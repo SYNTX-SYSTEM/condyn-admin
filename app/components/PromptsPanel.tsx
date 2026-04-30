@@ -32,7 +32,7 @@ export default function PromptsPanel({ token }: { token: string }) {
         headers: { Authorization: `Bearer ${token}` }
       });
       const data = await res.json();
-      setPrompts(data);
+      setPrompts(data.prompts || data); // FIX: Handle both {prompts: [...]} and [...]
     } catch (err) {
       console.error('Failed to load prompts:', err);
     }

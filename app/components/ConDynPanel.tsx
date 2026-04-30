@@ -38,7 +38,6 @@ export default function ConDynPanel() {
         ctx.fillStyle = '#F8FAFF';
         ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-        // Update and draw nodes
         nodes.forEach(node => {
           node.x += node.vx;
           node.y += node.vy;
@@ -52,7 +51,6 @@ export default function ConDynPanel() {
           ctx.fill();
         });
 
-        // Draw connections
         ctx.strokeStyle = 'rgba(21, 101, 192, 0.08)';
         ctx.lineWidth = 1;
         for (let i = 0; i < nodes.length; i++) {
@@ -89,12 +87,20 @@ export default function ConDynPanel() {
         body: JSON.stringify({ username, password })
       });
       
-      if (!res.ok) throw new Error('Login failed');
-      
       const data = await res.json();
+      
+      if (!res.ok) {
+        throw new Error(data?.detail || 'Login failed');
+      }
+      
+      if (!data.access_token) {
+        throw new Error('No token received');
+      }
+      
       setToken(data.access_token);
-    } catch (err) {
-      setError('Invalid credentials');
+    } catch (err: any) {
+      setError(err?.message || 'Invalid credentials');
+      console.error('Login error:', err);
     } finally {
       setLoading(false);
     }

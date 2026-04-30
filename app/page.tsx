@@ -1,3 +1,4 @@
+'use client';
 import ConDynPanel from './components/ConDynPanel';
 
 export default function Home() {
