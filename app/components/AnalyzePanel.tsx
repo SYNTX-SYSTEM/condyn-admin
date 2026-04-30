@@ -10,6 +10,7 @@ export default function AnalyzePanel({ token }: { token: string }) {
   const [loading, setLoading] = useState(false);
   const [activePrompt, setActivePrompt] = useState('');
   const [tokensUsed, setTokensUsed] = useState(0);
+  const [copySuccess, setCopySuccess] = useState(false);
 
   useEffect(() => {
     loadActivePrompt();
@@ -31,6 +32,7 @@ export default function AnalyzePanel({ token }: { token: string }) {
     if (!inputText.trim()) return;
     setLoading(true);
     setResult('');
+    setTokensUsed(0);
     
     try {
       const res = await fetch(`${API_URL}/analyze`, {
@@ -57,6 +59,8 @@ export default function AnalyzePanel({ token }: { token: string }) {
 
   const copyToClipboard = () => {
     navigator.clipboard.writeText(result);
+    setCopySuccess(true);
+    setTimeout(() => setCopySuccess(false), 2000);
   };
 
   return (
@@ -191,23 +195,27 @@ export default function AnalyzePanel({ token }: { token: string }) {
                 padding: '6px 14px',
                 fontSize: '12px',
                 fontWeight: '600',
-                color: '#1565C0',
-                background: 'transparent',
-                border: '1px solid #1565C0',
+                color: copySuccess ? '#FFFFFF' : '#1565C0',
+                background: copySuccess ? '#4CAF50' : 'transparent',
+                border: `1px solid ${copySuccess ? '#4CAF50' : '#1565C0'}`,
                 borderRadius: '4px',
                 cursor: 'pointer',
                 transition: 'all 0.15s ease'
               }}
               onMouseEnter={(e) => {
-                e.currentTarget.style.background = '#1565C0';
-                e.currentTarget.style.color = '#FFFFFF';
+                if (!copySuccess) {
+                  e.currentTarget.style.background = '#1565C0';
+                  e.currentTarget.style.color = '#FFFFFF';
+                }
               }}
               onMouseLeave={(e) => {
-                e.currentTarget.style.background = 'transparent';
-                e.currentTarget.style.color = '#1565C0';
+                if (!copySuccess) {
+                  e.currentTarget.style.background = 'transparent';
+                  e.currentTarget.style.color = '#1565C0';
+                }
               }}
             >
-              COPY
+              {copySuccess ? '✓ COPIED' : 'COPY'}
             </button>
           )}
         </div>

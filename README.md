@@ -426,3 +426,44 @@ Questions? Issues? Ideas?
 
 Charlottenburg Kiez. Berlin. 2026. Built with terminal and Claude.
 
+
+---
+
+## CHANGELOG
+
+### v1.1.0 (2026-04-30)
+
+**Features:**
+- ✓ Success toast notifications (create, activate, delete, save)
+- ✓ Copy button feedback ("✓ COPIED" for 2 seconds)
+- ✓ Improved NEW PROMPT mode with proper conditional rendering
+- ✓ Fixed CREATE endpoint (query params instead of JSON body)
+- ✓ Better empty state handling
+
+**UI Improvements:**
+- Green toast messages slide in from right, auto-dismiss after 3s
+- Copy button turns green with checkmark on success
+- Cleaner state management for NEW/EDIT/EMPTY modes
+
+**Bug Fixes:**
+- Backend compatibility: CREATE uses query parameters
+- Proper error handling with user-friendly alerts
+- Response format handling for `{prompts: [...]}` structure
+
+---
+
+## PRODUCTION DEPLOYMENT
+
+**Live:** https://admin.condyn.eu
+
+**Status:**
+- ✓ SSL Certificate: Let's Encrypt (auto-renew)
+- ✓ Process Management: PM2
+- ✓ Reverse Proxy: Nginx
+- ✓ Backend: http://localhost:8002
+- ✓ Frontend: http://localhost:3003
+
+**Last Deploy:** 2026-04-30 19:50 UTC  
+**Uptime Target:** 99.9%  
+**Response Time:** <200ms average
+
