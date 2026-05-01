@@ -9,7 +9,7 @@ interface Prompt {
   version: string;
   size: number;
   modified: string;
-  active: boolean;
+  is_active: boolean;
   content?: string;
 }
 
@@ -119,7 +119,7 @@ export default function PromptsPanel({ token }: { token: string }) {
   };
 
   const handleActivate = async () => {
-    if (!selected || selected.active) return;
+    if (!selected || selected.is_active) return;
     setLoading(true);
     try {
       await fetch(`${API_URL}/prompts/${selected.id}/activate`, {
@@ -137,7 +137,7 @@ export default function PromptsPanel({ token }: { token: string }) {
   };
 
   const handleDelete = async () => {
-    if (!selected || selected.active) return;
+    if (!selected || selected.is_active) return;
     if (!confirm(`Delete ${selected.filename}?`)) return;
     setLoading(true);
     try {
@@ -223,17 +223,17 @@ export default function PromptsPanel({ token }: { token: string }) {
               style={{
                 padding: '12px',
                 marginBottom: '8px',
-                background: p.active ? 'rgba(21, 101, 192, 0.1)' : 'transparent',
-                border: `1px solid ${p.active ? '#1565C0' : 'rgba(21, 101, 192, 0.15)'}`,
+                background: p.is_active ? 'rgba(21, 101, 192, 0.1)' : 'transparent',
+                border: `1px solid ${p.is_active ? '#1565C0' : 'rgba(21, 101, 192, 0.15)'}`,
                 borderRadius: '6px',
                 cursor: 'pointer',
                 transition: 'all 0.15s ease'
               }}
               onMouseEnter={(e) => {
-                if (!p.active) e.currentTarget.style.background = 'rgba(21, 101, 192, 0.05)';
+                if (!p.is_active) e.currentTarget.style.background = 'rgba(21, 101, 192, 0.05)';
               }}
               onMouseLeave={(e) => {
-                if (!p.active) e.currentTarget.style.background = 'transparent';
+                if (!p.is_active) e.currentTarget.style.background = 'transparent';
               }}
             >
               <div style={{
@@ -253,7 +253,7 @@ export default function PromptsPanel({ token }: { token: string }) {
                 alignItems: 'center'
               }}>
                 <span>{p.version} • {(p.size / 1024).toFixed(1)}KB</span>
-                {p.active && (
+                {p.is_active && (
                   <span style={{
                     background: '#1565C0',
                     color: '#FFFFFF',
@@ -370,7 +370,7 @@ export default function PromptsPanel({ token }: { token: string }) {
                   ● UNSAVED
                 </span>
               )}
-              {selected.active && (
+              {selected.is_active && (
                 <span style={{
                   background: '#1565C0',
                   color: '#FFFFFF',
@@ -424,7 +424,7 @@ export default function PromptsPanel({ token }: { token: string }) {
               </button>
               <button
                 onClick={handleActivate}
-                disabled={loading || selected.active}
+                disabled={loading || selected.is_active}
                 style={{
                   padding: '10px 20px',
                   fontSize: '13px',
@@ -433,8 +433,8 @@ export default function PromptsPanel({ token }: { token: string }) {
                   background: '#42A5F5',
                   border: 'none',
                   borderRadius: '6px',
-                  cursor: (loading || selected.active) ? 'not-allowed' : 'pointer',
-                  opacity: selected.active ? 0.5 : 1,
+                  cursor: (loading || selected.is_active) ? 'not-allowed' : 'pointer',
+                  opacity: selected.is_active ? 0.5 : 1,
                   transition: 'all 0.15s ease'
                 }}
               >
@@ -442,7 +442,7 @@ export default function PromptsPanel({ token }: { token: string }) {
               </button>
               <button
                 onClick={handleDelete}
-                disabled={loading || selected.active}
+                disabled={loading || selected.is_active}
                 style={{
                   padding: '10px 20px',
                   fontSize: '13px',
@@ -451,8 +451,8 @@ export default function PromptsPanel({ token }: { token: string }) {
                   background: '#E53935',
                   border: 'none',
                   borderRadius: '6px',
-                  cursor: (loading || selected.active) ? 'not-allowed' : 'pointer',
-                  opacity: selected.active ? 0.5 : 1,
+                  cursor: (loading || selected.is_active) ? 'not-allowed' : 'pointer',
+                  opacity: selected.is_active ? 0.5 : 1,
                   transition: 'all 0.15s ease'
                 }}
               >
