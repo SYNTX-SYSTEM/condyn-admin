@@ -793,3 +793,204 @@ input:focus::placeholder, textarea:focus::placeholder {
   0%, 100% { opacity: 0.3; }
   50% { opacity: 0.8; }
 }
+
+/* ─────────────────────────────────────────────────────────────
+   PROMPTS PANEL — Missing Classes
+   ───────────────────────────────────────────────────────────── */
+.split-layout {
+  display: grid;
+  grid-template-columns: 350px 1fr;
+  gap: 24px;
+  height: calc(100vh - 140px);
+}
+
+.prompt-item {
+  padding: 12px;
+  margin-bottom: 8px;
+  background: transparent;
+  border: 1px solid rgba(21, 101, 192, 0.15);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s var(--ease-organic);
+}
+
+.prompt-item:hover {
+  background: rgba(21, 101, 192, 0.05);
+  transform: translateX(4px);
+  border-left: 3px solid var(--primary-mid);
+}
+
+.prompt-item.active {
+  background: rgba(21, 101, 192, 0.1);
+  border: 1px solid #1565C0;
+  animation: cardBreath var(--breath-medium) var(--ease-organic) infinite;
+}
+
+.prompt-filename {
+  font-size: 13px;
+  font-weight: 600;
+  color: #1A1A2E;
+  margin-bottom: 4px;
+  font-family: monospace;
+}
+
+.prompt-meta {
+  font-size: 11px;
+  color: #666;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.section-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #1A1A2E;
+  margin: 0;
+}
+
+/* Badges */
+.badge {
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 600;
+  display: inline-block;
+}
+
+.badge-active {
+  background: var(--gradient-breath);
+  background-size: 300% 300%;
+  color: #FFFFFF;
+  animation: gradientBreath var(--flow) ease infinite;
+}
+
+.badge-unsaved {
+  background: #FFC107;
+  color: #1A1A2E;
+  animation: breatheBorder var(--pulse) ease-in-out infinite;
+}
+
+/* Buttons */
+.btn-accent {
+  padding: 10px 20px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #FFFFFF;
+  background: linear-gradient(135deg, #42A5F5, #2196F3);
+  background-size: 200% 200%;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s var(--ease-smooth);
+  animation: gradientBreath var(--breath-slow) ease infinite;
+}
+
+.btn-accent:hover:not(:disabled) {
+  animation: gradientBreath var(--breath-fast) ease infinite;
+  box-shadow: 0 4px 20px rgba(66, 165, 245, 0.4);
+}
+
+.btn-accent:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn-danger {
+  padding: 10px 20px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #FFFFFF;
+  background: linear-gradient(135deg, #E53935, #C62828);
+  background-size: 200% 200%;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s var(--ease-smooth);
+}
+
+.btn-danger:hover:not(:disabled) {
+  animation: gradientBreath var(--breath-fast) ease infinite;
+  box-shadow: 0 4px 20px rgba(229, 57, 53, 0.4);
+}
+
+.btn-danger:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Toast */
+.toast {
+  position: fixed;
+  top: 100px;
+  right: 32px;
+  background: var(--gradient-breath);
+  background-size: 300% 300%;
+  color: #FFFFFF;
+  padding: 16px 24px;
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(76, 175, 80, 0.3);
+  font-size: 14px;
+  font-weight: 600;
+  z-index: 1000;
+  animation: slideIn 0.3s var(--ease-bounce), gradientBreath var(--flow) ease infinite;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+/* Utility Classes */
+.gap-sm { gap: 8px; }
+.gap-md { gap: 12px; }
+
+.text-secondary {
+  color: #999;
+}
+
+.input-mono {
+  font-family: monospace;
+}
+
+/* Prompt Item Selected State */
+.prompt-item.selected {
+  background: rgba(21, 101, 192, 0.08);
+  border-left: 3px solid var(--primary-mid);
+}
+
+/* Cancel/Secondary Button */
+.btn-secondary {
+  padding: 10px 20px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #666;
+  background: transparent;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s var(--ease-smooth);
+}
+
+.btn-secondary:hover {
+  background: rgba(0, 0, 0, 0.05);
+  border-color: #999;
+}
+
+/* Button Disabled States - CRITICAL FIX */
+.btn-primary:disabled,
+.btn-accent:disabled,
+.btn-danger:disabled {
+  opacity: 0.4 !important;
+  cursor: not-allowed !important;
+  background: #ccc !important;
+  animation: none !important;
+  box-shadow: none !important;
+  pointer-events: none;
+}
