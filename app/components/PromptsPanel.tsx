@@ -87,16 +87,17 @@ export default function PromptsPanel({ token }: { token: string }) {
     if (!editFilename.trim() || !editContent.trim()) return;
     setLoading(true);
     try {
-      const params = new URLSearchParams({
-        filename: editFilename,
-        content: editContent
-      });
-      
-      const res = await fetch(`${API_URL}/prompts?${params}`, {
+      const res = await fetch(`${API_URL}/prompts`, {
         method: 'POST',
         headers: {
+          'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`
-        }
+        },
+        body: JSON.stringify({
+          filename: editFilename,
+          content: editContent,
+          version: 'v1.0'
+        })
       });
       
       if (res.ok) {

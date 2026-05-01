@@ -22,7 +22,7 @@ export default function AnalyzePanel({ token }: { token: string }) {
         headers: { Authorization: `Bearer ${token}` }
       });
       const data = await res.json();
-      setActivePrompt(data.id || 'none');
+      setActivePrompt(data.prompt?.filename || 'No active prompt');
     } catch (err) {
       console.error('Failed to load active prompt:', err);
     }
