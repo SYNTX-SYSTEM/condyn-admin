@@ -64,97 +64,46 @@ export default function AnalyzePanel({ token }: { token: string }) {
   };
 
   return (
-    <div style={{ display: 'flex', gap: '24px', height: 'calc(100vh - 140px)' }}>
+    <div className="analyze-layout">
       {/* Left: Input */}
-      <div style={{
-        width: '45%',
-        background: '#FFFFFF',
-        borderRadius: '8px',
-        boxShadow: '0 2px 12px rgba(21, 101, 192, 0.08)',
-        padding: '24px',
-        display: 'flex',
-        flexDirection: 'column'
-      }}>
-        <h2 style={{
-          fontSize: '16px',
-          fontWeight: '600',
-          color: '#1A1A2E',
-          margin: '0 0 16px 0'
-        }}>
+      <div className="card panel-left">
+        <h2 style={{ fontSize: '16px', fontWeight: '600', marginBottom: '16px' }}>
           INPUT
         </h2>
 
         <textarea
+          className="textarea"
           value={inputText}
           onChange={(e) => setInputText(e.target.value)}
           placeholder="Paste document text here..."
-          style={{
-            flex: 1,
-            minHeight: '200px',
-            padding: '16px',
-            fontSize: '13px',
-            fontFamily: 'monospace',
-            border: '1px solid rgba(21, 101, 192, 0.15)',
-            borderRadius: '6px',
-            resize: 'none',
-            outline: 'none',
-            lineHeight: '1.6',
-            marginBottom: '12px'
-          }}
-          onFocus={(e) => e.target.style.borderColor = '#1565C0'}
-          onBlur={(e) => e.target.style.borderColor = 'rgba(21, 101, 192, 0.15)'}
+          style={{ flex: 1, minHeight: '200px', marginBottom: '12px' }}
         />
 
         <input
+          className="input"
           type="text"
           value={context}
           onChange={(e) => setContext(e.target.value)}
           placeholder="Optional context note"
-          style={{
-            padding: '12px',
-            fontSize: '13px',
-            border: '1px solid rgba(21, 101, 192, 0.15)',
-            borderRadius: '6px',
-            marginBottom: '16px',
-            outline: 'none'
-          }}
-          onFocus={(e) => e.target.style.borderColor = '#1565C0'}
-          onBlur={(e) => e.target.style.borderColor = 'rgba(21, 101, 192, 0.15)'}
+          style={{ marginBottom: '16px' }}
         />
 
         <button
+          className="btn-primary"
           onClick={handleAnalyze}
           disabled={loading || !inputText.trim()}
-          style={{
-            padding: '14px',
-            fontSize: '14px',
-            fontWeight: '600',
-            color: '#FFFFFF',
-            background: '#1565C0',
-            border: 'none',
-            borderRadius: '6px',
-            cursor: (loading || !inputText.trim()) ? 'not-allowed' : 'pointer',
-            opacity: !inputText.trim() ? 0.5 : 1,
-            transition: 'all 0.15s ease',
-            marginBottom: '16px'
-          }}
-          onMouseEnter={(e) => {
-            if (!loading && inputText.trim()) e.currentTarget.style.background = '#0D47A1';
-          }}
-          onMouseLeave={(e) => e.currentTarget.style.background = '#1565C0'}
+          style={{ width: '100%', marginBottom: '16px' }}
         >
           {loading ? 'ANALYZING...' : '⚡ ANALYZE'}
         </button>
 
-        <div style={{
-          fontSize: '12px',
-          color: '#666',
+        <div className="card" style={{ 
+          fontSize: '12px', 
           padding: '12px',
-          background: 'rgba(21, 101, 192, 0.05)',
-          borderRadius: '6px'
+          background: 'rgba(21, 101, 192, 0.05)' 
         }}>
           <div style={{ marginBottom: '4px' }}>
-            <strong>Using:</strong> <span style={{ fontFamily: 'monospace' }}>{activePrompt}</span>
+            <strong>Using:</strong> <span className="text-mono">{activePrompt}</span>
           </div>
           {tokensUsed > 0 && (
             <div>
@@ -165,54 +114,21 @@ export default function AnalyzePanel({ token }: { token: string }) {
       </div>
 
       {/* Right: Output */}
-      <div style={{
-        flex: 1,
-        background: '#FFFFFF',
-        borderRadius: '8px',
-        boxShadow: '0 2px 12px rgba(21, 101, 192, 0.08)',
-        padding: '24px',
-        display: 'flex',
-        flexDirection: 'column'
-      }}>
-        <div style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          marginBottom: '16px'
-        }}>
-          <h2 style={{
-            fontSize: '16px',
-            fontWeight: '600',
-            color: '#1A1A2E',
-            margin: 0
-          }}>
+      <div className="card panel-right">
+        <div className="flex-between" style={{ marginBottom: '16px' }}>
+          <h2 style={{ fontSize: '16px', fontWeight: '600', margin: 0 }}>
             ANALYSIS RESULT
           </h2>
           {result && (
             <button
+              className={copySuccess ? "btn-success" : "btn-primary"}
               onClick={copyToClipboard}
-              style={{
-                padding: '6px 14px',
+              style={{ 
+                padding: '6px 14px', 
                 fontSize: '12px',
-                fontWeight: '600',
-                color: copySuccess ? '#FFFFFF' : '#1565C0',
-                background: copySuccess ? '#4CAF50' : 'transparent',
-                border: `1px solid ${copySuccess ? '#4CAF50' : '#1565C0'}`,
-                borderRadius: '4px',
-                cursor: 'pointer',
-                transition: 'all 0.15s ease'
-              }}
-              onMouseEnter={(e) => {
-                if (!copySuccess) {
-                  e.currentTarget.style.background = '#1565C0';
-                  e.currentTarget.style.color = '#FFFFFF';
-                }
-              }}
-              onMouseLeave={(e) => {
-                if (!copySuccess) {
-                  e.currentTarget.style.background = 'transparent';
-                  e.currentTarget.style.color = '#1565C0';
-                }
+                background: copySuccess ? undefined : 'transparent',
+                color: copySuccess ? undefined : '#1565C0',
+                border: copySuccess ? undefined : '1px solid #1565C0'
               }}
             >
               {copySuccess ? '✓ COPIED' : 'COPY'}
@@ -220,50 +136,43 @@ export default function AnalyzePanel({ token }: { token: string }) {
           )}
         </div>
 
-        <div style={{
+        <div className="card" style={{
           flex: 1,
           padding: '16px',
-          border: '1px solid rgba(21, 101, 192, 0.15)',
-          borderRadius: '6px',
           overflowY: 'auto',
           fontSize: '13px',
           lineHeight: '1.8',
-          color: '#1A1A2E',
-          whiteSpace: 'pre-wrap'
+          whiteSpace: 'pre-wrap',
+          background: 'rgba(255, 255, 255, 0.5)'
         }}>
           {loading ? (
-            <div style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              height: '100%',
-              color: '#1565C0'
-            }}>
-              <div style={{
-                width: '40px',
-                height: '40px',
-                border: '4px solid rgba(21, 101, 192, 0.2)',
-                borderTop: '4px solid #1565C0',
-                borderRadius: '50%',
-                animation: 'spin 1s linear infinite'
-              }} />
+            <div className="loading-symbiotic">
+              <div className="loading-logo-container">
+                <div className="breathing-ring"></div>
+                <div className="breathing-ring"></div>
+                <div className="breathing-ring"></div>
+                <div className="particle"></div>
+                <div className="particle"></div>
+                <div className="particle"></div>
+                <div className="particle"></div>
+                <div className="particle"></div>
+                <div className="particle"></div>
+                <div className="particle"></div>
+                <div className="particle"></div>
+                <img src="/logo.jpeg" alt="ConDyn" className="loading-logo" />
+              </div>
+              <div className="loading-text">Analyzing Structure</div>
+              <div className="loading-subtext">Connection Dynamics Framework at work...</div>
             </div>
           ) : result ? (
             <div dangerouslySetInnerHTML={{ __html: result.replace(/\n/g, '<br/>') }} />
           ) : (
-            <div style={{ color: '#999', fontStyle: 'italic' }}>
+            <div className="text-secondary" style={{ fontStyle: 'italic' }}>
               No analysis yet. Enter text and click ANALYZE.
             </div>
           )}
         </div>
       </div>
-
-      <style jsx>{`
-        @keyframes spin {
-          0% { transform: rotate(0deg); }
-          100% { transform: rotate(360deg); }
-        }
-      `}</style>
     </div>
   );
 }
