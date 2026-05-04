@@ -3,29 +3,6 @@ import { useState, useEffect, useRef } from 'react';
 
 const API_URL = process.env.NEXT_PUBLIC_CONDYN_API_URL || 'http://localhost:8002';
 
-const SAMPLE_EMAIL = `From: Sarah Chen, VP Operations
-To: All Department Heads
-Subject: Q4 Reporting Protocol - Mandatory Compliance
-
-Team,
-
-Effective immediately, all end-of-day reports must be submitted by 6:00 PM sharp, no exceptions. I've noticed increasing delays over the past two weeks, and this is unacceptable given our upcoming board review.
-
-Each department head is personally responsible for ensuring their team completes daily metrics before leaving. Any delays require prior approval from me directly - not your manager, not your team lead, ME. I don't have time to chase people down every evening.
-
-The new procedure is as follows:
-1. Team members complete their reports by 5:30 PM
-2. Department heads review and sign off by 5:50 PM  
-3. Final submission to my office by 6:00 PM
-
-I shouldn't have to remind everyone that these reports feed directly into our investor updates. Missing or late submissions reflect poorly on the entire organization, and frankly, on your ability to manage your teams effectively.
-
-If you're unable to meet these requirements, we need to have a serious conversation about whether you're the right fit for your current role. I expect full compliance starting tomorrow.
-
-Regards,
-Sarah Chen
-VP Operations`;
-
 export default function AnalyzePanel({ token }: { token: string }) {
   const [inputText, setInputText] = useState('');
   const [context, setContext] = useState('');
@@ -46,7 +23,6 @@ export default function AnalyzePanel({ token }: { token: string }) {
   }, []);
 
   useEffect(() => {
-    // Cleanup PDF URL on unmount
     return () => {
       if (pdfUrl) {
         URL.revokeObjectURL(pdfUrl);
@@ -71,7 +47,7 @@ export default function AnalyzePanel({ token }: { token: string }) {
       setUploadedFile(file);
       const url = URL.createObjectURL(file);
       setPdfUrl(url);
-      setInputText(''); // Clear text
+      setInputText('');
       setContext(`Uploaded PDF: ${file.name}`);
     } else {
       alert('Please upload a PDF file');
@@ -128,7 +104,6 @@ export default function AnalyzePanel({ token }: { token: string }) {
       let res;
       
       if (uploadedFile) {
-        // PDF Upload
         const formData = new FormData();
         formData.append('file', uploadedFile);
         if (context) {
@@ -144,7 +119,6 @@ export default function AnalyzePanel({ token }: { token: string }) {
           body: formData
         });
       } else {
-        // Text Analysis
         res = await fetch(`${API_URL}/analyze`, {
           method: 'POST',
           headers: {
@@ -180,21 +154,36 @@ export default function AnalyzePanel({ token }: { token: string }) {
     setTimeout(() => setCopySuccess(false), 2000);
   };
 
-  const loadSample = () => {
-    setInputText(SAMPLE_EMAIL);
-    setContext('Internal management email');
+  const loadSample = async () => {
+    console.log("🔵 Load Sample clicked!");
     handleClearFile();
+    
+    try {
+      console.log("🔵 Fetching sample...");
+      const res = await fetch("/samples/sample-email.txt");
+      console.log("🔵 Response:", res.status);
+      const text = await res.text();
+      console.log("🔵 Text loaded, length:", text.length);
+      
+      setTimeout(() => {
+        setInputText(text);
+        setContext("Internal management email");
+        console.log("🔵 Text set!");
+      }, 100);
+      
+    } catch (err) {
+      console.error("❌ Failed to load sample:", err);
+      alert("Failed to load sample email");
+    }
   };
 
   return (
     <div className="analyze-layout">
-      {/* Left: Input */}
       <div className="card panel-left">
         <h2 style={{ fontSize: '16px', fontWeight: '600', marginBottom: '16px' }}>
           INPUT
         </h2>
 
-        {/* File Upload Info */}
         {uploadedFile && (
           <div style={{
             padding: '12px',
@@ -234,7 +223,6 @@ export default function AnalyzePanel({ token }: { token: string }) {
           </div>
         )}
 
-        {/* PDF Preview OR Textarea */}
         <div 
           style={{ position: 'relative', flex: 1, marginBottom: '12px' }}
           onDragOver={handleDragOver}
@@ -242,7 +230,6 @@ export default function AnalyzePanel({ token }: { token: string }) {
           onDrop={handleDrop}
         >
           {pdfUrl ? (
-            // PDF Preview
             <iframe
               src={pdfUrl}
               style={{
@@ -254,7 +241,6 @@ export default function AnalyzePanel({ token }: { token: string }) {
               }}
             />
           ) : (
-            // Text Input
             <textarea
               className="textarea"
               value={inputText}
@@ -268,7 +254,6 @@ export default function AnalyzePanel({ token }: { token: string }) {
             />
           )}
           
-          {/* Drag Overlay */}
           {isDragging && !pdfUrl && (
             <div style={{
               position: 'absolute',
@@ -291,7 +276,6 @@ export default function AnalyzePanel({ token }: { token: string }) {
             </div>
           )}
           
-          {/* Upload & Sample Buttons */}
           {!pdfUrl && (
             <div style={{
               position: 'absolute',
@@ -377,7 +361,6 @@ export default function AnalyzePanel({ token }: { token: string }) {
         </div>
       </div>
 
-      {/* Right: Output */}
       <div className="card panel-right">
         <div className="flex-between" style={{ marginBottom: '16px' }}>
           <h2 style={{ fontSize: '16px', fontWeight: '600', margin: 0 }}>
