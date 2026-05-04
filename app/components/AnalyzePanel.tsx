@@ -1,5 +1,5 @@
 'use client';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 const API_URL = process.env.NEXT_PUBLIC_CONDYN_API_URL || 'http://localhost:8002';
 
@@ -34,10 +34,25 @@ export default function AnalyzePanel({ token }: { token: string }) {
   const [activePrompt, setActivePrompt] = useState('');
   const [tokensUsed, setTokensUsed] = useState(0);
   const [copySuccess, setCopySuccess] = useState(false);
+  
+  // PDF States
+  const [uploadedFile, setUploadedFile] = useState<File | null>(null);
+  const [pdfUrl, setPdfUrl] = useState<string | null>(null);
+  const [isDragging, setIsDragging] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     loadActivePrompt();
   }, []);
+
+  useEffect(() => {
+    // Cleanup PDF URL on unmount
+    return () => {
+      if (pdfUrl) {
+        URL.revokeObjectURL(pdfUrl);
+      }
+    };
+  }, [pdfUrl]);
 
   const loadActivePrompt = async () => {
     try {
@@ -51,30 +66,109 @@ export default function AnalyzePanel({ token }: { token: string }) {
     }
   };
 
+  const handleFileSelect = (file: File) => {
+    if (file.type === 'application/pdf') {
+      setUploadedFile(file);
+      const url = URL.createObjectURL(file);
+      setPdfUrl(url);
+      setInputText(''); // Clear text
+      setContext(`Uploaded PDF: ${file.name}`);
+    } else {
+      alert('Please upload a PDF file');
+    }
+  };
+
+  const handleDragOver = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(true);
+  };
+
+  const handleDragLeave = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(false);
+  };
+
+  const handleDrop = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(false);
+    const file = e.dataTransfer.files[0];
+    if (file) {
+      handleFileSelect(file);
+    }
+  };
+
+  const handleFileInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      handleFileSelect(file);
+    }
+  };
+
+  const handleClearFile = () => {
+    setUploadedFile(null);
+    if (pdfUrl) {
+      URL.revokeObjectURL(pdfUrl);
+      setPdfUrl(null);
+    }
+    setInputText('');
+    setContext('');
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
+    }
+  };
+
   const handleAnalyze = async () => {
-    if (!inputText.trim()) return;
+    if (!uploadedFile && !inputText.trim()) return;
+    
     setLoading(true);
     setResult('');
     setTokensUsed(0);
     
     try {
-      const res = await fetch(`${API_URL}/analyze`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`
-        },
-        body: JSON.stringify({
-          text: inputText,
-          context: context || undefined
-        })
-      });
+      let res;
+      
+      if (uploadedFile) {
+        // PDF Upload
+        const formData = new FormData();
+        formData.append('file', uploadedFile);
+        if (context) {
+          formData.append('context', context);
+        }
+        formData.append('language', 'en');
+        
+        res = await fetch(`${API_URL}/analyze/upload`, {
+          method: 'POST',
+          headers: {
+            Authorization: `Bearer ${token}`
+          },
+          body: formData
+        });
+      } else {
+        // Text Analysis
+        res = await fetch(`${API_URL}/analyze`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`
+          },
+          body: JSON.stringify({
+            text: inputText,
+            context: context || undefined
+          })
+        });
+      }
 
       const data = await res.json();
+      
+      if (!res.ok) {
+        throw new Error(data.detail || 'Analysis failed');
+      }
+      
       setResult(data.analysis);
       setTokensUsed(data.tokens_used || 0);
-    } catch (err) {
-      setResult('Analysis failed. Please try again.');
+      
+    } catch (err: any) {
+      setResult(`Analysis failed: ${err.message}`);
     } finally {
       setLoading(false);
     }
@@ -89,6 +183,7 @@ export default function AnalyzePanel({ token }: { token: string }) {
   const loadSample = () => {
     setInputText(SAMPLE_EMAIL);
     setContext('Internal management email');
+    handleClearFile();
   };
 
   return (
@@ -99,31 +194,153 @@ export default function AnalyzePanel({ token }: { token: string }) {
           INPUT
         </h2>
 
-        <div style={{ position: 'relative', flex: 1, marginBottom: '12px' }}>
-          <textarea
-            className="textarea"
-            value={inputText}
-            onChange={(e) => setInputText(e.target.value)}
-            placeholder="Paste document text here..."
-            style={{ width: '100%', height: '100%', minHeight: '200px' }}
-          />
+        {/* File Upload Info */}
+        {uploadedFile && (
+          <div style={{
+            padding: '12px',
+            background: 'rgba(156, 39, 176, 0.1)',
+            border: '1px solid rgba(156, 39, 176, 0.3)',
+            borderRadius: '6px',
+            marginBottom: '12px',
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center'
+          }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <span style={{ fontSize: '20px' }}>📄</span>
+              <div>
+                <div style={{ fontSize: '13px', fontWeight: '600', color: '#9C27B0' }}>
+                  {uploadedFile.name}
+                </div>
+                <div style={{ fontSize: '11px', color: '#666' }}>
+                  {(uploadedFile.size / 1024).toFixed(1)} KB
+                </div>
+              </div>
+            </div>
+            <button
+              onClick={handleClearFile}
+              style={{
+                padding: '4px 8px',
+                fontSize: '11px',
+                background: 'transparent',
+                border: '1px solid #999',
+                borderRadius: '4px',
+                cursor: 'pointer',
+                color: '#666'
+              }}
+            >
+              ✕ Clear
+            </button>
+          </div>
+        )}
+
+        {/* PDF Preview OR Textarea */}
+        <div 
+          style={{ position: 'relative', flex: 1, marginBottom: '12px' }}
+          onDragOver={handleDragOver}
+          onDragLeave={handleDragLeave}
+          onDrop={handleDrop}
+        >
+          {pdfUrl ? (
+            // PDF Preview
+            <iframe
+              src={pdfUrl}
+              style={{
+                width: '100%',
+                height: '100%',
+                minHeight: '400px',
+                border: '1px solid rgba(21, 101, 192, 0.15)',
+                borderRadius: '6px'
+              }}
+            />
+          ) : (
+            // Text Input
+            <textarea
+              className="textarea"
+              value={inputText}
+              onChange={(e) => setInputText(e.target.value)}
+              placeholder="Paste document text here or drag & drop PDF..."
+              style={{ 
+                width: '100%', 
+                height: '100%', 
+                minHeight: '200px'
+              }}
+            />
+          )}
           
-          <button
-            onClick={loadSample}
-            className="btn-primary"
-            style={{ 
+          {/* Drag Overlay */}
+          {isDragging && !pdfUrl && (
+            <div style={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              background: 'rgba(156, 39, 176, 0.1)',
+              border: '2px dashed #9C27B0',
+              borderRadius: '6px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              fontSize: '16px',
+              fontWeight: '600',
+              color: '#9C27B0',
+              pointerEvents: 'none'
+            }}>
+              📄 Drop PDF here
+            </div>
+          )}
+          
+          {/* Upload & Sample Buttons */}
+          {!pdfUrl && (
+            <div style={{
               position: 'absolute',
               bottom: '12px',
               right: '12px',
-              padding: '8px 16px',
-              fontSize: '12px',
-              background: 'linear-gradient(135deg, #00BCD4, #4FC3F7)',
-              border: 'none',
-              boxShadow: '0 2px 8px rgba(0, 188, 212, 0.3)'
-            }}
-          >
-            📧 Load Sample
-          </button>
+              display: 'flex',
+              gap: '8px'
+            }}>
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept=".pdf"
+                onChange={handleFileInputChange}
+                style={{ display: 'none' }}
+              />
+              <button
+                onClick={() => fileInputRef.current?.click()}
+                style={{ 
+                  padding: '8px 16px',
+                  fontSize: '12px',
+                  background: 'linear-gradient(135deg, #9C27B0, #BA68C8)',
+                  color: '#FFFFFF',
+                  border: 'none',
+                  borderRadius: '6px',
+                  cursor: 'pointer',
+                  boxShadow: '0 2px 8px rgba(156, 39, 176, 0.3)',
+                  fontWeight: '600'
+                }}
+              >
+                📄 Upload PDF
+              </button>
+              <button
+                onClick={loadSample}
+                style={{ 
+                  padding: '8px 16px',
+                  fontSize: '12px',
+                  background: 'linear-gradient(135deg, #00BCD4, #4FC3F7)',
+                  color: '#FFFFFF',
+                  border: 'none',
+                  borderRadius: '6px',
+                  cursor: 'pointer',
+                  boxShadow: '0 2px 8px rgba(0, 188, 212, 0.3)',
+                  fontWeight: '600'
+                }}
+              >
+                📧 Load Sample
+              </button>
+            </div>
+          )}
         </div>
 
         <input
@@ -138,7 +355,7 @@ export default function AnalyzePanel({ token }: { token: string }) {
         <button
           className="btn-primary"
           onClick={handleAnalyze}
-          disabled={loading || !inputText.trim()}
+          disabled={loading || (!uploadedFile && !inputText.trim())}
           style={{ width: '100%', marginBottom: '16px' }}
         >
           {loading ? 'ANALYZING...' : '⚡ ANALYZE'}
