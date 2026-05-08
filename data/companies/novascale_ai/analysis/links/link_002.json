@@ -1,0 +1,9 @@
+{
+  "link_id": "LINK_NOVA_002",
+  "company_id": "CMP_NOVA_001",
+  "source": "EVT_NOVA_001",
+  "target": "KPI_NOVA_2026_05",
+  "relation": "impacted",
+  "weight": 0.84,
+  "timestamp": "2026-05-01T17:20:00Z"
+}

@@ -1,0 +1,30 @@
+{
+  "event_id": "EVT_NOVA_001",
+  "company_id": "CMP_NOVA_001",
+  "timestamp": "2026-05-01T17:15:00Z",
+  "event_type": "policy_change",
+  "source_artifact": "MAIL_NOVA_001",
+  "trigger": "reporting_delays",
+  "affected_roles": [
+    "VP Operations",
+    "Department Head",
+    "Team Lead",
+    "Software Engineer"
+  ],
+  "structural_changes": [
+    {
+      "change": "deadline_hardened",
+      "value": "18:00"
+    },
+    {
+      "change": "approval_path_centralized",
+      "from": [
+        "Manager",
+        "Team Lead"
+      ],
+      "to": [
+        "VP Operations"
+      ]
+    }
+  ]
+}

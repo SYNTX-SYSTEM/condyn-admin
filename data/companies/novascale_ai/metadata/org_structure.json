@@ -1,0 +1,35 @@
+{
+  "company_id": "CMP_NOVA_001",
+  "roles": [
+    {
+      "role_id": "ROLE_NOVA_001",
+      "title": "CEO",
+      "department": "Executive",
+      "reports_to": null
+    },
+    {
+      "role_id": "ROLE_NOVA_002",
+      "title": "VP Operations",
+      "department": "Operations",
+      "reports_to": "ROLE_NOVA_001"
+    },
+    {
+      "role_id": "ROLE_NOVA_003",
+      "title": "Department Head",
+      "department": "Engineering",
+      "reports_to": "ROLE_NOVA_002"
+    },
+    {
+      "role_id": "ROLE_NOVA_004",
+      "title": "Team Lead",
+      "department": "Engineering",
+      "reports_to": "ROLE_NOVA_003"
+    },
+    {
+      "role_id": "ROLE_NOVA_005",
+      "title": "Software Engineer",
+      "department": "Engineering",
+      "reports_to": "ROLE_NOVA_004"
+    }
+  ]
+}

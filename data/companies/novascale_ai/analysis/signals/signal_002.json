@@ -1,0 +1,15 @@
+{
+  "signal_id": "SIG_NOVA_002",
+  "company_id": "CMP_NOVA_001",
+  "signal_type": "deadline_pressure",
+  "confidence": 0.88,
+  "linked_artifacts": [
+    "MAIL_NOVA_001",
+    "KPI_NOVA_2026_05"
+  ],
+  "linked_roles": [
+    "VP Operations",
+    "Software Engineer"
+  ],
+  "detected_at": "2026-05-01T17:26:00Z"
+}

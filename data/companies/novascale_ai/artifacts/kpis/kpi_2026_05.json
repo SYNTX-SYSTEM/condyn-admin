@@ -1,0 +1,17 @@
+{
+  "kpi_id": "KPI_NOVA_2026_05",
+  "company_id": "CMP_NOVA_001",
+  "period": "2026-05",
+  "metrics": {
+    "report_delay_rate": 0.34,
+    "average_submission_time": "18:22",
+    "approved_delay_requests": 18,
+    "unapproved_delay_events": 7,
+    "board_review_risk_level": 0.78,
+    "employee_turnover_risk": 0.41
+  },
+  "sources": [
+    "MAIL_NOVA_001",
+    "EVT_NOVA_001"
+  ]
+}

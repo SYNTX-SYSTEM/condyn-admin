@@ -1,0 +1,9 @@
+{
+  "company_id": "CMP_HELIX_001",
+  "name": "HelixBank Europe",
+  "industry": "Financial Services",
+  "size": 4200,
+  "region": "EU",
+  "simulation": true,
+  "created_at": "2026-05-08T18:00:00Z"
+}
