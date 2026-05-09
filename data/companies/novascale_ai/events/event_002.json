@@ -1,0 +1,20 @@
+{
+  "event_id": "EVT_NOVA_002",
+  "company_id": "CMP_NOVA_001",
+  "timestamp": "2026-05-08T08:50:00Z",
+  "event_type": "workflow_compression",
+  "source_artifact": "MAIL_NOVA_002",
+  "trigger": "executive_reporting_pressure",
+  "affected_roles": [
+    "Department Head",
+    "Team Lead",
+    "Software Engineer"
+  ],
+  "structural_changes": [
+    {
+      "change": "priority_shift",
+      "from": "feature_delivery",
+      "to": "reporting_compliance"
+    }
+  ]
+}

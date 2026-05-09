@@ -1,0 +1,9 @@
+{
+  "link_id": "LINK_HELIX_002",
+  "company_id": "CMP_HELIX_001",
+  "source": "EVT_HELIX_001",
+  "target": "SIG_HELIX_001",
+  "relation": "generated",
+  "weight": 0.91,
+  "timestamp": "2026-04-14T08:20:00Z"
+}

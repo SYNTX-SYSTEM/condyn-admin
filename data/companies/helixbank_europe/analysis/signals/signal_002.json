@@ -1,0 +1,15 @@
+{
+  "signal_id": "SIG_HELIX_002",
+  "company_id": "CMP_HELIX_001",
+  "signal_type": "regulatory_bottleneck_risk",
+  "confidence": 0.89,
+  "linked_artifacts": [
+    "EVT_HELIX_001",
+    "KPI_HELIX_2026_Q2"
+  ],
+  "linked_roles": [
+    "Operations Manager",
+    "Regional Audit Lead"
+  ],
+  "detected_at": "2026-04-14T08:24:00Z"
+}

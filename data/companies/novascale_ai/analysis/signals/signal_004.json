@@ -1,0 +1,15 @@
+{
+  "signal_id": "SIG_NOVA_004",
+  "company_id": "CMP_NOVA_001",
+  "signal_type": "turnover_risk_acceleration",
+  "confidence": 0.87,
+  "linked_artifacts": [
+    "KPI_NOVA_2026_05",
+    "KPI_NOVA_2026_06"
+  ],
+  "linked_roles": [
+    "Software Engineer",
+    "Team Lead"
+  ],
+  "detected_at": "2026-05-08T09:14:00Z"
+}

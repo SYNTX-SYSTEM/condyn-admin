@@ -3,15 +3,32 @@
   "company_id": "CMP_NOVA_001",
   "nodes": [
     "MAIL_NOVA_001",
+    "MAIL_NOVA_002",
+
     "EVT_NOVA_001",
+    "EVT_NOVA_002",
+
     "KPI_NOVA_2026_05",
+    "KPI_NOVA_2026_06",
+
     "SIG_NOVA_001",
-    "SIG_NOVA_002"
+    "SIG_NOVA_002",
+    "SIG_NOVA_003",
+    "SIG_NOVA_004"
   ],
   "edges": [
     "LINK_NOVA_001",
-    "LINK_NOVA_002"
+    "LINK_NOVA_002",
+    "LINK_NOVA_003",
+    "LINK_NOVA_004"
   ],
-  "generated_at": "2026-05-01T17:30:00Z",
+  "topology_characteristics": {
+    "authority_centralization": 0.82,
+    "workflow_instability": 0.76,
+    "turnover_pressure": 0.67,
+    "signal_density": 0.71,
+    "bottleneck_probability": 0.64
+  },
+  "generated_at": "2026-05-08T09:20:00Z",
   "network_type": "structural_relations"
 }

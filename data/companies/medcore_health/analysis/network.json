@@ -1,0 +1,24 @@
+{
+  "network_id": "NET_MED_001",
+  "company_id": "CMP_MEDCORE_001",
+  "nodes": [
+    "SHIFT_MED_001",
+    "EVT_MED_001",
+    "KPI_MED_2026_Q1",
+    "SIG_MED_001",
+    "SIG_MED_002"
+  ],
+  "edges": [
+    "LINK_MED_001",
+    "LINK_MED_002"
+  ],
+  "topology_characteristics": {
+    "staffing_pressure": 0.83,
+    "fatigue_density": 0.74,
+    "incident_risk": 0.61,
+    "workflow_instability": 0.69,
+    "turnover_pressure": 0.58
+  },
+  "generated_at": "2026-03-11T07:10:00Z",
+  "network_type": "healthcare_operational_topology"
+}

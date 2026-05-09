@@ -1,0 +1,17 @@
+{
+  "signal_id": "SIG_NOVA_003",
+  "company_id": "CMP_NOVA_001",
+  "signal_type": "workflow_compression",
+  "confidence": 0.91,
+  "linked_artifacts": [
+    "MAIL_NOVA_002",
+    "EVT_NOVA_002",
+    "KPI_NOVA_2026_06"
+  ],
+  "linked_roles": [
+    "Department Head",
+    "Team Lead",
+    "Software Engineer"
+  ],
+  "detected_at": "2026-05-08T09:10:00Z"
+}

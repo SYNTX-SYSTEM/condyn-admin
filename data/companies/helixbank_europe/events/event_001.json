@@ -1,0 +1,20 @@
+{
+  "event_id": "EVT_HELIX_001",
+  "company_id": "CMP_HELIX_001",
+  "timestamp": "2026-04-14T08:10:00Z",
+  "event_type": "compliance_escalation",
+  "source_artifact": "MAIL_HELIX_001",
+  "trigger": "accelerated_regulatory_review",
+  "affected_roles": [
+    "Compliance Director",
+    "Regional Audit Lead",
+    "Operations Manager"
+  ],
+  "structural_changes": [
+    {
+      "change": "escalation_window_reduction",
+      "from": "72_hours",
+      "to": "24_hours"
+    }
+  ]
+}

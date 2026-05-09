@@ -1,0 +1,9 @@
+{
+  "link_id": "LINK_HELIX_001",
+  "company_id": "CMP_HELIX_001",
+  "source": "MAIL_HELIX_001",
+  "target": "EVT_HELIX_001",
+  "relation": "triggered",
+  "weight": 0.95,
+  "timestamp": "2026-04-14T08:10:00Z"
+}

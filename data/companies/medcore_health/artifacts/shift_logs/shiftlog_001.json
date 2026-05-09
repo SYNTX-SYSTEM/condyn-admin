@@ -1,0 +1,17 @@
+{
+  "artifact_id": "SHIFT_MED_001",
+  "company_id": "CMP_MEDCORE_001",
+  "type": "shift_log",
+  "timestamp": "2026-03-11T06:20:00Z",
+  "from_role": "Shift Coordinator",
+  "to_roles": [
+    "Senior Nurse"
+  ],
+  "subject": "Emergency Shift Reassignment",
+  "tags": [
+    "staffing",
+    "shift",
+    "operations"
+  ],
+  "content": "Due to unexpected absences, three additional night shifts have been reassigned to the existing care team this week. Staffing reserves are currently unavailable."
+}

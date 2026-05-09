@@ -1,0 +1,16 @@
+{
+  "kpi_id": "KPI_HELIX_2026_Q2",
+  "company_id": "CMP_HELIX_001",
+  "period": "2026-Q2",
+  "metrics": {
+    "audit_exception_rate": 0.28,
+    "compliance_escalation_rate": 0.73,
+    "resolution_delay_rate": 0.31,
+    "regulatory_pressure_index": 0.88,
+    "operational_bottleneck_risk": 0.59
+  },
+  "sources": [
+    "MAIL_HELIX_001",
+    "EVT_HELIX_001"
+  ]
+}

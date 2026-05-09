@@ -1,0 +1,9 @@
+{
+  "link_id": "LINK_NOVA_003",
+  "company_id": "CMP_NOVA_001",
+  "source": "EVT_NOVA_002",
+  "target": "SIG_NOVA_003",
+  "relation": "generated",
+  "weight": 0.93,
+  "timestamp": "2026-05-08T09:10:00Z"
+}

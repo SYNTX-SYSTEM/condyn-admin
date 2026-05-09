@@ -1,0 +1,16 @@
+{
+  "kpi_id": "KPI_MED_2026_Q1",
+  "company_id": "CMP_MEDCORE_001",
+  "period": "2026-Q1",
+  "metrics": {
+    "staff_absence_rate": 0.26,
+    "shift_overload_index": 0.83,
+    "incident_probability": 0.61,
+    "compliance_fatigue_risk": 0.74,
+    "care_team_turnover_risk": 0.58
+  },
+  "sources": [
+    "SHIFT_MED_001",
+    "EVT_MED_001"
+  ]
+}

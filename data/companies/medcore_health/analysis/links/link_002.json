@@ -1,0 +1,9 @@
+{
+  "link_id": "LINK_MED_002",
+  "company_id": "CMP_MEDCORE_001",
+  "source": "EVT_MED_001",
+  "target": "SIG_MED_001",
+  "relation": "generated",
+  "weight": 0.91,
+  "timestamp": "2026-03-11T07:00:00Z"
+}

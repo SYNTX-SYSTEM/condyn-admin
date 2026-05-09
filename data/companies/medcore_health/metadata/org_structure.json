@@ -1,0 +1,29 @@
+{
+  "company_id": "CMP_MEDCORE_001",
+  "roles": [
+    {
+      "role_id": "ROLE_MED_001",
+      "title": "Clinical Operations Director",
+      "department": "Operations",
+      "reports_to": null
+    },
+    {
+      "role_id": "ROLE_MED_002",
+      "title": "Shift Coordinator",
+      "department": "Scheduling",
+      "reports_to": "ROLE_MED_001"
+    },
+    {
+      "role_id": "ROLE_MED_003",
+      "title": "Senior Nurse",
+      "department": "Patient Care",
+      "reports_to": "ROLE_MED_002"
+    },
+    {
+      "role_id": "ROLE_MED_004",
+      "title": "Care Staff",
+      "department": "Patient Care",
+      "reports_to": "ROLE_MED_003"
+    }
+  ]
+}

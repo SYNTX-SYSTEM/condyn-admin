@@ -1,0 +1,18 @@
+{
+  "artifact_id": "MAIL_HELIX_001",
+  "company_id": "CMP_HELIX_001",
+  "type": "email",
+  "timestamp": "2026-04-14T07:45:00Z",
+  "from_role": "Compliance Director",
+  "to_roles": [
+    "Regional Audit Lead",
+    "Operations Manager"
+  ],
+  "subject": "Immediate Audit Escalation Requirements",
+  "tags": [
+    "audit",
+    "compliance",
+    "regulatory"
+  ],
+  "content": "Regulatory review timelines have been accelerated following recent audit findings. All unresolved operational exceptions must now be escalated within 24 hours to the compliance office."
+}

@@ -1,0 +1,15 @@
+{
+  "signal_id": "SIG_MED_002",
+  "company_id": "CMP_MEDCORE_001",
+  "signal_type": "compliance_fatigue",
+  "confidence": 0.87,
+  "linked_artifacts": [
+    "EVT_MED_001",
+    "KPI_MED_2026_Q1"
+  ],
+  "linked_roles": [
+    "Senior Nurse",
+    "Care Staff"
+  ],
+  "detected_at": "2026-03-11T07:05:00Z"
+}

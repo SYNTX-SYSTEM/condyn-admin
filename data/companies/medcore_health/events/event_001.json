@@ -1,0 +1,19 @@
+{
+  "event_id": "EVT_MED_001",
+  "company_id": "CMP_MEDCORE_001",
+  "timestamp": "2026-03-11T06:45:00Z",
+  "event_type": "staffing_overload",
+  "source_artifact": "SHIFT_MED_001",
+  "trigger": "unexpected_absence_cluster",
+  "affected_roles": [
+    "Shift Coordinator",
+    "Senior Nurse",
+    "Care Staff"
+  ],
+  "structural_changes": [
+    {
+      "change": "shift_density_increase",
+      "value": "3_additional_night_shifts"
+    }
+  ]
+}

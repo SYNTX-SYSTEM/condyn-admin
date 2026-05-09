@@ -1,0 +1,24 @@
+{
+  "network_id": "NET_HELIX_001",
+  "company_id": "CMP_HELIX_001",
+  "nodes": [
+    "MAIL_HELIX_001",
+    "EVT_HELIX_001",
+    "KPI_HELIX_2026_Q2",
+    "SIG_HELIX_001",
+    "SIG_HELIX_002"
+  ],
+  "edges": [
+    "LINK_HELIX_001",
+    "LINK_HELIX_002"
+  ],
+  "topology_characteristics": {
+    "regulatory_pressure": 0.88,
+    "audit_instability": 0.72,
+    "compliance_density": 0.81,
+    "bottleneck_probability": 0.59,
+    "authority_centralization": 0.69
+  },
+  "generated_at": "2026-04-14T08:30:00Z",
+  "network_type": "compliance_topology"
+}

@@ -1,0 +1,18 @@
+{
+  "artifact_id": "MAIL_NOVA_002",
+  "company_id": "CMP_NOVA_001",
+  "type": "email",
+  "timestamp": "2026-05-08T08:40:00Z",
+  "from_role": "Department Head",
+  "to_roles": [
+    "Team Lead",
+    "Software Engineer"
+  ],
+  "subject": "Escalating Reporting Delays",
+  "tags": [
+    "escalation",
+    "workflow",
+    "reporting"
+  ],
+  "content": "Repeated reporting delays are now impacting executive review preparation. All teams are required to prioritize reporting completion above feature deployment tasks until further notice."
+}
