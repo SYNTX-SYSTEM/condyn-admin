@@ -1,7 +1,13 @@
 'use client';
-import { ReactFlow, Background, Controls, Node, Edge } from '@xyflow/react';
+import { ReactFlow, Background, Controls, Node } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
 import type { ReactFlowNode, ReactFlowEdge } from '@/types/topology';
+import PropagationEdge from './PropagationEdge';
+
+// Register custom edge types
+const edgeTypes = {
+  propagation: PropagationEdge,
+};
 
 interface TopologyGraphProps {
   nodes: ReactFlowNode[];
@@ -9,16 +15,6 @@ interface TopologyGraphProps {
   onNodeClick?: (nodeId: string) => void;
 }
 
-/**
- * DUMB Visual Field Renderer
- * 
- * Responsibilities:
- * - Render nodes and edges
- * - Handle zoom/pan interactions
- * - Pass click events up
- * 
- * NO business logic, interpretation, or signal calculation!
- */
 export default function TopologyGraph({
   nodes,
   edges,
@@ -36,18 +32,21 @@ export default function TopologyGraph({
       <ReactFlow
         nodes={nodes}
         edges={edges}
+        edgeTypes={edgeTypes}
         onNodeClick={handleNodeClick}
         fitView
         style={{ background: 'transparent' }}
       >
         <Background 
-          color="rgba(107, 155, 209, 0.1)" 
+          color="#E5E7EB" 
           gap={20}
+          size={1}
         />
         <Controls 
           style={{ 
-            background: 'rgba(10, 14, 39, 0.8)', 
-            border: '1px solid rgba(107, 155, 209, 0.2)',
+            background: 'rgba(255, 255, 255, 0.9)', 
+            border: '1px solid #E5E7EB',
+            borderRadius: '8px',
           }} 
         />
       </ReactFlow>

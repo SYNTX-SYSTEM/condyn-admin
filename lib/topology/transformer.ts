@@ -49,7 +49,11 @@ export function transformToReactFlow(data: TopologyData): TransformResult {
       id: link.link_id,
       source: link.source,
       target: link.target,
-      animated: link.weight > 0.8,
+      type: 'propagation',
+      animated: false,
+      data: {
+        weight: link.weight,
+      },
       style: {
         stroke: linkState,
         strokeWidth: 1 + link.weight * 2,
