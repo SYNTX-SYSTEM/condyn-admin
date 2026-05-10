@@ -1,6 +1,5 @@
 /**
  * Semantic field states for topology visualization
- * Adapted for white background
  */
 
 export const fieldStates = {
@@ -8,24 +7,40 @@ export const fieldStates = {
     background: '#FEE2E2',
     border: '#EF4444',
     text: '#991B1B',
+    borderWidth: '1.5px',
+    opacity: 0.95,
+    boxShadow: '0 3px 12px rgba(239, 68, 68, 0.12)',
+    padding: '12px 16px',  // Standard
   },
   
   event: {
     background: '#DBEAFE',
     border: '#3B82F6',
     text: '#1E3A8A',
+    borderWidth: '2.5px',
+    opacity: 1.0,
+    boxShadow: '0 2px 6px rgba(59, 130, 246, 0.08)',
+    padding: '12px 16px',  // Standard
   },
   
   kpi: {
     background: '#FED7AA',
     border: '#F97316',
     text: '#9A3412',
+    borderWidth: '2.5px',
+    opacity: 1.0,
+    boxShadow: '0 1px 4px rgba(249, 115, 22, 0.15)',
+    padding: '10px 14px',  // Kompakter!
   },
   
   artifact: {
     background: '#F3F4F6',
     border: '#9CA3AF',
     text: '#374151',
+    borderWidth: '1px',
+    opacity: 0.92,
+    boxShadow: '0 2px 8px rgba(156, 163, 175, 0.06)',
+    padding: '12px 16px',  // Standard
   },
   
   characteristics: {

@@ -22,6 +22,10 @@ export function transformToReactFlow(data: TopologyData): TransformResult {
     else if (nodeId.startsWith('EVT')) nodeType = 'event';
     else if (nodeId.startsWith('KPI')) nodeType = 'kpi';
     
+    // Apply subtle differentiation from fieldStates
+    const basePadding = '12px 16px';
+    const padding = fieldState.padding || basePadding;
+    
     return {
       id: nodeId,
       position: { x, y },
@@ -31,13 +35,14 @@ export function transformToReactFlow(data: TopologyData): TransformResult {
       },
       style: {
         background: fieldState.background,
-        border: `2px solid ${fieldState.border}`,
+        border: `${fieldState.borderWidth} solid ${fieldState.border}`,
         borderRadius: '8px',
-        padding: '12px 16px',
+        padding,
         color: fieldState.text,
         fontSize: '11px',
         fontWeight: '600',
-        boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
+        boxShadow: fieldState.boxShadow,
+        opacity: fieldState.opacity,
       },
     };
   });
