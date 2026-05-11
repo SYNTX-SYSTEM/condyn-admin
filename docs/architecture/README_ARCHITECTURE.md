@@ -160,7 +160,7 @@ Signals should not contain personal communication.
 
 Signals are intended for:
 
-- graph visualization
+- topological field visualization
 - structural clustering
 - temporal replay
 - heatmaps
@@ -208,9 +208,9 @@ Primary flow:
     SOURCE INPUT
     → STRUCTURAL EXTRACTION
     → EVENT GENERATION
-    → SIGNAL DETECTION
+    → ATOMIC SIGNAL PROJECTION
     → RELATION LINKING
-    → NETWORK TOPOLOGY
+    → RECURSIVE FIELD TOPOLOGY
     → VISUAL STRUCTURE RENDERING
 
 The platform does not optimize for document storage.
@@ -244,7 +244,7 @@ Primary purpose:
 
 Future rendering targets:
 
-- force-directed graphs
+- recursive field projections
 - temporal replay systems
 - relation heatmaps
 - structural drift overlays
@@ -295,10 +295,10 @@ without preserving human intimacy
     structural signals
 
     LAYER 4
-    relation links
+    relational perturbations
 
     LAYER 5
-    network topology
+    recursive field topology
 
     LAYER 6
     visual rendering
@@ -347,7 +347,7 @@ Lifecycle model:
     → PARSING
     → STRUCTURAL EXTRACTION
     → EVENT GENERATION
-    → SIGNAL DETECTION
+    → ATOMIC SIGNAL PROJECTION
     → NETWORK FORMATION
     → VISUALIZATION
     → RETENTION / EXPIRATION
@@ -383,7 +383,7 @@ Purpose of admin system:
 - validate ingestion pipelines
 - inspect event generation
 - inspect signal generation
-- validate network topology
+- validate recursive field topology
 - prepare future visualization layers
 
 The admin system is currently operating as:
@@ -447,13 +447,13 @@ ConDyn is influenced by multiple structural and topology-oriented architectural 
 
 Relevant reference domains include:
 
-- graph systems
+- relational topology systems
 - distributed topology
 - process mining
 - structural visualization
-- relation mapping
-- force-directed systems
-- organizational signal analysis
+- relational topology projection
+- recursive field dynamics
+- relational signal propagation
 - topology compression
 - systems rendering
 
@@ -463,7 +463,7 @@ Important conceptual reference environments include:
     relation-density mapping
     structural replay environments
     distributed signal propagation
-    graph-oriented architecture systems
+    topology-preserving recursive architectures
 
 External structural inspiration and topology research references:
 
@@ -523,7 +523,7 @@ Important architectural direction:
     STRUCTURAL SIGNALS
     → persistent
 
-    NETWORK TOPOLOGY
+    RECURSIVE FIELD TOPOLOGY
     → persistent
 
 Core assumption:
