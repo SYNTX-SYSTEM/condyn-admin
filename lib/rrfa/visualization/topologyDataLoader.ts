@@ -1,6 +1,6 @@
 import { FieldTopology, NodeFieldState } from '../field/fieldTopology';
 import { ProjectedSignal } from '../signals/projectedSignal';
-import { PrimitiveWeights } from '../primitives/primitiveWeights';
+import { PrimitiveWeights } from '../signals/projectedSignal';
 
 /**
  * Topology Data Loader

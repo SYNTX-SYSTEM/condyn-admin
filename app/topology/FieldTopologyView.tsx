@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState } from 'react';
 import ReactFlow, {
   Background,
   Controls,
@@ -14,21 +14,6 @@ import { TopologyDataLoader } from '@/lib/rrfa/visualization/topologyDataLoader'
 import { applySoftForceLayout } from '@/lib/rrfa/visualization/softForceLayout';
 import FieldNode from './components/FieldNode';
 import FieldEdge from './components/FieldEdge';
-
-/**
- * Field Topology View
- * 
- * Main visualization component for RRFA field topology.
- * 
- * Data flow:
- * 1. Load field_topology.json + signals_projected.json
- * 2. Build REAL edges from signal flow
- * 3. Apply soft force layout
- * 4. Render with React Flow
- * 
- * NOT: Dashboard, charts, tables
- * BUT: Field perception, breathing topology
- */
 
 const nodeTypes = {
   field: FieldNode,
@@ -45,7 +30,6 @@ export default function FieldTopologyView() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  // Load and render field topology
   useEffect(() => {
     loadFieldTopology();
   }, []);
@@ -55,19 +39,14 @@ export default function FieldTopologyView() {
       setLoading(true);
       setError(null);
 
-      // For now, hardcoded to novascale_ai
-      // Later: make company selectable
       const companyId = 'novascale_ai';
+      const data = await TopologyDataLoader.loadFieldTopology(companyId);
 
-      // Load field topology and signals
-      const data = TopologyDataLoader.loadFieldTopology(companyId);
-
-      // Apply soft force layout
       const positioned = applySoftForceLayout(
         data.nodes,
         data.edges,
-        800,
-        600
+        1200,
+        800
       );
 
       setNodes(positioned);
@@ -84,13 +63,10 @@ export default function FieldTopologyView() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center h-screen">
-        <div className="text-center">
-          <div className="text-2xl mb-4">🌐</div>
-          <div className="text-lg">Loading field topology...</div>
-          <div className="text-sm text-gray-500 mt-2">
-            Reading field_topology.json + signals_projected.json
-          </div>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100vh', width: '100vw' }}>
+        <div style={{ textAlign: 'center' }}>
+          <div style={{ fontSize: '2rem', marginBottom: '1rem' }}>🌐</div>
+          <div style={{ fontSize: '1.2rem' }}>Loading field topology...</div>
         </div>
       </div>
     );
@@ -98,14 +74,21 @@ export default function FieldTopologyView() {
 
   if (error) {
     return (
-      <div className="flex items-center justify-center h-screen">
-        <div className="text-center text-red-500">
-          <div className="text-2xl mb-4">❌</div>
-          <div className="text-lg">Failed to load field topology</div>
-          <div className="text-sm mt-2">{error}</div>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100vh', width: '100vw' }}>
+        <div style={{ textAlign: 'center', color: '#ef4444' }}>
+          <div style={{ fontSize: '2rem', marginBottom: '1rem' }}>❌</div>
+          <div style={{ fontSize: '1.2rem', marginBottom: '0.5rem' }}>Failed to load field topology</div>
+          <div style={{ fontSize: '0.9rem', marginBottom: '1rem' }}>{error}</div>
           <button
             onClick={loadFieldTopology}
-            className="mt-4 px-4 py-2 bg-blue-500 text-white rounded"
+            style={{
+              padding: '0.5rem 1rem',
+              backgroundColor: '#3b82f6',
+              color: 'white',
+              border: 'none',
+              borderRadius: '0.375rem',
+              cursor: 'pointer'
+            }}
           >
             Retry
           </button>
@@ -115,42 +98,56 @@ export default function FieldTopologyView() {
   }
 
   return (
-    <div className="w-full h-screen">
-      {/* Global field state indicator */}
+    <div style={{ width: '100vw', height: '100vh', position: 'relative' }}>
       {globals && (
-        <div className="absolute top-4 left-4 z-10 bg-black/80 text-white p-4 rounded-lg text-sm">
-          <div className="font-bold mb-2">Global Field State</div>
-          <div className="grid grid-cols-2 gap-2">
+        <div style={{
+          position: 'absolute',
+          top: '1rem',
+          left: '1rem',
+          zIndex: 10,
+          backgroundColor: 'rgba(0, 0, 0, 0.8)',
+          color: 'white',
+          padding: '1rem',
+          borderRadius: '0.5rem',
+          fontSize: '0.875rem'
+        }}>
+          <div style={{ fontWeight: 'bold', marginBottom: '0.5rem' }}>Global Field State</div>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.5rem' }}>
             <div>Propagation:</div>
-            <div className="font-mono">{(globals.avg_propagation * 100).toFixed(0)}%</div>
-            
+            <div style={{ fontFamily: 'monospace' }}>{(globals.avg_propagation * 100).toFixed(0)}%</div>
             <div>Stability:</div>
-            <div className="font-mono">{(globals.stability_score * 100).toFixed(0)}%</div>
-            
+            <div style={{ fontFamily: 'monospace' }}>{(globals.stability_score * 100).toFixed(0)}%</div>
             <div>Coupling:</div>
-            <div className="font-mono">{(globals.coupling_ratio * 100).toFixed(0)}%</div>
-            
+            <div style={{ fontFamily: 'monospace' }}>{(globals.coupling_ratio * 100).toFixed(0)}%</div>
             <div>Drift Hotspots:</div>
-            <div className="font-mono">{globals.drift_hotspots}</div>
+            <div style={{ fontFamily: 'monospace' }}>{globals.drift_hotspots}</div>
           </div>
         </div>
       )}
 
-      {/* Node/edge count */}
-      <div className="absolute top-4 right-4 z-10 bg-black/80 text-white p-4 rounded-lg text-sm">
-        <div className="font-bold mb-2">Topology</div>
+      <div style={{
+        position: 'absolute',
+        top: '1rem',
+        right: '1rem',
+        zIndex: 10,
+        backgroundColor: 'rgba(0, 0, 0, 0.8)',
+        color: 'white',
+        padding: '1rem',
+        borderRadius: '0.5rem',
+        fontSize: '0.875rem'
+      }}>
+        <div style={{ fontWeight: 'bold', marginBottom: '0.5rem' }}>Topology</div>
         <div>{nodes.length} nodes</div>
         <div>{edges.length} edges</div>
       </div>
 
-      {/* React Flow visualization */}
       <ReactFlow
         nodes={nodes}
         edges={edges}
         nodeTypes={nodeTypes}
         edgeTypes={edgeTypes}
         fitView
-        attributionPosition="bottom-right"
+        style={{ width: '100%', height: '100%' }}
       >
         <Background 
           variant={BackgroundVariant.Dots}
