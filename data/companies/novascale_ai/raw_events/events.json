@@ -1,0 +1,1012 @@
+{
+  "company_id": "novascale_ai",
+  "events": [
+    {
+      "event_id": "EVT_NOVASCALE_AI_001",
+      "timestamp": 1778024948912,
+      "from_node": "EVT_NOVA_001",
+      "to_node": "MAIL_NOVA_001",
+      "routingChange": false,
+      "authorityShift": false,
+      "urgencyLevel": 0.9333832997742559,
+      "deadlinePressure": 0.7472491229086093
+    },
+    {
+      "event_id": "EVT_NOVASCALE_AI_002",
+      "timestamp": 1778028548912,
+      "from_node": "MAIL_NOVA_003",
+      "to_node": "MAIL_NOVA_002",
+      "responseLatency": 339,
+      "retryCount": 3,
+      "routingChange": true,
+      "authorityShift": false,
+      "urgencyLevel": 0.005368873199686819,
+      "deadlinePressure": 0.4113055082221144
+    },
+    {
+      "event_id": "EVT_NOVASCALE_AI_003",
+      "timestamp": 1778032148912,
+      "from_node": "KPI_NOVA_2026_05",
+      "to_node": "EVT_NOVA_001",
+      "responseLatency": 2793,
+      "routingChange": true,
+      "authorityShift": true,
+      "urgencyLevel": 0.6990790118487484,
+      "deadlinePressure": 0.18650615265546344
+    },
+    {
+      "event_id": "EVT_NOVASCALE_AI_004",
+      "timestamp": 1778035748912,
+      "from_node": "MAIL_NOVA_002",
+      "to_node": "MAIL_NOVA_001",
+      "responseLatency": 154,
+      "retryCount": 3,
+      "routingChange": false,
+      "authorityShift": false,
+      "urgencyLevel": 0.3084885725049351
+    },
+    {
+      "event_id": "EVT_NOVASCALE_AI_005",
+      "timestamp": 1778039348912,
+      "from_node": "MAIL_NOVA_002",
+      "to_node": "EVT_NOVA_001",
+      "responseLatency": 2780,
+      "routingChange": false,
+      "authorityShift": false,
+      "urgencyLevel": 0.9598510468998065,
+      "deadlinePressure": 0.6133163703876112
+    },
+    {
+      "event_id": "EVT_NOVASCALE_AI_006",
+      "timestamp": 1778042948912,
+      "from_node": "KPI_NOVA_2026_05",
+      "to_node": "EVT_NOVA_001",
+      "routingChange": false,
+      "authorityShift": false,
+      "urgencyLevel": 0.42676404184060246,
+      "deadlinePressure": 0.4747739870428853
+    },
+    {
+      "event_id": "EVT_NOVASCALE_AI_007",
+      "timestamp": 1778046548912,
+      "from_node": "MAIL_NOVA_002",
+      "to_node": "KPI_NOVA_2026_05",
+      "routingChange": false,
+      "participationDelta": 0.7690221674271522,
+      "authorityShift": false,
+      "urgencyLevel": 0.4743617600516057
+    },
+    {
+      "event_id": "EVT_NOVASCALE_AI_008",
+      "timestamp": 1778050148912,
+      "from_node": "MAIL_NOVA_002",
+      "to_node": "KPI_NOVA_2026_05",
+      "routingChange": false,
+      "authorityShift": false,
+      "urgencyLevel": 0.9886111517223484
+    },
+    {
+      "event_id": "EVT_NOVASCALE_AI_009",
+      "timestamp": 1778053748912,
+      "from_node": "MAIL_NOVA_003",
+      "to_node": "KPI_NOVA_2026_05",
+      "routingChange": false,
+      "authorityShift": false,
+      "urgencyLevel": 0.2204883099465047
+    },
+    {
+      "event_id": "EVT_NOVASCALE_AI_010",
+      "timestamp": 1778057348912,
+      "from_node": "KPI_NOVA_2026_05",
+      "to_node": "MAIL_NOVA_002",
+      "retryCount": 3,
+      "routingChange": false,
+      "authorityShift": false,
+      "urgencyLevel": 0.9981863344159769
+    },
+    {
+      "event_id": "EVT_NOVASCALE_AI_011",
+      "timestamp": 1778060948912,
+      "from_node": "EVT_NOVA_001",
+      "to_node": "MAIL_NOVA_003",
+      "responseLatency": 1194,
+      "routingChange": false,
+      "authorityShift": false,
+      "urgencyLevel": 0.6578635823714372,
+      "deadlinePressure": 0.13812007460382691
+    },
+    {
+      "event_id": "EVT_NOVASCALE_AI_012",
+      "timestamp": 1778064548912,
+      "from_node": "MAIL_NOVA_002",
+      "to_node": "KPI_NOVA_2026_05",
+      "routingChange": false,
+      "authorityShift": false,
+      "urgencyLevel": 0.0077403392117108005
+    },
+    {
+      "event_id": "EVT_NOVASCALE_AI_013",
+      "timestamp": 1778068148912,
+      "from_node": "MAIL_NOVA_003",
+      "to_node": "EVT_NOVA_001",
+      "routingChange": false,
+      "authorityShift": false,
+      "urgencyLevel": 0.9576885815166294
+    },
+    {
+      "event_id": "EVT_NOVASCALE_AI_014",
+      "timestamp": 1778071748912,
+      "from_node": "MAIL_NOVA_002",
+      "to_node": "SIG_NOVA_001",
+      "retryCount": 2,
+      "routingChange": false,
+      "authorityShift": false,
+      "urgencyLevel": 0.9910136310123321
+    },
+    {
+      "event_id": "EVT_NOVASCALE_AI_015",
+      "timestamp": 1778075348912,
+      "from_node": "MAIL_NOVA_001",
+      "to_node": "EVT_NOVA_001",
+      "routingChange": false,
+      "authorityShift": false,
+      "urgencyLevel": 0.7753166186939295,
+      "deadlinePressure": 0.4544347899697958
+    },
+    {
+      "event_id": "EVT_NOVASCALE_AI_016",
+      "timestamp": 1778078948912,
+      "from_node": "MAIL_NOVA_003",
+      "to_node": "EVT_NOVA_001",
+      "retryCount": 1,
+      "routingChange": true,
+      "authorityShift": false,
+      "urgencyLevel": 0.45906363073347567,
+      "deadlinePressure": 0.7647730223466744
+    },
+    {
+      "event_id": "EVT_NOVASCALE_AI_017",
+      "timestamp": 1778082548912,
+      "from_node": "KPI_NOVA_2026_05",
+      "to_node": "MAIL_NOVA_001",
+      "routingChange": true,
+      "authorityShift": false,
+      "urgencyLevel": 0.9564556214369764,
+      "deadlinePressure": 0.4402864512953706
+    },
+    {
+      "event_id": "EVT_NOVASCALE_AI_018",
+      "timestamp": 1778086148912,
+      "from_node": "KPI_NOVA_2026_05",
+      "to_node": "MAIL_NOVA_002",
+      "routingChange": false,
+      "participationDelta": -0.906452275079376,
+      "authorityShift": false,
+      "urgencyLevel": 0.2683290667168383
+    },
+    {
+      "event_id": "EVT_NOVASCALE_AI_019",
+      "timestamp": 1778089748912,
+      "from_node": "MAIL_NOVA_001",
+      "to_node": "KPI_NOVA_2026_05",
+      "routingChange": false,
+      "participationDelta": -0.6592010851046224,
+      "authorityShift": false,
+      "urgencyLevel": 0.4487978604343479,
+      "deadlinePressure": 0.8984526675347291
+    },
+    {
+      "event_id": "EVT_NOVASCALE_AI_020",
+      "timestamp": 1778093348912,
+      "from_node": "MAIL_NOVA_001",
+      "to_node": "MAIL_NOVA_003",
+      "responseLatency": 7121,
+      "routingChange": false,
+      "authorityShift": true,
+      "urgencyLevel": 0.5083996353060205
+    },
+    {
+      "event_id": "EVT_NOVASCALE_AI_021",
+      "timestamp": 1778096948912,
+      "from_node": "MAIL_NOVA_002",
+      "to_node": "MAIL_NOVA_001",
+      "responseLatency": 329,
+      "retryCount": 1,
+      "routingChange": true,
+      "participationDelta": -0.576833918231372,
+      "authorityShift": false,
+      "urgencyLevel": 0.07401022117489586,
+      "deadlinePressure": 0.5674162154359106
+    },
+    {
+      "event_id": "EVT_NOVASCALE_AI_022",
+      "timestamp": 1778100548912,
+      "from_node": "SIG_NOVA_001",
+      "to_node": "MAIL_NOVA_002",
+      "responseLatency": 7784,
+      "routingChange": true,
+      "participationDelta": 0.33663552654182505,
+      "authorityShift": false,
+      "urgencyLevel": 0.9481360329744706,
+      "deadlinePressure": 0.9564915785609516
+    },
+    {
+      "event_id": "EVT_NOVASCALE_AI_023",
+      "timestamp": 1778104148912,
+      "from_node": "SIG_NOVA_001",
+      "to_node": "MAIL_NOVA_003",
+      "retryCount": 3,
+      "routingChange": true,
+      "participationDelta": -0.7995230000914062,
+      "authorityShift": false,
+      "urgencyLevel": 0.19860464106141573,
+      "deadlinePressure": 0.08527464931438367
+    },
+    {
+      "event_id": "EVT_NOVASCALE_AI_024",
+      "timestamp": 1778107748912,
+      "from_node": "MAIL_NOVA_003",
+      "to_node": "MAIL_NOVA_001",
+      "retryCount": 3,
+      "routingChange": false,
+      "authorityShift": false,
+      "urgencyLevel": 0.8253766098108428
+    },
+    {
+      "event_id": "EVT_NOVASCALE_AI_025",
+      "timestamp": 1778111348912,
+      "from_node": "KPI_NOVA_2026_05",
+      "to_node": "MAIL_NOVA_003",
+      "routingChange": false,
+      "participationDelta": 0.08030206011182317,
+      "authorityShift": false,
+      "urgencyLevel": 0.6964265116191928
+    },
+    {
+      "event_id": "EVT_NOVASCALE_AI_026",
+      "timestamp": 1778114948912,
+      "from_node": "SIG_NOVA_001",
+      "to_node": "MAIL_NOVA_002",
+      "routingChange": false,
+      "authorityShift": false,
+      "urgencyLevel": 0.2774556093089644
+    },
+    {
+      "event_id": "EVT_NOVASCALE_AI_027",
+      "timestamp": 1778118548912,
+      "from_node": "MAIL_NOVA_003",
+      "to_node": "EVT_NOVA_001",
+      "routingChange": false,
+      "authorityShift": false,
+      "urgencyLevel": 0.2171684984408544
+    },
+    {
+      "event_id": "EVT_NOVASCALE_AI_028",
+      "timestamp": 1778122148912,
+      "from_node": "KPI_NOVA_2026_05",
+      "to_node": "EVT_NOVA_001",
+      "routingChange": false,
+      "participationDelta": -0.2136915770829093,
+      "authorityShift": false,
+      "urgencyLevel": 0.8729944273907126
+    },
+    {
+      "event_id": "EVT_NOVASCALE_AI_029",
+      "timestamp": 1778125748912,
+      "from_node": "SIG_NOVA_001",
+      "to_node": "MAIL_NOVA_003",
+      "retryCount": 3,
+      "routingChange": false,
+      "authorityShift": false,
+      "urgencyLevel": 0.9778414675279536
+    },
+    {
+      "event_id": "EVT_NOVASCALE_AI_030",
+      "timestamp": 1778129348912,
+      "from_node": "MAIL_NOVA_002",
+      "to_node": "SIG_NOVA_001",
+      "responseLatency": 6350,
+      "routingChange": true,
+      "participationDelta": 0.052778175325576715,
+      "authorityShift": false,
+      "urgencyLevel": 0.2738338662870079
+    },
+    {
+      "event_id": "EVT_NOVASCALE_AI_031",
+      "timestamp": 1778132948912,
+      "from_node": "MAIL_NOVA_001",
+      "to_node": "MAIL_NOVA_002",
+      "retryCount": 1,
+      "routingChange": false,
+      "authorityShift": false,
+      "urgencyLevel": 0.6855716576814759
+    },
+    {
+      "event_id": "EVT_NOVASCALE_AI_032",
+      "timestamp": 1778136548912,
+      "from_node": "MAIL_NOVA_001",
+      "to_node": "MAIL_NOVA_003",
+      "routingChange": false,
+      "authorityShift": false,
+      "urgencyLevel": 0.44900306586113836,
+      "deadlinePressure": 0.10984655477970917
+    },
+    {
+      "event_id": "EVT_NOVASCALE_AI_033",
+      "timestamp": 1778140148912,
+      "from_node": "EVT_NOVA_001",
+      "to_node": "MAIL_NOVA_002",
+      "routingChange": false,
+      "authorityShift": false,
+      "urgencyLevel": 0.35592104413310355
+    },
+    {
+      "event_id": "EVT_NOVASCALE_AI_034",
+      "timestamp": 1778143748912,
+      "from_node": "EVT_NOVA_001",
+      "to_node": "KPI_NOVA_2026_05",
+      "responseLatency": 115,
+      "routingChange": false,
+      "participationDelta": 0.32062645386338806,
+      "authorityShift": true,
+      "urgencyLevel": 0.26619196151981384
+    },
+    {
+      "event_id": "EVT_NOVASCALE_AI_035",
+      "timestamp": 1778147348912,
+      "from_node": "KPI_NOVA_2026_05",
+      "to_node": "MAIL_NOVA_002",
+      "routingChange": false,
+      "authorityShift": true,
+      "urgencyLevel": 0.27137967542797825,
+      "deadlinePressure": 0.7260129707541711
+    },
+    {
+      "event_id": "EVT_NOVASCALE_AI_036",
+      "timestamp": 1778150948912,
+      "from_node": "SIG_NOVA_001",
+      "to_node": "MAIL_NOVA_001",
+      "routingChange": false,
+      "authorityShift": false,
+      "urgencyLevel": 0.2817232722207208
+    },
+    {
+      "event_id": "EVT_NOVASCALE_AI_037",
+      "timestamp": 1778154548912,
+      "from_node": "MAIL_NOVA_001",
+      "to_node": "EVT_NOVA_001",
+      "routingChange": false,
+      "authorityShift": true,
+      "urgencyLevel": 0.8776451512024701
+    },
+    {
+      "event_id": "EVT_NOVASCALE_AI_038",
+      "timestamp": 1778158148912,
+      "from_node": "MAIL_NOVA_001",
+      "to_node": "KPI_NOVA_2026_05",
+      "routingChange": false,
+      "authorityShift": false,
+      "urgencyLevel": 0.1869970940582839
+    },
+    {
+      "event_id": "EVT_NOVASCALE_AI_039",
+      "timestamp": 1778161748912,
+      "from_node": "EVT_NOVA_001",
+      "to_node": "KPI_NOVA_2026_05",
+      "routingChange": false,
+      "authorityShift": false,
+      "urgencyLevel": 0.35402836433915863
+    },
+    {
+      "event_id": "EVT_NOVASCALE_AI_040",
+      "timestamp": 1778165348912,
+      "from_node": "MAIL_NOVA_003",
+      "to_node": "SIG_NOVA_001",
+      "routingChange": false,
+      "participationDelta": 0.7018395507311719,
+      "authorityShift": false,
+      "urgencyLevel": 0.7067788558113761,
+      "deadlinePressure": 0.19907965231779845
+    },
+    {
+      "event_id": "EVT_NOVASCALE_AI_041",
+      "timestamp": 1778168948912,
+      "from_node": "EVT_NOVA_001",
+      "to_node": "MAIL_NOVA_002",
+      "routingChange": false,
+      "participationDelta": -0.5849528748228345,
+      "authorityShift": false,
+      "urgencyLevel": 0.06983611287452329,
+      "deadlinePressure": 0.22270059386121455
+    },
+    {
+      "event_id": "EVT_NOVASCALE_AI_042",
+      "timestamp": 1778172548912,
+      "from_node": "MAIL_NOVA_002",
+      "to_node": "EVT_NOVA_001",
+      "routingChange": false,
+      "authorityShift": false,
+      "urgencyLevel": 0.4096934626272313
+    },
+    {
+      "event_id": "EVT_NOVASCALE_AI_043",
+      "timestamp": 1778176148912,
+      "from_node": "MAIL_NOVA_001",
+      "to_node": "SIG_NOVA_001",
+      "retryCount": 3,
+      "routingChange": false,
+      "authorityShift": false,
+      "urgencyLevel": 0.8736690303984094,
+      "deadlinePressure": 0.981928220822242
+    },
+    {
+      "event_id": "EVT_NOVASCALE_AI_044",
+      "timestamp": 1778179748912,
+      "from_node": "KPI_NOVA_2026_05",
+      "to_node": "MAIL_NOVA_001",
+      "responseLatency": 4064,
+      "routingChange": false,
+      "authorityShift": false,
+      "urgencyLevel": 0.167256058777417,
+      "deadlinePressure": 0.4252513128172126
+    },
+    {
+      "event_id": "EVT_NOVASCALE_AI_045",
+      "timestamp": 1778183348912,
+      "from_node": "MAIL_NOVA_001",
+      "to_node": "KPI_NOVA_2026_05",
+      "routingChange": false,
+      "authorityShift": false,
+      "urgencyLevel": 0.9205621403507269
+    },
+    {
+      "event_id": "EVT_NOVASCALE_AI_046",
+      "timestamp": 1778186948912,
+      "from_node": "SIG_NOVA_001",
+      "to_node": "MAIL_NOVA_001",
+      "responseLatency": 3542,
+      "routingChange": false,
+      "authorityShift": true,
+      "urgencyLevel": 0.9805407840199654
+    },
+    {
+      "event_id": "EVT_NOVASCALE_AI_047",
+      "timestamp": 1778190548912,
+      "from_node": "KPI_NOVA_2026_05",
+      "to_node": "EVT_NOVA_001",
+      "responseLatency": 1003,
+      "routingChange": false,
+      "authorityShift": false,
+      "urgencyLevel": 0.9471197170427448
+    },
+    {
+      "event_id": "EVT_NOVASCALE_AI_048",
+      "timestamp": 1778194148912,
+      "from_node": "MAIL_NOVA_002",
+      "to_node": "MAIL_NOVA_003",
+      "routingChange": true,
+      "authorityShift": false,
+      "urgencyLevel": 0.03164793000124333,
+      "deadlinePressure": 0.18808387950351269
+    },
+    {
+      "event_id": "EVT_NOVASCALE_AI_049",
+      "timestamp": 1778197748912,
+      "from_node": "EVT_NOVA_001",
+      "to_node": "SIG_NOVA_001",
+      "routingChange": false,
+      "authorityShift": false,
+      "urgencyLevel": 0.3227190624556946
+    },
+    {
+      "event_id": "EVT_NOVASCALE_AI_050",
+      "timestamp": 1778201348912,
+      "from_node": "EVT_NOVA_001",
+      "to_node": "MAIL_NOVA_002",
+      "routingChange": false,
+      "participationDelta": -0.8119821486756464,
+      "authorityShift": false,
+      "urgencyLevel": 0.3494065878205592
+    },
+    {
+      "event_id": "EVT_NOVASCALE_AI_051",
+      "timestamp": 1778204948912,
+      "from_node": "MAIL_NOVA_001",
+      "to_node": "KPI_NOVA_2026_05",
+      "routingChange": false,
+      "authorityShift": false,
+      "urgencyLevel": 0.0069852714684794925
+    },
+    {
+      "event_id": "EVT_NOVASCALE_AI_052",
+      "timestamp": 1778208548912,
+      "from_node": "MAIL_NOVA_003",
+      "to_node": "SIG_NOVA_001",
+      "routingChange": false,
+      "authorityShift": false,
+      "urgencyLevel": 0.08797322429543919,
+      "deadlinePressure": 0.34315604448149806
+    },
+    {
+      "event_id": "EVT_NOVASCALE_AI_053",
+      "timestamp": 1778212148912,
+      "from_node": "MAIL_NOVA_003",
+      "to_node": "MAIL_NOVA_002",
+      "routingChange": false,
+      "participationDelta": 0.47105936605250864,
+      "authorityShift": false,
+      "urgencyLevel": 0.7693621232139041
+    },
+    {
+      "event_id": "EVT_NOVASCALE_AI_054",
+      "timestamp": 1778215748912,
+      "from_node": "MAIL_NOVA_003",
+      "to_node": "SIG_NOVA_001",
+      "responseLatency": 532,
+      "routingChange": false,
+      "authorityShift": false,
+      "urgencyLevel": 0.3404727566987369,
+      "deadlinePressure": 0.6195069823160577
+    },
+    {
+      "event_id": "EVT_NOVASCALE_AI_055",
+      "timestamp": 1778219348912,
+      "from_node": "MAIL_NOVA_001",
+      "to_node": "KPI_NOVA_2026_05",
+      "retryCount": 3,
+      "routingChange": false,
+      "authorityShift": false,
+      "urgencyLevel": 0.026805739238321413
+    },
+    {
+      "event_id": "EVT_NOVASCALE_AI_056",
+      "timestamp": 1778222948912,
+      "from_node": "SIG_NOVA_001",
+      "to_node": "KPI_NOVA_2026_05",
+      "routingChange": false,
+      "authorityShift": false,
+      "urgencyLevel": 0.7440282039422401
+    },
+    {
+      "event_id": "EVT_NOVASCALE_AI_057",
+      "timestamp": 1778226548912,
+      "from_node": "MAIL_NOVA_002",
+      "to_node": "KPI_NOVA_2026_05",
+      "routingChange": false,
+      "participationDelta": -0.04999549653552737,
+      "authorityShift": false,
+      "urgencyLevel": 0.6808297483035899
+    },
+    {
+      "event_id": "EVT_NOVASCALE_AI_058",
+      "timestamp": 1778230148912,
+      "from_node": "MAIL_NOVA_003",
+      "to_node": "MAIL_NOVA_001",
+      "responseLatency": 1677,
+      "routingChange": true,
+      "authorityShift": true,
+      "urgencyLevel": 0.16579753633489802
+    },
+    {
+      "event_id": "EVT_NOVASCALE_AI_059",
+      "timestamp": 1778233748912,
+      "from_node": "KPI_NOVA_2026_05",
+      "to_node": "MAIL_NOVA_003",
+      "routingChange": false,
+      "participationDelta": -0.13834188837666517,
+      "authorityShift": false,
+      "urgencyLevel": 0.19866196095371857
+    },
+    {
+      "event_id": "EVT_NOVASCALE_AI_060",
+      "timestamp": 1778237348912,
+      "from_node": "MAIL_NOVA_002",
+      "to_node": "KPI_NOVA_2026_05",
+      "retryCount": 1,
+      "routingChange": false,
+      "authorityShift": true,
+      "urgencyLevel": 0.2904388709140464
+    },
+    {
+      "event_id": "EVT_NOVASCALE_AI_061",
+      "timestamp": 1778240948912,
+      "from_node": "SIG_NOVA_001",
+      "to_node": "KPI_NOVA_2026_05",
+      "routingChange": false,
+      "authorityShift": false,
+      "urgencyLevel": 0.1548685923133386,
+      "deadlinePressure": 0.6357851288310832
+    },
+    {
+      "event_id": "EVT_NOVASCALE_AI_062",
+      "timestamp": 1778244548912,
+      "from_node": "MAIL_NOVA_002",
+      "to_node": "EVT_NOVA_001",
+      "routingChange": false,
+      "authorityShift": false,
+      "urgencyLevel": 0.6508378660850913
+    },
+    {
+      "event_id": "EVT_NOVASCALE_AI_063",
+      "timestamp": 1778248148912,
+      "from_node": "EVT_NOVA_001",
+      "to_node": "KPI_NOVA_2026_05",
+      "routingChange": false,
+      "authorityShift": false,
+      "urgencyLevel": 0.27809999092935644
+    },
+    {
+      "event_id": "EVT_NOVASCALE_AI_064",
+      "timestamp": 1778251748912,
+      "from_node": "MAIL_NOVA_003",
+      "to_node": "MAIL_NOVA_001",
+      "routingChange": false,
+      "authorityShift": false,
+      "urgencyLevel": 0.40863022493878787,
+      "deadlinePressure": 0.49091548400518437
+    },
+    {
+      "event_id": "EVT_NOVASCALE_AI_065",
+      "timestamp": 1778255348912,
+      "from_node": "KPI_NOVA_2026_05",
+      "to_node": "EVT_NOVA_001",
+      "routingChange": false,
+      "authorityShift": false,
+      "urgencyLevel": 0.41318369702997404,
+      "deadlinePressure": 0.14500089656030712
+    },
+    {
+      "event_id": "EVT_NOVASCALE_AI_066",
+      "timestamp": 1778258948912,
+      "from_node": "EVT_NOVA_001",
+      "to_node": "MAIL_NOVA_001",
+      "responseLatency": 578,
+      "routingChange": false,
+      "authorityShift": false,
+      "urgencyLevel": 0.03338409286054289
+    },
+    {
+      "event_id": "EVT_NOVASCALE_AI_067",
+      "timestamp": 1778262548912,
+      "from_node": "SIG_NOVA_001",
+      "to_node": "MAIL_NOVA_001",
+      "routingChange": false,
+      "authorityShift": false,
+      "urgencyLevel": 0.2286026840078168
+    },
+    {
+      "event_id": "EVT_NOVASCALE_AI_068",
+      "timestamp": 1778266148912,
+      "from_node": "MAIL_NOVA_002",
+      "to_node": "SIG_NOVA_001",
+      "responseLatency": 3978,
+      "retryCount": 2,
+      "routingChange": false,
+      "participationDelta": -0.9689373039328335,
+      "authorityShift": false,
+      "urgencyLevel": 0.7781019344439903
+    },
+    {
+      "event_id": "EVT_NOVASCALE_AI_069",
+      "timestamp": 1778269748912,
+      "from_node": "EVT_NOVA_001",
+      "to_node": "MAIL_NOVA_003",
+      "routingChange": false,
+      "participationDelta": 0.8356777203321597,
+      "authorityShift": false,
+      "urgencyLevel": 0.2508044777963321
+    },
+    {
+      "event_id": "EVT_NOVASCALE_AI_070",
+      "timestamp": 1778273348912,
+      "from_node": "KPI_NOVA_2026_05",
+      "to_node": "MAIL_NOVA_001",
+      "routingChange": false,
+      "authorityShift": false,
+      "urgencyLevel": 0.33201038197337485,
+      "deadlinePressure": 0.20700713767096923
+    },
+    {
+      "event_id": "EVT_NOVASCALE_AI_071",
+      "timestamp": 1778276948912,
+      "from_node": "KPI_NOVA_2026_05",
+      "to_node": "EVT_NOVA_001",
+      "routingChange": false,
+      "participationDelta": -0.7825456837219322,
+      "authorityShift": false,
+      "urgencyLevel": 0.36202237072612986
+    },
+    {
+      "event_id": "EVT_NOVASCALE_AI_072",
+      "timestamp": 1778280548912,
+      "from_node": "SIG_NOVA_001",
+      "to_node": "EVT_NOVA_001",
+      "routingChange": false,
+      "authorityShift": false,
+      "urgencyLevel": 0.6982841112879297
+    },
+    {
+      "event_id": "EVT_NOVASCALE_AI_073",
+      "timestamp": 1778284148912,
+      "from_node": "SIG_NOVA_001",
+      "to_node": "EVT_NOVA_001",
+      "routingChange": false,
+      "authorityShift": false,
+      "urgencyLevel": 0.5763573820492409,
+      "deadlinePressure": 0.6193240447848765
+    },
+    {
+      "event_id": "EVT_NOVASCALE_AI_074",
+      "timestamp": 1778287748912,
+      "from_node": "KPI_NOVA_2026_05",
+      "to_node": "EVT_NOVA_001",
+      "routingChange": false,
+      "authorityShift": false,
+      "urgencyLevel": 0.07455739761757085
+    },
+    {
+      "event_id": "EVT_NOVASCALE_AI_075",
+      "timestamp": 1778291348912,
+      "from_node": "MAIL_NOVA_002",
+      "to_node": "MAIL_NOVA_001",
+      "routingChange": true,
+      "participationDelta": 0.8693501693481815,
+      "authorityShift": false,
+      "urgencyLevel": 0.25926110279666226
+    },
+    {
+      "event_id": "EVT_NOVASCALE_AI_076",
+      "timestamp": 1778294948912,
+      "from_node": "MAIL_NOVA_001",
+      "to_node": "SIG_NOVA_001",
+      "routingChange": false,
+      "authorityShift": false,
+      "urgencyLevel": 0.6055066193438767
+    },
+    {
+      "event_id": "EVT_NOVASCALE_AI_077",
+      "timestamp": 1778298548912,
+      "from_node": "MAIL_NOVA_002",
+      "to_node": "EVT_NOVA_001",
+      "retryCount": 1,
+      "routingChange": false,
+      "authorityShift": false,
+      "urgencyLevel": 0.9497210559228417
+    },
+    {
+      "event_id": "EVT_NOVASCALE_AI_078",
+      "timestamp": 1778302148912,
+      "from_node": "MAIL_NOVA_001",
+      "to_node": "EVT_NOVA_001",
+      "routingChange": true,
+      "participationDelta": -0.6776790241223836,
+      "authorityShift": false,
+      "urgencyLevel": 0.9960516283141425,
+      "deadlinePressure": 0.7376820676952205
+    },
+    {
+      "event_id": "EVT_NOVASCALE_AI_079",
+      "timestamp": 1778305748912,
+      "from_node": "SIG_NOVA_001",
+      "to_node": "MAIL_NOVA_003",
+      "responseLatency": 5123,
+      "routingChange": false,
+      "authorityShift": true,
+      "urgencyLevel": 0.39536935857494115
+    },
+    {
+      "event_id": "EVT_NOVASCALE_AI_080",
+      "timestamp": 1778309348912,
+      "from_node": "KPI_NOVA_2026_05",
+      "to_node": "EVT_NOVA_001",
+      "routingChange": false,
+      "authorityShift": false,
+      "urgencyLevel": 0.8226218740056184
+    },
+    {
+      "event_id": "EVT_NOVASCALE_AI_081",
+      "timestamp": 1778312948912,
+      "from_node": "MAIL_NOVA_001",
+      "to_node": "SIG_NOVA_001",
+      "routingChange": true,
+      "authorityShift": false,
+      "urgencyLevel": 0.48406803096113027
+    },
+    {
+      "event_id": "EVT_NOVASCALE_AI_082",
+      "timestamp": 1778316548912,
+      "from_node": "EVT_NOVA_001",
+      "to_node": "MAIL_NOVA_002",
+      "routingChange": true,
+      "authorityShift": true,
+      "urgencyLevel": 0.38464934299718223,
+      "deadlinePressure": 0.6110651877817621
+    },
+    {
+      "event_id": "EVT_NOVASCALE_AI_083",
+      "timestamp": 1778320148912,
+      "from_node": "EVT_NOVA_001",
+      "to_node": "MAIL_NOVA_002",
+      "routingChange": false,
+      "authorityShift": true,
+      "urgencyLevel": 0.13445692018373756
+    },
+    {
+      "event_id": "EVT_NOVASCALE_AI_084",
+      "timestamp": 1778323748912,
+      "from_node": "MAIL_NOVA_002",
+      "to_node": "MAIL_NOVA_003",
+      "routingChange": false,
+      "authorityShift": false,
+      "urgencyLevel": 0.5061861082096257,
+      "deadlinePressure": 0.7338933404447661
+    },
+    {
+      "event_id": "EVT_NOVASCALE_AI_085",
+      "timestamp": 1778327348912,
+      "from_node": "KPI_NOVA_2026_05",
+      "to_node": "MAIL_NOVA_001",
+      "responseLatency": 5551,
+      "routingChange": false,
+      "authorityShift": false,
+      "urgencyLevel": 0.49553059227675034
+    },
+    {
+      "event_id": "EVT_NOVASCALE_AI_086",
+      "timestamp": 1778330948912,
+      "from_node": "EVT_NOVA_001",
+      "to_node": "MAIL_NOVA_002",
+      "routingChange": false,
+      "participationDelta": 0.19427931337674442,
+      "authorityShift": false,
+      "urgencyLevel": 0.28378199444502195,
+      "deadlinePressure": 0.5172300891170201
+    },
+    {
+      "event_id": "EVT_NOVASCALE_AI_087",
+      "timestamp": 1778334548912,
+      "from_node": "SIG_NOVA_001",
+      "to_node": "MAIL_NOVA_003",
+      "routingChange": false,
+      "authorityShift": false,
+      "urgencyLevel": 0.9643032547501018,
+      "deadlinePressure": 0.5657764278730415
+    },
+    {
+      "event_id": "EVT_NOVASCALE_AI_088",
+      "timestamp": 1778338148912,
+      "from_node": "MAIL_NOVA_003",
+      "to_node": "MAIL_NOVA_001",
+      "responseLatency": 2630,
+      "routingChange": false,
+      "authorityShift": false,
+      "urgencyLevel": 0.08026487479059763
+    },
+    {
+      "event_id": "EVT_NOVASCALE_AI_089",
+      "timestamp": 1778341748912,
+      "from_node": "MAIL_NOVA_003",
+      "to_node": "EVT_NOVA_001",
+      "responseLatency": 450,
+      "routingChange": false,
+      "participationDelta": -0.7942943786119376,
+      "authorityShift": false,
+      "urgencyLevel": 0.0962331678012951,
+      "deadlinePressure": 0.47089656810116365
+    },
+    {
+      "event_id": "EVT_NOVASCALE_AI_090",
+      "timestamp": 1778345348912,
+      "from_node": "SIG_NOVA_001",
+      "to_node": "EVT_NOVA_001",
+      "responseLatency": 4341,
+      "retryCount": 2,
+      "routingChange": false,
+      "authorityShift": false,
+      "urgencyLevel": 0.7310987942266582
+    },
+    {
+      "event_id": "EVT_NOVASCALE_AI_091",
+      "timestamp": 1778348948912,
+      "from_node": "EVT_NOVA_001",
+      "to_node": "SIG_NOVA_001",
+      "routingChange": true,
+      "authorityShift": false,
+      "urgencyLevel": 0.6420108652172174,
+      "deadlinePressure": 0.3240858343665203
+    },
+    {
+      "event_id": "EVT_NOVASCALE_AI_092",
+      "timestamp": 1778352548912,
+      "from_node": "MAIL_NOVA_002",
+      "to_node": "SIG_NOVA_001",
+      "routingChange": true,
+      "authorityShift": false,
+      "urgencyLevel": 0.580857210310852
+    },
+    {
+      "event_id": "EVT_NOVASCALE_AI_093",
+      "timestamp": 1778356148912,
+      "from_node": "SIG_NOVA_001",
+      "to_node": "MAIL_NOVA_003",
+      "routingChange": false,
+      "authorityShift": false,
+      "urgencyLevel": 0.5305568024656417,
+      "deadlinePressure": 0.10790973440622431
+    },
+    {
+      "event_id": "EVT_NOVASCALE_AI_094",
+      "timestamp": 1778359748912,
+      "from_node": "KPI_NOVA_2026_05",
+      "to_node": "MAIL_NOVA_003",
+      "responseLatency": 4822,
+      "routingChange": false,
+      "authorityShift": false,
+      "urgencyLevel": 0.903353910320194
+    },
+    {
+      "event_id": "EVT_NOVASCALE_AI_095",
+      "timestamp": 1778363348912,
+      "from_node": "EVT_NOVA_001",
+      "to_node": "MAIL_NOVA_001",
+      "routingChange": false,
+      "authorityShift": false,
+      "urgencyLevel": 0.42195315367801234
+    },
+    {
+      "event_id": "EVT_NOVASCALE_AI_096",
+      "timestamp": 1778366948912,
+      "from_node": "KPI_NOVA_2026_05",
+      "to_node": "SIG_NOVA_001",
+      "routingChange": false,
+      "authorityShift": false,
+      "urgencyLevel": 0.922340569121638
+    },
+    {
+      "event_id": "EVT_NOVASCALE_AI_097",
+      "timestamp": 1778370548912,
+      "from_node": "KPI_NOVA_2026_05",
+      "to_node": "SIG_NOVA_001",
+      "routingChange": false,
+      "authorityShift": false,
+      "urgencyLevel": 0.005663507566906922
+    },
+    {
+      "event_id": "EVT_NOVASCALE_AI_098",
+      "timestamp": 1778374148912,
+      "from_node": "EVT_NOVA_001",
+      "to_node": "MAIL_NOVA_002",
+      "routingChange": false,
+      "participationDelta": 0.12155505613542372,
+      "authorityShift": false,
+      "urgencyLevel": 0.2440999491099365
+    },
+    {
+      "event_id": "EVT_NOVASCALE_AI_099",
+      "timestamp": 1778377748912,
+      "from_node": "EVT_NOVA_001",
+      "to_node": "MAIL_NOVA_002",
+      "routingChange": false,
+      "authorityShift": false,
+      "urgencyLevel": 0.19617127661723588
+    },
+    {
+      "event_id": "EVT_NOVASCALE_AI_100",
+      "timestamp": 1778381348912,
+      "from_node": "MAIL_NOVA_003",
+      "to_node": "EVT_NOVA_001",
+      "routingChange": false,
+      "participationDelta": -0.69538975394364,
+      "authorityShift": false,
+      "urgencyLevel": 0.23614319565245645
+    }
+  ],
+  "metadata": {
+    "generated_at": 1778629748913,
+    "event_count": 100,
+    "time_span": {
+      "start": 1778024948912,
+      "end": 1778381348912
+    }
+  }
+}

@@ -1,0 +1,2210 @@
+{
+  "company_id": "medcore_health",
+  "signals": [
+    {
+      "signal_id": "SIG_EVT_MEDCORE_HEALTH_001",
+      "timestamp": 1778024948915,
+      "source_event": "EVT_MEDCORE_HEALTH_001",
+      "from_carrier": {
+        "carrier_id": "EVT_MED_001",
+        "carrier_type": "evt"
+      },
+      "to_carrier": {
+        "carrier_id": "SHIFT_MED_003",
+        "carrier_type": "shift"
+      },
+      "vector": {
+        "intensity": 0.7810085345613753,
+        "latency": 0,
+        "retry": 0,
+        "routing_shift": 0,
+        "participation_delta": 0,
+        "urgency": 0.7810085345613753,
+        "deadline_pressure": 0
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_MEDCORE_HEALTH_002",
+      "timestamp": 1778028548915,
+      "source_event": "EVT_MEDCORE_HEALTH_002",
+      "from_carrier": {
+        "carrier_id": "EVT_MED_001",
+        "carrier_type": "evt"
+      },
+      "to_carrier": {
+        "carrier_id": "SHIFT_MED_002",
+        "carrier_type": "shift"
+      },
+      "vector": {
+        "intensity": 0.9734246352674951,
+        "latency": 0,
+        "retry": 0,
+        "routing_shift": 0,
+        "participation_delta": 0,
+        "urgency": 0.9734246352674951,
+        "deadline_pressure": 0
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_MEDCORE_HEALTH_003",
+      "timestamp": 1778032148915,
+      "source_event": "EVT_MEDCORE_HEALTH_003",
+      "from_carrier": {
+        "carrier_id": "EVT_MED_001",
+        "carrier_type": "evt"
+      },
+      "to_carrier": {
+        "carrier_id": "SHIFT_MED_002",
+        "carrier_type": "shift"
+      },
+      "vector": {
+        "intensity": 0.9878665576421508,
+        "latency": 0.42310000000000003,
+        "retry": 0,
+        "routing_shift": 0,
+        "participation_delta": -0.20730218238237308,
+        "urgency": 0.9878665576421508,
+        "deadline_pressure": 0
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_MEDCORE_HEALTH_004",
+      "timestamp": 1778035748915,
+      "source_event": "EVT_MEDCORE_HEALTH_004",
+      "from_carrier": {
+        "carrier_id": "SHIFT_MED_003",
+        "carrier_type": "shift"
+      },
+      "to_carrier": {
+        "carrier_id": "KPI_MED_2026_05",
+        "carrier_type": "kpi"
+      },
+      "vector": {
+        "intensity": 0.7298140622404643,
+        "latency": 0,
+        "retry": 0.6,
+        "routing_shift": 0,
+        "participation_delta": 0,
+        "urgency": 0.7298140622404643,
+        "deadline_pressure": 0.7656609859111219
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_MEDCORE_HEALTH_005",
+      "timestamp": 1778039348915,
+      "source_event": "EVT_MEDCORE_HEALTH_005",
+      "from_carrier": {
+        "carrier_id": "EVT_MED_001",
+        "carrier_type": "evt"
+      },
+      "to_carrier": {
+        "carrier_id": "SHIFT_MED_002",
+        "carrier_type": "shift"
+      },
+      "vector": {
+        "intensity": 0.5659409806932969,
+        "latency": 0,
+        "retry": 0,
+        "routing_shift": 0,
+        "participation_delta": 0,
+        "urgency": 0.5659409806932969,
+        "deadline_pressure": 0
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_MEDCORE_HEALTH_006",
+      "timestamp": 1778042948915,
+      "source_event": "EVT_MEDCORE_HEALTH_006",
+      "from_carrier": {
+        "carrier_id": "EVT_MED_001",
+        "carrier_type": "evt"
+      },
+      "to_carrier": {
+        "carrier_id": "SHIFT_MED_001",
+        "carrier_type": "shift"
+      },
+      "vector": {
+        "intensity": 0.5312539101238214,
+        "latency": 0,
+        "retry": 0,
+        "routing_shift": 0,
+        "participation_delta": 0.8269154985963056,
+        "urgency": 0.5312539101238214,
+        "deadline_pressure": 0
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_MEDCORE_HEALTH_007",
+      "timestamp": 1778046548915,
+      "source_event": "EVT_MEDCORE_HEALTH_007",
+      "from_carrier": {
+        "carrier_id": "SHIFT_MED_002",
+        "carrier_type": "shift"
+      },
+      "to_carrier": {
+        "carrier_id": "EVT_MED_001",
+        "carrier_type": "evt"
+      },
+      "vector": {
+        "intensity": 0.45680998595867317,
+        "latency": 0,
+        "retry": 0,
+        "routing_shift": 0,
+        "participation_delta": -0.5869597607523227,
+        "urgency": 0.45680998595867317,
+        "deadline_pressure": 0
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_MEDCORE_HEALTH_008",
+      "timestamp": 1778050148915,
+      "source_event": "EVT_MEDCORE_HEALTH_008",
+      "from_carrier": {
+        "carrier_id": "SHIFT_MED_001",
+        "carrier_type": "shift"
+      },
+      "to_carrier": {
+        "carrier_id": "SHIFT_MED_003",
+        "carrier_type": "shift"
+      },
+      "vector": {
+        "intensity": 0.19376146519070336,
+        "latency": 0,
+        "retry": 0,
+        "routing_shift": 1,
+        "participation_delta": 0,
+        "urgency": 0.19376146519070336,
+        "deadline_pressure": 0
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_MEDCORE_HEALTH_009",
+      "timestamp": 1778053748915,
+      "source_event": "EVT_MEDCORE_HEALTH_009",
+      "from_carrier": {
+        "carrier_id": "SHIFT_MED_001",
+        "carrier_type": "shift"
+      },
+      "to_carrier": {
+        "carrier_id": "EVT_MED_001",
+        "carrier_type": "evt"
+      },
+      "vector": {
+        "intensity": 0.23323990995298005,
+        "latency": 0,
+        "retry": 0,
+        "routing_shift": 0,
+        "participation_delta": 0.8349949685902174,
+        "urgency": 0.23323990995298005,
+        "deadline_pressure": 0
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_MEDCORE_HEALTH_010",
+      "timestamp": 1778057348915,
+      "source_event": "EVT_MEDCORE_HEALTH_010",
+      "from_carrier": {
+        "carrier_id": "SHIFT_MED_002",
+        "carrier_type": "shift"
+      },
+      "to_carrier": {
+        "carrier_id": "EVT_MED_001",
+        "carrier_type": "evt"
+      },
+      "vector": {
+        "intensity": 0.1709102142512311,
+        "latency": 0,
+        "retry": 0,
+        "routing_shift": 0,
+        "participation_delta": 0,
+        "urgency": 0.1709102142512311,
+        "deadline_pressure": 0
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_MEDCORE_HEALTH_011",
+      "timestamp": 1778060948915,
+      "source_event": "EVT_MEDCORE_HEALTH_011",
+      "from_carrier": {
+        "carrier_id": "SHIFT_MED_003",
+        "carrier_type": "shift"
+      },
+      "to_carrier": {
+        "carrier_id": "SHIFT_MED_001",
+        "carrier_type": "shift"
+      },
+      "vector": {
+        "intensity": 0.2829868333157841,
+        "latency": 0,
+        "retry": 0.2,
+        "routing_shift": 0,
+        "participation_delta": 0.6384438095044542,
+        "urgency": 0.2829868333157841,
+        "deadline_pressure": 0
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_MEDCORE_HEALTH_012",
+      "timestamp": 1778064548915,
+      "source_event": "EVT_MEDCORE_HEALTH_012",
+      "from_carrier": {
+        "carrier_id": "SHIFT_MED_001",
+        "carrier_type": "shift"
+      },
+      "to_carrier": {
+        "carrier_id": "SHIFT_MED_003",
+        "carrier_type": "shift"
+      },
+      "vector": {
+        "intensity": 0.6639410165975987,
+        "latency": 0,
+        "retry": 0,
+        "routing_shift": 0,
+        "participation_delta": 0,
+        "urgency": 0.6639410165975987,
+        "deadline_pressure": 0
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_MEDCORE_HEALTH_013",
+      "timestamp": 1778068148915,
+      "source_event": "EVT_MEDCORE_HEALTH_013",
+      "from_carrier": {
+        "carrier_id": "SHIFT_MED_003",
+        "carrier_type": "shift"
+      },
+      "to_carrier": {
+        "carrier_id": "KPI_MED_2026_05",
+        "carrier_type": "kpi"
+      },
+      "vector": {
+        "intensity": 0.7879973393680237,
+        "latency": 0,
+        "retry": 0,
+        "routing_shift": 0,
+        "participation_delta": -0.9003671417773851,
+        "urgency": 0.7879973393680237,
+        "deadline_pressure": 0
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_MEDCORE_HEALTH_014",
+      "timestamp": 1778071748915,
+      "source_event": "EVT_MEDCORE_HEALTH_014",
+      "from_carrier": {
+        "carrier_id": "SHIFT_MED_001",
+        "carrier_type": "shift"
+      },
+      "to_carrier": {
+        "carrier_id": "SHIFT_MED_003",
+        "carrier_type": "shift"
+      },
+      "vector": {
+        "intensity": 0.4407822151116372,
+        "latency": 0.4091,
+        "retry": 0,
+        "routing_shift": 0,
+        "participation_delta": -0.25849491601570573,
+        "urgency": 0.4407822151116372,
+        "deadline_pressure": 0
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_MEDCORE_HEALTH_015",
+      "timestamp": 1778075348915,
+      "source_event": "EVT_MEDCORE_HEALTH_015",
+      "from_carrier": {
+        "carrier_id": "SHIFT_MED_002",
+        "carrier_type": "shift"
+      },
+      "to_carrier": {
+        "carrier_id": "EVT_MED_001",
+        "carrier_type": "evt"
+      },
+      "vector": {
+        "intensity": 0.6400880578291044,
+        "latency": 0.47,
+        "retry": 0,
+        "routing_shift": 0,
+        "participation_delta": 0,
+        "urgency": 0.6400880578291044,
+        "deadline_pressure": 0.6513320175115316
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_MEDCORE_HEALTH_016",
+      "timestamp": 1778078948915,
+      "source_event": "EVT_MEDCORE_HEALTH_016",
+      "from_carrier": {
+        "carrier_id": "SHIFT_MED_003",
+        "carrier_type": "shift"
+      },
+      "to_carrier": {
+        "carrier_id": "KPI_MED_2026_05",
+        "carrier_type": "kpi"
+      },
+      "vector": {
+        "intensity": 0.5175502068632676,
+        "latency": 0,
+        "retry": 0,
+        "routing_shift": 0,
+        "participation_delta": 0,
+        "urgency": 0.5175502068632676,
+        "deadline_pressure": 0
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_MEDCORE_HEALTH_017",
+      "timestamp": 1778082548915,
+      "source_event": "EVT_MEDCORE_HEALTH_017",
+      "from_carrier": {
+        "carrier_id": "EVT_MED_001",
+        "carrier_type": "evt"
+      },
+      "to_carrier": {
+        "carrier_id": "SHIFT_MED_003",
+        "carrier_type": "shift"
+      },
+      "vector": {
+        "intensity": 0.677704498613539,
+        "latency": 0.30989999999999995,
+        "retry": 0,
+        "routing_shift": 1,
+        "participation_delta": 0,
+        "urgency": 0.677704498613539,
+        "deadline_pressure": 0.8856400872723158
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_MEDCORE_HEALTH_018",
+      "timestamp": 1778086148915,
+      "source_event": "EVT_MEDCORE_HEALTH_018",
+      "from_carrier": {
+        "carrier_id": "SHIFT_MED_003",
+        "carrier_type": "shift"
+      },
+      "to_carrier": {
+        "carrier_id": "EVT_MED_001",
+        "carrier_type": "evt"
+      },
+      "vector": {
+        "intensity": 0.8040792180582925,
+        "latency": 0,
+        "retry": 0.4,
+        "routing_shift": 1,
+        "participation_delta": 0,
+        "urgency": 0.8040792180582925,
+        "deadline_pressure": 0
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_MEDCORE_HEALTH_019",
+      "timestamp": 1778089748915,
+      "source_event": "EVT_MEDCORE_HEALTH_019",
+      "from_carrier": {
+        "carrier_id": "SHIFT_MED_003",
+        "carrier_type": "shift"
+      },
+      "to_carrier": {
+        "carrier_id": "SHIFT_MED_002",
+        "carrier_type": "shift"
+      },
+      "vector": {
+        "intensity": 0.619177863562349,
+        "latency": 0.8617,
+        "retry": 0,
+        "routing_shift": 1,
+        "participation_delta": 0,
+        "urgency": 0.619177863562349,
+        "deadline_pressure": 0.5274405309278223
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_MEDCORE_HEALTH_020",
+      "timestamp": 1778093348915,
+      "source_event": "EVT_MEDCORE_HEALTH_020",
+      "from_carrier": {
+        "carrier_id": "EVT_MED_001",
+        "carrier_type": "evt"
+      },
+      "to_carrier": {
+        "carrier_id": "KPI_MED_2026_05",
+        "carrier_type": "kpi"
+      },
+      "vector": {
+        "intensity": 0.42896082285678827,
+        "latency": 0,
+        "retry": 0,
+        "routing_shift": 1,
+        "participation_delta": -0.35199297768133064,
+        "urgency": 0.42896082285678827,
+        "deadline_pressure": 0
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_MEDCORE_HEALTH_021",
+      "timestamp": 1778096948915,
+      "source_event": "EVT_MEDCORE_HEALTH_021",
+      "from_carrier": {
+        "carrier_id": "SHIFT_MED_003",
+        "carrier_type": "shift"
+      },
+      "to_carrier": {
+        "carrier_id": "KPI_MED_2026_05",
+        "carrier_type": "kpi"
+      },
+      "vector": {
+        "intensity": 0.7556571569697865,
+        "latency": 0,
+        "retry": 0,
+        "routing_shift": 0,
+        "participation_delta": 0,
+        "urgency": 0.7556571569697865,
+        "deadline_pressure": 0
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_MEDCORE_HEALTH_022",
+      "timestamp": 1778100548915,
+      "source_event": "EVT_MEDCORE_HEALTH_022",
+      "from_carrier": {
+        "carrier_id": "SHIFT_MED_003",
+        "carrier_type": "shift"
+      },
+      "to_carrier": {
+        "carrier_id": "SHIFT_MED_001",
+        "carrier_type": "shift"
+      },
+      "vector": {
+        "intensity": 0.41785283696374176,
+        "latency": 0,
+        "retry": 0,
+        "routing_shift": 1,
+        "participation_delta": 0,
+        "urgency": 0.41785283696374176,
+        "deadline_pressure": 0
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_MEDCORE_HEALTH_023",
+      "timestamp": 1778104148915,
+      "source_event": "EVT_MEDCORE_HEALTH_023",
+      "from_carrier": {
+        "carrier_id": "KPI_MED_2026_05",
+        "carrier_type": "kpi"
+      },
+      "to_carrier": {
+        "carrier_id": "SHIFT_MED_003",
+        "carrier_type": "shift"
+      },
+      "vector": {
+        "intensity": 0.7769577212925765,
+        "latency": 0,
+        "retry": 0,
+        "routing_shift": 0,
+        "participation_delta": 0,
+        "urgency": 0.7769577212925765,
+        "deadline_pressure": 0
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_MEDCORE_HEALTH_024",
+      "timestamp": 1778107748915,
+      "source_event": "EVT_MEDCORE_HEALTH_024",
+      "from_carrier": {
+        "carrier_id": "SHIFT_MED_002",
+        "carrier_type": "shift"
+      },
+      "to_carrier": {
+        "carrier_id": "SHIFT_MED_001",
+        "carrier_type": "shift"
+      },
+      "vector": {
+        "intensity": 0.03288285211057618,
+        "latency": 0,
+        "retry": 0,
+        "routing_shift": 0,
+        "participation_delta": 0,
+        "urgency": 0.03288285211057618,
+        "deadline_pressure": 0.6329270639097562
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_MEDCORE_HEALTH_025",
+      "timestamp": 1778111348915,
+      "source_event": "EVT_MEDCORE_HEALTH_025",
+      "from_carrier": {
+        "carrier_id": "SHIFT_MED_002",
+        "carrier_type": "shift"
+      },
+      "to_carrier": {
+        "carrier_id": "KPI_MED_2026_05",
+        "carrier_type": "kpi"
+      },
+      "vector": {
+        "intensity": 0.24619990967616623,
+        "latency": 0,
+        "retry": 0,
+        "routing_shift": 0,
+        "participation_delta": 0,
+        "urgency": 0.24619990967616623,
+        "deadline_pressure": 0.6246999997374989
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_MEDCORE_HEALTH_026",
+      "timestamp": 1778114948915,
+      "source_event": "EVT_MEDCORE_HEALTH_026",
+      "from_carrier": {
+        "carrier_id": "SHIFT_MED_001",
+        "carrier_type": "shift"
+      },
+      "to_carrier": {
+        "carrier_id": "KPI_MED_2026_05",
+        "carrier_type": "kpi"
+      },
+      "vector": {
+        "intensity": 0.0672425258485172,
+        "latency": 0,
+        "retry": 0,
+        "routing_shift": 0,
+        "participation_delta": 0,
+        "urgency": 0.0672425258485172,
+        "deadline_pressure": 0.758283638966035
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_MEDCORE_HEALTH_027",
+      "timestamp": 1778118548915,
+      "source_event": "EVT_MEDCORE_HEALTH_027",
+      "from_carrier": {
+        "carrier_id": "SHIFT_MED_001",
+        "carrier_type": "shift"
+      },
+      "to_carrier": {
+        "carrier_id": "KPI_MED_2026_05",
+        "carrier_type": "kpi"
+      },
+      "vector": {
+        "intensity": 0.13288980303045128,
+        "latency": 0,
+        "retry": 0,
+        "routing_shift": 0,
+        "participation_delta": 0,
+        "urgency": 0.13288980303045128,
+        "deadline_pressure": 0.9539635415222123
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_MEDCORE_HEALTH_028",
+      "timestamp": 1778122148915,
+      "source_event": "EVT_MEDCORE_HEALTH_028",
+      "from_carrier": {
+        "carrier_id": "SHIFT_MED_001",
+        "carrier_type": "shift"
+      },
+      "to_carrier": {
+        "carrier_id": "EVT_MED_001",
+        "carrier_type": "evt"
+      },
+      "vector": {
+        "intensity": 0.9869312163535673,
+        "latency": 0,
+        "retry": 0,
+        "routing_shift": 0,
+        "participation_delta": 0,
+        "urgency": 0.9869312163535673,
+        "deadline_pressure": 0.08282341729525489
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_MEDCORE_HEALTH_029",
+      "timestamp": 1778125748915,
+      "source_event": "EVT_MEDCORE_HEALTH_029",
+      "from_carrier": {
+        "carrier_id": "SHIFT_MED_001",
+        "carrier_type": "shift"
+      },
+      "to_carrier": {
+        "carrier_id": "SHIFT_MED_002",
+        "carrier_type": "shift"
+      },
+      "vector": {
+        "intensity": 0.834697163868142,
+        "latency": 0,
+        "retry": 0,
+        "routing_shift": 0,
+        "participation_delta": 0.07699712152329319,
+        "urgency": 0.834697163868142,
+        "deadline_pressure": 0
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_MEDCORE_HEALTH_030",
+      "timestamp": 1778129348915,
+      "source_event": "EVT_MEDCORE_HEALTH_030",
+      "from_carrier": {
+        "carrier_id": "EVT_MED_001",
+        "carrier_type": "evt"
+      },
+      "to_carrier": {
+        "carrier_id": "SHIFT_MED_003",
+        "carrier_type": "shift"
+      },
+      "vector": {
+        "intensity": 0.7358041569354481,
+        "latency": 0,
+        "retry": 0,
+        "routing_shift": 0,
+        "participation_delta": 0,
+        "urgency": 0.7358041569354481,
+        "deadline_pressure": 0
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_MEDCORE_HEALTH_031",
+      "timestamp": 1778132948915,
+      "source_event": "EVT_MEDCORE_HEALTH_031",
+      "from_carrier": {
+        "carrier_id": "SHIFT_MED_001",
+        "carrier_type": "shift"
+      },
+      "to_carrier": {
+        "carrier_id": "SHIFT_MED_002",
+        "carrier_type": "shift"
+      },
+      "vector": {
+        "intensity": 0.3879670245763598,
+        "latency": 0,
+        "retry": 0,
+        "routing_shift": 0,
+        "participation_delta": 0,
+        "urgency": 0.3879670245763598,
+        "deadline_pressure": 0.8009381682975236
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_MEDCORE_HEALTH_032",
+      "timestamp": 1778136548915,
+      "source_event": "EVT_MEDCORE_HEALTH_032",
+      "from_carrier": {
+        "carrier_id": "EVT_MED_001",
+        "carrier_type": "evt"
+      },
+      "to_carrier": {
+        "carrier_id": "SHIFT_MED_002",
+        "carrier_type": "shift"
+      },
+      "vector": {
+        "intensity": 0.42381392771288207,
+        "latency": 0,
+        "retry": 0,
+        "routing_shift": 0,
+        "participation_delta": 0,
+        "urgency": 0.42381392771288207,
+        "deadline_pressure": 0.789353967690511
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_MEDCORE_HEALTH_033",
+      "timestamp": 1778140148915,
+      "source_event": "EVT_MEDCORE_HEALTH_033",
+      "from_carrier": {
+        "carrier_id": "SHIFT_MED_002",
+        "carrier_type": "shift"
+      },
+      "to_carrier": {
+        "carrier_id": "EVT_MED_001",
+        "carrier_type": "evt"
+      },
+      "vector": {
+        "intensity": 0.8291572381048684,
+        "latency": 0,
+        "retry": 0,
+        "routing_shift": 0,
+        "participation_delta": 0.29504498440582827,
+        "urgency": 0.8291572381048684,
+        "deadline_pressure": 0
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_MEDCORE_HEALTH_034",
+      "timestamp": 1778143748915,
+      "source_event": "EVT_MEDCORE_HEALTH_034",
+      "from_carrier": {
+        "carrier_id": "SHIFT_MED_001",
+        "carrier_type": "shift"
+      },
+      "to_carrier": {
+        "carrier_id": "SHIFT_MED_003",
+        "carrier_type": "shift"
+      },
+      "vector": {
+        "intensity": 0.6987420729333986,
+        "latency": 0.5800000000000001,
+        "retry": 0.4,
+        "routing_shift": 0,
+        "participation_delta": 0,
+        "urgency": 0.6987420729333986,
+        "deadline_pressure": 0
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_MEDCORE_HEALTH_035",
+      "timestamp": 1778147348915,
+      "source_event": "EVT_MEDCORE_HEALTH_035",
+      "from_carrier": {
+        "carrier_id": "EVT_MED_001",
+        "carrier_type": "evt"
+      },
+      "to_carrier": {
+        "carrier_id": "SHIFT_MED_001",
+        "carrier_type": "shift"
+      },
+      "vector": {
+        "intensity": 0.5633696785156326,
+        "latency": 0.6078,
+        "retry": 0,
+        "routing_shift": 0,
+        "participation_delta": 0,
+        "urgency": 0.5633696785156326,
+        "deadline_pressure": 0.081212306042864
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_MEDCORE_HEALTH_036",
+      "timestamp": 1778150948915,
+      "source_event": "EVT_MEDCORE_HEALTH_036",
+      "from_carrier": {
+        "carrier_id": "SHIFT_MED_003",
+        "carrier_type": "shift"
+      },
+      "to_carrier": {
+        "carrier_id": "EVT_MED_001",
+        "carrier_type": "evt"
+      },
+      "vector": {
+        "intensity": 0.9372336556690386,
+        "latency": 0,
+        "retry": 0,
+        "routing_shift": 0,
+        "participation_delta": 0,
+        "urgency": 0.9372336556690386,
+        "deadline_pressure": 0
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_MEDCORE_HEALTH_037",
+      "timestamp": 1778154548915,
+      "source_event": "EVT_MEDCORE_HEALTH_037",
+      "from_carrier": {
+        "carrier_id": "SHIFT_MED_003",
+        "carrier_type": "shift"
+      },
+      "to_carrier": {
+        "carrier_id": "EVT_MED_001",
+        "carrier_type": "evt"
+      },
+      "vector": {
+        "intensity": 0.8589407273719205,
+        "latency": 0,
+        "retry": 0,
+        "routing_shift": 0,
+        "participation_delta": 0.5418215280109013,
+        "urgency": 0.8589407273719205,
+        "deadline_pressure": 0.19599666972492602
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_MEDCORE_HEALTH_038",
+      "timestamp": 1778158148915,
+      "source_event": "EVT_MEDCORE_HEALTH_038",
+      "from_carrier": {
+        "carrier_id": "KPI_MED_2026_05",
+        "carrier_type": "kpi"
+      },
+      "to_carrier": {
+        "carrier_id": "SHIFT_MED_003",
+        "carrier_type": "shift"
+      },
+      "vector": {
+        "intensity": 0.10780218610344305,
+        "latency": 0,
+        "retry": 0,
+        "routing_shift": 0,
+        "participation_delta": 0,
+        "urgency": 0.10780218610344305,
+        "deadline_pressure": 0.31457466238986953
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_MEDCORE_HEALTH_039",
+      "timestamp": 1778161748915,
+      "source_event": "EVT_MEDCORE_HEALTH_039",
+      "from_carrier": {
+        "carrier_id": "SHIFT_MED_002",
+        "carrier_type": "shift"
+      },
+      "to_carrier": {
+        "carrier_id": "SHIFT_MED_001",
+        "carrier_type": "shift"
+      },
+      "vector": {
+        "intensity": 0.1994461273451631,
+        "latency": 0.8661,
+        "retry": 0,
+        "routing_shift": 0,
+        "participation_delta": 0,
+        "urgency": 0.1994461273451631,
+        "deadline_pressure": 0
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_MEDCORE_HEALTH_040",
+      "timestamp": 1778165348915,
+      "source_event": "EVT_MEDCORE_HEALTH_040",
+      "from_carrier": {
+        "carrier_id": "KPI_MED_2026_05",
+        "carrier_type": "kpi"
+      },
+      "to_carrier": {
+        "carrier_id": "EVT_MED_001",
+        "carrier_type": "evt"
+      },
+      "vector": {
+        "intensity": 0.3633649299751953,
+        "latency": 0.4726,
+        "retry": 0,
+        "routing_shift": 0,
+        "participation_delta": 0,
+        "urgency": 0.3633649299751953,
+        "deadline_pressure": 0
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_MEDCORE_HEALTH_041",
+      "timestamp": 1778168948915,
+      "source_event": "EVT_MEDCORE_HEALTH_041",
+      "from_carrier": {
+        "carrier_id": "EVT_MED_001",
+        "carrier_type": "evt"
+      },
+      "to_carrier": {
+        "carrier_id": "SHIFT_MED_002",
+        "carrier_type": "shift"
+      },
+      "vector": {
+        "intensity": 0.5900102750545433,
+        "latency": 0.8337,
+        "retry": 0,
+        "routing_shift": 0,
+        "participation_delta": 0,
+        "urgency": 0.5900102750545433,
+        "deadline_pressure": 0
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_MEDCORE_HEALTH_042",
+      "timestamp": 1778172548915,
+      "source_event": "EVT_MEDCORE_HEALTH_042",
+      "from_carrier": {
+        "carrier_id": "SHIFT_MED_002",
+        "carrier_type": "shift"
+      },
+      "to_carrier": {
+        "carrier_id": "KPI_MED_2026_05",
+        "carrier_type": "kpi"
+      },
+      "vector": {
+        "intensity": 0.7296530801784897,
+        "latency": 0,
+        "retry": 0,
+        "routing_shift": 0,
+        "participation_delta": -0.8838310611351399,
+        "urgency": 0.7296530801784897,
+        "deadline_pressure": 0.28471173948186235
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_MEDCORE_HEALTH_043",
+      "timestamp": 1778176148915,
+      "source_event": "EVT_MEDCORE_HEALTH_043",
+      "from_carrier": {
+        "carrier_id": "EVT_MED_001",
+        "carrier_type": "evt"
+      },
+      "to_carrier": {
+        "carrier_id": "KPI_MED_2026_05",
+        "carrier_type": "kpi"
+      },
+      "vector": {
+        "intensity": 0.19398748022815826,
+        "latency": 0,
+        "retry": 0,
+        "routing_shift": 0,
+        "participation_delta": 0,
+        "urgency": 0.19398748022815826,
+        "deadline_pressure": 0
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_MEDCORE_HEALTH_044",
+      "timestamp": 1778179748915,
+      "source_event": "EVT_MEDCORE_HEALTH_044",
+      "from_carrier": {
+        "carrier_id": "SHIFT_MED_002",
+        "carrier_type": "shift"
+      },
+      "to_carrier": {
+        "carrier_id": "SHIFT_MED_003",
+        "carrier_type": "shift"
+      },
+      "vector": {
+        "intensity": 0.31147530211015995,
+        "latency": 0,
+        "retry": 0,
+        "routing_shift": 0,
+        "participation_delta": 0,
+        "urgency": 0.31147530211015995,
+        "deadline_pressure": 0
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_MEDCORE_HEALTH_045",
+      "timestamp": 1778183348915,
+      "source_event": "EVT_MEDCORE_HEALTH_045",
+      "from_carrier": {
+        "carrier_id": "SHIFT_MED_001",
+        "carrier_type": "shift"
+      },
+      "to_carrier": {
+        "carrier_id": "EVT_MED_001",
+        "carrier_type": "evt"
+      },
+      "vector": {
+        "intensity": 0.40893656199936146,
+        "latency": 0.5707,
+        "retry": 0,
+        "routing_shift": 0,
+        "participation_delta": 0,
+        "urgency": 0.40893656199936146,
+        "deadline_pressure": 0
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_MEDCORE_HEALTH_046",
+      "timestamp": 1778186948915,
+      "source_event": "EVT_MEDCORE_HEALTH_046",
+      "from_carrier": {
+        "carrier_id": "KPI_MED_2026_05",
+        "carrier_type": "kpi"
+      },
+      "to_carrier": {
+        "carrier_id": "SHIFT_MED_003",
+        "carrier_type": "shift"
+      },
+      "vector": {
+        "intensity": 0.7170534400071429,
+        "latency": 0.7446999999999999,
+        "retry": 0,
+        "routing_shift": 0,
+        "participation_delta": 0,
+        "urgency": 0.7170534400071429,
+        "deadline_pressure": 0
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_MEDCORE_HEALTH_047",
+      "timestamp": 1778190548915,
+      "source_event": "EVT_MEDCORE_HEALTH_047",
+      "from_carrier": {
+        "carrier_id": "EVT_MED_001",
+        "carrier_type": "evt"
+      },
+      "to_carrier": {
+        "carrier_id": "SHIFT_MED_003",
+        "carrier_type": "shift"
+      },
+      "vector": {
+        "intensity": 0.7454137663078328,
+        "latency": 0,
+        "retry": 0,
+        "routing_shift": 0,
+        "participation_delta": 0.44316619583393013,
+        "urgency": 0.7454137663078328,
+        "deadline_pressure": 0.5604881034677907
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_MEDCORE_HEALTH_048",
+      "timestamp": 1778194148915,
+      "source_event": "EVT_MEDCORE_HEALTH_048",
+      "from_carrier": {
+        "carrier_id": "KPI_MED_2026_05",
+        "carrier_type": "kpi"
+      },
+      "to_carrier": {
+        "carrier_id": "SHIFT_MED_001",
+        "carrier_type": "shift"
+      },
+      "vector": {
+        "intensity": 0.46216647192707505,
+        "latency": 0,
+        "retry": 0,
+        "routing_shift": 1,
+        "participation_delta": -0.7921007389372816,
+        "urgency": 0.46216647192707505,
+        "deadline_pressure": 0.28546330993898916
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_MEDCORE_HEALTH_049",
+      "timestamp": 1778197748915,
+      "source_event": "EVT_MEDCORE_HEALTH_049",
+      "from_carrier": {
+        "carrier_id": "SHIFT_MED_002",
+        "carrier_type": "shift"
+      },
+      "to_carrier": {
+        "carrier_id": "SHIFT_MED_003",
+        "carrier_type": "shift"
+      },
+      "vector": {
+        "intensity": 0.9497356596400484,
+        "latency": 0,
+        "retry": 0,
+        "routing_shift": 1,
+        "participation_delta": 0,
+        "urgency": 0.9497356596400484,
+        "deadline_pressure": 0.8036976777036222
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_MEDCORE_HEALTH_050",
+      "timestamp": 1778201348915,
+      "source_event": "EVT_MEDCORE_HEALTH_050",
+      "from_carrier": {
+        "carrier_id": "EVT_MED_001",
+        "carrier_type": "evt"
+      },
+      "to_carrier": {
+        "carrier_id": "SHIFT_MED_003",
+        "carrier_type": "shift"
+      },
+      "vector": {
+        "intensity": 0.8728957921824245,
+        "latency": 0,
+        "retry": 0,
+        "routing_shift": 1,
+        "participation_delta": 0,
+        "urgency": 0.8728957921824245,
+        "deadline_pressure": 0.5024807054838463
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_MEDCORE_HEALTH_051",
+      "timestamp": 1778204948915,
+      "source_event": "EVT_MEDCORE_HEALTH_051",
+      "from_carrier": {
+        "carrier_id": "SHIFT_MED_003",
+        "carrier_type": "shift"
+      },
+      "to_carrier": {
+        "carrier_id": "EVT_MED_001",
+        "carrier_type": "evt"
+      },
+      "vector": {
+        "intensity": 0.2221879424047295,
+        "latency": 0.8758,
+        "retry": 0,
+        "routing_shift": 0,
+        "participation_delta": 0,
+        "urgency": 0.2221879424047295,
+        "deadline_pressure": 0.8027828031946787
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_MEDCORE_HEALTH_052",
+      "timestamp": 1778208548915,
+      "source_event": "EVT_MEDCORE_HEALTH_052",
+      "from_carrier": {
+        "carrier_id": "KPI_MED_2026_05",
+        "carrier_type": "kpi"
+      },
+      "to_carrier": {
+        "carrier_id": "SHIFT_MED_002",
+        "carrier_type": "shift"
+      },
+      "vector": {
+        "intensity": 0.19825159446194474,
+        "latency": 0,
+        "retry": 0,
+        "routing_shift": 0,
+        "participation_delta": 0,
+        "urgency": 0.19825159446194474,
+        "deadline_pressure": 0
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_MEDCORE_HEALTH_053",
+      "timestamp": 1778212148915,
+      "source_event": "EVT_MEDCORE_HEALTH_053",
+      "from_carrier": {
+        "carrier_id": "SHIFT_MED_003",
+        "carrier_type": "shift"
+      },
+      "to_carrier": {
+        "carrier_id": "SHIFT_MED_001",
+        "carrier_type": "shift"
+      },
+      "vector": {
+        "intensity": 0.29889399512425774,
+        "latency": 0,
+        "retry": 0,
+        "routing_shift": 0,
+        "participation_delta": 0.7219914473130649,
+        "urgency": 0.29889399512425774,
+        "deadline_pressure": 0.3905731281318845
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_MEDCORE_HEALTH_054",
+      "timestamp": 1778215748915,
+      "source_event": "EVT_MEDCORE_HEALTH_054",
+      "from_carrier": {
+        "carrier_id": "EVT_MED_001",
+        "carrier_type": "evt"
+      },
+      "to_carrier": {
+        "carrier_id": "SHIFT_MED_001",
+        "carrier_type": "shift"
+      },
+      "vector": {
+        "intensity": 0.16016533525155707,
+        "latency": 0,
+        "retry": 0,
+        "routing_shift": 0,
+        "participation_delta": 0,
+        "urgency": 0.16016533525155707,
+        "deadline_pressure": 0.8073102655793405
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_MEDCORE_HEALTH_055",
+      "timestamp": 1778219348915,
+      "source_event": "EVT_MEDCORE_HEALTH_055",
+      "from_carrier": {
+        "carrier_id": "EVT_MED_001",
+        "carrier_type": "evt"
+      },
+      "to_carrier": {
+        "carrier_id": "SHIFT_MED_003",
+        "carrier_type": "shift"
+      },
+      "vector": {
+        "intensity": 0.4856403460756731,
+        "latency": 0,
+        "retry": 0,
+        "routing_shift": 0,
+        "participation_delta": 0.7594335943677484,
+        "urgency": 0.4856403460756731,
+        "deadline_pressure": 0
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_MEDCORE_HEALTH_056",
+      "timestamp": 1778222948915,
+      "source_event": "EVT_MEDCORE_HEALTH_056",
+      "from_carrier": {
+        "carrier_id": "SHIFT_MED_002",
+        "carrier_type": "shift"
+      },
+      "to_carrier": {
+        "carrier_id": "KPI_MED_2026_05",
+        "carrier_type": "kpi"
+      },
+      "vector": {
+        "intensity": 0.40257229073729306,
+        "latency": 0,
+        "retry": 0,
+        "routing_shift": 1,
+        "participation_delta": 0,
+        "urgency": 0.40257229073729306,
+        "deadline_pressure": 0
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_MEDCORE_HEALTH_057",
+      "timestamp": 1778226548915,
+      "source_event": "EVT_MEDCORE_HEALTH_057",
+      "from_carrier": {
+        "carrier_id": "SHIFT_MED_001",
+        "carrier_type": "shift"
+      },
+      "to_carrier": {
+        "carrier_id": "SHIFT_MED_002",
+        "carrier_type": "shift"
+      },
+      "vector": {
+        "intensity": 0.7486557730678984,
+        "latency": 0,
+        "retry": 0,
+        "routing_shift": 0,
+        "participation_delta": 0.8207306865450255,
+        "urgency": 0.7486557730678984,
+        "deadline_pressure": 0.1290066484323924
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_MEDCORE_HEALTH_058",
+      "timestamp": 1778230148915,
+      "source_event": "EVT_MEDCORE_HEALTH_058",
+      "from_carrier": {
+        "carrier_id": "SHIFT_MED_002",
+        "carrier_type": "shift"
+      },
+      "to_carrier": {
+        "carrier_id": "EVT_MED_001",
+        "carrier_type": "evt"
+      },
+      "vector": {
+        "intensity": 0.9455693675479206,
+        "latency": 0,
+        "retry": 0.6,
+        "routing_shift": 0,
+        "participation_delta": 0,
+        "urgency": 0.9455693675479206,
+        "deadline_pressure": 0
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_MEDCORE_HEALTH_059",
+      "timestamp": 1778233748915,
+      "source_event": "EVT_MEDCORE_HEALTH_059",
+      "from_carrier": {
+        "carrier_id": "SHIFT_MED_003",
+        "carrier_type": "shift"
+      },
+      "to_carrier": {
+        "carrier_id": "SHIFT_MED_002",
+        "carrier_type": "shift"
+      },
+      "vector": {
+        "intensity": 0.5178577521002077,
+        "latency": 0,
+        "retry": 0,
+        "routing_shift": 0,
+        "participation_delta": 0,
+        "urgency": 0.5178577521002077,
+        "deadline_pressure": 0.7292216590203144
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_MEDCORE_HEALTH_060",
+      "timestamp": 1778237348915,
+      "source_event": "EVT_MEDCORE_HEALTH_060",
+      "from_carrier": {
+        "carrier_id": "KPI_MED_2026_05",
+        "carrier_type": "kpi"
+      },
+      "to_carrier": {
+        "carrier_id": "EVT_MED_001",
+        "carrier_type": "evt"
+      },
+      "vector": {
+        "intensity": 0.9429234675932323,
+        "latency": 0.5752999999999999,
+        "retry": 0,
+        "routing_shift": 0,
+        "participation_delta": -0.4593673531062876,
+        "urgency": 0.9429234675932323,
+        "deadline_pressure": 0
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_MEDCORE_HEALTH_061",
+      "timestamp": 1778240948915,
+      "source_event": "EVT_MEDCORE_HEALTH_061",
+      "from_carrier": {
+        "carrier_id": "SHIFT_MED_001",
+        "carrier_type": "shift"
+      },
+      "to_carrier": {
+        "carrier_id": "SHIFT_MED_003",
+        "carrier_type": "shift"
+      },
+      "vector": {
+        "intensity": 0.983617323655658,
+        "latency": 0,
+        "retry": 0,
+        "routing_shift": 0,
+        "participation_delta": -0.6907530457260327,
+        "urgency": 0.983617323655658,
+        "deadline_pressure": 0
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_MEDCORE_HEALTH_062",
+      "timestamp": 1778244548915,
+      "source_event": "EVT_MEDCORE_HEALTH_062",
+      "from_carrier": {
+        "carrier_id": "SHIFT_MED_002",
+        "carrier_type": "shift"
+      },
+      "to_carrier": {
+        "carrier_id": "EVT_MED_001",
+        "carrier_type": "evt"
+      },
+      "vector": {
+        "intensity": 0.5317179095704487,
+        "latency": 0.9676,
+        "retry": 0,
+        "routing_shift": 0,
+        "participation_delta": 0.24769021137881175,
+        "urgency": 0.5317179095704487,
+        "deadline_pressure": 0.8499784361252773
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_MEDCORE_HEALTH_063",
+      "timestamp": 1778248148915,
+      "source_event": "EVT_MEDCORE_HEALTH_063",
+      "from_carrier": {
+        "carrier_id": "SHIFT_MED_001",
+        "carrier_type": "shift"
+      },
+      "to_carrier": {
+        "carrier_id": "SHIFT_MED_002",
+        "carrier_type": "shift"
+      },
+      "vector": {
+        "intensity": 0.10796551290019463,
+        "latency": 0,
+        "retry": 0,
+        "routing_shift": 0,
+        "participation_delta": 0,
+        "urgency": 0.10796551290019463,
+        "deadline_pressure": 0.8281764283163784
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_MEDCORE_HEALTH_064",
+      "timestamp": 1778251748915,
+      "source_event": "EVT_MEDCORE_HEALTH_064",
+      "from_carrier": {
+        "carrier_id": "EVT_MED_001",
+        "carrier_type": "evt"
+      },
+      "to_carrier": {
+        "carrier_id": "SHIFT_MED_001",
+        "carrier_type": "shift"
+      },
+      "vector": {
+        "intensity": 0.23480007172824102,
+        "latency": 0,
+        "retry": 0,
+        "routing_shift": 0,
+        "participation_delta": 0,
+        "urgency": 0.23480007172824102,
+        "deadline_pressure": 0.10989342221179443
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_MEDCORE_HEALTH_065",
+      "timestamp": 1778255348915,
+      "source_event": "EVT_MEDCORE_HEALTH_065",
+      "from_carrier": {
+        "carrier_id": "EVT_MED_001",
+        "carrier_type": "evt"
+      },
+      "to_carrier": {
+        "carrier_id": "KPI_MED_2026_05",
+        "carrier_type": "kpi"
+      },
+      "vector": {
+        "intensity": 0.21282480167885942,
+        "latency": 0,
+        "retry": 0,
+        "routing_shift": 0,
+        "participation_delta": 0,
+        "urgency": 0.21282480167885942,
+        "deadline_pressure": 0.1401647285541998
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_MEDCORE_HEALTH_066",
+      "timestamp": 1778258948915,
+      "source_event": "EVT_MEDCORE_HEALTH_066",
+      "from_carrier": {
+        "carrier_id": "KPI_MED_2026_05",
+        "carrier_type": "kpi"
+      },
+      "to_carrier": {
+        "carrier_id": "SHIFT_MED_001",
+        "carrier_type": "shift"
+      },
+      "vector": {
+        "intensity": 0.15979892707471044,
+        "latency": 0,
+        "retry": 0,
+        "routing_shift": 0,
+        "participation_delta": 0,
+        "urgency": 0.15979892707471044,
+        "deadline_pressure": 0
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_MEDCORE_HEALTH_067",
+      "timestamp": 1778262548915,
+      "source_event": "EVT_MEDCORE_HEALTH_067",
+      "from_carrier": {
+        "carrier_id": "SHIFT_MED_002",
+        "carrier_type": "shift"
+      },
+      "to_carrier": {
+        "carrier_id": "SHIFT_MED_001",
+        "carrier_type": "shift"
+      },
+      "vector": {
+        "intensity": 0.24028095922173542,
+        "latency": 0.4666,
+        "retry": 0,
+        "routing_shift": 0,
+        "participation_delta": 0,
+        "urgency": 0.24028095922173542,
+        "deadline_pressure": 0
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_MEDCORE_HEALTH_068",
+      "timestamp": 1778266148915,
+      "source_event": "EVT_MEDCORE_HEALTH_068",
+      "from_carrier": {
+        "carrier_id": "SHIFT_MED_002",
+        "carrier_type": "shift"
+      },
+      "to_carrier": {
+        "carrier_id": "SHIFT_MED_003",
+        "carrier_type": "shift"
+      },
+      "vector": {
+        "intensity": 0.024637912052306143,
+        "latency": 0,
+        "retry": 0,
+        "routing_shift": 0,
+        "participation_delta": -0.31339272822533104,
+        "urgency": 0.024637912052306143,
+        "deadline_pressure": 0.6898073375042872
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_MEDCORE_HEALTH_069",
+      "timestamp": 1778269748915,
+      "source_event": "EVT_MEDCORE_HEALTH_069",
+      "from_carrier": {
+        "carrier_id": "EVT_MED_001",
+        "carrier_type": "evt"
+      },
+      "to_carrier": {
+        "carrier_id": "KPI_MED_2026_05",
+        "carrier_type": "kpi"
+      },
+      "vector": {
+        "intensity": 0.5444150436593134,
+        "latency": 0,
+        "retry": 0,
+        "routing_shift": 1,
+        "participation_delta": 0,
+        "urgency": 0.5444150436593134,
+        "deadline_pressure": 0
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_MEDCORE_HEALTH_070",
+      "timestamp": 1778273348915,
+      "source_event": "EVT_MEDCORE_HEALTH_070",
+      "from_carrier": {
+        "carrier_id": "SHIFT_MED_002",
+        "carrier_type": "shift"
+      },
+      "to_carrier": {
+        "carrier_id": "EVT_MED_001",
+        "carrier_type": "evt"
+      },
+      "vector": {
+        "intensity": 0.03156535868189714,
+        "latency": 0,
+        "retry": 0,
+        "routing_shift": 1,
+        "participation_delta": 0,
+        "urgency": 0.03156535868189714,
+        "deadline_pressure": 0
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_MEDCORE_HEALTH_071",
+      "timestamp": 1778276948915,
+      "source_event": "EVT_MEDCORE_HEALTH_071",
+      "from_carrier": {
+        "carrier_id": "SHIFT_MED_002",
+        "carrier_type": "shift"
+      },
+      "to_carrier": {
+        "carrier_id": "SHIFT_MED_001",
+        "carrier_type": "shift"
+      },
+      "vector": {
+        "intensity": 0.43547738067024633,
+        "latency": 0,
+        "retry": 0,
+        "routing_shift": 0,
+        "participation_delta": 0,
+        "urgency": 0.43547738067024633,
+        "deadline_pressure": 0.9634052901407666
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_MEDCORE_HEALTH_072",
+      "timestamp": 1778280548915,
+      "source_event": "EVT_MEDCORE_HEALTH_072",
+      "from_carrier": {
+        "carrier_id": "SHIFT_MED_002",
+        "carrier_type": "shift"
+      },
+      "to_carrier": {
+        "carrier_id": "SHIFT_MED_001",
+        "carrier_type": "shift"
+      },
+      "vector": {
+        "intensity": 0.18675800994676695,
+        "latency": 0.8812,
+        "retry": 0,
+        "routing_shift": 1,
+        "participation_delta": 0,
+        "urgency": 0.18675800994676695,
+        "deadline_pressure": 0
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_MEDCORE_HEALTH_073",
+      "timestamp": 1778284148915,
+      "source_event": "EVT_MEDCORE_HEALTH_073",
+      "from_carrier": {
+        "carrier_id": "KPI_MED_2026_05",
+        "carrier_type": "kpi"
+      },
+      "to_carrier": {
+        "carrier_id": "SHIFT_MED_002",
+        "carrier_type": "shift"
+      },
+      "vector": {
+        "intensity": 0.17906024451987257,
+        "latency": 0,
+        "retry": 0.2,
+        "routing_shift": 0,
+        "participation_delta": 0,
+        "urgency": 0.17906024451987257,
+        "deadline_pressure": 0
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_MEDCORE_HEALTH_074",
+      "timestamp": 1778287748915,
+      "source_event": "EVT_MEDCORE_HEALTH_074",
+      "from_carrier": {
+        "carrier_id": "SHIFT_MED_002",
+        "carrier_type": "shift"
+      },
+      "to_carrier": {
+        "carrier_id": "EVT_MED_001",
+        "carrier_type": "evt"
+      },
+      "vector": {
+        "intensity": 0.22449178199548236,
+        "latency": 0,
+        "retry": 0,
+        "routing_shift": 0,
+        "participation_delta": 0,
+        "urgency": 0.22449178199548236,
+        "deadline_pressure": 0.47764965677831484
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_MEDCORE_HEALTH_075",
+      "timestamp": 1778291348915,
+      "source_event": "EVT_MEDCORE_HEALTH_075",
+      "from_carrier": {
+        "carrier_id": "SHIFT_MED_002",
+        "carrier_type": "shift"
+      },
+      "to_carrier": {
+        "carrier_id": "SHIFT_MED_001",
+        "carrier_type": "shift"
+      },
+      "vector": {
+        "intensity": 0.5692359785315777,
+        "latency": 0,
+        "retry": 0,
+        "routing_shift": 0,
+        "participation_delta": 0,
+        "urgency": 0.5692359785315777,
+        "deadline_pressure": 0.9547601727934887
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_MEDCORE_HEALTH_076",
+      "timestamp": 1778294948915,
+      "source_event": "EVT_MEDCORE_HEALTH_076",
+      "from_carrier": {
+        "carrier_id": "SHIFT_MED_002",
+        "carrier_type": "shift"
+      },
+      "to_carrier": {
+        "carrier_id": "EVT_MED_001",
+        "carrier_type": "evt"
+      },
+      "vector": {
+        "intensity": 0.5443052029943227,
+        "latency": 0,
+        "retry": 0,
+        "routing_shift": 1,
+        "participation_delta": 0,
+        "urgency": 0.5443052029943227,
+        "deadline_pressure": 0.3846863646605456
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_MEDCORE_HEALTH_077",
+      "timestamp": 1778298548915,
+      "source_event": "EVT_MEDCORE_HEALTH_077",
+      "from_carrier": {
+        "carrier_id": "SHIFT_MED_003",
+        "carrier_type": "shift"
+      },
+      "to_carrier": {
+        "carrier_id": "KPI_MED_2026_05",
+        "carrier_type": "kpi"
+      },
+      "vector": {
+        "intensity": 0.02838788747886567,
+        "latency": 0,
+        "retry": 0,
+        "routing_shift": 0,
+        "participation_delta": 0,
+        "urgency": 0.02838788747886567,
+        "deadline_pressure": 0.8029449020749007
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_MEDCORE_HEALTH_078",
+      "timestamp": 1778302148915,
+      "source_event": "EVT_MEDCORE_HEALTH_078",
+      "from_carrier": {
+        "carrier_id": "KPI_MED_2026_05",
+        "carrier_type": "kpi"
+      },
+      "to_carrier": {
+        "carrier_id": "EVT_MED_001",
+        "carrier_type": "evt"
+      },
+      "vector": {
+        "intensity": 0.3675819332202601,
+        "latency": 0,
+        "retry": 0,
+        "routing_shift": 0,
+        "participation_delta": 0,
+        "urgency": 0.3675819332202601,
+        "deadline_pressure": 0.7276374319948451
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_MEDCORE_HEALTH_079",
+      "timestamp": 1778305748915,
+      "source_event": "EVT_MEDCORE_HEALTH_079",
+      "from_carrier": {
+        "carrier_id": "KPI_MED_2026_05",
+        "carrier_type": "kpi"
+      },
+      "to_carrier": {
+        "carrier_id": "SHIFT_MED_001",
+        "carrier_type": "shift"
+      },
+      "vector": {
+        "intensity": 0.2242317577535824,
+        "latency": 0,
+        "retry": 0,
+        "routing_shift": 1,
+        "participation_delta": 0,
+        "urgency": 0.2242317577535824,
+        "deadline_pressure": 0
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_MEDCORE_HEALTH_080",
+      "timestamp": 1778309348915,
+      "source_event": "EVT_MEDCORE_HEALTH_080",
+      "from_carrier": {
+        "carrier_id": "EVT_MED_001",
+        "carrier_type": "evt"
+      },
+      "to_carrier": {
+        "carrier_id": "KPI_MED_2026_05",
+        "carrier_type": "kpi"
+      },
+      "vector": {
+        "intensity": 0.9935007163797376,
+        "latency": 0,
+        "retry": 0,
+        "routing_shift": 0,
+        "participation_delta": 0.9829558386263191,
+        "urgency": 0.9935007163797376,
+        "deadline_pressure": 0.4332500084527009
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_MEDCORE_HEALTH_081",
+      "timestamp": 1778312948915,
+      "source_event": "EVT_MEDCORE_HEALTH_081",
+      "from_carrier": {
+        "carrier_id": "SHIFT_MED_002",
+        "carrier_type": "shift"
+      },
+      "to_carrier": {
+        "carrier_id": "KPI_MED_2026_05",
+        "carrier_type": "kpi"
+      },
+      "vector": {
+        "intensity": 0.41159161862964466,
+        "latency": 0,
+        "retry": 0,
+        "routing_shift": 0,
+        "participation_delta": 0,
+        "urgency": 0.41159161862964466,
+        "deadline_pressure": 0
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_MEDCORE_HEALTH_082",
+      "timestamp": 1778316548915,
+      "source_event": "EVT_MEDCORE_HEALTH_082",
+      "from_carrier": {
+        "carrier_id": "SHIFT_MED_002",
+        "carrier_type": "shift"
+      },
+      "to_carrier": {
+        "carrier_id": "EVT_MED_001",
+        "carrier_type": "evt"
+      },
+      "vector": {
+        "intensity": 0.7406929362491428,
+        "latency": 0.6576,
+        "retry": 0,
+        "routing_shift": 1,
+        "participation_delta": 0,
+        "urgency": 0.7406929362491428,
+        "deadline_pressure": 0
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_MEDCORE_HEALTH_083",
+      "timestamp": 1778320148915,
+      "source_event": "EVT_MEDCORE_HEALTH_083",
+      "from_carrier": {
+        "carrier_id": "SHIFT_MED_001",
+        "carrier_type": "shift"
+      },
+      "to_carrier": {
+        "carrier_id": "SHIFT_MED_003",
+        "carrier_type": "shift"
+      },
+      "vector": {
+        "intensity": 0.5233832802447211,
+        "latency": 0,
+        "retry": 0,
+        "routing_shift": 0,
+        "participation_delta": 0,
+        "urgency": 0.5233832802447211,
+        "deadline_pressure": 0
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_MEDCORE_HEALTH_084",
+      "timestamp": 1778323748915,
+      "source_event": "EVT_MEDCORE_HEALTH_084",
+      "from_carrier": {
+        "carrier_id": "KPI_MED_2026_05",
+        "carrier_type": "kpi"
+      },
+      "to_carrier": {
+        "carrier_id": "EVT_MED_001",
+        "carrier_type": "evt"
+      },
+      "vector": {
+        "intensity": 0.09892321363447354,
+        "latency": 0.26239999999999997,
+        "retry": 0.4,
+        "routing_shift": 1,
+        "participation_delta": 0,
+        "urgency": 0.09892321363447354,
+        "deadline_pressure": 0.06257650527848901
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_MEDCORE_HEALTH_085",
+      "timestamp": 1778327348915,
+      "source_event": "EVT_MEDCORE_HEALTH_085",
+      "from_carrier": {
+        "carrier_id": "SHIFT_MED_003",
+        "carrier_type": "shift"
+      },
+      "to_carrier": {
+        "carrier_id": "KPI_MED_2026_05",
+        "carrier_type": "kpi"
+      },
+      "vector": {
+        "intensity": 0.9077634898728268,
+        "latency": 0,
+        "retry": 0,
+        "routing_shift": 0,
+        "participation_delta": 0,
+        "urgency": 0.9077634898728268,
+        "deadline_pressure": 0
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_MEDCORE_HEALTH_086",
+      "timestamp": 1778330948915,
+      "source_event": "EVT_MEDCORE_HEALTH_086",
+      "from_carrier": {
+        "carrier_id": "KPI_MED_2026_05",
+        "carrier_type": "kpi"
+      },
+      "to_carrier": {
+        "carrier_id": "SHIFT_MED_002",
+        "carrier_type": "shift"
+      },
+      "vector": {
+        "intensity": 0.31004991457146214,
+        "latency": 0.7968,
+        "retry": 0.6,
+        "routing_shift": 1,
+        "participation_delta": 0,
+        "urgency": 0.31004991457146214,
+        "deadline_pressure": 0.9466711291928338
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_MEDCORE_HEALTH_087",
+      "timestamp": 1778334548915,
+      "source_event": "EVT_MEDCORE_HEALTH_087",
+      "from_carrier": {
+        "carrier_id": "SHIFT_MED_003",
+        "carrier_type": "shift"
+      },
+      "to_carrier": {
+        "carrier_id": "KPI_MED_2026_05",
+        "carrier_type": "kpi"
+      },
+      "vector": {
+        "intensity": 0.28296428889171565,
+        "latency": 0,
+        "retry": 0,
+        "routing_shift": 0,
+        "participation_delta": 0,
+        "urgency": 0.28296428889171565,
+        "deadline_pressure": 0
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_MEDCORE_HEALTH_088",
+      "timestamp": 1778338148915,
+      "source_event": "EVT_MEDCORE_HEALTH_088",
+      "from_carrier": {
+        "carrier_id": "SHIFT_MED_002",
+        "carrier_type": "shift"
+      },
+      "to_carrier": {
+        "carrier_id": "SHIFT_MED_001",
+        "carrier_type": "shift"
+      },
+      "vector": {
+        "intensity": 0.7754837241725985,
+        "latency": 0,
+        "retry": 0,
+        "routing_shift": 0,
+        "participation_delta": -0.5000185397529471,
+        "urgency": 0.7754837241725985,
+        "deadline_pressure": 0.9352568202516642
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_MEDCORE_HEALTH_089",
+      "timestamp": 1778341748915,
+      "source_event": "EVT_MEDCORE_HEALTH_089",
+      "from_carrier": {
+        "carrier_id": "KPI_MED_2026_05",
+        "carrier_type": "kpi"
+      },
+      "to_carrier": {
+        "carrier_id": "EVT_MED_001",
+        "carrier_type": "evt"
+      },
+      "vector": {
+        "intensity": 0.814708734735829,
+        "latency": 0,
+        "retry": 0.2,
+        "routing_shift": 0,
+        "participation_delta": 0,
+        "urgency": 0.814708734735829,
+        "deadline_pressure": 0
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_MEDCORE_HEALTH_090",
+      "timestamp": 1778345348915,
+      "source_event": "EVT_MEDCORE_HEALTH_090",
+      "from_carrier": {
+        "carrier_id": "SHIFT_MED_003",
+        "carrier_type": "shift"
+      },
+      "to_carrier": {
+        "carrier_id": "EVT_MED_001",
+        "carrier_type": "evt"
+      },
+      "vector": {
+        "intensity": 0.3481215761477745,
+        "latency": 0,
+        "retry": 0,
+        "routing_shift": 0,
+        "participation_delta": 0,
+        "urgency": 0.3481215761477745,
+        "deadline_pressure": 0.17412800421581043
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_MEDCORE_HEALTH_091",
+      "timestamp": 1778348948915,
+      "source_event": "EVT_MEDCORE_HEALTH_091",
+      "from_carrier": {
+        "carrier_id": "EVT_MED_001",
+        "carrier_type": "evt"
+      },
+      "to_carrier": {
+        "carrier_id": "KPI_MED_2026_05",
+        "carrier_type": "kpi"
+      },
+      "vector": {
+        "intensity": 0.401755971294804,
+        "latency": 0.3194,
+        "retry": 0,
+        "routing_shift": 1,
+        "participation_delta": 0,
+        "urgency": 0.401755971294804,
+        "deadline_pressure": 0.5904306403131194
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_MEDCORE_HEALTH_092",
+      "timestamp": 1778352548915,
+      "source_event": "EVT_MEDCORE_HEALTH_092",
+      "from_carrier": {
+        "carrier_id": "EVT_MED_001",
+        "carrier_type": "evt"
+      },
+      "to_carrier": {
+        "carrier_id": "SHIFT_MED_002",
+        "carrier_type": "shift"
+      },
+      "vector": {
+        "intensity": 0.249141720275593,
+        "latency": 0,
+        "retry": 0,
+        "routing_shift": 0,
+        "participation_delta": 0,
+        "urgency": 0.249141720275593,
+        "deadline_pressure": 0.5910970025789721
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_MEDCORE_HEALTH_093",
+      "timestamp": 1778356148915,
+      "source_event": "EVT_MEDCORE_HEALTH_093",
+      "from_carrier": {
+        "carrier_id": "SHIFT_MED_003",
+        "carrier_type": "shift"
+      },
+      "to_carrier": {
+        "carrier_id": "SHIFT_MED_002",
+        "carrier_type": "shift"
+      },
+      "vector": {
+        "intensity": 0.08137561958635198,
+        "latency": 0.3792,
+        "retry": 0,
+        "routing_shift": 0,
+        "participation_delta": -0.9559266047247785,
+        "urgency": 0.08137561958635198,
+        "deadline_pressure": 0
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_MEDCORE_HEALTH_094",
+      "timestamp": 1778359748915,
+      "source_event": "EVT_MEDCORE_HEALTH_094",
+      "from_carrier": {
+        "carrier_id": "KPI_MED_2026_05",
+        "carrier_type": "kpi"
+      },
+      "to_carrier": {
+        "carrier_id": "SHIFT_MED_003",
+        "carrier_type": "shift"
+      },
+      "vector": {
+        "intensity": 0.5987949352134858,
+        "latency": 0.772,
+        "retry": 0.2,
+        "routing_shift": 0,
+        "participation_delta": 0.8901558962101568,
+        "urgency": 0.5987949352134858,
+        "deadline_pressure": 0
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_MEDCORE_HEALTH_095",
+      "timestamp": 1778363348915,
+      "source_event": "EVT_MEDCORE_HEALTH_095",
+      "from_carrier": {
+        "carrier_id": "EVT_MED_001",
+        "carrier_type": "evt"
+      },
+      "to_carrier": {
+        "carrier_id": "KPI_MED_2026_05",
+        "carrier_type": "kpi"
+      },
+      "vector": {
+        "intensity": 0.1932837353979966,
+        "latency": 0,
+        "retry": 0,
+        "routing_shift": 0,
+        "participation_delta": 0,
+        "urgency": 0.1932837353979966,
+        "deadline_pressure": 0
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_MEDCORE_HEALTH_096",
+      "timestamp": 1778366948915,
+      "source_event": "EVT_MEDCORE_HEALTH_096",
+      "from_carrier": {
+        "carrier_id": "EVT_MED_001",
+        "carrier_type": "evt"
+      },
+      "to_carrier": {
+        "carrier_id": "SHIFT_MED_001",
+        "carrier_type": "shift"
+      },
+      "vector": {
+        "intensity": 0.3450645169316844,
+        "latency": 0,
+        "retry": 0.6,
+        "routing_shift": 0,
+        "participation_delta": 0.16806142156052983,
+        "urgency": 0.3450645169316844,
+        "deadline_pressure": 0.2563532165601692
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_MEDCORE_HEALTH_097",
+      "timestamp": 1778370548915,
+      "source_event": "EVT_MEDCORE_HEALTH_097",
+      "from_carrier": {
+        "carrier_id": "SHIFT_MED_001",
+        "carrier_type": "shift"
+      },
+      "to_carrier": {
+        "carrier_id": "EVT_MED_001",
+        "carrier_type": "evt"
+      },
+      "vector": {
+        "intensity": 0.596762291019209,
+        "latency": 0,
+        "retry": 0,
+        "routing_shift": 0,
+        "participation_delta": 0,
+        "urgency": 0.596762291019209,
+        "deadline_pressure": 0.9405567405576221
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_MEDCORE_HEALTH_098",
+      "timestamp": 1778374148915,
+      "source_event": "EVT_MEDCORE_HEALTH_098",
+      "from_carrier": {
+        "carrier_id": "EVT_MED_001",
+        "carrier_type": "evt"
+      },
+      "to_carrier": {
+        "carrier_id": "KPI_MED_2026_05",
+        "carrier_type": "kpi"
+      },
+      "vector": {
+        "intensity": 0.8598298985387225,
+        "latency": 0,
+        "retry": 0,
+        "routing_shift": 0,
+        "participation_delta": 0.1286799806531791,
+        "urgency": 0.8598298985387225,
+        "deadline_pressure": 0
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_MEDCORE_HEALTH_099",
+      "timestamp": 1778377748915,
+      "source_event": "EVT_MEDCORE_HEALTH_099",
+      "from_carrier": {
+        "carrier_id": "EVT_MED_001",
+        "carrier_type": "evt"
+      },
+      "to_carrier": {
+        "carrier_id": "SHIFT_MED_003",
+        "carrier_type": "shift"
+      },
+      "vector": {
+        "intensity": 0.3991891130774168,
+        "latency": 0,
+        "retry": 0,
+        "routing_shift": 1,
+        "participation_delta": 0,
+        "urgency": 0.3991891130774168,
+        "deadline_pressure": 0
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_MEDCORE_HEALTH_100",
+      "timestamp": 1778381348915,
+      "source_event": "EVT_MEDCORE_HEALTH_100",
+      "from_carrier": {
+        "carrier_id": "SHIFT_MED_002",
+        "carrier_type": "shift"
+      },
+      "to_carrier": {
+        "carrier_id": "SHIFT_MED_003",
+        "carrier_type": "shift"
+      },
+      "vector": {
+        "intensity": 0.9542911738477122,
+        "latency": 0,
+        "retry": 0,
+        "routing_shift": 0,
+        "participation_delta": 0,
+        "urgency": 0.9542911738477122,
+        "deadline_pressure": 0
+      }
+    }
+  ],
+  "metadata": {
+    "generated_at": 1778629804139,
+    "signal_count": 100,
+    "source_events": 100
+  }
+}

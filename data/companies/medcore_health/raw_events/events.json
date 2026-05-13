@@ -1,0 +1,1018 @@
+{
+  "company_id": "medcore_health",
+  "events": [
+    {
+      "event_id": "EVT_MEDCORE_HEALTH_001",
+      "timestamp": 1778024948915,
+      "from_node": "EVT_MED_001",
+      "to_node": "SHIFT_MED_003",
+      "routingChange": false,
+      "authorityShift": false,
+      "urgencyLevel": 0.7810085345613753
+    },
+    {
+      "event_id": "EVT_MEDCORE_HEALTH_002",
+      "timestamp": 1778028548915,
+      "from_node": "EVT_MED_001",
+      "to_node": "SHIFT_MED_002",
+      "routingChange": false,
+      "authorityShift": false,
+      "urgencyLevel": 0.9734246352674951
+    },
+    {
+      "event_id": "EVT_MEDCORE_HEALTH_003",
+      "timestamp": 1778032148915,
+      "from_node": "EVT_MED_001",
+      "to_node": "SHIFT_MED_002",
+      "responseLatency": 5769,
+      "routingChange": false,
+      "participationDelta": -0.20730218238237308,
+      "authorityShift": false,
+      "urgencyLevel": 0.9878665576421508
+    },
+    {
+      "event_id": "EVT_MEDCORE_HEALTH_004",
+      "timestamp": 1778035748915,
+      "from_node": "SHIFT_MED_003",
+      "to_node": "KPI_MED_2026_05",
+      "retryCount": 3,
+      "routingChange": false,
+      "authorityShift": false,
+      "urgencyLevel": 0.7298140622404643,
+      "deadlinePressure": 0.7656609859111219
+    },
+    {
+      "event_id": "EVT_MEDCORE_HEALTH_005",
+      "timestamp": 1778039348915,
+      "from_node": "EVT_MED_001",
+      "to_node": "SHIFT_MED_002",
+      "routingChange": false,
+      "authorityShift": false,
+      "urgencyLevel": 0.5659409806932969
+    },
+    {
+      "event_id": "EVT_MEDCORE_HEALTH_006",
+      "timestamp": 1778042948915,
+      "from_node": "EVT_MED_001",
+      "to_node": "SHIFT_MED_001",
+      "routingChange": false,
+      "participationDelta": 0.8269154985963056,
+      "authorityShift": false,
+      "urgencyLevel": 0.5312539101238214
+    },
+    {
+      "event_id": "EVT_MEDCORE_HEALTH_007",
+      "timestamp": 1778046548915,
+      "from_node": "SHIFT_MED_002",
+      "to_node": "EVT_MED_001",
+      "routingChange": false,
+      "participationDelta": -0.5869597607523227,
+      "authorityShift": false,
+      "urgencyLevel": 0.45680998595867317
+    },
+    {
+      "event_id": "EVT_MEDCORE_HEALTH_008",
+      "timestamp": 1778050148915,
+      "from_node": "SHIFT_MED_001",
+      "to_node": "SHIFT_MED_003",
+      "routingChange": true,
+      "authorityShift": false,
+      "urgencyLevel": 0.19376146519070336
+    },
+    {
+      "event_id": "EVT_MEDCORE_HEALTH_009",
+      "timestamp": 1778053748915,
+      "from_node": "SHIFT_MED_001",
+      "to_node": "EVT_MED_001",
+      "routingChange": false,
+      "participationDelta": 0.8349949685902174,
+      "authorityShift": true,
+      "urgencyLevel": 0.23323990995298005
+    },
+    {
+      "event_id": "EVT_MEDCORE_HEALTH_010",
+      "timestamp": 1778057348915,
+      "from_node": "SHIFT_MED_002",
+      "to_node": "EVT_MED_001",
+      "routingChange": false,
+      "authorityShift": false,
+      "urgencyLevel": 0.1709102142512311
+    },
+    {
+      "event_id": "EVT_MEDCORE_HEALTH_011",
+      "timestamp": 1778060948915,
+      "from_node": "SHIFT_MED_003",
+      "to_node": "SHIFT_MED_001",
+      "retryCount": 1,
+      "routingChange": false,
+      "participationDelta": 0.6384438095044542,
+      "authorityShift": false,
+      "urgencyLevel": 0.2829868333157841
+    },
+    {
+      "event_id": "EVT_MEDCORE_HEALTH_012",
+      "timestamp": 1778064548915,
+      "from_node": "SHIFT_MED_001",
+      "to_node": "SHIFT_MED_003",
+      "routingChange": false,
+      "authorityShift": false,
+      "urgencyLevel": 0.6639410165975987
+    },
+    {
+      "event_id": "EVT_MEDCORE_HEALTH_013",
+      "timestamp": 1778068148915,
+      "from_node": "SHIFT_MED_003",
+      "to_node": "KPI_MED_2026_05",
+      "routingChange": false,
+      "participationDelta": -0.9003671417773851,
+      "authorityShift": false,
+      "urgencyLevel": 0.7879973393680237
+    },
+    {
+      "event_id": "EVT_MEDCORE_HEALTH_014",
+      "timestamp": 1778071748915,
+      "from_node": "SHIFT_MED_001",
+      "to_node": "SHIFT_MED_003",
+      "responseLatency": 5909,
+      "routingChange": false,
+      "participationDelta": -0.25849491601570573,
+      "authorityShift": false,
+      "urgencyLevel": 0.4407822151116372
+    },
+    {
+      "event_id": "EVT_MEDCORE_HEALTH_015",
+      "timestamp": 1778075348915,
+      "from_node": "SHIFT_MED_002",
+      "to_node": "EVT_MED_001",
+      "responseLatency": 5300,
+      "routingChange": false,
+      "authorityShift": false,
+      "urgencyLevel": 0.6400880578291044,
+      "deadlinePressure": 0.6513320175115316
+    },
+    {
+      "event_id": "EVT_MEDCORE_HEALTH_016",
+      "timestamp": 1778078948915,
+      "from_node": "SHIFT_MED_003",
+      "to_node": "KPI_MED_2026_05",
+      "routingChange": false,
+      "authorityShift": false,
+      "urgencyLevel": 0.5175502068632676
+    },
+    {
+      "event_id": "EVT_MEDCORE_HEALTH_017",
+      "timestamp": 1778082548915,
+      "from_node": "EVT_MED_001",
+      "to_node": "SHIFT_MED_003",
+      "responseLatency": 6901,
+      "routingChange": true,
+      "authorityShift": true,
+      "urgencyLevel": 0.677704498613539,
+      "deadlinePressure": 0.8856400872723158
+    },
+    {
+      "event_id": "EVT_MEDCORE_HEALTH_018",
+      "timestamp": 1778086148915,
+      "from_node": "SHIFT_MED_003",
+      "to_node": "EVT_MED_001",
+      "retryCount": 2,
+      "routingChange": true,
+      "authorityShift": false,
+      "urgencyLevel": 0.8040792180582925
+    },
+    {
+      "event_id": "EVT_MEDCORE_HEALTH_019",
+      "timestamp": 1778089748915,
+      "from_node": "SHIFT_MED_003",
+      "to_node": "SHIFT_MED_002",
+      "responseLatency": 1383,
+      "routingChange": true,
+      "authorityShift": false,
+      "urgencyLevel": 0.619177863562349,
+      "deadlinePressure": 0.5274405309278223
+    },
+    {
+      "event_id": "EVT_MEDCORE_HEALTH_020",
+      "timestamp": 1778093348915,
+      "from_node": "EVT_MED_001",
+      "to_node": "KPI_MED_2026_05",
+      "routingChange": true,
+      "participationDelta": -0.35199297768133064,
+      "authorityShift": false,
+      "urgencyLevel": 0.42896082285678827
+    },
+    {
+      "event_id": "EVT_MEDCORE_HEALTH_021",
+      "timestamp": 1778096948915,
+      "from_node": "SHIFT_MED_003",
+      "to_node": "KPI_MED_2026_05",
+      "routingChange": false,
+      "authorityShift": false,
+      "urgencyLevel": 0.7556571569697865
+    },
+    {
+      "event_id": "EVT_MEDCORE_HEALTH_022",
+      "timestamp": 1778100548915,
+      "from_node": "SHIFT_MED_003",
+      "to_node": "SHIFT_MED_001",
+      "routingChange": true,
+      "authorityShift": false,
+      "urgencyLevel": 0.41785283696374176
+    },
+    {
+      "event_id": "EVT_MEDCORE_HEALTH_023",
+      "timestamp": 1778104148915,
+      "from_node": "KPI_MED_2026_05",
+      "to_node": "SHIFT_MED_003",
+      "routingChange": false,
+      "authorityShift": false,
+      "urgencyLevel": 0.7769577212925765
+    },
+    {
+      "event_id": "EVT_MEDCORE_HEALTH_024",
+      "timestamp": 1778107748915,
+      "from_node": "SHIFT_MED_002",
+      "to_node": "SHIFT_MED_001",
+      "routingChange": false,
+      "authorityShift": false,
+      "urgencyLevel": 0.03288285211057618,
+      "deadlinePressure": 0.6329270639097562
+    },
+    {
+      "event_id": "EVT_MEDCORE_HEALTH_025",
+      "timestamp": 1778111348915,
+      "from_node": "SHIFT_MED_002",
+      "to_node": "KPI_MED_2026_05",
+      "routingChange": false,
+      "authorityShift": false,
+      "urgencyLevel": 0.24619990967616623,
+      "deadlinePressure": 0.6246999997374989
+    },
+    {
+      "event_id": "EVT_MEDCORE_HEALTH_026",
+      "timestamp": 1778114948915,
+      "from_node": "SHIFT_MED_001",
+      "to_node": "KPI_MED_2026_05",
+      "routingChange": false,
+      "authorityShift": false,
+      "urgencyLevel": 0.0672425258485172,
+      "deadlinePressure": 0.758283638966035
+    },
+    {
+      "event_id": "EVT_MEDCORE_HEALTH_027",
+      "timestamp": 1778118548915,
+      "from_node": "SHIFT_MED_001",
+      "to_node": "KPI_MED_2026_05",
+      "routingChange": false,
+      "authorityShift": true,
+      "urgencyLevel": 0.13288980303045128,
+      "deadlinePressure": 0.9539635415222123
+    },
+    {
+      "event_id": "EVT_MEDCORE_HEALTH_028",
+      "timestamp": 1778122148915,
+      "from_node": "SHIFT_MED_001",
+      "to_node": "EVT_MED_001",
+      "routingChange": false,
+      "authorityShift": false,
+      "urgencyLevel": 0.9869312163535673,
+      "deadlinePressure": 0.08282341729525489
+    },
+    {
+      "event_id": "EVT_MEDCORE_HEALTH_029",
+      "timestamp": 1778125748915,
+      "from_node": "SHIFT_MED_001",
+      "to_node": "SHIFT_MED_002",
+      "routingChange": false,
+      "participationDelta": 0.07699712152329319,
+      "authorityShift": false,
+      "urgencyLevel": 0.834697163868142
+    },
+    {
+      "event_id": "EVT_MEDCORE_HEALTH_030",
+      "timestamp": 1778129348915,
+      "from_node": "EVT_MED_001",
+      "to_node": "SHIFT_MED_003",
+      "routingChange": false,
+      "authorityShift": false,
+      "urgencyLevel": 0.7358041569354481
+    },
+    {
+      "event_id": "EVT_MEDCORE_HEALTH_031",
+      "timestamp": 1778132948915,
+      "from_node": "SHIFT_MED_001",
+      "to_node": "SHIFT_MED_002",
+      "routingChange": false,
+      "authorityShift": false,
+      "urgencyLevel": 0.3879670245763598,
+      "deadlinePressure": 0.8009381682975236
+    },
+    {
+      "event_id": "EVT_MEDCORE_HEALTH_032",
+      "timestamp": 1778136548915,
+      "from_node": "EVT_MED_001",
+      "to_node": "SHIFT_MED_002",
+      "routingChange": false,
+      "authorityShift": false,
+      "urgencyLevel": 0.42381392771288207,
+      "deadlinePressure": 0.789353967690511
+    },
+    {
+      "event_id": "EVT_MEDCORE_HEALTH_033",
+      "timestamp": 1778140148915,
+      "from_node": "SHIFT_MED_002",
+      "to_node": "EVT_MED_001",
+      "routingChange": false,
+      "participationDelta": 0.29504498440582827,
+      "authorityShift": false,
+      "urgencyLevel": 0.8291572381048684
+    },
+    {
+      "event_id": "EVT_MEDCORE_HEALTH_034",
+      "timestamp": 1778143748915,
+      "from_node": "SHIFT_MED_001",
+      "to_node": "SHIFT_MED_003",
+      "responseLatency": 4200,
+      "retryCount": 2,
+      "routingChange": false,
+      "authorityShift": false,
+      "urgencyLevel": 0.6987420729333986
+    },
+    {
+      "event_id": "EVT_MEDCORE_HEALTH_035",
+      "timestamp": 1778147348915,
+      "from_node": "EVT_MED_001",
+      "to_node": "SHIFT_MED_001",
+      "responseLatency": 3922,
+      "routingChange": false,
+      "authorityShift": false,
+      "urgencyLevel": 0.5633696785156326,
+      "deadlinePressure": 0.081212306042864
+    },
+    {
+      "event_id": "EVT_MEDCORE_HEALTH_036",
+      "timestamp": 1778150948915,
+      "from_node": "SHIFT_MED_003",
+      "to_node": "EVT_MED_001",
+      "routingChange": false,
+      "authorityShift": true,
+      "urgencyLevel": 0.9372336556690386
+    },
+    {
+      "event_id": "EVT_MEDCORE_HEALTH_037",
+      "timestamp": 1778154548915,
+      "from_node": "SHIFT_MED_003",
+      "to_node": "EVT_MED_001",
+      "routingChange": false,
+      "participationDelta": 0.5418215280109013,
+      "authorityShift": false,
+      "urgencyLevel": 0.8589407273719205,
+      "deadlinePressure": 0.19599666972492602
+    },
+    {
+      "event_id": "EVT_MEDCORE_HEALTH_038",
+      "timestamp": 1778158148915,
+      "from_node": "KPI_MED_2026_05",
+      "to_node": "SHIFT_MED_003",
+      "routingChange": false,
+      "authorityShift": false,
+      "urgencyLevel": 0.10780218610344305,
+      "deadlinePressure": 0.31457466238986953
+    },
+    {
+      "event_id": "EVT_MEDCORE_HEALTH_039",
+      "timestamp": 1778161748915,
+      "from_node": "SHIFT_MED_002",
+      "to_node": "SHIFT_MED_001",
+      "responseLatency": 1339,
+      "routingChange": false,
+      "authorityShift": false,
+      "urgencyLevel": 0.1994461273451631
+    },
+    {
+      "event_id": "EVT_MEDCORE_HEALTH_040",
+      "timestamp": 1778165348915,
+      "from_node": "KPI_MED_2026_05",
+      "to_node": "EVT_MED_001",
+      "responseLatency": 5274,
+      "routingChange": false,
+      "authorityShift": false,
+      "urgencyLevel": 0.3633649299751953
+    },
+    {
+      "event_id": "EVT_MEDCORE_HEALTH_041",
+      "timestamp": 1778168948915,
+      "from_node": "EVT_MED_001",
+      "to_node": "SHIFT_MED_002",
+      "responseLatency": 1663,
+      "routingChange": false,
+      "authorityShift": false,
+      "urgencyLevel": 0.5900102750545433
+    },
+    {
+      "event_id": "EVT_MEDCORE_HEALTH_042",
+      "timestamp": 1778172548915,
+      "from_node": "SHIFT_MED_002",
+      "to_node": "KPI_MED_2026_05",
+      "routingChange": false,
+      "participationDelta": -0.8838310611351399,
+      "authorityShift": false,
+      "urgencyLevel": 0.7296530801784897,
+      "deadlinePressure": 0.28471173948186235
+    },
+    {
+      "event_id": "EVT_MEDCORE_HEALTH_043",
+      "timestamp": 1778176148915,
+      "from_node": "EVT_MED_001",
+      "to_node": "KPI_MED_2026_05",
+      "routingChange": false,
+      "authorityShift": false,
+      "urgencyLevel": 0.19398748022815826
+    },
+    {
+      "event_id": "EVT_MEDCORE_HEALTH_044",
+      "timestamp": 1778179748915,
+      "from_node": "SHIFT_MED_002",
+      "to_node": "SHIFT_MED_003",
+      "routingChange": false,
+      "authorityShift": false,
+      "urgencyLevel": 0.31147530211015995
+    },
+    {
+      "event_id": "EVT_MEDCORE_HEALTH_045",
+      "timestamp": 1778183348915,
+      "from_node": "SHIFT_MED_001",
+      "to_node": "EVT_MED_001",
+      "responseLatency": 4293,
+      "routingChange": false,
+      "authorityShift": false,
+      "urgencyLevel": 0.40893656199936146
+    },
+    {
+      "event_id": "EVT_MEDCORE_HEALTH_046",
+      "timestamp": 1778186948915,
+      "from_node": "KPI_MED_2026_05",
+      "to_node": "SHIFT_MED_003",
+      "responseLatency": 2553,
+      "routingChange": false,
+      "authorityShift": false,
+      "urgencyLevel": 0.7170534400071429
+    },
+    {
+      "event_id": "EVT_MEDCORE_HEALTH_047",
+      "timestamp": 1778190548915,
+      "from_node": "EVT_MED_001",
+      "to_node": "SHIFT_MED_003",
+      "routingChange": false,
+      "participationDelta": 0.44316619583393013,
+      "authorityShift": false,
+      "urgencyLevel": 0.7454137663078328,
+      "deadlinePressure": 0.5604881034677907
+    },
+    {
+      "event_id": "EVT_MEDCORE_HEALTH_048",
+      "timestamp": 1778194148915,
+      "from_node": "KPI_MED_2026_05",
+      "to_node": "SHIFT_MED_001",
+      "routingChange": true,
+      "participationDelta": -0.7921007389372816,
+      "authorityShift": false,
+      "urgencyLevel": 0.46216647192707505,
+      "deadlinePressure": 0.28546330993898916
+    },
+    {
+      "event_id": "EVT_MEDCORE_HEALTH_049",
+      "timestamp": 1778197748915,
+      "from_node": "SHIFT_MED_002",
+      "to_node": "SHIFT_MED_003",
+      "routingChange": true,
+      "authorityShift": false,
+      "urgencyLevel": 0.9497356596400484,
+      "deadlinePressure": 0.8036976777036222
+    },
+    {
+      "event_id": "EVT_MEDCORE_HEALTH_050",
+      "timestamp": 1778201348915,
+      "from_node": "EVT_MED_001",
+      "to_node": "SHIFT_MED_003",
+      "routingChange": true,
+      "authorityShift": false,
+      "urgencyLevel": 0.8728957921824245,
+      "deadlinePressure": 0.5024807054838463
+    },
+    {
+      "event_id": "EVT_MEDCORE_HEALTH_051",
+      "timestamp": 1778204948915,
+      "from_node": "SHIFT_MED_003",
+      "to_node": "EVT_MED_001",
+      "responseLatency": 1242,
+      "routingChange": false,
+      "authorityShift": false,
+      "urgencyLevel": 0.2221879424047295,
+      "deadlinePressure": 0.8027828031946787
+    },
+    {
+      "event_id": "EVT_MEDCORE_HEALTH_052",
+      "timestamp": 1778208548915,
+      "from_node": "KPI_MED_2026_05",
+      "to_node": "SHIFT_MED_002",
+      "routingChange": false,
+      "authorityShift": false,
+      "urgencyLevel": 0.19825159446194474
+    },
+    {
+      "event_id": "EVT_MEDCORE_HEALTH_053",
+      "timestamp": 1778212148915,
+      "from_node": "SHIFT_MED_003",
+      "to_node": "SHIFT_MED_001",
+      "routingChange": false,
+      "participationDelta": 0.7219914473130649,
+      "authorityShift": false,
+      "urgencyLevel": 0.29889399512425774,
+      "deadlinePressure": 0.3905731281318845
+    },
+    {
+      "event_id": "EVT_MEDCORE_HEALTH_054",
+      "timestamp": 1778215748915,
+      "from_node": "EVT_MED_001",
+      "to_node": "SHIFT_MED_001",
+      "routingChange": false,
+      "authorityShift": false,
+      "urgencyLevel": 0.16016533525155707,
+      "deadlinePressure": 0.8073102655793405
+    },
+    {
+      "event_id": "EVT_MEDCORE_HEALTH_055",
+      "timestamp": 1778219348915,
+      "from_node": "EVT_MED_001",
+      "to_node": "SHIFT_MED_003",
+      "routingChange": false,
+      "participationDelta": 0.7594335943677484,
+      "authorityShift": false,
+      "urgencyLevel": 0.4856403460756731
+    },
+    {
+      "event_id": "EVT_MEDCORE_HEALTH_056",
+      "timestamp": 1778222948915,
+      "from_node": "SHIFT_MED_002",
+      "to_node": "KPI_MED_2026_05",
+      "routingChange": true,
+      "authorityShift": false,
+      "urgencyLevel": 0.40257229073729306
+    },
+    {
+      "event_id": "EVT_MEDCORE_HEALTH_057",
+      "timestamp": 1778226548915,
+      "from_node": "SHIFT_MED_001",
+      "to_node": "SHIFT_MED_002",
+      "routingChange": false,
+      "participationDelta": 0.8207306865450255,
+      "authorityShift": false,
+      "urgencyLevel": 0.7486557730678984,
+      "deadlinePressure": 0.1290066484323924
+    },
+    {
+      "event_id": "EVT_MEDCORE_HEALTH_058",
+      "timestamp": 1778230148915,
+      "from_node": "SHIFT_MED_002",
+      "to_node": "EVT_MED_001",
+      "retryCount": 3,
+      "routingChange": false,
+      "authorityShift": false,
+      "urgencyLevel": 0.9455693675479206
+    },
+    {
+      "event_id": "EVT_MEDCORE_HEALTH_059",
+      "timestamp": 1778233748915,
+      "from_node": "SHIFT_MED_003",
+      "to_node": "SHIFT_MED_002",
+      "routingChange": false,
+      "authorityShift": false,
+      "urgencyLevel": 0.5178577521002077,
+      "deadlinePressure": 0.7292216590203144
+    },
+    {
+      "event_id": "EVT_MEDCORE_HEALTH_060",
+      "timestamp": 1778237348915,
+      "from_node": "KPI_MED_2026_05",
+      "to_node": "EVT_MED_001",
+      "responseLatency": 4247,
+      "routingChange": false,
+      "participationDelta": -0.4593673531062876,
+      "authorityShift": false,
+      "urgencyLevel": 0.9429234675932323
+    },
+    {
+      "event_id": "EVT_MEDCORE_HEALTH_061",
+      "timestamp": 1778240948915,
+      "from_node": "SHIFT_MED_001",
+      "to_node": "SHIFT_MED_003",
+      "routingChange": false,
+      "participationDelta": -0.6907530457260327,
+      "authorityShift": true,
+      "urgencyLevel": 0.983617323655658
+    },
+    {
+      "event_id": "EVT_MEDCORE_HEALTH_062",
+      "timestamp": 1778244548915,
+      "from_node": "SHIFT_MED_002",
+      "to_node": "EVT_MED_001",
+      "responseLatency": 324,
+      "routingChange": false,
+      "participationDelta": 0.24769021137881175,
+      "authorityShift": false,
+      "urgencyLevel": 0.5317179095704487,
+      "deadlinePressure": 0.8499784361252773
+    },
+    {
+      "event_id": "EVT_MEDCORE_HEALTH_063",
+      "timestamp": 1778248148915,
+      "from_node": "SHIFT_MED_001",
+      "to_node": "SHIFT_MED_002",
+      "routingChange": false,
+      "authorityShift": false,
+      "urgencyLevel": 0.10796551290019463,
+      "deadlinePressure": 0.8281764283163784
+    },
+    {
+      "event_id": "EVT_MEDCORE_HEALTH_064",
+      "timestamp": 1778251748915,
+      "from_node": "EVT_MED_001",
+      "to_node": "SHIFT_MED_001",
+      "routingChange": false,
+      "authorityShift": false,
+      "urgencyLevel": 0.23480007172824102,
+      "deadlinePressure": 0.10989342221179443
+    },
+    {
+      "event_id": "EVT_MEDCORE_HEALTH_065",
+      "timestamp": 1778255348915,
+      "from_node": "EVT_MED_001",
+      "to_node": "KPI_MED_2026_05",
+      "routingChange": false,
+      "authorityShift": false,
+      "urgencyLevel": 0.21282480167885942,
+      "deadlinePressure": 0.1401647285541998
+    },
+    {
+      "event_id": "EVT_MEDCORE_HEALTH_066",
+      "timestamp": 1778258948915,
+      "from_node": "KPI_MED_2026_05",
+      "to_node": "SHIFT_MED_001",
+      "routingChange": false,
+      "authorityShift": false,
+      "urgencyLevel": 0.15979892707471044
+    },
+    {
+      "event_id": "EVT_MEDCORE_HEALTH_067",
+      "timestamp": 1778262548915,
+      "from_node": "SHIFT_MED_002",
+      "to_node": "SHIFT_MED_001",
+      "responseLatency": 5334,
+      "routingChange": false,
+      "authorityShift": false,
+      "urgencyLevel": 0.24028095922173542
+    },
+    {
+      "event_id": "EVT_MEDCORE_HEALTH_068",
+      "timestamp": 1778266148915,
+      "from_node": "SHIFT_MED_002",
+      "to_node": "SHIFT_MED_003",
+      "routingChange": false,
+      "participationDelta": -0.31339272822533104,
+      "authorityShift": false,
+      "urgencyLevel": 0.024637912052306143,
+      "deadlinePressure": 0.6898073375042872
+    },
+    {
+      "event_id": "EVT_MEDCORE_HEALTH_069",
+      "timestamp": 1778269748915,
+      "from_node": "EVT_MED_001",
+      "to_node": "KPI_MED_2026_05",
+      "routingChange": true,
+      "authorityShift": false,
+      "urgencyLevel": 0.5444150436593134
+    },
+    {
+      "event_id": "EVT_MEDCORE_HEALTH_070",
+      "timestamp": 1778273348915,
+      "from_node": "SHIFT_MED_002",
+      "to_node": "EVT_MED_001",
+      "routingChange": true,
+      "authorityShift": true,
+      "urgencyLevel": 0.03156535868189714
+    },
+    {
+      "event_id": "EVT_MEDCORE_HEALTH_071",
+      "timestamp": 1778276948915,
+      "from_node": "SHIFT_MED_002",
+      "to_node": "SHIFT_MED_001",
+      "routingChange": false,
+      "authorityShift": false,
+      "urgencyLevel": 0.43547738067024633,
+      "deadlinePressure": 0.9634052901407666
+    },
+    {
+      "event_id": "EVT_MEDCORE_HEALTH_072",
+      "timestamp": 1778280548915,
+      "from_node": "SHIFT_MED_002",
+      "to_node": "SHIFT_MED_001",
+      "responseLatency": 1188,
+      "routingChange": true,
+      "authorityShift": false,
+      "urgencyLevel": 0.18675800994676695
+    },
+    {
+      "event_id": "EVT_MEDCORE_HEALTH_073",
+      "timestamp": 1778284148915,
+      "from_node": "KPI_MED_2026_05",
+      "to_node": "SHIFT_MED_002",
+      "retryCount": 1,
+      "routingChange": false,
+      "authorityShift": false,
+      "urgencyLevel": 0.17906024451987257
+    },
+    {
+      "event_id": "EVT_MEDCORE_HEALTH_074",
+      "timestamp": 1778287748915,
+      "from_node": "SHIFT_MED_002",
+      "to_node": "EVT_MED_001",
+      "routingChange": false,
+      "authorityShift": false,
+      "urgencyLevel": 0.22449178199548236,
+      "deadlinePressure": 0.47764965677831484
+    },
+    {
+      "event_id": "EVT_MEDCORE_HEALTH_075",
+      "timestamp": 1778291348915,
+      "from_node": "SHIFT_MED_002",
+      "to_node": "SHIFT_MED_001",
+      "routingChange": false,
+      "authorityShift": false,
+      "urgencyLevel": 0.5692359785315777,
+      "deadlinePressure": 0.9547601727934887
+    },
+    {
+      "event_id": "EVT_MEDCORE_HEALTH_076",
+      "timestamp": 1778294948915,
+      "from_node": "SHIFT_MED_002",
+      "to_node": "EVT_MED_001",
+      "routingChange": true,
+      "authorityShift": true,
+      "urgencyLevel": 0.5443052029943227,
+      "deadlinePressure": 0.3846863646605456
+    },
+    {
+      "event_id": "EVT_MEDCORE_HEALTH_077",
+      "timestamp": 1778298548915,
+      "from_node": "SHIFT_MED_003",
+      "to_node": "KPI_MED_2026_05",
+      "routingChange": false,
+      "authorityShift": false,
+      "urgencyLevel": 0.02838788747886567,
+      "deadlinePressure": 0.8029449020749007
+    },
+    {
+      "event_id": "EVT_MEDCORE_HEALTH_078",
+      "timestamp": 1778302148915,
+      "from_node": "KPI_MED_2026_05",
+      "to_node": "EVT_MED_001",
+      "routingChange": false,
+      "authorityShift": false,
+      "urgencyLevel": 0.3675819332202601,
+      "deadlinePressure": 0.7276374319948451
+    },
+    {
+      "event_id": "EVT_MEDCORE_HEALTH_079",
+      "timestamp": 1778305748915,
+      "from_node": "KPI_MED_2026_05",
+      "to_node": "SHIFT_MED_001",
+      "routingChange": true,
+      "authorityShift": true,
+      "urgencyLevel": 0.2242317577535824
+    },
+    {
+      "event_id": "EVT_MEDCORE_HEALTH_080",
+      "timestamp": 1778309348915,
+      "from_node": "EVT_MED_001",
+      "to_node": "KPI_MED_2026_05",
+      "routingChange": false,
+      "participationDelta": 0.9829558386263191,
+      "authorityShift": false,
+      "urgencyLevel": 0.9935007163797376,
+      "deadlinePressure": 0.4332500084527009
+    },
+    {
+      "event_id": "EVT_MEDCORE_HEALTH_081",
+      "timestamp": 1778312948915,
+      "from_node": "SHIFT_MED_002",
+      "to_node": "KPI_MED_2026_05",
+      "routingChange": false,
+      "authorityShift": false,
+      "urgencyLevel": 0.41159161862964466
+    },
+    {
+      "event_id": "EVT_MEDCORE_HEALTH_082",
+      "timestamp": 1778316548915,
+      "from_node": "SHIFT_MED_002",
+      "to_node": "EVT_MED_001",
+      "responseLatency": 3424,
+      "routingChange": true,
+      "authorityShift": false,
+      "urgencyLevel": 0.7406929362491428
+    },
+    {
+      "event_id": "EVT_MEDCORE_HEALTH_083",
+      "timestamp": 1778320148915,
+      "from_node": "SHIFT_MED_001",
+      "to_node": "SHIFT_MED_003",
+      "routingChange": false,
+      "authorityShift": false,
+      "urgencyLevel": 0.5233832802447211
+    },
+    {
+      "event_id": "EVT_MEDCORE_HEALTH_084",
+      "timestamp": 1778323748915,
+      "from_node": "KPI_MED_2026_05",
+      "to_node": "EVT_MED_001",
+      "responseLatency": 7376,
+      "retryCount": 2,
+      "routingChange": true,
+      "authorityShift": false,
+      "urgencyLevel": 0.09892321363447354,
+      "deadlinePressure": 0.06257650527848901
+    },
+    {
+      "event_id": "EVT_MEDCORE_HEALTH_085",
+      "timestamp": 1778327348915,
+      "from_node": "SHIFT_MED_003",
+      "to_node": "KPI_MED_2026_05",
+      "routingChange": false,
+      "authorityShift": true,
+      "urgencyLevel": 0.9077634898728268
+    },
+    {
+      "event_id": "EVT_MEDCORE_HEALTH_086",
+      "timestamp": 1778330948915,
+      "from_node": "KPI_MED_2026_05",
+      "to_node": "SHIFT_MED_002",
+      "responseLatency": 2032,
+      "retryCount": 3,
+      "routingChange": true,
+      "authorityShift": true,
+      "urgencyLevel": 0.31004991457146214,
+      "deadlinePressure": 0.9466711291928338
+    },
+    {
+      "event_id": "EVT_MEDCORE_HEALTH_087",
+      "timestamp": 1778334548915,
+      "from_node": "SHIFT_MED_003",
+      "to_node": "KPI_MED_2026_05",
+      "routingChange": false,
+      "authorityShift": false,
+      "urgencyLevel": 0.28296428889171565
+    },
+    {
+      "event_id": "EVT_MEDCORE_HEALTH_088",
+      "timestamp": 1778338148915,
+      "from_node": "SHIFT_MED_002",
+      "to_node": "SHIFT_MED_001",
+      "routingChange": false,
+      "participationDelta": -0.5000185397529471,
+      "authorityShift": false,
+      "urgencyLevel": 0.7754837241725985,
+      "deadlinePressure": 0.9352568202516642
+    },
+    {
+      "event_id": "EVT_MEDCORE_HEALTH_089",
+      "timestamp": 1778341748915,
+      "from_node": "KPI_MED_2026_05",
+      "to_node": "EVT_MED_001",
+      "retryCount": 1,
+      "routingChange": false,
+      "authorityShift": false,
+      "urgencyLevel": 0.814708734735829
+    },
+    {
+      "event_id": "EVT_MEDCORE_HEALTH_090",
+      "timestamp": 1778345348915,
+      "from_node": "SHIFT_MED_003",
+      "to_node": "EVT_MED_001",
+      "routingChange": false,
+      "authorityShift": false,
+      "urgencyLevel": 0.3481215761477745,
+      "deadlinePressure": 0.17412800421581043
+    },
+    {
+      "event_id": "EVT_MEDCORE_HEALTH_091",
+      "timestamp": 1778348948915,
+      "from_node": "EVT_MED_001",
+      "to_node": "KPI_MED_2026_05",
+      "responseLatency": 6806,
+      "routingChange": true,
+      "authorityShift": false,
+      "urgencyLevel": 0.401755971294804,
+      "deadlinePressure": 0.5904306403131194
+    },
+    {
+      "event_id": "EVT_MEDCORE_HEALTH_092",
+      "timestamp": 1778352548915,
+      "from_node": "EVT_MED_001",
+      "to_node": "SHIFT_MED_002",
+      "routingChange": false,
+      "authorityShift": false,
+      "urgencyLevel": 0.249141720275593,
+      "deadlinePressure": 0.5910970025789721
+    },
+    {
+      "event_id": "EVT_MEDCORE_HEALTH_093",
+      "timestamp": 1778356148915,
+      "from_node": "SHIFT_MED_003",
+      "to_node": "SHIFT_MED_002",
+      "responseLatency": 6208,
+      "routingChange": false,
+      "participationDelta": -0.9559266047247785,
+      "authorityShift": false,
+      "urgencyLevel": 0.08137561958635198
+    },
+    {
+      "event_id": "EVT_MEDCORE_HEALTH_094",
+      "timestamp": 1778359748915,
+      "from_node": "KPI_MED_2026_05",
+      "to_node": "SHIFT_MED_003",
+      "responseLatency": 2280,
+      "retryCount": 1,
+      "routingChange": false,
+      "participationDelta": 0.8901558962101568,
+      "authorityShift": false,
+      "urgencyLevel": 0.5987949352134858
+    },
+    {
+      "event_id": "EVT_MEDCORE_HEALTH_095",
+      "timestamp": 1778363348915,
+      "from_node": "EVT_MED_001",
+      "to_node": "KPI_MED_2026_05",
+      "routingChange": false,
+      "authorityShift": false,
+      "urgencyLevel": 0.1932837353979966
+    },
+    {
+      "event_id": "EVT_MEDCORE_HEALTH_096",
+      "timestamp": 1778366948915,
+      "from_node": "EVT_MED_001",
+      "to_node": "SHIFT_MED_001",
+      "retryCount": 3,
+      "routingChange": false,
+      "participationDelta": 0.16806142156052983,
+      "authorityShift": false,
+      "urgencyLevel": 0.3450645169316844,
+      "deadlinePressure": 0.2563532165601692
+    },
+    {
+      "event_id": "EVT_MEDCORE_HEALTH_097",
+      "timestamp": 1778370548915,
+      "from_node": "SHIFT_MED_001",
+      "to_node": "EVT_MED_001",
+      "routingChange": false,
+      "authorityShift": false,
+      "urgencyLevel": 0.596762291019209,
+      "deadlinePressure": 0.9405567405576221
+    },
+    {
+      "event_id": "EVT_MEDCORE_HEALTH_098",
+      "timestamp": 1778374148915,
+      "from_node": "EVT_MED_001",
+      "to_node": "KPI_MED_2026_05",
+      "routingChange": false,
+      "participationDelta": 0.1286799806531791,
+      "authorityShift": false,
+      "urgencyLevel": 0.8598298985387225
+    },
+    {
+      "event_id": "EVT_MEDCORE_HEALTH_099",
+      "timestamp": 1778377748915,
+      "from_node": "EVT_MED_001",
+      "to_node": "SHIFT_MED_003",
+      "routingChange": true,
+      "authorityShift": false,
+      "urgencyLevel": 0.3991891130774168
+    },
+    {
+      "event_id": "EVT_MEDCORE_HEALTH_100",
+      "timestamp": 1778381348915,
+      "from_node": "SHIFT_MED_002",
+      "to_node": "SHIFT_MED_003",
+      "routingChange": false,
+      "authorityShift": false,
+      "urgencyLevel": 0.9542911738477122
+    }
+  ],
+  "metadata": {
+    "generated_at": 1778629748915,
+    "event_count": 100,
+    "time_span": {
+      "start": 1778024948915,
+      "end": 1778381348915
+    }
+  }
+}
