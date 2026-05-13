@@ -7,14 +7,17 @@ import path from 'path';
  * 
  * Loads field topology and projected signals for a company.
  * Server-side file reading (fs module works here!)
+ * 
+ * NOTE: Next.js 15+ params are async (Promise)
  */
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { companyId: string } }
+  { params }: { params: Promise<{ companyId: string }> }
 ) {
   try {
-    const { companyId } = params;
+    // Await params (Next.js 15+ requirement)
+    const { companyId } = await params;
     
     // Load field topology
     const topologyPath = path.join(
