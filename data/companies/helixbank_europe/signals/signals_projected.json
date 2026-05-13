@@ -1,0 +1,3110 @@
+{
+  "company_id": "helixbank_europe",
+  "signals": [
+    {
+      "signal_id": "SIG_EVT_HELIXBANK_EUROPE_001",
+      "timestamp": 1778024948914,
+      "source_event": "EVT_HELIXBANK_EUROPE_001",
+      "from_carrier": {
+        "carrier_id": "KPI_HELIX_2026_05",
+        "carrier_type": "kpi"
+      },
+      "to_carrier": {
+        "carrier_id": "MAIL_HELIX_001",
+        "carrier_type": "mail"
+      },
+      "vector": {
+        "intensity": 0.9854950294228011,
+        "latency": 0,
+        "retry": 0,
+        "routing_shift": 0,
+        "participation_delta": 0,
+        "urgency": 0.9854950294228011,
+        "deadline_pressure": 0.810313303637449
+      },
+      "primitive_weights": {
+        "coupling": 0,
+        "decoupling": 0,
+        "density": 0,
+        "diffusion": 0.014504970577198906,
+        "delay": 0,
+        "propagation": 1,
+        "drift": 0
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_HELIXBANK_EUROPE_002",
+      "timestamp": 1778028548914,
+      "source_event": "EVT_HELIXBANK_EUROPE_002",
+      "from_carrier": {
+        "carrier_id": "KPI_HELIX_2026_05",
+        "carrier_type": "kpi"
+      },
+      "to_carrier": {
+        "carrier_id": "MAIL_HELIX_001",
+        "carrier_type": "mail"
+      },
+      "vector": {
+        "intensity": 0.6665047151196863,
+        "latency": 0,
+        "retry": 0,
+        "routing_shift": 0,
+        "participation_delta": 0,
+        "urgency": 0.6665047151196863,
+        "deadline_pressure": 0.6995449904831752
+      },
+      "primitive_weights": {
+        "coupling": 0,
+        "decoupling": 0,
+        "density": 0,
+        "diffusion": 0.33349528488031366,
+        "delay": 0,
+        "propagation": 1,
+        "drift": 0
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_HELIXBANK_EUROPE_003",
+      "timestamp": 1778032148914,
+      "source_event": "EVT_HELIXBANK_EUROPE_003",
+      "from_carrier": {
+        "carrier_id": "EVT_HELIX_001",
+        "carrier_type": "evt"
+      },
+      "to_carrier": {
+        "carrier_id": "MAIL_HELIX_001",
+        "carrier_type": "mail"
+      },
+      "vector": {
+        "intensity": 0.22819181642802855,
+        "latency": 0.386,
+        "retry": 0.2,
+        "routing_shift": 0,
+        "participation_delta": -0.4805381896015928,
+        "urgency": 0.22819181642802855,
+        "deadline_pressure": 0
+      },
+      "primitive_weights": {
+        "coupling": 0,
+        "decoupling": 0.4805381896015928,
+        "density": 0.10965488234822383,
+        "diffusion": 0.4009248763186025,
+        "delay": 0.4632,
+        "propagation": 0.4912,
+        "drift": 0
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_HELIXBANK_EUROPE_004",
+      "timestamp": 1778035748914,
+      "source_event": "EVT_HELIXBANK_EUROPE_004",
+      "from_carrier": {
+        "carrier_id": "KPI_HELIX_2026_05",
+        "carrier_type": "kpi"
+      },
+      "to_carrier": {
+        "carrier_id": "MAIL_HELIX_002",
+        "carrier_type": "mail"
+      },
+      "vector": {
+        "intensity": 0.7514881398495727,
+        "latency": 0.4838,
+        "retry": 0,
+        "routing_shift": 0,
+        "participation_delta": 0,
+        "urgency": 0.7514881398495727,
+        "deadline_pressure": 0
+      },
+      "primitive_weights": {
+        "coupling": 0,
+        "decoupling": 0,
+        "density": 0,
+        "diffusion": 0.24851186015042726,
+        "delay": 0.4838,
+        "propagation": 0.5162,
+        "drift": 0
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_HELIXBANK_EUROPE_005",
+      "timestamp": 1778039348914,
+      "source_event": "EVT_HELIXBANK_EUROPE_005",
+      "from_carrier": {
+        "carrier_id": "EVT_HELIX_001",
+        "carrier_type": "evt"
+      },
+      "to_carrier": {
+        "carrier_id": "MAIL_HELIX_001",
+        "carrier_type": "mail"
+      },
+      "vector": {
+        "intensity": 0.08529557788058706,
+        "latency": 0,
+        "retry": 0,
+        "routing_shift": 0,
+        "participation_delta": 0.5696211394063071,
+        "urgency": 0.08529557788058706,
+        "deadline_pressure": 0
+      },
+      "primitive_weights": {
+        "coupling": 0.5696211394063071,
+        "decoupling": 0,
+        "density": 0.04858616425865941,
+        "diffusion": 0.39366944697176526,
+        "delay": 0,
+        "propagation": 1,
+        "drift": 0
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_HELIXBANK_EUROPE_006",
+      "timestamp": 1778042948914,
+      "source_event": "EVT_HELIXBANK_EUROPE_006",
+      "from_carrier": {
+        "carrier_id": "MAIL_HELIX_002",
+        "carrier_type": "mail"
+      },
+      "to_carrier": {
+        "carrier_id": "KPI_HELIX_2026_05",
+        "carrier_type": "kpi"
+      },
+      "vector": {
+        "intensity": 0.7067311375029701,
+        "latency": 0.2976,
+        "retry": 0,
+        "routing_shift": 1,
+        "participation_delta": 0,
+        "urgency": 0.7067311375029701,
+        "deadline_pressure": 0
+      },
+      "primitive_weights": {
+        "coupling": 0,
+        "decoupling": 0,
+        "density": 0,
+        "diffusion": 0.2932688624970299,
+        "delay": 0.2976,
+        "propagation": 0,
+        "drift": 0
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_HELIXBANK_EUROPE_007",
+      "timestamp": 1778046548914,
+      "source_event": "EVT_HELIXBANK_EUROPE_007",
+      "from_carrier": {
+        "carrier_id": "MAIL_HELIX_002",
+        "carrier_type": "mail"
+      },
+      "to_carrier": {
+        "carrier_id": "MAIL_HELIX_001",
+        "carrier_type": "mail"
+      },
+      "vector": {
+        "intensity": 0.557665027337531,
+        "latency": 0,
+        "retry": 0,
+        "routing_shift": 0,
+        "participation_delta": 0,
+        "urgency": 0.557665027337531,
+        "deadline_pressure": 0.30886690075614043
+      },
+      "primitive_weights": {
+        "coupling": 0,
+        "decoupling": 0,
+        "density": 0,
+        "diffusion": 0.442334972662469,
+        "delay": 0,
+        "propagation": 1,
+        "drift": 0
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_HELIXBANK_EUROPE_008",
+      "timestamp": 1778050148914,
+      "source_event": "EVT_HELIXBANK_EUROPE_008",
+      "from_carrier": {
+        "carrier_id": "EVT_HELIX_001",
+        "carrier_type": "evt"
+      },
+      "to_carrier": {
+        "carrier_id": "MAIL_HELIX_002",
+        "carrier_type": "mail"
+      },
+      "vector": {
+        "intensity": 0.5072966511427848,
+        "latency": 0,
+        "retry": 0,
+        "routing_shift": 0,
+        "participation_delta": 0,
+        "urgency": 0.5072966511427848,
+        "deadline_pressure": 0
+      },
+      "primitive_weights": {
+        "coupling": 0,
+        "decoupling": 0,
+        "density": 0,
+        "diffusion": 0.49270334885721523,
+        "delay": 0,
+        "propagation": 1,
+        "drift": 0
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_HELIXBANK_EUROPE_009",
+      "timestamp": 1778053748914,
+      "source_event": "EVT_HELIXBANK_EUROPE_009",
+      "from_carrier": {
+        "carrier_id": "MAIL_HELIX_002",
+        "carrier_type": "mail"
+      },
+      "to_carrier": {
+        "carrier_id": "EVT_HELIX_001",
+        "carrier_type": "evt"
+      },
+      "vector": {
+        "intensity": 0.7728326458938439,
+        "latency": 0,
+        "retry": 0,
+        "routing_shift": 1,
+        "participation_delta": -0.662439806170922,
+        "urgency": 0.7728326458938439,
+        "deadline_pressure": 0.7767708218976574
+      },
+      "primitive_weights": {
+        "coupling": 0,
+        "decoupling": 0.662439806170922,
+        "density": 0.5119551081484788,
+        "diffusion": 0.07668265608371284,
+        "delay": 0,
+        "propagation": 0,
+        "drift": 0.7767708218976574
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_HELIXBANK_EUROPE_010",
+      "timestamp": 1778057348914,
+      "source_event": "EVT_HELIXBANK_EUROPE_010",
+      "from_carrier": {
+        "carrier_id": "MAIL_HELIX_001",
+        "carrier_type": "mail"
+      },
+      "to_carrier": {
+        "carrier_id": "KPI_HELIX_2026_05",
+        "carrier_type": "kpi"
+      },
+      "vector": {
+        "intensity": 0.4237881355084274,
+        "latency": 0,
+        "retry": 0,
+        "routing_shift": 0,
+        "participation_delta": -0.5671876323698712,
+        "urgency": 0.4237881355084274,
+        "deadline_pressure": 0
+      },
+      "primitive_weights": {
+        "coupling": 0,
+        "decoupling": 0.5671876323698712,
+        "density": 0.2403673892054671,
+        "diffusion": 0.24939162132716844,
+        "delay": 0,
+        "propagation": 1,
+        "drift": 0
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_HELIXBANK_EUROPE_011",
+      "timestamp": 1778060948914,
+      "source_event": "EVT_HELIXBANK_EUROPE_011",
+      "from_carrier": {
+        "carrier_id": "EVT_HELIX_001",
+        "carrier_type": "evt"
+      },
+      "to_carrier": {
+        "carrier_id": "MAIL_HELIX_002",
+        "carrier_type": "mail"
+      },
+      "vector": {
+        "intensity": 0.07134671766875456,
+        "latency": 0,
+        "retry": 0,
+        "routing_shift": 0,
+        "participation_delta": 0,
+        "urgency": 0.07134671766875456,
+        "deadline_pressure": 0.21997510552730715
+      },
+      "primitive_weights": {
+        "coupling": 0,
+        "decoupling": 0,
+        "density": 0,
+        "diffusion": 0.9286532823312454,
+        "delay": 0,
+        "propagation": 1,
+        "drift": 0
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_HELIXBANK_EUROPE_012",
+      "timestamp": 1778064548914,
+      "source_event": "EVT_HELIXBANK_EUROPE_012",
+      "from_carrier": {
+        "carrier_id": "MAIL_HELIX_001",
+        "carrier_type": "mail"
+      },
+      "to_carrier": {
+        "carrier_id": "MAIL_HELIX_002",
+        "carrier_type": "mail"
+      },
+      "vector": {
+        "intensity": 0.005657487428616603,
+        "latency": 0.6352,
+        "retry": 0,
+        "routing_shift": 0,
+        "participation_delta": 0,
+        "urgency": 0.005657487428616603,
+        "deadline_pressure": 0
+      },
+      "primitive_weights": {
+        "coupling": 0,
+        "decoupling": 0,
+        "density": 0,
+        "diffusion": 0.9943425125713834,
+        "delay": 0.6352,
+        "propagation": 0.3648,
+        "drift": 0
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_HELIXBANK_EUROPE_013",
+      "timestamp": 1778068148914,
+      "source_event": "EVT_HELIXBANK_EUROPE_013",
+      "from_carrier": {
+        "carrier_id": "MAIL_HELIX_002",
+        "carrier_type": "mail"
+      },
+      "to_carrier": {
+        "carrier_id": "KPI_HELIX_2026_05",
+        "carrier_type": "kpi"
+      },
+      "vector": {
+        "intensity": 0.27473868707470817,
+        "latency": 0.2297,
+        "retry": 0,
+        "routing_shift": 0,
+        "participation_delta": 0,
+        "urgency": 0.27473868707470817,
+        "deadline_pressure": 0.2758077697842398
+      },
+      "primitive_weights": {
+        "coupling": 0,
+        "decoupling": 0,
+        "density": 0,
+        "diffusion": 0.7252613129252918,
+        "delay": 0.2297,
+        "propagation": 0.7703,
+        "drift": 0
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_HELIXBANK_EUROPE_014",
+      "timestamp": 1778071748914,
+      "source_event": "EVT_HELIXBANK_EUROPE_014",
+      "from_carrier": {
+        "carrier_id": "EVT_HELIX_001",
+        "carrier_type": "evt"
+      },
+      "to_carrier": {
+        "carrier_id": "MAIL_HELIX_002",
+        "carrier_type": "mail"
+      },
+      "vector": {
+        "intensity": 0.5386243397616637,
+        "latency": 0,
+        "retry": 0,
+        "routing_shift": 0,
+        "participation_delta": 0,
+        "urgency": 0.5386243397616637,
+        "deadline_pressure": 0.7025753244764936
+      },
+      "primitive_weights": {
+        "coupling": 0,
+        "decoupling": 0,
+        "density": 0,
+        "diffusion": 0.4613756602383363,
+        "delay": 0,
+        "propagation": 1,
+        "drift": 0
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_HELIXBANK_EUROPE_015",
+      "timestamp": 1778075348914,
+      "source_event": "EVT_HELIXBANK_EUROPE_015",
+      "from_carrier": {
+        "carrier_id": "EVT_HELIX_001",
+        "carrier_type": "evt"
+      },
+      "to_carrier": {
+        "carrier_id": "MAIL_HELIX_002",
+        "carrier_type": "mail"
+      },
+      "vector": {
+        "intensity": 0.2325270184302317,
+        "latency": 0.3172,
+        "retry": 0,
+        "routing_shift": 0,
+        "participation_delta": 0.6200631940548025,
+        "urgency": 0.2325270184302317,
+        "deadline_pressure": 0
+      },
+      "primitive_weights": {
+        "coupling": 0.6200631940548025,
+        "decoupling": 0,
+        "density": 0.1441814457518894,
+        "diffusion": 0.2915912332668552,
+        "delay": 0.3172,
+        "propagation": 0.6828000000000001,
+        "drift": 0
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_HELIXBANK_EUROPE_016",
+      "timestamp": 1778078948914,
+      "source_event": "EVT_HELIXBANK_EUROPE_016",
+      "from_carrier": {
+        "carrier_id": "KPI_HELIX_2026_05",
+        "carrier_type": "kpi"
+      },
+      "to_carrier": {
+        "carrier_id": "EVT_HELIX_001",
+        "carrier_type": "evt"
+      },
+      "vector": {
+        "intensity": 0.8098718857763083,
+        "latency": 0,
+        "retry": 0.2,
+        "routing_shift": 0,
+        "participation_delta": 0,
+        "urgency": 0.8098718857763083,
+        "deadline_pressure": 0
+      },
+      "primitive_weights": {
+        "coupling": 0,
+        "decoupling": 0.2,
+        "density": 0,
+        "diffusion": 0.1901281142236917,
+        "delay": 0,
+        "propagation": 0.8,
+        "drift": 0
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_HELIXBANK_EUROPE_017",
+      "timestamp": 1778082548914,
+      "source_event": "EVT_HELIXBANK_EUROPE_017",
+      "from_carrier": {
+        "carrier_id": "MAIL_HELIX_001",
+        "carrier_type": "mail"
+      },
+      "to_carrier": {
+        "carrier_id": "KPI_HELIX_2026_05",
+        "carrier_type": "kpi"
+      },
+      "vector": {
+        "intensity": 0.9045554281934749,
+        "latency": 0.218,
+        "retry": 0.4,
+        "routing_shift": 0,
+        "participation_delta": 0,
+        "urgency": 0.9045554281934749,
+        "deadline_pressure": 0
+      },
+      "primitive_weights": {
+        "coupling": 0,
+        "decoupling": 0.4,
+        "density": 0,
+        "diffusion": 0.0954445718065251,
+        "delay": 0.30519999999999997,
+        "propagation": 0.4692,
+        "drift": 0
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_HELIXBANK_EUROPE_018",
+      "timestamp": 1778086148914,
+      "source_event": "EVT_HELIXBANK_EUROPE_018",
+      "from_carrier": {
+        "carrier_id": "MAIL_HELIX_002",
+        "carrier_type": "mail"
+      },
+      "to_carrier": {
+        "carrier_id": "KPI_HELIX_2026_05",
+        "carrier_type": "kpi"
+      },
+      "vector": {
+        "intensity": 0.5658594841542108,
+        "latency": 0,
+        "retry": 0,
+        "routing_shift": 0,
+        "participation_delta": 0.5403596275438076,
+        "urgency": 0.5658594841542108,
+        "deadline_pressure": 0
+      },
+      "primitive_weights": {
+        "coupling": 0.5403596275438076,
+        "decoupling": 0,
+        "density": 0.3057676200997005,
+        "diffusion": 0.19954850840168203,
+        "delay": 0,
+        "propagation": 1,
+        "drift": 0
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_HELIXBANK_EUROPE_019",
+      "timestamp": 1778089748914,
+      "source_event": "EVT_HELIXBANK_EUROPE_019",
+      "from_carrier": {
+        "carrier_id": "MAIL_HELIX_002",
+        "carrier_type": "mail"
+      },
+      "to_carrier": {
+        "carrier_id": "MAIL_HELIX_001",
+        "carrier_type": "mail"
+      },
+      "vector": {
+        "intensity": 0.4183161170542784,
+        "latency": 0,
+        "retry": 0,
+        "routing_shift": 0,
+        "participation_delta": 0,
+        "urgency": 0.4183161170542784,
+        "deadline_pressure": 0
+      },
+      "primitive_weights": {
+        "coupling": 0,
+        "decoupling": 0,
+        "density": 0,
+        "diffusion": 0.5816838829457216,
+        "delay": 0,
+        "propagation": 1,
+        "drift": 0
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_HELIXBANK_EUROPE_020",
+      "timestamp": 1778093348914,
+      "source_event": "EVT_HELIXBANK_EUROPE_020",
+      "from_carrier": {
+        "carrier_id": "MAIL_HELIX_001",
+        "carrier_type": "mail"
+      },
+      "to_carrier": {
+        "carrier_id": "EVT_HELIX_001",
+        "carrier_type": "evt"
+      },
+      "vector": {
+        "intensity": 0.8305721131742989,
+        "latency": 0,
+        "retry": 0,
+        "routing_shift": 0,
+        "participation_delta": 0,
+        "urgency": 0.8305721131742989,
+        "deadline_pressure": 0
+      },
+      "primitive_weights": {
+        "coupling": 0,
+        "decoupling": 0,
+        "density": 0,
+        "diffusion": 0.1694278868257011,
+        "delay": 0,
+        "propagation": 1,
+        "drift": 0
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_HELIXBANK_EUROPE_021",
+      "timestamp": 1778096948914,
+      "source_event": "EVT_HELIXBANK_EUROPE_021",
+      "from_carrier": {
+        "carrier_id": "KPI_HELIX_2026_05",
+        "carrier_type": "kpi"
+      },
+      "to_carrier": {
+        "carrier_id": "MAIL_HELIX_001",
+        "carrier_type": "mail"
+      },
+      "vector": {
+        "intensity": 0.5051828715848699,
+        "latency": 0,
+        "retry": 0,
+        "routing_shift": 0,
+        "participation_delta": -0.32167512422422195,
+        "urgency": 0.5051828715848699,
+        "deadline_pressure": 0.8129262570708433
+      },
+      "primitive_weights": {
+        "coupling": 0,
+        "decoupling": 0.32167512422422195,
+        "density": 0.16250476297301217,
+        "diffusion": 0.3356467671639204,
+        "delay": 0,
+        "propagation": 1,
+        "drift": 0
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_HELIXBANK_EUROPE_022",
+      "timestamp": 1778100548914,
+      "source_event": "EVT_HELIXBANK_EUROPE_022",
+      "from_carrier": {
+        "carrier_id": "EVT_HELIX_001",
+        "carrier_type": "evt"
+      },
+      "to_carrier": {
+        "carrier_id": "KPI_HELIX_2026_05",
+        "carrier_type": "kpi"
+      },
+      "vector": {
+        "intensity": 0.31340515249720924,
+        "latency": 0,
+        "retry": 0,
+        "routing_shift": 0,
+        "participation_delta": 0.35807498574057206,
+        "urgency": 0.31340515249720924,
+        "deadline_pressure": 0.8334682421259618
+      },
+      "primitive_weights": {
+        "coupling": 0.35807498574057206,
+        "decoupling": 0,
+        "density": 0.11222254551146,
+        "diffusion": 0.4407424072736787,
+        "delay": 0,
+        "propagation": 1,
+        "drift": 0
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_HELIXBANK_EUROPE_023",
+      "timestamp": 1778104148914,
+      "source_event": "EVT_HELIXBANK_EUROPE_023",
+      "from_carrier": {
+        "carrier_id": "MAIL_HELIX_002",
+        "carrier_type": "mail"
+      },
+      "to_carrier": {
+        "carrier_id": "MAIL_HELIX_001",
+        "carrier_type": "mail"
+      },
+      "vector": {
+        "intensity": 0.8328216328153526,
+        "latency": 0,
+        "retry": 0,
+        "routing_shift": 0,
+        "participation_delta": 0.08077694287724402,
+        "urgency": 0.8328216328153526,
+        "deadline_pressure": 0
+      },
+      "primitive_weights": {
+        "coupling": 0.08077694287724402,
+        "decoupling": 0,
+        "density": 0.06727278546085882,
+        "diffusion": 0.1536742097682622,
+        "delay": 0,
+        "propagation": 1,
+        "drift": 0
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_HELIXBANK_EUROPE_024",
+      "timestamp": 1778107748914,
+      "source_event": "EVT_HELIXBANK_EUROPE_024",
+      "from_carrier": {
+        "carrier_id": "MAIL_HELIX_002",
+        "carrier_type": "mail"
+      },
+      "to_carrier": {
+        "carrier_id": "EVT_HELIX_001",
+        "carrier_type": "evt"
+      },
+      "vector": {
+        "intensity": 0.4554861457595176,
+        "latency": 0,
+        "retry": 0.6,
+        "routing_shift": 0,
+        "participation_delta": 0.14003953326621232,
+        "urgency": 0.4554861457595176,
+        "deadline_pressure": 0
+      },
+      "primitive_weights": {
+        "coupling": 0.05601581330648493,
+        "decoupling": 0.6,
+        "density": 0.0637860672613888,
+        "diffusion": 0.46826038823565885,
+        "delay": 0,
+        "propagation": 0.4,
+        "drift": 0
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_HELIXBANK_EUROPE_025",
+      "timestamp": 1778111348914,
+      "source_event": "EVT_HELIXBANK_EUROPE_025",
+      "from_carrier": {
+        "carrier_id": "EVT_HELIX_001",
+        "carrier_type": "evt"
+      },
+      "to_carrier": {
+        "carrier_id": "MAIL_HELIX_002",
+        "carrier_type": "mail"
+      },
+      "vector": {
+        "intensity": 0.8264723441860264,
+        "latency": 0,
+        "retry": 0,
+        "routing_shift": 1,
+        "participation_delta": 0,
+        "urgency": 0.8264723441860264,
+        "deadline_pressure": 0.6642424181915012
+      },
+      "primitive_weights": {
+        "coupling": 0,
+        "decoupling": 0,
+        "density": 0,
+        "diffusion": 0.17352765581397356,
+        "delay": 0,
+        "propagation": 0,
+        "drift": 0.6642424181915012
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_HELIXBANK_EUROPE_026",
+      "timestamp": 1778114948914,
+      "source_event": "EVT_HELIXBANK_EUROPE_026",
+      "from_carrier": {
+        "carrier_id": "MAIL_HELIX_002",
+        "carrier_type": "mail"
+      },
+      "to_carrier": {
+        "carrier_id": "EVT_HELIX_001",
+        "carrier_type": "evt"
+      },
+      "vector": {
+        "intensity": 0.6728431726969624,
+        "latency": 0,
+        "retry": 0,
+        "routing_shift": 0,
+        "participation_delta": 0,
+        "urgency": 0.6728431726969624,
+        "deadline_pressure": 0.04543722903472358
+      },
+      "primitive_weights": {
+        "coupling": 0,
+        "decoupling": 0,
+        "density": 0,
+        "diffusion": 0.32715682730303763,
+        "delay": 0,
+        "propagation": 1,
+        "drift": 0
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_HELIXBANK_EUROPE_027",
+      "timestamp": 1778118548914,
+      "source_event": "EVT_HELIXBANK_EUROPE_027",
+      "from_carrier": {
+        "carrier_id": "KPI_HELIX_2026_05",
+        "carrier_type": "kpi"
+      },
+      "to_carrier": {
+        "carrier_id": "MAIL_HELIX_001",
+        "carrier_type": "mail"
+      },
+      "vector": {
+        "intensity": 0.20690909887045494,
+        "latency": 0.3877,
+        "retry": 0,
+        "routing_shift": 0,
+        "participation_delta": 0,
+        "urgency": 0.20690909887045494,
+        "deadline_pressure": 0
+      },
+      "primitive_weights": {
+        "coupling": 0,
+        "decoupling": 0,
+        "density": 0,
+        "diffusion": 0.7930909011295451,
+        "delay": 0.3877,
+        "propagation": 0.6123000000000001,
+        "drift": 0
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_HELIXBANK_EUROPE_028",
+      "timestamp": 1778122148914,
+      "source_event": "EVT_HELIXBANK_EUROPE_028",
+      "from_carrier": {
+        "carrier_id": "KPI_HELIX_2026_05",
+        "carrier_type": "kpi"
+      },
+      "to_carrier": {
+        "carrier_id": "EVT_HELIX_001",
+        "carrier_type": "evt"
+      },
+      "vector": {
+        "intensity": 0.5948370174585287,
+        "latency": 0,
+        "retry": 0,
+        "routing_shift": 0,
+        "participation_delta": 0,
+        "urgency": 0.5948370174585287,
+        "deadline_pressure": 0
+      },
+      "primitive_weights": {
+        "coupling": 0,
+        "decoupling": 0,
+        "density": 0,
+        "diffusion": 0.4051629825414713,
+        "delay": 0,
+        "propagation": 1,
+        "drift": 0
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_HELIXBANK_EUROPE_029",
+      "timestamp": 1778125748914,
+      "source_event": "EVT_HELIXBANK_EUROPE_029",
+      "from_carrier": {
+        "carrier_id": "MAIL_HELIX_002",
+        "carrier_type": "mail"
+      },
+      "to_carrier": {
+        "carrier_id": "EVT_HELIX_001",
+        "carrier_type": "evt"
+      },
+      "vector": {
+        "intensity": 0.9751348208062638,
+        "latency": 0,
+        "retry": 0,
+        "routing_shift": 0,
+        "participation_delta": 0,
+        "urgency": 0.9751348208062638,
+        "deadline_pressure": 0.8907949875262933
+      },
+      "primitive_weights": {
+        "coupling": 0,
+        "decoupling": 0,
+        "density": 0,
+        "diffusion": 0.02486517919373621,
+        "delay": 0,
+        "propagation": 1,
+        "drift": 0
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_HELIXBANK_EUROPE_030",
+      "timestamp": 1778129348914,
+      "source_event": "EVT_HELIXBANK_EUROPE_030",
+      "from_carrier": {
+        "carrier_id": "MAIL_HELIX_001",
+        "carrier_type": "mail"
+      },
+      "to_carrier": {
+        "carrier_id": "KPI_HELIX_2026_05",
+        "carrier_type": "kpi"
+      },
+      "vector": {
+        "intensity": 0.43503864127534886,
+        "latency": 0,
+        "retry": 0,
+        "routing_shift": 0,
+        "participation_delta": 0,
+        "urgency": 0.43503864127534886,
+        "deadline_pressure": 0.48031148733403106
+      },
+      "primitive_weights": {
+        "coupling": 0,
+        "decoupling": 0,
+        "density": 0,
+        "diffusion": 0.5649613587246511,
+        "delay": 0,
+        "propagation": 1,
+        "drift": 0
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_HELIXBANK_EUROPE_031",
+      "timestamp": 1778132948914,
+      "source_event": "EVT_HELIXBANK_EUROPE_031",
+      "from_carrier": {
+        "carrier_id": "MAIL_HELIX_002",
+        "carrier_type": "mail"
+      },
+      "to_carrier": {
+        "carrier_id": "MAIL_HELIX_001",
+        "carrier_type": "mail"
+      },
+      "vector": {
+        "intensity": 0.4695135143281248,
+        "latency": 0,
+        "retry": 0,
+        "routing_shift": 0,
+        "participation_delta": -0.23506219035986886,
+        "urgency": 0.4695135143281248,
+        "deadline_pressure": 0
+      },
+      "primitive_weights": {
+        "coupling": 0,
+        "decoupling": 0.23506219035986886,
+        "density": 0.11036487508152869,
+        "diffusion": 0.405789170393535,
+        "delay": 0,
+        "propagation": 1,
+        "drift": 0
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_HELIXBANK_EUROPE_032",
+      "timestamp": 1778136548914,
+      "source_event": "EVT_HELIXBANK_EUROPE_032",
+      "from_carrier": {
+        "carrier_id": "MAIL_HELIX_002",
+        "carrier_type": "mail"
+      },
+      "to_carrier": {
+        "carrier_id": "MAIL_HELIX_001",
+        "carrier_type": "mail"
+      },
+      "vector": {
+        "intensity": 0.9303035323878082,
+        "latency": 0,
+        "retry": 0.4,
+        "routing_shift": 1,
+        "participation_delta": 0.07479898396603879,
+        "urgency": 0.9303035323878082,
+        "deadline_pressure": 0.3313242574256967
+      },
+      "primitive_weights": {
+        "coupling": 0,
+        "decoupling": 0.4,
+        "density": 0.06958575900262491,
+        "diffusion": 0.06448324264877796,
+        "delay": 0,
+        "propagation": 0,
+        "drift": 0.3313242574256967
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_HELIXBANK_EUROPE_033",
+      "timestamp": 1778140148914,
+      "source_event": "EVT_HELIXBANK_EUROPE_033",
+      "from_carrier": {
+        "carrier_id": "MAIL_HELIX_002",
+        "carrier_type": "mail"
+      },
+      "to_carrier": {
+        "carrier_id": "KPI_HELIX_2026_05",
+        "carrier_type": "kpi"
+      },
+      "vector": {
+        "intensity": 0.3690303512664428,
+        "latency": 0,
+        "retry": 0,
+        "routing_shift": 0,
+        "participation_delta": 0,
+        "urgency": 0.3690303512664428,
+        "deadline_pressure": 0
+      },
+      "primitive_weights": {
+        "coupling": 0,
+        "decoupling": 0,
+        "density": 0,
+        "diffusion": 0.6309696487335572,
+        "delay": 0,
+        "propagation": 1,
+        "drift": 0
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_HELIXBANK_EUROPE_034",
+      "timestamp": 1778143748914,
+      "source_event": "EVT_HELIXBANK_EUROPE_034",
+      "from_carrier": {
+        "carrier_id": "MAIL_HELIX_002",
+        "carrier_type": "mail"
+      },
+      "to_carrier": {
+        "carrier_id": "MAIL_HELIX_001",
+        "carrier_type": "mail"
+      },
+      "vector": {
+        "intensity": 0.22016770298466004,
+        "latency": 0.4578,
+        "retry": 0,
+        "routing_shift": 0,
+        "participation_delta": -0.23935678808235883,
+        "urgency": 0.22016770298466004,
+        "deadline_pressure": 0.9463959284406385
+      },
+      "primitive_weights": {
+        "coupling": 0,
+        "decoupling": 0.23935678808235883,
+        "density": 0.052698634225879,
+        "diffusion": 0.5931741431588601,
+        "delay": 0.4578,
+        "propagation": 0.5422,
+        "drift": 0
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_HELIXBANK_EUROPE_035",
+      "timestamp": 1778147348914,
+      "source_event": "EVT_HELIXBANK_EUROPE_035",
+      "from_carrier": {
+        "carrier_id": "EVT_HELIX_001",
+        "carrier_type": "evt"
+      },
+      "to_carrier": {
+        "carrier_id": "MAIL_HELIX_001",
+        "carrier_type": "mail"
+      },
+      "vector": {
+        "intensity": 0.061548679240363446,
+        "latency": 0,
+        "retry": 0,
+        "routing_shift": 0,
+        "participation_delta": 0,
+        "urgency": 0.061548679240363446,
+        "deadline_pressure": 0
+      },
+      "primitive_weights": {
+        "coupling": 0,
+        "decoupling": 0,
+        "density": 0,
+        "diffusion": 0.9384513207596366,
+        "delay": 0,
+        "propagation": 1,
+        "drift": 0
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_HELIXBANK_EUROPE_036",
+      "timestamp": 1778150948914,
+      "source_event": "EVT_HELIXBANK_EUROPE_036",
+      "from_carrier": {
+        "carrier_id": "MAIL_HELIX_002",
+        "carrier_type": "mail"
+      },
+      "to_carrier": {
+        "carrier_id": "EVT_HELIX_001",
+        "carrier_type": "evt"
+      },
+      "vector": {
+        "intensity": 0.9604760840574904,
+        "latency": 0,
+        "retry": 0,
+        "routing_shift": 0,
+        "participation_delta": 0.5569298278629469,
+        "urgency": 0.9604760840574904,
+        "deadline_pressure": 0
+      },
+      "primitive_weights": {
+        "coupling": 0.5569298278629469,
+        "decoupling": 0,
+        "density": 0.5349177801606154,
+        "diffusion": 0.017511868240178145,
+        "delay": 0,
+        "propagation": 1,
+        "drift": 0
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_HELIXBANK_EUROPE_037",
+      "timestamp": 1778154548914,
+      "source_event": "EVT_HELIXBANK_EUROPE_037",
+      "from_carrier": {
+        "carrier_id": "EVT_HELIX_001",
+        "carrier_type": "evt"
+      },
+      "to_carrier": {
+        "carrier_id": "MAIL_HELIX_002",
+        "carrier_type": "mail"
+      },
+      "vector": {
+        "intensity": 0.09757611646078623,
+        "latency": 0.0291,
+        "retry": 0,
+        "routing_shift": 0,
+        "participation_delta": 0,
+        "urgency": 0.09757611646078623,
+        "deadline_pressure": 0.799956403007358
+      },
+      "primitive_weights": {
+        "coupling": 0,
+        "decoupling": 0,
+        "density": 0,
+        "diffusion": 0.9024238835392138,
+        "delay": 0.0291,
+        "propagation": 0.9709,
+        "drift": 0
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_HELIXBANK_EUROPE_038",
+      "timestamp": 1778158148914,
+      "source_event": "EVT_HELIXBANK_EUROPE_038",
+      "from_carrier": {
+        "carrier_id": "KPI_HELIX_2026_05",
+        "carrier_type": "kpi"
+      },
+      "to_carrier": {
+        "carrier_id": "MAIL_HELIX_002",
+        "carrier_type": "mail"
+      },
+      "vector": {
+        "intensity": 0.9402719980388992,
+        "latency": 0,
+        "retry": 0,
+        "routing_shift": 0,
+        "participation_delta": -0.4245035209416024,
+        "urgency": 0.9402719980388992,
+        "deadline_pressure": 0
+      },
+      "primitive_weights": {
+        "coupling": 0,
+        "decoupling": 0.4245035209416024,
+        "density": 0.3991487738103081,
+        "diffusion": 0.034373254829806604,
+        "delay": 0,
+        "propagation": 1,
+        "drift": 0
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_HELIXBANK_EUROPE_039",
+      "timestamp": 1778161748914,
+      "source_event": "EVT_HELIXBANK_EUROPE_039",
+      "from_carrier": {
+        "carrier_id": "MAIL_HELIX_001",
+        "carrier_type": "mail"
+      },
+      "to_carrier": {
+        "carrier_id": "KPI_HELIX_2026_05",
+        "carrier_type": "kpi"
+      },
+      "vector": {
+        "intensity": 0.6664204019759632,
+        "latency": 0,
+        "retry": 0.2,
+        "routing_shift": 0,
+        "participation_delta": -0.20266324597954988,
+        "urgency": 0.6664204019759632,
+        "deadline_pressure": 0.8200950189396929
+      },
+      "primitive_weights": {
+        "coupling": 0,
+        "decoupling": 0.20266324597954988,
+        "density": 0.13505892185144514,
+        "diffusion": 0.26597527389593206,
+        "delay": 0,
+        "propagation": 0.8,
+        "drift": 0
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_HELIXBANK_EUROPE_040",
+      "timestamp": 1778165348914,
+      "source_event": "EVT_HELIXBANK_EUROPE_040",
+      "from_carrier": {
+        "carrier_id": "KPI_HELIX_2026_05",
+        "carrier_type": "kpi"
+      },
+      "to_carrier": {
+        "carrier_id": "MAIL_HELIX_001",
+        "carrier_type": "mail"
+      },
+      "vector": {
+        "intensity": 0.036418920141067845,
+        "latency": 0,
+        "retry": 0,
+        "routing_shift": 0,
+        "participation_delta": 0,
+        "urgency": 0.036418920141067845,
+        "deadline_pressure": 0
+      },
+      "primitive_weights": {
+        "coupling": 0,
+        "decoupling": 0,
+        "density": 0,
+        "diffusion": 0.9635810798589322,
+        "delay": 0,
+        "propagation": 1,
+        "drift": 0
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_HELIXBANK_EUROPE_041",
+      "timestamp": 1778168948914,
+      "source_event": "EVT_HELIXBANK_EUROPE_041",
+      "from_carrier": {
+        "carrier_id": "KPI_HELIX_2026_05",
+        "carrier_type": "kpi"
+      },
+      "to_carrier": {
+        "carrier_id": "MAIL_HELIX_002",
+        "carrier_type": "mail"
+      },
+      "vector": {
+        "intensity": 0.4353042455713645,
+        "latency": 0,
+        "retry": 0,
+        "routing_shift": 0,
+        "participation_delta": 0,
+        "urgency": 0.4353042455713645,
+        "deadline_pressure": 0.5084109309604228
+      },
+      "primitive_weights": {
+        "coupling": 0,
+        "decoupling": 0,
+        "density": 0,
+        "diffusion": 0.5646957544286355,
+        "delay": 0,
+        "propagation": 1,
+        "drift": 0
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_HELIXBANK_EUROPE_042",
+      "timestamp": 1778172548914,
+      "source_event": "EVT_HELIXBANK_EUROPE_042",
+      "from_carrier": {
+        "carrier_id": "EVT_HELIX_001",
+        "carrier_type": "evt"
+      },
+      "to_carrier": {
+        "carrier_id": "KPI_HELIX_2026_05",
+        "carrier_type": "kpi"
+      },
+      "vector": {
+        "intensity": 0.3306315668168882,
+        "latency": 0,
+        "retry": 0,
+        "routing_shift": 0,
+        "participation_delta": 0,
+        "urgency": 0.3306315668168882,
+        "deadline_pressure": 0
+      },
+      "primitive_weights": {
+        "coupling": 0,
+        "decoupling": 0,
+        "density": 0,
+        "diffusion": 0.6693684331831118,
+        "delay": 0,
+        "propagation": 1,
+        "drift": 0
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_HELIXBANK_EUROPE_043",
+      "timestamp": 1778176148914,
+      "source_event": "EVT_HELIXBANK_EUROPE_043",
+      "from_carrier": {
+        "carrier_id": "EVT_HELIX_001",
+        "carrier_type": "evt"
+      },
+      "to_carrier": {
+        "carrier_id": "KPI_HELIX_2026_05",
+        "carrier_type": "kpi"
+      },
+      "vector": {
+        "intensity": 0.2110667946744067,
+        "latency": 0,
+        "retry": 0,
+        "routing_shift": 0,
+        "participation_delta": 0,
+        "urgency": 0.2110667946744067,
+        "deadline_pressure": 0
+      },
+      "primitive_weights": {
+        "coupling": 0,
+        "decoupling": 0,
+        "density": 0,
+        "diffusion": 0.7889332053255933,
+        "delay": 0,
+        "propagation": 1,
+        "drift": 0
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_HELIXBANK_EUROPE_044",
+      "timestamp": 1778179748914,
+      "source_event": "EVT_HELIXBANK_EUROPE_044",
+      "from_carrier": {
+        "carrier_id": "EVT_HELIX_001",
+        "carrier_type": "evt"
+      },
+      "to_carrier": {
+        "carrier_id": "KPI_HELIX_2026_05",
+        "carrier_type": "kpi"
+      },
+      "vector": {
+        "intensity": 0.6735918947353949,
+        "latency": 0,
+        "retry": 0,
+        "routing_shift": 0,
+        "participation_delta": 0.43114003379269805,
+        "urgency": 0.6735918947353949,
+        "deadline_pressure": 0
+      },
+      "primitive_weights": {
+        "coupling": 0.43114003379269805,
+        "decoupling": 0,
+        "density": 0.29041243225870567,
+        "diffusion": 0.1856805037306127,
+        "delay": 0,
+        "propagation": 1,
+        "drift": 0
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_HELIXBANK_EUROPE_045",
+      "timestamp": 1778183348914,
+      "source_event": "EVT_HELIXBANK_EUROPE_045",
+      "from_carrier": {
+        "carrier_id": "EVT_HELIX_001",
+        "carrier_type": "evt"
+      },
+      "to_carrier": {
+        "carrier_id": "MAIL_HELIX_002",
+        "carrier_type": "mail"
+      },
+      "vector": {
+        "intensity": 0.9784617732651453,
+        "latency": 0,
+        "retry": 0,
+        "routing_shift": 0,
+        "participation_delta": 0,
+        "urgency": 0.9784617732651453,
+        "deadline_pressure": 0
+      },
+      "primitive_weights": {
+        "coupling": 0,
+        "decoupling": 0,
+        "density": 0,
+        "diffusion": 0.021538226734854726,
+        "delay": 0,
+        "propagation": 1,
+        "drift": 0
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_HELIXBANK_EUROPE_046",
+      "timestamp": 1778186948914,
+      "source_event": "EVT_HELIXBANK_EUROPE_046",
+      "from_carrier": {
+        "carrier_id": "MAIL_HELIX_002",
+        "carrier_type": "mail"
+      },
+      "to_carrier": {
+        "carrier_id": "KPI_HELIX_2026_05",
+        "carrier_type": "kpi"
+      },
+      "vector": {
+        "intensity": 0.0023241536785958417,
+        "latency": 0,
+        "retry": 0,
+        "routing_shift": 1,
+        "participation_delta": 0,
+        "urgency": 0.0023241536785958417,
+        "deadline_pressure": 0
+      },
+      "primitive_weights": {
+        "coupling": 0,
+        "decoupling": 0,
+        "density": 0,
+        "diffusion": 0.9976758463214042,
+        "delay": 0,
+        "propagation": 0,
+        "drift": 0
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_HELIXBANK_EUROPE_047",
+      "timestamp": 1778190548914,
+      "source_event": "EVT_HELIXBANK_EUROPE_047",
+      "from_carrier": {
+        "carrier_id": "KPI_HELIX_2026_05",
+        "carrier_type": "kpi"
+      },
+      "to_carrier": {
+        "carrier_id": "MAIL_HELIX_001",
+        "carrier_type": "mail"
+      },
+      "vector": {
+        "intensity": 0.6435645515842023,
+        "latency": 0.2683,
+        "retry": 0.6,
+        "routing_shift": 0,
+        "participation_delta": 0,
+        "urgency": 0.6435645515842023,
+        "deadline_pressure": 0.7131209064190329
+      },
+      "primitive_weights": {
+        "coupling": 0,
+        "decoupling": 0.6,
+        "density": 0,
+        "diffusion": 0.35643544841579766,
+        "delay": 0.42928,
+        "propagation": 0.29268,
+        "drift": 0
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_HELIXBANK_EUROPE_048",
+      "timestamp": 1778194148914,
+      "source_event": "EVT_HELIXBANK_EUROPE_048",
+      "from_carrier": {
+        "carrier_id": "EVT_HELIX_001",
+        "carrier_type": "evt"
+      },
+      "to_carrier": {
+        "carrier_id": "KPI_HELIX_2026_05",
+        "carrier_type": "kpi"
+      },
+      "vector": {
+        "intensity": 0.5272862224477697,
+        "latency": 0,
+        "retry": 0.4,
+        "routing_shift": 0,
+        "participation_delta": -0.05377529061823294,
+        "urgency": 0.5272862224477697,
+        "deadline_pressure": 0.6706253065607557
+      },
+      "primitive_weights": {
+        "coupling": 0,
+        "decoupling": 0.4,
+        "density": 0.028354969851119037,
+        "diffusion": 0.4472934567851164,
+        "delay": 0,
+        "propagation": 0.6,
+        "drift": 0
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_HELIXBANK_EUROPE_049",
+      "timestamp": 1778197748914,
+      "source_event": "EVT_HELIXBANK_EUROPE_049",
+      "from_carrier": {
+        "carrier_id": "EVT_HELIX_001",
+        "carrier_type": "evt"
+      },
+      "to_carrier": {
+        "carrier_id": "KPI_HELIX_2026_05",
+        "carrier_type": "kpi"
+      },
+      "vector": {
+        "intensity": 0.47948192558109026,
+        "latency": 0.2808,
+        "retry": 0.4,
+        "routing_shift": 1,
+        "participation_delta": 0.7586860497342571,
+        "urgency": 0.47948192558109026,
+        "deadline_pressure": 0.22293873262302522
+      },
+      "primitive_weights": {
+        "coupling": 0,
+        "decoupling": 0.4,
+        "density": 0.36377624803809244,
+        "diffusion": 0.12560827272274502,
+        "delay": 0.39311999999999997,
+        "propagation": 0,
+        "drift": 0.22293873262302522
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_HELIXBANK_EUROPE_050",
+      "timestamp": 1778201348914,
+      "source_event": "EVT_HELIXBANK_EUROPE_050",
+      "from_carrier": {
+        "carrier_id": "MAIL_HELIX_002",
+        "carrier_type": "mail"
+      },
+      "to_carrier": {
+        "carrier_id": "KPI_HELIX_2026_05",
+        "carrier_type": "kpi"
+      },
+      "vector": {
+        "intensity": 0.5357615521100529,
+        "latency": 0.0448,
+        "retry": 0,
+        "routing_shift": 0,
+        "participation_delta": 0,
+        "urgency": 0.5357615521100529,
+        "deadline_pressure": 0.5644720764052666
+      },
+      "primitive_weights": {
+        "coupling": 0,
+        "decoupling": 0,
+        "density": 0,
+        "diffusion": 0.46423844788994706,
+        "delay": 0.0448,
+        "propagation": 0.9552,
+        "drift": 0
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_HELIXBANK_EUROPE_051",
+      "timestamp": 1778204948914,
+      "source_event": "EVT_HELIXBANK_EUROPE_051",
+      "from_carrier": {
+        "carrier_id": "EVT_HELIX_001",
+        "carrier_type": "evt"
+      },
+      "to_carrier": {
+        "carrier_id": "MAIL_HELIX_002",
+        "carrier_type": "mail"
+      },
+      "vector": {
+        "intensity": 0.8793346692712722,
+        "latency": 0.0827,
+        "retry": 0.4,
+        "routing_shift": 1,
+        "participation_delta": 0,
+        "urgency": 0.8793346692712722,
+        "deadline_pressure": 0
+      },
+      "primitive_weights": {
+        "coupling": 0,
+        "decoupling": 0.4,
+        "density": 0,
+        "diffusion": 0.12066533072872776,
+        "delay": 0.11577999999999998,
+        "propagation": 0,
+        "drift": 0
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_HELIXBANK_EUROPE_052",
+      "timestamp": 1778208548914,
+      "source_event": "EVT_HELIXBANK_EUROPE_052",
+      "from_carrier": {
+        "carrier_id": "MAIL_HELIX_001",
+        "carrier_type": "mail"
+      },
+      "to_carrier": {
+        "carrier_id": "MAIL_HELIX_002",
+        "carrier_type": "mail"
+      },
+      "vector": {
+        "intensity": 0.25246975934846505,
+        "latency": 0,
+        "retry": 0,
+        "routing_shift": 1,
+        "participation_delta": 0.5467388425908206,
+        "urgency": 0.25246975934846505,
+        "deadline_pressure": 0
+      },
+      "primitive_weights": {
+        "coupling": 0,
+        "decoupling": 0,
+        "density": 0.1380350240153628,
+        "diffusion": 0.3388264220760771,
+        "delay": 0,
+        "propagation": 0,
+        "drift": 0
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_HELIXBANK_EUROPE_053",
+      "timestamp": 1778212148914,
+      "source_event": "EVT_HELIXBANK_EUROPE_053",
+      "from_carrier": {
+        "carrier_id": "KPI_HELIX_2026_05",
+        "carrier_type": "kpi"
+      },
+      "to_carrier": {
+        "carrier_id": "EVT_HELIX_001",
+        "carrier_type": "evt"
+      },
+      "vector": {
+        "intensity": 0.8305031219559129,
+        "latency": 0,
+        "retry": 0.6,
+        "routing_shift": 0,
+        "participation_delta": 0.3743516143048269,
+        "urgency": 0.8305031219559129,
+        "deadline_pressure": 0
+      },
+      "primitive_weights": {
+        "coupling": 0.14974064572193077,
+        "decoupling": 0.6,
+        "density": 0.31090018438939454,
+        "diffusion": 0.10604544812865471,
+        "delay": 0,
+        "propagation": 0.4,
+        "drift": 0
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_HELIXBANK_EUROPE_054",
+      "timestamp": 1778215748914,
+      "source_event": "EVT_HELIXBANK_EUROPE_054",
+      "from_carrier": {
+        "carrier_id": "MAIL_HELIX_001",
+        "carrier_type": "mail"
+      },
+      "to_carrier": {
+        "carrier_id": "EVT_HELIX_001",
+        "carrier_type": "evt"
+      },
+      "vector": {
+        "intensity": 0.06874422426094551,
+        "latency": 0,
+        "retry": 0.6,
+        "routing_shift": 0,
+        "participation_delta": 0,
+        "urgency": 0.06874422426094551,
+        "deadline_pressure": 0
+      },
+      "primitive_weights": {
+        "coupling": 0,
+        "decoupling": 0.6,
+        "density": 0,
+        "diffusion": 0.9312557757390545,
+        "delay": 0,
+        "propagation": 0.4,
+        "drift": 0
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_HELIXBANK_EUROPE_055",
+      "timestamp": 1778219348914,
+      "source_event": "EVT_HELIXBANK_EUROPE_055",
+      "from_carrier": {
+        "carrier_id": "MAIL_HELIX_001",
+        "carrier_type": "mail"
+      },
+      "to_carrier": {
+        "carrier_id": "MAIL_HELIX_002",
+        "carrier_type": "mail"
+      },
+      "vector": {
+        "intensity": 0.33213378567093566,
+        "latency": 0.1181,
+        "retry": 0,
+        "routing_shift": 0,
+        "participation_delta": 0,
+        "urgency": 0.33213378567093566,
+        "deadline_pressure": 0
+      },
+      "primitive_weights": {
+        "coupling": 0,
+        "decoupling": 0,
+        "density": 0,
+        "diffusion": 0.6678662143290643,
+        "delay": 0.1181,
+        "propagation": 0.8819,
+        "drift": 0
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_HELIXBANK_EUROPE_056",
+      "timestamp": 1778222948914,
+      "source_event": "EVT_HELIXBANK_EUROPE_056",
+      "from_carrier": {
+        "carrier_id": "EVT_HELIX_001",
+        "carrier_type": "evt"
+      },
+      "to_carrier": {
+        "carrier_id": "MAIL_HELIX_001",
+        "carrier_type": "mail"
+      },
+      "vector": {
+        "intensity": 0.26898246313039476,
+        "latency": 0,
+        "retry": 0,
+        "routing_shift": 0,
+        "participation_delta": 0,
+        "urgency": 0.26898246313039476,
+        "deadline_pressure": 0.8540521111253616
+      },
+      "primitive_weights": {
+        "coupling": 0,
+        "decoupling": 0,
+        "density": 0,
+        "diffusion": 0.7310175368696052,
+        "delay": 0,
+        "propagation": 1,
+        "drift": 0
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_HELIXBANK_EUROPE_057",
+      "timestamp": 1778226548914,
+      "source_event": "EVT_HELIXBANK_EUROPE_057",
+      "from_carrier": {
+        "carrier_id": "EVT_HELIX_001",
+        "carrier_type": "evt"
+      },
+      "to_carrier": {
+        "carrier_id": "KPI_HELIX_2026_05",
+        "carrier_type": "kpi"
+      },
+      "vector": {
+        "intensity": 0.3798581537076615,
+        "latency": 0,
+        "retry": 0.4,
+        "routing_shift": 0,
+        "participation_delta": 0,
+        "urgency": 0.3798581537076615,
+        "deadline_pressure": 0
+      },
+      "primitive_weights": {
+        "coupling": 0,
+        "decoupling": 0.4,
+        "density": 0,
+        "diffusion": 0.6201418462923385,
+        "delay": 0,
+        "propagation": 0.6,
+        "drift": 0
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_HELIXBANK_EUROPE_058",
+      "timestamp": 1778230148914,
+      "source_event": "EVT_HELIXBANK_EUROPE_058",
+      "from_carrier": {
+        "carrier_id": "MAIL_HELIX_001",
+        "carrier_type": "mail"
+      },
+      "to_carrier": {
+        "carrier_id": "MAIL_HELIX_002",
+        "carrier_type": "mail"
+      },
+      "vector": {
+        "intensity": 0.818661808828647,
+        "latency": 0,
+        "retry": 0,
+        "routing_shift": 1,
+        "participation_delta": -0.9737074361634956,
+        "urgency": 0.818661808828647,
+        "deadline_pressure": 0.8790482132149082
+      },
+      "primitive_weights": {
+        "coupling": 0,
+        "decoupling": 0.9737074361634956,
+        "density": 0.7971370909595117,
+        "diffusion": 0.004767845967369028,
+        "delay": 0,
+        "propagation": 0,
+        "drift": 0.8790482132149082
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_HELIXBANK_EUROPE_059",
+      "timestamp": 1778233748914,
+      "source_event": "EVT_HELIXBANK_EUROPE_059",
+      "from_carrier": {
+        "carrier_id": "EVT_HELIX_001",
+        "carrier_type": "evt"
+      },
+      "to_carrier": {
+        "carrier_id": "KPI_HELIX_2026_05",
+        "carrier_type": "kpi"
+      },
+      "vector": {
+        "intensity": 0.2383106057650557,
+        "latency": 0,
+        "retry": 0,
+        "routing_shift": 0,
+        "participation_delta": 0,
+        "urgency": 0.2383106057650557,
+        "deadline_pressure": 0
+      },
+      "primitive_weights": {
+        "coupling": 0,
+        "decoupling": 0,
+        "density": 0,
+        "diffusion": 0.7616893942349443,
+        "delay": 0,
+        "propagation": 1,
+        "drift": 0
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_HELIXBANK_EUROPE_060",
+      "timestamp": 1778237348914,
+      "source_event": "EVT_HELIXBANK_EUROPE_060",
+      "from_carrier": {
+        "carrier_id": "MAIL_HELIX_001",
+        "carrier_type": "mail"
+      },
+      "to_carrier": {
+        "carrier_id": "MAIL_HELIX_002",
+        "carrier_type": "mail"
+      },
+      "vector": {
+        "intensity": 0.294636178612661,
+        "latency": 0,
+        "retry": 0.4,
+        "routing_shift": 0,
+        "participation_delta": 0.42969019271840514,
+        "urgency": 0.294636178612661,
+        "deadline_pressure": 0.26099833508314685
+      },
+      "primitive_weights": {
+        "coupling": 0.25781411563104306,
+        "decoupling": 0.4,
+        "density": 0.12660227636988874,
+        "diffusion": 0.4022759050388226,
+        "delay": 0,
+        "propagation": 0.6,
+        "drift": 0
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_HELIXBANK_EUROPE_061",
+      "timestamp": 1778240948914,
+      "source_event": "EVT_HELIXBANK_EUROPE_061",
+      "from_carrier": {
+        "carrier_id": "EVT_HELIX_001",
+        "carrier_type": "evt"
+      },
+      "to_carrier": {
+        "carrier_id": "MAIL_HELIX_002",
+        "carrier_type": "mail"
+      },
+      "vector": {
+        "intensity": 0.758180713485548,
+        "latency": 0,
+        "retry": 0,
+        "routing_shift": 0,
+        "participation_delta": 0,
+        "urgency": 0.758180713485548,
+        "deadline_pressure": 0
+      },
+      "primitive_weights": {
+        "coupling": 0,
+        "decoupling": 0,
+        "density": 0,
+        "diffusion": 0.24181928651445195,
+        "delay": 0,
+        "propagation": 1,
+        "drift": 0
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_HELIXBANK_EUROPE_062",
+      "timestamp": 1778244548914,
+      "source_event": "EVT_HELIXBANK_EUROPE_062",
+      "from_carrier": {
+        "carrier_id": "MAIL_HELIX_002",
+        "carrier_type": "mail"
+      },
+      "to_carrier": {
+        "carrier_id": "KPI_HELIX_2026_05",
+        "carrier_type": "kpi"
+      },
+      "vector": {
+        "intensity": 0.2712043615867803,
+        "latency": 0.4985,
+        "retry": 0,
+        "routing_shift": 0,
+        "participation_delta": -0.33774331135672586,
+        "urgency": 0.2712043615867803,
+        "deadline_pressure": 0
+      },
+      "primitive_weights": {
+        "coupling": 0,
+        "decoupling": 0.33774331135672586,
+        "density": 0.091597459136706,
+        "diffusion": 0.48264978619319987,
+        "delay": 0.4985,
+        "propagation": 0.5015000000000001,
+        "drift": 0
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_HELIXBANK_EUROPE_063",
+      "timestamp": 1778248148914,
+      "source_event": "EVT_HELIXBANK_EUROPE_063",
+      "from_carrier": {
+        "carrier_id": "EVT_HELIX_001",
+        "carrier_type": "evt"
+      },
+      "to_carrier": {
+        "carrier_id": "KPI_HELIX_2026_05",
+        "carrier_type": "kpi"
+      },
+      "vector": {
+        "intensity": 0.24663872362238992,
+        "latency": 0,
+        "retry": 0,
+        "routing_shift": 0,
+        "participation_delta": 0,
+        "urgency": 0.24663872362238992,
+        "deadline_pressure": 0
+      },
+      "primitive_weights": {
+        "coupling": 0,
+        "decoupling": 0,
+        "density": 0,
+        "diffusion": 0.7533612763776101,
+        "delay": 0,
+        "propagation": 1,
+        "drift": 0
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_HELIXBANK_EUROPE_064",
+      "timestamp": 1778251748914,
+      "source_event": "EVT_HELIXBANK_EUROPE_064",
+      "from_carrier": {
+        "carrier_id": "MAIL_HELIX_001",
+        "carrier_type": "mail"
+      },
+      "to_carrier": {
+        "carrier_id": "KPI_HELIX_2026_05",
+        "carrier_type": "kpi"
+      },
+      "vector": {
+        "intensity": 0.6237913849877252,
+        "latency": 0,
+        "retry": 0,
+        "routing_shift": 1,
+        "participation_delta": 0,
+        "urgency": 0.6237913849877252,
+        "deadline_pressure": 0
+      },
+      "primitive_weights": {
+        "coupling": 0,
+        "decoupling": 0,
+        "density": 0,
+        "diffusion": 0.37620861501227476,
+        "delay": 0,
+        "propagation": 0,
+        "drift": 0
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_HELIXBANK_EUROPE_065",
+      "timestamp": 1778255348914,
+      "source_event": "EVT_HELIXBANK_EUROPE_065",
+      "from_carrier": {
+        "carrier_id": "MAIL_HELIX_002",
+        "carrier_type": "mail"
+      },
+      "to_carrier": {
+        "carrier_id": "KPI_HELIX_2026_05",
+        "carrier_type": "kpi"
+      },
+      "vector": {
+        "intensity": 0.09584292043037035,
+        "latency": 0,
+        "retry": 0.2,
+        "routing_shift": 0,
+        "participation_delta": -0.46447892101491206,
+        "urgency": 0.09584292043037035,
+        "deadline_pressure": 0
+      },
+      "primitive_weights": {
+        "coupling": 0,
+        "decoupling": 0.46447892101491206,
+        "density": 0.04451701626841649,
+        "diffusion": 0.48419517482313407,
+        "delay": 0,
+        "propagation": 0.8,
+        "drift": 0
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_HELIXBANK_EUROPE_066",
+      "timestamp": 1778258948914,
+      "source_event": "EVT_HELIXBANK_EUROPE_066",
+      "from_carrier": {
+        "carrier_id": "EVT_HELIX_001",
+        "carrier_type": "evt"
+      },
+      "to_carrier": {
+        "carrier_id": "MAIL_HELIX_002",
+        "carrier_type": "mail"
+      },
+      "vector": {
+        "intensity": 0.20825361867278125,
+        "latency": 0,
+        "retry": 0,
+        "routing_shift": 0,
+        "participation_delta": 0.037121323739914835,
+        "urgency": 0.20825361867278125,
+        "deadline_pressure": 0
+      },
+      "primitive_weights": {
+        "coupling": 0.037121323739914835,
+        "decoupling": 0,
+        "density": 0.007730649998761086,
+        "diffusion": 0.762355707586065,
+        "delay": 0,
+        "propagation": 1,
+        "drift": 0
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_HELIXBANK_EUROPE_067",
+      "timestamp": 1778262548914,
+      "source_event": "EVT_HELIXBANK_EUROPE_067",
+      "from_carrier": {
+        "carrier_id": "KPI_HELIX_2026_05",
+        "carrier_type": "kpi"
+      },
+      "to_carrier": {
+        "carrier_id": "MAIL_HELIX_001",
+        "carrier_type": "mail"
+      },
+      "vector": {
+        "intensity": 0.04532281409260386,
+        "latency": 0,
+        "retry": 0.4,
+        "routing_shift": 0,
+        "participation_delta": -0.30683030195225136,
+        "urgency": 0.04532281409260386,
+        "deadline_pressure": 0
+      },
+      "primitive_weights": {
+        "coupling": 0,
+        "decoupling": 0.4,
+        "density": 0.013906412733359396,
+        "diffusion": 0.6617532966885041,
+        "delay": 0,
+        "propagation": 0.6,
+        "drift": 0
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_HELIXBANK_EUROPE_068",
+      "timestamp": 1778266148914,
+      "source_event": "EVT_HELIXBANK_EUROPE_068",
+      "from_carrier": {
+        "carrier_id": "MAIL_HELIX_002",
+        "carrier_type": "mail"
+      },
+      "to_carrier": {
+        "carrier_id": "KPI_HELIX_2026_05",
+        "carrier_type": "kpi"
+      },
+      "vector": {
+        "intensity": 0.0058272735895692485,
+        "latency": 0,
+        "retry": 0,
+        "routing_shift": 0,
+        "participation_delta": 0,
+        "urgency": 0.0058272735895692485,
+        "deadline_pressure": 0
+      },
+      "primitive_weights": {
+        "coupling": 0,
+        "decoupling": 0,
+        "density": 0,
+        "diffusion": 0.9941727264104308,
+        "delay": 0,
+        "propagation": 1,
+        "drift": 0
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_HELIXBANK_EUROPE_069",
+      "timestamp": 1778269748914,
+      "source_event": "EVT_HELIXBANK_EUROPE_069",
+      "from_carrier": {
+        "carrier_id": "KPI_HELIX_2026_05",
+        "carrier_type": "kpi"
+      },
+      "to_carrier": {
+        "carrier_id": "EVT_HELIX_001",
+        "carrier_type": "evt"
+      },
+      "vector": {
+        "intensity": 0.012511281600175561,
+        "latency": 0.0195,
+        "retry": 0,
+        "routing_shift": 0,
+        "participation_delta": 0,
+        "urgency": 0.012511281600175561,
+        "deadline_pressure": 0.34288508074058144
+      },
+      "primitive_weights": {
+        "coupling": 0,
+        "decoupling": 0,
+        "density": 0,
+        "diffusion": 0.9874887183998244,
+        "delay": 0.0195,
+        "propagation": 0.9805,
+        "drift": 0
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_HELIXBANK_EUROPE_070",
+      "timestamp": 1778273348914,
+      "source_event": "EVT_HELIXBANK_EUROPE_070",
+      "from_carrier": {
+        "carrier_id": "EVT_HELIX_001",
+        "carrier_type": "evt"
+      },
+      "to_carrier": {
+        "carrier_id": "MAIL_HELIX_002",
+        "carrier_type": "mail"
+      },
+      "vector": {
+        "intensity": 0.05034752894037253,
+        "latency": 0,
+        "retry": 0,
+        "routing_shift": 1,
+        "participation_delta": 0.22570246305430564,
+        "urgency": 0.05034752894037253,
+        "deadline_pressure": 0
+      },
+      "primitive_weights": {
+        "coupling": 0,
+        "decoupling": 0,
+        "density": 0.011363561290540015,
+        "diffusion": 0.7353135692958619,
+        "delay": 0,
+        "propagation": 0,
+        "drift": 0
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_HELIXBANK_EUROPE_071",
+      "timestamp": 1778276948914,
+      "source_event": "EVT_HELIXBANK_EUROPE_071",
+      "from_carrier": {
+        "carrier_id": "MAIL_HELIX_002",
+        "carrier_type": "mail"
+      },
+      "to_carrier": {
+        "carrier_id": "KPI_HELIX_2026_05",
+        "carrier_type": "kpi"
+      },
+      "vector": {
+        "intensity": 0.5052054548161227,
+        "latency": 0.0384,
+        "retry": 0,
+        "routing_shift": 0,
+        "participation_delta": 0,
+        "urgency": 0.5052054548161227,
+        "deadline_pressure": 0
+      },
+      "primitive_weights": {
+        "coupling": 0,
+        "decoupling": 0,
+        "density": 0,
+        "diffusion": 0.49479454518387733,
+        "delay": 0.0384,
+        "propagation": 0.9616,
+        "drift": 0
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_HELIXBANK_EUROPE_072",
+      "timestamp": 1778280548914,
+      "source_event": "EVT_HELIXBANK_EUROPE_072",
+      "from_carrier": {
+        "carrier_id": "MAIL_HELIX_002",
+        "carrier_type": "mail"
+      },
+      "to_carrier": {
+        "carrier_id": "MAIL_HELIX_001",
+        "carrier_type": "mail"
+      },
+      "vector": {
+        "intensity": 0.9346960362946659,
+        "latency": 0,
+        "retry": 0,
+        "routing_shift": 0,
+        "participation_delta": 0,
+        "urgency": 0.9346960362946659,
+        "deadline_pressure": 0.6097596520618884
+      },
+      "primitive_weights": {
+        "coupling": 0,
+        "decoupling": 0,
+        "density": 0,
+        "diffusion": 0.06530396370533409,
+        "delay": 0,
+        "propagation": 1,
+        "drift": 0
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_HELIXBANK_EUROPE_073",
+      "timestamp": 1778284148914,
+      "source_event": "EVT_HELIXBANK_EUROPE_073",
+      "from_carrier": {
+        "carrier_id": "KPI_HELIX_2026_05",
+        "carrier_type": "kpi"
+      },
+      "to_carrier": {
+        "carrier_id": "MAIL_HELIX_001",
+        "carrier_type": "mail"
+      },
+      "vector": {
+        "intensity": 0.8838573965120202,
+        "latency": 0,
+        "retry": 0.2,
+        "routing_shift": 0,
+        "participation_delta": 0,
+        "urgency": 0.8838573965120202,
+        "deadline_pressure": 0
+      },
+      "primitive_weights": {
+        "coupling": 0,
+        "decoupling": 0.2,
+        "density": 0,
+        "diffusion": 0.11614260348797978,
+        "delay": 0,
+        "propagation": 0.8,
+        "drift": 0
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_HELIXBANK_EUROPE_074",
+      "timestamp": 1778287748914,
+      "source_event": "EVT_HELIXBANK_EUROPE_074",
+      "from_carrier": {
+        "carrier_id": "EVT_HELIX_001",
+        "carrier_type": "evt"
+      },
+      "to_carrier": {
+        "carrier_id": "MAIL_HELIX_002",
+        "carrier_type": "mail"
+      },
+      "vector": {
+        "intensity": 0.20589546671074377,
+        "latency": 0,
+        "retry": 0.4,
+        "routing_shift": 0,
+        "participation_delta": 0,
+        "urgency": 0.20589546671074377,
+        "deadline_pressure": 0
+      },
+      "primitive_weights": {
+        "coupling": 0,
+        "decoupling": 0.4,
+        "density": 0,
+        "diffusion": 0.7941045332892562,
+        "delay": 0,
+        "propagation": 0.6,
+        "drift": 0
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_HELIXBANK_EUROPE_075",
+      "timestamp": 1778291348914,
+      "source_event": "EVT_HELIXBANK_EUROPE_075",
+      "from_carrier": {
+        "carrier_id": "MAIL_HELIX_001",
+        "carrier_type": "mail"
+      },
+      "to_carrier": {
+        "carrier_id": "KPI_HELIX_2026_05",
+        "carrier_type": "kpi"
+      },
+      "vector": {
+        "intensity": 0.9423107222581515,
+        "latency": 0,
+        "retry": 0,
+        "routing_shift": 0,
+        "participation_delta": 0,
+        "urgency": 0.9423107222581515,
+        "deadline_pressure": 0
+      },
+      "primitive_weights": {
+        "coupling": 0,
+        "decoupling": 0,
+        "density": 0,
+        "diffusion": 0.05768927774184851,
+        "delay": 0,
+        "propagation": 1,
+        "drift": 0
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_HELIXBANK_EUROPE_076",
+      "timestamp": 1778294948914,
+      "source_event": "EVT_HELIXBANK_EUROPE_076",
+      "from_carrier": {
+        "carrier_id": "KPI_HELIX_2026_05",
+        "carrier_type": "kpi"
+      },
+      "to_carrier": {
+        "carrier_id": "EVT_HELIX_001",
+        "carrier_type": "evt"
+      },
+      "vector": {
+        "intensity": 0.8054509331516602,
+        "latency": 0,
+        "retry": 0,
+        "routing_shift": 0,
+        "participation_delta": -0.9062394466016559,
+        "urgency": 0.8054509331516602,
+        "deadline_pressure": 0
+      },
+      "primitive_weights": {
+        "coupling": 0,
+        "decoupling": 0.9062394466016559,
+        "density": 0.7299314079241478,
+        "diffusion": 0.018241028170831782,
+        "delay": 0,
+        "propagation": 1,
+        "drift": 0
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_HELIXBANK_EUROPE_077",
+      "timestamp": 1778298548914,
+      "source_event": "EVT_HELIXBANK_EUROPE_077",
+      "from_carrier": {
+        "carrier_id": "EVT_HELIX_001",
+        "carrier_type": "evt"
+      },
+      "to_carrier": {
+        "carrier_id": "KPI_HELIX_2026_05",
+        "carrier_type": "kpi"
+      },
+      "vector": {
+        "intensity": 0.27742755132960917,
+        "latency": 0.5879,
+        "retry": 0,
+        "routing_shift": 0,
+        "participation_delta": 0,
+        "urgency": 0.27742755132960917,
+        "deadline_pressure": 0.450555175931181
+      },
+      "primitive_weights": {
+        "coupling": 0,
+        "decoupling": 0,
+        "density": 0,
+        "diffusion": 0.7225724486703908,
+        "delay": 0.5879,
+        "propagation": 0.4121,
+        "drift": 0
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_HELIXBANK_EUROPE_078",
+      "timestamp": 1778302148914,
+      "source_event": "EVT_HELIXBANK_EUROPE_078",
+      "from_carrier": {
+        "carrier_id": "MAIL_HELIX_001",
+        "carrier_type": "mail"
+      },
+      "to_carrier": {
+        "carrier_id": "KPI_HELIX_2026_05",
+        "carrier_type": "kpi"
+      },
+      "vector": {
+        "intensity": 0.8719929022034252,
+        "latency": 0,
+        "retry": 0,
+        "routing_shift": 0,
+        "participation_delta": -0.9858453827669598,
+        "urgency": 0.8719929022034252,
+        "deadline_pressure": 0
+      },
+      "primitive_weights": {
+        "coupling": 0,
+        "decoupling": 0.9858453827669598,
+        "density": 0.8596501764428078,
+        "diffusion": 0.0018118914724228647,
+        "delay": 0,
+        "propagation": 1,
+        "drift": 0
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_HELIXBANK_EUROPE_079",
+      "timestamp": 1778305748914,
+      "source_event": "EVT_HELIXBANK_EUROPE_079",
+      "from_carrier": {
+        "carrier_id": "EVT_HELIX_001",
+        "carrier_type": "evt"
+      },
+      "to_carrier": {
+        "carrier_id": "MAIL_HELIX_002",
+        "carrier_type": "mail"
+      },
+      "vector": {
+        "intensity": 0.762251382256276,
+        "latency": 0.5445,
+        "retry": 0.4,
+        "routing_shift": 0,
+        "participation_delta": 0,
+        "urgency": 0.762251382256276,
+        "deadline_pressure": 0
+      },
+      "primitive_weights": {
+        "coupling": 0,
+        "decoupling": 0.4,
+        "density": 0,
+        "diffusion": 0.23774861774372402,
+        "delay": 0.7623,
+        "propagation": 0.2733,
+        "drift": 0
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_HELIXBANK_EUROPE_080",
+      "timestamp": 1778309348914,
+      "source_event": "EVT_HELIXBANK_EUROPE_080",
+      "from_carrier": {
+        "carrier_id": "KPI_HELIX_2026_05",
+        "carrier_type": "kpi"
+      },
+      "to_carrier": {
+        "carrier_id": "MAIL_HELIX_002",
+        "carrier_type": "mail"
+      },
+      "vector": {
+        "intensity": 0.4502275318322002,
+        "latency": 0,
+        "retry": 0,
+        "routing_shift": 0,
+        "participation_delta": -0.5467613153103956,
+        "urgency": 0.4502275318322002,
+        "deadline_pressure": 0
+      },
+      "primitive_weights": {
+        "coupling": 0,
+        "decoupling": 0.5467613153103956,
+        "density": 0.2461669974935268,
+        "diffusion": 0.24917815035093097,
+        "delay": 0,
+        "propagation": 1,
+        "drift": 0
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_HELIXBANK_EUROPE_081",
+      "timestamp": 1778312948914,
+      "source_event": "EVT_HELIXBANK_EUROPE_081",
+      "from_carrier": {
+        "carrier_id": "KPI_HELIX_2026_05",
+        "carrier_type": "kpi"
+      },
+      "to_carrier": {
+        "carrier_id": "MAIL_HELIX_002",
+        "carrier_type": "mail"
+      },
+      "vector": {
+        "intensity": 0.10336105305509657,
+        "latency": 0.4373,
+        "retry": 0.2,
+        "routing_shift": 1,
+        "participation_delta": 0,
+        "urgency": 0.10336105305509657,
+        "deadline_pressure": 0
+      },
+      "primitive_weights": {
+        "coupling": 0,
+        "decoupling": 0.2,
+        "density": 0,
+        "diffusion": 0.8966389469449034,
+        "delay": 0.52476,
+        "propagation": 0,
+        "drift": 0
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_HELIXBANK_EUROPE_082",
+      "timestamp": 1778316548914,
+      "source_event": "EVT_HELIXBANK_EUROPE_082",
+      "from_carrier": {
+        "carrier_id": "KPI_HELIX_2026_05",
+        "carrier_type": "kpi"
+      },
+      "to_carrier": {
+        "carrier_id": "MAIL_HELIX_002",
+        "carrier_type": "mail"
+      },
+      "vector": {
+        "intensity": 0.9165385378673305,
+        "latency": 0,
+        "retry": 0,
+        "routing_shift": 1,
+        "participation_delta": 0,
+        "urgency": 0.9165385378673305,
+        "deadline_pressure": 0
+      },
+      "primitive_weights": {
+        "coupling": 0,
+        "decoupling": 0,
+        "density": 0,
+        "diffusion": 0.08346146213266947,
+        "delay": 0,
+        "propagation": 0,
+        "drift": 0
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_HELIXBANK_EUROPE_083",
+      "timestamp": 1778320148914,
+      "source_event": "EVT_HELIXBANK_EUROPE_083",
+      "from_carrier": {
+        "carrier_id": "EVT_HELIX_001",
+        "carrier_type": "evt"
+      },
+      "to_carrier": {
+        "carrier_id": "KPI_HELIX_2026_05",
+        "carrier_type": "kpi"
+      },
+      "vector": {
+        "intensity": 0.22248017903499395,
+        "latency": 0,
+        "retry": 0,
+        "routing_shift": 0,
+        "participation_delta": -0.5375859076313945,
+        "urgency": 0.22248017903499395,
+        "deadline_pressure": 0
+      },
+      "primitive_weights": {
+        "coupling": 0,
+        "decoupling": 0.5375859076313945,
+        "density": 0.11960220897652236,
+        "diffusion": 0.35953612231013393,
+        "delay": 0,
+        "propagation": 1,
+        "drift": 0
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_HELIXBANK_EUROPE_084",
+      "timestamp": 1778323748914,
+      "source_event": "EVT_HELIXBANK_EUROPE_084",
+      "from_carrier": {
+        "carrier_id": "KPI_HELIX_2026_05",
+        "carrier_type": "kpi"
+      },
+      "to_carrier": {
+        "carrier_id": "EVT_HELIX_001",
+        "carrier_type": "evt"
+      },
+      "vector": {
+        "intensity": 0.5884243516142746,
+        "latency": 0.2292,
+        "retry": 0.2,
+        "routing_shift": 0,
+        "participation_delta": 0,
+        "urgency": 0.5884243516142746,
+        "deadline_pressure": 0
+      },
+      "primitive_weights": {
+        "coupling": 0,
+        "decoupling": 0.2,
+        "density": 0,
+        "diffusion": 0.41157564838572536,
+        "delay": 0.27503999999999995,
+        "propagation": 0.6166400000000001,
+        "drift": 0
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_HELIXBANK_EUROPE_085",
+      "timestamp": 1778327348914,
+      "source_event": "EVT_HELIXBANK_EUROPE_085",
+      "from_carrier": {
+        "carrier_id": "KPI_HELIX_2026_05",
+        "carrier_type": "kpi"
+      },
+      "to_carrier": {
+        "carrier_id": "MAIL_HELIX_002",
+        "carrier_type": "mail"
+      },
+      "vector": {
+        "intensity": 0.29374666092875645,
+        "latency": 0,
+        "retry": 0,
+        "routing_shift": 0,
+        "participation_delta": 0,
+        "urgency": 0.29374666092875645,
+        "deadline_pressure": 0.1156930224016719
+      },
+      "primitive_weights": {
+        "coupling": 0,
+        "decoupling": 0,
+        "density": 0,
+        "diffusion": 0.7062533390712435,
+        "delay": 0,
+        "propagation": 1,
+        "drift": 0
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_HELIXBANK_EUROPE_086",
+      "timestamp": 1778330948914,
+      "source_event": "EVT_HELIXBANK_EUROPE_086",
+      "from_carrier": {
+        "carrier_id": "MAIL_HELIX_002",
+        "carrier_type": "mail"
+      },
+      "to_carrier": {
+        "carrier_id": "KPI_HELIX_2026_05",
+        "carrier_type": "kpi"
+      },
+      "vector": {
+        "intensity": 0.6961203868262618,
+        "latency": 0,
+        "retry": 0,
+        "routing_shift": 1,
+        "participation_delta": 0,
+        "urgency": 0.6961203868262618,
+        "deadline_pressure": 0
+      },
+      "primitive_weights": {
+        "coupling": 0,
+        "decoupling": 0,
+        "density": 0,
+        "diffusion": 0.30387961317373824,
+        "delay": 0,
+        "propagation": 0,
+        "drift": 0
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_HELIXBANK_EUROPE_087",
+      "timestamp": 1778334548914,
+      "source_event": "EVT_HELIXBANK_EUROPE_087",
+      "from_carrier": {
+        "carrier_id": "MAIL_HELIX_001",
+        "carrier_type": "mail"
+      },
+      "to_carrier": {
+        "carrier_id": "MAIL_HELIX_002",
+        "carrier_type": "mail"
+      },
+      "vector": {
+        "intensity": 0.05864411849976836,
+        "latency": 0.505,
+        "retry": 0.2,
+        "routing_shift": 0,
+        "participation_delta": -0.20918069065336287,
+        "urgency": 0.05864411849976836,
+        "deadline_pressure": 0
+      },
+      "primitive_weights": {
+        "coupling": 0,
+        "decoupling": 0.20918069065336287,
+        "density": 0.0122672172105392,
+        "diffusion": 0.744442408057408,
+        "delay": 0.606,
+        "propagation": 0.396,
+        "drift": 0
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_HELIXBANK_EUROPE_088",
+      "timestamp": 1778338148914,
+      "source_event": "EVT_HELIXBANK_EUROPE_088",
+      "from_carrier": {
+        "carrier_id": "MAIL_HELIX_002",
+        "carrier_type": "mail"
+      },
+      "to_carrier": {
+        "carrier_id": "MAIL_HELIX_001",
+        "carrier_type": "mail"
+      },
+      "vector": {
+        "intensity": 0.8963468913149384,
+        "latency": 0,
+        "retry": 0,
+        "routing_shift": 0,
+        "participation_delta": 0,
+        "urgency": 0.8963468913149384,
+        "deadline_pressure": 0
+      },
+      "primitive_weights": {
+        "coupling": 0,
+        "decoupling": 0,
+        "density": 0,
+        "diffusion": 0.10365310868506161,
+        "delay": 0,
+        "propagation": 1,
+        "drift": 0
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_HELIXBANK_EUROPE_089",
+      "timestamp": 1778341748914,
+      "source_event": "EVT_HELIXBANK_EUROPE_089",
+      "from_carrier": {
+        "carrier_id": "MAIL_HELIX_002",
+        "carrier_type": "mail"
+      },
+      "to_carrier": {
+        "carrier_id": "KPI_HELIX_2026_05",
+        "carrier_type": "kpi"
+      },
+      "vector": {
+        "intensity": 0.19998556267040457,
+        "latency": 0,
+        "retry": 0,
+        "routing_shift": 1,
+        "participation_delta": 0,
+        "urgency": 0.19998556267040457,
+        "deadline_pressure": 0.05818151589940612
+      },
+      "primitive_weights": {
+        "coupling": 0,
+        "decoupling": 0,
+        "density": 0,
+        "diffusion": 0.8000144373295954,
+        "delay": 0,
+        "propagation": 0,
+        "drift": 0.05818151589940612
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_HELIXBANK_EUROPE_090",
+      "timestamp": 1778345348914,
+      "source_event": "EVT_HELIXBANK_EUROPE_090",
+      "from_carrier": {
+        "carrier_id": "MAIL_HELIX_001",
+        "carrier_type": "mail"
+      },
+      "to_carrier": {
+        "carrier_id": "MAIL_HELIX_002",
+        "carrier_type": "mail"
+      },
+      "vector": {
+        "intensity": 0.32641334648328857,
+        "latency": 0.7254,
+        "retry": 0.4,
+        "routing_shift": 0,
+        "participation_delta": 0.2171466198694505,
+        "urgency": 0.32641334648328857,
+        "deadline_pressure": 0
+      },
+      "primitive_weights": {
+        "coupling": 0.1302879719216703,
+        "decoupling": 0.4,
+        "density": 0.0708795548691219,
+        "diffusion": 0.5273195885163828,
+        "delay": 1.01556,
+        "propagation": 0.16475999999999996,
+        "drift": 0
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_HELIXBANK_EUROPE_091",
+      "timestamp": 1778348948914,
+      "source_event": "EVT_HELIXBANK_EUROPE_091",
+      "from_carrier": {
+        "carrier_id": "MAIL_HELIX_002",
+        "carrier_type": "mail"
+      },
+      "to_carrier": {
+        "carrier_id": "EVT_HELIX_001",
+        "carrier_type": "evt"
+      },
+      "vector": {
+        "intensity": 0.2570291019160871,
+        "latency": 0,
+        "retry": 0.6,
+        "routing_shift": 0,
+        "participation_delta": 0,
+        "urgency": 0.2570291019160871,
+        "deadline_pressure": 0.6953972135277622
+      },
+      "primitive_weights": {
+        "coupling": 0,
+        "decoupling": 0.6,
+        "density": 0,
+        "diffusion": 0.7429708980839129,
+        "delay": 0,
+        "propagation": 0.4,
+        "drift": 0
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_HELIXBANK_EUROPE_092",
+      "timestamp": 1778352548914,
+      "source_event": "EVT_HELIXBANK_EUROPE_092",
+      "from_carrier": {
+        "carrier_id": "KPI_HELIX_2026_05",
+        "carrier_type": "kpi"
+      },
+      "to_carrier": {
+        "carrier_id": "EVT_HELIX_001",
+        "carrier_type": "evt"
+      },
+      "vector": {
+        "intensity": 0.5830964658835707,
+        "latency": 0,
+        "retry": 0,
+        "routing_shift": 0,
+        "participation_delta": 0,
+        "urgency": 0.5830964658835707,
+        "deadline_pressure": 0.943579407321264
+      },
+      "primitive_weights": {
+        "coupling": 0,
+        "decoupling": 0,
+        "density": 0,
+        "diffusion": 0.41690353411642933,
+        "delay": 0,
+        "propagation": 1,
+        "drift": 0
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_HELIXBANK_EUROPE_093",
+      "timestamp": 1778356148914,
+      "source_event": "EVT_HELIXBANK_EUROPE_093",
+      "from_carrier": {
+        "carrier_id": "KPI_HELIX_2026_05",
+        "carrier_type": "kpi"
+      },
+      "to_carrier": {
+        "carrier_id": "MAIL_HELIX_001",
+        "carrier_type": "mail"
+      },
+      "vector": {
+        "intensity": 0.12866180135082916,
+        "latency": 0,
+        "retry": 0.6,
+        "routing_shift": 0,
+        "participation_delta": 0,
+        "urgency": 0.12866180135082916,
+        "deadline_pressure": 0.5363328902239821
+      },
+      "primitive_weights": {
+        "coupling": 0,
+        "decoupling": 0.6,
+        "density": 0,
+        "diffusion": 0.8713381986491708,
+        "delay": 0,
+        "propagation": 0.4,
+        "drift": 0
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_HELIXBANK_EUROPE_094",
+      "timestamp": 1778359748914,
+      "source_event": "EVT_HELIXBANK_EUROPE_094",
+      "from_carrier": {
+        "carrier_id": "MAIL_HELIX_002",
+        "carrier_type": "mail"
+      },
+      "to_carrier": {
+        "carrier_id": "KPI_HELIX_2026_05",
+        "carrier_type": "kpi"
+      },
+      "vector": {
+        "intensity": 0.48872200236418006,
+        "latency": 0.766,
+        "retry": 0,
+        "routing_shift": 1,
+        "participation_delta": 0,
+        "urgency": 0.48872200236418006,
+        "deadline_pressure": 0.8618634951299196
+      },
+      "primitive_weights": {
+        "coupling": 0,
+        "decoupling": 0,
+        "density": 0,
+        "diffusion": 0.5112779976358199,
+        "delay": 0.766,
+        "propagation": 0,
+        "drift": 0.8618634951299196
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_HELIXBANK_EUROPE_095",
+      "timestamp": 1778363348914,
+      "source_event": "EVT_HELIXBANK_EUROPE_095",
+      "from_carrier": {
+        "carrier_id": "MAIL_HELIX_001",
+        "carrier_type": "mail"
+      },
+      "to_carrier": {
+        "carrier_id": "EVT_HELIX_001",
+        "carrier_type": "evt"
+      },
+      "vector": {
+        "intensity": 0.315297853522722,
+        "latency": 0,
+        "retry": 0,
+        "routing_shift": 0,
+        "participation_delta": -0.5423758760264681,
+        "urgency": 0.315297853522722,
+        "deadline_pressure": 0
+      },
+      "primitive_weights": {
+        "coupling": 0,
+        "decoupling": 0.5423758760264681,
+        "density": 0.17100994951365137,
+        "diffusion": 0.31333621996446126,
+        "delay": 0,
+        "propagation": 1,
+        "drift": 0
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_HELIXBANK_EUROPE_096",
+      "timestamp": 1778366948914,
+      "source_event": "EVT_HELIXBANK_EUROPE_096",
+      "from_carrier": {
+        "carrier_id": "MAIL_HELIX_002",
+        "carrier_type": "mail"
+      },
+      "to_carrier": {
+        "carrier_id": "EVT_HELIX_001",
+        "carrier_type": "evt"
+      },
+      "vector": {
+        "intensity": 0.10716083919148223,
+        "latency": 0,
+        "retry": 0,
+        "routing_shift": 0,
+        "participation_delta": 0,
+        "urgency": 0.10716083919148223,
+        "deadline_pressure": 0.9741626112314268
+      },
+      "primitive_weights": {
+        "coupling": 0,
+        "decoupling": 0,
+        "density": 0,
+        "diffusion": 0.8928391608085178,
+        "delay": 0,
+        "propagation": 1,
+        "drift": 0
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_HELIXBANK_EUROPE_097",
+      "timestamp": 1778370548914,
+      "source_event": "EVT_HELIXBANK_EUROPE_097",
+      "from_carrier": {
+        "carrier_id": "MAIL_HELIX_001",
+        "carrier_type": "mail"
+      },
+      "to_carrier": {
+        "carrier_id": "KPI_HELIX_2026_05",
+        "carrier_type": "kpi"
+      },
+      "vector": {
+        "intensity": 0.35743961727745366,
+        "latency": 0,
+        "retry": 0,
+        "routing_shift": 0,
+        "participation_delta": -0.8313142374832099,
+        "urgency": 0.35743961727745366,
+        "deadline_pressure": 0
+      },
+      "primitive_weights": {
+        "coupling": 0,
+        "decoupling": 0.8313142374832099,
+        "density": 0.2971446428832968,
+        "diffusion": 0.10839078812263322,
+        "delay": 0,
+        "propagation": 1,
+        "drift": 0
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_HELIXBANK_EUROPE_098",
+      "timestamp": 1778374148914,
+      "source_event": "EVT_HELIXBANK_EUROPE_098",
+      "from_carrier": {
+        "carrier_id": "MAIL_HELIX_001",
+        "carrier_type": "mail"
+      },
+      "to_carrier": {
+        "carrier_id": "KPI_HELIX_2026_05",
+        "carrier_type": "kpi"
+      },
+      "vector": {
+        "intensity": 0.9919959685549435,
+        "latency": 0,
+        "retry": 0,
+        "routing_shift": 0,
+        "participation_delta": 0,
+        "urgency": 0.9919959685549435,
+        "deadline_pressure": 0.8478254784084098
+      },
+      "primitive_weights": {
+        "coupling": 0,
+        "decoupling": 0,
+        "density": 0,
+        "diffusion": 0.008004031445056459,
+        "delay": 0,
+        "propagation": 1,
+        "drift": 0
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_HELIXBANK_EUROPE_099",
+      "timestamp": 1778377748914,
+      "source_event": "EVT_HELIXBANK_EUROPE_099",
+      "from_carrier": {
+        "carrier_id": "MAIL_HELIX_002",
+        "carrier_type": "mail"
+      },
+      "to_carrier": {
+        "carrier_id": "KPI_HELIX_2026_05",
+        "carrier_type": "kpi"
+      },
+      "vector": {
+        "intensity": 0.28629764052774065,
+        "latency": 0,
+        "retry": 0.6,
+        "routing_shift": 1,
+        "participation_delta": 0,
+        "urgency": 0.28629764052774065,
+        "deadline_pressure": 0.6822935595317041
+      },
+      "primitive_weights": {
+        "coupling": 0,
+        "decoupling": 0.6,
+        "density": 0,
+        "diffusion": 0.7137023594722594,
+        "delay": 0,
+        "propagation": 0,
+        "drift": 0.6822935595317041
+      }
+    },
+    {
+      "signal_id": "SIG_EVT_HELIXBANK_EUROPE_100",
+      "timestamp": 1778381348914,
+      "source_event": "EVT_HELIXBANK_EUROPE_100",
+      "from_carrier": {
+        "carrier_id": "MAIL_HELIX_002",
+        "carrier_type": "mail"
+      },
+      "to_carrier": {
+        "carrier_id": "KPI_HELIX_2026_05",
+        "carrier_type": "kpi"
+      },
+      "vector": {
+        "intensity": 0.2846185801960055,
+        "latency": 0,
+        "retry": 0,
+        "routing_shift": 0,
+        "participation_delta": 0,
+        "urgency": 0.2846185801960055,
+        "deadline_pressure": 0
+      },
+      "primitive_weights": {
+        "coupling": 0,
+        "decoupling": 0,
+        "density": 0,
+        "diffusion": 0.7153814198039945,
+        "delay": 0,
+        "propagation": 1,
+        "drift": 0
+      }
+    }
+  ],
+  "metadata": {
+    "signal_count": 100,
+    "generated_at": "2026-05-13T00:50:13.412Z",
+    "with_projection": true
+  }
+}
