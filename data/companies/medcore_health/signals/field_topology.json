@@ -1,0 +1,104 @@
+{
+  "company_id": "medcore_health",
+  "timestamp": 1778706452627,
+  "nodes": [
+    {
+      "node_id": "EVT_MED_001",
+      "carrier_type": "evt",
+      "primitives": {
+        "coupling": 0.10255854738174905,
+        "decoupling": 0.07611244547844628,
+        "density": 0.08754400578332074,
+        "diffusion": 0.4058500814983202,
+        "propagation": 0.687932,
+        "delay": 0.1189828,
+        "drift": 0.04851628606016632
+      },
+      "signal_count": 50,
+      "centrality": 1
+    },
+    {
+      "node_id": "SHIFT_MED_003",
+      "carrier_type": "shift",
+      "primitives": {
+        "coupling": 0.09459724436147009,
+        "decoupling": 0.12612652401203162,
+        "density": 0.0944208024243136,
+        "diffusion": 0.346845898028078,
+        "propagation": 0.7070358974358975,
+        "delay": 0.08413333333333335,
+        "drift": 0.0697245897791694
+      },
+      "signal_count": 39,
+      "centrality": 1
+    },
+    {
+      "node_id": "SHIFT_MED_002",
+      "carrier_type": "shift",
+      "primitives": {
+        "coupling": 0.03513324399641363,
+        "decoupling": 0.11823002138958275,
+        "density": 0.0645396776205085,
+        "diffusion": 0.4731206417000167,
+        "propagation": 0.7221048780487805,
+        "delay": 0.08581268292682925,
+        "drift": 0.06493891957280058
+      },
+      "signal_count": 41,
+      "centrality": 1
+    },
+    {
+      "node_id": "KPI_MED_2026_05",
+      "carrier_type": "kpi",
+      "primitives": {
+        "coupling": 0.050660014895767325,
+        "decoupling": 0.1552127575732618,
+        "density": 0.10902305260572685,
+        "diffusion": 0.5106907584381919,
+        "propagation": 0.705838888888889,
+        "delay": 0.09776000000000001,
+        "drift": 0.052365044020095314
+      },
+      "signal_count": 36,
+      "centrality": 1
+    },
+    {
+      "node_id": "SHIFT_MED_001",
+      "carrier_type": "shift",
+      "primitives": {
+        "coupling": 0.11351792172928477,
+        "decoupling": 0.10121668354211669,
+        "density": 0.0974837555653867,
+        "diffusion": 0.4957435580029158,
+        "propagation": 0.7490676470588236,
+        "delay": 0.08195588235294116,
+        "drift": 0.008395979704087916
+      },
+      "signal_count": 34,
+      "centrality": 1
+    }
+  ],
+  "global_primitives": {
+    "avg_propagation": 0.7143958622864781,
+    "avg_density": 0.09060225879985127,
+    "avg_coupling": 0.07929339447293697,
+    "avg_decoupling": 0.11537968639908783,
+    "max_delay": 0.1189828,
+    "drift_hotspots": 0,
+    "coupling_ratio": 0.40731566027386845,
+    "stability_score": 0.9512118361727361
+  },
+  "spatial_density": {
+    "high_activity_nodes": [
+      "EVT_MED_001",
+      "SHIFT_MED_002"
+    ],
+    "isolated_nodes": [],
+    "density_clusters": []
+  },
+  "metadata": {
+    "signal_count": 100,
+    "aggregation_method": "node_average",
+    "generated_at": "2026-05-13T21:07:32.627Z"
+  }
+}

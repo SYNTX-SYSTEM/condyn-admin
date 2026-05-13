@@ -1,0 +1,89 @@
+{
+  "company_id": "helixbank_europe",
+  "timestamp": 1778706452620,
+  "nodes": [
+    {
+      "node_id": "KPI_HELIX_2026_05",
+      "carrier_type": "kpi",
+      "primitives": {
+        "coupling": 0.025505436082741525,
+        "decoupling": 0.1952758283738017,
+        "density": 0.08191431327323256,
+        "diffusion": 0.4513531426892474,
+        "propagation": 0.7049693103448277,
+        "delay": 0.09105689655172412,
+        "drift": 0.031470298330759566
+      },
+      "signal_count": 58,
+      "centrality": 1
+    },
+    {
+      "node_id": "MAIL_HELIX_001",
+      "carrier_type": "mail",
+      "primitives": {
+        "coupling": 0.025962504245906615,
+        "decoupling": 0.23972266984277404,
+        "density": 0.08706816298513097,
+        "diffusion": 0.4035471658593308,
+        "propagation": 0.7203760000000001,
+        "delay": 0.110451,
+        "drift": 0.030259311766015123
+      },
+      "signal_count": 40,
+      "centrality": 1
+    },
+    {
+      "node_id": "EVT_HELIX_001",
+      "carrier_type": "evt",
+      "primitives": {
+        "coupling": 0.061749043636125704,
+        "decoupling": 0.18509287168960076,
+        "density": 0.07907523568181445,
+        "diffusion": 0.4667258492935615,
+        "propagation": 0.7472764444444444,
+        "delay": 0.06584755555555556,
+        "drift": 0.036976710504715196
+      },
+      "signal_count": 45,
+      "centrality": 1
+    },
+    {
+      "node_id": "MAIL_HELIX_002",
+      "carrier_type": "mail",
+      "primitives": {
+        "coupling": 0.03998892661294586,
+        "decoupling": 0.14900410491322186,
+        "density": 0.06677150344939733,
+        "diffusion": 0.46312611156344974,
+        "propagation": 0.610201052631579,
+        "delay": 0.12176491228070174,
+        "drift": 0.07462674177703146
+      },
+      "signal_count": 57,
+      "centrality": 1
+    }
+  ],
+  "global_primitives": {
+    "avg_propagation": 0.6957057018552129,
+    "avg_density": 0.07870730384739383,
+    "avg_coupling": 0.038301477644429927,
+    "avg_decoupling": 0.19227386870484958,
+    "max_delay": 0.12176491228070174,
+    "drift_hotspots": 0,
+    "coupling_ratio": 0.16611263194812764,
+    "stability_score": 0.9566667344053696
+  },
+  "spatial_density": {
+    "high_activity_nodes": [
+      "KPI_HELIX_2026_05",
+      "MAIL_HELIX_002"
+    ],
+    "isolated_nodes": [],
+    "density_clusters": []
+  },
+  "metadata": {
+    "signal_count": 100,
+    "aggregation_method": "node_average",
+    "generated_at": "2026-05-13T21:07:32.620Z"
+  }
+}

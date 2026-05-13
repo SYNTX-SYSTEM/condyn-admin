@@ -1,0 +1,120 @@
+{
+  "company_id": "novascale_ai",
+  "timestamp": 1778706452612,
+  "nodes": [
+    {
+      "node_id": "EVT_NOVA_001",
+      "carrier_type": "evt",
+      "primitives": {
+        "coupling": 0.035905818139212585,
+        "decoupling": 0.13074476685320205,
+        "density": 0.05097097848512187,
+        "diffusion": 0.4065579835395541,
+        "propagation": 0.8421351219512195,
+        "delay": 0.036561951219512195,
+        "drift": 0.06400273816696685
+      },
+      "signal_count": 41,
+      "centrality": 1
+    },
+    {
+      "node_id": "MAIL_NOVA_001",
+      "carrier_type": "mail",
+      "primitives": {
+        "coupling": 0,
+        "decoupling": 0.145603678305109,
+        "density": 0.03996553617850176,
+        "diffusion": 0.4728328644527997,
+        "propagation": 0.6466206451612904,
+        "delay": 0.08323935483870969,
+        "drift": 0.05630273336859683
+      },
+      "signal_count": 31,
+      "centrality": 1
+    },
+    {
+      "node_id": "MAIL_NOVA_003",
+      "carrier_type": "mail",
+      "primitives": {
+        "coupling": 0.07203029990440218,
+        "decoupling": 0.1526741041732293,
+        "density": 0.053479243404469426,
+        "diffusion": 0.4547805920853057,
+        "propagation": 0.7107862068965516,
+        "delay": 0.08307379310344828,
+        "drift": 0.049980588254713285
+      },
+      "signal_count": 29,
+      "centrality": 1
+    },
+    {
+      "node_id": "MAIL_NOVA_002",
+      "carrier_type": "mail",
+      "primitives": {
+        "coupling": 0.04576223244093615,
+        "decoupling": 0.197033941684635,
+        "density": 0.08145541655049404,
+        "diffusion": 0.4293544674009231,
+        "propagation": 0.6728576470588236,
+        "delay": 0.06960823529411765,
+        "drift": 0.080422422632478
+      },
+      "signal_count": 34,
+      "centrality": 1
+    },
+    {
+      "node_id": "KPI_NOVA_2026_05",
+      "carrier_type": "kpi",
+      "primitives": {
+        "coupling": 0.03249863003895454,
+        "decoupling": 0.11528411127502869,
+        "density": 0.04379208884611455,
+        "diffusion": 0.4659045662306609,
+        "propagation": 0.8623472222222222,
+        "delay": 0.050966666666666674,
+        "drift": 0.017410905665300944
+      },
+      "signal_count": 36,
+      "centrality": 1
+    },
+    {
+      "node_id": "SIG_NOVA_001",
+      "carrier_type": "sig",
+      "primitives": {
+        "coupling": 0.024201363818316272,
+        "decoupling": 0.1299469070353186,
+        "density": 0.06008258786641878,
+        "diffusion": 0.39930694264990774,
+        "propagation": 0.6614193103448275,
+        "delay": 0.12061241379310343,
+        "drift": 0.047098346973857085
+      },
+      "signal_count": 29,
+      "centrality": 1
+    }
+  ],
+  "global_primitives": {
+    "avg_propagation": 0.7326943589391557,
+    "avg_density": 0.05495764188852007,
+    "avg_coupling": 0.03506639072363696,
+    "avg_decoupling": 0.14521458488775377,
+    "max_delay": 0.12061241379310343,
+    "drift_hotspots": 0,
+    "coupling_ratio": 0.19450965696583103,
+    "stability_score": 0.9474637108230145
+  },
+  "spatial_density": {
+    "high_activity_nodes": [
+      "EVT_NOVA_001",
+      "KPI_NOVA_2026_05",
+      "MAIL_NOVA_002"
+    ],
+    "isolated_nodes": [],
+    "density_clusters": []
+  },
+  "metadata": {
+    "signal_count": 100,
+    "aggregation_method": "node_average",
+    "generated_at": "2026-05-13T21:07:32.612Z"
+  }
+}
