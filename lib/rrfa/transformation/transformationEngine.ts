@@ -53,7 +53,7 @@ export class TransformationEngine {
    */
   private static normalizeLatency(latency?: number): number {
     if (!latency) return 0.0;
-    return Math.max(0.0, 1.0 - (latency / 10000));
+    return Math.min(1.0, latency / 10000);
   }
   
   /**

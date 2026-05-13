@@ -37,7 +37,7 @@
       },
       "vector": {
         "intensity": 0.005368873199686819,
-        "latency": 0.9661,
+        "latency": 0.0339,
         "retry": 0.6,
         "routing_shift": 1,
         "participation_delta": 0,
@@ -59,7 +59,7 @@
       },
       "vector": {
         "intensity": 0.6990790118487484,
-        "latency": 0.7207,
+        "latency": 0.2793,
         "retry": 0,
         "routing_shift": 1,
         "participation_delta": 0,
@@ -81,7 +81,7 @@
       },
       "vector": {
         "intensity": 0.3084885725049351,
-        "latency": 0.9846,
+        "latency": 0.0154,
         "retry": 0.6,
         "routing_shift": 0,
         "participation_delta": 0,
@@ -103,7 +103,7 @@
       },
       "vector": {
         "intensity": 0.9598510468998065,
-        "latency": 0.722,
+        "latency": 0.278,
         "retry": 0,
         "routing_shift": 0,
         "participation_delta": 0,
@@ -235,7 +235,7 @@
       },
       "vector": {
         "intensity": 0.6578635823714372,
-        "latency": 0.8806,
+        "latency": 0.1194,
         "retry": 0,
         "routing_shift": 0,
         "participation_delta": 0,
@@ -433,7 +433,7 @@
       },
       "vector": {
         "intensity": 0.5083996353060205,
-        "latency": 0.28790000000000004,
+        "latency": 0.7121,
         "retry": 0,
         "routing_shift": 0,
         "participation_delta": 0,
@@ -455,7 +455,7 @@
       },
       "vector": {
         "intensity": 0.07401022117489586,
-        "latency": 0.9671,
+        "latency": 0.0329,
         "retry": 0.2,
         "routing_shift": 1,
         "participation_delta": -0.576833918231372,
@@ -477,7 +477,7 @@
       },
       "vector": {
         "intensity": 0.9481360329744706,
-        "latency": 0.22160000000000002,
+        "latency": 0.7784,
         "retry": 0,
         "routing_shift": 1,
         "participation_delta": 0.33663552654182505,
@@ -653,7 +653,7 @@
       },
       "vector": {
         "intensity": 0.2738338662870079,
-        "latency": 0.365,
+        "latency": 0.635,
         "retry": 0,
         "routing_shift": 1,
         "participation_delta": 0.052778175325576715,
@@ -741,7 +741,7 @@
       },
       "vector": {
         "intensity": 0.26619196151981384,
-        "latency": 0.9885,
+        "latency": 0.0115,
         "retry": 0,
         "routing_shift": 0,
         "participation_delta": 0.32062645386338806,
@@ -961,7 +961,7 @@
       },
       "vector": {
         "intensity": 0.167256058777417,
-        "latency": 0.5936,
+        "latency": 0.4064,
         "retry": 0,
         "routing_shift": 0,
         "participation_delta": 0,
@@ -1005,7 +1005,7 @@
       },
       "vector": {
         "intensity": 0.9805407840199654,
-        "latency": 0.6457999999999999,
+        "latency": 0.3542,
         "retry": 0,
         "routing_shift": 0,
         "participation_delta": 0,
@@ -1027,7 +1027,7 @@
       },
       "vector": {
         "intensity": 0.9471197170427448,
-        "latency": 0.8996999999999999,
+        "latency": 0.1003,
         "retry": 0,
         "routing_shift": 0,
         "participation_delta": 0,
@@ -1181,7 +1181,7 @@
       },
       "vector": {
         "intensity": 0.3404727566987369,
-        "latency": 0.9468,
+        "latency": 0.0532,
         "retry": 0,
         "routing_shift": 0,
         "participation_delta": 0,
@@ -1269,7 +1269,7 @@
       },
       "vector": {
         "intensity": 0.16579753633489802,
-        "latency": 0.8323,
+        "latency": 0.1677,
         "retry": 0,
         "routing_shift": 1,
         "participation_delta": 0,
@@ -1445,7 +1445,7 @@
       },
       "vector": {
         "intensity": 0.03338409286054289,
-        "latency": 0.9422,
+        "latency": 0.0578,
         "retry": 0,
         "routing_shift": 0,
         "participation_delta": 0,
@@ -1489,7 +1489,7 @@
       },
       "vector": {
         "intensity": 0.7781019344439903,
-        "latency": 0.6022000000000001,
+        "latency": 0.3978,
         "retry": 0.4,
         "routing_shift": 0,
         "participation_delta": -0.9689373039328335,
@@ -1731,7 +1731,7 @@
       },
       "vector": {
         "intensity": 0.39536935857494115,
-        "latency": 0.4877,
+        "latency": 0.5123,
         "retry": 0,
         "routing_shift": 0,
         "participation_delta": 0,
@@ -1863,7 +1863,7 @@
       },
       "vector": {
         "intensity": 0.49553059227675034,
-        "latency": 0.44489999999999996,
+        "latency": 0.5551,
         "retry": 0,
         "routing_shift": 0,
         "participation_delta": 0,
@@ -1929,7 +1929,7 @@
       },
       "vector": {
         "intensity": 0.08026487479059763,
-        "latency": 0.737,
+        "latency": 0.263,
         "retry": 0,
         "routing_shift": 0,
         "participation_delta": 0,
@@ -1951,7 +1951,7 @@
       },
       "vector": {
         "intensity": 0.0962331678012951,
-        "latency": 0.955,
+        "latency": 0.045,
         "retry": 0,
         "routing_shift": 0,
         "participation_delta": -0.7942943786119376,
@@ -1973,7 +1973,7 @@
       },
       "vector": {
         "intensity": 0.7310987942266582,
-        "latency": 0.5659000000000001,
+        "latency": 0.4341,
         "retry": 0.4,
         "routing_shift": 0,
         "participation_delta": 0,
@@ -2061,7 +2061,7 @@
       },
       "vector": {
         "intensity": 0.903353910320194,
-        "latency": 0.5178,
+        "latency": 0.4822,
         "retry": 0,
         "routing_shift": 0,
         "participation_delta": 0,
@@ -2203,7 +2203,7 @@
     }
   ],
   "metadata": {
-    "generated_at": 1778629804133,
+    "generated_at": 1778632220933,
     "signal_count": 100,
     "source_events": 100
   }
