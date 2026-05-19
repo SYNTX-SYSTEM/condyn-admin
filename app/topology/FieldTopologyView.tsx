@@ -7,6 +7,7 @@ import { TopologyDataLoader } from '@/lib/rrfa/visualization/topologyDataLoader'
 import { applySoftForceLayout } from '@/lib/rrfa/visualization/softForceLayout';
 import FieldNode from './components/FieldNode';
 import FieldEdge from './components/FieldEdge';
+import AmbientField from './components/AmbientField';
 
 const nodeTypes = { field: FieldNode };
 const edgeTypes = { field: FieldEdge };
@@ -148,7 +149,8 @@ export default function FieldTopologyView() {
 
         <main style={{flex:1,position:'relative',backgroundColor:BG_DARK}}>
           <ReactFlow nodes={nodes} edges={edges} nodeTypes={nodeTypes} edgeTypes={edgeTypes} fitView fitViewOptions={{padding:0.15}} proOptions={{hideAttribution:true}} style={{width:'100%',height:'100%',background:'transparent'}}>
-            <Background variant={BackgroundVariant.Dots} gap={40} size={1} color="rgba(255,255,255,0.03)"/>
+            <AmbientField />
+            <Background variant={BackgroundVariant.Dots} gap={40} size={1} color="rgba(255,255,255,0.025)"/>
           </ReactFlow>
         </main>
 

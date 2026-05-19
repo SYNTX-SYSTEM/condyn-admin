@@ -1,8 +1,9 @@
 /**
- * Edge Reducer v3 - looser thresholds for denser neural-net look
+ * Edge Reducer v4 - structural suppression
  *
- * topK 3 → 5  (more outgoing edges per node = neural radiance)
- * min_weight 0.20 → 0.15 (let more peripheral edges through)
+ * 70% of edges silent. Only dominant signal paths survive.
+ * The graph should feel sparse — space between structures
+ * carries as much meaning as the structures themselves.
  */
 
 export interface EdgeForReduction {
@@ -10,13 +11,14 @@ export interface EdgeForReduction {
   target: string;
   data?: {
     primitives?: { coupling?: number; propagation?: number; drift?: number; };
+    edge_tier?: string;
   };
 }
 
 export interface ReductionStats { total: number; kept: number; dropped: number; }
 
-const DEFAULT_MIN_WEIGHT = 0.15;
-const DEFAULT_TOP_K_PER_SOURCE = 5;
+const DEFAULT_MIN_WEIGHT = 0.45;
+const DEFAULT_TOP_K_PER_SOURCE = 3;
 
 function getEdgeWeight<E extends EdgeForReduction>(e: E): number {
   const p = e.data?.primitives ?? {};
