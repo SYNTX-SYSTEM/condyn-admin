@@ -39,3 +39,9 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Local backup files from iterative edits
+*.bak
+*.v[0-9]bak
+*.v[0-9][0-9]bak
+package.json.backup

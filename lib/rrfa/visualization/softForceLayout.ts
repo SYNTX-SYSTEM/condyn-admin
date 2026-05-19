@@ -1,23 +1,14 @@
 /**
- * Soft Force Layout
- * 
- * Positions nodes using gentle d3-force simulation.
- * 
- * NOT: Explosive chaos physics
- * NOT: Random bouncing
- * NOT: Frantic realtime shifting
- * 
- * BUT: Stable breathing topology
- *      Langsam, träge, organisch
- *      Semiotisch lesbar
- * 
- * This creates Feldwahrnehmung, not videogame physics.
+ * Soft Force Layout v5 - wide spread for label+halo visibility
+ *
+ * Halos are now 45px blur radius and labels extend above/below the node.
+ * Need ~120px+ effective spacing between node centers.
  */
 
-import { 
-  forceSimulation, 
-  forceLink, 
-  forceManyBody, 
+import {
+  forceSimulation,
+  forceLink,
+  forceManyBody,
   forceCenter,
   forceCollide,
   SimulationNodeDatum,
@@ -35,86 +26,46 @@ interface LayoutEdge extends SimulationLinkDatum<LayoutNode> {
   [key: string]: any;
 }
 
-/**
- * Apply soft force layout to nodes
- * 
- * Creates organic positioning with gentle forces
- * Never fully settles (breathing effect)
- */
 export function applySoftForceLayout(
   nodes: any[],
   edges: any[],
-  width: number = 800,
-  height: number = 600
+  width: number = 1200,
+  height: number = 800
 ): any[] {
-  
-  // Create mutable copies for d3-force
+
   const layoutNodes: LayoutNode[] = nodes.map(n => ({ ...n }));
   const layoutEdges: LayoutEdge[] = edges.map(e => ({ ...e }));
-  
-  // SOFT force simulation (not explosive!)
+
   const simulation = forceSimulation(layoutNodes)
     .force('charge', forceManyBody()
-      .strength(-100)  // Gentle repulsion (NOT -1000!)
+      .strength(-550)              // strong spread
+      .distanceMax(700)
     )
-    .force('center', forceCenter(width / 2, height / 2))
+    .force('center', forceCenter(width / 2, height / 2)
+      .strength(0.05)
+    )
     .force('link', forceLink(layoutEdges)
       .id((d: any) => d.id)
-      .distance(100)   // Comfortable spacing
-      .strength(0.3)   // Soft attraction (not rigid!)
+      .distance(240)               // generous edge length
+      .strength(0.18)
     )
     .force('collision', forceCollide()
-      .radius(30)      // Prevent overlap
-      .strength(0.5)   // Soft collision avoidance
+      .radius(85)                  // accounts for node + halo + label
+      .strength(0.9)
     )
-    .alpha(0.3)        // Slow initial movement
-    .alphaTarget(0.05) // Never fully stops (breathing!)
-    .velocityDecay(0.7); // Heavy damping (träge!)
-  
-  // Run simulation for initial stable layout
-  // (200 ticks gives good stability without over-cooking)
-  for (let i = 0; i < 200; i++) {
+    .alpha(0.7)
+    .alphaTarget(0.02)
+    .velocityDecay(0.55);
+
+  for (let i = 0; i < 400; i++) {
     simulation.tick();
   }
-  
-  // Return positioned nodes
+
   return layoutNodes.map(node => ({
     ...nodes.find(n => n.id === node.id),
-    position: { 
-      x: node.x || 0, 
-      y: node.y || 0 
+    position: {
+      x: node.x || 0,
+      y: node.y || 0
     }
   }));
 }
-
-/**
- * Force Layout Parameters Explained
- * 
- * charge.strength = -100
- *   Nodes repel each other gently
- *   NOT -1000 (explosive chaos!)
- *   BUT -100 (comfortable spacing)
- * 
- * link.strength = 0.3
- *   Edges pull connected nodes together softly
- *   NOT 1.0 (rigid constraints!)
- *   BUT 0.3 (organic flexibility)
- * 
- * alpha = 0.3
- *   Initial simulation energy
- *   Lower = slower, more stable
- * 
- * alphaTarget = 0.05
- *   Simulation never fully stops
- *   Creates "breathing" effect
- *   Field stays alive, not frozen
- * 
- * velocityDecay = 0.7
- *   Heavy damping (träge!)
- *   Nodes move slowly, deliberately
- *   NOT bouncy chaos
- * 
- * Result:
- *   Stable, organic, breathing topology
- *   Feldwahrnehmung, not videogame
- */
