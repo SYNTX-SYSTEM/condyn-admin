@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react';
 import PromptsPanel from './PromptsPanel';
 import AnalyzePanel from './AnalyzePanel';
+import MarkdownPDF from './MarkdownPDF';
 
 const ADMIN_USER = process.env.NEXT_PUBLIC_ADMIN_USERNAME || 'condyn';
 const ADMIN_PASS = process.env.NEXT_PUBLIC_ADMIN_PASSWORD || 'condyn';
@@ -9,7 +10,7 @@ const BACKEND_TOKEN = process.env.NEXT_PUBLIC_BACKEND_TOKEN || '';
 
 export default function ConDynPanel() {
   const [authenticated, setAuthenticated] = useState(false);
-  const [activeTab, setActiveTab] = useState<'prompts' | 'analyze'>('prompts');
+  const [activeTab, setActiveTab] = useState<'prompts' | 'analyze' | 'pdf'>('prompts');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -315,6 +316,7 @@ export default function ConDynPanel() {
       <div style={{ padding: '32px' }}>
         {activeTab === 'prompts' && <PromptsPanel token={BACKEND_TOKEN} />}
         {activeTab === 'analyze' && <AnalyzePanel token={BACKEND_TOKEN} />}
+        {activeTab === 'pdf' && <MarkdownPDF />}
       </div>
     </div>
   );
