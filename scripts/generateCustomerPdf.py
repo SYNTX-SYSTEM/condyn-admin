@@ -80,7 +80,7 @@ def draw_cover(c, doc):
     c.rect(0, H - 55, W, 3, fill=1, stroke=0)
     # Linke Akzentlinie
     c.setFillColor(BLUE_PRIMARY)
-    c.rect(MARGIN - 8, H - 48, 3, 36, fill=1, stroke=0)
+
     # System-Label: Blau auf Weiss
     c.setFont("Helvetica-Bold", 16)
     c.setFillColor(BLUE_DARK)
@@ -265,7 +265,7 @@ def draw_content(c, doc, page_num, page_count):
     c.line(MARGIN, 42, W - MARGIN, 42)
     c.setFont("Helvetica-Bold", 6.5)
     c.setFillColor(BLUE_PRIMARY)
-    c.drawString(MARGIN, 30, "CLASSIFICATION: CONFIDENTIAL // condyn.eu")
+    c.drawString(MARGIN, 30, "Connection Dynamics")
     c.setFillColor(colors.HexColor("#94a3b8"))
     c.drawRightString(W - MARGIN, 30, f"CONDYN // SYNTX // PAGE {page_num} OF {page_count}")
 
