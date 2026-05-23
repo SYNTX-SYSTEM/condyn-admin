@@ -59,6 +59,8 @@ def draw_system_grid(c):
     c.restoreState()
 
 def draw_cover(c, doc):
+    base_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+    logo_path = os.path.join(base_dir, "public", "logo.jpeg")
     c.saveState()
     c.setFillColor(colors.HexColor("#F8FAFF"))
     c.rect(0, 0, W, H, fill=1, stroke=0)
@@ -69,10 +71,57 @@ def draw_cover(c, doc):
 
     c.saveState()
     # Obere Linie
+    # Oberer Header-Balken (füllt leere obere Hälfte)
+    c.setFillColor(BLUE_DARK)
+    c.setFillAlpha(1)
+    c.rect(0, H - 52, W, 52, fill=1, stroke=0)
+    # Hellblauer Akzentstreifen
+    c.setFillColor(BLUE_PRIMARY)
+    c.rect(0, H - 55, W, 3, fill=1, stroke=0)
+    # System-Label im Header
+    c.setFont("Helvetica-Bold", 14)
+    c.setFillColor(WHITE)
+    c.drawString(MARGIN, H - 28, "CONDYN / SYNTX")
+    c.setFont("Helvetica", 8)
+    c.setFillColor(BLUE_LIGHT)
+    c.drawString(MARGIN, H - 42, "STRUCTURAL ANALYSIS SYSTEM // CONFIDENTIAL")
+    # Logo im Cover-Header rechts, rund, kein Border
+    if os.path.exists(logo_path):
+        try:
+            hlx, hly, hls = W - MARGIN - 40, H - 50, 44
+            hcx, hcy = hlx + hls/2, hly + hls/2
+            c.setFillColor(WHITE)
+            c.setFillAlpha(0.15)
+            c.circle(hcx, hcy, hls/2 + 2, stroke=0, fill=1)
+            c.setFillAlpha(1)
+            p2 = c.beginPath()
+            p2.circle(hcx, hcy, hls/2)
+            c.clipPath(p2, stroke=0, fill=0)
+            c.drawImage(logo_path, hlx, hly, width=hls, height=hls, mask="auto")
+            c.restoreState()
+            c.saveState()
+        except:
+            pass
+    # Systeminfo-Streifen unter Header
+    c.setFillColor(colors.HexColor("#EBF2FF"))
+    c.setFillAlpha(1)
+    c.rect(0, H - 85, W, 30, fill=1, stroke=0)
+    c.setStrokeColor(BLUE_PRIMARY)
+    c.setLineWidth(0.5)
+    c.setStrokeAlpha(0.3)
+    c.line(0, H - 85, W, H - 85)
+    c.setFont("Helvetica-Bold", 7.5)
+    c.setFillColor(BLUE_DARK)
+    fields = [
+        (MARGIN, "SYSTEM: Connection Dynamics Analyzer"),
+        (W/2 - 40, "VERSION: Runtime 2025"),
+        (W - MARGIN - 130, "STATUS: CLASSIFIED"),
+    ]
+    for fx, ft in fields:
+        c.drawString(fx, H - 74, ft)
     c.setStrokeColor(BLUE_DARK)
     c.setLineWidth(3)
     c.setStrokeAlpha(1)
-    c.line(MARGIN, H - 28, W - MARGIN, H - 28)
 
     # Untere Linie
     c.setStrokeColor(BLUE_PRIMARY)
@@ -86,8 +135,6 @@ def draw_cover(c, doc):
     c.drawCentredString(W / 2, 30, "condyn.eu — CONFIDENTIAL DOCUMENT")
 
     # === LOGO RUND ===
-    base_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
-    logo_path = os.path.join(base_dir, "public", "logo.jpeg")
     logo_size = 120
     logo_x = (W - logo_size) / 2
     logo_y = H * 0.55

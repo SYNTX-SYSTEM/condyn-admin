@@ -26,7 +26,7 @@ export async function POST(req: NextRequest) {
     return new NextResponse(pdfBuffer, {
       headers: {
         'Content-Type': 'application/pdf',
-        'Content-Disposition': 'inline; filename="condyn_report.pdf"',
+        'Content-Disposition': 'attachment; filename="condyn_report.pdf"',
       },
     });
   } catch (err: any) {
