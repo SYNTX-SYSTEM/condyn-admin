@@ -287,6 +287,23 @@ export default function ConDynPanel() {
           </button>
 
           <button
+            onClick={() => setActiveTab('pdf')}
+            style={{
+              padding: '8px 16px',
+              fontSize: '13px',
+              fontWeight: '600',
+              color: activeTab === 'pdf' ? '#1565C0' : '#666',
+              background: 'transparent',
+              border: 'none',
+              borderBottom: activeTab === 'pdf' ? '2px solid #1565C0' : '2px solid transparent',
+              cursor: 'pointer',
+              transition: 'all 0.15s ease'
+            }}
+          >
+            PDF
+          </button>
+
+          <button
             onClick={() => setAuthenticated(false)}
             style={{
               padding: '8px 16px',
