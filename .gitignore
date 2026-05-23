@@ -47,3 +47,5 @@ next-env.d.ts
 package.json.backup
 .venv/
 output_test.pdf
+.venv/
+output_test.pdf
