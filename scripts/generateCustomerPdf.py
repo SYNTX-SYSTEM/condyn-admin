@@ -71,20 +71,23 @@ def draw_cover(c, doc):
 
     c.saveState()
     # Obere Linie
-    # Oberer Header-Balken (füllt leere obere Hälfte)
-    c.setFillColor(BLUE_DARK)
+    # Oberer Header-Balken: WEISS mit Blau-Text (komplementaer)
+    c.setFillColor(WHITE)
     c.setFillAlpha(1)
     c.rect(0, H - 52, W, 52, fill=1, stroke=0)
-    # Hellblauer Akzentstreifen
-    c.setFillColor(BLUE_PRIMARY)
+    # Dunkelblaue Unterlinie
+    c.setFillColor(BLUE_DARK)
     c.rect(0, H - 55, W, 3, fill=1, stroke=0)
-    # System-Label im Header
-    c.setFont("Helvetica-Bold", 14)
-    c.setFillColor(WHITE)
-    c.drawString(MARGIN, H - 28, "CONDYN / SYNTX")
+    # Linke Akzentlinie
+    c.setFillColor(BLUE_PRIMARY)
+    c.rect(MARGIN - 8, H - 48, 3, 36, fill=1, stroke=0)
+    # System-Label: Blau auf Weiss
+    c.setFont("Helvetica-Bold", 16)
+    c.setFillColor(BLUE_DARK)
+    c.drawString(MARGIN + 4, H - 26, "CONDYN / SYNTX")
     c.setFont("Helvetica", 8)
-    c.setFillColor(BLUE_LIGHT)
-    c.drawString(MARGIN, H - 42, "STRUCTURAL ANALYSIS SYSTEM // CONFIDENTIAL")
+    c.setFillColor(BLUE_PRIMARY)
+    c.drawString(MARGIN + 4, H - 40, "STRUCTURAL ANALYSIS SYSTEM  //  CONFIDENTIAL")
     # Logo im Cover-Header rechts, rund, kein Border
     if os.path.exists(logo_path):
         try:
@@ -103,22 +106,23 @@ def draw_cover(c, doc):
         except:
             pass
     # Systeminfo-Streifen unter Header
-    c.setFillColor(colors.HexColor("#EBF2FF"))
+    c.setFillColor(BLUE_FAINT)
     c.setFillAlpha(1)
     c.rect(0, H - 85, W, 30, fill=1, stroke=0)
-    c.setStrokeColor(BLUE_PRIMARY)
-    c.setLineWidth(0.5)
-    c.setStrokeAlpha(0.3)
+    c.setStrokeColor(BLUE_DARK)
+    c.setLineWidth(0.8)
+    c.setStrokeAlpha(0.6)
     c.line(0, H - 85, W, H - 85)
-    c.setFont("Helvetica-Bold", 7.5)
+    c.line(0, H - 55, W, H - 55)
+    # Einzelne vertikale Linie links
+    c.setLineWidth(2)
+    c.setStrokeAlpha(1)
+    c.line(MARGIN + 4, H - 84, MARGIN + 4, H - 57)
+    # Nur Contact zentriert
+    c.setFont("Helvetica-Bold", 9)
     c.setFillColor(BLUE_DARK)
-    fields = [
-        (MARGIN, "SYSTEM: Connection Dynamics Analyzer"),
-        (W/2 - 40, "VERSION: Runtime 2025"),
-        (W - MARGIN - 130, "STATUS: CLASSIFIED"),
-    ]
-    for fx, ft in fields:
-        c.drawString(fx, H - 74, ft)
+    c.setFillAlpha(1)
+    c.drawCentredString(W / 2, H - 73, "Contact:  d.fletcher@condyn.eu")
     c.setStrokeColor(BLUE_DARK)
     c.setLineWidth(3)
     c.setStrokeAlpha(1)
@@ -191,33 +195,37 @@ def draw_cover(c, doc):
     c.setFillColor(BLUE_PRIMARY)
     c.drawCentredString(W / 2, logo_y - 95, "condyn.eu")
 
-    # Info-Blöcke
-    block_y = 115
-    blocks = [
-        ("SYSTEM", ["Connection Dynamics", "Analyzer Runtime"]),
-        ("KLASSIFIKATION", ["Vertraulich", "Nur autorisierte", "Empfaenger"]),
-        ("AUSGABE", [today, "condyn.eu"]),
-    ]
-    bw = (W - 2 * MARGIN - 20) / 3
-    for i, (label, lines_) in enumerate(blocks):
-        bx = MARGIN + i * (bw + 10)
-        c.setFillColor(BLUE_FAINT)
-        c.setStrokeColor(BLUE_PRIMARY)
-        c.setLineWidth(0.5)
-        c.setFillAlpha(1)
-        c.setStrokeAlpha(0.4)
-        c.rect(bx, block_y, bw, 58, fill=1, stroke=1)
-        # Blauer Akzentstreifen oben
-        c.setFillColor(BLUE_DARK)
-        c.setFillAlpha(1)
-        c.rect(bx, block_y + 46, bw, 12, fill=1, stroke=0)
-        c.setFont("Helvetica-Bold", 7)
-        c.setFillColor(WHITE)
-        c.drawString(bx + 8, block_y + 49, label)
-        c.setFont("Helvetica", 8)
-        c.setFillColor(GREY_TEXT)
-        for j, tl in enumerate(lines_):
-            c.drawString(bx + 8, block_y + 34 - j * 11, tl)
+    # Eleganter Contact-Block (einzeln, zentriert)
+    bw = W - 2 * MARGIN
+    block_y = 95
+
+    # Outer border
+    c.setStrokeColor(BLUE_DARK)
+    c.setFillColor(WHITE)
+    c.setLineWidth(1)
+    c.setFillAlpha(1)
+    c.setStrokeAlpha(1)
+    c.rect(MARGIN, block_y, bw, 52, fill=1, stroke=1)
+
+    # Left accent bar
+    c.setFillColor(BLUE_DARK)
+    c.rect(MARGIN, block_y, 4, 52, fill=1, stroke=0)
+
+    # Top label bar
+    c.setFillColor(BLUE_FAINT)
+    c.rect(MARGIN + 4, block_y + 38, bw - 4, 14, fill=1, stroke=0)
+    c.setFont("Helvetica-Bold", 7)
+    c.setFillColor(BLUE_DARK)
+    c.drawString(MARGIN + 12, block_y + 42, "PRIMARY CONTACT")
+
+    # Contact details
+    c.setFont("Helvetica-Bold", 11)
+    c.setFillColor(NEAR_BLACK)
+    c.drawString(MARGIN + 12, block_y + 22, "d.fletcher@condyn.eu")
+
+    c.setFont("Helvetica", 8)
+    c.setFillColor(GREY_TEXT)
+    c.drawString(MARGIN + 12, block_y + 10, "Connection Dynamics Analyzer  //  condyn.eu  //  " + today)
 
     c.restoreState()
 
