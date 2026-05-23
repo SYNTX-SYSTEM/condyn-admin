@@ -117,10 +117,6 @@ def draw_cover(c, doc):
     c.setStrokeAlpha(0.6)
     c.line(0, H - 85, W, H - 85)
     c.line(0, H - 55, W, H - 55)
-    # Einzelne vertikale Linie links
-    c.setLineWidth(2)
-    c.setStrokeAlpha(1)
-    c.line(MARGIN + 4, H - 84, MARGIN + 4, H - 57)
     # Nur Contact zentriert
     c.setFont("Helvetica-Bold", 9)
     c.setFillColor(BLUE_DARK)
@@ -420,6 +416,20 @@ def generate_customer_pdf(src, out="customer_output.pdf"):
     if in_table and table_data:
         story += [build_table(table_data, th, tc), Spacer(1, 14)]
 
+    # Disclaimer Footer mit Namen
+    df_style = ParagraphStyle("DF", fontName="Helvetica-Bold", fontSize=10,
+        leading=16, textColor=WHITE, alignment=1)
+    ftr = Table([[Paragraph(
+        "Ottavio Braun  ·  Denver Fletcher  ·  T. Schoeps<br/>"
+        "<font size=8>Certified CONDYN / SYNTX Runtime Operators  ·  condyn.eu</font>",
+        df_style)]], colWidths=[W - 2*MARGIN])
+    ftr.setStyle(TableStyle([
+        ("BACKGROUND", (0,0), (-1,-1), BLUE_DARK),
+        ("TOPPADDING", (0,0), (-1,-1), 16),
+        ("BOTTOMPADDING", (0,0), (-1,-1), 16),
+    ]))
+    story.append(Spacer(1, 20))
+    story.append(ftr)
     doc.build(story, canvasmaker=NumberedCanvas)
     print(f"[SUCCESS] Corporate White ReportLab PDF compiled: {out}")
 
