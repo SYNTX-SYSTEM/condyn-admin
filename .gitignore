@@ -45,3 +45,5 @@ next-env.d.ts
 *.v[0-9]bak
 *.v[0-9][0-9]bak
 package.json.backup
+.venv/
+output_test.pdf
