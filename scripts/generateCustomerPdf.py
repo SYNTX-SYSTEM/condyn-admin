@@ -109,19 +109,7 @@ def draw_cover(c, doc):
         except:
             pass
     # Systeminfo-Streifen unter Header
-    c.setFillColor(BLUE_FAINT)
-    c.setFillAlpha(1)
-    c.rect(0, H - 85, W, 30, fill=1, stroke=0)
-    c.setStrokeColor(BLUE_DARK)
-    c.setLineWidth(0.8)
-    c.setStrokeAlpha(0.6)
-    c.line(0, H - 85, W, H - 85)
-    c.line(0, H - 55, W, H - 55)
-    # Nur Contact zentriert
-    c.setFont("Helvetica-Bold", 9)
-    c.setFillColor(BLUE_DARK)
-    c.setFillAlpha(1)
-    c.drawCentredString(W / 2, H - 73, "Contact:  d.fletcher@condyn.eu")
+
     c.setStrokeColor(BLUE_DARK)
     c.setLineWidth(3)
     c.setStrokeAlpha(1)
@@ -361,6 +349,7 @@ def generate_customer_pdf(src, out="customer_output.pdf"):
     body = ParagraphStyle('B', parent=s['Normal'], fontName='Helvetica', fontSize=10, leading=15, textColor=GREY_TEXT, spaceAfter=10)
     h1   = ParagraphStyle('H1', fontName='Helvetica-Bold', fontSize=20, leading=25, textColor=NEAR_BLACK, spaceAfter=8, alignment=1)
     h2   = ParagraphStyle('H2', fontName='Helvetica-Bold', fontSize=13, leading=16, textColor=NEAR_BLACK, spaceBefore=20, spaceAfter=8, keepWithNext=True)
+    h2_center = ParagraphStyle('H2C', fontName='Helvetica-Bold', fontSize=16, leading=20, textColor=NEAR_BLACK, spaceBefore=16, spaceAfter=12, alignment=1)
     h3   = ParagraphStyle('H3', fontName='Helvetica-Bold', fontSize=10.5, leading=13, textColor=BLUE_PRIMARY, spaceBefore=12, spaceAfter=6, keepWithNext=True)
     disc = ParagraphStyle('D', fontName='Helvetica', fontSize=9.5, leading=15, textColor=GREY_TEXT, spaceAfter=10, alignment=1)
     disc_h = ParagraphStyle('DH', fontName='Helvetica-Bold', fontSize=18, leading=22, textColor=BLUE_DARK, spaceAfter=16, alignment=1)
@@ -395,7 +384,7 @@ def generate_customer_pdf(src, out="customer_output.pdf"):
             if in_table and table_data:
                 story += [build_table(table_data, th, tc), Spacer(1, 14)]
                 in_table, table_data = False, []
-            story.append(Paragraph(clean(s2[3:]), h2))
+            story.append(Paragraph(clean(s2[3:]), h2_center if in_disc else h2))
             continue
         if s2.startswith("### "):
             story.append(Paragraph(clean(s2[4:]), h3))
