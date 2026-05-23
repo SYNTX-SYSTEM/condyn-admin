@@ -85,9 +85,12 @@ def draw_cover(c, doc):
     c.setFont("Helvetica-Bold", 16)
     c.setFillColor(BLUE_DARK)
     c.drawString(MARGIN + 4, H - 26, "CONDYN / SYNTX")
-    c.setFont("Helvetica", 8)
-    c.setFillColor(BLUE_PRIMARY)
-    c.drawString(MARGIN + 4, H - 40, "STRUCTURAL ANALYSIS SYSTEM  //  CONFIDENTIAL")
+    c.setFillColor(BLUE_DARK)
+    c.setFillAlpha(1)
+    c.rect(MARGIN + 4, H - 46, W - MARGIN - 50, 14, fill=1, stroke=0)
+    c.setFont("Helvetica-Bold", 7.5)
+    c.setFillColor(WHITE)
+    c.drawString(MARGIN + 10, H - 40, "STRUCTURAL ANALYSIS SYSTEM  //  CONFIDENTIAL")
     # Logo im Cover-Header rechts, rund, kein Border
     if os.path.exists(logo_path):
         try:
@@ -331,19 +334,25 @@ def build_table(raw_data, hs, cs):
     return t
 
 DISCLAIMER_MD = """---
-## Systemhinweis und Datenschutzerklarung
+## System Notice & Data Protection Declaration
 
-**Connection Dynamics Analyzer — CONDYN / SYNTX**
+**Connection Dynamics Analyzer — CONDYN / SYNTX Runtime**
 
-Dieses Dokument wurde automatisiert durch das CONDYN Structural Analyzer System generiert und enthaelt ausschliesslich strukturelle, systemische und organisationale Analysedaten.
+This document has been generated automatically by the CONDYN Structural Analyzer System and contains exclusively structural, systemic, and organizational analysis data.
 
-**Keine Personenanalyse.** Das CONDYN-System analysiert ausschliesslich Kommunikationsmuster, Systemstrukturen und relationale Dynamiken auf organisationaler Ebene. Es werden zu keinem Zeitpunkt personenbezogene Daten im Sinne der DSGVO (EU) 2016/679 erhoben, verarbeitet oder bewertet. Individuelle Personen sind niemals Gegenstand der Analyse.
+**No Personal Analysis.** The CONDYN system analyzes exclusively communication patterns, system structures, and relational dynamics at the organizational level. At no point in time are personal data within the meaning of GDPR (EU) 2016/679 collected, processed, or evaluated. Individual persons are never the subject of analysis.
 
-**Vertraulichkeit.** Dieses Dokument ist ausschliesslich fuer autorisierte Empfaenger bestimmt. Jede unbefugte Weitergabe, Vervielfaeltigung oder Nutzung ist untersagt.
+**Confidentiality.** This document is intended exclusively for authorized recipients. Any unauthorized disclosure, reproduction, or use is strictly prohibited under applicable law and proprietary governance protocols.
 
-**Haftungsausschluss.** Die enthaltenen Analysen stellen keine rechtliche, medizinische oder psychologische Beurteilung dar. CONDYN / SYNTX uebernimmt keine Haftung fuer Entscheidungen auf Basis dieser Systemausgabe.
+**Limitation of Liability.** The analyses contained herein do not constitute legal, medical, or psychological assessments. CONDYN / SYNTX accepts no liability for decisions made on the basis of this system output.
 
-(c) CONDYN / SYNTX Runtime — condyn.eu
+**Authorized Signatories**
+
+This report has been reviewed and authorized under the CONDYN / SYNTX Runtime protocol by the following certified system operators:
+
+Ottavio Braun  —  Denver Fletcher  —  Tobias Schopes
+
+(c) CONDYN / SYNTX Runtime  —  condyn.eu  —  All rights reserved.
 """
 
 def generate_customer_pdf(src, out="customer_output.pdf"):
@@ -357,7 +366,7 @@ def generate_customer_pdf(src, out="customer_output.pdf"):
     h1   = ParagraphStyle('H1', fontName='Helvetica-Bold', fontSize=20, leading=25, textColor=NEAR_BLACK, spaceAfter=8, alignment=1)
     h2   = ParagraphStyle('H2', fontName='Helvetica-Bold', fontSize=13, leading=16, textColor=NEAR_BLACK, spaceBefore=20, spaceAfter=8, keepWithNext=True)
     h3   = ParagraphStyle('H3', fontName='Helvetica-Bold', fontSize=10.5, leading=13, textColor=BLUE_PRIMARY, spaceBefore=12, spaceAfter=6, keepWithNext=True)
-    disc = ParagraphStyle('D', fontName='Helvetica', fontSize=8.5, leading=12.5, textColor=GREY_TEXT, spaceAfter=6)
+    disc = ParagraphStyle('D', fontName='Helvetica', fontSize=9, leading=14, textColor=GREY_TEXT, spaceAfter=8, alignment=1)
     th   = ParagraphStyle('TH', fontName='Helvetica-Bold', fontSize=9, leading=11, textColor=WHITE)
     tc   = ParagraphStyle('TC', fontName='Helvetica', fontSize=9.5, leading=13, textColor=GREY_TEXT)
 
