@@ -84,21 +84,21 @@ def draw_cover(c, doc):
     # System-Label: Blau auf Weiss
     c.setFont("Helvetica-Bold", 16)
     c.setFillColor(BLUE_DARK)
-    c.drawString(MARGIN + 4, H - 26, "CONDYN / SYNTX")
+    c.drawCentredString(W / 2, H - 26, "CONDYN / SYNTX")
     c.setFillColor(BLUE_DARK)
     c.setFillAlpha(1)
-    c.rect(MARGIN + 4, H - 46, W - MARGIN - 50, 14, fill=1, stroke=0)
+    c.rect(0, H - 46, W, 14, fill=1, stroke=0)
     c.setFont("Helvetica-Bold", 7.5)
     c.setFillColor(WHITE)
-    c.drawString(MARGIN + 10, H - 40, "STRUCTURAL ANALYSIS SYSTEM  //  CONFIDENTIAL")
+    c.drawCentredString(W / 2, H - 40, "STRUCTURAL ANALYSIS SYSTEM  //  CONFIDENTIAL")
     # Logo im Cover-Header rechts, rund, kein Border
     if os.path.exists(logo_path):
         try:
             hlx, hly, hls = W - MARGIN - 40, H - 50, 44
             hcx, hcy = hlx + hls/2, hly + hls/2
             c.setFillColor(WHITE)
-            c.setFillAlpha(0.15)
-            c.circle(hcx, hcy, hls/2 + 2, stroke=0, fill=1)
+            c.setFillAlpha(0.0)
+            c.circle(hcx, hcy, hls/2 + 2, stroke=0, fill=0)
             c.setFillAlpha(1)
             p2 = c.beginPath()
             p2.circle(hcx, hcy, hls/2)
@@ -149,11 +149,11 @@ def draw_cover(c, doc):
     r = logo_size / 2
 
     c.setFillColor(WHITE)
-    c.setStrokeColor(BLUE_DARK)
-    c.setLineWidth(2)
+    c.setStrokeColor(WHITE)
+    c.setLineWidth(0)
     c.setFillAlpha(1)
-    c.setStrokeAlpha(1)
-    c.circle(cx, cy, r + 10, stroke=1, fill=1)
+    c.setStrokeAlpha(0)
+    c.circle(cx, cy, r + 10, stroke=0, fill=1)
 
     if os.path.exists(logo_path):
         try:
@@ -350,7 +350,7 @@ This document has been generated automatically by the CONDYN Structural Analyzer
 
 This report has been reviewed and authorized under the CONDYN / SYNTX Runtime protocol by the following certified system operators:
 
-Ottavio Braun  —  Denver Fletcher  —  Tobias Schopes
+Ottavio Braun  —  Denver Fletcher  —  T. Schoeps
 
 (c) CONDYN / SYNTX Runtime  —  condyn.eu  —  All rights reserved.
 """
@@ -366,7 +366,10 @@ def generate_customer_pdf(src, out="customer_output.pdf"):
     h1   = ParagraphStyle('H1', fontName='Helvetica-Bold', fontSize=20, leading=25, textColor=NEAR_BLACK, spaceAfter=8, alignment=1)
     h2   = ParagraphStyle('H2', fontName='Helvetica-Bold', fontSize=13, leading=16, textColor=NEAR_BLACK, spaceBefore=20, spaceAfter=8, keepWithNext=True)
     h3   = ParagraphStyle('H3', fontName='Helvetica-Bold', fontSize=10.5, leading=13, textColor=BLUE_PRIMARY, spaceBefore=12, spaceAfter=6, keepWithNext=True)
-    disc = ParagraphStyle('D', fontName='Helvetica', fontSize=9, leading=14, textColor=GREY_TEXT, spaceAfter=8, alignment=1)
+    disc = ParagraphStyle('D', fontName='Helvetica', fontSize=9.5, leading=15, textColor=GREY_TEXT, spaceAfter=10, alignment=1)
+    disc_h = ParagraphStyle('DH', fontName='Helvetica-Bold', fontSize=18, leading=22, textColor=BLUE_DARK, spaceAfter=16, alignment=1)
+    disc_name = ParagraphStyle('DN', fontName='Helvetica-Bold', fontSize=11, leading=16, textColor=BLUE_PRIMARY, spaceAfter=8, alignment=1)
+    disc_hr = ParagraphStyle('DHR', fontName='Helvetica', fontSize=6, leading=8, textColor=BLUE_FAINT, spaceAfter=12, alignment=1)
     th   = ParagraphStyle('TH', fontName='Helvetica-Bold', fontSize=9, leading=11, textColor=WHITE)
     tc   = ParagraphStyle('TC', fontName='Helvetica', fontSize=9.5, leading=13, textColor=GREY_TEXT)
 
