@@ -3,6 +3,9 @@
 import React, { useState, useEffect } from "react";
 import { LayerInspector, LayerSnapshotData } from "../components/career/LayerInspector";
 import { CareerGraph } from "../components/career/CareerGraph";
+import { Sidebar } from "../components/career/Sidebar";
+import { Inspector } from "../components/career/Inspector";
+import { ReactFlowCareerGraph } from "../components/career/ReactFlowCareerGraph";
 import { ReactFlowNode, ReactFlowEdge } from "../../lib/career/adapters/react-flow";
 import "./career-demo.css";
 
@@ -11,6 +14,7 @@ export default function CareerArchitectureDemoPage() {
   const [selectedLayerId, setSelectedLayerId] = useState<string>("verified");
   const [selectedNode, setSelectedNode] = useState<ReactFlowNode | null>(null);
   const [selectedEdge, setSelectedEdge] = useState<ReactFlowEdge | null>(null);
+  const [viewMode, setViewMode] = useState<"css" | "reactflow">("reactflow");
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -87,8 +91,44 @@ export default function CareerArchitectureDemoPage() {
           <h1>CONDYN Career Analysis Protocol v1.0 — Architecture Replay Demo</h1>
           <p>Strict "Dumb Consumer" Principle &bull; Zero Client-Side Pipeline Execution &bull; 100% Deterministic Replay</p>
         </div>
-        <div className="demo-badge">
-          Step 5.5 Replay Engine
+        <div style={{ display: "flex", gap: "12px", alignItems: "center" }}>
+          <div style={{ display: "flex", background: "#21262d", padding: "3px", borderRadius: "20px", border: "1px solid #30363d" }}>
+            <button
+              onClick={() => setViewMode("css")}
+              style={{
+                padding: "6px 14px",
+                borderRadius: "16px",
+                border: "none",
+                background: viewMode === "css" ? "#58a6ff" : "transparent",
+                color: viewMode === "css" ? "#0d1117" : "#8b949e",
+                fontWeight: 600,
+                fontSize: "12px",
+                cursor: "pointer",
+                transition: "all 0.2s ease"
+              }}
+            >
+              Replay CSS Graph
+            </button>
+            <button
+              onClick={() => setViewMode("reactflow")}
+              style={{
+                padding: "6px 14px",
+                borderRadius: "16px",
+                border: "none",
+                background: viewMode === "reactflow" ? "#58a6ff" : "transparent",
+                color: viewMode === "reactflow" ? "#0d1117" : "#8b949e",
+                fontWeight: 600,
+                fontSize: "12px",
+                cursor: "pointer",
+                transition: "all 0.2s ease"
+              }}
+            >
+              ReactFlow Graph
+            </button>
+          </div>
+          <div className="demo-badge">
+            Step 6.1 Engine
+          </div>
         </div>
       </header>
 
@@ -113,19 +153,39 @@ export default function CareerArchitectureDemoPage() {
             onSelectLayer={setSelectedLayerId}
           />
           {reactFlowSnapshot ? (
-            <CareerGraph
-              graph={reactFlowSnapshot}
-              selectedNode={selectedNode}
-              selectedEdge={selectedEdge}
-              onSelectNode={(node) => {
-                setSelectedNode(node);
-                setSelectedEdge(null);
-              }}
-              onSelectEdge={(edge) => {
-                setSelectedEdge(edge);
-                setSelectedNode(null);
-              }}
-            />
+            viewMode === "css" ? (
+              <CareerGraph
+                graph={reactFlowSnapshot}
+                selectedNode={selectedNode}
+                selectedEdge={selectedEdge}
+                onSelectNode={(node) => {
+                  setSelectedNode(node);
+                  setSelectedEdge(null);
+                }}
+                onSelectEdge={(edge) => {
+                  setSelectedEdge(edge);
+                  setSelectedNode(null);
+                }}
+              />
+            ) : (
+              <div className="career-graph-container">
+                <Sidebar graph={reactFlowSnapshot} />
+                <div className="career-graph-main">
+                  <ReactFlowCareerGraph
+                    graph={reactFlowSnapshot}
+                    onSelectNode={(node) => {
+                      setSelectedNode(node);
+                      setSelectedEdge(null);
+                    }}
+                    onSelectEdge={(edge) => {
+                      setSelectedEdge(edge);
+                      setSelectedNode(null);
+                    }}
+                  />
+                </div>
+                <Inspector selectedNode={selectedNode} selectedEdge={selectedEdge} />
+              </div>
+            )
           ) : (
             <div style={{ padding: "40px", textAlign: "center" }}>
               <h3>No ReactFlow snapshot available.</h3>
@@ -136,3 +196,4 @@ export default function CareerArchitectureDemoPage() {
     </div>
   );
 }
+
