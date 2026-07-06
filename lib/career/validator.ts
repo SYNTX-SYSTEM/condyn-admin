@@ -227,21 +227,9 @@ export function validateCareerAnalysis(payload: unknown): ValidationResult<Canon
     });
   }
 
-  // Check all Relationship target_ids for Orphan Edges (No repair in Phase 2.3!)
+  // Check evidence doc_ids for Orphan References
   for (const [sectionName, entities] of domainArrays) {
     entities.forEach((entity, entityIdx) => {
-      entity.relationships.forEach((rel, relIdx) => {
-        if (!idRegistry.has(rel.target_id)) {
-          issues.push({
-            code: "ERR_ORPHAN_REFERENCE",
-            severity: "ERROR",
-            message: `Orphan edge detected: Entity '${entity.entity_id}' references non-existent target_id '${rel.target_id}'.`,
-            entityId: entity.entity_id,
-            path: ["structured_data", "analysis", sectionName, entityIdx, "relationships", relIdx, "target_id"]
-          });
-        }
-      });
-
       // Check evidence doc_ids
       entity.evidence.forEach((ev, evIdx) => {
         if (!idRegistry.has(ev.doc_id)) {
@@ -388,8 +376,42 @@ export function validateCareerAnalysis(payload: unknown): ValidationResult<Canon
     };
   }
 
-  // TODO [Phase 2.5]: Partial Graph Repair (Apply WARN_ORPHAN_EDGE_REMOVED edge removal without mutating other fields)
-  // TODO [Phase 2.6]: Validator Stamping (Set validation.status = PASSED, metadata.validation_state = VERIFIED, preserve overall_confidence)
+  // --------------------------------------------------------------------------
+  // Phase 2.5: Partial Graph Repair (Orphan Edge Removal)
+  // --------------------------------------------------------------------------
+  for (const [sectionName, entities] of domainArrays) {
+    entities.forEach((entity, entityIdx) => {
+      const originalRels = entity.relationships;
+      const validRels = originalRels.filter((rel, relIdx) => {
+        if (!idRegistry.has(rel.target_id)) {
+          issues.push({
+            code: "WARN_ORPHAN_EDGE_REMOVED",
+            severity: "WARNING",
+            message: `Partial Graph Repair: Removed orphan relationship from entity '${entity.entity_id}' referencing non-existent target_id '${rel.target_id}'.`,
+            entityId: entity.entity_id,
+            path: ["structured_data", "analysis", sectionName, entityIdx, "relationships", relIdx, "target_id"]
+          });
+          return false;
+        }
+        return true;
+      });
+      entity.relationships = validRels;
+    });
+  }
+
+  // --------------------------------------------------------------------------
+  // Phase 2.6: Validator Stamping
+  // --------------------------------------------------------------------------
+  for (const [_, entities] of domainArrays) {
+    entities.forEach(ent => {
+      if (ent.validation) {
+        ent.validation.status = "PASSED";
+      }
+    });
+  }
+  if (analysis.metadata) {
+    analysis.metadata.validation_state = "VERIFIED";
+  }
 
   const durationMs = Date.now() - startTime;
   const warningCount = issues.filter(i => i.severity === "WARNING").length;

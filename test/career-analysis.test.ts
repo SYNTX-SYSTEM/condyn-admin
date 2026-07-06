@@ -72,10 +72,10 @@ describe("CONDYN Career Analysis Protocol v1.0 - TDD Conformance Suite", () => {
         expect(hasDuplicateError).toBe(true);
       });
 
-      it("should emit ERR_ORPHAN_REFERENCE when a relationship points to a non-existent target_id (before repair phase)", () => {
+      it("should emit ERR_ORPHAN_REFERENCE when an evidence item points to a non-existent doc_id", () => {
         const invalidPayload = JSON.parse(goldJsonRaw);
-        // Point an organization relationship to a non-existent capability ID
-        invalidPayload.structured_data.analysis.organizations[0].relationships[1].target_id = "CAP_999_ORPHAN";
+        // Point a capability evidence item to a non-existent document ID
+        invalidPayload.structured_data.analysis.capabilities[0].evidence[0].doc_id = "DOC_999_ORPHAN";
 
         const result = validateCareerAnalysis(invalidPayload);
         expect(result.success).toBe(false);
@@ -105,6 +105,47 @@ describe("CONDYN Career Analysis Protocol v1.0 - TDD Conformance Suite", () => {
         expect(result.success).toBe(false);
         const hasEvidenceError = result.issues.some(i => i.code === "ERR_EVIDENCE_MISSING");
         expect(hasEvidenceError).toBe(true);
+      });
+    });
+
+    describe("Phase 2.5 & 2.6: Partial Graph Repair & Validator Stamping", () => {
+      it("should repair orphan relationship edges: remove edge, emit WARN_ORPHAN_EDGE_REMOVED, and succeed without mutating overall_confidence", () => {
+        const payloadWithOrphanEdge = JSON.parse(goldJsonRaw);
+        const originalConfidence = payloadWithOrphanEdge.structured_data.analysis.metadata.overall_confidence;
+        
+        // Add a broken relationship pointing to a non-existent capability ID
+        payloadWithOrphanEdge.structured_data.analysis.organizations[0].relationships.push({
+          target_id: "CAP_999_ORPHAN",
+          relation_type: "REQUIRES",
+          weight: 0.5
+        });
+
+        const result = validateCareerAnalysis(payloadWithOrphanEdge);
+        expect(result.success).toBe(true);
+        expect(result.data).toBeDefined();
+        
+        // Verify warning was emitted
+        const hasOrphanWarning = result.issues.some(i => i.code === "WARN_ORPHAN_EDGE_REMOVED" && i.severity === "WARNING");
+        expect(hasOrphanWarning).toBe(true);
+
+        // Verify edge was deterministically removed
+        const orgRels = result.data!.structured_data.analysis.organizations[0].relationships;
+        expect(orgRels.some(r => r.target_id === "CAP_999_ORPHAN")).toBe(false);
+
+        // Verify overall_confidence was NOT mutated
+        expect(result.data!.structured_data.analysis.metadata.overall_confidence).toBe(originalConfidence);
+      });
+
+      it("should stamp validation_state = VERIFIED and validation.status = PASSED on entities upon successful validation", () => {
+        const payload = JSON.parse(goldJsonRaw);
+        // Reset status to UNVERIFIED in input to prove validator stamps it
+        payload.structured_data.analysis.metadata.validation_state = "UNVERIFIED";
+        payload.structured_data.analysis.capabilities[0].validation.status = "UNVERIFIED";
+
+        const result = validateCareerAnalysis(payload);
+        expect(result.success).toBe(true);
+        expect(result.data!.structured_data.analysis.metadata.validation_state).toBe("VERIFIED");
+        expect(result.data!.structured_data.analysis.capabilities[0].validation.status).toBe("PASSED");
       });
     });
   });
