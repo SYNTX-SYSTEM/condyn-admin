@@ -199,8 +199,9 @@ Das Architekturmanifest definiert keine flüchtigen Assertionszahlen, sondern ve
 | **E2E Inference Pipeline** | `test/career-pipeline.test.ts` | Sequentielle DOC_-ID Vergabe, Custom-ID Zod/Präfix Guard, E2E Orchestrierung bis VERIFIED, Orphan & Syntax Error Propagierung |
 | **Persistence & Repository** | `test/career-repository.test.ts` | Kanonische `analysis_id`, Verified-Type & Runtime Guard, Immutability, titelfreie Index-Deskriptoren |
 | **Perception Mapper** | `test/career-perception.test.ts` | 1:1 Projection Model, Stempel-Wächter (`ERR_UNVERIFIED_ANALYSIS_PROJECTION`), deterministische Zirkulär-Koordinaten |
+| **View Model Builder** | `test/career-view-model.test.ts` | Framework-unabhängige visuelle Semantik (Style tokens, Tooltips, Groups, Collapse flags), 0 % Engine-Schmutz |
 
-*Die konkrete Test- und Assertionsanzahl wird dynamisch zur Laufzeit in der Vitest-CI ermittelt und protokolliert (aktueller Meilenstein: 5 Testsuiten / 35 Tests fehlerfrei passierend).*
+*Die konkrete Test- und Assertionsanzahl wird dynamisch zur Laufzeit in der Vitest-CI ermittelt und protokolliert (aktueller Meilenstein: 6 Testsuiten / 39 Tests fehlerfrei passierend).*
 
 ---
 
@@ -258,11 +259,25 @@ Mit dem **Backend Architecture Freeze v1.0** im Rücken haben wir die erste Brü
 
 ---
 
-## 11. Ausblick: Step 5.2 — UI Rendering Adapters (`ReactFlow` / `D3-Force`)
+## 11. Step 5.2: Der implementierte View Model Builder (`lib/career/view-model.ts`)
 
-In der nächsten Ausbaustufe werden die reinen `TopologyProjection`-Daten aus Step 5.1 in konkrete visuelle Komponenten (ReactFlow Node/Edge-Definitionen oder D3-Force Graphen) innerhalb der bestehenden CONDYN-Adminoberfläche eingespeist. Die gesamte Schichtenfolge steht unverrückbar fest:
+Um sicherzustellen, dass unser Frontend genauso modellagnostisch und entkoppelt bleibt wie unser Backend LLM-agnostisch ist, haben wir eine framework-unabhängige Zwischenschicht eingezogen.
+
+### Die 3 Charlottenburger View-Model-Gesetze
+1. **0 % Framework-Schmutz:** Das generierte View Model (`CareerViewModel`, `ViewNode`, `ViewEdge`, `ViewGroup`) ist reines, serialisierbares JSON. Es existieren keinerlei Abhängigkeiten zu React, ReactFlow, D3 oder dem DOM. Alle engine-spezifischen Variablen (wie `x`, `y`, `fx`, `fy`, `position`, `data`, `sourceHandle`, `targetHandle`) sind strikt verboten!
+2. **Semantisch-projektive Anreicherung:** Die Funktion `buildViewModel(projection)` leitet aus der reinen Projektion deterministisch visuelle Semantik ab: Form-Token (`shape: "CIRCLE" | "HEXAGON" | "RECTANGLE" | "PILL"`), Kanten-Stile (`strokeStyle: "SOLID" | "DASHED"`, `strokeWidth`, `animated`), verständliche Tooltip-Strings und UI-Steuerflags (`isCollapsible`, `isExpandedByDefault`).
+3. **Keine erfundene Fachlogik:** Der View Model Builder erfindet keine Scores oder Entitäten dazu. Er wandelt lediglich die bereits verifizierte Struktur in eine einheitliche Sprache um, die von beliebigen Rendering-Engines konsumiert werden kann.
+
+---
+
+## 12. Ausblick: Step 5.3–5.5 — Rendering Adapters & React Components
+
+In den nächsten Schritten docken wir schlanke Adapter an unser reines View Model an. Die gesamte Schichtenfolge des CONDYN Systems lautet nun makellos:
 ```
-SPEC -> Schema -> Types -> Validator -> Adapter -> Pipeline -> Repository -> Perception -> ReactFlow / D3
+SPEC -> Schema -> Types -> Validator -> Adapter -> Pipeline -> Repository -> Perception -> View Model -> [ReactFlow / D3 Adapter] -> React Components
 ```
+1. **Step 5.3 (`lib/career/adapters/react-flow.ts`):** 1:1 Mapping vom View Model in ReactFlow Nodes und Edges.
+2. **Step 5.4 (`lib/career/adapters/d3-force.ts`):** 1:1 Mapping vom View Model in D3 Simulation Graphs.
+3. **Step 5.5 (`app/components/career/*`):** Strunzdumme Präsentations-Komponenten (`CareerGraph`, `CareerNode`, `CareerSidebar`, `CareerInspector`), die ausschließlich den fertigen Adapter-Output visualisieren.
 
 
