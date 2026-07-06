@@ -197,8 +197,9 @@ Das Architekturmanifest definiert keine flüchtigen Assertionszahlen, sondern ve
 | **Zod Schema & Validator** | `test/career-analysis.test.ts` | Schema-Invarianz, Referenzielle Integrität, Semantik, DAG-Zyklen, Reparatur, Stamping |
 | **LLM Adapter & Pipeline** | `test/career-adapter.test.ts` | Prompt-Contract-Konstruktion, Provider-Abstraktionsvertrag, Output Processing & Parsing |
 | **E2E Inference Pipeline** | `test/career-pipeline.test.ts` | Sequentielle DOC_-ID Vergabe, Custom-ID Zod/Präfix Guard, E2E Orchestrierung bis VERIFIED, Orphan & Syntax Error Propagierung |
+| **Persistence & Repository** | `test/career-repository.test.ts` | Kanonische `analysis_id`, Verified-Type & Runtime Guard, Immutability, titelfreie Index-Deskriptoren |
 
-*Die konkrete Test- und Assertionsanzahl wird dynamisch zur Laufzeit in der Vitest-CI ermittelt und protokolliert (aktueller Meilenstein: 3 Testsuiten fehlerfrei passierend).*
+*Die konkrete Test- und Assertionsanzahl wird dynamisch zur Laufzeit in der Vitest-CI ermittelt und protokolliert (aktueller Meilenstein: 4 Testsuiten fehlerfrei passierend).*
 
 ---
 
@@ -224,9 +225,32 @@ Diese zentrale Schnittstelle verbindet alle 4 Säulen der Architektur zu einem e
 
 ---
 
-## 9. Ausblick: Step 5 — Die Frontend Perception Engine (`ReactFlow` / `D3-Force`)
+## 9. Step 4.5: Persistence & Repository Layer (`lib/career/repository.ts` & `lib/career/types.ts`)
 
-Nachdem die gesamte Backend- und E2E-Inferenz-Pipeline lückenlos gehärtet ist, öffnen wir das Tor zur visuellen Präsentation (`app/components/` bzw. `app/topology/`).
+Zwischen der E2E-Pipeline und dem Frontend sorgt der Repository-Layer dafür, dass unsere visuelle Präsentationsschicht vollständig von der konkreten Datenbanktechnologie (PostgreSQL, Supabase, Prisma, MongoDB oder InMemory für TDD) entkoppelt ist.
+
+### Die 3 Charlottenburger Persistenz-Gesetze
+1. **Kanonische `analysis_id` (`ANL_...`):** Die Identität einer Analyse wird niemals von der Datenbank erfunden. Sie ist als `analysis_id` fest im kanonischen Metadata-Header in [lib/career/schema.ts](file:///home/codi/Entwicklung/condyn-admin/lib/career/schema.ts) verankert und dient als Primary Key im gesamten System.
+2. **Compile-Time & Runtime Verified Guard:** In [lib/career/types.ts](file:///home/codi/Entwicklung/condyn-admin/lib/career/types.ts) ist der gebrandete Lifecycle-Typ `VerifiedCareerAnalysis` verankert. Das Repository akzeptiert via `save(analysis: VerifiedCareerAnalysis)` ausschließlich Objekte, die den Stempel `validation_state === "VERIFIED"` tragen. Wer versucht, ungeprüften Schmutz an der Typ-Schranke vorbei einzuschleusen, scheitert an einem harten Runtime-Guard (`ERR_UNVERIFIED_ANALYSIS_PERSISTENCE`).
+3. **Schlanke Index-Deskriptoren (`list()` ohne UI-Schmutz):** Da das Protokoll keinen kanonischen Titel einer Analyse garantiert, liefert `list()` ausschließlich reine, unberührte Fakten des Analyse-Laufs zurück:
+   ```ts
+   export interface AnalysisIndexEntry {
+     analysisId: string;
+     createdAt: string;
+     validationState: "VERIFIED";
+     overallConfidence: number;
+   }
+   ```
+   Keine UI-Strukturen, keine erfundenen Titel, keine Verschmutzung des kanonischen Index!
+
+---
+
+## 10. Ausblick: Step 5 — Die Frontend Perception Engine (`ReactFlow` / `D3-Force`)
+
+Nachdem die gesamte Backend-, E2E- und Persistenz-Pipeline lückenlos gehärtet ist, steht unsere 8-gliedrige Architektur wie ein Fels:
+```
+SPEC -> Schema -> Types -> Validator -> Adapter -> Pipeline -> Repository -> Perception -> Frontend
+```
 
 ### Die Charlottenburger Grundregel für Step 5
 > *"Die UI-Schicht ist ein strunzdummer Konsument ('dumb consumer'). Sie führt keinerlei Inferenz durch, erfindet keine Entitäten dazu und mutiert niemals den gestempelten Score!"*
