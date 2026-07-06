@@ -1,13 +1,14 @@
 /**
  * CONDYN CAREER ANALYSIS PROTOCOL v1.0
- * RUNTIME INTEGRITY VALIDATOR SKELETON (`lib/career/validator.ts`)
+ * RUNTIME INTEGRITY VALIDATOR (`lib/career/validator.ts`)
  * 
  * Status: ARCHITECTURE FREEZE v1.0 / KANONISCHER VERTRAG
  * Scope: Runtime verification, structural integrity, semantic rules, and partial graph repair.
- * Architecture: Phase 1 Skeleton (No repair logic yet, strict separation of concerns).
+ * Architecture: Phase 2.2 Schema Validation (JSON Parse & safeParse issue transformation).
  */
 
-import { CanonicalCareerAnalysis } from "./schema";
+import { z } from "zod";
+import { CanonicalCareerAnalysis, CanonicalCareerAnalysisSchema } from "./schema";
 
 // ============================================================================
 // 1. ERROR & WARNING CODES (CANONICAL TAXONOMY)
@@ -77,7 +78,44 @@ export interface ValidationResult<T = CanonicalCareerAnalysis> {
 }
 
 // ============================================================================
-// 3. VALIDATOR ENGINE SKELETON
+// 3. INTERNAL HELPER: MAP ZOD ISSUE TO CANONICAL ERROR CODE
+// ============================================================================
+
+function mapZodIssueToCode(issue: z.ZodIssue): ValidationErrorCode {
+  const pathStr = issue.path.join(".");
+  const msg = issue.message;
+
+  if (pathStr.includes("protocol_version") || pathStr.includes("schema_version") || pathStr.includes("prompt_contract_version")) {
+    return "ERR_VERSION_MISMATCH";
+  }
+  if (issue.path[0] === "report_markdown" || issue.path[0] === "structured_data" || pathStr === "structured_data.analysis" || pathStr === "structured_data.presentation") {
+    return "ERR_SCHEMA_BIFURCATION_MISSING";
+  }
+  if (msg.includes("prefix") || pathStr.endsWith("entity_id") || pathStr.endsWith("target_id") || pathStr.endsWith("doc_id") || pathStr.endsWith("node_id")) {
+    if (issue.code === "invalid_string" && issue.validation === "regex") {
+      return "ERR_INVALID_ID_PREFIX";
+    }
+  }
+  if (msg.includes("<= 1.0") || msg.includes(">= 0.0") || pathStr.includes("score") || pathStr.includes("confidence") || pathStr.includes("weight")) {
+    return "ERR_SCORE_OUT_OF_BOUNDS";
+  }
+  if (pathStr.includes("country_iso")) {
+    return "ERR_NON_CANONICAL_ISO_COUNTRY";
+  }
+  if (issue.code === "invalid_type" && issue.received === "undefined") {
+    if (issue.path.length === 2 && issue.path[0] === "structured_data") {
+      return "ERR_SCHEMA_BIFURCATION_MISSING";
+    }
+    if (issue.path.length === 3 && issue.path[0] === "structured_data" && issue.path[1] === "analysis") {
+      return "ERR_MANDATORY_SECTION_MISSING";
+    }
+    return "ERR_GRAMMAR_VIOLATION";
+  }
+  return "ERR_GRAMMAR_VIOLATION";
+}
+
+// ============================================================================
+// 4. VALIDATOR ENGINE IMPLEMENTATION
 // ============================================================================
 
 /**
@@ -91,19 +129,68 @@ export function validateCareerAnalysis(payload: unknown): ValidationResult<Canon
   const startTime = Date.now();
   const issues: ValidationIssue[] = [];
 
-  // Phase 1: Skeleton initialized.
-  // TODO [Phase 2]: Schema Validation (CanonicalCareerAnalysisSchema.safeParse & issue transformation)
-  // TODO [Phase 3]: Referential Integrity Check (Index all IDs, detect orphan edges without repair)
-  // TODO [Phase 4]: Semantic Rules (Grammar, 12 Sections, Role -> Org hierarchy, Score Bounds, Evidence, DAG check)
-  // TODO [Phase 5]: Partial Graph Repair (Apply WARN_ORPHAN_EDGE_REMOVED edge removal without mutating other fields)
-  // TODO [Phase 6]: Validator Stamping (Set validation.status = PASSED, metadata.validation_state = VERIFIED, preserve overall_confidence)
+  // --------------------------------------------------------------------------
+  // Phase 2.2a: JSON Parsing
+  // --------------------------------------------------------------------------
+  let parsedObject: unknown = payload;
+  if (typeof payload === "string") {
+    try {
+      parsedObject = JSON.parse(payload);
+    } catch (error) {
+      issues.push({
+        code: "ERR_JSON_SYNTAX_INVALID",
+        severity: "ERROR",
+        message: `Malformed JSON string: ${error instanceof Error ? error.message : String(error)}`,
+        path: []
+      });
+      const durationMs = Date.now() - startTime;
+      return {
+        success: false,
+        issues,
+        metrics: { durationMs, errorCount: 1, warningCount: 0 }
+      };
+    }
+  }
+
+  // --------------------------------------------------------------------------
+  // Phase 2.2b: Zod Schema Validation & Issue Transformation
+  // --------------------------------------------------------------------------
+  const parseResult = CanonicalCareerAnalysisSchema.safeParse(parsedObject);
+  if (!parseResult.success) {
+    for (const zodIssue of parseResult.error.issues) {
+      const code = mapZodIssueToCode(zodIssue);
+      issues.push({
+        code,
+        severity: "ERROR",
+        message: zodIssue.message,
+        path: zodIssue.path
+      });
+    }
+
+    const durationMs = Date.now() - startTime;
+    return {
+      success: false,
+      issues,
+      metrics: {
+        durationMs,
+        errorCount: issues.length,
+        warningCount: 0
+      }
+    };
+  }
+
+  // TODO [Phase 2.3]: Referential Integrity Check (Index all IDs, detect orphan edges without repair)
+  // TODO [Phase 2.4]: Semantic Rules (Grammar, 12 Sections, Role -> Org hierarchy, Score Bounds, Evidence, DAG check)
+  // TODO [Phase 2.5]: Partial Graph Repair (Apply WARN_ORPHAN_EDGE_REMOVED edge removal without mutating other fields)
+  // TODO [Phase 2.6]: Validator Stamping (Set validation.status = PASSED, metadata.validation_state = VERIFIED, preserve overall_confidence)
 
   const durationMs = Date.now() - startTime;
   const errorCount = issues.filter(i => i.severity === "ERROR").length;
   const warningCount = issues.filter(i => i.severity === "WARNING").length;
 
   return {
-    success: errorCount === 0,
+    success: true,
+    data: parseResult.data,
     issues,
     metrics: {
       durationMs,
