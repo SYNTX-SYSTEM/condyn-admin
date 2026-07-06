@@ -1,0 +1,113 @@
+{
+  "nodes": [
+    {
+      "id": "CAP_001",
+      "label": "Distributed Systems Architecture & Resilience",
+      "x": 0,
+      "y": 0,
+      "data": {
+        "type": "CAPABILITY",
+        "ringName": "Core Capabilities",
+        "ringIndex": 0,
+        "weight": 0.95,
+        "tooltip": "Distributed Systems Architecture & Resilience (CAPABILITY) — Weight: 95%",
+        "isCollapsible": false,
+        "isExpandedByDefault": true,
+        "style": {
+          "colorToken": "#1565C0",
+          "shape": "HEXAGON",
+          "borderWidth": 3,
+          "opacity": 1
+        }
+      },
+      "style": {
+        "opacity": 1,
+        "shape": "HEXAGON"
+      },
+      "fx": 0,
+      "fy": 0
+    },
+    {
+      "id": "ORG_001",
+      "label": "Siemens AG",
+      "x": 0,
+      "y": -250,
+      "data": {
+        "type": "CONCRETE_ORGANIZATION",
+        "ringName": "Target Organizations",
+        "ringIndex": 1,
+        "priorityGroup": "Immediate Market Match",
+        "weight": 0.94,
+        "tooltip": "Siemens AG (CONCRETE_ORGANIZATION) — Weight: 94%",
+        "isCollapsible": true,
+        "isExpandedByDefault": true,
+        "style": {
+          "colorToken": "#4CAF50",
+          "shape": "RECTANGLE",
+          "borderWidth": 1,
+          "opacity": 1
+        }
+      },
+      "style": {
+        "opacity": 1,
+        "shape": "RECTANGLE"
+      }
+    },
+    {
+      "id": "ROL_001",
+      "label": "Principal Edge Systems Architect",
+      "x": 0,
+      "y": -500,
+      "data": {
+        "type": "ROLE",
+        "ringName": "Target Roles",
+        "ringIndex": 2,
+        "weight": 0.92,
+        "tooltip": "Principal Edge Systems Architect (ROLE) — Weight: 92%",
+        "isCollapsible": true,
+        "isExpandedByDefault": false,
+        "style": {
+          "colorToken": "#FF9800",
+          "shape": "PILL",
+          "borderWidth": 1,
+          "opacity": 1
+        }
+      },
+      "style": {
+        "opacity": 1,
+        "shape": "PILL"
+      }
+    }
+  ],
+  "links": [
+    {
+      "id": "edge-ORG_001-CAP_001",
+      "source": "ORG_001",
+      "target": "CAP_001",
+      "strength": 0.89,
+      "animated": false,
+      "style": {
+        "strokeWidth": 1,
+        "stroke": "#999999",
+        "strokeDasharray": "5 5"
+      },
+      "data": {
+        "tooltip": "Connection force: 89%"
+      }
+    },
+    {
+      "id": "edge-ROL_001-ORG_001",
+      "source": "ROL_001",
+      "target": "ORG_001",
+      "strength": 0.95,
+      "animated": true,
+      "style": {
+        "strokeWidth": 2,
+        "stroke": "#999999"
+      },
+      "data": {
+        "tooltip": "Connection force: 95%"
+      }
+    }
+  ]
+}

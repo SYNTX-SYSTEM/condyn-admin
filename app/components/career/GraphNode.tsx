@@ -13,7 +13,11 @@ export const GraphNode: React.FC<GraphNodeProps> = ({ node, onSelect }) => {
       data-ring-name={node.data.ringName}
       data-ring-index={node.data.ringIndex}
       data-shape={node.data.style.shape}
-      style={{ opacity: node.style.opacity }}
+      style={{
+        left: `calc(50% + ${node.position?.x || 0}px)`,
+        top: `calc(50% + ${node.position?.y || 0}px)`,
+        opacity: node.style.opacity
+      }}
       onClick={() => onSelect && onSelect(node)}
       className="career-graph-node"
     >

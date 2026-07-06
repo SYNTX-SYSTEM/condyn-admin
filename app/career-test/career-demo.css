@@ -1,0 +1,299 @@
+/* ============================================================================
+   CONDYN Career Analysis Protocol v1.0 — Architecture Demo Styles
+   ============================================================================ */
+
+.demo-page-container {
+  min-height: 100vh;
+  background: #0d1117;
+  color: #c9d1d9;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  display: flex;
+  flex-direction: column;
+}
+
+.demo-header {
+  background: #161b22;
+  border-bottom: 1px solid #30363d;
+  padding: 16px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.demo-title h1 {
+  font-size: 20px;
+  font-weight: 700;
+  color: #58a6ff;
+  margin: 0;
+}
+
+.demo-title p {
+  font-size: 13px;
+  color: #8b949e;
+  margin: 4px 0 0 0;
+}
+
+.demo-badge {
+  background: rgba(56, 139, 253, 0.15);
+  border: 1px solid rgba(56, 139, 253, 0.4);
+  color: #58a6ff;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.demo-grid {
+  display: grid;
+  grid-template-columns: 380px 1fr;
+  flex: 1;
+  height: calc(100vh - 73px);
+  overflow: hidden;
+}
+
+/* Layer Inspector Left Column */
+.layer-inspector {
+  background: #161b22;
+  border-right: 1px solid #30363d;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+}
+
+.inspector-header {
+  padding: 16px;
+  border-bottom: 1px solid #30363d;
+}
+
+.inspector-header h3 {
+  font-size: 16px;
+  color: #f0f6fc;
+  margin: 0 0 4px 0;
+}
+
+.subtitle {
+  font-size: 12px;
+  color: #8b949e;
+  margin: 0;
+}
+
+.layer-list {
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  border-bottom: 1px solid #30363d;
+}
+
+.layer-btn {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: #21262d;
+  border: 1px solid #30363d;
+  border-radius: 8px;
+  padding: 10px 12px;
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.2s ease;
+  color: #c9d1d9;
+}
+
+.layer-btn:hover {
+  background: #30363d;
+  border-color: #58a6ff;
+}
+
+.layer-btn.active {
+  background: rgba(56, 139, 253, 0.15);
+  border-color: #58a6ff;
+  color: #58a6ff;
+}
+
+.layer-status-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #238636;
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.layer-name {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.layer-filename {
+  font-size: 11px;
+  color: #8b949e;
+}
+
+.layer-detail-panel {
+  flex: 1;
+  padding: 16px;
+  overflow-y: auto;
+}
+
+.layer-detail-panel h4 {
+  font-size: 15px;
+  color: #f0f6fc;
+  margin: 0 0 8px 0;
+}
+
+.layer-desc {
+  font-size: 13px;
+  color: #8b949e;
+  margin-bottom: 16px;
+  line-height: 1.4;
+}
+
+.metrics-box {
+  background: #0d1117;
+  border: 1px solid #30363d;
+  border-radius: 6px;
+  padding: 12px;
+  margin-bottom: 16px;
+  font-size: 13px;
+}
+
+.metrics-box p {
+  margin: 6px 0;
+}
+
+.status-verified {
+  color: #3fb950;
+  font-weight: bold;
+}
+
+.json-preview-container h5 {
+  font-size: 12px;
+  color: #8b949e;
+  margin: 0 0 8px 0;
+}
+
+.json-preview {
+  background: #0d1117;
+  border: 1px solid #30363d;
+  border-radius: 6px;
+  padding: 12px;
+  font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+  font-size: 11px;
+  color: #a5d6ff;
+  overflow-x: auto;
+  max-height: 280px;
+}
+
+/* Career Graph Right Column */
+.career-graph-container {
+  display: grid;
+  grid-template-columns: 240px 1fr 280px;
+  height: 100%;
+  background: #0d1117;
+}
+
+.career-sidebar {
+  background: #161b22;
+  border-right: 1px solid #30363d;
+  padding: 16px;
+  overflow-y: auto;
+}
+
+.career-sidebar h3 {
+  font-size: 14px;
+  color: #f0f6fc;
+  margin-bottom: 12px;
+  border-bottom: 1px solid #30363d;
+  padding-bottom: 8px;
+}
+
+.career-graph-main {
+  position: relative;
+  overflow: hidden;
+  background: radial-gradient(#21262d 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+.career-graph-canvas {
+  position: absolute;
+  inset: 0;
+}
+
+.canvas-nodes {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.career-graph-node {
+  position: absolute;
+  padding: 10px 16px;
+  border-radius: 10px;
+  background: rgba(22, 27, 34, 0.9);
+  border: 2px solid #58a6ff;
+  color: #f0f6fc;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  pointer-events: auto;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5), 0 0 10px rgba(88, 166, 255, 0.2);
+  transform: translate(-50%, -50%);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  white-space: nowrap;
+  backdrop-filter: blur(8px);
+}
+
+.career-graph-node:hover {
+  transform: translate(-50%, -50%) scale(1.08);
+  border-color: #79c0ff;
+  box-shadow: 0 0 24px rgba(88, 166, 255, 0.6);
+  z-index: 100;
+  background: rgba(33, 38, 45, 0.95);
+}
+
+.canvas-edges {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.career-graph-edge {
+  position: absolute;
+  padding: 4px 8px;
+  background: rgba(22, 27, 34, 0.8);
+  border: 1px solid #30363d;
+  border-radius: 4px;
+  color: #8b949e;
+  font-size: 11px;
+  pointer-events: auto;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.career-graph-edge:hover {
+  border-color: #58a6ff;
+  color: #58a6ff;
+  background: #21262d;
+}
+
+.career-inspector {
+  background: #161b22;
+  border-left: 1px solid #30363d;
+  padding: 16px;
+  overflow-y: auto;
+}
+
+.career-inspector h3 {
+  font-size: 14px;
+  color: #f0f6fc;
+  margin-bottom: 12px;
+  border-bottom: 1px solid #30363d;
+  padding-bottom: 8px;
+}

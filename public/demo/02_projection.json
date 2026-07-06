@@ -1,0 +1,60 @@
+{
+  "analysisId": "ANL_20260706_000001",
+  "centerNodeId": "CAP_001",
+  "nodes": [
+    {
+      "id": "CAP_001",
+      "type": "CAPABILITY",
+      "label": "Distributed Systems Architecture & Resilience",
+      "ringName": "Core Capabilities",
+      "ringIndex": 0,
+      "colorToken": "#1565C0",
+      "weight": 0.95,
+      "position": {
+        "x": 0,
+        "y": 0
+      }
+    },
+    {
+      "id": "ORG_001",
+      "type": "CONCRETE_ORGANIZATION",
+      "label": "Siemens AG",
+      "ringName": "Target Organizations",
+      "ringIndex": 1,
+      "colorToken": "#4CAF50",
+      "priorityGroup": "Immediate Market Match",
+      "weight": 0.94,
+      "position": {
+        "x": 0,
+        "y": -250
+      }
+    },
+    {
+      "id": "ROL_001",
+      "type": "ROLE",
+      "label": "Principal Edge Systems Architect",
+      "ringName": "Target Roles",
+      "ringIndex": 2,
+      "colorToken": "#FF9800",
+      "weight": 0.92,
+      "position": {
+        "x": 0,
+        "y": -500
+      }
+    }
+  ],
+  "edges": [
+    {
+      "id": "edge-ORG_001-CAP_001",
+      "source": "ORG_001",
+      "target": "CAP_001",
+      "interactionForce": 0.89
+    },
+    {
+      "id": "edge-ROL_001-ORG_001",
+      "source": "ROL_001",
+      "target": "ORG_001",
+      "interactionForce": 0.95
+    }
+  ]
+}

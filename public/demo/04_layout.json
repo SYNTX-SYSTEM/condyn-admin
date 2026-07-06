@@ -1,0 +1,126 @@
+{
+  "analysisId": "ANL_20260706_000001",
+  "centerNodeId": "CAP_001",
+  "nodes": [
+    {
+      "id": "CAP_001",
+      "label": "Distributed Systems Architecture & Resilience",
+      "type": "CAPABILITY",
+      "ringName": "Core Capabilities",
+      "ringIndex": 0,
+      "weight": 0.95,
+      "tooltip": "Distributed Systems Architecture & Resilience (CAPABILITY) — Weight: 95%",
+      "isCollapsible": false,
+      "isExpandedByDefault": true,
+      "style": {
+        "colorToken": "#1565C0",
+        "shape": "HEXAGON",
+        "borderWidth": 3,
+        "opacity": 1
+      },
+      "x": 0,
+      "y": 0
+    },
+    {
+      "id": "ORG_001",
+      "label": "Siemens AG",
+      "type": "CONCRETE_ORGANIZATION",
+      "ringName": "Target Organizations",
+      "ringIndex": 1,
+      "priorityGroup": "Immediate Market Match",
+      "weight": 0.94,
+      "tooltip": "Siemens AG (CONCRETE_ORGANIZATION) — Weight: 94%",
+      "isCollapsible": true,
+      "isExpandedByDefault": true,
+      "style": {
+        "colorToken": "#4CAF50",
+        "shape": "RECTANGLE",
+        "borderWidth": 1,
+        "opacity": 1
+      },
+      "x": 0,
+      "y": -250
+    },
+    {
+      "id": "ROL_001",
+      "label": "Principal Edge Systems Architect",
+      "type": "ROLE",
+      "ringName": "Target Roles",
+      "ringIndex": 2,
+      "weight": 0.92,
+      "tooltip": "Principal Edge Systems Architect (ROLE) — Weight: 92%",
+      "isCollapsible": true,
+      "isExpandedByDefault": false,
+      "style": {
+        "colorToken": "#FF9800",
+        "shape": "PILL",
+        "borderWidth": 1,
+        "opacity": 1
+      },
+      "x": 0,
+      "y": -500
+    }
+  ],
+  "edges": [
+    {
+      "id": "edge-ORG_001-CAP_001",
+      "source": "ORG_001",
+      "target": "CAP_001",
+      "interactionForce": 0.89,
+      "tooltip": "Connection force: 89%",
+      "style": {
+        "strokeWidth": 1,
+        "strokeColor": "#999999",
+        "strokeStyle": "DASHED",
+        "animated": false
+      }
+    },
+    {
+      "id": "edge-ROL_001-ORG_001",
+      "source": "ROL_001",
+      "target": "ORG_001",
+      "interactionForce": 0.95,
+      "tooltip": "Connection force: 95%",
+      "style": {
+        "strokeWidth": 2,
+        "strokeColor": "#999999",
+        "strokeStyle": "SOLID",
+        "animated": true
+      }
+    }
+  ],
+  "groups": [
+    {
+      "id": "group-ring-0",
+      "label": "Core Capabilities",
+      "type": "RING",
+      "nodeIds": [
+        "CAP_001"
+      ]
+    },
+    {
+      "id": "group-ring-1",
+      "label": "Target Organizations",
+      "type": "RING",
+      "nodeIds": [
+        "ORG_001"
+      ]
+    },
+    {
+      "id": "group-ring-2",
+      "label": "Target Roles",
+      "type": "RING",
+      "nodeIds": [
+        "ROL_001"
+      ]
+    },
+    {
+      "id": "group-prio-immediate-market-match",
+      "label": "Immediate Market Match",
+      "type": "PRIORITY",
+      "nodeIds": [
+        "ORG_001"
+      ]
+    }
+  ]
+}
