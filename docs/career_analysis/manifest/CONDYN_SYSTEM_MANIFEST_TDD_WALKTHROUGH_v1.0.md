@@ -200,8 +200,9 @@ Das Architekturmanifest definiert keine flüchtigen Assertionszahlen, sondern ve
 | **Persistence & Repository** | `test/career-repository.test.ts` | Kanonische `analysis_id`, Verified-Type & Runtime Guard, Immutability, titelfreie Index-Deskriptoren |
 | **Perception Mapper** | `test/career-perception.test.ts` | 1:1 Projection Model, Stempel-Wächter (`ERR_UNVERIFIED_ANALYSIS_PROJECTION`), deterministische Zirkulär-Koordinaten |
 | **View Model Builder** | `test/career-view-model.test.ts` | Framework-unabhängige visuelle Semantik (Style tokens, Tooltips, Groups, Collapse flags), 0 % Engine-Schmutz |
+| **Radial Layout Layer** | `test/career-layout.test.ts` | Engine-neutrale Zirkulär-Trigonometrie (`x`, `y`), Center Node auf `{0,0}`, 0 % ReactFlow/D3-Schmutz |
 
-*Die konkrete Test- und Assertionsanzahl wird dynamisch zur Laufzeit in der Vitest-CI ermittelt und protokolliert (aktueller Meilenstein: 6 Testsuiten / 39 Tests fehlerfrei passierend).*
+*Die konkrete Test- und Assertionsanzahl wird dynamisch zur Laufzeit in der Vitest-CI ermittelt und protokolliert (aktueller Meilenstein: 7 Testsuiten / 43 Tests fehlerfrei passierend).*
 
 ---
 
@@ -270,14 +271,25 @@ Um sicherzustellen, dass unser Frontend genauso modellagnostisch und entkoppelt 
 
 ---
 
-## 12. Ausblick: Step 5.3–5.5 — Rendering Adapters & React Components
+## 12. Step 5.3a: Die implementierte Radial Layout Layer (`lib/career/layout.ts`)
 
-In den nächsten Schritten docken wir schlanke Adapter an unser reines View Model an. Die gesamte Schichtenfolge des CONDYN Systems lautet nun makellos:
+Bevor konkrete Rendering-Adapter (ReactFlow oder D3) angedockt werden, haben wir mit der **Engine-Neutral Radial Layout Layer** sichergestellt, dass jegliche Trigonometrie und Koordinatenberechnung ($x, y$) vollständig framework-unabhängig aus der Struktur des View Models abgeleitet wird.
+
+### Die 3 Charlottenburger Layout-Gesetze
+1. **0 % ReactFlow/D3-Schmutz:** Das generierte `CareerLayoutModel` enthält weder `position` noch `data`, `sourceHandle`, `targetHandle`, `fx` oder `fy`. Es fügt den sauberen View-Model-Nodes ausschließlich die berechneten ganzzahligen Pixelkoordinaten `x` und `y` hinzu!
+2. **Deterministische Zirkulär-Trigonometrie:** Der Center Node (`centerNodeId`) sitzt unumstößlich auf `{ x: 0, y: 0 }`. Alle anderen Nodes verteilen sich nach ihren Ring-Radien (`radius = ringIndex * 250`) auf Winkel und werden deterministisch auf Integer gebändigt.
+3. **100 % Strukturerhalt:** Die Anzahl der Nodes, Edges und Groups sowie deren IDs und semantischen Anreicherungen bleiben zu 100 % intakt.
+
+---
+
+## 13. Ausblick: Step 5.3b–5.5 — Rendering Adapters & React Components
+
+In den nächsten Schritten docken wir schlanke Adapter an unser reines Layout Model an. Die gesamte Schichtenfolge des CONDYN Systems lautet nun makellos:
 ```
-SPEC -> Schema -> Types -> Validator -> Adapter -> Pipeline -> Repository -> Perception -> View Model -> [ReactFlow / D3 Adapter] -> React Components
+SPEC -> Schema -> Types -> Validator -> Adapter -> Pipeline -> Repository -> Perception -> View Model -> Radial Layout -> [ReactFlow / D3 Adapter] -> UI
 ```
-1. **Step 5.3 (`lib/career/adapters/react-flow.ts`):** 1:1 Mapping vom View Model in ReactFlow Nodes und Edges.
-2. **Step 5.4 (`lib/career/adapters/d3-force.ts`):** 1:1 Mapping vom View Model in D3 Simulation Graphs.
+1. **Step 5.3b (`lib/career/adapters/react-flow.ts`):** Strunzdummes 1:1 Mapping vom Layout Model in ReactFlow Nodes (`position: { x, y }`) und Edges ohne jegliche Trigonometrie!
+2. **Step 5.4 (`lib/career/adapters/d3-force.ts`):** 1:1 Mapping vom Layout Model in D3 Simulation Graphs.
 3. **Step 5.5 (`app/components/career/*`):** Strunzdumme Präsentations-Komponenten (`CareerGraph`, `CareerNode`, `CareerSidebar`, `CareerInspector`), die ausschließlich den fertigen Adapter-Output visualisieren.
 
 
