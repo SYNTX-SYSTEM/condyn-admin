@@ -2,9 +2,12 @@
  * CONDYN CAREER ANALYSIS PROTOCOL v1.0
  * LLM OUTPUT ADAPTER & PROMPT BUILDER (`lib/career/adapter.ts`)
  * 
- * Status: TDD Step 4.1 Implemented (Prompt Builder)
- * Scope: Constructs canonical system prompt (8 Invariance Rules) and user prompt (document corpus & JSON constraints).
+ * Status: TDD Step 4.1 & 4.2 Implemented, 4.3 Skeleton
+ * Scope: Constructs canonical system prompt (8 Invariance Rules), inference provider contract, and output processor.
  */
+
+import { validateCareerAnalysis, ValidationResult } from "./validator";
+import { CanonicalCareerAnalysis } from "./schema";
 
 export interface PromptBuilderOutput {
   systemPrompt: string;
@@ -90,4 +93,57 @@ export class MockInferenceProvider implements InferenceProvider {
     return this.mockResponse;
   }
 }
+
+// ============================================================================
+// STEP 4.3: LLM OUTPUT PROCESSOR & VALIDATOR PIPELINE
+// ============================================================================
+
+/**
+ * Processes the raw string output from an inference provider.
+ * Strips Markdown code wrappers (e.g., ```json ... ```), parses JSON,
+ * and passes the result through the canonical Runtime Integrity Validator.
+ */
+export function processLlmOutput(rawOutput: string | unknown): ValidationResult<CanonicalCareerAnalysis> {
+  const startTime = Date.now();
+  let payload: unknown = rawOutput;
+
+  if (typeof rawOutput === "string") {
+    let cleanString = rawOutput.trim();
+
+    // Try to extract JSON from markdown code block if wrapped (e.g. ```json ... ``` or ``` ... ```)
+    const codeBlockRegex = /```(?:json)?\s*([\s\S]*?)\s*```/i;
+    const match = cleanString.match(codeBlockRegex);
+    if (match && match[1]) {
+      cleanString = match[1].trim();
+    } else {
+      // If not matching markdown code block, extract between first { and last }
+      const firstBrace = cleanString.indexOf("{");
+      const lastBrace = cleanString.lastIndexOf("}");
+      if (firstBrace !== -1 && lastBrace !== -1 && lastBrace > firstBrace) {
+        cleanString = cleanString.substring(firstBrace, lastBrace + 1);
+      }
+    }
+
+    try {
+      payload = JSON.parse(cleanString);
+    } catch (e) {
+      return {
+        success: false,
+        issues: [{
+          code: "ERR_JSON_SYNTAX_INVALID",
+          severity: "ERROR",
+          message: `Failed to parse LLM JSON output: ${e instanceof Error ? e.message : String(e)}`
+        }],
+        metrics: {
+          durationMs: Date.now() - startTime,
+          errorCount: 1,
+          warningCount: 0
+        }
+      };
+    }
+  }
+
+  return validateCareerAnalysis(payload);
+}
+
 

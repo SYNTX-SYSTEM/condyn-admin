@@ -1,5 +1,7 @@
+import fs from "fs";
+import path from "path";
 import { describe, it, expect } from "vitest";
-import { buildCareerAnalysisPrompt, DocumentInput, MockInferenceProvider } from "../lib/career/adapter";
+import { buildCareerAnalysisPrompt, DocumentInput, MockInferenceProvider, processLlmOutput } from "../lib/career/adapter";
 
 describe("CONDYN Career Analysis Protocol v1.0 - Step 4.1: LLM Prompt Builder (`buildCareerAnalysisPrompt`)", () => {
   const sampleDocs: DocumentInput[] = [
@@ -71,4 +73,38 @@ describe("CONDYN Career Analysis Protocol v1.0 - Step 4.2: Inference Provider Co
       .rejects.toThrow("ERR_INVALID_PROMPT_BUNDLE");
   });
 });
+
+describe("CONDYN Career Analysis Protocol v1.0 - Step 4.3: LLM Output Processor (`processLlmOutput`)", () => {
+  const goldJsonPath = path.join(__dirname, "gold/case_001_minimal_valid/expected/expected.json");
+  const goldJsonRaw = fs.readFileSync(goldJsonPath, "utf-8");
+
+  it("should strip ```json code wrappers, parse JSON, and return success: true for valid gold model output", () => {
+    const wrappedOutput = `Here is the analysis:\n\`\`\`json\n${goldJsonRaw}\n\`\`\`\nDone.`;
+    const result = processLlmOutput(wrappedOutput);
+    expect(result.success).toBe(true);
+    expect(result.data).toBeDefined();
+    expect(result.data!.structured_data.analysis.metadata.validation_state).toBe("VERIFIED");
+  });
+
+  it("should strip generic ``` code wrappers without language specifier and validate successfully", () => {
+    const wrappedOutput = `\`\`\`\n${goldJsonRaw}\n\`\`\``;
+    const result = processLlmOutput(wrappedOutput);
+    expect(result.success).toBe(true);
+    expect(result.data).toBeDefined();
+  });
+
+  it("should handle raw un-wrapped JSON string cleanly and validate successfully", () => {
+    const result = processLlmOutput(goldJsonRaw);
+    expect(result.success).toBe(true);
+    expect(result.data).toBeDefined();
+  });
+
+  it("should return ERR_JSON_SYNTAX_INVALID when string is malformed or not parseable JSON", () => {
+    const malformedOutput = `\`\`\`json\n{ invalid: json ...\n\`\`\``;
+    const result = processLlmOutput(malformedOutput);
+    expect(result.success).toBe(false);
+    expect(result.issues.some(i => i.code === "ERR_JSON_SYNTAX_INVALID")).toBe(true);
+  });
+});
+
 
