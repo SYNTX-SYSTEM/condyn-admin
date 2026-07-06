@@ -201,8 +201,9 @@ Das Architekturmanifest definiert keine flüchtigen Assertionszahlen, sondern ve
 | **Perception Mapper** | `test/career-perception.test.ts` | 1:1 Projection Model, Stempel-Wächter (`ERR_UNVERIFIED_ANALYSIS_PROJECTION`), deterministische Zirkulär-Koordinaten |
 | **View Model Builder** | `test/career-view-model.test.ts` | Framework-unabhängige visuelle Semantik (Style tokens, Tooltips, Groups, Collapse flags), 0 % Engine-Schmutz |
 | **Radial Layout Layer** | `test/career-layout.test.ts` | Engine-neutrale Zirkulär-Trigonometrie (`x`, `y`), Center Node auf `{0,0}`, 0 % ReactFlow/D3-Schmutz |
+| **ReactFlow Adapter** | `test/career-react-flow.test.ts` | 1:1 Mapping ins ReactFlow-Format (`position`, `data`, `style`), 0 % Trigonometrie, 0 % D3-Schmutz |
 
-*Die konkrete Test- und Assertionsanzahl wird dynamisch zur Laufzeit in der Vitest-CI ermittelt und protokolliert (aktueller Meilenstein: 7 Testsuiten / 43 Tests fehlerfrei passierend).*
+*Die konkrete Test- und Assertionsanzahl wird dynamisch zur Laufzeit in der Vitest-CI ermittelt und protokolliert (aktueller Meilenstein: 8 Testsuiten / 48 Tests fehlerfrei passierend).*
 
 ---
 
@@ -282,14 +283,24 @@ Bevor konkrete Rendering-Adapter (ReactFlow oder D3) angedockt werden, haben wir
 
 ---
 
-## 13. Ausblick: Step 5.3b–5.5 — Rendering Adapters & React Components
+## 13. Step 5.3b: Der implementierte ReactFlow Adapter (`lib/career/adapters/react-flow.ts`)
 
-In den nächsten Schritten docken wir schlanke Adapter an unser reines Layout Model an. Die gesamte Schichtenfolge des CONDYN Systems lautet nun makellos:
+Als erste konkrete visuelle Rendering-Schnittstelle haben wir den **ReactFlow Adapter** angedockt. Er formatiert das vorbereitete `CareerLayoutModel` in saubere ReactFlow-Datenstrukturen, ohne dass auch nur eine Zeile Layout- oder Fachlogik erfunden wird.
+
+### Die 3 Charlottenburger Adapter-Gesetze
+1. **0 % Trigonometrie – strunzdummes 1:1 Mapping:** Der Adapter berechnet keine Winkel, Radien oder Abstände. Er formatiert die im `CareerLayoutModel` vorbereiteten `x`- und `y`-Werte direkt in `position: { x, y }` um.
+2. **Kapselung in `data` & `style`:** Labels, Tooltips, Gewichte, Collapse-Flags und Form-Semantik werden sauber im `data`-Payload gebündelt. Die SVG-Strop-Eigenschaften (wie `strokeDasharray: "5 5"` für gestrichelte Kanten und `animated`) werden direkt abgebildet.
+3. **0 % D3-Schmutz:** Weder Nodes noch Edges enthalten Physik-Variablen wie `fx`, `fy`, `vx` oder `vy`.
+
+---
+
+## 14. Ausblick: Step 5.4 & 5.5 — D3 Adapter & React Components
+
+Mit dem einsatzbereiten ReactFlow Adapter steht die gesamte 12-gliedrige Kette unverrückbar fest:
 ```
-SPEC -> Schema -> Types -> Validator -> Adapter -> Pipeline -> Repository -> Perception -> View Model -> Radial Layout -> [ReactFlow / D3 Adapter] -> UI
+SPEC -> Schema -> Types -> Validator -> Adapter -> Pipeline -> Repository -> Perception -> View Model -> Radial Layout -> ReactFlow -> UI
 ```
-1. **Step 5.3b (`lib/career/adapters/react-flow.ts`):** Strunzdummes 1:1 Mapping vom Layout Model in ReactFlow Nodes (`position: { x, y }`) und Edges ohne jegliche Trigonometrie!
-2. **Step 5.4 (`lib/career/adapters/d3-force.ts`):** 1:1 Mapping vom Layout Model in D3 Simulation Graphs.
-3. **Step 5.5 (`app/components/career/*`):** Strunzdumme Präsentations-Komponenten (`CareerGraph`, `CareerNode`, `CareerSidebar`, `CareerInspector`), die ausschließlich den fertigen Adapter-Output visualisieren.
+1. **Step 5.4 (`lib/career/adapters/d3-force.ts`):** 1:1 Mapping vom Layout Model in D3 Simulation Graphs.
+2. **Step 5.5 (`app/components/career/*`):** Strunzdumme Präsentations-Komponenten (`CareerGraph`, `CareerNode`, `CareerSidebar`, `CareerInspector`), die ausschließlich den fertigen Adapter-Output visualisieren.
 
 
