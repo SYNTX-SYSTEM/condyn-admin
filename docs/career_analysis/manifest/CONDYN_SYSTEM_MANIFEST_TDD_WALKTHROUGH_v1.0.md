@@ -202,8 +202,9 @@ Das Architekturmanifest definiert keine flüchtigen Assertionszahlen, sondern ve
 | **View Model Builder** | `test/career-view-model.test.ts` | Framework-unabhängige visuelle Semantik (Style tokens, Tooltips, Groups, Collapse flags), 0 % Engine-Schmutz |
 | **Radial Layout Layer** | `test/career-layout.test.ts` | Engine-neutrale Zirkulär-Trigonometrie (`x`, `y`), Center Node auf `{0,0}`, 0 % ReactFlow/D3-Schmutz |
 | **ReactFlow Adapter** | `test/career-react-flow.test.ts` | 1:1 Mapping ins ReactFlow-Format (`position`, `data`, `style`), 0 % Trigonometrie, 0 % D3-Schmutz |
+| **D3 Force Adapter** | `test/career-d3-force.test.ts` | 1:1 Mapping ins D3-Format (`x`, `y`, `fx/fy`, `strength`), 0 % Simulationsticks, 0 % ReactFlow-Schmutz |
 
-*Die konkrete Test- und Assertionsanzahl wird dynamisch zur Laufzeit in der Vitest-CI ermittelt und protokolliert (aktueller Meilenstein: 8 Testsuiten / 48 Tests fehlerfrei passierend).*
+*Die konkrete Test- und Assertionsanzahl wird dynamisch zur Laufzeit in der Vitest-CI ermittelt und protokolliert (aktueller Meilenstein: 9 Testsuiten / 54 Tests fehlerfrei passierend).*
 
 ---
 
@@ -294,13 +295,23 @@ Als erste konkrete visuelle Rendering-Schnittstelle haben wir den **ReactFlow Ad
 
 ---
 
-## 14. Ausblick: Step 5.4 & 5.5 — D3 Adapter & React Components
+## 14. Step 5.4: Der implementierte D3 Force Adapter (`lib/career/adapters/d3-force.ts`)
 
-Mit dem einsatzbereiten ReactFlow Adapter steht die gesamte 12-gliedrige Kette unverrückbar fest:
+Als zweite visuelle Rendering-Schnittstelle haben wir den **D3 Force Adapter** realisiert. Er mappt das `CareerLayoutModel` in eine reine, simulatortaugliche D3-Graphstruktur (`nodes`, `links`), ohne selbst Physik-Ticks auszuführen.
+
+### Die 3 Charlottenburger D3-Gesetze
+1. **0 % Simulationsticks / Layout-Neuberechnung:** Der Adapter übersetzt keine Koordinaten neu. Er übernimmt die aus dem Layout Model vorbereiteten `x`- und `y`-Werte 1:1 als Startkoordinaten für die physikalische D3-Simulation.
+2. **Zentrumsfixierung (`fx`, `fy`):** Der Center Node (`centerNodeId`) wird via `fx: 0, fy: 0` physikalisch fest im Ursprung verankert. Alle anderen Nodes erhalten keine fixierten Koordinaten (`undefined`), damit sie frei im physikalischen Kraftfeld schwingen können.
+3. **0 % ReactFlow-Schmutz:** Die generierten D3-Nodes und -Links sind absolut frei von ReactFlow-Spezifika (kein `position`-Wrapper-Objekt, keine Handle-Deskriptoren).
+
+---
+
+## 15. Ausblick: Step 5.5 — React Presentation Components
+
+Mit den beiden einsatzbereiten Rendering-Adaptern für ReactFlow und D3-Force steht unsere 13-gliedrige Architektur makellos und unumstößlich fest:
 ```
-SPEC -> Schema -> Types -> Validator -> Adapter -> Pipeline -> Repository -> Perception -> View Model -> Radial Layout -> ReactFlow -> UI
+SPEC -> Schema -> Types -> Validator -> Adapter -> Pipeline -> Repository -> Perception -> View Model -> Radial Layout -> [ReactFlow / D3 Adapter] -> UI Components
 ```
-1. **Step 5.4 (`lib/career/adapters/d3-force.ts`):** 1:1 Mapping vom Layout Model in D3 Simulation Graphs.
-2. **Step 5.5 (`app/components/career/*`):** Strunzdumme Präsentations-Komponenten (`CareerGraph`, `CareerNode`, `CareerSidebar`, `CareerInspector`), die ausschließlich den fertigen Adapter-Output visualisieren.
+In **Step 5.5 (`app/components/career/*`)** bauen wir nun die strunzdummen Präsentations-Komponenten (`CareerGraph`, `CareerNode`, `CareerSidebar`, `CareerInspector`), die ausschließlich die fertigen Adapter-Daten empfangen und visuell rendern!
 
 
