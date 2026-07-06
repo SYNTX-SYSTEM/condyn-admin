@@ -59,3 +59,35 @@ DO NOT wrap the output in \`\`\`json or any markdown block. Return ONLY the raw 
     userPrompt
   };
 }
+
+// ============================================================================
+// STEP 4.2: INFERENCE PROVIDER ABSTRACTION CONTRACT
+// ============================================================================
+
+/**
+ * Abstract inference provider contract ensuring model-agnostic execution.
+ * Allows seamless substitution of Gemini, OpenAI, Claude, or local models.
+ */
+export interface InferenceProvider {
+  /**
+   * Executes the prompt bundle against the underlying LLM/Inference model.
+   * Returns the raw unparsed string output from the model.
+   */
+  execute(prompt: PromptBuilderOutput): Promise<string>;
+}
+
+/**
+ * A deterministic Mock Inference Provider for TDD and pipeline testing.
+ * Returns a pre-configured raw string response without making external network calls.
+ */
+export class MockInferenceProvider implements InferenceProvider {
+  constructor(private mockResponse: string) {}
+
+  async execute(prompt: PromptBuilderOutput): Promise<string> {
+    if (!prompt.systemPrompt || !prompt.systemPrompt.trim() || !prompt.userPrompt || !prompt.userPrompt.trim()) {
+      throw new Error("ERR_INVALID_PROMPT_BUNDLE: Both systemPrompt and userPrompt must be provided and non-empty.");
+    }
+    return this.mockResponse;
+  }
+}
+

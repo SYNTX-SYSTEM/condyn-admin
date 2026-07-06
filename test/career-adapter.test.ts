@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { buildCareerAnalysisPrompt, DocumentInput } from "../lib/career/adapter";
+import { buildCareerAnalysisPrompt, DocumentInput, MockInferenceProvider } from "../lib/career/adapter";
 
 describe("CONDYN Career Analysis Protocol v1.0 - Step 4.1: LLM Prompt Builder (`buildCareerAnalysisPrompt`)", () => {
   const sampleDocs: DocumentInput[] = [
@@ -51,3 +51,24 @@ describe("CONDYN Career Analysis Protocol v1.0 - Step 4.1: LLM Prompt Builder (`
     expect(result.userPrompt).toContain("DO NOT wrap the output in ```json");
   });
 });
+
+describe("CONDYN Career Analysis Protocol v1.0 - Step 4.2: Inference Provider Contract (`InferenceProvider` & `MockInferenceProvider`)", () => {
+  it("should execute a prompt bundle and return the configured raw string response", async () => {
+    const mockJsonString = '{"report_markdown": "# Test Report", "structured_data": {}}';
+    const provider = new MockInferenceProvider(mockJsonString);
+    const result = await provider.execute({
+      systemPrompt: "System Instructions",
+      userPrompt: "User Instructions"
+    });
+    expect(result).toBe(mockJsonString);
+  });
+
+  it("should throw ERR_INVALID_PROMPT_BUNDLE when systemPrompt or userPrompt is empty", async () => {
+    const provider = new MockInferenceProvider("test");
+    await expect(provider.execute({ systemPrompt: "", userPrompt: "valid" }))
+      .rejects.toThrow("ERR_INVALID_PROMPT_BUNDLE");
+    await expect(provider.execute({ systemPrompt: "valid", userPrompt: "" }))
+      .rejects.toThrow("ERR_INVALID_PROMPT_BUNDLE");
+  });
+});
+
