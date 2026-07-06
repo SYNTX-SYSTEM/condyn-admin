@@ -4,6 +4,7 @@
   "structured_data": {
     "analysis": {
       "metadata": {
+        "analysis_id": "ANL_20260706_000001",
         "protocol_version": "1.0.0",
         "schema_version": "1.0.0",
         "prompt_contract_version": "PC-CONDYN-CAP-v1.0",

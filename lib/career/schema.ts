@@ -18,8 +18,8 @@ import { z } from "zod";
  * Enforces stable type prefixes: DOC_, CLU_, CAP_, DOM_, CLS_, ORG_, ROL_, OPP_, STR_, QRY_
  */
 export const CanonicalIdSchema = z.string().regex(
-  /^(DOC|CLU|CAP|DOM|CLS|ORG|ROL|OPP|STR|QRY)_[A-Z0-9_]+$/,
-  "ID must conform to canonical prefixes (DOC_, CLU_, CAP_, DOM_, CLS_, ORG_, ROL_, OPP_, STR_, QRY_)"
+  /^(ANL|DOC|CLU|CAP|DOM|CLS|ORG|ROL|OPP|STR|QRY)_[A-Z0-9_]+$/,
+  "ID must conform to canonical prefixes (ANL_, DOC_, CLU_, CAP_, DOM_, CLS_, ORG_, ROL_, OPP_, STR_, QRY_)"
 );
 
 /**
@@ -145,6 +145,7 @@ export const SearchQueryEntitySchema = UniversalEntitySchema.extend({
 // ============================================================================
 
 export const MetadataSchema = z.object({
+  analysis_id: CanonicalIdSchema,
   protocol_version: z.string().min(1),
   schema_version: z.string().min(1),
   prompt_contract_version: z.string().min(1),
