@@ -153,13 +153,13 @@ entity.validation = {
   validator_version: "v1.0.0"
 };
 ```
-Ergebnis: Die Testsuite [test/career-analysis.test.ts](file:///home/codi/Entwicklung/condyn-admin/test/career-analysis.test.ts) läuft mit **11 von 11 Tests grün! 🟢**
+Ergebnis: Die Testsuite [test/career-analysis.test.ts](file:///home/codi/Entwicklung/condyn-admin/test/career-analysis.test.ts) verifiziert die vollständige Schema- und Validator-Spezifikation. Die konkrete Assertionsanzahl wird dynamisch zur Laufzeit durch die Vitest-CI ermittelt.
 
 ---
 
 ## 6. Step 4: Die Abstraktions-Schleuse (`lib/career/adapter.ts`)
 
-Ein System, das fest an OpenAI oder Gemini verkabelt ist, ist nicht zukunftssicher. In Step 4 haben wir in [lib/career/adapter.ts](file:///home/codi/Entwicklung/condyn-admin/lib/career/adapter.ts) eine model-agnostische Schleuse gebaut, die den KI-Anbieter komplett vom Validator isoliert. Absicherung erfolgte durch [test/career-adapter.test.ts](file:///home/codi/Entwicklung/condyn-admin/test/career-adapter.test.ts).
+Ein System, das fest an OpenAI oder Gemini verkabelt ist, ist nicht zukunftssicher. In Step 4 definieren wir in [lib/career/adapter.ts](file:///home/codi/Entwicklung/condyn-admin/lib/career/adapter.ts) eine model-agnostische Schleuse, die den KI-Anbieter komplett vom Validator isoliert. Absicherung erfolgt durch [test/career-adapter.test.ts](file:///home/codi/Entwicklung/condyn-admin/test/career-adapter.test.ts).
 
 ### Step 4.1: Prompt Builder (`buildCareerAnalysisPrompt`)
 Diese Funktion nimmt ein Array von Eingabedokumenten (`DocumentInput[]`) und erzeugt das kanonische `PromptBuilderOutput`:
@@ -168,13 +168,13 @@ Diese Funktion nimmt ein Array von Eingabedokumenten (`DocumentInput[]`) und erz
   > *"WICHTIG: Bitte ausschließlich valides JSON als Ausgabe liefern. Kein Markdown Code-Wrapper! DO NOT wrap the output in \`\`\`json or any markdown block. Return ONLY the raw JSON object string starting with { and ending with }."*
 
 ### Step 4.2: Inference Provider Contract (`InferenceProvider`)
-Wir haben die KI-Schnittstelle als reines Interface abstrahiert:
+Wir abstrahieren die KI-Schnittstelle als reines Interface:
 ```ts
 export interface InferenceProvider {
   execute(prompt: PromptBuilderOutput): Promise<string>;
 }
 ```
-* Dazu kam die Klasse `MockInferenceProvider` für TDD, die im Konstruktor einen Raw-String entgegennimmt und bei der Ausführung strikt prüft, ob `systemPrompt` und `userPrompt` vorhanden und nicht leer sind (wirft ansonsten `ERR_INVALID_PROMPT_BUNDLE`).
+* Dazu kommt die Klasse `MockInferenceProvider` für TDD, die im Konstruktor einen Raw-String entgegennimmt und bei der Ausführung strikt prüft, ob `systemPrompt` und `userPrompt` vorhanden und nicht leer sind (wirft ansonsten `ERR_INVALID_PROMPT_BUNDLE`).
 * **Die semiotische Konsequenz:** Ob wir morgen `GeminiProvider`, `ClaudeProvider`, `OpenAIProvider` oder ein lokales Llama-3 Modell nutzen – die Signifikanten der KI werden immer durch denselben Trichter gepresst.
 
 ### Step 4.3: LLM Output Processor (`processLlmOutput`)
@@ -184,45 +184,54 @@ LLMs halten sich trotz strengster Verbote nicht immer an Regeln und packen ihr J
 3. **Syntax Guard:** Schlägt `JSON.parse(cleanString)` fehl, stürzt nicht die App ab, sondern der Processor liefert einen sauberen `ValidationResult` mit Code `ERR_JSON_SYNTAX_INVALID`.
 4. **Handoff:** Das saubere JSON wird sofort an `validateCareerAnalysis(...)` übergeben – wo Zod-Prüfung, ID-Registrierung, DAG-Check, Reparatur und Stamping voll automatisch ablaufen!
 
-Ergebnis: Die Testsuite [test/career-adapter.test.ts](file:///home/codi/Entwicklung/condyn-admin/test/career-adapter.test.ts) läuft mit **10 von 10 Tests grün! 🟢**
+Ergebnis: Die Testsuite [test/career-adapter.test.ts](file:///home/codi/Entwicklung/condyn-admin/test/career-adapter.test.ts) verifiziert Prompt-Contract, Provider-Schnittstelle und Output Processing.
 
 ---
 
-## 7. Die 100 % Grün-Bilanz: 21 von 21 Tests
+## 7. Kontinuierliche Verifikation & Test-Spezifikation
 
-Wir haben das System mit zwei messerscharfen Vitest-Suiten auf Herz und Nieren geprüft:
+Das Architekturmanifest definiert keine flüchtigen Assertionszahlen, sondern verankert die zu prüfenden Domänen. Die Test-Suiten verifizieren kontinuierlich:
 
-```
-===================================================================================
-CONDYN CAREER ANALYSIS PROTOCOL v1.0 — CONFORMANCE TEST SUITE BILANZ
-===================================================================================
-[1/2] test/career-analysis.test.ts (Validator & Schema Engine)
-      ✓ Domain 1: Canonical Zod Schema Tests (4 tests)
-      ✓ Domain 2: Runtime Integrity Validator Skeleton Tests (1 test)
-      ✓ Domain 2: Phase 2.3 Referential Integrity & Orphan Edge Detection (2 tests)
-      ✓ Domain 2: Phase 2.4 Semantic Rules & DAG Cycle Check (2 tests)
-      ✓ Domain 2: Phase 2.5 & 2.6 Partial Graph Repair & Stamping (2 tests)
-      -----------------------------------------------------------------------------
-      STATUS: 11 PASSED / 0 FAILED 🟢
+| Komponente | Test-Datei | Validierte Domäne / Scope |
+| :--- | :--- | :--- |
+| **Zod Schema & Validator** | `test/career-analysis.test.ts` | Schema-Invarianz, Referenzielle Integrität, Semantik, DAG-Zyklen, Reparatur, Stamping |
+| **LLM Adapter & Pipeline** | `test/career-adapter.test.ts` | Prompt-Contract-Konstruktion, Provider-Abstraktionsvertrag, Output Processing & Parsing |
+| **E2E Inference Pipeline** | `test/career-pipeline.test.ts` | Sequentielle DOC_-ID Vergabe, Custom-ID Zod/Präfix Guard, E2E Orchestrierung bis VERIFIED, Orphan & Syntax Error Propagierung |
 
-[2/2] test/career-adapter.test.ts (LLM Adapter & Prompt Pipeline)
-      ✓ Domain 3: Step 4.1 LLM Prompt Builder (4 tests)
-      ✓ Domain 3: Step 4.2 Inference Provider Contract (2 tests)
-      ✓ Domain 3: Step 4.3 LLM Output Processor & Validator Pipeline (4 tests)
-      -----------------------------------------------------------------------------
-      STATUS: 10 PASSED / 0 FAILED 🟢
-===================================================================================
-GESAMT-SYSTEM STATUS: 21 VON 21 TESTS STRAHLEND GRÜN! 🏁🚀🟢
-===================================================================================
-```
+*Die konkrete Test- und Assertionsanzahl wird dynamisch zur Laufzeit in der Vitest-CI ermittelt und protokolliert (aktueller Meilenstein: 3 Testsuiten fehlerfrei passierend).*
 
 ---
 
-## 8. Ausblick: Step 5 — Die Frontend Perception Engine
+## 8. Step 4.4: Die Implementierte E2E Inference Pipeline (`lib/career/pipeline.ts`)
 
-Was kommt jetzt? Jetzt, wo das Backend und die Adapter-Schleuse wie ein Schweizer Uhrwerk (oder eher: wie ein Charlottenburger Tresor) funktionieren, öffnen wir das Tor zur UI. In **Step 5** bauen wir die Frontend Perception Engine im Ordner `app/components/` bzw. `app/topology/`:
+Bevor die UI-Schicht angedockt wird, haben wir in [lib/career/pipeline.ts](file:///home/codi/Entwicklung/condyn-admin/lib/career/pipeline.ts) die lückenlose **End-to-End-Pipeline** im Charlottenburger Straßenstil geschmiedet und durch [test/career-pipeline.test.ts](file:///home/codi/Entwicklung/condyn-admin/test/career-pipeline.test.ts) abgesichert:
 
-1. **Dumb Projection Mappers (`lib/career/perception.ts`):**
-   Funktionen wie `toReactFlowGraph(presentation)` oder D3-Force Adapter. Sie nehmen ausschließlich `structured_data.presentation.semantic_graph` und `ui_layout` entgegen und mappen sie in `Node[]` und `Edge[]` für **ReactFlow** oder **D3-Force** (`d3-force`).
-2. **Charlottenburger Grundregel für Step 5:**
-   Die UI-Schicht ist strunzdumm ("dumb consumers"). Sie führt **keinerlei** Inferenz durch, erfindet keine Daten dazu und mutiert niemals den `VERIFIED` gestempelten Zustand der Analyse! Was Zod und der Validator abgesegnet haben, wird auf dem Bildschirm 1:1 grafisch projiziert.
+### Document Loader (`loadDocuments`)
+Der Loader nimmt rohe Eingaben (Text, Markdown, Strings) entgegen und erzwingt institutionelle Ordnung:
+* **Sequentielle Automatik:** Wenn keine ID geliefert wird, vergibt der Loader deterministisch 3-stellig gepaddete IDs: `DOC_001`, `DOC_002`, `DOC_003`.
+* **Custom-ID Guard:** Wird eine ID geliefert, prüft Zod strikt gegen das `CanonicalIdSchema`. Zusätzlich wird hart verifiziert, dass die ID mit `DOC_` beginnt (ein Versuch, ein Dokument mit `CAP_001` einzuschleusen, endet sofort mit `ERR_INVALID_DOCUMENT_ID`).
+
+### E2E Orchestrator (`executeCareerAnalysisPipeline`)
+Diese zentrale Schnittstelle verbindet alle 4 Säulen der Architektur zu einem einzigen, deterministischen Durchlauf:
+```
+[Raw Documents] -> loadDocuments -> buildCareerAnalysisPrompt -> InferenceProvider.execute -> processLlmOutput -> [VERIFIED Canonical Model]
+```
+1. Ingestion und Stempelung der Dokumente mit kanonischen IDs.
+2. Formattierung des Prompt-Bundles unter Vertrag `PC-CONDYN-CAP-v1.0` mit den 8 Invariance Rules.
+3. Model-agnostische Ausführung über das `InferenceProvider`-Interface (z. B. `MockInferenceProvider`, Gemini, OpenAI).
+4. Regex-sichere Bereinigung und phasenreine Validierung (Schema $\rightarrow$ Registry/Orphans $\rightarrow$ Semantik/DAG-Zyklen $\rightarrow$ Graph-Reparatur $\rightarrow$ Stamping).
+5. Rückgabe des garantiert sauberen `ValidationResult<CanonicalCareerAnalysis>` mit Zustand `VERIFIED`.
+
+---
+
+## 9. Ausblick: Step 5 — Die Frontend Perception Engine (`ReactFlow` / `D3-Force`)
+
+Nachdem die gesamte Backend- und E2E-Inferenz-Pipeline lückenlos gehärtet ist, öffnen wir das Tor zur visuellen Präsentation (`app/components/` bzw. `app/topology/`).
+
+### Die Charlottenburger Grundregel für Step 5
+> *"Die UI-Schicht ist ein strunzdummer Konsument ('dumb consumer'). Sie führt keinerlei Inferenz durch, erfindet keine Entitäten dazu und mutiert niemals den gestempelten Score!"*
+
+1. **Stempel-Wächter:** Jede UI-Komponente verweigert das Rendering sofort mit `ERR_UNVERIFIED_ANALYSIS_PROJECTION`, wenn das übergebene Analyse-Objekt nicht den Stempel `metadata.validation_state === "VERIFIED"` trägt.
+2. **Topology Projection Mapper (`lib/career/perception.ts`):** Abbildungsfunktionen wie `toReactFlowGraph(analysis)`, die aus `structured_data.presentation.semantic_graph` (`nodes` & `edges`) und `ui_layout` (`concentric_rings`, `color_tokens`) exakt formierte ReactFlow- oder D3-Force-Graphen erzeugen – 1:1, deterministisch und ohne jegliche Mutation der ursprünglichen Befunde.
+
+
