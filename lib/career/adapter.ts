@@ -6,6 +6,8 @@
  * Scope: Constructs canonical system prompt (8 Invariance Rules), inference provider contract, and output processor.
  */
 
+import * as fs from "fs";
+import * as path from "path";
 import { validateCareerAnalysis, ValidationResult } from "./validator";
 import { CanonicalCareerAnalysis } from "./schema";
 
@@ -84,13 +86,21 @@ export interface InferenceProvider {
  * Returns a pre-configured raw string response without making external network calls.
  */
 export class MockInferenceProvider implements InferenceProvider {
-  constructor(private mockResponse: string) {}
+  constructor(private mockResponse?: string) {}
 
   async execute(prompt: PromptBuilderOutput): Promise<string> {
     if (!prompt.systemPrompt || !prompt.systemPrompt.trim() || !prompt.userPrompt || !prompt.userPrompt.trim()) {
       throw new Error("ERR_INVALID_PROMPT_BUNDLE: Both systemPrompt and userPrompt must be provided and non-empty.");
     }
-    return this.mockResponse;
+    if (this.mockResponse) {
+      return this.mockResponse;
+    }
+    // Read canonical gold case JSON string from disk as default fallback when omitted
+    const goldPath = path.resolve(process.cwd(), "test/gold/case_001_minimal_valid/expected/expected.json");
+    if (fs.existsSync(goldPath)) {
+      return fs.readFileSync(goldPath, "utf-8");
+    }
+    throw new Error("ERR_MOCK_FALLBACK: Could not load gold case expected.json from " + goldPath);
   }
 }
 
