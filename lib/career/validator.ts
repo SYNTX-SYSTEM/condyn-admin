@@ -4,11 +4,11 @@
  * 
  * Status: ARCHITECTURE FREEZE v1.0 / KANONISCHER VERTRAG
  * Scope: Runtime verification, structural integrity, semantic rules, and partial graph repair.
- * Architecture: Phase 2.2 Schema Validation (JSON Parse & safeParse issue transformation).
+ * Architecture: Phase 2.3 Referential Integrity Check (ID indexing, duplicate check, orphan edge detection).
  */
 
 import { z } from "zod";
-import { CanonicalCareerAnalysis, CanonicalCareerAnalysisSchema } from "./schema";
+import { CanonicalCareerAnalysis, CanonicalCareerAnalysisSchema, UniversalEntity } from "./schema";
 
 // ============================================================================
 // 1. ERROR & WARNING CODES (CANONICAL TAXONOMY)
@@ -179,22 +179,228 @@ export function validateCareerAnalysis(payload: unknown): ValidationResult<Canon
     };
   }
 
-  // TODO [Phase 2.3]: Referential Integrity Check (Index all IDs, detect orphan edges without repair)
-  // TODO [Phase 2.4]: Semantic Rules (Grammar, 12 Sections, Role -> Org hierarchy, Score Bounds, Evidence, DAG check)
+  const validData = parseResult.data;
+  const analysis = validData.structured_data.analysis;
+
+  // --------------------------------------------------------------------------
+  // Phase 2.3: Referential Integrity Check (ID Indexing & Orphan Edge Detection)
+  // --------------------------------------------------------------------------
+  const idRegistry = new Set<string>();
+
+  // Helper to index an entity or cluster ID
+  const registerId = (id: string, path: (string | number)[]) => {
+    if (idRegistry.has(id)) {
+      issues.push({
+        code: "ERR_DUPLICATE_ENTITY_ID",
+        severity: "ERROR",
+        message: `Duplicate entity_id detected: '${id}' is already assigned.`,
+        entityId: id,
+        path
+      });
+    } else {
+      idRegistry.add(id);
+    }
+  };
+
+  // Index Consistency Clusters
+  analysis.consistency.clusters.forEach((clu, idx) => {
+    registerId(clu.cluster_id, ["structured_data", "analysis", "consistency", "clusters", idx, "cluster_id"]);
+  });
+
+  // Collect all 9 domain entity arrays
+  const domainArrays: [string, UniversalEntity[]][] = [
+    ["documents", analysis.documents],
+    ["capabilities", analysis.capabilities],
+    ["domains", analysis.domains],
+    ["organization_classes", analysis.organization_classes],
+    ["organizations", analysis.organizations],
+    ["roles", analysis.roles],
+    ["opportunities", analysis.opportunities],
+    ["strategies", analysis.strategies],
+    ["search_queries", analysis.search_queries]
+  ];
+
+  // Index all Domain Entities
+  for (const [sectionName, entities] of domainArrays) {
+    entities.forEach((entity, idx) => {
+      registerId(entity.entity_id, ["structured_data", "analysis", sectionName, idx, "entity_id"]);
+    });
+  }
+
+  // Check all Relationship target_ids for Orphan Edges (No repair in Phase 2.3!)
+  for (const [sectionName, entities] of domainArrays) {
+    entities.forEach((entity, entityIdx) => {
+      entity.relationships.forEach((rel, relIdx) => {
+        if (!idRegistry.has(rel.target_id)) {
+          issues.push({
+            code: "ERR_ORPHAN_REFERENCE",
+            severity: "ERROR",
+            message: `Orphan edge detected: Entity '${entity.entity_id}' references non-existent target_id '${rel.target_id}'.`,
+            entityId: entity.entity_id,
+            path: ["structured_data", "analysis", sectionName, entityIdx, "relationships", relIdx, "target_id"]
+          });
+        }
+      });
+
+      // Check evidence doc_ids
+      entity.evidence.forEach((ev, evIdx) => {
+        if (!idRegistry.has(ev.doc_id)) {
+          issues.push({
+            code: "ERR_ORPHAN_REFERENCE",
+            severity: "ERROR",
+            message: `Orphan reference detected: Evidence in '${entity.entity_id}' references non-existent doc_id '${ev.doc_id}'.`,
+            entityId: entity.entity_id,
+            path: ["structured_data", "analysis", sectionName, entityIdx, "evidence", evIdx, "doc_id"]
+          });
+        }
+      });
+    });
+  }
+
+  // Check consistency cluster doc_ids
+  analysis.consistency.clusters.forEach((clu, cluIdx) => {
+    clu.doc_ids.forEach((docId, docIdx) => {
+      if (!idRegistry.has(docId)) {
+        issues.push({
+          code: "ERR_ORPHAN_REFERENCE",
+          severity: "ERROR",
+          message: `Orphan reference detected: Cluster '${clu.cluster_id}' references non-existent doc_id '${docId}'.`,
+          entityId: clu.cluster_id,
+          path: ["structured_data", "analysis", "consistency", "clusters", cluIdx, "doc_ids", docIdx]
+        });
+      }
+    });
+  });
+
+  const errorCount = issues.filter(i => i.severity === "ERROR").length;
+  if (errorCount > 0) {
+    const durationMs = Date.now() - startTime;
+    return {
+      success: false,
+      issues,
+      metrics: {
+        durationMs,
+        errorCount,
+        warningCount: issues.filter(i => i.severity === "WARNING").length
+      }
+    };
+  }
+
+  // --------------------------------------------------------------------------
+  // Phase 2.4: Semantic Rules (Role Hierarchy, Mandatory Evidence, DAG Check)
+  // --------------------------------------------------------------------------
+
+  // 1. Role -> Organization Hierarchy Check
+  analysis.roles.forEach((role, roleIdx) => {
+    const hasOrgRef = role.relationships.some(rel => rel.relation_type === "ROLE_IN_ORGANIZATION");
+    if (!hasOrgRef) {
+      issues.push({
+        code: "ERR_ROLE_HIERARCHY_DISCONNECTED",
+        severity: "ERROR",
+        message: `Role entity '${role.entity_id}' is disconnected: missing mandatory 'ROLE_IN_ORGANIZATION' relationship.`,
+        entityId: role.entity_id,
+        path: ["structured_data", "analysis", "roles", roleIdx, "relationships"]
+      });
+    }
+  });
+
+  // 2. Mandatory Evidence Check across 8 domain arrays
+  const evidenceRequiredArrays: [string, UniversalEntity[]][] = [
+    ["capabilities", analysis.capabilities],
+    ["domains", analysis.domains],
+    ["organization_classes", analysis.organization_classes],
+    ["organizations", analysis.organizations],
+    ["roles", analysis.roles],
+    ["opportunities", analysis.opportunities],
+    ["strategies", analysis.strategies],
+    ["search_queries", analysis.search_queries]
+  ];
+
+  for (const [sectionName, entities] of evidenceRequiredArrays) {
+    entities.forEach((entity, idx) => {
+      if (!entity.evidence || entity.evidence.length === 0) {
+        issues.push({
+          code: "ERR_EVIDENCE_MISSING",
+          severity: "ERROR",
+          message: `Mandatory evidence missing: Entity '${entity.entity_id}' in section '${sectionName}' has an empty evidence array.`,
+          entityId: entity.entity_id,
+          path: ["structured_data", "analysis", sectionName, idx, "evidence"]
+        });
+      }
+    });
+  }
+
+  // 3. DAG (Directed Acyclic Graph) Check
+  const adjList = new Map<string, string[]>();
+  for (const [_, entities] of domainArrays) {
+    entities.forEach(ent => {
+      const targets = ent.relationships.map(r => r.target_id);
+      adjList.set(ent.entity_id, targets);
+    });
+  }
+
+  const visited = new Set<string>();
+  const recursionStack = new Set<string>();
+
+  const detectCycle = (nodeId: string, path: string[]): boolean => {
+    if (recursionStack.has(nodeId)) {
+      issues.push({
+        code: "ERR_CIRCULAR_REFERENCE_DETECTED",
+        severity: "ERROR",
+        message: `Circular reference detected in entity graph: ${[...path, nodeId].join(" -> ")}`,
+        entityId: nodeId
+      });
+      return true;
+    }
+    if (visited.has(nodeId)) return false;
+
+    visited.add(nodeId);
+    recursionStack.add(nodeId);
+
+    const neighbors = adjList.get(nodeId) || [];
+    for (const neighbor of neighbors) {
+      if (detectCycle(neighbor, [...path, nodeId])) {
+        return true;
+      }
+    }
+
+    recursionStack.delete(nodeId);
+    return false;
+  };
+
+  for (const [nodeId] of adjList) {
+    if (!visited.has(nodeId)) {
+      detectCycle(nodeId, []);
+    }
+  }
+
+  const totalErrors = issues.filter(i => i.severity === "ERROR").length;
+  if (totalErrors > 0) {
+    const durationMs = Date.now() - startTime;
+    return {
+      success: false,
+      issues,
+      metrics: {
+        durationMs,
+        errorCount: totalErrors,
+        warningCount: issues.filter(i => i.severity === "WARNING").length
+      }
+    };
+  }
+
   // TODO [Phase 2.5]: Partial Graph Repair (Apply WARN_ORPHAN_EDGE_REMOVED edge removal without mutating other fields)
   // TODO [Phase 2.6]: Validator Stamping (Set validation.status = PASSED, metadata.validation_state = VERIFIED, preserve overall_confidence)
 
   const durationMs = Date.now() - startTime;
-  const errorCount = issues.filter(i => i.severity === "ERROR").length;
   const warningCount = issues.filter(i => i.severity === "WARNING").length;
 
   return {
     success: true,
-    data: parseResult.data,
+    data: validData,
     issues,
     metrics: {
       durationMs,
-      errorCount,
+      errorCount: 0,
       warningCount
     }
   };
