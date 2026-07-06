@@ -198,8 +198,9 @@ Das Architekturmanifest definiert keine flüchtigen Assertionszahlen, sondern ve
 | **LLM Adapter & Pipeline** | `test/career-adapter.test.ts` | Prompt-Contract-Konstruktion, Provider-Abstraktionsvertrag, Output Processing & Parsing |
 | **E2E Inference Pipeline** | `test/career-pipeline.test.ts` | Sequentielle DOC_-ID Vergabe, Custom-ID Zod/Präfix Guard, E2E Orchestrierung bis VERIFIED, Orphan & Syntax Error Propagierung |
 | **Persistence & Repository** | `test/career-repository.test.ts` | Kanonische `analysis_id`, Verified-Type & Runtime Guard, Immutability, titelfreie Index-Deskriptoren |
+| **Perception Mapper** | `test/career-perception.test.ts` | 1:1 Projection Model, Stempel-Wächter (`ERR_UNVERIFIED_ANALYSIS_PROJECTION`), deterministische Zirkulär-Koordinaten |
 
-*Die konkrete Test- und Assertionsanzahl wird dynamisch zur Laufzeit in der Vitest-CI ermittelt und protokolliert (aktueller Meilenstein: 4 Testsuiten fehlerfrei passierend).*
+*Die konkrete Test- und Assertionsanzahl wird dynamisch zur Laufzeit in der Vitest-CI ermittelt und protokolliert (aktueller Meilenstein: 5 Testsuiten / 35 Tests fehlerfrei passierend).*
 
 ---
 
@@ -245,17 +246,23 @@ Zwischen der E2E-Pipeline und dem Frontend sorgt der Repository-Layer dafür, da
 
 ---
 
-## 10. Ausblick: Step 5 — Die Frontend Perception Engine (`ReactFlow` / `D3-Force`)
+## 10. Step 5.1: Der implementierte Topology Projection Mapper (`lib/career/perception.ts`)
 
-Nachdem die gesamte Backend-, E2E- und Persistenz-Pipeline lückenlos gehärtet ist, steht unsere 8-gliedrige Architektur wie ein Fels:
-```
-SPEC -> Schema -> Types -> Validator -> Adapter -> Pipeline -> Repository -> Perception -> Frontend
-```
+Mit dem **Backend Architecture Freeze v1.0** im Rücken haben wir die erste Brücke ins Frontend geschlagen: Eine strikt entkoppelte Abbildungsschicht ("Noch kein React, kein D3, kein UI. Nur kanonisches Modell $\rightarrow$ Projection Model").
 
 ### Die Charlottenburger Grundregel für Step 5
 > *"Die UI-Schicht ist ein strunzdummer Konsument ('dumb consumer'). Sie führt keinerlei Inferenz durch, erfindet keine Entitäten dazu und mutiert niemals den gestempelten Score!"*
 
-1. **Stempel-Wächter:** Jede UI-Komponente verweigert das Rendering sofort mit `ERR_UNVERIFIED_ANALYSIS_PROJECTION`, wenn das übergebene Analyse-Objekt nicht den Stempel `metadata.validation_state === "VERIFIED"` trägt.
-2. **Topology Projection Mapper (`lib/career/perception.ts`):** Abbildungsfunktionen wie `toReactFlowGraph(analysis)`, die aus `structured_data.presentation.semantic_graph` (`nodes` & `edges`) und `ui_layout` (`concentric_rings`, `color_tokens`) exakt formierte ReactFlow- oder D3-Force-Graphen erzeugen – 1:1, deterministisch und ohne jegliche Mutation der ursprünglichen Befunde.
+1. **Stempel-Wächter:** Funktion `projectTopology(analysis)` verweigert die Projektion sofort mit `ERR_UNVERIFIED_ANALYSIS_PROJECTION`, wenn das übergebene Analyse-Objekt nicht den Stempel `metadata.validation_state === "VERIFIED"` trägt.
+2. **1:1 Immutability & Deterministische Zirkulär-Koordinaten:** Labels, Weights und Farbtoken werden unberührt übernommen. Die Koordinaten `position: { x, y }` werden pro Ring (`radius = ringIndex * 250`) trigonometrisch berechnet und auf Integer-Pixel gerundet – garantiert zu **100 % deterministisch** bei jedem Aufruf!
+
+---
+
+## 11. Ausblick: Step 5.2 — UI Rendering Adapters (`ReactFlow` / `D3-Force`)
+
+In der nächsten Ausbaustufe werden die reinen `TopologyProjection`-Daten aus Step 5.1 in konkrete visuelle Komponenten (ReactFlow Node/Edge-Definitionen oder D3-Force Graphen) innerhalb der bestehenden CONDYN-Adminoberfläche eingespeist. Die gesamte Schichtenfolge steht unverrückbar fest:
+```
+SPEC -> Schema -> Types -> Validator -> Adapter -> Pipeline -> Repository -> Perception -> ReactFlow / D3
+```
 
 
