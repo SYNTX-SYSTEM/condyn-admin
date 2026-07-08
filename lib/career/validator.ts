@@ -66,6 +66,13 @@ export interface ValidationIssue {
   entityId?: string;
 }
 
+export interface PromptMetadata {
+  slug: string;
+  templateId: string;
+  versionId: string;
+  checksum: string;
+}
+
 export interface ValidationResult<T = CanonicalCareerAnalysis> {
   success: boolean;
   data?: T;
@@ -74,6 +81,7 @@ export interface ValidationResult<T = CanonicalCareerAnalysis> {
     durationMs: number;
     errorCount: number;
     warningCount: number;
+    promptMetadata?: PromptMetadata;
   };
 }
 

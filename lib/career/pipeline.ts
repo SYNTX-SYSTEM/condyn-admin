@@ -6,15 +6,27 @@
  * Scope: Document ingestion, ID assignment, prompt building, provider invocation, output processing, and stamping.
  */
 
-import { DocumentInput, InferenceProvider, buildCareerAnalysisPrompt, processLlmOutput } from "./adapter";
+import {
+  DocumentInput,
+  InferenceProvider,
+  buildCareerAnalysisPrompt,
+  buildCareerAnalysisPromptWithResolver,
+  processLlmOutput
+} from "./adapter";
 import { ValidationResult } from "./validator";
 import { CanonicalCareerAnalysis, CanonicalIdSchema } from "./schema";
 import { BatchDocumentInput, BatchProgress, loadDocumentBatch } from "./loaders/batch";
+import { ActivePromptResolver } from "./prompts/resolver";
 
 export interface DocumentLoaderInput {
   docId?: string;
   title?: string;
   content: string;
+}
+
+export interface PipelineExecutionOptions {
+  promptResolver?: ActivePromptResolver;
+  explicitKeyBase64?: string;
 }
 
 /**
@@ -47,16 +59,27 @@ export function loadDocuments(inputs: DocumentLoaderInput[]): DocumentInput[] {
 
 /**
  * Orchestrates the end-to-end career analysis inference pipeline.
- * Document Loader -> Prompt Builder -> InferenceProvider -> Output Processor -> Validator -> Canonical Model.
+ * Document Loader -> Prompt Builder (optional Registry Resolver) -> InferenceProvider -> Output Processor -> Validator -> Canonical Model.
  */
 export async function executeCareerAnalysisPipeline(
   inputs: DocumentLoaderInput[],
-  provider: InferenceProvider
+  provider: InferenceProvider,
+  options?: PipelineExecutionOptions
 ): Promise<ValidationResult<CanonicalCareerAnalysis>> {
   const docs = loadDocuments(inputs);
-  const promptBundle = buildCareerAnalysisPrompt(docs);
+  const promptBundle = await buildCareerAnalysisPromptWithResolver(
+    docs,
+    options?.promptResolver,
+    options?.explicitKeyBase64
+  );
   const rawOutput = await provider.execute(promptBundle);
-  return processLlmOutput(rawOutput);
+  const result = processLlmOutput(rawOutput);
+
+  if (promptBundle.promptMetadata) {
+    result.metrics.promptMetadata = promptBundle.promptMetadata;
+  }
+
+  return result;
 }
 
 /**
@@ -66,11 +89,22 @@ export async function executeCareerAnalysisPipeline(
 export async function executeCareerAnalysisBatchPipeline(
   batch: BatchDocumentInput[],
   provider: InferenceProvider,
-  onProgress?: (progress: BatchProgress) => void
+  onProgress?: (progress: BatchProgress) => void,
+  options?: PipelineExecutionOptions
 ): Promise<ValidationResult<CanonicalCareerAnalysis>> {
   const docs = await loadDocumentBatch(batch, onProgress);
-  const promptBundle = buildCareerAnalysisPrompt(docs);
+  const promptBundle = await buildCareerAnalysisPromptWithResolver(
+    docs,
+    options?.promptResolver,
+    options?.explicitKeyBase64
+  );
   const rawOutput = await provider.execute(promptBundle);
-  return processLlmOutput(rawOutput);
+  const result = processLlmOutput(rawOutput);
+
+  if (promptBundle.promptMetadata) {
+    result.metrics.promptMetadata = promptBundle.promptMetadata;
+  }
+
+  return result;
 }
 

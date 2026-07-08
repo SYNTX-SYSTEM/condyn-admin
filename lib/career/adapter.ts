@@ -10,10 +10,19 @@ import * as fs from "fs";
 import * as path from "path";
 import { validateCareerAnalysis, ValidationResult } from "./validator";
 import { CanonicalCareerAnalysis } from "./schema";
+import { ActivePromptResolver } from "./prompts/resolver";
+
+export interface PromptMetadata {
+  slug: string;
+  templateId: string;
+  versionId: string;
+  checksum: string;
+}
 
 export interface PromptBuilderOutput {
   systemPrompt: string;
   userPrompt: string;
+  promptMetadata?: PromptMetadata;
 }
 
 export interface DocumentInput {
@@ -266,6 +275,35 @@ DO NOT wrap the output in \`\`\`json or any markdown block. Return ONLY the raw 
   return {
     systemPrompt,
     userPrompt
+  };
+}
+
+/**
+ * Builds the canonical prompt bundle optionally using an ActivePromptResolver to load
+ * the active encrypted capability-deep-sweep prompt from the Prompt Registry.
+ */
+export async function buildCareerAnalysisPromptWithResolver(
+  documents: DocumentInput[],
+  resolver?: ActivePromptResolver,
+  explicitKeyBase64?: string
+): Promise<PromptBuilderOutput> {
+  const baseBundle = buildCareerAnalysisPrompt(documents);
+
+  if (!resolver) {
+    return baseBundle;
+  }
+
+  const resolved = await resolver.resolveActivePrompt("capability-deep-sweep", explicitKeyBase64);
+
+  return {
+    systemPrompt: `${resolved.plainTextContent}\n\n${baseBundle.systemPrompt}`,
+    userPrompt: baseBundle.userPrompt,
+    promptMetadata: {
+      slug: resolved.slug,
+      templateId: resolved.templateId,
+      versionId: resolved.versionId,
+      checksum: resolved.checksum
+    }
   };
 }
 
