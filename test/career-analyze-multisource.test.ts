@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
 import { POST } from "../app/api/career/analyze/route";
 
-describe("CONDYN Career Analysis Protocol v1.0 — Step 19d: API Extension for URL/Repo Inputs", () => {
+describe("CONDYN Career Analysis Protocol v1.0 — Step 19d: Multi-Source API Route (`test/career-analyze-multisource.test.ts`)", () => {
   beforeEach(() => {
     process.env.USE_GEMINI_PROVIDER = "false";
   });
@@ -10,7 +10,7 @@ describe("CONDYN Career Analysis Protocol v1.0 — Step 19d: API Extension for U
     vi.restoreAllMocks();
   });
 
-  it("should accept website source item and invoke website loader to return VERIFIED analysis", async () => {
+  it("should accept website source item and invoke loadWebsiteDocument server-side", async () => {
     vi.spyOn(global, "fetch").mockImplementation(async (url: any) => {
       if (String(url) === "https://condyn.eu/architect") {
         return {
@@ -43,7 +43,7 @@ describe("CONDYN Career Analysis Protocol v1.0 — Step 19d: API Extension for U
     expect(Array.isArray(body.reactFlowGraph.nodes)).toBe(true);
   });
 
-  it("should accept github source item and invoke github loader to return VERIFIED analysis", async () => {
+  it("should accept github source item and invoke loadGitHubRepositoryDocuments server-side", async () => {
     vi.spyOn(global, "fetch").mockImplementation(async (url: any) => {
       const urlStr = String(url);
       if (urlStr.endsWith("/readme")) {
@@ -134,7 +134,6 @@ describe("CONDYN Career Analysis Protocol v1.0 — Step 19d: API Extension for U
 
     const resWeb = await POST(reqWeb);
     expect(resWeb.status).toBe(400);
-
     const bodyWeb = await resWeb.json();
     expect(bodyWeb.success).toBe(false);
     expect(bodyWeb.issues[0].code).toBe("ERR_MISSING_SOURCE_URL");
@@ -153,7 +152,7 @@ describe("CONDYN Career Analysis Protocol v1.0 — Step 19d: API Extension for U
     expect(bodyGh.issues[0].code).toBe("ERR_MISSING_SOURCE_URL");
   });
 
-  it("should return HTTP 400 structured loader error when website or github URL is invalid", async () => {
+  it("should return HTTP 400 structured loader error when website URL is invalid", async () => {
     const req = new Request("http://localhost:3000/api/career/analyze", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -168,5 +167,44 @@ describe("CONDYN Career Analysis Protocol v1.0 — Step 19d: API Extension for U
     const body = await res.json();
     expect(body.success).toBe(false);
     expect(body.issues[0].code).toBe("ERR_INVALID_WEBSITE_URL");
+  });
+
+  it("should return HTTP 400 structured loader error when github URL is invalid", async () => {
+    const req = new Request("http://localhost:3000/api/career/analyze", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        documents: [{ type: "github", url: "https://gitlab.com/invalid/repo" }]
+      })
+    });
+
+    const res = await POST(req);
+    expect(res.status).toBe(400);
+
+    const body = await res.json();
+    expect(body.success).toBe(false);
+    expect(body.issues[0].code).toBe("ERR_INVALID_GITHUB_URL");
+  });
+
+  it("should preserve exact response structure compatibility (success, status, analysisId, metadata, reactFlowGraph)", async () => {
+    const req = new Request("http://localhost:3000/api/career/analyze", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        documents: [{ type: "text", title: "CV", content: "Senior Cloud Architect at Siemens." }]
+      })
+    });
+
+    const res = await POST(req);
+    expect(res.status).toBe(200);
+
+    const body = await res.json();
+    expect(body).toHaveProperty("success", true);
+    expect(body).toHaveProperty("status", "VERIFIED");
+    expect(body).toHaveProperty("analysisId");
+    expect(body).toHaveProperty("metadata");
+    expect(body).toHaveProperty("reactFlowGraph");
+    expect(body.reactFlowGraph).toHaveProperty("nodes");
+    expect(body.reactFlowGraph).toHaveProperty("edges");
   });
 });

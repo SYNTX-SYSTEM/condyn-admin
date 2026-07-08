@@ -154,5 +154,122 @@ Ab dem Architecture Freeze v1.0 gilt das Eiserne Gesetz: **Jede Änderung an der
   - *Pass Criteria:* Da die Major-Version übereinstimmt (`"1"`), überspringt der Validator das unbekannte Array ohne Exception, validiert alle v1.0-Entitäten fehlerfrei und stempelt `validation.status = "PASSED"`.
   - *Failure Criteria:* TypeError oder Rejection der kompletten Analyse wegen unbekannten Keys trotz gleicher Major-Version $\rightarrow$ Failure (`ERR_GRACEFUL_DEGRADATION_FAILED`).
 
+### DOMÄNE 11: PERCEPTION, VIEW-MODEL & TOPOLOGY PROJECTION
+- **TEST-11-01 (Topology Projection Parity & Bipartite Separation):**
+  - *Objective:* Verifikation der Projektionsschicht (`test/career-perception.test.ts`), welche das verifizierte Analysemodell in eine topologische Zwischenstruktur überführt.
+  - *Input:* `VerifiedCareerAnalysis` nach erfolgreichem Durchlauf von `validateCareerAnalysis(...)`.
+  - *Pass Criteria:* Jeder Knoten im Graphen entspricht exakt einer verifizierten Entität aus `structured_data.analysis`. Strikte bipartite Trennung zwischen primären Fachknoten (`ORGANIZATION`, `ROLE`, `STRATEGY`) und unterstützenden Evidenz-/Fähigkeitsknoten.
+  - *Failure Criteria:* Knoten ohne Fachmodell-Referenz oder Verlust von Entitäten $\rightarrow$ Rejection (`ERR_PROJECTION_PARITY_MISMATCH`).
+- **TEST-11-02 (View-Model Transformation & Deterministic Styling):**
+  - *Objective:* Verifikation von `buildViewModel(projection)` (`test/career-view-model.test.ts`).
+  - *Pass Criteria:* Zuweisung ontologie-spezifischer Shapes (`HEXAGON` für Firmen, `CAPSULE` für Rollen, `DIAMOND` für Strategien) und semantischer Farbtokens ohne jegliche Rückmutation der zugrundeliegenden Fachdaten.
+  - *Failure Criteria:* Mutation von Kernfeldern oder falsche Formzuweisung $\rightarrow$ Rejection (`ERR_VIEW_MODEL_POLLUTION`).
+- **TEST-11-03 (Concentric Radial & D3 Force Layout Calculation):**
+  - *Objective:* Verifikation von `buildRadialLayout(viewModel)` und der D3 Force Simulation (`test/career-layout.test.ts`, `test/career-d3-force.test.ts`).
+  - *Pass Criteria:* Deterministische Vergabe von $(x, y)$ Koordinaten auf konzentrischen Ringen gemäß `ring_index`. Null-Überlappungs-Garantie durch abstoßende Kraftfelder (`forceCollide`).
+  - *Failure Criteria:* Nahezu identische Koordinaten (Kollision) oder NaN-Werte $\rightarrow$ Failure (`ERR_LAYOUT_COLLISION_DETECTED`).
+- **TEST-11-04 (ReactFlow Adapter Invariance):**
+  - *Objective:* Verifikation von `toReactFlow(layout)` (`test/career-react-flow.test.ts`).
+  - *Pass Criteria:* Exakte Konvertierung in kanonische ReactFlow `Node[]` und `Edge[]` Objekte. Jedes `Node.data` Objekt bewahrt eine unveränderliche Referenz auf die Quell-Entität (`originalNode`).
+
+### DOMÄNE 12: INGESTION PIPELINE & ADAPTER NORMALIZATION
+- **TEST-12-01 (Adapter Document Input Preparation):**
+  - *Objective:* Verifikation von `loadDocuments(inputs)` (`test/career-adapter.test.ts`).
+  - *Pass Criteria:* Standardisierung roher Texteingaben zu `DocumentInput[]`. Kanonische ID-Vergabe (`DOC_001`, `DOC_002`), wenn keine ID mitgegeben wurde.
+  - *Failure Criteria:* IDs ohne `DOC_` Präfix $\rightarrow$ Rejection (`ERR_INVALID_DOCUMENT_ID`).
+- **TEST-12-02 (Sequential Batch Ingestion & Progress Enforcement):**
+  - *Objective:* Verifikation von `loadDocumentBatch(batch, onProgress)` (`test/career-batch-ingestion.test.ts`).
+  - *Pass Criteria:* Lückenlose Verarbeitung sequenzieller Dokumenten-Batches. Fail-Fast bei leeren oder fehlerhaften Dokumenten (`ERR_EMPTY_CONTENT`). Fortschrittsmeldungen (`INGESTING`, `EXTRACTING_PDF`, `VALIDATING`, `COMPLETED`).
+- **TEST-12-03 (Pipeline Execution Orchestration):**
+  - *Objective:* Verifikation der 8-stufigen End-to-End Ingestion-Pipeline (`test/career-pipeline.test.ts`).
+  - *Pass Criteria:* Nahtlose Orchestrierung von Ingestion, Prompt-Bündelung, LLM-Inferenz bis hin zur schematischen Verifikation (`VERIFIED`).
+
+### DOMÄNE 13: MULTI-SOURCE INGESTION & METADATA GOVERNANCE
+- **TEST-13-01 (Server-Side PDF Loader Integrity):**
+  - *Objective:* Verifikation von `loadPdfDocument(buffer)` (`test/career-pdf-loader.test.ts`).
+  - *Pass Criteria:* Server-seitige Extraktion reinen Textes aus PDF-Puffern via `pdf-parse`, Zuweisung von `DOC_PDF_001`.
+  - *Failure Criteria:* Leerer oder beschädigter Binärpuffer $\rightarrow$ strukturierter Fehler (`ERR_PDF_PARSE_FAILURE`).
+- **TEST-13-02 (Server-Side Website Loader Integrity):**
+  - *Objective:* Verifikation von `loadWebsiteDocument(url)` (`test/career-website-loader.test.ts`).
+  - *Pass Criteria:* Validierung auf `http/https`, Abruf und Säuberung von `<head>`, `<script>`, `<style>`, `<nav>`, `<header>`, `<footer>`.
+  - *Failure Criteria:* Ungültige URL oder leere Rückgabe $\rightarrow$ strukturierte Rejection (`ERR_INVALID_WEBSITE_URL`, `ERR_WEBSITE_EMPTY_CONTENT`).
+- **TEST-13-03 (Server-Side GitHub Repository Loader Integrity):**
+  - *Objective:* Verifikation von `loadGitHubRepositoryDocuments(repoUrl)` (`test/career-github-loader.test.ts`).
+  - *Pass Criteria:* Direkter API-Abruf von README, `package.json` und `/docs/*.md` ohne lokales Git-Cloning.
+  - *Failure Criteria:* Ungültiges Repo oder fehlender Zugriff $\rightarrow$ strukturierter Fehler (`ERR_INVALID_GITHUB_URL`, `ERR_GITHUB_FETCH_FAILURE`).
+- **TEST-13-04 (Source Normalization Metadata Determinism):**
+  - *Objective:* Verifikation von `SourceMetadata` in allen Loadern (`test/career-source-metadata.test.ts`).
+  - *Pass Criteria:* Eindeutiges `sourceKind` (`WEBSITE`, `GITHUB_README`, `PDF`, `TEXT`), deterministischer SHA-256 `contentHash` über den Inhalt und ISO-Timestamp `loadedAt`.
+
+### DOMÄNE 14: INFERENCE PROVIDER ABSTRACTION & LIVE CAPABILITY
+- **TEST-14-01 (Gemini Provider Execution & Parsing):**
+  - *Objective:* Verifikation von `GeminiProvider` (`test/career-gemini-provider.test.ts`).
+  - *Pass Criteria:* Erfüllung der `InferenceProvider` Schnittstelle, zuverlässige Extraktion von JSON aus LLM-Antworten und Durchleitung von Metadaten.
+- **TEST-14-02 (Dynamic Runtime Provider Switch):**
+  - *Objective:* Verifikation des Wechsels zwischen Mock und Live-API (`test/career-provider-switch.test.ts`).
+  - *Pass Criteria:* Steuerung über `USE_GEMINI_PROVIDER`. Bei fehlendem `GEMINI_API_KEY` im Live-Modus bricht der Provider ab mit `ERR_PROVIDER_FAILURE` (HTTP 503).
+- **TEST-14-03 (Gemini Live Inference & Schema Conformance):**
+  - *Objective:* Verifikation der echten Google Gemini API (`test/career-gemini-live.test.ts`).
+  - *Pass Criteria:* Live-Aufruf von `gemini-2.5-pro` erzeugt ein valides, 100% gegen `CanonicalCareerAnalysis` normiertes JSON-Objekt.
+
+### DOMÄNE 15: PROMPT GOVERNANCE SYSTEM & CRYPTOGRAPHIC REGISTRY
+- **TEST-15-01 (Encrypted Prompt Registry Engine):**
+  - *Objective:* Verifikation der verschlüsselten Prompt-Registry (`test/career-prompt-registry.test.ts`).
+  - *Pass Criteria:* Zero-Plaintext Storage mit AES-256-GCM. Abfang manipulierter Checksummen (`ERR_PROMPT_CHECKSUM_MISMATCH`) und inaktiver Versionen (`ERR_PROMPT_NOT_ACTIVE`).
+- **TEST-15-02 (Prompt System Seeding & Canonical Artifacts):**
+  - *Objective:* Verifikation von `seedPromptSystem(...)` (`test/career-prompt-system.test.ts`).
+  - *Pass Criteria:* Seeding aller 7 kanonischen Prompts (`capability-deep-sweep`, `organization-deep-sweep`, `role-deep-sweep`, `opportunity-deep-sweep`, `strategy-deep-sweep`, `search-query-generation`, `recommendation-generation`) als `ACTIVE` Versionen.
+- **TEST-15-03 (Runtime Active Prompt Resolver Integration):**
+  - *Objective:* Verifikation des `ActivePromptResolver` (`test/career-pipeline-prompt-resolver.test.ts`).
+  - *Pass Criteria:* Pipeline lädt den aktiven Prompt zur Laufzeit aus der Registry und verankert die `promptMetadata` (Version, Checksum) im Ergebnis.
+
+### DOMÄNE 16: PERSISTENCE ARCHITECTURE & DUAL-ENGINE STORAGE
+- **TEST-16-01 (In-Memory Repository Storage Contract):**
+  - *Objective:* Verifikation von `InMemoryCareerAnalysisRepository` (`test/career-repository.test.ts`).
+  - *Pass Criteria:* Korrekte CRUD-Operationen (`save`, `findById`, `listAnalyses`), Deep-Cloning zur Verhinderung von Referenz-Lecks und strikte Paginierung.
+- **TEST-16-02 (Postgres Repository Storage Contract & ACID Transaction):**
+  - *Objective:* Verifikation von `PostgresCareerAnalysisRepository` (`test/career-postgres-repository.test.ts`).
+  - *Pass Criteria:* Relationale + JSONB Persistenz im Schema `career_analyses`, atomare Transaktionen und exakte Gleichheit bei `findById`.
+
+### DOMÄNE 17: TEMPORAL GRAPH DIFF & CAREER EVOLUTION ENGINE
+- **TEST-17-01 (Topological Graph Comparison & Diff Classification):**
+  - *Objective:* Verifikation von `compareCareerAnalyses(baseline, target)` (`test/career-graph-diff.test.ts`).
+  - *Pass Criteria:* Vollständige Klassifikation aller Knoten und Kanten in `ADDED`, `REMOVED`, `MODIFIED`, `UNCHANGED`.
+- **TEST-17-02 (Semantic Drift & Capability Trajectory Metrics):**
+  - *Objective:* Verifikation der statistischen Auswertung (`test/career-graph-diff.test.ts`).
+  - *Pass Criteria:* Präzise prozentuale Drift-Berechnung (`overallStructuralDrift`) und Auswertung von Kompetenzzuwachs oder -verlust.
+
+### DOMÄNE 18: COMPANY POOL MATCHING ENGINE
+- **TEST-18-01 (Pool Resolution & Criteria Filtering):**
+  - *Objective:* Verifikation von `resolveCompanyPool(criteria)` (`test/career-company-pool.test.ts`).
+  - *Pass Criteria:* Filterung nach Branchen (`industry_enum`), Ländern (`country_iso`) und Größenkategorien.
+- **TEST-18-02 (Capability Matching & Fit Score Quantification):**
+  - *Objective:* Verifikation von `matchAnalysisAgainstPool(analysis, pool)` (`test/career-company-pool.test.ts`).
+  - *Pass Criteria:* Exakte Bestimmung des `fitScore` $[0.0, 1.0]$, Auflistung gedeckter Fähigkeiten (`matchedCapabilities`) und Lücken (`missingCapabilities`).
+- **TEST-18-03 (Ranked Recommendation Order):**
+  - *Objective:* Verifikation der absteigenden Sortierung nach `fitScore` im Empfehlungs-Ranking.
+
+### DOMÄNE 19: API SERVER ROUTE CONTRACTS & MULTI-SOURCE ENDPOINTS
+- **TEST-19-01 (Server Boundary Execution & Input Sanitization):**
+  - *Objective:* Verifikation von `POST /api/career/analyze` (`test/career-analyze-flow.test.ts`).
+  - *Pass Criteria:* HTTP 400 bei leeren/invaliden Dokumenten, erfolgreiche Pipeline-Ausführung (HTTP 200) und Rückgabe von `reactFlowGraph`.
+- **TEST-19-02 (REST Endpoints for Analysis Retrieval):**
+  - *Objective:* Verifikation von `GET /api/career/analyses` und `GET /api/career/analyses/[analysisId]` (`test/career-real-routes.test.ts`).
+  - *Pass Criteria:* Schlanke Listen-Projektion ohne Payload-Bloat sowie detaillierte Einzelabfrage mit serverseitig generiertem Graphen (HTTP 404 bei unbekannten IDs).
+- **TEST-19-03 (Multi-Source API Dispatcher):**
+  - *Objective:* Verifikation des Multi-Source Endpunkts (`test/career-multi-source-api.test.ts`).
+  - *Pass Criteria:* Korrektes serverseitiges Dispatching von `website` und `github` Quellen, Bündelung von `text`/`pdf` und strukturierte 400er-Fehler bei unzulässigen URLs.
+
+### DOMÄNE 20: FRONTEND PRESENTATION & COMPONENT CONTRACTS
+- **TEST-20-01 (Inspector 6-Tier Information Hierarchy):**
+  - *Objective:* Verifikation des `Inspector` Panels (`test/career-components.test.tsx`).
+  - *Pass Criteria:* Vollständiges Rendering aller 6 Hierarchieebenen (Header, Core Metrics, Properties, Evidence Quote & Score, Relationships, Validation Status) nach Knoten-Auswahl im Graphen.
+- **TEST-20-02 (Semiotic Node Shapes & Styling Compliance):**
+  - *Objective:* Verifikation der ReactFlow Komponenten (`test/career-reactflow-component.test.tsx`).
+  - *Pass Criteria:* Strikte Anwendung der semiotischen Formen (`HEXAGON`, `CAPSULE`, `DIAMOND`) und semantischer Farben auf Basis reiner Präsentationsdaten ("Dumb Consumer").
+- **TEST-20-03 (Full Page Interaction Flow & Progress Feedback):**
+  - *Objective:* Verifikation der Hauptseite (`test/career-analyze-page.test.tsx`).
+  - *Pass Criteria:* Fortschritts-Indikator während der Analyse und reibungsloses Rendering des interaktiven Graphen nach Abschluss.
+
 ---
 *Ende der kanonischen Prüf-Spezifikation TS-CONDYN-CAP-v1.0. Das System ist hiermit unbestechlich testbar.*
