@@ -48,20 +48,16 @@ Der gesamte Server- und Architektur-Kern ist formal abgeschlossen, verifiziert u
 
 Ab sofort werden keine weiteren Basis-Infrastrukturschichten mehr gebaut. Die Weiterentwicklung erfolgt ausschließlich durch Ausbau zum **Career Intelligence System**:
 
-### Abgeschlossene Meilensteine (17 – 20) ✅
+### Abgeschlossene Meilensteine (17 – 22) ✅
 - **Step 18: Capability Deep Sweep Prompt System**: Versionierte, verschlüsselte und über den ActivePromptResolver auflösbare Runtime-Prompts.
 - **Step 19: Multi-Source Ingestion Pipeline**: Serverseitige Ingestion für PDF, Website, GitHub Repository, Markdown und Text in einen einheitlichen `DocumentInput[]`-Strom inkl. Source Normalization Metadata.
 - **Step 20: Recommendation Engine (Career Advisor)**: Deterministische Capability Gap Analysis, Evidence Enhancement und Next Actions direkt integriert in `POST /api/career/analyze` und `GET /api/career/analyses/[analysisId]`.
+- **Step 21: Semantic Search (pgvector)**: Hybride semantische Vektorsuche (In-Memory + PgVectorStore) und EmbeddingProvider für Entitäten & Rollen.
+- **Step 22: Career Intelligence Demo UI**: Hochmodernes wissenschaftliches Instrumenten-Dashboard unter `/career/demo` mit strikter Client-/Dumb-Consumer-Trennung.
 
 ---
 
-### Step 21: Semantic Search (pgvector) — Nächster Fokus
-- **Ziel**: Hybride semantische Vektorsuche für alle Entitäten (Capabilities, Roles, Strategies, Organizations, Opportunities).
-- **Funktionsumfang**:
-  - Embedding-Generierung für Entitäten & Rollen.
-  - Semantisches Matching („Welche Organisation ist semantisch wie Helsing, auch ohne identische Begriffe? Welche Rolle ähnelt Principal Edge Systems Architect?").
-
-### Step 22: Company Pool Editor (Admin Management)
+### Step 23: Company Pool Editor (Admin Management) — Nächster Fokus
 - **Ziel**: Administratives Verwaltungssystem zur Überführung der Demo-Daten in ein echtes Wissenssystem.
 - **Funktionsumfang**:
   - Pools anlegen, Rollen und Capability Requirements pflegen.
