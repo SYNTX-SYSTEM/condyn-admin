@@ -4,6 +4,9 @@ import { projectTopology } from "../../../../../lib/career/perception";
 import { buildViewModel } from "../../../../../lib/career/view-model";
 import { buildRadialLayout } from "../../../../../lib/career/layout";
 import { toReactFlow } from "../../../../../lib/career/adapters/react-flow";
+import { matchCareerAnalysisAgainstPool } from "../../../../../lib/career/matching/engine";
+import { DEMO_COMPANY_POOL } from "../../../../../lib/career/matching/demo-pool";
+import { generateCareerRecommendations } from "../../../../../lib/career/recommendations/gaps";
 
 export async function GET(req: Request, { params }: { params: Promise<{ analysisId: string }> }) {
   try {
@@ -43,11 +46,16 @@ export async function GET(req: Request, { params }: { params: Promise<{ analysis
 
     const metadata = analysis.structured_data.analysis.metadata;
 
+    const matching = matchCareerAnalysisAgainstPool(analysis, DEMO_COMPANY_POOL);
+    const recommendations = generateCareerRecommendations(analysis, matching);
+
     return NextResponse.json({
       success: true,
       status: "VERIFIED",
       analysisId,
       metadata,
+      matching,
+      recommendations,
       analysis,
       reactFlowGraph
     });
