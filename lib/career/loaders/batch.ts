@@ -10,6 +10,15 @@
 import { DocumentInput } from "../adapter";
 import { loadDocuments } from "../pipeline";
 import { extractTextFromPdf } from "./pdf";
+import { SourceKind, createSourceMetadata } from "./source";
+
+function determineBatchSourceKind(item: BatchDocumentInput): SourceKind {
+  if (item.type === "text") return "TEXT";
+  if (item.type === "markdown") return "MARKDOWN";
+  if (item.type === "pdf") return "PDF";
+  if (item.buffer || item.base64) return "PDF";
+  return "TEXT";
+}
 
 export interface BatchDocumentInput {
   type?: "text" | "markdown" | "pdf";
@@ -84,7 +93,13 @@ export async function loadDocumentBatch(
         content = item.content.trim();
       }
 
-      rawDocs.push({ docId, title, content });
+      const sourceKind = determineBatchSourceKind(item);
+      rawDocs.push({
+        docId,
+        title,
+        content,
+        metadata: createSourceMetadata(sourceKind, content, { title })
+      });
       completed++;
 
       if (onProgress) {

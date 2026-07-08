@@ -7,6 +7,7 @@
  */
 
 import { DocumentInput } from "../adapter";
+import { createSourceMetadata } from "./source";
 
 /**
  * Strips `<script>`, `<style>`, `<nav>`, `<header>`, `<footer>`, HTML comments,
@@ -99,6 +100,7 @@ export async function loadWebsiteDocument(
   return {
     docId: docId || "DOC_WEB_001",
     title: title || url,
-    content
+    content,
+    metadata: createSourceMetadata("WEBSITE", content, { uri: url, title: title || url })
   };
 }

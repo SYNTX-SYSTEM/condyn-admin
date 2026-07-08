@@ -8,6 +8,7 @@
 
 import pdfParse from "pdf-parse";
 import { DocumentInput } from "../adapter";
+import { createSourceMetadata } from "./source";
 
 /**
  * Extracts raw text string from a PDF Buffer server-side.
@@ -49,6 +50,7 @@ export async function loadPdfDocument(
   return {
     docId: docId || "DOC_PDF_001",
     title: title || "PDF Resume",
-    content
+    content,
+    metadata: createSourceMetadata("PDF", content, { title: title || "PDF Resume" })
   };
 }

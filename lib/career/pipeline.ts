@@ -18,10 +18,13 @@ import { CanonicalCareerAnalysis, CanonicalIdSchema } from "./schema";
 import { BatchDocumentInput, BatchProgress, loadDocumentBatch } from "./loaders/batch";
 import { ActivePromptResolver } from "./prompts/resolver";
 
+import { SourceMetadata } from "./loaders/source";
+
 export interface DocumentLoaderInput {
   docId?: string;
   title?: string;
   content: string;
+  metadata?: SourceMetadata;
 }
 
 export interface PipelineExecutionOptions {
@@ -52,7 +55,8 @@ export function loadDocuments(inputs: DocumentLoaderInput[]): DocumentInput[] {
     return {
       docId,
       title: input.title,
-      content: input.content
+      content: input.content,
+      metadata: input.metadata
     };
   });
 }

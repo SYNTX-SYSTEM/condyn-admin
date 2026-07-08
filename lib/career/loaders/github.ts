@@ -7,6 +7,7 @@
  */
 
 import { DocumentInput } from "../adapter";
+import { createSourceMetadata } from "./source";
 
 export interface GitHubLoaderOptions {
   docIdPrefix?: string;
@@ -89,10 +90,12 @@ export async function loadGitHubRepositoryDocuments(
   if (readmeData && readmeData.content) {
     const text = decodeGitHubContent(readmeData.content);
     if (text) {
+      const path = readmeData.path || "README.md";
       documents.push({
         docId: formatId(documents.length + 1),
-        title: readmeData.path || "README.md",
-        content: text
+        title: path,
+        content: text,
+        metadata: createSourceMetadata("GITHUB_README", text, { uri: repoUrl, path, title: path })
       });
     }
   }
@@ -106,10 +109,12 @@ export async function loadGitHubRepositoryDocuments(
     if (pkgData && pkgData.content) {
       const text = decodeGitHubContent(pkgData.content);
       if (text) {
+        const path = pkgData.path || "package.json";
         documents.push({
           docId: formatId(documents.length + 1),
-          title: pkgData.path || "package.json",
-          content: text
+          title: path,
+          content: text,
+          metadata: createSourceMetadata("GITHUB_PACKAGE_JSON", text, { uri: repoUrl, path, title: path })
         });
       }
     }
@@ -132,10 +137,12 @@ export async function loadGitHubRepositoryDocuments(
         if (fileData && fileData.content) {
           const text = decodeGitHubContent(fileData.content);
           if (text) {
+            const path = fileData.path || mdFile.name;
             documents.push({
               docId: formatId(documents.length + 1),
-              title: fileData.path || mdFile.name,
-              content: text
+              title: path,
+              content: text,
+              metadata: createSourceMetadata("GITHUB_DOCS", text, { uri: repoUrl, path, title: path })
             });
           }
         }

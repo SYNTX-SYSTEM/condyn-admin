@@ -11,6 +11,7 @@ import * as path from "path";
 import { validateCareerAnalysis, ValidationResult } from "./validator";
 import { CanonicalCareerAnalysis } from "./schema";
 import { ActivePromptResolver } from "./prompts/resolver";
+import { SourceMetadata } from "./loaders/source";
 
 export interface PromptMetadata {
   slug: string;
@@ -29,6 +30,7 @@ export interface DocumentInput {
   docId: string;
   title?: string;
   content: string;
+  metadata?: SourceMetadata;
 }
 
 /**
