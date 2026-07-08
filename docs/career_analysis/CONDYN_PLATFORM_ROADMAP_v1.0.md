@@ -44,32 +44,31 @@ Der gesamte Server- und Architektur-Kern ist formal abgeschlossen, verifiziert u
 
 ---
 
-## 3. Die nächsten Produktbausteine (Steps 20 – 22)
+## 3. Die nächsten Produktbausteine (Steps 21 – 24)
 
-Ab sofort werden keine weiteren Basis-Infrastrukturschichten mehr gebaut. Die Weiterentwicklung erfolgt ausschließlich durch Aufbau auf der fertigen Architektur:
+Ab sofort werden keine weiteren Basis-Infrastrukturschichten mehr gebaut. Die Weiterentwicklung erfolgt ausschließlich durch Ausbau zum **Career Intelligence System**:
 
-### Abgeschlossene Meilensteine (17 – 19) ✅
+### Abgeschlossene Meilensteine (17 – 20) ✅
 - **Step 18: Capability Deep Sweep Prompt System**: Versionierte, verschlüsselte und über den ActivePromptResolver auflösbare Runtime-Prompts.
 - **Step 19: Multi-Source Ingestion Pipeline**: Serverseitige Ingestion für PDF, Website, GitHub Repository, Markdown und Text in einen einheitlichen `DocumentInput[]`-Strom inkl. Source Normalization Metadata.
+- **Step 20: Recommendation Engine (Career Advisor)**: Deterministische Capability Gap Analysis, Evidence Enhancement und Next Actions direkt integriert in `POST /api/career/analyze` und `GET /api/career/analyses/[analysisId]`.
 
 ---
 
-### Step 20: Recommendation Engine (Career Advisor) — Nächster Fokus
-- **Ziel**: Transformation vom reinen Matcher zum proaktiven Career Advisor.
-- **Funktionsumfang**:
-  - Welche Capability fehlt oder ist schwach?
-  - Welche Organisation und Rolle passt deshalb am besten?
-  - Welche Evidenz fehlt im Profil?
-  - Welche Dokumente oder Nachweise würden die Confidence gezielt erhöhen?
-
-### Step 21: Semantic Search (pgvector)
+### Step 21: Semantic Search (pgvector) — Nächster Fokus
 - **Ziel**: Hybride semantische Vektorsuche für alle Entitäten (Capabilities, Roles, Strategies, Organizations, Opportunities).
 - **Funktionsumfang**:
-  - Embedding-Generierung für Entitäten.
-  - Semantisches Matching („Zeige mir Organisationen, die semantisch zu meinem Profil passen, auch ohne identische Capability-Namen“).
+  - Embedding-Generierung für Entitäten & Rollen.
+  - Semantisches Matching („Welche Organisation ist semantisch wie Helsing, auch ohne identische Begriffe? Welche Rolle ähnelt Principal Edge Systems Architect?").
 
 ### Step 22: Company Pool Editor (Admin Management)
-- **Ziel**: Administratives Verwaltungssystem für Wissensbestände.
+- **Ziel**: Administratives Verwaltungssystem zur Überführung der Demo-Daten in ein echtes Wissenssystem.
 - **Funktionsumfang**:
   - Pools anlegen, Rollen und Capability Requirements pflegen.
   - Versionierung und Lifecycle-Steuerung (`DRAFT -> ACTIVE -> ARCHIVED`).
+
+### Step 23: Identity Management (z. B. Clerk)
+- **Ziel**: Echtes, sicheres Identitätsmanagement und Mandantenfähigkeit.
+
+### Step 24: Produktiver Company Pool
+- **Ziel**: Einsatz realer Unternehmens-, Branchen- und Rollendaten anstelle von Demo-Pools im Produktivbetrieb.
