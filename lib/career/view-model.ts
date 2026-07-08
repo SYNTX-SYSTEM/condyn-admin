@@ -33,6 +33,7 @@ export interface ViewEdge {
   source: string;
   target: string;
   interactionForce: number;
+  relationType?: string;
   tooltip: string;
   style: ViewEdgeStyle;
 }
@@ -95,6 +96,7 @@ export function buildViewModel(projection: TopologyProjection): CareerViewModel 
       source: edge.source,
       target: edge.target,
       interactionForce: edge.interactionForce,
+      relationType: edge.relationType,
       tooltip: `Connection force: ${(edge.interactionForce * 100).toFixed(0)}%`,
       style: {
         strokeWidth: isStrong ? 2 : 1,

@@ -17,6 +17,7 @@ export interface ProjectedEdge {
   source: string;
   target: string;
   interactionForce: number;
+  relationType?: string;
 }
 
 export interface TopologyProjection {
@@ -44,12 +45,19 @@ export function projectTopology(analysis: VerifiedCareerAnalysis): TopologyProje
 
   // Build entity lookup map for label resolution
   const entityMap = new Map<string, { label: string; type: string }>();
+  const relationMap = new Map<string, string>();
 
-  const register = (arr?: Array<{ entity_id: string; identity: { name?: string; title?: string; type: string } }>) => {
+  const register = (arr?: Array<{ entity_id: string; identity: { name?: string; title?: string; type: string }; relationships?: Array<{ target_id: string; relation_type: string }> }>) => {
     if (!arr) return;
     for (const item of arr) {
-      const label = item.identity.name || item.identity.title || item.entity_id;
-      entityMap.set(item.entity_id, { label, type: item.identity.type });
+      const label = item.identity?.name || item.identity?.title || item.entity_id;
+      entityMap.set(item.entity_id, { label, type: item.identity?.type || "UNKNOWN" });
+      if (item.relationships) {
+        for (const rel of item.relationships) {
+          relationMap.set(`${item.entity_id}->${rel.target_id}`, rel.relation_type);
+          relationMap.set(`${rel.target_id}->${item.entity_id}`, rel.relation_type);
+        }
+      }
     }
   };
 
@@ -62,6 +70,7 @@ export function projectTopology(analysis: VerifiedCareerAnalysis): TopologyProje
   register(domainAnalysis.opportunities as any);
   register(domainAnalysis.strategies as any);
   register(domainAnalysis.search_queries as any);
+  register(domainAnalysis.documents as any);
 
   // Map ring lookup
   const ringMap = new Map<string, { ringIndex: number; name: string }>();
@@ -136,7 +145,8 @@ export function projectTopology(analysis: VerifiedCareerAnalysis): TopologyProje
     id: `edge-${edge.source_id}-${edge.target_id}`,
     source: edge.source_id,
     target: edge.target_id,
-    interactionForce: edge.interaction_force
+    interactionForce: edge.interaction_force,
+    relationType: (edge as any).relation_type || relationMap.get(`${edge.source_id}->${edge.target_id}`) || undefined
   }));
 
   return {

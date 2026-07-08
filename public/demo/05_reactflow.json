@@ -96,6 +96,7 @@
       },
       "data": {
         "interactionForce": 0.89,
+        "relationType": "RESONATES_WITH",
         "tooltip": "Connection force: 89%"
       }
     },
@@ -110,6 +111,7 @@
       },
       "data": {
         "interactionForce": 0.95,
+        "relationType": "ROLE_IN_ORGANIZATION",
         "tooltip": "Connection force: 95%"
       }
     }

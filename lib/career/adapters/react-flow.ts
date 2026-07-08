@@ -24,6 +24,7 @@ export interface ReactFlowNode {
 
 export interface ReactFlowEdgeData {
   interactionForce: number;
+  relationType?: string;
   tooltip: string;
 }
 
@@ -89,6 +90,7 @@ export function toReactFlow(layoutModel: CareerLayoutModel): ReactFlowGraph {
       },
       data: {
         interactionForce: edge.interactionForce,
+        relationType: edge.relationType,
         tooltip: edge.tooltip
       }
     };

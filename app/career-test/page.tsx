@@ -183,7 +183,15 @@ export default function CareerArchitectureDemoPage() {
                     }}
                   />
                 </div>
-                <Inspector selectedNode={selectedNode} selectedEdge={selectedEdge} />
+                <Inspector
+                  selectedNode={selectedNode}
+                  selectedEdge={selectedEdge}
+                  graph={reactFlowSnapshot}
+                  onSelectNode={(node) => {
+                    setSelectedNode(node);
+                    setSelectedEdge(null);
+                  }}
+                />
               </div>
             )
           ) : (

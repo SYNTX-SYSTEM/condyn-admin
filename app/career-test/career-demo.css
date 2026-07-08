@@ -192,9 +192,10 @@
 /* Career Graph Right Column */
 .career-graph-container {
   display: grid;
-  grid-template-columns: 240px 1fr 280px;
+  grid-template-columns: 260px 1fr 300px;
   height: 100%;
-  background: #0d1117;
+  background: #0a0d14;
+  overflow: hidden;
 }
 
 .career-sidebar {
@@ -215,8 +216,7 @@
 .career-graph-main {
   position: relative;
   overflow: hidden;
-  background: radial-gradient(#21262d 1px, transparent 1px);
-  background-size: 24px 24px;
+  background: radial-gradient(circle at 50% 50%, rgba(22, 27, 34, 0.4) 0%, rgba(10, 13, 20, 0.95) 100%), #0a0d14;
 }
 
 .career-graph-canvas {
@@ -297,3 +297,73 @@
   border-bottom: 1px solid #30363d;
   padding-bottom: 8px;
 }
+
+/* Semiotic Visualization Language (SVL v1.0) — Instrument Silhouettes & Layers */
+.reactflow-career-node {
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.reactflow-career-node.shape-hexagon {
+  clip-path: polygon(12px 0%, calc(100% - 12px) 0%, 100% 50%, calc(100% - 12px) 100%, 12px 100%, 0% 50%);
+  filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.7));
+}
+
+.reactflow-career-node.shape-pill {
+  border-radius: 9999px !important;
+}
+
+.reactflow-career-node.shape-rectangle {
+  border-radius: 4px !important;
+}
+
+.reactflow-career-node.shape-diamond {
+  transform: rotate(45deg);
+}
+
+.reactflow-career-node.shape-diamond .node-content {
+  transform: rotate(-45deg);
+}
+
+.reactflow-career-node.shape-circle {
+  border-radius: 50% !important;
+  aspect-ratio: 1 / 1;
+}
+
+.reactflow-career-node.shape-document {
+  border-radius: 4px 16px 4px 4px !important;
+}
+
+.reactflow-career-node:hover {
+  transform: scale(1.03);
+  z-index: 999 !important;
+  filter: brightness(1.1);
+}
+
+/* SVL-5: 7 Semantic Layers Z-Stacking & LOD Zoom Constraints */
+.svl-space-layer {
+  z-index: 1;
+}
+
+.react-flow__edge {
+  z-index: 2 !important;
+}
+
+.react-flow__node {
+  z-index: 3;
+}
+
+.react-flow__minimap {
+  z-index: 7 !important;
+  background: transparent !important;
+  border: 1px solid rgba(48, 54, 61, 0.3) !important;
+  border-radius: 8px !important;
+  box-shadow: none !important;
+}
+
+.react-flow__controls {
+  z-index: 7 !important;
+}
+

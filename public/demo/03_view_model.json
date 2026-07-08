@@ -61,6 +61,7 @@
       "source": "ORG_001",
       "target": "CAP_001",
       "interactionForce": 0.89,
+      "relationType": "RESONATES_WITH",
       "tooltip": "Connection force: 89%",
       "style": {
         "strokeWidth": 1,
@@ -74,6 +75,7 @@
       "source": "ROL_001",
       "target": "ORG_001",
       "interactionForce": 0.95,
+      "relationType": "ROLE_IN_ORGANIZATION",
       "tooltip": "Connection force: 95%",
       "style": {
         "strokeWidth": 2,

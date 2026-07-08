@@ -48,13 +48,15 @@
       "id": "edge-ORG_001-CAP_001",
       "source": "ORG_001",
       "target": "CAP_001",
-      "interactionForce": 0.89
+      "interactionForce": 0.89,
+      "relationType": "RESONATES_WITH"
     },
     {
       "id": "edge-ROL_001-ORG_001",
       "source": "ROL_001",
       "target": "ORG_001",
-      "interactionForce": 0.95
+      "interactionForce": 0.95,
+      "relationType": "ROLE_IN_ORGANIZATION"
     }
   ]
 }
