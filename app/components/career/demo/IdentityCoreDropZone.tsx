@@ -40,6 +40,14 @@ export function IdentityCoreDropZone({ sources, onDropSource, isCommunicating = 
           0%, 100% { transform: scale(1); opacity: 0.6; }
           50% { transform: scale(1.15); opacity: 1; }
         }
+        @keyframes plasmaRotateCw {
+          0% { transform: rotate(0deg); }
+          100% { transform: rotate(360deg); }
+        }
+        @keyframes plasmaRotateCcw {
+          0% { transform: rotate(0deg); }
+          100% { transform: rotate(-360deg); }
+        }
       `}</style>
 
       <div
@@ -94,6 +102,47 @@ export function IdentityCoreDropZone({ sources, onDropSource, isCommunicating = 
             }}
           />
         )}
+
+        {/* Phase 2c: Inner Rotating Plasma Rings */}
+        <div
+          data-testid="plasma-core-rings"
+          style={{
+            position: "absolute",
+            top: "12px",
+            left: "12px",
+            right: "12px",
+            bottom: "12px",
+            pointerEvents: "none",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center"
+          }}
+        >
+          <svg width="196" height="196" style={{ position: "absolute" }}>
+            <circle
+              cx="98"
+              cy="98"
+              r="84"
+              fill="none"
+              stroke={SIL_TOKENS.colors.cyanActive}
+              strokeWidth="1.5"
+              strokeDasharray="24 12 8 16"
+              opacity="0.65"
+              style={{ animation: "plasmaRotateCw 20s linear infinite", transformOrigin: "98px 98px" }}
+            />
+            <circle
+              cx="98"
+              cy="98"
+              r="68"
+              fill="none"
+              stroke={SIL_TOKENS.colors.cyanGlowStrong}
+              strokeWidth="1.2"
+              strokeDasharray="16 8 4 12"
+              opacity="0.5"
+              style={{ animation: "plasmaRotateCcw 14s linear infinite", transformOrigin: "98px 98px" }}
+            />
+          </svg>
+        </div>
         {/* Living Energy Wave Rings */}
         <div
           style={{

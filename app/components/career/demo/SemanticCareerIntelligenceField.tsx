@@ -254,6 +254,26 @@ export function SemanticCareerIntelligenceField({ data }: SemanticCareerIntellig
             })}
           </g>
 
+          {/* Phase 2c: Semantic Dust Particles in Interplanetary Space */}
+          <g data-testid="semantic-dust-particles">
+            {[25, 55, 85, 115, 145, 175, 205, 235, 265, 295, 325, 355].map((deg, idx) => {
+              const rad = (deg * Math.PI) / 180;
+              const dist = 140 + (idx % 3) * 55;
+              const dustX = center + Math.cos(rad) * dist;
+              const dustY = center + Math.sin(rad) * dist;
+              return (
+                <circle
+                  key={idx}
+                  cx={dustX}
+                  cy={dustY}
+                  r={idx % 2 === 0 ? "1.2" : "1.8"}
+                  fill="#38e5ff"
+                  opacity="0.3"
+                />
+              );
+            })}
+          </g>
+
           {/* Energy Rays Connecting Core to Each Orbital Node */}
           {stages.map((st) => {
             const angleRad = (st.angleDeg * Math.PI) / 180;

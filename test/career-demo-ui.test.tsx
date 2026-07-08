@@ -118,9 +118,11 @@ describe("CONDYN / SYNTX — Step 22c: Semantic Career Intelligence Field (SIL v
     expect(html).toContain("data-testid=\"photon-stream-orbit-to-core\"");
     expect(html).toContain("data-testid=\"rotating-background-rings\"");
     expect(html).toContain("data-testid=\"ambient-energy-nodes\"");
+    expect(html).toContain("data-testid=\"semantic-dust-particles\"");
+    expect(html).toContain("data-testid=\"plasma-core-rings\"");
   });
 
-  it("should support OrbitalResonanceBubble hover, dimming, animationDelay props, and scientific HUD preview (SIL v2.5 Phase 2b)", () => {
+  it("should support OrbitalResonanceBubble hover, dimming, animationDelay props, and scientific HUD preview (SIL v2.5 Phase 2b/2c)", () => {
     const htmlHighlighted = renderToString(
       <OrbitalResonanceBubble
         stageId="02"
@@ -134,8 +136,11 @@ describe("CONDYN / SYNTX — Step 22c: Semantic Career Intelligence Field (SIL v
     );
     expect(htmlHighlighted).toContain("02");
     expect(htmlHighlighted).toContain("orbital-bubble-focused");
+    expect(htmlHighlighted).toContain("data-testid=\"semiotic-signature-02\"");
     expect(htmlHighlighted).toContain("CAPABILITY FIELD");
     expect(htmlHighlighted).toContain("HOLOGRAM HUD");
+    expect(htmlHighlighted).toContain("hologram-hud--large");
+    expect(htmlHighlighted).toContain("380px");
     expect(htmlHighlighted).toContain("CONFIDENCE");
     expect(htmlHighlighted).toContain("EVIDENCE DENSITY");
     expect(htmlHighlighted).toContain("SOURCES // SEMIOTIC GROUNDING");

@@ -47,7 +47,7 @@ export function getTooltipPlacement(angle?: number, stageId?: string): HudPlacem
 function getTooltipStyle(placement: HudPlacement): React.CSSProperties {
   const base: React.CSSProperties = {
     position: "absolute",
-    width: "340px",
+    width: "380px",
     backgroundColor: "rgba(6, 14, 24, 0.88)",
     border: `1.5px solid ${SIL_TOKENS.colors.cyanActive}`,
     borderRadius: "10px",
@@ -81,6 +81,107 @@ function getTooltipStyle(placement: HudPlacement): React.CSSProperties {
       return { ...base, top: "175px", left: "175px" };
     default:
       return { ...base, bottom: "215px", left: "50%", transform: "translateX(-50%)" };
+  }
+}
+
+function renderSemioticSignature(stageId: string, isHighlighted: boolean) {
+  const strokeColor = isHighlighted ? SIL_TOKENS.colors.cyanActive : "rgba(56, 229, 255, 0.45)";
+  const amberColor = isHighlighted ? "#ffb338" : "rgba(255, 179, 56, 0.55)";
+
+  switch (stageId) {
+    case "01":
+      return (
+        <svg
+          data-testid="semiotic-signature-01"
+          width="130"
+          height="130"
+          style={{ position: "absolute", top: "19px", left: "19px", pointerEvents: "none", zIndex: 0, opacity: 0.85 }}
+        >
+          <circle cx="65" cy="65" r="54" fill="none" stroke={strokeColor} strokeWidth="1" strokeDasharray="3 3" />
+          <circle cx="65" cy="65" r="40" fill="none" stroke={strokeColor} strokeWidth="1.2" />
+          <circle cx="65" cy="65" r="24" fill="none" stroke={strokeColor} strokeWidth="1" strokeDasharray="6 4" />
+        </svg>
+      );
+    case "02":
+      return (
+        <svg
+          data-testid="semiotic-signature-02"
+          width="130"
+          height="130"
+          style={{ position: "absolute", top: "19px", left: "19px", pointerEvents: "none", zIndex: 0, opacity: 0.85 }}
+        >
+          <polygon points="65,15 110,48 93,105 37,105 20,48" fill="none" stroke={strokeColor} strokeWidth="1.2" />
+          <line x1="65" y1="15" x2="93" y2="105" stroke={strokeColor} strokeWidth="0.8" strokeDasharray="2 2" />
+          <line x1="65" y1="15" x2="37" y2="105" stroke={strokeColor} strokeWidth="0.8" strokeDasharray="2 2" />
+          <line x1="20" y1="48" x2="110" y2="48" stroke={strokeColor} strokeWidth="0.8" strokeDasharray="2 2" />
+          <circle cx="65" cy="15" r="3" fill={strokeColor} />
+          <circle cx="110" cy="48" r="3" fill={strokeColor} />
+          <circle cx="93" cy="105" r="3" fill={strokeColor} />
+          <circle cx="37" cy="105" r="3" fill={strokeColor} />
+          <circle cx="20" cy="48" r="3" fill={strokeColor} />
+        </svg>
+      );
+    case "03":
+      return (
+        <svg
+          data-testid="semiotic-signature-03"
+          width="130"
+          height="130"
+          style={{ position: "absolute", top: "19px", left: "19px", pointerEvents: "none", zIndex: 0, opacity: 0.85 }}
+        >
+          <circle cx="65" cy="65" r="50" fill="none" stroke={strokeColor} strokeWidth="1" />
+          <circle cx="53" cy="65" r="36" fill="none" stroke={strokeColor} strokeWidth="1" strokeDasharray="4 3" />
+          <circle cx="77" cy="65" r="36" fill="none" stroke={strokeColor} strokeWidth="1" strokeDasharray="4 3" />
+          <circle cx="65" cy="65" r="22" fill="none" stroke={strokeColor} strokeWidth="1.5" />
+        </svg>
+      );
+    case "04":
+      return (
+        <svg
+          data-testid="semiotic-signature-04"
+          width="130"
+          height="130"
+          style={{ position: "absolute", top: "19px", left: "19px", pointerEvents: "none", zIndex: 0, opacity: 0.85 }}
+        >
+          <polygon points="65,18 92,34 92,65 65,81 38,65 38,34" fill="none" stroke={strokeColor} strokeWidth="1.2" />
+          <polygon points="65,49 92,65 92,96 65,112 38,96 38,65" fill="none" stroke={strokeColor} strokeWidth="1" strokeDasharray="3 2" />
+          <circle cx="65" cy="65" r="4" fill={strokeColor} />
+        </svg>
+      );
+    case "05":
+      return (
+        <svg
+          data-testid="semiotic-signature-05"
+          width="130"
+          height="130"
+          style={{ position: "absolute", top: "19px", left: "19px", pointerEvents: "none", zIndex: 0, opacity: 0.85 }}
+        >
+          <circle cx="65" cy="65" r="48" fill="none" stroke={amberColor} strokeWidth="1.2" strokeDasharray="18 8 6 12" />
+          <path d="M 40 40 L 60 65 L 48 85 L 78 90" fill="none" stroke={amberColor} strokeWidth="1.5" />
+          <path d="M 85 38 L 70 58 L 88 78" fill="none" stroke={amberColor} strokeWidth="1.2" strokeDasharray="4 2" />
+          <circle cx="60" cy="65" r="2.5" fill={amberColor} />
+        </svg>
+      );
+    case "06":
+      return (
+        <svg
+          data-testid="semiotic-signature-06"
+          width="130"
+          height="130"
+          style={{ position: "absolute", top: "19px", left: "19px", pointerEvents: "none", zIndex: 0, opacity: 0.85 }}
+        >
+          <path
+            d="M 65 65 Q 65 35 95 35 T 95 95 T 35 95 T 35 25"
+            fill="none"
+            stroke={strokeColor}
+            strokeWidth="1.3"
+            strokeDasharray="5 3"
+          />
+          <circle cx="65" cy="65" r="16" fill="none" stroke={strokeColor} strokeWidth="1.2" />
+        </svg>
+      );
+    default:
+      return null;
   }
 }
 
@@ -267,12 +368,18 @@ export function OrbitalResonanceBubble({
             transition: "all 0.3s ease"
           }}
         />
+
+        {/* Phase 2c: Inner Semiotic Signature Geometry */}
+        {renderSemioticSignature(stageId, isHighlighted)}
+
         <span
           style={{
             fontSize: "11px",
             color: isHighlighted ? SIL_TOKENS.colors.cyanActive : SIL_TOKENS.colors.textMuted,
             fontWeight: 700,
-            letterSpacing: "1px"
+            letterSpacing: "1px",
+            position: "relative",
+            zIndex: 1
           }}
         >
           {stageId}
@@ -283,7 +390,9 @@ export function OrbitalResonanceBubble({
             color: SIL_TOKENS.colors.textPrimary,
             fontWeight: 700,
             marginTop: "4px",
-            lineHeight: 1.2
+            lineHeight: 1.2,
+            position: "relative",
+            zIndex: 1
           }}
         >
           {stageName}
@@ -293,7 +402,9 @@ export function OrbitalResonanceBubble({
             fontSize: "10px",
             color: SIL_TOKENS.colors.textMuted,
             marginTop: "4px",
-            lineHeight: 1.2
+            lineHeight: 1.2,
+            position: "relative",
+            zIndex: 1
           }}
         >
           {subtitle}
@@ -306,7 +417,9 @@ export function OrbitalResonanceBubble({
             backgroundColor: isHighlighted ? "rgba(56, 229, 255, 0.15)" : "rgba(255,255,255,0.05)",
             padding: "2px 8px",
             borderRadius: "8px",
-            border: `1px solid ${isHighlighted ? "rgba(56, 229, 255, 0.4)" : "transparent"}`
+            border: `1px solid ${isHighlighted ? "rgba(56, 229, 255, 0.4)" : "transparent"}`,
+            position: "relative",
+            zIndex: 1
           }}
         >
           {`${itemCount} items`}
@@ -356,7 +469,7 @@ export function OrbitalResonanceBubble({
 
             <div
               data-testid={`orbital-preview-${stageId}`}
-              className={`hud-preview--${computedPlacement}`}
+              className={`hologram-hud--large hud-preview--${computedPlacement}`}
               style={getTooltipStyle(computedPlacement)}
             >
               {/* TITLE */}
