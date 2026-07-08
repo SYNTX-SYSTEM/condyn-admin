@@ -9,6 +9,7 @@
 import { DocumentInput, InferenceProvider, buildCareerAnalysisPrompt, processLlmOutput } from "./adapter";
 import { ValidationResult } from "./validator";
 import { CanonicalCareerAnalysis, CanonicalIdSchema } from "./schema";
+import { BatchDocumentInput, BatchProgress, loadDocumentBatch } from "./loaders/batch";
 
 export interface DocumentLoaderInput {
   docId?: string;
@@ -57,3 +58,19 @@ export async function executeCareerAnalysisPipeline(
   const rawOutput = await provider.execute(promptBundle);
   return processLlmOutput(rawOutput);
 }
+
+/**
+ * Orchestrates the end-to-end career analysis inference pipeline for a mixed batch of documents
+ * (text, markdown, PDF buffers/base64), reporting progress and ensuring stable ID assignment.
+ */
+export async function executeCareerAnalysisBatchPipeline(
+  batch: BatchDocumentInput[],
+  provider: InferenceProvider,
+  onProgress?: (progress: BatchProgress) => void
+): Promise<ValidationResult<CanonicalCareerAnalysis>> {
+  const docs = await loadDocumentBatch(batch, onProgress);
+  const promptBundle = buildCareerAnalysisPrompt(docs);
+  const rawOutput = await provider.execute(promptBundle);
+  return processLlmOutput(rawOutput);
+}
+
