@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from "react";
+import Link from "next/link";
 import { Sidebar } from "../../components/career/Sidebar";
 import { Inspector } from "../../components/career/Inspector";
 import { ReactFlowCareerGraph } from "../../components/career/ReactFlowCareerGraph";
@@ -98,8 +99,25 @@ export default function LiveCareerAnalysisPage() {
           <h1>CONDYN Live Career Analysis — Step 7 Server Boundary Flow</h1>
           <p>Strict Server-Side Pipeline Execution &bull; Zero Client-Side Keys/Zod/Repo &bull; 100% Dumb UI Consumer</p>
         </div>
-        <div className="demo-badge" style={{ background: "#238636", color: "#ffffff", borderColor: "#2ea043" }}>
-          Step 7 Live Engine
+        <div style={{ display: "flex", gap: "12px", alignItems: "center" }}>
+          <Link
+            href="/career/analyses"
+            style={{
+              background: "#21262d",
+              border: "1px solid #30363d",
+              color: "#58a6ff",
+              padding: "6px 14px",
+              borderRadius: "6px",
+              textDecoration: "none",
+              fontSize: "13px",
+              fontWeight: 600
+            }}
+          >
+            📜 Historische Analysen (Tresor)
+          </Link>
+          <div className="demo-badge" style={{ background: "#238636", color: "#ffffff", borderColor: "#2ea043" }}>
+            Step 11 Live Engine
+          </div>
         </div>
       </header>
 
@@ -129,25 +147,41 @@ export default function LiveCareerAnalysisPage() {
               <span style={{ color: "#58a6ff", fontWeight: 700, marginRight: "12px" }}>✓ ANALYSIS VERIFIED</span>
               <span style={{ color: "#8b949e", fontSize: "13px" }}>ID: <code style={{ color: "#f0f6fc" }}>{result.analysisId}</code> &bull; Source Documents: {result.metadata?.document_count || result.metadata?.source_document_count || stagedDocs.length || 1}</span>
             </div>
-            <button
-              onClick={() => {
-                setResult(null);
-                setSelectedNode(null);
-                setSelectedEdge(null);
-              }}
-              style={{
-                background: "#21262d",
-                color: "#c9d1d9",
-                border: "1px solid #30363d",
-                padding: "6px 14px",
-                borderRadius: "6px",
-                fontSize: "12px",
-                fontWeight: 600,
-                cursor: "pointer"
-              }}
-            >
-              ← Neue Analyse starten
-            </button>
+            <div style={{ display: "flex", gap: "12px", alignItems: "center" }}>
+              <Link
+                href={`/career/analyses/${result.analysisId}`}
+                style={{
+                  background: "#238636",
+                  color: "#ffffff",
+                  padding: "6px 14px",
+                  borderRadius: "6px",
+                  textDecoration: "none",
+                  fontSize: "12px",
+                  fontWeight: 600
+                }}
+              >
+                In Detailansicht öffnen &rarr;
+              </Link>
+              <button
+                onClick={() => {
+                  setResult(null);
+                  setSelectedNode(null);
+                  setSelectedEdge(null);
+                }}
+                style={{
+                  background: "#21262d",
+                  color: "#c9d1d9",
+                  border: "1px solid #30363d",
+                  padding: "6px 14px",
+                  borderRadius: "6px",
+                  fontSize: "12px",
+                  fontWeight: 600,
+                  cursor: "pointer"
+                }}
+              >
+                ← Neue Analyse starten
+              </button>
+            </div>
           </div>
           <div className="demo-grid" style={{ height: "calc(100vh - 120px)" }}>
             <Sidebar graph={result.reactFlowGraph} />
