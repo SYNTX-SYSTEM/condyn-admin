@@ -40,6 +40,7 @@ export class InMemorySemanticStore implements SemanticSearchStore {
     const topK = options?.topK ?? 10;
     const minSim = options?.minSimilarity ?? 0.0;
     const targetType = options?.entityType;
+    const targetAnalysisId = options?.analysisId;
 
     const queryNorm = this.l2Norm(queryVector);
     if (queryNorm === 0) {
@@ -50,6 +51,9 @@ export class InMemorySemanticStore implements SemanticSearchStore {
 
     for (const record of this.records.values()) {
       if (targetType && record.entityType !== targetType) {
+        continue;
+      }
+      if (targetAnalysisId && record.analysisId !== targetAnalysisId) {
         continue;
       }
 
@@ -67,7 +71,8 @@ export class InMemorySemanticStore implements SemanticSearchStore {
           entityType: record.entityType,
           text: record.text,
           similarityScore,
-          metadata: record.metadata
+          metadata: record.metadata,
+          analysisId: record.analysisId
         });
       }
     }

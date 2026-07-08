@@ -10,6 +10,7 @@ export interface SemanticEntityRecord {
   text: string;
   vector: number[];
   metadata?: Record<string, any>;
+  analysisId?: string;
 }
 
 export interface SemanticSearchResultItem {
@@ -18,10 +19,12 @@ export interface SemanticSearchResultItem {
   text: string;
   similarityScore: number;
   metadata?: Record<string, any>;
+  analysisId?: string;
 }
 
 export interface SemanticSearchOptions {
   topK?: number;
   minSimilarity?: number;
   entityType?: SemanticEntityType | string;
+  analysisId?: string;
 }
