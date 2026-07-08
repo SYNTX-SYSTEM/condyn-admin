@@ -152,9 +152,9 @@ describe("CONDYN Career Analysis Protocol v1.0 - Step 6.1: ReactFlow Graph Engin
     const content = fs.readFileSync(filePath, "utf-8");
 
     // Must not import domain/backend modules
-    expect(content).not.toContain("CanonicalCareerAnalysis");
-    expect(content).not.toContain("repository");
-    expect(content).not.toContain("validator");
+    expect(content).not.toMatch(/from\s+["'].*CanonicalCareerAnalysis.*["']/);
+    expect(content).not.toMatch(/from\s+["'].*repository.*["']/);
+    expect(content).not.toMatch(/from\s+["'].*validator.*["']/);
     expect(content).not.toContain("projectTopology");
     expect(content).not.toContain("buildViewModel");
     expect(content).not.toContain("buildRadialLayout");

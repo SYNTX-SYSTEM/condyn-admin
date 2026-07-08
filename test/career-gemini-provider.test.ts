@@ -84,13 +84,13 @@ describe("CONDYN Career Analysis Protocol v1.0 - Step 9: Gemini Inference Provid
     // 1. Default fallback
     const defaultProvider = new GeminiProvider();
     await defaultProvider.execute(samplePrompt);
-    expect(mockGenerateContent.mock.calls[0][0].model).toBe("gemini-2.5-pro");
+    expect(mockGenerateContent.mock.calls[0][0].model).toBe("gemini-2.0-flash");
 
     // 2. Env variable override
-    process.env.GEMINI_MODEL = "gemini-2.5-flash";
+    process.env.GEMINI_MODEL = "gemini-1.5-flash";
     const envProvider = new GeminiProvider();
     await envProvider.execute(samplePrompt);
-    expect(mockGenerateContent.mock.calls[1][0].model).toBe("gemini-2.5-flash");
+    expect(mockGenerateContent.mock.calls[1][0].model).toBe("gemini-1.5-flash");
 
     // 3. Constructor option override
     const optProvider = new GeminiProvider({ model: "gemini-1.5-pro" });

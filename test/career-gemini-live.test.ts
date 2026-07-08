@@ -26,11 +26,11 @@ describe.skipIf(!canRunLive)("CONDYN Career Analysis Protocol v1.0 - Step 9.3: G
     expect(rawJsonString.length).toBeGreaterThan(100);
 
     const validationResult = processLlmOutput(rawJsonString);
-    if (validationResult.status === "FAILED") {
+    if (!validationResult.success) {
       console.error("Live Gemini validation failures:", validationResult.issues);
     }
 
-    expect(validationResult.status).toBe("PASSED");
+    expect(validationResult.success).toBe(true);
     expect(validationResult.data).toBeDefined();
     expect(validationResult.data?.structured_data.analysis.metadata.validation_state).toBe("VERIFIED");
   }, 60000); // Allow up to 60s for real LLM latency

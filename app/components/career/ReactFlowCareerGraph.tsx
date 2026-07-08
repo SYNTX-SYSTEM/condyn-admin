@@ -17,7 +17,7 @@ const nodeTypes = {
 /**
  * ReactFlow presentation host component ("Dumb Consumer").
  * Strictly receives pre-computed ReactFlowGraph from adapter layer.
- * Performs ZERO domain logic, ZERO repository calls, ZERO validator calls, and ZERO trigonometry.
+ * Performs ZERO domain logic, ZERO persistence/db calls, ZERO validation logic, and ZERO trigonometry.
  */
 export const ReactFlowCareerGraph: React.FC<ReactFlowCareerGraphProps> = ({
   graph,

@@ -38,7 +38,211 @@ You MUST adhere strictly to the following 8 canonical Invariance Rules:
 5. Invariance Rule 5: Normalized score bounds exactly within closed interval [0.0, 1.0]. Never use integer percentages (e.g. use 0.94 instead of 94).
 6. Invariance Rule 6: Canonical ID naming prefixes. All entity IDs must strictly follow canonical prefix conventions: DOC_, CLU_, CAP_, DOM_, CLS_, ORG_, ROL_, OPP_, STR_, QRY_.
 7. Invariance Rule 7: Decoupled presentation topology. The presentation branch must contain read-only projection hints (semantic_graph vs ui_layout with concentric rings and priority groups) without inferring new business logic.
-8. Invariance Rule 8: Strict JSON syntax & Universal Entity Grammar compliance. Output MUST be valid parseable JSON strictly adhering to the CanonicalCareerAnalysisSchema.`;
+8. Invariance Rule 8: Strict JSON syntax & Universal Entity Grammar compliance. Output MUST be valid parseable JSON strictly adhering to the CanonicalCareerAnalysisSchema.
+
+=== CANONICAL JSON SCHEMA SKELETON & UNIVERSAL ENTITY GRAMMAR ===
+Your output MUST exactly follow this structural schema without missing required fields:
+{
+  "$schema": "https://schema.condyn.eu/v1.0/career-analysis.json",
+  "report_markdown": "# Career Analysis Report...",
+  "structured_data": {
+    "analysis": {
+      "metadata": {
+        "analysis_id": "ANL_20260707_000001",
+        "protocol_version": "1.0.0",
+        "schema_version": "1.0.0",
+        "prompt_contract_version": "PC-CONDYN-CAP-v1.0",
+        "analysis_timestamp": "2026-07-07T00:00:00Z",
+        "execution_duration_ms": 1000,
+        "document_count": 1,
+        "total_word_count": 100,
+        "dominant_cluster_name": "Primary Domain Cluster",
+        "overall_confidence": 0.95,
+        "validation_state": "UNVERIFIED"
+      },
+      "pipeline": {
+        "steps": [
+          {
+            "step_id": "STEP_1",
+            "name": "documents_loaded",
+            "started_at": "2026-07-07T00:00:00.000Z",
+            "finished_at": "2026-07-07T00:00:01.000Z",
+            "duration_ms": 1000,
+            "status": "COMPLETED",
+            "warnings": [],
+            "errors": []
+          }
+        ]
+      },
+      "consistency": {
+        "overall_cohesion_score": 0.95,
+        "summary": "Cohesive document analysis.",
+        "clusters": [
+          {
+            "cluster_id": "CLU_001",
+            "name": "Primary Domain Cluster",
+            "cohesion_score": 0.95,
+            "doc_ids": ["DOC_001"]
+          }
+        ],
+        "outlier_doc_ids": [],
+        "contradictions": []
+      },
+      "documents": [
+        {
+          "entity_id": "DOC_001",
+          "identity": { "type": "DOCUMENT", "name": "Document Title" },
+          "properties": {
+            "title": "Document Title",
+            "author": "Author Name",
+            "publication_date": "2026-01-01",
+            "word_count": 100,
+            "hash_sha256": "abcdef1234567890",
+            "cluster_id": "CLU_001"
+          },
+          "relationships": [],
+          "evidence": [
+            {
+              "doc_id": "DOC_001",
+              "location": "Section 1",
+              "context_quote": "Exact verbatim quote from text exceeding ten characters",
+              "evidence_score": 0.95
+            }
+          ],
+          "confidence": 0.95,
+          "validation": { "status": "UNVERIFIED" }
+        }
+      ],
+      "capabilities": [
+        {
+          "entity_id": "CAP_001",
+          "identity": { "type": "CAPABILITY", "name": "Capability Name" },
+          "properties": {
+            "name": "Capability Name",
+            "category": "TECHNICAL",
+            "proficiency_level": 0.9,
+            "years_experience": 5,
+            "market_demand_index": 0.85
+          },
+          "relationships": [
+            { "target_id": "DOC_001", "relation_type": "DERIVED_FROM", "weight": 0.95 }
+          ],
+          "evidence": [
+            {
+              "doc_id": "DOC_001",
+              "location": "Section 1",
+              "context_quote": "Exact verbatim quote supporting capability exceeding ten characters",
+              "evidence_score": 0.95
+            }
+          ],
+          "confidence": 0.95,
+          "validation": { "status": "UNVERIFIED" }
+        }
+      ],
+      "domains": [],
+      "organization_classes": [],
+      "organizations": [
+        {
+          "entity_id": "ORG_001",
+          "identity": { "type": "ORGANIZATION", "name": "Example Org" },
+          "properties": {
+            "country_iso": "DE",
+            "industry_enum": "TECHNOLOGY",
+            "resonance_score": 0.95
+          },
+          "relationships": [],
+          "evidence": [
+            {
+              "doc_id": "DOC_001",
+              "location": "Section 1",
+              "context_quote": "Verbatim evidence quote regarding organization exceeding ten characters",
+              "evidence_score": 0.95
+            }
+          ],
+          "confidence": 0.95,
+          "validation": { "status": "UNVERIFIED" }
+        }
+      ],
+      "roles": [
+        {
+          "entity_id": "ROL_001",
+          "identity": { "type": "ROLE", "name": "Senior Architect" },
+          "properties": {
+            "seniority": "SENIOR",
+            "domain_focus": "Cloud Architecture"
+          },
+          "relationships": [],
+          "evidence": [
+            {
+              "doc_id": "DOC_001",
+              "location": "Section 1",
+              "context_quote": "Verbatim quote regarding role exceeding ten characters",
+              "evidence_score": 0.95
+            }
+          ],
+          "confidence": 0.95,
+          "validation": { "status": "UNVERIFIED" }
+        }
+      ],
+      "opportunities": [],
+      "strategies": [],
+      "search_queries": [
+        {
+          "entity_id": "QRY_001",
+          "identity": { "type": "SEARCH_QUERY", "name": "Target Query" },
+          "properties": {
+            "title": "Query Title",
+            "query": "exact search query string",
+            "purpose": "Market Discovery",
+            "target": "Enterprise Tier",
+            "priority": "HIGH"
+          },
+          "relationships": [],
+          "evidence": [
+            {
+              "doc_id": "DOC_001",
+              "location": "Section 1",
+              "context_quote": "Verbatim quote justifying query exceeding ten characters",
+              "evidence_score": 0.95
+            }
+          ],
+          "confidence": 0.95,
+          "validation": { "status": "UNVERIFIED" }
+        }
+      ]
+    },
+    "presentation": {
+      "semantic_graph": {
+        "nodes": [
+          { "node_id": "DOC_001", "entity_type": "DOCUMENT", "weight": 1.0 }
+        ],
+        "edges": [
+          { "source_id": "DOC_001", "target_id": "CAP_001", "interaction_force": 0.85 }
+        ]
+      },
+      "ui_layout": {
+        "center_node_id": "DOC_001",
+        "concentric_rings": [
+          { "ring_index": 0, "name": "Core Identity", "node_ids": ["DOC_001"] },
+          { "ring_index": 1, "name": "Domain Ecosystem", "node_ids": ["CAP_001"] }
+        ],
+        "color_tokens": { "primary": "#3B82F6", "secondary": "#10B981" }
+      }
+    }
+  }
+}
+CRITICAL RULES FOR ALL 9 DOMAIN ARRAYS:
+1. Every entity in documents, capabilities, domains, organization_classes, organizations, roles, opportunities, strategies, and search_queries MUST provide all 7 cardinal properties:
+   - entity_id: (e.g. DOC_001, CAP_001, ORG_001, ROL_001, QRY_001)
+   - identity: MUST be an object with "type" and "name" (e.g. { "type": "CAPABILITY", "name": "Node.js" })
+   - properties: domain specific properties (NOTE: organizations MUST have country_iso as 2-letter uppercase ISO like "DE", industry_enum, resonance_score. roles MUST have seniority, domain_focus. search_queries MUST have title, query, purpose, target, priority)
+   - relationships: array of objects with target_id, relation_type, weight. IMPORTANT: relation_type MUST strictly be chosen from: "SUPPORTS", "REQUIRES", "RESONATES_WITH", "CONFLICTS_WITH", "DERIVED_FROM", "BELONGS_TO_CLASS", "ROLE_IN_ORGANIZATION". Never invent custom relation types!
+   - evidence: array of objects with doc_id, location, context_quote, evidence_score. IMPORTANT: context_quote must be an exact verbatim sentence from the text exceeding 10 characters!
+   - confidence: a decimal number between 0.0 and 1.0 (e.g. 0.95), NEVER an object!
+   - validation: MUST be an object with status strictly set to "UNVERIFIED" (e.g. { "status": "UNVERIFIED" }).
+2. Top-level structured_data MUST contain both "analysis" and "presentation". Do not omit "presentation".
+   - In presentation.semantic_graph.edges, every edge MUST have source_id, target_id, and interaction_force (a decimal number between 0.0 and 1.0, e.g. 0.85).
+   - In presentation.ui_layout.concentric_rings, every ring MUST have ring_index, name (a non-empty string e.g. "Core Identity" or "Strategic Horizon"), and node_ids (array of canonical IDs).`;
 
   const documentSections = documents.map(doc => {
     return `--- DOCUMENT METADATA (ID: ${doc.docId}, Title: ${doc.title || "Untitled Document"}) ---\n${doc.content}`;
