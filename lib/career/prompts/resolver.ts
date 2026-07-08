@@ -6,6 +6,7 @@ export interface ResolvedActivePrompt {
   slug: string;
   versionId: string;
   versionNumber: number;
+  status: "ACTIVE";
   plainTextContent: string;
   checksum: string;
 }
@@ -18,12 +19,16 @@ export interface ResolvedActivePrompt {
  *    Any mismatch throws ERR_PROMPT_CHECKSUM_MISMATCH.
  */
 export class ActivePromptResolver {
-  constructor(private readonly repository: PromptRepository) {}
+  constructor(
+    private readonly repository: PromptRepository,
+    private readonly defaultKeyBase64?: string
+  ) {}
 
   async resolveActivePrompt(
     slug: string,
     explicitKeyBase64?: string
   ): Promise<ResolvedActivePrompt> {
+    const keyToUse = explicitKeyBase64 ?? this.defaultKeyBase64;
     const template = await this.repository.getTemplateBySlug(slug);
     if (!template) {
       throw new Error(`ERR_PROMPT_TEMPLATE_NOT_FOUND: No prompt template found for slug "${slug}".`);
@@ -38,7 +43,7 @@ export class ActivePromptResolver {
 
     const decryptedContent = decryptPromptContent(
       activeVersion.encrypted_content,
-      explicitKeyBase64
+      keyToUse
     );
 
     const computedChecksum = computePromptChecksum(decryptedContent);
@@ -53,6 +58,7 @@ export class ActivePromptResolver {
       slug: template.slug,
       versionId: activeVersion.id,
       versionNumber: activeVersion.version,
+      status: "ACTIVE",
       plainTextContent: decryptedContent,
       checksum: computedChecksum
     };

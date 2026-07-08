@@ -48,11 +48,11 @@ Der gesamte Server- und Architektur-Kern ist formal abgeschlossen, verifiziert u
 
 Ab sofort werden keine weiteren Basis-Infrastrukturschichten mehr gebaut. Die Weiterentwicklung erfolgt ausschließlich durch Aufbau auf der fertigen Architektur:
 
-### Step 17: Company Pool Editor
-- Admin-UI zur versionierten Pflege von Organisationen, Rollen, Anforderungen und Suchstrategien (`status: DRAFT -> ACTIVE`).
+### Step 18: Capability Deep Sweep Prompt System (Priorität 1)
+- Einbindung und Aktivierung des spezialisierten Multi-Stage Prompt-Systems (`capability-deep-sweep`, `organization-deep-sweep`, `role-deep-sweep`, etc.) als versionierte, verschlüsselte Artefakte in die Encrypted Prompt Registry.
 
-### Step 18: Capability Deep Sweep Prompt System
-- Einbindung und Aktivierung der kanonischen Deep-Sweep-Prompts als versionierte Artefakte in die Encrypted Prompt Registry.
+### Step 17: Company Pool Editor (Priorität 2)
+- Admin-UI und Lifecycle-Verwaltung (`DRAFT -> ACTIVE`) zur Pflege von Organisationen, Rollen, Anforderungen und Suchstrategien im Company Pool.
 
 ### Step 19: Multi-Source Ingestion
 - Erweiterung des Ingestion-Layers um GitHub Repository Loader, Website Loader und LinkedIn/Profile-Adapter.
