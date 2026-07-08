@@ -44,21 +44,32 @@ Der gesamte Server- und Architektur-Kern ist formal abgeschlossen, verifiziert u
 
 ---
 
-## 3. Die nächsten Produktbausteine (Steps 17 – 21)
+## 3. Die nächsten Produktbausteine (Steps 20 – 22)
 
 Ab sofort werden keine weiteren Basis-Infrastrukturschichten mehr gebaut. Die Weiterentwicklung erfolgt ausschließlich durch Aufbau auf der fertigen Architektur:
 
-### Step 18: Capability Deep Sweep Prompt System (Priorität 1)
-- Einbindung und Aktivierung des spezialisierten Multi-Stage Prompt-Systems (`capability-deep-sweep`, `organization-deep-sweep`, `role-deep-sweep`, etc.) als versionierte, verschlüsselte Artefakte in die Encrypted Prompt Registry.
+### Abgeschlossene Meilensteine (17 – 19) ✅
+- **Step 18: Capability Deep Sweep Prompt System**: Versionierte, verschlüsselte und über den ActivePromptResolver auflösbare Runtime-Prompts.
+- **Step 19: Multi-Source Ingestion Pipeline**: Serverseitige Ingestion für PDF, Website, GitHub Repository, Markdown und Text in einen einheitlichen `DocumentInput[]`-Strom inkl. Source Normalization Metadata.
 
-### Step 17: Company Pool Editor (Priorität 2)
-- Admin-UI und Lifecycle-Verwaltung (`DRAFT -> ACTIVE`) zur Pflege von Organisationen, Rollen, Anforderungen und Suchstrategien im Company Pool.
+---
 
-### Step 19: Multi-Source Ingestion
-- Erweiterung des Ingestion-Layers um GitHub Repository Loader, Website Loader und LinkedIn/Profile-Adapter.
-
-### Step 20: Recommendation Engine
-- Handlungsorientierte Entscheidungsunterstützung: Erklärung von Skill-Gaps, Ableitung konkreter Lern- und Projektschritte zur Erhöhung des Resonanz-Scores.
+### Step 20: Recommendation Engine (Career Advisor) — Nächster Fokus
+- **Ziel**: Transformation vom reinen Matcher zum proaktiven Career Advisor.
+- **Funktionsumfang**:
+  - Welche Capability fehlt oder ist schwach?
+  - Welche Organisation und Rolle passt deshalb am besten?
+  - Welche Evidenz fehlt im Profil?
+  - Welche Dokumente oder Nachweise würden die Confidence gezielt erhöhen?
 
 ### Step 21: Semantic Search (pgvector)
-- Hybride semantische Vektorsuche zur Flankierung der deterministischen Graphen- und Resonanzanalyse.
+- **Ziel**: Hybride semantische Vektorsuche für alle Entitäten (Capabilities, Roles, Strategies, Organizations, Opportunities).
+- **Funktionsumfang**:
+  - Embedding-Generierung für Entitäten.
+  - Semantisches Matching („Zeige mir Organisationen, die semantisch zu meinem Profil passen, auch ohne identische Capability-Namen“).
+
+### Step 22: Company Pool Editor (Admin Management)
+- **Ziel**: Administratives Verwaltungssystem für Wissensbestände.
+- **Funktionsumfang**:
+  - Pools anlegen, Rollen und Capability Requirements pflegen.
+  - Versionierung und Lifecycle-Steuerung (`DRAFT -> ACTIVE -> ARCHIVED`).
