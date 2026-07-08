@@ -107,16 +107,20 @@ describe("CONDYN / SYNTX — Step 22c: Semantic Career Intelligence Field (SIL v
     expect(recHtml).toContain("DO-178C Safety Critical Avionics Certification");
   });
 
-  it("should render Planetarium structure with expanded radius, HUD coordinates, and energy paths (SIL v2.5 Phase 1)", () => {
+  it("should render Planetarium structure with expanded radius, HUD coordinates, energy paths, and photon streams (SIL v2.5 Phase 2a)", () => {
     const html = renderToString(<SemanticCareerIntelligenceField data={DEMO_CAREER_INTELLIGENCE_DATA} />);
 
     expect(html).toContain("SYS.PLANETARIUM // RADIUS: 330px");
     expect(html).toContain("SEMANTIC RESONANCE: ACTIVE");
     expect(html).toContain("data-testid=\"resonance-energy-paths\"");
     expect(html).toContain("data-testid=\"energy-ray-01\"");
+    expect(html).toContain("data-testid=\"photon-stream-core-to-orbit\"");
+    expect(html).toContain("data-testid=\"photon-stream-orbit-to-core\"");
+    expect(html).toContain("data-testid=\"rotating-background-rings\"");
+    expect(html).toContain("data-testid=\"ambient-energy-nodes\"");
   });
 
-  it("should support OrbitalResonanceBubble hover, dimming, animationDelay props, and mini-preview (SIL v2.5 Phase 1)", () => {
+  it("should support OrbitalResonanceBubble hover, dimming, animationDelay props, and scientific HUD preview (SIL v2.5 Phase 2b)", () => {
     const htmlHighlighted = renderToString(
       <OrbitalResonanceBubble
         stageId="02"
@@ -130,7 +134,14 @@ describe("CONDYN / SYNTX — Step 22c: Semantic Career Intelligence Field (SIL v
     );
     expect(htmlHighlighted).toContain("02");
     expect(htmlHighlighted).toContain("orbital-bubble-focused");
-    expect(htmlHighlighted).toContain("PREVIEW // TOP ITEMS");
+    expect(htmlHighlighted).toContain("CAPABILITY FIELD");
+    expect(htmlHighlighted).toContain("HOLOGRAM HUD");
+    expect(htmlHighlighted).toContain("CONFIDENCE");
+    expect(htmlHighlighted).toContain("EVIDENCE DENSITY");
+    expect(htmlHighlighted).toContain("SOURCES // SEMIOTIC GROUNDING");
+    expect(htmlHighlighted).toContain("data-testid=\"orbital-tether-02\"");
+    expect(htmlHighlighted).toContain("TOP ITEMS");
+    expect(htmlHighlighted).toContain("Click to focus this field");
     expect(htmlHighlighted).toContain("React Architecture");
     expect(htmlHighlighted).toContain("animation-delay:-4s");
 
@@ -144,6 +155,60 @@ describe("CONDYN / SYNTX — Step 22c: Semantic Career Intelligence Field (SIL v
       />
     );
     expect(htmlDimmed).toContain("03");
+  });
+
+  it("should render position-sensitive HUD placement classes for viewport safety (bottom, top, left, right)", () => {
+    // untere Bubble rendert Tooltip mit Placement `top`
+    const bottomBubbleHtml = renderToString(
+      <OrbitalResonanceBubble
+        stageId="04"
+        stageName="ROLE MANIFESTATION"
+        subtitle="Rollen"
+        itemCount={5}
+        isHovered={true}
+        angle={90}
+      />
+    );
+    expect(bottomBubbleHtml).toContain("hud-preview--top");
+
+    // obere Bubble rendert Tooltip mit Placement `bottom`
+    const topBubbleHtml = renderToString(
+      <OrbitalResonanceBubble
+        stageId="01"
+        stageName="IDENTITY CORE"
+        subtitle="Identität"
+        itemCount={5}
+        isHovered={true}
+        angle={270}
+      />
+    );
+    expect(topBubbleHtml).toContain("hud-preview--bottom");
+
+    // rechte Bubble rendert Tooltip mit Placement `left`
+    const rightBubbleHtml = renderToString(
+      <OrbitalResonanceBubble
+        stageId="00"
+        stageName="RIGHT ORBIT"
+        subtitle="Rechts"
+        itemCount={5}
+        isHovered={true}
+        angle={0}
+      />
+    );
+    expect(rightBubbleHtml).toContain("hud-preview--left");
+
+    // linke Bubble rendert Tooltip mit Placement `right`
+    const leftBubbleHtml = renderToString(
+      <OrbitalResonanceBubble
+        stageId="00"
+        stageName="LEFT ORBIT"
+        subtitle="Links"
+        itemCount={5}
+        isHovered={true}
+        angle={180}
+      />
+    );
+    expect(leftBubbleHtml).toContain("hud-preview--right");
   });
 });
 

@@ -31,7 +31,7 @@ export function SemanticGuideDrawer({ initialOpen = false }: SemanticGuideDrawer
         style={{
           position: "fixed",
           right: "24px",
-          top: "24px",
+          top: "84px",
           zIndex: 50,
           backgroundColor: "rgba(10, 14, 20, 0.85)",
           border: `1px solid ${SIL_TOKENS.colors.cyanActive}`,

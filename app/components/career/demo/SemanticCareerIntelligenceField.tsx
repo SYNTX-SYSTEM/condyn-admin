@@ -29,6 +29,8 @@ export function SemanticCareerIntelligenceField({ data }: SemanticCareerIntellig
       glyph: "◈",
       angleDeg: -90,
       animationDelay: "0s",
+      photonOutDur: "3.6s",
+      photonInDur: "4.4s",
       previewItems: data.sources.slice(0, 3).map((s) => s.name || s.title || "Quellendokument")
     },
     {
@@ -39,6 +41,8 @@ export function SemanticCareerIntelligenceField({ data }: SemanticCareerIntellig
       glyph: "⬡",
       angleDeg: -30,
       animationDelay: "-4s",
+      photonOutDur: "4.2s",
+      photonInDur: "5.0s",
       previewItems: data.capabilities.slice(0, 3).map((c) => c.name)
     },
     {
@@ -49,6 +53,8 @@ export function SemanticCareerIntelligenceField({ data }: SemanticCareerIntellig
       glyph: "◎",
       angleDeg: 30,
       animationDelay: "-8s",
+      photonOutDur: "4.8s",
+      photonInDur: "5.6s",
       previewItems: data.companyMatches.slice(0, 3).map((c) => c.companyName)
     },
     {
@@ -59,6 +65,8 @@ export function SemanticCareerIntelligenceField({ data }: SemanticCareerIntellig
       glyph: "⎔",
       angleDeg: 90,
       animationDelay: "-12s",
+      photonOutDur: "3.9s",
+      photonInDur: "4.7s",
       previewItems: data.roleMatches.slice(0, 3).map((r) => r.roleTitle)
     },
     {
@@ -69,6 +77,8 @@ export function SemanticCareerIntelligenceField({ data }: SemanticCareerIntellig
       glyph: "⟁",
       angleDeg: 150,
       animationDelay: "-16s",
+      photonOutDur: "4.5s",
+      photonInDur: "5.3s",
       previewItems: data.capabilityGaps.slice(0, 3).map((g) => g.capabilityName)
     },
     {
@@ -79,6 +89,8 @@ export function SemanticCareerIntelligenceField({ data }: SemanticCareerIntellig
       glyph: "∿",
       angleDeg: 210,
       animationDelay: "-20s",
+      photonOutDur: "5.1s",
+      photonInDur: "6.0s",
       previewItems: data.nextActions.slice(0, 3).map((a) => a.title)
     }
   ];
@@ -130,6 +142,16 @@ export function SemanticCareerIntelligenceField({ data }: SemanticCareerIntellig
       </div>
 
       {/* Center Radial Organism Field */}
+      <style>{`
+        @keyframes rotateClockwise {
+          0% { transform: rotate(0deg); }
+          100% { transform: rotate(360deg); }
+        }
+        @keyframes rotateCounterClockwise {
+          0% { transform: rotate(0deg); }
+          100% { transform: rotate(-360deg); }
+        }
+      `}</style>
       <div
         style={{
           position: "relative",
@@ -189,6 +211,49 @@ export function SemanticCareerIntelligenceField({ data }: SemanticCareerIntellig
             strokeWidth="1"
           />
 
+          {/* Phase 2b: Rotating Background Resonance Rings */}
+          <g data-testid="rotating-background-rings" style={{ transformOrigin: `${center}px ${center}px` }}>
+            <circle
+              cx={center}
+              cy={center}
+              r={radius - 40}
+              fill="none"
+              stroke="rgba(56, 229, 255, 0.16)"
+              strokeWidth="1"
+              strokeDasharray="12 18"
+              style={{ animation: "rotateClockwise 120s linear infinite", transformOrigin: `${center}px ${center}px` }}
+            />
+            <circle
+              cx={center}
+              cy={center}
+              r={radius - 140}
+              fill="none"
+              stroke="rgba(56, 229, 255, 0.14)"
+              strokeWidth="1"
+              strokeDasharray="6 12"
+              style={{ animation: "rotateCounterClockwise 90s linear infinite", transformOrigin: `${center}px ${center}px` }}
+            />
+          </g>
+
+          {/* Phase 2b: Ambient Energy Nodes */}
+          <g data-testid="ambient-energy-nodes">
+            {[0, 60, 120, 180, 240, 300].map((deg, idx) => {
+              const rad = (deg * Math.PI) / 180;
+              const nodeX = center + Math.cos(rad) * (radius - 70);
+              const nodeY = center + Math.sin(rad) * (radius - 70);
+              return (
+                <circle
+                  key={idx}
+                  cx={nodeX}
+                  cy={nodeY}
+                  r="2.5"
+                  fill="#38e5ff"
+                  opacity="0.45"
+                />
+              );
+            })}
+          </g>
+
           {/* Energy Rays Connecting Core to Each Orbital Node */}
           {stages.map((st) => {
             const angleRad = (st.angleDeg * Math.PI) / 180;
@@ -204,21 +269,38 @@ export function SemanticCareerIntelligenceField({ data }: SemanticCareerIntellig
                   x2={targetX}
                   y2={targetY}
                   stroke={isRayActive ? SIL_TOKENS.colors.cyanActive : "rgba(56, 229, 255, 0.26)"}
-                  strokeWidth={isRayActive ? "2.5" : "1"}
+                  strokeWidth={isRayActive ? "3" : "1"}
                   strokeDasharray={isRayActive ? undefined : "3 3"}
                   style={{ transition: "all 0.35s ease" }}
                 />
 
-                {/* Subtle Light Pulse along connection when active/hovered */}
-                {isRayActive && (
-                  <circle r="3.5" fill="#ffffff">
-                    <animateMotion
-                      path={`M ${center} ${center} L ${targetX} ${targetY}`}
-                      dur="2.2s"
-                      repeatCount="indefinite"
-                    />
-                  </circle>
-                )}
+                {/* Permanent Photon Core -> Orbit */}
+                <circle
+                  data-testid="photon-stream-core-to-orbit"
+                  r={isRayActive ? "3.5" : "2.2"}
+                  fill={isRayActive ? "#ffffff" : "#38e5ff"}
+                  opacity={isRayActive ? 1 : 0.75}
+                >
+                  <animateMotion
+                    path={`M ${center} ${center} L ${targetX} ${targetY}`}
+                    dur={isRayActive ? "1.6s" : st.photonOutDur}
+                    repeatCount="indefinite"
+                  />
+                </circle>
+
+                {/* Permanent Photon Orbit -> Core */}
+                <circle
+                  data-testid="photon-stream-orbit-to-core"
+                  r={isRayActive ? "3" : "1.8"}
+                  fill={isRayActive ? "#38e5ff" : "#8eefff"}
+                  opacity={isRayActive ? 0.95 : 0.6}
+                >
+                  <animateMotion
+                    path={`M ${targetX} ${targetY} L ${center} ${center}`}
+                    dur={isRayActive ? "2.1s" : st.photonInDur}
+                    repeatCount="indefinite"
+                  />
+                </circle>
 
                 <circle
                   cx={(center + targetX) / 2}
@@ -239,10 +321,10 @@ export function SemanticCareerIntelligenceField({ data }: SemanticCareerIntellig
             zIndex: 5,
             transition: "all 0.35s ease",
             transform: focusedStageId ? "scale(1.03)" : "scale(1)",
-            filter: focusedStageId ? `drop-shadow(0 0 20px rgba(56, 229, 255, 0.35))` : undefined
+            filter: focusedStageId ? `drop-shadow(0 0 25px rgba(56, 229, 255, 0.55))` : undefined
           }}
         >
-          <IdentityCoreDropZone sources={data.sources} />
+          <IdentityCoreDropZone sources={data.sources} isCommunicating={!!focusedStageId} />
         </div>
 
         {/* Orbiting Resonance Bubbles */}
@@ -279,6 +361,7 @@ export function SemanticCareerIntelligenceField({ data }: SemanticCareerIntellig
                   subtitle={st.subtitle}
                   itemCount={st.count}
                   previewItems={st.previewItems}
+                  angle={st.angleDeg}
                   isActive={isStageActive}
                   isHovered={isStageHovered}
                   isDimmed={isStageDimmed}
