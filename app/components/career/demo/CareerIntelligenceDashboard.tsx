@@ -1,92 +1,115 @@
-import React from "react";
+"use client";
+
+import React, { useState } from "react";
 import { DemoCareerIntelligenceData } from "../../../career/demo/demo-data";
-import { SourceSummaryPanel } from "./SourceSummaryPanel";
-import { CapabilityEvidencePanel } from "./CapabilityEvidencePanel";
-import { CompanyMatchPanel } from "./CompanyMatchPanel";
-import { RoleMatchPanel } from "./RoleMatchPanel";
-import { RecommendationPanel } from "./RecommendationPanel";
+import { IdentityCoreNode } from "./IdentityCoreNode";
+import { CapabilityField } from "./CapabilityField";
+import { ResonanceOrbits } from "./ResonanceOrbits";
+import { RoleManifestation } from "./RoleManifestation";
+import { TensionLayer } from "./TensionLayer";
+import { EvolutionLayer } from "./EvolutionLayer";
+import { SemanticCareerIntelligenceField } from "./SemanticCareerIntelligenceField";
+import { SIL_TOKENS } from "./SILTokens";
 
 export interface CareerIntelligenceDashboardProps {
   data: DemoCareerIntelligenceData;
 }
 
 /**
- * CONDYN CAREER ANALYSIS PROTOCOL v1.0
- * CAREER INTELLIGENCE DASHBOARD (`app/components/career/demo/CareerIntelligenceDashboard.tsx`)
+ * CONDYN / SYNTX — Semantic Interface Language (SIL v2.0)
+ * CAREER INTELLIGENCE FIELD (`app/components/career/demo/CareerIntelligenceDashboard.tsx`)
  *
- * Scientific instrument presentation layer orchestrating 100% client-safe panels
- * explaining sources, recognized capabilities, company & role matching, gaps, and recommendations.
+ * Supports switching between FIELD MODE (Radial Organism) and LIST MODE (Vertical Flow).
  */
 export function CareerIntelligenceDashboard({ data }: CareerIntelligenceDashboardProps) {
+  const [mode, setMode] = useState<"FIELD" | "LIST">("FIELD");
+
   return (
     <div
       data-testid="career-intelligence-dashboard"
       style={{
-        backgroundColor: "#010409",
-        color: "#c9d1d9",
+        backgroundColor: SIL_TOKENS.colors.void,
+        color: SIL_TOKENS.colors.textPrimary,
         minHeight: "100vh",
-        padding: "24px",
-        fontFamily: "var(--font-mono, monospace)"
+        fontFamily: SIL_TOKENS.typography.mono,
+        position: "relative"
       }}
     >
-      <header
+      {/* Top Controls Bar */}
+      <div
         style={{
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
-          paddingBottom: "16px",
-          borderBottom: "1px solid #21262d",
-          marginBottom: "20px"
+          padding: "16px 32px",
+          borderBottom: `1px solid ${SIL_TOKENS.colors.fieldBorder}`,
+          backgroundColor: "rgba(3, 5, 8, 0.9)"
         }}
       >
-        <div>
-          <h1 style={{ margin: 0, fontSize: "18px", color: "#58a6ff", letterSpacing: "1px" }}>
-            CONDYN Career Intelligence Instrument
-          </h1>
-          <span style={{ fontSize: "11px", color: "#8b949e" }}>
-            Semantic Career Profile & Actionable Fit Analysis
+        <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+          <img
+            src="/logo.jpeg"
+            alt="ConDyn"
+            style={{
+              width: "28px",
+              height: "28px",
+              borderRadius: "50%",
+              border: `1.5px solid ${SIL_TOKENS.colors.cyanActive}`,
+              boxShadow: `0 0 10px ${SIL_TOKENS.colors.cyanActive}`
+            }}
+          />
+          <span style={{ fontSize: "14px", fontWeight: 700, color: SIL_TOKENS.colors.cyanActive }}>
+            CONDYN / SYNTX — SEMANTIC CAREER INTELLIGENCE FIELD
           </span>
         </div>
-        <div style={{ display: "flex", gap: "12px", alignItems: "center" }}>
-          <span
+
+        {/* Mode Switcher */}
+        <div style={{ display: "flex", gap: "8px" }}>
+          <button
+            onClick={() => setMode("FIELD")}
             style={{
+              padding: "6px 14px",
+              borderRadius: "20px",
+              border: `1px solid ${mode === "FIELD" ? SIL_TOKENS.colors.cyanActive : SIL_TOKENS.colors.fieldBorder}`,
+              backgroundColor: mode === "FIELD" ? "rgba(56, 229, 255, 0.15)" : "transparent",
+              color: mode === "FIELD" ? SIL_TOKENS.colors.cyanActive : SIL_TOKENS.colors.textMuted,
               fontSize: "11px",
-              color: "#3fb950",
-              backgroundColor: "rgba(63,185,80,0.15)",
-              padding: "4px 8px",
-              borderRadius: "4px",
-              border: "1px solid rgba(63,185,80,0.4)"
+              fontWeight: 700,
+              cursor: "pointer"
             }}
           >
-            ID: {data.analysisId}
-          </span>
-          <span style={{ fontSize: "11px", color: "#8b949e" }}>
-            {data.generatedAt}
-          </span>
-        </div>
-      </header>
-
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "1fr 1fr",
-          gap: "20px"
-        }}
-      >
-        <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
-          <SourceSummaryPanel sources={data.sources} />
-          <CapabilityEvidencePanel capabilities={data.capabilities} />
-        </div>
-
-        <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
-          <CompanyMatchPanel companyMatches={data.companyMatches} />
-          <RoleMatchPanel roleMatches={data.roleMatches} />
-          <RecommendationPanel
-            capabilityGaps={data.capabilityGaps}
-            nextActions={data.nextActions}
-          />
+            ● FIELD MODE
+          </button>
+          <button
+            onClick={() => setMode("LIST")}
+            style={{
+              padding: "6px 14px",
+              borderRadius: "20px",
+              border: `1px solid ${mode === "LIST" ? SIL_TOKENS.colors.cyanActive : SIL_TOKENS.colors.fieldBorder}`,
+              backgroundColor: mode === "LIST" ? "rgba(56, 229, 255, 0.15)" : "transparent",
+              color: mode === "LIST" ? SIL_TOKENS.colors.cyanActive : SIL_TOKENS.colors.textMuted,
+              fontSize: "11px",
+              fontWeight: 700,
+              cursor: "pointer"
+            }}
+          >
+            ○ LIST MODE
+          </button>
         </div>
       </div>
+
+      {mode === "FIELD" ? (
+        <SemanticCareerIntelligenceField data={data} />
+      ) : (
+        <div style={{ maxWidth: "1080px", margin: "32px auto", padding: "0 24px", display: "flex", flexDirection: "column", gap: "24px" }}>
+          <IdentityCoreNode sources={data.sources} />
+          <CapabilityField capabilities={data.capabilities} />
+          <ResonanceOrbits companyMatches={data.companyMatches} />
+          <RoleManifestation roleMatches={data.roleMatches} />
+          <TensionLayer capabilityGaps={data.capabilityGaps} />
+          <EvolutionLayer nextActions={data.nextActions} />
+        </div>
+      )}
     </div>
   );
 }
