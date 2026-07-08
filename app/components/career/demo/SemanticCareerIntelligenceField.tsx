@@ -13,11 +13,12 @@ export interface SemanticCareerIntelligenceFieldProps {
 }
 
 /**
- * CONDYN / SYNTX — Semantic Interface Language (SIL v2.0)
+ * CONDYN / SYNTX — Semantic Interface Language (SIL v2.5 Phase 1)
  * SemanticCareerIntelligenceField: The living radial Bedeutungsraum organism.
  */
 export function SemanticCareerIntelligenceField({ data }: SemanticCareerIntelligenceFieldProps) {
   const [activeStageId, setActiveStageId] = useState<string | null>(null);
+  const [hoveredStageId, setHoveredStageId] = useState<string | null>(null);
 
   const stages = [
     {
@@ -26,7 +27,9 @@ export function SemanticCareerIntelligenceField({ data }: SemanticCareerIntellig
       subtitle: "Unverfälschter Identitätskern",
       count: data.sources.length,
       glyph: "◈",
-      angleDeg: -90
+      angleDeg: -90,
+      animationDelay: "0s",
+      previewItems: data.sources.slice(0, 3).map((s) => s.name || s.title || "Quellendokument")
     },
     {
       stageId: "02",
@@ -34,7 +37,9 @@ export function SemanticCareerIntelligenceField({ data }: SemanticCareerIntellig
       subtitle: "Semantischer Kern",
       count: data.capabilities.length,
       glyph: "⬡",
-      angleDeg: -30
+      angleDeg: -30,
+      animationDelay: "-4s",
+      previewItems: data.capabilities.slice(0, 3).map((c) => c.name)
     },
     {
       stageId: "03",
@@ -42,7 +47,9 @@ export function SemanticCareerIntelligenceField({ data }: SemanticCareerIntellig
       subtitle: "Organisationen im Feld",
       count: data.companyMatches.length,
       glyph: "◎",
-      angleDeg: 30
+      angleDeg: 30,
+      animationDelay: "-8s",
+      previewItems: data.companyMatches.slice(0, 3).map((c) => c.companyName)
     },
     {
       stageId: "04",
@@ -50,7 +57,9 @@ export function SemanticCareerIntelligenceField({ data }: SemanticCareerIntellig
       subtitle: "Konkrete Rollen",
       count: data.roleMatches.length,
       glyph: "⎔",
-      angleDeg: 90
+      angleDeg: 90,
+      animationDelay: "-12s",
+      previewItems: data.roleMatches.slice(0, 3).map((r) => r.roleTitle)
     },
     {
       stageId: "05",
@@ -58,7 +67,9 @@ export function SemanticCareerIntelligenceField({ data }: SemanticCareerIntellig
       subtitle: "Fähigkeitslücken",
       count: data.capabilityGaps.length,
       glyph: "⟁",
-      angleDeg: 150
+      angleDeg: 150,
+      animationDelay: "-16s",
+      previewItems: data.capabilityGaps.slice(0, 3).map((g) => g.capabilityName)
     },
     {
       stageId: "06",
@@ -66,12 +77,15 @@ export function SemanticCareerIntelligenceField({ data }: SemanticCareerIntellig
       subtitle: "Entwicklungspfade",
       count: data.nextActions.length,
       glyph: "∿",
-      angleDeg: 210
+      angleDeg: 210,
+      animationDelay: "-20s",
+      previewItems: data.nextActions.slice(0, 3).map((a) => a.title)
     }
   ];
 
-  const radius = 230;
-  const center = 300;
+  const radius = 330;
+  const center = 400;
+  const focusedStageId = hoveredStageId || activeStageId;
 
   return (
     <div
@@ -79,7 +93,7 @@ export function SemanticCareerIntelligenceField({ data }: SemanticCareerIntellig
       style={{
         backgroundColor: SIL_TOKENS.colors.void,
         color: SIL_TOKENS.colors.textPrimary,
-        minHeight: "860px",
+        minHeight: "960px",
         padding: "24px 32px",
         fontFamily: SIL_TOKENS.typography.mono,
         position: "relative",
@@ -105,7 +119,7 @@ export function SemanticCareerIntelligenceField({ data }: SemanticCareerIntellig
           gap: "24px"
         }}
       >
-        <span>SYS.FIELD // RADIUS: 230px</span>
+        <span>SYS.PLANETARIUM // RADIUS: 330px</span>
         <span>SEMANTIC RESONANCE: ACTIVE</span>
         <span>LATENCY: 0.4ms</span>
       </div>
@@ -119,8 +133,8 @@ export function SemanticCareerIntelligenceField({ data }: SemanticCareerIntellig
       <div
         style={{
           position: "relative",
-          width: "600px",
-          height: "600px",
+          width: "800px",
+          height: "800px",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
@@ -129,8 +143,9 @@ export function SemanticCareerIntelligenceField({ data }: SemanticCareerIntellig
       >
         {/* SVG Energy Flow Overlay connecting core to orbitals */}
         <svg
-          width="600"
-          height="600"
+          data-testid="resonance-energy-paths"
+          width="800"
+          height="800"
           style={{
             position: "absolute",
             top: 0,
@@ -141,13 +156,19 @@ export function SemanticCareerIntelligenceField({ data }: SemanticCareerIntellig
         >
           <defs>
             <radialGradient id="fieldGlow" cx="50%" cy="50%" r="50%">
-              <stop offset="0%" stopColor="#38e5ff" stopOpacity="0.25" />
+              <stop offset="0%" stopColor="#38e5ff" stopOpacity={focusedStageId ? "0.32" : "0.22"} />
               <stop offset="100%" stopColor="#030508" stopOpacity="0" />
             </radialGradient>
           </defs>
 
           {/* Core Ambient Aura */}
-          <circle cx={center} cy={center} r="280" fill="url(#fieldGlow)" />
+          <circle
+            cx={center}
+            cy={center}
+            r="360"
+            fill="url(#fieldGlow)"
+            style={{ transition: "all 0.5s ease" }}
+          />
 
           {/* Concentric Orbit Rings */}
           <circle
@@ -162,7 +183,7 @@ export function SemanticCareerIntelligenceField({ data }: SemanticCareerIntellig
           <circle
             cx={center}
             cy={center}
-            r={radius - 70}
+            r={radius - 90}
             fill="none"
             stroke="rgba(56, 229, 255, 0.12)"
             strokeWidth="1"
@@ -173,32 +194,54 @@ export function SemanticCareerIntelligenceField({ data }: SemanticCareerIntellig
             const angleRad = (st.angleDeg * Math.PI) / 180;
             const targetX = center + Math.cos(angleRad) * radius;
             const targetY = center + Math.sin(angleRad) * radius;
-            const isActive = activeStageId === st.stageId;
+            const isRayActive = focusedStageId === st.stageId;
 
             return (
-              <g key={`ray-${st.stageId}`}>
+              <g key={`ray-${st.stageId}`} data-testid={`energy-ray-${st.stageId}`}>
                 <line
                   x1={center}
                   y1={center}
                   x2={targetX}
                   y2={targetY}
-                  stroke={isActive ? SIL_TOKENS.colors.cyanActive : "rgba(56, 229, 255, 0.28)"}
-                  strokeWidth={isActive ? "2" : "1"}
-                  strokeDasharray={isActive ? undefined : "3 3"}
+                  stroke={isRayActive ? SIL_TOKENS.colors.cyanActive : "rgba(56, 229, 255, 0.26)"}
+                  strokeWidth={isRayActive ? "2.5" : "1"}
+                  strokeDasharray={isRayActive ? undefined : "3 3"}
+                  style={{ transition: "all 0.35s ease" }}
                 />
+
+                {/* Subtle Light Pulse along connection when active/hovered */}
+                {isRayActive && (
+                  <circle r="3.5" fill="#ffffff">
+                    <animateMotion
+                      path={`M ${center} ${center} L ${targetX} ${targetY}`}
+                      dur="2.2s"
+                      repeatCount="indefinite"
+                    />
+                  </circle>
+                )}
+
                 <circle
                   cx={(center + targetX) / 2}
                   cy={(center + targetY) / 2}
-                  r={isActive ? "3.5" : "2"}
-                  fill={isActive ? SIL_TOKENS.colors.cyanActive : "rgba(56, 229, 255, 0.6)"}
+                  r={isRayActive ? "4" : "2"}
+                  fill={isRayActive ? SIL_TOKENS.colors.cyanActive : "rgba(56, 229, 255, 0.6)"}
+                  style={{ transition: "all 0.35s ease" }}
                 />
               </g>
             );
           })}
         </svg>
 
-        {/* Central Identity Core DropZone */}
-        <div style={{ zIndex: 5 }}>
+        {/* Central Identity Core DropZone with subtle hover reaction */}
+        <div
+          data-testid="identity-core-wrapper"
+          style={{
+            zIndex: 5,
+            transition: "all 0.35s ease",
+            transform: focusedStageId ? "scale(1.03)" : "scale(1)",
+            filter: focusedStageId ? `drop-shadow(0 0 20px rgba(56, 229, 255, 0.35))` : undefined
+          }}
+        >
           <IdentityCoreDropZone sources={data.sources} />
         </div>
 
@@ -216,14 +259,17 @@ export function SemanticCareerIntelligenceField({ data }: SemanticCareerIntellig
             const angleRad = (st.angleDeg * Math.PI) / 180;
             const x = Math.cos(angleRad) * radius;
             const y = Math.sin(angleRad) * radius;
+            const isStageActive = activeStageId === st.stageId;
+            const isStageHovered = hoveredStageId === st.stageId;
+            const isStageDimmed = focusedStageId !== null && focusedStageId !== st.stageId;
 
             return (
               <div
                 key={st.stageId}
                 style={{
                   position: "absolute",
-                  left: `calc(50% + ${x}px - 80px)`,
-                  top: `calc(50% + ${y}px - 80px)`,
+                  left: `calc(50% + ${x}px - 84px)`,
+                  top: `calc(50% + ${y}px - 84px)`,
                   pointerEvents: "auto"
                 }}
               >
@@ -232,8 +278,14 @@ export function SemanticCareerIntelligenceField({ data }: SemanticCareerIntellig
                   stageName={`${st.glyph} ${st.stageName}`}
                   subtitle={st.subtitle}
                   itemCount={st.count}
-                  isActive={activeStageId === st.stageId}
-                  onClick={() => setActiveStageId(activeStageId === st.stageId ? null : st.stageId)}
+                  previewItems={st.previewItems}
+                  isActive={isStageActive}
+                  isHovered={isStageHovered}
+                  isDimmed={isStageDimmed}
+                  animationDelay={st.animationDelay}
+                  onClick={() => setActiveStageId(isStageActive ? null : st.stageId)}
+                  onMouseEnter={() => setHoveredStageId(st.stageId)}
+                  onMouseLeave={() => setHoveredStageId(null)}
                 />
               </div>
             );
@@ -248,3 +300,4 @@ export function SemanticCareerIntelligenceField({ data }: SemanticCareerIntellig
     </div>
   );
 }
+

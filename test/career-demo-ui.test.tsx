@@ -106,4 +106,44 @@ describe("CONDYN / SYNTX — Step 22c: Semantic Career Intelligence Field (SIL v
     );
     expect(recHtml).toContain("DO-178C Safety Critical Avionics Certification");
   });
+
+  it("should render Planetarium structure with expanded radius, HUD coordinates, and energy paths (SIL v2.5 Phase 1)", () => {
+    const html = renderToString(<SemanticCareerIntelligenceField data={DEMO_CAREER_INTELLIGENCE_DATA} />);
+
+    expect(html).toContain("SYS.PLANETARIUM // RADIUS: 330px");
+    expect(html).toContain("SEMANTIC RESONANCE: ACTIVE");
+    expect(html).toContain("data-testid=\"resonance-energy-paths\"");
+    expect(html).toContain("data-testid=\"energy-ray-01\"");
+  });
+
+  it("should support OrbitalResonanceBubble hover, dimming, animationDelay props, and mini-preview (SIL v2.5 Phase 1)", () => {
+    const htmlHighlighted = renderToString(
+      <OrbitalResonanceBubble
+        stageId="02"
+        stageName="CAPABILITY FIELD"
+        subtitle="Semantischer Kern"
+        itemCount={12}
+        isHovered={true}
+        animationDelay="-4s"
+        previewItems={["React Architecture", "TypeScript", "System Design"]}
+      />
+    );
+    expect(htmlHighlighted).toContain("02");
+    expect(htmlHighlighted).toContain("orbital-bubble-focused");
+    expect(htmlHighlighted).toContain("PREVIEW // TOP ITEMS");
+    expect(htmlHighlighted).toContain("React Architecture");
+    expect(htmlHighlighted).toContain("animation-delay:-4s");
+
+    const htmlDimmed = renderToString(
+      <OrbitalResonanceBubble
+        stageId="03"
+        stageName="RESONANCE ORBITS"
+        subtitle="Organisationen im Feld"
+        itemCount={5}
+        isDimmed={true}
+      />
+    );
+    expect(htmlDimmed).toContain("03");
+  });
 });
+
