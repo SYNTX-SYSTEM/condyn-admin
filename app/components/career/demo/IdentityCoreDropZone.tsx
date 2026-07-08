@@ -48,6 +48,11 @@ export function IdentityCoreDropZone({ sources, onDropSource, isCommunicating = 
           0% { transform: rotate(0deg); }
           100% { transform: rotate(-360deg); }
         }
+        @keyframes plasmaFlarePulse {
+          0%, 100% { opacity: 0.15; transform: scale(0.96) rotate(0deg); }
+          35% { opacity: 0.65; transform: scale(1.08) rotate(45deg); }
+          70% { opacity: 0.25; transform: scale(1.01) rotate(90deg); }
+        }
       `}</style>
 
       <div
@@ -143,6 +148,23 @@ export function IdentityCoreDropZone({ sources, onDropSource, isCommunicating = 
             />
           </svg>
         </div>
+
+        {/* Phase 2d: Autonomous Plasma Filament Flares */}
+        <div
+          data-testid="plasma-flare"
+          style={{
+            position: "absolute",
+            top: "18px",
+            left: "18px",
+            right: "18px",
+            bottom: "18px",
+            borderRadius: "50%",
+            pointerEvents: "none",
+            border: `1px solid ${SIL_TOKENS.colors.cyanActive}`,
+            boxShadow: `0 0 35px ${SIL_TOKENS.colors.cyanActive}, inset 0 0 25px ${SIL_TOKENS.colors.cyanGlowStrong}`,
+            animation: "plasmaFlarePulse 11s ease-in-out infinite"
+          }}
+        />
         {/* Living Energy Wave Rings */}
         <div
           style={{

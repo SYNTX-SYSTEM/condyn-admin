@@ -209,6 +209,25 @@ export interface OrbitalResonanceBubbleProps {
   style?: React.CSSProperties;
 }
 
+function getOrbitalPhysicsClass(stageId: string): string {
+  switch (stageId) {
+    case "01":
+      return "physics--precision-calm";
+    case "02":
+      return "physics--network-rotate";
+    case "03":
+      return "physics--wave-harmonic";
+    case "04":
+      return "physics--matrix-grid";
+    case "05":
+      return "physics--tension-instability";
+    case "06":
+      return "physics--spiral-evolution";
+    default:
+      return "";
+  }
+}
+
 /**
  * CONDYN / SYNTX — Semantic Interface Language (SIL v2.5 Phase 2b)
  * OrbitalResonanceBubble: Planetary resonance sphere with multi-layered atmosphere aura & floating Hologram HUD.
@@ -242,6 +261,7 @@ export function OrbitalResonanceBubble({
   };
 
   const computedPlacement = placement || getTooltipPlacement(angle, stageId);
+  const physicsClass = getOrbitalPhysicsClass(stageId);
 
   return (
     <>
@@ -260,14 +280,18 @@ export function OrbitalResonanceBubble({
           0%, 100% { opacity: 0.5; }
           50% { opacity: 0.9; }
         }
+        @keyframes hologramFloat {
+          0%, 100% { transform: translateY(0px); }
+          50% { transform: translateY(-4px); }
+        }
       `}</style>
 
       <div
-        data-testid={`orbital-bubble-${stageId}`}
+        data-testid={`orbital-physics-${stageId}`}
         onClick={onClick}
         onMouseEnter={onMouseEnter}
         onMouseLeave={onMouseLeave}
-        className={isHighlighted ? "orbital-bubble-focused" : ""}
+        className={`${isHighlighted ? "orbital-bubble-focused" : ""} ${physicsClass}`.trim()}
         style={{
           width: "168px",
           height: "168px",
@@ -469,8 +493,11 @@ export function OrbitalResonanceBubble({
 
             <div
               data-testid={`orbital-preview-${stageId}`}
-              className={`hologram-hud--large hud-preview--${computedPlacement}`}
-              style={getTooltipStyle(computedPlacement)}
+              className={`hologram-hud--large hologram-float hud-preview--${computedPlacement}`}
+              style={{
+                ...getTooltipStyle(computedPlacement),
+                animation: "hologramFloat 6s ease-in-out infinite"
+              }}
             >
               {/* TITLE */}
               <div

@@ -274,6 +274,43 @@ export function SemanticCareerIntelligenceField({ data }: SemanticCareerIntellig
             })}
           </g>
 
+          {/* Phase 2d: Inter-Orbital Coupling weighted relationships */}
+          <g data-testid="inter-orbital-coupling">
+            {/* Strong coupling: Capability (02) <-> Resonance (03) */}
+            <path
+              d={`M ${center + Math.cos((60 * Math.PI) / 180) * radius} ${center + Math.sin((60 * Math.PI) / 180) * radius} Q ${center + 140} ${center - 80} ${center + Math.cos((120 * Math.PI) / 180) * radius} ${center + Math.sin((120 * Math.PI) / 180) * radius}`}
+              fill="none"
+              stroke={SIL_TOKENS.colors.cyanActive}
+              strokeWidth="2.2"
+              strokeDasharray="6 4"
+              opacity="0.45"
+            />
+            {/* Moderate coupling: Role (04) <-> Evolution (06) */}
+            <path
+              d={`M ${center + Math.cos((180 * Math.PI) / 180) * radius} ${center + Math.sin((180 * Math.PI) / 180) * radius} Q ${center - 110} ${center + 120} ${center + Math.cos((300 * Math.PI) / 180) * radius} ${center + Math.sin((300 * Math.PI) / 180) * radius}`}
+              fill="none"
+              stroke="rgba(56, 229, 255, 0.22)"
+              strokeWidth="1.2"
+              strokeDasharray="3 5"
+            />
+          </g>
+
+          {/* Phase 2d: Sympathetic Resonance Cascade on Interaction */}
+          {focusedStageId && (
+            <g data-testid="resonance-cascade">
+              <circle
+                cx={center}
+                cy={center}
+                r={radius - 20}
+                fill="none"
+                stroke={SIL_TOKENS.colors.cyanActive}
+                strokeWidth="1.8"
+                opacity="0.7"
+                style={{ animation: "waveExpand 1.6s ease-out infinite" }}
+              />
+            </g>
+          )}
+
           {/* Energy Rays Connecting Core to Each Orbital Node */}
           {stages.map((st) => {
             const angleRad = (st.angleDeg * Math.PI) / 180;
