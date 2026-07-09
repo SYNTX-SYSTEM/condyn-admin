@@ -21,6 +21,7 @@ export function SemanticCareerIntelligenceField({ data }: SemanticCareerIntellig
   const [activeStageId, setActiveStageId] = useState<string | null>(null);
   const [hoveredStageId, setHoveredStageId] = useState<string | null>(null);
   const [zoomLevel, setZoomLevel] = useState<SemanticZoomLevel>(0);
+  const [selectedClusterId, setSelectedClusterId] = useState<string | null>(null);
 
   const stages = [
     {
@@ -101,6 +102,53 @@ export function SemanticCareerIntelligenceField({ data }: SemanticCareerIntellig
   const center = 400;
   const focusedStageId = hoveredStageId || activeStageId;
 
+  const activeStageObj = stages.find((s) => s.stageId === activeStageId);
+  const activeAngleRad = activeStageObj ? (activeStageObj.angleDeg * Math.PI) / 180 : 0;
+  const activeOrbitX = Math.cos(activeAngleRad) * radius;
+  const activeOrbitY = Math.sin(activeAngleRad) * radius;
+
+  let cameraScale = 1;
+  let cameraTranslateX = 0;
+  let cameraTranslateY = 0;
+
+  if (zoomLevel === 1 && activeStageId) {
+    cameraScale = 1.65;
+    cameraTranslateX = -activeOrbitX * 0.85;
+    cameraTranslateY = -activeOrbitY * 0.85;
+  } else if (zoomLevel >= 2 && activeStageId) {
+    cameraScale = 2.2;
+    cameraTranslateX = -activeOrbitX * 0.95;
+    cameraTranslateY = -activeOrbitY * 0.95;
+  }
+
+  const subClusters = activeStageId
+    ? [
+        {
+          id: `cl-${activeStageId}-1`,
+          title: "Core Architecture Cluster",
+          confidence: "98%",
+          evidenceCount: 14,
+          dx: -130,
+          dy: -85,
+          evidences: [
+            { id: `ev-${activeStageId}-1`, title: "Distributed System Reference", sourceType: "PDF", snippet: "System design specification verified." },
+            { id: `ev-${activeStageId}-2`, title: "Core Reconciler Implementation", sourceType: "GitHub", snippet: "pkg/engine/reconcile.go lines 14-88" }
+          ]
+        },
+        {
+          id: `cl-${activeStageId}-2`,
+          title: "Semantic Resonance Vector",
+          confidence: "95%",
+          evidenceCount: 9,
+          dx: 130,
+          dy: -75,
+          evidences: [
+            { id: `ev-${activeStageId}-3`, title: "SIL v3.0 Continuous Space Engine", sourceType: "GitHub", snippet: "app/components/career/demo/SemanticCareerIntelligenceField.tsx" }
+          ]
+        }
+      ]
+    : [];
+
   return (
     <div
       data-testid="semantic-career-intelligence-field"
@@ -156,9 +204,12 @@ export function SemanticCareerIntelligenceField({ data }: SemanticCareerIntellig
                 cursor: item.level <= zoomLevel ? "pointer" : "default"
               }}
               onClick={() => {
-                if (item.level <= zoomLevel) {
+                if (item.level <= zoomLevel || item.level === 0) {
                   setZoomLevel(item.level);
-                  if (item.level === 0) setActiveStageId(null);
+                  if (item.level === 0) {
+                    setActiveStageId(null);
+                    setSelectedClusterId(null);
+                  }
                 }
               }}
             >
@@ -173,6 +224,7 @@ export function SemanticCareerIntelligenceField({ data }: SemanticCareerIntellig
             onClick={() => {
               setZoomLevel(0);
               setActiveStageId(null);
+              setSelectedClusterId(null);
             }}
             style={{
               marginLeft: "8px",
@@ -236,12 +288,12 @@ export function SemanticCareerIntelligenceField({ data }: SemanticCareerIntellig
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          margin: "0 auto"
+          margin: "0 auto",
+          transform: `scale(${cameraScale}) translate(${cameraTranslateX}px, ${cameraTranslateY}px)`,
+          transition: "transform 0.75s cubic-bezier(0.16, 1, 0.3, 1)"
         }}
       >
-        {zoomLevel === 0 ? (
-          <>
-            {/* SVG Energy Flow Overlay connecting core to orbitals */}
+        {/* SVG Energy Flow Overlay connecting core to orbitals */}
             <svg
               data-testid="resonance-energy-paths"
               width="800"
@@ -282,6 +334,20 @@ export function SemanticCareerIntelligenceField({ data }: SemanticCareerIntellig
                   strokeDasharray={i === 1 ? "4 4" : undefined}
                 />
               ))}
+
+              {/* Phase 2b: Rotating Background Resonance Rings */}
+              <g data-testid="rotating-background-rings" style={{ transformOrigin: `${center}px ${center}px` }}>
+                <circle
+                  cx={center}
+                  cy={center}
+                  r={radius - 40}
+                  fill="none"
+                  stroke="rgba(56, 229, 255, 0.16)"
+                  strokeWidth="1"
+                  strokeDasharray="12 18"
+                  style={{ animation: "rotateClockwise 120s linear infinite", transformOrigin: `${center}px ${center}px` }}
+                />
+              </g>
 
               {/* Phase 2b: Living Ecosystem Field Ambient Elements */}
               <g data-testid="ambient-energy-nodes">
@@ -364,7 +430,7 @@ export function SemanticCareerIntelligenceField({ data }: SemanticCareerIntellig
                 const isRayActive = focusedStageId === st.stageId;
 
                 return (
-                  <g key={st.stageId}>
+                  <g key={`ray-${st.stageId}`} data-testid={`energy-ray-${st.stageId}`}>
                     <line
                       x1={center}
                       y1={center}
@@ -478,23 +544,106 @@ export function SemanticCareerIntelligenceField({ data }: SemanticCareerIntellig
                 );
               })}
             </div>
-          </>
-        ) : (
-          <div style={{ zIndex: 20 }}>
-            {activeStageId && (
-              <OrbitalSubspaceView
-                stageId={activeStageId}
-                stageName={stages.find((s) => s.stageId === activeStageId)?.stageName || activeStageId}
-                subtitle={stages.find((s) => s.stageId === activeStageId)?.subtitle}
-                zoomLevel={zoomLevel}
-                onZoomChange={(lvl) => {
-                  setZoomLevel(lvl);
-                  if (lvl === 0) setActiveStageId(null);
-                }}
-              />
+
+            {/* Phase 3c: Continuous Semantic Space Sub-Clusters (L1) */}
+            {zoomLevel >= 1 && activeStageId && (
+              <>
+                <svg
+                  width="800"
+                  height="800"
+                  style={{
+                    position: "absolute",
+                    top: 0,
+                    left: 0,
+                    pointerEvents: "none",
+                    zIndex: 14
+                  }}
+                >
+                  {subClusters.map((cluster) => (
+                    <line
+                      key={`line-${cluster.id}`}
+                      x1={center + activeOrbitX}
+                      y1={center + activeOrbitY}
+                      x2={center + activeOrbitX + cluster.dx}
+                      y2={center + activeOrbitY + cluster.dy}
+                      stroke={SIL_TOKENS.colors.cyanActive}
+                      strokeWidth="1.5"
+                      strokeDasharray="3 3"
+                    />
+                  ))}
+                </svg>
+
+                {subClusters.map((cluster) => (
+                  <div
+                    key={cluster.id}
+                    data-testid="subspace-cluster"
+                    onClick={() => {
+                      setSelectedClusterId(cluster.id);
+                      setZoomLevel(2);
+                    }}
+                    style={{
+                      position: "absolute",
+                      left: `${center + activeOrbitX + cluster.dx - 90}px`,
+                      top: `${center + activeOrbitY + cluster.dy - 35}px`,
+                      width: "180px",
+                      backgroundColor: "rgba(10, 18, 30, 0.92)",
+                      border: `1px solid ${selectedClusterId === cluster.id ? SIL_TOKENS.colors.cyanActive : "rgba(56, 229, 255, 0.45)"}`,
+                      borderRadius: "8px",
+                      padding: "10px",
+                      cursor: "pointer",
+                      zIndex: 15,
+                      boxShadow: "0 0 16px rgba(56, 229, 255, 0.18)"
+                    }}
+                  >
+                    <div style={{ fontSize: "9px", color: SIL_TOKENS.colors.cyanActive, fontWeight: 700 }}>
+                      CLUSTER NODE // {cluster.confidence}
+                    </div>
+                    <div style={{ fontSize: "11px", fontWeight: 700, margin: "4px 0" }}>
+                      {cluster.title}
+                    </div>
+                    <div style={{ fontSize: "9px", color: SIL_TOKENS.colors.textMuted }}>
+                      {cluster.evidenceCount} Verified Objects
+                    </div>
+                  </div>
+                ))}
+              </>
             )}
-          </div>
-        )}
+
+            {/* Phase 3c: Continuous Semantic Space Evidence Nodes (L2) */}
+            {zoomLevel >= 2 && selectedClusterId && (
+              <>
+                {subClusters
+                  .filter((cl) => cl.id === selectedClusterId)
+                  .flatMap((cl) => cl.evidences)
+                  .map((ev, i) => (
+                    <div
+                      key={ev.id}
+                      data-testid="evidence-node"
+                      style={{
+                        position: "absolute",
+                        left: `${center + activeOrbitX + (i === 0 ? -190 : 20)}px`,
+                        top: `${center + activeOrbitY + (i === 0 ? 35 : 45)}px`,
+                        width: "160px",
+                        backgroundColor: "rgba(6, 12, 20, 0.95)",
+                        border: "1px solid #38e5ff",
+                        borderRadius: "6px",
+                        padding: "8px",
+                        zIndex: 16
+                      }}
+                    >
+                      <div style={{ fontSize: "8px", color: "#38e5ff", fontWeight: 700 }}>
+                        EVIDENCE // {ev.sourceType}
+                      </div>
+                      <div style={{ fontSize: "10px", fontWeight: 700, margin: "3px 0" }}>
+                        {ev.title}
+                      </div>
+                      <div style={{ fontSize: "9px", color: "#63788a" }}>
+                        {ev.snippet}
+                      </div>
+                    </div>
+                  ))}
+              </>
+            )}
       </div>
 
       {/* Phase 3a: Compact Scientific Focus Detail Panel when an orbit is focused */}

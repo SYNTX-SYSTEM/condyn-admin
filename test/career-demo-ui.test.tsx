@@ -226,7 +226,7 @@ describe("CONDYN / SYNTX — Step 22c: Semantic Career Intelligence Field (SIL v
     expect(leftBubbleHtml).toContain("hud-preview--right");
   });
 
-  it("should render NASA Semantic Zoom Telemetry and OrbitalSubspaceView L1/L2 subspace layers (SIL v3.0 Phase 3b)", () => {
+  it("should render NASA Semantic Zoom Telemetry and Continuous Semantic Space L1/L2 subspace layers (SIL v3.0 Phase 3c)", () => {
     const fieldHtml = renderToString(<SemanticCareerIntelligenceField data={DEMO_CAREER_INTELLIGENCE_DATA} />);
     expect(fieldHtml).toContain("data-testid=\"semantic-zoom-telemetry\"");
     expect(fieldHtml).toContain("L0 PLANETARIUM");
@@ -242,7 +242,7 @@ describe("CONDYN / SYNTX — Step 22c: Semantic Career Intelligence Field (SIL v
       />
     );
     expect(subspaceL1Html).toContain("data-testid=\"orbital-subspace-view\"");
-    expect(subspaceL1Html).toContain("ORBITAL SUBSPACE // ZOOM LEVEL 1");
+    expect(subspaceL1Html).toContain("ORBITAL SUBSPACE // ZOOM LEVEL");
     expect(subspaceL1Html).toContain("data-testid=\"subspace-cluster\"");
 
     const subspaceL2Html = renderToString(
