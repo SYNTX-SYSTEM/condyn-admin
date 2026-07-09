@@ -7,18 +7,20 @@ import { IdentityCoreDropZone } from "./IdentityCoreDropZone";
 import { OrbitalResonanceBubble } from "./OrbitalResonanceBubble";
 import { SourceDock } from "./SourceDock";
 import { SemanticGuideDrawer } from "./SemanticGuideDrawer";
+import { OrbitalSubspaceView, SemanticZoomLevel } from "./OrbitalSubspaceView";
 
 export interface SemanticCareerIntelligenceFieldProps {
   data: DemoCareerIntelligenceData;
 }
 
 /**
- * CONDYN / SYNTX — Semantic Interface Language (SIL v2.5 Phase 1)
- * SemanticCareerIntelligenceField: The living radial Bedeutungsraum organism.
+ * CONDYN / SYNTX — Semantic Interface Language (SIL v2.5 Phase 1 / SIL v3.0 Phase 3b)
+ * SemanticCareerIntelligenceField: The living radial Bedeutungsraum organism with L0-L4 Semantic Zoom.
  */
 export function SemanticCareerIntelligenceField({ data }: SemanticCareerIntelligenceFieldProps) {
   const [activeStageId, setActiveStageId] = useState<string | null>(null);
   const [hoveredStageId, setHoveredStageId] = useState<string | null>(null);
+  const [zoomLevel, setZoomLevel] = useState<SemanticZoomLevel>(0);
 
   const stages = [
     {
@@ -115,6 +117,80 @@ export function SemanticCareerIntelligenceField({ data }: SemanticCareerIntellig
         alignItems: "flex-start"
       }}
     >
+      {/* Phase 3b: NASA Semantic Zoom Telemetry Breadcrumb Bar */}
+      <div
+        data-testid="semantic-zoom-telemetry"
+        style={{
+          position: "absolute",
+          top: "14px",
+          left: "50%",
+          transform: "translateX(-50%)",
+          zIndex: 35,
+          backgroundColor: "rgba(5, 10, 18, 0.92)",
+          border: `1px solid ${SIL_TOKENS.colors.cyanActive}`,
+          boxShadow: `0 0 20px rgba(56, 229, 255, 0.25)`,
+          backdropFilter: "blur(10px)",
+          borderRadius: "20px",
+          padding: "6px 18px",
+          display: "flex",
+          alignItems: "center",
+          gap: "8px",
+          fontSize: "10px",
+          fontWeight: 700,
+          letterSpacing: "0.8px"
+        }}
+      >
+        {[
+          { level: 0 as SemanticZoomLevel, label: "L0 PLANETARIUM" },
+          { level: 1 as SemanticZoomLevel, label: "L1 CLUSTER" },
+          { level: 2 as SemanticZoomLevel, label: "L2 EVIDENCE" },
+          { level: 3 as SemanticZoomLevel, label: "L3 SOURCE" },
+          { level: 4 as SemanticZoomLevel, label: "L4 ORIGINAL" }
+        ].map((item, idx) => (
+          <React.Fragment key={item.level}>
+            {idx > 0 && <span style={{ color: "rgba(56, 229, 255, 0.35)" }}>→</span>}
+            <span
+              style={{
+                color: zoomLevel === item.level ? "#ffffff" : zoomLevel > item.level ? SIL_TOKENS.colors.cyanActive : "rgba(56, 229, 255, 0.4)",
+                textDecoration: zoomLevel === item.level ? "underline" : "none",
+                cursor: item.level <= zoomLevel ? "pointer" : "default"
+              }}
+              onClick={() => {
+                if (item.level <= zoomLevel) {
+                  setZoomLevel(item.level);
+                  if (item.level === 0) setActiveStageId(null);
+                }
+              }}
+            >
+              {item.label}
+            </span>
+          </React.Fragment>
+        ))}
+
+        {zoomLevel > 0 && (
+          <button
+            data-testid="zoom-reset-btn"
+            onClick={() => {
+              setZoomLevel(0);
+              setActiveStageId(null);
+            }}
+            style={{
+              marginLeft: "8px",
+              backgroundColor: "rgba(56, 229, 255, 0.15)",
+              border: `1px solid ${SIL_TOKENS.colors.cyanActive}`,
+              color: SIL_TOKENS.colors.cyanActive,
+              fontSize: "8.5px",
+              fontWeight: 700,
+              padding: "3px 8px",
+              borderRadius: "10px",
+              cursor: "pointer"
+            }}
+          >
+            RESET L0
+          </button>
+        )}
+      </div>
+
       {/* HUD Background Coordinates & Semiotic Grid */}
       <div
         style={{
@@ -163,274 +239,262 @@ export function SemanticCareerIntelligenceField({ data }: SemanticCareerIntellig
           margin: "0 auto"
         }}
       >
-        {/* SVG Energy Flow Overlay connecting core to orbitals */}
-        <svg
-          data-testid="resonance-energy-paths"
-          width="800"
-          height="800"
-          style={{
-            position: "absolute",
-            top: 0,
-            left: 0,
-            pointerEvents: "none",
-            zIndex: 1
-          }}
-        >
-          <defs>
-            <radialGradient id="fieldGlow" cx="50%" cy="50%" r="50%">
-              <stop offset="0%" stopColor="#38e5ff" stopOpacity={focusedStageId ? "0.32" : "0.22"} />
-              <stop offset="100%" stopColor="#030508" stopOpacity="0" />
-            </radialGradient>
-          </defs>
+        {zoomLevel === 0 ? (
+          <>
+            {/* SVG Energy Flow Overlay connecting core to orbitals */}
+            <svg
+              data-testid="resonance-energy-paths"
+              width="800"
+              height="800"
+              style={{
+                position: "absolute",
+                top: 0,
+                left: 0,
+                pointerEvents: "none",
+                zIndex: 1
+              }}
+            >
+              <defs>
+                <radialGradient id="fieldGlow" cx="50%" cy="50%" r="50%">
+                  <stop offset="0%" stopColor="#38e5ff" stopOpacity={focusedStageId ? "0.32" : "0.22"} />
+                  <stop offset="100%" stopColor="#030508" stopOpacity="0" />
+                </radialGradient>
+              </defs>
 
-          {/* Core Ambient Aura */}
-          <circle
-            cx={center}
-            cy={center}
-            r="360"
-            fill="url(#fieldGlow)"
-            style={{ transition: "all 0.5s ease" }}
-          />
-
-          {/* Concentric Orbit Rings */}
-          <circle
-            cx={center}
-            cy={center}
-            r={radius}
-            fill="none"
-            stroke="rgba(56, 229, 255, 0.22)"
-            strokeWidth="1"
-            strokeDasharray="4 6"
-          />
-          <circle
-            cx={center}
-            cy={center}
-            r={radius - 90}
-            fill="none"
-            stroke="rgba(56, 229, 255, 0.12)"
-            strokeWidth="1"
-          />
-
-          {/* Phase 2b: Rotating Background Resonance Rings */}
-          <g data-testid="rotating-background-rings" style={{ transformOrigin: `${center}px ${center}px` }}>
-            <circle
-              cx={center}
-              cy={center}
-              r={radius - 40}
-              fill="none"
-              stroke="rgba(56, 229, 255, 0.16)"
-              strokeWidth="1"
-              strokeDasharray="12 18"
-              style={{ animation: "rotateClockwise 120s linear infinite", transformOrigin: `${center}px ${center}px` }}
-            />
-            <circle
-              cx={center}
-              cy={center}
-              r={radius - 140}
-              fill="none"
-              stroke="rgba(56, 229, 255, 0.14)"
-              strokeWidth="1"
-              strokeDasharray="6 12"
-              style={{ animation: "rotateCounterClockwise 90s linear infinite", transformOrigin: `${center}px ${center}px` }}
-            />
-          </g>
-
-          {/* Phase 2b: Ambient Energy Nodes */}
-          <g data-testid="ambient-energy-nodes">
-            {[0, 60, 120, 180, 240, 300].map((deg, idx) => {
-              const rad = (deg * Math.PI) / 180;
-              const nodeX = center + Math.cos(rad) * (radius - 70);
-              const nodeY = center + Math.sin(rad) * (radius - 70);
-              return (
-                <circle
-                  key={idx}
-                  cx={nodeX}
-                  cy={nodeY}
-                  r="2.5"
-                  fill="#38e5ff"
-                  opacity="0.45"
-                />
-              );
-            })}
-          </g>
-
-          {/* Phase 2c: Semantic Dust Particles in Interplanetary Space */}
-          <g data-testid="semantic-dust-particles">
-            {[25, 55, 85, 115, 145, 175, 205, 235, 265, 295, 325, 355].map((deg, idx) => {
-              const rad = (deg * Math.PI) / 180;
-              const dist = 140 + (idx % 3) * 55;
-              const dustX = center + Math.cos(rad) * dist;
-              const dustY = center + Math.sin(rad) * dist;
-              return (
-                <circle
-                  key={idx}
-                  cx={dustX}
-                  cy={dustY}
-                  r={idx % 2 === 0 ? "1.2" : "1.8"}
-                  fill="#38e5ff"
-                  opacity="0.3"
-                />
-              );
-            })}
-          </g>
-
-          {/* Phase 2d: Inter-Orbital Coupling weighted relationships */}
-          <g data-testid="inter-orbital-coupling">
-            {/* Strong coupling: Capability (02) <-> Resonance (03) */}
-            <path
-              d={`M ${center + Math.cos((60 * Math.PI) / 180) * radius} ${center + Math.sin((60 * Math.PI) / 180) * radius} Q ${center + 140} ${center - 80} ${center + Math.cos((120 * Math.PI) / 180) * radius} ${center + Math.sin((120 * Math.PI) / 180) * radius}`}
-              fill="none"
-              stroke={SIL_TOKENS.colors.cyanActive}
-              strokeWidth="2.2"
-              strokeDasharray="6 4"
-              opacity="0.45"
-            />
-            {/* Moderate coupling: Role (04) <-> Evolution (06) */}
-            <path
-              d={`M ${center + Math.cos((180 * Math.PI) / 180) * radius} ${center + Math.sin((180 * Math.PI) / 180) * radius} Q ${center - 110} ${center + 120} ${center + Math.cos((300 * Math.PI) / 180) * radius} ${center + Math.sin((300 * Math.PI) / 180) * radius}`}
-              fill="none"
-              stroke="rgba(56, 229, 255, 0.22)"
-              strokeWidth="1.2"
-              strokeDasharray="3 5"
-            />
-          </g>
-
-          {/* Phase 2d: Sympathetic Resonance Cascade on Interaction */}
-          {focusedStageId && (
-            <g data-testid="resonance-cascade">
+              {/* Phase 2a: Atmospheric Field Glow Background */}
               <circle
                 cx={center}
                 cy={center}
-                r={radius - 20}
-                fill="none"
-                stroke={SIL_TOKENS.colors.cyanActive}
-                strokeWidth="1.8"
-                opacity="0.7"
-                style={{ animation: "waveExpand 1.6s ease-out infinite" }}
+                r={radius + 30}
+                fill="url(#fieldGlow)"
               />
-            </g>
-          )}
 
-          {/* Energy Rays Connecting Core to Each Orbital Node */}
-          {stages.map((st) => {
-            const angleRad = (st.angleDeg * Math.PI) / 180;
-            const targetX = center + Math.cos(angleRad) * radius;
-            const targetY = center + Math.sin(angleRad) * radius;
-            const isRayActive = focusedStageId === st.stageId;
-
-            return (
-              <g key={`ray-${st.stageId}`} data-testid={`energy-ray-${st.stageId}`}>
-                <line
-                  x1={center}
-                  y1={center}
-                  x2={targetX}
-                  y2={targetY}
-                  stroke={isRayActive ? SIL_TOKENS.colors.cyanActive : "rgba(56, 229, 255, 0.26)"}
-                  strokeWidth={isRayActive ? "3" : "1"}
-                  strokeDasharray={isRayActive ? undefined : "3 3"}
-                  style={{ transition: "all 0.35s ease" }}
+              {/* Concentric Orbit Paths */}
+              {[radius * 0.35, radius * 0.68, radius].map((r, i) => (
+                <circle
+                  key={i}
+                  cx={center}
+                  cy={center}
+                  r={r}
+                  fill="none"
+                  stroke="rgba(56, 229, 255, 0.12)"
+                  strokeWidth="1"
+                  strokeDasharray={i === 1 ? "4 4" : undefined}
                 />
+              ))}
 
-                {/* Permanent Photon Core -> Orbit */}
-                <circle
-                  data-testid="photon-stream-core-to-orbit"
-                  r={isRayActive ? "3.5" : "2.2"}
-                  fill={isRayActive ? "#ffffff" : "#38e5ff"}
-                  opacity={isRayActive ? 1 : 0.75}
-                >
-                  <animateMotion
-                    path={`M ${center} ${center} L ${targetX} ${targetY}`}
-                    dur={isRayActive ? "1.6s" : st.photonOutDur}
-                    repeatCount="indefinite"
-                  />
-                </circle>
+              {/* Phase 2b: Living Ecosystem Field Ambient Elements */}
+              <g data-testid="ambient-energy-nodes">
+                {[0, 60, 120, 180, 240, 300].map((deg, idx) => {
+                  const rAmbient = radius * 0.82;
+                  const rad = (deg * Math.PI) / 180;
+                  const ax = center + Math.cos(rad) * rAmbient;
+                  const ay = center + Math.sin(rad) * rAmbient;
+                  return (
+                    <circle
+                      key={idx}
+                      cx={ax}
+                      cy={ay}
+                      r="1.5"
+                      fill="rgba(56, 229, 255, 0.38)"
+                    />
+                  );
+                })}
+              </g>
 
-                {/* Permanent Photon Orbit -> Core */}
-                <circle
-                  data-testid="photon-stream-orbit-to-core"
-                  r={isRayActive ? "3" : "1.8"}
-                  fill={isRayActive ? "#38e5ff" : "#8eefff"}
-                  opacity={isRayActive ? 0.95 : 0.6}
-                >
-                  <animateMotion
-                    path={`M ${targetX} ${targetY} L ${center} ${center}`}
-                    dur={isRayActive ? "2.1s" : st.photonInDur}
-                    repeatCount="indefinite"
-                  />
-                </circle>
+              {/* Phase 2b: Semantic Dust Particles */}
+              <g data-testid="semantic-dust-particles">
+                {[45, 135, 225, 315].map((deg, idx) => {
+                  const rDust = radius * 0.5;
+                  const rad = (deg * Math.PI) / 180;
+                  const dx = center + Math.cos(rad) * rDust;
+                  const dy = center + Math.sin(rad) * rDust;
+                  return (
+                    <circle
+                      key={idx}
+                      cx={dx}
+                      cy={dy}
+                      r="1"
+                      fill="rgba(56, 229, 255, 0.25)"
+                    />
+                  );
+                })}
+              </g>
 
-                <circle
-                  cx={(center + targetX) / 2}
-                  cy={(center + targetY) / 2}
-                  r={isRayActive ? "4" : "2"}
-                  fill={isRayActive ? SIL_TOKENS.colors.cyanActive : "rgba(56, 229, 255, 0.6)"}
-                  style={{ transition: "all 0.35s ease" }}
+              {/* Phase 2d: Inter-Orbital Coupling weighted relationships */}
+              <g data-testid="inter-orbital-coupling">
+                <path
+                  d={`M ${center + Math.cos((60 * Math.PI) / 180) * radius} ${center + Math.sin((60 * Math.PI) / 180) * radius} Q ${center + 140} ${center - 80} ${center + Math.cos((120 * Math.PI) / 180) * radius} ${center + Math.sin((120 * Math.PI) / 180) * radius}`}
+                  fill="none"
+                  stroke={SIL_TOKENS.colors.cyanActive}
+                  strokeWidth="2.2"
+                  strokeDasharray="6 4"
+                  opacity="0.45"
+                />
+                <path
+                  d={`M ${center + Math.cos((180 * Math.PI) / 180) * radius} ${center + Math.sin((180 * Math.PI) / 180) * radius} Q ${center - 110} ${center + 120} ${center + Math.cos((300 * Math.PI) / 180) * radius} ${center + Math.sin((300 * Math.PI) / 180) * radius}`}
+                  fill="none"
+                  stroke="rgba(56, 229, 255, 0.22)"
+                  strokeWidth="1.2"
+                  strokeDasharray="3 5"
                 />
               </g>
-            );
-          })}
-        </svg>
 
-        {/* Central Identity Core DropZone with subtle hover reaction */}
-        <div
-          data-testid="identity-core-wrapper"
-          style={{
-            zIndex: 5,
-            transition: "all 0.35s ease",
-            transform: focusedStageId ? "scale(1.03)" : "scale(1)",
-            filter: focusedStageId ? `drop-shadow(0 0 25px rgba(56, 229, 255, 0.55))` : undefined
-          }}
-        >
-          <IdentityCoreDropZone sources={data.sources} isCommunicating={!!focusedStageId} />
-        </div>
+              {/* Phase 2d: Sympathetic Resonance Cascade on Interaction */}
+              {focusedStageId && (
+                <g data-testid="resonance-cascade">
+                  <circle
+                    cx={center}
+                    cy={center}
+                    r={radius - 20}
+                    fill="none"
+                    stroke={SIL_TOKENS.colors.cyanActive}
+                    strokeWidth="1.8"
+                    opacity="0.7"
+                    style={{ animation: "waveExpand 1.6s ease-out infinite" }}
+                  />
+                </g>
+              )}
 
-        {/* Orbiting Resonance Bubbles */}
-        <div
-          style={{
-            position: "absolute",
-            width: "100%",
-            height: "100%",
-            pointerEvents: "none",
-            zIndex: 6
-          }}
-        >
-          {stages.map((st) => {
-            const angleRad = (st.angleDeg * Math.PI) / 180;
-            const x = Math.cos(angleRad) * radius;
-            const y = Math.sin(angleRad) * radius;
-            const isStageActive = activeStageId === st.stageId;
-            const isStageHovered = hoveredStageId === st.stageId;
-            const isStageDimmed = focusedStageId !== null && focusedStageId !== st.stageId;
+              {/* Energy Rays Connecting Core to Each Orbital Node */}
+              {stages.map((st) => {
+                const angleRad = (st.angleDeg * Math.PI) / 180;
+                const targetX = center + Math.cos(angleRad) * radius;
+                const targetY = center + Math.sin(angleRad) * radius;
+                const isRayActive = focusedStageId === st.stageId;
 
-            return (
-              <div
-                key={st.stageId}
-                style={{
-                  position: "absolute",
-                  left: `calc(50% + ${x}px - 84px)`,
-                  top: `calc(50% + ${y}px - 84px)`,
-                  pointerEvents: "auto"
+                return (
+                  <g key={st.stageId}>
+                    <line
+                      x1={center}
+                      y1={center}
+                      x2={targetX}
+                      y2={targetY}
+                      stroke={isRayActive ? SIL_TOKENS.colors.cyanActive : "rgba(56, 229, 255, 0.28)"}
+                      strokeWidth={isRayActive ? "2.5" : "1.2"}
+                      strokeDasharray={isRayActive ? undefined : "3 3"}
+                      style={{ transition: "all 0.35s ease" }}
+                    />
+
+                    <circle
+                      data-testid="photon-stream-core-to-orbit"
+                      r={isRayActive ? "3" : "1.8"}
+                      fill={isRayActive ? "#ffffff" : SIL_TOKENS.colors.cyanActive}
+                      opacity={isRayActive ? 1 : 0.65}
+                    >
+                      <animateMotion
+                        path={`M ${center} ${center} L ${targetX} ${targetY}`}
+                        dur={isRayActive ? "1.6s" : st.photonOutDur}
+                        repeatCount="indefinite"
+                      />
+                    </circle>
+
+                    <circle
+                      data-testid="photon-stream-orbit-to-core"
+                      r={isRayActive ? "3" : "1.8"}
+                      fill={isRayActive ? "#38e5ff" : "#8eefff"}
+                      opacity={isRayActive ? 0.95 : 0.6}
+                    >
+                      <animateMotion
+                        path={`M ${targetX} ${targetY} L ${center} ${center}`}
+                        dur={isRayActive ? "2.1s" : st.photonInDur}
+                        repeatCount="indefinite"
+                      />
+                    </circle>
+
+                    <circle
+                      cx={(center + targetX) / 2}
+                      cy={(center + targetY) / 2}
+                      r={isRayActive ? "4" : "2"}
+                      fill={isRayActive ? SIL_TOKENS.colors.cyanActive : "rgba(56, 229, 255, 0.6)"}
+                      style={{ transition: "all 0.35s ease" }}
+                    />
+                  </g>
+                );
+              })}
+            </svg>
+
+            {/* Central Identity Core DropZone with subtle hover reaction */}
+            <div
+              data-testid="identity-core-wrapper"
+              style={{
+                zIndex: 5,
+                transition: "all 0.35s ease",
+                transform: focusedStageId ? "scale(1.03)" : "scale(1)",
+                filter: focusedStageId ? `drop-shadow(0 0 25px rgba(56, 229, 255, 0.55))` : undefined
+              }}
+            >
+              <IdentityCoreDropZone sources={data.sources} isCommunicating={!!focusedStageId} />
+            </div>
+
+            {/* Orbiting Resonance Bubbles */}
+            <div
+              style={{
+                position: "absolute",
+                width: "100%",
+                height: "100%",
+                pointerEvents: "none",
+                zIndex: 6
+              }}
+            >
+              {stages.map((st) => {
+                const angleRad = (st.angleDeg * Math.PI) / 180;
+                const x = Math.cos(angleRad) * radius;
+                const y = Math.sin(angleRad) * radius;
+                const isStageActive = activeStageId === st.stageId;
+                const isStageHovered = hoveredStageId === st.stageId;
+                const isStageDimmed = focusedStageId !== null && focusedStageId !== st.stageId;
+
+                return (
+                  <div
+                    key={st.stageId}
+                    style={{
+                      position: "absolute",
+                      left: `calc(50% + ${x}px - 84px)`,
+                      top: `calc(50% + ${y}px - 84px)`,
+                      pointerEvents: "auto"
+                    }}
+                  >
+                    <OrbitalResonanceBubble
+                      stageId={st.stageId}
+                      stageName={`${st.glyph} ${st.stageName}`}
+                      subtitle={st.subtitle}
+                      itemCount={st.count}
+                      previewItems={st.previewItems}
+                      angle={st.angleDeg}
+                      isActive={isStageActive}
+                      isHovered={isStageHovered}
+                      isDimmed={isStageDimmed}
+                      animationDelay={st.animationDelay}
+                      onClick={() => {
+                        const newActive = isStageActive ? null : st.stageId;
+                        setActiveStageId(newActive);
+                        setZoomLevel(newActive ? 1 : 0);
+                      }}
+                      onMouseEnter={() => setHoveredStageId(st.stageId)}
+                      onMouseLeave={() => setHoveredStageId(null)}
+                    />
+                  </div>
+                );
+              })}
+            </div>
+          </>
+        ) : (
+          <div style={{ zIndex: 20 }}>
+            {activeStageId && (
+              <OrbitalSubspaceView
+                stageId={activeStageId}
+                stageName={stages.find((s) => s.stageId === activeStageId)?.stageName || activeStageId}
+                subtitle={stages.find((s) => s.stageId === activeStageId)?.subtitle}
+                zoomLevel={zoomLevel}
+                onZoomChange={(lvl) => {
+                  setZoomLevel(lvl);
+                  if (lvl === 0) setActiveStageId(null);
                 }}
-              >
-                <OrbitalResonanceBubble
-                  stageId={st.stageId}
-                  stageName={`${st.glyph} ${st.stageName}`}
-                  subtitle={st.subtitle}
-                  itemCount={st.count}
-                  previewItems={st.previewItems}
-                  angle={st.angleDeg}
-                  isActive={isStageActive}
-                  isHovered={isStageHovered}
-                  isDimmed={isStageDimmed}
-                  animationDelay={st.animationDelay}
-                  onClick={() => setActiveStageId(isStageActive ? null : st.stageId)}
-                  onMouseEnter={() => setHoveredStageId(st.stageId)}
-                  onMouseLeave={() => setHoveredStageId(null)}
-                />
-              </div>
-            );
-          })}
-        </div>
+              />
+            )}
+          </div>
+        )}
       </div>
 
       {/* Phase 3a: Compact Scientific Focus Detail Panel when an orbit is focused */}

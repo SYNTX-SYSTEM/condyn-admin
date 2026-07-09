@@ -19,6 +19,7 @@ import { OrbitalResonanceBubble } from "../app/components/career/demo/OrbitalRes
 import { SourceDock } from "../app/components/career/demo/SourceDock";
 import { SemanticGuideDrawer } from "../app/components/career/demo/SemanticGuideDrawer";
 import { SemanticCareerIntelligenceField } from "../app/components/career/demo/SemanticCareerIntelligenceField";
+import { OrbitalSubspaceView } from "../app/components/career/demo/OrbitalSubspaceView";
 
 describe("CONDYN / SYNTX — Step 22c: Semantic Career Intelligence Field (SIL v2.0) (`test/career-demo-ui.test.tsx`)", () => {
   it("should render IdentityCoreDropZone displaying ConDyn logo and active source count", () => {
@@ -224,5 +225,37 @@ describe("CONDYN / SYNTX — Step 22c: Semantic Career Intelligence Field (SIL v
     );
     expect(leftBubbleHtml).toContain("hud-preview--right");
   });
+
+  it("should render NASA Semantic Zoom Telemetry and OrbitalSubspaceView L1/L2 subspace layers (SIL v3.0 Phase 3b)", () => {
+    const fieldHtml = renderToString(<SemanticCareerIntelligenceField data={DEMO_CAREER_INTELLIGENCE_DATA} />);
+    expect(fieldHtml).toContain("data-testid=\"semantic-zoom-telemetry\"");
+    expect(fieldHtml).toContain("L0 PLANETARIUM");
+    expect(fieldHtml).toContain("L1 CLUSTER");
+    expect(fieldHtml).toContain("L2 EVIDENCE");
+
+    const subspaceL1Html = renderToString(
+      <OrbitalSubspaceView
+        stageId="02"
+        stageName="CAPABILITY FIELD"
+        subtitle="Semantischer Kern"
+        zoomLevel={1}
+      />
+    );
+    expect(subspaceL1Html).toContain("data-testid=\"orbital-subspace-view\"");
+    expect(subspaceL1Html).toContain("ORBITAL SUBSPACE // ZOOM LEVEL 1");
+    expect(subspaceL1Html).toContain("data-testid=\"subspace-cluster\"");
+
+    const subspaceL2Html = renderToString(
+      <OrbitalSubspaceView
+        stageId="02"
+        stageName="CAPABILITY FIELD"
+        subtitle="Semantischer Kern"
+        zoomLevel={2}
+      />
+    );
+    expect(subspaceL2Html).toContain("data-testid=\"zoom-level-2-evidence\"");
+    expect(subspaceL2Html).toContain("data-testid=\"evidence-node\"");
+  });
 });
+
 
