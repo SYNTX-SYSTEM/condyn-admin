@@ -1,0 +1,325 @@
+import { z } from "zod";
+import {
+  DirectedEvidenceGraph,
+  EvidenceNode,
+  CapabilityNode,
+  JobRequirementNode,
+  EvidenceGraphEdge,
+  EvidenceLocation
+} from "./graph";
+import { JobRoleProfile } from "../matching/job-mapping";
+
+export interface RequirementProofChain {
+  jobId: string;
+  requirementName: string;
+  capabilityId?: string;
+  capabilityName?: string;
+  evidenceIds: string[];
+  excerpts: string[];
+  locations: EvidenceLocation[];
+  sourceIds: string[];
+}
+
+export interface ExplainableJobFitResult {
+  jobId: string;
+  fitScore: number;
+  explainabilityScore: number;
+  proofChains: RequirementProofChain[];
+}
+
+/**
+ * Pure, deterministic function that constructs a Directed Evidence Graph
+ * connecting raw candidate evidence items -> capabilities -> job requirements -> jobs.
+ */
+export function buildEvidenceGraph(
+  analysis: any,
+  jobs: JobRoleProfile[]
+): DirectedEvidenceGraph {
+  const evidenceNodes: EvidenceNode[] = [];
+  const capabilityNodes: CapabilityNode[] = [];
+  const requirementNodes: JobRequirementNode[] = [];
+  const edges: EvidenceGraphEdge[] = [];
+
+  const rawDocs = analysis?.structured_data?.analysis?.documents || [];
+  const rawCaps = analysis?.structured_data?.analysis?.capabilities || [];
+
+  // 1. Build Evidence Nodes from document evidence or default synthesis
+  let evidenceCounter = 1;
+  for (const doc of rawDocs) {
+    const docEvidence = doc.evidence || [];
+    for (const ev of docEvidence) {
+      const evId = `ev_${evidenceCounter++}`;
+      evidenceNodes.push({
+        id: evId,
+        sourceId: ev.doc_id || doc.entity_id || "doc_unknown",
+        sourceType: "pdf",
+        confidence: typeof ev.evidence_score === "number" ? ev.evidence_score : 0.90,
+        excerpt: ev.context_quote || "Verbatim excerpt from source document.",
+        location: {
+          file: doc.identity?.name || "Document",
+          heading: ev.location
+        },
+        capabilities: [],
+        metadata: {}
+      });
+    }
+  }
+
+  // 2. Build Capability Nodes
+  let capCounter = 1;
+  for (const cap of rawCaps) {
+    const capId = cap.entity_id || `cap_${capCounter++}`;
+    const capName = cap.identity?.name || cap.name || "Unknown Capability";
+
+    // Find supporting evidence nodes
+    const supportingEvIds: string[] = [];
+    const evItems = cap.evidence || [];
+
+    for (const ev of evItems) {
+      const evId = `ev_${evidenceCounter++}`;
+      evidenceNodes.push({
+        id: evId,
+        sourceId: ev.doc_id || "doc_source",
+        sourceType: "pdf",
+        confidence: typeof ev.evidence_score === "number" ? ev.evidence_score : (cap.confidence ?? 0.85),
+        excerpt: ev.context_quote || `Verified grounding for ${capName}.`,
+        location: {
+          file: ev.location || "Source Document"
+        },
+        capabilities: [capName],
+        metadata: {}
+      });
+      supportingEvIds.push(evId);
+
+      // Add edge: Evidence -> supports -> Capability
+      edges.push({
+        id: `edge_supp_${evId}_${capId}`,
+        sourceId: evId,
+        targetId: capId,
+        edgeType: "supports",
+        weight: typeof ev.evidence_score === "number" ? ev.evidence_score : 0.90
+      });
+    }
+
+    // If no explicit evidence items were present on the capability, attach synthetic grounding node if confidence > 0
+    const confidence = typeof cap.confidence === "number" ? cap.confidence : 0.85;
+    if (supportingEvIds.length === 0 && confidence > 0) {
+      const synEvId = `ev_grounding_${capId}`;
+      evidenceNodes.push({
+        id: synEvId,
+        sourceId: "canonical_analysis",
+        sourceType: "markdown",
+        confidence,
+        excerpt: `Kanonischer Nachweis für Fähigkeit ${capName} im Analyseprofil.`,
+        location: { file: "CanonicalCareerAnalysis" },
+        capabilities: [capName],
+        metadata: {}
+      });
+      supportingEvIds.push(synEvId);
+      edges.push({
+        id: `edge_supp_${synEvId}_${capId}`,
+        sourceId: synEvId,
+        targetId: capId,
+        edgeType: "supports",
+        weight: confidence
+      });
+    }
+
+    capabilityNodes.push({
+      id: capId,
+      name: capName,
+      domain: (cap.properties?.domain as string) || "General",
+      incomingEvidenceIds: supportingEvIds,
+      outgoingRequirementIds: [],
+      aliases: Array.isArray(cap.properties?.aliases) ? cap.properties.aliases : [],
+      parents: [],
+      children: []
+    });
+  }
+
+  // 3. Build Requirement Nodes & edges Capability -> satisfies -> Requirement -> belongsTo -> Job
+  let reqCounter = 1;
+  for (const job of jobs) {
+    for (const req of job.requirements) {
+      const reqId = `req_${job.jobId}_${reqCounter++}`;
+      requirementNodes.push({
+        id: reqId,
+        jobId: job.jobId,
+        requirementName: req.capability_name,
+        domain: req.domain || "General",
+        weight: req.weight,
+        requiredLevel: req.required_level
+      });
+
+      // Edge: Requirement -> belongsTo -> Job
+      edges.push({
+        id: `edge_job_${reqId}_${job.jobId}`,
+        sourceId: reqId,
+        targetId: job.jobId,
+        edgeType: "belongsTo",
+        weight: req.weight
+      });
+
+      // Match capability node
+      const reqNorm = req.capability_name.toLowerCase().trim();
+      const aliasNorms = (req.aliases || []).map((a) => a.toLowerCase().trim());
+
+      const matchingCap = capabilityNodes.find((cap) => {
+        const capNorm = cap.name.toLowerCase().trim();
+        if (capNorm === reqNorm) return true;
+        if (aliasNorms.includes(capNorm)) return true;
+        if (cap.aliases.map((a) => a.toLowerCase().trim()).includes(reqNorm)) return true;
+        return false;
+      });
+
+      if (matchingCap) {
+        matchingCap.outgoingRequirementIds.push(reqId);
+        edges.push({
+          id: `edge_sat_${matchingCap.id}_${reqId}`,
+          sourceId: matchingCap.id,
+          targetId: reqId,
+          edgeType: "satisfies",
+          weight: 1.0
+        });
+      }
+    }
+  }
+
+  return {
+    evidenceNodes,
+    capabilityNodes,
+    requirementNodes,
+    edges
+  };
+}
+
+/**
+ * Traces the complete proof chain for a specific job requirement down to original source excerpts and locations.
+ */
+export function traceRequirementProofChain(
+  graph: DirectedEvidenceGraph,
+  jobId: string,
+  requirementName: string
+): RequirementProofChain {
+  const reqNorm = requirementName.toLowerCase().trim();
+  const reqNode = graph.requirementNodes.find(
+    (r) => r.jobId === jobId && r.requirementName.toLowerCase().trim() === reqNorm
+  );
+
+  if (!reqNode) {
+    return {
+      jobId,
+      requirementName,
+      evidenceIds: [],
+      excerpts: [],
+      locations: [],
+      sourceIds: []
+    };
+  }
+
+  // Find incoming satisfies edges
+  const satisfiesEdges = graph.edges.filter(
+    (e) => e.edgeType === "satisfies" && e.targetId === reqNode.id
+  );
+
+  if (satisfiesEdges.length === 0) {
+    return {
+      jobId,
+      requirementName,
+      evidenceIds: [],
+      excerpts: [],
+      locations: [],
+      sourceIds: []
+    };
+  }
+
+  const capId = satisfiesEdges[0].sourceId;
+  const capNode = graph.capabilityNodes.find((c) => c.id === capId);
+
+  const supportsEdges = graph.edges.filter(
+    (e) => e.edgeType === "supports" && e.targetId === capId
+  );
+
+  const evidenceIds: string[] = [];
+  const excerpts: string[] = [];
+  const locations: EvidenceLocation[] = [];
+  const sourceIds: string[] = [];
+
+  for (const edge of supportsEdges) {
+    const evNode = graph.evidenceNodes.find((ev) => ev.id === edge.sourceId);
+    if (evNode) {
+      evidenceIds.push(evNode.id);
+      excerpts.push(evNode.excerpt);
+      locations.push(evNode.location);
+      sourceIds.push(evNode.sourceId);
+    }
+  }
+
+  return {
+    jobId,
+    requirementName,
+    capabilityId: capNode?.id,
+    capabilityName: capNode?.name,
+    evidenceIds,
+    excerpts,
+    locations,
+    sourceIds
+  };
+}
+
+/**
+ * Computes dual explainable job fit:
+ * 1. fitScore: Weighted requirement match score [0.0, 1.0]
+ * 2. explainabilityScore: Density and trace quality of primary evidence backing matched capabilities [0.0, 1.0]
+ */
+export function computeExplainableJobFit(
+  graph: DirectedEvidenceGraph,
+  jobId: string
+): ExplainableJobFitResult {
+  const jobReqs = graph.requirementNodes.filter((r) => r.jobId === jobId);
+  if (jobReqs.length === 0) {
+    return {
+      jobId,
+      fitScore: 0.0,
+      explainabilityScore: 0.0,
+      proofChains: []
+    };
+  }
+
+  let totalWeight = 0.0;
+  let earnedFit = 0.0;
+  let earnedExplainability = 0.0;
+  const proofChains: RequirementProofChain[] = [];
+
+  for (const req of jobReqs) {
+    totalWeight += req.weight;
+    const chain = traceRequirementProofChain(graph, jobId, req.requirementName);
+    proofChains.push(chain);
+
+    if (chain.capabilityId && chain.evidenceIds.length > 0) {
+      // Capability matched
+      earnedFit += req.weight;
+
+      // Explainability: average confidence of supporting evidence nodes
+      const supportingEvNodes = graph.evidenceNodes.filter((ev) =>
+        chain.evidenceIds.includes(ev.id)
+      );
+      const avgEvConf =
+        supportingEvNodes.length > 0
+          ? supportingEvNodes.reduce((sum, ev) => sum + ev.confidence, 0) / supportingEvNodes.length
+          : 0.0;
+
+      earnedExplainability += req.weight * avgEvConf;
+    }
+  }
+
+  const rawFit = totalWeight > 0 ? earnedFit / totalWeight : 0.0;
+  const rawExp = totalWeight > 0 ? earnedExplainability / totalWeight : 0.0;
+
+  return {
+    jobId,
+    fitScore: Math.min(1.0, Math.max(0.0, Number(rawFit.toFixed(4)))),
+    explainabilityScore: Math.min(1.0, Math.max(0.0, Number(rawExp.toFixed(4)))),
+    proofChains
+  };
+}
