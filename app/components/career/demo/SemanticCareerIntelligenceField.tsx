@@ -354,8 +354,8 @@ export function SemanticCareerIntelligenceField({ data }: SemanticCareerIntellig
                 {[0, 60, 120, 180, 240, 300].map((deg, idx) => {
                   const rAmbient = radius * 0.82;
                   const rad = (deg * Math.PI) / 180;
-                  const ax = center + Math.cos(rad) * rAmbient;
-                  const ay = center + Math.sin(rad) * rAmbient;
+                  const ax = Math.round((center + Math.cos(rad) * rAmbient) * 100) / 100;
+                  const ay = Math.round((center + Math.sin(rad) * rAmbient) * 100) / 100;
                   return (
                     <circle
                       key={idx}
@@ -390,7 +390,7 @@ export function SemanticCareerIntelligenceField({ data }: SemanticCareerIntellig
               {/* Phase 2d: Inter-Orbital Coupling weighted relationships */}
               <g data-testid="inter-orbital-coupling">
                 <path
-                  d={`M ${center + Math.cos((60 * Math.PI) / 180) * radius} ${center + Math.sin((60 * Math.PI) / 180) * radius} Q ${center + 140} ${center - 80} ${center + Math.cos((120 * Math.PI) / 180) * radius} ${center + Math.sin((120 * Math.PI) / 180) * radius}`}
+                  d="M 565 685.79 Q 540 320 235 685.79"
                   fill="none"
                   stroke={SIL_TOKENS.colors.cyanActive}
                   strokeWidth="2.2"
@@ -398,7 +398,7 @@ export function SemanticCareerIntelligenceField({ data }: SemanticCareerIntellig
                   opacity="0.45"
                 />
                 <path
-                  d={`M ${center + Math.cos((180 * Math.PI) / 180) * radius} ${center + Math.sin((180 * Math.PI) / 180) * radius} Q ${center - 110} ${center + 120} ${center + Math.cos((300 * Math.PI) / 180) * radius} ${center + Math.sin((300 * Math.PI) / 180) * radius}`}
+                  d="M 70 400 Q 290 520 565 114.21"
                   fill="none"
                   stroke="rgba(56, 229, 255, 0.22)"
                   strokeWidth="1.2"
@@ -425,8 +425,8 @@ export function SemanticCareerIntelligenceField({ data }: SemanticCareerIntellig
               {/* Energy Rays Connecting Core to Each Orbital Node */}
               {stages.map((st) => {
                 const angleRad = (st.angleDeg * Math.PI) / 180;
-                const targetX = center + Math.cos(angleRad) * radius;
-                const targetY = center + Math.sin(angleRad) * radius;
+                const targetX = Math.round((center + Math.cos(angleRad) * radius) * 100) / 100;
+                const targetY = Math.round((center + Math.sin(angleRad) * radius) * 100) / 100;
                 const isRayActive = focusedStageId === st.stageId;
 
                 return (
@@ -505,8 +505,8 @@ export function SemanticCareerIntelligenceField({ data }: SemanticCareerIntellig
             >
               {stages.map((st) => {
                 const angleRad = (st.angleDeg * Math.PI) / 180;
-                const x = Math.cos(angleRad) * radius;
-                const y = Math.sin(angleRad) * radius;
+                const x = Math.round(Math.cos(angleRad) * radius * 100) / 100;
+                const y = Math.round(Math.sin(angleRad) * radius * 100) / 100;
                 const isStageActive = activeStageId === st.stageId;
                 const isStageHovered = hoveredStageId === st.stageId;
                 const isStageDimmed = focusedStageId !== null && focusedStageId !== st.stageId;
@@ -564,8 +564,8 @@ export function SemanticCareerIntelligenceField({ data }: SemanticCareerIntellig
                       key={`line-${cluster.id}`}
                       x1={center + activeOrbitX}
                       y1={center + activeOrbitY}
-                      x2={center + activeOrbitX + cluster.dx}
-                      y2={center + activeOrbitY + cluster.dy}
+                      x2={Math.round((center + activeOrbitX + cluster.dx) * 100) / 100}
+                      y2={Math.round((center + activeOrbitY + cluster.dy) * 100) / 100}
                       stroke={SIL_TOKENS.colors.cyanActive}
                       strokeWidth="1.5"
                       strokeDasharray="3 3"
@@ -583,8 +583,8 @@ export function SemanticCareerIntelligenceField({ data }: SemanticCareerIntellig
                     }}
                     style={{
                       position: "absolute",
-                      left: `${center + activeOrbitX + cluster.dx - 90}px`,
-                      top: `${center + activeOrbitY + cluster.dy - 35}px`,
+                      left: `${Math.round((center + activeOrbitX + cluster.dx - 90) * 100) / 100}px`,
+                      top: `${Math.round((center + activeOrbitY + cluster.dy - 35) * 100) / 100}px`,
                       width: "180px",
                       backgroundColor: "rgba(10, 18, 30, 0.92)",
                       border: `1px solid ${selectedClusterId === cluster.id ? SIL_TOKENS.colors.cyanActive : "rgba(56, 229, 255, 0.45)"}`,
@@ -621,8 +621,8 @@ export function SemanticCareerIntelligenceField({ data }: SemanticCareerIntellig
                       data-testid="evidence-node"
                       style={{
                         position: "absolute",
-                        left: `${center + activeOrbitX + (i === 0 ? -190 : 20)}px`,
-                        top: `${center + activeOrbitY + (i === 0 ? 35 : 45)}px`,
+                        left: `${Math.round((center + activeOrbitX + (i === 0 ? -190 : 20)) * 100) / 100}px`,
+                        top: `${Math.round((center + activeOrbitY + (i === 0 ? 35 : 45)) * 100) / 100}px`,
                         width: "160px",
                         backgroundColor: "rgba(6, 12, 20, 0.95)",
                         border: "1px solid #38e5ff",
