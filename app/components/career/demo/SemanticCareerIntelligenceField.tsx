@@ -165,58 +165,66 @@ export function SemanticCareerIntelligenceField({ data }: SemanticCareerIntellig
         alignItems: "flex-start"
       }}
     >
-      {/* Phase 3b: NASA Semantic Zoom Telemetry Breadcrumb Bar */}
+      {/* Phase 3b/3c: NASA Semantic Zoom Telemetry HUD Instrument */}
       <div
         data-testid="semantic-zoom-telemetry"
         style={{
           position: "absolute",
-          top: "14px",
+          top: "42px",
           left: "50%",
           transform: "translateX(-50%)",
           zIndex: 35,
-          backgroundColor: "rgba(5, 10, 18, 0.92)",
-          border: `1px solid ${SIL_TOKENS.colors.cyanActive}`,
-          boxShadow: `0 0 20px rgba(56, 229, 255, 0.25)`,
-          backdropFilter: "blur(10px)",
-          borderRadius: "20px",
-          padding: "6px 18px",
+          backgroundColor: "rgba(5, 15, 25, 0.45)",
+          border: `1px solid rgba(56, 229, 255, 0.35)`,
+          boxShadow: `0 0 15px rgba(56, 229, 255, 0.15)`,
+          backdropFilter: "blur(8px)",
+          borderRadius: "14px",
+          padding: "4px 14px",
           display: "flex",
           alignItems: "center",
-          gap: "8px",
-          fontSize: "10px",
+          gap: "10px",
+          fontSize: "9px",
           fontWeight: 700,
-          letterSpacing: "0.8px"
+          letterSpacing: "1px"
         }}
       >
         {[
-          { level: 0 as SemanticZoomLevel, label: "L0 PLANETARIUM" },
-          { level: 1 as SemanticZoomLevel, label: "L1 CLUSTER" },
-          { level: 2 as SemanticZoomLevel, label: "L2 EVIDENCE" },
-          { level: 3 as SemanticZoomLevel, label: "L3 SOURCE" },
-          { level: 4 as SemanticZoomLevel, label: "L4 ORIGINAL" }
-        ].map((item, idx) => (
-          <React.Fragment key={item.level}>
-            {idx > 0 && <span style={{ color: "rgba(56, 229, 255, 0.35)" }}>→</span>}
-            <span
-              style={{
-                color: zoomLevel === item.level ? "#ffffff" : zoomLevel > item.level ? SIL_TOKENS.colors.cyanActive : "rgba(56, 229, 255, 0.4)",
-                textDecoration: zoomLevel === item.level ? "underline" : "none",
-                cursor: item.level <= zoomLevel ? "pointer" : "default"
-              }}
-              onClick={() => {
-                if (item.level <= zoomLevel || item.level === 0) {
-                  setZoomLevel(item.level);
+          { level: 0 as SemanticZoomLevel, label: "L0 PLANETARIUM", isEnabled: true },
+          { level: 1 as SemanticZoomLevel, label: "L1 CLUSTER", isEnabled: activeStageId !== null || zoomLevel >= 1 },
+          { level: 2 as SemanticZoomLevel, label: "L2 EVIDENCE", isEnabled: selectedClusterId !== null || zoomLevel >= 2 },
+          { level: 3 as SemanticZoomLevel, label: "L3 SOURCE", isEnabled: false },
+          { level: 4 as SemanticZoomLevel, label: "L4 ORIGINAL", isEnabled: false }
+        ].map((item, idx) => {
+          const isCurrent = zoomLevel === item.level;
+          return (
+            <React.Fragment key={item.level}>
+              {idx > 0 && <span style={{ color: "rgba(56, 229, 255, 0.25)" }}>●───</span>}
+              <span
+                aria-current={isCurrent ? "step" : undefined}
+                aria-disabled={!item.isEnabled ? "true" : undefined}
+                style={{
+                  color: isCurrent ? "#ffffff" : item.isEnabled ? SIL_TOKENS.colors.cyanActive : "rgba(56, 229, 255, 0.28)",
+                  textDecoration: isCurrent ? "underline" : "none",
+                  cursor: item.isEnabled ? "pointer" : "default",
+                  opacity: item.isEnabled ? 1 : 0.45,
+                  transition: "all 0.2s ease"
+                }}
+                onClick={() => {
+                  if (!item.isEnabled) return;
                   if (item.level === 0) {
+                    setZoomLevel(0);
                     setActiveStageId(null);
                     setSelectedClusterId(null);
+                  } else {
+                    setZoomLevel(item.level);
                   }
-                }
-              }}
-            >
-              {item.label}
-            </span>
-          </React.Fragment>
-        ))}
+                }}
+              >
+                {item.label}
+              </span>
+            </React.Fragment>
+          );
+        })}
 
         {zoomLevel > 0 && (
           <button
@@ -227,13 +235,13 @@ export function SemanticCareerIntelligenceField({ data }: SemanticCareerIntellig
               setSelectedClusterId(null);
             }}
             style={{
-              marginLeft: "8px",
+              marginLeft: "6px",
               backgroundColor: "rgba(56, 229, 255, 0.15)",
               border: `1px solid ${SIL_TOKENS.colors.cyanActive}`,
               color: SIL_TOKENS.colors.cyanActive,
-              fontSize: "8.5px",
+              fontSize: "8px",
               fontWeight: 700,
-              padding: "3px 8px",
+              padding: "2px 7px",
               borderRadius: "10px",
               cursor: "pointer"
             }}

@@ -232,6 +232,8 @@ describe("CONDYN / SYNTX — Step 22c: Semantic Career Intelligence Field (SIL v
     expect(fieldHtml).toContain("L0 PLANETARIUM");
     expect(fieldHtml).toContain("L1 CLUSTER");
     expect(fieldHtml).toContain("L2 EVIDENCE");
+    expect(fieldHtml).toContain("aria-current=\"step\"");
+    expect(fieldHtml).toContain("aria-disabled=\"true\"");
 
     const subspaceL1Html = renderToString(
       <OrbitalSubspaceView
