@@ -78,11 +78,10 @@ describe("CONDYN / SYNTX — Step 22c: Semantic Career Intelligence Field (SIL v
     expect(html).toContain("EVOLUTION PATHS");
   });
 
-  it("should render CareerIntelligenceDashboard in FIELD MODE by default", () => {
+  it("should render CareerIntelligenceDashboard directly showing the Continuous Semantic Field", () => {
     const html = renderToString(<CareerIntelligenceDashboard data={DEMO_CAREER_INTELLIGENCE_DATA} />);
 
-    expect(html).toContain("FIELD MODE");
-    expect(html).toContain("LIST MODE");
+    expect(html).toContain("CONDYN / SYNTX — SEMANTIC CAREER INTELLIGENCE FIELD");
     expect(html).toContain("ConDyn");
   });
 
@@ -111,8 +110,7 @@ describe("CONDYN / SYNTX — Step 22c: Semantic Career Intelligence Field (SIL v
   it("should render Planetarium structure with expanded radius, HUD coordinates, energy paths, and photon streams (SIL v2.5 Phase 2a)", () => {
     const html = renderToString(<SemanticCareerIntelligenceField data={DEMO_CAREER_INTELLIGENCE_DATA} />);
 
-    expect(html).toContain("SYS.PLANETARIUM // RADIUS: 330px");
-    expect(html).toContain("SEMANTIC RESONANCE: ACTIVE");
+    expect(html).toContain("data-testid=\"semantic-zoom-telemetry\"");
     expect(html).toContain("data-testid=\"resonance-energy-paths\"");
     expect(html).toContain("data-testid=\"energy-ray-01\"");
     expect(html).toContain("data-testid=\"photon-stream-core-to-orbit\"");

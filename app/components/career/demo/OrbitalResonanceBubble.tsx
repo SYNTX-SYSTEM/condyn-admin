@@ -496,6 +496,8 @@ export function OrbitalResonanceBubble({
             <div
               data-testid={`orbital-preview-${stageId}`}
               className={`hologram-hud--large hologram-float hud-preview--${computedPlacement}`}
+              onMouseEnter={onMouseEnter}
+              onMouseLeave={onMouseLeave}
               style={{
                 ...getTooltipStyle(computedPlacement),
                 animation: "hologramFloat 6s ease-in-out infinite"
