@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { SIL_TOKENS } from "./tokens";
+import { SIL_TOKENS } from "./SILTokens";
 
 export type SemanticZoomLevel = 0 | 1 | 2 | 3 | 4;
 
