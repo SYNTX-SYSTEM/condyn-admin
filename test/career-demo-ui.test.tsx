@@ -229,6 +229,8 @@ describe("CONDYN / SYNTX — Step 22c: Semantic Career Intelligence Field (SIL v
   it("should render NASA Semantic Zoom Telemetry and Continuous Semantic Space L1/L2 subspace layers (SIL v3.0 Phase 3c)", () => {
     const fieldHtml = renderToString(<SemanticCareerIntelligenceField data={DEMO_CAREER_INTELLIGENCE_DATA} />);
     expect(fieldHtml).toContain("data-testid=\"semantic-zoom-telemetry\"");
+    expect(fieldHtml).toContain("semantic-zoom-telemetry--core");
+    expect(fieldHtml).toContain("data-zoom-level=\"0\"");
     expect(fieldHtml).toContain("L0 PLANETARIUM");
     expect(fieldHtml).toContain("L1 CLUSTER");
     expect(fieldHtml).toContain("L2 EVIDENCE");

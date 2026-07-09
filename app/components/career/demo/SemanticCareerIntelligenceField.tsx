@@ -152,6 +152,9 @@ export function SemanticCareerIntelligenceField({ data }: SemanticCareerIntellig
   return (
     <div
       data-testid="semantic-career-intelligence-field"
+      data-zoom-level={zoomLevel}
+      data-focused-stage-id={activeStageId || ""}
+      data-camera-scale={cameraScale}
       style={{
         backgroundColor: SIL_TOKENS.colors.void,
         color: SIL_TOKENS.colors.textPrimary,
@@ -165,91 +168,6 @@ export function SemanticCareerIntelligenceField({ data }: SemanticCareerIntellig
         alignItems: "flex-start"
       }}
     >
-      {/* Phase 3b/3c: NASA Semantic Zoom Telemetry HUD Instrument */}
-      <div
-        data-testid="semantic-zoom-telemetry"
-        style={{
-          position: "absolute",
-          top: "42px",
-          left: "50%",
-          transform: "translateX(-50%)",
-          zIndex: 35,
-          backgroundColor: "rgba(5, 15, 25, 0.45)",
-          border: `1px solid rgba(56, 229, 255, 0.35)`,
-          boxShadow: `0 0 15px rgba(56, 229, 255, 0.15)`,
-          backdropFilter: "blur(8px)",
-          borderRadius: "14px",
-          padding: "4px 14px",
-          display: "flex",
-          alignItems: "center",
-          gap: "10px",
-          fontSize: "9px",
-          fontWeight: 700,
-          letterSpacing: "1px"
-        }}
-      >
-        {[
-          { level: 0 as SemanticZoomLevel, label: "L0 PLANETARIUM", isEnabled: true },
-          { level: 1 as SemanticZoomLevel, label: "L1 CLUSTER", isEnabled: activeStageId !== null || zoomLevel >= 1 },
-          { level: 2 as SemanticZoomLevel, label: "L2 EVIDENCE", isEnabled: selectedClusterId !== null || zoomLevel >= 2 },
-          { level: 3 as SemanticZoomLevel, label: "L3 SOURCE", isEnabled: false },
-          { level: 4 as SemanticZoomLevel, label: "L4 ORIGINAL", isEnabled: false }
-        ].map((item, idx) => {
-          const isCurrent = zoomLevel === item.level;
-          return (
-            <React.Fragment key={item.level}>
-              {idx > 0 && <span style={{ color: "rgba(56, 229, 255, 0.25)" }}>●───</span>}
-              <span
-                aria-current={isCurrent ? "step" : undefined}
-                aria-disabled={!item.isEnabled ? "true" : undefined}
-                style={{
-                  color: isCurrent ? "#ffffff" : item.isEnabled ? SIL_TOKENS.colors.cyanActive : "rgba(56, 229, 255, 0.28)",
-                  textDecoration: isCurrent ? "underline" : "none",
-                  cursor: item.isEnabled ? "pointer" : "default",
-                  opacity: item.isEnabled ? 1 : 0.45,
-                  transition: "all 0.2s ease"
-                }}
-                onClick={() => {
-                  if (!item.isEnabled) return;
-                  if (item.level === 0) {
-                    setZoomLevel(0);
-                    setActiveStageId(null);
-                    setSelectedClusterId(null);
-                  } else {
-                    setZoomLevel(item.level);
-                  }
-                }}
-              >
-                {item.label}
-              </span>
-            </React.Fragment>
-          );
-        })}
-
-        {zoomLevel > 0 && (
-          <button
-            data-testid="zoom-reset-btn"
-            onClick={() => {
-              setZoomLevel(0);
-              setActiveStageId(null);
-              setSelectedClusterId(null);
-            }}
-            style={{
-              marginLeft: "6px",
-              backgroundColor: "rgba(56, 229, 255, 0.15)",
-              border: `1px solid ${SIL_TOKENS.colors.cyanActive}`,
-              color: SIL_TOKENS.colors.cyanActive,
-              fontSize: "8px",
-              fontWeight: 700,
-              padding: "2px 7px",
-              borderRadius: "10px",
-              cursor: "pointer"
-            }}
-          >
-            RESET L0
-          </button>
-        )}
-      </div>
 
       {/* HUD Background Coordinates & Semiotic Grid */}
       <div
@@ -499,6 +417,77 @@ export function SemanticCareerIntelligenceField({ data }: SemanticCareerIntellig
               }}
             >
               <IdentityCoreDropZone sources={data.sources} isCommunicating={!!focusedStageId} />
+            </div>
+
+            {/* Phase 3c: Core-bound Mini-HUD Camera Instrument */}
+            <div
+              data-testid="semantic-zoom-telemetry"
+              className="semantic-zoom-telemetry--core"
+              style={{
+                position: "absolute",
+                top: "545px",
+                left: "50%",
+                transform: "translateX(-50%)",
+                zIndex: 40,
+                maxWidth: "360px",
+                width: "max-content",
+                backgroundColor: "rgba(6, 14, 24, 0.65)",
+                border: `1px solid ${SIL_TOKENS.colors.cyanActive}`,
+                boxShadow: `0 0 16px rgba(56, 229, 255, 0.22)`,
+                backdropFilter: "blur(10px)",
+                borderRadius: "16px",
+                padding: "6px 14px",
+                display: "flex",
+                alignItems: "center",
+                gap: "6px"
+              }}
+            >
+              {[
+                { level: 0 as SemanticZoomLevel, label: "L0", title: "PLANETARIUM", isEnabled: true },
+                { level: 1 as SemanticZoomLevel, label: "L1", title: "CLUSTER", isEnabled: activeStageId !== null },
+                { level: 2 as SemanticZoomLevel, label: "L2", title: "EVIDENCE", isEnabled: selectedClusterId !== null },
+                { level: 3 as SemanticZoomLevel, label: "L3", title: "SOURCE", isEnabled: false },
+                { level: 4 as SemanticZoomLevel, label: "L4", title: "ORIGINAL", isEnabled: false }
+              ].map((item, idx) => {
+                const isCurrent = zoomLevel === item.level;
+                return (
+                  <React.Fragment key={item.level}>
+                    {idx > 0 && <span style={{ color: "rgba(56, 229, 255, 0.3)", fontSize: "9px" }}>●──</span>}
+                    <button
+                      type="button"
+                      disabled={!item.isEnabled}
+                      aria-current={isCurrent ? "step" : undefined}
+                      aria-disabled={!item.isEnabled ? "true" : undefined}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        if (!item.isEnabled) return;
+                        if (item.level === 0) {
+                          setZoomLevel(0);
+                          setActiveStageId(null);
+                          setSelectedClusterId(null);
+                        } else {
+                          setZoomLevel(item.level);
+                        }
+                      }}
+                      style={{
+                        background: isCurrent ? "rgba(56, 229, 255, 0.22)" : "transparent",
+                        border: isCurrent ? `1px solid ${SIL_TOKENS.colors.cyanActive}` : "1px solid transparent",
+                        borderRadius: "8px",
+                        color: isCurrent ? "#ffffff" : item.isEnabled ? SIL_TOKENS.colors.cyanActive : "rgba(56, 229, 255, 0.35)",
+                        cursor: item.isEnabled ? "pointer" : "not-allowed",
+                        padding: "3px 7px",
+                        fontSize: "9px",
+                        fontWeight: 700,
+                        fontFamily: SIL_TOKENS.typography.mono,
+                        letterSpacing: "0.5px",
+                        transition: "all 0.2s ease"
+                      }}
+                    >
+                      {`${item.label} ${item.title}`}
+                    </button>
+                  </React.Fragment>
+                );
+              })}
             </div>
 
             {/* Orbiting Resonance Bubbles */}
