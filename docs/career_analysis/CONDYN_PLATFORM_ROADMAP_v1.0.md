@@ -48,23 +48,34 @@ Der gesamte Server- und Architektur-Kern ist formal abgeschlossen, verifiziert u
 
 Ab sofort werden keine weiteren Basis-Infrastrukturschichten mehr gebaut. Die Weiterentwicklung erfolgt ausschließlich durch Ausbau zum **Career Intelligence System**:
 
-### Abgeschlossene Meilensteine (17 – 22) ✅
+### Abgeschlossene Meilensteine (17 – 23) ✅
 - **Step 18: Capability Deep Sweep Prompt System**: Versionierte, verschlüsselte und über den ActivePromptResolver auflösbare Runtime-Prompts.
 - **Step 19: Multi-Source Ingestion Pipeline**: Serverseitige Ingestion für PDF, Website, GitHub Repository, Markdown und Text in einen einheitlichen `DocumentInput[]`-Strom inkl. Source Normalization Metadata.
 - **Step 20: Recommendation Engine (Career Advisor)**: Deterministische Capability Gap Analysis, Evidence Enhancement und Next Actions direkt integriert in `POST /api/career/analyze` und `GET /api/career/analyses/[analysisId]`.
 - **Step 21: Semantic Search (pgvector)**: Hybride semantische Vektorsuche (In-Memory + PgVectorStore) und EmbeddingProvider für Entitäten & Rollen.
-- **Step 22: Career Intelligence Demo UI**: Hochmodernes wissenschaftliches Instrumenten-Dashboard unter `/career/demo` mit strikter Client-/Dumb-Consumer-Trennung.
+- **Step 22: Career Intelligence Demo UI & SIL v3.0**: Hochmodernes wissenschaftliches Instrumenten-Dashboard unter `/career/demo` mit strikter Client-/Dumb-Consumer-Trennung, Continuous Semantic Space & Mini-HUD.
+- **Step 23: Capability-to-Job Mapping Engine**: Deterministische Mapping-Engine (`lib/career/matching/job-mapping.ts`) mit feingranularer Evidenzdifferenzierung (Matched, Weak Evidence, Missing), Alias-/Domain-Matching und Explainability.
 
 ---
 
-### Step 23: Company Pool Editor (Admin Management) — Nächster Fokus
-- **Ziel**: Administratives Verwaltungssystem zur Überführung der Demo-Daten in ein echtes Wissenssystem.
-- **Funktionsumfang**:
-  - Pools anlegen, Rollen und Capability Requirements pflegen.
-  - Versionierung und Lifecycle-Steuerung (`DRAFT -> ACTIVE -> ARCHIVED`).
+## 4. Die nächsten analytischen Kernschritte (Steps 24 – 27)
 
-### Step 23: Identity Management (z. B. Clerk)
-- **Ziel**: Echtes, sicheres Identitätsmanagement und Mandantenfähigkeit.
+Ab sofort liegt der Fokus ausschließlich auf der Vertiefung der analytischen Wertschöpfung und Begründbarkeit:
 
-### Step 24: Produktiver Company Pool
-- **Ziel**: Einsatz realer Unternehmens-, Branchen- und Rollendaten anstelle von Demo-Pools im Produktivbetrieb.
+### Step 24: Evidence Graph Engine ⭐⭐⭐⭐⭐
+- **Ziel**: Nachvollziehbare Rückverfolgung von Rollenanforderungen bis zur Ursprungsquelle im Graphen:
+  `Job Requirement -> Capability -> Evidence -> Original Source -> Line / Commit / Paragraph`
+- **Wert**: Jeder Fit Score wird durch konkrete Textstellen, Commits oder Dokumente begründbar. Basis für L2 → L4 im Semantic Zoom.
+
+### Step 25: Company Pool Ranking
+- **Ziel**: Erweiterung der Mapping-Hierarchie von `Capabilities -> Jobs` auf `Capabilities -> Jobs -> Companies -> Markets`.
+- **Wert**: Beantwortet strukturell, welche Organisationen und Märkte ganzheitlich zum Profil passen.
+
+### Step 26: Career Gap Simulator
+- **Ziel**: Simulations-Engine zur Berechnung von Score-Deltas bei hypothetischem Nachweis neuer Quellen oder Fähigkeiten (z. B. *"Wenn GitHub ergänzt wird: Fit = 0.82"*).
+- **Wert**: Quantitative Priorisierung der wirksamsten Maßnahmen zur Schließung von Lücken.
+
+### Step 27: Confidence Propagation
+- **Ziel**: Ausbreitung von Evidenzdichte im semantischen Netz (z. B. 20 Kubernetes-Projekte erhöhen die Glaubwürdigkeit benachbarter Cloud-/DevOps-Knoten).
+- **Wert**: Organisches Graphen-Verhalten statt isolierter Einzelbewertungen.
+
