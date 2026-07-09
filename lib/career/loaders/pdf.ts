@@ -6,7 +6,8 @@
  * Scope: Extracts raw text from PDF buffers server-side and encapsulates parser failures as ERR_PDF_PARSE_FAILURE.
  */
 
-import pdfParse from "pdf-parse";
+import * as pdfParseModule from "pdf-parse";
+const pdfParse: any = (pdfParseModule as any).default || pdfParseModule;
 import { DocumentInput } from "../adapter";
 import { createSourceMetadata } from "./source";
 
