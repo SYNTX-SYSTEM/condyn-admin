@@ -11,31 +11,44 @@ import { OrbitalSubspaceView, SemanticZoomLevel } from "./OrbitalSubspaceView";
 
 export interface SemanticCareerIntelligenceFieldProps {
   data: DemoCareerIntelligenceData;
+  initialAnalysisState?: {
+    isAnalyzing?: boolean;
+    analysisStep?: string | null;
+    analysisError?: string | null;
+    analysisSuccess?: boolean;
+  };
 }
 
 /**
  * CONDYN / SYNTX — Semantic Interface Language (SIL v3.0 Phase 3c Continuous Semantic Space)
  * SemanticCareerIntelligenceField: The living radial Bedeutungsraum organism with L0-L4 Semantic Zoom.
  */
-export function SemanticCareerIntelligenceField({ data }: SemanticCareerIntelligenceFieldProps) {
+export function SemanticCareerIntelligenceField({
+  data,
+  initialAnalysisState
+}: SemanticCareerIntelligenceFieldProps) {
   const [activeData, setActiveData] = useState(data);
   const [activeStageId, setActiveStageId] = useState<string | null>(null);
   const [hoveredStageId, setHoveredStageId] = useState<string | null>(null);
   const [zoomLevel, setZoomLevel] = useState<SemanticZoomLevel>(0);
   const [selectedClusterId, setSelectedClusterId] = useState<string | null>(null);
-  const [isAnalyzing, setIsAnalyzing] = useState(false);
-  const [analysisStep, setAnalysisStep] = useState<string | null>(null);
-  const [analysisError, setAnalysisError] = useState<string | null>(null);
+  const [isAnalyzing, setIsAnalyzing] = useState(initialAnalysisState?.isAnalyzing ?? false);
+  const [analysisStep, setAnalysisStep] = useState<string | null>(initialAnalysisState?.analysisStep ?? null);
+  const [analysisError, setAnalysisError] = useState<string | null>(initialAnalysisState?.analysisError ?? null);
+  const [analysisSuccess, setAnalysisSuccess] = useState(initialAnalysisState?.analysisSuccess ?? false);
+  const [lastStagedDocs, setLastStagedDocs] = useState<any[]>([]);
 
   const handleAnalyze = async (stagedDocs: any[]) => {
+    setLastStagedDocs(stagedDocs);
     setIsAnalyzing(true);
     setAnalysisError(null);
+    setAnalysisSuccess(false);
     setAnalysisStep("ingesting");
 
     try {
-      setTimeout(() => setAnalysisStep("extracting"), 400);
-      setTimeout(() => setAnalysisStep("validating"), 800);
-      setTimeout(() => setAnalysisStep("matching"), 1200);
+      setTimeout(() => setAnalysisStep("extracting"), 300);
+      setTimeout(() => setAnalysisStep("validating"), 600);
+      setTimeout(() => setAnalysisStep("matching"), 900);
 
       const documentsPayload = stagedDocs.map((doc) => {
         if (doc.type === "pdf") {
@@ -58,6 +71,7 @@ export function SemanticCareerIntelligenceField({ data }: SemanticCareerIntellig
         throw new Error(json.issues?.[0]?.message || "Analyse fehlgeschlagen.");
       }
 
+      setAnalysisStep("complete");
       setActiveData((prev) => ({
         ...prev,
         sources: stagedDocs.map((d) => ({
@@ -67,14 +81,15 @@ export function SemanticCareerIntelligenceField({ data }: SemanticCareerIntellig
           status: "VERIFIED"
         }))
       }));
-      setAnalysisStep("recommendations");
+      setAnalysisSuccess(true);
     } catch (err: any) {
       setAnalysisError(err.message || "Fehler bei der Analyse");
+      setAnalysisSuccess(false);
     } finally {
       setTimeout(() => {
         setIsAnalyzing(false);
         setAnalysisStep(null);
-      }, 400);
+      }, 300);
     }
   };
 
@@ -329,6 +344,36 @@ export function SemanticCareerIntelligenceField({ data }: SemanticCareerIntellig
         </div>
       )}
 
+      {analysisSuccess && (
+        <div
+          data-testid="intake-success-banner"
+          style={{
+            position: "absolute",
+            top: "80px",
+            left: "50%",
+            transform: "translateX(-50%)",
+            backgroundColor: "rgba(10, 24, 20, 0.95)",
+            border: `1px solid ${SIL_TOKENS.colors.cyanActive}`,
+            borderRadius: "8px",
+            padding: "10px 18px",
+            color: SIL_TOKENS.colors.cyanActive,
+            fontFamily: SIL_TOKENS.typography.mono,
+            fontSize: "11px",
+            zIndex: 100,
+            boxShadow: "0 0 24px rgba(56, 229, 255, 0.4)",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            gap: "4px"
+          }}
+        >
+          <div style={{ fontWeight: 700 }}>ANALYSE ERFOLGREICH ABGESCHLOSSEN</div>
+          <div style={{ fontSize: "10px", color: SIL_TOKENS.colors.textPrimary }}>
+            IDENTITÄTSKERN & ORBITS MANIFESTIERT
+          </div>
+        </div>
+      )}
+
       {analysisError && (
         <div
           data-testid="intake-error-banner"
@@ -340,14 +385,36 @@ export function SemanticCareerIntelligenceField({ data }: SemanticCareerIntellig
             backgroundColor: "rgba(30, 10, 14, 0.95)",
             border: "1px solid #ff5555",
             borderRadius: "8px",
-            padding: "8px 16px",
+            padding: "10px 16px",
             color: "#ff5555",
             fontFamily: SIL_TOKENS.typography.mono,
             fontSize: "11px",
-            zIndex: 100
+            zIndex: 100,
+            display: "flex",
+            alignItems: "center",
+            gap: "12px"
           }}
         >
-          <span>INTAKE FEHLER: {analysisError}</span>
+          <div>
+            <div style={{ fontWeight: 700 }}>ANALYSE FEHLGESCHLAGEN</div>
+            <div style={{ fontSize: "10px" }}>{analysisError}</div>
+          </div>
+          <button
+            data-testid="retry-intake-btn"
+            onClick={() => handleAnalyze(lastStagedDocs)}
+            style={{
+              padding: "6px 12px",
+              backgroundColor: "#ff5555",
+              color: "#0a0e14",
+              border: "none",
+              borderRadius: "4px",
+              fontWeight: 700,
+              fontSize: "10px",
+              cursor: "pointer"
+            }}
+          >
+            NEU VERSUCHEN
+          </button>
         </div>
       )}
 
