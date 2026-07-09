@@ -50,10 +50,9 @@ describe("CONDYN / SYNTX — Step 22c: Semantic Career Intelligence Field (SIL v
     const html = renderToString(<SourceDock />);
 
     expect(html).toContain("1. WISSEN EINSPEISEN");
-    expect(html).toContain("PDF Dokumente");
-    expect(html).toContain("GitHub Repository");
-    expect(html).toContain("ZIEHEN");
-    expect(html).toContain("ABLEGEN");
+    expect(html).toContain("+ PDF DOKUMENT HOCHLADEN");
+    expect(html).toContain("+ GITHUB URL");
+    expect(html).toContain("+ WEBSITE URL");
   });
 
   it("should render SemanticGuideDrawer collapsible guide", () => {

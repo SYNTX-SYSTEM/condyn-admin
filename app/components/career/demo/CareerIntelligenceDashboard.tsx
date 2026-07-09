@@ -62,54 +62,9 @@ export function CareerIntelligenceDashboard({ data }: CareerIntelligenceDashboar
             CONDYN / SYNTX — SEMANTIC CAREER INTELLIGENCE FIELD
           </span>
         </div>
-
-        {/* Mode Switcher */}
-        <div style={{ display: "flex", gap: "8px" }}>
-          <button
-            onClick={() => setMode("FIELD")}
-            style={{
-              padding: "6px 14px",
-              borderRadius: "20px",
-              border: `1px solid ${mode === "FIELD" ? SIL_TOKENS.colors.cyanActive : SIL_TOKENS.colors.fieldBorder}`,
-              backgroundColor: mode === "FIELD" ? "rgba(56, 229, 255, 0.15)" : "transparent",
-              color: mode === "FIELD" ? SIL_TOKENS.colors.cyanActive : SIL_TOKENS.colors.textMuted,
-              fontSize: "11px",
-              fontWeight: 700,
-              cursor: "pointer"
-            }}
-          >
-            ● FIELD MODE
-          </button>
-          <button
-            onClick={() => setMode("LIST")}
-            style={{
-              padding: "6px 14px",
-              borderRadius: "20px",
-              border: `1px solid ${mode === "LIST" ? SIL_TOKENS.colors.cyanActive : SIL_TOKENS.colors.fieldBorder}`,
-              backgroundColor: mode === "LIST" ? "rgba(56, 229, 255, 0.15)" : "transparent",
-              color: mode === "LIST" ? SIL_TOKENS.colors.cyanActive : SIL_TOKENS.colors.textMuted,
-              fontSize: "11px",
-              fontWeight: 700,
-              cursor: "pointer"
-            }}
-          >
-            ○ LIST MODE
-          </button>
-        </div>
       </div>
 
-      {mode === "FIELD" ? (
-        <SemanticCareerIntelligenceField data={data} />
-      ) : (
-        <div style={{ maxWidth: "1080px", margin: "32px auto", padding: "0 24px", display: "flex", flexDirection: "column", gap: "24px" }}>
-          <IdentityCoreNode sources={data.sources} />
-          <CapabilityField capabilities={data.capabilities} />
-          <ResonanceOrbits companyMatches={data.companyMatches} />
-          <RoleManifestation roleMatches={data.roleMatches} />
-          <TensionLayer capabilityGaps={data.capabilityGaps} />
-          <EvolutionLayer nextActions={data.nextActions} />
-        </div>
-      )}
+      <SemanticCareerIntelligenceField data={data} />
     </div>
   );
 }

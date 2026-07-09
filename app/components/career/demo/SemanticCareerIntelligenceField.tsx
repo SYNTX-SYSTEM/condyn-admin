@@ -14,14 +14,69 @@ export interface SemanticCareerIntelligenceFieldProps {
 }
 
 /**
- * CONDYN / SYNTX — Semantic Interface Language (SIL v2.5 Phase 1 / SIL v3.0 Phase 3b)
+ * CONDYN / SYNTX — Semantic Interface Language (SIL v3.0 Phase 3c Continuous Semantic Space)
  * SemanticCareerIntelligenceField: The living radial Bedeutungsraum organism with L0-L4 Semantic Zoom.
  */
 export function SemanticCareerIntelligenceField({ data }: SemanticCareerIntelligenceFieldProps) {
+  const [activeData, setActiveData] = useState(data);
   const [activeStageId, setActiveStageId] = useState<string | null>(null);
   const [hoveredStageId, setHoveredStageId] = useState<string | null>(null);
   const [zoomLevel, setZoomLevel] = useState<SemanticZoomLevel>(0);
   const [selectedClusterId, setSelectedClusterId] = useState<string | null>(null);
+  const [isAnalyzing, setIsAnalyzing] = useState(false);
+  const [analysisStep, setAnalysisStep] = useState<string | null>(null);
+  const [analysisError, setAnalysisError] = useState<string | null>(null);
+
+  const handleAnalyze = async (stagedDocs: any[]) => {
+    setIsAnalyzing(true);
+    setAnalysisError(null);
+    setAnalysisStep("ingesting");
+
+    try {
+      setTimeout(() => setAnalysisStep("extracting"), 400);
+      setTimeout(() => setAnalysisStep("validating"), 800);
+      setTimeout(() => setAnalysisStep("matching"), 1200);
+
+      const documentsPayload = stagedDocs.map((doc) => {
+        if (doc.type === "pdf") {
+          return { type: "pdf", content: doc.content, title: doc.title };
+        }
+        if (doc.type === "github" || doc.type === "website") {
+          return { type: doc.type, url: doc.url, title: doc.title };
+        }
+        return { type: "text", content: doc.content, title: doc.title };
+      });
+
+      const res = await fetch("/api/career/analyze", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ documents: documentsPayload })
+      });
+
+      const json = await res.json();
+      if (!res.ok || !json.success) {
+        throw new Error(json.issues?.[0]?.message || "Analyse fehlgeschlagen.");
+      }
+
+      setActiveData((prev) => ({
+        ...prev,
+        sources: stagedDocs.map((d) => ({
+          id: d.id,
+          name: d.title,
+          type: d.type,
+          status: "VERIFIED"
+        }))
+      }));
+      setAnalysisStep("recommendations");
+    } catch (err: any) {
+      setAnalysisError(err.message || "Fehler bei der Analyse");
+    } finally {
+      setTimeout(() => {
+        setIsAnalyzing(false);
+        setAnalysisStep(null);
+      }, 400);
+    }
+  };
 
   const stages = [
     {
@@ -162,38 +217,139 @@ export function SemanticCareerIntelligenceField({ data }: SemanticCareerIntellig
         padding: "24px 32px",
         fontFamily: SIL_TOKENS.typography.mono,
         position: "relative",
-        overflow: "hidden",
+        overflow: "visible",
         display: "flex",
         justifyContent: "space-between",
         alignItems: "flex-start"
       }}
     >
 
-      {/* HUD Background Coordinates & Semiotic Grid */}
+      {/* Phase 3c: Floating Mini-HUD Camera Instrument at top center */}
       <div
+        data-testid="semantic-zoom-telemetry"
+        className="semantic-zoom-telemetry--core"
         style={{
           position: "absolute",
-          top: "16px",
+          top: "-46px",
           left: "50%",
           transform: "translateX(-50%)",
-          fontSize: "10px",
-          color: "rgba(56, 229, 255, 0.4)",
-          letterSpacing: "2px",
-          textTransform: "uppercase",
-          pointerEvents: "none",
+          zIndex: 40,
+          maxWidth: "560px",
+          width: "max-content",
+          backgroundColor: "rgba(6, 14, 24, 0.65)",
+          border: `1px solid ${SIL_TOKENS.colors.cyanActive}`,
+          boxShadow: `0 0 16px rgba(56, 229, 255, 0.22)`,
+          backdropFilter: "blur(10px)",
+          borderRadius: "16px",
+          padding: "6px 14px",
           display: "flex",
-          gap: "24px"
+          alignItems: "center",
+          gap: "6px"
         }}
       >
-        <span>SYS.PLANETARIUM // RADIUS: 330px</span>
-        <span>SEMANTIC RESONANCE: ACTIVE</span>
-        <span>LATENCY: 0.4ms</span>
+        {[
+          { level: 0 as SemanticZoomLevel, label: "L0", title: "PLANETARIUM", isEnabled: true },
+          { level: 1 as SemanticZoomLevel, label: "L1", title: "CLUSTER", isEnabled: activeStageId !== null },
+          { level: 2 as SemanticZoomLevel, label: "L2", title: "EVIDENCE", isEnabled: selectedClusterId !== null },
+          { level: 3 as SemanticZoomLevel, label: "L3", title: "SOURCE", isEnabled: false },
+          { level: 4 as SemanticZoomLevel, label: "L4", title: "ORIGINAL", isEnabled: false }
+        ].map((item, idx) => {
+          const isCurrent = zoomLevel === item.level;
+          return (
+            <React.Fragment key={item.level}>
+              {idx > 0 && <span style={{ color: "rgba(56, 229, 255, 0.3)", fontSize: "9px" }}>●──</span>}
+              <button
+                type="button"
+                disabled={!item.isEnabled}
+                aria-current={isCurrent ? "step" : undefined}
+                aria-disabled={!item.isEnabled ? "true" : undefined}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  if (!item.isEnabled) return;
+                  if (item.level === 0) {
+                    setZoomLevel(0);
+                    setActiveStageId(null);
+                    setSelectedClusterId(null);
+                  } else {
+                    setZoomLevel(item.level);
+                  }
+                }}
+                style={{
+                  background: isCurrent ? "rgba(56, 229, 255, 0.22)" : "transparent",
+                  border: isCurrent ? `1px solid ${SIL_TOKENS.colors.cyanActive}` : "1px solid transparent",
+                  borderRadius: "8px",
+                  color: isCurrent ? "#ffffff" : item.isEnabled ? SIL_TOKENS.colors.cyanActive : "rgba(56, 229, 255, 0.35)",
+                  cursor: item.isEnabled ? "pointer" : "not-allowed",
+                  padding: "3px 8px",
+                  fontSize: "9px",
+                  fontWeight: 700,
+                  fontFamily: SIL_TOKENS.typography.mono,
+                  letterSpacing: "0.5px",
+                  whiteSpace: "nowrap",
+                  transition: "all 0.2s ease"
+                }}
+              >
+                {`${item.label} ${item.title}`}
+              </button>
+            </React.Fragment>
+          );
+        })}
       </div>
 
       {/* Left Compact SourceDock */}
       <div style={{ zIndex: 10 }}>
-        <SourceDock />
+        <SourceDock onAnalyze={handleAnalyze} isAnalyzing={isAnalyzing} />
       </div>
+
+      {/* Telemetry Ingestion Status Banner */}
+      {isAnalyzing && (
+        <div
+          data-testid="intake-telemetry-banner"
+          style={{
+            position: "absolute",
+            top: "80px",
+            left: "50%",
+            transform: "translateX(-50%)",
+            backgroundColor: "rgba(10, 14, 20, 0.92)",
+            border: `1px solid ${SIL_TOKENS.colors.cyanActive}`,
+            borderRadius: "8px",
+            padding: "8px 16px",
+            color: SIL_TOKENS.colors.cyanActive,
+            fontFamily: SIL_TOKENS.typography.mono,
+            fontSize: "11px",
+            zIndex: 100,
+            boxShadow: "0 0 20px rgba(56, 229, 255, 0.35)",
+            display: "flex",
+            alignItems: "center",
+            gap: "10px"
+          }}
+        >
+          <span style={{ animation: "atmosphereGlow 1.5s infinite" }}>●</span>
+          <span>INTAKE TELEMETRY // STEP: {(analysisStep || "INGESTING").toUpperCase()}</span>
+        </div>
+      )}
+
+      {analysisError && (
+        <div
+          data-testid="intake-error-banner"
+          style={{
+            position: "absolute",
+            top: "80px",
+            left: "50%",
+            transform: "translateX(-50%)",
+            backgroundColor: "rgba(30, 10, 14, 0.95)",
+            border: "1px solid #ff5555",
+            borderRadius: "8px",
+            padding: "8px 16px",
+            color: "#ff5555",
+            fontFamily: SIL_TOKENS.typography.mono,
+            fontSize: "11px",
+            zIndex: 100
+          }}
+        >
+          <span>INTAKE FEHLER: {analysisError}</span>
+        </div>
+      )}
 
       {/* Center Radial Organism Field */}
       <style>{`
@@ -214,7 +370,7 @@ export function SemanticCareerIntelligenceField({ data }: SemanticCareerIntellig
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          margin: "0 auto",
+          margin: "16px auto 0",
           transform: `scale(${cameraScale}) translate(${cameraTranslateX}px, ${cameraTranslateY}px)`,
           transition: "transform 0.75s cubic-bezier(0.16, 1, 0.3, 1)"
         }}
@@ -417,77 +573,6 @@ export function SemanticCareerIntelligenceField({ data }: SemanticCareerIntellig
               }}
             >
               <IdentityCoreDropZone sources={data.sources} isCommunicating={!!focusedStageId} />
-            </div>
-
-            {/* Phase 3c: Core-bound Mini-HUD Camera Instrument */}
-            <div
-              data-testid="semantic-zoom-telemetry"
-              className="semantic-zoom-telemetry--core"
-              style={{
-                position: "absolute",
-                top: "545px",
-                left: "50%",
-                transform: "translateX(-50%)",
-                zIndex: 40,
-                maxWidth: "360px",
-                width: "max-content",
-                backgroundColor: "rgba(6, 14, 24, 0.65)",
-                border: `1px solid ${SIL_TOKENS.colors.cyanActive}`,
-                boxShadow: `0 0 16px rgba(56, 229, 255, 0.22)`,
-                backdropFilter: "blur(10px)",
-                borderRadius: "16px",
-                padding: "6px 14px",
-                display: "flex",
-                alignItems: "center",
-                gap: "6px"
-              }}
-            >
-              {[
-                { level: 0 as SemanticZoomLevel, label: "L0", title: "PLANETARIUM", isEnabled: true },
-                { level: 1 as SemanticZoomLevel, label: "L1", title: "CLUSTER", isEnabled: activeStageId !== null },
-                { level: 2 as SemanticZoomLevel, label: "L2", title: "EVIDENCE", isEnabled: selectedClusterId !== null },
-                { level: 3 as SemanticZoomLevel, label: "L3", title: "SOURCE", isEnabled: false },
-                { level: 4 as SemanticZoomLevel, label: "L4", title: "ORIGINAL", isEnabled: false }
-              ].map((item, idx) => {
-                const isCurrent = zoomLevel === item.level;
-                return (
-                  <React.Fragment key={item.level}>
-                    {idx > 0 && <span style={{ color: "rgba(56, 229, 255, 0.3)", fontSize: "9px" }}>●──</span>}
-                    <button
-                      type="button"
-                      disabled={!item.isEnabled}
-                      aria-current={isCurrent ? "step" : undefined}
-                      aria-disabled={!item.isEnabled ? "true" : undefined}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        if (!item.isEnabled) return;
-                        if (item.level === 0) {
-                          setZoomLevel(0);
-                          setActiveStageId(null);
-                          setSelectedClusterId(null);
-                        } else {
-                          setZoomLevel(item.level);
-                        }
-                      }}
-                      style={{
-                        background: isCurrent ? "rgba(56, 229, 255, 0.22)" : "transparent",
-                        border: isCurrent ? `1px solid ${SIL_TOKENS.colors.cyanActive}` : "1px solid transparent",
-                        borderRadius: "8px",
-                        color: isCurrent ? "#ffffff" : item.isEnabled ? SIL_TOKENS.colors.cyanActive : "rgba(56, 229, 255, 0.35)",
-                        cursor: item.isEnabled ? "pointer" : "not-allowed",
-                        padding: "3px 7px",
-                        fontSize: "9px",
-                        fontWeight: 700,
-                        fontFamily: SIL_TOKENS.typography.mono,
-                        letterSpacing: "0.5px",
-                        transition: "all 0.2s ease"
-                      }}
-                    >
-                      {`${item.label} ${item.title}`}
-                    </button>
-                  </React.Fragment>
-                );
-              })}
             </div>
 
             {/* Orbiting Resonance Bubbles */}
