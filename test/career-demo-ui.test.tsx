@@ -150,6 +150,10 @@ describe("CONDYN / SYNTX — Step 22c: Semantic Career Intelligence Field (SIL v
     expect(htmlHighlighted).toContain("EVIDENCE DENSITY");
     expect(htmlHighlighted).toContain("SOURCES // SEMIOTIC GROUNDING");
     expect(htmlHighlighted).toContain("data-testid=\"orbital-tether-02\"");
+    expect(htmlHighlighted).toContain("data-testid=\"hud-actions\"");
+    expect(htmlHighlighted).toContain("OPEN EVIDENCE");
+    expect(htmlHighlighted).toContain("INSPECT SOURCES");
+    expect(htmlHighlighted).toContain("VIEW MATCHES");
     expect(htmlHighlighted).toContain("TOP ITEMS");
     expect(htmlHighlighted).toContain("Click to focus this field");
     expect(htmlHighlighted).toContain("React Architecture");

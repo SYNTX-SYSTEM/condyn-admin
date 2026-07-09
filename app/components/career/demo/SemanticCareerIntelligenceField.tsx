@@ -433,6 +433,59 @@ export function SemanticCareerIntelligenceField({ data }: SemanticCareerIntellig
         </div>
       </div>
 
+      {/* Phase 3a: Compact Scientific Focus Detail Panel when an orbit is focused */}
+      {activeStageId && (
+        <div
+          data-testid="semantic-focus-panel"
+          style={{
+            position: "absolute",
+            top: "54px",
+            left: "50%",
+            transform: "translateX(-50%)",
+            zIndex: 25,
+            backgroundColor: "rgba(6, 11, 18, 0.92)",
+            border: `1px solid ${SIL_TOKENS.colors.cyanActive}`,
+            boxShadow: `0 0 30px ${SIL_TOKENS.colors.cyanGlowStrong}`,
+            backdropFilter: "blur(12px)",
+            borderRadius: "6px",
+            padding: "10px 18px",
+            display: "flex",
+            alignItems: "center",
+            gap: "18px",
+            color: SIL_TOKENS.colors.textPrimary,
+            fontSize: "11px"
+          }}
+        >
+          <div>
+            <div style={{ fontSize: "9px", color: SIL_TOKENS.colors.cyanActive, fontWeight: 700, letterSpacing: "1px" }}>
+              ACTIVE FOCUS // ORBIT {activeStageId}
+            </div>
+            <div style={{ fontWeight: 600, fontSize: "12px", marginTop: "2px" }}>
+              {stages.find((s) => s.stageId === activeStageId)?.stageName}
+            </div>
+          </div>
+          <div style={{ height: "24px", width: "1px", backgroundColor: "rgba(56, 229, 255, 0.25)" }} />
+          <div style={{ display: "flex", gap: "12px", fontSize: "10px", color: SIL_TOKENS.colors.textMuted }}>
+            <span>STATE: <strong style={{ color: SIL_TOKENS.colors.cyanActive }}>RESONANT</strong></span>
+            <span>EVIDENCE: <strong style={{ color: SIL_TOKENS.colors.textPrimary }}>VERIFIED</strong></span>
+          </div>
+          <button
+            onClick={() => setActiveStageId(null)}
+            style={{
+              backgroundColor: "transparent",
+              border: `1px solid rgba(56, 229, 255, 0.35)`,
+              color: SIL_TOKENS.colors.cyanActive,
+              fontSize: "9px",
+              padding: "4px 8px",
+              borderRadius: "3px",
+              cursor: "pointer"
+            }}
+          >
+            RESET FOCUS
+          </button>
+        </div>
+      )}
+
       {/* Right Collapsible Semantic Guide Drawer */}
       <div style={{ zIndex: 10 }}>
         <SemanticGuideDrawer />

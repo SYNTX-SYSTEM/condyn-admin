@@ -206,6 +206,7 @@ export interface OrbitalResonanceBubbleProps {
   onClick?: () => void;
   onMouseEnter?: () => void;
   onMouseLeave?: () => void;
+  onHudAction?: (action: "OPEN EVIDENCE" | "INSPECT SOURCES" | "VIEW MATCHES", stageId: string) => void;
   style?: React.CSSProperties;
 }
 
@@ -249,6 +250,7 @@ export function OrbitalResonanceBubble({
   onClick,
   onMouseEnter,
   onMouseLeave,
+  onHudAction,
   style
 }: OrbitalResonanceBubbleProps) {
   const isHighlighted = isActive || isHovered;
@@ -649,6 +651,58 @@ export function OrbitalResonanceBubble({
                   </div>
                 </div>
               )}
+
+              {/* INTERACTIVE HUD ACTION BAR (Phase 3a) */}
+              <div
+                data-testid="hud-actions"
+                style={{
+                  display: "flex",
+                  gap: "5px",
+                  marginBottom: "8px",
+                  pointerEvents: "auto"
+                }}
+              >
+                {[
+                  { label: "OPEN EVIDENCE", id: "open-evidence" },
+                  { label: "INSPECT SOURCES", id: "inspect-sources" },
+                  { label: "VIEW MATCHES", id: "view-matches" }
+                ].map((act) => (
+                  <button
+                    key={act.id}
+                    data-testid={`hud-action-${act.id}`}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      if (onHudAction) {
+                        onHudAction(act.label as any, stageId);
+                      }
+                    }}
+                    style={{
+                      flex: 1,
+                      backgroundColor: "rgba(56, 229, 255, 0.12)",
+                      border: `1px solid rgba(56, 229, 255, 0.45)`,
+                      color: SIL_TOKENS.colors.cyanActive,
+                      fontSize: "8.5px",
+                      fontWeight: 600,
+                      letterSpacing: "0.5px",
+                      padding: "5px 4px",
+                      borderRadius: "3px",
+                      cursor: "pointer",
+                      textAlign: "center",
+                      transition: "all 0.2s ease"
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.backgroundColor = "rgba(56, 229, 255, 0.28)";
+                      e.currentTarget.style.borderColor = SIL_TOKENS.colors.cyanActive;
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.backgroundColor = "rgba(56, 229, 255, 0.12)";
+                      e.currentTarget.style.borderColor = "rgba(56, 229, 255, 0.45)";
+                    }}
+                  >
+                    {act.label}
+                  </button>
+                ))}
+              </div>
 
               {/* ACTION HINT */}
               <div
