@@ -47,6 +47,7 @@ export default function ConDynPanel() {
       }}>
         <canvas
           id="neuralCanvas"
+          suppressHydrationWarning
           style={{
             position: 'absolute',
             top: 0,

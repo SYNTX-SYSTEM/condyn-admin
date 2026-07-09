@@ -165,7 +165,7 @@ export default function CareerAnalysisDetailPage() {
         </div>
       </header>
 
-      <div className="demo-grid" style={{ height: "calc(100vh - 73px)" }}>
+      <div className="career-graph-container" style={{ height: "calc(100vh - 73px)" }}>
         <Sidebar graph={result.reactFlowGraph} />
         <div className="career-graph-main">
           <ReactFlowCareerGraph
