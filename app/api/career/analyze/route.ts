@@ -100,6 +100,13 @@ export async function POST(req: Request) {
     const matching = matchCareerAnalysisAgainstPool(verifiedAnalysis, DEMO_COMPANY_POOL);
     const recommendations = generateCareerRecommendations(verifiedAnalysis, matching);
 
+    const inferenceTelemetry = (provider as any).lastTelemetry || {
+      modelsAttempted: [{ model: "deterministic-mock-v1", status: "SUCCESS", latencyMs: 12 }],
+      activeModel: "deterministic-mock-v1",
+      fallbackTriggered: false,
+      totalLatencyMs: 12
+    };
+
     return NextResponse.json({
       success: true,
       status: "VERIFIED",
@@ -107,7 +114,8 @@ export async function POST(req: Request) {
       metadata,
       matching,
       recommendations,
-      reactFlowGraph
+      reactFlowGraph,
+      inferenceTelemetry
     });
   } catch (err: any) {
     console.error("Fatal error in /api/career/analyze:", err);

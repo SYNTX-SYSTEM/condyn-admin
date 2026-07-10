@@ -8,6 +8,7 @@ import { OrbitalResonanceBubble } from "./OrbitalResonanceBubble";
 import { SourceDock } from "./SourceDock";
 import { SemanticGuideDrawer } from "./SemanticGuideDrawer";
 import { OrbitalSubspaceView, SemanticZoomLevel } from "./OrbitalSubspaceView";
+import { InferenceTelemetryHUD } from "./InferenceTelemetryHUD";
 
 export interface SemanticCareerIntelligenceFieldProps {
   data: DemoCareerIntelligenceData;
@@ -16,6 +17,7 @@ export interface SemanticCareerIntelligenceFieldProps {
     analysisStep?: string | null;
     analysisError?: string | null;
     analysisSuccess?: boolean;
+    inferenceTelemetry?: any;
   };
 }
 
@@ -36,6 +38,7 @@ export function SemanticCareerIntelligenceField({
   const [analysisStep, setAnalysisStep] = useState<string | null>(initialAnalysisState?.analysisStep ?? null);
   const [analysisError, setAnalysisError] = useState<string | null>(initialAnalysisState?.analysisError ?? null);
   const [analysisSuccess, setAnalysisSuccess] = useState(initialAnalysisState?.analysisSuccess ?? false);
+  const [inferenceTelemetry, setInferenceTelemetry] = useState<any>(initialAnalysisState?.inferenceTelemetry ?? null);
   const [lastStagedDocs, setLastStagedDocs] = useState<any[]>([]);
 
   const handleAnalyze = async (stagedDocs: any[]) => {
@@ -72,6 +75,9 @@ export function SemanticCareerIntelligenceField({
       }
 
       setAnalysisStep("complete");
+      if (json.inferenceTelemetry) {
+        setInferenceTelemetry(json.inferenceTelemetry);
+      }
       setActiveData((prev) => ({
         ...prev,
         sources: stagedDocs.map((d) => ({
@@ -417,6 +423,11 @@ export function SemanticCareerIntelligenceField({
           </button>
         </div>
       )}
+
+      <InferenceTelemetryHUD
+        telemetry={inferenceTelemetry}
+        isAnalyzing={isAnalyzing}
+      />
 
       {/* Center Radial Organism Field */}
       <style>{`
