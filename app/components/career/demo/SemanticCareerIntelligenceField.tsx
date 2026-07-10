@@ -9,6 +9,9 @@ import { SourceDock } from "./SourceDock";
 import { SemanticGuideDrawer } from "./SemanticGuideDrawer";
 import { OrbitalSubspaceView, SemanticZoomLevel } from "./OrbitalSubspaceView";
 import { InferenceTelemetryHUD } from "./InferenceTelemetryHUD";
+import { buildEvidenceGraph } from "../../../../lib/career/evidence/traversal";
+import { computeGraphFocus } from "../../../../lib/career/evidence/highlight";
+import { DecisionGraphInspector } from "./DecisionGraphInspector";
 
 export interface SemanticCareerIntelligenceFieldProps {
   data: DemoCareerIntelligenceData;
@@ -98,6 +101,29 @@ export function SemanticCareerIntelligenceField({
       }, 300);
     }
   };
+
+  const [selectedGraphNodeId, setSelectedGraphNodeId] = useState<string | null>(null);
+
+  const evidenceGraph = React.useMemo(() => {
+    return buildEvidenceGraph({ structured_data: activeData }, [
+      {
+        jobId: "job_siemens_lead",
+        title: "Principal Cloud Architect",
+        company: "Siemens AG",
+        requirements: (activeData.capabilities || []).map((c) => ({
+          capability_name: c.name || "Capability",
+          domain: "DevOps",
+          weight: 0.5,
+          required_level: "L5"
+        }))
+      }
+    ]);
+  }, [activeData]);
+
+  const graphFocus = React.useMemo(() => {
+    if (!selectedGraphNodeId) return null;
+    return computeGraphFocus(evidenceGraph, selectedGraphNodeId);
+  }, [evidenceGraph, selectedGraphNodeId]);
 
   const stages = [
     {
@@ -427,6 +453,12 @@ export function SemanticCareerIntelligenceField({
       <InferenceTelemetryHUD
         telemetry={inferenceTelemetry}
         isAnalyzing={isAnalyzing}
+      />
+
+      <DecisionGraphInspector
+        graph={evidenceGraph}
+        focus={graphFocus}
+        onSelectNode={(id) => setSelectedGraphNodeId(id)}
       />
 
       {/* Center Radial Organism Field */}
