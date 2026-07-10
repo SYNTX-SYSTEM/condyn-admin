@@ -84,7 +84,7 @@ describe("CONDYN Career Analysis Protocol v1.0 - Step 9: Gemini Inference Provid
     // 1. Default fallback
     const defaultProvider = new GeminiProvider();
     await defaultProvider.execute(samplePrompt);
-    expect(mockGenerateContent.mock.calls[0][0].model).toBe("gemini-2.0-flash");
+    expect(mockGenerateContent.mock.calls[0][0].model).toBe("gemini-2.5-flash");
 
     // 2. Env variable override
     process.env.GEMINI_MODEL = "gemini-1.5-flash";
@@ -98,8 +98,8 @@ describe("CONDYN Career Analysis Protocol v1.0 - Step 9: Gemini Inference Provid
     expect(mockGenerateContent.mock.calls[2][0].model).toBe("gemini-1.5-pro");
   });
 
-  it("should cleanly encapsulate SDK and API errors into ERR_PROVIDER_FAILURE", async () => {
-    mockGenerateContent.mockRejectedValueOnce(new Error("HTTP 429 Too Many Requests - Quota exceeded"));
+  it("should cleanly encapsulate SDK and API errors into ERR_PROVIDER_FAILURE across cascade", async () => {
+    mockGenerateContent.mockRejectedValue(new Error("HTTP 429 Too Many Requests - Quota exceeded"));
 
     const provider = new GeminiProvider();
 

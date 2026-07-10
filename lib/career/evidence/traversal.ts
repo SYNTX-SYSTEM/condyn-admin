@@ -1,16 +1,22 @@
 import { z } from "zod";
 import {
   DirectedEvidenceGraph,
+  SourceNode,
   EvidenceNode,
   CapabilityNode,
   JobRequirementNode,
+  JobNode,
+  OrganisationNode,
   EvidenceGraphEdge,
   EvidenceLocation
 } from "./graph";
 import { JobRoleProfile } from "../matching/job-mapping";
 
 export interface RequirementProofChain {
+  organisationId?: string;
+  organisationName?: string;
   jobId: string;
+  jobTitle?: string;
   requirementName: string;
   capabilityId?: string;
   capabilityName?: string;
@@ -29,29 +35,45 @@ export interface ExplainableJobFitResult {
 
 /**
  * Pure, deterministic function that constructs a Directed Evidence Graph
- * connecting raw candidate evidence items -> capabilities -> job requirements -> jobs.
+ * containing all 6 node classes and 5 directed edge types:
+ * Source -> contains -> Evidence -> supports -> Capability -> satisfies -> Requirement -> belongsTo -> Job -> belongsToOrg -> Organisation.
  */
 export function buildEvidenceGraph(
   analysis: any,
   jobs: JobRoleProfile[]
 ): DirectedEvidenceGraph {
+  const sourceNodes: SourceNode[] = [];
   const evidenceNodes: EvidenceNode[] = [];
   const capabilityNodes: CapabilityNode[] = [];
   const requirementNodes: JobRequirementNode[] = [];
+  const jobNodes: JobNode[] = [];
+  const organisationNodes: OrganisationNode[] = [];
   const edges: EvidenceGraphEdge[] = [];
 
   const rawDocs = analysis?.structured_data?.analysis?.documents || [];
   const rawCaps = analysis?.structured_data?.analysis?.capabilities || [];
 
-  // 1. Build Evidence Nodes from document evidence or default synthesis
+  // 1. Build Source Nodes & Document Evidence Nodes
   let evidenceCounter = 1;
+  const knownSourceIds = new Set<string>();
+
   for (const doc of rawDocs) {
+    const srcId = doc.entity_id || "DOC_UNKNOWN";
+    if (!knownSourceIds.has(srcId)) {
+      knownSourceIds.add(srcId);
+      sourceNodes.push({
+        id: srcId,
+        title: doc.identity?.name || "Source Document",
+        type: "pdf"
+      });
+    }
+
     const docEvidence = doc.evidence || [];
     for (const ev of docEvidence) {
       const evId = `ev_${evidenceCounter++}`;
       evidenceNodes.push({
         id: evId,
-        sourceId: ev.doc_id || doc.entity_id || "doc_unknown",
+        sourceId: srcId,
         sourceType: "pdf",
         confidence: typeof ev.evidence_score === "number" ? ev.evidence_score : 0.90,
         excerpt: ev.context_quote || "Verbatim excerpt from source document.",
@@ -62,24 +84,52 @@ export function buildEvidenceGraph(
         capabilities: [],
         metadata: {}
       });
+
+      // Edge: Source -> contains -> Evidence
+      edges.push({
+        id: `edge_cont_${srcId}_${evId}`,
+        sourceId: srcId,
+        targetId: evId,
+        edgeType: "contains",
+        weight: 1.0
+      });
     }
   }
 
-  // 2. Build Capability Nodes
+  // Ensure default canonical source node exists for synthetic grounding if needed
+  if (!knownSourceIds.has("canonical_analysis")) {
+    knownSourceIds.add("canonical_analysis");
+    sourceNodes.push({
+      id: "canonical_analysis",
+      title: "Canonical Career Analysis Profile",
+      type: "markdown"
+    });
+  }
+
+  // 2. Build Capability Nodes & Evidence supports edges
   let capCounter = 1;
   for (const cap of rawCaps) {
     const capId = cap.entity_id || `cap_${capCounter++}`;
     const capName = cap.identity?.name || cap.name || "Unknown Capability";
 
-    // Find supporting evidence nodes
     const supportingEvIds: string[] = [];
     const evItems = cap.evidence || [];
 
     for (const ev of evItems) {
+      const srcId = ev.doc_id || "canonical_analysis";
+      if (!knownSourceIds.has(srcId)) {
+        knownSourceIds.add(srcId);
+        sourceNodes.push({
+          id: srcId,
+          title: srcId,
+          type: "pdf"
+        });
+      }
+
       const evId = `ev_${evidenceCounter++}`;
       evidenceNodes.push({
         id: evId,
-        sourceId: ev.doc_id || "doc_source",
+        sourceId: srcId,
         sourceType: "pdf",
         confidence: typeof ev.evidence_score === "number" ? ev.evidence_score : (cap.confidence ?? 0.85),
         excerpt: ev.context_quote || `Verified grounding for ${capName}.`,
@@ -91,7 +141,16 @@ export function buildEvidenceGraph(
       });
       supportingEvIds.push(evId);
 
-      // Add edge: Evidence -> supports -> Capability
+      // Edge: Source -> contains -> Evidence
+      edges.push({
+        id: `edge_cont_${srcId}_${evId}`,
+        sourceId: srcId,
+        targetId: evId,
+        edgeType: "contains",
+        weight: 1.0
+      });
+
+      // Edge: Evidence -> supports -> Capability
       edges.push({
         id: `edge_supp_${evId}_${capId}`,
         sourceId: evId,
@@ -101,7 +160,6 @@ export function buildEvidenceGraph(
       });
     }
 
-    // If no explicit evidence items were present on the capability, attach synthetic grounding node if confidence > 0
     const confidence = typeof cap.confidence === "number" ? cap.confidence : 0.85;
     if (supportingEvIds.length === 0 && confidence > 0) {
       const synEvId = `ev_grounding_${capId}`;
@@ -116,6 +174,15 @@ export function buildEvidenceGraph(
         metadata: {}
       });
       supportingEvIds.push(synEvId);
+
+      edges.push({
+        id: `edge_cont_canonical_analysis_${synEvId}`,
+        sourceId: "canonical_analysis",
+        targetId: synEvId,
+        edgeType: "contains",
+        weight: 1.0
+      });
+
       edges.push({
         id: `edge_supp_${synEvId}_${capId}`,
         sourceId: synEvId,
@@ -137,9 +204,37 @@ export function buildEvidenceGraph(
     });
   }
 
-  // 3. Build Requirement Nodes & edges Capability -> satisfies -> Requirement -> belongsTo -> Job
+  // 3. Build Organisation Nodes, Job Nodes, Requirement Nodes & Edges
   let reqCounter = 1;
+  const knownOrgIds = new Set<string>();
+
   for (const job of jobs) {
+    const orgId = `org_${job.company.toLowerCase().replace(/[^a-z0-9]/g, "_")}`;
+    if (!knownOrgIds.has(orgId)) {
+      knownOrgIds.add(orgId);
+      organisationNodes.push({
+        id: orgId,
+        name: job.company,
+        domain: "Technology"
+      });
+    }
+
+    jobNodes.push({
+      id: job.jobId,
+      title: job.title,
+      company: job.company,
+      orgId
+    });
+
+    // Edge: Job -> belongsToOrg -> Organisation
+    edges.push({
+      id: `edge_org_${job.jobId}_${orgId}`,
+      sourceId: job.jobId,
+      targetId: orgId,
+      edgeType: "belongsToOrg",
+      weight: 1.0
+    });
+
     for (const req of job.requirements) {
       const reqId = `req_${job.jobId}_${reqCounter++}`;
       requirementNodes.push({
@@ -160,7 +255,6 @@ export function buildEvidenceGraph(
         weight: req.weight
       });
 
-      // Match capability node
       const reqNorm = req.capability_name.toLowerCase().trim();
       const aliasNorms = (req.aliases || []).map((a) => a.toLowerCase().trim());
 
@@ -186,15 +280,19 @@ export function buildEvidenceGraph(
   }
 
   return {
+    sourceNodes,
     evidenceNodes,
     capabilityNodes,
     requirementNodes,
+    jobNodes,
+    organisationNodes,
     edges
   };
 }
 
 /**
- * Traces the complete proof chain for a specific job requirement down to original source excerpts and locations.
+ * Traces the complete proof chain for a specific job requirement:
+ * Organisation -> Job -> Requirement -> Capability -> Evidence -> Original Source & exact Location.
  */
 export function traceRequirementProofChain(
   graph: DirectedEvidenceGraph,
@@ -206,9 +304,15 @@ export function traceRequirementProofChain(
     (r) => r.jobId === jobId && r.requirementName.toLowerCase().trim() === reqNorm
   );
 
+  const jobNode = graph.jobNodes.find((j) => j.id === jobId);
+  const orgNode = jobNode ? graph.organisationNodes.find((o) => o.id === jobNode.orgId) : undefined;
+
   if (!reqNode) {
     return {
+      organisationId: orgNode?.id,
+      organisationName: orgNode?.name,
       jobId,
+      jobTitle: jobNode?.title,
       requirementName,
       evidenceIds: [],
       excerpts: [],
@@ -217,14 +321,16 @@ export function traceRequirementProofChain(
     };
   }
 
-  // Find incoming satisfies edges
   const satisfiesEdges = graph.edges.filter(
     (e) => e.edgeType === "satisfies" && e.targetId === reqNode.id
   );
 
   if (satisfiesEdges.length === 0) {
     return {
+      organisationId: orgNode?.id,
+      organisationName: orgNode?.name,
       jobId,
+      jobTitle: jobNode?.title,
       requirementName,
       evidenceIds: [],
       excerpts: [],
@@ -256,7 +362,10 @@ export function traceRequirementProofChain(
   }
 
   return {
+    organisationId: orgNode?.id,
+    organisationName: orgNode?.name,
     jobId,
+    jobTitle: jobNode?.title,
     requirementName,
     capabilityId: capNode?.id,
     capabilityName: capNode?.name,
@@ -269,8 +378,8 @@ export function traceRequirementProofChain(
 
 /**
  * Computes dual explainable job fit:
- * 1. fitScore: Weighted requirement match score [0.0, 1.0]
- * 2. explainabilityScore: Density and trace quality of primary evidence backing matched capabilities [0.0, 1.0]
+ * 1. fitScore: Weighted requirement match score [0.0, 1.0] (functional requirement satisfaction)
+ * 2. explainabilityScore: Traceability, density, and confidence of evidence proof chains backing matched capabilities [0.0, 1.0]
  */
 export function computeExplainableJobFit(
   graph: DirectedEvidenceGraph,
@@ -297,10 +406,8 @@ export function computeExplainableJobFit(
     proofChains.push(chain);
 
     if (chain.capabilityId && chain.evidenceIds.length > 0) {
-      // Capability matched
       earnedFit += req.weight;
 
-      // Explainability: average confidence of supporting evidence nodes
       const supportingEvNodes = graph.evidenceNodes.filter((ev) =>
         chain.evidenceIds.includes(ev.id)
       );
