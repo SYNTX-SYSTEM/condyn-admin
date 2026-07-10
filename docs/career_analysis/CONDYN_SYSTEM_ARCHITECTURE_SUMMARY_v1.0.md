@@ -2,6 +2,17 @@
 
 > **"We are no longer building a career app. The career product is the first vertical. Underneath, ConDyn is already becoming decision infrastructure."**
 
+---
+
+## Die zwei Grundgesetze von CONDYN (Architectural North Star)
+
+1. **Everything is evidence until it becomes a decision. Every decision must be explainable back to evidence.**
+   *Jede Information im System ist ein Evidenzknoten. Keine Empfehlung und kein Score darf ohne rückverfolgbare Evidenz-Kette im Graphen manifestiert werden.*
+2. **Nothing becomes knowledge until it has survived validation.**
+   *Kein roher LLM-Output wird jemals zur Entscheidungsgrundlage. Jedes Ergebnis muss den Zod Runtime Validator passieren und als `VERIFIED` zertifiziert werden.*
+
+---
+
 CONDYN ist eine **Evidence-driven Decision Infrastructure**. Der Career-Use-Case ist der erste sichtbare vertikale Anwendungsfall.
 
 ```text
