@@ -4,6 +4,32 @@
 
 CONDYN ist eine **Evidence-driven Decision Infrastructure**. Der Career-Use-Case ist der erste sichtbare vertikale Anwendungsfall.
 
+```text
+                                    CONDYN SYSTEM ARCHITECTURE
+────────────────────────────────────────────────────────────────────────────────────────────────────
+                           Semantic Interface Language (SIL v3.0)
+   Decision Instrument | Scientific UI | Semantic Zoom | Planetarium | HUD | Real-Time Telemetry
+────────────────────────────────────────────────────────────────────────────────────────────────────
+                                       Decision Layer
+        Recommendations | Job Mapping | Company Matching | Gap Analysis | Next Actions
+────────────────────────────────────────────────────────────────────────────────────────────────────
+                                       Evidence Layer
+            Directed Evidence Graph | Traceable Proof Chains | Explainability | Confidence
+────────────────────────────────────────────────────────────────────────────────────────────────────
+                                       Knowledge Layer
+               Capabilities | Requirements | Organizations | Roles | Domain Ontology
+────────────────────────────────────────────────────────────────────────────────────────────────────
+                                       Inference Layer
+     Encrypted Prompt Registry | Prompt Contracts | Inference Router | Multi-Model Failover
+────────────────────────────────────────────────────────────────────────────────────────────────────
+                                         Data Layer
+           PDF Ingestion | GitHub Repositories | Website Scraper | Markdown | Raw Text
+────────────────────────────────────────────────────────────────────────────────────────────────────
+                                       Infrastructure
+     Runtime Zod Validator | Persistence | Repositories | PostgreSQL | pgvector | Analyze API
+────────────────────────────────────────────────────────────────────────────────────────────────────
+```
+
 Der Kernfluss lautet:
 ```text
 Source
