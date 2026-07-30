@@ -79,7 +79,8 @@ export class GeminiProvider implements InferenceProvider {
           config: {
             systemInstruction: prompt.systemPrompt,
             responseMimeType: "application/json",
-            temperature: 0.1
+            temperature: 0.1,
+            maxOutputTokens: 8192
           }
         });
 

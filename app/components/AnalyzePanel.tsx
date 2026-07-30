@@ -1,5 +1,6 @@
 'use client';
 import { useState, useEffect, useRef } from 'react';
+import ReactMarkdown from 'react-markdown';
 
 const API_URL = process.env.NEXT_PUBLIC_CONDYN_API_URL || 'http://localhost:8002';
 
@@ -142,7 +143,28 @@ export default function AnalyzePanel({ token }: { token: string }) {
       setTokensUsed(data.tokens_used || 0);
       
     } catch (err: any) {
-      setResult(`Analysis failed: ${err.message}`);
+      console.warn("Backend API failed, showing mock markdown for testing:", err.message);
+      setResult(`## ⚠️ Lokales Backend nicht erreichbar
+
+Da deine lokale Datenbank noch leer ist, hier ein **Mock-Ergebnis** um das Markdown-Rendering zu testen!
+
+### Role Fit: **Conditional Fit**
+**Role Title:** Chief of Staff oder Operations Program Manager
+
+#### 🎯 Geforderte Tasks:
+- *T-01:* Coordinate data collection timelines
+- *T-02:* Document submission procedures
+- *T-03:* Connect operational deadlines to board calendar
+
+#### 💡 Analyse-Details:
+> In many organizations, the task of writing and maintaining recurring submission procedures sits between an operations function and an administrative function.
+
+**Empfehlung:**
+1. Prozesse definieren
+2. Deadlines kommunizieren
+3. Regelmäßige Check-Ins einplanen
+
+*(Originaler Fehler: ${err.message})*`);
     } finally {
       setLoading(false);
     }
@@ -389,7 +411,6 @@ export default function AnalyzePanel({ token }: { token: string }) {
           overflowY: 'auto',
           fontSize: '13px',
           lineHeight: '1.8',
-          whiteSpace: 'pre-wrap',
           background: 'rgba(255, 255, 255, 0.5)'
         }}>
           {loading ? (
@@ -412,7 +433,7 @@ export default function AnalyzePanel({ token }: { token: string }) {
               <div className="loading-subtext">Connection Dynamics Framework at work...</div>
             </div>
           ) : result ? (
-            <div dangerouslySetInnerHTML={{ __html: result.replace(/\n/g, '<br/>') }} />
+            <ReactMarkdown>{result}</ReactMarkdown>
           ) : (
             <div className="text-secondary" style={{ fontStyle: 'italic' }}>
               No analysis yet. Enter text and click ANALYZE.
