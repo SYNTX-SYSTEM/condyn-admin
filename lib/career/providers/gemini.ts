@@ -82,7 +82,7 @@ export class GeminiProvider implements InferenceProvider {
             temperature: 0.1,
             maxOutputTokens: process.env.GEMINI_MAX_OUTPUT_TOKENS
               ? parseInt(process.env.GEMINI_MAX_OUTPUT_TOKENS, 10)
-              : 16384
+              : 32768
           }
         });
 
