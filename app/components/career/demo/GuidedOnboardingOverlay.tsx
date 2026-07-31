@@ -86,7 +86,7 @@ export function GuidedOnboardingOverlay({
         style={{
           width: "520px",
           maxWidth: "92vw",
-          backgroundColor: SIL_TOKENS.colors.surface,
+          backgroundColor: SIL_TOKENS.colors.field,
           border: `1px solid ${SIL_TOKENS.colors.cyanActive}`,
           borderRadius: "16px",
           boxShadow: `0 0 28px rgba(56, 229, 255, 0.35)`,

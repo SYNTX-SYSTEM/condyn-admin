@@ -48,7 +48,7 @@ export function generateCareerRecommendations(
 
   for (const roleMatch of matchResult.role_matches || []) {
     for (const missingCap of roleMatch.missingCapabilities || []) {
-      const weight = typeof missingCap.weight === "number" ? missingCap.weight : 0.5;
+      const weight = typeof (missingCap as any).weight === "number" ? (missingCap as any).weight : 0.5;
       let severity: CapabilityGapSeverity = "LOW";
       if (weight >= 0.8) {
         severity = "HIGH";
@@ -59,11 +59,11 @@ export function generateCareerRecommendations(
       const capKey = missingCap.capabilityName.trim().toLowerCase();
       const currentEvidenceConfidence = existingCapsMap.get(capKey);
 
-      const reason = `Role '${roleMatch.title}' at ${roleMatch.organizationName} requires capability '${missingCap.capabilityName}' (weight: ${weight.toFixed(2)}, level: ${missingCap.requiredLevel || "L3"}).`;
+      const reason = `Role '${roleMatch.title}' at ${roleMatch.organizationName} requires capability '${missingCap.capabilityName}' (weight: ${weight.toFixed(2)}, level: ${(missingCap as any).requiredLevel || "L3"}).`;
 
       capabilityGaps.push({
         capabilityName: missingCap.capabilityName,
-        domain: missingCap.domain || "General",
+        domain: (missingCap as any).domain || "General",
         requiredByRoleId: roleMatch.roleId,
         requiredByRoleTitle: roleMatch.title,
         organizationId: roleMatch.organizationId,

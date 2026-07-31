@@ -61,7 +61,7 @@ export async function loadDocumentBatch(
     onProgress({ total, completed: 0, failed: 0, status: "INGESTING" });
   }
 
-  const rawDocs: { docId?: string; title?: string; content: string }[] = [];
+  const rawDocs: import("../pipeline").DocumentLoaderInput[] = [];
 
   for (let i = 0; i < total; i++) {
     const item = batch[i];

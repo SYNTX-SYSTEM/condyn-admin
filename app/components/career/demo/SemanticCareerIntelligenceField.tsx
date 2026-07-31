@@ -113,10 +113,9 @@ export function SemanticCareerIntelligenceField({
       setActiveData((prev) => ({
         ...prev,
         sources: stagedDocs.map((d) => ({
-          id: d.id,
-          name: d.title,
-          type: d.type,
-          status: "VERIFIED"
+          sourceKind: String(d.type || "DOCUMENT").toUpperCase(),
+          sourceTitle: d.title || d.name || "Input Source",
+          contentHash: d.id || "HASH-" + Math.random().toString(36).substring(2, 8)
         }))
       }));
       setAnalysisSuccess(true);
@@ -138,12 +137,14 @@ export function SemanticCareerIntelligenceField({
       {
         jobId: "job_siemens_lead",
         title: "Principal Cloud Architect",
+        description: "Principal Cloud Architect role at Siemens AG",
         company: "Siemens AG",
         requirements: (activeData.capabilities || []).map((c) => ({
           capability_name: c.name || "Capability",
           domain: "DevOps",
           weight: 0.5,
-          required_level: "L5"
+          required_level: "L5",
+          aliases: []
         }))
       }
     ]);
@@ -166,7 +167,7 @@ export function SemanticCareerIntelligenceField({
       animationDelay: "0s",
       photonOutDur: "3.6s",
       photonInDur: "4.4s",
-      previewItems: data.sources.slice(0, 3).map((s) => s.name || s.title || "Quellendokument")
+      previewItems: data.sources.slice(0, 3).map((s) => s.sourceTitle || (s as any).name || "Quellendokument")
     },
     {
       stageId: "02",
@@ -192,7 +193,7 @@ export function SemanticCareerIntelligenceField({
       animationDelay: "-8s",
       photonOutDur: "4.8s",
       photonInDur: "5.6s",
-      previewItems: data.companyMatches.slice(0, 3).map((c) => c.companyName)
+      previewItems: data.companyMatches.slice(0, 3).map((c) => c.organizationName)
     },
     {
       stageId: "04",

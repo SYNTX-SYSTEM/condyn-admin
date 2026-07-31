@@ -44,8 +44,8 @@ async function listModels() {
       }
     } else if (Array.isArray(response)) {
       modelList = response;
-    } else if (response && Array.isArray(response.models)) {
-      modelList = response.models;
+    } else if (response && Array.isArray((response as any).models)) {
+      modelList = (response as any).models;
     } else if (response && Symbol.iterator in Object(response)) {
       modelList = Array.from(response as any);
     } else {

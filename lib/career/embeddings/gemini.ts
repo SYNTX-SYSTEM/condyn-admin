@@ -48,7 +48,7 @@ export class GeminiEmbeddingProvider implements EmbeddingProvider {
         contents: cleanText
       });
 
-      const values = response?.embedding?.values;
+      const values = (response as any)?.embedding?.values || (response as any)?.values;
       if (!values || !Array.isArray(values) || values.length === 0) {
         throw new Error("Empty or invalid embedding vector returned by Gemini API.");
       }

@@ -72,7 +72,7 @@ export async function POST(req: Request) {
     // Execute 8-layer domain pipeline on server
     const validationResult = await executeCareerAnalysisPipeline(normalizedDocs, provider);
 
-    if (validationResult.status === "FAILED" || !validationResult.data) {
+    if (!validationResult.success || !validationResult.data) {
       return NextResponse.json(
         {
           success: false,
@@ -83,7 +83,7 @@ export async function POST(req: Request) {
       );
     }
 
-    const verifiedAnalysis = validationResult.data;
+    const verifiedAnalysis = validationResult.data as any;
 
     // Save to request/demo-scoped repository
     await requestScopedRepository.save(verifiedAnalysis);

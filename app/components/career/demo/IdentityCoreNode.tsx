@@ -1,9 +1,9 @@
 import React from "react";
-import { DemoIngestionSource } from "../../../career/demo/demo-data";
+import { DemoSourceItem } from "../../../career/demo/demo-data";
 import { SIL_TOKENS } from "./SILTokens";
 
 export interface IdentityCoreNodeProps {
-  sources: DemoIngestionSource[];
+  sources: DemoSourceItem[];
 }
 
 export function IdentityCoreNode({ sources }: IdentityCoreNodeProps) {

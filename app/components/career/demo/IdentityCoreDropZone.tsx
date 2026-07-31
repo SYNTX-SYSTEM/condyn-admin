@@ -1,11 +1,11 @@
 "use client";
 
 import React, { useState } from "react";
-import { DemoIngestionSource } from "../../../career/demo/demo-data";
+import { DemoSourceItem } from "../../../career/demo/demo-data";
 import { SIL_TOKENS } from "./SILTokens";
 
 export interface IdentityCoreDropZoneProps {
-  sources: DemoIngestionSource[];
+  sources: DemoSourceItem[];
   onDropSource?: (source: { title: string; kind: string }) => void;
   isCommunicating?: boolean;
 }

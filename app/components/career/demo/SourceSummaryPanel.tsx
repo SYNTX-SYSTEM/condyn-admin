@@ -1,9 +1,9 @@
 import React from "react";
-import { DemoIngestionSource } from "../../../career/demo/demo-data";
+import { DemoSourceItem } from "../../../career/demo/demo-data";
 import { IdentityCoreNode } from "./IdentityCoreNode";
 
 export interface SourceSummaryPanelProps {
-  sources: DemoIngestionSource[];
+  sources: DemoSourceItem[];
 }
 
 export function SourceSummaryPanel({ sources }: SourceSummaryPanelProps) {

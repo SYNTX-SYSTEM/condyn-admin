@@ -22,10 +22,10 @@ async function runSystemVerification() {
   // 2. Validator
   const validationResult = validateCareerAnalysis(rawJson);
   if (!validationResult.success || !validationResult.data) {
-    console.error("❌ Validation failed:", validationResult.error);
+    console.error("❌ Validation failed:", validationResult.issues);
     process.exit(1);
   }
-  const verifiedAnalysis = validationResult.data;
+  const verifiedAnalysis = validationResult.data as any;
   const meta = verifiedAnalysis.structured_data.analysis.metadata;
   console.log("✓ Validation");
   console.log(`  analysis_id: ${meta.analysis_id}`);

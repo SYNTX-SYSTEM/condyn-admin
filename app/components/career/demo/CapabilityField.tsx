@@ -1,9 +1,9 @@
 import React from "react";
-import { DemoCapabilityEvidence } from "../../../career/demo/demo-data";
+import { DemoCapabilityItem } from "../../../career/demo/demo-data";
 import { SIL_TOKENS } from "./SILTokens";
 
 export interface CapabilityFieldProps {
-  capabilities: DemoCapabilityEvidence[];
+  capabilities: DemoCapabilityItem[];
 }
 
 export function CapabilityField({ capabilities }: CapabilityFieldProps) {

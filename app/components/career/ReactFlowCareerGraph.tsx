@@ -233,7 +233,7 @@ export const ReactFlowCareerGraph: React.FC<ReactFlowCareerGraphProps> = ({
           nodeColor={(node: any) => node.data?.style?.colorToken || "#58a6ff"}
           nodeStrokeColor={(node: any) => node.data?.style?.colorToken || "#58a6ff"}
           nodeStrokeWidth={1}
-          nodeBorderRadius={(node: any) => node.data?.style?.shape === "CIRCLE" ? 10 : node.data?.style?.shape === "PILL" ? 8 : 2}
+          nodeBorderRadius={4}
           style={{
             background: "transparent",
             border: "1px solid rgba(48, 54, 61, 0.2)",

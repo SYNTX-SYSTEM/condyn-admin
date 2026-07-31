@@ -108,7 +108,7 @@ export const Inspector: React.FC<InspectorProps> = ({ selectedNode, selectedEdge
                       <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
                         {incomingEdges.map(e => {
                           const src = getNodeById(e.source);
-                          const rel = (e.data?.relationType || e.data?.label || "CONNECTED_TO").toUpperCase();
+                          const rel = (e.data?.relationType || (e.data as any)?.label || "CONNECTED_TO").toUpperCase();
                           return (
                             <div
                               key={e.id}
@@ -150,7 +150,7 @@ export const Inspector: React.FC<InspectorProps> = ({ selectedNode, selectedEdge
                       <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
                         {outgoingEdges.map(e => {
                           const tgt = getNodeById(e.target);
-                          const rel = (e.data?.relationType || e.data?.label || "CONNECTED_TO").toUpperCase();
+                          const rel = (e.data?.relationType || (e.data as any)?.label || "CONNECTED_TO").toUpperCase();
                           return (
                             <div
                               key={e.id}
@@ -227,7 +227,7 @@ export const Inspector: React.FC<InspectorProps> = ({ selectedNode, selectedEdge
             <div style={{ background: "rgba(22, 27, 34, 0.85)", border: "1px solid rgba(48, 54, 61, 0.8)", borderRadius: "10px", padding: "20px" }}>
               <div style={{ fontSize: "10px", color: "#8b949e", fontWeight: 800, textTransform: "uppercase", letterSpacing: "1px", marginBottom: "10px", fontFamily: "monospace" }}>01 // EDGE RELATIONSHIP</div>
               <div style={{ fontSize: "16px", fontWeight: 800, color: "#f0f6fc", fontFamily: "monospace", marginBottom: "8px" }}>
-                {(selectedEdge.data?.relationType || selectedEdge.data?.label || "CONNECTED_TO").toUpperCase()}
+                {(selectedEdge.data?.relationType || (selectedEdge.data as any)?.label || "CONNECTED_TO").toUpperCase()}
               </div>
               <div style={{ fontSize: "11px", color: "#8b949e", fontFamily: "monospace", marginBottom: "4px" }}>{`Source: ${selectedEdge.source}`}</div>
               <div style={{ fontSize: "11px", color: "#8b949e", fontFamily: "monospace" }}>{`Target: ${selectedEdge.target}`}</div>

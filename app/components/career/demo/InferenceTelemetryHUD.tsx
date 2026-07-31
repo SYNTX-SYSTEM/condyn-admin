@@ -47,7 +47,7 @@ export function InferenceTelemetryHUD({
         width: "280px",
         backgroundColor: "rgba(10, 14, 20, 0.94)",
         border: `1px solid ${
-          fallbackTriggered ? SIL_TOKENS.colors.amberActive : SIL_TOKENS.colors.cyanActive
+          fallbackTriggered ? SIL_TOKENS.colors.tensionAmber : SIL_TOKENS.colors.cyanActive
         }`,
         borderRadius: "10px",
         padding: "12px 14px",
@@ -75,7 +75,7 @@ export function InferenceTelemetryHUD({
             fontSize: "10px",
             fontWeight: 700,
             letterSpacing: "0.8px",
-            color: fallbackTriggered ? SIL_TOKENS.colors.amberActive : SIL_TOKENS.colors.cyanActive
+            color: fallbackTriggered ? SIL_TOKENS.colors.tensionAmber : SIL_TOKENS.colors.cyanActive
           }}
         >
           INFERENCE CASCADE
@@ -83,7 +83,7 @@ export function InferenceTelemetryHUD({
         <span
           style={{
             fontSize: "9px",
-            color: SIL_TOKENS.colors.textSecondary
+            color: SIL_TOKENS.colors.textMuted
           }}
         >
           {telemetry ? `${telemetry.totalLatencyMs}ms` : "ACTIVE"}
@@ -94,7 +94,7 @@ export function InferenceTelemetryHUD({
         style={{
           fontSize: "11px",
           fontWeight: 700,
-          color: fallbackTriggered ? SIL_TOKENS.colors.amberActive : SIL_TOKENS.colors.cyanActive,
+          color: fallbackTriggered ? SIL_TOKENS.colors.tensionAmber : SIL_TOKENS.colors.cyanActive,
           marginBottom: "8px",
           display: "flex",
           alignItems: "center",
@@ -132,7 +132,7 @@ export function InferenceTelemetryHUD({
                     attempt.status === "SUCCESS"
                       ? SIL_TOKENS.colors.cyanActive
                       : attempt.status === "RATE_LIMITED"
-                      ? SIL_TOKENS.colors.amberActive
+                      ? SIL_TOKENS.colors.tensionAmber
                       : "#ff5555"
                 }}
               >

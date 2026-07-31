@@ -296,7 +296,7 @@ export function SystemCodexModal({
           width: "920px",
           maxWidth: "95vw",
           maxHeight: "88vh",
-          backgroundColor: SIL_TOKENS.colors.surface,
+          backgroundColor: SIL_TOKENS.colors.field,
           border: `1px solid ${SIL_TOKENS.colors.cyanActive}`,
           borderRadius: "16px",
           boxShadow: `0 0 32px rgba(56, 229, 255, 0.28)`,
