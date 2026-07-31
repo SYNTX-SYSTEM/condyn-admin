@@ -120,27 +120,40 @@ export default function AnalyzePanel({ token }: { token: string }) {
           body: formData
         });
       } else {
-        res = await fetch(`${API_URL}/analyze`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`
-          },
-          body: JSON.stringify({
-            text: inputText,
-            context: context || undefined
-          })
-        });
+        try {
+          res = await fetch('/api/career/analyze', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              documents: [{ type: 'text', title: 'Input Text', content: inputText }]
+            })
+          });
+          if (!res.ok) throw new Error('Primary pipeline fallback');
+        } catch (e) {
+          res = await fetch(`${API_URL}/analyze`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${token}`
+            },
+            body: JSON.stringify({
+              text: inputText,
+              context: context || undefined
+            })
+          });
+        }
       }
 
       const data = await res.json();
       
       if (!res.ok) {
-        throw new Error(data.detail || 'Analysis failed');
+        throw new Error(data.detail || (data.issues && data.issues[0]?.message) || 'Analysis failed');
       }
       
-      setResult(data.analysis);
-      setTokensUsed(data.tokens_used || 0);
+      setResult(data.reportMarkdown || data.analysis || '');
+      setTokensUsed(data.tokens_used || data.metadata?.total_word_count || 0);
       
     } catch (err: any) {
       console.warn("Backend API failed, showing mock markdown for testing:", err.message);

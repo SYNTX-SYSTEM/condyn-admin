@@ -115,7 +115,9 @@ export async function POST(req: Request) {
       matching,
       recommendations,
       reactFlowGraph,
-      inferenceTelemetry
+      inferenceTelemetry,
+      reportMarkdown: verifiedAnalysis.report_markdown,
+      analysis: verifiedAnalysis.report_markdown
     });
   } catch (err: any) {
     console.error("Fatal error in /api/career/analyze:", err);
