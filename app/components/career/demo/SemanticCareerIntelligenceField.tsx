@@ -1,12 +1,14 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { DemoCareerIntelligenceData } from "../../../career/demo/demo-data";
 import { SIL_TOKENS } from "./SILTokens";
 import { IdentityCoreDropZone } from "./IdentityCoreDropZone";
 import { OrbitalResonanceBubble } from "./OrbitalResonanceBubble";
 import { SourceDock } from "./SourceDock";
 import { SemanticGuideDrawer } from "./SemanticGuideDrawer";
+import { SystemCodexModal } from "./SystemCodexModal";
+import { GuidedOnboardingOverlay } from "./GuidedOnboardingOverlay";
 import { OrbitalSubspaceView, SemanticZoomLevel } from "./OrbitalSubspaceView";
 import { InferenceTelemetryHUD } from "./InferenceTelemetryHUD";
 import { buildEvidenceGraph } from "../../../../lib/career/evidence/traversal";
@@ -43,6 +45,33 @@ export function SemanticCareerIntelligenceField({
   const [analysisSuccess, setAnalysisSuccess] = useState(initialAnalysisState?.analysisSuccess ?? false);
   const [inferenceTelemetry, setInferenceTelemetry] = useState<any>(initialAnalysisState?.inferenceTelemetry ?? null);
   const [lastStagedDocs, setLastStagedDocs] = useState<any[]>([]);
+  const [isCodexOpen, setIsCodexOpen] = useState(false);
+  const [isOnboardingOpen, setIsOnboardingOpen] = useState(false);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      try {
+        const seen = localStorage.getItem("condyn_onboarding_seen");
+        if (!seen) {
+          setIsOnboardingOpen(true);
+        }
+      } catch (err) {}
+    }
+  }, []);
+
+  const handleHudAction = (action: "OPEN EVIDENCE" | "INSPECT SOURCES" | "VIEW MATCHES", stageId: string) => {
+    setActiveStageId(stageId);
+    if (action === "OPEN EVIDENCE") {
+      setZoomLevel(2);
+      setSelectedClusterId(`cl-${stageId}-1`);
+    } else if (action === "INSPECT SOURCES") {
+      setZoomLevel(2);
+      setSelectedClusterId(`cl-${stageId}-1`);
+    } else if (action === "VIEW MATCHES") {
+      setZoomLevel(1);
+      setSelectedClusterId(null);
+    }
+  };
 
   const handleAnalyze = async (stagedDocs: any[]) => {
     setLastStagedDocs(stagedDocs);
@@ -133,6 +162,7 @@ export function SemanticCareerIntelligenceField({
       count: data.sources.length,
       glyph: "◈",
       angleDeg: -90,
+      color: "#38e5ff",
       animationDelay: "0s",
       photonOutDur: "3.6s",
       photonInDur: "4.4s",
@@ -145,6 +175,7 @@ export function SemanticCareerIntelligenceField({
       count: data.capabilities.length,
       glyph: "⬡",
       angleDeg: -30,
+      color: "#00ffd5",
       animationDelay: "-4s",
       photonOutDur: "4.2s",
       photonInDur: "5.0s",
@@ -157,6 +188,7 @@ export function SemanticCareerIntelligenceField({
       count: data.companyMatches.length,
       glyph: "◎",
       angleDeg: 30,
+      color: "#6b8eff",
       animationDelay: "-8s",
       photonOutDur: "4.8s",
       photonInDur: "5.6s",
@@ -169,6 +201,7 @@ export function SemanticCareerIntelligenceField({
       count: data.roleMatches.length,
       glyph: "⎔",
       angleDeg: 90,
+      color: "#b87fff",
       animationDelay: "-12s",
       photonOutDur: "3.9s",
       photonInDur: "4.7s",
@@ -181,6 +214,7 @@ export function SemanticCareerIntelligenceField({
       count: data.capabilityGaps.length,
       glyph: "⟁",
       angleDeg: 150,
+      color: "#ff7c5c",
       animationDelay: "-16s",
       photonOutDur: "4.5s",
       photonInDur: "5.3s",
@@ -193,6 +227,7 @@ export function SemanticCareerIntelligenceField({
       count: data.nextActions.length,
       glyph: "∿",
       angleDeg: 210,
+      color: "#38ff8b",
       animationDelay: "-20s",
       photonOutDur: "5.1s",
       photonInDur: "6.0s",
@@ -261,13 +296,11 @@ export function SemanticCareerIntelligenceField({
         backgroundColor: SIL_TOKENS.colors.void,
         color: SIL_TOKENS.colors.textPrimary,
         minHeight: "960px",
-        padding: "24px 32px",
+        height: "100vh",
+        width: "100%",
         fontFamily: SIL_TOKENS.typography.mono,
         position: "relative",
-        overflow: "visible",
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "flex-start"
+        overflow: "hidden"
       }}
     >
 
@@ -344,7 +377,7 @@ export function SemanticCareerIntelligenceField({
       </div>
 
       {/* Left Compact SourceDock */}
-      <div style={{ zIndex: 10 }}>
+      <div style={{ position: "absolute", top: "24px", left: "24px", zIndex: 30 }}>
         <SourceDock onAnalyze={handleAnalyze} isAnalyzing={isAnalyzing} />
       </div>
 
@@ -474,15 +507,17 @@ export function SemanticCareerIntelligenceField({
       `}</style>
       <div
         style={{
-          position: "relative",
+          position: "absolute",
+          top: "50%",
+          left: "50%",
           width: "800px",
           height: "800px",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          margin: "16px auto 0",
-          transform: `scale(${cameraScale}) translate(${cameraTranslateX}px, ${cameraTranslateY}px)`,
-          transition: "transform 0.75s cubic-bezier(0.16, 1, 0.3, 1)"
+          transform: `translate(calc(-50% + ${cameraTranslateX}px), calc(-50% + ${cameraTranslateY}px)) scale(${cameraScale})`,
+          transition: "transform 0.75s cubic-bezier(0.16, 1, 0.3, 1)",
+          zIndex: 5
         }}
       >
         {/* SVG Energy Flow Overlay connecting core to orbitals */}
@@ -731,6 +766,8 @@ export function SemanticCareerIntelligenceField({
                       }}
                       onMouseEnter={() => setHoveredStageId(st.stageId)}
                       onMouseLeave={() => setHoveredStageId(null)}
+                      onHudAction={handleHudAction}
+                      accentColor={st.color}
                     />
                   </div>
                 );
@@ -891,10 +928,70 @@ export function SemanticCareerIntelligenceField({
         </div>
       )}
 
+      {/* Persistent Top-Right How This Works / Codex Button */}
+      <div
+        style={{
+          position: "fixed",
+          top: "24px",
+          right: "24px",
+          zIndex: 60,
+          display: "flex",
+          gap: "10px"
+        }}
+      >
+        <button
+          data-testid="how-this-works-btn"
+          onClick={() => setIsOnboardingOpen(true)}
+          style={{
+            padding: "8px 14px",
+            backgroundColor: "rgba(10, 20, 30, 0.9)",
+            border: `1px solid ${SIL_TOKENS.colors.cyanActive}`,
+            borderRadius: "8px",
+            color: SIL_TOKENS.colors.cyanActive,
+            fontFamily: SIL_TOKENS.typography.mono,
+            fontSize: "11px",
+            fontWeight: 700,
+            cursor: "pointer",
+            boxShadow: `0 0 16px rgba(56, 229, 255, 0.25)`
+          }}
+        >
+          ? HOW THIS WORKS
+        </button>
+        <button
+          data-testid="open-system-codex-btn"
+          onClick={() => setIsCodexOpen(true)}
+          style={{
+            padding: "8px 14px",
+            backgroundColor: "rgba(56, 229, 255, 0.15)",
+            border: `1px solid ${SIL_TOKENS.colors.cyanActive}`,
+            borderRadius: "8px",
+            color: SIL_TOKENS.colors.cyanActive,
+            fontFamily: SIL_TOKENS.typography.mono,
+            fontSize: "11px",
+            fontWeight: 700,
+            cursor: "pointer",
+            boxShadow: `0 0 16px rgba(56, 229, 255, 0.3)`
+          }}
+        >
+          📖 SYSTEM CODEX [DE|EN]
+        </button>
+      </div>
+
       {/* Right Collapsible Semantic Guide Drawer */}
       <div style={{ zIndex: 10 }}>
         <SemanticGuideDrawer />
       </div>
+
+      <SystemCodexModal
+        isOpen={isCodexOpen}
+        onClose={() => setIsCodexOpen(false)}
+      />
+
+      <GuidedOnboardingOverlay
+        isOpen={isOnboardingOpen}
+        onClose={() => setIsOnboardingOpen(false)}
+        onOpenCodex={() => setIsCodexOpen(true)}
+      />
     </div>
   );
 }

@@ -15,14 +15,15 @@ export interface SourceDockProps {
   onAddSource?: (type: string) => void;
   onAnalyze?: (documents: StagedDocumentItem[]) => void;
   isAnalyzing?: boolean;
+  initialStagedDocs?: StagedDocumentItem[];
 }
 
 /**
  * CONDYN / SYNTX — Semantic Interface Language (SIL v3.0 Phase 3c)
  * SourceDock: Functional left-side ingestion dock focused on feeding the core with PDF, URL, and Text sources.
  */
-export function SourceDock({ onAnalyze, isAnalyzing = false }: SourceDockProps) {
-  const [stagedDocs, setStagedDocs] = useState<StagedDocumentItem[]>([]);
+export function SourceDock({ onAnalyze, isAnalyzing = false, initialStagedDocs = [] }: SourceDockProps) {
+  const [stagedDocs, setStagedDocs] = useState<StagedDocumentItem[]>(initialStagedDocs);
   const [activeInputMode, setActiveInputMode] = useState<"none" | "github" | "website" | "text">("none");
   const [inputUrl, setInputUrl] = useState("");
   const [inputTitle, setInputTitle] = useState("");

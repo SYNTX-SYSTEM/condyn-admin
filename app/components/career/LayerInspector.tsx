@@ -236,7 +236,7 @@ export const LayerInspector: React.FC<LayerInspectorProps> = ({
             <h5 style={{ fontSize: "11px", fontFamily: "monospace", color: "#8b949e", textTransform: "uppercase", letterSpacing: "1px", marginBottom: "8px" }}>
               Snapshot JSON Payload ({selectedSnapshot.filename})
             </h5>
-            <pre className="json-preview" style={{ background: "#0a0d14", border: "1px solid rgba(48, 54, 61, 0.6)", borderRadius: "8px", padding: "14px", maxHeight: "320px", fontSize: "11px", lineHeight: "1.5" }}>
+            <pre className="json-preview" style={{ background: "#0a0d14", border: "1px solid rgba(48, 54, 61, 0.6)", borderRadius: "8px", padding: "14px", maxHeight: "600px", overflowY: "auto", whiteSpace: "pre-wrap", wordBreak: "break-word", fontSize: "11px", lineHeight: "1.5" }}>
               {selectedSnapshot.data
                 ? JSON.stringify(selectedSnapshot.data, null, 2)
                 : "No data loaded yet..."}

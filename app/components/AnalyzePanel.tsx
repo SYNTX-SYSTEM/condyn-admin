@@ -411,7 +411,9 @@ Da deine lokale Datenbank noch leer ist, hier ein **Mock-Ergebnis** um das Markd
           overflowY: 'auto',
           fontSize: '13px',
           lineHeight: '1.8',
-          background: 'rgba(255, 255, 255, 0.5)'
+          background: 'rgba(255, 255, 255, 0.5)',
+          whiteSpace: 'pre-wrap',
+          wordBreak: 'break-word'
         }}>
           {loading ? (
             <div className="loading-symbiotic">

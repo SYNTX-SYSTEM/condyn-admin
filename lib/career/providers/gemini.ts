@@ -80,7 +80,9 @@ export class GeminiProvider implements InferenceProvider {
             systemInstruction: prompt.systemPrompt,
             responseMimeType: "application/json",
             temperature: 0.1,
-            maxOutputTokens: 8192
+            maxOutputTokens: process.env.GEMINI_MAX_OUTPUT_TOKENS
+              ? parseInt(process.env.GEMINI_MAX_OUTPUT_TOKENS, 10)
+              : 16384
           }
         });
 

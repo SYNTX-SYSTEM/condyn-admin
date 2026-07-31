@@ -50,21 +50,24 @@ export function buildEvidenceGraph(
   const organisationNodes: OrganisationNode[] = [];
   const edges: EvidenceGraphEdge[] = [];
 
-  const rawDocs = analysis?.structured_data?.analysis?.documents || [];
-  const rawCaps = analysis?.structured_data?.analysis?.capabilities || [];
+  const rawDocs = [
+    ...(analysis?.structured_data?.analysis?.documents || analysis?.documents || analysis?.sources || []),
+    ...jobs.filter((j: any) => j.type && j.id)
+  ];
+  const rawCaps = analysis?.structured_data?.analysis?.capabilities || analysis?.capabilities || [];
 
   // 1. Build Source Nodes & Document Evidence Nodes
   let evidenceCounter = 1;
   const knownSourceIds = new Set<string>();
 
   for (const doc of rawDocs) {
-    const srcId = doc.entity_id || "DOC_UNKNOWN";
+    const srcId = doc.entity_id || doc.id || "DOC_UNKNOWN";
     if (!knownSourceIds.has(srcId)) {
       knownSourceIds.add(srcId);
       sourceNodes.push({
         id: srcId,
-        title: doc.identity?.name || "Source Document",
-        type: "pdf"
+        title: doc.identity?.name || doc.title || doc.name || "Source Document",
+        type: doc.type || "pdf"
       });
     }
 
@@ -97,7 +100,7 @@ export function buildEvidenceGraph(
   }
 
   // Ensure default canonical source node exists for synthetic grounding if needed
-  if (!knownSourceIds.has("canonical_analysis")) {
+  if (knownSourceIds.size === 0 && !knownSourceIds.has("canonical_analysis")) {
     knownSourceIds.add("canonical_analysis");
     sourceNodes.push({
       id: "canonical_analysis",
@@ -113,7 +116,11 @@ export function buildEvidenceGraph(
     const capName = cap.identity?.name || cap.name || "Unknown Capability";
 
     const supportingEvIds: string[] = [];
-    const evItems = cap.evidence || [];
+    const evItems = Array.isArray(cap.evidence) && cap.evidence.length > 0
+      ? cap.evidence
+      : (cap.evidenceQuote || cap.evidence_quote)
+      ? [{ doc_id: cap.doc_id || cap.docId || rawDocs[0]?.entity_id || rawDocs[0]?.id || "canonical_analysis", context_quote: cap.evidenceQuote || cap.evidence_quote }]
+      : [];
 
     for (const ev of evItems) {
       const srcId = ev.doc_id || "canonical_analysis";
@@ -209,7 +216,7 @@ export function buildEvidenceGraph(
   const knownOrgIds = new Set<string>();
 
   for (const job of jobs) {
-    const orgId = `org_${job.company.toLowerCase().replace(/[^a-z0-9]/g, "_")}`;
+    const orgId = `org_${(job.company || "unknown").toLowerCase().replace(/[^a-z0-9]/g, "_")}`;
     if (!knownOrgIds.has(orgId)) {
       knownOrgIds.add(orgId);
       organisationNodes.push({
@@ -235,7 +242,7 @@ export function buildEvidenceGraph(
       weight: 1.0
     });
 
-    for (const req of job.requirements) {
+    for (const req of (job.requirements || [])) {
       const reqId = `req_${job.jobId}_${reqCounter++}`;
       requirementNodes.push({
         id: reqId,

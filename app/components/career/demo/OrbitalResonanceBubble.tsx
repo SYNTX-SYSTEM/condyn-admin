@@ -207,7 +207,27 @@ export interface OrbitalResonanceBubbleProps {
   onMouseEnter?: () => void;
   onMouseLeave?: () => void;
   onHudAction?: (action: "OPEN EVIDENCE" | "INSPECT SOURCES" | "VIEW MATCHES", stageId: string) => void;
+  accentColor?: string;
   style?: React.CSSProperties;
+}
+
+export function getOrbitAccentColor(stageId: string): string {
+  switch (stageId) {
+    case "01":
+      return "#38e5ff"; // Cyan Core
+    case "02":
+      return "#00ffd5"; // Emerald Capability
+    case "03":
+      return "#6b8eff"; // Electric Indigo Resonance
+    case "04":
+      return "#b87fff"; // Purple Role
+    case "05":
+      return "#ff7c5c"; // Amber-Coral Tension
+    case "06":
+      return "#38ff8b"; // Mint Evolution
+    default:
+      return "#38e5ff";
+  }
 }
 
 function getOrbitalPhysicsClass(stageId: string): string {
@@ -251,6 +271,7 @@ export function OrbitalResonanceBubble({
   onMouseEnter,
   onMouseLeave,
   onHudAction,
+  accentColor,
   style
 }: OrbitalResonanceBubbleProps) {
   const isHighlighted = isActive || isHovered;
@@ -264,6 +285,7 @@ export function OrbitalResonanceBubble({
 
   const computedPlacement = placement || getTooltipPlacement(angle, stageId);
   const physicsClass = getOrbitalPhysicsClass(stageId);
+  const stageAccentColor = accentColor || getOrbitAccentColor(stageId);
 
   return (
     <>
@@ -665,9 +687,27 @@ export function OrbitalResonanceBubble({
                 }}
               >
                 {[
-                  { label: "OPEN EVIDENCE", id: "open-evidence" },
-                  { label: "INSPECT SOURCES", id: "inspect-sources" },
-                  { label: "VIEW MATCHES", id: "view-matches" }
+                  {
+                    label: "OPEN EVIDENCE",
+                    id: "open-evidence",
+                    color: stageAccentColor,
+                    bg: "rgba(56, 229, 255, 0.16)",
+                    border: stageAccentColor
+                  },
+                  {
+                    label: "INSPECT SOURCES",
+                    id: "inspect-sources",
+                    color: "#8ebbff",
+                    bg: "rgba(107, 142, 255, 0.16)",
+                    border: "#6b8eff"
+                  },
+                  {
+                    label: "VIEW MATCHES",
+                    id: "view-matches",
+                    color: "#66ffdf",
+                    bg: "rgba(0, 255, 213, 0.16)",
+                    border: "#00ffd5"
+                  }
                 ].map((act) => (
                   <button
                     key={act.id}
@@ -680,25 +720,25 @@ export function OrbitalResonanceBubble({
                     }}
                     style={{
                       flex: 1,
-                      backgroundColor: "rgba(56, 229, 255, 0.12)",
-                      border: `1px solid rgba(56, 229, 255, 0.45)`,
-                      color: SIL_TOKENS.colors.cyanActive,
+                      backgroundColor: act.bg,
+                      border: `1px solid ${act.border}77`,
+                      color: act.color,
                       fontSize: "8.5px",
-                      fontWeight: 600,
+                      fontWeight: 700,
                       letterSpacing: "0.5px",
-                      padding: "5px 4px",
-                      borderRadius: "3px",
+                      padding: "6px 4px",
+                      borderRadius: "4px",
                       cursor: "pointer",
                       textAlign: "center",
                       transition: "all 0.2s ease"
                     }}
                     onMouseEnter={(e) => {
-                      e.currentTarget.style.backgroundColor = "rgba(56, 229, 255, 0.28)";
-                      e.currentTarget.style.borderColor = SIL_TOKENS.colors.cyanActive;
+                      e.currentTarget.style.backgroundColor = act.bg.replace("0.16", "0.32");
+                      e.currentTarget.style.borderColor = act.border;
                     }}
                     onMouseLeave={(e) => {
-                      e.currentTarget.style.backgroundColor = "rgba(56, 229, 255, 0.12)";
-                      e.currentTarget.style.borderColor = "rgba(56, 229, 255, 0.45)";
+                      e.currentTarget.style.backgroundColor = act.bg;
+                      e.currentTarget.style.borderColor = `${act.border}77`;
                     }}
                   >
                     {act.label}
