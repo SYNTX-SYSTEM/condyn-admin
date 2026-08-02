@@ -49,3 +49,5 @@ package.json.backup
 output_test.pdf
 .venv/
 output_test.pdf
+*.backup_*
+*.before_*
