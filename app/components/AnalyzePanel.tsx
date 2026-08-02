@@ -16,7 +16,7 @@ export default function AnalyzePanel({ token }: { token: string }) {
   const [continuations, setContinuations] = useState(0);
   const [stopReason, setStopReason] = useState<string | null>(null);
   const [missingSections, setMissingSections] = useState<string[]>([]);
-  
+
   // PDF States
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
   const [pdfUrl, setPdfUrl] = useState<string | null>(null);
@@ -100,59 +100,52 @@ export default function AnalyzePanel({ token }: { token: string }) {
 
   const handleAnalyze = async () => {
     if (!uploadedFile && !inputText.trim()) return;
-    
+
     setLoading(true);
     setResult('');
     setTokensUsed(0);
-    
+
     try {
       let res;
-      
-      if (uploadedFile) {
-        const arrayBuffer = await uploadedFile.arrayBuffer();
-        const base64 = typeof window !== 'undefined'
-          ? btoa(new Uint8Array(arrayBuffer).reduce((data, byte) => data + String.fromCharCode(byte), ''))
-          : Buffer.from(arrayBuffer).toString('base64');
 
-        res = await fetch('/api/career/analyze', {
+      if (uploadedFile) {
+        const formData = new FormData();
+        formData.append('file', uploadedFile);
+        if (context) {
+          formData.append('context', context);
+        }
+        formData.append('language', 'en');
+
+        res = await fetch(`${API_URL}/analyze/upload`, {
           method: 'POST',
           headers: {
-            'Content-Type': 'application/json'
+            Authorization: `Bearer ${token}`
           },
-          body: JSON.stringify({
-            documents: [{ type: 'pdf', title: uploadedFile.name, base64 }]
-          })
+          body: formData
         });
       } else {
-        res = await fetch('/api/career/analyze', {
+        res = await fetch(`${API_URL}/analyze`, {
           method: 'POST',
           headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`
           },
           body: JSON.stringify({
-            documents: [{ type: 'text', title: 'Input Text', content: inputText }]
+            text: inputText,
+            context: context || undefined
           })
         });
       }
 
       const data = await res.json();
-      
+
       if (!res.ok) {
-        throw new Error(data.detail || (data.issues && data.issues[0]?.message) || 'Analysis failed');
+        throw new Error(data.detail || 'Analysis failed');
       }
-      
-      let markdownText = data.reportMarkdown || data.analysis || '';
-      const missing = data.missing_sections || data.manifest?.missing_sections || [];
-      if (data.complete === false || data.stop_reason === 'max_tokens' || missing.length > 0) {
-        markdownText += `\n\n---\n> ⚠️ **HINWEIS:** Analyse unvollständig! (${missing.length > 0 ? `Fehlende Pflicht-Sektionen: ${missing.join(', ')}` : 'Tokenlimit erreicht'})`;
-      }
-      setResult(markdownText);
-      setTokensUsed(data.tokens_used || data.metadata?.total_word_count || 0);
-      setAnalysisComplete(data.complete === true && missing.length === 0 && data.stop_reason !== 'max_tokens');
-      setContinuations(data.continuations || 0);
-      setStopReason(data.stop_reason || data.stopReason || null);
-      setMissingSections(missing);
-      
+
+      setResult(data.analysis);
+      setTokensUsed(data.tokens_used || 0);
+
     } catch (err: any) {
       console.warn("Backend API failed, showing mock markdown for testing:", err.message);
       setResult(`## ⚠️ Lokales Backend nicht erreichbar
@@ -190,20 +183,20 @@ Da deine lokale Datenbank noch leer ist, hier ein **Mock-Ergebnis** um das Markd
   const loadSample = async () => {
     console.log("🔵 Load Sample clicked!");
     handleClearFile();
-    
+
     try {
       console.log("🔵 Fetching sample...");
       const res = await fetch("/samples/sample-email.txt");
       console.log("🔵 Response:", res.status);
       const text = await res.text();
       console.log("🔵 Text loaded, length:", text.length);
-      
+
       setTimeout(() => {
         setInputText(text);
         setContext("Internal management email");
         console.log("🔵 Text set!");
       }, 100);
-      
+
     } catch (err) {
       console.error("❌ Failed to load sample:", err);
       alert("Failed to load sample email");
@@ -256,7 +249,7 @@ Da deine lokale Datenbank noch leer ist, hier ein **Mock-Ergebnis** um das Markd
           </div>
         )}
 
-        <div 
+        <div
           style={{ position: 'relative', flex: 1, marginBottom: '12px' }}
           onDragOver={handleDragOver}
           onDragLeave={handleDragLeave}
@@ -279,14 +272,14 @@ Da deine lokale Datenbank noch leer ist, hier ein **Mock-Ergebnis** um das Markd
               value={inputText}
               onChange={(e) => setInputText(e.target.value)}
               placeholder="Paste document text here or drag & drop PDF..."
-              style={{ 
-                width: '100%', 
-                height: '100%', 
+              style={{
+                width: '100%',
+                height: '100%',
                 minHeight: '200px'
               }}
             />
           )}
-          
+
           {isDragging && !pdfUrl && (
             <div style={{
               position: 'absolute',
@@ -308,7 +301,7 @@ Da deine lokale Datenbank noch leer ist, hier ein **Mock-Ergebnis** um das Markd
               📄 Drop PDF here
             </div>
           )}
-          
+
           {!pdfUrl && (
             <div style={{
               position: 'absolute',
@@ -326,7 +319,7 @@ Da deine lokale Datenbank noch leer ist, hier ein **Mock-Ergebnis** um das Markd
               />
               <button
                 onClick={() => fileInputRef.current?.click()}
-                style={{ 
+                style={{
                   padding: '8px 16px',
                   fontSize: '12px',
                   background: 'linear-gradient(135deg, #9C27B0, #BA68C8)',
@@ -342,7 +335,7 @@ Da deine lokale Datenbank noch leer ist, hier ein **Mock-Ergebnis** um das Markd
               </button>
               <button
                 onClick={loadSample}
-                style={{ 
+                style={{
                   padding: '8px 16px',
                   fontSize: '12px',
                   background: 'linear-gradient(135deg, #00BCD4, #4FC3F7)',
@@ -378,10 +371,10 @@ Da deine lokale Datenbank noch leer ist, hier ein **Mock-Ergebnis** um das Markd
           {loading ? 'ANALYZING...' : '⚡ ANALYZE'}
         </button>
 
-        <div className="card" style={{ 
-          fontSize: '12px', 
+        <div className="card" style={{
+          fontSize: '12px',
           padding: '12px',
-          background: 'rgba(21, 101, 192, 0.05)' 
+          background: 'rgba(21, 101, 192, 0.05)'
         }}>
           <div style={{ marginBottom: '4px' }}>
             <strong>Using:</strong> <span className="text-mono">{activePrompt}</span>
@@ -426,8 +419,8 @@ Da deine lokale Datenbank noch leer ist, hier ein **Mock-Ergebnis** um das Markd
             <button
               className={copySuccess ? "btn-success" : "btn-primary"}
               onClick={copyToClipboard}
-              style={{ 
-                padding: '6px 14px', 
+              style={{
+                padding: '6px 14px',
                 fontSize: '12px',
                 background: copySuccess ? undefined : 'transparent',
                 color: copySuccess ? undefined : '#1565C0',
