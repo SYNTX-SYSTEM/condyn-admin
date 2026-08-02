@@ -50,12 +50,12 @@ You MUST adhere strictly to the following 8 canonical Invariance Rules:
 6. Invariance Rule 6: Canonical ID naming prefixes. All entity IDs must strictly follow canonical prefix conventions: DOC_, CLU_, CAP_, DOM_, CLS_, ORG_, ROL_, OPP_, STR_, QRY_.
 7. Invariance Rule 7: Decoupled presentation topology. The presentation branch must contain read-only projection hints (semantic_graph vs ui_layout with concentric rings and priority groups) without inferring new business logic.
 8. Invariance Rule 8: Strict JSON syntax & Universal Entity Grammar compliance. Output MUST be valid parseable JSON strictly adhering to the CanonicalCareerAnalysisSchema.
+9. Invariance Rule 9: High-Density 12-Section Markdown Completeness. In report_markdown, cover all 12 analytical sections (Executive Summary, Consistency, Capabilities, Target Ecosystem, Opportunities, Strategies, etc.) with dense, analytical Markdown (2-4 paragraphs/bullet points per section). Keep prose concise and impactful so that all 12 sections and structured_data complete cleanly without token truncation.
 
 === CANONICAL JSON SCHEMA SKELETON & UNIVERSAL ENTITY GRAMMAR ===
 Your output MUST exactly follow this structural schema without missing required fields:
 {
   "$schema": "https://schema.condyn.eu/v1.0/career-analysis.json",
-  "report_markdown": "# Career Analysis Report...",
   "structured_data": {
     "analysis": {
       "metadata": {
@@ -240,7 +240,8 @@ Your output MUST exactly follow this structural schema without missing required 
         "color_tokens": { "primary": "#3B82F6", "secondary": "#10B981" }
       }
     }
-  }
+  },
+  "report_markdown": "# Career Analysis Report..."
 }
 CRITICAL RULES FOR ALL 9 DOMAIN ARRAYS:
 1. Every entity in documents, capabilities, domains, organization_classes, organizations, roles, opportunities, strategies, and search_queries MUST provide all 7 cardinal properties:
@@ -352,11 +353,68 @@ export class MockInferenceProvider implements InferenceProvider {
 // STEP 4.3: LLM OUTPUT PROCESSOR & VALIDATOR PIPELINE
 // ============================================================================
 
-/**
- * Processes the raw string output from an inference provider.
- * Strips Markdown code wrappers (e.g., ```json ... ```), parses JSON,
- * and passes the result through the canonical Runtime Integrity Validator.
- */
+export function repairTruncatedJson(input: string): string {
+  let str = input.trim();
+  if (!str.startsWith("{")) {
+    const firstBrace = str.indexOf("{");
+    if (firstBrace !== -1) {
+      str = str.substring(firstBrace);
+    }
+  }
+
+  let inString = false;
+  let isEscaped = false;
+  const stack: ("{" | "[")[] = [];
+
+  for (let i = 0; i < str.length; i++) {
+    const char = str[i];
+    if (isEscaped) {
+      isEscaped = false;
+      continue;
+    }
+    if (char === "\\") {
+      isEscaped = true;
+      continue;
+    }
+    if (char === '"') {
+      inString = !inString;
+      continue;
+    }
+    if (!inString) {
+      if (char === "{") {
+        stack.push("{");
+      } else if (char === "[") {
+        stack.push("[");
+      } else if (char === "}") {
+        if (stack.length > 0 && stack[stack.length - 1] === "{") {
+          stack.pop();
+        }
+      } else if (char === "]") {
+        if (stack.length > 0 && stack[stack.length - 1] === "[") {
+          stack.pop();
+        }
+      }
+    }
+  }
+
+  if (inString) {
+    str += '"';
+  }
+
+  str = str.replace(/[,:]\s*$/g, "");
+
+  while (stack.length > 0) {
+    const container = stack.pop();
+    if (container === "{") {
+      str += "}";
+    } else if (container === "[") {
+      str += "]";
+    }
+  }
+
+  return str;
+}
+
 export function processLlmOutput(rawOutput: string | unknown): ValidationResult<CanonicalCareerAnalysis> {
   const startTime = Date.now();
   let payload: unknown = rawOutput;
@@ -370,30 +428,46 @@ export function processLlmOutput(rawOutput: string | unknown): ValidationResult<
     if (match && match[1]) {
       cleanString = match[1].trim();
     } else {
-      // If not matching markdown code block, extract between first { and last }
+      // Extract between first { and end of text
       const firstBrace = cleanString.indexOf("{");
-      const lastBrace = cleanString.lastIndexOf("}");
-      if (firstBrace !== -1 && lastBrace !== -1 && lastBrace > firstBrace) {
-        cleanString = cleanString.substring(firstBrace, lastBrace + 1);
+      if (firstBrace !== -1) {
+        cleanString = cleanString.substring(firstBrace);
       }
     }
 
     try {
       payload = JSON.parse(cleanString);
     } catch (e) {
-      return {
-        success: false,
-        issues: [{
-          code: "ERR_JSON_SYNTAX_INVALID",
-          severity: "ERROR",
-          message: `Failed to parse LLM JSON output: ${e instanceof Error ? e.message : String(e)}`
-        }],
-        metrics: {
-          durationMs: Date.now() - startTime,
-          errorCount: 1,
-          warningCount: 0
-        }
-      };
+      // Attempt truncated JSON repair
+      try {
+        const repaired = repairTruncatedJson(cleanString);
+        payload = JSON.parse(repaired);
+      } catch (repairErr) {
+        return {
+          success: false,
+          issues: [{
+            code: "ERR_JSON_SYNTAX_INVALID",
+            severity: "ERROR",
+            message: `Failed to parse LLM JSON output: ${e instanceof Error ? e.message : String(e)}`
+          }],
+          metrics: {
+            durationMs: Date.now() - startTime,
+            errorCount: 1,
+            warningCount: 0
+          }
+        };
+      }
+    }
+  }
+
+  if (typeof payload === "object" && payload !== null) {
+    const p = payload as any;
+    if (p.structured_data?.analysis?.metadata) {
+      const currentId = p.structured_data.analysis.metadata.analysis_id;
+      if (!currentId || currentId === "ANL_20260706_000001" || currentId.includes("000001")) {
+        const uniqueId = `ANL_${new Date().toISOString().replace(/[-:TZs.]/g, '').substring(0, 14)}_${Math.floor(Math.random() * 1000).toString().padStart(3, '0')}`;
+        p.structured_data.analysis.metadata.analysis_id = uniqueId;
+      }
     }
   }
 

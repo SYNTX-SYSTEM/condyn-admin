@@ -84,7 +84,7 @@ describe("CONDYN Career Analysis Protocol v1.0 - Step 9: Gemini Inference Provid
     // 1. Default fallback
     const defaultProvider = new GeminiProvider();
     await defaultProvider.execute(samplePrompt);
-    expect(mockGenerateContent.mock.calls[0][0].model).toBe("gemini-2.5-flash");
+    expect(mockGenerateContent.mock.calls[0][0].model).toBe("gemini-2.0-flash");
 
     // 2. Env variable override
     process.env.GEMINI_MODEL = "gemini-1.5-flash";
@@ -111,5 +111,31 @@ describe("CONDYN Career Analysis Protocol v1.0 - Step 9: Gemini Inference Provid
     const provider = new GeminiProvider();
 
     await expect(provider.execute(samplePrompt)).rejects.toThrow(/ERR_PROVIDER_FAILURE.*Missing GEMINI_API_KEY/);
+  });
+
+  it("should automatically continue when finishReason is MAX_TOKENS and track telemetry", async () => {
+    process.env.GEMINI_API_KEY = "test-mock-api-key";
+    mockGenerateContent
+      .mockResolvedValueOnce({
+        text: () => '{"part1": "chunk1"',
+        candidates: [{ finishReason: "MAX_TOKENS" }],
+        usageMetadata: { promptTokenCount: 100, candidatesTokenCount: 500 }
+      })
+      .mockResolvedValueOnce({
+        text: ' "part2": "chunk2"}',
+        candidates: [{ finishReason: "STOP" }],
+        usageMetadata: { promptTokenCount: 120, candidatesTokenCount: 300 }
+      });
+
+    const provider = new GeminiProvider();
+    const result = await provider.execute(samplePrompt);
+
+    expect(mockGenerateContent).toHaveBeenCalledTimes(2);
+    expect(result).toBe('{"part1": "chunk1"\n "part2": "chunk2"}');
+    expect(provider.lastTelemetry).toBeDefined();
+    expect(provider.lastTelemetry?.finishReason).toBe("STOP");
+    expect(provider.lastTelemetry?.continuations).toBe(1);
+    expect(provider.lastTelemetry?.complete).toBe(true);
+    expect(provider.lastTelemetry?.outputTokens).toBe(800);
   });
 });

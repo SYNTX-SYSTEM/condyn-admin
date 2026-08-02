@@ -1,4 +1,7 @@
 import { NextResponse } from "next/server";
+
+export const maxDuration = 120; // 2 minutes execution limit for LLM career pipeline
+export const dynamic = "force-dynamic";
 import { executeCareerAnalysisPipeline } from "../../../../lib/career/pipeline";
 import { loadWebsiteDocument } from "../../../../lib/career/loaders/website";
 import { loadGitHubRepositoryDocuments } from "../../../../lib/career/loaders/github";
@@ -85,8 +88,13 @@ export async function POST(req: Request) {
 
     const verifiedAnalysis = validationResult.data as any;
 
-    // Save to request/demo-scoped repository
-    await requestScopedRepository.save(verifiedAnalysis);
+    let persistenceWarning: string | undefined = undefined;
+    try {
+      await requestScopedRepository.save(verifiedAnalysis);
+    } catch (saveErr: any) {
+      console.warn("Non-fatal repository persistence error during analysis execution:", saveErr.message);
+      persistenceWarning = saveErr.message || String(saveErr);
+    }
 
     // Execute server-side perception transformation chain
     const projection = projectTopology(verifiedAnalysis);
@@ -104,7 +112,11 @@ export async function POST(req: Request) {
       modelsAttempted: [{ model: "deterministic-mock-v1", status: "SUCCESS", latencyMs: 12 }],
       activeModel: "deterministic-mock-v1",
       fallbackTriggered: false,
-      totalLatencyMs: 12
+      totalLatencyMs: 12,
+      finishReason: "STOP",
+      outputTokens: 0,
+      continuations: 0,
+      complete: true
     };
 
     return NextResponse.json({
@@ -116,6 +128,10 @@ export async function POST(req: Request) {
       recommendations,
       reactFlowGraph,
       inferenceTelemetry,
+      persistenceWarning,
+      complete: inferenceTelemetry.complete !== false,
+      stop_reason: inferenceTelemetry.finishReason || "STOP",
+      continuations: inferenceTelemetry.continuations || 0,
       reportMarkdown: verifiedAnalysis.report_markdown,
       analysis: verifiedAnalysis.report_markdown
     });

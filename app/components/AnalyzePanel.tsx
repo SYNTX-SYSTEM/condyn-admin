@@ -12,6 +12,10 @@ export default function AnalyzePanel({ token }: { token: string }) {
   const [activePrompt, setActivePrompt] = useState('');
   const [tokensUsed, setTokensUsed] = useState(0);
   const [copySuccess, setCopySuccess] = useState(false);
+  const [analysisComplete, setAnalysisComplete] = useState(true);
+  const [continuations, setContinuations] = useState(0);
+  const [stopReason, setStopReason] = useState<string | null>(null);
+  const [missingSections, setMissingSections] = useState<string[]>([]);
   
   // PDF States
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
@@ -105,45 +109,30 @@ export default function AnalyzePanel({ token }: { token: string }) {
       let res;
       
       if (uploadedFile) {
-        const formData = new FormData();
-        formData.append('file', uploadedFile);
-        if (context) {
-          formData.append('context', context);
-        }
-        formData.append('language', 'en');
-        
-        res = await fetch(`${API_URL}/analyze/upload`, {
+        const arrayBuffer = await uploadedFile.arrayBuffer();
+        const base64 = typeof window !== 'undefined'
+          ? btoa(new Uint8Array(arrayBuffer).reduce((data, byte) => data + String.fromCharCode(byte), ''))
+          : Buffer.from(arrayBuffer).toString('base64');
+
+        res = await fetch('/api/career/analyze', {
           method: 'POST',
           headers: {
-            Authorization: `Bearer ${token}`
+            'Content-Type': 'application/json'
           },
-          body: formData
+          body: JSON.stringify({
+            documents: [{ type: 'pdf', title: uploadedFile.name, base64 }]
+          })
         });
       } else {
-        try {
-          res = await fetch('/api/career/analyze', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-              documents: [{ type: 'text', title: 'Input Text', content: inputText }]
-            })
-          });
-          if (!res.ok) throw new Error('Primary pipeline fallback');
-        } catch (e) {
-          res = await fetch(`${API_URL}/analyze`, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              Authorization: `Bearer ${token}`
-            },
-            body: JSON.stringify({
-              text: inputText,
-              context: context || undefined
-            })
-          });
-        }
+        res = await fetch('/api/career/analyze', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            documents: [{ type: 'text', title: 'Input Text', content: inputText }]
+          })
+        });
       }
 
       const data = await res.json();
@@ -152,8 +141,17 @@ export default function AnalyzePanel({ token }: { token: string }) {
         throw new Error(data.detail || (data.issues && data.issues[0]?.message) || 'Analysis failed');
       }
       
-      setResult(data.reportMarkdown || data.analysis || '');
+      let markdownText = data.reportMarkdown || data.analysis || '';
+      const missing = data.missing_sections || data.manifest?.missing_sections || [];
+      if (data.complete === false || data.stop_reason === 'max_tokens' || missing.length > 0) {
+        markdownText += `\n\n---\n> ⚠️ **HINWEIS:** Analyse unvollständig! (${missing.length > 0 ? `Fehlende Pflicht-Sektionen: ${missing.join(', ')}` : 'Tokenlimit erreicht'})`;
+      }
+      setResult(markdownText);
       setTokensUsed(data.tokens_used || data.metadata?.total_word_count || 0);
+      setAnalysisComplete(data.complete === true && missing.length === 0 && data.stop_reason !== 'max_tokens');
+      setContinuations(data.continuations || 0);
+      setStopReason(data.stop_reason || data.stopReason || null);
+      setMissingSections(missing);
       
     } catch (err: any) {
       console.warn("Backend API failed, showing mock markdown for testing:", err.message);
@@ -389,9 +387,32 @@ Da deine lokale Datenbank noch leer ist, hier ein **Mock-Ergebnis** um das Markd
             <strong>Using:</strong> <span className="text-mono">{activePrompt}</span>
           </div>
           {tokensUsed > 0 && (
-            <div>
-              <strong>Tokens used:</strong> {tokensUsed.toLocaleString()}
-            </div>
+            <>
+              <div>
+                <strong>Tokens used:</strong> {tokensUsed.toLocaleString()}
+              </div>
+              <div style={{ marginTop: '4px' }}>
+                <strong>Status:</strong>{' '}
+                <span style={{ color: analysisComplete ? '#4CAF50' : '#FF9800', fontWeight: 'bold' }}>
+                  {analysisComplete ? '✓ COMPLETE' : '⚠ INCOMPLETE (TRUNCATED)'}
+                </span>
+              </div>
+              {continuations > 0 && (
+                <div style={{ marginTop: '2px' }}>
+                  <strong>Continuations:</strong> {continuations}
+                </div>
+              )}
+              {stopReason && (
+                <div style={{ marginTop: '2px' }}>
+                  <strong>Stop reason:</strong> <span className="text-mono">{stopReason}</span>
+                </div>
+              )}
+              {missingSections.length > 0 && (
+                <div style={{ marginTop: '4px', color: '#f44336', fontSize: '11px' }}>
+                  <strong>Missing sections:</strong> {missingSections.join(', ')}
+                </div>
+              )}
+            </>
           )}
         </div>
       </div>
