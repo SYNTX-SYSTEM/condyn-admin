@@ -254,10 +254,16 @@ CRITICAL RULES FOR ALL 9 DOMAIN ARRAYS:
    - validation: MUST be an object with status strictly set to "UNVERIFIED" (e.g. { "status": "UNVERIFIED" }).
 2. Top-level structured_data MUST contain both "analysis" and "presentation". Do not omit "presentation".
    - In presentation.semantic_graph.edges, every edge MUST have source_id, target_id, and interaction_force (a decimal number between 0.0 and 1.0, e.g. 0.85).
-   - In presentation.ui_layout.concentric_rings, every ring MUST have ring_index, name (a non-empty string e.g. "Core Identity" or "Strategic Horizon"), and node_ids (array of canonical IDs).`;
+   - In presentation.ui_layout.concentric_rings, every ring MUST have ring_index, name (a non-empty string e.g. "Core Identity" or "Strategic Horizon"), and node_ids (array of canonical IDs).
+3. ROLE EXTRACTION RULE: A Role may only be emitted when the source contains sufficient evidence for both the Role itself AND the Organization context in which that Role exists.
+   - If a Role is emitted, the referenced Organization MUST exist in the "organizations" array.
+   - The Role MUST contain a "ROLE_IN_ORGANIZATION" relationship where "target_id" references that existing Organization entity.
+   - Both Role and relationship MUST be grounded in source evidence.
+   - If the source establishes a professional capability/title but DOES NOT establish an Organization: DO NOT invent or create a placeholder Organization, DO NOT emit an orphan Role, but DO retain any independently grounded capabilities normally.`;
 
   const documentSections = documents.map(doc => {
-    return `--- DOCUMENT METADATA (ID: ${doc.docId}, Title: ${doc.title || "Untitled Document"}) ---\n${doc.content}`;
+    const title = doc.title || "Untitled Document";
+    return "--- DOCUMENT METADATA (ID: " + doc.docId + ", Title: " + title + ") ---\n" + doc.content;
   }).join("\n\n");
 
   const userPrompt = `PROMPT CONTRACT: PC-CONDYN-CAP-v1.0
@@ -278,6 +284,7 @@ DO NOT wrap the output in \`\`\`json or any markdown block. Return ONLY the raw 
   return {
     systemPrompt,
     userPrompt
+
   };
 }
 
@@ -443,6 +450,14 @@ export function processLlmOutput(rawOutput: string | unknown): ValidationResult<
         const repaired = repairTruncatedJson(cleanString);
         payload = JSON.parse(repaired);
       } catch (repairErr) {
+        // [DIAGNOSTIC OBSERVABILITY] Capture bounded raw output for BUG 010 trace
+        console.error("==================================================");
+        console.error("BUG 010 DIAGNOSTIC: processLlmOutput JSON parse failed");
+        console.error(`RAW OUTPUT LENGTH: ${rawOutput.length}`);
+        console.error(`RAW PREFIX (800):\n${rawOutput.substring(0, 800)}`);
+        console.error(`RAW SUFFIX (400):\n${rawOutput.substring(Math.max(0, rawOutput.length - 400))}`);
+        console.error("==================================================");
+
         return {
           success: false,
           issues: [{

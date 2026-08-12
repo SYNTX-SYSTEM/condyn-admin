@@ -1,5 +1,6 @@
 import { GoogleGenAI } from "@google/genai";
 import { InferenceProvider, PromptBuilderOutput } from "../adapter";
+import { getGeminiCareerResponseJsonSchema } from "../schema-projector";
 
 export const DEFAULT_GEMINI_MODEL_CASCADE = [
   "gemini-2.0-flash",
@@ -98,6 +99,7 @@ export class GeminiProvider implements InferenceProvider {
             config: {
               systemInstruction: prompt.systemPrompt,
               responseMimeType: "application/json",
+              ...(step === 0 ? { responseJsonSchema: getGeminiCareerResponseJsonSchema() } : {}),
               temperature: 0.1,
               maxOutputTokens: process.env.GEMINI_MAX_OUTPUT_TOKENS
                 ? parseInt(process.env.GEMINI_MAX_OUTPUT_TOKENS, 10)

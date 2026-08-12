@@ -6,8 +6,8 @@
  * Scope: Extracts raw text from PDF buffers server-side and encapsulates parser failures as ERR_PDF_PARSE_FAILURE.
  */
 
-import * as pdfParseModule from "pdf-parse";
-const pdfParse: any = (pdfParseModule as any).default || pdfParseModule;
+import "pdf-parse/worker";
+import { PDFParse } from "pdf-parse";
 import { DocumentInput } from "../adapter";
 import { createSourceMetadata } from "./source";
 
@@ -20,12 +20,19 @@ export async function extractTextFromPdf(buffer: Buffer): Promise<string> {
     throw new Error("ERR_PDF_PARSE_FAILURE: PDF buffer is empty, undefined, or not a valid Buffer.");
   }
 
+  let parser: PDFParse;
   try {
-    const data = await pdfParse(buffer);
-    if (!data || typeof data.text !== "string") {
+    parser = new PDFParse({ data: buffer });
+  } catch (err: any) {
+    throw new Error(`ERR_PDF_PARSE_FAILURE: Failed to parse PDF buffer. Details: ${err instanceof Error ? err.message : String(err)}`);
+  }
+
+  try {
+    const result = await parser.getText();
+    if (!result || typeof result.text !== "string") {
       throw new Error("Invalid output format from PDF parser engine.");
     }
-    const text = data.text.trim();
+    const text = result.text.trim();
     if (text.length === 0) {
       throw new Error("Extracted text from PDF document is empty.");
     }
@@ -35,6 +42,10 @@ export async function extractTextFromPdf(buffer: Buffer): Promise<string> {
       throw err;
     }
     throw new Error(`ERR_PDF_PARSE_FAILURE: Failed to parse PDF buffer. Details: ${err instanceof Error ? err.message : String(err)}`);
+  } finally {
+    if (parser) {
+      await parser.destroy();
+    }
   }
 }
 

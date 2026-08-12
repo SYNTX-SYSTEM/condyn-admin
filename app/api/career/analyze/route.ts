@@ -16,6 +16,7 @@ import { toReactFlow } from "../../../../lib/career/adapters/react-flow";
 import { matchCareerAnalysisAgainstPool } from "../../../../lib/career/matching/engine";
 import { DEMO_COMPANY_POOL } from "../../../../lib/career/matching/demo-pool";
 import { generateCareerRecommendations } from "../../../../lib/career/recommendations/gaps";
+import { buildCareerAnalysisSuccessResponse } from "../../../../lib/career/api-response";
 
 // Request/Demo-scoped in-memory repository persistence for Step 7
 const requestScopedRepository = getCareerAnalysisRepository();
@@ -42,9 +43,19 @@ export async function POST(req: Request) {
     // Normalize multi-source input items (text, markdown, pdf, website, github)
     const normalizedDocs: DocumentInput[] = [];
     const pendingBatch: any[] = [];
+    const sourceManifest: Array<{ canonicalDocumentId: string, sourceRef: string }> = [];
+    let canonicalDocCounter = 1;
+    const getNextCanonicalId = () => `DOC_${String(canonicalDocCounter++).padStart(3, '0')}`;
 
     const flushPendingBatch = async () => {
       if (pendingBatch.length > 0) {
+        pendingBatch.forEach(item => {
+          const canonicalId = getNextCanonicalId();
+          if (item.docId) {
+            sourceManifest.push({ canonicalDocumentId: canonicalId, sourceRef: item.docId });
+          }
+          item.docId = canonicalId;
+        });
         const batchDocs = await loadDocumentBatch(pendingBatch);
         normalizedDocs.push(...batchDocs);
         pendingBatch.length = 0;
@@ -57,7 +68,11 @@ export async function POST(req: Request) {
         if (!item.url || !String(item.url).trim()) {
           throw new Error("ERR_MISSING_SOURCE_URL: Missing url property for website source.");
         }
-        const doc = await loadWebsiteDocument(item.url, item.title, item.docId);
+        const canonicalId = getNextCanonicalId();
+        if (item.docId) {
+          sourceManifest.push({ canonicalDocumentId: canonicalId, sourceRef: item.docId });
+        }
+        const doc = await loadWebsiteDocument(item.url, item.title, canonicalId);
         normalizedDocs.push(doc);
       } else if (item.type === "github") {
         await flushPendingBatch();
@@ -65,9 +80,23 @@ export async function POST(req: Request) {
           throw new Error("ERR_MISSING_SOURCE_URL: Missing url property for github source.");
         }
         const docs = await loadGitHubRepositoryDocuments(item.url);
+        docs.forEach(d => {
+          const canonicalId = getNextCanonicalId();
+          if (item.docId) {
+            sourceManifest.push({ canonicalDocumentId: canonicalId, sourceRef: item.docId });
+          }
+          d.docId = canonicalId;
+        });
         normalizedDocs.push(...docs);
       } else {
-        pendingBatch.push(item);
+        if (item.type === "pdf" && item.content) {
+          pendingBatch.push({
+            ...item,
+            base64: item.content
+          });
+        } else {
+          pendingBatch.push(item);
+        }
       }
     }
     await flushPendingBatch();
@@ -119,22 +148,18 @@ export async function POST(req: Request) {
       complete: true
     };
 
-    return NextResponse.json({
-      success: true,
-      status: "VERIFIED",
+    const responseEnvelope = buildCareerAnalysisSuccessResponse(verifiedAnalysis, {
       analysisId,
       metadata,
+      sourceManifest,
       matching,
       recommendations,
       reactFlowGraph,
       inferenceTelemetry,
-      persistenceWarning,
-      complete: inferenceTelemetry.complete !== false,
-      stop_reason: inferenceTelemetry.finishReason || "STOP",
-      continuations: inferenceTelemetry.continuations || 0,
-      reportMarkdown: verifiedAnalysis.report_markdown,
-      analysis: verifiedAnalysis.report_markdown
+      persistenceWarning
     });
+
+    return NextResponse.json(responseEnvelope);
   } catch (err: any) {
     console.error("Fatal error in /api/career/analyze:", err);
     const errorMsg = err.message || String(err);
