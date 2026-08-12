@@ -477,6 +477,54 @@ export function processLlmOutput(rawOutput: string | unknown): ValidationResult<
 
   if (typeof payload === "object" && payload !== null) {
     const p = payload as any;
+    
+    // Inject missing scopes that were omitted in GeminiInferenceSchema to satisfy Canonical schema
+    if (p.structured_data?.analysis) {
+      if (!p.structured_data.analysis.metadata) {
+        p.structured_data.analysis.metadata = {
+          analysis_id: `ANL_${new Date().toISOString().replace(/[-:TZs.]/g, '').substring(0, 14)}_${Math.floor(Math.random() * 1000).toString().padStart(3, '0')}`,
+          protocol_version: "1.0",
+          schema_version: "1.0",
+          prompt_contract_version: "1.0"
+        };
+      }
+      if (!p.structured_data.pipeline) {
+        p.structured_data.pipeline = { steps: [] };
+      }
+    }
+    if (p.structured_data && !p.structured_data.presentation) {
+      p.structured_data.presentation = {
+        semantic_graph: { nodes: [], edges: [] },
+        ui_layout: {
+          center_node_id: "ANL_UNKNOWN",
+          concentric_rings: [],
+          color_tokens: {}
+        }
+      };
+    }
+    
+    // Fill validation properties on entities
+    const domainArrays = [
+      p.structured_data?.analysis?.documents,
+      p.structured_data?.analysis?.capabilities,
+      p.structured_data?.analysis?.domains,
+      p.structured_data?.analysis?.organization_classes,
+      p.structured_data?.analysis?.organizations,
+      p.structured_data?.analysis?.roles,
+      p.structured_data?.analysis?.opportunities,
+      p.structured_data?.analysis?.strategies,
+      p.structured_data?.analysis?.search_queries
+    ];
+    for (const arr of domainArrays) {
+      if (Array.isArray(arr)) {
+        arr.forEach(ent => {
+          if (typeof ent === "object" && ent !== null && !ent.validation) {
+            ent.validation = { status: "UNVERIFIED" };
+          }
+        });
+      }
+    }
+
     if (p.structured_data?.analysis?.metadata) {
       const currentId = p.structured_data.analysis.metadata.analysis_id;
       if (!currentId || currentId === "ANL_20260706_000001" || currentId.includes("000001")) {

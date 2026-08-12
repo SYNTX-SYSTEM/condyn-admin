@@ -1,5 +1,44 @@
 import { zodToJsonSchema } from "zod-to-json-schema";
-import { CanonicalCareerAnalysisSchema } from "./schema";
+import { z } from "zod";
+import { 
+  CanonicalCareerAnalysisSchema,
+  UniversalEntitySchema,
+  OrganizationEntitySchema,
+  RoleEntitySchema,
+  SearchQueryEntitySchema,
+  NormalizedScoreSchema,
+  ConsistencyClusterSchema,
+  CanonicalIdSchema
+} from "./schema";
+
+const InferenceEntitySchema = UniversalEntitySchema.omit({ validation: true });
+const InferenceOrgSchema = OrganizationEntitySchema.omit({ validation: true });
+const InferenceRoleSchema = RoleEntitySchema.omit({ validation: true });
+const InferenceQuerySchema = SearchQueryEntitySchema.omit({ validation: true });
+
+export const GeminiInferenceSchema = z.object({
+  report_markdown: z.string().min(1, "Markdown report must not be empty"),
+  structured_data: z.object({
+    analysis: z.object({
+      consistency: z.object({
+        overall_cohesion_score: NormalizedScoreSchema,
+        summary: z.string().optional(),
+        clusters: z.array(ConsistencyClusterSchema).default([]),
+        outlier_doc_ids: z.array(CanonicalIdSchema).default([]),
+        contradictions: z.array(z.string()).default([])
+      }),
+      documents: z.array(InferenceEntitySchema).default([]),
+      capabilities: z.array(InferenceEntitySchema).default([]),
+      domains: z.array(InferenceEntitySchema).default([]),
+      organization_classes: z.array(InferenceEntitySchema).default([]),
+      organizations: z.array(InferenceOrgSchema).default([]),
+      roles: z.array(InferenceRoleSchema).default([]),
+      opportunities: z.array(InferenceEntitySchema).default([]),
+      strategies: z.array(InferenceEntitySchema).default([]),
+      search_queries: z.array(InferenceQuerySchema).default([])
+    })
+  })
+});
 
 /**
  * Recursively strips Gemini-unsupported JSON Schema keywords from the generated schema.
@@ -45,13 +84,13 @@ function sanitizeSchema(schemaNode: any) {
 }
 
 /**
- * Generates a Gemini-compatible JSON Schema from the SSOT CanonicalCareerAnalysisSchema.
+ * Generates a Gemini-compatible JSON Schema from the inference-specific schema.
  * Targets jsonSchema2019-09 to natively emit $defs instead of definitions.
  */
 export function getGeminiCareerResponseJsonSchema() {
-  const schema = zodToJsonSchema(CanonicalCareerAnalysisSchema, {
+  const schema = zodToJsonSchema(GeminiInferenceSchema, {
     target: "jsonSchema2019-09",
-    name: "CanonicalCareerAnalysis",
+    name: "GeminiCareerInference",
     definitionPath: "$defs"
   });
 
