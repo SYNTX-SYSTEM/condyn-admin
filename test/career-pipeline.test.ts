@@ -31,7 +31,7 @@ describe("CONDYN Career Analysis Protocol v1.0 - Step 4.4: Document Loader (`loa
 });
 
 describe("CONDYN Career Analysis Protocol v1.0 - Step 4.4: E2E Pipeline Orchestrator (`executeCareerAnalysisPipeline`)", () => {
-  const goldJsonPath = path.join(__dirname, "gold/case_001_minimal_valid/expected/expected.json");
+  const goldJsonPath = path.join(__dirname, "gold/case_001_minimal_valid/expected/gemini-inference.json");
   const goldJsonRaw = fs.readFileSync(goldJsonPath, "utf-8");
 
   it("should execute E2E pipeline with MockInferenceProvider up to VERIFIED state", async () => {
@@ -55,14 +55,54 @@ describe("CONDYN Career Analysis Protocol v1.0 - Step 4.4: E2E Pipeline Orchestr
     expect(result.issues.some(i => i.code === "ERR_JSON_SYNTAX_INVALID")).toBe(true);
   });
 
-  it("should propagate validator issues when provider output contains broken references or rule violations", async () => {
-    const brokenJson = goldJsonRaw.replace('"entity_id": "DOC_001"', '"entity_id": "DOC_ORPHAN_999"');
+  it("should propagate assembly errors when inference output contains broken document references", async () => {
+    // If we replace the DOC_001 ID in the evidence but not the source array, the assembly will detect a missing document
+    const brokenJson = goldJsonRaw.replace('"doc_id": "DOC_001"', '"doc_id": "DOC_ORPHAN_999"');
     const provider = new MockInferenceProvider(brokenJson);
+    
+    await expect(
+      executeCareerAnalysisPipeline([
+        { docId: "DOC_001", content: "Some content" }
+      ], provider)
+    ).rejects.toThrow(/ERR_CANONICAL_ASSEMBLY_DOCUMENT_REFERENCE_MISSING/);
+  });
+
+  it("BUG010Q: should create canonical DOCUMENT from runtime context even if LLM omits it", async () => {
+    const inferencePayload = {
+      report_markdown: "# Analysis",
+      consistency: { overall_cohesion_score: 1.0, clusters: [], outlier_doc_ids: [], contradictions: [] },
+      entities: [
+        {
+          entity_kind: "CAPABILITY",
+          entity_id: "CAP_001",
+          name: "Test Capability",
+          properties: {},
+          confidence: 0.9,
+          evidence: [
+            { doc_id: "DOC_001", location: "loc", context_quote: "this is a valid long quote for testing", evidence_score: 0.9 }
+          ]
+        }
+      ]
+    };
+    
+    const provider = new MockInferenceProvider(JSON.stringify(inferencePayload));
+    
     const result = await executeCareerAnalysisPipeline([
-      { content: "Some content" }
+      { docId: "DOC_001", title: "Real PDF", content: "Test Capability" }
     ], provider);
 
-    expect(result.success).toBe(false);
-    expect(result.issues.some(i => i.code === "ERR_ORPHAN_REFERENCE")).toBe(true);
+    expect(result.success).toBe(true);
+    
+    // Canonical output must contain the real canonical DOCUMENT
+    const docs = result.data!.structured_data.analysis.documents;
+    expect(docs).toHaveLength(1);
+    expect(docs[0].entity_id).toBe("DOC_001");
+    expect(docs[0].identity.name).toBe("Real PDF");
+    expect(docs[0].properties.raw_word_count).toBeDefined();
+
+    // Capability evidence still references DOC_001
+    const caps = result.data!.structured_data.analysis.capabilities;
+    expect(caps).toHaveLength(1);
+    expect(caps[0].evidence[0].doc_id).toBe("DOC_001");
   });
 });

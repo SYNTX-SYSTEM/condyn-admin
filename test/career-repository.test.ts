@@ -6,7 +6,7 @@ import { VerifiedCareerAnalysis } from "../lib/career/types";
 import { validateCareerAnalysis } from "../lib/career/validator";
 
 describe("CONDYN Career Analysis Protocol v1.0 - Step 4.5: Persistence & Repository Layer (`CareerAnalysisRepository`)", () => {
-  const goldJsonPath = path.join(__dirname, "gold/case_001_minimal_valid/expected/expected.json");
+  const goldJsonPath = path.join(__dirname, "gold/case_001_minimal_valid/expected/canonical-expected.json");
   const goldJsonRaw = fs.readFileSync(goldJsonPath, "utf-8");
   const unverifiedPayload = JSON.parse(goldJsonRaw);
 

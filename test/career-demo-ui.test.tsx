@@ -144,8 +144,6 @@ describe("CONDYN / SYNTX — Step 22c: Semantic Career Intelligence Field (SIL v
     expect(htmlHighlighted).toContain("hologram-hud--large");
     expect(htmlHighlighted).toContain("hologram-float");
     expect(htmlHighlighted).toContain("380px");
-    expect(htmlHighlighted).toContain("CONFIDENCE");
-    expect(htmlHighlighted).toContain("EVIDENCE DENSITY");
     expect(htmlHighlighted).toContain("SOURCES // SEMIOTIC GROUNDING");
     expect(htmlHighlighted).toContain("data-testid=\"orbital-tether-02\"");
     expect(htmlHighlighted).toContain("data-testid=\"hud-actions\"");

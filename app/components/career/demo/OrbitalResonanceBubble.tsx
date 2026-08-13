@@ -2,6 +2,7 @@
 
 import React from "react";
 import { SIL_TOKENS } from "./SILTokens";
+import { SilSourcePresentation } from "../../../../lib/career/view-model/source-presentation";
 
 export type HudPlacement =
   | "top"
@@ -209,6 +210,7 @@ export interface OrbitalResonanceBubbleProps {
   onHudAction?: (action: "OPEN EVIDENCE" | "INSPECT SOURCES" | "VIEW MATCHES", stageId: string) => void;
   accentColor?: string;
   style?: React.CSSProperties;
+  sourcePresentation?: SilSourcePresentation;
 }
 
 export function getOrbitAccentColor(stageId: string): string {
@@ -272,16 +274,12 @@ export function OrbitalResonanceBubble({
   onMouseLeave,
   onHudAction,
   accentColor,
-  style
+  style,
+  sourcePresentation
 }: OrbitalResonanceBubbleProps) {
   const isHighlighted = isActive || isHovered;
 
   const defaultPrimaryMetric = primaryMetric || `${itemCount} Active Objects`;
-  const defaultSecondaryMetrics = secondaryMetrics || {
-    confidence: "96%",
-    evidence: `${Math.max(12, itemCount * 14)} Objects`,
-    state: "Verified"
-  };
 
   const computedPlacement = placement || getTooltipPlacement(angle, stageId);
   const physicsClass = getOrbitalPhysicsClass(stageId);
@@ -559,61 +557,65 @@ export function OrbitalResonanceBubble({
               </div>
 
               {/* CONFIDENCE WITH PROGRESS BAR */}
-              <div style={{ marginBottom: "10px" }}>
-                <div
-                  style={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    fontSize: "10px",
-                    color: SIL_TOKENS.colors.textMuted,
-                    marginBottom: "4px"
-                  }}
-                >
-                  <span>CONFIDENCE</span>
-                  <strong style={{ color: SIL_TOKENS.colors.cyanActive }}>{defaultSecondaryMetrics.confidence}</strong>
-                </div>
-                <div
-                  style={{
-                    width: "100%",
-                    height: "6px",
-                    backgroundColor: "rgba(255, 255, 255, 0.08)",
-                    borderRadius: "3px",
-                    overflow: "hidden"
-                  }}
-                >
+              {secondaryMetrics?.confidence && (
+                <div style={{ marginBottom: "10px" }}>
                   <div
                     style={{
-                      width: defaultSecondaryMetrics.confidence,
-                      height: "100%",
-                      backgroundColor: SIL_TOKENS.colors.cyanActive,
-                      boxShadow: `0 0 8px ${SIL_TOKENS.colors.cyanActive}`
+                      display: "flex",
+                      justifyContent: "space-between",
+                      fontSize: "10px",
+                      color: SIL_TOKENS.colors.textMuted,
+                      marginBottom: "4px"
                     }}
-                  />
+                  >
+                    <span>CONFIDENCE</span>
+                    <strong style={{ color: SIL_TOKENS.colors.cyanActive }}>{secondaryMetrics.confidence}</strong>
+                  </div>
+                  <div
+                    style={{
+                      width: "100%",
+                      height: "6px",
+                      backgroundColor: "rgba(255, 255, 255, 0.08)",
+                      borderRadius: "3px",
+                      overflow: "hidden"
+                    }}
+                  >
+                    <div
+                      style={{
+                        width: secondaryMetrics.confidence,
+                        height: "100%",
+                        backgroundColor: SIL_TOKENS.colors.cyanActive,
+                        boxShadow: `0 0 8px ${SIL_TOKENS.colors.cyanActive}`
+                      }}
+                    />
+                  </div>
                 </div>
-              </div>
+              )}
 
               {/* EVIDENCE DENSITY WITH INDICATOR DOTS */}
-              <div style={{ marginBottom: "10px" }}>
-                <div
-                  style={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    fontSize: "10px",
-                    color: SIL_TOKENS.colors.textMuted,
-                    marginBottom: "4px"
-                  }}
-                >
-                  <span>EVIDENCE DENSITY</span>
-                  <strong style={{ color: SIL_TOKENS.colors.textPrimary }}>{defaultSecondaryMetrics.evidence}</strong>
+              {secondaryMetrics?.evidence && (
+                <div style={{ marginBottom: "10px" }}>
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      fontSize: "10px",
+                      color: SIL_TOKENS.colors.textMuted,
+                      marginBottom: "4px"
+                    }}
+                  >
+                    <span>EVIDENCE DENSITY</span>
+                    <strong style={{ color: SIL_TOKENS.colors.textPrimary }}>{secondaryMetrics.evidence}</strong>
+                  </div>
+                  <div style={{ display: "flex", gap: "4px" }}>
+                    {["●", "●", "●", "●", "●", "●", "●"].map((dot, idx) => (
+                      <span key={idx} style={{ color: idx < 6 ? SIL_TOKENS.colors.cyanActive : "rgba(56, 229, 255, 0.25)", fontSize: "10px" }}>
+                        {dot}
+                      </span>
+                    ))}
+                  </div>
                 </div>
-                <div style={{ display: "flex", gap: "4px" }}>
-                  {["●", "●", "●", "●", "●", "●", "●"].map((dot, idx) => (
-                    <span key={idx} style={{ color: idx < 6 ? SIL_TOKENS.colors.cyanActive : "rgba(56, 229, 255, 0.25)", fontSize: "10px" }}>
-                      {dot}
-                    </span>
-                  ))}
-                </div>
-              </div>
+              )}
 
               {/* SOURCES WITH MINI PILLS */}
               <div style={{ marginBottom: "10px" }}>
@@ -630,15 +632,17 @@ export function OrbitalResonanceBubble({
                   SOURCES // SEMIOTIC GROUNDING
                 </div>
                 <div style={{ display: "flex", gap: "6px", flexWrap: "wrap" }}>
-                  <span style={{ fontSize: "10px", padding: "2px 8px", borderRadius: "10px", backgroundColor: "rgba(56, 229, 255, 0.15)", border: `1px solid ${SIL_TOKENS.colors.cyanActive}`, color: SIL_TOKENS.colors.cyanActive }}>
-                    PDF ●
-                  </span>
-                  <span style={{ fontSize: "10px", padding: "2px 8px", borderRadius: "10px", backgroundColor: "rgba(56, 229, 255, 0.15)", border: `1px solid ${SIL_TOKENS.colors.cyanActive}`, color: SIL_TOKENS.colors.cyanActive }}>
-                    GitHub ●
-                  </span>
-                  <span style={{ fontSize: "10px", padding: "2px 8px", borderRadius: "10px", backgroundColor: "rgba(56, 229, 255, 0.15)", border: `1px solid ${SIL_TOKENS.colors.cyanActive}`, color: SIL_TOKENS.colors.cyanActive }}>
-                    Website ●
-                  </span>
+                  {sourcePresentation && sourcePresentation.labels.length > 0 ? (
+                    sourcePresentation.labels.map((label, idx) => (
+                      <span key={idx} style={{ fontSize: "10px", padding: "2px 8px", borderRadius: "10px", backgroundColor: "rgba(56, 229, 255, 0.15)", border: `1px solid ${SIL_TOKENS.colors.cyanActive}`, color: SIL_TOKENS.colors.cyanActive }}>
+                        {label} ●
+                      </span>
+                    ))
+                  ) : (
+                    <span style={{ fontSize: "10px", padding: "2px 8px", borderRadius: "10px", backgroundColor: "rgba(56, 229, 255, 0.15)", border: `1px solid ${SIL_TOKENS.colors.cyanActive}`, color: SIL_TOKENS.colors.cyanActive }}>
+                      SRC ●
+                    </span>
+                  )}
                 </div>
               </div>
 

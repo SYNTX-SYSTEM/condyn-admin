@@ -5,7 +5,7 @@ import { CanonicalCareerAnalysisSchema } from "../lib/career/schema";
 import { validateCareerAnalysis } from "../lib/career/validator";
 
 describe("CONDYN Career Analysis Protocol v1.0 - TDD Conformance Suite", () => {
-  const goldCasePath = path.join(__dirname, "gold/case_001_minimal_valid/expected/expected.json");
+  const goldCasePath = path.join(__dirname, "gold/case_001_minimal_valid/expected/canonical-expected.json");
   const goldJsonRaw = fs.readFileSync(goldCasePath, "utf-8");
   const goldJsonObject = JSON.parse(goldJsonRaw);
 
@@ -89,6 +89,29 @@ describe("CONDYN Career Analysis Protocol v1.0 - TDD Conformance Suite", () => {
         const invalidPayload = JSON.parse(goldJsonRaw);
         // Clear relationships on the role entity so it is disconnected from any organization
         invalidPayload.structured_data.analysis.roles[0].relationships = [];
+
+        const result = validateCareerAnalysis(invalidPayload);
+        expect(result.success).toBe(false);
+        const hasRoleError = result.issues.some(i => i.code === "ERR_ROLE_HIERARCHY_DISCONNECTED");
+        expect(hasRoleError).toBe(true);
+      });
+
+      it("should emit ERR_ROLE_HIERARCHY_DISCONNECTED when a role has a ROLE_IN_ORGANIZATION relationship targeting a non-organization entity (BUG 005)", () => {
+        const invalidPayload = JSON.parse(goldJsonRaw);
+        
+        // Remove all organizations to ensure the target is not an organization
+        invalidPayload.structured_data.analysis.organizations = [];
+        
+        // Set the relationship target to an EXISTING Document ID (DOC_001)
+        // This simulates BUG 005 where the LLM satisfied the schema and orphan-edge rules
+        // but violated the semantic hierarchy rule.
+        invalidPayload.structured_data.analysis.roles[0].relationships = [
+          {
+            target_id: "DOC_001",
+            relation_type: "ROLE_IN_ORGANIZATION",
+            weight: 1.0
+          }
+        ];
 
         const result = validateCareerAnalysis(invalidPayload);
         expect(result.success).toBe(false);

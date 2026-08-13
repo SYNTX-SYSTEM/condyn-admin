@@ -1,0 +1,357 @@
+{
+  "report_markdown": "# Career Analysis Report: Principal Edge Systems Architect\n\n## 1. Executive Summary\nElena Rostova is a top-tier Senior Distributed Systems Architect with a focus on IIoT Edge Computing and Gossip Protocols.\n\n## 2. Structural Consistency & Cohesion\nHigh cohesion across all experience records.\n\n## 3. Reconstructed Capability Architecture\n- Distributed Systems Architecture\n- Gossip Protocols\n\n## 4. Target Ecosystem & Organization Resonance\nStrong resonance with Tier-1 industrial automation providers like Siemens AG.\n\n## 5. Strategic Entry Strategies\nPosition as Principal Edge Systems Architect targeting high-availability infrastructure teams.",
+  "structured_data": {
+    "analysis": {
+      "metadata": {
+        "analysis_id": "ANL_TEST_DETERMINISTIC_ID",
+        "protocol_version": "1.0",
+        "schema_version": "1.0",
+        "prompt_contract_version": "1.0",
+        "execution_duration_ms": 1000,
+        "document_count": 1,
+        "total_word_count": 120
+      },
+      "pipeline": {
+        "steps": []
+      },
+      "consistency": {
+        "overall_cohesion_score": 0.95,
+        "summary": "Full structural coherence across all provided resumes.",
+        "clusters": [
+          {
+            "cluster_id": "CLU_001",
+            "name": "Distributed Systems Resilience",
+            "cohesion_score": 0.95,
+            "doc_ids": [
+              "DOC_001"
+            ]
+          }
+        ],
+        "outlier_doc_ids": [],
+        "contradictions": []
+      },
+      "documents": [
+        {
+          "entity_id": "DOC_001",
+          "properties": {
+            "word_count": 120,
+            "language": "en"
+          },
+          "relationships": [],
+          "evidence": [
+            {
+              "doc_id": "DOC_001",
+              "location": "Header",
+              "context_quote": "Over 10 years of experience architecting resilient distributed systems and IoT infrastructure.",
+              "evidence_score": 0.98,
+              "significance_explanation": "Establishes baseline professional identity."
+            }
+          ],
+          "confidence": 0.98,
+          "entity_kind": "DOCUMENT",
+          "name": "doc1.md",
+          "identity": {
+            "type": "DOCUMENT",
+            "name": "doc1.md",
+            "canonical_type": "DOCUMENT"
+          },
+          "validation": {
+            "status": "UNVERIFIED"
+          }
+        }
+      ],
+      "capabilities": [
+        {
+          "entity_id": "CAP_001",
+          "properties": {
+            "category": "CORE_TECHNICAL",
+            "seniority_level": "EXPERT"
+          },
+          "relationships": [],
+          "evidence": [
+            {
+              "doc_id": "DOC_001",
+              "location": "Section 2",
+              "context_quote": "Architected distributed IIoT Edge Computing systems with 99.999% uptime guarantees.",
+              "evidence_score": 0.96,
+              "significance_explanation": "Direct proof of enterprise-grade reliability engineering."
+            }
+          ],
+          "confidence": 0.95,
+          "entity_kind": "CAPABILITY",
+          "name": "Distributed Systems Architecture & Resilience",
+          "identity": {
+            "type": "CAPABILITY",
+            "name": "Distributed Systems Architecture & Resilience",
+            "canonical_type": "CAPABILITY"
+          },
+          "validation": {
+            "status": "UNVERIFIED"
+          }
+        }
+      ],
+      "domains": [
+        {
+          "entity_id": "DOM_001",
+          "properties": {
+            "maturity": "HIGH"
+          },
+          "relationships": [
+            {
+              "target_id": "CAP_001",
+              "relation_type": "SUPPORTS",
+              "weight": 0.9
+            }
+          ],
+          "evidence": [
+            {
+              "doc_id": "DOC_001",
+              "location": "Section 2",
+              "context_quote": "Implemented fault-tolerant gossip protocols across 5,000+ edge nodes in EMEA.",
+              "evidence_score": 0.94
+            }
+          ],
+          "confidence": 0.92,
+          "entity_kind": "DOMAIN",
+          "name": "IIoT Edge Computing",
+          "identity": {
+            "type": "DOMAIN",
+            "name": "IIoT Edge Computing",
+            "canonical_type": "DOMAIN"
+          },
+          "validation": {
+            "status": "UNVERIFIED"
+          }
+        }
+      ],
+      "organization_classes": [
+        {
+          "entity_id": "CLS_001",
+          "properties": {
+            "market_segment": "TIER_1_ENTERPRISE"
+          },
+          "relationships": [],
+          "evidence": [
+            {
+              "doc_id": "DOC_001",
+              "location": "Section 1",
+              "context_quote": "resilient distributed systems and IoT infrastructure for Tier-1 enterprise organizations.",
+              "evidence_score": 0.9
+            }
+          ],
+          "confidence": 0.9,
+          "entity_kind": "ORGANIZATION_CLASS",
+          "name": "Enterprise Industrial Automation",
+          "identity": {
+            "type": "ORGANIZATION_CLASS",
+            "name": "Enterprise Industrial Automation",
+            "canonical_type": "ORGANIZATION_CLASS"
+          },
+          "validation": {
+            "status": "UNVERIFIED"
+          }
+        }
+      ],
+      "organizations": [
+        {
+          "entity_id": "ORG_001",
+          "properties": {
+            "country_iso": "DE",
+            "region_code": "EMEA",
+            "industry_enum": "INDUSTRIAL_AUTOMATION",
+            "scale_tier": "ENTERPRISE_GLOBAL",
+            "workplace_model": "HYBRID",
+            "recruiter_pool_id": "POOL_DACH_01",
+            "resonance_score": 0.94
+          },
+          "relationships": [
+            {
+              "target_id": "CLS_001",
+              "relation_type": "BELONGS_TO_CLASS",
+              "weight": 1
+            },
+            {
+              "target_id": "CAP_001",
+              "relation_type": "RESONATES_WITH",
+              "weight": 0.95
+            }
+          ],
+          "evidence": [
+            {
+              "doc_id": "DOC_001",
+              "location": "Section 2",
+              "context_quote": "Led the worldwide IoT infrastructure transformation at Siemens Industrial Automation.",
+              "evidence_score": 0.98,
+              "significance_explanation": "Direct organizational resonance."
+            }
+          ],
+          "confidence": 0.95,
+          "entity_kind": "ORGANIZATION",
+          "name": "Siemens AG",
+          "code": "SIE",
+          "identity": {
+            "type": "ORGANIZATION",
+            "name": "Siemens AG",
+            "code": "SIE",
+            "canonical_type": "ORGANIZATION"
+          },
+          "validation": {
+            "status": "UNVERIFIED"
+          }
+        }
+      ],
+      "roles": [
+        {
+          "entity_id": "ROL_001",
+          "properties": {
+            "seniority": "PRINCIPAL",
+            "domain_focus": "IIOT_EDGE"
+          },
+          "relationships": [
+            {
+              "target_id": "ORG_001",
+              "relation_type": "ROLE_IN_ORGANIZATION",
+              "weight": 0.95
+            }
+          ],
+          "evidence": [
+            {
+              "doc_id": "DOC_001",
+              "location": "Section 2",
+              "context_quote": "Siemens AG — Principal Edge Systems Architect (2021 – Present)",
+              "evidence_score": 0.95
+            }
+          ],
+          "confidence": 0.92,
+          "entity_kind": "ROLE",
+          "name": "Principal Edge Systems Architect",
+          "identity": {
+            "type": "ROLE",
+            "name": "Principal Edge Systems Architect",
+            "canonical_type": "ROLE"
+          },
+          "validation": {
+            "status": "UNVERIFIED"
+          }
+        }
+      ],
+      "opportunities": [
+        {
+          "entity_id": "OPP_001",
+          "properties": {
+            "demand_level": "HIGH"
+          },
+          "relationships": [
+            {
+              "target_id": "CAP_001",
+              "relation_type": "REQUIRES",
+              "weight": 0.9
+            }
+          ],
+          "evidence": [
+            {
+              "doc_id": "DOC_001",
+              "location": "Section 2",
+              "context_quote": "fault-tolerant gossip protocols across 5,000+ edge nodes in EMEA.",
+              "evidence_score": 0.88
+            }
+          ],
+          "confidence": 0.88,
+          "entity_kind": "OPPORTUNITY",
+          "name": "Decentralized Edge Consensus",
+          "identity": {
+            "type": "OPPORTUNITY",
+            "name": "Decentralized Edge Consensus",
+            "canonical_type": "OPPORTUNITY"
+          },
+          "validation": {
+            "status": "UNVERIFIED"
+          }
+        }
+      ],
+      "strategies": [
+        {
+          "entity_id": "STR_001",
+          "properties": {
+            "timeframe": "IMMEDIATE"
+          },
+          "relationships": [
+            {
+              "target_id": "ROL_001",
+              "relation_type": "SUPPORTS",
+              "weight": 0.92
+            }
+          ],
+          "evidence": [
+            {
+              "doc_id": "DOC_001",
+              "location": "Section 1",
+              "context_quote": "Specialized in fault-tolerant gossip protocols and high-throughput edge automation.",
+              "evidence_score": 0.9
+            }
+          ],
+          "confidence": 0.9,
+          "entity_kind": "STRATEGY",
+          "name": "Resilience Architecture Leadership",
+          "identity": {
+            "type": "STRATEGY",
+            "name": "Resilience Architecture Leadership",
+            "canonical_type": "STRATEGY"
+          },
+          "validation": {
+            "status": "UNVERIFIED"
+          }
+        }
+      ],
+      "search_queries": [
+        {
+          "entity_id": "QRY_001",
+          "properties": {
+            "title": "Principal Distributed Systems Architect",
+            "query": "(\"Distributed Systems\" OR \"Gossip Protocol\") AND (\"IIoT\" OR \"Edge\") AND EMEA",
+            "purpose": "Targeting Tier-1 Industrial Edge Providers",
+            "target": "ENGINEERING_LEADERSHIP",
+            "priority": "HIGH_IMMEDIATE"
+          },
+          "relationships": [
+            {
+              "target_id": "CAP_001",
+              "relation_type": "REQUIRES",
+              "weight": 1
+            }
+          ],
+          "evidence": [
+            {
+              "doc_id": "DOC_001",
+              "location": "Section 2",
+              "context_quote": "Implemented fault-tolerant gossip protocols across 5,000+ edge nodes in EMEA.",
+              "evidence_score": 0.95
+            }
+          ],
+          "confidence": 0.94,
+          "entity_kind": "SEARCH_QUERY",
+          "name": "Principal Distributed Systems Architect EMEA",
+          "identity": {
+            "type": "SEARCH_QUERY",
+            "name": "Principal Distributed Systems Architect EMEA",
+            "canonical_type": "SEARCH_QUERY"
+          },
+          "validation": {
+            "status": "UNVERIFIED"
+          }
+        }
+      ]
+    },
+    "presentation": {
+      "semantic_graph": {
+        "nodes": [],
+        "edges": []
+      },
+      "ui_layout": {
+        "center_node_id": "DOC_001",
+        "concentric_rings": [],
+        "color_tokens": {}
+      }
+    }
+  }
+}

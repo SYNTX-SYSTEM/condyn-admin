@@ -17,7 +17,7 @@ import { validateCareerAnalysis } from "../lib/career/validator";
 import { db, initDbSchema, closeDbConnection } from "../lib/career/db/client";
 
 describe("CONDYN Career Analysis Protocol v1.0 - Step 10: PostgreSQL & Drizzle Persistence Layer", () => {
-  const goldJsonPath = path.join(__dirname, "gold/case_001_minimal_valid/expected/expected.json");
+  const goldJsonPath = path.join(__dirname, "gold/case_001_minimal_valid/expected/canonical-expected.json");
   const goldJsonRaw = fs.readFileSync(goldJsonPath, "utf-8");
   const unverifiedPayload = JSON.parse(goldJsonRaw);
 

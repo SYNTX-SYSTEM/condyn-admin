@@ -16,7 +16,7 @@ import { Sidebar } from "../app/components/career/Sidebar";
 import { Inspector } from "../app/components/career/Inspector";
 
 describe("CONDYN Career Analysis Protocol v1.0 - Step 5.5: React Presentation Components", () => {
-  const goldJsonPath = path.join(__dirname, "gold/case_001_minimal_valid/expected/expected.json");
+  const goldJsonPath = path.join(__dirname, "gold/case_001_minimal_valid/expected/canonical-expected.json");
   const goldJsonRaw = fs.readFileSync(goldJsonPath, "utf-8");
   const unverifiedPayload = JSON.parse(goldJsonRaw);
 

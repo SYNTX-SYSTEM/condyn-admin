@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import { SIL_TOKENS } from "./SILTokens";
+import { SilSourcePresentation } from "../../../../lib/career/view-model/source-presentation";
 
 export type SemanticZoomLevel = 0 | 1 | 2 | 3 | 4;
 
@@ -11,6 +12,7 @@ export interface OrbitalSubspaceViewProps {
   subtitle?: string;
   zoomLevel: SemanticZoomLevel;
   onZoomChange?: (level: SemanticZoomLevel) => void;
+  sourcePresentation?: SilSourcePresentation;
 }
 
 interface SubCluster {
@@ -117,12 +119,26 @@ export function OrbitalSubspaceView({
   stageName,
   subtitle,
   zoomLevel,
-  onZoomChange
+  onZoomChange,
+  sourcePresentation
 }: OrbitalSubspaceViewProps) {
   const [selectedClusterId, setSelectedClusterId] = useState<string | null>(null);
   const [selectedEvidenceId, setSelectedEvidenceId] = useState<string | null>(null);
 
-  const clusters = getClustersForStage(stageId);
+  const clusters = React.useMemo(() => {
+    const base = getClustersForStage(stageId);
+    if (!sourcePresentation || sourcePresentation.labels.length === 0) return base;
+    
+    return base.map(cl => ({
+      ...cl,
+      evidences: cl.evidences.map((ev, i) => ({
+        ...ev,
+        sourceType: (sourcePresentation.labels[i % sourcePresentation.labels.length] || "SRC") as any,
+        title: sourcePresentation.titles[i % sourcePresentation.titles.length] || "Verified Object"
+      }))
+    }));
+  }, [stageId, sourcePresentation]);
+
   const activeCluster = clusters.find((c) => c.id === selectedClusterId) || clusters[0];
   const activeEvidence =
     activeCluster?.evidences.find((e) => e.id === selectedEvidenceId) || activeCluster?.evidences[0];

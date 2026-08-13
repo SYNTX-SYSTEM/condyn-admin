@@ -1,9 +1,11 @@
-import { describe, it, expect, beforeEach } from "vitest";
+import { describe, it, expect, beforeEach, vi } from "vitest";
 import { POST } from "../app/api/career/analyze/route";
+import * as providers from "../lib/career/providers";
+import { MockInferenceProvider } from "../lib/career/adapter";
 
 describe("CONDYN Career Analysis Protocol v1.0 - Step 7.2: Server Boundary API Route", () => {
   beforeEach(() => {
-    process.env.USE_GEMINI_PROVIDER = "false";
+    vi.spyOn(providers, "getCareerInferenceProvider").mockReturnValue(new MockInferenceProvider());
   });
   it("should reject empty document array with HTTP 400 Bad Request", async () => {
     const req = new Request("http://localhost:3000/api/career/analyze", {

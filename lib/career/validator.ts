@@ -283,12 +283,39 @@ export function validateCareerAnalysis(payload: unknown): ValidationResult<Canon
   }
 
   // --------------------------------------------------------------------------
-  // Phase 2.4: Semantic Rules (Role Hierarchy, Mandatory Evidence, DAG Check)
+  // Phase 2.4: Partial Graph Repair (Orphan Edge Removal)
+  // --------------------------------------------------------------------------
+  for (const [sectionName, entities] of domainArrays) {
+    entities.forEach((entity, entityIdx) => {
+      const originalRels = entity.relationships;
+      const validRels = originalRels.filter((rel, relIdx) => {
+        if (!idRegistry.has(rel.target_id)) {
+          issues.push({
+            code: "WARN_ORPHAN_EDGE_REMOVED",
+            severity: "WARNING",
+            message: `Partial Graph Repair: Removed orphan relationship from entity '${entity.entity_id}' referencing non-existent target_id '${rel.target_id}'.`,
+            entityId: entity.entity_id,
+            path: ["structured_data", "analysis", sectionName, entityIdx, "relationships", relIdx, "target_id"]
+          });
+          return false;
+        }
+        return true;
+      });
+      entity.relationships = validRels;
+    });
+  }
+
+  // --------------------------------------------------------------------------
+  // Phase 2.5: Semantic Rules (Role Hierarchy, Mandatory Evidence, DAG Check)
   // --------------------------------------------------------------------------
 
   // 1. Role -> Organization Hierarchy Check
+  const organizationIds = new Set(analysis.organizations.map(org => org.entity_id));
   analysis.roles.forEach((role, roleIdx) => {
-    const hasOrgRef = role.relationships.some(rel => rel.relation_type === "ROLE_IN_ORGANIZATION");
+    const hasOrgRef = role.relationships.some(rel => 
+      rel.relation_type === "ROLE_IN_ORGANIZATION" && 
+      organizationIds.has(rel.target_id)
+    );
     if (!hasOrgRef) {
       issues.push({
         code: "ERR_ROLE_HIERARCHY_DISCONNECTED",
@@ -384,28 +411,6 @@ export function validateCareerAnalysis(payload: unknown): ValidationResult<Canon
     };
   }
 
-  // --------------------------------------------------------------------------
-  // Phase 2.5: Partial Graph Repair (Orphan Edge Removal)
-  // --------------------------------------------------------------------------
-  for (const [sectionName, entities] of domainArrays) {
-    entities.forEach((entity, entityIdx) => {
-      const originalRels = entity.relationships;
-      const validRels = originalRels.filter((rel, relIdx) => {
-        if (!idRegistry.has(rel.target_id)) {
-          issues.push({
-            code: "WARN_ORPHAN_EDGE_REMOVED",
-            severity: "WARNING",
-            message: `Partial Graph Repair: Removed orphan relationship from entity '${entity.entity_id}' referencing non-existent target_id '${rel.target_id}'.`,
-            entityId: entity.entity_id,
-            path: ["structured_data", "analysis", sectionName, entityIdx, "relationships", relIdx, "target_id"]
-          });
-          return false;
-        }
-        return true;
-      });
-      entity.relationships = validRels;
-    });
-  }
 
   // --------------------------------------------------------------------------
   // Phase 2.6: Validator Stamping

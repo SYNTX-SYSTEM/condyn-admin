@@ -75,7 +75,7 @@ describe("CONDYN Career Analysis Protocol v1.0 - Step 4.2: Inference Provider Co
 });
 
 describe("CONDYN Career Analysis Protocol v1.0 - Step 4.3: LLM Output Processor (`processLlmOutput`)", () => {
-  const goldJsonPath = path.join(__dirname, "gold/case_001_minimal_valid/expected/expected.json");
+  const goldJsonPath = path.join(__dirname, "gold/case_001_minimal_valid/expected/gemini-inference.json");
   const goldJsonRaw = fs.readFileSync(goldJsonPath, "utf-8");
 
   it("should strip ```json code wrappers, parse JSON, and return success: true for valid gold model output", () => {
@@ -104,6 +104,17 @@ describe("CONDYN Career Analysis Protocol v1.0 - Step 4.3: LLM Output Processor 
     const result = processLlmOutput(malformedOutput);
     expect(result.success).toBe(false);
     expect(result.issues.some(i => i.code === "ERR_JSON_SYNTAX_INVALID")).toBe(true);
+  });
+
+  it("should successfully recover from truncated JSON strings using repairTruncatedJson", () => {
+    const truncatedInput = `{"report_markdown": "# Section 1\\nExecutive Summary\\n\\n## Section 2\\nCapabilities Overview`;
+    const repaired = import("../lib/career/adapter").then(m => m.repairTruncatedJson(truncatedInput));
+    return repaired.then(str => {
+      expect(str.endsWith('"}')).toBe(true);
+      expect(JSON.parse(str)).toEqual({
+        report_markdown: "# Section 1\nExecutive Summary\n\n## Section 2\nCapabilities Overview"
+      });
+    });
   });
 });
 

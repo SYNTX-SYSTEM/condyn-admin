@@ -5,6 +5,7 @@ import {
 import { InMemoryPromptRepository } from "../lib/career/prompts/repository";
 import { ActivePromptResolver } from "../lib/career/prompts/resolver";
 import { UniversalEntitySchema } from "../lib/career/schema";
+import { buildCareerAnalysisPrompt } from "../lib/career/adapter";
 
 describe("CONDYN Career Analysis Protocol v1.0 — Step 25b: Prompt Verification Harness (`test/career-deep-sweep-prompt.test.ts`)", () => {
   const TEST_ENCRYPTION_KEY = Buffer.alloc(32, 0xAA).toString("base64");
@@ -92,5 +93,19 @@ describe("CONDYN Career Analysis Protocol v1.0 — Step 25b: Prompt Verification
     };
 
     expect(() => UniversalEntitySchema.parse(invalidCapabilityOutput)).toThrow();
+  });
+
+  it("5. should verify that the active PC-CONDYN-CAP-v1.0 extraction contract explicitly enforces ROLE EXTRACTION RULE", () => {
+    const promptOutput = buildCareerAnalysisPrompt([]);
+    const systemPrompt = promptOutput.systemPrompt;
+
+    expect(systemPrompt).toContain("ROLE EXTRACTION RULE: A Role may only be emitted when the source contains sufficient evidence for both the Role itself AND the Organization context");
+    expect(systemPrompt).toContain("the referenced Organization MUST exist in the \"entities\" array");
+    expect(systemPrompt).toContain("The Role MUST contain a \"ROLE_IN_ORGANIZATION\" relationship");
+    expect(systemPrompt).toContain("where \"target_id\" references that existing Organization entity");
+    expect(systemPrompt).toContain("Both Role and relationship MUST be grounded in source evidence");
+    expect(systemPrompt).toContain("DO NOT invent or create a placeholder Organization");
+    expect(systemPrompt).toContain("DO NOT emit an orphan Role");
+    expect(systemPrompt).toContain("DO retain any independently grounded capabilities normally");
   });
 });

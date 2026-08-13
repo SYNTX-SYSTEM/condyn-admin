@@ -70,6 +70,7 @@ export async function executeCareerAnalysisPipeline(
   provider: InferenceProvider,
   options?: PipelineExecutionOptions
 ): Promise<ValidationResult<CanonicalCareerAnalysis>> {
+  const startTime = Date.now();
   const docs = loadDocuments(inputs);
   const promptBundle = await buildCareerAnalysisPromptWithResolver(
     docs,
@@ -77,7 +78,16 @@ export async function executeCareerAnalysisPipeline(
     options?.explicitKeyBase64
   );
   const rawOutput = await provider.execute(promptBundle);
-  const result = processLlmOutput(rawOutput);
+  
+  const context = {
+    analysis_id: `ANL_${new Date().toISOString().replace(/[-:TZs.]/g, '').substring(0, 14)}_${Math.floor(Math.random() * 1000).toString().padStart(3, '0')}`,
+    execution_duration_ms: Date.now() - startTime,
+    document_count: docs.length,
+    pipeline_steps: [],
+    documents: docs
+  };
+
+  const result = processLlmOutput(rawOutput, context);
 
   if (promptBundle.promptMetadata) {
     result.metrics.promptMetadata = promptBundle.promptMetadata;
@@ -96,6 +106,7 @@ export async function executeCareerAnalysisBatchPipeline(
   onProgress?: (progress: BatchProgress) => void,
   options?: PipelineExecutionOptions
 ): Promise<ValidationResult<CanonicalCareerAnalysis>> {
+  const startTime = Date.now();
   const docs = await loadDocumentBatch(batch, onProgress);
   const promptBundle = await buildCareerAnalysisPromptWithResolver(
     docs,
@@ -103,7 +114,16 @@ export async function executeCareerAnalysisBatchPipeline(
     options?.explicitKeyBase64
   );
   const rawOutput = await provider.execute(promptBundle);
-  const result = processLlmOutput(rawOutput);
+  
+  const context = {
+    analysis_id: `ANL_${new Date().toISOString().replace(/[-:TZs.]/g, '').substring(0, 14)}_${Math.floor(Math.random() * 1000).toString().padStart(3, '0')}`,
+    execution_duration_ms: Date.now() - startTime,
+    document_count: docs.length,
+    pipeline_steps: [],
+    documents: docs
+  };
+
+  const result = processLlmOutput(rawOutput, context);
 
   if (promptBundle.promptMetadata) {
     result.metrics.promptMetadata = promptBundle.promptMetadata;

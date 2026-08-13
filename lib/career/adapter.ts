@@ -24,6 +24,7 @@ export interface PromptBuilderOutput {
   systemPrompt: string;
   userPrompt: string;
   promptMetadata?: PromptMetadata;
+  allowedDocIds?: string[];
 }
 
 export interface DocumentInput {
@@ -43,224 +44,28 @@ You are a deterministic, enterprise-grade AI analysis engine for career and capa
 You MUST adhere strictly to the following 8 canonical Invariance Rules:
 
 1. Invariance Rule 1: No external assumptions / hallucination. Only derive entities, relationships, and evidence directly from the provided document corpus. Everything must be grounded in verbatim evidence.
-2. Invariance Rule 2: Strict root bifurcation between structured_data and report_markdown. The report_markdown must contain a comprehensive human-readable analysis, while structured_data contains the exact computational representation.
-3. Invariance Rule 3: Universal Entity Grammar enforcement across all domain entities. Every entity MUST implement the 7 cardinal properties: Identity -> Properties -> Relationships -> Evidence -> Confidence -> Validation.
-4. Invariance Rule 4: Mandatory 12 analysis sections. The structured_data.analysis object MUST contain exactly 3 top-level objects (metadata, pipeline, consistency) and 9 top-level domain arrays (documents, capabilities, domains, organization_classes, organizations, roles, opportunities, strategies, search_queries).
-5. Invariance Rule 5: Normalized score bounds exactly within closed interval [0.0, 1.0]. Never use integer percentages (e.g. use 0.94 instead of 94).
-6. Invariance Rule 6: Canonical ID naming prefixes. All entity IDs must strictly follow canonical prefix conventions: DOC_, CLU_, CAP_, DOM_, CLS_, ORG_, ROL_, OPP_, STR_, QRY_.
-7. Invariance Rule 7: Decoupled presentation topology. The presentation branch must contain read-only projection hints (semantic_graph vs ui_layout with concentric rings and priority groups) without inferring new business logic.
-8. Invariance Rule 8: Strict JSON syntax & Universal Entity Grammar compliance. Output MUST be valid parseable JSON strictly adhering to the CanonicalCareerAnalysisSchema.
-9. Invariance Rule 9: High-Density 12-Section Markdown Completeness. In report_markdown, cover all 12 analytical sections (Executive Summary, Consistency, Capabilities, Target Ecosystem, Opportunities, Strategies, etc.) with dense, analytical Markdown (2-4 paragraphs/bullet points per section). Keep prose concise and impactful so that all 12 sections and structured_data complete cleanly without token truncation.
-
-=== CANONICAL JSON SCHEMA SKELETON & UNIVERSAL ENTITY GRAMMAR ===
-Your output MUST exactly follow this structural schema without missing required fields:
-{
-  "$schema": "https://schema.condyn.eu/v1.0/career-analysis.json",
-  "structured_data": {
-    "analysis": {
-      "metadata": {
-        "analysis_id": "ANL_20260707_000001",
-        "protocol_version": "1.0.0",
-        "schema_version": "1.0.0",
-        "prompt_contract_version": "PC-CONDYN-CAP-v1.0",
-        "analysis_timestamp": "2026-07-07T00:00:00Z",
-        "execution_duration_ms": 1000,
-        "document_count": 1,
-        "total_word_count": 100,
-        "dominant_cluster_name": "Primary Domain Cluster",
-        "overall_confidence": 0.95,
-        "validation_state": "UNVERIFIED"
-      },
-      "pipeline": {
-        "steps": [
-          {
-            "step_id": "STEP_1",
-            "name": "documents_loaded",
-            "started_at": "2026-07-07T00:00:00.000Z",
-            "finished_at": "2026-07-07T00:00:01.000Z",
-            "duration_ms": 1000,
-            "status": "COMPLETED",
-            "warnings": [],
-            "errors": []
-          }
-        ]
-      },
-      "consistency": {
-        "overall_cohesion_score": 0.95,
-        "summary": "Cohesive document analysis.",
-        "clusters": [
-          {
-            "cluster_id": "CLU_001",
-            "name": "Primary Domain Cluster",
-            "cohesion_score": 0.95,
-            "doc_ids": ["DOC_001"]
-          }
-        ],
-        "outlier_doc_ids": [],
-        "contradictions": []
-      },
-      "documents": [
-        {
-          "entity_id": "DOC_001",
-          "identity": { "type": "DOCUMENT", "name": "Document Title" },
-          "properties": {
-            "title": "Document Title",
-            "author": "Author Name",
-            "publication_date": "2026-01-01",
-            "word_count": 100,
-            "hash_sha256": "abcdef1234567890",
-            "cluster_id": "CLU_001"
-          },
-          "relationships": [],
-          "evidence": [
-            {
-              "doc_id": "DOC_001",
-              "location": "Section 1",
-              "context_quote": "Exact verbatim quote from text exceeding ten characters",
-              "evidence_score": 0.95
-            }
-          ],
-          "confidence": 0.95,
-          "validation": { "status": "UNVERIFIED" }
-        }
-      ],
-      "capabilities": [
-        {
-          "entity_id": "CAP_001",
-          "identity": { "type": "CAPABILITY", "name": "Capability Name" },
-          "properties": {
-            "name": "Capability Name",
-            "category": "TECHNICAL",
-            "proficiency_level": 0.9,
-            "years_experience": 5,
-            "market_demand_index": 0.85
-          },
-          "relationships": [
-            { "target_id": "DOC_001", "relation_type": "DERIVED_FROM", "weight": 0.95 }
-          ],
-          "evidence": [
-            {
-              "doc_id": "DOC_001",
-              "location": "Section 1",
-              "context_quote": "Exact verbatim quote supporting capability exceeding ten characters",
-              "evidence_score": 0.95
-            }
-          ],
-          "confidence": 0.95,
-          "validation": { "status": "UNVERIFIED" }
-        }
-      ],
-      "domains": [],
-      "organization_classes": [],
-      "organizations": [
-        {
-          "entity_id": "ORG_001",
-          "identity": { "type": "ORGANIZATION", "name": "Example Org" },
-          "properties": {
-            "country_iso": "DE",
-            "industry_enum": "TECHNOLOGY",
-            "resonance_score": 0.95
-          },
-          "relationships": [],
-          "evidence": [
-            {
-              "doc_id": "DOC_001",
-              "location": "Section 1",
-              "context_quote": "Verbatim evidence quote regarding organization exceeding ten characters",
-              "evidence_score": 0.95
-            }
-          ],
-          "confidence": 0.95,
-          "validation": { "status": "UNVERIFIED" }
-        }
-      ],
-      "roles": [
-        {
-          "entity_id": "ROL_001",
-          "identity": { "type": "ROLE", "name": "Senior Architect" },
-          "properties": {
-            "seniority": "SENIOR",
-            "domain_focus": "Cloud Architecture"
-          },
-          "relationships": [],
-          "evidence": [
-            {
-              "doc_id": "DOC_001",
-              "location": "Section 1",
-              "context_quote": "Verbatim quote regarding role exceeding ten characters",
-              "evidence_score": 0.95
-            }
-          ],
-          "confidence": 0.95,
-          "validation": { "status": "UNVERIFIED" }
-        }
-      ],
-      "opportunities": [],
-      "strategies": [],
-      "search_queries": [
-        {
-          "entity_id": "QRY_001",
-          "identity": { "type": "SEARCH_QUERY", "name": "Target Query" },
-          "properties": {
-            "title": "Query Title",
-            "query": "exact search query string",
-            "purpose": "Market Discovery",
-            "target": "Enterprise Tier",
-            "priority": "HIGH"
-          },
-          "relationships": [],
-          "evidence": [
-            {
-              "doc_id": "DOC_001",
-              "location": "Section 1",
-              "context_quote": "Verbatim quote justifying query exceeding ten characters",
-              "evidence_score": 0.95
-            }
-          ],
-          "confidence": 0.95,
-          "validation": { "status": "UNVERIFIED" }
-        }
-      ]
-    },
-    "presentation": {
-      "semantic_graph": {
-        "nodes": [
-          { "node_id": "DOC_001", "entity_type": "DOCUMENT", "weight": 1.0 }
-        ],
-        "edges": [
-          { "source_id": "DOC_001", "target_id": "CAP_001", "interaction_force": 0.85 }
-        ]
-      },
-      "ui_layout": {
-        "center_node_id": "DOC_001",
-        "concentric_rings": [
-          { "ring_index": 0, "name": "Core Identity", "node_ids": ["DOC_001"] },
-          { "ring_index": 1, "name": "Domain Ecosystem", "node_ids": ["CAP_001"] }
-        ],
-        "color_tokens": { "primary": "#3B82F6", "secondary": "#10B981" }
-      }
-    }
-  },
-  "report_markdown": "# Career Analysis Report..."
-}
-CRITICAL RULES FOR ALL 9 DOMAIN ARRAYS:
-1. Every entity in documents, capabilities, domains, organization_classes, organizations, roles, opportunities, strategies, and search_queries MUST provide all 7 cardinal properties:
-   - entity_id: (e.g. DOC_001, CAP_001, ORG_001, ROL_001, QRY_001)
-   - identity: MUST be an object with "type" and "name" (e.g. { "type": "CAPABILITY", "name": "Node.js" })
-   - properties: domain specific properties (NOTE: organizations MUST have country_iso as 2-letter uppercase ISO like "DE", industry_enum, resonance_score. roles MUST have seniority, domain_focus. search_queries MUST have title, query, purpose, target, priority)
-   - relationships: array of objects with target_id, relation_type, weight. IMPORTANT: relation_type MUST strictly be chosen from: "SUPPORTS", "REQUIRES", "RESONATES_WITH", "CONFLICTS_WITH", "DERIVED_FROM", "BELONGS_TO_CLASS", "ROLE_IN_ORGANIZATION". Never invent custom relation types!
-   - evidence: array of objects with doc_id, location, context_quote, evidence_score. IMPORTANT: context_quote must be an exact verbatim sentence from the text exceeding 10 characters!
-   - confidence: a decimal number between 0.0 and 1.0 (e.g. 0.95), NEVER an object!
-   - validation: MUST be an object with status strictly set to "UNVERIFIED" (e.g. { "status": "UNVERIFIED" }).
-2. Top-level structured_data MUST contain both "analysis" and "presentation". Do not omit "presentation".
-   - In presentation.semantic_graph.edges, every edge MUST have source_id, target_id, and interaction_force (a decimal number between 0.0 and 1.0, e.g. 0.85).
-   - In presentation.ui_layout.concentric_rings, every ring MUST have ring_index, name (a non-empty string e.g. "Core Identity" or "Strategic Horizon"), and node_ids (array of canonical IDs).
-3. ROLE EXTRACTION RULE: A Role may only be emitted when the source contains sufficient evidence for both the Role itself AND the Organization context in which that Role exists.
-   - If a Role is emitted, the referenced Organization MUST exist in the "organizations" array.
+2. Invariance Rule 2: Evidence Constraints. EVERY emitted semantic entity MUST contain at least one grounded evidence item from the supplied source documents. context_quote MUST be verbatim source text exceeding 10 characters. If no grounded evidence exists, OMIT THE ENTITY. Never emit an unsupported semantic entity.
+3. Invariance Rule 3: Normalized score bounds exactly within closed interval [0.0, 1.0].
+4. Invariance Rule 4: Universal Entity Grammar enforcement across all domain entities. Use only canonical relationship semantics ("SUPPORTS", "REQUIRES", "RESONATES_WITH", "CONFLICTS_WITH", "DERIVED_FROM", "BELONGS_TO_CLASS", "ROLE_IN_ORGANIZATION").
+5. Invariance Rule 5: ROLE EXTRACTION RULE: A Role may only be emitted when the source contains sufficient evidence for both the Role itself AND the Organization context in which that Role exists.
+   - If a Role is emitted, the referenced Organization MUST exist in the "entities" array.
    - The Role MUST contain a "ROLE_IN_ORGANIZATION" relationship where "target_id" references that existing Organization entity.
    - Both Role and relationship MUST be grounded in source evidence.
-   - If the source establishes a professional capability/title but DOES NOT establish an Organization: DO NOT invent or create a placeholder Organization, DO NOT emit an orphan Role, but DO retain any independently grounded capabilities normally.`;
+   - DO NOT invent or create a placeholder Organization.
+   - DO NOT emit an orphan Role.
+   - DO retain any independently grounded capabilities normally.
+6. Invariance Rule 6: Schema Compliance. Return only the exact JSON inference data required by the schema. Do not generate pipeline stats, topological mappings, or timestamps.
+7. Invariance Rule 7: Produce a concise analytical report_markdown based only on the evidence.
+8. Invariance Rule 8: Strict JSON syntax & Universal Entity Grammar compliance. Output MUST be valid parseable JSON strictly adhering to the schema.
+   - ALL entities must be emitted in the single "entities" array, discriminated by "entity_kind".
+   - Inject required specialized canonical properties directly into the generic "properties" object of that entity.
+   - If values cannot be grounded from evidence, DO NOT fabricate them. Omit the entity instead.
+   - ORGANIZATION: properties MUST contain "country_iso", "industry_enum", and "resonance_score".
+   - ROLE: properties MUST contain "seniority" and "domain_focus".
+   - SEARCH_QUERY: properties MUST contain "title", "query", "purpose", "target", and "priority".
+   - Other entity kinds may use arbitrary grounded key/value properties through the generic catchall.`;
 
+  const availableSources = documents.map(doc => `- ${doc.docId}: ${doc.title || "Untitled Document"}`).join("\n");
   const documentSections = documents.map(doc => {
     const title = doc.title || "Untitled Document";
     return "--- DOCUMENT METADATA (ID: " + doc.docId + ", Title: " + title + ") ---\n" + doc.content;
@@ -271,6 +76,10 @@ Protocol Version: v1.0
 Schema Version: v1.0
 Prompt Contract Version: PC-CONDYN-CAP-v1.0
 Document Count: ${documents.length}
+
+AVAILABLE SOURCE DOCUMENTS:
+${availableSources}
+Evidence must reference ONLY these exact IDs.
 
 === INPUT CORPUS ===
 ${documentSections}
@@ -283,8 +92,8 @@ DO NOT wrap the output in \`\`\`json or any markdown block. Return ONLY the raw 
 
   return {
     systemPrompt,
-    userPrompt
-
+    userPrompt,
+    allowedDocIds: documents.map(d => d.docId)
   };
 }
 
@@ -313,7 +122,8 @@ export async function buildCareerAnalysisPromptWithResolver(
       templateId: resolved.templateId,
       versionId: resolved.versionId,
       checksum: resolved.checksum
-    }
+    },
+    allowedDocIds: baseBundle.allowedDocIds
   };
 }
 
@@ -422,20 +232,28 @@ export function repairTruncatedJson(input: string): string {
   return str;
 }
 
-export function processLlmOutput(rawOutput: string | unknown): ValidationResult<CanonicalCareerAnalysis> {
+export interface PipelineOrchestrationContext {
+  analysis_id: string;
+  execution_duration_ms?: number;
+  document_count?: number;
+  total_word_count?: number;
+  pipeline_steps: any[];
+  documents?: DocumentInput[];
+}
+
+export function processLlmInferenceOutput(rawOutput: string | unknown): { success: boolean, data?: any, issues?: any, metrics?: any } {
   const startTime = Date.now();
   let payload: unknown = rawOutput;
 
   if (typeof rawOutput === "string") {
     let cleanString = rawOutput.trim();
 
-    // Try to extract JSON from markdown code block if wrapped (e.g. ```json ... ``` or ``` ... ```)
+    // Try to extract JSON from markdown code block if wrapped
     const codeBlockRegex = /```(?:json)?\s*([\s\S]*?)\s*```/i;
     const match = cleanString.match(codeBlockRegex);
     if (match && match[1]) {
       cleanString = match[1].trim();
     } else {
-      // Extract between first { and end of text
       const firstBrace = cleanString.indexOf("{");
       if (firstBrace !== -1) {
         cleanString = cleanString.substring(firstBrace);
@@ -445,19 +263,10 @@ export function processLlmOutput(rawOutput: string | unknown): ValidationResult<
     try {
       payload = JSON.parse(cleanString);
     } catch (e) {
-      // Attempt truncated JSON repair
       try {
         const repaired = repairTruncatedJson(cleanString);
         payload = JSON.parse(repaired);
       } catch (repairErr) {
-        // [DIAGNOSTIC OBSERVABILITY] Capture bounded raw output for BUG 010 trace
-        console.error("==================================================");
-        console.error("BUG 010 DIAGNOSTIC: processLlmOutput JSON parse failed");
-        console.error(`RAW OUTPUT LENGTH: ${rawOutput.length}`);
-        console.error(`RAW PREFIX (800):\n${rawOutput.substring(0, 800)}`);
-        console.error(`RAW SUFFIX (400):\n${rawOutput.substring(Math.max(0, rawOutput.length - 400))}`);
-        console.error("==================================================");
-
         return {
           success: false,
           issues: [{
@@ -475,66 +284,301 @@ export function processLlmOutput(rawOutput: string | unknown): ValidationResult<
     }
   }
 
+  return { success: true, data: payload, metrics: { durationMs: Date.now() - startTime } };
+}
+
+export function assembleCanonicalCareerAnalysis(payload: any, context: PipelineOrchestrationContext): any {
   if (typeof payload === "object" && payload !== null) {
     const p = payload as any;
     
-    // Inject missing scopes that were omitted in GeminiInferenceSchema to satisfy Canonical schema
-    if (p.structured_data?.analysis) {
-      if (!p.structured_data.analysis.metadata) {
-        p.structured_data.analysis.metadata = {
-          analysis_id: `ANL_${new Date().toISOString().replace(/[-:TZs.]/g, '').substring(0, 14)}_${Math.floor(Math.random() * 1000).toString().padStart(3, '0')}`,
-          protocol_version: "1.0",
-          schema_version: "1.0",
-          prompt_contract_version: "1.0"
-        };
+    // We construct the canonical output shape from the flattened inference shape
+    const canonical = {
+      report_markdown: p.report_markdown || "",
+      structured_data: {
+        analysis: {
+          metadata: {
+            analysis_id: context.analysis_id,
+            protocol_version: "1.0",
+            schema_version: "1.0",
+            prompt_contract_version: "1.0",
+            execution_duration_ms: context.execution_duration_ms,
+            document_count: context.document_count,
+            total_word_count: context.total_word_count
+          },
+          pipeline: { steps: context.pipeline_steps || [] },
+          consistency: p.consistency || { overall_cohesion_score: 0.0, clusters: [], outlier_doc_ids: [], contradictions: [] },
+          documents: [],
+          capabilities: [],
+          domains: [],
+          organization_classes: [],
+          organizations: [],
+          roles: [],
+          opportunities: [],
+          strategies: [],
+          search_queries: []
+        },
+        presentation: undefined
       }
-      if (!p.structured_data.pipeline) {
-        p.structured_data.pipeline = { steps: [] };
-      }
-    }
-    if (p.structured_data && !p.structured_data.presentation) {
-      p.structured_data.presentation = {
-        semantic_graph: { nodes: [], edges: [] },
-        ui_layout: {
-          center_node_id: "ANL_UNKNOWN",
-          concentric_rings: [],
-          color_tokens: {}
-        }
-      };
-    }
-    
-    // Fill validation properties on entities
-    const domainArrays = [
-      p.structured_data?.analysis?.documents,
-      p.structured_data?.analysis?.capabilities,
-      p.structured_data?.analysis?.domains,
-      p.structured_data?.analysis?.organization_classes,
-      p.structured_data?.analysis?.organizations,
-      p.structured_data?.analysis?.roles,
-      p.structured_data?.analysis?.opportunities,
-      p.structured_data?.analysis?.strategies,
-      p.structured_data?.analysis?.search_queries
-    ];
-    for (const arr of domainArrays) {
-      if (Array.isArray(arr)) {
-        arr.forEach(ent => {
-          if (typeof ent === "object" && ent !== null && !ent.validation) {
-            ent.validation = { status: "UNVERIFIED" };
+    };
+
+    // ────────────────────────────────────────────────────────
+    // DETERMINISTIC CANONICAL PARTITION & RELATION INTEGRITY
+    // ────────────────────────────────────────────────────────
+    if (Array.isArray(p.entities)) {
+      const entities = p.entities;
+      const emittedIds = new Map<string, string>(); // raw entity_id -> entity_kind
+
+      // Phase 1: Duplicate Detection
+      for (const ent of entities) {
+        if (!ent || typeof ent !== "object") continue;
+        if (ent.entity_id) {
+          if (emittedIds.has(ent.entity_id)) {
+            throw new Error(`ERR_CANONICAL_ASSEMBLY_DUPLICATE_ENTITY_ID: duplicate entity_id ${ent.entity_id}`);
           }
-        });
+          emittedIds.set(ent.entity_id, ent.entity_kind);
+        }
+      }
+
+      // Phase 2: Establish runtime-owned source IDs and inject missing canonical DOCUMENTs (BUG010Q)
+      const reservedDocIds = new Set<string>();
+      if (context.documents) {
+        for (const doc of context.documents) {
+          if (doc.docId) {
+            reservedDocIds.add(doc.docId);
+            
+            const wasEmitted = emittedIds.has(doc.docId);
+            emittedIds.set(doc.docId, "DOCUMENT");
+            
+            if (!wasEmitted) {
+              // Inject the missing canonical DOCUMENT from runtime context
+              const runtimeDoc = {
+                entity_kind: "DOCUMENT",
+                entity_id: doc.docId,
+                name: doc.title || doc.docId,
+                properties: {
+                  raw_word_count: doc.content ? doc.content.split(/\s+/).length : 0
+                },
+                relationships: [],
+                evidence: [],
+                confidence: 1.0,
+                validation: { status: "PASSED" }
+              };
+              entities.push(runtimeDoc as any);
+            }
+          }
+        }
+      }
+
+      // Phase 3: Establish entity ID map
+      const idMap = new Map<string, string>();
+      const typeCounters = {
+        DOCUMENT: 1, CAPABILITY: 1, DOMAIN: 1, ORGANIZATION_CLASS: 1,
+        ORGANIZATION: 1, ROLE: 1, OPPORTUNITY: 1, STRATEGY: 1, SEARCH_QUERY: 1
+      };
+      const prefixMap: Record<string, string> = {
+        DOCUMENT: "DOC", CAPABILITY: "CAP", DOMAIN: "DOM", ORGANIZATION_CLASS: "CLS",
+        ORGANIZATION: "ORG", ROLE: "ROL", OPPORTUNITY: "OPP", STRATEGY: "STR", SEARCH_QUERY: "QRY"
+      };
+
+      for (const ent of entities) {
+        if (!ent || typeof ent !== "object" || !ent.entity_id) continue;
+        const kind = ent.entity_kind;
+
+        if (kind === "DOCUMENT" && reservedDocIds.has(ent.entity_id)) {
+          idMap.set(ent.entity_id, ent.entity_id);
+          continue;
+        }
+
+        if (kind in typeCounters) {
+          let nextNum = typeCounters[kind as keyof typeof typeCounters];
+          let proposedId = `${prefixMap[kind]}_${String(nextNum).padStart(3, '0')}`;
+          
+          if (kind === "DOCUMENT") {
+            while (reservedDocIds.has(proposedId)) {
+              nextNum++;
+              proposedId = `${prefixMap[kind]}_${String(nextNum).padStart(3, '0')}`;
+            }
+          }
+          typeCounters[kind as keyof typeof typeCounters] = nextNum + 1;
+          idMap.set(ent.entity_id, proposedId);
+        } else {
+          idMap.set(ent.entity_id, ent.entity_id);
+        }
+      }
+
+      // Phase 4: Establish cluster ID map
+      const clusterIdMap = new Map<string, string>();
+      if (p.consistency && Array.isArray(p.consistency.clusters)) {
+        let clusterCounter = 1;
+        for (const c of p.consistency.clusters) {
+          if (c.cluster_id) {
+            clusterIdMap.set(c.cluster_id, `CLU_${String(clusterCounter).padStart(3, '0')}`);
+            clusterCounter++;
+          }
+        }
+      }
+
+      // Phase 5: Structural normalization and raw relationship existence checks
+      for (const ent of entities) {
+        if (!ent || typeof ent !== "object") continue;
+        
+        if (ent.relationships === undefined || ent.relationships === null) {
+          ent.relationships = [];
+        }
+
+        if (Array.isArray(ent.relationships)) {
+          for (const rel of ent.relationships) {
+            if (!rel.target_id) continue;
+            
+            if (!emittedIds.has(rel.target_id)) {
+              throw new Error(`ERR_CANONICAL_ASSEMBLY_RELATION_TARGET_MISSING: target_id ${rel.target_id} not found`);
+            }
+
+            const targetKind = emittedIds.get(rel.target_id);
+            if (rel.relation_type === "ROLE_IN_ORGANIZATION" && targetKind !== "ORGANIZATION") {
+              throw new Error(`ERR_CANONICAL_ASSEMBLY_RELATION_KIND_MISMATCH: ROLE_IN_ORGANIZATION must target an ORGANIZATION, but got ${targetKind}`);
+            }
+          }
+        }
+      }
+
+      // Phase 6: Rewrite references
+      for (const ent of entities) {
+        if (!ent || typeof ent !== "object") continue;
+        
+        if (ent.entity_id && idMap.has(ent.entity_id)) {
+          ent.entity_id = idMap.get(ent.entity_id);
+        }
+
+        if (Array.isArray(ent.relationships)) {
+          for (const rel of ent.relationships) {
+            if (rel.target_id && idMap.has(rel.target_id)) {
+              rel.target_id = idMap.get(rel.target_id);
+            }
+          }
+        }
+
+        if (Array.isArray(ent.evidence)) {
+          for (const ev of ent.evidence) {
+            if (ev.doc_id) {
+              if (emittedIds.get(ev.doc_id) !== "DOCUMENT") {
+                throw new Error(`ERR_CANONICAL_ASSEMBLY_DOCUMENT_REFERENCE_MISSING: evidence.doc_id ${ev.doc_id} does not reference a DOCUMENT`);
+              }
+              if (idMap.has(ev.doc_id)) {
+                ev.doc_id = idMap.get(ev.doc_id);
+              }
+            }
+          }
+        }
+      }
+
+      if (p.consistency) {
+        if (Array.isArray(p.consistency.clusters)) {
+          for (const c of p.consistency.clusters) {
+            if (c.cluster_id && clusterIdMap.has(c.cluster_id)) {
+              c.cluster_id = clusterIdMap.get(c.cluster_id);
+            }
+            if (Array.isArray(c.doc_ids)) {
+              c.doc_ids = c.doc_ids.map((d: string) => {
+                if (emittedIds.get(d) !== "DOCUMENT") {
+                  throw new Error(`ERR_CANONICAL_ASSEMBLY_DOCUMENT_REFERENCE_MISSING: cluster.doc_ids contains ${d} which is not a DOCUMENT`);
+                }
+                return idMap.has(d) ? idMap.get(d) : d;
+              });
+            }
+          }
+        }
+        if (Array.isArray(p.consistency.outlier_doc_ids)) {
+          p.consistency.outlier_doc_ids = p.consistency.outlier_doc_ids.map((d: string) => {
+            if (emittedIds.get(d) !== "DOCUMENT") {
+              throw new Error(`ERR_CANONICAL_ASSEMBLY_DOCUMENT_REFERENCE_MISSING: outlier_doc_ids contains ${d} which is not a DOCUMENT`);
+            }
+            return idMap.has(d) ? idMap.get(d) : d;
+          });
+        }
+      }
+
+      // Phase 7: Deterministic Partition & Identity Construction
+      for (const ent of entities) {
+        if (!ent || typeof ent !== "object") continue;
+
+        ent.identity = {
+          type: ent.entity_kind,
+          name: ent.name,
+          canonical_type: ent.entity_kind
+        };
+        if (ent.code) {
+          ent.identity.code = ent.code;
+        }
+        
+        ent.validation = { status: "UNVERIFIED" };
+
+        switch (ent.entity_kind) {
+          case "DOCUMENT": canonical.structured_data.analysis.documents.push(ent as never); break;
+          case "CAPABILITY": canonical.structured_data.analysis.capabilities.push(ent as never); break;
+          case "DOMAIN": canonical.structured_data.analysis.domains.push(ent as never); break;
+          case "ORGANIZATION_CLASS": canonical.structured_data.analysis.organization_classes.push(ent as never); break;
+          case "ORGANIZATION": canonical.structured_data.analysis.organizations.push(ent as never); break;
+          case "ROLE": canonical.structured_data.analysis.roles.push(ent as never); break;
+          case "OPPORTUNITY": canonical.structured_data.analysis.opportunities.push(ent as never); break;
+          case "STRATEGY": canonical.structured_data.analysis.strategies.push(ent as never); break;
+          case "SEARCH_QUERY": canonical.structured_data.analysis.search_queries.push(ent as never); break;
+        }
       }
     }
 
-    if (p.structured_data?.analysis?.metadata) {
-      const currentId = p.structured_data.analysis.metadata.analysis_id;
-      if (!currentId || currentId === "ANL_20260706_000001" || currentId.includes("000001")) {
-        const uniqueId = `ANL_${new Date().toISOString().replace(/[-:TZs.]/g, '').substring(0, 14)}_${Math.floor(Math.random() * 1000).toString().padStart(3, '0')}`;
-        p.structured_data.analysis.metadata.analysis_id = uniqueId;
+    // Graph Projection (Deterministic)
+    let centerNode = "";
+    const domainArrays = [
+      canonical.structured_data.analysis.documents,
+      canonical.structured_data.analysis.capabilities,
+      canonical.structured_data.analysis.domains,
+      canonical.structured_data.analysis.organization_classes,
+      canonical.structured_data.analysis.organizations,
+      canonical.structured_data.analysis.roles,
+      canonical.structured_data.analysis.opportunities,
+      canonical.structured_data.analysis.strategies,
+      canonical.structured_data.analysis.search_queries
+    ];
+
+    for (const arr of domainArrays) {
+      if (arr.length > 0 && (arr[0] as any).entity_id) {
+        centerNode = (arr[0] as any).entity_id;
+        break;
       }
     }
+
+    if (!centerNode) {
+      throw new Error("ERR_CANONICAL_ASSEMBLY_EMPTY: No entities found to project center_node_id. Fabricating IDs is not allowed.");
+    }
+
+    canonical.structured_data.presentation = {
+      semantic_graph: { nodes: [], edges: [] },
+      ui_layout: {
+        center_node_id: centerNode,
+        concentric_rings: [],
+        color_tokens: {}
+      }
+    } as any;
+
+    return canonical;
   }
 
-  return validateCareerAnalysis(payload);
+  return payload;
+}
+
+export function processLlmOutput(rawOutput: string | unknown, context?: PipelineOrchestrationContext): ValidationResult<CanonicalCareerAnalysis> {
+  const inference = processLlmInferenceOutput(rawOutput);
+  if (!inference.success) return inference as any;
+
+  const ctx = context || {
+    analysis_id: "ANL_TEST_DETERMINISTIC_ID",
+    pipeline_steps: []
+  };
+
+  const canonicalCandidate = assembleCanonicalCareerAnalysis(inference.data, ctx);
+  
+  return validateCareerAnalysis(canonicalCandidate);
 }
 
 

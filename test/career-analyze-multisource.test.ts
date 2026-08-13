@@ -1,9 +1,11 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
 import { POST } from "../app/api/career/analyze/route";
+import * as providers from "../lib/career/providers";
+import { MockInferenceProvider } from "../lib/career/adapter";
 
 describe("CONDYN Career Analysis Protocol v1.0 — Step 19d: Multi-Source API Route (`test/career-analyze-multisource.test.ts`)", () => {
   beforeEach(() => {
-    process.env.USE_GEMINI_PROVIDER = "false";
+    vi.spyOn(providers, "getCareerInferenceProvider").mockReturnValue(new MockInferenceProvider());
   });
 
   afterEach(() => {

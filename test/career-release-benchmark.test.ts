@@ -8,7 +8,7 @@ import { propagateGraphConfidence } from "../lib/career/confidence/propagation";
 describe("CONDYN Career Analysis Protocol v1.0 — Phase 4: Prompt Quality & Gold Standard Benchmark Suite", () => {
   const goldExpectedPath = path.resolve(
     __dirname,
-    "gold/case_001_minimal_valid/expected/expected.json"
+    "gold/case_001_minimal_valid/expected/canonical-expected.json"
   );
 
   it("1. Gold Standard Compliance: expected.json passes CanonicalCareerAnalysis validator with 100% success", () => {

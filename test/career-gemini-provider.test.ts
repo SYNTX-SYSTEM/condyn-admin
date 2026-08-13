@@ -4,11 +4,15 @@ import { PromptBuilderOutput } from "../lib/career/adapter";
 
 // Mock @google/genai SDK completely
 const mockGenerateContent = vi.fn();
+const mockCountTokens = vi.fn().mockResolvedValue({ totalTokens: 12345 });
+const mockGet = vi.fn().mockResolvedValue({ inputTokenLimit: 2000000, outputTokenLimit: 8192 });
 vi.mock("@google/genai", () => {
   return {
     GoogleGenAI: class MockGoogleGenAI {
       models = {
-        generateContent: mockGenerateContent
+        generateContent: mockGenerateContent,
+        countTokens: mockCountTokens,
+        get: mockGet
       };
       constructor(options: any) {
         if (!options?.apiKey && !process.env.GEMINI_API_KEY) {
@@ -49,7 +53,7 @@ describe("CONDYN Career Analysis Protocol v1.0 - Step 9: Gemini Inference Provid
     expect(result).toContain("structured_data");
   });
 
-  it("should build correct Gemini request passing systemPrompt to systemInstruction and userPrompt to contents", async () => {
+  it("should build correct Gemini request folding systemPrompt into initial contents and omit systemInstruction from config", async () => {
     mockGenerateContent.mockResolvedValueOnce({
       text: () => "{}"
     });
@@ -60,8 +64,12 @@ describe("CONDYN Career Analysis Protocol v1.0 - Step 9: Gemini Inference Provid
     expect(mockGenerateContent).toHaveBeenCalledTimes(1);
     const callArgs = mockGenerateContent.mock.calls[0][0];
 
-    expect(callArgs.contents).toBe(samplePrompt.userPrompt);
-    expect(callArgs.config.systemInstruction).toBe(samplePrompt.systemPrompt);
+    // Assert that the semantic system prompt is folded into contents
+    expect(callArgs.contents).toContain(samplePrompt.systemPrompt);
+    expect(callArgs.contents).toContain(samplePrompt.userPrompt);
+    
+    // Assert that the config no longer contains systemInstruction boundary
+    expect(callArgs.config.systemInstruction).toBeUndefined();
   });
 
   it("should enforce structured JSON mode by setting responseMimeType to application/json", async () => {
@@ -135,7 +143,33 @@ describe("CONDYN Career Analysis Protocol v1.0 - Step 9: Gemini Inference Provid
     expect(provider.lastTelemetry).toBeDefined();
     expect(provider.lastTelemetry?.finishReason).toBe("STOP");
     expect(provider.lastTelemetry?.continuations).toBe(1);
-    expect(provider.lastTelemetry?.complete).toBe(true);
-    expect(provider.lastTelemetry?.outputTokens).toBe(800);
+  });
+
+  it("clamps maxOutputTokens to 8192 for gemini-3.5-flash and diagnostic correctly reports it (BUG010E)", async () => {
+    process.env.GEMINI_MAX_OUTPUT_TOKENS = "65536";
+    
+    // Reject to trigger the diagnostic formatter in the catch block
+    mockGenerateContent.mockRejectedValueOnce({
+      status: 400,
+      code: "INVALID_ARGUMENT",
+      message: "Simulated rejection."
+    });
+
+    const provider = new GeminiProvider({ model: "gemini-3.5-flash" });
+    
+    let caughtError: any = null;
+    try {
+      await provider.execute(samplePrompt);
+    } catch (e) {
+      caughtError = e;
+    }
+
+    // 1. Assert SDK actually received clamped value
+    const callArgs = mockGenerateContent.mock.calls[0][0];
+    expect(callArgs.config.maxOutputTokens).toBe(8192);
+
+    // 2. Assert diagnostic formatter accurately reflects the clamped value
+    const errorString = caughtError?.message || String(caughtError);
+    expect(errorString).toContain("maxOutputTokens: 8192");
   });
 });

@@ -21,7 +21,9 @@
     "react-dom": "19.2.4",
     "react-markdown": "^10.1.0",
     "reactflow": "^11.11.4",
-    "zod": "^3.24.1"
+    "tsx": "^4.23.12",
+    "zod": "^3.24.1",
+    "zod-to-json-schema": "^3.25.2"
   },
   "devDependencies": {
     "@types/d3-force": "^3.0.10",

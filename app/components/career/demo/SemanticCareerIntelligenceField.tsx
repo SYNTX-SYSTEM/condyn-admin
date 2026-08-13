@@ -14,6 +14,9 @@ import { InferenceTelemetryHUD } from "./InferenceTelemetryHUD";
 import { buildEvidenceGraph } from "../../../../lib/career/evidence/traversal";
 import { computeGraphFocus } from "../../../../lib/career/evidence/highlight";
 import { DecisionGraphInspector } from "./DecisionGraphInspector";
+import { adaptCanonicalToDemoState } from "../../../../lib/career/ui-adapter";
+import { buildSilSourcePresentation } from "../../../../lib/career/view-model/source-presentation";
+import { buildSilClusterPresentation } from "../../../../lib/career/view-model/cluster-presentation";
 
 export interface SemanticCareerIntelligenceFieldProps {
   data: DemoCareerIntelligenceData;
@@ -87,12 +90,12 @@ export function SemanticCareerIntelligenceField({
 
       const documentsPayload = stagedDocs.map((doc) => {
         if (doc.type === "pdf") {
-          return { type: "pdf", content: doc.content, title: doc.title };
+          return { type: "pdf", content: doc.content, title: doc.title, docId: doc.id };
         }
         if (doc.type === "github" || doc.type === "website") {
-          return { type: doc.type, url: doc.url, title: doc.title };
+          return { type: doc.type, url: doc.url, title: doc.title, docId: doc.id };
         }
-        return { type: "text", content: doc.content, title: doc.title };
+        return { type: "text", content: doc.content, title: doc.title, docId: doc.id };
       });
 
       const res = await fetch("/api/career/analyze", {
@@ -110,14 +113,10 @@ export function SemanticCareerIntelligenceField({
       if (json.inferenceTelemetry) {
         setInferenceTelemetry(json.inferenceTelemetry);
       }
-      setActiveData((prev) => ({
-        ...prev,
-        sources: stagedDocs.map((d) => ({
-          sourceKind: String(d.type || "DOCUMENT").toUpperCase(),
-          sourceTitle: d.title || d.name || "Input Source",
-          contentHash: d.id || "HASH-" + Math.random().toString(36).substring(2, 8)
-        }))
-      }));
+      
+      const projectedRealState = adaptCanonicalToDemoState(json.data, stagedDocs, json.sourceManifest);
+      setActiveData(projectedRealState);
+      
       setAnalysisSuccess(true);
     } catch (err: any) {
       setAnalysisError(err.message || "Fehler bei der Analyse");
@@ -150,6 +149,10 @@ export function SemanticCareerIntelligenceField({
     ]);
   }, [activeData]);
 
+  const sourcePresentation = React.useMemo(() => {
+    return buildSilSourcePresentation(activeData);
+  }, [activeData]);
+
   const graphFocus = React.useMemo(() => {
     if (!selectedGraphNodeId) return null;
     return computeGraphFocus(evidenceGraph, selectedGraphNodeId);
@@ -160,79 +163,79 @@ export function SemanticCareerIntelligenceField({
       stageId: "01",
       stageName: "IDENTITY CORE",
       subtitle: "Unverfälschter Identitätskern",
-      count: data.sources.length,
+      count: activeData.sources.length,
       glyph: "◈",
       angleDeg: -90,
       color: "#38e5ff",
       animationDelay: "0s",
       photonOutDur: "3.6s",
       photonInDur: "4.4s",
-      previewItems: data.sources.slice(0, 3).map((s) => s.sourceTitle || (s as any).name || "Quellendokument")
+      previewItems: activeData.sources.slice(0, 3).map((s) => s.sourceTitle || (s as any).name || "Quellendokument")
     },
     {
       stageId: "02",
       stageName: "CAPABILITY FIELD",
       subtitle: "Semantischer Kern",
-      count: data.capabilities.length,
+      count: activeData.capabilities.length,
       glyph: "⬡",
       angleDeg: -30,
       color: "#00ffd5",
       animationDelay: "-4s",
       photonOutDur: "4.2s",
       photonInDur: "5.0s",
-      previewItems: data.capabilities.slice(0, 3).map((c) => c.name)
+      previewItems: activeData.capabilities.slice(0, 3).map((c) => c.name)
     },
     {
       stageId: "03",
       stageName: "RESONANCE ORBITS",
       subtitle: "Organisationen im Feld",
-      count: data.companyMatches.length,
+      count: activeData.companyMatches.length,
       glyph: "◎",
       angleDeg: 30,
       color: "#6b8eff",
       animationDelay: "-8s",
       photonOutDur: "4.8s",
       photonInDur: "5.6s",
-      previewItems: data.companyMatches.slice(0, 3).map((c) => c.organizationName)
+      previewItems: activeData.companyMatches.slice(0, 3).map((c) => c.organizationName)
     },
     {
       stageId: "04",
       stageName: "ROLE MANIFESTATION",
       subtitle: "Konkrete Rollen",
-      count: data.roleMatches.length,
+      count: activeData.roleMatches.length,
       glyph: "⎔",
       angleDeg: 90,
       color: "#b87fff",
       animationDelay: "-12s",
       photonOutDur: "3.9s",
       photonInDur: "4.7s",
-      previewItems: data.roleMatches.slice(0, 3).map((r) => r.roleTitle)
+      previewItems: activeData.roleMatches.slice(0, 3).map((r) => r.roleTitle)
     },
     {
       stageId: "05",
       stageName: "TENSION FIELD",
       subtitle: "Fähigkeitslücken",
-      count: data.capabilityGaps.length,
+      count: activeData.capabilityGaps.length,
       glyph: "⟁",
       angleDeg: 150,
       color: "#ff7c5c",
       animationDelay: "-16s",
       photonOutDur: "4.5s",
       photonInDur: "5.3s",
-      previewItems: data.capabilityGaps.slice(0, 3).map((g) => g.capabilityName)
+      previewItems: activeData.capabilityGaps.slice(0, 3).map((g) => g.capabilityName)
     },
     {
       stageId: "06",
       stageName: "EVOLUTION PATHS",
       subtitle: "Entwicklungspfade",
-      count: data.nextActions.length,
+      count: activeData.nextActions.length,
       glyph: "∿",
       angleDeg: 210,
       color: "#38ff8b",
       animationDelay: "-20s",
       photonOutDur: "5.1s",
       photonInDur: "6.0s",
-      previewItems: data.nextActions.slice(0, 3).map((a) => a.title)
+      previewItems: activeData.nextActions.slice(0, 3).map((a) => a.title)
     }
   ];
 
@@ -259,33 +262,11 @@ export function SemanticCareerIntelligenceField({
     cameraTranslateY = -activeOrbitY * 0.95;
   }
 
-  const subClusters = activeStageId
-    ? [
-        {
-          id: `cl-${activeStageId}-1`,
-          title: "Core Architecture Cluster",
-          confidence: "98%",
-          evidenceCount: 14,
-          dx: -130,
-          dy: -85,
-          evidences: [
-            { id: `ev-${activeStageId}-1`, title: "Distributed System Reference", sourceType: "PDF", snippet: "System design specification verified." },
-            { id: `ev-${activeStageId}-2`, title: "Core Reconciler Implementation", sourceType: "GitHub", snippet: "pkg/engine/reconcile.go lines 14-88" }
-          ]
-        },
-        {
-          id: `cl-${activeStageId}-2`,
-          title: "Semantic Resonance Vector",
-          confidence: "95%",
-          evidenceCount: 9,
-          dx: 130,
-          dy: -75,
-          evidences: [
-            { id: `ev-${activeStageId}-3`, title: "SIL v3.0 Continuous Space Engine", sourceType: "GitHub", snippet: "app/components/career/demo/SemanticCareerIntelligenceField.tsx" }
-          ]
-        }
-      ]
-    : [];
+  const subClusters = buildSilClusterPresentation(
+    activeStageId,
+    analysisSuccess,
+    sourcePresentation
+  );
 
   return (
     <div
@@ -718,7 +699,7 @@ export function SemanticCareerIntelligenceField({
                 filter: focusedStageId ? `drop-shadow(0 0 25px rgba(56, 229, 255, 0.55))` : undefined
               }}
             >
-              <IdentityCoreDropZone sources={data.sources} isCommunicating={!!focusedStageId} />
+              <IdentityCoreDropZone sources={activeData.sources} isCommunicating={!!focusedStageId} />
             </div>
 
             {/* Orbiting Resonance Bubbles */}
@@ -760,6 +741,7 @@ export function SemanticCareerIntelligenceField({
                       isHovered={isStageHovered}
                       isDimmed={isStageDimmed}
                       animationDelay={st.animationDelay}
+                      sourcePresentation={sourcePresentation}
                       onClick={() => {
                         const newActive = isStageActive ? null : st.stageId;
                         setActiveStageId(newActive);

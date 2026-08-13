@@ -44,22 +44,18 @@ startxref
 }
 
 describe("CONDYN Career Analysis Protocol v1.0 - Step 8: Serverseitige PDF-Ingestion", () => {
-  it("should extract raw text from a valid PDF buffer via extractTextFromPdf", async () => {
-    // Note: If pdf-parse cannot parse our minimal ASCII PDF in unit test without font dictionaries,
-    // we verify that extractTextFromPdf returns string or handles mocked/real buffers.
+  it("extracts text from a valid PDF using the production parser", async () => {
     const sampleText = "Erfahrener Senior Cloud Systems Architect mit Fokus auf Kubernetes und Node.js.";
+    const validPdfBuffer = createMinimalPdfBuffer(sampleText);
     
-    // We mock pdf-parse behavior if needed or test direct buffer extraction
-    const mockBuffer = Buffer.from("mock pdf buffer content");
+    // The test must NOT catch and swallow ERR_PDF_PARSE_FAILURE here.
+    // If the runtime API is broken (e.g. pdfParse is not a function),
+    // this call must fail the test directly, establishing a genuine RED.
+    const extracted = await extractTextFromPdf(validPdfBuffer);
     
-    // We spy on pdf-parse or test real implementation
-    try {
-      const extracted = await extractTextFromPdf(createMinimalPdfBuffer(sampleText));
-      expect(typeof extracted).toBe("string");
-    } catch (e: any) {
-      // If minimal pdf fails native pdf-parse, verify it throws ERR_PDF_PARSE_FAILURE
-      expect(e.message).toContain("ERR_PDF_PARSE_FAILURE");
-    }
+    expect(typeof extracted).toBe("string");
+    // (Depending on whether pdf-parse can map characters without an explicit /F1 font dict,
+    // the text might be empty or contain the sample text. At minimum it must complete.)
   });
 
   it("should throw ERR_PDF_PARSE_FAILURE when extracting from an empty Buffer", async () => {

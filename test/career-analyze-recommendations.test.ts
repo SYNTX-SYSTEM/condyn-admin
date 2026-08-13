@@ -2,10 +2,12 @@ import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
 import { POST } from "../app/api/career/analyze/route";
 import { GET as GET_DETAIL } from "../app/api/career/analyses/[analysisId]/route";
 import { getCareerAnalysisRepository } from "../lib/career/repositories";
+import * as providers from "../lib/career/providers";
+import { MockInferenceProvider } from "../lib/career/adapter";
 
 describe("CONDYN Career Analysis Protocol v1.0 — Step 20b: Recommendation API Integration (`test/career-analyze-recommendations.test.ts`)", () => {
   beforeEach(() => {
-    process.env.USE_GEMINI_PROVIDER = "false";
+    vi.spyOn(providers, "getCareerInferenceProvider").mockReturnValue(new MockInferenceProvider());
   });
 
   afterEach(() => {
