@@ -7,9 +7,25 @@
 - **TEST 001C (GITHUB ONLY):** ✅ PASS / CLOSED
   - *Observation Note (Metric Provenance)*: "Engineering Reality Reconstruction" showed 95%. Future sweep should verify canonical mapping origin for this score. Do not block current test gates.
 - **TEST 001D (WEBSITE ONLY):** ✅ PASS / CLOSED
+- **TEST 001E (PDF + GITHUB):** ✅ PASS / CLOSED
+- **TEST 001F (FULL MULTI-SOURCE):** ✅ PASS / CLOSED
 
-## ARCHITECTURE GATES SECURED
-- **Evidence Boundary:** 🔒 VERIFIED
-- **Runtime Document Owner:** 🔒 VERIFIED
-- **Zero-State Strict Compliance:** 🔒 VERIFIED
-- **Pipeline Abstraction (Multi-Source -> Canonical):** 🔒 VERIFIED
+***INGESTION HARDENING PHASE = COMPLETE*** 🔥
+
+## PHASE 2 — EVIDENCE → DECISION HARDENING
+
+- **TEST 002A (EVIDENCE → CAPABILITY PROOF CHAIN):** ✅ PASS / CLOSED
+- **TEST 002B (CAPABILITY CONVERGENCE):** ✅ PASS / CLOSED
+- **TEST 002C (CAPABILITY → REQUIREMENT → ROLE):** ✅ PASS / CLOSED
+- **TEST 002D (SCORE PROVENANCE):** ✅ PASS / CLOSED
+- **TEST 002E (RECOMMENDATION PROOF CHAIN):** ✅ PASS / CLOSED
+
+***PHASE 2 = COMPLETE*** 🔥
+
+## PHASE 3 — DECISION LIFECYCLE
+
+- **TEST 003A (RECOMMENDATION → DECISION BOUNDARY):** ✅ PASS / CLOSED
+- **TEST 003B (DECISION → COMMITMENT / ACTION):** ✅ PASS / CLOSED
+- **TEST 003C (OUTCOME CAPTURE):** ⏳ OPEN / NEXT
+- **TEST 003D (FEEDBACK ATTRIBUTION):** ⏸️ PENDING
+- **TEST 003E (LEARNING WITHOUT HISTORY MUTATION):** ⏸️ PENDING

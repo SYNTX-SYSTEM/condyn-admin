@@ -106,7 +106,12 @@ export function SemanticCareerIntelligenceField({
 
       const json = await res.json();
       if (!res.ok || !json.success) {
-        throw new Error(json.issues?.[0]?.message || "Analyse fehlgeschlagen.");
+        const errorData = {
+          message: json.issues?.[0]?.message || "Analyse fehlgeschlagen.",
+          issues: json.issues || [],
+          status: res.status
+        };
+        throw errorData;
       }
 
       setAnalysisStep("complete");
@@ -119,7 +124,11 @@ export function SemanticCareerIntelligenceField({
       
       setAnalysisSuccess(true);
     } catch (err: any) {
-      setAnalysisError(err.message || "Fehler bei der Analyse");
+      if (err.issues && err.status) {
+        setAnalysisError(JSON.stringify({ status: err.status, issues: err.issues }));
+      } else {
+        setAnalysisError(JSON.stringify({ status: 500, issues: [{ message: err.message || "Fehler bei der Analyse" }] }));
+      }
       setAnalysisSuccess(false);
     } finally {
       setTimeout(() => {
@@ -408,7 +417,11 @@ export function SemanticCareerIntelligenceField({
         </div>
       )}
 
-      {analysisError && (
+      {analysisError && (() => {
+        let errData = { status: 500, issues: [{ message: analysisError }] };
+        try { errData = JSON.parse(analysisError); } catch (e) {}
+        
+        return (
         <div
           data-testid="intake-error-banner"
           style={{
@@ -416,41 +429,68 @@ export function SemanticCareerIntelligenceField({
             top: "80px",
             left: "50%",
             transform: "translateX(-50%)",
-            backgroundColor: "rgba(30, 10, 14, 0.95)",
-            border: "1px solid #ff5555",
+            backgroundColor: "rgba(26, 9, 11, 0.96)",
+            border: "1px solid #ff3333",
             borderRadius: "8px",
-            padding: "10px 16px",
+            padding: "16px 24px",
             color: "#ff5555",
             fontFamily: SIL_TOKENS.typography.mono,
-            fontSize: "11px",
             zIndex: 100,
             display: "flex",
-            alignItems: "center",
-            gap: "12px"
+            flexDirection: "column",
+            gap: "12px",
+            boxShadow: "0 0 30px rgba(255, 51, 51, 0.25)",
+            maxWidth: "600px"
           }}
         >
-          <div>
-            <div style={{ fontWeight: 700 }}>ANALYSE FEHLGESCHLAGEN</div>
-            <div style={{ fontSize: "10px" }}>{analysisError}</div>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+            <div style={{ fontWeight: 800, fontSize: "14px", letterSpacing: "1px" }}>
+              {errData.status === 422 ? "SEMANTIC BOUNDARY VIOLATION" : errData.status === 503 ? "PROVIDER TRUNCATION" : "ANALYSE FEHLGESCHLAGEN"}
+            </div>
+            <div style={{ fontSize: "10px", color: "rgba(255, 85, 85, 0.7)" }}>HTTP {errData.status}</div>
           </div>
-          <button
-            data-testid="retry-intake-btn"
-            onClick={() => handleAnalyze(lastStagedDocs)}
-            style={{
-              padding: "6px 12px",
-              backgroundColor: "#ff5555",
-              color: "#0a0e14",
-              border: "none",
-              borderRadius: "4px",
-              fontWeight: 700,
-              fontSize: "10px",
-              cursor: "pointer"
-            }}
-          >
-            NEU VERSUCHEN
-          </button>
+          
+          <div style={{ fontSize: "11px", color: "#ffbaba", lineHeight: "1.5" }}>
+            {errData.status === 422 && "Model output violated the canonical semantic contract and was rejected before entering the validated state."}
+            {errData.status === 503 && "Das Modell hat das maximale Token-Limit überschritten (Truncation) oder der Provider ist nicht erreichbar. Die Pipeline hat die strukturierte Extraktion abgebrochen."}
+          </div>
+
+          <div style={{ maxHeight: "150px", overflowY: "auto", borderTop: "1px solid rgba(255, 51, 51, 0.3)", paddingTop: "8px", marginTop: "4px" }}>
+            {errData.issues.map((issue: any, i: number) => (
+              <div key={i} style={{ fontSize: "10px", marginBottom: "6px", display: "flex", gap: "8px" }}>
+                <span style={{ color: "#ff3333" }}>•</span>
+                <div>
+                  {issue.code && <strong style={{ color: "#ff3333", display: "block" }}>[{issue.code}]</strong>}
+                  <span style={{ color: "#ff8888" }}>{issue.message}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <div style={{ display: "flex", justifyContent: "flex-end", marginTop: "8px" }}>
+            <button
+              data-testid="retry-intake-btn"
+              onClick={() => handleAnalyze(lastStagedDocs)}
+              style={{
+                padding: "8px 16px",
+                backgroundColor: "#ff3333",
+                color: "#0a0e14",
+                border: "none",
+                borderRadius: "4px",
+                fontWeight: 800,
+                fontSize: "11px",
+                cursor: "pointer",
+                letterSpacing: "1px",
+                transition: "background 0.2s"
+              }}
+              onMouseOver={(e) => e.currentTarget.style.backgroundColor = "#ff5555"}
+              onMouseOut={(e) => e.currentTarget.style.backgroundColor = "#ff3333"}
+            >
+              NEU VERSUCHEN
+            </button>
+          </div>
         </div>
-      )}
+      );})()}
 
       <InferenceTelemetryHUD
         telemetry={inferenceTelemetry}

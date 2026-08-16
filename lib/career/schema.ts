@@ -18,8 +18,8 @@ import { z } from "zod";
  * Enforces stable type prefixes: DOC_, CLU_, CAP_, DOM_, CLS_, ORG_, ROL_, OPP_, STR_, QRY_
  */
 export const CanonicalIdSchema = z.string().regex(
-  /^(ANL|DOC|CLU|CAP|DOM|CLS|ORG|ROL|OPP|STR|QRY)_[A-Z0-9_]+$/,
-  "ID must conform to canonical prefixes (ANL_, DOC_, CLU_, CAP_, DOM_, CLS_, ORG_, ROL_, OPP_, STR_, QRY_)"
+  /^(ANL|DOC|CLU|CAP|REQ|DOM|CLS|ORG|ROL|OPP|STR|QRY)_[A-Z0-9_]+$/,
+  "ID must conform to canonical prefixes (ANL_, DOC_, CLU_, CAP_, REQ_, DOM_, CLS_, ORG_, ROL_, OPP_, STR_, QRY_)"
 );
 
 /**
@@ -197,9 +197,10 @@ export const AnalysisSchema = z.object({
   pipeline: PipelineSchema,
   consistency: ConsistencySchema,
 
-  // 9 Top-Level Domain Arrays
+  // 10 Top-Level Domain Arrays
   documents: z.array(UniversalEntitySchema).default([]),
   capabilities: z.array(UniversalEntitySchema).default([]),
+  requirements: z.array(UniversalEntitySchema).default([]),
   domains: z.array(UniversalEntitySchema).default([]),
   organization_classes: z.array(UniversalEntitySchema).default([]),
   organizations: z.array(OrganizationEntitySchema).default([]),

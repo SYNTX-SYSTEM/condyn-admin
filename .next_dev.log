@@ -6,9 +6,14 @@
 - Local:         http://localhost:3000
 - Network:       http://10.203.2.220:3000
 - Environments: .env.local
-✓ Ready in 589ms
+✓ Ready in 432ms
 
- GET /api/health 404 in 588ms (next.js: 367ms, application-code: 220ms)
- GET /career/demo 200 in 160ms (next.js: 31ms, application-code: 129ms)
- POST /api/career/analyze 200 in 34.3s (next.js: 1663ms, application-code: 32.7s)
+ GET /api/health 404 in 440ms (next.js: 262ms, application-code: 178ms)
+ GET /career/demo 200 in 165ms (next.js: 32ms, application-code: 133ms)
+ POST /api/career/analyze 200 in 54s (next.js: 1564ms, application-code: 52s)
+ GET /career/demo 200 in 854ms (next.js: 57ms, application-code: 798ms)
+ GET /career/demo 200 in 127ms (next.js: 8ms, application-code: 119ms)
+ GET /career/demo 200 in 343ms (next.js: 27ms, application-code: 316ms)
+ GET /career/demo 200 in 345ms (next.js: 13ms, application-code: 332ms)
+ POST /api/career/analyze 200 in 62s (next.js: 15ms, application-code: 62s)
 [?25h

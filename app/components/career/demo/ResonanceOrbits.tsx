@@ -49,7 +49,10 @@ export function ResonanceOrbits({ companyMatches }: ResonanceOrbitsProps) {
 
       <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
         {companyMatches.map((org) => {
-          const fitPct = Math.round(org.fitScore * 100);
+          const isScored = org.fitScore != null;
+          const fitPct = isScored ? Math.round(org.fitScore! * 100) : null;
+          const label = isScored ? `${fitPct}%` : "UNSUPPORTED";
+          
           return (
             <div
               key={org.organizationId}
@@ -59,9 +62,8 @@ export function ResonanceOrbits({ companyMatches }: ResonanceOrbitsProps) {
                 gap: "6px",
                 padding: "14px",
                 backgroundColor: "rgba(3,5,8,0.5)",
-                border: `1px solid ${fitPct >= 90 ? "rgba(56, 229, 255, 0.4)" : SIL_TOKENS.colors.fieldBorder}`,
-                borderRadius: "8px",
-                boxShadow: fitPct >= 90 ? `0 0 14px ${SIL_TOKENS.colors.cyanGlow}` : "none"
+                border: `1px solid ${SIL_TOKENS.colors.fieldBorder}`,
+                borderRadius: "8px"
               }}
             >
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
@@ -71,15 +73,15 @@ export function ResonanceOrbits({ companyMatches }: ResonanceOrbitsProps) {
                 <span
                   style={{
                     fontSize: "12px",
-                    color: fitPct >= 90 ? SIL_TOKENS.colors.cyanActive : SIL_TOKENS.colors.textPrimary,
+                    color: SIL_TOKENS.colors.cyanActive,
                     fontWeight: 700,
-                    backgroundColor: fitPct >= 90 ? "rgba(56, 229, 255, 0.12)" : "rgba(255, 255, 255, 0.05)",
-                    border: `1px solid ${fitPct >= 90 ? "rgba(56, 229, 255, 0.3)" : SIL_TOKENS.colors.fieldBorder}`,
+                    backgroundColor: "rgba(56, 229, 255, 0.1)",
+                    border: `1px solid rgba(56, 229, 255, 0.2)`,
                     padding: "2px 8px",
                     borderRadius: "4px"
                   }}
                 >
-                  {`${fitPct}% Fit`}
+                  {label}
                 </span>
               </div>
               <p style={{ margin: 0, fontSize: "11px", color: SIL_TOKENS.colors.textMuted, lineHeight: 1.4 }}>

@@ -49,7 +49,10 @@ export function RoleManifestation({ roleMatches }: RoleManifestationProps) {
 
       <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
         {roleMatches.map((role) => {
-          const fitPct = Math.round(role.fitScore * 100);
+          const isScored = role.fitScore != null;
+          const fitPct = isScored ? Math.round(role.fitScore! * 100) : null;
+          const label = isScored ? `${fitPct}%` : "UNSUPPORTED";
+          
           return (
             <div
               key={role.roleId}
@@ -59,9 +62,9 @@ export function RoleManifestation({ roleMatches }: RoleManifestationProps) {
                 gap: "6px",
                 padding: "14px",
                 backgroundColor: "rgba(3,5,8,0.5)",
-                border: `1px solid ${fitPct >= 90 ? "rgba(56, 229, 255, 0.4)" : SIL_TOKENS.colors.fieldBorder}`,
+                border: `1px solid ${(isScored && fitPct! >= 90) ? "rgba(56, 229, 255, 0.4)" : SIL_TOKENS.colors.fieldBorder}`,
                 borderRadius: "8px",
-                boxShadow: fitPct >= 90 ? `0 0 14px ${SIL_TOKENS.colors.cyanGlow}` : "none"
+                boxShadow: (isScored && fitPct! >= 90) ? `0 0 14px ${SIL_TOKENS.colors.cyanGlow}` : "none"
               }}
             >
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
@@ -76,15 +79,15 @@ export function RoleManifestation({ roleMatches }: RoleManifestationProps) {
                 <span
                   style={{
                     fontSize: "12px",
-                    color: fitPct >= 90 ? SIL_TOKENS.colors.cyanActive : SIL_TOKENS.colors.textPrimary,
+                    color: (isScored && fitPct! >= 90) ? SIL_TOKENS.colors.cyanActive : SIL_TOKENS.colors.textPrimary,
                     fontWeight: 700,
-                    backgroundColor: fitPct >= 90 ? "rgba(56, 229, 255, 0.12)" : "rgba(255, 255, 255, 0.05)",
-                    border: `1px solid ${fitPct >= 90 ? "rgba(56, 229, 255, 0.3)" : SIL_TOKENS.colors.fieldBorder}`,
+                    backgroundColor: (isScored && fitPct! >= 90) ? "rgba(56, 229, 255, 0.12)" : "rgba(255, 255, 255, 0.05)",
+                    border: `1px solid ${(isScored && fitPct! >= 90) ? "rgba(56, 229, 255, 0.3)" : SIL_TOKENS.colors.fieldBorder}`,
                     padding: "2px 8px",
                     borderRadius: "4px"
                   }}
                 >
-                  {`${fitPct}%`}
+                  {label}
                 </span>
               </div>
               <p style={{ margin: 0, fontSize: "11px", color: SIL_TOKENS.colors.textMuted, lineHeight: 1.4 }}>

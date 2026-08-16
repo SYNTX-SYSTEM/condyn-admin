@@ -7,6 +7,8 @@ import {
   DemoNextAction, 
   DemoSourceItem 
 } from "../../app/career/demo/demo-data";
+import { evaluateAlignment } from "./matching/alignment";
+import { buildRoleRecommendation } from "./matching/derivation";
 
 /**
  * Pure deterministic adapter bridging the validated CanonicalCareerAnalysis
@@ -18,31 +20,18 @@ export function adaptCanonicalToDemoState(
   sourceManifest?: Array<{ canonicalDocumentId: string, sourceRef: string }>
 ): DemoCareerIntelligenceData {
   const analysis = canonicalData.structured_data.analysis;
+  const manifest = sourceManifest || [];
 
   // 1. SOURCES
-  // Deterministic correlation via sourceManifest
   const sources: DemoSourceItem[] = (analysis.documents || []).map((doc: any, index: number) => {
-    
-    // Find the transport correlation mapping
-    const manifestEntry = (sourceManifest || []).find(m => m.canonicalDocumentId === doc.entity_id);
-    
-    // Locate the authoritative staged document using the mapped sourceRef
+    const manifestEntry = manifest.find(m => m.canonicalDocumentId === doc.entity_id);
     let stagedDoc: any = null;
     if (manifestEntry) {
       stagedDoc = stagedDocs.find(d => d.id === manifestEntry.sourceRef);
     }
-    
-    // Fallback logic ONLY for legacy or fallback scenarios (index matching explicitly rejected for deterministic provenance)
-    // We enforce the SOURCE CORRELATION INVARIANT: If there's no deterministic match, it's UNKNOWN.
     const finalStagedDoc = stagedDoc || {};
-    
     const sourceKind = String(finalStagedDoc.type || "DOCUMENT").toUpperCase();
 
-    // Enforce title precedence:
-    // 1. Correlated staged title
-    // 2. Correlated staged name
-    // 3. Canonical semantic name
-    // 4. "Unknown Document"
     let sourceTitle = "Unknown Document";
     if (finalStagedDoc.title) {
       sourceTitle = finalStagedDoc.title;
@@ -64,33 +53,32 @@ export function adaptCanonicalToDemoState(
 
   // 2. CAPABILITIES
   const capabilities: DemoCapabilityItem[] = (analysis.capabilities || []).map((cap: any) => {
-    // Extract evidence summary
     const evidenceObj = cap.evidence && cap.evidence.length > 0 ? cap.evidence[0] : null;
     const evidenceSummary = evidenceObj?.context_quote || "Derived from analysis context.";
+    const confMetric = cap.confidence != null ? cap.confidence : undefined;
 
     return {
       id: cap.entity_id,
       name: cap.identity.name,
       domain: cap.properties.category || "UNKNOWN_DOMAIN",
-      evidenceConfidence: cap.confidence || 0.5,
+      evidenceConfidence: confMetric,
       evidenceSummary
     };
   });
 
-  // 3. COMPANY MATCHES (Organizations)
+  // 3. COMPANY MATCHES
   const companyMatches: DemoOrganizationMatch[] = (analysis.organizations || []).map((org: any) => {
     return {
       organizationId: org.entity_id,
       organizationName: org.identity.name,
-      fitScore: org.properties.resonance_score || org.confidence || 0.5,
-      matchedCapabilities: [], // Future extension: lookup relationships
+      fitScore: undefined, 
+      matchedCapabilities: [],
       rationale: org.evidence?.[0]?.context_quote || "Identified in text."
     };
   });
 
-  // 4. ROLE MATCHES
+  // 4. ROLE MATCHES + DETERMINISTIC FIT SCORE (TEST002E)
   const roleMatches: DemoRoleMatch[] = (analysis.roles || []).map((role: any) => {
-    // Attempt to find the linked organization name
     const orgRel = role.relationships?.find((r: any) => r.relation_type === "ROLE_IN_ORGANIZATION");
     let orgName = "Unknown Organization";
     if (orgRel && orgRel.target_id) {
@@ -98,18 +86,37 @@ export function adaptCanonicalToDemoState(
       if (org) orgName = org.identity.name;
     }
 
+    // Identify requirements linked to this role
+    const linkedReqIds = role.relationships
+      ?.filter((r: any) => r.relation_type === "REQUIRES")
+      .map((r: any) => r.target_id) || [];
+      
+    const roleReqs = (analysis.requirements || []).filter((req: any) => linkedReqIds.includes(req.entity_id));
+    
+    // Evaluate alignment for each requirement against ALL candidate capabilities
+    const alignments = roleReqs.map((req: any) => {
+      // Find a matching capability if any
+      const cap = analysis.capabilities?.find((c: any) => 
+        c.identity.name.trim().toLowerCase() === req.identity.name.trim().toLowerCase()
+      );
+      return evaluateAlignment(cap || null, req, analysis, manifest);
+    });
+
+    const recommendation = buildRoleRecommendation(role.entity_id, alignments);
+    const fitScoreValue = recommendation.fitScore.value;
+
     return {
       roleId: role.entity_id,
       roleTitle: role.identity.name,
       organizationName: orgName,
-      fitScore: role.confidence || 0.5,
-      matchedCapabilities: [],
-      missingCapabilities: [],
-      rationale: role.evidence?.[0]?.context_quote || "Role identified in text."
+      fitScore: fitScoreValue !== null ? fitScoreValue : undefined,
+      matchedCapabilities: alignments.filter((a: any) => a.state === "SUPPORTED").map((a: any) => a.requirementId),
+      missingCapabilities: alignments.filter((a: any) => a.state === "NOT_SUPPORTED").map((a: any) => a.requirementId),
+      rationale: role.evidence?.[0]?.context_quote || `Recommendation State: ${recommendation.recommendationState}`
     };
   });
 
-  // 5. NEXT ACTIONS (Strategies)
+  // 5. NEXT ACTIONS
   const nextActions: DemoNextAction[] = (analysis.strategies || []).map((strat: any) => {
     return {
       actionId: strat.entity_id,
@@ -119,12 +126,11 @@ export function adaptCanonicalToDemoState(
     };
   });
 
-  // UNMAPPED SIL DOMAINS: capabilityGaps (opportunities/gaps mapping not 1:1 yet)
   const capabilityGaps: DemoCapabilityGap[] = [];
 
   return {
-    analysisId: analysis.metadata.analysis_id,
-    generatedAt: analysis.metadata.analysis_timestamp || new Date().toISOString(),
+    analysisId: analysis.metadata?.analysis_id || "ANL_UNKNOWN",
+    generatedAt: analysis.metadata?.analysis_timestamp || new Date().toISOString(),
     sources,
     capabilities,
     companyMatches,

@@ -67,7 +67,7 @@ export function buildSilClusterPresentation(
       const dy = Math.round(Math.sin(angle) * radius);
 
       let confStr = undefined;
-      if (confKey && item[confKey]) {
+      if (confKey && item[confKey] != null) {
         confStr = `${Math.round(item[confKey] * 100)}%`;
       }
 

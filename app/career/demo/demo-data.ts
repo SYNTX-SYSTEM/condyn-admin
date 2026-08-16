@@ -17,14 +17,14 @@ export interface DemoCapabilityItem {
   id: string;
   name: string;
   domain: string;
-  evidenceConfidence: number;
+  evidenceConfidence?: number; // Kept as optional but we'll use resolveMetric
   evidenceSummary: string;
 }
 
 export interface DemoOrganizationMatch {
   organizationId: string;
   organizationName: string;
-  fitScore: number;
+  fitScore?: number;
   matchedCapabilities: string[];
   rationale: string;
 }
@@ -33,7 +33,7 @@ export interface DemoRoleMatch {
   roleId: string;
   roleTitle: string;
   organizationName: string;
-  fitScore: number;
+  fitScore?: number;
   matchedCapabilities: string[];
   missingCapabilities: string[];
   rationale: string;
