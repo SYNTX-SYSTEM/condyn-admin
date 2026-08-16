@@ -1,0 +1,14 @@
+
+> condyn-admin@0.1.0 dev
+> next dev
+
+▲ Next.js 16.2.4 (Turbopack)
+- Local:         http://localhost:3000
+- Network:       http://10.203.2.220:3000
+- Environments: .env.local
+✓ Ready in 589ms
+
+ GET /api/health 404 in 588ms (next.js: 367ms, application-code: 220ms)
+ GET /career/demo 200 in 160ms (next.js: 31ms, application-code: 129ms)
+ POST /api/career/analyze 200 in 34.3s (next.js: 1663ms, application-code: 32.7s)
+[?25h

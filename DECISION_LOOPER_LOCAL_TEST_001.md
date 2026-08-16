@@ -1,10 +1,15 @@
-BUG 007: STABLE
-BUG 008: STABLE
-BUG 009: STABLE (Targeted Green)
+# CONDYN LOCAL TEST PROTOCOL 001
 
-BUG 010A: TARGETED GREEN PENDING
-BUG 010B: CANDIDATE / MINIMAL GREEN IMPLEMENTED / TARGETED GREEN PENDING
-Root Cause: Gemini rejects the projected schema due to `definitions` usage (needs `$defs`).
-Action: Fixed a false positive in the test walker regarding the `$schema` domain property. No production changes. Awaiting test execution.
+## PIPELINE VERIFICATION STATUS
 
-TEST 001B: OPEN
+- **TEST 001A (TEXT / MARKDOWN):** ✅ PASS / CLOSED
+- **TEST 001B (PDF ONLY):** ✅ PASS / CLOSED
+- **TEST 001C (GITHUB ONLY):** ✅ PASS / CLOSED
+  - *Observation Note (Metric Provenance)*: "Engineering Reality Reconstruction" showed 95%. Future sweep should verify canonical mapping origin for this score. Do not block current test gates.
+- **TEST 001D (WEBSITE ONLY):** ✅ PASS / CLOSED
+
+## ARCHITECTURE GATES SECURED
+- **Evidence Boundary:** 🔒 VERIFIED
+- **Runtime Document Owner:** 🔒 VERIFIED
+- **Zero-State Strict Compliance:** 🔒 VERIFIED
+- **Pipeline Abstraction (Multi-Source -> Canonical):** 🔒 VERIFIED
