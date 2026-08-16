@@ -18,39 +18,86 @@ export interface SilClusterPresentation {
 export function buildSilClusterPresentation(
   activeStageId: string | null,
   analysisSuccess: boolean,
-  sourcePresentation: { labels: string[]; titles: string[] }
+  sourcePresentation: { labels: string[]; titles: string[] },
+  activeData?: any
 ): SilClusterPresentation[] {
   if (!activeStageId) {
     return [];
   }
 
-  const subClusters: SilClusterPresentation[] = [
-    {
-      id: `cl-${activeStageId}-1`,
-      title: "Core Architecture Cluster",
-      confidence: analysisSuccess ? undefined : "98%",
-      evidenceCount: analysisSuccess ? undefined : 14,
-      dx: -130,
-      dy: -85,
-      evidences: [
-        { id: `ev-${activeStageId}-1`, title: "Source Grounding", sourceType: "PDF", snippet: "System design specification verified." },
-        { id: `ev-${activeStageId}-2`, title: "Contextual Evidence", sourceType: "GitHub", snippet: "pkg/engine/reconcile.go lines 14-88" }
-      ]
-    },
-    {
-      id: `cl-${activeStageId}-2`,
-      title: "Semantic Resonance Vector",
-      confidence: analysisSuccess ? undefined : "95%",
-      evidenceCount: analysisSuccess ? undefined : 9,
-      dx: 130,
-      dy: -75,
-      evidences: [
-        { id: `ev-${activeStageId}-3`, title: "Verified Capability", sourceType: "GitHub", snippet: "app/components/career/demo/SemanticCareerIntelligenceField.tsx" }
-      ]
-    }
-  ];
+  let subClusters: SilClusterPresentation[] = [];
 
-  // Override the hardcoded evidence sourceTypes with the actual runtime provenance
+  if (analysisSuccess && activeData) {
+    // Dynamically project real LLM inference data to L1 Clusters
+    let items: any[] = [];
+    let titleKey = "title";
+    let confKey = "confidence";
+
+    if (activeStageId === "01") {
+      items = activeData.sources || [];
+      titleKey = "sourceTitle";
+      confKey = ""; // sources don't have confidence
+    } else if (activeStageId === "02") {
+      items = activeData.capabilities || [];
+      titleKey = "name";
+      confKey = "evidenceConfidence";
+    } else if (activeStageId === "03") {
+      items = activeData.companyMatches || [];
+      titleKey = "organizationName";
+      confKey = "fitScore";
+    } else if (activeStageId === "04") {
+      items = activeData.roleMatches || [];
+      titleKey = "roleTitle";
+      confKey = "fitScore";
+    } else if (activeStageId === "05") {
+      items = activeData.capabilityGaps || [];
+      titleKey = "capabilityName";
+      confKey = "";
+    } else if (activeStageId === "06") {
+      items = activeData.nextActions || [];
+      titleKey = "title";
+      confKey = "";
+    }
+
+    subClusters = items.map((item, idx) => {
+      // Radially distribute clusters around the L1 zoom origin
+      const angle = (idx * (360 / Math.max(items.length, 1))) * (Math.PI / 180);
+      const radius = 130;
+      const dx = Math.round(Math.cos(angle) * radius);
+      const dy = Math.round(Math.sin(angle) * radius);
+
+      let confStr = undefined;
+      if (confKey && item[confKey]) {
+        confStr = `${Math.round(item[confKey] * 100)}%`;
+      }
+
+      // Generate localized evidence nodes for this cluster
+      const snippet = item.evidenceSummary || item.rationale || item.description || "Inferred from document context.";
+      
+      return {
+        id: `cl-${activeStageId}-${idx}`,
+        title: item[titleKey] || "Unknown Node",
+        confidence: confStr,
+        evidenceCount: 1,
+        dx,
+        dy,
+        evidences: [
+          {
+            id: `ev-${activeStageId}-${idx}-1`,
+            title: "Canonical Evidence",
+            sourceType: "SRC",
+            snippet
+          }
+        ]
+      };
+    });
+
+  } else {
+    // Zero-State: Return purely empty until real inference data populates it.
+    subClusters = [];
+  }
+
+  // Bind authoritative source telemetry to evidence presentation
   subClusters.forEach((cl) => {
     cl.evidences.forEach((ev, i) => {
       ev.sourceType = sourcePresentation.labels[i % sourcePresentation.labels.length] || "SRC";

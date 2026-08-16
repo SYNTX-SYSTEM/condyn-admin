@@ -91,7 +91,7 @@ describe("CONDYN Career Analysis - UI Projection Adapter (Canonical -> SIL v3.0)
 
     // 4. DEMO REPLACEMENT
     // Assert that the analysisId was correctly projected from the canonical metadata, 
-    // proving this is not just the original DEMO_CAREER_INTELLIGENCE_DATA object.
+    // proving this is not just the original EMPTY_CAREER_INTELLIGENCE_DATA object.
     expect(result.analysisId).toBe(canonicalPayload.structured_data.analysis.metadata.analysis_id);
 
     // 5. EMPTY DOMAIN BEHAVIOUR

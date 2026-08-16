@@ -1,0 +1,19 @@
+{
+  "success": false,
+  "issues": [
+    {
+      "code": "ERR_SCHEMA_BIFURCATION_MISSING",
+      "severity": "ERROR",
+      "message": "Context quote must contain verbatim evidence (> 10 chars)",
+      "path": [
+        "structured_data",
+        "analysis",
+        "capabilities",
+        0,
+        "evidence",
+        0,
+        "context_quote"
+      ]
+    }
+  ]
+}

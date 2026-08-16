@@ -3,6 +3,49 @@ import { loadGitHubRepositoryDocuments } from "../lib/career/loaders/github";
 import { loadDocuments } from "../lib/career/pipeline";
 
 describe("CONDYN Career Analysis Protocol v1.0 — Step 19b: GitHub Repository Loader", () => {
+  it("should enforce the correct request boundary headers WITHOUT a GITHUB_TOKEN", async () => {
+    const originalToken = process.env.GITHUB_TOKEN;
+    delete process.env.GITHUB_TOKEN;
+    
+    let capturedOptions: any = null;
+    const mockFetcher = async (url: string, options?: any) => {
+      capturedOptions = options;
+      return { ok: true, status: 200, json: async () => ({ content: Buffer.from("test").toString("base64") }) };
+    };
+
+    await loadGitHubRepositoryDocuments("https://github.com/condyn/career-engine", { fetcher: mockFetcher as any });
+    
+    expect(capturedOptions).toBeDefined();
+    expect(capturedOptions.headers["Accept"]).toBe("application/vnd.github+json");
+    expect(capturedOptions.headers["X-GitHub-Api-Version"]).toBe("2022-11-28");
+    expect(capturedOptions.headers["User-Agent"]).toBe("CONDYN");
+    expect(capturedOptions.headers["Authorization"]).toBeUndefined();
+    
+    if (originalToken !== undefined) process.env.GITHUB_TOKEN = originalToken;
+  });
+
+  it("should enforce the correct request boundary headers WITH a GITHUB_TOKEN", async () => {
+    const originalToken = process.env.GITHUB_TOKEN;
+    process.env.GITHUB_TOKEN = "ghp_mock_token_12345";
+    
+    let capturedOptions: any = null;
+    const mockFetcher = async (url: string, options?: any) => {
+      capturedOptions = options;
+      return { ok: true, status: 200, json: async () => ({ content: Buffer.from("test").toString("base64") }) };
+    };
+
+    await loadGitHubRepositoryDocuments("https://github.com/condyn/career-engine", { fetcher: mockFetcher as any });
+    
+    expect(capturedOptions).toBeDefined();
+    expect(capturedOptions.headers["Accept"]).toBe("application/vnd.github+json");
+    expect(capturedOptions.headers["X-GitHub-Api-Version"]).toBe("2022-11-28");
+    expect(capturedOptions.headers["User-Agent"]).toBe("CONDYN");
+    expect(capturedOptions.headers["Authorization"]).toBe("Bearer ghp_mock_token_12345");
+    
+    if (originalToken !== undefined) process.env.GITHUB_TOKEN = originalToken;
+    else delete process.env.GITHUB_TOKEN;
+  });
+
   it("should load valid GitHub repo URL and extract README, package.json, and docs/*.md as DocumentInput[]", async () => {
     const mockFetcher = async (url: string) => {
       if (url.endsWith("/readme")) {

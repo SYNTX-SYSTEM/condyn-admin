@@ -47,11 +47,12 @@ export class InMemoryCareerAnalysisRepository implements CareerAnalysisRepositor
     const entries: AnalysisIndexEntry[] = [];
     for (const [analysisId, analysis] of this.store.entries()) {
       const meta = analysis.structured_data.analysis.metadata;
+      const consistency = analysis.structured_data.analysis.consistency;
       entries.push({
         analysisId,
         createdAt: meta.analysis_timestamp || new Date().toISOString(),
         validationState: "VERIFIED",
-        overallConfidence: meta.overall_confidence ?? 0.0
+        overallConfidence: meta.overall_confidence ?? consistency?.overall_cohesion_score ?? 0.0
       });
     }
     return entries;

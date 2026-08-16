@@ -66,9 +66,9 @@ describe("CONDYN Career Analysis Protocol v1.0 - Step 10: PostgreSQL & Drizzle P
     const verifiedAnalysis = validationResult.data as VerifiedCareerAnalysis;
     await pgRepo.save(verifiedAnalysis);
 
-    const loaded = await pgRepo.load("ANL_20260706_000001");
+    const loaded = await pgRepo.load("ANL_TEST_DETERMINISTIC_ID");
     expect(loaded).toBeDefined();
-    expect(loaded!.structured_data.analysis.metadata.analysis_id).toBe("ANL_20260706_000001");
+    expect(loaded!.structured_data.analysis.metadata.analysis_id).toBe("ANL_TEST_DETERMINISTIC_ID");
     expect(loaded!.structured_data.analysis.metadata.validation_state).toBe("VERIFIED");
   });
 
@@ -78,7 +78,7 @@ describe("CONDYN Career Analysis Protocol v1.0 - Step 10: PostgreSQL & Drizzle P
     const verifiedAnalysis = validationResult.data as VerifiedCareerAnalysis;
     await pgRepo.save(verifiedAnalysis);
 
-    const loaded = await pgRepo.load("ANL_20260706_000001");
+    const loaded = await pgRepo.load("ANL_TEST_DETERMINISTIC_ID");
     expect(loaded).toEqual(verifiedAnalysis);
   });
 
@@ -87,10 +87,10 @@ describe("CONDYN Career Analysis Protocol v1.0 - Step 10: PostgreSQL & Drizzle P
     const list = await pgRepo.list();
     
     expect(list.length).toBeGreaterThanOrEqual(1);
-    const entry = list.find(e => e.analysisId === "ANL_20260706_000001");
+    const entry = list.find(e => e.analysisId === "ANL_TEST_DETERMINISTIC_ID");
     expect(entry).toBeDefined();
     expect(entry!.validationState).toBe("VERIFIED");
-    expect(entry!.overallConfidence).toBe(0.94);
+    expect(entry!.overallConfidence).toBe(0.95);
     
     // Verify no UI or full JSON payload properties leaked into index entry
     expect((entry as any).title).toBeUndefined();
@@ -108,8 +108,8 @@ describe("CONDYN Career Analysis Protocol v1.0 - Step 10: PostgreSQL & Drizzle P
     await inMemRepo.save(verifiedAnalysis);
     await pgRepo.save(verifiedAnalysis);
     
-    const inMemLoaded = await inMemRepo.load("ANL_20260706_000001");
-    const pgLoaded = await pgRepo.load("ANL_20260706_000001");
+    const inMemLoaded = await inMemRepo.load("ANL_TEST_DETERMINISTIC_ID");
+    const pgLoaded = await pgRepo.load("ANL_TEST_DETERMINISTIC_ID");
     
     expect(pgLoaded).toEqual(inMemLoaded);
   });

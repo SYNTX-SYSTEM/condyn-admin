@@ -94,7 +94,7 @@ describe("CONDYN Career Analysis Protocol v1.0 - Step 12: Batch Document Ingesti
   });
 
   it("should execute E2E batch analysis pipeline and produce a single CanonicalCareerAnalysis DAG", async () => {
-    const goldJsonPath = path.join(__dirname, "gold/case_001_minimal_valid/expected/canonical-expected.json");
+    const goldJsonPath = path.join(__dirname, "gold/case_001_minimal_valid/expected/expected.json");
     const goldJsonRaw = fs.readFileSync(goldJsonPath, "utf-8");
     const provider = new MockInferenceProvider(goldJsonRaw);
 

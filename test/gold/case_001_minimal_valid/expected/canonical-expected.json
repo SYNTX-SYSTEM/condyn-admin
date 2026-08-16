@@ -344,13 +344,36 @@
     },
     "presentation": {
       "semantic_graph": {
-        "nodes": [],
-        "edges": []
+        "nodes": [
+          { "node_id": "CAP_001", "entity_type": "CAPABILITY", "weight": 0.95 },
+          { "node_id": "ORG_001", "entity_type": "CONCRETE_ORGANIZATION", "weight": 0.94 },
+          { "node_id": "ROL_001", "entity_type": "ROLE", "weight": 0.92 }
+        ],
+        "edges": [
+          { "source_id": "ORG_001", "target_id": "CAP_001", "interaction_force": 0.89 },
+          { "source_id": "ROL_001", "target_id": "ORG_001", "interaction_force": 0.95 }
+        ]
       },
       "ui_layout": {
-        "center_node_id": "DOC_001",
-        "concentric_rings": [],
-        "color_tokens": {}
+        "center_node_id": "CAP_001",
+        "concentric_rings": [
+          { "ring_index": 0, "name": "Core Capabilities", "node_ids": ["CAP_001"] },
+          { "ring_index": 1, "name": "Target Organizations", "node_ids": ["ORG_001"] },
+          { "ring_index": 2, "name": "Target Roles", "node_ids": ["ROL_001"] }
+        ],
+        "color_tokens": {
+          "CAPABILITY": "#1565C0",
+          "CONCRETE_ORGANIZATION": "#4CAF50"
+        },
+        "priority_groups": [
+          {
+            "group_id": "GRP_TOP_RESONANCE",
+            "label": "Immediate Market Match",
+            "node_ids": [
+              "ORG_001"
+            ]
+          }
+        ]
       }
     }
   }

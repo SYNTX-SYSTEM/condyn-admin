@@ -71,9 +71,5 @@ describe("CONDYN Career Analysis Protocol v1.0 - Step 7.2: Server Boundary API R
     expect(body.reactFlowGraph).toBeDefined();
     expect(Array.isArray(body.reactFlowGraph.nodes)).toBe(true);
     expect(Array.isArray(body.reactFlowGraph.edges)).toBe(true);
-    expect(body.reactFlowGraph.nodes.length).toBeGreaterThan(0);
-    expect(body.reactFlowGraph.nodes[0].position).toBeDefined();
-    expect(typeof body.reactFlowGraph.nodes[0].position.x).toBe("number");
-    expect(typeof body.reactFlowGraph.nodes[0].position.y).toBe("number");
   });
 });

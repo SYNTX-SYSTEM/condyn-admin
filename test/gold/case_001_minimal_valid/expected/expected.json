@@ -18,26 +18,6 @@
   },
   "entities": [
     {
-      "entity_id": "DOC_001",
-      "properties": {
-        "word_count": 120,
-        "language": "en"
-      },
-      "relationships": [],
-      "evidence": [
-        {
-          "doc_id": "DOC_001",
-          "location": "Header",
-          "context_quote": "Over 10 years of experience architecting resilient distributed systems and IoT infrastructure.",
-          "evidence_score": 0.98,
-          "significance_explanation": "Establishes baseline professional identity."
-        }
-      ],
-      "confidence": 0.98,
-      "entity_kind": "DOCUMENT",
-      "name": "doc1.md"
-    },
-    {
       "entity_id": "CAP_001",
       "properties": {
         "category": "CORE_TECHNICAL",

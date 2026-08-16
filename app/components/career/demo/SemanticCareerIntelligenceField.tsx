@@ -132,21 +132,7 @@ export function SemanticCareerIntelligenceField({
   const [selectedGraphNodeId, setSelectedGraphNodeId] = useState<string | null>(null);
 
   const evidenceGraph = React.useMemo(() => {
-    return buildEvidenceGraph({ structured_data: activeData }, [
-      {
-        jobId: "job_siemens_lead",
-        title: "Principal Cloud Architect",
-        description: "Principal Cloud Architect role at Siemens AG",
-        company: "Siemens AG",
-        requirements: (activeData.capabilities || []).map((c) => ({
-          capability_name: c.name || "Capability",
-          domain: "DevOps",
-          weight: 0.5,
-          required_level: "L5",
-          aliases: []
-        }))
-      }
-    ]);
+    return buildEvidenceGraph({ structured_data: activeData }, []);
   }, [activeData]);
 
   const sourcePresentation = React.useMemo(() => {
@@ -265,7 +251,8 @@ export function SemanticCareerIntelligenceField({
   const subClusters = buildSilClusterPresentation(
     activeStageId,
     analysisSuccess,
-    sourcePresentation
+    sourcePresentation,
+    activeData
   );
 
   return (

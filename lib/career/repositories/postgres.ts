@@ -35,8 +35,9 @@ export class PostgresCareerAnalysisRepository implements CareerAnalysisRepositor
     }
 
     const meta = analysis.structured_data.analysis.metadata;
+    const consistency = analysis.structured_data.analysis.consistency;
     const createdAt = meta.analysis_timestamp || new Date().toISOString();
-    const overallConfidence = meta.overall_confidence ?? 0.0;
+    const overallConfidence = meta.overall_confidence ?? consistency?.overall_cohesion_score ?? 0.0;
 
     // Perform Postgres UPSERT (insert with onConflictDoUpdate)
     await this.database

@@ -111,7 +111,7 @@ describe("CONDYN Career Analysis Protocol v1.0 - Step 9: Gemini Inference Provid
 
     const provider = new GeminiProvider();
 
-    await expect(provider.execute(samplePrompt)).rejects.toThrow(/ERR_PROVIDER_FAILURE.*Quota exceeded/);
+    await expect(provider.execute(samplePrompt)).rejects.toThrow(/ERR_PROVIDER_FAILURE[\s\S]*Quota exceeded/);
   });
 
   it("should throw ERR_PROVIDER_FAILURE if no API key is present in options or process.env", async () => {
@@ -121,8 +121,13 @@ describe("CONDYN Career Analysis Protocol v1.0 - Step 9: Gemini Inference Provid
     await expect(provider.execute(samplePrompt)).rejects.toThrow(/ERR_PROVIDER_FAILURE.*Missing GEMINI_API_KEY/);
   });
 
-  it("should automatically continue when finishReason is MAX_TOKENS and track telemetry", async () => {
+  it("should automatically continue when finishReason is MAX_TOKENS and track telemetry for unstructured requests", async () => {
     process.env.GEMINI_API_KEY = "test-mock-api-key";
+    
+    // Create an unstructured prompt by removing the schema
+    const unstructuredPrompt = { ...samplePrompt };
+    delete (unstructuredPrompt as any).schema;
+    
     mockGenerateContent
       .mockResolvedValueOnce({
         text: () => '{"part1": "chunk1"',
@@ -130,22 +135,23 @@ describe("CONDYN Career Analysis Protocol v1.0 - Step 9: Gemini Inference Provid
         usageMetadata: { promptTokenCount: 100, candidatesTokenCount: 500 }
       })
       .mockResolvedValueOnce({
-        text: ' "part2": "chunk2"}',
+        text: () => ' "part2": "chunk2"}',
         candidates: [{ finishReason: "STOP" }],
         usageMetadata: { promptTokenCount: 120, candidatesTokenCount: 300 }
       });
 
     const provider = new GeminiProvider();
-    const result = await provider.execute(samplePrompt);
+    const result = await provider.execute(unstructuredPrompt);
 
     expect(mockGenerateContent).toHaveBeenCalledTimes(2);
-    expect(result).toBe('{"part1": "chunk1"\n "part2": "chunk2"}');
+    expect(result).toBe('"part2": "chunk2"}');
     expect(provider.lastTelemetry).toBeDefined();
     expect(provider.lastTelemetry?.finishReason).toBe("STOP");
-    expect(provider.lastTelemetry?.continuations).toBe(1);
+    expect(provider.lastTelemetry?.continuations).toBe(0);
+    expect(provider.lastTelemetry?.structuredRegenerations).toBe(1);
   });
 
-  it("clamps maxOutputTokens to 8192 for gemini-3.5-flash and diagnostic correctly reports it (BUG010E)", async () => {
+  it("clamps maxOutputTokens to 65536 and diagnostic correctly reports it (BUG010E)", async () => {
     process.env.GEMINI_MAX_OUTPUT_TOKENS = "65536";
     
     // Reject to trigger the diagnostic formatter in the catch block
@@ -166,10 +172,10 @@ describe("CONDYN Career Analysis Protocol v1.0 - Step 9: Gemini Inference Provid
 
     // 1. Assert SDK actually received clamped value
     const callArgs = mockGenerateContent.mock.calls[0][0];
-    expect(callArgs.config.maxOutputTokens).toBe(8192);
+    expect(callArgs.config.maxOutputTokens).toBe(65536);
 
     // 2. Assert diagnostic formatter accurately reflects the clamped value
     const errorString = caughtError?.message || String(caughtError);
-    expect(errorString).toContain("maxOutputTokens: 8192");
+    expect(errorString).toContain("maxOutputTokens: 65536");
   });
 });

@@ -1,0 +1,1236 @@
+{
+  "type": "object",
+  "properties": {
+    "report_markdown": {
+      "type": "string"
+    },
+    "structured_data": {
+      "type": "object",
+      "properties": {
+        "analysis": {
+          "type": "object",
+          "properties": {
+            "consistency": {
+              "type": "object",
+              "properties": {
+                "overall_cohesion_score": {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 1
+                },
+                "summary": {
+                  "type": "string"
+                },
+                "clusters": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "cluster_id": {
+                        "type": "string"
+                      },
+                      "name": {
+                        "type": "string"
+                      },
+                      "cohesion_score": {
+                        "$ref": "#/$defs/GeminiCareerInference/properties/structured_data/properties/analysis/properties/consistency/properties/overall_cohesion_score"
+                      },
+                      "doc_ids": {
+                        "type": "array",
+                        "items": {
+                          "$ref": "#/$defs/GeminiCareerInference/properties/structured_data/properties/analysis/properties/consistency/properties/clusters/items/properties/cluster_id"
+                        }
+                      }
+                    },
+                    "required": [
+                      "cluster_id",
+                      "name",
+                      "cohesion_score",
+                      "doc_ids"
+                    ],
+                    "additionalProperties": false
+                  }
+                },
+                "outlier_doc_ids": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/GeminiCareerInference/properties/structured_data/properties/analysis/properties/consistency/properties/clusters/items/properties/cluster_id"
+                  }
+                },
+                "contradictions": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              },
+              "required": [
+                "overall_cohesion_score"
+              ],
+              "additionalProperties": false
+            },
+            "documents": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "entity_id": {
+                    "$ref": "#/$defs/GeminiCareerInference/properties/structured_data/properties/analysis/properties/consistency/properties/clusters/items/properties/cluster_id"
+                  },
+                  "identity": {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "type": "string"
+                      },
+                      "name": {
+                        "type": "string"
+                      },
+                      "code": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "type",
+                      "name"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "properties": {
+                    "type": "object",
+                    "additionalProperties": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "number"
+                        },
+                        {
+                          "type": "boolean"
+                        },
+                        {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        }
+                      ]
+                    }
+                  },
+                  "relationships": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "target_id": {
+                          "$ref": "#/$defs/GeminiCareerInference/properties/structured_data/properties/analysis/properties/consistency/properties/clusters/items/properties/cluster_id"
+                        },
+                        "relation_type": {
+                          "type": "string",
+                          "enum": [
+                            "SUPPORTS",
+                            "REQUIRES",
+                            "RESONATES_WITH",
+                            "CONFLICTS_WITH",
+                            "DERIVED_FROM",
+                            "BELONGS_TO_CLASS",
+                            "ROLE_IN_ORGANIZATION"
+                          ]
+                        },
+                        "weight": {
+                          "$ref": "#/$defs/GeminiCareerInference/properties/structured_data/properties/analysis/properties/consistency/properties/overall_cohesion_score"
+                        }
+                      },
+                      "required": [
+                        "target_id",
+                        "relation_type",
+                        "weight"
+                      ],
+                      "additionalProperties": false
+                    }
+                  },
+                  "evidence": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "doc_id": {
+                          "$ref": "#/$defs/GeminiCareerInference/properties/structured_data/properties/analysis/properties/consistency/properties/clusters/items/properties/cluster_id"
+                        },
+                        "location": {
+                          "type": "string"
+                        },
+                        "context_quote": {
+                          "type": "string"
+                        },
+                        "evidence_score": {
+                          "$ref": "#/$defs/GeminiCareerInference/properties/structured_data/properties/analysis/properties/consistency/properties/overall_cohesion_score"
+                        },
+                        "significance_explanation": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "doc_id",
+                        "location",
+                        "context_quote",
+                        "evidence_score"
+                      ],
+                      "additionalProperties": false
+                    }
+                  },
+                  "confidence": {
+                    "$ref": "#/$defs/GeminiCareerInference/properties/structured_data/properties/analysis/properties/consistency/properties/overall_cohesion_score"
+                  }
+                },
+                "required": [
+                  "entity_id",
+                  "identity",
+                  "properties",
+                  "relationships",
+                  "evidence",
+                  "confidence"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "capabilities": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "entity_id": {
+                    "$ref": "#/$defs/GeminiCareerInference/properties/structured_data/properties/analysis/properties/consistency/properties/clusters/items/properties/cluster_id"
+                  },
+                  "identity": {
+                    "$ref": "#/$defs/GeminiCareerInference/properties/structured_data/properties/analysis/properties/documents/items/properties/identity"
+                  },
+                  "properties": {
+                    "$ref": "#/$defs/GeminiCareerInference/properties/structured_data/properties/analysis/properties/documents/items/properties/properties"
+                  },
+                  "relationships": {
+                    "$ref": "#/$defs/GeminiCareerInference/properties/structured_data/properties/analysis/properties/documents/items/properties/relationships"
+                  },
+                  "evidence": {
+                    "$ref": "#/$defs/GeminiCareerInference/properties/structured_data/properties/analysis/properties/documents/items/properties/evidence"
+                  },
+                  "confidence": {
+                    "$ref": "#/$defs/GeminiCareerInference/properties/structured_data/properties/analysis/properties/consistency/properties/overall_cohesion_score"
+                  }
+                },
+                "required": [
+                  "entity_id",
+                  "identity",
+                  "properties",
+                  "relationships",
+                  "evidence",
+                  "confidence"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "domains": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "entity_id": {
+                    "$ref": "#/$defs/GeminiCareerInference/properties/structured_data/properties/analysis/properties/consistency/properties/clusters/items/properties/cluster_id"
+                  },
+                  "identity": {
+                    "$ref": "#/$defs/GeminiCareerInference/properties/structured_data/properties/analysis/properties/documents/items/properties/identity"
+                  },
+                  "properties": {
+                    "$ref": "#/$defs/GeminiCareerInference/properties/structured_data/properties/analysis/properties/documents/items/properties/properties"
+                  },
+                  "relationships": {
+                    "$ref": "#/$defs/GeminiCareerInference/properties/structured_data/properties/analysis/properties/documents/items/properties/relationships"
+                  },
+                  "evidence": {
+                    "$ref": "#/$defs/GeminiCareerInference/properties/structured_data/properties/analysis/properties/documents/items/properties/evidence"
+                  },
+                  "confidence": {
+                    "$ref": "#/$defs/GeminiCareerInference/properties/structured_data/properties/analysis/properties/consistency/properties/overall_cohesion_score"
+                  }
+                },
+                "required": [
+                  "entity_id",
+                  "identity",
+                  "properties",
+                  "relationships",
+                  "evidence",
+                  "confidence"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "organization_classes": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "entity_id": {
+                    "$ref": "#/$defs/GeminiCareerInference/properties/structured_data/properties/analysis/properties/consistency/properties/clusters/items/properties/cluster_id"
+                  },
+                  "identity": {
+                    "$ref": "#/$defs/GeminiCareerInference/properties/structured_data/properties/analysis/properties/documents/items/properties/identity"
+                  },
+                  "properties": {
+                    "$ref": "#/$defs/GeminiCareerInference/properties/structured_data/properties/analysis/properties/documents/items/properties/properties"
+                  },
+                  "relationships": {
+                    "$ref": "#/$defs/GeminiCareerInference/properties/structured_data/properties/analysis/properties/documents/items/properties/relationships"
+                  },
+                  "evidence": {
+                    "$ref": "#/$defs/GeminiCareerInference/properties/structured_data/properties/analysis/properties/documents/items/properties/evidence"
+                  },
+                  "confidence": {
+                    "$ref": "#/$defs/GeminiCareerInference/properties/structured_data/properties/analysis/properties/consistency/properties/overall_cohesion_score"
+                  }
+                },
+                "required": [
+                  "entity_id",
+                  "identity",
+                  "properties",
+                  "relationships",
+                  "evidence",
+                  "confidence"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "organizations": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "entity_id": {
+                    "$ref": "#/$defs/GeminiCareerInference/properties/structured_data/properties/analysis/properties/consistency/properties/clusters/items/properties/cluster_id"
+                  },
+                  "identity": {
+                    "$ref": "#/$defs/GeminiCareerInference/properties/structured_data/properties/analysis/properties/documents/items/properties/identity"
+                  },
+                  "properties": {
+                    "type": "object",
+                    "properties": {
+                      "country_iso": {
+                        "type": "string"
+                      },
+                      "region_code": {
+                        "type": "string"
+                      },
+                      "industry_enum": {
+                        "type": "string"
+                      },
+                      "scale_tier": {
+                        "type": "string"
+                      },
+                      "workplace_model": {
+                        "type": "string"
+                      },
+                      "recruiter_pool_id": {
+                        "type": "string"
+                      },
+                      "resonance_score": {
+                        "$ref": "#/$defs/GeminiCareerInference/properties/structured_data/properties/analysis/properties/consistency/properties/overall_cohesion_score"
+                      }
+                    },
+                    "required": [
+                      "country_iso",
+                      "industry_enum",
+                      "resonance_score"
+                    ],
+                    "additionalProperties": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "number"
+                        },
+                        {
+                          "type": "boolean"
+                        },
+                        {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        }
+                      ]
+                    }
+                  },
+                  "relationships": {
+                    "$ref": "#/$defs/GeminiCareerInference/properties/structured_data/properties/analysis/properties/documents/items/properties/relationships"
+                  },
+                  "evidence": {
+                    "$ref": "#/$defs/GeminiCareerInference/properties/structured_data/properties/analysis/properties/documents/items/properties/evidence"
+                  },
+                  "confidence": {
+                    "$ref": "#/$defs/GeminiCareerInference/properties/structured_data/properties/analysis/properties/consistency/properties/overall_cohesion_score"
+                  }
+                },
+                "required": [
+                  "entity_id",
+                  "identity",
+                  "properties",
+                  "relationships",
+                  "evidence",
+                  "confidence"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "roles": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "entity_id": {
+                    "$ref": "#/$defs/GeminiCareerInference/properties/structured_data/properties/analysis/properties/consistency/properties/clusters/items/properties/cluster_id"
+                  },
+                  "identity": {
+                    "$ref": "#/$defs/GeminiCareerInference/properties/structured_data/properties/analysis/properties/documents/items/properties/identity"
+                  },
+                  "properties": {
+                    "type": "object",
+                    "properties": {
+                      "seniority": {
+                        "type": "string"
+                      },
+                      "domain_focus": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "seniority",
+                      "domain_focus"
+                    ],
+                    "additionalProperties": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "number"
+                        },
+                        {
+                          "type": "boolean"
+                        },
+                        {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        }
+                      ]
+                    }
+                  },
+                  "relationships": {
+                    "$ref": "#/$defs/GeminiCareerInference/properties/structured_data/properties/analysis/properties/documents/items/properties/relationships"
+                  },
+                  "evidence": {
+                    "$ref": "#/$defs/GeminiCareerInference/properties/structured_data/properties/analysis/properties/documents/items/properties/evidence"
+                  },
+                  "confidence": {
+                    "$ref": "#/$defs/GeminiCareerInference/properties/structured_data/properties/analysis/properties/consistency/properties/overall_cohesion_score"
+                  }
+                },
+                "required": [
+                  "entity_id",
+                  "identity",
+                  "properties",
+                  "relationships",
+                  "evidence",
+                  "confidence"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "opportunities": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "entity_id": {
+                    "$ref": "#/$defs/GeminiCareerInference/properties/structured_data/properties/analysis/properties/consistency/properties/clusters/items/properties/cluster_id"
+                  },
+                  "identity": {
+                    "$ref": "#/$defs/GeminiCareerInference/properties/structured_data/properties/analysis/properties/documents/items/properties/identity"
+                  },
+                  "properties": {
+                    "$ref": "#/$defs/GeminiCareerInference/properties/structured_data/properties/analysis/properties/documents/items/properties/properties"
+                  },
+                  "relationships": {
+                    "$ref": "#/$defs/GeminiCareerInference/properties/structured_data/properties/analysis/properties/documents/items/properties/relationships"
+                  },
+                  "evidence": {
+                    "$ref": "#/$defs/GeminiCareerInference/properties/structured_data/properties/analysis/properties/documents/items/properties/evidence"
+                  },
+                  "confidence": {
+                    "$ref": "#/$defs/GeminiCareerInference/properties/structured_data/properties/analysis/properties/consistency/properties/overall_cohesion_score"
+                  }
+                },
+                "required": [
+                  "entity_id",
+                  "identity",
+                  "properties",
+                  "relationships",
+                  "evidence",
+                  "confidence"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "strategies": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "entity_id": {
+                    "$ref": "#/$defs/GeminiCareerInference/properties/structured_data/properties/analysis/properties/consistency/properties/clusters/items/properties/cluster_id"
+                  },
+                  "identity": {
+                    "$ref": "#/$defs/GeminiCareerInference/properties/structured_data/properties/analysis/properties/documents/items/properties/identity"
+                  },
+                  "properties": {
+                    "$ref": "#/$defs/GeminiCareerInference/properties/structured_data/properties/analysis/properties/documents/items/properties/properties"
+                  },
+                  "relationships": {
+                    "$ref": "#/$defs/GeminiCareerInference/properties/structured_data/properties/analysis/properties/documents/items/properties/relationships"
+                  },
+                  "evidence": {
+                    "$ref": "#/$defs/GeminiCareerInference/properties/structured_data/properties/analysis/properties/documents/items/properties/evidence"
+                  },
+                  "confidence": {
+                    "$ref": "#/$defs/GeminiCareerInference/properties/structured_data/properties/analysis/properties/consistency/properties/overall_cohesion_score"
+                  }
+                },
+                "required": [
+                  "entity_id",
+                  "identity",
+                  "properties",
+                  "relationships",
+                  "evidence",
+                  "confidence"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "search_queries": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "entity_id": {
+                    "$ref": "#/$defs/GeminiCareerInference/properties/structured_data/properties/analysis/properties/consistency/properties/clusters/items/properties/cluster_id"
+                  },
+                  "identity": {
+                    "$ref": "#/$defs/GeminiCareerInference/properties/structured_data/properties/analysis/properties/documents/items/properties/identity"
+                  },
+                  "properties": {
+                    "type": "object",
+                    "properties": {
+                      "title": {
+                        "type": "string"
+                      },
+                      "query": {
+                        "type": "string"
+                      },
+                      "purpose": {
+                        "type": "string"
+                      },
+                      "target": {
+                        "type": "string"
+                      },
+                      "priority": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "title",
+                      "query",
+                      "purpose",
+                      "target",
+                      "priority"
+                    ],
+                    "additionalProperties": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "number"
+                        },
+                        {
+                          "type": "boolean"
+                        },
+                        {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        }
+                      ]
+                    }
+                  },
+                  "relationships": {
+                    "$ref": "#/$defs/GeminiCareerInference/properties/structured_data/properties/analysis/properties/documents/items/properties/relationships"
+                  },
+                  "evidence": {
+                    "$ref": "#/$defs/GeminiCareerInference/properties/structured_data/properties/analysis/properties/documents/items/properties/evidence"
+                  },
+                  "confidence": {
+                    "$ref": "#/$defs/GeminiCareerInference/properties/structured_data/properties/analysis/properties/consistency/properties/overall_cohesion_score"
+                  }
+                },
+                "required": [
+                  "entity_id",
+                  "identity",
+                  "properties",
+                  "relationships",
+                  "evidence",
+                  "confidence"
+                ],
+                "additionalProperties": false
+              }
+            }
+          },
+          "required": [
+            "consistency"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "analysis"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "report_markdown",
+    "structured_data"
+  ],
+  "additionalProperties": false,
+  "$defs": {
+    "GeminiCareerInference": {
+      "type": "object",
+      "properties": {
+        "report_markdown": {
+          "type": "string"
+        },
+        "structured_data": {
+          "type": "object",
+          "properties": {
+            "analysis": {
+              "type": "object",
+              "properties": {
+                "consistency": {
+                  "type": "object",
+                  "properties": {
+                    "overall_cohesion_score": {
+                      "type": "number",
+                      "minimum": 0,
+                      "maximum": 1
+                    },
+                    "summary": {
+                      "type": "string"
+                    },
+                    "clusters": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "cluster_id": {
+                            "type": "string"
+                          },
+                          "name": {
+                            "type": "string"
+                          },
+                          "cohesion_score": {
+                            "$ref": "#/$defs/GeminiCareerInference/properties/structured_data/properties/analysis/properties/consistency/properties/overall_cohesion_score"
+                          },
+                          "doc_ids": {
+                            "type": "array",
+                            "items": {
+                              "$ref": "#/$defs/GeminiCareerInference/properties/structured_data/properties/analysis/properties/consistency/properties/clusters/items/properties/cluster_id"
+                            }
+                          }
+                        },
+                        "required": [
+                          "cluster_id",
+                          "name",
+                          "cohesion_score",
+                          "doc_ids"
+                        ],
+                        "additionalProperties": false
+                      }
+                    },
+                    "outlier_doc_ids": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/$defs/GeminiCareerInference/properties/structured_data/properties/analysis/properties/consistency/properties/clusters/items/properties/cluster_id"
+                      }
+                    },
+                    "contradictions": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "required": [
+                    "overall_cohesion_score"
+                  ],
+                  "additionalProperties": false
+                },
+                "documents": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "entity_id": {
+                        "$ref": "#/$defs/GeminiCareerInference/properties/structured_data/properties/analysis/properties/consistency/properties/clusters/items/properties/cluster_id"
+                      },
+                      "identity": {
+                        "type": "object",
+                        "properties": {
+                          "type": {
+                            "type": "string"
+                          },
+                          "name": {
+                            "type": "string"
+                          },
+                          "code": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "type",
+                          "name"
+                        ],
+                        "additionalProperties": false
+                      },
+                      "properties": {
+                        "type": "object",
+                        "additionalProperties": {
+                          "anyOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "number"
+                            },
+                            {
+                              "type": "boolean"
+                            },
+                            {
+                              "type": "array",
+                              "items": {
+                                "type": "string"
+                              }
+                            }
+                          ]
+                        }
+                      },
+                      "relationships": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "target_id": {
+                              "$ref": "#/$defs/GeminiCareerInference/properties/structured_data/properties/analysis/properties/consistency/properties/clusters/items/properties/cluster_id"
+                            },
+                            "relation_type": {
+                              "type": "string",
+                              "enum": [
+                                "SUPPORTS",
+                                "REQUIRES",
+                                "RESONATES_WITH",
+                                "CONFLICTS_WITH",
+                                "DERIVED_FROM",
+                                "BELONGS_TO_CLASS",
+                                "ROLE_IN_ORGANIZATION"
+                              ]
+                            },
+                            "weight": {
+                              "$ref": "#/$defs/GeminiCareerInference/properties/structured_data/properties/analysis/properties/consistency/properties/overall_cohesion_score"
+                            }
+                          },
+                          "required": [
+                            "target_id",
+                            "relation_type",
+                            "weight"
+                          ],
+                          "additionalProperties": false
+                        }
+                      },
+                      "evidence": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "doc_id": {
+                              "$ref": "#/$defs/GeminiCareerInference/properties/structured_data/properties/analysis/properties/consistency/properties/clusters/items/properties/cluster_id"
+                            },
+                            "location": {
+                              "type": "string"
+                            },
+                            "context_quote": {
+                              "type": "string"
+                            },
+                            "evidence_score": {
+                              "$ref": "#/$defs/GeminiCareerInference/properties/structured_data/properties/analysis/properties/consistency/properties/overall_cohesion_score"
+                            },
+                            "significance_explanation": {
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "doc_id",
+                            "location",
+                            "context_quote",
+                            "evidence_score"
+                          ],
+                          "additionalProperties": false
+                        }
+                      },
+                      "confidence": {
+                        "$ref": "#/$defs/GeminiCareerInference/properties/structured_data/properties/analysis/properties/consistency/properties/overall_cohesion_score"
+                      }
+                    },
+                    "required": [
+                      "entity_id",
+                      "identity",
+                      "properties",
+                      "relationships",
+                      "evidence",
+                      "confidence"
+                    ],
+                    "additionalProperties": false
+                  }
+                },
+                "capabilities": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "entity_id": {
+                        "$ref": "#/$defs/GeminiCareerInference/properties/structured_data/properties/analysis/properties/consistency/properties/clusters/items/properties/cluster_id"
+                      },
+                      "identity": {
+                        "$ref": "#/$defs/GeminiCareerInference/properties/structured_data/properties/analysis/properties/documents/items/properties/identity"
+                      },
+                      "properties": {
+                        "$ref": "#/$defs/GeminiCareerInference/properties/structured_data/properties/analysis/properties/documents/items/properties/properties"
+                      },
+                      "relationships": {
+                        "$ref": "#/$defs/GeminiCareerInference/properties/structured_data/properties/analysis/properties/documents/items/properties/relationships"
+                      },
+                      "evidence": {
+                        "$ref": "#/$defs/GeminiCareerInference/properties/structured_data/properties/analysis/properties/documents/items/properties/evidence"
+                      },
+                      "confidence": {
+                        "$ref": "#/$defs/GeminiCareerInference/properties/structured_data/properties/analysis/properties/consistency/properties/overall_cohesion_score"
+                      }
+                    },
+                    "required": [
+                      "entity_id",
+                      "identity",
+                      "properties",
+                      "relationships",
+                      "evidence",
+                      "confidence"
+                    ],
+                    "additionalProperties": false
+                  }
+                },
+                "domains": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "entity_id": {
+                        "$ref": "#/$defs/GeminiCareerInference/properties/structured_data/properties/analysis/properties/consistency/properties/clusters/items/properties/cluster_id"
+                      },
+                      "identity": {
+                        "$ref": "#/$defs/GeminiCareerInference/properties/structured_data/properties/analysis/properties/documents/items/properties/identity"
+                      },
+                      "properties": {
+                        "$ref": "#/$defs/GeminiCareerInference/properties/structured_data/properties/analysis/properties/documents/items/properties/properties"
+                      },
+                      "relationships": {
+                        "$ref": "#/$defs/GeminiCareerInference/properties/structured_data/properties/analysis/properties/documents/items/properties/relationships"
+                      },
+                      "evidence": {
+                        "$ref": "#/$defs/GeminiCareerInference/properties/structured_data/properties/analysis/properties/documents/items/properties/evidence"
+                      },
+                      "confidence": {
+                        "$ref": "#/$defs/GeminiCareerInference/properties/structured_data/properties/analysis/properties/consistency/properties/overall_cohesion_score"
+                      }
+                    },
+                    "required": [
+                      "entity_id",
+                      "identity",
+                      "properties",
+                      "relationships",
+                      "evidence",
+                      "confidence"
+                    ],
+                    "additionalProperties": false
+                  }
+                },
+                "organization_classes": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "entity_id": {
+                        "$ref": "#/$defs/GeminiCareerInference/properties/structured_data/properties/analysis/properties/consistency/properties/clusters/items/properties/cluster_id"
+                      },
+                      "identity": {
+                        "$ref": "#/$defs/GeminiCareerInference/properties/structured_data/properties/analysis/properties/documents/items/properties/identity"
+                      },
+                      "properties": {
+                        "$ref": "#/$defs/GeminiCareerInference/properties/structured_data/properties/analysis/properties/documents/items/properties/properties"
+                      },
+                      "relationships": {
+                        "$ref": "#/$defs/GeminiCareerInference/properties/structured_data/properties/analysis/properties/documents/items/properties/relationships"
+                      },
+                      "evidence": {
+                        "$ref": "#/$defs/GeminiCareerInference/properties/structured_data/properties/analysis/properties/documents/items/properties/evidence"
+                      },
+                      "confidence": {
+                        "$ref": "#/$defs/GeminiCareerInference/properties/structured_data/properties/analysis/properties/consistency/properties/overall_cohesion_score"
+                      }
+                    },
+                    "required": [
+                      "entity_id",
+                      "identity",
+                      "properties",
+                      "relationships",
+                      "evidence",
+                      "confidence"
+                    ],
+                    "additionalProperties": false
+                  }
+                },
+                "organizations": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "entity_id": {
+                        "$ref": "#/$defs/GeminiCareerInference/properties/structured_data/properties/analysis/properties/consistency/properties/clusters/items/properties/cluster_id"
+                      },
+                      "identity": {
+                        "$ref": "#/$defs/GeminiCareerInference/properties/structured_data/properties/analysis/properties/documents/items/properties/identity"
+                      },
+                      "properties": {
+                        "type": "object",
+                        "properties": {
+                          "country_iso": {
+                            "type": "string"
+                          },
+                          "region_code": {
+                            "type": "string"
+                          },
+                          "industry_enum": {
+                            "type": "string"
+                          },
+                          "scale_tier": {
+                            "type": "string"
+                          },
+                          "workplace_model": {
+                            "type": "string"
+                          },
+                          "recruiter_pool_id": {
+                            "type": "string"
+                          },
+                          "resonance_score": {
+                            "$ref": "#/$defs/GeminiCareerInference/properties/structured_data/properties/analysis/properties/consistency/properties/overall_cohesion_score"
+                          }
+                        },
+                        "required": [
+                          "country_iso",
+                          "industry_enum",
+                          "resonance_score"
+                        ],
+                        "additionalProperties": {
+                          "anyOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "number"
+                            },
+                            {
+                              "type": "boolean"
+                            },
+                            {
+                              "type": "array",
+                              "items": {
+                                "type": "string"
+                              }
+                            }
+                          ]
+                        }
+                      },
+                      "relationships": {
+                        "$ref": "#/$defs/GeminiCareerInference/properties/structured_data/properties/analysis/properties/documents/items/properties/relationships"
+                      },
+                      "evidence": {
+                        "$ref": "#/$defs/GeminiCareerInference/properties/structured_data/properties/analysis/properties/documents/items/properties/evidence"
+                      },
+                      "confidence": {
+                        "$ref": "#/$defs/GeminiCareerInference/properties/structured_data/properties/analysis/properties/consistency/properties/overall_cohesion_score"
+                      }
+                    },
+                    "required": [
+                      "entity_id",
+                      "identity",
+                      "properties",
+                      "relationships",
+                      "evidence",
+                      "confidence"
+                    ],
+                    "additionalProperties": false
+                  }
+                },
+                "roles": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "entity_id": {
+                        "$ref": "#/$defs/GeminiCareerInference/properties/structured_data/properties/analysis/properties/consistency/properties/clusters/items/properties/cluster_id"
+                      },
+                      "identity": {
+                        "$ref": "#/$defs/GeminiCareerInference/properties/structured_data/properties/analysis/properties/documents/items/properties/identity"
+                      },
+                      "properties": {
+                        "type": "object",
+                        "properties": {
+                          "seniority": {
+                            "type": "string"
+                          },
+                          "domain_focus": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "seniority",
+                          "domain_focus"
+                        ],
+                        "additionalProperties": {
+                          "anyOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "number"
+                            },
+                            {
+                              "type": "boolean"
+                            },
+                            {
+                              "type": "array",
+                              "items": {
+                                "type": "string"
+                              }
+                            }
+                          ]
+                        }
+                      },
+                      "relationships": {
+                        "$ref": "#/$defs/GeminiCareerInference/properties/structured_data/properties/analysis/properties/documents/items/properties/relationships"
+                      },
+                      "evidence": {
+                        "$ref": "#/$defs/GeminiCareerInference/properties/structured_data/properties/analysis/properties/documents/items/properties/evidence"
+                      },
+                      "confidence": {
+                        "$ref": "#/$defs/GeminiCareerInference/properties/structured_data/properties/analysis/properties/consistency/properties/overall_cohesion_score"
+                      }
+                    },
+                    "required": [
+                      "entity_id",
+                      "identity",
+                      "properties",
+                      "relationships",
+                      "evidence",
+                      "confidence"
+                    ],
+                    "additionalProperties": false
+                  }
+                },
+                "opportunities": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "entity_id": {
+                        "$ref": "#/$defs/GeminiCareerInference/properties/structured_data/properties/analysis/properties/consistency/properties/clusters/items/properties/cluster_id"
+                      },
+                      "identity": {
+                        "$ref": "#/$defs/GeminiCareerInference/properties/structured_data/properties/analysis/properties/documents/items/properties/identity"
+                      },
+                      "properties": {
+                        "$ref": "#/$defs/GeminiCareerInference/properties/structured_data/properties/analysis/properties/documents/items/properties/properties"
+                      },
+                      "relationships": {
+                        "$ref": "#/$defs/GeminiCareerInference/properties/structured_data/properties/analysis/properties/documents/items/properties/relationships"
+                      },
+                      "evidence": {
+                        "$ref": "#/$defs/GeminiCareerInference/properties/structured_data/properties/analysis/properties/documents/items/properties/evidence"
+                      },
+                      "confidence": {
+                        "$ref": "#/$defs/GeminiCareerInference/properties/structured_data/properties/analysis/properties/consistency/properties/overall_cohesion_score"
+                      }
+                    },
+                    "required": [
+                      "entity_id",
+                      "identity",
+                      "properties",
+                      "relationships",
+                      "evidence",
+                      "confidence"
+                    ],
+                    "additionalProperties": false
+                  }
+                },
+                "strategies": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "entity_id": {
+                        "$ref": "#/$defs/GeminiCareerInference/properties/structured_data/properties/analysis/properties/consistency/properties/clusters/items/properties/cluster_id"
+                      },
+                      "identity": {
+                        "$ref": "#/$defs/GeminiCareerInference/properties/structured_data/properties/analysis/properties/documents/items/properties/identity"
+                      },
+                      "properties": {
+                        "$ref": "#/$defs/GeminiCareerInference/properties/structured_data/properties/analysis/properties/documents/items/properties/properties"
+                      },
+                      "relationships": {
+                        "$ref": "#/$defs/GeminiCareerInference/properties/structured_data/properties/analysis/properties/documents/items/properties/relationships"
+                      },
+                      "evidence": {
+                        "$ref": "#/$defs/GeminiCareerInference/properties/structured_data/properties/analysis/properties/documents/items/properties/evidence"
+                      },
+                      "confidence": {
+                        "$ref": "#/$defs/GeminiCareerInference/properties/structured_data/properties/analysis/properties/consistency/properties/overall_cohesion_score"
+                      }
+                    },
+                    "required": [
+                      "entity_id",
+                      "identity",
+                      "properties",
+                      "relationships",
+                      "evidence",
+                      "confidence"
+                    ],
+                    "additionalProperties": false
+                  }
+                },
+                "search_queries": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "entity_id": {
+                        "$ref": "#/$defs/GeminiCareerInference/properties/structured_data/properties/analysis/properties/consistency/properties/clusters/items/properties/cluster_id"
+                      },
+                      "identity": {
+                        "$ref": "#/$defs/GeminiCareerInference/properties/structured_data/properties/analysis/properties/documents/items/properties/identity"
+                      },
+                      "properties": {
+                        "type": "object",
+                        "properties": {
+                          "title": {
+                            "type": "string"
+                          },
+                          "query": {
+                            "type": "string"
+                          },
+                          "purpose": {
+                            "type": "string"
+                          },
+                          "target": {
+                            "type": "string"
+                          },
+                          "priority": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "title",
+                          "query",
+                          "purpose",
+                          "target",
+                          "priority"
+                        ],
+                        "additionalProperties": {
+                          "anyOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "number"
+                            },
+                            {
+                              "type": "boolean"
+                            },
+                            {
+                              "type": "array",
+                              "items": {
+                                "type": "string"
+                              }
+                            }
+                          ]
+                        }
+                      },
+                      "relationships": {
+                        "$ref": "#/$defs/GeminiCareerInference/properties/structured_data/properties/analysis/properties/documents/items/properties/relationships"
+                      },
+                      "evidence": {
+                        "$ref": "#/$defs/GeminiCareerInference/properties/structured_data/properties/analysis/properties/documents/items/properties/evidence"
+                      },
+                      "confidence": {
+                        "$ref": "#/$defs/GeminiCareerInference/properties/structured_data/properties/analysis/properties/consistency/properties/overall_cohesion_score"
+                      }
+                    },
+                    "required": [
+                      "entity_id",
+                      "identity",
+                      "properties",
+                      "relationships",
+                      "evidence",
+                      "confidence"
+                    ],
+                    "additionalProperties": false
+                  }
+                }
+              },
+              "required": [
+                "consistency"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "analysis"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "report_markdown",
+        "structured_data"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

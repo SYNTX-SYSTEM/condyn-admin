@@ -47,8 +47,19 @@ function decodeGitHubContent(base64Content?: string): string {
 async function fetchGitHubJson(apiUrl: string, fetcher?: any): Promise<any> {
   const activeFetcher = fetcher || fetch;
   let response: any;
+  
+  const headers: Record<string, string> = {
+    "Accept": "application/vnd.github+json",
+    "X-GitHub-Api-Version": "2022-11-28",
+    "User-Agent": "CONDYN"
+  };
+
+  if (process.env.GITHUB_TOKEN) {
+    headers["Authorization"] = `Bearer ${process.env.GITHUB_TOKEN}`;
+  }
+
   try {
-    response = await activeFetcher(apiUrl);
+    response = await activeFetcher(apiUrl, { headers });
   } catch (err: any) {
     throw new Error(`ERR_GITHUB_FETCH_FAILURE: Network error fetching GitHub API "${apiUrl}": ${err?.message || err}`);
   }

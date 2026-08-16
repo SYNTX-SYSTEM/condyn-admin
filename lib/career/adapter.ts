@@ -355,6 +355,11 @@ export function assembleCanonicalCareerAnalysis(payload: any, context: PipelineO
                 entity_kind: "DOCUMENT",
                 entity_id: doc.docId,
                 name: doc.title || doc.docId,
+                identity: {
+                  type: "DOCUMENT",
+                  name: doc.title || doc.docId,
+                  canonical_type: "DOCUMENT"
+                },
                 properties: {
                   raw_word_count: doc.content ? doc.content.split(/\s+/).length : 0
                 },
