@@ -7,6 +7,7 @@ export interface RecommendationProofChain {
   fitScore: MetricProvenance;
   explainabilityScore: MetricProvenance;
   alignments: AlignmentResult[];
+  policyVersionId?: string;
 }
 
 export function calculateFitAndExplainability(
