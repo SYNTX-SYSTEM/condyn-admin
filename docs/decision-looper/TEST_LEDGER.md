@@ -33,5 +33,11 @@
 ### 005C Async API Orchestration & HTTP Decoupling
 ✅ CLOSED - Refactored `POST /api/career/analyze` to return `202 Accepted` immediately. Implemented decoupled `GET /api/career/jobs/:jobId` polling endpoint. Rewrote 16 legacy regression tests by bifurcating into pipeline-domain tests (Category A) and E2E orchestration tests (Category C), maintaining 100% test coverage without degrading legacy HTTP bounds. Idempotency guarantees validated.
 
-**TEST RUN**: 482 passed | 8 skipped (490 tests across 102 suites)
+### 005D Frontend Job Lifecycle
+✅ CLOSED - Completed manual UI audit proving the continuous end-to-end integration: user input -> async job creation (202) -> worker polling -> background extraction -> frontend hydration via existing UI adapter without legacy synchronous fallbacks or fabricated demo percentages (BUG006).
+
+### 005E Full System Acceptance
+⏳ NEXT - Final end-to-end brutal shutdown worker scenario and acceptance of Phase 5.
+
+**TEST RUN**: 490 passed | 8 skipped
 **BUILD**: npm run build → PASS

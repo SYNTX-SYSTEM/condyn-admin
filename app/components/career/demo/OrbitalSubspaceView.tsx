@@ -234,9 +234,6 @@ export function OrbitalSubspaceView({
                 <span style={{ fontSize: "10px", color: SIL_TOKENS.colors.cyanActive, fontWeight: 700 }}>
                   CLUSTER NODE
                 </span>
-                <span style={{ fontSize: "10px", color: SIL_TOKENS.colors.textMuted }}>
-                  CONF: <strong style={{ color: SIL_TOKENS.colors.textPrimary }}>{cluster.confidence}</strong>
-                </span>
               </div>
               <div style={{ fontSize: "14px", fontWeight: 700, marginBottom: "8px" }}>{cluster.title}</div>
               <div style={{ fontSize: "11px", color: SIL_TOKENS.colors.textMuted }}>

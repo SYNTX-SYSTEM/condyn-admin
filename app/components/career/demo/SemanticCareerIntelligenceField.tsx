@@ -17,6 +17,7 @@ import { DecisionGraphInspector } from "./DecisionGraphInspector";
 import { adaptCanonicalToDemoState } from "../../../../lib/career/ui-adapter";
 import { buildSilSourcePresentation } from "../../../../lib/career/view-model/source-presentation";
 import { buildSilClusterPresentation } from "../../../../lib/career/view-model/cluster-presentation";
+import { useCareerAnalysisJob } from "../../../../lib/career/ui/useCareerAnalysisJob";
 
 export interface SemanticCareerIntelligenceFieldProps {
   data: DemoCareerIntelligenceData;
@@ -42,10 +43,14 @@ export function SemanticCareerIntelligenceField({
   const [hoveredStageId, setHoveredStageId] = useState<string | null>(null);
   const [zoomLevel, setZoomLevel] = useState<SemanticZoomLevel>(0);
   const [selectedClusterId, setSelectedClusterId] = useState<string | null>(null);
-  const [isAnalyzing, setIsAnalyzing] = useState(initialAnalysisState?.isAnalyzing ?? false);
-  const [analysisStep, setAnalysisStep] = useState<string | null>(initialAnalysisState?.analysisStep ?? null);
-  const [analysisError, setAnalysisError] = useState<string | null>(initialAnalysisState?.analysisError ?? null);
-  const [analysisSuccess, setAnalysisSuccess] = useState(initialAnalysisState?.analysisSuccess ?? false);
+  
+  const job = useCareerAnalysisJob();
+  const jobState = job.state.state;
+  const isAnalyzing = jobState === "SUBMITTING" || jobState === "PENDING" || jobState === "RUNNING" || jobState === "LOADING_RESULT";
+  const analysisError = jobState === "FAILED" ? JSON.stringify({ status: job.state.errorCode || 500, issues: [{ message: job.state.errorSummary || "Job Failed" }] }) : null;
+  const analysisSuccess = jobState === "SUCCEEDED";
+  const analysisStep = jobState; // fallback mapping
+
   const [inferenceTelemetry, setInferenceTelemetry] = useState<any>(initialAnalysisState?.inferenceTelemetry ?? null);
   const [lastStagedDocs, setLastStagedDocs] = useState<any[]>([]);
   const [isCodexOpen, setIsCodexOpen] = useState(false);
@@ -61,6 +66,23 @@ export function SemanticCareerIntelligenceField({
       } catch (err) {}
     }
   }, []);
+
+  useEffect(() => {
+    if (job.state.state === "SUCCEEDED" && job.state.canonicalAnalysis) {
+      const canonical = job.state.canonicalAnalysis;
+      if (canonical.inferenceTelemetry) {
+        setInferenceTelemetry(canonical.inferenceTelemetry);
+      }
+      
+      const realData = canonical.analysis || canonical.data || canonical;
+      const projectedRealState = adaptCanonicalToDemoState(
+        realData, 
+        lastStagedDocs, 
+        canonical.sourceManifest
+      );
+      setActiveData(projectedRealState);
+    }
+  }, [job.state.state, job.state.canonicalAnalysis]);
 
   const handleHudAction = (action: "OPEN EVIDENCE" | "INSPECT SOURCES" | "VIEW MATCHES", stageId: string) => {
     setActiveStageId(stageId);
@@ -78,64 +100,17 @@ export function SemanticCareerIntelligenceField({
 
   const handleAnalyze = async (stagedDocs: any[]) => {
     setLastStagedDocs(stagedDocs);
-    setIsAnalyzing(true);
-    setAnalysisError(null);
-    setAnalysisSuccess(false);
-    setAnalysisStep("ingesting");
-
-    try {
-      setTimeout(() => setAnalysisStep("extracting"), 300);
-      setTimeout(() => setAnalysisStep("validating"), 600);
-      setTimeout(() => setAnalysisStep("matching"), 900);
-
-      const documentsPayload = stagedDocs.map((doc) => {
-        if (doc.type === "pdf") {
-          return { type: "pdf", content: doc.content, title: doc.title, docId: doc.id };
-        }
-        if (doc.type === "github" || doc.type === "website") {
-          return { type: doc.type, url: doc.url, title: doc.title, docId: doc.id };
-        }
-        return { type: "text", content: doc.content, title: doc.title, docId: doc.id };
-      });
-
-      const res = await fetch("/api/career/analyze", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ documents: documentsPayload })
-      });
-
-      const json = await res.json();
-      if (!res.ok || !json.success) {
-        const errorData = {
-          message: json.issues?.[0]?.message || "Analyse fehlgeschlagen.",
-          issues: json.issues || [],
-          status: res.status
-        };
-        throw errorData;
+    const documentsPayload = stagedDocs.map((doc) => {
+      if (doc.type === "pdf") {
+        return { type: "pdf", content: doc.content, title: doc.title, docId: doc.id };
       }
+      if (doc.type === "github" || doc.type === "website") {
+        return { type: doc.type, url: doc.url, title: doc.title, docId: doc.id };
+      }
+      return { type: "text", content: doc.content, title: doc.title, docId: doc.id };
+    });
 
-      setAnalysisStep("complete");
-      if (json.inferenceTelemetry) {
-        setInferenceTelemetry(json.inferenceTelemetry);
-      }
-      
-      const projectedRealState = adaptCanonicalToDemoState(json.data, stagedDocs, json.sourceManifest);
-      setActiveData(projectedRealState);
-      
-      setAnalysisSuccess(true);
-    } catch (err: any) {
-      if (err.issues && err.status) {
-        setAnalysisError(JSON.stringify({ status: err.status, issues: err.issues }));
-      } else {
-        setAnalysisError(JSON.stringify({ status: 500, issues: [{ message: err.message || "Fehler bei der Analyse" }] }));
-      }
-      setAnalysisSuccess(false);
-    } finally {
-      setTimeout(() => {
-        setIsAnalyzing(false);
-        setAnalysisStep(null);
-      }, 300);
-    }
+    job.submitAnalysis({ documents: documentsPayload });
   };
 
   const [selectedGraphNodeId, setSelectedGraphNodeId] = useState<string | null>(null);
@@ -383,7 +358,7 @@ export function SemanticCareerIntelligenceField({
           }}
         >
           <span style={{ animation: "atmosphereGlow 1.5s infinite" }}>●</span>
-          <span>INTAKE TELEMETRY // STEP: {(analysisStep || "INGESTING").toUpperCase()}</span>
+          <span>INTAKE TELEMETRY // STEP: {jobState === "PENDING" ? "QUEUED" : (jobState === "RUNNING" ? "ANALYZING SOURCES..." : jobState.toUpperCase())}</span>
         </div>
       )}
 

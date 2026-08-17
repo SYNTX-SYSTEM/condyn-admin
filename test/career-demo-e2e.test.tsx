@@ -1,8 +1,16 @@
 import React from "react";
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, vi } from "vitest";
 import { renderToString } from "react-dom/server";
 import { SemanticCareerIntelligenceField } from "../app/components/career/demo/SemanticCareerIntelligenceField";
 import { SourceDock } from "../app/components/career/demo/SourceDock";
+import { useCareerAnalysisJob } from "../lib/career/ui/useCareerAnalysisJob";
+
+vi.mock("../lib/career/ui/useCareerAnalysisJob", () => ({
+  useCareerAnalysisJob: vi.fn(() => ({
+    state: { state: "IDLE" },
+    submitAnalysis: vi.fn()
+  }))
+}));
 
 describe("CONDYN Career Analysis Protocol v1.0 — Step 26: End-to-End Live Demo Hardening (`test/career-demo-e2e.test.tsx`)", () => {
   const sampleData = {
@@ -25,30 +33,32 @@ describe("CONDYN Career Analysis Protocol v1.0 — Step 26: End-to-End Live Demo
       { actionId: "act-1", title: "Complete Siemens Security Assessment", timeframe: "14 Days", impact: "High" }
     ]
   };
-
   it("1. should render telemetry progress banner when isAnalyzing is active", () => {
+    (useCareerAnalysisJob as any).mockReturnValue({
+      state: { state: "RUNNING" },
+      submitAnalysis: vi.fn()
+    });
+
     const html = renderToString(
       <SemanticCareerIntelligenceField
         data={sampleData}
-        initialAnalysisState={{
-          isAnalyzing: true,
-          analysisStep: "extracting"
-        }}
       />
     );
 
     expect(html).toContain("data-testid=\"intake-telemetry-banner\"");
     expect(html).toContain("INTAKE TELEMETRY // STEP:");
-    expect(html).toContain("EXTRACTING");
+    expect(html).toContain("ANALYZING SOURCES...");
   });
 
   it("2. should render intake-success-banner when analysis succeeds", () => {
+    (useCareerAnalysisJob as any).mockReturnValue({
+      state: { state: "SUCCEEDED" },
+      submitAnalysis: vi.fn()
+    });
+
     const html = renderToString(
       <SemanticCareerIntelligenceField
         data={sampleData}
-        initialAnalysisState={{
-          analysisSuccess: true
-        }}
       />
     );
 
@@ -58,12 +68,14 @@ describe("CONDYN Career Analysis Protocol v1.0 — Step 26: End-to-End Live Demo
   });
 
   it("3. should render intake-error-banner and retry-intake-btn button when analysis encounters error", () => {
+    (useCareerAnalysisJob as any).mockReturnValue({
+      state: { state: "FAILED", errorCode: "ERR_NETWORK", errorSummary: "Netzwerk-Timeout beim Intake." },
+      submitAnalysis: vi.fn()
+    });
+
     const html = renderToString(
       <SemanticCareerIntelligenceField
         data={sampleData}
-        initialAnalysisState={{
-          analysisError: "Netzwerk-Timeout beim Intake."
-        }}
       />
     );
 
@@ -81,12 +93,14 @@ describe("CONDYN Career Analysis Protocol v1.0 — Step 26: End-to-End Live Demo
   });
 
   it("5. should maintain all 6 orbit bubbles and IdentityCoreDropZone in the field alongside intake banners", () => {
+    (useCareerAnalysisJob as any).mockReturnValue({
+      state: { state: "SUCCEEDED" },
+      submitAnalysis: vi.fn()
+    });
+
     const html = renderToString(
       <SemanticCareerIntelligenceField
         data={sampleData}
-        initialAnalysisState={{
-          analysisSuccess: true
-        }}
       />
     );
 
