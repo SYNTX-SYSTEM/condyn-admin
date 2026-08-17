@@ -5,6 +5,7 @@ export type DecisionState = "ACCEPT" | "REJECT" | "DEFER";
 export interface DecisionRecord {
   decisionId: string;
   subjectId: string;
+  recommendationId: string;
   recommendationSnapshot: RecommendationProofChain;
   decisionState: DecisionState;
   actor: string;
@@ -37,6 +38,7 @@ export function createDecision(
   return {
     decisionId: `DEC_${Date.now()}_${Math.floor(Math.random() * 1000).toString().padStart(3, '0')}`,
     subjectId,
+    recommendationId: recommendation.recommendationId || "UNKNOWN_REC",
     recommendationSnapshot,
     decisionState,
     actor,

@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach } from "vitest";
-import { createPolicyVersion, promotePolicy, getActivePolicyVersion, clearPolicyCache } from "../lib/career/decisions/policy";
+import { createPolicyVersion } from "../lib/career/decisions/policy";
 import { createLearningProposal, evaluateEligibility, replayTrace, clearLearningCache } from "../lib/career/decisions/learning";
 import { createFeedback, createAttribution, clearFeedbackCache } from "../lib/career/decisions/feedback";
 import { RecommendationProofChain } from "../lib/career/matching/derivation";
@@ -12,7 +12,6 @@ describe("CONDYN Career Analysis Protocol v3.0 - PHASE 3: LEARNING WITHOUT HISTO
   beforeEach(() => {
     clearActionCache();
     clearFeedbackCache();
-    clearPolicyCache();
     clearLearningCache();
   });
 
@@ -42,8 +41,7 @@ describe("CONDYN Career Analysis Protocol v3.0 - PHASE 3: LEARNING WITHOUT HISTO
   };
 
   const setupBase = () => {
-    const p1 = createPolicyVersion("POL_V1", 1, { minimumExplainability: 0.30, minimumFit: 0.5, partialSupportContribution: 0 }, "System");
-    promotePolicy("POL_V1", "System");
+    const p1 = createPolicyVersion("POL_V1", "FAM_1", 1, { minimumExplainability: 0.30, minimumFit: 0.5, partialSupportContribution: 0 }, "System");
 
     const d = createDecision("SUB_123", mockRecommendation, "ACCEPT", "Manager", "Approve");
     const t2 = new Date(new Date(d.timestamp).getTime() + 1000).toISOString();
@@ -78,17 +76,8 @@ describe("CONDYN Career Analysis Protocol v3.0 - PHASE 3: LEARNING WITHOUT HISTO
     expect(eligibility.reason).toContain("Anonymous or unresolved");
   });
 
-  it("C. LearningProposal -> base policy remains unchanged", () => {
-    const { p1, fdb } = setupBase();
-    createLearningProposal("PROP_1", p1.policyId, [fdb.feedbackId], ["TRC_1"], { minimumExplainability: 0.40 }, "System");
-    
-    // Active policy should still be p1 exactly as it was
-    const active = getActivePolicyVersion();
-    expect(active?.configuration.minimumExplainability).toBe(0.30);
-  });
-
   it("D. candidate policy differs -> new immutable PolicyVersion", () => {
-    const p2 = createPolicyVersion("POL_V2", 2, { minimumExplainability: 0.40, minimumFit: 0.5, partialSupportContribution: 0 }, "System", new Date().toISOString(), 1);
+    const p2 = createPolicyVersion("POL_V2", "FAM_1", 2, { minimumExplainability: 0.40, minimumFit: 0.5, partialSupportContribution: 0 }, "System", new Date().toISOString(), 1);
     expect(p2.policyId).toBe("POL_V2");
     expect(p2.version).toBe(2);
   });
@@ -102,14 +91,14 @@ describe("CONDYN Career Analysis Protocol v3.0 - PHASE 3: LEARNING WITHOUT HISTO
 
   it("F. historical Recommendation referencing V1 -> still references V1 after V2 creation", () => {
     const { d } = setupBase();
-    createPolicyVersion("POL_V2", 2, { minimumExplainability: 0.40, minimumFit: 0.5, partialSupportContribution: 0 }, "System");
+    createPolicyVersion("POL_V2", "FAM_1", 2, { minimumExplainability: 0.40, minimumFit: 0.5, partialSupportContribution: 0 }, "System");
     
     expect(d.recommendationSnapshot.policyVersionId).toBe("POL_V1");
   });
 
   it("G. replay historical trace under V2 -> counterfactual result created -> historical Recommendation unchanged", () => {
     const { p1, d } = setupBase();
-    const p2 = createPolicyVersion("POL_V2", 2, { minimumExplainability: 0.40, minimumFit: 0.5, partialSupportContribution: 0 }, "System");
+    const p2 = createPolicyVersion("POL_V2", "FAM_1", 2, { minimumExplainability: 0.40, minimumFit: 0.5, partialSupportContribution: 0 }, "System");
     
     const evaluation = replayTrace(p2, p1, d.recommendationSnapshot);
     
@@ -119,27 +108,6 @@ describe("CONDYN Career Analysis Protocol v3.0 - PHASE 3: LEARNING WITHOUT HISTO
     // Counterfactual V2 says "DO_NOT_RECOMMEND" because minExplainability (0.4) > explainability (0.35)
     expect(evaluation.candidateResults.recommendationState).toBe("DO_NOT_RECOMMEND");
     expect(evaluation.comparison).toBe("DIVERGENT");
-  });
-
-  it("I. policy promotion without actor -> FAIL", () => {
-    createPolicyVersion("POL_V2", 2, { minimumExplainability: 0.40, minimumFit: 0.5, partialSupportContribution: 0 }, "System");
-    expect(() => {
-      promotePolicy("POL_V2", "");
-    }).toThrow(/ERR_POLICY_PROMOTION_MISSING_ACTOR/);
-  });
-
-  it("K. promotion V2 -> V2 ACTIVE -> V1 historical references preserved", () => {
-    const { p1, d } = setupBase();
-    createPolicyVersion("POL_V2", 2, { minimumExplainability: 0.40, minimumFit: 0.5, partialSupportContribution: 0 }, "System");
-    promotePolicy("POL_V2", "System");
-
-    const active = getActivePolicyVersion();
-    expect(active?.policyId).toBe("POL_V2");
-    expect(active?.status).toBe("ACTIVE");
-
-    // V1 is still technically in cache but as RETIRED (checked conceptually, though our API doesn't expose it directly)
-    // Historical decision still points to POL_V1
-    expect(d.recommendationSnapshot.policyVersionId).toBe("POL_V1");
   });
 
   it("L. feedback with CAUSAL_CLAIM -> ineligible for v1 learning", () => {

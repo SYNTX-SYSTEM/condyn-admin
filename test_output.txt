@@ -1,0 +1,3993 @@
+
+ RUN  v3.2.7 /home/codi/Entwicklung/condyn-admin
+
+stdout | test/career-persistence-semantic-integrity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: PERSISTENCE SEMANTIC INTEGRITY (TEST004A) > A. overall_confidence exists -> exact value persists and reloads
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_analyses" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-persistence-semantic-integrity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: PERSISTENCE SEMANTIC INTEGRITY (TEST004A) > A. overall_confidence exists -> exact value persists and reloads
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_recommendations" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-persistence-semantic-integrity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: PERSISTENCE SEMANTIC INTEGRITY (TEST004A) > A. overall_confidence exists -> exact value persists and reloads
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_decisions" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-persistence-semantic-integrity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: PERSISTENCE SEMANTIC INTEGRITY (TEST004A) > A. overall_confidence exists -> exact value persists and reloads
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_commitments" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-persistence-semantic-integrity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: PERSISTENCE SEMANTIC INTEGRITY (TEST004A) > A. overall_confidence exists -> exact value persists and reloads
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_actions" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-persistence-semantic-integrity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: PERSISTENCE SEMANTIC INTEGRITY (TEST004A) > A. overall_confidence exists -> exact value persists and reloads
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_outcomes" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-persistence-semantic-integrity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: PERSISTENCE SEMANTIC INTEGRITY (TEST004A) > A. overall_confidence exists -> exact value persists and reloads
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_feedback" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-persistence-semantic-integrity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: PERSISTENCE SEMANTIC INTEGRITY (TEST004A) > A. overall_confidence exists -> exact value persists and reloads
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_attributions" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-persistence-semantic-integrity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: PERSISTENCE SEMANTIC INTEGRITY (TEST004A) > A. overall_confidence exists -> exact value persists and reloads
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_policy_versions" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-persistence-semantic-integrity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: PERSISTENCE SEMANTIC INTEGRITY (TEST004A) > A. overall_confidence exists -> exact value persists and reloads
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_policy_families" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-persistence-semantic-integrity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: PERSISTENCE SEMANTIC INTEGRITY (TEST004A) > A. overall_confidence exists -> exact value persists and reloads
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_policy_promotions" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-persistence-semantic-integrity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: PERSISTENCE SEMANTIC INTEGRITY (TEST004A) > A. overall_confidence exists -> exact value persists and reloads
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_learning_proposals" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-persistence-semantic-integrity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: PERSISTENCE SEMANTIC INTEGRITY (TEST004A) > A. overall_confidence exists -> exact value persists and reloads
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_policy_evaluations" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-persistence-semantic-integrity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: PERSISTENCE SEMANTIC INTEGRITY (TEST004A) > B. overall_confidence absent -> remains absent/null
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_analyses" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-persistence-semantic-integrity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: PERSISTENCE SEMANTIC INTEGRITY (TEST004A) > B. overall_confidence absent -> remains absent/null
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_recommendations" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-persistence-semantic-integrity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: PERSISTENCE SEMANTIC INTEGRITY (TEST004A) > B. overall_confidence absent -> remains absent/null
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_decisions" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-persistence-semantic-integrity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: PERSISTENCE SEMANTIC INTEGRITY (TEST004A) > B. overall_confidence absent -> remains absent/null
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_commitments" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-persistence-semantic-integrity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: PERSISTENCE SEMANTIC INTEGRITY (TEST004A) > B. overall_confidence absent -> remains absent/null
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_actions" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-persistence-semantic-integrity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: PERSISTENCE SEMANTIC INTEGRITY (TEST004A) > B. overall_confidence absent -> remains absent/null
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_outcomes" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-persistence-semantic-integrity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: PERSISTENCE SEMANTIC INTEGRITY (TEST004A) > B. overall_confidence absent -> remains absent/null
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_feedback" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-persistence-semantic-integrity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: PERSISTENCE SEMANTIC INTEGRITY (TEST004A) > B. overall_confidence absent -> remains absent/null
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_attributions" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-persistence-semantic-integrity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: PERSISTENCE SEMANTIC INTEGRITY (TEST004A) > B. overall_confidence absent -> remains absent/null
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_policy_versions" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-persistence-semantic-integrity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: PERSISTENCE SEMANTIC INTEGRITY (TEST004A) > B. overall_confidence absent -> remains absent/null
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_policy_families" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-persistence-semantic-integrity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: PERSISTENCE SEMANTIC INTEGRITY (TEST004A) > B. overall_confidence absent -> remains absent/null
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_policy_promotions" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-persistence-semantic-integrity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: PERSISTENCE SEMANTIC INTEGRITY (TEST004A) > B. overall_confidence absent -> remains absent/null
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_learning_proposals" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-persistence-semantic-integrity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: PERSISTENCE SEMANTIC INTEGRITY (TEST004A) > B. overall_confidence absent -> remains absent/null
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_policy_evaluations" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-persistence-semantic-integrity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: PERSISTENCE SEMANTIC INTEGRITY (TEST004A) > C. overall_cohesion_score exists but overall_confidence absent -> MUST NOT become overallConfidence
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_analyses" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-persistence-semantic-integrity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: PERSISTENCE SEMANTIC INTEGRITY (TEST004A) > C. overall_cohesion_score exists but overall_confidence absent -> MUST NOT become overallConfidence
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_recommendations" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-persistence-semantic-integrity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: PERSISTENCE SEMANTIC INTEGRITY (TEST004A) > C. overall_cohesion_score exists but overall_confidence absent -> MUST NOT become overallConfidence
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_decisions" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-persistence-semantic-integrity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: PERSISTENCE SEMANTIC INTEGRITY (TEST004A) > C. overall_cohesion_score exists but overall_confidence absent -> MUST NOT become overallConfidence
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_commitments" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-persistence-semantic-integrity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: PERSISTENCE SEMANTIC INTEGRITY (TEST004A) > C. overall_cohesion_score exists but overall_confidence absent -> MUST NOT become overallConfidence
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_actions" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-persistence-semantic-integrity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: PERSISTENCE SEMANTIC INTEGRITY (TEST004A) > C. overall_cohesion_score exists but overall_confidence absent -> MUST NOT become overallConfidence
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_outcomes" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-persistence-semantic-integrity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: PERSISTENCE SEMANTIC INTEGRITY (TEST004A) > C. overall_cohesion_score exists but overall_confidence absent -> MUST NOT become overallConfidence
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_feedback" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-persistence-semantic-integrity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: PERSISTENCE SEMANTIC INTEGRITY (TEST004A) > C. overall_cohesion_score exists but overall_confidence absent -> MUST NOT become overallConfidence
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_attributions" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-persistence-semantic-integrity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: PERSISTENCE SEMANTIC INTEGRITY (TEST004A) > C. overall_cohesion_score exists but overall_confidence absent -> MUST NOT become overallConfidence
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_policy_versions" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-persistence-semantic-integrity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: PERSISTENCE SEMANTIC INTEGRITY (TEST004A) > C. overall_cohesion_score exists but overall_confidence absent -> MUST NOT become overallConfidence
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_policy_families" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-persistence-semantic-integrity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: PERSISTENCE SEMANTIC INTEGRITY (TEST004A) > C. overall_cohesion_score exists but overall_confidence absent -> MUST NOT become overallConfidence
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_policy_promotions" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-persistence-semantic-integrity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: PERSISTENCE SEMANTIC INTEGRITY (TEST004A) > C. overall_cohesion_score exists but overall_confidence absent -> MUST NOT become overallConfidence
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_learning_proposals" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-persistence-semantic-integrity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: PERSISTENCE SEMANTIC INTEGRITY (TEST004A) > C. overall_cohesion_score exists but overall_confidence absent -> MUST NOT become overallConfidence
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_policy_evaluations" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-persistence-semantic-integrity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: PERSISTENCE SEMANTIC INTEGRITY (TEST004A) > D. missing metric -> MUST NOT become 0
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_analyses" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-persistence-semantic-integrity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: PERSISTENCE SEMANTIC INTEGRITY (TEST004A) > D. missing metric -> MUST NOT become 0
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_recommendations" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-persistence-semantic-integrity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: PERSISTENCE SEMANTIC INTEGRITY (TEST004A) > D. missing metric -> MUST NOT become 0
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_decisions" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-persistence-semantic-integrity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: PERSISTENCE SEMANTIC INTEGRITY (TEST004A) > D. missing metric -> MUST NOT become 0
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_commitments" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-persistence-semantic-integrity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: PERSISTENCE SEMANTIC INTEGRITY (TEST004A) > D. missing metric -> MUST NOT become 0
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_actions" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-persistence-semantic-integrity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: PERSISTENCE SEMANTIC INTEGRITY (TEST004A) > D. missing metric -> MUST NOT become 0
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_outcomes" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-persistence-semantic-integrity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: PERSISTENCE SEMANTIC INTEGRITY (TEST004A) > D. missing metric -> MUST NOT become 0
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_feedback" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-persistence-semantic-integrity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: PERSISTENCE SEMANTIC INTEGRITY (TEST004A) > D. missing metric -> MUST NOT become 0
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_attributions" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-persistence-semantic-integrity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: PERSISTENCE SEMANTIC INTEGRITY (TEST004A) > D. missing metric -> MUST NOT become 0
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_policy_versions" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-persistence-semantic-integrity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: PERSISTENCE SEMANTIC INTEGRITY (TEST004A) > D. missing metric -> MUST NOT become 0
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_policy_families" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-persistence-semantic-integrity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: PERSISTENCE SEMANTIC INTEGRITY (TEST004A) > D. missing metric -> MUST NOT become 0
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_policy_promotions" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-persistence-semantic-integrity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: PERSISTENCE SEMANTIC INTEGRITY (TEST004A) > D. missing metric -> MUST NOT become 0
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_learning_proposals" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-persistence-semantic-integrity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: PERSISTENCE SEMANTIC INTEGRITY (TEST004A) > D. missing metric -> MUST NOT become 0
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_policy_evaluations" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-persistence-semantic-integrity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: PERSISTENCE SEMANTIC INTEGRITY (TEST004A) > E. save -> load -> canonical payload deep-equal
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_analyses" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-persistence-semantic-integrity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: PERSISTENCE SEMANTIC INTEGRITY (TEST004A) > E. save -> load -> canonical payload deep-equal
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_recommendations" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-persistence-semantic-integrity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: PERSISTENCE SEMANTIC INTEGRITY (TEST004A) > E. save -> load -> canonical payload deep-equal
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_decisions" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-persistence-semantic-integrity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: PERSISTENCE SEMANTIC INTEGRITY (TEST004A) > E. save -> load -> canonical payload deep-equal
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_commitments" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-persistence-semantic-integrity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: PERSISTENCE SEMANTIC INTEGRITY (TEST004A) > E. save -> load -> canonical payload deep-equal
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_actions" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-persistence-semantic-integrity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: PERSISTENCE SEMANTIC INTEGRITY (TEST004A) > E. save -> load -> canonical payload deep-equal
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_outcomes" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-persistence-semantic-integrity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: PERSISTENCE SEMANTIC INTEGRITY (TEST004A) > E. save -> load -> canonical payload deep-equal
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_feedback" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-persistence-semantic-integrity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: PERSISTENCE SEMANTIC INTEGRITY (TEST004A) > E. save -> load -> canonical payload deep-equal
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_attributions" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-persistence-semantic-integrity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: PERSISTENCE SEMANTIC INTEGRITY (TEST004A) > E. save -> load -> canonical payload deep-equal
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_policy_versions" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-persistence-semantic-integrity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: PERSISTENCE SEMANTIC INTEGRITY (TEST004A) > E. save -> load -> canonical payload deep-equal
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_policy_families" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-persistence-semantic-integrity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: PERSISTENCE SEMANTIC INTEGRITY (TEST004A) > E. save -> load -> canonical payload deep-equal
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_policy_promotions" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-persistence-semantic-integrity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: PERSISTENCE SEMANTIC INTEGRITY (TEST004A) > E. save -> load -> canonical payload deep-equal
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_learning_proposals" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-persistence-semantic-integrity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: PERSISTENCE SEMANTIC INTEGRITY (TEST004A) > E. save -> load -> canonical payload deep-equal
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_policy_evaluations" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+ ✓ test/career-persistence-semantic-integrity.test.ts (5 tests) 399ms
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > A. V1 active -> promote V2 -> head = V2 -> promotion record exists
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_analyses" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > A. V1 active -> promote V2 -> head = V2 -> promotion record exists
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_recommendations" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > A. V1 active -> promote V2 -> head = V2 -> promotion record exists
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_decisions" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > A. V1 active -> promote V2 -> head = V2 -> promotion record exists
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_commitments" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > A. V1 active -> promote V2 -> head = V2 -> promotion record exists
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_actions" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > A. V1 active -> promote V2 -> head = V2 -> promotion record exists
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_outcomes" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > A. V1 active -> promote V2 -> head = V2 -> promotion record exists
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_feedback" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > A. V1 active -> promote V2 -> head = V2 -> promotion record exists
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_attributions" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > A. V1 active -> promote V2 -> head = V2 -> promotion record exists
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_policy_versions" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > A. V1 active -> promote V2 -> head = V2 -> promotion record exists
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_policy_families" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > A. V1 active -> promote V2 -> head = V2 -> promotion record exists
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_policy_promotions" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > A. V1 active -> promote V2 -> head = V2 -> promotion record exists
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_learning_proposals" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > A. V1 active -> promote V2 -> head = V2 -> promotion record exists
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_policy_evaluations" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-lifecycle-postgres-persistence.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: IMMUTABLE LIFECYCLE PERSISTENCE (TEST004B)
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_analyses" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-lifecycle-postgres-persistence.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: IMMUTABLE LIFECYCLE PERSISTENCE (TEST004B)
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_recommendations" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-lifecycle-postgres-persistence.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: IMMUTABLE LIFECYCLE PERSISTENCE (TEST004B)
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_decisions" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-lifecycle-postgres-persistence.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: IMMUTABLE LIFECYCLE PERSISTENCE (TEST004B)
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_commitments" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-lifecycle-postgres-persistence.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: IMMUTABLE LIFECYCLE PERSISTENCE (TEST004B)
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_actions" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-lifecycle-postgres-persistence.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: IMMUTABLE LIFECYCLE PERSISTENCE (TEST004B)
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_outcomes" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-lifecycle-postgres-persistence.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: IMMUTABLE LIFECYCLE PERSISTENCE (TEST004B)
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_feedback" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-lifecycle-postgres-persistence.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: IMMUTABLE LIFECYCLE PERSISTENCE (TEST004B)
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_attributions" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-lifecycle-postgres-persistence.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: IMMUTABLE LIFECYCLE PERSISTENCE (TEST004B)
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_policy_versions" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-lifecycle-postgres-persistence.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: IMMUTABLE LIFECYCLE PERSISTENCE (TEST004B)
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_policy_families" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-lifecycle-postgres-persistence.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: IMMUTABLE LIFECYCLE PERSISTENCE (TEST004B)
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_policy_promotions" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-lifecycle-postgres-persistence.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: IMMUTABLE LIFECYCLE PERSISTENCE (TEST004B)
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_learning_proposals" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-lifecycle-postgres-persistence.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: IMMUTABLE LIFECYCLE PERSISTENCE (TEST004B)
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_policy_evaluations" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-lifecycle-recovery.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: RESTART & LINEAGE RECONSTRUCTION (TEST004C) > A/B/C/K. complete persisted lifecycle -> exact reconstruction with all IDs/timestamps preserved
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_analyses" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-lifecycle-recovery.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: RESTART & LINEAGE RECONSTRUCTION (TEST004C) > A/B/C/K. complete persisted lifecycle -> exact reconstruction with all IDs/timestamps preserved
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_recommendations" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-lifecycle-recovery.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: RESTART & LINEAGE RECONSTRUCTION (TEST004C) > A/B/C/K. complete persisted lifecycle -> exact reconstruction with all IDs/timestamps preserved
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_decisions" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-lifecycle-recovery.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: RESTART & LINEAGE RECONSTRUCTION (TEST004C) > A/B/C/K. complete persisted lifecycle -> exact reconstruction with all IDs/timestamps preserved
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_commitments" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-lifecycle-recovery.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: RESTART & LINEAGE RECONSTRUCTION (TEST004C) > A/B/C/K. complete persisted lifecycle -> exact reconstruction with all IDs/timestamps preserved
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_actions" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-lifecycle-recovery.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: RESTART & LINEAGE RECONSTRUCTION (TEST004C) > A/B/C/K. complete persisted lifecycle -> exact reconstruction with all IDs/timestamps preserved
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_outcomes" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-lifecycle-recovery.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: RESTART & LINEAGE RECONSTRUCTION (TEST004C) > A/B/C/K. complete persisted lifecycle -> exact reconstruction with all IDs/timestamps preserved
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_feedback" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-lifecycle-recovery.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: RESTART & LINEAGE RECONSTRUCTION (TEST004C) > A/B/C/K. complete persisted lifecycle -> exact reconstruction with all IDs/timestamps preserved
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_attributions" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-lifecycle-recovery.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: RESTART & LINEAGE RECONSTRUCTION (TEST004C) > A/B/C/K. complete persisted lifecycle -> exact reconstruction with all IDs/timestamps preserved
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_policy_versions" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-lifecycle-recovery.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: RESTART & LINEAGE RECONSTRUCTION (TEST004C) > A/B/C/K. complete persisted lifecycle -> exact reconstruction with all IDs/timestamps preserved
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_policy_families" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-lifecycle-recovery.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: RESTART & LINEAGE RECONSTRUCTION (TEST004C) > A/B/C/K. complete persisted lifecycle -> exact reconstruction with all IDs/timestamps preserved
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_policy_promotions" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-lifecycle-recovery.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: RESTART & LINEAGE RECONSTRUCTION (TEST004C) > A/B/C/K. complete persisted lifecycle -> exact reconstruction with all IDs/timestamps preserved
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_learning_proposals" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-lifecycle-recovery.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: RESTART & LINEAGE RECONSTRUCTION (TEST004C) > A/B/C/K. complete persisted lifecycle -> exact reconstruction with all IDs/timestamps preserved
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_policy_evaluations" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > B. V1 historical PolicyVersion unchanged
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_analyses" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > B. V1 historical PolicyVersion unchanged
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_recommendations" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > B. V1 historical PolicyVersion unchanged
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_decisions" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > B. V1 historical PolicyVersion unchanged
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_commitments" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > B. V1 historical PolicyVersion unchanged
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_actions" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > B. V1 historical PolicyVersion unchanged
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_outcomes" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > B. V1 historical PolicyVersion unchanged
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_feedback" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > B. V1 historical PolicyVersion unchanged
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_attributions" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > B. V1 historical PolicyVersion unchanged
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_policy_versions" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > B. V1 historical PolicyVersion unchanged
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_policy_families" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > B. V1 historical PolicyVersion unchanged
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_policy_promotions" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > B. V1 historical PolicyVersion unchanged
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_learning_proposals" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > B. V1 historical PolicyVersion unchanged
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_policy_evaluations" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-lifecycle-recovery.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: RESTART & LINEAGE RECONSTRUCTION (TEST004C) > D. Recommendation policy binding preserved
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_analyses" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-lifecycle-recovery.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: RESTART & LINEAGE RECONSTRUCTION (TEST004C) > D. Recommendation policy binding preserved
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_recommendations" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-lifecycle-recovery.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: RESTART & LINEAGE RECONSTRUCTION (TEST004C) > D. Recommendation policy binding preserved
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_decisions" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-lifecycle-recovery.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: RESTART & LINEAGE RECONSTRUCTION (TEST004C) > D. Recommendation policy binding preserved
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_commitments" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-lifecycle-recovery.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: RESTART & LINEAGE RECONSTRUCTION (TEST004C) > D. Recommendation policy binding preserved
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_actions" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-lifecycle-recovery.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: RESTART & LINEAGE RECONSTRUCTION (TEST004C) > D. Recommendation policy binding preserved
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_outcomes" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-lifecycle-recovery.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: RESTART & LINEAGE RECONSTRUCTION (TEST004C) > D. Recommendation policy binding preserved
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_feedback" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-lifecycle-recovery.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: RESTART & LINEAGE RECONSTRUCTION (TEST004C) > D. Recommendation policy binding preserved
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_attributions" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-lifecycle-recovery.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: RESTART & LINEAGE RECONSTRUCTION (TEST004C) > D. Recommendation policy binding preserved
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_policy_versions" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-lifecycle-recovery.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: RESTART & LINEAGE RECONSTRUCTION (TEST004C) > D. Recommendation policy binding preserved
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_policy_families" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-lifecycle-recovery.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: RESTART & LINEAGE RECONSTRUCTION (TEST004C) > D. Recommendation policy binding preserved
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_policy_promotions" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-lifecycle-recovery.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: RESTART & LINEAGE RECONSTRUCTION (TEST004C) > D. Recommendation policy binding preserved
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_learning_proposals" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-lifecycle-recovery.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: RESTART & LINEAGE RECONSTRUCTION (TEST004C) > D. Recommendation policy binding preserved
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_policy_evaluations" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > E. promotion without actor -> FAIL
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_analyses" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > E. promotion without actor -> FAIL
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_recommendations" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > E. promotion without actor -> FAIL
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_decisions" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > E. promotion without actor -> FAIL
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_commitments" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > E. promotion without actor -> FAIL
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_actions" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > E. promotion without actor -> FAIL
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_outcomes" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > E. promotion without actor -> FAIL
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_feedback" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > E. promotion without actor -> FAIL
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_attributions" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > E. promotion without actor -> FAIL
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_policy_versions" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > E. promotion without actor -> FAIL
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_policy_families" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > E. promotion without actor -> FAIL
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_policy_promotions" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > E. promotion without actor -> FAIL
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_learning_proposals" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > E. promotion without actor -> FAIL
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_policy_evaluations" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-lifecycle-recovery.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: RESTART & LINEAGE RECONSTRUCTION (TEST004C) > E. Evidence -> Document -> Source provenance preserved
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_analyses" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-lifecycle-recovery.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: RESTART & LINEAGE RECONSTRUCTION (TEST004C) > E. Evidence -> Document -> Source provenance preserved
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_recommendations" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-lifecycle-recovery.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: RESTART & LINEAGE RECONSTRUCTION (TEST004C) > E. Evidence -> Document -> Source provenance preserved
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_decisions" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-lifecycle-recovery.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: RESTART & LINEAGE RECONSTRUCTION (TEST004C) > E. Evidence -> Document -> Source provenance preserved
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_commitments" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-lifecycle-recovery.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: RESTART & LINEAGE RECONSTRUCTION (TEST004C) > E. Evidence -> Document -> Source provenance preserved
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_actions" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-lifecycle-recovery.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: RESTART & LINEAGE RECONSTRUCTION (TEST004C) > E. Evidence -> Document -> Source provenance preserved
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_outcomes" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-lifecycle-recovery.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: RESTART & LINEAGE RECONSTRUCTION (TEST004C) > E. Evidence -> Document -> Source provenance preserved
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_feedback" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-lifecycle-recovery.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: RESTART & LINEAGE RECONSTRUCTION (TEST004C) > E. Evidence -> Document -> Source provenance preserved
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_attributions" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-lifecycle-recovery.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: RESTART & LINEAGE RECONSTRUCTION (TEST004C) > E. Evidence -> Document -> Source provenance preserved
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_policy_versions" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-lifecycle-recovery.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: RESTART & LINEAGE RECONSTRUCTION (TEST004C) > E. Evidence -> Document -> Source provenance preserved
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_policy_families" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-lifecycle-recovery.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: RESTART & LINEAGE RECONSTRUCTION (TEST004C) > E. Evidence -> Document -> Source provenance preserved
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_policy_promotions" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-lifecycle-recovery.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: RESTART & LINEAGE RECONSTRUCTION (TEST004C) > E. Evidence -> Document -> Source provenance preserved
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_learning_proposals" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-lifecycle-recovery.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: RESTART & LINEAGE RECONSTRUCTION (TEST004C) > E. Evidence -> Document -> Source provenance preserved
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_policy_evaluations" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+ ✓ test/career-components.test.tsx (5 tests) 121ms
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > F. unknown candidate policy -> FAIL
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_analyses" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > F. unknown candidate policy -> FAIL
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_recommendations" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-lifecycle-recovery.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: RESTART & LINEAGE RECONSTRUCTION (TEST004C) > F. missing parent artifact -> ERR_LIFECYCLE_RECOVERY_BROKEN_LINEAGE
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_analyses" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-lifecycle-recovery.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: RESTART & LINEAGE RECONSTRUCTION (TEST004C) > F. missing parent artifact -> ERR_LIFECYCLE_RECOVERY_BROKEN_LINEAGE
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_recommendations" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-lifecycle-recovery.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: RESTART & LINEAGE RECONSTRUCTION (TEST004C) > F. missing parent artifact -> ERR_LIFECYCLE_RECOVERY_BROKEN_LINEAGE
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_decisions" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > F. unknown candidate policy -> FAIL
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_decisions" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > F. unknown candidate policy -> FAIL
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_commitments" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > F. unknown candidate policy -> FAIL
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_actions" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > F. unknown candidate policy -> FAIL
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_outcomes" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-lifecycle-recovery.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: RESTART & LINEAGE RECONSTRUCTION (TEST004C) > F. missing parent artifact -> ERR_LIFECYCLE_RECOVERY_BROKEN_LINEAGE
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_commitments" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-lifecycle-recovery.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: RESTART & LINEAGE RECONSTRUCTION (TEST004C) > F. missing parent artifact -> ERR_LIFECYCLE_RECOVERY_BROKEN_LINEAGE
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_actions" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-lifecycle-recovery.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: RESTART & LINEAGE RECONSTRUCTION (TEST004C) > F. missing parent artifact -> ERR_LIFECYCLE_RECOVERY_BROKEN_LINEAGE
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_outcomes" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-lifecycle-recovery.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: RESTART & LINEAGE RECONSTRUCTION (TEST004C) > F. missing parent artifact -> ERR_LIFECYCLE_RECOVERY_BROKEN_LINEAGE
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_feedback" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-lifecycle-recovery.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: RESTART & LINEAGE RECONSTRUCTION (TEST004C) > F. missing parent artifact -> ERR_LIFECYCLE_RECOVERY_BROKEN_LINEAGE
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_attributions" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > F. unknown candidate policy -> FAIL
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_feedback" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > F. unknown candidate policy -> FAIL
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_attributions" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > F. unknown candidate policy -> FAIL
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_policy_versions" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-lifecycle-recovery.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: RESTART & LINEAGE RECONSTRUCTION (TEST004C) > F. missing parent artifact -> ERR_LIFECYCLE_RECOVERY_BROKEN_LINEAGE
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_policy_versions" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-lifecycle-recovery.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: RESTART & LINEAGE RECONSTRUCTION (TEST004C) > F. missing parent artifact -> ERR_LIFECYCLE_RECOVERY_BROKEN_LINEAGE
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_policy_families" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-lifecycle-recovery.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: RESTART & LINEAGE RECONSTRUCTION (TEST004C) > F. missing parent artifact -> ERR_LIFECYCLE_RECOVERY_BROKEN_LINEAGE
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_policy_promotions" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-lifecycle-recovery.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: RESTART & LINEAGE RECONSTRUCTION (TEST004C) > F. missing parent artifact -> ERR_LIFECYCLE_RECOVERY_BROKEN_LINEAGE
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_learning_proposals" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-lifecycle-recovery.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: RESTART & LINEAGE RECONSTRUCTION (TEST004C) > F. missing parent artifact -> ERR_LIFECYCLE_RECOVERY_BROKEN_LINEAGE
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_policy_evaluations" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > F. unknown candidate policy -> FAIL
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_policy_families" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > F. unknown candidate policy -> FAIL
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_policy_promotions" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > F. unknown candidate policy -> FAIL
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_learning_proposals" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > F. unknown candidate policy -> FAIL
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_policy_evaluations" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > G. policy from wrong family -> FAIL
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_analyses" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > G. policy from wrong family -> FAIL
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_recommendations" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > G. policy from wrong family -> FAIL
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_decisions" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > G. policy from wrong family -> FAIL
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_commitments" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > G. policy from wrong family -> FAIL
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_actions" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > G. policy from wrong family -> FAIL
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_outcomes" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > G. policy from wrong family -> FAIL
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_feedback" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-lifecycle-recovery.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: RESTART & LINEAGE RECONSTRUCTION (TEST004C) > G. tampered JSONB -> ERR_PERSISTED_ARTIFACT_INTEGRITY
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_analyses" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-lifecycle-recovery.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: RESTART & LINEAGE RECONSTRUCTION (TEST004C) > G. tampered JSONB -> ERR_PERSISTED_ARTIFACT_INTEGRITY
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_recommendations" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-lifecycle-recovery.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: RESTART & LINEAGE RECONSTRUCTION (TEST004C) > G. tampered JSONB -> ERR_PERSISTED_ARTIFACT_INTEGRITY
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_decisions" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-lifecycle-recovery.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: RESTART & LINEAGE RECONSTRUCTION (TEST004C) > G. tampered JSONB -> ERR_PERSISTED_ARTIFACT_INTEGRITY
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_commitments" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-lifecycle-recovery.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: RESTART & LINEAGE RECONSTRUCTION (TEST004C) > G. tampered JSONB -> ERR_PERSISTED_ARTIFACT_INTEGRITY
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_actions" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-lifecycle-recovery.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: RESTART & LINEAGE RECONSTRUCTION (TEST004C) > G. tampered JSONB -> ERR_PERSISTED_ARTIFACT_INTEGRITY
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_outcomes" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-lifecycle-recovery.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: RESTART & LINEAGE RECONSTRUCTION (TEST004C) > G. tampered JSONB -> ERR_PERSISTED_ARTIFACT_INTEGRITY
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_feedback" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > G. policy from wrong family -> FAIL
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_attributions" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > G. policy from wrong family -> FAIL
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_policy_versions" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > G. policy from wrong family -> FAIL
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_policy_families" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-lifecycle-recovery.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: RESTART & LINEAGE RECONSTRUCTION (TEST004C) > G. tampered JSONB -> ERR_PERSISTED_ARTIFACT_INTEGRITY
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_attributions" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-lifecycle-recovery.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: RESTART & LINEAGE RECONSTRUCTION (TEST004C) > G. tampered JSONB -> ERR_PERSISTED_ARTIFACT_INTEGRITY
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_policy_versions" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-lifecycle-recovery.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: RESTART & LINEAGE RECONSTRUCTION (TEST004C) > G. tampered JSONB -> ERR_PERSISTED_ARTIFACT_INTEGRITY
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_policy_families" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-lifecycle-recovery.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: RESTART & LINEAGE RECONSTRUCTION (TEST004C) > G. tampered JSONB -> ERR_PERSISTED_ARTIFACT_INTEGRITY
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_policy_promotions" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-lifecycle-recovery.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: RESTART & LINEAGE RECONSTRUCTION (TEST004C) > G. tampered JSONB -> ERR_PERSISTED_ARTIFACT_INTEGRITY
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_learning_proposals" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-lifecycle-recovery.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: RESTART & LINEAGE RECONSTRUCTION (TEST004C) > G. tampered JSONB -> ERR_PERSISTED_ARTIFACT_INTEGRITY
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_policy_evaluations" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > G. policy from wrong family -> FAIL
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_policy_promotions" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > G. policy from wrong family -> FAIL
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_learning_proposals" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > G. policy from wrong family -> FAIL
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_policy_evaluations" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-lifecycle-recovery.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: RESTART & LINEAGE RECONSTRUCTION (TEST004C) > H/J. zero LLM calls during recovery + empty caches
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_analyses" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-lifecycle-recovery.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: RESTART & LINEAGE RECONSTRUCTION (TEST004C) > H/J. zero LLM calls during recovery + empty caches
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_recommendations" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-lifecycle-recovery.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: RESTART & LINEAGE RECONSTRUCTION (TEST004C) > H/J. zero LLM calls during recovery + empty caches
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_decisions" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-lifecycle-recovery.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: RESTART & LINEAGE RECONSTRUCTION (TEST004C) > H/J. zero LLM calls during recovery + empty caches
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_commitments" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-lifecycle-recovery.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: RESTART & LINEAGE RECONSTRUCTION (TEST004C) > H/J. zero LLM calls during recovery + empty caches
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_actions" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-lifecycle-recovery.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: RESTART & LINEAGE RECONSTRUCTION (TEST004C) > H/J. zero LLM calls during recovery + empty caches
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_outcomes" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-lifecycle-recovery.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: RESTART & LINEAGE RECONSTRUCTION (TEST004C) > H/J. zero LLM calls during recovery + empty caches
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_feedback" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-lifecycle-recovery.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: RESTART & LINEAGE RECONSTRUCTION (TEST004C) > H/J. zero LLM calls during recovery + empty caches
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_attributions" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-lifecycle-recovery.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: RESTART & LINEAGE RECONSTRUCTION (TEST004C) > H/J. zero LLM calls during recovery + empty caches
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_policy_versions" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-lifecycle-recovery.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: RESTART & LINEAGE RECONSTRUCTION (TEST004C) > H/J. zero LLM calls during recovery + empty caches
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_policy_families" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-lifecycle-recovery.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: RESTART & LINEAGE RECONSTRUCTION (TEST004C) > H/J. zero LLM calls during recovery + empty caches
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_policy_promotions" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-lifecycle-recovery.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: RESTART & LINEAGE RECONSTRUCTION (TEST004C) > H/J. zero LLM calls during recovery + empty caches
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_learning_proposals" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-lifecycle-recovery.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: RESTART & LINEAGE RECONSTRUCTION (TEST004C) > H/J. zero LLM calls during recovery + empty caches
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_policy_evaluations" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > H. expected active = V1 but head already = V2 -> ERR_POLICY_ACTIVATION_CONFLICT
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_analyses" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > H. expected active = V1 but head already = V2 -> ERR_POLICY_ACTIVATION_CONFLICT
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_recommendations" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > H. expected active = V1 but head already = V2 -> ERR_POLICY_ACTIVATION_CONFLICT
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_decisions" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > H. expected active = V1 but head already = V2 -> ERR_POLICY_ACTIVATION_CONFLICT
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_commitments" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > H. expected active = V1 but head already = V2 -> ERR_POLICY_ACTIVATION_CONFLICT
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_actions" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > H. expected active = V1 but head already = V2 -> ERR_POLICY_ACTIVATION_CONFLICT
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_outcomes" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > H. expected active = V1 but head already = V2 -> ERR_POLICY_ACTIVATION_CONFLICT
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_feedback" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > H. expected active = V1 but head already = V2 -> ERR_POLICY_ACTIVATION_CONFLICT
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_attributions" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > H. expected active = V1 but head already = V2 -> ERR_POLICY_ACTIVATION_CONFLICT
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_policy_versions" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > H. expected active = V1 but head already = V2 -> ERR_POLICY_ACTIVATION_CONFLICT
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_policy_families" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > H. expected active = V1 but head already = V2 -> ERR_POLICY_ACTIVATION_CONFLICT
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_policy_promotions" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > H. expected active = V1 but head already = V2 -> ERR_POLICY_ACTIVATION_CONFLICT
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_learning_proposals" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+ ❯ test/career-lifecycle-recovery.test.ts (6 tests | 5 failed) 405ms
+   × CONDYN Career Analysis Protocol v4.0 - PHASE 4: RESTART & LINEAGE RECONSTRUCTION (TEST004C) > A/B/C/K. complete persisted lifecycle -> exact reconstruction with all IDs/timestamps preserved 202ms
+     → ERR_UNKNOWN_FEEDBACK
+   × CONDYN Career Analysis Protocol v4.0 - PHASE 4: RESTART & LINEAGE RECONSTRUCTION (TEST004C) > D. Recommendation policy binding preserved 51ms
+     → ERR_UNKNOWN_DECISION
+   × CONDYN Career Analysis Protocol v4.0 - PHASE 4: RESTART & LINEAGE RECONSTRUCTION (TEST004C) > E. Evidence -> Document -> Source provenance preserved 61ms
+     → ERR_UNKNOWN_DECISION
+   ✓ CONDYN Career Analysis Protocol v4.0 - PHASE 4: RESTART & LINEAGE RECONSTRUCTION (TEST004C) > F. missing parent artifact -> ERR_LIFECYCLE_RECOVERY_BROKEN_LINEAGE 40ms
+   × CONDYN Career Analysis Protocol v4.0 - PHASE 4: RESTART & LINEAGE RECONSTRUCTION (TEST004C) > G. tampered JSONB -> ERR_PERSISTED_ARTIFACT_INTEGRITY 23ms
+     → Failed query: DELETE FROM career_decisions
+params: 
+   × CONDYN Career Analysis Protocol v4.0 - PHASE 4: RESTART & LINEAGE RECONSTRUCTION (TEST004C) > H/J. zero LLM calls during recovery + empty caches 23ms
+     → Failed query: DELETE FROM career_feedback
+params: 
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > H. expected active = V1 but head already = V2 -> ERR_POLICY_ACTIVATION_CONFLICT
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_policy_evaluations" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+ ❯ test/career-lifecycle-postgres-persistence.test.ts (14 tests | 1 failed) 524ms
+   ✓ CONDYN Career Analysis Protocol v4.0 - PHASE 4: IMMUTABLE LIFECYCLE PERSISTENCE (TEST004B) > A. Recommendation save/load -> deepEqual 60ms
+   ✓ CONDYN Career Analysis Protocol v4.0 - PHASE 4: IMMUTABLE LIFECYCLE PERSISTENCE (TEST004B) > B. Decision save/load -> recommendation reference preserved 33ms
+   ✓ CONDYN Career Analysis Protocol v4.0 - PHASE 4: IMMUTABLE LIFECYCLE PERSISTENCE (TEST004B) > C. Decision with unknown Recommendation -> FAIL 25ms
+   ✓ CONDYN Career Analysis Protocol v4.0 - PHASE 4: IMMUTABLE LIFECYCLE PERSISTENCE (TEST004B) > D. Commitment with unknown Decision -> FAIL 32ms
+   × CONDYN Career Analysis Protocol v4.0 - PHASE 4: IMMUTABLE LIFECYCLE PERSISTENCE (TEST004B) > E. Action with unknown Commitment -> FAIL 36ms
+     → Failed query: delete from "career_recommendations"
+params: 
+   ✓ CONDYN Career Analysis Protocol v4.0 - PHASE 4: IMMUTABLE LIFECYCLE PERSISTENCE (TEST004B) > F. Outcome with unknown Action -> FAIL 28ms
+   ✓ CONDYN Career Analysis Protocol v4.0 - PHASE 4: IMMUTABLE LIFECYCLE PERSISTENCE (TEST004B) > G. Feedback with unknown Outcome -> FAIL 20ms
+   ✓ CONDYN Career Analysis Protocol v4.0 - PHASE 4: IMMUTABLE LIFECYCLE PERSISTENCE (TEST004B) > H. Attribution with unknown Feedback -> FAIL 14ms
+   ✓ CONDYN Career Analysis Protocol v4.0 - PHASE 4: IMMUTABLE LIFECYCLE PERSISTENCE (TEST004B) > I. same ID + identical payload -> IDEMPOTENT 24ms
+   ✓ CONDYN Career Analysis Protocol v4.0 - PHASE 4: IMMUTABLE LIFECYCLE PERSISTENCE (TEST004B) > J. same ID + reordered object keys -> IDEMPOTENT 23ms
+   ✓ CONDYN Career Analysis Protocol v4.0 - PHASE 4: IMMUTABLE LIFECYCLE PERSISTENCE (TEST004B) > K. same ID + modified semantic payload -> ERR_IMMUTABLE_RECORD_CONFLICT 20ms
+   ✓ CONDYN Career Analysis Protocol v4.0 - PHASE 4: IMMUTABLE LIFECYCLE PERSISTENCE (TEST004B) > L. save V1 Policy -> save V2 Policy -> V1 unchanged 25ms
+   ✓ CONDYN Career Analysis Protocol v4.0 - PHASE 4: IMMUTABLE LIFECYCLE PERSISTENCE (TEST004B) > M. Decision recommendationSnapshot differs from referenced Recommendation -> FAIL 24ms
+   ✓ CONDYN Career Analysis Protocol v4.0 - PHASE 4: IMMUTABLE LIFECYCLE PERSISTENCE (TEST004B) > N. save complete lifecycle -> reload each artifact -> exact lineage reconstructable 60ms
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > I. two concurrent promotions from same revision -> exactly one succeeds
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_analyses" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > I. two concurrent promotions from same revision -> exactly one succeeds
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_recommendations" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > I. two concurrent promotions from same revision -> exactly one succeeds
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_decisions" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > I. two concurrent promotions from same revision -> exactly one succeeds
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_commitments" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > I. two concurrent promotions from same revision -> exactly one succeeds
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_actions" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > I. two concurrent promotions from same revision -> exactly one succeeds
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_outcomes" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > I. two concurrent promotions from same revision -> exactly one succeeds
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_feedback" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > I. two concurrent promotions from same revision -> exactly one succeeds
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_attributions" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > I. two concurrent promotions from same revision -> exactly one succeeds
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_policy_versions" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > I. two concurrent promotions from same revision -> exactly one succeeds
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_policy_families" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > I. two concurrent promotions from same revision -> exactly one succeeds
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_policy_promotions" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > I. two concurrent promotions from same revision -> exactly one succeeds
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_learning_proposals" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > I. two concurrent promotions from same revision -> exactly one succeeds
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_policy_evaluations" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > M. same promotion request retry -> idempotent
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_analyses" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > M. same promotion request retry -> idempotent
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_recommendations" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > M. same promotion request retry -> idempotent
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_decisions" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > M. same promotion request retry -> idempotent
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_commitments" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > M. same promotion request retry -> idempotent
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_actions" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > M. same promotion request retry -> idempotent
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_outcomes" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > M. same promotion request retry -> idempotent
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_feedback" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > M. same promotion request retry -> idempotent
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_attributions" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > M. same promotion request retry -> idempotent
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_policy_versions" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > M. same promotion request retry -> idempotent
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_policy_families" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > M. same promotion request retry -> idempotent
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_policy_promotions" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > M. same promotion request retry -> idempotent
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_learning_proposals" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+ ✓ test/career-multi-model-failover.test.tsx (4 tests) 152ms
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > M. same promotion request retry -> idempotent
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_policy_evaluations" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > N. same promotion ID conflicting payload -> FAIL
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_analyses" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > N. same promotion ID conflicting payload -> FAIL
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_recommendations" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > N. same promotion ID conflicting payload -> FAIL
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_decisions" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > N. same promotion ID conflicting payload -> FAIL
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_commitments" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > N. same promotion ID conflicting payload -> FAIL
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_actions" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > N. same promotion ID conflicting payload -> FAIL
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_outcomes" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > N. same promotion ID conflicting payload -> FAIL
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_feedback" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > N. same promotion ID conflicting payload -> FAIL
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_attributions" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > N. same promotion ID conflicting payload -> FAIL
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_policy_versions" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > N. same promotion ID conflicting payload -> FAIL
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_policy_families" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > N. same promotion ID conflicting payload -> FAIL
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_policy_promotions" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > N. same promotion ID conflicting payload -> FAIL
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_learning_proposals" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > N. same promotion ID conflicting payload -> FAIL
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_policy_evaluations" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > O. promotion in family A -> family B unchanged
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_analyses" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > O. promotion in family A -> family B unchanged
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_recommendations" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > O. promotion in family A -> family B unchanged
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_decisions" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > O. promotion in family A -> family B unchanged
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_commitments" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > O. promotion in family A -> family B unchanged
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_actions" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > O. promotion in family A -> family B unchanged
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_outcomes" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > O. promotion in family A -> family B unchanged
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_feedback" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > O. promotion in family A -> family B unchanged
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_attributions" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > O. promotion in family A -> family B unchanged
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_policy_versions" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > O. promotion in family A -> family B unchanged
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_policy_families" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > O. promotion in family A -> family B unchanged
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_policy_promotions" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > O. promotion in family A -> family B unchanged
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_learning_proposals" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > O. promotion in family A -> family B unchanged
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_policy_evaluations" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+ ✓ test/career-demo-e2e.test.tsx (5 tests) 234ms
+ ❯ test/career-policy-activation-atomicity.test.ts (10 tests | 3 failed) 1162ms
+   × CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > A. V1 active -> promote V2 -> head = V2 -> promotion record exists 411ms
+     → ERR_POLICY_NOT_FOUND: Candidate policy not found.
+   × CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > B. V1 historical PolicyVersion unchanged 44ms
+     → ERR_POLICY_NOT_FOUND: Candidate policy not found.
+   × CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > E. promotion without actor -> FAIL 95ms
+     → expected [Function] to throw error including 'ERR_POLICY_PROMOTION_MISSING_ACTOR' but got 'ERR_POLICY_NOT_FOUND: Candidate polic…'
+   ✓ CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > F. unknown candidate policy -> FAIL 37ms
+   ✓ CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > G. policy from wrong family -> FAIL 37ms
+   ✓ CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > H. expected active = V1 but head already = V2 -> ERR_POLICY_ACTIVATION_CONFLICT 101ms
+   ✓ CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > I. two concurrent promotions from same revision -> exactly one succeeds 158ms
+   ✓ CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > M. same promotion request retry -> idempotent 69ms
+   ✓ CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > N. same promotion ID conflicting payload -> FAIL 80ms
+   ✓ CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > O. promotion in family A -> family B unchanged 127ms
+stdout | test/career-postgres-repository.test.ts > CONDYN Career Analysis Protocol v1.0 - Step 10: PostgreSQL & Drizzle Persistence Layer
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_analyses" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-postgres-repository.test.ts > CONDYN Career Analysis Protocol v1.0 - Step 10: PostgreSQL & Drizzle Persistence Layer
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_recommendations" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-postgres-repository.test.ts > CONDYN Career Analysis Protocol v1.0 - Step 10: PostgreSQL & Drizzle Persistence Layer
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_decisions" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-postgres-repository.test.ts > CONDYN Career Analysis Protocol v1.0 - Step 10: PostgreSQL & Drizzle Persistence Layer
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_commitments" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-postgres-repository.test.ts > CONDYN Career Analysis Protocol v1.0 - Step 10: PostgreSQL & Drizzle Persistence Layer
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_actions" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-postgres-repository.test.ts > CONDYN Career Analysis Protocol v1.0 - Step 10: PostgreSQL & Drizzle Persistence Layer
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_outcomes" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-postgres-repository.test.ts > CONDYN Career Analysis Protocol v1.0 - Step 10: PostgreSQL & Drizzle Persistence Layer
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_feedback" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-postgres-repository.test.ts > CONDYN Career Analysis Protocol v1.0 - Step 10: PostgreSQL & Drizzle Persistence Layer
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_attributions" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-postgres-repository.test.ts > CONDYN Career Analysis Protocol v1.0 - Step 10: PostgreSQL & Drizzle Persistence Layer
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_policy_versions" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-postgres-repository.test.ts > CONDYN Career Analysis Protocol v1.0 - Step 10: PostgreSQL & Drizzle Persistence Layer
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_policy_families" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-postgres-repository.test.ts > CONDYN Career Analysis Protocol v1.0 - Step 10: PostgreSQL & Drizzle Persistence Layer
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_policy_promotions" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-postgres-repository.test.ts > CONDYN Career Analysis Protocol v1.0 - Step 10: PostgreSQL & Drizzle Persistence Layer
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_learning_proposals" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+stdout | test/career-postgres-repository.test.ts > CONDYN Career Analysis Protocol v1.0 - Step 10: PostgreSQL & Drizzle Persistence Layer
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "career_policy_evaluations" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '207',
+  routine: 'transformCreateStmt'
+}
+
+ ✓ test/career-demo-ui.test.tsx (4 tests) 168ms
+ ✓ test/career-postgres-repository.test.ts (5 tests) 237ms
+ ✓ test/career-system-codex-modal.test.tsx (4 tests) 54ms
+stderr | test/career-gemini-provider.test.ts > CONDYN Career Analysis Protocol v1.0 - Step 9: Gemini Inference Provider TDD > should cleanly encapsulate SDK and API errors into ERR_PROVIDER_FAILURE across cascade
+==================================================
+GEMINI REQUEST FAILURE
+MODEL: gemini-2.0-flash
+ATTEMPT: 1/4
+STEP: 0
+HTTP: UNKNOWN
+CODE: UNKNOWN
+STATUS: UNKNOWN
+MESSAGE: HTTP 429 Too Many Requests - Quota exceeded
+DETAILS: NONE
+
+EXACT INPUT TOKENS: UNKNOWN
+MODEL INPUT TOKEN LIMIT: UNKNOWN
+MODEL OUTPUT TOKEN LIMIT: UNKNOWN
+REQUESTED OUTPUT TOKENS: 65536
+INPUT + REQUESTED OUTPUT: UNKNOWN
+
+REQUEST:
+responseMimeType: application/json
+responseJsonSchema: YES
+schemaBytes: 5619
+schemaDepth: 12
+schemaProperties: 80
+schemaRefs: 8
+schemaDefs: 1
+schemaRootKeys: 5
+systemPromptChars: 31
+userPromptChars: 53
+maxOutputTokens: 65536
+temperature: 0.1
+==================================================
+
+stderr | test/career-gemini-provider.test.ts > CONDYN Career Analysis Protocol v1.0 - Step 9: Gemini Inference Provider TDD > should cleanly encapsulate SDK and API errors into ERR_PROVIDER_FAILURE across cascade
+==================================================
+GEMINI REQUEST FAILURE
+MODEL: gemini-2.5-flash
+ATTEMPT: 2/4
+STEP: 0
+HTTP: UNKNOWN
+CODE: UNKNOWN
+STATUS: UNKNOWN
+MESSAGE: HTTP 429 Too Many Requests - Quota exceeded
+DETAILS: NONE
+
+EXACT INPUT TOKENS: UNKNOWN
+MODEL INPUT TOKEN LIMIT: UNKNOWN
+MODEL OUTPUT TOKEN LIMIT: UNKNOWN
+REQUESTED OUTPUT TOKENS: 65536
+INPUT + REQUESTED OUTPUT: UNKNOWN
+
+REQUEST:
+responseMimeType: application/json
+responseJsonSchema: YES
+schemaBytes: 5619
+schemaDepth: 12
+schemaProperties: 80
+schemaRefs: 8
+schemaDefs: 1
+schemaRootKeys: 5
+systemPromptChars: 31
+userPromptChars: 53
+maxOutputTokens: 65536
+temperature: 0.1
+==================================================
+
+stderr | test/career-gemini-provider.test.ts > CONDYN Career Analysis Protocol v1.0 - Step 9: Gemini Inference Provider TDD > should cleanly encapsulate SDK and API errors into ERR_PROVIDER_FAILURE across cascade
+==================================================
+GEMINI REQUEST FAILURE
+MODEL: gemini-1.5-pro
+ATTEMPT: 3/4
+STEP: 0
+HTTP: UNKNOWN
+CODE: UNKNOWN
+STATUS: UNKNOWN
+MESSAGE: HTTP 429 Too Many Requests - Quota exceeded
+DETAILS: NONE
+
+EXACT INPUT TOKENS: UNKNOWN
+MODEL INPUT TOKEN LIMIT: UNKNOWN
+MODEL OUTPUT TOKEN LIMIT: UNKNOWN
+REQUESTED OUTPUT TOKENS: 65536
+INPUT + REQUESTED OUTPUT: UNKNOWN
+
+REQUEST:
+responseMimeType: application/json
+responseJsonSchema: YES
+schemaBytes: 5619
+schemaDepth: 12
+schemaProperties: 80
+schemaRefs: 8
+schemaDefs: 1
+schemaRootKeys: 5
+systemPromptChars: 31
+userPromptChars: 53
+maxOutputTokens: 65536
+temperature: 0.1
+==================================================
+
+stderr | test/career-gemini-provider.test.ts > CONDYN Career Analysis Protocol v1.0 - Step 9: Gemini Inference Provider TDD > should cleanly encapsulate SDK and API errors into ERR_PROVIDER_FAILURE across cascade
+==================================================
+GEMINI REQUEST FAILURE
+MODEL: gemini-1.5-flash
+ATTEMPT: 4/4
+STEP: 0
+HTTP: UNKNOWN
+CODE: UNKNOWN
+STATUS: UNKNOWN
+MESSAGE: HTTP 429 Too Many Requests - Quota exceeded
+DETAILS: NONE
+
+EXACT INPUT TOKENS: UNKNOWN
+MODEL INPUT TOKEN LIMIT: UNKNOWN
+MODEL OUTPUT TOKEN LIMIT: UNKNOWN
+REQUESTED OUTPUT TOKENS: 65536
+INPUT + REQUESTED OUTPUT: UNKNOWN
+
+REQUEST:
+responseMimeType: application/json
+responseJsonSchema: YES
+schemaBytes: 5619
+schemaDepth: 12
+schemaProperties: 80
+schemaRefs: 8
+schemaDefs: 1
+schemaRootKeys: 5
+systemPromptChars: 31
+userPromptChars: 53
+maxOutputTokens: 65536
+temperature: 0.1
+==================================================
+
+stderr | test/career-gemini-provider.test.ts > CONDYN Career Analysis Protocol v1.0 - Step 9: Gemini Inference Provider TDD > clamps maxOutputTokens to 65536 and diagnostic correctly reports it (BUG010E)
+==================================================
+GEMINI REQUEST FAILURE
+MODEL: gemini-3.5-flash
+ATTEMPT: 1/5
+STEP: 0
+HTTP: 400
+CODE: INVALID_ARGUMENT
+STATUS: 400
+MESSAGE: Simulated rejection.
+DETAILS: NONE
+
+EXACT INPUT TOKENS: 12345
+MODEL INPUT TOKEN LIMIT: 2000000
+MODEL OUTPUT TOKEN LIMIT: 8192
+REQUESTED OUTPUT TOKENS: 65536
+INPUT + REQUESTED OUTPUT: 77881
+
+REQUEST:
+responseMimeType: application/json
+responseJsonSchema: YES
+schemaBytes: 5619
+schemaDepth: 12
+schemaProperties: 80
+schemaRefs: 8
+schemaDefs: 1
+schemaRootKeys: 5
+systemPromptChars: 31
+userPromptChars: 53
+maxOutputTokens: 65536
+temperature: 0.1
+==================================================
+
+ ✓ test/career-gemini-provider.test.ts (8 tests) 123ms
+ ✓ test/career-graph-diff.test.ts (9 tests) 162ms
+ ✓ test/career-guided-onboarding.test.tsx (3 tests) 66ms
+ ✓ test/career-release-ui-hardening.test.tsx (4 tests) 40ms
+stderr | test/career-analyze-multisource.test.ts > CONDYN Career Analysis Protocol v1.0 — Step 19d: Multi-Source API Route (`test/career-analyze-multisource.test.ts`) > should return HTTP 400 when url property is missing for website or github source
+Fatal error in /api/career/analyze: Error: ERR_MISSING_SOURCE_URL: Missing url property for website source.
+    at POST (/home/codi/Entwicklung/condyn-admin/app/api/career/analyze/route.ts:69:17)
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at /home/codi/Entwicklung/condyn-admin/test/career-analyze-multisource.test.ts:137:20
+    at file:///home/codi/Entwicklung/condyn-admin/node_modules/@vitest/runner/dist/chunk-hooks.js:752:20
+
+ ✓ test/career-pdf-payload-contract.test.ts (1 test) 117ms
+stderr | test/career-analyze-multisource.test.ts > CONDYN Career Analysis Protocol v1.0 — Step 19d: Multi-Source API Route (`test/career-analyze-multisource.test.ts`) > should return HTTP 400 when url property is missing for website or github source
+Fatal error in /api/career/analyze: Error: ERR_MISSING_SOURCE_URL: Missing url property for github source.
+    at POST (/home/codi/Entwicklung/condyn-admin/app/api/career/analyze/route.ts:80:17)
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at /home/codi/Entwicklung/condyn-admin/test/career-analyze-multisource.test.ts:151:19
+    at file:///home/codi/Entwicklung/condyn-admin/node_modules/@vitest/runner/dist/chunk-hooks.js:752:20
+
+stderr | test/career-analyze-multisource.test.ts > CONDYN Career Analysis Protocol v1.0 — Step 19d: Multi-Source API Route (`test/career-analyze-multisource.test.ts`) > should return HTTP 400 structured loader error when website URL is invalid
+Fatal error in /api/career/analyze: Error: ERR_INVALID_WEBSITE_URL: Invalid or unsupported website URL "ftp://invalid-scheme.example.com". Must use http: or https:.
+    at loadWebsiteDocument (/home/codi/Entwicklung/condyn-admin/lib/career/loaders/website.ts:69:11)
+    at POST (/home/codi/Entwicklung/condyn-admin/app/api/career/analyze/route.ts:75:27)
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at /home/codi/Entwicklung/condyn-admin/test/career-analyze-multisource.test.ts:166:17
+    at file:///home/codi/Entwicklung/condyn-admin/node_modules/@vitest/runner/dist/chunk-hooks.js:752:20
+
+stderr | test/career-analyze-multisource.test.ts > CONDYN Career Analysis Protocol v1.0 — Step 19d: Multi-Source API Route (`test/career-analyze-multisource.test.ts`) > should return HTTP 400 structured loader error when github URL is invalid
+Fatal error in /api/career/analyze: Error: ERR_INVALID_GITHUB_URL: URL "https://gitlab.com/invalid/repo" must point to github.com.
+    at parseGitHubRepoUrl (/home/codi/Entwicklung/condyn-admin/lib/career/loaders/github.ts:31:11)
+    at loadGitHubRepositoryDocuments (/home/codi/Entwicklung/condyn-admin/lib/career/loaders/github.ts:89:27)
+    at POST (/home/codi/Entwicklung/condyn-admin/app/api/career/analyze/route.ts:82:28)
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at /home/codi/Entwicklung/condyn-admin/test/career-analyze-multisource.test.ts:183:17
+    at file:///home/codi/Entwicklung/condyn-admin/node_modules/@vitest/runner/dist/chunk-hooks.js:752:20
+
+ ✓ test/career-analyze-multisource.test.ts (7 tests) 149ms
+ ✓ test/career-pdf-loader.test.ts (5 tests) 90ms
+ ✓ test/career-analyze-recommendations.test.ts (4 tests) 88ms
+ ✓ test/career-analysis.test.ts (12 tests) 90ms
+ ✓ test/career-pgvector-store.test.ts (5 tests) 27ms
+ ✓ test/career-gui-interaction-audit.test.tsx (4 tests) 37ms
+ ✓ test/career-trust-audit.test.tsx (6 tests) 61ms
+stderr | test/career-gemini-continuation.test.ts > BUG010M: Atomic Structured Retry Contract > TEST C — repeated structured truncation
+==================================================
+GEMINI REQUEST FAILURE
+MODEL: gemini-3.5-flash
+ATTEMPT: 1/5
+STEP: 2
+HTTP: UNKNOWN
+CODE: UNKNOWN
+STATUS: UNKNOWN
+MESSAGE: ERR_PROVIDER_STRUCTURED_OUTPUT_TRUNCATED
+DETAILS: NONE
+
+EXACT INPUT TOKENS: UNKNOWN
+MODEL INPUT TOKEN LIMIT: UNKNOWN
+MODEL OUTPUT TOKEN LIMIT: UNKNOWN
+REQUESTED OUTPUT TOKENS: 65536
+INPUT + REQUESTED OUTPUT: UNKNOWN
+
+REQUEST:
+responseMimeType: application/json
+responseJsonSchema: YES
+schemaBytes: 5619
+schemaDepth: 12
+schemaProperties: 80
+schemaRefs: 8
+schemaDefs: 1
+schemaRootKeys: 5
+systemPromptChars: 3
+userPromptChars: 3
+maxOutputTokens: 65536
+temperature: 0.1
+==================================================
+
+ ✓ test/career-gemini-continuation.test.ts (6 tests) 57ms
+ ✓ test/career-gemini-schema-projector.test.ts (7 tests) 47ms
+ ✓ test/career-reactflow-component.test.tsx (4 tests) 46ms
+stderr | test/career-analyze-flow.test.ts > CONDYN Career Analysis Protocol v1.0 - Step 7.2: Server Boundary API Route > should reject document with empty content string with HTTP 400 Bad Request
+Fatal error in /api/career/analyze: Error: ERR_EMPTY_CONTENT: Document content cannot be empty (Title: Empty Resume).
+    at loadDocumentBatch (/home/codi/Entwicklung/condyn-admin/lib/career/loaders/batch.ts:91:17)
+    at flushPendingBatch (/home/codi/Entwicklung/condyn-admin/app/api/career/analyze/route.ts:59:33)
+    at POST (/home/codi/Entwicklung/condyn-admin/app/api/career/analyze/route.ts:102:11)
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at /home/codi/Entwicklung/condyn-admin/test/career-analyze-flow.test.ts:36:17
+    at file:///home/codi/Entwicklung/condyn-admin/node_modules/@vitest/runner/dist/chunk-hooks.js:752:20
+
+ ✓ test/career-analyze-flow.test.ts (3 tests) 74ms
+ ✓ test/career-gemini-embedding-provider.test.ts (7 tests) 27ms
+ ✓ test/career-prompt-system.test.ts (5 tests) 46ms
+ ✓ test/career-react-flow.test.ts (5 tests) 53ms
+ ✓ test/career-prompt-registry.test.ts (9 tests) 42ms
+ ✓ test/career-semantic-search.test.ts (8 tests) 60ms
+ ✓ test/career-layout.test.ts (4 tests) 40ms
+ ✓ test/career-decision-graph-inspector.test.tsx (4 tests) 63ms
+ ✓ test/career-d3-force.test.ts (6 tests) 46ms
+ ✓ test/career-pdf-runtime-resolution.test.ts (1 test) 9671ms
+   ✓ CONDYN Career Analysis Protocol v1.0 - BUG 009: Next.js Runtime PDF Worker Resolution > should successfully parse PDF in Next.js Turbopack runtime without pdf.worker.mjs resolution errors  2552ms
+ ✓ test/career-analyze-page.test.tsx (3 tests) 65ms
+ ✓ test/career-repository.test.ts (4 tests) 48ms
+ ✓ test/career-company-pool.test.ts (7 tests) 49ms
+ ✓ test/career-pipeline-prompt-resolver.test.ts (3 tests) 53ms
+ ✓ test/career-evidence-graph.test.ts (6 tests) 29ms
+stderr | test/career-provider-switch.test.ts > CONDYN Career Analysis Protocol v1.0 - Step 9.4: Server-Side Provider Switch > should return structured error response with ERR_PROVIDER_FAILURE when GEMINI_API_KEY is missing during live provider execution
+Fatal error in /api/career/analyze: Error: ERR_PROVIDER_FAILURE: Missing GEMINI_API_KEY environment variable or constructor option.
+    at GeminiProvider.execute (/home/codi/Entwicklung/condyn-admin/lib/career/providers/gemini.ts:166:13)
+    at executeCareerAnalysisPipeline (/home/codi/Entwicklung/condyn-admin/lib/career/pipeline.ts:80:36)
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at POST (/home/codi/Entwicklung/condyn-admin/app/api/career/analyze/route.ts:105:30)
+    at /home/codi/Entwicklung/condyn-admin/test/career-provider-switch.test.ts:64:17
+    at file:///home/codi/Entwicklung/condyn-admin/node_modules/@vitest/runner/dist/chunk-hooks.js:752:20
+
+ ✓ test/career-provider-switch.test.ts (5 tests) 42ms
+ ✓ test/career-adapter.test.ts (11 tests) 42ms
+ ✓ test/career-real-routes.test.ts (5 tests) 35ms
+ ✓ test/career-ui-metrics-wiring.test.tsx (2 tests) 43ms
+ ✓ test/career-canonical-assembly.test.ts (6 tests) 43ms
+ ✓ test/career-deep-sweep-prompt.test.ts (5 tests) 32ms
+stderr | test/career-gemini-provider-error.test.ts > GeminiProvider Error Diagnostic Boundary > formats detailed bounded error diagnostics without leaking secrets (RED/GREEN)
+==================================================
+GEMINI REQUEST FAILURE
+MODEL: gemini-test-model
+ATTEMPT: 1/5
+STEP: 0
+HTTP: 400
+CODE: INVALID_ARGUMENT
+STATUS: 400
+MESSAGE: Request contains an invalid argument.
+DETAILS: [{"type":"type.googleapis.com/google.rpc.BadRequest"}]
+
+EXACT INPUT TOKENS: 12345
+MODEL INPUT TOKEN LIMIT: 2000000
+MODEL OUTPUT TOKEN LIMIT: 8192
+REQUESTED OUTPUT TOKENS: 65536
+INPUT + REQUESTED OUTPUT: 77881
+
+REQUEST:
+responseMimeType: application/json
+responseJsonSchema: YES
+schemaBytes: 5619
+schemaDepth: 12
+schemaProperties: 80
+schemaRefs: 8
+schemaDefs: 1
+schemaRootKeys: 5
+systemPromptChars: 22
+userPromptChars: 28
+maxOutputTokens: 65536
+temperature: 0.1
+==================================================
+
+ ✓ test/career-gemini-provider-error.test.ts (1 test) 50ms
+ ✓ test/career-batch-ingestion.test.ts (7 tests) 48ms
+ ✓ test/career-ui-source-presentation-wiring.test.tsx (1 test) 37ms
+ ✓ test/career-ux-friction-audit.test.tsx (3 tests) 60ms
+ ✓ test/career-pipeline.test.ts (7 tests) 32ms
+ ✓ test/career-gemini-structured-output.test.ts (1 test) 19ms
+ ✓ test/career-confidence-propagation.test.ts (6 tests) 15ms
+ ✓ test/career-pipeline-website.test.ts (1 test) 67ms
+ ✓ test/career-recommendation-engine.test.ts (6 tests) 15ms
+ ✓ test/career-ui-adapter.test.ts (2 tests) 19ms
+ ✓ test/career-job-mapping-engine.test.ts (6 tests) 27ms
+ ✓ test/career-release-benchmark.test.ts (3 tests) 29ms
+ ✓ test/career-role-extraction.test.ts (4 tests) 44ms
+ ✓ test/career-feedback-attribution-boundary.test.ts (13 tests) 25ms
+ ✓ test/career-pipeline-github.test.ts (1 test) 28ms
+ ✓ test/career-pipeline-full-multisource.test.ts (1 test) 35ms
+ ✓ test/career-assembly.test.ts (8 tests) 44ms
+ ✓ test/career-github-loader.test.ts (7 tests) 26ms
+ ✓ test/career-capability-proof-chain.test.ts (6 tests) 21ms
+ ❯ test/career-learning-policy-boundary.test.ts (9 tests | 9 failed) 27ms
+   × CONDYN Career Analysis Protocol v3.0 - PHASE 3: LEARNING WITHOUT HISTORY MUTATION (TEST003E) > A. eligible Feedback -> LearningProposal -> PASS 13ms
+     → (0 , clearPolicyCache) is not a function
+   × CONDYN Career Analysis Protocol v3.0 - PHASE 3: LEARNING WITHOUT HISTORY MUTATION (TEST003E) > B. anonymous / invalid Feedback -> excluded with explicit reason 1ms
+     → (0 , clearPolicyCache) is not a function
+   × CONDYN Career Analysis Protocol v3.0 - PHASE 3: LEARNING WITHOUT HISTORY MUTATION (TEST003E) > D. candidate policy differs -> new immutable PolicyVersion 1ms
+     → (0 , clearPolicyCache) is not a function
+   × CONDYN Career Analysis Protocol v3.0 - PHASE 3: LEARNING WITHOUT HISTORY MUTATION (TEST003E) > E. attempt to modify existing PolicyVersion -> FAIL 1ms
+     → (0 , clearPolicyCache) is not a function
+   × CONDYN Career Analysis Protocol v3.0 - PHASE 3: LEARNING WITHOUT HISTORY MUTATION (TEST003E) > F. historical Recommendation referencing V1 -> still references V1 after V2 creation 1ms
+     → (0 , clearPolicyCache) is not a function
+   × CONDYN Career Analysis Protocol v3.0 - PHASE 3: LEARNING WITHOUT HISTORY MUTATION (TEST003E) > G. replay historical trace under V2 -> counterfactual result created -> historical Recommendation unchanged 1ms
+     → (0 , clearPolicyCache) is not a function
+   × CONDYN Career Analysis Protocol v3.0 - PHASE 3: LEARNING WITHOUT HISTORY MUTATION (TEST003E) > L. feedback with CAUSAL_CLAIM -> ineligible for v1 learning 1ms
+     → (0 , clearPolicyCache) is not a function
+   × CONDYN Career Analysis Protocol v3.0 - PHASE 3: LEARNING WITHOUT HISTORY MUTATION (TEST003E) > M. duplicate LearningProposal ID identical -> idempotent 1ms
+     → (0 , clearPolicyCache) is not a function
+   × CONDYN Career Analysis Protocol v3.0 - PHASE 3: LEARNING WITHOUT HISTORY MUTATION (TEST003E) > N. duplicate ID conflicting payload -> FAIL 5ms
+     → (0 , clearPolicyCache) is not a function
+ ✓ test/career-commitment-action-boundary.test.ts (12 tests) 20ms
+ ✓ test/career-view-model.test.ts (4 tests) 24ms
+stdout | test/career-perception.test.ts > CONDYN Career Analysis Protocol v1.0 - Step 5.1: Topology Projection Mapper (`projectTopology`) > should project canonical model into TopologyProjection without mutating domain scores or labels
+PRESENTATION: {
+  "semantic_graph": {
+    "nodes": [
+      {
+        "node_id": "CAP_001",
+        "entity_type": "CAPABILITY",
+        "weight": 0.95
+      },
+      {
+        "node_id": "ORG_001",
+        "entity_type": "CONCRETE_ORGANIZATION",
+        "weight": 0.94
+      },
+      {
+        "node_id": "ROL_001",
+        "entity_type": "ROLE",
+        "weight": 0.92
+      }
+    ],
+    "edges": [
+      {
+        "source_id": "ORG_001",
+        "target_id": "CAP_001",
+        "interaction_force": 0.89
+      },
+      {
+        "source_id": "ROL_001",
+        "target_id": "ORG_001",
+        "interaction_force": 0.95
+      }
+    ]
+  },
+  "ui_layout": {
+    "center_node_id": "CAP_001",
+    "concentric_rings": [
+      {
+        "ring_index": 0,
+        "name": "Core Capabilities",
+        "node_ids": [
+          "CAP_001"
+        ]
+      },
+      {
+        "ring_index": 1,
+        "name": "Target Organizations",
+        "node_ids": [
+          "ORG_001"
+        ]
+      },
+      {
+        "ring_index": 2,
+        "name": "Target Roles",
+        "node_ids": [
+          "ROL_001"
+        ]
+      }
+    ],
+    "color_tokens": {
+      "CAPABILITY": "#1565C0",
+      "CONCRETE_ORGANIZATION": "#4CAF50"
+    },
+    "priority_groups": [
+      {
+        "group_id": "GRP_TOP_RESONANCE",
+        "label": "Immediate Market Match",
+        "node_ids": [
+          "ORG_001"
+        ]
+      }
+    ]
+  }
+}
+
+ ✓ test/career-perception.test.ts (4 tests) 25ms
+ ✓ test/career-gemini-inference-scope.test.ts (1 test) 31ms
+ ✓ test/career-pipeline-multi-source.test.ts (1 test) 33ms
+ ✓ test/career-capability-convergence.test.ts (5 tests) 14ms
+ ✓ test/career-recommendation-proof-chain.test.ts (7 tests) 13ms
+ ✓ test/career-release-edge-cases.test.ts (4 tests) 21ms
+ ✓ test/career-decision-integrity.test.ts (5 tests) 17ms
+ ✓ test/career-decision-boundary.test.ts (8 tests) 14ms
+ ✓ test/career-release-e2e.test.ts (3 tests) 18ms
+ ✓ test/career-action-outcome-boundary.test.ts (5 tests) 27ms
+ ✓ test/career-website-loader.test.ts (6 tests) 50ms
+ ✓ test/career-gemini-adapter.test.ts (4 tests) 24ms
+ ✓ test/career-capability-requirement-alignment.test.ts (4 tests) 19ms
+ ✓ test/career-evidence-highlight.test.ts (3 tests) 22ms
+ ✓ test/career-score-provenance.test.ts (5 tests) 20ms
+ ✓ test/career-ui-source-presentation.test.ts (1 test) 17ms
+ ✓ test/career-source-metadata.test.ts (6 tests) 35ms
+ ✓ test/career-section-workflow.test.ts (2 tests) 14ms
+ ✓ test/career-api-integration.test.ts (2 tests) 16ms
+ ✓ test/career-ui-cluster-metrics-wiring.test.ts (1 test) 9ms
+ ✓ test/career-prompt-contract.test.ts (2 tests) 11ms
+stdout | test/career-gemini-live-probe.test.ts > BUG 010: Gemini Schema Acceptance (LIVE PROBE) > should successfully generate content using the projected Gemini schema
+Skipping live probe (RUN_GEMINI_LIVE_PROBE not set)
+
+ ✓ test/career-gemini-live-probe.test.ts (1 test) 19ms
+ ↓ test/career-gemini-embedding-live.test.ts (1 test | 1 skipped)
+ ↓ test/career-gemini-live.test.ts (1 test | 1 skipped)
+ ↓ test/career-gemini-probe.test.ts (1 test | 1 skipped)
+ ↓ test/career-gemini-request-boundary.test.ts (1 test | 1 skipped)
+ ↓ test/career-gemini-schema-bisection.test.ts (1 test | 1 skipped)
+ ↓ test/gemini-token-limit-matrix.test.ts (1 test | 1 skipped)
+ ↓ test/schema-bisection.test.ts (1 test | 1 skipped)
+ ↓ test/career-forensic-pdf.test.ts (1 test | 1 skipped)
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 18 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/career-learning-policy-boundary.test.ts > CONDYN Career Analysis Protocol v3.0 - PHASE 3: LEARNING WITHOUT HISTORY MUTATION (TEST003E) > A. eligible Feedback -> LearningProposal -> PASS
+ FAIL  test/career-learning-policy-boundary.test.ts > CONDYN Career Analysis Protocol v3.0 - PHASE 3: LEARNING WITHOUT HISTORY MUTATION (TEST003E) > B. anonymous / invalid Feedback -> excluded with explicit reason
+ FAIL  test/career-learning-policy-boundary.test.ts > CONDYN Career Analysis Protocol v3.0 - PHASE 3: LEARNING WITHOUT HISTORY MUTATION (TEST003E) > D. candidate policy differs -> new immutable PolicyVersion
+ FAIL  test/career-learning-policy-boundary.test.ts > CONDYN Career Analysis Protocol v3.0 - PHASE 3: LEARNING WITHOUT HISTORY MUTATION (TEST003E) > E. attempt to modify existing PolicyVersion -> FAIL
+ FAIL  test/career-learning-policy-boundary.test.ts > CONDYN Career Analysis Protocol v3.0 - PHASE 3: LEARNING WITHOUT HISTORY MUTATION (TEST003E) > F. historical Recommendation referencing V1 -> still references V1 after V2 creation
+ FAIL  test/career-learning-policy-boundary.test.ts > CONDYN Career Analysis Protocol v3.0 - PHASE 3: LEARNING WITHOUT HISTORY MUTATION (TEST003E) > G. replay historical trace under V2 -> counterfactual result created -> historical Recommendation unchanged
+ FAIL  test/career-learning-policy-boundary.test.ts > CONDYN Career Analysis Protocol v3.0 - PHASE 3: LEARNING WITHOUT HISTORY MUTATION (TEST003E) > L. feedback with CAUSAL_CLAIM -> ineligible for v1 learning
+ FAIL  test/career-learning-policy-boundary.test.ts > CONDYN Career Analysis Protocol v3.0 - PHASE 3: LEARNING WITHOUT HISTORY MUTATION (TEST003E) > M. duplicate LearningProposal ID identical -> idempotent
+ FAIL  test/career-learning-policy-boundary.test.ts > CONDYN Career Analysis Protocol v3.0 - PHASE 3: LEARNING WITHOUT HISTORY MUTATION (TEST003E) > N. duplicate ID conflicting payload -> FAIL
+TypeError: (0 , clearPolicyCache) is not a function
+ ❯ test/career-learning-policy-boundary.test.ts:15:5
+     13|     clearActionCache();
+     14|     clearFeedbackCache();
+     15|     clearPolicyCache();
+       |     ^
+     16|     clearLearningCache();
+     17|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/18]⎯
+
+ FAIL  test/career-lifecycle-postgres-persistence.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: IMMUTABLE LIFECYCLE PERSISTENCE (TEST004B) > E. Action with unknown Commitment -> FAIL
+Error: Failed query: delete from "career_recommendations"
+params: 
+ ❯ PostgresJsPreparedQuery.queryWithCache node_modules/src/pg-core/session.ts:73:11
+ ❯ test/career-lifecycle-postgres-persistence.test.ts:33:5
+     31|     await db.delete(careerCommitments);
+     32|     await db.delete(careerDecisions);
+     33|     await db.delete(careerRecommendations);
+       |     ^
+     34|   });
+     35| 
+
+Caused by: PostgresError: update or delete on table "career_recommendations" violates foreign key constraint "career_decisions_recommendation_id_fkey" on table "career_decisions"
+ ❯ ErrorResponse node_modules/postgres/src/connection.js:815:30
+ ❯ handle node_modules/postgres/src/connection.js:489:6
+ ❯ Socket.data node_modules/postgres/src/connection.js:324:9
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+Serialized Error: { severity_local: 'ERROR', severity: 'ERROR', code: '23503', detail: 'Key (id)=(REC_1786972133535) is still referenced from table "career_decisions".', schema_name: 'public', table_name: 'career_decisions', constraint_name: 'career_decisions_recommendation_id_fkey', file: 'ri_triggers.c', routine: 'ri_ReportViolation', query: 'delete from "career_recommendations"', parameters: [], args: [], types: [] }
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/18]⎯
+
+ FAIL  test/career-lifecycle-recovery.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: RESTART & LINEAGE RECONSTRUCTION (TEST004C) > A/B/C/K. complete persisted lifecycle -> exact reconstruction with all IDs/timestamps preserved
+Error: ERR_UNKNOWN_FEEDBACK
+ ❯ LifecycleRepository.idempotentSave lib/career/repositories/lifecycle.ts:43:45
+     41|         if (msg.includes("action")) throw new Error("ERR_UNKNOWN_ACTIO…
+     42|         if (msg.includes("outcome")) throw new Error("ERR_UNKNOWN_OUTC…
+     43|         if (msg.includes("feedback")) throw new Error("ERR_UNKNOWN_FEE…
+       |                                             ^
+     44|         if (msg.includes("policy")) throw new Error("ERR_UNKNOWN_POLIC…
+     45|         throw new Error(`ERR_UNKNOWN_PARENT: ${errCause.message}`);
+ ❯ LifecycleRepository.saveAttribution lib/career/repositories/lifecycle.ts:139:5
+ ❯ populateCompleteLifecycle test/career-lifecycle-recovery.test.ts:93:5
+ ❯ test/career-lifecycle-recovery.test.ts:102:101
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/18]⎯
+
+ FAIL  test/career-lifecycle-recovery.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: RESTART & LINEAGE RECONSTRUCTION (TEST004C) > D. Recommendation policy binding preserved
+Error: ERR_UNKNOWN_DECISION
+ ❯ LifecycleRepository.idempotentSave lib/career/repositories/lifecycle.ts:38:45
+     36|       if (errCause.code === '23503' || (errCause.message && errCause.m…
+     37|         const msg = (errCause.constraint || errCause.message || "").to…
+     38|         if (msg.includes("decision")) throw new Error("ERR_UNKNOWN_DEC…
+       |                                             ^
+     39|         if (msg.includes("recommendation")) throw new Error("ERR_UNKNO…
+     40|         if (msg.includes("commitment")) throw new Error("ERR_UNKNOWN_C…
+ ❯ LifecycleRepository.saveDecision lib/career/repositories/lifecycle.ts:82:5
+ ❯ populateCompleteLifecycle test/career-lifecycle-recovery.test.ts:78:5
+ ❯ test/career-lifecycle-recovery.test.ts:128:42
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/18]⎯
+
+ FAIL  test/career-lifecycle-recovery.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: RESTART & LINEAGE RECONSTRUCTION (TEST004C) > E. Evidence -> Document -> Source provenance preserved
+Error: ERR_UNKNOWN_DECISION
+ ❯ LifecycleRepository.idempotentSave lib/career/repositories/lifecycle.ts:38:45
+     36|       if (errCause.code === '23503' || (errCause.message && errCause.m…
+     37|         const msg = (errCause.constraint || errCause.message || "").to…
+     38|         if (msg.includes("decision")) throw new Error("ERR_UNKNOWN_DEC…
+       |                                             ^
+     39|         if (msg.includes("recommendation")) throw new Error("ERR_UNKNO…
+     40|         if (msg.includes("commitment")) throw new Error("ERR_UNKNOWN_C…
+ ❯ LifecycleRepository.saveDecision lib/career/repositories/lifecycle.ts:82:5
+ ❯ populateCompleteLifecycle test/career-lifecycle-recovery.test.ts:78:5
+ ❯ test/career-lifecycle-recovery.test.ts:135:29
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/18]⎯
+
+ FAIL  test/career-lifecycle-recovery.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: RESTART & LINEAGE RECONSTRUCTION (TEST004C) > G. tampered JSONB -> ERR_PERSISTED_ARTIFACT_INTEGRITY
+Error: Failed query: DELETE FROM career_decisions
+params: 
+ ❯ PostgresJsPreparedQuery.queryWithCache node_modules/src/pg-core/session.ts:73:11
+ ❯ test/career-lifecycle-recovery.test.ts:33:5
+     31|     await db.execute(sql`DELETE FROM career_actions`);
+     32|     await db.execute(sql`DELETE FROM career_commitments`);
+     33|     await db.execute(sql`DELETE FROM career_decisions`);
+       |     ^
+     34|     await db.execute(sql`DELETE FROM career_recommendations`);
+     35|     await db.execute(sql`DELETE FROM career_policy_versions`);
+
+Caused by: PostgresError: update or delete on table "career_decisions" violates foreign key constraint "career_commitments_decision_id_fkey" on table "career_commitments"
+ ❯ ErrorResponse node_modules/postgres/src/connection.js:815:30
+ ❯ handle node_modules/postgres/src/connection.js:489:6
+ ❯ Socket.data node_modules/postgres/src/connection.js:324:9
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+Serialized Error: { severity_local: 'ERROR', severity: 'ERROR', code: '23503', detail: 'Key (id)=(DEC_1786972133769_427) is still referenced from table "career_commitments".', schema_name: 'public', table_name: 'career_commitments', constraint_name: 'career_commitments_decision_id_fkey', file: 'ri_triggers.c', routine: 'ri_ReportViolation', query: 'DELETE FROM career_decisions', parameters: [], args: [], types: [] }
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/18]⎯
+
+ FAIL  test/career-lifecycle-recovery.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: RESTART & LINEAGE RECONSTRUCTION (TEST004C) > H/J. zero LLM calls during recovery + empty caches
+Error: Failed query: DELETE FROM career_feedback
+params: 
+ ❯ PostgresJsPreparedQuery.queryWithCache node_modules/src/pg-core/session.ts:73:11
+ ❯ test/career-lifecycle-recovery.test.ts:29:5
+     27|     await db.execute(sql`DELETE FROM career_learning_proposals`);
+     28|     await db.execute(sql`DELETE FROM career_attributions`);
+     29|     await db.execute(sql`DELETE FROM career_feedback`);
+       |     ^
+     30|     await db.execute(sql`DELETE FROM career_outcomes`);
+     31|     await db.execute(sql`DELETE FROM career_actions`);
+
+Caused by: PostgresError: update or delete on table "career_feedback" violates foreign key constraint "career_attributions_feedback_id_fkey" on table "career_attributions"
+ ❯ ErrorResponse node_modules/postgres/src/connection.js:815:30
+ ❯ handle node_modules/postgres/src/connection.js:489:6
+ ❯ Socket.data node_modules/postgres/src/connection.js:324:9
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+Serialized Error: { severity_local: 'ERROR', severity: 'ERROR', code: '23503', detail: 'Key (id)=(FDB_1786972133794_252) is still referenced from table "career_attributions".', schema_name: 'public', table_name: 'career_attributions', constraint_name: 'career_attributions_feedback_id_fkey', file: 'ri_triggers.c', routine: 'ri_ReportViolation', query: 'DELETE FROM career_feedback', parameters: [], args: [], types: [] }
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/18]⎯
+
+ FAIL  test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > A. V1 active -> promote V2 -> head = V2 -> promotion record exists
+Error: ERR_POLICY_NOT_FOUND: Candidate policy not found.
+ ❯ lib/career/repositories/lifecycle.ts:232:15
+    230|       const candidateResult = await tx.select().from(careerPolicyVersi…
+    231|       if (!candidateResult || candidateResult.length === 0) {
+    232|         throw new Error("ERR_POLICY_NOT_FOUND: Candidate policy not fo…
+       |               ^
+    233|       }
+    234|       
+ ❯ scope node_modules/postgres/src/index.js:260:18
+ ❯ Function.begin node_modules/postgres/src/index.js:243:14
+ ❯ LifecycleRepository.promotePolicy lib/career/repositories/lifecycle.ts:197:12
+ ❯ test/career-policy-activation-atomicity.test.ts:34:5
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/18]⎯
+
+ FAIL  test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > B. V1 historical PolicyVersion unchanged
+Error: ERR_POLICY_NOT_FOUND: Candidate policy not found.
+ ❯ lib/career/repositories/lifecycle.ts:232:15
+    230|       const candidateResult = await tx.select().from(careerPolicyVersi…
+    231|       if (!candidateResult || candidateResult.length === 0) {
+    232|         throw new Error("ERR_POLICY_NOT_FOUND: Candidate policy not fo…
+       |               ^
+    233|       }
+    234|       
+ ❯ scope node_modules/postgres/src/index.js:260:18
+ ❯ Function.begin node_modules/postgres/src/index.js:243:14
+ ❯ LifecycleRepository.promotePolicy lib/career/repositories/lifecycle.ts:197:12
+ ❯ test/career-policy-activation-atomicity.test.ts:52:5
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/18]⎯
+
+ FAIL  test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > E. promotion without actor -> FAIL
+AssertionError: expected [Function] to throw error including 'ERR_POLICY_PROMOTION_MISSING_ACTOR' but got 'ERR_POLICY_NOT_FOUND: Candidate polic…'
+
+Expected: "ERR_POLICY_PROMOTION_MISSING_ACTOR"
+Received: "ERR_POLICY_NOT_FOUND: Candidate policy not found."
+
+ ❯ test/career-policy-activation-atomicity.test.ts:66:5
+     64|     const v1 = generatePolicy("P1", "FAM1", 1);
+     65|     await repo.savePolicyVersion(v1);
+     66|     await expect(repo.promotePolicy("PROM1", "FAM1", "P1", 0, "")).rej…
+       |     ^
+     67|   });
+     68| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[10/18]⎯
+
+
+ Test Files  4 failed | 86 passed | 8 skipped (98)
+      Tests  18 failed | 427 passed | 8 skipped (453)
+   Start at  15:08:50
+   Duration  21.32s (transform 6.77s, setup 0ms, collect 65.94s, tests 16.44s, environment 50ms, prepare 22.29s)
+

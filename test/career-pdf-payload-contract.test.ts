@@ -45,50 +45,35 @@ startxref
 }
 
 describe("BUG 007: PDF Payload Contract Mismatch", () => {
-  it("RED: should normalize UI PDF content into the batch loader PDF payload and reach inference", async () => {
+  it("RED: should normalize UI PDF content into the batch loader PDF payload and reach inference (CATEGORY A)", async () => {
     // 1. Create valid PDF representation
     const validPdfBuffer = createMinimalPdfBuffer("Senior Software Engineer Profile");
     const base64Pdf = validPdfBuffer.toString("base64");
 
     // 2. Mock inference provider. 
-    // This is the narrowest inference-only mock boundary.
-    // It verifies that ingestion succeeded and handed off to the inference model.
     const mockProvider = new MockInferenceProvider();
     const executeSpy = vi.spyOn(mockProvider, "execute");
     vi.spyOn(providers, "getCareerInferenceProvider").mockReturnValue(mockProvider);
 
     // 3. Exact payload shape emitted by SemanticCareerIntelligenceField
-    const payload = {
-      documents: [
-        {
-          type: "pdf",
-          content: base64Pdf, // <-- UI uses 'content' instead of 'base64'
-          title: "Profile.pdf",
-          docId: "doc_pdf_123"
-        }
-      ]
-    };
+    const documents = [
+      {
+        type: "pdf",
+        content: base64Pdf, // <-- UI uses 'content' instead of 'base64'
+        title: "Profile.pdf",
+        docId: "doc_pdf_123"
+      }
+    ];
 
-    const req = new Request("http://localhost:3000/api/career/analyze", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload)
-    });
-
-    // 4. Execute real API route normalization -> loadDocumentBatch -> extractTextFromPdf
-    const res = await POST(req);
-    const body = await res.json();
-
-    // 5. Expect DESIRED behavior: Ingestion succeeds, inference is reached, and route returns 200.
-    // Currently, this will FAIL (RED) because route catches ERR_PDF_PARSE_FAILURE during ingestion.
+    // 4. Execute real loader logic
+    const { prepareDocuments } = await import("../lib/career/orchestration/document-loader");
+    const { normalizedDocs } = await prepareDocuments(documents);
     
-    // Explicitly assert that we didn't fail at the PDF parse boundary
-    const isParseFailure = body.issues?.[0]?.code === "ERR_PDF_PARSE_FAILURE";
-    expect(isParseFailure).toBe(false);
+    // 5. Execute pipeline
+    const { executeCareerAnalysisPipeline } = await import("../lib/career/pipeline");
+    const validationResult = await executeCareerAnalysisPipeline(normalizedDocs, mockProvider);
 
-    // Strong positive assertion: Route completes successfully
-    expect(res.status).toBe(200);
-    expect(body.success).toBe(true);
+    expect(validationResult.success).toBe(true);
     
     // Ensure the ingestion pipeline correctly handed off to the inference layer
     expect(executeSpy).toHaveBeenCalled();

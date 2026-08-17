@@ -1,28 +1,14 @@
 import { NextResponse } from "next/server";
+import { db } from "../../../../lib/career/db/client";
+import { JobRepository } from "../../../../lib/career/orchestration/job-repository";
+import { createJob } from "../../../../lib/career/orchestration/job";
 
-export const maxDuration = 120; // 2 minutes execution limit for LLM career pipeline
+export const maxDuration = 10; // Fast HTTP acceptance
 export const dynamic = "force-dynamic";
-import { executeCareerAnalysisPipeline } from "../../../../lib/career/pipeline";
-import { loadWebsiteDocument } from "../../../../lib/career/loaders/website";
-import { loadGitHubRepositoryDocuments } from "../../../../lib/career/loaders/github";
-import { loadDocumentBatch } from "../../../../lib/career/loaders/batch";
-import { DocumentInput } from "../../../../lib/career/adapter";
-import { getCareerInferenceProvider } from "../../../../lib/career/providers";
-import { getCareerAnalysisRepository } from "../../../../lib/career/repositories";
-import { projectTopology } from "../../../../lib/career/perception";
-import { buildViewModel } from "../../../../lib/career/view-model";
-import { buildRadialLayout } from "../../../../lib/career/layout";
-import { toReactFlow } from "../../../../lib/career/adapters/react-flow";
-import { matchCareerAnalysisAgainstPool } from "../../../../lib/career/matching/engine";
-import { DEMO_COMPANY_POOL } from "../../../../lib/career/matching/demo-pool";
-import { generateCareerRecommendations } from "../../../../lib/career/recommendations/gaps";
-import { buildCareerAnalysisSuccessResponse } from "../../../../lib/career/api-response";
-
-// Request/Demo-scoped in-memory repository persistence for Step 7
-const requestScopedRepository = getCareerAnalysisRepository();
 
 export async function POST(req: Request) {
   try {
+    const idempotencyKey = req.headers.get("idempotency-key");
     const body = await req.json().catch(() => ({}));
     const documents = body.documents || [];
 
@@ -37,158 +23,81 @@ export async function POST(req: Request) {
       );
     }
 
-    // Provider choice resolved dynamically via getCareerInferenceProvider() (toggled via USE_GEMINI_PROVIDER)
-    const provider = getCareerInferenceProvider();
-
-    // Normalize multi-source input items (text, markdown, pdf, website, github)
-    const normalizedDocs: DocumentInput[] = [];
-    const pendingBatch: any[] = [];
-    const sourceManifest: Array<{ canonicalDocumentId: string, sourceRef: string }> = [];
-    let canonicalDocCounter = 1;
-    const getNextCanonicalId = () => `DOC_${String(canonicalDocCounter++).padStart(3, '0')}`;
-
-    const flushPendingBatch = async () => {
-      if (pendingBatch.length > 0) {
-        pendingBatch.forEach(item => {
-          const canonicalId = getNextCanonicalId();
-          if (item.docId) {
-            sourceManifest.push({ canonicalDocumentId: canonicalId, sourceRef: item.docId });
+    // 2. PRESERVE NEGATIVE REQUEST TESTS: Validate payload structure synchronously
+    for (const doc of documents) {
+      if (doc.type === "website") {
+        if (!doc.url || !String(doc.url).trim()) {
+          return NextResponse.json({ success: false, status: "FAILED", issues: [{ code: "ERR_MISSING_SOURCE_URL", message: "Missing URL for website document." }] }, { status: 400 });
+        }
+        try {
+          const urlObj = new URL(doc.url);
+          if (urlObj.protocol !== "http:" && urlObj.protocol !== "https:") {
+            return NextResponse.json({ success: false, status: "FAILED", issues: [{ code: "ERR_INVALID_WEBSITE_URL", message: "Invalid website URL protocol." }] }, { status: 400 });
           }
-          item.docId = canonicalId;
-        });
-        const batchDocs = await loadDocumentBatch(pendingBatch);
-        normalizedDocs.push(...batchDocs);
-        pendingBatch.length = 0;
-      }
-    };
-
-    for (const item of documents) {
-      if (item.type === "website") {
-        await flushPendingBatch();
-        if (!item.url || !String(item.url).trim()) {
-          throw new Error("ERR_MISSING_SOURCE_URL: Missing url property for website source.");
+        } catch {
+          return NextResponse.json({ success: false, status: "FAILED", issues: [{ code: "ERR_INVALID_WEBSITE_URL", message: "Invalid website URL." }] }, { status: 400 });
         }
-        const canonicalId = getNextCanonicalId();
-        if (item.docId) {
-          sourceManifest.push({ canonicalDocumentId: canonicalId, sourceRef: item.docId });
+      } else if (doc.type === "github") {
+        if (!doc.url || !String(doc.url).trim()) {
+          return NextResponse.json({ success: false, status: "FAILED", issues: [{ code: "ERR_MISSING_SOURCE_URL", message: "Missing URL for github document." }] }, { status: 400 });
         }
-        const doc = await loadWebsiteDocument(item.url, item.title, canonicalId);
-        normalizedDocs.push(doc);
-      } else if (item.type === "github") {
-        await flushPendingBatch();
-        if (!item.url || !String(item.url).trim()) {
-          throw new Error("ERR_MISSING_SOURCE_URL: Missing url property for github source.");
-        }
-        const docs = await loadGitHubRepositoryDocuments(item.url);
-        docs.forEach(d => {
-          const canonicalId = getNextCanonicalId();
-          if (item.docId) {
-            sourceManifest.push({ canonicalDocumentId: canonicalId, sourceRef: item.docId });
+        try {
+          const urlObj = new URL(doc.url);
+          if (urlObj.hostname !== "github.com") {
+            return NextResponse.json({ success: false, status: "FAILED", issues: [{ code: "ERR_INVALID_GITHUB_URL", message: "Invalid Github URL." }] }, { status: 400 });
           }
-          d.docId = canonicalId;
-        });
-        normalizedDocs.push(...docs);
-      } else {
-        if (item.type === "pdf" && item.content) {
-          pendingBatch.push({
-            ...item,
-            base64: item.content
-          });
-        } else {
-          pendingBatch.push(item);
+        } catch {
+          return NextResponse.json({ success: false, status: "FAILED", issues: [{ code: "ERR_INVALID_GITHUB_URL", message: "Invalid Github URL." }] }, { status: 400 });
+        }
+      } else if (!doc.type || doc.type === "text" || doc.type === "markdown") {
+        if (!doc.content || !String(doc.content).trim()) {
+           return NextResponse.json({ success: false, status: "FAILED", issues: [{ code: "ERR_NO_DOCUMENTS", message: "Document content cannot be empty." }] }, { status: 400 });
         }
       }
     }
-    await flushPendingBatch();
 
-    // Execute 8-layer domain pipeline on server
-    const validationResult = await executeCareerAnalysisPipeline(normalizedDocs, provider);
+    // Input Snapshot Contract: Durable input
+    const inputRef = {
+      sourceType: "BATCH", // or whatever represents the composite payload
+      sourceData: body
+    } as any; // Cast as any or JobInputRef
 
-    if (!validationResult.success || !validationResult.data) {
+    const job = createJob("CAREER_ANALYSIS", inputRef, idempotencyKey || undefined);
+    
+    const repo = new JobRepository(db);
+
+    try {
+      const enqueuedJob = await repo.enqueueJob(job);
+      
       return NextResponse.json(
         {
-          success: false,
-          status: "FAILED",
-          issues: validationResult.issues
+          jobId: enqueuedJob.jobId,
+          status: enqueuedJob.status,
+          statusUrl: `/api/career/jobs/${enqueuedJob.jobId}`
         },
-        { status: 422 }
+        { status: 202 } // HTTP 202 Accepted
       );
+    } catch (dbErr: any) {
+      if (dbErr.message === "ERR_JOB_IDEMPOTENCY_CONFLICT") {
+        return NextResponse.json(
+          {
+            success: false,
+            status: "FAILED",
+            issues: [{ code: "ERR_JOB_IDEMPOTENCY_CONFLICT", message: "Conflicting request for idempotency key." }]
+          },
+          { status: 409 } // Conflict
+        );
+      }
+      throw dbErr;
     }
 
-    const verifiedAnalysis = validationResult.data as any;
-
-    let persistenceWarning: string | undefined = undefined;
-    try {
-      await requestScopedRepository.save(verifiedAnalysis);
-    } catch (saveErr: any) {
-      console.warn("Non-fatal repository persistence error during analysis execution:", saveErr.message);
-      persistenceWarning = saveErr.message || String(saveErr);
-    }
-
-    // Execute server-side perception transformation chain
-    const projection = projectTopology(verifiedAnalysis);
-    const viewModel = buildViewModel(projection);
-    const layout = buildRadialLayout(viewModel);
-    const reactFlowGraph = toReactFlow(layout);
-
-    const analysisId = verifiedAnalysis.structured_data.analysis.metadata.analysis_id;
-    const metadata = verifiedAnalysis.structured_data.analysis.metadata;
-
-    const matching = matchCareerAnalysisAgainstPool(verifiedAnalysis, DEMO_COMPANY_POOL);
-    const recommendations = generateCareerRecommendations(verifiedAnalysis, matching);
-
-    const inferenceTelemetry = (provider as any).lastTelemetry || {
-      modelsAttempted: [{ model: "deterministic-mock-v1", status: "SUCCESS", latencyMs: 12 }],
-      activeModel: "deterministic-mock-v1",
-      fallbackTriggered: false,
-      totalLatencyMs: 12,
-      finishReason: "STOP",
-      outputTokens: 0,
-      continuations: 0,
-      complete: true
-    };
-
-    const responseEnvelope = buildCareerAnalysisSuccessResponse(verifiedAnalysis, {
-      analysisId,
-      metadata,
-      sourceManifest,
-      matching,
-      recommendations,
-      reactFlowGraph,
-      inferenceTelemetry,
-      persistenceWarning
-    });
-
-    return NextResponse.json(responseEnvelope);
   } catch (err: any) {
     console.error("Fatal error in /api/career/analyze:", err);
-    const errorMsg = err.message || String(err);
-    if (errorMsg.startsWith("ERR_PROVIDER_FAILURE")) {
-      return NextResponse.json(
-        {
-          success: false,
-          status: "FAILED",
-          issues: [{ code: "ERR_PROVIDER_FAILURE", message: errorMsg }]
-        },
-        { status: 503 }
-      );
-    }
-    if (errorMsg.startsWith("ERR_")) {
-      const code = errorMsg.split(":")[0];
-      return NextResponse.json(
-        {
-          success: false,
-          status: "FAILED",
-          issues: [{ code, message: errorMsg }]
-        },
-        { status: 400 }
-      );
-    }
     return NextResponse.json(
       {
         success: false,
         status: "FAILED",
-        issues: [{ code: "ERR_SERVER_FATAL", message: errorMsg || "Internal server error during analysis execution." }]
+        issues: [{ code: "ERR_SERVER_FATAL", message: err.message || "Internal server error during analysis enqueue." }]
       },
       { status: 500 }
     );

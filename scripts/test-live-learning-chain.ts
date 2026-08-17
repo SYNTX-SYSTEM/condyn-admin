@@ -19,7 +19,7 @@ async function main() {
   console.log("==================================================");
 
   // 1. Establish Base Policy
-  const p1 = createPolicyVersion("POL_V1", 1, { minimumExplainability: 0.30, minimumFit: 0.5, partialSupportContribution: 0 }, "System");
+  const p1 = createPolicyVersion("POL_V1", "FAM_1", 1, { minimumExplainability: 0.30, minimumFit: 0.5, partialSupportContribution: 0 }, "System");
   promotePolicy("POL_V1", "System");
   console.log("\\n1. Active Policy set to V1.");
 
@@ -129,7 +129,7 @@ Worked at TechCorp (a US based SOFTWARE company) for 5 years leading a team of 4
     const proposal = createLearningProposal("PROP_LIVETEST_1", p1.policyId, [feedback.feedbackId], [decision.decisionId], { minimumExplainability: 0.40 }, "System");
     
     console.log("\\n6. Generating Policy V2 Candidate and Replaying Historical Trace...");
-    const p2 = createPolicyVersion("POL_V2", 2, { minimumExplainability: 0.40, minimumFit: 0.5, partialSupportContribution: 0 }, "System", new Date().toISOString(), 1);
+    const p2 = createPolicyVersion("POL_V2", "FAM_1", 2, { minimumExplainability: 0.40, minimumFit: 0.5, partialSupportContribution: 0 }, "System", new Date().toISOString(), 1);
     
     const evaluation = replayTrace(p2, p1, decision.recommendationSnapshot);
     console.log(`   [ACTUAL V1] Recommendation: ${evaluation.baselineResults.recommendationState}`);

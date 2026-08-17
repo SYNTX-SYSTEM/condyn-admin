@@ -57,7 +57,7 @@ describe("CONDYN Career Analysis Protocol v1.0 - Step 4.5: Persistence & Reposit
     expect(list[0]).toEqual(expect.objectContaining({
       analysisId: "ANL_TEST_DETERMINISTIC_ID",
       validationState: "VERIFIED",
-      overallConfidence: 0.95
+      overallConfidence: undefined
     }));
     // Ensure no UI or title properties leaked into the index entry
     expect((list[0] as any).title).toBeUndefined();

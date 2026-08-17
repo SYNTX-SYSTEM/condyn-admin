@@ -90,7 +90,7 @@ describe("CONDYN Career Analysis Protocol v1.0 - Step 10: PostgreSQL & Drizzle P
     const entry = list.find(e => e.analysisId === "ANL_TEST_DETERMINISTIC_ID");
     expect(entry).toBeDefined();
     expect(entry!.validationState).toBe("VERIFIED");
-    expect(entry!.overallConfidence).toBe(0.95);
+    expect(entry!.overallConfidence).toBeUndefined();
     
     // Verify no UI or full JSON payload properties leaked into index entry
     expect((entry as any).title).toBeUndefined();

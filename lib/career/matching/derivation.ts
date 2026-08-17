@@ -2,6 +2,7 @@ import { AlignmentResult, AlignmentState } from "./alignment";
 import { MetricProvenance, resolveMetric } from "../metrics/provenance";
 
 export interface RecommendationProofChain {
+  recommendationId?: string;
   roleId: string;
   recommendationState: "RECOMMEND" | "REVIEW" | "INSUFFICIENT_EVIDENCE" | "DO_NOT_RECOMMEND";
   fitScore: MetricProvenance;
@@ -78,6 +79,7 @@ export function buildRoleRecommendation(
   }
 
   return {
+    recommendationId: `REC_${Date.now()}_${Math.floor(Math.random() * 1000).toString().padStart(3, '0')}`,
     roleId,
     recommendationState,
     fitScore: fitScoreProv,

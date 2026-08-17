@@ -12,7 +12,7 @@ describe("CONDYN Career Analysis Protocol v1.0 — Step 19d: Multi-Source API Ro
     vi.restoreAllMocks();
   });
 
-  it("should accept website source item and invoke loadWebsiteDocument server-side", async () => {
+  it("should accept website source item and invoke loadWebsiteDocument server-side (CATEGORY A)", async () => {
     vi.spyOn(global, "fetch").mockImplementation(async (url: any) => {
       if (String(url) === "https://condyn.eu/architect") {
         return {
@@ -24,28 +24,22 @@ describe("CONDYN Career Analysis Protocol v1.0 — Step 19d: Multi-Source API Ro
       return { ok: false, status: 404 } as any;
     });
 
-    const req = new Request("http://localhost:3000/api/career/analyze", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        documents: [
-          { type: "website", url: "https://condyn.eu/architect", title: "Architect Profile" }
-        ]
-      })
-    });
+    const { prepareDocuments } = await import("../lib/career/orchestration/document-loader");
+    const { executeCareerAnalysisPipeline } = await import("../lib/career/pipeline");
+    
+    const { normalizedDocs } = await prepareDocuments([
+      { type: "website", url: "https://condyn.eu/architect", title: "Architect Profile" }
+    ]);
 
-    const res = await POST(req);
-    expect(res.status).toBe(200);
-
-    const body = await res.json();
-    expect(body.success).toBe(true);
-    expect(body.status).toBe("VERIFIED");
-    expect(body.analysisId).toMatch(/^ANL_/);
-    expect(body.reactFlowGraph).toBeDefined();
-    expect(Array.isArray(body.reactFlowGraph.nodes)).toBe(true);
+    const validationResult = await executeCareerAnalysisPipeline(normalizedDocs, providers.getCareerInferenceProvider());
+    expect(validationResult.success).toBe(true);
+    
+    const analysis = validationResult.data as any;
+    expect(analysis.structured_data.analysis.metadata.validation_state).toBe("VERIFIED");
+    expect(analysis.structured_data.analysis.metadata.analysis_id).toMatch(/^ANL_/);
   });
 
-  it("should accept github source item and invoke loadGitHubRepositoryDocuments server-side", async () => {
+  it("should accept github source item and invoke loadGitHubRepositoryDocuments server-side (CATEGORY A)", async () => {
     vi.spyOn(global, "fetch").mockImplementation(async (url: any) => {
       const urlStr = String(url);
       if (urlStr.endsWith("/readme")) {
@@ -62,26 +56,21 @@ describe("CONDYN Career Analysis Protocol v1.0 — Step 19d: Multi-Source API Ro
       return { ok: false, status: 404 } as any;
     });
 
-    const req = new Request("http://localhost:3000/api/career/analyze", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        documents: [
-          { type: "github", url: "https://github.com/condyn/career-engine" }
-        ]
-      })
-    });
+    const { prepareDocuments } = await import("../lib/career/orchestration/document-loader");
+    const { executeCareerAnalysisPipeline } = await import("../lib/career/pipeline");
+    
+    const { normalizedDocs } = await prepareDocuments([
+      { type: "github", url: "https://github.com/condyn/career-engine" }
+    ]);
 
-    const res = await POST(req);
-    expect(res.status).toBe(200);
-
-    const body = await res.json();
-    expect(body.success).toBe(true);
-    expect(body.status).toBe("VERIFIED");
-    expect(body.analysisId).toMatch(/^ANL_/);
+    const validationResult = await executeCareerAnalysisPipeline(normalizedDocs, providers.getCareerInferenceProvider());
+    expect(validationResult.success).toBe(true);
+    
+    const analysis = validationResult.data as any;
+    expect(analysis.structured_data.analysis.metadata.validation_state).toBe("VERIFIED");
   });
 
-  it("should accept mixed batch (text + website + github) and combine into unified DocumentInput[]", async () => {
+  it("should accept mixed batch (text + website + github) and combine into unified DocumentInput[] (CATEGORY A)", async () => {
     vi.spyOn(global, "fetch").mockImplementation(async (url: any) => {
       const urlStr = String(url);
       if (urlStr === "https://condyn.eu/bio") {
@@ -105,24 +94,19 @@ describe("CONDYN Career Analysis Protocol v1.0 — Step 19d: Multi-Source API Ro
       return { ok: false, status: 404 } as any;
     });
 
-    const req = new Request("http://localhost:3000/api/career/analyze", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        documents: [
-          { type: "text", title: "Notes", content: "Expert in distributed consensus algorithms." },
-          { type: "website", url: "https://condyn.eu/bio" },
-          { type: "github", url: "https://github.com/condyn/kernel" }
-        ]
-      })
-    });
+    const { prepareDocuments } = await import("../lib/career/orchestration/document-loader");
+    const { executeCareerAnalysisPipeline } = await import("../lib/career/pipeline");
+    
+    const { normalizedDocs } = await prepareDocuments([
+      { type: "text", title: "Notes", content: "Expert in distributed consensus algorithms." },
+      { type: "website", url: "https://condyn.eu/bio" },
+      { type: "github", url: "https://github.com/condyn/kernel" }
+    ]);
+    
+    expect(normalizedDocs.length).toBeGreaterThan(0);
 
-    const res = await POST(req);
-    expect(res.status).toBe(200);
-
-    const body = await res.json();
-    expect(body.success).toBe(true);
-    expect(body.status).toBe("VERIFIED");
+    const validationResult = await executeCareerAnalysisPipeline(normalizedDocs, providers.getCareerInferenceProvider());
+    expect(validationResult.success).toBe(true);
   });
 
   it("should return HTTP 400 when url property is missing for website or github source", async () => {
@@ -188,19 +172,28 @@ describe("CONDYN Career Analysis Protocol v1.0 — Step 19d: Multi-Source API Ro
     expect(body.issues[0].code).toBe("ERR_INVALID_GITHUB_URL");
   });
 
-  it("should preserve exact response structure compatibility (success, status, analysisId, metadata, reactFlowGraph)", async () => {
-    const req = new Request("http://localhost:3000/api/career/analyze", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        documents: [{ type: "text", title: "CV", content: "Senior Cloud Architect at Siemens." }]
-      })
-    });
+  it("should preserve exact response structure compatibility (success, status, analysisId, metadata, reactFlowGraph) (CATEGORY C)", async () => {
+    const { getCareerAnalysisRepository } = await import("../lib/career/repositories");
+    const { GET: GET_ANALYSIS } = await import("../app/api/career/analyses/[analysisId]/route");
+    const { prepareDocuments } = await import("../lib/career/orchestration/document-loader");
+    const { executeCareerAnalysisPipeline } = await import("../lib/career/pipeline");
+    
+    // 1. Manually build and persist canonical analysis (simulating successful worker execution)
+    const { normalizedDocs } = await prepareDocuments([{ type: "text", title: "CV", content: "Senior Cloud Architect at Siemens." }]);
+    const validationResult = await executeCareerAnalysisPipeline(normalizedDocs, providers.getCareerInferenceProvider());
+    const analysis = validationResult.data as any;
+    const analysisId = analysis.structured_data.analysis.metadata.analysis_id;
+    
+    const canonRepo = getCareerAnalysisRepository();
+    await canonRepo.save(analysis);
 
-    const res = await POST(req);
+    // 2. Client retrieves analysis via GET endpoint
+    const getReq = new Request(`http://localhost:3000/api/career/analyses/${analysisId}`);
+    const res = await GET_ANALYSIS(getReq, { params: Promise.resolve({ analysisId }) });
+    
     expect(res.status).toBe(200);
-
     const body = await res.json();
+
     expect(body).toHaveProperty("success", true);
     expect(body).toHaveProperty("status", "VERIFIED");
     expect(body).toHaveProperty("analysisId");

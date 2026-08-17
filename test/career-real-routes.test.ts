@@ -70,7 +70,7 @@ describe("CONDYN Career Analysis Protocol v1.0 - Step 11: Real Route Integration
     const entry = body.analyses.find((e: any) => e.analysisId === "ANL_TEST_DETERMINISTIC_ID");
     expect(entry).toBeDefined();
     expect(entry.validationState).toBe("VERIFIED");
-    expect(entry.overallConfidence).toBe(0.95); // Changed to 0.95 to match JSON
+    expect(entry.overallConfidence).toBeUndefined();
     expect(entry.ui_layout).toBeUndefined();
     expect(entry.structured_data).toBeUndefined();
   });

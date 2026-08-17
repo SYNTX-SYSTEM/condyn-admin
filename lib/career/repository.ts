@@ -52,7 +52,7 @@ export class InMemoryCareerAnalysisRepository implements CareerAnalysisRepositor
         analysisId,
         createdAt: meta.analysis_timestamp || new Date().toISOString(),
         validationState: "VERIFIED",
-        overallConfidence: meta.overall_confidence ?? consistency?.overall_cohesion_score ?? 0.0
+        overallConfidence: meta.overall_confidence,
       });
     }
     return entries;

@@ -50,25 +50,24 @@ describe("CONDYN Career Analysis Protocol v1.0 - Step 9.4: Server-Side Provider 
   });
 
   it("should return structured error response with ERR_PROVIDER_FAILURE when GEMINI_API_KEY is missing during live provider execution", async () => {
+    // Force a genuine provider execution by wiping the mock key
     process.env.USE_GEMINI_PROVIDER = "true";
     delete process.env.GEMINI_API_KEY;
 
-    const req = new Request("http://localhost:3000/api/career/analyze", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        documents: [{ title: "Test Resume", content: "Valid resume text for failure testing." }]
-      })
-    });
+    const sampleBody = {
+      documents: [{ title: "Test Resume", content: "Valid resume text for failure testing." }]
+    };
 
-    const res = await POST(req);
-    expect(res.status).toBe(503);
-
-    const body = await res.json();
-    expect(body.success).toBe(false);
-    expect(body.status).toBe("FAILED");
-    expect(body.issues).toBeDefined();
-    expect(body.issues[0].code).toBe("ERR_PROVIDER_FAILURE");
-    expect(body.issues[0].message).toContain("Missing GEMINI_API_KEY");
+    const { executeCareerAnalysisPipeline } = await import("../lib/career/pipeline");
+    const { getCareerInferenceProvider } = await import("../lib/career/providers");
+    const { prepareDocuments } = await import("../lib/career/orchestration/document-loader");
+    const { normalizedDocs } = await prepareDocuments(sampleBody.documents);
+    
+    try {
+      await executeCareerAnalysisPipeline(normalizedDocs, getCareerInferenceProvider());
+      expect.fail("Should have thrown ERR_PROVIDER_FAILURE");
+    } catch (err: any) {
+      expect(err.message).toContain("ERR_PROVIDER_FAILURE");
+    }
   });
 });

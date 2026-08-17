@@ -22,5 +22,5 @@ export interface AnalysisIndexEntry {
   analysisId: string;
   createdAt: string;
   validationState: "VERIFIED";
-  overallConfidence: number;
+  overallConfidence?: number;
 }

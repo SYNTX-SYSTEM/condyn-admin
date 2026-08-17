@@ -37,7 +37,7 @@ export class PostgresCareerAnalysisRepository implements CareerAnalysisRepositor
     const meta = analysis.structured_data.analysis.metadata;
     const consistency = analysis.structured_data.analysis.consistency;
     const createdAt = meta.analysis_timestamp || new Date().toISOString();
-    const overallConfidence = meta.overall_confidence ?? consistency?.overall_cohesion_score ?? 0.0;
+    const overallConfidence = meta.overall_confidence ?? null;
 
     // Perform Postgres UPSERT (insert with onConflictDoUpdate)
     await this.database
@@ -88,7 +88,7 @@ export class PostgresCareerAnalysisRepository implements CareerAnalysisRepositor
       analysisId: row.analysisId,
       createdAt: row.createdAt,
       validationState: row.validationState as "VERIFIED",
-      overallConfidence: row.overallConfidence
+      overallConfidence: row.overallConfidence ?? undefined
     }));
   }
 }

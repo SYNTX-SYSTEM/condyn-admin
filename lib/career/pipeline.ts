@@ -30,6 +30,7 @@ export interface DocumentLoaderInput {
 export interface PipelineExecutionOptions {
   promptResolver?: ActivePromptResolver;
   explicitKeyBase64?: string;
+  explicitAnalysisId?: string;
 }
 
 /**
@@ -80,7 +81,7 @@ export async function executeCareerAnalysisPipeline(
   const rawOutput = await provider.execute(promptBundle);
   
   const context = {
-    analysis_id: `ANL_${new Date().toISOString().replace(/[-:TZs.]/g, '').substring(0, 14)}_${Math.floor(Math.random() * 1000).toString().padStart(3, '0')}`,
+    analysis_id: options?.explicitAnalysisId || `ANL_${new Date().toISOString().replace(/[-:TZs.]/g, '').substring(0, 14)}_${Math.floor(Math.random() * 1000).toString().padStart(3, '0')}`,
     execution_duration_ms: Date.now() - startTime,
     document_count: docs.length,
     pipeline_steps: [],
@@ -116,7 +117,7 @@ export async function executeCareerAnalysisBatchPipeline(
   const rawOutput = await provider.execute(promptBundle);
   
   const context = {
-    analysis_id: `ANL_${new Date().toISOString().replace(/[-:TZs.]/g, '').substring(0, 14)}_${Math.floor(Math.random() * 1000).toString().padStart(3, '0')}`,
+    analysis_id: options?.explicitAnalysisId || `ANL_${new Date().toISOString().replace(/[-:TZs.]/g, '').substring(0, 14)}_${Math.floor(Math.random() * 1000).toString().padStart(3, '0')}`,
     execution_duration_ms: Date.now() - startTime,
     document_count: docs.length,
     pipeline_steps: [],
