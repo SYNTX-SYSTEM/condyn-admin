@@ -200,7 +200,7 @@ export class JobRepository {
           errorCode: updates.errorCode || null,
           errorSummary: updates.errorSummary || null,
           startedAt: updates.startedAt || row.startedAt,
-          completedAt: updates.completedAt || row.completedAt
+          completedAt: toStatus === "SUCCEEDED" ? (updates.completedAt || new Date().toISOString()) : (updates.completedAt || row.completedAt)
         })
         .where(and(
           eq(careerAnalysisJobs.jobId, jobId),

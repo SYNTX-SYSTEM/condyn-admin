@@ -89,7 +89,7 @@ describe("CONDYN Career Analysis Protocol v1.0 — Step 26: End-to-End Live Demo
   it("4. should render SourceDock with analyzing state indicator disabled during active ingestion", () => {
     const html = renderToString(<SourceDock isAnalyzing={true} />);
 
-    expect(html).toContain("1. WISSEN EINSPEISEN");
+    expect(html).toContain("WISSEN EINSPEISEN");
   });
 
   it("5. should maintain all 6 orbit bubbles and IdentityCoreDropZone in the field alongside intake banners", () => {

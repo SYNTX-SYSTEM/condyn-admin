@@ -33,6 +33,7 @@ export class CareerJobWorker {
       const job = await this.jobRepo.claimNextJob(this.workerId, this.leaseDurationMs);
       
       if (job) {
+        console.log(`[Worker ${this.workerId}] CLAIMED ${job.jobId} lease=${job.leaseVersion}`);
         // We have a job! Start a heartbeat interval
         const heartbeatInterval = setInterval(() => {
           this.jobRepo.heartbeatJob(job.jobId, this.workerId, job.leaseVersion, this.leaseDurationMs)

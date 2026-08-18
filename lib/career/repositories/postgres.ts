@@ -11,6 +11,7 @@ import { CareerAnalysisRepository } from "../repository";
 import { VerifiedCareerAnalysis, AnalysisIndexEntry } from "../types";
 import { db } from "../db/client";
 import { careerAnalyses } from "../db/schema";
+import { isDeepStrictEqual } from "util";
 
 /**
  * PostgreSQL implementation of the canonical `CareerAnalysisRepository` contract.
@@ -39,7 +40,15 @@ export class PostgresCareerAnalysisRepository implements CareerAnalysisRepositor
     const createdAt = meta.analysis_timestamp || new Date().toISOString();
     const overallConfidence = meta.overall_confidence ?? null;
 
-    // Perform Postgres UPSERT (insert with onConflictDoUpdate)
+    const existing = await this.load(analysisId);
+    if (existing) {
+      if (!isDeepStrictEqual(existing, analysis)) {
+        throw new Error(`ERR_IMMUTABLE_RECORD_CONFLICT: Canonical analysis ${analysisId} already exists with a divergent payload. Silent overwrites are prohibited.`);
+      }
+      return; // Idempotent success
+    }
+
+    // Perform Postgres UPSERT (insert with onConflictDoNothing)
     await this.database
       .insert(careerAnalyses)
       .values({
@@ -49,15 +58,7 @@ export class PostgresCareerAnalysisRepository implements CareerAnalysisRepositor
         overallConfidence,
         payload: analysis
       })
-      .onConflictDoUpdate({
-        target: careerAnalyses.analysisId,
-        set: {
-          createdAt,
-          validationState: "VERIFIED",
-          overallConfidence,
-          payload: analysis
-        }
-      });
+      .onConflictDoNothing();
   }
 
   async load(analysisId: string): Promise<VerifiedCareerAnalysis | null> {

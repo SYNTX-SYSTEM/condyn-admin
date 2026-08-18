@@ -94,33 +94,42 @@ export function SourceDock({ onAnalyze, isAnalyzing = false, initialStagedDocs =
     <div
       data-testid="source-dock"
       style={{
-        width: "250px",
-        backgroundColor: "rgba(10, 14, 20, 0.88)",
-        border: `1px solid ${SIL_TOKENS.colors.fieldBorder}`,
+        position: "relative",
+        width: "340px",
+        backgroundColor: "rgba(6, 10, 15, 0.92)",
+        border: `1px solid rgba(56, 229, 255, 0.2)`,
+        borderLeft: `4px solid ${SIL_TOKENS.colors.cyanActive}`,
         borderRadius: "12px",
-        padding: "16px",
+        padding: "24px",
         fontFamily: SIL_TOKENS.typography.mono,
         color: SIL_TOKENS.colors.textPrimary,
         display: "flex",
         flexDirection: "column",
-        gap: "14px",
-        boxShadow: "0 8px 24px rgba(0, 0, 0, 0.45)",
-        backdropFilter: "blur(12px)"
+        gap: "18px",
+        boxShadow: "0 12px 40px rgba(0, 0, 0, 0.7), 0 0 20px rgba(56, 229, 255, 0.1)",
+        backdropFilter: "blur(16px)"
       }}
     >
+      {/* Decorative semiotic corner bracket */}
+      <div style={{ position: "absolute", top: -1, right: -1, width: "15px", height: "15px", borderTop: `2px solid ${SIL_TOKENS.colors.cyanActive}`, borderRight: `2px solid ${SIL_TOKENS.colors.cyanActive}` }} />
+      <div style={{ position: "absolute", bottom: -1, right: -1, width: "15px", height: "15px", borderBottom: `2px solid ${SIL_TOKENS.colors.cyanActive}`, borderRight: `2px solid ${SIL_TOKENS.colors.cyanActive}` }} />
+
       <div>
         <h3
           style={{
             margin: 0,
-            fontSize: "12px",
+            fontSize: "14px",
             color: SIL_TOKENS.colors.cyanActive,
             textTransform: "uppercase",
-            letterSpacing: "1px"
+            letterSpacing: "1.5px",
+            display: "flex",
+            alignItems: "center",
+            gap: "8px"
           }}
         >
-          1. WISSEN EINSPEISEN
+          <span style={{ fontSize: "16px" }}>◰</span> WISSEN EINSPEISEN
         </h3>
-        <p style={{ margin: "4px 0 0 0", fontSize: "11px", color: SIL_TOKENS.colors.textMuted, lineHeight: 1.3 }}>
+        <p style={{ margin: "6px 0 0 0", fontSize: "12px", color: SIL_TOKENS.colors.textMuted, lineHeight: 1.4 }}>
           Fügen Sie Dokumente, Repositories oder URLs zur Analyse hinzu.
         </p>
       </div>
@@ -136,7 +145,7 @@ export function SourceDock({ onAnalyze, isAnalyzing = false, initialStagedDocs =
       />
 
       {/* Upload Zone / Action Buttons */}
-      <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
+      <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
         <button
           onClick={() => fileInputRef.current?.click()}
           style={{
@@ -144,31 +153,37 @@ export function SourceDock({ onAnalyze, isAnalyzing = false, initialStagedDocs =
             alignItems: "center",
             justifyContent: "center",
             gap: "8px",
-            padding: "10px",
+            padding: "12px",
             border: `1px dashed ${SIL_TOKENS.colors.cyanActive}`,
             borderRadius: "8px",
             backgroundColor: "rgba(56, 229, 255, 0.05)",
             color: SIL_TOKENS.colors.cyanActive,
-            fontSize: "11px",
+            fontSize: "12px",
             fontWeight: 700,
-            cursor: "pointer"
+            letterSpacing: "0.5px",
+            cursor: "pointer",
+            transition: "all 0.2s"
           }}
+          onMouseOver={(e) => e.currentTarget.style.backgroundColor = "rgba(56, 229, 255, 0.15)"}
+          onMouseOut={(e) => e.currentTarget.style.backgroundColor = "rgba(56, 229, 255, 0.05)"}
           data-testid="add-pdf-source-btn"
         >
           + PDF DOKUMENT HOCHLADEN
         </button>
 
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "6px" }}>
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px" }}>
           <button
             onClick={() => setActiveInputMode(activeInputMode === "github" ? "none" : "github")}
             style={{
-              padding: "7px 8px",
+              padding: "10px",
               backgroundColor: activeInputMode === "github" ? "rgba(56, 229, 255, 0.15)" : "rgba(3, 5, 8, 0.6)",
               border: `1px solid ${activeInputMode === "github" ? SIL_TOKENS.colors.cyanActive : SIL_TOKENS.colors.fieldBorder}`,
               borderRadius: "6px",
               color: SIL_TOKENS.colors.textPrimary,
-              fontSize: "10px",
-              cursor: "pointer"
+              fontSize: "11px",
+              fontWeight: 600,
+              cursor: "pointer",
+              transition: "all 0.2s"
             }}
             data-testid="add-github-source-btn"
           >
@@ -177,13 +192,15 @@ export function SourceDock({ onAnalyze, isAnalyzing = false, initialStagedDocs =
           <button
             onClick={() => setActiveInputMode(activeInputMode === "website" ? "none" : "website")}
             style={{
-              padding: "7px 8px",
+              padding: "10px",
               backgroundColor: activeInputMode === "website" ? "rgba(56, 229, 255, 0.15)" : "rgba(3, 5, 8, 0.6)",
               border: `1px solid ${activeInputMode === "website" ? SIL_TOKENS.colors.cyanActive : SIL_TOKENS.colors.fieldBorder}`,
               borderRadius: "6px",
               color: SIL_TOKENS.colors.textPrimary,
-              fontSize: "10px",
-              cursor: "pointer"
+              fontSize: "11px",
+              fontWeight: 600,
+              cursor: "pointer",
+              transition: "all 0.2s"
             }}
             data-testid="add-website-source-btn"
           >
@@ -194,14 +211,16 @@ export function SourceDock({ onAnalyze, isAnalyzing = false, initialStagedDocs =
         <button
           onClick={() => setActiveInputMode(activeInputMode === "text" ? "none" : "text")}
           style={{
-            padding: "7px 8px",
+            padding: "10px",
             backgroundColor: activeInputMode === "text" ? "rgba(56, 229, 255, 0.15)" : "rgba(3, 5, 8, 0.6)",
             border: `1px solid ${activeInputMode === "text" ? SIL_TOKENS.colors.cyanActive : SIL_TOKENS.colors.fieldBorder}`,
             borderRadius: "6px",
             color: SIL_TOKENS.colors.textPrimary,
-            fontSize: "10px",
+            fontSize: "11px",
+            fontWeight: 600,
             textAlign: "center",
-            cursor: "pointer"
+            cursor: "pointer",
+            transition: "all 0.2s"
           }}
           data-testid="add-text-source-btn"
         >
@@ -389,15 +408,16 @@ export function SourceDock({ onAnalyze, isAnalyzing = false, initialStagedDocs =
           disabled={isAnalyzing}
           onClick={() => onAnalyze && onAnalyze(stagedDocs)}
           style={{
-            padding: "10px",
+            padding: "14px",
             backgroundColor: isAnalyzing ? "rgba(56, 229, 255, 0.3)" : SIL_TOKENS.colors.cyanActive,
             border: "none",
             borderRadius: "8px",
             color: "#0a0e14",
-            fontWeight: 700,
-            fontSize: "11px",
+            fontWeight: 800,
+            fontSize: "13px",
+            letterSpacing: "1px",
             cursor: isAnalyzing ? "wait" : "pointer",
-            boxShadow: isAnalyzing ? "none" : "0 0 16px rgba(56, 229, 255, 0.4)",
+            boxShadow: isAnalyzing ? "none" : "0 0 20px rgba(56, 229, 255, 0.5)",
             transition: "all 0.2s ease"
           }}
           data-testid="start-intake-analysis-btn"

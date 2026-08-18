@@ -37,7 +37,23 @@
 ✅ CLOSED - Completed manual UI audit proving the continuous end-to-end integration: user input -> async job creation (202) -> worker polling -> background extraction -> frontend hydration via existing UI adapter without legacy synchronous fallbacks or fabricated demo percentages (BUG006).
 
 ### 005E Full System Acceptance
-⏳ NEXT - Final end-to-end brutal shutdown worker scenario and acceptance of Phase 5.
+✅ CLOSED - TEST005E Full System Acceptance = PASS
+
+Acceptance evidence:
+- Worker A: JOB_1786995494385_429 lease=1 → killed during execution
+- Worker B: same JOB → lease=2 → SUCCEEDED
+- canonical result rows = 1
+- browser recovered without reload
+
+Defects discovered and fixed during 005E:
+- duplicate legacy worker entrypoint / process ownership
+- standalone worker environment / fail-fast provider configuration
+- terminal success completed_at lifecycle defect
+- canonical repository payload mutability (prevented silent overwrite via onConflictDoNothing and deep equivalence checks)
+
+---
+**TEST005E PASS → PHASE 5 ASYNC ORCHESTRATION COMPLETE.** 🔥
+---
 
 **TEST RUN**: 490 passed | 8 skipped
 **BUILD**: npm run build → PASS

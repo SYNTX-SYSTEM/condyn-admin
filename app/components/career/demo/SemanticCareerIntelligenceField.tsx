@@ -330,7 +330,7 @@ export function SemanticCareerIntelligenceField({
       </div>
 
       {/* Left Compact SourceDock */}
-      <div style={{ position: "absolute", top: "24px", left: "24px", zIndex: 30 }}>
+      <div style={{ position: "absolute", top: "50%", transform: "translateY(-50%)", left: "40px", zIndex: 30 }}>
         <SourceDock onAnalyze={handleAnalyze} isAnalyzing={isAnalyzing} />
       </div>
 
