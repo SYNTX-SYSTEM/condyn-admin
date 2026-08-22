@@ -2,9 +2,9 @@
 import { useState, useEffect, useRef } from 'react';
 import ReactMarkdown from 'react-markdown';
 
-const API_URL = process.env.NEXT_PUBLIC_CONDYN_API_URL || 'http://localhost:8002';
+const API_URL = '/api/admin/proxy';
 
-export default function AnalyzePanel({ token }: { token: string }) {
+export default function AnalyzePanel() {
   const [inputText, setInputText] = useState('');
   const [context, setContext] = useState('');
   const [result, setResult] = useState('');
@@ -37,9 +37,7 @@ export default function AnalyzePanel({ token }: { token: string }) {
 
   const loadActivePrompt = async () => {
     try {
-      const res = await fetch(`${API_URL}/prompts/active/current`, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
+      const res = await fetch(`${API_URL}/prompts/active/current`);
       const data = await res.json();
       setActivePrompt(data.prompt?.filename || 'No active prompt');
     } catch (err) {
@@ -118,17 +116,13 @@ export default function AnalyzePanel({ token }: { token: string }) {
 
         res = await fetch(`${API_URL}/analyze/upload`, {
           method: 'POST',
-          headers: {
-            Authorization: `Bearer ${token}`
-          },
           body: formData
         });
       } else {
         res = await fetch(`${API_URL}/analyze`, {
           method: 'POST',
           headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`
+            'Content-Type': 'application/json'
           },
           body: JSON.stringify({
             text: inputText,

@@ -17,29 +17,29 @@ export type HudPlacement =
 export function getTooltipPlacement(angle?: number, stageId?: string): HudPlacement {
   if (typeof angle === "number") {
     const norm = ((angle % 360) + 360) % 360;
-    if (norm === 270) return "bottom";
-    if (norm === 90) return "top";
-    if (norm === 0) return "left";
-    if (norm === 180) return "right";
-    if (norm > 0 && norm < 90) return "top-left";
-    if (norm > 90 && norm < 180) return "top-right";
-    if (norm > 180 && norm < 270) return "bottom-right";
-    if (norm > 270 && norm < 360) return "bottom-left";
+    if (norm === 270) return "top"; // 270 is up
+    if (norm === 90) return "bottom"; // 90 is down
+    if (norm === 0) return "right"; // 0 is right
+    if (norm === 180) return "left"; // 180 is left
+    if (norm > 0 && norm < 90) return "bottom-right";
+    if (norm > 90 && norm < 180) return "bottom-left";
+    if (norm > 180 && norm < 270) return "top-left";
+    if (norm > 270 && norm < 360) return "top-right";
   }
 
   switch (stageId) {
     case "01":
-      return "bottom";
-    case "02":
-      return "bottom-left";
-    case "03":
-      return "top-left";
-    case "04":
       return "top";
-    case "05":
-      return "top-right";
-    case "06":
+    case "02":
+      return "right";
+    case "03":
       return "bottom-right";
+    case "04":
+      return "bottom";
+    case "05":
+      return "bottom-left";
+    case "06":
+      return "top-left";
     default:
       return "top";
   }
@@ -54,24 +54,24 @@ function getTooltipStyle(placement: HudPlacement): React.CSSProperties {
     borderRadius: "10px",
     padding: "16px 18px",
     boxShadow: `0 12px 36px rgba(0, 0, 0, 0.9), 0 0 24px rgba(56, 229, 255, 0.32)`,
-    backdropFilter: "blur(16px)",
     backgroundImage: "radial-gradient(rgba(56, 229, 255, 0.12) 1px, transparent 1px)",
     backgroundSize: "14px 14px",
     zIndex: 50,
     textAlign: "left",
-    pointerEvents: "none",
-    fontFamily: SIL_TOKENS.typography.mono
+    pointerEvents: "auto",
+    fontFamily: SIL_TOKENS.typography.mono,
+    WebkitFontSmoothing: "antialiased"
   };
 
   switch (placement) {
     case "top":
-      return { ...base, bottom: "215px", left: "50%", transform: "translateX(-50%)" };
+      return { ...base, bottom: "215px", left: "-106px" }; // (380 - 168) / 2 = 106
     case "bottom":
-      return { ...base, top: "215px", left: "50%", transform: "translateX(-50%)" };
+      return { ...base, top: "215px", left: "-106px" };
     case "left":
-      return { ...base, right: "215px", top: "50%", transform: "translateY(-50%)" };
+      return { ...base, right: "215px", top: "-50px" }; // Approximate vertical center without dynamic calc
     case "right":
-      return { ...base, left: "215px", top: "50%", transform: "translateY(-50%)" };
+      return { ...base, left: "215px", top: "-50px" };
     case "top-left":
       return { ...base, bottom: "175px", right: "175px" };
     case "top-right":
@@ -81,7 +81,7 @@ function getTooltipStyle(placement: HudPlacement): React.CSSProperties {
     case "bottom-right":
       return { ...base, top: "175px", left: "175px" };
     default:
-      return { ...base, bottom: "215px", left: "50%", transform: "translateX(-50%)" };
+      return { ...base, bottom: "215px", left: "-106px" };
   }
 }
 
@@ -303,8 +303,12 @@ export function OrbitalResonanceBubble({
           50% { opacity: 0.9; }
         }
         @keyframes hologramFloat {
-          0%, 100% { transform: translateY(0px); }
-          50% { transform: translateY(-4px); }
+          0%, 100% { translate: 0px 0px; }
+          50% { translate: 0px -4px; }
+        }
+        @keyframes moonOrbit {
+          from { transform: rotate(0deg) translateX(110px) rotate(0deg); }
+          to { transform: rotate(360deg) translateX(110px) rotate(-360deg); }
         }
       `}</style>
 
@@ -471,8 +475,43 @@ export function OrbitalResonanceBubble({
           {`${itemCount} items`}
         </span>
 
+        {/* Phase 3c: Orbiting Moons representing Capabilities */}
+        {!isActive && itemCount > 0 && (
+          <div
+            style={{
+              position: "absolute",
+              top: "50%",
+              left: "50%",
+              width: 0,
+              height: 0,
+              pointerEvents: "none"
+            }}
+          >
+            {Array.from({ length: Math.min(itemCount, 24) }).map((_, i, arr) => {
+              const delay = -(160 / arr.length) * i;
+              return (
+                <div
+                  key={`moon-${i}`}
+                  style={{
+                    position: "absolute",
+                    top: "-3px",
+                    left: "-3px",
+                    width: "9px",
+                    height: "9px",
+                    borderRadius: "50%",
+                    backgroundColor: SIL_TOKENS.colors.cyanActive,
+                    boxShadow: `0 0 8px ${SIL_TOKENS.colors.cyanActive}`,
+                    animation: `moonOrbit 160s linear infinite`,
+                    animationDelay: `${delay}s`
+                  }}
+                />
+              );
+            })}
+          </div>
+        )}
+
         {/* Freely Floating Scientific Hologram HUD with Tether Line */}
-        {(isHovered || isActive) && (
+        {(isHovered && !isActive) && (
           <>
             {/* Tether Energy Line connecting Planet Bubble to Hologram HUD */}
             <svg
@@ -716,8 +755,10 @@ export function OrbitalResonanceBubble({
                   <button
                     key={act.id}
                     data-testid={`hud-action-${act.id}`}
+                    disabled={act.id === "inspect-sources"}
                     onClick={(e) => {
                       e.stopPropagation();
+                      if (act.id === "inspect-sources") return;
                       if (onHudAction) {
                         onHudAction(act.label as any, stageId);
                       }
@@ -732,15 +773,18 @@ export function OrbitalResonanceBubble({
                       letterSpacing: "0.5px",
                       padding: "6px 4px",
                       borderRadius: "4px",
-                      cursor: "pointer",
+                      cursor: act.id === "inspect-sources" ? "not-allowed" : "pointer",
+                      opacity: act.id === "inspect-sources" ? 0.3 : 1,
                       textAlign: "center",
                       transition: "all 0.2s ease"
                     }}
                     onMouseEnter={(e) => {
+                      if (act.id === "inspect-sources") return;
                       e.currentTarget.style.backgroundColor = act.bg.replace("0.16", "0.32");
                       e.currentTarget.style.borderColor = act.border;
                     }}
                     onMouseLeave={(e) => {
+                      if (act.id === "inspect-sources") return;
                       e.currentTarget.style.backgroundColor = act.bg;
                       e.currentTarget.style.borderColor = `${act.border}77`;
                     }}

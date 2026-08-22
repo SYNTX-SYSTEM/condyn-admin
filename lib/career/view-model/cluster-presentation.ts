@@ -60,9 +60,27 @@ export function buildSilClusterPresentation(
     }
 
     subClusters = items.map((item, idx) => {
-      // Radially distribute clusters around the L1 zoom origin
-      const angle = (idx * (360 / Math.max(items.length, 1))) * (Math.PI / 180);
-      const radius = 130;
+      // Collision-free layout strategy (1-ring or 2-ring)
+      let radius = 150; // Tighter radius for smaller cards
+      let angleDeg = 0;
+      
+      if (items.length <= 5) {
+        // 1-ring layout, offset by 45deg to avoid landing on incoming energy rays (multiples of 90)
+        angleDeg = (idx * (360 / items.length)) + 45;
+      } else {
+        // 2-ring layout for 6+ items to prevent overlap
+        const isInner = idx % 2 === 0;
+        radius = isInner ? 130 : 220;
+        
+        // Distribute evenly but slightly staggered, offset to avoid rays
+        const halfCount = Math.ceil(items.length / 2);
+        const segmentId = Math.floor(idx / 2);
+        const baseAngle = segmentId * (360 / halfCount) + 30; // Offset by 30deg
+        
+        angleDeg = baseAngle + (isInner ? 0 : (360 / halfCount) / 2);
+      }
+      
+      const angle = angleDeg * (Math.PI / 180);
       const dx = Math.round(Math.cos(angle) * radius);
       const dy = Math.round(Math.sin(angle) * radius);
 
@@ -72,23 +90,26 @@ export function buildSilClusterPresentation(
       }
 
       // Generate localized evidence nodes for this cluster
-      const snippet = item.evidenceSummary || item.rationale || item.description || "Inferred from document context.";
+      const snippet = item.evidenceSummary || item.rationale || item.description;
+      const nodeId = item.id || item.capabilityId || item.jobId || item.requirementId || item.companyId || `cl-${activeStageId}-${idx}`;
       
+      const evidences: SilClusterEvidence[] = snippet ? [
+        {
+          id: `ev-${activeStageId}-${idx}-1`,
+          title: "Primary Evidence",
+          sourceType: "SRC",
+          snippet
+        }
+      ] : [];
+
       return {
-        id: `cl-${activeStageId}-${idx}`,
+        id: nodeId,
         title: item[titleKey] || "Unknown Node",
         confidence: confStr,
-        evidenceCount: 1,
+        evidenceCount: evidences.length > 0 ? evidences.length : undefined,
         dx,
         dy,
-        evidences: [
-          {
-            id: `ev-${activeStageId}-${idx}-1`,
-            title: "Canonical Evidence",
-            sourceType: "SRC",
-            snippet
-          }
-        ]
+        evidences
       };
     });
 
@@ -101,7 +122,7 @@ export function buildSilClusterPresentation(
   subClusters.forEach((cl) => {
     cl.evidences.forEach((ev, i) => {
       ev.sourceType = sourcePresentation.labels[i % sourcePresentation.labels.length] || "SRC";
-      ev.title = sourcePresentation.titles[i % sourcePresentation.titles.length] || "Verified Object";
+      ev.title = sourcePresentation.titles[i % sourcePresentation.titles.length] || "Source Document";
     });
   });
 

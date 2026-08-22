@@ -45,10 +45,16 @@ export class GeminiEmbeddingProvider implements EmbeddingProvider {
 
       const response = await ai.models.embedContent({
         model: this.model,
-        contents: cleanText
+        contents: cleanText,
+        config: {
+          outputDimensionality: 768
+        }
       });
 
-      const values = (response as any)?.embedding?.values || (response as any)?.values;
+      const values =
+        (response as any)?.embeddings?.[0]?.values ||
+        (response as any)?.embedding?.values ||
+        (response as any)?.values;
       if (!values || !Array.isArray(values) || values.length === 0) {
         throw new Error("Empty or invalid embedding vector returned by Gemini API.");
       }

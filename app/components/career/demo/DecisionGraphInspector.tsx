@@ -93,16 +93,14 @@ export const DecisionGraphInspector: React.FC<DecisionGraphInspectorProps> = ({
     evidenceNode?.confidence ??
     (upstreamEvidences.length > 0
       ? upstreamEvidences.reduce((s, e) => s + e.confidence, 0) / upstreamEvidences.length
-      : capabilityNode
-        ? 0.88
-        : 1.0);
+      : undefined);
 
   const hasMissingOrWeakEvidence =
-    avgConfidence < 0.70 || (capabilityNode && upstreamEvidences.length === 0);
+    (avgConfidence !== undefined && avgConfidence < 0.70) || (capabilityNode && upstreamEvidences.length === 0);
 
   const heatmapToken = getEvidenceHeatmapToken(
-    avgConfidence,
-    hasMissingOrWeakEvidence && avgConfidence <= 0
+    avgConfidence ?? 0,
+    hasMissingOrWeakEvidence && (avgConfidence === undefined || avgConfidence <= 0)
   );
 
   const isBlocked = hasMissingOrWeakEvidence;

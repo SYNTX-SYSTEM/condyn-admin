@@ -41,6 +41,7 @@ export function SemanticCareerIntelligenceField({
   const [activeData, setActiveData] = useState(data);
   const [activeStageId, setActiveStageId] = useState<string | null>(null);
   const [hoveredStageId, setHoveredStageId] = useState<string | null>(null);
+  const hoverTimeoutRef = React.useRef<NodeJS.Timeout | null>(null);
   const [zoomLevel, setZoomLevel] = useState<SemanticZoomLevel>(0);
   const [selectedClusterId, setSelectedClusterId] = useState<string | null>(null);
   
@@ -86,12 +87,17 @@ export function SemanticCareerIntelligenceField({
 
   const handleHudAction = (action: "OPEN EVIDENCE" | "INSPECT SOURCES" | "VIEW MATCHES", stageId: string) => {
     setActiveStageId(stageId);
-    if (action === "OPEN EVIDENCE") {
+    if (action === "OPEN EVIDENCE" || action === "INSPECT SOURCES") {
       setZoomLevel(2);
-      setSelectedClusterId(`cl-${stageId}-1`);
-    } else if (action === "INSPECT SOURCES") {
-      setZoomLevel(2);
-      setSelectedClusterId(`cl-${stageId}-1`);
+      
+      let firstId = `cl-${stageId}-0`;
+      if (stageId === "02" && activeData.capabilities?.length > 0) firstId = activeData.capabilities[0].id || activeData.capabilities[0].capabilityId || firstId;
+      if (stageId === "03" && activeData.companyMatches?.length > 0) firstId = activeData.companyMatches[0].companyId || firstId;
+      if (stageId === "04" && activeData.roleMatches?.length > 0) firstId = activeData.roleMatches[0].jobId || firstId;
+      if (stageId === "05" && activeData.tensionField?.length > 0) firstId = activeData.tensionField[0].requirementId || firstId;
+      if (stageId === "06" && activeData.evolutionPaths?.length > 0) firstId = activeData.evolutionPaths[0].id || firstId;
+      
+      setSelectedClusterId(firstId);
     } else if (action === "VIEW MATCHES") {
       setZoomLevel(1);
       setSelectedClusterId(null);
@@ -245,6 +251,11 @@ export function SemanticCareerIntelligenceField({
       data-zoom-level={zoomLevel}
       data-focused-stage-id={activeStageId || ""}
       data-camera-scale={cameraScale}
+      onClick={() => {
+        if (graphFocus) {
+          setSelectedGraphNodeId(null);
+        }
+      }}
       style={{
         backgroundColor: SIL_TOKENS.colors.void,
         color: SIL_TOKENS.colors.textPrimary,
@@ -292,10 +303,11 @@ export function SemanticCareerIntelligenceField({
             <React.Fragment key={item.level}>
               {idx > 0 && <span style={{ color: "rgba(56, 229, 255, 0.3)", fontSize: "9px" }}>●──</span>}
               <button
+                suppressHydrationWarning
                 type="button"
-                disabled={!item.isEnabled}
+                disabled={item.isEnabled ? undefined : true}
                 aria-current={isCurrent ? "step" : undefined}
-                aria-disabled={!item.isEnabled ? "true" : undefined}
+                aria-disabled={item.isEnabled ? undefined : true}
                 onClick={(e) => {
                   e.stopPropagation();
                   if (!item.isEnabled) return;
@@ -367,7 +379,7 @@ export function SemanticCareerIntelligenceField({
           data-testid="intake-success-banner"
           style={{
             position: "absolute",
-            top: "80px",
+            bottom: "32px",
             left: "50%",
             transform: "translateX(-50%)",
             backgroundColor: "rgba(10, 24, 20, 0.95)",
@@ -639,6 +651,19 @@ export function SemanticCareerIntelligenceField({
                 const targetX = Math.round((center + Math.cos(angleRad) * radius) * 100) / 100;
                 const targetY = Math.round((center + Math.sin(angleRad) * radius) * 100) / 100;
                 const isRayActive = focusedStageId === st.stageId;
+                
+                let isRayRelated = false;
+                if (graphFocus) {
+                  const focusSet = new Set([graphFocus.focusNodeId, ...graphFocus.upstreamNodes, ...graphFocus.downstreamNodes]);
+                  if (st.stageId === "01") isRayRelated = evidenceGraph.sourceNodes.some(n => focusSet.has(n.id)) || evidenceGraph.evidenceNodes.some(n => focusSet.has(n.id));
+                  if (st.stageId === "02") isRayRelated = evidenceGraph.capabilityNodes.some(n => focusSet.has(n.id));
+                  if (st.stageId === "03") isRayRelated = evidenceGraph.organisationNodes.some(n => focusSet.has(n.id));
+                  if (st.stageId === "04") isRayRelated = evidenceGraph.jobNodes.some(n => focusSet.has(n.id)) || evidenceGraph.requirementNodes.some(n => focusSet.has(n.id));
+                }
+                
+                const rayStroke = graphFocus 
+                  ? (isRayRelated ? SIL_TOKENS.colors.cyanActive : "rgba(56, 229, 255, 0.05)")
+                  : (isRayActive ? SIL_TOKENS.colors.cyanActive : "rgba(56, 229, 255, 0.28)");
 
                 return (
                   <g key={`ray-${st.stageId}`} data-testid={`energy-ray-${st.stageId}`}>
@@ -647,17 +672,17 @@ export function SemanticCareerIntelligenceField({
                       y1={center}
                       x2={targetX}
                       y2={targetY}
-                      stroke={isRayActive ? SIL_TOKENS.colors.cyanActive : "rgba(56, 229, 255, 0.28)"}
-                      strokeWidth={isRayActive ? "2.5" : "1.2"}
-                      strokeDasharray={isRayActive ? undefined : "3 3"}
+                      stroke={rayStroke}
+                      strokeWidth={isRayActive || (graphFocus && isRayRelated) ? "2.5" : "1.2"}
+                      strokeDasharray={isRayActive || (graphFocus && isRayRelated) ? undefined : "3 3"}
                       style={{ transition: "all 0.35s ease" }}
                     />
 
                     <circle
                       data-testid="photon-stream-core-to-orbit"
-                      r={isRayActive ? "3" : "1.8"}
-                      fill={isRayActive ? "#ffffff" : SIL_TOKENS.colors.cyanActive}
-                      opacity={isRayActive ? 1 : 0.65}
+                      r={isRayActive || (graphFocus && isRayRelated) ? "3" : "1.8"}
+                      fill={isRayActive || (graphFocus && isRayRelated) ? "#ffffff" : SIL_TOKENS.colors.cyanActive}
+                      opacity={isRayActive || (graphFocus && isRayRelated) ? 1 : (graphFocus ? 0.1 : 0.65)}
                     >
                       <animateMotion
                         path={`M ${center} ${center} L ${targetX} ${targetY}`}
@@ -695,10 +720,12 @@ export function SemanticCareerIntelligenceField({
             <div
               data-testid="identity-core-wrapper"
               style={{
-                zIndex: 5,
-                transition: "all 0.35s ease",
-                transform: focusedStageId ? "scale(1.03)" : "scale(1)",
-                filter: focusedStageId ? `drop-shadow(0 0 25px rgba(56, 229, 255, 0.55))` : undefined
+                zIndex: 10,
+                opacity: focusedStageId ? 0.35 : 1,
+                transform: focusedStageId ? "scale(0.85)" : "scale(1)",
+                filter: focusedStageId ? "grayscale(80%)" : undefined,
+                pointerEvents: focusedStageId ? "none" : "auto",
+                transition: "all 0.5s ease"
               }}
             >
               <IdentityCoreDropZone sources={activeData.sources} isCommunicating={!!focusedStageId} />
@@ -720,7 +747,19 @@ export function SemanticCareerIntelligenceField({
                 const y = Math.round(Math.sin(angleRad) * radius * 100) / 100;
                 const isStageActive = activeStageId === st.stageId;
                 const isStageHovered = hoveredStageId === st.stageId;
-                const isStageDimmed = focusedStageId !== null && focusedStageId !== st.stageId;
+                
+                let isStageRelated = false;
+                if (graphFocus) {
+                  const focusSet = new Set([graphFocus.focusNodeId, ...graphFocus.upstreamNodes, ...graphFocus.downstreamNodes]);
+                  if (st.stageId === "01") isStageRelated = evidenceGraph.sourceNodes.some(n => focusSet.has(n.id)) || evidenceGraph.evidenceNodes.some(n => focusSet.has(n.id));
+                  if (st.stageId === "02") isStageRelated = evidenceGraph.capabilityNodes.some(n => focusSet.has(n.id));
+                  if (st.stageId === "03") isStageRelated = evidenceGraph.organisationNodes.some(n => focusSet.has(n.id));
+                  if (st.stageId === "04") isStageRelated = evidenceGraph.jobNodes.some(n => focusSet.has(n.id)) || evidenceGraph.requirementNodes.some(n => focusSet.has(n.id));
+                }
+
+                // If a focus exists, stages are dimmed unless they are related
+                const isStageDimmed = graphFocus ? !isStageRelated : (focusedStageId !== null && focusedStageId !== st.stageId);
+
 
                 return (
                   <div
@@ -748,9 +787,17 @@ export function SemanticCareerIntelligenceField({
                         const newActive = isStageActive ? null : st.stageId;
                         setActiveStageId(newActive);
                         setZoomLevel(newActive ? 1 : 0);
+                        if (!newActive) setSelectedGraphNodeId(null);
                       }}
-                      onMouseEnter={() => setHoveredStageId(st.stageId)}
-                      onMouseLeave={() => setHoveredStageId(null)}
+                      onMouseEnter={() => {
+                        if (hoverTimeoutRef.current) clearTimeout(hoverTimeoutRef.current);
+                        setHoveredStageId(st.stageId);
+                      }}
+                      onMouseLeave={() => {
+                        hoverTimeoutRef.current = setTimeout(() => {
+                          setHoveredStageId(null);
+                        }, 250);
+                      }}
                       onHudAction={handleHudAction}
                       accentColor={st.color}
                     />
@@ -761,28 +808,38 @@ export function SemanticCareerIntelligenceField({
 
             {/* Phase 3c: Continuous Semantic Space Sub-Clusters (L1) */}
             {zoomLevel >= 1 && activeStageId && (
-              <>
+              <div
+                style={{
+                  position: "absolute",
+                  left: `${center + activeOrbitX}px`,
+                  top: `${center + activeOrbitY}px`,
+                  width: 0,
+                  height: 0,
+                  zIndex: 14,
+                  animation: "rotateClockwise 160s linear infinite"
+                }}
+              >
                 <svg
                   width="800"
                   height="800"
                   style={{
                     position: "absolute",
-                    top: 0,
-                    left: 0,
+                    top: -400,
+                    left: -400,
                     pointerEvents: "none",
-                    zIndex: 14
                   }}
                 >
                   {subClusters.map((cluster) => (
                     <line
                       key={`line-${cluster.id}`}
-                      x1={center + activeOrbitX}
-                      y1={center + activeOrbitY}
-                      x2={Math.round((center + activeOrbitX + cluster.dx) * 100) / 100}
-                      y2={Math.round((center + activeOrbitY + cluster.dy) * 100) / 100}
-                      stroke={SIL_TOKENS.colors.cyanActive}
-                      strokeWidth="1.5"
-                      strokeDasharray="3 3"
+                      x1={400}
+                      y1={400}
+                      x2={Math.round((400 + cluster.dx) * 100) / 100}
+                      y2={Math.round((400 + cluster.dy) * 100) / 100}
+                      stroke={(graphFocus && (cluster.id === graphFocus.focusNodeId || graphFocus.upstreamNodes.includes(cluster.id) || graphFocus.downstreamNodes.includes(cluster.id))) ? SIL_TOKENS.colors.cyanActive : (graphFocus ? "rgba(56, 229, 255, 0.05)" : SIL_TOKENS.colors.cyanActive)}
+                      strokeWidth={(graphFocus && (cluster.id === graphFocus.focusNodeId || graphFocus.upstreamNodes.includes(cluster.id) || graphFocus.downstreamNodes.includes(cluster.id))) ? "2.5" : "1.5"}
+                      strokeDasharray={(graphFocus && (cluster.id === graphFocus.focusNodeId || graphFocus.upstreamNodes.includes(cluster.id) || graphFocus.downstreamNodes.includes(cluster.id))) ? undefined : "3 3"}
+                      style={{ transition: "all 0.3s ease" }}
                     />
                   ))}
                 </svg>
@@ -791,36 +848,43 @@ export function SemanticCareerIntelligenceField({
                   <div
                     key={cluster.id}
                     data-testid="subspace-cluster"
-                    onClick={() => {
+                    onClick={(e) => {
+                      e.stopPropagation();
                       setSelectedClusterId(cluster.id);
+                      setSelectedGraphNodeId(cluster.id);
                       setZoomLevel(2);
                     }}
                     style={{
                       position: "absolute",
-                      left: `${Math.round((center + activeOrbitX + cluster.dx - 90) * 100) / 100}px`,
-                      top: `${Math.round((center + activeOrbitY + cluster.dy - 35) * 100) / 100}px`,
-                      width: "180px",
+                      left: `${Math.round((cluster.dx - 68) * 100) / 100}px`,
+                      top: `${Math.round((cluster.dy - 25) * 100) / 100}px`,
+                      width: "135px",
                       backgroundColor: "rgba(10, 18, 30, 0.92)",
                       border: `1px solid ${selectedClusterId === cluster.id ? SIL_TOKENS.colors.cyanActive : "rgba(56, 229, 255, 0.45)"}`,
-                      borderRadius: "8px",
-                      padding: "10px",
+                      borderRadius: "6px",
+                      padding: "6px 8px",
                       cursor: "pointer",
                       zIndex: 15,
-                      boxShadow: "0 0 16px rgba(56, 229, 255, 0.18)"
+                      boxShadow: (graphFocus && cluster.id === graphFocus.focusNodeId) ? "0 0 25px rgba(56, 229, 255, 0.6)" : "0 0 16px rgba(56, 229, 255, 0.18)",
+                      opacity: (graphFocus && cluster.id !== graphFocus.focusNodeId && !graphFocus.upstreamNodes.includes(cluster.id) && !graphFocus.downstreamNodes.includes(cluster.id)) ? 0.3 : 1,
+                      filter: (graphFocus && cluster.id !== graphFocus.focusNodeId && !graphFocus.upstreamNodes.includes(cluster.id) && !graphFocus.downstreamNodes.includes(cluster.id)) ? "grayscale(80%)" : undefined,
+                      transition: "all 0.3s ease",
+                      transformOrigin: "center center",
+                      animation: "rotateCounterClockwise 160s linear infinite"
                     }}
                   >
-                    <div style={{ fontSize: "9px", color: SIL_TOKENS.colors.cyanActive, fontWeight: 700 }}>
-                      CLUSTER NODE // {cluster.confidence}
+                    <div style={{ fontSize: "8px", color: SIL_TOKENS.colors.cyanActive, fontWeight: 700 }}>
+                      CLUSTER NODE {cluster.confidence ? `// ${cluster.confidence}` : "// N/A"}
                     </div>
-                    <div style={{ fontSize: "11px", fontWeight: 700, margin: "4px 0" }}>
+                    <div style={{ fontSize: "10px", fontWeight: 700, margin: "3px 0", lineHeight: "1.2" }}>
                       {cluster.title}
                     </div>
-                    <div style={{ fontSize: "9px", color: SIL_TOKENS.colors.textMuted }}>
-                      {cluster.evidenceCount} Verified Objects
+                    <div style={{ fontSize: "8px", color: SIL_TOKENS.colors.textMuted }}>
+                      {cluster.evidenceCount !== undefined ? `${cluster.evidenceCount} Evidences` : "NO EVIDENCE"}
                     </div>
                   </div>
                 ))}
-              </>
+              </div>
             )}
 
             {/* Phase 3c: Continuous Semantic Space Evidence Nodes (L2) */}
@@ -866,9 +930,8 @@ export function SemanticCareerIntelligenceField({
           data-testid="semantic-focus-panel"
           style={{
             position: "absolute",
-            top: "54px",
-            left: "50%",
-            transform: "translateX(-50%)",
+            bottom: "32px",
+            right: "32px",
             zIndex: 25,
             backgroundColor: "rgba(6, 11, 18, 0.92)",
             border: `1px solid ${SIL_TOKENS.colors.cyanActive}`,

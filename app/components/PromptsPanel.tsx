@@ -1,7 +1,7 @@
 'use client';
 import { useState, useEffect } from 'react';
 
-const API_URL = process.env.NEXT_PUBLIC_CONDYN_API_URL || 'http://localhost:8002';
+const API_URL = '/api/admin/proxy';
 
 interface Prompt {
   id: string;
@@ -13,7 +13,7 @@ interface Prompt {
   content?: string;
 }
 
-export default function PromptsPanel({ token }: { token: string }) {
+export default function PromptsPanel() {
   const [prompts, setPrompts] = useState<Prompt[]>([]);
   const [selected, setSelected] = useState<Prompt | null>(null);
   const [editContent, setEditContent] = useState('');
@@ -47,9 +47,7 @@ export default function PromptsPanel({ token }: { token: string }) {
 
   const loadPrompts = async () => {
     try {
-      const res = await fetch(`${API_URL}/prompts`, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
+      const res = await fetch(`${API_URL}/prompts`);
       const data = await res.json();
       setPrompts(data.prompts || data);
     } catch (err) {
@@ -59,9 +57,7 @@ export default function PromptsPanel({ token }: { token: string }) {
 
   const loadPromptContent = async (promptId: string) => {
     try {
-      const res = await fetch(`${API_URL}/prompts/${promptId}`, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
+      const res = await fetch(`${API_URL}/prompts/${promptId}`);
       const data = await res.json();
       
       const content = data.content || '';
@@ -84,8 +80,7 @@ export default function PromptsPanel({ token }: { token: string }) {
       await fetch(`${API_URL}/prompts/${selected.id}`, {
         method: 'PUT',
         headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`
+          'Content-Type': 'application/json'
         },
         body: JSON.stringify({ content: editContent })
       });
@@ -107,8 +102,7 @@ export default function PromptsPanel({ token }: { token: string }) {
       const res = await fetch(`${API_URL}/prompts`, {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`
+          'Content-Type': 'application/json'
         },
         body: JSON.stringify({
           filename: editFilename,
@@ -137,8 +131,7 @@ export default function PromptsPanel({ token }: { token: string }) {
     setLoading(true);
     try {
       await fetch(`${API_URL}/prompts/${selected.id}/activate`, {
-        method: 'POST',
-        headers: { Authorization: `Bearer ${token}` }
+        method: 'POST'
       });
       await loadPrompts();
       await loadPromptContent(selected.id);
@@ -156,8 +149,7 @@ export default function PromptsPanel({ token }: { token: string }) {
     setLoading(true);
     try {
       await fetch(`${API_URL}/prompts/${selected.id}`, {
-        method: 'DELETE',
-        headers: { Authorization: `Bearer ${token}` }
+        method: 'DELETE'
       });
       setSelected(null);
       setEditContent('');

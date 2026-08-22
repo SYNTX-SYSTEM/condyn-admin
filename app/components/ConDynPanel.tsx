@@ -6,7 +6,6 @@ import MarkdownPDF from './MarkdownPDF';
 
 const ADMIN_USER = process.env.NEXT_PUBLIC_ADMIN_USERNAME || 'condyn';
 const ADMIN_PASS = process.env.NEXT_PUBLIC_ADMIN_PASSWORD || 'condyn';
-const BACKEND_TOKEN = process.env.NEXT_PUBLIC_BACKEND_TOKEN || '';
 
 export default function ConDynPanel() {
   const [authenticated, setAuthenticated] = useState(false);
@@ -18,7 +17,6 @@ export default function ConDynPanel() {
 
   useEffect(() => {
     console.log('ConDyn Admin - Auth Ready');
-    console.log('Backend Token:', BACKEND_TOKEN ? 'Configured ✓' : 'Missing ✗');
   }, []);
 
   const handleLogin = (e: React.FormEvent) => {
@@ -305,6 +303,31 @@ export default function ConDynPanel() {
           </button>
 
           <button
+            onClick={() => { window.location.href = '/career/demo'; }}
+            style={{
+              padding: '8px 16px',
+              fontSize: '13px',
+              fontWeight: '600',
+              color: '#1565C0',
+              background: 'transparent',
+              border: '1px solid #1565C0',
+              borderRadius: '6px',
+              cursor: 'pointer',
+              transition: 'all 0.15s ease'
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.background = '#1565C0';
+              e.currentTarget.style.color = '#FFFFFF';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.background = 'transparent';
+              e.currentTarget.style.color = '#1565C0';
+            }}
+          >
+            DECISION LOOPER
+          </button>
+
+          <button
             onClick={() => setAuthenticated(false)}
             style={{
               padding: '8px 16px',
@@ -332,8 +355,8 @@ export default function ConDynPanel() {
       </div>
 
       <div style={{ padding: '32px' }}>
-        {activeTab === 'prompts' && <PromptsPanel token={BACKEND_TOKEN} />}
-        {activeTab === 'analyze' && <AnalyzePanel token={BACKEND_TOKEN} />}
+        {activeTab === 'prompts' && <PromptsPanel />}
+        {activeTab === 'analyze' && <AnalyzePanel />}
         {activeTab === 'pdf' && <MarkdownPDF />}
       </div>
     </div>

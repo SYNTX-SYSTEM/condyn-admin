@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { SIL_TOKENS } from "./SILTokens";
 import { SilSourcePresentation } from "../../../../lib/career/view-model/source-presentation";
+import type { SilClusterPresentation } from "../../../../lib/career/view-model/cluster-presentation";
 
 export type SemanticZoomLevel = 0 | 1 | 2 | 3 | 4;
 
@@ -13,6 +14,7 @@ export interface OrbitalSubspaceViewProps {
   zoomLevel: SemanticZoomLevel;
   onZoomChange?: (level: SemanticZoomLevel) => void;
   sourcePresentation?: SilSourcePresentation;
+  clusters?: SilClusterPresentation[];
 }
 
 interface SubCluster {
@@ -28,91 +30,7 @@ interface SubCluster {
   }>;
 }
 
-const DEMO_CLUSTERS: Record<string, SubCluster[]> = {
-  "01": [
-    {
-      id: "cl-01-1",
-      title: "Core Identity & Archetype",
-      confidence: "98%",
-      evidenceCount: 14,
-      evidences: [
-        { id: "ev-1", title: "Principal Systems Architect Profile", sourceType: "PDF", snippet: "Demonstrates 10+ years architecting distributed systems." }
-      ]
-    },
-    {
-      id: "cl-01-2",
-      title: "Executive Technical Leadership",
-      confidence: "94%",
-      evidenceCount: 8,
-      evidences: [
-        { id: "ev-2", title: "Engineering Organization Scalability", sourceType: "PDF", snippet: "Managed cross-functional teams across 3 timezones." }
-      ]
-    }
-  ],
-  "02": [
-    {
-      id: "cl-02-1",
-      title: "Distributed Architecture & Cloud",
-      confidence: "97%",
-      evidenceCount: 22,
-      evidences: [
-        { id: "ev-201", title: "Cloud-Native Microservices Spec", sourceType: "PDF", snippet: "Event-driven CQRS architecture design document." },
-        { id: "ev-202", title: "Kubernetes Cluster Operator Engine", sourceType: "GitHub", snippet: "pkg/operator/reconciler.go lines 42-128" }
-      ]
-    },
-    {
-      id: "cl-02-2",
-      title: "React & Semantic Frontend Systems",
-      confidence: "99%",
-      evidenceCount: 18,
-      evidences: [
-        { id: "ev-203", title: "SIL v2.5 / v3.0 Design System", sourceType: "GitHub", snippet: "app/components/career/demo/SemanticCareerIntelligenceField.tsx" }
-      ]
-    },
-    {
-      id: "cl-02-3",
-      title: "AI Agentic Coding & Pipelines",
-      confidence: "95%",
-      evidenceCount: 15,
-      evidences: [
-        { id: "ev-204", title: "Career Analysis Multi-Source Engine", sourceType: "GitHub", snippet: "lib/career/adapter.ts & matching/demo-pool.ts" }
-      ]
-    }
-  ]
-};
-
-function getClustersForStage(stageId: string): SubCluster[] {
-  return DEMO_CLUSTERS[stageId] || [
-    {
-      id: `cl-${stageId}-1`,
-      title: "Primary Field Competency Cluster",
-      confidence: "96%",
-      evidenceCount: 12,
-      evidences: [
-        {
-          id: `ev-${stageId}-1`,
-          title: "Verified Semantic Grounding Object",
-          sourceType: "PDF",
-          snippet: "Extracted verified evidence segment matching stage ontology."
-        }
-      ]
-    },
-    {
-      id: `cl-${stageId}-2`,
-      title: "Secondary Resonance Vector",
-      confidence: "92%",
-      evidenceCount: 9,
-      evidences: [
-        {
-          id: `ev-${stageId}-2`,
-          title: "Production System Reference",
-          sourceType: "GitHub",
-          snippet: "Repository commit log verification passed."
-        }
-      ]
-    }
-  ];
-}
+// DEMO_CLUSTERS removed to enforce epistemic truth.
 
 export function OrbitalSubspaceView({
   stageId,
@@ -120,26 +38,27 @@ export function OrbitalSubspaceView({
   subtitle,
   zoomLevel,
   onZoomChange,
-  sourcePresentation
+  sourcePresentation,
+  clusters: realClusters
 }: OrbitalSubspaceViewProps) {
   const [selectedClusterId, setSelectedClusterId] = useState<string | null>(null);
   const [selectedEvidenceId, setSelectedEvidenceId] = useState<string | null>(null);
 
-  const clusters = React.useMemo(() => {
-    const base = getClustersForStage(stageId);
-    if (!sourcePresentation || sourcePresentation.labels.length === 0) return base;
+  const displayClusters = React.useMemo(() => {
+    if (!realClusters) return [];
+    if (!sourcePresentation || sourcePresentation.labels.length === 0) return realClusters;
     
-    return base.map(cl => ({
+    return realClusters.map(cl => ({
       ...cl,
       evidences: cl.evidences.map((ev, i) => ({
         ...ev,
         sourceType: (sourcePresentation.labels[i % sourcePresentation.labels.length] || "SRC") as any,
-        title: sourcePresentation.titles[i % sourcePresentation.titles.length] || "Verified Object"
+        title: sourcePresentation.titles[i % sourcePresentation.titles.length] || ev.title || "Source Document"
       }))
     }));
-  }, [stageId, sourcePresentation]);
+  }, [realClusters, sourcePresentation]);
 
-  const activeCluster = clusters.find((c) => c.id === selectedClusterId) || clusters[0];
+  const activeCluster = displayClusters.find((c) => c.id === selectedClusterId) || displayClusters[0];
   const activeEvidence =
     activeCluster?.evidences.find((e) => e.id === selectedEvidenceId) || activeCluster?.evidences[0];
 
@@ -213,12 +132,18 @@ export function OrbitalSubspaceView({
             alignContent: "start"
           }}
         >
-          {clusters.map((cluster) => (
+          {displayClusters.length === 0 && (
+            <div style={{ color: SIL_TOKENS.colors.textMuted, fontSize: "12px", marginTop: "12px" }}>
+              NO EVIDENCE AVAILABLE
+            </div>
+          )}
+          {displayClusters.map((cluster) => (
             <div
               key={cluster.id}
               data-testid="subspace-cluster"
               onClick={() => {
                 setSelectedClusterId(cluster.id);
+                setSelectedEvidenceId(null);
                 if (onZoomChange) onZoomChange(2);
               }}
               style={{
@@ -236,8 +161,17 @@ export function OrbitalSubspaceView({
                 </span>
               </div>
               <div style={{ fontSize: "14px", fontWeight: 700, marginBottom: "8px" }}>{cluster.title}</div>
-              <div style={{ fontSize: "11px", color: SIL_TOKENS.colors.textMuted }}>
-                {cluster.evidenceCount} Verified Evidence Objects
+              <div style={{ fontSize: "10px", color: SIL_TOKENS.colors.textMuted }}>
+                {cluster.evidenceCount !== undefined ? `${cluster.evidenceCount} Linked Objects` : "NO LINKED REQUIREMENT"}
+              </div>
+              <div
+                style={{
+                  fontSize: "10px",
+                  color: SIL_TOKENS.colors.cyanActive,
+                  fontWeight: 700
+                }}
+              >
+                CONFIDENCE {cluster.confidence || "UNAVAILABLE"}
               </div>
             </div>
           ))}

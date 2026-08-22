@@ -48,8 +48,8 @@ export function CareerIntelligenceDashboard({ data }: CareerIntelligenceDashboar
       >
         <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
           <img
-            src="/logo.jpeg"
-            alt="ConDyn"
+            src="/dll-logo.svg"
+            alt="Decision Loop Labs"
             style={{
               width: "28px",
               height: "28px",

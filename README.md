@@ -92,10 +92,10 @@ npm install
 
 ```bash
 cat > .env.local << 'EOF'
-NEXT_PUBLIC_CONDYN_API_URL=/api
+CONDYN_API_URL=http://localhost:8002
 NEXT_PUBLIC_ADMIN_USERNAME=condyn
 NEXT_PUBLIC_ADMIN_PASSWORD="YourSecurePassword123"
-NEXT_PUBLIC_BACKEND_TOKEN=your-jwt-token-here
+BACKEND_TOKEN=your-jwt-token-here
 EOF
 ```
 
@@ -114,7 +114,7 @@ curl -X POST https://admin.condyn.eu/api/login \
   -H "Content-Type: application/json" \
   -d '{"username":"condyn","password":"YourPassword"}' | jq -r '.access_token'
 
-# Put that token in .env.local as NEXT_PUBLIC_BACKEND_TOKEN
+# Put that token in .env.local as BACKEND_TOKEN
 ```
 
 ### 3. Build & Start

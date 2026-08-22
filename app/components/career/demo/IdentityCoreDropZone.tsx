@@ -264,8 +264,8 @@ export function IdentityCoreDropZone({ sources, onDropSource, isCommunicating = 
             }}
           >
             <img
-              src="/logo.jpeg"
-              alt="ConDyn SYNTX Logo"
+              src="/dll-logo.svg"
+              alt="DLL Logo"
               style={{
                 width: "100%",
                 height: "100%",
