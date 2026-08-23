@@ -5,12 +5,16 @@ import { careerCapabilityRuns, careerCapabilitySnapshots } from "../db/schema";
 import { assertVerifiedCapabilitySnapshot, computeSnapshotKey } from "./snapshot";
 import type { CapabilityDiscoveryRun, VerifiedCapabilitySnapshot } from "./schema";
 import type { CapabilityConvergenceRun } from "./convergence/types";
+import { assertPersistableCapabilityVerificationRun } from "./verification/run";
+import type { CapabilityVerificationRun } from "./verification/types";
 
 export interface CapabilityCoreRepository {
   saveRun(run: CapabilityDiscoveryRun): Promise<void>;
   getRunById(runId: string): Promise<CapabilityDiscoveryRun | null>;
   saveConvergenceRun(run: CapabilityConvergenceRun): Promise<void>;
   getConvergenceRunById(convergenceRunId: string): Promise<CapabilityConvergenceRun | null>;
+  saveVerificationRun(run: CapabilityVerificationRun): Promise<void>;
+  getVerificationRunById(verificationRunId: string): Promise<CapabilityVerificationRun | null>;
   getSnapshotByKey(snapshotKey: string): Promise<VerifiedCapabilitySnapshot | null>;
   saveSnapshot(snapshot: VerifiedCapabilitySnapshot): Promise<void>;
   savePhase4VerifiedSnapshot(snapshot: VerifiedCapabilitySnapshot): Promise<void>;
@@ -30,6 +34,7 @@ function assertPhase4SnapshotRoute(snapshot: VerifiedCapabilitySnapshot): void {
 export class InMemoryCapabilityCoreRepository implements CapabilityCoreRepository {
   private readonly runs = new Map<string, CapabilityDiscoveryRun>();
   private readonly convergenceRuns = new Map<string, CapabilityConvergenceRun>();
+  private readonly verificationRuns = new Map<string, CapabilityVerificationRun>();
   private readonly snapshots = new Map<string, VerifiedCapabilitySnapshot>();
   async saveRun(run: CapabilityDiscoveryRun): Promise<void> {
     const existing = this.runs.get(run.runId);
@@ -39,6 +44,16 @@ export class InMemoryCapabilityCoreRepository implements CapabilityCoreRepositor
   async getRunById(runId: string): Promise<CapabilityDiscoveryRun | null> { const run = this.runs.get(runId); return run ? structuredClone(run) : null; }
   async saveConvergenceRun(run: CapabilityConvergenceRun): Promise<void> { const existing = this.convergenceRuns.get(run.convergenceRunId); if (existing && !isDeepStrictEqual(existing, run)) throw new Error(`ERR_IMMUTABLE_CONVERGENCE_RUN_CONFLICT: ${run.convergenceRunId}`); this.convergenceRuns.set(run.convergenceRunId, structuredClone(run)); }
   async getConvergenceRunById(convergenceRunId: string): Promise<CapabilityConvergenceRun | null> { const run = this.convergenceRuns.get(convergenceRunId); return run ? structuredClone(run) : null; }
+  async saveVerificationRun(run: CapabilityVerificationRun): Promise<void> {
+    assertPersistableCapabilityVerificationRun(run);
+    const existing = this.verificationRuns.get(run.verificationRunId);
+    if (existing && !isDeepStrictEqual(existing, run)) throw new Error(`ERR_IMMUTABLE_VERIFICATION_RUN_CONFLICT: ${run.verificationRunId}`);
+    if (!existing) this.verificationRuns.set(run.verificationRunId, structuredClone(run));
+  }
+  async getVerificationRunById(verificationRunId: string): Promise<CapabilityVerificationRun | null> {
+    const run = this.verificationRuns.get(verificationRunId);
+    return run ? structuredClone(run) : null;
+  }
   async getSnapshotByKey(snapshotKey: string): Promise<VerifiedCapabilitySnapshot | null> { const snapshot = this.snapshots.get(snapshotKey); return snapshot ? structuredClone(snapshot) : null; }
   async saveSnapshot(snapshot: VerifiedCapabilitySnapshot): Promise<void> {
     assertGenericSnapshotRoute(snapshot);
@@ -84,6 +99,28 @@ export class PostgresCapabilityCoreRepository implements CapabilityCoreRepositor
     const rows = await this.database.select({ payload: careerCapabilityRuns.payload }).from(careerCapabilityRuns).where(eq(careerCapabilityRuns.runId, convergenceRunId)).limit(1);
     const run = rows[0]?.payload as CapabilityConvergenceRun | undefined;
     return run?.runKind === "CAPABILITY_CONVERGENCE" ? structuredClone(run) : null;
+  }
+  async saveVerificationRun(run: CapabilityVerificationRun): Promise<void> {
+    assertPersistableCapabilityVerificationRun(run);
+    const existing = await this.getVerificationRunById(run.verificationRunId);
+    if (existing && !isDeepStrictEqual(existing, run)) throw new Error(`ERR_IMMUTABLE_VERIFICATION_RUN_CONFLICT: ${run.verificationRunId}`);
+    if (existing) return;
+    const inserted = await this.database.insert(careerCapabilityRuns).values({ runId: run.verificationRunId, sourceBundleHash: run.sourceBundleHash, kernelVersion: run.kernelVersion, promptChecksum: run.promptChecksum, provider: run.inference.provider, model: run.inference.model, schemaVersion: run.schemaVersion, status: run.status, rawOutputHash: run.rawOutputHash, payload: run, createdAt: run.createdAt, completedAt: run.completedAt }).onConflictDoNothing().returning({ runId: careerCapabilityRuns.runId });
+    if (!inserted.length) {
+      const persisted = await this.getVerificationRunById(run.verificationRunId);
+      if (!persisted || !isDeepStrictEqual(persisted, run)) throw new Error(`ERR_IMMUTABLE_VERIFICATION_RUN_CONFLICT: ${run.verificationRunId}`);
+    }
+  }
+  async getVerificationRunById(verificationRunId: string): Promise<CapabilityVerificationRun | null> {
+    const rows = await this.database.select({ payload: careerCapabilityRuns.payload }).from(careerCapabilityRuns).where(eq(careerCapabilityRuns.runId, verificationRunId)).limit(1);
+    const payload = rows[0]?.payload;
+    if (!payload || typeof payload !== "object" || Array.isArray(payload) || (payload as { runKind?: unknown }).runKind !== "CAPABILITY_VERIFICATION") return null;
+    try {
+      assertPersistableCapabilityVerificationRun(payload as CapabilityVerificationRun);
+      return structuredClone(payload as CapabilityVerificationRun);
+    } catch {
+      return null;
+    }
   }
   async getSnapshotByKey(snapshotKey: string): Promise<VerifiedCapabilitySnapshot | null> {
     const rows = await this.database.select({ payload: careerCapabilitySnapshots.payload }).from(careerCapabilitySnapshots).where(eq(careerCapabilitySnapshots.snapshotKey, snapshotKey)).limit(1);

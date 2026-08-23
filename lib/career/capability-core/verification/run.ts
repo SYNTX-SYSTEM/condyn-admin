@@ -1,5 +1,8 @@
+import { isDeepStrictEqual } from "util";
 import { sha256Utf8 } from "../hashing";
+import type { CapabilityCoreRepository } from "../repository";
 import { normalizeSourceText, type SourceDocument } from "../source";
+import { CapabilityVerificationRunIdentitySchema } from "./schema";
 import type { CapabilityVerificationRun, CapabilityVerificationRunIdentityInput } from "./types";
 
 const compare = (left: string, right: string) => left < right ? -1 : left > right ? 1 : 0;
@@ -51,7 +54,8 @@ type VerificationPayload = CapabilityVerificationRun["payload"];
 
 function stringId(value: unknown): value is string { return typeof value === "string" && value.trim().length > 0; }
 function hasExactKeys(value: unknown, keys: string[]): value is Record<string, unknown> {
-  return !!value && typeof value === "object" && !Array.isArray(value) && Object.keys(value).length === keys.length && keys.every((key) => Object.prototype.hasOwnProperty.call(value, key));
+  const actualKeys = value && typeof value === "object" && !Array.isArray(value) ? Reflect.ownKeys(value) : [];
+  return actualKeys.length === keys.length && actualKeys.every((key) => typeof key === "string" && keys.includes(key));
 }
 
 /** Sorting arrays before hashing makes the payload hash independent of incidental construction order. */
@@ -82,4 +86,25 @@ export function assertCanonicalCapabilityVerificationPayload(payload: Verificati
 
 export function computeCapabilityVerificationRawOutputHash(payload: VerificationPayload): string {
   return sha256Utf8(stableVerificationJsonStringify(canonicalizeCapabilityVerificationPayload(payload)));
+}
+
+export function assertPersistableCapabilityVerificationRun(run: CapabilityVerificationRun): void {
+  if (!hasExactKeys(run, ["runKind", "verificationRunId", "convergenceRunId", "convergenceRawOutputHash", "sourceEvidenceRepresentationHash", "sourceBundleHash", "kernelVersion", "promptChecksum", "inference", "schemaVersion", "algorithmVersion", "snapshotSchemaVersion", "rawOutputHash", "status", "payload", "createdAt", "completedAt"]) || !hasExactKeys(run.inference, ["provider", "model"]) || !stringId(run.inference.provider) || !stringId(run.inference.model) || run.runKind !== "CAPABILITY_VERIFICATION" || run.status !== "COMPLETED" || !stringId(run.sourceBundleHash) || !stringId(run.createdAt) || !stringId(run.completedAt) || !/^[0-9a-f]{64}$/.test(run.sourceEvidenceRepresentationHash) || !/^[0-9a-f]{64}$/.test(run.convergenceRawOutputHash) || !/^[0-9a-f]{64}$/.test(run.rawOutputHash) || !/^VFY_[0-9A-F]{24}$/.test(run.verificationRunId)) integrityError();
+  const identity: CapabilityVerificationRunIdentityInput = { convergenceRunId: run.convergenceRunId, convergenceRawOutputHash: run.convergenceRawOutputHash, sourceEvidenceRepresentationHash: run.sourceEvidenceRepresentationHash, kernelVersion: run.kernelVersion, promptChecksum: run.promptChecksum, provider: run.inference?.provider, model: run.inference?.model, schemaVersion: run.schemaVersion, algorithmVersion: run.algorithmVersion, snapshotSchemaVersion: run.snapshotSchemaVersion };
+  if (!CapabilityVerificationRunIdentitySchema.safeParse(identity).success || buildCapabilityVerificationRunId(identity) !== run.verificationRunId) integrityError();
+  assertCanonicalCapabilityVerificationPayload(run.payload);
+  if (computeCapabilityVerificationRawOutputHash(run.payload) !== run.rawOutputHash) integrityError();
+}
+
+/** Only the immutable repository artifact may authorize later publication. */
+export async function requireAuthoritativePersistedCapabilityVerificationRun(
+  suppliedRun: CapabilityVerificationRun,
+  repository: Pick<CapabilityCoreRepository, "getVerificationRunById">
+): Promise<CapabilityVerificationRun> {
+  assertPersistableCapabilityVerificationRun(suppliedRun);
+  const persistedRun = await repository.getVerificationRunById(suppliedRun.verificationRunId);
+  if (!persistedRun) integrityError();
+  assertPersistableCapabilityVerificationRun(persistedRun);
+  if (!isDeepStrictEqual(suppliedRun, persistedRun)) integrityError();
+  return structuredClone(persistedRun);
 }

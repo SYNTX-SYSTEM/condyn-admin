@@ -34,6 +34,8 @@ export interface CapabilityVerificationRun {
   convergenceRunId: string;
   convergenceRawOutputHash: string;
   sourceEvidenceRepresentationHash: string;
+  /** Persisted lineage metadata; Slice 2C authenticates it against the upstream artifacts. */
+  sourceBundleHash: string;
   kernelVersion: string;
   promptChecksum: string;
   inference: { provider: string; model: string };

@@ -42,6 +42,7 @@ const verificationRun = (drafts: CanonicalCapabilityDraft[], overrides: Partial<
   convergenceRunId: "CONV_0123456789ABCDEF01234567",
   convergenceRawOutputHash: "a".repeat(64),
   sourceEvidenceRepresentationHash: "c".repeat(64),
+  sourceBundleHash: "source",
   kernelVersion: "verification-v1",
   promptChecksum: "checksum",
   inference: { provider: "gemini", model: "model" },
