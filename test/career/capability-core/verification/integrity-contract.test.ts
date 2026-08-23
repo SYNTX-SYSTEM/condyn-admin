@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import * as verification from "../../../../lib/career/capability-core/verification";
-import { buildCapabilityConvergenceRunId, buildCapabilityDiscoveryRunId, canonicalizeCapabilityConvergence, computeSourceBundleHash, createCapabilityCandidate, createSourceDocument, normalizeSourceText, sha256Utf8, stableConvergenceJsonStringify, stableJsonStringify, validateCapabilityConvergenceOutput, verifyCandidateEvidence, type CapabilityConvergenceRun, type CapabilityDiscoveryRun, type CapabilityKernelOutput, type SourceDocument } from "../../../../lib/career/capability-core";
+import { buildCapabilityConvergenceRunId, buildCapabilityDiscoveryRunId, canonicalizeCapabilityConvergence, computeSourceBundleHash, createCapabilityCandidate, createSourceDocument, InMemoryCapabilityCoreRepository, normalizeSourceText, sha256Utf8, stableConvergenceJsonStringify, stableJsonStringify, validateCapabilityConvergenceOutput, verifyCandidateEvidence, type CapabilityConvergenceRun, type CapabilityDiscoveryRun, type CapabilityKernelOutput, type SourceDocument } from "../../../../lib/career/capability-core";
 import type { AuthenticatedCapabilityVerificationChain, CapabilityVerificationAuthorityDependencies, CapabilityVerificationIntegrityInput, CapabilityVerificationRun, VerifiedCapabilitySnapshotPublisher } from "../../../../lib/career/capability-core/verification";
 
 type IntegrityInputHasNoRepository = "repository" extends keyof CapabilityVerificationIntegrityInput ? false : true;
@@ -323,8 +323,11 @@ describe("Phase 4 Slice 2 verification-run integrity contract", () => {
     expect(api.deriveCapabilityVerificationPublicationEligibility?.(payload as CapabilityVerificationRun["payload"])).toBe(payload.publicationEligibility);
   });
 
-  it("freezes the next publisher to establish authority from raw integrity input", () => {
-    expect(typeof (verification as Record<string, unknown>).publishVerifiedCapabilitySnapshotFromIntegrityInput).toBe("function");
+  it("constructs the final publisher from a repository without exporting a raw writer", () => {
+    const repository = new InMemoryCapabilityCoreRepository();
+    expect(typeof repository.createVerifiedCapabilitySnapshotPublisher).toBe("function");
+    expect(typeof (verification as Record<string, unknown>).createVerifiedCapabilitySnapshotPublisher).toBe("undefined");
+    expect("savePhase4VerifiedSnapshot" in repository).toBe(false);
   });
 
   it("distinguishes authenticated chain integrity from persisted publication authority", async () => {

@@ -36,7 +36,7 @@ function assertPromptAndInference(prompt: unknown, inference: unknown): void {
 }
 
 function authenticateSources(documents: SourceDocument[]): { sourceBundleHash: string; sourceEvidenceRepresentationHash: string } {
-  if (!Array.isArray(documents)) integrityError();
+  if (!Array.isArray(documents) || documents.length === 0) integrityError();
   const docIds = new Set<string>();
   for (const document of documents) {
     if (!isRecord(document) || typeof document.docId !== "string" || !document.docId.trim() || docIds.has(document.docId) || typeof document.title !== "string" || !document.title.trim() || typeof document.normalizedText !== "string" || typeof document.normalizedTextHash !== "string" || sha256Utf8(document.normalizedText) !== document.normalizedTextHash || (document.pages !== undefined && !Array.isArray(document.pages))) integrityError();

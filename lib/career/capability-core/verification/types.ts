@@ -2,31 +2,7 @@ import type { CanonicalCapabilityDraft } from "../convergence/types";
 import type { CapabilityConvergenceRun } from "../convergence/types";
 import type { CapabilityCoreRepository } from "../repository";
 import type { SourceDocument } from "../source";
-import type { CapabilityCandidate, CapabilityDiscoveryRun, CapabilityRelation, EvidenceClaim, VerifiedCapability, VerifiedCapabilitySnapshot } from "../schema";
-
-/**
- * Phase 4 receives semantic drafts but must publish only CONDYN-verified truth.
- * Provider output is deliberately absent: it cannot author evidence, provenance, or IDs.
- */
-export interface CapabilityVerificationPublicationInput {
-  canonicalDrafts: CanonicalCapabilityDraft[];
-  capabilities: VerifiedCapability[];
-  evidence: EvidenceClaim[];
-  /** Complete Phase-3 relation inventory; every member needs a Phase-4 disposition. */
-  proposedRelations: CapabilityRelation[];
-  publicationContext: CapabilityVerificationPublicationContext;
-}
-
-/** Not authoritative: next slice derives bundle/counts from authenticated Convergence/Discovery lineage and binds deterministic snapshot schema configuration into VFY identity. */
-export interface CapabilityVerificationPublicationContext {
-  sourceBundleHash: string;
-  schemaVersion: string;
-  candidateCount: number;
-  rejectedCandidateCount: number;
-}
-
-/** Final relation states that are eligible to enter a verified truth snapshot. */
-export type FinalVerifiedRelationType = "PARENT_CHILD" | "RELATED_CAPABILITY" | "DISTINCT_CAPABILITY";
+import type { CapabilityCandidate, CapabilityDiscoveryRun, CapabilityRelation, EvidenceClaim, VerifiedCapabilitySnapshot } from "../schema";
 
 /** The immutable Phase 4 audit artifact may complete while truth publication remains blocked. */
 export interface CapabilityVerificationRun {
@@ -76,7 +52,7 @@ export interface CapabilityVerificationIntegrityInput {
   verificationRun: CapabilityVerificationRun;
 }
 
-/** Contract-only result: the next publisher accepts this reconstructed artifact, never caller-built copies. */
+/** Reconstructed authentication result; the final publisher establishes this internally and never accepts it from callers. */
 export interface AuthenticatedCapabilityVerificationChain {
   sourceBundleHash: string;
   sourceEvidenceRepresentationHash: string;
@@ -106,11 +82,6 @@ export interface CapabilityVerificationAuthorityDependencies {
 /** Phase 4 metadata binds final truth to the immutable run that authorized publication. */
 export interface VerifiedSnapshotPublicationMetadata { verificationRunId: string; verificationRawOutputHash: string; }
 
-/** Transitional Slice 1A publisher contract; Slice 2D replaces this caller-built input. */
-export interface InterimVerifiedCapabilitySnapshotPublisher {
-  publish(input: CapabilityVerificationPublicationInput & { verificationRun: CapabilityVerificationRun }): VerifiedCapabilitySnapshot;
-}
-
 /**
  * The final publisher establishes persisted authority internally from raw integrity input.
  * Its repository dependency is fixed when the publisher is constructed, not supplied by the caller.
@@ -118,8 +89,3 @@ export interface InterimVerifiedCapabilitySnapshotPublisher {
 export interface VerifiedCapabilitySnapshotPublisher {
   publish(input: CapabilityVerificationIntegrityInput): Promise<VerifiedCapabilitySnapshot>;
 }
-
-/** Slice 2D construction contract; implementation remains deliberately deferred. */
-export type CreateVerifiedCapabilitySnapshotPublisher = (
-  dependencies: CapabilityVerificationAuthorityDependencies
-) => VerifiedCapabilitySnapshotPublisher;

@@ -4,6 +4,7 @@ export * from "./hashing";
 export * from "./evidence-validator";
 export * from "./identity";
 export * from "./snapshot";
-export * from "./repository";
+export { InMemoryCapabilityCoreRepository, PostgresCapabilityCoreRepository } from "./repository";
+export type { CapabilityCoreRepository } from "./repository";
 export * from "./discovery";
 export * from "./convergence";

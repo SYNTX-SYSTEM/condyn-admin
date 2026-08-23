@@ -2,11 +2,13 @@ import { isDeepStrictEqual } from "util";
 import { eq } from "drizzle-orm";
 import { db } from "../db/client";
 import { careerCapabilityRuns, careerCapabilitySnapshots } from "../db/schema";
-import { assertVerifiedCapabilitySnapshot, computeSnapshotKey } from "./snapshot";
-import type { CapabilityDiscoveryRun, VerifiedCapabilitySnapshot } from "./schema";
+import { buildProvisionalCapabilityId } from "./identity";
+import { assertVerifiedCapabilitySnapshot, buildSnapshotId, computeSnapshotKey, createVerifiedCapabilitySnapshot } from "./snapshot";
+import { createCapabilityRelation, type CapabilityDiscoveryRun, type CapabilityRelation, type EvidenceClaim, type VerifiedCapability, type VerifiedCapabilitySnapshot } from "./schema";
 import type { CapabilityConvergenceRun } from "./convergence/types";
 import { assertPersistableCapabilityVerificationRun } from "./verification/run";
-import type { CapabilityVerificationRun } from "./verification/types";
+import { authenticatePersistedCapabilityVerificationRun } from "./verification/authenticator";
+import type { AuthoritativeCapabilityVerificationChain, CapabilityVerificationIntegrityInput, CapabilityVerificationRun, VerifiedCapabilitySnapshotPublisher } from "./verification/types";
 
 export interface CapabilityCoreRepository {
   saveRun(run: CapabilityDiscoveryRun): Promise<void>;
@@ -17,7 +19,7 @@ export interface CapabilityCoreRepository {
   getVerificationRunById(verificationRunId: string): Promise<CapabilityVerificationRun | null>;
   getSnapshotByKey(snapshotKey: string): Promise<VerifiedCapabilitySnapshot | null>;
   saveSnapshot(snapshot: VerifiedCapabilitySnapshot): Promise<void>;
-  savePhase4VerifiedSnapshot(snapshot: VerifiedCapabilitySnapshot): Promise<void>;
+  createVerifiedCapabilitySnapshotPublisher(): VerifiedCapabilitySnapshotPublisher;
 }
 
 function assertGenericSnapshotRoute(snapshot: VerifiedCapabilitySnapshot): void {
@@ -25,10 +27,104 @@ function assertGenericSnapshotRoute(snapshot: VerifiedCapabilitySnapshot): void 
   assertVerifiedCapabilitySnapshot(snapshot);
 }
 
-/** Verification Run identity and upstream provenance are authenticated in the next Phase-4 integrity slice. */
+/** Infrastructure route only; the trusted publisher authenticates the persisted upstream chain before calling it. */
 function assertPhase4SnapshotRoute(snapshot: VerifiedCapabilitySnapshot): void {
   if (snapshot.publication?.mode !== "PHASE4_VERIFIED") throw new Error("ERR_PHASE4_SNAPSHOT_REQUIRES_DEDICATED_REPOSITORY");
   assertVerifiedCapabilitySnapshot(snapshot);
+}
+
+const fail = (code: string): never => { throw new Error(code); };
+
+function finalCapabilityId(draft: AuthoritativeCapabilityVerificationChain["canonicalDrafts"][number]): string {
+  const provisional = buildProvisionalCapabilityId(draft.canonicalName, draft.scope);
+  if (provisional !== draft.provisionalCapabilityId) return fail("ERR_PHASE4_PROVISIONAL_ID_MISMATCH");
+  return provisional.replace("PCAP_", "CAP_");
+}
+
+function exactlyOne<T extends { provisionalCapabilityId: string }>(items: T[], provisionalCapabilityId: string, code: string): T {
+  const matches = items.filter((item) => item.provisionalCapabilityId === provisionalCapabilityId);
+  if (matches.length !== 1) return fail(code);
+  return matches[0];
+}
+
+function constructCapabilities(chain: AuthoritativeCapabilityVerificationChain): VerifiedCapability[] {
+  const run = chain.verificationRun;
+  const capabilities = chain.canonicalDrafts.map((draft) => {
+    const semantic = exactlyOne(run.payload.semanticDefinitionOutcomes, draft.provisionalCapabilityId, "ERR_PHASE4_SEMANTIC_DEFINITION_NOT_PASSED");
+    if (semantic.status !== "PASSED") return fail("ERR_PHASE4_SEMANTIC_DEFINITION_NOT_PASSED");
+    const level = exactlyOne(run.payload.demonstratedLevelOutcomes, draft.provisionalCapabilityId, "ERR_PHASE4_LEVEL_TRUTH_INVARIANT");
+    const levelIsVerified = level.status === "VERIFIED";
+    if ((levelIsVerified && level.demonstratedCapabilityLevel === null) || (!levelIsVerified && level.demonstratedCapabilityLevel !== null)) return fail("ERR_PHASE4_LEVEL_TRUTH_INVARIANT");
+    return {
+      capabilityId: finalCapabilityId(draft), canonicalName: draft.canonicalName, scope: draft.scope,
+      structuralDefinition: draft.structuralDefinition, primaryDomain: draft.primaryDomain,
+      demonstratedCapabilityLevel: level.demonstratedCapabilityLevel, levelVerificationStatus: level.status,
+      evidenceIds: [...draft.evidenceIds], relationIds: [],
+      provenance: { sourceCandidateIds: [...draft.provenance.sourceCandidateIds], sourceDocumentIds: [...draft.provenance.sourceDocumentIds] },
+      validation: { evidenceStatus: "PASSED", semanticDefinitionStatus: "PASSED", convergenceStatus: "VERIFIED" }
+    } satisfies VerifiedCapability;
+  });
+  if (new Set(capabilities.map((item) => item.capabilityId)).size !== capabilities.length) return fail("ERR_PHASE4_NONDETERMINISTIC_CAPABILITY_ID");
+  return capabilities;
+}
+
+function constructEvidence(chain: AuthoritativeCapabilityVerificationChain): EvidenceClaim[] {
+  const expectedIds: string[] = []; const seen = new Set<string>();
+  for (const draft of chain.canonicalDrafts) for (const evidenceId of draft.evidenceIds) if (!seen.has(evidenceId)) { seen.add(evidenceId); expectedIds.push(evidenceId); }
+  if (chain.verifiedEvidence.length !== expectedIds.length || new Set(chain.verifiedEvidence.map((item) => item.evidenceId)).size !== chain.verifiedEvidence.length) return fail("ERR_PHASE4_EVIDENCE_INVENTORY_INVALID");
+  const evidenceById = new Map(chain.verifiedEvidence.map((item) => [item.evidenceId, item]));
+  return expectedIds.map((evidenceId) => {
+    const evidence = evidenceById.get(evidenceId);
+    if (evidence === undefined || evidence.verification.status !== "VERIFIED") return fail("ERR_PHASE4_EVIDENCE_INVENTORY_INVALID");
+    return structuredClone(evidence);
+  });
+}
+
+function constructRelations(chain: AuthoritativeCapabilityVerificationChain, capabilities: VerifiedCapability[]): CapabilityRelation[] {
+  const capabilityIdByProvisionalId = new Map(chain.canonicalDrafts.map((draft, index) => [draft.provisionalCapabilityId, capabilities[index].capabilityId]));
+  const relations: CapabilityRelation[] = [];
+  for (const proposal of chain.proposedRelations) {
+    const disposition = chain.verificationRun.payload.relationDispositions.filter((item) => item.relationId === proposal.relationId);
+    if (disposition.length !== 1) return fail("ERR_PHASE4_RELATION_DISPOSITION_MISSING");
+    if (disposition[0].status === "UNRESOLVED") return fail("ERR_PHASE4_PUBLICATION_BLOCKED");
+    if (disposition[0].status === "REJECTED") continue;
+    if (proposal.status !== "PROPOSED" || !["PARENT_CHILD", "RELATED_CAPABILITY", "DISTINCT_CAPABILITY"].includes(proposal.relationType)) return fail("ERR_PHASE4_RELATION_NOT_VERIFIED");
+    const sourceCapabilityRef = capabilityIdByProvisionalId.get(proposal.sourceCapabilityRef);
+    const targetCapabilityRef = capabilityIdByProvisionalId.get(proposal.targetCapabilityRef);
+    if (sourceCapabilityRef === undefined || targetCapabilityRef === undefined) return fail("ERR_PHASE4_RELATION_DISPOSITION_MISSING");
+    relations.push(createCapabilityRelation({ sourceCapabilityRef, targetCapabilityRef, relationType: proposal.relationType, status: "VERIFIED", reason: proposal.reason, createdBy: proposal.createdBy, createdAt: chain.verificationRun.completedAt }));
+  }
+  if (new Set(relations.map((item) => item.relationId)).size !== relations.length) return fail("ERR_PHASE4_RELATION_NOT_VERIFIED");
+  return relations;
+}
+
+function constructPhase4Snapshot(chain: AuthoritativeCapabilityVerificationChain): VerifiedCapabilitySnapshot {
+  const run = chain.verificationRun;
+  if (run.payload.publicationEligibility !== "ELIGIBLE") return fail("ERR_PHASE4_PUBLICATION_BLOCKED");
+  const capabilities = constructCapabilities(chain); const evidence = constructEvidence(chain); const relations = constructRelations(chain, capabilities);
+  const indexedCapabilities = capabilities.map((capability) => ({ ...capability, relationIds: relations.filter((relation) => relation.sourceCapabilityRef === capability.capabilityId || relation.targetCapabilityRef === capability.capabilityId).map((relation) => relation.relationId) }));
+  const generic = createVerifiedCapabilitySnapshot({ sourceBundleHash: chain.sourceBundleHash, kernelVersion: run.kernelVersion, prompt: { checksum: run.promptChecksum }, inference: run.inference, schemaVersion: run.snapshotSchemaVersion, candidateCount: chain.candidateCount, rejectedCandidateCount: chain.rejectedCandidateCount, createdAt: run.completedAt, status: "VERIFIED" }, indexedCapabilities, evidence, relations);
+  const publication = { mode: "PHASE4_VERIFIED" as const, verificationRunId: run.verificationRunId, verificationRawOutputHash: run.rawOutputHash };
+  const snapshot = { ...generic, publication, snapshotId: buildSnapshotId({ ...generic, publication }) };
+  assertVerifiedCapabilitySnapshot(snapshot);
+  return snapshot;
+}
+
+/** The private persistence closure is captured only by this publisher; callers receive no write capability. */
+function createBoundVerifiedCapabilitySnapshotPublisher(
+  repository: Pick<CapabilityCoreRepository, "getRunById" | "getConvergenceRunById" | "getVerificationRunById" | "getSnapshotByKey">,
+  persistPhase4Snapshot: (snapshot: VerifiedCapabilitySnapshot) => Promise<void>
+): VerifiedCapabilitySnapshotPublisher {
+  return {
+    async publish(input: CapabilityVerificationIntegrityInput) {
+      const chain = await authenticatePersistedCapabilityVerificationRun(input, repository);
+      const expected = constructPhase4Snapshot(chain);
+      await persistPhase4Snapshot(expected);
+      const persisted = await repository.getSnapshotByKey(computeSnapshotKey(expected));
+      if (persisted === null || !isDeepStrictEqual(persisted, expected)) return fail("ERR_PHASE4_SNAPSHOT_PERSISTENCE_INVALID");
+      return structuredClone(persisted);
+    }
+  };
 }
 
 export class InMemoryCapabilityCoreRepository implements CapabilityCoreRepository {
@@ -59,9 +155,12 @@ export class InMemoryCapabilityCoreRepository implements CapabilityCoreRepositor
     assertGenericSnapshotRoute(snapshot);
     await this.saveSnapshotImmutable(snapshot);
   }
-  async savePhase4VerifiedSnapshot(snapshot: VerifiedCapabilitySnapshot): Promise<void> {
+  async #persistPhase4VerifiedSnapshot(snapshot: VerifiedCapabilitySnapshot): Promise<void> {
     assertPhase4SnapshotRoute(snapshot);
     await this.saveSnapshotImmutable(snapshot);
+  }
+  createVerifiedCapabilitySnapshotPublisher(): VerifiedCapabilitySnapshotPublisher {
+    return createBoundVerifiedCapabilitySnapshotPublisher(this, (snapshot) => this.#persistPhase4VerifiedSnapshot(snapshot));
   }
   private async saveSnapshotImmutable(snapshot: VerifiedCapabilitySnapshot): Promise<void> {
     const key = computeSnapshotKey(snapshot);
@@ -133,9 +232,12 @@ export class PostgresCapabilityCoreRepository implements CapabilityCoreRepositor
     assertGenericSnapshotRoute(snapshot);
     await this.saveSnapshotImmutable(snapshot);
   }
-  async savePhase4VerifiedSnapshot(snapshot: VerifiedCapabilitySnapshot): Promise<void> {
+  async #persistPhase4VerifiedSnapshot(snapshot: VerifiedCapabilitySnapshot): Promise<void> {
     assertPhase4SnapshotRoute(snapshot);
     await this.saveSnapshotImmutable(snapshot);
+  }
+  createVerifiedCapabilitySnapshotPublisher(): VerifiedCapabilitySnapshotPublisher {
+    return createBoundVerifiedCapabilitySnapshotPublisher(this, (snapshot) => this.#persistPhase4VerifiedSnapshot(snapshot));
   }
   private async saveSnapshotImmutable(snapshot: VerifiedCapabilitySnapshot): Promise<void> {
     const snapshotKey = computeSnapshotKey(snapshot);
