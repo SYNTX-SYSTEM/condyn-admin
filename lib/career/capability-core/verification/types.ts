@@ -1,5 +1,7 @@
 import type { CanonicalCapabilityDraft } from "../convergence/types";
-import type { CapabilityRelation, EvidenceClaim, VerifiedCapability, VerifiedCapabilitySnapshot } from "../schema";
+import type { CapabilityConvergenceRun } from "../convergence/types";
+import type { SourceDocument } from "../source";
+import type { CapabilityCandidate, CapabilityDiscoveryRun, CapabilityRelation, EvidenceClaim, VerifiedCapability, VerifiedCapabilitySnapshot } from "../schema";
 
 /**
  * Phase 4 receives semantic drafts but must publish only CONDYN-verified truth.
@@ -31,11 +33,13 @@ export interface CapabilityVerificationRun {
   verificationRunId: string;
   convergenceRunId: string;
   convergenceRawOutputHash: string;
+  sourceEvidenceRepresentationHash: string;
   kernelVersion: string;
   promptChecksum: string;
   inference: { provider: string; model: string };
   schemaVersion: string;
   algorithmVersion: string;
+  snapshotSchemaVersion: string;
   rawOutputHash: string;
   status: "COMPLETED";
   payload: {
@@ -51,13 +55,42 @@ export interface CapabilityVerificationRun {
 export interface CapabilityVerificationRunIdentityInput {
   convergenceRunId: string;
   convergenceRawOutputHash: string;
+  sourceEvidenceRepresentationHash: string;
   kernelVersion: string;
   promptChecksum: string;
   provider: string;
   model: string;
   schemaVersion: string;
   algorithmVersion: string;
+  snapshotSchemaVersion: string;
 }
+
+/** Slice 2 authenticates every artifact before it can authorize final publication. */
+export interface CapabilityVerificationIntegrityInput {
+  sourceDocuments: SourceDocument[];
+  discoveryRun: CapabilityDiscoveryRun;
+  convergenceRun: CapabilityConvergenceRun;
+  verificationRun: CapabilityVerificationRun;
+}
+
+/** Contract-only result: the next publisher accepts this reconstructed artifact, never caller-built copies. */
+export interface AuthenticatedCapabilityVerificationChain {
+  sourceBundleHash: string;
+  sourceEvidenceRepresentationHash: string;
+  discoveryRun: CapabilityDiscoveryRun;
+  discoveryCandidates: CapabilityCandidate[];
+  convergenceRun: CapabilityConvergenceRun;
+  canonicalDrafts: CanonicalCapabilityDraft[];
+  proposedRelations: CapabilityRelation[];
+  verificationRun: CapabilityVerificationRun;
+  verifiedEvidence: EvidenceClaim[];
+  candidateCount: number;
+  rejectedCandidateCount: number;
+  snapshotSchemaVersion: string;
+}
+
+/** The next publisher accepts only this authenticated chain, never caller-built publication state. */
+export interface AuthenticatedCapabilityVerificationPublicationInput { chain: AuthenticatedCapabilityVerificationChain; }
 
 /** Phase 4 metadata binds final truth to the immutable run that authorized publication. */
 export interface VerifiedSnapshotPublicationMetadata { verificationRunId: string; verificationRawOutputHash: string; }

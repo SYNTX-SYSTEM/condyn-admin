@@ -1,0 +1,85 @@
+import { sha256Utf8 } from "../hashing";
+import { normalizeSourceText, type SourceDocument } from "../source";
+import type { CapabilityVerificationRun, CapabilityVerificationRunIdentityInput } from "./types";
+
+const compare = (left: string, right: string) => left < right ? -1 : left > right ? 1 : 0;
+const integrityError = (): never => { throw new Error("ERR_CAPABILITY_VERIFICATION_RUN_INTEGRITY_INVALID"); };
+const levels = new Set(["L1", "L2", "L3", "L4", "L5", "L6"]);
+
+export function stableVerificationJsonStringify(value: unknown): string {
+  if (Array.isArray(value)) return `[${value.map(stableVerificationJsonStringify).join(",")}]`;
+  if (value && typeof value === "object") {
+    const item = value as Record<string, unknown>;
+    return `{${Object.keys(item).sort(compare).map((key) => `${JSON.stringify(key)}:${stableVerificationJsonStringify(item[key])}`).join(",")}}`;
+  }
+  return JSON.stringify(value);
+}
+
+/** Source bundles preserve Phase 1-3 identity; this separate hash binds the source fields evidence resolution observes. */
+export function computeSourceEvidenceRepresentationHash(documents: SourceDocument[]): string {
+  const documentIds = new Set<string>();
+  const canonical = [...documents].sort((left, right) => compare(left.docId, right.docId)).map((document) => {
+    if (!document.docId.trim() || documentIds.has(document.docId) || sha256Utf8(document.normalizedText) !== document.normalizedTextHash) integrityError();
+    documentIds.add(document.docId);
+    const pageNumbers = new Set<number>();
+    const pages = [...(document.pages ?? [])].sort((left, right) => left.pageNumber - right.pageNumber).map((page) => {
+      if (pageNumbers.has(page.pageNumber) || page.normalizedText !== normalizeSourceText(page.text)) integrityError();
+      pageNumbers.add(page.pageNumber);
+      return [page.pageNumber, sha256Utf8(page.normalizedText)];
+    });
+    return {
+      docId: document.docId,
+      title: document.title,
+      normalizedTextHash: document.normalizedTextHash,
+      pagesPresent: document.pages !== undefined,
+      pages
+    };
+  });
+  return sha256Utf8(stableVerificationJsonStringify(canonical));
+}
+
+export function computeCapabilityVerificationRunKey(input: CapabilityVerificationRunIdentityInput): string {
+  return sha256Utf8(stableVerificationJsonStringify([input.convergenceRunId, input.convergenceRawOutputHash, input.sourceEvidenceRepresentationHash, input.kernelVersion, input.promptChecksum, input.provider, input.model, input.schemaVersion, input.algorithmVersion, input.snapshotSchemaVersion]));
+}
+
+/** VFY identifies verification configuration and authenticated upstream identity, not timestamps or mutable output. */
+export function buildCapabilityVerificationRunId(input: CapabilityVerificationRunIdentityInput): string {
+  return `VFY_${computeCapabilityVerificationRunKey(input).slice(0, 24).toUpperCase()}`;
+}
+
+type VerificationPayload = CapabilityVerificationRun["payload"];
+
+function stringId(value: unknown): value is string { return typeof value === "string" && value.trim().length > 0; }
+function hasExactKeys(value: unknown, keys: string[]): value is Record<string, unknown> {
+  return !!value && typeof value === "object" && !Array.isArray(value) && Object.keys(value).length === keys.length && keys.every((key) => Object.prototype.hasOwnProperty.call(value, key));
+}
+
+/** Sorting arrays before hashing makes the payload hash independent of incidental construction order. */
+export function canonicalizeCapabilityVerificationPayload(payload: VerificationPayload): VerificationPayload {
+  if (!hasExactKeys(payload, ["semanticDefinitionOutcomes", "demonstratedLevelOutcomes", "relationDispositions", "publicationEligibility"]) || !Array.isArray(payload.semanticDefinitionOutcomes) || !Array.isArray(payload.demonstratedLevelOutcomes) || !Array.isArray(payload.relationDispositions) || (payload.publicationEligibility !== "ELIGIBLE" && payload.publicationEligibility !== "BLOCKED")) integrityError();
+  const semanticDefinitionOutcomes = payload.semanticDefinitionOutcomes.map((outcome) => {
+    if (!hasExactKeys(outcome, ["provisionalCapabilityId", "status"]) || !stringId(outcome.provisionalCapabilityId) || (outcome.status !== "PASSED" && outcome.status !== "FAILED")) integrityError();
+    return { provisionalCapabilityId: outcome.provisionalCapabilityId, status: outcome.status };
+  }).sort((left, right) => compare(left.provisionalCapabilityId, right.provisionalCapabilityId));
+  const demonstratedLevelOutcomes = payload.demonstratedLevelOutcomes.map((outcome) => {
+    if (!hasExactKeys(outcome, ["provisionalCapabilityId", "status", "demonstratedCapabilityLevel"]) || !stringId(outcome.provisionalCapabilityId) || (outcome.status !== "VERIFIED" && outcome.status !== "UNVERIFIED")) integrityError();
+    const validLevel = typeof outcome.demonstratedCapabilityLevel === "string" && levels.has(outcome.demonstratedCapabilityLevel);
+    if ((outcome.status === "VERIFIED" && !validLevel) || (outcome.status === "UNVERIFIED" && outcome.demonstratedCapabilityLevel !== null)) integrityError();
+    return { provisionalCapabilityId: outcome.provisionalCapabilityId, status: outcome.status, demonstratedCapabilityLevel: outcome.demonstratedCapabilityLevel };
+  }).sort((left, right) => compare(left.provisionalCapabilityId, right.provisionalCapabilityId));
+  const relationDispositions = payload.relationDispositions.map((disposition) => {
+    if (!hasExactKeys(disposition, ["relationId", "status"]) || !stringId(disposition.relationId) || (disposition.status !== "VERIFIED" && disposition.status !== "REJECTED" && disposition.status !== "UNRESOLVED")) integrityError();
+    return { relationId: disposition.relationId, status: disposition.status };
+  }).sort((left, right) => compare(left.relationId, right.relationId));
+  return { semanticDefinitionOutcomes, demonstratedLevelOutcomes, relationDispositions, publicationEligibility: payload.publicationEligibility };
+}
+
+export function assertCanonicalCapabilityVerificationPayload(payload: VerificationPayload): void {
+  const canonical = canonicalizeCapabilityVerificationPayload(payload);
+  const ordered = (actual: Array<{ provisionalCapabilityId?: string; relationId?: string }>, expected: Array<{ provisionalCapabilityId?: string; relationId?: string }>) => actual.length === expected.length && actual.every((item, index) => item.provisionalCapabilityId === expected[index].provisionalCapabilityId && item.relationId === expected[index].relationId);
+  if (!ordered(payload.semanticDefinitionOutcomes, canonical.semanticDefinitionOutcomes) || !ordered(payload.demonstratedLevelOutcomes, canonical.demonstratedLevelOutcomes) || !ordered(payload.relationDispositions, canonical.relationDispositions)) integrityError();
+}
+
+export function computeCapabilityVerificationRawOutputHash(payload: VerificationPayload): string {
+  return sha256Utf8(stableVerificationJsonStringify(canonicalizeCapabilityVerificationPayload(payload)));
+}

@@ -18,7 +18,7 @@ export const VerifiedPublicationCapabilityGateSchema = z.object({
 }).strict();
 
 export const VerifiedSnapshotPublicationMetadataSchema = z.object({ verificationRunId: z.string().regex(/^VFY_[0-9A-F]{24}$/), verificationRawOutputHash: z.string().regex(/^[0-9a-f]{64}$/) }).strict();
-export const CapabilityVerificationRunIdentitySchema = z.object({ convergenceRunId: z.string().regex(/^CONV_[0-9A-F]{24}$/), convergenceRawOutputHash: z.string().regex(/^[0-9a-f]{64}$/), kernelVersion: z.string().min(1), promptChecksum: z.string().min(1), provider: z.string().min(1), model: z.string().min(1), schemaVersion: z.string().min(1), algorithmVersion: z.string().min(1) }).strict();
+export const CapabilityVerificationRunIdentitySchema = z.object({ convergenceRunId: z.string().regex(/^CONV_[0-9A-F]{24}$/), convergenceRawOutputHash: z.string().regex(/^[0-9a-f]{64}$/), sourceEvidenceRepresentationHash: z.string().regex(/^[0-9a-f]{64}$/), kernelVersion: z.string().min(1), promptChecksum: z.string().min(1), provider: z.string().min(1), model: z.string().min(1), schemaVersion: z.string().min(1), algorithmVersion: z.string().min(1), snapshotSchemaVersion: z.string().min(1) }).strict();
 
 /** A final level is truthful only when its verification state and value agree exactly. */
 export const FinalLevelTruthSchema = z.union([
