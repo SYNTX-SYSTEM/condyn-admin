@@ -1,0 +1,12 @@
+import { describe, expect, it } from "vitest";
+import { InMemoryCapabilityCoreRepository, buildCapabilityConvergenceRunId, computeCapabilityConvergenceRunKey, runCapabilityConvergence, stableConvergenceJsonStringify } from "../../../../lib/career/capability-core";
+import { convergenceOutput, discoveryRun, verifiedCandidate } from "./fixtures";
+
+describe("Capability Convergence run identity", () => {
+  const input = { discoveryRunId: "RUN", discoveryRawOutputHash: "RAW", kernelVersion: "K", promptChecksum: "P", provider: "gemini", model: "model", schemaVersion: "S", algorithmVersion: "A" };
+  it("uses recursively stable JSON and a CONV upper-hex identity", () => { expect(stableConvergenceJsonStringify({ b: { z: 1, a: 2 }, a: 3 })).toBe('{"a":3,"b":{"a":2,"z":1}}'); expect(buildCapabilityConvergenceRunId(input)).toMatch(/^CONV_[0-9A-F]{24}$/); expect(computeCapabilityConvergenceRunKey(input)).toHaveLength(64); });
+  it("persists discovery raw output identity separately and reconstructs its CONV ID", async () => {
+    const discovery = discoveryRun([verifiedCandidate("A")]); const result = await runCapabilityConvergence(discovery, { kernelVersion: "convergence-v1", schemaVersion: "schema", algorithmVersion: "algorithm" }, { kernelResolver: { resolve: async () => ({ kernelVersion: "convergence-v1", templateId: "T", versionId: "V", checksum: "P", plainTextContent: "K" }) }, provider: { providerName: "gemini", model: "model", execute: async () => ({ convergenceOutput: convergenceOutput([discovery.payload.candidates[0].candidateId]) }) }, repository: new InMemoryCapabilityCoreRepository() }); const run: any = result.run;
+    expect(run.discoveryRawOutputHash).toBe(discovery.rawOutputHash); expect(buildCapabilityConvergenceRunId({ discoveryRunId: run.discoveryRunId, discoveryRawOutputHash: run.discoveryRawOutputHash, kernelVersion: run.kernelVersion, promptChecksum: run.prompt.checksum, provider: run.inference.provider, model: run.inference.model, schemaVersion: run.schemaVersion, algorithmVersion: run.algorithmVersion })).toBe(run.convergenceRunId); expect(buildCapabilityConvergenceRunId({ discoveryRunId: run.discoveryRunId, discoveryRawOutputHash: "changed", kernelVersion: run.kernelVersion, promptChecksum: run.prompt.checksum, provider: run.inference.provider, model: run.inference.model, schemaVersion: run.schemaVersion, algorithmVersion: run.algorithmVersion })).not.toBe(run.convergenceRunId);
+  });
+});

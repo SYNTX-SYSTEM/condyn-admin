@@ -6,3 +6,4 @@ export * from "./identity";
 export * from "./snapshot";
 export * from "./repository";
 export * from "./discovery";
+export * from "./convergence";
