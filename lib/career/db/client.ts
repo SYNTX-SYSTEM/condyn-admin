@@ -30,6 +30,33 @@ export async function initDbSchema(): Promise<void> {
         overall_confidence REAL,
         payload JSONB NOT NULL
       );`,
+      targetSql`CREATE TABLE IF NOT EXISTS career_capability_runs (
+        run_id TEXT PRIMARY KEY,
+        source_bundle_hash TEXT NOT NULL,
+        kernel_version TEXT NOT NULL,
+        prompt_checksum TEXT NOT NULL,
+        provider TEXT NOT NULL,
+        model TEXT NOT NULL,
+        schema_version TEXT NOT NULL,
+        status TEXT NOT NULL,
+        raw_output_hash TEXT,
+        payload JSONB NOT NULL,
+        created_at TEXT NOT NULL,
+        completed_at TEXT
+      );`,
+      targetSql`CREATE TABLE IF NOT EXISTS career_capability_snapshots (
+        snapshot_id TEXT PRIMARY KEY,
+        snapshot_key TEXT UNIQUE NOT NULL,
+        source_bundle_hash TEXT NOT NULL,
+        kernel_version TEXT NOT NULL,
+        prompt_checksum TEXT NOT NULL,
+        provider TEXT NOT NULL,
+        model TEXT NOT NULL,
+        schema_version TEXT NOT NULL,
+        status TEXT NOT NULL,
+        payload JSONB NOT NULL,
+        created_at TEXT NOT NULL
+      );`,
       targetSql`CREATE TABLE IF NOT EXISTS career_recommendations (
         id TEXT PRIMARY KEY,
         payload_hash TEXT NOT NULL,

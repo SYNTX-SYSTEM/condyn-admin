@@ -21,6 +21,37 @@ export const careerAnalyses = pgTable("career_analyses", {
   payload: jsonb("payload").notNull()
 });
 
+/** Append-only raw Capability Discovery provenance; independent of legacy analyses. */
+export const careerCapabilityRuns = pgTable("career_capability_runs", {
+  runId: text("run_id").primaryKey(),
+  sourceBundleHash: text("source_bundle_hash").notNull(),
+  kernelVersion: text("kernel_version").notNull(),
+  promptChecksum: text("prompt_checksum").notNull(),
+  provider: text("provider").notNull(),
+  model: text("model").notNull(),
+  schemaVersion: text("schema_version").notNull(),
+  status: text("status").notNull(),
+  rawOutputHash: text("raw_output_hash"),
+  payload: jsonb("payload").notNull(),
+  createdAt: text("created_at").notNull(),
+  completedAt: text("completed_at")
+});
+
+/** Append-only verified Capability Core truth snapshots. */
+export const careerCapabilitySnapshots = pgTable("career_capability_snapshots", {
+  snapshotId: text("snapshot_id").primaryKey(),
+  snapshotKey: text("snapshot_key").notNull().unique(),
+  sourceBundleHash: text("source_bundle_hash").notNull(),
+  kernelVersion: text("kernel_version").notNull(),
+  promptChecksum: text("prompt_checksum").notNull(),
+  provider: text("provider").notNull(),
+  model: text("model").notNull(),
+  schemaVersion: text("schema_version").notNull(),
+  status: text("status").notNull(),
+  payload: jsonb("payload").notNull(),
+  createdAt: text("created_at").notNull()
+});
+
 export const careerRecommendations = pgTable("career_recommendations", {
   id: text("id").primaryKey(),
   payloadHash: text("payload_hash").notNull(),
