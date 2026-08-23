@@ -7,6 +7,7 @@ import type { CapabilityDiscoveryRun, VerifiedCapabilitySnapshot } from "./schem
 
 export interface CapabilityCoreRepository {
   saveRun(run: CapabilityDiscoveryRun): Promise<void>;
+  getRunById(runId: string): Promise<CapabilityDiscoveryRun | null>;
   getSnapshotByKey(snapshotKey: string): Promise<VerifiedCapabilitySnapshot | null>;
   saveSnapshot(snapshot: VerifiedCapabilitySnapshot): Promise<void>;
 }
@@ -19,6 +20,7 @@ export class InMemoryCapabilityCoreRepository implements CapabilityCoreRepositor
     if (existing && !isDeepStrictEqual(existing, run)) throw new Error(`ERR_IMMUTABLE_RUN_CONFLICT: ${run.runId}`);
     this.runs.set(run.runId, structuredClone(run));
   }
+  async getRunById(runId: string): Promise<CapabilityDiscoveryRun | null> { const run = this.runs.get(runId); return run ? structuredClone(run) : null; }
   async getSnapshotByKey(snapshotKey: string): Promise<VerifiedCapabilitySnapshot | null> { const snapshot = this.snapshots.get(snapshotKey); return snapshot ? structuredClone(snapshot) : null; }
   async saveSnapshot(snapshot: VerifiedCapabilitySnapshot): Promise<void> {
     assertVerifiedCapabilitySnapshot(snapshot);
@@ -33,7 +35,18 @@ export class InMemoryCapabilityCoreRepository implements CapabilityCoreRepositor
 export class PostgresCapabilityCoreRepository implements CapabilityCoreRepository {
   constructor(private readonly database = db) {}
   async saveRun(run: CapabilityDiscoveryRun): Promise<void> {
-    await this.database.insert(careerCapabilityRuns).values({ runId: run.runId, sourceBundleHash: run.sourceBundleHash, kernelVersion: run.kernelVersion, promptChecksum: run.prompt.checksum, provider: run.inference.provider, model: run.inference.model, schemaVersion: run.schemaVersion, status: run.status, rawOutputHash: run.rawOutputHash ?? null, payload: run.payload, createdAt: run.createdAt, completedAt: run.completedAt ?? null }).onConflictDoNothing();
+    const existing = await this.getRunById(run.runId);
+    if (existing && !isDeepStrictEqual(existing, run)) throw new Error(`ERR_IMMUTABLE_RUN_CONFLICT: ${run.runId}`);
+    if (existing) return;
+    const inserted = await this.database.insert(careerCapabilityRuns).values({ runId: run.runId, sourceBundleHash: run.sourceBundleHash, kernelVersion: run.kernelVersion, promptChecksum: run.prompt.checksum, provider: run.inference.provider, model: run.inference.model, schemaVersion: run.schemaVersion, status: run.status, rawOutputHash: run.rawOutputHash ?? null, payload: run, createdAt: run.createdAt, completedAt: run.completedAt ?? null }).onConflictDoNothing().returning({ runId: careerCapabilityRuns.runId });
+    if (!inserted.length) {
+      const persisted = await this.getRunById(run.runId);
+      if (!persisted || !isDeepStrictEqual(persisted, run)) throw new Error(`ERR_IMMUTABLE_RUN_CONFLICT: ${run.runId}`);
+    }
+  }
+  async getRunById(runId: string): Promise<CapabilityDiscoveryRun | null> {
+    const rows = await this.database.select({ payload: careerCapabilityRuns.payload }).from(careerCapabilityRuns).where(eq(careerCapabilityRuns.runId, runId)).limit(1);
+    return rows[0]?.payload as CapabilityDiscoveryRun ?? null;
   }
   async getSnapshotByKey(snapshotKey: string): Promise<VerifiedCapabilitySnapshot | null> {
     const rows = await this.database.select({ payload: careerCapabilitySnapshots.payload }).from(careerCapabilitySnapshots).where(eq(careerCapabilitySnapshots.snapshotKey, snapshotKey)).limit(1);

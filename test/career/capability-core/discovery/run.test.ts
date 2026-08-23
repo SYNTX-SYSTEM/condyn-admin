@@ -1,0 +1,4 @@
+import { describe, expect, it } from "vitest";
+import { buildCapabilityDiscoveryRunId, stableJsonStringify } from "../../../../lib/career/capability-core";
+const base = { sourceBundleHash: "s", kernelVersion: "k", promptChecksum: "p", provider: "gemini", model: "m", schemaVersion: "1" };
+describe("discovery run identity", () => { it("is stable and changes with every identity component", () => { expect(buildCapabilityDiscoveryRunId(base)).toBe(buildCapabilityDiscoveryRunId(base)); for (const key of Object.keys(base) as (keyof typeof base)[]) expect(buildCapabilityDiscoveryRunId(base)).not.toBe(buildCapabilityDiscoveryRunId({ ...base, [key]: "changed" })); }); it("sorts object keys without changing array order", () => expect(stableJsonStringify({ z: [2, 1], a: "x" })).toBe('{"a":"x","z":[2,1]}')); });

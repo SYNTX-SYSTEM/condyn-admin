@@ -1,0 +1,3 @@
+import { describe, expect, it } from "vitest";
+import { ActivePromptCapabilityKernelResolver } from "../../../../lib/career/capability-core";
+describe("capability kernel resolver", () => { it("maps encrypted resolver metadata while kernel version remains explicit", async () => { const active = { resolveActivePrompt: async () => ({ templateId: "T", versionId: "V", checksum: "C", plainTextContent: "FAKE" }) }; const result = await new ActivePromptCapabilityKernelResolver(active as never, "slug", "kernel-v1").resolve(); expect(result).toEqual({ templateId: "T", versionId: "V", checksum: "C", plainTextContent: "FAKE", kernelVersion: "kernel-v1" }); }); });
