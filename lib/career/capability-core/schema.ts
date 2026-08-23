@@ -171,6 +171,8 @@ export interface VerifiedCapabilitySnapshot {
   evidence: EvidenceClaim[];
   relations: CapabilityRelation[];
   validationSummary: { candidateCount: number; rejectedCandidateCount: number; verifiedCapabilityCount: number; verifiedEvidenceCount: number; rejectedEvidenceCount: number; unresolvedRelationCount: number };
+  /** Optional so Phase-1/manual snapshots preserve their historical identity and shape. */
+  publication?: { mode: "PHASE4_VERIFIED"; verificationRunId: string; verificationRawOutputHash: string };
   createdAt: string;
   status: "DRAFT" | "VERIFIED" | "SUPERSEDED";
 }

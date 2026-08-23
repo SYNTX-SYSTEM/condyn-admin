@@ -13,6 +13,18 @@ export interface CapabilityCoreRepository {
   getConvergenceRunById(convergenceRunId: string): Promise<CapabilityConvergenceRun | null>;
   getSnapshotByKey(snapshotKey: string): Promise<VerifiedCapabilitySnapshot | null>;
   saveSnapshot(snapshot: VerifiedCapabilitySnapshot): Promise<void>;
+  savePhase4VerifiedSnapshot(snapshot: VerifiedCapabilitySnapshot): Promise<void>;
+}
+
+function assertGenericSnapshotRoute(snapshot: VerifiedCapabilitySnapshot): void {
+  if (snapshot.publication?.mode === "PHASE4_VERIFIED") throw new Error("ERR_PHASE4_SNAPSHOT_REQUIRES_DEDICATED_REPOSITORY");
+  assertVerifiedCapabilitySnapshot(snapshot);
+}
+
+/** Verification Run identity and upstream provenance are authenticated in the next Phase-4 integrity slice. */
+function assertPhase4SnapshotRoute(snapshot: VerifiedCapabilitySnapshot): void {
+  if (snapshot.publication?.mode !== "PHASE4_VERIFIED") throw new Error("ERR_PHASE4_SNAPSHOT_REQUIRES_DEDICATED_REPOSITORY");
+  assertVerifiedCapabilitySnapshot(snapshot);
 }
 
 export class InMemoryCapabilityCoreRepository implements CapabilityCoreRepository {
@@ -29,7 +41,14 @@ export class InMemoryCapabilityCoreRepository implements CapabilityCoreRepositor
   async getConvergenceRunById(convergenceRunId: string): Promise<CapabilityConvergenceRun | null> { const run = this.convergenceRuns.get(convergenceRunId); return run ? structuredClone(run) : null; }
   async getSnapshotByKey(snapshotKey: string): Promise<VerifiedCapabilitySnapshot | null> { const snapshot = this.snapshots.get(snapshotKey); return snapshot ? structuredClone(snapshot) : null; }
   async saveSnapshot(snapshot: VerifiedCapabilitySnapshot): Promise<void> {
-    assertVerifiedCapabilitySnapshot(snapshot);
+    assertGenericSnapshotRoute(snapshot);
+    await this.saveSnapshotImmutable(snapshot);
+  }
+  async savePhase4VerifiedSnapshot(snapshot: VerifiedCapabilitySnapshot): Promise<void> {
+    assertPhase4SnapshotRoute(snapshot);
+    await this.saveSnapshotImmutable(snapshot);
+  }
+  private async saveSnapshotImmutable(snapshot: VerifiedCapabilitySnapshot): Promise<void> {
     const key = computeSnapshotKey(snapshot);
     const existing = this.snapshots.get(key);
     if (existing && !isDeepStrictEqual(existing, snapshot)) throw new Error(`ERR_IMMUTABLE_SNAPSHOT_CONFLICT: ${snapshot.snapshotId}`);
@@ -74,7 +93,14 @@ export class PostgresCapabilityCoreRepository implements CapabilityCoreRepositor
     return snapshot;
   }
   async saveSnapshot(snapshot: VerifiedCapabilitySnapshot): Promise<void> {
-    assertVerifiedCapabilitySnapshot(snapshot);
+    assertGenericSnapshotRoute(snapshot);
+    await this.saveSnapshotImmutable(snapshot);
+  }
+  async savePhase4VerifiedSnapshot(snapshot: VerifiedCapabilitySnapshot): Promise<void> {
+    assertPhase4SnapshotRoute(snapshot);
+    await this.saveSnapshotImmutable(snapshot);
+  }
+  private async saveSnapshotImmutable(snapshot: VerifiedCapabilitySnapshot): Promise<void> {
     const snapshotKey = computeSnapshotKey(snapshot);
     const existing = await this.getSnapshotByKey(snapshotKey);
     if (existing && !isDeepStrictEqual(existing, snapshot)) throw new Error(`ERR_IMMUTABLE_SNAPSHOT_CONFLICT: ${snapshot.snapshotId}`);

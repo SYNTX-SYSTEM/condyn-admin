@@ -7,9 +7,12 @@ export interface SnapshotConfiguration {
   prompt: VerifiedCapabilitySnapshot["prompt"];
   inference: VerifiedCapabilitySnapshot["inference"];
   schemaVersion: string;
+  publication?: VerifiedCapabilitySnapshot["publication"];
 }
 
 export function computeSnapshotKey(snapshot: SnapshotConfiguration): string {
+  // Phase 4 truth is authorized by one immutable verification artifact, not mutable graph content.
+  if (snapshot.publication?.mode === "PHASE4_VERIFIED") return sha256Utf8(JSON.stringify(["CAPABILITY_VERIFIED_SNAPSHOT_V1", snapshot.publication.verificationRunId, snapshot.publication.verificationRawOutputHash]));
   return sha256Utf8(JSON.stringify([snapshot.sourceBundleHash, snapshot.kernelVersion, snapshot.prompt.checksum, snapshot.inference.provider, snapshot.inference.model, snapshot.schemaVersion]));
 }
 
@@ -23,6 +26,7 @@ export function assertVerifiedCapabilityEvidence(capability: VerifiedCapability,
   }
 }
 
+/** Generic Phase-1 constructor input deliberately excludes Phase-4 publication binding. */
 export type VerifiedSnapshotInput = Pick<VerifiedCapabilitySnapshot, "sourceBundleHash" | "kernelVersion" | "prompt" | "inference" | "schemaVersion" | "createdAt" | "status"> & Pick<VerifiedCapabilitySnapshot["validationSummary"], "candidateCount" | "rejectedCandidateCount">;
 
 export function assertVerifiedCapabilitySnapshot(snapshot: VerifiedCapabilitySnapshot): void {
