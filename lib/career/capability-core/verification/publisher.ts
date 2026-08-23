@@ -2,7 +2,7 @@ import { buildProvisionalCapabilityId } from "../identity";
 import { assertVerifiedCapabilitySnapshot, buildSnapshotId, createVerifiedCapabilitySnapshot } from "../snapshot";
 import { createCapabilityRelation, type CapabilityRelation, type EvidenceClaim, type VerifiedCapability, type VerifiedCapabilitySnapshot } from "../schema";
 import type { CanonicalCapabilityDraft } from "../convergence/types";
-import type { CapabilityVerificationPublicationInput, CapabilityVerificationRun, VerifiedCapabilitySnapshotPublisher } from "./types";
+import type { CapabilityVerificationPublicationInput, CapabilityVerificationRun, InterimVerifiedCapabilitySnapshotPublisher } from "./types";
 
 const equalArrays = (left: string[], right: string[]) => left.length === right.length && left.every((value, index) => value === right[index]);
 const finalCapabilityId = (draft: CanonicalCapabilityDraft): string => {
@@ -143,4 +143,4 @@ export function publishVerifiedCapabilitySnapshot(input: CapabilityVerificationP
   return published;
 }
 
-export const verifiedCapabilitySnapshotPublisher: VerifiedCapabilitySnapshotPublisher = { publish: publishVerifiedCapabilitySnapshot };
+export const verifiedCapabilitySnapshotPublisher: InterimVerifiedCapabilitySnapshotPublisher = { publish: publishVerifiedCapabilitySnapshot };

@@ -136,9 +136,9 @@ describe("Phase 4 verified-truth publication contract", () => {
   it("promotes verified Phase-3 relations into a new CAP graph relation identity", () => {
     const source = draft("Source"); const target = draft("Target");
     const proposal = createCapabilityRelation({ sourceCapabilityRef: source.provisionalCapabilityId, targetCapabilityRef: target.provisionalCapabilityId, relationType: "RELATED_CAPABILITY", status: "PROPOSED", reason: "semantic proposal", createdBy: "SEMANTIC_RESOLVER", createdAt: configuration.createdAt });
-    const run = verificationRun([source, target], { payload: { ...verificationRun([source, target]).payload, relationDispositions: [{ relationId: proposal.relationId, status: "VERIFIED" }] } });
+    const run = verificationRun([source, target], { completedAt: "2026-02-02T00:00:00.000Z", payload: { ...verificationRun([source, target]).payload, relationDispositions: [{ relationId: proposal.relationId, status: "VERIFIED" }] } });
     const snapshot = publish({ drafts: [source, target], run, proposedRelations: [proposal] });
-    const expected = createCapabilityRelation({ sourceCapabilityRef: finalId(source), targetCapabilityRef: finalId(target), relationType: proposal.relationType, status: "VERIFIED", reason: proposal.reason, createdBy: proposal.createdBy, createdAt: proposal.createdAt });
+    const expected = createCapabilityRelation({ sourceCapabilityRef: finalId(source), targetCapabilityRef: finalId(target), relationType: proposal.relationType, status: "VERIFIED", reason: proposal.reason, createdBy: proposal.createdBy, createdAt: run.completedAt });
     expect(snapshot.relations).toEqual([expected]);
     expect(expected.relationId).not.toBe(proposal.relationId);
     expect(snapshot.capabilities.every((item) => item.relationIds.includes(expected.relationId))).toBe(true);

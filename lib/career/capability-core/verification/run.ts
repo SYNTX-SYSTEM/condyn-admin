@@ -103,7 +103,7 @@ export async function requireAuthoritativePersistedCapabilityVerificationRun(
 ): Promise<CapabilityVerificationRun> {
   assertPersistableCapabilityVerificationRun(suppliedRun);
   const persistedRun = await repository.getVerificationRunById(suppliedRun.verificationRunId);
-  if (!persistedRun) integrityError();
+  if (persistedRun === null) return integrityError();
   assertPersistableCapabilityVerificationRun(persistedRun);
   if (!isDeepStrictEqual(suppliedRun, persistedRun)) integrityError();
   return structuredClone(persistedRun);

@@ -1,5 +1,6 @@
 import type { CanonicalCapabilityDraft } from "../convergence/types";
 import type { CapabilityConvergenceRun } from "../convergence/types";
+import type { CapabilityCoreRepository } from "../repository";
 import type { SourceDocument } from "../source";
 import type { CapabilityCandidate, CapabilityDiscoveryRun, CapabilityRelation, EvidenceClaim, VerifiedCapability, VerifiedCapabilitySnapshot } from "../schema";
 
@@ -91,17 +92,34 @@ export interface AuthenticatedCapabilityVerificationChain {
   snapshotSchemaVersion: string;
 }
 
-/** The next publisher accepts only this authenticated chain, never caller-built publication state. */
-export interface AuthenticatedCapabilityVerificationPublicationInput { chain: AuthenticatedCapabilityVerificationChain; }
+/**
+ * Authentication proves consistency. Authority is established only by successful persisted
+ * authentication through trusted repository dependencies; this chain is not a caller-supplied token.
+ */
+export interface AuthoritativeCapabilityVerificationChain extends AuthenticatedCapabilityVerificationChain {}
+
+/** Trusted application dependency, deliberately separate from caller-supplied integrity artifacts. */
+export interface CapabilityVerificationAuthorityDependencies {
+  repository: Pick<CapabilityCoreRepository, "getRunById" | "getConvergenceRunById" | "getVerificationRunById">;
+}
 
 /** Phase 4 metadata binds final truth to the immutable run that authorized publication. */
 export interface VerifiedSnapshotPublicationMetadata { verificationRunId: string; verificationRawOutputHash: string; }
 
-/**
- * The publisher consumes a verification artifact, but this slice does not yet establish
- * that artifact's identity, schema, upstream binding, or immutable repository provenance.
- * Verification Run Integrity will make a run publication-authoritative in a later slice.
- */
-export interface VerifiedCapabilitySnapshotPublisher {
+/** Transitional Slice 1A publisher contract; Slice 2D replaces this caller-built input. */
+export interface InterimVerifiedCapabilitySnapshotPublisher {
   publish(input: CapabilityVerificationPublicationInput & { verificationRun: CapabilityVerificationRun }): VerifiedCapabilitySnapshot;
 }
+
+/**
+ * The final publisher establishes persisted authority internally from raw integrity input.
+ * Its repository dependency is fixed when the publisher is constructed, not supplied by the caller.
+ */
+export interface VerifiedCapabilitySnapshotPublisher {
+  publish(input: CapabilityVerificationIntegrityInput): Promise<VerifiedCapabilitySnapshot>;
+}
+
+/** Slice 2D construction contract; implementation remains deliberately deferred. */
+export type CreateVerifiedCapabilitySnapshotPublisher = (
+  dependencies: CapabilityVerificationAuthorityDependencies
+) => VerifiedCapabilitySnapshotPublisher;

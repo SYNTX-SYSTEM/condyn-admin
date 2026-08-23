@@ -104,18 +104,28 @@ describe("Phase 4 Slice 2B Postgres verification-run persistence", () => {
 
 describe("Phase 4 Slice 2B verification self-integrity and persisted authority", () => {
   const save = (item: CapabilityVerificationRun) => new InMemoryCapabilityCoreRepository().saveVerificationRun(item);
+  const withInvalidLevelShape = (item: CapabilityVerificationRun): CapabilityVerificationRun => {
+    const result = structuredClone(item);
+    const outcome = result.payload.demonstratedLevelOutcomes[0];
+    if (outcome === undefined) throw new Error("test fixture requires a demonstrated-level outcome");
+    Reflect.set(outcome, "status", "VERIFIED");
+    Reflect.set(outcome, "demonstratedCapabilityLevel", null);
+    return result;
+  };
 
-  it.each([
+  const invalidRuns: ReadonlyArray<readonly [string, (item: CapabilityVerificationRun) => CapabilityVerificationRun]> = [
     ["tampered VFY ID", (item: CapabilityVerificationRun) => ({ ...item, verificationRunId: "VFY_0123456789ABCDEF01234567" })],
     ["tampered rawOutputHash", (item: CapabilityVerificationRun) => ({ ...item, rawOutputHash: "0".repeat(64) })],
     ["noncanonical payload", (item: CapabilityVerificationRun) => ({ ...item, payload: { ...item.payload, semanticDefinitionOutcomes: [...item.payload.semanticDefinitionOutcomes].reverse() } })],
-    ["invalid level shape", (item: CapabilityVerificationRun) => ({ ...item, payload: { ...item.payload, demonstratedLevelOutcomes: [{ provisionalCapabilityId: "PCAP_A", status: "VERIFIED", demonstratedCapabilityLevel: null }, item.payload.demonstratedLevelOutcomes[1]] } })],
+    ["invalid level shape", withInvalidLevelShape],
     ["empty sourceBundleHash", (item: CapabilityVerificationRun) => ({ ...item, sourceBundleHash: "" })],
     ["extra top-level property", (item: CapabilityVerificationRun) => ({ ...item, hiddenAuthority: "forged" })],
     ["extra inference property", (item: CapabilityVerificationRun) => ({ ...item, inference: { ...item.inference, hidden: "forged" } })],
     ["empty inference provider", (item: CapabilityVerificationRun) => ({ ...item, inference: { ...item.inference, provider: "" } })],
     ["empty inference model", (item: CapabilityVerificationRun) => ({ ...item, inference: { ...item.inference, model: "" } })]
-  ])("rejects %s before persistence", async (_name, mutate) => {
+  ];
+
+  it.each(invalidRuns)("rejects %s before persistence", async (_name, mutate) => {
     await expect(save(mutate(run()))).rejects.toThrow("ERR_CAPABILITY_VERIFICATION_RUN_INTEGRITY_INVALID");
   });
 
