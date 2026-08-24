@@ -2,7 +2,7 @@
 
 ## Scope
 
-This walkthrough describes authority and structural checks implemented through Phase 5C1. It does not describe semantic evidence binding, support, contradiction, gap, dependency, consequence, recommendation, decision, or persistence behavior as current functionality.
+This walkthrough describes authority, structural checks, and semantic evaluator proposal binding implemented through Phase 5C2. It does not describe gaps, structural contradictions, dependencies, consequences, recommendation, decision, validation assembly, persistence behavior, or human-machine feedback as current functionality.
 
 ## Phase 5A: generic producer authority consumption
 
@@ -93,6 +93,80 @@ NO PERSISTENCE IN 5C1
 
 Payload is deliberately ignored after resolution. 5C1 neither hashes, stores, returns, compares, or semantically interprets it. An empty `sourceStateReferences` inventory resolves zero references and succeeds. That success does not mean the context is complete.
 
+## Phase 5C2: semantic evidence binding
+
+`createBoundSemanticEvidenceBinder(reader, evaluator)` captures `reader.resolve.bind(reader)` and `evaluator.evaluate.bind(evaluator)` once at construction. A caller supplies only a `DecisionContextDraft` to `bind(context)`; it cannot supply a historic 5C1 result, resolution, payload, reader, resolver, repository, evaluator, or producer/repository write capability.
+
+The current operation order is deliberately two-stage:
+
+```text
+DecisionContextDraft supplied to bind(...)
+  -> recursively capture complete caller data through descriptors
+  -> assertDecisionContextDraft(captured context)
+  -> capture canonical source references and items
+
+STAGE A: COMPLETE OPERATION-TIME AUTHORITY + PAYLOAD ISOLATION
+  -> resolve every source reference in canonical order through the bound reader
+  -> capture each returned resolution envelope
+  -> reject malformed returned authority resolution envelopes/references and require every returned reference exactly equals its request
+  -> structuredClone every resolver-returned payload
+  -> recursively reject SharedArrayBuffer, SharedArrayBuffer-backed views, and nested shared memory
+  -> prepare every isolated state input
+
+STAGE B: SEMANTIC EVALUATION
+  -> invoke the bound evaluator once for each prepared state
+  -> pass detached context items, detached reference, and isolated opaque payload
+  -> capture and validate zero or more evaluator proposals
+  -> require known item IDs and the same listed state reference
+  -> reject duplicate item/reference targets
+  -> construct EBIND identities, sort canonically, return detached proposals
+```
+
+Stage B does not start unless all Stage-A references have resolved, matched, and produced safe semantic payloads. Therefore a later resolution or payload-isolation failure invokes the evaluator zero times. This is operation-local preparation only; the binder neither persists it nor returns a reusable authority certificate.
+
+### Payload isolation
+
+Phase 5A remains unchanged: `AuthoritativeStateResolution` carries a detached reference and the resolver-returned opaque payload, but the generic reader does not clone arbitrary payloads. Phase 5C2 establishes a separate operation-local semantic payload boundary before evaluation. It uses `structuredClone`, then recursively inspects the clone with cycle protection.
+
+`structuredClone` alone is not sufficient: `SharedArrayBuffer` can survive cloning while retaining shared mutable memory. Phase 5C2 rejects direct or transitive `SharedArrayBuffer`, typed-array/DataView views backed by it, and such values nested in arrays, ordinary objects, `Map`, or `Set`. A non-detachable or shared-memory payload fails `ERR_DECISION_EVIDENCE_BINDING_PAYLOAD_NOT_DETACHABLE`; the evaluator receives no call. The reason is exact:
+
+```text
+SEMANTIC INSPECTION CAPABILITY != PRODUCER MUTATION CAPABILITY
+```
+
+The evaluator receives `SemanticEvidenceEvaluationInput` containing `contextId`, detached captured context items exposed through a readonly array type, one detached state reference, and the isolated opaque payload. The readonly array type does not claim deep runtime immutability. The evaluator receives no producer authority, repository, resolver, reader, producer-state write capability, or human decision state. It may mutate its operation-local detached payload without mutating the resolver-owned payload. Evaluator output is semantic proposal data only.
+
+### Binding semantics
+
+Each `SemanticEvidenceBindingProposal` represents one `DecisionContextItem` × one `AuthoritativeStateReference` and has exactly one disposition:
+
+```text
+SUPPORTED
+PARTIALLY_SUPPORTED
+NOT_SUPPORTED
+CONTRADICTED
+```
+
+The evaluator may return `[]`. The binder does not synthesize `NOT_SUPPORTED`; therefore no binding is not `NOT_SUPPORTED`, and zero bindings establish neither support, completeness, incompleteness, nor a gap.
+
+Provenance and support remain separate axes. `AUTHORITATIVE_STATE` provenance is not automatically `SUPPORTED`; `HUMAN_INPUT` may be `SUPPORTED`; `MODEL_PROPOSAL` may be `CONTRADICTED`. Provenance answers where the item came from. Binding answers how this one state semantically relates to the item according to the evaluator proposal.
+
+`CONTRADICTED` means one authoritative state semantically conflicts with one item statement according to the semantic evaluator. It is not the later Phase-5C3 structural `Contradiction` concept and does not create such an artifact.
+
+### `EBIND_` identity
+
+```ts
+EBIND_ + SHA256(JSON.stringify([
+  "SEMANTIC_EVIDENCE_BINDING_V1",
+  contextId,
+  itemId,
+  [producerId, authorityContractId, artifactId, locator],
+  disposition
+])).slice(0, 24).toUpperCase()
+```
+
+The SHA-256 is the implementation hash over `JSON.stringify(...)`; the first 24 hex characters are uppercased. Rationale is trimmed for returned canonical proposal content but is excluded from identity. Different rationale wording preserves the same ID for the same relation/disposition; a different disposition changes it. No provider/model/request metadata, timestamp, randomness, or execution order participates.
+
 ## Failure model
 
 | Boundary | Current error/behavior |
@@ -103,9 +177,17 @@ Payload is deliberately ignored after resolution. 5C1 neither hashes, stores, re
 | Invalid validator reader dependency | `ERR_DECISION_CONTEXT_AUTHORITY_READER_INVALID` |
 | Invalid/hostile/tampered context entering 5C1 | `ERR_DECISION_CONTEXT_AUTHORITY_CONTEXT_INVALID` |
 | Returned reader reference differs from requested reference | `ERR_DECISION_CONTEXT_AUTHORITY_REFERENCE_MISMATCH` |
+| Invalid/hostile/tampered context entering 5C2 | `ERR_DECISION_EVIDENCE_BINDING_CONTEXT_INVALID` |
+| Invalid bound 5C2 reader/evaluator | `ERR_DECISION_EVIDENCE_BINDING_READER_INVALID`, `ERR_DECISION_EVIDENCE_BINDING_EVALUATOR_INVALID` |
+| Malformed 5C2 returned authority resolution envelope/reference, or returned reference differs from request | `ERR_DECISION_EVIDENCE_BINDING_AUTHORITY_REFERENCE_MISMATCH` |
+| 5C2 payload cannot isolate or contains shared memory | `ERR_DECISION_EVIDENCE_BINDING_PAYLOAD_NOT_DETACHABLE` |
+| Invalid evaluator output shape, disposition, or rationale | `ERR_DECISION_EVIDENCE_BINDING_EVALUATION_INVALID` |
+| Unknown item; malformed, foreign, or mismatched evaluator state reference; duplicate target | `ERR_DECISION_EVIDENCE_BINDING_ITEM_NOT_FOUND`, `ERR_DECISION_EVIDENCE_BINDING_STATE_REFERENCE_INVALID`, `ERR_DECISION_EVIDENCE_BINDING_DUPLICATE` |
 
 The validator does not catch errors from `await boundResolve(...)`. Existing deterministic Phase-5A reader/adapter errors therefore remain observable where they arise; a producer dependency exception also propagates rather than being reclassified as a 5C1 context error.
 
+The Phase-5C2 binder likewise permits Phase-5A reader/resolver/producer errors to propagate from its operation-time authority calls. It reclassifies only its own capture/isolation/proposal-boundary failures into the Phase-5C2 errors above.
+
 ## Authority is not semantic support
 
-The implemented chain establishes that configured producer authority can currently resolve each declared context reference. It does not establish that any `DecisionContextItem.statement` is true, supported by the payload, contradicted, complete, human-adopted, or suitable for a recommendation. Those are later concerns and are not implemented through Phase 5C1.
+The implemented chain establishes that configured producer authority can currently resolve each declared context reference and that a bound semantic evaluator can propose an item/reference disposition from an isolated payload. It does not establish verified semantic truth, that a statement is factually supported, completeness, a gap, a structural contradiction, human adoption, or suitability for a recommendation. Those remain later concerns beyond Phase 5C2.

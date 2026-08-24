@@ -15,6 +15,13 @@
 | `DecisionContextDraftInput` | `sourceStateReferences`, `items` | Constructor input. It does not accept a context ID, status, schema version, question ID, payload, repository, resolver, or resolution. |
 | `DecisionContextDraft` | `artifactKind: "DECISION_CONTEXT_DRAFT"`, `schemaVersion: "DECISION_CONTEXT_DRAFT_V1"`, `contextId`, `validationStatus: "NOT_RUN"`, `sourceStateReferences`, `decisionQuestionId`, `items` | Detached canonical pre-validation structural artifact. It is not persisted by current Decision Core code. |
 | `BoundDecisionContextAuthorityValidator` | `validate(context): Promise<void>` | Composition-time bound operation that checks current authority reachability for every context source reference. It returns no proof, payload collection, token, or validated context artifact. |
+| `EvidenceBindingDisposition` | `SUPPORTED`, `PARTIALLY_SUPPORTED`, `NOT_SUPPORTED`, `CONTRADICTED` | Closed Phase-5C2 semantic evaluator disposition set. It is not authority, verified truth, completeness, recommendation, or a Phase-5C3 finding. |
+| `EVIDENCE_BINDING_DISPOSITIONS` | readonly runtime list of the four disposition strings | Runtime representation of the closed disposition set. |
+| `SemanticEvidenceBindingEvaluation` | `itemId`, `stateReference`, `disposition`, `rationale` | One evaluator-produced candidate relationship. The binder captures and validates it before constructing a proposal. |
+| `SemanticEvidenceEvaluationInput` | `contextId`, `items: readonly DecisionContextItem[]`, `stateReference`, `payload` | Operation-local evaluator input. `items` are detached captured values exposed through a readonly array type, not a claim of deep runtime immutability; reference is detached. `payload` is the Phase-5C2 isolated opaque payload, not a repository/read capability or producer-owned shared memory. |
+| `SemanticEvidenceBindingEvaluator` | `evaluate(input): Promise<readonly SemanticEvidenceBindingEvaluation[]>` | Composition-time evaluator dependency. It has no repository, resolver, reader, producer-state write capability, human decision state, or producer authority. It may mutate its operation-local detached payload without mutating the resolver-owned payload. Its output is proposal data only. |
+| `SemanticEvidenceBindingProposal` | `bindingId`, `contextId`, `itemId`, `stateReference`, `disposition`, `rationale` | Canonical Phase-5C2 proposal for one item × one state reference. It is not persisted and does not validate the Decision Context. |
+| `BoundSemanticEvidenceBinder` | `bind(context): Promise<SemanticEvidenceBindingProposal[]>` | Composition-time bound operation. It re-establishes authority and payload isolation before invoking semantic evaluation. |
 
 ## Reference and reader behavior
 
@@ -104,3 +111,46 @@ Identity is local structural identity. It does not itself prove semantic truth, 
 | Context ID mismatch | `ERR_DECISION_CONTEXT_ID_MISMATCH` |
 
 None of these structural outcomes resolve a producer, inspect payload semantics, or establish semantic support.
+
+## Semantic Evidence Binding identity and operation
+
+`createBoundSemanticEvidenceBinder(reader, evaluator)` captures `reader.resolve.bind(reader)` and `evaluator.evaluate.bind(evaluator)` at construction. `bind(context)` accepts only a `DecisionContextDraft`; it accepts no caller-supplied payload, resolution, reader, resolver, repository, or evaluator.
+
+The binder captures and structurally asserts the complete context. In Stage A it resolves every canonical source-state reference, requires every returned authority resolution envelope/reference to be well-formed and to equal the requested reference exactly, and creates a semantic payload copy. The generic Phase-5A reader does **not** clone arbitrary resolver payloads. Phase 5C2 uses `structuredClone` itself, then rejects a clone containing `SharedArrayBuffer`, a view backed by `SharedArrayBuffer`, or nested shared memory in arrays, objects, `Map`, or `Set`; cyclic/repeated graphs are inspected with cycle protection. A payload that cannot be cloned or safely inspected fails `ERR_DECISION_EVIDENCE_BINDING_PAYLOAD_NOT_DETACHABLE` before evaluator invocation.
+
+Only after every Stage-A reference has resolved, matched, and produced an isolated semantic payload does Stage B invoke the bound evaluator once for each prepared state. The evaluator may propose zero or more item/reference relationships. The binder validates exact proposal shape, requires an existing item ID and the same listed state reference, rejects duplicate item/reference targets, then sorts proposals by `bindingId` using deterministic code-point comparison. The returned array is a detached clone. It remains semantic proposal data, not an authority certificate or validated context artifact.
+
+### `EBIND_` binding identity
+
+The implementation uses `createHash("sha256")` over `JSON.stringify(...)`, takes the first 24 hexadecimal characters, uppercases them, and prefixes `EBIND_`:
+
+```ts
+EBIND_ + SHA256(JSON.stringify([
+  "SEMANTIC_EVIDENCE_BINDING_V1",
+  contextId,
+  itemId,
+  [producerId, authorityContractId, artifactId, locator],
+  disposition
+])).slice(0, 24).toUpperCase()
+```
+
+`rationale` is trimmed for stored canonical proposal content but is not identity-bearing. Differently worded rationales for the same context, item, state reference, and disposition retain the same `EBIND_`; a different disposition changes it. Provider/model identity, request IDs, timestamps, randomness, and execution order do not participate.
+
+An `EBIND_` identity is local deterministic proposal identity. It does not prove semantic truth, producer authority, completeness, human adoption, recommendation quality, or a structural contradiction.
+
+### Binding failures
+
+| Condition | Error / behavior |
+| --- | --- |
+| Invalid, hostile, or tampered supplied context | `ERR_DECISION_EVIDENCE_BINDING_CONTEXT_INVALID` |
+| Invalid bound reader/evaluator dependency | `ERR_DECISION_EVIDENCE_BINDING_READER_INVALID`, `ERR_DECISION_EVIDENCE_BINDING_EVALUATOR_INVALID` |
+| Malformed returned authority resolution envelope/reference, or returned reference differs from request | `ERR_DECISION_EVIDENCE_BINDING_AUTHORITY_REFERENCE_MISMATCH` |
+| Payload cannot be detached or contains shared memory | `ERR_DECISION_EVIDENCE_BINDING_PAYLOAD_NOT_DETACHABLE` |
+| Invalid evaluator output shape, disposition, or rationale | `ERR_DECISION_EVIDENCE_BINDING_EVALUATION_INVALID` |
+| Unknown item | `ERR_DECISION_EVIDENCE_BINDING_ITEM_NOT_FOUND` |
+| Malformed, foreign, or mismatched evaluator state reference | `ERR_DECISION_EVIDENCE_BINDING_STATE_REFERENCE_INVALID` |
+| More than one proposal for an item/reference target | `ERR_DECISION_EVIDENCE_BINDING_DUPLICATE` |
+
+Phase-5A resolver and producer errors from operation-time resolution are not reclassified by the binder and may propagate.
+
+`AUTHORITATIVE_STATE` provenance does not imply `SUPPORTED`; provenance records origin, whereas a binding records the evaluator's proposed semantic relationship. `HUMAN_INPUT` may be `SUPPORTED`, and `MODEL_PROPOSAL` may be `CONTRADICTED`. No binding is not `NOT_SUPPORTED`: zero proposals are valid and establish neither support, completeness, incompleteness, nor a gap. `CONTRADICTED` is one evaluator-proposed item/state relationship, not the later Phase-5C3 `Contradiction` concept.
