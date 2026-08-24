@@ -17,11 +17,12 @@ const publisher = (repository: core.CapabilityCoreRepository): Publisher => {
 
 const source = (id: string, quote: string) => core.createSourceDocument({ docId: id, title: id, rawContent: quote });
 
-function fixture(options: { relation?: "VERIFIED" | "REJECTED" | "UNRESOLVED"; level?: "VERIFIED" | "UNVERIFIED"; zero?: boolean; emptySources?: boolean; blocked?: boolean } = {}): CapabilityVerificationIntegrityInput {
+function fixture(options: { relation?: "VERIFIED" | "REJECTED" | "UNRESOLVED"; proposalRelationType?: "RELATED_CAPABILITY" | "UNRESOLVED"; level?: "VERIFIED" | "UNVERIFIED"; zero?: boolean; emptySources?: boolean; blocked?: boolean } = {}): CapabilityVerificationIntegrityInput {
   const sourceDocuments = options.emptySources ? [] : options.zero ? [source("DOC_ZERO", "No capabilities discovered")] : [source("DOC_A", "Proof A"), source("DOC_B", "Proof B")];
+  const hasRelation = options.relation !== undefined || options.proposalRelationType !== undefined;
   const capabilities = options.zero ? [] : [
     { canonical_name: "Capability A", capability_scope: "ATOMIC" as const, structural_definition: "Definition A", primary_domain: null, demonstrated_capability_level: null, model_confidence: 0.9, evidence_mode: "EXPLICIT" as const, evidence: [{ source_document: "DOC_A", location: "source", exact_quote: "Proof A" }] },
-    ...(options.relation ? [{ canonical_name: "Capability B", capability_scope: "ATOMIC" as const, structural_definition: "Definition B", primary_domain: null, demonstrated_capability_level: null, model_confidence: 0.9, evidence_mode: "EXPLICIT" as const, evidence: [{ source_document: "DOC_B", location: "source", exact_quote: "Proof B" }] }] : [])
+    ...(hasRelation ? [{ canonical_name: "Capability B", capability_scope: "ATOMIC" as const, structural_definition: "Definition B", primary_domain: null, demonstrated_capability_level: null, model_confidence: 0.9, evidence_mode: "EXPLICIT" as const, evidence: [{ source_document: "DOC_B", location: "source", exact_quote: "Proof B" }] }] : [])
   ];
   const kernelOutput: core.CapabilityKernelOutput = { kernel_version: "discovery-v1", capabilities, coverage_audit: { source_documents_examined: sourceDocuments.length, capability_count: capabilities.length, atomic_capability_count: capabilities.length, composite_capability_count: 0, attribution_pass_completed: true, target_state_ownership_pass_completed: true, atomic_extraction_pass_completed: true, method_capability_pass_completed: true, composite_reconstruction_pass_completed: true, global_convergence_pass_completed: true, inventory_reconciliation_pass_completed: true, final_reconciliation_produced_new_capabilities: false, unresolved_target_operations: 0, segments_classified_as_external_source_content: 0, segments_classified_as_target_subject_operation: 0, segments_classified_as_target_subject_designed_target_state: 0, segments_classified_as_target_organization_capability: 0, segments_excluded_due_to_attribution_ambiguity: 0 } };
   const sourceBundleHash = core.computeSourceBundleHash(sourceDocuments);
@@ -32,8 +33,9 @@ function fixture(options: { relation?: "VERIFIED" | "REJECTED" | "UNRESOLVED"; l
   const discoveryRawOutputHash = discoveryRun.rawOutputHash;
   if (discoveryRawOutputHash === undefined) throw new Error("test fixture requires a Discovery raw output hash");
   const groups = candidates.map((candidate, index) => ({ group_key: `group-${index}`, member_candidate_ids: [candidate.candidateId], canonical_name: kernelOutput.capabilities[index].canonical_name, capability_scope: "ATOMIC" as const, structural_definition: kernelOutput.capabilities[index].structural_definition, primary_domain: null }));
-  const relations = options.relation && candidates.length === 2 ? [{ source_group_key: "group-0", target_group_key: "group-1", relation_type: "RELATED_CAPABILITY" as const, reason: "verified relation" }] : [];
-  const convergenceOutput = core.validateCapabilityConvergenceOutput({ convergence_version: "convergence-v1", groups, relations, reconciliation_audit: { input_candidate_count: candidates.length, grouped_candidate_count: candidates.length, group_count: groups.length, same_capability_merge_count: 0, unresolved_relation_count: 0, reconciliation_pass_completed: true } }, candidates);
+  const relations = hasRelation && candidates.length === 2 ? [{ source_group_key: "group-0", target_group_key: "group-1", relation_type: options.proposalRelationType ?? "RELATED_CAPABILITY" as const, reason: "verified relation" }] : [];
+  const unresolvedRelationCount = relations.filter((relation) => relation.relation_type === "UNRESOLVED").length;
+  const convergenceOutput = core.validateCapabilityConvergenceOutput({ convergence_version: "convergence-v1", groups, relations, reconciliation_audit: { input_candidate_count: candidates.length, grouped_candidate_count: candidates.length, group_count: groups.length, same_capability_merge_count: 0, unresolved_relation_count: unresolvedRelationCount, reconciliation_pass_completed: true } }, candidates);
   const convergenceRawOutputHash = core.sha256Utf8(core.stableConvergenceJsonStringify(convergenceOutput));
   const convergenceRunId = core.buildCapabilityConvergenceRunId({ discoveryRunId: runId, discoveryRawOutputHash: discoveryRawOutputHash, kernelVersion: "convergence-v1", promptChecksum: "convergence-prompt", provider: "gemini", model: "convergence-model", schemaVersion: "convergence-schema", algorithmVersion: "convergence-algorithm" });
   const canonical = core.canonicalizeCapabilityConvergence(convergenceOutput, candidates, createdAt);
@@ -101,11 +103,38 @@ describe("Phase 4 authoritative final truth publication", () => {
     await expect(publisher(rejectedRepository).publish(rejectedInput)).resolves.toMatchObject({ relations: [] });
   });
 
-  it("rejects unresolved proposals and publishes a valid persisted zero graph", async () => {
+  it("blocks an UNRESOLVED VFY disposition and publishes a valid persisted zero graph", async () => {
     const unresolved = fixture({ relation: "UNRESOLVED" }); const unresolvedRepository = new core.InMemoryCapabilityCoreRepository(); await persist(unresolvedRepository, unresolved);
     await expect(publisher(unresolvedRepository).publish(unresolved)).rejects.toThrow("ERR_PHASE4_PUBLICATION_BLOCKED");
     const zero = fixture({ zero: true }); const zeroRepository = new core.InMemoryCapabilityCoreRepository(); await persist(zeroRepository, zero);
     await expect(publisher(zeroRepository).publish(zero)).resolves.toMatchObject({ capabilities: [], evidence: [], relations: [], status: "VERIFIED" });
+  });
+
+  it("rejects an UNRESOLVED Phase-3 relation type despite an ELIGIBLE VERIFIED VFY disposition", async () => {
+    const input = fixture({ proposalRelationType: "UNRESOLVED" });
+    expect(input.verificationRun.payload.publicationEligibility).toBe("ELIGIBLE");
+    expect(input.verificationRun.payload.relationDispositions[0]?.status).toBe("VERIFIED");
+    expect(input.convergenceRun.payload.proposedRelations[0]?.relationType).toBe("UNRESOLVED");
+    const repository = new core.InMemoryCapabilityCoreRepository(); await persist(repository, input);
+    await expect(publisher(repository).publish(input)).rejects.toThrow("ERR_PHASE4_RELATION_NOT_VERIFIED");
+  });
+
+  it("rejects after successful private persistence when the subsequent reread is missing", async () => {
+    class MissingRereadRepository extends core.InMemoryCapabilityCoreRepository {
+      async getSnapshotByKey(_snapshotKey: string): Promise<VerifiedCapabilitySnapshot | null> { return null; }
+      async readPrivatelyPersistedSnapshot(snapshotKey: string): Promise<VerifiedCapabilitySnapshot | null> { return super.getSnapshotByKey(snapshotKey); }
+    }
+    const repository = new MissingRereadRepository(); const input = fixture(); await persist(repository, input);
+    await expect(publisher(repository).publish(input)).rejects.toThrow("ERR_PHASE4_SNAPSHOT_PERSISTENCE_INVALID");
+    const snapshotKey = core.computeSnapshotKey({ sourceBundleHash: input.discoveryRun.sourceBundleHash, kernelVersion: input.verificationRun.kernelVersion, prompt: { checksum: input.verificationRun.promptChecksum }, inference: input.verificationRun.inference, schemaVersion: input.verificationRun.snapshotSchemaVersion, publication: { mode: "PHASE4_VERIFIED", verificationRunId: input.verificationRun.verificationRunId, verificationRawOutputHash: input.verificationRun.rawOutputHash } });
+    await expect(repository.readPrivatelyPersistedSnapshot(snapshotKey)).resolves.toMatchObject({ publication: { mode: "PHASE4_VERIFIED" } });
+  });
+
+  it("propagates a private persistence failure without translating it to a reread failure", async () => {
+    const repository = new core.InMemoryCapabilityCoreRepository();
+    Reflect.set(repository, "saveSnapshotImmutable", async () => { throw new Error("ERR_TEST_PRIVATE_PERSISTENCE_FAILURE"); });
+    const input = fixture(); await persist(repository, input);
+    await expect(publisher(repository).publish(input)).rejects.toThrow("ERR_TEST_PRIVATE_PERSISTENCE_FAILURE");
   });
 
   it("rejects an unreachable empty source set before publication", async () => {
