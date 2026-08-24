@@ -1,10 +1,10 @@
 # Decision Core architecture
 
-## Scope through Phase 5C2
+## Scope through Phase 5C3A
 
 Decision Core is a generic, producer-neutral module for consuming governed producer state and forming a deterministic structural `DecisionContextDraft`. It is separate from Capability Core. Capability Core publishes capability/evidence-oriented Phase-4 snapshots; Decision Core does not require that ontology and can consume any producer that implements a compatible authority resolver.
 
-The implemented architecture through Phase 5C2 establishes a generic, producer-neutral foundation for constructing structurally defined decision contexts that can reference governed producer state, and for separately producing explicit semantic evaluator proposals about item/reference relationships. It does not implement recommendation, assessment, scoring, ranking, human decision, action, outcome, feedback, gaps, structural contradictions, dependencies, consequences, validation assembly, persistence, or a closed human-machine loop.
+The implemented architecture through Phase 5C3A establishes a generic, producer-neutral foundation for constructing structurally defined decision contexts that can reference governed producer state, separately producing explicit semantic evaluator proposals about item/reference relationships, and canonically representing explicit structural comparison targets. It does not implement recommendation, assessment, scoring, ranking, human decision, action, outcome, feedback, gaps, structural contradictions, dependency findings, consequences, satisfaction evaluation, validation assembly, persistence, or a closed human-machine loop.
 
 ## Implemented layers
 
@@ -15,6 +15,7 @@ The implemented architecture through Phase 5C2 establishes a generic, producer-n
 | Context structure (5B) | Canonically construct and structurally assert a pre-validation decision environment. | `DecisionContextDraft` |
 | Context authority gate (5C1) | Re-resolve every context source reference at operation time through a bound reader. | `BoundDecisionContextAuthorityValidator` |
 | Semantic evidence binding (5C2) | Re-resolve and isolate every source payload, then produce canonical item/reference semantic proposals. | `BoundSemanticEvidenceBinder` |
+| Explicit structural expectation (5C3A) | Canonically represent an explicit structural comparison target associated with one structurally valid context under the sealed Phase-5B contract. | `StructuralExpectation` |
 
 The current Capability Core adapter in `lib/decision-adapters/capability-core.ts` is one producer-specific integration. It is not part of the generic Decision Core kernel.
 
@@ -41,6 +42,13 @@ DecisionContextDraft input
   -> Stage A: resolve every canonical reference, verify every returned reference, detach every payload, reject shared memory
   -> Stage B: bound semantic evaluation for each prepared state
   -> canonical SemanticEvidenceBindingProposal[]
+
+DecisionContextDraft input + explicit StructuralExpectationInput
+  -> defensive structural capture and assertion against the sealed Phase-5B contract
+  -> context item/reference membership checks
+  -> canonical expectation body and provenance
+  -> deterministic DEXP identity
+  -> canonical StructuralExpectation
 ```
 
 The Capability adapter captures only `getSnapshotByKey` from the supplied repository. For its fixed producer/contract pair it reads by the opaque locator, validates the existing `VerifiedCapabilitySnapshot`, requires `status: "VERIFIED"` and `publication.mode: "PHASE4_VERIFIED"`, recomputes the snapshot key, checks the locator and `snapshotId`, and returns a detached clone. That producer-specific behavior is outside the generic reader.
@@ -66,6 +74,23 @@ RECOMMENDATION                != HUMAN DECISION
 HUMAN INPUT                   != EVIDENCE TRUTH
 MODEL PROPOSAL                != HUMAN ADOPTION
 PERSISTENCE AUTHORITY         != SEMANTIC CORRECTNESS
+OBSERVED STRUCTURE            != EXPECTED STRUCTURE
+EXPECTATION                   != FACT
+EXPECTATION                   != OBSERVATION
+EXPECTATION                   != SATISFACTION
+EXPECTATION                   != FINDING
+EXPECTATION                   != GAP
+EXPECTATION                   != DECISION NEED
+EXPECTATION                   != PRIORITY
+EXPECTATION                   != RECOMMENDATION
+DEPENDENCY EXPECTATION        != DEPENDENCY FINDING
+NO BINDING                    != GAP
+NO BINDING                    != NOT_SUPPORTED
+OBJECTIVE                     != AUTOMATIC EXPECTATION
+CONSTRAINT                    != AUTOMATIC EXPECTATION
+UNCERTAINTY                   != GAP
+HUMAN_INPUT EXPECTATION       != EVIDENCE TRUTH
+MODEL_PROPOSAL EXPECTATION    != HUMAN REQUIREMENT
 ```
 
 An `AuthoritativeStateReference` names a producer-governed artifact, but carries no payload, repository, resolver, or authority capability. A successful reader resolution describes one operation through one bound dependency; it does not confer portable authority for a later operation. A later authority-dependent operation must resolve again through its own bound reader.
@@ -76,6 +101,8 @@ Phase 5C1 asks only whether each reference carried by the structurally accepted 
 
 Phase 5C2 adds `SemanticEvidenceBindingProposal`: one `DecisionContextItem` × one `AuthoritativeStateReference`, with exactly `SUPPORTED`, `PARTIALLY_SUPPORTED`, `NOT_SUPPORTED`, or `CONTRADICTED`. It is semantic evaluator proposal data, not producer authority, verified semantic truth, human adoption, recommendation, decision, completeness proof, validated context, or Phase-5C3 structural finding. `CONTRADICTED` means one state semantically conflicts with one item according to the evaluator; it is not a `Contradiction` artifact.
 
+Phase 5C3A adds `StructuralExpectation`, an explicit comparison target bound by `contextId` to one structurally valid `DecisionContextDraft` under the sealed Phase-5B contract. It can express an `EVIDENCE_BINDING`, `CONTEXT_ROLE`, or `DEPENDENCY` expectation and performs only the structural membership checks required by that contract; it does not evaluate expectation satisfaction against observed role counts, binding inventories, dependency findings, or other relation state. In particular, it does not inspect bindings, count roles, resolve authority, evaluate semantic payloads, establish satisfaction, or produce a Gap, Dependency finding, Contradiction finding, Consequence, Decision Need, or recommendation. `AUTHORITATIVE_STATE` expectation provenance proves only structural presence of its reference in that context's source inventory; it does not prove current authority, semantic truth, or expectation satisfaction.
+
 ## Trust boundaries
 
 1. **Producer adapter boundary.** Producer-specific persistence and artifact validation stay in adapters/resolvers. The generic kernel has no Capability Core import.
@@ -85,6 +112,7 @@ Phase 5C2 adds `SemanticEvidenceBindingProposal`: one `DecisionContextItem` × o
 5. **5C1 operation boundary.** The validator captures the complete supplied context through own data descriptors before asserting it, then resolves detached captured references in canonical order. Mutation of the caller-owned context after validation has begun cannot redirect later calls.
 6. **5C2 operation boundary.** The binder performs no semantic evaluation until Stage A has resolved every canonical source reference, verified each returned reference, and prepared an isolated payload for each. It captures both reader and evaluator methods with their receivers at construction; later replacement cannot redirect the binder.
 7. **Semantic payload boundary.** The Phase-5A reader returns an opaque resolver payload without generically cloning it. Phase 5C2 uses `structuredClone` for its own operation-local evaluator payload and then rejects direct or transitive shared memory, including `SharedArrayBuffer` and views backed by it. This prevents semantic inspection from granting producer-memory mutation capability.
+8. **5C3A structural expectation boundary.** Construction and assertion defensively capture the entire context and expectation representation. They perform only structural context membership and deterministic identity work; they do not call a reader, resolver, repository, semantic evaluator, or Phase-5C2 binder.
 
 ## Reachable structural states
 
@@ -96,9 +124,14 @@ Phase 5C2 adds `SemanticEvidenceBindingProposal`: one `DecisionContextItem` × o
 | A successfully resolved reference with unrelated payload content | Valid 5C1 operation input/result; payload remains semantically uninterpreted. |
 | A structurally valid context whose evaluator proposes no bindings | Valid 5C2 result. It does not mean `NOT_SUPPORTED`, completeness, incompleteness, support, or a gap. |
 | `AUTHORITATIVE_STATE` provenance item with no evaluator proposal | Valid 5C2 result; provenance does not imply `SUPPORTED`. |
+| Context has no `OPTION` items and no `CONTEXT_ROLE` expectation | Phase 5C3A derives and represents no Gap. |
+| Context has no `OPTION` items and an explicit `CONTEXT_ROLE` expectation with `minimumCount: 1` | A valid expectation exists; 5C3A still produces no Gap or satisfaction result. |
+| Objective has zero binding proposals and no `EVIDENCE_BINDING` expectation | Phase 5C3A derives and represents no Gap. |
+| Explicit `EVIDENCE_BINDING` expectation exists for an objective | A valid comparison target exists; satisfaction remains unevaluated. |
+| Explicit `DEPENDENCY` expectation says A depends on B | A valid expectation exists; no Dependency finding is established. |
 
 ## Generic core and producer adapters
 
 The generic `lib/decision-core/**` production files are guarded against imports from Career, Capability Core, matching, recommendations, and legacy Career decision-loop code. The Capability adapter may import Capability Core because it is a producer-specific integration outside that generic kernel.
 
-Decision Core is application-domain neutral, not ontology-free in a metaphysical sense: the current ontology is intentionally about opaque producer state, structural context items, roles, provenance, and operation-time authority reachability. Recruiting is not implemented on top of this module.
+Decision Core is application-domain neutral, not ontology-free in a metaphysical sense: the current ontology is intentionally about opaque producer state, structural context items, roles, provenance, operation-time authority reachability, semantic proposals, and explicit structural expectations. Recruiting is not implemented on top of this module.

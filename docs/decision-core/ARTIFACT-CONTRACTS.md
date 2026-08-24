@@ -22,6 +22,18 @@
 | `SemanticEvidenceBindingEvaluator` | `evaluate(input): Promise<readonly SemanticEvidenceBindingEvaluation[]>` | Composition-time evaluator dependency. It has no repository, resolver, reader, producer-state write capability, human decision state, or producer authority. It may mutate its operation-local detached payload without mutating the resolver-owned payload. Its output is proposal data only. |
 | `SemanticEvidenceBindingProposal` | `bindingId`, `contextId`, `itemId`, `stateReference`, `disposition`, `rationale` | Canonical Phase-5C2 proposal for one item × one state reference. It is not persisted and does not validate the Decision Context. |
 | `BoundSemanticEvidenceBinder` | `bind(context): Promise<SemanticEvidenceBindingProposal[]>` | Composition-time bound operation. It re-establishes authority and payload isolation before invoking semantic evaluation. |
+| `STRUCTURAL_EXPECTATION_SCHEMA_VERSION` | `"STRUCTURAL_EXPECTATION_V1"` | Fixed schema-version constant for Phase 5C3A expectations. |
+| `STRUCTURAL_EXPECTATION_KINDS` / `StructuralExpectationKind` | `EVIDENCE_BINDING`, `CONTEXT_ROLE`, `DEPENDENCY` | Closed Phase-5C3A expectation-kind set. These are explicit comparison-target kinds, not findings. |
+| `EvidenceBindingStructuralExpectationInput` | `kind`, `subjectItemId`, `acceptedDispositions`, `provenance` | Constructor input for one item later evidence-binding comparison criterion. |
+| `ContextRoleStructuralExpectationInput` | `kind`, `role`, `minimumCount`, `provenance` | Constructor input for a future count comparison against one context role. |
+| `DependencyStructuralExpectationInput` | `kind`, `dependentItemId`, `prerequisiteItemId`, `provenance` | Constructor input for a future directed structural dependency comparison. |
+| `StructuralExpectationInput` | Discriminated union of the three Phase-5C3A inputs | Callers supply only explicit expectation content; no context ID, artifact ID, payload, reader, resolver, repository, authority token, binding inventory, or finding. |
+| `EvidenceBindingStructuralExpectation` | Common expectation fields plus `subjectItemId`, `acceptedDispositions` | Canonical explicit criterion for a future item/binding comparison. It does not inspect or claim any binding. |
+| `ContextRoleStructuralExpectation` | Common expectation fields plus `role`, `minimumCount` | Canonical explicit criterion for a future role-count comparison. It does not count current items or claim satisfaction. |
+| `DependencyStructuralExpectation` | Common expectation fields plus `dependentItemId`, `prerequisiteItemId` | Canonical explicit criterion for a future directed dependency comparison. It is not a Dependency finding. |
+| `StructuralExpectation` | Discriminated union of the three Phase-5C3A artifacts | `artifactKind: "STRUCTURAL_EXPECTATION"`, `schemaVersion: "STRUCTURAL_EXPECTATION_V1"`, `expectationId`, `contextId`, `kind`, `provenance`, and exact variant fields. It is not persisted by current Decision Core code. |
+| `createStructuralExpectation(context, input)` | `DecisionContextDraft × StructuralExpectationInput -> StructuralExpectation` | Captures/asserts one context, validates explicit input structurally, derives canonical content/identity, asserts the result, and returns a detached clone. |
+| `assertStructuralExpectation(context, expectation)` | `DecisionContextDraft × StructuralExpectation -> void` | Verifies exact stored representation, context binding, membership, canonicality, and deterministic identity without repairing the artifact. |
 
 ## Reference and reader behavior
 
@@ -154,3 +166,68 @@ An `EBIND_` identity is local deterministic proposal identity. It does not prove
 Phase-5A resolver and producer errors from operation-time resolution are not reclassified by the binder and may propagate.
 
 `AUTHORITATIVE_STATE` provenance does not imply `SUPPORTED`; provenance records origin, whereas a binding records the evaluator's proposed semantic relationship. `HUMAN_INPUT` may be `SUPPORTED`, and `MODEL_PROPOSAL` may be `CONTRADICTED`. No binding is not `NOT_SUPPORTED`: zero proposals are valid and establish neither support, completeness, incompleteness, nor a gap. `CONTRADICTED` is one evaluator-proposed item/state relationship, not the later Phase-5C3 `Contradiction` concept.
+
+## Explicit Structural Expectation contract
+
+Phase 5C3A adds a structural comparison target, not a structural finding. A `StructuralExpectation` is bound to a structurally valid `DecisionContextDraft` under the sealed Phase-5B contract by `contextId`; it embeds neither that draft nor a state payload, binding proposal inventory, reader, resolver, repository, authority token, validated context, or finding. It makes later comparison criteria explicit without performing that comparison.
+
+### Exact kinds and variant semantics
+
+`EVIDENCE_BINDING` has the exact common fields plus `subjectItemId` and `acceptedDispositions`. `subjectItemId` must identify an item in the supplied context. Its non-empty accepted-disposition set contains only sealed Phase-5C2 disposition values and is an explicit future comparison criterion; Phase 5C3A does not inspect `SemanticEvidenceBindingProposal[]`, determine that any binding exists, or determine satisfaction.
+
+`CONTEXT_ROLE` has the exact common fields plus `role` and `minimumCount`. `role` is one sealed `DecisionContextItemRole`; `minimumCount` is a positive safe integer. The artifact says that a later comparison may require at least that count. Phase 5C3A does not count current context items, so an expectation is neither role satisfaction nor a Gap.
+
+`DEPENDENCY` has the exact common fields plus `dependentItemId` and `prerequisiteItemId`. Both IDs must identify distinct items in the supplied context. Its direction is identity-bearing: A depends on B is different from B depends on A. It is an expectation only; Phase 5C3A does not test whether a dependency exists and does not create a Dependency finding.
+
+All variants carry the sealed `DecisionContextItemProvenance` union unchanged. `AUTHORITATIVE_STATE` provenance requires its exact four-field reference to be structurally present in `DecisionContextDraft.sourceStateReferences`; this is membership only. It does not resolve authority, inspect a payload, establish semantic truth, or satisfy an expectation. `HUMAN_INPUT` expectation provenance is not evidence truth, and `MODEL_PROPOSAL` expectation provenance remains proposal state rather than becoming a human requirement.
+
+### `DEXP_` expectation identity
+
+The implementation serializes this exact five-element tuple with `JSON.stringify(...)`, hashes it with SHA-256, takes the first 24 hexadecimal characters, uppercases them, and prefixes that suffix with `DEXP_`:
+
+The exact formula is `DEXP_ + SHA256(JSON.stringify(["STRUCTURAL_EXPECTATION_V1", contextId, kind, canonicalVariantBody, canonicalProvenance])).slice(0, 24).toUpperCase()`.
+
+1. `"STRUCTURAL_EXPECTATION_V1"`
+2. `contextId`
+3. `kind`
+4. `canonicalVariantBody`
+5. `canonicalProvenance`
+
+The canonical variant body is `[subjectItemId, canonicalAcceptedDispositions]` for `EVIDENCE_BINDING`, `[role, minimumCount]` for `CONTEXT_ROLE`, and `[dependentItemId, prerequisiteItemId]` for `DEPENDENCY`.
+
+`canonicalProvenance` is exactly `["AUTHORITATIVE_STATE", [producerId, authorityContractId, artifactId, locator]]`, `["HUMAN_INPUT", actorId]`, `["MODEL_PROPOSAL", proposalRef]`, or `["DETERMINISTIC_DERIVATION", ruleId]`.
+
+The identity excludes timestamps, randomness, execution order, rationale, and provider/model metadata beyond explicit provenance. It is local deterministic expectation identity; it does not prove fact, authority, current reachability, semantic support, satisfaction, a finding, a Gap, decision need, priority, recommendation, or human adoption.
+
+### Canonical input and canonical stored artifacts
+
+The `EVIDENCE_BINDING` constructor accepts a valid selected disposition set in any order, rejects duplicates, and stores selected values in the sealed Phase-5C2 disposition order.
+
+That exact stored order is `SUPPORTED`, then `PARTIALLY_SUPPORTED`, then `NOT_SUPPORTED`, then `CONTRADICTED`. Thus a selected set containing NOT_SUPPORTED and SUPPORTED is stored with SUPPORTED first and NOT_SUPPORTED second.
+
+Construction may canonicalize valid input. Assertion must verify that the submitted stored artifact is already canonical: canonical equivalence is not canonical stored-artifact representation.
+
+`assertStructuralExpectation(...)` captures the submitted artifact without mutating it, validates its dispositions, derives expected canonical order, and requires its stored order to already equal that order.
+
+A reordered stored `acceptedDispositions` array with an unchanged ID is a malformed/non-canonical representation and fails `ERR_DECISION_STRUCTURAL_EXPECTATION_INVALID`; assertion neither repairs nor reorders it.
+
+### Structural expectation failures and defensive capture
+
+Construction and assertion use defensive descriptor-based capture. Applicable malformed or hostile values such as missing or extra keys, symbol keys, accessors, sparse arrays, custom array state, invalid descriptors, reflection failures, and cycles where finite contract data is required are rejected. The constructor returns a detached clone: changing caller-owned nested input afterwards does not mutate the returned artifact. Assertion independently rejects hostile stored representations; no deep-freeze or runtime immutability claim is made.
+
+| Condition | Error |
+| --- | --- |
+| Malformed or tampered supplied `DecisionContextDraft` | `ERR_DECISION_STRUCTURAL_EXPECTATION_CONTEXT_INVALID` |
+| General malformed constructor input, invalid kind or role, invalid count, self-dependency, or malformed non-authoritative provenance | `ERR_DECISION_STRUCTURAL_EXPECTATION_INPUT_INVALID` |
+| Referenced item absent from the context | `ERR_DECISION_STRUCTURAL_EXPECTATION_ITEM_NOT_FOUND` |
+| Malformed or structurally unlisted `AUTHORITATIVE_STATE` provenance reference | `ERR_DECISION_STRUCTURAL_EXPECTATION_REFERENCE_INVALID` |
+| Empty or unknown accepted disposition | `ERR_DECISION_STRUCTURAL_EXPECTATION_DISPOSITION_INVALID` |
+| Duplicate accepted disposition | `ERR_DECISION_STRUCTURAL_EXPECTATION_DUPLICATE_DISPOSITION` |
+| Stored artifact with otherwise valid canonical structural content but wrong deterministic ID | `ERR_DECISION_STRUCTURAL_EXPECTATION_ID_MISMATCH` |
+| Hostile/accessor/symbol representation, unexpected or missing top-level artifact fields, invalid artifact kind/schema version/context ID/kind/expectation-ID shape, unexpected stored keys, or non-canonical stored disposition order | `ERR_DECISION_STRUCTURAL_EXPECTATION_INVALID` |
+
+The `INVALID` code is a stored-representation error, not a blanket mapping for every invalid field in a stored artifact. After safe representation capture, assertion reconstructs variant input through the existing structural input path. Meaningful invalid variant content can still produce `INPUT_INVALID`, `ITEM_NOT_FOUND`, `REFERENCE_INVALID`, `DISPOSITION_INVALID`, or `DUPLICATE_DISPOSITION` in the structural-expectation error namespace. A wrong deterministic ID remains `ERR_DECISION_STRUCTURAL_EXPECTATION_ID_MISMATCH`.
+
+The full specific codes are `ERR_DECISION_STRUCTURAL_EXPECTATION_INPUT_INVALID`, `ERR_DECISION_STRUCTURAL_EXPECTATION_ITEM_NOT_FOUND`, `ERR_DECISION_STRUCTURAL_EXPECTATION_REFERENCE_INVALID`, `ERR_DECISION_STRUCTURAL_EXPECTATION_DISPOSITION_INVALID`, and `ERR_DECISION_STRUCTURAL_EXPECTATION_DUPLICATE_DISPOSITION`.
+
+Phase 5C3A performs no authority resolution, payload inspection, semantic evaluation, semantic binding execution, satisfaction evaluation, or finding derivation.

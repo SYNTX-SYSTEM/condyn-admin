@@ -2,7 +2,7 @@
 
 ## Scope
 
-This walkthrough describes authority, structural checks, and semantic evaluator proposal binding implemented through Phase 5C2. It does not describe gaps, structural contradictions, dependencies, consequences, recommendation, decision, validation assembly, persistence behavior, or human-machine feedback as current functionality.
+This walkthrough describes authority, structural checks, semantic evaluator proposal binding, and explicit structural comparison targets implemented through Phase 5C3A. It does not describe gaps, structural contradictions, dependency findings, consequences, satisfaction evaluation, recommendation, decision, validation assembly, persistence behavior, or human-machine feedback as current functionality.
 
 ## Phase 5A: generic producer authority consumption
 
@@ -167,6 +167,20 @@ EBIND_ + SHA256(JSON.stringify([
 
 The SHA-256 is the implementation hash over `JSON.stringify(...)`; the first 24 hex characters are uppercased. Rationale is trimmed for returned canonical proposal content but is excluded from identity. Different rationale wording preserves the same ID for the same relation/disposition; a different disposition changes it. No provider/model/request metadata, timestamp, randomness, or execution order participates.
 
+## Phase 5C3A: explicit structural expectation
+
+Phase 5C3A is not a new authority-resolution stage and does not consume a prior Phase-5C1 success as authority. It consumes a structurally valid `DecisionContextDraft` under the sealed Phase-5B contract and an explicit expectation input. It does not invoke the Phase-5C2 binder.
+
+Its operation is: capture the supplied context, assert it against the sealed Phase-5B contract, capture explicit expectation input, check context item and source-reference membership, form canonical expectation body and provenance, derive deterministic `DEXP_` identity, construct a canonical `StructuralExpectation`, assert it, and return a detached clone.
+
+No reader, resolver, repository, producer state, payload, or semantic evaluator call occurs. `AUTHORITATIVE_STATE` provenance is checked only for structural membership in the captured context source inventory; it establishes neither current authority reachability nor expectation satisfaction.
+
+The three exact expectation kinds are `EVIDENCE_BINDING`, `CONTEXT_ROLE`, and `DEPENDENCY`. An evidence-binding expectation does not inspect binding proposals; a context-role expectation does not count items; and a dependency expectation does not establish a Dependency finding. Each is an explicit future comparison target only.
+
+For `EVIDENCE_BINDING`, construction accepts selected valid dispositions in any order and stores them in sealed order: `SUPPORTED`, `PARTIALLY_SUPPORTED`, `NOT_SUPPORTED`, `CONTRADICTED`.
+
+Assertion is stricter: it captures the submitted artifact representation and requires the stored disposition order already to be canonical. It does not silently sort, repair, or normalize a stored artifact. A reordered stored representation fails `ERR_DECISION_STRUCTURAL_EXPECTATION_INVALID` even when its deterministic ID remains unchanged.
+
 ## Failure model
 
 | Boundary | Current error/behavior |
@@ -183,6 +197,14 @@ The SHA-256 is the implementation hash over `JSON.stringify(...)`; the first 24 
 | 5C2 payload cannot isolate or contains shared memory | `ERR_DECISION_EVIDENCE_BINDING_PAYLOAD_NOT_DETACHABLE` |
 | Invalid evaluator output shape, disposition, or rationale | `ERR_DECISION_EVIDENCE_BINDING_EVALUATION_INVALID` |
 | Unknown item; malformed, foreign, or mismatched evaluator state reference; duplicate target | `ERR_DECISION_EVIDENCE_BINDING_ITEM_NOT_FOUND`, `ERR_DECISION_EVIDENCE_BINDING_STATE_REFERENCE_INVALID`, `ERR_DECISION_EVIDENCE_BINDING_DUPLICATE` |
+| Malformed/tampered context entering 5C3A | `ERR_DECISION_STRUCTURAL_EXPECTATION_CONTEXT_INVALID` |
+| General malformed 5C3A input, invalid kind/role/count, self-dependency, or malformed non-authoritative provenance | `ERR_DECISION_STRUCTURAL_EXPECTATION_INPUT_INVALID` |
+| Missing item; malformed/unlisted authoritative-state provenance reference | `ERR_DECISION_STRUCTURAL_EXPECTATION_ITEM_NOT_FOUND`, `ERR_DECISION_STRUCTURAL_EXPECTATION_REFERENCE_INVALID` |
+| Empty/unknown or duplicate accepted disposition | `ERR_DECISION_STRUCTURAL_EXPECTATION_DISPOSITION_INVALID`, `ERR_DECISION_STRUCTURAL_EXPECTATION_DUPLICATE_DISPOSITION` |
+| Wrong deterministic expectation ID | `ERR_DECISION_STRUCTURAL_EXPECTATION_ID_MISMATCH` |
+| Hostile/accessor/symbol representation, unexpected or missing top-level artifact fields, invalid artifact kind/schema version/context ID/kind/expectation-ID shape, unexpected stored keys, or non-canonical stored disposition order | `ERR_DECISION_STRUCTURAL_EXPECTATION_INVALID` |
+
+`ERR_DECISION_STRUCTURAL_EXPECTATION_INVALID` classifies stored-representation failures. After safe representation capture, stored variant content is reconstructed through the normal structural-input path, so meaningful invalid variant content may instead preserve `ERR_DECISION_STRUCTURAL_EXPECTATION_INPUT_INVALID`, `ERR_DECISION_STRUCTURAL_EXPECTATION_ITEM_NOT_FOUND`, `ERR_DECISION_STRUCTURAL_EXPECTATION_REFERENCE_INVALID`, `ERR_DECISION_STRUCTURAL_EXPECTATION_DISPOSITION_INVALID`, or `ERR_DECISION_STRUCTURAL_EXPECTATION_DUPLICATE_DISPOSITION`. Wrong deterministic ID remains `ERR_DECISION_STRUCTURAL_EXPECTATION_ID_MISMATCH`.
 
 The validator does not catch errors from `await boundResolve(...)`. Existing deterministic Phase-5A reader/adapter errors therefore remain observable where they arise; a producer dependency exception also propagates rather than being reclassified as a 5C1 context error.
 
@@ -190,4 +212,4 @@ The Phase-5C2 binder likewise permits Phase-5A reader/resolver/producer errors t
 
 ## Authority is not semantic support
 
-The implemented chain establishes that configured producer authority can currently resolve each declared context reference and that a bound semantic evaluator can propose an item/reference disposition from an isolated payload. It does not establish verified semantic truth, that a statement is factually supported, completeness, a gap, a structural contradiction, human adoption, or suitability for a recommendation. Those remain later concerns beyond Phase 5C2.
+The implemented chain establishes that configured producer authority can currently resolve each declared context reference, that a bound semantic evaluator can propose an item/reference disposition from an isolated payload, and that an explicit structural comparison target can be represented canonically. It does not establish verified semantic truth, that a statement is factually supported, expectation satisfaction, completeness, a Gap, a structural contradiction, a Dependency finding, human adoption, or suitability for a recommendation. Those remain later concerns beyond Phase 5C3A.
