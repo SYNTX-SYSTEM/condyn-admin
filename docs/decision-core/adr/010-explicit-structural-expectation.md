@@ -12,7 +12,7 @@ The implemented invariant is `ABSENCE != GAP`.
 
 Decision Context roles do not implicitly create expectations: an `OBJECTIVE` or `CONSTRAINT` is not automatically an expectation, and `UNCERTAINTY` is not a Gap. Likewise, zero semantic bindings do not establish a Gap or `NOT_SUPPORTED`.
 
-A dependency expectation also must remain distinct from a Dependency finding. The expectation can name a future structural comparison without proving that the dependency exists. Provenance remains an origin axis: a human expectation is not evidence truth; a model-proposed expectation is not a human requirement; and `AUTHORITATIVE_STATE` provenance does not establish satisfaction or semantic truth.
+A dependency expectation also must remain distinct from a Dependency finding. The expectation can name a future structural comparison without proving a dependency relation. Provenance remains an origin axis: a human expectation is not evidence truth; a model-proposed expectation is not a human requirement; and `AUTHORITATIVE_STATE` provenance does not establish satisfaction or semantic truth.
 
 ## Decision
 
@@ -32,7 +32,7 @@ A stored artifact is never silently repaired, normalized, or reordered by `asser
 
 Later Gap reconstruction can compare observed structure against an explicit expectation instead of treating absence as a conclusion. This ADR does not implement that comparison.
 
-Structural relation proposal work for contradiction and dependency, Gap reconstruction, and structural consequence propagation remain later work. No recommendation, Decision Need, priority, score, confidence, ranking, human decision, action, outcome, feedback, persistence, or revision lineage is introduced.
+Phase 5C3B now implements explicit structural relation proposals for contradiction and dependency. Expectation remains distinct from both a relation proposal and a finding. Gap reconstruction and structural consequence propagation remain later work. No recommendation, Decision Need, priority, score, confidence, ranking, human decision, action, outcome, feedback, persistence, or revision lineage is introduced.
 
 Model-proposed expectations remain proposal state rather than human requirements. A structural expectation may exist without being relevant to a human decision. The artifact is not an authoritative fact, satisfaction result, finding, or persistence record.
 

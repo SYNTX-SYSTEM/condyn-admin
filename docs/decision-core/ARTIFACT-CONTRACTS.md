@@ -34,6 +34,16 @@
 | `StructuralExpectation` | Discriminated union of the three Phase-5C3A artifacts | `artifactKind: "STRUCTURAL_EXPECTATION"`, `schemaVersion: "STRUCTURAL_EXPECTATION_V1"`, `expectationId`, `contextId`, `kind`, `provenance`, and exact variant fields. It is not persisted by current Decision Core code. |
 | `createStructuralExpectation(context, input)` | `DecisionContextDraft × StructuralExpectationInput -> StructuralExpectation` | Captures/asserts one context, validates explicit input structurally, derives canonical content/identity, asserts the result, and returns a detached clone. |
 | `assertStructuralExpectation(context, expectation)` | `DecisionContextDraft × StructuralExpectation -> void` | Verifies exact stored representation, context binding, membership, canonicality, and deterministic identity without repairing the artifact. |
+| `STRUCTURAL_RELATION_PROPOSAL_SCHEMA_VERSION` | `"STRUCTURAL_RELATION_PROPOSAL_V1"` | Fixed schema-version constant for Phase 5C3B relation proposals. |
+| `STRUCTURAL_RELATION_PROPOSAL_KINDS` / `StructuralRelationProposalKind` | `CONTRADICTION`, `DEPENDENCY` | Closed Phase-5C3B relation-proposal kind set. These are caller-supplied proposals, not relation truth or findings. |
+| `ContradictionStructuralRelationProposalInput` | `kind: "CONTRADICTION"`, `itemIds: readonly [string, string]`, `provenance` | Constructor input for one proposed symmetric item/item incompatibility relation. |
+| `DependencyStructuralRelationProposalInput` | `kind: "DEPENDENCY"`, `dependentItemId`, `prerequisiteItemId`, `provenance` | Constructor input for one proposed directional item/item dependency relation. |
+| `StructuralRelationProposalInput` | Discriminated union of the two Phase-5C3B inputs | Callers supply one explicit relation proposal; no artifact ID, context ID, payload, reader, resolver, repository, authority token, semantic binding, expectation, or finding. |
+| `ContradictionStructuralRelationProposal` | Common relation fields plus canonical `itemIds` | Canonical symmetric proposal only; it is not a formal logical contradiction or Contradiction finding. |
+| `DependencyStructuralRelationProposal` | Common relation fields plus `dependentItemId`, `prerequisiteItemId` | Canonical directional proposal only; it is not a Dependency expectation or Dependency finding. |
+| `StructuralRelationProposal` | Discriminated union of the two Phase-5C3B artifacts | `artifactKind: "STRUCTURAL_RELATION_PROPOSAL"`, `schemaVersion: "STRUCTURAL_RELATION_PROPOSAL_V1"`, `relationProposalId`, `contextId`, `kind`, `provenance`, and exact variant fields. It is not persisted by current Decision Core code. |
+| `createStructuralRelationProposal(context, input)` | `DecisionContextDraft × StructuralRelationProposalInput -> StructuralRelationProposal` | Captures/asserts one context, structurally validates one explicit proposal, derives canonical content/identity, asserts the result, and returns a detached clone. |
+| `assertStructuralRelationProposal(context, proposal)` | `DecisionContextDraft × StructuralRelationProposal -> void` | Verifies exact stored representation, context binding, membership, applicable stored canonicality, and deterministic identity without repairing the artifact. |
 
 ## Reference and reader behavior
 
@@ -231,3 +241,63 @@ The `INVALID` code is a stored-representation error, not a blanket mapping for e
 The full specific codes are `ERR_DECISION_STRUCTURAL_EXPECTATION_INPUT_INVALID`, `ERR_DECISION_STRUCTURAL_EXPECTATION_ITEM_NOT_FOUND`, `ERR_DECISION_STRUCTURAL_EXPECTATION_REFERENCE_INVALID`, `ERR_DECISION_STRUCTURAL_EXPECTATION_DISPOSITION_INVALID`, and `ERR_DECISION_STRUCTURAL_EXPECTATION_DUPLICATE_DISPOSITION`.
 
 Phase 5C3A performs no authority resolution, payload inspection, semantic evaluation, semantic binding execution, satisfaction evaluation, or finding derivation.
+
+## Explicit Structural Relation Proposal contract
+
+Phase 5C3B adds `StructuralRelationProposal`: one caller-supplied `DecisionContextItem` × `DecisionContextItem` relation proposal bound to one structurally valid `DecisionContextDraft` by `contextId`. It embeds neither the context nor item objects, a payload, `SemanticEvidenceBindingProposal`, `StructuralExpectation`, reader, resolver, repository, authority token, validated context, or finding. It represents relation proposal content only: relation proposal is not relation truth or a finding.
+
+The schema version is exactly `"STRUCTURAL_RELATION_PROPOSAL_V1"`; the closed kind set is exactly `CONTRADICTION` and `DEPENDENCY`. There is no batch, persistence, detector, evaluator, analyzer, inference, graph-traversal, or relation-validation operation.
+
+### Exact kinds and variant semantics
+
+`CONTRADICTION` has the common fields plus `itemIds: [string, string]`. Both IDs must identify distinct items in the supplied context. It is a proposed symmetric structural incompatibility relation, not a formal logical contradiction and not a Phase-5C2 `CONTRADICTED` semantic binding. Construction accepts either endpoint order and stores the two IDs in deterministic code-point string order.
+
+`DEPENDENCY` has the common fields plus `dependentItemId` and `prerequisiteItemId`. Both IDs must identify distinct items in the supplied context. Direction is preserved and identity-bearing: A depends on B differs from B depends on A. Separate A -> B and B -> A proposals are structurally representable; Phase 5C3B makes no graph-level cycle judgment or interpretation.
+
+All variants reuse the sealed `DecisionContextItemProvenance` union unchanged. Its origin is identity-bearing but never proves relation truth. `AUTHORITATIVE_STATE` provenance requires only that its exact four-field reference is structurally present in `DecisionContextDraft.sourceStateReferences`; this does not resolve current authority, inspect payloads, execute semantic evaluation, or validate the relation.
+
+### `DREL_` relation-proposal identity
+
+The implementation serializes this exact five-element tuple with `JSON.stringify(...)`, hashes it with SHA-256, takes the first 24 hexadecimal characters, uppercases them, and prefixes that suffix with `DREL_`:
+
+```ts
+DREL_ + SHA256(JSON.stringify([
+  "STRUCTURAL_RELATION_PROPOSAL_V1",
+  contextId,
+  kind,
+  canonicalRelationBody,
+  canonicalProvenance
+])).slice(0, 24).toUpperCase()
+```
+
+`canonicalProvenance` is exactly one of:
+
+```ts
+["AUTHORITATIVE_STATE", [producerId, authorityContractId, artifactId, locator]]
+["HUMAN_INPUT", actorId]
+["MODEL_PROPOSAL", proposalRef]
+["DETERMINISTIC_DERIVATION", ruleId]
+```
+
+For `CONTRADICTION`, `canonicalRelationBody` is `[canonicalFirstItemId, canonicalSecondItemId]` in deterministic code-point order. For `DEPENDENCY`, it is `[dependentItemId, prerequisiteItemId]`; direction is not sorted or normalized away.
+
+`DREL_` is local deterministic proposal identity only. It does not establish relation truth, authority, semantic correctness, finding status, decision relevance, priority, recommendation, or human adoption. Timestamp, randomness, execution order, rationale, confidence, score, and provider/model metadata beyond explicit provenance are excluded.
+
+### Constructor canonicalization, stored canonicality, and failures
+
+Construction may canonicalize valid `CONTRADICTION` input. Thus A/B and B/A constructor input produce one canonical proposal and the same `DREL_`. Assertion is stricter: it must verify a submitted stored artifact is already canonical. It never silently repairs or reorders stored endpoints. A stored contradiction with reversed endpoints is an invalid representation even when its retained ID names the canonical equivalent.
+
+Assertion order is exact: capture stored artifact, validate common header, validate the exact kind-specific stored key set, validate variant content, verify stored contradiction canonicality where applicable, then recompute `DREL_` identity. A dependency direction change is not canonicalized; retaining the old ID then fails identity verification.
+
+The constructor and assertion defensively capture data through descriptors. They reject hostile or malformed values such as accessors, symbol keys, missing or unexpected keys, sparse/custom arrays, invalid descriptors, and reflection failures. The constructor returns a detached artifact; this is not a deep-freeze guarantee.
+
+| Condition | Error |
+| --- | --- |
+| Malformed or tampered supplied `DecisionContextDraft` | `ERR_DECISION_STRUCTURAL_RELATION_CONTEXT_INVALID` |
+| General malformed constructor input, invalid kind, self relation, or malformed non-authoritative provenance | `ERR_DECISION_STRUCTURAL_RELATION_INPUT_INVALID` |
+| Relation endpoint absent from the context | `ERR_DECISION_STRUCTURAL_RELATION_ITEM_NOT_FOUND` |
+| Malformed or structurally unlisted `AUTHORITATIVE_STATE` provenance reference | `ERR_DECISION_STRUCTURAL_RELATION_REFERENCE_INVALID` |
+| Otherwise valid canonical stored proposal with wrong deterministic DREL | `ERR_DECISION_STRUCTURAL_RELATION_ID_MISMATCH` |
+| Hostile/malformed stored representation, invalid header, missing/unexpected top-level stored fields, or noncanonical stored contradiction endpoint order | `ERR_DECISION_STRUCTURAL_RELATION_INVALID` |
+
+`INVALID` is a stored-representation error, not a blanket mapping for all stored content. After an exact stored representation shape has been captured, meaningful variant-content errors may preserve `ERR_DECISION_STRUCTURAL_RELATION_INPUT_INVALID`, `ERR_DECISION_STRUCTURAL_RELATION_ITEM_NOT_FOUND`, or `ERR_DECISION_STRUCTURAL_RELATION_REFERENCE_INVALID`.

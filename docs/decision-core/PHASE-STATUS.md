@@ -8,12 +8,12 @@
 | Phase 5C1 | Decision Context Authority Gate | SEALED | `47eaf25647dde9a8fc9c2fd4154f4ce405aea9c4` / `v1.0.0-decision-core-phase5c1-authority-gate` |
 | Phase 5C2 | Semantic Evidence Binding | SEALED | `5b29b46a16c440de835b87b2579573f7c3465415` / `v1.0.0-decision-core-phase5c2-semantic-binding` |
 | Phase 5C3A | Explicit Structural Expectation Contract | SEALED | `a803f504ae56c4eae8a4fc8d5d020a8eb3db86ce` / `v1.0.0-decision-core-phase5c3a-structural-expectation` |
+| Phase 5C3B | Explicit Structural Relation Proposal Contract | SEALED | `0fee42a93eaa65fe75fef0cd744ec2d004e8652f` / `v1.0.0-decision-core-phase5c3b-structural-relations` |
 
 ## Planned, not implemented
 
 | Planned phase | Deferred scope |
 | --- | --- |
-| Phase 5C3B | Structural relation proposals for contradiction and dependency |
 | Phase 5C3C | Gap reconstruction against explicit expectations |
 | Phase 5C3D | Structural consequence propagation |
 | Phase 5C4 | Validation Assembly |
@@ -21,4 +21,4 @@
 
 Recommendation, human decision, action, outcome, feedback, and learning are later conceptual work. They have no implementation status in this checkpoint.
 
-At Phase 5C3A, the bidirectional human-machine loop is not structurally complete. Current code can form a structural context, check operation-time reachability of governed references, produce item/reference semantic evaluator proposals, and represent explicit structural expectations. It does not evaluate expectation satisfaction, derive gaps, structural contradictions, dependency findings, consequences, recommendations, evaluate alternatives, record a human decision, or observe an outcome.
+At Phase 5C3B, the bidirectional human-machine loop is not structurally complete. Current code can form a structural context, check operation-time reachability of governed references, produce item/reference semantic evaluator proposals, represent explicit structural expectations, and represent explicit item/item relation proposals. It does not evaluate expectation satisfaction, discover or validate relations, derive gaps, structural contradictions, dependency findings, consequences, recommendations, evaluate alternatives, record a human decision, or observe an outcome.
