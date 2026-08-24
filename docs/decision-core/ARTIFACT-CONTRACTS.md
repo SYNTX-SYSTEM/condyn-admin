@@ -44,6 +44,18 @@
 | `StructuralRelationProposal` | Discriminated union of the two Phase-5C3B artifacts | `artifactKind: "STRUCTURAL_RELATION_PROPOSAL"`, `schemaVersion: "STRUCTURAL_RELATION_PROPOSAL_V1"`, `relationProposalId`, `contextId`, `kind`, `provenance`, and exact variant fields. It is not persisted by current Decision Core code. |
 | `createStructuralRelationProposal(context, input)` | `DecisionContextDraft × StructuralRelationProposalInput -> StructuralRelationProposal` | Captures/asserts one context, structurally validates one explicit proposal, derives canonical content/identity, asserts the result, and returns a detached clone. |
 | `assertStructuralRelationProposal(context, proposal)` | `DecisionContextDraft × StructuralRelationProposal -> void` | Verifies exact stored representation, context binding, membership, applicable stored canonicality, and deterministic identity without repairing the artifact. |
+| `STRUCTURAL_GAP_SCHEMA_VERSION` | `"STRUCTURAL_GAP_V1"` | Fixed schema-version constant for Phase 5C3C derived gaps. |
+| `StructuralGapKind` | `EVIDENCE_BINDING`, `CONTEXT_ROLE`, `DEPENDENCY` | Closed derived-gap kind union corresponding to the sealed expectation kinds. |
+| `EvidenceBindingStructuralGapObservationBasis` | `kind: "EVIDENCE_BINDING"`, `bindings: readonly SemanticEvidenceBindingProposal[]` | Explicit represented EBIND observation basis. |
+| `ContextRoleStructuralGapObservationBasis` | `kind: "CONTEXT_ROLE"` | The supplied structurally valid context is the represented role observation basis. |
+| `DependencyStructuralGapObservationBasis` | `kind: "DEPENDENCY"`, `relationProposals: readonly StructuralRelationProposal[]` | Explicit represented DREL observation basis. |
+| `StructuralGapObservationBasis` | Discriminated union of the three basis variants | Its kind must exactly match the expectation kind. |
+| `EvidenceBindingStructuralGap` | Common fields plus `subjectItemId`, `acceptedDispositions`, `observedBindingIds` | Canonical basis-relative unmet evidence-binding expectation. |
+| `ContextRoleStructuralGap` | Common fields plus `role`, `minimumCount`, `observedCount`, `observedItemIds` | Canonical basis-relative unmet context-role expectation. |
+| `DependencyStructuralGap` | Common fields plus `dependentItemId`, `prerequisiteItemId`, `observedRelationProposalIds` | Canonical basis-relative unmet dependency expectation. |
+| `StructuralGap` | Discriminated union of the three variants | `artifactKind: "STRUCTURAL_GAP"`, `schemaVersion: "STRUCTURAL_GAP_V1"`, `gapId`, `contextId`, `expectationId`, `kind`, and exact variant fields. It has no independent provenance. |
+| `reconstructStructuralGap(context, expectation, basis)` | `DecisionContextDraft × StructuralExpectation × StructuralGapObservationBasis -> StructuralGap \| null` | Compares exactly one expectation against exactly one explicit represented basis. |
+| `assertStructuralGap(context, expectation, basis, gap)` | `DecisionContextDraft × StructuralExpectation × StructuralGapObservationBasis × StructuralGap -> void` | Basis-bound stored-artifact assertion; verifies deterministic derivation rather than only hash consistency. |
 
 ## Reference and reader behavior
 
@@ -301,3 +313,53 @@ The constructor and assertion defensively capture data through descriptors. They
 | Hostile/malformed stored representation, invalid header, missing/unexpected top-level stored fields, or noncanonical stored contradiction endpoint order | `ERR_DECISION_STRUCTURAL_RELATION_INVALID` |
 
 `INVALID` is a stored-representation error, not a blanket mapping for all stored content. After an exact stored representation shape has been captured, meaningful variant-content errors may preserve `ERR_DECISION_STRUCTURAL_RELATION_INPUT_INVALID`, `ERR_DECISION_STRUCTURAL_RELATION_ITEM_NOT_FOUND`, or `ERR_DECISION_STRUCTURAL_RELATION_REFERENCE_INVALID`.
+
+## Structural Gap Reconstruction contract
+
+Phase 5C3C adds the adjacent `lib/decision-core/structural-gaps/` module. It does not add Gap APIs to the sealed `structural-findings` module, which continues to expose only `StructuralExpectation` and `StructuralRelationProposal`. A `StructuralGap` is a deterministic derived artifact only when one explicit expectation is unsatisfied within one explicit represented observation basis:
+
+```text
+STRUCTURAL GAP = EXPLICIT EXPECTATION + UNSATISFIED EXPLICIT REPRESENTED BASIS
+```
+
+It is not real-world absence, global incompleteness, semantic truth, Decision Need, priority, consequence, recommendation, or human decision. `reconstructStructuralGap(context, expectation, basis)` returns one canonical gap when the supplied expectation is unsatisfied within the supplied basis; otherwise it returns `null`. `null` establishes only that this expectation produces no gap under this basis.
+
+### Variant comparison semantics
+
+For `CONTEXT_ROLE`, the context itself supplies observed items. Matching-role item IDs are sorted canonically. The expectation is satisfied when `observedItemIds.length >= minimumCount`; otherwise the gap stores `role`, `minimumCount`, `observedCount`, and `observedItemIds`, with `observedCount` exactly equal to the array length.
+
+For `EVIDENCE_BINDING`, every supplied `SemanticEvidenceBindingProposal` is defensively validated before use: exact fields, same `contextId`, a context-listed item and source reference, one sealed disposition, a non-empty canonical trimmed rationale, and the exact sealed `EBIND_` identity. The basis rejects duplicate binding IDs and duplicate item/reference targets, including different dispositions with distinct IDs. Only bindings for `subjectItemId` are relevant. At least one accepted disposition returns `null`; otherwise the gap records canonical `observedBindingIds`. Unrelated bindings do not enter the gap body or change `DGAP_`.
+
+For `DEPENDENCY`, every supplied `StructuralRelationProposal` must pass the sealed Phase-5C3B assertion. Only an exact directional `DEPENDENCY` proposal satisfies the expectation. A reverse dependency remains relevant represented observation data and is recorded in canonical `observedRelationProposalIds`, but does not satisfy. `CONTRADICTION` proposals neither satisfy nor enter a dependency-gap observation body. No graph traversal or cycle interpretation occurs.
+
+### `DGAP_` identity and basis relativity
+
+```ts
+DGAP_ + SHA256(JSON.stringify([
+  "STRUCTURAL_GAP_V1",
+  contextId,
+  expectationId,
+  kind,
+  canonicalGapBody
+])).slice(0, 24).toUpperCase()
+```
+
+The canonical bodies are `[subjectItemId, acceptedDispositions, observedBindingIds]` for `EVIDENCE_BINDING`, `[role, minimumCount, observedItemIds]` for `CONTEXT_ROLE`, and `[dependentItemId, prerequisiteItemId, observedRelationProposalIds]` for `DEPENDENCY`. `observedCount` is derived from `observedItemIds.length` and is not separately identity-bearing. Expectation provenance is already carried by `expectationId`; a gap has no separate provenance.
+
+Thus the same context and expectation with a different relevant non-satisfying represented basis can yield a different `DGAP_`; a satisfying basis yields `null`. Irrelevant observations omitted from the canonical body do not change the identity. This is represented-field derivation, not observation of external reality.
+
+### Basis-bound stored assertion and failures
+
+`assertStructuralGap(context, expectation, basis, gap)` first validates the context and expectation, reconstructs against the supplied basis, and preserves basis/artifact-specific errors. If reconstruction returns `null`, any supplied gap is invalid. It then validates the exact stored gap shape and canonical stored arrays, compares every non-ID field to the reconstructed gap, and finally checks the deterministic ID. It does not repair stored artifacts.
+
+| Condition | Error |
+| --- | --- |
+| Malformed/tampered context | `ERR_DECISION_STRUCTURAL_GAP_CONTEXT_INVALID` |
+| Expectation failing its sealed contract for the supplied context | `ERR_DECISION_STRUCTURAL_GAP_EXPECTATION_INVALID` |
+| Malformed or mismatched basis wrapper/container, or duplicate observation artifact | `ERR_DECISION_STRUCTURAL_GAP_BASIS_INVALID` |
+| Malformed, foreign, noncanonical, or identity-invalid EBIND | `ERR_DECISION_STRUCTURAL_GAP_BINDING_INVALID` |
+| DREL failing sealed Phase-5C3B assertion | `ERR_DECISION_STRUCTURAL_GAP_RELATION_INVALID` |
+| Otherwise valid canonical stored gap body with wrong `DGAP_` | `ERR_DECISION_STRUCTURAL_GAP_ID_MISMATCH` |
+| Hostile, malformed, noncanonical, body-mismatching stored gap, or a supplied gap for a satisfying basis | `ERR_DECISION_STRUCTURAL_GAP_INVALID` |
+
+No Phase-5C3C API invokes a reader, resolver, repository, semantic binder, semantic evaluator, or relation detector; it neither resolves authority nor inspects producer payloads. Structurally consuming EBIND/DREL proposals does not make either current authority or truth.

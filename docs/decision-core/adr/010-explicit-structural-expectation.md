@@ -30,9 +30,9 @@ A stored artifact is never silently repaired, normalized, or reordered by `asser
 
 ## Consequences
 
-Later Gap reconstruction can compare observed structure against an explicit expectation instead of treating absence as a conclusion. This ADR does not implement that comparison.
+Phase 5C3A itself does not compare observed structure against an explicit expectation or derive a Gap. Phase 5C3C now implements basis-relative Structural Gap reconstruction by comparing an explicit `StructuralExpectation` with an explicit represented observation basis.
 
-Phase 5C3B now implements explicit structural relation proposals for contradiction and dependency. Expectation remains distinct from both a relation proposal and a finding. Gap reconstruction and structural consequence propagation remain later work. No recommendation, Decision Need, priority, score, confidence, ranking, human decision, action, outcome, feedback, persistence, or revision lineage is introduced.
+Phase 5C3B now implements explicit structural relation proposals for contradiction and dependency. Expectation remains distinct from both a relation proposal and a finding. Phase 5C3C now implements basis-relative Structural Gap reconstruction; structural consequence propagation remains later work. No recommendation, Decision Need, priority, score, confidence, ranking, human decision, action, outcome, feedback, persistence, or revision lineage is introduced.
 
 Model-proposed expectations remain proposal state rather than human requirements. A structural expectation may exist without being relevant to a human decision. The artifact is not an authoritative fact, satisfaction result, finding, or persistence record.
 

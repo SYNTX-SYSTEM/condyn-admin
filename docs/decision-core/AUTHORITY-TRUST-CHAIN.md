@@ -2,7 +2,7 @@
 
 ## Scope
 
-This walkthrough describes authority, structural checks, semantic evaluator proposal binding, explicit structural comparison targets, and explicit structural relation proposals implemented through Phase 5C3B. It does not describe gaps, structural contradictions, dependency findings, consequences, satisfaction evaluation, relation discovery, recommendation, decision, validation assembly, persistence behavior, or human-machine feedback as current functionality.
+This walkthrough describes authority, structural checks, semantic evaluator proposal binding, explicit structural comparison targets, explicit structural relation proposals, and basis-relative structural gap reconstruction implemented through Phase 5C3C. It does not describe structural contradictions, dependency findings, consequences, decision need, relation discovery, recommendation, decision, validation assembly, persistence behavior, or human-machine feedback as current functionality.
 
 ## Phase 5A: generic producer authority consumption
 
@@ -202,6 +202,23 @@ The exact relation kinds are `CONTRADICTION` and `DEPENDENCY`, and both are call
 
 Stored artifact assertion follows a fixed order: capture stored artifact, validate common header, validate exact kind-specific stored key set, validate variant content, verify stored contradiction canonicality where applicable, then recompute `DREL_`. It does not repair stored artifacts. A reversed stored contradiction representation fails `ERR_DECISION_STRUCTURAL_RELATION_INVALID`; changing stored dependency direction while retaining the old ID fails `ERR_DECISION_STRUCTURAL_RELATION_ID_MISMATCH`.
 
+## Phase 5C3C: basis-relative structural gap reconstruction
+
+Phase 5C3C is not a new authority-resolution stage. The adjacent `structural-gaps` module consumes a structurally valid `DecisionContextDraft`, one sealed `StructuralExpectation`, and one explicit observation basis. It does not consume a prior authority success as a portable certificate, invoke the Phase-5C2 binder, invoke an evaluator, inspect payloads, discover relations, or traverse a graph.
+
+```text
+DecisionContextDraft + StructuralExpectation + explicit observation basis
+  -> structural basis validation
+  -> expectation-specific comparison
+  -> null OR canonical StructuralGap
+```
+
+For `CONTEXT_ROLE`, represented observations are the context's own canonical items. For `EVIDENCE_BINDING`, the explicit basis contains structurally validated EBIND proposals. For `DEPENDENCY`, it contains structurally validated DREL proposals. The result is a gap only when that one expectation is unsatisfied within that exact represented basis. It is not a claim of real-world absence, global completeness, semantic truth, relation truth, Decision Need, consequence, recommendation, or human adoption.
+
+For dependency comparison, exact direction satisfies; a reverse dependency remains relevant observation data but does not satisfy, and a contradiction proposal is ignored for dependency satisfaction. For evidence-binding comparison, only the expectation subject's bindings affect the observation body, and at least one accepted disposition satisfies. EBIND target uniqueness is preserved: one item/reference target may occur only once in a supplied basis.
+
+`assertStructuralGap(context, expectation, basis, gap)` is basis-bound. It reconstructs the expected result from the supplied basis before accepting a stored gap. A satisfying reconstruction (`null`) makes any supplied gap invalid, even if its hash is self-consistent. Basis errors propagate as their own errors before stored-gap validation; malformed/noncanonical/body-mismatching stored gaps remain `INVALID` and an otherwise-valid body with only a wrong `DGAP_` remains `ID_MISMATCH`.
+
 ## Failure model
 
 | Boundary | Current error/behavior |
@@ -230,6 +247,13 @@ Stored artifact assertion follows a fixed order: capture stored artifact, valida
 | Malformed/unlisted authoritative-state relation provenance reference | `ERR_DECISION_STRUCTURAL_RELATION_REFERENCE_INVALID` |
 | Wrong deterministic relation-proposal ID on otherwise valid canonical stored proposal | `ERR_DECISION_STRUCTURAL_RELATION_ID_MISMATCH` |
 | Hostile/malformed stored relation representation, invalid header, missing/unexpected top-level fields, or noncanonical stored contradiction endpoint order | `ERR_DECISION_STRUCTURAL_RELATION_INVALID` |
+| Malformed/tampered context entering 5C3C | `ERR_DECISION_STRUCTURAL_GAP_CONTEXT_INVALID` |
+| Expectation invalid for the supplied context | `ERR_DECISION_STRUCTURAL_GAP_EXPECTATION_INVALID` |
+| Malformed/mismatched basis wrapper or container, or duplicate basis observation | `ERR_DECISION_STRUCTURAL_GAP_BASIS_INVALID` |
+| Malformed or foreign EBIND proposal | `ERR_DECISION_STRUCTURAL_GAP_BINDING_INVALID` |
+| DREL proposal failing sealed 5C3B assertion | `ERR_DECISION_STRUCTURAL_GAP_RELATION_INVALID` |
+| Otherwise valid canonical stored gap body with wrong `DGAP_` | `ERR_DECISION_STRUCTURAL_GAP_ID_MISMATCH` |
+| Hostile, malformed, noncanonical, or body-mismatching stored gap; supplied gap under a satisfying basis | `ERR_DECISION_STRUCTURAL_GAP_INVALID` |
 
 `ERR_DECISION_STRUCTURAL_EXPECTATION_INVALID` classifies stored-representation failures. After safe representation capture, stored variant content is reconstructed through the normal structural-input path, so meaningful invalid variant content may instead preserve `ERR_DECISION_STRUCTURAL_EXPECTATION_INPUT_INVALID`, `ERR_DECISION_STRUCTURAL_EXPECTATION_ITEM_NOT_FOUND`, `ERR_DECISION_STRUCTURAL_EXPECTATION_REFERENCE_INVALID`, `ERR_DECISION_STRUCTURAL_EXPECTATION_DISPOSITION_INVALID`, or `ERR_DECISION_STRUCTURAL_EXPECTATION_DUPLICATE_DISPOSITION`. Wrong deterministic ID remains `ERR_DECISION_STRUCTURAL_EXPECTATION_ID_MISMATCH`.
 
@@ -239,4 +263,4 @@ The Phase-5C2 binder likewise permits Phase-5A reader/resolver/producer errors t
 
 ## Authority is not semantic support
 
-The implemented chain establishes that configured producer authority can currently resolve each declared context reference, that a bound semantic evaluator can propose an item/reference disposition from an isolated payload, that an explicit structural comparison target can be represented canonically, and that an explicit item/item relation proposal can be represented canonically. It does not establish verified semantic truth, that a statement is factually supported, expectation satisfaction, completeness, relation truth, a Gap, a structural contradiction, a Dependency finding, human adoption, or suitability for a recommendation. Those remain later concerns beyond Phase 5C3B.
+The implemented chain establishes that configured producer authority can currently resolve each declared context reference, that a bound semantic evaluator can propose an item/reference disposition from an isolated payload, that explicit structural expectations and item/item relation proposals can be represented canonically, and that one explicit expectation can be deterministically compared with one explicit represented basis to derive a basis-relative `StructuralGap` or `null`. It does not establish verified semantic truth, real-world absence, global completeness, relation truth, a structural contradiction, a Dependency finding, Decision Need, consequence, human adoption, or suitability for a recommendation. Those remain later concerns beyond Phase 5C3C.
