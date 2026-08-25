@@ -13,14 +13,15 @@
 | Phase 5C3D | Structural Consequence Propagation | SEALED | `23a907921712b2375a31ecd10f73b0675b9608dc` / `v1.0.0-decision-core-phase5c3d-structural-consequences` |
 | Phase 5C4 | Validation Assembly | SEALED | `0a731079bcad003eeb8d81f0f9f24d0f2a066825` / `v1.0.0-decision-core-phase5c4-validation-assembly` |
 | Phase 5D1 | Immutable Decision Context Revision Artifact Contract | SEALED | `ebc53d6bc407e9640c8443e820821ec01192e3c8` / `v1.0.0-decision-core-phase5d1-revision-contract` |
+| Phase 5D2A | Repository-Bound Immutable Persistence Authority | SEALED IMPLEMENTATION | `6e6062f7da9eaa5e549c7d8169be119d05d95df0` / `v1.0.0-decision-core-phase5d2a-persistence-authority` |
 
 ## Planned, not implemented
 
 | Planned phase | Deferred scope |
 | --- | --- |
-| Phase 5D2 | Repository-Bound Immutable Persistence Authority |
+| Phase 5D2B | Durable PostgreSQL Persistence Adapter |
 | Phase 5D3 | Read-Only Revision Lineage Reconstruction |
 
 Recommendation, human decision, action, outcome, feedback, and learning are later conceptual work. They have no implementation status in this checkpoint.
 
-At Phase 5D1, the bidirectional human-machine loop is not structurally complete. Current code can form a structural context, check operation-time reachability of governed references where explicitly invoked, produce item/reference semantic evaluator proposals, represent explicit structural expectations and item/item relation proposals, derive basis-relative structural gaps and explicit-path structural consequences, assemble revalidated derivational coherence for one context, and create a self-contained canonical `DecisionContextRevision`. It does not derive Decision Need, recommend, evaluate alternatives, record a human decision, observe an outcome, process feedback, persist a revision, resolve a parent, reconstruct lineage, select a head/latest/current revision, or complete a bidirectional human-machine loop.
+At Phase 5D2A, the bidirectional human-machine loop is not structurally complete. Current code can form a structural context, check operation-time reachability of governed references where explicitly invoked, produce item/reference semantic evaluator proposals, represent explicit structural expectations and item/item relation proposals, derive basis-relative structural gaps and explicit-path structural consequences, assemble revalidated derivational coherence for one context, create a self-contained canonical `DecisionContextRevision`, and persist revisions through repository-bound immutable authority semantics. It does not derive Decision Need, prioritize, score alternatives, recommend, record a human decision, record action, observe an outcome, process feedback, learn, reconstruct full persisted lineage, select a current/head/latest revision, or complete a bidirectional human-machine loop.

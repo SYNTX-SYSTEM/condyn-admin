@@ -2,7 +2,7 @@
 
 ## Scope
 
-This walkthrough describes authority, structural checks, semantic evaluator proposal binding, explicit structural comparison targets, explicit structural relation proposals, basis-relative structural gap reconstruction, explicit-path structural consequence propagation, derivational-coherence validation assembly, and self-contained revision artifacts implemented through Phase 5D1. It does not describe structural contradictions, dependency findings, decision need, relation discovery, recommendation, decision, repository persistence authority, revision-parent resolution, lineage reconstruction, or human-machine feedback as current functionality.
+This walkthrough describes authority, structural checks, semantic evaluator proposal binding, explicit structural comparison targets, explicit structural relation proposals, basis-relative structural gap reconstruction, explicit-path structural consequence propagation, derivational-coherence validation assembly, self-contained revision artifacts, and repository-bound immutable persistence authority implemented through Phase 5D2A. It does not describe structural contradictions, dependency findings, decision need, relation discovery, recommendation, decision, durable PostgreSQL persistence, revision-lineage reconstruction, or human-machine feedback as current functionality.
 
 ## Phase 5A: generic producer authority consumption
 
@@ -288,7 +288,33 @@ The revision embeds all three derivation-state components, allowing later local 
 
 The revision captures each caller-owned component once and continues only with detached data. Its stored assertion compares detached captured stored context/input/assembly representation with reconstructed canonical state; caller-owned nested values are not reread after predecessor validation. This preserves `STATE VALIDATED == STATE STORED / COMPARED`, without claiming that arbitrary proxy non-idempotence is detectable.
 
-`DREV_` binds schema, `previousRevisionId`, `contextId`, and `assemblyId`. `previousRevisionId: null` represents a root; a DREV-shaped previous ID represents only child shape. A syntactically invalid non-null predecessor ID is `ERR_DECISION_CONTEXT_REVISION_PREVIOUS_ID_INVALID` at the constructor boundary, but malformed stored revision representation, including this field, is `ERR_DECISION_CONTEXT_REVISION_INVALID` at stored assertion. Phase 5D1 performs no repository call, parent lookup, lineage traversal, head/latest/active selection, branch policy, authority re-resolution, payload inspection, binder, evaluator, or persistence. A revision artifact is not current authority, authority of record, semantic truth, a decision-readiness result, or a recommendation.
+`DREV_` binds schema, `previousRevisionId`, `contextId`, and `assemblyId`. `previousRevisionId: null` represents a root; a DREV-shaped previous ID represents only child shape. A syntactically invalid non-null predecessor ID is `ERR_DECISION_CONTEXT_REVISION_PREVIOUS_ID_INVALID` at the constructor boundary, but malformed stored revision representation, including this field, is `ERR_DECISION_CONTEXT_REVISION_INVALID` at stored assertion. Phase 5D1 itself performs no repository call, parent lookup, lineage traversal, head/latest/active selection, branch policy, authority re-resolution, payload inspection, binder, evaluator, or persistence. A standalone revision artifact is not current authority, authority of record, semantic truth, a decision-readiness result, or a recommendation.
+
+## Phase 5D2A: repository-bound immutable persistence authority
+
+Phase 5D2A adds the adjacent `revision-persistence` module. It does not re-run Phase-5A producer-authority resolution, invoke producer resolvers, inspect producer payloads, invoke the semantic binder, or invoke the semantic evaluator. It does read and validate Decision Context revision repository records for immediate-parent integrity and exact post-write authority-of-record reread. `PRODUCER PAYLOAD INSPECTION != REVISION REPOSITORY RECORD INSPECTION`: 5A/5C1/5C2 concern configured producer authority and producer state, whereas 5D2A concerns the repository-selected stored representation of a `DecisionContextRevision`. `REVISION AUTHORITY OF RECORD != CURRENT PRODUCER AUTHORITY`; persisting a revision does not re-establish current authority of any referenced producer state.
+
+```text
+InMemoryDecisionContextRevisionRepository
+  -> createDecisionContextRevisionPersister()
+  -> BoundDecisionContextRevisionPersister.persist(revision)
+  -> pristine detached capture and sealed 5D1 assertion
+  -> immediate parent read only when previousRevisionId is non-null
+  -> runtime-private immutable write using a detached writer copy
+  -> exact post-write getRevisionById(expected.revisionId)
+  -> sealed reread assertion and complete-artifact equality
+  -> detached DecisionContextRevision return
+```
+
+`DecisionContextRevisionRepository` defines the supported read/factory capability shape only. `INTERFACE CONFORMANCE != PHASE-5D2A GOVERNANCE GUARANTEE`: an arbitrary conforming implementation is not automatically proven to preserve immediate-parent integrity, immutable replay, private storage, exact reread, complete equality, or pristine expected-state isolation. The shipped `InMemoryDecisionContextRevisionRepository` plus its bound persister path enforces the documented 5D2A semantics.
+
+The shipped in-memory repository's `#writeRevision(...)` is runtime-private storage machinery; it is not a supported raw write API. Storage machinery is not the authority boundary. A successful write alone is not authority of record. `persist(...)` succeeds only after the exact reread equals the pristine validated expected revision.
+
+The operation captures the caller revision once before awaits. The writer receives `structuredClone(expected)`, while the post-write reread is compared with the pristine expected artifact. Thus `STATE VALIDATED == EXPECTED AUTHORITY STATE`, but `WRITER INPUT == DETACHED COPY OF EXPECTED AUTHORITY STATE`; writer mutation cannot alter the comparison baseline.
+
+For a root (`previousRevisionId === null`), no parent lookup occurs. For a child, exactly one immediate parent lookup is required: the returned parent must exist, pass sealed revision assertion, and have the requested ID. This establishes immediate referential integrity only. It does not traverse ancestry, establish causation or semantic continuity, require shared context/assembly IDs, or select a branch/head/latest/active revision. Multiple children of one parent and children with unchanged context/assembly IDs remain valid.
+
+The shipped in-memory repository treats exact complete same-ID replay as idempotent and rejects same-DREV divergent complete payload as `ERR_DECISION_CONTEXT_REVISION_IMMUTABLE_CONFLICT`. Identity-excluded EBIND rationale remains part of complete equality even when EBIND, DVASM, and DREV identities are unchanged. The returned artifact is detached and has operation-relative meaning only: this bound repository selected that exact complete revision as the immutable record for that DREV at successful completion. Revision authority of record is not current producer authority: 5D2A does not re-resolve referenced producer state. Authority of record is also not truth, current decision state, head/latest/active state, or a portable authority token.
 
 ## Failure model
 
@@ -341,6 +367,11 @@ The revision captures each caller-owned component once and continues only with d
 | Syntactically invalid non-null previous-revision ID in otherwise captured constructor input | `ERR_DECISION_CONTEXT_REVISION_PREVIOUS_ID_INVALID` |
 | Hostile, malformed, noncanonical, or body-mismatching stored revision, including malformed stored previous-revision ID | `ERR_DECISION_CONTEXT_REVISION_INVALID` |
 | Otherwise exact stored revision with wrong `DREV_` | `ERR_DECISION_CONTEXT_REVISION_ID_MISMATCH` |
+| Invalid repository/persister composition dependency | `ERR_DECISION_CONTEXT_REVISION_REPOSITORY_INVALID` |
+| Non-null requested immediate parent absent | `ERR_DECISION_CONTEXT_REVISION_PARENT_NOT_FOUND` |
+| Returned immediate parent malformed, invalid, noncanonical, or ID-mismatched | `ERR_DECISION_CONTEXT_REVISION_PARENT_INVALID` |
+| Same revision ID already maps to divergent complete artifact | `ERR_DECISION_CONTEXT_REVISION_IMMUTABLE_CONFLICT` |
+| Write succeeded but reread is missing, invalid, wrong-ID, or complete-payload divergent | `ERR_DECISION_CONTEXT_REVISION_PERSISTENCE_INVALID` |
 
 `ERR_DECISION_STRUCTURAL_EXPECTATION_INVALID` classifies stored-representation failures. After safe representation capture, stored variant content is reconstructed through the normal structural-input path, so meaningful invalid variant content may instead preserve `ERR_DECISION_STRUCTURAL_EXPECTATION_INPUT_INVALID`, `ERR_DECISION_STRUCTURAL_EXPECTATION_ITEM_NOT_FOUND`, `ERR_DECISION_STRUCTURAL_EXPECTATION_REFERENCE_INVALID`, `ERR_DECISION_STRUCTURAL_EXPECTATION_DISPOSITION_INVALID`, or `ERR_DECISION_STRUCTURAL_EXPECTATION_DUPLICATE_DISPOSITION`. Wrong deterministic ID remains `ERR_DECISION_STRUCTURAL_EXPECTATION_ID_MISMATCH`.
 
@@ -350,4 +381,4 @@ The Phase-5C2 binder likewise permits Phase-5A reader/resolver/producer errors t
 
 ## Authority is not semantic support
 
-The implemented chain establishes that configured producer authority can currently resolve each declared context reference where that gate is explicitly invoked, that a bound semantic evaluator can propose an item/reference disposition from an isolated payload, that explicit structural expectations and item/item relation proposals can be represented canonically, that one explicit expectation can be deterministically compared with one explicit represented basis to derive a basis-relative `StructuralGap` or `null`, that one validated item-anchored gap can be propagated along one explicit ordered represented dependency path into an explicit-path basis-relative `StructuralConsequence`, that those explicit derivations can be revalidated and assembled canonically for one context, and that this derivation state can be captured in a self-contained `DecisionContextRevision`. It does not establish verified semantic truth, real-world absence, global completeness, current authority, repository persistence authority, parent existence, lineage, head selection, relation truth, a structural contradiction, a Dependency finding, real-world consequence, Decision Need, human adoption, or suitability for a recommendation. Those remain later concerns beyond Phase 5D1.
+The implemented chain establishes that configured producer authority can currently resolve each declared context reference where that gate is explicitly invoked, that a bound semantic evaluator can propose an item/reference disposition from an isolated payload, that explicit structural expectations and item/item relation proposals can be represented canonically, that one explicit expectation can be deterministically compared with one explicit represented basis to derive a basis-relative `StructuralGap` or `null`, that one validated item-anchored gap can be propagated along one explicit ordered represented dependency path into an explicit-path basis-relative `StructuralConsequence`, that those explicit derivations can be revalidated and assembled canonically for one context, that this derivation state can be captured in a self-contained `DecisionContextRevision`, and that a bound repository can select one exact complete revision artifact as its immutable record through a successful 5D2A persistence operation. It does not establish verified semantic truth, real-world absence, global completeness, current producer authority, current decision state, full lineage, head/latest/active selection, relation truth, a structural contradiction, a Dependency finding, real-world consequence, Decision Need, human adoption, or suitability for a recommendation. Durable persistence and lineage reconstruction remain later concerns beyond Phase 5D2A.

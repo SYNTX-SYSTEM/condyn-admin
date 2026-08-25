@@ -47,7 +47,7 @@ Decision Core can now deterministically represent that one validated item-anchor
 
 It does not establish dependency truth, a real-world effect, prediction, outcome, another gap, severity, probability, confidence, priority, Decision Need, recommendation, human decision, action, feedback, persistence, or revision lineage. It performs no authority resolution, payload inspection, semantic evaluation, relation discovery, reachability search, shortest-path computation, path ranking, or graph traversal.
 
-Phase 5C4 now implements Validation Assembly for revalidated derivational coherence. Phase 5D1 now implements a self-contained canonical Decision Context revision artifact. Repository-bound immutable persistence authority and read-only revision-lineage reconstruction remain later Phase 5D2/5D3 work.
+Phase 5C4 now implements Validation Assembly for revalidated derivational coherence. Phase 5D1 now implements a self-contained canonical Decision Context revision artifact, and 5D2A now implements repository-bound immutable persistence authority. Phase 5D2B remains planned for durable PostgreSQL persistence and Phase 5D3 remains planned for read-only revision-lineage reconstruction.
 
 ## Evidence
 

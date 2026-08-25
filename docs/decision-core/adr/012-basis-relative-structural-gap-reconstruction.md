@@ -36,9 +36,9 @@ The module consumes EBIND and DREL artifacts structurally without invoking autho
 
 Decision Core can now derive a deterministic basis-relative structural gap from an explicit expectation and explicit represented basis. It does not thereby establish real-world absence, completeness, semantic truth, relation truth, Decision Need, consequence, recommendation, or human adoption.
 
-Basis relativity permits later revision-lineage work to distinguish the same expectation evaluated against different relevant represented bases, because such bases can produce different `DGAP_` identities. Phase 5D1 now implements the self-contained revision artifact needed for local revalidation; repository persistence authority and read-only revision-lineage reconstruction remain later Phase 5D2/5D3 work.
+Basis relativity permits later revision-lineage work to distinguish the same expectation evaluated against different relevant represented bases, because such bases can produce different `DGAP_` identities. Phase 5D1 now implements the self-contained revision artifact needed for local revalidation, and Phase 5D2A now implements repository-bound immutable persistence authority. A durable PostgreSQL adapter (5D2B) and read-only revision-lineage reconstruction (5D3) remain later work.
 
-Phase 5C3D now implements explicit-path basis-relative `StructuralConsequence` propagation from validated item-anchored gaps along explicit ordered dependency paths. Phase 5C4 now implements Validation Assembly for revalidated derivational coherence. Phase 5D1 now implements a self-contained revision artifact, not persistence. Repository-bound persistence, recommendation, human decision, action, outcome, feedback, and learning remain later work.
+Phase 5C3D now implements explicit-path basis-relative `StructuralConsequence` propagation from validated item-anchored gaps along explicit ordered dependency paths. Phase 5C4 now implements Validation Assembly for revalidated derivational coherence. Phase 5D1 now implements a self-contained revision artifact, and 5D2A now implements repository-bound immutable persistence authority. Durable persistence, read-only lineage reconstruction, recommendation, human decision, action, outcome, feedback, and learning remain later work.
 
 ## Evidence
 

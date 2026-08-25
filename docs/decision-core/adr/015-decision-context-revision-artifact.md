@@ -45,7 +45,7 @@ Construction and stored assertion safely capture one detached operation-local sn
 
 Decision Core can now create and revalidate a canonical self-contained revision artifact without a repository. It does not thereby establish persistence, authority of record, current authority, truth, a parent record, head/latest/active/superseded state, recommendation, Decision Need, human decision, action, outcome, or feedback.
 
-Phase 5D2 remains the planned repository-bound immutable persistence authority boundary. It may later select one complete persisted artifact state for a DREV identity; that selection is not implemented here. Phase 5D3 remains the planned read-only revision-lineage reconstruction boundary. Those future repository records may be governed historical records; they do not assert truth.
+Phase 5D2A now partially realizes the planned repository-bound immutable persistence boundary: the shipped in-memory bound path may select one exact complete revision artifact as its immutable record state for a DREV through immediate-parent integrity, immutable write, and exact post-write reread. This does not change the Phase 5D1 decision itself or make a standalone revision authoritative. Phase 5D2B remains planned for the durable PostgreSQL persistence adapter, and Phase 5D3 remains planned for read-only revision-lineage reconstruction. Durable governed historical record across process restart is deferred to Phase 5D2B; a repository-selected immutable record state is not a truth claim.
 
 ## Evidence
 

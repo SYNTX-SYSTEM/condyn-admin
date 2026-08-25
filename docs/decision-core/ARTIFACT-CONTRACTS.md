@@ -74,6 +74,9 @@
 | `DecisionContextRevision` | `artifactKind: "DECISION_CONTEXT_REVISION"`, `schemaVersion: "DECISION_CONTEXT_REVISION_V1"`, `revisionId`, `previousRevisionId`, `context`, `validationInput`, `validationAssembly` | Detached canonical self-contained derivation state. It is not persisted authority, truth, a current/head/latest revision, or a parent-existence claim. |
 | `createDecisionContextRevision(input)` | `DecisionContextRevisionInput -> DecisionContextRevision` | Captures once, validates/reconstructs the embedded derivation state, canonicalizes validation input, and returns a detached canonical revision. |
 | `assertDecisionContextRevision(revision)` | `DecisionContextRevision -> void` | Revalidates the self-contained state and requires canonical stored body before accepting deterministic identity. |
+| `DecisionContextRevisionRepository` | `getRevisionById(revisionId)` and `createDecisionContextRevisionPersister()` | Supported interface shape; it has no raw-writer member, but conformance alone does not prove 5D2A governance semantics. |
+| `BoundDecisionContextRevisionPersister` | `persist(revision)` | Supported repository-bound persistence capability for one complete `DecisionContextRevision`. |
+| `InMemoryDecisionContextRevisionRepository` | In-memory `DecisionContextRevisionRepository` implementation | Shipped implementation that enforces 5D2A authority semantics; it is not durable persistence. |
 
 ## Reference and reader behavior
 
@@ -542,7 +545,7 @@ Phase 5C4 invokes no reader, resolver, repository, payload, authority validator,
 
 ## Decision Context Revision contract
 
-Phase 5D1 adds the adjacent `lib/decision-core/revisions/` module. It defines a self-contained canonical revision artifact; it does not add a repository, persistence operation, parent lookup, lineage traversal, head/latest/current selection, or authority of record.
+Phase 5D1 adds the adjacent `lib/decision-core/revisions/` module. It defines a self-contained canonical revision artifact. The 5D1 artifact contract itself adds no repository operation, parent lookup, lineage traversal, head/latest/current selection, or authority of record.
 
 ```ts
 interface DecisionContextRevisionInput {
@@ -602,4 +605,78 @@ Constructor and stored assertion operate from one detached operation-local snaps
 | Otherwise exact valid revision body with wrong `revisionId` | `ERR_DECISION_CONTEXT_REVISION_ID_MISMATCH` |
 | Invalid embedded context or derivation state after safe representation capture | Meaningful sealed predecessor error remains observable. |
 
-A self-consistent DREV string alone does not establish a valid revision. The artifact is neither truth, persistence, persisted authority, current authority, head/latest/active/superseded state, decision readiness, Decision Need, recommendation, human decision, action, outcome, nor feedback. Phase 5D2 is the planned repository-bound immutable persistence authority boundary; Phase 5D3 is the planned read-only lineage reconstruction boundary.
+A self-consistent DREV string alone does not establish a valid revision. The artifact is neither truth, persistence, persisted authority, current authority, head/latest/active/superseded state, decision readiness, Decision Need, recommendation, human decision, action, outcome, nor feedback.
+
+## Repository-Bound Immutable Persistence Authority contract
+
+Phase 5D2A adds the adjacent `lib/decision-core/revision-persistence/` module. Its supported public surface is deliberately small:
+
+```ts
+interface DecisionContextRevisionRepository {
+  getRevisionById(revisionId: string): Promise<DecisionContextRevision | null>;
+  createDecisionContextRevisionPersister(): BoundDecisionContextRevisionPersister;
+}
+
+interface BoundDecisionContextRevisionPersister {
+  persist(revision: DecisionContextRevision): Promise<DecisionContextRevision>;
+}
+```
+
+`DecisionContextRevisionRepository` defines only the supported `getRevisionById(...)` and persister-factory shape. Its absence of a raw-writer member does not prove that every conforming runtime object has no other method or enforces the Phase-5D2A invariant. `INTERFACE CONFORMANCE != PHASE-5D2A GOVERNANCE GUARANTEE`.
+
+The shipped `InMemoryDecisionContextRevisionRepository` is the implementation that enforces the documented 5D2A semantics. Its supported write path is exactly `repository -> createDecisionContextRevisionPersister() -> persist(revision)`. It is tested not to expose runtime-callable `saveRevision`, `writeRevision`, `putRevision`, `replaceRevision`, `updateRevision`, or `deleteRevision`. Its runtime-private `#writeRevision(...)` is storage machinery, not a public write capability or the authority boundary.
+
+`createBoundDecisionContextRevisionPersister(...)` is internal composition machinery in `revision-persistence/persister.ts`. It is not exported by `revision-persistence/index.ts` or `lib/decision-core/index.ts`; deep-import accessibility is not a supported repository write capability.
+
+The supported shipped in-memory path establishes authority of record only when all of the following succeed:
+
+```text
+VALID CANONICAL DREV
+  + BOUND SHIPPED REPOSITORY/PERSISTER
+  + IMMEDIATE PARENT INTEGRITY
+  + IMMUTABLE WRITE
+  + EXACT POST-WRITE REREAD
+  + EXACT COMPLETE-ARTIFACT EQUALITY
+  = REPOSITORY-SELECTED AUTHORITY OF RECORD FOR THIS DREV ID DURING THIS OPERATION
+```
+
+Authority of record is not truth, semantic correctness, current producer authority, current decision state, head/latest/active selection, Decision Need, or recommendation. It is an application/API capability boundary, not cryptographic isolation or a hostile same-process sandbox.
+
+### Operation-local snapshot and exact reread
+
+One `persist(...)` occurrence captures and sealed-asserts one pristine detached expected revision before repository awaits. The private writer receives `structuredClone(expected)`, not the pristine expected object. The post-write reread is captured once, sealed-asserted, and compared against the pristine expected artifact.
+
+```text
+STATE VALIDATED == EXPECTED AUTHORITY STATE
+WRITER INPUT    == DETACHED COPY OF EXPECTED AUTHORITY STATE
+WRITER MUTATION CAPABILITY != EXPECTED AUTHORITY STATE MUTATION CAPABILITY
+```
+
+The shipped in-memory operation returns a detached `DecisionContextRevision` from the exact reread only after its revision ID and every complete payload field equal the pristine expected revision. A successful private write alone is insufficient. A missing, malformed, invalid, wrong-ID, or complete-payload-divergent reread after a successful write fails `ERR_DECISION_CONTEXT_REVISION_PERSISTENCE_INVALID`. Underlying writer/dependency errors may propagate rather than being normalized to that error.
+
+### Root, immediate parent, and forks
+
+`previousRevisionId === null` is a root persistence operation and performs no parent lookup. A root is not globally first, the only root, active, head, or preferred.
+
+A non-null `previousRevisionId` requires exactly one immediate `getRevisionById(previousRevisionId)` lookup before writing. That parent must exist, pass sealed `assertDecisionContextRevision(...)`, and have the requested revision ID. An absent parent fails `ERR_DECISION_CONTEXT_REVISION_PARENT_NOT_FOUND`; a malformed, invalid, noncanonical, or identity-mismatched returned parent fails `ERR_DECISION_CONTEXT_REVISION_PARENT_INVALID`. This is immediate referential integrity only: it does not traverse ancestry, establish causation, semantic continuity, same-context/assembly continuity, or select a head.
+
+Multiple children of one persisted parent are valid. `LINEAGE INTEGRITY != BRANCH SELECTION POLICY`. A child may preserve its parent's `contextId` and `validationAssembly.assemblyId`; `NEW REVISION != REQUIRED SEMANTIC CHANGE`.
+
+### Immutable record key and complete payload
+
+Repository identity is `revisionId`. Exact replay of the same complete revision is idempotent. The same DREV with a divergent complete artifact fails `ERR_DECISION_CONTEXT_REVISION_IMMUTABLE_CONFLICT`.
+
+`DREV_` identity is deliberately not the complete revision payload. In particular, identity-excluded canonical EBIND rationale state may differ while EBIND identity, `DVASM_`, and `DREV_` remain unchanged. This is intentional identity/payload separation, not a hash collision: identity selects the record key, while exact complete-artifact equality selects the immutable record state.
+
+### Errors and in-memory limit
+
+| Condition | Error / behavior |
+| --- | --- |
+| Invalid persister-composition dependency contract | `ERR_DECISION_CONTEXT_REVISION_REPOSITORY_INVALID` |
+| Required immediate parent absent | `ERR_DECISION_CONTEXT_REVISION_PARENT_NOT_FOUND` |
+| Returned immediate parent malformed, invalid, or ID-mismatched | `ERR_DECISION_CONTEXT_REVISION_PARENT_INVALID` |
+| Same DREV already has divergent complete artifact state | `ERR_DECISION_CONTEXT_REVISION_IMMUTABLE_CONFLICT` |
+| Write reports success but reread cannot establish exact complete persisted equality | `ERR_DECISION_CONTEXT_REVISION_PERSISTENCE_INVALID` |
+| Invalid caller revision | Meaningful sealed Phase-5D1 error remains observable. |
+
+The shipped in-memory implementation enforces repository-bound authority semantics, immediate-parent integrity, immutable replay/conflict behavior, exact reread, complete equality, and detached reads/returns. It does not prove durable persistence, process-restart survival, database durability or transaction isolation, Postgres race guarantees, database foreign keys, or cold restart. `5D2A != DURABLE HISTORICAL MEMORY`; durable governed historical record across process restart is deferred to Phase 5D2B. Phase 5D3 is planned for read-only revision-lineage reconstruction.
