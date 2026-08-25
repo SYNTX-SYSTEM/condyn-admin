@@ -7,3 +7,4 @@ export * from "./structural-gaps";
 export * from "./structural-consequences";
 export * from "./validation-assembly";
 export * from "./revisions";
+export * from "./revision-persistence";
