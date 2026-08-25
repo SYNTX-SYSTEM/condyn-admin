@@ -61,6 +61,14 @@
 | `StructuralConsequence` | `artifactKind: "STRUCTURAL_CONSEQUENCE"`, `schemaVersion: "STRUCTURAL_CONSEQUENCE_V1"`, `consequenceId`, `contextId`, `sourceGapId`, `sourceItemId`, `affectedItemId`, `dependencyPathRelationProposalIds` | Canonical basis-relative derivation from one validated item-anchored gap and one explicit ordered dependency path. It has no independent provenance. |
 | `reconstructStructuralConsequence(context, expectation, gapBasis, gap, propagationBasis)` | `DecisionContextDraft × StructuralExpectation × StructuralGapObservationBasis × StructuralGap × StructuralConsequencePropagationBasis -> StructuralConsequence` | Revalidates one source gap, validates one explicit ordered path, and derives one consequence. |
 | `assertStructuralConsequence(context, expectation, gapBasis, gap, propagationBasis, consequence)` | `DecisionContextDraft × StructuralExpectation × StructuralGapObservationBasis × StructuralGap × StructuralConsequencePropagationBasis × StructuralConsequence -> void` | Reconstructs from the exact supplied derivation inputs before accepting stored representation and identity. |
+| `DECISION_CONTEXT_VALIDATION_ASSEMBLY_SCHEMA_VERSION` | `"DECISION_CONTEXT_VALIDATION_ASSEMBLY_V1"` | Fixed schema-version constant for Phase 5C4 assemblies. |
+| `StructuralValidationBasisDescriptor` | `CONTEXT_ROLE`; `EVIDENCE_BINDING { bindingIds }`; `DEPENDENCY { relationProposalIds }` | Assembly-only canonical descriptor: EVIDENCE_BINDING/DEPENDENCY carry complete supplied observation IDs; CONTEXT_ROLE is kind-only and uses context-bound observations. |
+| `StructuralExpectationValidationInput` | `expectation`, `basis`, `result` | One caller-supplied Phase-5C3C derivation occurrence; the result is revalidated rather than trusted. |
+| `StructuralConsequenceValidationInput` | `expectation`, `gapBasis`, `gap`, `propagationBasis`, `consequence` | One caller-supplied Phase-5C3D derivation occurrence; the consequence and its source gap are revalidated. |
+| `DecisionContextValidationAssemblyInput` | `expectationValidations`, `consequenceValidations` | Explicit derivation inputs; both arrays may be empty. |
+| `DecisionContextValidationAssembly` | `artifactKind: "DECISION_CONTEXT_VALIDATION_ASSEMBLY"`, `schemaVersion: "DECISION_CONTEXT_VALIDATION_ASSEMBLY_V1"`, `assemblyId`, `contextId`, `expectationResults`, `consequenceIds` | Separate deterministic derivational-coherence artifact. It does not mutate the draft or claim truth, completeness, authority, or decision readiness. |
+| `assembleDecisionContextValidation(context, input)` | `DecisionContextDraft × DecisionContextValidationAssemblyInput -> DecisionContextValidationAssembly` | Revalidates predecessor derivations and returns a detached canonical assembly. |
+| `assertDecisionContextValidationAssembly(context, input, assembly)` | `DecisionContextDraft × DecisionContextValidationAssemblyInput × DecisionContextValidationAssembly -> void` | Reconstructs the exact expected assembly before accepting stored representation and identity. |
 
 ## Reference and reader behavior
 
@@ -418,3 +426,111 @@ The relation-proposal ID array is ordered and never sorted. `sourceItemId` and `
 Sealed Phase-5C3C errors propagate unchanged: an invalid expectation remains `ERR_DECISION_STRUCTURAL_GAP_EXPECTATION_INVALID`; with a valid expectation, malformed gap basis, EBIND, or DREL remains the corresponding Phase-5C3C gap error. A bad source gap is not a bad propagation basis, a bad DREL is not bad path topology, and a bad path is not a bad stored consequence.
 
 Phase 5C3D invokes no authority reader, resolver, repository, payload inspection, semantic evaluator, semantic binder, relation detector, graph traversal, scoring, recommendation, persistence, or human-decision API. Structural consumption does not upgrade a DREL proposal into relation truth, a StructuralGap into real-world absence, or a StructuralConsequence into a real-world consequence.
+
+## Decision Context Validation Assembly contract
+
+Phase 5C4 adds the adjacent `lib/decision-core/validation-assembly/` module. It is not an extension of the sealed Phase-5C1 `validation` authority gate:
+
+```text
+5C1 AUTHORITY VALIDATION != 5C4 VALIDATION ASSEMBLY
+```
+
+It records derivational coherence, not truth:
+
+```text
+EXPLICIT DECISION CONTEXT
++ EXPLICIT STRUCTURAL DERIVATION INPUTS
++ OPERATION-LOCAL CONTRACT REVALIDATION
+= DECISION CONTEXT VALIDATION ASSEMBLY
+```
+
+The artifact is exactly:
+
+```ts
+{
+  artifactKind: "DECISION_CONTEXT_VALIDATION_ASSEMBLY";
+  schemaVersion: "DECISION_CONTEXT_VALIDATION_ASSEMBLY_V1";
+  assemblyId: string;
+  contextId: string;
+  expectationResults: StructuralExpectationValidationResult[];
+  consequenceIds: string[];
+}
+```
+
+It has no authority status, pass/fail state, score, confidence, priority, severity, probability, recommendation, Decision Need, human decision, timestamp, model/provider metadata, persistence metadata, or revision metadata. The sealed `DecisionContextDraft` remains `validationStatus: "NOT_RUN"`; Phase 5C4 creates neither a validated context nor a `ValidatedDecisionContext` type.
+
+### Expectation inputs and canonical results
+
+One `StructuralExpectationValidationInput` contains exactly `expectation`, `basis`, and `result`, where `result` is `StructuralGap | null`. The caller result is not trusted. Phase 5C4 reuses the sealed Phase-5C3C reconstruction and, for a supplied gap, its basis-bound assertion.
+
+| Canonical result | Caller result | Assembly behavior |
+| --- | --- | --- |
+| `null` | `null` | Store `{ expectationId, basis, outcome: "NO_GAP" }`. |
+| `StructuralGap` | Exact derivation-valid `StructuralGap` | Store `{ expectationId, basis, outcome: "GAP", gapId }`. |
+| `null` | `StructuralGap` | `ERR_DECISION_VALIDATION_ASSEMBLY_RESULT_MISMATCH`. |
+| `StructuralGap` | `null` | `ERR_DECISION_VALIDATION_ASSEMBLY_RESULT_MISMATCH`. |
+
+`NO_GAP` means only that this expectation produced no StructuralGap under this explicit represented basis. It is not global completeness, truth, current authority, decision readiness, or Decision Need.
+
+One expectation ID may occur only once in an assembly; a duplicate fails `ERR_DECISION_VALIDATION_ASSEMBLY_DUPLICATE_EXPECTATION`. Empty expectation and consequence input arrays are valid and yield an empty canonical assembly. That is not a completeness proof.
+
+### Basis-descriptor commitments and consequence coherence
+
+`StructuralValidationBasisDescriptor` is assembly-only. The assembly commits to the complete derivation basis, but descriptor representation is variant-specific:
+
+```ts
+{ kind: "CONTEXT_ROLE" }
+{ kind: "EVIDENCE_BINDING", bindingIds: string[] }
+{ kind: "DEPENDENCY", relationProposalIds: string[] }
+```
+
+Its public variants are `EvidenceBindingStructuralValidationBasisDescriptor`, `ContextRoleStructuralValidationBasisDescriptor`, and `DependencyStructuralValidationBasisDescriptor`. The two public result variants are `NoGapStructuralExpectationValidationResult` and `GapStructuralExpectationValidationResult`, united by `StructuralExpectationValidationResult`.
+
+For `EVIDENCE_BINDING` and `DEPENDENCY`, the descriptor carries the complete canonical supplied observation-ID inventory. Nested IDs are deterministic code-point sorted; input ordering is not identity-bearing; duplicates fail rather than being silently deduplicated. For `CONTEXT_ROLE`, the descriptor is only `{ kind: "CONTEXT_ROLE" }`: its represented observations are the canonical context items already bound through assembly `contextId`, not item IDs embedded in the descriptor. The descriptor stores no EBIND rationale or full EBIND/DREL artifact. EBIND participates only within the sealed Phase-5C3C evidence-binding basis: Phase 5C4 exposes no top-level binding inventory and adds no standalone EBIND assertion API.
+
+The canonical descriptor is identity-bearing within an assembly that also commits to `contextId`. `DGAP_` alone does not commit to every supplied EVIDENCE_BINDING or DEPENDENCY basis observation, so the same expectation may produce the same `gapId` from two valid such bases that differ only by irrelevant represented observations. Those bases have distinct descriptor inventories and therefore produce different assembly identities. CONTEXT_ROLE observations remain committed through `contextId`.
+
+One `StructuralConsequenceValidationInput` contains exactly `expectation`, `gapBasis`, `gap`, `propagationBasis`, and `consequence`. Phase 5C4 operation-locally invokes the sealed Phase-5C3D assertion rather than trusting `DCONS_`. Its source must already occur as a `GAP` result in the same assembly with the same `expectationId`, canonical `StructuralValidationBasisDescriptor`, and `gapId`; otherwise it fails `ERR_DECISION_VALIDATION_ASSEMBLY_CONSEQUENCE_SOURCE_MISSING`. A GAP may have zero or multiple explicit consequences. `consequenceIds` stores only exact validated DCONS IDs in canonical code-point order; duplicate IDs fail `ERR_DECISION_VALIDATION_ASSEMBLY_DUPLICATE_CONSEQUENCE`.
+
+### Detached reconstruction, identity, and assertion
+
+For each input occurrence, Phase 5C4 captures one detached operation-local snapshot and reuses it throughout predecessor validation, reconstruction, basis-descriptor construction, source-coherence checks, and identity construction:
+
+```text
+ONE DERIVATION INPUT OCCURRENCE
+-> ONE DETACHED OPERATION-LOCAL SNAPSHOT
+
+BASIS USED FOR DERIVATION
+== BASIS COMMITTED INTO THE ASSEMBLY
+```
+
+This prevents caller mutation or a non-idempotent proxy from presenting different values to predecessor validation and DVASM construction. Safe capture is not semantic validation.
+
+```ts
+DVASM_ + SHA256(JSON.stringify([
+  "DECISION_CONTEXT_VALIDATION_ASSEMBLY_V1",
+  contextId,
+  canonicalExpectationResults,
+  canonicalConsequenceIds
+])).slice(0, 24).toUpperCase()
+```
+
+Expectation results are code-point sorted by `expectationId`; binding IDs, relation-proposal IDs, and consequence IDs are code-point sorted. The exact canonical result objects and consequence-ID set participate in identity. Thus a context, expectation ID, canonical basis descriptor, `GAP`/`NO_GAP` outcome, gap ID, or consequence-set change changes `DVASM_`; input order alone does not.
+
+`assertDecisionContextValidationAssembly(context, input, assembly)` reconstructs the complete canonical expected assembly from the exact supplied derivation inputs before accepting stored representation. It does not merely recompute a self-consistent hash from stored fields. A body mismatch fails `ERR_DECISION_VALIDATION_ASSEMBLY_INVALID`; only an otherwise exact artifact with a wrong `assemblyId` fails `ERR_DECISION_VALIDATION_ASSEMBLY_ID_MISMATCH`.
+
+### Error and authority boundaries
+
+| Condition | Error / behavior |
+| --- | --- |
+| Malformed 5C4 wrapper or input container | `ERR_DECISION_VALIDATION_ASSEMBLY_INPUT_INVALID` |
+| Duplicate expectation ID | `ERR_DECISION_VALIDATION_ASSEMBLY_DUPLICATE_EXPECTATION` |
+| Caller result differs from canonical Phase-5C3C reconstruction | `ERR_DECISION_VALIDATION_ASSEMBLY_RESULT_MISMATCH` |
+| Valid consequence lacks its matching assembled GAP source | `ERR_DECISION_VALIDATION_ASSEMBLY_CONSEQUENCE_SOURCE_MISSING` |
+| Duplicate consequence ID | `ERR_DECISION_VALIDATION_ASSEMBLY_DUPLICATE_CONSEQUENCE` |
+| Hostile, malformed, or body-mismatching stored assembly | `ERR_DECISION_VALIDATION_ASSEMBLY_INVALID` |
+| Otherwise exact stored assembly with wrong `DVASM_` | `ERR_DECISION_VALIDATION_ASSEMBLY_ID_MISMATCH` |
+
+Meaningful sealed predecessor errors remain observable. In particular, the directly consumed Phase-5B `DecisionContextDraft` preserves `ERR_DECISION_CONTEXT_INVALID`, `ERR_DECISION_CONTEXT_SOURCE_STATE_REFERENCES_NOT_CANONICAL`, `ERR_DECISION_CONTEXT_ITEMS_NOT_CANONICAL`, `ERR_DECISION_CONTEXT_DECISION_QUESTION_COUNT`, `ERR_DECISION_CONTEXT_AUTHORITATIVE_REFERENCE_MISSING`, `ERR_DECISION_CONTEXT_DECISION_QUESTION_ID_MISMATCH`, and `ERR_DECISION_CONTEXT_ID_MISMATCH`; a bad Decision Context is not relabeled as a StructuralGap-context failure. Structural expectation, gap basis, EBIND, DREL, stored gap, propagation basis/path, and stored consequence errors likewise remain owned by their sealed predecessor contracts.
+
+Phase 5C4 invokes no reader, resolver, repository, payload, authority validator, semantic binder, or semantic evaluator. It emits no authority certificate or authority-valid flag. Contract coherence is not current authority, semantic verification, truth, completeness, decision readiness, priority, recommendation, or human decision.

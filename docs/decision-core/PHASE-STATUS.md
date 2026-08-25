@@ -11,14 +11,14 @@
 | Phase 5C3B | Explicit Structural Relation Proposal Contract | SEALED | `0fee42a93eaa65fe75fef0cd744ec2d004e8652f` / `v1.0.0-decision-core-phase5c3b-structural-relations` |
 | Phase 5C3C | Structural Gap Reconstruction | SEALED | `b0ead38583e43908c7b234543e61afb611119962` / `v1.0.0-decision-core-phase5c3c-structural-gaps` |
 | Phase 5C3D | Structural Consequence Propagation | SEALED | `23a907921712b2375a31ecd10f73b0675b9608dc` / `v1.0.0-decision-core-phase5c3d-structural-consequences` |
+| Phase 5C4 | Validation Assembly | SEALED | `0a731079bcad003eeb8d81f0f9f24d0f2a066825` / `v1.0.0-decision-core-phase5c4-validation-assembly` |
 
 ## Planned, not implemented
 
 | Planned phase | Deferred scope |
 | --- | --- |
-| Phase 5C4 | Validation Assembly |
 | Phase 5D | Immutable Decision Context Persistence + Revision Lineage |
 
 Recommendation, human decision, action, outcome, feedback, and learning are later conceptual work. They have no implementation status in this checkpoint.
 
-At Phase 5C3D, the bidirectional human-machine loop is not structurally complete. Current code can form a structural context, check operation-time reachability of governed references, produce item/reference semantic evaluator proposals, represent explicit structural expectations and item/item relation proposals, derive basis-relative structural gaps from explicit expectations and explicit represented bases, and derive basis-relative structural consequences from validated item-anchored gaps and caller-supplied ordered dependency paths. It does not derive Decision Need, recommend, evaluate alternatives, record a human decision, observe an outcome, process feedback, persist or revise a Decision Context, or complete a bidirectional human-machine loop.
+At Phase 5C4, the bidirectional human-machine loop is not structurally complete. Current code can form a structural context, check operation-time reachability of governed references, produce item/reference semantic evaluator proposals, represent explicit structural expectations and item/item relation proposals, derive basis-relative structural gaps and explicit-path structural consequences, and assemble revalidated derivational coherence for one context. It does not derive Decision Need, recommend, evaluate alternatives, record a human decision, observe an outcome, process feedback, persist or revise a Decision Context, or complete a bidirectional human-machine loop.
