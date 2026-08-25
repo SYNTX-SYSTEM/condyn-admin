@@ -47,7 +47,7 @@ Decision Core can now deterministically represent that one validated item-anchor
 
 It does not establish dependency truth, a real-world effect, prediction, outcome, another gap, severity, probability, confidence, priority, Decision Need, recommendation, human decision, action, feedback, persistence, or revision lineage. It performs no authority resolution, payload inspection, semantic evaluation, relation discovery, reachability search, shortest-path computation, path ranking, or graph traversal.
 
-Phase 5C4 now implements Validation Assembly for revalidated derivational coherence. Immutable Decision Context persistence with revision lineage remains later work.
+Phase 5C4 now implements Validation Assembly for revalidated derivational coherence. Phase 5D1 now implements a self-contained canonical Decision Context revision artifact. Repository-bound immutable persistence authority and read-only revision-lineage reconstruction remain later Phase 5D2/5D3 work.
 
 ## Evidence
 

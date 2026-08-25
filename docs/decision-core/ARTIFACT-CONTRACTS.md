@@ -69,6 +69,11 @@
 | `DecisionContextValidationAssembly` | `artifactKind: "DECISION_CONTEXT_VALIDATION_ASSEMBLY"`, `schemaVersion: "DECISION_CONTEXT_VALIDATION_ASSEMBLY_V1"`, `assemblyId`, `contextId`, `expectationResults`, `consequenceIds` | Separate deterministic derivational-coherence artifact. It does not mutate the draft or claim truth, completeness, authority, or decision readiness. |
 | `assembleDecisionContextValidation(context, input)` | `DecisionContextDraft × DecisionContextValidationAssemblyInput -> DecisionContextValidationAssembly` | Revalidates predecessor derivations and returns a detached canonical assembly. |
 | `assertDecisionContextValidationAssembly(context, input, assembly)` | `DecisionContextDraft × DecisionContextValidationAssemblyInput × DecisionContextValidationAssembly -> void` | Reconstructs the exact expected assembly before accepting stored representation and identity. |
+| `DECISION_CONTEXT_REVISION_SCHEMA_VERSION` | `"DECISION_CONTEXT_REVISION_V1"` | Fixed schema-version constant for Phase 5D1 revision artifacts. |
+| `DecisionContextRevisionInput` | `previousRevisionId`, `context`, `validationInput`, `validationAssembly` | Constructor input for one self-contained revision artifact; no caller-supplied revision ID or repository metadata. |
+| `DecisionContextRevision` | `artifactKind: "DECISION_CONTEXT_REVISION"`, `schemaVersion: "DECISION_CONTEXT_REVISION_V1"`, `revisionId`, `previousRevisionId`, `context`, `validationInput`, `validationAssembly` | Detached canonical self-contained derivation state. It is not persisted authority, truth, a current/head/latest revision, or a parent-existence claim. |
+| `createDecisionContextRevision(input)` | `DecisionContextRevisionInput -> DecisionContextRevision` | Captures once, validates/reconstructs the embedded derivation state, canonicalizes validation input, and returns a detached canonical revision. |
+| `assertDecisionContextRevision(revision)` | `DecisionContextRevision -> void` | Revalidates the self-contained state and requires canonical stored body before accepting deterministic identity. |
 
 ## Reference and reader behavior
 
@@ -534,3 +539,67 @@ Expectation results are code-point sorted by `expectationId`; binding IDs, relat
 Meaningful sealed predecessor errors remain observable. In particular, the directly consumed Phase-5B `DecisionContextDraft` preserves `ERR_DECISION_CONTEXT_INVALID`, `ERR_DECISION_CONTEXT_SOURCE_STATE_REFERENCES_NOT_CANONICAL`, `ERR_DECISION_CONTEXT_ITEMS_NOT_CANONICAL`, `ERR_DECISION_CONTEXT_DECISION_QUESTION_COUNT`, `ERR_DECISION_CONTEXT_AUTHORITATIVE_REFERENCE_MISSING`, `ERR_DECISION_CONTEXT_DECISION_QUESTION_ID_MISMATCH`, and `ERR_DECISION_CONTEXT_ID_MISMATCH`; a bad Decision Context is not relabeled as a StructuralGap-context failure. Structural expectation, gap basis, EBIND, DREL, stored gap, propagation basis/path, and stored consequence errors likewise remain owned by their sealed predecessor contracts.
 
 Phase 5C4 invokes no reader, resolver, repository, payload, authority validator, semantic binder, or semantic evaluator. It emits no authority certificate or authority-valid flag. Contract coherence is not current authority, semantic verification, truth, completeness, decision readiness, priority, recommendation, or human decision.
+
+## Decision Context Revision contract
+
+Phase 5D1 adds the adjacent `lib/decision-core/revisions/` module. It defines a self-contained canonical revision artifact; it does not add a repository, persistence operation, parent lookup, lineage traversal, head/latest/current selection, or authority of record.
+
+```ts
+interface DecisionContextRevisionInput {
+  previousRevisionId: string | null;
+  context: DecisionContextDraft;
+  validationInput: DecisionContextValidationAssemblyInput;
+  validationAssembly: DecisionContextValidationAssembly;
+}
+
+interface DecisionContextRevision {
+  artifactKind: "DECISION_CONTEXT_REVISION";
+  schemaVersion: "DECISION_CONTEXT_REVISION_V1";
+  revisionId: string;
+  previousRevisionId: string | null;
+  context: DecisionContextDraft;
+  validationInput: DecisionContextValidationAssemblyInput;
+  validationAssembly: DecisionContextValidationAssembly;
+}
+```
+
+The public operations are `createDecisionContextRevision(input)` and `assertDecisionContextRevision(revision)`. No revision ID is supplied to the constructor. There are no created/updated timestamps, revision number, latest/current/active/head/superseded flag, authority status, score, confidence, priority, Decision Need, recommendation, human decision, action, outcome, feedback, provider/model metadata, or repository metadata fields.
+
+### DCTX, DVASM, and DREV identities
+
+`DCTX_` is the structural Decision Context identity, `DVASM_` is the derivational-coherence assembly identity, and `DREV_` is the self-contained revision-artifact identity. They are distinct identities: `DCTX_ != DVASM_`, `DVASM_ != DREV_`, and `DCTX_ != DREV_`. No one of them establishes truth or persistence authority.
+
+```ts
+DREV_ + SHA256(JSON.stringify([
+  "DECISION_CONTEXT_REVISION_V1",
+  previousRevisionId,
+  context.contextId,
+  validationAssembly.assemblyId
+])).slice(0, 24).toUpperCase()
+```
+
+A root revision has `previousRevisionId === null`. A child-shaped revision has a previous ID matching `^DREV_[0-9A-F]{24}$`. This validates representation only: Phase 5D1 does not look up the parent, establish causation or semantic continuity, traverse lineage, or select a head.
+
+### Complete payload, canonical derivation state, and snapshot isolation
+
+`DREV_` identity is not the complete revision payload. Its tuple does not directly hash every embedded validation-input field. A canonical EBIND rationale can change without changing EBIND identity, the relevant derivation identity, `DVASM_`, or `DREV_`; two structurally valid complete revision artifacts may therefore have the same DREV identity and different identity-excluded represented payload. Phase 5D1 permits this and does not resolve a persistence conflict.
+
+The revision embeds `context`, `validationInput`, and `validationAssembly`, so its derivational coherence can be revalidated through `assertDecisionContextDraft(context)` and `assertDecisionContextValidationAssembly(context, validationInput, validationAssembly)` without external derivation artifacts. This is self-contained revalidation state, not a durable persisted cold-restart record.
+
+Construction safely captures caller input, validates the sealed context and supplied assembly, canonicalizes validation input, reconstructs the canonical assembly from that canonical input, and embeds detached canonical state in the revision artifact. Expectation validations sort by `expectation.expectationId`; EVIDENCE_BINDING basis bindings sort by `bindingId`; DEPENDENCY basis relation proposals sort by `relationProposalId`; consequence validations sort by `consequence.consequenceId`. `DEPENDENCY_PATH.relationProposals` preserve their supplied order because the explicit path is semantic. No silent deduplication occurs.
+
+Constructor and stored assertion operate from one detached operation-local snapshot. After capture, caller-owned nested context, validation input, and validation assembly representation has zero authority over validation, revision construction, or canonical stored-revision comparison. Assertion compares detached captured stored revision representation against reconstructed canonical state; it does not reread caller-owned nested state after predecessor validation. Safe capture is not semantic validation, and the returned revision is detached rather than promised deeply frozen.
+
+### Stored assertion and errors
+
+`assertDecisionContextRevision(revision)` requires the embedded context to pass its sealed contract, canonicalizes/revalidates embedded validation input, reconstructs the canonical assembly, requires the stored validation input and assembly already equal that canonical representation, and then recomputes `DREV_`.
+
+| Condition | Error / behavior |
+| --- | --- |
+| Malformed `DecisionContextRevisionInput` wrapper | `ERR_DECISION_CONTEXT_REVISION_INPUT_INVALID` |
+| Syntactically invalid non-null `previousRevisionId` in otherwise captured constructor input | `ERR_DECISION_CONTEXT_REVISION_PREVIOUS_ID_INVALID` |
+| Hostile, malformed, noncanonical, or body-mismatching stored revision, including malformed stored `previousRevisionId` | `ERR_DECISION_CONTEXT_REVISION_INVALID` |
+| Otherwise exact valid revision body with wrong `revisionId` | `ERR_DECISION_CONTEXT_REVISION_ID_MISMATCH` |
+| Invalid embedded context or derivation state after safe representation capture | Meaningful sealed predecessor error remains observable. |
+
+A self-consistent DREV string alone does not establish a valid revision. The artifact is neither truth, persistence, persisted authority, current authority, head/latest/active/superseded state, decision readiness, Decision Need, recommendation, human decision, action, outcome, nor feedback. Phase 5D2 is the planned repository-bound immutable persistence authority boundary; Phase 5D3 is the planned read-only lineage reconstruction boundary.

@@ -2,7 +2,7 @@
 
 ## Scope
 
-This walkthrough describes authority, structural checks, semantic evaluator proposal binding, explicit structural comparison targets, explicit structural relation proposals, basis-relative structural gap reconstruction, explicit-path structural consequence propagation, and derivational-coherence validation assembly implemented through Phase 5C4. It does not describe structural contradictions, dependency findings, decision need, relation discovery, recommendation, decision, persistence behavior, or human-machine feedback as current functionality.
+This walkthrough describes authority, structural checks, semantic evaluator proposal binding, explicit structural comparison targets, explicit structural relation proposals, basis-relative structural gap reconstruction, explicit-path structural consequence propagation, derivational-coherence validation assembly, and self-contained revision artifacts implemented through Phase 5D1. It does not describe structural contradictions, dependency findings, decision need, relation discovery, recommendation, decision, repository persistence authority, revision-parent resolution, lineage reconstruction, or human-machine feedback as current functionality.
 
 ## Phase 5A: generic producer authority consumption
 
@@ -269,6 +269,27 @@ The assembly commits to the complete derivation basis. For EVIDENCE_BINDING and 
 
 No reader, resolver, repository, payload inspection, authority validator, semantic binder, semantic evaluator, or current-authority operation occurs. Phase 5C4 emits no authority certificate and does not mutate `DecisionContextDraft.validationStatus`, which remains `"NOT_RUN"`.
 
+## Phase 5D1: self-contained revision artifact
+
+Phase 5D1 is not a new authority-resolution or repository stage. The adjacent `revisions` module consumes a revision input containing a context, explicit validation input, and an assembly claimed for that input:
+
+```text
+DecisionContextRevisionInput
+  -> detached operation-local capture
+  -> sealed Phase-5B DecisionContextDraft assertion
+  -> sealed Phase-5C4 validation-assembly assertion
+  -> canonical validation input
+  -> canonical assembly reconstruction
+  -> deterministic DREV identity
+  -> detached DecisionContextRevision
+```
+
+The revision embeds all three derivation-state components, allowing later local calls to `assertDecisionContextDraft(context)` and `assertDecisionContextValidationAssembly(context, validationInput, validationAssembly)` without external inputs. It does not make that state persisted, prove durable cold restart, or establish repository authority.
+
+The revision captures each caller-owned component once and continues only with detached data. Its stored assertion compares detached captured stored context/input/assembly representation with reconstructed canonical state; caller-owned nested values are not reread after predecessor validation. This preserves `STATE VALIDATED == STATE STORED / COMPARED`, without claiming that arbitrary proxy non-idempotence is detectable.
+
+`DREV_` binds schema, `previousRevisionId`, `contextId`, and `assemblyId`. `previousRevisionId: null` represents a root; a DREV-shaped previous ID represents only child shape. A syntactically invalid non-null predecessor ID is `ERR_DECISION_CONTEXT_REVISION_PREVIOUS_ID_INVALID` at the constructor boundary, but malformed stored revision representation, including this field, is `ERR_DECISION_CONTEXT_REVISION_INVALID` at stored assertion. Phase 5D1 performs no repository call, parent lookup, lineage traversal, head/latest/active selection, branch policy, authority re-resolution, payload inspection, binder, evaluator, or persistence. A revision artifact is not current authority, authority of record, semantic truth, a decision-readiness result, or a recommendation.
+
 ## Failure model
 
 | Boundary | Current error/behavior |
@@ -316,6 +337,10 @@ No reader, resolver, repository, payload inspection, authority validator, semant
 | Valid consequence has no matching assembled GAP source derivation | `ERR_DECISION_VALIDATION_ASSEMBLY_CONSEQUENCE_SOURCE_MISSING` |
 | Hostile, malformed, or body-mismatching stored assembly | `ERR_DECISION_VALIDATION_ASSEMBLY_INVALID` |
 | Otherwise exact stored assembly with wrong `DVASM_` | `ERR_DECISION_VALIDATION_ASSEMBLY_ID_MISMATCH` |
+| Malformed Phase-5D1 revision constructor wrapper/input | `ERR_DECISION_CONTEXT_REVISION_INPUT_INVALID` |
+| Syntactically invalid non-null previous-revision ID in otherwise captured constructor input | `ERR_DECISION_CONTEXT_REVISION_PREVIOUS_ID_INVALID` |
+| Hostile, malformed, noncanonical, or body-mismatching stored revision, including malformed stored previous-revision ID | `ERR_DECISION_CONTEXT_REVISION_INVALID` |
+| Otherwise exact stored revision with wrong `DREV_` | `ERR_DECISION_CONTEXT_REVISION_ID_MISMATCH` |
 
 `ERR_DECISION_STRUCTURAL_EXPECTATION_INVALID` classifies stored-representation failures. After safe representation capture, stored variant content is reconstructed through the normal structural-input path, so meaningful invalid variant content may instead preserve `ERR_DECISION_STRUCTURAL_EXPECTATION_INPUT_INVALID`, `ERR_DECISION_STRUCTURAL_EXPECTATION_ITEM_NOT_FOUND`, `ERR_DECISION_STRUCTURAL_EXPECTATION_REFERENCE_INVALID`, `ERR_DECISION_STRUCTURAL_EXPECTATION_DISPOSITION_INVALID`, or `ERR_DECISION_STRUCTURAL_EXPECTATION_DUPLICATE_DISPOSITION`. Wrong deterministic ID remains `ERR_DECISION_STRUCTURAL_EXPECTATION_ID_MISMATCH`.
 
@@ -325,4 +350,4 @@ The Phase-5C2 binder likewise permits Phase-5A reader/resolver/producer errors t
 
 ## Authority is not semantic support
 
-The implemented chain establishes that configured producer authority can currently resolve each declared context reference, that a bound semantic evaluator can propose an item/reference disposition from an isolated payload, that explicit structural expectations and item/item relation proposals can be represented canonically, that one explicit expectation can be deterministically compared with one explicit represented basis to derive a basis-relative `StructuralGap` or `null`, that one validated item-anchored gap can be propagated along one explicit ordered represented dependency path into a basis-relative `StructuralConsequence`, and that those explicit derivations can be revalidated and assembled canonically for one context. It does not establish verified semantic truth, real-world absence, global completeness, current authority, relation truth, a structural contradiction, a Dependency finding, real-world consequence, Decision Need, human adoption, or suitability for a recommendation. Those remain later concerns beyond Phase 5C4.
+The implemented chain establishes that configured producer authority can currently resolve each declared context reference where that gate is explicitly invoked, that a bound semantic evaluator can propose an item/reference disposition from an isolated payload, that explicit structural expectations and item/item relation proposals can be represented canonically, that one explicit expectation can be deterministically compared with one explicit represented basis to derive a basis-relative `StructuralGap` or `null`, that one validated item-anchored gap can be propagated along one explicit ordered represented dependency path into an explicit-path basis-relative `StructuralConsequence`, that those explicit derivations can be revalidated and assembled canonically for one context, and that this derivation state can be captured in a self-contained `DecisionContextRevision`. It does not establish verified semantic truth, real-world absence, global completeness, current authority, repository persistence authority, parent existence, lineage, head selection, relation truth, a structural contradiction, a Dependency finding, real-world consequence, Decision Need, human adoption, or suitability for a recommendation. Those remain later concerns beyond Phase 5D1.

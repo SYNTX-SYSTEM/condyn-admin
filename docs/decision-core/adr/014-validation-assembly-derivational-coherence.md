@@ -32,7 +32,7 @@ An empty input is valid. It creates an empty canonical assembly for the context;
 
 Decision Core can now deterministically assemble revalidated structural derivations for one explicit context. `DVASM_` is deterministic derivation identity, not a truth or authority certificate.
 
-The assembly remains distinct from Decision Need, priority, score, confidence, severity, recommendation, human decision, action, outcome, feedback, persistence, and revision lineage. Phase 5D is the next boundary for immutable Decision Context persistence and revision lineage; it is not implemented by this ADR.
+The assembly remains distinct from Decision Need, priority, score, confidence, severity, recommendation, human decision, action, outcome, feedback, persistence, and revision lineage. Phase 5D1 now implements a self-contained canonical Decision Context revision artifact; it is not introduced by this ADR. Repository-bound immutable persistence authority and read-only revision-lineage reconstruction remain later Phase 5D2/5D3 work.
 
 ## Evidence
 
