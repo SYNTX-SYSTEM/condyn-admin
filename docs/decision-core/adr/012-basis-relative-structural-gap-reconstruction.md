@@ -38,7 +38,7 @@ Decision Core can now derive a deterministic basis-relative structural gap from 
 
 Basis relativity permits later revision-lineage work to distinguish the same expectation evaluated against different relevant represented bases, because such bases can produce different `DGAP_` identities. Phase 5D revision lineage is not implemented.
 
-Structural consequence propagation, Validation Assembly, persistence, recommendation, human decision, action, outcome, feedback, and learning remain later work.
+Phase 5C3D now implements basis-relative structural consequence propagation from validated item-anchored gaps along explicit ordered dependency paths. Validation Assembly, persistence, recommendation, human decision, action, outcome, feedback, and learning remain later work.
 
 ## Evidence
 

@@ -53,7 +53,7 @@ Construction may canonicalize valid caller input. Stored assertion follows this 
 
 Decision Core can now represent explicit item/item relation proposals canonically while keeping relation ontology separate from relation discovery, truth, and findings. Future logic may consume these proposals, but Phase 5C3B itself does not validate them into findings.
 
-Phase 5C3A expectations remain distinct from relation proposals and findings. Phase 5C3C now implements basis-relative Structural Gap reconstruction against explicit expectations and explicit represented observation bases. Relation proposal remains distinct from relation truth, finding, and Gap. Structural consequence propagation remains later work. No Contradiction finding, Dependency finding, Consequence, Decision Need, priority, recommendation, human decision, action, outcome, feedback, persistence, or revision lineage is introduced by this ADR.
+Phase 5C3A expectations remain distinct from relation proposals and findings. Phase 5C3C now implements basis-relative Structural Gap reconstruction against explicit expectations and explicit represented observation bases. Phase 5C3D now implements basis-relative structural consequence propagation from validated item-anchored gaps along explicit ordered dependency paths. Relation proposal remains distinct from relation truth, finding, and Gap. No Contradiction finding, Dependency finding, Decision Need, priority, recommendation, human decision, action, outcome, feedback, persistence, or revision lineage is introduced by this ADR.
 
 ## Evidence
 

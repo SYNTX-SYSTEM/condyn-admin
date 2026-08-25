@@ -1,10 +1,10 @@
 # Decision Core architecture
 
-## Scope through Phase 5C3C
+## Scope through Phase 5C3D
 
 Decision Core is a generic, producer-neutral module for consuming governed producer state and forming a deterministic structural `DecisionContextDraft`. It is separate from Capability Core. Capability Core publishes capability/evidence-oriented Phase-4 snapshots; Decision Core does not require that ontology and can consume any producer that implements a compatible authority resolver.
 
-The implemented architecture through Phase 5C3C establishes a generic, producer-neutral foundation for constructing structurally defined decision contexts that can reference governed producer state, separately producing explicit semantic evaluator proposals about item/reference relationships, canonically representing explicit structural comparison targets and caller-supplied item/item relation proposals, and deriving deterministic structural gaps from explicit expectations against explicit represented observation bases. It does not implement recommendation, assessment, scoring, ranking, human decision, action, outcome, feedback, structural contradictions, dependency findings, consequences, decision need, relation discovery, validation assembly, persistence, or a closed human-machine loop.
+The implemented architecture through Phase 5C3D establishes a generic, producer-neutral foundation for constructing structurally defined decision contexts that can reference governed producer state, separately producing explicit semantic evaluator proposals about item/reference relationships, canonically representing explicit structural comparison targets and caller-supplied item/item relation proposals, deriving deterministic structural gaps from explicit expectations against explicit represented observation bases, and deriving explicit-path structural consequences from validated item-anchored gaps. It does not implement recommendation, assessment, scoring, ranking, human decision, action, outcome, feedback, structural contradictions, dependency findings, decision need, relation discovery, validation assembly, persistence, or a closed human-machine loop.
 
 ## Implemented layers
 
@@ -18,6 +18,7 @@ The implemented architecture through Phase 5C3C establishes a generic, producer-
 | Explicit structural expectation (5C3A) | Canonically represent an explicit structural comparison target associated with one structurally valid context under the sealed Phase-5B contract. | `StructuralExpectation` |
 | Explicit structural relation proposal (5C3B) | Canonically represent one caller-supplied structural item/item relation proposal associated with one structurally valid context. | `StructuralRelationProposal` |
 | Structural gap reconstruction (5C3C) | Deterministically compare one explicit expectation with one explicit represented observation basis. | `StructuralGap` or `null` |
+| Structural consequence propagation (5C3D) | Derive one consequence from one validated item-anchored gap and one caller-supplied ordered dependency path. | `StructuralConsequence` |
 
 The current Capability Core adapter in `lib/decision-adapters/capability-core.ts` is one producer-specific integration. It is not part of the generic Decision Core kernel.
 
@@ -63,6 +64,12 @@ DecisionContextDraft + StructuralExpectation + explicit StructuralGapObservation
   -> defensive context, expectation, and basis validation
   -> expectation-specific structural comparison
   -> null OR canonical StructuralGap
+
+DecisionContextDraft + StructuralExpectation + StructuralGapObservationBasis + StructuralGap
++ explicit StructuralConsequencePropagationBasis
+  -> operation-local source-gap revalidation
+  -> explicit ordered DEPENDENCY-path validation
+  -> canonical StructuralConsequence
 ```
 
 The Capability adapter captures only `getSnapshotByKey` from the supplied repository. For its fixed producer/contract pair it reads by the opaque locator, validates the existing `VerifiedCapabilitySnapshot`, requires `status: "VERIFIED"` and `publication.mode: "PHASE4_VERIFIED"`, recomputes the snapshot key, checks the locator and `snapshotId`, and returns a detached clone. That producer-specific behavior is outside the generic reader.
@@ -122,6 +129,15 @@ GAP                           != PRIORITY
 GAP                           != CONSEQUENCE
 GAP                           != RECOMMENDATION
 GAP                           != HUMAN DECISION
+DEPENDENCY PROPOSAL           != CONSEQUENCE
+VALID DREL PATH               != TRUE DEPENDENCY PATH
+STRUCTURAL CONSEQUENCE        != REAL-WORLD EFFECT
+STRUCTURAL CONSEQUENCE        != PREDICTION
+STRUCTURAL CONSEQUENCE        != OUTCOME
+STRUCTURAL CONSEQUENCE        != DECISION NEED
+STRUCTURAL CONSEQUENCE        != PRIORITY
+STRUCTURAL CONSEQUENCE        != SEVERITY
+STRUCTURAL CONSEQUENCE        != RECOMMENDATION
 HASH CONSISTENCY              != DERIVATION VALIDITY
 BAD BASIS                     != BAD STORED GAP
 BAD EBIND                     != BAD STORED GAP
@@ -149,6 +165,8 @@ Phase 5C3B adds `StructuralRelationProposal`, a caller-supplied proposal for one
 
 Phase 5C3C adds `StructuralGap` in the adjacent `lib/decision-core/structural-gaps/` module, not in `structural-findings`. A structural gap is one explicit `StructuralExpectation` that is unsatisfied within one explicitly supplied represented observation basis. It is basis-relative: it does not claim real-world absence, global incompleteness, semantic truth, decision need, priority, consequence, recommendation, or human decision. The existing `structural-findings` module continues to own `StructuralExpectation` and `StructuralRelationProposal`; expectation or relation proposal is not itself a derived Gap.
 
+Phase 5C3D adds `StructuralConsequence` in the adjacent `lib/decision-core/structural-consequences/` module, not in `structural-findings` or `structural-gaps`. It represents only that one validated item-anchored structural gap is structurally upstream of another context item along one explicit ordered represented dependency path. It does not establish dependency-path truth, a real-world effect, prediction, outcome, another gap, severity, priority, decision need, or recommendation.
+
 ## Trust boundaries
 
 1. **Producer adapter boundary.** Producer-specific persistence and artifact validation stay in adapters/resolvers. The generic kernel has no Capability Core import.
@@ -161,6 +179,7 @@ Phase 5C3C adds `StructuralGap` in the adjacent `lib/decision-core/structural-ga
 8. **5C3A structural expectation boundary.** Construction and assertion defensively capture the entire context and expectation representation. They perform only structural context membership and deterministic identity work; they do not call a reader, resolver, repository, semantic evaluator, or Phase-5C2 binder.
 9. **5C3B structural relation proposal boundary.** Construction and assertion defensively capture the entire context and relation representation. They require context item membership and, for `AUTHORITATIVE_STATE` provenance, source-reference membership only. They do not call a reader, resolver, repository, semantic evaluator, Phase-5C2 binder, or Phase-5C3A expectation API.
 10. **5C3C structural gap boundary.** Reconstruction consumes a structurally valid context, expectation, and explicit basis. It validates represented EBIND/DREL proposal artifacts but invokes no reader, resolver, repository, binder, evaluator, detector, or graph traversal. `assertStructuralGap` reconstructs against the exact basis before it accepts a stored gap, so a self-consistent hash cannot make a gap valid under a satisfying basis.
+11. **5C3D structural consequence boundary.** Reconstruction revalidates the source gap against the captured context, expectation, and gap basis before validating one caller-supplied ordered dependency path. It performs no graph discovery, authority resolution, semantic evaluation, or relation-truth validation; a valid DREL path remains represented proposal data.
 
 ## Reachable structural states
 
@@ -189,9 +208,15 @@ Phase 5C3C adds `StructuralGap` in the adjacent `lib/decision-core/structural-ga
 | Explicit dependency expectation plus an explicit supplied `DEPENDENCY` basis containing an exact directional proposal | `null` for that expectation and basis. |
 | Explicit dependency expectation plus an explicit supplied `DEPENDENCY` basis containing only the reverse proposal | A basis-relative gap is derived; the reverse proposal ID is retained as relevant observation data but does not satisfy the direction. |
 | No explicit expectation | No structural-gap reconstruction occurs; absence alone derives no Gap. |
+| Valid item-anchored `EVIDENCE_BINDING` gap plus one explicit dependency proposal whose prerequisite is its subject item | A canonical one-hop basis-relative `StructuralConsequence` is derived. |
+| Valid item-anchored gap plus an explicit ordered multi-hop dependency path | A canonical consequence is derived; `affectedItemId` is the final path dependent item. |
+| Valid `CONTEXT_ROLE` gap | It has no unique missing item anchor and cannot propagate: `ERR_DECISION_STRUCTURAL_CONSEQUENCE_SOURCE_NOT_ITEM_ANCHORED`. |
+| Explicit path contains a `CONTRADICTION`, has broken continuity, repeats an ID/item, or begins away from the source item | Path validation fails; 5C3D does not discover or repair an alternative path. |
+| Phase 5C3D is not invoked | No `StructuralConsequence` is derived; no graph-reachability conclusion follows. |
+| Phase 5C3D is invoked with an explicit `DEPENDENCY_PATH` whose `relationProposals` array is empty | `ERR_DECISION_STRUCTURAL_CONSEQUENCE_PATH_INVALID`. |
 
 ## Generic core and producer adapters
 
 The generic `lib/decision-core/**` production files are guarded against imports from Career, Capability Core, matching, recommendations, and legacy Career decision-loop code. The Capability adapter may import Capability Core because it is a producer-specific integration outside that generic kernel.
 
-Decision Core is application-domain neutral, not ontology-free in a metaphysical sense: the current ontology is intentionally about opaque producer state, structural context items, roles, provenance, operation-time authority reachability, semantic proposals, explicit structural expectations, explicit structural relation proposals, and basis-relative structural gaps. Recruiting is not implemented on top of this module.
+Decision Core is application-domain neutral, not ontology-free in a metaphysical sense: the current ontology is intentionally about opaque producer state, structural context items, roles, provenance, operation-time authority reachability, semantic proposals, explicit structural expectations, explicit structural relation proposals, basis-relative structural gaps, and explicit-path basis-relative structural consequences. Recruiting is not implemented on top of this module.

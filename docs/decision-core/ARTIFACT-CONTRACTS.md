@@ -56,6 +56,11 @@
 | `StructuralGap` | Discriminated union of the three variants | `artifactKind: "STRUCTURAL_GAP"`, `schemaVersion: "STRUCTURAL_GAP_V1"`, `gapId`, `contextId`, `expectationId`, `kind`, and exact variant fields. It has no independent provenance. |
 | `reconstructStructuralGap(context, expectation, basis)` | `DecisionContextDraft × StructuralExpectation × StructuralGapObservationBasis -> StructuralGap \| null` | Compares exactly one expectation against exactly one explicit represented basis. |
 | `assertStructuralGap(context, expectation, basis, gap)` | `DecisionContextDraft × StructuralExpectation × StructuralGapObservationBasis × StructuralGap -> void` | Basis-bound stored-artifact assertion; verifies deterministic derivation rather than only hash consistency. |
+| `STRUCTURAL_CONSEQUENCE_SCHEMA_VERSION` | `"STRUCTURAL_CONSEQUENCE_V1"` | Fixed schema-version constant for Phase 5C3D structural consequences. |
+| `StructuralConsequencePropagationBasis` | `kind: "DEPENDENCY_PATH"`, `relationProposals: readonly StructuralRelationProposal[]` | One explicit ordered represented dependency path; it is not an unordered graph inventory. |
+| `StructuralConsequence` | `artifactKind: "STRUCTURAL_CONSEQUENCE"`, `schemaVersion: "STRUCTURAL_CONSEQUENCE_V1"`, `consequenceId`, `contextId`, `sourceGapId`, `sourceItemId`, `affectedItemId`, `dependencyPathRelationProposalIds` | Canonical basis-relative derivation from one validated item-anchored gap and one explicit ordered dependency path. It has no independent provenance. |
+| `reconstructStructuralConsequence(context, expectation, gapBasis, gap, propagationBasis)` | `DecisionContextDraft × StructuralExpectation × StructuralGapObservationBasis × StructuralGap × StructuralConsequencePropagationBasis -> StructuralConsequence` | Revalidates one source gap, validates one explicit ordered path, and derives one consequence. |
+| `assertStructuralConsequence(context, expectation, gapBasis, gap, propagationBasis, consequence)` | `DecisionContextDraft × StructuralExpectation × StructuralGapObservationBasis × StructuralGap × StructuralConsequencePropagationBasis × StructuralConsequence -> void` | Reconstructs from the exact supplied derivation inputs before accepting stored representation and identity. |
 
 ## Reference and reader behavior
 
@@ -363,3 +368,53 @@ Thus the same context and expectation with a different relevant non-satisfying r
 | Hostile, malformed, noncanonical, body-mismatching stored gap, or a supplied gap for a satisfying basis | `ERR_DECISION_STRUCTURAL_GAP_INVALID` |
 
 No Phase-5C3C API invokes a reader, resolver, repository, semantic binder, semantic evaluator, or relation detector; it neither resolves authority nor inspects producer payloads. Structurally consuming EBIND/DREL proposals does not make either current authority or truth.
+
+## Structural Consequence Propagation contract
+
+Phase 5C3D adds the adjacent `lib/decision-core/structural-consequences/` module. It does not widen the sealed `structural-findings` or `structural-gaps` barrels. A `StructuralConsequence` is one deterministic, basis-relative derivation:
+
+```text
+validated item-anchored StructuralGap
++ one explicit ordered represented DEPENDENCY path
+-> one StructuralConsequence
+```
+
+It states only that the source gap is structurally upstream of `affectedItemId` along that supplied path. It is not dependency-path truth, a real-world effect, prediction, outcome, another Gap, severity, probability, confidence, priority, Decision Need, recommendation, or human decision.
+
+### Source gap and path semantics
+
+`reconstructStructuralConsequence(context, expectation, gapBasis, gap, propagationBasis)` operation-locally revalidates the source gap under the sealed Phase-5C3C contract. Its observable preparation order is context capture, expectation capture and validation, gap-basis capture, sealed `assertStructuralGap`, canonical `reconstructStructuralGap`, then source-anchor derivation. A `DGAP_` hash alone is not a portable derivation certificate.
+
+An `EVIDENCE_BINDING` gap anchors at `subjectItemId`; a `DEPENDENCY` gap anchors at `dependentItemId`. A `CONTEXT_ROLE` gap has no unique missing item and rejects with `ERR_DECISION_STRUCTURAL_CONSEQUENCE_SOURCE_NOT_ITEM_ANCHORED`.
+
+The propagation basis is exactly `{ kind: "DEPENDENCY_PATH", relationProposals }`, one caller-supplied ordered sequence. Each relation must pass the sealed Phase-5C3B assertion and have kind `DEPENDENCY`. Because stored DREL direction is `dependentItemId depends on prerequisiteItemId`, propagation travels `prerequisiteItemId -> dependentItemId`.
+
+The sequence must be non-empty; its first prerequisite must equal the source item; each previous dependent must equal the next prerequisite; relation-proposal IDs and visited items must not repeat. A valid `CONTRADICTION` proposal is the wrong path kind. These are local validation rules for the supplied path only: Phase 5C3D does not receive an unordered graph, discover paths, search reachability, rank or shorten paths, infer relations, or make a global acyclicity claim. `affectedItemId` is the final path dependent item and is not caller-selectable.
+
+### `DCONS_` identity and stored assertion
+
+```ts
+DCONS_ + SHA256(JSON.stringify([
+  "STRUCTURAL_CONSEQUENCE_V1",
+  contextId,
+  sourceGapId,
+  dependencyPathRelationProposalIds
+])).slice(0, 24).toUpperCase()
+```
+
+The relation-proposal ID array is ordered and never sorted. `sourceItemId` and `affectedItemId` are derived fields, not independent identity axes. Thus the same source gap and same explicit ordered path have one `DCONS_`; different paths have different identities even when they end at the same item.
+
+`assertStructuralConsequence(context, expectation, gapBasis, gap, propagationBasis, consequence)` reconstructs the expected consequence from the exact supplied inputs before accepting a stored artifact. It requires every non-ID field and the stored ordered path-ID array to equal that derivation; it does not repair or reorder stored values. A self-consistent artifact for another path is invalid. Only an otherwise exact artifact with a wrong `consequenceId` fails `ERR_DECISION_STRUCTURAL_CONSEQUENCE_ID_MISMATCH`.
+
+| Condition | Error |
+| --- | --- |
+| Malformed propagation-basis wrapper/container | `ERR_DECISION_STRUCTURAL_CONSEQUENCE_BASIS_INVALID` |
+| Hostile, malformed, or sealed-assertion-invalid propagation DREL | `ERR_DECISION_STRUCTURAL_CONSEQUENCE_RELATION_INVALID` |
+| Empty, discontinuous, non-DEPENDENCY, duplicate-ID, repeated-item, or wrongly anchored path | `ERR_DECISION_STRUCTURAL_CONSEQUENCE_PATH_INVALID` |
+| Valid `CONTEXT_ROLE` source gap | `ERR_DECISION_STRUCTURAL_CONSEQUENCE_SOURCE_NOT_ITEM_ANCHORED` |
+| Otherwise exact stored consequence with wrong `DCONS_` | `ERR_DECISION_STRUCTURAL_CONSEQUENCE_ID_MISMATCH` |
+| Hostile, malformed, noncanonical, or body-mismatching stored consequence | `ERR_DECISION_STRUCTURAL_CONSEQUENCE_INVALID` |
+
+Sealed Phase-5C3C errors propagate unchanged: an invalid expectation remains `ERR_DECISION_STRUCTURAL_GAP_EXPECTATION_INVALID`; with a valid expectation, malformed gap basis, EBIND, or DREL remains the corresponding Phase-5C3C gap error. A bad source gap is not a bad propagation basis, a bad DREL is not bad path topology, and a bad path is not a bad stored consequence.
+
+Phase 5C3D invokes no authority reader, resolver, repository, payload inspection, semantic evaluator, semantic binder, relation detector, graph traversal, scoring, recommendation, persistence, or human-decision API. Structural consumption does not upgrade a DREL proposal into relation truth, a StructuralGap into real-world absence, or a StructuralConsequence into a real-world consequence.
