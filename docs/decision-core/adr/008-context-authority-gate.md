@@ -30,4 +30,4 @@ Payloads are ignored. The gate does not claim item support, evidence binding, co
 
 ## Consequence
 
-Phase 5C1 establishes current reachability through the configured authority boundary, not semantic support. Semantic evidence binding, gaps, contradictions, dependencies, consequences, validation assembly, immutable context persistence, revision lineage, recommendations, human decisions, actions, outcomes, and feedback remain deferred.
+Phase 5C1 establishes current reachability through the configured authority boundary, not semantic support. Semantic evidence binding, gaps, contradictions, dependencies, consequences, validation assembly, immutable context persistence, revision lineage, recommendations, human decisions, actions, outcomes, and feedback are not introduced by Phase 5C1 and remain outside this ADR.

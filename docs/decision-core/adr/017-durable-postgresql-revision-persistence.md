@@ -62,7 +62,7 @@ PostgreSQL adds physical referential integrity, database-race-safe immutable ins
 
 The focused integration suite uses isolated schemas and derives test DDL from the actual internal Drizzle descriptor. Two independent postgres.js clients prove database uniqueness rather than JavaScript-instance serialization. The test boundary is database-backed survival across repository/client reconstruction; it does not claim literal OS-process crash recovery, machine restart, backups, replication, disaster recovery, or infinite permanence.
 
-Phase 5D3 remains planned for read-only revision-lineage reconstruction.
+Phase 5D3 now reconstructs one explicit predecessor path read-only through the existing generic `getRevisionById(...)` capability; it does not add a PostgreSQL-specific lineage query or alter this durable adapter.
 
 ## Evidence
 

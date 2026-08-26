@@ -1,10 +1,10 @@
 # Decision Core architecture
 
-## Scope through Phase 5D2B
+## Scope through Phase 5D3
 
 Decision Core is a generic, producer-neutral module for consuming governed producer state and forming a deterministic structural `DecisionContextDraft`. It is separate from Capability Core. Capability Core publishes capability/evidence-oriented Phase-4 snapshots; Decision Core does not require that ontology and can consume any producer that implements a compatible authority resolver.
 
-The implemented architecture through Phase 5D2B establishes a generic, producer-neutral foundation for constructing structurally defined decision contexts that can reference governed producer state, separately producing explicit semantic evaluator proposals about item/reference relationships, canonically representing explicit structural comparison targets and caller-supplied item/item relation proposals, deriving deterministic structural gaps and explicit-path basis-relative `StructuralConsequence` artifacts, assembling revalidated derivational coherence, creating self-contained canonical revision artifacts, and persisting them through repository-bound immutable authority semantics backed by PostgreSQL. It does not implement recommendation, assessment, scoring, ranking, human decision, action, outcome, feedback, structural contradictions, dependency findings, decision need, relation discovery, full revision-lineage reconstruction, head selection, or a closed human-machine loop.
+The implemented architecture through Phase 5D3 establishes a generic, producer-neutral foundation for constructing structurally defined decision contexts that can reference governed producer state, separately producing explicit semantic evaluator proposals about item/reference relationships, canonically representing explicit structural comparison targets and caller-supplied item/item relation proposals, deriving deterministic structural gaps and explicit-path basis-relative `StructuralConsequence` artifacts, assembling revalidated derivational coherence, creating self-contained canonical revision artifacts, persisting them through repository-bound immutable authority semantics backed by PostgreSQL, and reconstructing one explicit read-only predecessor path from a supplied revision ID. It does not implement recommendation, assessment, scoring, ranking, human decision, action, outcome, feedback, structural contradictions, dependency findings, decision need, relation discovery, branch or descendant discovery, head selection, or a closed human-machine loop.
 
 ## Implemented layers
 
@@ -23,6 +23,7 @@ The implemented architecture through Phase 5D2B establishes a generic, producer-
 | Immutable revision artifact (5D1) | Canonically capture one self-contained context plus its revalidatable derivation state; it is not persisted authority. | `DecisionContextRevision` |
 | Repository-bound immutable persistence authority (5D2A) | The shipped in-memory repository/persister path persists one valid complete revision with immediate-parent integrity, immutable replay/conflict handling, and exact post-write reread. | `DecisionContextRevisionRepository` capability shape; `InMemoryDecisionContextRevisionRepository` enforcement |
 | Durable PostgreSQL persistence adapter (5D2B) | Implements the sealed 5D2A persistence semantics against an injected PostgreSQL/Drizzle dependency, with physical self-FK integrity, race-safe immutable insert, and client/repository reconstruction survival. | `PostgresDecisionContextRevisionRepository` |
+| Read-only revision lineage reconstruction (5D3) | Follows one supplied revision's explicit predecessor references through a bound generic reader and returns a detached root-to-start predecessor path. | `BoundDecisionContextRevisionLineageReconstructor` |
 
 The current Capability Core adapter in `lib/decision-adapters/capability-core.ts` is one producer-specific integration. It is not part of the generic Decision Core kernel.
 
@@ -105,6 +106,14 @@ PostgresDecisionContextRevisionRepository
   -> conflict-race winner reread where needed
   -> sealed 5D2A exact post-write reread and complete-artifact equality
   -> detached PostgreSQL-backed DecisionContextRevision
+
+BoundDecisionContextRevisionLineageReconstructor
+  -> reconstruct(startRevisionId)
+  -> validate DREV-shaped start ID before read
+  -> bound getRevisionById(requestedRevisionId)
+  -> sealed DecisionContextRevision assertion and exact requested-ID check
+  -> repeat explicit previousRevisionId until null
+  -> detached ROOT -> ... -> START predecessor lineage
 ```
 
 The Capability adapter captures only `getSnapshotByKey` from the supplied repository. For its fixed producer/contract pair it reads by the opaque locator, validates the existing `VerifiedCapabilitySnapshot`, requires `status: "VERIFIED"` and `publication.mode: "PHASE4_VERIFIED"`, recomputes the snapshot key, checks the locator and `snapshotId`, and returns a detached clone. That producer-specific behavior is outside the generic reader.
@@ -250,7 +259,23 @@ Phase 5D1 adds `DecisionContextRevision` in the adjacent `lib/decision-core/revi
 
 Phase 5D2A adds the adjacent `lib/decision-core/revision-persistence/` module. `DecisionContextRevisionRepository` defines the supported read/factory capability shape, not a universal governance guarantee. The shipped `InMemoryDecisionContextRevisionRepository` write path is `repository -> createDecisionContextRevisionPersister() -> persist(revision)` and exposes no runtime-callable raw writer. A successful operation through that shipped path means that this bound repository selected this exact complete `DecisionContextRevision` as the immutable record for that DREV identity during that operation. This authority of record is not truth, semantic correctness, current producer authority, current decision state, head/latest/active selection, or a recommendation. It validates only the immediate parent for a child and performs no lineage traversal.
 
-Phase 5D2B adds `PostgresDecisionContextRevisionRepository` in `lib/decision-adapters/revision-persistence/`. The dependency direction is `decision-adapters/revision-persistence -> decision-core/revision-persistence -> decision-core/revisions`; generic Decision Core remains free of PostgreSQL, Drizzle, Career DB, and frontend dependencies. The adapter receives a configured `PostgresJsDatabase`; it does not read `DATABASE_URL`, create a pool, provision tables, or run migrations. Its supported write path remains `repository -> createDecisionContextRevisionPersister() -> persist(revision)`; its runtime-private writer is storage machinery, not a public write capability. PostgreSQL implements the sealed 5D2A authority operation with `decision_context_revisions`, physical immediate-parent referential integrity, race-safe immutable insert, and database-backed survival across repository/client reconstruction. It does not establish truth, current producer authority, head/latest/active selection, or full lineage reconstruction.
+Phase 5D2B adds `PostgresDecisionContextRevisionRepository` in `lib/decision-adapters/revision-persistence/`. The dependency direction is `decision-adapters/revision-persistence -> decision-core/revision-persistence -> decision-core/revisions`; generic Decision Core remains free of PostgreSQL, Drizzle, Career DB, and frontend dependencies. The adapter receives a configured `PostgresJsDatabase`; it does not read `DATABASE_URL`, create a pool, provision tables, or run migrations. Its supported write path remains `repository -> createDecisionContextRevisionPersister() -> persist(revision)`; its runtime-private writer is storage machinery, not a public write capability. PostgreSQL implements the sealed 5D2A authority operation with `decision_context_revisions`, physical immediate-parent referential integrity, race-safe immutable insert, and database-backed survival across repository/client reconstruction. It does not establish truth, current producer authority, head/latest/active selection, or branch discovery.
+
+Phase 5D3 adds the adjacent generic `lib/decision-core/revision-lineage/` module. It captures only an exact `getRevisionById(...)` reader capability; it receives no writer, persister, database, PostgreSQL client, resolver, binder, evaluator, or authority validator. Starting from one DREV-shaped ID, it reads and sealed-validates exactly each requested revision, requires exact returned ID equality, follows only `previousRevisionId`, and returns a detached `ROOT -> ... -> START` predecessor path. This is predecessor order, not chronological or temporal order. It establishes neither persistence authority, current producer authority, truth, semantic continuity, causation, a head/latest/current/active revision, branch selection, nor descendant discovery.
+
+```text
+LINEAGE RECONSTRUCTION != HEAD SELECTION
+LINEAGE RECONSTRUCTION != BRANCH SELECTION
+LINEAGE RECONSTRUCTION != DESCENDANT DISCOVERY
+PREVIOUS REVISION ID  != CAUSATION
+PREVIOUS REVISION ID  != SEMANTIC CONTINUITY
+PREVIOUS REVISION ID  != WALL-CLOCK TIME
+ROOT                  != GLOBALLY FIRST / UNIQUE / CURRENT STATE
+READABLE LINEAGE      != TRUE HISTORY / CURRENT PRODUCER AUTHORITY
+READABLE LINEAGE      != DECISION NEED / RECOMMENDATION
+MISSING PREDECESSOR   != ROOT
+PARTIAL CHAIN         != VALID LINEAGE
+```
 
 ## Trust boundaries
 
@@ -269,6 +294,7 @@ Phase 5D2B adds `PostgresDecisionContextRevisionRepository` in `lib/decision-ada
 13. **5D1 revision-artifact boundary.** Revision construction and assertion capture one detached operation-local revision state, revalidate its embedded Phase-5B context and Phase-5C4 derivation assembly, and compare detached stored state with reconstructed canonical state. They do not reread caller-owned nested state after capture, call a repository, resolve a parent, re-resolve authority, or select a head.
 14. **5D2A bound-persistence boundary.** The shipped in-memory persister captures its repository dependencies at construction and captures one pristine detached expected revision before repository awaits. The runtime-private writer receives a detached copy, then a post-write reread is captured, sealed-asserted, and compared for exact complete-artifact equality with the pristine expected revision. Storage machinery is not a supported raw write capability, and a successful private write alone is not authority of record. Interface conformance alone does not prove a third-party repository implementation preserves this boundary.
 15. **5D2B PostgreSQL adapter boundary.** The adapter lives outside generic Decision Core and receives its configured database dependency. A read captures JSONB payload, sealed-asserts that exact persisted revision representation, verifies physical and embedded revision identities, and returns a detached artifact: `READ != RECONSTRUCT != REPAIR`. The runtime-private writer uses immutable insert plus a conflict-race reread; the sealed 5D2A persister still performs its separate final authority reread. PostgreSQL rows require `row.revision_id == payload.revisionId` and `row.previous_revision_id == payload.previousRevisionId`.
+16. **5D3 lineage-read boundary.** The reconstructor captures only one own data-property `getRevisionById` method at construction. Every operation validates the start ID before a read, tracks requested IDs in an operation-local visited set before each read, sealed-asserts each detached returned revision, and follows only its explicit predecessor reference. It returns only after the chain reaches explicit `previousRevisionId: null`; it does not repair stored revisions, return partial chains, write, enumerate branches, or discover descendants.
 
 ## Reachable structural states
 

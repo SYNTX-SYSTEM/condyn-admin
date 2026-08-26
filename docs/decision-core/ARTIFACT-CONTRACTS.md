@@ -78,6 +78,9 @@
 | `BoundDecisionContextRevisionPersister` | `persist(revision)` | Supported repository-bound persistence capability for one complete `DecisionContextRevision`. |
 | `InMemoryDecisionContextRevisionRepository` | In-memory `DecisionContextRevisionRepository` implementation | Shipped implementation that enforces 5D2A authority semantics; it is not durable persistence. |
 | `PostgresDecisionContextRevisionRepository` | Constructor receives configured `PostgresJsDatabase`; `getRevisionById(revisionId)` and `createDecisionContextRevisionPersister()` | Infrastructure adapter outside generic Decision Core that implements sealed 5D2A persistence semantics using PostgreSQL. Its physical table descriptor is internal, not a supported barrel export. |
+| `DecisionContextRevisionLineage` | `startRevisionId`, `rootRevisionId`, `revisions` | Plain detached read model for one complete explicit predecessor path; it is not a persisted artifact, authority certificate, branch artifact, or current-state model. |
+| `BoundDecisionContextRevisionLineageReconstructor` | `reconstruct(startRevisionId)` | Read-only bound capability that reconstructs one complete predecessor path. |
+| `createBoundDecisionContextRevisionLineageReconstructor(reader)` | Exact `getRevisionById(revisionId)` reader dependency -> bound reconstructor | Captures only one own function-valued data-property reader method; no writer, persister, database, or authority dependency is accepted. |
 
 ## Reference and reader behavior
 
@@ -680,7 +683,7 @@ Repository identity is `revisionId`. Exact replay of the same complete revision 
 | Write reports success but reread cannot establish exact complete persisted equality | `ERR_DECISION_CONTEXT_REVISION_PERSISTENCE_INVALID` |
 | Invalid caller revision | Meaningful sealed Phase-5D1 error remains observable. |
 
-The shipped in-memory implementation enforces repository-bound authority semantics, immediate-parent integrity, immutable replay/conflict behavior, exact reread, complete equality, and detached reads/returns. It does not itself prove durable persistence, process-restart survival, database durability or transaction isolation, Postgres race guarantees, database foreign keys, or cold restart. `5D2A != DURABLE HISTORICAL MEMORY`; Phase 5D2B provides the separate durable PostgreSQL adapter. Phase 5D3 is planned for read-only revision-lineage reconstruction.
+The shipped in-memory implementation enforces repository-bound authority semantics, immediate-parent integrity, immutable replay/conflict behavior, exact reread, complete equality, and detached reads/returns. It does not itself prove durable persistence, process-restart survival, database durability or transaction isolation, Postgres race guarantees, database foreign keys, or cold restart. `5D2A != DURABLE HISTORICAL MEMORY`; Phase 5D2B provides the separate durable PostgreSQL adapter. Phase 5D3 separately reconstructs one explicit read-only predecessor path through the existing generic read capability.
 
 ## Durable PostgreSQL Persistence Adapter contract
 
@@ -725,3 +728,25 @@ The runtime-private writer uses `INSERT ... ON CONFLICT DO NOTHING ... RETURNING
 5D2B combines 5D2A application-level immediate-parent validation with the physical self foreign key. Both establish integrity layers, but `FK != FULL LINEAGE VALIDATION`: there is no parent-of-parent traversal, head selection, or branch policy. A child whose parent is not visible fails `ERR_DECISION_CONTEXT_REVISION_PARENT_NOT_FOUND`; there is no wait, polling, automatic retry, or eventual-consistency interpretation. One parent may have multiple children, and a child may retain its parent's context and assembly identities.
 
 The focused integration suite uses isolated PostgreSQL schemas and derives test DDL from the actual internal `decisionContextRevisions` Drizzle descriptor; test provisioning is not production bootstrapping. It uses two independent postgres.js clients for physical race tests. It proves database-backed survival across repository/client reconstruction, not OS-process crash recovery, machine restart, backup, replication, or disaster recovery.
+
+## Phase 5D3 read-only revision lineage
+
+Phase 5D3 adds the adjacent generic `lib/decision-core/revision-lineage/` module. Its exact public read model is:
+
+```ts
+interface DecisionContextRevisionLineage {
+  startRevisionId: string;
+  rootRevisionId: string;
+  revisions: readonly DecisionContextRevision[];
+}
+```
+
+The only operation is `createBoundDecisionContextRevisionLineageReconstructor({ getRevisionById }).reconstruct(startRevisionId)`. The runtime dependency is exact: it captures only an own function-valued data property named `getRevisionById`; accessor-backed or extra-capability dependencies are rejected with `ERR_DECISION_CONTEXT_REVISION_LINEAGE_READER_INVALID`. Thus 5D3 has read capability and zero write capability. A sealed-valid result from this generic reader is not itself persistence proof or repository-selected authority of record; those semantics remain owned by the reader's repository contract when one is supplied.
+
+`startRevisionId` must match `^DREV_[0-9A-F]{24}$` before any reader invocation or it fails `ERR_DECISION_CONTEXT_REVISION_LINEAGE_START_ID_INVALID`. For each requested ID, a `null` first read fails `ERR_DECISION_CONTEXT_REVISION_LINEAGE_START_NOT_FOUND`; a `null` later predecessor read fails `ERR_DECISION_CONTEXT_REVISION_LINEAGE_PREDECESSOR_NOT_FOUND`. Only a sealed-valid revision with explicit `previousRevisionId: null` is the root of this returned path. Missing predecessor is not root, and the operation returns no partial result. Complete means only that all explicit `previousRevisionId` links from the supplied start have been read through the bound reader until this explicit-null terminator; it does not mean global history, all branches or descendants, unique repository history, or global completeness.
+
+Every non-null returned revision is detached, passes sealed `assertDecisionContextRevision(...)`, and must have `revisionId` exactly equal to the requested ID. Malformed/noncanonical state, malformed predecessor representation, or wrong returned ID fails `ERR_DECISION_CONTEXT_REVISION_LINEAGE_REVISION_INVALID`; 5D3 does not reconstruct or repair individual stored revisions. Reader and adapter errors, including `ERR_DECISION_CONTEXT_REVISION_POSTGRES_RECORD_INVALID`, propagate unchanged.
+
+The returned `revisions` are in root-to-start explicit predecessor order: `R[0].revisionId === rootRevisionId`, `R[0].previousRevisionId === null`, `R[n - 1].revisionId === startRevisionId`, and each later revision names the preceding result revision as its predecessor. This is predecessor order, not chronological or temporal order. The result has no `DLINE_`, `artifactKind`, schema version, timestamp, lineage ID, depth, branch, head/latest/current/active status, authority, or semantic-change field.
+
+The reconstructor tracks requested IDs in an operation-local visited set before each read. Repetition fails `ERR_DECISION_CONTEXT_REVISION_LINEAGE_CYCLE`; this is defensive repeated-request-ID protection for a generic reader boundary, not causal-cycle detection, semantic-cycle detection, graph analysis, or branch discovery. Each invocation owns its visited set and captured sequence; returned state is detached but not promised deep-frozen.
