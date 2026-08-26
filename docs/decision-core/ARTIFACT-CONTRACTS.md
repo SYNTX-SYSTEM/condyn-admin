@@ -87,6 +87,12 @@
 | `DecisionAssessmentRequest` | Exact canonical nine-field stored artifact | A detached `DECISION_ASSESSMENT_REQUEST` / `DECISION_ASSESSMENT_REQUEST_V1` artifact with deterministic `DAREQ_`; request is not assessment, Decision Need, recommendation, or human decision. |
 | `createDecisionAssessmentRequest(input)` | `DecisionAssessmentRequestInput -> DecisionAssessmentRequest` | Captures and validates request representation, trims `actorId`, canonicalizes selection inventories, derives `DAREQ_`, returns detached state, and loads no referenced revision. |
 | `assertDecisionAssessmentRequest(value)` | `unknown -> asserts value is DecisionAssessmentRequest` | Verifies exact already-canonical stored representation and deterministic identity without sorting, trimming, deduplicating, or otherwise repairing it. |
+| `DECISION_ASSESSMENT_BASIS_SCHEMA_VERSION` | `"DECISION_ASSESSMENT_BASIS_V1"` | Fixed schema-version constant for the Phase 6B revision-bound assessment-basis contract. |
+| `DecisionAssessmentBasisRevisionReader` | `getRevisionById(revisionId: string): Promise<DecisionContextRevision \| null>` | Narrow exact read capability only; it is not a repository writer, persistence proof, lineage API, or authority resolver. |
+| `BoundDecisionAssessmentBasisBinder` | `bind(assessmentRequest: DecisionAssessmentRequest): Promise<DecisionAssessmentBasis>` | Construction-bound read operation that creates one revision-bound basis or fails at its defined request/revision/membership boundary. |
+| `DecisionAssessmentBasis` | Exact canonical five-field stored artifact | A detached `DECISION_ASSESSMENT_BASIS` / `DECISION_ASSESSMENT_BASIS_V1` artifact with deterministic `DABAS_`; basis is not assessment, Decision Need, recommendation, or human decision. |
+| `createBoundDecisionAssessmentBasisBinder(reader)` | `DecisionAssessmentBasisRevisionReader -> BoundDecisionAssessmentBasisBinder` | Captures only an exact own enumerable data-method reader capability; the binder reads one exact requested revision and has no writer, repository, evaluator, lineage, or authority operation. |
+| `assertDecisionAssessmentBasis(value)` | `unknown -> asserts value is DecisionAssessmentBasis` | Verifies exact already-canonical self-contained stored representation, revision binding, membership/roles, and deterministic complete-state identity without repairing it. |
 
 ## Reference and reader behavior
 
@@ -841,3 +847,91 @@ ERR_DECISION_ASSESSMENT_REQUEST_ID_MISMATCH
 ```
 
 The contract defines no item-not-found, role-mismatch, revision-not-found, repository, assessment, recommendation, or Decision Need errors.
+
+## Phase 6B revision-bound assessment basis contract
+
+Phase 6B adds the generic `DecisionAssessmentBasis` artifact under `lib/decision-core/assessment-basis/`. It binds one sealed Phase 6A request to one exact reader-returned sealed `DecisionContextRevision`, then verifies the request's declared item membership and roles. It stops there: `ASSESSMENT BASIS != ASSESSMENT != DECISION NEED != RECOMMENDATION != HUMAN DECISION`.
+
+```ts
+interface DecisionAssessmentBasis {
+  artifactKind: "DECISION_ASSESSMENT_BASIS";
+  schemaVersion: "DECISION_ASSESSMENT_BASIS_V1";
+  assessmentBasisId: string;
+  assessmentRequest: DecisionAssessmentRequest;
+  revision: DecisionContextRevision;
+}
+```
+
+No extra fields are valid: no timestamp, model/provider metadata, score, recommendation, Decision Need, human decision, repository metadata, or current/head/latest state. Runtime exports are exactly `DECISION_ASSESSMENT_BASIS_SCHEMA_VERSION`, `createBoundDecisionAssessmentBasisBinder`, and `assertDecisionAssessmentBasis`. Public types are exactly `DecisionAssessmentBasisRevisionReader`, `BoundDecisionAssessmentBasisBinder`, and `DecisionAssessmentBasis`; no identity builder is public.
+
+### Bound reader and operation order
+
+`DecisionAssessmentBasisRevisionReader` has exactly `getRevisionById(revisionId: string): Promise<DecisionContextRevision | null>`. Construction accepts only one own enumerable data-property capability with that function-valued method. Extra own capabilities, accessor-backed methods, symbol state, a non-enumerable method, a missing method, `null`, arrays, and primitives fail `ERR_DECISION_ASSESSMENT_BASIS_READER_INVALID`. The method is captured and bound at construction, so later replacement cannot redirect the binder. This narrow reader does not prove persistence, current producer authority, or authority of record.
+
+`bind(...)` operates in this exact order:
+
+1. Defensively capture the complete supplied `DecisionAssessmentRequest`.
+2. Sealed-assert it with `assertDecisionAssessmentRequest(...)`.
+3. Only then invoke `getRevisionById(request.revisionId)`.
+4. Treat `null` as `ERR_DECISION_ASSESSMENT_BASIS_REVISION_NOT_FOUND`.
+5. Defensively capture the complete returned revision.
+6. Sealed-assert it with `assertDecisionContextRevision(...)`.
+7. Require exact returned/requested `revisionId` equality.
+8. Verify decision-question membership.
+9. Verify decision-question role.
+10. Verify selected option membership and role.
+11. Verify selected objective membership and role.
+12. Verify selected constraint membership and role.
+13. Construct `DecisionAssessmentBasis`.
+14. Derive complete-state `DABAS_`.
+15. Assert the constructed basis.
+16. Return detached basis state.
+17. Stop; no semantic assessment follows.
+
+Request capture occurs before the reader await; hostile nested request accessors are rejected without execution and invalid requests are not repaired. Returned revision state is likewise captured before membership, role, or identity work; detached does not mean deep-frozen.
+
+The question must exist in `revision.context.items`, have role `DECISION_QUESTION`, and equal `revision.context.decisionQuestionId`. Every selected option, objective, and constraint must respectively exist and have role `OPTION`, `OBJECTIVE`, and `CONSTRAINT`. Missing items fail `ERR_DECISION_ASSESSMENT_BASIS_ITEM_NOT_FOUND`; role mismatch fails `ERR_DECISION_ASSESSMENT_BASIS_ROLE_MISMATCH`. Empty selection arrays remain valid: `EMPTY SELECTIONS != READINESS`. `MEMBERSHIP != SEMANTIC SUPPORT`, `ROLE != NORMATIVE IMPORTANCE`, and `ROLE != TRUTH`.
+
+### `DABAS_` complete-state identity
+
+`assessmentBasisId` matches `^DABAS_[0-9A-F]{24}$` and is derived by SHA-256 over the JSON encoding of:
+
+```ts
+[
+  "DECISION_ASSESSMENT_BASIS_V1",
+  canonicalCompleteDecisionAssessmentRequest,
+  canonicalCompleteDecisionContextRevision
+]
+```
+
+The first 24 hexadecimal characters are uppercased and prefixed `DABAS_`. The private canonicalizer recursively orders object own string keys by deterministic code-point comparison, preserves array order, and preserves primitive values. Object insertion order is non-semantic; no hidden, symbol, or accessor state participates. No timestamp, randomness, or UUID participates.
+
+`DREV IDENTITY != COMPLETE REVISION PAYLOAD`: sealed-valid revision payload can differ in identity-excluded semantic-binding rationale while retaining the same `revisionId`. Therefore the same DREV with a different complete revision payload produces a different `DABAS_`; identity is not merely `assessmentRequestId + revisionId`. `DABAS IDENTITY != REVISION AUTHORITY != DECISION AUTHORITY != TRUTH`.
+
+### Stored assertion and errors
+
+`assertDecisionAssessmentBasis(value)` is repository-free and has the boundary `unknown -> asserts value is DecisionAssessmentBasis`. It requires exact five-field representation, header and DABAS shape, sealed embedded request/revision assertions, exact embedded revision-ID equality, item membership/role checks, and recomputed complete-state identity. It rejects hostile nested state and does not sort, trim, deduplicate, canonicalize, or otherwise mutate the submitted stored representation as repair. The separately captured request/revision state is structurally canonicalized only inside the private DABAS identity calculation, so object property insertion order remains non-semantic; that identity canonicalization does not mutate caller state and array ordering remains preserved:
+
+```text
+ASSERT MUST NOT REPAIR
+```
+
+Hostile, malformed, noncanonical, predecessor-invalid, revision-binding-invalid, or membership/role-invalid stored basis state fails `ERR_DECISION_ASSESSMENT_BASIS_INVALID`. If the complete basis body is otherwise valid and only `assessmentBasisId` differs from the recomputed complete-state identity, assertion fails `ERR_DECISION_ASSESSMENT_BASIS_ID_MISMATCH`.
+
+```text
+IDENTITY CANONICALIZATION != STORED-ARTIFACT REPAIR
+INVALID BODY != VALID COMPLETE BODY + STALE / WRONG DABAS
+```
+
+```text
+ERR_DECISION_ASSESSMENT_BASIS_READER_INVALID
+ERR_DECISION_ASSESSMENT_BASIS_REQUEST_INVALID
+ERR_DECISION_ASSESSMENT_BASIS_REVISION_NOT_FOUND
+ERR_DECISION_ASSESSMENT_BASIS_REVISION_INVALID
+ERR_DECISION_ASSESSMENT_BASIS_ITEM_NOT_FOUND
+ERR_DECISION_ASSESSMENT_BASIS_ROLE_MISMATCH
+ERR_DECISION_ASSESSMENT_BASIS_INVALID
+ERR_DECISION_ASSESSMENT_BASIS_ID_MISMATCH
+```
+
+The module remains generic Decision Core: it has no Career, Recruiting, Capability Core, matching, legacy-loop, frontend, PostgreSQL, Drizzle, decision-adapter, repository writer, evaluator/model/provider, lineage, producer-authority, assessment, recommendation, Decision Need, score, ranking, or human-decision dependency.

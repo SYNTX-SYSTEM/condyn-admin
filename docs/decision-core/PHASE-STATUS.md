@@ -17,14 +17,15 @@
 | Phase 5D2B | Durable PostgreSQL Persistence Adapter | SEALED IMPLEMENTATION | `96083e677767e21b36b636258abb20ebf293b0fc` / `v1.0.0-decision-core-phase5d2b-postgres-persistence` |
 | Phase 5D3 | Read-Only Revision Lineage Reconstruction | SEALED IMPLEMENTATION | `8a886f8bf39c4bd8fb84dc2e863fd02014d1916e` / `v1.0.0-decision-core-phase5d3-lineage-reconstruction` |
 | Phase 6A | Human-Owned Assessment Request Contract | SEALED IMPLEMENTATION | `d315fcee7f3e501284072b85650a8a83c85e3b3b` / `v1.0.0-decision-core-phase6a-assessment-request` |
+| Phase 6B | Revision-Bound Assessment Basis | SEALED IMPLEMENTATION | `fa891f7b8280e06ca3a1102b7f1bcf477c4475bd` / `v1.0.0-decision-core-phase6b-assessment-basis` |
 
 **Phase 5C4 sealed-defect audit.** Phase 5C4 remains SEALED with its original implementation identity above. During Phase 5D2B integration, a narrow RED regression independently proved a serialization-order portability defect in stored validation-assembly equality. Commit `96083e677767e21b36b636258abb20ebf293b0fc` contains the targeted correction: object property insertion order is non-semantic under structural equality, while array order remains significant. No 5C4 artifact shape, identity, ontology, public API, or derivation semantics were redesigned. `SEALED DEFECT CORRECTION != ARCHITECTURAL REDESIGN`; see ADR 017.
 
-Phase 6A records one standalone human-declared normative assessment frame through a DREV-shaped revision reference and DCI-shaped selections. It does not resolve the revision, read a repository, validate item membership or roles, assess, recommend, derive Decision Need, score, rank, or record a human decision.
+Phase 6A records one standalone human-declared normative assessment frame through a DREV-shaped revision reference and DCI-shaped selections. Phase 6B binds one sealed request to one exact reader-returned sealed revision, verifies referenced item membership and declared roles, and returns one detached deterministic `DecisionAssessmentBasis`. It does not assess, recommend, derive Decision Need, score, rank, or record a human decision.
 
-Recommendation, human decision, action, outcome, feedback, and learning are later conceptual work. Assessment basis, assessment result, semantic assessment, model evaluation, and Decision Need also have no implementation status in this checkpoint.
+Recommendation, human decision, action, outcome, feedback, and learning are later conceptual work. Assessment result, semantic assessment, model evaluation, and Decision Need also have no implementation status in this checkpoint.
 
-At Phase 6A, the bidirectional human-machine loop remains open. Current code can form a structural context, check operation-time reachability of governed references where explicitly invoked, produce item/reference semantic evaluator proposals, represent explicit structural expectations and item/item relation proposals, derive basis-relative structural gaps and explicit-path structural consequences, assemble revalidated derivational coherence for one context, create a self-contained canonical `DecisionContextRevision`, establish repository-bound immutable authority semantics, durably persist those records in PostgreSQL across repository/client reconstruction, reconstruct one explicit root-to-start predecessor lineage through a bound read capability, and record one detached human-declared assessment request. It does not derive Decision Need, bind that request to an existing revision, assess, prioritize, score alternatives, recommend, record a human decision, record action, observe an outcome, process feedback, learn, select a current/head/latest revision, or complete a bidirectional human-machine loop.
+At Phase 6B, the bidirectional human-machine loop remains open. Current code can form a structural context, check operation-time reachability of governed references where explicitly invoked, produce item/reference semantic evaluator proposals, represent explicit structural expectations and item/item relation proposals, derive basis-relative structural gaps and explicit-path structural consequences, assemble revalidated derivational coherence for one context, create a self-contained canonical `DecisionContextRevision`, establish repository-bound immutable authority semantics, durably persist those records in PostgreSQL across repository/client reconstruction, reconstruct one explicit root-to-start predecessor lineage through a bound read capability, record one detached human-declared assessment request, and bind that request to one exact sealed revision with item membership/role checks. It does not derive Decision Need, assess, prioritize, score alternatives, recommend, record a human decision, record action, observe an outcome, process feedback, learn, select a current/head/latest revision, or complete a bidirectional human-machine loop.
 
 ## Phase 6A implementation evidence
 
@@ -36,3 +37,14 @@ At Phase 6A, the bidirectional human-machine loop remains open. Current code can
 - Sealed Phase-5 predecessor diffs: EMPTY.
 
 Repository-wide TypeScript is not claimed clean: unrelated Career/UI/test type issues remain outside the Phase 6A scope.
+
+## Phase 6B implementation evidence
+
+- Focused Phase 6B: 16 / 16 passing.
+- Decision Core: 227 / 227 passing.
+- Capability Core: 272 / 272 passing.
+- Scoped TypeScript: PASS.
+- `git diff --check`: PASS.
+- Sealed predecessor diffs: EMPTY.
+
+Repository-wide TypeScript is not claimed clean: unrelated Career/UI/test type issues remain outside the Phase 6B scope.
