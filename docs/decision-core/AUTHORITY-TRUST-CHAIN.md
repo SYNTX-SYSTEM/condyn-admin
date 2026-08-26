@@ -2,7 +2,7 @@
 
 ## Scope
 
-This walkthrough describes authority, structural checks, semantic evaluator proposal binding, explicit structural comparison targets, explicit structural relation proposals, basis-relative structural gap reconstruction, explicit-path structural consequence propagation, derivational-coherence validation assembly, self-contained revision artifacts, repository-bound immutable persistence authority, its durable PostgreSQL adapter, read-only explicit predecessor-lineage reconstruction, the Phase 6A human-owned assessment-request contract, and the Phase 6B revision-bound assessment-basis contract. Phase 6B binds one request to one exact sealed revision without assessing, recommending, deciding, or establishing repository authority.
+This walkthrough describes authority, structural checks, semantic evaluator proposal binding, explicit structural comparison targets, explicit structural relation proposals, basis-relative structural gap reconstruction, explicit-path structural consequence propagation, derivational-coherence validation assembly, self-contained revision artifacts, repository-bound immutable persistence authority, its durable PostgreSQL adapter, read-only explicit predecessor-lineage reconstruction, the Phase 6A human-owned assessment-request contract, the Phase 6B revision-bound assessment-basis contract, and the Phase 6C semantic assessment-proposal contract. Phase 6C represents admitted model semantic assessment relations without recommending, deciding, or establishing repository authority.
 
 ## Phase 5A: generic producer authority consumption
 
@@ -385,6 +385,21 @@ HUMAN-OWNED ASSESSMENT REQUEST
 
 `READER RETURN != PERSISTENCE PROOF`, `SEALED REVISION != CURRENT REVISION != CURRENT PRODUCER AUTHORITY`, and `REVISION-BOUND ASSESSMENT BASIS != AUTHORITY OF RECORD`. Membership is not semantic support; a matching role is not normative importance or truth. The result is a detached deterministic `DABAS_` artifact; it is not assessment, Decision Need, recommendation, or human decision. It does not select current/head/latest state, traverse lineage, revalidate producer authority, write persistence, or call an evaluator/model/provider. If a reader is backed by a sealed repository, repository authority semantics remain owned by that repository contract.
 
+## Phase 6C: semantic assessment proposal
+
+Phase 6C adds this bounded chain:
+
+```text
+SEALED DecisionAssessmentBasis
++ BOUND DecisionAssessmentEvaluator
++ DECLARED MODEL_PROPOSAL PROVENANCE
+= CANONICAL DecisionAssessmentProposal
+```
+
+The evaluator composition is exact: one own enumerable data-method `evaluate`, captured and bound at proposer construction. The proposer captures and sealed-asserts the complete basis before evaluator await, captures declared `MODEL_PROPOSAL` provenance before the call, supplies the evaluator a detached complete basis, defensively captures returned relations, admits only human-selected option and objective/constraint targets, rejects duplicate target pairs, canonicalizes relation order, derives complete-state `DASPR_`, self-asserts, and returns detached state.
+
+`REVISION MEMBERSHIP != HUMAN NORMATIVE SELECTION`. The evaluator may inspect the complete detached basis; the contract governs admitted output rather than asserting control over internal semantic reasoning. `MODEL_PROPOSAL != HUMAN PREFERENCE != AUTHENTICATED MODEL != PROVIDER AUTHORITY != TRUTH`. Zero or partial relations are valid; `NO ASSESSMENT != UNDETERMINED`. This creates neither authority of record nor producer-authority resolution, and is neither recommendation, Decision Need declaration, nor human decision.
+
 ## Failure model
 
 | Boundary | Current error/behavior |
@@ -463,6 +478,15 @@ HUMAN-OWNED ASSESSMENT REQUEST
 | Bound item does not have the declared request role | `ERR_DECISION_ASSESSMENT_BASIS_ROLE_MISMATCH` |
 | Hostile, malformed, noncanonical, embedded-contract-invalid, revision-binding-invalid, or membership/role-invalid stored basis | `ERR_DECISION_ASSESSMENT_BASIS_INVALID` |
 | Otherwise exact valid stored basis with wrong `DABAS_` | `ERR_DECISION_ASSESSMENT_BASIS_ID_MISMATCH` |
+| Invalid Phase 6C evaluator composition | `ERR_DECISION_ASSESSMENT_PROPOSAL_EVALUATOR_INVALID` |
+| Invalid/hostile basis entering Phase 6C proposer | `ERR_DECISION_ASSESSMENT_PROPOSAL_BASIS_INVALID` |
+| Invalid/hostile Phase 6C proposal provenance | `ERR_DECISION_ASSESSMENT_PROPOSAL_PROVENANCE_INVALID` |
+| Malformed evaluator output, disposition, target shape, or rationale | `ERR_DECISION_ASSESSMENT_PROPOSAL_EVALUATION_INVALID` |
+| Valid-shaped option target not selected by the embedded request | `ERR_DECISION_ASSESSMENT_PROPOSAL_OPTION_NOT_SELECTED` |
+| Valid-shaped objective/constraint target not selected by the embedded request | `ERR_DECISION_ASSESSMENT_PROPOSAL_CRITERION_NOT_SELECTED` |
+| Duplicate option/criterion target pair | `ERR_DECISION_ASSESSMENT_PROPOSAL_DUPLICATE` |
+| Hostile, malformed, noncanonical, embedded-invalid, target-invalid, or duplicate stored proposal | `ERR_DECISION_ASSESSMENT_PROPOSAL_INVALID` |
+| Otherwise exact valid stored proposal with wrong `DASPR_` | `ERR_DECISION_ASSESSMENT_PROPOSAL_ID_MISMATCH` |
 
 `ERR_DECISION_STRUCTURAL_EXPECTATION_INVALID` classifies stored-representation failures. After safe representation capture, stored variant content is reconstructed through the normal structural-input path, so meaningful invalid variant content may instead preserve `ERR_DECISION_STRUCTURAL_EXPECTATION_INPUT_INVALID`, `ERR_DECISION_STRUCTURAL_EXPECTATION_ITEM_NOT_FOUND`, `ERR_DECISION_STRUCTURAL_EXPECTATION_REFERENCE_INVALID`, `ERR_DECISION_STRUCTURAL_EXPECTATION_DISPOSITION_INVALID`, or `ERR_DECISION_STRUCTURAL_EXPECTATION_DUPLICATE_DISPOSITION`. Wrong deterministic ID remains `ERR_DECISION_STRUCTURAL_EXPECTATION_ID_MISMATCH`.
 
@@ -470,8 +494,8 @@ The validator does not catch errors from `await boundResolve(...)`. Existing det
 
 The Phase-5C2 binder likewise permits Phase-5A reader/resolver/producer errors to propagate from its operation-time authority calls. It reclassifies only its own capture/isolation/proposal-boundary failures into the Phase-5C2 errors above.
 
-Phase 5D3 likewise does not catch reader, repository, or adapter exceptions that it does not own; they propagate unchanged. Its six lineage errors classify only its composition, input, successful-null-read, successfully returned-revision, and repeated-request-ID boundaries. Phase 6B likewise permits underlying reader dependency exceptions to propagate; its eight errors classify its own composition, request, returned-revision, membership/role, and stored-basis boundaries.
+Phase 5D3 likewise does not catch reader, repository, or adapter exceptions that it does not own; they propagate unchanged. Its six lineage errors classify only its composition, input, successful-null-read, successfully returned-revision, and repeated-request-ID boundaries. Phase 6B likewise permits underlying reader dependency exceptions to propagate; its eight errors classify its own composition, request, returned-revision, membership/role, and stored-basis boundaries. Phase 6C likewise permits underlying evaluator dependency exceptions to propagate; its nine errors classify its own composition, basis, provenance, output, selected-target, duplicate, and stored-proposal boundaries.
 
 ## Authority is not semantic support
 
-The implemented chain establishes that configured producer authority can currently resolve each declared context reference where that gate is explicitly invoked, that a bound semantic evaluator can propose an item/reference disposition from an isolated payload, that explicit structural expectations and item/item relation proposals can be represented canonically, that one explicit expectation can be deterministically compared with one explicit represented basis to derive a basis-relative `StructuralGap` or `null`, that one validated item-anchored gap can be propagated along one explicit ordered represented dependency path into an explicit-path basis-relative `StructuralConsequence`, that those explicit derivations can be revalidated and assembled canonically for one context, that this derivation state can be captured in a self-contained `DecisionContextRevision`, that sealed 5D2A repository authority semantics can be durably implemented in PostgreSQL across repository/client reconstruction, that one explicit predecessor path can be reconstructed read-only through a bound reader, that a human may declare a detached normative assessment frame, and that this request can be bound to one exact sealed revision with declared item membership/role checks. That basis establishes no assessment, recommendation, human decision, new authority, semantic support, normative importance, revision currentness, or persistence proof. The chain does not establish verified semantic truth, real-world absence, global completeness, current producer authority, current decision state, branch/descendant discovery, head/latest/active selection, relation truth, a structural contradiction, a Dependency finding, real-world consequence, Decision Need, human adoption, or suitability for a recommendation.
+The implemented chain establishes that configured producer authority can currently resolve each declared context reference where that gate is explicitly invoked, that a bound semantic evaluator can propose an item/reference disposition from an isolated payload, that explicit structural expectations and item/item relation proposals can be represented canonically, that one explicit expectation can be deterministically compared with one explicit represented basis to derive a basis-relative `StructuralGap` or `null`, that one validated item-anchored gap can be propagated along one explicit ordered represented dependency path into an explicit-path basis-relative `StructuralConsequence`, that those explicit derivations can be revalidated and assembled canonically for one context, that this derivation state can be captured in a self-contained `DecisionContextRevision`, that sealed 5D2A repository authority semantics can be durably implemented in PostgreSQL across repository/client reconstruction, that one explicit predecessor path can be reconstructed read-only through a bound reader, that a human may declare a detached normative assessment frame, that this request can be bound to one exact sealed revision with declared item membership/role checks, and that one bound semantic assessment evaluator can produce canonical assessment proposal state carrying declared `MODEL_PROPOSAL` provenance within that selected frame. The proposal establishes no semantic truth, human preference, recommendation, human decision, new authority, revision currentness, or persistence proof. The chain does not establish verified semantic truth, real-world absence, global completeness, current producer authority, current decision state, branch/descendant discovery, head/latest/active selection, relation truth, a structural contradiction, a Dependency finding, real-world consequence, Decision Need, human adoption, or suitability for a recommendation.

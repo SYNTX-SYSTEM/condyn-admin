@@ -1,6 +1,6 @@
 # Decision Core architecture
 
-## Scope through Phase 6B
+## Scope through Phase 6C
 
 Decision Core is a generic, producer-neutral module for consuming governed producer state and forming a deterministic structural `DecisionContextDraft`. It is separate from Capability Core. Capability Core publishes capability/evidence-oriented Phase-4 snapshots; Decision Core does not require that ontology and can consume any producer that implements a compatible authority resolver.
 
@@ -8,7 +8,9 @@ The implemented architecture through Phase 5D3 establishes the generic, producer
 
 Phase 6B adds the adjacent generic `assessment-basis` contract. It binds one sealed request to one exact reader-returned sealed revision, verifies referenced item membership and declared roles, and creates a detached deterministic basis. It does not establish persistence authority, current producer authority, current/head/latest state, lineage, assessment, Decision Need, recommendation, or human decision.
 
-The implemented current chain is producer/evidence state -> structural Decision Context -> validated revision state -> persisted revision authority -> read-only predecessor lineage -> human-owned assessment request -> revision-bound assessment basis. These remain distinct artifacts and operations, not one automatic pipeline.
+Phase 6C adds the adjacent generic `assessment-proposal` contract. It consumes one sealed revision-bound assessment basis, one composition-time bound evaluator, and declared `MODEL_PROPOSAL` provenance to represent zero or more human-selected `OPTION × OBJECTIVE/CONSTRAINT` semantic assessment relations. It does not rank, score, recommend, derive Decision Need, decide, establish provider authority, or close the human-machine loop.
+
+The implemented current chain is producer/evidence state -> structural Decision Context -> validated revision state -> persisted revision authority -> read-only predecessor lineage -> human-owned assessment request -> revision-bound assessment basis -> semantic assessment proposal. These remain distinct artifacts and operations, not one automatic pipeline.
 
 ## Implemented layers
 
@@ -30,6 +32,7 @@ The implemented current chain is producer/evidence state -> structural Decision 
 | Read-only revision lineage reconstruction (5D3) | Follows one supplied revision's explicit predecessor references through a bound generic reader and returns a detached root-to-start predecessor path. | `BoundDecisionContextRevisionLineageReconstructor` |
 | Human-owned assessment request (6A) | Records one declared human normative frame through shape-only DREV/DCI references; it has no revision reader, repository, evaluator, or decision operation. | `DecisionAssessmentRequest` |
 | Revision-bound assessment basis (6B) | Binds one sealed request to one exact sealed revision read and validates referenced context membership/roles without assessing or deciding. | `DecisionAssessmentBasis` |
+| Semantic assessment proposal (6C) | Consumes one sealed revision-bound assessment basis and one bound semantic evaluator, admits only human-selected `OPTION × OBJECTIVE/CONSTRAINT` relations, and creates one canonical model-proposal artifact without ranking, recommending, deriving Decision Need, or deciding. | `DecisionAssessmentProposal` |
 
 The current Capability Core adapter in `lib/decision-adapters/capability-core.ts` is one producer-specific integration. It is not part of the generic Decision Core kernel.
 
@@ -138,6 +141,21 @@ DecisionAssessmentRequest
   -> question + selected item membership/role verification
   -> complete-state DABAS identity
   -> detached DecisionAssessmentBasis
+  -> STOP
+
+DecisionAssessmentBasis
+  + exact bound DecisionAssessmentEvaluator capability
+  + declared MODEL_PROPOSAL provenance
+  -> createBoundDecisionAssessmentProposer(...)
+  -> propose(basis, proposedBy)
+  -> sealed basis capture/assertion
+  -> detached evaluator input
+  -> zero-or-more evaluator assessment relations
+  -> selected target admission
+  -> duplicate-target rejection
+  -> canonical relation ordering
+  -> complete-state DASPR identity
+  -> detached DecisionAssessmentProposal
   -> STOP
 ```
 
@@ -339,6 +357,23 @@ DecisionAssessmentRequest
 
 Its reader is one exact bound `getRevisionById(...)` capability. A reader return is not persistence proof; a sealed revision is not current revision or current producer authority; and the resulting basis is not authority of record. The request is captured before the read await, the returned revision is captured once, and the detached result does not establish deep freezing. Question membership requires the context's canonical question ID and `DECISION_QUESTION` role; selected IDs require their declared `OPTION`, `OBJECTIVE`, or `CONSTRAINT` role. This validates membership and role only: `MEMBERSHIP != SEMANTIC SUPPORT`, `ROLE != NORMATIVE IMPORTANCE`, and `ASSESSMENT BASIS != ASSESSMENT != DECISION NEED != RECOMMENDATION != HUMAN DECISION`.
 
+## Phase 6C semantic assessment proposal boundary
+
+Phase 6C introduces model semantic assessment proposal state only:
+
+```text
+EVIDENCE-BACKED REVISION STATE
+!= HUMAN-OWNED NORMATIVE FRAME
+!= MODEL SEMANTIC ASSESSMENT PROPOSAL
+
+ASSESSMENT RELATION != RANKING
+ASSESSMENT RELATION != OPTION PREFERENCE
+ASSESSMENT PROPOSAL != RECOMMENDATION != DECISION NEED != HUMAN DECISION
+MODEL_PROPOSAL != HUMAN PREFERENCE != AUTHENTICATED MODEL != PROVIDER AUTHORITY != TRUTH
+```
+
+The proposer admits only an `optionItemId` selected in `assessmentRequest.selectedOptionItemIds` and a `criterionItemId` selected in its objective or constraint inventory. `REVISION MEMBERSHIP != HUMAN NORMATIVE SELECTION`: the evaluator receives the complete detached basis, but Phase 6C governs only which returned relations may enter its stored artifact, not the evaluator's internal reasoning. Zero or partial relations are valid; `NO ASSESSMENT != UNDETERMINED`, and no readiness or completeness inference follows.
+
 ## Trust boundaries
 
 1. **Producer adapter boundary.** Producer-specific persistence and artifact validation stay in adapters/resolvers. The generic kernel has no Capability Core import.
@@ -359,6 +394,7 @@ Its reader is one exact bound `getRevisionById(...)` capability. A reader return
 16. **5D3 lineage-read boundary.** The reconstructor captures only one own data-property `getRevisionById` method at construction. Every operation validates the start ID before a read, tracks requested IDs in an operation-local visited set before each read, sealed-asserts each detached returned revision, and follows only its explicit predecessor reference. It returns only after the chain reaches explicit `previousRevisionId: null`; it does not repair stored revisions, return partial chains, write, enumerate branches, or discover descendants.
 17. **6A assessment-request boundary.** Construction and assertion defensively capture exact request representation. `revisionId` is DREV-shape only; question and selection IDs are DCI-shape only; `requestedBy` is declared `HUMAN_INPUT` ownership only. Construction may trim `actorId`, canonicalize selection order, reject duplicates/category overlap/question reuse, and return detached state; stored assertion does not repair. It performs no repository read, revision resolution, persistence authority operation, lineage traversal, item existence/role validation, authority operation, evaluator/model/provider call, assessment, Decision Need derivation, recommendation, or human decision.
 18. **6B assessment-basis boundary.** The binder captures one exact own enumerable `getRevisionById` reader method, captures/asserts the request before its read await, captures/asserts one returned revision, requires exact requested/returned DREV equality, verifies declared item membership/roles, derives complete-state `DABAS_`, asserts, and returns detached state. It performs no lineage traversal, producer-authority resolution, persistence-authority operation, assessment, Decision Need derivation, recommendation, or human decision.
+19. **6C semantic-assessment-proposal boundary.** The proposer captures one exact own enumerable `evaluate` method, captures/asserts the complete basis before evaluator await, captures declared `MODEL_PROPOSAL` provenance before the call, supplies a detached basis, defensively captures output, admits only human-selected targets, rejects duplicate pairs, canonicalizes relations, derives complete-state `DASPR_`, self-asserts, and returns detached state. It creates no recommendation, Decision Need, or human decision.
 
 ## Reachable structural states
 
@@ -394,6 +430,13 @@ Its reader is one exact bound `getRevisionById(...)` capability. A reader return
 | Phase 5C3D is not invoked | No `StructuralConsequence` is derived; no graph-reachability conclusion follows. |
 | Phase 5C3D is invoked with an explicit `DEPENDENCY_PATH` whose `relationProposals` array is empty | `ERR_DECISION_STRUCTURAL_CONSEQUENCE_PATH_INVALID`. |
 | Empty `expectationValidations` and `consequenceValidations` | A valid empty canonical validation assembly; it is not a completeness proof. |
+| Bound basis with zero selected options, objectives, and constraints | Valid 6B basis; a 6C evaluator may return `[]`, producing a valid zero-assessment proposal. This is neither readiness nor `UNDETERMINED`. |
+| Selected `OPTION × OBJECTIVE` relation with `ALIGNED` | Valid semantic assessment relation; it is not option preference or recommendation. |
+| Selected `OPTION × CONSTRAINT` relation with `MISALIGNED` | Valid semantic assessment relation; it is not automatic rejection or recommendation. |
+| Evaluator explicitly emits `UNDETERMINED` | Explicit proposal state, distinct from an absent relation. |
+| Revision contains an option, objective, or constraint not selected by the request | It cannot be admitted as a Phase 6C option or criterion target merely through revision membership. |
+| Same option/criterion pair occurs twice | `ERR_DECISION_ASSESSMENT_PROPOSAL_DUPLICATE`; differing rationale or disposition does not create another relation. |
+| Partial selected evaluation matrix | Valid; no completeness or readiness inference follows. |
 | Canonical C3C result is `null` and caller supplies `null` | One `NO_GAP` assembly result: no gap under this represented basis, not truth or global satisfaction. |
 | Canonical C3C result is a gap and caller supplies its derivation-valid gap | One `GAP` assembly result with canonical `gapId`. |
 | One EVIDENCE_BINDING or DEPENDENCY gap ID with two supplied bases differing only in irrelevant observations | The gap ID may remain the same, but the canonical descriptor inventories and `DVASM_` identities differ. For CONTEXT_ROLE, canonical context observations are already committed through `contextId` and the descriptor remains kind-only. |
@@ -418,4 +461,4 @@ Its reader is one exact bound `getRevisionById(...)` capability. A reader return
 
 The generic `lib/decision-core/**` production files are guarded against imports from Career, Capability Core, matching, recommendations, and legacy Career decision-loop code. The Capability adapter may import Capability Core because it is a producer-specific integration outside that generic kernel.
 
-Decision Core is application-domain neutral, not ontology-free in a metaphysical sense: the current ontology is intentionally about opaque producer state, structural context items, roles, provenance, operation-time authority reachability, semantic proposals, explicit structural expectations, explicit structural relation proposals, basis-relative structural gaps and explicit-path consequences, derivational-coherence assemblies, self-contained revision artifacts, repository-bound immutable authority-of-record operations, the PostgreSQL adapter implementing those sealed persistence semantics outside the kernel, read-only explicit predecessor-lineage reconstruction, a standalone human-declared assessment-request contract, and a revision-bound assessment-basis contract. These are distinct operations and artifacts, not one automatic pipeline. Recruiting is not implemented on top of this module.
+Decision Core is application-domain neutral, not ontology-free in a metaphysical sense: the current ontology is intentionally about opaque producer state, structural context items, roles, provenance, operation-time authority reachability, semantic proposals, explicit structural expectations, explicit structural relation proposals, basis-relative structural gaps and explicit-path consequences, derivational-coherence assemblies, self-contained revision artifacts, repository-bound immutable authority-of-record operations, the PostgreSQL adapter implementing those sealed persistence semantics outside the kernel, read-only explicit predecessor-lineage reconstruction, a standalone human-declared assessment-request contract, a revision-bound assessment-basis contract, and a semantic assessment-proposal contract. These are distinct operations and artifacts, not one automatic pipeline. Recruiting is not implemented on top of this module.

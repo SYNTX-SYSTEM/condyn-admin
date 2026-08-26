@@ -18,14 +18,15 @@
 | Phase 5D3 | Read-Only Revision Lineage Reconstruction | SEALED IMPLEMENTATION | `8a886f8bf39c4bd8fb84dc2e863fd02014d1916e` / `v1.0.0-decision-core-phase5d3-lineage-reconstruction` |
 | Phase 6A | Human-Owned Assessment Request Contract | SEALED IMPLEMENTATION | `d315fcee7f3e501284072b85650a8a83c85e3b3b` / `v1.0.0-decision-core-phase6a-assessment-request` |
 | Phase 6B | Revision-Bound Assessment Basis | SEALED IMPLEMENTATION | `fa891f7b8280e06ca3a1102b7f1bcf477c4475bd` / `v1.0.0-decision-core-phase6b-assessment-basis` |
+| Phase 6C | Semantic Assessment Proposal | SEALED IMPLEMENTATION | `448e6a91ccab913e8697f7220c6756853992309a` / `v1.0.0-decision-core-phase6c-assessment-proposal` |
 
 **Phase 5C4 sealed-defect audit.** Phase 5C4 remains SEALED with its original implementation identity above. During Phase 5D2B integration, a narrow RED regression independently proved a serialization-order portability defect in stored validation-assembly equality. Commit `96083e677767e21b36b636258abb20ebf293b0fc` contains the targeted correction: object property insertion order is non-semantic under structural equality, while array order remains significant. No 5C4 artifact shape, identity, ontology, public API, or derivation semantics were redesigned. `SEALED DEFECT CORRECTION != ARCHITECTURAL REDESIGN`; see ADR 017.
 
-Phase 6A records one standalone human-declared normative assessment frame through a DREV-shaped revision reference and DCI-shaped selections. Phase 6B binds one sealed request to one exact reader-returned sealed revision, verifies referenced item membership and declared roles, and returns one detached deterministic `DecisionAssessmentBasis`. It does not assess, recommend, derive Decision Need, score, rank, or record a human decision.
+Phase 6A records one standalone human-declared normative assessment frame through a DREV-shaped revision reference and DCI-shaped selections. Phase 6B binds one sealed request to one exact reader-returned sealed revision, verifies referenced item membership and declared roles, and returns one detached deterministic `DecisionAssessmentBasis`. Phase 6C consumes one sealed basis through one bound semantic assessment evaluator and admits zero or more selected option/criterion relations into one detached canonical `DecisionAssessmentProposal`. It does not recommend, derive Decision Need, rank, score, or record a human decision.
 
-Recommendation, human decision, action, outcome, feedback, and learning are later conceptual work. Assessment result, semantic assessment, model evaluation, and Decision Need also have no implementation status in this checkpoint.
+Semantic assessment proposal is implemented. Recommendation, Decision Need, human decision, action, outcome, feedback, and learning remain later conceptual work.
 
-At Phase 6B, the bidirectional human-machine loop remains open. Current code can form a structural context, check operation-time reachability of governed references where explicitly invoked, produce item/reference semantic evaluator proposals, represent explicit structural expectations and item/item relation proposals, derive basis-relative structural gaps and explicit-path structural consequences, assemble revalidated derivational coherence for one context, create a self-contained canonical `DecisionContextRevision`, establish repository-bound immutable authority semantics, durably persist those records in PostgreSQL across repository/client reconstruction, reconstruct one explicit root-to-start predecessor lineage through a bound read capability, record one detached human-declared assessment request, and bind that request to one exact sealed revision with item membership/role checks. It does not derive Decision Need, assess, prioritize, score alternatives, recommend, record a human decision, record action, observe an outcome, process feedback, learn, select a current/head/latest revision, or complete a bidirectional human-machine loop.
+At Phase 6C, the bidirectional human-machine loop remains open. Current code can form a structural context, check operation-time reachability of governed references where explicitly invoked, produce item/reference semantic evaluator proposals, represent explicit structural expectations and item/item relation proposals, derive basis-relative structural gaps and explicit-path structural consequences, assemble revalidated derivational coherence for one context, create a self-contained canonical `DecisionContextRevision`, establish repository-bound immutable authority semantics, durably persist those records in PostgreSQL across repository/client reconstruction, reconstruct one explicit root-to-start predecessor lineage through a bound read capability, record one detached human-declared assessment request, bind that request to one exact sealed revision with item membership/role checks, consume one sealed basis through one bound semantic assessment evaluator, admit zero or more selected option/criterion assessment relations, and create one detached canonical `DecisionAssessmentProposal`. It does not derive Decision Need, rank, score, prioritize, recommend, record a human decision, record action, observe an outcome, process feedback, learn, select a current/head/latest revision, or complete a bidirectional human-machine loop.
 
 ## Phase 6A implementation evidence
 
@@ -48,3 +49,16 @@ Repository-wide TypeScript is not claimed clean: unrelated Career/UI/test type i
 - Sealed predecessor diffs: EMPTY.
 
 Repository-wide TypeScript is not claimed clean: unrelated Career/UI/test type issues remain outside the Phase 6B scope.
+
+## Phase 6C implementation evidence
+
+- Focused Phase 6C: 13 / 13 passing.
+- Decision Core: 240 / 240 passing.
+- Capability Core: 272 / 272 passing.
+- Scoped TypeScript: PASS.
+- `git diff --check`: PASS.
+- Sealed predecessor diffs: EMPTY.
+
+The post-implementation double sweep and consolidated adversarial hardening found no production defect. Additional tests hardened object-order identity, unselected constraints, hostile provenance, stored-target validity, evaluator-output detachment, exact malformed-target error ownership, and stored provenance hostility; no production source change was required during hardening.
+
+Repository-wide TypeScript is not claimed clean: unrelated Career/UI/test type issues remain outside the Phase 6C scope.

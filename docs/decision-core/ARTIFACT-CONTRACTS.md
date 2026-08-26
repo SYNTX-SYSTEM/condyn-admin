@@ -93,6 +93,16 @@
 | `DecisionAssessmentBasis` | Exact canonical five-field stored artifact | A detached `DECISION_ASSESSMENT_BASIS` / `DECISION_ASSESSMENT_BASIS_V1` artifact with deterministic `DABAS_`; basis is not assessment, Decision Need, recommendation, or human decision. |
 | `createBoundDecisionAssessmentBasisBinder(reader)` | `DecisionAssessmentBasisRevisionReader -> BoundDecisionAssessmentBasisBinder` | Captures only an exact own enumerable data-method reader capability; the binder reads one exact requested revision and has no writer, repository, evaluator, lineage, or authority operation. |
 | `assertDecisionAssessmentBasis(value)` | `unknown -> asserts value is DecisionAssessmentBasis` | Verifies exact already-canonical self-contained stored representation, revision binding, membership/roles, and deterministic complete-state identity without repairing it. |
+| `DECISION_ASSESSMENT_PROPOSAL_SCHEMA_VERSION` | `"DECISION_ASSESSMENT_PROPOSAL_V1"` | Fixed schema-version constant for the Phase 6C semantic assessment-proposal contract. |
+| `DECISION_ASSESSMENT_DISPOSITIONS` / `DecisionAssessmentDisposition` | `ALIGNED`, `PARTIALLY_ALIGNED`, `MISALIGNED`, `UNDETERMINED` | Closed semantic assessment relation disposition set; it contains no score, confidence, probability, weight, priority, severity, or rank. |
+| `DecisionAssessmentEvaluation` | `optionItemId`, `criterionItemId`, `disposition`, `rationale` | One admitted selected `OPTION × OBJECTIVE/CONSTRAINT` semantic assessment relation. Rationale is trimmed and identity-bearing. |
+| `DecisionAssessmentProposalProvenance` | `origin: "MODEL_PROPOSAL"`, `proposalRef` | Declared proposal provenance only; `MODEL_PROPOSAL != AUTHENTICATED MODEL != PROVIDER AUTHORITY != TRUTH`. |
+| `DecisionAssessmentEvaluationInput` | `assessmentBasis` | Exact one-field detached complete-basis evaluator input. |
+| `DecisionAssessmentEvaluator` | `evaluate(input): Promise<readonly DecisionAssessmentEvaluation[]>` | Exact composition-time evaluator capability with no repository, writer, persistence, authority, lineage, recommendation, or decision API. |
+| `BoundDecisionAssessmentProposer` | `propose(assessmentBasis, proposedBy): Promise<DecisionAssessmentProposal>` | Bound operation that creates one canonical model semantic assessment proposal. |
+| `DecisionAssessmentProposal` | Exact canonical six-field stored artifact | A detached `DECISION_ASSESSMENT_PROPOSAL` / `DECISION_ASSESSMENT_PROPOSAL_V1` artifact with deterministic `DASPR_`; it is not recommendation, Decision Need, or human decision. |
+| `createBoundDecisionAssessmentProposer(evaluator)` | `DecisionAssessmentEvaluator -> BoundDecisionAssessmentProposer` | Captures exactly one own enumerable data-method `evaluate` capability and binds it at construction. |
+| `assertDecisionAssessmentProposal(value)` | `unknown -> asserts value is DecisionAssessmentProposal` | Self-contained exact stored assertion; it performs no evaluator, reader, repository, lineage, authority, provider, or model call and does not repair representation. |
 
 ## Reference and reader behavior
 
@@ -935,3 +945,104 @@ ERR_DECISION_ASSESSMENT_BASIS_ID_MISMATCH
 ```
 
 The module remains generic Decision Core: it has no Career, Recruiting, Capability Core, matching, legacy-loop, frontend, PostgreSQL, Drizzle, decision-adapter, repository writer, evaluator/model/provider, lineage, producer-authority, assessment, recommendation, Decision Need, score, ranking, or human-decision dependency.
+
+## Phase 6C semantic assessment proposal contract
+
+Phase 6C adds `DecisionAssessmentProposal` under `lib/decision-core/assessment-proposal/`. It consumes one sealed `DecisionAssessmentBasis`, one bound semantic evaluator, and declared `MODEL_PROPOSAL` provenance to represent zero or more semantic assessment relations. The chain is `DecisionAssessmentRequest -> DecisionAssessmentBasis -> DecisionAssessmentProposal -> STOP`; no recommendation follows.
+
+```ts
+interface DecisionAssessmentProposal {
+  artifactKind: "DECISION_ASSESSMENT_PROPOSAL";
+  schemaVersion: "DECISION_ASSESSMENT_PROPOSAL_V1";
+  assessmentProposalId: string;
+  assessmentBasis: DecisionAssessmentBasis;
+  proposedBy: DecisionAssessmentProposalProvenance;
+  assessments: readonly DecisionAssessmentEvaluation[];
+}
+```
+
+Exactly six top-level fields are valid. There is no timestamp, UUID, provider/model metadata beyond `proposalRef`, score, rank, priority, weight, confidence, recommendation, Decision Need, human decision, repository/persistence metadata, or current/head/latest state. Runtime exports are exactly `DECISION_ASSESSMENT_PROPOSAL_SCHEMA_VERSION`, `DECISION_ASSESSMENT_DISPOSITIONS`, `createBoundDecisionAssessmentProposer`, and `assertDecisionAssessmentProposal`. Public types are exactly `DecisionAssessmentDisposition`, `DecisionAssessmentEvaluation`, `DecisionAssessmentProposalProvenance`, `DecisionAssessmentEvaluationInput`, `DecisionAssessmentEvaluator`, `DecisionAssessmentProposal`, and `BoundDecisionAssessmentProposer`.
+
+### Relations, dispositions, provenance, and evaluator
+
+```ts
+interface DecisionAssessmentEvaluation {
+  optionItemId: string;
+  criterionItemId: string;
+  disposition: DecisionAssessmentDisposition;
+  rationale: string;
+}
+
+interface DecisionAssessmentProposalProvenance {
+  origin: "MODEL_PROPOSAL";
+  proposalRef: string;
+}
+
+interface DecisionAssessmentEvaluationInput {
+  assessmentBasis: DecisionAssessmentBasis;
+}
+
+interface DecisionAssessmentEvaluator {
+  evaluate(input: DecisionAssessmentEvaluationInput): Promise<readonly DecisionAssessmentEvaluation[]>;
+}
+
+interface BoundDecisionAssessmentProposer {
+  propose(assessmentBasis: DecisionAssessmentBasis, proposedBy: DecisionAssessmentProposalProvenance): Promise<DecisionAssessmentProposal>;
+}
+```
+
+The closed disposition set is exactly `ALIGNED`, `PARTIALLY_ALIGNED`, `MISALIGNED`, and `UNDETERMINED`. An assessment relation is not ranking or option preference, and the proposal is not recommendation, Decision Need, or human decision. `proposalRef` is trimmed by `propose(...)`; stored assertion requires its already-trimmed representation. It is declarative proposal provenance, not model/provider authentication, authorization, signature, authority token, truth, human preference, or human adoption.
+
+`createBoundDecisionAssessmentProposer(evaluator)` accepts exactly one own enumerable data-method capability named `evaluate`. Extra properties, symbols, accessor-backed or non-enumerable methods, missing methods, `null`, arrays, and primitives reject with `ERR_DECISION_ASSESSMENT_PROPOSAL_EVALUATOR_INVALID`. Its method is captured and bound at construction, so later replacement cannot redirect the proposer.
+
+### Operation and target admission
+
+`propose(...)` (1) captures the complete basis, (2) sealed-asserts it, (3) captures exact declared `MODEL_PROPOSAL` provenance, (4) trims valid `proposalRef`, (5) invokes the bound evaluator once with a detached complete basis, (6) captures output, (7) validates exact evaluation shape, (8) trims nonempty rationale, (9) verifies the selected option target, (10) verifies the selected objective/constraint target, (11) rejects duplicate target pairs, (12) canonicalizes evaluation order, (13) derives `DASPR_`, (14) constructs the proposal, (15) self-asserts it, (16) returns detached state, and (17) stops. Caller mutation after operation start cannot redirect basis/provenance; evaluator input and evaluator-owned output are independently detached. Detached does not mean deep-frozen.
+
+An `optionItemId` must occur in `assessmentBasis.assessmentRequest.selectedOptionItemIds`. A `criterionItemId` must occur in either selected objectives or selected constraints. A revision-member item alone is not enough: `REVISION MEMBERSHIP != HUMAN NORMATIVE SELECTION`. The evaluator may inspect the complete detached basis, but this contract governs admitted output representation rather than claiming to constrain or prove internal evaluator reasoning.
+
+Target identity is exactly `[optionItemId, criterionItemId]`; a second relation for the same pair fails `ERR_DECISION_ASSESSMENT_PROPOSAL_DUPLICATE`, even if disposition or rationale differs. Evaluations are code-point ordered by `JSON.stringify([optionItemId, criterionItemId])`. Zero output and partial matrices are valid: `NO ASSESSMENT != UNDETERMINED`; no missing relation is synthesized, and `PARTIAL ASSESSMENT MATRIX != INCOMPLETE DECISION STATE`.
+
+### `DASPR_` complete-state identity
+
+`assessmentProposalId` matches `^DASPR_[0-9A-F]{24}$`: SHA-256 of `JSON.stringify(...)`, first 24 uppercase hexadecimal characters, prefixed `DASPR_`.
+
+```ts
+[
+  "DECISION_ASSESSMENT_PROPOSAL_V1",
+  canonicalCompleteDecisionAssessmentBasis,
+  ["MODEL_PROPOSAL", proposedBy.proposalRef],
+  canonicalAssessments
+]
+```
+
+The complete basis canonicalizer recursively code-point-sorts object own string keys while preserving arrays and primitive values. Object insertion order is non-semantic; array order follows predecessor contracts. Canonical assessments contain complete option ID, criterion ID, disposition, and trimmed rationale. Rationale is identity-bearing: unlike Phase 5C2 `EBIND_`, whose rationale is stored but identity-excluded, `DASPR_` identifies the complete represented assessment proposal state. `EBIND RATIONALE IDENTITY RULE != DASPR RATIONALE IDENTITY RULE` because the artifacts identify different things.
+
+`DASPR IDENTITY = COMPLETE REPRESENTED ASSESSMENT PROPOSAL STATE`, but `DASPR IDENTITY != TRUTH != RECOMMENDATION AUTHORITY != DECISION AUTHORITY`. No timestamp, UUID, randomness, execution order, or provider metadata participates.
+
+### Stored assertion and errors
+
+`assertDecisionAssessmentProposal(value)` has the boundary `unknown -> asserts value is DecisionAssessmentProposal`. It is self-contained: it calls no evaluator, reader, repository, lineage, authority, provider, or model dependency. It requires exact six-field representation, header/DASPR shape, sealed embedded basis, exact already-canonical declared `MODEL_PROPOSAL` provenance, exact evaluation shape, trimmed rationale, selected targets, no duplicate pairs, canonical ordering, and complete-state identity.
+
+```text
+CREATE MAY CANONICALIZE
+ASSERT MUST NOT REPAIR
+IDENTITY CANONICALIZATION != STORED-ARTIFACT REPAIR
+INVALID BODY != VALID COMPLETE BODY + STALE / WRONG DASPR
+```
+
+Hostile, malformed, noncanonical, embedded-invalid, target-invalid, or duplicate stored state fails `ERR_DECISION_ASSESSMENT_PROPOSAL_INVALID`. An otherwise exact valid complete body with only stale/wrong deterministic ID fails `ERR_DECISION_ASSESSMENT_PROPOSAL_ID_MISMATCH`. At construction, malformed provenance fails `ERR_DECISION_ASSESSMENT_PROPOSAL_PROVENANCE_INVALID`; valid-shaped unselected option/criterion fails its respective selection error; malformed target references fail `ERR_DECISION_ASSESSMENT_PROPOSAL_EVALUATION_INVALID`. Stored body failures collapse to `INVALID` except final otherwise-valid ID mismatch. Underlying evaluator dependency errors not owned by Phase 6C may propagate unchanged.
+
+```text
+ERR_DECISION_ASSESSMENT_PROPOSAL_EVALUATOR_INVALID
+ERR_DECISION_ASSESSMENT_PROPOSAL_BASIS_INVALID
+ERR_DECISION_ASSESSMENT_PROPOSAL_PROVENANCE_INVALID
+ERR_DECISION_ASSESSMENT_PROPOSAL_EVALUATION_INVALID
+ERR_DECISION_ASSESSMENT_PROPOSAL_OPTION_NOT_SELECTED
+ERR_DECISION_ASSESSMENT_PROPOSAL_CRITERION_NOT_SELECTED
+ERR_DECISION_ASSESSMENT_PROPOSAL_DUPLICATE
+ERR_DECISION_ASSESSMENT_PROPOSAL_INVALID
+ERR_DECISION_ASSESSMENT_PROPOSAL_ID_MISMATCH
+```
+
+The module remains generic: no Career, Recruiting, Capability Core, matching, legacy loop, frontend, PostgreSQL, Drizzle, decision adapters, revision persistence/lineage, provider implementation, model implementation, scoring, ranking, recommendation, Decision Need, or human-decision dependency exists.
