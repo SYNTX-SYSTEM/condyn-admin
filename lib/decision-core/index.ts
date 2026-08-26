@@ -9,3 +9,4 @@ export * from "./validation-assembly";
 export * from "./revisions";
 export * from "./revision-persistence";
 export * from "./revision-lineage";
+export * from "./assessment-request";
