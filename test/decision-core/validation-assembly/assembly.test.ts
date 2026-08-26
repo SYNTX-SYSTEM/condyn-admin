@@ -188,6 +188,37 @@ describe("Decision Context Validation Assembly", () => {
     expect((assembly.consequenceIds as string[])).toEqual([input.consequence.consequenceId]);
   });
 
+  it("accepts a structurally identical stored assembly when only nested object insertion order differs", () => {
+    const draft = context();
+    const expectation = evidenceExpectation(draft);
+    const gap = gapFor(draft, expectation);
+    const input = { expectationValidations: [{ expectation, basis: evidenceBasis, result: gap }], consequenceValidations: [] };
+    const assembly = assembleDecisionContextValidation(draft, input);
+    const result = assembly.expectationResults[0];
+    if (result === undefined || result.outcome !== "GAP") throw new Error("missing GAP result");
+    const reorderedResult = {
+      basis: result.basis,
+      gapId: result.gapId,
+      outcome: "GAP" as const,
+      expectationId: result.expectationId
+    };
+    const reorderedAssembly = {
+      artifactKind: assembly.artifactKind,
+      schemaVersion: assembly.schemaVersion,
+      assemblyId: assembly.assemblyId,
+      contextId: assembly.contextId,
+      expectationResults: [reorderedResult],
+      consequenceIds: [...assembly.consequenceIds]
+    };
+
+    expect(Object.keys(result)).toEqual(["expectationId", "basis", "outcome", "gapId"]);
+    expect(Object.keys(reorderedResult)).toEqual(["basis", "gapId", "outcome", "expectationId"]);
+    expect(reorderedAssembly).toEqual(assembly);
+    expect(reorderedAssembly.expectationResults).toEqual(assembly.expectationResults);
+    expect(reorderedAssembly.consequenceIds).toEqual(assembly.consequenceIds);
+    expect(() => assertDecisionContextValidationAssembly(draft, input, reorderedAssembly)).not.toThrow();
+  });
+
   it("preserves predecessor errors and rejects hostile wrappers/stored artifacts", () => {
     const draft = context(); const expectation = evidenceExpectation(draft); const gap = gapFor(draft, expectation);
     expect(() => assembleDecisionContextValidation(draft, { expectationValidations: [{ expectation, basis: { kind: "EVIDENCE_BINDING", bindings: [{}] } as never, result: gap }], consequenceValidations: [] })).toThrow("ERR_DECISION_STRUCTURAL_GAP_BINDING_INVALID");

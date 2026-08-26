@@ -22,7 +22,17 @@ const assemblyKeys = ["artifactKind", "schemaVersion", "assemblyId", "contextId"
 type Captured = null | boolean | number | string | Captured[] | { [key: string]: Captured };
 
 const isString = (value: unknown): value is string => typeof value === "string" && value.trim().length > 0;
-const same = (left: unknown, right: unknown): boolean => JSON.stringify(left) === JSON.stringify(right);
+const same = (left: unknown, right: unknown): boolean => {
+  if (left === right) return true;
+  if (left === null || right === null || typeof left !== "object" || typeof right !== "object") return false;
+  if (Array.isArray(left) || Array.isArray(right)) return Array.isArray(left) && Array.isArray(right) && left.length === right.length && left.every((value, index) => same(value, right[index]));
+  const leftRecord = left as Record<string, unknown>;
+  const rightRecord = right as Record<string, unknown>;
+  const leftKeys = Object.keys(leftRecord);
+  const rightKeys = Object.keys(rightRecord);
+  return leftKeys.length === rightKeys.length
+    && leftKeys.every((key) => Object.prototype.hasOwnProperty.call(rightRecord, key) && same(leftRecord[key], rightRecord[key]));
+};
 
 function capture(value: unknown, code: string, ancestors: WeakSet<object> = new WeakSet<object>()): Captured {
   try {
