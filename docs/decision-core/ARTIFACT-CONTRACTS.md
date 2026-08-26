@@ -81,6 +81,12 @@
 | `DecisionContextRevisionLineage` | `startRevisionId`, `rootRevisionId`, `revisions` | Plain detached read model for one complete explicit predecessor path; it is not a persisted artifact, authority certificate, branch artifact, or current-state model. |
 | `BoundDecisionContextRevisionLineageReconstructor` | `reconstruct(startRevisionId)` | Read-only bound capability that reconstructs one complete predecessor path. |
 | `createBoundDecisionContextRevisionLineageReconstructor(reader)` | Exact `getRevisionById(revisionId)` reader dependency -> bound reconstructor | Captures only one own function-valued data-property reader method; no writer, persister, database, or authority dependency is accepted. |
+| `DECISION_ASSESSMENT_REQUEST_SCHEMA_VERSION` | `"DECISION_ASSESSMENT_REQUEST_V1"` | Fixed schema-version constant for the Phase 6A human-owned request contract. |
+| `DecisionAssessmentRequestActor` | `origin: "HUMAN_INPUT"`, `actorId` | Declared human ownership only; `HUMAN_INPUT != AUTHENTICATION`. |
+| `DecisionAssessmentRequestInput` | `revisionId`, `requestedBy`, `decisionQuestionItemId`, `selectedOptionItemIds`, `selectedObjectiveItemIds`, `selectedConstraintItemIds` | Constructor input for one declared request. DREV shape is not revision existence; DCI shape is not item membership or role. |
+| `DecisionAssessmentRequest` | Exact canonical nine-field stored artifact | A detached `DECISION_ASSESSMENT_REQUEST` / `DECISION_ASSESSMENT_REQUEST_V1` artifact with deterministic `DAREQ_`; request is not assessment, Decision Need, recommendation, or human decision. |
+| `createDecisionAssessmentRequest(input)` | `DecisionAssessmentRequestInput -> DecisionAssessmentRequest` | Captures and validates request representation, trims `actorId`, canonicalizes selection inventories, derives `DAREQ_`, returns detached state, and loads no referenced revision. |
+| `assertDecisionAssessmentRequest(value)` | `unknown -> asserts value is DecisionAssessmentRequest` | Verifies exact already-canonical stored representation and deterministic identity without sorting, trimming, deduplicating, or otherwise repairing it. |
 
 ## Reference and reader behavior
 
@@ -750,3 +756,88 @@ Every non-null returned revision is detached, passes sealed `assertDecisionConte
 The returned `revisions` are in root-to-start explicit predecessor order: `R[0].revisionId === rootRevisionId`, `R[0].previousRevisionId === null`, `R[n - 1].revisionId === startRevisionId`, and each later revision names the preceding result revision as its predecessor. This is predecessor order, not chronological or temporal order. The result has no `DLINE_`, `artifactKind`, schema version, timestamp, lineage ID, depth, branch, head/latest/current/active status, authority, or semantic-change field.
 
 The reconstructor tracks requested IDs in an operation-local visited set before each read. Repetition fails `ERR_DECISION_CONTEXT_REVISION_LINEAGE_CYCLE`; this is defensive repeated-request-ID protection for a generic reader boundary, not causal-cycle detection, semantic-cycle detection, graph analysis, or branch discovery. Each invocation owns its visited set and captured sequence; returned state is detached but not promised deep-frozen.
+
+## Phase 6A human-owned assessment request contract
+
+Phase 6A adds the generic `DecisionAssessmentRequest` artifact under `lib/decision-core/assessment-request/`. It records one explicitly human-declared normative assessment frame. It is not an assessment, assessment basis, recommendation, Decision Need, human decision, score, ranking, revision-resolution result, or repository-authority record.
+
+```ts
+interface DecisionAssessmentRequest {
+  artifactKind: "DECISION_ASSESSMENT_REQUEST";
+  schemaVersion: "DECISION_ASSESSMENT_REQUEST_V1";
+  assessmentRequestId: string;
+  revisionId: string;
+  requestedBy: { origin: "HUMAN_INPUT"; actorId: string };
+  decisionQuestionItemId: string;
+  selectedOptionItemIds: readonly string[];
+  selectedObjectiveItemIds: readonly string[];
+  selectedConstraintItemIds: readonly string[];
+}
+```
+
+No extra stored fields are valid. The runtime module exports exactly `DECISION_ASSESSMENT_REQUEST_SCHEMA_VERSION`, `createDecisionAssessmentRequest`, and `assertDecisionAssessmentRequest`; its public types are `DecisionAssessmentRequestActor`, `DecisionAssessmentRequestInput`, and `DecisionAssessmentRequest`. No identity builder is public.
+
+### `DAREQ_` identity
+
+`assessmentRequestId` is deterministic:
+
+```ts
+DAREQ_ + SHA256(JSON.stringify([
+  "DECISION_ASSESSMENT_REQUEST_V1",
+  revisionId,
+  ["HUMAN_INPUT", trimmedActorId],
+  decisionQuestionItemId,
+  canonicalSelectedOptionItemIds,
+  canonicalSelectedObjectiveItemIds,
+  canonicalSelectedConstraintItemIds
+])).slice(0, 24).toUpperCase()
+```
+
+There is no timestamp, randomness, UUID, provider/model metadata, or execution-order input. `DAREQ IDENTITY != DECISION AUTHORITY`, `DAREQ IDENTITY != REVISION AUTHORITY`, and `DAREQ IDENTITY != HUMAN DECISION`.
+
+### Human ownership, references, and selections
+
+`requestedBy` is exactly `{ origin: "HUMAN_INPUT", actorId }`. `actorId` must be non-empty after trimming; construction stores the trimmed value. This records declared human normative ownership only:
+
+```text
+HUMAN_INPUT != AUTHENTICATED HUMAN IDENTITY
+HUMAN_INPUT != AUTHORIZATION
+HUMAN_INPUT != SIGNATURE
+HUMAN_INPUT != EVIDENCE TRUTH
+HUMAN_INPUT != HUMAN DECISION
+```
+
+There is no identity provider, permission check, authentication, signature, or user database lookup.
+
+`revisionId` must only match `^DREV_[0-9A-F]{24}$`. A DREV-shaped reference is not proof of revision existence, persisted authority, current revision, head, latest, or active state. Phase 6A performs no repository read, revision assertion, persistence check, lineage reconstruction, current/head selection, or producer-authority resolution.
+
+Every item reference must only match `^DCI_[0-9A-F]{24}$`. A DCI-shaped reference is not proof that the item exists, belongs to the named revision, or has the declared role. Thus Phase 6A does not prove that its question is an actual `DECISION_QUESTION`, or that selected IDs are actual `OPTION`, `OBJECTIVE`, or `CONSTRAINT` items.
+
+Selections mean only: **the human declared this item reference as part of this assessment request.** `SELECTION != OBJECTIVE IMPORTANCE`, `SELECTION != TRUTH`, and `SELECTION != COMPLETENESS`. Inclusion does not establish objective/constraint truth, enforceability, option viability, global relevance, completeness, or decision readiness. All three selection arrays may simultaneously be empty; that is valid request representation and does not imply an assessment can execute.
+
+### Canonicalization and stored assertion
+
+`createDecisionAssessmentRequest(...)` trims `actorId`, code-point-sorts each selection array by item ID, and returns detached selection arrays and requester state. Caller array order is non-semantic. It does not deduplicate: duplicate option, objective, or constraint IDs; a DCI repeated across categories; or reuse of `decisionQuestionItemId` in a selection all fail `ERR_DECISION_ASSESSMENT_REQUEST_DUPLICATE_SELECTION`. This is request-level declared-category consistency, not actual context-role validation.
+
+`assertDecisionAssessmentRequest(...)` accepts only exact canonical stored representation and never repairs it:
+
+```text
+CREATE MAY CANONICALIZE
+ASSERT MUST NOT REPAIR
+```
+
+It rejects malformed, accessor-backed, symbol-keyed, or non-enumerable representation; extra or missing fields; malformed IDs; untrimmed actor IDs; noncanonical order; duplicates; cross-category duplicate classification; and question reuse. An otherwise exact canonical body with the wrong `DAREQ_` fails `ERR_DECISION_ASSESSMENT_REQUEST_ID_MISMATCH`.
+
+### Errors
+
+```text
+ERR_DECISION_ASSESSMENT_REQUEST_INPUT_INVALID
+ERR_DECISION_ASSESSMENT_REQUEST_REVISION_ID_INVALID
+ERR_DECISION_ASSESSMENT_REQUEST_ACTOR_INVALID
+ERR_DECISION_ASSESSMENT_REQUEST_ITEM_ID_INVALID
+ERR_DECISION_ASSESSMENT_REQUEST_DUPLICATE_SELECTION
+ERR_DECISION_ASSESSMENT_REQUEST_INVALID
+ERR_DECISION_ASSESSMENT_REQUEST_ID_MISMATCH
+```
+
+The contract defines no item-not-found, role-mismatch, revision-not-found, repository, assessment, recommendation, or Decision Need errors.

@@ -2,7 +2,7 @@
 
 ## Scope
 
-This walkthrough describes authority, structural checks, semantic evaluator proposal binding, explicit structural comparison targets, explicit structural relation proposals, basis-relative structural gap reconstruction, explicit-path structural consequence propagation, derivational-coherence validation assembly, self-contained revision artifacts, repository-bound immutable persistence authority, its durable PostgreSQL adapter, and read-only explicit predecessor-lineage reconstruction implemented through Phase 5D3. It does not describe structural contradictions, dependency findings, decision need, relation discovery, recommendation, decision, branch/descendant discovery, or human-machine feedback as current functionality.
+This walkthrough describes authority, structural checks, semantic evaluator proposal binding, explicit structural comparison targets, explicit structural relation proposals, basis-relative structural gap reconstruction, explicit-path structural consequence propagation, derivational-coherence validation assembly, self-contained revision artifacts, repository-bound immutable persistence authority, its durable PostgreSQL adapter, read-only explicit predecessor-lineage reconstruction, and the Phase 6A human-owned assessment-request contract. Phase 6A records a normative frame but does not assess, recommend, decide, resolve a revision, or establish repository authority.
 
 ## Phase 5A: generic producer authority consumption
 
@@ -356,6 +356,19 @@ The operation-local visited-ID set checks and adds each requested ID before its 
 
 `SEALED-VALID READER RESULT != PERSISTENCE PROOF`, `5D3 READ CAPABILITY != 5D2A PERSISTENCE-AUTHORITY GUARANTEE`, and generic `getRevisionById(...)` conformance does not establish repository-selected authority of record. A successful reconstruction establishes only an exact requested-ID chain of sealed-valid revisions whose explicit predecessor references reach `null` through that bound reader. When the reader is a shipped in-memory or PostgreSQL repository read capability, repository and persistence semantics remain owned by the corresponding 5D2A/5D2B boundary; 5D3 itself does not establish durable persistence, current producer authority, or truth.
 
+## Phase 6A: human-owned assessment request
+
+Phase 6A has no authority operation. `createDecisionAssessmentRequest(...)` captures one declared human-owned normative frame and creates a deterministic `DAREQ_` artifact. It reads no revision, repository, persistence authority, lineage, producer, resolver, evaluator, or model. Its `revisionId` is only DREV-shaped; its question and selection IDs are only DCI-shaped.
+
+```text
+DREV-SHAPED REFERENCE != REVISION EXISTENCE != PERSISTED AUTHORITY
+DCI-SHAPED REFERENCE  != ITEM EXISTENCE != ITEM MEMBERSHIP != ITEM ROLE VALIDATION
+HUMAN_INPUT           != AUTHENTICATED IDENTITY != AUTHORIZATION != SIGNATURE
+HUMAN ASSESSMENT REQUEST != ASSESSMENT != RECOMMENDATION != HUMAN DECISION
+```
+
+`requestedBy: { origin: "HUMAN_INPUT", actorId }` is a declared ownership axis, not evidence truth. Selections say only that the human declared item references as part of this request; they are not a claim of importance, truth, completeness, viability, enforceability, or readiness. An empty selection inventory is valid. The contract prevents duplicate request-level categorization but does not validate any referenced context role.
+
 ## Failure model
 
 | Boundary | Current error/behavior |
@@ -419,6 +432,13 @@ The operation-local visited-ID set checks and adds each requested ID before its 
 | Named predecessor absent | `ERR_DECISION_CONTEXT_REVISION_LINEAGE_PREDECESSOR_NOT_FOUND` |
 | Returned revision malformed, noncanonical, or wrong for its requested ID | `ERR_DECISION_CONTEXT_REVISION_LINEAGE_REVISION_INVALID` |
 | Repeated requested revision ID | `ERR_DECISION_CONTEXT_REVISION_LINEAGE_CYCLE` |
+| Malformed Phase 6A constructor representation | `ERR_DECISION_ASSESSMENT_REQUEST_INPUT_INVALID` |
+| Malformed DREV-shaped request reference | `ERR_DECISION_ASSESSMENT_REQUEST_REVISION_ID_INVALID` |
+| Invalid declared requester | `ERR_DECISION_ASSESSMENT_REQUEST_ACTOR_INVALID` |
+| Malformed DCI-shaped request reference | `ERR_DECISION_ASSESSMENT_REQUEST_ITEM_ID_INVALID` |
+| Duplicate or overlapping declared selection | `ERR_DECISION_ASSESSMENT_REQUEST_DUPLICATE_SELECTION` |
+| Malformed/noncanonical stored Phase 6A request | `ERR_DECISION_ASSESSMENT_REQUEST_INVALID` |
+| Otherwise exact canonical request with wrong `DAREQ_` | `ERR_DECISION_ASSESSMENT_REQUEST_ID_MISMATCH` |
 
 `ERR_DECISION_STRUCTURAL_EXPECTATION_INVALID` classifies stored-representation failures. After safe representation capture, stored variant content is reconstructed through the normal structural-input path, so meaningful invalid variant content may instead preserve `ERR_DECISION_STRUCTURAL_EXPECTATION_INPUT_INVALID`, `ERR_DECISION_STRUCTURAL_EXPECTATION_ITEM_NOT_FOUND`, `ERR_DECISION_STRUCTURAL_EXPECTATION_REFERENCE_INVALID`, `ERR_DECISION_STRUCTURAL_EXPECTATION_DISPOSITION_INVALID`, or `ERR_DECISION_STRUCTURAL_EXPECTATION_DUPLICATE_DISPOSITION`. Wrong deterministic ID remains `ERR_DECISION_STRUCTURAL_EXPECTATION_ID_MISMATCH`.
 
@@ -430,4 +450,4 @@ Phase 5D3 likewise does not catch reader, repository, or adapter exceptions that
 
 ## Authority is not semantic support
 
-The implemented chain establishes that configured producer authority can currently resolve each declared context reference where that gate is explicitly invoked, that a bound semantic evaluator can propose an item/reference disposition from an isolated payload, that explicit structural expectations and item/item relation proposals can be represented canonically, that one explicit expectation can be deterministically compared with one explicit represented basis to derive a basis-relative `StructuralGap` or `null`, that one validated item-anchored gap can be propagated along one explicit ordered represented dependency path into an explicit-path basis-relative `StructuralConsequence`, that those explicit derivations can be revalidated and assembled canonically for one context, that this derivation state can be captured in a self-contained `DecisionContextRevision`, that sealed 5D2A repository authority semantics can be durably implemented in PostgreSQL across repository/client reconstruction, and that one explicit predecessor path of sealed-valid revisions can be reconstructed read-only from a supplied DREV through a bound reader. When that reader is a shipped repository read capability, repository/persistence semantics remain owned by its 5D2A/5D2B boundary. It does not establish verified semantic truth, real-world absence, global completeness, current producer authority, current decision state, branch/descendant discovery, head/latest/active selection, relation truth, a structural contradiction, a Dependency finding, real-world consequence, Decision Need, human adoption, or suitability for a recommendation.
+The implemented chain establishes that configured producer authority can currently resolve each declared context reference where that gate is explicitly invoked, that a bound semantic evaluator can propose an item/reference disposition from an isolated payload, that explicit structural expectations and item/item relation proposals can be represented canonically, that one explicit expectation can be deterministically compared with one explicit represented basis to derive a basis-relative `StructuralGap` or `null`, that one validated item-anchored gap can be propagated along one explicit ordered represented dependency path into an explicit-path basis-relative `StructuralConsequence`, that those explicit derivations can be revalidated and assembled canonically for one context, that this derivation state can be captured in a self-contained `DecisionContextRevision`, that sealed 5D2A repository authority semantics can be durably implemented in PostgreSQL across repository/client reconstruction, that one explicit predecessor path can be reconstructed read-only through a bound reader, and that a human may declare a detached normative assessment frame. That request establishes no assessment, recommendation, human decision, authority, revision existence, item membership, or item role. The chain does not establish verified semantic truth, real-world absence, global completeness, current producer authority, current decision state, branch/descendant discovery, head/latest/active selection, relation truth, a structural contradiction, a Dependency finding, real-world consequence, Decision Need, human adoption, or suitability for a recommendation.

@@ -1,10 +1,10 @@
 # Decision Core architecture
 
-## Scope through Phase 5D3
+## Scope through Phase 6A
 
 Decision Core is a generic, producer-neutral module for consuming governed producer state and forming a deterministic structural `DecisionContextDraft`. It is separate from Capability Core. Capability Core publishes capability/evidence-oriented Phase-4 snapshots; Decision Core does not require that ontology and can consume any producer that implements a compatible authority resolver.
 
-The implemented architecture through Phase 5D3 establishes a generic, producer-neutral foundation for constructing structurally defined decision contexts that can reference governed producer state, separately producing explicit semantic evaluator proposals about item/reference relationships, canonically representing explicit structural comparison targets and caller-supplied item/item relation proposals, deriving deterministic structural gaps and explicit-path basis-relative `StructuralConsequence` artifacts, assembling revalidated derivational coherence, creating self-contained canonical revision artifacts, persisting them through repository-bound immutable authority semantics backed by PostgreSQL, and reconstructing one explicit read-only predecessor path from a supplied revision ID. It does not implement recommendation, assessment, scoring, ranking, human decision, action, outcome, feedback, structural contradictions, dependency findings, decision need, relation discovery, branch or descendant discovery, head selection, or a closed human-machine loop.
+The implemented architecture through Phase 5D3 establishes the generic, producer-neutral state foundation. Phase 6A adds the adjacent generic `assessment-request` contract: a standalone, explicitly human-declared normative frame that references one DREV-shaped revision and declared DCI-shaped item selections. It does not resolve that revision, read a repository, validate referenced item membership or roles, assess anything, derive Decision Need, score or rank, recommend, record a human decision, or close the human-machine loop.
 
 ## Implemented layers
 
@@ -24,6 +24,7 @@ The implemented architecture through Phase 5D3 establishes a generic, producer-n
 | Repository-bound immutable persistence authority (5D2A) | The shipped in-memory repository/persister path persists one valid complete revision with immediate-parent integrity, immutable replay/conflict handling, and exact post-write reread. | `DecisionContextRevisionRepository` capability shape; `InMemoryDecisionContextRevisionRepository` enforcement |
 | Durable PostgreSQL persistence adapter (5D2B) | Implements the sealed 5D2A persistence semantics against an injected PostgreSQL/Drizzle dependency, with physical self-FK integrity, race-safe immutable insert, and client/repository reconstruction survival. | `PostgresDecisionContextRevisionRepository` |
 | Read-only revision lineage reconstruction (5D3) | Follows one supplied revision's explicit predecessor references through a bound generic reader and returns a detached root-to-start predecessor path. | `BoundDecisionContextRevisionLineageReconstructor` |
+| Human-owned assessment request (6A) | Records one declared human normative frame through shape-only DREV/DCI references; it has no revision reader, repository, evaluator, or decision operation. | `DecisionAssessmentRequest` |
 
 The current Capability Core adapter in `lib/decision-adapters/capability-core.ts` is one producer-specific integration. It is not part of the generic Decision Core kernel.
 
@@ -114,6 +115,13 @@ BoundDecisionContextRevisionLineageReconstructor
   -> sealed DecisionContextRevision assertion and exact requested-ID check
   -> repeat explicit previousRevisionId until null
   -> detached ROOT -> ... -> START predecessor lineage
+
+DecisionAssessmentRequestInput
+  -> defensive exact data capture
+  -> DREV/DCI shape checks only
+  -> actor trim + selection canonicalization
+  -> deterministic DAREQ identity
+  -> detached DecisionAssessmentRequest
 ```
 
 The Capability adapter captures only `getSnapshotByKey` from the supplied repository. For its fixed producer/contract pair it reads by the opaque locator, validates the existing `VerifiedCapabilitySnapshot`, requires `status: "VERIFIED"` and `publication.mode: "PHASE4_VERIFIED"`, recomputes the snapshot key, checks the locator and `snapshotId`, and returns a detached clone. That producer-specific behavior is outside the generic reader.
@@ -277,6 +285,27 @@ MISSING PREDECESSOR   != ROOT
 PARTIAL CHAIN         != VALID LINEAGE
 ```
 
+## Phase 6A human-owned assessment request boundary
+
+Phase 6A introduces only a `DecisionAssessmentRequest`: one human-declared normative assessment frame. Its ownership axis is distinct from both the evidence-backed decision state and later proposal or decision state:
+
+```text
+EVIDENCE-BACKED STATE
+!= HUMAN-OWNED NORMATIVE FRAME
+!= MODEL ASSESSMENT PROPOSAL
+!= MODEL RECOMMENDATION PROPOSAL
+!= HUMAN DECISION
+
+GAP != DECISION NEED
+STRUCTURAL CONSEQUENCE != DECISION NEED
+VALIDATION ASSEMBLY != DECISION NEED
+REVISION != DECISION NEED
+READABLE LINEAGE != DECISION NEED
+HUMAN ASSESSMENT REQUEST != DECISION NEED
+```
+
+The request has no reader, repository, persistence operation, lineage traversal, authority resolution, evaluator, provider, or model dependency. A DREV-shaped `revisionId` names only the revision the human intends to assess later; a DCI-shaped item reference names only an item reference selected by that human. The request neither proves the revision exists nor proves item membership or roles. In particular, readable lineage does not create an assessment request, and an assessment request does not identify a current revision.
+
 ## Trust boundaries
 
 1. **Producer adapter boundary.** Producer-specific persistence and artifact validation stay in adapters/resolvers. The generic kernel has no Capability Core import.
@@ -295,6 +324,7 @@ PARTIAL CHAIN         != VALID LINEAGE
 14. **5D2A bound-persistence boundary.** The shipped in-memory persister captures its repository dependencies at construction and captures one pristine detached expected revision before repository awaits. The runtime-private writer receives a detached copy, then a post-write reread is captured, sealed-asserted, and compared for exact complete-artifact equality with the pristine expected revision. Storage machinery is not a supported raw write capability, and a successful private write alone is not authority of record. Interface conformance alone does not prove a third-party repository implementation preserves this boundary.
 15. **5D2B PostgreSQL adapter boundary.** The adapter lives outside generic Decision Core and receives its configured database dependency. A read captures JSONB payload, sealed-asserts that exact persisted revision representation, verifies physical and embedded revision identities, and returns a detached artifact: `READ != RECONSTRUCT != REPAIR`. The runtime-private writer uses immutable insert plus a conflict-race reread; the sealed 5D2A persister still performs its separate final authority reread. PostgreSQL rows require `row.revision_id == payload.revisionId` and `row.previous_revision_id == payload.previousRevisionId`.
 16. **5D3 lineage-read boundary.** The reconstructor captures only one own data-property `getRevisionById` method at construction. Every operation validates the start ID before a read, tracks requested IDs in an operation-local visited set before each read, sealed-asserts each detached returned revision, and follows only its explicit predecessor reference. It returns only after the chain reaches explicit `previousRevisionId: null`; it does not repair stored revisions, return partial chains, write, enumerate branches, or discover descendants.
+17. **6A assessment-request boundary.** Construction and assertion defensively capture exact request representation. `revisionId` is DREV-shape only; question and selection IDs are DCI-shape only; `requestedBy` is declared `HUMAN_INPUT` ownership only. Construction may trim `actorId`, canonicalize selection order, reject duplicates/category overlap/question reuse, and return detached state; stored assertion does not repair. It performs no repository read, revision resolution, persistence authority operation, lineage traversal, item existence/role validation, authority operation, evaluator/model/provider call, assessment, Decision Need derivation, recommendation, or human decision.
 
 ## Reachable structural states
 
@@ -354,4 +384,4 @@ PARTIAL CHAIN         != VALID LINEAGE
 
 The generic `lib/decision-core/**` production files are guarded against imports from Career, Capability Core, matching, recommendations, and legacy Career decision-loop code. The Capability adapter may import Capability Core because it is a producer-specific integration outside that generic kernel.
 
-Decision Core is application-domain neutral, not ontology-free in a metaphysical sense: the current ontology is intentionally about opaque producer state, structural context items, roles, provenance, operation-time authority reachability, semantic proposals, explicit structural expectations, explicit structural relation proposals, basis-relative structural gaps and explicit-path consequences, derivational-coherence assemblies, self-contained revision artifacts, repository-bound immutable authority-of-record operations, and a PostgreSQL adapter that implements those sealed persistence semantics outside the kernel. These are distinct operations and artifacts, not one automatic pipeline. Recruiting is not implemented on top of this module.
+Decision Core is application-domain neutral, not ontology-free in a metaphysical sense: the current ontology is intentionally about opaque producer state, structural context items, roles, provenance, operation-time authority reachability, semantic proposals, explicit structural expectations, explicit structural relation proposals, basis-relative structural gaps and explicit-path consequences, derivational-coherence assemblies, self-contained revision artifacts, repository-bound immutable authority-of-record operations, the PostgreSQL adapter implementing those sealed persistence semantics outside the kernel, read-only explicit predecessor-lineage reconstruction, and a standalone human-declared assessment-request contract. These are distinct operations and artifacts, not one automatic pipeline. Recruiting is not implemented on top of this module.
