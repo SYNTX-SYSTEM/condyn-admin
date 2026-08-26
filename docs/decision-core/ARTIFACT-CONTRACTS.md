@@ -77,6 +77,7 @@
 | `DecisionContextRevisionRepository` | `getRevisionById(revisionId)` and `createDecisionContextRevisionPersister()` | Supported interface shape; it has no raw-writer member, but conformance alone does not prove 5D2A governance semantics. |
 | `BoundDecisionContextRevisionPersister` | `persist(revision)` | Supported repository-bound persistence capability for one complete `DecisionContextRevision`. |
 | `InMemoryDecisionContextRevisionRepository` | In-memory `DecisionContextRevisionRepository` implementation | Shipped implementation that enforces 5D2A authority semantics; it is not durable persistence. |
+| `PostgresDecisionContextRevisionRepository` | Constructor receives configured `PostgresJsDatabase`; `getRevisionById(revisionId)` and `createDecisionContextRevisionPersister()` | Infrastructure adapter outside generic Decision Core that implements sealed 5D2A persistence semantics using PostgreSQL. Its physical table descriptor is internal, not a supported barrel export. |
 
 ## Reference and reader behavior
 
@@ -679,4 +680,48 @@ Repository identity is `revisionId`. Exact replay of the same complete revision 
 | Write reports success but reread cannot establish exact complete persisted equality | `ERR_DECISION_CONTEXT_REVISION_PERSISTENCE_INVALID` |
 | Invalid caller revision | Meaningful sealed Phase-5D1 error remains observable. |
 
-The shipped in-memory implementation enforces repository-bound authority semantics, immediate-parent integrity, immutable replay/conflict behavior, exact reread, complete equality, and detached reads/returns. It does not prove durable persistence, process-restart survival, database durability or transaction isolation, Postgres race guarantees, database foreign keys, or cold restart. `5D2A != DURABLE HISTORICAL MEMORY`; durable governed historical record across process restart is deferred to Phase 5D2B. Phase 5D3 is planned for read-only revision-lineage reconstruction.
+The shipped in-memory implementation enforces repository-bound authority semantics, immediate-parent integrity, immutable replay/conflict behavior, exact reread, complete equality, and detached reads/returns. It does not itself prove durable persistence, process-restart survival, database durability or transaction isolation, Postgres race guarantees, database foreign keys, or cold restart. `5D2A != DURABLE HISTORICAL MEMORY`; Phase 5D2B provides the separate durable PostgreSQL adapter. Phase 5D3 is planned for read-only revision-lineage reconstruction.
+
+## Durable PostgreSQL Persistence Adapter contract
+
+Phase 5D2B adds `PostgresDecisionContextRevisionRepository` under `lib/decision-adapters/revision-persistence/`. Its dependency direction is:
+
+```text
+decision-adapters/revision-persistence
+  -> decision-core/revision-persistence
+  -> decision-core/revisions
+```
+
+The adapter receives a configured `PostgresJsDatabase` dependency. It does not read `DATABASE_URL`, create a pool, create a database or table, or run migrations. Generic `lib/decision-core/**` remains free of PostgreSQL, Drizzle, Career DB, Career ontology, and frontend dependencies.
+
+Its supported surface is `getRevisionById(revisionId)` and `createDecisionContextRevisionPersister()`. The supported write path remains `repository -> createDecisionContextRevisionPersister() -> persist(revision)`. The adapter barrel exports only `PostgresDecisionContextRevisionRepository`; the `decisionContextRevisions` Drizzle descriptor and runtime-private `#writeRevision(...)` are infrastructure machinery, not public write capability.
+
+The physical PostgreSQL table is exactly `decision_context_revisions` with `revision_id TEXT PRIMARY KEY`, nullable `previous_revision_id TEXT`, and `payload JSONB NOT NULL`. `previous_revision_id` self-references `revision_id` with non-cascading deletion and is not unique, so forks remain physically representable. There are no timestamps, revision numbers, head/latest/current/active/superseded fields, branch fields, or payload hash.
+
+Every accepted row must satisfy:
+
+```text
+requested revision ID == row.revision_id, where lookup supplies one
+row.revision_id == payload.revisionId
+row.previous_revision_id == payload.previousRevisionId
+```
+
+The read path is exact persisted representation validation:
+
+```text
+PostgreSQL row
+  -> detached JSONB payload
+  -> assertDecisionContextRevision(payload)
+  -> physical / embedded identity equality
+  -> detached DecisionContextRevision
+```
+
+`READ != RECONSTRUCT != REPAIR`. JSONB object-key normalization is accepted through structural data equality, but a malformed, noncanonical, or physical/embedded-inconsistent row fails `ERR_DECISION_CONTEXT_REVISION_POSTGRES_RECORD_INVALID` and is not normalized.
+
+The runtime-private writer uses `INSERT ... ON CONFLICT DO NOTHING ... RETURNING`. An insert winner succeeds; an existing key causes a conflict-race reread of the winner. Exact complete artifact equality is idempotent replay, while divergent complete artifact state is `ERR_DECISION_CONTEXT_REVISION_IMMUTABLE_CONFLICT`. This race reread answers which row won the physical key; it remains distinct from the sealed 5D2A post-write reread that decides whether the bound authority operation may return. No update, overwrite, repair, or payload-hash equality criterion exists.
+
+`DREV_` remains lookup identity, not the complete record state. Identity-excluded EBIND rationale remains conflict-relevant complete payload. PostgreSQL JSONB may reorder object keys without changing structural data; arrays remain order-sensitive. The targeted 5C4 correction made stored-assembly equality recursive, key-order-insensitive for objects, and order-sensitive for arrays without changing any 5C4 artifact shape, identity, API, or derivation semantics.
+
+5D2B combines 5D2A application-level immediate-parent validation with the physical self foreign key. Both establish integrity layers, but `FK != FULL LINEAGE VALIDATION`: there is no parent-of-parent traversal, head selection, or branch policy. A child whose parent is not visible fails `ERR_DECISION_CONTEXT_REVISION_PARENT_NOT_FOUND`; there is no wait, polling, automatic retry, or eventual-consistency interpretation. One parent may have multiple children, and a child may retain its parent's context and assembly identities.
+
+The focused integration suite uses isolated PostgreSQL schemas and derives test DDL from the actual internal `decisionContextRevisions` Drizzle descriptor; test provisioning is not production bootstrapping. It uses two independent postgres.js clients for physical race tests. It proves database-backed survival across repository/client reconstruction, not OS-process crash recovery, machine restart, backup, replication, or disaster recovery.
