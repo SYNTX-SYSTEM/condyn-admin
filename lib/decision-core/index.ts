@@ -15,3 +15,4 @@ export * from "./assessment-proposal";
 export * from "./recommendation-proposal";
 export * from "./proposal-coherence";
 export * from "./human-decision";
+export * from "./action-intent";
