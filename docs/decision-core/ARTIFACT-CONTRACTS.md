@@ -123,6 +123,12 @@
 | `HumanDecisionDeclaration` | Exact canonical seven-field stored artifact | Detached `HUMAN_DECISION_DECLARATION` / `HUMAN_DECISION_DECLARATION_V1` artifact with deterministic `DHDEC_`; it is not recommendation, truth, action, outcome, or persistence authority. |
 | `createHumanDecisionDeclaration(validation, input)` | `DecisionProposalCoherenceValidation × HumanDecisionDeclarationInput -> HumanDecisionDeclaration` | Sealed-asserts one complete DPCV, admits actual embedded revision `OPTION` items, canonicalizes choices/rationale/actor representation, and returns detached state. |
 | `assertHumanDecisionDeclaration(value)` | `unknown -> asserts value is HumanDecisionDeclaration` | Self-contained exact stored assertion with no model, provider, evaluator, generator, reader, repository, persister, lineage, authority, or authentication call; it does not repair state. |
+| `DECISION_ACTION_INTENT_SCHEMA_VERSION` | `"DECISION_ACTION_INTENT_V1"` | Fixed schema-version constant for the Phase 8A1 decision-bound action-intent artifact. |
+| `ActionIntentActor` | `origin: "HUMAN_INPUT"`, `actorId` | Declared intent ownership only; it is not authenticated identity, authorization, signature, permission, or truth. |
+| `DecisionActionIntentInput` | `declaredBy`, `operationalizedOptionItemIds`, `operationDescription`, `rationale` | Exact four-field constructor input. The option inventory is a nonempty subset of the sealed human decision's choices. |
+| `DecisionActionIntent` | Exact canonical eight-field stored artifact | Detached `DECISION_ACTION_INTENT` / `DECISION_ACTION_INTENT_V1` artifact with deterministic `DAINT_`; it is not commitment, action, execution, outcome, or persistence authority. |
+| `createDecisionActionIntent(declaration, input)` | `HumanDecisionDeclaration × DecisionActionIntentInput -> DecisionActionIntent` | Sealed-asserts one complete human declaration, canonicalizes admitted local state, and returns detached intended-operation state. |
+| `assertDecisionActionIntent(value)` | `unknown -> asserts value is DecisionActionIntent` | Self-contained exact stored assertion with no model, provider, evaluator, generator, reader, repository, persister, lineage, resolver, executor, clock, or external call; it does not repair state. |
 
 ## Reference and reader behavior
 
@@ -1285,3 +1291,78 @@ The public runtime surface is exactly `HUMAN_DECISION_DECLARATION_SCHEMA_VERSION
 - `ERR_DECISION_HUMAN_DECISION_RATIONALE_INVALID`
 - `ERR_DECISION_HUMAN_DECISION_INVALID`
 - `ERR_DECISION_HUMAN_DECISION_ID_MISMATCH`
+
+## Phase 8A1 decision-bound action-intent contract
+
+Phase 8A1 adds `DecisionActionIntent` under `lib/decision-core/action-intent/`. It consumes one complete sealed `HumanDecisionDeclaration`, declared `HUMAN_INPUT` intent actor, a nonempty explicit subset of the human-chosen option IDs, opaque operation text, and optional human rationale; it creates one detached canonical artifact and stops. It is intended operation state only: `HUMAN DECISION != ACTION INTENT`, `ACTION INTENT != HUMAN COMMITMENT != ACTION != EXECUTION != OUTCOME`, and `INTENDED ACTION != OBSERVED ACTION`.
+
+```ts
+interface ActionIntentActor {
+  origin: "HUMAN_INPUT";
+  actorId: string;
+}
+
+interface DecisionActionIntentInput {
+  declaredBy: ActionIntentActor;
+  operationalizedOptionItemIds: readonly string[];
+  operationDescription: string;
+  rationale: string | null;
+}
+
+interface DecisionActionIntent {
+  artifactKind: "DECISION_ACTION_INTENT";
+  schemaVersion: "DECISION_ACTION_INTENT_V1";
+  actionIntentId: string;
+  humanDecisionDeclaration: HumanDecisionDeclaration;
+  declaredBy: ActionIntentActor;
+  operationalizedOptionItemIds: readonly string[];
+  operationDescription: string;
+  rationale: string | null;
+}
+```
+
+The input has exactly four fields and the artifact exactly eight. There is no commitment/action actor, execution or status field, timestamp, target, assignee, due date, outcome, feedback, persistence metadata, or authentication metadata. `declaredBy` is declared human input only: `ACTION INTENT DECLARER != DECISION ACTOR != FUTURE COMMITMENT ACTOR != FUTURE ACTION ACTOR`, and `HUMAN_INPUT != AUTHENTICATED IDENTITY != AUTHORIZATION != SIGNATURE != PERMISSION != TRUTH`.
+
+### Subset admission and opaque operation text
+
+The complete human declaration is the sole predecessor authority boundary. `createDecisionActionIntent(...)` calls `assertHumanDecisionDeclaration(...)` and does not independently reconstruct the revision, inspect context roles, inspect assessment selections/relations, inspect recommendations or traces, resolve producer authority, traverse lineage, or read persistence.
+
+Every operationalized ID is DCI-shaped, unique, and in `humanDecisionDeclaration.chosenOptionItemIds`; construction canonicalizes code-point order and stored assertion requires it already. `ACTION INTENT SCOPE ⊆ HUMAN DECISION CHOICE SET`. This follows, rather than contradicts, `MODEL PROPOSAL SPACE != HUMAN DECISION SPACE`: the model cannot narrow pre-decision human admissibility, while an intent cannot operationalize an option the human did not choose. A/B/C may yield an A/C intent; if the human chose only A/B, actual revision option C is invalid for the intent.
+
+`operationDescription` is trimmed nonempty opaque text. It is not parsed into an action type, target, assignee, executor, parameter set, command, workflow, timing, or expected effect. `OPERATION DESCRIPTION != EXECUTABLE COMMAND != EXECUTION PROOF != EXPECTED OUTCOME != AUTHORIZATION`. Rationale is `null` or trimmed nonempty human text; `RATIONALE != ACTION INTENT != PROOF != TRUTH != AUTHORIZATION != EXECUTION`.
+
+One decision may have zero, one, or multiple independently declared intents. No repository/global uniqueness or cross-intent overlap constraint exists: `ONE HUMAN DECISION != ONE ACTION INTENT` and `DECISION EXISTENCE != ACTION INTENT EXISTENCE`.
+
+### `DAINT_` complete-state identity and stored assertion
+
+`DAINT_` matches `^DAINT_[0-9A-F]{24}$`: it is the first 24 uppercase hexadecimal characters of SHA-256 over:
+
+```ts
+[
+  "DECISION_ACTION_INTENT_V1",
+  canonicalCompleteHumanDecisionDeclaration,
+  ["HUMAN_INPUT", trimmedDeclaredByActorId],
+  canonicalOperationalizedOptionItemIds,
+  canonicalOperationDescription,
+  canonicalRationale
+]
+```
+
+The complete embedded human declaration participates, not only `humanDecisionId`. Recursive canonicalization makes predecessor object insertion order non-semantic while retaining sealed predecessor array semantics; local option order is separately canonical. Predecessor state, declarer, option subset, operation description, and rationale each change `DAINT_`. `DAINT IDENTITY != AUTHENTICATED IDENTITY != AUTHORIZATION != EXECUTION != ACTION OCCURRENCE != OUTCOME != TRUTH != PERSISTENCE AUTHORITY != CURRENT PRODUCER AUTHORITY`.
+
+`assertDecisionActionIntent(value)` is self-contained and may call only `assertHumanDecisionDeclaration(...)`. It requires exact headers and eight fields, a sealed complete predecessor, canonical human actor, nonempty canonical subset, trimmed opaque operation text, canonical rationale, and recomputed identity. `CREATE MAY CANONICALIZE; ASSERT MUST NOT REPAIR.` Hostile, malformed, noncanonical, predecessor-invalid, or body-invalid stored state fails `ERR_DECISION_ACTION_INTENT_INVALID`; only an otherwise exact valid body with a stale/wrong ID fails `ERR_DECISION_ACTION_INTENT_ID_MISMATCH`.
+
+Descriptor-based capture rejects accessors, symbols, hidden fields, sparse arrays, custom array state, and cycles without getter execution, including nested hostile predecessor state. Returned state is detached, not asserted deep-frozen. The module imports only `node:crypto`, sealed `human-decision`, and local files. It does not reuse or generalize `lib/career/decisions/action.ts`; legacy `CommitmentRecord`, `ActionEvent`, action types/targets, time/random IDs, and caches remain domain-specific.
+
+The runtime surface is exactly `DECISION_ACTION_INTENT_SCHEMA_VERSION`, `createDecisionActionIntent`, and `assertDecisionActionIntent`. The public types are exactly `ActionIntentActor`, `DecisionActionIntentInput`, and `DecisionActionIntent`. The exact error surface is:
+
+- `ERR_DECISION_ACTION_INTENT_INPUT_INVALID`
+- `ERR_DECISION_ACTION_INTENT_HUMAN_DECISION_INVALID`
+- `ERR_DECISION_ACTION_INTENT_ACTOR_INVALID`
+- `ERR_DECISION_ACTION_INTENT_OPTION_ID_INVALID`
+- `ERR_DECISION_ACTION_INTENT_OPTION_NOT_CHOSEN`
+- `ERR_DECISION_ACTION_INTENT_DUPLICATE_OPTION`
+- `ERR_DECISION_ACTION_INTENT_OPERATION_INVALID`
+- `ERR_DECISION_ACTION_INTENT_RATIONALE_INVALID`
+- `ERR_DECISION_ACTION_INTENT_INVALID`
+- `ERR_DECISION_ACTION_INTENT_ID_MISMATCH`
