@@ -103,6 +103,15 @@
 | `DecisionAssessmentProposal` | Exact canonical six-field stored artifact | A detached `DECISION_ASSESSMENT_PROPOSAL` / `DECISION_ASSESSMENT_PROPOSAL_V1` artifact with deterministic `DASPR_`; it is not recommendation, Decision Need, or human decision. |
 | `createBoundDecisionAssessmentProposer(evaluator)` | `DecisionAssessmentEvaluator -> BoundDecisionAssessmentProposer` | Captures exactly one own enumerable data-method `evaluate` capability and binds it at construction. |
 | `assertDecisionAssessmentProposal(value)` | `unknown -> asserts value is DecisionAssessmentProposal` | Self-contained exact stored assertion; it performs no evaluator, reader, repository, lineage, authority, provider, or model call and does not repair representation. |
+| `DECISION_RECOMMENDATION_PROPOSAL_SCHEMA_VERSION` | `"DECISION_RECOMMENDATION_PROPOSAL_V1"` | Fixed schema-version constant for the Phase 6D recommendation-proposal contract. |
+| `DecisionRecommendation` | `optionItemId`, `rationale` | One admitted option-only recommendation representation. Rationale is trimmed, nonempty, and identity-bearing; no criterion, disposition, score, rank, priority, winner, or rejection field exists. |
+| `DecisionRecommendationProposalProvenance` | `origin: "MODEL_PROPOSAL"`, `proposalRef` | Declared proposal provenance only; it does not identify or authenticate the recommendation generator, a model, or a provider. |
+| `DecisionRecommendationGenerationInput` | `assessmentProposal` | Exact one-field detached predecessor input supplied to the generator. |
+| `DecisionRecommendationGenerator` | `recommend(input): Promise<readonly DecisionRecommendation[]>` | Generic bound semantic recommendation capability, not model identity, provider identity, or authority. |
+| `DecisionRecommendationProposal` | Exact canonical six-field stored artifact | A detached `DECISION_RECOMMENDATION_PROPOSAL` / `DECISION_RECOMMENDATION_PROPOSAL_V1` artifact with deterministic `DRECP_`; it is not decision, action, outcome, truth, or recommendation correctness. |
+| `BoundDecisionRecommendationProposer` | `propose(assessmentProposal, proposedBy): Promise<DecisionRecommendationProposal>` | Bound operation that constructs canonical recommendation proposal state. |
+| `createBoundDecisionRecommendationProposer(generator)` | `DecisionRecommendationGenerator -> BoundDecisionRecommendationProposer` | Captures exactly one own enumerable data-method `recommend` capability at construction. |
+| `assertDecisionRecommendationProposal(value)` | `unknown -> asserts value is DecisionRecommendationProposal` | Self-contained exact stored assertion with no generator, evaluator, reader, repository, authority, lineage, provider, or model call. |
 
 ## Reference and reader behavior
 
@@ -1046,3 +1055,84 @@ ERR_DECISION_ASSESSMENT_PROPOSAL_ID_MISMATCH
 ```
 
 The module remains generic: no Career, Recruiting, Capability Core, matching, legacy loop, frontend, PostgreSQL, Drizzle, decision adapters, revision persistence/lineage, provider implementation, model implementation, scoring, ranking, recommendation, Decision Need, or human-decision dependency exists.
+
+## Phase 6D recommendation proposal contract
+
+Phase 6D adds `DecisionRecommendationProposal` under `lib/decision-core/recommendation-proposal/`. It transforms one sealed assessment proposal through one bound generic semantic recommendation capability and declared `MODEL_PROPOSAL` provenance into canonical recommendation proposal state, then stops. It does not make a human decision or close the human-machine loop.
+
+```ts
+interface DecisionRecommendationProposal {
+  artifactKind: "DECISION_RECOMMENDATION_PROPOSAL";
+  schemaVersion: "DECISION_RECOMMENDATION_PROPOSAL_V1";
+  recommendationProposalId: string;
+  assessmentProposal: DecisionAssessmentProposal;
+  proposedBy: DecisionRecommendationProposalProvenance;
+  recommendations: readonly DecisionRecommendation[];
+}
+```
+
+Exactly six top-level fields are valid. `DecisionRecommendation` is exactly `{ optionItemId, rationale }`; it contains no criterion ID, disposition, score, weight, rank, priority, confidence, timestamp, winner, or rejection state. Rationale is trimmed, nonempty, and identity-bearing. Runtime exports are exactly `DECISION_RECOMMENDATION_PROPOSAL_SCHEMA_VERSION`, `createBoundDecisionRecommendationProposer`, and `assertDecisionRecommendationProposal`. Public types are exactly `DecisionRecommendation`, `DecisionRecommendationProposalProvenance`, `DecisionRecommendationGenerationInput`, `DecisionRecommendationGenerator`, `DecisionRecommendationProposal`, and `BoundDecisionRecommendationProposer`.
+
+### Generator, provenance, and operation
+
+```ts
+interface DecisionRecommendationGenerationInput {
+  assessmentProposal: DecisionAssessmentProposal;
+}
+
+interface DecisionRecommendationGenerator {
+  recommend(input: DecisionRecommendationGenerationInput): Promise<readonly DecisionRecommendation[]>;
+}
+```
+
+`createBoundDecisionRecommendationProposer(generator)` accepts exactly one own enumerable data-method `recommend`. It rejects extras, symbols, accessors, non-enumerable/missing/non-function `recommend`, arrays, primitives, and `null`. The method is captured and bound at construction; later replacement cannot redirect the proposer and its receiver is preserved. The generator is a generic semantic recommendation capability: `GENERATOR CAPABILITY != MODEL IDENTITY`, and declared `MODEL_PROPOSAL` provenance does not prove generator identity, model/provider authentication, provider authority, human preference, or truth.
+
+`propose(...)` (1) captures the complete assessment proposal, (2) sealed-asserts it, (3) captures declared `MODEL_PROPOSAL` provenance and trims valid `proposalRef`, (4) invokes the bound `recommend` capability once with a detached complete predecessor, (5) defensively captures output, (6) validates exact recommendation shape and trimmed nonempty rationale, (7) validates human selection, (8) validates assessment representation, (9) rejects duplicate option targets, (10) canonicalizes recommendation order, (11) derives `DRECP_`, (12) constructs the exact artifact, (13) self-asserts it, (14) returns detached state, and (15) stops. Caller mutation cannot redirect predecessor, selection/assessment inventory, provenance, or identity. Generator input and output are detached; detached does not mean deep-frozen.
+
+### Target admission and disposition independence
+
+A recommendation `optionItemId` must be DCI-shaped, occur in `assessmentProposal.assessmentBasis.assessmentRequest.selectedOptionItemIds`, and occur in at least one `assessmentProposal.assessments[*].optionItemId` relation. Thus `REVISION MEMBERSHIP != HUMAN NORMATIVE SELECTION`, `HUMAN NORMATIVE SELECTION != ASSESSMENT REPRESENTATION`, and `ASSESSMENT REPRESENTATION != RECOMMENDATION`. A selected but unassessed option is not admissible, without a claim that it is bad, rejected, incomplete, irrelevant, unsafe, or unfit.
+
+Admission does not inspect assessment disposition. An option represented only as `ALIGNED`, `PARTIALLY_ALIGNED`, `MISALIGNED`, or `UNDETERMINED` remains structurally eligible. `DISPOSITION != RECOMMENDATION POLICY`; `ALIGNED != RECOMMENDED`, `PARTIALLY_ALIGNED != LOWER PRIORITY`, `MISALIGNED != REJECTED`, and `UNDETERMINED != BLOCKED`.
+
+Zero, partial, and multiple recommendations are valid. Recommendation order is non-semantic and stored order is deterministic by code-point `optionItemId`. Absence means no claim; no rejection is synthesized. With empty embedded assessments, zero recommendations remain valid but no non-empty output can satisfy assessment-representation admission. Multiple recommendations do not establish ranking, best, optimality, human preference, Decision Need, decision, action, outcome, or truth.
+
+### `DRECP_` complete-state identity
+
+`recommendationProposalId` matches `^DRECP_[0-9A-F]{24}$`: SHA-256 of `JSON.stringify(...)`, first 24 uppercase hexadecimal characters, prefixed `DRECP_`.
+
+```ts
+[
+  "DECISION_RECOMMENDATION_PROPOSAL_V1",
+  canonicalCompleteDecisionAssessmentProposal,
+  ["MODEL_PROPOSAL", proposedBy.proposalRef],
+  canonicalRecommendations
+]
+```
+
+The complete embedded assessment proposal participates; identity is not merely `assessmentProposalId + recommendations`. Its canonicalizer recursively code-point-sorts object own string keys, preserves arrays in sealed predecessor order, and preserves primitive values. Recommendation input order is non-semantic because Phase 6D canonicalizes by option ID. Changing complete assessment proposal state, `proposalRef`, recommended option, rationale, or recommendation set changes `DRECP_`. `DRECP IDENTITY != TRUTH != RECOMMENDATION CORRECTNESS != OPTION OPTIMALITY != HUMAN DECISION`.
+
+### Stored assertion and errors
+
+`assertDecisionRecommendationProposal(value)` is self-contained and may sealed-assert the embedded `DecisionAssessmentProposal`. It calls no generator, evaluator, reader, repository, persister, lineage, authority resolver, provider, model, or external dependency. It requires exact six fields, header/ID shape, exact canonical provenance, exact two-field recommendations, already-trimmed rationale, valid selected and assessment-represented DCI targets, no duplicates, canonical order, and recomputed complete-state identity.
+
+```text
+CREATE MAY CANONICALIZE
+ASSERT MUST NOT REPAIR
+```
+
+It does not trim, sort, deduplicate, replace targets, or synthesize state. Hostile, malformed, noncanonical, embedded-invalid, target-invalid, or duplicate stored state fails `ERR_DECISION_RECOMMENDATION_PROPOSAL_INVALID`. Only an otherwise exact valid body with stale/wrong deterministic ID fails `ERR_DECISION_RECOMMENDATION_PROPOSAL_ID_MISMATCH`.
+
+```text
+ERR_DECISION_RECOMMENDATION_PROPOSAL_GENERATOR_INVALID
+ERR_DECISION_RECOMMENDATION_PROPOSAL_ASSESSMENT_PROPOSAL_INVALID
+ERR_DECISION_RECOMMENDATION_PROPOSAL_PROVENANCE_INVALID
+ERR_DECISION_RECOMMENDATION_PROPOSAL_RECOMMENDATION_INVALID
+ERR_DECISION_RECOMMENDATION_PROPOSAL_OPTION_NOT_SELECTED
+ERR_DECISION_RECOMMENDATION_PROPOSAL_OPTION_NOT_ASSESSED
+ERR_DECISION_RECOMMENDATION_PROPOSAL_DUPLICATE
+ERR_DECISION_RECOMMENDATION_PROPOSAL_INVALID
+ERR_DECISION_RECOMMENDATION_PROPOSAL_ID_MISMATCH
+```
+
+The module remains generic Decision Core: no Career, Recruiting, Capability Core, matching, legacy loop, frontend, PostgreSQL, Drizzle, decision adapters, revision persistence/lineage, provider implementation, score/rank/recommendation-policy, Decision Need, human decision, action, outcome, feedback, or learning dependency exists.
