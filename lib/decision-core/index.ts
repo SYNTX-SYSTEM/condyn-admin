@@ -12,3 +12,4 @@ export * from "./revision-lineage";
 export * from "./assessment-request";
 export * from "./assessment-basis";
 export * from "./assessment-proposal";
+export * from "./recommendation-proposal";
