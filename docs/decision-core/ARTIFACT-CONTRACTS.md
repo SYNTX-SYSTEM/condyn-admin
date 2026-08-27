@@ -112,6 +112,11 @@
 | `BoundDecisionRecommendationProposer` | `propose(assessmentProposal, proposedBy): Promise<DecisionRecommendationProposal>` | Bound operation that constructs canonical recommendation proposal state. |
 | `createBoundDecisionRecommendationProposer(generator)` | `DecisionRecommendationGenerator -> BoundDecisionRecommendationProposer` | Captures exactly one own enumerable data-method `recommend` capability at construction. |
 | `assertDecisionRecommendationProposal(value)` | `unknown -> asserts value is DecisionRecommendationProposal` | Self-contained exact stored assertion with no generator, evaluator, reader, repository, authority, lineage, provider, or model call. |
+| `DECISION_PROPOSAL_COHERENCE_VALIDATION_SCHEMA_VERSION` | `"DECISION_PROPOSAL_COHERENCE_VALIDATION_V1"` | Fixed schema-version constant for deterministic Phase 6E proposal-coherence validation. |
+| `DecisionRecommendationCoherenceTrace` | `optionItemId`, `representedCriterionItemIds` | Exact two-field trace from one recommendation to its already-represented assessment criterion IDs; it carries no rationale, disposition, support, correctness, completeness, or status. |
+| `DecisionProposalCoherenceValidation` | Exact canonical five-field stored artifact | Detached `DECISION_PROPOSAL_COHERENCE_VALIDATION` / `DECISION_PROPOSAL_COHERENCE_VALIDATION_V1` trace-validation artifact with deterministic `DPCV_`; it is not truth, recommendation correctness, Decision Need, or human decision. |
+| `validateDecisionProposalCoherence(recommendationProposal)` | `DecisionRecommendationProposal -> DecisionProposalCoherenceValidation` | Sealed-asserts one complete predecessor, deterministically reconstructs canonical represented criterion traces, and has no dependency capability. |
+| `assertDecisionProposalCoherenceValidation(value)` | `unknown -> asserts value is DecisionProposalCoherenceValidation` | Self-contained exact stored assertion; it reads no generator, evaluator, reader, repository, persister, lineage, authority, provider, or model dependency and does not repair state. |
 
 ## Reference and reader behavior
 
@@ -1136,3 +1141,67 @@ ERR_DECISION_RECOMMENDATION_PROPOSAL_ID_MISMATCH
 ```
 
 The module remains generic Decision Core: no Career, Recruiting, Capability Core, matching, legacy loop, frontend, PostgreSQL, Drizzle, decision adapters, revision persistence/lineage, provider implementation, score/rank/recommendation-policy, Decision Need, human decision, action, outcome, feedback, or learning dependency exists.
+
+## Phase 6E proposal coherence validation contract
+
+Phase 6E adds `DecisionProposalCoherenceValidation` under `lib/decision-core/proposal-coherence/`. It transforms one sealed `DecisionRecommendationProposal` through deterministic ConDyn trace reconstruction into a detached canonical validation artifact, then stops. It has no model, provider, evaluator, generator, human actor, reader, repository, persister, lineage, or authority dependency.
+
+```ts
+interface DecisionRecommendationCoherenceTrace {
+  optionItemId: string;
+  representedCriterionItemIds: readonly string[];
+}
+
+interface DecisionProposalCoherenceValidation {
+  artifactKind: "DECISION_PROPOSAL_COHERENCE_VALIDATION";
+  schemaVersion: "DECISION_PROPOSAL_COHERENCE_VALIDATION_V1";
+  proposalCoherenceValidationId: string;
+  recommendationProposal: DecisionRecommendationProposal;
+  traces: readonly DecisionRecommendationCoherenceTrace[];
+}
+```
+
+The trace has exactly two fields and the artifact exactly five. There are no timestamps, added provenance, model/provider metadata, validation-status boolean, `coherent` boolean, correctness field, or support field. Runtime exports are exactly `DECISION_PROPOSAL_COHERENCE_VALIDATION_SCHEMA_VERSION`, `validateDecisionProposalCoherence`, and `assertDecisionProposalCoherenceValidation`. Public types are exactly `DecisionRecommendationCoherenceTrace` and `DecisionProposalCoherenceValidation`.
+
+### Trace reconstruction and canonicalization
+
+For each recommendation, one trace is derived. Its `optionItemId` equals the recommendation option ID. Its `representedCriterionItemIds` are exactly every `criterionItemId` in `recommendationProposal.assessmentProposal.assessments` whose `optionItemId` equals the trace option ID. All assessment dispositions and rationales are represented data only: neither is interpreted, filtered, or treated as support, justification, correctness, completeness, or readiness.
+
+Trace inventory order is deterministic code-point `optionItemId` order. Criterion IDs within each trace are deterministic code-point `criterionItemId` order. Phase 6E derives its own canonical trace representation rather than relying on predecessor iteration order. It does not require a selected-criterion Cartesian product or synthesize missing criteria. Assessed but unrecommended options receive no trace; zero recommendations yield `traces: []`; multiple recommendations yield one trace each.
+
+Phase 6D already guarantees that every recommendation target is human-selected and assessment-represented at least once. A sealed-valid recommendation proposal therefore has no untraceable recommendation under the Phase 6E definition. Phase 6E adds no `UNTRACEABLE`, `INCOHERENT`, `UNSUPPORTED`, `INCOMPLETE`, `REJECTED`, or `NOT_READY` state.
+
+`TRACEABILITY != SEMANTIC CORRECTNESS`, `STRUCTURAL COHERENCE != RECOMMENDATION CORRECTNESS`, `ASSESSMENT REPRESENTATION != SUPPORT FOR RECOMMENDATION`, `CRITERION TRACE != JUSTIFICATION`, `ASSESSMENT DISPOSITION != COHERENCE POLICY`, `MISALIGNED != INCOHERENT RECOMMENDATION`, and `UNDETERMINED != INVALID RECOMMENDATION`.
+
+### `DPCV_` complete-state identity
+
+`proposalCoherenceValidationId` matches `^DPCV_[0-9A-F]{24}$`: SHA-256 of `JSON.stringify(...)`, first 24 uppercase hexadecimal characters, prefixed `DPCV_`.
+
+```ts
+[
+  "DECISION_PROPOSAL_COHERENCE_VALIDATION_V1",
+  canonicalCompleteDecisionRecommendationProposal,
+  canonicalTraces
+]
+```
+
+The complete embedded recommendation proposal participates; identity is not merely `recommendationProposalId + traces`. Its canonicalizer recursively code-point-sorts object own string keys, preserves sealed predecessor array order, and preserves primitive values. Trace and criterion order are separately canonicalized. A changed complete predecessor changes `DPCV_` even if the trace summary remains the same: this includes assessment disposition or rationale, recommendation rationale, proposal reference, human assessment frame, and recommendation inventory. `TRACE SUMMARY != COMPLETE VALIDATION IDENTITY`. `DPCV IDENTITY != TRUTH != RECOMMENDATION CORRECTNESS != HUMAN DECISION`.
+
+### Stored assertion and errors
+
+`assertDecisionProposalCoherenceValidation(value)` is self-contained and may sealed-assert the embedded `DecisionRecommendationProposal`. It calls no generator, evaluator, reader, repository, persister, lineage, authority resolver, provider, model, or external dependency. It requires exact five fields, valid header and `DPCV_` shape, a sealed complete predecessor, exact two-field traces, exact trace/criterion inventories, canonical trace/criterion ordering, and recomputed complete-state identity.
+
+```text
+CREATE MAY DERIVE / CANONICALIZE
+ASSERT MUST NOT REPAIR
+```
+
+Assertion may independently derive expected traces for comparison, but it does not sort, deduplicate, replace, add, remove, or reconstruct into the supplied stored object. Hostile, malformed, noncanonical, predecessor-invalid, or trace-mismatching stored state fails `ERR_DECISION_PROPOSAL_COHERENCE_INVALID`. Only an otherwise exact valid body with stale/wrong deterministic ID fails `ERR_DECISION_PROPOSAL_COHERENCE_ID_MISMATCH`.
+
+```text
+ERR_DECISION_PROPOSAL_COHERENCE_RECOMMENDATION_PROPOSAL_INVALID
+ERR_DECISION_PROPOSAL_COHERENCE_INVALID
+ERR_DECISION_PROPOSAL_COHERENCE_ID_MISMATCH
+```
+
+Phase 6E does not reuse Phase-5 `validation` or `validation-assembly`: `validation` is operation-time producer-authority reachability, `validation-assembly` is Phase-5 derivational coherence, and `proposal-coherence` is Phase-6 recommendation-to-assessment trace reconstruction. The module remains generic Decision Core and imports only the sealed recommendation-proposal contract plus standard crypto/local files.
