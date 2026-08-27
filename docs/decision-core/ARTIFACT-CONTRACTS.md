@@ -117,6 +117,12 @@
 | `DecisionProposalCoherenceValidation` | Exact canonical five-field stored artifact | Detached `DECISION_PROPOSAL_COHERENCE_VALIDATION` / `DECISION_PROPOSAL_COHERENCE_VALIDATION_V1` trace-validation artifact with deterministic `DPCV_`; it is not truth, recommendation correctness, Decision Need, or human decision. |
 | `validateDecisionProposalCoherence(recommendationProposal)` | `DecisionRecommendationProposal -> DecisionProposalCoherenceValidation` | Sealed-asserts one complete predecessor, deterministically reconstructs canonical represented criterion traces, and has no dependency capability. |
 | `assertDecisionProposalCoherenceValidation(value)` | `unknown -> asserts value is DecisionProposalCoherenceValidation` | Self-contained exact stored assertion; it reads no generator, evaluator, reader, repository, persister, lineage, authority, provider, or model dependency and does not repair state. |
+| `HUMAN_DECISION_DECLARATION_SCHEMA_VERSION` | `"HUMAN_DECISION_DECLARATION_V1"` | Fixed schema-version constant for the Phase 7A human positive-option-selection declaration. |
+| `HumanDecisionActor` | `origin: "HUMAN_INPUT"`, `actorId` | Declared human ownership only; it is not authenticated identity, authorization, signature, permission, or truth. |
+| `HumanDecisionDeclarationInput` | `decidedBy`, `chosenOptionItemIds`, `rationale` | Exact three-field constructor input; choices are positive selections only and rationale is `null` or a nonempty string. |
+| `HumanDecisionDeclaration` | Exact canonical seven-field stored artifact | Detached `HUMAN_DECISION_DECLARATION` / `HUMAN_DECISION_DECLARATION_V1` artifact with deterministic `DHDEC_`; it is not recommendation, truth, action, outcome, or persistence authority. |
+| `createHumanDecisionDeclaration(validation, input)` | `DecisionProposalCoherenceValidation × HumanDecisionDeclarationInput -> HumanDecisionDeclaration` | Sealed-asserts one complete DPCV, admits actual embedded revision `OPTION` items, canonicalizes choices/rationale/actor representation, and returns detached state. |
+| `assertHumanDecisionDeclaration(value)` | `unknown -> asserts value is HumanDecisionDeclaration` | Self-contained exact stored assertion with no model, provider, evaluator, generator, reader, repository, persister, lineage, authority, or authentication call; it does not repair state. |
 
 ## Reference and reader behavior
 
@@ -1205,3 +1211,77 @@ ERR_DECISION_PROPOSAL_COHERENCE_ID_MISMATCH
 ```
 
 Phase 6E does not reuse Phase-5 `validation` or `validation-assembly`: `validation` is operation-time producer-authority reachability, `validation-assembly` is Phase-5 derivational coherence, and `proposal-coherence` is Phase-6 recommendation-to-assessment trace reconstruction. The module remains generic Decision Core and imports only the sealed recommendation-proposal contract plus standard crypto/local files.
+
+## Phase 7A human decision declaration contract
+
+Phase 7A adds `HumanDecisionDeclaration` under `lib/decision-core/human-decision/`. It consumes one sealed `DecisionProposalCoherenceValidation`, a declared `HUMAN_INPUT` actor, one or more explicit option choices, and optional human rationale; it creates one detached canonical declaration and stops. This is the first explicit human normative state transition, not a model proposal, recommendation, recommendation-correctness claim, truth, action, outcome, feedback, learning, or persistence-authority operation.
+
+```ts
+interface HumanDecisionActor {
+  origin: "HUMAN_INPUT";
+  actorId: string;
+}
+
+interface HumanDecisionDeclarationInput {
+  decidedBy: HumanDecisionActor;
+  chosenOptionItemIds: readonly string[];
+  rationale: string | null;
+}
+
+interface HumanDecisionDeclaration {
+  artifactKind: "HUMAN_DECISION_DECLARATION";
+  schemaVersion: "HUMAN_DECISION_DECLARATION_V1";
+  humanDecisionId: string;
+  proposalCoherenceValidation: DecisionProposalCoherenceValidation;
+  decidedBy: HumanDecisionActor;
+  chosenOptionItemIds: readonly string[];
+  rationale: string | null;
+}
+```
+
+The artifact has exactly seven fields. It has no timestamp, UUID, randomness, status enum, recommendation state, score, rank, priority, action, outcome, feedback, persistence metadata, or authentication metadata. `HUMAN_INPUT` is declared origin/ownership only: it is not authenticated human identity, authorization, signature, permission, or truth, and `DECISION ACTOR != ASSESSMENT REQUESTER`.
+
+### Human autonomy and option admission
+
+`THE MODEL MAY NARROW ITS OWN PROPOSAL SPACE; IT MUST NOT NARROW THE HUMAN DECISION SPACE.` A chosen ID is admitted when it is DCI-shaped, exists in the complete sealed revision reached through `DPCV -> recommendation proposal -> assessment proposal -> assessment basis -> revision -> context.items`, and has role `OPTION`. It need not occur in the 6A selected options, 6C assessments, 6D recommendations, or 6E traces. Thus `HUMAN ASSESSMENT SELECTION != HUMAN DECISION ADMISSIBILITY`, `ASSESSMENT != HUMAN DECISION ADMISSIBILITY`, `RECOMMENDATION != HUMAN DECISION ADMISSIBILITY`, and `COHERENCE TRACE != HUMAN DECISION ADMISSIBILITY`.
+
+For example, a revision with options A/B/C may have A/B selected in 6A and only A assessed, recommended, and traced through Phase 6; a Phase 7A declaration choosing C remains valid because C is an actual revision `OPTION`. This does not call C unsupported, invalid, bad, or outside the human decision space.
+
+One or more distinct choices are required. Multiple choices are valid because no generic exclusivity/single-choice contract exists. `ONE DECISION != EXACTLY ONE OPTION`, `MULTIPLE CHOSEN OPTIONS != RANKING`, `MULTIPLE CHOSEN OPTIONS != ORDERED PREFERENCE`, and input order is canonicalized by code-point item-ID order. Empty choices reject only because 7A is explicit positive selection: `ZERO CHOSEN OPTIONS != DEFER != ABSTAIN != REJECT_ALL != NO_DECISION`.
+
+Rationale is `null` or a trimmed nonempty string. Construction trims it; stored assertion requires already-trimmed state. `HUMAN RATIONALE != PROOF != TRUTH != RECOMMENDATION CORRECTNESS`.
+
+### Construction, identity, and stored assertion
+
+`createHumanDecisionDeclaration(proposalCoherenceValidation, input)` captures and sealed-asserts the complete DPCV, captures the exact three-field input, trims valid actor/rationale values, validates actual revision-option membership/role, rejects duplicates, canonicalizes choice order, derives `DHDEC_`, self-asserts, and returns detached state. It calls no model, provider, evaluator, generator, reader, repository, persister, lineage, authority resolver, or authentication dependency.
+
+`DHDEC_` matches `^DHDEC_[0-9A-F]{24}$` and is the first 24 uppercase hexadecimal characters of SHA-256 over:
+
+```ts
+[
+  "HUMAN_DECISION_DECLARATION_V1",
+  canonicalCompleteDecisionProposalCoherenceValidation,
+  ["HUMAN_INPUT", trimmedActorId],
+  canonicalChosenOptionItemIds,
+  canonicalRationale
+]
+```
+
+The complete embedded DPCV participates: assessment-frame/proposal/disposition/rationale, recommendation/provenance/rationale, and coherence-trace changes alter `DHDEC_` even when choices remain the same. Decision actor, choice set, and human rationale also participate. Recursive object-key canonicalization makes object insertion order non-semantic; sealed predecessor arrays retain their represented semantics and chosen choice order is independently canonical. `DHDEC IDENTITY != AUTHENTICATED HUMAN IDENTITY != AUTHORIZATION != TRUTH != RECOMMENDATION CORRECTNESS != OPTION OPTIMALITY != ACTION != PERSISTENCE AUTHORITY`.
+
+`assertHumanDecisionDeclaration(value)` is self-contained. It requires exact seven fields, headers and `DHDEC_` shape, a sealed complete DPCV, exact `HUMAN_INPUT` actor with trimmed nonempty ID, a nonempty canonical unique choice inventory, valid revision `OPTION` targets, valid canonical rationale, and recomputed complete-state identity. `CREATE MAY CANONICALIZE; ASSERT MUST NOT REPAIR.` Hostile, malformed, noncanonical, predecessor-invalid, or body-invalid stored state fails `ERR_DECISION_HUMAN_DECISION_INVALID`; only an otherwise exact valid body with a stale/wrong ID fails `ERR_DECISION_HUMAN_DECISION_ID_MISMATCH`.
+
+Descriptor-based capture rejects accessors, symbol keys, hidden fields, sparse arrays, custom array state, and cycles without getter execution. Returned state is detached, not asserted deep-frozen. The module is generic and imports only `node:crypto`, sealed `proposal-coherence`, and local files. It neither reuses nor generalizes `lib/career/decisions/*`; legacy Career decision artifacts remain domain-specific and are not authority for Phase 7A.
+
+The public runtime surface is exactly `HUMAN_DECISION_DECLARATION_SCHEMA_VERSION`, `createHumanDecisionDeclaration`, and `assertHumanDecisionDeclaration`. The public types are exactly `HumanDecisionActor`, `HumanDecisionDeclarationInput`, and `HumanDecisionDeclaration`. The exact Phase 7A error surface is:
+
+- `ERR_DECISION_HUMAN_DECISION_INPUT_INVALID`
+- `ERR_DECISION_HUMAN_DECISION_PROPOSAL_COHERENCE_INVALID`
+- `ERR_DECISION_HUMAN_DECISION_ACTOR_INVALID`
+- `ERR_DECISION_HUMAN_DECISION_OPTION_ID_INVALID`
+- `ERR_DECISION_HUMAN_DECISION_OPTION_NOT_FOUND`
+- `ERR_DECISION_HUMAN_DECISION_OPTION_ROLE_MISMATCH`
+- `ERR_DECISION_HUMAN_DECISION_DUPLICATE_OPTION`
+- `ERR_DECISION_HUMAN_DECISION_RATIONALE_INVALID`
+- `ERR_DECISION_HUMAN_DECISION_INVALID`
+- `ERR_DECISION_HUMAN_DECISION_ID_MISMATCH`

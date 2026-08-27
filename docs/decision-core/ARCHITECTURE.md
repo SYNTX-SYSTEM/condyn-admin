@@ -1,6 +1,6 @@
 # Decision Core architecture
 
-## Scope through Phase 6E
+## Scope through Phase 7A
 
 Decision Core is a generic, producer-neutral module for consuming governed producer state and forming a deterministic structural `DecisionContextDraft`. It is separate from Capability Core. Capability Core publishes capability/evidence-oriented Phase-4 snapshots; Decision Core does not require that ontology and can consume any producer that implements a compatible authority resolver.
 
@@ -14,7 +14,9 @@ Phase 6D adds the adjacent generic `recommendation-proposal` contract. It consum
 
 Phase 6E adds the adjacent generic `proposal-coherence` contract. It consumes one sealed recommendation proposal and deterministically reconstructs the represented assessment criterion trace for each recommended option. It introduces no model, provider, evaluator, generator, human actor, reader, repository, persister, lineage traversal, authority resolver, or decision maker. It does not establish truth, recommendation correctness, support, suitability, optimality, Decision Need, human decision, action, outcome, feedback, or readiness.
 
-The implemented current chain is producer/evidence state -> structural Decision Context -> validated revision state -> persisted revision authority -> read-only predecessor lineage -> human-owned assessment request -> revision-bound assessment basis -> semantic assessment proposal -> recommendation proposal -> proposal coherence validation. These remain distinct artifacts and operations, not one automatic pipeline.
+Phase 7A adds the adjacent generic `human-decision` contract: the first explicit human normative state transition. It consumes one sealed `DecisionProposalCoherenceValidation`, one declared human actor, one or more explicit revision `OPTION` choices, and optional human rationale to create one detached `HumanDecisionDeclaration`. Its choice admission is the complete sealed revision's `OPTION` ontology, not the assessment-selection, assessment, recommendation, or trace inventories. It does not establish recommendation correctness, truth, authenticated identity, authorization, action, outcome, feedback, learning, or persistence authority.
+
+The implemented current chain is producer/evidence state -> structural Decision Context -> validated revision state -> persisted revision authority -> read-only predecessor lineage -> human-owned assessment request -> revision-bound assessment basis -> semantic assessment proposal -> recommendation proposal -> proposal coherence validation -> human decision declaration. These remain distinct artifacts and operations, not one automatic pipeline.
 
 ## Implemented layers
 
@@ -39,6 +41,7 @@ The implemented current chain is producer/evidence state -> structural Decision 
 | Semantic assessment proposal (6C) | Consumes one sealed revision-bound assessment basis and one bound semantic evaluator, admits only human-selected `OPTION × OBJECTIVE/CONSTRAINT` relations, and creates one canonical model-proposal artifact without ranking, recommending, deriving Decision Need, or deciding. | `DecisionAssessmentProposal` |
 | Recommendation proposal (6D) | Consumes one sealed assessment proposal and one bound semantic recommendation capability, admits only selected and assessment-represented options, and creates one canonical model-proposal artifact without ranking, deciding, or acting. | `DecisionRecommendationProposal` |
 | Proposal coherence validation (6E) | Deterministically reconstructs the exact represented assessment criterion trace for each recommendation in one sealed recommendation proposal, without interpreting dispositions, rationale, support, correctness, or readiness. | `DecisionProposalCoherenceValidation` |
+| Human decision declaration (7A) | Records one explicit positive human selection of one or more actual revision `OPTION` items, independent of the model-proposal path, without action or outcome semantics. | `HumanDecisionDeclaration` |
 
 The current Capability Core adapter in `lib/decision-adapters/capability-core.ts` is one producer-specific integration. It is not part of the generic Decision Core kernel.
 
@@ -186,6 +189,18 @@ DecisionRecommendationProposal
   -> canonical trace and criterion ordering
   -> complete-state DPCV identity
   -> detached DecisionProposalCoherenceValidation
+  -> STOP
+
+DecisionProposalCoherenceValidation
+  + declared HUMAN_INPUT actor
+  + one-or-more explicit option choices
+  + optional human rationale
+  -> createHumanDecisionDeclaration(...)
+  -> sealed validation capture/assertion
+  -> complete embedded revision OPTION admission
+  -> canonical chosen-option order
+  -> complete-state DHDEC identity
+  -> detached HumanDecisionDeclaration
   -> STOP
 ```
 
@@ -449,6 +464,27 @@ DPCV IDENTITY != TRUTH != RECOMMENDATION CORRECTNESS != HUMAN DECISION
 
 Phase 6D already guarantees each recommendation target is selected and assessment-represented, so a sealed-valid recommendation proposal has one trace per recommendation under this definition. Phase 6E introduces no `UNTRACEABLE`, `INCOHERENT`, `UNSUPPORTED`, `INCOMPLETE`, `REJECTED`, or `NOT_READY` state. It has no model, provider, evaluator, generator, human actor, reader, repository, persister, lineage, or authority dependency, and creates no Decision Need, human decision, action, outcome, feedback, truth, or authority-of-reality claim.
 
+## Phase 7A human decision declaration boundary
+
+Phase 7A implements only:
+
+```text
+SEALED DecisionProposalCoherenceValidation
++ DECLARED HUMAN_INPUT actor
++ ONE OR MORE explicit revision OPTION choices
++ OPTIONAL human rationale
+-> HumanDecisionDeclaration
+-> STOP
+```
+
+This is the first explicit human normative state transition. `THE MODEL MAY NARROW ITS OWN PROPOSAL SPACE; IT MUST NOT NARROW THE HUMAN DECISION SPACE.` A choice is admitted only when its DCI-shaped ID names an actual `OPTION` in the complete sealed revision embedded through `DecisionProposalCoherenceValidation -> DecisionRecommendationProposal -> DecisionAssessmentProposal -> DecisionAssessmentBasis -> DecisionContextRevision -> context.items`. It is not admitted from the 6A selected-options, 6C assessment, 6D recommendation, or 6E trace inventories.
+
+Thus `HUMAN ASSESSMENT SELECTION != HUMAN DECISION ADMISSIBILITY`, `ASSESSMENT != HUMAN DECISION ADMISSIBILITY`, `RECOMMENDATION != HUMAN DECISION ADMISSIBILITY`, and `COHERENCE TRACE != HUMAN DECISION ADMISSIBILITY`. For example, a revision may contain options A, B, and C while 6A selects A/B, 6C assesses A, 6D recommends A, and 6E traces A; a human declaration choosing C remains valid because C is an actual revision `OPTION`, not because it traversed the model-proposal path.
+
+Phase 7A represents explicit positive selection only: one or more distinct choices are required, multiple choices are valid, and caller order is canonicalized rather than treated as preference. `ONE DECISION != EXACTLY ONE OPTION`, `MULTIPLE CHOSEN OPTIONS != RANKING`, `INPUT ORDER != HUMAN PREFERENCE`, and `ZERO CHOSEN OPTIONS != DEFER != ABSTAIN != REJECT_ALL != NO_DECISION`. `decidedBy` is declared `HUMAN_INPUT` ownership only: it is neither authentication, authorization, signature, permission, nor truth, and `DECISION ACTOR != ASSESSMENT REQUESTER`.
+
+The declaration is not a recommendation, recommendation correctness, truth, option optimality, action, outcome, feedback, learning, current producer authority, or authority of reality. Human rationale is optional (`null` or a trimmed nonempty string) and `HUMAN RATIONALE != PROOF != SEMANTIC TRUTH`. The contract is constructed independently from first principles; legacy `lib/career/decisions/*` remains domain-specific and is not authority for this ontology.
+
 ## Trust boundaries
 
 1. **Producer adapter boundary.** Producer-specific persistence and artifact validation stay in adapters/resolvers. The generic kernel has no Capability Core import.
@@ -472,6 +508,7 @@ Phase 6D already guarantees each recommendation target is selected and assessmen
 19. **6C semantic-assessment-proposal boundary.** The proposer captures one exact own enumerable `evaluate` method, captures/asserts the complete basis before evaluator await, captures declared `MODEL_PROPOSAL` provenance before the call, supplies a detached basis, defensively captures output, admits only human-selected targets, rejects duplicate pairs, canonicalizes relations, derives complete-state `DASPR_`, self-asserts, and returns detached state. It creates no recommendation, Decision Need, or human decision.
 20. **6D recommendation-proposal boundary.** The proposer captures one exact own enumerable `recommend` method, captures/asserts the complete assessment proposal before generator await, captures declared `MODEL_PROPOSAL` provenance before the call, supplies a detached assessment proposal, defensively captures output, admits only selected and assessment-represented options, rejects duplicate options, canonicalizes recommendations, derives complete-state `DRECP_`, self-asserts, and returns detached state. It creates no ranking, Decision Need, human decision, action, or authority operation.
 21. **6E proposal-coherence boundary.** The validator captures and sealed-asserts one complete recommendation proposal, derives exactly one canonical criterion trace for every recommendation from its embedded assessment relations, derives complete-state `DPCV_`, self-asserts, and returns detached state. It has no dependency capability and interprets neither assessment dispositions nor rationales. It creates no semantic support/correctness claim, ranking, Decision Need, human decision, action, outcome, feedback, or authority operation.
+22. **7A human-decision boundary.** Construction captures and sealed-asserts one complete DPCV, captures one declared `HUMAN_INPUT` actor, nonempty choices, and optional rationale, then admits each choice only through the embedded complete revision's actual `OPTION` items. It canonicalizes choice order, derives complete-state `DHDEC_`, self-asserts, and returns detached state. It does not require 6A selection, 6C assessment, 6D recommendation, or 6E trace membership, and creates no model proposal, truth, authorization, action, outcome, feedback, learning, or persistence-authority claim.
 
 ## Reachable structural states
 
@@ -523,6 +560,9 @@ Phase 6D already guarantees each recommendation target is selected and assessmen
 | Assessed but unrecommended option | Produces no 6E trace. `ASSESSED != RECOMMENDED`. |
 | Zero recommendations | Valid 6E validation with `traces: []`; absence is not rejection, incompleteness, or readiness state. |
 | Multiple recommendations | One canonical trace per recommendation; no trace is created for assessed but unrecommended options. |
+| Revision options A, B, C; 6A selects A/B; 6C assesses A; 6D recommends A; 6E traces A; human chooses C | Valid 7A declaration because C is an actual embedded revision `OPTION`. Its absence from every model-proposal inventory is no human-choice admission failure. |
+| Human chooses two distinct actual revision options in caller order C, A | Valid 7A declaration with canonical item-ID choice order; it creates no ranking or ordered preference. |
+| Human supplies no chosen options | Invalid Phase 7A positive-selection input only; it does not represent defer, abstain, reject-all, or no decision. |
 | Canonical C3C result is `null` and caller supplies `null` | One `NO_GAP` assembly result: no gap under this represented basis, not truth or global satisfaction. |
 | Canonical C3C result is a gap and caller supplies its derivation-valid gap | One `GAP` assembly result with canonical `gapId`. |
 | One EVIDENCE_BINDING or DEPENDENCY gap ID with two supplied bases differing only in irrelevant observations | The gap ID may remain the same, but the canonical descriptor inventories and `DVASM_` identities differ. For CONTEXT_ROLE, canonical context observations are already committed through `contextId` and the descriptor remains kind-only. |
