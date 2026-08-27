@@ -129,6 +129,12 @@
 | `DecisionActionIntent` | Exact canonical eight-field stored artifact | Detached `DECISION_ACTION_INTENT` / `DECISION_ACTION_INTENT_V1` artifact with deterministic `DAINT_`; it is not commitment, action, execution, outcome, or persistence authority. |
 | `createDecisionActionIntent(declaration, input)` | `HumanDecisionDeclaration × DecisionActionIntentInput -> DecisionActionIntent` | Sealed-asserts one complete human declaration, canonicalizes admitted local state, and returns detached intended-operation state. |
 | `assertDecisionActionIntent(value)` | `unknown -> asserts value is DecisionActionIntent` | Self-contained exact stored assertion with no model, provider, evaluator, generator, reader, repository, persister, lineage, resolver, executor, clock, or external call; it does not repair state. |
+| `HUMAN_COMMITMENT_SCHEMA_VERSION` | `"HUMAN_COMMITMENT_V1"` | Fixed schema-version constant for the Phase 8A2 human-commitment artifact. |
+| `HumanCommitmentActor` | `origin: "HUMAN_INPUT"`, `actorId` | Declared human commitment actor only; it is not authenticated identity, authorization, signature, permission, organizational role, or legal accountability. |
+| `HumanCommitmentInput` | `committedBy`, `rationale` | Exact two-field constructor input. |
+| `HumanCommitment` | Exact canonical six-field stored artifact | Detached `HUMAN_COMMITMENT` / `HUMAN_COMMITMENT_V1` artifact with deterministic `DHCOM_`; it is not assignment, action, execution, outcome, truth, or persistence authority. |
+| `createHumanCommitment(actionIntent, input)` | `DecisionActionIntent × HumanCommitmentInput -> HumanCommitment` | Sealed-asserts one complete Action Intent, canonicalizes local actor/rationale state, and returns detached declared-commitment state. |
+| `assertHumanCommitment(value)` | `unknown -> asserts value is HumanCommitment` | Self-contained exact stored assertion with no model, provider, evaluator, generator, reader, repository, persister, lineage, resolver, executor, clock, or external call; it does not repair state. |
 
 ## Reference and reader behavior
 
@@ -1321,7 +1327,7 @@ interface DecisionActionIntent {
 }
 ```
 
-The input has exactly four fields and the artifact exactly eight. There is no commitment/action actor, execution or status field, timestamp, target, assignee, due date, outcome, feedback, persistence metadata, or authentication metadata. `declaredBy` is declared human input only: `ACTION INTENT DECLARER != DECISION ACTOR != FUTURE COMMITMENT ACTOR != FUTURE ACTION ACTOR`, and `HUMAN_INPUT != AUTHENTICATED IDENTITY != AUTHORIZATION != SIGNATURE != PERMISSION != TRUTH`.
+The input has exactly four fields and the artifact exactly eight. There is no commitment/action actor, execution or status field, timestamp, target, assignee, due date, outcome, feedback, persistence metadata, or authentication metadata. `declaredBy` is declared human input only: the Action Intent declarer, decision actor, future commitment actor, and future Action actor are independent semantic role positions; no actor-ID equality or inequality is required or inferred. `HUMAN_INPUT != AUTHENTICATED IDENTITY != AUTHORIZATION != SIGNATURE != PERMISSION != TRUTH`.
 
 ### Subset admission and opaque operation text
 
@@ -1366,3 +1372,74 @@ The runtime surface is exactly `DECISION_ACTION_INTENT_SCHEMA_VERSION`, `createD
 - `ERR_DECISION_ACTION_INTENT_RATIONALE_INVALID`
 - `ERR_DECISION_ACTION_INTENT_INVALID`
 - `ERR_DECISION_ACTION_INTENT_ID_MISMATCH`
+
+## Phase 8A2 human-commitment contract
+
+Phase 8A2 adds `HumanCommitment` under `lib/decision-core/human-commitment/`. It consumes one complete sealed `DecisionActionIntent`, one declared `HUMAN_INPUT` commitment actor, and optional human rationale; it creates one detached canonical artifact and stops.
+
+```ts
+interface HumanCommitmentActor {
+  origin: "HUMAN_INPUT";
+  actorId: string;
+}
+
+interface HumanCommitmentInput {
+  committedBy: HumanCommitmentActor;
+  rationale: string | null;
+}
+
+interface HumanCommitment {
+  artifactKind: "HUMAN_COMMITMENT";
+  schemaVersion: "HUMAN_COMMITMENT_V1";
+  humanCommitmentId: string;
+  actionIntent: DecisionActionIntent;
+  committedBy: HumanCommitmentActor;
+  rationale: string | null;
+}
+```
+
+The input has exactly two fields and the artifact exactly six. `COMMITMENT TARGET = COMPLETE SEALED ACTION INTENT`: no option IDs, operation-description duplicate, action type, target, assignment, assignee, executor, authorization, role, status, timestamp, due date, execution, outcome, feedback, persistence metadata, or authentication metadata exists. `ACTION INTENT OWNS OPERATIONALIZATION SCOPE`; Human Commitment has no partial-scope representation and does not expand or shrink that scope.
+
+### Actor, rationale, and multiple-commitment semantics
+
+`committedBy` is exact `{ origin: "HUMAN_INPUT", actorId }`; construction trims a nonempty actor ID and stored assertion requires it already trimmed. It is declaration only: `HUMAN_INPUT != AUTHENTICATED HUMAN IDENTITY != AUTHORIZATION != SIGNATURE != PERMISSION != ORGANIZATIONAL ROLE != LEGAL ACCOUNTABILITY`. The commitment actor may differ from both the decision actor and Action Intent declarer. These are independent semantic role positions; no actor-ID equality or inequality is required or inferred. One artifact has one actor; no actor array, joint commitment, quorum, voting, delegation, or aggregation exists.
+
+One Action Intent may have zero, one, or multiple independent Human Commitments. This contract creates one artifact and performs no repository lookup, search for other commitments, aggregation, or global uniqueness operation: `ONE ACTION INTENT != ONE HUMAN COMMITMENT` and `ACTION INTENT EXISTENCE != COMMITMENT EXISTENCE`.
+
+Rationale is `null` or trimmed nonempty human text; stored assertion requires it already trimmed. It represents only the declared actor's reason for committing. `COMMITMENT RATIONALE != COMMITMENT != AUTHORIZATION != EXECUTION PROOF != LEGAL SIGNATURE != ACTION PLAN != OUTCOME EXPECTATION != TRUTH`.
+
+### Declared-commitment boundary and temporal exclusions
+
+The artifact records declared commitment only. `DECLARED COMMITMENT != LEGAL RESPONSIBILITY != ORGANIZATIONAL ACCOUNTABILITY != OWNERSHIP`; it does not establish externally enforced obligation. It establishes neither authorization, permission, execution authority, organizational authority, assignment, assignee, nor executor. The commitment-actor role does not establish an assignee or executor role; a future workflow may represent the same or a different concrete actor.
+
+`HUMAN COMMITMENT != ACTION`; `COMMITTED != EXECUTED != DONE != COMPLETED != ACTION OCCURRED != OUTCOME ACHIEVED`. Commitment is not a universal precondition for future Action observation: a later Action boundary may need to represent emergency, external-system, spontaneous-human, or imported historical action without prior ConDyn commitment.
+
+There is no `timestamp`, `createdAt`, `committedAt`, `dueAt`, `expiresAt`, `effectiveAt`, `scheduledAt`, `Date.now()`, `Math.random()`, or UUID. `WALL-CLOCK TIME != AUTHORITY`; `TIMESTAMP != COMMITMENT != EXECUTION PROOF`; `DUE DATE != COMMITMENT`. A future temporal workflow contract requires separate justification.
+
+### `DHCOM_` complete-state identity and stored assertion
+
+`DHCOM_` matches `^DHCOM_[0-9A-F]{24}$`: it is the first 24 uppercase hexadecimal characters of SHA-256 over:
+
+```ts
+[
+  "HUMAN_COMMITMENT_V1",
+  canonicalCompleteDecisionActionIntent,
+  ["HUMAN_INPUT", trimmedCommittedByActorId],
+  canonicalRationale
+]
+```
+
+The complete embedded Action Intent participates, not only `actionIntentId`. Recursive canonicalization makes predecessor object insertion order non-semantic while retaining sealed predecessor array semantics. Predecessor state, commitment actor, and rationale each change `DHCOM_`; the same normalized complete state is deterministic. `DHCOM IDENTITY != AUTHENTICATED IDENTITY != AUTHORIZATION != ASSIGNMENT != EXECUTION != ACTION OCCURRENCE != COMPLETION != OUTCOME != TRUTH != PERSISTENCE AUTHORITY != CURRENT PRODUCER AUTHORITY`.
+
+`assertHumanCommitment(value)` is self-contained and may call only `assertDecisionActionIntent(...)`. It requires exact headers and six fields, sealed complete Action Intent, canonical actor/rationale state, and recomputed complete-state identity. `CREATE MAY CANONICALIZE; ASSERT MUST NOT REPAIR.` Constructor predecessor failure is `ERR_DECISION_HUMAN_COMMITMENT_ACTION_INTENT_INVALID`; hostile, malformed, noncanonical, predecessor-invalid, or body-invalid stored state is `ERR_DECISION_HUMAN_COMMITMENT_INVALID`; only otherwise exact valid stored state with a stale/wrong ID is `ERR_DECISION_HUMAN_COMMITMENT_ID_MISMATCH`.
+
+Descriptor-based capture rejects accessors, symbols, hidden fields, cycles, nested hostile predecessor accessors, nested sparse arrays, and nested custom array state without getter execution. Returned state is detached, not asserted deep-frozen. The module imports only `node:crypto`, sealed `action-intent`, and local files. It does not reuse or generalize `lib/career/decisions/action.ts`, `CommitmentRecord`, `decisionId`, `actionType`, `targetRef`, time/random IDs, `deepFreeze`, or action caches.
+
+The runtime surface is exactly `HUMAN_COMMITMENT_SCHEMA_VERSION`, `createHumanCommitment`, and `assertHumanCommitment`. The public types are exactly `HumanCommitmentActor`, `HumanCommitmentInput`, and `HumanCommitment`. The exact error surface is:
+
+- `ERR_DECISION_HUMAN_COMMITMENT_INPUT_INVALID`
+- `ERR_DECISION_HUMAN_COMMITMENT_ACTION_INTENT_INVALID`
+- `ERR_DECISION_HUMAN_COMMITMENT_ACTOR_INVALID`
+- `ERR_DECISION_HUMAN_COMMITMENT_RATIONALE_INVALID`
+- `ERR_DECISION_HUMAN_COMMITMENT_INVALID`
+- `ERR_DECISION_HUMAN_COMMITMENT_ID_MISMATCH`

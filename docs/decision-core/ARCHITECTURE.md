@@ -1,6 +1,6 @@
 # Decision Core architecture
 
-## Scope through Phase 8A1
+## Scope through Phase 8A2
 
 Decision Core is a generic, producer-neutral module for consuming governed producer state and forming a deterministic structural `DecisionContextDraft`. It is separate from Capability Core. Capability Core publishes capability/evidence-oriented Phase-4 snapshots; Decision Core does not require that ontology and can consume any producer that implements a compatible authority resolver.
 
@@ -18,7 +18,9 @@ Phase 7A adds the adjacent generic `human-decision` contract: the first explicit
 
 Phase 8A1 adds the adjacent generic `action-intent` contract: the first explicit operationalization state after human decision. It consumes one sealed `HumanDecisionDeclaration`, one declared human intent declarer, a nonempty explicit subset of the human-chosen options, an opaque operation description, and optional human rationale to create one detached `DecisionActionIntent`. It does not establish commitment, action, execution, completion, outcome, feedback, learning, authorization, authenticated identity, or persistence authority.
 
-The implemented current chain is producer/evidence state -> structural Decision Context -> validated revision state -> persisted revision authority -> read-only predecessor lineage -> human-owned assessment request -> revision-bound assessment basis -> semantic assessment proposal -> recommendation proposal -> proposal coherence validation -> human decision declaration -> decision-bound action intent. These remain distinct artifacts and operations, not one automatic pipeline.
+Phase 8A2 adds the adjacent generic `human-commitment` contract. It consumes one sealed complete `DecisionActionIntent`, one declared human commitment actor, and optional human rationale to create one detached `HumanCommitment`. It records declared commitment only: it establishes neither responsibility, ownership, accountability, assignment, authorization, execution, completion, outcome, feedback, learning, authenticated identity, nor persistence authority.
+
+The implemented current chain is producer/evidence state -> structural Decision Context -> validated revision state -> persisted revision authority -> read-only predecessor lineage -> human-owned assessment request -> revision-bound assessment basis -> semantic assessment proposal -> recommendation proposal -> proposal coherence validation -> human decision declaration -> decision-bound action intent -> human commitment. These remain distinct artifacts and operations, not one automatic pipeline.
 
 ## Implemented layers
 
@@ -45,6 +47,7 @@ The implemented current chain is producer/evidence state -> structural Decision 
 | Proposal coherence validation (6E) | Deterministically reconstructs the exact represented assessment criterion trace for each recommendation in one sealed recommendation proposal, without interpreting dispositions, rationale, support, correctness, or readiness. | `DecisionProposalCoherenceValidation` |
 | Human decision declaration (7A) | Records one explicit positive human selection of one or more actual revision `OPTION` items, independent of the model-proposal path, without action or outcome semantics. | `HumanDecisionDeclaration` |
 | Decision-bound action intent (8A1) | Records one opaque intended operation for a nonempty explicit subset of one sealed human decision's chosen options, without commitment, action, execution, or outcome semantics. | `DecisionActionIntent` |
+| Human commitment (8A2) | Records one declared human commitment to one complete sealed Action Intent, without assignment, authorization, execution, action, outcome, or persistence semantics. | `HumanCommitment` |
 
 The current Capability Core adapter in `lib/decision-adapters/capability-core.ts` is one producer-specific integration. It is not part of the generic Decision Core kernel.
 
@@ -520,6 +523,24 @@ The human decision establishes the admissible operationalization boundary. `MODE
 
 `operationDescription` is trimmed nonempty opaque human/domain-provided text. It is not parsed into action type, target, assignee, executor, parameters, command, workflow, timing, or expected effect. `OPERATION DESCRIPTION != EXECUTABLE COMMAND != EXECUTION PROOF != EXPECTED OUTCOME != AUTHORIZATION`. The declared intent actor is independent of the decision actor and any future commitment or action actor; `HUMAN_INPUT != AUTHENTICATED IDENTITY != AUTHORIZATION != SIGNATURE != PERMISSION != TRUTH`.
 
+## Phase 8A2 human-commitment boundary
+
+Phase 8A2 implements only:
+
+```text
+SEALED DecisionActionIntent
++ DECLARED HUMAN_INPUT commitment actor
++ OPTIONAL HUMAN rationale
+-> HumanCommitment
+-> STOP
+```
+
+`COMMITMENT TARGET = COMPLETE SEALED ACTION INTENT`. Human Commitment does not repeat `operationalizedOptionItemIds`, `chosenOptionItemIds`, or `operationDescription`; Action Intent owns operationalization scope. There is no partial-commitment field: to represent a narrower scope, create a narrower Action Intent first and commit to that complete intent.
+
+`committedBy` is declared human input only and may differ from the decision actor and Action Intent declarer. These are independent semantic role positions; no actor-ID equality or inequality is required or inferred. `DECLARED COMMITMENT != LEGAL RESPONSIBILITY != ORGANIZATIONAL ACCOUNTABILITY != OWNERSHIP`; `COMMITMENT != AUTHORIZATION != PERMISSION != EXECUTION AUTHORITY != ORGANIZATIONAL AUTHORITY`. The commitment-actor role does not establish an assignee or executor role; a future workflow may represent the same or a different concrete actor. One artifact contains one actor, but one Action Intent may have zero, one, or multiple independent commitments: `ACTION INTENT EXISTENCE != COMMITMENT EXISTENCE` and `ONE ACTION INTENT != ONE HUMAN COMMITMENT`.
+
+Rationale is `null` or trimmed nonempty text and represents only the declared actor's reason for committing. `HUMAN COMMITMENT != ACTION`; `COMMITTED != EXECUTED != DONE != COMPLETED != ACTION OCCURRED != OUTCOME ACHIEVED`. There is no timestamp, schedule, assignment, authorization, action, completion, outcome, feedback, learning, or persistence authority. Commitment is not a universal precondition for future Action observation; a future Action boundary may need to represent emergency, external, spontaneous, or imported observed action without a prior ConDyn commitment.
+
 ## Trust boundaries
 
 1. **Producer adapter boundary.** Producer-specific persistence and artifact validation stay in adapters/resolvers. The generic kernel has no Capability Core import.
@@ -545,6 +566,7 @@ The human decision establishes the admissible operationalization boundary. `MODE
 21. **6E proposal-coherence boundary.** The validator captures and sealed-asserts one complete recommendation proposal, derives exactly one canonical criterion trace for every recommendation from its embedded assessment relations, derives complete-state `DPCV_`, self-asserts, and returns detached state. It has no dependency capability and interprets neither assessment dispositions nor rationales. It creates no semantic support/correctness claim, ranking, Decision Need, human decision, action, outcome, feedback, or authority operation.
 22. **7A human-decision boundary.** Construction captures and sealed-asserts one complete DPCV, captures one declared `HUMAN_INPUT` actor, nonempty choices, and optional rationale, then admits each choice only through the embedded complete revision's actual `OPTION` items. It canonicalizes choice order, derives complete-state `DHDEC_`, self-asserts, and returns detached state. It does not require 6A selection, 6C assessment, 6D recommendation, or 6E trace membership, and creates no model proposal, truth, authorization, action, outcome, feedback, learning, or persistence-authority claim.
 23. **8A1 action-intent boundary.** Construction captures and sealed-asserts one complete HumanDecisionDeclaration before exact input capture. It admits only a nonempty canonical subset of that declaration's chosen-option inventory, captures a declared `HUMAN_INPUT` intent actor and opaque operation text, derives complete-state `DAINT_`, self-asserts, and returns detached state. It does not inspect lower-phase inventories, read a dependency, create commitment/action/execution state, or establish authorization, truth, or persistence authority.
+24. **8A2 human-commitment boundary.** Construction captures and sealed-asserts one complete DecisionActionIntent before exact two-field input capture, captures one declared `HUMAN_INPUT` commitment actor and optional rationale, derives complete-state `DHCOM_`, self-asserts, and returns detached state. It does not reinterpret Action Intent scope or inspect lower predecessors, read a dependency, create assignment/action/execution state, or establish authorization, externally enforced responsibility, truth, or persistence authority.
 
 ## Reachable structural states
 
@@ -623,4 +645,4 @@ The human decision establishes the admissible operationalization boundary. `MODE
 
 The generic `lib/decision-core/**` production files are guarded against imports from Career, Capability Core, matching, recommendations, and legacy Career decision-loop code. The Capability adapter may import Capability Core because it is a producer-specific integration outside that generic kernel.
 
-Decision Core is application-domain neutral, not ontology-free in a metaphysical sense: the current ontology is intentionally about opaque producer state, structural context items, roles, provenance, operation-time authority reachability, semantic proposals, explicit structural expectations, explicit structural relation proposals, basis-relative structural gaps and explicit-path consequences, derivational-coherence assemblies, self-contained revision artifacts, repository-bound immutable authority-of-record operations, the PostgreSQL adapter implementing those sealed persistence semantics outside the kernel, read-only explicit predecessor-lineage reconstruction, a standalone human-declared assessment-request contract, a revision-bound assessment-basis contract, a semantic assessment-proposal contract, a recommendation-proposal contract, a deterministic proposal-coherence trace-validation contract, an explicit positive human option-selection declaration, and a decision-bound action-intent contract. These are distinct operations and artifacts, not one automatic pipeline. Recruiting is not implemented on top of this module.
+Decision Core is application-domain neutral, not ontology-free in a metaphysical sense: the current ontology is intentionally about opaque producer state, structural context items, roles, provenance, operation-time authority reachability, semantic proposals, explicit structural expectations, explicit structural relation proposals, basis-relative structural gaps and explicit-path consequences, derivational-coherence assemblies, self-contained revision artifacts, repository-bound immutable authority-of-record operations, the PostgreSQL adapter implementing those sealed persistence semantics outside the kernel, read-only explicit predecessor-lineage reconstruction, a standalone human-declared assessment-request contract, a revision-bound assessment-basis contract, a semantic assessment-proposal contract, a recommendation-proposal contract, a deterministic proposal-coherence trace-validation contract, an explicit positive human option-selection declaration, a decision-bound action-intent contract, and a human-commitment contract. These are distinct operations and artifacts, not one automatic pipeline. Recruiting is not implemented on top of this module.
