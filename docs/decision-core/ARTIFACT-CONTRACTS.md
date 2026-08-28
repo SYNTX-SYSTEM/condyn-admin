@@ -135,6 +135,12 @@
 | `HumanCommitment` | Exact canonical six-field stored artifact | Detached `HUMAN_COMMITMENT` / `HUMAN_COMMITMENT_V1` artifact with deterministic `DHCOM_`; it is not assignment, action, execution, outcome, truth, or persistence authority. |
 | `createHumanCommitment(actionIntent, input)` | `DecisionActionIntent × HumanCommitmentInput -> HumanCommitment` | Sealed-asserts one complete Action Intent, canonicalizes local actor/rationale state, and returns detached declared-commitment state. |
 | `assertHumanCommitment(value)` | `unknown -> asserts value is HumanCommitment` | Self-contained exact stored assertion with no model, provider, evaluator, generator, reader, repository, persister, lineage, resolver, executor, clock, or external call; it does not repair state. |
+| `ACTION_OCCURRENCE_CLAIM_SCHEMA_VERSION` | `"ACTION_OCCURRENCE_CLAIM_V1"` | Fixed schema-version constant for the standalone Phase 8B occurrence-claim artifact. |
+| `ActionOccurrenceClaimSource` | `HUMAN_INPUT` or `AUTHORITATIVE_STATE` | Exact closed source union; it is not the Decision Context provenance union. |
+| `ActionOccurrenceClaimInput` | `source`, `operationDescription` | Exact two-field constructor input. |
+| `ActionOccurrenceClaim` | Exact canonical five-field stored artifact | Detached `ACTION_OCCURRENCE_CLAIM` / `ACTION_OCCURRENCE_CLAIM_V1` artifact with deterministic `DAOC_`; it is not Action fact, observation, execution proof, outcome, or persistence authority. |
+| `createActionOccurrenceClaim(input)` | `ActionOccurrenceClaimInput -> ActionOccurrenceClaim` | Captures local source and opaque text only, canonicalizes only permitted fields, and returns detached represented-claim state. |
+| `assertActionOccurrenceClaim(value)` | `unknown -> asserts value is ActionOccurrenceClaim` | Self-contained exact stored assertion with no reader, resolver, validator, evaluator, repository, persistence, payload, or external call; it does not repair state. |
 
 ## Reference and reader behavior
 
@@ -1412,7 +1418,7 @@ Rationale is `null` or trimmed nonempty human text; stored assertion requires it
 
 The artifact records declared commitment only. `DECLARED COMMITMENT != LEGAL RESPONSIBILITY != ORGANIZATIONAL ACCOUNTABILITY != OWNERSHIP`; it does not establish externally enforced obligation. It establishes neither authorization, permission, execution authority, organizational authority, assignment, assignee, nor executor. The commitment-actor role does not establish an assignee or executor role; a future workflow may represent the same or a different concrete actor.
 
-`HUMAN COMMITMENT != ACTION`; `COMMITTED != EXECUTED != DONE != COMPLETED != ACTION OCCURRED != OUTCOME ACHIEVED`. Commitment is not a universal precondition for future Action observation: a later Action boundary may need to represent emergency, external-system, spontaneous-human, or imported historical action without prior ConDyn commitment.
+`HUMAN COMMITMENT != ACTION`; `COMMITTED != EXECUTED != DONE != COMPLETED != ACTION OCCURRED != OUTCOME ACHIEVED`. Commitment is not a universal predecessor for the standalone Phase 8B occurrence-claim branch. Stronger Action, observation, verification, performer, outcome, feedback, learning, and temporal semantics remain future work only if separately specified.
 
 There is no `timestamp`, `createdAt`, `committedAt`, `dueAt`, `expiresAt`, `effectiveAt`, `scheduledAt`, `Date.now()`, `Math.random()`, or UUID. `WALL-CLOCK TIME != AUTHORITY`; `TIMESTAMP != COMMITMENT != EXECUTION PROOF`; `DUE DATE != COMMITMENT`. A future temporal workflow contract requires separate justification.
 
@@ -1443,3 +1449,65 @@ The runtime surface is exactly `HUMAN_COMMITMENT_SCHEMA_VERSION`, `createHumanCo
 - `ERR_DECISION_HUMAN_COMMITMENT_RATIONALE_INVALID`
 - `ERR_DECISION_HUMAN_COMMITMENT_INVALID`
 - `ERR_DECISION_HUMAN_COMMITMENT_ID_MISMATCH`
+
+## Phase 8B action-occurrence-claim contract
+
+Phase 8B adds `ActionOccurrenceClaim` under `lib/decision-core/action-occurrence-claim/`. It represents only: an explicit represented source claims that a described opaque operation occurred. It is a standalone occurrence-claim boundary, not Action, Action Event, observation, verification, execution proof, occurrence proof, or authority of reality.
+
+```ts
+type ActionOccurrenceClaimSource =
+  | { origin: "HUMAN_INPUT"; actorId: string }
+  | { origin: "AUTHORITATIVE_STATE"; stateReference: AuthoritativeStateReference };
+
+interface ActionOccurrenceClaimInput {
+  source: ActionOccurrenceClaimSource;
+  operationDescription: string;
+}
+
+interface ActionOccurrenceClaim {
+  artifactKind: "ACTION_OCCURRENCE_CLAIM";
+  schemaVersion: "ACTION_OCCURRENCE_CLAIM_V1";
+  actionOccurrenceClaimId: string;
+  source: ActionOccurrenceClaimSource;
+  operationDescription: string;
+}
+```
+
+The input has exactly two fields and the artifact exactly five. It contains no Decision, Action Intent, Human Commitment, revision, assessment, recommendation, coherence, performer, action type, target, external reference, rationale, status, time, outcome, feedback, persistence, or relation field. `ACTION INTENT != UNIVERSAL ACTION PREDECESSOR`; `HUMAN COMMITMENT != UNIVERSAL ACTION PREDECESSOR`; operation-text, actor, ID, or temporal similarity establishes no relation.
+
+### Closed source union and opaque fields
+
+Only `HUMAN_INPUT` and `AUTHORITATIVE_STATE` are valid claim sources: `ACTION OCCURRENCE CLAIM SOURCE UNION != DECISION CONTEXT PROVENANCE UNION`; `MODEL_PROPOSAL != ACTION OCCURRENCE SOURCE`; `DETERMINISTIC_DERIVATION != ACTION OCCURRENCE SOURCE`. `HUMAN_INPUT` is declared human reporting provenance only, not authenticated identity, authorization, performer, executor, assignment, responsibility, ownership, accountability, execution proof, or truth. `CLAIM SOURCE ROLE != PERFORMER ROLE`; role non-equivalence does not require actor-ID inequality.
+
+`AUTHORITATIVE_STATE` is exact `{ origin: "AUTHORITATIVE_STATE", stateReference: { producerId, authorityContractId, artifactId, locator } }`. It stores only that exact governed-state reference. No resolution, reader, resolver, authority validator, evaluator, repository, adapter, payload read, or payload inspection occurs. `REFERENCE != AUTHORITY TOKEN`; `REFERENCE PRESENT != REFERENCE CURRENTLY RESOLVABLE`; `REFERENCE CURRENTLY RESOLVABLE != PAYLOAD SUPPORTS CLAIM`; `PAYLOAD SUPPORTS CLAIM != ACTION OCCURRED IN REALITY`.
+
+Every reference field is a non-blank string, but its exact opaque producer-owned representation is preserved, including surrounding whitespace. Human actor ID and `operationDescription` may trim during creation; references validate non-blankness without normalization. Stored assertion repairs nothing. `operationDescription` is trimmed nonempty opaque text, not executable command, execution proof, outcome, taxonomy, performer, or relation to Action Intent. Phase 8B represents no temporal claim: no timestamp, occurrence time, clock, random ID, or scheduling state exists.
+
+### `DAOC_` identity, capture, and assertion
+
+`DAOC_` matches `^DAOC_[0-9A-F]{24}$`: it is the first 24 uppercase hexadecimal characters of SHA-256 over:
+
+```ts
+[
+  "ACTION_OCCURRENCE_CLAIM_V1",
+  canonicalSource,
+  operationDescription
+]
+```
+
+`canonicalSource` is `["HUMAN_INPUT", actorId]` or `["AUTHORITATIVE_STATE", [producerId, authorityContractId, artifactId, locator]]`. Object insertion order is non-semantic; every represented source axis and operation text is semantic. `DAOC IDENTITY != REAL-WORLD EVENT IDENTITY != ACTION IDENTITY != EXECUTION IDENTITY != TRUTH != CURRENT SOURCE AUTHORITY != PERSISTENCE AUTHORITY`.
+
+Construction is deterministic and dependency-free: it captures the exact top-level input, then source, then reference under their own shallow descriptor boundaries; canonicalizes only human actor ID and operation text; self-asserts; and returns detached state. Boundary-local capture prevents outer boundaries from stealing source/reference error ownership. Accessors, symbols, hidden/non-enumerable fields, extras, invalid objects, and self/cycle state where applicable reject without getter execution. Returned state is detached, not asserted deep-frozen.
+
+`assertActionOccurrenceClaim(value)` is self-contained and exact/canonical/non-repairing. `CREATE MAY CANONICALIZE; ASSERT MUST NOT REPAIR.` Constructor errors are respectively `...INPUT_INVALID` for malformed top level, `...SOURCE_INVALID` for malformed/unsupported source, `...REFERENCE_INVALID` for malformed authoritative reference, and `...OPERATION_INVALID` for invalid text. Hostile, malformed, noncanonical, or body-invalid stored state is `ERR_DECISION_ACTION_OCCURRENCE_CLAIM_INVALID`; only otherwise valid state with stale/wrong `DAOC_` is `ERR_DECISION_ACTION_OCCURRENCE_CLAIM_ID_MISMATCH`.
+
+The runtime surface is exactly `ACTION_OCCURRENCE_CLAIM_SCHEMA_VERSION`, `createActionOccurrenceClaim`, and `assertActionOccurrenceClaim`. Public types are exactly `ActionOccurrenceClaimSource`, `ActionOccurrenceClaimInput`, and `ActionOccurrenceClaim`. Exact errors are:
+
+- `ERR_DECISION_ACTION_OCCURRENCE_CLAIM_INPUT_INVALID`
+- `ERR_DECISION_ACTION_OCCURRENCE_CLAIM_SOURCE_INVALID`
+- `ERR_DECISION_ACTION_OCCURRENCE_CLAIM_REFERENCE_INVALID`
+- `ERR_DECISION_ACTION_OCCURRENCE_CLAIM_OPERATION_INVALID`
+- `ERR_DECISION_ACTION_OCCURRENCE_CLAIM_INVALID`
+- `ERR_DECISION_ACTION_OCCURRENCE_CLAIM_ID_MISMATCH`
+
+Phase 8B adds no persistence or authority-of-record operation: `ACTION OCCURRENCE CLAIM ARTIFACT != PERSISTENCE AUTHORITY`; a future persisted claim would not imply real-world truth. It is independently constructed and does not reuse `lib/career/decisions/action.ts`, `ActionEvent`, `CommitmentRecord`, action type/external reference/occurrence-time semantics, random/time identity, action cache, or a mandatory Commitment-to-Action chain. `LEGACY CAREER ACTION EVENT != AUTHORITY FOR GENERIC PHASE 8B`.
