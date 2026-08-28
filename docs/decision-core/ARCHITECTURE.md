@@ -1,6 +1,6 @@
 # Decision Core architecture
 
-## Scope through Phase 8D1
+## Scope through Phase 8D2
 
 Decision Core is a generic, producer-neutral module for consuming governed producer state and forming a deterministic structural `DecisionContextDraft`. It is separate from Capability Core. Capability Core publishes capability/evidence-oriented Phase-4 snapshots; Decision Core does not require that ontology and can consume any producer that implements a compatible authority resolver.
 
@@ -29,6 +29,8 @@ Phase 8C2 adds the `action-state-change-association` contract. It consumes one c
 Phase 8C3 adds the `outcome-attribution-proposal` contract. It consumes one complete sealed `ActionStateChangeAssociationProposal` and explicit represented outcome-attribution provenance to construct one detached `OutcomeAttributionProposal`. It represents only a proposal that the association's already represented State Change Claim has an outcome role relative to that association's already represented Action Occurrence Claim. It establishes neither outcome truth or fact, relation truth, effect truth, consequence truth, causation, causal support, semantic support, current or publication authority, authority of reality, persistence authority, nor temporal relation.
 
 Phase 8D1 adds the `context-observation-proposal` contract. It consumes one complete sealed `OutcomeAttributionProposal`, one explicit opaque statement, and explicit represented provenance to construct one detached `DecisionContextObservationProposal`. It represents an `OBSERVATION`-role candidate for a future Decision Context only. It does not create a `DecisionContextItem`, admit state into a Decision Context, create a revision, or close the loop; it establishes neither observation truth, outcome truth, semantic support, causation, authority of reality, nor persistence authority.
+
+Phase 8D2 adds the `context-observation-admission` contract. One declared human actor explicitly declares one sealed `DecisionContextObservationProposal` admitted as eligible for future `OBSERVATION`-role materialization in a Decision Context, with an optional opaque rationale. It is positive human normative admission declaration state only. It does not materialize a `DecisionContextItem`, create or mutate a Decision Context, create a revision, establish truth, support, causation, authentication, external authorization, persistence authority, or close the loop.
 
 The implemented architecture has distinct branches, not one automatic pipeline:
 
@@ -81,6 +83,19 @@ TO DECISION CONTEXT OBSERVATION PROPOSAL
 
 NO AUTOMATIC EDGE FROM DECISION CONTEXT OBSERVATION PROPOSAL
 TO DECISION CONTEXT
+
+EXPLICIT DECISION CONTEXT OBSERVATION ADMISSION PATH
+sealed DecisionContextObservationProposal
++ declared HUMAN_INPUT actor
++ optional opaque rationale
+-> DecisionContextObservationAdmissionDeclaration
+-> STOP
+
+NO AUTOMATIC EDGE FROM DECISION CONTEXT OBSERVATION PROPOSAL
+TO DECISION CONTEXT OBSERVATION ADMISSION DECLARATION
+
+NO AUTOMATIC EDGE FROM DECISION CONTEXT OBSERVATION ADMISSION DECLARATION
+TO DECISION CONTEXT ITEM
 ```
 
 ## Implemented layers
@@ -114,6 +129,7 @@ TO DECISION CONTEXT
 | Action-state-change association proposal (8C2) | Records one explicit provenance-attributed proposal associating one sealed Action Occurrence Claim endpoint with one sealed State Change Claim endpoint, without relation truth, outcome, effect, consequence, attribution, causation, temporal, or persistence semantics. | `ActionStateChangeAssociationProposal` |
 | Outcome attribution proposal (8C3) | Records one explicit provenance-attributed proposal that the sealed association's represented State Change Claim has an outcome role relative to its represented Action Occurrence Claim, without outcome truth, relation truth, causation, temporal, or persistence semantics. | `OutcomeAttributionProposal` |
 | Decision Context observation proposal (8D1) | Records one explicit provenance-attributed opaque statement as an `OBSERVATION`-role candidate for a future Decision Context, based on one sealed Outcome Attribution Proposal, without Context Item creation, admission, revision, truth, support, causation, temporal, or persistence semantics. | `DecisionContextObservationProposal` |
+| Decision Context observation admission declaration (8D2) | Records one positive declared human admission of one sealed observation proposal as eligible for future `OBSERVATION`-role materialization, without materialization, Context mutation, revision, truth, support, causation, authentication, authorization, temporal, or persistence semantics. | `DecisionContextObservationAdmissionDeclaration` |
 
 The current Capability Core adapter in `lib/decision-adapters/capability-core.ts` is one producer-specific integration. It is not part of the generic Decision Core kernel.
 
@@ -696,6 +712,26 @@ The proposal is an `OBSERVATION`-role candidate for a future Decision Context, n
 
 `DCOP_` is deterministic over the sealed Outcome Attribution Proposal ID, statement, and complete canonical provenance. Construction canonicalizes only permitted local statement/provenance fields, self-asserts, and returns detached state. Stored assertion is exact, canonical, and non-repairing. Boundary-local shallow descriptor capture retains top-level, provenance, and authoritative-reference error ownership; hostile predecessor state is rejected without getter execution where applicable. `OBSERVATION ROLE != OBSERVED REALITY`; `OBSERVATION PROPOSAL != OBSERVATION TRUTH`; `REENTRY PROPOSAL != ADMISSION`; `REENTRY PROPOSAL != REVISION`; `REENTRY PROPOSAL != LOOP CLOSED`; `REENTRY != OUTCOME TRUTH`; `REENTRY != SEMANTIC SUPPORT`. Phase 8D1 represents no time, temporal relation, Feedback, Learning, causation, or persistence authority.
 
+## Phase 8D2 decision-context-observation-admission boundary
+
+Phase 8D2 implements only:
+
+```text
+SEALED DecisionContextObservationProposal
++ DECLARED HUMAN_INPUT actor
++ OPTIONAL OPAQUE RATIONALE
+-> DecisionContextObservationAdmissionDeclaration
+-> STOP
+```
+
+One declaration records only that the declared human actor admits its sealed proposal as eligible for future `OBSERVATION`-role materialization. `DECISION CONTEXT OBSERVATION PROPOSAL != DECISION CONTEXT OBSERVATION ADMISSION DECLARATION`; `PROPOSAL EXISTENCE != ADMISSION DECLARATION EXISTENCE`; `ADMISSION DECLARATION != DECISION CONTEXT ITEM`; `ADMISSION DECLARATION != DECISION CONTEXT`; `ADMISSION DECLARATION != DECISION CONTEXT REVISION`; `ADMISSION DECLARATION != MATERIALIZATION`; `ADMISSION DECLARATION != CONTEXT MUTATION`; `ADMISSION DECLARATION != REVISION CREATION`; `ADMISSION DECLARATION != LOOP CLOSED`. There is no automatic edge from proposal to declaration or declaration to Context Item.
+
+`admittedBy` is exactly declared `HUMAN_INPUT` provenance. It is not authenticated identity or external authorization, and no equality or inequality is required with any actor or provenance represented in the sealed proposal: `ADMITTED BY != PROPOSAL PROVENANCE`; `HUMAN ADMISSION DECLARATION != AUTHENTICATED IDENTITY`; `HUMAN ADMISSION DECLARATION != EXTERNAL AUTHORIZATION`. `rationale` is opaque `string | null`, identity-bearing, and not support. The contract represents positive admission only; it contains no rejection, defer, ignore, abstain, block, aggregation, vote, consensus, ranking, priority, score, confidence, or decision-status state. No admission declaration does not infer any negative disposition.
+
+The exact six-field artifact retains the complete sealed `DecisionContextObservationProposal`; no target Context, item, revision, question, or source-state inventory field exists. Phase 8D2 validates only through `assertDecisionContextObservationProposal(...)`, does not repair predecessor state, and does not inspect or resolve any authoritative reference it may carry. `ADMISSION AUTHORITY != MATERIALIZATION TARGET`; `AUTHORITATIVE DCOP ADMISSION != SOURCE STATE REFERENCE ADMISSION`; `REFERENCE PRESENT IN DCOP != REFERENCE PRESENT IN FUTURE DECISION CONTEXT`; `ADMISSION DECLARATION != SOURCE STATE INVENTORY MUTATION`.
+
+`DCOAD_` is deterministic over the sealed `DCOP_`, declared actor, and rationale including `null` versus string. It preserves the complete predecessor identity rather than compressing it into a Decision Context Item identity. `DCOP IDENTITY != DECISION CONTEXT ITEM IDENTITY`; `DISTINCT DCOP IDENTITY != NECESSARILY DISTINCT FUTURE DCI IDENTITY`; `DCOAD IDENTITY != CONTEXT ITEM IDENTITY`; `DCOAD IDENTITY != CONTEXT IDENTITY`; `DCOAD IDENTITY != REVISION IDENTITY`; `DCOAD IDENTITY != OBSERVATION TRUTH`; `DCOAD IDENTITY != OUTCOME TRUTH`; `DCOAD IDENTITY != PERSISTENCE AUTHORITY`. Construction and assertion use boundary-local shallow descriptor capture, reject hostile representations without getter execution, are non-repairing where stored, and return detached state. Phase 8D2 represents no time, Feedback, Learning, truth, semantic support, causation, persistence, Context mutation, materialization, or loop closure.
+
 ## Trust boundaries
 
 1. **Producer adapter boundary.** Producer-specific persistence and artifact validation stay in adapters/resolvers. The generic kernel has no Capability Core import.
@@ -803,4 +839,4 @@ The proposal is an `OBSERVATION`-role candidate for a future Decision Context, n
 
 The generic `lib/decision-core/**` production files are guarded against imports from Career, Capability Core, matching, recommendations, and legacy Career decision-loop code. The Capability adapter may import Capability Core because it is a producer-specific integration outside that generic kernel.
 
-Decision Core is application-domain neutral, not ontology-free in a metaphysical sense: the current ontology is intentionally about opaque producer state, structural context items, roles, provenance, operation-time authority reachability, semantic proposals, explicit structural expectations, explicit structural relation proposals, basis-relative structural gaps and explicit-path consequences, derivational-coherence assemblies, self-contained revision artifacts, repository-bound immutable authority-of-record operations, the PostgreSQL adapter implementing those sealed persistence semantics outside the kernel, read-only explicit predecessor-lineage reconstruction, a standalone human-declared assessment-request contract, a revision-bound assessment-basis contract, a semantic assessment-proposal contract, a recommendation-proposal contract, a deterministic proposal-coherence trace-validation contract, an explicit positive human option-selection declaration, a decision-bound action-intent contract, a human-commitment contract, a standalone source-attributed action-occurrence-claim contract, a standalone source-attributed state-change-claim contract, an explicit provenance-attributed action-state-change association-proposal contract over one sealed `ActionOccurrenceClaim` and one sealed `StateChangeClaim`, an explicit provenance-attributed outcome-attribution-proposal contract over one sealed `ActionStateChangeAssociationProposal`, and an explicit provenance-attributed opaque-statement observation-role candidate contract over one sealed `OutcomeAttributionProposal`. These are distinct operations and artifacts, not one automatic pipeline. Recruiting is not implemented on top of this module.
+Decision Core is application-domain neutral, not ontology-free in a metaphysical sense: the current ontology is intentionally about opaque producer state, structural context items, roles, provenance, operation-time authority reachability, semantic proposals, explicit structural expectations, explicit structural relation proposals, basis-relative structural gaps and explicit-path consequences, derivational-coherence assemblies, self-contained revision artifacts, repository-bound immutable authority-of-record operations, the PostgreSQL adapter implementing those sealed persistence semantics outside the kernel, read-only explicit predecessor-lineage reconstruction, a standalone human-declared assessment-request contract, a revision-bound assessment-basis contract, a semantic assessment-proposal contract, a recommendation-proposal contract, a deterministic proposal-coherence trace-validation contract, an explicit positive human option-selection declaration, a decision-bound action-intent contract, a human-commitment contract, a standalone source-attributed action-occurrence-claim contract, a standalone source-attributed state-change-claim contract, an explicit provenance-attributed action-state-change association-proposal contract over one sealed `ActionOccurrenceClaim` and one sealed `StateChangeClaim`, an explicit provenance-attributed outcome-attribution-proposal contract over one sealed `ActionStateChangeAssociationProposal`, an explicit provenance-attributed opaque-statement observation-role candidate contract over one sealed `OutcomeAttributionProposal`, and an explicit positive human admission-declaration contract over one sealed `DecisionContextObservationProposal` for future `OBSERVATION`-role materialization. These are distinct operations and artifacts, not one automatic pipeline. Recruiting is not implemented on top of this module.

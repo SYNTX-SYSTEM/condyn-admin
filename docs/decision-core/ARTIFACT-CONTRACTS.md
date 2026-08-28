@@ -165,6 +165,12 @@
 | `DecisionContextObservationProposal` | Exact canonical six-field stored artifact | Detached `DECISION_CONTEXT_OBSERVATION_PROPOSAL` / `DECISION_CONTEXT_OBSERVATION_PROPOSAL_V1` artifact with deterministic `DCOP_`; it is not a Context Item, Context, revision, admission, observation truth, or persistence authority. |
 | `createDecisionContextObservationProposal(input)` | `DecisionContextObservationProposalInput -> DecisionContextObservationProposal` | Captures and sealed-validates the outcome-attribution predecessor, opaque statement, and explicit provenance, and returns detached candidate state. |
 | `assertDecisionContextObservationProposal(value)` | `unknown -> asserts value is DecisionContextObservationProposal` | Self-contained exact stored assertion of predecessor, statement, and provenance with no external operation; it does not repair state. |
+| `DECISION_CONTEXT_OBSERVATION_ADMISSION_DECLARATION_SCHEMA_VERSION` | `"DECISION_CONTEXT_OBSERVATION_ADMISSION_DECLARATION_V1"` | Fixed schema-version constant for the Phase 8D2 positive human observation-admission declaration. |
+| `DecisionContextObservationAdmissionActor` | `origin: "HUMAN_INPUT"`, `actorId` | Declared admission actor only; it is not authenticated identity or external authorization. |
+| `DecisionContextObservationAdmissionDeclarationInput` | `decisionContextObservationProposal`, `admittedBy`, `rationale` | Exact three-field constructor input; `rationale` is required as `string \| null`. |
+| `DecisionContextObservationAdmissionDeclaration` | Exact canonical six-field stored artifact | Detached `DECISION_CONTEXT_OBSERVATION_ADMISSION_DECLARATION` / `DECISION_CONTEXT_OBSERVATION_ADMISSION_DECLARATION_V1` artifact with deterministic `DCOAD_`; it is not Context Item materialization, Context mutation, revision, truth, support, causation, or persistence authority. |
+| `createDecisionContextObservationAdmissionDeclaration(input)` | `DecisionContextObservationAdmissionDeclarationInput -> DecisionContextObservationAdmissionDeclaration` | Captures and sealed-validates one observation proposal, canonicalizes only local actor/rationale state, and returns detached positive admission-declaration state. |
+| `assertDecisionContextObservationAdmissionDeclaration(value)` | `unknown -> asserts value is DecisionContextObservationAdmissionDeclaration` | Self-contained exact stored assertion with no Context, reader, resolver, evaluator, repository, persistence, or external operation; it does not repair state. |
 
 ## Reference and reader behavior
 
@@ -1800,3 +1806,71 @@ The exact error surface is:
 - `ERR_DECISION_CONTEXT_OBSERVATION_PROPOSAL_ID_MISMATCH`
 
 Phase 8D1 performs no Decision Context admission, `DecisionContextItem` materialization, revision creation, Feedback, Learning, truth promotion, semantic support, causation, time, or persistence operation. `OBSERVATION ROLE != OBSERVED REALITY`; `OBSERVATION PROPOSAL != OBSERVATION TRUTH`; `REENTRY PROPOSAL != ADMISSION`; `REENTRY PROPOSAL != REVISION`; `REENTRY PROPOSAL != LOOP CLOSED`; `REENTRY != OUTCOME TRUTH`; `REENTRY != SEMANTIC SUPPORT`; `PERSISTED != TRUE`. It is independently constructed and does not reuse or generalize legacy Career outcome, feedback, or learning semantics.
+
+## Phase 8D2 decision-context-observation-admission contract
+
+Phase 8D2 adds `DecisionContextObservationAdmissionDeclaration` under `lib/decision-core/context-observation-admission/`. It represents only a declared human actor explicitly declaring one sealed `DecisionContextObservationProposal` admitted as eligible for future `OBSERVATION`-role materialization in a Decision Context. It is a positive human normative admission declaration only.
+
+```ts
+interface DecisionContextObservationAdmissionActor {
+  origin: "HUMAN_INPUT";
+  actorId: string;
+}
+
+interface DecisionContextObservationAdmissionDeclarationInput {
+  decisionContextObservationProposal: DecisionContextObservationProposal;
+  admittedBy: DecisionContextObservationAdmissionActor;
+  rationale: string | null;
+}
+
+interface DecisionContextObservationAdmissionDeclaration {
+  artifactKind: "DECISION_CONTEXT_OBSERVATION_ADMISSION_DECLARATION";
+  schemaVersion: typeof DECISION_CONTEXT_OBSERVATION_ADMISSION_DECLARATION_SCHEMA_VERSION;
+  decisionContextObservationAdmissionId: string;
+  decisionContextObservationProposal: DecisionContextObservationProposal;
+  admittedBy: DecisionContextObservationAdmissionActor;
+  rationale: string | null;
+}
+```
+
+The input has exactly three fields and the artifact exactly six. No field is optional: `rationale` is exactly `string | null`. There is no `role`, `itemId`, `contextId`, `revisionId`, `previousRevisionId`, `decisionQuestionId`, `sourceStateReferences`, status, acceptance/rejection, support, truth, score, confidence, priority, time, repository, or persistence field. `DECISION CONTEXT OBSERVATION PROPOSAL != DECISION CONTEXT OBSERVATION ADMISSION DECLARATION`; `ADMISSION DECLARATION != DECISION CONTEXT ITEM`; `ADMISSION DECLARATION != DECISION CONTEXT`; `ADMISSION DECLARATION != DECISION CONTEXT REVISION`; `ADMISSION DECLARATION != MATERIALIZATION`; `ADMISSION DECLARATION != CONTEXT MUTATION`; `ADMISSION DECLARATION != REVISION CREATION`; `ADMISSION DECLARATION != LOOP CLOSED`.
+
+### Sealed predecessor, human actor, and rationale
+
+Construction consumes exactly one complete sealed `DecisionContextObservationProposal` and validates it only through `assertDecisionContextObservationProposal(...)`. It does not reconstruct, reinterpret, or repair the nested Outcome Attribution Proposal, association proposal, Action Occurrence Claim, or State Change Claim. `PROPOSAL EXISTENCE != ADMISSION DECLARATION EXISTENCE`: explicit construction and one declared human actor are required.
+
+`admittedBy` is exactly `{ origin: "HUMAN_INPUT", actorId: string }`. Construction trims actor ID and requires it nonempty; stored assertion requires the canonical trimmed representation. The actor is declarative only: `ADMITTED BY != PROPOSAL PROVENANCE`; `PROPOSAL PROVENANCE != ADMISSION AUTHORITY`; `HUMAN ADMISSION DECLARATION != AUTHENTICATED IDENTITY`; `HUMAN ADMISSION DECLARATION != EXTERNAL AUTHORIZATION`. No equality or inequality with actors inside the sealed proposal is required or inferred.
+
+`rationale` is opaque and identity-bearing. At construction `null` remains `null`; a string is trimmed and must be nonempty. Stored assertion accepts `null` or an already canonical trimmed nonempty string. `RATIONALE != EVIDENCE`; `RATIONALE != SUPPORT`; `RATIONALE != OBSERVATION TRUTH`; `RATIONALE != OUTCOME TRUTH`. The positive-only declaration contains no rejection, defer, ignore, abstain, block, aggregation, voting, consensus, ranking, priority, score, confidence, or decision-status semantics. `NO ADMISSION DECLARATION != REJECTION`; `NO ADMISSION DECLARATION != DEFER`; `NO ADMISSION DECLARATION != IGNORE`; `NO ADMISSION DECLARATION != ABSTAIN`; `NO ADMISSION DECLARATION != BLOCK`.
+
+### `DCOAD_` identity, authority boundary, capture, and assertion
+
+`DCOAD_` matches `^DCOAD_[0-9A-F]{24}$`: it is the first 24 uppercase hexadecimal SHA-256 characters over:
+
+```ts
+[
+  "DECISION_CONTEXT_OBSERVATION_ADMISSION_DECLARATION_V1",
+  decisionContextObservationProposal.decisionContextObservationProposalId,
+  ["HUMAN_INPUT", admittedBy.actorId],
+  rationale
+]
+```
+
+Object insertion order is non-semantic. The sealed `DCOP_`, declared human actor, and rationale including `null` versus string are identity-bearing. `DCOAD IDENTITY != CONTEXT ITEM IDENTITY`; `DCOAD IDENTITY != CONTEXT IDENTITY`; `DCOAD IDENTITY != REVISION IDENTITY`; `DCOAD IDENTITY != OBSERVATION TRUTH`; `DCOAD IDENTITY != OUTCOME TRUTH`; `DCOAD IDENTITY != PERSISTENCE AUTHORITY`.
+
+The retained sealed DCOP prevents return-path-candidate identity from being compressed away: `DCOP IDENTITY != DECISION CONTEXT ITEM IDENTITY`; `DISTINCT DCOP IDENTITY != NECESSARILY DISTINCT FUTURE DCI IDENTITY`. Phase 8D2 neither materializes nor defines a future item mapping. A sealed admitted DCOP may contain `AUTHORITATIVE_STATE` provenance, but Phase 8D2 neither inspects nor resolves it and does not modify any source inventory: `AUTHORITATIVE DCOP ADMISSION != SOURCE STATE REFERENCE ADMISSION`; `REFERENCE PRESENT IN DCOP != REFERENCE PRESENT IN FUTURE DECISION CONTEXT`; `ADMISSION DECLARATION != SOURCE STATE INVENTORY MUTATION`.
+
+Construction and stored assertion use boundary-local shallow descriptor capture. The top level owns `decisionContextObservationProposal`, `admittedBy`, and `rationale`; the actor boundary owns `origin` and `actorId`. Nested validity is delegated only through the sealed predecessor assertion. Construction does not repair predecessor state, stored assertion repairs nothing, hostile accessors, symbol keys, hidden/non-enumerable fields, extras, and hostile nested predecessor state reject without getter execution, and returned state is detached. This is not a deep-freeze claim. `CREATE MAY CANONICALIZE WHERE EXPLICITLY DEFINED`; `ASSERT MUST NOT REPAIR`.
+
+`assertDecisionContextObservationAdmissionDeclaration(value)` is self-contained, exact, canonical, and non-repairing. Constructor failures are `...INPUT_INVALID` for malformed top level, `...PROPOSAL_INVALID` for invalid, hostile, or stale sealed DCOP, `...ACTOR_INVALID` for invalid actor, and `...RATIONALE_INVALID` for invalid rationale. Hostile, malformed, noncanonical, actor-invalid, rationale-invalid, sealed-DCOP-invalid, or nested-predecessor-invalid stored state is `ERR_DECISION_CONTEXT_OBSERVATION_ADMISSION_INVALID`. Only otherwise canonical valid state with stale/wrong outer `DCOAD_` is `ERR_DECISION_CONTEXT_OBSERVATION_ADMISSION_ID_MISMATCH`.
+
+The exact error surface is:
+
+- `ERR_DECISION_CONTEXT_OBSERVATION_ADMISSION_INPUT_INVALID`
+- `ERR_DECISION_CONTEXT_OBSERVATION_ADMISSION_PROPOSAL_INVALID`
+- `ERR_DECISION_CONTEXT_OBSERVATION_ADMISSION_ACTOR_INVALID`
+- `ERR_DECISION_CONTEXT_OBSERVATION_ADMISSION_RATIONALE_INVALID`
+- `ERR_DECISION_CONTEXT_OBSERVATION_ADMISSION_INVALID`
+- `ERR_DECISION_CONTEXT_OBSERVATION_ADMISSION_ID_MISMATCH`
+
+Phase 8D2 adds no target Context, `DecisionContextItem`, `DecisionContextDraft`, `DecisionContextRevision`, Context mutation, revision operation, reader, resolver, evaluator, repository, persister, time, Feedback, Learning, truth, semantic support, causation, or persistence operation. `ADMISSION AUTHORITY != MATERIALIZATION TARGET`; `ADMISSION != OBSERVATION TRUTH`; `ADMISSION != OBSERVED REALITY`; `ADMISSION != OUTCOME TRUTH`; `ADMISSION != SEMANTIC SUPPORT`; `ADMISSION != CAUSATION`; `PERSISTED != TRUE`. It is independently constructed and does not reuse legacy Career outcome, feedback, or learning semantics.
