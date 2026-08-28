@@ -141,6 +141,12 @@
 | `ActionOccurrenceClaim` | Exact canonical five-field stored artifact | Detached `ACTION_OCCURRENCE_CLAIM` / `ACTION_OCCURRENCE_CLAIM_V1` artifact with deterministic `DAOC_`; it is not Action fact, observation, execution proof, outcome, or persistence authority. |
 | `createActionOccurrenceClaim(input)` | `ActionOccurrenceClaimInput -> ActionOccurrenceClaim` | Captures local source and opaque text only, canonicalizes only permitted fields, and returns detached represented-claim state. |
 | `assertActionOccurrenceClaim(value)` | `unknown -> asserts value is ActionOccurrenceClaim` | Self-contained exact stored assertion with no reader, resolver, validator, evaluator, repository, persistence, payload, or external call; it does not repair state. |
+| `STATE_CHANGE_CLAIM_SCHEMA_VERSION` | `"STATE_CHANGE_CLAIM_V1"` | Fixed schema-version constant for the standalone Phase 8C1 state-change-claim artifact. |
+| `StateChangeClaimSource` | `HUMAN_INPUT` or `AUTHORITATIVE_STATE` | Exact closed source union with its own State Change Claim semantic role; it is not an alias of the occurrence-claim source type. |
+| `StateChangeClaimInput` | `source`, `stateChangeDescription` | Exact two-field constructor input. |
+| `StateChangeClaim` | Exact canonical five-field stored artifact | Detached `STATE_CHANGE_CLAIM` / `STATE_CHANGE_CLAIM_V1` artifact with deterministic `DSCC_`; it is not state-change fact, observation, verified change, effect, outcome, consequence, causal claim, or persistence authority. |
+| `createStateChangeClaim(input)` | `StateChangeClaimInput -> StateChangeClaim` | Captures local source and opaque description only, canonicalizes only permitted fields, and returns detached represented-claim state. |
+| `assertStateChangeClaim(value)` | `unknown -> asserts value is StateChangeClaim` | Self-contained exact stored assertion with no reader, resolver, validator, evaluator, repository, persistence, payload, or external call; it does not repair state. |
 
 ## Reference and reader behavior
 
@@ -1511,3 +1517,67 @@ The runtime surface is exactly `ACTION_OCCURRENCE_CLAIM_SCHEMA_VERSION`, `create
 - `ERR_DECISION_ACTION_OCCURRENCE_CLAIM_ID_MISMATCH`
 
 Phase 8B adds no persistence or authority-of-record operation: `ACTION OCCURRENCE CLAIM ARTIFACT != PERSISTENCE AUTHORITY`; a future persisted claim would not imply real-world truth. It is independently constructed and does not reuse `lib/career/decisions/action.ts`, `ActionEvent`, `CommitmentRecord`, action type/external reference/occurrence-time semantics, random/time identity, action cache, or a mandatory Commitment-to-Action chain. `LEGACY CAREER ACTION EVENT != AUTHORITY FOR GENERIC PHASE 8B`.
+
+## Phase 8C1 state-change-claim contract
+
+Phase 8C1 adds `StateChangeClaim` under `lib/decision-core/state-change-claim/`. It represents only: an explicit represented source claims that a described opaque state change occurred. It is a standalone state-change-claim boundary, not state-change fact, observed reality, verified change, effect, outcome, consequence, causal claim, semantic state-change support, or authority of reality.
+
+```ts
+type StateChangeClaimSource =
+  | { origin: "HUMAN_INPUT"; actorId: string }
+  | { origin: "AUTHORITATIVE_STATE"; stateReference: AuthoritativeStateReference };
+
+interface StateChangeClaimInput {
+  source: StateChangeClaimSource;
+  stateChangeDescription: string;
+}
+
+interface StateChangeClaim {
+  artifactKind: "STATE_CHANGE_CLAIM";
+  schemaVersion: "STATE_CHANGE_CLAIM_V1";
+  stateChangeClaimId: string;
+  source: StateChangeClaimSource;
+  stateChangeDescription: string;
+}
+```
+
+The input has exactly two fields and the artifact exactly five. It contains no Action Occurrence Claim, Decision, Action Intent, Human Commitment, revision, assessment, recommendation, coherence, before/after state, delta, metric, unit, direction, magnitude, affected actor, performer, executor, assignee, target, effect, outcome, consequence, causal classification, status, rationale, evidence, time, persistence, or relation field. `ACTION OCCURRENCE CLAIM != STATE CHANGE CLAIM`; `ACTION OCCURRENCE CLAIM + STATE CHANGE CLAIM != OUTCOME`. Text, actor, ID, or temporal similarity establishes no relation.
+
+### Closed source union and opaque fields
+
+Only `HUMAN_INPUT` and `AUTHORITATIVE_STATE` are valid State Change Claim sources: `MODEL_PROPOSAL != STATE CHANGE CLAIM SOURCE`; `DETERMINISTIC_DERIVATION != STATE CHANGE CLAIM SOURCE`. `StateChangeClaimSource` is its own semantic type even where its represented shape resembles the occurrence-claim source type: `SAME REPRESENTATION != SAME SEMANTIC ROLE`.
+
+`HUMAN_INPUT` is declared human reporting provenance only, not authenticated identity, authorization, signature, permission, affected actor, performer, executor, assignment, responsibility, ownership, accountability, state-change proof, or truth. `STATE CHANGE CLAIM SOURCE ROLE != AFFECTED ACTOR ROLE`; role non-equivalence does not require actor-ID inequality. No affected-actor field exists.
+
+`AUTHORITATIVE_STATE` is exact `{ origin: "AUTHORITATIVE_STATE", stateReference: { producerId, authorityContractId, artifactId, locator } }`. It stores only that exact governed-state reference. No resolution, reader, resolver, authority validator, evaluator, repository, adapter, payload read, or payload inspection occurs. `REFERENCE != AUTHORITY TOKEN`; `REFERENCE PRESENT != CURRENT SOURCE AUTHORITY`; `CURRENT SOURCE AUTHORITY != SEMANTIC STATE CHANGE SUPPORT`; `SEMANTIC STATE CHANGE SUPPORT != STATE CHANGE FACT`.
+
+Every reference field is a non-blank string, but its exact opaque producer-owned representation is preserved, including surrounding whitespace. Human actor ID and `stateChangeDescription` may trim during creation; references validate non-blankness without normalization. Stored assertion repairs nothing. `stateChangeDescription` is trimmed nonempty opaque text, not before/after state, structured delta, metric, effect, outcome, consequence, taxonomy, status, causal relation, or proof. `STATE CHANGE DESCRIPTION != STRUCTURED DELTA`; `STATE CHANGE DESCRIPTION != EFFECT`; `STATE CHANGE DESCRIPTION != OUTCOME`; `STATE CHANGE DESCRIPTION != CAUSAL RELATION`. Phase 8C1 represents no temporal claim: no timestamp, change time, clock, random ID, or scheduling state exists.
+
+### `DSCC_` identity, capture, and assertion
+
+`DSCC_` matches `^DSCC_[0-9A-F]{24}$`: it is the first 24 uppercase hexadecimal characters of SHA-256 over:
+
+```ts
+[
+  "STATE_CHANGE_CLAIM_V1",
+  canonicalSource,
+  stateChangeDescription
+]
+```
+
+`canonicalSource` is `["HUMAN_INPUT", actorId]` or `["AUTHORITATIVE_STATE", [producerId, authorityContractId, artifactId, locator]]`. Object insertion order is non-semantic; every represented source axis and exact reference string is semantic. `DSCC IDENTITY != REAL-WORLD STATE CHANGE IDENTITY`; `DSCC IDENTITY != OUTCOME IDENTITY`; `DSCC IDENTITY != CAUSAL IDENTITY`; `DSCC IDENTITY != TRUTH`; `DSCC IDENTITY != CURRENT SOURCE AUTHORITY`; `DSCC IDENTITY != PERSISTENCE AUTHORITY`.
+
+Construction is deterministic and dependency-free: it captures exact top-level input, then source, then reference under their own shallow descriptor boundaries; canonicalizes only human actor ID and state-change description; preserves authoritative reference values exactly; self-asserts; and returns detached state. The top-level boundary owns `source` and `stateChangeDescription`; the source boundary owns its direct variant shape; the authoritative reference boundary owns its four fields. Boundary-local capture preserves nested semantic error ownership. Accessors, symbols, hidden/non-enumerable fields, extras, invalid objects, and applicable self/cycle state reject without getter execution. Returned state is detached, not asserted deep-frozen.
+
+`assertStateChangeClaim(value)` is self-contained and exact/canonical/non-repairing. `CREATE MAY CANONICALIZE WHERE EXPLICITLY DEFINED; ASSERT MUST NOT REPAIR.` Constructor errors are respectively `...INPUT_INVALID` for malformed top level, `...SOURCE_INVALID` for malformed/unsupported source, `...REFERENCE_INVALID` for malformed authoritative reference, and `...DESCRIPTION_INVALID` for invalid description text. Hostile, malformed, noncanonical, or body-invalid stored state is `ERR_DECISION_STATE_CHANGE_CLAIM_INVALID`; only otherwise valid state with stale/wrong `DSCC_` is `ERR_DECISION_STATE_CHANGE_CLAIM_ID_MISMATCH`.
+
+The runtime surface is exactly `STATE_CHANGE_CLAIM_SCHEMA_VERSION`, `createStateChangeClaim`, and `assertStateChangeClaim`. Public types are exactly `StateChangeClaimSource`, `StateChangeClaimInput`, and `StateChangeClaim`. Exact errors are:
+
+- `ERR_DECISION_STATE_CHANGE_CLAIM_INPUT_INVALID`
+- `ERR_DECISION_STATE_CHANGE_CLAIM_SOURCE_INVALID`
+- `ERR_DECISION_STATE_CHANGE_CLAIM_REFERENCE_INVALID`
+- `ERR_DECISION_STATE_CHANGE_CLAIM_DESCRIPTION_INVALID`
+- `ERR_DECISION_STATE_CHANGE_CLAIM_INVALID`
+- `ERR_DECISION_STATE_CHANGE_CLAIM_ID_MISMATCH`
+
+Phase 8C1 adds no persistence or authority-of-record operation: `STATE CHANGE CLAIM ARTIFACT != PERSISTENCE AUTHORITY`; persisted state, if introduced under a separate contract, would not imply real-world truth. `PERSISTED != TRUE`; persistence is governed record authority, not state-change fact. The contract is independently constructed and does not reuse or generalize `lib/career/decisions/outcome.ts`, `OutcomeRecord`, `OutcomeState`, action ID/actor/occurrence-time/evidence fields, SUCCESS/FAILURE domain states, date/random identity, temporal Action-to-Outcome invariants, or legacy feedback attribution. `LEGACY OUTCOME RECORD != STATE CHANGE CLAIM`.
