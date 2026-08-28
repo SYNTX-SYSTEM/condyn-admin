@@ -171,6 +171,12 @@
 | `DecisionContextObservationAdmissionDeclaration` | Exact canonical six-field stored artifact | Detached `DECISION_CONTEXT_OBSERVATION_ADMISSION_DECLARATION` / `DECISION_CONTEXT_OBSERVATION_ADMISSION_DECLARATION_V1` artifact with deterministic `DCOAD_`; it is not Context Item materialization, Context mutation, revision, truth, support, causation, or persistence authority. |
 | `createDecisionContextObservationAdmissionDeclaration(input)` | `DecisionContextObservationAdmissionDeclarationInput -> DecisionContextObservationAdmissionDeclaration` | Captures and sealed-validates one observation proposal, canonicalizes only local actor/rationale state, and returns detached positive admission-declaration state. |
 | `assertDecisionContextObservationAdmissionDeclaration(value)` | `unknown -> asserts value is DecisionContextObservationAdmissionDeclaration` | Self-contained exact stored assertion with no Context, reader, resolver, evaluator, repository, persistence, or external operation; it does not repair state. |
+| `DECISION_CONTEXT_OBSERVATION_ITEM_PROJECTION_SCHEMA_VERSION` | `"DECISION_CONTEXT_OBSERVATION_ITEM_PROJECTION_V1"` | Fixed schema-version constant for the Phase 8D3 deterministic observation-item semantic projection artifact. |
+| `ProjectedDecisionContextObservationItemInput` | `role: "OBSERVATION"`, `statement`, `provenance` | Exact three-field future item-input semantics only; it is not a Decision Context Item or membership state. |
+| `DecisionContextObservationItemProjectionInput` | `decisionContextObservationAdmissionDeclaration` | Exact one-field constructor input. |
+| `DecisionContextObservationItemProjection` | Exact canonical five-field stored artifact | Detached `DECISION_CONTEXT_OBSERVATION_ITEM_PROJECTION` / `DECISION_CONTEXT_OBSERVATION_ITEM_PROJECTION_V1` artifact with deterministic `DCOIP_`; it is not materialization, Context membership, Context mutation, revision, truth, support, causation, or persistence authority. |
+| `createDecisionContextObservationItemProjection(input)` | `DecisionContextObservationItemProjectionInput -> DecisionContextObservationItemProjection` | Sealed-validates one admission declaration, derives exact future `OBSERVATION`-item input semantics, and returns detached projection state. |
+| `assertDecisionContextObservationItemProjection(value)` | `unknown -> asserts value is DecisionContextObservationItemProjection` | Self-contained exact stored assertion of the sealed admission and deterministic projected input; it does not repair or make Context-relative checks. |
 
 ## Reference and reader behavior
 
@@ -1874,3 +1880,67 @@ The exact error surface is:
 - `ERR_DECISION_CONTEXT_OBSERVATION_ADMISSION_ID_MISMATCH`
 
 Phase 8D2 adds no target Context, `DecisionContextItem`, `DecisionContextDraft`, `DecisionContextRevision`, Context mutation, revision operation, reader, resolver, evaluator, repository, persister, time, Feedback, Learning, truth, semantic support, causation, or persistence operation. `ADMISSION AUTHORITY != MATERIALIZATION TARGET`; `ADMISSION != OBSERVATION TRUTH`; `ADMISSION != OBSERVED REALITY`; `ADMISSION != OUTCOME TRUTH`; `ADMISSION != SEMANTIC SUPPORT`; `ADMISSION != CAUSATION`; `PERSISTED != TRUE`. It is independently constructed and does not reuse legacy Career outcome, feedback, or learning semantics.
+
+## Phase 8D3 decision-context-observation-item-projection contract
+
+Phase 8D3 adds `DecisionContextObservationItemProjection` under `lib/decision-core/context-observation-item-projection/`. It represents only a deterministic projection of the exact future Decision Context `OBSERVATION`-item input semantics of one complete sealed `DecisionContextObservationAdmissionDeclaration`, while retaining the complete sealed admission lineage.
+
+```ts
+interface ProjectedDecisionContextObservationItemInput {
+  role: "OBSERVATION";
+  statement: string;
+  provenance: DecisionContextObservationProposalProvenance;
+}
+
+interface DecisionContextObservationItemProjectionInput {
+  decisionContextObservationAdmissionDeclaration: DecisionContextObservationAdmissionDeclaration;
+}
+
+interface DecisionContextObservationItemProjection {
+  artifactKind: "DECISION_CONTEXT_OBSERVATION_ITEM_PROJECTION";
+  schemaVersion: typeof DECISION_CONTEXT_OBSERVATION_ITEM_PROJECTION_SCHEMA_VERSION;
+  decisionContextObservationItemProjectionId: string;
+  decisionContextObservationAdmissionDeclaration: DecisionContextObservationAdmissionDeclaration;
+  projectedItemInput: ProjectedDecisionContextObservationItemInput;
+}
+```
+
+The input has exactly one field and the artifact exactly five. `projectedItemInput` has exactly `role`, `statement`, and `provenance`; its role is exactly `OBSERVATION`. No `itemId`, Context ID, revision ID, source-state inventory, or target Context exists.
+
+### Deterministic projection and lineage retention
+
+`projectedItemInput.role = "OBSERVATION"`. `projectedItemInput.statement` is exactly the sealed DCOP statement represented inside the sealed DCOAD. `projectedItemInput.provenance` is exactly the complete sealed DCOP provenance represented inside that DCOAD. `PROJECTED ITEM PROVENANCE = DCOP PROVENANCE`; `ADMISSION AUTHORITY != PROJECTED ITEM PROVENANCE`; `DETERMINISTIC PROJECTION != DETERMINISTIC_DERIVATION ITEM PROVENANCE`.
+
+`HUMAN_INPUT`, `MODEL_PROPOSAL`, and `AUTHORITATIVE_STATE` remain their represented provenance variants. The operation does not replace provenance with `admittedBy`, use rationale as statement or provenance, or synthesize `DETERMINISTIC_DERIVATION` provenance. `ADMITTED BY != PROJECTED ITEM PROVENANCE`; `RATIONALE != PROJECTED ITEM STATEMENT`; `RATIONALE != PROJECTED ITEM PROVENANCE`.
+
+The complete sealed admission declaration remains embedded. Distinct admission identities may have equal projected input semantics, so lineage is not compressed: `DISTINCT ADMISSION IDENTITY != NECESSARILY DISTINCT PROJECTED ITEM INPUT`.
+
+### `DCOIP_` identity, authority boundary, capture, and assertion
+
+`DCOIP_` matches `^DCOIP_[0-9A-F]{24}$`: it is the first 24 uppercase hexadecimal SHA-256 characters over:
+
+```ts
+[
+  "DECISION_CONTEXT_OBSERVATION_ITEM_PROJECTION_V1",
+  decisionContextObservationAdmissionDeclaration.decisionContextObservationAdmissionId
+]
+```
+
+The complete sealed DCOAD identity is the sole identity axis because projected item input is fully deterministic from that state. `DCOIP IDENTITY != DCI IDENTITY`; `DCOIP IDENTITY != CONTEXT IDENTITY`; `DCOIP IDENTITY != REVISION IDENTITY`; `DCOIP IDENTITY != OBSERVATION TRUTH`; `DCOIP IDENTITY != PERSISTENCE AUTHORITY`.
+
+Construction consumes and validates the predecessor only through `assertDecisionContextObservationAdmissionDeclaration(...)`. It does not repair or reinterpret the admission, DCOP, Outcome Attribution Proposal, association proposal, Action Occurrence Claim, or State Change Claim. `CREATE MAY CANONICALIZE WHERE EXPLICITLY DEFINED`; `ASSERT MUST NOT REPAIR`.
+
+For `AUTHORITATIVE_STATE`, the complete reference is carried exactly into projected provenance. No resolver, reader, payload access, repository, source-inventory mutation, or future inventory-membership check occurs. `REFERENCE CARRIED BY PROJECTED ITEM INPUT != SOURCE STATE INVENTORY MEMBERSHIP`; `PROJECTED AUTHORITATIVE ITEM INPUT != SOURCE STATE REFERENCE ADMISSION`; `REFERENCE PRESENT IN PROJECTED ITEM INPUT != REFERENCE PRESENT IN FUTURE DECISION CONTEXT`.
+
+Construction and stored assertion use boundary-local shallow descriptor capture. The input owns `decisionContextObservationAdmissionDeclaration`; the artifact owns its five fields; `projectedItemInput` owns `role`, `statement`, and `provenance`; provenance owns its canonical variant fields. Hostile extras, symbols, hidden/non-enumerable fields, accessors, malformed nested values, hostile sealed predecessor state, and hostile projected input/provenance reject without getter execution. Returned state is detached; this is not a deep-freeze claim.
+
+The exact error surface is:
+
+- `ERR_DECISION_CONTEXT_OBSERVATION_ITEM_PROJECTION_INPUT_INVALID`
+- `ERR_DECISION_CONTEXT_OBSERVATION_ITEM_PROJECTION_ADMISSION_INVALID`
+- `ERR_DECISION_CONTEXT_OBSERVATION_ITEM_PROJECTION_INVALID`
+- `ERR_DECISION_CONTEXT_OBSERVATION_ITEM_PROJECTION_ID_MISMATCH`
+
+Malformed or hostile constructor input is `...INPUT_INVALID`; invalid, hostile, or stale sealed DCOAD input is `...ADMISSION_INVALID`. Stored malformed/hostile projection, invalid DCOAD, hostile projected input/provenance, wrong role, statement/provenance drift, or noncanonical nested state is `ERR_DECISION_CONTEXT_OBSERVATION_ITEM_PROJECTION_INVALID`. Only an otherwise canonical valid complete body with stale/wrong outer `DCOIP_` is `ERR_DECISION_CONTEXT_OBSERVATION_ITEM_PROJECTION_ID_MISMATCH`; body invalidity takes precedence.
+
+Phase 8D3 creates no `DecisionContextItem`, `DecisionContextDraft`, or `DecisionContextRevision`; it performs no Context membership, duplicate, Decision Question count, ordering, identity, validation, revision, Feedback, Learning, time, persistence, or authority operation. `PROJECTION != DECISION CONTEXT ITEM`; `PROJECTED ITEM INPUT != DECISION CONTEXT ITEM`; `PROJECTED ITEM INPUT != ITEM MEMBERSHIP`; `ITEM IDENTITY COMPUTABILITY != ITEM EXISTENCE`; `ITEM EXISTENCE != CONTEXT MEMBERSHIP`; `PROJECTION != MATERIALIZATION`; `PROJECTION != TARGET CONTEXT`; `PROJECTION != CONTEXT MUTATION`; `PROJECTION != DECISION CONTEXT DRAFT`; `PROJECTION != DECISION CONTEXT REVISION`; `PROJECTION != REVISION CREATION`; `PROJECTION != LOOP CLOSED`; `PROJECTION != OBSERVATION TRUTH`; `PROJECTION != OBSERVED REALITY`; `PROJECTION != OUTCOME TRUTH`; `PROJECTION != SEMANTIC SUPPORT`; `PROJECTION != CAUSATION`; `PERSISTED != TRUE`. Legacy Career semantics remain non-authoritative.
