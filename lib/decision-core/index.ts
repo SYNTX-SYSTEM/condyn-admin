@@ -24,3 +24,4 @@ export * from "./outcome-attribution-proposal";
 export * from "./context-observation-proposal";
 export * from "./context-observation-admission";
 export * from "./context-observation-item-projection";
+export * from "./context-observation-target-declaration";
