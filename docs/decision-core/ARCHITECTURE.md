@@ -1,6 +1,6 @@
 # Decision Core architecture
 
-## Scope through Phase 8C1
+## Scope through Phase 8C2
 
 Decision Core is a generic, producer-neutral module for consuming governed producer state and forming a deterministic structural `DecisionContextDraft`. It is separate from Capability Core. Capability Core publishes capability/evidence-oriented Phase-4 snapshots; Decision Core does not require that ontology and can consume any producer that implements a compatible authority resolver.
 
@@ -24,6 +24,8 @@ Phase 8B adds the adjacent generic `action-occurrence-claim` contract. An explic
 
 Phase 8C1 adds the standalone `state-change-claim` contract. An explicit represented `HUMAN_INPUT` or `AUTHORITATIVE_STATE` source claims that an opaque described state change occurred. It establishes neither state-change fact, observed reality, verified change, effect, outcome, consequence, causal claim, semantic state-change support, authority of reality, current source authority, nor persistence authority.
 
+Phase 8C2 adds the `action-state-change-association` contract. It consumes one complete sealed `ActionOccurrenceClaim`, one complete sealed `StateChangeClaim`, and explicit represented provenance to construct one detached `ActionStateChangeAssociationProposal`. It establishes neither relation truth, outcome, effect, consequence, attribution, causation, semantic support, current authority, authority of reality, persistence authority, temporal relation, Action fact, nor State Change fact.
+
 The implemented architecture has distinct branches, not one automatic pipeline:
 
 ```text
@@ -32,15 +34,24 @@ HumanDecisionDeclaration -> DecisionActionIntent -> HumanCommitment -> STOP
 
 ACTION OCCURRENCE CLAIM PATH
 HUMAN_INPUT -----------\
-                         -> ActionOccurrenceClaim -> STOP
+                         -> ActionOccurrenceClaim
 AUTHORITATIVE_STATE ---/
 
 STATE CHANGE CLAIM PATH
 HUMAN_INPUT -----------\
-                         -> StateChangeClaim -> STOP
+                         -> StateChangeClaim
 AUTHORITATIVE_STATE ---/
 
-NO AUTOMATIC EDGE BETWEEN THESE PATHS
+EXPLICIT ASSOCIATION PROPOSAL PATH
+ActionOccurrenceClaim ----------------\
+                                        \
+StateChangeClaim ------------------------> ActionStateChangeAssociationProposal
+                                        /
+explicit provenance ------------------/
+
+ActionStateChangeAssociationProposal -> STOP
+
+NO AUTOMATIC EDGE BETWEEN THE CLAIM PATHS
 ```
 
 ## Implemented layers
@@ -71,6 +82,7 @@ NO AUTOMATIC EDGE BETWEEN THESE PATHS
 | Human commitment (8A2) | Records one declared human commitment to one complete sealed Action Intent, without assignment, authorization, execution, action, outcome, or persistence semantics. | `HumanCommitment` |
 | Action occurrence claim (8B) | Records one standalone source-attributed claim that an opaque described operation occurred, without fact, observation, execution, performer, temporal, outcome, or persistence semantics. | `ActionOccurrenceClaim` |
 | State change claim (8C1) | Records one standalone source-attributed claim that an opaque described state change occurred, without fact, observation, verified change, effect, outcome, consequence, causation, temporal, or persistence semantics. | `StateChangeClaim` |
+| Action-state-change association proposal (8C2) | Records one explicit provenance-attributed proposal associating one sealed Action Occurrence Claim endpoint with one sealed State Change Claim endpoint, without relation truth, outcome, effect, consequence, attribution, causation, temporal, or persistence semantics. | `ActionStateChangeAssociationProposal` |
 
 The current Capability Core adapter in `lib/decision-adapters/capability-core.ts` is one producer-specific integration. It is not part of the generic Decision Core kernel.
 
@@ -598,6 +610,26 @@ The closed source union is `HUMAN_INPUT | AUTHORITATIVE_STATE`. It is its own se
 
 No reader, resolver, authority validator, evaluator, repository, adapter, payload inspection, affected-actor field, temporal field, persistence, effect, outcome, consequence, or causal classification exists. Reference strings are non-blank but preserved exactly; only human actor ID and `stateChangeDescription` may trim at construction. `STATE CHANGE DESCRIPTION != STRUCTURED DELTA`; `STATE CHANGE DESCRIPTION != EFFECT`; `STATE CHANGE DESCRIPTION != OUTCOME`; `STATE CHANGE DESCRIPTION != CAUSAL RELATION`. Phase 8C1 represents no temporal claim: `CLAIM THAT CHANGE OCCURRED != REPRESENTATION OF WHEN CHANGE OCCURRED`, `TIMESTAMP != STATE CHANGE PROOF`, and `TEMPORAL ORDER != CAUSATION`.
 
+## Phase 8C2 action-state-change-association boundary
+
+Phase 8C2 implements only:
+
+```text
+SEALED ActionOccurrenceClaim
++ SEALED StateChangeClaim
++ EXPLICIT HUMAN_INPUT | MODEL_PROPOSAL | AUTHORITATIVE_STATE provenance
+-> ActionStateChangeAssociationProposal
+-> STOP
+```
+
+The two claims remain independent sealed endpoint artifacts. `ACTION OCCURRENCE CLAIM + STATE CHANGE CLAIM != ASSOCIATION`; their coexistence, text equality, actor equality, source equality, ID similarity, temporal proximity, or temporal order does not infer an association. Explicit Phase 8C2 construction alone creates the represented proposal artifact. Endpoint actor/source equality and inequality are both admitted and establish no additional meaning.
+
+The proposal has no relation-kind taxonomy and does not reuse `StructuralRelationProposal`: `STRUCTURAL RELATION PROPOSAL != ACTION STATE CHANGE ASSOCIATION PROPOSAL`. It adds no predecessor field to either claim and no Decision, Intent, Commitment, Outcome, effect, consequence, attribution, causal, temporal, score, confidence, status, repository, or persistence field. `ASSOCIATION PROPOSAL != RELATION TRUTH`; `ASSOCIATION PROPOSAL != OUTCOME`; `ASSOCIATION PROPOSAL != EFFECT`; `ASSOCIATION PROPOSAL != CONSEQUENCE`; `ASSOCIATION != ATTRIBUTION`; `ASSOCIATION != CAUSATION`.
+
+The closed provenance union is `HUMAN_INPUT | MODEL_PROPOSAL | AUTHORITATIVE_STATE`; it is its own semantic type: `SAME REPRESENTATION != SAME SEMANTIC ROLE`. Human and model local identifiers may trim at construction. An authoritative reference stores its exact non-blank opaque strings without normalization. No reader, resolver, authority validator, repository, adapter, payload inspection, semantic evaluator, model/provider invocation, or persistence operation exists. `PROVENANCE != SUPPORT`; `REFERENCE PRESENT != CURRENT SOURCE AUTHORITY`; `CURRENT SOURCE AUTHORITY != ASSOCIATION TRUTH`; `MODEL PROPOSAL != PUBLICATION AUTHORITY`.
+
+`DASCA_` is deterministic over ordered Action Occurrence Claim ID, ordered State Change Claim ID, and complete canonical provenance. The endpoint roles are not sorted. Construction validates both sealed endpoint contracts, canonicalizes only permitted local provenance fields, self-asserts, and returns detached state. Stored assertion is exact, canonical, and non-repairing. Boundary-local shallow descriptor capture keeps top-level, provenance, and authoritative-reference errors at their semantic boundaries; hostile input is rejected without getter execution where applicable. Phase 8C2 represents no temporal relation or association time, and adds no persistence authority.
+
 ## Trust boundaries
 
 1. **Producer adapter boundary.** Producer-specific persistence and artifact validation stay in adapters/resolvers. The generic kernel has no Capability Core import.
@@ -626,6 +658,7 @@ No reader, resolver, authority validator, evaluator, repository, adapter, payloa
 24. **8A2 human-commitment boundary.** Construction captures and sealed-asserts one complete DecisionActionIntent before exact two-field input capture, captures one declared `HUMAN_INPUT` commitment actor and optional rationale, derives complete-state `DHCOM_`, self-asserts, and returns detached state. It does not reinterpret Action Intent scope or inspect lower predecessors, read a dependency, create assignment/action/execution state, or establish authorization, externally enforced responsibility, truth, or persistence authority.
 25. **8B occurrence-claim boundary.** Construction captures exact top-level input, source, and authoritative reference representations under separate shallow descriptor boundaries, derives complete-state `DAOC_`, self-asserts, and returns detached state. It calls no external dependency. The top-level boundary owns `source` and `operationDescription`; the source boundary owns its direct variant shape; the reference boundary owns its four opaque fields, so outer capture does not steal nested semantic error ownership.
 26. **8C1 state-change-claim boundary.** Construction captures exact top-level input, source, and authoritative reference representations under separate shallow descriptor boundaries, derives complete-state `DSCC_`, self-asserts, and returns detached state. It calls no external dependency. The top-level boundary owns `source` and `stateChangeDescription`; the source boundary owns its direct variant shape; the reference boundary owns its four opaque fields, preserving nested semantic error ownership.
+27. **8C2 action-state-change-association boundary.** Construction captures exact top-level input, one sealed Action Occurrence Claim endpoint, one sealed State Change Claim endpoint, provenance, and authoritative provenance reference under their own boundaries. It sealed-asserts both endpoints, derives ordered-endpoint `DASCA_`, self-asserts, and returns detached state. It calls no external dependency. The top-level boundary owns `actionOccurrenceClaim`, `stateChangeClaim`, and `provenance`; provenance owns its direct variant shape; the reference boundary owns its four opaque fields.
 
 ## Reachable structural states
 
@@ -704,4 +737,4 @@ No reader, resolver, authority validator, evaluator, repository, adapter, payloa
 
 The generic `lib/decision-core/**` production files are guarded against imports from Career, Capability Core, matching, recommendations, and legacy Career decision-loop code. The Capability adapter may import Capability Core because it is a producer-specific integration outside that generic kernel.
 
-Decision Core is application-domain neutral, not ontology-free in a metaphysical sense: the current ontology is intentionally about opaque producer state, structural context items, roles, provenance, operation-time authority reachability, semantic proposals, explicit structural expectations, explicit structural relation proposals, basis-relative structural gaps and explicit-path consequences, derivational-coherence assemblies, self-contained revision artifacts, repository-bound immutable authority-of-record operations, the PostgreSQL adapter implementing those sealed persistence semantics outside the kernel, read-only explicit predecessor-lineage reconstruction, a standalone human-declared assessment-request contract, a revision-bound assessment-basis contract, a semantic assessment-proposal contract, a recommendation-proposal contract, a deterministic proposal-coherence trace-validation contract, an explicit positive human option-selection declaration, a decision-bound action-intent contract, a human-commitment contract, a standalone source-attributed action-occurrence-claim contract, and a standalone source-attributed state-change-claim contract. These are distinct operations and artifacts, not one automatic pipeline. Recruiting is not implemented on top of this module.
+Decision Core is application-domain neutral, not ontology-free in a metaphysical sense: the current ontology is intentionally about opaque producer state, structural context items, roles, provenance, operation-time authority reachability, semantic proposals, explicit structural expectations, explicit structural relation proposals, basis-relative structural gaps and explicit-path consequences, derivational-coherence assemblies, self-contained revision artifacts, repository-bound immutable authority-of-record operations, the PostgreSQL adapter implementing those sealed persistence semantics outside the kernel, read-only explicit predecessor-lineage reconstruction, a standalone human-declared assessment-request contract, a revision-bound assessment-basis contract, a semantic assessment-proposal contract, a recommendation-proposal contract, a deterministic proposal-coherence trace-validation contract, an explicit positive human option-selection declaration, a decision-bound action-intent contract, a human-commitment contract, a standalone source-attributed action-occurrence-claim contract, a standalone source-attributed state-change-claim contract, and an explicit provenance-attributed action-state-change association-proposal contract over one sealed `ActionOccurrenceClaim` and one sealed `StateChangeClaim`. These are distinct operations and artifacts, not one automatic pipeline. Recruiting is not implemented on top of this module.

@@ -147,6 +147,12 @@
 | `StateChangeClaim` | Exact canonical five-field stored artifact | Detached `STATE_CHANGE_CLAIM` / `STATE_CHANGE_CLAIM_V1` artifact with deterministic `DSCC_`; it is not state-change fact, observation, verified change, effect, outcome, consequence, causal claim, or persistence authority. |
 | `createStateChangeClaim(input)` | `StateChangeClaimInput -> StateChangeClaim` | Captures local source and opaque description only, canonicalizes only permitted fields, and returns detached represented-claim state. |
 | `assertStateChangeClaim(value)` | `unknown -> asserts value is StateChangeClaim` | Self-contained exact stored assertion with no reader, resolver, validator, evaluator, repository, persistence, payload, or external call; it does not repair state. |
+| `ACTION_STATE_CHANGE_ASSOCIATION_PROPOSAL_SCHEMA_VERSION` | `"ACTION_STATE_CHANGE_ASSOCIATION_PROPOSAL_V1"` | Fixed schema-version constant for the explicit Phase 8C2 association-proposal artifact. |
+| `ActionStateChangeAssociationProvenance` | `HUMAN_INPUT`, `MODEL_PROPOSAL`, or `AUTHORITATIVE_STATE` | Exact closed provenance union with its own association-proposal semantic role. |
+| `ActionStateChangeAssociationProposalInput` | `actionOccurrenceClaim`, `stateChangeClaim`, `provenance` | Exact three-field constructor input. |
+| `ActionStateChangeAssociationProposal` | Exact canonical six-field stored artifact | Detached `ACTION_STATE_CHANGE_ASSOCIATION_PROPOSAL` / `ACTION_STATE_CHANGE_ASSOCIATION_PROPOSAL_V1` artifact with deterministic `DASCA_`; it is not relation truth, outcome, effect, consequence, attribution, causation, or persistence authority. |
+| `createActionStateChangeAssociationProposal(input)` | `ActionStateChangeAssociationProposalInput -> ActionStateChangeAssociationProposal` | Captures and sealed-validates both endpoints and explicit provenance, canonicalizes only permitted local provenance fields, and returns detached proposal state. |
+| `assertActionStateChangeAssociationProposal(value)` | `unknown -> asserts value is ActionStateChangeAssociationProposal` | Self-contained exact stored assertion of both sealed endpoints and provenance with no external operation; it does not repair state. |
 
 ## Reference and reader behavior
 
@@ -1581,3 +1587,70 @@ The runtime surface is exactly `STATE_CHANGE_CLAIM_SCHEMA_VERSION`, `createState
 - `ERR_DECISION_STATE_CHANGE_CLAIM_ID_MISMATCH`
 
 Phase 8C1 adds no persistence or authority-of-record operation: `STATE CHANGE CLAIM ARTIFACT != PERSISTENCE AUTHORITY`; persisted state, if introduced under a separate contract, would not imply real-world truth. `PERSISTED != TRUE`; persistence is governed record authority, not state-change fact. The contract is independently constructed and does not reuse or generalize `lib/career/decisions/outcome.ts`, `OutcomeRecord`, `OutcomeState`, action ID/actor/occurrence-time/evidence fields, SUCCESS/FAILURE domain states, date/random identity, temporal Action-to-Outcome invariants, or legacy feedback attribution. `LEGACY OUTCOME RECORD != STATE CHANGE CLAIM`.
+
+## Phase 8C2 action-state-change-association-proposal contract
+
+Phase 8C2 adds `ActionStateChangeAssociationProposal` under `lib/decision-core/action-state-change-association/`. It represents only one explicit provenance-attributed proposal associating one complete sealed `ActionOccurrenceClaim` and one complete sealed `StateChangeClaim`. `ACTION OCCURRENCE CLAIM + STATE CHANGE CLAIM != ASSOCIATION`. The proposal is not relation truth, outcome, effect, consequence, attribution, causation, causal support, semantic support, current authority, authority of reality, persistence authority, temporal relation, Action fact, or State Change fact.
+
+```ts
+type ActionStateChangeAssociationProvenance =
+  | { origin: "HUMAN_INPUT"; actorId: string }
+  | { origin: "MODEL_PROPOSAL"; proposalRef: string }
+  | { origin: "AUTHORITATIVE_STATE"; stateReference: AuthoritativeStateReference };
+
+interface ActionStateChangeAssociationProposalInput {
+  actionOccurrenceClaim: ActionOccurrenceClaim;
+  stateChangeClaim: StateChangeClaim;
+  provenance: ActionStateChangeAssociationProvenance;
+}
+
+interface ActionStateChangeAssociationProposal {
+  artifactKind: "ACTION_STATE_CHANGE_ASSOCIATION_PROPOSAL";
+  schemaVersion: "ACTION_STATE_CHANGE_ASSOCIATION_PROPOSAL_V1";
+  actionStateChangeAssociationProposalId: string;
+  actionOccurrenceClaim: ActionOccurrenceClaim;
+  stateChangeClaim: StateChangeClaim;
+  provenance: ActionStateChangeAssociationProvenance;
+}
+```
+
+The input has exactly three fields and the artifact exactly six. It contains no `kind`, `relationKind`, outcome, effect, consequence, attribution, causal field, rationale, status, confidence, score, priority, time, repository, or persistence metadata. There is no relation-kind taxonomy. `STRUCTURAL RELATION PROPOSAL != ACTION STATE CHANGE ASSOCIATION PROPOSAL`; Phase 8C2 does not reuse, generalize, replace, or extend the sealed context-bound `StructuralRelationProposal` contract.
+
+### Sealed endpoints and closed provenance
+
+Construction consumes exactly one complete sealed Action Occurrence Claim in its action endpoint role and one complete sealed State Change Claim in its state-change endpoint role. Their public assertion contracts are used; construction does not repair them. Endpoint coexistence, text equality, actor equality, source-origin equality, ID similarity, temporal proximity, or temporal order does not infer association. Endpoint actor/source equality and inequality are both admitted. The explicit proposal construction is what creates represented proposal state.
+
+The closed provenance union is exactly `HUMAN_INPUT | MODEL_PROPOSAL | AUTHORITATIVE_STATE`; `DETERMINISTIC_DERIVATION` is not admitted. `ActionStateChangeAssociationProvenance` is its own semantic type: `SAME REPRESENTATION != SAME SEMANTIC ROLE`. Human `actorId` and model `proposalRef` are trimmed nonempty text at construction and must already be canonical when stored. They represent provenance only: neither establishes authenticated identity, authorization, publication authority, responsibility, ownership, accountability, relation truth, outcome, effect, attribution, or causation. `MODEL PROPOSAL != PUBLICATION AUTHORITY`.
+
+`AUTHORITATIVE_STATE` stores only `{ producerId, authorityContractId, artifactId, locator }`. Each is a non-blank string, while the exact opaque represented strings are preserved without trimming or normalization: `VALIDATE NON-BLANKNESS + PRESERVE EXACT REPRESENTATION`. No reader, resolver, authority validator, repository, adapter, payload inspection, semantic evaluator, model/provider invocation, or persistence operation occurs. `REFERENCE != AUTHORITY TOKEN`; `REFERENCE PRESENT != CURRENT SOURCE AUTHORITY`; `PROVENANCE != SUPPORT`; `CURRENT SOURCE AUTHORITY != ASSOCIATION TRUTH`.
+
+### `DASCA_` identity, capture, and assertion
+
+`DASCA_` matches `^DASCA_[0-9A-F]{24}$`: it is the first 24 uppercase hexadecimal SHA-256 characters over:
+
+```ts
+[
+  "ACTION_STATE_CHANGE_ASSOCIATION_PROPOSAL_V1",
+  actionOccurrenceClaim.actionOccurrenceClaimId,
+  stateChangeClaim.stateChangeClaimId,
+  canonicalProvenance
+]
+```
+
+Canonical provenance is `['HUMAN_INPUT', actorId]`, `['MODEL_PROPOSAL', proposalRef]`, or `['AUTHORITATIVE_STATE', [producerId, authorityContractId, artifactId, locator]]`. The endpoint roles are ordered and are not sorted. Object insertion order is non-semantic; changing either endpoint ID or canonical provenance changes identity. Exact authoritative-reference strings are identity-bearing. `DASCA IDENTITY != RELATION TRUTH`; `DASCA IDENTITY != OUTCOME IDENTITY`; `DASCA IDENTITY != CAUSAL IDENTITY`; `DASCA IDENTITY != PERSISTENCE AUTHORITY`.
+
+Construction uses boundary-local shallow descriptor capture: the top level owns both endpoints and provenance, provenance owns its direct variant shape, and the authoritative reference owns its four fields. Valid nested claims are cloned and the returned proposal is detached. Accessors, symbol keys, hidden/non-enumerable fields, extras, invalid objects, and hostile nested claims reject without getter execution where applicable. This is not a deep-freeze claim. `CREATE MAY CANONICALIZE WHERE EXPLICITLY DEFINED`; `CREATE MUST NOT REPAIR CLAIMS`; `ASSERT MUST NOT REPAIR`.
+
+`assertActionStateChangeAssociationProposal(value)` is self-contained, exact, canonical, and non-repairing. Constructor failures are `...INPUT_INVALID` for malformed top level, `...ACTION_CLAIM_INVALID` for invalid/hostile Action Occurrence Claim, `...STATE_CHANGE_CLAIM_INVALID` for invalid/hostile State Change Claim, `...PROVENANCE_INVALID` for malformed/unsupported provenance, and `...REFERENCE_INVALID` for malformed authoritative provenance reference. Hostile, malformed, noncanonical, nested-claim-invalid, or body-invalid stored state is `ERR_DECISION_ACTION_STATE_CHANGE_ASSOCIATION_INVALID`. A stale nested `DAOC_` or `DSCC_` remains outer association invalid. Only otherwise canonical valid state with stale/wrong outer `DASCA_` is `ERR_DECISION_ACTION_STATE_CHANGE_ASSOCIATION_ID_MISMATCH`.
+
+The exact error surface is:
+
+- `ERR_DECISION_ACTION_STATE_CHANGE_ASSOCIATION_INPUT_INVALID`
+- `ERR_DECISION_ACTION_STATE_CHANGE_ASSOCIATION_ACTION_CLAIM_INVALID`
+- `ERR_DECISION_ACTION_STATE_CHANGE_ASSOCIATION_STATE_CHANGE_CLAIM_INVALID`
+- `ERR_DECISION_ACTION_STATE_CHANGE_ASSOCIATION_PROVENANCE_INVALID`
+- `ERR_DECISION_ACTION_STATE_CHANGE_ASSOCIATION_REFERENCE_INVALID`
+- `ERR_DECISION_ACTION_STATE_CHANGE_ASSOCIATION_INVALID`
+- `ERR_DECISION_ACTION_STATE_CHANGE_ASSOCIATION_ID_MISMATCH`
+
+Phase 8C2 represents no temporal relation or association time. It adds no repository, adapter, database, revision, current/head/latest selection, authority-of-record operation, or persistence authority: `ASSOCIATION PROPOSAL != PERSISTENCE AUTHORITY`; `PERSISTED != TRUE`. It is independently constructed and does not reuse or generalize `lib/career/decisions/outcome.ts`, `feedback.ts`, `learning.ts`, `OutcomeRecord`, `OutcomeState`, `FeedbackRecord`, `AttributionRecord`, `AttributionType`, or legacy association/causal vocabulary.
