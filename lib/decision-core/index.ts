@@ -19,3 +19,4 @@ export * from "./action-intent";
 export * from "./human-commitment";
 export * from "./action-occurrence-claim";
 export * from "./state-change-claim";
+export * from "./action-state-change-association";
