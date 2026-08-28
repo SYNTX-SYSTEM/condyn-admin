@@ -153,6 +153,12 @@
 | `ActionStateChangeAssociationProposal` | Exact canonical six-field stored artifact | Detached `ACTION_STATE_CHANGE_ASSOCIATION_PROPOSAL` / `ACTION_STATE_CHANGE_ASSOCIATION_PROPOSAL_V1` artifact with deterministic `DASCA_`; it is not relation truth, outcome, effect, consequence, attribution, causation, or persistence authority. |
 | `createActionStateChangeAssociationProposal(input)` | `ActionStateChangeAssociationProposalInput -> ActionStateChangeAssociationProposal` | Captures and sealed-validates both endpoints and explicit provenance, canonicalizes only permitted local provenance fields, and returns detached proposal state. |
 | `assertActionStateChangeAssociationProposal(value)` | `unknown -> asserts value is ActionStateChangeAssociationProposal` | Self-contained exact stored assertion of both sealed endpoints and provenance with no external operation; it does not repair state. |
+| `OUTCOME_ATTRIBUTION_PROPOSAL_SCHEMA_VERSION` | `"OUTCOME_ATTRIBUTION_PROPOSAL_V1"` | Fixed schema-version constant for the explicit Phase 8C3 outcome-attribution-proposal artifact. |
+| `OutcomeAttributionProvenance` | `HUMAN_INPUT`, `MODEL_PROPOSAL`, or `AUTHORITATIVE_STATE` | Exact closed provenance union with its own outcome-attribution-proposal semantic role. |
+| `OutcomeAttributionProposalInput` | `associationProposal`, `provenance` | Exact two-field constructor input. |
+| `OutcomeAttributionProposal` | Exact canonical five-field stored artifact | Detached `OUTCOME_ATTRIBUTION_PROPOSAL` / `OUTCOME_ATTRIBUTION_PROPOSAL_V1` artifact with deterministic `DOATP_`; it is not outcome truth, relation truth, causation, or persistence authority. |
+| `createOutcomeAttributionProposal(input)` | `OutcomeAttributionProposalInput -> OutcomeAttributionProposal` | Captures and sealed-validates the association predecessor and explicit provenance, canonicalizes only permitted local provenance fields, and returns detached proposal state. |
+| `assertOutcomeAttributionProposal(value)` | `unknown -> asserts value is OutcomeAttributionProposal` | Self-contained exact stored assertion of the sealed association and provenance with no external operation; it does not repair state. |
 
 ## Reference and reader behavior
 
@@ -1654,3 +1660,68 @@ The exact error surface is:
 - `ERR_DECISION_ACTION_STATE_CHANGE_ASSOCIATION_ID_MISMATCH`
 
 Phase 8C2 represents no temporal relation or association time. It adds no repository, adapter, database, revision, current/head/latest selection, authority-of-record operation, or persistence authority: `ASSOCIATION PROPOSAL != PERSISTENCE AUTHORITY`; `PERSISTED != TRUE`. It is independently constructed and does not reuse or generalize `lib/career/decisions/outcome.ts`, `feedback.ts`, `learning.ts`, `OutcomeRecord`, `OutcomeState`, `FeedbackRecord`, `AttributionRecord`, `AttributionType`, or legacy association/causal vocabulary.
+
+## Phase 8C3 outcome-attribution-proposal contract
+
+Phase 8C3 adds `OutcomeAttributionProposal` under `lib/decision-core/outcome-attribution-proposal/`. It represents only an explicit provenance-attributed proposal that the `StateChangeClaim` already represented in one complete sealed `ActionStateChangeAssociationProposal` has an outcome role relative to that association's represented `ActionOccurrenceClaim`.
+
+```ts
+type OutcomeAttributionProvenance =
+  | { origin: "HUMAN_INPUT"; actorId: string }
+  | { origin: "MODEL_PROPOSAL"; proposalRef: string }
+  | { origin: "AUTHORITATIVE_STATE"; stateReference: AuthoritativeStateReference };
+
+interface OutcomeAttributionProposalInput {
+  associationProposal: ActionStateChangeAssociationProposal;
+  provenance: OutcomeAttributionProvenance;
+}
+
+interface OutcomeAttributionProposal {
+  artifactKind: "OUTCOME_ATTRIBUTION_PROPOSAL";
+  schemaVersion: typeof OUTCOME_ATTRIBUTION_PROPOSAL_SCHEMA_VERSION;
+  outcomeAttributionProposalId: string;
+  associationProposal: ActionStateChangeAssociationProposal;
+  provenance: OutcomeAttributionProvenance;
+}
+```
+
+The input has exactly two fields and the artifact exactly five. `actionOccurrenceClaim` and `stateChangeClaim` are not duplicated: they remain represented inside the sealed association predecessor. There are no outcome-state, effect, consequence, causal, rationale, status, confidence, score, priority, evaluation, evidence, temporal, repository, or persistence fields. `ASSOCIATION PROPOSAL != OUTCOME ATTRIBUTION PROPOSAL`; `ASSOCIATION != OUTCOME ATTRIBUTION`; `ACTION OCCURRENCE CLAIM + STATE CHANGE CLAIM + ASSOCIATION PROPOSAL != OUTCOME ATTRIBUTION PROPOSAL`; `OUTCOME ATTRIBUTION PROPOSAL != OUTCOME TRUTH`; `OUTCOME ATTRIBUTION PROPOSAL != RELATION TRUTH`; `OUTCOME ATTRIBUTION PROPOSAL != CAUSAL CLAIM`; `OUTCOME ATTRIBUTION != CAUSATION`.
+
+### Sealed association predecessor and closed provenance
+
+Construction consumes exactly one complete sealed `ActionStateChangeAssociationProposal` and validates it through `assertActionStateChangeAssociationProposal(...)`. It does not repair, reinterpret, or reconstruct its embedded claims. `ASSOCIATION PROPOSAL EXISTENCE != OUTCOME ATTRIBUTION PROPOSAL EXISTENCE`: explicit Phase 8C3 construction and new represented provenance are required.
+
+The closed provenance union is exactly `HUMAN_INPUT | MODEL_PROPOSAL | AUTHORITATIVE_STATE`; `DETERMINISTIC_DERIVATION` is not admitted. `OutcomeAttributionProvenance` is its own semantic type: `SAME REPRESENTATION != SAME SEMANTIC ROLE`. The association and outcome-attribution provenance may have the same concrete source or different concrete sources; neither equality nor inequality is required or inferred.
+
+Human `actorId` and model `proposalRef` are trimmed nonempty strings at construction and must already be canonical when stored. They represent proposal provenance only, not authenticated identity, authorization, signature, responsibility, ownership, accountability, performer role, outcome truth, relation truth, or causal authority. `MODEL PROPOSAL != PUBLICATION AUTHORITY`; `MODEL PROPOSAL != OUTCOME TRUTH`; `MODEL PROPOSAL != CAUSAL AUTHORITY`.
+
+`AUTHORITATIVE_STATE` stores only `{ producerId, authorityContractId, artifactId, locator }`. Every field is a non-blank string, but each exact opaque represented value is preserved without trimming or normalization: `VALIDATE NON-BLANKNESS + PRESERVE EXACT REPRESENTATION`. No reader, resolver, authority validator, repository, adapter, payload inspection, semantic evaluator, model/provider, or persistence call occurs. `REFERENCE != AUTHORITY TOKEN`; `REFERENCE PRESENT != CURRENT SOURCE AUTHORITY`; `PROVENANCE != SUPPORT`; `CURRENT SOURCE AUTHORITY != OUTCOME TRUTH`.
+
+### `DOATP_` identity, capture, and assertion
+
+`DOATP_` matches `^DOATP_[0-9A-F]{24}$`: it is the first 24 uppercase hexadecimal SHA-256 characters over:
+
+```ts
+[
+  "OUTCOME_ATTRIBUTION_PROPOSAL_V1",
+  associationProposal.actionStateChangeAssociationProposalId,
+  canonicalProvenance
+]
+```
+
+Canonical provenance is `['HUMAN_INPUT', actorId]`, `['MODEL_PROPOSAL', proposalRef]`, or `['AUTHORITATIVE_STATE', [producerId, authorityContractId, artifactId, locator]]`. Object insertion order is non-semantic; the sealed association identity and complete canonical provenance are identity-bearing, and exact authoritative reference strings remain identity-bearing. `DOATP IDENTITY != OUTCOME TRUTH`; `DOATP IDENTITY != RELATION TRUTH`; `DOATP IDENTITY != CAUSAL IDENTITY`; `DOATP IDENTITY != PERSISTENCE AUTHORITY`.
+
+Construction uses boundary-local shallow descriptor capture: the top level owns `associationProposal` and `provenance`; provenance owns its direct variant shape; the authoritative reference owns its four fields. Nested association validity is delegated through the sealed public assertion contract. Construction does not repair the predecessor, and stored assertion repairs nothing. Accessors, symbol keys, hidden/non-enumerable fields, extras, invalid predecessor state, and hostile nested claim state reject without getter execution where applicable. The returned artifact is detached; this is not a deep-freeze claim. `CREATE MAY CANONICALIZE WHERE EXPLICITLY DEFINED`; `CREATE MUST NOT REPAIR PREDECESSOR`; `ASSERT MUST NOT REPAIR`.
+
+`assertOutcomeAttributionProposal(value)` is self-contained, exact, canonical, and non-repairing. Constructor failures are `...INPUT_INVALID` for malformed top level, `...ASSOCIATION_PROPOSAL_INVALID` for invalid, hostile, or stale sealed association state, `...PROVENANCE_INVALID` for malformed/unsupported provenance, and `...REFERENCE_INVALID` for malformed authoritative provenance reference. Hostile, malformed, noncanonical, nested-association-invalid, nested-claim-invalid, or body-invalid stored state is `ERR_DECISION_OUTCOME_ATTRIBUTION_INVALID`. Only otherwise canonical valid state with stale/wrong outer `DOATP_` is `ERR_DECISION_OUTCOME_ATTRIBUTION_ID_MISMATCH`.
+
+The exact error surface is:
+
+- `ERR_DECISION_OUTCOME_ATTRIBUTION_INPUT_INVALID`
+- `ERR_DECISION_OUTCOME_ATTRIBUTION_ASSOCIATION_PROPOSAL_INVALID`
+- `ERR_DECISION_OUTCOME_ATTRIBUTION_PROVENANCE_INVALID`
+- `ERR_DECISION_OUTCOME_ATTRIBUTION_REFERENCE_INVALID`
+- `ERR_DECISION_OUTCOME_ATTRIBUTION_INVALID`
+- `ERR_DECISION_OUTCOME_ATTRIBUTION_ID_MISMATCH`
+
+Phase 8C3 represents no outcome-state taxonomy, time, temporal relation, effect truth, consequence truth, causation, causal support, relation truth, or outcome truth. `TEMPORAL ORDER != OUTCOME ATTRIBUTION`; `TEMPORAL ORDER != CAUSATION`. It adds no repository, adapter, database, persister, revision, current/head/latest selection, authority-of-record operation, or persistence authority: `OUTCOME ATTRIBUTION PROPOSAL != PERSISTENCE AUTHORITY`; `PERSISTED != TRUE`. Persistence, if separately introduced later, would establish governed record authority only, not outcome truth. The contract is independently reconstructed and does not reuse or generalize `lib/career/decisions/outcome.ts`, `feedback.ts`, `learning.ts`, `OutcomeRecord`, `OutcomeState`, `FeedbackRecord`, `AttributionRecord`, `AttributionType`, `ASSOCIATED_WITH`, `SUPPORTS`, `CONTRADICTS`, or `CAUSAL_CLAIM`.
