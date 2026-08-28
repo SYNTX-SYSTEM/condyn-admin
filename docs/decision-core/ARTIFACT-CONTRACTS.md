@@ -159,6 +159,12 @@
 | `OutcomeAttributionProposal` | Exact canonical five-field stored artifact | Detached `OUTCOME_ATTRIBUTION_PROPOSAL` / `OUTCOME_ATTRIBUTION_PROPOSAL_V1` artifact with deterministic `DOATP_`; it is not outcome truth, relation truth, causation, or persistence authority. |
 | `createOutcomeAttributionProposal(input)` | `OutcomeAttributionProposalInput -> OutcomeAttributionProposal` | Captures and sealed-validates the association predecessor and explicit provenance, canonicalizes only permitted local provenance fields, and returns detached proposal state. |
 | `assertOutcomeAttributionProposal(value)` | `unknown -> asserts value is OutcomeAttributionProposal` | Self-contained exact stored assertion of the sealed association and provenance with no external operation; it does not repair state. |
+| `DECISION_CONTEXT_OBSERVATION_PROPOSAL_SCHEMA_VERSION` | `"DECISION_CONTEXT_OBSERVATION_PROPOSAL_V1"` | Fixed schema-version constant for the explicit Phase 8D1 Decision Context observation-candidate proposal artifact. |
+| `DecisionContextObservationProposalProvenance` | `HUMAN_INPUT`, `MODEL_PROPOSAL`, or `AUTHORITATIVE_STATE` | Exact closed provenance union with its own observation-candidate semantic role. |
+| `DecisionContextObservationProposalInput` | `outcomeAttributionProposal`, `statement`, `provenance` | Exact three-field constructor input. |
+| `DecisionContextObservationProposal` | Exact canonical six-field stored artifact | Detached `DECISION_CONTEXT_OBSERVATION_PROPOSAL` / `DECISION_CONTEXT_OBSERVATION_PROPOSAL_V1` artifact with deterministic `DCOP_`; it is not a Context Item, Context, revision, admission, observation truth, or persistence authority. |
+| `createDecisionContextObservationProposal(input)` | `DecisionContextObservationProposalInput -> DecisionContextObservationProposal` | Captures and sealed-validates the outcome-attribution predecessor, opaque statement, and explicit provenance, and returns detached candidate state. |
+| `assertDecisionContextObservationProposal(value)` | `unknown -> asserts value is DecisionContextObservationProposal` | Self-contained exact stored assertion of predecessor, statement, and provenance with no external operation; it does not repair state. |
 
 ## Reference and reader behavior
 
@@ -1725,3 +1731,72 @@ The exact error surface is:
 - `ERR_DECISION_OUTCOME_ATTRIBUTION_ID_MISMATCH`
 
 Phase 8C3 represents no outcome-state taxonomy, time, temporal relation, effect truth, consequence truth, causation, causal support, relation truth, or outcome truth. `TEMPORAL ORDER != OUTCOME ATTRIBUTION`; `TEMPORAL ORDER != CAUSATION`. It adds no repository, adapter, database, persister, revision, current/head/latest selection, authority-of-record operation, or persistence authority: `OUTCOME ATTRIBUTION PROPOSAL != PERSISTENCE AUTHORITY`; `PERSISTED != TRUE`. Persistence, if separately introduced later, would establish governed record authority only, not outcome truth. The contract is independently reconstructed and does not reuse or generalize `lib/career/decisions/outcome.ts`, `feedback.ts`, `learning.ts`, `OutcomeRecord`, `OutcomeState`, `FeedbackRecord`, `AttributionRecord`, `AttributionType`, `ASSOCIATED_WITH`, `SUPPORTS`, `CONTRADICTS`, or `CAUSAL_CLAIM`.
+
+## Phase 8D1 decision-context-observation-proposal contract
+
+Phase 8D1 adds `DecisionContextObservationProposal` under `lib/decision-core/context-observation-proposal/`. It represents only one explicit provenance-attributed opaque statement, based on one complete sealed `OutcomeAttributionProposal`, as an `OBSERVATION`-role candidate for a future Decision Context.
+
+```ts
+type DecisionContextObservationProposalProvenance =
+  | { origin: "HUMAN_INPUT"; actorId: string }
+  | { origin: "MODEL_PROPOSAL"; proposalRef: string }
+  | { origin: "AUTHORITATIVE_STATE"; stateReference: AuthoritativeStateReference };
+
+interface DecisionContextObservationProposalInput {
+  outcomeAttributionProposal: OutcomeAttributionProposal;
+  statement: string;
+  provenance: DecisionContextObservationProposalProvenance;
+}
+
+interface DecisionContextObservationProposal {
+  artifactKind: "DECISION_CONTEXT_OBSERVATION_PROPOSAL";
+  schemaVersion: typeof DECISION_CONTEXT_OBSERVATION_PROPOSAL_SCHEMA_VERSION;
+  decisionContextObservationProposalId: string;
+  outcomeAttributionProposal: OutcomeAttributionProposal;
+  statement: string;
+  provenance: DecisionContextObservationProposalProvenance;
+}
+```
+
+The input has exactly three fields and the artifact exactly six. The candidate target role is semantically `OBSERVATION`, but no `DecisionContextItem` exists. There is no `role`, `itemId`, `contextId`, `revisionId`, `previousRevisionId`, feedback, evaluation, support, status, confidence, score, priority, truth, time, repository, or persistence field. `OUTCOME ATTRIBUTION PROPOSAL != DECISION CONTEXT OBSERVATION PROPOSAL`; `DECISION CONTEXT OBSERVATION PROPOSAL != DECISION CONTEXT ITEM`; `DECISION CONTEXT OBSERVATION PROPOSAL != DECISION CONTEXT`; `DECISION CONTEXT OBSERVATION PROPOSAL != DECISION CONTEXT REVISION`.
+
+### Sealed predecessor, statement, and provenance
+
+Construction consumes exactly one complete sealed `OutcomeAttributionProposal` and validates it only through `assertOutcomeAttributionProposal(...)`. It does not repair or reinterpret it and does not independently reconstruct its nested association or claims. `OUTCOME ATTRIBUTION PROPOSAL EXISTENCE != DECISION CONTEXT OBSERVATION PROPOSAL EXISTENCE`: explicit Phase 8D1 construction, statement, and provenance are required.
+
+`statement` is required opaque text. Construction trims it and requires it nonempty; stored assertion requires the already canonical trimmed representation. It is identity-bearing and is not derived from predecessor descriptions, IDs, association or attribution semantics, or similarity. `OUTCOME ATTRIBUTION PROPOSAL != OBSERVATION STATEMENT`.
+
+The closed provenance union is exactly `HUMAN_INPUT | MODEL_PROPOSAL | AUTHORITATIVE_STATE`; `DETERMINISTIC_DERIVATION` is not admitted. `DecisionContextObservationProposalProvenance` is its own semantic type: `SAME REPRESENTATION != SAME SEMANTIC ROLE`. Human `actorId` and model `proposalRef` are trimmed nonempty strings at construction and must already be canonical when stored. They represent provenance only, not authenticated identity, authorization, signature, observation truth, outcome truth, support, responsibility, ownership, or accountability. `MODEL PROPOSAL != PUBLICATION AUTHORITY`; `MODEL PROPOSAL != OBSERVATION TRUTH`; `MODEL PROPOSAL != OUTCOME TRUTH`.
+
+`AUTHORITATIVE_STATE` stores only `{ producerId, authorityContractId, artifactId, locator }`. Every field is a non-blank string, but each exact opaque represented value is preserved without trimming or normalization: `VALIDATE NON-BLANKNESS + PRESERVE EXACT REPRESENTATION`. No reader, resolver, payload inspection, authority validator, evaluator, repository, context constructor, revision operation, or persistence operation occurs. `REFERENCE != AUTHORITY TOKEN`; `REFERENCE PRESENT != CURRENT SOURCE AUTHORITY`; `CURRENT SOURCE AUTHORITY != OBSERVATION TRUTH`; `PROVENANCE != SUPPORT`.
+
+### `DCOP_` identity, capture, and assertion
+
+`DCOP_` matches `^DCOP_[0-9A-F]{24}$`: it is the first 24 uppercase hexadecimal SHA-256 characters over:
+
+```ts
+[
+  "DECISION_CONTEXT_OBSERVATION_PROPOSAL_V1",
+  outcomeAttributionProposal.outcomeAttributionProposalId,
+  statement,
+  canonicalProvenance
+]
+```
+
+Canonical provenance is `['HUMAN_INPUT', actorId]`, `['MODEL_PROPOSAL', proposalRef]`, or `['AUTHORITATIVE_STATE', [producerId, authorityContractId, artifactId, locator]]`. Object insertion order is non-semantic; the sealed predecessor identity, statement, and complete canonical provenance are identity-bearing, and exact authoritative reference strings remain identity-bearing. `DCOP IDENTITY != OBSERVATION TRUTH`; `DCOP IDENTITY != CONTEXT ADMISSION`; `DCOP IDENTITY != REVISION IDENTITY`; `DCOP IDENTITY != OUTCOME TRUTH`; `DCOP IDENTITY != PERSISTENCE AUTHORITY`.
+
+Construction uses boundary-local shallow descriptor capture: the top level owns `outcomeAttributionProposal`, `statement`, and `provenance`; provenance owns only its direct variant shape; the authoritative reference owns its four fields. Nested predecessor validity is delegated only through the sealed public assertion contract. Construction does not repair predecessor state, and stored assertion repairs nothing. Accessors, symbol keys, hidden/non-enumerable fields, extras, hostile nested association state, hostile nested `ActionOccurrenceClaim`, and hostile nested `StateChangeClaim` reject without getter execution. Returned state is detached; this is not a deep-freeze claim. `CREATE MAY CANONICALIZE WHERE EXPLICITLY DEFINED`; `ASSERT MUST NOT REPAIR`.
+
+`assertDecisionContextObservationProposal(value)` is self-contained, exact, canonical, and non-repairing. Constructor failures are `...INPUT_INVALID` for malformed top level, `...OUTCOME_ATTRIBUTION_INVALID` for invalid, hostile, or stale sealed predecessor state, `...STATEMENT_INVALID` for invalid statement, `...PROVENANCE_INVALID` for malformed/unsupported provenance, and `...REFERENCE_INVALID` for malformed authoritative provenance reference. Hostile, malformed, noncanonical, nested-predecessor-invalid, statement-invalid, provenance-invalid, reference-invalid, or body-invalid stored state is `ERR_DECISION_CONTEXT_OBSERVATION_PROPOSAL_INVALID`. Only otherwise canonical valid state with stale/wrong outer `DCOP_` is `ERR_DECISION_CONTEXT_OBSERVATION_PROPOSAL_ID_MISMATCH`.
+
+The exact error surface is:
+
+- `ERR_DECISION_CONTEXT_OBSERVATION_PROPOSAL_INPUT_INVALID`
+- `ERR_DECISION_CONTEXT_OBSERVATION_PROPOSAL_OUTCOME_ATTRIBUTION_INVALID`
+- `ERR_DECISION_CONTEXT_OBSERVATION_PROPOSAL_STATEMENT_INVALID`
+- `ERR_DECISION_CONTEXT_OBSERVATION_PROPOSAL_PROVENANCE_INVALID`
+- `ERR_DECISION_CONTEXT_OBSERVATION_PROPOSAL_REFERENCE_INVALID`
+- `ERR_DECISION_CONTEXT_OBSERVATION_PROPOSAL_INVALID`
+- `ERR_DECISION_CONTEXT_OBSERVATION_PROPOSAL_ID_MISMATCH`
+
+Phase 8D1 performs no Decision Context admission, `DecisionContextItem` materialization, revision creation, Feedback, Learning, truth promotion, semantic support, causation, time, or persistence operation. `OBSERVATION ROLE != OBSERVED REALITY`; `OBSERVATION PROPOSAL != OBSERVATION TRUTH`; `REENTRY PROPOSAL != ADMISSION`; `REENTRY PROPOSAL != REVISION`; `REENTRY PROPOSAL != LOOP CLOSED`; `REENTRY != OUTCOME TRUTH`; `REENTRY != SEMANTIC SUPPORT`; `PERSISTED != TRUE`. It is independently constructed and does not reuse or generalize legacy Career outcome, feedback, or learning semantics.

@@ -1,6 +1,6 @@
 # Decision Core architecture
 
-## Scope through Phase 8C3
+## Scope through Phase 8D1
 
 Decision Core is a generic, producer-neutral module for consuming governed producer state and forming a deterministic structural `DecisionContextDraft`. It is separate from Capability Core. Capability Core publishes capability/evidence-oriented Phase-4 snapshots; Decision Core does not require that ontology and can consume any producer that implements a compatible authority resolver.
 
@@ -27,6 +27,8 @@ Phase 8C1 adds the standalone `state-change-claim` contract. An explicit represe
 Phase 8C2 adds the `action-state-change-association` contract. It consumes one complete sealed `ActionOccurrenceClaim`, one complete sealed `StateChangeClaim`, and explicit represented provenance to construct one detached `ActionStateChangeAssociationProposal`. It establishes neither relation truth, outcome, effect, consequence, attribution, causation, semantic support, current authority, authority of reality, persistence authority, temporal relation, Action fact, nor State Change fact.
 
 Phase 8C3 adds the `outcome-attribution-proposal` contract. It consumes one complete sealed `ActionStateChangeAssociationProposal` and explicit represented outcome-attribution provenance to construct one detached `OutcomeAttributionProposal`. It represents only a proposal that the association's already represented State Change Claim has an outcome role relative to that association's already represented Action Occurrence Claim. It establishes neither outcome truth or fact, relation truth, effect truth, consequence truth, causation, causal support, semantic support, current or publication authority, authority of reality, persistence authority, nor temporal relation.
+
+Phase 8D1 adds the `context-observation-proposal` contract. It consumes one complete sealed `OutcomeAttributionProposal`, one explicit opaque statement, and explicit represented provenance to construct one detached `DecisionContextObservationProposal`. It represents an `OBSERVATION`-role candidate for a future Decision Context only. It does not create a `DecisionContextItem`, admit state into a Decision Context, create a revision, or close the loop; it establishes neither observation truth, outcome truth, semantic support, causation, authority of reality, nor persistence authority.
 
 The implemented architecture has distinct branches, not one automatic pipeline:
 
@@ -64,6 +66,21 @@ OutcomeAttributionProposal -> STOP
 
 NO AUTOMATIC EDGE FROM ASSOCIATION PROPOSAL
 TO OUTCOME ATTRIBUTION PROPOSAL
+
+EXPLICIT DECISION CONTEXT OBSERVATION PROPOSAL PATH
+sealed OutcomeAttributionProposal --------\
+                                           \
+explicit opaque statement -----------------> DecisionContextObservationProposal
+                                           /
+explicit provenance ----------------------/
+
+DecisionContextObservationProposal -> STOP
+
+NO AUTOMATIC EDGE FROM OUTCOME ATTRIBUTION PROPOSAL
+TO DECISION CONTEXT OBSERVATION PROPOSAL
+
+NO AUTOMATIC EDGE FROM DECISION CONTEXT OBSERVATION PROPOSAL
+TO DECISION CONTEXT
 ```
 
 ## Implemented layers
@@ -96,6 +113,7 @@ TO OUTCOME ATTRIBUTION PROPOSAL
 | State change claim (8C1) | Records one standalone source-attributed claim that an opaque described state change occurred, without fact, observation, verified change, effect, outcome, consequence, causation, temporal, or persistence semantics. | `StateChangeClaim` |
 | Action-state-change association proposal (8C2) | Records one explicit provenance-attributed proposal associating one sealed Action Occurrence Claim endpoint with one sealed State Change Claim endpoint, without relation truth, outcome, effect, consequence, attribution, causation, temporal, or persistence semantics. | `ActionStateChangeAssociationProposal` |
 | Outcome attribution proposal (8C3) | Records one explicit provenance-attributed proposal that the sealed association's represented State Change Claim has an outcome role relative to its represented Action Occurrence Claim, without outcome truth, relation truth, causation, temporal, or persistence semantics. | `OutcomeAttributionProposal` |
+| Decision Context observation proposal (8D1) | Records one explicit provenance-attributed opaque statement as an `OBSERVATION`-role candidate for a future Decision Context, based on one sealed Outcome Attribution Proposal, without Context Item creation, admission, revision, truth, support, causation, temporal, or persistence semantics. | `DecisionContextObservationProposal` |
 
 The current Capability Core adapter in `lib/decision-adapters/capability-core.ts` is one producer-specific integration. It is not part of the generic Decision Core kernel.
 
@@ -660,6 +678,24 @@ The closed provenance union is `HUMAN_INPUT | MODEL_PROPOSAL | AUTHORITATIVE_STA
 
 `DOATP_` is deterministic over the sealed association ID and complete canonical attribution provenance. Construction validates the sealed association through its public assertion contract, canonicalizes only permitted local provenance fields, self-asserts, and returns detached state. Stored assertion is exact, canonical, and non-repairing. Boundary-local shallow descriptor capture retains top-level, provenance, and authoritative-reference error ownership; hostile state is rejected without getter execution where applicable. Phase 8C3 represents no outcome-state taxonomy, temporal relation, causation, or persistence authority.
 
+## Phase 8D1 decision-context-observation-proposal boundary
+
+Phase 8D1 implements only:
+
+```text
+SEALED OutcomeAttributionProposal
++ EXPLICIT OPAQUE STATEMENT
++ EXPLICIT HUMAN_INPUT | MODEL_PROPOSAL | AUTHORITATIVE_STATE provenance
+-> DecisionContextObservationProposal
+-> STOP
+```
+
+The proposal is an `OBSERVATION`-role candidate for a future Decision Context, not a `DecisionContextItem`. `OUTCOME ATTRIBUTION PROPOSAL != DECISION CONTEXT OBSERVATION PROPOSAL`; `OUTCOME ATTRIBUTION PROPOSAL EXISTENCE != DECISION CONTEXT OBSERVATION PROPOSAL EXISTENCE`; `DECISION CONTEXT OBSERVATION PROPOSAL != DECISION CONTEXT ITEM`; `DECISION CONTEXT OBSERVATION PROPOSAL != DECISION CONTEXT`; `DECISION CONTEXT OBSERVATION PROPOSAL != DECISION CONTEXT REVISION`. Explicit construction, statement, and provenance are required. The sealed predecessor is validated only through its public assertion contract; Phase 8D1 does not repair or reinterpret it or independently reconstruct its nested association or claims.
+
+`statement` is required opaque trimmed nonempty text and is identity-bearing; it is not derived from predecessor descriptions, IDs, association semantics, attribution semantics, or similarity. `OUTCOME ATTRIBUTION PROPOSAL != OBSERVATION STATEMENT`. The closed provenance union is `HUMAN_INPUT | MODEL_PROPOSAL | AUTHORITATIVE_STATE`, and is its own semantic type: `SAME REPRESENTATION != SAME SEMANTIC ROLE`. Local human and model identifiers may trim only during construction; exact non-blank authoritative reference strings remain opaque and unnormalized. No reader, resolver, payload inspection, authority validator, evaluator, repository, context constructor, or revision operation exists. `REFERENCE != AUTHORITY TOKEN`; `REFERENCE PRESENT != CURRENT SOURCE AUTHORITY`; `CURRENT SOURCE AUTHORITY != OBSERVATION TRUTH`; `PROVENANCE != SUPPORT`; `MODEL PROPOSAL != PUBLICATION AUTHORITY`; `MODEL PROPOSAL != OBSERVATION TRUTH`; `MODEL PROPOSAL != OUTCOME TRUTH`.
+
+`DCOP_` is deterministic over the sealed Outcome Attribution Proposal ID, statement, and complete canonical provenance. Construction canonicalizes only permitted local statement/provenance fields, self-asserts, and returns detached state. Stored assertion is exact, canonical, and non-repairing. Boundary-local shallow descriptor capture retains top-level, provenance, and authoritative-reference error ownership; hostile predecessor state is rejected without getter execution where applicable. `OBSERVATION ROLE != OBSERVED REALITY`; `OBSERVATION PROPOSAL != OBSERVATION TRUTH`; `REENTRY PROPOSAL != ADMISSION`; `REENTRY PROPOSAL != REVISION`; `REENTRY PROPOSAL != LOOP CLOSED`; `REENTRY != OUTCOME TRUTH`; `REENTRY != SEMANTIC SUPPORT`. Phase 8D1 represents no time, temporal relation, Feedback, Learning, causation, or persistence authority.
+
 ## Trust boundaries
 
 1. **Producer adapter boundary.** Producer-specific persistence and artifact validation stay in adapters/resolvers. The generic kernel has no Capability Core import.
@@ -767,4 +803,4 @@ The closed provenance union is `HUMAN_INPUT | MODEL_PROPOSAL | AUTHORITATIVE_STA
 
 The generic `lib/decision-core/**` production files are guarded against imports from Career, Capability Core, matching, recommendations, and legacy Career decision-loop code. The Capability adapter may import Capability Core because it is a producer-specific integration outside that generic kernel.
 
-Decision Core is application-domain neutral, not ontology-free in a metaphysical sense: the current ontology is intentionally about opaque producer state, structural context items, roles, provenance, operation-time authority reachability, semantic proposals, explicit structural expectations, explicit structural relation proposals, basis-relative structural gaps and explicit-path consequences, derivational-coherence assemblies, self-contained revision artifacts, repository-bound immutable authority-of-record operations, the PostgreSQL adapter implementing those sealed persistence semantics outside the kernel, read-only explicit predecessor-lineage reconstruction, a standalone human-declared assessment-request contract, a revision-bound assessment-basis contract, a semantic assessment-proposal contract, a recommendation-proposal contract, a deterministic proposal-coherence trace-validation contract, an explicit positive human option-selection declaration, a decision-bound action-intent contract, a human-commitment contract, a standalone source-attributed action-occurrence-claim contract, a standalone source-attributed state-change-claim contract, an explicit provenance-attributed action-state-change association-proposal contract over one sealed `ActionOccurrenceClaim` and one sealed `StateChangeClaim`, and an explicit provenance-attributed outcome-attribution-proposal contract over one sealed `ActionStateChangeAssociationProposal`. These are distinct operations and artifacts, not one automatic pipeline. Recruiting is not implemented on top of this module.
+Decision Core is application-domain neutral, not ontology-free in a metaphysical sense: the current ontology is intentionally about opaque producer state, structural context items, roles, provenance, operation-time authority reachability, semantic proposals, explicit structural expectations, explicit structural relation proposals, basis-relative structural gaps and explicit-path consequences, derivational-coherence assemblies, self-contained revision artifacts, repository-bound immutable authority-of-record operations, the PostgreSQL adapter implementing those sealed persistence semantics outside the kernel, read-only explicit predecessor-lineage reconstruction, a standalone human-declared assessment-request contract, a revision-bound assessment-basis contract, a semantic assessment-proposal contract, a recommendation-proposal contract, a deterministic proposal-coherence trace-validation contract, an explicit positive human option-selection declaration, a decision-bound action-intent contract, a human-commitment contract, a standalone source-attributed action-occurrence-claim contract, a standalone source-attributed state-change-claim contract, an explicit provenance-attributed action-state-change association-proposal contract over one sealed `ActionOccurrenceClaim` and one sealed `StateChangeClaim`, an explicit provenance-attributed outcome-attribution-proposal contract over one sealed `ActionStateChangeAssociationProposal`, and an explicit provenance-attributed opaque-statement observation-role candidate contract over one sealed `OutcomeAttributionProposal`. These are distinct operations and artifacts, not one automatic pipeline. Recruiting is not implemented on top of this module.
