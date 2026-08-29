@@ -1,0 +1,16 @@
+import type { DecisionContextObservationTargetRevisionBinding } from "../context-observation-target-revision-binding";
+
+export const DECISION_CONTEXT_OBSERVATION_MATERIALIZATION_READINESS_SCHEMA_VERSION =
+  "DECISION_CONTEXT_OBSERVATION_MATERIALIZATION_READINESS_V1";
+
+export interface DecisionContextObservationMaterializationReadinessInput {
+  decisionContextObservationTargetRevisionBinding: DecisionContextObservationTargetRevisionBinding;
+}
+
+export interface DecisionContextObservationMaterializationReadiness {
+  artifactKind: "DECISION_CONTEXT_OBSERVATION_MATERIALIZATION_READINESS";
+  schemaVersion: typeof DECISION_CONTEXT_OBSERVATION_MATERIALIZATION_READINESS_SCHEMA_VERSION;
+  decisionContextObservationMaterializationReadinessId: string;
+  decisionContextObservationTargetRevisionBinding: DecisionContextObservationTargetRevisionBinding;
+  candidateItemId: string;
+}
