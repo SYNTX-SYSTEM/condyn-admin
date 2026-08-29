@@ -8,6 +8,8 @@
     "start": "next start --port 3003",
     "lint": "eslint",
     "test": "vitest",
+    "phase:verify": "tsx scripts/decision-core/phase-gate/cli.ts verify",
+    "phase:seal": "tsx scripts/decision-core/phase-gate/cli.ts seal",
     "worker:career": "tsx --env-file=.env.local scripts/run-career-worker.ts"
   },
   "dependencies": {
