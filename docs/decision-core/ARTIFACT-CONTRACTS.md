@@ -1,5 +1,15 @@
 # Decision Core artifact contracts
 
+## Phase 8D4B target revision binding
+
+`DecisionContextObservationTargetRevisionBinding` is `DECISION_CONTEXT_OBSERVATION_TARGET_REVISION_BINDING_V1` / `DECISION_CONTEXT_OBSERVATION_TARGET_REVISION_BINDING` with exactly five fields: `artifactKind`, `schemaVersion`, `decisionContextObservationTargetRevisionBindingId`, `decisionContextObservationTargetDeclaration`, and `revision`. Its ID is `DCOTRB_` plus the first 24 uppercase hexadecimal characters of SHA-256 over `[schema, canonical complete DecisionContextObservationTargetDeclaration, canonical complete DecisionContextRevision]`. `COMPLETE REVISION STATE != DREV STRING ALONE`.
+
+`DecisionContextObservationTargetRevisionReader` exposes only `getRevisionById(revisionId: string): Promise<DecisionContextRevision | null>`. `BoundDecisionContextObservationTargetRevisionBinder` exposes only `bind(declaration: DecisionContextObservationTargetDeclaration): Promise<DecisionContextObservationTargetRevisionBinding>`. The binder captures its method at construction; captures and sealed-asserts the declaration before awaiting; makes exactly one read for the captured `targetRevisionId`; accepts only one complete sealed returned revision whose `revisionId` equals that target; and propagates an underlying reader rejection unchanged. It does not traverse `previousRevisionId`, reconstruct lineage, invoke a persister, or construct a Context draft or revision.
+
+Stored assertion is self-contained: it performs no read, validates the exact five-field representation and both complete sealed artifacts, checks target/revision equality and deterministic identity, and repairs nothing. Descriptor-safe capture rejects accessors without getter execution and rejects symbol, hidden, or extra properties where applicable. A malformed body is invalid before a stale binding ID is classified. The exact error surface is `ERR_DECISION_CONTEXT_OBSERVATION_TARGET_REVISION_BINDING_READER_INVALID`, `ERR_DECISION_CONTEXT_OBSERVATION_TARGET_REVISION_BINDING_DECLARATION_INVALID`, `ERR_DECISION_CONTEXT_OBSERVATION_TARGET_REVISION_BINDING_REVISION_NOT_FOUND`, `ERR_DECISION_CONTEXT_OBSERVATION_TARGET_REVISION_BINDING_REVISION_INVALID`, `ERR_DECISION_CONTEXT_OBSERVATION_TARGET_REVISION_BINDING_INVALID`, and `ERR_DECISION_CONTEXT_OBSERVATION_TARGET_REVISION_BINDING_ID_MISMATCH`.
+
+The binding retains complete detached declaration and revision state but is not a persistence, authority-of-record, current/head/latest/active, selection, materialization, membership, mutation, transition, readiness, truth, support, causation, or human-decision artifact.
+
 ## Current public contracts
 
 | Contract | Exact fields / operation | Current semantics |
