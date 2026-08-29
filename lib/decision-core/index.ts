@@ -27,3 +27,4 @@ export * from "./context-observation-item-projection";
 export * from "./context-observation-target-declaration";
 export * from "./context-observation-target-revision-binding";
 export * from "./context-observation-materialization-readiness";
+export * from "./context-observation-item-materialization";
