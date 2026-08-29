@@ -1,6 +1,6 @@
 # Decision Core architecture
 
-## Scope through Phase 8D6
+## Scope through Phase 8D7
 
 Decision Core is a generic, producer-neutral module for consuming governed producer state and forming a deterministic structural `DecisionContextDraft`. It is separate from Capability Core. Capability Core publishes capability/evidence-oriented Phase-4 snapshots; Decision Core does not require that ontology and can consume any producer that implements a compatible authority resolver.
 
@@ -943,3 +943,21 @@ The exact artifact fields are `artifactKind`, `schemaVersion`, `decisionContextO
 ITEM EXISTENCE != CONTEXT MEMBERSHIP. READINESS != MATERIALIZATION. MATERIALIZATION != ITEM MEMBERSHIP. MATERIALIZATION != CONTEXT MEMBERSHIP. MATERIALIZATION != CONTEXT MUTATION. MATERIALIZATION != REVISION MUTATION. MATERIALIZATION != REVISION CREATION. MATERIALIZATION != REVISION TRANSITION. MATERIALIZATION != PERSISTENCE. MATERIALIZATION != PERSISTENCE AUTHORITY. MATERIALIZATION != LOOP CLOSED. MATERIALIZED ITEM != CONTEXT MEMBER. ITEM ID != CONTEXT MEMBERSHIP. ITEM ID != PERSISTENCE. ITEM ID != LOOP CLOSURE.
 
 Phase 8D6 does not insert the item into the bound revision, modify source references or revision state, construct a Context or revision, or persist anything. MATERIALIZATION != OBSERVATION TRUTH. MATERIALIZATION != OBSERVED REALITY. MATERIALIZATION != OUTCOME TRUTH. MATERIALIZATION != SEMANTIC SUPPORT. MATERIALIZATION != CAUSATION. MATERIALIZATION != HUMAN DECISION. MATERIALIZED OBSERVATION != TRUE OBSERVATION. AUTHORITATIVE_STATE PROVENANCE != SOURCE TRUTH. SOURCE INVENTORY MEMBERSHIP != EXTERNAL AUTHORITY. MODEL_PROPOSAL PROVENANCE != MODEL FACT. HUMAN_INPUT PROVENANCE != VERIFIED FACT. PERSISTED != TRUE.
+
+## Phase 8D7 decision-context-observation-context-transition boundary
+
+Phase 8D7 is a deterministic Context-transition operation only: `DecisionContextObservationItemMaterialization -> deterministic Context transition -> new DecisionContextDraft -> DecisionContextObservationContextTransition -> STOP`. It constructs one new complete `DecisionContextDraft` from the exact bound base Context plus the exact standalone materialized `OBSERVATION` item. It establishes actual Context membership in that new ContextDraft only; it does not establish revision membership.
+
+ITEM EXISTENCE != CONTEXT MEMBERSHIP. MATERIALIZATION != CONTEXT MEMBERSHIP. CONTEXT MEMBERSHIP REQUIRES CONTEXT REPRESENTATION. There is no separate abstract membership declaration: the complete new Context is the structural membership representation.
+
+The new Context differs semantically from the base Context by exactly one item membership: CONTEXT TRANSITION DELTA = EXACTLY ONE ITEM MEMBERSHIP. It retains every base item and every base sourceStateReference completely, adds exactly the complete materialized `OBSERVATION`, adds no unrelated item or reference, removes neither base items nor references, and modifies neither. Phase 8D7 uses `createDecisionContextDraft`; that existing constructor owns canonical item order, item-identity reconstruction, and Context identity. Base item IDs are not passed as construction authority.
+
+The unique `decisionQuestionId` remains equal to the base Context's value: OBSERVATION MEMBERSHIP != DECISION QUESTION REPLACEMENT. The resulting `contextId` differs from the base because its item set differs: BASE CONTEXT != RESULT CONTEXT. CONTEXT ID CHANGE != REVISION CREATION. CONTEXT ID CHANGE != PERSISTENCE. CONTEXT ID CHANGE != HISTORY AUTHORITY. CONTEXT ID CHANGE != CURRENTNESS.
+
+Source inventory is carried forward exactly. CONTEXT TRANSITION != SOURCE REFERENCE ADMISSION. CONTEXT TRANSITION != SOURCE AUTHORITY RESOLUTION. CONTEXT TRANSITION != SOURCE AUTHENTICATION. SOURCE INVENTORY CARRIED FORWARD != EXTERNAL AUTHORITY. For `AUTHORITATIVE_STATE`, Phase 8D5 had already established required inventory presence; 8D7 adds no reference.
+
+The new Context has `validationStatus: NOT_RUN`. BASE REVISION VALIDATION != NEW CONTEXT VALIDATION. BASE VALIDATION ASSEMBLY != NEW CONTEXT VALIDATION ASSEMBLY. CONTEXT MEMBERSHIP != VALIDATED REVISION STATE. NEW CONTEXT != VALIDATED REVISION. Neither `validationInput` nor `validationAssembly` is carried forward or invoked.
+
+The exact fields are `artifactKind`, `schemaVersion`, `decisionContextObservationContextTransitionId`, `decisionContextObservationItemMaterialization`, and `context`. `DCOCT_` is SHA-256 over `[schema, canonical complete materialization, canonical complete DecisionContextDraft]`, first 24 uppercase hex. The complete materialization lineage is retained and returned data is detached. Stored assertion proves the complete one-item delta, performs no reader, repository, authority, revision, validation-assembly, or persistence operation, and repairs nothing.
+
+CONTEXT MEMBERSHIP != REVISION MEMBERSHIP. CONTEXT TRANSITION != REVISION TRANSITION. CONTEXT TRANSITION != REVISION CREATION. CONTEXT TRANSITION != PERSISTENCE. CONTEXT TRANSITION != PERSISTENCE AUTHORITY. NEW CONTEXT != NEW REVISION. NEW CONTEXT != CURRENT CONTEXT. NEW CONTEXT != HEAD CONTEXT. NEW CONTEXT != LATEST CONTEXT. BOUND REVISION != MUTATION DESTINATION. BASE REVISION != FUTURE REVISION. NEW CONTEXT != OBSERVATION TRUTH. NEW CONTEXT != SEMANTIC SUPPORT. NEW CONTEXT != CAUSATION. CONTEXT MEMBERSHIP != HUMAN DECISION. CONTEXT MEMBERSHIP != LOOP CLOSED. `MODEL_PROPOSAL != FACT`; `AUTHORITATIVE_STATE PROVENANCE != SOURCE TRUTH`; `HUMAN_INPUT PROVENANCE != VERIFIED FACT`; and `PERSISTED != TRUE` remain preserved.

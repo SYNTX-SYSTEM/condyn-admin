@@ -1,8 +1,18 @@
 # Decision Core invariants
 
-## Scope through Phase 8D6
+## Scope through Phase 8D7
 
 The Phase 8D4A section below extends the existing cumulative enforcement record through Phase 8D4A; all earlier invariant material remains in force.
+
+## Phase 8D7 observation Context transition invariants
+
+- The transition has exactly five fields and retains complete sealed materialization lineage plus one complete new `DecisionContextDraft`; no revision, validation input, validation assembly, persistence, authority, or current/head/latest field is represented.
+- Its Context delta is exact: base item IDs UNION the materialized item ID, base count plus one, complete base item and source-reference preservation, exactly one complete materialized additional item, unchanged `decisionQuestionId`, and distinct result `contextId`.
+- Context construction uses the existing `createDecisionContextDraft`; canonical order and Context/item identity remain owned by the Context contract. CONTEXT TRANSITION DELTA = EXACTLY ONE ITEM MEMBERSHIP.
+- The new Context remains `validationStatus: NOT_RUN`. BASE REVISION VALIDATION != NEW CONTEXT VALIDATION. BASE VALIDATION ASSEMBLY != NEW CONTEXT VALIDATION ASSEMBLY. CONTEXT MEMBERSHIP != VALIDATED REVISION STATE. NEW CONTEXT != VALIDATED REVISION.
+- DCOCT identity commits to schema, canonical complete materialization, and canonical complete result Context. Object insertion order is non-semantic; DCOIM alone is not proof of all represented predecessor state.
+- Construction and stored assertion are descriptor-safe, detached, reader-free, repository-read-free, authority-resolution-free, revision-construction-free, validation-assembly-free, and persistence-free. Body invalidity precedes stale DCOCT classification and stored assertion repairs nothing.
+- ITEM EXISTENCE != CONTEXT MEMBERSHIP. MATERIALIZATION != CONTEXT MEMBERSHIP. CONTEXT MEMBERSHIP != REVISION MEMBERSHIP. CONTEXT TRANSITION != REVISION TRANSITION. CONTEXT TRANSITION != REVISION CREATION. CONTEXT TRANSITION != PERSISTENCE. CONTEXT TRANSITION != PERSISTENCE AUTHORITY. NEW CONTEXT != NEW REVISION. NEW CONTEXT != CURRENT CONTEXT. NEW CONTEXT != HEAD CONTEXT. NEW CONTEXT != LATEST CONTEXT. NEW CONTEXT != OBSERVATION TRUTH. NEW CONTEXT != SEMANTIC SUPPORT. NEW CONTEXT != CAUSATION. CONTEXT MEMBERSHIP != HUMAN DECISION. CONTEXT MEMBERSHIP != LOOP CLOSED.
 
 ## Phase 8D6 observation item materialization invariants
 

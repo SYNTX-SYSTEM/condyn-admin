@@ -1,5 +1,21 @@
 # Decision Core artifact contracts
 
+## Phase 8D7 observation Context transition
+
+`DecisionContextObservationContextTransition` is `DECISION_CONTEXT_OBSERVATION_CONTEXT_TRANSITION_V1` / `DECISION_CONTEXT_OBSERVATION_CONTEXT_TRANSITION` with exactly five fields: `artifactKind`, `schemaVersion`, `decisionContextObservationContextTransitionId`, `decisionContextObservationItemMaterialization`, and `context`. The retained predecessor is the complete sealed `DecisionContextObservationItemMaterialization`; `context` is one complete new `DecisionContextDraft`. There is no revision, `revisionId`, `previousRevisionId`, validation input or assembly, persistence, repository, current/head/latest state, authority, truth, or timestamp field.
+
+The operation takes no independent base Context, item, source-reference, item-array, or target input. It obtains the base Context only through retained materialization lineage and uses `createDecisionContextDraft` with semantic copies of every base reference and base item role, statement, and provenance plus the materialized item role, statement, and provenance. The Context constructor, not Phase 8D7, owns canonical ordering and reconstruction of item and Context identity.
+
+The result is an exact delta: its item-ID set equals the base item-ID set UNION the materialized item ID; its count is base count plus one; every base item and reference is complete and unchanged; the one additional item equals the materialized item completely; `decisionQuestionId` is preserved; and `contextId` differs from the base. The new draft is `validationStatus: NOT_RUN`.
+
+`DCOCT_` is the first 24 uppercase hexadecimal characters of SHA-256 over `[schema, canonical complete DecisionContextObservationItemMaterialization, canonical complete DecisionContextDraft]`. Object insertion order is non-semantic. Complete materialization and complete Context state are identity-bearing; this is neither truth nor persistence proof.
+
+Stored assertion is self-contained: it performs no reader or repository read, authority resolution, revision construction, validation assembly, or persistence operation. It asserts the complete materialization and complete Context representation, then the complete delta rather than mere item presence. Body invalidity precedes DCOCT ID mismatch and assertion repairs nothing. Descriptor-safe capture rejects accessors without getter execution and rejects hidden, symbol, extra, and hostile nested materialization, Context, item, provenance, and source-reference state where applicable. Returned data is detached; no deep freeze is claimed.
+
+The exact error surface is `ERR_DECISION_CONTEXT_OBSERVATION_CONTEXT_TRANSITION_INPUT_INVALID`, `ERR_DECISION_CONTEXT_OBSERVATION_CONTEXT_TRANSITION_MATERIALIZATION_INVALID`, `ERR_DECISION_CONTEXT_OBSERVATION_CONTEXT_TRANSITION_INVALID`, and `ERR_DECISION_CONTEXT_OBSERVATION_CONTEXT_TRANSITION_ID_MISMATCH`.
+
+ITEM EXISTENCE != CONTEXT MEMBERSHIP. MATERIALIZATION != CONTEXT MEMBERSHIP. CONTEXT MEMBERSHIP != REVISION MEMBERSHIP. CONTEXT TRANSITION != REVISION TRANSITION. CONTEXT TRANSITION != REVISION CREATION. CONTEXT TRANSITION != PERSISTENCE. CONTEXT TRANSITION != PERSISTENCE AUTHORITY. NEW CONTEXT != NEW REVISION. NEW CONTEXT != CURRENT CONTEXT. NEW CONTEXT != HEAD CONTEXT. NEW CONTEXT != LATEST CONTEXT. CONTEXT MEMBERSHIP != LOOP CLOSED.
+
 ## Phase 8D6 observation item materialization
 
 `DecisionContextObservationItemMaterialization` is `DECISION_CONTEXT_OBSERVATION_ITEM_MATERIALIZATION_V1` / `DECISION_CONTEXT_OBSERVATION_ITEM_MATERIALIZATION` with exactly five fields: `artifactKind`, `schemaVersion`, `decisionContextObservationItemMaterializationId`, `decisionContextObservationMaterializationReadiness`, and `item`. Its embedded item has exactly `itemId`, `role`, `statement`, and `provenance`. The item is derived only from the complete sealed readiness lineage: its ID equals `candidateItemId`, role is `OBSERVATION`, and statement and provenance equal the retained projection exactly.

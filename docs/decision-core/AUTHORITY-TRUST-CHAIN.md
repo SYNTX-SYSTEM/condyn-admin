@@ -2,6 +2,18 @@
 
 ## Scope
 
+### Phase 8D7 Context transition
+
+Phase 8D7 constructs one new detached `DecisionContextDraft` from the complete bound base Context and one complete sealed materialized `OBSERVATION` item. Its one-item delta establishes membership only in that represented new Context. ITEM EXISTENCE != CONTEXT MEMBERSHIP. MATERIALIZATION != CONTEXT MEMBERSHIP. CONTEXT MEMBERSHIP REQUIRES CONTEXT REPRESENTATION. CONTEXT MEMBERSHIP != REVISION MEMBERSHIP.
+
+The carried-forward source inventory is structural state only. CONTEXT TRANSITION != SOURCE REFERENCE ADMISSION. CONTEXT TRANSITION != SOURCE AUTHORITY RESOLUTION. CONTEXT TRANSITION != SOURCE AUTHENTICATION. SOURCE INVENTORY CARRIED FORWARD != EXTERNAL AUTHORITY. Phase 8D7 neither resolves nor authenticates a source, fetches a payload, validates freshness, or establishes truth or support.
+
+The result Context is `validationStatus: NOT_RUN`; base revision validation and validation assembly do not transfer. BASE REVISION VALIDATION != NEW CONTEXT VALIDATION. BASE VALIDATION ASSEMBLY != NEW CONTEXT VALIDATION ASSEMBLY. CONTEXT MEMBERSHIP != VALIDATED REVISION STATE. NEW CONTEXT != VALIDATED REVISION.
+
+No revision is created, selected, made current, or persisted. CONTEXT TRANSITION != REVISION TRANSITION. CONTEXT TRANSITION != REVISION CREATION. CONTEXT TRANSITION != PERSISTENCE. CONTEXT TRANSITION != PERSISTENCE AUTHORITY. NEW CONTEXT != NEW REVISION. NEW CONTEXT != CURRENT CONTEXT. NEW CONTEXT != HEAD CONTEXT. NEW CONTEXT != LATEST CONTEXT. CONTEXT MEMBERSHIP != LOOP CLOSED.
+
+Membership changes no epistemic status: NEW CONTEXT != OBSERVATION TRUTH. NEW CONTEXT != SEMANTIC SUPPORT. NEW CONTEXT != CAUSATION. CONTEXT MEMBERSHIP != HUMAN DECISION. MODEL_PROPOSAL != FACT. AUTHORITATIVE_STATE PROVENANCE != SOURCE TRUTH. HUMAN_INPUT PROVENANCE != VERIFIED FACT. PERSISTED != TRUE.
+
 ### Phase 8D6 standalone item materialization
 
 Phase 8D6 derives one exact standalone `DecisionContextItem` representation from one sealed `DecisionContextObservationMaterializationReadiness`. The item carries the readiness candidate ID and exact projected `OBSERVATION` role, statement, and provenance. Materialization mechanism and statement provenance are separate: HUMAN_INPUT remains HUMAN_INPUT; MODEL_PROPOSAL remains MODEL_PROPOSAL; AUTHORITATIVE_STATE remains AUTHORITATIVE_STATE. MODEL_PROPOSAL != FACT.
