@@ -25,3 +25,4 @@ export * from "./context-observation-proposal";
 export * from "./context-observation-admission";
 export * from "./context-observation-item-projection";
 export * from "./context-observation-target-declaration";
+export * from "./context-observation-target-revision-binding";
