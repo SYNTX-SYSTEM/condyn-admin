@@ -1,6 +1,6 @@
 # Decision Core architecture
 
-## Scope through Phase 8D3
+## Scope through Phase 8D4A
 
 Decision Core is a generic, producer-neutral module for consuming governed producer state and forming a deterministic structural `DecisionContextDraft`. It is separate from Capability Core. Capability Core publishes capability/evidence-oriented Phase-4 snapshots; Decision Core does not require that ontology and can consume any producer that implements a compatible authority resolver.
 
@@ -33,6 +33,8 @@ Phase 8D1 adds the `context-observation-proposal` contract. It consumes one comp
 Phase 8D2 adds the `context-observation-admission` contract. One declared human actor explicitly declares one sealed `DecisionContextObservationProposal` admitted as eligible for future `OBSERVATION`-role materialization in a Decision Context, with an optional opaque rationale. It is positive human normative admission declaration state only. It does not materialize a `DecisionContextItem`, create or mutate a Decision Context, create a revision, establish truth, support, causation, authentication, external authorization, persistence authority, or close the loop.
 
 Phase 8D3 adds the `context-observation-item-projection` contract. It deterministically derives the exact future `OBSERVATION`-item input semantics represented by one sealed `DecisionContextObservationAdmissionDeclaration`, retaining the complete sealed admission lineage. It does not create a `DecisionContextItem`, establish item identity or Context membership, identify or mutate a target Context, create a revision, establish truth, support, causation, current authority, persistence authority, or close the loop.
+
+Phase 8D4A adds the `context-observation-target-declaration` contract. One declared human actor explicitly declares one sealed `DecisionContextObservationItemProjection` intended to be carried forward from one DREV-shaped declared base-state reference in possible future Context processing. It does not prove revision existence, bind a sealed revision, establish current/head/latest state, materialize an item, establish Context membership, mutate a Context or revision, create a revision, establish truth, support, causation, persistence authority, or close the loop.
 
 The implemented architecture has distinct branches, not one automatic pipeline:
 
@@ -109,6 +111,23 @@ TO DECISION CONTEXT OBSERVATION ITEM PROJECTION
 
 NO AUTOMATIC EDGE FROM DECISION CONTEXT OBSERVATION ITEM PROJECTION
 TO DECISION CONTEXT ITEM
+
+EXPLICIT DECISION CONTEXT OBSERVATION TARGET DECLARATION PATH
+sealed DecisionContextObservationItemProjection
++ declared DREV-shaped revision reference
++ declared HUMAN_INPUT actor
++ optional rationale
+-> DecisionContextObservationTargetDeclaration
+-> STOP
+
+NO AUTOMATIC EDGE FROM DECISION CONTEXT OBSERVATION ITEM PROJECTION
+TO DECISION CONTEXT OBSERVATION TARGET DECLARATION
+
+NO AUTOMATIC EDGE FROM DECISION CONTEXT OBSERVATION TARGET DECLARATION
+TO REVISION BINDING
+
+NO AUTOMATIC EDGE FROM DECISION CONTEXT OBSERVATION TARGET DECLARATION
+TO MATERIALIZATION
 ```
 
 ## Implemented layers
@@ -144,6 +163,7 @@ TO DECISION CONTEXT ITEM
 | Decision Context observation proposal (8D1) | Records one explicit provenance-attributed opaque statement as an `OBSERVATION`-role candidate for a future Decision Context, based on one sealed Outcome Attribution Proposal, without Context Item creation, admission, revision, truth, support, causation, temporal, or persistence semantics. | `DecisionContextObservationProposal` |
 | Decision Context observation admission declaration (8D2) | Records one positive declared human admission of one sealed observation proposal as eligible for future `OBSERVATION`-role materialization, without materialization, Context mutation, revision, truth, support, causation, authentication, authorization, temporal, or persistence semantics. | `DecisionContextObservationAdmissionDeclaration` |
 | Decision Context observation item projection (8D3) | Deterministically projects one sealed admission declaration into exact future `OBSERVATION`-item input semantics while retaining admission lineage, without item materialization, identity, Context membership, Context mutation, revision, truth, support, causation, temporal, or persistence semantics. | `DecisionContextObservationItemProjection` |
+| Decision Context observation target declaration (8D4A) | Records one declared human target declaration over one sealed observation item projection and one DREV-shaped base-state reference, without revision binding or existence proof, materialization readiness, Context membership, Context mutation, revision creation, truth, support, causation, temporal, or persistence semantics. | `DecisionContextObservationTargetDeclaration` |
 
 The current Capability Core adapter in `lib/decision-adapters/capability-core.ts` is one producer-specific integration. It is not part of the generic Decision Core kernel.
 
@@ -763,6 +783,27 @@ The projection derives only exact future `OBSERVATION`-item input semantics: `ro
 The complete sealed admission declaration remains embedded. Distinct `DCOAD_` identities may produce equal projected item input, so the projection retains rather than compresses admission lineage: `DISTINCT ADMISSION IDENTITY != NECESSARILY DISTINCT PROJECTED ITEM INPUT`. `DCOIP_` is deterministic only over the sealed DCOAD identity. `DCOIP IDENTITY != DCI IDENTITY`; `DCOIP IDENTITY != CONTEXT IDENTITY`; `DCOIP IDENTITY != REVISION IDENTITY`; `DCOIP IDENTITY != OBSERVATION TRUTH`; `DCOIP IDENTITY != PERSISTENCE AUTHORITY`.
 
 An `AUTHORITATIVE_STATE` reference is carried exactly in projected provenance but is not resolved, inspected, validated against, or admitted to a source inventory. `REFERENCE CARRIED BY PROJECTED ITEM INPUT != SOURCE STATE INVENTORY MEMBERSHIP`; `PROJECTED AUTHORITATIVE ITEM INPUT != SOURCE STATE REFERENCE ADMISSION`; `REFERENCE PRESENT IN PROJECTED ITEM INPUT != REFERENCE PRESENT IN FUTURE DECISION CONTEXT`. Boundary-local shallow descriptor capture and sealed predecessor assertion reject hostile state without getter execution; stored assertion repairs nothing and returned state is detached. Phase 8D3 represents no time, Feedback, Learning, truth, semantic support, causation, persistence, or loop closure.
+
+## Phase 8D4A decision-context-observation-target-declaration boundary
+
+Phase 8D4A implements only:
+
+```text
+SEALED DecisionContextObservationItemProjection
++ DECLARED DREV-shaped revision reference
++ DECLARED HUMAN_INPUT actor
++ OPTIONAL OPAQUE RATIONALE
+-> DecisionContextObservationTargetDeclaration
+-> STOP
+```
+
+The named `targetRevisionId` is a declared base-state reference for possible future Context processing, not a mutable destination. It is shape-only (`^DREV_[0-9A-F]{24}$`): `DREV SHAPE != REVISION EXISTENCE`; `TARGET REVISION ID != SEALED REVISION`; `TARGET REVISION ID != PERSISTENCE PROOF`; `TARGET REVISION ID != CURRENT REVISION`; `TARGET REVISION ID != HEAD REVISION`; `TARGET REVISION ID != LATEST REVISION`; `TARGET REVISION != MUTATION DESTINATION`; `TARGET REVISION ID != FUTURE REVISION ID`. Phase 6A is the narrow architectural precedent for a human-owned DREV-shaped reference without existence proof; Phase 6B shows that exact reader binding is separate. Phase 8D4A reuses neither assessment artifact nor assessment ontology.
+
+`TARGET DECLARATION != TARGET BINDING`; `TARGET DECLARATION != REVISION EXISTENCE`; `TARGET DECLARATION != PERSISTENCE AUTHORITY`; `TARGET DECLARATION != MATERIALIZATION`; `TARGET DECLARATION != MATERIALIZATION READINESS`; `TARGET DECLARATION != DECISION CONTEXT ITEM`; `TARGET DECLARATION != ITEM MEMBERSHIP`; `TARGET DECLARATION != CONTEXT MEMBERSHIP`; `TARGET DECLARATION != CONTEXT MUTATION`; `TARGET DECLARATION != REVISION MUTATION`; `TARGET DECLARATION != REVISION CREATION`; `TARGET DECLARATION != LOOP CLOSED`. No reader, repository, revision object, Context object, Context Item, Context mutation, or revision operation exists at this boundary.
+
+The exact seven-field artifact retains the complete sealed DCOIP, one target revision reference, one declared human actor, and `string | null` rationale. The declarer is canonical trimmed `HUMAN_INPUT` only: `DECLARED BY != ADMITTED BY`; `DECLARED BY != PROJECTION PROVENANCE`; `DECLARED BY != AUTHENTICATED IDENTITY`; `DECLARED BY != EXTERNAL AUTHORIZATION`; `DECLARED BY != REVISION OWNER`; `DECLARED BY != REVISION AUTHOR`. Rationale is opaque and identity-bearing: `RATIONALE != EVIDENCE`; `RATIONALE != SUPPORT`; `RATIONALE != TARGET VALIDITY`; `RATIONALE != REVISION EXISTENCE`; `RATIONALE != MATERIALIZATION AUTHORITY`. One DCOIP may have zero, one, or multiple independent declarations: `DCOIP EXISTENCE != TARGET DECLARATION EXISTENCE`; `ONE DCOIP != ONE TARGET DECLARATION`.
+
+`DCOTD_` deterministically commits to the sealed DCOIP identity, target revision ID, declared actor, and rationale. `DCOTD IDENTITY != REVISION EXISTENCE`; `DCOTD IDENTITY != TARGET BINDING`; `DCOTD IDENTITY != MATERIALIZATION`; `DCOTD IDENTITY != PERSISTENCE AUTHORITY`; `DCOTD IDENTITY != OBSERVATION TRUTH`. `DECLARATION IDENTITY != PERSISTENCE AUTHORITY`. An embedded projected `AUTHORITATIVE_STATE` reference is neither inspected nor admitted to a source inventory: `TARGET DECLARATION != SOURCE STATE REFERENCE ADMISSION`; `TARGET DECLARATION != SOURCE STATE INVENTORY MEMBERSHIP`; `TARGET REVISION REFERENCE != MATERIALIZATION READINESS`; `AUTHORITATIVE REFERENCE CARRIED BY DCOIP != REFERENCE PRESENT IN TARGET REVISION CONTEXT`. Boundary-local shallow descriptor capture and sealed predecessor assertion reject hostile state without getter execution; stored assertion repairs nothing and returned state is detached. Phase 8D4A represents no time, truth, semantic support, causation, persistence, Feedback, Learning, or loop closure.
 
 ## Trust boundaries
 

@@ -177,6 +177,12 @@
 | `DecisionContextObservationItemProjection` | Exact canonical five-field stored artifact | Detached `DECISION_CONTEXT_OBSERVATION_ITEM_PROJECTION` / `DECISION_CONTEXT_OBSERVATION_ITEM_PROJECTION_V1` artifact with deterministic `DCOIP_`; it is not materialization, Context membership, Context mutation, revision, truth, support, causation, or persistence authority. |
 | `createDecisionContextObservationItemProjection(input)` | `DecisionContextObservationItemProjectionInput -> DecisionContextObservationItemProjection` | Sealed-validates one admission declaration, derives exact future `OBSERVATION`-item input semantics, and returns detached projection state. |
 | `assertDecisionContextObservationItemProjection(value)` | `unknown -> asserts value is DecisionContextObservationItemProjection` | Self-contained exact stored assertion of the sealed admission and deterministic projected input; it does not repair or make Context-relative checks. |
+| `DECISION_CONTEXT_OBSERVATION_TARGET_DECLARATION_SCHEMA_VERSION` | `"DECISION_CONTEXT_OBSERVATION_TARGET_DECLARATION_V1"` | Fixed schema-version constant for the Phase 8D4A human target-declaration artifact. |
+| `DecisionContextObservationTargetDeclarationActor` | `origin: "HUMAN_INPUT"`, `actorId` | Declared target actor only; it is not authenticated identity, external authorization, or revision authority. |
+| `DecisionContextObservationTargetDeclarationInput` | `decisionContextObservationItemProjection`, `targetRevisionId`, `declaredBy`, `rationale` | Exact four-field constructor input; `rationale` is required as `string \| null`. |
+| `DecisionContextObservationTargetDeclaration` | Exact canonical seven-field stored artifact | Detached `DECISION_CONTEXT_OBSERVATION_TARGET_DECLARATION` / `DECISION_CONTEXT_OBSERVATION_TARGET_DECLARATION_V1` artifact with deterministic `DCOTD_`; it is not target binding, revision existence, materialization, Context membership, revision mutation, truth, support, causation, or persistence authority. |
+| `createDecisionContextObservationTargetDeclaration(input)` | `DecisionContextObservationTargetDeclarationInput -> DecisionContextObservationTargetDeclaration` | Sealed-validates one DCOIP, validates one DREV-shaped base-state reference, canonicalizes local actor/rationale state, and returns detached declaration state. |
+| `assertDecisionContextObservationTargetDeclaration(value)` | `unknown -> asserts value is DecisionContextObservationTargetDeclaration` | Self-contained exact stored assertion with no revision reader, repository, Context operation, persistence, or repair. |
 
 ## Reference and reader behavior
 
@@ -1944,3 +1950,80 @@ The exact error surface is:
 Malformed or hostile constructor input is `...INPUT_INVALID`; invalid, hostile, or stale sealed DCOAD input is `...ADMISSION_INVALID`. Stored malformed/hostile projection, invalid DCOAD, hostile projected input/provenance, wrong role, statement/provenance drift, or noncanonical nested state is `ERR_DECISION_CONTEXT_OBSERVATION_ITEM_PROJECTION_INVALID`. Only an otherwise canonical valid complete body with stale/wrong outer `DCOIP_` is `ERR_DECISION_CONTEXT_OBSERVATION_ITEM_PROJECTION_ID_MISMATCH`; body invalidity takes precedence.
 
 Phase 8D3 creates no `DecisionContextItem`, `DecisionContextDraft`, or `DecisionContextRevision`; it performs no Context membership, duplicate, Decision Question count, ordering, identity, validation, revision, Feedback, Learning, time, persistence, or authority operation. `PROJECTION != DECISION CONTEXT ITEM`; `PROJECTED ITEM INPUT != DECISION CONTEXT ITEM`; `PROJECTED ITEM INPUT != ITEM MEMBERSHIP`; `ITEM IDENTITY COMPUTABILITY != ITEM EXISTENCE`; `ITEM EXISTENCE != CONTEXT MEMBERSHIP`; `PROJECTION != MATERIALIZATION`; `PROJECTION != TARGET CONTEXT`; `PROJECTION != CONTEXT MUTATION`; `PROJECTION != DECISION CONTEXT DRAFT`; `PROJECTION != DECISION CONTEXT REVISION`; `PROJECTION != REVISION CREATION`; `PROJECTION != LOOP CLOSED`; `PROJECTION != OBSERVATION TRUTH`; `PROJECTION != OBSERVED REALITY`; `PROJECTION != OUTCOME TRUTH`; `PROJECTION != SEMANTIC SUPPORT`; `PROJECTION != CAUSATION`; `PERSISTED != TRUE`. Legacy Career semantics remain non-authoritative.
+
+## Phase 8D4A decision-context-observation-target-declaration contract
+
+Phase 8D4A adds `DecisionContextObservationTargetDeclaration` under `lib/decision-core/context-observation-target-declaration/`. It represents only a declared human target declaration: one sealed `DecisionContextObservationItemProjection` is intended to be carried forward from one DREV-shaped declared base-state reference in possible future Context processing. The reference is not a mutable destination.
+
+```ts
+interface DecisionContextObservationTargetDeclarationActor {
+  origin: "HUMAN_INPUT";
+  actorId: string;
+}
+
+interface DecisionContextObservationTargetDeclarationInput {
+  decisionContextObservationItemProjection: DecisionContextObservationItemProjection;
+  targetRevisionId: string;
+  declaredBy: DecisionContextObservationTargetDeclarationActor;
+  rationale: string | null;
+}
+
+interface DecisionContextObservationTargetDeclaration {
+  artifactKind: "DECISION_CONTEXT_OBSERVATION_TARGET_DECLARATION";
+  schemaVersion: typeof DECISION_CONTEXT_OBSERVATION_TARGET_DECLARATION_SCHEMA_VERSION;
+  decisionContextObservationTargetDeclarationId: string;
+  decisionContextObservationItemProjection: DecisionContextObservationItemProjection;
+  targetRevisionId: string;
+  declaredBy: DecisionContextObservationTargetDeclarationActor;
+  rationale: string | null;
+}
+```
+
+The input has exactly four fields and the artifact exactly seven. No Context, Context ID, Context Item, item ID, revision object, previous/future revision ID, source inventory, validation, time, repository metadata, or current/head/latest state exists.
+
+### Sealed predecessor, DREV-shaped base state, actor, and rationale
+
+Construction consumes exactly one complete sealed DCOIP and validates it only through `assertDecisionContextObservationItemProjection(...)`. It does not repair or reinterpret the admission declaration, observation proposal, outcome attribution proposal, association proposal, Action Occurrence Claim, or State Change Claim. The complete sealed DCOIP remains embedded; `ASSERT MUST NOT REPAIR`.
+
+`targetRevisionId` matches only `^DREV_[0-9A-F]{24}$`. This is shape-only: `DREV SHAPE != REVISION EXISTENCE`; `TARGET REVISION ID != SEALED REVISION`; `TARGET REVISION ID != PERSISTENCE PROOF`; `TARGET REVISION ID != CURRENT REVISION`; `TARGET REVISION ID != HEAD REVISION`; `TARGET REVISION ID != LATEST REVISION`; `TARGET REVISION != MUTATION DESTINATION`; `TARGET REVISION ID != FUTURE REVISION ID`. `TARGET DECLARATION != TARGET BINDING`; `TARGET DECLARATION != REVISION EXISTENCE`; `TARGET DECLARATION != PERSISTENCE AUTHORITY`. Phase 6A provides only the narrow precedent that a human declaration can carry DREV shape without existence proof; Phase 6B separately demonstrates reader binding. Phase 8D4A does not reuse either artifact or assessment ontology.
+
+`declaredBy` is exactly `{ origin: "HUMAN_INPUT", actorId: string }`. Construction trims nonempty actor ID; stored assertion requires canonical trimmed state. The actor is declarative only: `DECLARED BY != ADMITTED BY`; `DECLARED BY != PROJECTION PROVENANCE`; `DECLARED BY != AUTHENTICATED IDENTITY`; `DECLARED BY != EXTERNAL AUTHORIZATION`; `DECLARED BY != REVISION OWNER`; `DECLARED BY != REVISION AUTHOR`. No actor equality or inequality with any predecessor actor is required or inferred.
+
+`rationale` is exactly `string | null`. Construction preserves `null`, trims strings, and rejects empty results; stored assertion accepts only `null` or canonical trimmed nonempty text. It is opaque and identity-bearing: `RATIONALE != EVIDENCE`; `RATIONALE != SUPPORT`; `RATIONALE != TARGET VALIDITY`; `RATIONALE != REVISION EXISTENCE`; `RATIONALE != MATERIALIZATION AUTHORITY`.
+
+One declaration contains one sealed DCOIP, one target revision ID, one declared actor, and one rationale value. One DCOIP can have zero, one, or multiple independent declarations; no registry, aggregation, vote, consensus, rank, priority, score, confidence, or negative disposition exists. `DCOIP EXISTENCE != TARGET DECLARATION EXISTENCE`; `ONE DCOIP != ONE TARGET DECLARATION`.
+
+### `DCOTD_` identity, authority boundary, capture, and assertion
+
+`DCOTD_` matches `^DCOTD_[0-9A-F]{24}$`: it is the first 24 uppercase hexadecimal SHA-256 characters over:
+
+```ts
+[
+  "DECISION_CONTEXT_OBSERVATION_TARGET_DECLARATION_V1",
+  decisionContextObservationItemProjection
+    .decisionContextObservationItemProjectionId,
+  targetRevisionId,
+  ["HUMAN_INPUT", declaredBy.actorId],
+  rationale
+]
+```
+
+All tuple members are identity-bearing and object insertion order is non-semantic. `DCOTD IDENTITY != REVISION EXISTENCE`; `DCOTD IDENTITY != TARGET BINDING`; `DCOTD IDENTITY != MATERIALIZATION`; `DCOTD IDENTITY != PERSISTENCE AUTHORITY`; `DCOTD IDENTITY != OBSERVATION TRUTH`. `DECLARATION IDENTITY != PERSISTENCE AUTHORITY`.
+
+An embedded DCOIP can carry projected `AUTHORITATIVE_STATE` provenance. Phase 8D4A neither resolves it nor inspects a target revision or source inventory: `TARGET DECLARATION != SOURCE STATE REFERENCE ADMISSION`; `TARGET DECLARATION != SOURCE STATE INVENTORY MEMBERSHIP`; `TARGET REVISION REFERENCE != MATERIALIZATION READINESS`; `AUTHORITATIVE REFERENCE CARRIED BY DCOIP != REFERENCE PRESENT IN TARGET REVISION CONTEXT`.
+
+Construction and stored assertion use boundary-local shallow descriptor capture. The input owns its four fields, the artifact its seven fields, and `declaredBy` only `origin` and `actorId`. Hostile extras, symbols, hidden/non-enumerable fields, accessors, or hostile sealed DCOIP state reject without getter execution. Returned state is detached; this is not a deep-freeze claim.
+
+The exact error surface is:
+
+- `ERR_DECISION_CONTEXT_OBSERVATION_TARGET_DECLARATION_INPUT_INVALID`
+- `ERR_DECISION_CONTEXT_OBSERVATION_TARGET_DECLARATION_PROJECTION_INVALID`
+- `ERR_DECISION_CONTEXT_OBSERVATION_TARGET_DECLARATION_REVISION_ID_INVALID`
+- `ERR_DECISION_CONTEXT_OBSERVATION_TARGET_DECLARATION_ACTOR_INVALID`
+- `ERR_DECISION_CONTEXT_OBSERVATION_TARGET_DECLARATION_RATIONALE_INVALID`
+- `ERR_DECISION_CONTEXT_OBSERVATION_TARGET_DECLARATION_INVALID`
+- `ERR_DECISION_CONTEXT_OBSERVATION_TARGET_DECLARATION_ID_MISMATCH`
+
+Malformed/hostile constructor input is `...INPUT_INVALID`; invalid/hostile/stale DCOIP is `...PROJECTION_INVALID`; invalid target ID is `...REVISION_ID_INVALID`; invalid actor is `...ACTOR_INVALID`; and invalid rationale is `...RATIONALE_INVALID`. Stored malformed/hostile/noncanonical state, invalid nested DCOIP, invalid target reference/actor/rationale, or other body drift is `ERR_DECISION_CONTEXT_OBSERVATION_TARGET_DECLARATION_INVALID`. Only an otherwise canonical valid complete body with stale/wrong outer `DCOTD_` is `ERR_DECISION_CONTEXT_OBSERVATION_TARGET_DECLARATION_ID_MISMATCH`; body invalidity takes precedence.
+
+Phase 8D4A performs no revision read, target binding, current/head/latest resolution, Context construction, Context membership, materialization, materialization-readiness check, Context/revision mutation, revision creation, reader, resolver, evaluator, provider, Feedback, Learning, time, repository, persister, database, or authority-of-record operation. `TARGET DECLARATION != MATERIALIZATION`; `TARGET DECLARATION != MATERIALIZATION READINESS`; `TARGET DECLARATION != DECISION CONTEXT ITEM`; `TARGET DECLARATION != ITEM MEMBERSHIP`; `TARGET DECLARATION != CONTEXT MEMBERSHIP`; `TARGET DECLARATION != CONTEXT MUTATION`; `TARGET DECLARATION != REVISION MUTATION`; `TARGET DECLARATION != REVISION CREATION`; `TARGET DECLARATION != LOOP CLOSED`; `TARGET DECLARATION != OBSERVATION TRUTH`; `TARGET DECLARATION != OBSERVED REALITY`; `TARGET DECLARATION != OUTCOME TRUTH`; `TARGET DECLARATION != SEMANTIC SUPPORT`; `TARGET DECLARATION != CAUSATION`; `PERSISTED != TRUE`. Legacy Career semantics remain non-authoritative.
