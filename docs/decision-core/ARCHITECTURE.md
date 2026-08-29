@@ -1,6 +1,6 @@
 # Decision Core architecture
 
-## Scope through Phase 8D5
+## Scope through Phase 8D6
 
 Decision Core is a generic, producer-neutral module for consuming governed producer state and forming a deterministic structural `DecisionContextDraft`. It is separate from Capability Core. Capability Core publishes capability/evidence-oriented Phase-4 snapshots; Decision Core does not require that ontology and can consume any producer that implements a compatible authority resolver.
 
@@ -933,3 +933,13 @@ The exact five fields are `artifactKind`, `schemaVersion`, `decisionContextObser
 For `HUMAN_INPUT` and `MODEL_PROPOSAL`, Phase 8D5 adds no source-inventory condition. For `AUTHORITATIVE_STATE`, the exact projected reference must already be in the bound base Context's `sourceStateReferences`; otherwise no artifact is returned and `ERR_DECISION_CONTEXT_OBSERVATION_MATERIALIZATION_READINESS_SOURCE_REFERENCE_MISSING` applies. The candidate ID must be absent from bound `context.items`; otherwise no artifact is returned and `ERR_DECISION_CONTEXT_OBSERVATION_MATERIALIZATION_READINESS_ITEM_ALREADY_PRESENT` applies. SOURCE STATE INVENTORY MEMBERSHIP != EXTERNAL AUTHORITY. ITEM ALREADY PRESENT != RETURN PATH MATERIALIZED. ITEM ALREADY PRESENT != LOOP CLOSED.
 
 The bound revision remains base state: BOUND REVISION != MUTATION DESTINATION. READINESS != MATERIALIZATION. READINESS != DECISION CONTEXT ITEM. READINESS != CONTEXT MEMBERSHIP. READINESS != CONTEXT MUTATION. READINESS != REVISION MUTATION. READINESS != REVISION CREATION. READINESS != REVISION TRANSITION. READINESS != PERSISTENCE. READINESS != OBSERVATION TRUTH. READINESS != SEMANTIC SUPPORT. READINESS != CAUSATION. READINESS != HUMAN DECISION. READINESS != LOOP CLOSED. Phase 8D5 creates no item, Context, revision, or persistence operation.
+
+## Phase 8D6 decision-context-observation-item-materialization boundary
+
+Phase 8D6 is a deterministic standalone-item operation only: `DecisionContextObservationMaterializationReadiness -> deterministic item materialization -> DecisionContextObservationItemMaterialization -> STOP`. It constructs exactly `{ itemId, role, statement, provenance }` from sealed readiness lineage. `itemId` equals `readiness.candidateItemId`, role remains `OBSERVATION`, and statement and provenance remain exactly projected. HUMAN_INPUT remains HUMAN_INPUT. MODEL_PROPOSAL remains MODEL_PROPOSAL. AUTHORITATIVE_STATE remains AUTHORITATIVE_STATE. The mechanism does not rebrand statement provenance as `DETERMINISTIC_DERIVATION`.
+
+The exact artifact fields are `artifactKind`, `schemaVersion`, `decisionContextObservationItemMaterializationId`, `decisionContextObservationMaterializationReadiness`, and `item`. `DCOIM_` is SHA-256 over `[schema, canonical complete readiness, canonical complete item]`, first 24 uppercase hex. MATERIALIZED ITEM ID = READINESS CANDIDATE ITEM ID. This is identity continuity only, not a new DCI algorithm, truth proof, authority, persistence, or membership proof.
+
+ITEM EXISTENCE != CONTEXT MEMBERSHIP. READINESS != MATERIALIZATION. MATERIALIZATION != ITEM MEMBERSHIP. MATERIALIZATION != CONTEXT MEMBERSHIP. MATERIALIZATION != CONTEXT MUTATION. MATERIALIZATION != REVISION MUTATION. MATERIALIZATION != REVISION CREATION. MATERIALIZATION != REVISION TRANSITION. MATERIALIZATION != PERSISTENCE. MATERIALIZATION != PERSISTENCE AUTHORITY. MATERIALIZATION != LOOP CLOSED. MATERIALIZED ITEM != CONTEXT MEMBER. ITEM ID != CONTEXT MEMBERSHIP. ITEM ID != PERSISTENCE. ITEM ID != LOOP CLOSURE.
+
+Phase 8D6 does not insert the item into the bound revision, modify source references or revision state, construct a Context or revision, or persist anything. MATERIALIZATION != OBSERVATION TRUTH. MATERIALIZATION != OBSERVED REALITY. MATERIALIZATION != OUTCOME TRUTH. MATERIALIZATION != SEMANTIC SUPPORT. MATERIALIZATION != CAUSATION. MATERIALIZATION != HUMAN DECISION. MATERIALIZED OBSERVATION != TRUE OBSERVATION. AUTHORITATIVE_STATE PROVENANCE != SOURCE TRUTH. SOURCE INVENTORY MEMBERSHIP != EXTERNAL AUTHORITY. MODEL_PROPOSAL PROVENANCE != MODEL FACT. HUMAN_INPUT PROVENANCE != VERIFIED FACT. PERSISTED != TRUE.

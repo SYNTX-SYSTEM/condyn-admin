@@ -1,8 +1,18 @@
 # Decision Core invariants
 
-## Scope through Phase 8D5
+## Scope through Phase 8D6
 
 The Phase 8D4A section below extends the existing cumulative enforcement record through Phase 8D4A; all earlier invariant material remains in force.
+
+## Phase 8D6 observation item materialization invariants
+
+- Materialization accepts exactly one complete sealed readiness predecessor and no independent item, Context, or revision input.
+- It constructs exactly one standalone four-field item from retained readiness lineage: `itemId` equals `candidateItemId`, role remains `OBSERVATION`, and statement and provenance match projection exactly.
+- Statement provenance is preserved: HUMAN_INPUT remains HUMAN_INPUT, MODEL_PROPOSAL remains MODEL_PROPOSAL, and AUTHORITATIVE_STATE remains AUTHORITATIVE_STATE; it is not rewritten to `DETERMINISTIC_DERIVATION`.
+- The five-field artifact retains complete readiness plus item. DCOIM identity commits to schema, canonical complete readiness, and canonical complete item, with object insertion order non-semantic.
+- Item existence remains isolated: ITEM EXISTENCE != CONTEXT MEMBERSHIP. MATERIALIZATION != ITEM MEMBERSHIP. MATERIALIZATION != CONTEXT MEMBERSHIP. MATERIALIZATION != CONTEXT MUTATION. MATERIALIZATION != REVISION MUTATION. MATERIALIZATION != REVISION CREATION. MATERIALIZATION != REVISION TRANSITION. MATERIALIZATION != PERSISTENCE. MATERIALIZATION != PERSISTENCE AUTHORITY. MATERIALIZATION != LOOP CLOSED.
+- Construction and stored assertion are descriptor-safe, detached, reader-free, resolver-free, Context-construction-free, revision-construction-free, and persistence-free. Accessors, hidden fields, symbol keys, extras, hostile nested readiness, item, and provenance state reject without getter execution; stored body invalidity precedes stale DCOIM classification and assertion repairs nothing.
+- Materialization does not promote epistemic or authority status: MATERIALIZATION != OBSERVATION TRUTH. MATERIALIZATION != OBSERVED REALITY. MATERIALIZATION != OUTCOME TRUTH. MATERIALIZATION != SEMANTIC SUPPORT. MATERIALIZATION != CAUSATION. MATERIALIZATION != HUMAN DECISION. MATERIALIZED OBSERVATION != TRUE OBSERVATION. AUTHORITATIVE_STATE PROVENANCE != SOURCE TRUTH. SOURCE INVENTORY MEMBERSHIP != EXTERNAL AUTHORITY. MODEL_PROPOSAL PROVENANCE != MODEL FACT. HUMAN_INPUT PROVENANCE != VERIFIED FACT. PERSISTED != TRUE.
 
 ## Phase 8D5 observation materialization readiness invariants
 

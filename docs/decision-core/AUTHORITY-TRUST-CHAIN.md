@@ -2,6 +2,14 @@
 
 ## Scope
 
+### Phase 8D6 standalone item materialization
+
+Phase 8D6 derives one exact standalone `DecisionContextItem` representation from one sealed `DecisionContextObservationMaterializationReadiness`. The item carries the readiness candidate ID and exact projected `OBSERVATION` role, statement, and provenance. Materialization mechanism and statement provenance are separate: HUMAN_INPUT remains HUMAN_INPUT; MODEL_PROPOSAL remains MODEL_PROPOSAL; AUTHORITATIVE_STATE remains AUTHORITATIVE_STATE. MODEL_PROPOSAL != FACT.
+
+MATERIALIZATION != OBSERVATION TRUTH. MATERIALIZATION != OBSERVED REALITY. MATERIALIZATION != OUTCOME TRUTH. MATERIALIZATION != SEMANTIC SUPPORT. MATERIALIZATION != CAUSATION. MATERIALIZATION != HUMAN DECISION. MATERIALIZED OBSERVATION != TRUE OBSERVATION. AUTHORITATIVE_STATE PROVENANCE != SOURCE TRUTH. SOURCE INVENTORY MEMBERSHIP != EXTERNAL AUTHORITY. MODEL_PROPOSAL PROVENANCE != MODEL FACT. HUMAN_INPUT PROVENANCE != VERIFIED FACT. PERSISTED != TRUE.
+
+It performs no reader or authority-resolution operation and creates no Context membership, Context mutation, revision, or persistence state. MATERIALIZATION != ITEM MEMBERSHIP. MATERIALIZATION != CONTEXT MEMBERSHIP. MATERIALIZATION != PERSISTENCE AUTHORITY. MATERIALIZATION != LOOP CLOSED.
+
 ### Phase 8D5 structural materialization readiness
 
 Phase 8D5 consumes one sealed `DecisionContextObservationTargetRevisionBinding` and establishes only positive structural readiness relative to its bound base revision. EXACT REVISION BINDING != MATERIALIZATION READINESS. For `AUTHORITATIVE_STATE`, the exact projected reference must already appear in the bound base Context's `sourceStateReferences`; `HUMAN_INPUT` and `MODEL_PROPOSAL` have no added inventory requirement. SOURCE REFERENCE PRESENT != SOURCE AUTHORITY RESOLVED. SOURCE REFERENCE PRESENT != SOURCE AUTHENTICATED. SOURCE REFERENCE PRESENT != SOURCE CURRENT. SOURCE REFERENCE PRESENT != SOURCE TRUE. SOURCE REFERENCE PRESENT != SEMANTIC SUPPORT. SOURCE REFERENCE PRESENT != CAUSATION. SOURCE STATE INVENTORY MEMBERSHIP != EXTERNAL AUTHORITY.

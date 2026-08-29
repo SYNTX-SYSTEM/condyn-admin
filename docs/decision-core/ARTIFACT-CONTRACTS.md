@@ -1,5 +1,17 @@
 # Decision Core artifact contracts
 
+## Phase 8D6 observation item materialization
+
+`DecisionContextObservationItemMaterialization` is `DECISION_CONTEXT_OBSERVATION_ITEM_MATERIALIZATION_V1` / `DECISION_CONTEXT_OBSERVATION_ITEM_MATERIALIZATION` with exactly five fields: `artifactKind`, `schemaVersion`, `decisionContextObservationItemMaterializationId`, `decisionContextObservationMaterializationReadiness`, and `item`. Its embedded item has exactly `itemId`, `role`, `statement`, and `provenance`. The item is derived only from the complete sealed readiness lineage: its ID equals `candidateItemId`, role is `OBSERVATION`, and statement and provenance equal the retained projection exactly.
+
+`DCOIM_` is the first 24 uppercase hexadecimal characters of SHA-256 over `[schema, canonical complete DecisionContextObservationMaterializationReadiness, canonical complete DecisionContextItem]`. Object insertion order is non-semantic, and complete readiness and item state are identity-bearing. No second DCI identity algorithm exists. HUMAN_INPUT remains HUMAN_INPUT, MODEL_PROPOSAL remains MODEL_PROPOSAL, and AUTHORITATIVE_STATE remains AUTHORITATIVE_STATE; the deterministic operation does not replace provenance with `DETERMINISTIC_DERIVATION`.
+
+Stored assertion is self-contained: it performs no reader call, authority resolution, Context construction, revision construction, or persistence operation. It verifies exact artifact and item representations, complete readiness, all four readiness-derived item values, and deterministic identity; body invalidity precedes DCOIM mismatch; and it repairs nothing. Descriptor-safe capture rejects accessors without getter execution and rejects hidden, symbol, extra, hostile nested readiness, item, and provenance state where applicable. Returned data is detached; no deep freeze is claimed.
+
+ITEM EXISTENCE != CONTEXT MEMBERSHIP. MATERIALIZATION != ITEM MEMBERSHIP. MATERIALIZATION != CONTEXT MEMBERSHIP. MATERIALIZATION != CONTEXT MUTATION. MATERIALIZATION != REVISION MUTATION. MATERIALIZATION != REVISION CREATION. MATERIALIZATION != REVISION TRANSITION. MATERIALIZATION != PERSISTENCE. MATERIALIZATION != PERSISTENCE AUTHORITY. The artifact contains no Context, context ID, membership, revision, future revision, current/head/latest state, authority, truth, status, score, confidence, or timestamp field.
+
+The exact error surface is `ERR_DECISION_CONTEXT_OBSERVATION_ITEM_MATERIALIZATION_INPUT_INVALID`, `ERR_DECISION_CONTEXT_OBSERVATION_ITEM_MATERIALIZATION_READINESS_INVALID`, `ERR_DECISION_CONTEXT_OBSERVATION_ITEM_MATERIALIZATION_INVALID`, and `ERR_DECISION_CONTEXT_OBSERVATION_ITEM_MATERIALIZATION_ID_MISMATCH`.
+
 ## Phase 8D5 observation materialization readiness
 
 `DecisionContextObservationMaterializationReadiness` is `DECISION_CONTEXT_OBSERVATION_MATERIALIZATION_READINESS_V1` / `DECISION_CONTEXT_OBSERVATION_MATERIALIZATION_READINESS` with exactly five fields: `artifactKind`, `schemaVersion`, `decisionContextObservationMaterializationReadinessId`, `decisionContextObservationTargetRevisionBinding`, and `candidateItemId`. Its ID is `DCOMR_` plus the first 24 uppercase hexadecimal characters of SHA-256 over `[schema, canonical complete DecisionContextObservationTargetRevisionBinding, candidateItemId]`. Object insertion order is non-semantic; the complete retained binding, not its string identity alone, participates in readiness identity.
