@@ -2,6 +2,12 @@
 
 ## Scope
 
+### Phase 8D5 structural materialization readiness
+
+Phase 8D5 consumes one sealed `DecisionContextObservationTargetRevisionBinding` and establishes only positive structural readiness relative to its bound base revision. EXACT REVISION BINDING != MATERIALIZATION READINESS. For `AUTHORITATIVE_STATE`, the exact projected reference must already appear in the bound base Context's `sourceStateReferences`; `HUMAN_INPUT` and `MODEL_PROPOSAL` have no added inventory requirement. SOURCE REFERENCE PRESENT != SOURCE AUTHORITY RESOLVED. SOURCE REFERENCE PRESENT != SOURCE AUTHENTICATED. SOURCE REFERENCE PRESENT != SOURCE CURRENT. SOURCE REFERENCE PRESENT != SOURCE TRUE. SOURCE REFERENCE PRESENT != SEMANTIC SUPPORT. SOURCE REFERENCE PRESENT != CAUSATION. SOURCE STATE INVENTORY MEMBERSHIP != EXTERNAL AUTHORITY.
+
+Phase 8D5 does not resolve the reference, fetch source payload, authenticate source identity, verify freshness, verify truth, verify semantic support, or establish causation. Its other structural condition is candidate-item absence: an already-present candidate ID is not return-path materialization or loop closure, and an absent ID is not semantic novelty, truth, or priority. READINESS != MATERIALIZATION. READINESS != PERSISTENCE AUTHORITY. READINESS != OBSERVATION TRUTH. READINESS != OUTCOME TRUTH. READINESS != SEMANTIC SUPPORT. READINESS != CAUSATION. READINESS != HUMAN DECISION. PERSISTED != TRUE.
+
 ### Phase 8D4B reader-backed exact binding
 
 Phase 8D4B binds one sealed `DecisionContextObservationTargetDeclaration` to one complete valid reader-returned `DecisionContextRevision` only through the explicit bound read. The reader capability is not a repository proof: `READER RETURN != PERSISTENCE PROOF`; `REVISION BINDING != PERSISTENCE AUTHORITY`; `REVISION BINDING != AUTHORITY OF RECORD`; `REVISION BINDING != CURRENT REVISION`; `REVISION BINDING != HEAD REVISION`; `REVISION BINDING != LATEST REVISION`; `REVISION BINDING != ACTIVE REVISION`; `REVISION BINDING != REVISION SELECTION`; `REVISION BINDING != MUTATION DESTINATION`; `REVISION BINDING != FUTURE REVISION`.

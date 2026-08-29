@@ -33,6 +33,7 @@
 | Phase 8D3 | Decision Context Observation Item Projection | SEALED IMPLEMENTATION | `0d9fd1076317547181b499f1710056c0a2959e66` / `v1.0.0-decision-core-phase8d3-context-observation-item-projection` |
 | Phase 8D4A | Decision Context Observation Target Declaration | SEALED IMPLEMENTATION | `3eaf89f1ec40e49dea07796ec82d9329046c9464` / `v1.0.0-decision-core-phase8d4a-context-observation-target-declaration` |
 | Phase 8D4B | Decision Context Observation Target Revision Binding | SEALED IMPLEMENTATION | `6a2a92f62e39ff853b9c6925a76ee35c917e92c0` / `v1.0.0-decision-core-phase8d4b-target-revision-binding` |
+| Phase 8D5 | Decision Context Observation Materialization Readiness | SEALED IMPLEMENTATION | `bdbd9198fc28d599751faa7274a7375f2d1a0996` / `v1.0.0-decision-core-phase8d5-materialization-readiness` |
 
 **Phase 5C4 sealed-defect audit.** Phase 5C4 remains SEALED with its original implementation identity above. During Phase 5D2B integration, a narrow RED regression independently proved a serialization-order portability defect in stored validation-assembly equality. Commit `96083e677767e21b36b636258abb20ebf293b0fc` contains the targeted correction: object property insertion order is non-semantic under structural equality, while array order remains significant. No 5C4 artifact shape, identity, ontology, public API, or derivation semantics were redesigned. `SEALED DEFECT CORRECTION != ARCHITECTURAL REDESIGN`; see ADR 017.
 
@@ -265,21 +266,33 @@ Two independent implementation Deep Sweeps found no Phase 8D4A production defect
 
 The implementation is sealed under the tested contract. Repository-wide TypeScript cleanliness and global zero-defect status are not claimed.
 
-## Phase 8D4B current return-path status
+## Phase 8D5 current return-path status
 
 - 8D1: candidate representation.
 - 8D2: explicit positive human admission.
 - 8D3: deterministic future OBSERVATION-item semantic projection.
 - 8D4A: explicit human declaration of a DREV-shaped base-state target reference.
 - 8D4B: reader-backed exact binding of that declaration to one complete valid revision state.
+- 8D5: deterministic structural materialization readiness relative to that bound base revision.
 
-Materialization, Context item membership, Context membership, revision transition, and loop closure remain outside the return path. Full Phase 8 remains incomplete. The Phase 8D4B binding is reader-backed exact base-state binding only; it establishes no persistence authority, current/head/latest/active selection, source-state inventory admission, readiness, truth, support, causation, or human decision.
+Actual DecisionContextItem materialization, Context item membership, Context membership, Context transition, revision creation or transition, persistence of a future revision, and loop closure remain outside the return path. Full Phase 8 remains incomplete. Phase 8D5 establishes only deterministic structural readiness: it creates no item, Context, revision, or persistence operation, and establishes no source authority resolution, truth, support, causation, or human decision.
 
 ## Phase 8D4B implementation evidence
 
 - Implementation: `6a2a92f62e39ff853b9c6925a76ee35c917e92c0` / `v1.0.0-decision-core-phase8d4b-target-revision-binding`.
 - Focused 8D4B: 9 / 9 passed.
 - Decision Core: 30 files / 346 tests passed.
+- Capability + authority-adapter: 32 files / 295 tests passed.
+- Phase Gate: MECHANICAL VERIFICATION PASS.
+- Implementation seal: MECHANICAL SEALING PASS.
+
+This scoped evidence does not claim repository-wide semantic correctness, zero defects, or repository-wide TypeScript cleanliness.
+
+## Phase 8D5 implementation evidence
+
+- Implementation: `bdbd9198fc28d599751faa7274a7375f2d1a0996` / `v1.0.0-decision-core-phase8d5-materialization-readiness`.
+- Focused 8D5: 9 / 9 passed.
+- Decision Core: 31 files / 355 tests passed.
 - Capability + authority-adapter: 32 files / 295 tests passed.
 - Phase Gate: MECHANICAL VERIFICATION PASS.
 - Implementation seal: MECHANICAL SEALING PASS.

@@ -1,6 +1,6 @@
 # Decision Core architecture
 
-## Scope through Phase 8D4B
+## Scope through Phase 8D5
 
 Decision Core is a generic, producer-neutral module for consuming governed producer state and forming a deterministic structural `DecisionContextDraft`. It is separate from Capability Core. Capability Core publishes capability/evidence-oriented Phase-4 snapshots; Decision Core does not require that ontology and can consume any producer that implements a compatible authority resolver.
 
@@ -923,3 +923,13 @@ The five exact fields are `artifactKind`, `schemaVersion`, `decisionContextObser
 The bound revision remains base state: `TARGET REVISION BOUND != OBSERVATION MATERIALIZED`; `REVISION BINDING != MATERIALIZATION`; `REVISION BINDING != MATERIALIZATION READINESS`; `REVISION BINDING != DECISION CONTEXT ITEM`; `REVISION BINDING != ITEM MEMBERSHIP`; `REVISION BINDING != CONTEXT MEMBERSHIP`; `REVISION BINDING != CONTEXT MUTATION`; `REVISION BINDING != REVISION MUTATION`; `REVISION BINDING != REVISION CREATION`; `REVISION BINDING != REVISION TRANSITION`; `REVISION BINDING != LOOP CLOSED`. It performs no lineage traversal, persister invocation, Context-draft construction, or revision construction.
 
 `AUTHORITATIVE REFERENCE CARRIED BY DCOIP != REFERENCE PRESENT IN BOUND REVISION CONTEXT`; `REVISION BINDING != SOURCE STATE REFERENCE ADMISSION`; `REVISION BINDING != SOURCE STATE INVENTORY MEMBERSHIP`; `BOUND REVISION != MATERIALIZATION READINESS`. `REVISION BINDING != OBSERVATION TRUTH`; `REVISION BINDING != OBSERVED REALITY`; `REVISION BINDING != OUTCOME TRUTH`; `REVISION BINDING != SEMANTIC SUPPORT`; `REVISION BINDING != CAUSATION`; `REVISION BINDING != HUMAN DECISION`; `PERSISTED != TRUE`.
+
+## Phase 8D5 decision-context-observation-materialization-readiness boundary
+
+Phase 8D5 is a deterministic structural operation only: `DecisionContextObservationTargetRevisionBinding -> structural readiness checks -> DecisionContextObservationMaterializationReadiness -> STOP`. EXACT REVISION BINDING != MATERIALIZATION READINESS. The sealed binding supplies the complete predecessor lineage and its complete base revision; no independent role, statement, provenance, or target input is accepted.
+
+The exact five fields are `artifactKind`, `schemaVersion`, `decisionContextObservationMaterializationReadinessId`, `decisionContextObservationTargetRevisionBinding`, and `candidateItemId`. `DCOMR_` is SHA-256 over `[schema, canonical complete binding, candidateItemId]`, first 24 uppercase hex. The deterministic candidate `DCI_` identity is derived using existing Context role, statement, and provenance identity semantics only. CANDIDATE ITEM ID != DECISION CONTEXT ITEM. CANDIDATE ITEM ID != MATERIALIZATION. CANDIDATE ITEM ID != CONTEXT MEMBERSHIP.
+
+For `HUMAN_INPUT` and `MODEL_PROPOSAL`, Phase 8D5 adds no source-inventory condition. For `AUTHORITATIVE_STATE`, the exact projected reference must already be in the bound base Context's `sourceStateReferences`; otherwise no artifact is returned and `ERR_DECISION_CONTEXT_OBSERVATION_MATERIALIZATION_READINESS_SOURCE_REFERENCE_MISSING` applies. The candidate ID must be absent from bound `context.items`; otherwise no artifact is returned and `ERR_DECISION_CONTEXT_OBSERVATION_MATERIALIZATION_READINESS_ITEM_ALREADY_PRESENT` applies. SOURCE STATE INVENTORY MEMBERSHIP != EXTERNAL AUTHORITY. ITEM ALREADY PRESENT != RETURN PATH MATERIALIZED. ITEM ALREADY PRESENT != LOOP CLOSED.
+
+The bound revision remains base state: BOUND REVISION != MUTATION DESTINATION. READINESS != MATERIALIZATION. READINESS != DECISION CONTEXT ITEM. READINESS != CONTEXT MEMBERSHIP. READINESS != CONTEXT MUTATION. READINESS != REVISION MUTATION. READINESS != REVISION CREATION. READINESS != REVISION TRANSITION. READINESS != PERSISTENCE. READINESS != OBSERVATION TRUTH. READINESS != SEMANTIC SUPPORT. READINESS != CAUSATION. READINESS != HUMAN DECISION. READINESS != LOOP CLOSED. Phase 8D5 creates no item, Context, revision, or persistence operation.

@@ -1,8 +1,22 @@
 # Decision Core invariants
 
-## Scope through Phase 8D4B
+## Scope through Phase 8D5
 
 The Phase 8D4A section below extends the existing cumulative enforcement record through Phase 8D4A; all earlier invariant material remains in force.
+
+## Phase 8D5 observation materialization readiness invariants
+
+- Readiness has exactly one complete sealed target-revision binding predecessor; no independent role, statement, provenance, or target input exists.
+- The predecessor is descriptor-safely captured and sealed-asserted before Phase 8D5 derives any semantic value. Accessors reject without getter execution; hidden, symbol, and extra properties reject where applicable.
+- The retained revision is base state. BOUND REVISION != MUTATION DESTINATION. READINESS != CONTEXT MUTATION. READINESS != REVISION MUTATION. READINESS != REVISION CREATION. READINESS != REVISION TRANSITION.
+- Candidate identity is the existing deterministic `DCI_` identity for the retained projected `OBSERVATION` role, statement, and provenance. CANDIDATE ITEM ID != DECISION CONTEXT ITEM. CANDIDATE ITEM ID != MATERIALIZATION. CANDIDATE ITEM ID != CONTEXT MEMBERSHIP.
+- `HUMAN_INPUT` and `MODEL_PROPOSAL` introduce no source inventory condition. `AUTHORITATIVE_STATE` requires exact structural membership of the projected reference in the bound base Context inventory; absence is `ERR_DECISION_CONTEXT_OBSERVATION_MATERIALIZATION_READINESS_SOURCE_REFERENCE_MISSING`.
+- Inventory membership is not an authority operation: SOURCE REFERENCE PRESENT != SOURCE AUTHORITY RESOLVED. SOURCE REFERENCE PRESENT != SOURCE AUTHENTICATED. SOURCE REFERENCE PRESENT != SOURCE CURRENT. SOURCE REFERENCE PRESENT != SOURCE TRUE. SOURCE REFERENCE PRESENT != SEMANTIC SUPPORT. SOURCE REFERENCE PRESENT != CAUSATION. SOURCE STATE INVENTORY MEMBERSHIP != EXTERNAL AUTHORITY.
+- The candidate ID must be absent from the bound base Context items; presence is `ERR_DECISION_CONTEXT_OBSERVATION_MATERIALIZATION_READINESS_ITEM_ALREADY_PRESENT`. ITEM ALREADY PRESENT != RETURN PATH MATERIALIZED. ITEM ALREADY PRESENT != LOOP CLOSED. ITEM ID ABSENT != SEMANTIC NOVELTY. ITEM ID ABSENT != TRUTH. ITEM ID ABSENT != PRIORITY.
+- The readiness artifact has exactly `artifactKind`, `schemaVersion`, `decisionContextObservationMaterializationReadinessId`, `decisionContextObservationTargetRevisionBinding`, and `candidateItemId`. It is positive readiness only: no status, score, confidence, ranking, priority, recommendation, threshold, or human-approval field exists.
+- `DCOMR_` identity commits to schema, canonical complete binding, and candidate ID using SHA-256 first 24 uppercase hex. Object insertion order is non-semantic. The complete binding representation is identity-bearing; readiness identity is not truth proof.
+- Stored assertion is self-contained and reader-free, resolver-free, construction-free, and persistence-free. It rechecks complete binding, candidate identity, applicable inventory membership, candidate absence, and DCOMR identity; body invalidity precedes DCOMR mismatch; it repairs nothing.
+- READINESS != MATERIALIZATION. READINESS != MATERIALIZATION AUTHORITY. READINESS != DECISION CONTEXT ITEM. READINESS != ITEM MEMBERSHIP. READINESS != CONTEXT MEMBERSHIP. READINESS != PERSISTENCE. READINESS != PERSISTENCE AUTHORITY. READINESS != OBSERVATION TRUTH. READINESS != OBSERVED REALITY. READINESS != OUTCOME TRUTH. READINESS != SEMANTIC SUPPORT. READINESS != CAUSATION. READINESS != HUMAN DECISION. READINESS != LOOP CLOSED. PERSISTED != TRUE.
 
 ## Phase 8D4B exact revision-binding invariants
 
