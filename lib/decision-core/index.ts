@@ -19,6 +19,7 @@ export * from "./action-intent";
 export * from "./human-commitment";
 export * from "./action-occurrence-claim";
 export * from "./human-commitment-action-occurrence-association";
+export * from "./decision-loop-occurrence-return-binding";
 export * from "./state-change-claim";
 export * from "./action-state-change-association";
 export * from "./outcome-attribution-proposal";
