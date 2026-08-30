@@ -1,8 +1,23 @@
 # Decision Core invariants
 
-## Scope through Phase 8E1
+## Scope through Phase 8E2
 
 The Phase 8D4A section below extends the existing cumulative enforcement record through Phase 8D4A; all earlier invariant material remains in force.
+
+## Phase 8E2 decision-loop occurrence-return binding invariants
+
+| Invariant | Why it is required | Enforcement boundary | Consequence / excluded inference |
+| --- | --- | --- | --- |
+| Both complete sealed lineages are required. | Structural closure cannot be inferred from IDs, a standalone claim, or a partial path. | Exact two-field input; sealed 8E1 and 8D10 assertions. | No independent ActionOccurrenceClaim, claim ID, HumanCommitment, revision, repository, or authority input is accepted. |
+| The bridge and return claims must be complete-data equal. | One common ID cannot prove full retained endpoint state. | Exact comparison of `artifactKind`, `schemaVersion`, `actionOccurrenceClaimId`, `source`, and `operationDescription` after both parent assertions. | `ACTION OCCURRENCE CLAIM ID EQUALITY != COMPLETE RETURN-PATH MATCH`; mismatch is `ERR_DECISION_LOOP_OCCURRENCE_RETURN_BINDING_OCCURRENCE_MISMATCH` at creation. |
+| No matching heuristic exists. | A relation must remain represented rather than inferred from superficial similarity. | Closed create/assertion implementation has no search, matcher, evaluator, provider, or reader. | Operation-description, actor, source, temporal, ID, Context, observation-text, and repository similarity establish nothing. |
+| The artifact retains complete lineages and no duplicate claim. | The joined structural path must remain self-contained without a second flattened representation. | Exact five-field artifact shape. | No `loopClosed` boolean, closure certificate, success, execution, causation, feedback, learning, truth, authority, or current-state field exists. |
+| `DLORB_` commits to both complete parents. | Shared occurrence identity alone must not collapse distinct represented return paths. | SHA-256 over schema plus canonical complete 8E1 and 8D10 artifacts. | Object-key insertion order is non-semantic; sealed semantic arrays retain order; DLORB identity is not execution, relation, causation, or fresh-repository proof. |
+| Stored assertion is self-contained and non-repairing. | Stored structural continuity must not depend on live infrastructure or repair malformed lineage. | Parent assertions, complete claim comparison, then DLORB recomputation. | No repository read/write, persist, authority, parent, current/head/latest, model, provider, or external-lineage operation occurs; body invalidity precedes outer ID mismatch. |
+| Structural closure does not upgrade authority. | The 8D10 persistence representation is already bounded and 8E2 is not another persistence operation. | No persister or repository dependency in the 8E2 contract. | `LOOP BINDING != PERSISTENCE AUTHORITY`; `LOOP BINDING != AUTHORITY OF RECORD CREATION`; `8E2 STRUCTURAL BINDING != PERSISTER CONFORMANCE CERTIFICATE`; `STORED LOOP BINDING != FRESH REPOSITORY READ`. |
+| Structural closure is not real-world or causal closure. | Joined representations do not verify the represented action, relationship, or consequences. | Exact closed artifact surface and no execution/causal/feedback/learning dependency. | `STRUCTURAL LOOP CLOSURE != EXECUTION PROOF`; `STRUCTURAL LOOP CLOSURE != ACTION FACT`; `STRUCTURAL LOOP CLOSURE != COMMITMENT FULFILLMENT`; `STRUCTURAL LOOP CLOSURE != RELATION TRUTH`; `STRUCTURAL LOOP CLOSURE != CAUSATION`; `STRUCTURAL LOOP CLOSURE != OUTCOME TRUTH`; `STRUCTURAL LOOP CLOSURE != OBSERVATION TRUTH`; `STRUCTURAL LOOP CLOSURE != SEMANTIC CORRECTNESS`; `STRUCTURAL LOOP CLOSURE != DECISION SUCCESS`; `STRUCTURAL LOOP CLOSURE != FEEDBACK`; `STRUCTURAL LOOP CLOSURE != LEARNING`. |
+
+Phase 8 is structurally closed by this final operation for the current architecture. No separate loop-closure certificate and no Phase 8E3 are required for that structural closure.
 
 ## Phase 8E1 explicit commitment-occurrence association invariants
 

@@ -2,6 +2,16 @@
 
 ## Scope
 
+### Phase 8E2 represented structural closure
+
+Phase 8E2 structurally binds two already sealed lineages only when their retained complete ActionOccurrenceClaims are exactly equal. It creates no repository operation and extends none of the operation-relative persistence semantics already represented by the 8D10 predecessor. LOOP BINDING != PERSISTENCE AUTHORITY. LOOP BINDING != AUTHORITY OF RECORD CREATION. LOOP BINDING != AUTHORITY OF REALITY. LOOP BINDING != CURRENT SOURCE AUTHORITY. LOOP BINDING != PUBLICATION AUTHORITY.
+
+The 8D10 predecessor may represent operation-relative repository-selected authority of record only when its supplied persister fulfilled the sealed Phase-5D2A contract. PERSISTER INTERFACE CONFORMANCE != 5D2A GOVERNANCE GUARANTEE. 8E2 STRUCTURAL BINDING != PERSISTER CONFORMANCE CERTIFICATE. 8E2 does not certify a persister, replay persistence, read a repository, establish fresh liveness, or select current/head/latest state.
+
+Stored assertion is self-contained. STORED LOOP BINDING != FRESH REPOSITORY READ. STORED ASSERTION != CURRENT REPOSITORY PROOF. STRUCTURAL LOOP CLOSURE != CURRENT RECORD EXISTENCE PROOF. STRUCTURAL LOOP CLOSURE != CURRENT AUTHORITY PROOF. PERSISTED != TRUE. AUTHORITY OF RECORD != AUTHORITY OF REALITY.
+
+Represented structural closure does not promote any epistemic or causal state. STRUCTURAL LOOP CLOSURE != EXECUTION PROOF. STRUCTURAL LOOP CLOSURE != ACTION FACT. STRUCTURAL LOOP CLOSURE != COMMITMENT FULFILLMENT. STRUCTURAL LOOP CLOSURE != RELATION TRUTH. STRUCTURAL LOOP CLOSURE != CAUSATION. STRUCTURAL LOOP CLOSURE != OUTCOME TRUTH. STRUCTURAL LOOP CLOSURE != OBSERVATION TRUTH. STRUCTURAL LOOP CLOSURE != SEMANTIC CORRECTNESS. STRUCTURAL LOOP CLOSURE != DECISION SUCCESS. STRUCTURAL LOOP CLOSURE != FEEDBACK. STRUCTURAL LOOP CLOSURE != LEARNING. STRUCTURAL CONTINUITY != CAUSAL CONTINUITY. LINEAGE != CAUSATION.
+
 ### Phase 8E1 explicit bridge proposal
 
 8E1 records represented provenance for an explicit association proposal; it does not resolve, authenticate, or inspect an authority source. HUMAN PROPOSAL != RELATION TRUTH. HUMAN PROPOSAL != EXECUTION PROOF. MODEL PROPOSAL != RELATION TRUTH. MODEL PROPOSAL != EXECUTION PROOF. REFERENCE != AUTHORITY TOKEN. REFERENCE PRESENT != CURRENT SOURCE AUTHORITY. PROVENANCE != SUPPORT.

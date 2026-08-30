@@ -1,6 +1,6 @@
 # Decision Core architecture
 
-## Scope through Phase 8E1
+## Scope through Phase 8E2
 
 Decision Core is a generic, producer-neutral module for consuming governed producer state and forming a deterministic structural `DecisionContextDraft`. It is separate from Capability Core. Capability Core publishes capability/evidence-oriented Phase-4 snapshots; Decision Core does not require that ontology and can consume any producer that implements a compatible authority resolver.
 
@@ -35,6 +35,8 @@ Phase 8D2 adds the `context-observation-admission` contract. One declared human 
 Phase 8D3 adds the `context-observation-item-projection` contract. It deterministically derives the exact future `OBSERVATION`-item input semantics represented by one sealed `DecisionContextObservationAdmissionDeclaration`, retaining the complete sealed admission lineage. It does not create a `DecisionContextItem`, establish item identity or Context membership, identify or mutate a target Context, create a revision, establish truth, support, causation, current authority, persistence authority, or close the loop.
 
 Phase 8D4A adds the `context-observation-target-declaration` contract. One declared human actor explicitly declares one sealed `DecisionContextObservationItemProjection` intended to be carried forward from one DREV-shaped declared base-state reference in possible future Context processing. It does not prove revision existence, bind a sealed revision, establish current/head/latest state, materialize an item, establish Context membership, mutate a Context or revision, create a revision, establish truth, support, causation, persistence authority, or close the loop.
+
+Phase 8E2 adds the final structural Phase-8 `decision-loop-occurrence-return-binding` contract. It accepts one sealed `HumanCommitmentActionOccurrenceAssociationProposal` and one sealed `DecisionContextObservationRevisionPersistence`, requires complete represented equality of the ActionOccurrenceClaim retained by each lineage, and creates one detached `DecisionLoopOccurrenceReturnBinding`. It establishes represented structural continuity only. It establishes neither execution proof, action fact, commitment fulfillment, relation truth, causation, outcome truth, observation truth, semantic correctness, decision success, feedback, learning, fresh repository authority, nor current-state selection.
 
 The implemented architecture has distinct branches, not one automatic pipeline:
 
@@ -1009,3 +1011,42 @@ PERSISTENCE != REVISION CREATION. PERSISTENCE != CONTEXT TRANSITION. PREVIOUS RE
 The six-field `DHCAOA_` artifact retains complete endpoints and closed HUMAN_INPUT, MODEL_PROPOSAL, or AUTHORITATIVE_STATE provenance. Its complete-state identity is not relation truth, execution proof, causal identity, or persistence authority. ASSOCIATION PROPOSAL != EXECUTION PROOF. ASSOCIATION PROPOSAL != COMMITMENT FULFILLMENT. ASSOCIATION PROPOSAL != ACTION FACT. ASSOCIATION PROPOSAL != RELATION TRUTH. ASSOCIATION != CAUSATION. COMMITTED != EXECUTED. ACTION OCCURRENCE CLAIM != ACTION OCCURRENCE FACT. OPERATION DESCRIPTION EQUALITY != ASSOCIATION. ACTOR EQUALITY != ASSOCIATION. SOURCE EQUALITY != ASSOCIATION. TEMPORAL ORDER != ASSOCIATION.
 
 BRIDGE ASSOCIATION PROPOSAL != LOOP CLOSED. ASSOCIATION PROPOSAL EXISTENCE != RETURN-PATH MATCH. ACTION OCCURRENCE CLAIM ID EQUALITY != COMPLETE RETURN-PATH MATCH. Phase 8E1 does not consume the persisted 8D10 return path, resolve authority, infer an association, or change either endpoint contract.
+
+## Phase 8E2 decision-loop occurrence-return binding boundary
+
+Phase 8E2 is the final structural Phase-8 operation:
+
+```text
+HumanDecisionDeclaration
+-> DecisionActionIntent
+-> HumanCommitment
+-> HumanCommitmentActionOccurrenceAssociationProposal
+-> exact complete ActionOccurrenceClaim
+-> ActionStateChangeAssociationProposal
+-> OutcomeAttributionProposal
+-> DecisionContextObservationProposal
+-> DecisionContextObservationAdmissionDeclaration
+-> DecisionContextObservationItemProjection
+-> DecisionContextObservationTargetDeclaration
+-> DecisionContextObservationTargetRevisionBinding
+-> DecisionContextObservationMaterializationReadiness
+-> DecisionContextObservationItemMaterialization
+-> DecisionContextObservationContextTransition
+-> DecisionContextObservationContextValidationAssembly
+-> DecisionContextObservationRevisionCreation
+-> DecisionContextObservationRevisionPersistence
+```
+
+`HumanCommitmentActionOccurrenceAssociationProposal + DecisionContextObservationRevisionPersistence -> DecisionLoopOccurrenceReturnBinding -> STRUCTURAL PHASE 8 CLOSURE`. The binding extracts the ActionOccurrenceClaim only from the complete sealed 8E1 bridge and the complete sealed 8D10 return lineage. No caller-supplied claim or ID, Context search, text matching, actor/source comparison, temporal matching, repository lookup, or model inference is admitted.
+
+The exact five fields are `artifactKind`, `schemaVersion`, `decisionLoopOccurrenceReturnBindingId`, `humanCommitmentActionOccurrenceAssociationProposal`, and `decisionContextObservationRevisionPersistence`. No duplicate ActionOccurrenceClaim, `loopClosed`, closure-status, success, execution, fulfillment, causation, feedback, learning, truth, authority certificate, current/head/latest, or timestamp field exists. The valid binding artifact itself represents represented structural loop closure; no separate Phase-8 loop-closure certificate and no Phase 8E3 are required for structural closure in this architecture.
+
+The match is complete represented ActionOccurrenceClaim equality: `artifactKind`, `schemaVersion`, `actionOccurrenceClaimId`, `source`, and `operationDescription` must all be equal. ACTION OCCURRENCE CLAIM ID EQUALITY != COMPLETE RETURN-PATH MATCH. VALID BRIDGE + VALID RETURN PATH != STRUCTURAL LOOP CLOSURE unless the complete retained claims match. A mismatch produces no binding artifact.
+
+`DLORB_` is SHA-256, first 24 uppercase hexadecimal characters, over `[DECISION_LOOP_OCCURRENCE_RETURN_BINDING_V1, canonical complete HumanCommitmentActionOccurrenceAssociationProposal, canonical complete DecisionContextObservationRevisionPersistence]`. Object insertion order is non-semantic; sealed order-bearing arrays retain their existing semantics. DLORB IDENTITY != EXECUTION PROOF. DLORB IDENTITY != RELATION TRUTH. DLORB IDENTITY != CAUSAL PROOF. DLORB IDENTITY != FRESH REPOSITORY PROOF.
+
+Successful binding establishes REPRESENTED STRUCTURAL LOOP CLOSURE for exactly the two sealed lineages: a complete represented decision-side path and a complete represented persisted return path are structurally joined through the same complete claim. STRUCTURAL LOOP CLOSURE != EXECUTION PROOF. STRUCTURAL LOOP CLOSURE != ACTION FACT. STRUCTURAL LOOP CLOSURE != COMMITMENT FULFILLMENT. STRUCTURAL LOOP CLOSURE != RELATION TRUTH. STRUCTURAL LOOP CLOSURE != CAUSATION. STRUCTURAL LOOP CLOSURE != OUTCOME TRUTH. STRUCTURAL LOOP CLOSURE != OBSERVATION TRUTH. STRUCTURAL LOOP CLOSURE != SEMANTIC CORRECTNESS. STRUCTURAL LOOP CLOSURE != DECISION SUCCESS. STRUCTURAL LOOP CLOSURE != FEEDBACK. STRUCTURAL LOOP CLOSURE != LEARNING. STRUCTURAL LOOP CLOSURE != CURRENT REPOSITORY PROOF. STRUCTURAL LOOP CLOSURE != CURRENT RECORD EXISTENCE PROOF. STRUCTURAL LOOP CLOSURE != CURRENT AUTHORITY PROOF. STRUCTURAL LOOP CLOSURE != CURRENT REVISION. STRUCTURAL LOOP CLOSURE != HEAD REVISION. STRUCTURAL LOOP CLOSURE != LATEST REVISION. STRUCTURAL CONTINUITY != CAUSAL CONTINUITY. LINEAGE != CAUSATION.
+
+8E2 does not rerun persistence or create authority. LOOP BINDING != PERSISTENCE AUTHORITY. LOOP BINDING != AUTHORITY OF RECORD CREATION. LOOP BINDING != AUTHORITY OF REALITY. LOOP BINDING != CURRENT SOURCE AUTHORITY. LOOP BINDING != PUBLICATION AUTHORITY. PERSISTER INTERFACE CONFORMANCE != 5D2A GOVERNANCE GUARANTEE. 8E2 STRUCTURAL BINDING != PERSISTER CONFORMANCE CERTIFICATE. STORED LOOP BINDING != FRESH REPOSITORY READ. STORED ASSERTION != CURRENT REPOSITORY PROOF. PERSISTED != TRUE. AUTHORITY OF RECORD != AUTHORITY OF REALITY.
+
+Creation and stored assertion are descriptor-safe and self-contained. Stored assertion reasserts both complete parents, extracts both claim representations, requires their complete equality, checks DLORB identity, and repairs nothing. It performs no repository read/write, persistence, parent lookup, authority resolution, current/head/latest selection, model or provider operation, or external lineage reconstruction. Stored body invalidity, including a cross-lineage claim mismatch, precedes stale outer DLORB identity mismatch.
