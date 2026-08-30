@@ -1,6 +1,6 @@
 # Decision Core architecture
 
-## Scope through Phase 8D10
+## Scope through Phase 8E1
 
 Decision Core is a generic, producer-neutral module for consuming governed producer state and forming a deterministic structural `DecisionContextDraft`. It is separate from Capability Core. Capability Core publishes capability/evidence-oriented Phase-4 snapshots; Decision Core does not require that ontology and can consume any producer that implements a compatible authority resolver.
 
@@ -1001,3 +1001,11 @@ REVISION CREATION != PERSISTENCE. REVISION EXISTENCE != PERSISTED REVISION. NEW 
 For a persister fulfilling Phase-5D2A, persistence success already includes exact immediate-parent integrity, immutable write, exact post-write reread, and complete-artifact equality. PERSISTER INTERFACE CONFORMANCE != 5D2A GOVERNANCE GUARANTEE. PHASE 8D10 WRAPPER != PERSISTER CONFORMANCE CERTIFICATE. PHASE 8D10 ARTIFACT != REUSABLE AUTHORITY CERTIFICATE. PERSISTENCE SUCCESS != LOOP CLOSED.
 
 PERSISTENCE != REVISION CREATION. PERSISTENCE != CONTEXT TRANSITION. PREVIOUS REVISION ID != PERSISTED PARENT PROOF. IMMEDIATE PARENT INTEGRITY != FULL LINEAGE INTEGRITY. DREV ID != COMPLETE REVISION STATE. IDEMPOTENT REPLAY != NEW REVISION. IMMUTABLE CONFLICT != AUTOMATIC REPLACEMENT. AUTHORITY OF RECORD != AUTHORITY OF REALITY. AUTHORITY OF RECORD != TRUTH. PERSISTED != TRUE. PERSISTED REVISION != CURRENT REVISION. PERSISTED REVISION != HEAD REVISION. PERSISTED REVISION != LATEST REVISION. STORED PERSISTENCE ARTIFACT != FRESH REPOSITORY READ. STORED ASSERTION != REPOSITORY REREAD.
+
+## Phase 8E1 commitment-occurrence association boundary
+
+`HumanDecisionDeclaration -> DecisionActionIntent -> HumanCommitment` and `ActionOccurrenceClaim -> independent occurrence / return branch` remain independently valid branches. `HumanCommitment + ActionOccurrenceClaim + explicit provenance -> HumanCommitmentActionOccurrenceAssociationProposal -> STOP` adds one optional explicit bridge only. HUMAN COMMITMENT != UNIVERSAL ACTION PREDECESSOR. ACTION OCCURRENCE CLAIM != COMMITMENT-BOUND CLAIM. ASSOCIATION EXISTENCE != OCCURRENCE-CLAIM VALIDITY. HUMAN COMMITMENT + ACTION OCCURRENCE CLAIM != ASSOCIATION.
+
+The six-field `DHCAOA_` artifact retains complete endpoints and closed HUMAN_INPUT, MODEL_PROPOSAL, or AUTHORITATIVE_STATE provenance. Its complete-state identity is not relation truth, execution proof, causal identity, or persistence authority. ASSOCIATION PROPOSAL != EXECUTION PROOF. ASSOCIATION PROPOSAL != COMMITMENT FULFILLMENT. ASSOCIATION PROPOSAL != ACTION FACT. ASSOCIATION PROPOSAL != RELATION TRUTH. ASSOCIATION != CAUSATION. COMMITTED != EXECUTED. ACTION OCCURRENCE CLAIM != ACTION OCCURRENCE FACT. OPERATION DESCRIPTION EQUALITY != ASSOCIATION. ACTOR EQUALITY != ASSOCIATION. SOURCE EQUALITY != ASSOCIATION. TEMPORAL ORDER != ASSOCIATION.
+
+BRIDGE ASSOCIATION PROPOSAL != LOOP CLOSED. ASSOCIATION PROPOSAL EXISTENCE != RETURN-PATH MATCH. ACTION OCCURRENCE CLAIM ID EQUALITY != COMPLETE RETURN-PATH MATCH. Phase 8E1 does not consume the persisted 8D10 return path, resolve authority, infer an association, or change either endpoint contract.

@@ -1,8 +1,18 @@
 # Decision Core invariants
 
-## Scope through Phase 8D10
+## Scope through Phase 8E1
 
 The Phase 8D4A section below extends the existing cumulative enforcement record through Phase 8D4A; all earlier invariant material remains in force.
+
+## Phase 8E1 explicit commitment-occurrence association invariants
+
+- One artifact retains one complete sealed HumanCommitment, one complete sealed ActionOccurrenceClaim, and explicit closed-union provenance; neither endpoint is reduced to an ID or modified.
+- The bridge is optional and adjacent: HUMAN COMMITMENT != UNIVERSAL ACTION PREDECESSOR, ACTION OCCURRENCE CLAIM != COMMITMENT-BOUND CLAIM, and ASSOCIATION EXISTENCE != OCCURRENCE-CLAIM VALIDITY.
+- No operation-description, actor, source, temporal, identifier, or model-output comparison infers association. OPERATION DESCRIPTION SIMILARITY != ASSOCIATION. TEMPORAL ORDER != ASSOCIATION. TEMPORAL ORDER != CAUSATION.
+- The association is neither execution proof, commitment fulfillment, action fact, relation truth, causal claim, success, completion, persistence authority, nor loop closure.
+- AUTHORITATIVE_STATE retains an opaque nonblank reference only. No reader, source payload, freshness, repository lookup, authority resolution, persistence, or 8D10 return-path traversal occurs.
+- DHCAOA_ commits to canonical complete endpoint and provenance state; object insertion order does not affect identity, while existing sealed array semantics remain intact.
+- Descriptor-safe capture rejects accessors, symbols, hidden/extra properties, hostile endpoint lineage, hostile provenance/reference state, cycles, sparse arrays, and custom arrays without getter execution. Stored assertion is self-contained and repairs nothing.
 
 ## Phase 8D10 observation revision persistence invariants
 

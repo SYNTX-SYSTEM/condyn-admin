@@ -2,6 +2,14 @@
 
 ## Scope
 
+### Phase 8E1 explicit bridge proposal
+
+8E1 records represented provenance for an explicit association proposal; it does not resolve, authenticate, or inspect an authority source. HUMAN PROPOSAL != RELATION TRUTH. HUMAN PROPOSAL != EXECUTION PROOF. MODEL PROPOSAL != RELATION TRUTH. MODEL PROPOSAL != EXECUTION PROOF. REFERENCE != AUTHORITY TOKEN. REFERENCE PRESENT != CURRENT SOURCE AUTHORITY. PROVENANCE != SUPPORT.
+
+The bridge does not upgrade either endpoint or establish an authority claim. ASSOCIATION PROPOSAL != EXECUTION PROOF. ASSOCIATION PROPOSAL != ACTION FACT. ASSOCIATION PROPOSAL != RELATION TRUTH. ASSOCIATION != CAUSATION. ASSOCIATION PROPOSAL != CURRENT AUTHORITY. ASSOCIATION PROPOSAL != AUTHORITY OF REALITY. ASSOCIATION PROPOSAL != PERSISTENCE AUTHORITY. PERSISTED != TRUE.
+
+BRIDGE ASSOCIATION PROPOSAL != LOOP CLOSED. The artifact does not inspect the persisted 8D10 return path, and stored assertion performs no repository read or authority resolution.
+
 ### Phase 8D10 operation-relative persistence authority
 
 For a conforming sealed 5D2A persister, 8D10 represents operation-relative repository-selected authority of record for one exact complete child revision. PERSISTER INTERFACE CONFORMANCE != 5D2A GOVERNANCE GUARANTEE. AUTHORITY OF RECORD != AUTHORITY OF REALITY. AUTHORITY OF RECORD != TRUTH. AUTHORITY OF RECORD != SEMANTIC CORRECTNESS. AUTHORITY OF RECORD != VALIDATION COMPLETENESS. AUTHORITY OF RECORD != CURRENT PRODUCER AUTHORITY. AUTHORITY OF RECORD != CURRENT DECISION STATE.

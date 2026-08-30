@@ -1,5 +1,13 @@
 # Decision Core artifact contracts
 
+## Phase 8E1 human commitment action occurrence association
+
+`HumanCommitmentActionOccurrenceAssociationProposal` is `HUMAN_COMMITMENT_ACTION_OCCURRENCE_ASSOCIATION_PROPOSAL_V1` / `HUMAN_COMMITMENT_ACTION_OCCURRENCE_ASSOCIATION_PROPOSAL`. It contains exactly `artifactKind`, `schemaVersion`, `humanCommitmentActionOccurrenceAssociationProposalId`, `humanCommitment`, `actionOccurrenceClaim`, and `provenance`. It retains complete sealed endpoint artifacts: the HumanCommitment retains its DecisionActionIntent and HumanDecisionDeclaration lineage, and ActionOccurrenceClaim remains a standalone complete claim.
+
+The closed Phase-8E1 provenance union is HUMAN_INPUT, MODEL_PROPOSAL, and AUTHORITATIVE_STATE. `DHCAOA_` is SHA-256 first 24 uppercase hex over canonical complete HumanCommitment, complete ActionOccurrenceClaim, and provenance. Object-key insertion order is non-semantic; existing sealed order-bearing arrays are not sorted. No relationKind, executionStatus, fulfilled, completed, success, performer, executor, outcome, effect, causation, timestamp, persistence, or loopClosed field exists. DHCAOA IDENTITY != RELATION TRUTH. DHCAOA IDENTITY != EXECUTION PROOF. DHCAOA IDENTITY != CAUSAL IDENTITY.
+
+Creation and stored assertion are descriptor-safe and self-contained. They assert only sealed endpoints and local provenance state; they perform no reader, repository, authority-resolution, model, similarity, inference, lineage, return-path, or persistence operation. Stored body invalidity precedes a stale DHCAOA identity mismatch.
+
 ## Phase 8D10 observation revision persistence
 
 `DecisionContextObservationRevisionPersistence` is `DECISION_CONTEXT_OBSERVATION_REVISION_PERSISTENCE_V1` / `DECISION_CONTEXT_OBSERVATION_REVISION_PERSISTENCE` with exactly `artifactKind`, `schemaVersion`, `decisionContextObservationRevisionPersistenceId`, `decisionContextObservationRevisionCreation`, and `persistedRevision`. `DCORP_` is SHA-256 first 24 uppercase hex over canonical complete creation and persisted revision. The result retains complete state, not IDs only, and no repository, persister, reader, writer, authority token, current/head/latest, branch, truth, validation-complete, or timestamp field exists.
