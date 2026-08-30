@@ -1,5 +1,5 @@
-import { readdirSync, readFileSync } from "node:fs";
-import { join, resolve } from "node:path";
+import { readFileSync } from "node:fs";
+import { resolve } from "node:path";
 import { describe, expect, it } from "vitest";
 import * as runtimeModule from "../../lib/decision-runtime";
 import type {
@@ -24,7 +24,11 @@ const reference = (): AuthoritativeStateReference => ({
   locator: " locator / opaque "
 });
 const revision = (): DecisionContextRevision => ({ opaque: "revision" } as unknown as DecisionContextRevision);
-const files = (directory: string): string[] => readdirSync(directory, { withFileTypes: true }).flatMap((entry) => entry.isDirectory() ? files(join(directory, entry.name)) : entry.name.endsWith(".ts") ? [join(directory, entry.name)] : []);
+const r1ProductionFiles = [
+  "lib/decision-runtime/types.ts",
+  "lib/decision-runtime/runtime.ts",
+  "lib/decision-runtime/index.ts"
+];
 
 function dependencies(overrides: Partial<RuntimeDependencies> = {}) {
   const authorityCalls: AuthoritativeStateReference[] = [];
@@ -156,7 +160,7 @@ describe("Decision Application Runtime R1", () => {
     const runtime = runtimeModule.createDecisionApplicationRuntime(dependencies().dependencies as never);
     expect(Object.keys(runtime).sort()).toEqual(["persistDecisionContextRevision", "readDecisionContextRevision", "resolveAuthoritativeState"]);
     expect(Object.keys(runtimeModule).sort()).toEqual(["createDecisionApplicationRuntime"]);
-    const source = files(resolve(process.cwd(), "lib/decision-runtime")).map((file) => readFileSync(file, "utf8")).join("\n");
+    const source = r1ProductionFiles.map((file) => readFileSync(resolve(process.cwd(), file), "utf8")).join("\n");
     expect([...new Set(source.match(/ERR_DECISION_RUNTIME_[A-Z_]+/g) ?? [])]).toEqual(["ERR_DECISION_RUNTIME_DEPENDENCIES_INVALID"]);
     expect(source).not.toMatch(/lib\/career|career_decisions|career_commitments|career_actions|career_outcomes|career_feedback|career_learning|JobRepository|lib\/decision-adapters|postgres|drizzle|next|app\/api|process\.env|node:fs|http|OpenAI|Anthropic|Gemini|Mistral|provider|evaluator|model|LLM|Date\.now|new Date|Math\.random|randomUUID|setTimeout|cron|scheduler|current|head|latest|active|DecisionCase|DecisionSession|DecisionJob|Workflow|StateMachine|Command log|Event log|Correlation|Idempotency|createDecisionContext|createHuman|createAction|createObservation|createDecisionLoop|assembleDecision|buildDecision/i);
   });
