@@ -31,3 +31,4 @@ export * from "./context-observation-item-materialization";
 export * from "./context-observation-context-transition";
 export * from "./context-observation-context-validation-assembly";
 export * from "./context-observation-revision-creation";
+export * from "./context-observation-revision-persistence";
