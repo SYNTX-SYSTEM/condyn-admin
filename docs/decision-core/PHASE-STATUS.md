@@ -38,6 +38,7 @@
 | Phase 8D7 | Decision Context Observation Context Transition | SEALED IMPLEMENTATION | `305374e20695a1e4794902e603cd6e74ca82203e` / `v1.0.0-decision-core-phase8d7-context-transition` |
 | Phase 8D8 | Decision Context Observation Context Validation Assembly | SEALED IMPLEMENTATION | `99481c8c12e4e89dd75b20f67440ce71171fbd0f` / `v1.0.0-decision-core-phase8d8-context-validation-assembly` |
 | Phase 8D9 | Decision Context Observation Revision Creation | SEALED IMPLEMENTATION | `065b8850acc0f0e2d1225c2d637703cb5c196750` / `v1.0.0-decision-core-phase8d9-revision-creation` |
+| Phase 8D10 | Decision Context Observation Revision Persistence | SEALED IMPLEMENTATION | `7940f0a54fc5698a7a9c2a6f71646b6addb0d465` / `v1.0.0-decision-core-phase8d10-revision-persistence` |
 
 **Phase 5C4 sealed-defect audit.** Phase 5C4 remains SEALED with its original implementation identity above. During Phase 5D2B integration, a narrow RED regression independently proved a serialization-order portability defect in stored validation-assembly equality. Commit `96083e677767e21b36b636258abb20ebf293b0fc` contains the targeted correction: object property insertion order is non-semantic under structural equality, while array order remains significant. No 5C4 artifact shape, identity, ontology, public API, or derivation semantics were redesigned. `SEALED DEFECT CORRECTION != ARCHITECTURAL REDESIGN`; see ADR 017.
 
@@ -270,7 +271,7 @@ Two independent implementation Deep Sweeps found no Phase 8D4A production defect
 
 The implementation is sealed under the tested contract. Repository-wide TypeScript cleanliness and global zero-defect status are not claimed.
 
-## Phase 8D9 current return-path status
+## Phase 8D10 current return-path status
 
 - 8D1: candidate representation.
 - 8D2: explicit positive human admission.
@@ -282,8 +283,9 @@ The implementation is sealed under the tested contract. Repository-wide TypeScri
 - 8D7: deterministic Context transition establishing actual Context membership in one new DecisionContextDraft.
 - 8D8: explicit new-Context validation input plus deterministic derivational-coherence assembly against exactly that new Context.
 - 8D9: deterministic creation of one complete new child DecisionContextRevision referencing the exact bound base revision.
+- 8D10: bound persistence of that exact child revision through the existing governed revision-persistence contract, yielding one exact persistence-result representation and, for a conforming sealed persister, operation-relative repository-selected authority of record.
 
-New revision persistence, repository-backed record authority for the new revision, repository-level confirmation of the persisted child artifact, and loop closure remain outside the return path. Full Phase 8 remains incomplete. Phase 8D9 creates a detached child revision artifact only: it creates no persistence, repository authority, parent lookup, branch selection, current/head/latest state, validated Context status, truth, or human decision.
+The formal loop-closure condition remains outside the return path. Full Phase 8 remains incomplete. Phase 8D10 does not select a current/head/latest revision, prove truth or semantic correctness, or issue a reusable authority certificate; stored assertion is not a fresh repository read.
 
 ## Phase 8D4B implementation evidence
 
@@ -315,6 +317,18 @@ This scoped evidence does not claim repository-wide semantic correctness, zero d
 - Capability + authority-adapter: 32 files / 295 tests passed.
 - Phase Gate: MECHANICAL VERIFICATION PASS.
 - Implementation seal: MECHANICAL SEALING PASS.
+
+This scoped evidence does not claim repository-wide semantic correctness, zero defects, or repository-wide TypeScript cleanliness.
+
+## Phase 8D10 implementation evidence
+
+- Implementation: `7940f0a54fc5698a7a9c2a6f71646b6addb0d465` / `v1.0.0-decision-core-phase8d10-revision-persistence`.
+- Focused 8D10: 9 / 9 passed.
+- Decision Core: 36 files / 388 tests passed.
+- Capability + authority-adapter: 32 files / 295 tests passed.
+- Phase Gate: MECHANICAL VERIFICATION PASS.
+- Implementation seal: MECHANICAL SEALING PASS.
+- Semantic review required one permanent-test hardening cycle before seal; production remained byte-identical during that cycle.
 
 This scoped evidence does not claim repository-wide semantic correctness, zero defects, or repository-wide TypeScript cleanliness.
 

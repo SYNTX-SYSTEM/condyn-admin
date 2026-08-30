@@ -2,6 +2,12 @@
 
 ## Scope
 
+### Phase 8D10 operation-relative persistence authority
+
+For a conforming sealed 5D2A persister, 8D10 represents operation-relative repository-selected authority of record for one exact complete child revision. PERSISTER INTERFACE CONFORMANCE != 5D2A GOVERNANCE GUARANTEE. AUTHORITY OF RECORD != AUTHORITY OF REALITY. AUTHORITY OF RECORD != TRUTH. AUTHORITY OF RECORD != SEMANTIC CORRECTNESS. AUTHORITY OF RECORD != VALIDATION COMPLETENESS. AUTHORITY OF RECORD != CURRENT PRODUCER AUTHORITY. AUTHORITY OF RECORD != CURRENT DECISION STATE.
+
+STORED PERSISTENCE ARTIFACT != FRESH REPOSITORY READ. STORED ASSERTION != REPOSITORY REREAD. STORED ASSERTION != CURRENT REPOSITORY PROOF. STORED ARTIFACT EXISTENCE != CURRENT RECORD EXISTENCE PROOF. STORED ARTIFACT EXISTENCE != CURRENT AUTHORITY PROOF. PERSISTED REVISION != CURRENT REVISION. PERSISTED REVISION != HEAD REVISION. PERSISTED REVISION != LATEST REVISION. PERSISTENCE SUCCESS != LOOP CLOSED. PERSISTED != TRUE.
+
 ### Phase 8D9 detached child revision creation
 
 Phase 8D9 deterministically constructs one self-contained child `DecisionContextRevision` from the retained 8D8 transitioned Context, explicit validation input, and derivationally coherent assembly. It names the exact retained bound base revision ID as `previousRevisionId`, but does not look up that parent through a repository.

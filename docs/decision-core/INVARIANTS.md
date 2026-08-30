@@ -1,8 +1,16 @@
 # Decision Core invariants
 
-## Scope through Phase 8D9
+## Scope through Phase 8D10
 
 The Phase 8D4A section below extends the existing cumulative enforcement record through Phase 8D4A; all earlier invariant material remains in force.
+
+## Phase 8D10 observation revision persistence invariants
+
+- One captured bound `persist` method is the only dependency operation; 8D10 exposes no repository, reader, writer, raw adapter, parent lookup, or second reread.
+- It submits exactly the detached complete 8D9 child revision and accepts only a complete-data-equal returned revision.
+- Conforming 5D2A success includes immediate-parent integrity, immutable write, exact post-write reread, and complete equality; interface conformance alone is not a governance certificate.
+- Complete predecessor and result are retained and committed to `DCORP_`; stored assertion is repository-free and is not fresh authority confirmation.
+- `PERSISTED != TRUE`; `PERSISTED REVISION != CURRENT REVISION`; `AUTHORITY OF RECORD != TRUTH`; and `PERSISTENCE SUCCESS != LOOP CLOSED`.
 
 ## Phase 8D9 observation revision creation invariants
 

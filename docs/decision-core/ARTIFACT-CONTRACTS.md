@@ -1,5 +1,11 @@
 # Decision Core artifact contracts
 
+## Phase 8D10 observation revision persistence
+
+`DecisionContextObservationRevisionPersistence` is `DECISION_CONTEXT_OBSERVATION_REVISION_PERSISTENCE_V1` / `DECISION_CONTEXT_OBSERVATION_REVISION_PERSISTENCE` with exactly `artifactKind`, `schemaVersion`, `decisionContextObservationRevisionPersistenceId`, `decisionContextObservationRevisionCreation`, and `persistedRevision`. `DCORP_` is SHA-256 first 24 uppercase hex over canonical complete creation and persisted revision. The result retains complete state, not IDs only, and no repository, persister, reader, writer, authority token, current/head/latest, branch, truth, validation-complete, or timestamp field exists.
+
+The bound operation captures one `persist` method once and submits exactly the sealed 8D9 child revision. Returned state must be complete-data equal to that child, not merely share its DREV. Stored assertion is self-contained, performs no persistence or repository operation, repairs nothing, and checks complete equality before outer-ID mismatch. Exact owned errors are `ERR_DECISION_CONTEXT_OBSERVATION_REVISION_PERSISTENCE_PERSISTER_INVALID`, `ERR_DECISION_CONTEXT_OBSERVATION_REVISION_PERSISTENCE_INPUT_INVALID`, `ERR_DECISION_CONTEXT_OBSERVATION_REVISION_PERSISTENCE_REVISION_CREATION_INVALID`, `ERR_DECISION_CONTEXT_OBSERVATION_REVISION_PERSISTENCE_RESULT_INVALID`, `ERR_DECISION_CONTEXT_OBSERVATION_REVISION_PERSISTENCE_INVALID`, and `ERR_DECISION_CONTEXT_OBSERVATION_REVISION_PERSISTENCE_ID_MISMATCH`.
+
 ## Phase 8D9 observation revision creation
 
 `DecisionContextObservationRevisionCreation` is `DECISION_CONTEXT_OBSERVATION_REVISION_CREATION_V1` / `DECISION_CONTEXT_OBSERVATION_REVISION_CREATION` with exactly five fields: `artifactKind`, `schemaVersion`, `decisionContextObservationRevisionCreationId`, `decisionContextObservationContextValidationAssembly`, and `revision`. It retains one complete sealed Phase 8D8 predecessor and one complete new `DecisionContextRevision`; no repository, persister, persisted flag, authority-of-record, current/head/latest/active/selected state, branch, truth, validated Context, validation-complete flag, or timestamp exists.
