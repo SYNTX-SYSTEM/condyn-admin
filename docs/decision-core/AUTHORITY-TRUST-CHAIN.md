@@ -2,6 +2,16 @@
 
 ## Scope
 
+### Phase 8D8 explicit new-Context derivational assembly
+
+Phase 8D8 accepts a sealed Context transition and explicit validation input, then reassembles derivational coherence only against exactly `transition.context`. The Context remains `validationStatus: NOT_RUN`. VALIDATION ASSEMBLY EXISTENCE != CONTEXT VALIDATION STATUS. ASSEMBLY SUCCESS != VALIDATION_STATUS CHANGE. ASSEMBLY SUCCESS != VALIDATED CONTEXT.
+
+It does not carry forward base revision validation state. BASE REVISION VALIDATION != NEW CONTEXT VALIDATION. BASE VALIDATION INPUT != AUTOMATIC NEW VALIDATION INPUT. BASE VALIDATION ASSEMBLY != NEW CONTEXT VALIDATION ASSEMBLY. VALIDATION INPUT REUSE != VALIDATION STATE CARRY-FORWARD. OLD DERIVATION != NEW CONTEXT DERIVATION. A caller may explicitly resubmit old input, but it is reconstructed against the new Context and may fail under existing precise derivation rules.
+
+VALIDATION ASSEMBLY != TRUTH. VALIDATION ASSEMBLY != COMPLETENESS. VALIDATION ASSEMBLY != CURRENT AUTHORITY. VALIDATION ASSEMBLY != SEMANTIC VERIFICATION. VALIDATION ASSEMBLY != DECISION READINESS. VALIDATION ASSEMBLY != AUTHORITY VALIDATION. VALIDATION ASSEMBLY != SOURCE AUTHORITY. No authority validator or bound authority reader is invoked. AUTHORITY RESOLUTION SUCCESS != REUSABLE AUTHORITY ARTIFACT. SOURCE REFERENCE MEMBERSHIP != CURRENT AUTHORITY. No source payload, freshness, or external authentication operation occurs.
+
+VALIDATION ASSEMBLY != REVISION. VALIDATION ASSEMBLY != REVISION CREATION. VALIDATION ASSEMBLY != REVISION TRANSITION. VALIDATION ASSEMBLY != PERSISTENCE. VALIDATION ASSEMBLY != PERSISTENCE AUTHORITY. VALIDATION ASSEMBLY != LOOP CLOSED. PERSISTED != TRUE.
+
 ### Phase 8D7 Context transition
 
 Phase 8D7 constructs one new detached `DecisionContextDraft` from the complete bound base Context and one complete sealed materialized `OBSERVATION` item. Its one-item delta establishes membership only in that represented new Context. ITEM EXISTENCE != CONTEXT MEMBERSHIP. MATERIALIZATION != CONTEXT MEMBERSHIP. CONTEXT MEMBERSHIP REQUIRES CONTEXT REPRESENTATION. CONTEXT MEMBERSHIP != REVISION MEMBERSHIP.

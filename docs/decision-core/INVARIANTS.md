@@ -1,8 +1,18 @@
 # Decision Core invariants
 
-## Scope through Phase 8D7
+## Scope through Phase 8D8
 
 The Phase 8D4A section below extends the existing cumulative enforcement record through Phase 8D4A; all earlier invariant material remains in force.
+
+## Phase 8D8 observation Context validation assembly invariants
+
+- The six-field artifact retains complete sealed transition, complete explicit validation input, and complete resulting validation assembly; no validated-Context state, validation completeness, revision, persistence, authority proof, truth, score, confidence, or timestamp is represented.
+- Creation captures transition and input descriptor-safely before calling the existing `assembleDecisionContextValidation` against exactly `transition.context`. The Context remains `validationStatus: NOT_RUN`.
+- Base revision validation input and assembly are never copied implicitly. BASE REVISION VALIDATION != NEW CONTEXT VALIDATION. BASE VALIDATION INPUT != AUTOMATIC NEW VALIDATION INPUT. BASE VALIDATION ASSEMBLY != NEW CONTEXT VALIDATION ASSEMBLY. VALIDATION INPUT REUSE != VALIDATION STATE CARRY-FORWARD. OLD DERIVATION != NEW CONTEXT DERIVATION.
+- Empty and nonempty input remain neither completeness nor truth claims: VALIDATION INPUT != VALIDATION COMPLETENESS. VALIDATION INPUT != TRUTH. VALIDATION INPUT != AUTHORITY. EMPTY VALIDATION INPUT != COMPLETE VALIDATION. NONEMPTY VALIDATION INPUT != COMPLETE VALIDATION. ASSEMBLY SUCCESS != COMPLETE VALIDATION.
+- DCOCVA identity commits to schema, canonical complete transition, canonical complete input, and canonical complete assembly. Object insertion order is non-semantic; DCOCT, Context, or assembly IDs alone do not prove complete represented state.
+- Stored assertion is detached, self-contained, reader-free, authority-resolution-free, repository-read-free, Context-construction-free, revision-construction-free, and persistence-free. It reasserts exact coherence through the existing assembly assertion; body invalidity precedes stale DCOCVA classification and assertion repairs nothing.
+- VALIDATION ASSEMBLY EXISTENCE != CONTEXT VALIDATION STATUS. ASSEMBLY SUCCESS != VALIDATION_STATUS CHANGE. ASSEMBLY SUCCESS != VALIDATED CONTEXT. VALIDATION ASSEMBLY != TRUTH. VALIDATION ASSEMBLY != COMPLETENESS. VALIDATION ASSEMBLY != CURRENT AUTHORITY. VALIDATION ASSEMBLY != SEMANTIC VERIFICATION. VALIDATION ASSEMBLY != DECISION READINESS. VALIDATION ASSEMBLY != AUTHORITY VALIDATION. VALIDATION ASSEMBLY != SOURCE AUTHORITY. VALIDATION ASSEMBLY != REVISION. VALIDATION ASSEMBLY != REVISION CREATION. VALIDATION ASSEMBLY != REVISION TRANSITION. VALIDATION ASSEMBLY != PERSISTENCE. VALIDATION ASSEMBLY != PERSISTENCE AUTHORITY. VALIDATION ASSEMBLY != LOOP CLOSED.
 
 ## Phase 8D7 observation Context transition invariants
 
