@@ -1,5 +1,15 @@
 # Decision Core artifact contracts
 
+## Phase 8D9 observation revision creation
+
+`DecisionContextObservationRevisionCreation` is `DECISION_CONTEXT_OBSERVATION_REVISION_CREATION_V1` / `DECISION_CONTEXT_OBSERVATION_REVISION_CREATION` with exactly five fields: `artifactKind`, `schemaVersion`, `decisionContextObservationRevisionCreationId`, `decisionContextObservationContextValidationAssembly`, and `revision`. It retains one complete sealed Phase 8D8 predecessor and one complete new `DecisionContextRevision`; no repository, persister, persisted flag, authority-of-record, current/head/latest/active/selected state, branch, truth, validated Context, validation-complete flag, or timestamp exists.
+
+Creation accepts only the sealed Phase 8D8 artifact. It delegates exactly to `createDecisionContextRevision` with the retained bound base revision ID as `previousRevisionId`, the retained transitioned Context, explicit validation input, and validation assembly. The existing revision contract owns all revision canonicalization and DREV identity. REVISION CREATION != CONTEXT MUTATION. The embedded Context remains `validationStatus: NOT_RUN`: REVISION EXISTENCE != VALIDATED CONTEXT and REVISION CREATION != VALIDATION_STATUS CHANGE.
+
+`DCORC_` is the first 24 uppercase hexadecimal characters of SHA-256 over `[schema, canonical complete DecisionContextObservationContextValidationAssembly, canonical complete DecisionContextRevision]`. Object insertion order is non-semantic. DREV ID != COMPLETE REVISION STATE; DCORC commits to complete represented revision state.
+
+Stored assertion is self-contained: it asserts the complete predecessor and stored revision, reconstructs the exact expected child revision, requires complete represented equality, and verifies DCORC identity. It performs no read, parent lookup, repository operation, persistence, authority resolution, or lineage traversal. Body invalidity precedes stale outer ID and repairs nothing. The exact Phase 8D9-owned errors are `ERR_DECISION_CONTEXT_OBSERVATION_REVISION_CREATION_INPUT_INVALID`, `ERR_DECISION_CONTEXT_OBSERVATION_REVISION_CREATION_VALIDATION_ASSEMBLY_INVALID`, `ERR_DECISION_CONTEXT_OBSERVATION_REVISION_CREATION_INVALID`, and `ERR_DECISION_CONTEXT_OBSERVATION_REVISION_CREATION_ID_MISMATCH`.
+
 ## Phase 8D8 observation Context validation assembly
 
 `DecisionContextObservationContextValidationAssembly` is `DECISION_CONTEXT_OBSERVATION_CONTEXT_VALIDATION_ASSEMBLY_V1` / `DECISION_CONTEXT_OBSERVATION_CONTEXT_VALIDATION_ASSEMBLY` with exactly six fields: `artifactKind`, `schemaVersion`, `decisionContextObservationContextValidationAssemblyId`, `decisionContextObservationContextTransition`, `validationInput`, and `validationAssembly`. It retains complete sealed transition, complete explicit `DecisionContextValidationAssemblyInput`, and complete resulting `DecisionContextValidationAssembly`, not their IDs alone. There is no validated Context, validation-complete/passed/ready state, revision, `revisionId`, `previousRevisionId`, persistence, authority proof, truth, confidence, score, or timestamp field.

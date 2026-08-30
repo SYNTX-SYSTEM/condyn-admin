@@ -1,6 +1,6 @@
 # Decision Core architecture
 
-## Scope through Phase 8D8
+## Scope through Phase 8D9
 
 Decision Core is a generic, producer-neutral module for consuming governed producer state and forming a deterministic structural `DecisionContextDraft`. It is separate from Capability Core. Capability Core publishes capability/evidence-oriented Phase-4 snapshots; Decision Core does not require that ontology and can consume any producer that implements a compatible authority resolver.
 
@@ -977,3 +977,19 @@ The exact six fields are `artifactKind`, `schemaVersion`, `decisionContextObserv
 VALIDATION ASSEMBLY != TRUTH. VALIDATION ASSEMBLY != COMPLETENESS. VALIDATION ASSEMBLY != CURRENT AUTHORITY. VALIDATION ASSEMBLY != SEMANTIC VERIFICATION. VALIDATION ASSEMBLY != DECISION READINESS. VALIDATION ASSEMBLY != AUTHORITY VALIDATION. VALIDATION ASSEMBLY != SOURCE AUTHORITY. AUTHORITY RESOLUTION SUCCESS != REUSABLE AUTHORITY ARTIFACT. SOURCE REFERENCE MEMBERSHIP != CURRENT AUTHORITY. Phase 8D8 performs no authority resolution, source payload fetch, freshness check, source authentication, reader, repository read, Context construction, revision construction, or persistence operation.
 
 VALIDATION ASSEMBLY != REVISION. VALIDATION ASSEMBLY != REVISION CREATION. VALIDATION ASSEMBLY != REVISION TRANSITION. NEW CONTEXT VALIDATION ASSEMBLY != NEW REVISION. VALIDATION ASSEMBLY != PERSISTENCE. VALIDATION ASSEMBLY != PERSISTENCE AUTHORITY. VALIDATION ASSEMBLY != LOOP CLOSED. No DREV, revision ID, previous revision ID, lineage, persistence, or loop closure is created. `PERSISTED != TRUE` remains preserved.
+
+## Phase 8D9 decision-context-observation-revision-creation boundary
+
+Phase 8D9 is a deterministic revision-construction operation only: `DecisionContextObservationContextValidationAssembly -> createDecisionContextRevision -> new DecisionContextRevision -> DecisionContextObservationRevisionCreation -> STOP`. It retains the complete sealed Phase 8D8 predecessor and complete child revision. The child names exactly the bound base revision as `previousRevisionId`; it establishes neither persistence nor repository authority.
+
+The existing `createDecisionContextRevision` constructor owns canonical revision representation, validation-input canonicalization, revision identity, and structural assertion. Phase 8D9 supplies exactly the retained bound base revision ID, transitioned Context, explicit validation input, and validation assembly. It neither duplicates a DREV algorithm nor mutates Context state: REVISION CREATION != CONTEXT MUTATION.
+
+The embedded transitioned `DecisionContextDraft` remains `validationStatus: NOT_RUN`. REVISION EXISTENCE != VALIDATED CONTEXT. REVISION CREATION != VALIDATION_STATUS CHANGE. VALIDATION ASSEMBLY EXISTENCE != CONTEXT VALIDATION STATUS. ASSEMBLY SUCCESS != VALIDATED CONTEXT.
+
+The exact fields are `artifactKind`, `schemaVersion`, `decisionContextObservationRevisionCreationId`, `decisionContextObservationContextValidationAssembly`, and `revision`. `DCORC_` is SHA-256 over `[schema, canonical complete validation assembly predecessor, canonical complete revision]`, first 24 uppercase hex. Object insertion order is non-semantic. DREV ID != COMPLETE REVISION STATE. REVISION IDENTITY != COMPLETE ARTIFACT EQUALITY. The wrapper retains and commits to complete state rather than trusting a DREV string alone.
+
+Stored assertion is self-contained: it captures and asserts the complete predecessor and revision, derives the bound base revision through retained lineage, reconstructs the expected child through `createDecisionContextRevision`, requires complete represented equality, verifies DCORC identity, and repairs nothing. It performs no reader, parent lookup, repository operation, persistence, authority resolution, or lineage traversal. Body invalidity precedes stale DCORC ID.
+
+PREVIOUS REVISION ID != PERSISTED PARENT PROOF. PREVIOUS REVISION ID != REPOSITORY PARENT EXISTENCE PROOF. PREVIOUS REVISION ID != CURRENT REVISION. PREVIOUS REVISION ID != HEAD REVISION. PREVIOUS REVISION ID != LATEST REVISION. PREVIOUS REVISION ID != ACTIVE REVISION. PREVIOUS REVISION ID != BRANCH SELECTION. PREVIOUS REVISION ID != CAUSATION. PREVIOUS REVISION ID != OVERWRITE.
+
+REVISION CREATION != PERSISTENCE. REVISION EXISTENCE != PERSISTED REVISION. NEW REVISION != PERSISTED REVISION. REVISION CREATION != PERSISTENCE AUTHORITY. REVISION CREATION != AUTHORITY OF RECORD. DREV ID != PERSISTENCE PROOF. DREV ID != AUTHORITY OF RECORD. BOUND BASE REVISION != PERSISTED PARENT RECORD. REVISION CREATION != REPOSITORY LINEAGE VALIDATION. PREDECESSOR REFERENCE != BRANCH SELECTION POLICY. LINEAGE INTEGRITY != BRANCH SELECTION POLICY. NEW REVISION != CURRENT REVISION. NEW REVISION != HEAD REVISION. NEW REVISION != LATEST REVISION. NEW REVISION != ACTIVE REVISION. NEW REVISION != SELECTED REVISION. NEW REVISION != MUTATION. REVISION CREATION != BASE REVISION OVERWRITE. BASE REVISION != MUTATION DESTINATION. REVISION EXISTENCE != TRUTH. REVISION EXISTENCE != SEMANTIC CORRECTNESS. REVISION EXISTENCE != VALIDATION COMPLETENESS. REVISION EXISTENCE != DECISION READINESS. REVISION EXISTENCE != HUMAN DECISION. REVISION EXISTENCE != CAUSATION. REVISION CREATION != LOOP CLOSED. `PERSISTED != TRUE` remains preserved.

@@ -1,8 +1,18 @@
 # Decision Core invariants
 
-## Scope through Phase 8D8
+## Scope through Phase 8D9
 
 The Phase 8D4A section below extends the existing cumulative enforcement record through Phase 8D4A; all earlier invariant material remains in force.
+
+## Phase 8D9 observation revision creation invariants
+
+- One sealed Phase 8D8 artifact is the only construction input; no independent parent ID, Context, validation input, assembly, revision ID, repository, or persister is accepted.
+- `previousRevisionId` equals exactly the retained bound base revision ID. No parent lookup, repository read, lineage traversal, branch selection, current/head/latest/active selection, or overwrite occurs.
+- The child revision is exactly the deterministic output of `createDecisionContextRevision` for the retained transitioned Context, explicit validation input, validation assembly, and bound base revision ID.
+- The transitioned Context is not mutated and remains `validationStatus: NOT_RUN`. `REVISION EXISTENCE != VALIDATED CONTEXT`; `REVISION CREATION != VALIDATION_STATUS CHANGE`.
+- Complete sealed predecessor and complete revision are retained, descriptor-safely captured, detached, and committed to canonical `DCORC_` identity. `DREV ID != COMPLETE REVISION STATE`.
+- Stored assertion rederives the expected child revision and rejects any complete-state divergence before outer-ID mismatch; it repairs nothing and performs no read, persistence, authority, or lineage operation.
+- `REVISION CREATION != PERSISTENCE`; `REVISION CREATION != AUTHORITY OF RECORD`; `NEW REVISION != CURRENT REVISION`; `REVISION EXISTENCE != TRUTH`; and `REVISION CREATION != LOOP CLOSED`.
 
 ## Phase 8D8 observation Context validation assembly invariants
 

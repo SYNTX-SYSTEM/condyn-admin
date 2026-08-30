@@ -2,6 +2,16 @@
 
 ## Scope
 
+### Phase 8D9 detached child revision creation
+
+Phase 8D9 deterministically constructs one self-contained child `DecisionContextRevision` from the retained 8D8 transitioned Context, explicit validation input, and derivationally coherent assembly. It names the exact retained bound base revision ID as `previousRevisionId`, but does not look up that parent through a repository.
+
+PREVIOUS REVISION ID != PERSISTED PARENT PROOF. PREVIOUS REVISION ID != REPOSITORY PARENT EXISTENCE PROOF. BOUND BASE REVISION != PERSISTED PARENT RECORD. REVISION CREATION != REPOSITORY LINEAGE VALIDATION. PREDECESSOR REFERENCE != BRANCH SELECTION POLICY. LINEAGE INTEGRITY != BRANCH SELECTION POLICY.
+
+The operation creates no persistence or authority state. REVISION CREATION != PERSISTENCE. REVISION EXISTENCE != PERSISTED REVISION. NEW REVISION != PERSISTED REVISION. REVISION CREATION != PERSISTENCE AUTHORITY. REVISION CREATION != AUTHORITY OF RECORD. DREV ID != PERSISTENCE PROOF. DREV ID != AUTHORITY OF RECORD. NEW REVISION != CURRENT REVISION. NEW REVISION != HEAD REVISION. NEW REVISION != LATEST REVISION. NEW REVISION != ACTIVE REVISION. NEW REVISION != SELECTED REVISION.
+
+Revision existence does not establish truth, correctness, completeness, decision readiness, human decision, or causation. The embedded transitioned Context remains `validationStatus: NOT_RUN`: REVISION EXISTENCE != VALIDATED CONTEXT. REVISION CREATION != VALIDATION_STATUS CHANGE. PERSISTED != TRUE. REVISION CREATION != LOOP CLOSED.
+
 ### Phase 8D8 explicit new-Context derivational assembly
 
 Phase 8D8 accepts a sealed Context transition and explicit validation input, then reassembles derivational coherence only against exactly `transition.context`. The Context remains `validationStatus: NOT_RUN`. VALIDATION ASSEMBLY EXISTENCE != CONTEXT VALIDATION STATUS. ASSEMBLY SUCCESS != VALIDATION_STATUS CHANGE. ASSEMBLY SUCCESS != VALIDATED CONTEXT.
