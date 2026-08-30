@@ -29,3 +29,4 @@ export * from "./context-observation-target-revision-binding";
 export * from "./context-observation-materialization-readiness";
 export * from "./context-observation-item-materialization";
 export * from "./context-observation-context-transition";
+export * from "./context-observation-context-validation-assembly";
