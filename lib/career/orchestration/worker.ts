@@ -55,6 +55,8 @@ export class CareerJobWorker {
 
         try {
           const reportOperation: ReportCareerJobRuntimeOperation = async (currentOperation) => {
+            // The processor owns the real execution boundary; the worker only
+            // persists that exact bounded position for client observation.
             await this.jobRepo.updateJobState(
               job.jobId,
               this.workerId,
@@ -67,7 +69,8 @@ export class CareerJobWorker {
 
           const { resultAnalysisId } = await this.processJob(job, reportOperation);
           
-          // Complete the job with the verified canonical analysis
+          // Job success remains tied to the canonical Career Analysis result;
+          // Capability proposal artifacts are sidecar state, never job results.
           await this.jobRepo.updateJobState(job.jobId, this.workerId, job.leaseVersion, "RUNNING", "SUCCEEDED", { resultAnalysisId });
         } catch (error: any) {
           // Determine if error is terminal. For now, assume retryable for general errors.

@@ -39,6 +39,9 @@ async function main() {
   const capabilityRepository = new PostgresCapabilityCoreRepository(db);
   const promptRepository = new InMemoryPromptRepository();
   const workerId = process.env.CAREER_WORKER_ID || "worker-node-1";
+  // Managed proposal kernels are a startup prerequisite. Their encryption key
+  // is validated before a worker exists, so invalid configuration cannot claim
+  // a job and then fail after polling begins.
   const capabilityProposalExecutor = await createCareerCapabilityProposalExecutor({
     environment: {
       GEMINI_MODEL: process.env.GEMINI_MODEL,
@@ -128,5 +131,8 @@ async function main() {
 
 main().catch((error) => {
   console.error(error);
+  // A caught startup rejection would otherwise leave no failing process status.
+  // Preserve a non-zero result so startup failure is visible to the supervisor
+  // and cannot look like a healthy worker startup.
   process.exitCode = 1;
 });

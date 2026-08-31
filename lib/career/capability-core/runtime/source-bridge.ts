@@ -24,6 +24,8 @@ function toCompatibleMetadata(
 /**
  * Adapts Career document input to the sealed Capability Core source contract.
  * This bridge deliberately contributes no authority, page, or capability semantics.
+ * Career input has no page representation, so `pages: undefined` preserves that
+ * absence rather than inventing page boundaries or evidence locations.
  */
 export function toCapabilitySourceDocuments(documents: DocumentInput[]): SourceDocument[] {
   return documents.map((document) => {
@@ -36,6 +38,8 @@ export function toCapabilitySourceDocuments(documents: DocumentInput[]): SourceD
       rawContent: document.content,
       ...(metadata ? { metadata } : {})
       }),
+      // Metadata remains informational; it does not make this bridge an
+      // evidence or authority producer.
       pages: undefined
     };
   });

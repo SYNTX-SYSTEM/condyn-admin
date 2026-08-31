@@ -5,6 +5,8 @@ import { compareCapabilityConvergenceStrings } from "./ordering";
 const compare = compareCapabilityConvergenceStrings;
 export function buildCapabilityConvergencePrompt(candidates: CapabilityCandidate[], kernel: ResolvedCapabilityConvergenceKernel): CapabilityConvergencePrompt {
   const transport = candidates.slice().sort((a, b) => compare(a.candidateId, b.candidateId)).map((candidate) => ({ candidate_id: candidate.candidateId, canonical_name: candidate.proposedCanonicalName, capability_scope: candidate.proposedScope, structural_definition: candidate.structuralDefinition, primary_domain: candidate.proposedPrimaryDomain, verified_evidence: candidate.evidenceClaims.filter((claim) => claim.verification.status === "VERIFIED").slice().sort((a, b) => compare(a.evidenceId, b.evidenceId)).map((claim) => ({ evidence_id: claim.evidenceId, source_document_id: claim.verification.matchedDocId, location: claim.declaredLocation, exact_quote: claim.exactQuote })) }));
+  // The resolver supplies the exact runtime identity. Convergence preserves
+  // strict mismatch rejection after inference and never normalizes model output.
   return {
     systemPrompt: `${kernel.plainTextContent}\n\nOutput identity contract:\n"convergence_version" MUST equal exactly "${kernel.kernelVersion}".\nDo not substitute the prompt slug, schema version, model version, semantic version shorthand, or any other value.`,
     userPrompt: `CONDYN CAPABILITY CONVERGENCE INPUT\nELIGIBLE_CANDIDATE_COUNT: ${transport.length}\n\n${JSON.stringify(transport)}`

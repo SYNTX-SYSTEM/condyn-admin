@@ -20,6 +20,8 @@ import type { PromptRepository } from "../prompts/repository";
 import type { ActivePromptResolver } from "../prompts/resolver";
 import type { ReportCareerJobRuntimeOperation } from "./career-analysis-job-processor";
 
+// Prompt slugs select managed kernels; these explicit versions are the runtime
+// identities that Discovery and Convergence validate against provider output.
 const discoveryConfiguration = {
   kernelVersion: "discovery-v1",
   schemaVersion: "discovery-schema-v1"
@@ -112,6 +114,8 @@ function selectedCapabilityModel(
   environment: CareerCapabilityProposalExecutorDependencies["environment"],
   defaultGeminiModel: string
 ): string {
+  // Discovery and Convergence share one worker-selected model. A blank value is
+  // intentionally equivalent to absent configuration, not a second model policy.
   return environment.GEMINI_MODEL?.trim()
     ? environment.GEMINI_MODEL
     : defaultGeminiModel;
@@ -125,6 +129,8 @@ function telemetryDiscoveryProvider(
     providerName: provider.providerName,
     model: provider.model,
     async execute(request) {
+      // Reuse is decided inside Discovery before this wrapper is reached. This
+      // operation therefore denotes a real provider call, never inferred progress.
       await reportOperation("INFERENCE");
       return provider.execute(request);
     }
@@ -139,6 +145,8 @@ function telemetryConvergenceProvider(
     providerName: provider.providerName,
     model: provider.model,
     async execute(request) {
+      // As above, emit only at the concrete provider boundary; reused or
+      // ineligible Convergence work must not appear as active inference.
       await reportOperation("INFERENCE");
       return provider.execute(request);
     }
@@ -148,12 +156,16 @@ function telemetryConvergenceProvider(
 /**
  * Concrete F10B composition around the sealed F10A runtime. Provider telemetry
  * is emitted only from wrapped execute calls, so reuse paths do not invent
- * inference activity.
+ * inference activity. This composes proposal stages only; Verification and
+ * Phase-4 publication remain outside this worker prerequisite.
  */
 export async function createCareerCapabilityProposalExecutor(
   dependencies: CareerCapabilityProposalExecutorDependencies
 ): Promise<CareerCapabilityProposalExecutor> {
   const encryptionKeyBase64 = dependencies.environment.PROMPT_ENCRYPTION_KEY ?? "";
+  // Bootstrap validates managed prompt encryption before constructing the
+  // Capability Proposal providers. Startup therefore fails before polling when
+  // this prerequisite is invalid instead of claiming work that cannot execute safely.
   await dependencies.bootstrapCapabilityProposalKernels({
     promptRepository: dependencies.promptRepository,
     encryptionKeyBase64

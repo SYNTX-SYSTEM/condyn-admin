@@ -62,7 +62,9 @@ export interface CapabilityProposalRuntime {
 
 /**
  * Bounded F10A proposal orchestration. Discovery and Convergence own all
- * validation, evidence filtering, and artifact persistence semantics.
+ * validation, evidence filtering, and artifact persistence semantics. Its
+ * returned RUN_/CONV_ state remains proposal state, not verified capability
+ * truth or a Phase-4 publication.
  */
 export function createCapabilityProposalRuntime<Repository extends object>(
   dependencies: CapabilityProposalRuntimeDependencies<Repository>
@@ -76,6 +78,8 @@ export function createCapabilityProposalRuntime<Repository extends object>(
       });
 
       if (discovery.kind === "VERIFIED_SNAPSHOT_REUSED") {
+        // This is an already-existing verified snapshot state. Do not fabricate
+        // proposal artifacts or run Convergence merely to continue.
         return {
           kind: "VERIFIED_SNAPSHOT_REUSED",
           sourceDocuments,

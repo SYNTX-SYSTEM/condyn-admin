@@ -7,6 +7,9 @@ export function buildCapabilityDiscoveryPrompt(documents: SourceDocument[], reso
     const body = document.pages?.length ? document.pages.slice().sort((a, b) => a.pageNumber - b.pageNumber).map((page) => `<PAGE number="${page.pageNumber}">\n${page.normalizedText}\n</PAGE>`).join("\n") : document.normalizedText;
     return `${header}${body}\n</SOURCE_DOCUMENT>`;
   });
+  // The resolver is the sole source of the expected runtime kernel identity.
+  // The model is instructed before inference, while Discovery still rejects a
+  // mismatch afterward rather than rewriting arbitrary model output.
   return {
     systemPrompt: `${resolvedKernel.plainTextContent}\n\nOutput identity contract:\n"kernel_version" MUST equal exactly "${resolvedKernel.kernelVersion}".\nDo not substitute the prompt slug, schema version, model version, semantic version shorthand, or any other value.`,
     userPrompt: `CONDYN CAPABILITY DISCOVERY SOURCE CORPUS\nSOURCE_DOCUMENT_COUNT: ${documents.length}\n\n${sections.join("\n\n")}`

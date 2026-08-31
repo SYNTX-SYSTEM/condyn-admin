@@ -31,7 +31,8 @@ function deterministicAnalysisId(jobId: string): string {
 /**
  * Coordinates the Career Analysis recovery path with the governed Capability
  * Proposal prerequisite. Capability artifacts are durable sidecar state and
- * never replace the canonical Career Analysis job result.
+ * never replace the canonical Career Analysis job result. An existing analysis
+ * is recovery information only; it is not evidence that the sidecar ran.
  */
 export function createCareerAnalysisJobProcessor(
   dependencies: CareerAnalysisJobProcessorDependencies
@@ -47,14 +48,21 @@ export function createCareerAnalysisJobProcessor(
       resultAnalysisId
     );
 
+    // Prepare exactly one normalized Career inventory. F10A alone converts this
+    // inventory to SourceDocuments, and both sidecar and legacy paths reuse it.
     await reportOperation("SOURCE_PREPARATION");
     const { normalizedDocs } = await dependencies.prepareDocuments(
       (job.inputRef.sourceData as { documents: unknown[] }).documents
     );
 
+    // The sidecar remains a prerequisite even for recovery: returning the
+    // existing canonical analysis before this point would mask missing or failed
+    // Discovery/Convergence proposal state.
     await dependencies.capabilityProposalExecutor.execute(normalizedDocs, reportOperation);
 
     if (existingAnalysis) {
+      // Canonical analysis remains the Career job result contract; sidecar RUN_/
+      // CONV_ artifacts do not become result fields or authority claims here.
       return { resultAnalysisId };
     }
 
@@ -64,6 +72,8 @@ export function createCareerAnalysisJobProcessor(
       resultAnalysisId
     );
 
+    // Only the legacy path persists a canonical Career Analysis. Reuse never
+    // rewrites an already durable result.
     await reportOperation("PERSISTENCE");
     await dependencies.canonicalAnalysisRepository.save(legacyResult.analysis);
 

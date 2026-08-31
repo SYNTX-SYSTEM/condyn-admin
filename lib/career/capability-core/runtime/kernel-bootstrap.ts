@@ -2,6 +2,9 @@ import { encryptPromptContent } from "../../prompts/crypto";
 import type { PromptRepository } from "../../prompts/repository";
 import type { PromptTemplate, PromptVersion } from "../../prompts/schema";
 
+// These managed kernels govern only Discovery and Convergence proposals. They
+// intentionally do not reuse the legacy deep-sweep prompt or extend into
+// Verification, snapshot publication, or any other authority-producing stage.
 const CAPABILITY_PROPOSAL_KERNELS = [
   {
     slug: "capability-discovery-v1",
@@ -30,7 +33,8 @@ export interface CapabilityProposalKernelBootstrapDependencies {
 
 /**
  * Seeds the two F10A managed proposal kernels as encrypted ACTIVE prompt versions.
- * Plaintext is supplied only to encryption and is never retained in Capability Core artifacts.
+ * Plaintext is supplied only to encryption and resolution; durable run artifacts
+ * retain prompt identity metadata, never the proposal kernel content itself.
  */
 export async function bootstrapCapabilityProposalKernels(
   dependencies: CapabilityProposalKernelBootstrapDependencies
