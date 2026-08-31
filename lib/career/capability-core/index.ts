@@ -8,3 +8,4 @@ export { InMemoryCapabilityCoreRepository, PostgresCapabilityCoreRepository } fr
 export type { CapabilityCoreRepository } from "./repository";
 export * from "./discovery";
 export * from "./convergence";
+export * from "./runtime";

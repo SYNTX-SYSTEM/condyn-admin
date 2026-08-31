@@ -50,4 +50,49 @@ describe("Worker Configuration Validation", () => {
     expect(currentJob?.leaseVersion).toBe(0);
     expect(currentJob?.leaseOwner).toBeNull();
   });
+
+  it("exits non-zero for missing prompt encryption before claiming a job", async () => {
+    const job = createJob("CAREER_ANALYSIS", {
+      sourceType: "TEXT",
+      sourceData: { documents: [] }
+    });
+    await repo.enqueueJob(job);
+
+    const beforeStartup = await repo.getJob(job.jobId);
+    expect(beforeStartup?.status).toBe("PENDING");
+    expect(beforeStartup?.attemptCount).toBe(0);
+    expect(beforeStartup?.leaseVersion).toBe(0);
+    expect(beforeStartup?.leaseOwner).toBeNull();
+
+    let exitStatus: number | null = null;
+    let output = "";
+    try {
+      execSync("npx tsx scripts/run-career-worker.ts", {
+        env: {
+          ...process.env,
+          GEMINI_API_KEY: "f10b-startup-validation-only",
+          PROMPT_ENCRYPTION_KEY: ""
+        },
+        stdio: "pipe"
+      });
+    } catch (error) {
+      const commandError = error as {
+        status?: number | null;
+        stderr?: Buffer;
+        stdout?: Buffer;
+      };
+      exitStatus = commandError.status ?? null;
+      output = `${commandError.stderr?.toString() ?? ""}${commandError.stdout?.toString() ?? ""}`;
+    }
+
+    expect(exitStatus).not.toBeNull();
+    expect(exitStatus).not.toBe(0);
+    expect(output).toContain("ERR_MISSING_ENCRYPTION_KEY");
+
+    const afterStartup = await repo.getJob(job.jobId);
+    expect(afterStartup?.status).toBe("PENDING");
+    expect(afterStartup?.attemptCount).toBe(0);
+    expect(afterStartup?.leaseVersion).toBe(0);
+    expect(afterStartup?.leaseOwner).toBeNull();
+  }, 15000);
 });

@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach } from "vitest";
+import { describe, it, expect, beforeEach, afterAll } from "vitest";
 import { InMemoryCareerAnalysisRepository } from "../lib/career/repository";
 import { PostgresCareerAnalysisRepository } from "../lib/career/repositories/postgres";
 import { db, initDbSchema } from "../lib/career/db/client";
@@ -6,6 +6,7 @@ import { careerAnalyses } from "../lib/career/db/schema";
 import { eq } from "drizzle-orm";
 
 describe("CONDYN Career Analysis Protocol v4.0 - PHASE 4: PERSISTENCE SEMANTIC INTEGRITY (TEST004A)", () => {
+  const testAnalysisId = "TEST_ID";
   let memRepo: InMemoryCareerAnalysisRepository;
   let pgRepo: PostgresCareerAnalysisRepository;
 
@@ -13,8 +14,15 @@ describe("CONDYN Career Analysis Protocol v4.0 - PHASE 4: PERSISTENCE SEMANTIC I
     await initDbSchema();
     memRepo = new InMemoryCareerAnalysisRepository();
     pgRepo = new PostgresCareerAnalysisRepository();
-    // clear DB
-    await db.delete(careerAnalyses);
+    await db
+      .delete(careerAnalyses)
+      .where(eq(careerAnalyses.analysisId, testAnalysisId));
+  });
+
+  afterAll(async () => {
+    await db
+      .delete(careerAnalyses)
+      .where(eq(careerAnalyses.analysisId, testAnalysisId));
   });
 
   const createMockAnalysis = (id: string, confidence?: number, cohesion?: number): any => ({
@@ -45,8 +53,8 @@ describe("CONDYN Career Analysis Protocol v4.0 - PHASE 4: PERSISTENCE SEMANTIC I
     const memList = await memRepo.list();
     const pgList = await pgRepo.list();
 
-    const memEntry = memList.find(e => e.analysisId === "TEST_ID");
-    const pgEntry = pgList.find(e => e.analysisId === "TEST_ID");
+    const memEntry = memList.find(e => e.analysisId === testAnalysisId);
+    const pgEntry = pgList.find(e => e.analysisId === testAnalysisId);
 
     expect(memEntry).toBeDefined();
     expect(pgEntry).toBeDefined();
@@ -56,28 +64,28 @@ describe("CONDYN Career Analysis Protocol v4.0 - PHASE 4: PERSISTENCE SEMANTIC I
   };
 
   it("A. overall_confidence exists -> exact value persists and reloads", async () => {
-    const analysis = createMockAnalysis("TEST_ID", 0.95);
+    const analysis = createMockAnalysis(testAnalysisId, 0.95);
     await testRepos(analysis, (entry) => {
       expect(entry.overallConfidence).toBe(0.95);
     });
   });
 
   it("B. overall_confidence absent -> remains absent/null", async () => {
-    const analysis = createMockAnalysis("TEST_ID");
+    const analysis = createMockAnalysis(testAnalysisId);
     await testRepos(analysis, (entry) => {
       expect(entry.overallConfidence).toBeUndefined();
     });
   });
 
   it("C. overall_cohesion_score exists but overall_confidence absent -> MUST NOT become overallConfidence", async () => {
-    const analysis = createMockAnalysis("TEST_ID", undefined, 0.88);
+    const analysis = createMockAnalysis(testAnalysisId, undefined, 0.88);
     await testRepos(analysis, (entry) => {
       expect(entry.overallConfidence).toBeUndefined();
     });
   });
 
   it("D. missing metric -> MUST NOT become 0", async () => {
-    const analysis = createMockAnalysis("TEST_ID");
+    const analysis = createMockAnalysis(testAnalysisId);
     await testRepos(analysis, (entry) => {
       expect(entry.overallConfidence).not.toBe(0);
       expect(entry.overallConfidence).toBeUndefined();
@@ -85,12 +93,12 @@ describe("CONDYN Career Analysis Protocol v4.0 - PHASE 4: PERSISTENCE SEMANTIC I
   });
 
   it("E. save -> load -> canonical payload deep-equal", async () => {
-    const analysis = createMockAnalysis("TEST_ID", 0.95, 0.88);
+    const analysis = createMockAnalysis(testAnalysisId, 0.95, 0.88);
     await memRepo.save(analysis);
     await pgRepo.save(analysis);
 
-    const memLoaded = await memRepo.load("TEST_ID");
-    const pgLoaded = await pgRepo.load("TEST_ID");
+    const memLoaded = await memRepo.load(testAnalysisId);
+    const pgLoaded = await pgRepo.load(testAnalysisId);
 
     expect(memLoaded).toEqual(analysis);
     expect(pgLoaded).toEqual(analysis);

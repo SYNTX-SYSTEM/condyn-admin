@@ -80,7 +80,7 @@ describe("CONDYN Career Analysis Protocol v1.0 — Step 27: UX Friction, Informa
     const inspectorHtml = renderToString(<DecisionGraphInspector graph={sampleGraph} focus={sampleFocus} />);
 
     // Step 1: Bring knowledge in
-    expect(dockHtml).toContain("WISSEN EINSPEISEN");
+    expect(dockHtml).toContain("INGEST KNOWLEDGE");
     // Step 3 & 4: Evidence & Capability Grounding
     expect(inspectorHtml).toContain("EVIDENCE QUALITY");
     // Step 5: Explain decision

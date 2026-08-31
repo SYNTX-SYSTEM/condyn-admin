@@ -4,7 +4,7 @@ import { renderToString } from "react-dom/server";
 import { OrbitalResonanceBubble } from "../app/components/career/demo/OrbitalResonanceBubble";
 
 describe("OrbitalResonanceBubble Source Presentation Wiring", () => {
-  it("should render runtime source provenance without throwing ReferenceError", () => {
+  it("should render runtime source provenance in the hover manifestation", () => {
     // Define the valid runtime source presentation payload
     const sourcePresentation = {
       count: 1,
@@ -23,7 +23,7 @@ describe("OrbitalResonanceBubble Source Presentation Wiring", () => {
           stageName="TEST"
           subtitle="TEST"
           itemCount={1}
-          isActive={true}
+          isHovered={true}
           sourcePresentation={sourcePresentation}
         />
       );

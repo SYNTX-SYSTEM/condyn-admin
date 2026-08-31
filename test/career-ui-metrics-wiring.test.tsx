@@ -28,8 +28,8 @@ describe("OrbitalResonanceBubble Metrics Wiring (BUG 006A)", () => {
     // The missing metric must NOT equal a fabricated metric.
   });
 
-  it("should render explicit secondaryMetrics when provided", () => {
-    // Control test to preserve the explicit metric contract
+  it("should render explicit secondaryMetrics in the hover manifestation when provided", () => {
+    // Secondary metrics belong to the hover manifestation, not the focused orbit body.
     const explicitMetrics = {
       confidence: "81%",
       evidence: "7 Objects",
@@ -42,7 +42,7 @@ describe("OrbitalResonanceBubble Metrics Wiring (BUG 006A)", () => {
         stageName="CAPABILITY FIELD"
         subtitle="Semantischer Kern"
         itemCount={3}
-        isActive={true}
+        isHovered={true}
         secondaryMetrics={explicitMetrics}
       />
     );

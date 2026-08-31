@@ -1,61 +1,124 @@
-import { CareerJobWorker } from "../lib/career/orchestration/worker";
+import {
+  CareerJobWorker,
+  createCareerAnalysisJobProcessor,
+  createCareerCapabilityProposalExecutor
+} from "../lib/career/orchestration/worker";
 import { JobRepository } from "../lib/career/orchestration/job-repository";
 import { executeCareerAnalysisPipeline } from "../lib/career/pipeline";
 import { db } from "../lib/career/db/client";
-import { GeminiProvider } from "../lib/career/providers/gemini";
+import {
+  DEFAULT_GEMINI_MODEL_CASCADE,
+  GeminiProvider
+} from "../lib/career/providers/gemini";
 import { prepareDocuments } from "../lib/career/orchestration/document-loader";
 import { PostgresCareerAnalysisRepository } from "../lib/career/repositories/postgres";
+import {
+  ActivePromptCapabilityConvergenceResolver,
+  ActivePromptCapabilityKernelResolver,
+  GeminiCapabilityConvergenceProvider,
+  GeminiCapabilityDiscoveryProvider,
+  PostgresCapabilityCoreRepository,
+  bootstrapCapabilityProposalKernels,
+  createCapabilityProposalRuntime,
+  runCapabilityConvergence,
+  runCapabilityDiscovery
+} from "../lib/career/capability-core";
+import { InMemoryPromptRepository } from "../lib/career/prompts/repository";
+import { ActivePromptResolver } from "../lib/career/prompts/resolver";
+import type { VerifiedCareerAnalysis } from "../lib/career/types";
 
 async function main() {
-  const jobRepo = new JobRepository(db);
-  const provider = new GeminiProvider();
-  
-  const workerId = process.env.CAREER_WORKER_ID || "worker-node-1";
-  
-  const worker = new CareerJobWorker(
-    workerId,
-    jobRepo,
-    async (job, reportOperation) => {
-      console.log(`[Worker ${workerId}] Executing job ${job.jobId}`);
-      
-      const canonRepo = new PostgresCareerAnalysisRepository(db);
-      const deterministicAnalysisId = job.jobId.replace("JOB_", "ANL_");
-      
-      await reportOperation("RECOVERY_CHECK");
-      const existing = await canonRepo.load(deterministicAnalysisId);
-      if (existing) {
-        console.log(`[Worker ${workerId}] Canonical analysis ${deterministicAnalysisId} already exists. Skipping pipeline execution.`);
-        return { resultAnalysisId: deterministicAnalysisId };
-      }
-
-      await reportOperation("SOURCE_PREPARATION");
-      const { normalizedDocs } = await prepareDocuments(job.inputRef.sourceData.documents);
-      const validationResult = await executeCareerAnalysisPipeline(normalizedDocs, provider, {
-        explicitAnalysisId: job.jobId.replace("JOB_", "ANL_"),
-        onRuntimeOperation: reportOperation
-      });
-      
-      if (!validationResult.success) {
-        throw new Error(validationResult.errors?.map((e: any) => e.message).join(", ") || "Validation failed");
-      }
-      
-      const verifiedAnalysis = validationResult.data as any;
-      const resultAnalysisId = verifiedAnalysis.structured_data.analysis.metadata.analysis_id;
-      
-      await reportOperation("PERSISTENCE");
-      await canonRepo.save(verifiedAnalysis);
-      
-      console.log(`[Worker ${workerId}] Job ${job.jobId} succeeded: ${resultAnalysisId}`);
-      return { resultAnalysisId };
-    },
-    2000, // claim interval
-    30000 // lease duration
-  );
-  
   if (!process.env.GEMINI_API_KEY) {
     console.error("ERR_PROVIDER_CONFIG: Missing GEMINI_API_KEY environment variable. Worker startup aborted.");
     process.exit(1);
   }
+
+  const jobRepo = new JobRepository(db);
+  const provider = new GeminiProvider();
+  const canonicalAnalysisRepository = new PostgresCareerAnalysisRepository(db);
+  const capabilityRepository = new PostgresCapabilityCoreRepository(db);
+  const promptRepository = new InMemoryPromptRepository();
+  const workerId = process.env.CAREER_WORKER_ID || "worker-node-1";
+  const capabilityProposalExecutor = await createCareerCapabilityProposalExecutor({
+    environment: {
+      GEMINI_MODEL: process.env.GEMINI_MODEL,
+      PROMPT_ENCRYPTION_KEY: process.env.PROMPT_ENCRYPTION_KEY
+    },
+    defaultGeminiModel: DEFAULT_GEMINI_MODEL_CASCADE[0],
+    promptRepository,
+    capabilityRepository,
+    bootstrapCapabilityProposalKernels,
+    createActivePromptResolver: (repository, encryptionKeyBase64) =>
+      new ActivePromptResolver(repository, encryptionKeyBase64),
+    createDiscoveryKernelResolver: (
+      activePromptResolver,
+      promptSlug,
+      kernelVersion,
+      encryptionKeyBase64
+    ) =>
+      new ActivePromptCapabilityKernelResolver(
+        activePromptResolver,
+        promptSlug,
+        kernelVersion,
+        encryptionKeyBase64
+      ),
+    createConvergenceKernelResolver: (
+      activePromptResolver,
+      kernelVersion,
+      promptSlug,
+      encryptionKeyBase64
+    ) =>
+      new ActivePromptCapabilityConvergenceResolver(
+        activePromptResolver,
+        kernelVersion,
+        promptSlug,
+        encryptionKeyBase64
+      ),
+    createDiscoveryProvider: (model) =>
+      new GeminiCapabilityDiscoveryProvider({ model }),
+    createConvergenceProvider: (model) =>
+      new GeminiCapabilityConvergenceProvider({ model }),
+    runDiscovery: runCapabilityDiscovery,
+    runConvergence: runCapabilityConvergence,
+    createProposalRuntime: createCapabilityProposalRuntime
+  });
+
+  const processJob = createCareerAnalysisJobProcessor({
+    canonicalAnalysisRepository: {
+      load: (analysisId) => canonicalAnalysisRepository.load(analysisId),
+      save: (analysis) =>
+        canonicalAnalysisRepository.save(analysis as VerifiedCareerAnalysis)
+    },
+    prepareDocuments,
+    capabilityProposalExecutor,
+    async executeLegacyCareerAnalysis(documents, reportOperation, explicitAnalysisId) {
+      const validationResult = await executeCareerAnalysisPipeline(documents, provider, {
+        explicitAnalysisId,
+        onRuntimeOperation: reportOperation
+      });
+
+      if (!validationResult.success || !validationResult.data) {
+        throw new Error(
+          validationResult.issues.map((issue) => issue.message).join(", ") ||
+            "Validation failed"
+        );
+      }
+
+      const analysis = validationResult.data as unknown as VerifiedCareerAnalysis;
+      return {
+        resultAnalysisId: analysis.structured_data.analysis.metadata.analysis_id,
+        analysis
+      };
+    }
+  });
+
+  const worker = new CareerJobWorker(
+    workerId,
+    jobRepo,
+    processJob,
+    2000, // claim interval
+    30000 // lease duration
+  );
 
   worker.start();
   console.log(`Career worker PID: ${process.pid}`);
@@ -63,4 +126,7 @@ async function main() {
   console.log("Worker started. Polling for jobs...");
 }
 
-main().catch(console.error);
+main().catch((error) => {
+  console.error(error);
+  process.exitCode = 1;
+});

@@ -12,8 +12,8 @@ describe("CONDYN / SYNTX — Step 22c: Semantic Career Intelligence Field (SIL v
   it("should render IdentityCoreDropZone without any active sources in Zero-State", () => {
     const html = renderToString(<IdentityCoreDropZone sources={EMPTY_CAREER_INTELLIGENCE_DATA.sources} />);
 
-    expect(html).toContain("ConDyn");
-    expect(html).toContain("SYNTX CORE");
+    expect(html).toContain("DLL Logo");
+    expect(html).toContain("SYNTX CORE • ORGANISM");
     expect(html).toContain("0 SOURCES ACTIVE"); // count is 0
   });
 
@@ -36,7 +36,7 @@ describe("CONDYN / SYNTX — Step 22c: Semantic Career Intelligence Field (SIL v
     const html = renderToString(<SemanticCareerIntelligenceField data={EMPTY_CAREER_INTELLIGENCE_DATA} />);
 
     // Basic layout asserts
-    expect(html).toContain("ConDyn");
+    expect(html).toContain("SYNTX CORE • ORGANISM");
     expect(html).toContain("CAPABILITY FIELD");
     expect(html).toContain("RESONANCE ORBITS");
     
@@ -61,5 +61,4 @@ describe("CONDYN / SYNTX — Step 22c: Semantic Career Intelligence Field (SIL v
     expect(html).toContain("CONDYN / SYNTX — SEMANTIC CAREER INTELLIGENCE FIELD");
   });
 });
-
 

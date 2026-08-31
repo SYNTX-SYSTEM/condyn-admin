@@ -1,6 +1,9 @@
 import { JobRepository } from "./job-repository";
 import { CareerJobRuntimeOperation, JobRecord } from "./job";
 
+export { createCareerAnalysisJobProcessor } from "./career-analysis-job-processor";
+export { createCareerCapabilityProposalExecutor } from "./capability-proposal-executor";
+
 export type ReportCareerJobRuntimeOperation = (
   operation: CareerJobRuntimeOperation
 ) => Promise<void>;

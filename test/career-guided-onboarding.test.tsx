@@ -16,8 +16,9 @@ describe("GuidedOnboardingOverlay — Interactive 6-Step Tour", () => {
       <GuidedOnboardingOverlay isOpen={true} onClose={() => {}} />
     );
     expect(html).toContain("1. IDENTITY CORE");
-    expect(html).toContain("SCHRITT 1 VON 6");
-    expect(html).toContain("WEITER ▶");
+    expect(html).toContain("STEP 1 OF 6");
+    expect(html).toContain("NEXT");
+    expect(html).toContain("onboarding-next-btn");
   });
 
   it("3. Contains close button and optional manual link", () => {
@@ -28,6 +29,6 @@ describe("GuidedOnboardingOverlay — Interactive 6-Step Tour", () => {
         onOpenCodex={() => {}}
       />
     );
-    expect(html).toContain("HANDBUCH ÖFFNEN");
+    expect(html).toContain("OPEN MANUAL");
   });
 });

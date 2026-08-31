@@ -193,6 +193,6 @@ describe("CONDYN Career Analysis Protocol v1.0 — Phase 6 & 6.5: Architectural 
     expect(inspectorHtml).toContain("#38e5ff");
 
     // Q5: How can I improve the result? (Actionable ingestion trigger shown)
-    expect(dockHtml).toContain("WISSEN EINSPEISEN");
+    expect(dockHtml).toContain("INGEST KNOWLEDGE");
   });
 });
