@@ -62,13 +62,13 @@ describe("CONDYN Career Analysis Protocol v1.0 — Step 27: Complete Interaction
       />
     );
 
-    expect(html).toContain("PDF DOKUMENT HOCHLADEN");
+    expect(html).toContain("UPLOAD PDF DOCUMENT");
     expect(html).toContain("GITHUB URL");
     expect(html).toContain("WEBSITE URL");
-    expect(html).toContain("TEXT / MARKDOWN EINGEBEN");
+    expect(html).toContain("ENTER TEXT / MARKDOWN");
   });
 
-  it("2. SourceDock Audit: renders ANALYSE LÄUFT... state when analysis trigger is active", () => {
+  it("2. SourceDock Audit: renders ANALYSIS RUNNING... state when analysis trigger is active", () => {
     const html = renderToString(
       <SourceDock
         sources={[]}
@@ -88,7 +88,7 @@ describe("CONDYN Career Analysis Protocol v1.0 — Step 27: Complete Interaction
       />
     );
 
-    expect(html).toContain("ANALYSE LÄUFT...");
+    expect(html).toContain("ANALYSIS RUNNING...");
   });
 
   it("3. DecisionGraphInspector Audit: renders interactive Upstream & Downstream navigation lists", () => {

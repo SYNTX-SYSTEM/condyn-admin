@@ -1,3 +1,5 @@
+import type { CareerJobRuntimeOperation } from "../orchestration/job";
+
 export type JobLifecycleState = "IDLE" | "SUBMITTING" | "PENDING" | "RUNNING" | "LOADING_RESULT" | "SUCCEEDED" | "FAILED";
 
 export interface JobState {
@@ -5,6 +7,8 @@ export interface JobState {
   activeJobId: string | null;
   resultAnalysisId: string | null;
   canonicalAnalysis: any | null;
+  currentOperation: CareerJobRuntimeOperation | null;
+  attemptCount: number | null;
   errorCode: string | null;
   errorSummary: string | null;
 }
@@ -15,6 +19,8 @@ export class CareerJobController {
     activeJobId: null,
     resultAnalysisId: null,
     canonicalAnalysis: null,
+    currentOperation: null,
+    attemptCount: null,
     errorCode: null,
     errorSummary: null,
   };
@@ -61,6 +67,8 @@ export class CareerJobController {
       activeJobId: null,
       resultAnalysisId: null,
       canonicalAnalysis: null,
+      currentOperation: null,
+      attemptCount: null,
       errorCode: null,
       errorSummary: null
     });
@@ -136,7 +144,11 @@ export class CareerJobController {
       if (res.status === 200) {
         const data = await res.json();
         if (data.status === "PENDING" || data.status === "RUNNING") {
-          this.updateState({ state: data.status });
+          this.updateState({
+            state: data.status,
+            currentOperation: data.currentOperation,
+            attemptCount: data.attemptCount
+          });
         } else if (data.status === "SUCCEEDED") {
           this.stopPolling();
           this.updateState({ state: "SUCCEEDED", resultAnalysisId: data.resultAnalysisId });
@@ -163,7 +175,7 @@ export class CareerJobController {
   }
 
   private async fetchCanonicalResult(analysisId: string, jobId: string) {
-    this.updateState({ state: "LOADING_RESULT" });
+    this.updateState({ state: "LOADING_RESULT", currentOperation: null });
     try {
       const res = await this.fetchFn(`/api/career/analyses/${analysisId}`);
       if (this.state.activeJobId !== jobId) return; // Stale protection

@@ -2,11 +2,13 @@
 
 import React, { useState } from "react";
 import { SIL_TOKENS } from "./SILTokens";
+import { SIL_COPY, type SilLocale } from "../../../../lib/career/view-model/sil-language";
 
 export interface GuidedOnboardingOverlayProps {
   isOpen: boolean;
   onClose: () => void;
   onOpenCodex?: () => void;
+  locale?: SilLocale;
 }
 
 /**
@@ -16,44 +18,19 @@ export interface GuidedOnboardingOverlayProps {
 export function GuidedOnboardingOverlay({
   isOpen,
   onClose,
-  onOpenCodex
+  onOpenCodex,
+  locale = SIL_COPY.defaultLocale
 }: GuidedOnboardingOverlayProps) {
   const [stepIndex, setStepIndex] = useState(0);
+  const t = SIL_COPY[locale].onboarding;
 
   if (!isOpen) return null;
 
-  const steps = [
-    {
-      step: 1,
-      title: "1. IDENTITY CORE",
-      description: "Das ist der Identity Core im Zentrum des Planetariums. Hier entsteht die Analyse aus Ihren Quellen."
-    },
-    {
-      step: 2,
-      title: "2. WISSEN EINSPEISEN",
-      description: "Links im SourceDock speisen Sie Wissen ein: PDF-Dokumente, GitHub-Repositories, Webseiten oder Textstellen."
-    },
-    {
-      step: 3,
-      title: "3. DIE 6 RESONANZ-ORBITS",
-      description: "Um den Kern kreisen die 6 semantischen Bereiche: von Fähigkeiten über Organisationen bis zu Entwicklungspfaden."
-    },
-    {
-      step: 4,
-      title: "4. TIEFER FLIEGEN (SEMANTISCHER ZOOM)",
-      description: "Klicken Sie auf einen Orbit im Planetarium, um in L1 (Cluster) und L2 (Beweise) einzutauchen."
-    },
-    {
-      step: 5,
-      title: "5. DECISION GRAPH INSPECTOR",
-      description: "Der Inspector rechts unten zeigt für jede Entscheidung, ob sie durch Beweise unterstützt (SUPPORTED) oder blockiert (BLOCKED) ist."
-    },
-    {
-      step: 6,
-      title: "6. TRUST & NACHVOLLZIEHBARKEIT",
-      description: "Die 5 Vertrauensfragen und der System Codex erklären mathematisch exakt, warum Sie dem Ergebnis vertrauen können."
-    }
-  ];
+  const steps = t.steps.map((entry, index) => ({
+    step: index + 1,
+    title: entry.title,
+    description: entry.description
+  }));
 
   const currentStep = steps[stepIndex] || steps[0];
 
@@ -108,7 +85,7 @@ export function GuidedOnboardingOverlay({
               fontWeight: 700
             }}
           >
-            {`CONDYN ONBOARDING // SCHRITT ${stepIndex + 1} VON ${steps.length}`}
+            {`${t.title} // ${t.step} ${stepIndex + 1} ${t.of} ${steps.length}`}
           </span>
           <button
             data-testid="onboarding-close-btn"
@@ -167,7 +144,7 @@ export function GuidedOnboardingOverlay({
                   cursor: "pointer"
                 }}
               >
-                ◀ ZURÜCK
+                ◀ {t.previous}
               </button>
             )}
           </div>
@@ -191,7 +168,7 @@ export function GuidedOnboardingOverlay({
                   cursor: "pointer"
                 }}
               >
-                📖 HANDBUCH ÖFFNEN
+                📖 {t.openManual}
               </button>
             )}
 
@@ -210,7 +187,7 @@ export function GuidedOnboardingOverlay({
                   cursor: "pointer"
                 }}
               >
-                WEITER ▶
+                {t.next} ▶
               </button>
             ) : (
               <button
@@ -227,7 +204,7 @@ export function GuidedOnboardingOverlay({
                   cursor: "pointer"
                 }}
               >
-                ✓ TOUR BEENDEN
+                ✓ {t.finish}
               </button>
             )}
           </div>

@@ -160,6 +160,7 @@ export const careerAnalysisJobs = pgTable("career_analysis_jobs", {
   idempotencyKey: text("idempotency_key").unique(),
   inputRef: jsonb("input_ref").notNull(),
   attemptCount: integer("attempt_count").notNull().default(0),
+  currentOperation: text("current_operation"),
   resultAnalysisId: text("result_analysis_id").references(() => careerAnalyses.analysisId),
   errorCode: text("error_code"),
   errorSummary: text("error_summary"),

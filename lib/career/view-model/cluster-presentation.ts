@@ -91,7 +91,16 @@ export function buildSilClusterPresentation(
 
       // Generate localized evidence nodes for this cluster
       const snippet = item.evidenceSummary || item.rationale || item.description;
-      const nodeId = item.id || item.capabilityId || item.jobId || item.requirementId || item.companyId || `cl-${activeStageId}-${idx}`;
+      const nodeId =
+        item.id ||
+        item.capabilityId ||
+        item.organizationId ||
+        item.roleId ||
+        item.actionId ||
+        item.jobId ||
+        item.requirementId ||
+        item.companyId ||
+        `cl-${activeStageId}-${idx}`;
       
       const evidences: SilClusterEvidence[] = snippet ? [
         {

@@ -19,6 +19,7 @@ import { BatchDocumentInput, BatchProgress, loadDocumentBatch } from "./loaders/
 import { ActivePromptResolver } from "./prompts/resolver";
 
 import { SourceMetadata } from "./loaders/source";
+import { CareerJobRuntimeOperation } from "./orchestration/job";
 
 export interface DocumentLoaderInput {
   docId?: string;
@@ -31,6 +32,7 @@ export interface PipelineExecutionOptions {
   promptResolver?: ActivePromptResolver;
   explicitKeyBase64?: string;
   explicitAnalysisId?: string;
+  onRuntimeOperation?: (operation: CareerJobRuntimeOperation) => void | Promise<void>;
 }
 
 /**
@@ -78,6 +80,7 @@ export async function executeCareerAnalysisPipeline(
     options?.promptResolver,
     options?.explicitKeyBase64
   );
+  await options?.onRuntimeOperation?.("INFERENCE");
   const rawOutput = await provider.execute(promptBundle);
   
   const context = {
@@ -88,6 +91,7 @@ export async function executeCareerAnalysisPipeline(
     documents: docs
   };
 
+  await options?.onRuntimeOperation?.("ANALYSIS_VALIDATION");
   const result = processLlmOutput(rawOutput, context);
 
   if (promptBundle.promptMetadata) {
@@ -132,4 +136,3 @@ export async function executeCareerAnalysisBatchPipeline(
 
   return result;
 }
-

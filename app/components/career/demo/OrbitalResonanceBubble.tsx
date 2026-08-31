@@ -3,46 +3,19 @@
 import React from "react";
 import { SIL_TOKENS } from "./SILTokens";
 import { SilSourcePresentation } from "../../../../lib/career/view-model/source-presentation";
+import { SIL_COPY, type SilLocale } from "../../../../lib/career/view-model/sil-language";
+import {
+  resolveSilFocusedManifestationPresentation,
+  type SilFocusedManifestationPlacement
+} from "../../../../lib/career/view-model/focused-orbit-placement";
 
-export type HudPlacement =
-  | "top"
-  | "bottom"
-  | "left"
-  | "right"
-  | "top-left"
-  | "top-right"
-  | "bottom-left"
-  | "bottom-right";
+export type HudPlacement = SilFocusedManifestationPlacement;
 
 export function getTooltipPlacement(angle?: number, stageId?: string): HudPlacement {
-  if (typeof angle === "number") {
-    const norm = ((angle % 360) + 360) % 360;
-    if (norm === 270) return "top"; // 270 is up
-    if (norm === 90) return "bottom"; // 90 is down
-    if (norm === 0) return "right"; // 0 is right
-    if (norm === 180) return "left"; // 180 is left
-    if (norm > 0 && norm < 90) return "bottom-right";
-    if (norm > 90 && norm < 180) return "bottom-left";
-    if (norm > 180 && norm < 270) return "top-left";
-    if (norm > 270 && norm < 360) return "top-right";
-  }
-
-  switch (stageId) {
-    case "01":
-      return "top";
-    case "02":
-      return "right";
-    case "03":
-      return "bottom-right";
-    case "04":
-      return "bottom";
-    case "05":
-      return "bottom-left";
-    case "06":
-      return "top-left";
-    default:
-      return "top";
-  }
+  return resolveSilFocusedManifestationPresentation(
+    stageId,
+    angle
+  ).placement;
 }
 
 function getTooltipStyle(placement: HudPlacement): React.CSSProperties {
@@ -211,6 +184,8 @@ export interface OrbitalResonanceBubbleProps {
   accentColor?: string;
   style?: React.CSSProperties;
   sourcePresentation?: SilSourcePresentation;
+  locale?: SilLocale;
+  attentionState?: "EMPTY_PROJECTION_ATTENTION" | null;
 }
 
 export function getOrbitAccentColor(stageId: string): string {
@@ -275,13 +250,25 @@ export function OrbitalResonanceBubble({
   onHudAction,
   accentColor,
   style,
-  sourcePresentation
+  sourcePresentation,
+  locale = SIL_COPY.defaultLocale,
+  attentionState = null
 }: OrbitalResonanceBubbleProps) {
+  const t = SIL_COPY[locale];
+  const isEmptyProjectionAttention =
+    attentionState === "EMPTY_PROJECTION_ATTENTION";
   const isHighlighted = isActive || isHovered;
 
-  const defaultPrimaryMetric = primaryMetric || `${itemCount} Active Objects`;
+  const defaultPrimaryMetric = primaryMetric || `${itemCount} ${t.hud.activeObjects}`;
 
-  const computedPlacement = placement || getTooltipPlacement(angle, stageId);
+  const focusedPresentation =
+    resolveSilFocusedManifestationPresentation(
+      stageId,
+      angle,
+      placement
+    );
+  const computedPlacement = focusedPresentation.placement;
+  const tetherTarget = focusedPresentation.tetherTarget;
   const physicsClass = getOrbitalPhysicsClass(stageId);
   const stageAccentColor = accentColor || getOrbitAccentColor(stageId);
 
@@ -310,10 +297,50 @@ export function OrbitalResonanceBubble({
           from { transform: rotate(0deg) translateX(110px) rotate(0deg); }
           to { transform: rotate(360deg) translateX(110px) rotate(-360deg); }
         }
+
+        @keyframes emptyProjectionBreathe {
+          0%, 100% {
+            transform: scale(0.98);
+            opacity: 0.42;
+            box-shadow:
+              0 0 14px rgba(255, 56, 68, 0.34),
+              0 0 30px rgba(255, 56, 68, 0.20);
+          }
+          50% {
+            transform: scale(1.16);
+            opacity: 0.98;
+            box-shadow:
+              0 0 26px rgba(255, 56, 68, 0.82),
+              0 0 58px rgba(255, 56, 68, 0.52);
+          }
+        }
+
+        @keyframes emptyProjectionShellBreathe {
+          0%, 100% {
+            transform: scale(1.01);
+            opacity: 0.38;
+          }
+          50% {
+            transform: scale(1.10);
+            opacity: 0.96;
+          }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+          [data-testid="empty-projection-breathing-halo"],
+          [data-testid="empty-projection-breathing-shell"] {
+            animation: none !important;
+          }
+        }
       `}</style>
 
       <div
         data-testid={`orbital-physics-${stageId}`}
+        data-attention-state={
+          isEmptyProjectionAttention
+            ? "EMPTY_PROJECTION_ATTENTION"
+            : undefined
+        }
         onClick={onClick}
         onMouseEnter={onMouseEnter}
         onMouseLeave={onMouseLeave}
@@ -404,6 +431,50 @@ export function OrbitalResonanceBubble({
           </>
         )}
 
+        {isEmptyProjectionAttention && (
+          <>
+            <div
+              data-testid="empty-projection-breathing-halo"
+              aria-hidden="true"
+              style={{
+                position: "absolute",
+                top: "-20px",
+                left: "-20px",
+                right: "-20px",
+                bottom: "-20px",
+                borderRadius: "50%",
+                border: "2px solid rgba(255, 56, 68, 0.78)",
+                background:
+                  "radial-gradient(circle, transparent 58%, rgba(255, 56, 68, 0.12) 76%, transparent 100%)",
+                pointerEvents: "none",
+                zIndex: 0,
+                animation:
+                  "emptyProjectionBreathe 2.8s cubic-bezier(0.45, 0, 0.55, 1) infinite"
+              }}
+            />
+
+            <div
+              data-testid="empty-projection-breathing-shell"
+              aria-hidden="true"
+              style={{
+                position: "absolute",
+                top: "-11px",
+                left: "-11px",
+                right: "-11px",
+                bottom: "-11px",
+                borderRadius: "50%",
+                border: "1.5px dashed rgba(255, 56, 68, 0.92)",
+                boxShadow:
+                  "inset 0 0 20px rgba(255, 56, 68, 0.20)",
+                pointerEvents: "none",
+                zIndex: 0,
+                animation:
+                  "emptyProjectionShellBreathe 2.8s cubic-bezier(0.45, 0, 0.55, 1) infinite"
+              }}
+            />
+          </>
+        )}
+
         {/* Outer Semiotic Ring */}
         <div
           style={{
@@ -472,7 +543,7 @@ export function OrbitalResonanceBubble({
             zIndex: 1
           }}
         >
-          {`${itemCount} items`}
+          {`${itemCount} ${t.field.items}`}
         </span>
 
         {/* Phase 3c: Orbiting Moons representing Capabilities */}
@@ -531,20 +602,8 @@ export function OrbitalResonanceBubble({
               <line
                 x1="120"
                 y1="120"
-                x2={
-                  computedPlacement.includes("left")
-                    ? "20"
-                    : computedPlacement.includes("right")
-                    ? "220"
-                    : "120"
-                }
-                y2={
-                  computedPlacement.includes("top")
-                    ? "20"
-                    : computedPlacement.includes("bottom")
-                    ? "220"
-                    : "120"
-                }
+                x2={tetherTarget.x}
+                y2={tetherTarget.y}
                 stroke={SIL_TOKENS.colors.cyanActive}
                 strokeWidth="1.5"
                 strokeDasharray="4 3"
@@ -579,7 +638,7 @@ export function OrbitalResonanceBubble({
                 }}
               >
                 <span>{stageName}</span>
-                <span style={{ fontSize: "9px", color: "rgba(56, 229, 255, 0.6)" }}>HOLOGRAM HUD</span>
+                <span style={{ fontSize: "9px", color: "rgba(56, 229, 255, 0.6)" }}>{t.hud.hologram}</span>
               </div>
 
               {/* PRIMARY METRIC */}
@@ -607,7 +666,7 @@ export function OrbitalResonanceBubble({
                       marginBottom: "4px"
                     }}
                   >
-                    <span>CONFIDENCE</span>
+                    <span>{t.hud.confidence}</span>
                     <strong style={{ color: SIL_TOKENS.colors.cyanActive }}>{secondaryMetrics.confidence}</strong>
                   </div>
                   <div
@@ -643,7 +702,7 @@ export function OrbitalResonanceBubble({
                       marginBottom: "4px"
                     }}
                   >
-                    <span>EVIDENCE DENSITY</span>
+                    <span>{t.hud.evidenceDensity}</span>
                     <strong style={{ color: SIL_TOKENS.colors.textPrimary }}>{secondaryMetrics.evidence}</strong>
                   </div>
                   <div style={{ display: "flex", gap: "4px" }}>
@@ -668,7 +727,7 @@ export function OrbitalResonanceBubble({
                     fontWeight: 700
                   }}
                 >
-                  SOURCES // SEMIOTIC GROUNDING
+                  {t.hud.sourcesGrounding}
                 </div>
                 <div style={{ display: "flex", gap: "6px", flexWrap: "wrap" }}>
                   {sourcePresentation && sourcePresentation.labels.length > 0 ? (
@@ -685,7 +744,7 @@ export function OrbitalResonanceBubble({
                 </div>
               </div>
 
-              {/* TOP ITEMS */}
+              {/* {t.hud.topItems} */}
               {previewItems && previewItems.length > 0 && (
                 <div style={{ marginBottom: "10px" }}>
                   <div
@@ -698,7 +757,7 @@ export function OrbitalResonanceBubble({
                       fontWeight: 700
                     }}
                   >
-                    TOP ITEMS
+                    {t.hud.topItems}
                   </div>
                   <div style={{ display: "flex", flexDirection: "column", gap: "3px" }}>
                     {previewItems.slice(0, 3).map((item, idx) => (
@@ -731,21 +790,24 @@ export function OrbitalResonanceBubble({
               >
                 {[
                   {
-                    label: "OPEN EVIDENCE",
+                    action: "OPEN EVIDENCE" as const,
+                    label: t.hud.openEvidence,
                     id: "open-evidence",
                     color: stageAccentColor,
                     bg: "rgba(56, 229, 255, 0.16)",
                     border: stageAccentColor
                   },
                   {
-                    label: "INSPECT SOURCES",
+                    action: "INSPECT SOURCES" as const,
+                    label: t.hud.inspectSources,
                     id: "inspect-sources",
                     color: "#8ebbff",
                     bg: "rgba(107, 142, 255, 0.16)",
                     border: "#6b8eff"
                   },
                   {
-                    label: "VIEW MATCHES",
+                    action: "VIEW MATCHES" as const,
+                    label: t.hud.viewMatches,
                     id: "view-matches",
                     color: "#66ffdf",
                     bg: "rgba(0, 255, 213, 0.16)",
@@ -760,7 +822,7 @@ export function OrbitalResonanceBubble({
                       e.stopPropagation();
                       if (act.id === "inspect-sources") return;
                       if (onHudAction) {
-                        onHudAction(act.label as any, stageId);
+                        onHudAction(act.action, stageId);
                       }
                     }}
                     style={{
@@ -804,7 +866,7 @@ export function OrbitalResonanceBubble({
                   letterSpacing: "0.5px"
                 }}
               >
-                Click to focus this field
+                {t.hud.clickToFocus}
               </div>
             </div>
           </>
@@ -813,5 +875,3 @@ export function OrbitalResonanceBubble({
     </>
   );
 }
-
-

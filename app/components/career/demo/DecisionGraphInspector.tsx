@@ -1,11 +1,13 @@
 import React from "react";
 import { DirectedEvidenceGraph } from "../../../../lib/career/evidence/graph";
 import { GraphFocus, getEvidenceHeatmapToken } from "../../../../lib/career/evidence/highlight";
+import { SIL_COPY, type SilLocale } from "../../../../lib/career/view-model/sil-language";
 
 export interface DecisionGraphInspectorProps {
   graph: DirectedEvidenceGraph;
   focus: GraphFocus | null;
   onSelectNode?: (nodeId: string) => void;
+  locale?: SilLocale;
 }
 
 /**
@@ -15,24 +17,76 @@ export interface DecisionGraphInspectorProps {
 export const DecisionGraphInspector: React.FC<DecisionGraphInspectorProps> = ({
   graph,
   focus,
-  onSelectNode
+  onSelectNode,
+  locale = SIL_COPY.defaultLocale
 }) => {
+  const t = SIL_COPY[locale].inspector;
+
   if (!focus) {
     return (
       <div
         data-testid="decision-graph-inspector-idle"
         className="fixed bottom-6 left-6 z-40 w-96 rounded-2xl border border-white/10 bg-black/80 p-5 text-slate-300 shadow-2xl backdrop-blur-xl font-mono text-xs"
+        style={{
+          position: "fixed",
+          bottom: "24px",
+          left: "24px",
+          zIndex: 40,
+          width: "384px",
+          borderRadius: "16px",
+          border: "1px solid rgba(255, 255, 255, 0.10)",
+          backgroundColor: "rgba(0, 0, 0, 0.82)",
+          padding: "20px",
+          color: "#cbd5e1",
+          fontFamily: "var(--font-mono, 'JetBrains Mono', monospace)",
+          fontSize: "12px",
+          boxShadow: "0 18px 48px rgba(0, 0, 0, 0.72)",
+          backdropFilter: "blur(14px)"
+        }}
       >
-        <div className="flex items-center justify-between border-b border-white/10 pb-3">
-          <span className="font-bold text-cyan-400 tracking-widest">
-            DECISION GRAPH INSPECTOR
+        <div
+          className="flex items-center justify-between border-b border-white/10 pb-3"
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            borderBottom: "1px solid rgba(255, 255, 255, 0.10)",
+            paddingBottom: "12px"
+          }}
+        >
+          <span
+            className="font-bold text-cyan-400 tracking-widest"
+            style={{
+              fontWeight: 700,
+              color: "#22d3ee",
+              letterSpacing: "0.12em"
+            }}
+          >
+            {t.title}
           </span>
-          <span className="rounded-full bg-slate-800 px-2 py-0.5 text-[10px] text-slate-400">
+          <span
+            className="rounded-full bg-slate-800 px-2 py-0.5 text-[10px] text-slate-400"
+            style={{
+              borderRadius: "999px",
+              backgroundColor: "#1e293b",
+              padding: "2px 8px",
+              fontSize: "10px",
+              color: "#94a3b8"
+            }}
+          >
             SIL v3.0
           </span>
         </div>
-        <p className="mt-3 text-slate-500">
-          Hover or select any node in the Planetarium to inspect its bidirectional Decision Graph focus.
+        <p
+          className="mt-3 text-slate-500"
+          style={{
+            marginTop: "12px",
+            marginBottom: 0,
+            color: "#64748b",
+            lineHeight: 1.5
+          }}
+        >
+          {t.idle}
         </p>
       </div>
     );
@@ -109,13 +163,29 @@ export const DecisionGraphInspector: React.FC<DecisionGraphInspectorProps> = ({
     <div
       data-testid="decision-graph-inspector"
       className="fixed bottom-6 left-6 z-40 w-[420px] rounded-2xl border border-cyan-500/30 bg-black/85 p-5 text-slate-200 shadow-2xl backdrop-blur-xl font-mono text-xs transition-all duration-300"
+      style={{
+        position: "fixed",
+        bottom: "24px",
+        left: "24px",
+        zIndex: 40,
+        width: "420px",
+        borderRadius: "16px",
+        border: "1px solid rgba(6, 182, 212, 0.30)",
+        backgroundColor: "rgba(0, 0, 0, 0.86)",
+        padding: "20px",
+        color: "#e2e8f0",
+        fontFamily: "var(--font-mono, 'JetBrains Mono', monospace)",
+        fontSize: "12px",
+        boxShadow: "0 18px 48px rgba(0, 0, 0, 0.72)",
+        backdropFilter: "blur(14px)"
+      }}
     >
       {/* HEADER */}
       <div className="flex items-center justify-between border-b border-cyan-500/20 pb-3">
         <div className="flex items-center gap-2">
           <span className="h-2 w-2 rounded-full bg-cyan-400 animate-pulse" />
           <span className="font-bold text-cyan-400 tracking-wider">
-            DECISION GRAPH INSPECTOR
+            {t.title}
           </span>
         </div>
         <span className="rounded bg-cyan-950/80 border border-cyan-500/40 px-2 py-0.5 text-[10px] text-cyan-300">
@@ -123,11 +193,11 @@ export const DecisionGraphInspector: React.FC<DecisionGraphInspectorProps> = ({
         </span>
       </div>
 
-      {/* 1. FOCUS NODE */}
+      {/* 1. {t.focusNode} */}
       <div className="mt-3 rounded-lg border border-white/10 bg-slate-900/60 p-3">
         <div className="flex items-center justify-between">
           <span className="text-[10px] uppercase text-slate-400 font-semibold tracking-wider">
-            1. FOCUS NODE
+            1. {t.focusNode}
           </span>
           <span className="rounded bg-slate-800 px-1.5 py-0.5 text-[9px] text-cyan-300">
             {nodeTypeLabel}
@@ -138,14 +208,14 @@ export const DecisionGraphInspector: React.FC<DecisionGraphInspectorProps> = ({
         </div>
       </div>
 
-      {/* 2. DECISION STATE & EVIDENCE QUALITY */}
+      {/* 2. {t.decisionState} & {t.evidenceQuality} */}
       <div className="mt-2 grid grid-cols-2 gap-2">
         <div
           data-testid="decision-state-container"
           className="rounded-lg border border-white/10 bg-slate-900/60 p-2.5"
         >
           <div className="text-[10px] uppercase text-slate-400 font-semibold">
-            DECISION STATE
+            {t.decisionState}
           </div>
           {isBlocked ? (
             <div
@@ -168,7 +238,7 @@ export const DecisionGraphInspector: React.FC<DecisionGraphInspectorProps> = ({
 
         <div className="rounded-lg border border-white/10 bg-slate-900/60 p-2.5">
           <div className="text-[10px] uppercase text-slate-400 font-semibold">
-            EVIDENCE QUALITY
+            {t.evidenceQuality}
           </div>
           <div
             data-testid="evidence-quality-badge"
@@ -187,7 +257,7 @@ export const DecisionGraphInspector: React.FC<DecisionGraphInspectorProps> = ({
       {/* 3. TRACEABILITY (Living Traversal Photon Flow) */}
       <div className="mt-2 rounded-lg border border-white/10 bg-slate-900/60 p-3">
         <div className="text-[10px] uppercase text-slate-400 font-semibold">
-          TRACEABILITY FLOW
+          {t.traceabilityFlow}
         </div>
         <div
           data-testid="traversal-animation"
@@ -214,7 +284,7 @@ export const DecisionGraphInspector: React.FC<DecisionGraphInspectorProps> = ({
       {/* 4. UPSTREAM */}
       <div className="mt-2 rounded-lg border border-white/10 bg-slate-900/60 p-2.5 max-h-24 overflow-y-auto">
         <div className="text-[10px] uppercase text-slate-400 font-semibold">
-          UPSTREAM ({upstreamEvidences.length + upstreamSources.length})
+          {t.upstream} ({upstreamEvidences.length + upstreamSources.length})
         </div>
         <div className="mt-1 space-y-1">
           {upstreamSources.map((src) => (
@@ -236,7 +306,7 @@ export const DecisionGraphInspector: React.FC<DecisionGraphInspectorProps> = ({
             </div>
           ))}
           {upstreamSources.length === 0 && upstreamEvidences.length === 0 && (
-            <div className="text-[11px] text-slate-500">No upstream proof items</div>
+            <div className="text-[11px] text-slate-500">{t.noUpstream}</div>
           )}
         </div>
       </div>
@@ -244,7 +314,7 @@ export const DecisionGraphInspector: React.FC<DecisionGraphInspectorProps> = ({
       {/* 5. DOWNSTREAM */}
       <div className="mt-2 rounded-lg border border-white/10 bg-slate-900/60 p-2.5 max-h-24 overflow-y-auto">
         <div className="text-[10px] uppercase text-slate-400 font-semibold">
-          DOWNSTREAM ({downstreamRequirements.length + downstreamJobs.length + downstreamOrgs.length})
+          {t.downstream} ({downstreamRequirements.length + downstreamJobs.length + downstreamOrgs.length})
         </div>
         <div className="mt-1 space-y-1">
           {downstreamRequirements.map((req) => (
@@ -277,7 +347,7 @@ export const DecisionGraphInspector: React.FC<DecisionGraphInspectorProps> = ({
           {downstreamRequirements.length === 0 &&
             downstreamJobs.length === 0 &&
             downstreamOrgs.length === 0 && (
-              <div className="text-[11px] text-slate-500">No downstream decision items</div>
+              <div className="text-[11px] text-slate-500">{t.noDownstream}</div>
             )}
         </div>
       </div>

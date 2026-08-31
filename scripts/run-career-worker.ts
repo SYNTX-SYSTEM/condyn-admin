@@ -15,20 +15,25 @@ async function main() {
   const worker = new CareerJobWorker(
     workerId,
     jobRepo,
-    async (job) => {
+    async (job, reportOperation) => {
       console.log(`[Worker ${workerId}] Executing job ${job.jobId}`);
       
       const canonRepo = new PostgresCareerAnalysisRepository(db);
       const deterministicAnalysisId = job.jobId.replace("JOB_", "ANL_");
       
+      await reportOperation("RECOVERY_CHECK");
       const existing = await canonRepo.load(deterministicAnalysisId);
       if (existing) {
         console.log(`[Worker ${workerId}] Canonical analysis ${deterministicAnalysisId} already exists. Skipping pipeline execution.`);
         return { resultAnalysisId: deterministicAnalysisId };
       }
 
+      await reportOperation("SOURCE_PREPARATION");
       const { normalizedDocs } = await prepareDocuments(job.inputRef.sourceData.documents);
-      const validationResult = await executeCareerAnalysisPipeline(normalizedDocs, provider, { explicitAnalysisId: job.jobId.replace("JOB_", "ANL_") });
+      const validationResult = await executeCareerAnalysisPipeline(normalizedDocs, provider, {
+        explicitAnalysisId: job.jobId.replace("JOB_", "ANL_"),
+        onRuntimeOperation: reportOperation
+      });
       
       if (!validationResult.success) {
         throw new Error(validationResult.errors?.map((e: any) => e.message).join(", ") || "Validation failed");
@@ -37,7 +42,7 @@ async function main() {
       const verifiedAnalysis = validationResult.data as any;
       const resultAnalysisId = verifiedAnalysis.structured_data.analysis.metadata.analysis_id;
       
-      // We must save the canonical analysis to DB so the UI can fetch it
+      await reportOperation("PERSISTENCE");
       await canonRepo.save(verifiedAnalysis);
       
       console.log(`[Worker ${workerId}] Job ${job.jobId} succeeded: ${resultAnalysisId}`);

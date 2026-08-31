@@ -2,26 +2,29 @@
 
 import React, { useState } from "react";
 import { SIL_TOKENS } from "./SILTokens";
+import { SIL_COPY, type SilLocale } from "../../../../lib/career/view-model/sil-language";
 
 export interface SemanticGuideDrawerProps {
   initialOpen?: boolean;
+  locale?: SilLocale;
 }
 
 /**
  * CONDYN / SYNTX — Semantic Interface Language (SIL v2.0)
  * SemanticGuideDrawer: Collapsible right-side guide explaining the 6-stage semantic flow.
  */
-export function SemanticGuideDrawer({ initialOpen = false }: SemanticGuideDrawerProps) {
+export function SemanticGuideDrawer({
+  initialOpen = false,
+  locale = SIL_COPY.defaultLocale
+}: SemanticGuideDrawerProps) {
   const [isOpen, setIsOpen] = useState(initialOpen);
+  const t = SIL_COPY[locale];
 
-  const stages = [
-    { id: "01", title: "IDENTITY CORE", desc: "Wer sind Sie? Ihre Quellen bilden den unverfälschten Identitätskern." },
-    { id: "02", title: "CAPABILITY FIELD", desc: "Welche Fähigkeiten bilden Ihren semantischen Kern?" },
-    { id: "03", title: "RESONANCE ORBITS", desc: "Mit welchen Organisationen resonieren Ihre Fähigkeiten?" },
-    { id: "04", title: "ROLE MANIFESTATION", desc: "Welche konkreten Rollen passen zu diesem Resonanzfeld?" },
-    { id: "05", title: "TENSION FIELD", desc: "Wo fehlen Fähigkeiten oder Erfahrung? Wo entstehen Lücken?" },
-    { id: "06", title: "EVOLUTION PATHS", desc: "Welche Pfade führen zu mehr Resonanz und Möglichkeiten?" }
-  ];
+  const stages = (["01", "02", "03", "04", "05", "06"] as const).map((id) => ({
+    id,
+    title: t.orbits[id].name,
+    desc: t.guide.stages[id]
+  }));
 
   if (!isOpen) {
     return (
@@ -75,7 +78,7 @@ export function SemanticGuideDrawer({ initialOpen = false }: SemanticGuideDrawer
             letterSpacing: "1px"
           }}
         >
-          DER 6-STUFIGE FLUSS
+          {t.guide.title}
         </h3>
         <button
           onClick={() => setIsOpen(false)}

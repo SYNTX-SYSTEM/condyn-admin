@@ -1,4 +1,9 @@
 import { JobRepository } from "./job-repository";
+import { CareerJobRuntimeOperation, JobRecord } from "./job";
+
+export type ReportCareerJobRuntimeOperation = (
+  operation: CareerJobRuntimeOperation
+) => Promise<void>;
 
 export class CareerJobWorker {
   private isRunning: boolean = false;
@@ -7,8 +12,10 @@ export class CareerJobWorker {
   constructor(
     private readonly workerId: string,
     private readonly jobRepo: JobRepository,
-    // Dependency inject the actual pipeline here later
-    private readonly processJob: (job: any) => Promise<{ resultAnalysisId: string }>,
+    private readonly processJob: (
+      job: JobRecord,
+      reportOperation: ReportCareerJobRuntimeOperation
+    ) => Promise<{ resultAnalysisId: string }>,
     private readonly pollIntervalMs: number = 2000,
     private readonly leaseDurationMs: number = 30000
   ) {}
@@ -44,8 +51,18 @@ export class CareerJobWorker {
         }, this.leaseDurationMs / 2);
 
         try {
-          // Execute the actual pipeline
-          const { resultAnalysisId } = await this.processJob(job);
+          const reportOperation: ReportCareerJobRuntimeOperation = async (currentOperation) => {
+            await this.jobRepo.updateJobState(
+              job.jobId,
+              this.workerId,
+              job.leaseVersion,
+              "RUNNING",
+              "RUNNING",
+              { currentOperation }
+            );
+          };
+
+          const { resultAnalysisId } = await this.processJob(job, reportOperation);
           
           // Complete the job with the verified canonical analysis
           await this.jobRepo.updateJobState(job.jobId, this.workerId, job.leaseVersion, "RUNNING", "SUCCEEDED", { resultAnalysisId });

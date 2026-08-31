@@ -153,6 +153,7 @@ export async function initDbSchema(): Promise<void> {
         idempotency_key TEXT UNIQUE,
         input_ref JSONB NOT NULL,
         attempt_count INTEGER NOT NULL DEFAULT 0,
+        current_operation TEXT,
         result_analysis_id TEXT REFERENCES career_analyses(analysis_id),
         error_code TEXT,
         error_summary TEXT,
@@ -163,7 +164,8 @@ export async function initDbSchema(): Promise<void> {
         lease_expires_at TEXT,
         lease_version INTEGER NOT NULL DEFAULT 0,
         heartbeat_at TEXT
-      );`
+      );`,
+      targetSql`ALTER TABLE career_analysis_jobs ADD COLUMN IF NOT EXISTS current_operation TEXT;`
     ];
     for (const q of tableQueries) {
       await q;

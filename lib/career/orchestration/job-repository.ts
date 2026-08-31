@@ -1,12 +1,19 @@
 import { PostgresJsDatabase } from "drizzle-orm/postgres-js";
 import { eq, lt, or, and, sql } from "drizzle-orm";
 import { careerAnalysisJobs, careerAnalyses } from "../db/schema";
-import { JobRecord, JobStatus } from "./job";
+import {
+  assertCareerJobRuntimeOperation,
+  CareerJobRuntimeOperation,
+  JobRecord,
+  JobStatus
+} from "./job";
 
 export class JobRepository {
   constructor(private readonly db: PostgresJsDatabase<any>) {}
 
   async enqueueJob(job: JobRecord): Promise<JobRecord> {
+    assertCareerJobRuntimeOperation(job.currentOperation);
+
     try {
       await this.db.insert(careerAnalysisJobs).values({
         jobId: job.jobId,
@@ -15,6 +22,7 @@ export class JobRepository {
         idempotencyKey: job.idempotencyKey || null,
         inputRef: job.inputRef,
         attemptCount: job.attemptCount,
+        currentOperation: job.currentOperation,
         resultAnalysisId: job.resultAnalysisId || null,
         errorCode: job.errorCode || null,
         errorSummary: job.errorSummary || null,
@@ -50,6 +58,8 @@ export class JobRepository {
   }
 
   private mapRow(row: any): JobRecord {
+    assertCareerJobRuntimeOperation(row.currentOperation);
+
     return {
       jobId: row.jobId,
       jobType: row.jobType as any,
@@ -57,6 +67,7 @@ export class JobRepository {
       idempotencyKey: row.idempotencyKey,
       inputRef: row.inputRef as any,
       attemptCount: row.attemptCount,
+      currentOperation: row.currentOperation,
       resultAnalysisId: row.resultAnalysisId,
       errorCode: row.errorCode,
       errorSummary: row.errorSummary,
@@ -94,6 +105,7 @@ export class JobRepository {
         lease_expires_at = ${expiresISO},
         lease_version = lease_version + 1,
         attempt_count = attempt_count + 1,
+        current_operation = NULL,
         started_at = ${nowISO},
         heartbeat_at = ${nowISO}
       WHERE job_id = (
@@ -112,6 +124,8 @@ export class JobRepository {
     // Drizzle doesn't support complex UPDATE ... RETURNING easily with SKIP LOCKED out of the box,
     // so we map the raw snake_case result:
     const row = result[0] as any;
+    assertCareerJobRuntimeOperation(row.current_operation);
+
     return {
       jobId: row.job_id,
       jobType: row.job_type as any,
@@ -119,6 +133,7 @@ export class JobRepository {
       idempotencyKey: row.idempotency_key,
       inputRef: row.input_ref as any,
       attemptCount: row.attempt_count,
+      currentOperation: row.current_operation,
       resultAnalysisId: row.result_analysis_id,
       errorCode: row.error_code,
       errorSummary: row.error_summary,
@@ -174,6 +189,10 @@ export class JobRepository {
       throw new Error("ERR_INVALID_JOB_TRANSITION: Cannot mark SUCCEEDED without resultAnalysisId");
     }
 
+    if (updates.currentOperation !== undefined) {
+      assertCareerJobRuntimeOperation(updates.currentOperation);
+    }
+
     await this.db.transaction(async (tx) => {
       // 1. Enforce lease fencing token
       const current = await tx.select().from(careerAnalysisJobs).where(eq(careerAnalysisJobs.jobId, jobId));
@@ -196,6 +215,11 @@ export class JobRepository {
       await tx.update(careerAnalysisJobs)
         .set({
           status: toStatus,
+          currentOperation: toStatus === "PENDING"
+            ? null
+            : updates.currentOperation === undefined
+            ? row.currentOperation
+            : updates.currentOperation,
           resultAnalysisId: updates.resultAnalysisId || null,
           errorCode: updates.errorCode || null,
           errorSummary: updates.errorSummary || null,
@@ -246,6 +270,7 @@ export class JobRepository {
         await tx.update(careerAnalysisJobs)
           .set({
             status: "PENDING",
+            currentOperation: null,
             errorCode,
             errorSummary,
             leaseOwner: null,

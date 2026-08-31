@@ -65,6 +65,67 @@ describe("CONDYN Career Analysis Protocol v5.0 - PHASE 5: TEST005D FRONTEND JOB 
     expect(controller.getState().state).toBe("RUNNING");
   });
 
+  it("Progress telemetry V1: consumes currentOperation and attemptCount from RUNNING polling without synthesis", async () => {
+    mockFetch
+      .mockResolvedValueOnce({ status: 202, json: async () => ({ jobId: "JOB_123" }) })
+      .mockResolvedValueOnce({
+        status: 200,
+        json: async () => ({ status: "RUNNING", currentOperation: "INFERENCE", attemptCount: 2 })
+      });
+
+    await controller.submitAnalysis({ docs: ["A"] });
+    for (let i = 0; i < 10; i++) await Promise.resolve();
+
+    expect((controller.getState() as any).currentOperation).toBe("INFERENCE");
+    expect((controller.getState() as any).attemptCount).toBe(2);
+  });
+
+  it("Progress telemetry V1: preserves null currentOperation from PENDING polling", async () => {
+    mockFetch
+      .mockResolvedValueOnce({ status: 202, json: async () => ({ jobId: "JOB_123" }) })
+      .mockResolvedValueOnce({
+        status: 200,
+        json: async () => ({ status: "PENDING", currentOperation: null, attemptCount: 0 })
+      });
+
+    await controller.submitAnalysis({ docs: ["A"] });
+    for (let i = 0; i < 10; i++) await Promise.resolve();
+
+    expect((controller.getState() as any).state).toBe("PENDING");
+    expect((controller.getState() as any).currentOperation).toBeNull();
+    expect((controller.getState() as any).attemptCount).toBe(0);
+  });
+
+  it("Progress telemetry V1 blocker B2: clears the worker operation while loading the canonical result", async () => {
+    let resolveCanonicalResult!: (value: unknown) => void;
+    const canonicalResult = new Promise((resolve) => {
+      resolveCanonicalResult = resolve;
+    });
+
+    mockFetch
+      .mockResolvedValueOnce({ status: 202, json: async () => ({ jobId: "JOB_123" }) })
+      .mockResolvedValueOnce({
+        status: 200,
+        json: async () => ({ status: "RUNNING", currentOperation: "PERSISTENCE", attemptCount: 2 })
+      })
+      .mockResolvedValueOnce({ status: 200, json: async () => ({ status: "SUCCEEDED", resultAnalysisId: "ANL_456" }) })
+      .mockReturnValueOnce(canonicalResult);
+
+    await controller.submitAnalysis({ docs: ["A"] });
+    for (let i = 0; i < 10; i++) await Promise.resolve();
+    expect(controller.getState().state).toBe("RUNNING");
+    expect((controller.getState() as any).currentOperation).toBe("PERSISTENCE");
+
+    await vi.advanceTimersByTimeAsync(2000);
+    for (let i = 0; i < 10; i++) await Promise.resolve();
+
+    expect(controller.getState().state).toBe("LOADING_RESULT");
+    expect((controller.getState() as any).attemptCount).toBe(2);
+    expect((controller.getState() as any).currentOperation).toBeNull();
+
+    resolveCanonicalResult({ analysisId: "ANL_456" });
+  });
+
   it("G, H, I. SUCCEEDED stops polling and fetches resultAnalysisId", async () => {
     mockFetch
       .mockResolvedValueOnce({ status: 202, json: async () => ({ jobId: "JOB_123" }) })

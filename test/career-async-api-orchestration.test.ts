@@ -111,7 +111,7 @@ describe("CONDYN Career Analysis Protocol v5.0 - PHASE 5: ASYNC API ORCHESTRATIO
     expect(json2.issues[0].code).toBe("ERR_JOB_IDEMPOTENCY_CONFLICT");
   });
 
-  it("F. GET PENDING job -> correct bounded state", async () => {
+  it("Progress telemetry V1 / F. GET PENDING job -> bounded state includes null currentOperation", async () => {
     const job = createJob("CAREER_ANALYSIS", { sourceType: "TEXT", sourceData: "data" });
     await repo.enqueueJob(job);
 
@@ -123,11 +123,12 @@ describe("CONDYN Career Analysis Protocol v5.0 - PHASE 5: ASYNC API ORCHESTRATIO
     expect(json).toEqual({
       jobId: job.jobId,
       status: "PENDING",
-      attemptCount: 0
+      attemptCount: 0,
+      currentOperation: null
     });
   });
 
-  it("G/M. GET RUNNING job -> correct bounded state, no partial canonical result exposed", async () => {
+  it("Progress telemetry V1 / G/M. GET RUNNING job -> bounded state includes null currentOperation and no partial canonical result", async () => {
     const job = createJob("CAREER_ANALYSIS", { sourceType: "TEXT", sourceData: "data" });
     await repo.enqueueJob(job);
     const claim = await repo.claimNextJob("worker-1", 10000);
@@ -140,11 +141,34 @@ describe("CONDYN Career Analysis Protocol v5.0 - PHASE 5: ASYNC API ORCHESTRATIO
     expect(json).toEqual({
       jobId: job.jobId,
       status: "RUNNING",
-      attemptCount: 1
+      attemptCount: 1,
+      currentOperation: null
     });
     // M. Proves no resultAnalysisId is exposed
     expect(json.resultAnalysisId).toBeUndefined();
     expect(json.leaseOwner).toBeUndefined(); // no internal leaks
+  });
+
+  it("Progress telemetry V1. GET RUNNING job projects the exact persisted currentOperation", async () => {
+    const job = createJob("CAREER_ANALYSIS", { sourceType: "TEXT", sourceData: "data" });
+    await repo.enqueueJob(job);
+    const claim = await repo.claimNextJob("worker-operation-projection", 10000);
+    await repo.updateJobState(
+      job.jobId,
+      "worker-operation-projection",
+      claim!.leaseVersion,
+      "RUNNING",
+      "RUNNING",
+      { currentOperation: "SOURCE_PREPARATION" } as any
+    );
+
+    const res = await GET(createMockRequest({}), { params: Promise.resolve({ jobId: job.jobId }) });
+    expect(await res.json()).toEqual({
+      jobId: job.jobId,
+      status: "RUNNING",
+      attemptCount: 1,
+      currentOperation: "SOURCE_PREPARATION"
+    });
   });
 
   it("H/I. GET SUCCEEDED job -> resultAnalysisId / resolves to VERIFIED Analysis", async () => {

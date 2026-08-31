@@ -2,6 +2,7 @@
 
 import React, { useState, useRef } from "react";
 import { SIL_TOKENS } from "./SILTokens";
+import { SIL_COPY, type SilLocale } from "../../../../lib/career/view-model/sil-language";
 
 export interface StagedDocumentItem {
   id: string;
@@ -16,13 +17,20 @@ export interface SourceDockProps {
   onAnalyze?: (documents: StagedDocumentItem[]) => void;
   isAnalyzing?: boolean;
   initialStagedDocs?: StagedDocumentItem[];
+  locale?: SilLocale;
 }
 
 /**
  * CONDYN / SYNTX — Semantic Interface Language (SIL v3.0 Phase 3c)
  * SourceDock: Functional left-side ingestion dock focused on feeding the core with PDF, URL, and Text sources.
  */
-export function SourceDock({ onAnalyze, isAnalyzing = false, initialStagedDocs = [] }: SourceDockProps) {
+export function SourceDock({
+  onAnalyze,
+  isAnalyzing = false,
+  initialStagedDocs = [],
+  locale = SIL_COPY.defaultLocale
+}: SourceDockProps) {
+  const t = SIL_COPY[locale].sourceDock;
   const [stagedDocs, setStagedDocs] = useState<StagedDocumentItem[]>(initialStagedDocs);
   const [activeInputMode, setActiveInputMode] = useState<"none" | "github" | "website" | "text">("none");
   const [inputUrl, setInputUrl] = useState("");
@@ -76,7 +84,7 @@ export function SourceDock({ onAnalyze, isAnalyzing = false, initialStagedDocs =
     const newDoc: StagedDocumentItem = {
       id: `doc_text_${Date.now()}`,
       type: "text",
-      title: inputTitle.trim() || "Manuelle Text-Eingabe",
+      title: inputTitle.trim() || t.manualTextTitle,
       content: inputText.trim()
     };
 
@@ -127,10 +135,10 @@ export function SourceDock({ onAnalyze, isAnalyzing = false, initialStagedDocs =
             gap: "8px"
           }}
         >
-          <span style={{ fontSize: "16px" }}>◰</span> WISSEN EINSPEISEN
+          <span style={{ fontSize: "16px" }}>◰</span> {t.title}
         </h3>
         <p style={{ margin: "6px 0 0 0", fontSize: "12px", color: SIL_TOKENS.colors.textMuted, lineHeight: 1.4 }}>
-          Fügen Sie Dokumente, Repositories oder URLs zur Analyse hinzu.
+          {t.description}
         </p>
       </div>
 
@@ -168,7 +176,7 @@ export function SourceDock({ onAnalyze, isAnalyzing = false, initialStagedDocs =
           onMouseOut={(e) => e.currentTarget.style.backgroundColor = "rgba(56, 229, 255, 0.05)"}
           data-testid="add-pdf-source-btn"
         >
-          + PDF DOKUMENT HOCHLADEN
+          + {t.uploadPdf}
         </button>
 
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px" }}>
@@ -187,7 +195,7 @@ export function SourceDock({ onAnalyze, isAnalyzing = false, initialStagedDocs =
             }}
             data-testid="add-github-source-btn"
           >
-            + GITHUB URL
+            + {t.githubUrl}
           </button>
           <button
             onClick={() => setActiveInputMode(activeInputMode === "website" ? "none" : "website")}
@@ -204,7 +212,7 @@ export function SourceDock({ onAnalyze, isAnalyzing = false, initialStagedDocs =
             }}
             data-testid="add-website-source-btn"
           >
-            + WEBSITE URL
+            + {t.websiteUrl}
           </button>
         </div>
 
@@ -224,7 +232,7 @@ export function SourceDock({ onAnalyze, isAnalyzing = false, initialStagedDocs =
           }}
           data-testid="add-text-source-btn"
         >
-          + TEXT / MARKDOWN EINGEBEN
+          + {t.enterText}
         </button>
       </div>
 
@@ -243,15 +251,15 @@ export function SourceDock({ onAnalyze, isAnalyzing = false, initialStagedDocs =
         >
           <div style={{ fontSize: "10px", color: SIL_TOKENS.colors.cyanActive, fontWeight: 700 }}>
             {activeInputMode === "github"
-              ? "GITHUB REPOSITORY URL"
+              ? t.repositoryUrl
               : activeInputMode === "website"
-              ? "WEBSITE / PORTFOLIO URL"
-              : "TEXT / MARKDOWN EINGABE"}
+              ? t.websitePortfolioUrl
+              : t.textMarkdownInput}
           </div>
 
           <input
             type="text"
-            placeholder="Bezeichnung (optional)"
+            placeholder={t.optionalTitle}
             value={inputTitle}
             onChange={(e) => setInputTitle(e.target.value)}
             style={{
@@ -285,7 +293,7 @@ export function SourceDock({ onAnalyze, isAnalyzing = false, initialStagedDocs =
           ) : (
             <textarea
               rows={4}
-              placeholder="Fügen Sie hier Ihren Text oder Markdown ein..."
+              placeholder={t.textPlaceholder}
               value={inputText}
               onChange={(e) => setInputText(e.target.value)}
               style={{
@@ -315,7 +323,7 @@ export function SourceDock({ onAnalyze, isAnalyzing = false, initialStagedDocs =
                 cursor: "pointer"
               }}
             >
-              ABBRECHEN
+              {t.cancel}
             </button>
             <button
               onClick={() =>
@@ -335,7 +343,7 @@ export function SourceDock({ onAnalyze, isAnalyzing = false, initialStagedDocs =
               }}
               data-testid="submit-source-btn"
             >
-              HINZUFÜGEN
+              {t.add}
             </button>
           </div>
         </div>
@@ -352,11 +360,11 @@ export function SourceDock({ onAnalyze, isAnalyzing = false, initialStagedDocs =
             letterSpacing: "0.5px"
           }}
         >
-          BEREITGESTELLTE QUELLEN ({stagedDocs.length})
+          {t.stagedSources} ({stagedDocs.length})
         </div>
         {stagedDocs.length === 0 ? (
           <div style={{ fontSize: "11px", color: SIL_TOKENS.colors.textMuted, fontStyle: "italic" }}>
-            Keine Quellen ausgewählt.
+            {t.noSources}
           </div>
         ) : (
           <div style={{ display: "flex", flexDirection: "column", gap: "6px", maxHeight: "150px", overflowY: "auto" }}>
@@ -392,7 +400,7 @@ export function SourceDock({ onAnalyze, isAnalyzing = false, initialStagedDocs =
                     fontSize: "12px",
                     padding: "0 4px"
                   }}
-                  title="Quelle entfernen"
+                  title={t.removeSource}
                 >
                   ×
                 </button>
@@ -422,7 +430,7 @@ export function SourceDock({ onAnalyze, isAnalyzing = false, initialStagedDocs =
           }}
           data-testid="start-intake-analysis-btn"
         >
-          {isAnalyzing ? "ANALYSE LÄUFT..." : "ANALYSE STARTEN (POST)"}
+          {isAnalyzing ? t.analysisRunning : `${t.startAnalysis} (POST)`}
         </button>
       )}
     </div>

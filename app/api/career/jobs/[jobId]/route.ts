@@ -27,7 +27,8 @@ export async function GET(req: Request, context: { params: Promise<{ jobId: stri
       return NextResponse.json({
         jobId: job.jobId,
         status: job.status,
-        attemptCount: job.attemptCount
+        attemptCount: job.attemptCount,
+        currentOperation: job.currentOperation
       });
     } else if (job.status === "SUCCEEDED") {
       return NextResponse.json({

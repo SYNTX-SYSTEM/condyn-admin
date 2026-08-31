@@ -5,6 +5,7 @@ import { DemoCareerIntelligenceData } from "../../../career/demo/demo-data";
 import { SIL_TOKENS } from "./SILTokens";
 import { IdentityCoreDropZone } from "./IdentityCoreDropZone";
 import { OrbitalResonanceBubble } from "./OrbitalResonanceBubble";
+import { SilOrbitEmptyState } from "./SilOrbitEmptyState";
 import { SourceDock } from "./SourceDock";
 import { SemanticGuideDrawer } from "./SemanticGuideDrawer";
 import { SystemCodexModal } from "./SystemCodexModal";
@@ -18,6 +19,8 @@ import { adaptCanonicalToDemoState } from "../../../../lib/career/ui-adapter";
 import { buildSilSourcePresentation } from "../../../../lib/career/view-model/source-presentation";
 import { buildSilClusterPresentation } from "../../../../lib/career/view-model/cluster-presentation";
 import { useCareerAnalysisJob } from "../../../../lib/career/ui/useCareerAnalysisJob";
+import { SIL_COPY, type SilLocale } from "../../../../lib/career/view-model/sil-language";
+import { buildSilOrbitEmptyState } from "../../../../lib/career/view-model/orbit-empty-state";
 
 export interface SemanticCareerIntelligenceFieldProps {
   data: DemoCareerIntelligenceData;
@@ -28,16 +31,135 @@ export interface SemanticCareerIntelligenceFieldProps {
     analysisSuccess?: boolean;
     inferenceTelemetry?: any;
   };
+  initialLocale?: SilLocale;
 }
+
 
 /**
  * CONDYN / SYNTX — Semantic Interface Language (SIL v3.0 Phase 3c Continuous Semantic Space)
  * SemanticCareerIntelligenceField: The living radial Bedeutungsraum organism with L0-L4 Semantic Zoom.
  */
+export function resolveSilHudClusterId(
+  stageId: string,
+  activeData: DemoCareerIntelligenceData
+): string | null {
+  const clusters = buildSilClusterPresentation(
+    stageId,
+    true,
+    { labels: [], titles: [] },
+    activeData
+  );
+
+  return clusters[0]?.id ?? null;
+}
+
+export function resolveFocusedOrbitEmptyState(
+  activeStageId: string | null,
+  zoomLevel: number,
+  activeData: DemoCareerIntelligenceData,
+  locale: SilLocale
+) {
+  if (activeStageId === null || zoomLevel !== 1) {
+    return null;
+  }
+
+  return buildSilOrbitEmptyState(
+    activeStageId,
+    activeData,
+    locale
+  );
+}
+
+export type SilFocusedOrbitPresentation =
+  | {
+      kind: "EMPTY_PROJECTION";
+      stateLabel: string;
+      evidenceLabel: string;
+      emptyState: NonNullable<
+        ReturnType<typeof buildSilOrbitEmptyState>
+      >;
+    }
+  | {
+      kind: "PROJECTED";
+      stateLabel: null;
+      evidenceLabel: null;
+      emptyState: null;
+    };
+
+export function resolveSilFocusedOrbitPresentation(
+  activeStageId: string | null,
+  zoomLevel: number,
+  activeData: DemoCareerIntelligenceData,
+  locale: SilLocale
+): SilFocusedOrbitPresentation | null {
+  if (
+    activeStageId === null ||
+    zoomLevel !== 1 ||
+    !["01", "02", "03", "04", "05", "06"].includes(
+      activeStageId
+    )
+  ) {
+    return null;
+  }
+
+  const emptyState = buildSilOrbitEmptyState(
+    activeStageId,
+    activeData,
+    locale
+  );
+
+  if (emptyState) {
+    const focusCopy = SIL_COPY[locale].focus;
+
+    return {
+      kind: "EMPTY_PROJECTION",
+      stateLabel:
+        focusCopy.emptyProjectionState,
+      evidenceLabel:
+        focusCopy.noneProjectedEvidence,
+      emptyState
+    };
+  }
+
+  return {
+    kind: "PROJECTED",
+    stateLabel: null,
+    evidenceLabel: null,
+    emptyState: null
+  };
+}
+
+export type SilOrbitAttentionState =
+  | "EMPTY_PROJECTION_ATTENTION"
+  | null;
+
+export function resolveSilOrbitAttentionState(
+  stageId: string,
+  activeData: DemoCareerIntelligenceData,
+  jobState: string
+): SilOrbitAttentionState {
+  if (jobState !== "SUCCEEDED") {
+    return null;
+  }
+
+  const emptyState = buildSilOrbitEmptyState(
+    stageId,
+    activeData,
+    SIL_COPY.defaultLocale
+  );
+
+  return emptyState
+    ? "EMPTY_PROJECTION_ATTENTION"
+    : null;
+}
+
 export function SemanticCareerIntelligenceField({
   data,
-  initialAnalysisState
+  initialAnalysisState,
+  initialLocale = SIL_COPY.defaultLocale
 }: SemanticCareerIntelligenceFieldProps) {
+  const [locale, setLocale] = useState<SilLocale>(initialLocale);
+  const t = SIL_COPY[locale];
   const [activeData, setActiveData] = useState(data);
   const [activeStageId, setActiveStageId] = useState<string | null>(null);
   const [hoveredStageId, setHoveredStageId] = useState<string | null>(null);
@@ -48,9 +170,23 @@ export function SemanticCareerIntelligenceField({
   const job = useCareerAnalysisJob();
   const jobState = job.state.state;
   const isAnalyzing = jobState === "SUBMITTING" || jobState === "PENDING" || jobState === "RUNNING" || jobState === "LOADING_RESULT";
+  const showsRuntimeTelemetry = isAnalyzing || jobState === "FAILED";
+  const runtimePresentationOperation =
+    jobState === "SUBMITTING" || jobState === "LOADING_RESULT" || jobState === "FAILED"
+      ? null
+      : job.state.currentOperation;
   const analysisError = jobState === "FAILED" ? JSON.stringify({ status: job.state.errorCode || 500, issues: [{ message: job.state.errorSummary || "Job Failed" }] }) : null;
   const analysisSuccess = jobState === "SUCCEEDED";
   const analysisStep = jobState; // fallback mapping
+  const focusedOrbitPresentation =
+    jobState === "SUCCEEDED"
+      ? resolveSilFocusedOrbitPresentation(
+          activeStageId,
+          zoomLevel,
+          activeData,
+          locale
+        )
+      : null;
 
   const [inferenceTelemetry, setInferenceTelemetry] = useState<any>(initialAnalysisState?.inferenceTelemetry ?? null);
   const [lastStagedDocs, setLastStagedDocs] = useState<any[]>([]);
@@ -87,17 +223,18 @@ export function SemanticCareerIntelligenceField({
 
   const handleHudAction = (action: "OPEN EVIDENCE" | "INSPECT SOURCES" | "VIEW MATCHES", stageId: string) => {
     setActiveStageId(stageId);
+
     if (action === "OPEN EVIDENCE" || action === "INSPECT SOURCES") {
+      const firstClusterId = resolveSilHudClusterId(stageId, activeData);
+
+      if (firstClusterId === null) {
+        setSelectedClusterId(null);
+        setZoomLevel(1);
+        return;
+      }
+
+      setSelectedClusterId(firstClusterId);
       setZoomLevel(2);
-      
-      let firstId = `cl-${stageId}-0`;
-      if (stageId === "02" && activeData.capabilities?.length > 0) firstId = activeData.capabilities[0].id || activeData.capabilities[0].capabilityId || firstId;
-      if (stageId === "03" && activeData.companyMatches?.length > 0) firstId = activeData.companyMatches[0].companyId || firstId;
-      if (stageId === "04" && activeData.roleMatches?.length > 0) firstId = activeData.roleMatches[0].jobId || firstId;
-      if (stageId === "05" && activeData.tensionField?.length > 0) firstId = activeData.tensionField[0].requirementId || firstId;
-      if (stageId === "06" && activeData.evolutionPaths?.length > 0) firstId = activeData.evolutionPaths[0].id || firstId;
-      
-      setSelectedClusterId(firstId);
     } else if (action === "VIEW MATCHES") {
       setZoomLevel(1);
       setSelectedClusterId(null);
@@ -137,8 +274,8 @@ export function SemanticCareerIntelligenceField({
   const stages = [
     {
       stageId: "01",
-      stageName: "IDENTITY CORE",
-      subtitle: "Unverfälschter Identitätskern",
+      stageName: t.orbits["01"].name,
+      subtitle: t.orbits["01"].subtitle,
       count: activeData.sources.length,
       glyph: "◈",
       angleDeg: -90,
@@ -146,12 +283,12 @@ export function SemanticCareerIntelligenceField({
       animationDelay: "0s",
       photonOutDur: "3.6s",
       photonInDur: "4.4s",
-      previewItems: activeData.sources.slice(0, 3).map((s) => s.sourceTitle || (s as any).name || "Quellendokument")
+      previewItems: activeData.sources.slice(0, 3).map((s) => s.sourceTitle || (s as any).name || "Source document")
     },
     {
       stageId: "02",
-      stageName: "CAPABILITY FIELD",
-      subtitle: "Semantischer Kern",
+      stageName: t.orbits["02"].name,
+      subtitle: t.orbits["02"].subtitle,
       count: activeData.capabilities.length,
       glyph: "⬡",
       angleDeg: -30,
@@ -163,8 +300,8 @@ export function SemanticCareerIntelligenceField({
     },
     {
       stageId: "03",
-      stageName: "RESONANCE ORBITS",
-      subtitle: "Organisationen im Feld",
+      stageName: t.orbits["03"].name,
+      subtitle: t.orbits["03"].subtitle,
       count: activeData.companyMatches.length,
       glyph: "◎",
       angleDeg: 30,
@@ -176,8 +313,8 @@ export function SemanticCareerIntelligenceField({
     },
     {
       stageId: "04",
-      stageName: "ROLE MANIFESTATION",
-      subtitle: "Konkrete Rollen",
+      stageName: t.orbits["04"].name,
+      subtitle: t.orbits["04"].subtitle,
       count: activeData.roleMatches.length,
       glyph: "⎔",
       angleDeg: 90,
@@ -189,8 +326,8 @@ export function SemanticCareerIntelligenceField({
     },
     {
       stageId: "05",
-      stageName: "TENSION FIELD",
-      subtitle: "Fähigkeitslücken",
+      stageName: t.orbits["05"].name,
+      subtitle: t.orbits["05"].subtitle,
       count: activeData.capabilityGaps.length,
       glyph: "⟁",
       angleDeg: 150,
@@ -202,8 +339,8 @@ export function SemanticCareerIntelligenceField({
     },
     {
       stageId: "06",
-      stageName: "EVOLUTION PATHS",
-      subtitle: "Entwicklungspfade",
+      stageName: t.orbits["06"].name,
+      subtitle: t.orbits["06"].subtitle,
       count: activeData.nextActions.length,
       glyph: "∿",
       angleDeg: 210,
@@ -343,7 +480,7 @@ export function SemanticCareerIntelligenceField({
 
       {/* Left Compact SourceDock */}
       <div style={{ position: "absolute", top: "50%", transform: "translateY(-50%)", left: "40px", zIndex: 30 }}>
-        <SourceDock onAnalyze={handleAnalyze} isAnalyzing={isAnalyzing} />
+        <SourceDock onAnalyze={handleAnalyze} isAnalyzing={isAnalyzing} locale={locale} />
       </div>
 
       {/* Telemetry Ingestion Status Banner */}
@@ -397,9 +534,9 @@ export function SemanticCareerIntelligenceField({
             gap: "4px"
           }}
         >
-          <div style={{ fontWeight: 700 }}>ANALYSE ERFOLGREICH ABGESCHLOSSEN</div>
+          <div style={{ fontWeight: 700 }}>{t.analysis.successTitle}</div>
           <div style={{ fontSize: "10px", color: SIL_TOKENS.colors.textPrimary }}>
-            IDENTITÄTSKERN & ORBITS MANIFESTIERT
+            {t.analysis.successSubtitle}
           </div>
         </div>
       )}
@@ -432,14 +569,14 @@ export function SemanticCareerIntelligenceField({
         >
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
             <div style={{ fontWeight: 800, fontSize: "14px", letterSpacing: "1px" }}>
-              {errData.status === 422 ? "SEMANTIC BOUNDARY VIOLATION" : errData.status === 503 ? "PROVIDER TRUNCATION" : "ANALYSE FEHLGESCHLAGEN"}
+              {errData.status === 422 ? "SEMANTIC BOUNDARY VIOLATION" : errData.status === 503 ? "PROVIDER TRUNCATION" : t.analysis.failed}
             </div>
             <div style={{ fontSize: "10px", color: "rgba(255, 85, 85, 0.7)" }}>HTTP {errData.status}</div>
           </div>
           
           <div style={{ fontSize: "11px", color: "#ffbaba", lineHeight: "1.5" }}>
-            {errData.status === 422 && "Model output violated the canonical semantic contract and was rejected before entering the validated state."}
-            {errData.status === 503 && "Das Modell hat das maximale Token-Limit überschritten (Truncation) oder der Provider ist nicht erreichbar. Die Pipeline hat die strukturierte Extraktion abgebrochen."}
+            {errData.status === 422 && t.analysis.semanticBoundary}
+            {errData.status === 503 && t.analysis.providerTruncation}
           </div>
 
           <div style={{ maxHeight: "150px", overflowY: "auto", borderTop: "1px solid rgba(255, 51, 51, 0.3)", paddingTop: "8px", marginTop: "4px" }}>
@@ -473,7 +610,7 @@ export function SemanticCareerIntelligenceField({
               onMouseOver={(e) => e.currentTarget.style.backgroundColor = "#ff5555"}
               onMouseOut={(e) => e.currentTarget.style.backgroundColor = "#ff3333"}
             >
-              NEU VERSUCHEN
+              {t.analysis.retry}
             </button>
           </div>
         </div>
@@ -482,11 +619,18 @@ export function SemanticCareerIntelligenceField({
       <InferenceTelemetryHUD
         telemetry={inferenceTelemetry}
         isAnalyzing={isAnalyzing}
+        locale={locale}
+        runtimeProgress={showsRuntimeTelemetry ? {
+          lifecycleState: jobState,
+          currentOperation: runtimePresentationOperation,
+          attemptCount: job.state.attemptCount
+        } : null}
       />
 
       <DecisionGraphInspector
         graph={evidenceGraph}
         focus={graphFocus}
+        locale={locale}
         onSelectNode={(id) => setSelectedGraphNodeId(id)}
       />
 
@@ -783,6 +927,12 @@ export function SemanticCareerIntelligenceField({
                       isDimmed={isStageDimmed}
                       animationDelay={st.animationDelay}
                       sourcePresentation={sourcePresentation}
+                      locale={locale}
+                      attentionState={resolveSilOrbitAttentionState(
+                        st.stageId,
+                        activeData,
+                        jobState
+                      )}
                       onClick={() => {
                         const newActive = isStageActive ? null : st.stageId;
                         setActiveStageId(newActive);
@@ -874,13 +1024,13 @@ export function SemanticCareerIntelligenceField({
                     }}
                   >
                     <div style={{ fontSize: "8px", color: SIL_TOKENS.colors.cyanActive, fontWeight: 700 }}>
-                      CLUSTER NODE {cluster.confidence ? `// ${cluster.confidence}` : "// N/A"}
+                      {t.field.clusterNode} {cluster.confidence ? `// ${cluster.confidence}` : "// N/A"}
                     </div>
                     <div style={{ fontSize: "10px", fontWeight: 700, margin: "3px 0", lineHeight: "1.2" }}>
                       {cluster.title}
                     </div>
                     <div style={{ fontSize: "8px", color: SIL_TOKENS.colors.textMuted }}>
-                      {cluster.evidenceCount !== undefined ? `${cluster.evidenceCount} Evidences` : "NO EVIDENCE"}
+                      {cluster.evidenceCount !== undefined ? `${cluster.evidenceCount} ${t.field.evidences}` : t.field.noEvidence}
                     </div>
                   </div>
                 ))}
@@ -922,6 +1072,36 @@ export function SemanticCareerIntelligenceField({
                   ))}
               </>
             )}
+      {jobState === "SUCCEEDED" &&
+        activeStageId &&
+        focusedOrbitPresentation?.kind ===
+          "EMPTY_PROJECTION" &&
+        focusedOrbitPresentation.emptyState && (
+          <div
+            data-testid={`sil-focused-empty-orbit-${activeStageId}`}
+            style={{
+              position: "absolute",
+              left: `${center + activeOrbitX}px`,
+              top: `${center + activeOrbitY}px`,
+              width: 0,
+              height: 0,
+              zIndex: 18,
+              pointerEvents: "none"
+            }}
+          >
+            <SilOrbitEmptyState
+              stageId={activeStageId}
+              state={
+                focusedOrbitPresentation.emptyState
+              }
+              towardCore={{
+                x: -activeOrbitX,
+                y: -activeOrbitY
+              }}
+            />
+          </div>
+        )}
+
       </div>
 
       {/* Phase 3a: Compact Scientific Focus Detail Panel when an orbit is focused */}
@@ -948,17 +1128,66 @@ export function SemanticCareerIntelligenceField({
         >
           <div>
             <div style={{ fontSize: "9px", color: SIL_TOKENS.colors.cyanActive, fontWeight: 700, letterSpacing: "1px" }}>
-              ACTIVE FOCUS // ORBIT {activeStageId}
+              {t.focus.activeFocus} // ORBIT {activeStageId}
             </div>
             <div style={{ fontWeight: 600, fontSize: "12px", marginTop: "2px" }}>
               {stages.find((s) => s.stageId === activeStageId)?.stageName}
             </div>
           </div>
-          <div style={{ height: "24px", width: "1px", backgroundColor: "rgba(56, 229, 255, 0.25)" }} />
-          <div style={{ display: "flex", gap: "12px", fontSize: "10px", color: SIL_TOKENS.colors.textMuted }}>
-            <span>STATE: <strong style={{ color: SIL_TOKENS.colors.cyanActive }}>RESONANT</strong></span>
-            <span>EVIDENCE: <strong style={{ color: SIL_TOKENS.colors.textPrimary }}>VERIFIED</strong></span>
-          </div>
+          {focusedOrbitPresentation?.kind ===
+            "EMPTY_PROJECTION" && (
+            <>
+              <div
+                style={{
+                  height: "24px",
+                  width: "1px",
+                  backgroundColor:
+                    "rgba(255, 56, 68, 0.34)"
+                }}
+              />
+              <div
+                data-testid="semantic-focus-empty-projection"
+                style={{
+                  display: "flex",
+                  gap: "12px",
+                  fontSize: "10px",
+                  color:
+                    SIL_TOKENS.colors.textMuted
+                }}
+              >
+                <span>
+                  {t.focus.state}:{" "}
+                  <strong
+                    style={{
+                      color:
+                        "rgba(255, 91, 101, 0.96)"
+                    }}
+                  >
+                    {
+                      focusedOrbitPresentation
+                        .stateLabel
+                    }
+                  </strong>
+                </span>
+
+                <span>
+                  {t.focus.evidence}:{" "}
+                  <strong
+                    style={{
+                      color:
+                        SIL_TOKENS.colors
+                          .textPrimary
+                    }}
+                  >
+                    {
+                      focusedOrbitPresentation
+                        .evidenceLabel
+                    }
+                  </strong>
+                </span>
+              </div>
+            </>
+          )}
           <button
             onClick={() => setActiveStageId(null)}
             style={{
@@ -971,7 +1200,7 @@ export function SemanticCareerIntelligenceField({
               cursor: "pointer"
             }}
           >
-            RESET FOCUS
+            {t.focus.reset}
           </button>
         </div>
       )}
@@ -1003,7 +1232,7 @@ export function SemanticCareerIntelligenceField({
             boxShadow: `0 0 16px rgba(56, 229, 255, 0.25)`
           }}
         >
-          ? HOW THIS WORKS
+          ? {t.controls.howThisWorks}
         </button>
         <button
           data-testid="open-system-codex-btn"
@@ -1021,26 +1250,28 @@ export function SemanticCareerIntelligenceField({
             boxShadow: `0 0 16px rgba(56, 229, 255, 0.3)`
           }}
         >
-          📖 SYSTEM CODEX [DE|EN]
+          📖 {t.controls.systemCodex} [DE|EN]
         </button>
       </div>
 
       {/* Right Collapsible Semantic Guide Drawer */}
       <div style={{ zIndex: 10 }}>
-        <SemanticGuideDrawer />
+        <SemanticGuideDrawer locale={locale} />
       </div>
 
       <SystemCodexModal
         isOpen={isCodexOpen}
         onClose={() => setIsCodexOpen(false)}
+        locale={locale}
+        onLocaleChange={setLocale}
       />
 
       <GuidedOnboardingOverlay
         isOpen={isOnboardingOpen}
         onClose={() => setIsOnboardingOpen(false)}
+        locale={locale}
         onOpenCodex={() => setIsCodexOpen(true)}
       />
     </div>
   );
 }
-

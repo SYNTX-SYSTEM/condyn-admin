@@ -2,11 +2,14 @@
 
 import React, { useState } from "react";
 import { SIL_TOKENS } from "./SILTokens";
+import { SIL_COPY, type SilLocale } from "../../../../lib/career/view-model/sil-language";
 
 export interface SystemCodexModalProps {
   isOpen: boolean;
   onClose: () => void;
-  initialLang?: "de" | "en";
+  initialLang?: SilLocale;
+  locale?: SilLocale;
+  onLocaleChange?: (locale: SilLocale) => void;
 }
 
 /**
@@ -16,9 +19,20 @@ export interface SystemCodexModalProps {
 export function SystemCodexModal({
   isOpen,
   onClose,
-  initialLang = "de"
+  initialLang,
+  locale,
+  onLocaleChange
 }: SystemCodexModalProps) {
-  const [lang, setLang] = useState<"de" | "en">(initialLang);
+  const [internalLang, setInternalLang] = useState<SilLocale>(
+    initialLang ?? "de"
+  );
+  const lang = locale ?? internalLang;
+  const setLang = (next: SilLocale) => {
+    if (locale === undefined) {
+      setInternalLang(next);
+    }
+    onLocaleChange?.(next);
+  };
   const [activeChapter, setActiveChapter] = useState<number>(0);
 
   if (!isOpen) return null;

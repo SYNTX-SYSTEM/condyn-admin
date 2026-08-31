@@ -1,6 +1,6 @@
 import fs from "fs";
 import path from "path";
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, vi } from "vitest";
 import { loadDocuments, executeCareerAnalysisPipeline } from "../lib/career/pipeline";
 import { MockInferenceProvider } from "../lib/career/adapter";
 
@@ -43,6 +43,26 @@ describe("CONDYN Career Analysis Protocol v1.0 - Step 4.4: E2E Pipeline Orchestr
     expect(result.success).toBe(true);
     expect(result.data).toBeDefined();
     expect(result.data!.structured_data.analysis.metadata.validation_state).toBe("VERIFIED");
+  });
+
+  it("Runtime telemetry V1: signals INFERENCE before provider await and ANALYSIS_VALIDATION before output processing", async () => {
+    const operations: string[] = [];
+    const provider = new MockInferenceProvider(goldJsonRaw);
+    vi.spyOn(provider, "execute").mockImplementation(async () => {
+      expect(operations).toEqual(["INFERENCE"]);
+      return goldJsonRaw;
+    });
+
+    const result = await executeCareerAnalysisPipeline(
+      [{ title: "Telemetry source", content: "Career analysis source" }],
+      provider,
+      {
+        onRuntimeOperation: (operation: string) => operations.push(operation)
+      } as any
+    );
+
+    expect(result.success).toBe(true);
+    expect(operations).toEqual(["INFERENCE", "ANALYSIS_VALIDATION"]);
   });
 
   it("should propagate ERR_JSON_SYNTAX_INVALID when inference provider returns malformed JSON", async () => {

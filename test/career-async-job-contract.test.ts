@@ -38,6 +38,69 @@ describe("CONDYN Career Analysis Protocol v5.0 - PHASE 5: DURABLE ASYNC JOB CONT
     sourceData: "I am a software engineer."
   };
 
+  it.each([
+    "RECOVERY_CHECK",
+    "SOURCE_PREPARATION",
+    "INFERENCE",
+    "ANALYSIS_VALIDATION",
+    "PERSISTENCE"
+  ])("Progress telemetry V1: persists and reads back admitted operation %s exactly", async (currentOperation) => {
+    const job = createJob("CAREER_ANALYSIS", sampleInput);
+    await repo.enqueueJob(job);
+    const claim = await repo.claimNextJob("worker-operation-contract", 10000);
+
+    await repo.updateJobState(
+      job.jobId,
+      "worker-operation-contract",
+      claim!.leaseVersion,
+      "RUNNING",
+      "RUNNING",
+      { currentOperation } as any
+    );
+
+    const loaded = await repo.getJob(job.jobId);
+    expect((loaded as any)?.currentOperation).toBe(currentOperation);
+    expect((loaded as any)?.progressPercent).toBeUndefined();
+    expect((loaded as any)?.estimatedCompletion).toBeUndefined();
+    expect((loaded as any)?.completedOperations).toBeUndefined();
+  });
+
+  it("Progress telemetry V1: rejects a non-admitted runtime operation", async () => {
+    const job = createJob("CAREER_ANALYSIS", sampleInput);
+    await repo.enqueueJob(job);
+    const claim = await repo.claimNextJob("worker-invalid-operation", 10000);
+
+    await expect(
+      repo.updateJobState(
+        job.jobId,
+        "worker-invalid-operation",
+        claim!.leaseVersion,
+        "RUNNING",
+        "RUNNING",
+        { currentOperation: "PROVIDER_RESPONSE" } as any
+      )
+    ).rejects.toThrow();
+  });
+
+  it("Progress telemetry V1 blocker B3: enqueue rejects an invalid runtime operation", async () => {
+    const job = createJob("CAREER_ANALYSIS", sampleInput);
+    Reflect.set(job, "currentOperation", "PROVIDER_RESPONSE");
+
+    await expect(repo.enqueueJob(job)).rejects.toThrow("ERR_INVALID_JOB_RUNTIME_OPERATION");
+  });
+
+  it("Progress telemetry V1 blocker B3: getJob rejects an invalid stored runtime operation", async () => {
+    const job = createJob("CAREER_ANALYSIS", sampleInput);
+    await repo.enqueueJob(job);
+    await db.execute(sql`
+      UPDATE career_analysis_jobs
+      SET current_operation = ${"PROVIDER_RESPONSE"}
+      WHERE job_id = ${job.jobId}
+    `);
+
+    await expect(repo.getJob(job.jobId)).rejects.toThrow("ERR_INVALID_JOB_RUNTIME_OPERATION");
+  });
+
   it("A. valid request -> durable PENDING job", async () => {
     const job = createJob("CAREER_ANALYSIS", sampleInput);
     await repo.enqueueJob(job);
@@ -46,6 +109,60 @@ describe("CONDYN Career Analysis Protocol v5.0 - PHASE 5: DURABLE ASYNC JOB CONT
     expect(loaded).toBeDefined();
     expect(loaded?.status).toBe("PENDING");
     expect(loaded?.inputRef).toEqual(sampleInput);
+  });
+
+  it("Progress telemetry V1: JobRecord starts PENDING with no runtime operation", async () => {
+    const job = createJob("CAREER_ANALYSIS", sampleInput);
+    expect((job as any).currentOperation).toBeNull();
+
+    await repo.enqueueJob(job);
+    const loaded = await repo.getJob(job.jobId);
+    expect((loaded as any)?.currentOperation).toBeNull();
+  });
+
+  it("Progress telemetry V1: a RUNNING worker update persists a real current operation", async () => {
+    const job = createJob("CAREER_ANALYSIS", sampleInput);
+    await repo.enqueueJob(job);
+    const claim = await repo.claimNextJob("worker-telemetry", 10000);
+
+    await repo.updateJobState(
+      job.jobId,
+      "worker-telemetry",
+      claim!.leaseVersion,
+      "RUNNING",
+      "RUNNING",
+      { currentOperation: "SOURCE_PREPARATION" } as any
+    );
+
+    const loaded = await repo.getJob(job.jobId);
+    expect((loaded as any)?.currentOperation).toBe("SOURCE_PREPARATION");
+  });
+
+  it("Progress telemetry V1: retrying to PENDING clears the prior runtime operation", async () => {
+    const job = createJob("CAREER_ANALYSIS", sampleInput);
+    await repo.enqueueJob(job);
+    const claim = await repo.claimNextJob("worker-retry-telemetry", 10000);
+
+    await repo.updateJobState(
+      job.jobId,
+      "worker-retry-telemetry",
+      claim!.leaseVersion,
+      "RUNNING",
+      "RUNNING",
+      { currentOperation: "INFERENCE" } as any
+    );
+    await repo.failJob(
+      job.jobId,
+      "worker-retry-telemetry",
+      claim!.leaseVersion,
+      false,
+      "TRANSIENT",
+      "retry"
+    );
+
+    const retried = await repo.getJob(job.jobId);
+    expect(retried?.status).toBe("PENDING");
+    expect((retried as any)?.currentOperation).toBeNull();
   });
 
   it("B/C. Idempotent submission & conflicts", async () => {
