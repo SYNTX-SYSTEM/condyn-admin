@@ -960,7 +960,11 @@ export function SemanticCareerIntelligenceField({
                 width: "100%",
                 height: "100%",
                 pointerEvents: "none",
-                zIndex: 6
+                // The hover HUD lives inside this orbital stacking context.
+                // Raise the whole layer only while a HUD is visible so the
+                // opaque observation surface can actually composite above
+                // the Identity Core (z-index 10).
+                zIndex: hoveredStageId !== null ? 60 : 6
               }}
             >
               {stages.map((st) => {
