@@ -5,7 +5,10 @@ import { DemoCareerIntelligenceData } from "../../../career/demo/demo-data";
 import { SIL_TOKENS } from "./SILTokens";
 import { IdentityCoreDropZone } from "./IdentityCoreDropZone";
 import { OrbitalResonanceBubble } from "./OrbitalResonanceBubble";
-import { SilOrbitEmptyState } from "./SilOrbitEmptyState";
+import {
+  SilOrbitEmptyState,
+  SilOrbitEmptyStateCopy
+} from "./SilOrbitEmptyState";
 import { SourceDock } from "./SourceDock";
 import { SemanticGuideDrawer } from "./SemanticGuideDrawer";
 import { SystemCodexModal } from "./SystemCodexModal";
@@ -40,6 +43,157 @@ export interface SemanticCareerIntelligenceFieldProps {
     inferenceTelemetry?: any;
   };
   initialLocale?: SilLocale;
+  initialFocus?: {
+    stageId?: SilOrbitStageId | null;
+    zoomLevel?: SemanticZoomLevel;
+  };
+}
+
+export interface FocusTransitionStageShellProps {
+  stageId: string;
+  x: number;
+  y: number;
+  isCosmosAnchor: boolean;
+  isCosmosBackground: boolean;
+  showFocusPulse: boolean;
+  emptyVisualUnderlay?: React.ReactNode;
+  emptyCopyForeground?: React.ReactNode;
+  children: React.ReactNode;
+}
+
+const FOCUSED_STAGE_BUBBLE_OUTER_RADIUS = (168 + 16 * 2 + 1.5 * 2) / 2;
+const FOCUSED_EMPTY_COPY_GAP = 24;
+
+/**
+ * The position shell owns orbit-to-focus coordinates, while this visual shell
+ * owns scale. Every center-dependent focus visual remains beneath both owners.
+ */
+export function FocusTransitionStageShell({
+  stageId,
+  x,
+  y,
+  isCosmosAnchor,
+  isCosmosBackground,
+  showFocusPulse,
+  emptyVisualUnderlay,
+  emptyCopyForeground,
+  children
+}: FocusTransitionStageShellProps) {
+  return (
+    <div
+      data-testid={`focus-transition-stage-shell-${stageId}`}
+      data-focus-translation-owner="stage-position"
+      style={{
+        position: "absolute",
+        left: `calc(50% + ${x}px - 84px)`,
+        top: `calc(50% + ${y}px - 84px)`,
+        pointerEvents: isCosmosBackground ? "none" : "auto",
+        opacity: isCosmosBackground ? 0.12 : isCosmosAnchor ? 0.42 : 1,
+        filter: isCosmosBackground ? "blur(3px) grayscale(86%)" : undefined,
+        transform: isCosmosAnchor
+          ? `translate(${-x}px, ${-y}px)`
+          : "translate(0px, 0px)",
+        transformOrigin: "center center",
+        transition: "transform 0.78s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.62s ease, filter 0.62s ease"
+      }}
+    >
+      <div
+        data-testid={`focus-stage-visual-${stageId}`}
+        data-focus-scale-owner="stage-visual"
+        style={{
+          position: "relative",
+          isolation: "isolate",
+          transform: `scale(${isCosmosAnchor ? 1.12 : isCosmosBackground ? 0.72 : 1})`,
+          transformOrigin: "center center",
+          transition: "transform 0.78s cubic-bezier(0.16, 1, 0.3, 1)"
+        }}
+      >
+        {emptyVisualUnderlay && (
+          <div
+            data-testid={`empty-visual-underlay-${stageId}`}
+            style={{
+              position: "absolute",
+              left: "50%",
+              top: "50%",
+              width: 0,
+              height: 0,
+              zIndex: 0,
+              pointerEvents: "none"
+            }}
+          >
+            {emptyVisualUnderlay}
+          </div>
+        )}
+
+        <div
+          data-testid={`focused-stage-bubble-${stageId}`}
+          style={{ position: "relative", zIndex: 1 }}
+        >
+          {children}
+        </div>
+
+        {emptyCopyForeground && (
+          <div
+            data-testid={`empty-copy-foreground-${stageId}`}
+            style={{
+              position: "absolute",
+              left: "50%",
+              top: `calc(50% - ${FOCUSED_STAGE_BUBBLE_OUTER_RADIUS + FOCUSED_EMPTY_COPY_GAP}px)`,
+              width: "390px",
+              transform: "translateX(-50%) translateY(-100%)",
+              zIndex: 3,
+              pointerEvents: "none"
+            }}
+          >
+            {emptyCopyForeground}
+          </div>
+        )}
+
+        {showFocusPulse && (
+          <>
+            <style>{`
+              @keyframes focusTransitionPulse {
+                0% { transform: scale(1); opacity: 0.7; }
+                100% { transform: scale(1.45); opacity: 0; }
+              }
+            `}</style>
+            <div
+              data-testid={`focus-transition-pulse-${stageId}`}
+              aria-hidden="true"
+              style={{
+                position: "absolute",
+                inset: 0,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                pointerEvents: "none",
+                zIndex: 0,
+                // The previous field-SVG pulse inherited its focused 0.18
+                // opacity; retain that intensity after relocating it.
+                opacity: isCosmosAnchor ? 0.4285714286 : 1
+              }}
+            >
+              <svg width="620" height="620" viewBox="0 0 620 620">
+                <circle
+                  cx="310"
+                  cy="310"
+                  r="310"
+                  fill="none"
+                  stroke={SIL_TOKENS.colors.cyanActive}
+                  strokeWidth="1.8"
+                  style={{
+                    animation: "focusTransitionPulse 1.6s ease-out infinite",
+                    transformBox: "fill-box",
+                    transformOrigin: "center"
+                  }}
+                />
+              </svg>
+            </div>
+          </>
+        )}
+      </div>
+    </div>
+  );
 }
 
 
@@ -183,15 +337,20 @@ export function resolveSilOrbitAttentionState(
 export function SemanticCareerIntelligenceField({
   data,
   initialAnalysisState,
-  initialLocale = SIL_COPY.defaultLocale
+  initialLocale = SIL_COPY.defaultLocale,
+  initialFocus
 }: SemanticCareerIntelligenceFieldProps) {
   const [locale, setLocale] = useState<SilLocale>(initialLocale);
   const t = SIL_COPY[locale];
   const [activeData, setActiveData] = useState(data);
-  const [activeStageId, setActiveStageId] = useState<string | null>(null);
+  const [activeStageId, setActiveStageId] = useState<string | null>(
+    initialFocus?.stageId ?? null
+  );
   const [hoveredStageId, setHoveredStageId] = useState<string | null>(null);
   const hoverTimeoutRef = React.useRef<NodeJS.Timeout | null>(null);
-  const [zoomLevel, setZoomLevel] = useState<SemanticZoomLevel>(0);
+  const [zoomLevel, setZoomLevel] = useState<SemanticZoomLevel>(
+    initialFocus?.zoomLevel ?? 0
+  );
   const [selectedClusterId, setSelectedClusterId] = useState<string | null>(null);
   
   const job = useCareerAnalysisJob();
@@ -421,6 +580,8 @@ export function SemanticCareerIntelligenceField({
   const isOrbitCosmosFocus = activeStageId !== null && zoomLevel === 1;
   const isOrbitDeepFocus = activeStageId !== null && zoomLevel >= 2 && selectedClusterId !== null;
   const isOrbitStageFocus = isOrbitCosmosFocus || isOrbitDeepFocus;
+  const hasFocusedEmptyProjection =
+    focusedOrbitPresentation?.kind === "EMPTY_PROJECTION";
 
   const subClusters = buildSilClusterPresentation(
     activeStageId,
@@ -851,22 +1012,6 @@ export function SemanticCareerIntelligenceField({
                 />
               </g>
 
-              {/* Phase 2d: Sympathetic Resonance Cascade on Interaction */}
-              {focusedStageId && (
-                <g data-testid="resonance-cascade">
-                  <circle
-                    cx={center}
-                    cy={center}
-                    r={radius - 20}
-                    fill="none"
-                    stroke={SIL_TOKENS.colors.cyanActive}
-                    strokeWidth="1.8"
-                    opacity="0.7"
-                    style={{ animation: "waveExpand 1.6s ease-out infinite" }}
-                  />
-                </g>
-              )}
-
               {/* Energy Rays Connecting Core to Each Orbital Node */}
               {stages.map((st) => {
                 const angleRad = (st.angleDeg * Math.PI) / 180;
@@ -990,23 +1135,38 @@ export function SemanticCareerIntelligenceField({
 
 
                 return (
-                  <div
+                  <FocusTransitionStageShell
                     key={st.stageId}
-                    style={{
-                      position: "absolute",
-                      left: `calc(50% + ${x}px - 84px)`,
-                      top: `calc(50% + ${y}px - 84px)`,
-                      pointerEvents: isCosmosBackground ? "none" : "auto",
-                      opacity: isCosmosBackground ? 0.12 : isCosmosAnchor ? 0.42 : 1,
-                      filter: isCosmosBackground ? "blur(3px) grayscale(86%)" : undefined,
-                      transform: isCosmosAnchor
-                        ? `translate(${-x}px, ${-y}px) scale(1.12)`
-                        : isCosmosBackground
-                          ? "scale(0.72)"
-                          : "scale(1)",
-                      transformOrigin: "center center",
-                      transition: "transform 0.78s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.62s ease, filter 0.62s ease"
-                    }}
+                    stageId={st.stageId}
+                    x={x}
+                    y={y}
+                    isCosmosAnchor={isCosmosAnchor}
+                    isCosmosBackground={isCosmosBackground}
+                    showFocusPulse={focusedStageId === st.stageId}
+                    emptyVisualUnderlay={
+                      isCosmosAnchor &&
+                      jobState === "SUCCEEDED" &&
+                      focusedOrbitPresentation?.kind === "EMPTY_PROJECTION" &&
+                      focusedOrbitPresentation.emptyState ? (
+                        <SilOrbitEmptyState
+                          stageId={st.stageId}
+                          state={focusedOrbitPresentation.emptyState}
+                          showCopy={false}
+                          towardCore={{ x: 0, y: 0 }}
+                        />
+                      ) : undefined
+                    }
+                    emptyCopyForeground={
+                      isCosmosAnchor &&
+                      jobState === "SUCCEEDED" &&
+                      focusedOrbitPresentation?.kind === "EMPTY_PROJECTION" &&
+                      focusedOrbitPresentation.emptyState ? (
+                        <SilOrbitEmptyStateCopy
+                          stageId={st.stageId}
+                          state={focusedOrbitPresentation.emptyState}
+                        />
+                      ) : undefined
+                    }
                   >
                     <OrbitalResonanceBubble
                       stageId={st.stageId}
@@ -1053,7 +1213,7 @@ export function SemanticCareerIntelligenceField({
                       onHudAction={handleHudAction}
                       accentColor={st.color}
                     />
-                  </div>
+                  </FocusTransitionStageShell>
                 );
               })}
             </div>
@@ -1181,39 +1341,9 @@ export function SemanticCareerIntelligenceField({
                   ))}
               </>
             )}
-      {jobState === "SUCCEEDED" &&
-        activeStageId &&
-        focusedOrbitPresentation?.kind ===
-          "EMPTY_PROJECTION" &&
-        focusedOrbitPresentation.emptyState && (
-          <div
-            data-testid={`sil-focused-empty-orbit-${activeStageId}`}
-            style={{
-              position: "absolute",
-              left: `${center + activeOrbitX}px`,
-              top: `${center + activeOrbitY}px`,
-              width: 0,
-              height: 0,
-              zIndex: 18,
-              pointerEvents: "none"
-            }}
-          >
-            <SilOrbitEmptyState
-              stageId={activeStageId}
-              state={
-                focusedOrbitPresentation.emptyState
-              }
-              towardCore={{
-                x: -activeOrbitX,
-                y: -activeOrbitY
-              }}
-            />
-          </div>
-        )}
-
       </div>
 
-      {isCapabilityCosmosFocus && (
+      {isCapabilityCosmosFocus && !hasFocusedEmptyProjection && (
         <CapabilityCosmosView
           clusters={subClusters}
           onSelectCluster={(clusterId) => {
@@ -1246,7 +1376,10 @@ export function SemanticCareerIntelligenceField({
         />
       )}
 
-      {isOrbitCosmosFocus && activeStageId && activeStageId !== "02" && (
+      {isOrbitCosmosFocus &&
+        !hasFocusedEmptyProjection &&
+        activeStageId &&
+        activeStageId !== "02" && (
         <OrbitalCosmosView
           stageId={activeStageId}
           stageName={stages.find((stage) => stage.stageId === activeStageId)?.stageName || activeStageId}

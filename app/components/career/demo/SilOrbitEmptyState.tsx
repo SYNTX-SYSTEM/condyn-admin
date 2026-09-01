@@ -6,6 +6,7 @@ import { getOrbitAccentColor } from "./OrbitalResonanceBubble";
 export interface SilOrbitEmptyStateProps {
   stageId: string;
   state: SilOrbitEmptyStatePresentation;
+  showCopy?: boolean;
   towardCore?: {
     x: number;
     y: number;
@@ -21,9 +22,102 @@ const GHOST_GLYPHS: Record<string, string> = {
   "06": "∿"
 };
 
+/** Foreground copy can be layered independently from the ghost underlay. */
+export function SilOrbitEmptyStateCopy({
+  stageId,
+  state
+}: Pick<SilOrbitEmptyStateProps, "stageId" | "state">) {
+  const accent = getOrbitAccentColor(stageId);
+
+  return (
+    <div
+      data-testid={`sil-orbit-empty-copy-${stageId}`}
+      style={{
+        width: "100%",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        textAlign: "center",
+        fontFamily: SIL_TOKENS.typography.mono,
+        color: SIL_TOKENS.colors.textPrimary
+      }}
+    >
+      <div
+        style={{
+          fontSize: "8px",
+          fontWeight: 800,
+          letterSpacing: "2.2px",
+          color: "rgba(255, 91, 101, 0.96)",
+          textShadow: "0 0 9px rgba(255, 56, 68, 0.72)"
+        }}
+      >
+        {state.label}
+      </div>
+
+      <div
+        style={{
+          marginTop: "8px",
+          width: "72px",
+          height: "1px",
+          background: `linear-gradient(
+            90deg,
+            transparent,
+            ${accent},
+            rgba(255, 56, 68, 0.92),
+            transparent
+          )`
+        }}
+      />
+
+      <div
+        style={{
+          marginTop: "13px",
+          maxWidth: "300px",
+          fontSize: "15px",
+          lineHeight: 1.18,
+          fontWeight: 900,
+          letterSpacing: "1px",
+          color: SIL_TOKENS.colors.textPrimary,
+          textShadow: `
+            0 0 12px ${accent}66,
+            0 0 18px rgba(255, 56, 68, 0.24)
+          `
+        }}
+      >
+        {state.title}
+      </div>
+
+      <div
+        style={{
+          marginTop: "14px",
+          maxWidth: "300px",
+          fontSize: "10px",
+          lineHeight: 1.55,
+          color: SIL_TOKENS.colors.textMuted
+        }}
+      >
+        {state.reason}
+      </div>
+
+      <div
+        style={{
+          marginTop: "14px",
+          fontSize: "7px",
+          letterSpacing: "1.5px",
+          color: accent,
+          opacity: 0.58
+        }}
+      >
+        ORBIT {stageId} // STRUCTURAL ABSENCE
+      </div>
+    </div>
+  );
+}
+
 export function SilOrbitEmptyState({
   stageId,
   state,
+  showCopy = true,
   towardCore = { x: 220, y: 0 }
 }: SilOrbitEmptyStateProps) {
   const accent = getOrbitAccentColor(stageId);
@@ -312,88 +406,17 @@ export function SilOrbitEmptyState({
             {GHOST_GLYPHS[stageId] ?? "○"}
           </div>
 
-          <div
-            style={{
-              position: "absolute",
-              inset: "24px 38px",
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              justifyContent: "center",
-              textAlign: "center",
-              zIndex: 2
-            }}
-          >
+          {showCopy && (
             <div
               style={{
-                fontSize: "8px",
-                fontWeight: 800,
-                letterSpacing: "2.2px",
-                color: "rgba(255, 91, 101, 0.96)",
-                textShadow:
-                  "0 0 9px rgba(255, 56, 68, 0.72)"
+                position: "absolute",
+                inset: "24px 38px",
+                zIndex: 2
               }}
             >
-              {state.label}
+              <SilOrbitEmptyStateCopy stageId={stageId} state={state} />
             </div>
-
-            <div
-              style={{
-                marginTop: "8px",
-                width: "72px",
-                height: "1px",
-                background: `linear-gradient(
-                  90deg,
-                  transparent,
-                  ${accent},
-                  rgba(255, 56, 68, 0.92),
-                  transparent
-                )`
-              }}
-            />
-
-            <div
-              style={{
-                marginTop: "13px",
-                maxWidth: "300px",
-                fontSize: "15px",
-                lineHeight: 1.18,
-                fontWeight: 900,
-                letterSpacing: "1px",
-                color: SIL_TOKENS.colors.textPrimary,
-                textShadow: `
-                  0 0 12px ${accent}66,
-                  0 0 18px rgba(255, 56, 68, 0.24)
-                `
-              }}
-            >
-              {state.title}
-            </div>
-
-            <div
-              style={{
-                marginTop: "14px",
-                maxWidth: "300px",
-                fontSize: "10px",
-                lineHeight: 1.55,
-                color: SIL_TOKENS.colors.textMuted
-              }}
-            >
-              {state.reason}
-            </div>
-
-            <div
-              style={{
-                marginTop: "14px",
-                fontSize: "7px",
-                letterSpacing: "1.5px",
-                color: accent,
-                opacity: 0.58
-              }}
-            >
-              ORBIT {stageId} // STRUCTURAL ABSENCE
-            </div>
-          </div>
+          )}
         </div>
       </div>
     </div>
