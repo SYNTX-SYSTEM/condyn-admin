@@ -12,6 +12,9 @@ export interface SilOrbitEmptyStatePresentation {
   reason: string;
 }
 
+// An empty collection is a completed, stage-specific projection absence. It is
+// not an error, a blocked state, or a domain conclusion (for example, stage 05
+// does not assert that no real capability gaps exist).
 function hasProjectedItems(
   stageId: SilOrbitStageId,
   data: DemoCareerIntelligenceData

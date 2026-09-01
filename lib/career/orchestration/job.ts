@@ -1,5 +1,7 @@
 export type JobStatus = "PENDING" | "RUNNING" | "SUCCEEDED" | "FAILED";
 export type JobType = "CAREER_ANALYSIS";
+// These are bounded worker-progress labels, not a claim about semantic truth,
+// verification, publication, authority, or a current/head/latest artifact.
 export type CareerJobRuntimeOperation =
   | "RECOVERY_CHECK"
   | "SOURCE_PREPARATION"
