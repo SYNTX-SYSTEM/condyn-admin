@@ -11,6 +11,10 @@ import { SemanticGuideDrawer } from "./SemanticGuideDrawer";
 import { SystemCodexModal } from "./SystemCodexModal";
 import { GuidedOnboardingOverlay } from "./GuidedOnboardingOverlay";
 import { OrbitalSubspaceView, SemanticZoomLevel } from "./OrbitalSubspaceView";
+import CapabilityCosmosView from "./CapabilityCosmosView";
+import CapabilityDeepFocusView from "./CapabilityDeepFocusView";
+import { OrbitalCosmosView } from "./OrbitalCosmosView";
+import { OrbitalDeepFocusView } from "./OrbitalDeepFocusView";
 import { InferenceTelemetryHUD } from "./InferenceTelemetryHUD";
 import { buildEvidenceGraph } from "../../../../lib/career/evidence/traversal";
 import { computeGraphFocus } from "../../../../lib/career/evidence/highlight";
@@ -22,6 +26,9 @@ import { buildSilClusterPresentation } from "../../../../lib/career/view-model/c
 import { useCareerAnalysisJob } from "../../../../lib/career/ui/useCareerAnalysisJob";
 import { SIL_COPY, type SilLocale } from "../../../../lib/career/view-model/sil-language";
 import { buildSilOrbitEmptyState } from "../../../../lib/career/view-model/orbit-empty-state";
+import { buildOrbitFocusProjection } from "../../../../lib/career/view-model/orbit-focus-projection";
+import { resolveOrbitalFocusNavigation } from "../../../../lib/career/view-model/orbital-focus-navigation";
+import type { SilOrbitStageId } from "../../../../lib/career/view-model/sil-language";
 
 export interface SemanticCareerIntelligenceFieldProps {
   data: DemoCareerIntelligenceData;
@@ -249,6 +256,19 @@ export function SemanticCareerIntelligenceField({
   const handleHudAction = (action: "OPEN EVIDENCE" | "INSPECT SOURCES" | "VIEW MATCHES", stageId: string) => {
     setActiveStageId(stageId);
 
+    if (stageId !== "02") {
+      const items = buildOrbitFocusProjection(stageId, activeData);
+      const firstItem = items[0];
+      if ((action === "OPEN EVIDENCE" || action === "INSPECT SOURCES") && firstItem) {
+        setSelectedClusterId(firstItem.id);
+        setZoomLevel(2);
+      } else {
+        setSelectedClusterId(null);
+        setZoomLevel(1);
+      }
+      return;
+    }
+
     if (action === "OPEN EVIDENCE" || action === "INSPECT SOURCES") {
       const firstClusterId = resolveSilHudClusterId(stageId, activeData);
 
@@ -392,15 +412,15 @@ export function SemanticCareerIntelligenceField({
   let cameraTranslateX = 0;
   let cameraTranslateY = 0;
 
-  if (zoomLevel === 1 && activeStageId) {
-    cameraScale = 1.65;
-    cameraTranslateX = -activeOrbitX * 0.85;
-    cameraTranslateY = -activeOrbitY * 0.85;
-  } else if (zoomLevel >= 2 && activeStageId) {
-    cameraScale = 2.2;
-    cameraTranslateX = -activeOrbitX * 0.95;
-    cameraTranslateY = -activeOrbitY * 0.95;
-  }
+  const orbitItems = React.useMemo(
+    () => buildOrbitFocusProjection(activeStageId, activeData),
+    [activeStageId, activeData]
+  );
+  const isCapabilityCosmosFocus = activeStageId === "02" && zoomLevel === 1;
+  const isCapabilityDeepFocus = activeStageId === "02" && zoomLevel >= 2 && selectedClusterId !== null;
+  const isOrbitCosmosFocus = activeStageId !== null && zoomLevel === 1;
+  const isOrbitDeepFocus = activeStageId !== null && zoomLevel >= 2 && selectedClusterId !== null;
+  const isOrbitStageFocus = isOrbitCosmosFocus || isOrbitDeepFocus;
 
   const subClusters = buildSilClusterPresentation(
     activeStageId,
@@ -480,6 +500,10 @@ export function SemanticCareerIntelligenceField({
                     setActiveStageId(null);
                     setSelectedClusterId(null);
                   } else {
+                    if (item.level === 1 && activeStageId !== null) {
+                      setSelectedClusterId(null);
+                      setSelectedGraphNodeId(null);
+                    }
                     setZoomLevel(item.level);
                   }
                 }}
@@ -506,7 +530,17 @@ export function SemanticCareerIntelligenceField({
       </div>
 
       {/* Left Compact SourceDock */}
-      <div style={{ position: "absolute", top: "50%", transform: "translateY(-50%)", left: "40px", zIndex: 30 }}>
+      <div style={{
+        position: "absolute",
+        top: "50%",
+        transform: isOrbitStageFocus ? "translateY(-50%) scale(0.72)" : "translateY(-50%) scale(1)",
+        left: "40px",
+        zIndex: 30,
+        opacity: isOrbitStageFocus ? 0.12 : 1,
+        filter: isOrbitStageFocus ? "blur(3px)" : undefined,
+        pointerEvents: isOrbitStageFocus ? "none" : "auto",
+        transition: "transform 0.62s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.56s ease, filter 0.56s ease"
+      }}>
         <SourceDock onAnalyze={handleAnalyze} isAnalyzing={isAnalyzing} locale={locale} />
       </div>
 
@@ -643,23 +677,37 @@ export function SemanticCareerIntelligenceField({
         </div>
       );})()}
 
-      <InferenceTelemetryHUD
-        telemetry={inferenceTelemetry}
-        isAnalyzing={isAnalyzing}
-        locale={locale}
-        runtimeProgress={showsRuntimeTelemetry ? {
-          lifecycleState: jobState,
-          currentOperation: runtimePresentationOperation,
-          attemptCount: job.state.attemptCount
-        } : null}
-      />
+      <div style={{
+                opacity: isOrbitStageFocus ? 0.12 : 1,
+                filter: isOrbitStageFocus ? "blur(3px)" : undefined,
+                pointerEvents: isOrbitStageFocus ? "none" : "auto",
+        transition: "opacity 0.56s ease, filter 0.56s ease"
+      }}>
+        <InferenceTelemetryHUD
+          telemetry={inferenceTelemetry}
+          isAnalyzing={isAnalyzing}
+          locale={locale}
+          runtimeProgress={showsRuntimeTelemetry ? {
+            lifecycleState: jobState,
+            currentOperation: runtimePresentationOperation,
+            attemptCount: job.state.attemptCount
+          } : null}
+        />
+      </div>
 
-      <DecisionGraphInspector
-        graph={evidenceGraph}
-        focus={graphFocus}
-        locale={locale}
-        onSelectNode={(id) => setSelectedGraphNodeId(id)}
-      />
+      <div style={{
+                opacity: isOrbitStageFocus ? 0.12 : 1,
+                filter: isOrbitStageFocus ? "blur(3px)" : undefined,
+                pointerEvents: isOrbitStageFocus ? "none" : "auto",
+        transition: "opacity 0.56s ease, filter 0.56s ease"
+      }}>
+        <DecisionGraphInspector
+          graph={evidenceGraph}
+          focus={graphFocus}
+          locale={locale}
+          onSelectNode={(id) => setSelectedGraphNodeId(id)}
+        />
+      </div>
 
       {/* Center Radial Organism Field */}
       <style>{`
@@ -697,7 +745,10 @@ export function SemanticCareerIntelligenceField({
                 top: 0,
                 left: 0,
                 pointerEvents: "none",
-                zIndex: 1
+                zIndex: 1,
+                opacity: isOrbitStageFocus ? 0.18 : 1,
+                filter: isOrbitStageFocus ? "blur(2px)" : undefined,
+                transition: "opacity 0.72s cubic-bezier(0.16, 1, 0.3, 1), filter 0.72s cubic-bezier(0.16, 1, 0.3, 1)"
               }}
             >
               <defs>
@@ -892,10 +943,10 @@ export function SemanticCareerIntelligenceField({
               data-testid="identity-core-wrapper"
               style={{
                 zIndex: 10,
-                opacity: focusedStageId ? 0.35 : 1,
-                transform: focusedStageId ? "scale(0.85)" : "scale(1)",
-                filter: focusedStageId ? "grayscale(80%)" : undefined,
-                pointerEvents: focusedStageId ? "none" : "auto",
+                opacity: isOrbitStageFocus ? 0.12 : focusedStageId ? 0.35 : 1,
+                transform: isOrbitStageFocus ? "scale(0.62)" : focusedStageId ? "scale(0.85)" : "scale(1)",
+                filter: isOrbitStageFocus ? "blur(3px) grayscale(92%)" : focusedStageId ? "grayscale(80%)" : undefined,
+                pointerEvents: focusedStageId || isOrbitStageFocus ? "none" : "auto",
                 transition: "all 0.5s ease"
               }}
             >
@@ -918,6 +969,8 @@ export function SemanticCareerIntelligenceField({
                 const y = Math.round(Math.sin(angleRad) * radius * 100) / 100;
                 const isStageActive = activeStageId === st.stageId;
                 const isStageHovered = hoveredStageId === st.stageId;
+                const isCosmosAnchor = isOrbitStageFocus && st.stageId === activeStageId;
+                const isCosmosBackground = isOrbitStageFocus && !isCosmosAnchor;
                 
                 let isStageRelated = false;
                 if (graphFocus) {
@@ -939,7 +992,16 @@ export function SemanticCareerIntelligenceField({
                       position: "absolute",
                       left: `calc(50% + ${x}px - 84px)`,
                       top: `calc(50% + ${y}px - 84px)`,
-                      pointerEvents: "auto"
+                      pointerEvents: isCosmosBackground ? "none" : "auto",
+                      opacity: isCosmosBackground ? 0.12 : isCosmosAnchor ? 0.42 : 1,
+                      filter: isCosmosBackground ? "blur(3px) grayscale(86%)" : undefined,
+                      transform: isCosmosAnchor
+                        ? `translate(${-x}px, ${-y}px) scale(1.12)`
+                        : isCosmosBackground
+                          ? "scale(0.72)"
+                          : "scale(1)",
+                      transformOrigin: "center center",
+                      transition: "transform 0.78s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.62s ease, filter 0.62s ease"
                     }}
                   >
                     <OrbitalResonanceBubble
@@ -961,10 +1023,19 @@ export function SemanticCareerIntelligenceField({
                         jobState
                       )}
                       onClick={() => {
-                        const newActive = isStageActive ? null : st.stageId;
-                        setActiveStageId(newActive);
-                        setZoomLevel(newActive ? 1 : 0);
-                        if (!newActive) setSelectedGraphNodeId(null);
+                        const nextFocus = resolveOrbitalFocusNavigation({
+                          activeStageId: activeStageId as SilOrbitStageId | null,
+                          selectedItemId: selectedClusterId,
+                          requestedStageId: st.stageId as SilOrbitStageId,
+                          requestedItemId: null,
+                          itemIds: buildOrbitFocusProjection(st.stageId, activeData).map((item) => item.id)
+                        });
+                        setActiveStageId(nextFocus.activeStageId);
+                        setSelectedClusterId(nextFocus.selectedItemId);
+                        setZoomLevel(nextFocus.zoomLevel);
+                        if (!nextFocus.activeStageId) {
+                          setSelectedGraphNodeId(null);
+                        }
                       }}
                       onMouseEnter={() => {
                         if (hoverTimeoutRef.current) clearTimeout(hoverTimeoutRef.current);
@@ -984,7 +1055,7 @@ export function SemanticCareerIntelligenceField({
             </div>
 
             {/* Phase 3c: Continuous Semantic Space Sub-Clusters (L1) */}
-            {zoomLevel >= 1 && activeStageId && (
+            {zoomLevel >= 1 && activeStageId && !isOrbitStageFocus && (
               <div
                 style={{
                   position: "absolute",
@@ -1072,7 +1143,7 @@ export function SemanticCareerIntelligenceField({
             )}
 
             {/* Phase 3c: Continuous Semantic Space Evidence Nodes (L2) */}
-            {zoomLevel >= 2 && selectedClusterId && (
+            {zoomLevel >= 2 && selectedClusterId && !isOrbitDeepFocus && (
               <>
                 {subClusters
                   .filter((cl) => cl.id === selectedClusterId)
@@ -1138,6 +1209,76 @@ export function SemanticCareerIntelligenceField({
 
       </div>
 
+      {isCapabilityCosmosFocus && (
+        <CapabilityCosmosView
+          clusters={subClusters}
+          onSelectCluster={(clusterId) => {
+            setSelectedClusterId(clusterId);
+            setSelectedGraphNodeId(null);
+            setZoomLevel(2);
+          }}
+          onExit={() => {
+            setActiveStageId(null);
+            setSelectedClusterId(null);
+            setSelectedGraphNodeId(null);
+            setZoomLevel(0);
+          }}
+        />
+      )}
+
+      {isCapabilityDeepFocus && selectedClusterId && (
+        <CapabilityDeepFocusView
+          clusters={subClusters}
+          selectedClusterId={selectedClusterId}
+          onSelectCluster={(clusterId) => {
+            setSelectedClusterId(clusterId);
+            setSelectedGraphNodeId(null);
+          }}
+          onBack={() => {
+            setSelectedClusterId(null);
+            setSelectedGraphNodeId(null);
+            setZoomLevel(1);
+          }}
+        />
+      )}
+
+      {isOrbitCosmosFocus && activeStageId && activeStageId !== "02" && (
+        <OrbitalCosmosView
+          stageId={activeStageId}
+          stageName={stages.find((stage) => stage.stageId === activeStageId)?.stageName || activeStageId}
+          items={orbitItems}
+          onSelectItem={(itemId) => {
+            setSelectedClusterId(itemId);
+            setSelectedGraphNodeId(null);
+            setZoomLevel(2);
+          }}
+          onExit={() => {
+            setActiveStageId(null);
+            setSelectedClusterId(null);
+            setSelectedGraphNodeId(null);
+            setZoomLevel(0);
+          }}
+        />
+      )}
+
+      {isOrbitDeepFocus && activeStageId && activeStageId !== "02" && selectedClusterId && (
+        <OrbitalDeepFocusView
+          stageId={activeStageId}
+          stageName={stages.find((stage) => stage.stageId === activeStageId)?.stageName || activeStageId}
+          selectedItemId={selectedClusterId}
+          items={orbitItems}
+          onSelectItem={(itemId) => {
+            setSelectedClusterId(itemId);
+            setSelectedGraphNodeId(null);
+          }}
+          onBack={() => {
+            setSelectedClusterId(null);
+            setSelectedGraphNodeId(null);
+            setZoomLevel(1);
+          }}
+        />
+      )}
+
       {/* Phase 3a: Compact Scientific Focus Detail Panel when an orbit is focused */}
       {activeStageId && (
         <div
@@ -1157,7 +1298,11 @@ export function SemanticCareerIntelligenceField({
             alignItems: "center",
             gap: "18px",
             color: SIL_TOKENS.colors.textPrimary,
-            fontSize: "11px"
+            fontSize: "11px",
+            opacity: isOrbitStageFocus ? 0.12 : 1,
+            filter: isOrbitStageFocus ? "blur(2px)" : undefined,
+            pointerEvents: isOrbitStageFocus ? "none" : "auto",
+            transition: "opacity 0.56s ease, filter 0.56s ease"
           }}
         >
           <div>
@@ -1223,7 +1368,12 @@ export function SemanticCareerIntelligenceField({
             </>
           )}
           <button
-            onClick={() => setActiveStageId(null)}
+            onClick={() => {
+              setActiveStageId(null);
+              setSelectedClusterId(null);
+              setSelectedGraphNodeId(null);
+              setZoomLevel(0);
+            }}
             style={{
               backgroundColor: "transparent",
               border: `1px solid rgba(56, 229, 255, 0.35)`,

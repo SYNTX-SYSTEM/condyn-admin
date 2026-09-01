@@ -22,13 +22,26 @@ function getTooltipStyle(placement: HudPlacement): React.CSSProperties {
   const base: React.CSSProperties = {
     position: "absolute",
     width: "380px",
-    backgroundColor: "rgba(6, 14, 24, 0.88)",
+    // The observation surface must visually isolate its evidence from the
+    // organism behind it; this is quiet spatial framing, not a new HUD state.
+    // A true, opaque observation surface. The atmosphere layers decorate a
+    // solid universe rather than functioning as transparent glass.
+    // The final opaque gradient is the actual body surface; decorative star
+    // layers never expose the organism underneath the observation HUD.
+    background: "#02070d",
+    backgroundColor: "#02070d",
+    backgroundImage:
+      "radial-gradient(circle at 17% 24%, rgba(56, 229, 255, 0.22) 0 1px, transparent 1.5px), radial-gradient(circle at 78% 30%, rgba(126, 255, 204, 0.14) 0 1px, transparent 1.5px), radial-gradient(ellipse at 70% 78%, rgba(13, 83, 103, 0.16), transparent 56%), radial-gradient(ellipse at 18% 16%, rgba(9, 55, 73, 0.15), transparent 52%)",
     border: `1.5px solid ${SIL_TOKENS.colors.cyanActive}`,
     borderRadius: "10px",
     padding: "16px 18px",
-    boxShadow: `0 12px 36px rgba(0, 0, 0, 0.9), 0 0 24px rgba(56, 229, 255, 0.32)`,
-    backgroundImage: "radial-gradient(rgba(56, 229, 255, 0.12) 1px, transparent 1px)",
-    backgroundSize: "14px 14px",
+    boxShadow: `0 12px 36px rgba(0, 0, 0, 0.9), 0 0 24px rgba(56, 229, 255, 0.32), inset 0 0 54px rgba(0, 0, 0, 0.88)`,
+    backgroundSize: "92px 92px, 127px 127px, auto, auto",
+    opacity: 1,
+    mixBlendMode: "normal",
+    backgroundBlendMode: "normal",
+    backdropFilter: "none",
+    isolation: "isolate",
     zIndex: 50,
     textAlign: "left",
     pointerEvents: "auto",
@@ -341,6 +354,7 @@ export function OrbitalResonanceBubble({
             ? "EMPTY_PROJECTION_ATTENTION"
             : undefined
         }
+        data-hud-composition-ancestor={isHovered && !isActive ? "opaque" : undefined}
         onClick={onClick}
         onMouseEnter={onMouseEnter}
         onMouseLeave={onMouseLeave}
@@ -364,6 +378,9 @@ export function OrbitalResonanceBubble({
           textAlign: "center",
           position: "relative",
           opacity: isDimmed ? 0.52 : 1,
+          mixBlendMode: "normal",
+          backgroundBlendMode: "normal",
+          isolation: "isolate",
           animation: `orbitFloatPhase2 25s ease-in-out infinite`,
           animationDelay: animationDelay,
           transition: "opacity 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease, background-color 0.35s ease",
@@ -613,7 +630,9 @@ export function OrbitalResonanceBubble({
 
             <div
               data-testid={`orbital-preview-${stageId}`}
-              className={`hologram-hud--large hologram-float hud-preview--${computedPlacement}`}
+              data-opaque-hud-surface="true"
+              data-hud-composition-root="opaque"
+              className={`hologram-hud--large hologram-float quietUniverseDust hud-preview--${computedPlacement}`}
               onMouseEnter={onMouseEnter}
               onMouseLeave={onMouseLeave}
               style={{
