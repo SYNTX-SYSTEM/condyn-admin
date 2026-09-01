@@ -273,6 +273,9 @@ export function OrbitalResonanceBubble({
   const isEmptyProjectionAttention =
     attentionState === "EMPTY_PROJECTION_ATTENTION";
   const isHighlighted = isActive || isHovered;
+  // The shared physics shell also contains the hover HUD and tether. A hovered
+  // stage is therefore an interaction surface, never an opacity-dimmed ancestor.
+  const isEffectivelyDimmed = isDimmed && !isHovered;
 
   const defaultPrimaryMetric = primaryMetric || `${itemCount} ${t.hud.activeObjects}`;
 
@@ -379,7 +382,7 @@ export function OrbitalResonanceBubble({
           padding: "16px",
           textAlign: "center",
           position: "relative",
-          opacity: isDimmed ? 0.52 : 1,
+          opacity: isEffectivelyDimmed ? 0.52 : 1,
           mixBlendMode: "normal",
           backgroundBlendMode: "normal",
           isolation: "isolate",
@@ -389,6 +392,11 @@ export function OrbitalResonanceBubble({
           ...style
         }}
       >
+        <div
+          data-testid={`orbital-bubble-body-${stageId}`}
+          aria-hidden="true"
+          style={{ display: "contents" }}
+        />
         {/* Phase 2b: Multi-layer Planetary Atmosphere (Glow / Ring / Glow / Ring / Glow) */}
         {isHighlighted && (
           <>
