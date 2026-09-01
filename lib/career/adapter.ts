@@ -61,6 +61,7 @@ You MUST adhere strictly to the following 8 canonical Invariance Rules:
    - Inject required specialized canonical properties directly into the generic "properties" object of that entity.
    - If values cannot be grounded from evidence, DO NOT fabricate them. Omit the entity instead.
    - ORGANIZATION: properties MUST contain "country_iso", "industry_enum", and "resonance_score".
+   - ORGANIZATION.country_iso MUST be ISO-3166-1 alpha-2: exactly 2 uppercase ASCII letters (examples: DE, US, CH). Country names are forbidden; alpha-3 codes are forbidden; lowercase is forbidden. If the country cannot be grounded from evidence, do not fabricate it; omit the ORGANIZATION entity.
    - ROLE: properties MUST contain "seniority" and "domain_focus".
    - SEARCH_QUERY: properties MUST contain "title", "query", "purpose", "target", and "priority".
    - Other entity kinds may use arbitrary grounded key/value properties through the generic catchall.`;
@@ -585,5 +586,4 @@ export function processLlmOutput(rawOutput: string | unknown, context?: Pipeline
   
   return validateCareerAnalysis(canonicalCandidate);
 }
-
 

@@ -14,4 +14,15 @@ describe("BUG010L: Prompt Contract Assertions", () => {
     const prompt = buildCareerAnalysisPrompt([]);
     expect(prompt.systemPrompt).toContain("If values cannot be grounded from evidence, DO NOT fabricate them. Omit the entity instead.");
   });
+
+  it("requires ORGANIZATION.country_iso to use a grounded canonical ISO alpha-2 code", () => {
+    const prompt = buildCareerAnalysisPrompt([]);
+
+    expect(prompt.systemPrompt).toMatch(/ISO-3166-1 alpha-2/i);
+    expect(prompt.systemPrompt).toMatch(/exactly 2 (?:uppercase )?(?:ASCII )?letters/i);
+    expect(prompt.systemPrompt).toMatch(/uppercase/i);
+    expect(prompt.systemPrompt).toMatch(/country names? (?:are )?forbidden/i);
+    expect(prompt.systemPrompt).toMatch(/alpha-3 (?:codes? )?(?:are )?forbidden/i);
+    expect(prompt.systemPrompt).toMatch(/country (?:cannot be )?grounded.*do not fabricate.*omit the ORGANIZATION entity/i);
+  });
 });
