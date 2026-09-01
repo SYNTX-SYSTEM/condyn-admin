@@ -38,6 +38,8 @@ async function main() {
   const provider = new GeminiProvider();
   const canonicalAnalysisRepository = new PostgresCareerAnalysisRepository(db);
   const capabilityRepository = new PostgresCapabilityCoreRepository(db);
+  // The worker owns durable sidecar provenance, but the Career job result
+  // remains the canonical analysis id rather than a proposal artifact id.
   const projectionReferenceRepository = new PostgresCapabilityProposalProjectionReferenceRepository(db);
   const promptRepository = new InMemoryPromptRepository();
   const workerId = process.env.CAREER_WORKER_ID || "worker-node-1";

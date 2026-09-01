@@ -3,6 +3,8 @@ import { and, eq, or } from "drizzle-orm";
 import { careerCapabilityProposalProjectionReferences } from "../../db/schema";
 
 export interface CapabilityProposalProjectionReference {
+  // Immutable technical provenance only: analysis/job identity selects the
+  // exact Discovery and Convergence artifacts; it creates no latest pointer.
   analysisId: string;
   jobId: string;
   discoveryRunId: string;
@@ -49,6 +51,8 @@ export class PostgresCapabilityProposalProjectionReferenceRepository
   constructor(private readonly database: any) {}
 
   async save(reference: CapabilityProposalProjectionReference): Promise<void> {
+    // PostgreSQL enforces durable identity, while equality checks preserve the
+    // repository's idempotent-or-conflict rule; persistence is not authority.
     const existing = await this.database
       .select()
       .from(careerCapabilityProposalProjectionReferences)

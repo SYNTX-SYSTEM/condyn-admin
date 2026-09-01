@@ -49,6 +49,8 @@ export function OrbitalSubspaceView({
     if (!sourcePresentation || sourcePresentation.labels.length === 0) return realClusters;
     
     return realClusters.map(cl => {
+      // Proposal evidence already has an exact Core source mapping. Applying
+      // legacy positional labels here would manufacture provenance.
       if (cl.projectionState === "PROPOSED") return cl;
       return {
       ...cl,
@@ -288,6 +290,7 @@ export function OrbitalSubspaceView({
             }}
           >
             {activeEvidence.snippet}
+            {/* Legacy inspection metadata is not projection evidence. */}
             {activeCluster.projectionState !== "PROPOSED" &&
               "\n\n// METADATA:\n// SYNTX Semantic Grounding ID: CONDYN-EVIDENCE-VERIFIED-492\n// Latency: 0.2ms | Signature Matching: PASSED"}
           </pre>

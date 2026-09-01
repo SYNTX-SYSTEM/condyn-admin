@@ -175,7 +175,10 @@ export const careerAnalysisJobs = pgTable("career_analysis_jobs", {
   heartbeatAt: text("heartbeat_at")
 });
 
-/** Immutable technical lineage from a Career Analysis to its exact proposal artifacts. */
+/**
+ * Immutable technical lineage from a Career Analysis to its exact proposal
+ * artifacts. It intentionally has no mutable latest/current/head or authority state.
+ */
 export const careerCapabilityProposalProjectionReferences = pgTable("career_capability_proposal_projection_references", {
   analysisId: text("analysis_id").primaryKey().references(() => careerAnalyses.analysisId),
   jobId: text("job_id").notNull().unique().references(() => careerAnalysisJobs.jobId),

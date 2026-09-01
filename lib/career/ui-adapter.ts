@@ -48,6 +48,8 @@ export function adaptCanonicalToDemoState(
       sourceTitle,
       sourceUri: finalStagedDoc.url || undefined,
       contentHash: doc.properties?.hash_sha256 || `HASH-${doc.entity_id}`,
+      // F11 can match proposal evidence only by this canonical document id;
+      // legacy presentation keeps its existing fallback behavior.
       sourceDocumentId: finalStagedDoc.docId || finalStagedDoc.id || doc.entity_id
     };
   });

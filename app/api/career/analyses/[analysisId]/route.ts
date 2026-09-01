@@ -50,6 +50,8 @@ export async function GET(req: Request, { params }: { params: Promise<{ analysis
 
     const matching = matchCareerAnalysisAgainstPool(analysis, DEMO_COMPANY_POOL);
     const recommendations = generateCareerRecommendations(analysis, matching);
+    // This is a separately namespaced, exact-lineage sidecar. Its absence is
+    // normal for historical analyses and never changes the legacy result status.
     const capabilityProposalProjection = await createCapabilityProposalProjectionReader({
       references: new PostgresCapabilityProposalProjectionReferenceRepository(db),
       capabilityRepository: new PostgresCapabilityCoreRepository(db)

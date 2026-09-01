@@ -20,6 +20,8 @@ export interface DemoCapabilityItem {
   domain: string;
   evidenceConfidence?: number; // Kept as optional but we'll use resolveMetric
   evidenceSummary: string;
+  // These fields describe an optional Capability Proposal projection only.
+  // They intentionally carry no confidence, demonstrated-level, or authority claim.
   projectionState?: "PROPOSED";
   evidenceState?: "EVIDENCE_PASSED";
   semanticDefinitionState?: "NOT_RUN";

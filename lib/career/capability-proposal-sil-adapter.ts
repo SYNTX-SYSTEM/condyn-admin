@@ -1,7 +1,11 @@
 import type { DemoCareerIntelligenceData, DemoCapabilityItem } from "../../app/career/demo/demo-data";
 import type { CapabilityProposalProjection } from "./capability-core/projection";
 
-/** Applies non-authoritative proposal data without changing legacy analysis projection semantics. */
+/**
+ * Applies a non-authoritative proposal overlay without changing legacy analysis
+ * semantics. Proposal fields stay explicit so SIL cannot manufacture truth from
+ * source matching, model output, or persistence alone.
+ */
 export function applyCapabilityProposalProjectionToDemoState(
   legacy: DemoCareerIntelligenceData,
   projection: CapabilityProposalProjection | null

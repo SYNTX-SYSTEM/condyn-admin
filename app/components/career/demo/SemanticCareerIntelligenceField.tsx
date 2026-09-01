@@ -237,6 +237,8 @@ export function SemanticCareerIntelligenceField({
         lastStagedDocs, 
         canonical.sourceManifest
       );
+      // F11 overlays only the explicit proposal capability representation;
+      // the legacy analysis projection remains responsible for every other orbit.
       setActiveData(applyCapabilityProposalProjectionToDemoState(
         projectedLegacyState,
         canonical.capabilityProposalProjection ?? null

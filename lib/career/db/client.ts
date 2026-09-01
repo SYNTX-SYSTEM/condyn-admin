@@ -166,6 +166,8 @@ export async function initDbSchema(): Promise<void> {
         heartbeat_at TEXT
       );`,
       targetSql`ALTER TABLE career_analysis_jobs ADD COLUMN IF NOT EXISTS current_operation TEXT;`,
+      // F11 lineage is a physical, immutable foreign-key relation. The table
+      // records exact technical provenance only; it does not publish authority.
       targetSql`CREATE TABLE IF NOT EXISTS career_capability_proposal_projection_references (
         analysis_id TEXT PRIMARY KEY REFERENCES career_analyses(analysis_id),
         job_id TEXT UNIQUE NOT NULL REFERENCES career_analysis_jobs(job_id),

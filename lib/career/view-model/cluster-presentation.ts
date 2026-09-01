@@ -92,7 +92,8 @@ export function buildSilClusterPresentation(
         confStr = `${Math.round(item[confKey] * 100)}%`;
       }
 
-      // Generate localized evidence nodes for this cluster
+      // Proposal evidence is already source-matched by Core. Keep its exact
+      // source identity instead of applying the legacy positional presentation.
       const proposalEvidence = item.projectionState === "PROPOSED" ? item.evidence || [] : [];
       const snippet = proposalEvidence[0]?.exactQuote || item.evidenceSummary || item.rationale || item.description;
       const nodeId =

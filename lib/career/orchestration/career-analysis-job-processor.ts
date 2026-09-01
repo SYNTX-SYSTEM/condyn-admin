@@ -66,6 +66,8 @@ export function createCareerAnalysisJobProcessor(
       convergenceRun?: { convergenceRunId?: unknown; completedAt?: unknown };
     };
     const persistProjectionReference = async () => {
+      // Snapshot reuse is stronger pre-existing Core state, not a proposal RUN_/
+      // CONV_ pair; F11 must not fabricate lineage for that branch.
       if (proposal.kind !== "PROPOSALS_CONVERGED") return;
       if (!dependencies.projectionReferenceRepository) {
         throw new Error("ERR_CAPABILITY_PROPOSAL_PROJECTION_REFERENCE_INVALID");

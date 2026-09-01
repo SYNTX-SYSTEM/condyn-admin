@@ -4,6 +4,8 @@ import type { CapabilityConvergenceRun } from "../convergence";
 import type { CapabilityProposalProjectionReferenceRepository } from "./reference-repository";
 
 export interface CapabilityProposalProjection {
+  // This is a read model for a persisted proposal lineage, not a Capability
+  // authority surface. The explicit states prevent callers from inferring truth.
   projectionKind: "CAPABILITY_PROPOSAL";
   projectionState: "PROPOSED";
   evidenceState: "EVIDENCE_PASSED";
@@ -19,6 +21,8 @@ export interface CapabilityProposalProjection {
   relations: Array<{ id: string; sourceCapabilityId: string; targetCapabilityId: string; relationType: string; state: "PROPOSED"; reason: string }>;
 }
 
+// An immutable reference selects one exact RUN_/CONV_ pair. Never repair or
+// search for another artifact when that pair fails validation.
 const integrity = (): never => { throw new Error("ERR_CAPABILITY_PROPOSAL_PROJECTION_LINEAGE_INVALID"); };
 
 type VerifiedEvidence = { candidateId: string; claim: EvidenceClaim };
@@ -56,6 +60,7 @@ export function createCapabilityProposalProjectionReader(dependencies: {
   return {
     async read(analysisId) {
       const reference = await dependencies.references.getByAnalysisId(analysisId);
+      // Historical analyses predate F11 and therefore have no proposal sidecar.
       if (reference === null) return null;
       if (reference.analysisId !== analysisId) integrity();
       const discovery = await dependencies.capabilityRepository.getRunById(reference.discoveryRunId);
@@ -81,6 +86,8 @@ export function createCapabilityProposalProjectionReader(dependencies: {
         if (!candidate.candidateId || candidatesById.has(candidate.candidateId)) integrity();
         candidatesById.set(candidate.candidateId, candidate);
       }
+      // EVIDENCE_PASSED is source-match admission only; it is not semantic
+      // definition verification or capability authority.
       const evidenceById = verifiedEvidence(persistedCandidates);
       const drafts = convergenceRun.payload.canonicalDrafts;
       if (!Array.isArray(drafts)) integrity();
