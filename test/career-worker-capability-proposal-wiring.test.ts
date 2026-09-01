@@ -19,6 +19,8 @@ type ProposalState =
       kind: "PROPOSALS_CONVERGED";
       discoveryDisposition: "EXECUTED" | "REUSED";
       convergenceDisposition: "EXECUTED" | "REUSED";
+      discoveryRun: { runId: string; sourceBundleHash: string };
+      convergenceRun: { convergenceRunId: string; completedAt: string };
     }
   | { kind: "VERIFIED_SNAPSHOT_REUSED"; discoveryDisposition: "VERIFIED_SNAPSHOT_REUSED" };
 
@@ -30,6 +32,17 @@ type CareerAnalysisJobProcessorFactory = (dependencies: {
   prepareDocuments(documents: unknown[]): Promise<{ normalizedDocs: DocumentInput[] }>;
   capabilityProposalExecutor: {
     execute(documents: DocumentInput[], reportOperation: ReportOperation): Promise<ProposalState>;
+  };
+  projectionReferenceRepository?: {
+    save(reference: {
+      analysisId: string;
+      jobId: string;
+      discoveryRunId: string;
+      convergenceRunId: string;
+      sourceBundleHash: string;
+      createdAt: string;
+    }): Promise<void>;
+    getByAnalysisId(analysisId: string): Promise<unknown>;
   };
   executeLegacyCareerAnalysis(
     documents: DocumentInput[],
@@ -130,7 +143,9 @@ function proposalState(discoveryDisposition: "EXECUTED" | "REUSED" = "EXECUTED")
   return {
     kind: "PROPOSALS_CONVERGED",
     discoveryDisposition,
-    convergenceDisposition: discoveryDisposition === "REUSED" ? "REUSED" : "EXECUTED"
+    convergenceDisposition: discoveryDisposition === "REUSED" ? "REUSED" : "EXECUTED",
+    discoveryRun: { runId: "RUN_F10B_WIRING", sourceBundleHash: "SOURCE_F10B_WIRING" },
+    convergenceRun: { convergenceRunId: "CONV_F10B_WIRING", completedAt: "2026-09-01T00:00:00.000Z" }
   };
 }
 
@@ -165,6 +180,10 @@ function processorFixture(options: {
   const reportOperation: ReportOperation = vi.fn(async (operation) => {
     events.push(`operation:${operation}`);
   });
+  const projectionReferenceRepository = {
+    save: vi.fn(async () => undefined),
+    getByAnalysisId: vi.fn(async () => null)
+  };
 
   return {
     events,
@@ -178,6 +197,7 @@ function processorFixture(options: {
       canonicalAnalysisRepository: { load, save },
       prepareDocuments,
       capabilityProposalExecutor: { execute },
+      projectionReferenceRepository,
       executeLegacyCareerAnalysis
     })
   };

@@ -165,7 +165,15 @@ export async function initDbSchema(): Promise<void> {
         lease_version INTEGER NOT NULL DEFAULT 0,
         heartbeat_at TEXT
       );`,
-      targetSql`ALTER TABLE career_analysis_jobs ADD COLUMN IF NOT EXISTS current_operation TEXT;`
+      targetSql`ALTER TABLE career_analysis_jobs ADD COLUMN IF NOT EXISTS current_operation TEXT;`,
+      targetSql`CREATE TABLE IF NOT EXISTS career_capability_proposal_projection_references (
+        analysis_id TEXT PRIMARY KEY REFERENCES career_analyses(analysis_id),
+        job_id TEXT UNIQUE NOT NULL REFERENCES career_analysis_jobs(job_id),
+        discovery_run_id TEXT NOT NULL REFERENCES career_capability_runs(run_id),
+        convergence_run_id TEXT NOT NULL REFERENCES career_capability_runs(run_id),
+        source_bundle_hash TEXT NOT NULL,
+        created_at TEXT NOT NULL
+      );`
     ];
     for (const q of tableQueries) {
       await q;

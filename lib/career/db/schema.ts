@@ -174,3 +174,13 @@ export const careerAnalysisJobs = pgTable("career_analysis_jobs", {
   leaseVersion: integer("lease_version").notNull().default(0),
   heartbeatAt: text("heartbeat_at")
 });
+
+/** Immutable technical lineage from a Career Analysis to its exact proposal artifacts. */
+export const careerCapabilityProposalProjectionReferences = pgTable("career_capability_proposal_projection_references", {
+  analysisId: text("analysis_id").primaryKey().references(() => careerAnalyses.analysisId),
+  jobId: text("job_id").notNull().unique().references(() => careerAnalysisJobs.jobId),
+  discoveryRunId: text("discovery_run_id").notNull().references(() => careerCapabilityRuns.runId),
+  convergenceRunId: text("convergence_run_id").notNull().references(() => careerCapabilityRuns.runId),
+  sourceBundleHash: text("source_bundle_hash").notNull(),
+  createdAt: text("created_at").notNull()
+});

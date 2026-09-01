@@ -18,6 +18,7 @@ import {
   GeminiCapabilityConvergenceProvider,
   GeminiCapabilityDiscoveryProvider,
   PostgresCapabilityCoreRepository,
+  PostgresCapabilityProposalProjectionReferenceRepository,
   bootstrapCapabilityProposalKernels,
   createCapabilityProposalRuntime,
   runCapabilityConvergence,
@@ -37,6 +38,7 @@ async function main() {
   const provider = new GeminiProvider();
   const canonicalAnalysisRepository = new PostgresCareerAnalysisRepository(db);
   const capabilityRepository = new PostgresCapabilityCoreRepository(db);
+  const projectionReferenceRepository = new PostgresCapabilityProposalProjectionReferenceRepository(db);
   const promptRepository = new InMemoryPromptRepository();
   const workerId = process.env.CAREER_WORKER_ID || "worker-node-1";
   // Managed proposal kernels are a startup prerequisite. Their encryption key
@@ -94,6 +96,7 @@ async function main() {
     },
     prepareDocuments,
     capabilityProposalExecutor,
+    projectionReferenceRepository,
     async executeLegacyCareerAnalysis(documents, reportOperation, explicitAnalysisId) {
       const validationResult = await executeCareerAnalysisPipeline(documents, provider, {
         explicitAnalysisId,

@@ -7,6 +7,8 @@ import { toReactFlow } from "../../../../../lib/career/adapters/react-flow";
 import { matchCareerAnalysisAgainstPool } from "../../../../../lib/career/matching/engine";
 import { DEMO_COMPANY_POOL } from "../../../../../lib/career/matching/demo-pool";
 import { generateCareerRecommendations } from "../../../../../lib/career/recommendations/gaps";
+import { db } from "../../../../../lib/career/db/client";
+import { PostgresCapabilityCoreRepository, PostgresCapabilityProposalProjectionReferenceRepository, createCapabilityProposalProjectionReader } from "../../../../../lib/career/capability-core";
 
 export async function GET(req: Request, { params }: { params: Promise<{ analysisId: string }> }) {
   try {
@@ -48,6 +50,10 @@ export async function GET(req: Request, { params }: { params: Promise<{ analysis
 
     const matching = matchCareerAnalysisAgainstPool(analysis, DEMO_COMPANY_POOL);
     const recommendations = generateCareerRecommendations(analysis, matching);
+    const capabilityProposalProjection = await createCapabilityProposalProjectionReader({
+      references: new PostgresCapabilityProposalProjectionReferenceRepository(db),
+      capabilityRepository: new PostgresCapabilityCoreRepository(db)
+    }).read(analysisId);
 
     return NextResponse.json({
       success: true,
@@ -56,6 +62,7 @@ export async function GET(req: Request, { params }: { params: Promise<{ analysis
       metadata,
       matching,
       recommendations,
+      capabilityProposalProjection,
       analysis,
       reactFlowGraph
     });

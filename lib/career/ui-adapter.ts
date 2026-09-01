@@ -47,7 +47,8 @@ export function adaptCanonicalToDemoState(
       sourceKind,
       sourceTitle,
       sourceUri: finalStagedDoc.url || undefined,
-      contentHash: doc.properties?.hash_sha256 || `HASH-${doc.entity_id}`
+      contentHash: doc.properties?.hash_sha256 || `HASH-${doc.entity_id}`,
+      sourceDocumentId: finalStagedDoc.docId || finalStagedDoc.id || doc.entity_id
     };
   });
 

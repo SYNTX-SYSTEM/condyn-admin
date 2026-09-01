@@ -1,5 +1,6 @@
 import type { DocumentInput } from "../adapter";
 import type { CareerJobRuntimeOperation, JobRecord } from "./job";
+import type { CapabilityProposalProjectionReferenceRepository } from "../capability-core/projection";
 
 export type ReportCareerJobRuntimeOperation = (
   operation: CareerJobRuntimeOperation
@@ -17,6 +18,7 @@ export interface CareerAnalysisJobProcessorDependencies {
       reportOperation: ReportCareerJobRuntimeOperation
     ): Promise<unknown>;
   };
+  projectionReferenceRepository?: CapabilityProposalProjectionReferenceRepository;
   executeLegacyCareerAnalysis(
     documents: DocumentInput[],
     reportOperation: ReportCareerJobRuntimeOperation,
@@ -58,11 +60,42 @@ export function createCareerAnalysisJobProcessor(
     // The sidecar remains a prerequisite even for recovery: returning the
     // existing canonical analysis before this point would mask missing or failed
     // Discovery/Convergence proposal state.
-    await dependencies.capabilityProposalExecutor.execute(normalizedDocs, reportOperation);
+    const proposal = await dependencies.capabilityProposalExecutor.execute(normalizedDocs, reportOperation) as {
+      kind?: unknown;
+      discoveryRun?: { runId?: unknown; sourceBundleHash?: unknown };
+      convergenceRun?: { convergenceRunId?: unknown; completedAt?: unknown };
+    };
+    const persistProjectionReference = async () => {
+      if (proposal.kind !== "PROPOSALS_CONVERGED") return;
+      if (!dependencies.projectionReferenceRepository) {
+        throw new Error("ERR_CAPABILITY_PROPOSAL_PROJECTION_REFERENCE_INVALID");
+      }
+      const discoveryRun = proposal.discoveryRun;
+      const convergenceRun = proposal.convergenceRun;
+      if (
+        typeof discoveryRun?.runId !== "string" ||
+        typeof discoveryRun.sourceBundleHash !== "string" ||
+        typeof convergenceRun?.convergenceRunId !== "string" ||
+        typeof convergenceRun.completedAt !== "string"
+      ) {
+        throw new Error("ERR_CAPABILITY_PROPOSAL_PROJECTION_REFERENCE_INVALID");
+      }
+      await dependencies.projectionReferenceRepository.save({
+        analysisId: resultAnalysisId,
+        jobId: job.jobId,
+        discoveryRunId: discoveryRun.runId,
+        convergenceRunId: convergenceRun.convergenceRunId,
+        sourceBundleHash: discoveryRun.sourceBundleHash,
+        // The Convergence artifact fixes this immutable lineage timestamp.
+        // A recovery must never manufacture a fresh reference identity.
+        createdAt: convergenceRun.completedAt
+      });
+    };
 
     if (existingAnalysis) {
       // Canonical analysis remains the Career job result contract; sidecar RUN_/
       // CONV_ artifacts do not become result fields or authority claims here.
+      await persistProjectionReference();
       return { resultAnalysisId };
     }
 
@@ -76,6 +109,7 @@ export function createCareerAnalysisJobProcessor(
     // rewrites an already durable result.
     await reportOperation("PERSISTENCE");
     await dependencies.canonicalAnalysisRepository.save(legacyResult.analysis);
+    await persistProjectionReference();
 
     return { resultAnalysisId: legacyResult.resultAnalysisId };
   };

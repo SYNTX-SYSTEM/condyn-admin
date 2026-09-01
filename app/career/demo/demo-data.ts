@@ -11,6 +11,7 @@ export interface DemoSourceItem {
   sourceTitle: string;
   sourceUri?: string;
   contentHash: string;
+  sourceDocumentId?: string;
 }
 
 export interface DemoCapabilityItem {
@@ -19,6 +20,15 @@ export interface DemoCapabilityItem {
   domain: string;
   evidenceConfidence?: number; // Kept as optional but we'll use resolveMetric
   evidenceSummary: string;
+  projectionState?: "PROPOSED";
+  evidenceState?: "EVIDENCE_PASSED";
+  semanticDefinitionState?: "NOT_RUN";
+  authorityState?: "NONE";
+  scope?: "ATOMIC" | "COMPOSITE";
+  structuralDefinition?: string;
+  sourceDocumentIds?: string[];
+  sourceCandidateIds?: string[];
+  evidence?: Array<{ evidenceId: string; sourceDocumentId: string; exactQuote: string; verificationState: "SOURCE_MATCH_VERIFIED" }>;
 }
 
 export interface DemoOrganizationMatch {

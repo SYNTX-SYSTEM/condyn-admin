@@ -16,6 +16,7 @@ import { buildEvidenceGraph } from "../../../../lib/career/evidence/traversal";
 import { computeGraphFocus } from "../../../../lib/career/evidence/highlight";
 import { DecisionGraphInspector } from "./DecisionGraphInspector";
 import { adaptCanonicalToDemoState } from "../../../../lib/career/ui-adapter";
+import { applyCapabilityProposalProjectionToDemoState } from "../../../../lib/career/capability-proposal-sil-adapter";
 import { buildSilSourcePresentation } from "../../../../lib/career/view-model/source-presentation";
 import { buildSilClusterPresentation } from "../../../../lib/career/view-model/cluster-presentation";
 import { useCareerAnalysisJob } from "../../../../lib/career/ui/useCareerAnalysisJob";
@@ -51,6 +52,25 @@ export function resolveSilHudClusterId(
   );
 
   return clusters[0]?.id ?? null;
+}
+
+/**
+ * The legacy evidence graph has synthetic confidence/evidence fallback rules.
+ * Proposal capabilities remain visible in the Capability Field, but must never
+ * enter that legacy graph and acquire semantics the proposal projection lacks.
+ */
+export function excludeCapabilityProposalsFromEvidenceGraph(
+  data: DemoCareerIntelligenceData
+): DemoCareerIntelligenceData {
+  if (!data.capabilities.some((capability) => capability.projectionState === "PROPOSED")) {
+    return data;
+  }
+  return {
+    ...data,
+    capabilities: data.capabilities.filter(
+      (capability) => capability.projectionState !== "PROPOSED"
+    )
+  };
 }
 
 export function resolveFocusedOrbitEmptyState(
@@ -212,12 +232,15 @@ export function SemanticCareerIntelligenceField({
       }
       
       const realData = canonical.analysis || canonical.data || canonical;
-      const projectedRealState = adaptCanonicalToDemoState(
+      const projectedLegacyState = adaptCanonicalToDemoState(
         realData, 
         lastStagedDocs, 
         canonical.sourceManifest
       );
-      setActiveData(projectedRealState);
+      setActiveData(applyCapabilityProposalProjectionToDemoState(
+        projectedLegacyState,
+        canonical.capabilityProposalProjection ?? null
+      ));
     }
   }, [job.state.state, job.state.canonicalAnalysis]);
 
@@ -259,7 +282,9 @@ export function SemanticCareerIntelligenceField({
   const [selectedGraphNodeId, setSelectedGraphNodeId] = useState<string | null>(null);
 
   const evidenceGraph = React.useMemo(() => {
-    return buildEvidenceGraph({ structured_data: activeData }, []);
+    return buildEvidenceGraph({
+      structured_data: excludeCapabilityProposalsFromEvidenceGraph(activeData)
+    }, []);
   }, [activeData]);
 
   const sourcePresentation = React.useMemo(() => {
@@ -1024,7 +1049,9 @@ export function SemanticCareerIntelligenceField({
                     }}
                   >
                     <div style={{ fontSize: "8px", color: SIL_TOKENS.colors.cyanActive, fontWeight: 700 }}>
-                      {t.field.clusterNode} {cluster.confidence ? `// ${cluster.confidence}` : "// N/A"}
+                      {t.field.clusterNode} {cluster.projectionState === "PROPOSED"
+                        ? "// PROPOSED"
+                        : cluster.confidence ? `// ${cluster.confidence}` : "// N/A"}
                     </div>
                     <div style={{ fontSize: "10px", fontWeight: 700, margin: "3px 0", lineHeight: "1.2" }}>
                       {cluster.title}
@@ -1032,6 +1059,11 @@ export function SemanticCareerIntelligenceField({
                     <div style={{ fontSize: "8px", color: SIL_TOKENS.colors.textMuted }}>
                       {cluster.evidenceCount !== undefined ? `${cluster.evidenceCount} ${t.field.evidences}` : t.field.noEvidence}
                     </div>
+                    {cluster.projectionState === "PROPOSED" && (
+                      <div style={{ fontSize: "8px", color: SIL_TOKENS.colors.textMuted, marginTop: "3px" }}>
+                        EVIDENCE PASSED // SEMANTIC DEFINITION NOT RUN
+                      </div>
+                    )}
                   </div>
                 ))}
               </div>

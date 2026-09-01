@@ -48,14 +48,17 @@ export function OrbitalSubspaceView({
     if (!realClusters) return [];
     if (!sourcePresentation || sourcePresentation.labels.length === 0) return realClusters;
     
-    return realClusters.map(cl => ({
+    return realClusters.map(cl => {
+      if (cl.projectionState === "PROPOSED") return cl;
+      return {
       ...cl,
       evidences: cl.evidences.map((ev, i) => ({
         ...ev,
         sourceType: (sourcePresentation.labels[i % sourcePresentation.labels.length] || "SRC") as any,
         title: sourcePresentation.titles[i % sourcePresentation.titles.length] || ev.title || "Source Document"
       }))
-    }));
+      };
+    });
   }, [realClusters, sourcePresentation]);
 
   const activeCluster = displayClusters.find((c) => c.id === selectedClusterId) || displayClusters[0];
@@ -171,8 +174,15 @@ export function OrbitalSubspaceView({
                   fontWeight: 700
                 }}
               >
-                CONFIDENCE {cluster.confidence || "UNAVAILABLE"}
+                {cluster.projectionState === "PROPOSED"
+                  ? "PROPOSED"
+                  : `CONFIDENCE ${cluster.confidence || "UNAVAILABLE"}`}
               </div>
+              {cluster.projectionState === "PROPOSED" && (
+                <div style={{ fontSize: "9px", color: SIL_TOKENS.colors.textMuted, marginTop: "4px" }}>
+                  EVIDENCE PASSED // SEMANTIC DEFINITION NOT RUN
+                </div>
+              )}
             </div>
           ))}
         </div>
@@ -211,7 +221,9 @@ export function OrbitalSubspaceView({
               >
                 <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "6px" }}>
                   <span style={{ fontSize: "10px", color: SIL_TOKENS.colors.cyanActive, fontWeight: 700 }}>
-                    [{ev.sourceType}] VERIFIED EVIDENCE NODE
+                    [{ev.sourceType}] {activeCluster.projectionState === "PROPOSED"
+                      ? "SOURCE-MATCH EVIDENCE NODE"
+                      : "VERIFIED EVIDENCE NODE"}
                   </span>
                   <span style={{ fontSize: "10px", color: SIL_TOKENS.colors.textMuted }}>ID: {ev.id}</span>
                 </div>
@@ -276,8 +288,16 @@ export function OrbitalSubspaceView({
             }}
           >
             {activeEvidence.snippet}
-            {"\n\n// METADATA:\n// SYNTX Semantic Grounding ID: CONDYN-EVIDENCE-VERIFIED-492\n// Latency: 0.2ms | Signature Matching: PASSED"}
+            {activeCluster.projectionState !== "PROPOSED" &&
+              "\n\n// METADATA:\n// SYNTX Semantic Grounding ID: CONDYN-EVIDENCE-VERIFIED-492\n// Latency: 0.2ms | Signature Matching: PASSED"}
           </pre>
+          {activeCluster.projectionState === "PROPOSED" && (
+            <div style={{ fontSize: "10px", color: SIL_TOKENS.colors.textMuted, lineHeight: 1.7 }}>
+              STATE: PROPOSED<br />
+              EVIDENCE: SOURCE MATCH<br />
+              SEMANTIC DEFINITION: NOT RUN
+            </div>
+          )}
         </div>
       )}
     </div>

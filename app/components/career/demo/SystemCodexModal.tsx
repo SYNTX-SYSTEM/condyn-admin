@@ -79,7 +79,7 @@ export function SystemCodexModal({
               <p>Im Zentrum des Planetariums steht der <strong>Identity Core</strong> (der unverfälschte Identitätskern aus Ihren Quellen). Um ihn kreisen 6 Resonanz-Orbits:</p>
               <ul>
                 <li><strong>01 IDENTITY CORE:</strong> Rohvermessung Ihrer professionellen Identität.</li>
-                <li><strong>02 CAPABILITY FIELD:</strong> Verifizierte Fähigkeiten und Cluster.</li>
+                <li><strong>02 CAPABILITY FIELD:</strong> Fähigkeitscluster; Proposal-Status wird bei Bedarf explizit angezeigt.</li>
                 <li><strong>03 RESONANCE ORBITS:</strong> Schnittmengen mit Organisationen und Marktsegmenten.</li>
                 <li><strong>04 ROLE MANIFESTATION:</strong> Konkrete Rollen und Positionen.</li>
                 <li><strong>05 TENSION FIELD:</strong> Lückenanalyse, fehlende Evidenzen und Reibungspunkte.</li>
@@ -201,7 +201,7 @@ export function SystemCodexModal({
               <p>At the center of the Planetarium sits the <strong>Identity Core</strong>. Orbiting around it are 6 semantic resonance fields:</p>
               <ul>
                 <li><strong>01 IDENTITY CORE:</strong> Raw measurement of professional identity.</li>
-                <li><strong>02 CAPABILITY FIELD:</strong> Verified capability clusters.</li>
+                <li><strong>02 CAPABILITY FIELD:</strong> Capability clusters; proposal state is shown explicitly when present.</li>
                 <li><strong>03 RESONANCE ORBITS:</strong> Intersections with organizations and market domains.</li>
                 <li><strong>04 ROLE MANIFESTATION:</strong> Concrete roles and positions.</li>
                 <li><strong>05 TENSION FIELD:</strong> Missing capabilities and diagnostic friction.</li>

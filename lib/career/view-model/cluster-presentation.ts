@@ -13,6 +13,9 @@ export interface SilClusterPresentation {
   dx: number;
   dy: number;
   evidences: SilClusterEvidence[];
+  projectionState?: "PROPOSED";
+  evidenceState?: "EVIDENCE_PASSED";
+  semanticDefinitionState?: "NOT_RUN";
 }
 
 export function buildSilClusterPresentation(
@@ -84,13 +87,14 @@ export function buildSilClusterPresentation(
       const dx = Math.round(Math.cos(angle) * radius);
       const dy = Math.round(Math.sin(angle) * radius);
 
-      let confStr = undefined;
-      if (confKey && item[confKey] != null) {
+      let confStr: string | undefined;
+      if (confStr === undefined && confKey && item[confKey] != null) {
         confStr = `${Math.round(item[confKey] * 100)}%`;
       }
 
       // Generate localized evidence nodes for this cluster
-      const snippet = item.evidenceSummary || item.rationale || item.description;
+      const proposalEvidence = item.projectionState === "PROPOSED" ? item.evidence || [] : [];
+      const snippet = proposalEvidence[0]?.exactQuote || item.evidenceSummary || item.rationale || item.description;
       const nodeId =
         item.id ||
         item.capabilityId ||
@@ -102,7 +106,12 @@ export function buildSilClusterPresentation(
         item.companyId ||
         `cl-${activeStageId}-${idx}`;
       
-      const evidences: SilClusterEvidence[] = snippet ? [
+      const evidences: SilClusterEvidence[] = proposalEvidence.length > 0
+        ? proposalEvidence.map((evidence: any) => {
+            const source = (activeData.sources || []).find((item: any) => item.sourceDocumentId === evidence.sourceDocumentId);
+            return { id: evidence.evidenceId, title: source?.sourceTitle || evidence.sourceDocumentId, sourceType: source?.sourceKind || "SRC", snippet: evidence.exactQuote };
+          })
+        : snippet ? [
         {
           id: `ev-${activeStageId}-${idx}-1`,
           title: "Primary Evidence",
@@ -116,6 +125,11 @@ export function buildSilClusterPresentation(
         title: item[titleKey] || "Unknown Node",
         confidence: confStr,
         evidenceCount: evidences.length > 0 ? evidences.length : undefined,
+        ...(item.projectionState === "PROPOSED" ? {
+          projectionState: "PROPOSED" as const,
+          evidenceState: "EVIDENCE_PASSED" as const,
+          semanticDefinitionState: "NOT_RUN" as const
+        } : {}),
         dx,
         dy,
         evidences
@@ -127,8 +141,9 @@ export function buildSilClusterPresentation(
     subClusters = [];
   }
 
-  // Bind authoritative source telemetry to evidence presentation
+  // Legacy evidence has no canonical source id; proposal evidence was mapped above.
   subClusters.forEach((cl) => {
+    if (activeData?.capabilities?.some((item: any) => item.projectionState === "PROPOSED" && item.evidence?.some((evidence: any) => evidence.evidenceId === cl.evidences[0]?.id))) return;
     cl.evidences.forEach((ev, i) => {
       ev.sourceType = sourcePresentation.labels[i % sourcePresentation.labels.length] || "SRC";
       ev.title = sourcePresentation.titles[i % sourcePresentation.titles.length] || "Source Document";
