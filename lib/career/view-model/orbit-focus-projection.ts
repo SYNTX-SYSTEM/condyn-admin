@@ -1,11 +1,17 @@
 import type { DemoCareerIntelligenceData } from "../../../app/career/demo/demo-data";
 import type { SilOrbitStageId } from "./sil-language";
+import {
+  buildSourceSatellitePresentation,
+  type SourceSatellitePresentation
+} from "./source-satellite-presentation";
 
 export interface OrbitFocusItem {
   id: string;
   title: string;
   /** Existing stage-owned metadata. It is never synthesized as evidence. */
   secondary: string[];
+  /** Optional display-only grammar for source satellites. */
+  sourceSatellite?: SourceSatellitePresentation;
 }
 
 function present(values: Array<string | undefined>) {
@@ -22,11 +28,16 @@ export function buildOrbitFocusProjection(
 ): OrbitFocusItem[] {
   switch (stageId) {
     case "01":
-      return data.sources.map((source) => ({
-        id: source.sourceDocumentId || source.contentHash,
-        title: source.sourceTitle,
-        secondary: present([source.sourceKind, source.sourceUri, source.contentHash])
-      }));
+      return data.sources.map((source) => {
+        const sourceSatellite = buildSourceSatellitePresentation(source);
+
+        return {
+          id: source.sourceDocumentId || source.contentHash,
+          title: sourceSatellite.displayTitle,
+          secondary: present([source.sourceKind, source.sourceUri, source.contentHash]),
+          sourceSatellite
+        };
+      });
     case "02":
       return data.capabilities.map((capability) => ({
         id: capability.id,
