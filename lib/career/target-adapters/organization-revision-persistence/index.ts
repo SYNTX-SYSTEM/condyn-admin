@@ -1,0 +1,1 @@
+export { PostgresTargetOrganizationRevisionRepository } from "./postgres";
