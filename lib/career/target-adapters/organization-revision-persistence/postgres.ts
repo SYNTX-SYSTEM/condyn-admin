@@ -30,6 +30,7 @@ function capturePersistedRevision(
   requestedRevisionId?: string
 ): TargetOrganizationRevision {
   try {
+    // Direct durable reads expose record corruption distinctly from a failed persistence reread.
     if (
       !nonEmptyString(row.targetOrganizationRevisionId) ||
       !nonEmptyString(row.targetOrganizationEntityId) ||
@@ -49,6 +50,10 @@ function capturePersistedRevision(
   }
 }
 
+/**
+ * PostgreSQL implements storage only. PK conflict rereads the durable winner: equality is replay,
+ * divergence is immutable conflict, never update or replacement semantics.
+ */
 export class PostgresTargetOrganizationRevisionRepository implements TargetOrganizationRevisionRepository {
   constructor(private readonly database: PostgresJsDatabase) {}
 

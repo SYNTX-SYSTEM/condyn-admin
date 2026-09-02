@@ -2,6 +2,7 @@ import type { TargetOrganizationRevision } from "../types";
 import { createBoundTargetOrganizationRevisionPersister, sameTargetOrganizationRevisionData } from "./persister";
 import type { BoundTargetOrganizationRevisionPersister, TargetOrganizationRevisionRepository } from "./types";
 
+/** Reference persistence for immutable revisions; it intentionally has no descriptor lookup or resolution. */
 export class InMemoryTargetOrganizationRevisionRepository implements TargetOrganizationRevisionRepository {
   readonly #revisions = new Map<string, TargetOrganizationRevision>();
 

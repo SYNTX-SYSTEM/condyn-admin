@@ -2,6 +2,7 @@ import { createHash } from "node:crypto";
 import type { TargetOrganizationRevisionInput } from "./types";
 
 export function deriveTargetOrganizationRevisionId(input: TargetOrganizationRevisionInput): string {
+  // Descriptive revision state determines this immutable ID; createdAt is intentionally absent.
   const canonicalIdentity = [
     "TARGET_ORGANIZATION_REVISION_V1",
     input.targetOrganizationEntityId,

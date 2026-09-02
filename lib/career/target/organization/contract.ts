@@ -58,6 +58,7 @@ function asInput(value: unknown): TargetOrganizationRevisionInput {
     "targetOrganizationEntityId", "previousRevisionId", "organizationDescriptor",
     "descriptorKind", "schemaVersion", "createdAt"
   ]);
+  // T2 accepts descriptive declared-name state only; it performs no organization identity resolution.
   if (
     !nonEmptyString(captured.targetOrganizationEntityId) ||
     !(captured.previousRevisionId === null || nonEmptyString(captured.previousRevisionId)) ||
@@ -77,6 +78,7 @@ export function createTargetOrganizationEntity(input: TargetOrganizationEntity):
 }
 
 export function createTargetOrganizationRevision(input: TargetOrganizationRevisionInput): TargetOrganizationRevision {
+  // Construction is pure: it creates no source/role binding, relation, resonance, or matching state.
   const canonical = asInput(input);
   const revision: TargetOrganizationRevision = {
     targetOrganizationRevisionId: deriveTargetOrganizationRevisionId(canonical),

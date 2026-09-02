@@ -16,6 +16,7 @@ export interface TargetOrganizationRevisionPersistenceDependencies {
   writeRevision(revision: TargetOrganizationRevision): Promise<void>;
 }
 
+// Persistence equality protects immutability only; it is not organization identity authority.
 const sameData = (left: unknown, right: unknown): boolean => {
   if (left === right) return true;
   if (left === null || right === null || typeof left !== "object" || typeof right !== "object") return false;
@@ -73,8 +74,10 @@ async function rereadPersistedRevision(
   expected: TargetOrganizationRevision
 ): Promise<TargetOrganizationRevision> {
   try {
+    // A successful write is insufficient: storage must contain exactly the requested artifact.
     return captureExactReread(await getRevisionById(expected.targetOrganizationRevisionId), expected);
   } catch (error) {
+    // Direct reads retain the record error; only this mandatory final reread maps it to persistence invalid.
     if (error instanceof Error && error.message === "ERR_TARGET_ORGANIZATION_REVISION_POSTGRES_RECORD_INVALID") {
       return fail("ERR_TARGET_ORGANIZATION_REVISION_PERSISTENCE_INVALID");
     }
@@ -93,6 +96,7 @@ export function createBoundTargetOrganizationRevisionPersister(
     async persist(revision: TargetOrganizationRevision): Promise<TargetOrganizationRevision> {
       const expected = captureTargetOrganizationRevision(revision);
       if (expected.previousRevisionId !== null) {
+        // Only the caller-supplied immediate parent is validated; siblings remain legitimate forks.
         const parent = await getRevisionById(expected.previousRevisionId);
         if (parent === null) fail("ERR_TARGET_ORGANIZATION_REVISION_PARENT_NOT_FOUND");
         captureParent(parent, expected.previousRevisionId, expected.targetOrganizationEntityId);
