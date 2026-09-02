@@ -45,7 +45,11 @@ function capturePersistedRevision(
   }
 }
 
-/** Concrete PostgreSQL composition. Raw insert is private; callers receive a bound persister. */
+/**
+ * Concrete PostgreSQL composition. Raw insert is private; callers receive a bound persister.
+ * Primary-key conflict is resolved by rereading the durable winner: exact equality is replay,
+ * while divergence is an immutable conflict rather than an update or replacement.
+ */
 export class PostgresTargetSourceRevisionRepository implements TargetSourceRevisionRepository {
   constructor(private readonly database: PostgresJsDatabase) {}
 

@@ -63,6 +63,7 @@ function asInput(value: unknown): TargetSourceRevisionInput {
     "rawContentHash", "normalizedContentHash", "normalizedContent",
     "normalizationVersion", "schemaVersion", "createdAt"
   ]);
+  // Producer failures such as NO_SOURCE remain outside T1; they never become revision states.
   if (
     !nonEmptyString(captured.targetSourceEntityId) ||
     !(captured.previousRevisionId === null || nonEmptyString(captured.previousRevisionId)) ||
@@ -86,6 +87,7 @@ export function createTargetSourceEntity(input: TargetSourceEntity): TargetSourc
 }
 
 export function createTargetSourceRevision(input: TargetSourceRevisionInput): TargetSourceRevision {
+  // Parent existence and durable storage belong to the persistence boundary.
   const canonical = asInput(input);
   const revision: TargetSourceRevision = {
     targetSourceRevisionId: deriveTargetSourceRevisionId(canonical),
@@ -96,6 +98,7 @@ export function createTargetSourceRevision(input: TargetSourceRevisionInput): Ta
 }
 
 export function assertTargetSourceRevision(value: unknown): asserts value is TargetSourceRevision {
+  // Validate the complete immutable artifact; malformed input is never repaired in place.
   const captured = capture(value) as Record<string, unknown>;
   exactKeys(captured, [
     "targetSourceRevisionId", "targetSourceEntityId", "previousRevisionId",

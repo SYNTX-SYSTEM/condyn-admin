@@ -14,6 +14,7 @@ export interface TargetSourceRevisionPersistenceDependencies {
   writeRevision(revision: TargetSourceRevision): Promise<void>;
 }
 
+// Structural equality enforces immutable persistence; it is not semantic equivalence or authority.
 const sameData = (left: unknown, right: unknown): boolean => {
   if (left === right) return true;
   if (left === null || right === null || typeof left !== "object" || typeof right !== "object") return false;
@@ -71,6 +72,7 @@ async function rereadPersistedRevision(
   expected: TargetSourceRevision
 ): Promise<TargetSourceRevision> {
   try {
+    // A successful write is insufficient: durable state must exactly match the caller artifact.
     return captureExactReread(await getRevisionById(expected.targetSourceRevisionId), expected);
   } catch (error) {
     if (error instanceof Error && error.message === "ERR_TARGET_SOURCE_REVISION_POSTGRES_RECORD_INVALID") {
@@ -80,7 +82,11 @@ async function rereadPersistedRevision(
   }
 }
 
-/** Internal constructor: only repositories expose a persister to normal callers. */
+/**
+ * Internal constructor: repositories retain raw writes while callers receive a bound persister.
+ * It validates only the immediate parent supplied by the revision; that relation permits forks,
+ * not a mutable head.
+ */
 export function createBoundTargetSourceRevisionPersister(
   dependencies: TargetSourceRevisionPersistenceDependencies
 ): BoundTargetSourceRevisionPersister {

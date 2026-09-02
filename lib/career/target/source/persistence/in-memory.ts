@@ -2,7 +2,10 @@ import type { TargetSourceRevision } from "../types";
 import { createBoundTargetSourceRevisionPersister, sameTargetSourceRevisionData } from "./persister";
 import type { BoundTargetSourceRevisionPersister, TargetSourceRevisionRepository } from "./types";
 
-/** Reference repository: immutable state is writable only through its bound persister. */
+/**
+ * Reference repository: immutable state is writable only through its bound persister. Exact
+ * replay is idempotent; a divergent payload for the same revision ID is an immutable conflict.
+ */
 export class InMemoryTargetSourceRevisionRepository implements TargetSourceRevisionRepository {
   readonly #revisions = new Map<string, TargetSourceRevision>();
 

@@ -1,7 +1,11 @@
 import type { TargetSourceRevision } from "../../target/source";
 import { type AnyPgColumn, jsonb, pgTable, text } from "drizzle-orm/pg-core";
 
-/** Adapter-owned physical contract; provisioning remains outside the Target Source core. */
+/**
+ * Adapter-owned physical contract; Target Source core remains database-independent. The
+ * duplicated identity columns are checked against payload, while restrictive self-FK deletion
+ * preserves physical lineage without creating a current or head selection.
+ */
 export const targetSourceRevisions = pgTable("target_source_revisions", {
   targetSourceRevisionId: text("target_source_revision_id").primaryKey(),
   targetSourceEntityId: text("target_source_entity_id").notNull(),

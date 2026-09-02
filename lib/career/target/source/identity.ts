@@ -1,7 +1,10 @@
 import { createHash } from "node:crypto";
 import type { TargetSourceRevisionInput } from "./types";
 
-/** createdAt is deliberately excluded: it is audit metadata, never identity. */
+/**
+ * Canonical state inputs deterministically identify an immutable revision. createdAt is
+ * deliberately excluded: audit metadata must never imply ordering or authority.
+ */
 export function deriveTargetSourceRevisionId(input: TargetSourceRevisionInput): string {
   const canonicalIdentity = [
     "TARGET_SOURCE_REVISION_V1",
