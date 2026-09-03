@@ -1,0 +1,5 @@
+import { createHash } from "node:crypto";
+import { canonicalizeRequirementEvidence, canonicalizeTargetRequirementPayload, stableTargetRequirementJson } from "./canonicalize";
+import type { TargetRequirementRevisionInput } from "./types";
+/** Run, provider, and admission identity stay out: this is semantic revision identity only. */
+export function deriveTargetRequirementRevisionId(input: TargetRequirementRevisionInput): string { return `TRQREV_${createHash("sha256").update(stableTargetRequirementJson(["TARGET_REQUIREMENT_REVISION_V1", input.targetRequirementEntityId, input.targetRoleProfileRevisionId, input.previousRevisionId, canonicalizeTargetRequirementPayload(input.requirement), canonicalizeRequirementEvidence(input.evidence), input.sourceEvidenceState, input.classificationValidationState, input.semanticInterpretationState, input.requiredLevelValidationState, input.necessityValidationState, input.scopeValidationState, input.matchingEligibility, input.proposalState, input.authorityState, input.schemaVersion]), "utf8").digest("hex").slice(0, 32).toUpperCase()}`; }

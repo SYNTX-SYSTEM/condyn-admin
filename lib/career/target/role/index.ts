@@ -4,3 +4,4 @@ export * from "./source-binding";
 export * from "./organization-binding";
 export * from "./profile";
 export * from "./reconstruction";
+export * from "./requirement";
