@@ -10,3 +10,4 @@ export * from "./discovery";
 export * from "./convergence";
 export * from "./runtime";
 export * from "./projection";
+export * from "./relation-operand";

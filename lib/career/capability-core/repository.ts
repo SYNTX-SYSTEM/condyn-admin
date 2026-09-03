@@ -18,6 +18,7 @@ export interface CapabilityCoreRepository {
   saveVerificationRun(run: CapabilityVerificationRun): Promise<void>;
   getVerificationRunById(verificationRunId: string): Promise<CapabilityVerificationRun | null>;
   getSnapshotByKey(snapshotKey: string): Promise<VerifiedCapabilitySnapshot | null>;
+  getSnapshotById(snapshotId: string): Promise<VerifiedCapabilitySnapshot | null>;
   saveSnapshot(snapshot: VerifiedCapabilitySnapshot): Promise<void>;
   createVerifiedCapabilitySnapshotPublisher(): VerifiedCapabilitySnapshotPublisher;
 }
@@ -151,6 +152,11 @@ export class InMemoryCapabilityCoreRepository implements CapabilityCoreRepositor
     return run ? structuredClone(run) : null;
   }
   async getSnapshotByKey(snapshotKey: string): Promise<VerifiedCapabilitySnapshot | null> { const snapshot = this.snapshots.get(snapshotKey); return snapshot ? structuredClone(snapshot) : null; }
+  async getSnapshotById(snapshotId: string): Promise<VerifiedCapabilitySnapshot | null> {
+    const snapshots = [...this.snapshots.values()].filter((snapshot) => snapshot.snapshotId === snapshotId);
+    if (snapshots.length > 1) return fail("ERR_CAPABILITY_SNAPSHOT_ID_AMBIGUOUS");
+    return snapshots[0] ? structuredClone(snapshots[0]) : null;
+  }
   async saveSnapshot(snapshot: VerifiedCapabilitySnapshot): Promise<void> {
     assertGenericSnapshotRoute(snapshot);
     await this.saveSnapshotImmutable(snapshot);
@@ -227,6 +233,15 @@ export class PostgresCapabilityCoreRepository implements CapabilityCoreRepositor
     if (!snapshot) return null;
     assertVerifiedCapabilitySnapshot(snapshot);
     return snapshot;
+  }
+  async getSnapshotById(snapshotId: string): Promise<VerifiedCapabilitySnapshot | null> {
+    const rows = await this.database.select({ payload: careerCapabilitySnapshots.payload }).from(careerCapabilitySnapshots).where(eq(careerCapabilitySnapshots.snapshotId, snapshotId)).limit(2);
+    if (rows.length > 1) return fail("ERR_CAPABILITY_SNAPSHOT_ID_AMBIGUOUS");
+    const snapshot = rows[0]?.payload as VerifiedCapabilitySnapshot | undefined;
+    if (!snapshot) return null;
+    assertVerifiedCapabilitySnapshot(snapshot);
+    if (snapshot.snapshotId !== snapshotId) return fail("ERR_CAPABILITY_SNAPSHOT_ID_AMBIGUOUS");
+    return structuredClone(snapshot);
   }
   async saveSnapshot(snapshot: VerifiedCapabilitySnapshot): Promise<void> {
     assertGenericSnapshotRoute(snapshot);

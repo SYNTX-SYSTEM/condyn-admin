@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { buildSnapshotId, computeSnapshotKey, createCapabilityRelation, createVerifiedCapabilitySnapshot, InMemoryCapabilityCoreRepository, type EvidenceClaim, type VerifiedCapability } from "../../../lib/career/capability-core";
+import { assertVerifiedCapabilitySnapshot, buildSnapshotId, computeSnapshotKey, createCapabilityRelation, createVerifiedCapabilitySnapshot, InMemoryCapabilityCoreRepository, type EvidenceClaim, type VerifiedCapability } from "../../../lib/career/capability-core";
 
 const base = { sourceBundleHash: "source", kernelVersion: "kernel", prompt: { checksum: "prompt" }, inference: { provider: "openai", model: "gpt" }, schemaVersion: "1" };
 const evidence: EvidenceClaim = { evidenceId: "EVD_1", sourceDocumentRef: "DOC_1", declaredLocation: "Page 1", exactQuote: "quote", verification: { status: "VERIFIED" } };
@@ -29,6 +29,22 @@ describe("Capability Core immutable snapshot", () => {
     const loaded = await repository.getSnapshotByKey(computeSnapshotKey(saved));
     loaded!.capabilities[0].canonicalName = "Mutated";
     expect((await repository.getSnapshotByKey(computeSnapshotKey(saved)))!.capabilities[0].canonicalName).toBe("Gold");
+  });
+  it("validates all summary fields after PostgreSQL JSONB reorders object keys", () => {
+    const persisted = structuredClone(snapshot());
+    const summary = persisted.validationSummary;
+    // PostgreSQL JSONB does not preserve JavaScript insertion order for object keys.
+    persisted.validationSummary = {
+      candidateCount: summary.candidateCount,
+      rejectedEvidenceCount: summary.rejectedEvidenceCount,
+      verifiedEvidenceCount: summary.verifiedEvidenceCount,
+      rejectedCandidateCount: summary.rejectedCandidateCount,
+      unresolvedRelationCount: summary.unresolvedRelationCount,
+      verifiedCapabilityCount: summary.verifiedCapabilityCount
+    };
+    expect(() => assertVerifiedCapabilitySnapshot(persisted)).not.toThrow();
+    expect(() => assertVerifiedCapabilitySnapshot({ ...persisted, validationSummary: { ...persisted.validationSummary, verifiedEvidenceCount: 2 } })).toThrow(/VALIDATION_SUMMARY_MISMATCH/);
+    expect(() => assertVerifiedCapabilitySnapshot({ ...persisted, validationSummary: { ...persisted.validationSummary, unexpectedCount: 0 } as typeof persisted.validationSummary })).toThrow(/VALIDATION_SUMMARY_MISMATCH/);
   });
   it("enforces relation references in both endpoint capabilities", () => {
     const second: VerifiedCapability = { ...capability, capabilityId: "G02", canonicalName: "Second", relationIds: [] };

@@ -57,7 +57,11 @@ export function assertVerifiedCapabilitySnapshot(snapshot: VerifiedCapabilitySna
     if (!source.relationIds.includes(relation.relationId) || !target.relationIds.includes(relation.relationId)) throw new Error(`ERR_SNAPSHOT_RELATION_ENDPOINT_INDEX: ${relation.relationId}`);
   });
   const expectedSummary = { candidateCount: snapshot.validationSummary.candidateCount, rejectedCandidateCount: snapshot.validationSummary.rejectedCandidateCount, verifiedCapabilityCount: snapshot.capabilities.length, verifiedEvidenceCount: snapshot.evidence.filter(({ verification }) => verification.status === "VERIFIED").length, rejectedEvidenceCount: snapshot.evidence.filter(({ verification }) => verification.status !== "VERIFIED").length, unresolvedRelationCount: snapshot.relations.filter(({ relationType }) => relationType === "UNRESOLVED").length };
-  if (JSON.stringify(snapshot.validationSummary) !== JSON.stringify(expectedSummary)) throw new Error("ERR_SNAPSHOT_VALIDATION_SUMMARY_MISMATCH");
+  // JSONB canonicalizes object-key order. Validate the complete named summary instead of its transport order.
+  const actualSummary = snapshot.validationSummary;
+  const expectedSummaryKeys = Object.keys(expectedSummary).sort();
+  const actualSummaryKeys = Object.keys(actualSummary).sort();
+  if (expectedSummaryKeys.length !== actualSummaryKeys.length || expectedSummaryKeys.some((key, index) => key !== actualSummaryKeys[index]) || expectedSummaryKeys.some((key) => actualSummary[key as keyof typeof actualSummary] !== expectedSummary[key as keyof typeof expectedSummary])) throw new Error("ERR_SNAPSHOT_VALIDATION_SUMMARY_MISMATCH");
 }
 
 export function createVerifiedCapabilitySnapshot(input: VerifiedSnapshotInput, capabilities: VerifiedCapability[], evidence: EvidenceClaim[], relations: CapabilityRelation[] = []): VerifiedCapabilitySnapshot {
