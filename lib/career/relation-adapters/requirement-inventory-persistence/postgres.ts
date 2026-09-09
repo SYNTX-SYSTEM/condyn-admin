@@ -49,6 +49,20 @@ export class PostgresRequirementInventoryRepository implements RequirementInvent
     } catch { return fail("ERR_REQUIREMENT_INVENTORY_PERSISTENCE_INVALID"); }
   }
 
+  async listAggregatesByInventoryAndSnapshot(input: { targetRoleRequirementInventoryId: string; verifiedCapabilitySnapshotId: string }): Promise<RequirementRelationAggregate[]> {
+    if (!input.targetRoleRequirementInventoryId || !input.verifiedCapabilitySnapshotId) fail("ERR_REQUIREMENT_INVENTORY_PERSISTENCE_INVALID");
+    const rows = await this.database.select().from(requirementRelationAggregates).where(eq(requirementRelationAggregates.targetRoleRequirementInventoryId, input.targetRoleRequirementInventoryId));
+    const values = await Promise.all(rows.filter(row => row.verifiedCapabilitySnapshotId === input.verifiedCapabilitySnapshotId).map(row => this.getAggregateById(row.requirementRelationAggregateId)));
+    return values.filter((value): value is RequirementRelationAggregate => value !== null).sort((a, b) => a.requirementRelationAggregateId.localeCompare(b.requirementRelationAggregateId));
+  }
+
+  async listAggregatesByExactLocator(input: { targetRoleRequirementInventoryId: string; verifiedCapabilitySnapshotId: string; targetRequirementEntityId: string; targetRequirementRevisionId: string }): Promise<RequirementRelationAggregate[]> {
+    // This is discovery, not selection: callers receive every exact historical aggregate, never a winner/current view.
+    if (!input.targetRoleRequirementInventoryId || !input.verifiedCapabilitySnapshotId || !input.targetRequirementEntityId || !input.targetRequirementRevisionId) fail("ERR_REQUIREMENT_INVENTORY_PERSISTENCE_INVALID");
+    const candidates = await this.listAggregatesByInventoryAndSnapshot(input);
+    return candidates.filter(value => value.targetRequirementEntityId === input.targetRequirementEntityId && value.targetRequirementRevisionId === input.targetRequirementRevisionId);
+  }
+
   async persistInventory(value: TargetRoleRequirementInventory): Promise<TargetRoleRequirementInventory> {
     assertTargetRoleRequirementInventory(value);
     const existing = await this.getInventoryById(value.targetRoleRequirementInventoryId);
