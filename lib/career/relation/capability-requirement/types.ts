@@ -105,6 +105,9 @@ export interface CapabilityRequirementRelationProviderEvaluation {
 export interface CapabilityRequirementRelationProvider {
   execute(input: { candidateCapabilityOperandId: string; targetRequirementRevisionId: string; candidate: { canonicalName: string; structuralDefinition: string; primaryDomain: string | null }; requirement: { capabilityExpression: string | null; structuralDefinition: string | null; normalizedStatement: string } }): Promise<{ rawOutput: string; evaluation: unknown }>;
 }
+/** Historical terminal discovery for one exact pair/protocol; it never ranks or selects a match. */
+export interface CapabilityRequirementRelationProtocol { relationProducerVersion: string; requirementAdmissionPolicyVersion: string; semanticPolicyVersion: string; levelPolicyVersion: string; scopePolicyVersion: string; evidencePolicyVersion: string; }
+export type CapabilityRequirementPairTerminal = { disposition: "MATERIALIZED_RELATION"; relation: CapabilityRequirementRelation } | { disposition: "EVALUATION_FAILED"; result: CapabilityRequirementRelationEvaluationResult } | { disposition: "NOT_EVALUATED" };
 
 export interface CapabilityRequirementLevelPolicy {
   version: string;

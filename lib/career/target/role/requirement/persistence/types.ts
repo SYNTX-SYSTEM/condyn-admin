@@ -3,7 +3,7 @@ import type { TargetRoleOrganizationBindingRevision } from "../../organization-b
 import type { TargetRoleProfileRevision } from "../../profile";
 import type { TargetRequirementRevision } from "../types";
 export interface BoundTargetRequirementRevisionPersister { persist(revision: TargetRequirementRevision): Promise<TargetRequirementRevision>; }
-export interface TargetRequirementRevisionRepository { getRevisionById(id: string): Promise<TargetRequirementRevision | null>; createTargetRequirementRevisionPersister(): BoundTargetRequirementRevisionPersister; }
+export interface TargetRequirementRevisionRepository { getRevisionById(id: string): Promise<TargetRequirementRevision | null>; listTargetRequirementRevisionsByTargetRoleProfileRevisionId(targetRoleProfileRevisionId: string): Promise<TargetRequirementRevision[]>; createTargetRequirementRevisionPersister(): BoundTargetRequirementRevisionPersister; }
 /**
  * Exact lineage operands remain owned by their canonical revision repositories.
  * This contains no current-revision selection or derived organization identity.
