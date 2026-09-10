@@ -1,0 +1,2 @@
+export { PostgresRecommendationPolicyRevisionRepository, PostgresRecommendationProposalRepository } from "./postgres";
+export { recommendationPolicyRevisions, recommendationPolicyRules, recommendationProposals, recommendationProposalItems, recommendationProposalRequirementReferences, recommendationProposalAggregateReferences, recommendationProposalRelationReferences, recommendationProposalResultReferences, recommendationProposalOperandReferences } from "./postgres-schema";
