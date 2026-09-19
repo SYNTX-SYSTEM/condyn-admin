@@ -1,10 +1,12 @@
 export * from "./schema";
 export * from "./source";
+export * from "./source-bundle";
 export * from "./hashing";
 export * from "./evidence-validator";
 export * from "./identity";
 export * from "./snapshot";
 export { InMemoryCapabilityCoreRepository, PostgresCapabilityCoreRepository } from "./repository";
+export { PostgresCandidateSourceBundleRepository } from "./source-bundle-postgres";
 export type { CapabilityCoreRepository } from "./repository";
 export * from "./discovery";
 export * from "./convergence";

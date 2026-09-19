@@ -10,6 +10,7 @@ import postgres from "postgres";
 import { drizzle } from "drizzle-orm/postgres-js";
 import * as schema from "./schema";
 import { initT11ProductionPersistenceSchema } from "./t11-persistence-schema";
+import { initCanonicalSilReadLineageSchema } from "../sil-projection/persistence-schema";
 
 const connectionString = process.env.DATABASE_URL || "postgresql://postgres:postgres@localhost:5432/condyn";
 
@@ -182,6 +183,7 @@ export async function initDbSchema(): Promise<void> {
       await q;
     }
     await initT11ProductionPersistenceSchema(targetSql);
+    await initCanonicalSilReadLineageSchema(targetSql);
   };
 
   try {
