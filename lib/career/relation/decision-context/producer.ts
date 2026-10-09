@@ -1,6 +1,6 @@
 import type { DecisionAuthorityGrantRevisionRepository } from "../decision-authority";
 import type { RecommendationProposalRepository } from "../recommendation-proposal";
-import { createCareerDecisionContextRevision } from "./contract";
+import { createCareerDecisionContextRevision, sameCareerDecisionContext } from "./contract";
 import type { CareerDecisionContextRevisionRepository } from "./persistence";
 import type { CareerDecisionContextRevisionInput } from "./types";
 
@@ -23,8 +23,9 @@ export async function produceAndPersistCareerDecisionContextRevision(input: Care
   const value = createCareerDecisionContextRevision(exactAuthority, exactProposal, input);
   try {
     const persisted = await dependencies.contexts.persistCareerDecisionContextRevision(value);
-    if (JSON.stringify(persisted) !== JSON.stringify(value)) fail("ERR_CAREER_DECISION_CONTEXT_PERSISTENCE_FAILED");
-    return persisted;
+    // Object key order is non-semantic (PostgreSQL JSONB rereads reorder keys); equality is the repository's own canonical comparison.
+    if (!sameCareerDecisionContext(persisted, value)) fail("ERR_CAREER_DECISION_CONTEXT_PERSISTENCE_FAILED");
+    return structuredClone(value);
   } catch (error) {
     if (error instanceof Error && error.message === "ERR_CAREER_DECISION_CONTEXT_IMMUTABLE_CONFLICT") throw error;
     return fail("ERR_CAREER_DECISION_CONTEXT_PERSISTENCE_FAILED");

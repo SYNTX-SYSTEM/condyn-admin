@@ -54,6 +54,26 @@ const input = (override: Record<string, unknown> = {}) => ({
 });
 
 describe("T11B CareerDecisionContextRevision", () => {
+  it("accepts a persisted reread whose object keys come back in storage order, as PostgreSQL JSONB returns them", async () => {
+    const authorities = new InMemoryDecisionAuthorityGrantRevisionRepository();
+    const proposals = new InMemoryRecommendationProposalRepository();
+    const inner = new InMemoryCareerDecisionContextRevisionRepository();
+    await authorities.persistDecisionAuthorityGrantRevision(authority);
+    await proposals.persistRecommendationProposal(proposal);
+    const reorder = (value: unknown): unknown => Array.isArray(value)
+      ? value.map(reorder)
+      : value !== null && typeof value === "object"
+        ? Object.fromEntries(Object.keys(value as object).sort((left, right) => left.length - right.length || (left < right ? -1 : 1)).map(key => [key, reorder((value as Record<string, unknown>)[key])]))
+        : value;
+    const contexts = {
+      getCareerDecisionContextRevisionById: async (id: string) => reorder(await inner.getCareerDecisionContextRevisionById(id)) as never,
+      persistCareerDecisionContextRevision: async (value: Parameters<typeof inner.persistCareerDecisionContextRevision>[0]) => reorder(await inner.persistCareerDecisionContextRevision(value)) as never,
+    };
+    const value = await produceAndPersistCareerDecisionContextRevision(input(), { authorities, proposals, contexts });
+    assertCareerDecisionContextRevision(value);
+    expect(value).toEqual(createCareerDecisionContextRevision(authority, proposal, input() as never));
+  });
+
   it("creates an exact DAR/RCP-bound structural context without selecting a recommendation", async () => {
     const authorities = new InMemoryDecisionAuthorityGrantRevisionRepository();
     const proposals = new InMemoryRecommendationProposalRepository();
