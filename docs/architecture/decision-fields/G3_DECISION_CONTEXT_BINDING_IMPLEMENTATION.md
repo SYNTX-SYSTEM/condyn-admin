@@ -29,11 +29,14 @@ authorized human declaration is the DCR over the bound DCTXREV. The binding itse
 
 ## R5: declaration references for generic claims (D2, D3)
 
-`lib/career/canonical-authority/` is the single carrier of the vocabulary: producer id
+`lib/career/canonical-authority/` mirrors the vocabulary whose authoritative home is the R1
+resolver namespace (`lib/decision-adapters/career-canonical/namespace.ts`): producer id
 `CONDYN_CAREER_CANONICAL_CHAIN` and fifteen contract ids built from the artifact's own literals
 (`PROPOSAL_ONLY_AUTHORITY_NONE`, `PROPOSAL_ONLY_RECOMMENDATION_POLICY_BOUND`, `DECLARATION`,
-`IMMUTABLE_RECORD`). The producer declares its authority state; the R1 resolver family imports
-these values (agreed with the G2 producer session, Case 2, no meaning change). Builders re-assert
+`IMMUTABLE_RECORD`). `lib/career` may not import the adapter zone, so the values are mirrored,
+as the four-field reference shape is (R8); equality is proven in
+`test/decision-integration/g2-g3-cross-relation.test.ts` on the integration branch. Agreed with
+the G2 producer session; the resolver namespace is unchanged. Builders re-assert
 the artifact and return `{ producerId, authorityContractId, artifactId, locator = artifactId }` for
 AOC, SCD, ASCAD, CORD, COVD, COVFCR and RCP; artifact ids must be exactly 32 hex characters (R6).
 The RCP builder refuses any `authorityState` other than `RECOMMENDATION_POLICY_BOUND`.

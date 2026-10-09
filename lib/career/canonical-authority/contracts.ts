@@ -1,8 +1,11 @@
 /**
- * Single carrier of the Career canonical authority vocabulary (decision D3, relation R6).
- * The producer declares the authority state its artifacts carry; the resolver family in
- * `lib/decision-adapters/career-canonical` imports these values and defines none of its own
- * (the adapter zone may import career code; career code never imports the adapter zone).
+ * Career-side mirror of the Career canonical authority vocabulary (decision D3, relation R6).
+ * The authoritative home is the R1 resolver namespace
+ * `lib/decision-adapters/career-canonical/namespace.ts`: a contract id is meaningful only where
+ * a bound resolver resolves it. lib/career may not import the adapter zone, so the values are
+ * mirrored here, exactly as the four-field reference shape is mirrored (R8). Equality of producer
+ * id and all fifteen contract ids is proven in
+ * test/decision-integration/g2-g3-cross-relation.test.ts on the integration branch.
  *
  * Vocabulary: the artifact's own proposalState and authorityState literals (NONE rendered as
  * AUTHORITY_NONE), DECLARATION for explicit human declarations, IMMUTABLE_RECORD for
