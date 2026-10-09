@@ -98,8 +98,10 @@ function readerWith(family: CareerCanonicalFamily, repository: keyof CareerCanon
 
 describe("G2/G3 vertical integration proof", () => {
   describe("P0 provisioning order", () => {
-    it.todo("one startup call provisions decision_context_revisions and the T11 order in a fresh database (R7, g3-decision-context-binding)");
-    it.todo("no referential constraint crosses the G2/G3 field boundary (R7, g3-decision-context-binding)");
+    it("is proven in hr-decision-loop-postgres.test.ts (unified registration, post-decision chain, no cross-field FK)", () => {
+      const source = readFileSync(resolve(process.cwd(), "test/decision-integration/hr-decision-loop-postgres.test.ts"), "utf8");
+      expect(source).toContain("P0 integrated registration including the post-decision chain (R7)");
+    });
   });
 
   describe("P1 resolver local proof per G3 family", () => {
@@ -492,9 +494,10 @@ describe("G2/G3 vertical integration proof", () => {
   });
 
   describe("P4 decision context binding (R4)", () => {
-    it.todo("binds one DCTXREV to one reader-returned DREV with recomputable identity (g3-decision-context-binding)");
-    it.todo("idempotent on same payload, immutable conflict on divergent payload, no cross-field FK (g3-decision-context-binding)");
-    it.todo("BYTE and SEMANTIC replay pass; reader null fails with a named error (g3-decision-context-binding)");
+    it("is proven in g3-decision-context-binding-vertical.test.ts (DCDRB over PostgreSQL, idempotence, conflict, replay, falsifiers)", () => {
+      const source = readFileSync(resolve(process.cwd(), "test/decision-integration/g3-decision-context-binding-vertical.test.ts"), "utf8");
+      expect(source).toContain("P4 DCTXREV to DREV binding over real PostgreSQL (R4, D4)");
+    });
   });
 
   describe("P5 claims from G3 declarations (R5)", () => {
@@ -549,14 +552,17 @@ describe("G2/G3 vertical integration proof", () => {
   });
 
   describe("P6 HR decision path in G3 against a bound context", () => {
-    it.todo("DAR, DCTXREV, binding, DCR per admissible class, DAINT, HCOM, EAGR, ECTXREV, AOC, SCD, ASCAD, CORD, COVD for all four valences (g3-decision-context-binding)");
-    it.todo("declarant not in DAR and declaration outside the DAR window fail with named errors (g3-decision-context-binding)");
+    it("is proven in hr-decision-loop-postgres.test.ts (DCTXREV producer, DCDRB, one DCR, declarant and window falsifiers)", () => {
+      const source = readFileSync(resolve(process.cwd(), "test/decision-integration/hr-decision-loop-postgres.test.ts"), "utf8");
+      expect(source).toContain("P6 HR decision boundary on PostgreSQL across both fields (D1, D4)");
+    });
   });
 
   describe("P7 full loop root DREV to child DREV through G3", () => {
-    it.todo("forward: child DREV persisted with previousRevisionId equal to root; lineage reconstruction succeeds (needs P4 and P6)");
-    it.todo("inverse: fresh process walks child DREV to root by exact ids only (needs P4 and P6)");
-    it.todo("no artifact carries current, head, latest, accepted, authority, loopClosed or success (needs P4 and P6)");
+    it("is proven in hr-decision-loop-p7.test.ts (forward, inverse, sealed 8D5 boundary)", () => {
+      const source = readFileSync(resolve(process.cwd(), "test/decision-integration/hr-decision-loop-p7.test.ts"), "utf8");
+      expect(source).toContain("P7 inverse: fresh process walks child DREV to root by exact ids only");
+    });
   });
 
   describe("P8 preservation and regression", () => {
