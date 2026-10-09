@@ -49,7 +49,11 @@ grammar.
 
 Proven use: 8B `ActionOccurrenceClaim` and 8C1 `StateChangeClaim` with `AUTHORITATIVE_STATE` sources
 naming AOC and SCD; 8C2, 8C3 and 8D1 provenance naming ASCAD, CORD, COVD; a child DREV whose
-OBSERVATION item carries exact COVD provenance while the root DREV stays unchanged (D2).
+OBSERVATION item carries exact COVD provenance while the root DREV stays unchanged. That child is
+created directly through the sealed revision contract, not through the governed 8D1..8D10 return:
+sealed 8D5 (ADR 036) requires an `AUTHORITATIVE_STATE` observation reference to be present in the
+base inventory, and 8D7 keeps the inventory unchanged, so the governed return cannot carry exact
+COVD provenance. This is an open Case-3 boundary between sealed 8D5 and decision D2.
 
 ## R7: unified startup registration
 

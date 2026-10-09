@@ -254,7 +254,12 @@ describe("P5 claims and provenance from G3 declarations (R5, D2)", () => {
     }
   });
 
-  it("returns an observation into a child DREV with exact COVD provenance while the root stays untouched (D2)", async () => {
+  // BOUNDARY (Case 3, open): this child DREV is created directly through the sealed 5D1/5D2A
+  // revision contract with an extended source inventory. It is NOT the governed 8D1..8D10 return:
+  // sealed 8D5 requires an AUTHORITATIVE_STATE observation reference to be in the base inventory
+  // already, and 8D7 keeps that inventory unchanged, so a governed return cannot carry exact COVD
+  // provenance. This test proves structural admissibility of the D2 shape only.
+  it("structurally admits a child DREV with exact COVD provenance outside the governed 8D path (D2 shape only, root untouched)", async () => {
     const t12j = lib.t12j.createT12JHistoricalFixture();
     const covd = lib.authority.careerOutcomeValenceDeclarationReference(t12j.outcomeValenceDeclaration);
     const repositories = new lib.g2Postgres.PostgresDecisionContextRevisionRepository(graph.first.db);
