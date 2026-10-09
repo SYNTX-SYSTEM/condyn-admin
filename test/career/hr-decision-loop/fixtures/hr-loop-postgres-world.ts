@@ -362,7 +362,9 @@ export async function createHrLoopPostgresWorld(): Promise<HrLoopWorld> {
  * child DREV_ whose OBSERVATION item carries AUTHORITATIVE_STATE provenance to
  * the exact COVD (decision D2 semantics). Both are built with the sealed
  * decision-core constructors and persisted through the sealed repository. The
- * child is a lineage fixture for the frontend walk, not an 8D return proof.
+ * child is a lineage fixture for the frontend walk, not an 8D return proof:
+ * the governed 8D return (sealed 8D5) cannot carry exact COVD provenance, so a
+ * child like this one exists only when formed directly, as here.
  */
 export const HR_LOOP_G3_OUTCOME_VALENCE_CONTRACT_ID = "CAREER_OUTCOME_VALENCE_DECLARATION_V1";
 export const HR_LOOP_G3_PRODUCER_ID = "career-canonical-chain";
