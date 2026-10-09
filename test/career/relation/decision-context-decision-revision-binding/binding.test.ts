@@ -68,7 +68,7 @@ describe("CareerDecisionContextDecisionRevisionBinding frozen contract (R4, D4)"
       .toThrow("ERR_CAREER_DECISION_CONTEXT_DECISION_REVISION_BINDING_READER_INVALID");
   });
 
-  it("requires exactly one Career recommendation-proposal witness naming the DCTXREV proposal", async () => {
+  it("requires exactly one whole-artifact witness of the DCTXREV proposal and admits item locators of that proposal only", async () => {
     const fixture = createDcdrbHistoricalFixture();
     const reader = (revision: unknown) => ({ async getDecisionContextRevisionById() { return structuredClone(revision); } });
     const missing = createGenericRevisionForProposal(fixture.proposal, fixture.context, { sourceStateReferences: [] });
@@ -80,10 +80,24 @@ describe("CareerDecisionContextDecisionRevisionBinding frozen contract (R4, D4)"
     await expect(createBoundCareerDecisionContextDecisionRevisionBinder(fixture.contexts, reader(mismatched))
       .bind({ ...fixture.bindingInput, decisionContextRevisionId: mismatched.revisionId }))
       .rejects.toThrow("ERR_CAREER_DECISION_CONTEXT_DECISION_REVISION_BINDING_RECOMMENDATION_PROPOSAL_WITNESS_MISMATCH");
-    const ambiguous = createGenericRevisionForProposal(fixture.proposal, fixture.context, { sourceStateReferences: [fixture.witness, foreign] });
-    await expect(createBoundCareerDecisionContextDecisionRevisionBinder(fixture.contexts, reader(ambiguous))
-      .bind({ ...fixture.bindingInput, decisionContextRevisionId: ambiguous.revisionId }))
-      .rejects.toThrow("ERR_CAREER_DECISION_CONTEXT_DECISION_REVISION_BINDING_RECOMMENDATION_PROPOSAL_WITNESS_AMBIGUOUS");
+    const withForeign = createGenericRevisionForProposal(fixture.proposal, fixture.context, { sourceStateReferences: [fixture.witness, foreign] });
+    await expect(createBoundCareerDecisionContextDecisionRevisionBinder(fixture.contexts, reader(withForeign))
+      .bind({ ...fixture.bindingInput, decisionContextRevisionId: withForeign.revisionId }))
+      .rejects.toThrow("ERR_CAREER_DECISION_CONTEXT_DECISION_REVISION_BINDING_RECOMMENDATION_PROPOSAL_WITNESS_MISMATCH");
+    const itemReference = { ...fixture.witness, locator: `${fixture.witness.artifactId}/items/1` };
+    const withItem = createGenericRevisionForProposal(fixture.proposal, fixture.context, { sourceStateReferences: [fixture.witness, itemReference] });
+    const itemBound = await createBoundCareerDecisionContextDecisionRevisionBinder(fixture.contexts, reader(withItem))
+      .bind({ ...fixture.bindingInput, decisionContextRevisionId: withItem.revisionId });
+    expect(itemBound.recommendationProposalWitness).toEqual(fixture.witness);
+    const itemOnly = createGenericRevisionForProposal(fixture.proposal, fixture.context, { sourceStateReferences: [itemReference] });
+    await expect(createBoundCareerDecisionContextDecisionRevisionBinder(fixture.contexts, reader(itemOnly))
+      .bind({ ...fixture.bindingInput, decisionContextRevisionId: itemOnly.revisionId }))
+      .rejects.toThrow("ERR_CAREER_DECISION_CONTEXT_DECISION_REVISION_BINDING_RECOMMENDATION_PROPOSAL_WITNESS_MISSING");
+    const badLocator = { ...fixture.witness, locator: `${fixture.witness.artifactId}/items/01` };
+    const withBadLocator = createGenericRevisionForProposal(fixture.proposal, fixture.context, { sourceStateReferences: [fixture.witness, badLocator] });
+    await expect(createBoundCareerDecisionContextDecisionRevisionBinder(fixture.contexts, reader(withBadLocator))
+      .bind({ ...fixture.bindingInput, decisionContextRevisionId: withBadLocator.revisionId }))
+      .rejects.toThrow("ERR_CAREER_DECISION_CONTEXT_DECISION_REVISION_BINDING_RECOMMENDATION_PROPOSAL_WITNESS_MISMATCH");
     const otherProducer = { ...fixture.witness, producerId: "SOMEONE_ELSE" };
     const foreignProducer = createGenericRevisionForProposal(fixture.proposal, fixture.context, { sourceStateReferences: [otherProducer] });
     await expect(createBoundCareerDecisionContextDecisionRevisionBinder(fixture.contexts, reader(foreignProducer))

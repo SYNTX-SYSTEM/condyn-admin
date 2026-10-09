@@ -187,23 +187,28 @@ function semanticCareerRevision(value: unknown, code: string): Omit<CareerDecisi
 }
 
 /**
- * Exactly one DREV source-state reference may name a Career recommendation
- * proposal, and it must name the DCTXREV's proposal. Equality of exact ids
- * only; this is not option correspondence, semantic support, or currentness.
+ * The DREV must carry exactly one whole-artifact reference to the DCTXREV's recommendation
+ * proposal under the Career producer and its RCP contract id. Further references with the
+ * same pair are admitted only as item locators `<rcpId>/items/<ordinal>` of that same RCP
+ * (the R1/R6 locator grammar). Any reference with the pair naming another artifact is a
+ * mismatch. Exact ids only; not option correspondence, semantic support, or currentness.
  */
 function recommendationProposalWitness(
   revision: GenericDecisionContextRevisionWitness,
   careerContext: Pick<CareerDecisionContextRevision, "recommendationProposalId">,
   codes: { missing: string; ambiguous: string; mismatch: string },
 ): AuthoritativeStateReference {
+  const rcpId = careerContext.recommendationProposalId;
   const candidates = revision.context.sourceStateReferences.filter(item =>
     item.producerId === CAREER_CANONICAL_PRODUCER_ID &&
     item.authorityContractId === CAREER_CANONICAL_AUTHORITY_CONTRACTS.RECOMMENDATION_PROPOSAL);
-  if (candidates.length === 0) fail(codes.missing);
-  if (candidates.length > 1) fail(codes.ambiguous);
-  const witness = candidates[0];
-  if (witness.artifactId !== careerContext.recommendationProposalId) fail(codes.mismatch);
-  return { ...witness };
+  if (candidates.some(item => item.artifactId !== rcpId)) fail(codes.mismatch);
+  const itemLocator = new RegExp(`^${rcpId}/items/(0|[1-9][0-9]*)$`);
+  if (candidates.some(item => item.locator !== rcpId && !itemLocator.test(item.locator))) fail(codes.mismatch);
+  const whole = candidates.filter(item => item.locator === rcpId);
+  if (whole.length === 0) fail(codes.missing);
+  if (whole.length > 1) fail(codes.ambiguous);
+  return { ...whole[0] };
 }
 
 const sameReference = (left: AuthoritativeStateReference, right: AuthoritativeStateReference) =>
