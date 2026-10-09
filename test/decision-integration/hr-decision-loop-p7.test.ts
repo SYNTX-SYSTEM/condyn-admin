@@ -259,7 +259,7 @@ describe("P7 forward: root DREV to child DREV through the G3 chain", () => {
     }
   });
 
-  it("returns the COVD-provenanced observation: 8B/8C1 from AOC/SCD, 8C2/8C3/8D1, then 8D2 to 8D10 into a child DREV with previousRevisionId equal to the root; lineage reconstructs child to root", async () => {
+  it("returns the COVD-provenanced observation: 8B/8C1 from AOC/SCD, 8C2/8C3/8D1, governed 8D2 to 8D4B, sealed 8D5 refuses the COVD reference (Case-3 boundary); the D2-shaped child DREV is formed directly outside the governed path; lineage reconstructs child to root", async () => {
     const occurrenceClaim = createActionOccurrenceClaim({ source: { origin: "AUTHORITATIVE_STATE", stateReference: reference("AOC", walked.aoc) }, operationDescription: "Applied for the target role." });
     const stateChangeClaim = createStateChangeClaim({ source: { origin: "AUTHORITATIVE_STATE", stateReference: reference("SCD", walked.scd) }, stateChangeDescription: "Application status moved to interview-invited." });
     const association = createActionStateChangeAssociationProposal({ actionOccurrenceClaim: occurrenceClaim, stateChangeClaim, provenance: { origin: "AUTHORITATIVE_STATE", stateReference: reference("ASCAD", walked.ascad) } });
