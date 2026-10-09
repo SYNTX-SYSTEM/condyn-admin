@@ -90,7 +90,7 @@ afterAll(async () => {
 describe("P0 unified startup registration order (R7)", () => {
   it("provisions both fields in one order in a fresh database, idempotently, with no cross-field foreign key", async () => {
     const order = await lib.registration.registerUnifiedPersistenceSchema(sql);
-    expect(order).toEqual(["CAREER_FIELD_SCHEMA", "DECISION_CORE_REVISIONS", "CAREER_DECISION_CONTEXT_DECISION_REVISION_BINDINGS"]);
+    expect(order).toEqual(["CAREER_FIELD_SCHEMA", "CAREER_POST_DECISION_CHAIN", "DECISION_CORE_REVISIONS", "CAREER_DECISION_CONTEXT_DECISION_REVISION_BINDINGS"]);
     const tables = await lib.registration.listRegisteredTables(sql);
     expect(tables).toEqual(expect.arrayContaining([
       "decision_context_revisions",
