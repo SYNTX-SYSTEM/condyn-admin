@@ -6,6 +6,7 @@ import {
   initCareerDecisionContextDecisionRevisionBindingSchema,
 } from "../career/relation-adapters/decision-context-decision-revision-binding-persistence";
 import { ensureDecisionRuntimePostgresSchema } from "../decision-runtime/composition";
+import { initPostDecisionChainSchema, postDecisionChainTableNames } from "./post-decision-chain-schema";
 
 /**
  * One startup registration order for both fields (relation R7). This module is
@@ -18,12 +19,14 @@ export const DECISION_CORE_FIELD_TABLES = Object.freeze(["decision_context_revis
 
 export const UNIFIED_REGISTRATION_ORDER = Object.freeze([
   "CAREER_FIELD_SCHEMA",
+  "CAREER_POST_DECISION_CHAIN",
   "DECISION_CORE_REVISIONS",
   "CAREER_DECISION_CONTEXT_DECISION_REVISION_BINDINGS",
 ] as const);
 
 export async function registerUnifiedPersistenceSchema(sql: Sql): Promise<readonly string[]> {
   await applyCareerDbSchema(sql);
+  await initPostDecisionChainSchema(sql);
   await ensureDecisionRuntimePostgresSchema(drizzle(sql) as unknown as Parameters<typeof ensureDecisionRuntimePostgresSchema>[0]);
   await initCareerDecisionContextDecisionRevisionBindingSchema(sql);
   return UNIFIED_REGISTRATION_ORDER;
@@ -67,4 +70,4 @@ export async function listRegisteredTables(sql: Sql): Promise<readonly string[]>
   return rows.map(row => row.table_name);
 }
 
-export { careerDecisionContextDecisionRevisionBindingTableName };
+export { careerDecisionContextDecisionRevisionBindingTableName, postDecisionChainTableNames };
