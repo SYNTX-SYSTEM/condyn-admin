@@ -1,6 +1,6 @@
 # G2 / G3 Field Relation: Generic Decision Core and Career Canonical Chain
 
-Status: TOPOLOGY RESOLVED. CARRIER DECISIONS OPEN (Human Authority required).
+Status: TOPOLOGY RESOLVED. CARRIER DECISIONS D1 TO D5 DECIDED BY HUMAN AUTHORITY ON 2026-10-09 (section 7).
 
 Reconstructed 2026-10-09 under System Field Engineering from:
 `capability-mapping` @ `ee06ff650080528c341fff024b132192a3850af6` (G2),
@@ -132,15 +132,22 @@ FALSIFIERS
 - A 24-hex `DAINT_` offered to a G3 resolver and a 32-hex `DAINT_` offered to G2 both fail.
 - Removing a resolver turns the same POST from 201 into 422.
 
-## 7. Open decisions (Case 3, Human Authority)
+## 7. Decisions (Case 3, decided by Human Authority, 2026-10-09)
 
-| Id | Decision | Options | Recorded recommendation (not a decision) |
-| --- | --- | --- | --- |
-| D1 | Single human decision carrier | G3 DCR, or G2 7A | DCR: expresses REJECT, DEFER and REQUEST_* which 7A cannot; carries DAR authorization natively; G3 execution chain is FK-bound to HCOM after DCR. Cost: G2 6A to 8A2 and 8E2 stay unused for HR; closure is proven by `DREV_` lineage instead of 8E2. |
-| D2 | Return home | child `DREV_` only, COVFCR only, or both with declared distinct meaning | Both, with declared meaning: child `DREV_` returns the observation into the decision context; COVFCR carries valence feedback history. |
-| D3 | Authority contract id vocabulary | per-family names encoding NONE / POLICY_BOUND / PHASE4_VERIFIED | Names must state the G3 `authorityState` literally. |
-| D4 | New sealed G3 relation (R4) | accept as a new phase in G3 numbering, or reject | Accept; it is the only additive bridge. |
-| D5 | Base for integration work | sealed `b001360`, or the preserved overlay `wip/field-01-overlay-2026-09-22` | OBSERVED 2026-10-09: `tsc --noEmit` reports 253 errors on clean `b001360` (87 in `lib/career/relation`, 26 in `lib/career/relation-adapters`, 51 in `test/career/relation`) and 0 on the overlay. The overlay's strictness refactors are the FIELD_01 typecheck closure. Recommendation: classify the overlay first (the 98 contract and adapter refactors are the fast path), then re-point the two integration branches, which carry no commits yet, onto the classified result. Until then they stay on `b001360`. |
+The following determinations were issued verbatim by the field owner and are
+binding for every integration relation in section 5.
+
+| Id | Decision (binding) | Consequence for the field |
+| --- | --- | --- |
+| D1 | G3 `HumanDecisionRecord` (DCR) is the only HR decision carrier. | G2 7A, 8A1, 8A2 and 8E2 are not used for HR. G2 8B, 8C1, 8C2, 8C3 and 8D remain in use as standalone branches. HR loop closure is proven by `DREV_` lineage (P7), not by 8E2. Any HR decision ingress admits a DCR through the DAR gate; no second declaration artifact may exist for the same act. |
+| D2 | G3 COVFCR and G2 child `DREV_` coexist with explicitly separated semantics and exact provenance. | Child `DREV_`: the observation returned into the decision context, provenance `AUTHORITATIVE_STATE` to the exact COVD or COVFCR. COVFCR: valence feedback history over the DCTXREV. Neither selects, supersedes or summarizes the other. Each cross-reference names the exact artifact id and contract id. |
+| D3 | `authorityContractId` reflects the actually established authority state; no implicit upgrade. | Contract ids encode the G3 `authorityState` literally (for example `..._PROPOSAL_ONLY_V1`, `..._RECOMMENDATION_POLICY_BOUND_V1`, `..._DECLARATION_V1`). A resolver must reject an artifact whose stored state differs from the state its contract id names. `PHASE4_VERIFIED` remains reserved for Capability Core. |
+| D4 | Additive, immutable DCTXREV to `DREV_` binding with exact identity and replay, without changes to sealed contracts. | New G3 relation following the COVFTRB pattern: reader-backed exact read of the `DREV_`, identity recomputed over both bodies minus `createdAt`, idempotent persist, immutable conflict, BYTE and SEMANTIC replay, no foreign key across fields. DCTXREV, DCR and all G2 contracts stay byte-identical. |
+| D5 | The classified SIL overlay is the integration base, only after preservation and type-check proof. | The overlay `wip/field-01-overlay-2026-09-22` is classified per FIELD_01 categories, its preservation suites and `tsc` are proven in an isolated database, and only then are `integration/g2-producer-adapters` and `integration/g3-decision-context-binding` re-pointed onto the classified commit. Until that proof exists they stay on `b001360`. |
+
+Evidence recorded for D5 before the decision: clean `b001360` reports 253
+`tsc` errors (87 in `lib/career/relation`, 26 in `lib/career/relation-adapters`,
+51 in `test/career/relation`); the overlay reports 0.
 
 ## 8. Worktrees prepared 2026-10-09
 
