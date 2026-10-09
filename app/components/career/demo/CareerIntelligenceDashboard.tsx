@@ -13,6 +13,7 @@ import { SIL_TOKENS } from "./SILTokens";
 
 export interface CareerIntelligenceDashboardProps {
   data: DemoCareerIntelligenceData;
+  canonicalSilAssociationId?: string;
 }
 
 /**
@@ -21,7 +22,7 @@ export interface CareerIntelligenceDashboardProps {
  *
  * Supports switching between FIELD MODE (Radial Organism) and LIST MODE (Vertical Flow).
  */
-export function CareerIntelligenceDashboard({ data }: CareerIntelligenceDashboardProps) {
+export function CareerIntelligenceDashboard({ data, canonicalSilAssociationId }: CareerIntelligenceDashboardProps) {
   const [mode, setMode] = useState<"FIELD" | "LIST">("FIELD");
 
   return (
@@ -64,7 +65,7 @@ export function CareerIntelligenceDashboard({ data }: CareerIntelligenceDashboar
         </div>
       </div>
 
-      <SemanticCareerIntelligenceField data={data} />
+      <SemanticCareerIntelligenceField data={data} canonicalSilAssociationId={canonicalSilAssociationId} />
     </div>
   );
 }

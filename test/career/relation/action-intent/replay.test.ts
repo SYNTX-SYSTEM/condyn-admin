@@ -180,9 +180,12 @@ describe("T12A CareerDecisionActionIntent historical replay RED contract", () =>
   it("SEMANTIC_REPLAY preserves the T12A temporal boundary after DAR effectiveUntil", async () => {
     const api = await loadReplay();
     const graph = historicalGraph();
+    const effectiveUntil = graph.value.authority.effectiveUntil;
+    expect(effectiveUntil).not.toBeNull();
+    if (effectiveUntil === null) throw new Error("fixture must provide an effective-until boundary");
     expect(graph.value.decisionRecord.declaredAt >= graph.value.authority.effectiveFrom).toBe(true);
-    expect(graph.value.decisionRecord.declaredAt < graph.value.authority.effectiveUntil).toBe(true);
-    expect(graph.value.actionIntent.declaredAt > graph.value.authority.effectiveUntil).toBe(true);
+    expect(graph.value.decisionRecord.declaredAt < effectiveUntil).toBe(true);
+    expect(graph.value.actionIntent.declaredAt > effectiveUntil).toBe(true);
     expect(graph.value.actionIntent.declaredAt >= graph.value.decisionRecord.declaredAt).toBe(true);
     await expect(semantic(api, graph)).resolves.toEqual(graph.value.actionIntent);
   });

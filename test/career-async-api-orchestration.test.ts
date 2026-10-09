@@ -39,6 +39,10 @@ describe("CONDYN Career Analysis Protocol v5.0 - PHASE 5: ASYNC API ORCHESTRATIO
     ]
   };
 
+  const jobRouteContext = (jobId: string) => ({
+    params: Promise.resolve({ jobId })
+  });
+
   const dummyCanonicalAnalysis = (id: string) => ({
     structured_data: {
       analysis: {
@@ -116,7 +120,7 @@ describe("CONDYN Career Analysis Protocol v5.0 - PHASE 5: ASYNC API ORCHESTRATIO
     await repo.enqueueJob(job);
 
     const req = createMockRequest({});
-    const res = await GET(req, { params: { jobId: job.jobId } });
+    const res = await GET(req, jobRouteContext(job.jobId));
     
     expect(res.status).toBe(200);
     const json = await res.json();
@@ -134,7 +138,7 @@ describe("CONDYN Career Analysis Protocol v5.0 - PHASE 5: ASYNC API ORCHESTRATIO
     const claim = await repo.claimNextJob("worker-1", 10000);
 
     const req = createMockRequest({});
-    const res = await GET(req, { params: { jobId: job.jobId } });
+    const res = await GET(req, jobRouteContext(job.jobId));
     
     expect(res.status).toBe(200);
     const json = await res.json();
@@ -181,7 +185,7 @@ describe("CONDYN Career Analysis Protocol v5.0 - PHASE 5: ASYNC API ORCHESTRATIO
     await repo.updateJobState(job.jobId, "worker-1", claim!.leaseVersion, "RUNNING", "SUCCEEDED", { resultAnalysisId: "ANA_API_OK" });
 
     const req = createMockRequest({});
-    const res = await GET(req, { params: { jobId: job.jobId } });
+    const res = await GET(req, jobRouteContext(job.jobId));
     
     expect(res.status).toBe(200);
     const json = await res.json();
@@ -202,7 +206,7 @@ describe("CONDYN Career Analysis Protocol v5.0 - PHASE 5: ASYNC API ORCHESTRATIO
     await repo.failJob(job.jobId, "worker-1", claim!.leaseVersion, true, "TEST_ERR", "Testing error");
 
     const req = createMockRequest({});
-    const res = await GET(req, { params: { jobId: job.jobId } });
+    const res = await GET(req, jobRouteContext(job.jobId));
     
     expect(res.status).toBe(200);
     const json = await res.json();
@@ -216,7 +220,7 @@ describe("CONDYN Career Analysis Protocol v5.0 - PHASE 5: ASYNC API ORCHESTRATIO
 
   it("K. unknown job -> 404", async () => {
     const req = createMockRequest({});
-    const res = await GET(req, { params: { jobId: "JOB_FAKE" } });
+    const res = await GET(req, jobRouteContext("JOB_FAKE"));
     
     expect(res.status).toBe(404);
   });
@@ -239,7 +243,7 @@ describe("CONDYN Career Analysis Protocol v5.0 - PHASE 5: ASYNC API ORCHESTRATIO
     // Proves isolation
     await workerRepo.failJob(claim!.jobId, "external-worker", claim!.leaseVersion, true, "ISOLATED", "success");
     
-    const finalRes = await GET(req, { params: { jobId: json.jobId } });
+    const finalRes = await GET(req, jobRouteContext(json.jobId));
     expect((await finalRes.json()).status).toBe("FAILED");
   });
 
@@ -252,7 +256,7 @@ describe("CONDYN Career Analysis Protocol v5.0 - PHASE 5: ASYNC API ORCHESTRATIO
     const jobId = postJson.jobId;
 
     // 2. CLIENT GET
-    const getRes1 = await GET(req, { params: { jobId } });
+    const getRes1 = await GET(req, jobRouteContext(jobId));
     expect((await getRes1.json()).status).toBe("PENDING");
 
     // 3. WORKER Execution
@@ -280,7 +284,7 @@ describe("CONDYN Career Analysis Protocol v5.0 - PHASE 5: ASYNC API ORCHESTRATIO
     await workerRepo.updateJobState(jobId, "real-worker", claim!.leaseVersion, "RUNNING", "SUCCEEDED", { resultAnalysisId });
 
     // 4. CLIENT GET SUCCEEDED
-    const getRes2 = await GET(req, { params: { jobId } });
+    const getRes2 = await GET(req, jobRouteContext(jobId));
     const getJson2 = await getRes2.json();
     expect(getJson2.status).toBe("SUCCEEDED");
     expect(getJson2.resultAnalysisId).toBe(resultAnalysisId);

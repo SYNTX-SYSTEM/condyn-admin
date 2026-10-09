@@ -1,0 +1,38 @@
+import type { ExecutionChannelScope, ExecutionTargetScope } from "../execution-authority";
+
+export interface ExecutionSubject {
+  decisionSubjectItemOrdinals: number[];
+  subjectRef: string;
+}
+
+export interface ExecutionTarget {
+  targetKind: ExecutionTargetScope;
+  targetRef: string;
+}
+
+export interface ExecutionChannel {
+  channelKind: ExecutionChannelScope;
+  channelRef: string;
+}
+
+/** An ECTXREV binds exact historical decision and execution-authority witnesses; it does not issue an instruction. */
+export interface ExecutionContextRevision {
+  executionContextRevisionId: string;
+  decisionRecordId: string;
+  executionAuthorityRevisionId: string;
+  executionSubject: ExecutionSubject;
+  executionTarget: ExecutionTarget;
+  executionChannel: ExecutionChannel;
+  contextEvidenceRefs: string[];
+  schemaVersion: "EXECUTION_CONTEXT_REVISION_V1";
+  createdAt: string;
+}
+
+export interface ExecutionContextRevisionInput {
+  executionSubject: ExecutionSubject;
+  executionTarget: ExecutionTarget;
+  executionChannel: ExecutionChannel;
+  contextEvidenceRefs: string[];
+  schemaVersion: "EXECUTION_CONTEXT_REVISION_V1";
+  createdAt: string;
+}

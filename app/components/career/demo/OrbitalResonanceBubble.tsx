@@ -35,7 +35,7 @@ function getTooltipStyle(placement: HudPlacement): React.CSSProperties {
     border: `1.5px solid ${SIL_TOKENS.colors.cyanActive}`,
     borderRadius: "10px",
     padding: "16px 18px",
-    boxShadow: `0 16px 44px rgba(0, 0, 0, 0.92), 0 0 34px rgba(56, 229, 255, 0.28), 0 0 72px rgba(56, 229, 255, 0.10), inset 0 0 42px rgba(0, 0, 0, 0.62)`,
+    boxShadow: `0 16px 44px rgba(0, 0, 0, 0.92), 0 0 34px rgba(56, 229, 255, 0.28), 0 0 72px rgba(56, 229, 255, 0.10), inset 0 0 54px rgba(0, 0, 0, 0.88)`,
     backgroundSize: "auto",
     backgroundRepeat: "no-repeat",
     backgroundPosition: "center",
@@ -201,6 +201,7 @@ export interface OrbitalResonanceBubbleProps {
   sourcePresentation?: SilSourcePresentation;
   locale?: SilLocale;
   attentionState?: "EMPTY_PROJECTION_ATTENTION" | null;
+  canonicalState?: "AVAILABLE" | "EMPTY" | "NOT_PRODUCED" | "UNKNOWN" | "FAILED" | "PRE_CANONICAL";
 }
 
 export function getOrbitAccentColor(stageId: string): string {
@@ -267,7 +268,8 @@ export function OrbitalResonanceBubble({
   style,
   sourcePresentation,
   locale = SIL_COPY.defaultLocale,
-  attentionState = null
+  attentionState = null,
+  canonicalState = "PRE_CANONICAL"
 }: OrbitalResonanceBubbleProps) {
   const t = SIL_COPY[locale];
   const isEmptyProjectionAttention =
@@ -556,6 +558,12 @@ export function OrbitalResonanceBubble({
           }}
         >
           {subtitle}
+        </span>
+        <span
+          data-testid={`canonical-sil-region-state-${stageId}`}
+          style={{ fontSize: "9px", color: canonicalState === "PRE_CANONICAL" ? SIL_TOKENS.colors.textMuted : SIL_TOKENS.colors.cyanActive, marginTop: "3px", position: "relative", zIndex: 1 }}
+        >
+          {canonicalState === "PRE_CANONICAL" ? "PRE-CANONICAL DISCOVERY" : `CANONICAL ${canonicalState}`}
         </span>
         <span
           style={{

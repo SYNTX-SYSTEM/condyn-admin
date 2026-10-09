@@ -79,6 +79,8 @@ describe("CareerOutcomeValenceFeedbackContextRevision frozen replay contract", (
     expect(api).not.toHaveProperty("persistCareerOutcomeValenceFeedbackContextRevision");
   });
 
+  // This covers every first/subsequent parent failure branch against rebuilt
+  // histories. Keep the scheduler allowance local to this replay integration.
   it("semantically replays exactly one first or subsequent persisted parent with the sealed audit-time equality laws", async () => {
     const api = await loadCareerOutcomeValenceFeedbackContextRevisionReplay();
     const value = await createT13IHistoricalFixture();
@@ -171,7 +173,7 @@ describe("CareerOutcomeValenceFeedbackContextRevision frozen replay contract", (
     await expect(api.semanticReplayCareerOutcomeValenceFeedbackContextRevision(
       value.subsequentReplayTarget.careerOutcomeValenceFeedbackContextRevisionId, subsequentMalformed.dependencies(),
     )).rejects.toThrow(mismatch);
-  });
+  }, 15_000);
 
   it("preserves semantic replay mismatch for invalid immediate parents while derivation remains parent-reader-free and timestamp-exact", async () => {
     const api = await loadCareerOutcomeValenceFeedbackContextRevisionReplay();

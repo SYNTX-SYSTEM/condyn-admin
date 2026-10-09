@@ -47,7 +47,8 @@ describe("State Change Claim", () => {
     const claim = createStateChangeClaim(supplied);
     expect(claim.source).toEqual(source);
     expect(claim.source).toEqual({ origin: "AUTHORITATIVE_STATE", stateReference: { producerId: " producer ", authorityContractId: " contract ", artifactId: " artifact ", locator: " locator " } });
-    const suppliedReference = (supplied.source as { stateReference: Record<string, string> }).stateReference;
+    if (supplied.source.origin !== "AUTHORITATIVE_STATE") throw new Error("fixture must use an authoritative state source");
+    const suppliedReference = supplied.source.stateReference;
     for (const key of ["producerId", "authorityContractId", "artifactId", "locator"] as const) suppliedReference[key] = `changed-${key}`;
     expect(claim.source).toEqual(referenceSource());
   });

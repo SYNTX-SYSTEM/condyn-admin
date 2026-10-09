@@ -27,6 +27,9 @@ describe("CareerOutcomeValenceFeedbackContextRevision persistence frozen Domain 
     expect(value.firstRevision.parent.parentRevisionKind).toBe("CAREER_DECISION_CONTEXT_REVISION");
     expect(value.subsequentRevision.parent.parentRevisionKind)
       .toBe("CAREER_OUTCOME_VALENCE_FEEDBACK_CONTEXT_REVISION");
+    if (value.subsequentRevision.parent.parentRevisionKind !== "CAREER_OUTCOME_VALENCE_FEEDBACK_CONTEXT_REVISION") {
+      throw new Error("expected subsequent feedback-context parent");
+    }
     expect(value.subsequentRevision.parent.parentFeedbackContextContent).toEqual(value.contentX);
     expect(repositories.decisionContextReads).toEqual([]);
     expect(repositories.feedbackRevisionWrites).toEqual([]);
@@ -95,6 +98,8 @@ describe("CareerOutcomeValenceFeedbackContextRevision persistence frozen Domain 
       .rejects.toThrow(parentBaseMismatch);
   });
 
+  // The negative branches deliberately reconstruct several complete histories;
+  // retain a local timeout rather than relaxing the repository-wide budget.
   it("resolves a subsequent named COVFCR parent, preserves branch freedom, and keeps semantic COVFCC comparison audit-time-insensitive", async () => {
     const api = await loadCareerOutcomeValenceFeedbackContextRevisionPersistence();
     const value = await createT13HHistoricalFixture();
@@ -150,7 +155,7 @@ describe("CareerOutcomeValenceFeedbackContextRevision persistence frozen Domain 
     expect(branches.feedbackRevisionWrites).toHaveLength(2);
     expect(Object.keys(branches.dependencies())).not.toContain("currentRevisionId");
     expect(Object.keys(branches.dependencies())).not.toContain("getAncestorRevisionById");
-  });
+  }, 15_000);
 
   it("enforces immutable write and exact reread semantics without a receipt, replay, PostgreSQL, or ancestor traversal", async () => {
     const api = await loadCareerOutcomeValenceFeedbackContextRevisionPersistence();

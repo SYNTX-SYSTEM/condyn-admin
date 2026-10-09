@@ -180,10 +180,25 @@ export const careerAnalysisJobs = pgTable("career_analysis_jobs", {
  * artifacts. It intentionally has no mutable latest/current/head or authority state.
  */
 export const careerCapabilityProposalProjectionReferences = pgTable("career_capability_proposal_projection_references", {
-  analysisId: text("analysis_id").primaryKey().references(() => careerAnalyses.analysisId),
-  jobId: text("job_id").notNull().unique().references(() => careerAnalysisJobs.jobId),
+  analysisId: text("analysis_id").primaryKey().references(() => careerAnalyses.analysisId, { onDelete: "cascade" }),
+  jobId: text("job_id").notNull().unique().references(() => careerAnalysisJobs.jobId, { onDelete: "cascade" }),
   discoveryRunId: text("discovery_run_id").notNull().references(() => careerCapabilityRuns.runId),
   convergenceRunId: text("convergence_run_id").notNull().references(() => careerCapabilityRuns.runId),
+  // Technical Stage-A provenance only.  The hash remains integrity evidence;
+  // this exact ID is the retrieval identity required by a later Stage-B run.
+  candidateSourceBundleId: text("candidate_source_bundle_id"),
   sourceBundleHash: text("source_bundle_hash").notNull(),
   createdAt: text("created_at").notNull()
+});
+
+/** Immutable technical provenance for one already-authorized canonical Stage-B execution. */
+export const careerCanonicalSilRuntimeAssociations = pgTable("career_canonical_sil_runtime_associations", {
+  canonicalSilRuntimeAssociationId: text("canonical_sil_runtime_association_id").primaryKey(),
+  candidateSourceBundleId: text("candidate_source_bundle_id").notNull(),
+  verifiedCapabilitySnapshotId: text("verified_capability_snapshot_id").notNull(),
+  organizationRelationId: text("organization_relation_id").notNull(),
+  roleRelationId: text("role_relation_id").notNull(),
+  tensionStateId: text("tension_state_id").notNull(),
+  evolutionInputStateId: text("evolution_input_state_id").notNull(),
+  payload: jsonb("payload").notNull(),
 });

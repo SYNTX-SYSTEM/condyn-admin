@@ -1,0 +1,75 @@
+import { describe, expect, it } from "vitest";
+import { assertDecisionAuthorityRevision, deriveDecisionAuthorityRevisionId } from "../../../../lib/career/relation/decision-authority";
+import { deriveDecisionContextRevisionId } from "../../../../lib/career/relation/decision-context";
+import { createDecisionRecord } from "../../../../lib/career/relation/decision-record";
+import { deriveEvolutionInputStateId } from "../../../../lib/career/relation/evolution-input";
+import { createExecutionAuthorityRevision } from "../../../../lib/career/relation/execution-authority";
+import { assertExecutionContextRevision, createExecutionContextRevision } from "../../../../lib/career/relation/execution-context";
+import { deriveRecommendationPolicyRevisionId, deriveRecommendationProposal } from "../../../../lib/career/relation/recommendation-proposal";
+
+const stamp = "2027-01-01T00:00:00.000Z";
+const evolutionItem = { evolutionInputClass: "INCREASE_DEMONSTRATED_LEVEL_INPUT" as const, derivationDisposition: "DERIVABLE" as const, tensionClassificationFamily: "STRUCTURAL_DIFFERENCE" as const, tensionClassificationCode: "LEVEL_BELOW_RELATION", subjectKind: "REQUIREMENT", dimension: "LEVEL", targetRequirementEntityId: null, targetRequirementRevisionIds: [], requirementRelationAggregateId: null, candidateCapabilityOperandId: null, capabilityRequirementRelationId: null, capabilityRequirementRelationEvaluationResultId: null, necessityStates: [] };
+const evolutionSemantic = { tensionStateId: "TSN_1", roleRelationId: "RRL_1", verifiedCapabilitySnapshotId: "SNAP_1", targetRoleProfileRevisionId: "TRP_1", targetRoleRequirementInventoryId: "TRQINV_1", items: [evolutionItem], derivationPolicyLineage: { evolutionInputDerivationPolicyVersion: "evolution-v1" }, proposalState: "PROPOSAL_ONLY" as const, authorityState: "NONE" as const, schemaVersion: "EVOLUTION_INPUT_STATE_V1" as const };
+const evolution = { evolutionInputStateId: deriveEvolutionInputStateId(evolutionSemantic), ...evolutionSemantic, createdAt: stamp };
+const policySemantic = { provenance: { origin: "EXPLICIT_POLICY_DECLARATION" as const, actorId: "POLICY_ACTOR", authorityEvidenceRef: "evidence://policy" }, rules: [
+  { evolutionInputClass: "INCREASE_DEMONSTRATED_LEVEL_INPUT" as const, action: "PROPOSE" as const, recommendationKind: "DEMONSTRATED_LEVEL_RECOMMENDATION" as const },
+  { evolutionInputClass: "RESOLVE_SEMANTIC_UNCERTAINTY_INPUT" as const, action: "PROPOSE" as const, recommendationKind: "SEMANTIC_UNCERTAINTY_RESOLUTION_RECOMMENDATION" as const },
+  { evolutionInputClass: "RESOLVE_TARGET_UNCERTAINTY_INPUT" as const, action: "PROPOSE" as const, recommendationKind: "TARGET_UNCERTAINTY_RESOLUTION_RECOMMENDATION" as const },
+  { evolutionInputClass: "STRENGTHEN_EVIDENCE_INPUT" as const, action: "PROPOSE" as const, recommendationKind: "EVIDENCE_STRENGTHENING_RECOMMENDATION" as const },
+], recommendationPolicyImplementationVersion: "recommendation-v1", schemaVersion: "RECOMMENDATION_POLICY_REVISION_V1" as const };
+const policy = { recommendationPolicyRevisionId: deriveRecommendationPolicyRevisionId(policySemantic), ...policySemantic, createdAt: stamp };
+const proposal = deriveRecommendationProposal(evolution, policy, { version: "recommendation-v1" }, stamp);
+const decisionAuthoritySemantic = { actorId: "DECISION_ACTOR", authorityScope: "CAREER_DECISION", authorityEvidenceRef: "evidence://decision-authority", schemaVersion: "DECISION_AUTHORITY_REVISION_V1" as const };
+const decisionAuthority = { decisionAuthorityRevisionId: deriveDecisionAuthorityRevisionId(decisionAuthoritySemantic), ...decisionAuthoritySemantic, createdAt: stamp };
+assertDecisionAuthorityRevision(decisionAuthority);
+const decisionContextSemantic = { recommendationProposalId: proposal.recommendationProposalId, decisionAuthorityRevisionId: decisionAuthority.decisionAuthorityRevisionId, decisionSubjectItemOrdinals: [0], contextEvidenceRefs: ["evidence://decision-context"], schemaVersion: "DECISION_CONTEXT_REVISION_V1" as const };
+const decisionContext = { decisionContextRevisionId: deriveDecisionContextRevisionId(decisionContextSemantic), ...decisionContextSemantic, createdAt: stamp };
+const record = (decisionDisposition: "DECISION_DECLARED" | "DECISION_ABSTAINED" | "DECISION_NOT_AUTHORIZED" | "DECISION_BLOCKED", decisionDeclaration: "AUTHORIZED_ACTION" | "NO_ACTION" | "REQUEST_FURTHER_EVIDENCE" | "REQUEST_TARGET_CLARIFICATION") => createDecisionRecord(decisionContext, proposal, { decisionDisposition, decisionDeclaration, createdAt: stamp });
+const authority = (authorityScope: "EXTERNAL_ACTION" | "EVIDENCE_REQUEST" | "TARGET_CLARIFICATION_REQUEST" = "EXTERNAL_ACTION", target = "COMMUNICATION_ENDPOINT" as const, channel = "EMAIL" as const) => createExecutionAuthorityRevision({ actorId: "EXECUTION_ACTOR", authorityScope, executionTargetScope: target, executionChannelScope: channel, authorityEvidenceRef: "evidence://execution-authority", schemaVersion: "EXECUTION_AUTHORITY_REVISION_V1", createdAt: stamp });
+const input = (overrides: Record<string, unknown> = {}) => ({ executionSubject: { decisionSubjectItemOrdinals: [0], subjectRef: "subject://candidate/1" }, executionTarget: { targetKind: "COMMUNICATION_ENDPOINT" as const, targetRef: "endpoint://recipient/1" }, executionChannel: { channelKind: "EMAIL" as const, channelRef: "channel://mail/1" }, contextEvidenceRefs: ["evidence://context/a"], schemaVersion: "EXECUTION_CONTEXT_REVISION_V1" as const, createdAt: stamp, ...overrides });
+
+describe("T12B ExecutionContextRevision", () => {
+  it("binds each execution-context-capable T11 declaration to its exact EAR scope", () => {
+    const action = createExecutionContextRevision(record("DECISION_DECLARED", "AUTHORIZED_ACTION"), authority(), input());
+    const evidence = createExecutionContextRevision(record("DECISION_DECLARED", "REQUEST_FURTHER_EVIDENCE"), authority("EVIDENCE_REQUEST"), input());
+    const clarification = createExecutionContextRevision(record("DECISION_BLOCKED", "REQUEST_TARGET_CLARIFICATION"), authority("TARGET_CLARIFICATION_REQUEST"), input());
+    expect([action, evidence, clarification].every(value => Object.isFrozen(value))).toBe(true);
+    expect(action.executionContextRevisionId).toMatch(/^ECTXREV_[0-9A-F]{32}$/);
+  });
+
+  it("derives stable identity from explicit subject, target, channel, and canonical evidence", () => {
+    const decision = record("DECISION_DECLARED", "AUTHORIZED_ACTION");
+    const ear = authority();
+    const first = createExecutionContextRevision(decision, ear, input({ contextEvidenceRefs: ["evidence://context/b", "evidence://context/a", "evidence://context/a"] }));
+    const second = createExecutionContextRevision(decision, ear, input({ contextEvidenceRefs: ["evidence://context/a", "evidence://context/b"], createdAt: "2028-01-01T00:00:00.000Z" }));
+    expect(first.contextEvidenceRefs).toEqual(["evidence://context/a", "evidence://context/b"]);
+    expect(first.executionContextRevisionId).toBe(second.executionContextRevisionId);
+    expect(createExecutionContextRevision(decision, ear, input({ executionSubject: { decisionSubjectItemOrdinals: [0], subjectRef: "subject://candidate/2" } })).executionContextRevisionId).not.toBe(first.executionContextRevisionId);
+    expect(createExecutionContextRevision(decision, ear, input({ executionTarget: { targetKind: "COMMUNICATION_ENDPOINT", targetRef: "endpoint://recipient/2" } })).executionContextRevisionId).not.toBe(first.executionContextRevisionId);
+    expect(createExecutionContextRevision(decision, ear, input({ executionChannel: { channelKind: "EMAIL", channelRef: "channel://mail/2" } })).executionContextRevisionId).not.toBe(first.executionContextRevisionId);
+  });
+
+  it("fails closed on non-executable decisions, non-exact subjects, scope divergence, and invalid witnesses", () => {
+    const decision = record("DECISION_DECLARED", "AUTHORIZED_ACTION");
+    const ear = authority();
+    expect(() => createExecutionContextRevision(decision, ear, input({ executionSubject: { decisionSubjectItemOrdinals: [], subjectRef: "subject://candidate/1" } }))).toThrow("ERR_EXECUTION_CONTEXT_REVISION_INVALID");
+    expect(() => createExecutionContextRevision(decision, ear, input({ executionSubject: { decisionSubjectItemOrdinals: [0, 1], subjectRef: "subject://candidate/1" } }))).toThrow("ERR_EXECUTION_CONTEXT_REVISION_INVALID");
+    expect(() => createExecutionContextRevision(record("DECISION_DECLARED", "NO_ACTION"), ear, input())).toThrow("ERR_EXECUTION_CONTEXT_REVISION_INVALID");
+    expect(() => createExecutionContextRevision(record("DECISION_ABSTAINED", "NO_ACTION"), ear, input())).toThrow("ERR_EXECUTION_CONTEXT_REVISION_INVALID");
+    expect(() => createExecutionContextRevision(record("DECISION_NOT_AUTHORIZED", "NO_ACTION"), ear, input())).toThrow("ERR_EXECUTION_CONTEXT_REVISION_INVALID");
+    expect(() => createExecutionContextRevision(decision, authority("EVIDENCE_REQUEST"), input())).toThrow("ERR_EXECUTION_CONTEXT_REVISION_INVALID");
+    expect(() => createExecutionContextRevision(decision, authority("EXTERNAL_ACTION", "PERSON"), input())).toThrow("ERR_EXECUTION_CONTEXT_REVISION_INVALID");
+    expect(() => createExecutionContextRevision(decision, authority("EXTERNAL_ACTION", "COMMUNICATION_ENDPOINT", "MESSAGE"), input())).toThrow("ERR_EXECUTION_CONTEXT_REVISION_INVALID");
+    expect(() => createExecutionContextRevision({ ...decision, decisionRecordId: "DCR_00000000000000000000000000000000" }, ear, input())).toThrow("ERR_EXECUTION_CONTEXT_REVISION_INVALID");
+    expect(() => createExecutionContextRevision(decision, { ...ear, executionAuthorityRevisionId: "EAR_00000000000000000000000000000000" }, input())).toThrow("ERR_EXECUTION_CONTEXT_REVISION_INVALID");
+  });
+
+  it("rejects free taxonomy values, malformed artifacts, and unknown keys", () => {
+    const context = createExecutionContextRevision(record("DECISION_DECLARED", "AUTHORIZED_ACTION"), authority(), input());
+    expect(() => createExecutionContextRevision(record("DECISION_DECLARED", "AUTHORIZED_ACTION"), authority(), input({ executionTarget: { targetKind: "ROLE", targetRef: "target://role" } }))).toThrow("ERR_EXECUTION_CONTEXT_REVISION_INVALID");
+    expect(() => createExecutionContextRevision(record("DECISION_DECLARED", "AUTHORIZED_ACTION"), authority(), input({ executionChannel: { channelKind: "GMAIL", channelRef: "channel://mail" } }))).toThrow("ERR_EXECUTION_CONTEXT_REVISION_INVALID");
+    expect(() => createExecutionContextRevision(record("DECISION_DECLARED", "AUTHORIZED_ACTION"), authority(), input({ contextEvidenceRefs: [""] }))).toThrow("ERR_EXECUTION_CONTEXT_REVISION_INVALID");
+    expect(() => assertExecutionContextRevision({ ...context, executionContextRevisionId: "ECTXREV_00000000000000000000000000000000" })).toThrow("ERR_EXECUTION_CONTEXT_REVISION_INVALID");
+    expect(() => assertExecutionContextRevision({ ...context, unknown: true })).toThrow("ERR_EXECUTION_CONTEXT_REVISION_INVALID");
+  });
+});

@@ -37,20 +37,7 @@ describe("CONDYN Career Analysis Protocol v4.0 - PHASE 4: IMMUTABLE LIFECYCLE PE
   });
 
   const createDummyRecommendation = () => {
-    return buildRoleRecommendation("ROL_TEST", [
-      {
-        requirementId: "REQ_1",
-        state: "SUPPORTED",
-        evidences: [{
-          evidenceId: "EVI_1",
-          score: 0.9,
-          type: "EXPLICIT_CLAIM",
-          text: "I did this",
-          sourceId: "SRC_1",
-          documentId: "DOC_1"
-        }]
-      }
-    ]);
+    return buildRoleRecommendation("ROL_TEST", []);
   };
 
   it("A. Recommendation save/load -> deepEqual", async () => {

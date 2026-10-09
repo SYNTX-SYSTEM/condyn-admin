@@ -37,7 +37,7 @@ describe("Worker Recovery Pipeline Invariant", () => {
     const validationResult = await executeCareerAnalysisPipeline(normalizedDocs, provider, { explicitAnalysisId: deterministicAnalysisId });
     
     if (!validationResult.success) {
-      throw new Error(validationResult.errors?.map((e: any) => e.message).join(", ") || "Validation failed");
+      throw new Error(validationResult.issues?.map((issue) => issue.message).join(", ") || "Validation failed");
     }
     
     const verifiedAnalysis = validationResult.data as any;

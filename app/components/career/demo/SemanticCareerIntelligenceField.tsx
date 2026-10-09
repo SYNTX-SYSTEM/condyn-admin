@@ -32,9 +32,12 @@ import { buildSilOrbitEmptyState } from "../../../../lib/career/view-model/orbit
 import { buildOrbitFocusProjection } from "../../../../lib/career/view-model/orbit-focus-projection";
 import { resolveOrbitalFocusNavigation } from "../../../../lib/career/view-model/orbital-focus-navigation";
 import type { SilOrbitStageId } from "../../../../lib/career/view-model/sil-language";
+import { decodeCanonicalSilFrontendPresentation, type CanonicalSilFrontendPresentation, type CanonicalSilFrontendRegionName } from "../../../../lib/career/sil-projection/frontend-presentation";
 
 export interface SemanticCareerIntelligenceFieldProps {
   data: DemoCareerIntelligenceData;
+  /** Explicit Stage-B association selected by the product workflow, never inferred from Stage A. */
+  canonicalSilAssociationId?: string;
   initialAnalysisState?: {
     isAnalyzing?: boolean;
     analysisStep?: string | null;
@@ -336,6 +339,7 @@ export function resolveSilOrbitAttentionState(
 
 export function SemanticCareerIntelligenceField({
   data,
+  canonicalSilAssociationId,
   initialAnalysisState,
   initialLocale = SIL_COPY.defaultLocale,
   initialFocus
@@ -343,6 +347,7 @@ export function SemanticCareerIntelligenceField({
   const [locale, setLocale] = useState<SilLocale>(initialLocale);
   const t = SIL_COPY[locale];
   const [activeData, setActiveData] = useState(data);
+  const [canonicalSilPresentation, setCanonicalSilPresentation] = useState<CanonicalSilFrontendPresentation | null>(null);
   const [activeStageId, setActiveStageId] = useState<string | null>(
     initialFocus?.stageId ?? null
   );
@@ -380,6 +385,24 @@ export function SemanticCareerIntelligenceField({
   const [isOnboardingOpen, setIsOnboardingOpen] = useState(false);
 
   useEffect(() => {
+    let active = true;
+    if (!canonicalSilAssociationId) {
+      setCanonicalSilPresentation(null);
+      return () => { active = false; };
+    }
+    void fetch(`/api/career/canonical-sil/${encodeURIComponent(canonicalSilAssociationId)}`)
+      .then(async response => response.ok ? response.json() : null)
+      .then(payload => {
+        const presentation = payload && typeof payload === "object"
+          ? decodeCanonicalSilFrontendPresentation(Reflect.get(payload, "canonicalSil"))
+          : null;
+        if (active) setCanonicalSilPresentation(presentation);
+      })
+      .catch(() => { if (active) setCanonicalSilPresentation(null); });
+    return () => { active = false; };
+  }, [canonicalSilAssociationId]);
+
+  useEffect(() => {
     if (typeof window !== "undefined") {
       try {
         const seen = localStorage.getItem("condyn_onboarding_seen");
@@ -391,7 +414,7 @@ export function SemanticCareerIntelligenceField({
   }, []);
 
   useEffect(() => {
-    if (job.state.state === "SUCCEEDED" && job.state.canonicalAnalysis) {
+    if (canonicalSilPresentation === null && job.state.state === "SUCCEEDED" && job.state.canonicalAnalysis) {
       const canonical = job.state.canonicalAnalysis;
       if (canonical.inferenceTelemetry) {
         setInferenceTelemetry(canonical.inferenceTelemetry);
@@ -410,7 +433,7 @@ export function SemanticCareerIntelligenceField({
         canonical.capabilityProposalProjection ?? null
       ));
     }
-  }, [job.state.state, job.state.canonicalAnalysis]);
+  }, [job.state.state, job.state.canonicalAnalysis, canonicalSilPresentation]);
 
   const handleHudAction = (action: "OPEN EVIDENCE" | "INSPECT SOURCES" | "VIEW MATCHES", stageId: string) => {
     setActiveStageId(stageId);
@@ -477,84 +500,99 @@ export function SemanticCareerIntelligenceField({
     return computeGraphFocus(evidenceGraph, selectedGraphNodeId);
   }, [evidenceGraph, selectedGraphNodeId]);
 
+  const canonicalRegionsByStage: Readonly<Record<string, CanonicalSilFrontendRegionName>> = {
+    "01": "identity", "02": "capability", "03": "resonance", "04": "role", "05": "tension", "06": "evolution",
+  };
+  const canonicalRegionForStage = (stageId: string): CanonicalSilFrontendRegionName | null => canonicalRegionsByStage[stageId] ?? null;
+  const canonicalStage = (stageId: string) => {
+    const name = canonicalRegionForStage(stageId);
+    return name === null || canonicalSilPresentation === null ? null : canonicalSilPresentation.regions[name];
+  };
+  const canonicalDisplayState = (stageId: string): "AVAILABLE" | "EMPTY" | "NOT_PRODUCED" | "UNKNOWN" | "FAILED" | "PRE_CANONICAL" => canonicalStage(stageId)?.state ?? "PRE_CANONICAL";
   const stages = [
     {
       stageId: "01",
       stageName: t.orbits["01"].name,
       subtitle: t.orbits["01"].subtitle,
-      count: activeData.sources.length,
+      count: canonicalStage("01")?.count ?? activeData.sources.length,
       glyph: "◈",
       angleDeg: -90,
       color: "#38e5ff",
       animationDelay: "0s",
       photonOutDur: "3.6s",
       photonInDur: "4.4s",
-      previewItems: activeData.sources.slice(0, 3).map((s) => s.sourceTitle || (s as any).name || "Source document")
+      previewItems: canonicalStage("01")?.artifactIds.slice(0, 3) ?? activeData.sources.slice(0, 3).map((s) => s.sourceTitle || (s as any).name || "Source document"),
+      canonicalState: canonicalDisplayState("01")
     },
     {
       stageId: "02",
       stageName: t.orbits["02"].name,
       subtitle: t.orbits["02"].subtitle,
-      count: activeData.capabilities.length,
+      count: canonicalStage("02")?.count ?? activeData.capabilities.length,
       glyph: "⬡",
       angleDeg: -30,
       color: "#00ffd5",
       animationDelay: "-4s",
       photonOutDur: "4.2s",
       photonInDur: "5.0s",
-      previewItems: activeData.capabilities.slice(0, 3).map((c) => c.name)
+      previewItems: canonicalStage("02")?.artifactIds.slice(0, 3) ?? activeData.capabilities.slice(0, 3).map((c) => c.name),
+      canonicalState: canonicalDisplayState("02")
     },
     {
       stageId: "03",
       stageName: t.orbits["03"].name,
       subtitle: t.orbits["03"].subtitle,
-      count: activeData.companyMatches.length,
+      count: canonicalStage("03")?.count ?? activeData.companyMatches.length,
       glyph: "◎",
       angleDeg: 30,
       color: "#6b8eff",
       animationDelay: "-8s",
       photonOutDur: "4.8s",
       photonInDur: "5.6s",
-      previewItems: activeData.companyMatches.slice(0, 3).map((c) => c.organizationName)
+      previewItems: canonicalStage("03")?.artifactIds.slice(0, 3) ?? activeData.companyMatches.slice(0, 3).map((c) => c.organizationName),
+      canonicalState: canonicalDisplayState("03")
     },
     {
       stageId: "04",
       stageName: t.orbits["04"].name,
       subtitle: t.orbits["04"].subtitle,
-      count: activeData.roleMatches.length,
+      count: canonicalStage("04")?.count ?? activeData.roleMatches.length,
       glyph: "⎔",
       angleDeg: 90,
       color: "#b87fff",
       animationDelay: "-12s",
       photonOutDur: "3.9s",
       photonInDur: "4.7s",
-      previewItems: activeData.roleMatches.slice(0, 3).map((r) => r.roleTitle)
+      previewItems: canonicalStage("04")?.artifactIds.slice(0, 3) ?? activeData.roleMatches.slice(0, 3).map((r) => r.roleTitle),
+      canonicalState: canonicalDisplayState("04")
     },
     {
       stageId: "05",
       stageName: t.orbits["05"].name,
       subtitle: t.orbits["05"].subtitle,
-      count: activeData.capabilityGaps.length,
+      count: canonicalStage("05")?.count ?? activeData.capabilityGaps.length,
       glyph: "⟁",
       angleDeg: 150,
       color: "#ff7c5c",
       animationDelay: "-16s",
       photonOutDur: "4.5s",
       photonInDur: "5.3s",
-      previewItems: activeData.capabilityGaps.slice(0, 3).map((g) => g.capabilityName)
+      previewItems: canonicalStage("05")?.artifactIds.slice(0, 3) ?? activeData.capabilityGaps.slice(0, 3).map((g) => g.capabilityName),
+      canonicalState: canonicalDisplayState("05")
     },
     {
       stageId: "06",
       stageName: t.orbits["06"].name,
       subtitle: t.orbits["06"].subtitle,
-      count: activeData.nextActions.length,
+      count: canonicalStage("06")?.count ?? activeData.nextActions.length,
       glyph: "∿",
       angleDeg: 210,
       color: "#38ff8b",
       animationDelay: "-20s",
       photonOutDur: "5.1s",
       photonInDur: "6.0s",
-      previewItems: activeData.nextActions.slice(0, 3).map((a) => a.title)
+      previewItems: canonicalStage("06")?.artifactIds.slice(0, 3) ?? activeData.nextActions.slice(0, 3).map((a) => a.title),
+      canonicalState: canonicalDisplayState("06")
     }
   ];
 
@@ -595,6 +633,7 @@ export function SemanticCareerIntelligenceField({
       data-testid="semantic-career-intelligence-field"
       data-zoom-level={zoomLevel}
       data-focused-stage-id={activeStageId || ""}
+      data-sil-mode={canonicalSilPresentation?.mode ?? "PRE_CANONICAL_DISCOVERY"}
       data-camera-scale={cameraScale}
       onClick={() => {
         if (graphFocus) {
@@ -1180,6 +1219,7 @@ export function SemanticCareerIntelligenceField({
                       isDimmed={isStageDimmed}
                       animationDelay={st.animationDelay}
                       sourcePresentation={sourcePresentation}
+                      canonicalState={st.canonicalState}
                       locale={locale}
                       attentionState={resolveSilOrbitAttentionState(
                         st.stageId,

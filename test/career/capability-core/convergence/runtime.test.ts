@@ -9,8 +9,8 @@ const provider = (output = convergenceOutput([])): CapabilityConvergenceProvider
 
 describe("Capability Convergence runtime", () => {
   it("accepts a completed discovery run, persists no prompt plaintext, and reuses before inference", async () => {
-    const repository = new InMemoryCapabilityCoreRepository(); const input = discoveryRun([verifiedCandidate("CAND_A"), rejectedCandidate("CAND_R")]);
-    const first = await runCapabilityConvergence(input, config, { kernelResolver: resolver, provider: provider(convergenceOutput(input.payload.candidates[0].candidateId ? [input.payload.candidates[0].candidateId] : [])), repository, now: () => "now" });
+    const repository = new InMemoryCapabilityCoreRepository(); const verified = verifiedCandidate("CAND_A"); const input = discoveryRun([verified, rejectedCandidate("CAND_R")]);
+    const first = await runCapabilityConvergence(input, config, { kernelResolver: resolver, provider: provider(convergenceOutput([verified.candidateId])), repository, now: () => "now" });
     expect(first.kind).toBe("CONVERGENCE_COMPLETED"); expect(JSON.stringify(first)).not.toContain(secret); expect(JSON.stringify(first)).not.toContain("KEY");
     const reused = await runCapabilityConvergence(input, config, { kernelResolver: resolver, provider: { ...provider(), execute: async () => { throw new Error("called") } }, repository });
     expect(reused.kind).toBe("CONVERGENCE_RUN_REUSED"); expect(JSON.stringify(reused)).not.toContain(secret);

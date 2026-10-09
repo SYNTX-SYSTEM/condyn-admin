@@ -9,6 +9,7 @@ export interface CapabilityProposalProjectionReference {
   jobId: string;
   discoveryRunId: string;
   convergenceRunId: string;
+  candidateSourceBundleId?: string;
   sourceBundleHash: string;
   createdAt: string;
 }
@@ -21,6 +22,11 @@ export interface CapabilityProposalProjectionReferenceRepository {
 const conflict = (): never => {
   throw new Error("ERR_IMMUTABLE_CAPABILITY_PROPOSAL_PROJECTION_REFERENCE_CONFLICT");
 };
+
+function materialize(row: typeof careerCapabilityProposalProjectionReferences.$inferSelect): CapabilityProposalProjectionReference {
+  const { candidateSourceBundleId, ...rest } = row;
+  return candidateSourceBundleId === null ? rest : { ...rest, candidateSourceBundleId };
+}
 
 export class InMemoryCapabilityProposalProjectionReferenceRepository
   implements CapabilityProposalProjectionReferenceRepository {
@@ -61,7 +67,7 @@ export class PostgresCapabilityProposalProjectionReferenceRepository
         eq(careerCapabilityProposalProjectionReferences.jobId, reference.jobId)
       ));
     if (existing.length > 0) {
-      if (existing.length !== 1 || !isDeepStrictEqual(existing[0], reference)) conflict();
+      if (existing.length !== 1 || !isDeepStrictEqual(materialize(existing[0]), reference)) conflict();
       return;
     }
     try {
@@ -79,7 +85,7 @@ export class PostgresCapabilityProposalProjectionReferenceRepository
         eq(careerCapabilityProposalProjectionReferences.analysisId, reference.analysisId),
         eq(careerCapabilityProposalProjectionReferences.jobId, reference.jobId)
       ));
-    if (persisted.length !== 1 || !isDeepStrictEqual(persisted[0], reference)) conflict();
+    if (persisted.length !== 1 || !isDeepStrictEqual(materialize(persisted[0]), reference)) conflict();
   }
 
   async getByAnalysisId(analysisId: string): Promise<CapabilityProposalProjectionReference | null> {
@@ -88,7 +94,7 @@ export class PostgresCapabilityProposalProjectionReferenceRepository
       .from(careerCapabilityProposalProjectionReferences)
       .where(eq(careerCapabilityProposalProjectionReferences.analysisId, analysisId))
       .limit(1);
-    return rows[0] ?? null;
+    return rows[0] ? materialize(rows[0]) : null;
   }
 }
 

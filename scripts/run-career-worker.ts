@@ -18,6 +18,7 @@ import {
   GeminiCapabilityConvergenceProvider,
   GeminiCapabilityDiscoveryProvider,
   PostgresCapabilityCoreRepository,
+  PostgresCandidateSourceBundleRepository,
   PostgresCapabilityProposalProjectionReferenceRepository,
   bootstrapCapabilityProposalKernels,
   createCapabilityProposalRuntime,
@@ -38,6 +39,7 @@ async function main() {
   const provider = new GeminiProvider();
   const canonicalAnalysisRepository = new PostgresCareerAnalysisRepository(db);
   const capabilityRepository = new PostgresCapabilityCoreRepository(db);
+  const candidateSourceBundles = new PostgresCandidateSourceBundleRepository(db);
   // The worker owns durable sidecar provenance, but the Career job result
   // remains the canonical analysis id rather than a proposal artifact id.
   const projectionReferenceRepository = new PostgresCapabilityProposalProjectionReferenceRepository(db);
@@ -98,6 +100,7 @@ async function main() {
     },
     prepareDocuments,
     capabilityProposalExecutor,
+    candidateSourceBundles,
     projectionReferenceRepository,
     async executeLegacyCareerAnalysis(documents, reportOperation, explicitAnalysisId) {
       const validationResult = await executeCareerAnalysisPipeline(documents, provider, {

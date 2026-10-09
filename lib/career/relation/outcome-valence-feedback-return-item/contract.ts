@@ -54,14 +54,16 @@ function capture(value: unknown, code: string, ancestors = new WeakSet<object>()
       if (Array.isArray(value)) {
         const keys = Reflect.ownKeys(value);
         const length = Reflect.getOwnPropertyDescriptor(value, "length");
+        const arrayLength = length !== undefined && "value" in length && typeof length.value === "number"
+          ? length.value
+          : fail(code);
         if (
-          length === undefined || !("value" in length) || typeof length.value !== "number" ||
-          !Number.isSafeInteger(length.value) || length.value < 0 || keys.length !== length.value + 1 ||
+          !Number.isSafeInteger(arrayLength) || arrayLength < 0 || keys.length !== arrayLength + 1 ||
           !keys.includes("length") || keys.some(key => typeof key === "symbol" || (key !== "length" &&
-            (!/^(0|[1-9][0-9]*)$/.test(key) || Number(key) >= length.value)))
+            (!/^(0|[1-9][0-9]*)$/.test(key) || Number(key) >= arrayLength)))
         ) return fail(code);
         const result: Captured[] = [];
-        for (let index = 0; index < length.value; index += 1) {
+        for (let index = 0; index < arrayLength; index += 1) {
           const descriptor = Reflect.getOwnPropertyDescriptor(value, String(index));
           if (descriptor === undefined || descriptor.enumerable !== true || !("value" in descriptor)) return fail(code);
           result.push(capture(descriptor.value, code, ancestors));
@@ -172,12 +174,18 @@ function representation(
   code: string,
 ): CareerOutcomeValenceFeedbackReturnRepresentation {
   try {
-    const captured = capture(value, code) as unknown as CareerOutcomeValenceFeedbackReturnRepresentation;
+    const captured = capture(value, code);
     assertCareerOutcomeValenceFeedbackReturnRepresentation(captured);
     return captured;
   } catch {
     return fail(code);
   }
+}
+
+function isRepresentationSemanticBody(
+  value: unknown,
+): value is CareerOutcomeValenceFeedbackReturnItemSemanticBody["careerOutcomeValenceFeedbackReturnRepresentation"] {
+  return value !== null && typeof value === "object" && !Array.isArray(value);
 }
 
 function representationSemantic(
@@ -194,16 +202,16 @@ function representationSemantic(
     complete = representation({ ...captured, createdAt: auditPlaceholder }, code);
   } else {
     try {
-      deriveCareerOutcomeValenceFeedbackReturnRepresentationId(captured as never);
+      deriveCareerOutcomeValenceFeedbackReturnRepresentationId(captured);
     } catch {
       return fail(code);
     }
-    return canonicalRepresentationSemanticBody(captured, code) as
-      CareerOutcomeValenceFeedbackReturnItemSemanticBody["careerOutcomeValenceFeedbackReturnRepresentation"];
+    const semantic = canonicalRepresentationSemanticBody(captured, code);
+    return isRepresentationSemanticBody(semantic) ? semantic : fail(code);
   }
   const { careerOutcomeValenceFeedbackReturnRepresentationId: _id, createdAt: _createdAt, ...body } = complete;
-  return canonicalRepresentationSemanticBody(capture(body, code), code) as
-    CareerOutcomeValenceFeedbackReturnItemSemanticBody["careerOutcomeValenceFeedbackReturnRepresentation"];
+  const semantic = canonicalRepresentationSemanticBody(capture(body, code), code);
+  return isRepresentationSemanticBody(semantic) ? semantic : fail(code);
 }
 
 function semanticBody(value: unknown, code: string): CareerOutcomeValenceFeedbackReturnItemSemanticBody {

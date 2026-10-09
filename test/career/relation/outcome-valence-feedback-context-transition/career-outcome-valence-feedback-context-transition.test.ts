@@ -186,10 +186,13 @@ describe("CareerOutcomeValenceFeedbackContextTransition frozen Domain contract",
       value.baseCareerDecisionContextRevision, null, value.x, value.contentX, value.transitionInput,
     );
     const pristine = structuredClone(transition);
-    value.baseCareerDecisionContextRevision.contextEvidenceRefs[0] = "mutated-caller-base";
+    const alteredCallerBase = {
+      ...value.baseCareerDecisionContextRevision,
+      contextEvidenceRefs: ["mutated-caller-base"],
+    };
     (value.x.careerOutcomeValenceFeedbackReturnRepresentation.representedFeedback.beforeObservation as { value: string })
       .value = "mutated-caller-member";
-    expect(pristine.baseCareerDecisionContextRevision.contextEvidenceRefs[0]).not.toBe("mutated-caller-base");
+    expect(pristine.baseCareerDecisionContextRevision.contextEvidenceRefs[0]).not.toBe(alteredCallerBase.contextEvidenceRefs[0]);
     expect(pristine.addedFeedbackReturnItem.careerOutcomeValenceFeedbackReturnRepresentation.representedFeedback
       .beforeObservation.value).not.toBe("mutated-caller-member");
     api.assertCareerOutcomeValenceFeedbackContextTransition(pristine);

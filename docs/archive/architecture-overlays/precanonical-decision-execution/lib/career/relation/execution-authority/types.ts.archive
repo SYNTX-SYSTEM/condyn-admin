@@ -1,0 +1,22 @@
+export const executionAuthorityScopes = ["EXTERNAL_ACTION", "EVIDENCE_REQUEST", "TARGET_CLARIFICATION_REQUEST"] as const;
+export type ExecutionAuthorityScope = typeof executionAuthorityScopes[number];
+
+export const executionTargetScopes = ["PERSON", "ORGANIZATION", "SYSTEM", "DOCUMENT", "COMMUNICATION_ENDPOINT"] as const;
+export type ExecutionTargetScope = typeof executionTargetScopes[number];
+
+export const executionChannelScopes = ["EMAIL", "MESSAGE", "API", "DOCUMENT", "HUMAN_HANDOFF"] as const;
+export type ExecutionChannelScope = typeof executionChannelScopes[number];
+
+/** An EAR is an immutable, explicit execution-authority witness; it is not a decision or an execution fact. */
+export interface ExecutionAuthorityRevision {
+  executionAuthorityRevisionId: string;
+  actorId: string;
+  authorityScope: ExecutionAuthorityScope;
+  executionTargetScope: ExecutionTargetScope;
+  executionChannelScope: ExecutionChannelScope;
+  authorityEvidenceRef: string;
+  schemaVersion: "EXECUTION_AUTHORITY_REVISION_V1";
+  createdAt: string;
+}
+
+export type ExecutionAuthorityRevisionInput = Omit<ExecutionAuthorityRevision, "executionAuthorityRevisionId">;

@@ -1,0 +1,106 @@
+import { eq } from "drizzle-orm";
+import type { PostgresJsDatabase } from "drizzle-orm/postgres-js";
+import { type DecisionRecord } from "../../relation/decision-record";
+import { createExecutionContextRevision, assertExecutionContextRevision, stableExecutionContext, type ExecutionContextRevision } from "../../relation/execution-context";
+import { type ExecutionAuthorityRevision } from "../../relation/execution-authority";
+import { executionContextEvidenceReferences, executionContextRevisions, executionContextSubjectReferences } from "./postgres-schema";
+
+const fail = (code: string): never => { throw new Error(code); };
+const same = (left: readonly unknown[], right: readonly unknown[]) => left.length === right.length && left.every((value, index) => value === right[index]);
+
+export interface DecisionRecordReader { getDecisionRecordById(id: string): Promise<DecisionRecord | null>; }
+export interface ExecutionAuthorityRevisionReader { getExecutionAuthorityRevisionById(id: string): Promise<ExecutionAuthorityRevision | null>; }
+export interface ExecutionContextRevisionRepository {
+  getExecutionContextRevisionById(id: string): Promise<ExecutionContextRevision | null>;
+  persistExecutionContextRevision(value: ExecutionContextRevision): Promise<ExecutionContextRevision>;
+}
+
+/** Exact ECTXREV reads revalidate historical DCR/EAR witnesses and compare raw normalized rows without deduplicating database state. */
+export class PostgresExecutionContextRevisionRepository implements ExecutionContextRevisionRepository {
+  constructor(private readonly database: PostgresJsDatabase, private readonly decisions: DecisionRecordReader, private readonly authorities: ExecutionAuthorityRevisionReader) {}
+
+  private async witnesses(value: ExecutionContextRevision): Promise<void> {
+    try {
+      const [decisionRecord, executionAuthorityRevision] = await Promise.all([
+        this.decisions.getDecisionRecordById(value.decisionRecordId),
+        this.authorities.getExecutionAuthorityRevisionById(value.executionAuthorityRevisionId),
+      ]);
+      if (decisionRecord === null || executionAuthorityRevision === null) fail("ERR_EXECUTION_CONTEXT_REVISION_PERSISTENCE_FAILED");
+      const rebuilt = createExecutionContextRevision(decisionRecord, executionAuthorityRevision, {
+        executionSubject: structuredClone(value.executionSubject),
+        executionTarget: structuredClone(value.executionTarget),
+        executionChannel: structuredClone(value.executionChannel),
+        contextEvidenceRefs: structuredClone(value.contextEvidenceRefs),
+        schemaVersion: value.schemaVersion,
+        createdAt: value.createdAt,
+      });
+      if (stableExecutionContext(rebuilt) !== stableExecutionContext(value)) fail("ERR_EXECUTION_CONTEXT_REVISION_PERSISTENCE_FAILED");
+    } catch {
+      fail("ERR_EXECUTION_CONTEXT_REVISION_PERSISTENCE_FAILED");
+    }
+  }
+
+  async getExecutionContextRevisionById(id: string): Promise<ExecutionContextRevision | null> {
+    const rows = await this.database.select().from(executionContextRevisions).where(eq(executionContextRevisions.executionContextRevisionId, id)).limit(1);
+    if (rows.length === 0) return null;
+    try {
+      const row = rows[0];
+      const value = row.payload;
+      assertExecutionContextRevision(value);
+      if (
+        row.executionContextRevisionId !== value.executionContextRevisionId ||
+        row.decisionRecordId !== value.decisionRecordId ||
+        row.executionAuthorityRevisionId !== value.executionAuthorityRevisionId ||
+        row.subjectRef !== value.executionSubject.subjectRef ||
+        row.targetKind !== value.executionTarget.targetKind ||
+        row.targetRef !== value.executionTarget.targetRef ||
+        row.channelKind !== value.executionChannel.channelKind ||
+        row.channelRef !== value.executionChannel.channelRef ||
+        row.schemaVersion !== value.schemaVersion ||
+        row.createdAt !== value.createdAt
+      ) fail("ERR_EXECUTION_CONTEXT_REVISION_PERSISTENCE_FAILED");
+      const [subjects, evidence] = await Promise.all([
+        this.database.select().from(executionContextSubjectReferences).where(eq(executionContextSubjectReferences.executionContextRevisionId, id)),
+        this.database.select().from(executionContextEvidenceReferences).where(eq(executionContextEvidenceReferences.executionContextRevisionId, id)),
+      ]);
+      const physicalSubjects = subjects.map(subject => subject.ordinal).sort((left, right) => left - right);
+      const physicalEvidence = evidence.map(reference => reference.evidenceRef).sort();
+      if (!same(value.executionSubject.decisionSubjectItemOrdinals, physicalSubjects) || !same(value.contextEvidenceRefs, physicalEvidence)) fail("ERR_EXECUTION_CONTEXT_REVISION_PERSISTENCE_FAILED");
+      await this.witnesses(value);
+      return structuredClone(value);
+    } catch {
+      return fail("ERR_EXECUTION_CONTEXT_REVISION_PERSISTENCE_FAILED");
+    }
+  }
+
+  async persistExecutionContextRevision(value: ExecutionContextRevision): Promise<ExecutionContextRevision> {
+    assertExecutionContextRevision(value);
+    const existing = await this.getExecutionContextRevisionById(value.executionContextRevisionId);
+    if (existing !== null) {
+      if (stableExecutionContext(existing) !== stableExecutionContext(value)) fail("ERR_EXECUTION_CONTEXT_REVISION_IMMUTABLE_CONFLICT");
+      return existing;
+    }
+    await this.witnesses(value);
+    await this.database.transaction(async tx => {
+      await tx.insert(executionContextRevisions).values({
+        executionContextRevisionId: value.executionContextRevisionId,
+        decisionRecordId: value.decisionRecordId,
+        executionAuthorityRevisionId: value.executionAuthorityRevisionId,
+        subjectRef: value.executionSubject.subjectRef,
+        targetKind: value.executionTarget.targetKind,
+        targetRef: value.executionTarget.targetRef,
+        channelKind: value.executionChannel.channelKind,
+        channelRef: value.executionChannel.channelRef,
+        schemaVersion: value.schemaVersion,
+        createdAt: value.createdAt,
+        payload: structuredClone(value),
+      }).onConflictDoNothing();
+      for (const ordinal of value.executionSubject.decisionSubjectItemOrdinals) await tx.insert(executionContextSubjectReferences).values({ referenceId: `${value.executionContextRevisionId}:subject:${ordinal}`, executionContextRevisionId: value.executionContextRevisionId, ordinal }).onConflictDoNothing();
+      for (const evidenceRef of value.contextEvidenceRefs) await tx.insert(executionContextEvidenceReferences).values({ referenceId: `${value.executionContextRevisionId}:evidence:${evidenceRef}`, executionContextRevisionId: value.executionContextRevisionId, evidenceRef }).onConflictDoNothing();
+    });
+    const reread = await this.getExecutionContextRevisionById(value.executionContextRevisionId);
+    if (reread === null) fail("ERR_EXECUTION_CONTEXT_REVISION_PERSISTENCE_FAILED");
+    if (stableExecutionContext(reread) !== stableExecutionContext(value)) fail("ERR_EXECUTION_CONTEXT_REVISION_IMMUTABLE_CONFLICT");
+    return reread;
+  }
+}

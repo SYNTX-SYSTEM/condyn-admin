@@ -42,12 +42,17 @@ function captureInput(
   if (
     Object.keys(candidate).length !== keys.length ||
     keys.some(key => !Object.prototype.hasOwnProperty.call(candidate, key)) ||
-    !bindingId.test(candidate.careerOutcomeValenceFeedbackTargetRevisionBindingId as string) ||
+    typeof candidate.careerOutcomeValenceFeedbackTargetRevisionBindingId !== "string" ||
+    !bindingId.test(candidate.careerOutcomeValenceFeedbackTargetRevisionBindingId) ||
     !canonicalTimestamp(candidate.createdAt)
   ) {
     return fail("ERR_CAREER_OUTCOME_VALENCE_FEEDBACK_RETURN_REPRESENTATION_ADMISSION_INVALID");
   }
-  return candidate as CareerOutcomeValenceFeedbackReturnRepresentationAdmissionInput;
+  return {
+    careerOutcomeValenceFeedbackTargetRevisionBindingId:
+      candidate.careerOutcomeValenceFeedbackTargetRevisionBindingId,
+    createdAt: candidate.createdAt,
+  };
 }
 
 function captureDependencies(

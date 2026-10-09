@@ -98,6 +98,9 @@ describe("CareerOutcomeValenceFeedbackContextRevision frozen PostgreSQL persiste
     const value = await createT13HHistoricalFixture();
     const unresolved = await createT13EHistoricalFixture("UNRESOLVED");
     const reader = {
+      async getCareerDecisionContextRevisionById(id: string) {
+        return id === value.base.careerDecisionContextRevisionId ? structuredClone(value.base) : null;
+      },
       async getCareerOutcomeValenceFeedbackContextRevisionById(id: string) {
         return id === value.firstRevision.careerOutcomeValenceFeedbackContextRevisionId
           ? structuredClone(value.firstRevision)
@@ -255,6 +258,8 @@ describe("CareerOutcomeValenceFeedbackContextRevision frozen PostgreSQL persiste
     }
   });
 
+  // This isolated physical roundtrip opens and tears down an exact schema;
+  // give only this integration proof enough budget under parallel load.
   it("freezes T13I concrete-reader compatibility without physical-byte authority", async () => {
     const adapter = await loadAdapter();
     const schema = await loadSchema();
@@ -282,7 +287,7 @@ describe("CareerOutcomeValenceFeedbackContextRevision frozen PostgreSQL persiste
     } finally {
       await session.close();
     }
-  });
+  }, 15_000);
 
   it("freezes physical storage as an immutable historical repository only, not a feedback successor, consumer, byte authority, or replay mode", async () => {
     const adapter = await loadAdapter();

@@ -1,6 +1,7 @@
 import type { DocumentInput } from "../adapter";
 import type { CareerJobRuntimeOperation, JobRecord } from "./job";
 import type { CapabilityProposalProjectionReferenceRepository } from "../capability-core/projection";
+import { createCandidateSourceBundle, type CandidateSourceBundleRepository, toCapabilitySourceDocuments } from "../capability-core";
 
 export type ReportCareerJobRuntimeOperation = (
   operation: CareerJobRuntimeOperation
@@ -19,6 +20,8 @@ export interface CareerAnalysisJobProcessorDependencies {
     ): Promise<unknown>;
   };
   projectionReferenceRepository?: CapabilityProposalProjectionReferenceRepository;
+  /** Stage-A source provenance; this publishes no target or verification authority. */
+  candidateSourceBundles?: CandidateSourceBundleRepository;
   executeLegacyCareerAnalysis(
     documents: DocumentInput[],
     reportOperation: ReportCareerJobRuntimeOperation,
@@ -56,6 +59,14 @@ export function createCareerAnalysisJobProcessor(
     const { normalizedDocs } = await dependencies.prepareDocuments(
       (job.inputRef.sourceData as { documents: unknown[] }).documents
     );
+    const sourceBundle = dependencies.candidateSourceBundles
+      ? await dependencies.candidateSourceBundles.persistCandidateSourceBundle(createCandidateSourceBundle({
+        candidateSourceBundleId: `CSB_${job.jobId}`,
+        documents: toCapabilitySourceDocuments(normalizedDocs),
+        schemaVersion: "CANDIDATE_SOURCE_BUNDLE_V1",
+        createdAt: job.createdAt,
+      }))
+      : null;
 
     // The sidecar remains a prerequisite even for recovery: returning the
     // existing canonical analysis before this point would mask missing or failed
@@ -82,11 +93,15 @@ export function createCareerAnalysisJobProcessor(
       ) {
         throw new Error("ERR_CAPABILITY_PROPOSAL_PROJECTION_REFERENCE_INVALID");
       }
+      if (sourceBundle !== null && sourceBundle.sourceBundleHash !== discoveryRun.sourceBundleHash) {
+        throw new Error("ERR_CANDIDATE_SOURCE_BUNDLE_PROPOSAL_LINEAGE_INVALID");
+      }
       await dependencies.projectionReferenceRepository.save({
         analysisId: resultAnalysisId,
         jobId: job.jobId,
         discoveryRunId: discoveryRun.runId,
         convergenceRunId: convergenceRun.convergenceRunId,
+        ...(sourceBundle === null ? {} : { candidateSourceBundleId: sourceBundle.candidateSourceBundleId }),
         sourceBundleHash: discoveryRun.sourceBundleHash,
         // The Convergence artifact fixes this immutable lineage timestamp.
         // A recovery must never manufacture a fresh reference identity.

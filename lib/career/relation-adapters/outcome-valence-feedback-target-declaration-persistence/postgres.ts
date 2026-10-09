@@ -29,6 +29,18 @@ const subjectKey = (subject: {
 }) => `${subject.recommendationProposalId}:${String(subject.sourceEvolutionInputItemOrdinal).padStart(12, "0")}`;
 const sameInventory = (left: readonly string[], right: readonly string[]) =>
   left.length === right.length && left.every((value, index) => value === right[index]);
+const observation = (
+  observationState: string,
+  value: string | null,
+): CareerOutcomeValenceFeedbackTargetDeclaration["beforeObservation"] => {
+  if (observationState === "OBSERVED" && typeof value === "string") {
+    return { observationState, value };
+  }
+  if ((observationState === "UNKNOWN" || observationState === "NOT_OBSERVED") && value === null) {
+    return { observationState, value };
+  }
+  return fail(persistenceFailed);
+};
 
 export interface CareerOutcomeValenceFeedbackTargetDeclarationRepository {
   getCareerOutcomeValenceFeedbackTargetDeclarationById(
@@ -94,8 +106,8 @@ implements CareerOutcomeValenceFeedbackTargetDeclarationRepository {
       actionOccurredAt: row.actionOccurredAt,
       stateSubject: { subjectKind: row.stateSubjectKind as CareerOutcomeValenceFeedbackTargetDeclaration["stateSubject"]["subjectKind"], subjectRef: row.stateSubjectRef },
       stateDimension: row.stateDimension,
-      beforeObservation: { observationState: row.beforeObservationState as "OBSERVED", value: row.beforeObservationValue },
-      afterObservation: { observationState: row.afterObservationState as "OBSERVED", value: row.afterObservationValue },
+      beforeObservation: observation(row.beforeObservationState, row.beforeObservationValue),
+      afterObservation: observation(row.afterObservationState, row.afterObservationValue),
       observedAt: row.observedAt,
       associationDeclaredAt: row.associationDeclaredAt,
       outcomeRoleDeclaredAt: row.outcomeRoleDeclaredAt,
@@ -240,7 +252,7 @@ implements CareerOutcomeValenceFeedbackTargetDeclarationRepository {
   ): Promise<CareerOutcomeValenceFeedbackTargetDeclaration> {
     try {
       const value = await this.existing(id);
-      if (!value) fail(notFound);
+      if (!value) return fail(notFound);
       return value;
     } catch (error) {
       if (error instanceof Error && error.message === notFound) throw error;

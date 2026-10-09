@@ -5,6 +5,7 @@ import { PostgresRequirementInventoryRepository } from "../requirement-inventory
 import { targetRequirementRevisions } from "../../target-adapters/role-requirement-revision-persistence/postgres-schema";
 import { roleRelationAggregateReferences, roleRelationCoverageReferences, roleRelations } from "./postgres-schema";
 
+
 const fail = (code: string): never => { throw new Error(code); };
 const sameSet = (left: string[], right: string[]) => left.length === right.length && new Set(left).size === left.length && left.every(value => right.includes(value));
 const coverageRefId = (roleRelationId: string, targetRequirementEntityId: string, targetRequirementRevisionId: string) => `${roleRelationId}:${targetRequirementEntityId}:${targetRequirementRevisionId}`;

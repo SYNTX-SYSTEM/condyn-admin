@@ -19,7 +19,7 @@ describe("Worker Configuration Validation", () => {
 
   it("fails fast on missing provider configuration without claiming a job", async () => {
     // Enqueue a job
-    const job = createJob("CAREER_ANALYSIS", { sourceType: "TEST", sourceData: {} });
+    const job = createJob("CAREER_ANALYSIS", { sourceType: "TEXT", sourceData: {} });
     await repo.enqueueJob(job);
 
     // Verify job is PENDING

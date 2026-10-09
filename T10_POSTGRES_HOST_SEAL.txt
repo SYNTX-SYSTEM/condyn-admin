@@ -1,0 +1,583 @@
+
+ RUN  v3.2.7 /home/codi/Entwicklung/condyn-admin-sil-integration
+
+ ❯ test/career/relation/recommendation-proposal/concrete-composition-postgres.test.ts (1 test | 1 failed) 3953ms
+   × T5→T10 PostgreSQL concrete process-restart seal > persists exact upstream state and replays provider-free RoleRelation, TensionState, EvolutionInputState, and RecommendationProposal after fresh clients 3414ms
+     → promise resolved "{ items: [ { …(16) }, …(20) ], …(13) }" instead of rejecting
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/career/relation/recommendation-proposal/concrete-composition-postgres.test.ts > T5→T10 PostgreSQL concrete process-restart seal > persists exact upstream state and replays provider-free RoleRelation, TensionState, EvolutionInputState, and RecommendationProposal after fresh clients
+AssertionError: promise resolved "{ items: [ { …(16) }, …(20) ], …(13) }" instead of rejecting
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- Error {[39m
+[32m-   "message": "rejected promise",[39m
+[31m+ {[39m
+[31m+   "authorityState": "RECOMMENDATION_POLICY_BOUND",[39m
+[31m+   "createdAt": "2026-10-07T00:00:00.000Z",[39m
+[31m+   "evolutionInputStateId": "EIS_0DDB546CA7B9D08DFCD54825670D9874",[39m
+[31m+   "items": [[39m
+[31m+     {[39m
+[31m+       "candidateCapabilityOperandId": null,[39m
+[31m+       "capabilityRequirementRelationEvaluationResultId": null,[39m
+[31m+       "capabilityRequirementRelationId": "CRREL_4F7E8724182DC274F5F1A5FD397D30D9",[39m
+[31m+       "derivationDisposition": "DERIVABLE",[39m
+[31m+       "dimension": "EVIDENCE",[39m
+[31m+       "evolutionInputClass": "NO_ACTION_JUSTIFIED_INPUT",[39m
+[31m+       "necessityStates": [[39m
+[31m+         {[39m
+[31m+           "necessityState": "REQUIRED",[39m
+[31m+           "targetRequirementRevisionId": "TRQREV_9294EC464C17A04854C5C6FC70098B59",[39m
+[31m+         },[39m
+[31m+       ],[39m
+[31m+       "recommendationDisposition": "ABSTAINED",[39m
+[31m+       "recommendationKind": null,[39m
+[31m+       "requirementRelationAggregateId": "RRA_1443BC2369F763EA032B447901704469",[39m
+[31m+       "sourceEvolutionInputItemOrdinal": 0,[39m
+[31m+       "subjectKind": "AGGREGATE_DIMENSION",[39m
+[31m+       "targetRequirementEntityId": "K_LEVEL_BELOW",[39m
+[31m+       "targetRequirementRevisionIds": [[39m
+[31m+         "TRQREV_9294EC464C17A04854C5C6FC70098B59",[39m
+[31m+       ],[39m
+[31m+       "tensionClassificationCode": "EVIDENCE_SUFFICIENT",[39m
+[31m+       "tensionClassificationFamily": "NOT_A_TENSION",[39m
+[31m+     },[39m
+[31m+     {[39m
+[31m+       "candidateCapabilityOperandId": null,[39m
+[31m+       "capabilityRequirementRelationEvaluationResultId": null,[39m
+[31m+       "capabilityRequirementRelationId": "CRREL_4F7E8724182DC274F5F1A5FD397D30D9",[39m
+[31m+       "derivationDisposition": "DERIVABLE",[39m
+[31m+       "dimension": "EVIDENCE",[39m
+[31m+       "evolutionInputClass": "NO_ACTION_JUSTIFIED_INPUT",[39m
+[31m+       "necessityStates": [[39m
+[31m+         {[39m
+[31m+           "necessityState": "REQUIRED",[39m
+[31m+           "targetRequirementRevisionId": "TRQREV_9294EC464C17A04854C5C6FC70098B59",[39m
+[31m+         },[39m
+[31m+       ],[39m
+[31m+       "recommendationDisposition": "ABSTAINED",[39m
+[31m+       "recommendationKind": null,[39m
+[31m+       "requirementRelationAggregateId": "RRA_F851FE8DB950D5AFD41B21B1669A6CAB",[39m
+[31m+       "sourceEvolutionInputItemOrdinal": 1,[39m
+[31m+       "subjectKind": "AGGREGATE_DIMENSION",[39m
+[31m+       "targetRequirementEntityId": "K_LEVEL_BELOW",[39m
+[31m+       "targetRequirementRevisionIds": [[39m
+[31m+         "TRQREV_9294EC464C17A04854C5C6FC70098B59",[39m
+[31m+       ],[39m
+[31m+       "tensionClassificationCode": "EVIDENCE_SUFFICIENT",[39m
+[31m+       "tensionClassificationFamily": "NOT_A_TENSION",[39m
+[31m+     },[39m
+[31m+     {[39m
+[31m+       "candidateCapabilityOperandId": null,[39m
+[31m+       "capabilityRequirementRelationEvaluationResultId": null,[39m
+[31m+       "capabilityRequirementRelationId": "CRREL_4F7E8724182DC274F5F1A5FD397D30D9",[39m
+[31m+       "derivationDisposition": "DERIVABLE",[39m
+[31m+       "dimension": "LEVEL",[39m
+[31m+       "evolutionInputClass": "INCREASE_DEMONSTRATED_LEVEL_INPUT",[39m
+[31m+       "necessityStates": [[39m
+[31m+         {[39m
+[31m+           "necessityState": "REQUIRED",[39m
+[31m+           "targetRequirementRevisionId": "TRQREV_9294EC464C17A04854C5C6FC70098B59",[39m
+[31m+         },[39m
+[31m+       ],[39m
+[31m+       "recommendationDisposition": "PROPOSED",[39m
+[31m+       "recommendationKind": "DEMONSTRATED_LEVEL_RECOMMENDATION",[39m
+[31m+       "requirementRelationAggregateId": "RRA_1443BC2369F763EA032B447901704469",[39m
+[31m+       "sourceEvolutionInputItemOrdinal": 2,[39m
+[31m+       "subjectKind": "AGGREGATE_DIMENSION",[39m
+[31m+       "targetRequirementEntityId": "K_LEVEL_BELOW",[39m
+[31m+       "targetRequirementRevisionIds": [[39m
+[31m+         "TRQREV_9294EC464C17A04854C5C6FC70098B59",[39m
+[31m+       ],[39m
+[31m+       "tensionClassificationCode": "LEVEL_BELOW_RELATION",[39m
+[31m+       "tensionClassificationFamily": "STRUCTURAL_DIFFERENCE",[39m
+[31m+     },[39m
+[31m+     {[39m
+[31m+       "candidateCapabilityOperandId": null,[39m
+[31m+       "capabilityRequirementRelationEvaluationResultId": null,[39m
+[31m+       "capabilityRequirementRelationId": "CRREL_4F7E8724182DC274F5F1A5FD397D30D9",[39m
+[31m+       "derivationDisposition": "DERIVABLE",[39m
+[31m+       "dimension": "LEVEL",[39m
+[31m+       "evolutionInputClass": "INCREASE_DEMONSTRATED_LEVEL_INPUT",[39m
+[31m+       "necessityStates": [[39m
+[31m+         {[39m
+[31m+           "necessityState": "REQUIRED",[39m
+[31m+           "targetRequirementRevisionId": "TRQREV_9294EC464C17A04854C5C6FC70098B59",[39m
+[31m+         },[39m
+[31m+       ],[39m
+[31m+       "recommendationDisposition": "PROPOSED",[39m
+[31m+       "recommendationKind": "DEMONSTRATED_LEVEL_RECOMMENDATION",[39m
+[31m+       "requirementRelationAggregateId": "RRA_F851FE8DB950D5AFD41B21B1669A6CAB",[39m
+[31m+       "sourceEvolutionInputItemOrdinal": 3,[39m
+[31m+       "subjectKind": "AGGREGATE_DIMENSION",[39m
+[31m+       "targetRequirementEntityId": "K_LEVEL_BELOW",[39m
+[31m+       "targetRequirementRevisionIds": [[39m
+[31m+         "TRQREV_9294EC464C17A04854C5C6FC70098B59",[39m
+[31m+       ],[39m
+[31m+       "tensionClassificationCode": "LEVEL_BELOW_RELATION",[39m
+[31m+       "tensionClassificationFamily": "STRUCTURAL_DIFFERENCE",[39m
+[31m+     },[39m
+[31m+     {[39m
+[31m+       "candidateCapabilityOperandId": null,[39m
+[31m+       "capabilityRequirementRelationEvaluationResultId": null,[39m
+[31m+       "capabilityRequirementRelationId": "CRREL_4F7E8724182DC274F5F1A5FD397D30D9",[39m
+[31m+       "derivationDisposition": "DERIVABLE",[39m
+[31m+       "dimension": "SCOPE",[39m
+[31m+       "evolutionInputClass": "NO_ACTION_JUSTIFIED_INPUT",[39m
+[31m+       "necessityStates": [[39m
+[31m+         {[39m
+[31m+           "necessityState": "REQUIRED",[39m
+[31m+           "targetRequirementRevisionId": "TRQREV_9294EC464C17A04854C5C6FC70098B59",[39m
+[31m+         },[39m
+[31m+       ],[39m
+[31m+       "recommendationDisposition": "ABSTAINED",[39m
+[31m+       "recommendationKind": null,[39m
+[31m+       "requirementRelationAggregateId": "RRA_1443BC2369F763EA032B447901704469",[39m
+[31m+       "sourceEvolutionInputItemOrdinal": 4,[39m
+[31m+       "subjectKind": "AGGREGATE_DIMENSION",[39m
+[31m+       "targetRequirementEntityId": "K_LEVEL_BELOW",[39m
+[31m+       "targetRequirementRevisionIds": [[39m
+[31m+         "TRQREV_9294EC464C17A04854C5C6FC70098B59",[39m
+[31m+       ],[39m
+[31m+       "tensionClassificationCode": "SCOPE_NOT_APPLICABLE",[39m
+[31m+       "tensionClassificationFamily": "NOT_A_TENSION",[39m
+[31m+     },[39m
+[31m+     {[39m
+[31m+       "candidateCapabilityOperandId": null,[39m
+[31m+       "capabilityRequirementRelationEvaluationResultId": null,[39m
+[31m+       "capabilityRequirementRelationId": "CRREL_4F7E8724182DC274F5F1A5FD397D30D9",[39m
+[31m+       "derivationDisposition": "DERIVABLE",[39m
+[31m+       "dimension": "SCOPE",[39m
+[31m+       "evolutionInputClass": "NO_ACTION_JUSTIFIED_INPUT",[39m
+[31m+       "necessityStates": [[39m
+[31m+         {[39m
+[31m+           "necessityState": "REQUIRED",[39m
+[31m+           "targetRequirementRevisionId": "TRQREV_9294EC464C17A04854C5C6FC70098B59",[39m
+[31m+         },[39m
+[31m+       ],[39m
+[31m+       "recommendationDisposition": "ABSTAINED",[39m
+[31m+       "recommendationKind": null,[39m
+[31m+       "requirementRelationAggregateId": "RRA_F851FE8DB950D5AFD41B21B1669A6CAB",[39m
+[31m+       "sourceEvolutionInputItemOrdinal": 5,[39m
+[31m+       "subjectKind": "AGGREGATE_DIMENSION",[39m
+[31m+       "targetRequirementEntityId": "K_LEVEL_BELOW",[39m
+[31m+       "targetRequirementRevisionIds": [[39m
+[31m+         "TRQREV_9294EC464C17A04854C5C6FC70098B59",[39m
+[31m+       ],[39m
+[31m+       "tensionClassificationCode": "SCOPE_NOT_APPLICABLE",[39m
+[31m+       "tensionClassificationFamily": "NOT_A_TENSION",[39m
+[31m+     },[39m
+[31m+     {[39m
+[31m+       "candidateCapabilityOperandId": null,[39m
+[31m+       "capabilityRequirementRelationEvaluationResultId": null,[39m
+[31m+       "capabilityRequirementRelationId": "CRREL_4F7E8724182DC274F5F1A5FD397D30D9",[39m
+[31m+       "derivationDisposition": "NOT_DERIVABLE",[39m
+[31m+       "dimension": "SEMANTIC",[39m
+[31m+       "evolutionInputClass": null,[39m
+[31m+       "necessityStates": [[39m
+[31m+         {[39m
+[31m+           "necessityState": "REQUIRED",[39m
+[31m+           "targetRequirementRevisionId": "TRQREV_9294EC464C17A04854C5C6FC70098B59",[39m
+[31m+         },[39m
+[31m+       ],[39m
+[31m+       "recommendationDisposition": "NOT_RECOMMENDABLE",[39m
+[31m+       "recommendationKind": null,[39m
+[31m+       "requirementRelationAggregateId": "RRA_1443BC2369F763EA032B447901704469",[39m
+[31m+       "sourceEvolutionInputItemOrdinal": 6,[39m
+[31m+       "subjectKind": "AGGREGATE_DIMENSION",[39m
+[31m+       "targetRequirementEntityId": "K_LEVEL_BELOW",[39m
+[31m+       "targetRequirementRevisionIds": [[39m
+[31m+         "TRQREV_9294EC464C17A04854C5C6FC70098B59",[39m
+[31m+       ],[39m
+[31m+       "tensionClassificationCode": "SEMANTIC_PARTIAL_RELATION",[39m
+[31m+       "tensionClassificationFamily": "STRUCTURAL_DIFFERENCE",[39m
+[31m+     },[39m
+[31m+     {[39m
+[31m+       "candidateCapabilityOperandId": null,[39m
+[31m+       "capabilityRequirementRelationEvaluationResultId": null,[39m
+[31m+       "capabilityRequirementRelationId": "CRREL_4F7E8724182DC274F5F1A5FD397D30D9",[39m
+[31m+       "derivationDisposition": "NOT_DERIVABLE",[39m
+[31m+       "dimension": "SEMANTIC",[39m
+[31m+       "evolutionInputClass": null,[39m
+[31m+       "necessityStates": [[39m
+[31m+         {[39m
+[31m+           "necessityState": "REQUIRED",[39m
+[31m+           "targetRequirementRevisionId": "TRQREV_9294EC464C17A04854C5C6FC70098B59",[39m
+[31m+         },[39m
+[31m+       ],[39m
+[31m+       "recommendationDisposition": "NOT_RECOMMENDABLE",[39m
+[31m+       "recommendationKind": null,[39m
+[31m+       "requirementRelationAggregateId": "RRA_F851FE8DB950D5AFD41B21B1669A6CAB",[39m
+[31m+       "sourceEvolutionInputItemOrdinal": 7,[39m
+[31m+       "subjectKind": "AGGREGATE_DIMENSION",[39m
+[31m+       "targetRequirementEntityId": "K_LEVEL_BELOW",[39m
+[31m+       "targetRequirementRevisionIds": [[39m
+[31m+         "TRQREV_9294EC464C17A04854C5C6FC70098B59",[39m
+[31m+       ],[39m
+[31m+       "tensionClassificationCode": "SEMANTIC_PARTIAL_RELATION",[39m
+[31m+       "tensionClassificationFamily": "STRUCTURAL_DIFFERENCE",[39m
+[31m+     },[39m
+[31m+     {[39m
+[31m+       "candidateCapabilityOperandId": null,[39m
+[31m+       "capabilityRequirementRelationEvaluationResultId": null,[39m
+[31m+       "capabilityRequirementRelationId": null,[39m
+[31m+       "derivationDisposition": "DERIVABLE",[39m
+[31m+       "dimension": "COMPOSITION",[39m
+[31m+       "evolutionInputClass": "RESOLVE_SEMANTIC_UNCERTAINTY_INPUT",[39m
+[31m+       "necessityStates": [[39m
+[31m+         {[39m
+[31m+           "necessityState": "REQUIRED",[39m
+[31m+           "targetRequirementRevisionId": "TRQREV_9294EC464C17A04854C5C6FC70098B59",[39m
+[31m+         },[39m
+[31m+       ],[39m
+[31m+       "recommendationDisposition": "PROPOSED",[39m
+[31m+       "recommendationKind": "SEMANTIC_UNCERTAINTY_RESOLUTION_RECOMMENDATION",[39m
+[31m+       "requirementRelationAggregateId": "RRA_1443BC2369F763EA032B447901704469",[39m
+[31m+       "sourceEvolutionInputItemOrdinal": 8,[39m
+[31m+       "subjectKind": "AGGREGATE_DIMENSION",[39m
+[31m+       "targetRequirementEntityId": "K_LEVEL_BELOW",[39m
+[31m+       "targetRequirementRevisionIds": [[39m
+[31m+         "TRQREV_9294EC464C17A04854C5C6FC70098B59",[39m
+[31m+       ],[39m
+[31m+       "tensionClassificationCode": "COMPOSITION_UNEVALUATED",[39m
+[31m+       "tensionClassificationFamily": "EPISTEMIC_UNCERTAINTY",[39m
+[31m+     },[39m
+[31m+     {[39m
+[31m+       "candidateCapabilityOperandId": null,[39m
+[31m+       "capabilityRequirementRelationEvaluationResultId": null,[39m
+[31m+       "capabilityRequirementRelationId": null,[39m
+[31m+       "derivationDisposition": "DERIVABLE",[39m
+[31m+       "dimension": "COMPOSITION",[39m
+[31m+       "evolutionInputClass": "RESOLVE_SEMANTIC_UNCERTAINTY_INPUT",[39m
+[31m+       "necessityStates": [[39m
+[31m+         {[39m
+[31m+           "necessityState": "REQUIRED",[39m
+[31m+           "targetRequirementRevisionId": "TRQREV_9294EC464C17A04854C5C6FC70098B59",[39m
+[31m+         },[39m
+[31m+       ],[39m
+[31m+       "recommendationDisposition": "PROPOSED",[39m
+[31m+       "recommendationKind": "SEMANTIC_UNCERTAINTY_RESOLUTION_RECOMMENDATION",[39m
+[31m+       "requirementRelationAggregateId": "RRA_F851FE8DB950D5AFD41B21B1669A6CAB",[39m
+[31m+       "sourceEvolutionInputItemOrdinal": 9,[39m
+[31m+       "subjectKind": "AGGREGATE_DIMENSION",[39m
+[31m+       "targetRequirementEntityId": "K_LEVEL_BELOW",[39m
+[31m+       "targetRequirementRevisionIds": [[39m
+[31m+         "TRQREV_9294EC464C17A04854C5C6FC70098B59",[39m
+[31m+       ],[39m
+[31m+       "tensionClassificationCode": "COMPOSITION_UNEVALUATED",[39m
+[31m+       "tensionClassificationFamily": "EPISTEMIC_UNCERTAINTY",[39m
+[31m+     },[39m
+[31m+     {[39m
+[31m+       "candidateCapabilityOperandId": null,[39m
+[31m+       "capabilityRequirementRelationEvaluationResultId": null,[39m
+[31m+       "capabilityRequirementRelationId": null,[39m
+[31m+       "derivationDisposition": "DERIVABLE",[39m
+[31m+       "dimension": "COVERAGE",[39m
+[31m+       "evolutionInputClass": "NO_ACTION_JUSTIFIED_INPUT",[39m
+[31m+       "necessityStates": [[39m
+[31m+         {[39m
+[31m+           "necessityState": "OPTIONAL",[39m
+[31m+           "targetRequirementRevisionId": "TRQREV_AF6E6896931D0B27460BED0D84723050",[39m
+[31m+         },[39m
+[31m+       ],[39m
+[31m+       "recommendationDisposition": "ABSTAINED",[39m
+[31m+       "recommendationKind": null,[39m
+[31m+       "requirementRelationAggregateId": null,[39m
+[31m+       "sourceEvolutionInputItemOrdinal": 10,[39m
+[31m+       "subjectKind": "REQUIREMENT",[39m
+[31m+       "targetRequirementEntityId": "G_INELIGIBLE",[39m
+[31m+       "targetRequirementRevisionIds": [[39m
+[31m+         "TRQREV_AF6E6896931D0B27460BED0D84723050",[39m
+[31m+       ],[39m
+[31m+       "tensionClassificationCode": "INELIGIBLE_DIRECT_RELATION_NOT_APPLICABLE",[39m
+[31m+       "tensionClassificationFamily": "NOT_A_TENSION",[39m
+[31m+     },[39m
+[31m+     {[39m
+[31m+       "candidateCapabilityOperandId": null,[39m
+[31m+       "capabilityRequirementRelationEvaluationResultId": null,[39m
+[31m+       "capabilityRequirementRelationId": null,[39m
+[31m+       "derivationDisposition": "DERIVABLE",[39m
+[31m+       "dimension": "COVERAGE",[39m
+[31m+       "evolutionInputClass": "NO_ACTION_JUSTIFIED_INPUT",[39m
+[31m+       "necessityStates": [[39m
+[31m+         {[39m
+[31m+           "necessityState": "PREFERRED",[39m
+[31m+           "targetRequirementRevisionId": "TRQREV_9BE83A497DAF1742D2CAE56ADAF893F0",[39m
+[31m+         },[39m
+[31m+       ],[39m
+[31m+       "recommendationDisposition": "ABSTAINED",[39m
+[31m+       "recommendationKind": null,[39m
+[31m+       "requirementRelationAggregateId": null,[39m
+[31m+       "sourceEvolutionInputItemOrdinal": 11,[39m
+[31m+       "subjectKind": "REQUIREMENT",[39m
+[31m+       "targetRequirementEntityId": "F_NON_DIRECT",[39m
+[31m+       "targetRequirementRevisionIds": [[39m
+[31m+         "TRQREV_9BE83A497DAF1742D2CAE56ADAF893F0",[39m
+[31m+       ],[39m
+[31m+       "tensionClassificationCode": "NON_DIRECT_REQUIREMENT_REVIEWED",[39m
+[31m+       "tensionClassificationFamily": "NOT_A_TENSION",[39m
+[31m+     },[39m
+[31m+     {[39m
+[31m+       "candidateCapabilityOperandId": null,[39m
+[31m+       "capabilityRequirementRelationEvaluationResultId": null,[39m
+[31m+       "capabilityRequirementRelationId": null,[39m
+[31m+       "derivationDisposition": "DERIVABLE",[39m
+[31m+       "dimension": "COVERAGE",[39m
+[31m+       "evolutionInputClass": "RESOLVE_SEMANTIC_UNCERTAINTY_INPUT",[39m
+[31m+       "necessityStates": [[39m
+[31m+         {[39m
+[31m+           "necessityState": "CONDITIONAL",[39m
+[31m+           "targetRequirementRevisionId": "TRQREV_15883DADA0BA461279E6B8EAB0924CA3",[39m
+[31m+         },[39m
+[31m+       ],[39m
+[31m+       "recommendationDisposition": "PROPOSED",[39m
+[31m+       "recommendationKind": "SEMANTIC_UNCERTAINTY_RESOLUTION_RECOMMENDATION",[39m
+[31m+       "requirementRelationAggregateId": null,[39m
+[31m+       "sourceEvolutionInputItemOrdinal": 12,[39m
+[31m+       "subjectKind": "REQUIREMENT",[39m
+[31m+       "targetRequirementEntityId": "D_CONDITIONAL",[39m
+[31m+       "targetRequirementRevisionIds": [[39m
+[31m+         "TRQREV_15883DADA0BA461279E6B8EAB0924CA3",[39m
+[31m+       ],[39m
+[31m+       "tensionClassificationCode": "RELATION_NOT_AVAILABLE",[39m
+[31m+       "tensionClassificationFamily": "EPISTEMIC_UNCERTAINTY",[39m
+[31m+     },[39m
+[31m+     {[39m
+[31m+       "candidateCapabilityOperandId": null,[39m
+[31m+       "capabilityRequirementRelationEvaluationResultId": null,[39m
+[31m+       "capabilityRequirementRelationId": null,[39m
+[31m+       "derivationDisposition": "DERIVABLE",[39m
+[31m+       "dimension": "COVERAGE",[39m
+[31m+       "evolutionInputClass": "RESOLVE_SEMANTIC_UNCERTAINTY_INPUT",[39m
+[31m+       "necessityStates": [[39m
+[31m+         {[39m
+[31m+           "necessityState": "OPTIONAL",[39m
+[31m+           "targetRequirementRevisionId": "TRQREV_F4BE151AF04C30679C839A6EAB248215",[39m
+[31m+         },[39m
+[31m+       ],[39m
+[31m+       "recommendationDisposition": "PROPOSED",[39m
+[31m+       "recommendationKind": "SEMANTIC_UNCERTAINTY_RESOLUTION_RECOMMENDATION",[39m
+[31m+       "requirementRelationAggregateId": null,[39m
+[31m+       "sourceEvolutionInputItemOrdinal": 13,[39m
+[31m+       "subjectKind": "REQUIREMENT",[39m
+[31m+       "targetRequirementEntityId": "C_OPTIONAL",[39m
+[31m+       "targetRequirementRevisionIds": [[39m
+[31m+         "TRQREV_F4BE151AF04C30679C839A6EAB248215",[39m
+[31m+       ],[39m
+[31m+       "tensionClassificationCode": "RELATION_NOT_AVAILABLE",[39m
+[31m+       "tensionClassificationFamily": "EPISTEMIC_UNCERTAINTY",[39m
+[31m+     },[39m
+[31m+     {[39m
+[31m+       "candidateCapabilityOperandId": null,[39m
+[31m+       "capabilityRequirementRelationEvaluationResultId": null,[39m
+[31m+       "capabilityRequirementRelationId": null,[39m
+[31m+       "derivationDisposition": "DERIVABLE",[39m
+[31m+       "dimension": "COVERAGE",[39m
+[31m+       "evolutionInputClass": "RESOLVE_SEMANTIC_UNCERTAINTY_INPUT",[39m
+[31m+       "necessityStates": [[39m
+[31m+         {[39m
+[31m+           "necessityState": "PREFERRED",[39m
+[31m+           "targetRequirementRevisionId": "TRQREV_F6DA3FAA0CDF48595C7B7B79F8C36BE9",[39m
+[31m+         },[39m
+[31m+       ],[39m
+[31m+       "recommendationDisposition": "PROPOSED",[39m
+[31m+       "recommendationKind": "SEMANTIC_UNCERTAINTY_RESOLUTION_RECOMMENDATION",[39m
+[31m+       "requirementRelationAggregateId": null,[39m
+[31m+       "sourceEvolutionInputItemOrdinal": 14,[39m
+[31m+       "subjectKind": "REQUIREMENT",[39m
+[31m+       "targetRequirementEntityId": "B_PREFERRED",[39m
+[31m+       "targetRequirementRevisionIds": [[39m
+[31m+         "TRQREV_F6DA3FAA0CDF48595C7B7B79F8C36BE9",[39m
+[31m+       ],[39m
+[31m+       "tensionClassificationCode": "RELATION_NOT_AVAILABLE",[39m
+[31m+       "tensionClassificationFamily": "EPISTEMIC_UNCERTAINTY",[39m
+[31m+     },[39m
+[31m+     {[39m
+[31m+       "candidateCapabilityOperandId": null,[39m
+[31m+       "capabilityRequirementRelationEvaluationResultId": null,[39m
+[31m+       "capabilityRequirementRelationId": null,[39m
+[31m+       "derivationDisposition": "DERIVABLE",[39m
+[31m+       "dimension": "COVERAGE",[39m
+[31m+       "evolutionInputClass": "RESOLVE_SEMANTIC_UNCERTAINTY_INPUT",[39m
+[31m+       "necessityStates": [[39m
+[31m+         {[39m
+[31m+           "necessityState": "REQUIRED",[39m
+[31m+           "targetRequirementRevisionId": "TRQREV_83C7401AFB35AE09ADDD16E437EC0227",[39m
+[31m+         },[39m
+[31m+       ],[39m
+[31m+       "recommendationDisposition": "PROPOSED",[39m
+[31m+       "recommendationKind": "SEMANTIC_UNCERTAINTY_RESOLUTION_RECOMMENDATION",[39m
+[31m+       "requirementRelationAggregateId": null,[39m
+[31m+       "sourceEvolutionInputItemOrdinal": 15,[39m
+[31m+       "subjectKind": "REQUIREMENT",[39m
+[31m+       "targetRequirementEntityId": "A_REQUIRED",[39m
+[31m+       "targetRequirementRevisionIds": [[39m
+[31m+         "TRQREV_83C7401AFB35AE09ADDD16E437EC0227",[39m
+[31m+       ],[39m
+[31m+       "tensionClassificationCode": "RELATION_NOT_AVAILABLE",[39m
+[31m+       "tensionClassificationFamily": "EPISTEMIC_UNCERTAINTY",[39m
+[31m+     },[39m
+[31m+     {[39m
+[31m+       "candidateCapabilityOperandId": null,[39m
+[31m+       "capabilityRequirementRelationEvaluationResultId": null,[39m
+[31m+       "capabilityRequirementRelationId": null,[39m
+[31m+       "derivationDisposition": "DERIVABLE",[39m
+[31m+       "dimension": "COVERAGE",[39m
+[31m+       "evolutionInputClass": "RESOLVE_SEMANTIC_UNCERTAINTY_INPUT",[39m
+[31m+       "necessityStates": [[39m
+[31m+         {[39m
+[31m+           "necessityState": "REQUIRED",[39m
+[31m+           "targetRequirementRevisionId": "TRQREV_CCDF3FD408B81C7FF6B17EEEE69F7CE1",[39m
+[31m+         },[39m
+[31m+       ],[39m
+[31m+       "recommendationDisposition": "PROPOSED",[39m
+[31m+       "recommendationKind": "SEMANTIC_UNCERTAINTY_RESOLUTION_RECOMMENDATION",[39m
+[31m+       "requirementRelationAggregateId": null,[39m
+[31m+       "sourceEvolutionInputItemOrdinal": 16,[39m
+[31m+       "subjectKind": "REQUIREMENT",[39m
+[31m+       "targetRequirementEntityId": "J_NO_AGGREGATE",[39m
+[31m+       "targetRequirementRevisionIds": [[39m
+[31m+         "TRQREV_CCDF3FD408B81C7FF6B17EEEE69F7CE1",[39m
+[31m+       ],[39m
+[31m+       "tensionClassificationCode": "RELATION_NOT_AVAILABLE",[39m
+[31m+       "tensionClassificationFamily": "EPISTEMIC_UNCERTAINTY",[39m
+[31m+     },[39m
+[31m+     {[39m
+[31m+       "candidateCapabilityOperandId": null,[39m
+[31m+       "capabilityRequirementRelationEvaluationResultId": null,[39m
+[31m+       "capabilityRequirementRelationId": null,[39m
+[31m+       "derivationDisposition": "DERIVABLE",[39m
+[31m+       "dimension": "COVERAGE",[39m
+[31m+       "evolutionInputClass": "RESOLVE_SEMANTIC_UNCERTAINTY_INPUT",[39m
+[31m+       "necessityStates": [[39m
+[31m+         {[39m
+[31m+           "necessityState": "UNKNOWN",[39m
+[31m+           "targetRequirementRevisionId": "TRQREV_2C9256741BE73E10067DA35909FAB4EF",[39m
+[31m+         },[39m
+[31m+       ],[39m
+[31m+       "recommendationDisposition": "PROPOSED",[39m
+[31m+       "recommendationKind": "SEMANTIC_UNCERTAINTY_RESOLUTION_RECOMMENDATION",[39m
+[31m+       "requirementRelationAggregateId": null,[39m
+[31m+       "sourceEvolutionInputItemOrdinal": 17,[39m
+[31m+       "subjectKind": "REQUIREMENT",[39m
+[31m+       "targetRequirementEntityId": "E_UNKNOWN",[39m
+[31m+       "targetRequirementRevisionIds": [[39m
+[31m+         "TRQREV_2C9256741BE73E10067DA35909FAB4EF",[39m
+[31m+       ],[39m
+[31m+       "tensionClassificationCode": "RELATION_NOT_AVAILABLE",[39m
+[31m+       "tensionClassificationFamily": "EPISTEMIC_UNCERTAINTY",[39m
+[31m+     },[39m
+[31m+     {[39m
+[31m+       "candidateCapabilityOperandId": null,[39m
+[31m+       "capabilityRequirementRelationEvaluationResultId": null,[39m
+[31m+       "capabilityRequirementRelationId": null,[39m
+[31m+       "derivationDisposition": "DERIVABLE",[39m
+[31m+       "dimension": "COVERAGE",[39m
+[31m+       "evolutionInputClass": "RESOLVE_TARGET_UNCERTAINTY_INPUT",[39m
+[31m+       "necessityStates": [[39m
+[31m+         {[39m
+[31m+           "necessityState": "REQUIRED",[39m
+[31m+           "targetRequirementRevisionId": "TRQREV_9294EC464C17A04854C5C6FC70098B59",[39m
+[31m+         },[39m
+[31m+       ],[39m
+[31m+       "recommendationDisposition": "PROPOSED",[39m
+[31m+       "recommendationKind": "TARGET_UNCERTAINTY_RESOLUTION_RECOMMENDATION",[39m
+[31m+       "requirementRelationAggregateId": null,[39m
+[31m+       "sourceEvolutionInputItemOrdinal": 18,[39m
+[31m+       "subjectKind": "REQUIREMENT",[39m
+[31m+       "targetRequirementEntityId": "K_LEVEL_BELOW",[39m
+[31m+       "targetRequirementRevisionIds": [[39m
+[31m+         "TRQREV_9294EC464C17A04854C5C6FC70098B59",[39m
+[31m+       ],[39m
+[31m+       "tensionClassificationCode": "REQUIREMENT_RELATION_AGGREGATE_SET_UNRESOLVED",[39m
+[31m+       "tensionClassificationFamily": "EPISTEMIC_UNCERTAINTY",[39m
+[31m+     },[39m
+[31m+     {[39m
+[31m+       "candidateCapabilityOperandId": null,[39m
+[31m+       "capabilityRequirementRelationEvaluationResultId": null,[39m
+[31m+       "capabilityRequirementRelationId": null,[39m
+[31m+       "derivationDisposition": "DERIVABLE",[39m
+[31m+       "dimension": "COVERAGE",[39m
+[31m+       "evolutionInputClass": "RESOLVE_TARGET_UNCERTAINTY_INPUT",[39m
+[31m+       "necessityStates": [[39m
+[31m+         {[39m
+[31m+           "necessityState": "UNKNOWN",[39m
+[31m+           "targetRequirementRevisionId": "TRQREV_5CD19CFE6AB28772CA459FB432490226",[39m
+[31m+         },[39m
+[31m+         {[39m
+[31m+           "necessityState": "CONDITIONAL",[39m
+[31m+           "targetRequirementRevisionId": "TRQREV_D5E1BD8C8A9C4ACCE73E8FFF4807DDE4",[39m
+[31m+         },[39m
+[31m+       ],[39m
+[31m+       "recommendationDisposition": "PROPOSED",[39m
+[31m+       "recommendationKind": "TARGET_UNCERTAINTY_RESOLUTION_RECOMMENDATION",[39m
+[31m+       "requirementRelationAggregateId": null,[39m
+[31m+       "sourceEvolutionInputItemOrdinal": 19,[39m
+[31m+       "subjectKind": "REQUIREMENT",[39m
+[31m+       "targetRequirementEntityId": "I_BRANCH",[39m
+[31m+       "targetRequirementRevisionIds": [[39m
+[31m+         "TRQREV_5CD19CFE6AB28772CA459FB432490226",[39m
+[31m+         "TRQREV_D5E1BD8C8A9C4ACCE73E8FFF4807DDE4",[39m
+[31m+       ],[39m
+[31m+       "tensionClassificationCode": "REQUIREMENT_REVISION_BRANCH_UNRESOLVED",[39m
+[31m+       "tensionClassificationFamily": "EPISTEMIC_UNCERTAINTY",[39m
+[31m+     },[39m
+[31m+     {[39m
+[31m+       "candidateCapabilityOperandId": null,[39m
+[31m+       "capabilityRequirementRelationEvaluationResultId": null,[39m
+[31m+       "capabilityRequirementRelationId": null,[39m
+[31m+       "derivationDisposition": "DERIVABLE",[39m
+[31m+       "dimension": "COVERAGE",[39m
+[31m+       "evolutionInputClass": "RESOLVE_TARGET_UNCERTAINTY_INPUT",[39m
+[31m+       "necessityStates": [[39m
+[31m+         {[39m
+[31m+           "necessityState": "UNKNOWN",[39m
+[31m+           "targetRequirementRevisionId": "TRQREV_6DF6DD1ED1BF67CD6FF9BE30F70BC68D",[39m
+[31m+         },[39m
+[31m+       ],[39m
+[31m+       "recommendationDisposition": "PROPOSED",[39m
+[31m+       "recommendationKind": "TARGET_UNCERTAINTY_RESOLUTION_RECOMMENDATION",[39m
+[31m+       "requirementRelationAggregateId": null,[39m
+[31m+       "sourceEvolutionInputItemOrdinal": 20,[39m
+[31m+       "subjectKind": "REQUIREMENT",[39m
+[31m+       "targetRequirementEntityId": "H_ELIGIBILITY_UNKNOWN",[39m
+[31m+       "targetRequirementRevisionIds": [[39m
+[31m+         "TRQREV_6DF6DD1ED1BF67CD6FF9BE30F70BC68D",[39m
+[31m+       ],[39m
+[31m+       "tensionClassificationCode": "ELIGIBILITY_UNKNOWN",[39m
+[31m+       "tensionClassificationFamily": "EPISTEMIC_UNCERTAINTY",[39m
+[31m+     },[39m
+[31m+   ],[39m
+[31m+   "proposalState": "PROPOSAL_ONLY",[39m
+[31m+   "recommendationPolicyLineage": {[39m
+[31m+     "recommendationPolicyImplementationVersion": "recommendation-v1",[39m
+[31m+   },[39m
+[31m+   "recommendationPolicyRevisionId": "RPR_9CB4FA56F0FD8872636978E852F1043D",[39m
+[31m+   "recommendationProposalId": "RCP_4607E15E690D9322EEDF7392DAABF6E8",[39m
+[31m+   "roleRelationId": "RRL_50F716ACBBE775C577C77AA7CAE147E3",[39m
+[31m+   "schemaVersion": "RECOMMENDATION_PROPOSAL_V1",[39m
+[31m+   "targetRoleProfileRevisionId": "TRPREV_BE17D30DC62D9DE5C5571C49E1499780",[39m
+[31m+   "targetRoleRequirementInventoryId": "TRQINV_FD80C6D1FB74D45669D95F01AF95C20B",[39m
+[31m+   "tensionStateId": "TSN_0143C5587F2C72D7AECEE494FDA9A4A4",[39m
+[31m+   "verifiedCapabilitySnapshotId": "SNAP_00C3C5C256B2E133ED52CC11",[39m
+[2m  }[22m
+
+ ❯ invalidProposal test/career/relation/role-relation/concrete-composition-postgres.test.ts:155:179
+
+ ❯ test/career/relation/role-relation/concrete-composition-postgres.test.ts:165:426
+ ❯ test/career/relation/role-relation/concrete-composition-postgres.test.ts:154:107
+ ❯ scope node_modules/postgres/src/index.js:260:18
+ ❯ Function.begin node_modules/postgres/src/index.js:243:14
+ ❯ test/career/relation/role-relation/concrete-composition-postgres.test.ts:165:5
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed (1)
+   Start at  11:34:45
+   Duration  6.23s (transform 1.19s, setup 0ms, collect 1.93s, tests 3.95s, environment 0ms, prepare 114ms)
+

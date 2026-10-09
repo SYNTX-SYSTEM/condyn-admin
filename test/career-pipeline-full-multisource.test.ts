@@ -1,39 +1,35 @@
 import { describe, it, expect } from "vitest";
 import { executeCareerAnalysisPipeline } from "../lib/career/pipeline";
-import { MockInferenceProvider, buildCareerAnalysisPrompt } from "../lib/career/adapter";
-import { DocumentInput } from "../lib/career/index";
+import { MockInferenceProvider, buildCareerAnalysisPrompt, type DocumentInput } from "../lib/career/adapter";
+import { createSourceMetadata } from "../lib/career/loaders/source";
 
 describe("CONDYN Career Analysis Protocol v1.0 — TEST001F: FULL MULTI-SOURCE END-TO-END", () => {
   it("should harmoniously orchestrate PDF, GitHub, Website, and Markdown sources into a single canonical state", async () => {
     // 1. Arrange: All four Runtime Document Source Families
     const multiSourceDocs: DocumentInput[] = [
       {
-        url: "file://resume.pdf",
-        type: "pdf",
         docId: "DOC_001",
         title: "Jane Doe Resume PDF",
-        content: "Senior Systems Engineer specializing in Rust. Worked at TechCorp from 2020 to 2026."
+        content: "Senior Systems Engineer specializing in Rust. Worked at TechCorp from 2020 to 2026.",
+        metadata: createSourceMetadata("PDF", "Senior Systems Engineer specializing in Rust. Worked at TechCorp from 2020 to 2026.", { uri: "file://resume.pdf" })
       },
       {
-        url: "https://github.com/janedoe/rust-core",
-        type: "github",
         docId: "DOC_GH_001",
         title: "README.md",
-        content: "# rust-core\nHigh performance distributed systems core."
+        content: "# rust-core\nHigh performance distributed systems core.",
+        metadata: createSourceMetadata("GITHUB_README", "# rust-core\nHigh performance distributed systems core.", { uri: "https://github.com/janedoe/rust-core", path: "README.md" })
       },
       {
-        url: "https://janedoe.engineer/profile",
-        type: "website",
         docId: "DOC_WEB_001",
         title: "Jane Doe Website",
-        content: "I design scalable architecture."
+        content: "I design scalable architecture.",
+        metadata: createSourceMetadata("WEBSITE", "I design scalable architecture.", { uri: "https://janedoe.engineer/profile" })
       },
       {
-        url: "memory://manual-text",
-        type: "markdown",
         docId: "DOC_TXT_001",
         title: "Direct Input",
-        content: "I am actively seeking roles in Munich."
+        content: "I am actively seeking roles in Munich.",
+        metadata: createSourceMetadata("MARKDOWN", "I am actively seeking roles in Munich.", { uri: "memory://manual-text" })
       }
     ];
 

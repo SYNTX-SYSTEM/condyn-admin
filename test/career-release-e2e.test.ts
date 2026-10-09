@@ -67,12 +67,14 @@ describe("CONDYN Career Analysis Protocol v1.0 — Phase 2: Release E2E Complete
       jobId: "job_event_arch",
       title: "Lead Event-Driven Systems Architect",
       company: "Bosch Global",
+      description: "Lead event-driven systems architecture role.",
       requirements: [
         {
           capability_name: "Event-Driven Architecture",
           domain: "Architecture",
           weight: 1.0,
-          required_level: "L5"
+          required_level: "L5",
+          aliases: []
         }
       ]
     }

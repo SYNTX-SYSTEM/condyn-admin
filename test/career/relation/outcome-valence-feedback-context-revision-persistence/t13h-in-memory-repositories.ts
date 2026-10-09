@@ -1,3 +1,6 @@
+import type { CareerDecisionContextRevision } from "../../../../lib/career/relation/decision-context";
+import type { CareerOutcomeValenceFeedbackContextRevision } from "../../../../lib/career/relation/outcome-valence-feedback-context-revision";
+
 type UnknownRecord = Record<string, unknown>;
 
 function canonical(value: unknown): unknown {
@@ -25,12 +28,12 @@ export class T13HInMemoryRepositories {
   readonly #feedbackRevisionScripts = new Map<string, Scripted[]>();
   writeFailure: Error | null = null;
 
-  seedDecisionContext(value: UnknownRecord): void {
-    this.decisionContexts.set(value.careerDecisionContextRevisionId as string, structuredClone(value));
+  seedDecisionContext(value: CareerDecisionContextRevision): void {
+    this.decisionContexts.set(value.careerDecisionContextRevisionId, structuredClone(value));
   }
 
-  seedFeedbackRevision(value: UnknownRecord): void {
-    this.feedbackRevisions.set(value.careerOutcomeValenceFeedbackContextRevisionId as string, structuredClone(value));
+  seedFeedbackRevision(value: CareerOutcomeValenceFeedbackContextRevision): void {
+    this.feedbackRevisions.set(value.careerOutcomeValenceFeedbackContextRevisionId, structuredClone(value));
   }
 
   scriptDecisionContextRead(id: string, ...responses: Scripted[]): void {

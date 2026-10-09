@@ -49,23 +49,32 @@ describe("CONDYN Career Analysis Protocol v1.0 - Step 5.1: Topology Projection M
   };
 
   const getVerifiedAnalysis = (): VerifiedCareerAnalysis => {
-    return unverifiedPayload as unknown as VerifiedCareerAnalysis;
-  };
-
-  it("should throw ERR_UNVERIFIED_ANALYSIS_PROJECTION when passed an unverified analysis", () => {
-    const dirtyAnalysis = {
-      ...unverifiedPayload,
+    const raw = fs.readFileSync(
+      path.join(process.cwd(), "test/gold/case_001_minimal_valid/expected/canonical-expected.json"),
+      "utf8"
+    );
+    const result = validateCareerAnalysis(JSON.parse(raw));
+    if (!result.success || !result.data || result.data.structured_data.analysis.metadata.validation_state !== "VERIFIED") {
+      throw new Error("gold fixture must satisfy the verified canonical analysis contract");
+    }
+    return {
+      ...structuredClone(result.data),
       structured_data: {
-        ...unverifiedPayload.structured_data,
+        ...structuredClone(result.data.structured_data),
         analysis: {
-          ...unverifiedPayload.structured_data.analysis,
+          ...structuredClone(result.data.structured_data.analysis),
           metadata: {
-            ...unverifiedPayload.structured_data.analysis.metadata,
-            validation_state: "UNVERIFIED"
+            ...structuredClone(result.data.structured_data.analysis.metadata),
+            validation_state: "VERIFIED" as const
           }
         }
       }
-    } as VerifiedCareerAnalysis;
+    };
+  };
+
+  it("should throw ERR_UNVERIFIED_ANALYSIS_PROJECTION when passed an unverified analysis", () => {
+    const dirtyAnalysis = getVerifiedAnalysis();
+    Reflect.set(dirtyAnalysis.structured_data.analysis.metadata, "validation_state", "UNVERIFIED");
 
     expect(() => projectTopology(dirtyAnalysis)).toThrow("ERR_UNVERIFIED_ANALYSIS_PROJECTION");
   });
@@ -75,7 +84,7 @@ describe("CONDYN Career Analysis Protocol v1.0 - Step 5.1: Topology Projection M
     console.log("PRESENTATION:", JSON.stringify(analysis.structured_data.presentation, null, 2));
     const projection = projectTopology(analysis);
 
-    expect(projection.analysisId).toBe("ANL_20260706_000001");
+    expect(projection.analysisId).toBe("ANL_TEST_DETERMINISTIC_ID");
     expect(projection.centerNodeId).toBe("CAP_001");
     expect(projection.nodes).toHaveLength(3);
     expect(projection.edges).toHaveLength(2);

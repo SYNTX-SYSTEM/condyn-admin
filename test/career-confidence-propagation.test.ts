@@ -48,12 +48,14 @@ describe("CONDYN Career Analysis Protocol v1.0 — Step 25: Confidence Propagati
       jobId: "job_cloud_arch",
       title: "Principal Cloud Architect",
       company: "Siemens AG",
+      description: "Principal cloud architecture role.",
       requirements: [
         {
           capability_name: "Kubernetes Orchestration",
           domain: "DevOps",
           weight: 1.0,
-          required_level: "L5"
+          required_level: "L5",
+          aliases: []
         }
       ]
     }

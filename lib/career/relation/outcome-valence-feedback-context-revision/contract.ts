@@ -268,9 +268,12 @@ function assertCompatibility(
     if (parent.parentRevisionId !== transition.baseCareerDecisionContextRevision.careerDecisionContextRevisionId) fail(baseMismatch);
     return;
   }
-  if (parent.parentRevisionKind !== "CAREER_OUTCOME_VALENCE_FEEDBACK_CONTEXT_REVISION") fail(parentModeMismatch);
-  if (!sameContent(parent.parentFeedbackContextContent, transition.previousFeedbackContextContent)) fail(parentContentMismatch);
-  if (!sameBase(parent.parentFeedbackContextContent.baseCareerDecisionContextRevision, transition.baseCareerDecisionContextRevision)) fail(baseMismatch);
+  if (parent.parentRevisionKind === "CAREER_OUTCOME_VALENCE_FEEDBACK_CONTEXT_REVISION") {
+    if (!sameContent(parent.parentFeedbackContextContent, transition.previousFeedbackContextContent)) fail(parentContentMismatch);
+    if (!sameBase(parent.parentFeedbackContextContent.baseCareerDecisionContextRevision, transition.baseCareerDecisionContextRevision)) fail(baseMismatch);
+    return;
+  }
+  fail(parentModeMismatch);
 }
 
 function semanticBody(value: unknown, code: string): CareerOutcomeValenceFeedbackContextRevisionSemanticBody {

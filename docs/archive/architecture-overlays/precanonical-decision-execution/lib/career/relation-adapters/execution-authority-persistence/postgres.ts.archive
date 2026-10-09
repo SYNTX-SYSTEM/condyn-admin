@@ -1,0 +1,63 @@
+import { eq } from "drizzle-orm";
+import type { PostgresJsDatabase } from "drizzle-orm/postgres-js";
+import { assertExecutionAuthorityRevision, stableExecutionAuthority, type ExecutionAuthorityRevision } from "../../relation/execution-authority";
+import { executionAuthorityRevisions } from "./postgres-schema";
+
+const fail = (code: string): never => { throw new Error(code); };
+
+export interface ExecutionAuthorityRevisionRepository {
+  getExecutionAuthorityRevisionById(id: string): Promise<ExecutionAuthorityRevision | null>;
+  persistExecutionAuthorityRevision(value: ExecutionAuthorityRevision): Promise<ExecutionAuthorityRevision>;
+}
+
+/** Exact EAR reads compare durable columns and immutable payload; corrupted authority state is never repaired. */
+export class PostgresExecutionAuthorityRevisionRepository implements ExecutionAuthorityRevisionRepository {
+  constructor(private readonly database: PostgresJsDatabase) {}
+
+  async getExecutionAuthorityRevisionById(id: string): Promise<ExecutionAuthorityRevision | null> {
+    const rows = await this.database.select().from(executionAuthorityRevisions).where(eq(executionAuthorityRevisions.executionAuthorityRevisionId, id)).limit(1);
+    if (rows.length === 0) return null;
+    try {
+      const row = rows[0];
+      const value = row.payload;
+      assertExecutionAuthorityRevision(value);
+      if (
+        row.executionAuthorityRevisionId !== value.executionAuthorityRevisionId ||
+        row.actorId !== value.actorId ||
+        row.authorityScope !== value.authorityScope ||
+        row.executionTargetScope !== value.executionTargetScope ||
+        row.executionChannelScope !== value.executionChannelScope ||
+        row.authorityEvidenceRef !== value.authorityEvidenceRef ||
+        row.schemaVersion !== value.schemaVersion ||
+        row.createdAt !== value.createdAt
+      ) fail("ERR_EXECUTION_AUTHORITY_REVISION_PERSISTENCE_FAILED");
+      return structuredClone(value);
+    } catch {
+      return fail("ERR_EXECUTION_AUTHORITY_REVISION_PERSISTENCE_FAILED");
+    }
+  }
+
+  async persistExecutionAuthorityRevision(value: ExecutionAuthorityRevision): Promise<ExecutionAuthorityRevision> {
+    assertExecutionAuthorityRevision(value);
+    const existing = await this.getExecutionAuthorityRevisionById(value.executionAuthorityRevisionId);
+    if (existing !== null) {
+      if (stableExecutionAuthority(existing) !== stableExecutionAuthority(value)) fail("ERR_EXECUTION_AUTHORITY_REVISION_IMMUTABLE_CONFLICT");
+      return existing;
+    }
+    await this.database.insert(executionAuthorityRevisions).values({
+      executionAuthorityRevisionId: value.executionAuthorityRevisionId,
+      actorId: value.actorId,
+      authorityScope: value.authorityScope,
+      executionTargetScope: value.executionTargetScope,
+      executionChannelScope: value.executionChannelScope,
+      authorityEvidenceRef: value.authorityEvidenceRef,
+      schemaVersion: value.schemaVersion,
+      createdAt: value.createdAt,
+      payload: structuredClone(value),
+    }).onConflictDoNothing();
+    const reread = await this.getExecutionAuthorityRevisionById(value.executionAuthorityRevisionId);
+    if (reread === null) fail("ERR_EXECUTION_AUTHORITY_REVISION_PERSISTENCE_FAILED");
+    if (stableExecutionAuthority(reread) !== stableExecutionAuthority(value)) fail("ERR_EXECUTION_AUTHORITY_REVISION_IMMUTABLE_CONFLICT");
+    return reread;
+  }
+}

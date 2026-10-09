@@ -39,8 +39,9 @@ function subjectKey(subject: DecisionSubjectReference): string {
 }
 
 function subjects(value: unknown, normalize: boolean): DecisionSubjectReference[] {
-  if (!Array.isArray(value) || value.length === 0) fail();
-  const captured = value.map(item => {
+  const items: unknown[] = Array.isArray(value) ? value : fail();
+  if (items.length === 0) fail();
+  const captured = items.map(item => {
     const subject = exactObject(item, subjectKeys);
     if (!rcp.test(subject.recommendationProposalId as string) || !Number.isSafeInteger(subject.sourceEvolutionInputItemOrdinal) || (subject.sourceEvolutionInputItemOrdinal as number) < 0) fail();
     return {
@@ -55,10 +56,12 @@ function subjects(value: unknown, normalize: boolean): DecisionSubjectReference[
 }
 
 function evidence(value: unknown, normalize: boolean): string[] {
-  if (!Array.isArray(value) || value.length === 0) fail();
-  const captured = value.map(item => {
-    if (typeof item !== "string" || item.trim().length === 0) fail();
-    return normalize ? item.trim() : item;
+  const items: unknown[] = Array.isArray(value) ? value : fail();
+  if (items.length === 0) fail();
+  const captured = items.map(item => {
+    const text = typeof item === "string" ? item : fail();
+    if (text.trim().length === 0) fail();
+    return normalize ? text.trim() : text;
   });
   if (captured.some(item => !nonEmptyText(item)) || new Set(captured).size !== captured.length) fail();
   const canonical = [...captured].sort(compare);

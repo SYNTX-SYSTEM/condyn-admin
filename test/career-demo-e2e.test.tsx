@@ -14,25 +14,28 @@ vi.mock("../lib/career/ui/useCareerAnalysisJob", () => ({
 }));
 
 describe("CONDYN Career Analysis Protocol v1.0 — Step 26: End-to-End Live Demo Hardening (`test/career-demo-e2e.test.tsx`)", () => {
-  const sampleData = {
+  const sampleData: DemoCareerIntelligenceData = {
+    analysisId: "ANL_DEMO_E2E",
+    generatedAt: "2026-01-01T00:00:00.000Z",
     sources: [
-      { id: "src-1", name: "Siemens_Architecture_Project.pdf", type: "pdf" }
+      { sourceKind: "PDF", sourceTitle: "Siemens_Architecture_Project.pdf", contentHash: "source-hash" }
     ],
     capabilities: [
-      { id: "cap-1", name: "Kubernetes Orchestration", domain: "DevOps", confidence: "95%" }
+      { id: "cap-1", name: "Kubernetes Orchestration", domain: "DevOps", evidenceSummary: "Observed" }
     ],
     companyMatches: [
-      { companyId: "comp-1", companyName: "Siemens AG", industry: "Industrial AI", resonanceScore: 94 }
+      { organizationId: "comp-1", organizationName: "Siemens AG", matchedCapabilities: [], rationale: "Match" }
     ],
     roleMatches: [
-      { roleId: "role-1", roleTitle: "Principal Cloud Architect", companyName: "Siemens AG", fitScore: 92 }
+      { roleId: "role-1", roleTitle: "Principal Cloud Architect", organizationName: "Siemens AG", fitScore: 92, matchedCapabilities: [], missingCapabilities: [], rationale: "Match" }
     ],
     capabilityGaps: [
-      { gapId: "gap-1", capabilityName: "Quantum Cryptography", currentLevel: "L2", requiredLevel: "L4", priority: "HIGH" }
+      { capabilityName: "Quantum Cryptography", domain: "Security", requiredByRoleTitle: "Principal Cloud Architect", organizationName: "Siemens AG", severity: "HIGH", reason: "Gap" }
     ],
     nextActions: [
-      { actionId: "act-1", title: "Complete Siemens Security Assessment", timeframe: "14 Days", impact: "High" }
-    ]
+      { actionId: "act-1", title: "Complete Siemens Security Assessment", description: "Assessment", expectedImpact: "High" }
+    ],
+    reactFlowGraph: { nodes: [], edges: [] }
   };
 
   const runtimeTelemetryData: DemoCareerIntelligenceData = {

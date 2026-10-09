@@ -171,12 +171,32 @@ export async function initDbSchema(): Promise<void> {
       // F11 lineage is a physical, immutable foreign-key relation. The table
       // records exact technical provenance only; it does not publish authority.
       targetSql`CREATE TABLE IF NOT EXISTS career_capability_proposal_projection_references (
-        analysis_id TEXT PRIMARY KEY REFERENCES career_analyses(analysis_id),
-        job_id TEXT UNIQUE NOT NULL REFERENCES career_analysis_jobs(job_id),
+        analysis_id TEXT PRIMARY KEY REFERENCES career_analyses(analysis_id) ON DELETE CASCADE,
+        job_id TEXT UNIQUE NOT NULL REFERENCES career_analysis_jobs(job_id) ON DELETE CASCADE,
         discovery_run_id TEXT NOT NULL REFERENCES career_capability_runs(run_id),
         convergence_run_id TEXT NOT NULL REFERENCES career_capability_runs(run_id),
+        candidate_source_bundle_id TEXT,
         source_bundle_hash TEXT NOT NULL,
         created_at TEXT NOT NULL
+      );`,
+      targetSql`ALTER TABLE career_capability_proposal_projection_references ADD COLUMN IF NOT EXISTS candidate_source_bundle_id TEXT;`,
+      // This association has no independent lifecycle: it is technical
+      // provenance owned jointly by the persisted analysis and its job.  The
+      // cascade preserves referential integrity for historical cleanup without
+      // turning the reference into a current/selection pointer.
+      targetSql`ALTER TABLE career_capability_proposal_projection_references DROP CONSTRAINT IF EXISTS career_capability_proposal_projection_references_analysis_id_fkey;`,
+      targetSql`ALTER TABLE career_capability_proposal_projection_references ADD CONSTRAINT career_capability_proposal_projection_references_analysis_id_fkey FOREIGN KEY (analysis_id) REFERENCES career_analyses(analysis_id) ON DELETE CASCADE;`,
+      targetSql`ALTER TABLE career_capability_proposal_projection_references DROP CONSTRAINT IF EXISTS career_capability_proposal_projection_references_job_id_fkey;`,
+      targetSql`ALTER TABLE career_capability_proposal_projection_references ADD CONSTRAINT career_capability_proposal_projection_references_job_id_fkey FOREIGN KEY (job_id) REFERENCES career_analysis_jobs(job_id) ON DELETE CASCADE;`,
+      targetSql`CREATE TABLE IF NOT EXISTS career_canonical_sil_runtime_associations (
+        canonical_sil_runtime_association_id TEXT PRIMARY KEY,
+        candidate_source_bundle_id TEXT NOT NULL,
+        verified_capability_snapshot_id TEXT NOT NULL,
+        organization_relation_id TEXT NOT NULL,
+        role_relation_id TEXT NOT NULL,
+        tension_state_id TEXT NOT NULL,
+        evolution_input_state_id TEXT NOT NULL,
+        payload JSONB NOT NULL
       );`
     ];
     for (const q of tableQueries) {

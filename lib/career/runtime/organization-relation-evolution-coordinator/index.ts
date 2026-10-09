@@ -16,7 +16,7 @@ export function composeOrganizationRelationEvolution(
 ): OrganizationRelationEvolutionComposition {
   const organizationRelation = createOrganizationRelation({
     targetOrganizationRevision: input.targetOrganizationRevision,
-    roleRelationMemberships: input.roleRelationMemberships,
+    roleRelationMemberships: [...input.roleRelationMemberships],
     aggregationPolicy: input.aggregationPolicy,
     createdAt: input.createdAt,
   });
@@ -38,7 +38,7 @@ export function composeOrganizationRelationEvolution(
       evolutionInputState,
     });
   }
-  return { organizationRelation, roleBranches };
+  return { organizationRelation, roleBranches: [...roleBranches] };
 }
 
 export type {

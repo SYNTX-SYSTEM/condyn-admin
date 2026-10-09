@@ -14,7 +14,7 @@ import {
   buildTargetRoleRequirementInventory,
   type T6BPairRepository,
 } from "../../../../lib/career/relation/requirement-inventory";
-import { createOrganizationRelation } from "../../../../lib/career/relation/organization-relation";
+import { createOrganizationRelation, type OrganizationRelationAggregationPolicy } from "../../../../lib/career/relation/organization-relation";
 import { produceRoleRelation } from "../../../../lib/career/relation/role-relation";
 import { classifyRoleRelation } from "../../../../lib/career/relation/tension-state";
 import { createTargetOrganizationRevision } from "../../../../lib/career/target/organization";
@@ -35,7 +35,7 @@ const aggregationPolicy = {
   schemaVersion: "ORGANIZATION_RELATION_AGGREGATION_POLICY_V1",
   organizationRelationAggregationPolicyVersion: "ORGANIZATION_RELATION_INVENTORY_ONLY_V1",
   aggregationMode: "ROLE_RELATION_INVENTORY_ONLY",
-};
+} satisfies OrganizationRelationAggregationPolicy;
 const tensionClassificationPolicy = { version: "tension-v1" };
 const evolutionInputDerivationPolicy = { version: "evolution-v1" };
 const protocol = {
@@ -458,7 +458,7 @@ describe("OrganizationRelation evolution coordinator contract", () => {
     source.roleRelationMemberships[0].roleRelation.createdAt = "mutated caller role";
     source.roleRelationMemberships.push(structuredClone(source.roleRelationMemberships[0]));
     source.targetOrganizationRevision.organizationDescriptor = "mutated caller organization";
-    source.aggregationPolicy.aggregationMode = "mutated caller policy";
+    Reflect.set(source.aggregationPolicy, "aggregationMode", "mutated caller policy");
     expect(result.organizationRelation.targetOrganizationRevision.organizationDescriptor).toBe("Declared Organization");
     expect(result.organizationRelation.aggregationPolicy).toEqual(aggregationPolicy);
     expect(result.roleBranches[0].roleRelation.roleRelationId).toBe(firstOutputRoleId);

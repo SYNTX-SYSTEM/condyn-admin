@@ -20,7 +20,7 @@ describe("Job Lifecycle Timestamp Regression", () => {
 
   it("assigns completedAt when transitioning to SUCCEEDED", async () => {
     // 1. Create a job
-    const job = createJob("CAREER_ANALYSIS", { sourceType: "TEST", sourceData: {} });
+    const job = createJob("CAREER_ANALYSIS", { sourceType: "TEXT", sourceData: {} });
     await repo.enqueueJob(job);
     
     // 2. Claim the job (transitions to RUNNING)

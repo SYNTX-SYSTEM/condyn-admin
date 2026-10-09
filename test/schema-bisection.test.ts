@@ -1,4 +1,4 @@
-import { describe, it } from "vitest";
+import { describe, expect, it } from "vitest";
 import { GoogleGenAI } from "@google/genai";
 import { getGeminiCareerResponseJsonSchema } from "../lib/career/schema-projector";
 import * as fs from "fs";

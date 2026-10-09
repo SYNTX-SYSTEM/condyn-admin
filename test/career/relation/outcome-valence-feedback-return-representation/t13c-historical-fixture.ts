@@ -16,7 +16,7 @@ import {
 } from "../../../../lib/career/relation/outcome-valence-feedback-target-revision-binding";
 import { createT13AHistoricalFixture } from "../outcome-valence-feedback-target-declaration/t13a-historical-fixture";
 
-function exactReader(value: unknown) {
+function exactReader(value: import("../../../../lib/career/relation/decision-context").CareerDecisionContextRevision) {
   return {
     async getCareerDecisionContextRevisionById() {
       return structuredClone(value);

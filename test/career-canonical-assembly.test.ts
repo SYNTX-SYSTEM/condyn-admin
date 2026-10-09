@@ -127,7 +127,13 @@ describe("BUG010P: Structural Empty Collection Normalization", () => {
     const context = {
       analysis_id: "ANL_TEST",
       pipeline_steps: [],
-      documents: [{ docId: "DOC_001", title: "Mock Document", wordCount: 100 }]
+      documents: [
+        {
+          docId: "DOC_001",
+          title: "Mock Document",
+          content: "Canonical assembly fixture source document."
+        }
+      ]
     };
 
     const result = processLlmOutput(JSON.stringify(payload), context);
@@ -141,23 +147,24 @@ describe("BUG010P: Structural Empty Collection Normalization", () => {
     const documents = result.data!.structured_data.analysis.documents;
 
     // 1. entity with relationships omitted -> canonical relationships = []
-    expect(capabilities.find((c: any) => c.entity_id === "CAP_001").relationships).toEqual([]);
+    const capability = capabilities.find((item) => item.entity_id === "CAP_001");
+    expect(capability?.relationships).toEqual([]);
 
     // 2. evidence exists to pass validation
-    expect(capabilities.find((c: any) => c.entity_id === "CAP_001").evidence).toHaveLength(1);
+    expect(capability?.evidence).toHaveLength(1);
 
     // 3. existing non-empty relationships preserved exactly
-    expect(roles.find((r: any) => r.entity_id === "ROL_001").relationships).toHaveLength(1);
-    expect(roles.find((r: any) => r.entity_id === "ROL_001").relationships[0].relation_type).toBe("ROLE_IN_ORGANIZATION");
+    const role = roles.find((item) => item.entity_id === "ROL_001");
+    expect(role?.relationships).toHaveLength(1);
+    expect(role?.relationships[0]?.relation_type).toBe("ROLE_IN_ORGANIZATION");
 
     // 4. existing non-empty evidence preserved exactly
-    expect(roles.find((r: any) => r.entity_id === "ROL_001").evidence).toHaveLength(1);
-    expect(roles.find((r: any) => r.entity_id === "ROL_001").evidence[0].context_quote).toBe("This is another sufficiently long quote for validation");
+    expect(role?.evidence).toHaveLength(1);
+    expect(role?.evidence[0]?.context_quote).toBe("This is another sufficiently long quote for validation");
 
     // 5. runtime DOCUMENT injected with empty evidence
     expect(documents).toHaveLength(1);
-    expect(documents[0].entity_id).toBe("DOC_001");
-    expect(documents[0].evidence).toEqual([]);
+    expect(documents[0]?.entity_id).toBe("DOC_001");
+    expect(documents[0]?.evidence).toEqual([]);
   });
 });
-

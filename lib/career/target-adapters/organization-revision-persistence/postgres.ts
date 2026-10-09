@@ -10,6 +10,7 @@ import {
 } from "../../target/organization";
 import { targetOrganizationRevisions } from "./postgres-schema";
 
+
 const invalidRecord = (): never => {
   throw new Error("ERR_TARGET_ORGANIZATION_REVISION_POSTGRES_RECORD_INVALID");
 };

@@ -1,3 +1,6 @@
+import type { CareerDecisionContextRevision } from "../../../../lib/career/relation/decision-context";
+import type { CareerOutcomeValenceFeedbackContextRevision } from "../../../../lib/career/relation/outcome-valence-feedback-context-revision";
+
 type Scripted = unknown | Error | null;
 
 /** Test-only read observability; replay has no writer or persistence authority. */
@@ -9,12 +12,12 @@ export class T13IInMemoryReaders {
   readonly #decisionContextScripts = new Map<string, Scripted[]>();
   readonly #feedbackRevisionScripts = new Map<string, Scripted[]>();
 
-  seedDecisionContext(value: Record<string, unknown>): void {
-    this.decisionContexts.set(value.careerDecisionContextRevisionId as string, structuredClone(value));
+  seedDecisionContext(value: CareerDecisionContextRevision): void {
+    this.decisionContexts.set(value.careerDecisionContextRevisionId, structuredClone(value));
   }
 
-  seedFeedbackRevision(value: Record<string, unknown>): void {
-    this.feedbackRevisions.set(value.careerOutcomeValenceFeedbackContextRevisionId as string, structuredClone(value));
+  seedFeedbackRevision(value: CareerOutcomeValenceFeedbackContextRevision): void {
+    this.feedbackRevisions.set(value.careerOutcomeValenceFeedbackContextRevisionId, structuredClone(value));
   }
 
   scriptDecisionContextRead(id: string, ...responses: Scripted[]): void {

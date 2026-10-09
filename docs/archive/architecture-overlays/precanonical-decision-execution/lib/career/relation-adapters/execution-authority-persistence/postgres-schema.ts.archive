@@ -1,0 +1,14 @@
+import { jsonb, pgTable, text } from "drizzle-orm/pg-core";
+import type { ExecutionAuthorityRevision } from "../../relation/execution-authority";
+
+export const executionAuthorityRevisions = pgTable("execution_authority_revisions", {
+  executionAuthorityRevisionId: text("execution_authority_revision_id").primaryKey(),
+  actorId: text("actor_id").notNull(),
+  authorityScope: text("authority_scope").notNull(),
+  executionTargetScope: text("execution_target_scope").notNull(),
+  executionChannelScope: text("execution_channel_scope").notNull(),
+  authorityEvidenceRef: text("authority_evidence_ref").notNull(),
+  schemaVersion: text("schema_version").notNull(),
+  createdAt: text("created_at").notNull(),
+  payload: jsonb("payload").$type<ExecutionAuthorityRevision>().notNull(),
+});

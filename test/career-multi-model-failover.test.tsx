@@ -3,16 +3,10 @@ import { describe, it, expect } from "vitest";
 import { renderToString } from "react-dom/server";
 import { InferenceTelemetryHUD, InferenceTelemetryData } from "../app/components/career/demo/InferenceTelemetryHUD";
 import { SemanticCareerIntelligenceField } from "../app/components/career/demo/SemanticCareerIntelligenceField";
+import { EMPTY_CAREER_INTELLIGENCE_DATA } from "../app/career/demo/demo-data";
 
 describe("CONDYN Career Analysis Protocol v1.0 — Step 27: Multi-Model Inference Failover Cascade (`test/career-multi-model-failover.test.ts`)", () => {
-  const sampleData = {
-    sources: [],
-    capabilities: [],
-    companyMatches: [],
-    roleMatches: [],
-    capabilityGaps: [],
-    nextActions: []
-  };
+  const sampleData = EMPTY_CAREER_INTELLIGENCE_DATA;
 
   it("1. should render InferenceTelemetryHUD at bottom right with cascade status", () => {
     const telemetry: InferenceTelemetryData = {

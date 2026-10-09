@@ -1,0 +1,104 @@
+import { randomBytes } from "node:crypto";
+import { sql as drizzleSql } from "drizzle-orm";
+import { drizzle, type PostgresJsDatabase } from "drizzle-orm/postgres-js";
+import { getTableConfig } from "drizzle-orm/pg-core";
+import postgres, { type Sql } from "postgres";
+import { afterAll, beforeAll, describe, expect, it } from "vitest";
+import { deriveDecisionAuthorityRevisionId } from "../../../../lib/career/relation/decision-authority";
+import { deriveDecisionContextRevisionId } from "../../../../lib/career/relation/decision-context";
+import { createDecisionRecord } from "../../../../lib/career/relation/decision-record";
+import { deriveEvolutionInputStateId } from "../../../../lib/career/relation/evolution-input";
+import { createExecutionAuthorityRevision } from "../../../../lib/career/relation/execution-authority";
+import { createExecutionContextRevision, deriveExecutionContextRevisionId, type ExecutionContextRevision } from "../../../../lib/career/relation/execution-context";
+import { deriveRecommendationPolicyRevisionId, deriveRecommendationProposal, InMemoryRecommendationProposalRepository } from "../../../../lib/career/relation/recommendation-proposal";
+import { PostgresDecisionAuthorityRevisionRepository, PostgresDecisionContextRevisionRepository, PostgresDecisionRecordRepository } from "../../../../lib/career/relation-adapters/decision-authority-persistence";
+import { decisionAuthorityRevisions, decisionContextEvidenceReferences, decisionContextRevisions, decisionContextSubjectReferences, decisionRecords, decisionRecordSubjectReferences } from "../../../../lib/career/relation-adapters/decision-authority-persistence/postgres-schema";
+import { PostgresExecutionAuthorityRevisionRepository } from "../../../../lib/career/relation-adapters/execution-authority-persistence";
+import { executionAuthorityRevisions } from "../../../../lib/career/relation-adapters/execution-authority-persistence/postgres-schema";
+import { PostgresExecutionContextRevisionRepository } from "../../../../lib/career/relation-adapters/execution-context-persistence";
+import { executionContextEvidenceReferences, executionContextRevisions, executionContextSubjectReferences } from "../../../../lib/career/relation-adapters/execution-context-persistence/postgres-schema";
+
+const url = process.env.DATABASE_URL || "postgresql://postgres:postgres@localhost:5432/condyn";
+const schema = `execution_context_t12b_${randomBytes(8).toString("hex")}`;
+const stamp = "2027-01-01T00:00:00.000Z";
+let admin: Sql;
+const clients = new Set<Sql>();
+const tables = [decisionAuthorityRevisions, decisionContextRevisions, decisionContextSubjectReferences, decisionContextEvidenceReferences, decisionRecords, decisionRecordSubjectReferences, executionAuthorityRevisions, executionContextRevisions, executionContextSubjectReferences, executionContextEvidenceReferences].map(getTableConfig);
+const quote = (value: string) => `"${value}"`;
+const ddl = (config: typeof tables[number]) => `CREATE TABLE ${quote(schema)}.${quote(config.name)} (${[...config.columns.map(column => `${quote(column.name)} ${column.getSQLType()}${column.notNull ? " NOT NULL" : ""}${column.primary ? " PRIMARY KEY" : ""}`), ...config.foreignKeys.map(key => { const ref = key.reference(); return `FOREIGN KEY (${ref.columns.map(column => quote(column.name)).join(",")}) REFERENCES ${quote(schema)}.${quote(getTableConfig(ref.foreignTable).name)} (${ref.foreignColumns.map(column => quote(column.name)).join(",")}) ON DELETE ${(key.onDelete ?? "no action").toUpperCase()}`; })].join(",")})`;
+const client = async () => { const sql = postgres(url, { max: 1, onnotice: () => undefined }); clients.add(sql); await sql.unsafe(`SET search_path TO "${schema}"`); return { sql, db: drizzle(sql) }; };
+const close = async (sql: Sql) => { await sql.end({ timeout: 5 }); clients.delete(sql); };
+
+beforeAll(async () => { admin = postgres(url, { max: 1, onnotice: () => undefined }); await admin.unsafe(`CREATE SCHEMA "${schema}"`); for (const table of tables) await admin.unsafe(ddl(table)); });
+afterAll(async () => { await Promise.all([...clients].map(sql => sql.end({ timeout: 5 }))); if (admin) { await admin.unsafe(`DROP SCHEMA "${schema}" CASCADE`); await admin.end({ timeout: 5 }); } });
+
+const proposal = () => {
+  const item = { evolutionInputClass: "INCREASE_DEMONSTRATED_LEVEL_INPUT" as const, derivationDisposition: "DERIVABLE" as const, tensionClassificationFamily: "STRUCTURAL_DIFFERENCE" as const, tensionClassificationCode: "LEVEL_BELOW_RELATION", subjectKind: "REQUIREMENT", dimension: "LEVEL", targetRequirementEntityId: null, targetRequirementRevisionIds: [], requirementRelationAggregateId: null, candidateCapabilityOperandId: null, capabilityRequirementRelationId: null, capabilityRequirementRelationEvaluationResultId: null, necessityStates: [] };
+  const evolutionSemantic = { tensionStateId: "TSN_1", roleRelationId: "RRL_1", verifiedCapabilitySnapshotId: "SNAP_1", targetRoleProfileRevisionId: "TRP_1", targetRoleRequirementInventoryId: "TRQINV_1", items: [item], derivationPolicyLineage: { evolutionInputDerivationPolicyVersion: "evolution-v1" }, proposalState: "PROPOSAL_ONLY" as const, authorityState: "NONE" as const, schemaVersion: "EVOLUTION_INPUT_STATE_V1" as const };
+  const evolution = { evolutionInputStateId: deriveEvolutionInputStateId(evolutionSemantic), ...evolutionSemantic, createdAt: stamp };
+  const policySemantic = { provenance: { origin: "EXPLICIT_POLICY_DECLARATION" as const, actorId: "POLICY_ACTOR", authorityEvidenceRef: "evidence://policy" }, rules: [
+    { evolutionInputClass: "INCREASE_DEMONSTRATED_LEVEL_INPUT" as const, action: "PROPOSE" as const, recommendationKind: "DEMONSTRATED_LEVEL_RECOMMENDATION" as const },
+    { evolutionInputClass: "RESOLVE_SEMANTIC_UNCERTAINTY_INPUT" as const, action: "PROPOSE" as const, recommendationKind: "SEMANTIC_UNCERTAINTY_RESOLUTION_RECOMMENDATION" as const },
+    { evolutionInputClass: "RESOLVE_TARGET_UNCERTAINTY_INPUT" as const, action: "PROPOSE" as const, recommendationKind: "TARGET_UNCERTAINTY_RESOLUTION_RECOMMENDATION" as const },
+    { evolutionInputClass: "STRENGTHEN_EVIDENCE_INPUT" as const, action: "PROPOSE" as const, recommendationKind: "EVIDENCE_STRENGTHENING_RECOMMENDATION" as const },
+  ], recommendationPolicyImplementationVersion: "recommendation-v1", schemaVersion: "RECOMMENDATION_POLICY_REVISION_V1" as const };
+  const policy = { recommendationPolicyRevisionId: deriveRecommendationPolicyRevisionId(policySemantic), ...policySemantic, createdAt: stamp };
+  return deriveRecommendationProposal(evolution, policy, { version: "recommendation-v1" }, stamp);
+};
+
+describe("T12B PostgreSQL immutable ExecutionContextRevision persistence", () => {
+  it("validates exact DCR/EAR witnesses and raw normalized ECTXREV references", async () => {
+    const { sql, db } = await client();
+    const proposals = new InMemoryRecommendationProposalRepository();
+    const rcp = proposal(); await proposals.persistRecommendationProposal(rcp);
+    const runtime = (database: PostgresJsDatabase) => {
+      const decisionAuthorities = new PostgresDecisionAuthorityRevisionRepository(database);
+      const decisionContexts = new PostgresDecisionContextRevisionRepository(database, decisionAuthorities, proposals);
+      const decisionRecords = new PostgresDecisionRecordRepository(database, decisionContexts, decisionAuthorities, proposals);
+      const executionAuthorities = new PostgresExecutionAuthorityRevisionRepository(database);
+      const executionContexts = new PostgresExecutionContextRevisionRepository(database, decisionRecords, executionAuthorities);
+      return { decisionAuthorities, decisionContexts, decisionRecords, executionAuthorities, executionContexts };
+    };
+    const r = runtime(db);
+    const decisionAuthoritySemantic = { actorId: "DECISION_ACTOR", authorityScope: "CAREER_DECISION", authorityEvidenceRef: "evidence://decision-authority", schemaVersion: "DECISION_AUTHORITY_REVISION_V1" as const };
+    const decisionAuthority = { decisionAuthorityRevisionId: deriveDecisionAuthorityRevisionId(decisionAuthoritySemantic), ...decisionAuthoritySemantic, createdAt: stamp };
+    await r.decisionAuthorities.persistDecisionAuthorityRevision(decisionAuthority);
+    const decisionContextSemantic = { recommendationProposalId: rcp.recommendationProposalId, decisionAuthorityRevisionId: decisionAuthority.decisionAuthorityRevisionId, decisionSubjectItemOrdinals: [0], contextEvidenceRefs: ["evidence://decision-context"], schemaVersion: "DECISION_CONTEXT_REVISION_V1" as const };
+    const decisionContext = { decisionContextRevisionId: deriveDecisionContextRevisionId(decisionContextSemantic), ...decisionContextSemantic, createdAt: stamp };
+    await r.decisionContexts.persistDecisionContextRevision(decisionContext);
+    const decisionRecord = createDecisionRecord(decisionContext, rcp, { decisionDisposition: "DECISION_DECLARED", decisionDeclaration: "AUTHORIZED_ACTION", createdAt: stamp });
+    const otherDecisionRecord = createDecisionRecord(decisionContext, rcp, { decisionDisposition: "DECISION_BLOCKED", decisionDeclaration: "REQUEST_FURTHER_EVIDENCE", createdAt: stamp });
+    await r.decisionRecords.persistDecisionRecord(decisionRecord); await r.decisionRecords.persistDecisionRecord(otherDecisionRecord);
+    const authority = createExecutionAuthorityRevision({ actorId: "EXECUTION_ACTOR", authorityScope: "EXTERNAL_ACTION", executionTargetScope: "COMMUNICATION_ENDPOINT", executionChannelScope: "EMAIL", authorityEvidenceRef: "evidence://execution-authority", schemaVersion: "EXECUTION_AUTHORITY_REVISION_V1", createdAt: stamp });
+    const { executionAuthorityRevisionId: _authorityId, ...otherAuthorityInput } = authority;
+    const otherAuthority = createExecutionAuthorityRevision({ ...otherAuthorityInput, actorId: "OTHER_EXECUTION_ACTOR", authorityScope: "EVIDENCE_REQUEST", authorityEvidenceRef: "evidence://other-execution-authority" });
+    await r.executionAuthorities.persistExecutionAuthorityRevision(authority); await r.executionAuthorities.persistExecutionAuthorityRevision(otherAuthority);
+    const context = createExecutionContextRevision(decisionRecord, authority, { executionSubject: { decisionSubjectItemOrdinals: [0], subjectRef: "subject://candidate/1" }, executionTarget: { targetKind: "COMMUNICATION_ENDPOINT", targetRef: "endpoint://recipient/1" }, executionChannel: { channelKind: "EMAIL", channelRef: "channel://mail/1" }, contextEvidenceRefs: ["evidence://context/b", "evidence://context/a", "evidence://context/a"], schemaVersion: "EXECUTION_CONTEXT_REVISION_V1", createdAt: stamp });
+    await expect(r.executionContexts.persistExecutionContextRevision(context)).resolves.toEqual(context);
+    await expect(r.executionContexts.getExecutionContextRevisionById(context.executionContextRevisionId)).resolves.toEqual(context);
+    await expect(r.executionContexts.persistExecutionContextRevision(context)).resolves.toEqual(context);
+    await expect(r.executionContexts.persistExecutionContextRevision({ ...context, createdAt: "2028-01-01T00:00:00.000Z" })).rejects.toThrow("ERR_EXECUTION_CONTEXT_REVISION_IMMUTABLE_CONFLICT");
+
+    const rollback = async (fn: (tx: any) => Promise<void>) => { await db.transaction(async tx => { await fn(tx); throw new Error("rollback execution context corruption"); }).catch(error => { if (error.message !== "rollback execution context corruption") throw error; }); await expect(r.executionContexts.getExecutionContextRevisionById(context.executionContextRevisionId)).resolves.toEqual(context); };
+    const invalid = async (tx: any, id = context.executionContextRevisionId) => expect(runtime(tx as PostgresJsDatabase).executionContexts.getExecutionContextRevisionById(id)).rejects.toThrow("ERR_EXECUTION_CONTEXT_REVISION_PERSISTENCE_FAILED");
+    await rollback(async tx => { await tx.execute(drizzleSql`UPDATE execution_context_revisions SET payload = jsonb_set(payload, '{subjectRef}', '"foreign"'::jsonb) WHERE execution_context_revision_id = ${context.executionContextRevisionId}`); await invalid(tx); });
+    for (const [column, value] of [["decision_record_id", otherDecisionRecord.decisionRecordId], ["execution_authority_revision_id", otherAuthority.executionAuthorityRevisionId], ["subject_ref", "foreign"], ["target_kind", "PERSON"], ["target_ref", "foreign"], ["channel_kind", "MESSAGE"], ["channel_ref", "foreign"], ["schema_version", "foreign"], ["created_at", "2028-01-01T00:00:00.000Z"]] as const) await rollback(async tx => { await tx.execute(drizzleSql.raw(`UPDATE execution_context_revisions SET ${column} = '${value}' WHERE execution_context_revision_id = '${context.executionContextRevisionId}'`)); await invalid(tx); });
+    await rollback(async tx => { await tx.execute(drizzleSql`DELETE FROM execution_context_subject_references WHERE execution_context_revision_id = ${context.executionContextRevisionId}`); await invalid(tx); });
+    await rollback(async tx => { await tx.execute(drizzleSql`INSERT INTO execution_context_subject_references(reference_id,execution_context_revision_id,ordinal) VALUES(${`${context.executionContextRevisionId}:extra`},${context.executionContextRevisionId},1)`); await invalid(tx); });
+    await rollback(async tx => { await tx.execute(drizzleSql`INSERT INTO execution_context_subject_references(reference_id,execution_context_revision_id,ordinal) VALUES(${`${context.executionContextRevisionId}:duplicate`},${context.executionContextRevisionId},0)`); await invalid(tx); });
+    await rollback(async tx => { await tx.execute(drizzleSql`UPDATE execution_context_subject_references SET ordinal = 1 WHERE execution_context_revision_id = ${context.executionContextRevisionId}`); await invalid(tx); });
+    await rollback(async tx => { await tx.execute(drizzleSql`DELETE FROM execution_context_evidence_references WHERE execution_context_revision_id = ${context.executionContextRevisionId}`); await invalid(tx); });
+    await rollback(async tx => { await tx.execute(drizzleSql`INSERT INTO execution_context_evidence_references(reference_id,execution_context_revision_id,evidence_ref) VALUES(${`${context.executionContextRevisionId}:extra`},${context.executionContextRevisionId},'evidence://extra')`); await invalid(tx); });
+    await rollback(async tx => { await tx.execute(drizzleSql`INSERT INTO execution_context_evidence_references(reference_id,execution_context_revision_id,evidence_ref) VALUES(${`${context.executionContextRevisionId}:duplicate`},${context.executionContextRevisionId},'evidence://context/a')`); await invalid(tx); });
+    await rollback(async tx => { await tx.execute(drizzleSql`UPDATE execution_context_evidence_references SET evidence_ref = 'evidence://changed' WHERE execution_context_revision_id = ${context.executionContextRevisionId}`); await invalid(tx); });
+    await rollback(async tx => { await tx.execute(drizzleSql`UPDATE decision_records SET payload = jsonb_set(payload, '{decisionDeclaration}', '"NO_ACTION"'::jsonb) WHERE decision_record_id = ${decisionRecord.decisionRecordId}`); await invalid(tx); });
+    await rollback(async tx => { await expect(new PostgresExecutionContextRevisionRepository(tx as PostgresJsDatabase, { getDecisionRecordById: async () => null }, runtime(tx as PostgresJsDatabase).executionAuthorities).getExecutionContextRevisionById(context.executionContextRevisionId)).rejects.toThrow("ERR_EXECUTION_CONTEXT_REVISION_PERSISTENCE_FAILED"); });
+    await rollback(async tx => { await expect(new PostgresExecutionContextRevisionRepository(tx as PostgresJsDatabase, runtime(tx as PostgresJsDatabase).decisionRecords, { getExecutionAuthorityRevisionById: async () => null }).getExecutionContextRevisionById(context.executionContextRevisionId)).rejects.toThrow("ERR_EXECUTION_CONTEXT_REVISION_PERSISTENCE_FAILED"); });
+    const forge = (mutate: (value: any) => void) => { const value = structuredClone(context) as any; mutate(value); const { executionContextRevisionId: _id, createdAt: _createdAt, ...semantic } = value; value.executionContextRevisionId = deriveExecutionContextRevisionId(semantic); return value as ExecutionContextRevision; };
+    const insertForged = async (tx: any, value: ExecutionContextRevision) => { await tx.insert(executionContextRevisions).values({ executionContextRevisionId: value.executionContextRevisionId, decisionRecordId: value.decisionRecordId, executionAuthorityRevisionId: value.executionAuthorityRevisionId, subjectRef: value.executionSubject.subjectRef, targetKind: value.executionTarget.targetKind, targetRef: value.executionTarget.targetRef, channelKind: value.executionChannel.channelKind, channelRef: value.executionChannel.channelRef, schemaVersion: value.schemaVersion, createdAt: value.createdAt, payload: value }); for (const ordinal of value.executionSubject.decisionSubjectItemOrdinals) await tx.insert(executionContextSubjectReferences).values({ referenceId: `${value.executionContextRevisionId}:subject:${ordinal}`, executionContextRevisionId: value.executionContextRevisionId, ordinal }); for (const evidenceRef of value.contextEvidenceRefs) await tx.insert(executionContextEvidenceReferences).values({ referenceId: `${value.executionContextRevisionId}:evidence:${evidenceRef}`, executionContextRevisionId: value.executionContextRevisionId, evidenceRef }); };
+    await rollback(async tx => { const forged = forge(value => { value.executionAuthorityRevisionId = otherAuthority.executionAuthorityRevisionId; }); await insertForged(tx, forged); await invalid(tx, forged.executionContextRevisionId); });
+    await rollback(async tx => { const forged = forge(value => { value.executionTarget.targetKind = "PERSON"; }); await insertForged(tx, forged); await invalid(tx, forged.executionContextRevisionId); });
+    await rollback(async tx => { const forged = forge(value => { value.executionChannel.channelKind = "MESSAGE"; }); await insertForged(tx, forged); await invalid(tx, forged.executionContextRevisionId); });
+    await close(sql);
+  });
+});

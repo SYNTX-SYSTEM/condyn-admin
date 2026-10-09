@@ -85,8 +85,9 @@ function subjectKey(subject: DecisionSubjectReference): string {
 }
 
 function subjects(value: unknown, normalize: boolean, canonicalRequired: boolean): DecisionSubjectReference[] {
-  if (!Array.isArray(value) || value.length === 0) fail();
-  const captured = value.map(item => {
+  const items: unknown[] = Array.isArray(value) ? value : fail();
+  if (items.length === 0) fail();
+  const captured = items.map(item => {
     const subject = exactObject(item, subjectKeys);
     if (
       !rcp.test(subject.recommendationProposalId as string) ||
@@ -105,10 +106,12 @@ function subjects(value: unknown, normalize: boolean, canonicalRequired: boolean
 }
 
 function evidence(value: unknown, normalize: boolean, canonicalRequired: boolean): string[] {
-  if (!Array.isArray(value) || value.length === 0) fail();
-  const captured = value.map(item => {
-    if (typeof item !== "string" || item.trim().length === 0) fail();
-    return normalize ? item.trim() : item;
+  const items: unknown[] = Array.isArray(value) ? value : fail();
+  if (items.length === 0) fail();
+  const captured = items.map(item => {
+    const text = typeof item === "string" ? item : fail();
+    if (text.trim().length === 0) fail();
+    return normalize ? text.trim() : text;
   });
   if (captured.some(item => !canonicalText(item)) || new Set(captured).size !== captured.length) fail();
   const canonical = [...captured].sort(compare);
@@ -118,18 +121,20 @@ function evidence(value: unknown, normalize: boolean, canonicalRequired: boolean
 
 function target(value: unknown, normalize: boolean): CareerExecutionTarget {
   const captured = exactObject(value, targetKeys);
-  if (typeof captured.targetKind !== "string" || typeof captured.targetRef !== "string") fail();
-  const targetRef = normalize ? captured.targetRef.trim() : captured.targetRef;
-  if (!targetKinds.includes(captured.targetKind as CareerExecutionTargetKind) || !canonicalText(targetRef)) fail();
-  return { targetKind: captured.targetKind as CareerExecutionTargetKind, targetRef };
+  const targetKind = typeof captured.targetKind === "string" ? captured.targetKind : fail();
+  const rawTargetRef = typeof captured.targetRef === "string" ? captured.targetRef : fail();
+  const targetRef = normalize ? rawTargetRef.trim() : rawTargetRef;
+  if (!targetKinds.includes(targetKind as CareerExecutionTargetKind) || !canonicalText(targetRef)) fail();
+  return { targetKind: targetKind as CareerExecutionTargetKind, targetRef };
 }
 
 function channel(value: unknown, normalize: boolean): CareerExecutionChannel {
   const captured = exactObject(value, channelKeys);
-  if (typeof captured.channelKind !== "string" || typeof captured.channelRef !== "string") fail();
-  const channelRef = normalize ? captured.channelRef.trim() : captured.channelRef;
-  if (!channelKinds.includes(captured.channelKind as CareerExecutionChannelKind) || !canonicalText(channelRef)) fail();
-  return { channelKind: captured.channelKind as CareerExecutionChannelKind, channelRef };
+  const channelKind = typeof captured.channelKind === "string" ? captured.channelKind : fail();
+  const rawChannelRef = typeof captured.channelRef === "string" ? captured.channelRef : fail();
+  const channelRef = normalize ? rawChannelRef.trim() : rawChannelRef;
+  if (!channelKinds.includes(channelKind as CareerExecutionChannelKind) || !canonicalText(channelRef)) fail();
+  return { channelKind: channelKind as CareerExecutionChannelKind, channelRef };
 }
 
 function semantic(
@@ -137,12 +142,14 @@ function semantic(
   normalize: boolean,
   canonicalInventories: boolean,
 ) {
-  const declaredByActorId = normalize
-    ? typeof value.declaredByActorId === "string" ? value.declaredByActorId.trim() : fail()
-    : value.declaredByActorId;
-  const operationDescription = normalize
-    ? typeof value.operationDescription === "string" ? value.operationDescription.trim() : fail()
-    : value.operationDescription;
+  const rawDeclaredByActorId = typeof value.declaredByActorId === "string"
+    ? value.declaredByActorId
+    : fail();
+  const rawOperationDescription = typeof value.operationDescription === "string"
+    ? value.operationDescription
+    : fail();
+  const declaredByActorId = normalize ? rawDeclaredByActorId.trim() : rawDeclaredByActorId;
+  const operationDescription = normalize ? rawOperationDescription.trim() : rawOperationDescription;
   if (
     !eagr.test(value.careerExecutionAuthorityGrantRevisionId as string) ||
     !hcom.test(value.careerHumanCommitmentId as string) ||

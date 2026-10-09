@@ -83,8 +83,9 @@ function subjectKey(subject: DecisionSubjectReference): string {
 }
 
 function subjects(value: unknown, normalize: boolean): DecisionSubjectReference[] {
-  if (!Array.isArray(value) || value.length === 0) fail();
-  const captured = value.map(item => {
+  const items: unknown[] = Array.isArray(value) ? value : fail();
+  if (items.length === 0) fail();
+  const captured = items.map(item => {
     const subject = exactObject(item, subjectKeys);
     if (
       !rcp.test(subject.recommendationProposalId as string) ||
@@ -107,10 +108,11 @@ function closedInventory<T extends string>(
   allowed: readonly T[],
   normalize: boolean,
 ): T[] {
-  if (!Array.isArray(value) || value.length === 0) fail();
-  const captured = value.map(item => {
-    if (typeof item !== "string") fail();
-    const canonical = normalize ? item.trim() : item;
+  const items: unknown[] = Array.isArray(value) ? value : fail();
+  if (items.length === 0) fail();
+  const captured = items.map(item => {
+    const text = typeof item === "string" ? item : fail();
+    const canonical = normalize ? text.trim() : text;
     if (!allowed.includes(canonical as T)) fail();
     return canonical as T;
   });
@@ -121,10 +123,12 @@ function closedInventory<T extends string>(
 }
 
 function evidence(value: unknown, normalize: boolean): string[] {
-  if (!Array.isArray(value) || value.length === 0) fail();
-  const captured = value.map(item => {
-    if (typeof item !== "string" || item.trim().length === 0) fail();
-    return normalize ? item.trim() : item;
+  const items: unknown[] = Array.isArray(value) ? value : fail();
+  if (items.length === 0) fail();
+  const captured = items.map(item => {
+    const text = typeof item === "string" ? item : fail();
+    if (text.trim().length === 0) fail();
+    return normalize ? text.trim() : text;
   });
   if (captured.some(item => !nonEmptyText(item)) || new Set(captured).size !== captured.length) fail();
   const canonical = [...captured].sort(compare);

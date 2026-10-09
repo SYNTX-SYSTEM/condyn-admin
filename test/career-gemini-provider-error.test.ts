@@ -33,8 +33,7 @@ describe("GeminiProvider Error Diagnostic Boundary", () => {
     try {
       await provider.execute({
         userPrompt,
-        systemPrompt,
-        documents: []
+        systemPrompt
       });
     } catch (e) {
       caughtError = e;

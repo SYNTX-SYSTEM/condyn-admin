@@ -76,7 +76,7 @@ describe("CONDYN Career Analysis Protocol v1.0 — Step 27: UX Friction, Informa
   });
 
   it("3. Enterprise Demo Narrative Audit: UI components cover all 6 storytelling steps without manual explanation", () => {
-    const dockHtml = renderToString(<SourceDock sources={[]} />);
+    const dockHtml = renderToString(<SourceDock initialStagedDocs={[]} />);
     const inspectorHtml = renderToString(<DecisionGraphInspector graph={sampleGraph} focus={sampleFocus} />);
 
     // Step 1: Bring knowledge in

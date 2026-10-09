@@ -145,7 +145,7 @@ export class PostgresCareerActionStateChangeAssociationDeclarationRepository
   ): Promise<CareerActionStateChangeAssociationDeclaration> {
     try {
       const value = await this.existing(id);
-      if (!value) fail("ERR_CAREER_ACTION_STATE_CHANGE_ASSOCIATION_DECLARATION_NOT_FOUND");
+      if (!value) return fail("ERR_CAREER_ACTION_STATE_CHANGE_ASSOCIATION_DECLARATION_NOT_FOUND");
       return value;
     } catch (error) {
       if (error instanceof Error && error.message === "ERR_CAREER_ACTION_STATE_CHANGE_ASSOCIATION_DECLARATION_NOT_FOUND") throw error;
@@ -176,7 +176,7 @@ export class PostgresCareerActionStateChangeAssociationDeclarationRepository
     }
     try {
       await this.database.transaction(async transaction => {
-        await transaction.insert(careerActionStateChangeAssociationDeclarations).values({
+        const root: typeof careerActionStateChangeAssociationDeclarations.$inferInsert = {
           careerActionStateChangeAssociationDeclarationId: value.careerActionStateChangeAssociationDeclarationId,
           careerStateChangeDeclarationId: value.careerStateChangeDeclarationId,
           careerActionOccurrenceId: value.careerActionOccurrenceId,
@@ -212,7 +212,8 @@ export class PostgresCareerActionStateChangeAssociationDeclarationRepository
           schemaVersion: value.schemaVersion,
           createdAt: value.createdAt,
           payload: structuredClone(value),
-        }).onConflictDoNothing();
+        };
+        await transaction.insert(careerActionStateChangeAssociationDeclarations).values(root).onConflictDoNothing();
         for (const subject of value.decisionSubjects) await transaction.insert(careerActionStateChangeAssociationDeclarationSubjects).values({
           referenceId: `${value.careerActionStateChangeAssociationDeclarationId}:subject:${subjectKey(subject)}`,
           careerActionStateChangeAssociationDeclarationId: value.careerActionStateChangeAssociationDeclarationId,

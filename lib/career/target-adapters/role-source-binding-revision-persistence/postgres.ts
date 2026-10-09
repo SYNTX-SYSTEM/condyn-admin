@@ -11,6 +11,7 @@ import {
 } from "../../target/role";
 import { targetRoleSourceBindingRevisions } from "./postgres-schema";
 
+
 const invalidRecord = (): never => {
   throw new Error("ERR_TARGET_ROLE_SOURCE_BINDING_REVISION_POSTGRES_RECORD_INVALID");
 };

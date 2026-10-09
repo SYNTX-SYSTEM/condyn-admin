@@ -91,8 +91,9 @@ function subjectKey(subject: DecisionSubjectReference): string {
 }
 
 function subjects(value: unknown, canonicalRequired: boolean): DecisionSubjectReference[] {
-  if (!Array.isArray(value) || value.length === 0) fail();
-  const captured = value.map(item => {
+  const items: unknown[] = Array.isArray(value) ? value : fail();
+  if (items.length === 0) fail();
+  const captured = items.map(item => {
     const subject = exactObject(item, subjectKeys);
     if (!rcp.test(subject.recommendationProposalId as string) || !Number.isSafeInteger(subject.sourceEvolutionInputItemOrdinal) || (subject.sourceEvolutionInputItemOrdinal as number) < 0) fail();
     return { recommendationProposalId: subject.recommendationProposalId as string, sourceEvolutionInputItemOrdinal: subject.sourceEvolutionInputItemOrdinal as number };
@@ -104,10 +105,12 @@ function subjects(value: unknown, canonicalRequired: boolean): DecisionSubjectRe
 }
 
 function inventory(value: unknown, normalize: boolean, canonicalRequired: boolean): string[] {
-  if (!Array.isArray(value) || value.length === 0) fail();
-  const captured = value.map(item => {
-    if (typeof item !== "string" || item.trim().length === 0) fail();
-    return normalize ? item.trim() : item;
+  const items: unknown[] = Array.isArray(value) ? value : fail();
+  if (items.length === 0) fail();
+  const captured = items.map(item => {
+    const text = typeof item === "string" ? item : fail();
+    if (text.trim().length === 0) fail();
+    return normalize ? text.trim() : text;
   });
   if (captured.some(item => !canonicalText(item)) || new Set(captured).size !== captured.length) fail();
   const canonical = [...captured].sort(compare);
@@ -129,17 +132,18 @@ function executionChannel(value: unknown) {
 
 function stateSubject(value: unknown, normalize: boolean) {
   const captured = exactObject(value, stateSubjectKeys);
-  if (!stateSubjectKinds.includes(captured.subjectKind as CareerStateSubjectKind) || typeof captured.subjectRef !== "string") fail();
-  const subjectRef = normalize ? captured.subjectRef.trim() : captured.subjectRef;
-  if (!canonicalText(subjectRef)) fail();
-  return { subjectKind: captured.subjectKind as CareerStateSubjectKind, subjectRef };
+  const subjectKind = typeof captured.subjectKind === "string" ? captured.subjectKind : fail();
+  const rawSubjectRef = typeof captured.subjectRef === "string" ? captured.subjectRef : fail();
+  const subjectRef = normalize ? rawSubjectRef.trim() : rawSubjectRef;
+  if (!stateSubjectKinds.includes(subjectKind as CareerStateSubjectKind) || !canonicalText(subjectRef)) fail();
+  return { subjectKind: subjectKind as CareerStateSubjectKind, subjectRef };
 }
 
 function observation(value: unknown, normalize: boolean): CareerStateObservation {
   const captured = exactObject(value, observationKeys);
   if (captured.observationState === "OBSERVED") {
-    if (typeof captured.value !== "string") fail();
-    const stateValue = normalize ? captured.value.trim() : captured.value;
+    const rawStateValue = typeof captured.value === "string" ? captured.value : fail();
+    const stateValue = normalize ? rawStateValue.trim() : rawStateValue;
     if (!canonicalText(stateValue)) fail();
     return { observationState: "OBSERVED", value: stateValue };
   }
@@ -153,13 +157,17 @@ function observation(value: unknown, normalize: boolean): CareerStateObservation
 function externalReference(value: unknown, normalize: boolean): AuthoritativeStateReference | null {
   if (value === null) return null;
   const captured = exactObject(value, referenceKeys);
-  const values = Object.fromEntries(referenceKeys.map(key => {
-    if (typeof captured[key] !== "string") fail();
-    const result = normalize ? (captured[key] as string).trim() : captured[key] as string;
-    if (!canonicalText(result)) fail();
-    return [key, result];
-  }));
-  return values as AuthoritativeStateReference;
+  const text = (key: (typeof referenceKeys)[number]): string => {
+    const raw = typeof captured[key] === "string" ? captured[key] : fail();
+    const result = normalize ? raw.trim() : raw;
+    return canonicalText(result) ? result : fail();
+  };
+  return {
+    producerId: text("producerId"),
+    authorityContractId: text("authorityContractId"),
+    artifactId: text("artifactId"),
+    locator: text("locator"),
+  };
 }
 
 function semantic(value: Record<string, unknown>, normalize: boolean, canonicalRequired: boolean) {

@@ -86,8 +86,9 @@ function subjectKey(subject: DecisionSubjectReference): string {
 }
 
 function subjects(value: unknown, canonicalRequired: boolean): DecisionSubjectReference[] {
-  if (!Array.isArray(value) || value.length === 0) fail();
-  const captured = value.map(item => {
+  const items: unknown[] = Array.isArray(value) ? value : fail();
+  if (items.length === 0) fail();
+  const captured = items.map(item => {
     const subject = exactObject(item, subjectKeys);
     if (
       !rcp.test(subject.recommendationProposalId as string) ||
@@ -106,10 +107,12 @@ function subjects(value: unknown, canonicalRequired: boolean): DecisionSubjectRe
 }
 
 function evidence(value: unknown, normalize: boolean, canonicalRequired: boolean): string[] {
-  if (!Array.isArray(value) || value.length === 0) fail();
-  const captured = value.map(item => {
-    if (typeof item !== "string" || item.trim().length === 0) fail();
-    return normalize ? item.trim() : item;
+  const items: unknown[] = Array.isArray(value) ? value : fail();
+  if (items.length === 0) fail();
+  const captured: string[] = items.map(item => {
+    const text = typeof item === "string" ? item : fail();
+    if (text.trim().length === 0) fail();
+    return normalize ? text.trim() : text;
   });
   if (captured.some(item => !canonicalText(item)) || new Set(captured).size !== captured.length) fail();
   const canonical = [...captured].sort(compare);
@@ -143,8 +146,8 @@ function channel(value: unknown): { channelKind: CareerExecutionChannelKind; cha
 
 function externalReference(value: unknown, normalize: boolean): string | null {
   if (value === null) return null;
-  if (typeof value !== "string") fail();
-  const captured = normalize ? value.trim() : value;
+  const text = typeof value === "string" ? value : fail();
+  const captured = normalize ? text.trim() : text;
   if (!canonicalText(captured)) fail();
   return captured;
 }

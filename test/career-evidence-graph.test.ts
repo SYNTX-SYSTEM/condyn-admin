@@ -65,18 +65,21 @@ describe("CONDYN Career Analysis Protocol v1.0 — Step 24a: Directed Evidence G
       jobId: "job_siemens_lead",
       title: "Principal Cloud Architect",
       company: "Siemens AG",
+      description: "Principal cloud architecture role.",
       requirements: [
         {
           capability_name: "Kubernetes Orchestration",
           domain: "DevOps",
           weight: 0.6,
-          required_level: "L5"
+          required_level: "L5",
+          aliases: []
         },
         {
           capability_name: "Distributed Systems Architecture",
           domain: "Systems",
           weight: 0.4,
-          required_level: "L5"
+          required_level: "L5",
+          aliases: []
         }
       ]
     }

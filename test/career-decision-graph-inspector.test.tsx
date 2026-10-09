@@ -49,12 +49,14 @@ describe("CONDYN Career Analysis Protocol v1.0 — Step 24b: Decision Graph Insp
       jobId: "job_siemens_lead",
       title: "Principal Cloud Architect",
       company: "Siemens AG",
+      description: "Principal cloud architecture role.",
       requirements: [
         {
           capability_name: "Kubernetes Orchestration",
           domain: "DevOps",
           weight: 0.6,
-          required_level: "L5"
+          required_level: "L5",
+          aliases: []
         }
       ]
     }

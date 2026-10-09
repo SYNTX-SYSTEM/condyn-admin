@@ -1,0 +1,43 @@
+import { describe, expect, it } from "vitest";
+import { assertExecutionAuthorityRevision, createExecutionAuthorityRevision, deriveExecutionAuthorityRevisionId } from "../../../../lib/career/relation/execution-authority";
+
+const input = {
+  actorId: "ACTOR_EXECUTION_1",
+  authorityScope: "EXTERNAL_ACTION" as const,
+  executionTargetScope: "COMMUNICATION_ENDPOINT" as const,
+  executionChannelScope: "EMAIL" as const,
+  authorityEvidenceRef: "evidence://execution-authority/1",
+  schemaVersion: "EXECUTION_AUTHORITY_REVISION_V1" as const,
+  createdAt: "2027-01-01T00:00:00.000Z",
+};
+
+describe("T12A ExecutionAuthorityRevision", () => {
+  it("creates a frozen deterministic EAR while createdAt remains audit metadata", () => {
+    const first = createExecutionAuthorityRevision(input);
+    const second = createExecutionAuthorityRevision({ ...input, createdAt: "2028-01-01T00:00:00.000Z" });
+    expect(first.executionAuthorityRevisionId).toMatch(/^EAR_[0-9A-F]{32}$/);
+    expect(first.executionAuthorityRevisionId).toBe(second.executionAuthorityRevisionId);
+    expect(Object.isFrozen(first)).toBe(true);
+  });
+
+  it("binds every execution-authority semantic scope and witness into the ID", () => {
+    const { createdAt: _createdAt, ...semantic } = input;
+    const id = deriveExecutionAuthorityRevisionId(semantic);
+    expect(deriveExecutionAuthorityRevisionId({ ...semantic, authorityScope: "EVIDENCE_REQUEST" })).not.toBe(id);
+    expect(deriveExecutionAuthorityRevisionId({ ...semantic, executionTargetScope: "PERSON" })).not.toBe(id);
+    expect(deriveExecutionAuthorityRevisionId({ ...semantic, executionChannelScope: "MESSAGE" })).not.toBe(id);
+    expect(deriveExecutionAuthorityRevisionId({ ...semantic, authorityEvidenceRef: "evidence://execution-authority/2" })).not.toBe(id);
+  });
+
+  it("rejects unknown scopes, free legacy values, malformed IDs, and invalid audit timestamps", () => {
+    const value = createExecutionAuthorityRevision(input);
+    expect(() => createExecutionAuthorityRevision({ ...input, actorId: " " })).toThrow("ERR_EXECUTION_AUTHORITY_REVISION_INVALID");
+    expect(() => createExecutionAuthorityRevision({ ...input, authorityScope: "DECISION" as any })).toThrow("ERR_EXECUTION_AUTHORITY_REVISION_INVALID");
+    expect(() => createExecutionAuthorityRevision({ ...input, executionTargetScope: "ROLE" as any })).toThrow("ERR_EXECUTION_AUTHORITY_REVISION_INVALID");
+    expect(() => createExecutionAuthorityRevision({ ...input, executionChannelScope: "GMAIL" as any })).toThrow("ERR_EXECUTION_AUTHORITY_REVISION_INVALID");
+    expect(() => createExecutionAuthorityRevision({ ...input, authorityEvidenceRef: "" })).toThrow("ERR_EXECUTION_AUTHORITY_REVISION_INVALID");
+    expect(() => createExecutionAuthorityRevision({ ...input, createdAt: "not-a-timestamp" })).toThrow("ERR_EXECUTION_AUTHORITY_REVISION_INVALID");
+    expect(() => assertExecutionAuthorityRevision({ ...value, executionAuthorityRevisionId: "DAR_00000000000000000000000000000000" })).toThrow("ERR_EXECUTION_AUTHORITY_REVISION_INVALID");
+    expect(() => assertExecutionAuthorityRevision({ ...value, executionAuthorityRevisionId: "EAR_00000000000000000000000000000000" })).toThrow("ERR_EXECUTION_AUTHORITY_REVISION_INVALID");
+  });
+});

@@ -1,0 +1,3 @@
+export { PostgresExecutionAuthorityRevisionRepository } from "./postgres";
+export type { ExecutionAuthorityRevisionRepository } from "./postgres";
+export { executionAuthorityRevisions } from "./postgres-schema";

@@ -1,0 +1,49 @@
+import { createHash } from "node:crypto";
+import { executionAuthorityScopes, executionChannelScopes, executionTargetScopes, type ExecutionAuthorityRevision, type ExecutionAuthorityRevisionInput } from "./types";
+
+const fail = (): never => { throw new Error("ERR_EXECUTION_AUTHORITY_REVISION_INVALID"); };
+const nonBlank = (value: unknown): value is string => typeof value === "string" && value.trim().length > 0;
+const canonicalTimestamp = (value: unknown): value is string => typeof value === "string" && Number.isFinite(Date.parse(value)) && new Date(value).toISOString() === value;
+const exact = (value: unknown, keys: readonly string[]): Record<string, unknown> => {
+  if (value === null || typeof value !== "object" || Array.isArray(value)) return fail();
+  const item = value as Record<string, unknown>;
+  const actual = Object.keys(item);
+  if (actual.length !== keys.length || keys.some(key => !Object.prototype.hasOwnProperty.call(item, key))) return fail();
+  return item;
+};
+
+export const stableExecutionAuthority = (value: unknown): string => JSON.stringify(value, (_key, item) => item && typeof item === "object" && !Array.isArray(item) ? Object.fromEntries(Object.keys(item).sort().map(key => [key, (item as Record<string, unknown>)[key]])) : item);
+
+function assertSemantic(value: unknown): asserts value is Omit<ExecutionAuthorityRevision, "executionAuthorityRevisionId" | "createdAt"> {
+  const item = exact(value, ["actorId", "authorityScope", "executionTargetScope", "executionChannelScope", "authorityEvidenceRef", "schemaVersion"]);
+  if (!nonBlank(item.actorId) || !executionAuthorityScopes.includes(item.authorityScope as never) || !executionTargetScopes.includes(item.executionTargetScope as never) || !executionChannelScopes.includes(item.executionChannelScope as never) || !nonBlank(item.authorityEvidenceRef) || item.schemaVersion !== "EXECUTION_AUTHORITY_REVISION_V1") fail();
+}
+
+function assertInput(value: unknown): asserts value is ExecutionAuthorityRevisionInput {
+  const item = exact(value, ["actorId", "authorityScope", "executionTargetScope", "executionChannelScope", "authorityEvidenceRef", "schemaVersion", "createdAt"]);
+  const { createdAt, ...semantic } = item;
+  assertSemantic(semantic);
+  if (!canonicalTimestamp(createdAt)) fail();
+}
+
+/** The ID binds the explicit authority witness and all three closed scopes; createdAt is audit metadata only. */
+export function deriveExecutionAuthorityRevisionId(value: Omit<ExecutionAuthorityRevision, "executionAuthorityRevisionId" | "createdAt">): string {
+  assertSemantic(value);
+  return `EAR_${createHash("sha256").update(stableExecutionAuthority(["EXECUTION_AUTHORITY_REVISION_V1", value.actorId, value.authorityScope, value.executionTargetScope, value.executionChannelScope, value.authorityEvidenceRef, value.schemaVersion]), "utf8").digest("hex").slice(0, 32).toUpperCase()}`;
+}
+
+export function assertExecutionAuthorityRevision(value: unknown): asserts value is ExecutionAuthorityRevision {
+  const item = exact(value, ["executionAuthorityRevisionId", "actorId", "authorityScope", "executionTargetScope", "executionChannelScope", "authorityEvidenceRef", "schemaVersion", "createdAt"]);
+  const { executionAuthorityRevisionId, createdAt, ...semantic } = item;
+  assertSemantic(semantic);
+  if (typeof executionAuthorityRevisionId !== "string" || !/^EAR_[0-9A-F]{32}$/.test(executionAuthorityRevisionId) || !canonicalTimestamp(createdAt) || executionAuthorityRevisionId !== deriveExecutionAuthorityRevisionId(semantic as Omit<ExecutionAuthorityRevision, "executionAuthorityRevisionId" | "createdAt">)) fail();
+}
+
+/** Creation emits a frozen artifact. An actor alone is never treated as execution authority. */
+export function createExecutionAuthorityRevision(input: ExecutionAuthorityRevisionInput): ExecutionAuthorityRevision {
+  assertInput(input);
+  const { createdAt, ...semantic } = input;
+  const value: ExecutionAuthorityRevision = { executionAuthorityRevisionId: deriveExecutionAuthorityRevisionId(semantic), ...semantic, createdAt };
+  assertExecutionAuthorityRevision(value);
+  return Object.freeze(value);
+}

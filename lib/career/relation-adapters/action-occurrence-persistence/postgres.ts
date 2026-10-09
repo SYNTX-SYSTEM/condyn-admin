@@ -147,7 +147,7 @@ export class PostgresCareerActionOccurrenceRepository implements CareerActionOcc
   async getCareerActionOccurrenceById(id: string): Promise<CareerActionOccurrence> {
     try {
       const value = await this.existing(id);
-      if (!value) fail("ERR_CAREER_ACTION_OCCURRENCE_NOT_FOUND");
+      if (!value) return fail("ERR_CAREER_ACTION_OCCURRENCE_NOT_FOUND");
       return value;
     } catch (error) {
       if (error instanceof Error && error.message === "ERR_CAREER_ACTION_OCCURRENCE_NOT_FOUND") throw error;

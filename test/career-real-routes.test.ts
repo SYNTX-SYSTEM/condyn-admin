@@ -9,7 +9,7 @@
 
 import fs from "fs";
 import path from "path";
-import { describe, it, expect, beforeEach, afterEach } from "vitest";
+import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
 import { getCareerAnalysisRepository } from "../lib/career/repositories";
 import { InMemoryCareerAnalysisRepository } from "../lib/career/repository";
 import { PostgresCareerAnalysisRepository } from "../lib/career/repositories/postgres";
@@ -25,32 +25,30 @@ describe("CONDYN Career Analysis Protocol v1.0 - Step 11: Real Route Integration
   const validationResult = validateCareerAnalysis(unverifiedPayload);
   const verifiedAnalysis = validationResult.data as VerifiedCareerAnalysis;
 
-  const originalEnv = { ...process.env };
-
   beforeEach(async () => {
-    process.env.NODE_ENV = "test";
-    delete process.env.CAREER_REPOSITORY;
+    vi.stubEnv("NODE_ENV", "test");
+    vi.stubEnv("CAREER_REPOSITORY", undefined);
     const repo = getCareerAnalysisRepository();
     await repo.save(verifiedAnalysis);
   });
 
   afterEach(() => {
-    process.env = { ...originalEnv };
+    vi.unstubAllEnvs();
   });
 
   it("should return InMemoryCareerAnalysisRepository when NODE_ENV === 'test' or CAREER_REPOSITORY === 'inmemory'", () => {
-    process.env.NODE_ENV = "test";
-    delete process.env.CAREER_REPOSITORY;
+    vi.stubEnv("NODE_ENV", "test");
+    vi.stubEnv("CAREER_REPOSITORY", undefined);
     expect(getCareerAnalysisRepository()).toBeInstanceOf(InMemoryCareerAnalysisRepository);
 
-    process.env.NODE_ENV = "production";
-    process.env.CAREER_REPOSITORY = "inmemory";
+    vi.stubEnv("NODE_ENV", "production");
+    vi.stubEnv("CAREER_REPOSITORY", "inmemory");
     expect(getCareerAnalysisRepository()).toBeInstanceOf(InMemoryCareerAnalysisRepository);
   });
 
   it("should strictly enforce PostgresCareerAnalysisRepository when NODE_ENV !== 'test' and CAREER_REPOSITORY !== 'inmemory'", () => {
-    process.env.NODE_ENV = "production";
-    delete process.env.CAREER_REPOSITORY;
+    vi.stubEnv("NODE_ENV", "production");
+    vi.stubEnv("CAREER_REPOSITORY", undefined);
     expect(getCareerAnalysisRepository()).toBeInstanceOf(PostgresCareerAnalysisRepository);
   });
 

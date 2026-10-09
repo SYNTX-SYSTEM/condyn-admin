@@ -1,0 +1,30 @@
+import { integer, jsonb, pgTable, text } from "drizzle-orm/pg-core";
+import { decisionRecords } from "../decision-authority-persistence/postgres-schema";
+import { executionAuthorityRevisions } from "../execution-authority-persistence/postgres-schema";
+import type { ExecutionContextRevision } from "../../relation/execution-context";
+
+export const executionContextRevisions = pgTable("execution_context_revisions", {
+  executionContextRevisionId: text("execution_context_revision_id").primaryKey(),
+  decisionRecordId: text("decision_record_id").notNull().references(() => decisionRecords.decisionRecordId, { onDelete: "restrict" }),
+  executionAuthorityRevisionId: text("execution_authority_revision_id").notNull().references(() => executionAuthorityRevisions.executionAuthorityRevisionId, { onDelete: "restrict" }),
+  subjectRef: text("subject_ref").notNull(),
+  targetKind: text("target_kind").notNull(),
+  targetRef: text("target_ref").notNull(),
+  channelKind: text("channel_kind").notNull(),
+  channelRef: text("channel_ref").notNull(),
+  schemaVersion: text("schema_version").notNull(),
+  createdAt: text("created_at").notNull(),
+  payload: jsonb("payload").$type<ExecutionContextRevision>().notNull(),
+});
+
+export const executionContextSubjectReferences = pgTable("execution_context_subject_references", {
+  referenceId: text("reference_id").primaryKey(),
+  executionContextRevisionId: text("execution_context_revision_id").notNull().references(() => executionContextRevisions.executionContextRevisionId, { onDelete: "restrict" }),
+  ordinal: integer("ordinal").notNull(),
+});
+
+export const executionContextEvidenceReferences = pgTable("execution_context_evidence_references", {
+  referenceId: text("reference_id").primaryKey(),
+  executionContextRevisionId: text("execution_context_revision_id").notNull().references(() => executionContextRevisions.executionContextRevisionId, { onDelete: "restrict" }),
+  evidenceRef: text("evidence_ref").notNull(),
+});

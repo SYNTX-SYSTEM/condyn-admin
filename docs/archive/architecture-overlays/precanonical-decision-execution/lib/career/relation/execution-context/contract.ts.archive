@@ -1,0 +1,114 @@
+import { createHash } from "node:crypto";
+import { assertDecisionRecord, type DecisionRecord } from "../decision-record";
+import { assertExecutionAuthorityRevision, executionChannelScopes, executionTargetScopes, type ExecutionAuthorityRevision, type ExecutionAuthorityScope } from "../execution-authority";
+import type { ExecutionContextRevision, ExecutionContextRevisionInput, ExecutionSubject } from "./types";
+
+const fail = (): never => { throw new Error("ERR_EXECUTION_CONTEXT_REVISION_INVALID"); };
+const nonBlank = (value: unknown): value is string => typeof value === "string" && value.trim().length > 0;
+const canonicalTimestamp = (value: unknown): value is string => typeof value === "string" && Number.isFinite(Date.parse(value)) && new Date(value).toISOString() === value;
+const exact = (value: unknown, keys: readonly string[]): Record<string, unknown> => {
+  if (value === null || typeof value !== "object" || Array.isArray(value)) return fail();
+  const item = value as Record<string, unknown>;
+  const actual = Object.keys(item);
+  if (actual.length !== keys.length || keys.some(key => !Object.prototype.hasOwnProperty.call(item, key))) return fail();
+  return item;
+};
+const same = (left: readonly number[], right: readonly number[]) => left.length === right.length && left.every((value, index) => value === right[index]);
+const canonicalOrdinals = (value: unknown): number[] => {
+  if (!Array.isArray(value) || value.some(item => !Number.isInteger(item) || item < 0)) return fail();
+  return [...new Set(value)].sort((left, right) => left - right);
+};
+const canonicalRefs = (value: unknown): string[] => {
+  if (!Array.isArray(value) || value.some(item => !nonBlank(item))) return fail();
+  return [...new Set(value)].sort();
+};
+const contextDeclarations: Record<DecisionRecord["decisionDeclaration"], ExecutionAuthorityScope | null> = {
+  AUTHORIZED_ACTION: "EXTERNAL_ACTION",
+  NO_ACTION: null,
+  REQUEST_FURTHER_EVIDENCE: "EVIDENCE_REQUEST",
+  REQUEST_TARGET_CLARIFICATION: "TARGET_CLARIFICATION_REQUEST",
+};
+
+export const stableExecutionContext = (value: unknown): string => JSON.stringify(value, (_key, item) => item && typeof item === "object" && !Array.isArray(item) ? Object.fromEntries(Object.keys(item).sort().map(key => [key, (item as Record<string, unknown>)[key]])) : item);
+
+function assertSubject(value: unknown, canonical = true): asserts value is ExecutionSubject {
+  const item = exact(value, ["decisionSubjectItemOrdinals", "subjectRef"]);
+  const ordinals = canonicalOrdinals(item.decisionSubjectItemOrdinals);
+  if (!nonBlank(item.subjectRef) || (canonical && !same(ordinals, item.decisionSubjectItemOrdinals as number[]))) fail();
+}
+
+function assertTarget(value: unknown): void {
+  const item = exact(value, ["targetKind", "targetRef"]);
+  if (!executionTargetScopes.includes(item.targetKind as never) || !nonBlank(item.targetRef)) fail();
+}
+
+function assertChannel(value: unknown): void {
+  const item = exact(value, ["channelKind", "channelRef"]);
+  if (!executionChannelScopes.includes(item.channelKind as never) || !nonBlank(item.channelRef)) fail();
+}
+
+function assertInput(value: unknown): asserts value is ExecutionContextRevisionInput {
+  const item = exact(value, ["executionSubject", "executionTarget", "executionChannel", "contextEvidenceRefs", "schemaVersion", "createdAt"]);
+  assertSubject(item.executionSubject, false);
+  assertTarget(item.executionTarget);
+  assertChannel(item.executionChannel);
+  canonicalRefs(item.contextEvidenceRefs);
+  if (item.schemaVersion !== "EXECUTION_CONTEXT_REVISION_V1" || !canonicalTimestamp(item.createdAt)) fail();
+}
+
+function assertSemantic(value: unknown): asserts value is Omit<ExecutionContextRevision, "executionContextRevisionId" | "createdAt"> {
+  const item = exact(value, ["decisionRecordId", "executionAuthorityRevisionId", "executionSubject", "executionTarget", "executionChannel", "contextEvidenceRefs", "schemaVersion"]);
+  if (!/^DCR_[0-9A-F]{32}$/.test(item.decisionRecordId as string) || !/^EAR_[0-9A-F]{32}$/.test(item.executionAuthorityRevisionId as string)) fail();
+  assertSubject(item.executionSubject);
+  assertTarget(item.executionTarget);
+  assertChannel(item.executionChannel);
+  const refs = canonicalRefs(item.contextEvidenceRefs);
+  if (JSON.stringify(refs) !== JSON.stringify(item.contextEvidenceRefs) || item.schemaVersion !== "EXECUTION_CONTEXT_REVISION_V1") fail();
+}
+
+/** ECTXREV identity binds explicit historical witnesses, subject, target, channel, and canonical evidence; createdAt is audit metadata. */
+export function deriveExecutionContextRevisionId(value: Omit<ExecutionContextRevision, "executionContextRevisionId" | "createdAt">): string {
+  assertSemantic(value);
+  return `ECTXREV_${createHash("sha256").update(stableExecutionContext(["EXECUTION_CONTEXT_REVISION_V1", value.decisionRecordId, value.executionAuthorityRevisionId, value.executionSubject.decisionSubjectItemOrdinals, value.executionSubject.subjectRef, value.executionTarget.targetKind, value.executionTarget.targetRef, value.executionChannel.channelKind, value.executionChannel.channelRef, value.contextEvidenceRefs, value.schemaVersion]), "utf8").digest("hex").slice(0, 32).toUpperCase()}`;
+}
+
+export function assertExecutionContextRevision(value: unknown): asserts value is ExecutionContextRevision {
+  const item = exact(value, ["executionContextRevisionId", "decisionRecordId", "executionAuthorityRevisionId", "executionSubject", "executionTarget", "executionChannel", "contextEvidenceRefs", "schemaVersion", "createdAt"]);
+  const { executionContextRevisionId, createdAt, ...semantic } = item;
+  assertSemantic(semantic);
+  if (typeof executionContextRevisionId !== "string" || !/^ECTXREV_[0-9A-F]{32}$/.test(executionContextRevisionId) || !canonicalTimestamp(createdAt) || executionContextRevisionId !== deriveExecutionContextRevisionId(semantic as Omit<ExecutionContextRevision, "executionContextRevisionId" | "createdAt">)) fail();
+}
+
+/** Builds a frozen context only when exact DCR subjects and EAR declaration/target/channel scopes agree. */
+export function createExecutionContextRevision(decisionRecord: DecisionRecord, executionAuthorityRevision: ExecutionAuthorityRevision, input: ExecutionContextRevisionInput): ExecutionContextRevision {
+  try {
+    assertDecisionRecord(decisionRecord);
+    assertExecutionAuthorityRevision(executionAuthorityRevision);
+    assertInput(input);
+    const decisionSubjectItemOrdinals = canonicalOrdinals(input.executionSubject.decisionSubjectItemOrdinals);
+    const contextEvidenceRefs = canonicalRefs(input.contextEvidenceRefs);
+    if (!same(decisionSubjectItemOrdinals, decisionRecord.decisionSubjectItemOrdinals)) fail();
+    const requiredScope = contextDeclarations[decisionRecord.decisionDeclaration];
+    if (requiredScope === null || executionAuthorityRevision.authorityScope !== requiredScope) fail();
+    if (input.executionTarget.targetKind !== executionAuthorityRevision.executionTargetScope || input.executionChannel.channelKind !== executionAuthorityRevision.executionChannelScope) fail();
+    const semantic = {
+      decisionRecordId: decisionRecord.decisionRecordId,
+      executionAuthorityRevisionId: executionAuthorityRevision.executionAuthorityRevisionId,
+      executionSubject: { decisionSubjectItemOrdinals, subjectRef: input.executionSubject.subjectRef },
+      executionTarget: structuredClone(input.executionTarget),
+      executionChannel: structuredClone(input.executionChannel),
+      contextEvidenceRefs,
+      schemaVersion: "EXECUTION_CONTEXT_REVISION_V1" as const,
+    };
+    const value: ExecutionContextRevision = { executionContextRevisionId: deriveExecutionContextRevisionId(semantic), ...semantic, createdAt: input.createdAt };
+    assertExecutionContextRevision(value);
+    Object.freeze(value.executionSubject.decisionSubjectItemOrdinals);
+    Object.freeze(value.executionSubject);
+    Object.freeze(value.executionTarget);
+    Object.freeze(value.executionChannel);
+    Object.freeze(value.contextEvidenceRefs);
+    return Object.freeze(value);
+  } catch {
+    return fail();
+  }
+}

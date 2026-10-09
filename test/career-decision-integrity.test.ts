@@ -47,12 +47,14 @@ describe("CONDYN Career Analysis Protocol v1.0 — Phase 1: Decision Integrity S
       jobId: "job_cloud_principal",
       title: "Principal Cloud Platform Architect",
       company: "Siemens AG",
+      description: "Principal cloud platform architecture role.",
       requirements: [
         {
           capability_name: "Kubernetes Orchestration",
           domain: "DevOps",
           weight: 1.0,
-          required_level: "L5"
+          required_level: "L5",
+          aliases: []
         }
       ]
     }

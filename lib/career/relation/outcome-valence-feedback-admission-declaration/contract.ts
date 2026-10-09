@@ -136,8 +136,9 @@ function subjectKey(subject: DecisionSubjectReference): string {
 }
 
 function subjects(value: unknown, canonicalRequired: boolean): DecisionSubjectReference[] {
-  if (!Array.isArray(value) || value.length === 0) fail();
-  const captured = value.map(item => {
+  const items: unknown[] = Array.isArray(value) ? value : fail();
+  if (items.length === 0) fail();
+  const captured = items.map(item => {
     const subject = exactObject(item, subjectKeys);
     if (!rcp.test(subject.recommendationProposalId as string) || !Number.isSafeInteger(subject.sourceEvolutionInputItemOrdinal) || (subject.sourceEvolutionInputItemOrdinal as number) < 0) fail();
     return {
@@ -152,10 +153,12 @@ function subjects(value: unknown, canonicalRequired: boolean): DecisionSubjectRe
 }
 
 function inventory(value: unknown, normalize: boolean, canonicalRequired: boolean): string[] {
-  if (!Array.isArray(value) || value.length === 0) fail();
-  const captured = value.map(item => {
-    if (typeof item !== "string" || item.trim().length === 0) fail();
-    return normalize ? item.trim() : item;
+  const items: unknown[] = Array.isArray(value) ? value : fail();
+  if (items.length === 0) fail();
+  const captured = items.map(item => {
+    const text = typeof item === "string" ? item : fail();
+    if (text.trim().length === 0) fail();
+    return normalize ? text.trim() : text;
   });
   if (captured.some(item => !canonicalText(item)) || new Set(captured).size !== captured.length) fail();
   const canonical = [...captured].sort(compare);
@@ -341,8 +344,9 @@ export function createCareerOutcomeValenceFeedbackAdmissionDeclaration(
     !canonicalTimestamp(captured.admittedAt) || !canonicalTimestamp(captured.createdAt) ||
     (captured.admittedAt as string) < outcomeValenceDeclaration.declaredAt
   ) fail();
-  if (typeof captured.admittedByActorId !== "string") fail();
-  const admittedByActorId = captured.admittedByActorId.trim();
+  const admittedByActorId = typeof captured.admittedByActorId === "string"
+    ? captured.admittedByActorId.trim()
+    : fail();
   if (!canonicalText(admittedByActorId)) fail();
   const canonical = semantic({
     careerOutcomeValenceDeclarationId: outcomeValenceDeclaration.careerOutcomeValenceDeclarationId,

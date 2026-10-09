@@ -54,9 +54,6 @@ describe("CONDYN Career Analysis Protocol v1.0 — Step 27: Complete Interaction
   it("1. SourceDock Audit: renders all multi-source ingestion action buttons (PDF, GitHub, Website, Markdown)", () => {
     const html = renderToString(
       <SourceDock
-        sources={[]}
-        onAddSource={() => {}}
-        onRemoveSource={() => {}}
         onAnalyze={() => {}}
         isAnalyzing={false}
       />
@@ -71,18 +68,14 @@ describe("CONDYN Career Analysis Protocol v1.0 — Step 27: Complete Interaction
   it("2. SourceDock Audit: renders ANALYSIS RUNNING... state when analysis trigger is active", () => {
     const html = renderToString(
       <SourceDock
-        sources={[]}
         initialStagedDocs={[
           {
             id: "doc-1",
-            name: "Architecture.pdf",
+            title: "Architecture.pdf",
             type: "pdf",
-            size: 1024,
-            status: "ready"
+            content: "fixture"
           }
         ]}
-        onAddSource={() => {}}
-        onRemoveSource={() => {}}
         onAnalyze={() => {}}
         isAnalyzing={true}
       />

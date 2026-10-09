@@ -115,6 +115,7 @@ describe("CONDYN Career Analysis Protocol v2.0 - PHASE 2: EVIDENCE → CAPABILIT
     organization_classes: [],
     organizations: [],
     roles: [],
+    requirements: [],
     opportunities: [],
     strategies: [],
     search_queries: []

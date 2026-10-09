@@ -56,12 +56,17 @@ function captureInput(value: unknown): CareerOutcomeValenceFeedbackTargetRevisio
   if (
     Object.keys(candidate).length !== keys.length ||
     keys.some(key => !Object.prototype.hasOwnProperty.call(candidate, key)) ||
-    !targetDeclarationId.test(candidate.careerOutcomeValenceFeedbackTargetDeclarationId as string) ||
+    typeof candidate.careerOutcomeValenceFeedbackTargetDeclarationId !== "string" ||
+    !targetDeclarationId.test(candidate.careerOutcomeValenceFeedbackTargetDeclarationId) ||
     !canonicalTimestamp(candidate.createdAt)
   ) {
     return fail("ERR_CAREER_OUTCOME_VALENCE_FEEDBACK_TARGET_REVISION_BINDING_ADMISSION_INVALID");
   }
-  return candidate as CareerOutcomeValenceFeedbackTargetRevisionBindingAdmissionInput;
+  return {
+    careerOutcomeValenceFeedbackTargetDeclarationId:
+      candidate.careerOutcomeValenceFeedbackTargetDeclarationId,
+    createdAt: candidate.createdAt,
+  };
 }
 
 function captureDependencies(

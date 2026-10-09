@@ -154,7 +154,7 @@ export class PostgresCareerOutcomeValenceDeclarationRepository implements Career
   async getCareerOutcomeValenceDeclarationById(id: string): Promise<CareerOutcomeValenceDeclaration> {
     try {
       const value = await this.existing(id);
-      if (!value) fail("ERR_CAREER_OUTCOME_VALENCE_DECLARATION_NOT_FOUND");
+      if (!value) return fail("ERR_CAREER_OUTCOME_VALENCE_DECLARATION_NOT_FOUND");
       return value;
     } catch (error) {
       if (error instanceof Error && error.message === "ERR_CAREER_OUTCOME_VALENCE_DECLARATION_NOT_FOUND") throw error;

@@ -74,7 +74,8 @@ implements CareerOutcomeValenceFeedbackTargetRevisionBindingRepository {
     } catch { return fail(failed); }
     let reread: CareerOutcomeValenceFeedbackTargetRevisionBinding | null;
     try { reread = await this.existing(value.careerOutcomeValenceFeedbackTargetRevisionBindingId); } catch { return fail(failed); }
-    if (!reread || !same(reread, value)) fail(failed);
-    return reread;
+    const persisted = reread ?? fail(failed);
+    if (!same(persisted, value)) fail(failed);
+    return persisted;
   }
 }

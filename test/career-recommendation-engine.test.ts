@@ -44,32 +44,28 @@ describe("CONDYN Career Analysis Protocol v1.0 — Step 20a: Recommendation Engi
           {
             requirementId: "req_1",
             capabilityName: "Distributed Systems",
-            domain: "Architecture",
-            weight: 0.6,
-            requiredLevel: "L5",
-            extractedConfidence: 0.95
+            requiredWeight: 0.6,
+            extractedConfidence: 0.95,
+            contribution: 0.57
           }
         ],
         missingCapabilities: [
           {
             requirementId: "req_2",
             capabilityName: "Zero Trust Security Architecture",
-            domain: "Security",
-            weight: 0.85, // >= 0.8 -> HIGH severity
+            requiredWeight: 0.85, // >= 0.8 -> HIGH severity
             requiredLevel: "L5"
           },
           {
             requirementId: "req_3",
             capabilityName: "Edge AI Deployment",
-            domain: "AI",
-            weight: 0.55, // >= 0.5 -> MEDIUM severity
+            requiredWeight: 0.55, // >= 0.5 -> MEDIUM severity
             requiredLevel: "L4"
           },
           {
             requirementId: "req_4",
             capabilityName: "Internal Auditing",
-            domain: "Compliance",
-            weight: 0.30, // < 0.5 -> LOW severity
+            requiredWeight: 0.30, // < 0.5 -> LOW severity
             requiredLevel: "L3"
           }
         ],

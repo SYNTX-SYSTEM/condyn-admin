@@ -1,32 +1,29 @@
 import { describe, it, expect } from "vitest";
 import { executeCareerAnalysisPipeline } from "../lib/career/pipeline";
-import { MockInferenceProvider, buildCareerAnalysisPrompt } from "../lib/career/adapter";
-import { DocumentInput } from "../lib/career/index";
+import { MockInferenceProvider, buildCareerAnalysisPrompt, type DocumentInput } from "../lib/career/adapter";
+import { createSourceMetadata } from "../lib/career/loaders/source";
 
 describe("CONDYN Career Analysis Protocol v1.0 — TEST001E: PDF + GITHUB Y-Node Pipeline", () => {
   it("should securely merge multi-source documents, preserve unique IDs, and trace evidence correctly", async () => {
     // 1. Arrange: PDF and GitHub Multi-Source Documents
     const multiSourceDocs: DocumentInput[] = [
       {
-        url: "file://resume.pdf",
-        type: "pdf",
         docId: "DOC_001",
         title: "Jane Doe Resume",
-        content: "Senior Systems Engineer specializing in Rust. Worked at TechCorp from 2020 to 2026."
+        content: "Senior Systems Engineer specializing in Rust. Worked at TechCorp from 2020 to 2026.",
+        metadata: createSourceMetadata("PDF", "Senior Systems Engineer specializing in Rust. Worked at TechCorp from 2020 to 2026.", { uri: "file://resume.pdf" })
       },
       {
-        url: "https://github.com/janedoe/rust-core",
-        type: "github",
         docId: "DOC_GH_001",
         title: "README.md",
-        content: "# rust-core\nHigh performance distributed systems core."
+        content: "# rust-core\nHigh performance distributed systems core.",
+        metadata: createSourceMetadata("GITHUB_README", "# rust-core\nHigh performance distributed systems core.", { uri: "https://github.com/janedoe/rust-core", path: "README.md" })
       },
       {
-        url: "https://github.com/janedoe/rust-core",
-        type: "github",
         docId: "DOC_GH_002",
         title: "src/main.rs",
-        content: "fn main() { println!(\"Starting cluster...\"); }"
+        content: "fn main() { println!(\"Starting cluster...\"); }",
+        metadata: createSourceMetadata("GITHUB_DOCS", "fn main() { println!(\"Starting cluster...\"); }", { uri: "https://github.com/janedoe/rust-core", path: "src/main.rs" })
       }
     ];
 

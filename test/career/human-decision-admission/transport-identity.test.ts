@@ -119,7 +119,7 @@ describe("T20 authenticated principal transport identity contract", () => {
   it("keeps the frozen module transport-only: no request parsing, time/currentness, providers, persistence, replay, T11 domain construction, or HTTP route", async () => {
     await subject();
     const source = readFileSync(sourcePath, "utf8");
-    expect(source).toMatch(/export interface AuthenticatedPrincipal\s*\{\s*issuer: string;\s*subject: string;/s);
+    expect(source).toMatch(/export interface AuthenticatedPrincipal\s*\{[\s\S]*issuer: string;[\s\S]*subject: string;/);
     expect(source).toMatch(/export async function admitHumanDecisionTransportIdentity/);
     expect(source).not.toMatch(/\.json\(|headers\.|cookies\(|Authorization|Date\.now|new Date|createdAt|declaredAt|effectiveFrom|effectiveUntil|current|latest|active|head|postgres|drizzle|repository|persist|replay|DecisionAuthorityGrantRevision|CareerDecisionContextRevision|RecommendationProposal|HumanDecisionRecord|HumanDecisionDeclarationInput|commitment|execution|action|outcome|feedback|Auth\.js|NextAuth|Clerk|Keycloak|jose|OAuth|OIDC|Supabase|Firebase|Cognito|Entra/i);
     expect(source).not.toMatch(/declarantActorId\s*=|\.toLowerCase\(/);

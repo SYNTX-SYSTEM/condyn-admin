@@ -291,7 +291,7 @@ function assertSubsequent(
   if (result.feedbackReturnItems.length !== previous.feedbackReturnItems.length + 1) fail(notPlusOne);
   for (const [id, member] of prior) {
     const retained = output.get(id);
-    if (retained === undefined) fail(priorMissing);
+    if (retained === undefined) return fail(priorMissing);
     if (!sameItem(retained, member)) fail(memberSemanticMismatch);
   }
   for (const [id, member] of output) {

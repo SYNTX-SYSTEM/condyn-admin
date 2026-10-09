@@ -112,7 +112,7 @@ export class PostgresCareerExecutionAuthorityGrantRevisionRepository implements 
   async getCareerExecutionAuthorityGrantRevisionById(id: string): Promise<CareerExecutionAuthorityGrantRevision> {
     try {
       const value = await this.existing(id);
-      if (!value) fail("ERR_CAREER_EXECUTION_AUTHORITY_GRANT_NOT_FOUND");
+      if (!value) return fail("ERR_CAREER_EXECUTION_AUTHORITY_GRANT_NOT_FOUND");
       return value;
     } catch (error) {
       if (error instanceof Error && error.message === "ERR_CAREER_EXECUTION_AUTHORITY_GRANT_NOT_FOUND") throw error;

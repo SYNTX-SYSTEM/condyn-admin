@@ -1,7 +1,7 @@
 import { describe, it, expect } from "vitest";
 import { executeCareerAnalysisPipeline } from "../lib/career/pipeline";
-import { MockInferenceProvider, buildCareerAnalysisPrompt } from "../lib/career/adapter";
-import { DocumentInput } from "../lib/career/index";
+import { MockInferenceProvider, buildCareerAnalysisPrompt, type DocumentInput } from "../lib/career/adapter";
+import { createSourceMetadata } from "../lib/career/loaders/source";
 
 describe("CONDYN / SYNTX — GITHUB PIPELINE E2E TEST (`test/career-pipeline-github.test.ts`)", () => {
   it("should process GitHub documents deterministically, enforce boundaries, and construct valid evidence chains", async () => {
@@ -9,26 +9,16 @@ describe("CONDYN / SYNTX — GITHUB PIPELINE E2E TEST (`test/career-pipeline-git
     // This simulates what loadGitHubRepositoryDocuments returns in a zero-state environment
     const githubDocs: DocumentInput[] = [
       {
-        url: "https://github.com/codi/test-repo",
-        type: "github",
         docId: "DOC_GH_001",
         title: "README.md",
         content: "# Test Repository\nImplements real-time distributed processing.",
-        telemetry: {
-          path: "README.md",
-          sha: "abcd123"
-        }
+        metadata: createSourceMetadata("GITHUB_README", "# Test Repository\nImplements real-time distributed processing.", { uri: "https://github.com/codi/test-repo", path: "README.md" })
       },
       {
-        url: "https://github.com/codi/test-repo",
-        type: "github",
         docId: "DOC_GH_002",
         title: "package.json",
         content: '{\n  "name": "test-repo",\n  "version": "1.0.0"\n}',
-        telemetry: {
-          path: "package.json",
-          sha: "efgh456"
-        }
+        metadata: createSourceMetadata("GITHUB_PACKAGE_JSON", '{\n  "name": "test-repo",\n  "version": "1.0.0"\n}', { uri: "https://github.com/codi/test-repo", path: "package.json" })
       }
     ];
 

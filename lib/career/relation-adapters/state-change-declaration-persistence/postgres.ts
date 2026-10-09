@@ -131,7 +131,7 @@ export class PostgresCareerStateChangeDeclarationRepository implements CareerSta
   async getCareerStateChangeDeclarationById(id: string): Promise<CareerStateChangeDeclaration> {
     try {
       const value = await this.existing(id);
-      if (!value) fail("ERR_CAREER_STATE_CHANGE_DECLARATION_NOT_FOUND");
+      if (!value) return fail("ERR_CAREER_STATE_CHANGE_DECLARATION_NOT_FOUND");
       return value;
     } catch (error) {
       if (error instanceof Error && error.message === "ERR_CAREER_STATE_CHANGE_DECLARATION_NOT_FOUND") throw error;

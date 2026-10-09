@@ -31,8 +31,7 @@ describe("GeminiProvider Inference Scope Contract", () => {
     // 2. Act
     await provider.execute({
       userPrompt: "Analyze this.",
-      systemPrompt: "You are an expert.",
-      documents: []
+      systemPrompt: "You are an expert."
     });
 
     // 3. Assert - Intercept generateContent call

@@ -47,7 +47,7 @@ describe("CareerOutcomeValenceFeedbackContextRevision frozen Domain contract", (
     const api = await loadCareerOutcomeValenceFeedbackContextRevision();
     const value = await createT13GHistoricalFixture();
     expect(api.CAREER_OUTCOME_VALENCE_FEEDBACK_CONTEXT_REVISION_SCHEMA_VERSION).toBe(schema);
-    expect(Object.keys(api)).toEqual(expect.arrayContaining(apiKeys));
+    expect(Object.keys(api)).toEqual(expect.arrayContaining([...apiKeys]));
     const revision = api.createCareerOutcomeValenceFeedbackContextRevision(
       value.firstParent,
       value.first,
@@ -149,9 +149,12 @@ describe("CareerOutcomeValenceFeedbackContextRevision frozen Domain contract", (
     const value = await createT13GHistoricalFixture();
     const first = api.createCareerOutcomeValenceFeedbackContextRevision(value.firstParent, value.first, value.revisionInput);
     const pristine = structuredClone(first);
-    value.first.baseCareerDecisionContextRevision.contextEvidenceRefs[0] = "mutated-caller-base";
+    const alteredCallerBase = {
+      ...value.first.baseCareerDecisionContextRevision,
+      contextEvidenceRefs: ["mutated-caller-base"],
+    };
     expect(pristine.careerOutcomeValenceFeedbackContextTransition.baseCareerDecisionContextRevision.contextEvidenceRefs[0])
-      .not.toBe("mutated-caller-base");
+      .not.toBe(alteredCallerBase.contextEvidenceRefs[0]);
     api.assertCareerOutcomeValenceFeedbackContextRevision(pristine);
     expect(() => api.assertCareerOutcomeValenceFeedbackContextRevision({
       ...pristine,

@@ -1,0 +1,55 @@
+import { randomBytes } from "node:crypto";
+import { sql as drizzleSql } from "drizzle-orm";
+import { drizzle, type PostgresJsDatabase } from "drizzle-orm/postgres-js";
+import { getTableConfig } from "drizzle-orm/pg-core";
+import postgres, { type Sql } from "postgres";
+import { afterAll, beforeAll, describe, expect, it } from "vitest";
+import { createExecutionAuthorityRevision } from "../../../../lib/career/relation/execution-authority";
+import { PostgresExecutionAuthorityRevisionRepository } from "../../../../lib/career/relation-adapters/execution-authority-persistence";
+import { executionAuthorityRevisions } from "../../../../lib/career/relation-adapters/execution-authority-persistence/postgres-schema";
+
+const url = process.env.DATABASE_URL || "postgresql://postgres:postgres@localhost:5432/condyn";
+const schema = `execution_authority_t12a_${randomBytes(8).toString("hex")}`;
+const stamp = "2027-01-01T00:00:00.000Z";
+let admin: Sql;
+const clients = new Set<Sql>();
+const config = getTableConfig(executionAuthorityRevisions);
+const quote = (value: string) => `"${value}"`;
+const ddl = `CREATE TABLE ${quote(schema)}.${quote(config.name)} (${config.columns.map(column => `${quote(column.name)} ${column.getSQLType()}${column.notNull ? " NOT NULL" : ""}${column.primary ? " PRIMARY KEY" : ""}`).join(",")})`;
+const client = async () => { const sql = postgres(url, { max: 1, onnotice: () => undefined }); clients.add(sql); await sql.unsafe(`SET search_path TO "${schema}"`); return { sql, db: drizzle(sql) }; };
+const close = async (sql: Sql) => { await sql.end({ timeout: 5 }); clients.delete(sql); };
+
+beforeAll(async () => { admin = postgres(url, { max: 1, onnotice: () => undefined }); await admin.unsafe(`CREATE SCHEMA "${schema}"`); await admin.unsafe(ddl); });
+afterAll(async () => { await Promise.all([...clients].map(sql => sql.end({ timeout: 5 }))); if (admin) { await admin.unsafe(`DROP SCHEMA "${schema}" CASCADE`); await admin.end({ timeout: 5 }); } });
+
+describe("T12A PostgreSQL immutable ExecutionAuthorityRevision persistence", () => {
+  it("exact-reads immutable EAR state and fails closed on durable corruption", async () => {
+    const { sql, db } = await client();
+    const repository = new PostgresExecutionAuthorityRevisionRepository(db);
+    const authority = createExecutionAuthorityRevision({
+      actorId: "ACTOR_EXECUTION_1",
+      authorityScope: "EXTERNAL_ACTION",
+      executionTargetScope: "COMMUNICATION_ENDPOINT",
+      executionChannelScope: "EMAIL",
+      authorityEvidenceRef: "evidence://execution-authority/1",
+      schemaVersion: "EXECUTION_AUTHORITY_REVISION_V1",
+      createdAt: stamp,
+    });
+    await expect(repository.persistExecutionAuthorityRevision(authority)).resolves.toEqual(authority);
+    await expect(repository.getExecutionAuthorityRevisionById(authority.executionAuthorityRevisionId)).resolves.toEqual(authority);
+    await expect(repository.persistExecutionAuthorityRevision(authority)).resolves.toEqual(authority);
+    await expect(repository.persistExecutionAuthorityRevision({ ...authority, createdAt: "2028-01-01T00:00:00.000Z" })).rejects.toThrow("ERR_EXECUTION_AUTHORITY_REVISION_IMMUTABLE_CONFLICT");
+
+    const rollback = async (fn: (tx: any) => Promise<void>) => db.transaction(async tx => { await fn(tx); throw new Error("rollback execution authority corruption"); }).catch(error => { if (error.message !== "rollback execution authority corruption") throw error; });
+    const invalid = async (tx: any) => expect(new PostgresExecutionAuthorityRevisionRepository(tx as PostgresJsDatabase).getExecutionAuthorityRevisionById(authority.executionAuthorityRevisionId)).rejects.toThrow("ERR_EXECUTION_AUTHORITY_REVISION_PERSISTENCE_FAILED");
+    await rollback(async tx => { await tx.execute(drizzleSql`UPDATE execution_authority_revisions SET payload = jsonb_set(payload, '{actorId}', '"foreign"'::jsonb) WHERE execution_authority_revision_id = ${authority.executionAuthorityRevisionId}`); await invalid(tx); });
+    await rollback(async tx => { await tx.execute(drizzleSql`UPDATE execution_authority_revisions SET actor_id = 'foreign' WHERE execution_authority_revision_id = ${authority.executionAuthorityRevisionId}`); await invalid(tx); });
+    await rollback(async tx => { await tx.execute(drizzleSql`UPDATE execution_authority_revisions SET authority_scope = 'foreign' WHERE execution_authority_revision_id = ${authority.executionAuthorityRevisionId}`); await invalid(tx); });
+    await rollback(async tx => { await tx.execute(drizzleSql`UPDATE execution_authority_revisions SET execution_target_scope = 'foreign' WHERE execution_authority_revision_id = ${authority.executionAuthorityRevisionId}`); await invalid(tx); });
+    await rollback(async tx => { await tx.execute(drizzleSql`UPDATE execution_authority_revisions SET execution_channel_scope = 'foreign' WHERE execution_authority_revision_id = ${authority.executionAuthorityRevisionId}`); await invalid(tx); });
+    await rollback(async tx => { await tx.execute(drizzleSql`UPDATE execution_authority_revisions SET authority_evidence_ref = 'foreign' WHERE execution_authority_revision_id = ${authority.executionAuthorityRevisionId}`); await invalid(tx); });
+    await rollback(async tx => { await tx.execute(drizzleSql`UPDATE execution_authority_revisions SET schema_version = 'foreign' WHERE execution_authority_revision_id = ${authority.executionAuthorityRevisionId}`); await invalid(tx); });
+    await rollback(async tx => { await tx.execute(drizzleSql`UPDATE execution_authority_revisions SET created_at = '2028-01-01T00:00:00.000Z' WHERE execution_authority_revision_id = ${authority.executionAuthorityRevisionId}`); await invalid(tx); });
+    await close(sql);
+  });
+});

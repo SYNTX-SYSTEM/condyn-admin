@@ -148,7 +148,7 @@ describe("T36 explicit CareerActionOccurrence application admission", () => {
     await expect(api.admitAndPersistCareerActionOccurrence(input, input.performedByActorId, { contexts: conflict.contexts, occurrences: conflict.occurrences }))
       .rejects.toThrow("ERR_CAREER_ACTION_OCCURRENCE_IMMUTABLE_CONFLICT");
     const base = dependencies();
-    const forged = dependencies({ persisted: { ...base.fixture.actionOccurrence, occurrenceEvidenceRefs: ["evidence://substituted"] } });
+    const forged = dependencies({ persisted: { ...base.fixture.occurrence, occurrenceEvidenceRefs: ["evidence://substituted"] } });
     await expect(api.admitAndPersistCareerActionOccurrence(input, input.performedByActorId, { contexts: forged.contexts, occurrences: forged.occurrences }))
       .rejects.toThrow("ERR_CAREER_ACTION_OCCURRENCE_PERSISTENCE_FAILED");
   });
