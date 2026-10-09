@@ -1,6 +1,7 @@
 # Vertical Integration Proof: G2 Generic Decision Core with G3 Career Canonical Producers
 
-Status: DEFINED. Not implemented. Not run.
+Status: DEFINED. Stages P1, P2, P3, P5, P8 IMPLEMENTED AND RUN GREEN on
+`integration/g2-producer-adapters` (see section 4). Stages P0, P4, P6, P7 not implemented.
 
 This proof is the acceptance condition for the relation recorded in
 [G2_G3_FIELD_RELATION.md](./G2_G3_FIELD_RELATION.md). It is dependency
@@ -124,3 +125,16 @@ inference, frontend rendering, learning, policy promotion, and the Case 3
 decisions D1 to D5 in the relation document. Where D1 or D2 is decided
 differently from the recorded recommendation, P6 and P7 are redefined before
 implementation.
+
+## 4. Run record
+
+- 2026-10-09, `integration/g2-producer-adapters`: P1 (fifteen families, ASCAD and CORD
+  added as eligible provenance), P2, P3, P5 and P8 are real tests in
+  `test/decision-integration/g2-g3-vertical-proof.test.ts` and ran GREEN in one isolated
+  database per run; P0, P4, P6, P7 remain `it.todo`. Counts, boundaries and the exact
+  HTTP statuses observed are recorded in
+  [G2_PRODUCER_INTEGRATION.md](./G2_PRODUCER_INTEGRATION.md). Two observations amend the
+  expectations above: the base `435a112` carries `test/career/capability-core` 37 files /
+  309 tests and `test/decision-runtime` 7 files plus `test/decision-adapters` 1 file / 39
+  tests; and the sealed transport answers 500, not 422, when a resolver is absent or a
+  stored G3 row no longer recomputes (boundary B1 in the integration document).

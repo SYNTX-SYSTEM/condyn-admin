@@ -162,9 +162,12 @@ Evidence recorded for D5 before the decision: clean `b001360` reports 253
 
 `node_modules` in the three new worktrees is a symlink to the main worktree.
 
-The two integration worktrees carry no implementation commits yet. On 2026-10-09,
-after D5 and the classification proof (tsc 0, G2 442/442, G3 green, legacy G1
-suites quarantined), both were re-pointed from `b001360` to `435a112`.
+On 2026-10-09, after D5 and the classification proof (tsc 0, G2 442/442, G3 green,
+legacy G1 suites quarantined), both integration worktrees were re-pointed from
+`b001360` to `435a112`. R1, R2, R3, R6 and R8 were then implemented on
+`integration/g2-producer-adapters`; see
+[G2_PRODUCER_INTEGRATION.md](./G2_PRODUCER_INTEGRATION.md). R4, R5 and R7 remain open
+on `integration/g3-decision-context-binding`.
 
 ## 9. Proof
 
