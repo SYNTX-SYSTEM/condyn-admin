@@ -15,7 +15,7 @@ No sealed contract was modified. `lib/decision-core/**`, `lib/decision-runtime/*
 | Schema version | `CAREER_DECISION_CONTEXT_DECISION_REVISION_BINDING_V1` |
 | Identity | `DCDRB_` + first 32 uppercase hex of SHA-256 over `[schemaVersion, canonical(DCTXREV minus createdAt), canonical(DREV witness), canonical(recommendationProposalWitness)]` |
 | Bound sides | one `CareerDecisionContextRevision` read by exact id through a Career reader; one generic `DecisionContextRevision` read by exact id through a generic reader |
-| Witness rule | exactly one DREV `sourceStateReferences` entry with producer `CONDYN_CAREER_CANONICAL` and contract `CAREER_RECOMMENDATION_PROPOSAL_RECOMMENDATION_POLICY_BOUND_V1`; its `artifactId` must equal the DCTXREV `recommendationProposalId`. Errors: `..._WITNESS_MISSING`, `..._WITNESS_AMBIGUOUS`, `..._WITNESS_MISMATCH` |
+| Witness rule | exactly one whole-artifact DREV `sourceStateReferences` entry (`locator == artifactId`) with producer `CONDYN_CAREER_CANONICAL_CHAIN` and contract `CAREER_RECOMMENDATION_PROPOSAL_PROPOSAL_ONLY_RECOMMENDATION_POLICY_BOUND_V1` naming the DCTXREV `recommendationProposalId`; further references with that pair are admitted only as item locators `<rcpId>/items/<ordinal>` of the same RCP (R1/R6 grammar). Errors: `..._WITNESS_MISSING`, `..._WITNESS_AMBIGUOUS`, `..._WITNESS_MISMATCH` |
 | Generic side validation | shape witness only (exact keys, `DREV_`/`DCTX_`/`DCI_` patterns, exact four-field references). Generic validity is asserted by the reader adapter `lib/decision-adapters/career-decision-context-binding/` using `assertDecisionContextRevision`. SHAPE WITNESS != GENERIC VALIDITY |
 | Persistence | `lib/career/relation-adapters/decision-context-decision-revision-binding-persistence/`: table `career_decision_context_decision_revision_bindings`, one restrictive FK to `career_decision_context_revisions`, no FK to `decision_context_revisions`; insert `ON CONFLICT DO NOTHING`, exact reread, `*_IMMUTABLE_CONFLICT` on divergent payload |
 | Replay | BYTE, DERIVATION, SEMANTIC (re-read both sides by exact id, re-assert DAR and RCP witnesses) |
@@ -29,13 +29,23 @@ authorized human declaration is the DCR over the bound DCTXREV. The binding itse
 
 ## R5: declaration references for generic claims (D2, D3)
 
-`lib/career/canonical-authority/`: producer id `CONDYN_CAREER_CANONICAL` and fifteen contract ids,
-each naming the artifact's literal authority state (`PROPOSAL_ONLY`, `RECOMMENDATION_POLICY_BOUND`,
-`DECLARATION`, `DECLARED_NAME`, `INVENTORY_ONLY`, `HISTORICAL`). Builders re-assert the artifact
-and return `{ producerId, authorityContractId, artifactId, locator = artifactId }`:
-AOC, SCD, ASCAD, CORD, COVD, COVFCR, RCP. The RCP builder refuses any `authorityState` other than
-`RECOMMENDATION_POLICY_BOUND`. No Career module imports the generic kernel; the four-field shape is
-mirrored structurally.
+`lib/career/canonical-authority/` mirrors the vocabulary whose authoritative home is the R1
+resolver namespace (`lib/decision-adapters/career-canonical/namespace.ts`): producer id
+`CONDYN_CAREER_CANONICAL_CHAIN` and fifteen contract ids built from the artifact's own literals
+(`PROPOSAL_ONLY_AUTHORITY_NONE`, `PROPOSAL_ONLY_RECOMMENDATION_POLICY_BOUND`, `DECLARATION`,
+`IMMUTABLE_RECORD`). `lib/career` may not import the adapter zone, so the values are mirrored,
+as the four-field reference shape is (R8); equality is proven in
+`test/decision-integration/g2-g3-cross-relation.test.ts` on the integration branch. Agreed with
+the G2 producer session; the resolver namespace is unchanged. Builders re-assert
+the artifact and return `{ producerId, authorityContractId, artifactId, locator = artifactId }` for
+AOC, SCD, ASCAD, CORD, COVD, COVFCR and RCP; artifact ids must be exactly 32 hex characters (R6).
+The RCP builder refuses any `authorityState` other than `RECOMMENDATION_POLICY_BOUND`.
+
+Correction 2026-10-09: the first version (`9dcd315`) used producer `CONDYN_CAREER_CANONICAL` and a
+second, self-invented contract vocabulary. Integration with R1 proved both unresolvable
+(`ERR_DECISION_AUTHORITY_RESOLVER_NOT_FOUND`) and the witness rule incompatible with the R2 item
+locators. The vocabulary was aligned to its authoritative home and the witness rule to the locator
+grammar.
 
 Proven use: 8B `ActionOccurrenceClaim` and 8C1 `StateChangeClaim` with `AUTHORITATIVE_STATE` sources
 naming AOC and SCD; 8C2, 8C3 and 8D1 provenance naming ASCAD, CORD, COVD; a child DREV whose
