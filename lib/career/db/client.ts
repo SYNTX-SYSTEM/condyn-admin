@@ -19,11 +19,11 @@ const sql = postgres(connectionString, { max: 10 });
 export const db = drizzle(sql, { schema });
 
 /**
- * Ensures the `career_analyses` table exists in PostgreSQL without requiring manual migration steps during testing or dev.
- * Automatically creates the target database if it does not exist yet (error 3D000).
+ * Applies the complete Career-field DDL (analysis, capability, legacy lifecycle,
+ * jobs, T11 canonical chain, SIL lineage) to the supplied client. Startup-only;
+ * request handling never creates tables.
  */
-export async function initDbSchema(): Promise<void> {
-  const runQueries = async (targetSql: postgres.Sql) => {
+export async function applyCareerDbSchema(targetSql: postgres.Sql): Promise<void> {
     const tableQueries = [
       targetSql`CREATE TABLE IF NOT EXISTS career_analyses (
         analysis_id TEXT PRIMARY KEY,
@@ -204,8 +204,14 @@ export async function initDbSchema(): Promise<void> {
     }
     await initT11ProductionPersistenceSchema(targetSql);
     await initCanonicalSilReadLineageSchema(targetSql);
-  };
+}
 
+/**
+ * Ensures the Career schema exists for the singleton connection.
+ * Automatically creates the target database if it does not exist yet (error 3D000).
+ */
+export async function initDbSchema(): Promise<void> {
+  const runQueries = applyCareerDbSchema;
   try {
     await runQueries(sql);
   } catch (err: any) {
