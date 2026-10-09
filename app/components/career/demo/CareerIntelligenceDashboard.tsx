@@ -14,6 +14,8 @@ import { SIL_TOKENS } from "./SILTokens";
 export interface CareerIntelligenceDashboardProps {
   data: DemoCareerIntelligenceData;
   canonicalSilAssociationId?: string;
+  careerDecisionContextRevisionId?: string;
+  decisionContextRevisionId?: string;
 }
 
 /**
@@ -22,7 +24,7 @@ export interface CareerIntelligenceDashboardProps {
  *
  * Supports switching between FIELD MODE (Radial Organism) and LIST MODE (Vertical Flow).
  */
-export function CareerIntelligenceDashboard({ data, canonicalSilAssociationId }: CareerIntelligenceDashboardProps) {
+export function CareerIntelligenceDashboard({ data, canonicalSilAssociationId, careerDecisionContextRevisionId, decisionContextRevisionId }: CareerIntelligenceDashboardProps) {
   const [mode, setMode] = useState<"FIELD" | "LIST">("FIELD");
 
   return (
@@ -65,7 +67,12 @@ export function CareerIntelligenceDashboard({ data, canonicalSilAssociationId }:
         </div>
       </div>
 
-      <SemanticCareerIntelligenceField data={data} canonicalSilAssociationId={canonicalSilAssociationId} />
+      <SemanticCareerIntelligenceField
+        data={data}
+        canonicalSilAssociationId={canonicalSilAssociationId}
+        careerDecisionContextRevisionId={careerDecisionContextRevisionId}
+        decisionContextRevisionId={decisionContextRevisionId}
+      />
     </div>
   );
 }
