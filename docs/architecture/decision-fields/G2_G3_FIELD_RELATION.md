@@ -154,16 +154,17 @@ Evidence recorded for D5 before the decision: clean `b001360` reports 253
 | Path | Branch | Base | Purpose |
 | --- | --- | --- | --- |
 | `condyn-admin` | `capability-mapping` | | G2 reference state; untouched |
-| `condyn-admin-sil-integration` | `wip/field-01-overlay-2026-09-22` | b001360 | preserved overlay for FIELD_01 classification; pushed |
+| `condyn-admin-sil-integration` | `wip/field-01-overlay-2026-09-22` @ `435a112` | b001360 | preserved overlay, CLASSIFIED (see `docs/architecture/system-fields/FIELD_01_OVERLAY_CLASSIFICATION.md` on that branch); pushed |
 | `condyn-admin-field-relation` | `architecture/g2-g3-field-relation` | b001360 | this document and the proof definition |
-| `condyn-admin-g2-producers` | `integration/g2-producer-adapters` | b001360 | R1, R2, R3, R6, R8 |
-| `condyn-admin-g3-binding` | `integration/g3-decision-context-binding` | b001360 | R4, R5, R7 |
+| `condyn-admin-g2-producers` | `integration/g2-producer-adapters` | `435a112` (classified overlay, per D5) | R1, R2, R3, R6, R8 |
+| `condyn-admin-g3-binding` | `integration/g3-decision-context-binding` | `435a112` (classified overlay, per D5) | R4, R5, R7 |
 | `condyn-admin-phase-gate` | `tooling/decision-core-phase-gate` | 3eaf89f | sealing tooling, 25 commits behind |
 
 `node_modules` in the three new worktrees is a symlink to the main worktree.
 
-The two integration worktrees are intentionally empty of commits. Their base is
-provisional pending D5; see the type-check evidence recorded there.
+The two integration worktrees carry no implementation commits yet. On 2026-10-09,
+after D5 and the classification proof (tsc 0, G2 442/442, G3 green, legacy G1
+suites quarantined), both were re-pointed from `b001360` to `435a112`.
 
 ## 9. Proof
 
