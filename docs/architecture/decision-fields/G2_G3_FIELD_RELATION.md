@@ -140,7 +140,7 @@ FALSIFIERS
 | D2 | Return home | child `DREV_` only, COVFCR only, or both with declared distinct meaning | Both, with declared meaning: child `DREV_` returns the observation into the decision context; COVFCR carries valence feedback history. |
 | D3 | Authority contract id vocabulary | per-family names encoding NONE / POLICY_BOUND / PHASE4_VERIFIED | Names must state the G3 `authorityState` literally. |
 | D4 | New sealed G3 relation (R4) | accept as a new phase in G3 numbering, or reject | Accept; it is the only additive bridge. |
-| D5 | Base for integration work | sealed `b001360`, or the preserved overlay `wip/field-01-overlay-2026-09-22` | Base on `b001360`; classify the overlay first per FIELD_01. |
+| D5 | Base for integration work | sealed `b001360`, or the preserved overlay `wip/field-01-overlay-2026-09-22` | OBSERVED 2026-10-09: `tsc --noEmit` reports 253 errors on clean `b001360` (87 in `lib/career/relation`, 26 in `lib/career/relation-adapters`, 51 in `test/career/relation`) and 0 on the overlay. The overlay's strictness refactors are the FIELD_01 typecheck closure. Recommendation: classify the overlay first (the 98 contract and adapter refactors are the fast path), then re-point the two integration branches, which carry no commits yet, onto the classified result. Until then they stay on `b001360`. |
 
 ## 8. Worktrees prepared 2026-10-09
 
@@ -154,6 +154,9 @@ FALSIFIERS
 | `condyn-admin-phase-gate` | `tooling/decision-core-phase-gate` | 3eaf89f | sealing tooling, 25 commits behind |
 
 `node_modules` in the three new worktrees is a symlink to the main worktree.
+
+The two integration worktrees are intentionally empty of commits. Their base is
+provisional pending D5; see the type-check evidence recorded there.
 
 ## 9. Proof
 
