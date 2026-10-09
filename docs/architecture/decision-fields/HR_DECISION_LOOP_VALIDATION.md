@@ -1,10 +1,10 @@
 # HR Decision Looper: independent validation of the combined G2/G3 integration
 
 Status: VALIDATED 2026-10-09 by the PINK session (owner of `integration/g2-producer-adapters`)
-on a throwaway local merge `validation/hr-decision-loop-pink` of
-`integration/g2-producer-adapters` @ `1fb55ca`,
-`integration/g3-decision-context-binding` @ `87d09e1` (vocabulary mirror `af7a709`, DCTXREV producer reread fix),
-and `integration/hr-decision-loop` @ `6e21b9e` (R7 post-decision chain registration).
+on the throwaway branch `validation/hr-decision-loop-pink`, finally at the content of
+`integration/hr-decision-loop` @ `d882899` (GELB's combined branch: `integration/g2-producer-adapters`
+@ `1fb55ca`, `integration/g3-decision-context-binding` up to `67cf5dc`, R7 post-decision registration,
+cross-relation test, P7 cherry-picked as `d360271`) plus this document.
 Authoritative contracts: `G2_G3_FIELD_RELATION.md` (decisions D1 to D5) and
 `VERTICAL_INTEGRATION_PROOF.md`. Nothing sealed was modified; no shared production data was touched;
 every PostgreSQL proof ran in a database `condyn_pink_*` created and dropped by the suite with
@@ -27,7 +27,7 @@ identity and basis-preservation checks.
 | P7 inverse | same file, `fixtures/p7-inverse-walk.ts` | GREEN in a second process (`tsx`): child DREV → root → COVD → CORD → ASCAD → SCD → AOC → ECTXREV → EAGR → HCOM → DAINT → DCR → DCTXREV → binding (addressed by the exact pair, exactly-one check) → RCP (resolved through R1) → DAR; sixteen ids equal to the forward record; no step orders by time or selects a latest row. |
 | Property | both | No artifact carries a key named `current`, `head`, `latest`, `accepted`, `authority`, `verified`, `loopClosed` or `success`; the G3 payload sentinel never reaches a revision. |
 | Combined integration directory | `test/decision-integration` (both owners' suites, cross-relation, Postgres loop, P7) | 8 files, 97 tests passed, 10 todo (the P0/P4/P6/P7 placeholders of the index file `g2-g3-vertical-proof.test.ts`, now proven in `g3-decision-context-binding-vertical.test.ts`, `hr-decision-loop-postgres.test.ts` and `hr-decision-loop-p7.test.ts`; replacing the placeholders by references is a change to the index on the combined branch). Three Next dev servers and five isolated databases were created and dropped in one run; the shared `condyn` database existed before and after each cleanup. |
-| Preservation | `test/decision-core`, `test/decision-runtime`, `test/decision-adapters`, `test/career/capability-core`, `test/career` | PRESERVATION_RESULT |
+| Preservation | `test/decision-core`, `test/decision-runtime`, `test/decision-adapters`, `test/career/capability-core`, `test/career` | G2 batch (`test/decision-core`, `test/decision-runtime`, `test/decision-adapters`, `test/career/capability-core`): 83 files / 751 tests, 749 passed in the concurrent batch, 2 load timeouts (`structural-consequences/reconstruct.test.ts`, `validation/authority.test.ts`, both build a TypeScript program over the tree); re-run idle: 24/24 passed at 3.8 s and 2.9 s on the combined tree and 3.6 s and 3.0 s on `1fb55ca`, so the combination adds no cost. G3 batch (`vitest run test/career`): 287 files, 1667 tests, 1648 passed, 6 skipped, 13 failed in four COVFCR suites in the concurrent batch; re-run idle: 4 files / 25 tests passed. The five legacy G1 suites passed against the pre-shaped `condyn` basis as before; their quarantine classification is unchanged. |
 | Type-check | `npx tsc --noEmit -p tsconfig.json` on the merged tree | 0 errors. |
 
 ## 3. Unresolved boundaries (Case 3, field owner)
