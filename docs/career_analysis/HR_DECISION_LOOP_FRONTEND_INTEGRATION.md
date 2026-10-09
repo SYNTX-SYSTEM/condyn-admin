@@ -168,6 +168,7 @@ repository; raw SQL is used only for database creation and table provisioning.
 | B5 | `produceAndPersistCareerDecisionContextRevision` at `435a112` compares `JSON.stringify` key order and fails against a JSONB reread with `ERR_CAREER_DECISION_CONTEXT_PERSISTENCE_FAILED`; the fixture persists through the repository instead. Reported; fixed on `integration/g3-decision-context-binding` @ `87d09e1` (compares with `sameCareerDecisionContext`). | fixed upstream, not in this base |
 | B6 | Turbopack rejects the `node_modules` symlink of a git worktree; the e2e spawns `next dev --webpack`. The sealed R5 e2e (`test/decision-runtime/e2e`) fails in such a worktree for the same environmental reason and is unchanged. | environment |
 | B7 | Playwright is not a dependency of the repository; the browser section runs only with `CONDYN_PLAYWRIGHT_MODULE` and is reported as skipped otherwise. | tooling decision |
+| B9 | `next build --webpack` compiles the branch successfully (40 s) but fails Next.js route type checking on the pre-existing `app/api/admin/proxy/[...path]/route.ts` (`handleProxy` is not a valid Route export). The file is byte-identical to `435a112`; not repaired here. | pre-existing; outside this field |
 | B8 | A context can hold more than one persisted DCR (distinct declarations); the UI lists all and selects none. Whether a second declaration over one DCTXREV is admissible is a G3 semantic question, not decided here. | Case 3 for the G3 owner |
 
 ## 7. Non-claims
