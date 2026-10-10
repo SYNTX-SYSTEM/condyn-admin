@@ -161,6 +161,18 @@ describe.skipIf(playwrightModule === null)("PINK JP-B: Job Pool panel in a real 
     }
     expect(await page.locator('[data-testid^="job-pool-trqrev-"]').count()).toBe(validationPool.requirements.length);
 
+    // Sweep coverage (GRÜN 5839762): a seeded analysis has no capability sweep; the panel says so and shows no coverage line.
+    const sweep = page.getByTestId("job-pool-capability-sweep");
+    expect(await sweep.getAttribute("data-sweep-state")).toBe(matches.capabilitySweep.state);
+    expect(await sweep.getAttribute("data-sweep-state")).toBe("NOT_PRODUCED");
+    expect(await sweep.getAttribute("data-proposal-count")).toBe("0");
+    expect(await sweep.getAttribute("data-scored")).toBe("false");
+    expect(await page.locator('[data-testid^="job-pool-role-"][data-testid$="-sweep"]').count()).toBe(0);
+    for (const role of matches.roleMatches as any[]) {
+      expect(await page.getByTestId(`job-pool-role-${role.poolRoleId}-sweep-only`).getAttribute("data-count")).toBe(String(role.sweepOnlyCoverageCount));
+      expect(role.sweepOnlyCoverageCount).toBe(0);
+    }
+
     // PINK's fixture facts, as rendered.
     const beta = (matches.roleMatches as any[]).find((role) => role.poolRoleId === "role_pink_beta_platform");
     expect(beta.matched.map((item: any) => [item.poolRequirementId, item.matchBasis, item.matchedConstituent])).toEqual([["req_pink_beta_1", "ALIAS", null], ["req_pink_beta_3", "COMPOSITE_CONSTITUENT", "Node.js"]]);
