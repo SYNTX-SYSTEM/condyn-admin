@@ -11,13 +11,16 @@ import { createBoundAuthoritativeStateReader } from "../../../lib/decision-core"
 import { createCareerCanonicalAuthoritativeStateResolvers } from "../../../lib/decision-adapters/career-canonical";
 import { createLocalCareerCanonicalProducerRepositories } from "../../../lib/decision-runtime/local/career-canonical-producers";
 import { careerDecisionChainRepositories } from "./postgres-decision-chain";
+import { verifyDisposableTestDatabase } from "../../../lib/database-isolation/verification";
 
 const fail = (code: string): never => { throw new Error(code); };
 
 async function main(): Promise<void> {
   const [childRevisionId] = process.argv.slice(2);
   if (!childRevisionId) fail("ERR_P7_INVERSE_CHILD_ID_MISSING");
-  const sql = postgres(process.env.DATABASE_URL!, { max: 1, onnotice: () => undefined });
+  // Runs outside vitest, so outside the gate: positively identify the disposable database first.
+  const { url } = await verifyDisposableTestDatabase(process.env.DATABASE_URL);
+  const sql = postgres(url, { max: 1, onnotice: () => undefined });
   try {
     const db = drizzle(sql);
     const revisions = new PostgresDecisionContextRevisionRepository(db);
