@@ -279,6 +279,36 @@ JP-R, JP-B, JP-B-PINK); JP-M is GELB's live evidence (`JOB_POOL_CONNECTION.md` �
 open finding against the Job Pool delta. Open owner items: F-JP-5, HIA-1, HIA-2, B-JP-CONTINUITY, B-JP-ACTOR,
 B-JP-GEMINI (PINK has no live model evidence of its own).
 
+### 3.10 JP-PDF: the manual path automated without Gemini (`test/job-pool-validation/pdf-path.postgres.test.ts`)
+
+Requested by GELB under the owner mandate "INTEGRATED FIELD CONVERGENCE" (2026-10-10): the PDF path had only been
+proven with text sources. PINK's proof drives, on the disposable database as the role:
+
+1. `POST /api/career/analyze` with `{ type: "pdf", content: <base64> }` → `202` and a `JOB_` id;
+2. `JobRepository.claimNextJob` on PostgreSQL;
+3. the production processor (`createCareerAnalysisJobProcessor`) with the production `prepareDocuments`
+   (batch loader → `pdf-parse`), the real `PostgresCandidateSourceBundleRepository` (JSONB) and the real projection
+   reference repository; the legacy pipeline runs with the deterministic `MockInferenceProvider`; only the capability
+   proposal executor is a stub whose first call fails transiently;
+4. attempt 1: the bundle `CSB_<jobId>` is persisted with one `PDF` document, `loadedAt` pinned to the job's
+   `createdAt` (D-JP-2) and the extracted text present; attempt 2 rebuilds a deep-equal bundle (D-JP-3) and succeeds;
+5. `GET /api/career/jobs/{id}` → `SUCCEEDED`; `GET /api/career/analyses/{id}` → `200 VERIFIED` with capabilities at
+   `identity.name`;
+6. PINK's pool uploaded through the job pool route and matched against that analysis → `200`,
+   `candidateCapabilityCount` equal to the analysis capabilities, every role `NOT_EVALUATED`.
+
+Two PDFs: a hand-written single-page PDF generated in the test (no committed binary needed) and GELB's synthetic
+two-page CV `docs/examples/cv.synthetic.pdf` (`cf112ec`; extracted text begins "Alex Example — Curriculum Vitae").
+
+Run on `1ed5bf1`+`cf112ec` merged (`condyn_test_d9c58882fa6d604e`), 2026-10-10 21:37:
+
+```
+ ✓ test/job-pool-validation/pdf-path.postgres.test.ts (2 tests) 2195ms
+```
+
+Boundary: the proposal executor (Discovery/Convergence model calls) is stubbed; the live Gemini evidence for the PDF
+path is GELB's (JP-M). The legacy `MockInferenceProvider` output is deterministic and not a model result.
+
 ## 4. Boundaries and findings for coordination
 
 - F-JP-1 (closed in `b782793`): `JOB_POOL_CONNECTION.md` §4 followed the per-role `JOB_POOL_JSON_ROLE` design;
