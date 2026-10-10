@@ -8,8 +8,14 @@ connection. Nothing here deploys anything.
 
 - PostgreSQL on localhost with the least-privilege test role file `~/.config/condyn/test-db-role.env`
   (`TEST_DATABASE_ADMIN_URL=postgresql://condyn_test_runner:…@localhost:5432/postgres`).
-- A Gemini API key in your shell for the real capability sweep: `export GEMINI_API_KEY=…` (optionally `GEMINI_MODEL`).
-  The script never stores the key; it only passes it to the worker child process.
+- A Gemini API key in your shell for the real capability sweep: `export GEMINI_API_KEY=…`. The script never stores
+  the key; it only passes it to the worker child process.
+- `export GEMINI_MODEL=<model>` is required in practice. The worker's default cascade starts with `gemini-2.0-flash`,
+  which the Gemini API answered with 404 for the operator key on 2026-10-10; `gemini-2.5-flash` is listed but answers
+  "no longer available to new users". `gemini-3.8-flash` was verified with the discovery provider's exact request.
+  List what your key can reach with `npx tsx scripts/list-models.ts`. The script warns when `GEMINI_MODEL` is unset.
+  Note that `npm run job-pool:local` does not read `.env.local` (unlike `npm run worker:career`); export both variables
+  in the shell, or `set -a; . /path/to/.env.local; set +a` first (that file must not contain a `DATABASE_URL`).
 - No other `next dev` running in this worktree (Next allows one per project directory).
 
 ## 2. Start
@@ -18,6 +24,7 @@ connection. Nothing here deploys anything.
 cd ~/Entwicklung/condyn-admin-job-pool
 set -a; . ~/.config/condyn/test-db-role.env; set +a
 export GEMINI_API_KEY=…          # only needed for the real sweep
+export GEMINI_MODEL=gemini-3.8-flash
 npm run job-pool:local            # = hr-loop:local up --with-worker
 ```
 
@@ -28,8 +35,10 @@ What happens, in order, and what to expect in the log:
 3. `registered schema: CAREER_FIELD_SCHEMA -> … -> CAREER_DECISION_CONTEXT_DECISION_REVISION_BINDINGS` and
    `registered job-pool persistence` (or the note that the job-pool routes register lazily when the module is absent).
 4. `seeded the sealed-producer world` (the HR Decision Loop contexts; unrelated to pools but part of the same environment).
-5. `starting career worker against condyn_test_…` followed by `[worker] Career worker started: hr-loop-local-worker`.
-   Without `GEMINI_API_KEY` the script stops with `ERR_HR_LOOP_LOCAL_GEMINI_API_KEY_MISSING` before anything starts.
+5. `starting career worker against condyn_test_… (GEMINI_MODEL gemini-3.8-flash, fresh PROMPT_ENCRYPTION_KEY, …)`
+   followed by `[worker] Career worker started: hr-loop-local-worker`. Without `GEMINI_API_KEY` the script stops with
+   `ERR_HR_LOOP_LOCAL_GEMINI_API_KEY_MISSING` before anything starts. A failed attempt is logged by the worker as
+   `[Worker …] FAILED <job> lease=n terminal=… <code>: <summary>` (since b6986ff).
 6. `starting next dev --webpack on 127.0.0.1:3017`.
 
 Without the worker (upload and matching against an already persisted analysis only): `npm run hr-loop:local`.
@@ -52,7 +61,8 @@ Credential: none. The uploader actor id in the panel is self-declared and not au
 5. Click `SELECT` on the upload. Expect `SELECTED UPLOAD` with the canonical mapping chips `MAPPED · PROPOSAL_ONLY ·
    authority NONE`, the TOREV/TRPREV/TRQREV counts and the HIA-1 boundary text. The URL now carries `jobPoolUploadId=`.
    Matches stay idle: there is no analysis yet.
-6. Run the real sweep: drop a CV PDF (or add a GitHub/website source) into the identity core and start the analysis.
+6. Run the real sweep: in the source dock add a text source (`+ TEXT`, paste a CV, submit) or a PDF/GitHub/website
+   source, then start the analysis (`START INTAKE ANALYSIS`).
    Watch the worker lines (`[worker] … CLAIMED …`). When the job succeeds the planetarium fills and the panel's
    `ANALYSIS FOR MATCHING` shows the `ANL_…` id with `FROM THIS SESSION'S SUCCEEDED CAPABILITY SWEEP`.
 7. Expect `ROLE MATCHES (LAYER P)` to read automatically: the three labels `DETERMINISTIC PRESENTATION · NOT A CANONICAL
@@ -73,7 +83,9 @@ Credential: none. The uploader actor id in the panel is self-declared and not au
 
 ## 4. Stop and clean up
 
-`Ctrl+C` stops the server and the worker; the database is kept for reuse. `npm run hr-loop:local:drop` removes exactly
+`Ctrl+C` stops the server and the worker; the database is kept for reuse. Several sessions run `next dev` and career
+workers on this machine: never `pkill -f "next dev"` or `pkill -f run-career-worker` (on 2026-10-10 such a kill from
+outside terminated this environment mid-sweep, exit 143); stop by PID (`ps -eo pid,args | grep condyn-admin-job-pool`). `npm run hr-loop:local:drop` removes exactly
 that database (`dropDisposableTestDatabase`, name pattern and marker verified). Nothing else is touched.
 
 ## 5. Notes
