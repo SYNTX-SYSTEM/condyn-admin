@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { createCapabilityProposalProjectionReader, createInMemoryCapabilityProposalProjectionReferenceRepository } from "../../../../lib/career/capability-core";
+/** Kept outside test/career/capability-core: that suite is sealed and pinned by the P8 preservation proof. */
+import { createCapabilityProposalProjectionReader, createInMemoryCapabilityProposalProjectionReferenceRepository } from "../../../lib/career/capability-core";
 
 /**
  * D-JP-4: EVD identity is SHA256([source document, location, exact quote]). Two Discovery candidates that cite
