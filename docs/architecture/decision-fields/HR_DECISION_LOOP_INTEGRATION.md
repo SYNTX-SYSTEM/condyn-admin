@@ -54,3 +54,41 @@ Every PostgreSQL stage ran in a freshly created database (`condyn_dll_*`, `condy
 | B-INGRESS | No HTTP ingress for the DCR in this branch; the HR frontend branch carries its own routes. | Owned by the frontend branch |
 | B-LEGACY | G1 legacy lifecycle suites and two schema-order-dependent suites fail on fresh databases. | Legacy quarantine, separate work unit |
 | B-DEPLOY | nginx routes `/api/` to port 8002; nothing here is deployed. | Deployment, out of scope |
+
+## 4. Frontend integration (2026-10-10)
+
+`frontend/hr-decision-loop` @ `aa83348` (GRÜN session) merged as `10c3449`; no file overlap with
+`ddf3d07`, merge base `435a112`. Its `lib/career/hr-decision-loop` imports only `lib/career`;
+the import-boundary test stays green.
+
+| Step | Commit | Content |
+| --- | --- | --- |
+| Merge | `10c3449` | HR Decision Loop SIL frontend: read model, read service, declaration application through the sealed T11C gate, HTTP routes, dock |
+| DCDRB connection | `1ddfc85` | fifteenth region `decisionRevisionBindings` (index by exact DCTXREV, exact reread through the sealed DCDRB repository); dock lists each bound DREV id as an exact entry point into the frozen G2 GET, labelled as a persisted structural witness, never current, accepted or a governed 8D return |
+| Type fix | `812fa91` | local Playwright `Locator` type gains `inputValue` |
+
+Broken relation found in the frontend test world (same class as I-FBR-1): the G2 child DREV named
+the COVD under a test-only producer `career-canonical-chain` that no resolver resolves, and the
+root DREV named no RCP, so no binding could be established. The world now uses the R1/R6
+vocabulary through `lib/career/canonical-authority`; the root inventory names the RCP; context A
+carries one DCDRB persisted through the sealed admission. The child DREV is still formed directly
+and is documented as such (B-8D5).
+
+| Proof | Result |
+| --- | --- |
+| `tsc --noEmit` | 0 errors |
+| Import boundary | 5/5 |
+| DCDRB region unit (read service, decoder, entry points, NOT_PROVISIONED, FAILED) | 3/3 |
+| PostgreSQL read service incl. inverse context A → DCDRB → root DREV with R1 resolution | 4/4 |
+| HTTP + Chromium e2e (`next dev`, Playwright from `CONDYN_PLAYWRIGHT_MODULE`) | 7/7; screenshot `05-context-a-bound-root-revision-read-by-exact-id.png` |
+| G2 + integration (`test/decision-core`, `-runtime`, `-adapters`, `-integration`) | 54 files, 543/543, incl. R5 HTTP e2e, P3, P6, P7 |
+| `test/career` | 296 files, 1706 tests: 1668 passed, 6 skipped, 32 failed = four G1 lifecycle suites (legacy quarantine) and two schema-order-dependent suites, identical at base `435a112` |
+| Sealed surfaces | `lib/decision-core` byte-identical to the 8E2 seal; API v1 transport and contract unchanged; no G3 relation, adapter, db, admission or persistence file changed since `ddf3d07` |
+
+Boundaries unchanged and unresolved: B-8D5 (Case 3), B1 API v1 422 mapping, B-T11C, B-ENTRY
+(neither `registerUnifiedPersistenceSchema` nor the binding table is wired into a runtime entry
+point; the frontend's local composition still uses `initDbSchema()`, so a running server shows the
+post-decision regions and the DCDRB region as `NOT_PROVISIONED` until a composition decision is
+made), B-LEGACY, B-DEPLOY. Frontend-specific: B2 self-declared local principal (not
+authentication), B7 Playwright not a repository dependency, B8 several DCRs per DCTXREV listed
+without selection, B9 pre-existing `next build` route-type failure in the admin proxy.
