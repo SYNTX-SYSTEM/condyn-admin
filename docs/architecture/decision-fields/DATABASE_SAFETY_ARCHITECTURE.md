@@ -101,3 +101,16 @@ plus this record); `tsc --noEmit` 0 errors.
 Agreement of state and documentation: GELB's section 8 of `HR_DECISION_LOOP_INTEGRATION.md` reports the
 same gate behaviour, the same role-based results and the same manual walkthrough; the only differences
 are the batch-time load timeouts recorded here with their idle re-runs.
+
+## 8. Delta `6f400ea..1572dcf` validated (2026-10-10)
+
+| Change | Reading | Evidence |
+| --- | --- | --- |
+| `dc975cb` registration DDL on a dedicated client | `ensureHrDecisionLoopPersistenceRegistration` keeps the gate (positive disposable identity first); the DDL now runs on `createRegistrationClient(verified.url)` (one connection, notices silenced) bound to the verified URL and ended in `finally`; the application singleton is never used for DDL. `hr-loop:local up` re-verifies the state-file database (name pattern plus marker) before reuse and deletes a stale state file; `--fresh` creates a new one | gate test and registration-client test green; manual `seed` then `up`: "reusing verified disposable database", 15 regions AVAILABLE, 0 notices in the server output, `drop` removed it, no leftover |
+| `1572dcf` notice filter on the application client | `createNoticeForwarder` suppresses only `42622 truncate_identifier` and `42P07`/`42P06`/`42710` notices ending in "skipping"; everything else is forwarded unchanged; no statement, option or connection target changed | `test/career/db/notice-filter.test.ts` green; `tsc` 0 |
+| Observation (not a defect) | the `42622` truncation notice was the only visible runtime symptom of the DB-2 class (constraint names longer than 63 bytes). With it suppressed on the application client, that class is silent at runtime; the static pins on the sealed table names and the DB-2 record are now the only detection | recorded for the owner |
+
+Role-based run on the merged tip (`validation/hr-decision-loop-pink` @ `2b2e8b1`, content identical to
+`1572dcf`): `test/career/db`, `test/career/hr-decision-loop` (incl. the Chromium e2e), `test/database-isolation`
+(least-privilege proof executed), `test/decision-integration` (P7 forward and inverse): 31 files, 212 / 212;
+no leftover database.
