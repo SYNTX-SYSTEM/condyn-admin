@@ -51,18 +51,28 @@ function minimalPdf(text: string): Buffer {
 
 const samplePdfPath = resolve(process.cwd(), "docs/examples/cv.synthetic.pdf");
 
-async function runPdfJob(pdf: Buffer, title: string, expectedText: string) {
+type SweepLineage = "NONE" | "DANGLING_REFERENCE";
+
+async function runPdfJob(pdf: Buffer, title: string, expectedText: string, lineage: SweepLineage = "NONE") {
   const bundles = new PostgresCandidateSourceBundleRepository(db);
   const postgresAnalyses = new PostgresCareerAnalysisRepository(db);
   const provider = new MockInferenceProvider();
   let attempts = 0;
+  let currentJobId = "";
   const dependencies: CareerAnalysisJobProcessorDependencies = {
     canonicalAnalysisRepository: {
       load: (analysisId) => postgresAnalyses.load(analysisId),
       save: async (analysis) => { await postgresAnalyses.save(analysis as VerifiedCareerAnalysis); await getCareerAnalysisRepository().save(analysis as VerifiedCareerAnalysis); }
     },
     prepareDocuments,
-    capabilityProposalExecutor: { execute: async () => { attempts += 1; if (attempts === 1) throw new Error("PINK_TRANSIENT_PROPOSAL_FAILURE"); return { kind: "SNAPSHOT_REUSED" }; } },
+    capabilityProposalExecutor: { execute: async () => {
+      attempts += 1;
+      if (attempts === 1) throw new Error("PINK_TRANSIENT_PROPOSAL_FAILURE");
+      if (lineage === "NONE") return { kind: "SNAPSHOT_REUSED" };
+      // A projection reference whose RUN_/CONV_ artifacts do not exist: the F11 reader must report a lineage violation.
+      const bundle = await bundles.getCandidateSourceBundleById(`CSB_${currentJobId}`);
+      return { kind: "PROPOSALS_CONVERGED", discoveryRun: { runId: `RUN_PINK_DANGLING_${currentJobId}`, sourceBundleHash: bundle!.sourceBundleHash }, convergenceRun: { convergenceRunId: `CONV_PINK_DANGLING_${currentJobId}`, completedAt: "2026-10-10T00:00:00.000Z" } };
+    } },
     candidateSourceBundles: bundles,
     projectionReferenceRepository: new PostgresCapabilityProposalProjectionReferenceRepository(db),
     async executeLegacyCareerAnalysis(documents, reportOperation, explicitAnalysisId) {
@@ -85,6 +95,7 @@ async function runPdfJob(pdf: Buffer, title: string, expectedText: string) {
   const jobs = new JobRepository(db);
   const claimed = await jobs.claimNextJob("pink-pdf-worker", 30_000);
   expect(claimed?.jobId).toBe(jobId);
+  currentJobId = jobId;
   const report = async () => undefined;
 
   // Attempt 1: the loader, pdf-parse and the bundle persistence run; the proposal executor fails transiently.
@@ -96,6 +107,20 @@ async function runPdfJob(pdf: Buffer, title: string, expectedText: string) {
   expect(bundleAfterFirst!.documents[0].metadata?.loadedAt).toBe(claimed!.createdAt);
   expect(bundleAfterFirst!.documents[0].normalizedText).toContain(expectedText);
   expect(bundleAfterFirst!.documents[0].normalizedTextHash).toMatch(/^[0-9a-f]{64}$/);
+
+  if (lineage === "DANGLING_REFERENCE") {
+    // The schema enforces proposal lineage: a projection reference to absent RUN_/CONV_ rows is refused by the
+    // foreign keys of career_capability_proposal_projection_references, so no dangling reference can ever exist.
+    // The canonical analysis of the attempt is persisted before the reference; the job stays RUNNING.
+    await expect(processor(claimed!, report)).rejects.toThrow(/violates foreign key constraint|Failed query/);
+    const references = new PostgresCapabilityProposalProjectionReferenceRepository(db);
+    const analysisId = `ANL_${jobId.replace(/^JOB_/, "")}`;
+    const stored = await getCareerAnalysisRepository().load(analysisId) ?? await postgresAnalyses.load(analysisId);
+    expect(stored).not.toBeNull();
+    expect(await references.getByAnalysisId(stored!.structured_data.analysis.metadata.analysis_id)).toBeNull();
+    const resultAnalysisId = stored!.structured_data.analysis.metadata.analysis_id;
+    return { jobId, analysisId: resultAnalysisId, capabilities: stored!.structured_data.analysis.capabilities as unknown[] };
+  }
 
   // Attempt 2: the same durable input rebuilds the identical bundle (D-JP-2 pinned loadedAt, D-JP-3 JSON-stable form).
   const result = await processor(claimed!, report);
@@ -113,6 +138,26 @@ async function runPdfJob(pdf: Buffer, title: string, expectedText: string) {
   expect(analysisBody.status).toBe("VERIFIED");
   expect(analysisBody.analysis.structured_data.analysis.documents.length).toBeGreaterThan(0);
   return { jobId, analysisId: result.resultAnalysisId as string, capabilities: analysisBody.analysis.structured_data.analysis.capabilities as unknown[] };
+}
+
+async function matchesFor(jobPoolUploadId: string, analysisId: string) {
+  const response = await getMatches(new Request(`http://local/api/career/job-pools/${jobPoolUploadId}/matches?analysisId=${analysisId}`), { params: Promise.resolve({ jobPoolUploadId }) });
+  expect(response.status).toBe(200);
+  return response.json();
+}
+
+/** The matching body without its sweep fields and ids: what must not move when the sweep state changes. */
+function scoredView(presentation: any) {
+  return JSON.stringify({
+    roleMatches: presentation.roleMatches.map(({ sweepOnlyCoverageCount: _c, ...role }: any) => ({
+      ...role,
+      matched: role.matched.map(({ sweepProposal: _p, ...item }: any) => item),
+      weakEvidence: role.weakEvidence.map(({ sweepProposal: _p, ...item }: any) => item),
+      missing: role.missing.map(({ sweepProposal: _p, ...item }: any) => item)
+    })),
+    organizationMatches: presentation.organizationMatches,
+    candidateCapabilityCount: presentation.candidateCapabilityCount
+  });
 }
 
 describe("JP-PDF: PDF → capability sweep (stub) → JSON Job Pool → matching, on PostgreSQL without Gemini", () => {
@@ -134,12 +179,25 @@ describe("JP-PDF: PDF → capability sweep (stub) → JSON Job Pool → matching
     const upload = await uploadJobPool(new Request("http://local/api/career/job-pools", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(validationPool) }));
     expect([200, 201]).toContain(upload.status);
     const { jobPoolUploadId } = await upload.json();
-    const matches = await getMatches(new Request(`http://local/api/career/job-pools/${jobPoolUploadId}/matches?analysisId=${analysisId}`), { params: Promise.resolve({ jobPoolUploadId }) });
-    expect(matches.status).toBe(200);
-    const presentation = await matches.json();
+    const presentation = await matchesFor(jobPoolUploadId, analysisId);
     expect(presentation.analysisId).toBe(analysisId);
     expect(presentation.candidateCapabilityCount).toBe(capabilities.length);
     expect(presentation.roleMatches.map((role: { poolRoleId: string }) => role.poolRoleId).sort()).toEqual(validationPool.roles.map((role) => role.id).sort());
     for (const role of presentation.roleMatches) expect(role.canonical.capabilityRequirementRelationState).toBe("NOT_EVALUATED");
+    // No sweep was produced for this job (SNAPSHOT_REUSED, no projection reference).
+    expect(presentation.capabilitySweep).toEqual({ state: "NOT_PRODUCED", proposalCount: 0, scored: false });
+
+    // Same PDF, second job whose executor claims a proposal lineage without RUN_/CONV_ rows: the schema refuses the
+    // reference, the sweep stays NOT_PRODUCED (never a fabricated AVAILABLE), and the analysis matching of the second
+    // job is byte-identical to the first (deterministic path from the same PDF bytes).
+    const dangling = await runPdfJob(readFileSync(samplePdfPath), "cv.synthetic.pdf", "Alex Example", "DANGLING_REFERENCE");
+    expect(dangling.analysisId).not.toBe(analysisId);
+    const secondPresentation = await matchesFor(jobPoolUploadId, dangling.analysisId);
+    expect(secondPresentation.capabilitySweep).toEqual({ state: "NOT_PRODUCED", proposalCount: 0, scored: false });
+    expect(scoredView(secondPresentation)).toBe(scoredView(presentation));
+    for (const role of secondPresentation.roleMatches) {
+      expect(role.sweepOnlyCoverageCount).toBe(0);
+      for (const item of [...role.matched, ...role.weakEvidence, ...role.missing]) expect(item.sweepProposal).toBeNull();
+    }
   });
 });

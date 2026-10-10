@@ -234,6 +234,12 @@ describe.skipIf(routes === null)("Job Pool connection: HTTP contract, canonical 
     expect(presentation.analysisId).toBe(analysisId);
     expect(presentation.jobPoolUploadId).toBe(view.jobPoolUploadId);
     expect(presentation.candidateCapabilityCount).toBe(validationCapabilities.length);
+    // Sweep coverage (7134952): a seeded analysis has no capability sweep; the fields are present and inert.
+    expect(presentation.capabilitySweep).toEqual({ state: "NOT_PRODUCED", proposalCount: 0, scored: false });
+    for (const role of presentation.roleMatches as any[]) {
+      expect(role.sweepOnlyCoverageCount).toBe(0);
+      for (const item of [...role.matched, ...role.weakEvidence, ...role.missing]) expect(item.sweepProposal).toBeNull();
+    }
 
     const roles: any[] = presentation.roleMatches;
     expect(roles.map((r) => r.poolRoleId).sort()).toEqual(validationPool.roles.map((r) => r.id).sort());
@@ -270,7 +276,7 @@ describe.skipIf(routes === null)("Job Pool connection: HTTP contract, canonical 
     const alpha = roles.find((r) => r.poolRoleId === "role_pink_alpha_architect");
     expect(alpha.matched.map((item: any) => [item.poolRequirementId, item.matchBasis, item.necessity])).toEqual([["req_pink_alpha_1", "EXACT", "REQUIRED"]]);
     expect(alpha.weakEvidence.map((item: any) => [item.poolRequirementId, item.matchBasis, item.necessity])).toEqual([["req_pink_alpha_2", "EXACT", "PREFERRED"]]);
-    expect(alpha.missing).toEqual([{ poolRequirementId: "req_pink_alpha_3", capabilityName: "Industrial IoT Protocol Design", requiredLevel: "", weight: 0.4, necessity: "UNDECLARED", evidenceHint: null }]);
+    expect(alpha.missing).toEqual([{ poolRequirementId: "req_pink_alpha_3", capabilityName: "Industrial IoT Protocol Design", requiredLevel: "", weight: 0.4, necessity: "UNDECLARED", evidenceHint: null, sweepProposal: null }]);
     expect(alpha.resonanceScore).toBeCloseTo((1.0 * 0.95 + 0.6 * 0.45 * 0.5) / 2.0, 3);
 
     const beta = roles.find((r) => r.poolRoleId === "role_pink_beta_platform");
