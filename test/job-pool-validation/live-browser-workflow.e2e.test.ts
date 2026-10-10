@@ -60,8 +60,9 @@ async function stop(child: ChildProcess | undefined): Promise<void> {
 
 /** Child environments carry the verified disposable URL only; no shared-database opt-in of any name is forwarded. */
 function childEnvironment(extra: Record<string, string | undefined>): NodeJS.ProcessEnv {
-  const inherited = Object.fromEntries(Object.entries(process.env).filter(([key]) => !key.startsWith("CONDYN_ALLOW_")));
-  return { ...inherited, ...extra, DATABASE_URL: world.databaseUrl, NEXT_TELEMETRY_DISABLED: "1" } as NodeJS.ProcessEnv;
+  const env: NodeJS.ProcessEnv = { ...process.env, ...extra, DATABASE_URL: world.databaseUrl, NEXT_TELEMETRY_DISABLED: "1" };
+  for (const key of Object.keys(env)) if (key.startsWith("CONDYN_ALLOW_")) delete env[key];
+  return env;
 }
 
 describe.skipIf(playwrightModule === null || !liveKeyPresent)("PINK JP-LIVE: PDF → Gemini sweep → JSON Job Pool → matching in a real browser", () => {
