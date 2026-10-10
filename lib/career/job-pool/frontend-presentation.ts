@@ -75,8 +75,9 @@ function decodeCanonicalMapping(value: unknown): JobPoolCanonicalMapping | null 
     const requirements: JobPoolCanonicalMapping["roles"][number]["requirements"] = [];
     for (const requirement of role.requirements) {
       if (!isRecord(requirement) || !isNonEmptyString(requirement.poolRequirementId) || !isString(requirement.capabilityName) || !isNonEmptyString(requirement.targetRequirementEntityId) || !isNonEmptyString(requirement.targetRequirementRevisionId)) return null;
+      if (!isNonEmptyString(requirement.targetRequirementReconstructionResultId) || !isNonEmptyString(requirement.targetRequirementEntityAdmissionId)) return null;
       if (!oneOf(requirement.matchingEligibility, ELIGIBILITIES) || !oneOf(requirement.necessityState, CANONICAL_NECESSITIES)) return null;
-      requirements.push({ poolRequirementId: requirement.poolRequirementId, capabilityName: requirement.capabilityName, targetRequirementEntityId: requirement.targetRequirementEntityId, targetRequirementRevisionId: requirement.targetRequirementRevisionId, matchingEligibility: requirement.matchingEligibility, necessityState: requirement.necessityState });
+      requirements.push({ poolRequirementId: requirement.poolRequirementId, capabilityName: requirement.capabilityName, targetRequirementEntityId: requirement.targetRequirementEntityId, targetRequirementRevisionId: requirement.targetRequirementRevisionId, targetRequirementReconstructionResultId: requirement.targetRequirementReconstructionResultId, targetRequirementEntityAdmissionId: requirement.targetRequirementEntityAdmissionId, matchingEligibility: requirement.matchingEligibility, necessityState: requirement.necessityState });
     }
     roles.push({
       poolRoleId: role.poolRoleId as string,

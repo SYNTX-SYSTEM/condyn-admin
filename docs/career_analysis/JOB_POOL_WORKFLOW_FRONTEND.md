@@ -1,6 +1,6 @@
 # Job Pool Workflow — SIL Frontend Field
 
-Status: in implementation on `frontend/job-pool-workflow` (base `integration/job-pool-connection` @ `120e0ce`).
+Status: implemented on `frontend/job-pool-workflow` (base `integration/job-pool-connection` @ `120e0ce`, GELB's routes merged at `b782793`).
 Field owner: GRÜN (frontend). Backend and contract: GELB (`docs/architecture/decision-fields/JOB_POOL_CONNECTION.md`).
 Independent validation: PINK.
 
@@ -113,4 +113,11 @@ Run record: see §7.
 | 2026-10-10 | `99530f2` | HR loop non-Postgres suites (8 files) | 28 passed |
 | 2026-10-10 | `99530f2` | `HR_LOOP_LOCAL_PORT=3019 tsx scripts/hr-decision-loop-local.ts up` smoke | fresh disposable DB, unified registration, panel server-rendered for `?analysisId&jobPoolUploadId`, 0 NOTICE lines; `serve --with-worker` without `GEMINI_API_KEY` exits 1 with `ERR_HR_LOOP_LOCAL_GEMINI_API_KEY_MISSING` |
 
-(P-H, P-B and the manual run are appended once GELB's routes are on the integration branch.)
+| 2026-10-10 | `3d16882`+ (merge of `b782793`) | `npm run -s test:isolated -- test/career/job-pool` with `CONDYN_PLAYWRIGHT_MODULE` (9 files incl. GELB's JP-U/JP-C/JP-H suites) | 51 tests: 50 passed, 1 failed in my browser test's id extraction (regex swallowed the adjacent pool name); fixed by reading `data-upload-id` |
+| 2026-10-10 | after fix | `test/career/job-pool/e2e` + `panel-ssr` | 13 passed: HTTP 5/5, Chromium 3/3 (screenshots 01–05 in `evidence/job-pool/`), SSR 5/5 |
+| 2026-10-10 | after fix | `test/career/hr-decision-loop` without e2e (12 files, incl. both Postgres suites) | 43 passed (preservation of the dock field) |
+| 2026-10-10 | after fix | `tsc --noEmit` | 0 errors |
+
+Additional backend codes observed in the merged routes and how the panel shows them: `400 ERR_JOB_POOL_ACTOR_INVALID`
+(upload REJECTED with code), `400 ERR_ANALYSIS_ID_REQUIRED` (matches FAILED with code; the panel never sends an empty id),
+`404 ERR_ANALYSIS_NOT_FOUND` (matches NOT_FOUND with code and message).

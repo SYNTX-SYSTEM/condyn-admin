@@ -19,7 +19,7 @@
  *   drop    drop the database in the state file (or the URL given as argument)
  *
  * Job Connection (owner mandate, 2026-10-10): `up --with-worker` (npm run job-pool:local) additionally
- *   registers the job-pool persistence (lib/career/job-pool/persistence-schema, when present at this revision)
+ *   registers the job-pool persistence (lib/career/job-pool/persistence-schema)
  *   and spawns the career worker (scripts/run-career-worker.ts) against the SAME verified disposable URL, with
  *   GEMINI_API_KEY taken from the operator's environment (fail closed when absent), GEMINI_MODEL passed through
  *   if set, and a freshly generated PROMPT_ENCRYPTION_KEY (32 random bytes, base64) per run. The worker's prompt
@@ -34,6 +34,7 @@ import postgres from "postgres";
 import { createDisposableTestDatabase, dropDisposableTestDatabase, verifyDisposableTestDatabase } from "../lib/database-isolation/verification";
 import { requireTestDatabaseAdminUrl } from "./test-db/admin-url";
 import { assertLeastPrivilegeAdmin } from "./test-db/admin-privilege";
+import { registerJobPoolPersistenceSchema } from "../lib/career/job-pool/persistence-schema";
 
 const STATE_DIR = resolve(process.cwd(), ".hr-loop-local");
 const STATE_FILE = resolve(STATE_DIR, "state.json");
@@ -100,26 +101,13 @@ async function portFree(port: number): Promise<boolean> {
   });
 }
 
-/**
- * Unified registration (R7) followed by the job-pool registration of the Job Connection field. The job-pool
- * module is resolved by path at runtime because it lands with GELB's backend; without it the HTTP routes
- * register their tables lazily through their own disposable-database gate, so nothing is missing, only earlier.
- */
+/** Unified registration (R7) followed by the job-pool registration of the Job Connection field (both idempotent). */
 async function registerPersistence(sql: postgres.Sql): Promise<void> {
   const { registerUnifiedPersistenceSchema } = await import("../lib/persistence/unified-schema-registration");
   const order = await registerUnifiedPersistenceSchema(sql);
   console.info(`[hr-loop:local] registered schema: ${order.join(" -> ")}`);
-  const jobPoolModulePath = "../lib/career/job-pool/persistence-schema";
-  let jobPoolModule: { registerJobPoolPersistenceSchema?: (client: postgres.Sql) => Promise<unknown> } | null = null;
-  try { jobPoolModule = await import(jobPoolModulePath); } catch (error) {
-    if (!(error instanceof Error && /Cannot find module|ERR_MODULE_NOT_FOUND/.test(error.message))) throw error;
-  }
-  if (jobPoolModule?.registerJobPoolPersistenceSchema) {
-    await jobPoolModule.registerJobPoolPersistenceSchema(sql);
-    console.info("[hr-loop:local] registered job-pool persistence");
-  } else {
-    console.info("[hr-loop:local] job-pool persistence module not present at this revision; the job-pool routes register lazily on the verified database");
-  }
+  await registerJobPoolPersistenceSchema(sql);
+  console.info("[hr-loop:local] registered job-pool persistence");
 }
 
 /** Child environments are built explicitly: the verified URL only, never the shared-database opt-in. */

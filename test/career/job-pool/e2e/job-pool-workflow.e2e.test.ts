@@ -16,7 +16,7 @@ import { spawn, type ChildProcess } from "node:child_process";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import { decodeJobPoolMatchPresentation, decodeJobPoolUploadView, describeRanking } from "../../../../lib/career/job-pool/frontend-presentation";
 import { fetchJobPoolMatches, listJobPools, readJobPoolUpload, uploadJobPool } from "../../../../lib/career/ui/useJobPool";
-import { createJobPoolPostgresWorld, EVIDENCE_QUOTE_FOR, JOB_POOL_E2E_UPLOADER, SAMPLE_POOL_PATH, type JobPoolWorld } from "../fixtures/job-pool-postgres-world";
+import { createJobPoolPostgresWorld, JOB_POOL_E2E_TARGET as T, JOB_POOL_E2E_UPLOADER, type JobPoolWorld } from "../fixtures/job-pool-postgres-world";
 
 const EVIDENCE_DIR = resolve(process.cwd(), "docs/career_analysis/evidence/job-pool");
 
@@ -135,17 +135,24 @@ describe("Job Pool workflow over HTTP against the production routes", () => {
     expect(matches.presentation).toEqual({ kind: "DETERMINISTIC_RESONANCE_PRESENTATION", policyVersion: "JOB_POOL_PRESENTATION_MATCHING_V1", authorityState: "NONE", canonicalEvaluation: false, decision: false, weakEvidenceThreshold: expect.any(Number) });
     expect(matches.roleMatches).toHaveLength(world.samplePool.roles.length);
     expect(describeRanking(matches.roleMatches)).toBe("MONOTONE_BY_RESONANCE");
-    const targetRole = matches.roleMatches.find(role => role.poolRoleId === world.target.role.id)!;
+    const targetRole = matches.roleMatches.find(role => role.poolRoleId === T.roleId)!;
     expect(targetRole).toBeDefined();
-    const hit = targetRole.matched.find(item => item.poolRequirementId === world.target.requirement.id)!;
+    const hit = targetRole.matched.find(item => item.poolRequirementId === T.requirementId)!;
     expect(hit).toBeDefined();
     expect(hit.matchBasis).toBe("EXACT");
-    expect(hit.matchedCapabilityEntityId).toBe("CAP_JOB_POOL_E2E_TARGET");
-    expect(hit.evidence).toEqual([{ docId: "DOC_JOB_POOL_E2E_CV", quote: EVIDENCE_QUOTE_FOR(world.target.requirement.capability_name) }]);
-    // Inverse: every other requirement of that role is absent from the analysis and must be reported, not dropped.
-    const others = world.samplePool.requirements.filter(requirement => requirement.role_id === world.target.role.id && requirement.id !== world.target.requirement.id);
-    for (const other of others) expect([...targetRole.missing, ...targetRole.weakEvidence].some(item => item.poolRequirementId === other.id)).toBe(true);
-    expect(matches.roleMatches[0].poolRoleId).toBe(world.target.role.id);
+    expect(hit.matchedCapabilityEntityId).toBe(T.capabilityEntityId);
+    expect(hit.evidence).toEqual([{ docId: T.docId, quote: T.quote }]);
+    // Documented bases of the fixture: React via ALIAS (React.js), Node.js by TOKEN_CONTAINMENT under weak evidence, Automated Testing missing.
+    expect(targetRole.matched.find(item => item.poolRequirementId === "req_002")?.matchBasis).toBe("ALIAS");
+    expect(targetRole.weakEvidence.find(item => item.poolRequirementId === "req_003")?.matchBasis).toBe("TOKEN_CONTAINMENT");
+    expect(targetRole.weakEvidence.find(item => item.poolRequirementId === "req_003")?.reason).toEqual(expect.any(String));
+    expect(targetRole.missing.map(item => item.poolRequirementId)).toContain("req_005");
+    // Inverse: every requirement of the role appears in exactly one of the three presentation sets.
+    for (const requirement of world.samplePool.requirements.filter(item => item.role_id === T.roleId)) {
+      const presence = [targetRole.matched, targetRole.weakEvidence, targetRole.missing].filter(set => set.some(item => item.poolRequirementId === requirement.id)).length;
+      expect(presence).toBe(1);
+    }
+    expect(matches.roleMatches[0].poolRoleId).toBe(T.roleId);
     for (const role of matches.roleMatches) {
       expect(role.canonical.capabilityRequirementRelationState).toBe("NOT_EVALUATED");
       expect(role.canonical.reason).toBe("VERIFIED_CAPABILITY_SNAPSHOT_ABSENT");
@@ -238,8 +245,9 @@ describe.skipIf(playwrightModule === null)("Job Pool workflow in a real browser"
     const result = page.locator('[data-testid="job-pool-upload-result"][data-upload-outcome="CREATED"]');
     await result.waitFor({ timeout: 60_000 });
     const resultText = (await result.textContent()) ?? "";
-    const newId = /JPOOL_[A-Za-z0-9]+/.exec(resultText)?.[0] ?? "";
-    expect(newId).toMatch(/^JPOOL_/);
+    const newId = (await result.getAttribute("data-upload-id")) ?? "";
+    expect(newId).toMatch(/^JPOOL_[0-9A-F]{32}$/);
+    expect(resultText).toContain(newId);
     expect([uploadedId, draftUploadId]).not.toContain(newId);
     expect(resultText).toContain("UPLOADED != SELECTED");
     await page.locator('[data-testid="job-pool-list"][data-pool-count="3"]').waitFor({ timeout: 60_000 });
@@ -261,12 +269,15 @@ describe.skipIf(playwrightModule === null)("Job Pool workflow in a real browser"
     expect(labels).toContain("NOT A DECISION");
     expect(await page.getByTestId("job-pool-ranking").getAttribute("data-ranking")).toBe("MONOTONE_BY_RESONANCE");
     expect(await page.getByTestId("job-pool-role-list").getAttribute("data-role-count")).toBe(String(world.samplePool.roles.length));
-    const first = page.getByTestId(`job-pool-role-${world.target.role.id}`);
+    const first = page.getByTestId(`job-pool-role-${T.roleId}`);
     expect(await first.getAttribute("data-rank")).toBe("1");
-    const hit = page.getByTestId(`job-pool-role-${world.target.role.id}-matched-${world.target.requirement.id}`);
+    const hit = page.getByTestId(`job-pool-role-${T.roleId}-matched-${T.requirementId}`);
     expect(await hit.getAttribute("data-match-basis")).toBe("EXACT");
-    expect(await hit.textContent()).toContain(EVIDENCE_QUOTE_FOR(world.target.requirement.capability_name));
-    const canonical = page.getByTestId(`job-pool-role-${world.target.role.id}-canonical`);
+    expect(await hit.textContent()).toContain(T.quote);
+    expect(await page.getByTestId(`job-pool-role-${T.roleId}-matched-req_002`).getAttribute("data-match-basis")).toBe("ALIAS");
+    expect(await page.getByTestId(`job-pool-role-${T.roleId}-weak-req_003`).getAttribute("data-match-basis")).toBe("TOKEN_CONTAINMENT");
+    expect(await page.getByTestId(`job-pool-role-${T.roleId}-missing-req_005`).count()).toBe(1);
+    const canonical = page.getByTestId(`job-pool-role-${T.roleId}-canonical`);
     expect(await canonical.getAttribute("data-relation-state")).toBe("NOT_EVALUATED");
     expect(await canonical.getAttribute("data-relation-reason")).toBe("VERIFIED_CAPABILITY_SNAPSHOT_ABSENT");
     expect(await canonical.textContent()).toContain("TRPREV");

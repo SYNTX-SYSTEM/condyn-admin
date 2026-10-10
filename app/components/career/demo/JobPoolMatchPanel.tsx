@@ -238,7 +238,7 @@ export function JobPoolMatchPanel({ jobResultAnalysisId = null, analysisId = nul
           {workflow.upload.state === "SUBMITTING" ? t.submitting : t.submit}
         </button>
         {(workflow.upload.state === "CREATED" || workflow.upload.state === "IDENTICAL_EXISTS") && (
-          <div data-testid="job-pool-upload-result" data-upload-outcome={workflow.upload.state} style={{ display: "flex", flexDirection: "column", gap: "2px" }}>
+          <div data-testid="job-pool-upload-result" data-upload-outcome={workflow.upload.state} data-upload-id={workflow.upload.upload.jobPoolUploadId} style={{ display: "flex", flexDirection: "column", gap: "2px" }}>
             <span style={green}>{workflow.upload.state === "CREATED" ? t.uploadCreated : t.uploadIdentical}</span>
             <span style={mono}>{workflow.upload.upload.jobPoolUploadId}</span>
             <span style={muted}>{workflow.upload.upload.poolName} v{workflow.upload.upload.poolVersion} · {workflow.upload.upload.poolStatus} · raw sha256 {workflow.upload.upload.rawSha256.slice(0, 16)}…</span>

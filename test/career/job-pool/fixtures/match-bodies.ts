@@ -33,8 +33,8 @@ export const view: JobPoolUploadView = {
         targetRoleSourceBindingRevisionId: "TRSB_A", targetRoleOrganizationBindingRevisionId: "TROB_A", targetRoleProfileRevisionId: "TRPREV_A",
         targetRoleReconstructionBatchRunId: "TRRB_1", targetRequirementReconstructionBatchRunId: "TRQRB_1",
         requirements: [
-          { poolRequirementId: "REQ_1", capabilityName: "TypeScript", targetRequirementEntityId: "TRQENT_1", targetRequirementRevisionId: "TRQREV_1", matchingEligibility: "MATCHING_ELIGIBLE_PROPOSAL_ONLY", necessityState: "REQUIRED" },
-          { poolRequirementId: "REQ_2", capabilityName: "Kubernetes", targetRequirementEntityId: "TRQENT_2", targetRequirementRevisionId: "TRQREV_2", matchingEligibility: "MATCHING_ELIGIBLE_PROPOSAL_ONLY", necessityState: "UNKNOWN" }
+          { poolRequirementId: "REQ_1", capabilityName: "TypeScript", targetRequirementEntityId: "TRQENT_1", targetRequirementRevisionId: "TRQREV_1", targetRequirementReconstructionResultId: "TRQRR_1", targetRequirementEntityAdmissionId: "TRQEA_1", matchingEligibility: "MATCHING_ELIGIBLE_PROPOSAL_ONLY", necessityState: "REQUIRED" },
+          { poolRequirementId: "REQ_2", capabilityName: "Kubernetes", targetRequirementEntityId: "TRQENT_2", targetRequirementRevisionId: "TRQREV_2", targetRequirementReconstructionResultId: "TRQRR_2", targetRequirementEntityAdmissionId: "TRQEA_2", matchingEligibility: "MATCHING_ELIGIBLE_PROPOSAL_ONLY", necessityState: "UNKNOWN" }
         ]
       },
       {
@@ -42,7 +42,7 @@ export const view: JobPoolUploadView = {
         targetRoleSourceBindingRevisionId: "TRSB_B", targetRoleOrganizationBindingRevisionId: "TROB_B", targetRoleProfileRevisionId: "TRPREV_B",
         targetRoleReconstructionBatchRunId: "TRRB_1", targetRequirementReconstructionBatchRunId: "TRQRB_1",
         requirements: [
-          { poolRequirementId: "REQ_3", capabilityName: "SQL", targetRequirementEntityId: "TRQENT_3", targetRequirementRevisionId: "TRQREV_3", matchingEligibility: "MATCHING_ELIGIBLE_PROPOSAL_ONLY", necessityState: "PREFERRED" }
+          { poolRequirementId: "REQ_3", capabilityName: "SQL", targetRequirementEntityId: "TRQENT_3", targetRequirementRevisionId: "TRQREV_3", targetRequirementReconstructionResultId: "TRQRR_3", targetRequirementEntityAdmissionId: "TRQEA_3", matchingEligibility: "MATCHING_ELIGIBLE_PROPOSAL_ONLY", necessityState: "PREFERRED" }
         ]
       }
     ]
