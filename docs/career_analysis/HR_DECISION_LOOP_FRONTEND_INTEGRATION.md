@@ -33,7 +33,7 @@ Server side, `lib/career/hr-decision-loop/`:
 | `server-read-service.ts` | relational index by exact lineage column, exact reread through the sealed repository of each family, region states `AVAILABLE / EMPTY / NOT_PROVISIONED / FAILED` |
 | `declaration-application.ts` | captures the five declaration fields, admits the transport identity, runs the sealed T11C producer unchanged |
 | `http.ts` | transport only; public codes `ERR_HR_DECISION_LOOP_API_*`; bounded `reason` allowlist of sealed T11C codes for 422 |
-| `local-composition.ts` | binds `createProductionHumanDecisionRecordDependencies` and the post-decision Postgres repositories to the one physical client, after a gated `registerUnifiedPersistenceSchema` (R7 order; only on a positively disposable database, no DDL otherwise) |
+| `local-composition.ts`, `registration-client.ts` | binds `createProductionHumanDecisionRecordDependencies` and the post-decision Postgres repositories to the one physical client, after a gated `registerUnifiedPersistenceSchema` (R7 order; only on a positively disposable database, on a dedicated silenced client, no DDL otherwise) |
 | `frontend-presentation.ts` | client-safe decoders of the three wire shapes and the exact lineage walk |
 
 No file under `lib/decision-core`, `lib/decision-runtime`, `lib/decision-adapters`,

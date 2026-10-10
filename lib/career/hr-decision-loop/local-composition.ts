@@ -1,5 +1,6 @@
 import { drizzle } from "drizzle-orm/postgres-js";
 import { db } from "../db/client";
+import { createRegistrationClient } from "./registration-client";
 import { verifyDisposableTestDatabase } from "../../database-isolation/verification";
 import { registerUnifiedPersistenceSchema } from "../../persistence/unified-schema-registration";
 import { createProductionHumanDecisionRecordDependencies } from "../human-decision-admission/application";
@@ -27,9 +28,14 @@ let registration: Promise<"REGISTERED" | "NO_DDL_ON_NON_DISPOSABLE_DATABASE"> | 
 
 export function ensureHrDecisionLoopPersistenceRegistration(): Promise<"REGISTERED" | "NO_DDL_ON_NON_DISPOSABLE_DATABASE"> {
   registration ??= (async () => {
-    const disposable = await verifyDisposableTestDatabase(process.env.DATABASE_URL).then(() => true, () => false);
-    if (!disposable) return "NO_DDL_ON_NON_DISPOSABLE_DATABASE";
-    await registerUnifiedPersistenceSchema(db.$client);
+    const verified = await verifyDisposableTestDatabase(process.env.DATABASE_URL).then(result => result, () => null);
+    if (verified === null) return "NO_DDL_ON_NON_DISPOSABLE_DATABASE";
+    const client = createRegistrationClient(verified.url);
+    try {
+      await registerUnifiedPersistenceSchema(client);
+    } finally {
+      await client.end({ timeout: 5 });
+    }
     return "REGISTERED";
   })().catch(error => { registration = undefined; throw error; });
   return registration;

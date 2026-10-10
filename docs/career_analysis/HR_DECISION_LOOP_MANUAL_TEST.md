@@ -27,10 +27,13 @@ starts on `http://127.0.0.1:3017` (override with `HR_LOOP_LOCAL_PORT`). The bann
 the exact URLs with the seeded ids. The state (ids, database name) is in
 `.hr-loop-local/state.json`, ignored by git.
 
-Other commands: `npm run hr-loop:local:seed` (database only), `npm run hr-loop:local:serve`
-(server on the existing database), `npm run hr-loop:local:status` (print URLs),
-`npm run hr-loop:local:drop` (remove exactly that database). Stopping the server keeps the
-database so the operator can continue later.
+Repeated starts reuse the verified database of `.hr-loop-local/state.json` (same ids, no
+accumulation); `npm run hr-loop:local -- --fresh` creates a new one. Other commands:
+`npm run hr-loop:local:seed` (database only), `npm run hr-loop:local:serve` (server on the
+existing database), `npm run hr-loop:local:status` (print URLs), `npm run hr-loop:local:drop`
+(remove exactly that database). Stopping the server keeps the database so the operator can
+continue later. The server log carries no DDL notices: the HR routes register the schema on a
+dedicated silenced client.
 
 Credentials: there is no login in front of `/career/demo`. The only "credential" is the
 declarant actor id the seeded Decision Authority Grant authorizes: `HR_DECIDER_LOCAL`
