@@ -108,6 +108,17 @@ files, `scripts/write-live-lifecycle.ts`, the HR loop local composition). Two `t
 See `docs/architecture/decision-fields/HR_DECISION_LOOP_INTEGRATION.md` section 7 and
 `test/database-isolation/*`. The guard is code-level; option F would add a server-level barrier.
 
+### Known limits of the code-level guard (independent verification, G2 producer session)
+
+- In-process tampering that assembles the opt-in variable name at runtime and deletes the test-runner
+  markers before importing the client can still reach `condyn`; the static test catches literal
+  forms only.
+- F-2: `vitest --config <other config>` skips the gate. The application client still refuses
+  protected names, the non-sealed helpers classify the URL themselves, and the P7 second process
+  verifies its target positively; the 22 sealed or frozen test files that read `DATABASE_URL`
+  directly would follow a `condyn` URL in such a run.
+- Both are closed only at the server level (option F).
+
 ## 6. Unresolved evidence
 
 - Exact run that deleted the DB-1 rows (several candidates, no statement log).
