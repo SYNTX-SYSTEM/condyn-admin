@@ -153,7 +153,7 @@ describe("HR Decision Loop over HTTP against the production composition roots", 
     expect(decoded!.previousRevisionId).toBe(world.g2.rootRevisionId);
     expect(decoded!.items.find(item => item.role === "OBSERVATION")!.provenanceDetail).toBe(`CAREER_OUTCOME_VALENCE_DECLARATION_V1 · ${world.chain.careerOutcomeValenceDeclarationId}`);
     expect(JSON.stringify(childBody)).not.toContain(HR_LOOP_G3_PAYLOAD_MARKER);
-    const lineage = await readDecisionContextLineage(world.g2.childRevisionId, serverFetch);
+    const lineage = await readDecisionContextLineage(world.g2.childRevisionId, { kind: "INPUT" }, serverFetch);
     expect(lineage.state).toBe("AVAILABLE");
     if (lineage.state === "AVAILABLE") {
       expect(lineage.lineage.terminal).toBe("ROOT_REACHED");
@@ -161,7 +161,7 @@ describe("HR Decision Loop over HTTP against the production composition roots", 
       expect(lineage.lineage.revisions[1].sourceStateReferences[0].artifactId).toBe(world.snapshotId);
     }
     expect((await fetch(`${base()}/api/decision-contexts/${world.contextA}`)).status).toBe(404);
-    expect(await readDecisionContextLineage("DREV_ABSENT", serverFetch)).toEqual({ state: "NOT_FOUND" });
+    expect(await readDecisionContextLineage("DREV_ABSENT", { kind: "INPUT" }, serverFetch)).toEqual({ state: "NOT_FOUND", revisionId: "DREV_ABSENT", entry: { kind: "INPUT" } });
   }, 60_000);
 
   it("server-renders the dock only for an explicit DCTXREV and keeps the SIL field otherwise untouched", async () => {
@@ -180,7 +180,7 @@ describe("HR Decision Loop over HTTP against the production composition roots", 
 describe.skipIf(playwrightModule === null)("HR Decision Loop in a real browser", () => {
   type Browser = { newPage(options: { viewport: { width: number; height: number } }): Promise<Page>; close(): Promise<void> };
   type Locator = { waitFor(options?: { timeout?: number; state?: string }): Promise<void>; count(): Promise<number>; textContent(): Promise<string | null>; getAttribute(name: string): Promise<string | null>; click(): Promise<void>; fill(value: string): Promise<void>; isDisabled(): Promise<boolean>; inputValue(): Promise<string>; first(): Locator };
-  type Page = { goto(url: string, options?: { waitUntil?: string; timeout?: number }): Promise<unknown>; locator(selector: string): Locator; getByTestId(id: string): Locator; screenshot(options: { path: string; fullPage?: boolean }): Promise<unknown>; on(event: string, handler: (payload: unknown) => void): void; close(): Promise<void> };
+  type Page = { goto(url: string, options?: { waitUntil?: string; timeout?: number }): Promise<unknown>; url(): string; locator(selector: string): Locator; getByTestId(id: string): Locator; screenshot(options: { path: string; fullPage?: boolean }): Promise<unknown>; on(event: string, handler: (payload: unknown) => void): void; close(): Promise<void> };
   let browser: Browser;
   let pageErrors: string[] = [];
 
@@ -216,6 +216,18 @@ describe.skipIf(playwrightModule === null)("HR Decision Loop in a real browser",
     await page.locator('[data-testid="next-context-lineage"][data-lineage-terminal="ROOT_REACHED"]').waitFor({ timeout: 60_000 });
     expect(await page.getByTestId(`decision-context-revision-${world.g2.childRevisionId}`).count()).toBe(1);
     expect(await page.getByTestId(`decision-context-revision-${world.g2.rootRevisionId}`).count()).toBe(1);
+    // Entry from the URL is an explicit assumption; the directly formed child extends the root inventory and is unbound; the root is bound through the DCDRB.
+    expect(await page.getByTestId("next-context-entry").getAttribute("data-entry-kind")).toBe("URL");
+    const childCard = page.getByTestId(`decision-context-revision-${world.g2.childRevisionId}`);
+    expect(await childCard.getAttribute("data-revision-position")).toBe("CHILD");
+    expect(await childCard.getAttribute("data-return-character")).toBe("INVENTORY_EXTENDED");
+    expect(await childCard.getAttribute("data-binding-state")).toBe("UNBOUND");
+    expect(await childCard.textContent()).toContain("formed outside the governed 8D return");
+    const rootCard = page.getByTestId(`decision-context-revision-${world.g2.rootRevisionId}`);
+    expect(await rootCard.getAttribute("data-revision-position")).toBe("ROOT");
+    expect(await rootCard.getAttribute("data-binding-state")).toBe("BOUND");
+    expect(await rootCard.textContent()).toContain(world.g2.decisionRevisionBindingId);
+    expect(await page.getByTestId("hr-decision-loop-bound-revisions").getAttribute("data-binding-region-state")).toBe("AVAILABLE");
     expect(await page.getByTestId("hr-decision-loop-non-claims").textContent()).toContain("PERSISTED != TRUE");
     for (const stage of ["01", "02", "03", "04", "05", "06"]) expect(await page.getByTestId(`focus-transition-stage-shell-${stage}`).count()).toBe(1);
     expect(await page.getByTestId("semantic-zoom-telemetry").count()).toBe(1);
@@ -227,6 +239,10 @@ describe.skipIf(playwrightModule === null)("HR Decision Loop in a real browser",
     await page.locator(`[data-testid="next-context-lineage"][data-lineage-terminal="ROOT_REACHED"] [data-testid="decision-context-revision-${world.g2.rootRevisionId}"]`).waitFor({ timeout: 60_000 });
     expect(await page.getByTestId(`decision-context-revision-${world.g2.childRevisionId}`).count()).toBe(0);
     expect(await page.getByTestId("next-context-revision-input").inputValue()).toBe(world.g2.rootRevisionId);
+    expect(await page.getByTestId("next-context-entry").getAttribute("data-entry-kind")).toBe("BINDING");
+    expect(await page.getByTestId("next-context-entry").textContent()).toContain(world.g2.decisionRevisionBindingId);
+    expect(new URL(page.url()).searchParams.get("decisionContextRevisionId")).toBe(world.g2.rootRevisionId);
+    expect(new URL(page.url()).searchParams.get("careerDecisionContextRevisionId")).toBe(world.contextA);
     expect(await page.getByTestId("hr-decision-loop-next-context").textContent()).toContain("not a governed 8D return");
     await page.screenshot({ path: resolve(EVIDENCE_DIR, "05-context-a-bound-root-revision-read-by-exact-id.png") });
     await page.getByTestId("hr-decision-loop-dock-collapse").click();
@@ -243,7 +259,13 @@ describe.skipIf(playwrightModule === null)("HR Decision Loop in a real browser",
     await page.locator('[data-testid="hr-decision-loop-dock"][data-loop-read-state="AVAILABLE"]').waitFor({ timeout: 120_000 });
     expect(await page.getByTestId("hr-decision-declare-btn").isDisabled()).toBe(true);
     expect(await page.getByTestId("hr-decision-loop-bound-revisions").getAttribute("data-bound-count")).toBe("0");
+    expect(await page.getByTestId("hr-decision-loop-bound-revisions").getAttribute("data-binding-region-state")).toBe("EMPTY");
     expect(await page.getByTestId("hr-decision-loop-bound-revisions-none").count()).toBe(1);
+    // An explicit id that no persisted revision carries is absence, not failure, and the entry stays an assumption.
+    await page.getByTestId("next-context-revision-input").fill("DREV_000000000000000000000000");
+    await page.getByTestId("next-context-load-btn").click();
+    await page.getByTestId("next-context-not-found").waitFor({ timeout: 60_000 });
+    expect(await page.getByTestId("next-context-entry").getAttribute("data-entry-kind")).toBe("INPUT");
     await page.getByTestId("hr-decision-declarant-input").fill("INTRUDER");
     await page.getByTestId("hr-decision-class-REJECT_RECOMMENDATION").click();
     await page.getByTestId("hr-decision-evidence-input").fill("evidence://frontend/browser-e2e");

@@ -268,6 +268,9 @@ export async function seedUpstream(db: PostgresJsDatabase) {
   return { snapshot, proposal };
 }
 
+/** Everything the world knows about its seeded ids; connection handles are kept apart so the seed is reusable outside vitest. */
+export type HrLoopWorldData = Omit<HrLoopWorld, "sql" | "db" | "destroy">;
+
 export async function createHrLoopPostgresWorld(): Promise<HrLoopWorld> {
   const { databaseName, databaseUrl, sql, admin } = await provisionDatabase();
   const destroy = async () => {
@@ -277,6 +280,21 @@ export async function createHrLoopPostgresWorld(): Promise<HrLoopWorld> {
   };
   try {
     await provisionSchema(sql);
+    const data = await seedHrLoopWorldInto(sql, databaseUrl, databaseName);
+    return { ...data, sql, db: drizzle(sql), destroy };
+  } catch (error) {
+    await destroy().catch(() => undefined);
+    throw error;
+  }
+}
+
+/**
+ * Seeds the complete world into an already provisioned database. Every artifact is
+ * built by its sealed `create*` / `produce*` function and persisted through its own
+ * repository. The caller owns the connection and the database's lifecycle.
+ */
+export async function seedHrLoopWorldInto(sql: Sql, databaseUrl: string, databaseName: string): Promise<HrLoopWorldData> {
+  {
     const db = drizzle(sql);
     const { snapshot, proposal } = await seedUpstream(db);
     const stamp = HR_LOOP_WORLD_STAMP;
@@ -334,7 +352,7 @@ export async function createHrLoopPostgresWorld(): Promise<HrLoopWorld> {
     const g2 = await seedDecisionContextLineage(db, snapshot.snapshotId, computeSnapshotKey(snapshot), proposal, valence, producer.contexts, contextA.careerDecisionContextRevisionId);
 
     return {
-      databaseName, databaseUrl, sql, db,
+      databaseName, databaseUrl,
       snapshotId: snapshot.snapshotId,
       snapshotKey: computeSnapshotKey(snapshot),
       decisionAuthorityGrantRevisionId: authority.decisionAuthorityGrantRevisionId,
@@ -358,12 +376,8 @@ export async function createHrLoopPostgresWorld(): Promise<HrLoopWorld> {
         careerOutcomeValenceFeedbackTargetRevisionBindingId: feedbackBinding.careerOutcomeValenceFeedbackTargetRevisionBindingId,
         careerOutcomeValenceFeedbackContextRevisionId: feedbackRevision.careerOutcomeValenceFeedbackContextRevisionId
       },
-      g2,
-      destroy
+      g2
     };
-  } catch (error) {
-    await destroy().catch(() => undefined);
-    throw error;
   }
 }
 

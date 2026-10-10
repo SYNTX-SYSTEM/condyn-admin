@@ -8,10 +8,20 @@ import type { HrDecisionLoopRegionName, HrDecisionLoopRegionState } from "./read
 
 export type HrDecisionLoopPresentationRegionState = HrDecisionLoopRegionState;
 
+/** An exact DCTXREV id a persisted artifact names; it is an exact navigation target, never a selection. */
+export interface HrDecisionLoopContextLink {
+  label: string;
+  careerDecisionContextRevisionId: string;
+}
+
 export interface HrDecisionLoopArtifactRow {
   id: string;
   /** Short exact facts for the row, each already a persisted field; no derived judgement. */
   facts: readonly { label: string; value: string }[];
+  /** Exact DCTXREV ids named by this artifact (feedback target, binding parent, bound context). */
+  contextLinks: readonly HrDecisionLoopContextLink[];
+  /** For a DCDRB row: the exact DREV id the binding names. Present only on `decisionRevisionBindings` rows. */
+  boundDecisionContextRevisionId?: string;
 }
 
 export interface HrDecisionLoopPresentationRegion {
@@ -147,6 +157,31 @@ function compositionFacts(name: HrDecisionLoopRegionName, artifact: Record<strin
   return facts;
 }
 
+const DCTXREV_ID = /^DCTXREV_[0-9A-F]{32}$/;
+
+/** Exact DCTXREV ids a persisted artifact names, copied verbatim; the dock renders them as exact navigation. */
+function contextLinks(name: HrDecisionLoopRegionName, artifact: Record<string, unknown>, facts: readonly { label: string; value: string }[]): HrDecisionLoopContextLink[] {
+  const links: HrDecisionLoopContextLink[] = [];
+  const push = (label: string, value: unknown) => { if (typeof value === "string" && DCTXREV_ID.test(value)) links.push({ label, careerDecisionContextRevisionId: value }); };
+  if (name === "feedbackTargets") push("targetCareerDecisionContextRevisionId", artifact.targetCareerDecisionContextRevisionId);
+  if (name === "feedbackTargetBindings") push("targetCareerDecisionContextRevisionId", facts.find(fact => fact.label === "targetCareerDecisionContextRevisionId")?.value);
+  if (name === "feedbackContextRevisions") {
+    const parent = artifact.parent;
+    if (isRecord(parent) && parent.parentRevisionKind === "CAREER_DECISION_CONTEXT_REVISION") push("parentRevisionId", parent.parentRevisionId);
+  }
+  if (name === "decisionRevisionBindings") {
+    const context = artifact.careerDecisionContextRevision;
+    if (isRecord(context)) push("careerDecisionContextRevisionId", context.careerDecisionContextRevisionId);
+  }
+  return links;
+}
+
+function boundRevision(name: HrDecisionLoopRegionName, artifact: Record<string, unknown>): { boundDecisionContextRevisionId?: string } {
+  if (name !== "decisionRevisionBindings") return {};
+  const revision = artifact.decisionContextRevision;
+  return isRecord(revision) && typeof revision.revisionId === "string" ? { boundDecisionContextRevisionId: revision.revisionId } : {};
+}
+
 function decodeRegion(name: HrDecisionLoopRegionName, value: unknown): HrDecisionLoopPresentationRegion | null {
   if (!isRecord(value) || !isState(value.state) || !isStringArray(value.artifactIds) || !Array.isArray(value.artifacts)) return null;
   if (value.state === "FAILED" && typeof value.failureCode !== "string") return null;
@@ -162,7 +197,7 @@ function decodeRegion(name: HrDecisionLoopRegionName, value: unknown): HrDecisio
       if (text !== null) facts.push({ label: field, value: text });
     }
     facts.push(...compositionFacts(name, artifact));
-    rows.push({ id, facts });
+    rows.push({ id, facts, contextLinks: contextLinks(name, artifact, facts), ...boundRevision(name, artifact) });
   }
   if (value.state === "AVAILABLE" && rows.length !== value.artifactIds.length) return null;
   return {
@@ -315,12 +350,24 @@ export function decodeHumanDecisionRecordPresentation(value: unknown): HumanDeci
 /** The exact lineage walk ends at a null predecessor, at a missing revision, or at the bound depth. */
 export const DECISION_CONTEXT_LINEAGE_MAX_DEPTH = 32;
 
-export type DecisionContextLineageTerminal = "ROOT_REACHED" | "PREDECESSOR_NOT_FOUND" | "PREDECESSOR_UNDECODABLE" | "DEPTH_BOUND_REACHED";
+/**
+ * Terminal of an exact lineage walk. Absence (404) and a failed read (transport
+ * or service failure) are different facts and are never merged.
+ */
+export type DecisionContextLineageTerminal = "ROOT_REACHED" | "PREDECESSOR_NOT_FOUND" | "PREDECESSOR_READ_FAILED" | "PREDECESSOR_UNDECODABLE" | "DEPTH_BOUND_REACHED";
 
 export interface DecisionContextLineagePresentation {
   revisions: readonly DecisionContextRevisionPresentation[];
   terminal: DecisionContextLineageTerminal;
+  /** Public code of the failed predecessor read, when the terminal is PREDECESSOR_READ_FAILED. */
+  failureCode?: string | null;
 }
+
+/** One exact read of a revision: present, absent, or failed. */
+export type DecisionContextLineageRead =
+  | { kind: "REVISION"; value: unknown }
+  | { kind: "ABSENT" }
+  | { kind: "FAILED"; code: string | null };
 
 /**
  * Pure lineage walk over an exact reader. It follows `previousRevisionId`
@@ -328,19 +375,55 @@ export interface DecisionContextLineagePresentation {
  */
 export async function walkDecisionContextLineage(
   startRevisionId: string,
-  readRevision: (revisionId: string) => Promise<unknown | null>
+  readRevision: (revisionId: string) => Promise<DecisionContextLineageRead>
 ): Promise<DecisionContextLineagePresentation> {
   const revisions: DecisionContextRevisionPresentation[] = [];
   let next: string | null = startRevisionId;
   for (let depth = 0; depth < DECISION_CONTEXT_LINEAGE_MAX_DEPTH && next !== null; depth += 1) {
-    const raw = await readRevision(next);
-    if (raw === null) return { revisions, terminal: "PREDECESSOR_NOT_FOUND" };
-    const decoded = decodeDecisionContextRevisionPresentation(raw);
+    const read = await readRevision(next);
+    if (read.kind === "ABSENT") return { revisions, terminal: "PREDECESSOR_NOT_FOUND" };
+    if (read.kind === "FAILED") return { revisions, terminal: "PREDECESSOR_READ_FAILED", failureCode: read.code };
+    const decoded = decodeDecisionContextRevisionPresentation(read.value);
     if (decoded === null) return { revisions, terminal: "PREDECESSOR_UNDECODABLE" };
     revisions.push(decoded);
     next = decoded.previousRevisionId;
   }
   return { revisions, terminal: next === null ? "ROOT_REACHED" : "DEPTH_BOUND_REACHED" };
+}
+
+/**
+ * What two persisted revisions say about the relation between a revision and
+ * its predecessor. Sealed 8D7 keeps the source-state inventory unchanged, so a
+ * revision whose inventory extends its predecessor's was formed outside the
+ * governed 8D return (decision D2 shape, boundary B-8D5). The converse is not
+ * a claim: an unchanged inventory is compatible with a governed return, it does
+ * not establish one, because no 8D artifact is part of the revision itself.
+ */
+export type DecisionContextRevisionReturnCharacter = "ROOT" | "INVENTORY_UNCHANGED" | "INVENTORY_EXTENDED" | "PREDECESSOR_NOT_READ";
+
+export interface DecisionContextRevisionLineageDescriptor {
+  revisionId: string;
+  position: "ROOT" | "CHILD";
+  returnCharacter: DecisionContextRevisionReturnCharacter;
+  /** Source-state references present here and absent from the predecessor (exact field equality). */
+  addedSourceStateReferences: readonly DecisionContextRevisionPresentation["sourceStateReferences"][number][];
+  /** Item ids present here and absent from the predecessor. */
+  addedItemIds: readonly string[];
+}
+
+const sameReference = (left: DecisionContextRevisionPresentation["sourceStateReferences"][number], right: DecisionContextRevisionPresentation["sourceStateReferences"][number]) =>
+  left.producerId === right.producerId && left.authorityContractId === right.authorityContractId && left.artifactId === right.artifactId && left.locator === right.locator;
+
+/** Describes each walked revision against the predecessor that follows it in the walk; pure and order-preserving. */
+export function describeDecisionContextLineage(revisions: readonly DecisionContextRevisionPresentation[]): DecisionContextRevisionLineageDescriptor[] {
+  return revisions.map((revision, index) => {
+    const predecessor = revision.previousRevisionId === null ? null : revisions[index + 1] ?? null;
+    if (revision.previousRevisionId === null) return { revisionId: revision.revisionId, position: "ROOT", returnCharacter: "ROOT", addedSourceStateReferences: [], addedItemIds: [] };
+    if (predecessor === null || predecessor.revisionId !== revision.previousRevisionId) return { revisionId: revision.revisionId, position: "CHILD", returnCharacter: "PREDECESSOR_NOT_READ", addedSourceStateReferences: [], addedItemIds: [] };
+    const addedSourceStateReferences = revision.sourceStateReferences.filter(reference => !predecessor.sourceStateReferences.some(candidate => sameReference(candidate, reference)));
+    const addedItemIds = revision.items.filter(item => !predecessor.items.some(candidate => candidate.itemId === item.itemId)).map(item => item.itemId);
+    return { revisionId: revision.revisionId, position: "CHILD", returnCharacter: addedSourceStateReferences.length === 0 ? "INVENTORY_UNCHANGED" : "INVENTORY_EXTENDED", addedSourceStateReferences, addedItemIds };
+  });
 }
 
 /**
@@ -350,6 +433,18 @@ export async function walkDecisionContextLineage(
 export function boundDecisionContextRevisionIds(presentation: HrDecisionLoopPresentation): string[] {
   const region = presentation.regions.find(candidate => candidate.name === "decisionRevisionBindings");
   if (!region || region.state !== "AVAILABLE") return [];
-  const ids = region.rows.flatMap(row => row.facts.filter(fact => fact.label === "decisionContextRevisionId").map(fact => fact.value));
+  const ids = region.rows.flatMap(row => row.boundDecisionContextRevisionId === undefined ? [] : [row.boundDecisionContextRevisionId]);
   return [...new Set(ids)].sort();
+}
+
+/** The persisted state of the DCDRB family itself: "no binding" is only true when the region is EMPTY. */
+export function decisionRevisionBindingRegionState(presentation: HrDecisionLoopPresentation): HrDecisionLoopPresentationRegion | null {
+  return presentation.regions.find(candidate => candidate.name === "decisionRevisionBindings") ?? null;
+}
+
+/** Ids of the persisted DCDRB bindings of this context that name the given DREV; empty means unbound here, not unbound anywhere. */
+export function decisionRevisionBindingIdsFor(presentation: HrDecisionLoopPresentation, decisionContextRevisionId: string): string[] {
+  const region = decisionRevisionBindingRegionState(presentation);
+  if (!region || region.state !== "AVAILABLE") return [];
+  return region.rows.filter(row => row.boundDecisionContextRevisionId === decisionContextRevisionId).map(row => row.id).sort();
 }

@@ -51,3 +51,6 @@ output_test.pdf
 output_test.pdf
 *.backup_*
 *.before_*
+
+# HR Decision Looper local manual environment state (disposable database id, ports)
+/.hr-loop-local/
