@@ -1,5 +1,17 @@
 /** Scripted route bodies shaped exactly like docs/architecture/decision-fields/JOB_POOL_CONNECTION.md §5 and lib/career/job-pool/types.ts. */
-import type { JobPoolMatchPresentation, JobPoolUploadSummary, JobPoolUploadView } from "../../../../lib/career/job-pool/types";
+import type { JobPoolMatchPresentation, JobPoolSweepProposalCoverage, JobPoolUploadSummary, JobPoolUploadView } from "../../../../lib/career/job-pool/types";
+
+/** The sweep proposal that covers the missing Kubernetes requirement of ROLE_A (unscored by contract). */
+export const kubernetesSweepCoverage: JobPoolSweepProposalCoverage = {
+  capabilityProposalId: "PCAP_K8S",
+  name: "Kubernetes Cluster Operations",
+  matchBasis: "TOKEN_CONTAINMENT",
+  matchedConstituent: null,
+  evidence: [{ docId: "DOC_CV", quote: "Operated the Kubernetes test cluster for the platform team." }],
+  evidenceState: "SOURCE_MATCH_VERIFIED",
+  authorityState: "NONE",
+  scored: false
+};
 
 export const UPLOAD_ID = "JPOOL_0123456789abcdef";
 
@@ -56,19 +68,22 @@ export const matches: JobPoolMatchPresentation = {
   poolId: "POOL_SAMPLE",
   poolVersion: 1,
   candidateCapabilityCount: 2,
+  capabilitySweep: { state: "AVAILABLE", proposalCount: 3, scored: false },
   roleMatches: [
     {
       poolRoleId: "ROLE_A", title: "Platform Engineer", seniority: "Senior", domainFocus: "Platform", poolOrganizationId: "ORG_1", organizationName: "Acme", resonanceScore: 0.75,
-      matched: [{ poolRequirementId: "REQ_1", capabilityName: "TypeScript", requiredLevel: "L4", weight: 1, necessity: "REQUIRED", matchBasis: "EXACT", matchedCapabilityName: "TypeScript", matchedCapabilityEntityId: "CAP_TS", matchedConstituent: null, confidence: 0.9, contribution: 0.75, evidence: [{ docId: "DOC_CV", quote: "Built services in TypeScript for six years." }] }],
+      matched: [{ poolRequirementId: "REQ_1", capabilityName: "TypeScript", requiredLevel: "L4", weight: 1, necessity: "REQUIRED", matchBasis: "EXACT", matchedCapabilityName: "TypeScript", matchedCapabilityEntityId: "CAP_TS", matchedConstituent: null, confidence: 0.9, contribution: 0.75, evidence: [{ docId: "DOC_CV", quote: "Built services in TypeScript for six years." }], sweepProposal: null }],
       weakEvidence: [],
-      missing: [{ poolRequirementId: "REQ_2", capabilityName: "Kubernetes", requiredLevel: "L3", weight: 0.5, necessity: "UNDECLARED", evidenceHint: "cluster operations" }],
+      missing: [{ poolRequirementId: "REQ_2", capabilityName: "Kubernetes", requiredLevel: "L3", weight: 0.5, necessity: "UNDECLARED", evidenceHint: "cluster operations", sweepProposal: kubernetesSweepCoverage }],
+      sweepOnlyCoverageCount: 1,
       canonical: { targetRoleProfileRevisionId: "TRPREV_A", targetRequirementRevisionIds: ["TRQREV_1", "TRQREV_2"], capabilityRequirementRelationState: "NOT_EVALUATED", reason: "VERIFIED_CAPABILITY_SNAPSHOT_ABSENT" }
     },
     {
       poolRoleId: "ROLE_B", title: "Data Analyst", seniority: "Mid", domainFocus: "Data", poolOrganizationId: "ORG_1", organizationName: "Acme", resonanceScore: 0.3,
       matched: [],
-      weakEvidence: [{ poolRequirementId: "REQ_3", capabilityName: "SQL", requiredLevel: "L2", weight: 0.6, necessity: "PREFERRED", matchBasis: "TOKEN_CONTAINMENT", matchedCapabilityName: "SQL Reporting", matchedCapabilityEntityId: "CAP_SQL", matchedConstituent: null, confidence: 0.3, contribution: 0.18, evidence: [{ docId: "DOC_CV", quote: "Occasional SQL reporting for the finance team." }], reason: "confidence 0.3 below weakEvidenceThreshold 0.4" }],
+      weakEvidence: [{ poolRequirementId: "REQ_3", capabilityName: "SQL", requiredLevel: "L2", weight: 0.6, necessity: "PREFERRED", matchBasis: "TOKEN_CONTAINMENT", matchedCapabilityName: "SQL Reporting", matchedCapabilityEntityId: "CAP_SQL", matchedConstituent: null, confidence: 0.3, contribution: 0.18, evidence: [{ docId: "DOC_CV", quote: "Occasional SQL reporting for the finance team." }], reason: "confidence 0.3 below weakEvidenceThreshold 0.4", sweepProposal: null }],
       missing: [],
+      sweepOnlyCoverageCount: 0,
       canonical: { targetRoleProfileRevisionId: "TRPREV_B", targetRequirementRevisionIds: ["TRQREV_3"], capabilityRequirementRelationState: "NOT_EVALUATED", reason: "VERIFIED_CAPABILITY_SNAPSHOT_ABSENT" }
     }
   ],
