@@ -10,13 +10,14 @@
  * state per role is rendered as delivered (TRPREV, TRQREV ids, NOT_EVALUATED
  * reason), and nothing here leads to the HR Decision Looper.
  *
- * PRESENTED != EVALUATED · UPLOADED != SELECTED · RANKED != RECOMMENDED · MISSING != GAP DECISION
+ * PRESENTED != EVALUATED · UPLOADED != SELECTED · RANKED != RECOMMENDED · MISSING != GAP DECISION · COVERED != SCORED
  */
 import type {
   JobPoolCanonicalMapping,
   JobPoolErrorBody,
   JobPoolMatchPresentation,
   JobPoolRoleMatch,
+  JobPoolSweepProposalCoverage,
   JobPoolUploadSummary,
   JobPoolUploadView
 } from "./types";
@@ -37,6 +38,7 @@ const NECESSITIES = ["REQUIRED", "PREFERRED", "OPTIONAL", "UNDECLARED"] as const
 const CANONICAL_NECESSITIES = ["REQUIRED", "PREFERRED", "OPTIONAL", "UNKNOWN"] as const;
 const MATCH_BASES = ["EXACT", "ALIAS", "COMPOSITE_CONSTITUENT", "TOKEN_CONTAINMENT"] as const;
 const ELIGIBILITIES = ["MATCHING_ELIGIBLE_PROPOSAL_ONLY", "MATCHING_INELIGIBLE", "MATCHING_ELIGIBILITY_UNKNOWN"] as const;
+const SWEEP_STATES = ["AVAILABLE", "NOT_PRODUCED", "FAILED"] as const;
 
 export function decodeJobPoolUploadSummary(value: unknown): JobPoolUploadSummary | null {
   if (!isRecord(value)) return null;
@@ -115,6 +117,29 @@ function decodeEvidence(value: unknown): JobPoolRoleMatch["matched"][number]["ev
   return quotes;
 }
 
+/**
+ * Coverage by a Gemini Capability Sweep proposal is unscored by contract: the entry must say so
+ * (scored === false, authority NONE, source-match-verified evidence). `undefined` means undecodable,
+ * `null` means the requirement is not covered. The key must be present on every requirement entry.
+ */
+function decodeSweepProposal(value: unknown): JobPoolSweepProposalCoverage | null | undefined {
+  if (value === null) return null;
+  if (!isRecord(value)) return undefined;
+  if (!isString(value.capabilityProposalId) || !/^PCAP_.+/.test(value.capabilityProposalId) || !isString(value.name)) return undefined;
+  if (!oneOf(value.matchBasis, MATCH_BASES)) return undefined;
+  if (!(value.matchedConstituent === null || isString(value.matchedConstituent))) return undefined;
+  if ((value.matchBasis === "COMPOSITE_CONSTITUENT") !== (typeof value.matchedConstituent === "string")) return undefined;
+  if (value.evidenceState !== "SOURCE_MATCH_VERIFIED" || value.authorityState !== "NONE" || value.scored !== false) return undefined;
+  const evidence = decodeEvidence(value.evidence);
+  if (evidence === null) return undefined;
+  return { capabilityProposalId: value.capabilityProposalId, name: value.name, matchBasis: value.matchBasis, matchedConstituent: value.matchedConstituent, evidence, evidenceState: "SOURCE_MATCH_VERIFIED", authorityState: "NONE", scored: false };
+}
+
+function sweepProposalOf(value: Record<string, unknown>): JobPoolSweepProposalCoverage | null | undefined {
+  if (!("sweepProposal" in value)) return undefined;
+  return decodeSweepProposal(value.sweepProposal);
+}
+
 function decodeMatched(value: unknown): JobPoolRoleMatch["matched"][number] | null {
   if (!isRecord(value)) return null;
   if (!isNonEmptyString(value.poolRequirementId) || !isString(value.capabilityName) || !isString(value.requiredLevel) || !isFiniteNumber(value.weight)) return null;
@@ -125,6 +150,8 @@ function decodeMatched(value: unknown): JobPoolRoleMatch["matched"][number] | nu
   if ((value.matchBasis === "COMPOSITE_CONSTITUENT") !== (typeof value.matchedConstituent === "string")) return null;
   const evidence = decodeEvidence(value.evidence);
   if (evidence === null) return null;
+  const sweepProposal = sweepProposalOf(value);
+  if (sweepProposal === undefined) return null;
   return {
     poolRequirementId: value.poolRequirementId,
     capabilityName: value.capabilityName,
@@ -137,7 +164,8 @@ function decodeMatched(value: unknown): JobPoolRoleMatch["matched"][number] | nu
     matchedConstituent: value.matchedConstituent,
     confidence: value.confidence,
     contribution: value.contribution,
-    evidence
+    evidence,
+    sweepProposal
   };
 }
 
@@ -158,11 +186,16 @@ function decodeRoleMatch(value: unknown): JobPoolRoleMatch | null {
   for (const item of value.missing) {
     if (!isRecord(item) || !isNonEmptyString(item.poolRequirementId) || !isString(item.capabilityName) || !isString(item.requiredLevel) || !isFiniteNumber(item.weight) || !oneOf(item.necessity, NECESSITIES)) return null;
     if (!(item.evidenceHint === null || isString(item.evidenceHint))) return null;
-    missing.push({ poolRequirementId: item.poolRequirementId, capabilityName: item.capabilityName, requiredLevel: item.requiredLevel, weight: item.weight, necessity: item.necessity, evidenceHint: item.evidenceHint });
+    const sweepProposal = sweepProposalOf(item);
+    if (sweepProposal === undefined) return null;
+    missing.push({ poolRequirementId: item.poolRequirementId, capabilityName: item.capabilityName, requiredLevel: item.requiredLevel, weight: item.weight, necessity: item.necessity, evidenceHint: item.evidenceHint, sweepProposal });
   }
   const canonical = value.canonical;
   if (!isNonEmptyString(canonical.targetRoleProfileRevisionId) || !isStringArray(canonical.targetRequirementRevisionIds)) return null;
   if (canonical.capabilityRequirementRelationState !== "NOT_EVALUATED" || canonical.reason !== "VERIFIED_CAPABILITY_SNAPSHOT_ABSENT") return null;
+  if (!isFiniteNumber(value.sweepOnlyCoverageCount) || !Number.isInteger(value.sweepOnlyCoverageCount) || value.sweepOnlyCoverageCount < 0) return null;
+  // The count is a claim about the delivered missing set; it must equal the covered missing entries.
+  if (value.sweepOnlyCoverageCount !== missing.filter(item => item.sweepProposal !== null).length) return null;
   return {
     poolRoleId: value.poolRoleId,
     title: value.title,
@@ -174,6 +207,7 @@ function decodeRoleMatch(value: unknown): JobPoolRoleMatch | null {
     matched,
     weakEvidence,
     missing,
+    sweepOnlyCoverageCount: value.sweepOnlyCoverageCount,
     canonical: {
       targetRoleProfileRevisionId: canonical.targetRoleProfileRevisionId,
       targetRequirementRevisionIds: canonical.targetRequirementRevisionIds,
@@ -195,6 +229,8 @@ export function decodeJobPoolMatchPresentation(value: unknown): JobPoolMatchPres
   if (block.authorityState !== "NONE" || block.canonicalEvaluation !== false || block.decision !== false || !isFiniteNumber(block.weakEvidenceThreshold)) return null;
   if (!isNonEmptyString(value.analysisId) || !isNonEmptyString(value.jobPoolUploadId) || !isNonEmptyString(value.poolId) || !isFiniteNumber(value.poolVersion) || !isFiniteNumber(value.candidateCapabilityCount)) return null;
   if (!Array.isArray(value.roleMatches) || !Array.isArray(value.organizationMatches)) return null;
+  const sweep = value.capabilitySweep;
+  if (!isRecord(sweep) || !oneOf(sweep.state, SWEEP_STATES) || !isFiniteNumber(sweep.proposalCount) || !Number.isInteger(sweep.proposalCount) || sweep.proposalCount < 0 || sweep.scored !== false) return null;
   const roleMatches: JobPoolRoleMatch[] = [];
   for (const role of value.roleMatches) { const decoded = decodeRoleMatch(role); if (decoded === null) return null; roleMatches.push(decoded); }
   const organizationMatches: JobPoolMatchPresentation["organizationMatches"] = [];
@@ -210,6 +246,7 @@ export function decodeJobPoolMatchPresentation(value: unknown): JobPoolMatchPres
     poolId: value.poolId,
     poolVersion: value.poolVersion,
     candidateCapabilityCount: value.candidateCapabilityCount,
+    capabilitySweep: { state: sweep.state, proposalCount: sweep.proposalCount, scored: false },
     roleMatches,
     organizationMatches
   };
@@ -261,13 +298,18 @@ export interface JobPoolRoleRequirementCounts {
   total: number;
   /** TRQREV ids delivered in the canonical state; compared against the three presentation sets. */
   canonicalRequirementRevisions: number;
+  /** Requirements in any set that a capability sweep proposal covers (unscored). */
+  sweepCovered: number;
+  /** Delivered sweepOnlyCoverageCount: missing requirements the sweep covers. */
+  sweepOnlyCoverage: number;
 }
 
 export function requirementCounts(role: JobPoolRoleMatch): JobPoolRoleRequirementCounts {
   const matched = role.matched.length;
   const weakEvidence = role.weakEvidence.length;
   const missing = role.missing.length;
-  return { matched, weakEvidence, missing, total: matched + weakEvidence + missing, canonicalRequirementRevisions: role.canonical.targetRequirementRevisionIds.length };
+  const sweepCovered = [...role.matched, ...role.weakEvidence, ...role.missing].filter(item => item.sweepProposal !== null).length;
+  return { matched, weakEvidence, missing, total: matched + weakEvidence + missing, canonicalRequirementRevisions: role.canonical.targetRequirementRevisionIds.length, sweepCovered, sweepOnlyCoverage: role.sweepOnlyCoverageCount };
 }
 
 /** Exact selection: the id must be one of the listed uploads; a stale URL id that is not listed is reported, not silently dropped. */

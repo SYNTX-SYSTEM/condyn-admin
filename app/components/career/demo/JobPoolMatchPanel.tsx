@@ -11,7 +11,7 @@ import {
   requirementCounts
 } from "../../../../lib/career/job-pool/frontend-presentation";
 import { useJobPoolWorkflow } from "../../../../lib/career/ui/useJobPool";
-import type { JobPoolMatchedRequirement, JobPoolMissingRequirement, JobPoolRoleMatch, JobPoolUploadSummary, JobPoolUploadView, JobPoolWeakRequirement } from "../../../../lib/career/job-pool/types";
+import type { JobPoolMatchedRequirement, JobPoolMissingRequirement, JobPoolRoleMatch, JobPoolSweepProposalCoverage, JobPoolUploadSummary, JobPoolUploadView, JobPoolWeakRequirement } from "../../../../lib/career/job-pool/types";
 
 type JobPoolCopy = (typeof SIL_COPY)[SilLocale]["jobPool"];
 
@@ -65,6 +65,19 @@ function Evidence({ quotes, t }: { quotes: JobPoolMatchedRequirement["evidence"]
   );
 }
 
+/** Unscored coverage by a capability sweep proposal: shown with its verified quote, never as a score. */
+function SweepCoverage({ testId, coverage, t }: { testId: string; coverage: JobPoolSweepProposalCoverage | null; t: JobPoolCopy }) {
+  if (coverage === null) return null;
+  return (
+    <div data-testid={testId} data-sweep-basis={coverage.matchBasis} data-proposal-id={coverage.capabilityProposalId} data-scored="false" style={{ display: "flex", flexDirection: "column", gap: "2px", paddingLeft: "8px", borderLeft: `2px solid ${SIL_TOKENS.colors.cyanActive}` }}>
+      <span style={{ ...muted, color: SIL_TOKENS.colors.cyanActive }}>
+        {t.sweepCovered}: <span style={mono}>{coverage.name}</span> ({coverage.matchBasis}{coverage.matchedConstituent !== null ? ` · ${t.constituent} ${coverage.matchedConstituent}` : ""}) · {coverage.capabilityProposalId} · <span style={chip(SIL_TOKENS.colors.tensionAmber)}>{t.unscored}</span>
+      </span>
+      <Evidence quotes={coverage.evidence} t={t} />
+    </div>
+  );
+}
+
 function MatchedRow({ roleId, item, kind, t }: { roleId: string; item: JobPoolMatchedRequirement | JobPoolWeakRequirement; kind: "matched" | "weak"; t: JobPoolCopy }) {
   return (
     <li
@@ -82,6 +95,7 @@ function MatchedRow({ roleId, item, kind, t }: { roleId: string; item: JobPoolMa
       {"reason" in item && <span style={amber}>{item.reason}</span>}
       <span style={muted}>{t.evidence}</span>
       <Evidence quotes={item.evidence} t={t} />
+      <SweepCoverage testId={`job-pool-role-${roleId}-${kind}-${item.poolRequirementId}-sweep`} coverage={item.sweepProposal} t={t} />
     </li>
   );
 }
@@ -93,6 +107,7 @@ function MissingRow({ roleId, item, t }: { roleId: string; item: JobPoolMissingR
         {item.capabilityName} <span style={muted}>· {t.level} {item.requiredLevel || "—"} · {t.weight} {item.weight} · {item.necessity}</span>
       </span>
       {item.evidenceHint !== null && <span style={muted}>{t.hint}: {item.evidenceHint}</span>}
+      <SweepCoverage testId={`job-pool-role-${roleId}-missing-${item.poolRequirementId}-sweep`} coverage={item.sweepProposal} t={t} />
     </li>
   );
 }
@@ -107,6 +122,8 @@ function RoleCard({ role, rank, t }: { role: JobPoolRoleMatch; rank: number; t: 
       data-matched-count={counts.matched}
       data-weak-count={counts.weakEvidence}
       data-missing-count={counts.missing}
+      data-sweep-covered={counts.sweepCovered}
+      data-sweep-only-coverage={counts.sweepOnlyCoverage}
       data-relation-state={role.canonical.capabilityRequirementRelationState}
       style={{ ...panelSurface, border: `1px solid ${rank === 1 ? "rgba(56, 229, 255, 0.4)" : SIL_TOKENS.colors.fieldBorder}` }}
     >
@@ -124,6 +141,7 @@ function RoleCard({ role, rank, t }: { role: JobPoolRoleMatch; rank: number; t: 
 
       <span style={sectionTitle}>{t.missing} ({counts.missing})</span>
       {role.missing.length === 0 ? <span style={muted}>{t.none}</span> : <ul style={{ margin: 0, padding: 0, listStyle: "none" }}>{role.missing.map(item => <MissingRow key={item.poolRequirementId} roleId={role.poolRoleId} item={item} t={t} />)}</ul>}
+      <span data-testid={`job-pool-role-${role.poolRoleId}-sweep-only`} data-count={counts.sweepOnlyCoverage} style={counts.sweepOnlyCoverage > 0 ? { ...muted, color: SIL_TOKENS.colors.cyanActive } : muted}>{t.sweepOnlyCoverage}: {counts.sweepOnlyCoverage}</span>
 
       <div data-testid={`job-pool-role-${role.poolRoleId}-canonical`} data-relation-state={role.canonical.capabilityRequirementRelationState} data-relation-reason={role.canonical.reason} style={{ display: "flex", flexDirection: "column", gap: "2px", paddingTop: "4px", borderTop: `1px solid ${SIL_TOKENS.colors.fieldBorder}` }}>
         <span style={sectionTitle}>{t.canonicalState}</span>
@@ -320,6 +338,11 @@ export function JobPoolMatchPanel({ jobResultAnalysisId = null, analysisId = nul
               <span style={muted}>{presentation.presentation.kind} · {presentation.presentation.policyVersion} · authority {presentation.presentation.authorityState} · canonicalEvaluation {String(presentation.presentation.canonicalEvaluation)} · decision {String(presentation.presentation.decision)}</span>
               <span style={muted}>{t.candidateCapabilities} {presentation.candidateCapabilityCount} · {t.weakThreshold} {presentation.presentation.weakEvidenceThreshold} · {presentation.poolId} v{presentation.poolVersion}</span>
               <span data-testid="job-pool-ranking" data-ranking={ranking} style={ranking === "DELIVERED_ORDER_NOT_MONOTONE" ? amber : muted}>{t.ranking[ranking]}</span>
+              <div data-testid="job-pool-capability-sweep" data-sweep-state={presentation.capabilitySweep.state} data-proposal-count={presentation.capabilitySweep.proposalCount} data-scored="false" style={{ display: "flex", flexDirection: "column", gap: "2px", padding: "6px 0", borderTop: `1px dashed ${SIL_TOKENS.colors.fieldBorder}`, borderBottom: `1px dashed ${SIL_TOKENS.colors.fieldBorder}` }}>
+                <span style={sectionTitle}>{t.sweep}</span>
+                <span style={presentation.capabilitySweep.state === "FAILED" ? red : presentation.capabilitySweep.state === "NOT_PRODUCED" ? amber : muted}>{t.sweepStates[presentation.capabilitySweep.state]} · {t.sweepProposals} {presentation.capabilitySweep.proposalCount} · <span style={chip(SIL_TOKENS.colors.tensionAmber)}>{t.unscored}</span></span>
+                <span style={muted}>{t.sweepBoundary}</span>
+              </div>
               <div data-testid="job-pool-role-list" data-role-count={presentation.roleMatches.length} style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
                 {presentation.roleMatches.map((role, index) => <RoleCard key={role.poolRoleId} role={role} rank={index + 1} t={t} />)}
               </div>

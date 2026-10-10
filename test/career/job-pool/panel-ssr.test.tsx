@@ -10,6 +10,17 @@ import { SemanticCareerIntelligenceField } from "../../../app/components/career/
 import { CareerIntelligenceDashboard } from "../../../app/components/career/demo/CareerIntelligenceDashboard";
 import { JobPoolMatchPanel } from "../../../app/components/career/demo/JobPoolMatchPanel";
 import { EMPTY_CAREER_INTELLIGENCE_DATA } from "../../../app/career/demo/demo-data";
+import { matches, UPLOAD_ID } from "./fixtures/match-bodies";
+
+vi.mock("../../../lib/career/ui/useJobPool", async (importOriginal) => {
+  const original = await importOriginal<typeof import("../../../lib/career/ui/useJobPool")>();
+  return {
+    ...original,
+    useJobPoolWorkflow: (options: { analysisId: string | null; initialJobPoolUploadId?: string | null }) => options.initialJobPoolUploadId === "JPOOL_WITH_MATCHES"
+      ? { pools: { state: "EMPTY" }, upload: { state: "IDLE" }, selectedJobPoolUploadId: UPLOAD_ID, view: { state: "IDLE" }, matches: { state: "AVAILABLE", jobPoolUploadId: UPLOAD_ID, analysisId: "ANL_TEST", matches }, submitUpload: vi.fn(), select: vi.fn(), reloadPools: vi.fn(), reloadMatches: vi.fn() }
+      : { pools: { state: "IDLE" }, upload: { state: "IDLE" }, selectedJobPoolUploadId: options.initialJobPoolUploadId ?? null, view: { state: "IDLE" }, matches: { state: "IDLE" }, submitUpload: vi.fn(), select: vi.fn(), reloadPools: vi.fn(), reloadMatches: vi.fn() }
+  };
+});
 
 const chrome = ["semantic-career-intelligence-field", "semantic-zoom-telemetry", "identity-core-wrapper", "decision-graph-inspector-idle", "how-this-works-btn", "open-system-codex-btn", "semantic-guide-drawer-toggle"];
 const stages = ["01", "02", "03", "04", "05", "06"];
@@ -60,6 +71,24 @@ describe("SIL Job Pool panel (server-rendered field)", () => {
     expect(de).not.toContain("JOB POOL CONNECTION");
     const en = renderToString(<JobPoolMatchPanel jobPoolUploadId="JPOOL_SSR" locale="en" />);
     expect(en).toContain("JOB POOL CONNECTION");
+  });
+
+  it("renders sweep coverage as unscored coverage with its quote, per entry, per role and per response", () => {
+    const html = renderToString(<JobPoolMatchPanel jobPoolUploadId="JPOOL_WITH_MATCHES" analysisId="ANL_TEST" />);
+    expect(html).toContain('data-testid="job-pool-capability-sweep"');
+    expect(html).toContain('data-sweep-state="AVAILABLE"');
+    expect(html).toContain('data-proposal-count="3"');
+    expect(html).toContain("SWEEP PROPOSALS READ");
+    expect(html).toContain('data-testid="job-pool-role-ROLE_A-missing-REQ_2-sweep"');
+    expect(html).toContain('data-sweep-basis="TOKEN_CONTAINMENT"');
+    expect(html).toContain("COVERED BY THE CAPABILITY SWEEP");
+    expect(html).toContain("Kubernetes Cluster Operations");
+    expect(html).toContain("Operated the Kubernetes test cluster for the platform team.");
+    expect(html).toContain('data-sweep-only-coverage="1"');
+    expect(html).toContain('data-sweep-only-coverage="0"');
+    expect(html).not.toContain("job-pool-role-ROLE_A-matched-REQ_1-sweep");
+    expect(html).toContain("COVERED != SCORED");
+    expect((html.match(/UNSCORED/g) ?? []).length).toBeGreaterThanOrEqual(2);
   });
 
   it("threads the exact ids from the dashboard to the field", () => {

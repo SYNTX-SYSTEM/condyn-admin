@@ -352,7 +352,18 @@ export const SIL_COPY = {
       relation: "CAPABILITY-REQUIREMENT RELATION",
       organizations: "ORGANIZATION AGGREGATES (PRESENTATION)",
       missingBoundary: "Missing requirements are the delivered presentation gaps of this pool. They are not recommendations, not a decision and not an input to the HR Decision Loop.",
-      nonClaims: "PRESENTED != EVALUATED · UPLOADED != SELECTED · RANKED != RECOMMENDED · MISSING != GAP DECISION"
+      sweep: "CAPABILITY SWEEP COVERAGE (UNSCORED)",
+      sweepStates: {
+        AVAILABLE: "SWEEP PROPOSALS READ",
+        NOT_PRODUCED: "NO SWEEP PROPOSALS RECORDED FOR THIS ANALYSIS",
+        FAILED: "SWEEP PROJECTION COULD NOT BE READ (LINEAGE INVALID)"
+      },
+      sweepProposals: "PROPOSALS",
+      sweepBoundary: "Coverage by a Gemini Capability Sweep proposal is shown with its source-verified quote. It is unscored proposal coverage: not a score, it changes no resonanceScore, not a canonical evaluation, not a decision.",
+      sweepCovered: "COVERED BY THE CAPABILITY SWEEP",
+      sweepOnlyCoverage: "MISSING REQUIREMENTS COVERED BY THE SWEEP (UNSCORED)",
+      unscored: "UNSCORED",
+      nonClaims: "PRESENTED != EVALUATED · UPLOADED != SELECTED · RANKED != RECOMMENDED · MISSING != GAP DECISION · COVERED != SCORED"
     },
 
     emptyStates: {
@@ -721,7 +732,18 @@ export const SIL_COPY = {
       relation: "CAPABILITY-REQUIREMENT-RELATION",
       organizations: "ORGANISATIONS-AGGREGATE (PRÄSENTATION)",
       missingBoundary: "Fehlende Anforderungen sind die gelieferten Präsentationslücken dieses Pools. Sie sind keine Empfehlungen, keine Entscheidung und kein Input für die HR-Entscheidungsschleife.",
-      nonClaims: "PRÄSENTIERT != BEWERTET · HOCHGELADEN != AUSGEWÄHLT · GEREIHT != EMPFOHLEN · FEHLEND != LÜCKENENTSCHEIDUNG"
+      sweep: "CAPABILITY-SWEEP-ABDECKUNG (UNBEWERTET)",
+      sweepStates: {
+        AVAILABLE: "SWEEP-VORSCHLÄGE GELESEN",
+        NOT_PRODUCED: "KEINE SWEEP-VORSCHLÄGE FÜR DIESE ANALYSE AUFGEZEICHNET",
+        FAILED: "SWEEP-PROJEKTION KONNTE NICHT GELESEN WERDEN (LINIE UNGÜLTIG)"
+      },
+      sweepProposals: "VORSCHLÄGE",
+      sweepBoundary: "Abdeckung durch einen Gemini-Capability-Sweep-Vorschlag wird mit dem quellverifizierten Zitat gezeigt. Sie ist unbewertete Vorschlagsabdeckung: kein Score, ändert keinen resonanceScore, keine kanonische Bewertung, keine Entscheidung.",
+      sweepCovered: "DURCH DEN CAPABILITY-SWEEP ABGEDECKT",
+      sweepOnlyCoverage: "FEHLENDE ANFORDERUNGEN, DIE DER SWEEP ABDECKT (UNBEWERTET)",
+      unscored: "UNBEWERTET",
+      nonClaims: "PRÄSENTIERT != BEWERTET · HOCHGELADEN != AUSGEWÄHLT · GEREIHT != EMPFOHLEN · FEHLEND != LÜCKENENTSCHEIDUNG · ABGEDECKT != BEWERTET"
     },
 
     emptyStates: {
