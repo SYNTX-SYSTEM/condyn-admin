@@ -138,3 +138,45 @@ Response types are exported from `lib/career/job-pool/types.ts`.
 - **B-JP-ACTOR:** the uploader is self-declared, not authenticated (same class as HR boundary B2).
 - **B-ENTRY (C5):** tables are registered only on verified disposable databases. Without an owner-approved migration
   the job pool routes have no production path; on any other database they answer 503 and issue no DDL.
+
+## 8. Defects found and repaired in this field (2026-10-10)
+
+Each defect was found on a disposable database (runner or manual environment, role `condyn_test_runner`), proven
+red, repaired and covered by a regression test. D-JP-2 to D-JP-5 sit in the existing Gemini pipeline and are visible
+only with real PostgreSQL and real model output; the earlier wiring tests use doubles.
+
+| Id | Defect | Symptom | Repair | Proof |
+| --- | --- | --- | --- | --- |
+| D-JP-1 | Legacy matchers read `capability.name`; analyses carry `identity.name` | every real analysis scores 0 against every pool | shared `extractAnalysisCapabilities` (both shapes) | `test/career/matching-identity-name.test.ts` |
+| D-JP-2 | Loaders stamp a wall-clock `metadata.loadedAt` | a retried job rebuilds a different `CSB_<jobId>` → permanent `ERR_CANDIDATE_SOURCE_BUNDLE_IMMUTABLE_CONFLICT` | processor pins `loadedAt` to `job.createdAt` | `test/career-worker-retry-source-bundle.test.ts` |
+| D-JP-3 | F10A bridge sets an explicit `pages: undefined` key, which JSONB drops | every real job: attempt 1 `…PERSISTENCE_INVALID`, retries `…IMMUTABLE_CONFLICT` | processor persists the bundle in its JSON-stable form; bridge and its contract unchanged | same file, JSONB-like strict store |
+| D-JP-4 | Projection reader resolves each content-addressed evidence id to one candidate | `GET /api/career/analyses/[id]` 500 when two proposals cite one sentence | reader keeps the set of holders; divergent claims under one id still fail | `test/career/capability-core/projection/shared-evidence.test.ts` |
+| D-JP-5 | Provenance check demands unique per-quote documents | same 500 when a proposal has two quotes from one document | compare distinct documents | same file |
+
+The worker now logs every failed attempt (`[Worker …] FAILED …`), because the job row keeps only the last summary.
+
+## 9. Live evidence (manual environment, real Gemini, disposable database)
+
+Run on `condyn_test_a1b4da2c0dfb9bbf` with the operator's `GEMINI_API_KEY` and `GEMINI_MODEL` from
+`/home/codi/Entwicklung/condyn-admin/.env.local`, a fresh `PROMPT_ENCRYPTION_KEY`, worker and server bound only to
+the verified URL. Input: a synthetic CV text (no personal data).
+
+| Step | Result |
+| --- | --- |
+| `POST /api/career/job-pools` (sample) / repeated | 201 / 200, `JPOOL_30F7145E21F34BEF0FCE510DFC75837B`, 6 roles, 28 TRQREV |
+| `POST /api/career/analyze` before D-JP-2/3 | job FAILED after 3 attempts, `ERR_CANDIDATE_SOURCE_BUNDLE_IMMUTABLE_CONFLICT` |
+| same after the repairs | job SUCCEEDED in one attempt (89 s), `ANL_1791656796738_760` |
+| `GET /api/career/analyses/[id]` before D-JP-4/5 / after | 500 / 200 |
+| `GET …/matches` before COMPOSITE_CONSTITUENT | full-stack 0.5167, most requirements weak (composite names) |
+| `GET …/matches` after | full-stack 0.8152 (TypeScript, React, Node.js, PostgreSQL matched; Automated Testing missing), data 0.6387, frontend lead 0.4486, platform 0.3375, ML 0.2700, architect 0 |
+| server log | 0 PostgreSQL notice objects |
+
+Environment boundary B-JP-MODEL: the default cascade `DEFAULT_GEMINI_MODEL_CASCADE` starts with models that the
+API no longer serves to this key (GRÜN's probe: `gemini-2.0-flash` 404, `gemini-2.5-flash` unavailable to new users).
+The operator must set `GEMINI_MODEL`; the env file names `gemini-3.1-pro-preview`, GRÜN's run used
+`gemini-3.8-flash`. Changing the default cascade is left to the owner.
+
+Presentation boundary B-JP-PROPOSALS: matching reads the legacy analysis capabilities (the documented input of the
+pool spec). The capability proposals of the same job are finer (e.g. "Test-Driven Development (TDD)",
+"Kubernetes Deployment") but carry no confidence; using them as a candidate surface needs a decision on how
+proposals without confidence enter the CP-I score.
