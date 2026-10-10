@@ -16,7 +16,8 @@
     "hr-loop:local:seed": "tsx scripts/hr-decision-loop-local.ts seed",
     "hr-loop:local:serve": "tsx scripts/hr-decision-loop-local.ts serve",
     "hr-loop:local:status": "tsx scripts/hr-decision-loop-local.ts status",
-    "hr-loop:local:drop": "tsx scripts/hr-decision-loop-local.ts drop"
+    "hr-loop:local:drop": "tsx scripts/hr-decision-loop-local.ts drop",
+    "job-pool:local": "tsx scripts/hr-decision-loop-local.ts up --with-worker"
   },
   "dependencies": {
     "@google/genai": "^2.10.0",

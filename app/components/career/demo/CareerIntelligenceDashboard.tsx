@@ -16,6 +16,8 @@ export interface CareerIntelligenceDashboardProps {
   canonicalSilAssociationId?: string;
   careerDecisionContextRevisionId?: string;
   decisionContextRevisionId?: string;
+  analysisId?: string;
+  jobPoolUploadId?: string;
 }
 
 /**
@@ -24,7 +26,7 @@ export interface CareerIntelligenceDashboardProps {
  *
  * Supports switching between FIELD MODE (Radial Organism) and LIST MODE (Vertical Flow).
  */
-export function CareerIntelligenceDashboard({ data, canonicalSilAssociationId, careerDecisionContextRevisionId, decisionContextRevisionId }: CareerIntelligenceDashboardProps) {
+export function CareerIntelligenceDashboard({ data, canonicalSilAssociationId, careerDecisionContextRevisionId, decisionContextRevisionId, analysisId, jobPoolUploadId }: CareerIntelligenceDashboardProps) {
   const [mode, setMode] = useState<"FIELD" | "LIST">("FIELD");
 
   return (
@@ -72,6 +74,8 @@ export function CareerIntelligenceDashboard({ data, canonicalSilAssociationId, c
         canonicalSilAssociationId={canonicalSilAssociationId}
         careerDecisionContextRevisionId={careerDecisionContextRevisionId}
         decisionContextRevisionId={decisionContextRevisionId}
+        analysisId={analysisId}
+        jobPoolUploadId={jobPoolUploadId}
       />
     </div>
   );
