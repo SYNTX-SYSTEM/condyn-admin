@@ -3,10 +3,17 @@
 import React, { useState } from "react";
 import { SIL_TOKENS } from "./SILTokens";
 import { SIL_COPY, type SilLocale } from "../../../../lib/career/view-model/sil-language";
-import { boundDecisionContextRevisionIds } from "../../../../lib/career/hr-decision-loop/frontend-presentation";
-import { useHrDecisionLoop } from "../../../../lib/career/ui/useHrDecisionLoop";
+import {
+  boundDecisionContextRevisionIds,
+  decisionRevisionBindingIdsFor,
+  decisionRevisionBindingRegionState,
+  describeDecisionContextLineage
+} from "../../../../lib/career/hr-decision-loop/frontend-presentation";
+import { useHrDecisionLoop, type DecisionContextEntry } from "../../../../lib/career/ui/useHrDecisionLoop";
 import type {
+  DecisionContextRevisionLineageDescriptor,
   DecisionContextRevisionPresentation,
+  HrDecisionLoopContextLink,
   HrDecisionLoopPresentation,
   HrDecisionLoopPresentationRegion
 } from "../../../../lib/career/hr-decision-loop/frontend-presentation";
@@ -92,6 +99,31 @@ const buttonStyle = (active: boolean): React.CSSProperties => ({
   cursor: active ? "pointer" : "not-allowed"
 });
 
+/** Exact navigation to another persisted DCTXREV through the same URL contract; it opens that context, it selects nothing. */
+function contextHref(careerDecisionContextRevisionId: string): string {
+  return `?careerDecisionContextRevisionId=${encodeURIComponent(careerDecisionContextRevisionId)}`;
+}
+
+function ContextLinks({ links, currentContextId, t }: { links: readonly HrDecisionLoopContextLink[]; currentContextId: string; t: DecisionLoopCopy }) {
+  const foreign = links.filter(link => link.careerDecisionContextRevisionId !== currentContextId);
+  if (foreign.length === 0) return null;
+  return (
+    <span style={muted}>
+      {foreign.map(link => (
+        <a
+          key={`${link.label}:${link.careerDecisionContextRevisionId}`}
+          data-testid={`hr-decision-loop-context-link-${link.careerDecisionContextRevisionId}`}
+          data-navigates-to-context={link.careerDecisionContextRevisionId}
+          href={contextHref(link.careerDecisionContextRevisionId)}
+          style={{ ...mono, color: SIL_TOKENS.colors.cyanActive, marginRight: "10px" }}
+        >
+          {t.openContext} · {link.label}
+        </a>
+      ))}
+    </span>
+  );
+}
+
 function RegionRail({ presentation, t }: { presentation: HrDecisionLoopPresentation; t: DecisionLoopCopy }) {
   return (
     <div data-testid="hr-decision-loop-chain" style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
@@ -120,6 +152,7 @@ function RegionRail({ presentation, t }: { presentation: HrDecisionLoopPresentat
                   </span>
                 ))}
               </span>
+              <ContextLinks links={row.contextLinks} currentContextId={presentation.careerDecisionContextRevisionId} t={t} />
             </div>
           ))}
         </div>
@@ -128,10 +161,36 @@ function RegionRail({ presentation, t }: { presentation: HrDecisionLoopPresentat
   );
 }
 
-function RevisionCard({ revision, t }: { revision: DecisionContextRevisionPresentation; t: DecisionLoopCopy }) {
+type BindingLabel = { kind: "BOUND"; bindingIds: string[] } | { kind: "UNBOUND" } | { kind: "UNKNOWN" };
+
+function RevisionCard({ revision, descriptor, binding, t }: { revision: DecisionContextRevisionPresentation; descriptor: DecisionContextRevisionLineageDescriptor; binding: BindingLabel; t: DecisionLoopCopy }) {
+  const characterCopy = descriptor.returnCharacter === "ROOT" ? null
+    : descriptor.returnCharacter === "INVENTORY_UNCHANGED" ? t.inventoryUnchanged
+    : descriptor.returnCharacter === "INVENTORY_EXTENDED" ? t.inventoryExtended
+    : t.predecessorNotRead;
   return (
-    <div data-testid={`decision-context-revision-${revision.revisionId}`} style={{ ...panelSurface, borderColor: "rgba(56, 229, 255, 0.35)" }}>
+    <div
+      data-testid={`decision-context-revision-${revision.revisionId}`}
+      data-revision-position={descriptor.position}
+      data-return-character={descriptor.returnCharacter}
+      data-binding-state={binding.kind}
+      style={{ ...panelSurface, borderColor: "rgba(56, 229, 255, 0.35)" }}
+    >
       <span style={{ ...mono, fontWeight: 700 }}>{revision.revisionId}</span>
+      <span style={{ ...muted, color: SIL_TOKENS.colors.cyanActive }}>
+        {descriptor.position === "ROOT" ? t.revisionRoot : t.revisionChild}
+        {" · "}
+        {binding.kind === "BOUND" ? `${t.boundToThisContext} · ${binding.bindingIds.join(", ")}` : binding.kind === "UNBOUND" ? t.notBoundToThisContext : t.bindingStateUnknown}
+      </span>
+      {characterCopy && (
+        <span data-testid={`decision-context-revision-character-${revision.revisionId}`} style={{ ...muted, color: descriptor.returnCharacter === "INVENTORY_EXTENDED" ? SIL_TOKENS.colors.tensionAmber : SIL_TOKENS.colors.textMuted }}>
+          {characterCopy}
+        </span>
+      )}
+      {descriptor.addedSourceStateReferences.length > 0 && (
+        <span style={muted}>{t.addedReferences}: {descriptor.addedSourceStateReferences.map(reference => `${reference.authorityContractId} · ${reference.artifactId}`).join("; ")}</span>
+      )}
+      {descriptor.addedItemIds.length > 0 && <span style={muted}>{t.addedItems}: {descriptor.addedItemIds.join(", ")}</span>}
       <span style={muted}>previousRevisionId: {revision.previousRevisionId ?? "null"}</span>
       <span style={muted}>contextId: {revision.contextId}</span>
       <span style={muted}>validationStatus: {revision.validationStatus}</span>
@@ -169,6 +228,26 @@ export function HrDecisionLoopDock({ careerDecisionContextRevisionId, decisionCo
   const [nextRevisionInput, setNextRevisionInput] = useState(decisionContextRevisionId ?? "");
 
   const presentation = loop.state === "AVAILABLE" ? loop.presentation : null;
+  const boundIds = presentation ? boundDecisionContextRevisionIds(presentation) : [];
+  const bindingRegion = presentation ? decisionRevisionBindingRegionState(presentation) : null;
+  /** Bound here means a persisted DCDRB of this exact context names the DREV; unknown when the binding family itself is not readable. */
+  const bindingLabelFor = (revisionId: string): BindingLabel => {
+    if (!presentation || bindingRegion === null || (bindingRegion.state !== "AVAILABLE" && bindingRegion.state !== "EMPTY")) return { kind: "UNKNOWN" };
+    const bindingIds = decisionRevisionBindingIdsFor(presentation, revisionId);
+    return bindingIds.length > 0 ? { kind: "BOUND", bindingIds } : { kind: "UNBOUND" };
+  };
+  /** Keeps the URL an honest record of the explicit id the dock is reading; it never rewrites the DCTXREV. */
+  const openRevision = (revisionId: string, entry: DecisionContextEntry) => {
+    setNextRevisionInput(revisionId);
+    if (typeof window !== "undefined" && typeof window.history?.replaceState === "function") {
+      try {
+        const url = new URL(window.location.href);
+        url.searchParams.set("decisionContextRevisionId", revisionId);
+        window.history.replaceState(window.history.state, "", url.toString());
+      } catch { /* navigation state is a convenience, never a requirement */ }
+    }
+    void loadNextContext(revisionId, entry);
+  };
   const evidenceRefs = evidenceText.split("\n").map(line => line.trim()).filter(line => line.length > 0);
   const canDeclare = presentation !== null && declaration.state !== "SUBMITTING" && declarantActorId.trim().length > 0 && declarationClass.length > 0 && evidenceRefs.length > 0;
 
@@ -233,9 +312,9 @@ export function HrDecisionLoopDock({ careerDecisionContextRevisionId, decisionCo
       <section data-testid="hr-decision-loop-context" style={panelSurface}>
         <h4 style={sectionTitle}>{t.context}</h4>
         <span style={mono}>{careerDecisionContextRevisionId}</span>
-        {loop.state === "LOADING" && <span style={muted}>{t.loading}</span>}
+        {(loop.state === "IDLE" || loop.state === "LOADING") && <span data-testid="hr-decision-loop-loading" style={muted}>{t.loading}</span>}
         {loop.state === "NOT_FOUND" && <span data-testid="hr-decision-loop-not-found" style={{ ...muted, color: regionColor("FAILED") }}>{t.notFound}</span>}
-        {loop.state === "FAILED" && <span data-testid="hr-decision-loop-failed" style={{ ...muted, color: regionColor("FAILED") }}>{t.readFailed}{loop.code ? ` · ${loop.code}` : ""}</span>}
+        {loop.state === "FAILED" && <span data-testid="hr-decision-loop-failed" style={{ ...muted, color: regionColor("FAILED") }}>{t.readFailed}{loop.code ? ` · ${loop.code}` : ""}{loop.reason ? ` · ${loop.reason}` : ""}</span>}
         {presentation && (
           <>
             <span style={muted}>{t.authority}</span>
@@ -313,47 +392,66 @@ export function HrDecisionLoopDock({ careerDecisionContextRevisionId, decisionCo
       <section data-testid="hr-decision-loop-next-context" style={panelSurface}>
         <h4 style={sectionTitle}>{t.nextContext}</h4>
         <span style={muted}>{t.nextContextHint}</span>
-        {presentation && (() => {
-          const bound = boundDecisionContextRevisionIds(presentation);
-          return (
-            <div data-testid="hr-decision-loop-bound-revisions" data-bound-count={bound.length} style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
-              <span style={muted}>{t.boundRevisions}</span>
-              {bound.length === 0 && <span data-testid="hr-decision-loop-bound-revisions-none" style={muted}>{t.boundRevisionsNone}</span>}
-              {bound.map(revisionId => (
+        {presentation && (
+          <div data-testid="hr-decision-loop-bound-revisions" data-bound-count={boundIds.length} data-binding-region-state={bindingRegion?.state ?? "ABSENT"} style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
+            <span style={muted}>{t.boundRevisions}</span>
+            {bindingRegion?.state === "NOT_PROVISIONED" && <span data-testid="hr-decision-loop-bound-revisions-not-provisioned" style={{ ...muted, color: SIL_TOKENS.colors.tensionAmber }}>{t.boundRevisionsNotProvisioned}</span>}
+            {bindingRegion?.state === "FAILED" && <span data-testid="hr-decision-loop-bound-revisions-failed" style={{ ...muted, color: regionColor("FAILED") }}>{t.boundRevisionsFailed}{bindingRegion.failureCode ? ` · ${bindingRegion.failureCode}` : ""}</span>}
+            {bindingRegion?.state === "EMPTY" && <span data-testid="hr-decision-loop-bound-revisions-none" style={muted}>{t.boundRevisionsNone}</span>}
+            {boundIds.map(revisionId => {
+              const bindingIds = decisionRevisionBindingIdsFor(presentation, revisionId);
+              return (
                 <button
                   key={revisionId}
                   type="button"
                   data-testid={`bound-decision-context-revision-${revisionId}`}
                   disabled={nextContext.state === "LOADING"}
-                  onClick={() => { setNextRevisionInput(revisionId); void loadNextContext(revisionId); }}
+                  onClick={() => openRevision(revisionId, { kind: "BINDING", careerDecisionContextDecisionRevisionBindingId: bindingIds[0] ?? "" })}
                   style={{ ...buttonStyle(true), ...mono, textAlign: "left" }}
                 >
-                  {revisionId}
+                  {revisionId} · {bindingIds.join(", ")}
                 </button>
-              ))}
-            </div>
-          );
-        })()}
+              );
+            })}
+          </div>
+        )}
         <div style={{ display: "flex", gap: "6px" }}>
           <input data-testid="next-context-revision-input" placeholder={t.nextContextInput} value={nextRevisionInput} onChange={event => setNextRevisionInput(event.target.value)} style={inputStyle} />
           <button
             type="button"
             data-testid="next-context-load-btn"
             disabled={nextRevisionInput.trim().length === 0 || nextContext.state === "LOADING"}
-            onClick={() => void loadNextContext(nextRevisionInput.trim())}
+            onClick={() => openRevision(nextRevisionInput.trim(), { kind: "INPUT" })}
             style={{ ...buttonStyle(nextRevisionInput.trim().length > 0), whiteSpace: "nowrap" }}
           >
             {nextContext.state === "LOADING" ? t.nextContextLoading : t.nextContextLoad}
           </button>
         </div>
+        {nextContext.state !== "IDLE" && (
+          <span data-testid="next-context-entry" data-entry-kind={nextContext.entry.kind} style={muted}>
+            {t.entryLabel}: {nextContext.entry.kind === "URL" ? t.entryUrl : nextContext.entry.kind === "INPUT" ? t.entryInput : `${t.entryBinding} · ${nextContext.entry.careerDecisionContextDecisionRevisionBindingId}`} · {nextContext.revisionId}
+          </span>
+        )}
         {nextContext.state === "NOT_FOUND" && <span data-testid="next-context-not-found" style={{ ...muted, color: regionColor("FAILED") }}>{t.nextContextNotFound}</span>}
         {nextContext.state === "FAILED" && <span data-testid="next-context-failed" style={{ ...muted, color: regionColor("FAILED") }}>{t.nextContextFailed}{nextContext.code ? ` · ${nextContext.code}` : ""}</span>}
         {nextContext.state === "AVAILABLE" && (
           <div data-testid="next-context-lineage" data-lineage-terminal={nextContext.lineage.terminal} style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
             <span style={muted}>{t.lineage} · {nextContext.lineage.revisions.length}</span>
-            {nextContext.lineage.revisions.map(revision => <RevisionCard key={revision.revisionId} revision={revision} t={t} />)}
-            <span style={muted}>
-              {nextContext.lineage.terminal === "ROOT_REACHED" ? t.rootReached : nextContext.lineage.terminal === "PREDECESSOR_NOT_FOUND" ? t.predecessorNotFound : nextContext.lineage.terminal === "PREDECESSOR_UNDECODABLE" ? t.predecessorUndecodable : t.depthBound}
+            {describeDecisionContextLineage(nextContext.lineage.revisions).map((descriptor, index) => (
+              <RevisionCard
+                key={descriptor.revisionId}
+                revision={nextContext.lineage.revisions[index]}
+                descriptor={descriptor}
+                binding={bindingLabelFor(descriptor.revisionId)}
+                t={t}
+              />
+            ))}
+            <span data-testid="next-context-terminal" style={{ ...muted, color: nextContext.lineage.terminal === "ROOT_REACHED" ? SIL_TOKENS.colors.textMuted : SIL_TOKENS.colors.tensionAmber }}>
+              {nextContext.lineage.terminal === "ROOT_REACHED" ? t.rootReached
+                : nextContext.lineage.terminal === "PREDECESSOR_NOT_FOUND" ? t.predecessorNotFound
+                : nextContext.lineage.terminal === "PREDECESSOR_READ_FAILED" ? `${t.predecessorReadFailed}${nextContext.lineage.failureCode ? ` · ${nextContext.lineage.failureCode}` : ""}`
+                : nextContext.lineage.terminal === "PREDECESSOR_UNDECODABLE" ? t.predecessorUndecodable
+                : t.depthBound}
             </span>
           </div>
         )}

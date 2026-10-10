@@ -102,7 +102,7 @@ describe("HR Decision Loop read service", () => {
     expect(reader.indexes[0]).toBe(baseId);
     expect(reader.indexes.slice(1).sort()).toEqual([first, branch].map(revision => revision.careerOutcomeValenceFeedbackContextRevisionId).sort().concat([subsequent.careerOutcomeValenceFeedbackContextRevisionId]).sort());
     expect(fixture.context.careerDecisionContextRevisionId).not.toBe(baseId);
-  });
+  }, 20_000); // the T13H fixture rebuilds the full sealed feedback lineage; a load-sensitive budget, as in T49, keeps a proven walk from a false timeout
 
   it("fails closed for an absent or malformed context id", async () => {
     const { base } = await dependencies();

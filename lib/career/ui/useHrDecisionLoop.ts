@@ -5,6 +5,7 @@ import {
   decodeHrDecisionLoopPresentation,
   decodeHumanDecisionRecordPresentation,
   walkDecisionContextLineage,
+  type DecisionContextLineageRead,
   type DecisionContextLineagePresentation,
   type HrDecisionLoopPresentation,
   type HumanDecisionRecordPresentation
@@ -30,7 +31,7 @@ export type HrDecisionLoopReadState =
   | { state: "LOADING" }
   | { state: "AVAILABLE"; presentation: HrDecisionLoopPresentation }
   | { state: "NOT_FOUND" }
-  | { state: "FAILED"; code: string | null };
+  | { state: "FAILED"; code: string | null; reason: string | null };
 
 export type HrDecisionDeclarationState =
   | { state: "IDLE" }
@@ -39,12 +40,23 @@ export type HrDecisionDeclarationState =
   | { state: "REJECTED"; code: string; reason: string | null }
   | { state: "FAILED"; code: string | null };
 
+/**
+ * How the exact DREV id entered the dock. An id from the URL or the input is
+ * an explicit assumption of the operator; an id from a DCDRB binding is a
+ * persisted structural witness of this context. Neither makes the revision
+ * current, accepted or a governed return.
+ */
+export type DecisionContextEntry =
+  | { kind: "URL" }
+  | { kind: "INPUT" }
+  | { kind: "BINDING"; careerDecisionContextDecisionRevisionBindingId: string };
+
 export type DecisionContextLineageState =
   | { state: "IDLE" }
-  | { state: "LOADING" }
-  | { state: "AVAILABLE"; lineage: DecisionContextLineagePresentation }
-  | { state: "NOT_FOUND" }
-  | { state: "FAILED"; code: string | null };
+  | { state: "LOADING"; revisionId: string; entry: DecisionContextEntry }
+  | { state: "AVAILABLE"; revisionId: string; entry: DecisionContextEntry; lineage: DecisionContextLineagePresentation }
+  | { state: "NOT_FOUND"; revisionId: string; entry: DecisionContextEntry }
+  | { state: "FAILED"; revisionId: string; entry: DecisionContextEntry; code: string | null };
 
 export interface HrDecisionDeclarationDraft {
   declarantActorId: string;
@@ -73,9 +85,9 @@ export async function fetchHrDecisionLoop(careerDecisionContextRevisionId: strin
   const response = await fetcher(`${HR_DECISION_LOOP_CONTEXT_ROUTE}/${encodeURIComponent(careerDecisionContextRevisionId)}`);
   const payload = await readJson(response);
   if (response.status === 404) return { state: "NOT_FOUND" };
-  if (!response.ok) return { state: "FAILED", code: publicErrorCode(payload) };
+  if (!response.ok) return { state: "FAILED", code: publicErrorCode(payload), reason: publicErrorReason(payload) };
   const presentation = isRecord(payload) ? decodeHrDecisionLoopPresentation(payload.hrDecisionLoop) : null;
-  return presentation === null ? { state: "FAILED", code: null } : { state: "AVAILABLE", presentation };
+  return presentation === null ? { state: "FAILED", code: null, reason: null } : { state: "AVAILABLE", presentation };
 }
 
 export async function declareHumanDecision(
@@ -110,25 +122,28 @@ export async function declareHumanDecision(
   return { state: "FAILED", code };
 }
 
-export async function readDecisionContextLineage(revisionId: string, fetcher: typeof fetch = fetch): Promise<DecisionContextLineageState> {
-  let first = true;
-  let failure: DecisionContextLineageState | null = null;
-  const lineage = await walkDecisionContextLineage(revisionId, async (id) => {
-    const response = await fetcher(`${DECISION_CONTEXT_API_ROUTE}/${encodeURIComponent(id)}`);
-    const payload = await readJson(response);
-    if (response.status === 404) {
-      if (first) failure = { state: "NOT_FOUND" };
-      return null;
-    }
-    if (!response.ok) {
-      if (first) failure = { state: "FAILED", code: publicErrorCode(payload) };
-      return null;
-    }
-    first = false;
-    return isRecord(payload) ? payload.revision ?? null : null;
-  });
-  if (failure !== null) return failure;
-  return { state: "AVAILABLE", lineage };
+/** Exact read of one DREV through the frozen API v1; absence and failure stay distinct facts. */
+export async function readDecisionContextRevisionExact(revisionId: string, fetcher: typeof fetch = fetch): Promise<DecisionContextLineageRead> {
+  let response: Response;
+  try {
+    response = await fetcher(`${DECISION_CONTEXT_API_ROUTE}/${encodeURIComponent(revisionId)}`);
+  } catch {
+    return { kind: "FAILED", code: null };
+  }
+  const payload = await readJson(response);
+  if (response.status === 404) return { kind: "ABSENT" };
+  if (!response.ok) return { kind: "FAILED", code: publicErrorCode(payload) };
+  return { kind: "REVISION", value: isRecord(payload) ? payload.revision ?? null : null };
+}
+
+export async function readDecisionContextLineage(revisionId: string, entry: DecisionContextEntry = { kind: "INPUT" }, fetcher: typeof fetch = fetch): Promise<DecisionContextLineageState> {
+  const lineage = await walkDecisionContextLineage(revisionId, id => readDecisionContextRevisionExact(id, fetcher));
+  if (lineage.revisions.length === 0) {
+    if (lineage.terminal === "PREDECESSOR_NOT_FOUND") return { state: "NOT_FOUND", revisionId, entry };
+    if (lineage.terminal === "PREDECESSOR_READ_FAILED") return { state: "FAILED", revisionId, entry, code: lineage.failureCode ?? null };
+    if (lineage.terminal === "PREDECESSOR_UNDECODABLE") return { state: "FAILED", revisionId, entry, code: null };
+  }
+  return { state: "AVAILABLE", revisionId, entry, lineage };
 }
 
 export function useHrDecisionLoop(careerDecisionContextRevisionId: string | null, initialDecisionContextRevisionId: string | null = null) {
@@ -143,21 +158,24 @@ export function useHrDecisionLoop(careerDecisionContextRevisionId: string | null
     generation.current = current;
     setLoop({ state: "LOADING" });
     let next: HrDecisionLoopReadState;
-    try { next = await fetchHrDecisionLoop(careerDecisionContextRevisionId); } catch { next = { state: "FAILED", code: null }; }
+    try { next = await fetchHrDecisionLoop(careerDecisionContextRevisionId); } catch { next = { state: "FAILED", code: null, reason: null }; }
     if (generation.current === current) setLoop(next);
   }, [careerDecisionContextRevisionId]);
 
   useEffect(() => { void reload(); }, [reload]);
 
-  const loadNextContext = useCallback(async (revisionId: string) => {
-    setNextContext({ state: "LOADING" });
+  const lineageGeneration = useRef(0);
+  const loadNextContext = useCallback(async (revisionId: string, entry: DecisionContextEntry = { kind: "INPUT" }) => {
+    const current = lineageGeneration.current + 1;
+    lineageGeneration.current = current;
+    setNextContext({ state: "LOADING", revisionId, entry });
     let next: DecisionContextLineageState;
-    try { next = await readDecisionContextLineage(revisionId); } catch { next = { state: "FAILED", code: null }; }
-    setNextContext(next);
+    try { next = await readDecisionContextLineage(revisionId, entry); } catch { next = { state: "FAILED", revisionId, entry, code: null }; }
+    if (lineageGeneration.current === current) setNextContext(next);
   }, []);
 
   useEffect(() => {
-    if (initialDecisionContextRevisionId !== null && initialDecisionContextRevisionId.length > 0) void loadNextContext(initialDecisionContextRevisionId);
+    if (initialDecisionContextRevisionId !== null && initialDecisionContextRevisionId.length > 0) void loadNextContext(initialDecisionContextRevisionId, { kind: "URL" });
   }, [initialDecisionContextRevisionId, loadNextContext]);
 
   const declare = useCallback(async (draft: HrDecisionDeclarationDraft) => {

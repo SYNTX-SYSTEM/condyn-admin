@@ -11,7 +11,12 @@
     "worker:career": "tsx --env-file=.env.local scripts/run-career-worker.ts",
     "test:isolated": "tsx scripts/test-db/run.ts",
     "test:db:create": "tsx scripts/test-db/create.ts",
-    "test:db:drop": "tsx scripts/test-db/drop.ts"
+    "test:db:drop": "tsx scripts/test-db/drop.ts",
+    "hr-loop:local": "tsx scripts/hr-decision-loop-local.ts up",
+    "hr-loop:local:seed": "tsx scripts/hr-decision-loop-local.ts seed",
+    "hr-loop:local:serve": "tsx scripts/hr-decision-loop-local.ts serve",
+    "hr-loop:local:status": "tsx scripts/hr-decision-loop-local.ts status",
+    "hr-loop:local:drop": "tsx scripts/hr-decision-loop-local.ts drop"
   },
   "dependencies": {
     "@google/genai": "^2.10.0",
