@@ -25,7 +25,12 @@ export interface CapabilityProposalProjection {
 // search for another artifact when that pair fails validation.
 const integrity = (): never => { throw new Error("ERR_CAPABILITY_PROPOSAL_PROJECTION_LINEAGE_INVALID"); };
 
-type VerifiedEvidence = { candidateId: string; claim: EvidenceClaim };
+/**
+ * EVD identity is content-addressed (source document, location, exact quote), so two candidates that cite the
+ * same sentence legitimately carry the same evidence id (D-JP-4). One id resolves to one claim and the set of
+ * candidates that hold it; divergent claims under one id remain a lineage violation.
+ */
+type VerifiedEvidence = { candidateIds: Set<string>; claim: EvidenceClaim };
 
 function verifiedEvidence(candidates: CapabilityCandidate[]): Map<string, VerifiedEvidence> {
   const evidence = new Map<string, VerifiedEvidence>();
@@ -33,8 +38,13 @@ function verifiedEvidence(candidates: CapabilityCandidate[]): Map<string, Verifi
     if (candidate.status !== "EVIDENCE_PASSED") continue;
     for (const claim of candidate.evidenceClaims) {
       if (claim.verification.status === "VERIFIED" && claim.verification.matchedDocId) {
-        if (evidence.has(claim.evidenceId)) integrity();
-        evidence.set(claim.evidenceId, { candidateId: candidate.candidateId, claim });
+        const known = evidence.get(claim.evidenceId);
+        if (known) {
+          if (known.claim.exactQuote !== claim.exactQuote || known.claim.verification.matchedDocId !== claim.verification.matchedDocId) integrity();
+          known.candidateIds.add(candidate.candidateId);
+          continue;
+        }
+        evidence.set(claim.evidenceId, { candidateIds: new Set([candidate.candidateId]), claim });
       }
     }
   }
@@ -113,13 +123,14 @@ export function createCapabilityProposalProjectionReader(dependencies: {
           const resolved = evidenceById.get(evidenceId);
           if (!resolved) integrity();
           const resolvedEvidence = resolved as VerifiedEvidence;
-          if (!sourceCandidateIds.includes(resolvedEvidence.candidateId)) integrity();
+          if (!sourceCandidateIds.some((candidateId) => resolvedEvidence.candidateIds.has(candidateId))) integrity();
           const verifiedClaim = resolvedEvidence.claim;
           const sourceDocumentId = verifiedClaim.verification.matchedDocId;
           if (!sourceDocumentId) integrity();
           return { evidenceId, sourceDocumentId: sourceDocumentId as string, exactQuote: verifiedClaim.exactQuote, verificationState: "SOURCE_MATCH_VERIFIED" as const };
         });
-        if (!sameStringSet(evidence.map((item) => item.sourceDocumentId), draft.provenance.sourceDocumentIds)) integrity();
+        // D-JP-5: several evidence quotes may come from one document; provenance declares each document once.
+        if (!sameStringSet([...new Set(evidence.map((item) => item.sourceDocumentId))], draft.provenance.sourceDocumentIds)) integrity();
         return {
           id: draft.provisionalCapabilityId, name: draft.canonicalName, domain: draft.primaryDomain,
           scope: draft.scope, structuralDefinition: draft.structuralDefinition,
