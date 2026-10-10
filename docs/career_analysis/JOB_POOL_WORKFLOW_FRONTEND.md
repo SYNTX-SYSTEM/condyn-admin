@@ -1,6 +1,6 @@
 # Job Pool Workflow — SIL Frontend Field
 
-Status: implemented on `frontend/job-pool-workflow` (base `integration/job-pool-connection` @ `120e0ce`, GELB's routes merged at `b782793`).
+Status: implemented on `frontend/job-pool-workflow` (base `integration/job-pool-connection` @ `120e0ce`, GELB's routes merged at `b782793`, sweep-coverage contract `integration/job-pool-sweep-coverage` @ `9945565` merged 2026-10-10).
 Field owner: GRÜN (frontend). Backend and contract: GELB (`docs/architecture/decision-fields/JOB_POOL_CONNECTION.md`).
 Independent validation: PINK.
 
@@ -66,11 +66,20 @@ Every state below is a distinct DOM state (`data-*` attribute plus visible copy)
 | Ranking | `MONOTONE_BY_RESONANCE`, `DELIVERED_ORDER_NOT_MONOTONE` (shown unchanged, flagged), `EMPTY` |
 | Per role | rank, `resonanceScore`, matched / weak-evidence / missing requirements with `matchBasis`, evidence quotes (`docId`, verbatim quote) or `NO EVIDENCE QUOTE DELIVERED`, canonical `TRPREV`, `TRQREV` ids, `NOT_EVALUATED · VERIFIED_CAPABILITY_SNAPSHOT_ABSENT` |
 | Layer labels | `DETERMINISTIC PRESENTATION`, `NOT A CANONICAL EVALUATION`, `NOT A DECISION`, each derived from one literal field of the delivered presentation block |
+| Capability sweep coverage (per response) | `AVAILABLE` (proposals read, count), `NOT_PRODUCED` (no sweep recorded for this analysis), `FAILED` (projection lineage invalid; only the sweep is marked, scores stand); always `scored: false`, always labelled `UNSCORED` |
+| Capability sweep coverage (per requirement) | `sweepProposal` present on every matched, weak and missing entry: `null` or the covering proposal (`PCAP_` id, name, basis, constituent, source-match-verified quotes, authority NONE, `scored: false`), rendered as "COVERED BY THE CAPABILITY SWEEP: name (basis) · UNSCORED" with its quotes |
+| Capability sweep coverage (per role) | `sweepOnlyCoverageCount` = missing requirements the sweep covers; the decoder refuses a count that differs from the delivered missing entries |
 
-Laws kept visible: `PRESENTED != EVALUATED · UPLOADED != SELECTED · RANKED != RECOMMENDED · MISSING != GAP DECISION`.
+Laws kept visible: `PRESENTED != EVALUATED · UPLOADED != SELECTED · RANKED != RECOMMENDED · MISSING != GAP DECISION · COVERED != SCORED`.
+
+Three sources of a match stay distinguishable in the DOM: a scored legacy-capability match (`data-match-basis`, confidence,
+contribution), an unscored sweep proposal coverage (`data-sweep-basis`, `data-scored="false"`, `PCAP_` id, verified quote),
+and the canonical layer (`TRPREV`, `TRQREV`, `NOT_EVALUATED`). None of them is a decision; nothing leads to the HR dock.
 
 ## 4. Non-claims and authority
 
+- Sweep coverage is proposal coverage: the decoder admits it only with `scored: false`, `authorityState: "NONE"`,
+  `evidenceState: "SOURCE_MATCH_VERIFIED"` and a `PCAP_` id; the panel never adds it to any score or count of matches.
 - The frontend re-scores nothing, re-ranks nothing, parses no pool and repairs no pool. A body whose presentation block
   claims a canonical evaluation or a decision is undecodable (`FAILED`), not rendered with softened labels.
 - The analysis id is never inferred: it is this session's succeeded sweep or an explicit URL id. There is no analysis list
@@ -90,7 +99,8 @@ Laws kept visible: `PRESENTED != EVALUATED · UPLOADED != SELECTED · RANKED != 
 | B-ENTRY | The routes answer 503 without a verified disposable database; the panel shows `NOT_PROVISIONED`. No DDL from the frontend. |
 | B-GEMINI | The real sweep needs `GEMINI_API_KEY` in the operator's shell; the manual environment fails closed without it and never stores it. The e2e seeds one analysis row directly and makes no model call. |
 | B-GEMINI-MODEL | `DEFAULT_GEMINI_MODEL_CASCADE[0]` (`gemini-2.0-flash`) answered 404 for the operator key on 2026-10-10 and `gemini-2.5-flash` "no longer available to new users"; the worker's discovery provider masks the cause as `ERR_CAPABILITY_DISCOVERY_PROVIDER_FAILURE`. `GEMINI_MODEL=gemini-3.8-flash` verified. The cascade is GELB's provider field; reported as an environment boundary to the owner. |
-| B-JP-CANDIDATES | The matcher reads the analysis's canonical `capabilities` (legacy pipeline output). For the real CV sweep that is 2 capabilities (TypeScript, Node.js), while the F11 proposal projection of the same analysis carries 7 richer capabilities (e.g. "Relational Database Schema Design", "Automated Software Testing Implementation") that the matching never sees. `candidateCapabilityCount` makes this visible in the panel. Which capability set matching should read is a contract decision (GELB/owner), not a frontend one. |
+| B-JP-CANDIDATES (closed for visibility, open for scoring) | Since `9945565` the sweep proposals of the same job are visible per requirement as unscored coverage; scores are still computed from the legacy capabilities only (proven identical with and without the sweep by GELB). Whether proposals may ever be scored is a semantic decision (HIA-2 class), not taken here. |
+| B-JP-CANDIDATES (original finding) | The matcher reads the analysis's canonical `capabilities` (legacy pipeline output). For the real CV sweep that is 2 capabilities (TypeScript, Node.js), while the F11 proposal projection of the same analysis carries 7 richer capabilities (e.g. "Relational Database Schema Design", "Automated Software Testing Implementation") that the matching never sees. `candidateCapabilityCount` makes this visible in the panel. Which capability set matching should read is a contract decision (GELB/owner), not a frontend one. |
 | B-ANALYZE-PAGE | `app/career/analyze/page.tsx` (legacy "Step 7" page, linked from `/career/analyses`) expects a synchronous `{ success: true }` from `POST /api/career/analyze`, but the route answers `202 { jobId }` since the async job contract; the page therefore always shows "Pipeline Execution or Validation Error". It is not on the `/career/demo` path of this field and has its own frozen tests (`test/career-analyze-page.test.tsx`). Recorded, not repaired here; repairing it means re-basing that page on `CareerJobController` polling (owner/GELB decision). |
 | B-COMPOSITE-SPLIT | With the PDF sweep the model names composite capabilities ("TypeScript & Node.js Platform Engineering"). GELB's split on " & " yields "TypeScript" (COMPOSITE_CONSTITUENT for req TypeScript) and "Node.js Platform Engineering", which only TOKEN_CONTAINS "Node.js" and therefore lands under weak evidence at confidence 0.96. Whether a constituent should itself be token-matched is a matcher decision (GELB). |
 | B-PEER-KILL | Several sessions run `next dev` and career workers on one machine. A pattern kill from outside (`pkill -f`) terminated this environment mid-sweep (exit 143) on 2026-10-10. Operators stop by PID. |
@@ -128,6 +138,9 @@ Run record: see §7.
 | 2026-10-10 | `7345ab6`+ (incl. `b6986ff`) | `npm run -s test:isolated -- test/career/job-pool test/career/hr-decision-loop` without the HR e2e, with `CONDYN_PLAYWRIGHT_MODULE` | 21 files, 96 tests passed (Job Pool e2e 8/8 incl. Chromium 3/3; GELB's JP suites; HR loop 12 files incl. both Postgres suites); `tsc --noEmit` 0 errors |
 
 | 2026-10-10 | `cf112ec` (= integration tip incl. PINK's validation suites) | P-M PDF path, browser-driven, fresh `condyn_test_e46502b73c9f316f`, `GEMINI_MODEL=gemini-3.8-flash` | `docs/examples/cv.synthetic.pdf` through the source dock file chooser → `START INTAKE ANALYSIS` → `POST /api/career/analyze 202` → success banner after 72 s → field populated (identity 1, capabilities 9, organisations 2, roles 2; analysis GET 200, legacy capabilities "TypeScript & Node.js Platform Engineering" 0.96 and "Python & Kafka Event-Driven ETL" 0.94, projection 9) → panel: sample pool uploaded (201, listed, not selected) → selected → matches AVAILABLE: role_fullstack 0.364 rank 1 (TypeScript COMPOSITE_CONSTITUENT via the composite name, constituent "TypeScript"; Node.js TOKEN_CONTAINMENT under weak evidence; React, PostgreSQL, Automated Testing missing), role_data 0.303, role_ml 0.282, role_frontend_lead 0.219, two roles 0; four constituent rows rendered; three labels; six stage shells; no dock; 0 page errors, 0 console errors. Evidence 11–15. No PDF-path symptom in the UI (base64 intake, analyze route, loader) |
+
+| 2026-10-10 | merge of `9945565` (sweep coverage) | decoder, fixture, copy, panel, tests extended; `tsc` 0; `test/career/job-pool` without e2e: 8 files, 49 tests green | Job Pool e2e first run 7/8: my own assertion counted the sweep-state block as a coverage row (selector `[data-testid$="-sweep"]`), fixed to require `data-sweep-basis` |
+| 2026-10-10 | same | browser render of the kept PDF-run analysis `ANL_1791660225500_612` × sample pool on `condyn_test_e46502b73c9f316f` (no new model call) | `capabilitySweep AVAILABLE · 9 proposals`, 14 coverage rows, 4 roles with sweep-only coverage: role_fullstack 0.364 keeps its score with 2 of 3 missing covered (PostgreSQL, Automated Testing); role_platform stays 0.000 with 4 of 5 missing covered (Kubernetes, Docker, CI/CD, Linux); 0 page errors; evidence 16 |
 
 Additional backend codes observed in the merged routes and how the panel shows them: `400 ERR_JOB_POOL_ACTOR_INVALID`
 (upload REJECTED with code), `400 ERR_ANALYSIS_ID_REQUIRED` (matches FAILED with code; the panel never sends an empty id),

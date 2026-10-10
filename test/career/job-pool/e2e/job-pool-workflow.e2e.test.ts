@@ -136,6 +136,12 @@ describe("Job Pool workflow over HTTP against the production routes", () => {
     expect(matches.presentation).toEqual({ kind: "DETERMINISTIC_RESONANCE_PRESENTATION", policyVersion: "JOB_POOL_PRESENTATION_MATCHING_V1", authorityState: "NONE", canonicalEvaluation: false, decision: false, weakEvidenceThreshold: expect.any(Number) });
     expect(matches.roleMatches).toHaveLength(world.samplePool.roles.length);
     expect(describeRanking(matches.roleMatches)).toBe("MONOTONE_BY_RESONANCE");
+    // The directly seeded analysis has no capability sweep: coverage is NOT_PRODUCED, nothing is covered, scores stand alone.
+    expect(matches.capabilitySweep).toEqual({ state: "NOT_PRODUCED", proposalCount: 0, scored: false });
+    for (const role of matches.roleMatches) {
+      expect(role.sweepOnlyCoverageCount).toBe(0);
+      for (const item of [...role.matched, ...role.weakEvidence, ...role.missing]) expect(item.sweepProposal).toBeNull();
+    }
     const targetRole = matches.roleMatches.find(role => role.poolRoleId === T.roleId)!;
     expect(targetRole).toBeDefined();
     const hit = targetRole.matched.find(item => item.poolRequirementId === T.requirementId)!;
@@ -269,6 +275,10 @@ describe.skipIf(playwrightModule === null)("Job Pool workflow in a real browser"
     expect(labels).toContain("NOT A CANONICAL EVALUATION");
     expect(labels).toContain("NOT A DECISION");
     expect(await page.getByTestId("job-pool-ranking").getAttribute("data-ranking")).toBe("MONOTONE_BY_RESONANCE");
+    expect(await page.getByTestId("job-pool-capability-sweep").getAttribute("data-sweep-state")).toBe("NOT_PRODUCED");
+    expect(await page.getByTestId("job-pool-capability-sweep").getAttribute("data-scored")).toBe("false");
+    expect(await page.getByTestId("job-pool-capability-sweep").textContent()).toContain("UNSCORED");
+    expect(await page.locator('[data-testid$="-sweep"][data-sweep-basis]').count()).toBe(0);
     expect(await page.getByTestId("job-pool-role-list").getAttribute("data-role-count")).toBe(String(world.samplePool.roles.length));
     const first = page.getByTestId(`job-pool-role-${T.roleId}`);
     expect(await first.getAttribute("data-rank")).toBe("1");
@@ -283,7 +293,7 @@ describe.skipIf(playwrightModule === null)("Job Pool workflow in a real browser"
     expect(await canonical.getAttribute("data-relation-reason")).toBe("VERIFIED_CAPABILITY_SNAPSHOT_ABSENT");
     expect(await canonical.textContent()).toContain("TRPREV");
     expect(await page.locator('[data-testid^="job-pool-trqrev-"]').count()).toBe(world.samplePool.requirements.length);
-    expect(await page.getByTestId("job-pool-non-claims").textContent()).toContain("PRESENTED != EVALUATED");
+    expect(await page.getByTestId("job-pool-non-claims").textContent()).toContain("COVERED != SCORED");
     // Preservation: planetarium geometry and the absence of any dock without an exact DCTXREV.
     for (const stage of ["01", "02", "03", "04", "05", "06"]) expect(await page.getByTestId(`focus-transition-stage-shell-${stage}`).count()).toBe(1);
     expect(await page.getByTestId("semantic-zoom-telemetry").count()).toBe(1);
