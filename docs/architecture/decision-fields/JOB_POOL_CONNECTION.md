@@ -248,3 +248,27 @@ confidence, so scoring them requires a rule that the documents do not contain.
 B-COMPOSITE-SPLIT (GRÜN): "TypeScript & Node.js Platform Engineering" splits into "TypeScript" and "Node.js Platform
 Engineering"; the second part only token-contains "Node.js" and stays weak evidence. Counting token containment inside a
 constituent as a full match would bypass the weak-evidence rule; the sweep coverage now shows the remaining gap.
+
+### 11.4 Final integrated state and proofs
+
+Integrated: GRÜN `5839762` (strict decoder and panel for the sweep coverage: `job-pool-capability-sweep`, per-requirement
+sweep lines, per-role sweep-only count, COVERED != SCORED), PINK's suites up to `675590b`
+(`test/job-pool-validation/**`: D-JP-1, layer separation, HTTP/canonical/inverse, browser walk, PDF path, sweep
+coverage) and this document. Proofs as `condyn_test_runner` on disposable databases; `condyn` untouched.
+
+| Proof | Result |
+| --- | --- |
+| `tsc --noEmit` | 0 errors |
+| `next build` | passes; three job-pool routes dynamic |
+| G2, runtime, adapters, integration, isolation, capability core, proposal projection, career runtime, HR loop, job pool (incl. Chromium e2e), PINK validation suites (incl. browser walk, PDF path, sweep coverage), legacy Step 16/23, worker, PDF loader and batch ingestion suites | 146 files, 1132 tests, all green |
+| Sealed inventories (P8) | `test/decision-core`, `test/career/capability-core`, `test/decision-runtime`, `test/decision-adapters` diff-free against `435a112` |
+| Final real walkthrough (`npm run job-pool:local`, PDF `docs/examples/cv.synthetic.pdf`, model from the operator env file) | pool 201; analyze 202 → SUCCEEDED in one attempt (123 s), `ANL_1791661195700_440`; analyses 200; matches 200 with `capabilitySweep` AVAILABLE · 14 proposals; `/career/demo?analysisId=…&jobPoolUploadId=…` 200; 0 notices; 0 failed attempts |
+
+Model variance observed across four real runs of the same synthetic CV: the legacy analysis named 7, 5, 4 and 1
+capabilities (the last run: only "TypeScript"), while the capability sweep of the same jobs proposed 9 to 14
+source-verified capabilities each time. Scores therefore follow the legacy analysis and vary strongly; the sweep
+coverage is stable but unscored. Whether the sweep may be scored is owner decision HIA-3.
+
+Open boundaries (unchanged, owner): HIA-1 Phase-4 capability verification authority; HIA-2 model as CRR provider;
+HIA-3 scoring of sweep proposals; B-JP-MODEL default Gemini cascade; B-ENTRY production provisioning; F-JP-5 G1 schema
+drift; B-ANALYZE-PAGE legacy `/career/analyze` page; B-JP-CONTINUITY; B-JP-ACTOR.
