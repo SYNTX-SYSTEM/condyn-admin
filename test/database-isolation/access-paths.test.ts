@@ -58,6 +58,12 @@ describe("database access paths (static regression proof)", () => {
     expect(withFallback).toEqual(FROZEN_TEST_FALLBACKS);
   });
 
+  it("no test code touches the test-runner markers or the shared-database opt-in", () => {
+    const offenders = files(resolve(root, "test")).map(path => relative(root, path)).filter(path => !path.startsWith("test/database-isolation/") && !path.startsWith("test/support/database-isolation/"))
+      .filter(path => /CONDYN_ALLOW_SHARED_DATABASE|delete\s+process\.env\.VITEST|process\.env\.VITEST\w*\s*=[^=]/.test(readFileSync(resolve(root, path), "utf8")));
+    expect(offenders).toEqual([]);
+  });
+
   it("vitest always runs the isolation gate and never takes DATABASE_URL from .env files", async () => {
     const config = readFileSync(resolve(root, "vitest.config.ts"), "utf8");
     expect(config).toContain("./test/support/database-isolation/global-setup.ts");

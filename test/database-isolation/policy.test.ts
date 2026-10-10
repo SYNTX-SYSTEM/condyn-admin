@@ -66,6 +66,16 @@ describe("database isolation policy (pure, no connection)", () => {
     expect(resolveApplicationDatabaseUrl(ok, true)).toBe(ok);
   });
 
+  it("allows the shared database to the application only with an explicit opt-in outside any test runner", () => {
+    const shared = "postgresql://postgres:postgres@localhost:5432/condyn";
+    expect(resolveApplicationDatabaseUrl(shared, false)).toBe(UNCONFIGURED_DATABASE_URL);
+    expect(resolveApplicationDatabaseUrl(shared, false, "0")).toBe(UNCONFIGURED_DATABASE_URL);
+    expect(resolveApplicationDatabaseUrl(shared, false, "true")).toBe(UNCONFIGURED_DATABASE_URL);
+    expect(resolveApplicationDatabaseUrl(shared, true, "1")).toBe(UNCONFIGURED_DATABASE_URL);
+    expect(resolveApplicationDatabaseUrl(shared, false, "1")).toBe(shared);
+    expect(resolveApplicationDatabaseUrl("postgresql://postgres:postgres@localhost:5432/postgres", false, "1")).toBe("postgresql://postgres:postgres@localhost:5432/postgres");
+  });
+
   it("derives the maintenance URL without query, fragment or the target database", () => {
     expect(maintenanceUrlFor(ok)).toBe("postgresql://postgres:postgres@localhost:5432/postgres");
   });

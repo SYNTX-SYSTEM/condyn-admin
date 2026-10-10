@@ -15,6 +15,8 @@ declare module "vitest" {
  * Create one with `npm run test:db:create`, or use `npm run test:isolated -- <vitest args>`.
  */
 export default async function setup(project: TestProject): Promise<void> {
+  // The shared-database opt-in belongs to real servers and workers only; a test run never carries it.
+  delete process.env.CONDYN_ALLOW_SHARED_DATABASE;
   const verified = await verifyDisposableTestDatabase(process.env.DATABASE_URL);
   project.provide("verifiedTestDatabaseUrl", verified.url);
   console.info(`[database-isolation] verified disposable test database ${verified.databaseName}`);
