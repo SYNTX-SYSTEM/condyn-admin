@@ -50,7 +50,17 @@ export const PoolCapabilityRequirementSchema = z.object({
     message: "weight must be in range [0.0, 1.0]"
   }),
   required_level: z.string(),
-  evidence_hint: z.string().optional()
+  evidence_hint: z.string().optional(),
+  /** Optional, additive (Job Pool connection): alternative names for presentation matching (Step 23). */
+  aliases: z.array(z.string().min(1)).optional(),
+  /** Optional, additive: declared necessity, mapped to the canonical necessityState. Absent means UNKNOWN. */
+  necessity: z.enum(["REQUIRED", "PREFERRED", "OPTIONAL"]).optional(),
+  /** Optional, additive: canonical TargetRequirementType. Absent means CAPABILITY. */
+  requirement_type: z.enum([
+    "CAPABILITY", "KNOWLEDGE", "EXPERIENCE", "CREDENTIAL", "TOOL_TECHNOLOGY", "LANGUAGE", "LOCATION",
+    "AVAILABILITY", "SENIORITY", "DOMAIN_CONTEXT", "BEHAVIORAL_EXPECTATION", "LEGAL",
+    "ORGANIZATIONAL_CONSTRAINT", "RESPONSIBILITY", "PREFERENCE", "UNKNOWN"
+  ]).optional()
 });
 export type PoolCapabilityRequirement = z.infer<typeof PoolCapabilityRequirementSchema>;
 

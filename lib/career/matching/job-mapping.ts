@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { ExtractedCapabilityItem } from "./scoring";
+import { extractCapabilityItem } from "./capability-extraction";
 
 export const JobCapabilityRequirementSchema = z.object({
   capability_name: z.string().min(1),
@@ -76,11 +77,11 @@ export function mapCapabilitiesToJobs(
   const minConfidence = options.minConfidenceThreshold ?? 0.70;
 
   // Normalize capabilities defensively without mutating input
-  const capabilities: ExtractedCapabilityItem[] = rawCapabilities.map((cap) => ({
-    name: cap.name || cap.capability_name || "",
-    domain: cap.domain || "General",
-    confidence: typeof cap.confidence === "number" ? cap.confidence : 0.85
-  }));
+  // D-JP-1: accept canonical UniversalEntity capabilities (identity.name) as well as flat items.
+  const capabilities: ExtractedCapabilityItem[] = rawCapabilities.map((cap, index) => {
+    const item = extractCapabilityItem(cap, index);
+    return { name: item.name, domain: item.domain || "General", confidence: item.confidence };
+  });
 
   const results: JobMappingResultItem[] = [];
 

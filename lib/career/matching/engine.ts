@@ -11,6 +11,7 @@ import {
   MissingCapabilityDetail,
   ScoreBreakdownItem
 } from "./scoring";
+import { extractAnalysisCapabilities } from "./capability-extraction";
 
 export interface RoleMatchResultItem {
   roleId: string;
@@ -66,11 +67,11 @@ export function matchCareerAnalysisAgainstPool(
     analysis?.structured_data?.analysis?.metadata?.analysis_id || "unknown_analysis";
 
   // Extract capability tokens from canonical analysis
-  const rawCapabilities = analysis?.structured_data?.analysis?.capabilities || [];
-  const extractedCapabilities: ExtractedCapabilityItem[] = rawCapabilities.map((c: any) => ({
-    name: c.name || c.capability_name || "",
-    domain: c.domain || "",
-    confidence: typeof c.confidence === "number" ? c.confidence : 0.85
+  // D-JP-1: canonical analysis capabilities carry their name at identity.name.
+  const extractedCapabilities: ExtractedCapabilityItem[] = extractAnalysisCapabilities(analysis).map(({ name, domain, confidence }) => ({
+    name,
+    domain,
+    confidence
   }));
 
   const roleMatches: RoleMatchResultItem[] = [];
