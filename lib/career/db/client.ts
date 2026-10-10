@@ -16,10 +16,15 @@ import { resolveApplicationDatabaseUrl } from "../../database-isolation/policy";
 
 /**
  * No fallback to any real database (database isolation mandate, 2026-10-10): a missing
- * DATABASE_URL resolves to an unroutable `.invalid` host, and under a test runner a protected
- * database name (condyn, postgres, template*) resolves to the same host. Queries fail closed.
+ * DATABASE_URL resolves to an unroutable `.invalid` host. A protected database name (condyn,
+ * postgres, template*) resolves to the same host unless a real server or worker sets
+ * CONDYN_ALLOW_SHARED_DATABASE=1 outside any test runner. Queries fail closed.
  */
-const connectionString = resolveApplicationDatabaseUrl(process.env.DATABASE_URL, process.env.VITEST !== undefined);
+const connectionString = resolveApplicationDatabaseUrl(
+  process.env.DATABASE_URL,
+  process.env.VITEST !== undefined || process.env.VITEST_WORKER_ID !== undefined,
+  process.env.CONDYN_ALLOW_SHARED_DATABASE
+);
 
 // Singleton connection client for serverless Next.js environment safety
 const sql = postgres(connectionString, { max: 10 });

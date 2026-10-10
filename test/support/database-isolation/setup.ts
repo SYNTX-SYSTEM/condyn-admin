@@ -12,3 +12,4 @@ if (typeof verified !== "string" || !verdict.ok) {
   throw new Error(`ERR_TEST_DATABASE_ISOLATION_${verdict.ok ? "NOT_PROVIDED" : verdict.code}: no verified disposable test database for this test file`);
 }
 process.env.DATABASE_URL = verified;
+delete process.env.CONDYN_ALLOW_SHARED_DATABASE;

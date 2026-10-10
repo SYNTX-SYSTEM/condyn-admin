@@ -97,8 +97,32 @@ without selection, B9 pre-existing `next build` route-type failure in the admin 
 
 | Id | Finding | Evidence | Cause | State |
 | --- | --- | --- | --- | --- |
-| DB-1 | The seven legacy G1 lifecycle rows of the shared `condyn` database are gone: one each in `career_recommendations` .. `career_attributions`, chain `REC_1790085122039_982` → `ATTR_1790085122057_501`, written 2026-09-22 by `scripts/write-live-lifecycle.ts`. The 76-table schema and the two `career_capability_runs` rows are intact. | Row counts on 2026-10-09 (field reconstruction) versus 2026-10-10: 1 → 0 in each of the seven tables. | Peer preservation batches ran the G1 legacy suites without `DATABASE_URL`, so against the shared database, and those suites delete the legacy tables unconditionally. Confirmed by both sessions: the G2 producer session (PINK) on 2026-10-09 at about 21:11 and 22:05 and on 2026-10-10 at about 12:56; the frontend session (GRÜN) on 2026-10-09 at 21:59. The earliest candidate is 2026-10-09 21:11; which run removed the rows cannot be determined. All runs of this session used isolated `condyn_dll_*`, `condyn_sfe_*` or `condyn_g3b_*` databases. No copy of the rows is known to exist. | Owner decision: accept the loss or re-create a lifecycle with the script (new ids, not the same records). No restoration was attempted. |
+| DB-1 | The seven legacy G1 lifecycle rows of the shared `condyn` database are gone: one each in `career_recommendations` .. `career_attributions`, chain `REC_1790085122039_982` → `ATTR_1790085122057_501`, written 2026-09-22 by `scripts/write-live-lifecycle.ts`. The 76-table schema and the two `career_capability_runs` rows are intact. | Row counts on 2026-10-09 (field reconstruction) versus 2026-10-10: 1 → 0 in each of the seven tables. | Peer preservation batches ran the G1 legacy suites without `DATABASE_URL`, so against the shared database, and those suites delete the legacy tables unconditionally. Confirmed by both sessions: the G2 producer session (PINK) on 2026-10-09 at about 21:11 and 22:05 and on 2026-10-10 at about 12:56; the frontend session (GRÜN) on 2026-10-09 at 21:59. The earliest candidate is 2026-10-09 21:11; which run removed the rows cannot be determined. Correction (2026-10-10, server log): this session's run of `test/decision-runtime` and `test/decision-adapters` on 2026-10-09 at 19:21 had no `DATABASE_URL` and created and dropped temporary schemas in `condyn` (schema-scoped DDL, no rows in `public`); its other runs used isolated databases. Full reconstruction: `docs/incidents/2026-10-09-shared-condyn-database.md`. No copy of the rows is known to exist. | Owner decision: accept the loss or re-create a lifecycle with the script (new ids, not the same records). No restoration was attempted. |
 | DB-2 | `lib/career/db/client.ts:187-188` drops `career_capability_proposal_projection_references_analysis_id_fkey` by its full 66-character name, but PostgreSQL stores the automatically generated constraint as `career_capability_proposal_projection_referenc_analysis_id_fkey`. On a database created before the overlay (the shared `condyn` database) the old `NO ACTION` key survives next to the new `CASCADE` key, so the intended cascade never takes effect; on a fresh database both keys cascade (harmless duplicate). | Reproduced in a throwaway database: fresh `[referenc_…_fkey:c, …_analysis_id_fk:c]`; legacy shape after startup `[referenc_…_fkey:a, …_analysis_id_fk:c]`. The shared database shows the legacy shape. | Identifier truncation (NAMEDATALEN 63) in the overlay's startup DDL. | Field 01/02 work unit (projection references, outside this integration delta). Repairing it changes the shared database at the next startup, so it needs the owner's go-ahead. |
 | DB-3 | The overlay startup DDL (`initDbSchema`) has also run against the shared database at least once (new column `candidate_source_bundle_id`, the `CASCADE` key of DB-2, `career_canonical_sil_runtime_associations`). | Shared schema inspection. | Peer sessions' local runs against the default `DATABASE_URL`; DDL only. | Recorded. |
 
 Prevention, for every session: run any suite that touches PostgreSQL with `DATABASE_URL` pointing at an isolated database. The G1 legacy suites must never run against the shared database.
+
+## 7. Database isolation (2026-10-10)
+
+Owner mandate: the shared `condyn` database is never modified by tests or agent operations.
+Implemented at `48d52c2`, incident reconstructed in `docs/incidents/2026-10-09-shared-condyn-database.md`.
+
+| Layer | Mechanism |
+| --- | --- |
+| Application client | `lib/career/db/client.ts` has no fallback; a missing `DATABASE_URL` resolves to an unroutable `.invalid` host; a protected name (`condyn`, `postgres`, `template*`) does too unless a real server or worker sets `CONDYN_ALLOW_SHARED_DATABASE=1` outside any test runner (the test gate deletes it; test code may not mention it or touch `VITEST`) |
+| Test gate | vitest `globalSetup` refuses MISSING, MALFORMED, AMBIGUOUS, PROTECTED, NOT_DISPOSABLE and NON_LOCAL_HOST URLs before any connection, then verifies read-only that the database is exactly the named `condyn_test_<16 hex>` and carries the disposable marker comment; per-file `setupFiles` reset the worker to the verified URL; `.env` files cannot supply `DATABASE_URL` |
+| Disposable databases | `lib/database-isolation/verification.ts`: create marks, drop refuses anything not positively identified; `scripts/test-db/{create,drop,run}.ts`; `npm test` and `test-and-build.sh` use the runner with an explicit `TEST_DATABASE_ADMIN_URL` (maintenance database on loopback) |
+| Test code | non-sealed tests that create databases use the helpers; 22 sealed or frozen test files keep an unreachable literal fallback, pinned by `test/database-isolation/access-paths.test.ts` |
+| Not done (owner) | server-level permissions (dedicated test role, `REVOKE CONNECT`), any write to `condyn` |
+
+Proof through the runner: `test/database-isolation` 52/52 (12 refused URL classes as real child
+vitest runs that never reach a test body), offline DB-1 recovery candidate 2/2; G2 + integration +
+isolation 59 files, 593/593; `test/career` 296 files, 1667 passed, 6 skipped, 33 failed = the 32
+known legacy failures plus one COVFCR load timeout, re-run 8/8. Independent verification by the G2
+producer session confirmed every refused class and found one residual vector (test code deleting
+`VITEST` before importing the client), closed by the explicit opt-in.
+
+Owner action required for local use of the real application against `condyn`: set
+`DATABASE_URL=postgresql://…/condyn` and `CONDYN_ALLOW_SHARED_DATABASE=1` for the server or worker
+process (for example in `.env.local`). Without both, the application reaches no database.
