@@ -14,9 +14,11 @@ import type {
  * - CP-I3: every role lists matched, weak-evidence and missing requirements explicitly.
  * - CP-I4: score = Σ contribution / Σ weight, so a heavier requirement moves the score more.
  * - Step 23: a match with confidence below the threshold is weak evidence and contributes weight × confidence × 0.5.
- * - Match bases, in priority order: EXACT (normalized name), ALIAS (normalized declared alias), TOKEN_CONTAINMENT
- *   (every token of the requirement name or an alias occurs in the capability name). TOKEN_CONTAINMENT is always
- *   reported as weak evidence because it is not a name identity.
+ * - Match bases, in priority order: EXACT (normalized name), ALIAS (normalized declared alias),
+ *   COMPOSITE_CONSTITUENT (the capability name is a conjunction such as "TypeScript and Node.js" and one of its parts
+ *   equals the requirement name or an alias; a conjunction states each part), TOKEN_CONTAINMENT (every token of the
+ *   requirement name or an alias occurs in the capability name). TOKEN_CONTAINMENT is always reported as weak
+ *   evidence because it is not a name identity.
  *
  * The result has authority NONE, is computed on read, is not canonical evaluation and is not a decision.
  */
@@ -33,8 +35,14 @@ export const capabilityTokens = (value: string): string[] =>
 const round4 = (value: number) => Number(value.toFixed(4));
 const clamp01 = (value: number) => Math.min(1, Math.max(0, value));
 
-interface CandidateMatch { basis: JobPoolMatchBasis; capability: AnalysisCapabilityItem }
-const BASIS_RANK: Record<JobPoolMatchBasis, number> = { EXACT: 0, ALIAS: 1, TOKEN_CONTAINMENT: 2 };
+interface CandidateMatch { basis: JobPoolMatchBasis; capability: AnalysisCapabilityItem; constituent: string | null }
+const BASIS_RANK: Record<JobPoolMatchBasis, number> = { EXACT: 0, ALIAS: 1, COMPOSITE_CONSTITUENT: 2, TOKEN_CONTAINMENT: 3 };
+/** Conjunction separators; "/" is deliberately absent so terms like "CI/CD" stay whole. */
+const CONJUNCTION = /\s+(?:and|und|&|\+)\s+|\s*[,;]\s*/iu;
+export const compositeConstituents = (value: string): string[] => {
+  const parts = value.split(CONJUNCTION).map(part => part.trim()).filter(part => part.length > 0);
+  return parts.length >= 2 ? parts : [];
+};
 
 export function findCandidateMatch(requirement: PoolCapabilityRequirement, capabilities: AnalysisCapabilityItem[]): CandidateMatch | null {
   const requirementName = normalizeCapabilityName(requirement.capability_name);
@@ -44,10 +52,15 @@ export function findCandidateMatch(requirement: PoolCapabilityRequirement, capab
   for (const capability of capabilities) {
     const name = normalizeCapabilityName(capability.name);
     if (name.length === 0) continue;
-    if (name === requirementName) { found.push({ basis: "EXACT", capability }); continue; }
-    if (aliases.includes(name)) { found.push({ basis: "ALIAS", capability }); continue; }
+    if (name === requirementName) { found.push({ basis: "EXACT", capability, constituent: null }); continue; }
+    if (aliases.includes(name)) { found.push({ basis: "ALIAS", capability, constituent: null }); continue; }
+    const constituent = compositeConstituents(capability.name).find(part => {
+      const normalized = normalizeCapabilityName(part);
+      return normalized === requirementName || aliases.includes(normalized);
+    });
+    if (constituent !== undefined) { found.push({ basis: "COMPOSITE_CONSTITUENT", capability, constituent }); continue; }
     const tokens = new Set(capabilityTokens(capability.name));
-    if (tokenSets.some(set => set.every(token => tokens.has(token)))) found.push({ basis: "TOKEN_CONTAINMENT", capability });
+    if (tokenSets.some(set => set.every(token => tokens.has(token)))) found.push({ basis: "TOKEN_CONTAINMENT", capability, constituent: null });
   }
   found.sort((a, b) =>
     BASIS_RANK[a.basis] - BASIS_RANK[b.basis] ||
@@ -96,7 +109,8 @@ export function matchAnalysisAgainstJobPool(input: {
       const base: JobPoolMatchedRequirement = {
         poolRequirementId: requirement.id, capabilityName: requirement.capability_name, requiredLevel: requirement.required_level,
         weight: requirement.weight, necessity: necessityOf(requirement), matchBasis: match.basis,
-        matchedCapabilityName: match.capability.name, matchedCapabilityEntityId: match.capability.entityId,
+        matchedCapabilityName: match.capability.name, matchedConstituent: match.constituent,
+        matchedCapabilityEntityId: match.capability.entityId,
         confidence, contribution, evidence: match.capability.evidence.slice(0, 3)
       };
       if (!weak) { matched.push(base); continue; }

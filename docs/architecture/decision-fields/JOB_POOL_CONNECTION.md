@@ -33,7 +33,7 @@ governed human decisions. This field realizes it as three layers with one-way da
 2. **Presentation layer (P).** Deterministic resonance matching between the analysis capabilities of one explicit
    analysis and one explicit uploaded pool, following CP-I1..CP-I4 and the Step-23 weak-evidence rule. It carries
    `authorityState: NONE`, is computed on read, is never persisted as canonical state and is never an input to RCP,
-   DAR, DCTXREV or DCR. Each match states its basis (`EXACT`, `ALIAS`, `TOKEN_CONTAINMENT`) and the analysis
+   DAR, DCTXREV or DCR. Each match states its basis (`EXACT`, `ALIAS`, `COMPOSITE_CONSTITUENT`, `TOKEN_CONTAINMENT`) and the analysis
    evidence quotes it rests on.
 3. **Governed decision layer (D).** The HR Decision Looper is unchanged. No path leads from (P) or (C) to a DCR.
 
