@@ -1,6 +1,6 @@
 # Database Safety Audit: shared `condyn` database and test isolation
 
-Status: GUARD VERIFIED 2026-10-10 (PINK session, independent validation); full-suite run under the runner pending section 6. Read-only evidence; nothing
+Status: COMPLETE 2026-10-10 (PINK session, independent validation). Guard verified at `48d52c2` and re-verified at `7d2a2b3` / `0422cdc`; full suites run through the disposable-database runner (section 6). Read-only evidence; nothing
 restored or repaired; no write to the shared database during this audit.
 
 Global hard boundary under audit: the shared `condyn` database must never be deleted, dropped,
@@ -71,6 +71,23 @@ agent writing such a test. Mitigations are listed in section 5.
 **Minor.** `[::1]` passes the policy but postgres-js parses the host as `[` (ENOTFOUND); IPv6 loopback is
 unusable, harmless.
 
+### 4.1 Re-verification at `7d2a2b3` and `0422cdc` (opt-in guard, static gate, second-process check)
+
+`resolveApplicationDatabaseUrl(raw, underTestRunner, optIn)` now maps protected names to the `.invalid`
+host unless `CONDYN_ALLOW_SHARED_DATABASE === "1"` and the process is not under vitest (`VITEST` or
+`VITEST_WORKER_ID`); the gate deletes the opt-in globally and per file; `access-paths.test.ts` forbids,
+outside the isolation suites, any mention of the opt-in, `delete process.env.VITEST` and assignments to
+`process.env.VITEST*`; the P7 second process verifies its target before connecting.
+
+| Probe (isolated run through the runner unless noted) | Observed |
+| --- | --- |
+| B1: test deletes `VITEST` and `VITEST_WORKER_ID`, sets `DATABASE_URL` to `condyn`, no opt-in, then imports the client | `.invalid` host (F-1 closed for this form) |
+| D: as B1 plus the opt-in set in-process under a runtime-assembled variable name | `localhost/condyn` resolved (no query issued). Deliberate in-process tampering remains possible; closable only by a server-level role (R2) |
+| Static gate with scratch files containing `delete process.env.VITEST`, the literal shared URL and the literal opt-in | `access-paths.test.ts` RED naming each file; runtime-assembled names are not detected (known limit) |
+| Application client outside vitest: `/condyn` without opt-in; with opt-in `1`; with opt-in and `VITEST=1`; with opt-in and `VITEST_WORKER_ID=1`; opt-in value `yes` | `.invalid`; `condyn`; `.invalid`; `.invalid`; `.invalid` |
+| **F-2** `npx vitest run --config <config without globalSetup>` with `DATABASE_URL=condyn`, payload a non-database test | runs without the gate (5/5 of the payload passed, no connection made). Under such a run the client still resolves protected names to `.invalid`, but the 22 pinned sealed or frozen files that read `process.env.DATABASE_URL` directly would build clients on `condyn` and create schemas there. Procedural limit; recorded by GELB as closable only by the server-level role |
+| P7 (`hr-decision-loop-p7.test.ts`) through the runner on `0422cdc` | 7/7, inverse walk in the second process verified its disposable target; no leftover database |
+
 ## 5. Remaining risks and owner decisions
 
 | Id | Risk or decision | Owner |
@@ -86,4 +103,19 @@ unusable, harmless.
 
 ## 6. Regression and integration under the runner
 
-PENDING_RUNNER_RESULTS
+All runs with `TEST_DATABASE_ADMIN_URL` naming the maintenance database and `npm run test:isolated`,
+which created a marked `condyn_test_<16 hex>` database, ran vitest against it and dropped it; no
+`condyn_test_*` or `condyn_pink_*` database remained afterwards. `CONDYN_PLAYWRIGHT_MODULE` was set
+so the browser section of the HR loop e2e executed.
+
+| Batch | Result |
+| --- | --- |
+| `test/decision-core test/decision-runtime test/decision-adapters test/decision-integration test/database-isolation test/career/capability-core` | 97 files, 906 / 906 passed (`condyn_test_808834b64e3af0d6` created and dropped); includes P0 to P8, the R5 HTTP e2e, the isolation suites and the offline DB-1 recovery-candidate test |
+| `test/career` | 296 files: 283 passed, 6 skipped, 7 failed; 1706 tests: 1662 passed, 6 skipped, 38 failed. 27 failures are the four G1 legacy suites (`career-lifecycle-concurrency-idempotency` 6, `career-lifecycle-postgres-persistence` 6, `career-lifecycle-recovery` 5, `career-policy-activation-atomicity` 10) failing on a fresh database exactly as classified on 2026-10-09 (DDL drift; legacy quarantine). 11 failures are 5000 ms timeouts in the three COVFCR suites under load; re-run through the runner: 18 / 19, then the remaining replay file 5 / 5 alone (23 s for five tests at load 5). No content failure |
+| `tsc --noEmit` on the merged tree (`0422cdc` plus this record) | 0 errors |
+
+Agreement of documentation, evidence and state: GELB's record (`HR_DECISION_LOOP_INTEGRATION.md`,
+`docs/incidents/2026-10-09-shared-condyn-database.md`) and this audit report the same guard behaviour,
+the same incident timeline and the same residual limits; the only numeric difference is that the legacy
+suites fail here on the disposable database (as on any fresh database) where they previously passed against
+the pre-shaped shared database, which is the expected consequence of isolation.

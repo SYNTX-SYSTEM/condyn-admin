@@ -66,3 +66,15 @@ neither `registerUnifiedPersistenceSchema` nor the binding table is wired into a
 point and the frontend's local composition still calls `initDbSchema()`, so a running server reports
 the post-decision regions and the DCDRB region as `NOT_PROVISIONED` until a composition decision is
 made. Frontend-specific boundaries B2, B7, B8, B9 are in `HR_DECISION_LOOP_FRONTEND_INTEGRATION.md`.
+
+## 6. Round 3: database safety delta validated at `0422cdc` (2026-10-10)
+
+See `DATABASE_SAFETY_AUDIT.md` for the full access-path inventory, fail-closed verification, incident
+evidence and residual risks. Summary: every refused `DATABASE_URL` class aborts a real vitest process in
+`globalSetup` before any test body; the application client resolves missing, empty and protected targets to
+an unroutable host unless an explicit production opt-in is set outside vitest; `npm test` and the build
+script run through the disposable-database runner; the full G2, integration, isolation and G3 suites ran
+through that runner with no leftover database (906 / 906 and 1662 passed with the classified legacy
+quarantine and load-only timeouts). Residual limits, closable only by an owner decision on a dedicated
+PostgreSQL test role: deliberate in-process tampering with runtime-assembled variable names, and a
+`vitest --config` override that drops the gate for the 22 pinned sealed or frozen files.
