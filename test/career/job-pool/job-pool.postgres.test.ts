@@ -126,6 +126,19 @@ describe("JSON Job Pool on PostgreSQL (JP-C, JP-I, JP-H)", () => {
     for (const item of [...top.matched, ...top.weakEvidence]) for (const evidence of item.evidence) expect(stored).toContain(evidence.quote);
   }, 120_000);
 
+  it("reads the capability sweep of the analysis job: NOT_PRODUCED without proposals, FAILED on a lineage error, never changing scores", async () => {
+    const { createJobPoolApplication } = await import("../../../lib/career/job-pool/application");
+    const app = (capabilitySweep?: { read(id: string): Promise<never> }) => createJobPoolApplication({ database: drizzle(sql) as never, analyses: getCareerAnalysisRepository(), ...(capabilitySweep ? { capabilitySweep } : {}) });
+    const viaRoute = await (await handleJobPoolMatchesRequest(view.jobPoolUploadId, new Request(`http://local/x?analysisId=${FIXTURE_ANALYSIS_ID}`), factory)).json();
+    expect(viaRoute.capabilitySweep).toEqual({ state: "NOT_PRODUCED", proposalCount: 0, scored: false });
+    const failed = await app({ read: async () => { throw new Error("ERR_CAPABILITY_PROPOSAL_PROJECTION_LINEAGE_INVALID"); } }).matches(view.jobPoolUploadId, FIXTURE_ANALYSIS_ID);
+    expect(failed.capabilitySweep.state).toBe("FAILED");
+    const available = await app({ read: async () => ({ capabilities: [{ id: "PCAP_TDD", name: "Test-Driven Development (TDD)", evidence: [{ sourceDocumentId: "DOC_001", exactQuote: "Introduced test-driven development." }] }] }) as never }).matches(view.jobPoolUploadId, FIXTURE_ANALYSIS_ID);
+    expect(available.capabilitySweep).toEqual({ state: "AVAILABLE", proposalCount: 1, scored: false });
+    expect(available.roleMatches.map(r => r.resonanceScore)).toEqual(viaRoute.roleMatches.map((r: { resonanceScore: number }) => r.resonanceScore));
+    expect(failed.roleMatches.map(r => r.resonanceScore)).toEqual(viaRoute.roleMatches.map((r: { resonanceScore: number }) => r.resonanceScore));
+  }, 120_000);
+
   it("answers the documented error statuses", async () => {
     const statusOf = async (response: Promise<Response>) => { const r = await response; return [r.status, (await r.json()).error?.code]; };
     expect(await statusOf(post("{nope"))).toEqual([400, "ERR_JOB_POOL_JSON_INVALID"]);

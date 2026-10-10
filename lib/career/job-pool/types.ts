@@ -68,6 +68,22 @@ export interface JobPoolEvidenceQuote {
   quote: string;
 }
 
+/**
+ * Coverage of one requirement by a Gemini Capability Sweep proposal (Discovery/Convergence, F11 projection) of the
+ * same analysis job. Proposals carry source-verified quotes but no confidence, so the coverage is shown and never
+ * scored: it does not change resonanceScore and is not canonical evaluation or a decision.
+ */
+export interface JobPoolSweepProposalCoverage {
+  capabilityProposalId: string;
+  name: string;
+  matchBasis: JobPoolMatchBasis;
+  matchedConstituent: string | null;
+  evidence: JobPoolEvidenceQuote[];
+  evidenceState: "SOURCE_MATCH_VERIFIED";
+  authorityState: "NONE";
+  scored: false;
+}
+
 export interface JobPoolMatchedRequirement {
   poolRequirementId: string;
   capabilityName: string;
@@ -82,6 +98,7 @@ export interface JobPoolMatchedRequirement {
   confidence: number;
   contribution: number;
   evidence: JobPoolEvidenceQuote[];
+  sweepProposal: JobPoolSweepProposalCoverage | null;
 }
 
 export interface JobPoolWeakRequirement extends JobPoolMatchedRequirement {
@@ -95,6 +112,7 @@ export interface JobPoolMissingRequirement {
   weight: number;
   necessity: "REQUIRED" | "PREFERRED" | "OPTIONAL" | "UNDECLARED";
   evidenceHint: string | null;
+  sweepProposal: JobPoolSweepProposalCoverage | null;
 }
 
 export interface JobPoolCanonicalRelationState {
@@ -115,6 +133,8 @@ export interface JobPoolRoleMatch {
   matched: JobPoolMatchedRequirement[];
   weakEvidence: JobPoolWeakRequirement[];
   missing: JobPoolMissingRequirement[];
+  /** Missing requirements that a capability sweep proposal covers (unscored). */
+  sweepOnlyCoverageCount: number;
   canonical: JobPoolCanonicalRelationState;
 }
 
@@ -141,6 +161,8 @@ export interface JobPoolMatchPresentation {
   poolId: string;
   poolVersion: number;
   candidateCapabilityCount: number;
+  /** The capability sweep of the same job: AVAILABLE (proposals read), NOT_PRODUCED (none recorded), FAILED (lineage invalid). */
+  capabilitySweep: { state: "AVAILABLE" | "NOT_PRODUCED" | "FAILED"; proposalCount: number; scored: false };
   roleMatches: JobPoolRoleMatch[];
   organizationMatches: JobPoolOrganizationMatch[];
 }
