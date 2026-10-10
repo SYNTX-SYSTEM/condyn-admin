@@ -126,3 +126,16 @@ producer session confirmed every refused class and found one residual vector (te
 Owner action required for local use of the real application against `condyn`: set
 `DATABASE_URL=postgresql://…/condyn` and `CONDYN_ALLOW_SHARED_DATABASE=1` for the server or worker
 process (for example in `.env.local`). Without both, the application reaches no database.
+
+### 7.1 Least-privilege test role (owner authorization 2026-10-10)
+
+- Role `condyn_test_runner` provisioned by the G2 producer session with `scripts/test-db/provision-role.ts`
+  (credentials outside the repository, `~/.config/condyn/test-db-role.env`, mode 600).
+- The runner (`scripts/test-db/run.ts`, `create.ts`) refuses a superuser admin role unless
+  `TEST_DATABASE_ALLOW_SUPERUSER=1` is set explicitly (`scripts/test-db/admin-privilege.ts`).
+  Standard invocation: `set -a; . ~/.config/condyn/test-db-role.env; set +a; npm run -s test:isolated -- <args>`.
+- Proof as the role: `test/database-isolation` 58/58 including the least-privilege proof
+  (not skipped) and the superuser-refusal test.
+- Privilege hardening of `condyn`: assessed in `CONDYN_PRIVILEGE_HARDENING_ASSESSMENT.md`. The
+  schema-creation restriction is already in effect (`public` is owner-only in `condyn`); option H1
+  (remove PUBLIC `CONNECT`/`TEMP`) is prepared but not applied and needs separate owner approval.
