@@ -139,3 +139,28 @@ process (for example in `.env.local`). Without both, the application reaches no 
 - Privilege hardening of `condyn`: assessed in `CONDYN_PRIVILEGE_HARDENING_ASSESSMENT.md`. The
   schema-creation restriction is already in effect (`public` is owner-only in `condyn`); option H1
   (remove PUBLIC `CONNECT`/`TEMP`) is prepared but not applied and needs separate owner approval.
+
+## 8. Operational, manually testable HR Decision Looper (2026-10-10)
+
+`frontend/hr-decision-dock-finalization` @ `37eea05` (GRÜN) merged as `63e7d9f`. It contains the
+integration tip `e43f11e`, the dock finalization G1-G9, the local manual environment
+`scripts/hr-decision-loop-local.ts` (`npm run hr-loop:local`, `:seed`, `:serve`, `:status`, `:drop`)
+and the gated runtime registration: the HR routes call `registerUnifiedPersistenceSchema` only after
+`verifyDisposableTestDatabase(DATABASE_URL)` succeeds and issue no DDL on any other database. No file
+under `lib/decision-*`, `lib/database-isolation`, `lib/persistence`, `lib/career/db`, the G3 relation
+or adapter trees, `scripts/test-db` or sealed tests changed. Observation: the HR local composition
+reaches the G2 runtime transitively through `lib/persistence` (composition root, same pattern as
+`lib/decision-runtime/local`); the import-boundary test checks direct imports only.
+
+Proof as the least-privilege role `condyn_test_runner` (every database created, verified and
+dropped by the runner; the shared `condyn` database untouched):
+
+| Proof | Result |
+| --- | --- |
+| `tsc --noEmit` | 0 errors |
+| G2 + integration + isolation (incl. least-privilege proof, superuser refusal, P3/P6/P7, R5) | 62 files, 601/601 |
+| `test/career` (incl. HR loop unit, gate, PostgreSQL, HTTP and Chromium e2e) | 299 files, 1716 tests: 1683 passed, 6 skipped, 27 failed = the four G1 legacy suites (legacy quarantine) |
+| Manual environment smoke (`npm run hr-loop:local` as the role, port 3027) | started on a disposable database, unified registration, seeded world; HTTP: context A 15 families AVAILABLE, child DREV → root, absent DREV 404, declarations on context B 422 DECLARANT_MISMATCH, 422 SUBJECT_NOT_ADMISSIBLE, 201, 409; Chromium: onboarding closed, 15 AVAILABLE regions, bound root click → root only, plain field without dock, no page errors; `npm run hr-loop:local:drop` dropped exactly that database |
+
+How the operator starts it: `set -a; . ~/.config/condyn/test-db-role.env; set +a; npm run hr-loop:local`,
+then follow `docs/career_analysis/HR_DECISION_LOOP_MANUAL_TEST.md`.
