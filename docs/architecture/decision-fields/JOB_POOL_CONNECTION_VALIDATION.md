@@ -309,6 +309,33 @@ Run on `1ed5bf1`+`cf112ec` merged (`condyn_test_d9c58882fa6d604e`), 2026-10-10 2
 Boundary: the proposal executor (Discovery/Convergence model calls) is stubbed; the live Gemini evidence for the PDF
 path is GELB's (JP-M). The legacy `MockInferenceProvider` output is deterministic and not a model result.
 
+### 3.11 Sweep coverage delta `7134952` (GELB, `integration/job-pool-sweep-coverage` @ `9945565`) merged as `a8ab938`
+
+Contract additions (`lib/career/job-pool/types.ts`): `sweepProposal` on every matched, weak and missing entry (always
+present, `null` when uncovered; `scored: false`, `evidenceState: SOURCE_MATCH_VERIFIED`, `authorityState: NONE`),
+`sweepOnlyCoverageCount` per role, `capabilitySweep { state: AVAILABLE | NOT_PRODUCED | FAILED, proposalCount,
+scored: false }` on the body. The application reads the F11 projection with the same reader as the analyses route; a
+reader error marks `FAILED` and never alters the analysis matching.
+
+PINK proofs:
+
+- `sweep-coverage.test.ts` (unit, GELB's matching function with PINK's pool and analysis): every scored and ranked
+  field is byte-identical with, without and with a FAILED sweep; a proposal covering the missing requirement
+  `req_pink_alpha_3` appears as `sweepProposal` (EXACT, verified quote, unscored) and counts once in
+  `sweepOnlyCoverageCount`; a composite proposal covers `req_pink_beta_3` by `COMPOSITE_CONSTITUENT` without
+  changing its score; an unrelated proposal appears nowhere.
+- `http-canonical-inverse.postgres.test.ts`: a seeded analysis answers `capabilitySweep NOT_PRODUCED / 0 / false`,
+  `sweepProposal: null` everywhere, `sweepOnlyCoverageCount: 0`.
+- `pdf-path.postgres.test.ts`: the job without proposals answers `NOT_PRODUCED`; a second job of the same PDF whose
+  executor claims a proposal lineage without `RUN_` / `CONV_` rows is refused by the foreign keys of
+  `career_capability_proposal_projection_references` (no dangling reference can exist; the canonical analysis of that
+  attempt is persisted, the reference is not, the job stays RUNNING), and its matching is byte-identical to the first
+  job's.
+
+Boundary B-JP-SWEEP-AVAILABLE: PINK has no HTTP-level `AVAILABLE` or `FAILED` case. `AVAILABLE` needs persisted
+Discovery/Convergence runs (GELB's live evidence); `FAILED` needs a payload-level lineage violation behind valid foreign
+keys. Both are covered by GELB's unit and PostgreSQL suites in PINK's batch.
+
 ## 4. Boundaries and findings for coordination
 
 - F-JP-1 (closed in `b782793`): `JOB_POOL_CONNECTION.md` §4 followed the per-role `JOB_POOL_JSON_ROLE` design;
