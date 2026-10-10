@@ -1,0 +1,476 @@
+{
+  "pool": {
+    "id": "pool_condyn_sample_tech_v1",
+    "name": "CONDYN Sample Tech Job Pool",
+    "description": "Sample JSON Job Pool for the manual HR workflow: software, platform, data and AI roles.",
+    "version": 1,
+    "status": "ACTIVE",
+    "created_at": "2026-10-10T00:00:00.000Z"
+  },
+  "organizations": [
+    {
+      "id": "org_nordlicht",
+      "pool_id": "pool_condyn_sample_tech_v1",
+      "org_id": "nordlicht_software",
+      "name": "Nordlicht Software GmbH",
+      "country_iso": "DE",
+      "region": "Berlin",
+      "industry": "B2B SaaS",
+      "scale": "Scaleup (200+)",
+      "description": "Builds a collaborative planning platform for industrial customers."
+    },
+    {
+      "id": "org_rheinwerk",
+      "pool_id": "pool_condyn_sample_tech_v1",
+      "org_id": "rheinwerk_systems",
+      "name": "Rheinwerk Systems AG",
+      "country_iso": "DE",
+      "region": "Cologne",
+      "industry": "Industrial Edge & Automation",
+      "scale": "Enterprise (5k+)",
+      "description": "Industrial automation vendor moving its control software to the edge and the cloud."
+    },
+    {
+      "id": "org_alpendata",
+      "pool_id": "pool_condyn_sample_tech_v1",
+      "org_id": "alpendata_ai",
+      "name": "AlpenData AI",
+      "country_iso": "AT",
+      "region": "Vienna",
+      "industry": "Applied AI",
+      "scale": "Startup (50+)",
+      "description": "Applied machine learning products for document understanding."
+    }
+  ],
+  "roles": [
+    {
+      "id": "role_fullstack",
+      "pool_id": "pool_condyn_sample_tech_v1",
+      "organization_id": "org_nordlicht",
+      "title": "Senior Full-Stack Engineer",
+      "seniority": "Senior / L4",
+      "domain_focus": "Web Platforms",
+      "description": "Builds product features end to end in TypeScript, React and Node.js."
+    },
+    {
+      "id": "role_frontend_lead",
+      "pool_id": "pool_condyn_sample_tech_v1",
+      "organization_id": "org_nordlicht",
+      "title": "Frontend Lead",
+      "seniority": "Lead / L5",
+      "domain_focus": "User Interfaces",
+      "description": "Leads the frontend architecture and a team of four engineers."
+    },
+    {
+      "id": "role_platform",
+      "pool_id": "pool_condyn_sample_tech_v1",
+      "organization_id": "org_rheinwerk",
+      "title": "Platform Engineer",
+      "seniority": "Senior / L4",
+      "domain_focus": "Cloud & Edge Platforms",
+      "description": "Operates the Kubernetes-based edge and cloud platform."
+    },
+    {
+      "id": "role_architect",
+      "pool_id": "pool_condyn_sample_tech_v1",
+      "organization_id": "org_rheinwerk",
+      "title": "Principal Systems Architect",
+      "seniority": "Principal / L6",
+      "domain_focus": "Distributed Systems",
+      "description": "Owns the architecture of distributed real-time control systems."
+    },
+    {
+      "id": "role_ml",
+      "pool_id": "pool_condyn_sample_tech_v1",
+      "organization_id": "org_alpendata",
+      "title": "Machine Learning Engineer",
+      "seniority": "Mid / L3",
+      "domain_focus": "Applied ML",
+      "description": "Trains and ships document understanding models."
+    },
+    {
+      "id": "role_data",
+      "pool_id": "pool_condyn_sample_tech_v1",
+      "organization_id": "org_alpendata",
+      "title": "Data Engineer",
+      "seniority": "Senior / L4",
+      "domain_focus": "Data Platforms",
+      "description": "Builds batch and streaming data pipelines."
+    }
+  ],
+  "requirements": [
+    {
+      "id": "req_001",
+      "role_id": "role_fullstack",
+      "capability_name": "TypeScript",
+      "domain": "Software Engineering",
+      "weight": 0.9,
+      "required_level": "L4 - Advanced",
+      "necessity": "REQUIRED",
+      "aliases": [
+        "TS",
+        "TypeScript Development"
+      ],
+      "evidence_hint": "Projects or roles that show TypeScript in practice."
+    },
+    {
+      "id": "req_002",
+      "role_id": "role_fullstack",
+      "capability_name": "React",
+      "domain": "Frontend",
+      "weight": 0.8,
+      "required_level": "L4 - Advanced",
+      "necessity": "REQUIRED",
+      "aliases": [
+        "React.js",
+        "ReactJS"
+      ],
+      "evidence_hint": "Projects or roles that show React in practice."
+    },
+    {
+      "id": "req_003",
+      "role_id": "role_fullstack",
+      "capability_name": "Node.js",
+      "domain": "Backend",
+      "weight": 0.7,
+      "required_level": "L3 - Proficient",
+      "necessity": "REQUIRED",
+      "aliases": [
+        "NodeJS",
+        "Node"
+      ],
+      "evidence_hint": "Projects or roles that show Node.js in practice."
+    },
+    {
+      "id": "req_004",
+      "role_id": "role_fullstack",
+      "capability_name": "PostgreSQL",
+      "domain": "Data Storage",
+      "weight": 0.5,
+      "required_level": "L3 - Proficient",
+      "necessity": "PREFERRED",
+      "aliases": [
+        "Postgres",
+        "SQL"
+      ],
+      "evidence_hint": "Projects or roles that show PostgreSQL in practice."
+    },
+    {
+      "id": "req_005",
+      "role_id": "role_fullstack",
+      "capability_name": "Automated Testing",
+      "domain": "Quality",
+      "weight": 0.4,
+      "required_level": "L3 - Proficient",
+      "necessity": "PREFERRED",
+      "aliases": [
+        "Test-Driven Development",
+        "TDD",
+        "Unit Testing"
+      ],
+      "evidence_hint": "Projects or roles that show Automated Testing in practice."
+    },
+    {
+      "id": "req_006",
+      "role_id": "role_frontend_lead",
+      "capability_name": "React",
+      "domain": "Frontend",
+      "weight": 0.9,
+      "required_level": "L5 - Expert",
+      "necessity": "REQUIRED",
+      "aliases": [
+        "React.js",
+        "ReactJS"
+      ],
+      "evidence_hint": "Projects or roles that show React in practice."
+    },
+    {
+      "id": "req_007",
+      "role_id": "role_frontend_lead",
+      "capability_name": "TypeScript",
+      "domain": "Software Engineering",
+      "weight": 0.8,
+      "required_level": "L5 - Expert",
+      "necessity": "REQUIRED",
+      "aliases": [
+        "TS"
+      ],
+      "evidence_hint": "Projects or roles that show TypeScript in practice."
+    },
+    {
+      "id": "req_008",
+      "role_id": "role_frontend_lead",
+      "capability_name": "Frontend Architecture",
+      "domain": "Architecture",
+      "weight": 0.8,
+      "required_level": "L5 - Expert",
+      "necessity": "REQUIRED",
+      "aliases": [
+        "Software Architecture"
+      ],
+      "evidence_hint": "Projects or roles that show Frontend Architecture in practice."
+    },
+    {
+      "id": "req_009",
+      "role_id": "role_frontend_lead",
+      "capability_name": "Technical Leadership",
+      "domain": "Leadership",
+      "weight": 0.7,
+      "required_level": "L4 - Advanced",
+      "necessity": "REQUIRED",
+      "aliases": [
+        "Team Leadership",
+        "Engineering Leadership"
+      ],
+      "evidence_hint": "Projects or roles that show Technical Leadership in practice."
+    },
+    {
+      "id": "req_010",
+      "role_id": "role_frontend_lead",
+      "capability_name": "Accessibility",
+      "domain": "User Interfaces",
+      "weight": 0.3,
+      "required_level": "",
+      "necessity": "OPTIONAL",
+      "aliases": [
+        "WCAG"
+      ],
+      "evidence_hint": "Projects or roles that show Accessibility in practice."
+    },
+    {
+      "id": "req_011",
+      "role_id": "role_platform",
+      "capability_name": "Kubernetes",
+      "domain": "Cloud Infrastructure",
+      "weight": 0.9,
+      "required_level": "L4 - Advanced",
+      "necessity": "REQUIRED",
+      "aliases": [
+        "K8s"
+      ],
+      "evidence_hint": "Projects or roles that show Kubernetes in practice."
+    },
+    {
+      "id": "req_012",
+      "role_id": "role_platform",
+      "capability_name": "Docker",
+      "domain": "Cloud Infrastructure",
+      "weight": 0.6,
+      "required_level": "L3 - Proficient",
+      "necessity": "REQUIRED",
+      "aliases": [
+        "Containerization"
+      ],
+      "evidence_hint": "Projects or roles that show Docker in practice."
+    },
+    {
+      "id": "req_013",
+      "role_id": "role_platform",
+      "capability_name": "Terraform",
+      "domain": "Infrastructure as Code",
+      "weight": 0.6,
+      "required_level": "L3 - Proficient",
+      "necessity": "PREFERRED",
+      "aliases": [
+        "Infrastructure as Code"
+      ],
+      "evidence_hint": "Projects or roles that show Terraform in practice."
+    },
+    {
+      "id": "req_014",
+      "role_id": "role_platform",
+      "capability_name": "CI/CD",
+      "domain": "Delivery",
+      "weight": 0.6,
+      "required_level": "L3 - Proficient",
+      "necessity": "REQUIRED",
+      "aliases": [
+        "Continuous Integration",
+        "GitHub Actions"
+      ],
+      "evidence_hint": "Projects or roles that show CI/CD in practice."
+    },
+    {
+      "id": "req_015",
+      "role_id": "role_platform",
+      "capability_name": "Linux",
+      "domain": "Operating Systems",
+      "weight": 0.5,
+      "required_level": "L3 - Proficient",
+      "necessity": "PREFERRED",
+      "aliases": [
+        "Linux Administration"
+      ],
+      "evidence_hint": "Projects or roles that show Linux in practice."
+    },
+    {
+      "id": "req_016",
+      "role_id": "role_architect",
+      "capability_name": "Distributed Systems",
+      "domain": "Architecture",
+      "weight": 1.0,
+      "required_level": "L5 - Expert",
+      "necessity": "REQUIRED",
+      "aliases": [
+        "Distributed Computing"
+      ],
+      "evidence_hint": "Projects or roles that show Distributed Systems in practice."
+    },
+    {
+      "id": "req_017",
+      "role_id": "role_architect",
+      "capability_name": "Software Architecture",
+      "domain": "Architecture",
+      "weight": 0.9,
+      "required_level": "L5 - Expert",
+      "necessity": "REQUIRED",
+      "aliases": [
+        "System Design",
+        "Systems Architecture"
+      ],
+      "evidence_hint": "Projects or roles that show Software Architecture in practice."
+    },
+    {
+      "id": "req_018",
+      "role_id": "role_architect",
+      "capability_name": "Real-Time Systems",
+      "domain": "Embedded",
+      "weight": 0.7,
+      "required_level": "L4 - Advanced",
+      "necessity": "PREFERRED",
+      "aliases": [
+        "Real-Time Computing"
+      ],
+      "evidence_hint": "Projects or roles that show Real-Time Systems in practice."
+    },
+    {
+      "id": "req_019",
+      "role_id": "role_architect",
+      "capability_name": "Rust",
+      "domain": "Systems Programming",
+      "weight": 0.5,
+      "required_level": "L4 - Advanced",
+      "necessity": "OPTIONAL",
+      "aliases": [
+        "Rust Programming"
+      ],
+      "evidence_hint": "Projects or roles that show Rust in practice."
+    },
+    {
+      "id": "req_020",
+      "role_id": "role_ml",
+      "capability_name": "Python",
+      "domain": "Programming",
+      "weight": 0.9,
+      "required_level": "L4 - Advanced",
+      "necessity": "REQUIRED",
+      "aliases": [
+        "Python Programming"
+      ],
+      "evidence_hint": "Projects or roles that show Python in practice."
+    },
+    {
+      "id": "req_021",
+      "role_id": "role_ml",
+      "capability_name": "Machine Learning",
+      "domain": "AI",
+      "weight": 0.9,
+      "required_level": "L3 - Proficient",
+      "necessity": "REQUIRED",
+      "aliases": [
+        "ML"
+      ],
+      "evidence_hint": "Projects or roles that show Machine Learning in practice."
+    },
+    {
+      "id": "req_022",
+      "role_id": "role_ml",
+      "capability_name": "PyTorch",
+      "domain": "AI Frameworks",
+      "weight": 0.6,
+      "required_level": "L3 - Proficient",
+      "necessity": "PREFERRED",
+      "aliases": [
+        "Torch"
+      ],
+      "evidence_hint": "Projects or roles that show PyTorch in practice."
+    },
+    {
+      "id": "req_023",
+      "role_id": "role_ml",
+      "capability_name": "Natural Language Processing",
+      "domain": "AI",
+      "weight": 0.6,
+      "required_level": "L3 - Proficient",
+      "necessity": "PREFERRED",
+      "aliases": [
+        "NLP"
+      ],
+      "evidence_hint": "Projects or roles that show Natural Language Processing in practice."
+    },
+    {
+      "id": "req_024",
+      "role_id": "role_data",
+      "capability_name": "SQL",
+      "domain": "Data",
+      "weight": 0.9,
+      "required_level": "L4 - Advanced",
+      "necessity": "REQUIRED",
+      "aliases": [
+        "PostgreSQL"
+      ],
+      "evidence_hint": "Projects or roles that show SQL in practice."
+    },
+    {
+      "id": "req_025",
+      "role_id": "role_data",
+      "capability_name": "Python",
+      "domain": "Programming",
+      "weight": 0.7,
+      "required_level": "L3 - Proficient",
+      "necessity": "REQUIRED",
+      "aliases": [
+        "Python Programming"
+      ],
+      "evidence_hint": "Projects or roles that show Python in practice."
+    },
+    {
+      "id": "req_026",
+      "role_id": "role_data",
+      "capability_name": "Apache Kafka",
+      "domain": "Streaming",
+      "weight": 0.6,
+      "required_level": "L3 - Proficient",
+      "necessity": "PREFERRED",
+      "aliases": [
+        "Kafka",
+        "Event Streaming"
+      ],
+      "evidence_hint": "Projects or roles that show Apache Kafka in practice."
+    },
+    {
+      "id": "req_027",
+      "role_id": "role_data",
+      "capability_name": "Data Modeling",
+      "domain": "Data",
+      "weight": 0.6,
+      "required_level": "L3 - Proficient",
+      "necessity": "REQUIRED",
+      "aliases": [
+        "Data Modelling"
+      ],
+      "evidence_hint": "Projects or roles that show Data Modeling in practice."
+    },
+    {
+      "id": "req_028",
+      "role_id": "role_data",
+      "capability_name": "German",
+      "domain": "Language",
+      "weight": 0.3,
+      "required_level": "C1",
+      "necessity": "PREFERRED",
+      "requirement_type": "LANGUAGE",
+      "evidence_hint": "Projects or roles that show German in practice."
+    }
+  ]
+}

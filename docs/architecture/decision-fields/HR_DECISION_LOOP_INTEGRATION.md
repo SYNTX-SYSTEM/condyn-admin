@@ -207,3 +207,11 @@ PINK's independent validation of `6f400ea` (records taken over from
 `HR_DECISION_LOOP_VALIDATION.md` section 7) agrees: light checks 69/69, superuser admin refused,
 batch failures only under concurrent load and green idle, `test/career` failures = 27 G1
 quarantine + 6 COVFCR timeouts green idle, manual smoke 15 regions AVAILABLE.
+
+PINK validated the delta `6f400ea..1572dcf` independently (`validation/hr-decision-loop-pink`, merged
+as `2b2e8b1`, section 8 of `DATABASE_SAFETY_ARCHITECTURE.md`): by reading, and as the role with
+31 files, 212/212 including the Chromium e2e, plus a manual reuse smoke with 0 notices. Recorded
+observation: the `42622` truncation notice was the only runtime symptom of the DB-2 class (a
+statement naming an identifier longer than 63 bytes). With it suppressed in the application log,
+detection rests on the static pins and the DB-2 record. The notice remains visible in any direct
+`psql` session and in clients without the filter.
