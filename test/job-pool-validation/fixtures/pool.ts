@@ -122,6 +122,14 @@ export const validationPool = {
       required_level: "C1",
       necessity: "OPTIONAL",
       requirement_type: "LANGUAGE"
+    },
+    {
+      id: "req_pink_beta_3",
+      role_id: "role_pink_beta_platform",
+      capability_name: "Node.js",
+      domain: "Runtime",
+      weight: 0.3,
+      required_level: ""
     }
   ]
 } as const;
@@ -140,7 +148,6 @@ export function clonePool(): {
 
 export function draftPool() {
   const pool = clonePool();
-  pool.pool.id = "pool_pink_validation_draft";
   pool.pool.status = "DRAFT";
   return pool;
 }

@@ -32,12 +32,14 @@ const matchingModule = join(root, "lib/career/matching");
 
 /** Governed decision layer (D) and canonical decision carriers that layer P/C must never reach. */
 const decisionLayerPattern = /hr-decision-loop|decision-core|decision-runtime|hr-decision-context|human-decision-admission|decision-context-decision-revision-binding|career\/decisions|decision-adapters/;
+// F-JP-4 closed in 3a74ad0: the registration client lives in lib/persistence; no exception is tolerated.
+const isDecisionEdge = (spec: string) => decisionLayerPattern.test(spec);
 
 describe("Job Pool connection: layer separation (preservation)", () => {
   const jobPoolFiles = [...sources(jobPoolModule), ...sources(jobPoolRoutes)];
 
   it.skipIf(jobPoolFiles.length === 0)("layer C/P sources import nothing from the governed decision layer D", () => {
-    const violations = jobPoolFiles.flatMap((file) => importsOf(file).filter((spec) => decisionLayerPattern.test(spec)).map((spec) => `${relative(root, file)} -> ${spec}`));
+    const violations = jobPoolFiles.flatMap((file) => importsOf(file).filter(isDecisionEdge).map((spec) => `${relative(root, file)} -> ${spec}`));
     expect(violations).toEqual([]);
   });
 

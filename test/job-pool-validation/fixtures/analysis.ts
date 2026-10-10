@@ -16,11 +16,12 @@ export interface CapabilitySpec {
   quote: string;
 }
 
-/** The capability set used against `validationPool`: EXACT, ALIAS, weak, token-containment, unrelated. */
+/** The capability set used against `validationPool`: EXACT, ALIAS, weak, composite constituent, unrelated. */
 export const validationCapabilities: CapabilitySpec[] = [
   { entityId: "CAP_PINK_EXACT", name: "Distributed Systems Architecture", confidence: 0.95, quote: "Architected distributed IIoT Edge Computing system for resilient operation" },
   { entityId: "CAP_PINK_ALIAS", name: "k8s", confidence: 0.9, quote: "Operated k8s clusters across three regions with GitOps" },
   { entityId: "CAP_PINK_WEAK", name: "Edge Computing", confidence: 0.45, quote: "Supported an edge computing pilot for two months" },
+  { entityId: "CAP_PINK_COMPOSITE", name: "TypeScript and Node.js", confidence: 0.8, quote: "Built payment services in TypeScript and Node.js with full test coverage" },
   { entityId: "CAP_PINK_UNRELATED", name: "Watercolour Painting", confidence: 0.8, quote: "Exhibited watercolour paintings at a local gallery" }
 ];
 

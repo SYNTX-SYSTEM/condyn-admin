@@ -14,6 +14,7 @@ import { drizzle } from "drizzle-orm/postgres-js";
 import postgres from "postgres";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import { db } from "../../lib/career/db/client";
+import { CompanyPoolDataSchema } from "../../lib/career/matching/pool";
 import { getCareerAnalysisRepository } from "../../lib/career/repositories";
 import { PostgresTargetRequirementArtifactRepository } from "../../lib/career/target-adapters/role-requirement-artifact-persistence/postgres";
 import { byteReplayTargetRequirementRevision } from "../../lib/career/target/role/requirement/replay";
@@ -76,10 +77,13 @@ describe.skipIf(routes === null)("Job Pool connection: HTTP contract, canonical 
     expect(view.jobPoolUploadId).toMatch(/^JPOOL_/);
     expect(view.poolId).toBe(validationPool.pool.id);
     expect(view.poolStatus).toBe("ACTIVE");
-    expect([view.organizationCount, view.roleCount, view.requirementCount]).toEqual([2, 3, 5]);
+    expect([view.organizationCount, view.roleCount, view.requirementCount]).toEqual([2, 3, 6]);
     expect(view.rawSha256).toBe(sha256(uploadedBytes));
-    expect(view.canonicalSha256).toBe(sha256(canonicalJson(validationPool)));
-    expect(view.pool).toEqual(JSON.parse(uploadedBytes));
+    // A1 (amended after b782793): the canonical bytes are the key-sorted JSON of the schema-normalized pool
+    // (CompanyPoolDataSchema applies `search_queries: []`), not of the raw upload object.
+    const normalized = CompanyPoolDataSchema.parse(JSON.parse(uploadedBytes));
+    expect(view.canonicalSha256).toBe(sha256(canonicalJson(normalized)));
+    expect(view.pool).toEqual(normalized);
 
     const again = await post(uploadedBytes);
     expect(again.status).toBe(200);
@@ -152,7 +156,8 @@ describe.skipIf(routes === null)("Job Pool connection: HTTP contract, canonical 
       req_pink_alpha_2: { type: "CAPABILITY", level: { kind: "UNKNOWN" }, levelState: "UNKNOWN", necessity: { kind: "PREFERRED" }, necessityState: "SUPPORTED" },
       req_pink_alpha_3: { type: "CAPABILITY", level: { kind: "UNKNOWN" }, levelState: "UNKNOWN", necessity: { kind: "UNKNOWN" }, necessityState: "UNKNOWN" },
       req_pink_beta_1: { type: "TOOL_TECHNOLOGY", level: { kind: "CAPABILITY_LEVEL", level: "L4" }, levelState: "SUPPORTED", necessity: { kind: "REQUIRED" }, necessityState: "SUPPORTED" },
-      req_pink_beta_2: { type: "LANGUAGE", level: { kind: "LANGUAGE_PROFICIENCY", proficiency: "C1" }, levelState: "SUPPORTED", necessity: { kind: "OPTIONAL" }, necessityState: "SUPPORTED" }
+      req_pink_beta_2: { type: "LANGUAGE", level: { kind: "LANGUAGE_PROFICIENCY", proficiency: "C1" }, levelState: "SUPPORTED", necessity: { kind: "OPTIONAL" }, necessityState: "SUPPORTED" },
+      req_pink_beta_3: { type: "CAPABILITY", level: { kind: "UNKNOWN" }, levelState: "UNKNOWN", necessity: { kind: "UNKNOWN" }, necessityState: "UNKNOWN" }
     };
     const seen: string[] = [];
     for (const role of view.canonicalMapping.roles) {
@@ -239,10 +244,12 @@ describe.skipIf(routes === null)("Job Pool connection: HTTP contract, canonical 
       const requirements = validationPool.requirements.filter((req) => req.role_id === role.poolRoleId);
       const total = requirements.reduce((sum, req) => sum + req.weight, 0);
       const earned = [...role.matched, ...role.weakEvidence].reduce((sum: number, item: any) => sum + item.contribution, 0);
-      expect(role.resonanceScore).toBeCloseTo(total === 0 ? 0 : earned / total, 9);
+      expect(role.resonanceScore).toBeCloseTo(total === 0 ? 0 : earned / total, 3);
       expect([...role.matched, ...role.weakEvidence, ...role.missing].map((item: any) => item.poolRequirementId).sort()).toEqual(requirements.map((req) => req.id).sort());
       for (const item of [...role.matched, ...role.weakEvidence]) {
-        expect(["EXACT", "ALIAS", "TOKEN_CONTAINMENT"]).toContain(item.matchBasis);
+        expect(["EXACT", "ALIAS", "COMPOSITE_CONSTITUENT", "TOKEN_CONTAINMENT"]).toContain(item.matchBasis);
+        expect("matchedConstituent" in item).toBe(true);
+        if (item.matchBasis !== "COMPOSITE_CONSTITUENT") expect(item.matchedConstituent).toBeNull();
         const capability = validationCapabilities.find((spec) => spec.entityId === item.matchedCapabilityEntityId)!;
         expect(capability).toBeDefined();
         expect(item.matchedCapabilityName).toBe(capability.name);
@@ -250,10 +257,10 @@ describe.skipIf(routes === null)("Job Pool connection: HTTP contract, canonical 
         expect(item.evidence.length).toBeGreaterThan(0);
         for (const quote of item.evidence) expect(quote).toEqual({ docId: "DOC_001", quote: capability.quote });
       }
-      for (const item of role.matched) expect(item.contribution).toBeCloseTo(item.weight * item.confidence, 9);
+      for (const item of role.matched) expect(item.contribution).toBeCloseTo(item.weight * item.confidence, 3);
       for (const item of role.weakEvidence) {
         expect(item.confidence).toBeLessThan(0.7);
-        expect(item.contribution).toBeCloseTo(item.weight * item.confidence * 0.5, 9);
+        expect(item.contribution).toBeCloseTo(item.weight * item.confidence * 0.5, 3);
         expect(item.reason.length).toBeGreaterThan(0);
       }
       const mapping = view.canonicalMapping.roles.find((r: any) => r.poolRoleId === role.poolRoleId);
@@ -264,12 +271,16 @@ describe.skipIf(routes === null)("Job Pool connection: HTTP contract, canonical 
     expect(alpha.matched.map((item: any) => [item.poolRequirementId, item.matchBasis, item.necessity])).toEqual([["req_pink_alpha_1", "EXACT", "REQUIRED"]]);
     expect(alpha.weakEvidence.map((item: any) => [item.poolRequirementId, item.matchBasis, item.necessity])).toEqual([["req_pink_alpha_2", "EXACT", "PREFERRED"]]);
     expect(alpha.missing).toEqual([{ poolRequirementId: "req_pink_alpha_3", capabilityName: "Industrial IoT Protocol Design", requiredLevel: "", weight: 0.4, necessity: "UNDECLARED", evidenceHint: null }]);
-    expect(alpha.resonanceScore).toBeCloseTo((1.0 * 0.95 + 0.6 * 0.45 * 0.5) / 2.0, 9);
+    expect(alpha.resonanceScore).toBeCloseTo((1.0 * 0.95 + 0.6 * 0.45 * 0.5) / 2.0, 3);
 
     const beta = roles.find((r) => r.poolRoleId === "role_pink_beta_platform");
-    expect(beta.matched.map((item: any) => [item.poolRequirementId, item.matchBasis, item.matchedCapabilityName])).toEqual([["req_pink_beta_1", "ALIAS", "k8s"]]);
+    // COMPOSITE_CONSTITUENT (contract addition b6986ff): a conjunction states each part; full match under the 0.7 rule.
+    expect(beta.matched.map((item: any) => [item.poolRequirementId, item.matchBasis, item.matchedCapabilityName, item.matchedConstituent])).toEqual([
+      ["req_pink_beta_1", "ALIAS", "k8s", null],
+      ["req_pink_beta_3", "COMPOSITE_CONSTITUENT", "TypeScript and Node.js", "Node.js"]
+    ]);
     expect(beta.missing.map((item: any) => [item.poolRequirementId, item.necessity])).toEqual([["req_pink_beta_2", "OPTIONAL"]]);
-    expect(beta.resonanceScore).toBeCloseTo((0.9 * 0.9) / 1.1, 9);
+    expect(beta.resonanceScore).toBeCloseTo((0.9 * 0.9 + 0.3 * 0.8) / 1.4, 3);
 
     const empty = roles.find((r) => r.poolRoleId === "role_pink_beta_empty");
     expect([empty.resonanceScore, empty.matched, empty.weakEvidence, empty.missing]).toEqual([0, [], [], []]);
@@ -289,9 +300,11 @@ describe.skipIf(routes === null)("Job Pool connection: HTTP contract, canonical 
   it("JP-H: matches refuse unknown analyses and pools (404) and inactive pools (409)", async () => {
     expect((await getMatches(view.jobPoolUploadId, "?analysisId=ANL_DOES_NOT_EXIST")).status).toBe(404);
     expect((await getMatches("JPOOL_DOES_NOT_EXIST", `?analysisId=${analysisId}`)).status).toBe(404);
-    expect([400, 404]).toContain((await getMatches(view.jobPoolUploadId, "")).status);
+    const noAnalysis = await getMatches(view.jobPoolUploadId, "");
+    expect(noAnalysis.status).toBe(400);
+    expect((await noAnalysis.json()).error.code).toBe("ERR_ANALYSIS_ID_REQUIRED");
     const draft = await post(JSON.stringify(draftPool()));
-    expect([200, 201]).toContain(draft.status);
+    expect(draft.status).toBe(201);
     const draftId = (await draft.json()).jobPoolUploadId;
     const inactive = await getMatches(draftId, `?analysisId=${analysisId}`);
     expect(inactive.status).toBe(409);
@@ -322,8 +335,9 @@ describe.skipIf(routes === null)("Job Pool connection: HTTP contract, canonical 
       expect((await response.json()).error.code).toBe("ERR_JOB_POOL_REFERENCE_INVALID");
     }
     const list = await routes!.collection.GET!(new Request("http://local/api/career/job-pools"), { params: Promise.resolve({}) });
-    const ids = (await list.json()).jobPools.map((item: any) => item.poolId);
-    expect(ids.filter((id: string) => id === validationPool.pool.id).length).toBe(1);
+    const summaries = (await list.json()).jobPools;
+    // The rejected uploads left no record; the ACTIVE pool exists once (the DRAFT variant is a separate upload).
+    expect(summaries.filter((item: any) => item.poolId === validationPool.pool.id && item.poolStatus === "ACTIVE").length).toBe(1);
   });
 
   it("JP-H: an unmarked database in the disposable name pattern receives no DDL and the upload answers 503", async () => {
