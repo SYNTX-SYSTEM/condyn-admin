@@ -33,6 +33,11 @@ function deterministicAnalysisId(jobId: string): string {
   return jobId.replace("JOB_", "ANL_");
 }
 
+/** JSON-stable copy: drops undefined-valued keys exactly as a JSON(B) round trip does. */
+export function withoutUndefinedKeys<T>(value: T): T {
+  return JSON.parse(JSON.stringify(value)) as T;
+}
+
 /** Pins the informational load timestamp of every normalized document to one durable instant. */
 export function pinDocumentLoadTime<T extends { metadata?: unknown }>(documents: T[], instant: string): T[] {
   let changed = false;
@@ -79,7 +84,9 @@ export function createCareerAnalysisJobProcessor(
     const sourceBundle = dependencies.candidateSourceBundles
       ? await dependencies.candidateSourceBundles.persistCandidateSourceBundle(createCandidateSourceBundle({
         candidateSourceBundleId: `CSB_${job.jobId}`,
-        documents: toCapabilitySourceDocuments(normalizedDocs),
+        // D-JP-3: the F10A bridge marks absent pages with an explicit `pages: undefined` key, which JSONB
+        // drops; the persisted bundle then never equals its own write. The bundle stores the JSON-stable form.
+        documents: withoutUndefinedKeys(toCapabilitySourceDocuments(normalizedDocs)),
         schemaVersion: "CANDIDATE_SOURCE_BUNDLE_V1",
         createdAt: job.createdAt,
       }))

@@ -1,6 +1,7 @@
 import { describe, expect, it, vi } from "vitest";
 import { createCareerAnalysisJobProcessor, pinDocumentLoadTime } from "../lib/career/orchestration/career-analysis-job-processor";
-import { InMemoryCandidateSourceBundleRepository } from "../lib/career/capability-core/source-bundle";
+import { isDeepStrictEqual } from "node:util";
+import type { CandidateSourceBundle, CandidateSourceBundleRepository } from "../lib/career/capability-core/source-bundle";
 import { createSourceMetadata } from "../lib/career/loaders/source";
 
 /**
@@ -19,6 +20,26 @@ const job = {
   leaseVersion: 1
 } as never;
 
+/** Mimics PostgresCandidateSourceBundleRepository: storage drops undefined keys (JSONB), comparison is strict. */
+class JsonbLikeBundleRepository implements CandidateSourceBundleRepository {
+  readonly rows = new Map<string, string>();
+  async getCandidateSourceBundleById(id: string): Promise<CandidateSourceBundle | null> {
+    const row = this.rows.get(id);
+    return row === undefined ? null : JSON.parse(row);
+  }
+  async persistCandidateSourceBundle(value: CandidateSourceBundle): Promise<CandidateSourceBundle> {
+    const existing = await this.getCandidateSourceBundleById(value.candidateSourceBundleId);
+    if (existing) {
+      if (!isDeepStrictEqual(existing, value)) throw new Error("ERR_CANDIDATE_SOURCE_BUNDLE_IMMUTABLE_CONFLICT");
+      return existing;
+    }
+    this.rows.set(value.candidateSourceBundleId, JSON.stringify(value));
+    const reread = await this.getCandidateSourceBundleById(value.candidateSourceBundleId);
+    if (!isDeepStrictEqual(reread, value)) throw new Error("ERR_CANDIDATE_SOURCE_BUNDLE_PERSISTENCE_INVALID");
+    return reread!;
+  }
+}
+
 function fixture() {
   let clock = 0;
   const prepareDocuments = vi.fn(async () => ({
@@ -35,7 +56,7 @@ function fixture() {
     return { kind: "SNAPSHOT_REUSED" };
   });
   const save = vi.fn(async () => undefined);
-  const bundles = new InMemoryCandidateSourceBundleRepository();
+  const bundles = new JsonbLikeBundleRepository();
   const processor = createCareerAnalysisJobProcessor({
     canonicalAnalysisRepository: { load: async () => null, save },
     prepareDocuments,
@@ -46,8 +67,8 @@ function fixture() {
   return { processor, prepareDocuments, execute, bundles };
 }
 
-describe("career job retry with a persisted source bundle (D-JP-2)", () => {
-  it("succeeds on the retry after a transient failure: the second attempt rebuilds the identical bundle", async () => {
+describe("career job retry with a persisted source bundle (D-JP-2, D-JP-3)", () => {
+  it("persists the bundle through a JSONB-like store and succeeds on the retry after a transient failure", async () => {
     const { processor, bundles } = fixture();
     const report = vi.fn(async () => undefined);
     await expect(processor(job, report)).rejects.toThrow("TRANSIENT_PROVIDER_FAILURE");
