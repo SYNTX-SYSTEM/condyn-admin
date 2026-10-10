@@ -1,3 +1,5 @@
+import { requireTestDatabaseUrl, DISPOSABLE_TEST_DATABASE_PATTERN } from "../../lib/database-isolation/policy";
+import { createDisposableTestDatabaseNamed, dropDisposableTestDatabase, newDisposableTestDatabaseName } from "../../lib/database-isolation/verification";
 import { randomBytes } from "node:crypto";
 import { drizzle } from "drizzle-orm/postgres-js";
 import postgres, { type Sql } from "postgres";
@@ -8,8 +10,8 @@ import { afterAll, beforeAll, describe, expect, it } from "vitest";
  * running G2 (R1, R2, R3) and G3 (R4, R5, R7) together in one freshly created database.
  * D1: the G3 HumanDecisionRecord is the only decision carrier; no G2 human decision artifact exists.
  */
-const basis = new URL(process.env.DATABASE_URL ?? "postgresql://postgres:postgres@localhost:5432/condyn");
-const databaseName = `condyn_dll_${randomBytes(8).toString("hex")}`;
+const basis = new URL(requireTestDatabaseUrl());
+const databaseName = newDisposableTestDatabaseName();
 const databaseUrl = new URL(basis.toString()); databaseUrl.pathname = `/${databaseName}`;
 const adminUrl = new URL(basis.toString()); adminUrl.pathname = "/postgres";
 const stamp = "2026-10-09T00:00:00.000Z";
@@ -47,7 +49,7 @@ async function load() {
 
 beforeAll(async () => {
   admin = postgres(adminUrl.toString(), { max: 1, onnotice: () => undefined });
-  await admin.unsafe(`CREATE DATABASE "${databaseName}"`);
+  await createDisposableTestDatabaseNamed(basis.toString(), databaseName);
   sql = postgres(databaseUrl.toString(), { max: 2, onnotice: () => undefined });
   lib = await load();
 }, 60_000);
@@ -55,11 +57,10 @@ beforeAll(async () => {
 afterAll(async () => {
   const [identity] = await sql`SELECT current_database() AS name` as unknown as Array<{ name: string }>;
   expect(identity.name).toBe(databaseName);
-  expect(databaseName.startsWith("condyn_dll_")).toBe(true);
+  expect(DISPOSABLE_TEST_DATABASE_PATTERN.test(databaseName)).toBe(true);
   await lib.client.closeDbConnection().catch(() => undefined);
   await sql.end({ timeout: 5 });
-  await admin.unsafe("SELECT pg_terminate_backend(pid) FROM pg_stat_activity WHERE datname = $1 AND pid <> pg_backend_pid()", [databaseName]);
-  await admin.unsafe(`DROP DATABASE IF EXISTS "${databaseName}"`);
+  await dropDisposableTestDatabase(databaseUrl.toString());
   expect(await admin.unsafe("SELECT 1 FROM pg_database WHERE datname = $1", [databaseName])).toHaveLength(0);
   await admin.end({ timeout: 5 });
 }, 60_000);
