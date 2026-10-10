@@ -77,6 +77,9 @@ export class CareerJobWorker {
           const isTerminal = error?.name === "TERMINAL_ERROR";
           const errorCode = error?.code || "EXECUTION_FAILED";
           const errorSummary = error?.message || "Unknown error";
+          // Each attempt's cause is logged: the job row keeps only the last attempt's summary,
+          // which can hide the original failure behind a retry symptom (D-JP-3 was found this way).
+          console.error(`[Worker ${this.workerId}] FAILED ${job.jobId} lease=${job.leaseVersion} terminal=${isTerminal} ${errorCode}: ${errorSummary}`);
           
           await this.jobRepo.failJob(job.jobId, this.workerId, job.leaseVersion, isTerminal, errorCode, errorSummary);
         } finally {
