@@ -1,3 +1,5 @@
+import { requireTestDatabaseUrl, DISPOSABLE_TEST_DATABASE_PATTERN } from "../../lib/database-isolation/policy";
+import { createDisposableTestDatabaseNamed, dropDisposableTestDatabase, newDisposableTestDatabaseName } from "../../lib/database-isolation/verification";
 import { randomBytes } from "node:crypto";
 import { spawn, spawnSync, type ChildProcess } from "node:child_process";
 import { once } from "node:events";
@@ -293,9 +295,9 @@ describe("G2/G3 vertical integration proof", () => {
   });
 
   describe("P3 root context from G3 state over HTTP", () => {
-    const databaseBasis = process.env.DATABASE_URL ?? "postgresql://postgres:postgres@localhost:5432/condyn";
+    const databaseBasis = requireTestDatabaseUrl();
     const basisName = new URL(databaseBasis).pathname.slice(1);
-    const databaseName = `condyn_p3_${randomBytes(10).toString("hex")}`;
+    const databaseName = newDisposableTestDatabaseName();
     const sentinel = `P3SENTINEL${randomBytes(6).toString("hex").toUpperCase()}`;
     const databaseUrl = new URL(databaseBasis); databaseUrl.pathname = `/${databaseName}`;
     const administrativeUrl = new URL(databaseBasis); administrativeUrl.pathname = "/postgres";
@@ -350,7 +352,7 @@ describe("G2/G3 vertical integration proof", () => {
     beforeAll(async () => {
       expect(databaseName).not.toBe(basisName);
       administrativeClient = postgres(administrativeUrl.toString(), { max: 1, onnotice: () => undefined });
-      await administrativeClient.unsafe(`CREATE DATABASE "${databaseName}"`);
+      await createDisposableTestDatabaseNamed(databaseBasis, databaseName);
       databaseClient = postgres(databaseUrl.toString(), { max: 1, onnotice: () => undefined });
       await provisionCareerChainSchema(databaseClient);
       expect(await tableExists("decision_context_revisions")).toBe(false);
@@ -375,9 +377,8 @@ describe("G2/G3 vertical integration proof", () => {
       try {
         const before = await administrativeClient.unsafe("SELECT datname FROM pg_database WHERE datname = ANY($1::text[]) ORDER BY datname", [[databaseName, basisName]]);
         cleanup.push(`before=${before.map((row) => row.datname).join(",")}`);
-        expect(/^condyn_p3_[0-9a-f]{20}$/.test(databaseName)).toBe(true);
-        await administrativeClient.unsafe("SELECT pg_terminate_backend(pid) FROM pg_stat_activity WHERE datname = $1 AND pid <> pg_backend_pid()", [databaseName]);
-        await administrativeClient.unsafe(`DROP DATABASE IF EXISTS "${databaseName}"`);
+        expect(DISPOSABLE_TEST_DATABASE_PATTERN.test(databaseName)).toBe(true);
+        await dropDisposableTestDatabase(databaseUrl.toString());
         const after = await administrativeClient.unsafe("SELECT datname FROM pg_database WHERE datname = ANY($1::text[]) ORDER BY datname", [[databaseName, basisName]]);
         cleanup.push(`after=${after.map((row) => row.datname).join(",")}`);
         expect(after.map((row) => row.datname)).not.toContain(databaseName);

@@ -1,3 +1,5 @@
+import { requireTestDatabaseUrl, DISPOSABLE_TEST_DATABASE_PATTERN } from "../../lib/database-isolation/policy";
+import { createDisposableTestDatabaseNamed, dropDisposableTestDatabase, newDisposableTestDatabaseName } from "../../lib/database-isolation/verification";
 import { randomBytes } from "node:crypto";
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
@@ -10,8 +12,8 @@ import { afterAll, beforeAll, describe, expect, it } from "vitest";
  * end; the shared development database is never touched. Stage names follow
  * docs/architecture/decision-fields/VERTICAL_INTEGRATION_PROOF.md.
  */
-const basis = new URL(process.env.DATABASE_URL ?? "postgresql://postgres:postgres@localhost:5432/condyn");
-const databaseName = `condyn_g3b_${randomBytes(8).toString("hex")}`;
+const basis = new URL(requireTestDatabaseUrl());
+const databaseName = newDisposableTestDatabaseName();
 const databaseUrl = new URL(basis.toString()); databaseUrl.pathname = `/${databaseName}`;
 const adminUrl = new URL(basis.toString()); adminUrl.pathname = "/postgres";
 const forbidden = ["current", "latest", "head", "accepted", "authority", "verified", "loopClosed", "success"];
@@ -68,7 +70,7 @@ function genericRootRevision(proposal: any, context: any) {
 
 beforeAll(async () => {
   admin = postgres(adminUrl.toString(), { max: 1, onnotice: () => undefined });
-  await admin.unsafe(`CREATE DATABASE "${databaseName}"`);
+  await createDisposableTestDatabaseNamed(basis.toString(), databaseName);
   sql = postgres(databaseUrl.toString(), { max: 2, onnotice: () => undefined });
   lib = await loadLibraries();
 }, 60_000);
@@ -78,10 +80,10 @@ afterAll(async () => {
   const [identity] = await sql`SELECT current_database() AS name` as unknown as Array<{ name: string }>;
   expect(identity.name).toBe(databaseName);
   expect(databaseName).not.toBe(basis.pathname.slice(1));
+  expect(DISPOSABLE_TEST_DATABASE_PATTERN.test(databaseName)).toBe(true);
   await lib.t12a.closeT12AHistoricalFixture().catch(() => undefined);
   await sql.end({ timeout: 5 });
-  await admin.unsafe("SELECT pg_terminate_backend(pid) FROM pg_stat_activity WHERE datname = $1 AND pid <> pg_backend_pid()", [databaseName]);
-  await admin.unsafe(`DROP DATABASE IF EXISTS "${databaseName}"`);
+  await dropDisposableTestDatabase(databaseUrl.toString());
   const remaining = await admin.unsafe("SELECT 1 FROM pg_database WHERE datname = $1", [databaseName]);
   expect(remaining).toHaveLength(0);
   await admin.end({ timeout: 5 });

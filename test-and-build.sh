@@ -1,3 +1,3 @@
 set -e
-npx vitest run
+npm run test:isolated
 npm run build

@@ -1,3 +1,5 @@
+import { requireTestDatabaseUrl, DISPOSABLE_TEST_DATABASE_PATTERN } from "../../../../lib/database-isolation/policy";
+import { createDisposableTestDatabaseNamed, dropDisposableTestDatabase, newDisposableTestDatabaseName } from "../../../../lib/database-isolation/verification";
 /**
  * Isolated PostgreSQL world for the HR Decision Loop frontend proofs.
  *
@@ -103,7 +105,7 @@ export const HR_LOOP_OBSERVER = "HR_OBSERVER_LOCAL";
 /** A marker that lives only inside G3 payloads; it must never appear in a G2 revision or envelope. */
 export const HR_LOOP_G3_PAYLOAD_MARKER = "G3_PAYLOAD_ONLY_MARKER_4C1F";
 
-const databaseBasis = process.env.DATABASE_URL ?? "postgresql://postgres:postgres@localhost:5432/condyn";
+const databaseBasis = requireTestDatabaseUrl();
 
 /** Dependency-ordered drizzle declarations of the post-decision chain (not registered by production startup). */
 export const postDecisionTables = [
@@ -169,13 +171,13 @@ export interface HrLoopWorld {
 }
 
 export async function provisionDatabase(): Promise<{ databaseName: string; databaseUrl: string; sql: Sql; admin: Sql }> {
-  const databaseName = `condyn_hrloop_${randomBytes(8).toString("hex")}`;
+  const databaseName = newDisposableTestDatabaseName();
   const url = new URL(databaseBasis);
   url.pathname = `/${databaseName}`;
   const adminUrl = new URL(databaseBasis);
   adminUrl.pathname = "/postgres";
   const admin = postgres(adminUrl.toString(), { max: 1, onnotice: () => undefined });
-  await admin.unsafe(`CREATE DATABASE ${quote(databaseName)}`);
+  await createDisposableTestDatabaseNamed(databaseBasis, databaseName);
   const sql = postgres(url.toString(), { max: 2, onnotice: () => undefined });
   return { databaseName, databaseUrl: url.toString(), sql, admin };
 }
@@ -270,8 +272,7 @@ export async function createHrLoopPostgresWorld(): Promise<HrLoopWorld> {
   const { databaseName, databaseUrl, sql, admin } = await provisionDatabase();
   const destroy = async () => {
     await sql.end({ timeout: 5 });
-    await admin.unsafe("SELECT pg_terminate_backend(pid) FROM pg_stat_activity WHERE datname = $1 AND pid <> pg_backend_pid()", [databaseName]);
-    await admin.unsafe(`DROP DATABASE IF EXISTS ${quote(databaseName)}`);
+    await dropDisposableTestDatabase(databaseUrl);
     await admin.end({ timeout: 5 });
   };
   try {
