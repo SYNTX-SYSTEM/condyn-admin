@@ -12,7 +12,14 @@ import * as schema from "./schema";
 import { initT11ProductionPersistenceSchema } from "./t11-persistence-schema";
 import { initCanonicalSilReadLineageSchema } from "../sil-projection/persistence-schema";
 
-const connectionString = process.env.DATABASE_URL || "postgresql://postgres:postgres@localhost:5432/condyn";
+import { resolveApplicationDatabaseUrl } from "../../database-isolation/policy";
+
+/**
+ * No fallback to any real database (database isolation mandate, 2026-10-10): a missing
+ * DATABASE_URL resolves to an unroutable `.invalid` host, and under a test runner a protected
+ * database name (condyn, postgres, template*) resolves to the same host. Queries fail closed.
+ */
+const connectionString = resolveApplicationDatabaseUrl(process.env.DATABASE_URL, process.env.VITEST !== undefined);
 
 // Singleton connection client for serverless Next.js environment safety
 const sql = postgres(connectionString, { max: 10 });

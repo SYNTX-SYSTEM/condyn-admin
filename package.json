@@ -7,8 +7,11 @@
     "build": "next build",
     "start": "next start --port 3003",
     "lint": "eslint",
-    "test": "vitest",
-    "worker:career": "tsx --env-file=.env.local scripts/run-career-worker.ts"
+    "test": "tsx scripts/test-db/run.ts",
+    "worker:career": "tsx --env-file=.env.local scripts/run-career-worker.ts",
+    "test:isolated": "tsx scripts/test-db/run.ts",
+    "test:db:create": "tsx scripts/test-db/create.ts",
+    "test:db:drop": "tsx scripts/test-db/drop.ts"
   },
   "dependencies": {
     "@google/genai": "^2.10.0",

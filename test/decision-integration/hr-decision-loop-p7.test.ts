@@ -1,3 +1,5 @@
+import { requireTestDatabaseUrl, DISPOSABLE_TEST_DATABASE_PATTERN } from "../../lib/database-isolation/policy";
+import { createDisposableTestDatabaseNamed, dropDisposableTestDatabase, newDisposableTestDatabaseName } from "../../lib/database-isolation/verification";
 import { randomBytes } from "node:crypto";
 import { spawn, spawnSync, type ChildProcess } from "node:child_process";
 import { once } from "node:events";
@@ -63,9 +65,9 @@ import { seedCareerCanonicalChain, type SeededCareerCanonicalChain } from "./fix
  */
 
 const forbiddenKeys = ["current", "head", "latest", "accepted", "authority", "verified", "loopClosed", "success"];
-const databaseBasis = process.env.DATABASE_URL ?? "postgresql://postgres:postgres@localhost:5432/condyn";
+const databaseBasis = requireTestDatabaseUrl();
 const basisName = new URL(databaseBasis).pathname.slice(1);
-const databaseName = `condyn_pink_p7_${randomBytes(8).toString("hex")}`;
+const databaseName = newDisposableTestDatabaseName();
 const sentinel = `P7SENTINEL${randomBytes(6).toString("hex").toUpperCase()}`;
 const databaseUrl = new URL(databaseBasis); databaseUrl.pathname = `/${databaseName}`;
 const administrativeUrl = new URL(databaseBasis); administrativeUrl.pathname = "/postgres";
@@ -117,7 +119,7 @@ async function stopServer(): Promise<void> {
 beforeAll(async () => {
   expect(databaseName).not.toBe(basisName);
   administrativeClient = postgres(administrativeUrl.toString(), { max: 1, onnotice: () => undefined });
-  await administrativeClient.unsafe(`CREATE DATABASE "${databaseName}"`);
+  await createDisposableTestDatabaseNamed(databaseBasis, databaseName);
   databaseClient = postgres(databaseUrl.toString(), { max: 2, onnotice: () => undefined });
   // P0 / R7: one startup registration order for both fields, then the post-decision tables the order does not cover yet.
   await registerUnifiedPersistenceSchema(databaseClient);
@@ -145,9 +147,8 @@ afterAll(async () => {
   if (administrativeClient === undefined) return;
   try {
     const before = (await administrativeClient.unsafe("SELECT datname FROM pg_database WHERE datname = ANY($1::text[])", [[databaseName, basisName]])).map((row) => row.datname as string);
-    expect(/^condyn_pink_p7_[0-9a-f]{16}$/.test(databaseName)).toBe(true);
-    await administrativeClient.unsafe("SELECT pg_terminate_backend(pid) FROM pg_stat_activity WHERE datname = $1 AND pid <> pg_backend_pid()", [databaseName]);
-    await administrativeClient.unsafe(`DROP DATABASE IF EXISTS "${databaseName}"`);
+    expect(DISPOSABLE_TEST_DATABASE_PATTERN.test(databaseName)).toBe(true);
+    await dropDisposableTestDatabase(databaseUrl.toString());
     const after = (await administrativeClient.unsafe("SELECT datname FROM pg_database WHERE datname = ANY($1::text[])", [[databaseName, basisName]])).map((row) => row.datname as string);
     expect(after).not.toContain(databaseName);
     expect(after.includes(basisName)).toBe(before.includes(basisName));

@@ -1,3 +1,4 @@
+import { requireTestDatabaseUrl } from "../../lib/database-isolation/policy";
 import { randomBytes } from "node:crypto";
 import { drizzle } from "drizzle-orm/postgres-js";
 import postgres, { type Sql } from "postgres";
@@ -12,7 +13,7 @@ import { computeSnapshotKey } from "../../lib/career/capability-core";
 import { createCareerCanonicalLocalFixture, type CareerCanonicalLocalFixture } from "./fixtures/career-canonical-local-fixture";
 import { stubRepositories } from "./fixtures/stub-repositories";
 
-const databaseUrl = process.env.DATABASE_URL || "postgresql://postgres:postgres@localhost:5432/condyn";
+const databaseUrl = requireTestDatabaseUrl();
 const schemaName = `g2g3_r3_${randomBytes(8).toString("hex")}`;
 let admin: Sql;
 let client: Sql;
