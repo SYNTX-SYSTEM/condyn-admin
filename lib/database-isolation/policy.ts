@@ -68,21 +68,25 @@ export function maintenanceUrlFor(url: string): string {
   return parsed.toString();
 }
 
+/** Explicit opt-in that only a real server or worker process may set; refused under any test runner. */
+export const SHARED_DATABASE_OPT_IN_VARIABLE = "CONDYN_ALLOW_SHARED_DATABASE";
+
 /**
  * Connection string for the application client. There is no fallback to any real database:
- * a missing URL resolves to an unroutable host, and under a test runner a protected
- * database name resolves to the same unroutable host. Queries then fail closed.
+ * a missing URL resolves to an unroutable host. A protected database name (condyn, postgres,
+ * template*) also resolves to the unroutable host unless the process explicitly opted in with
+ * CONDYN_ALLOW_SHARED_DATABASE=1 AND is not running under a test runner.
  */
-export function resolveApplicationDatabaseUrl(raw: string | undefined, underTestRunner: boolean): string {
+export function resolveApplicationDatabaseUrl(raw: string | undefined, underTestRunner: boolean, sharedDatabaseOptIn: string | undefined = undefined): string {
   if (raw === undefined || raw.trim() === "") return UNCONFIGURED_DATABASE_URL;
-  if (underTestRunner) {
-    try {
-      const name = decodeURIComponent(new URL(raw).pathname.replace(/^\//, ""));
-      if (name === "" || isProtectedDatabaseName(name)) return UNCONFIGURED_DATABASE_URL;
-    } catch {
-      return UNCONFIGURED_DATABASE_URL;
-    }
+  let name: string;
+  try {
+    name = decodeURIComponent(new URL(raw).pathname.replace(/^\//, ""));
+  } catch {
+    return UNCONFIGURED_DATABASE_URL;
   }
+  if (underTestRunner && name === "") return UNCONFIGURED_DATABASE_URL;
+  if (isProtectedDatabaseName(name) && (underTestRunner || sharedDatabaseOptIn !== "1")) return UNCONFIGURED_DATABASE_URL;
   return raw;
 }
 
