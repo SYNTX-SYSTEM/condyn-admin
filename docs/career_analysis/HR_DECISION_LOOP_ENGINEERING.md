@@ -109,6 +109,7 @@ dependency); without it the browser section is reported as skipped.
 | Composition root gate | `local-composition-gate.test.ts` (doubles, no connection), `local-composition.postgres.test.ts` | runner database | disposable identity → unified registration once per process, every family provisioned, seeded world served with 15 × AVAILABLE through the production root; non-disposable identity → no DDL |
 | Final run as the least-privilege role `condyn_test_runner` (tip merged: `e43f11e`) | all of the above plus `test/database-isolation/least-privilege-role.test.ts` | `condyn_test_2b08dec7b4f06b6a` (created, verified, dropped) | 18 files, 90 passed; Chromium e2e 7/7 (103 s) |
 | Script as the role | `npm run hr-loop:local:seed`, `:drop` | `condyn_test_1bb89b29238875ea` | admin role reported as least privilege; created, registered, seeded, dropped. Superuser admin without `TEST_DATABASE_ALLOW_SUPERUSER=1` → `ERR_TEST_DATABASE_ADMIN_SUPERUSER` before any database is created |
+| Convergence run as the role (section 6.1) | all HR-loop files incl. `registration-client.test.ts`, SIL locale, demo e2e, import boundary, access paths, least-privilege role | `condyn_test_c0cbbad0eabe0af6` (created, verified, dropped) | 19 files, 91 passed; Chromium e2e 7/7 (58 s) |
 | Type-check | `npx tsc --noEmit -p tsconfig.json`; the script separately | | 0 errors |
 
 Preservation: sealed surfaces unchanged on this branch (`lib/decision-*`, `lib/career/relation*`,
@@ -122,6 +123,16 @@ re-run in this round (it was run by GELB and PINK on the integration tip under t
 Operational note: Next.js 16 allows one `next dev` per project directory. Stop the manual
 server before running the e2e in the same worktree (the e2e spawns its own server), or run the
 e2e from another worktree.
+
+### 6.1 Convergence round (2026-10-10, after the merge `63e7d9f`)
+
+Top-down reconstruction on `integration/hr-decision-loop` @ `6f400ea` found two remaining
+relations in this field that affected the manual operator; both are repaired and proven.
+
+| Id | Broken relation | Evidence (RED) | Repair | Evidence (GREEN) |
+| --- | --- | --- | --- | --- |
+| C1 | The gated persistence registration ran the idempotent DDL through the application client, which has no notice handler; the first HR request flooded the server log with PostgreSQL NOTICE objects. | live environment, first `GET …/contexts/{A}`: 396 notice lines ("relation … already exists, skipping") | `registration-client.ts`: a dedicated single-connection client bound to the verified URL with notices silenced; the application client is never used for DDL (`local-composition.ts`) | same request on the repaired build: 0 notice lines, 0 error lines; `registration-client.test.ts` 1/1, `local-composition-gate.test.ts` 2/2 (verified URL → one client, one registration, client ended; non-disposable → no client, no DDL), `local-composition.postgres.test.ts` 2/2 |
+| C2 | Every `npm run hr-loop:local` created a new disposable database even when the previous one still existed, so databases accumulated and the operator's seeded ids changed on every restart. | state file plus a second `up` → second database | `up` verifies the database of the state file with `verifyDisposableTestDatabase` and reuses it; a stale or missing state falls back to create; `up --fresh` forces a new database | live: "reusing verified disposable database condyn_test_73582a5bf02ddfa7", same ids, 200 on context A |
 
 ## 7. Known limitations and unresolved boundaries
 

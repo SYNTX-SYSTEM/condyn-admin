@@ -11,7 +11,8 @@
  * database path in this script. CONDYN_ALLOW_SHARED_DATABASE is never set here.
  *
  * Subcommands:
- *   up      create + verify + provision + seed + serve        (default)
+ *   up      reuse the verified database of the state file, else create + verify + provision + seed; then serve  (default)
+ *   up --fresh   always create a new database (the previous one is kept until dropped)
  *   seed    create + verify + provision + seed, then exit (prints the state)
  *   serve   verify the database in the state file and start the server
  *   status  print the state file
@@ -153,9 +154,29 @@ async function serve(state: LocalState): Promise<void> {
   console.info(`[hr-loop:local] server stopped; database ${verified.databaseName} is kept. Drop it with: npm run hr-loop:local:drop`);
 }
 
+/** The verified database of the last run is reused so that repeated starts never accumulate databases. */
+async function existingVerifiedState(): Promise<LocalState | null> {
+  if (!existsSync(STATE_FILE)) return null;
+  const state = readState();
+  try {
+    await verifyDisposableTestDatabase(state.databaseUrl);
+    return state;
+  } catch (error) {
+    console.info(`[hr-loop:local] state file names ${state.databaseName}, which is not a verified disposable database any more (${error instanceof Error ? error.message : String(error)}); creating a new one`);
+    unlinkSync(STATE_FILE);
+    return null;
+  }
+}
+
 async function main(): Promise<void> {
   const command = process.argv[2] ?? "up";
-  if (command === "up") { await serve(await createAndSeed()); return; }
+  if (command === "up") {
+    const fresh = process.argv.includes("--fresh");
+    const existing = fresh ? null : await existingVerifiedState();
+    if (existing) console.info(`[hr-loop:local] reusing verified disposable database ${existing.databaseName} (use \`up --fresh\` for a new one)`);
+    await serve(existing ?? await createAndSeed());
+    return;
+  }
   if (command === "seed") { printBanner(await createAndSeed()); return; }
   if (command === "serve") { await serve(readState()); return; }
   if (command === "status") { printBanner(readState()); return; }
