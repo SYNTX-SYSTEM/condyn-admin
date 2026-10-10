@@ -20,6 +20,7 @@ import { OrbitalCosmosView } from "./OrbitalCosmosView";
 import { OrbitalDeepFocusView } from "./OrbitalDeepFocusView";
 import { InferenceTelemetryHUD } from "./InferenceTelemetryHUD";
 import { HrDecisionLoopDock } from "./HrDecisionLoopDock";
+import { JobPoolMatchPanel } from "./JobPoolMatchPanel";
 import { buildEvidenceGraph } from "../../../../lib/career/evidence/traversal";
 import { computeGraphFocus } from "../../../../lib/career/evidence/highlight";
 import { DecisionGraphInspector } from "./DecisionGraphInspector";
@@ -43,6 +44,10 @@ export interface SemanticCareerIntelligenceFieldProps {
   careerDecisionContextRevisionId?: string;
   /** Explicit G2 Decision Context revision (DREV) to read as the reconstructed next context. */
   decisionContextRevisionId?: string;
+  /** Exact analysis for the Job Pool match panel only; the planetarium keeps its own job-driven state. */
+  analysisId?: string;
+  /** Exact Job Pool upload selected for matching (URL). */
+  jobPoolUploadId?: string;
   initialAnalysisState?: {
     isAnalyzing?: boolean;
     analysisStep?: string | null;
@@ -347,6 +352,8 @@ export function SemanticCareerIntelligenceField({
   canonicalSilAssociationId,
   careerDecisionContextRevisionId,
   decisionContextRevisionId,
+  analysisId,
+  jobPoolUploadId,
   initialAnalysisState,
   initialLocale = SIL_COPY.defaultLocale,
   initialFocus
@@ -642,6 +649,7 @@ export function SemanticCareerIntelligenceField({
       data-focused-stage-id={activeStageId || ""}
       data-sil-mode={canonicalSilPresentation?.mode ?? "PRE_CANONICAL_DISCOVERY"}
       data-hr-decision-loop-context={careerDecisionContextRevisionId ?? ""}
+      data-job-pool-upload={jobPoolUploadId ?? ""}
       data-camera-scale={cameraScale}
       onClick={() => {
         if (graphFocus) {
@@ -1636,6 +1644,14 @@ export function SemanticCareerIntelligenceField({
           locale={locale}
         />
       )}
+
+      {/* Left Job Pool panel: upload, explicit selection and the presentation matching of one exact analysis. No edge to the dock. */}
+      <JobPoolMatchPanel
+        jobResultAnalysisId={jobState === "SUCCEEDED" ? job.state.resultAnalysisId : null}
+        analysisId={analysisId ?? null}
+        jobPoolUploadId={jobPoolUploadId ?? null}
+        locale={locale}
+      />
 
       <SystemCodexModal
         isOpen={isCodexOpen}

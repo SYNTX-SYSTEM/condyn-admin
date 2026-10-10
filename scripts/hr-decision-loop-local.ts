@@ -17,8 +17,16 @@
  *   serve   verify the database in the state file and start the server
  *   status  print the state file
  *   drop    drop the database in the state file (or the URL given as argument)
+ *
+ * Job Connection (owner mandate, 2026-10-10): `up --with-worker` (npm run job-pool:local) additionally
+ *   registers the job-pool persistence (lib/career/job-pool/persistence-schema, when present at this revision)
+ *   and spawns the career worker (scripts/run-career-worker.ts) against the SAME verified disposable URL, with
+ *   GEMINI_API_KEY taken from the operator's environment (fail closed when absent), GEMINI_MODEL passed through
+ *   if set, and a freshly generated PROMPT_ENCRYPTION_KEY (32 random bytes, base64) per run. The worker's prompt
+ *   repository is in memory. Neither child ever receives CONDYN_ALLOW_SHARED_DATABASE.
  */
-import { spawn } from "node:child_process";
+import { spawn, type ChildProcess } from "node:child_process";
+import { randomBytes } from "node:crypto";
 import { mkdirSync, readFileSync, writeFileSync, existsSync, unlinkSync } from "node:fs";
 import { resolve } from "node:path";
 import { createServer } from "node:net";
@@ -60,7 +68,9 @@ function urls(state: LocalState): Record<string, string> {
   return {
     "Context A (complete persisted chain, one DCDRB binding, next context preloaded)": `${base}/career/demo?careerDecisionContextRevisionId=${state.contextA}&decisionContextRevisionId=${state.childRevisionId}`,
     "Context B (no declaration yet: declare here)": `${base}/career/demo?careerDecisionContextRevisionId=${state.contextB}`,
-    "SIL field without the dock (preservation check)": `${base}/career/demo`,
+    "SIL field without the dock (preservation check); Job Pool panel toggle top-left": `${base}/career/demo`,
+    "Job Pool panel for an exact analysis (replace ANL_… with the id of a succeeded capability sweep)": `${base}/career/demo?analysisId=ANL_…`,
+    "API: job pool uploads (explicit selection only)": `${base}/api/career/job-pools`,
     "API: context A read model": `${base}/api/career/hr-decision-loop/contexts/${state.contextA}`,
     "API: seeded human decision record": `${base}/api/career/hr-decision-loop/decisions/${state.humanDecisionRecordId}`,
     "API: G2 root revision (frozen API v1)": `${base}/api/decision-contexts/${state.rootRevisionId}`,
@@ -76,7 +86,8 @@ function printBanner(state: LocalState): void {
   console.info("");
   for (const [label, url] of Object.entries(urls(state))) console.info(`${label}\n  ${url}`);
   console.info("");
-  console.info("walkthrough  docs/career_analysis/HR_DECISION_LOOP_MANUAL_TEST.md");
+  console.info("walkthrough  docs/career_analysis/HR_DECISION_LOOP_MANUAL_TEST.md · docs/career_analysis/JOB_POOL_WORKFLOW_MANUAL_TEST.md");
+  console.info("worker       npm run job-pool:local   (adds the career worker; needs GEMINI_API_KEY in your shell)");
   console.info(`drop         npm run hr-loop:local:drop   (removes ${state.databaseName} only)`);
   console.info("");
 }
@@ -87,6 +98,61 @@ async function portFree(port: number): Promise<boolean> {
     listener.once("error", () => done(false));
     listener.listen(port, "127.0.0.1", () => listener.close(() => done(true)));
   });
+}
+
+/**
+ * Unified registration (R7) followed by the job-pool registration of the Job Connection field. The job-pool
+ * module is resolved by path at runtime because it lands with GELB's backend; without it the HTTP routes
+ * register their tables lazily through their own disposable-database gate, so nothing is missing, only earlier.
+ */
+async function registerPersistence(sql: postgres.Sql): Promise<void> {
+  const { registerUnifiedPersistenceSchema } = await import("../lib/persistence/unified-schema-registration");
+  const order = await registerUnifiedPersistenceSchema(sql);
+  console.info(`[hr-loop:local] registered schema: ${order.join(" -> ")}`);
+  const jobPoolModulePath = "../lib/career/job-pool/persistence-schema";
+  let jobPoolModule: { registerJobPoolPersistenceSchema?: (client: postgres.Sql) => Promise<unknown> } | null = null;
+  try { jobPoolModule = await import(jobPoolModulePath); } catch (error) {
+    if (!(error instanceof Error && /Cannot find module|ERR_MODULE_NOT_FOUND/.test(error.message))) throw error;
+  }
+  if (jobPoolModule?.registerJobPoolPersistenceSchema) {
+    await jobPoolModule.registerJobPoolPersistenceSchema(sql);
+    console.info("[hr-loop:local] registered job-pool persistence");
+  } else {
+    console.info("[hr-loop:local] job-pool persistence module not present at this revision; the job-pool routes register lazily on the verified database");
+  }
+}
+
+/** Child environments are built explicitly: the verified URL only, never the shared-database opt-in. */
+function childEnvironment(verifiedUrl: string, extra: Record<string, string | undefined> = {}): NodeJS.ProcessEnv {
+  const env: NodeJS.ProcessEnv = { ...process.env, ...extra, DATABASE_URL: verifiedUrl, NEXT_TELEMETRY_DISABLED: "1" };
+  delete env.CONDYN_ALLOW_SHARED_DATABASE;
+  return env;
+}
+
+function spawnCareerWorker(verifiedUrl: string, databaseName: string): ChildProcess {
+  const geminiApiKey = process.env.GEMINI_API_KEY;
+  if (!geminiApiKey) fail("ERR_HR_LOOP_LOCAL_GEMINI_API_KEY_MISSING: --with-worker needs GEMINI_API_KEY in the operator's environment (never stored by this script)");
+  const promptEncryptionKey = randomBytes(32).toString("base64");
+  console.info(`[hr-loop:local] starting career worker against ${databaseName} (GEMINI_MODEL ${process.env.GEMINI_MODEL ?? "default cascade"}, fresh PROMPT_ENCRYPTION_KEY, in-memory prompt repository)`);
+  const worker = spawn(process.execPath, [resolve(process.cwd(), "node_modules/tsx/dist/cli.mjs"), resolve(process.cwd(), "scripts/run-career-worker.ts")], {
+    cwd: process.cwd(),
+    stdio: ["ignore", "pipe", "pipe"],
+    env: childEnvironment(verifiedUrl, { GEMINI_API_KEY: geminiApiKey, PROMPT_ENCRYPTION_KEY: promptEncryptionKey, CAREER_WORKER_ID: process.env.CAREER_WORKER_ID ?? "hr-loop-local-worker" })
+  });
+  const forward = (stream: NodeJS.ReadableStream | null, sink: (line: string) => void) => {
+    if (!stream) return;
+    let buffered = "";
+    stream.on("data", (chunk: Buffer) => {
+      buffered += chunk.toString("utf8");
+      const lines = buffered.split("\n");
+      buffered = lines.pop() ?? "";
+      for (const line of lines) if (line.length > 0) sink(`[worker] ${line}`);
+    });
+  };
+  forward(worker.stdout, line => console.info(line));
+  forward(worker.stderr, line => console.error(line));
+  worker.once("exit", code => console.info(`[hr-loop:local] career worker exited (code ${code ?? "signal"})`));
+  return worker;
 }
 
 async function createAndSeed(): Promise<LocalState> {
@@ -102,9 +168,7 @@ async function createAndSeed(): Promise<LocalState> {
   try {
     const identity = await sql`SELECT current_database() AS name`;
     if (identity[0]?.name !== verified.databaseName) fail(`ERR_HR_LOOP_LOCAL_IDENTITY_MISMATCH: connected to ${identity[0]?.name}`);
-    const { registerUnifiedPersistenceSchema } = await import("../lib/persistence/unified-schema-registration");
-    const order = await registerUnifiedPersistenceSchema(sql);
-    console.info(`[hr-loop:local] registered schema: ${order.join(" -> ")}`);
+    await registerPersistence(sql);
     const world = await import("../test/career/hr-decision-loop/fixtures/hr-loop-postgres-world");
     const data = await world.seedHrLoopWorldInto(sql, verified.url, verified.databaseName);
     console.info("[hr-loop:local] seeded the sealed-producer world (context A full chain + DCDRB, context B empty)");
@@ -137,20 +201,29 @@ async function createAndSeed(): Promise<LocalState> {
   }
 }
 
-async function serve(state: LocalState): Promise<void> {
+async function serve(state: LocalState, options: { withWorker: boolean }): Promise<void> {
   const verified = await verifyDisposableTestDatabase(state.databaseUrl);
   if (!(await portFree(state.port))) fail(`ERR_HR_LOOP_LOCAL_PORT_BUSY: port ${state.port} is in use; set HR_LOOP_LOCAL_PORT`);
+  if (options.withWorker && !process.env.GEMINI_API_KEY) fail("ERR_HR_LOOP_LOCAL_GEMINI_API_KEY_MISSING: --with-worker needs GEMINI_API_KEY in the operator's environment (never stored by this script)");
+  // A reused database from an earlier revision may predate the job-pool registration; registration is idempotent.
+  const sql = postgres(verified.url, { max: 1, onnotice: () => undefined });
+  try { await registerPersistence(sql); } finally { await sql.end({ timeout: 5 }).catch(() => undefined); }
   printBanner(state);
+  const worker = options.withWorker ? spawnCareerWorker(verified.url, verified.databaseName) : null;
   console.info(`[hr-loop:local] starting next dev --webpack on 127.0.0.1:${state.port} against ${verified.databaseName}`);
   const child = spawn(process.execPath, [resolve(process.cwd(), "node_modules/next/dist/bin/next"), "dev", "--webpack", "-p", String(state.port), "-H", "127.0.0.1"], {
     cwd: process.cwd(),
     stdio: "inherit",
-    env: { ...process.env, DATABASE_URL: verified.url, NEXT_TELEMETRY_DISABLED: "1" }
+    env: childEnvironment(verified.url)
   });
-  const stop = () => { if (child.exitCode === null) child.kill("SIGTERM"); };
+  const stop = () => {
+    if (child.exitCode === null) child.kill("SIGTERM");
+    if (worker && worker.exitCode === null) worker.kill("SIGTERM");
+  };
   process.on("SIGINT", stop);
   process.on("SIGTERM", stop);
   await new Promise<void>(done => child.once("exit", () => done()));
+  if (worker && worker.exitCode === null) worker.kill("SIGTERM");
   console.info(`[hr-loop:local] server stopped; database ${verified.databaseName} is kept. Drop it with: npm run hr-loop:local:drop`);
 }
 
@@ -172,13 +245,14 @@ async function main(): Promise<void> {
   const command = process.argv[2] ?? "up";
   if (command === "up") {
     const fresh = process.argv.includes("--fresh");
+    const withWorker = process.argv.includes("--with-worker") || process.env.HR_LOOP_LOCAL_WORKER === "1";
     const existing = fresh ? null : await existingVerifiedState();
     if (existing) console.info(`[hr-loop:local] reusing verified disposable database ${existing.databaseName} (use \`up --fresh\` for a new one)`);
-    await serve(existing ?? await createAndSeed());
+    await serve(existing ?? await createAndSeed(), { withWorker });
     return;
   }
   if (command === "seed") { printBanner(await createAndSeed()); return; }
-  if (command === "serve") { await serve(readState()); return; }
+  if (command === "serve") { await serve(readState(), { withWorker: process.argv.includes("--with-worker") || process.env.HR_LOOP_LOCAL_WORKER === "1" }); return; }
   if (command === "status") { printBanner(readState()); return; }
   if (command === "drop") {
     const target = process.argv[3] ?? (existsSync(STATE_FILE) ? readState().databaseUrl : undefined);
