@@ -7,7 +7,7 @@
  * - governed human decisions (HR Decision Looper, no edge from this module).
  */
 
-export type JobPoolMatchBasis = "EXACT" | "ALIAS" | "TOKEN_CONTAINMENT";
+export type JobPoolMatchBasis = "EXACT" | "ALIAS" | "COMPOSITE_CONSTITUENT" | "TOKEN_CONTAINMENT";
 
 export interface JobPoolUploadSummary {
   jobPoolUploadId: string;
@@ -76,6 +76,8 @@ export interface JobPoolMatchedRequirement {
   necessity: "REQUIRED" | "PREFERRED" | "OPTIONAL" | "UNDECLARED";
   matchBasis: JobPoolMatchBasis;
   matchedCapabilityName: string;
+  /** The part of a composite capability name that matched (COMPOSITE_CONSTITUENT only), otherwise null. */
+  matchedConstituent: string | null;
   matchedCapabilityEntityId: string;
   confidence: number;
   contribution: number;

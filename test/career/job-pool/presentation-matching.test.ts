@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { JobPoolError } from "../../../lib/career/job-pool/errors";
-import { findCandidateMatch, matchAnalysisAgainstJobPool, normalizeCapabilityName, WEAK_EVIDENCE_THRESHOLD } from "../../../lib/career/job-pool/presentation-matching";
+import { compositeConstituents, findCandidateMatch, matchAnalysisAgainstJobPool, normalizeCapabilityName, WEAK_EVIDENCE_THRESHOLD } from "../../../lib/career/job-pool/presentation-matching";
 import type { JobPoolCanonicalMapping } from "../../../lib/career/job-pool/types";
 import { parseJobPoolUpload } from "../../../lib/career/job-pool/upload";
 import { extractAnalysisCapabilities } from "../../../lib/career/matching/capability-extraction";
@@ -93,6 +93,28 @@ describe("presentation matching JOB_POOL_PRESENTATION_MATCHING_V1 (JP-U)", () =>
     expect(findCandidateMatch(requirement, items)).toMatchObject({ basis: "EXACT", capability: { entityId: "C1" } });
     expect(normalizeCapabilityName("Node.js")).toBe(normalizeCapabilityName("NodeJS"));
     expect(normalizeCapabilityName("C++")).not.toBe(normalizeCapabilityName("C#"));
+  });
+
+  it("matches one part of a composite capability name as COMPOSITE_CONSTITUENT, a full match, and keeps CI/CD whole", () => {
+    const requirement = (name: string, aliases: string[] = []) => ({ id: "r", role_id: "x", capability_name: name, domain: "", weight: 1, required_level: "", aliases }) as never;
+    const items = extractAnalysisCapabilities(verifiedAnalysis("ANL", [
+      capabilityEntity("C1", "TypeScript and Node.js", 0.9, "x".repeat(12)),
+      capabilityEntity("C2", "CI/CD and Docker", 0.8, "x".repeat(12)),
+      capabilityEntity("C3", "PostgreSQL & SQL", 0.85, "x".repeat(12))
+    ]));
+    expect(findCandidateMatch(requirement("Node.js"), items)).toMatchObject({ basis: "COMPOSITE_CONSTITUENT", capability: { entityId: "C1" } });
+    expect(findCandidateMatch(requirement("CI/CD"), items)).toMatchObject({ basis: "COMPOSITE_CONSTITUENT", capability: { entityId: "C2" } });
+    expect(findCandidateMatch(requirement("Postgres", ["PostgreSQL"]), items)).toMatchObject({ basis: "COMPOSITE_CONSTITUENT", capability: { entityId: "C3" } });
+    expect(findCandidateMatch(requirement("Node"), items)).toMatchObject({ basis: "TOKEN_CONTAINMENT" });
+    expect(compositeConstituents("CI/CD")).toEqual([]);
+    const p = pool();
+    const result = matchAnalysisAgainstJobPool({ analysis: verifiedAnalysis("ANL", [capabilityEntity("C1", "TypeScript and Node.js", 0.9, "Built services in TypeScript and Node.js.")]), analysisId: "ANL", jobPoolUploadId: "JPOOL_X", pool: p, canonicalMapping: mappingFor(p) });
+    const fullstack = result.roleMatches.find(role => role.poolRoleId === "role_fullstack")!;
+    expect(fullstack.matched.map(item => [item.capabilityName, item.matchBasis, item.matchedCapabilityName, item.matchedConstituent])).toEqual([
+      ["TypeScript", "COMPOSITE_CONSTITUENT", "TypeScript and Node.js", "TypeScript"],
+      ["Node.js", "COMPOSITE_CONSTITUENT", "TypeScript and Node.js", "Node.js"]
+    ]);
+    expect(findCandidateMatch(requirement("Postgres", ["PostgreSQL"]), items)?.constituent).toBe("PostgreSQL");
   });
 
   it("does not match a requirement whose tokens the capability name does not contain", () => {

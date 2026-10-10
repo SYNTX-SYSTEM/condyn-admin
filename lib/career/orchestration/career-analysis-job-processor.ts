@@ -33,6 +33,24 @@ function deterministicAnalysisId(jobId: string): string {
   return jobId.replace("JOB_", "ANL_");
 }
 
+/** JSON-stable copy: drops undefined-valued keys exactly as a JSON(B) round trip does. */
+export function withoutUndefinedKeys<T>(value: T): T {
+  return JSON.parse(JSON.stringify(value)) as T;
+}
+
+/** Pins the informational load timestamp of every normalized document to one durable instant. */
+export function pinDocumentLoadTime<T extends { metadata?: unknown }>(documents: T[], instant: string): T[] {
+  let changed = false;
+  const pinned = documents.map(document => {
+    const metadata = document.metadata as Record<string, unknown> | undefined;
+    if (!metadata || typeof metadata !== "object" || !("loadedAt" in metadata) || metadata.loadedAt === instant) return document;
+    changed = true;
+    return { ...document, metadata: { ...metadata, loadedAt: instant } };
+  });
+  // Unchanged input keeps its identity, so callers see exactly the prepared inventory.
+  return changed ? pinned : documents;
+}
+
 /**
  * Coordinates the Career Analysis recovery path with the governed Capability
  * Proposal prerequisite. Capability artifacts are durable sidecar state and
@@ -56,13 +74,19 @@ export function createCareerAnalysisJobProcessor(
     // Prepare exactly one normalized Career inventory. F10A alone converts this
     // inventory to SourceDocuments, and both sidecar and legacy paths reuse it.
     await reportOperation("SOURCE_PREPARATION");
-    const { normalizedDocs } = await dependencies.prepareDocuments(
+    const prepared = await dependencies.prepareDocuments(
       (job.inputRef.sourceData as { documents: unknown[] }).documents
     );
+    // D-JP-2: loaders stamp metadata.loadedAt with the wall clock. Every attempt of one job reloads
+    // the same durable input, so the stamp is pinned to the job's admission time; otherwise a retry
+    // rebuilds a different CSB_<jobId> bundle and fails with ERR_CANDIDATE_SOURCE_BUNDLE_IMMUTABLE_CONFLICT.
+    const normalizedDocs = pinDocumentLoadTime(prepared.normalizedDocs, job.createdAt);
     const sourceBundle = dependencies.candidateSourceBundles
       ? await dependencies.candidateSourceBundles.persistCandidateSourceBundle(createCandidateSourceBundle({
         candidateSourceBundleId: `CSB_${job.jobId}`,
-        documents: toCapabilitySourceDocuments(normalizedDocs),
+        // D-JP-3: the F10A bridge marks absent pages with an explicit `pages: undefined` key, which JSONB
+        // drops; the persisted bundle then never equals its own write. The bundle stores the JSON-stable form.
+        documents: withoutUndefinedKeys(toCapabilitySourceDocuments(normalizedDocs)),
         schemaVersion: "CANDIDATE_SOURCE_BUNDLE_V1",
         createdAt: job.createdAt,
       }))

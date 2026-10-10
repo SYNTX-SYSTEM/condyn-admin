@@ -4,7 +4,7 @@ const mocks = vi.hoisted(() => ({ verify: vi.fn(), unified: vi.fn(), jobPool: vi
 vi.mock("../../../lib/database-isolation/verification", () => ({ verifyDisposableTestDatabase: mocks.verify }));
 vi.mock("../../../lib/persistence/unified-schema-registration", () => ({ registerUnifiedPersistenceSchema: mocks.unified }));
 vi.mock("../../../lib/career/job-pool/persistence-schema", () => ({ registerJobPoolPersistenceSchema: mocks.jobPool }));
-vi.mock("../../../lib/career/hr-decision-loop/registration-client", () => ({ createRegistrationClient: mocks.createClient }));
+vi.mock("../../../lib/persistence/registration-client", () => ({ createRegistrationClient: mocks.createClient }));
 
 /** JP-H: the job pool routes issue DDL only after positive disposable identity, on a dedicated client. */
 describe("Job Pool persistence registration gate", () => {
