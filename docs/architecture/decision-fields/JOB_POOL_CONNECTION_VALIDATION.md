@@ -336,6 +336,64 @@ Boundary B-JP-SWEEP-AVAILABLE: PINK has no HTTP-level `AVAILABLE` or `FAILED` ca
 Discovery/Convergence runs (GELB's live evidence); `FAILED` needs a payload-level lineage violation behind valid foreign
 keys. Both are covered by GELB's unit and PostgreSQL suites in PINK's batch.
 
+### 3.12 Final independent validation of the authoritative tip `b4091f5` (owner mandate "SFE — FINAL INDEPENDENT VALIDATION")
+
+Synchronization: GELB named `integration/job-pool-connection` @ `b4091f5` as the final integrated state (GRÜN's sweep
+decoder and panel `5839762`, PINK's suites up to `675590b`, GELB's record §11). PINK's head `fac4980` is tree-identical
+to `b4091f5` outside PINK's own files (`git diff --stat b4091f5 HEAD` is empty except `test/job-pool-validation/**` and
+this record). `tsc --noEmit`: 0.
+
+Reconstruction of GRÜN's delta `5839762`: strict decoder of `sweepProposal`, `sweepOnlyCoverageCount` (must equal the
+count of covered missing entries) and `capabilitySweep` (`scored` must be `false`); panel test ids
+`job-pool-capability-sweep` (`data-sweep-state`, `data-proposal-count`, `data-scored`),
+`job-pool-role-<role>-<matched|weak|missing>-<req>-sweep` (`data-sweep-basis`, `data-proposal-id`, `data-scored`),
+`job-pool-role-<role>-sweep-only` (`data-count`).
+
+Full-tree JP-R on the final content (`condyn_test_f250731109ee92a1`, 2026-10-10 21:44–21:53, load 2.6, 0 timeouts):
+
+```
+ Test Files  6 failed | 369 passed | 8 skipped (383)
+      Tests  29 failed | 2376 passed | 8 skipped (2413)
+```
+
+Classification: 4 files / 27 tests F-JP-5 (legacy DDL drift, pre-existing); 2 files / 2 tests PINK-side, caused by
+PINK's own edits landing while the batch ran: the seeded browser walk's new selector `[data-testid$="-sweep"]` also
+matched the `job-pool-capability-sweep` container (narrowed to role lines), and the new live suite spelled the
+shared-database opt-in name while removing it from child environments, which the static access-path guard forbids
+(now filtered by prefix). Both re-run green together with the guard
+(`condyn_test_383d26b7034e89a5`: access-paths 5/5, browser-walk 1/1, live suite skipped without key). No red is
+attributable to the final tip.
+
+Seeded browser walk (JP-B-PINK) extended: `capabilitySweep NOT_PRODUCED / 0 / false` in the DOM equals the body,
+no role sweep line rendered, every `sweep-only` count 0.
+
+**JP-LIVE (PINK's reproduction of the manual workflow in a real browser, with the real model).**
+`test/job-pool-validation/live-browser-workflow.e2e.test.ts`, gated on `GEMINI_API_KEY` in the process environment
+(skipped with reason otherwise). The key and `GEMINI_MODEL` were loaded from the operator's main-checkout env file
+into the one test command only, forwarded to the `next dev` and `run-career-worker` children, never printed or stored
+(B-GEMINI). Disposable database `condyn_test_d0155af7bdb90910` (GRÜN's world fixture, dropped afterwards) plus the
+runner's `condyn_test_213e1e83254abeea` (dropped).
+
+| Step | Observed |
+| --- | --- |
+| PDF `docs/examples/cv.synthetic.pdf` into the source dock, `START INTAKE ANALYSIS` | `intake-success-banner` after 132 s, one attempt, 0 failed worker attempts |
+| Job Pool panel | `data-analysis-source = JOB_RESULT`, `ANL_1791662108286_357` |
+| PINK pool uploaded via file chooser, selected | `JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7` (same id as every earlier PINK upload: canonical bytes) |
+| matches body | `capabilitySweep AVAILABLE`, 17 proposals, `scored: false`; legacy analysis 3 capabilities |
+| inverse | projection reference row exists for the analysis; the F11 reader returns exactly 17 proposals; every rendered sweep line (3) equals its body entry in basis, proposal id, name and `scored=false`; every `sweep-only` count and every score equals the body; no HR dock element; 0 page errors |
+| model | `gemini-3.1-pro-preview` (GELB's manual runs used the same; GRÜN's used `gemini-3.8-flash`) |
+
+Evidence: `evidence/job-pool-validation/pink-02-live-sweep-completed.png`, `pink-03-live-sweep-coverage-in-panel.png`,
+`pink-live-run.json` (ids, timings, per-role counts). Observation consistent with GELB's HIA-3 note: the scored legacy
+analysis produced 3 capabilities (scores 0.10 / 0 / 0 for PINK's roles) while the unscored sweep produced 17 proposals
+covering two of the missing requirements; scores follow the legacy analysis by contract.
+
+**Convergence verdict on `b4091f5`.** Verified: JP-U-PINK, JP-P (strict, incl. frontend), JP-H, JP-C, JP-I, JP-PDF,
+sweep invariants, JP-B (GRÜN's e2e 8/8 and PINK's walk), JP-LIVE, full-tree JP-R with every red classified. Documented
+legacy exception: F-JP-5. Authority boundaries unchanged: HIA-1, HIA-2, HIA-3 (scoring the sweep), B-JP-CONTINUITY,
+B-JP-ACTOR, B-GEMINI (key from the operator's shell), B-JP-SWEEP-AVAILABLE now closed at HTTP level by JP-LIVE for
+`AVAILABLE` (`FAILED` remains unit-level only). No open PINK finding against the tip.
+
 ## 4. Boundaries and findings for coordination
 
 - F-JP-1 (closed in `b782793`): `JOB_POOL_CONNECTION.md` §4 followed the per-role `JOB_POOL_JSON_ROLE` design;

@@ -1,0 +1,44 @@
+{
+  "recordedAt": "2026-10-10T19:57:26.541Z",
+  "tip": "b4091f5",
+  "database": "condyn_test_d0155af7bdb90910",
+  "geminiModel": "gemini-3.1-pro-preview",
+  "analysisId": "ANL_1791662108286_357",
+  "jobPoolUploadId": "JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7",
+  "sweepSeconds": 132,
+  "totalSeconds": 154,
+  "capabilitySweep": {
+    "state": "AVAILABLE",
+    "proposalCount": 17,
+    "scored": false
+  },
+  "candidateCapabilityCount": 3,
+  "renderedCoveredLines": 3,
+  "roles": [
+    {
+      "poolRoleId": "role_pink_beta_platform",
+      "resonanceScore": 0.1018,
+      "matched": 0,
+      "weak": 1,
+      "missing": 2,
+      "sweepOnlyCoverageCount": 2
+    },
+    {
+      "poolRoleId": "role_pink_alpha_architect",
+      "resonanceScore": 0,
+      "matched": 0,
+      "weak": 0,
+      "missing": 3,
+      "sweepOnlyCoverageCount": 0
+    },
+    {
+      "poolRoleId": "role_pink_beta_empty",
+      "resonanceScore": 0,
+      "matched": 0,
+      "weak": 0,
+      "missing": 0,
+      "sweepOnlyCoverageCount": 0
+    }
+  ],
+  "workerFailedAttempts": 0
+}
