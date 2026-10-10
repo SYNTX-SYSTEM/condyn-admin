@@ -3,7 +3,7 @@ import { db } from "../db/client";
 import { getCareerAnalysisRepository } from "../repositories";
 import { verifyDisposableTestDatabase } from "../../database-isolation/verification";
 import { registerUnifiedPersistenceSchema } from "../../persistence/unified-schema-registration";
-import { createRegistrationClient } from "../hr-decision-loop/registration-client";
+import { createRegistrationClient } from "../../persistence/registration-client";
 import { createJobPoolApplication, type JobPoolApplication } from "./application";
 import { JobPoolError } from "./errors";
 import { registerJobPoolPersistenceSchema } from "./persistence-schema";
