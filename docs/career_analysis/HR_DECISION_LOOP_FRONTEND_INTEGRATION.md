@@ -29,7 +29,7 @@ Server side, `lib/career/hr-decision-loop/`:
 
 | Module | Role |
 | --- | --- |
-| `read-model.ts` | `HR_DECISION_LOOP_READ_MODEL_V1`: exact DCTXREV, DAR, RCP and fourteen regions, one per post-decision family |
+| `read-model.ts` | `HR_DECISION_LOOP_READ_MODEL_V1`: exact DCTXREV, DAR, RCP and fifteen regions: one per post-decision family plus `decisionRevisionBindings` (DCDRB, R4) |
 | `server-read-service.ts` | relational index by exact lineage column, exact reread through the sealed repository of each family, region states `AVAILABLE / EMPTY / NOT_PROVISIONED / FAILED` |
 | `declaration-application.ts` | captures the five declaration fields, admits the transport identity, runs the sealed T11C producer unchanged |
 | `http.ts` | transport only; public codes `ERR_HR_DECISION_LOOP_API_*`; bounded `reason` allowlist of sealed T11C codes for 422 |
@@ -52,9 +52,14 @@ No file under `lib/decision-core`, `lib/decision-runtime`, `lib/decision-adapter
 | Feedback admission, target, binding, revision | G3 COVFAD, COVFTD, COVFTRB, COVFCR | read | COVFTRB indexed by target DCTXREV; COVFCR walked by exact parent ids |
 | Reconstructed next Decision Context | G2 `DecisionContextRevision` (DREV) | read | explicit exact id; lineage by `previousRevisionId` only (D2: an OBSERVATION with `AUTHORITATIVE_STATE` provenance to the exact COVD) |
 
-The DCTXREV to DREV binding (R4, decision D4) is not implemented in this field.
-The dock says so and reads the DREV by an explicit id. When the binding lands,
-the dock consumes its exact read instead of the manual input.
+Integrated on `integration/hr-decision-loop` (2026-10-10): the DCTXREV to DREV binding
+(R4, decision D4) is the fifteenth region `decisionRevisionBindings`, indexed by
+`career_decision_context_revision_id` and reread exactly through
+`PostgresCareerDecisionContextDecisionRevisionBindingRepository`. The dock lists every
+bound DREV id as an exact entry point into the frozen G2 GET; it never selects one, never
+reads the DREV from the binding payload, and labels a binding as a persisted structural
+witness only (not current, not accepted, not a governed 8D return). The manual exact-id
+input remains.
 
 ## 3. Wire contract
 
@@ -68,7 +73,8 @@ the dock consumes its exact read instead of the manual input.
   "decisions": { "state": "AVAILABLE|EMPTY|NOT_PROVISIONED|FAILED", "artifactIds": ["…"], "artifacts": ["…"], "failureCode?": "…" },
   "actionIntents": "…", "commitments": "…", "executionAuthorityGrants": "…", "executionContexts": "…",
   "actionOccurrences": "…", "stateChanges": "…", "associations": "…", "outcomeRoles": "…", "outcomeValences": "…",
-  "feedbackAdmissions": "…", "feedbackTargets": "…", "feedbackTargetBindings": "…", "feedbackContextRevisions": "…" } }
+  "feedbackAdmissions": "…", "feedbackTargets": "…", "feedbackTargetBindings": "…", "feedbackContextRevisions": "…",
+  "decisionRevisionBindings": "…" } }
 ```
 
 Artifacts are the sealed artifacts verbatim. `artifactIds` are sorted by id,
@@ -163,7 +169,7 @@ repository; raw SQL is used only for database creation and table provisioning.
 | --- | --- | --- |
 | B1 | `initDbSchema()` does not provision the post-decision tables (DAINT … COVFCR); the read service represents them as `NOT_PROVISIONED`. The proofs provision them test-side from the drizzle declarations. On `integration/hr-decision-loop` a `lib/persistence/registerUnifiedPersistenceSchema(sql)` exists (T11 + post-decision chain + `decision_context_revisions` + bindings) but is not wired into an entry point; wiring it is a composition decision. | Field 01 / R7 owner; not changed here |
 | B2 | Transport identity is a LOCAL_DEVELOPMENT self-declared principal (two headers). It is not authentication; the DAR gate still rejects any declarant the grant does not name. | explicit; replace the resolver pair when an identity provider exists |
-| B3 | DCTXREV ↔ DREV binding (R4) is not part of this base; the next context is read by an explicit exact DREV id. The binding now exists on `integration/g3-decision-context-binding` as `career_decision_context_decision_revision_bindings` (`DCDRB_` + 32 hex, indexed by `career_decision_context_revision_id`, exact reread via `PostgresCareerDecisionContextDecisionRevisionBindingRepository.getCareerDecisionContextDecisionRevisionBindingById`; payload carries the full DREV; more than one binding per DCTXREV is possible, none is current). Follow-up: add a fifteenth region `decisionRevisionBindings` to the read model with the same index-then-reread pattern and let the dock offer each bound DREV id as an exact lineage entry point. | follow-up on this branch after the integration branch lands |
+| B3 | Resolved on `integration/hr-decision-loop`: the DCDRB binding is the region `decisionRevisionBindings` and a dock entry point (see section 2). Like the other post-decision tables, `career_decision_context_decision_revision_bindings` is not created by `initDbSchema()`; in a runtime without it the region is `NOT_PROVISIONED` and the dock offers no entry point. | resolved; provisioning is B1 |
 | B4 | HR context layer (R2) and G3 producer resolvers (R1, R3) are not implemented; the frontend does not create root DREVs. | `integration/g2-producer-adapters` owner |
 | B5 | `produceAndPersistCareerDecisionContextRevision` at `435a112` compares `JSON.stringify` key order and fails against a JSONB reread with `ERR_CAREER_DECISION_CONTEXT_PERSISTENCE_FAILED`; the fixture persists through the repository instead. Reported; fixed on `integration/g3-decision-context-binding` @ `87d09e1` (compares with `sameCareerDecisionContext`). | fixed upstream, not in this base |
 | B6 | Turbopack rejects the `node_modules` symlink of a git worktree; the e2e spawns `next dev --webpack`. The sealed R5 e2e (`test/decision-runtime/e2e`) fails in such a worktree for the same environmental reason and is unchanged. | environment |
@@ -172,6 +178,20 @@ repository; raw SQL is used only for database creation and table provisioning.
 | B10 | Sealed T11C admits REQUEST_FURTHER_EVIDENCE only for EVIDENCE_* subjects and REQUEST_TARGET_CLARIFICATION only for target-uncertainty subjects; for semantic-uncertainty RCP subjects only ACCEPT, REJECT and DEFER pass. The dock offers every class the DAR permits and renders the sealed `ERR_HUMAN_DECISION_SUBJECT_NOT_ADMISSIBLE` verbatim; it does not pre-filter classes by subject, because admissibility is the gate's verdict, not a frontend derivation. | by design; confirmed with the integration branch owner |
 | B11 | The governed 8D return (sealed 8D5) cannot carry exact COVD provenance; a child DREV whose OBSERVATION names a COVD exists only when formed directly, as the proof fixture does. The dock therefore labels a DREV as a persisted revision with its lineage and provenance verbatim and never as a governed return or loop closure. | confirmed with the integration branch owner; see `docs/architecture/decision-fields/HR_DECISION_LOOP_INTEGRATION.md` on `integration/hr-decision-loop` @ `d882899` |
 | B8 | A context can hold more than one persisted DCR (distinct declarations); the UI lists all and selects none. Whether a second declaration over one DCTXREV is admissible is a G3 semantic question, not decided here. | Case 3 for the G3 owner |
+
+### Integration run on `integration/hr-decision-loop` (2026-10-10)
+
+The test world now names the RCP and the COVD with the R1/R6 vocabulary
+(`CONDYN_CAREER_CANONICAL_CHAIN`, via `lib/career/canonical-authority`) instead of the
+former test-only producer `career-canonical-chain`, which no resolver could resolve. The
+root DREV's inventory names the RCP, and context A carries one DCDRB to that root,
+persisted through the sealed admission.
+
+| Kind | File | Result |
+| --- | --- | --- |
+| LOCAL: DCDRB region, decoder, bound entry points, NOT_PROVISIONED and FAILED without entry point | `test/career/hr-decision-loop/decision-revision-binding-region.test.ts` | 3/3 |
+| INTEGRATION + INVERSE (PostgreSQL): fifteen regions AVAILABLE for A, EMPTY for B; context A → DCDRB → exact root DREV; the root's Career reference resolves through the R1 resolvers | `test/career/hr-decision-loop/read-service.postgres.test.ts` | 4/4 |
+| HTTP + BROWSER (`next dev`, Chromium): fifteen regions, bound root clicked and read through the frozen G2 GET with `ROOT_REACHED`, context B shows no binding | `test/career/hr-decision-loop/e2e/hr-decision-loop-frontend.e2e.test.ts` | 7/7 (screenshot `05-context-a-bound-root-revision-read-by-exact-id.png`) |
 
 ## 7. Non-claims
 

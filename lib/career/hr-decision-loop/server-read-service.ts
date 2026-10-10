@@ -54,6 +54,10 @@ import {
 import { PostgresCareerOutcomeValenceFeedbackContextRevisionRepository } from "../relation-adapters/outcome-valence-feedback-context-revision-persistence";
 import { careerOutcomeValenceFeedbackContextRevisions } from "../relation-adapters/outcome-valence-feedback-context-revision-persistence/postgres-schema";
 import {
+  PostgresCareerDecisionContextDecisionRevisionBindingRepository,
+  careerDecisionContextDecisionRevisionBindings
+} from "../relation-adapters/decision-context-decision-revision-binding-persistence";
+import {
   HR_DECISION_LOOP_READ_MODEL_SCHEMA_VERSION,
   type HrDecisionLoopReadModel,
   type HrDecisionLoopRegion
@@ -90,6 +94,8 @@ export interface HrDecisionLoopReadDependencies extends HumanDecisionProducerDep
   feedbackTargetBindings: ExactIndexedReader<HrDecisionLoopReadModel["feedbackTargetBindings"]["artifacts"][number]>;
   /** Index by exact parent id; the service walks parent ids recursively. */
   feedbackContextRevisions: ExactIndexedReader<HrDecisionLoopReadModel["feedbackContextRevisions"]["artifacts"][number]>;
+  /** Index by the exact DCTXREV the binding names; exact reread through the sealed DCDRB repository. */
+  decisionRevisionBindings: ExactIndexedReader<HrDecisionLoopReadModel["decisionRevisionBindings"]["artifacts"][number]>;
 }
 
 export interface HrDecisionLoopReadService {
@@ -202,7 +208,8 @@ export function createHrDecisionLoopReadService(dependencies: HrDecisionLoopRead
         feedbackAdmissions: await region(dependencies.feedbackAdmissions, id),
         feedbackTargets: await region(dependencies.feedbackTargets, id),
         feedbackTargetBindings: await region(dependencies.feedbackTargetBindings, id),
-        feedbackContextRevisions: await feedbackRevisionRegion(dependencies.feedbackContextRevisions, id)
+        feedbackContextRevisions: await feedbackRevisionRegion(dependencies.feedbackContextRevisions, id),
+        decisionRevisionBindings: await region(dependencies.decisionRevisionBindings, id)
       };
       return structuredClone(model);
     }
@@ -239,6 +246,7 @@ export function createPostgresHrDecisionLoopReadDependencies(
   const feedbackTargets = new PostgresCareerOutcomeValenceFeedbackTargetDeclarationRepository(adapters, feedbackAdmissions);
   const feedbackBindings = new PostgresCareerOutcomeValenceFeedbackTargetRevisionBindingRepository(adapters);
   const feedbackRevisions = new PostgresCareerOutcomeValenceFeedbackContextRevisionRepository(adapters);
+  const decisionRevisionBindings = new PostgresCareerDecisionContextDecisionRevisionBindingRepository(adapters);
   return Object.freeze({
     ...base,
     decisionIndex: {
@@ -296,6 +304,10 @@ export function createPostgresHrDecisionLoopReadDependencies(
     feedbackContextRevisions: {
       indexIds: postgresIndex(database, careerOutcomeValenceFeedbackContextRevisions, careerOutcomeValenceFeedbackContextRevisions.careerOutcomeValenceFeedbackContextRevisionId, careerOutcomeValenceFeedbackContextRevisions.parentRevisionId),
       readById: (id: string) => feedbackRevisions.getCareerOutcomeValenceFeedbackContextRevisionById(id)
+    },
+    decisionRevisionBindings: {
+      indexIds: postgresIndex(database, careerDecisionContextDecisionRevisionBindings, careerDecisionContextDecisionRevisionBindings.careerDecisionContextDecisionRevisionBindingId, careerDecisionContextDecisionRevisionBindings.careerDecisionContextRevisionId),
+      readById: (id: string) => decisionRevisionBindings.getCareerDecisionContextDecisionRevisionBindingById(id)
     }
   });
 }

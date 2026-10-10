@@ -49,7 +49,7 @@ async function dependencies(overrides: Partial<HrDecisionLoopReadDependencies> =
     authorities, proposals, contexts, records,
     decisionIndex: { indexIds: async exact => exact === fixture.context.careerDecisionContextRevisionId ? [fixture.decisionRecord.humanDecisionRecordId] : [], readById: id => records.getHumanDecisionRecordById(id) },
     actionIntents: indexed([fixture.actionIntent as unknown as Record<string, unknown>], "careerDecisionActionIntentId", "careerDecisionContextRevisionId") as never,
-    commitments: empty(), executionAuthorityGrants: empty(), executionContexts: empty(), actionOccurrences: empty(), stateChanges: empty(), associations: empty(), outcomeRoles: empty(), outcomeValences: empty(), feedbackAdmissions: empty(), feedbackTargets: empty(), feedbackTargetBindings: empty(), feedbackContextRevisions: empty(),
+    commitments: empty(), executionAuthorityGrants: empty(), executionContexts: empty(), actionOccurrences: empty(), stateChanges: empty(), associations: empty(), outcomeRoles: empty(), outcomeValences: empty(), feedbackAdmissions: empty(), feedbackTargets: empty(), feedbackTargetBindings: empty(), feedbackContextRevisions: empty(), decisionRevisionBindings: empty(),
     ...overrides
   };
   return { fixture, base };

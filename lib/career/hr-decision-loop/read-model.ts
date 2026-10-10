@@ -15,6 +15,7 @@ import type { CareerOutcomeValenceFeedbackAdmissionDeclaration } from "../relati
 import type { CareerOutcomeValenceFeedbackTargetDeclaration } from "../relation/outcome-valence-feedback-target-declaration";
 import type { CareerOutcomeValenceFeedbackTargetRevisionBinding } from "../relation/outcome-valence-feedback-target-revision-binding";
 import type { CareerOutcomeValenceFeedbackContextRevision } from "../relation/outcome-valence-feedback-context-revision";
+import type { CareerDecisionContextDecisionRevisionBinding } from "../relation/decision-context-decision-revision-binding";
 
 export const HR_DECISION_LOOP_READ_MODEL_SCHEMA_VERSION = "HR_DECISION_LOOP_READ_MODEL_V1" as const;
 
@@ -53,7 +54,8 @@ export const HR_DECISION_LOOP_REGION_NAMES = [
   "feedbackAdmissions",
   "feedbackTargets",
   "feedbackTargetBindings",
-  "feedbackContextRevisions"
+  "feedbackContextRevisions",
+  "decisionRevisionBindings"
 ] as const;
 
 export type HrDecisionLoopRegionName = typeof HR_DECISION_LOOP_REGION_NAMES[number];
@@ -85,6 +87,12 @@ export interface HrDecisionLoopReadModel {
   feedbackTargetBindings: HrDecisionLoopRegion<CareerOutcomeValenceFeedbackTargetRevisionBinding>;
   /** Indexed by exact parent ids only: parent = this DCTXREV, then parent = each found COVFCR. */
   feedbackContextRevisions: HrDecisionLoopRegion<CareerOutcomeValenceFeedbackContextRevision>;
+  /**
+   * DCTXREV to DREV bindings (R4, decision D4), indexed by the exact DCTXREV. A binding is a
+   * persisted structural witness between one Career decision context and one generic Decision
+   * Context revision. More than one may exist; none is current, accepted or a governed return.
+   */
+  decisionRevisionBindings: HrDecisionLoopRegion<CareerDecisionContextDecisionRevisionBinding>;
 }
 
 export const HR_DECISION_LOOP_FORBIDDEN_CLAIM_KEYS = [

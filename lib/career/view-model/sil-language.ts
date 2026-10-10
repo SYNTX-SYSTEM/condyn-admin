@@ -240,7 +240,8 @@ export const SIL_COPY = {
         feedbackAdmissions: "FEEDBACK ADMISSION (COVFAD)",
         feedbackTargets: "FEEDBACK TARGET (COVFTD)",
         feedbackTargetBindings: "TARGET REVISION BINDING (COVFTRB)",
-        feedbackContextRevisions: "FEEDBACK CONTEXT REVISION (COVFCR)"
+        feedbackContextRevisions: "FEEDBACK CONTEXT REVISION (COVFCR)",
+        decisionRevisionBindings: "DECISION CONTEXT BINDING (DCDRB)"
       },
       nextContext: "RECONSTRUCTED NEXT DECISION CONTEXT (DREV)",
       nextContextHint: "Exact G2 revision id; the lineage is walked by previousRevisionId only.",
@@ -256,7 +257,9 @@ export const SIL_COPY = {
       depthBound: "DEPTH BOUND REACHED",
       items: "CONTEXT ITEMS",
       sourceReferences: "SOURCE STATE REFERENCES",
-      bindingBoundary: "DCTXREV ↔ DREV binding (R4) is not implemented in this field; the next context is read by explicit exact id.",
+      boundRevisions: "BOUND GENERIC CONTEXT REVISIONS (DCDRB)",
+      boundRevisionsNone: "NO PERSISTED BINDING FOR THIS CONTEXT",
+      bindingBoundary: "A DCDRB binding is a persisted structural witness only: not current, not accepted, not a governed 8D return. Each bound DREV is read by its exact id.",
       nonClaims: "PERSISTED != TRUE · DECLARED != DONE · RETURN != NEW DECISION · ROOT != HEAD != LATEST"
     },
 
@@ -514,7 +517,8 @@ export const SIL_COPY = {
         feedbackAdmissions: "FEEDBACK-ZULASSUNG (COVFAD)",
         feedbackTargets: "FEEDBACK-ZIEL (COVFTD)",
         feedbackTargetBindings: "ZIELREVISIONSBINDUNG (COVFTRB)",
-        feedbackContextRevisions: "FEEDBACK-KONTEXTREVISION (COVFCR)"
+        feedbackContextRevisions: "FEEDBACK-KONTEXTREVISION (COVFCR)",
+        decisionRevisionBindings: "ENTSCHEIDUNGSKONTEXT-BINDUNG (DCDRB)"
       },
       nextContext: "REKONSTRUIERTER NÄCHSTER ENTSCHEIDUNGSKONTEXT (DREV)",
       nextContextHint: "Exakte G2-Revisions-ID; die Linie wird ausschließlich über previousRevisionId verfolgt.",
@@ -530,7 +534,9 @@ export const SIL_COPY = {
       depthBound: "TIEFENGRENZE ERREICHT",
       items: "KONTEXTELEMENTE",
       sourceReferences: "QUELLZUSTANDSREFERENZEN",
-      bindingBoundary: "Die DCTXREV ↔ DREV-Bindung (R4) ist in diesem Feld nicht implementiert; der nächste Kontext wird über eine explizite exakte ID gelesen.",
+      boundRevisions: "GEBUNDENE GENERISCHE KONTEXTREVISIONEN (DCDRB)",
+      boundRevisionsNone: "KEINE PERSISTIERTE BINDUNG FÜR DIESEN KONTEXT",
+      bindingBoundary: "Eine DCDRB-Bindung ist nur ein persistierter struktureller Zeuge: nicht aktuell, nicht akzeptiert, keine governte 8D-Rückkehr. Jede gebundene DREV wird über ihre exakte ID gelesen.",
       nonClaims: "PERSISTIERT != WAHR · ERKLÄRT != ERLEDIGT · RÜCKKEHR != NEUE ENTSCHEIDUNG · WURZEL != HEAD != LATEST"
     },
 

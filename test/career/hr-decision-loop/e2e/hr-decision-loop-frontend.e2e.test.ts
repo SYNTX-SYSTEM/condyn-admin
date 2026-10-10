@@ -90,7 +90,7 @@ afterAll(async () => {
 }, 60_000);
 
 describe("HR Decision Loop over HTTP against the production composition roots", () => {
-  it("answers the exact-id read with the documented envelope and all fourteen families persisted for context A", async () => {
+  it("answers the exact-id read with the documented envelope and all fifteen families (fourteen G3 families plus the DCDRB binding) persisted for context A", async () => {
     expect(readiness).toEqual({ status: 404, body: { success: false, error: { code: "ERR_HR_DECISION_LOOP_API_NOT_FOUND", message: "The exact decision context was not found." } } });
     const response = await fetch(`${base()}/api/career/hr-decision-loop/contexts/${world.contextA}`);
     expect(response.status).toBe(200);
@@ -203,12 +203,14 @@ describe.skipIf(playwrightModule === null)("HR Decision Loop in a real browser",
 
   afterAll(async () => { if (browser) await browser.close(); }, 30_000);
 
-  it("renders context A with all fourteen persisted states and the reconstructed next context lineage without touching the planetarium", async () => {
+  it("renders context A with all fifteen persisted states, the reconstructed next context lineage, and the DCDRB-bound root as an exact entry point, without touching the planetarium", async () => {
     pageErrors = [];
     const page = await openPage(`/career/demo?careerDecisionContextRevisionId=${world.contextA}&decisionContextRevisionId=${world.g2.childRevisionId}`);
     const dock = page.locator('[data-testid="hr-decision-loop-dock"][data-loop-read-state="AVAILABLE"]');
     await dock.waitFor({ timeout: 120_000 });
-    expect(await page.locator('[data-testid^="hr-decision-loop-region-"][data-region-state="AVAILABLE"]').count()).toBe(14);
+    expect(await page.locator('[data-testid^="hr-decision-loop-region-"][data-region-state="AVAILABLE"]').count()).toBe(15);
+    expect(await page.getByTestId(`hr-decision-loop-artifact-${world.g2.decisionRevisionBindingId}`).count()).toBe(1);
+    expect(await page.getByTestId("hr-decision-loop-bound-revisions").getAttribute("data-bound-count")).toBe("1");
     expect(await page.getByTestId(`hr-decision-loop-artifact-${world.chain.careerOutcomeValenceFeedbackContextRevisionId}`).count()).toBe(1);
     expect(await page.getByTestId(`hr-decision-loop-artifact-${world.chain.humanDecisionRecordId}`).count()).toBe(1);
     await page.locator('[data-testid="next-context-lineage"][data-lineage-terminal="ROOT_REACHED"]').waitFor({ timeout: 60_000 });
@@ -220,6 +222,13 @@ describe.skipIf(playwrightModule === null)("HR Decision Loop in a real browser",
     expect(await page.getByTestId("decision-graph-inspector-idle").count()).toBe(1);
     expect(await page.getByTestId("semantic-career-intelligence-field").getAttribute("data-sil-mode")).toBe("PRE_CANONICAL_DISCOVERY");
     await page.screenshot({ path: resolve(EVIDENCE_DIR, "01-context-a-persisted-chain-and-next-context.png") });
+    // The bound DREV is an exact entry point only: clicking it reads that revision through the frozen G2 GET.
+    await page.getByTestId(`bound-decision-context-revision-${world.g2.rootRevisionId}`).click();
+    await page.locator(`[data-testid="next-context-lineage"][data-lineage-terminal="ROOT_REACHED"] [data-testid="decision-context-revision-${world.g2.rootRevisionId}"]`).waitFor({ timeout: 60_000 });
+    expect(await page.getByTestId(`decision-context-revision-${world.g2.childRevisionId}`).count()).toBe(0);
+    expect(await page.getByTestId("next-context-revision-input").inputValue()).toBe(world.g2.rootRevisionId);
+    expect(await page.getByTestId("hr-decision-loop-next-context").textContent()).toContain("not a governed 8D return");
+    await page.screenshot({ path: resolve(EVIDENCE_DIR, "05-context-a-bound-root-revision-read-by-exact-id.png") });
     await page.getByTestId("hr-decision-loop-dock-collapse").click();
     await page.getByTestId("hr-decision-loop-dock-toggle").waitFor({ timeout: 10_000 });
     await page.getByTestId("hr-decision-loop-dock-toggle").click();
@@ -233,6 +242,8 @@ describe.skipIf(playwrightModule === null)("HR Decision Loop in a real browser",
     const page = await openPage(`/career/demo?careerDecisionContextRevisionId=${world.contextB}`);
     await page.locator('[data-testid="hr-decision-loop-dock"][data-loop-read-state="AVAILABLE"]').waitFor({ timeout: 120_000 });
     expect(await page.getByTestId("hr-decision-declare-btn").isDisabled()).toBe(true);
+    expect(await page.getByTestId("hr-decision-loop-bound-revisions").getAttribute("data-bound-count")).toBe("0");
+    expect(await page.getByTestId("hr-decision-loop-bound-revisions-none").count()).toBe(1);
     await page.getByTestId("hr-decision-declarant-input").fill("INTRUDER");
     await page.getByTestId("hr-decision-class-REJECT_RECOMMENDATION").click();
     await page.getByTestId("hr-decision-evidence-input").fill("evidence://frontend/browser-e2e");

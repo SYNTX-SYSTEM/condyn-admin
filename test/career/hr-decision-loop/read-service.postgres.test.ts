@@ -1,3 +1,6 @@
+import { createBoundAuthoritativeStateReader } from "../../../lib/decision-core/authority";
+import { CAREER_CANONICAL_PRODUCER_ID, createCareerCanonicalAuthoritativeStateResolvers } from "../../../lib/decision-adapters/career-canonical";
+import { createLocalCareerCanonicalProducerRepositories } from "../../../lib/decision-runtime/local/career-canonical-producers";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import { createProductionHumanDecisionRecordDependencies } from "../../../lib/career/human-decision-admission/application";
 import {
@@ -52,7 +55,8 @@ describe("HR Decision Loop read service over an isolated PostgreSQL world", () =
       feedbackAdmissions: world.chain.careerOutcomeValenceFeedbackAdmissionDeclarationId,
       feedbackTargets: world.chain.careerOutcomeValenceFeedbackTargetDeclarationId,
       feedbackTargetBindings: world.chain.careerOutcomeValenceFeedbackTargetRevisionBindingId,
-      feedbackContextRevisions: world.chain.careerOutcomeValenceFeedbackContextRevisionId
+      feedbackContextRevisions: world.chain.careerOutcomeValenceFeedbackContextRevisionId,
+      decisionRevisionBindings: world.g2.decisionRevisionBindingId
     };
     for (const name of HR_DECISION_LOOP_REGION_NAMES) {
       expect(model[name].state, name).toBe("AVAILABLE");
@@ -109,11 +113,29 @@ describe("HR Decision Loop read service over an isolated PostgreSQL world", () =
     const child = await revisions.getRevisionById(world.g2.childRevisionId);
     expect(child!.previousRevisionId).toBe(world.g2.rootRevisionId);
     const observation = child!.context.items.find(item => item.role === "OBSERVATION")!;
-    expect(observation.provenance).toEqual({ origin: "AUTHORITATIVE_STATE", stateReference: { producerId: "career-canonical-chain", authorityContractId: "CAREER_OUTCOME_VALENCE_DECLARATION_V1", artifactId: world.chain.careerOutcomeValenceDeclarationId, locator: world.chain.careerOutcomeValenceDeclarationId } });
+    expect(observation.provenance).toEqual({ origin: "AUTHORITATIVE_STATE", stateReference: { producerId: "CONDYN_CAREER_CANONICAL_CHAIN", authorityContractId: "CAREER_OUTCOME_VALENCE_DECLARATION_V1", artifactId: world.chain.careerOutcomeValenceDeclarationId, locator: world.chain.careerOutcomeValenceDeclarationId } });
     const root = await revisions.getRevisionById(child!.previousRevisionId!);
     expect(root!.previousRevisionId).toBeNull();
     expect(root!.context.sourceStateReferences[0].artifactId).toBe(world.snapshotId);
     expect(JSON.stringify(child)).not.toContain(HR_LOOP_G3_PAYLOAD_MARKER);
     expect(JSON.stringify(root)).not.toContain(HR_LOOP_G3_PAYLOAD_MARKER);
+  });
+
+  it("inverse through the DCDRB binding: context A to its exact root DREV, whose Career references resolve through R1", async () => {
+    const { producer } = compose();
+    const read = createPostgresHrDecisionLoopReadDependencies(world.db, producer);
+    expect(await read.decisionRevisionBindings.indexIds(world.contextA)).toEqual([world.g2.decisionRevisionBindingId]);
+    expect(await read.decisionRevisionBindings.indexIds(world.contextB)).toEqual([]);
+    const binding = await read.decisionRevisionBindings.readById(world.g2.decisionRevisionBindingId);
+    expect(binding!.careerDecisionContextRevision.careerDecisionContextRevisionId).toBe(world.contextA);
+    expect(binding!.decisionContextRevision.revisionId).toBe(world.g2.rootRevisionId);
+    expect(binding!.recommendationProposalWitness.artifactId).toBe(world.recommendationProposalId);
+    const root = await new PostgresDecisionContextRevisionRepository(world.db as never).getRevisionById(binding!.decisionContextRevision.revisionId);
+    expect(root).toEqual(binding!.decisionContextRevision);
+    const reader = createBoundAuthoritativeStateReader(createCareerCanonicalAuthoritativeStateResolvers(createLocalCareerCanonicalProducerRepositories(world.db as never)));
+    const careerReferences = root!.context.sourceStateReferences.filter(reference => reference.producerId === CAREER_CANONICAL_PRODUCER_ID);
+    expect(careerReferences.map(reference => reference.artifactId)).toEqual([world.recommendationProposalId]);
+    for (const reference of careerReferences) expect((await reader.resolve(reference)).reference).toEqual(reference);
+    for (const key of HR_DECISION_LOOP_FORBIDDEN_CLAIM_KEYS) expect(binding).not.toHaveProperty(key);
   });
 });

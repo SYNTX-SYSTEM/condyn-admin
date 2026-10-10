@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { SIL_TOKENS } from "./SILTokens";
 import { SIL_COPY, type SilLocale } from "../../../../lib/career/view-model/sil-language";
+import { boundDecisionContextRevisionIds } from "../../../../lib/career/hr-decision-loop/frontend-presentation";
 import { useHrDecisionLoop } from "../../../../lib/career/ui/useHrDecisionLoop";
 import type {
   DecisionContextRevisionPresentation,
@@ -312,6 +313,27 @@ export function HrDecisionLoopDock({ careerDecisionContextRevisionId, decisionCo
       <section data-testid="hr-decision-loop-next-context" style={panelSurface}>
         <h4 style={sectionTitle}>{t.nextContext}</h4>
         <span style={muted}>{t.nextContextHint}</span>
+        {presentation && (() => {
+          const bound = boundDecisionContextRevisionIds(presentation);
+          return (
+            <div data-testid="hr-decision-loop-bound-revisions" data-bound-count={bound.length} style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
+              <span style={muted}>{t.boundRevisions}</span>
+              {bound.length === 0 && <span data-testid="hr-decision-loop-bound-revisions-none" style={muted}>{t.boundRevisionsNone}</span>}
+              {bound.map(revisionId => (
+                <button
+                  key={revisionId}
+                  type="button"
+                  data-testid={`bound-decision-context-revision-${revisionId}`}
+                  disabled={nextContext.state === "LOADING"}
+                  onClick={() => { setNextRevisionInput(revisionId); void loadNextContext(revisionId); }}
+                  style={{ ...buttonStyle(true), ...mono, textAlign: "left" }}
+                >
+                  {revisionId}
+                </button>
+              ))}
+            </div>
+          );
+        })()}
         <div style={{ display: "flex", gap: "6px" }}>
           <input data-testid="next-context-revision-input" placeholder={t.nextContextInput} value={nextRevisionInput} onChange={event => setNextRevisionInput(event.target.value)} style={inputStyle} />
           <button

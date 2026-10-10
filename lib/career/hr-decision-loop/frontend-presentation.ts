@@ -59,7 +59,8 @@ export const HR_DECISION_LOOP_REGION_ORDER: readonly HrDecisionLoopRegionName[] 
   "feedbackAdmissions",
   "feedbackTargets",
   "feedbackTargetBindings",
-  "feedbackContextRevisions"
+  "feedbackContextRevisions",
+  "decisionRevisionBindings"
 ];
 
 /** Exact id field of every family, used to label rows; this is identity, not selection. */
@@ -77,7 +78,8 @@ const REGION_ID_FIELD: Record<HrDecisionLoopRegionName, string> = {
   feedbackAdmissions: "careerOutcomeValenceFeedbackAdmissionDeclarationId",
   feedbackTargets: "careerOutcomeValenceFeedbackTargetDeclarationId",
   feedbackTargetBindings: "careerOutcomeValenceFeedbackTargetRevisionBindingId",
-  feedbackContextRevisions: "careerOutcomeValenceFeedbackContextRevisionId"
+  feedbackContextRevisions: "careerOutcomeValenceFeedbackContextRevisionId",
+  decisionRevisionBindings: "careerDecisionContextDecisionRevisionBindingId"
 };
 
 /** Persisted fields shown per family; every value is copied verbatim from the artifact. */
@@ -95,7 +97,8 @@ const REGION_FACT_FIELDS: Record<HrDecisionLoopRegionName, readonly string[]> = 
   feedbackAdmissions: ["admittedByActorId", "admittedAt"],
   feedbackTargets: ["targetCareerDecisionContextRevisionId", "declaredByActorId", "declaredAt"],
   feedbackTargetBindings: ["createdAt"],
-  feedbackContextRevisions: ["createdAt"]
+  feedbackContextRevisions: ["createdAt"],
+  decisionRevisionBindings: ["createdAt"]
 };
 
 const regionStates: readonly HrDecisionLoopRegionState[] = ["AVAILABLE", "EMPTY", "NOT_PROVISIONED", "FAILED"];
@@ -118,6 +121,12 @@ function compositionFacts(name: HrDecisionLoopRegionName, artifact: Record<strin
     const target = artifact.targetCareerDecisionContextRevision;
     if (isRecord(declaration) && typeof declaration.careerOutcomeValenceFeedbackTargetDeclarationId === "string") facts.push({ label: "careerOutcomeValenceFeedbackTargetDeclarationId", value: declaration.careerOutcomeValenceFeedbackTargetDeclarationId });
     if (isRecord(target) && typeof target.careerDecisionContextRevisionId === "string") facts.push({ label: "targetCareerDecisionContextRevisionId", value: target.careerDecisionContextRevisionId });
+  }
+  if (name === "decisionRevisionBindings") {
+    const revision = artifact.decisionContextRevision;
+    const witness = artifact.recommendationProposalWitness;
+    if (isRecord(revision) && typeof revision.revisionId === "string") facts.push({ label: "decisionContextRevisionId", value: revision.revisionId });
+    if (isRecord(witness) && typeof witness.artifactId === "string") facts.push({ label: "recommendationProposalWitness", value: witness.artifactId });
   }
   if (name === "feedbackContextRevisions") {
     const parent = artifact.parent;
@@ -332,4 +341,15 @@ export async function walkDecisionContextLineage(
     next = decoded.previousRevisionId;
   }
   return { revisions, terminal: next === null ? "ROOT_REACHED" : "DEPTH_BOUND_REACHED" };
+}
+
+/**
+ * Exact DREV ids named by persisted DCDRB bindings of this context, sorted by id. They are
+ * entry points for an exact G2 read; none is current, preferred or a governed return.
+ */
+export function boundDecisionContextRevisionIds(presentation: HrDecisionLoopPresentation): string[] {
+  const region = presentation.regions.find(candidate => candidate.name === "decisionRevisionBindings");
+  if (!region || region.state !== "AVAILABLE") return [];
+  const ids = region.rows.flatMap(row => row.facts.filter(fact => fact.label === "decisionContextRevisionId").map(fact => fact.value));
+  return [...new Set(ids)].sort();
 }

@@ -87,6 +87,13 @@ import { computeSnapshotKey } from "../../../../lib/career/capability-core";
 import { createPhase4Input } from "../../capability-core/relation-operand/phase4-fixture";
 import { careerCapabilityRuns } from "../../../../lib/career/db/schema";
 import { initT11ProductionPersistenceSchema } from "../../../../lib/career/db/t11-persistence-schema";
+import { CAREER_CANONICAL_AUTHORITY_CONTRACTS, CAREER_CANONICAL_PRODUCER_ID, careerOutcomeValenceDeclarationReference, careerRecommendationProposalReference } from "../../../../lib/career/canonical-authority";
+import { bindAndPersistCareerDecisionContextDecisionRevision } from "../../../../lib/career/decision-context-decision-revision-binding-admission/application";
+import { careerDecisionContextDecisionRevisionBindings, PostgresCareerDecisionContextDecisionRevisionBindingRepository } from "../../../../lib/career/relation-adapters/decision-context-decision-revision-binding-persistence";
+import type { CareerDecisionContextRevisionRepository } from "../../../../lib/career/relation/decision-context";
+import type { CareerOutcomeValenceDeclaration } from "../../../../lib/career/relation/outcome-valence-declaration";
+import type { RecommendationProposal } from "../../../../lib/career/relation/recommendation-proposal";
+import { createGenericDecisionContextRevisionReader } from "../../../../lib/decision-adapters/career-decision-context-binding";
 
 export const HR_LOOP_WORLD_STAMP = "2026-10-01T00:00:00.000Z";
 export const HR_LOOP_DECIDER = "HR_DECIDER_LOCAL";
@@ -112,7 +119,8 @@ export const postDecisionTables = [
   careerOutcomeValenceFeedbackAdmissionDeclarations, careerOutcomeValenceFeedbackAdmissionDeclarationSubjects, careerOutcomeValenceFeedbackAdmissionDeclarationEvidenceReferences,
   careerOutcomeValenceFeedbackTargetDeclarations, careerOutcomeValenceFeedbackTargetDeclarationSubjects, careerOutcomeValenceFeedbackTargetDeclarationEvidenceReferences,
   careerOutcomeValenceFeedbackTargetRevisionBindings,
-  careerOutcomeValenceFeedbackContextRevisions
+  careerOutcomeValenceFeedbackContextRevisions,
+  careerDecisionContextDecisionRevisionBindings
 ];
 
 const quote = (value: string) => `"${value.replaceAll('"', '""')}"`;
@@ -155,7 +163,8 @@ export interface HrLoopWorld {
     careerOutcomeValenceFeedbackTargetRevisionBindingId: string;
     careerOutcomeValenceFeedbackContextRevisionId: string;
   };
-  g2: { rootRevisionId: string; childRevisionId: string };
+  /** G2 root DREV (inventory names the RCP), D2-shaped child DREV formed directly, and the one DCDRB binding context A to the root. */
+  g2: { rootRevisionId: string; childRevisionId: string; decisionRevisionBindingId: string };
   destroy(): Promise<void>;
 }
 
@@ -277,8 +286,8 @@ export async function createHrLoopPostgresWorld(): Promise<HrLoopWorld> {
     const authority = createDecisionAuthorityGrantRevision({ grantorActorId: HR_LOOP_GRANTOR, authorizedActorId: HR_LOOP_DECIDER, authorityScope: "CAREER_RECOMMENDATION_DECISION", permittedDecisionClasses: ["ACCEPT_RECOMMENDATION", "DEFER_DECISION", "REJECT_RECOMMENDATION", "REQUEST_FURTHER_EVIDENCE", "REQUEST_TARGET_CLARIFICATION"], permittedSubjectKinds: ["RCP_ITEM"], authorityEvidenceRefs: [`evidence://grant/hr-loop/${HR_LOOP_G3_PAYLOAD_MARKER}`], declaredAt: stamp, effectiveFrom: "2026-01-01T00:00:00.000Z", effectiveUntil: null, createdAt: stamp });
     await producer.authorities.persistDecisionAuthorityGrantRevision(authority);
     const subjects = proposedOrdinals.map(sourceEvolutionInputItemOrdinal => ({ recommendationProposalId: proposal.recommendationProposalId, sourceEvolutionInputItemOrdinal }));
-    // Note: `produceAndPersistCareerDecisionContextRevision` compares JSON key order and therefore
-    // cannot be used against a JSONB reread; the sealed T12A fixture also persists through the repository.
+    // Contexts are persisted through the repository, as the sealed T12A fixture does. (The producer's
+    // JSONB key-order defect is fixed at 87d09e1 and proven in test/decision-integration.)
     const contextA = await producer.contexts.persistCareerDecisionContextRevision(createCareerDecisionContextRevision(authority, proposal, { decisionAuthorityGrantRevisionId: authority.decisionAuthorityGrantRevisionId, recommendationProposalId: proposal.recommendationProposalId, decisionSubjects: subjects, contextEvidenceRefs: ["evidence://context/hr-loop/a"], createdAt: stamp }));
     const contextB = await producer.contexts.persistCareerDecisionContextRevision(createCareerDecisionContextRevision(authority, proposal, { decisionAuthorityGrantRevisionId: authority.decisionAuthorityGrantRevisionId, recommendationProposalId: proposal.recommendationProposalId, decisionSubjects: subjects, contextEvidenceRefs: ["evidence://context/hr-loop/b"], createdAt: stamp }));
 
@@ -321,7 +330,7 @@ export async function createHrLoopPostgresWorld(): Promise<HrLoopWorld> {
     }).persistCareerOutcomeValenceFeedbackContextRevision(feedbackRevision);
     void read;
 
-    const g2 = await seedDecisionContextLineage(db, snapshot.snapshotId, computeSnapshotKey(snapshot), valence.careerOutcomeValenceDeclarationId);
+    const g2 = await seedDecisionContextLineage(db, snapshot.snapshotId, computeSnapshotKey(snapshot), proposal, valence, producer.contexts, contextA.careerDecisionContextRevisionId);
 
     return {
       databaseName, databaseUrl, sql, db,
@@ -366,15 +375,25 @@ export async function createHrLoopPostgresWorld(): Promise<HrLoopWorld> {
  * the governed 8D return (sealed 8D5) cannot carry exact COVD provenance, so a
  * child like this one exists only when formed directly, as here.
  */
-export const HR_LOOP_G3_OUTCOME_VALENCE_CONTRACT_ID = "CAREER_OUTCOME_VALENCE_DECLARATION_V1";
-export const HR_LOOP_G3_PRODUCER_ID = "career-canonical-chain";
+export const HR_LOOP_G3_OUTCOME_VALENCE_CONTRACT_ID = CAREER_CANONICAL_AUTHORITY_CONTRACTS.OUTCOME_VALENCE_DECLARATION;
+/** The R1/R6 producer id; references named here resolve through the R1 resolver family. */
+export const HR_LOOP_G3_PRODUCER_ID = CAREER_CANONICAL_PRODUCER_ID;
 
-async function seedDecisionContextLineage(db: PostgresJsDatabase, snapshotId: string, snapshotKey: string, outcomeValenceDeclarationId: string) {
+async function seedDecisionContextLineage(
+  db: PostgresJsDatabase,
+  snapshotId: string,
+  snapshotKey: string,
+  proposal: RecommendationProposal,
+  valence: CareerOutcomeValenceDeclaration,
+  contexts: CareerDecisionContextRevisionRepository,
+  bindingContextId: string
+) {
   const repository = new PostgresDecisionContextRevisionRepository(db as never);
   const persister = repository.createDecisionContextRevisionPersister();
   const snapshotReference: AuthoritativeStateReference = { producerId: CAPABILITY_CORE_PRODUCER_ID, authorityContractId: CAPABILITY_CORE_AUTHORITY_CONTRACT_ID, artifactId: snapshotId, locator: snapshotKey };
+  const proposalReference: AuthoritativeStateReference = careerRecommendationProposalReference(proposal);
   const rootInput: DecisionContextDraftInput = {
-    sourceStateReferences: [snapshotReference],
+    sourceStateReferences: [snapshotReference, proposalReference],
     items: [
       { role: "DECISION_QUESTION", statement: "Which recommendation subjects should the HR decider act on?", provenance: { origin: "HUMAN_INPUT", actorId: HR_LOOP_DECIDER } },
       { role: "OBJECTIVE", statement: "Reach an interview invitation for the target role.", provenance: { origin: "HUMAN_INPUT", actorId: HR_LOOP_DECIDER } }
@@ -383,14 +402,19 @@ async function seedDecisionContextLineage(db: PostgresJsDatabase, snapshotId: st
   const rootContext = createDecisionContextDraft(rootInput);
   const emptyValidation = { expectationValidations: [], consequenceValidations: [] };
   const root: DecisionContextRevision = await persister.persist(createDecisionContextRevision({ previousRevisionId: null, context: rootContext, validationInput: emptyValidation, validationAssembly: assembleDecisionContextValidation(rootContext, emptyValidation) }));
-  const valenceReference: AuthoritativeStateReference = { producerId: HR_LOOP_G3_PRODUCER_ID, authorityContractId: HR_LOOP_G3_OUTCOME_VALENCE_CONTRACT_ID, artifactId: outcomeValenceDeclarationId, locator: outcomeValenceDeclarationId };
+  const valenceReference: AuthoritativeStateReference = careerOutcomeValenceDeclarationReference(valence);
   const childContext = createDecisionContextDraft({
-    sourceStateReferences: [snapshotReference, valenceReference],
+    sourceStateReferences: [snapshotReference, proposalReference, valenceReference],
     items: [
       ...rootInput.items,
       { role: "OBSERVATION", statement: "application-status observed applied -> interview-invited; declared valence DESIRABLE", provenance: { origin: "AUTHORITATIVE_STATE", stateReference: valenceReference } }
     ]
   });
   const child = await persister.persist(createDecisionContextRevision({ previousRevisionId: root.revisionId, context: childContext, validationInput: emptyValidation, validationAssembly: assembleDecisionContextValidation(childContext, emptyValidation) }));
-  return { rootRevisionId: root.revisionId, childRevisionId: child.revisionId };
+  // R4 / D4: one exact, reader-backed DCTXREV to root-DREV binding persisted through the sealed admission.
+  const binding = await bindAndPersistCareerDecisionContextDecisionRevision(
+    { careerDecisionContextRevisionId: bindingContextId, decisionContextRevisionId: root.revisionId, createdAt: "2026-10-08T11:00:00.000Z" },
+    { decisionContexts: contexts, decisionRevisions: createGenericDecisionContextRevisionReader(repository), bindings: new PostgresCareerDecisionContextDecisionRevisionBindingRepository(db as never) }
+  );
+  return { rootRevisionId: root.revisionId, childRevisionId: child.revisionId, decisionRevisionBindingId: binding.careerDecisionContextDecisionRevisionBindingId };
 }
