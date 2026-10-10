@@ -27,6 +27,8 @@ export interface JobPoolCanonicalRequirementMapping {
   capabilityName: string;
   targetRequirementEntityId: string;
   targetRequirementRevisionId: string;
+  targetRequirementReconstructionResultId: string;
+  targetRequirementEntityAdmissionId: string;
   matchingEligibility: "MATCHING_ELIGIBLE_PROPOSAL_ONLY" | "MATCHING_INELIGIBLE" | "MATCHING_ELIGIBILITY_UNKNOWN";
   necessityState: "REQUIRED" | "PREFERRED" | "OPTIONAL" | "UNKNOWN";
 }

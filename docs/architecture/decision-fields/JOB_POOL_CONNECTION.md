@@ -1,6 +1,6 @@
 # Job Pool Connection (JSON Job Pool → canonical target requirements → presentation matching)
 
-Status: in implementation on `integration/job-pool-connection` (base `integration/hr-decision-loop` @ `5f47aa1`).
+Status: implemented, under validation on `integration/job-pool-connection` (base `integration/hr-decision-loop` @ `5f47aa1`).
 Owner session: GELB (architecture, backend). Frontend: GRÜN. Independent validation: PINK.
 
 ## 1. Reconstructed relation (documentation and contracts)
@@ -62,21 +62,42 @@ optional, additive requirement fields are admitted; existing pools stay valid:
 Weights stay presentation-only. They are never mapped to canonical necessity.
 A sample file is `docs/examples/job-pool.sample.json`.
 
+The analysis side of layer P is read through `getCareerAnalysisRepository()`, the same path as
+`GET /api/career/analyses/[id]` (in-memory under `NODE_ENV=test`, PostgreSQL otherwise).
+
 ## 4. Canonical mapping rules (layer C)
 
-- **Identity scope.** Every target entity is scoped to one upload: `<KIND>ENT_` + hash(upload id, pool item id).
-  Re-uploading byte-identical canonical content yields the same upload id and is idempotent. A new pool version is a
-  new upload with new entities; continuity across uploads is not asserted (boundary B-JP-CONTINUITY).
-- **Source.** One `TargetSourceRevision` per role (`sourceKind: "JOB_POOL_JSON_ROLE"`,
-  `sourceLocator: jobpool://<upload>/roles/<roleId>`). `normalizedContent` is a deterministic, line-based rendering
-  of pool, organization, role and the role's requirements; `rawContentHash` is the SHA-256 of the uploaded bytes.
+Adopted after PINK's review C1–C7 (2026-10-10).
+
+- **Canonical bytes.** The validated pool is serialized as key-sorted JSON without whitespace (`stableJson`).
+  `canonicalSha256` = SHA-256 of these bytes; the upload id is `JPOOL_` + its first 32 hex digits (upper case).
+  Byte-different but equivalent uploads (whitespace, key order) are the same upload. The canonical bytes are stored
+  (`career_job_pool_uploads.canonical_json`); `rawSha256` is the SHA-256 of the exact bytes of the first upload only.
+- **Identity scope.** Every target entity is scoped to one upload: `<KIND>ENT_` + hash(upload id, declared pool item
+  id). Admission is `NEW_ENTITY_ADMITTED` only (policy `JOB_POOL_UPLOAD_SCOPED_ENTITY_V1`), never `CONTINUATION_*`;
+  a new pool version is a new upload with new entities (boundary B-JP-CONTINUITY).
+- **Source (C1, C2).** ONE `TargetSourceRevision` per upload: `sourceKind: "DOCUMENT"` (the only kind the sealed
+  source contract admits), `sourceLocator: jobpool://<JPOOL id>`, `normalizationVersion: JOB_POOL_SOURCE_RENDERING_V1`,
+  `rawContentHash` = `canonicalSha256`, `normalizedContent` = deterministic rendering of the whole pool (id-scoped
+  lines, NFC, whitespace collapsed per value, LF, no trailing spaces), `normalizedContentHash` over exactly that text.
+  Every role binds to this one source. Every evidence quote is one complete id-scoped line of it.
 - **Organization.** One `TargetOrganizationRevision` per pool organization, `descriptorKind: "DECLARED_NAME"`.
 - **Bindings.** One role-source binding and one role-organization binding per role.
-- **Role profile.** `reconstructTargetRoleProfiles` with the deterministic provider `CONDYN_JOB_POOL_JSON`; evidence
-  quotes are exact lines of the source.
-- **Requirements.** `reconstructTargetRequirementsDurably` with the same provider; admission
-  `NEW_ENTITY_ADMITTED`, policy `JOB_POOL_UPLOAD_SCOPED_ENTITY_V1`, actor `JOB_POOL_UPLOADER:<declared actor>`.
-  `required_level` maps verbatim to `{ kind: "CAPABILITY_LEVEL", level }` (empty → `UNKNOWN`).
+- **Role profile.** `reconstructTargetRoleProfiles` with the deterministic provider `CONDYN_JOB_POOL_JSON`. Its batch
+  runs and results are persisted by `PostgresTargetRoleReconstructionArtifactRepository`
+  (`target_role_reconstruction_batch_runs`, `target_role_reconstruction_results`; new adapter with the semantics of the
+  in-memory reference, raw provider bytes bound to their hash).
+- **Requirements.** `reconstructTargetRequirementsDurably` with the same provider and the existing
+  `PostgresTargetRequirementArtifactRepository`. The mapping records, per requirement, the revision, reconstruction
+  result and admission ids, so byte and semantic replay and the inverse walk use exact ids.
+- **Level mapping table `JOB_POOL_REQUIRED_LEVEL_MAPPING_V1` (C3).** CAPABILITY, TOOL_TECHNOLOGY, KNOWLEDGE: a
+  declared level starting with L1..L6 maps to `CAPABILITY_LEVEL "L<n>"` (`SUPPORTED`), anything else to `UNKNOWN`
+  (`requiredLevelValidationState: UNKNOWN`). EXPERIENCE, LANGUAGE, CREDENTIAL: the declared text becomes the canonical
+  free-text variant. Every other type or an empty level: `UNKNOWN`. The raw text stays in the source and in layer P.
+- **Necessity (C7).** Declared necessity maps to `necessityState` with `SUPPORTED`; absent necessity maps to
+  `UNKNOWN` in both state and validation. Weights are never mapped.
+- **Scope.** A declared requirement domain maps to `SCOPED` with only `domainScope` set; an empty domain to
+  `NOT_APPLICABLE`.
 
 ## 5. HTTP contract (v1)
 
@@ -115,4 +136,5 @@ Response types are exported from `lib/career/job-pool/types.ts`.
 - **HIA-2:** whether a model may act as the Capability-Requirement provider (semantic, evidence, scope judgements).
 - **B-JP-CONTINUITY:** no entity continuity across pool uploads.
 - **B-JP-ACTOR:** the uploader is self-declared, not authenticated (same class as HR boundary B2).
-- **B-ENTRY** applies: tables are registered only on verified disposable databases.
+- **B-ENTRY (C5):** tables are registered only on verified disposable databases. Without an owner-approved migration
+  the job pool routes have no production path; on any other database they answer 503 and issue no DDL.
