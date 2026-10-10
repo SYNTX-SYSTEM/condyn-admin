@@ -227,6 +227,58 @@ Convergence state on `6ba6a80`: every red of the full-tree batch is either F-JP-
 load timeout that passes idle. No red is attributable to the Job Pool delta. Open for the final round: JP-B
 (browser) and the combined tip with GRÜN's `frontend/job-pool-workflow`; JP-M remains GELB's live evidence.
 
+### 3.9 Combined tip `a62b6f9` (GRÜN `frontend/job-pool-workflow` + GELB) merged as `6a1c375`: final JP-R and JP-B
+
+Reconstruction of GRÜN's delta: `lib/career/job-pool/frontend-presentation.ts` (strict decoders of the §5 bodies, label
+derivation from literal fields, ranking descriptor), `lib/career/ui/useJobPool.ts` (four routes, closed unions),
+`app/components/career/demo/JobPoolMatchPanel.tsx` (upload, explicit selection, canonical mapping, ranked matches with
+basis, constituent, evidence, `NOT_EVALUATED`, non-claims; `data-*` state attributes), additive props on the demo
+page, `npm run job-pool:local` (registration plus career worker on the verified disposable URL), Chromium e2e and
+proof world. GELB's `a62b6f9` moved `shared-evidence.test.ts` out of the sealed capability-core directory, so the P8
+inventory is strict again (37 files, diff-free against `435a112`): PINK dropped the `37 + 1` admission.
+`tsc --noEmit`: 0 errors. PINK's layer-separation proof now also covers the panel and the client hook (no decision edge).
+
+Job Pool batch on `6a1c375` as the role (`condyn_test_85af51ad98dabddd`), 2026-10-10 21:02:
+
+```
+ Test Files  18 passed (18) · Tests  154 passed | 3 skipped (157)
+```
+(PINK 3 files / 22; GELB and GRÜN job pool suites incl. `panel-ssr`, `client-reads`, `frontend-presentation`,
+`e2e` HTTP section; `g2-g3-vertical-proof` 63/63 strict P8; Step 16/23; worker and shared-evidence suites.)
+
+JP-B (GRÜN's Chromium e2e, run by PINK as the role with `CONDYN_PLAYWRIGHT_MODULE`, `condyn_test_95dfe5d4e1d9cf48`):
+
+```
+ ✓ test/career/job-pool/e2e/job-pool-workflow.e2e.test.ts (8 tests) 33750ms
+```
+
+JP-B-PINK (independent browser walk, `test/job-pool-validation/browser-walk.e2e.test.ts`,
+`condyn_test_95e372e18ab9a34c`, 21:14): real `next dev --webpack` and Chromium on a disposable database; PINK's
+pool uploaded through the file chooser with actor `PINK_BROWSER_WALK`, selected explicitly; every rendered rank,
+resonance score, matched count, match basis, composite constituent (`Node.js`), evidence quote, `NOT_EVALUATED`
+state and TRPREV/TRQREV id equals the matches body of the same server, and every rendered TRQREV id resolves through
+`PostgresTargetRequirementRevisionRepository` on that database; no HR dock element present; zero page errors.
+Evidence: `evidence/job-pool-validation/pink-01-browser-walk-ranked-matches.png`.
+
+```
+ ✓ test/job-pool-validation/browser-walk.e2e.test.ts (1 test) 19291ms
+```
+
+Final full-tree JP-R on `6a1c375` as the role (`condyn_test_b0bc8bc9a08d1cc8`), 21:05–21:14, load 2–4.5:
+
+```
+ Test Files  4 failed | 368 passed | 8 skipped (380)
+      Tests  27 failed | 2368 passed | 8 skipped (2403)
+   Duration  557 s · timeouts: 0
+```
+
+The four red files are exactly the F-JP-5 lifecycle suites (27 tests, pre-existing legacy DDL drift). No other red.
+
+Convergence: on the combined tip every proof of the plan that PINK owns is green (JP-U-PINK, JP-P, JP-H, JP-C, JP-I,
+JP-R, JP-B, JP-B-PINK); JP-M is GELB's live evidence (`JOB_POOL_CONNECTION.md` §9, GRÜN's run record §7). PINK has no
+open finding against the Job Pool delta. Open owner items: F-JP-5, HIA-1, HIA-2, B-JP-CONTINUITY, B-JP-ACTOR,
+B-JP-GEMINI (PINK has no live model evidence of its own).
+
 ## 4. Boundaries and findings for coordination
 
 - F-JP-1 (closed in `b782793`): `JOB_POOL_CONNECTION.md` §4 followed the per-role `JOB_POOL_JSON_ROLE` design;

@@ -3,7 +3,7 @@ import { createDisposableTestDatabaseNamed, dropDisposableTestDatabase, newDispo
 import { randomBytes } from "node:crypto";
 import { spawn, spawnSync, type ChildProcess } from "node:child_process";
 import { once } from "node:events";
-import { existsSync, readdirSync, readFileSync } from "node:fs";
+import { readdirSync, readFileSync } from "node:fs";
 import { createServer } from "node:net";
 import { join, resolve } from "node:path";
 import { drizzle } from "drizzle-orm/postgres-js";
@@ -569,17 +569,12 @@ describe("G2/G3 vertical integration proof", () => {
   describe("P8 preservation and regression", () => {
     const testFiles = (directory: string): string[] => readdirSync(resolve(process.cwd(), directory), { withFileTypes: true }).flatMap((entry) => entry.isDirectory() ? testFiles(join(directory, entry.name)) : /\.test\.tsx?$/.test(entry.name) ? [join(directory, entry.name)] : []);
 
-    // Job Pool field (ea8db60, D-JP-4/5): GELB added the additive capability-core suite
-    // projection/shared-evidence.test.ts. It is the only admitted delta in the preserved test inventories.
-    const admittedAdditiveSuites = ["test/career/capability-core/projection/shared-evidence.test.ts"];
-
-    it("decision-core 38 files, capability-core 37 + 1 admitted files, runtime 7 plus adapters 1 files; sealed suites and runtime files unchanged", () => {
+    it("decision-core 38 files, capability-core 37 files, runtime 7 plus adapters 1 files; sealed suites and runtime files unchanged", () => {
       expect(testFiles("test/decision-core")).toHaveLength(38);
-      expect(testFiles("test/career/capability-core")).toHaveLength(37 + admittedAdditiveSuites.length);
-      for (const suite of admittedAdditiveSuites) expect(existsSync(resolve(process.cwd(), suite))).toBe(true);
+      expect(testFiles("test/career/capability-core")).toHaveLength(37);
       expect(testFiles("test/decision-runtime")).toHaveLength(7);
       expect(testFiles("test/decision-adapters")).toHaveLength(1);
-      const unchanged = spawnSync("git", ["diff", "--quiet", "435a112", "--", ...admittedAdditiveSuites.map((suite) => `:(exclude)${suite}`), "test/decision-core", "test/career/capability-core", "test/decision-runtime", "test/decision-adapters", "lib/decision-runtime/types.ts", "lib/decision-runtime/runtime.ts", "lib/decision-runtime/index.ts", "lib/decision-runtime/composition/index.ts", "lib/decision-runtime/composition/postgres-capability-core.ts", "lib/decision-runtime/composition/types.ts", "lib/decision-adapters/capability-core.ts", "lib/decision-adapters/revision-persistence"], { cwd: process.cwd() });
+      const unchanged = spawnSync("git", ["diff", "--quiet", "435a112", "--", "test/decision-core", "test/career/capability-core", "test/decision-runtime", "test/decision-adapters", "lib/decision-runtime/types.ts", "lib/decision-runtime/runtime.ts", "lib/decision-runtime/index.ts", "lib/decision-runtime/composition/index.ts", "lib/decision-runtime/composition/postgres-capability-core.ts", "lib/decision-runtime/composition/types.ts", "lib/decision-adapters/capability-core.ts", "lib/decision-adapters/revision-persistence"], { cwd: process.cwd() });
       expect(unchanged.status).toBe(0);
     });
 

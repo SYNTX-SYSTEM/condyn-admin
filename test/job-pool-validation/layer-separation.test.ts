@@ -27,6 +27,8 @@ function importsOf(file: string): string[] {
 
 const jobPoolModule = join(root, "lib/career/job-pool");
 const jobPoolRoutes = join(root, "app/api/career/job-pools");
+/** GRÜN's frontend field (a62b6f9): panel, client hook and decoders are layer P presentation as well. */
+const jobPoolFrontend = ["app/components/career/demo/JobPoolMatchPanel.tsx", "lib/career/ui/useJobPool.ts"].map((file) => join(root, file)).filter(existsSync);
 const hrLoopModule = join(root, "lib/career/hr-decision-loop");
 const matchingModule = join(root, "lib/career/matching");
 
@@ -36,7 +38,7 @@ const decisionLayerPattern = /hr-decision-loop|decision-core|decision-runtime|hr
 const isDecisionEdge = (spec: string) => decisionLayerPattern.test(spec);
 
 describe("Job Pool connection: layer separation (preservation)", () => {
-  const jobPoolFiles = [...sources(jobPoolModule), ...sources(jobPoolRoutes)];
+  const jobPoolFiles = [...sources(jobPoolModule), ...sources(jobPoolRoutes), ...jobPoolFrontend];
 
   it.skipIf(jobPoolFiles.length === 0)("layer C/P sources import nothing from the governed decision layer D", () => {
     const violations = jobPoolFiles.flatMap((file) => importsOf(file).filter(isDecisionEdge).map((spec) => `${relative(root, file)} -> ${spec}`));
