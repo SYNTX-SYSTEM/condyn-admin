@@ -35,6 +35,9 @@ governed human decisions. This field realizes it as three layers with one-way da
    `authorityState: NONE`, is computed on read, is never persisted as canonical state and is never an input to RCP,
    DAR, DCTXREV or DCR. Each match states its basis (`EXACT`, `ALIAS`, `COMPOSITE_CONSTITUENT`, `TOKEN_CONTAINMENT`) and the analysis
    evidence quotes it rests on.
+   Since the convergence round, each requirement entry also carries the coverage by the **Gemini Capability Sweep**
+   proposals of the same analysis job (`sweepProposal`, section 11). Proposals carry source-verified quotes but no
+   confidence; the coverage is therefore shown and never scored.
 3. **Governed decision layer (D).** The HR Decision Looper is unchanged. No path leads from (P) or (C) to a DCR.
 
 ```
@@ -203,3 +206,45 @@ the shared `condyn` database untouched):
 
 Known pre-existing reds outside this field: the four G1 lifecycle suites (F-JP-5, `career_policy_versions` DDL drift)
 and `test/career-worker-recovery-pipeline.test.ts` (assumes pre-existing tables).
+
+## 11. Convergence round: PDF path and Gemini Capability Sweep coverage (2026-10-10)
+
+### 11.1 Field reconstruction, top-down
+
+| Link | Implementation | Proof |
+| --- | --- | --- |
+| PDF intake | SourceDock file input → `POST /api/career/analyze` `{type:"pdf", content:<base64>}` → 202 job | GRÜN browser run (evidence 11–15); PINK `pdf-path.postgres.test.ts` |
+| Extraction | worker `prepareDocuments` → batch loader → `pdf-parse` (`lib/career/loaders/pdf.ts`) | `docs/examples/cv.synthetic.pdf` → 1647 chars; PINK test with two PDFs |
+| Source bundle | `CSB_<jobId>` with `loadedAt` pinned (D-JP-2) and JSON-stable documents (D-JP-3) | PINK: retry rebuilds a deep-equal bundle on real JSONB |
+| Gemini Capability Sweep | Discovery + Convergence kernels → `RUN_`/`CONV_` → F11 projection (`PCAP_`, verified quotes) | live: 14 proposals for the synthetic CV; reader fixed (D-JP-4/5) |
+| Gemini analysis | legacy pipeline → `career_analyses` (capabilities with confidence and evidence) | live: one attempt, 90 s, 7 capabilities |
+| JSON Job Pool | upload → canonical bytes → target revisions (layer C) | JP-C/JP-I suites (GELB, PINK) |
+| Job matching | layer P on analysis capabilities, plus unscored sweep coverage | live and unit/PostgreSQL proofs below |
+| Decision | HR Decision Looper unchanged; no edge from C or P | PINK layer-separation proof |
+
+### 11.2 Gemini Capability Sweep coverage
+
+Live PDF run (`ANL_1791660183739_840`, sample pool): the analysis capabilities match 11 of 28 requirements, the sweep
+proposals 17. Seven requirements are covered only by the sweep (Automated Testing ← "Test-Driven Development (TDD)",
+Accessibility ← "Web Accessibility Implementation", Kubernetes ← "Kubernetes Deployment", CI/CD ← "CI/CD Pipeline
+Engineering", Linux ← "Linux Administration" (ALIAS), Data Modeling ← "Dimensional Data Modeling", German ← "German
+Language Proficiency").
+
+Contract additions (all always present): `sweepProposal: JobPoolSweepProposalCoverage | null` on every matched, weak
+and missing entry (`capabilityProposalId`, `name`, `matchBasis`, `matchedConstituent`, verified `evidence`,
+`evidenceState: SOURCE_MATCH_VERIFIED`, `authorityState: NONE`, `scored: false`); `sweepOnlyCoverageCount` per role;
+`capabilitySweep: { state: AVAILABLE | NOT_PRODUCED | FAILED, proposalCount, scored: false }` per response. The reader
+is the F11 projection reader of `GET /api/career/analyses/[id]`; a lineage failure marks only the sweep `FAILED`.
+
+Invariants proven: scores are identical with and without the sweep (unit test, PostgreSQL test, live run with
+byte-identical `[roleId, score]` lists before and after); `FAILED` and `NOT_PRODUCED` leave the analysis matching
+unchanged.
+
+Owner decision HIA-3 (unchanged, now evidenced): whether sweep proposals may contribute to the score. They have no
+confidence, so scoring them requires a rule that the documents do not contain.
+
+### 11.3 Matcher rule kept
+
+B-COMPOSITE-SPLIT (GRÜN): "TypeScript & Node.js Platform Engineering" splits into "TypeScript" and "Node.js Platform
+Engineering"; the second part only token-contains "Node.js" and stays weak evidence. Counting token containment inside a
+constituent as a full match would bypass the weak-evidence rule; the sweep coverage now shows the remaining gap.
