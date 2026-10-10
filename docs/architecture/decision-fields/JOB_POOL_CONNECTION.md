@@ -180,3 +180,26 @@ Presentation boundary B-JP-PROPOSALS: matching reads the legacy analysis capabil
 pool spec). The capability proposals of the same job are finer (e.g. "Test-Driven Development (TDD)",
 "Kubernetes Deployment") but carry no confidence; using them as a candidate surface needs a decision on how
 proposals without confidence enter the CP-I score.
+
+## 10. Integration of the frontend and final proofs (2026-10-10)
+
+`frontend/job-pool-workflow` @ `aa1532d` (GRÜN) fast-forwarded: `JobPoolMatchPanel` on `/career/demo` (explicit
+analysis from the succeeded job or `?analysisId=`, explicit pool selection persisted as `?jobPoolUploadId=`, strict
+decoders, the three layer labels, canonical state per role), `npm run job-pool:local` (manual environment with the
+career worker bound only to the verified disposable URL), Chromium e2e and the manual test guide
+`docs/career_analysis/JOB_POOL_WORKFLOW_MANUAL_TEST.md`. The shared-evidence regression test lives in
+`test/career/capability-proposal-projection/` because `test/career/capability-core` is sealed and pinned by P8.
+
+Proofs on `a62b6f9` as `condyn_test_runner` (databases created, verified and dropped by the runner or the script;
+the shared `condyn` database untouched):
+
+| Proof | Result |
+| --- | --- |
+| `tsc --noEmit` | 0 errors |
+| `next build` | passes; `/api/career/job-pools`, `/{id}`, `/{id}/matches` dynamic |
+| G2, runtime, adapters, integration, isolation, capability core, career runtime, HR loop, job pool (incl. Chromium e2e), legacy Step 16/23, worker suites, analyses routes | 138 files, 1089 tests green (P8 after moving the shared-evidence test) |
+| Manual walkthrough `npm run job-pool:local --fresh` with real Gemini | upload 201; analyze 202 → SUCCEEDED in one attempt (107 s); analyses 200; matches 200, full-stack 0.6189 first; `/career/demo?analysisId=…&jobPoolUploadId=…` 200; 0 notices; 0 failed attempts |
+| GRÜN's browser walkthrough with real Gemini (`aa1532d`) | field populated, panel matches AVAILABLE, full-stack 0.835 first, 0 page errors (evidence 08–10) |
+
+Known pre-existing reds outside this field: the four G1 lifecycle suites (F-JP-5, `career_policy_versions` DDL drift)
+and `test/career-worker-recovery-pipeline.test.ts` (assumes pre-existing tables).
