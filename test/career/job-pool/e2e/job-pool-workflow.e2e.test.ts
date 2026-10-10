@@ -10,8 +10,9 @@
 import { createRequire } from "node:module";
 import { once } from "node:events";
 import { createServer } from "node:net";
-import { mkdirSync, writeFileSync } from "node:fs";
-import { resolve } from "node:path";
+import { mkdirSync, mkdtempSync, writeFileSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { join, resolve } from "node:path";
 import { spawn, type ChildProcess } from "node:child_process";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import { decodeJobPoolMatchPresentation, decodeJobPoolUploadView, describeRanking } from "../../../../lib/career/job-pool/frontend-presentation";
@@ -236,7 +237,7 @@ describe.skipIf(playwrightModule === null)("Job Pool workflow in a real browser"
     // A new pool version is a new upload with new canonical entities (B-JP-CONTINUITY); the browser sends the file bytes.
     const versionTwo = JSON.parse(world.samplePoolText) as { pool: { version: number } };
     versionTwo.pool.version = world.samplePool.pool.version + 1;
-    const versionTwoPath = resolve(EVIDENCE_DIR, "job-pool.sample.v2.json");
+    const versionTwoPath = join(mkdtempSync(join(tmpdir(), "job-pool-e2e-")), "job-pool.sample.v2.json");
     writeFileSync(versionTwoPath, JSON.stringify(versionTwo, null, 2));
     await page.getByTestId("job-pool-file-input").setInputFiles(versionTwoPath);
     await page.getByTestId("job-pool-actor-input").fill("JOB_POOL_BROWSER_UPLOADER");

@@ -120,6 +120,7 @@ function childEnvironment(verifiedUrl: string, extra: Record<string, string | un
 function spawnCareerWorker(verifiedUrl: string, databaseName: string): ChildProcess {
   const geminiApiKey = process.env.GEMINI_API_KEY;
   if (!geminiApiKey) fail("ERR_HR_LOOP_LOCAL_GEMINI_API_KEY_MISSING: --with-worker needs GEMINI_API_KEY in the operator's environment (never stored by this script)");
+  if (!process.env.GEMINI_MODEL) console.warn("[hr-loop:local] GEMINI_MODEL is not set: the worker falls back to the provider's default cascade (gemini-2.0-flash first), which the Gemini API answered with 404 on 2026-10-10; set GEMINI_MODEL to a model from `npx tsx scripts/list-models.ts` (gemini-3.8-flash verified)");
   const promptEncryptionKey = randomBytes(32).toString("base64");
   console.info(`[hr-loop:local] starting career worker against ${databaseName} (GEMINI_MODEL ${process.env.GEMINI_MODEL ?? "default cascade"}, fresh PROMPT_ENCRYPTION_KEY, in-memory prompt repository)`);
   const worker = spawn(process.execPath, [resolve(process.cwd(), "node_modules/tsx/dist/cli.mjs"), resolve(process.cwd(), "scripts/run-career-worker.ts")], {
