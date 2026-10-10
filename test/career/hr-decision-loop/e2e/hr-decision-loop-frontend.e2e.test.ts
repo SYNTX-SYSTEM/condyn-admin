@@ -179,7 +179,7 @@ describe("HR Decision Loop over HTTP against the production composition roots", 
 
 describe.skipIf(playwrightModule === null)("HR Decision Loop in a real browser", () => {
   type Browser = { newPage(options: { viewport: { width: number; height: number } }): Promise<Page>; close(): Promise<void> };
-  type Locator = { waitFor(options?: { timeout?: number; state?: string }): Promise<void>; count(): Promise<number>; textContent(): Promise<string | null>; getAttribute(name: string): Promise<string | null>; click(): Promise<void>; fill(value: string): Promise<void>; isDisabled(): Promise<boolean>; first(): Locator };
+  type Locator = { waitFor(options?: { timeout?: number; state?: string }): Promise<void>; count(): Promise<number>; textContent(): Promise<string | null>; getAttribute(name: string): Promise<string | null>; click(): Promise<void>; fill(value: string): Promise<void>; isDisabled(): Promise<boolean>; inputValue(): Promise<string>; first(): Locator };
   type Page = { goto(url: string, options?: { waitUntil?: string; timeout?: number }): Promise<unknown>; locator(selector: string): Locator; getByTestId(id: string): Locator; screenshot(options: { path: string; fullPage?: boolean }): Promise<unknown>; on(event: string, handler: (payload: unknown) => void): void; close(): Promise<void> };
   let browser: Browser;
   let pageErrors: string[] = [];
