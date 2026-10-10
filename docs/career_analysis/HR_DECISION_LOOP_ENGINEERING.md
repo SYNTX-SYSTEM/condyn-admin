@@ -30,7 +30,7 @@ Next.js routes (transport only)
    GET  /api/decision-contexts/{DREV}                         → frozen API v1 (G2), unchanged
    ▼
 lib/career/hr-decision-loop (frontend field)
-   local-composition: initDbSchema() + createProductionHumanDecisionRecordDependencies + post-decision repositories
+   local-composition: registration gate (unified R7 order only on a positively disposable database; no DDL otherwise) + createProductionHumanDecisionRecordDependencies + post-decision repositories
    server-read-service: index by exact lineage column → exact reread through each sealed repository
    declaration-application: capture five fields → admitHumanDecisionTransportIdentity → produceAndPersistHumanDecisionRecord
    ▼
@@ -79,16 +79,21 @@ the governed 8D return (B-8D5), never as a governed return.
 
 ## 5. Runtime setup
 
-See `HR_DECISION_LOOP_MANUAL_TEST.md`. Summary: `TEST_DATABASE_ADMIN_URL=postgresql://<user>:<pw>@localhost:5432/postgres npm run hr-loop:local`
-creates and verifies a disposable database, runs `registerUnifiedPersistenceSchema`, seeds the world,
+See `HR_DECISION_LOOP_MANUAL_TEST.md`. Summary: `set -a; . ~/.config/condyn/test-db-role.env; set +a; npm run hr-loop:local`
+checks that the admin role is the least-privilege test role (superuser refused without
+`TEST_DATABASE_ALLOW_SUPERUSER=1`), creates and verifies a disposable database, runs `registerUnifiedPersistenceSchema`, seeds the world,
 verifies again and starts `next dev --webpack` on `http://127.0.0.1:3017`. `npm run hr-loop:local:drop`
-removes exactly that database. The server itself still calls `initDbSchema()` on first request
-(T11 only); the post-decision and binding tables exist in the manual environment because the
-script registers them first (B-ENTRY stays a composition decision).
+removes exactly that database. The HR Decision Loop composition root runs
+`registerUnifiedPersistenceSchema` on first request only when the bound DATABASE_URL is a
+positively verified disposable database (name pattern and marker); on any other database the
+HR routes issue no DDL at all and absent families read as NOT_PROVISIONED. A server started on
+a verified empty disposable database is therefore operational without the script; the script
+still registers first so the seed can run before the server.
 
 ## 6. Test execution and results (2026-10-10, this branch, after merging the guard `7d2a2b3`)
 
-How to run: `TEST_DATABASE_ADMIN_URL=postgresql://<user>:<pw>@localhost:5432/postgres npm run -s test:isolated -- <files>`.
+How to run: `set -a; . ~/.config/condyn/test-db-role.env; set +a; npm run -s test:isolated -- <files>`
+(least-privilege role `condyn_test_runner`; a superuser admin is refused without `TEST_DATABASE_ALLOW_SUPERUSER=1`).
 The runner creates one marked disposable database, the vitest global setup verifies it before
 any file runs, and the runner drops it afterwards. The e2e creates a second disposable
 database of its own inside that run and drops it. Browser steps need
@@ -101,6 +106,9 @@ dependency); without it the browser section is reported as skipped.
 | HTTP + Chromium e2e (real `next dev --webpack`, production composition roots) | `test/career/hr-decision-loop/e2e/hr-decision-loop-frontend.e2e.test.ts` | `condyn_test_1ad7ff09be6c40e9` plus the suite's own world database (both dropped) | 7/7 in 92 s: envelopes and 201/400/401/403/404/409/422; frozen G2 GET and lineage walk; SSR with and without dock; browser: 15 persisted families, entry kind URL then BINDING, child INVENTORY_EXTENDED and NOT BOUND, root BOUND with the DCDRB id, URL parameter follows the read, absence vs failure, declaration rejected then persisted with exact reread, field without dock unchanged, no page errors |
 | Manual environment, live | `npm run hr-loop:local` → `condyn_test_18eec094f8cc9d79` | created, verified twice, seeded, served on 3017, dropped | HTTP: context A 200 with 15 × AVAILABLE/1, DCR 200, root and child DREV 200 (child.previousRevisionId = root), absent DREV 404, dock rendered only with the parameter; POST on B: intruder 422 `ERR_HUMAN_DECISION_DECLARANT_MISMATCH`, decider 201, repeat 409. Chromium: 15 regions, child INVENTORY_EXTENDED, declaration ACCEPT_RECOMMENDATION persisted and listed, no page errors. Screenshots `06-manual-environment-context-a.png`, `07-manual-environment-context-b-declared.png` |
 | Script fail-closed paths | `scripts/hr-decision-loop-local.ts` | none opened | missing admin URL → `ERR_TEST_DATABASE_ADMIN_URL_MISSING`; admin URL naming `condyn` → `ERR_TEST_DATABASE_ADMIN_URL_NOT_MAINTENANCE`; drop of `condyn` → `ERR_TEST_DATABASE_ISOLATION_PROTECTED`; drop of an unmarked, non-existent disposable name → refused |
+| Composition root gate | `local-composition-gate.test.ts` (doubles, no connection), `local-composition.postgres.test.ts` | runner database | disposable identity → unified registration once per process, every family provisioned, seeded world served with 15 × AVAILABLE through the production root; non-disposable identity → no DDL |
+| Final run as the least-privilege role `condyn_test_runner` (tip merged: `e43f11e`) | all of the above plus `test/database-isolation/least-privilege-role.test.ts` | `condyn_test_2b08dec7b4f06b6a` (created, verified, dropped) | 18 files, 90 passed; Chromium e2e 7/7 (103 s) |
+| Script as the role | `npm run hr-loop:local:seed`, `:drop` | `condyn_test_1bb89b29238875ea` | admin role reported as least privilege; created, registered, seeded, dropped. Superuser admin without `TEST_DATABASE_ALLOW_SUPERUSER=1` → `ERR_TEST_DATABASE_ADMIN_SUPERUSER` before any database is created |
 | Type-check | `npx tsc --noEmit -p tsconfig.json`; the script separately | | 0 errors |
 
 Preservation: sealed surfaces unchanged on this branch (`lib/decision-*`, `lib/career/relation*`,
@@ -120,7 +128,7 @@ e2e from another worktree.
 | Id | Boundary | Owner |
 | --- | --- | --- |
 | B-8D5 | Governed 8D return cannot carry exact COVD provenance; the D2-shaped child exists only when formed directly. The dock reports the persisted difference and claims no governance. | Case 3, field owner |
-| B-ENTRY | `registerUnifiedPersistenceSchema` is not wired into a server or worker entry point; the manual script registers it before starting the server; a server started any other way shows the post-decision and binding families as NOT_PROVISIONED. | composition decision |
+| B-ENTRY | For the HR Decision Loop routes: `createLocalHrDecisionLoopHttpApplication` runs `registerUnifiedPersistenceSchema` only on a positively disposable database (proofs `local-composition.postgres.test.ts`, `local-composition-gate.test.ts`); on any other database, including the shared one, the HR routes issue no DDL and absent families read as NOT_PROVISIONED. Registration for a non-disposable database remains the owner's composition decision. The canonical SIL routes and the career worker still use `initDbSchema()`; the G2 route registers `decision_context_revisions` itself. | owner decision for non-disposable databases |
 | B-INGRESS | No HTTP ingress for DAINT … COVFCR, DCDRB, root or child DREV creation; the dock represents these, seeded only. | separate work unit |
 | B2 | Local self-declared principal; not authentication. | identity provider decision |
 | B8 / B10 / B-T11C | Several DCRs per context are listed, none selected; admissibility is the sealed gate's verdict rendered verbatim. | G3 semantics |

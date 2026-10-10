@@ -1,9 +1,10 @@
 /**
  * HR Decision Looper: local manual test environment.
  *
- *   TEST_DATABASE_ADMIN_URL=postgresql://postgres:postgres@localhost:5432/postgres npm run hr-loop:local
+ *   set -a; . ~/.config/condyn/test-db-role.env; set +a; npm run hr-loop:local
  *
- * Database isolation (owner mandate, 2026-10-10): the database is created ONLY with
+ * Database isolation (owner mandate, 2026-10-10): the admin role must be the least-privilege
+ * test role (a superuser is refused unless TEST_DATABASE_ALLOW_SUPERUSER=1); the database is created ONLY with
  * createDisposableTestDatabase, positively verified with verifyDisposableTestDatabase before
  * seeding and again before the server starts, and removed ONLY with dropDisposableTestDatabase.
  * The shared `condyn` database is refused by name before any connection. There is no other
@@ -23,6 +24,7 @@ import { createServer } from "node:net";
 import postgres from "postgres";
 import { createDisposableTestDatabase, dropDisposableTestDatabase, verifyDisposableTestDatabase } from "../lib/database-isolation/verification";
 import { requireTestDatabaseAdminUrl } from "./test-db/admin-url";
+import { assertLeastPrivilegeAdmin } from "./test-db/admin-privilege";
 
 const STATE_DIR = resolve(process.cwd(), ".hr-loop-local");
 const STATE_FILE = resolve(STATE_DIR, "state.json");
@@ -88,6 +90,8 @@ async function portFree(port: number): Promise<boolean> {
 
 async function createAndSeed(): Promise<LocalState> {
   const adminUrl = requireTestDatabaseAdminUrl();
+  const admin = await assertLeastPrivilegeAdmin(adminUrl);
+  console.info(`[hr-loop:local] admin role ${admin.role}${admin.superuser ? " (superuser, explicitly allowed)" : " (least privilege)"}`);
   const created = await createDisposableTestDatabase(adminUrl);
   console.info(`[hr-loop:local] created disposable database ${created.databaseName}`);
   const verified = await verifyDisposableTestDatabase(created.url);

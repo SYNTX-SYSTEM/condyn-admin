@@ -9,8 +9,13 @@ the helpers of `lib/database-isolation` (owner mandate 2026-10-10).
 
 ```bash
 cd ~/Entwicklung/condyn-admin-hr-dock            # any worktree on this branch
-TEST_DATABASE_ADMIN_URL=postgresql://postgres:postgres@localhost:5432/postgres npm run hr-loop:local
+set -a; . ~/.config/condyn/test-db-role.env; set +a   # least-privilege role condyn_test_runner (TEST_DATABASE_ADMIN_URL etc.)
+npm run hr-loop:local
 ```
+
+The admin role is checked first: a superuser is refused unless `TEST_DATABASE_ALLOW_SUPERUSER=1`
+is set explicitly (owner decision 2026-10-10; the role file is created by
+`scripts/test-db/provision-role.ts`, see `docs/architecture/decision-fields/DATABASE_SAFETY_AUDIT.md`).
 
 What happens, in order: a disposable database is created and marked; it is verified by a
 read-only connection (name and marker); the unified persistence registration runs (T11,
@@ -71,8 +76,10 @@ local self-declared principal (boundary B2: this is not authentication).
   seeded. The dock represents them; it cannot create them.
 - No root DREV creation from the dock; the frozen API v1 POST exists and the R2 builder exists
   on this branch, but no UI calls them.
-- The server uses `initDbSchema()` on first request; the post-decision tables exist here only
-  because the script ran the unified registration first (B-ENTRY unchanged).
+- The HR Decision Loop routes register the unified persistence order on first request only on
+  a positively disposable database, so the server is operational on any verified empty
+  disposable database; on a non-disposable database they issue no DDL (families read as
+  NOT_PROVISIONED). The script registers earlier only so the seed can run before the server.
 - Locale switch is in the System Codex ([DE|EN]).
 - Next.js 16 allows one `next dev` per project directory: stop the manual server before
   running the browser e2e in the same worktree (it starts its own server), or run the e2e from
