@@ -19,6 +19,7 @@ import CapabilityDeepFocusView from "./CapabilityDeepFocusView";
 import { OrbitalCosmosView } from "./OrbitalCosmosView";
 import { OrbitalDeepFocusView } from "./OrbitalDeepFocusView";
 import { InferenceTelemetryHUD } from "./InferenceTelemetryHUD";
+import { HrDecisionLoopDock } from "./HrDecisionLoopDock";
 import { buildEvidenceGraph } from "../../../../lib/career/evidence/traversal";
 import { computeGraphFocus } from "../../../../lib/career/evidence/highlight";
 import { DecisionGraphInspector } from "./DecisionGraphInspector";
@@ -38,6 +39,10 @@ export interface SemanticCareerIntelligenceFieldProps {
   data: DemoCareerIntelligenceData;
   /** Explicit Stage-B association selected by the product workflow, never inferred from Stage A. */
   canonicalSilAssociationId?: string;
+  /** Explicit G3 Career Decision Context revision (DCTXREV) selected by the product workflow. */
+  careerDecisionContextRevisionId?: string;
+  /** Explicit G2 Decision Context revision (DREV) to read as the reconstructed next context. */
+  decisionContextRevisionId?: string;
   initialAnalysisState?: {
     isAnalyzing?: boolean;
     analysisStep?: string | null;
@@ -340,6 +345,8 @@ export function resolveSilOrbitAttentionState(
 export function SemanticCareerIntelligenceField({
   data,
   canonicalSilAssociationId,
+  careerDecisionContextRevisionId,
+  decisionContextRevisionId,
   initialAnalysisState,
   initialLocale = SIL_COPY.defaultLocale,
   initialFocus
@@ -634,6 +641,7 @@ export function SemanticCareerIntelligenceField({
       data-zoom-level={zoomLevel}
       data-focused-stage-id={activeStageId || ""}
       data-sil-mode={canonicalSilPresentation?.mode ?? "PRE_CANONICAL_DISCOVERY"}
+      data-hr-decision-loop-context={careerDecisionContextRevisionId ?? ""}
       data-camera-scale={cameraScale}
       onClick={() => {
         if (graphFocus) {
@@ -1619,6 +1627,15 @@ export function SemanticCareerIntelligenceField({
       <div style={{ zIndex: 10 }}>
         <SemanticGuideDrawer locale={locale} />
       </div>
+
+      {/* Right HR Decision Loop Dock: rendered only for an explicit exact DCTXREV; it owns no planetarium geometry. */}
+      {careerDecisionContextRevisionId && (
+        <HrDecisionLoopDock
+          careerDecisionContextRevisionId={careerDecisionContextRevisionId}
+          decisionContextRevisionId={decisionContextRevisionId ?? null}
+          locale={locale}
+        />
+      )}
 
       <SystemCodexModal
         isOpen={isCodexOpen}
