@@ -79,4 +79,25 @@ integration branch; PINK validates the pushed result independently.
 | Runner least privilege | `scripts/test-db/admin-privilege.ts`: superuser admin refused unless `TEST_DATABASE_ALLOW_SUPERUSER` is exactly `1`, checked read-only on the maintenance connection; used by `run.ts`, `create.ts` and the manual environment |
 | Prepared hardening H1 | `scripts/db-hardening/condyn-public-connect-hardening.PREPARED.sql`: pre-checks (datacl NULL, owner `postgres`), `REVOKE CONNECT, TEMPORARY ON DATABASE condyn FROM PUBLIC`, explicit grant to `postgres`, in-transaction post-checks, rollback recipe. Impact on `authenticator`, `hr_timesheet_user`, `web_anon`: they lose `CONNECT` and `TEMP` on `condyn` but already hold no privilege on any schema or relation there (assessment table); current `pg_stat_activity` shows no connection of those roles to `condyn`. NOT APPLIED; owner approval pending |
 
-Execution evidence for this candidate is recorded in section 7 once the merged commit is pushed.
+Execution evidence for the merged result is in section 7.
+
+## 7. Execution evidence on the integration tip `6f400ea` (merge `63e7d9f` of `37eea05`), 2026-10-10
+
+All runs as `condyn_test_runner` through `npm run -s test:isolated` (superuser admin refused by default,
+verified: `ERR_TEST_DATABASE_ADMIN_SUPERUSER`), each in a marked `condyn_test_<16 hex>` database created
+and dropped by the runner; the validation tree is `validation/hr-decision-loop-pink` @ `18cca4d` (the tip
+plus this record); `tsc --noEmit` 0 errors.
+
+| Proof | Result |
+| --- | --- |
+| Light checks: registration gate (`local-composition-gate`, `local-composition.postgres`), `test/database-isolation` with the least-privilege proof executed, P7 forward and inverse | 11 files, 69 / 69 |
+| G2 + integration + isolation + capability-core + HR loop (batch, one other session's run concurrent, load 3.4 to 3.8) | 111 files, 949 passed, 7 skipped, 3 failed: the three TypeScript-program tests at 6.1 to 7.4 s (load), and the HR loop e2e file failed in its setup hook so its seven tests were reported skipped (hook error not captured in the filtered batch output) |
+| Idle re-run of the three TypeScript-program files and the three COVFCR suites | 5 files, 63 / 63 (3.0 to 3.6 s per program test) |
+| Idle re-run of the HR loop e2e with Chromium (`CONDYN_PLAYWRIGHT_MODULE` set) | 7 / 7: fifteen families incl. the DCDRB binding region, sealed-gate declaration and rejection, next-context lineage through the frozen G2 GET, dock only for an explicit DCTXREV, bound root as exact entry point in the browser |
+| `test/career` (batch, concurrent other run) | 299 files, 1677 passed, 6 skipped, 33 failed: 27 are the four G1 legacy suites on a fresh database (quarantine, identical to `435a112`), 6 are COVFCR 5 s timeouts, all green in the idle re-run above |
+| Manual environment smoke as the role (`hr-loop:local:seed`, `:serve` on port 3041, HTTP, stop, `:drop`) | 15 regions `AVAILABLE`, binding region `AVAILABLE`, decision record 200, declaration without principal 401, wrong principal 403, inadmissible class 422, `DEFER_DECISION` 201 then 409, demo page with dock 200, plain field without dock; database created, verified and dropped by the script; no state left |
+| Leftover databases after all PINK runs | none owned by PINK runs; databases of other sessions' concurrent runs untouched |
+
+Agreement of state and documentation: GELB's section 8 of `HR_DECISION_LOOP_INTEGRATION.md` reports the
+same gate behaviour, the same role-based results and the same manual walkthrough; the only differences
+are the batch-time load timeouts recorded here with their idle re-runs.
