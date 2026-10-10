@@ -29,7 +29,10 @@ describe("Job Pool frontend presentation", () => {
       (body: typeof matches) => { (body.presentation as { kind: string }).kind = "CANONICAL_EVALUATION"; },
       (body: typeof matches) => { (body.roleMatches[0].canonical as { capabilityRequirementRelationState: string }).capabilityRequirementRelationState = "EVALUATED"; },
       (body: typeof matches) => { (body.roleMatches[0].matched[0] as { matchBasis: string }).matchBasis = "SEMANTIC"; },
-      (body: typeof matches) => { delete (body.roleMatches[0].matched[0] as { evidence?: unknown }).evidence; }
+      (body: typeof matches) => { delete (body.roleMatches[0].matched[0] as { evidence?: unknown }).evidence; },
+      (body: typeof matches) => { delete (body.roleMatches[0].matched[0] as { matchedConstituent?: unknown }).matchedConstituent; },
+      (body: typeof matches) => { (body.roleMatches[0].matched[0] as { matchedConstituent: unknown }).matchedConstituent = "TypeScript"; },
+      (body: typeof matches) => { (body.roleMatches[0].matched[0] as { matchBasis: string }).matchBasis = "COMPOSITE_CONSTITUENT"; }
     ]) {
       const body = clone(matches);
       mutation(body);
@@ -39,6 +42,16 @@ describe("Job Pool frontend presentation", () => {
     (mapping.canonicalMapping as { authorityState: string }).authorityState = "GRANTED";
     expect(decodeJobPoolUploadView(mapping)).toBeNull();
     expect(decodeJobPoolUploadSummary({ ...summary, poolStatus: "LIVE" })).toBeNull();
+  });
+
+  it("decodes a COMPOSITE_CONSTITUENT match only with its constituent, keeping the composite name as delivered", () => {
+    const body = clone(matches);
+    const item = body.roleMatches[0].matched[0] as { matchBasis: string; matchedCapabilityName: string; matchedConstituent: string | null };
+    item.matchBasis = "COMPOSITE_CONSTITUENT";
+    item.matchedCapabilityName = "TypeScript and Node.js";
+    item.matchedConstituent = "TypeScript";
+    const decoded = decodeJobPoolMatchPresentation(body);
+    expect(decoded?.roleMatches[0].matched[0]).toMatchObject({ matchBasis: "COMPOSITE_CONSTITUENT", matchedCapabilityName: "TypeScript and Node.js", matchedConstituent: "TypeScript" });
   });
 
   it("decodes error bodies with and without issues and rejects malformed ones", () => {

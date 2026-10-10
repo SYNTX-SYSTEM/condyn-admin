@@ -35,7 +35,7 @@ const oneOf = <T extends string>(value: unknown, allowed: readonly T[]): value i
 const POOL_STATUSES = ["DRAFT", "ACTIVE", "ARCHIVED"] as const;
 const NECESSITIES = ["REQUIRED", "PREFERRED", "OPTIONAL", "UNDECLARED"] as const;
 const CANONICAL_NECESSITIES = ["REQUIRED", "PREFERRED", "OPTIONAL", "UNKNOWN"] as const;
-const MATCH_BASES = ["EXACT", "ALIAS", "TOKEN_CONTAINMENT"] as const;
+const MATCH_BASES = ["EXACT", "ALIAS", "COMPOSITE_CONSTITUENT", "TOKEN_CONTAINMENT"] as const;
 const ELIGIBILITIES = ["MATCHING_ELIGIBLE_PROPOSAL_ONLY", "MATCHING_INELIGIBLE", "MATCHING_ELIGIBILITY_UNKNOWN"] as const;
 
 export function decodeJobPoolUploadSummary(value: unknown): JobPoolUploadSummary | null {
@@ -120,6 +120,9 @@ function decodeMatched(value: unknown): JobPoolRoleMatch["matched"][number] | nu
   if (!isNonEmptyString(value.poolRequirementId) || !isString(value.capabilityName) || !isString(value.requiredLevel) || !isFiniteNumber(value.weight)) return null;
   if (!oneOf(value.necessity, NECESSITIES) || !oneOf(value.matchBasis, MATCH_BASES)) return null;
   if (!isString(value.matchedCapabilityName) || !isString(value.matchedCapabilityEntityId) || !isFiniteNumber(value.confidence) || !isFiniteNumber(value.contribution)) return null;
+  // matchedConstituent is always present: a string for COMPOSITE_CONSTITUENT, null for every other basis.
+  if (!(value.matchedConstituent === null || isString(value.matchedConstituent))) return null;
+  if ((value.matchBasis === "COMPOSITE_CONSTITUENT") !== (typeof value.matchedConstituent === "string")) return null;
   const evidence = decodeEvidence(value.evidence);
   if (evidence === null) return null;
   return {
@@ -131,6 +134,7 @@ function decodeMatched(value: unknown): JobPoolRoleMatch["matched"][number] | nu
     matchBasis: value.matchBasis,
     matchedCapabilityName: value.matchedCapabilityName,
     matchedCapabilityEntityId: value.matchedCapabilityEntityId,
+    matchedConstituent: value.matchedConstituent,
     confidence: value.confidence,
     contribution: value.contribution,
     evidence

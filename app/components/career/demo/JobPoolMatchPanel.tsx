@@ -77,7 +77,7 @@ function MatchedRow({ roleId, item, kind, t }: { roleId: string; item: JobPoolMa
         {item.capabilityName} <span style={muted}>· {t.level} {item.requiredLevel || "—"} · {t.weight} {item.weight} · {item.necessity}</span>
       </span>
       <span style={muted}>
-        {t.basis} <span style={chip(kind === "matched" ? SIL_TOKENS.colors.evolutionGreen : SIL_TOKENS.colors.tensionAmber)}>{item.matchBasis}</span> {t.via} <span style={mono}>{item.matchedCapabilityName}</span> ({item.matchedCapabilityEntityId}) · confidence {item.confidence} · contribution {item.contribution}
+        {t.basis} <span style={chip(kind === "matched" ? SIL_TOKENS.colors.evolutionGreen : SIL_TOKENS.colors.tensionAmber)}>{item.matchBasis}</span> {t.via} <span style={mono}>{item.matchedCapabilityName}</span>{item.matchedConstituent !== null && <> · {t.constituent} <span data-testid="job-pool-matched-constituent" style={mono}>{item.matchedConstituent}</span></>} ({item.matchedCapabilityEntityId}) · confidence {item.confidence} · contribution {item.contribution}
       </span>
       {"reason" in item && <span style={amber}>{item.reason}</span>}
       <span style={muted}>{t.evidence}</span>

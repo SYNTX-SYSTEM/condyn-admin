@@ -59,7 +59,7 @@ export const matches: JobPoolMatchPresentation = {
   roleMatches: [
     {
       poolRoleId: "ROLE_A", title: "Platform Engineer", seniority: "Senior", domainFocus: "Platform", poolOrganizationId: "ORG_1", organizationName: "Acme", resonanceScore: 0.75,
-      matched: [{ poolRequirementId: "REQ_1", capabilityName: "TypeScript", requiredLevel: "L4", weight: 1, necessity: "REQUIRED", matchBasis: "EXACT", matchedCapabilityName: "TypeScript", matchedCapabilityEntityId: "CAP_TS", confidence: 0.9, contribution: 0.75, evidence: [{ docId: "DOC_CV", quote: "Built services in TypeScript for six years." }] }],
+      matched: [{ poolRequirementId: "REQ_1", capabilityName: "TypeScript", requiredLevel: "L4", weight: 1, necessity: "REQUIRED", matchBasis: "EXACT", matchedCapabilityName: "TypeScript", matchedCapabilityEntityId: "CAP_TS", matchedConstituent: null, confidence: 0.9, contribution: 0.75, evidence: [{ docId: "DOC_CV", quote: "Built services in TypeScript for six years." }] }],
       weakEvidence: [],
       missing: [{ poolRequirementId: "REQ_2", capabilityName: "Kubernetes", requiredLevel: "L3", weight: 0.5, necessity: "UNDECLARED", evidenceHint: "cluster operations" }],
       canonical: { targetRoleProfileRevisionId: "TRPREV_A", targetRequirementRevisionIds: ["TRQREV_1", "TRQREV_2"], capabilityRequirementRelationState: "NOT_EVALUATED", reason: "VERIFIED_CAPABILITY_SNAPSHOT_ABSENT" }
@@ -67,7 +67,7 @@ export const matches: JobPoolMatchPresentation = {
     {
       poolRoleId: "ROLE_B", title: "Data Analyst", seniority: "Mid", domainFocus: "Data", poolOrganizationId: "ORG_1", organizationName: "Acme", resonanceScore: 0.3,
       matched: [],
-      weakEvidence: [{ poolRequirementId: "REQ_3", capabilityName: "SQL", requiredLevel: "L2", weight: 0.6, necessity: "PREFERRED", matchBasis: "TOKEN_CONTAINMENT", matchedCapabilityName: "SQL Reporting", matchedCapabilityEntityId: "CAP_SQL", confidence: 0.3, contribution: 0.18, evidence: [{ docId: "DOC_CV", quote: "Occasional SQL reporting for the finance team." }], reason: "confidence 0.3 below weakEvidenceThreshold 0.4" }],
+      weakEvidence: [{ poolRequirementId: "REQ_3", capabilityName: "SQL", requiredLevel: "L2", weight: 0.6, necessity: "PREFERRED", matchBasis: "TOKEN_CONTAINMENT", matchedCapabilityName: "SQL Reporting", matchedCapabilityEntityId: "CAP_SQL", matchedConstituent: null, confidence: 0.3, contribution: 0.18, evidence: [{ docId: "DOC_CV", quote: "Occasional SQL reporting for the finance team." }], reason: "confidence 0.3 below weakEvidenceThreshold 0.4" }],
       missing: [],
       canonical: { targetRoleProfileRevisionId: "TRPREV_B", targetRequirementRevisionIds: ["TRQREV_3"], capabilityRequirementRelationState: "NOT_EVALUATED", reason: "VERIFIED_CAPABILITY_SNAPSHOT_ABSENT" }
     }
