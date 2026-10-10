@@ -223,8 +223,10 @@ declaration mapping), `dock-ssr.test.tsx` 4/4, `decision-revision-binding-region
 `read-service.test.ts`, `http.test.ts`, `routes.test.ts`, `declaration-application.test.ts`,
 SIL locale wiring and language contract, `career-demo-e2e.test.tsx`: 62/62; `tsc` 0 errors.
 The isolated-world HTTP/browser e2e carries the new assertions (entry kinds, revision position,
-return character, bound state, URL parameter, absence vs failure) and is run only against a
-`condyn_hrloop_*` database created and dropped by the suite.
+return character, bound state, URL parameter, absence vs failure): 7/7 on 2026-10-10 under the
+database isolation guard (`npm run test:isolated`, disposable `condyn_test_1ad7ff09be6c40e9`
+created and dropped by the runner). Manual environment and complete run record:
+`HR_DECISION_LOOP_ENGINEERING.md`, `HR_DECISION_LOOP_MANUAL_TEST.md`.
 
 ## 7. Non-claims
 
