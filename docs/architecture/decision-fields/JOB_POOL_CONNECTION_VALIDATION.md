@@ -213,6 +213,20 @@ diff-free against `435a112`. The proof now carries the single admitted additive 
 exist, excluded from the diff-free check); every other file of the sealed inventories remains byte-identical to
 `435a112`. No sealed suite was changed.
 
+### 3.8 COVFCR idle re-run on `6ba6a80`, 2026-10-10 20:58, load 1.9
+
+```
+[test-db] created condyn_test_e0e75499bf0505fb
+ ✓ …/career-outcome-valence-feedback-context-revision-postgres.test.ts (8 tests) 20548ms
+ ✓ …/career-outcome-valence-feedback-context-revision-replay.test.ts (5 tests) 17178ms
+ ✓ …/outcome-valence-feedback-context-revision-lifecycle/field-integration.test.ts (2 tests) 8370ms
+ Test Files  3 passed (3) · Tests  15 passed (15)
+```
+
+Convergence state on `6ba6a80`: every red of the full-tree batch is either F-JP-5 (pre-existing, owner item) or a
+load timeout that passes idle. No red is attributable to the Job Pool delta. Open for the final round: JP-B
+(browser) and the combined tip with GRÜN's `frontend/job-pool-workflow`; JP-M remains GELB's live evidence.
+
 ## 4. Boundaries and findings for coordination
 
 - F-JP-1 (closed in `b782793`): `JOB_POOL_CONNECTION.md` §4 followed the per-role `JOB_POOL_JSON_ROLE` design;
