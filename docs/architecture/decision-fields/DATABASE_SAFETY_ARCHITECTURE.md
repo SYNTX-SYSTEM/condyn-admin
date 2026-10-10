@@ -64,3 +64,19 @@ TEST_DATABASE_ADMIN_URL=postgresql://<admin>:<pw>@localhost:5432/postgres npm ru
 
 Creates a marked `condyn_test_<16 hex>` database, runs vitest against it, drops it. A plain `npx vitest run`
 without a verified `DATABASE_URL` aborts before any test. Never pass a URL naming `condyn`.
+
+## 6. Top-down reconstruction of the integration tip candidate (read-only, 2026-10-10)
+
+Candidate: `frontend/hr-decision-dock-finalization` @ `37eea05` (GRÜN), which already contains
+`integration/hr-decision-loop` up to `e43f11e` (GELB: least privilege by default, hardening assessment)
+and PINK's layer-4 files as `5c52dea`. No file overlap with `ed0ad2f`. GELB merges it into the
+integration branch; PINK validates the pushed result independently.
+
+| Relation | Finding (by reading the code, before execution) |
+| --- | --- |
+| Runtime schema registration | `lib/career/hr-decision-loop/local-composition.ts`: `ensureHrDecisionLoopPersistenceRegistration()` runs `registerUnifiedPersistenceSchema` only after `verifyDisposableTestDatabase(DATABASE_URL)` succeeds; any refusal or connection error yields `NO_DDL_ON_NON_DISPOSABLE_DATABASE`, cached once per process. On `condyn` (PROTECTED by name) no DDL can run; absent tables surface as `NOT_PROVISIONED`. Consequence for production: schema provisioning on the shared database becomes an explicit owner-run migration, never a request side effect. Gate test: `test/career/hr-decision-loop/local-composition-gate.test.ts` |
+| Manual environment | `scripts/hr-decision-loop-local.ts` (`up`, `seed`, `serve`, `status`, `drop`): admin URL validated, `assertLeastPrivilegeAdmin` enforced, database created with `createDisposableTestDatabase`, verified before seeding and again before `next dev --webpack` starts, exposed to the server only as the verified URL, removed only with `dropDisposableTestDatabase`; `CONDYN_ALLOW_SHARED_DATABASE` never set; state under `.hr-loop-local/` (git-ignored) |
+| Runner least privilege | `scripts/test-db/admin-privilege.ts`: superuser admin refused unless `TEST_DATABASE_ALLOW_SUPERUSER` is exactly `1`, checked read-only on the maintenance connection; used by `run.ts`, `create.ts` and the manual environment |
+| Prepared hardening H1 | `scripts/db-hardening/condyn-public-connect-hardening.PREPARED.sql`: pre-checks (datacl NULL, owner `postgres`), `REVOKE CONNECT, TEMPORARY ON DATABASE condyn FROM PUBLIC`, explicit grant to `postgres`, in-transaction post-checks, rollback recipe. Impact on `authenticator`, `hr_timesheet_user`, `web_anon`: they lose `CONNECT` and `TEMP` on `condyn` but already hold no privilege on any schema or relation there (assessment table); current `pg_stat_activity` shows no connection of those roles to `condyn`. NOT APPLIED; owner approval pending |
+
+Execution evidence for this candidate is recorded in section 7 once the merged commit is pushed.
