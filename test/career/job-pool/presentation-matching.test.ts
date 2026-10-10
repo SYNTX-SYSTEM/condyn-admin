@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { JobPoolError } from "../../../lib/career/job-pool/errors";
-import { compositeConstituents, findCandidateMatch, matchAnalysisAgainstJobPool, normalizeCapabilityName, WEAK_EVIDENCE_THRESHOLD } from "../../../lib/career/job-pool/presentation-matching";
+import { compositeConstituents, findCandidateMatch, findSweepCoverage, matchAnalysisAgainstJobPool, normalizeCapabilityName, WEAK_EVIDENCE_THRESHOLD } from "../../../lib/career/job-pool/presentation-matching";
 import type { JobPoolCanonicalMapping } from "../../../lib/career/job-pool/types";
 import { parseJobPoolUpload } from "../../../lib/career/job-pool/upload";
 import { extractAnalysisCapabilities } from "../../../lib/career/matching/capability-extraction";
@@ -115,6 +115,32 @@ describe("presentation matching JOB_POOL_PRESENTATION_MATCHING_V1 (JP-U)", () =>
       ["Node.js", "COMPOSITE_CONSTITUENT", "TypeScript and Node.js", "Node.js"]
     ]);
     expect(findCandidateMatch(requirement("Postgres", ["PostgreSQL"]), items)?.constituent).toBe("PostgreSQL");
+  });
+
+  it("shows capability sweep coverage per requirement without changing any score (unscored, authority NONE)", () => {
+    const p = pool();
+    const proposals = [
+      { id: "PCAP_TDD", name: "Test-Driven Development (TDD)", evidence: [{ sourceDocumentId: "DOC_001", exactQuote: "Introduced test-driven development with Jest." }] },
+      { id: "PCAP_CICD", name: "CI/CD Pipeline Engineering", evidence: [{ sourceDocumentId: "DOC_001", exactQuote: "Set up CI/CD pipelines with GitHub Actions." }] },
+      { id: "PCAP_TS", name: "TypeScript Development", evidence: [{ sourceDocumentId: "DOC_001", exactQuote: "Built services in TypeScript." }] }
+    ];
+    const base = { analysis: verifiedAnalysis(FIXTURE_ANALYSIS_ID, fixtureCapabilities()), analysisId: FIXTURE_ANALYSIS_ID, jobPoolUploadId: "JPOOL_X", pool: p, canonicalMapping: mappingFor(p) };
+    const without = matchAnalysisAgainstJobPool(base);
+    const withSweep = matchAnalysisAgainstJobPool({ ...base, capabilitySweep: { state: "AVAILABLE", proposals } });
+    expect(without.capabilitySweep).toEqual({ state: "NOT_PRODUCED", proposalCount: 0, scored: false });
+    expect(withSweep.capabilitySweep).toEqual({ state: "AVAILABLE", proposalCount: 3, scored: false });
+    expect(withSweep.roleMatches.map(r => [r.poolRoleId, r.resonanceScore])).toEqual(without.roleMatches.map(r => [r.poolRoleId, r.resonanceScore]));
+    const fullstack = withSweep.roleMatches.find(r => r.poolRoleId === "role_fullstack")!;
+    const testing = fullstack.missing.find(r => r.capabilityName === "Automated Testing")!;
+    expect(testing.sweepProposal).toEqual({ capabilityProposalId: "PCAP_TDD", name: "Test-Driven Development (TDD)", matchBasis: "TOKEN_CONTAINMENT", matchedConstituent: null, evidence: [{ docId: "DOC_001", quote: "Introduced test-driven development with Jest." }], evidenceState: "SOURCE_MATCH_VERIFIED", authorityState: "NONE", scored: false });
+    expect(fullstack.sweepOnlyCoverageCount).toBe(1);
+    expect(fullstack.matched.find(r => r.capabilityName === "TypeScript")?.sweepProposal?.capabilityProposalId).toBe("PCAP_TS");
+    const platform = withSweep.roleMatches.find(r => r.poolRoleId === "role_platform")!;
+    expect(platform.missing.find(r => r.capabilityName === "CI/CD")?.sweepProposal?.matchBasis).toBe("TOKEN_CONTAINMENT");
+    expect(findSweepCoverage({ id: "r", role_id: "x", capability_name: "Rust", domain: "", weight: 1, required_level: "" } as never, proposals)).toBeNull();
+    const failed = matchAnalysisAgainstJobPool({ ...base, capabilitySweep: { state: "FAILED" } });
+    expect(failed.capabilitySweep).toEqual({ state: "FAILED", proposalCount: 0, scored: false });
+    expect(failed.roleMatches.every(r => [...r.matched, ...r.weakEvidence, ...r.missing].every(item => item.sweepProposal === null))).toBe(true);
   });
 
   it("does not match a requirement whose tokens the capability name does not contain", () => {

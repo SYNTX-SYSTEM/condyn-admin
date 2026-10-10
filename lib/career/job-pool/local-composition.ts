@@ -1,6 +1,7 @@
 import { drizzle } from "drizzle-orm/postgres-js";
 import { db } from "../db/client";
 import { getCareerAnalysisRepository } from "../repositories";
+import { createCapabilityProposalProjectionReader, PostgresCapabilityCoreRepository, PostgresCapabilityProposalProjectionReferenceRepository } from "../capability-core";
 import { verifyDisposableTestDatabase } from "../../database-isolation/verification";
 import { registerUnifiedPersistenceSchema } from "../../persistence/unified-schema-registration";
 import { createRegistrationClient } from "../../persistence/registration-client";
@@ -36,5 +37,12 @@ export async function createLocalJobPoolApplication(): Promise<JobPoolApplicatio
   if (await ensureJobPoolPersistenceRegistration() !== "REGISTERED") {
     throw new JobPoolError("ERR_JOB_POOL_PERSISTENCE_NOT_PROVISIONED", 503, "Job pool persistence is provisioned only on a verified disposable database (B-ENTRY).");
   }
-  return createJobPoolApplication({ database: drizzle(db.$client), analyses: getCareerAnalysisRepository() });
+  return createJobPoolApplication({
+    database: drizzle(db.$client),
+    analyses: getCareerAnalysisRepository(),
+    capabilitySweep: createCapabilityProposalProjectionReader({
+      references: new PostgresCapabilityProposalProjectionReferenceRepository(db),
+      capabilityRepository: new PostgresCapabilityCoreRepository(db)
+    })
+  });
 }

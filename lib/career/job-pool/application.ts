@@ -3,7 +3,7 @@ import type { CompanyPoolData } from "../matching/pool";
 import type { CareerAnalysisRepository } from "../repository";
 import { mapJobPoolToCanonicalTargets } from "./canonical-mapping";
 import { JobPoolError } from "./errors";
-import { matchAnalysisAgainstJobPool } from "./presentation-matching";
+import { matchAnalysisAgainstJobPool, type CapabilitySweepInput } from "./presentation-matching";
 import { PostgresJobPoolRepository, type JobPoolUploadRecord } from "./repository";
 import type { JobPoolMatchPresentation, JobPoolUploadSummary, JobPoolUploadView } from "./types";
 import { parseJobPoolUpload } from "./upload";
@@ -34,6 +34,8 @@ export interface JobPoolApplicationDependencies {
   database: PostgresJsDatabase;
   /** The same analysis read path as GET /api/career/analyses/[id] (getCareerAnalysisRepository). */
   analyses: Pick<CareerAnalysisRepository, "load">;
+  /** The F11 capability proposal projection of the analysis job (same reader as the analyses route). */
+  capabilitySweep?: { read(analysisId: string): Promise<{ capabilities: Array<{ id: string; name: string; evidence: Array<{ sourceDocumentId: string; exactQuote: string }> }> } | null> };
   now?: () => string;
 }
 
@@ -98,7 +100,20 @@ export function createJobPoolApplication(deps: JobPoolApplicationDependencies) {
       const view = await this.get(jobPoolUploadId);
       const analysis = await analyses.load(analysisId);
       if (analysis === null) throw new JobPoolError("ERR_ANALYSIS_NOT_FOUND", 404, `Unknown analysis ${analysisId}.`);
+      let capabilitySweep: CapabilitySweepInput = { state: "NOT_PRODUCED" };
+      if (deps.capabilitySweep) {
+        try {
+          const projection = await deps.capabilitySweep.read(analysisId);
+          if (projection !== null) {
+            capabilitySweep = { state: "AVAILABLE", proposals: projection.capabilities.map(item => ({ id: item.id, name: item.name, evidence: item.evidence.map(e => ({ sourceDocumentId: e.sourceDocumentId, exactQuote: e.exactQuote })) })) };
+          }
+        } catch {
+          // A sidecar lineage violation never hides or alters the analysis matching; it is reported as FAILED.
+          capabilitySweep = { state: "FAILED" };
+        }
+      }
       return matchAnalysisAgainstJobPool({
+        capabilitySweep,
         analysis,
         analysisId,
         jobPoolUploadId,

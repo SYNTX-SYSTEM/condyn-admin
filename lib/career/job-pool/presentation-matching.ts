@@ -2,7 +2,7 @@ import type { CompanyPoolData, PoolCapabilityRequirement } from "../matching/poo
 import { extractAnalysisCapabilities, type AnalysisCapabilityItem } from "../matching/capability-extraction";
 import { JobPoolError } from "./errors";
 import type {
-  JobPoolCanonicalMapping, JobPoolMatchBasis, JobPoolMatchedRequirement, JobPoolMatchPresentation, JobPoolMissingRequirement,
+  JobPoolCanonicalMapping, JobPoolMatchBasis, JobPoolSweepProposalCoverage, JobPoolMatchedRequirement, JobPoolMatchPresentation, JobPoolMissingRequirement,
   JobPoolOrganizationMatch, JobPoolRoleMatch, JobPoolWeakRequirement
 } from "./types";
 
@@ -71,18 +71,41 @@ export function findCandidateMatch(requirement: PoolCapabilityRequirement, capab
 
 const necessityOf = (requirement: PoolCapabilityRequirement) => requirement.necessity ?? "UNDECLARED";
 
+/** One capability sweep proposal as the F11 projection exposes it (authority NONE, source-verified evidence). */
+export interface SweepProposal { id: string; name: string; evidence: Array<{ sourceDocumentId: string; exactQuote: string }> }
+export type CapabilitySweepInput = { state: "AVAILABLE"; proposals: SweepProposal[] } | { state: "NOT_PRODUCED" } | { state: "FAILED" };
+
+/** Same match bases as the analysis side; ordering among equal bases is by proposal id (no confidence exists). */
+export function findSweepCoverage(requirement: PoolCapabilityRequirement, proposals: SweepProposal[]): JobPoolSweepProposalCoverage | null {
+  const items: AnalysisCapabilityItem[] = proposals.map(proposal => ({
+    entityId: proposal.id, name: proposal.name, domain: "", confidence: 0,
+    evidence: proposal.evidence.map(item => ({ docId: item.sourceDocumentId, quote: item.exactQuote }))
+  }));
+  const match = findCandidateMatch(requirement, items);
+  if (match === null) return null;
+  return {
+    capabilityProposalId: match.capability.entityId, name: match.capability.name, matchBasis: match.basis,
+    matchedConstituent: match.constituent, evidence: match.capability.evidence.slice(0, 3),
+    evidenceState: "SOURCE_MATCH_VERIFIED", authorityState: "NONE", scored: false
+  };
+}
+
 export function matchAnalysisAgainstJobPool(input: {
   analysis: unknown;
   analysisId: string;
   jobPoolUploadId: string;
   pool: CompanyPoolData;
   canonicalMapping: JobPoolCanonicalMapping;
+  capabilitySweep?: CapabilitySweepInput;
 }): JobPoolMatchPresentation {
   const { pool } = input;
   if (pool.pool.status !== "ACTIVE") {
     throw new JobPoolError("ERR_INACTIVE_COMPANY_POOL", 409, `The pool status is ${pool.pool.status}; matching requires ACTIVE (CP-I1).`);
   }
   const capabilities = extractAnalysisCapabilities(input.analysis);
+  const sweep: CapabilitySweepInput = input.capabilitySweep ?? { state: "NOT_PRODUCED" };
+  const proposals = sweep.state === "AVAILABLE" ? sweep.proposals : [];
+  const coverageOf = (requirement: PoolCapabilityRequirement) => (proposals.length ? findSweepCoverage(requirement, proposals) : null);
   const canonicalByRole = new Map(input.canonicalMapping.roles.map(role => [role.poolRoleId, role]));
 
   const roleMatches: JobPoolRoleMatch[] = pool.roles.map(role => {
@@ -98,7 +121,8 @@ export function matchAnalysisAgainstJobPool(input: {
       if (match === null) {
         missing.push({
           poolRequirementId: requirement.id, capabilityName: requirement.capability_name, requiredLevel: requirement.required_level,
-          weight: requirement.weight, necessity: necessityOf(requirement), evidenceHint: requirement.evidence_hint ?? null
+          weight: requirement.weight, necessity: necessityOf(requirement), evidenceHint: requirement.evidence_hint ?? null,
+          sweepProposal: coverageOf(requirement)
         });
         continue;
       }
@@ -111,7 +135,8 @@ export function matchAnalysisAgainstJobPool(input: {
         weight: requirement.weight, necessity: necessityOf(requirement), matchBasis: match.basis,
         matchedCapabilityName: match.capability.name, matchedConstituent: match.constituent,
         matchedCapabilityEntityId: match.capability.entityId,
-        confidence, contribution, evidence: match.capability.evidence.slice(0, 3)
+        confidence, contribution, evidence: match.capability.evidence.slice(0, 3),
+        sweepProposal: coverageOf(requirement)
       };
       if (!weak) { matched.push(base); continue; }
       const reasons: string[] = [];
@@ -132,6 +157,7 @@ export function matchAnalysisAgainstJobPool(input: {
       matched,
       weakEvidence,
       missing,
+      sweepOnlyCoverageCount: missing.filter(item => item.sweepProposal !== null).length,
       canonical: {
         targetRoleProfileRevisionId: canonical.targetRoleProfileRevisionId,
         targetRequirementRevisionIds: canonical.requirements.map(item => item.targetRequirementRevisionId),
@@ -169,6 +195,7 @@ export function matchAnalysisAgainstJobPool(input: {
     poolId: pool.pool.id,
     poolVersion: pool.pool.version,
     candidateCapabilityCount: capabilities.length,
+    capabilitySweep: { state: sweep.state, proposalCount: proposals.length, scored: false },
     roleMatches,
     organizationMatches
   };
