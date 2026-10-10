@@ -93,7 +93,7 @@ outside the isolation suites, any mention of the opt-in, `delete process.env.VIT
 | Id | Risk or decision | Owner |
 | --- | --- | --- |
 | R1 | F-1 above: make the client refuse protected names unconditionally unless an explicit production opt-in variable is set by the real server and worker only, and let the static isolation test forbid `delete process.env.VITEST` and assignments to `process.env.DATABASE_URL` under `test/`. | GELB / owner |
-| R2 | The guard is code-level. A PostgreSQL role for tests without `CONNECT` on `condyn` (and the application role without `DROP`/`TRUNCATE` on it) would hold even if the code guard is bypassed. Credentials are an owner decision. | owner |
+| R2 | The guard is code-level. A least-privilege test role holds even if the code guard is bypassed: tooling (`scripts/test-db/provision-role.ts`), proof (`least-privilege-role.test.ts`) and a transient demonstration exist; see `DATABASE_SAFETY_ARCHITECTURE.md`. Provisioning the role on the shared cluster is an owner action (PINK created and reverted it on 2026-10-10 after GELB flagged the authority boundary). | owner |
 | R3 | `psql`, `pg_dump`, direct scripts and agents are outside the guard. The rule "never `condyn` in any command" remains procedural. | owner |
 | R4 | Production and the worker now fail closed when `DATABASE_URL` is unset: `npm run worker:career` with the present `.env.local` (no `DATABASE_URL`) no longer reaches `condyn`. The owner must set the variable explicitly where the shared database is intended. | owner |
 | R5 | Root-owned container `next dev` (pid 416931, since 2026-09-24) has an unreadable environment; its database target is unknown. | owner |
