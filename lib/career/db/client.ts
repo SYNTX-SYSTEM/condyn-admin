@@ -13,6 +13,7 @@ import { initT11ProductionPersistenceSchema } from "./t11-persistence-schema";
 import { initCanonicalSilReadLineageSchema } from "../sil-projection/persistence-schema";
 
 import { resolveApplicationDatabaseUrl } from "../../database-isolation/policy";
+import { createNoticeForwarder } from "./notice-filter";
 
 /**
  * No fallback to any real database (database isolation mandate, 2026-10-10): a missing
@@ -27,7 +28,7 @@ const connectionString = resolveApplicationDatabaseUrl(
 );
 
 // Singleton connection client for serverless Next.js environment safety
-const sql = postgres(connectionString, { max: 10 });
+const sql = postgres(connectionString, { max: 10, onnotice: createNoticeForwarder() });
 export const db = drizzle(sql, { schema });
 
 /**

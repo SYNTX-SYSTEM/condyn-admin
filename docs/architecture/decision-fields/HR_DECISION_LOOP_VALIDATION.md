@@ -78,3 +78,12 @@ through that runner with no leftover database (906 / 906 and 1662 passed with th
 quarantine and load-only timeouts). Residual limits, closable only by an owner decision on a dedicated
 PostgreSQL test role: deliberate in-process tampering with runtime-assembled variable names, and a
 `vitest --config` override that drops the gate for the 22 pinned sealed or frozen files.
+
+## 7. Round 4: recursive integration validated at `6f400ea` (2026-10-10)
+
+Integration tip after the merge of GRÜN's dock finalization: gated runtime registration (DDL only on a
+positively verified disposable database, otherwise none), manual environment on the least-privilege role,
+superuser admin refused by default. Full execution evidence, including the idle re-runs of the
+load-sensitive files and the independent manual smoke, is section 7 of `DATABASE_SAFETY_ARCHITECTURE.md`.
+Open owner items are unchanged: H1 privilege hardening inside `condyn` (prepared, not applied), server
+logging, DB-2 and DB-3 cleanup, B-8D5, B1, B-T11C.

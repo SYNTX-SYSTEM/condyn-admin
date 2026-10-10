@@ -164,3 +164,46 @@ dropped by the runner; the shared `condyn` database untouched):
 
 How the operator starts it: `set -a; . ~/.config/condyn/test-db-role.env; set +a; npm run hr-loop:local`,
 then follow `docs/career_analysis/HR_DECISION_LOOP_MANUAL_TEST.md`.
+
+## 9. Silent server log and stable manual database (2026-10-10)
+
+`frontend/hr-decision-dock-finalization` @ `dc975cb` (GRÜN) fast-forwarded. The gated registration
+runs on a dedicated single-connection client bound to the verified disposable URL, with notices
+silenced (`lib/career/hr-decision-loop/registration-client.ts`). The application client never issues
+the registration DDL. `npm run hr-loop:local` (`up`) reuses the verified database named in the state
+file; `up --fresh` forces a new one.
+
+The live smoke on that tip still showed 17 notice objects on the first requests from two sources outside
+the registration path:
+
+- 16 × `42622 truncate_identifier` on the HR context read: sealed relation names longer than 63 bytes
+  (`career_action_state_change_association_declaration_evidence_references`,
+  `career_outcome_valence_feedback_{admission,target}_declaration_evidence_references`) are named in
+  ordinary statements on the application client. PostgreSQL resolves the truncated name
+  deterministically; reads and writes are unaffected.
+- 1 × `42P07 … already exists, skipping` from the frozen G2 local API: `ensureDecisionRuntimePostgresSchema(db)`
+  in `lib/decision-runtime/local/decision-context-api.ts` on every `/api/decision-contexts` request
+  (access path P4 in `DATABASE_SAFETY_AUDIT.md`; frozen API v1, unchanged).
+
+GELB added `lib/career/db/notice-filter.ts`. The application client drops only `42622` and the idempotent
+skip notices (`42P07`, `42P06`, `42710` whose message ends in "skipping"); every other notice is
+forwarded unchanged to `console.log`, the postgres.js default. No statement, connection target or
+schema changed; the frozen and sealed files are untouched.
+
+Proof as `condyn_test_runner` (every database created, verified and dropped by the runner or the
+script; the shared `condyn` database untouched):
+
+| Proof | Result |
+| --- | --- |
+| `tsc --noEmit` | 0 errors |
+| G2 + runtime + adapters + integration + isolation + capability core + HR loop (on `dc975cb`) | 112 files, 957 passed, 3 skipped (Chromium e2e without Playwright module) |
+| Notice filter + HR loop + isolation (with the filter) | 22 files, 107 passed, 3 skipped |
+| HR loop Chromium e2e (`CONDYN_PLAYWRIGHT_MODULE` set) | 7/7 |
+| Manual smoke run 1 (`dc975cb`, port 3027) | context A, decision, root and child revision 200; 17 notice objects in the server log |
+| Manual smoke run 2 (with the filter, `up` again) | reused `condyn_test_95551a3c526bbee5` from the state file; 15/15 families AVAILABLE; all four reads 200; 0 notice objects; `hr-loop:local:drop` dropped it |
+
+PINK's independent validation of `6f400ea` (records taken over from
+`validation/hr-decision-loop-pink` @ `1ad9762`: `DATABASE_SAFETY_ARCHITECTURE.md` sections 6 and 7,
+`HR_DECISION_LOOP_VALIDATION.md` section 7) agrees: light checks 69/69, superuser admin refused,
+batch failures only under concurrent load and green idle, `test/career` failures = 27 G1
+quarantine + 6 COVFCR timeouts green idle, manual smoke 15 regions AVAILABLE.
