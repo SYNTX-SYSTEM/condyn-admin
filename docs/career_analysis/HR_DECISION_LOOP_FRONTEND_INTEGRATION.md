@@ -193,6 +193,39 @@ persisted through the sealed admission.
 | INTEGRATION + INVERSE (PostgreSQL): fifteen regions AVAILABLE for A, EMPTY for B; context A → DCDRB → exact root DREV; the root's Career reference resolves through the R1 resolvers | `test/career/hr-decision-loop/read-service.postgres.test.ts` | 4/4 |
 | HTTP + BROWSER (`next dev`, Chromium): fifteen regions, bound root clicked and read through the frozen G2 GET with `ROOT_REACHED`, context B shows no binding | `test/career/hr-decision-loop/e2e/hr-decision-loop-frontend.e2e.test.ts` | 7/7 (screenshot `05-context-a-bound-root-revision-read-by-exact-id.png`) |
 
+## 8. Dock finalization round (2026-10-10, branch `frontend/hr-decision-dock-finalization`, base `628dc70`)
+
+Reconstruction of the integrated dock against the integrated contracts (DCDRB binding
+`CAREER_DECISION_CONTEXT_DECISION_REVISION_BINDING_V1`, frozen API v1, sealed T11C, sealed
+8D5/8D7, boundary B-8D5). Every repair below is inside the frontend field: no sealed contract,
+governance decision, database schema or route wire shape changed.
+
+| Id | Gap found | Repair |
+| --- | --- | --- |
+| G1 | With the DCDRB family `NOT_PROVISIONED` or `FAILED` the dock said "NO PERSISTED BINDING FOR THIS CONTEXT", which is only true for `EMPTY`. In a runtime without the unified registration (B-ENTRY) every context would read as unbound. | Bound list carries `data-binding-region-state`; `NOT_PROVISIONED` and `FAILED` render their own amber/red lines ("BOUND STATE UNKNOWN"); "none" appears only for `EMPTY`. |
+| G2 | A DREV read by explicit id and a DREV reached through a binding looked the same (bound vs unbound, assumed vs persisted). | The hook records the entry source (`URL`, `INPUT`, `BINDING` with the exact DCDRB id); the section shows "ENTRY: EXPLICIT ID FROM URL/INPUT (ASSUMED, NOT BOUND)" or "DCDRB BINDING OF THIS CONTEXT · DCDRB_…"; every revision card states BOUND TO THIS CONTEXT (with binding ids), NOT BOUND TO THIS CONTEXT, or BOUND STATE UNKNOWN when the binding family is not readable. |
+| G3 | A directly formed child DREV (D2 shape) and a governed 8D return were indistinguishable in the lineage. | `describeDecisionContextLineage` compares each revision with its persisted predecessor: sealed 8D7 keeps the inventory unchanged, so INVENTORY EXTENDED proves formation outside the governed return (amber, names the added references and items); INVENTORY UNCHANGED is stated as compatible with a governed return, governance explicitly not established by the read; PREDECESSOR NOT READ when the walk stopped. ROOT and CHILD are labelled. |
+| G4 | A failed predecessor read (500, network) was reported as PREDECESSOR NOT FOUND. | The exact reader returns REVISION, ABSENT or FAILED; the walk terminal `PREDECESSOR_READ_FAILED` carries the public code; absence stays 404 only. |
+| G5 | The section title "RECONSTRUCTED NEXT DECISION CONTEXT" asserted a relation the read does not establish for an explicit id. | Title "GENERIC DECISION CONTEXT REVISION (DREV) · EXACT READ"; the hint names what is reconstructed (lineage by `previousRevisionId`) and what is assumed (an explicit id). |
+| G6 | A 422 on the context read hid the public `reason`. | `fetchHrDecisionLoop` returns the reason; the context section prints code and reason. |
+| G7 | Before the first fetch (server render, IDLE) the context section showed nothing. | IDLE renders the loading line (`hr-decision-loop-loading`). |
+| G8 | No inverse navigation: artifacts naming another exact DCTXREV (feedback target, binding parent, bound context) were dead text. | Rows carry typed `contextLinks`; the rail renders "OPEN EXACT CONTEXT" links to `?careerDecisionContextRevisionId=…` for foreign contexts only (same-context ids are not links). `boundDecisionContextRevisionId` is a typed row field (review note 1 of the integration round). |
+| G9 | Reading a DREV from the dock left the URL stale. | `openRevision` updates `decisionContextRevisionId` via `history.replaceState`; the DCTXREV parameter is never rewritten. |
+
+Unchanged on purpose: admissibility is not pre-computed in the UI (B10); the sealed verdict is
+rendered verbatim. Several DCRs stay listed without selection (B8). The non-claims footer and
+the amber binding boundary line remain.
+
+Proof (DB-free, run by explicit file list, `DATABASE_URL` never defaulted to the shared database):
+`frontend-presentation.test.ts` 7/7 (lineage read protocol, descriptor, typed links and bound ids),
+new `client-reads.test.ts` 4/4 (scripted fetch: reasons, exact read, mid-walk failure, entry source,
+declaration mapping), `dock-ssr.test.tsx` 4/4, `decision-revision-binding-region.test.ts` 3/3,
+`read-service.test.ts`, `http.test.ts`, `routes.test.ts`, `declaration-application.test.ts`,
+SIL locale wiring and language contract, `career-demo-e2e.test.tsx`: 62/62; `tsc` 0 errors.
+The isolated-world HTTP/browser e2e carries the new assertions (entry kinds, revision position,
+return character, bound state, URL parameter, absence vs failure) and is run only against a
+`condyn_hrloop_*` database created and dropped by the suite.
+
 ## 7. Non-claims
 
 The dock does not create authority, does not mark a decision as current, does

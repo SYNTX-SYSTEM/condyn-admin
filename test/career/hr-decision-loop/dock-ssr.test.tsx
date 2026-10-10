@@ -27,6 +27,10 @@ describe("SIL HR Decision Loop dock (server-rendered field)", () => {
     expect(html).toContain('data-testid="hr-decision-loop-dock"');
     expect(html).toContain('data-hr-decision-loop-context="DCTXREV_SSR"');
     expect(html).toContain('data-loop-read-state="IDLE"');
+    expect(html).toContain('data-testid="hr-decision-loop-loading"');
+    expect(html).toContain("READING EXACT DECISION CONTEXT...");
+    expect(html).toContain("EXACT READ");
+    expect(html).not.toContain("RECONSTRUCTED NEXT DECISION CONTEXT");
     expect(html).toContain("HR DECISION LOOP");
     expect(html).toContain("DCTXREV_SSR");
     expect(html).toContain('value="DREV_SSR"');
