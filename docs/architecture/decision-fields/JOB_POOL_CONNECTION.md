@@ -272,3 +272,42 @@ coverage is stable but unscored. Whether the sweep may be scored is owner decisi
 Open boundaries (unchanged, owner): HIA-1 Phase-4 capability verification authority; HIA-2 model as CRR provider;
 HIA-3 scoring of sweep proposals; B-JP-MODEL default Gemini cascade; B-ENTRY production provisioning; F-JP-5 G1 schema
 drift; B-ANALYZE-PAGE legacy `/career/analyze` page; B-JP-CONTINUITY; B-JP-ACTOR.
+
+## 12. Semantic governance of the Job Field (2026-10-11)
+
+Owner mandate "SFE — JOB FIELD SEMANTIC GOVERNANCE": the capability, job-role, resonance and pending relations keep
+one meaning per layer (reconstructed by GELB and, independently, by GRÜN for the Job Field). The same word on one screen never transfers authority, provenance or score between layers.
+
+### 12.1 Glossary per layer
+
+| Term | Canonical layer (C) | Presentation layer (P, job pool) | SIL planetarium (analysis view) | Decision layer (D) |
+| --- | --- | --- | --- | --- |
+| capability | `VerifiedCapability` in a `PHASE4_VERIFIED` snapshot; **none is produced at runtime** (HIA-1) | analysis capability (`identity.name`, confidence, evidence; scored) and capability sweep proposal (`PCAP_`, source-verified quote, no confidence; **unscored**) | capability orbit: analysis capabilities plus the F11 proposal overlay (authority NONE) | RCP item subjects (fixtures only) |
+| job role | `TargetRoleProfileRevision` (`TRPREV_`, PROPOSAL_ONLY, authority NONE) mapped from a pool role | pool role (`poolRoleId`) with its `resonanceScore` | Role Manifestation: LLM-inferred career roles of the analysis, or canonical `RoleRelation` via the canonical SIL association | none |
+| resonance | forbidden term inside canonical relations (role relation, tension, evolution contracts); in the canonical SIL read model only the region name for `OrganizationRelation` | `resonanceScore` = Σ contribution / Σ weight (CP-I, deterministic, authority NONE) | Resonance Orbits: LLM-generated organizations with `resonance_score` | none |
+| relation | `CapabilityRequirementRelation`, aggregates, `RoleRelation`, tension, evolution input, recommendation proposal: produced only by governed producers; **the job pool produces none** | none; a match is not a relation | proposed relations between capability proposals (`PROPOSED`) | DCDRB and the post-decision chain |
+| organization | `TargetOrganizationRevision` (`DECLARED_NAME`, upload-scoped entity) | pool organization (`poolOrganizationId`) | Resonance Orbits: LLM-inferred organizations of the analysis | none |
+| gap | forbidden term inside canonical relations | not used; the presentation names missing requirements and pending kinds | Tension Field `capabilityGaps` (legacy projection, empty for real analyses) | none |
+| evidence | requirement evidence = exact lines of the pool source (`SOURCE_MATCH_VERIFIED`) | analysis evidence quotes behind a scored match; source-verified sweep quotes behind unscored coverage; provenance printed per requirement | evidence inspector of the analysis | DAR/DCR evidence references |
+| pending | `capabilityRequirementRelationState: NOT_EVALUATED`, reason `VERIFIED_CAPABILITY_SNAPSHOT_ABSENT` | per pool role four kinds: UNPROVEN_CANONICAL, UNRESOLVED_EVIDENCE (weak, reason stated), UNSCORED_COVERAGE, NO_EVIDENCE_DELIVERED | `PRE_CANONICAL_DISCOVERY`, `NOT_PRODUCED`, `EMPTY` region states | none |
+
+### 12.2 Rules
+
+- **SG-1 No identity inference across sources.** Pool organizations and roles are never joined with LLM-inferred
+  organizations or roles by equal or similar names (`TargetOrganizationRevision`: "equal descriptors never resolve
+  entity identity").
+- **SG-2 Absent evidence is not absent capability.** A missing requirement means "no evidence delivered by the analysis";
+  sweep coverage and missing evidence stay distinguishable.
+- **SG-3 Presentation vocabulary stays out of canonical payloads.** No key of a proposed role profile or requirement
+  contains resonance, score, weight, fit, match, gap, rank or recommend; weights are never mapped.
+- **SG-4 The Job Field produces and references no canonical relation or decision.** Its files import no relation
+  producer, relation persistence, decision field or HR loop module; its bodies carry no CRR/RRA/RRL/TSN/EIS/RPR/RCP or
+  decision ids and no authority other than NONE.
+- **SG-5 Scores are presentation.** `resonanceScore` and any geometry derived from it (e.g. distance) carry authority
+  NONE and are labelled as presentation; sweep coverage is never scored (HIA-3).
+- **SG-6 Pending is not a promise.** A NOT_EVALUATED canonical relation cites its reason and does not imply that a
+  later step will prove the match; canonical evaluation needs HIA-1/HIA-2.
+
+Proof: `test/career/job-pool/semantic-governance.test.ts` (SG-3, SG-4, SG-5; its file set includes GRÜN's Job Field
+files by path pattern), `test/job-pool-validation/layer-separation.test.ts` (PINK), and the presentation suites
+(SG-2, SG-6 states). SG-1 and the labels of SG-5/SG-6 are frontend rules reviewed with GRÜN (conditions G1–G6).
