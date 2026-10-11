@@ -1,7 +1,7 @@
 {
   "plan": "docs/acceptance/CONDYN_SYSTEM_ACCEPTANCE_TEST_PLAN_v1.2.md",
-  "version": "1.2.1",
-  "tip": "d17b042",
+  "version": "1.2.3",
+  "tip": "142df0f",
   "generated": "2026-10-11",
   "scenarioCount": 136,
   "scenarios": [
@@ -755,7 +755,7 @@
     {
       "id": "E-07",
       "suite": "TS-E Spatial Job Field",
-      "title": "Exit and return",
+      "title": "Exit and return (rule since 627ec07)",
       "sequences": [],
       "risk": [
         "R3",
@@ -763,7 +763,8 @@
       ],
       "video": true,
       "evidence": [
-        "E-07.webm"
+        "E-07.webm",
+        "E-07-reload.png"
       ]
     },
     {

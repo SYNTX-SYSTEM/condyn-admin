@@ -188,6 +188,20 @@ describe.skipIf(playwrightModule === null || !jobFocusPresent)("PINK Job Field: 
     expect(reason).toContain("NOT_EVALUATED");
     expect(reason).toContain("VERIFIED_CAPABILITY_SNAPSHOT_ABSENT");
     await page.screenshot({ path: resolve(EVIDENCE_DIR, "pink-04-job-field-job-focus.png") });
+
+    // Finding E-07 (PINK, 2026-10-11) fixed by GRÜN in 627ec07: an explicit exit must survive a reload.
+    // After the in-field exit the URL carries focus=CAPABILITY with the upload still selected, and a reload stays
+    // in the ground state (no Pool Field, no Job Field), although the upload id alone would open the Pool Field.
+    await page.getByTestId("job-field-exit-btn").click();
+    await page.locator('[data-testid="semantic-career-intelligence-field"][data-field-focus="CAPABILITY"]').waitFor({ timeout: 30_000 });
+    const exitUrl = new URL(page.url());
+    expect(exitUrl.searchParams.get("focus")).toBe("CAPABILITY");
+    expect(exitUrl.searchParams.get("jobPoolUploadId")).toBe(uploadId);
+    expect(exitUrl.searchParams.get("jobRoleId")).toBeNull();
+    await page.reload({ waitUntil: "domcontentloaded" });
+    await page.locator('[data-testid="semantic-career-intelligence-field"][data-field-focus="CAPABILITY"]').waitFor({ timeout: 60_000 });
+    expect(await page.getByTestId("job-field").count()).toBe(0);
+    expect(await page.getByTestId("job-pool-panel").count()).toBe(0);
     expect(pageErrors).toEqual([]);
     await page.close();
   }, 300_000);
