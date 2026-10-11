@@ -144,7 +144,7 @@ function useMotionMode(): JobFieldMotionMode {
 
 const MOTION_CSS = `
 @keyframes jfEnter { from { opacity: 0; } to { opacity: 1; } }
-@keyframes jfRise { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+@keyframes jfRise { from { opacity: 0; } to { opacity: 1; } }
 @keyframes jfEmerge { from { opacity: 0; transform: scale(0.35); } to { opacity: 1; transform: scale(1); } }
 @keyframes jfBreathLight { 0%, 100% { opacity: var(--jf-lo); } 50% { opacity: var(--jf-hi); } }
 @keyframes jfBreathScale { 0%, 100% { transform: scale(1); } 50% { transform: scale(var(--jf-amp, 1.03)); } }
@@ -160,7 +160,8 @@ const MOTION_CSS = `
 [data-testid="job-field"] [data-jf-reveal] { animation: jfRise .32s ease-out both; }
 [data-testid="job-field"] button:hover { color: #e6f1f8; text-shadow: 0 0 12px rgba(56, 229, 255, 0.45); }
 [data-testid="job-field"] button:focus-visible, [data-testid="job-field"] [role="button"]:focus-visible { outline: 1px solid rgba(56, 229, 255, 0.7); outline-offset: 3px; border-radius: 2px; }
-[data-testid="job-field"] [data-jf-surface] { scrollbar-width: thin; scrollbar-color: rgba(56, 229, 255, 0.18) transparent; }
+[data-testid="job-field"] [data-jf-surface], [data-testid="job-field-lens"], [data-testid="job-field-legend-text"] { scrollbar-width: thin; scrollbar-color: rgba(56, 229, 255, 0.18) transparent; }
+[data-testid="job-field-nearest"] button, [data-testid="job-field-nearest"] [role="button"] { pointer-events: auto; }
 [data-testid="job-field"] [data-testid^="job-field-role-"]:hover [data-jf-body] { filter: drop-shadow(0 0 10px rgba(56, 229, 255, 0.45)); }
 [data-testid="job-field"] ::-webkit-scrollbar { width: 6px; }
 [data-testid="job-field"] ::-webkit-scrollbar-thumb { background: rgba(56, 229, 255, 0.18); border-radius: 3px; }
@@ -361,12 +362,23 @@ function RoleDetail({ role, t, onBack }: { role: JobFieldRoleNode; t: JobFieldCo
   );
 }
 
-function RoleNode({ role, selected, nearest, dimmed, focused, mode, t, onSelect, onHover }: { role: JobFieldRoleNode; selected: boolean; nearest: boolean; dimmed: boolean; focused: boolean; mode: JobFieldMotionMode; t: JobFieldCopy; onSelect(): void; onHover(entered: boolean): void }) {
+const CAMERA_SCALE = 1.5;
+/** When a role is focused the camera moves onto it: the role sits at (280, 400) of the viewBox, the lens opens to its right. */
+function camera(field: JobFieldModel, selectedRoleId: string | null): { scale: number; tx: number; ty: number } {
+  const role = selectedRoleId === null ? null : field.roles.find(candidate => candidate.poolRoleId === selectedRoleId) ?? null;
+  if (role === null) return { scale: 1, tx: 0, ty: 0 };
+  return { scale: CAMERA_SCALE, tx: Math.round((280 - CAMERA_SCALE * role.x) * 100) / 100, ty: Math.round((400 - CAMERA_SCALE * role.y) * 100) / 100 };
+}
+
+function RoleNode({ role, selected, nearest, dimmed, focused, hoveredRequirementId, mode, t, onSelect, onHover, onHoverRequirement }: { role: JobFieldRoleNode; selected: boolean; nearest: boolean; dimmed: boolean; focused: boolean; hoveredRequirementId: string | null; mode: JobFieldMotionMode; t: JobFieldCopy; onSelect(): void; onHover(entered: boolean): void; onHoverRequirement(poolRequirementId: string | null): void }) {
   const radius = 26 + Math.min(10, role.counts.total);
-  const moons = requirementMoons(role.requirements, radius + 10);
+  const moonRadius = selected ? radius + 40 : radius + 10;
+  const moons = requirementMoons(role.requirements, moonRadius);
   const motion = roleMotion(role, mode);
   const rings = focused ? pendingRings(role.pending, mode) : [];
+  const ringBase = selected ? moonRadius + 14 : radius + 7;
   const breathing = motion.kind === "BREATH" && motion.periodMs > 0;
+  const named = (id: string) => role.requirements.find(requirement => requirement.poolRequirementId === id)?.capabilityName ?? id;
   return (
     <g
       data-testid={`job-field-role-${role.poolRoleId}`}
@@ -382,11 +394,12 @@ function RoleNode({ role, selected, nearest, dimmed, focused, mode, t, onSelect,
       data-no-evidence={role.counts.noEvidence}
       data-motion={motion.kind}
       data-focused={focused ? "true" : "false"}
+      data-moon-radius={moonRadius}
       transform={`translate(${role.x} ${role.y})`}
       onClick={event => { event.stopPropagation(); onSelect(); }}
       onMouseEnter={() => onHover(true)}
       onMouseLeave={() => onHover(false)}
-      style={{ cursor: "pointer", opacity: dimmed ? 0.3 : 1, transition: "opacity 0.4s ease" }}
+      style={{ cursor: "pointer", opacity: dimmed ? 0.22 : 1, transition: "opacity 0.5s ease" }}
     >
       <g data-jf-emerge style={{ animation: motion.emergeDurationMs > 0 ? `jfEmerge ${motion.emergeDurationMs}ms cubic-bezier(.2,.8,.2,1) ${motion.emergeDelayMs}ms both` : undefined, transformBox: "fill-box", transformOrigin: "center" }}>
         {motion.glowRadius > 0 && (
@@ -399,50 +412,61 @@ function RoleNode({ role, selected, nearest, dimmed, focused, mode, t, onSelect,
           />
         )}
         {rings.map(ring => (
-          <circle key={ring.kind} data-pending-kind={ring.kind} data-pending-count={ring.count} data-motion="ORBIT" r={radius + 7 + ring.radiusOffset} fill="none" stroke={PENDING_COLOR[ring.kind]} strokeWidth={1} strokeDasharray={ring.dasharray} style={{ opacity: ring.opacity, animation: ring.durationMs > 0 ? `jfOrbit ${ring.durationMs}ms linear infinite${ring.index % 2 === 1 ? " reverse" : ""}` : undefined }} />
+          <circle key={ring.kind} data-pending-kind={ring.kind} data-pending-count={ring.count} data-motion="ORBIT" r={ringBase + ring.radiusOffset} fill="none" stroke={PENDING_COLOR[ring.kind]} strokeWidth={1} strokeDasharray={ring.dasharray} style={{ opacity: ring.opacity, animation: ring.durationMs > 0 ? `jfOrbit ${ring.durationMs}ms linear infinite${ring.index % 2 === 1 ? " reverse" : ""}` : undefined }} />
         ))}
-        <circle r={radius + 16} fill="none" stroke={selected ? CYAN : nearest ? "rgba(56, 229, 255, 0.45)" : "transparent"} strokeWidth={selected ? 1.6 : 1} strokeDasharray={nearest && !selected ? "4 4" : undefined} style={{ transition: "stroke .3s ease" }} />
+        <circle r={radius + 16} fill="none" stroke={selected ? CYAN : nearest ? "rgba(56, 229, 255, 0.45)" : "transparent"} strokeWidth={selected ? 1.2 : 1} strokeDasharray={nearest && !selected ? "4 4" : undefined} style={{ transition: "stroke .3s ease" }} />
+        {selected && <circle r={moonRadius} fill="none" stroke="rgba(56, 229, 255, 0.14)" strokeDasharray="2 5" />}
         {moons.map(moon => {
           const moonStyle = segmentMotion(moon.state, mode);
           const hollow = moon.state === "NO_EVIDENCE_DELIVERED";
           const dashed = moon.state === "COVERED_UNSCORED";
+          const hot = hoveredRequirementId === moon.poolRequirementId;
+          const labelRadians = ((moon.angle - 90) * Math.PI) / 180;
+          const labelX = Math.cos(labelRadians) * 11;
+          const labelY = Math.sin(labelRadians) * 11;
+          const anchor = Math.abs(Math.cos(labelRadians)) < 0.35 ? "middle" : Math.cos(labelRadians) > 0 ? "start" : "end";
           return (
-            <circle
-              key={moon.poolRequirementId}
-              data-testid={`job-field-moon-${moon.poolRequirementId}`}
-              data-segment-state={moon.state}
-              data-motion={moonStyle.kind}
-              cx={moon.x}
-              cy={moon.y}
-              r={3.8}
-              fill={hollow || dashed ? "none" : STATE_COLOR[moon.state]}
-              stroke={STATE_COLOR[moon.state]}
-              strokeWidth={hollow ? 1 : dashed ? 1.4 : 0}
-              strokeDasharray={dashed ? "2 2" : undefined}
-              style={{ opacity: moonStyle.opacity, transformBox: "fill-box", transformOrigin: "center", animation: moonStyle.durationMs > 0 ? `${moonStyle.kind === "WAVER" ? "jfWaver" : "jfSpin"} ${moonStyle.durationMs}ms ${moonStyle.kind === "WAVER" ? "ease-in-out" : "linear"} infinite` : undefined, filter: moon.state === "MATCHED" ? `drop-shadow(0 0 3px ${SIL_TOKENS.colors.cyanGlowStrong})` : undefined }}
-            />
+            <g key={moon.poolRequirementId} onMouseEnter={() => selected && onHoverRequirement(moon.poolRequirementId)} onMouseLeave={() => selected && onHoverRequirement(null)}>
+              <circle
+                data-testid={`job-field-moon-${moon.poolRequirementId}`}
+                data-segment-state={moon.state}
+                data-motion={moonStyle.kind}
+                cx={moon.x}
+                cy={moon.y}
+                r={hot ? 5.6 : selected ? 4.6 : 3.8}
+                fill={hollow || dashed ? "none" : STATE_COLOR[moon.state]}
+                stroke={STATE_COLOR[moon.state]}
+                strokeWidth={hollow ? 1 : dashed ? 1.4 : 0}
+                strokeDasharray={dashed ? "2 2" : undefined}
+                style={{ opacity: moonStyle.opacity, transformBox: "fill-box", transformOrigin: "center", transition: "cx .78s cubic-bezier(.16,1,.3,1), cy .78s cubic-bezier(.16,1,.3,1), r .25s ease", animation: moonStyle.durationMs > 0 ? `${moonStyle.kind === "WAVER" ? "jfWaver" : "jfSpin"} ${moonStyle.durationMs}ms ${moonStyle.kind === "WAVER" ? "ease-in-out" : "linear"} infinite` : undefined, filter: moon.state === "MATCHED" ? `drop-shadow(0 0 3px ${SIL_TOKENS.colors.cyanGlowStrong})` : undefined }}
+              />
+              {selected && (
+                <text data-jf-moon-label x={moon.x + labelX} y={moon.y + labelY + 3} textAnchor={anchor} fill={hot ? INK : STATE_COLOR[moon.state]} fontFamily={SANS} fontSize={hot ? 8.5 : 7.5} fontWeight={600} style={{ pointerEvents: "none", transition: "fill .2s ease" }}>{shortTitle(named(moon.poolRequirementId), 18)}</text>
+              )}
+            </g>
           );
         })}
         <g data-jf-body>
           <circle r={radius} fill={`rgba(56, 229, 255, ${motion.bodyOpacity})`} stroke={role.hasScoredMatch ? CYAN : "rgba(255, 91, 101, 0.5)"} strokeWidth={role.hasScoredMatch ? 1.2 : 0.9} style={{ ["--jf-lo" as string]: 1 - motion.amplitude * 0.5, ["--jf-hi" as string]: 1, animation: breathing ? `jfBreathLight ${motion.periodMs}ms ease-in-out infinite` : undefined } as React.CSSProperties} />
-          <text textAnchor="middle" y={0} fill={role.hasScoredMatch ? SIL_TOKENS.colors.textPrimary : SIL_TOKENS.colors.textMuted} fontFamily={SIL_TOKENS.typography.mono} fontSize={12} fontWeight={700}>{percent(role.resonanceScore)}</text>
-          <text textAnchor="middle" y={12} fill={SIL_TOKENS.colors.textMuted} fontFamily={SIL_TOKENS.typography.mono} fontSize={8}>#{role.deliveredRank}</text>
+          <text textAnchor="middle" y={0} fill={role.hasScoredMatch ? INK : MUTED} fontFamily={MONO} fontSize={12} fontWeight={700}>{percent(role.resonanceScore)}</text>
+          <text textAnchor="middle" y={12} fill={MUTED} fontFamily={MONO} fontSize={8}>#{role.deliveredRank}</text>
         </g>
-        <text textAnchor="middle" y={radius + 28} fill={role.hasScoredMatch ? SIL_TOKENS.colors.textPrimary : SIL_TOKENS.colors.textMuted} fontFamily={SIL_TOKENS.typography.sans} fontSize={12} fontWeight={600}>{shortTitle(role.title)}</text>
-        {focused && <text data-jf-hover-label textAnchor="middle" y={radius + 41} fill={SIL_TOKENS.colors.textMuted} fontFamily={SIL_TOKENS.typography.mono} fontSize={8.5}>{shortTitle(role.organizationName, 28)}</text>}
-        {focused && !role.hasScoredMatch && <text data-jf-hover-label textAnchor="middle" y={radius + 53} fill={RED} fontFamily={SIL_TOKENS.typography.mono} fontSize={8.5}>{t.noScoredMatch}</text>}
+        {!selected && <text textAnchor="middle" y={radius + 28} fill={role.hasScoredMatch ? INK : MUTED} fontFamily={SANS} fontSize={12} fontWeight={600}>{shortTitle(role.title)}</text>}
+        {focused && !selected && <text data-jf-hover-label textAnchor="middle" y={radius + 41} fill={MUTED} fontFamily={MONO} fontSize={8.5}>{shortTitle(role.organizationName, 28)}</text>}
+        {focused && !selected && !role.hasScoredMatch && <text data-jf-hover-label textAnchor="middle" y={radius + 53} fill={RED} fontFamily={MONO} fontSize={8.5}>{t.noScoredMatch}</text>}
       </g>
     </g>
   );
 }
 
-function FieldCanvas({ field, selectedRoleId, hoveredRoleId, mode, t, onSelectRole, onHoverRole }: { field: JobFieldModel; selectedRoleId: string | null; hoveredRoleId: string | null; mode: JobFieldMotionMode; t: JobFieldCopy; onSelectRole(poolRoleId: string | null): void; onHoverRole(poolRoleId: string | null): void }) {
+function FieldCanvas({ field, selectedRoleId, hoveredRoleId, hoveredRequirementId, mode, t, onSelectRole, onHoverRole, onHoverRequirement }: { field: JobFieldModel; selectedRoleId: string | null; hoveredRoleId: string | null; hoveredRequirementId: string | null; mode: JobFieldMotionMode; t: JobFieldCopy; onSelectRole(poolRoleId: string | null): void; onHoverRole(poolRoleId: string | null): void; onHoverRequirement(poolRequirementId: string | null): void }) {
   const { center, innerRadius, outerRadius, size } = field.layout;
   const motion = fieldMotion(mode);
   const nearestId = field.nearestPresentedRole?.poolRoleId ?? null;
   const nearestNode = nearestId === null ? null : field.roles.find(role => role.poolRoleId === nearestId) ?? null;
+  const view = camera(field, selectedRoleId);
   return (
-    <svg data-testid="job-field-canvas" data-motion-mode={mode} viewBox={`0 0 ${size} ${size}`} style={{ position: "absolute", top: "50%", left: "calc(50% - 64px)", transform: "translate(-50%, -50%)", width: "min(88vh, 50vw, 760px)", height: "min(88vh, 50vw, 760px)", overflow: "visible" }} onClick={() => onSelectRole(null)}>
+    <svg data-testid="job-field-canvas" data-motion-mode={mode} data-camera-scale={view.scale} viewBox={`0 0 ${size} ${size}`} style={{ position: "absolute", inset: 0, width: "100%", height: "100%", overflow: "visible" }} onClick={() => onSelectRole(null)}>
       <defs>
         <filter id="jfBlur" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="9" /></filter>
         <filter id="jfBlurSoft" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="22" /></filter>
@@ -450,73 +474,77 @@ function FieldCanvas({ field, selectedRoleId, hoveredRoleId, mode, t, onSelectRo
         <radialGradient id="jfCoreGradient"><stop offset="0%" stopColor="rgba(56, 229, 255, 0.55)" /><stop offset="55%" stopColor="rgba(56, 229, 255, 0.12)" /><stop offset="100%" stopColor="rgba(56, 229, 255, 0)" /></radialGradient>
         <radialGradient id="jfFieldGradient"><stop offset="0%" stopColor="rgba(56, 229, 255, 0.06)" /><stop offset="70%" stopColor="rgba(56, 229, 255, 0.015)" /><stop offset="100%" stopColor="rgba(3, 5, 8, 0)" /></radialGradient>
       </defs>
-      <circle cx={center} cy={center} r={outerRadius + 60} fill="url(#jfFieldGradient)" />
-      {field.organizations.map(organization => {
-        const hue = organizationHue(organization.hueIndex);
-        const lit = organization.aggregateScore !== null;
-        const light = lit ? 0.05 + 0.3 * Math.min(1, Math.max(0, organization.aggregateScore ?? 0)) : 0.045;
-        const focusedHere = organization.roleIds.some(id => id === hoveredRoleId || id === selectedRoleId);
-        return (
-          <path
-            key={organization.poolOrganizationId}
-            data-testid={`job-field-nebula-${organization.poolOrganizationId}`}
-            data-aggregate-score={organization.aggregateScore ?? ""}
-            data-hue={hue}
-            data-motion={lit && motion.core.periodMs > 0 ? "BREATH" : "STILL"}
-            d={sectorPath(center, center, innerRadius - 14, outerRadius + 46, organization.startAngle + 1, organization.endAngle - 1)}
-            fill={`hsla(${hue}, 85%, 62%, 1)`}
-            filter="url(#jfNebula)"
-            style={{ opacity: light * (focusedHere ? 1.35 : 1), ["--jf-lo" as string]: light * 0.75, ["--jf-hi" as string]: light * 1.25, animation: lit && motion.core.periodMs > 0 ? `jfNebula ${motion.core.periodMs * 1.6}ms ease-in-out infinite` : undefined, transition: "opacity .4s ease", pointerEvents: "none" } as React.CSSProperties}
-          />
-        );
-      })}
-      {field.roles.filter(role => role.hasScoredMatch).map(role => (
-        <line key={`thread-${role.poolRoleId}`} data-testid={`job-field-thread-${role.poolRoleId}`} data-resonance-score={role.resonanceScore} x1={center} y1={center} x2={role.x} y2={role.y} stroke={CYAN} strokeWidth={0.8} style={{ opacity: 0.08 + 0.42 * role.resonanceScore, pointerEvents: "none" }} />
-      ))}
-      <circle cx={center} cy={center} r={innerRadius} fill="none" stroke="rgba(56, 229, 255, 0.16)" strokeDasharray="2 6" />
-      <circle cx={center} cy={center} r={(innerRadius + outerRadius) / 2} fill="none" stroke="rgba(56, 229, 255, 0.09)" strokeDasharray="2 6" />
-      <circle cx={center} cy={center} r={outerRadius} fill="none" stroke="rgba(255, 91, 101, 0.2)" strokeDasharray="2 6" />
-      <text x={center} y={center - outerRadius - 46} textAnchor="middle" fill={SIL_TOKENS.colors.textMuted} fontFamily={SIL_TOKENS.typography.mono} fontSize={8} opacity={0.8}>{t.resonance} 0% · {t.noScoredMatch}</text>
-      <text x={center} y={center - innerRadius - 10} textAnchor="middle" fill="rgba(56, 229, 255, 0.5)" fontFamily={SIL_TOKENS.typography.mono} fontSize={8}>{t.resonance} 100%</text>
-      {field.organizations.map(organization => {
-        const mid = (organization.startAngle + organization.endAngle) / 2;
-        const radians = ((mid - 90) * Math.PI) / 180;
-        const labelRadius = outerRadius + 64;
-        const focusedHere = organization.roleIds.some(id => id === hoveredRoleId || id === selectedRoleId);
-        return (
-          <g key={organization.poolOrganizationId} data-testid={`job-field-organization-${organization.poolOrganizationId}`} data-role-count={organization.roleIds.length} style={{ transition: "opacity .3s ease", opacity: selectedRoleId !== null && !focusedHere ? 0.45 : 1 }}>
-            <path d={arcPath(center, center, outerRadius + 40, organization.startAngle + 2, organization.endAngle - 2)} fill="none" stroke={focusedHere ? `hsla(${organizationHue(organization.hueIndex)}, 85%, 70%, 0.7)` : `hsla(${organizationHue(organization.hueIndex)}, 85%, 70%, 0.28)`} strokeWidth={focusedHere ? 1.6 : 1} style={{ transition: "stroke .3s ease" }} />
-            <text x={center + labelRadius * Math.cos(radians)} y={center + labelRadius * Math.sin(radians)} textAnchor="middle" dominantBaseline="middle" fill={focusedHere ? SIL_TOKENS.colors.textPrimary : SIL_TOKENS.colors.textMuted} fontFamily={SIL_TOKENS.typography.mono} fontSize={9.5} letterSpacing={1.4}>{shortTitle(organization.name.toUpperCase(), 30)}</text>
+      <g data-jf-camera style={{ transform: `translate(${view.tx}px, ${view.ty}px) scale(${view.scale})`, transformOrigin: "0 0", transition: "transform .78s cubic-bezier(.16,1,.3,1)" }}>
+        <circle cx={center} cy={center} r={outerRadius + 60} fill="url(#jfFieldGradient)" />
+        {field.organizations.map(organization => {
+          const hue = organizationHue(organization.hueIndex);
+          const lit = organization.aggregateScore !== null;
+          const light = lit ? 0.05 + 0.3 * Math.min(1, Math.max(0, organization.aggregateScore ?? 0)) : 0.045;
+          const focusedHere = organization.roleIds.some(id => id === hoveredRoleId || id === selectedRoleId);
+          return (
+            <path
+              key={organization.poolOrganizationId}
+              data-testid={`job-field-nebula-${organization.poolOrganizationId}`}
+              data-aggregate-score={organization.aggregateScore ?? ""}
+              data-hue={hue}
+              data-motion={lit && motion.core.periodMs > 0 ? "BREATH" : "STILL"}
+              d={sectorPath(center, center, innerRadius - 14, outerRadius + 46, organization.startAngle + 1, organization.endAngle - 1)}
+              fill={`hsla(${hue}, 85%, 62%, 1)`}
+              filter="url(#jfNebula)"
+              style={{ opacity: light * (focusedHere ? 1.35 : selectedRoleId !== null ? 0.5 : 1), ["--jf-lo" as string]: light * 0.75, ["--jf-hi" as string]: light * 1.25, animation: lit && motion.core.periodMs > 0 ? `jfNebula ${motion.core.periodMs * 1.6}ms ease-in-out infinite` : undefined, transition: "opacity .4s ease", pointerEvents: "none" } as React.CSSProperties}
+            />
+          );
+        })}
+        {field.roles.filter(role => role.hasScoredMatch).map(role => (
+          <line key={`thread-${role.poolRoleId}`} data-testid={`job-field-thread-${role.poolRoleId}`} data-resonance-score={role.resonanceScore} x1={center} y1={center} x2={role.x} y2={role.y} stroke={CYAN} strokeWidth={0.8} style={{ opacity: (0.08 + 0.42 * role.resonanceScore) * (selectedRoleId !== null && selectedRoleId !== role.poolRoleId ? 0.3 : 1), pointerEvents: "none", transition: "opacity .4s ease" }} />
+        ))}
+        <circle cx={center} cy={center} r={innerRadius} fill="none" stroke="rgba(56, 229, 255, 0.16)" strokeDasharray="2 6" />
+        <circle cx={center} cy={center} r={(innerRadius + outerRadius) / 2} fill="none" stroke="rgba(56, 229, 255, 0.09)" strokeDasharray="2 6" />
+        <circle cx={center} cy={center} r={outerRadius} fill="none" stroke="rgba(255, 91, 101, 0.2)" strokeDasharray="2 6" />
+        <text x={center} y={center - outerRadius - 46} textAnchor="middle" fill={MUTED} fontFamily={MONO} fontSize={8} opacity={0.8}>{t.resonance} 0% · {t.noScoredMatch}</text>
+        <text x={center} y={center - innerRadius - 10} textAnchor="middle" fill="rgba(56, 229, 255, 0.5)" fontFamily={MONO} fontSize={8}>{t.resonance} 100%</text>
+        {field.organizations.map(organization => {
+          const mid = (organization.startAngle + organization.endAngle) / 2;
+          const radians = ((mid - 90) * Math.PI) / 180;
+          const labelRadius = outerRadius + 64;
+          const focusedHere = organization.roleIds.some(id => id === hoveredRoleId || id === selectedRoleId);
+          return (
+            <g key={organization.poolOrganizationId} data-testid={`job-field-organization-${organization.poolOrganizationId}`} data-role-count={organization.roleIds.length} style={{ transition: "opacity .3s ease", opacity: selectedRoleId !== null && !focusedHere ? 0.3 : 1 }}>
+              <path d={arcPath(center, center, outerRadius + 40, organization.startAngle + 2, organization.endAngle - 2)} fill="none" stroke={focusedHere ? `hsla(${organizationHue(organization.hueIndex)}, 85%, 70%, 0.7)` : `hsla(${organizationHue(organization.hueIndex)}, 85%, 70%, 0.28)`} strokeWidth={focusedHere ? 1.6 : 1} style={{ transition: "stroke .3s ease" }} />
+              <text x={center + labelRadius * Math.cos(radians)} y={center + labelRadius * Math.sin(radians)} textAnchor="middle" dominantBaseline="middle" fill={focusedHere ? INK : MUTED} fontFamily={MONO} fontSize={9.5} letterSpacing={1.4}>{shortTitle(organization.name.toUpperCase(), 30)}</text>
+            </g>
+          );
+        })}
+        {nearestNode !== null && (
+          <line data-testid="job-field-nearest-ray" data-motion="FLOW" x1={center} y1={center} x2={nearestNode.x} y2={nearestNode.y} stroke={CYAN} strokeWidth={1.2} strokeDasharray={motion.nearestFlow.dasharray} opacity={selectedRoleId !== null && selectedRoleId !== nearestId ? 0.2 : 0.7} style={{ animation: motion.nearestFlow.durationMs > 0 ? `jfFlow ${motion.nearestFlow.durationMs}ms linear infinite` : undefined, transition: "opacity .4s ease" }} />
+        )}
+        <g data-testid="job-field-core" data-candidate-capability-count={field.candidateCapabilityCount} data-sweep-proposal-count={field.capabilitySweep.proposalCount} data-motion="BREATH" transform={`translate(${center} ${center})`} style={{ opacity: selectedRoleId !== null ? 0.55 : 1, transition: "opacity .4s ease" }}>
+          <circle r={110} fill="url(#jfCoreGradient)" filter="url(#jfBlurSoft)" style={{ ["--jf-lo" as string]: 0.55, ["--jf-hi" as string]: 1, animation: motion.core.periodMs > 0 ? `jfBreathLight ${motion.core.periodMs}ms ease-in-out infinite` : undefined } as React.CSSProperties} />
+          <g style={{ ["--jf-amp" as string]: motion.core.amplitudeScale, animation: motion.core.periodMs > 0 ? `jfBreathScale ${motion.core.periodMs}ms ease-in-out infinite` : undefined, transformBox: "fill-box", transformOrigin: "center" } as React.CSSProperties}>
+            <circle r={54} fill="rgba(3, 5, 8, 0.92)" stroke={CYAN} strokeWidth={1.5} style={{ filter: `drop-shadow(0 0 14px ${SIL_TOKENS.colors.cyanGlowStrong})` }} />
+            <text textAnchor="middle" y={-8} fill={CYAN} fontFamily={MONO} fontSize={10} fontWeight={700} letterSpacing={1.5}>{t.core}</text>
+            <text textAnchor="middle" y={6} fill={INK} fontFamily={MONO} fontSize={9}>{field.candidateCapabilityCount} · {field.capabilitySweep.proposalCount}</text>
+            <text textAnchor="middle" y={18} fill={MUTED} fontFamily={MONO} fontSize={7}>scored · unscored</text>
           </g>
-        );
-      })}
-      {nearestNode !== null && (
-        <line data-testid="job-field-nearest-ray" data-motion="FLOW" x1={center} y1={center} x2={nearestNode.x} y2={nearestNode.y} stroke={CYAN} strokeWidth={1.2} strokeDasharray={motion.nearestFlow.dasharray} opacity={0.7} style={{ animation: motion.nearestFlow.durationMs > 0 ? `jfFlow ${motion.nearestFlow.durationMs}ms linear infinite` : undefined }} />
-      )}
-      <g data-testid="job-field-core" data-candidate-capability-count={field.candidateCapabilityCount} data-sweep-proposal-count={field.capabilitySweep.proposalCount} data-motion="BREATH" transform={`translate(${center} ${center})`}>
-        <circle r={110} fill="url(#jfCoreGradient)" filter="url(#jfBlurSoft)" style={{ ["--jf-lo" as string]: 0.55, ["--jf-hi" as string]: 1, animation: motion.core.periodMs > 0 ? `jfBreathLight ${motion.core.periodMs}ms ease-in-out infinite` : undefined } as React.CSSProperties} />
-        <g style={{ ["--jf-amp" as string]: motion.core.amplitudeScale, animation: motion.core.periodMs > 0 ? `jfBreathScale ${motion.core.periodMs}ms ease-in-out infinite` : undefined, transformBox: "fill-box", transformOrigin: "center" } as React.CSSProperties}>
-          <circle r={54} fill="rgba(3, 5, 8, 0.92)" stroke={CYAN} strokeWidth={1.5} style={{ filter: `drop-shadow(0 0 14px ${SIL_TOKENS.colors.cyanGlowStrong})` }} />
-          <text textAnchor="middle" y={-8} fill={CYAN} fontFamily={SIL_TOKENS.typography.mono} fontSize={10} fontWeight={700} letterSpacing={1.5}>{t.core}</text>
-          <text textAnchor="middle" y={6} fill={SIL_TOKENS.colors.textPrimary} fontFamily={SIL_TOKENS.typography.mono} fontSize={9}>{field.candidateCapabilityCount} · {field.capabilitySweep.proposalCount}</text>
-          <text textAnchor="middle" y={18} fill={SIL_TOKENS.colors.textMuted} fontFamily={SIL_TOKENS.typography.mono} fontSize={7}>scored · unscored</text>
+          <circle data-motion="CIRCULATE" data-sweep-halo r={64} fill="none" stroke={field.capabilitySweep.proposalCount > 0 ? "rgba(56, 229, 255, 0.4)" : "rgba(56, 229, 255, 0.14)"} strokeDasharray={motion.sweepHalo.dasharray} style={{ animation: motion.sweepHalo.durationMs > 0 && field.capabilitySweep.proposalCount > 0 ? `jfCirculate ${motion.sweepHalo.durationMs}ms linear infinite` : undefined }} />
         </g>
-        <circle data-motion="CIRCULATE" data-sweep-halo r={64} fill="none" stroke={field.capabilitySweep.proposalCount > 0 ? "rgba(56, 229, 255, 0.4)" : "rgba(56, 229, 255, 0.14)"} strokeDasharray={motion.sweepHalo.dasharray} style={{ animation: motion.sweepHalo.durationMs > 0 && field.capabilitySweep.proposalCount > 0 ? `jfCirculate ${motion.sweepHalo.durationMs}ms linear infinite` : undefined }} />
+        {field.roles.map(role => (
+          <RoleNode
+            key={role.poolRoleId}
+            role={role}
+            selected={role.poolRoleId === selectedRoleId}
+            nearest={role.poolRoleId === nearestId}
+            dimmed={selectedRoleId !== null && role.poolRoleId !== selectedRoleId}
+            focused={role.poolRoleId === selectedRoleId || role.poolRoleId === hoveredRoleId}
+            hoveredRequirementId={role.poolRoleId === selectedRoleId ? hoveredRequirementId : null}
+            mode={mode}
+            t={t}
+            onSelect={() => onSelectRole(role.poolRoleId === selectedRoleId ? null : role.poolRoleId)}
+            onHover={entered => onHoverRole(entered ? role.poolRoleId : null)}
+            onHoverRequirement={onHoverRequirement}
+          />
+        ))}
       </g>
-      {field.roles.map(role => (
-        <RoleNode
-          key={role.poolRoleId}
-          role={role}
-          selected={role.poolRoleId === selectedRoleId}
-          nearest={role.poolRoleId === nearestId}
-          dimmed={selectedRoleId !== null && role.poolRoleId !== selectedRoleId}
-          focused={role.poolRoleId === selectedRoleId || role.poolRoleId === hoveredRoleId}
-          mode={mode}
-          t={t}
-          onSelect={() => onSelectRole(role.poolRoleId === selectedRoleId ? null : role.poolRoleId)}
-          onHover={entered => onHoverRole(entered ? role.poolRoleId : null)}
-        />
-      ))}
     </svg>
   );
 }
@@ -532,6 +560,11 @@ function StateLine({ state, t }: { state: JobFieldState; t: JobFieldCopy }) {
   );
 }
 
+/** A lens: the one contextual reading of the focused body. No border, a faint void behind the text so the galaxy stays readable. */
+const lens: React.CSSProperties = { background: "radial-gradient(ellipse at 20% 0%, rgba(3, 5, 8, 0.94) 0%, rgba(3, 5, 8, 0.82) 60%, rgba(3, 5, 8, 0.6) 100%)", backdropFilter: "blur(6px)", borderRadius: "14px", padding: "14px 16px" };
+const pct = (value: number) => `${(value / JOB_FIELD_LAYOUT_SIZE) * 100}%`;
+const JOB_FIELD_LAYOUT_SIZE = 800;
+
 export function JobField({ workflow, analysisSource, selectedRoleId, onSelectRole, onSelectPool, onExit, locale = SIL_COPY.defaultLocale }: JobFieldProps) {
   const t = SIL_COPY[locale].jobField;
   const mode = useMotionMode();
@@ -544,7 +577,10 @@ export function JobField({ workflow, analysisSource, selectedRoleId, onSelectRol
   const nearestNode = field === null || nearest === null ? null : field.roles.find(role => role.poolRoleId === nearest.poolRoleId) ?? null;
   const listed = workflow.pools.state === "AVAILABLE" ? workflow.pools.jobPools : [];
   const [hoveredRoleId, setHoveredRoleId] = useState<string | null>(null);
+  const [hoveredRequirementId, setHoveredRequirementId] = useState<string | null>(null);
   const [legendOpen, setLegendOpen] = useState(false);
+  /** The caption sits outward from the core, on the free side of its body, so it never covers the candidate or another body. */
+  const captionSide = nearestNode === null ? "right" : nearestNode.x >= 400 ? "right" : "left";
   return (
     <div
       data-testid="job-field"
@@ -561,86 +597,99 @@ export function JobField({ workflow, analysisSource, selectedRoleId, onSelectRol
       data-hovered-role={hoveredRoleId ?? ""}
       data-surface-grammar="FIELD_EXTENSION_V1"
       data-galaxy-grammar="GALAXY_V1"
+      data-interaction-grammar="LENS_V1"
+      data-focus-level={selectedId !== null ? "ROLE" : "FIELD"}
       style={{ position: "absolute", inset: 0, zIndex: 45, backgroundColor: "rgba(3, 5, 8, 0.9)", backdropFilter: "blur(8px)", fontFamily: MONO, color: INK, animation: motion.enterMs > 0 ? `jfEnter ${motion.enterMs}ms ease-out both` : undefined }}
     >
       <style>{MOTION_CSS}</style>
-      {field !== null && <FieldCanvas field={field} selectedRoleId={selectedId} hoveredRoleId={hoveredRoleId} mode={mode} t={t} onSelectRole={onSelectRole} onHoverRole={setHoveredRoleId} />}
 
-      {/* Edge veils: the void deepens toward the margins so the surfaces read without containers; the field recedes under them. */}
-      <div aria-hidden="true" data-jf-veil="left" style={{ position: "absolute", left: 0, top: 0, bottom: 0, width: "min(380px, 32vw)", background: "linear-gradient(90deg, rgba(3, 5, 8, 0.96) 0%, rgba(3, 5, 8, 0.72) 55%, rgba(3, 5, 8, 0) 100%)", pointerEvents: "none", zIndex: 45 }} />
-      <div aria-hidden="true" data-jf-veil="right" style={{ position: "absolute", right: 0, top: 0, bottom: 0, width: "min(560px, 42vw)", background: "linear-gradient(270deg, rgba(3, 5, 8, 0.97) 0%, rgba(3, 5, 8, 0.8) 60%, rgba(3, 5, 8, 0) 100%)", pointerEvents: "none", zIndex: 45 }} />
+      {/* The stage: the galaxy and its lenses share one coordinate space (percentages of the viewBox). */}
+      <div data-testid="job-field-stage" style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)", width: "min(90vh, 62vw, 820px)", height: "min(90vh, 62vw, 820px)" }}>
+        {field !== null && <FieldCanvas field={field} selectedRoleId={selectedId} hoveredRoleId={hoveredRoleId} hoveredRequirementId={hoveredRequirementId} mode={mode} t={t} onSelectRole={onSelectRole} onHoverRole={setHoveredRoleId} onHoverRequirement={setHoveredRequirementId} />}
 
-      <div data-jf-surface="left" style={{ position: "absolute", left: "28px", top: "136px", width: "min(284px, 25vw)", maxHeight: "calc(100vh - 200px)", overflowY: "auto", paddingRight: "6px", ...stack(14), zIndex: 46 }}>
-        <div style={stack(6)}>
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", gap: "10px" }}>
-            <h3 style={{ ...label, color: CYAN, fontSize: "10px", letterSpacing: "2.4px", textShadow: `0 0 14px ${SIL_TOKENS.colors.cyanGlowStrong}` }}>{t.title}</h3>
-            <button data-testid="job-field-exit-btn" onClick={onExit} style={action("muted")}>{t.exit}</button>
+        {/* FIELD level: one caption at the nearest presented role; nothing else occupies attention. */}
+        {field !== null && selection.kind !== "ROLE" && nearestNode !== null && (
+          <section
+            data-testid="job-field-nearest"
+            data-role-id={nearestNode.poolRoleId}
+            data-jf-reveal="true"
+            data-caption-side={captionSide}
+            style={{ ...lens, position: "absolute", left: captionSide === "right" ? `calc(${pct(nearestNode.x)} + 64px)` : `calc(${pct(nearestNode.x)} - 64px)`, top: pct(nearestNode.y), transform: captionSide === "right" ? "translateY(-50%)" : "translate(-100%, -50%)", width: "min(300px, 36%)", ...stack(10), zIndex: 3, pointerEvents: "none" }}
+          >
+            <span style={sectionTitle}>{t.nearest}</span>
+            <h4 style={{ ...title, fontSize: "18px" }}>{nearestNode.title}</h4>
+            <span style={micro}>{nearestNode.organizationName}</span>
+            <p data-testid="job-field-reading" style={{ ...prose, fontSize: "12px" }}>{readingSentence(t.reading, nearestNode)}</p>
+            <ResonanceReading role={nearestNode} t={t} />
+            <PendingField roleId={nearestNode.poolRoleId} pending={nearestNode.pending} t={t} />
+            <span style={{ ...amber, fontSize: "8.5px" }}>{t.nearestLabel}</span>
+            <button data-testid="job-field-open-nearest" onClick={() => onSelectRole(nearestNode.poolRoleId)} style={{ ...action("cyan"), alignSelf: "flex-start" }}>{t.open} →</button>
+          </section>
+        )}
+        {field !== null && selection.kind !== "ROLE" && nearestNode === null && (
+          <section data-testid="job-field-no-nearest" data-jf-reveal="true" style={{ ...lens, position: "absolute", left: "50%", top: "calc(50% + 96px)", transform: "translateX(-50%)", width: "min(320px, 40%)", ...stack(8), zIndex: 3, textAlign: "center" }}>
+            <span style={sectionTitle}>{t.nearest}</span>
+            <span style={{ ...prose, color: RED }}>{t.noNearest}</span>
+            <span style={{ ...amber, fontSize: "8.5px" }}>{t.nearestLabel}</span>
+          </section>
+        )}
+
+        {/* ROLE level: the camera sits on the role; its reading opens beside it as one lens. */}
+        {field !== null && selection.kind === "ROLE" && (
+          <div data-testid="job-field-lens" data-role-id={selection.role.poolRoleId} style={{ ...lens, position: "absolute", left: "calc(35% + 210px)", top: "8%", width: "min(380px, 44%)", maxHeight: "84%", overflowY: "auto", zIndex: 3 }}>
+            <RoleDetail key={selection.role.poolRoleId} role={selection.role} t={t} onBack={() => onSelectRole(null)} />
           </div>
-          <span style={{ ...micro, opacity: 0.8 }}>{t.subtitle}</span>
-          <StateLine state={state} t={t} />
-        </div>
+        )}
+
+        {/* No field yet: the state itself is the centre. */}
         {state === "NO_POOL" && (
-          <div data-testid="job-field-pool-selection" data-jf-reveal="true" style={stack(10)}>
+          <div data-testid="job-field-pool-selection" data-jf-reveal="true" style={{ ...lens, position: "absolute", left: "50%", top: "50%", transform: "translate(-50%, -50%)", width: "min(360px, 60%)", ...stack(10), zIndex: 3 }}>
+            <span style={sectionTitle}>{t.states.NO_POOL}</span>
             {listed.length === 0 && <span style={prose}>{SIL_COPY[locale].jobPool.poolsEmpty}</span>}
             {listed.map(pool => (
               <div key={pool.jobPoolUploadId} style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", gap: "10px", paddingBottom: "8px", borderBottom: "1px solid rgba(99, 120, 138, 0.2)" }}>
-                <span style={stack(2)}><span style={{ fontFamily: SANS, fontSize: "12.5px", fontWeight: 500, color: INK }}>{pool.poolName}</span><span style={micro}>v{pool.poolVersion} · {pool.poolStatus}</span></span>
+                <span style={stack(2)}><span style={{ fontFamily: SANS, fontSize: "13px", fontWeight: 500, color: INK }}>{pool.poolName}</span><span style={micro}>v{pool.poolVersion} · {pool.poolStatus}</span></span>
                 <button data-testid={`job-field-select-pool-${pool.jobPoolUploadId}`} onClick={() => onSelectPool(pool.jobPoolUploadId)} style={action("cyan")}>{t.select}</button>
               </div>
             ))}
           </div>
         )}
-        {state === "NO_ANALYSIS" && <span data-testid="job-field-no-analysis" data-jf-reveal="true" style={{ ...prose, color: AMBER }}>{t.states.NO_ANALYSIS}</span>}
-        {field !== null && (
-          <div data-testid="job-field-legend" data-legend-open={legendOpen ? "true" : "false"} data-jf-reveal="true" style={stack(12)}>
+        {state === "NO_ANALYSIS" && <span data-testid="job-field-no-analysis" data-jf-reveal="true" style={{ ...lens, ...prose, color: AMBER, position: "absolute", left: "50%", top: "50%", transform: "translate(-50%, -50%)", width: "min(360px, 60%)", textAlign: "center", zIndex: 3 }}>{t.states.NO_ANALYSIS}</span>}
+        {field !== null && selection.kind === "NOT_DELIVERED" && <span data-testid="job-field-role-not-delivered" data-jf-reveal="true" style={{ ...lens, ...prose, color: RED, position: "absolute", left: "50%", top: "calc(50% + 96px)", transform: "translateX(-50%)", width: "min(320px, 40%)", textAlign: "center", zIndex: 3 }}>{selection.poolRoleId} · {t.states.NOT_FOUND}</span>}
+      </div>
+
+      {/* Orientation: one small line, never a panel. */}
+      <div data-jf-surface="header" style={{ position: "absolute", left: "28px", top: "136px", ...stack(6), zIndex: 46, maxWidth: "min(300px, 26vw)" }}>
+        <div style={{ display: "flex", alignItems: "baseline", gap: "14px" }}>
+          <h3 style={{ ...label, color: CYAN, fontSize: "10px", letterSpacing: "2.4px", textShadow: `0 0 14px ${SIL_TOKENS.colors.cyanGlowStrong}` }}>{t.title}</h3>
+          <button data-testid="job-field-exit-btn" onClick={onExit} style={action("muted")}>{t.exit}</button>
+        </div>
+        <StateLine state={state} t={t} />
+      </div>
+
+      {/* Legend: an affordance, open on demand; the key and every explanation live here. */}
+      {field !== null && (
+        <div data-testid="job-field-legend" data-legend-open={legendOpen ? "true" : "false"} style={{ position: "absolute", left: "28px", bottom: "calc(var(--condyn-page-header-height, 60px) + 52px)", ...stack(10), zIndex: 46, width: "min(320px, 28vw)" }}>
+          <div data-testid="job-field-legend-text" hidden={!legendOpen} data-jf-reveal={legendOpen ? "true" : undefined} style={{ ...lens, display: legendOpen ? "flex" : "none", flexDirection: "column", gap: "10px", maxHeight: "calc(100vh - 360px)", overflowY: "auto" }}>
+            <span style={{ ...micro, opacity: 0.8 }}>{t.subtitle}</span>
             <div style={stack(6)}>
               {STATES.map(stateKey => <span key={stateKey} style={stateWord(STATE_COLOR[stateKey])}><StateDot state={stateKey} size={7} />{t.requirementStates[stateKey]}</span>)}
             </div>
-            <button data-testid="job-field-legend-toggle" aria-expanded={legendOpen} onClick={() => setLegendOpen(value => !value)} style={{ ...ghost, alignSelf: "flex-start" }}>{legendOpen ? t.legendHide : t.legendToggle}</button>
-            <div data-testid="job-field-legend-text" hidden={!legendOpen} data-jf-reveal={legendOpen ? "true" : undefined} style={{ display: legendOpen ? "flex" : "none", flexDirection: "column", gap: "10px" }}>
-              <div style={{ display: "flex", gap: "22px" }}>
-                <span style={{ display: "flex", flexDirection: "column-reverse", gap: "3px" }}><span style={{ ...micro, fontSize: "8px", letterSpacing: "1px", textTransform: "uppercase" }}>{t.coreCapabilities}: </span><span style={{ ...display, fontSize: "22px" }}>{field.candidateCapabilityCount}</span></span>
-                <span style={{ display: "flex", flexDirection: "column-reverse", gap: "3px" }}><span style={{ ...micro, fontSize: "8px", letterSpacing: "1px", textTransform: "uppercase" }}>{t.coreSweep}: </span><span style={{ ...display, fontSize: "22px", color: INK_SOFT }}>{field.capabilitySweep.proposalCount}<span style={{ ...micro, marginLeft: "6px", letterSpacing: "0.6px" }}>({field.capabilitySweep.state})</span></span></span>
-              </div>
-              <span style={micro}>{t.ranking[field.ranking]}</span>
-              <p style={prose}>{t.legend}</p>
-              <p style={{ ...prose, color: "rgba(56, 229, 255, 0.78)" }}>{t.motion}</p>
-              <p style={{ ...prose, color: "rgba(56, 229, 255, 0.78)" }}>{t.galaxy}</p>
-              <span style={micro}>{t.hoverHint}</span>
+            <div style={{ display: "flex", gap: "22px" }}>
+              <span style={{ display: "flex", flexDirection: "column-reverse", gap: "3px" }}><span style={{ ...micro, fontSize: "8px", letterSpacing: "1px", textTransform: "uppercase" }}>{t.coreCapabilities}: </span><span style={{ ...display, fontSize: "22px" }}>{field.candidateCapabilityCount}</span></span>
+              <span style={{ display: "flex", flexDirection: "column-reverse", gap: "3px" }}><span style={{ ...micro, fontSize: "8px", letterSpacing: "1px", textTransform: "uppercase" }}>{t.coreSweep}: </span><span style={{ ...display, fontSize: "22px", color: INK_SOFT }}>{field.capabilitySweep.proposalCount}<span style={{ ...micro, marginLeft: "6px", letterSpacing: "0.6px" }}>({field.capabilitySweep.state})</span></span></span>
             </div>
+            <span style={micro}>{t.ranking[field.ranking]}</span>
+            <p style={prose}>{t.legend}</p>
+            <p style={{ ...prose, color: "rgba(56, 229, 255, 0.78)" }}>{t.motion}</p>
+            <p style={{ ...prose, color: "rgba(56, 229, 255, 0.78)" }}>{t.galaxy}</p>
+            <span style={micro}>{t.hoverHint}</span>
           </div>
-        )}
-        {field !== null && selection.kind === "NOT_DELIVERED" && <span data-testid="job-field-role-not-delivered" data-jf-reveal="true" style={{ ...prose, color: RED }}>{selection.poolRoleId} · {t.states.NOT_FOUND}</span>}
-      </div>
+          <button data-testid="job-field-legend-toggle" aria-expanded={legendOpen} onClick={() => setLegendOpen(value => !value)} style={{ ...ghost, alignSelf: "flex-start", fontSize: "9px" }}>{legendOpen ? t.legendHide : `ⓘ ${t.legendToggle}`}</button>
+        </div>
+      )}
 
-      <div data-jf-surface="right" style={{ position: "absolute", right: "32px", top: "136px", width: "min(420px, 32vw)", maxHeight: "calc(100vh - 200px)", overflowY: "auto", paddingRight: "6px", ...stack(12), zIndex: 46 }}>
-        {field !== null && selection.kind === "ROLE" && <RoleDetail key={selection.role.poolRoleId} role={selection.role} t={t} onBack={() => onSelectRole(null)} />}
-        {field !== null && selection.kind !== "ROLE" && nearestNode !== null && (
-          <section data-testid="job-field-nearest" data-role-id={nearestNode.poolRoleId} data-jf-reveal="true" style={stack(16)}>
-            <div style={stack(6)}>
-              <span style={sectionTitle}>{t.nearest}</span>
-              <h4 style={title}>{nearestNode.title}</h4>
-              <span style={micro}>{nearestNode.organizationName}</span>
-              <p data-testid="job-field-reading" style={prose}>{readingSentence(t.reading, nearestNode)}</p>
-              <div style={tether(true)} />
-            </div>
-            <ResonanceReading role={nearestNode} t={t} />
-            <span style={amber}>{t.nearestLabel}</span>
-            <PendingField roleId={nearestNode.poolRoleId} pending={nearestNode.pending} t={t} />
-            <button data-testid="job-field-open-nearest" onClick={() => onSelectRole(nearestNode.poolRoleId)} style={{ ...action("cyan"), alignSelf: "flex-start" }}>{t.open} →</button>
-          </section>
-        )}
-        {field !== null && selection.kind !== "ROLE" && nearestNode === null && (
-          <section data-testid="job-field-no-nearest" data-jf-reveal="true" style={stack(10)}>
-            <span style={sectionTitle}>{t.nearest}</span>
-            <span style={{ ...prose, color: RED }}>{t.noNearest}</span>
-            <div style={tether(false)} />
-            <span style={amber}>{t.nearestLabel}</span>
-          </section>
-        )}
-      </div>
-
-      {/* Ground line: the laws of the field, always visible, never in the way. The planetarium root starts below the page header with a full-viewport height, so its own bottom edge is off-screen, and the overlay's backdrop filter pins fixed descendants to it as well; the line is lifted by the header height (B-JF-GROUND-LINE). */}
+      {/* Ground line: the laws of the field, always visible, never in the way (B-JF-GROUND-LINE). */}
       <span data-testid="job-field-non-claims" style={{ position: "absolute", left: "50%", bottom: "calc(var(--condyn-page-header-height, 60px) + 22px)", transform: "translateX(-50%)", maxWidth: "min(900px, 80vw)", textAlign: "center", ...micro, fontSize: "8.5px", letterSpacing: "1.4px", color: "rgba(230, 241, 248, 0.55)", zIndex: 46 }}>{t.nonClaims}</span>
     </div>
   );
