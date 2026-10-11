@@ -423,7 +423,17 @@ export const SIL_COPY = {
       },
       canonicalReason: "Capability-Requirement Relation: NOT_EVALUATED · VERIFIED_CAPABILITY_SNAPSHOT_ABSENT. A canonical evaluation requires an owner decision (HIA-1/2); nothing in this field evaluates, proves or decides it.",
       none: "NONE",
-      nonClaims: "NEAREST != CHOSEN · PENDING != MISSING CAPABILITY · COVERED != SCORED · DISTANCE != TRUTH · POOL ROLE != INFERRED ROLE"
+      nonClaims: "NEAREST != CHOSEN · PENDING != MISSING CAPABILITY · COVERED != SCORED · DISTANCE != TRUTH · POOL ROLE != INFERRED ROLE",
+      legendToggle: "LEGEND",
+      legendHide: "HIDE LEGEND",
+      motion: "Light and breath = pool resonance (presentation) · still and unlit = no scored match delivered · waver = weak evidence · circulating dashes = covered by the sweep, unscored · faint gap = no evidence delivered · flowing ray = nearest presented role, not a choice · orbiting rings = what is pending toward the focused role",
+      reveal: "REVEAL EVIDENCE",
+      hide: "HIDE EVIDENCE",
+      revealAll: "REVEAL ALL EVIDENCE",
+      hideAll: "HIDE ALL EVIDENCE",
+      ids: "IDS",
+      composition: "REQUIREMENT COMPOSITION",
+      hoverHint: "hover a role for its pending field · click to open it"
     },
 
     emptyStates: {
@@ -863,7 +873,17 @@ export const SIL_COPY = {
       },
       canonicalReason: "Capability-Requirement-Relation: NOT_EVALUATED · VERIFIED_CAPABILITY_SNAPSHOT_ABSENT. Eine kanonische Bewertung erfordert eine Eigentümerentscheidung (HIA-1/2); nichts in diesem Feld bewertet, beweist oder entscheidet sie.",
       none: "KEINE",
-      nonClaims: "NÄCHSTE != GEWÄHLT · AUSSTEHEND != FEHLENDE CAPABILITY · ABGEDECKT != BEWERTET · ABSTAND != WAHRHEIT · POOL-ROLLE != INFERIERTE ROLLE"
+      nonClaims: "NÄCHSTE != GEWÄHLT · AUSSTEHEND != FEHLENDE CAPABILITY · ABGEDECKT != BEWERTET · ABSTAND != WAHRHEIT · POOL-ROLLE != INFERIERTE ROLLE",
+      legendToggle: "LEGENDE",
+      legendHide: "LEGENDE AUSBLENDEN",
+      motion: "Licht und Atmen = Pool-Resonanz (Präsentation) · still und unbeleuchtet = kein bewerteter Match geliefert · Flackern = schwache Evidenz · kreisende Striche = durch den Sweep abgedeckt, unbewertet · blasse Lücke = keine Evidenz geliefert · fließender Strahl = nächste präsentierte Rolle, keine Wahl · kreisende Ringe = was für die fokussierte Rolle aussteht",
+      reveal: "EVIDENZ ZEIGEN",
+      hide: "EVIDENZ AUSBLENDEN",
+      revealAll: "ALLE EVIDENZ ZEIGEN",
+      hideAll: "ALLE EVIDENZ AUSBLENDEN",
+      ids: "IDS",
+      composition: "ANFORDERUNGSZUSAMMENSETZUNG",
+      hoverHint: "Rolle überfahren für ihr Ausstehend-Feld · klicken zum Öffnen"
     },
 
     emptyStates: {

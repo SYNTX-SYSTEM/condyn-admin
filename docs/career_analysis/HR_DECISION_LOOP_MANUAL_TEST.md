@@ -25,7 +25,9 @@ and B, the full chain DCR → … → COVFCR on A, a G2 root DREV bound to A by 
 directly formed D2-shaped child DREV); the database is verified again; `next dev --webpack`
 starts on `http://127.0.0.1:3017` (override with `HR_LOOP_LOCAL_PORT`). The banner prints
 the exact URLs with the seeded ids. The state (ids, database name) is in
-`.hr-loop-local/state.json`, ignored by git.
+`.hr-loop-local/state.json`, ignored by git. That file also holds the database URL with the
+runner password (written owner-only, 600 in a 700 directory): never print, attach or quote it;
+evidence names the database only.
 
 Repeated starts reuse the verified database of `.hr-loop-local/state.json` (same ids, no
 accumulation); `npm run hr-loop:local -- --fresh` creates a new one. Other commands:

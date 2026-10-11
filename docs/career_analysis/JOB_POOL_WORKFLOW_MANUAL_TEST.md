@@ -44,7 +44,7 @@ Expected log, in order:
 ```
 
 Without `GEMINI_API_KEY` the script stops before anything starts: `ERR_HR_LOOP_LOCAL_GEMINI_API_KEY_MISSING`.
-`up --fresh` forces a new database; plain `up` reuses the one in `.hr-loop-local/state.json` when it still verifies.
+`up --fresh` forces a new database; plain `up` reuses the one in `.hr-loop-local/state.json` when it still verifies. The state file holds the database URL with the runner password (owner-only, 600 in a 700 directory): never print, attach or quote it; evidence names the database only.
 
 URL: `http://127.0.0.1:3017/career/demo` — credential: none. The uploader actor id in the panel is self-declared and
 not authenticated (B-JP-ACTOR); default `JOB_POOL_UPLOADER_LOCAL`.
@@ -81,8 +81,12 @@ full-stack role 46–84 %, the PDF run 36 %); the structure above is stable.
 | J5 | `ALL ROLES`, then `← CAPABILITY FIELD` | Back to the overview, then back to the capability planetarium; `focus` and `jobRoleId` leave the URL; the panel returns to its top-left anchor |
 | J6 | Open `/career/demo?focus=JOB&analysisId=ANL_…&jobPoolUploadId=JPOOL_…&jobRoleId=role_fullstack` | The Job Field opens directly on that role. A stale `jobRoleId` is named (`… POOL OR ANALYSIS NOT FOUND`), never silently dropped |
 | J7 | Open `/career/demo?focus=JOB&analysisId=ANL_…` without a pool | State `NO JOB POOL UPLOAD SELECTED` with the persisted uploads to select inside the field; selecting one reads the field and writes `jobPoolUploadId` to the URL |
+| J8 | Watch the field for ten seconds without reading anything | The field is alive and every motion means one thing: roles emerge from the core in delivered order; a role with a scored match holds light that breathes (more light and a livelier breath at higher pool resonance); a role without a scored match is unlit and still on the outer ring, visible, not red-alarmed; the ray to the nearest presented role flows outward (dashed: a direction, not a choice); amber ring segments waver (weak evidence); dashed cyan segments circulate (covered by the sweep, unscored); faint red gaps stand still (no evidence delivered); the core breathes slowly and its dashed halo circulates only when sweep proposals exist |
+| J9 | Hover a role node | Its organisation and, for an unlit role, `NO SCORED MATCH` appear under it; dashed rings orbit it, one per PENDING kind that has ids (grey unproven canonical, amber unresolved, dashed cyan unscored coverage, red no evidence); the organisation arc brightens. Leaving the node removes them |
+| J10 | Click `LEGEND` (left), then open a role and click `REVEAL EVIDENCE` on one line and `REVEAL ALL EVIDENCE` | The legend text (geometry sentence, the motion grammar sentence, the hover hint) unfolds and `HIDE LEGEND` folds it; in the role, each requirement line starts with name, state chip, necessity and weight only; the provenance line, confidence, source quotes and the weak-evidence reason unfold per line or for all lines. Clicking a PENDING cell lists its ids |
+| J11 | Enable "reduce motion" in the OS (or emulate it in DevTools: Rendering → prefers-reduced-motion) and reload | The field names `data-motion-mode="REDUCED"`; nothing moves, no breath, no flow, no orbit; every light value stays (a scored role is still lit by its resonance, an unlit role still unlit); all counts, labels and reveals are unchanged |
 
-Evidence of the automated run: `17-job-field-overview-nearest-presented-role.png`, `18-job-field-role-pending.png`, `19-job-field-selected-from-field.png`.
+Evidence of the automated run: `17-job-field-overview-nearest-presented-role.png`, `18-job-field-role-pending.png` (all evidence revealed), `19-job-field-selected-from-field.png`, `20-job-field-semiontic-legend-hover.png` (legend open, nearest role hovered with its orbiting pending rings).
 
 ## 4. Inverse checks (optional, each a distinct visible state)
 

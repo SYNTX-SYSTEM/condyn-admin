@@ -92,6 +92,40 @@ describe("SIL Job Field focus (server-rendered)", () => {
     expect(html).not.toContain("verified capability");
   });
 
+  it("carries the semiontic motion grammar as derived attributes: light for scored resonance, stillness without a scored match, one motion per requirement state, legend collapsed", () => {
+    const html = renderToString(<SemanticCareerIntelligenceField data={EMPTY_CAREER_INTELLIGENCE_DATA} fieldFocus="JOB" jobPoolUploadId="JPOOL_WITH_MATCHES" analysisId="ANL_TEST" />);
+    expect(html).toMatch(/data-testid="job-field"[^>]*data-motion-grammar="SEMIONTIC_V1"[^>]*data-motion-mode="LIVE"/);
+    expect(html).toMatch(/data-testid="job-field-role-ROLE_A"[^>]*data-motion="BREATH"[^>]*data-focused="false"/);
+    expect(html).toMatch(/data-testid="job-field-role-ROLE_B"[^>]*data-motion="STILL"/);
+    expect(html).toMatch(/data-segment-state="MATCHED"[^>]*data-motion="STEADY"/);
+    expect(html).toMatch(/data-segment-state="COVERED_UNSCORED"[^>]*data-motion="CIRCULATE"/);
+    expect(html).toMatch(/data-testid="job-field-nearest-ray"[^>]*data-motion="FLOW"/);
+    expect(html).toMatch(/data-testid="job-field-core"[^>]*data-motion="BREATH"/);
+    expect(html).toContain('data-jf-light');
+    // Progressive disclosure: the legend text is in the DOM, collapsed; the nearest card shows the resonance bar and the four pending cells.
+    expect(html).toMatch(/data-testid="job-field-legend"[^>]*data-legend-open="false"/);
+    expect(html).toContain('data-testid="job-field-legend-toggle"');
+    expect(html).toMatch(/data-testid="job-field-legend-text"[^>]*hidden/);
+    expect(html).toContain("Light and breath = pool resonance (presentation)");
+    expect(html).toMatch(/data-testid="job-field-resonance-bar"[^>]*data-resonance-score="0.75"[^>]*data-motion="BREATH"/);
+    expect(html).toMatch(/data-testid="job-field-pending-UNPROVEN_CANONICAL"[^>]*data-count="2"[^>]*data-ids="TRQREV_1,TRQREV_2"[^>]*data-present="true"/);
+    expect(html).toMatch(/data-testid="job-field-pending-UNRESOLVED_EVIDENCE"[^>]*data-count="0"[^>]*data-ids=""[^>]*data-present="false"/);
+    expect(html).toContain("@media (prefers-reduced-motion: reduce)");
+  });
+
+  it("reveals requirement evidence progressively: lines carry their motion and start collapsed with the evidence in the DOM", () => {
+    const html = renderToString(<SemanticCareerIntelligenceField data={EMPTY_CAREER_INTELLIGENCE_DATA} fieldFocus="JOB" jobPoolUploadId="JPOOL_WITH_MATCHES" analysisId="ANL_TEST" jobRoleId="ROLE_A" />);
+    expect(html).toMatch(/data-testid="job-field-requirement-REQ_1"[^>]*data-state="MATCHED"[^>]*data-motion="STEADY"[^>]*data-revealed="false"/);
+    expect(html).toMatch(/data-testid="job-field-requirement-REQ_2"[^>]*data-state="COVERED_UNSCORED"[^>]*data-motion="CIRCULATE"[^>]*data-revealed="false"/);
+    expect(html).toContain('data-testid="job-field-requirement-toggle-REQ_1"');
+    expect(html).toMatch(/data-testid="job-field-requirement-evidence-REQ_1"[^>]*hidden/);
+    expect(html).toMatch(/data-testid="job-field-reveal-all"[^>]*data-revealed-all="false"/);
+    expect(html).toContain('data-testid="job-field-composition"');
+    expect(html).toMatch(/data-testid="job-field-role-ROLE_A"[^>]*data-selected="true"[^>]*[^>]*data-focused="true"/);
+    expect(html).toMatch(/data-pending-kind="UNPROVEN_CANONICAL"[^>]*data-pending-count="2"[^>]*data-motion="ORBIT"/);
+    expect(html).not.toMatch(/data-pending-kind="UNRESOLVED_EVIDENCE"/);
+  });
+
   it("opens an exact role from the URL with its requirement relations and provenance, and names a stale role id", () => {
     const html = renderToString(<SemanticCareerIntelligenceField data={EMPTY_CAREER_INTELLIGENCE_DATA} fieldFocus="JOB" jobPoolUploadId="JPOOL_WITH_MATCHES" analysisId="ANL_TEST" jobRoleId="ROLE_A" />);
     expect(html).toContain('data-selected-role="ROLE_A"');
