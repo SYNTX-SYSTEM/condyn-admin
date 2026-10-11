@@ -394,6 +394,138 @@ legacy exception: F-JP-5. Authority boundaries unchanged: HIA-1, HIA-2, HIA-3 (s
 B-JP-ACTOR, B-GEMINI (key from the operator's shell), B-JP-SWEEP-AVAILABLE now closed at HTTP level by JP-LIVE for
 `AVAILABLE` (`FAILED` remains unit-level only). No open PINK finding against the tip.
 
+### 3.13 Job Field semantic validation (owner mandate "SFE — INDEPENDENT JOB FIELD VALIDATION", 2026-10-11)
+
+Synchronization: GELB's governance base `integration/job-field-governance` @ `990130c` (glossary and rules SG-1..SG-6 in
+`JOB_POOL_CONNECTION.md` §12, guard `test/career/job-pool/semantic-governance.test.ts`); GRÜN's Job Field on
+`frontend/job-field` (JOB focus, contract of 2026-10-11: `data-field-focus`, `job-field*` test ids, pending kinds
+UNPROVEN_CANONICAL / UNRESOLVED_EVIDENCE / UNSCORED_COVERAGE / NO_EVIDENCE_DELIVERED, nearest presented role, distance
+= 1 − resonanceScore, "POOL RESONANCE (PRESENTATION)"). Owner environment not touched: 127.0.0.1:3017 and
+`condyn_test_e46502b73c9f316f`.
+
+PINK reconstruction of the Job Field at `04ded74` (adapter `lib/career/ui-adapter.ts`, orbit views, derivation
+`lib/career/matching/{alignment,derivation}.ts`, F11 overlay `lib/career/capability-proposal-sil-adapter.ts`, panel):
+
+| Relation | Source → surface | PINK finding |
+| --- | --- | --- |
+| capability | analysis.capabilities → orbit 02; replaced by F11 proposals when a projection exists; panel candidates = analysis.capabilities | F-JF-1: two sources on one screen without a source label (live run: orbit 17 items, panel 3 candidates) |
+| job role | analysis.roles with REQUIRES → orbit 04, fit = equal-weight fraction of requirements aligned by exact lowercase name equality | F-JF-2: one name relation, two equality semantics (exact vs NFKC/alias/composite in the panel); F-JF-3: `recommendationId` from `Date.now()`/random inside a proof chain |
+| resonance | analysis.organizations → orbit 03, never scored; pool aggregates → panel only | F-JF-6: naming collision, resolved for the Job Field by GELB's G2 qualifier |
+| pending | F11 proposed relations validated by the reader, dropped by the SIL adapter; `capabilityGaps` always `[]` → orbit 05 structurally empty | F-JF-4 |
+| legacy list views | `RoleManifestation`, `ResonanceOrbits`, `CapabilityField` imported, not rendered; label `fitScore == null` as "UNSUPPORTED", undefined confidence as "0%" | F-JF-5 (latent SG-2 violation) |
+
+Findings sent to GELB (F-JF-2/3 and the list) and GRÜN (F-JF-1/4/5) for root repair on 2026-10-11.
+
+PINK proofs prepared against the contract (skip with reason until GRÜN's push is integrated):
+`test/job-pool-validation/job-field-static.test.ts` (SG-1: Job Field files read no LLM-inferred organizations, roles
+or entity names; SG-4 imports; SG-5/6 vocabulary), `test/job-pool-validation/job-field.e2e.test.ts` (JOB focus in a
+real browser on a disposable database: every role value equals the matches body, count sums equal the TRQREV count,
+delivered order, nearest-role rule, distance, pending kinds with counts and ids, requirement states and provenance,
+legend and non-claims, no RRL_/TSN_/EIS_/RCP_ in the DOM, stage shells 01–06 kept, HR dock absent; distinct
+NO_ANALYSIS / NO_POOL / INACTIVE_POOL states).
+
+#### 3.13.1 GELB's root repair `cf2d084` (integration/job-field-governance) validated, merged as `a5dc75e`
+
+Delta: `lib/career/ui-adapter.ts` wraps `evaluateAlignment` per REQUIRES requirement; when a capability of the same
+name exists and the proof chain refuses with `ERR_EPISTEMIC_VIOLATION` (one document proving both sides, the normal
+single-CV case) or `ERR_PROOF_CHAIN_BROKEN` (document absent from a source manifest, which the analyses route never
+delivers), the relation is stated `UNRESOLVED` with the capability id; every other error still propagates. GELB's
+probe of both real PDF analyses in the owner environment found 0 role→REQUIRES relations, so the exact-equality
+alignment is dormant and the real defect was a latent whole-field crash on any name coincidence. Proof
+`test/career/planetarium-role-alignment.test.ts`.
+
+PINK inverse (same test file against the pre-repair adapter `990130c` checked out temporarily, then restored):
+
+```
+pre-repair:  2 failed | 1 passed  (ERR_EPISTEMIC_VIOLATION: Document DOC_001 cannot be used to prove both …;
+                                   ERR_PROOF_CHAIN_BROKEN: Document DOC_001 exists but missing from origin source manifest)
+repaired:    3 passed
+```
+
+Regression on the merged head (`condyn_test_172764f305a11d58`): ui-adapter, recommendation proof chain,
+capability-requirement alignment, SIL orbit contract, proposal SIL projection, semantic governance, DB-1 recovery
+candidate, PINK layer and sweep suites: 9 files / 37 tests green.
+
+Resolution of PINK's findings (GELB §12.3): F-JF-2 repaired as above (equality semantics left dormant and unchanged,
+recorded); F-JF-3 not changed at the source: `REC_<Date.now()>_<random>` is the G1 legacy lifecycle id format under
+the legacy freeze, the DB-1 recovery candidate depends on it, and the planetarium exposes neither the id nor the
+derivation (proven) → owner boundary **B-JF-REC-ID**, accepted by PINK. F-JF-1, 4, 5, 6 assigned to GRÜN as
+presentation items; PINK's Job Field proofs bind their labels when the Job Field lands.
+
+#### 3.13.2 GRÜN's Job Field `frontend/job-field` @ `8e876fd` validated, merged as `22bb539` (with GELB's `cf2d084`)
+
+Contract clarifications bound (GRÜN, 2026-10-11): `data-resonance-score` verbatim body value, `data-distance` =
+clamp01(1 − score) unrounded (numeric tolerance), `data-pool-id` = the selected upload id (`JPOOL_…`),
+`data-ids` of `UNPROVEN_CANONICAL` = the role's TRQREV ids in delivered order, other kinds = pool requirement ids,
+`data-field-state` authoritative. Source wording (F-JF-1) in the legend: "ANALYSIS CAPABILITIES (SCORED SOURCE): n ·
+SWEEP PROPOSALS (UNSCORED): m"; authority wording on the nearest presented role; laws on the non-claims line.
+
+PINK-side corrections while binding (no Job Field finding): the SG-1 token `roleMatches` also names the pool body
+field (now `activeData.roleMatches`, `demo-data`, `ui-adapter` imports and the entity grammar are the forbidden
+tokens); the legend copy lives in `sil-language.ts`, not in the Job Field sources; the authority wording sits on the
+nearest element, not the legend.
+
+Reconstruction: `lib/career/job-pool/job-field-presentation.ts` derives everything from `JobPoolMatchPresentation`
+only (requirement states MATCHED / UNRESOLVED / COVERED_UNSCORED / NO_EVIDENCE_DELIVERED, four pending kinds never
+merged, distance = clamp01(1 − resonanceScore), grouping by `poolOrganizationId` only, nearest = first delivered role
+with a scored match); `JobField.tsx` renders it with the contract ids. GRÜN resolved F-JF-1 (legend), F-JF-5 (legacy
+list components no longer imported), F-JF-6 (orbit 03 subtitle "Inferred organisations (analysis) · not pool
+resonance"); F-JF-4 and the orbit 02/04 relabels are blocked by sealed SIL language tests → owner boundary
+**B-ORBIT-COPY** (recorded in `JOB_FIELD_FRONTEND.md` §5).
+
+Runs as the role (load 5–14 from peer batches; no timeout):
+
+```
+condyn_test_3f85a9d211cd974d  Job Field + Job Pool + adapter suites: 23 files green (GRÜN e2e 10/10, PINK browser walk,
+                              HTTP/canonical/inverse, PDF path, SSR, governance, planetarium alignment, orbit contract);
+                              PINK job-field proofs red on three PINK-side assumptions (above)
+condyn_test_58133f9f9e6c9583  PINK job-field.e2e 2/2 and job-field-static 3/3 green after the corrections
+```
+
+Evidence: `evidence/job-pool-validation/pink-04-job-field-job-focus.png`.
+
+#### 3.13.3 HR composition proof on the shared runner database: `a9121b9` superseded by root repair `8f95afc`
+
+`a9121b9` relaxed the precondition of `test/career/hr-decision-loop/local-composition.postgres.test.ts` to "nothing or
+the complete unified set"; GELB's own full tree showed it still red (1 of 40 unified tables pre-created by another
+suite; seeding on a table another suite had created). Root repair `8f95afc`: the proof creates, verifies and drops its
+**own** disposable database (`createDisposableTestDatabaseNamed` on the runner's verified basis,
+`verifyDisposableTestDatabase`, `dropDisposableTestDatabase`), binds `DATABASE_URL` to it in `beforeAll` before the
+unified registration, composition and application client are imported (dynamic imports), and restores the runner URL
+afterwards. The original strict precondition `expect(before).toEqual([])` is back, a stronger claim than before.
+PINK reading: correct root cause (one shared runner database per run); the repair removes the file-order dependence
+for this proof without touching any other database; marker verification and drop keep the hard boundary. Combined tip
+retargeted to `integration/job-field-governance` @ `d339c8c` (includes GRÜN's docs `5b788fc`), merged as the current
+PINK head; tree-identical outside PINK's files.
+
+#### 3.13.4 Full-tree JP-R on the combined tip `d339c8c` (PINK head `ec39b40`), classification and verdict
+
+Run as the role on `condyn_test_1a81c4bc6953fe4f` (dropped), 2026-10-11 04:14–04:33, started at load 2.9, load 5–8
+during the run (an operator browser process and a peer batch):
+
+```
+ Test Files  13 failed | 368 passed | 9 skipped (390)
+      Tests  44 failed | 2388 passed | 9 skipped (2441)
+   Duration  1113 s · timeouts: 34 · other non-lifecycle reasons: none
+```
+
+| Class | Files | Evidence |
+| --- | --- | --- |
+| F-JP-5 legacy DDL drift (pre-existing) | 4 lifecycle suites, 27 tests | unchanged cause (§3.5) |
+| load timeouts at the 5 s default | 9 files (5 COVFCR suites, decision-core context/contract, structural-consequences/reconstruct, validation/authority, g2-g3-cross-relation) | every red is `Test timed out in 5000ms`; sequential re-run at load 3–5: 2 files green, 7 still timing out; diagnostic run of those 7 with `--testTimeout=60000` (no committed test changed): 7 files / 71 tests green at load 5–6 (`condyn_test_42b042889205e1b2`); none of the suites imports `ui-adapter.ts`, `job-field-presentation.ts`, `sil-language.ts` or `JobField.tsx` (grep over the relation, decision-core, decision-runtime, outcome-valence libs and the suites: no edge) |
+
+No red is attributable to the Job Field round. The idle re-run of the COVFCR and decision-core suites at load 1.9
+(§3.8, same files) stands as the reference for their default-timeout behaviour; a truly idle machine was not available
+during this round (owner environment and peers active).
+
+**Verdict (owner mandate "SFE — INDEPENDENT JOB FIELD VALIDATION").** Verified on `d339c8c`: semantic reconstruction
+of the four relations, findings F-JF-1..6 resolved at their source or recorded as owner boundaries (B-JF-REC-ID,
+B-ORBIT-COPY), GELB's root repairs `cf2d084` and `8f95afc` proven by inverse, GRÜN's Job Field proven by SSR, Chromium
+e2e and PINK's independent JOB-focus browser proof, static SG guards green, Job Pool and HR loop suites green, full
+tree classified. Documented legacy exception: F-JP-5. Authority boundaries unchanged: HIA-1/2/3, B-JP-CONTINUITY,
+B-JP-ACTOR, B-GEMINI, B-JF-REC-ID, B-ORBIT-COPY, B-JF-SESSION. The shared `condyn` database and the owner's manual
+environment (`127.0.0.1:3017`, `condyn_test_e46502b73c9f316f`) were never touched.
+
 ## 4. Boundaries and findings for coordination
 
 - F-JP-1 (closed in `b782793`): `JOB_POOL_CONNECTION.md` §4 followed the per-role `JOB_POOL_JSON_ROLE` design;
