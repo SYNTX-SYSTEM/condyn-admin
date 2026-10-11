@@ -134,6 +134,19 @@ join omits the field; it never falls back to fuzzy matching.
   and from `focus=CAPABILITY` keep their current contract.
 - **R11 Grammar versioning.** The new interaction grammar gets its own id; LENS_V1 / POOL_FIELD_V1 / GALAXY_V1 /
   SEMIONTIC_V1 attributes and test ids stay additive or are retired only with a recorded plan change by PINK.
+- **R13 No nearest-role caption in FIELD (rules GRÜN's Q1).** The "nearest presented role" caption selects a role by
+  delivered score and leads the FIELD state with it, which is a score-first impression (§7.1). It leaves the FIELD
+  state. The resonance reading and the authority label ("presentation · authority NONE · not a role relation (RRL) ·
+  not a recommendation (RCP) · not a decision") appear in the ROLE aperture, wherever a score is shown. The test id
+  `job-field-nearest` is retired with a PINK plan change under R11, not reused with a new meaning. The field-edge
+  semantic line (`PRESENTED != EVALUATED · …`) stays, because it carries no score.
+- **R14 Job Field governance G4 amended (rules GRÜN's Q2).** `distance = 1 − resonance` and the scored-role threads
+  `job-field-thread-<role>` leave the FIELD and ORGANIZATION states. Geometry there is containment (pool ⊃ organization
+  ⊃ role). No candidate↔role coupling and no support preview implies match quality before selection (§8.2). In ROLE
+  state the geometry is relation-state geometry per §9.2: the requirement's support category sets its distance, and the
+  delivered `contribution` may modulate only trace weight within a category. The delivered `resonanceScore` appears as
+  the coupling of the candidate↔role relation in ROLE state and numerically only in an aperture. The delivered order of
+  `roleMatches` positions nothing.
 - **R12 No new data path.** The view model reads only §1 surfaces. A second read (`/api/career/analyses/{id}`) for source
   title/provenance is permitted; no new route, table, write or persisted presentation state.
 
