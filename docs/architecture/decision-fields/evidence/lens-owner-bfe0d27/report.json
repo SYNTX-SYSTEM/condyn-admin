@@ -1,0 +1,463 @@
+{
+  "base": "http://127.0.0.1:3017",
+  "upload": "JPOOL_30F7145E21F34BEF0FCE510DFC75837B",
+  "analyses": [
+    "ANL_1791660225500_612",
+    "ANL_1791697406804_831"
+  ],
+  "at": "2026-10-11T11:21:50.698Z",
+  "failures": 2,
+  "results": [
+    {
+      "name": "GET analyses 200",
+      "ok": true,
+      "detail": "status 200"
+    },
+    {
+      "name": "analyses resolved",
+      "ok": true,
+      "detail": "ANL_1791660225500_612,ANL_1791697406804_831"
+    },
+    {
+      "name": "GET upload view 200",
+      "ok": true,
+      "detail": "status 200 state ?"
+    },
+    {
+      "name": "canonical mapping present",
+      "ok": true,
+      "detail": "roles 6"
+    },
+    {
+      "name": "[612] GET matches 200",
+      "ok": true,
+      "detail": "status 200 roles 6 sweep AVAILABLE"
+    },
+    {
+      "name": "[612] JF grammar LENS_V1",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "[612] JF focus-level FIELD",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "[612] JF camera 1",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "[612] JF no lens",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "[612] JF legend folded",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "[612] JF role count = matches",
+      "ok": true,
+      "detail": "6"
+    },
+    {
+      "name": "[612] JF pool id = upload",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "[612] caption role = nearest",
+      "ok": true,
+      "detail": "role_fullstack"
+    },
+    {
+      "name": "[612] caption side",
+      "ok": true,
+      "detail": "right"
+    },
+    {
+      "name": "[612] caption pointer-transparent",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "[612] authority label 10.5px",
+      "ok": true,
+      "detail": "10.5px"
+    },
+    {
+      "name": "[612] caption authority wording",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "[612] caption does not cover its body",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "[612] JF focus-level ROLE",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "[612] JF camera 1.5",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "[612] JF caption gone",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "[612] lens has role detail",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "[612] moon labels = requirements",
+      "ok": true,
+      "detail": "5 vs 5"
+    },
+    {
+      "name": "[612] moons spread by +30 (radius+10 → radius+40)",
+      "ok": true,
+      "detail": "41 → 71"
+    },
+    {
+      "name": "[612] lens entrance leaves no transform residue (B-LENS-TRANSFORM)",
+      "ok": true,
+      "detail": "none"
+    },
+    {
+      "name": "[612] pending reason inside lens (keyboard)",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "[612] reason within lens box",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "[612] UNPROVEN ids = canonical TRQREV ids",
+      "ok": true,
+      "detail": "5"
+    },
+    {
+      "name": "[612] legend reveals by keyboard",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "[612] exit → focus=CAPABILITY, upload kept",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "[612] PF grammar LENS_V1",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "[612] PF focus-level POOL",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "[612] PF intake hidden with core",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "[612] PF core lens visible",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "[612] PF core lens fixed in overlay root (B-LENS-HIT)",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "[612] PF role-list count = matches",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "[612] PF role lenses hidden at POOL level",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "[612] PF intake affordance shows",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "[612] PF intake affordance hides",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "[612] PF focus-level ROLE",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "[612] PF role lens visible",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "[612] PF core lens dimmed + inert",
+      "ok": false,
+      "detail": "count 1 pointer-events none opacity 1"
+    },
+    {
+      "name": "[612] PF structure requirements = canonical",
+      "ok": true,
+      "detail": "5 vs 5"
+    },
+    {
+      "name": "[612] PF role reading inside lens",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "[612] PF back → POOL",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "[612] reduced: motion-mode REDUCED",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "[612] reduced: lens animation none",
+      "ok": true,
+      "detail": "none"
+    },
+    {
+      "name": "[612] reduced: camera transition none",
+      "ok": true,
+      "detail": "0s"
+    },
+    {
+      "name": "[612] reduced: still ROLE level",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "[831] GET matches 200",
+      "ok": true,
+      "detail": "status 200 roles 6 sweep AVAILABLE"
+    },
+    {
+      "name": "[831] JF grammar LENS_V1",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "[831] JF focus-level FIELD",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "[831] JF camera 1",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "[831] JF no lens",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "[831] JF legend folded",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "[831] JF role count = matches",
+      "ok": true,
+      "detail": "6"
+    },
+    {
+      "name": "[831] JF pool id = upload",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "[831] no nearest",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "[831] JF focus-level ROLE",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "[831] JF camera 1.5",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "[831] JF caption gone",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "[831] lens has role detail",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "[831] moon labels = requirements",
+      "ok": true,
+      "detail": "4 vs 4"
+    },
+    {
+      "name": "[831] moons spread by +30 (radius+10 → radius+40)",
+      "ok": true,
+      "detail": "40 → 70"
+    },
+    {
+      "name": "[831] lens entrance leaves no transform residue (B-LENS-TRANSFORM)",
+      "ok": true,
+      "detail": "none"
+    },
+    {
+      "name": "[831] pending reason inside lens (keyboard)",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "[831] reason within lens box",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "[831] UNPROVEN ids = canonical TRQREV ids",
+      "ok": true,
+      "detail": "4"
+    },
+    {
+      "name": "[831] legend reveals by keyboard",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "[831] exit → focus=CAPABILITY, upload kept",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "[831] PF grammar LENS_V1",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "[831] PF focus-level POOL",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "[831] PF intake hidden with core",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "[831] PF core lens visible",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "[831] PF core lens fixed in overlay root (B-LENS-HIT)",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "[831] PF role-list count = matches",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "[831] PF role lenses hidden at POOL level",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "[831] PF intake affordance shows",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "[831] PF intake affordance hides",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "[831] PF focus-level ROLE",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "[831] PF role lens visible",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "[831] PF core lens dimmed + inert",
+      "ok": false,
+      "detail": "count 1 pointer-events none opacity 1"
+    },
+    {
+      "name": "[831] PF structure requirements = canonical",
+      "ok": true,
+      "detail": "4 vs 4"
+    },
+    {
+      "name": "[831] PF role reading inside lens",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "[831] PF back → POOL",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "[831] reduced: motion-mode REDUCED",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "[831] reduced: lens animation none",
+      "ok": true,
+      "detail": "none"
+    },
+    {
+      "name": "[831] reduced: camera transition none",
+      "ok": true,
+      "detail": "0s"
+    },
+    {
+      "name": "[831] reduced: still ROLE level",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "page issued no non-GET request to the owner server",
+      "ok": true,
+      "detail": ""
+    }
+  ],
+  "nonGet": []
+}

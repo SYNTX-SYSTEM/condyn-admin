@@ -545,6 +545,52 @@ The acceptance plan deliverable (owner mandate "COMPLETE SYSTEM ACCEPTANCE TEST 
 `docs/acceptance/CONDYN_SYSTEM_ACCEPTANCE_TEST_PLAN_v1.2.md` with its scenario index; versions 1.0.0 (`cccd647`)
 → 1.2.2 (`d17b042` + `627ec07`), taken onto the integration branch by GELB at each single-tip release.
 
+### 3.15 Lens Field handover: read-only proof against the owner environment on `bfe0d27` (2026-10-11)
+
+Owner mandate "Lens Field handover": GELB moved `127.0.0.1:3017` from `ee4c4dc` to `bfe0d27` (= `01b1d7b` + plan
+1.3.0; the only tree difference to PINK's `5070425` is this record), database `condyn_test_e46502b73c9f316f` reused
+without `--fresh` (GELB's inventory identical before and after: 123 tables, 280 rows, 4 analyses, 1 pool). PINK ran one
+independent, GET-only browser proof on the existing analyses `ANL_…612` and `ANL_…831` with
+`JPOOL_30F7145E21F34BEF0FCE510DFC75837B`: `test/job-pool-validation/support/lens-readonly-proof.mjs` (Chromium via
+`CONDYN_PLAYWRIGHT_MODULE`, 1600×1000; records every non-GET request the page issues and fails on any; no upload, no
+analysis, no SQL). Dry-run first on PINK's own disposable environment (`condyn_test_8092dd55da95d96a`, port 3117,
+fixture analysis + validation pool), which found two script assumptions (onboarding overlay, moon radius formula) and
+the same product observation as below; the disposable database was dropped afterwards.
+
+Result on the owner environment, 2026-10-11T11:21Z: 88/90 checks green, `nonGet = []`, 0 page errors; evidence
+`evidence/lens-owner-bfe0d27/` (four frames, `report.json`, `manifest.sha256`; the full set of twelve frames is in
+PINK's scratchpad). Green per analysis: `LENS_V1` at FIELD with camera 1, no lens, legend folded, role count and pool
+id equal to the GET bodies; caption on the nearest role (612: `role_fullstack`; 831: `job-field-no-nearest`),
+`data-caption-side`, pointer-transparent, authority label 10.5 px, caption box not covering its body (B-LENS-HIT);
+ROLE by click: camera 1.5, lens with the role detail, caption gone, moon labels = requirements of the canonical mapping
+(5 / 4), moons spread by exactly +30 (radius + 10 → radius + 40), no transform residue on the lens (B-LENS-TRANSFORM),
+WHY PENDING by Enter inside the lens box, UNPROVEN ids = `canonical.targetRequirementRevisionIds`; legend by Enter;
+exit → `focus=CAPABILITY` with the upload kept; Pool Field: POOL for the bare upload id, intake hidden with a core and
+shown/hidden by its affordance, core lens `position: fixed` outside the stage, role lenses hidden at POOL, structure
+role → ROLE with the role lens visible, structure requirements = canonical mapping, role reading inside the lens,
+back → POOL; reduced motion: `REDUCED`, lens animation `none`, camera transition 0 s, ROLE level still reachable.
+
+Finding F-LF-2 (PINK → GRÜN, Case 1, severity low, frontend only): when a structure role is focused in the Pool Field
+the core lens `job-pool-selected` becomes inert (`pointer-events: none`, as specified in §12.1) but its computed
+opacity stays 1 although the inline style says 0.25. Cause (KNOWN, read in `JobPoolMatchPanel.tsx`): the reveal rule
+`[data-jp-reveal] { animation: jpRise .32s ease-out both }` ends on `opacity: 1` with fill-mode `both`, and the
+animation fill overrides the inline `opacity` for as long as the element lives, exactly the opacity twin of
+B-LENS-TRANSFORM. Scope: the only element that carries a reveal attribute and a state-dependent inline opacity; the
+receding organisations, roles and core are SVG groups without the attribute and do dim. Effect: the core lens does
+not visually recede behind the focused role lens (frames `612-05-pf-role-lens.png`, `831-05-pf-role-lens.png`); the
+interaction holds. Repair belongs to GRÜN (e.g. fill-mode `backwards`, or the dim on a wrapper); the plan's D-11
+expectation ("core lens dims and ignores pointer events") stays as written.
+
+GELB's F-LF-1 (`role_fullstack` / …612: `UNSCORED_COVERAGE` counts 3 including Node.js, weak evidence with
+contribution 0.336, while the composition line "missing covered by the sweep (unscored)" says 2) read by PINK: the
+pending kind is defined as "a sweep proposal exists and the requirement is not MATCHED" (`derivePending`, `3b0fc384`)
+and PINK's Job Field proof binds exactly that set (`[...weakEvidence, ...missing]` with a proposal); the composition
+line counts the missing subset. Both numbers are true for different sets, and a requirement is in two pending kinds
+by design (pending ≠ missing, SG-6). What misleads is the label "UNSCORED (SWEEP COVERAGE ONLY)": Node.js has scored
+weak evidence, so the sweep is not its only coverage. PINK's reading: a label defect (drop "ONLY" or say "sweep
+proposal unscored"), not a count defect; narrowing the kind to missing-only would be a §4 contract change that
+PINK's proof and plan E-06 would follow, owner decision.
+
 ## 4. Boundaries and findings for coordination
 
 - F-JP-1 (closed in `b782793`): `JOB_POOL_CONNECTION.md` §4 followed the per-role `JOB_POOL_JSON_ROLE` design;
