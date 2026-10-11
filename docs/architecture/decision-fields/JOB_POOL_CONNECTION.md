@@ -322,3 +322,25 @@ files by path pattern), `test/job-pool-validation/layer-separation.test.ts` (PIN
 | F-JF-4 proposed capability relations are not projected; orbit 05 `capabilityGaps` is always empty | GRÜN | presentation: state "NOT PROJECTED" on orbit 05 or project delivered facts with provenance (SG-2, SG-6) |
 | F-JF-5 dead list components label a missing fitScore "UNSUPPORTED" and undefined confidence "0%" | GRÜN | remove or relabel before any list mode becomes reachable (SG-2) |
 | F-JF-6 orbit 03 "resonance" for unscored CV organizations | GRÜN | Job Field qualifies "POOL RESONANCE (PRESENTATION)" (G2); orbit 03 subtitle is presentation copy |
+
+### 12.4 Job Field integration and proofs (2026-10-11)
+
+Integrated: GRÜN's Job Field (`frontend/job-field`: `job-field-presentation.ts`, `JobField.tsx`, JOB focus on
+`/career/demo`, G1–G6 realized; `docs/career_analysis/JOB_FIELD_FRONTEND.md`), PINK's Job Field proofs, and two source
+repairs: F-JF-2 (planetarium alignment states proof-chain conflicts as UNRESOLVED) and the HR composition proof on its
+own fresh disposable database (`8f95afc`; the runner database is shared by every file of a run, other suites leave
+partial table sets, so the proof now provisions, verifies and drops its own database and keeps its strict "no table at
+all" precondition).
+
+| Proof (as `condyn_test_runner`) | Result |
+| --- | --- |
+| `tsc --noEmit` | 0 errors |
+| semantic governance (SG-3/4/5, file set incl. Job Field) | 4/4 |
+| planetarium role alignment (F-JF-2/3) | red before, 3/3 after |
+| HR composition with job pool in shuffled file orders (seeds 1, 3) | 38/38 |
+| GRÜN Job Pool + Job Field e2e (Chromium) | 10/10 |
+| full tree `d339c8c` (all G2 dirs, isolation, `test/career`, `test/job-pool-validation`, all top-level career suites) | 386 files: 2383 passed, 7 skipped; reds only the four F-JP-5 legacy suites and seven 5 s timeouts under load 5–14 (COVFCR persistence/replay/lifecycle, decision-core reconstruct/authority/context), none referencing a file changed since `04ded74` |
+
+Owner boundaries added in this round: B-JF-REC-ID (G1 recommendation id format, frozen; the projection never exposes
+it) and B-ORBIT-COPY (orbit 02/04/05 subtitles are pinned by sealed SIL language suites; relabelling needs an owner
+decision).
