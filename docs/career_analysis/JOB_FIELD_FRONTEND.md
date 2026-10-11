@@ -171,3 +171,45 @@ REDUCED mode (`prefers-reduced-motion`, `data-motion-mode="REDUCED"`): every dur
 Boundaries added: B-JF-MOTION-GEOMETRY (breath is light only; any future geometry animation on a clickable node must
 be finite, because Playwright waits for a stable bounding box); B-JF-REVEAL (folded text stays in the DOM so every
 textContent-based proof keeps binding; `hidden` + `display: none`, not removal).
+
+## 9. Information surfaces as field extensions (owner mandate "SFE — SEMIONTIC INFORMATION FIELD RECONSTRUCTION", 2026-10-11)
+
+Frontend and interaction only; the pure model, the motion grammar (§8), every semantic distinction, provenance, scoring,
+governance and authority boundary, and the DOM contract (§4, §8.3) are unchanged. Surface grammar `FIELD_EXTENSION_V1`
+(`data-surface-grammar` on `job-field`).
+
+### 9.1 What changed
+
+| Before (§8) | Now |
+| --- | --- |
+| Bordered, blurred cards left and right ("surface" style), chips with borders, buttons as boxed controls | No containers. Two edge veils (`data-jf-veil="left|right"`, pointer-events none) deepen the void toward the margins so text reads directly on the field; the planetarium and the outer rim recede under them |
+| One mono face at 9–11 px for everything | Two faces, one language: mono (token) for identifiers, numbers, tracked labels and state words; sans (token) for role titles (17 px / 600) and prose (11.5 px / 1.6). Display numbers in mono 30 px / 300 (pool resonance) and 20–22 px / 300 (source counts, pending counts) |
+| Legend card: counts in one line, four bordered chips, sentences | Two source readings (number over label), a vertical key of four state words with their motion glyphs, the ranking line, and `LEGEND` as a text affordance that unfolds the prose |
+| Nearest card | A reading: section label, title, organisation, a tether line from the field (cyan for a lit subject, red-tinted for an unlit one), the display resonance with its light bar and rank, the authority label, the four pending counts as tokens over a top rule (dashed for unscored coverage), the canonical reason as prose, `OPEN ROLE →` |
+| Role detail card: meta line, bar, chips, bordered requirement rows | Organisation label with `ALL ROLES` as text, title, seniority · domain · ids as micro text, tether, resonance reading, composition (3 px bar + state words with counts), relations as a grid per line (glyph · capability name in sans · state word · necessity/weight · `REVEAL EVIDENCE`), evidence indented under a rule in the state colour with quotes in italic sans |
+| Laws in the right column | Ground line: centred under the canvas, always visible, 8.5 px tracked, never competing |
+| Pending ids folded inside the cell | A single ids line under the four tokens (`job-field-pending-ids`, `data-kind`) when a token is open; the cell keeps `title`, `data-ids` and `aria-expanded` |
+
+Buttons remain `<button>` elements with their test ids; they read as text affordances (tracked uppercase, glow on hover,
+visible focus ring) rather than as controls of a panel.
+
+### 9.2 Proofs
+
+| Proof | Content |
+| --- | --- |
+| P-JF-S (extended) | `data-surface-grammar="FIELD_EXTENSION_V1"`, both veils and both surfaces rendered, no border on the legend or the nearest reading; all earlier assertions unchanged (test ids, folded text in the DOM, governance labels) |
+| P-JF-B | my e2e 10/10 and PINK's `job-field.e2e` 2/2 on the rebuilt surfaces without any change to their assertions (every textContent-based check still binds, e.g. `ANALYSIS CAPABILITIES (SCORED SOURCE): n` is kept contiguous in DOM order under a column-reverse layout) |
+| P-JF-M, P-JF-U, P-JF-G, PINK static, sealed SIL suites, panel SSR | unchanged |
+
+### 9.3 Run record
+
+| Date | Revision | Run | Result |
+| --- | --- | --- | --- |
+| 2026-10-11 | working tree on `0353cd9` | `tsc --noEmit` | 0 errors |
+| 2026-10-11 | same | job-field SSR/motion/presentation, panel SSR, GELB governance, PINK static, 2 sealed SIL suites | 56 passed |
+| 2026-10-11 | same | my e2e (10) and PINK's job-field.e2e (2), each on its own disposable DB, in parallel | 12/12; first frames showed the laws line too faint and the role-detail frame captured mid-reveal (jfRise 320 ms): ground line set to 8.5 px at 55 % ink, 450 ms settle before each evidence frame |
+| 2026-10-11 | same | rerun after the two corrections: full `test/career/job-pool` tree with e2e + PINK static + 5 sealed SIL suites + dock SSR; PINK's `job-field.e2e` in parallel on its own DB | 20 files / 131 passed; 2/2; tsc 0 |
+
+Boundary B-JF-FONTS: no web font is loaded by the app shell; the mono and sans tokens resolve to the system faces
+(`'JetBrains Mono', monospace` / `system-ui`). Loading a face is an app-shell decision outside this field.
+

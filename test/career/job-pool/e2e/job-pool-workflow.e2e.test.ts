@@ -203,7 +203,7 @@ describe("Job Pool workflow over HTTP against the production routes", () => {
 describe.skipIf(playwrightModule === null)("Job Pool workflow in a real browser", () => {
   type Browser = { newPage(options: { viewport: { width: number; height: number }; reducedMotion?: "reduce" | "no-preference" }): Promise<Page>; close(): Promise<void> };
   type Locator = { waitFor(options?: { timeout?: number; state?: string }): Promise<void>; count(): Promise<number>; textContent(): Promise<string | null>; getAttribute(name: string): Promise<string | null>; click(): Promise<void>; fill(value: string): Promise<void>; isDisabled(): Promise<boolean>; setInputFiles(files: string | string[]): Promise<void>; first(): Locator; hover(): Promise<void>; isVisible(): Promise<boolean>; evaluate<T>(fn: (element: Element) => T): Promise<T> };
-  type Page = { goto(url: string, options?: { waitUntil?: string; timeout?: number }): Promise<unknown>; url(): string; locator(selector: string): Locator; getByTestId(id: string): Locator; screenshot(options: { path: string; fullPage?: boolean }): Promise<unknown>; on(event: string, handler: (payload: unknown) => void): void; close(): Promise<void> };
+  type Page = { goto(url: string, options?: { waitUntil?: string; timeout?: number }): Promise<unknown>; url(): string; locator(selector: string): Locator; getByTestId(id: string): Locator; screenshot(options: { path: string; fullPage?: boolean }): Promise<unknown>; waitForTimeout(ms: number): Promise<void>; on(event: string, handler: (payload: unknown) => void): void; close(): Promise<void> };
   let browser: Browser;
   let pageErrors: string[] = [];
 
@@ -367,6 +367,7 @@ describe.skipIf(playwrightModule === null)("Job Pool workflow in a real browser"
     // The planetarium recedes but stays rendered; no dock without an exact DCTXREV.
     for (const stage of ["01", "02", "03", "04", "05", "06"]) expect(await page.getByTestId(`focus-transition-stage-shell-${stage}`).count()).toBe(1);
     expect(await page.locator('[data-testid^="hr-decision-loop"]').count()).toBe(0);
+    await page.waitForTimeout(450); // let the reveal and emergence animations settle before the evidence frame
     await page.screenshot({ path: resolve(EVIDENCE_DIR, "17-job-field-overview-nearest-presented-role.png") });
 
     // Semiontic layer: light breathes only on roles with a scored match; an unlit role is still; the nearest ray flows;
@@ -394,6 +395,7 @@ describe.skipIf(playwrightModule === null)("Job Pool workflow in a real browser"
     const nearestRole = delivered.matches.roleMatches.find(role => role.poolRoleId === T.roleId)!;
     const expectedRings = [nearestRole.canonical.targetRequirementRevisionIds.length > 0, nearestRole.weakEvidence.length > 0, [...nearestRole.weakEvidence, ...nearestRole.missing].some(item => item.sweepProposal !== null), nearestRole.missing.some(item => item.sweepProposal === null)].filter(Boolean).length;
     expect(await page.locator(`[data-testid="job-field-role-${T.roleId}"] [data-motion="ORBIT"]`).count()).toBe(expectedRings);
+    await page.waitForTimeout(450); // let the reveal and emergence animations settle before the evidence frame
     await page.screenshot({ path: resolve(EVIDENCE_DIR, "20-job-field-semiontic-legend-hover.png") });
 
     await page.getByTestId(`job-field-role-${T.roleId}`).click();
@@ -425,6 +427,7 @@ describe.skipIf(playwrightModule === null)("Job Pool workflow in a real browser"
     await page.locator('[data-testid="job-field-reveal-all"][data-revealed-all="true"]').waitFor({ timeout: 10_000 });
     expect(await page.locator('[data-testid^="job-field-requirement-"][data-revealed="false"]').count()).toBe(0);
     expect(await page.getByTestId("job-field-resonance-bar").getAttribute("data-resonance-score")).toBe(String(nearestRole.resonanceScore));
+    await page.waitForTimeout(450); // let the reveal and emergence animations settle before the evidence frame
     await page.screenshot({ path: resolve(EVIDENCE_DIR, "18-job-field-role-pending.png") });
 
     await page.getByTestId("job-field-role-back").click();
