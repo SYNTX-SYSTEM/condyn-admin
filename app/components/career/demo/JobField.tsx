@@ -579,7 +579,8 @@ export function JobField({ workflow, analysisSource, selectedRoleId, onSelectRol
   const [hoveredRoleId, setHoveredRoleId] = useState<string | null>(null);
   const [hoveredRequirementId, setHoveredRequirementId] = useState<string | null>(null);
   const [legendOpen, setLegendOpen] = useState(false);
-  const captionSide = nearestNode === null ? "right" : nearestNode.x > 400 ? "left" : "right";
+  /** The caption sits outward from the core, on the free side of its body, so it never covers the candidate or another body. */
+  const captionSide = nearestNode === null ? "right" : nearestNode.x >= 400 ? "right" : "left";
   return (
     <div
       data-testid="job-field"
