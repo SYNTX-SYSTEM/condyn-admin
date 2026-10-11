@@ -3,7 +3,7 @@
 | Field | Value |
 | --- | --- |
 | Document | `CONDYN_SYSTEM_ACCEPTANCE_TEST_PLAN_v1.0.md` |
-| Version | 1.0.1 (2026-10-11) |
+| Version | 1.0.2 (2026-10-11) |
 | Authored by | PINK (independent SFE validation field) under the owner mandate "SFE — COMPLETE SYSTEM ACCEPTANCE TEST PLAN" |
 | Application version under test | `integration/job-field-governance` @ `cccd647` (authoritative, GELB 2026-10-11). Every scenario cites this tip; a different tip requires a new plan version or a documented delta (§5.3). |
 | Executing agent | an independent external testing agent operating through Gemini Antigravity (browser automation, screenshots, video, HTTP, read-only SQL) |
@@ -11,7 +11,7 @@
 | Out of scope | production deployment (forbidden), the shared `condyn` database (forbidden), role/privilege administration (forbidden), application changes (forbidden) |
 | Machine-readable index | `docs/acceptance/condyn-acceptance-scenarios.v1.json` (one row per scenario: id, suite, sequence, risk, evidence) |
 
-Change log: 1.0.0 initial release against `cccd647`; 1.0.1 GELB's code review folded in (start-up log lines, status output, state-file secret rule, HR route status codes, jobs route bodies).
+Change log: 1.0.0 initial release against `cccd647`; 1.0.1 GELB's code review folded in (start-up log lines, status output, state-file secret rule, HR route status codes, jobs route bodies); 1.0.2 A-07 state-file permission check added (binding on tips that carry `e762972`, the 600/700 fix of the manual-environment state file; `cccd647` itself predates it).
 
 ---
 
@@ -206,6 +206,8 @@ Scenario format: **Id · Title** · Objective · Preconditions · Procedure · E
 **A-05 · Secret hygiene** · Objective: no credential in evidence. · Procedure: `grep -rEl "AIza|GEMINI_API_KEY=|postgresql://[^:]+:[^@]+@" <evidence dir>`. · Expected: no match. · Evidence: `A-05-secret-scan.txt`. · Risk: all.
 
 **A-06 · Automated baseline** · Objective: the proof landscape is green before manual work. · Procedure: E-07. · Expected: all green except documented skips. · Evidence: `A-06-baseline.txt` (runner output). · Risk: R7.
+
+**A-07 · State file permissions** · Objective: the manual environment's state file, which carries the role password, is private. · Pre: E-04 or E-05 started in your worktree. · Procedure: `stat -c %a .hr-loop-local .hr-loop-local/state.json` (never read the file's content). · Expected: `700` and `600` on any tip that carries `e762972` (script-only fix on top of `cccd647`); on exactly `cccd647` the values are OBSERVED and reported (KNOWN defect there, fixed in `e762972`), not a new finding. · Evidence: `A-07-perms.txt`. · Risk: R7.
 
 ### TS-B API contracts
 
@@ -489,7 +491,7 @@ Acceptance for TS-O: mean score ≥ 2.0 and no item at 0. Items at 1 are finding
 
 | Seq | Name | Scenarios (in order) | Entry condition | Exit condition | Budget |
 | --- | --- | --- | --- | --- | --- |
-| S0 | Safety and smoke | A-01 … A-06, P-02 | E-01…E-03 done | all PASS; the baseline is green | 30 min |
+| S0 | Safety and smoke | A-01 … A-07, P-02 | E-01…E-03 done | all PASS; the baseline is green | 30 min |
 | S1 | Stub path, no model | E-05 server (no worker, no key): B-01, B-02, B-08 … B-10, B-12, B-13, B-14, B-15, D-01 … D-03, E-09 (NO_ANALYSIS and NO_POOL states only), G-01 … G-07, H-01, H-05, H-06, I-01 … I-04, I-07, B-16, N-04 … N-08. Scenarios that need an analysis (D-04 onward, B-11, E-01 …) wait for S2; no analysis is seeded by hand into a server database | S0 PASS | every listed scenario executed with evidence | 2 h |
 | S2 | Live model path | E-04 server: B-03 … B-07, C-01 … C-05, D-01 … D-10, B-11, E-01 … E-10, F-01 … F-05, M-01 … M-06, I-05, I-06 | S1 PASS, key and model available | live sweep succeeded at least once; all evidence | 3 h |
 | S3 | Spatial and motion | J-01 … J-08, H-03, H-04, O-08, O-09 | S2 analysis loaded | videos recorded and reviewed | 1.5 h |
