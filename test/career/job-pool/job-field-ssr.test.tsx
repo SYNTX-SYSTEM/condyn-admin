@@ -111,6 +111,14 @@ describe("SIL Job Field focus (server-rendered)", () => {
     expect(html).toMatch(/data-testid="job-field-pending-UNPROVEN_CANONICAL"[^>]*data-count="2"[^>]*data-ids="TRQREV_1,TRQREV_2"[^>]*data-present="true"/);
     expect(html).toMatch(/data-testid="job-field-pending-UNRESOLVED_EVIDENCE"[^>]*data-count="0"[^>]*data-ids=""[^>]*data-present="false"/);
     expect(html).toContain("@media (prefers-reduced-motion: reduce)");
+    // Information surfaces are field extensions: veils instead of containers, a ground line for the laws, a tether on the nearest reading.
+    expect(html).toMatch(/data-testid="job-field"[^>]*data-surface-grammar="FIELD_EXTENSION_V1"/);
+    expect(html).toContain('data-jf-veil="left"');
+    expect(html).toContain('data-jf-veil="right"');
+    expect(html).toMatch(/data-jf-surface="left"/);
+    expect(html).toMatch(/data-jf-surface="right"/);
+    expect(html).not.toMatch(/data-testid="job-field-legend"[^>]*style="[^"]*border/);
+    expect(html).not.toMatch(/data-testid="job-field-nearest"[^>]*style="[^"]*border/);
   });
 
   it("reveals requirement evidence progressively: lines carry their motion and start collapsed with the evidence in the DOM", () => {
