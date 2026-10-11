@@ -526,6 +526,11 @@ observation point. Readable labels wrap at word boundaries (`wrapLines`), never 
 - B-SYNTX-SCORE: `resonanceScore` appears only inside the pending-boundary aperture (`syntx-aperture-resonance`), never in FIELD,
   ORGANIZATION or ROLE signs; `organizationMatches[].aggregateScore` is not rendered at all (no organization aperture carries a number yet).
 - B-SYNTX-URL: the observation point is in the URL (`jobOrganizationId`, `jobRoleId`, `jobRequirementId`); the aperture never is.
+- B-SYNTX-FOCUS (F-SX-1, PINK): a return or an aperture close may unmount the focused sign; the field then moves focus to the sign of
+  the new observation point (`data-sign-id` of the selected region / carrier / anchor), else to the field root, so Escape works at every
+  level (R8) and the keyboard never falls out of the field. Pinned in the e2e keyboard walk (REQUIREMENT → ROLE → ORGANIZATION → FIELD).
+- B-SYNTX-TRACE-ORDER (O-SX-1, PINK): traces render receded first, field next, inspectable last, so where every trace converges on one
+  source carrier the inspectable trace owns the pointer.
 - B-LENS-FILL, B-LENS-TRANSFORM, B-LENS-HIT, B-JF-GROUND-LINE, B-JF-FONTS continue to hold for the apertures and edge lenses.
 
 ### 13.6 Proofs
@@ -542,3 +547,4 @@ observation point. Readable labels wrap at word boundaries (`wrapLines`), never 
 | Date | Revision | Run | Result |
 |---|---|---|---|
 | 2026-10-11 | SYNTX reconstruction (this delta on 41abe12) | view model, SSR, presentation, governance (file set extended to `Syntx*`), PINK static + layer separation, sealed SIL suites, client reads: 24 files / 153 tests on a disposable database; e2e 10/10 in two consecutive runs on the final build (evidence 21–26 regenerated); tsc 0. Browser lessons: thin SVG signs need transparent hit areas (`data-sx-hit`); a ring or region is clicked on its stroke/body, a trace by absolute coordinates (Playwright's position reference for SVG groups is not their client rect); wrapped `tspan`s concatenate in `textContent`; the legacy analysis route needs a `presentation` block, so the e2e fixture carries the adapter's empty one plus one source document for the title join | green |
+| 2026-10-11 | F-SX-1 / O-SX-1 (PINK, on 3d50c0a) | keyboard focus left the field when a return or an aperture close unmounted the focused sign (Escape then did nothing) → focus follows the observation point (B-SYNTX-FOCUS); a receded trace could capture the pointer over the inspectable one where traces converge → inspectable traces render last (B-SYNTX-TRACE-ORDER). e2e keyboard walk extended (REQUIREMENT aperture → ROLE → ORGANIZATION → FIELD with focus inside at every step) and trace order asserted | e2e 10/10 ×2 · SSR 7/7 · view model 13/13 · GELB governance 10/10 · static 3/3 · semantic governance 4/4 · tsc 0 |

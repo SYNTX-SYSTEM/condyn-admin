@@ -169,6 +169,8 @@ function signAttributes(sign: VisualSign): Record<string, string> {
 }
 
 const receded = (sign: VisualSign): boolean => sign.state === "receded";
+/** Render order of traces: receded first, then field, inspectable last (O-SX-1: the inspectable trace owns the pointer where traces converge on one source carrier). */
+const traceOrder = (trace: SyntxTrace): number => (trace.sign.state === "inspectable" ? 2 : trace.sign.state === "receded" ? 0 : 1);
 const recedeOpacity = (sign: VisualSign, deep = 0.22): number => (receded(sign) ? deep : 1);
 
 function SvgLabel({ lines, x, y, size, fill, weight = 600, anchor = "middle", family = SANS, spacing }: { lines: string[]; x: number; y: number; size: number; fill: string; weight?: number; anchor?: "middle" | "start" | "end"; family?: string; spacing?: number }) {
@@ -340,7 +342,7 @@ function FieldCanvas({ field, mode, t, onObserve }: CanvasProps) {
                 </g>
               );
             })}
-            {field.requirements.map(requirement => requirement.traces.map(trace => {
+            {field.requirements.flatMap(requirement => requirement.traces.map(trace => ({ requirement, trace }))).sort((a, b) => traceOrder(a.trace) - traceOrder(b.trace)).map(({ requirement, trace }) => {
               const source = field.sources[trace.sourceDocIndex];
               const stroke = TRACE_STROKE[trace.kind];
               const inspectable = trace.sign.state === "inspectable";
@@ -362,7 +364,7 @@ function FieldCanvas({ field, mode, t, onObserve }: CanvasProps) {
                   <line x1={requirement.x} y1={requirement.y} x2={x2} y2={y2} stroke={stroke.color} strokeWidth={trace.weight * (inspectable ? 1.4 : 1)} strokeDasharray={stroke.dash} strokeLinecap="round" style={{ pointerEvents: "none" }} />
                 </g>
               );
-            }))}
+            })}
             {field.requirements.map(requirement => {
               const shape = SUPPORT_SHAPE[requirement.support];
               const selected = requirement.sign.state === "requirement_selected";
@@ -508,6 +510,18 @@ export function SyntxField({ workflow, analysisSource, observation: requested, o
   const intakeVisible = intakeOpen;
   const summary = field === null ? null : summarySentence(field.summary, t.summary);
   const observationId = observation.kind === "FIELD" ? (field?.pool.jobPoolUploadId ?? workflow.selectedJobPoolUploadId ?? "") : observation.kind === "ORGANIZATION" ? observation.organizationId ?? "" : observation.kind === "ROLE" ? observation.roleId ?? "" : observation.requirementId ?? "";
+  const observedSignId = observation.kind === "ORGANIZATION" ? `org:${observation.organizationId}` : observation.kind === "ROLE" ? `role:${observation.roleId}` : observation.kind === "REQUIREMENT" ? `req:${observation.requirementId}` : null;
+  const apertureOpen = field?.aperture !== null && field?.aperture !== undefined;
+
+  /** F-SX-1 (PINK, R8): when a return or an aperture close unmounts the focused sign, focus moves to the sign of the new observation point, else to the field root, so Escape keeps working at every level. */
+  useEffect(() => {
+    const root = rootRef.current;
+    if (root === null || typeof document === "undefined") return;
+    const active = document.activeElement;
+    if (active !== null && active !== root && active !== document.body && root.contains(active)) return;
+    const target = (observedSignId === null ? null : root.querySelector<HTMLElement | SVGElement>(`[data-sign-id="${observedSignId}"]`)) ?? root;
+    (target as HTMLElement).focus?.({ preventScroll: true });
+  }, [observation.kind, observation.organizationId, observation.roleId, observation.requirementId, apertureOpen, observedSignId]);
 
   const onFile = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
