@@ -526,6 +526,25 @@ tree classified. Documented legacy exception: F-JP-5. Authority boundaries uncha
 B-JP-ACTOR, B-GEMINI, B-JF-REC-ID, B-ORBIT-COPY, B-JF-SESSION. The shared `condyn` database and the owner's manual
 environment (`127.0.0.1:3017`, `condyn_test_e46502b73c9f316f`) were never touched.
 
+### 3.14 Pool Field round and acceptance plan (2026-10-11)
+
+Owner mandates "SEMIONTIC FRONTEND RECONSTRUCTION", "SEMIONTIC INFORMATION FIELD RECONSTRUCTION", "SEMIONTIC JOB POOL
+FIELD" and "POOL FIELD RUNTIME HANDOVER" produced GRÜN's `ce76bc7`, `a3a4f04`, `1e5c2e3` (third field state POOL,
+the panel rebuilt as the Pool Field) and GELB's integrations `0353cd9`, `093b9e6`, `d17b042`. PINK validated each
+delta on merge with the Job Field browser proof, the browser walk, the static SG guard, layer separation and the
+peers' suites (last run on `d17b042` content: 11 files / 55 and 18 files / 102 green). The owner's environment was
+moved to `d17b042` by GELB; PINK ran nothing against it.
+
+Finding E-07 (PINK → GRÜN, Case 1): after `job-field-exit-btn` the field was CAPABILITY but the URL kept the upload
+id without a focus, so a reload opened the Pool Field (B-POOL-INITIAL-FOCUS). Fixed by GRÜN in `627ec07`: every
+exit to the ground state writes `focus=CAPABILITY` when an upload is selected and `page.tsx` accepts it; proven by
+GRÜN's e2e (reload after exit) and by PINK's `job-field.e2e.test.ts`, extended with exit → URL `focus=CAPABILITY` →
+reload → CAPABILITY with neither field mounted (2/2 green on `627ec07`, `condyn_test_34532128529c278c`).
+
+The acceptance plan deliverable (owner mandate "COMPLETE SYSTEM ACCEPTANCE TEST PLAN") lives in
+`docs/acceptance/CONDYN_SYSTEM_ACCEPTANCE_TEST_PLAN_v1.2.md` with its scenario index; versions 1.0.0 (`cccd647`)
+→ 1.2.2 (`d17b042` + `627ec07`), taken onto the integration branch by GELB at each single-tip release.
+
 ## 4. Boundaries and findings for coordination
 
 - F-JP-1 (closed in `b782793`): `JOB_POOL_CONNECTION.md` §4 followed the per-role `JOB_POOL_JSON_ROLE` design;
