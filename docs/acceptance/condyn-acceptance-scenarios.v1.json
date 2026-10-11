@@ -1,9 +1,9 @@
 {
-  "plan": "docs/acceptance/CONDYN_SYSTEM_ACCEPTANCE_TEST_PLAN_v1.4.md",
-  "version": "1.4.2",
-  "tip": "8356bab",
+  "plan": "docs/acceptance/CONDYN_SYSTEM_ACCEPTANCE_TEST_PLAN_v1.5.md",
+  "version": "1.5.0",
+  "tip": "3d50c0a",
   "generated": "2026-10-11",
-  "scenarioCount": 153,
+  "scenarioCount": 154,
   "scenarios": [
     {
       "id": "A-01",
@@ -452,7 +452,7 @@
     {
       "id": "D-01",
       "suite": "TS-D Job Pool workflow",
-      "title": "Enter the Pool Field on a fresh database",
+      "title": "Enter the field on a fresh database",
       "sequences": [
         "S1",
         "S2"
@@ -462,6 +462,7 @@
       ],
       "video": true,
       "evidence": [
+        "D-01.webm",
         "D-01.png"
       ]
     },
@@ -495,7 +496,7 @@
     {
       "id": "D-04",
       "suite": "TS-D Job Pool workflow",
-      "title": "Explicit selection: node to the core, structure, matching",
+      "title": "Explicit selection: the pool becomes the field",
       "sequences": [
         "S1",
         "S1"
@@ -506,22 +507,22 @@
       ],
       "video": true,
       "evidence": [
-        "D-04-matches.json",
-        "D-04.png"
+        "D-04.webm",
+        "D-04.png",
+        "D-04-matches.json"
       ]
     },
     {
       "id": "D-05",
       "suite": "TS-D Job Pool workflow",
-      "title": "Readings equal the body",
+      "title": "RETIRED (1.5.0, R11)",
       "sequences": [],
       "risk": [
         "R7"
       ],
       "video": false,
-      "evidence": [
-        "D-05-diff.txt"
-      ]
+      "evidence": [],
+      "retired": "1.5.0"
     },
     {
       "id": "D-06",
@@ -540,7 +541,7 @@
     {
       "id": "D-07",
       "suite": "TS-D Job Pool workflow",
-      "title": "Organisation aggregates and the ground line",
+      "title": "No organisation aggregate; the ground line",
       "sequences": [],
       "risk": [
         "R2"
@@ -594,88 +595,70 @@
     {
       "id": "D-11",
       "suite": "TS-D Job Pool workflow",
-      "title": "Structure role reading (1e5c2e3)",
-      "sequences": [
-        "S2"
-      ],
+      "title": "RETIRED (1.5.0, R11)",
+      "sequences": [],
       "risk": [
         "R2",
         "R7"
       ],
       "video": false,
-      "evidence": [
-        "D-11.png",
-        "D-11-diff.txt"
-      ]
+      "evidence": [],
+      "retired": "1.5.0"
     },
     {
       "id": "D-12",
       "suite": "TS-D Job Pool workflow",
-      "title": "Enter the Job Field from the Pool Field (1e5c2e3)",
-      "sequences": [
-        "S2"
-      ],
+      "title": "RETIRED (1.5.0)",
+      "sequences": [],
       "risk": [
         "R3",
         "R4"
       ],
-      "video": true,
-      "evidence": [
-        "D-12.webm"
-      ]
+      "video": false,
+      "evidence": [],
+      "retired": "1.5.0"
     },
     {
       "id": "D-13",
       "suite": "TS-D Job Pool workflow",
-      "title": "Pool Field motion (1e5c2e3)",
-      "sequences": [
-        "S3"
-      ],
+      "title": "RETIRED (1.5.0)",
+      "sequences": [],
       "risk": [
         "R4"
       ],
-      "video": true,
-      "evidence": [
-        "D-13.webm",
-        "D-13-computed.txt"
-      ]
+      "video": false,
+      "evidence": [],
+      "retired": "1.5.0"
     },
     {
       "id": "D-14",
       "suite": "TS-D Job Pool workflow",
-      "title": "Pool Field meaning (1e5c2e3)",
-      "sequences": [
-        "S2",
-        "S6"
-      ],
+      "title": "RETIRED (1.5.0)",
+      "sequences": [],
       "risk": [
         "R2"
       ],
       "video": false,
-      "evidence": [
-        "D-14-score.json"
-      ]
+      "evidence": [],
+      "retired": "1.5.0"
     },
     {
       "id": "D-15",
       "suite": "TS-D Job Pool workflow",
-      "title": "Pool Field nebulae and folds (b64e2c9)",
-      "sequences": [
-        "S2"
-      ],
+      "title": "RETIRED (1.5.0, R14)",
+      "sequences": [],
       "risk": [
         "R2",
         "R7"
       ],
       "video": false,
-      "evidence": [
-        "D-15-*.png"
-      ]
+      "evidence": [],
+      "retired": "1.5.0"
     },
     {
       "id": "E-01",
       "suite": "TS-E Spatial Job Field",
-      "title": "Enter JOB focus",
+      "title": "Enter FIELD focus",
       "sequences": [
         "S2"
       ],
@@ -692,81 +675,69 @@
     {
       "id": "E-02",
       "suite": "TS-E Spatial Job Field",
-      "title": "Canvas reads as a field, numbers equal the body",
+      "title": "RETIRED (1.5.0, R4/R13/R14)",
       "sequences": [],
       "risk": [
         "R2",
         "R7"
       ],
       "video": false,
-      "evidence": [
-        "E-02-diff.txt",
-        "E-02.png"
-      ]
+      "evidence": [],
+      "retired": "1.5.0"
     },
     {
       "id": "E-03",
       "suite": "TS-E Spatial Job Field",
-      "title": "Legend, laws, source naming",
+      "title": "Laws, authority wording, no canonical ids",
       "sequences": [],
       "risk": [
         "R2"
       ],
       "video": false,
       "evidence": [
-        "E-03-dom.txt",
-        "E-03.png"
+        "E-03.png",
+        "E-03-dom.txt"
       ]
     },
     {
       "id": "E-04",
       "suite": "TS-E Spatial Job Field",
-      "title": "Nearest presented role",
-      "sequences": [
-        "S2"
-      ],
+      "title": "RETIRED (1.5.0, R13)",
+      "sequences": [],
       "risk": [
         "R2",
         "R4"
       ],
-      "video": true,
-      "evidence": [
-        "E-04.png",
-        "E-04.webm"
-      ]
+      "video": false,
+      "evidence": [],
+      "retired": "1.5.0"
     },
     {
       "id": "E-05",
       "suite": "TS-E Spatial Job Field",
-      "title": "Role selection and disclosure",
-      "sequences": [
-        "S1"
-      ],
+      "title": "RETIRED (1.5.0)",
+      "sequences": [],
       "risk": [
         "R2",
         "R3",
         "R4"
       ],
-      "video": true,
-      "evidence": [
-        "E-05.png",
-        "E-05.webm"
-      ]
+      "video": false,
+      "evidence": [],
+      "retired": "1.5.0"
     },
     {
       "id": "E-06",
       "suite": "TS-E Spatial Job Field",
-      "title": "PENDING block",
+      "title": "RETIRED (1.5.0, R2)",
       "sequences": [],
       "risk": [
         "R2",
         "R7"
       ],
       "video": false,
-      "evidence": [
-        "E-06-ids.txt",
-        "E-06.png"
-      ]
+      "evidence": [],
+      "retired": "1.5.0"
     },
     {
       "id": "E-07",
@@ -786,7 +757,7 @@
     {
       "id": "E-08",
       "suite": "TS-E Spatial Job Field",
-      "title": "Deep links",
+      "title": "Deep links and stale observation ids",
       "sequences": [
         "S7"
       ],
@@ -834,36 +805,28 @@
     {
       "id": "E-11",
       "suite": "TS-E Spatial Job Field",
-      "title": "Progressive disclosure (ce76bc7)",
-      "sequences": [
-        "S2",
-        "S3"
-      ],
+      "title": "RETIRED (1.5.0)",
+      "sequences": [],
       "risk": [
         "R2",
         "R4"
       ],
-      "video": true,
-      "evidence": [
-        "E-11.webm"
-      ]
+      "video": false,
+      "evidence": [],
+      "retired": "1.5.0"
     },
     {
       "id": "E-12",
       "suite": "TS-E Spatial Job Field",
-      "title": "Galaxy structures (b64e2c9)",
-      "sequences": [
-        "S3"
-      ],
+      "title": "RETIRED (1.5.0, R14)",
+      "sequences": [],
       "risk": [
         "R2",
         "R7"
       ],
       "video": false,
-      "evidence": [
-        "E-12.png",
-        "E-12-diff.txt"
-      ]
+      "evidence": [],
+      "retired": "1.5.0"
     },
     {
       "id": "F-01",
@@ -883,7 +846,7 @@
     {
       "id": "F-02",
       "suite": "TS-F PENDING relations",
-      "title": "Four kinds never merged",
+      "title": "Overlap preserved, categories never merged (R7)",
       "sequences": [],
       "risk": [
         "R7"
@@ -1223,9 +1186,9 @@
       ],
       "video": true,
       "evidence": [
+        "I-05.webm",
         "I-05-l1.png",
-        "I-05-l2.png",
-        "I-05.webm"
+        "I-05-l2.png"
       ]
     },
     {
@@ -1246,7 +1209,7 @@
     {
       "id": "I-07",
       "suite": "TS-I Interaction surfaces",
-      "title": "Field-state strip (1e5c2e3)",
+      "title": "Field-state strip (434ef49)",
       "sequences": [
         "S1"
       ],
@@ -1255,7 +1218,8 @@
       ],
       "video": false,
       "evidence": [
-        "I-07-*.png"
+        "I-07-*.png",
+        "I-07.webm"
       ]
     },
     {
@@ -1312,8 +1276,8 @@
       ],
       "video": true,
       "evidence": [
-        "J-03.png",
-        "J-03.webm"
+        "J-03.webm",
+        "J-03.png"
       ]
     },
     {
@@ -1333,28 +1297,26 @@
     {
       "id": "J-05",
       "suite": "TS-J Visual coherence and motion",
-      "title": "Job Field entry and nearest ray",
+      "title": "RETIRED (1.5.0, R13)",
       "sequences": [],
       "risk": [
         "R4"
       ],
-      "video": true,
-      "evidence": [
-        "J-05.webm"
-      ]
+      "video": false,
+      "evidence": [],
+      "retired": "1.5.0"
     },
     {
       "id": "J-06",
       "suite": "TS-J Visual coherence and motion",
-      "title": "Role selection dimming",
+      "title": "RETIRED (1.5.0)",
       "sequences": [],
       "risk": [
         "R4"
       ],
-      "video": true,
-      "evidence": [
-        "J-06.webm"
-      ]
+      "video": false,
+      "evidence": [],
+      "retired": "1.5.0"
     },
     {
       "id": "J-07",
@@ -1388,19 +1350,14 @@
     {
       "id": "J-09",
       "suite": "TS-J Visual coherence and motion",
-      "title": "Job Field motion grammar (ce76bc7)",
-      "sequences": [
-        "S3"
-      ],
+      "title": "RETIRED (1.5.0)",
+      "sequences": [],
       "risk": [
         "R4"
       ],
-      "video": true,
-      "evidence": [
-        "J-09-grammar.webm",
-        "J-09-hover.webm",
-        "J-09-computed.txt"
-      ]
+      "video": false,
+      "evidence": [],
+      "retired": "1.5.0"
     },
     {
       "id": "J-10",
@@ -1420,23 +1377,19 @@
     {
       "id": "J-11",
       "suite": "TS-J Visual coherence and motion",
-      "title": "Galaxy motion (b64e2c9)",
-      "sequences": [
-        "S3"
-      ],
+      "title": "RETIRED (1.5.0, R14)",
+      "sequences": [],
       "risk": [
         "R4"
       ],
-      "video": true,
-      "evidence": [
-        "J-11.webm",
-        "J-11-computed.txt"
-      ]
+      "video": false,
+      "evidence": [],
+      "retired": "1.5.0"
     },
     {
       "id": "J-12",
       "suite": "TS-J Visual coherence and motion",
-      "title": "Lens motion (01b1d7b)",
+      "title": "SYNTX motion (434ef49; B-LENS-FILL and B-LENS-TRANSFORM carried)",
       "sequences": [
         "S3"
       ],
@@ -1518,8 +1471,8 @@
       ],
       "video": true,
       "evidence": [
-        "L-01-order.txt",
-        "L-01.webm"
+        "L-01.webm",
+        "L-01-order.txt"
       ]
     },
     {
@@ -1872,7 +1825,9 @@
         "R2"
       ],
       "video": false,
-      "evidence": []
+      "evidence": [
+        "O-01.png"
+      ]
     },
     {
       "id": "O-02",
@@ -1885,38 +1840,38 @@
         "R2"
       ],
       "video": false,
-      "evidence": []
+      "evidence": [
+        "O-02.png"
+      ]
     },
     {
       "id": "O-03",
       "suite": "TS-O Semiontic quality review",
-      "title": "What does the Job Field distance mean, and that it is presentation, not truth?",
-      "sequences": [
-        "S6"
-      ],
+      "title": "RETIRED (1.5.0, R14): the distance geometry is gone",
+      "sequences": [],
       "risk": [
         "R2"
       ],
       "video": false,
-      "evidence": []
+      "evidence": [],
+      "retired": "1.5.0"
     },
     {
       "id": "O-04",
       "suite": "TS-O Semiontic quality review",
-      "title": "Why is this role \"nearest\", and that nearest ≠ chosen?",
-      "sequences": [
-        "S6"
-      ],
+      "title": "RETIRED (1.5.0, R13): no nearest role exists",
+      "sequences": [],
       "risk": [
         "R2"
       ],
       "video": false,
-      "evidence": []
+      "evidence": [],
+      "retired": "1.5.0"
     },
     {
       "id": "O-05",
       "suite": "TS-O Semiontic quality review",
-      "title": "What is pending, in four kinds, and that pending ≠ missing capability?",
+      "title": "What is pending (one suspended boundary around the whole ecology), and that pending ≠ missing capability and ≠ failure?",
       "sequences": [
         "S6"
       ],
@@ -1924,12 +1879,14 @@
         "R2"
       ],
       "video": false,
-      "evidence": []
+      "evidence": [
+        "O-05.png"
+      ]
     },
     {
       "id": "O-06",
       "suite": "TS-O Semiontic quality review",
-      "title": "Which evidence backs a match, and where it comes from (analysis vs sweep)?",
+      "title": "Which evidence backs a trace and where it comes from (scored vs sweep, the resolved source title, the exact location)?",
       "sequences": [
         "S6"
       ],
@@ -1937,7 +1894,9 @@
         "R2"
       ],
       "video": false,
-      "evidence": []
+      "evidence": [
+        "O-06.png"
+      ]
     },
     {
       "id": "O-07",
@@ -1950,7 +1909,9 @@
         "R2"
       ],
       "video": false,
-      "evidence": []
+      "evidence": [
+        "O-07.png"
+      ]
     },
     {
       "id": "O-08",
@@ -1963,7 +1924,9 @@
         "R2"
       ],
       "video": false,
-      "evidence": []
+      "evidence": [
+        "O-08.webm"
+      ]
     },
     {
       "id": "O-09",
@@ -1994,32 +1957,26 @@
     {
       "id": "O-11",
       "suite": "TS-O Semiontic quality review",
-      "title": "Pool Field: ring = persisted, core = selected (1e5c2e3)",
-      "sequences": [
-        "S6"
-      ],
+      "title": "RETIRED (1.5.0): the Pool Field is gone; the edge apertures are judged under O-13",
+      "sequences": [],
       "risk": [
         "R2"
       ],
       "video": false,
-      "evidence": [
-        "O-11.png"
-      ]
+      "evidence": [],
+      "retired": "1.5.0"
     },
     {
       "id": "O-12",
       "suite": "TS-O Semiontic quality review",
-      "title": "Galaxy: nebula, thread, moons, reading sentence (b64e2c9)",
-      "sequences": [
-        "S6"
-      ],
+      "title": "RETIRED (1.5.0, R14)",
+      "sequences": [],
       "risk": [
         "R2"
       ],
       "video": false,
-      "evidence": [
-        "O-12.png"
-      ]
+      "evidence": [],
+      "retired": "1.5.0"
     },
     {
       "id": "P-01",
@@ -2061,11 +2018,28 @@
       ]
     },
     {
+      "id": "Q-00",
+      "suite": "TS-Q SYNTX field path",
+      "title": "Bodies first",
+      "sequences": [
+        "S2"
+      ],
+      "risk": [
+        "R7"
+      ],
+      "video": false,
+      "evidence": [
+        "Q-00-*.json",
+        "Q-00-expected.json"
+      ],
+      "binding": "BOUND"
+    },
+    {
       "id": "Q-01",
       "suite": "TS-Q SYNTX field path",
       "title": "STATE A FIELD composition (spec §5 A, §8.2; table §2.1, R4, R13, R14)",
       "sequences": [
-        "S8"
+        "S2"
       ],
       "risk": [
         "R2",
@@ -2075,16 +2049,17 @@
       "evidence": [
         "Q-01.png",
         "Q-01-signs.json",
-        "Q-01-diff.txt"
+        "[data-sign-id]",
+        "Q-01-audit.txt"
       ],
-      "binding": "PRE-BINDING"
+      "binding": "BOUND"
     },
     {
       "id": "Q-02",
       "suite": "TS-Q SYNTX field path",
-      "title": "STATE B ORGANIZATION (spec §5 B, §4.1, §4.2; table §2.1, §3)",
+      "title": "STATE B ORGANIZATION (spec §5 B; table §2.1, §3)",
       "sequences": [
-        "S8"
+        "S2"
       ],
       "risk": [
         "R3",
@@ -2096,14 +2071,14 @@
         "Q-02.webm",
         "Q-02-signs.json"
       ],
-      "binding": "PRE-BINDING"
+      "binding": "BOUND"
     },
     {
       "id": "Q-03",
       "suite": "TS-Q SYNTX field path",
-      "title": "STATE C ROLE (spec §5 C, §4.3, §9; table §2.2, §2.4, R4, R6, R14)",
+      "title": "STATE C ROLE (spec §5 C, §9; table §2.2, §2.4, R2, R4, R6, R7, R14)",
       "sequences": [
-        "S8"
+        "S2"
       ],
       "risk": [
         "R2",
@@ -2114,16 +2089,16 @@
       "evidence": [
         "Q-03.png",
         "Q-03-signs.json",
-        "Q-03-diff.txt"
+        "Q-03-audit.txt"
       ],
-      "binding": "PRE-BINDING"
+      "binding": "BOUND"
     },
     {
       "id": "Q-04",
       "suite": "TS-Q SYNTX field path",
-      "title": "STATE D REQUIREMENT and the evidence aperture (spec §5 D, §4.4, §12; table §2.2, §2.3, §3, R3, R5, R6)",
+      "title": "STATE D REQUIREMENT and the evidence aperture (spec §5 D, §12; table §2.2, §2.3, §3, R3, R5, R6)",
       "sequences": [
-        "S8"
+        "S2"
       ],
       "risk": [
         "R2",
@@ -2132,20 +2107,22 @@
       ],
       "video": false,
       "evidence": [
+        "Q-04-requirement.png",
         "Q-04-matched.png",
         "Q-04-weak.png",
-        "Q-04-sweep.png",
         "Q-04-missing.png",
+        "Q-04-pending.png",
+        "Q-04-sweep.png",
         "Q-04-aperture.json"
       ],
-      "binding": "PRE-BINDING"
+      "binding": "BOUND"
     },
     {
       "id": "Q-05",
       "suite": "TS-Q SYNTX field path",
       "title": "STATE E RETURN and reversibility (spec §5 E, §13.3, §13.4; R8, R12)",
       "sequences": [
-        "S8"
+        "S2"
       ],
       "risk": [
         "R3",
@@ -2158,14 +2135,14 @@
         "Q-05-requests.txt",
         "Q-05-diff.txt"
       ],
-      "binding": "PRE-BINDING"
+      "binding": "BOUND"
     },
     {
       "id": "Q-06",
       "suite": "TS-Q SYNTX field path",
-      "title": "Motion contract (spec §6)",
+      "title": "Motion contract (spec §6; J-12)",
       "sequences": [
-        "S8"
+        "S3"
       ],
       "risk": [
         "R4",
@@ -2174,33 +2151,33 @@
       "video": true,
       "evidence": [
         "Q-06.webm",
-        "Q-06-reduced.webm",
+        "Q-06-reduced.png",
         "Q-06-computed.txt"
       ],
-      "binding": "PRE-BINDING"
+      "binding": "BOUND"
     },
     {
       "id": "Q-07",
       "suite": "TS-Q SYNTX field path",
       "title": "Authority grammar and the unsupported list (spec §11, §12.5, §4.6; table §3, R1, R3)",
       "sequences": [
-        "S8"
+        "S2"
       ],
       "risk": [
         "R9"
       ],
       "video": false,
       "evidence": [
-        "Q-07-audit.txt"
+        "Q-0x-audit.txt"
       ],
-      "binding": "PRE-BINDING"
+      "binding": "BOUND"
     },
     {
       "id": "Q-08",
       "suite": "TS-Q SYNTX field path",
       "title": "Keyboard and accessibility of the path (spec §13.4; R8, R9)",
       "sequences": [
-        "S8"
+        "S2"
       ],
       "risk": [
         "R8",
@@ -2211,14 +2188,14 @@
         "Q-08.webm",
         "Q-08-summary.txt"
       ],
-      "binding": "PRE-BINDING"
+      "binding": "BOUND"
     },
     {
       "id": "Q-09",
       "suite": "TS-Q SYNTX field path",
       "title": "Information compression and score handling (spec §7, §7.1; table §2.4, R4, R13, R14)",
       "sequences": [
-        "S8"
+        "S2"
       ],
       "risk": [
         "R2",
@@ -2230,14 +2207,14 @@
         "Q-09-first-paint.png",
         "data-observation-kind=ROLE"
       ],
-      "binding": "PRE-BINDING"
+      "binding": "BOUND"
     },
     {
       "id": "Q-10",
       "suite": "TS-Q SYNTX field path",
       "title": "Proof-reference integrity (spec §15.1, §14.3; table §2, BR-2)",
       "sequences": [
-        "S8"
+        "S2"
       ],
       "risk": [
         "R7",
@@ -2245,17 +2222,17 @@
       ],
       "video": false,
       "evidence": [
-        "Q-10-signs.json",
+        "Q-0x-signs.json",
         "Q-10-diff.txt"
       ],
-      "binding": "PRE-BINDING"
+      "binding": "BOUND"
     },
     {
       "id": "Q-11",
       "suite": "TS-Q SYNTX field path",
       "title": "Capability Field and the carried contracts untouched (R10, R11; spec §1.2, §10.3)",
       "sequences": [
-        "S8"
+        "S2"
       ],
       "risk": [
         "R3",
@@ -2266,7 +2243,7 @@
         "Q-11.png",
         "Q-11-ids.txt"
       ],
-      "binding": "PRE-BINDING"
+      "binding": "BOUND"
     },
     {
       "id": "Q-12",
@@ -2282,10 +2259,20 @@
       ],
       "video": false,
       "evidence": [
-        "Q-12-report.json"
+        "docs/architecture/decision-fields/evidence/syntx-walk-3d50c0a/",
+        "Q-04-aperture.json",
+        "Q-05-requests.txt",
+        "Q-06-computed.txt",
+        "Q-08-summary.txt",
+        "Q-11-ids.txt",
+        "Q-12-report.json",
+        "manifest.sha256"
       ],
-      "binding": "PRE-BINDING"
+      "binding": "BOUND"
     }
   ],
-  "docsTip": "4a4a7fe"
+  "docsTip": "3d50c0a",
+  "activeScenarioCount": 134,
+  "retiredScenarioCount": 20,
+  "suiteNote": "TS-Q bound on 3d50c0a (GRÜN 434ef49 + GELB governance); retired ids (plan change under R11/R13/R14) keep their numbers and are never reused"
 }

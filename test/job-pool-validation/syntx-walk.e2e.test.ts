@@ -89,7 +89,7 @@ async function availablePort(): Promise<number> {
 }
 
 interface SignRecord { testId: string | null; id: string; source: string; relation: string; state: string; manifestation: string; interaction: string; transition: string; proof: Record<string, string> }
-interface Report { tip: string; recordedAt: string; database: string; analysisId: string; jobPoolUploadId: string; scenarios: Record<string, { verdict: "PASS" | "BOUNDARY-MATCH"; note?: string; counts?: Record<string, number> }> }
+interface Report { tip: string; recordedAt: string; database: string; analysisId: string; jobPoolUploadId: string; scenarios: Record<string, { verdict: "PASS" | "BOUNDARY-MATCH" | "FAIL"; finding?: string; note?: string; counts?: Record<string, number> }> }
 
 describe.skipIf(playwrightModule === null)("PINK Q-12: SYNTX field walk FIELD â†’ ORGANIZATION â†’ ROLE â†’ REQUIREMENT â†’ EVIDENCE â†’ RETURN against PINK's fixtures", () => {
   let browser: any;
@@ -204,9 +204,12 @@ describe.skipIf(playwrightModule === null)("PINK Q-12: SYNTX field walk FIELD â†
       }
     }
     // R1 / B-SYNTX-CLOSURE and R2: no closure manifestation exists; at most one suspended boundary per ecology.
-    expect(signs.filter((sign) => sign.relation === "pending_evaluation").length).toBeLessThanOrEqual(1);
+    // The aperture inherits the relation of the sign it inspects (BR-3) and is not a second boundary: count boundaries only.
+    const pendingBoundaries = signs.filter((sign) => sign.relation === "pending_evaluation" && sign.manifestation !== "temporary_aperture");
+    expect(pendingBoundaries.length).toBeLessThanOrEqual(1);
+    expect(signs.filter((sign) => sign.manifestation === "temporary_aperture").length).toBeLessThanOrEqual(1);
     const anchors = signs.filter((sign) => sign.manifestation === "anchor");
-    if (anchors.length > 0 && (await page.locator('[data-testid^="syntx-requirement-"][data-evaluation-state="NOT_EVALUATED"]').count()) > 0) expect(signs.filter((sign) => sign.relation === "pending_evaluation").length).toBe(1);
+    if (anchors.length > 0 && (await page.locator('[data-testid^="syntx-requirement-"][data-evaluation-state="NOT_EVALUATED"]').count()) > 0) expect(pendingBoundaries.length).toBe(1);
     // GELB condition (a): proof values are attributes only; the stage carries no id as text outside an open aperture.
     const apertureOpen = (await field(page).getAttribute("data-aperture-open")) === "true";
     const text = apertureOpen ? await field(page).evaluate((root: Element) => Array.from(root.querySelectorAll('[data-testid="syntx-canvas"]')).map((element) => element.textContent ?? "").join(" ")) : await stageText(page);
@@ -412,6 +415,7 @@ describe.skipIf(playwrightModule === null)("PINK Q-12: SYNTX field walk FIELD â†
     pass("Q-02", { receded: view.canonicalMapping.organizations.length - 1 });
 
     // ---- Q-03 STATE C ROLE (spec Â§5 C, Â§9; table Â§2.2, Â§2.4, R2, R4, R6, R7, R14) ----
+    await settled(page);
     await page.getByTestId(`syntx-role-${ROLE_ID}`).click();
     await waitKind(page, "ROLE");
     expect(await root.getAttribute("data-observation-id")).toBe(ROLE_ID);
@@ -546,6 +550,7 @@ describe.skipIf(playwrightModule === null)("PINK Q-12: SYNTX field walk FIELD â†
     const supportedId = requirementIds.find((id) => supportOf(id) === "SUPPORTED")!;
     const weakId = requirementIds.find((id) => supportOf(id) === "WEAK")!;
     const openId = requirementIds.find((id) => supportOf(id) === "OPEN")!;
+    await settled(page);
     await page.getByTestId(`syntx-requirement-${supportedId}`).click();
     await waitKind(page, "REQUIREMENT");
     expect(await root.getAttribute("data-observation-id")).toBe(supportedId);
@@ -710,6 +715,7 @@ describe.skipIf(playwrightModule === null)("PINK Q-12: SYNTX field walk FIELD â†
     const organizationAgain = await collectSigns(page);
     expect(organizationAgain.map((sign) => [sign.id, sign.state, sign.proof])).toEqual(liveSigns.ORGANIZATION.map((sign) => [sign.id, sign.state, sign.proof]));
     // The background is a return (spec Â§13.3): a click on the empty canvas restores the field.
+    await settled(page);
     await page.getByTestId("syntx-canvas").click({ position: { x: 4, y: 4 } });
     await waitKind(page, "FIELD");
     expect(params(page).get("jobOrganizationId")).toBeNull();
@@ -718,11 +724,14 @@ describe.skipIf(playwrightModule === null)("PINK Q-12: SYNTX field walk FIELD â†
     expect(await page.getByTestId("syntx-return-btn").count()).toBe(0);
     const fieldAgain = await collectSigns(page);
     expect(fieldAgain.map((sign) => [sign.id, sign.state, sign.interaction, sign.transition, sign.proof])).toEqual(fieldSigns.map((sign) => [sign.id, sign.state, sign.interaction, sign.transition, sign.proof]));
-    // The path is a return: deep in, then every step back by the breadcrumb, then a reload reproduces the observation point.
+    // The path is a return: deep in (acting on settled frames, J-12), then every step back by the breadcrumb, then a reload reproduces the observation point.
+    await settled(page);
     await region.click({ position: await bottomOf(region) });
     await waitKind(page, "ORGANIZATION");
+    await settled(page);
     await page.getByTestId(`syntx-role-${ROLE_ID}`).click();
     await waitKind(page, "ROLE");
+    await settled(page);
     await page.getByTestId(`syntx-requirement-${supportedId}`).click();
     await waitKind(page, "REQUIREMENT");
     const requirementAgain = await collectSigns(page);
@@ -749,8 +758,12 @@ describe.skipIf(playwrightModule === null)("PINK Q-12: SYNTX field walk FIELD â†
     const analysisAfter = await (await fetch(`${base()}/api/career/analyses/${ANALYSIS_ID}`)).json();
     expect(JSON.stringify(viewAfter)).toBe(JSON.stringify(view));
     expect(JSON.stringify(matchesAfter)).toBe(JSON.stringify(matches));
-    expect(JSON.stringify(analysisAfter)).toBe(JSON.stringify(analysisBody));
-    pass("Q-05", { nonGetRequests: nonGet.length }, "return affordance, background, Escape, path and reload restore the same sign sets; bodies identical");
+    // The legacy `recommendations` block of the analysis read (binding Â§1: not an input; Appendix C "legacy matching fields") carries a per-request `generatedAt`; everything else is byte-identical.
+    const withoutLegacyStamp = (body: any) => JSON.stringify({ ...body, recommendations: body.recommendations ? { ...body.recommendations, generatedAt: null } : body.recommendations });
+    expect(withoutLegacyStamp(analysisAfter)).toBe(withoutLegacyStamp(analysisBody));
+    expect(JSON.stringify(analysisAfter.analysis)).toBe(JSON.stringify(analysisBody.analysis));
+    expect(JSON.stringify(analysisAfter.capabilityProposalProjection)).toBe(JSON.stringify(analysisBody.capabilityProposalProjection));
+    pass("Q-05", { nonGetRequests: nonGet.length }, "return affordance, background, Escape, path and reload restore the same sign sets; view and matches bodies byte-identical, the analysis body identical except the legacy recommendations.generatedAt request stamp (non-input)");
 
     // ---- Q-08 keyboard path (spec Â§13.4; R8, R9): Enter selects, Escape returns, the same observation sequence as the pointer path ----
     await region.focus();
@@ -766,13 +779,25 @@ describe.skipIf(playwrightModule === null)("PINK Q-12: SYNTX field walk FIELD â†
     await page.keyboard.press("Enter");
     await page.locator('[data-testid="syntx-field"][data-aperture-open="true"]').waitFor({ timeout: 10_000 });
     expect(await aperture.getAttribute("data-aperture-for")).toBe(traceId);
-    for (const expected of ["REQUIREMENT", "ROLE", "ORGANIZATION", "FIELD"]) { await page.keyboard.press("Escape"); await waitKind(page, expected, expected === "REQUIREMENT" ? '[data-aperture-open="false"]' : ""); }
+    // R8: Escape returns one level at every level from the keyboard. Focus must stay inside the field when the sign that held it unmounts on return; a loss is recorded as finding F-SX-1 and the walk re-focuses the root to continue.
+    const focusLoss: string[] = [];
+    const focusState = () => page.evaluate(() => { const active = document.activeElement; const root = document.querySelector('[data-testid="syntx-field"]'); return { inside: root !== null && active !== null && root.contains(active), active: active === null ? "null" : `${active.tagName.toLowerCase()}${active.getAttribute("data-testid") ? `#${active.getAttribute("data-testid")}` : ""}${active.getAttribute("data-sign-id") ? `[${active.getAttribute("data-sign-id")}]` : ""}` }; });
+    const keyboardTrace: string[] = [];
+    for (const expected of ["REQUIREMENT", "ROLE", "ORGANIZATION", "FIELD"]) {
+      await page.keyboard.press("Escape");
+      const kindAfter = await page.locator('[data-testid="syntx-field"]').evaluate((element: Element) => element.getAttribute("data-observation-kind"));
+      const focus = await focusState();
+      keyboardTrace.push(`Escape â†’ expected ${expected}, observed ${kindAfter}, aperture ${await root.getAttribute("data-aperture-open")}, focus ${focus.active} (inside: ${focus.inside})`);
+      if (!focus.inside) { focusLoss.push(`before reaching ${expected}: focus on ${focus.active}`); await root.focus(); if (kindAfter !== expected) await page.keyboard.press("Escape"); }
+      await waitKind(page, expected, expected === "REQUIREMENT" ? '[data-aperture-open="false"]' : "");
+    }
     // Every carrier, anchor, trace and boundary is a named button; receded ones leave the tab order.
     const buttons = await field(page).evaluate((root: Element) => Array.from(root.querySelectorAll('[data-sign-id][role="button"]')).map((element) => ({ id: element.getAttribute("data-sign-id"), label: element.getAttribute("aria-label") ?? "", tabindex: element.getAttribute("tabindex") })));
     expect(buttons.length).toBe(view.canonicalMapping.organizations.length + view.canonicalMapping.roles.length);
     for (const button of buttons) { expect(button.label.length).toBeGreaterThan(0); expect(button.tabindex).toBe("0"); }
-    writeFileSync(resolve(EVIDENCE_DIR, "Q-08-summary.txt"), `FIELD: ${await summaryText(page)}\nbuttons at FIELD: ${JSON.stringify(buttons)}\n`);
-    pass("Q-08", { buttons: buttons.length });
+    writeFileSync(resolve(EVIDENCE_DIR, "Q-08-summary.txt"), `FIELD: ${await summaryText(page)}\nbuttons at FIELD: ${JSON.stringify(buttons)}\nkeyboard trace:\n${keyboardTrace.join("\n")}\nfocus loss: ${focusLoss.length === 0 ? "none" : focusLoss.join("; ")}\n`);
+    if (focusLoss.length === 0) pass("Q-08", { buttons: buttons.length });
+    else report.scenarios["Q-08"] = { verdict: "FAIL", finding: "F-SX-1", note: `keyboard focus leaves the field when the focused sign unmounts on return: ${focusLoss.join("; ")}; Escape then no longer returns until the field is focused again (R8, spec Â§13.4)` };
     pass("Q-07", undefined, "unsupported wording, legacy role names, aggregate numbers and closure manifestations absent at every observation point (Q-0x-audit.txt)");
     pass("Q-10", undefined, "sign enums, identity, proof resolution and TRQREV database resolution bound at every observation point (Q-0x-signs.json)");
 
@@ -791,8 +816,11 @@ describe.skipIf(playwrightModule === null)("PINK Q-12: SYNTX field walk FIELD â†
     await page.locator('[data-testid="semantic-career-intelligence-field"][data-field-focus="CAPABILITY"]').waitFor({ timeout: 60_000 });
     expect(await root.count()).toBe(0);
     for (const stage of ["01", "02", "03", "04", "05", "06"]) expect(await page.getByTestId(`focus-transition-stage-shell-${stage}`).count()).toBe(1);
-    await page.getByTestId("job-pool-panel-toggle").click();
-    await page.locator('[data-testid="syntx-field"][data-field-state="AVAILABLE"]').waitFor({ timeout: 60_000 });
+    // Re-entry after the reload: a click before hydration completes is lost in headless Chromium (not a field behaviour), so the click is repeated until the field answers.
+    for (let attempt = 0; attempt < 12; attempt += 1) {
+      await page.getByTestId("job-pool-panel-toggle").click();
+      try { await page.locator('[data-testid="syntx-field"][data-field-state="AVAILABLE"]').waitFor({ timeout: 5_000 }); break; } catch { if (attempt === 11) throw new Error("the field did not open on re-entry"); }
+    }
     expect(params(page).get("focus")).toBe("FIELD");
     expect(await root.getAttribute("data-observation-kind")).toBe("FIELD");
     await settled(page);
@@ -801,6 +829,7 @@ describe.skipIf(playwrightModule === null)("PINK Q-12: SYNTX field walk FIELD â†
     pass("Q-11");
     expect(pageErrors).toEqual([]);
     await page.close();
+    expect(focusLoss, "F-SX-1: keyboard focus must stay inside the field on return (R8)").toEqual([]);
   }, 600_000);
 
   it("Q-06: reduced motion keeps every sign and its meaning; LIVE names only the allowed motions", async () => {

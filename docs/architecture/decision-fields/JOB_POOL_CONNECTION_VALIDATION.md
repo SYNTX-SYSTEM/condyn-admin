@@ -639,6 +639,62 @@ E-04 caption, E-12 threads, K geometry and the matching assertions of `job-field
 `syntx-walk.e2e.test.ts` (Q-12) is written against GRÜN's published contract. Application code unchanged (`8356bab`);
 owner environment stays on `801828c` until Q-12 is green. GRÜN had not started at the time of writing.
 
+### 3.17 SYNTX field: acceptance binding and the running walk on `3d50c0a` (2026-10-11)
+
+GRÜN's delta `434ef49` (frontend/job-field; `SyntxField.tsx`, `syntx-field-view-model.ts`, `analysis-sources.ts`,
+DOM contract `JOB_FIELD_FRONTEND.md` §13 = BR-1 … BR-5 with the sign inventory and the retired / kept / new ids)
+was integrated by GELB as `3d50c0a` (`integration/job-field-governance`: merge `7272ae9` + the governance suite
+`test/career/job-pool/syntx-field-governance.test.ts`, 10 cases over every observation point, binding §5.1,
+B-SYNTX-JOIN accepted). `app/` and `lib/` of `3d50c0a` are byte-identical to `434ef49`.
+
+PINK's deliverables on `3d50c0a`:
+- Plan 1.5.0 (`docs/acceptance/CONDYN_SYSTEM_ACCEPTANCE_TEST_PLAN_v1.5.md`, index 1.5.0 / tip `3d50c0a`): TS-Q bound
+  to §13.3 (Q-00 … Q-12 with ids), §2.1–§2.3 rewritten for the one field, TS-D/E/F/H/I/J/K/L/N/O rebound, 20 scenario
+  ids retired under R11/R13/R14 (D-05, D-11 … D-15, E-02, E-04 … E-06, E-11, E-12, J-05, J-06, J-09, J-11, O-03,
+  O-04, O-11, O-12; kept with their numbers, never reused), Appendix A regenerated (215 ids; 117 retired, 68 new
+  lines), Appendix C (B-SYNTX-PREBINDING resolved; B-SYNTX-JOIN, B-SYNTX-SCORE, B-SYNTX-URL, B-JP-GEMINI-FIXTURE,
+  O-SX-1), D (§13), F, G.
+- `test/job-pool-validation/syntx-walk.e2e.test.ts` (Q-12): real `next dev --webpack` on a disposable database with
+  PINK's pool, a DRAFT copy, a second version through the intake and the seeded analysis; Chromium walks FIELD →
+  ORGANIZATION → ROLE → REQUIREMENT → EVIDENCE (matched, weak, missing, pending apertures) → RETURN and binds, at every
+  observation point, every `[data-sign-id]` (six §14.3 enums, proof attributes resolving in the three GET bodies, TRQREV
+  resolution on the database, pending once per ecology, no closure, no proof id as text), the apertures' texts and
+  joins (source title and `location` through the exact joins), reversibility (return affordance, background, Escape,
+  path, reload: identical sign dumps), GET-only traffic, the unsupported-list audit, no number before the pending
+  aperture, keyboard Enter/Escape, LIVE motion names (`sxEnter`, `sxSuspend`, opacity transitions, camera `.78s`) and
+  reduced motion (nothing running, same signs), exit / reload / re-entry, the retired ids, and the carried field
+  states (NO_ANALYSIS, NO_POOL + intake + explicit selection, INACTIVE_POOL as containment with UNREAD anchors,
+  NOT_FOUND, three stale kinds, JOB/POOL aliases). Evidence `evidence/syntx-walk-3d50c0a/` (Q-00 bodies, screenshots,
+  sign dumps, audits, `Q-04-aperture.json`, `Q-05-requests.txt`, `Q-06-computed.txt`, `Q-08-summary.txt`,
+  `Q-12-report.json`, `manifest.sha256`).
+- `job-field-static.test.ts` extended to the SYNTX files with the B-SYNTX-JOIN allow-list (the sources module reads
+  `documents`, `capabilities[].evidence` and the proposal projection only; no `.organizations` / `.roles` /
+  `matching` / `recommendations` read, no fuzzy matching); `live-browser-workflow.e2e.test.ts` rebound to the dotted
+  traces and the sweep aperture (not executed: no `GEMINI_API_KEY` in PINK's shell); `job-field.e2e.test.ts` and
+  `browser-walk.e2e.test.ts` retired with their grammar (their surviving concerns moved into the walk).
+
+Run record (2026-10-11, `3d50c0a`, disposable databases, Chromium via `CONDYN_PLAYWRIGHT_MODULE`): static / unit /
+governance batch 9 files / 54 tests green (incl. GELB's 10 governance cases); `tsc --noEmit` 0; the walk: the
+reduced-motion test and the field-states test green, the path test green in every assertion except one finding.
+
+Findings and observations:
+- **F-SX-1** (PINK → GRÜN, S3, Q-08 / R8 / spec §13.4): keyboard focus leaves the field when the sign holding it
+  unmounts on return (focused trace at REQUIREMENT → Escape, Escape → ROLE keeps focus on the trace → Escape →
+  ORGANIZATION unmounts the ecology, `document.activeElement` becomes `body` → the next Escape is lost until the field
+  is focused again). Expected: on return move focus to the field root (`tabIndex -1`, `rootRef` exists) or to the sign
+  of the new observation point. Evidence `Q-08-summary.txt`. The Q-12 gate opens with GRÜN's repair and PINK's re-run.
+- **O-SX-1** (observation, S4): with one source document every trace of an ecology converges on the same carrier; a
+  receded trace rendered later in DOM order sits on top of the inspectable one near that end and captures the pointer.
+  The walk clicks a point the trace owns under `elementFromPoint`. Possible closure: pointer-events none on receded
+  traces, or inspectable traces rendered last.
+- KNOWN, not findings: `GET /api/career/analyses/{id}` re-stamps the legacy `recommendations.generatedAt` per request
+  (binding §1 non-input; the Q-05 byte comparison excludes that field); a click on the strip toggle right after a
+  reload is lost before hydration in headless Chromium (the walk retries); the seeded analysis has no sweep
+  (B-JP-GEMINI-FIXTURE), so sweep signs are asserted absent and bound by the live suite.
+
+Owner environment `127.0.0.1:3017` untouched (still `d07017a`, bound by plan 1.4.2); it moves only after the Q-12
+gate is green and the owner instructs.
+
 ## 4. Boundaries and findings for coordination
 
 - F-JP-1 (closed in `b782793`): `JOB_POOL_CONNECTION.md` §4 followed the per-role `JOB_POOL_JSON_ROLE` design;

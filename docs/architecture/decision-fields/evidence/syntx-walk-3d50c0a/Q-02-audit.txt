@@ -1,0 +1,21 @@
+Q-02
+visible text:
+Organization Alpha Industrial Systems contains 1 roles: Distributed Systems Architect.
+
+Alpha IndustrialSystems
+Beta Cloud GmbH
+DistributedSystems Architect
+Platform Engineer
+Role WithoutRequirements
+JOB FIELD
+← CAPABILITY FIELD
+PINK validation pool
+›
+Alpha Industrial Systems
+← RETURN
+PRESENTATION MATCHING
+Esc returns · Enter selects · Tab moves between carriers
+⬡ POOLS · 2
++ INTAKE
+BOUNDARY
+PRESENTED != EVALUATED · UPLOADED != SELECTED · RANKED != RECOMMENDED · MISSING != GAP DECISION · COVERED != SCORED · PENDING != MISSING CAPABILITY · POOL ROLE != INFERRED ROLE

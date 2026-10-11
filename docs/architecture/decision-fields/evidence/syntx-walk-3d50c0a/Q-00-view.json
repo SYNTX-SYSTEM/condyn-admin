@@ -1,0 +1,263 @@
+{
+  "jobPoolUploadId": "JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7",
+  "poolId": "pool_pink_validation_v1",
+  "poolVersion": 1,
+  "poolName": "PINK validation pool",
+  "poolStatus": "ACTIVE",
+  "organizationCount": 2,
+  "roleCount": 3,
+  "requirementCount": 6,
+  "uploadedByActorRef": "JOB_POOL_UPLOADER:PINK_SYNTX_WALK",
+  "uploadedAt": "2026-10-11T14:48:28.834Z",
+  "canonicalSha256": "6ca8892f9ad0f6ac316f8fc3f6294bb7995bc46e8dff6855e905c66d74a4fcac",
+  "rawSha256": "bcc9e9b19b893b1107a149333f45572cab93f093b77ed789a09fd5d180b00fcc",
+  "pool": {
+    "organizations": [
+      {
+        "country_iso": "DE",
+        "description": "Edge and automation platforms.",
+        "id": "org_pink_alpha",
+        "industry": "Industrial automation",
+        "name": "Alpha Industrial Systems",
+        "org_id": "ALPHA",
+        "pool_id": "pool_pink_validation_v1",
+        "region": "Bavaria",
+        "scale": "ENTERPRISE"
+      },
+      {
+        "country_iso": "DE",
+        "description": "Cloud platform engineering.",
+        "id": "org_pink_beta",
+        "industry": "Cloud software",
+        "name": "Beta Cloud GmbH",
+        "org_id": "BETA",
+        "pool_id": "pool_pink_validation_v1",
+        "region": "Berlin",
+        "scale": "SCALEUP"
+      }
+    ],
+    "pool": {
+      "created_at": "2026-10-10T00:00:00.000Z",
+      "description": "Deterministic pool for the independent Job Pool validation field.",
+      "id": "pool_pink_validation_v1",
+      "name": "PINK validation pool",
+      "status": "ACTIVE",
+      "version": 1
+    },
+    "requirements": [
+      {
+        "capability_name": "Distributed Systems Architecture",
+        "domain": "Architecture",
+        "evidence_hint": "Reference architectures delivered to production.",
+        "id": "req_pink_alpha_1",
+        "necessity": "REQUIRED",
+        "required_level": "L5 expert",
+        "requirement_type": "CAPABILITY",
+        "role_id": "role_pink_alpha_architect",
+        "weight": 1
+      },
+      {
+        "capability_name": "Edge Computing",
+        "domain": "Infrastructure",
+        "id": "req_pink_alpha_2",
+        "necessity": "PREFERRED",
+        "required_level": "advanced",
+        "role_id": "role_pink_alpha_architect",
+        "weight": 0.6
+      },
+      {
+        "capability_name": "Industrial IoT Protocol Design",
+        "domain": "Protocols",
+        "id": "req_pink_alpha_3",
+        "required_level": "",
+        "role_id": "role_pink_alpha_architect",
+        "weight": 0.4
+      },
+      {
+        "aliases": [
+          "k8s",
+          "Kubernetes"
+        ],
+        "capability_name": "Kubernetes Orchestration",
+        "domain": "Infrastructure",
+        "id": "req_pink_beta_1",
+        "necessity": "REQUIRED",
+        "required_level": "L4",
+        "requirement_type": "TOOL_TECHNOLOGY",
+        "role_id": "role_pink_beta_platform",
+        "weight": 0.9
+      },
+      {
+        "capability_name": "German Language",
+        "domain": "Language",
+        "id": "req_pink_beta_2",
+        "necessity": "OPTIONAL",
+        "required_level": "C1",
+        "requirement_type": "LANGUAGE",
+        "role_id": "role_pink_beta_platform",
+        "weight": 0.2
+      },
+      {
+        "capability_name": "Node.js",
+        "domain": "Runtime",
+        "id": "req_pink_beta_3",
+        "required_level": "",
+        "role_id": "role_pink_beta_platform",
+        "weight": 0.3
+      }
+    ],
+    "roles": [
+      {
+        "description": "Designs resilient distributed control platforms.",
+        "domain_focus": "Industrial edge platforms",
+        "id": "role_pink_alpha_architect",
+        "organization_id": "org_pink_alpha",
+        "pool_id": "pool_pink_validation_v1",
+        "seniority": "SENIOR",
+        "title": "Distributed Systems Architect"
+      },
+      {
+        "description": "Operates Kubernetes based platforms.",
+        "domain_focus": "Cloud infrastructure",
+        "id": "role_pink_beta_platform",
+        "organization_id": "org_pink_beta",
+        "pool_id": "pool_pink_validation_v1",
+        "seniority": "MID",
+        "title": "Platform Engineer"
+      },
+      {
+        "description": "A role that declares no requirement at all.",
+        "domain_focus": "Unspecified",
+        "id": "role_pink_beta_empty",
+        "organization_id": "org_pink_beta",
+        "pool_id": "pool_pink_validation_v1",
+        "seniority": "JUNIOR",
+        "title": "Role Without Requirements"
+      }
+    ],
+    "search_queries": []
+  },
+  "canonicalMapping": {
+    "authorityState": "NONE",
+    "mappingState": "MAPPED",
+    "organizations": [
+      {
+        "name": "Alpha Industrial Systems",
+        "poolOrganizationId": "org_pink_alpha",
+        "targetOrganizationEntityId": "TORGENT_CA0690821AD71539C8EDBAB4E05617E3",
+        "targetOrganizationRevisionId": "TOREV_B40CBFE3A15EA4B73BAC27373176FB32"
+      },
+      {
+        "name": "Beta Cloud GmbH",
+        "poolOrganizationId": "org_pink_beta",
+        "targetOrganizationEntityId": "TORGENT_4B1899750C717127B7B31A685AAC7230",
+        "targetOrganizationRevisionId": "TOREV_9D0338BCD08C92AD30FB5EB012FE9298"
+      }
+    ],
+    "proposalState": "PROPOSAL_ONLY",
+    "provider": "CONDYN_JOB_POOL_JSON",
+    "roles": [
+      {
+        "poolOrganizationId": "org_pink_alpha",
+        "poolRoleId": "role_pink_alpha_architect",
+        "requirements": [
+          {
+            "capabilityName": "Distributed Systems Architecture",
+            "matchingEligibility": "MATCHING_ELIGIBLE_PROPOSAL_ONLY",
+            "necessityState": "REQUIRED",
+            "poolRequirementId": "req_pink_alpha_1",
+            "targetRequirementEntityAdmissionId": "TRQADM_81F10655216CEDBCEB77837BB25CA653",
+            "targetRequirementEntityId": "TRQENT_85DAE9F5E006A3A8A4CD43C596FB13BC",
+            "targetRequirementReconstructionResultId": "TRQRES_A1FFF0B46CF088A1EE6112C16A08CBBB",
+            "targetRequirementRevisionId": "TRQREV_29D80C3F89E61E2A3BB10754638AC45F"
+          },
+          {
+            "capabilityName": "Edge Computing",
+            "matchingEligibility": "MATCHING_ELIGIBILITY_UNKNOWN",
+            "necessityState": "PREFERRED",
+            "poolRequirementId": "req_pink_alpha_2",
+            "targetRequirementEntityAdmissionId": "TRQADM_9325DA1AD5FDD7479675158916B905FB",
+            "targetRequirementEntityId": "TRQENT_607D9BE89E33B83B4DDFACC53E01EFD3",
+            "targetRequirementReconstructionResultId": "TRQRES_B8C12C6130CA8E28AA711689B1E4076E",
+            "targetRequirementRevisionId": "TRQREV_DCF8ECD04E910CF8758BBC70C9C36D38"
+          },
+          {
+            "capabilityName": "Industrial IoT Protocol Design",
+            "matchingEligibility": "MATCHING_ELIGIBILITY_UNKNOWN",
+            "necessityState": "UNKNOWN",
+            "poolRequirementId": "req_pink_alpha_3",
+            "targetRequirementEntityAdmissionId": "TRQADM_FE71DE930EBCFF227796E4A923758EF2",
+            "targetRequirementEntityId": "TRQENT_2B152FD889B5D2B37204E1BFD28819F5",
+            "targetRequirementReconstructionResultId": "TRQRES_6EC895A5D91C523800F717F35929C610",
+            "targetRequirementRevisionId": "TRQREV_DAE2665961105126306A09A302E25930"
+          }
+        ],
+        "targetRequirementReconstructionBatchRunId": "TRQRUN_1CA739B5CF1C821E739D92F93E215836",
+        "targetRoleEntityId": "TROLEENT_FF8BAFBF9F54E90735C034B8974EF846",
+        "targetRoleOrganizationBindingRevisionId": "TROBREV_5C16B8DE6BFE493B85F62E2D60FD9F47",
+        "targetRoleProfileRevisionId": "TRPREV_D38DB0D9058849FFA30DB9FC2DAE91BE",
+        "targetRoleReconstructionBatchRunId": "TRRBATCH_E8052AA6A2A08200025A89C1FF04BD8D",
+        "targetRoleSourceBindingRevisionId": "TRSBREV_F1F8E09B9832BE871BEA0FAFC880FA49",
+        "targetSourceRevisionId": "TSREV_6716DD9A354C5F497A055A9E20C17B10",
+        "title": "Distributed Systems Architect"
+      },
+      {
+        "poolOrganizationId": "org_pink_beta",
+        "poolRoleId": "role_pink_beta_platform",
+        "requirements": [
+          {
+            "capabilityName": "Kubernetes Orchestration",
+            "matchingEligibility": "MATCHING_INELIGIBLE",
+            "necessityState": "REQUIRED",
+            "poolRequirementId": "req_pink_beta_1",
+            "targetRequirementEntityAdmissionId": "TRQADM_46BE25EDD1F92D52EFD57886057C4094",
+            "targetRequirementEntityId": "TRQENT_26362DA17A26F8682F57784E21C66423",
+            "targetRequirementReconstructionResultId": "TRQRES_A14F57BFBD4A1E0ED40C295412598312",
+            "targetRequirementRevisionId": "TRQREV_9FEA3168112FE3FD961CFBCD9D3DEE4A"
+          },
+          {
+            "capabilityName": "German Language",
+            "matchingEligibility": "MATCHING_INELIGIBLE",
+            "necessityState": "OPTIONAL",
+            "poolRequirementId": "req_pink_beta_2",
+            "targetRequirementEntityAdmissionId": "TRQADM_BFD3D43D8B0CC8970538176DC94B319A",
+            "targetRequirementEntityId": "TRQENT_6266E58D1E63DD0D635596006EDCE1B3",
+            "targetRequirementReconstructionResultId": "TRQRES_EED076DC18B2F6B8D37EBAB67E63BBB8",
+            "targetRequirementRevisionId": "TRQREV_E165EFEF5E7BE72803FD4A1E1B9418FB"
+          },
+          {
+            "capabilityName": "Node.js",
+            "matchingEligibility": "MATCHING_ELIGIBILITY_UNKNOWN",
+            "necessityState": "UNKNOWN",
+            "poolRequirementId": "req_pink_beta_3",
+            "targetRequirementEntityAdmissionId": "TRQADM_18B78DE5912903264D97818717DFBAFD",
+            "targetRequirementEntityId": "TRQENT_2A0D5254C00969388E9BA0F90CA32286",
+            "targetRequirementReconstructionResultId": "TRQRES_05658F5AF19193961CACABA33D92E52A",
+            "targetRequirementRevisionId": "TRQREV_D48D82BF772A32CC81F2E853B59F2BCB"
+          }
+        ],
+        "targetRequirementReconstructionBatchRunId": "TRQRUN_1CA739B5CF1C821E739D92F93E215836",
+        "targetRoleEntityId": "TROLEENT_E6CB8C28196A1C8DCF034E700691E0B7",
+        "targetRoleOrganizationBindingRevisionId": "TROBREV_9C05D44693C17740A25FFC198AF05EA4",
+        "targetRoleProfileRevisionId": "TRPREV_2A45EB03B2D1FEBF8D083A83D6AF1B3C",
+        "targetRoleReconstructionBatchRunId": "TRRBATCH_E8052AA6A2A08200025A89C1FF04BD8D",
+        "targetRoleSourceBindingRevisionId": "TRSBREV_00C29466DA54BB4030B13726D22439D2",
+        "targetSourceRevisionId": "TSREV_6716DD9A354C5F497A055A9E20C17B10",
+        "title": "Platform Engineer"
+      },
+      {
+        "poolOrganizationId": "org_pink_beta",
+        "poolRoleId": "role_pink_beta_empty",
+        "requirements": [],
+        "targetRequirementReconstructionBatchRunId": "TRQRUN_1CA739B5CF1C821E739D92F93E215836",
+        "targetRoleEntityId": "TROLEENT_4C0C997659496DE590EDDA71631C87E3",
+        "targetRoleOrganizationBindingRevisionId": "TROBREV_0A80D92922CB79785E157F993F72703C",
+        "targetRoleProfileRevisionId": "TRPREV_04C51C3BE258B21526BCB1658B375C08",
+        "targetRoleReconstructionBatchRunId": "TRRBATCH_E8052AA6A2A08200025A89C1FF04BD8D",
+        "targetRoleSourceBindingRevisionId": "TRSBREV_54492E01099F86DF3B5F2EA4D88C8A15",
+        "targetSourceRevisionId": "TSREV_6716DD9A354C5F497A055A9E20C17B10",
+        "title": "Role Without Requirements"
+      }
+    ]
+  }
+}
