@@ -1,7 +1,12 @@
 {
   "plan": "docs/acceptance/CONDYN_SYSTEM_ACCEPTANCE_TEST_PLAN_v1.1.md",
+<<<<<<< HEAD
   "version": "1.1.1",
   "tip": "0353cd9 (+ frontend a3a4f04 pending integration)",
+=======
+  "version": "1.1.0",
+  "tip": "0353cd9",
+>>>>>>> origin/integration/job-field-governance
   "generated": "2026-10-11",
   "scenarioCount": 131,
   "scenarios": [
