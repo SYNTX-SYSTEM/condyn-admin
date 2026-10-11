@@ -203,7 +203,7 @@ describe("Job Pool workflow over HTTP against the production routes", () => {
 describe.skipIf(playwrightModule === null)("Job Pool workflow in a real browser", () => {
   type Browser = { newPage(options: { viewport: { width: number; height: number }; reducedMotion?: "reduce" | "no-preference" }): Promise<Page>; close(): Promise<void> };
   type Locator = { waitFor(options?: { timeout?: number; state?: string }): Promise<void>; count(): Promise<number>; textContent(): Promise<string | null>; getAttribute(name: string): Promise<string | null>; click(): Promise<void>; fill(value: string): Promise<void>; isDisabled(): Promise<boolean>; setInputFiles(files: string | string[]): Promise<void>; first(): Locator; hover(): Promise<void>; isVisible(): Promise<boolean>; evaluate<T>(fn: (element: Element) => T): Promise<T> };
-  type Page = { goto(url: string, options?: { waitUntil?: string; timeout?: number }): Promise<unknown>; url(): string; locator(selector: string): Locator; getByTestId(id: string): Locator; screenshot(options: { path: string; fullPage?: boolean }): Promise<unknown>; waitForTimeout(ms: number): Promise<void>; on(event: string, handler: (payload: unknown) => void): void; close(): Promise<void> };
+  type Page = { goto(url: string, options?: { waitUntil?: string; timeout?: number }): Promise<unknown>; reload(options?: { waitUntil?: string }): Promise<unknown>; url(): string; locator(selector: string): Locator; getByTestId(id: string): Locator; screenshot(options: { path: string; fullPage?: boolean }): Promise<unknown>; waitForTimeout(ms: number): Promise<void>; on(event: string, handler: (payload: unknown) => void): void; close(): Promise<void> };
   let browser: Browser;
   let pageErrors: string[] = [];
 
@@ -342,7 +342,11 @@ describe.skipIf(playwrightModule === null)("Job Pool workflow in a real browser"
     await page.getByTestId("job-pool-panel-collapse").click();
     await page.locator('[data-testid="semantic-career-intelligence-field"][data-field-focus="CAPABILITY"]').waitFor({ timeout: 30_000 });
     expect(await page.getByTestId("job-pool-panel").count()).toBe(0);
-    expect(new URL(page.url()).searchParams.get("focus")).toBeNull();
+    // The explicit exit survives a reload: with an upload still selected, the ground state is named in the URL.
+    expect(new URL(page.url()).searchParams.get("focus")).toBe("CAPABILITY");
+    await page.reload({ waitUntil: "domcontentloaded" });
+    await page.locator('[data-testid="semantic-career-intelligence-field"][data-field-focus="CAPABILITY"]').waitFor({ timeout: 60_000 });
+    expect(await page.getByTestId("job-pool-panel").count()).toBe(0);
     expect(pageErrors).toEqual([]);
     await page.close();
   }, 300_000);
@@ -481,7 +485,8 @@ describe.skipIf(playwrightModule === null)("Job Pool workflow in a real browser"
     await page.getByTestId("job-field-exit-btn").click();
     await page.locator('[data-testid="semantic-career-intelligence-field"][data-field-focus="CAPABILITY"]').waitFor({ timeout: 10_000 });
     expect(await page.getByTestId("job-field").count()).toBe(0);
-    expect(new URL(page.url()).searchParams.get("focus")).toBeNull();
+    // With an upload still selected, the exit names the ground state so a reload keeps it (B-POOL-INITIAL-FOCUS).
+    expect(new URL(page.url()).searchParams.get("focus")).toBe("CAPABILITY");
     expect(await page.getByTestId("semantic-zoom-telemetry").count()).toBe(1);
     expect(pageErrors).toEqual([]);
     await page.close();
