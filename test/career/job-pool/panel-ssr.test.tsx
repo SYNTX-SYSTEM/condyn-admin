@@ -111,6 +111,11 @@ describe("SIL Job Pool panel (server-rendered field)", () => {
     expect(job).toContain('data-field-focus="JOB"');
     expect(job).not.toContain('data-testid="job-pool-panel"');
     expect(job).toContain('data-testid="job-field"');
+    // An explicit CAPABILITY focus (written on exit) keeps the ground state on reload despite the upload id.
+    const ground = renderToString(<SemanticCareerIntelligenceField data={EMPTY_CAREER_INTELLIGENCE_DATA} jobPoolUploadId="JPOOL_SSR" fieldFocus="CAPABILITY" />);
+    expect(ground).toContain('data-field-focus="CAPABILITY"');
+    expect(ground).not.toContain('data-testid="job-pool-panel"');
+    expect(ground).not.toContain('data-testid="job-field"');
   });
 
   it("renders the orbit from the delivered list: the selected upload at the core and disabled, the others on the ring in delivered order", () => {

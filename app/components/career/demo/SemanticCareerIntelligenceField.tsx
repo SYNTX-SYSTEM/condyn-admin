@@ -415,7 +415,13 @@ export function SemanticCareerIntelligenceField({
       window.history.replaceState(window.history.state, "", url.toString());
     } catch { /* navigation state is a convenience, never a requirement */ }
   };
-  const switchFieldFocus = (next: "CAPABILITY" | "JOB" | "POOL") => { setFieldFocus(next); replaceUrlParam("focus", next === "CAPABILITY" ? null : next); if (next !== "JOB") { setJobRoleId(null); replaceUrlParam("jobRoleId", null); } };
+  /** The ground state is written explicitly (focus=CAPABILITY) whenever an exact upload is in the URL: otherwise a reload would reopen the Pool Field after an explicit exit (B-POOL-INITIAL-FOCUS). */
+  const switchFieldFocus = (next: "CAPABILITY" | "JOB" | "POOL") => {
+    setFieldFocus(next);
+    const selectedUpload = jobPoolWorkflow.selectedJobPoolUploadId ?? jobPoolUploadId ?? null;
+    replaceUrlParam("focus", next === "CAPABILITY" ? (selectedUpload ? "CAPABILITY" : null) : next);
+    if (next !== "JOB") { setJobRoleId(null); replaceUrlParam("jobRoleId", null); }
+  };
   const selectJobRole = (poolRoleId: string | null) => { setJobRoleId(poolRoleId); replaceUrlParam("jobRoleId", poolRoleId); };
   const selectJobPool = (id: string) => { jobPoolWorkflow.select(id); replaceUrlParam("jobPoolUploadId", id); };
   const [inferenceTelemetry, setInferenceTelemetry] = useState<any>(initialAnalysisState?.inferenceTelemetry ?? null);
