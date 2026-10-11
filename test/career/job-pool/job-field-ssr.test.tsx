@@ -188,4 +188,11 @@ describe("SIL Job Field focus (server-rendered)", () => {
     expect(dash).toContain('data-field-focus="JOB"');
     expect(dash).toContain('data-selected-role="ROLE_B"');
   });
+
+  it("lets the reveal animation release the element after it rises, so inline opacity (the canonical reason at 0.85) is never pinned to 1 (F-LF-2 twin)", () => {
+    const html = renderToString(<SemanticCareerIntelligenceField data={EMPTY_CAREER_INTELLIGENCE_DATA} fieldFocus="JOB" jobPoolUploadId="JPOOL_WITH_MATCHES" analysisId="ANL_TEST" />);
+    expect(html).toContain("@keyframes jfRise { from { opacity: 0; } to { opacity: 1; } }");
+    expect(html).toContain("[data-jf-reveal] { animation: jfRise .32s ease-out backwards; }");
+    expect(html).not.toMatch(/jfRise [^;]*\bboth\b/);
+  });
 });

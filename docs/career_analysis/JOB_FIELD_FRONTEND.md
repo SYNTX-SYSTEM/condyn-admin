@@ -380,6 +380,12 @@ is interactive and sits on the free side of its body; a viewport-anchored lens m
 of the transformed stage (a transform makes `position: fixed` relative to it).
 Boundary B-LENS-TRANSFORM: entrance animations on positioned lenses animate opacity only; a keyframe that ends on
 `transform: none` with a fill mode overrides the inline transform that places the lens.
+Boundary B-LENS-FILL (F-LF-2, PINK): a reveal animation releases its element when it ends (`fill-mode: backwards`,
+never `both`/`forwards`). A fill mode that holds the final keyframe pins the animated property for the element's
+lifetime and overrides every later inline value, so a state-dependent opacity (the core lens receding to 0.25 while a
+structure role is focused, the canonical reason at 0.85) read as 1. Animation expresses the entrance only; the
+relational state after it is the inline style. The e2e asserts the computed opacity of the core lens at ROLE level
+(< 0.5) and after ALL ROLES (1); both SSR suites pin the fill mode.
 
 ### 12.4 Run record
 
@@ -389,6 +395,7 @@ Boundary B-LENS-TRANSFORM: entrance animations on positioned lenses animate opac
 | 2026-10-11 | same | first run: my e2e 10/10 · PINK browser-walk 1/1 + job-field.e2e 2/2 · unit/SSR batch 100/103 | the 3 reds were my SSR assertions matching the stylesheet text (the ids now appear in selectors); matched the element markup instead → 7/7 |
 | 2026-10-11 | same | frames reviewed: the nearest caption sat on its body. Cause: the reveal keyframe ended on `transform: none` with `fill-mode: both`, cancelling the inline transform that places a caption beside its body → reveal animations are opacity-only (B-LENS-TRANSFORM). The role lens covered the spread moon labels → moved to 35 % + 210 px. The Pool Field core lens below the core covered the lower bodies → a tethered reading at the viewport edge, vertically centred | — |
 | 2026-10-11 | same | the core lens, declared `position: fixed` inside the transformed stage, was pinned to the stage and intercepted a click on a body (my e2e, 37 retries) → moved to the overlay root (B-LENS-HIT) | my e2e 10/10 + panel SSR 8/8 · PINK browser-walk 1/1 + job-field.e2e 2/2 · 16 files / 103; tsc 0 |
+| 2026-10-11 | F-LF-2 (PINK, owner mandate "F-LF-2 FOCUS RELATION REPAIR") | the core lens read opacity 1 while a structure role was focused although the inline style said 0.25: the reveal rule `jpRise … both` held the last keyframe for the element's lifetime (opacity twin of B-LENS-TRANSFORM); the same rule in the Job Field pinned the canonical reason to 1 instead of 0.85 → both reveal rules use `fill-mode: backwards` (B-LENS-FILL); no derivation, data or copy change | e2e 10/10 ×3 (polled core-lens state: 0.25 / pointer-events none / ROLE at focus, 1 / auto / POOL after ALL ROLES) · job-field SSR 8/8 · panel SSR 9/9 · presentation/motion/static/layer-separation green (7 files / 46) · tsc 0 |
 | 2026-10-11 | `af53a58` + fix | frame 17: the nearest caption, placed on the inner side of its body, covered the candidate core → the caption sits outward from the core (`data-caption-side` = right for bodies on the right half, left otherwise) | my e2e 10/10 + job-field SSR 7/7 · PINK browser-walk 1/1 + job-field.e2e 2/2; tsc 0 |
 | 2026-10-11 | `2ce8266` + fix | GELB governance note: the authority label in the caption was the smallest text (8.5 px) → 10.5 px (`job-field-authority-label`), asserted by SSR | job-field SSR 7/7; tsc 0 |
 
