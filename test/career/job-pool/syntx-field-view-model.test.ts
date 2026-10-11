@@ -8,11 +8,19 @@ import {
   observeOrganization,
   observeRequirement,
   observeRole,
+  requirementLabel,
   resolveObservation,
   returnFrom,
+  ROLE_CLEARANCE_RADIUS,
+  SOURCE_BOX,
+  SOURCE_RING_RADIUS,
   summarySentence,
   SUPPORT_DISTANCE,
   SYNTX_FIELD_GRAMMAR,
+  SYNTX_LAYOUT,
+  traceClearance,
+  tracePath,
+  tracePoint,
   type SyntxObservation
 } from "../../../lib/career/job-pool/syntx-field-view-model";
 import { decodeAnalysisSources, type AnalysisSources } from "../../../lib/career/job-pool/analysis-sources";
@@ -154,6 +162,57 @@ describe("SYNTX field view model (read-only adapter over the delivered Job Pool 
     expect(pending.aperture!.sign.relation).toBe("pending_evaluation");
   });
 
+  it("perceptual closure: co-terminal traces bow apart and stay distinct (F-SX-2); traces clear the role carrier and every requirement label (O-SX-2); the REQUIREMENT camera keeps every reached source in view (O-SX-4)", () => {
+    // Owner-shaped overlap: the matched requirement also carries an unscored sweep proposal from the same document (stable + dotted to one carrier).
+    const body: typeof matches = JSON.parse(JSON.stringify(matches));
+    body.roleMatches[0].matched[0].sweepProposal = { ...kubernetesSweepCoverage, name: "TypeScript (sweep)", evidence: [{ docId: "DOC_CV", quote: "TypeScript appears in the sweep as well." }] };
+    body.roleMatches[0].matched[0].evidence.push({ docId: "DOC_CV", quote: "A second TypeScript quote from the same document." });
+    for (const observation of [ROLE_A, REQ_1]) {
+      const field = deriveSyntxField(view, body, null, observation)!;
+      const role = field.roles.find(candidate => candidate.id === "ROLE_A")!;
+      const req1 = field.requirements.find(requirement => requirement.id === "REQ_1")!;
+      expect(req1.traces.map(trace => trace.sign.manifestation)).toEqual(["trace_stable", "trace_stable", "trace_dotted"]);
+      // Bows are geometry only: never in the sign or its proof, and the sign ids are unchanged.
+      expect(req1.traces.map(trace => trace.sign.id)).toEqual(["trace:REQ_1:supports:DOC_CV:0", "trace:REQ_1:supports:DOC_CV:1", "trace:REQ_1:covers_unscored:DOC_CV:0"]);
+      for (const trace of req1.traces) expect(JSON.stringify(trace.sign)).not.toContain("bow");
+      // F-SX-2: three traces on the same endpoints take three distinct bows, distinct paths and midpoints at least 16 units apart.
+      const bows = req1.traces.map(trace => trace.bow);
+      expect(new Set(bows).size).toBe(3);
+      for (let i = 0; i < bows.length; i += 1) for (let j = i + 1; j < bows.length; j += 1) expect(Math.abs(bows[i] - bows[j])).toBeGreaterThanOrEqual(18);
+      const carrier = field.sources[req1.traces[0].sourceDocIndex];
+      const paths = req1.traces.map(trace => tracePath(req1, carrier, trace.bow));
+      expect(new Set(paths).size).toBe(3);
+      const midpoints = req1.traces.map(trace => tracePoint(req1, carrier, trace.bow, 0.5));
+      for (let i = 0; i < midpoints.length; i += 1) for (let j = i + 1; j < midpoints.length; j += 1) expect(Math.hypot(midpoints[i].x - midpoints[j].x, midpoints[i].y - midpoints[j].y)).toBeGreaterThanOrEqual(16);
+      // O-SX-2: every trace of the ecology clears the role carrier (with its inner title) and every requirement label.
+      const rects = field.requirements.map(requirement => requirementLabel(requirement).box);
+      for (const requirement of field.requirements) for (const trace of requirement.traces) {
+        const source = field.sources[trace.sourceDocIndex];
+        expect(traceClearance(requirement, source, trace.bow, { discs: [{ x: role.x, y: role.y, r: ROLE_CLEARANCE_RADIUS }], rects }), `${observation.kind} ${trace.sign.id}`).toBeGreaterThanOrEqual(2);
+      }
+      // Source carriers sit on the outer ring; the label geometry the routing keeps clear is the label the renderer draws.
+      for (const source of field.sources) expect(Math.hypot(source.x - role.x, source.y - role.y)).toBeCloseTo(SOURCE_RING_RADIUS, 0);
+      expect(requirementLabel(req1)).toMatchObject({ lines: ["TypeScript"], anchor: expect.stringMatching(/^(middle|start|end)$/) });
+    }
+    // O-SX-4: at REQUIREMENT the camera keeps scale 2.4 and every carrier the observed requirement reaches lies inside the view, title included.
+    for (const requirementId of ["REQ_1", "REQ_2"]) {
+      const field = deriveSyntxField(view, body, null, { ...REQ_1, requirementId })!;
+      expect(field.camera.scale).toBe(CAMERA_SCALE.REQUIREMENT);
+      const half = SYNTX_LAYOUT.center / field.camera.scale;
+      const observed = field.requirements.find(requirement => requirement.id === requirementId)!;
+      expect(Math.abs(observed.x - field.camera.x)).toBeLessThan(half);
+      expect(Math.abs(observed.y - field.camera.y)).toBeLessThan(half);
+      for (const trace of observed.traces) {
+        const source = field.sources[trace.sourceDocIndex];
+        expect(Math.abs(source.x - field.camera.x) + SOURCE_BOX.halfWidth, `${requirementId} ${source.docId} x`).toBeLessThanOrEqual(half);
+        expect(source.y + SOURCE_BOX.below - field.camera.y, `${requirementId} ${source.docId} y`).toBeLessThanOrEqual(half);
+        expect(field.camera.y - (source.y - SOURCE_BOX.above), `${requirementId} ${source.docId} -y`).toBeLessThanOrEqual(half);
+      }
+    }
+    // A single trace stays straight; nothing about the signs changed against the unmodified matching.
+    expect(deriveSyntxField(view, matches, null, REQ_1)!.requirements.find(requirement => requirement.id === "REQ_1")!.traces.map(trace => trace.bow)).toEqual([0]);
+  });
+
   it("joins source title, evidence location and sweep evidence id only by exact match inside the same analysis; a miss omits the field", () => {
     const resolved = deriveSyntxField(view, matches, SOURCES, REQ_1)!;
     const stable = resolved.requirements[0].traces[0];
@@ -239,10 +298,14 @@ describe("SYNTX field view model (read-only adapter over the delivered Job Pool 
 
   it("generates the screen-reader summary from the same facts as the signs, in the SIL locale", () => {
     const en = SIL_COPY.en.syntx.summary;
-    expect(summarySentence(deriveSyntxField(view, matches, null, FIELD_OBSERVATION)!.summary, en)).toBe("Job pool Sample Pool, version 1, ACTIVE: 1 organizations containing 2 roles. A presentation matching was read for this pool.");
+    expect(summarySentence(deriveSyntxField(view, matches, null, FIELD_OBSERVATION)!.summary, en)).toBe("Job pool Sample Pool, version 1, ACTIVE: 1 organization containing 2 roles. A presentation matching was read for this pool.");
     expect(summarySentence(deriveSyntxField(view, matches, null, ROLE_A)!.summary, en)).toBe("Role Platform Engineer at Acme requires 2 requirements: 1 with scored support, 0 with weak support, 1 covered only by an unscored sweep proposal, 0 without delivered support, 0 without a matching read. Canonical evaluation is pending for every requirement of this role.");
-    expect(summarySentence(deriveSyntxField(view, matches, null, REQ_1)!.summary, en)).toBe("Requirement TypeScript of role Platform Engineer: supported by scored evidence; 1 evidence traces from 1 sources.");
+    expect(summarySentence(deriveSyntxField(view, matches, null, REQ_1)!.summary, en)).toBe("Requirement TypeScript of role Platform Engineer: supported by scored evidence; 1 evidence trace from 1 source.");
     expect(summarySentence(deriveSyntxField(view, matches, null, at("ORGANIZATION", { organizationId: "ORG_1" }))!.summary, SIL_COPY.de.syntx.summary)).toBe("Organisation Acme enthält 2 Rollen: Platform Engineer, Data Analyst.");
+    // O-SX-3: the reading agrees in number in both locales.
+    expect(summarySentence(deriveSyntxField(view, matches, null, REQ_1)!.summary, SIL_COPY.de.syntx.summary)).toBe("Anforderung TypeScript der Rolle Platform Engineer: durch bewertete Evidenz gestützt; 1 Evidenzspur aus 1 Quelle.");
+    expect(summarySentence(deriveSyntxField(view, matches, null, FIELD_OBSERVATION)!.summary, SIL_COPY.de.syntx.summary)).toContain("1 Organisation mit 2 Rollen.");
+    expect(summarySentence({ kind: "REQUIREMENT", requirementName: "SQL", roleTitle: "Platform Engineer", support: "WEAK", traceCount: 2, sourceCount: 2, apertureOpen: false }, en)).toBe("Requirement SQL of role Platform Engineer: weakly supported by scored evidence; 2 evidence traces from 2 sources.");
   });
 });
 

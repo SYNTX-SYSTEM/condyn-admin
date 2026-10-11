@@ -527,10 +527,10 @@ export const SIL_COPY = {
       boundaryHide: "HIDE BOUNDARY",
       matching: "PRESENTATION MATCHING",
       summary: {
-        field: "Job pool {poolName}, version {poolVersion}, {poolStatus}: {organizationCount} organizations containing {roleCount} roles. {matching}",
-        organization: "Organization {organizationName} contains {roleCount} roles: {roleTitles}.",
-        role: "Role {roleTitle} at {organizationName} requires {requirementCount} requirements: {supported} with scored support, {weak} with weak support, {sweepOnly} covered only by an unscored sweep proposal, {open} without delivered support, {unread} without a matching read. {pending}",
-        requirement: "Requirement {requirementName} of role {roleTitle}: {support}; {traceCount} evidence traces from {sourceCount} sources. {aperture}",
+        field: "Job pool {poolName}, version {poolVersion}, {poolStatus}: {organizationCount} {organizations} containing {roleCount} {roles}. {matching}",
+        organization: "Organization {organizationName} contains {roleCount} {roles}: {roleTitles}.",
+        role: "Role {roleTitle} at {organizationName} requires {requirementCount} {requirements}: {supported} with scored support, {weak} with weak support, {sweepOnly} covered only by an unscored sweep proposal, {open} without delivered support, {unread} without a matching read. {pending}",
+        requirement: "Requirement {requirementName} of role {roleTitle}: {support}; {traceCount} {traces} from {sourceCount} {sources}. {aperture}",
         support: {
           SUPPORTED: "supported by scored evidence",
           WEAK: "weakly supported by scored evidence",
@@ -541,7 +541,14 @@ export const SIL_COPY = {
         pendingEvaluation: "Canonical evaluation is pending for every requirement of this role.",
         apertureOpen: "An inspection aperture is open.",
         matchingRead: "A presentation matching was read for this pool.",
-        matchingNotRead: "No presentation matching was read."
+        matchingNotRead: "No presentation matching was read.",
+        nouns: {
+          organizations: { one: "organization", other: "organizations" },
+          roles: { one: "role", other: "roles" },
+          requirements: { one: "requirement", other: "requirements" },
+          traces: { one: "evidence trace", other: "evidence traces" },
+          sources: { one: "source", other: "sources" }
+        }
       },
       stale: {
         ORGANIZATION: "ORGANIZATION ID NOT IN THIS POOL",
@@ -1091,10 +1098,10 @@ export const SIL_COPY = {
       boundaryHide: "GRENZE VERBERGEN",
       matching: "PRÄSENTATIONS-MATCHING",
       summary: {
-        field: "Job-Pool {poolName}, Version {poolVersion}, {poolStatus}: {organizationCount} Organisationen mit {roleCount} Rollen. {matching}",
-        organization: "Organisation {organizationName} enthält {roleCount} Rollen: {roleTitles}.",
-        role: "Rolle {roleTitle} bei {organizationName} erfordert {requirementCount} Anforderungen: {supported} mit bewerteter Stützung, {weak} mit schwacher Stützung, {sweepOnly} nur durch einen unbewerteten Sweep-Vorschlag abgedeckt, {open} ohne gelieferte Stützung, {unread} ohne gelesenes Matching. {pending}",
-        requirement: "Anforderung {requirementName} der Rolle {roleTitle}: {support}; {traceCount} Evidenzspuren aus {sourceCount} Quellen. {aperture}",
+        field: "Job-Pool {poolName}, Version {poolVersion}, {poolStatus}: {organizationCount} {organizations} mit {roleCount} {roles}. {matching}",
+        organization: "Organisation {organizationName} enthält {roleCount} {roles}: {roleTitles}.",
+        role: "Rolle {roleTitle} bei {organizationName} erfordert {requirementCount} {requirements}: {supported} mit bewerteter Stützung, {weak} mit schwacher Stützung, {sweepOnly} nur durch einen unbewerteten Sweep-Vorschlag abgedeckt, {open} ohne gelieferte Stützung, {unread} ohne gelesenes Matching. {pending}",
+        requirement: "Anforderung {requirementName} der Rolle {roleTitle}: {support}; {traceCount} {traces} aus {sourceCount} {sources}. {aperture}",
         support: {
           SUPPORTED: "durch bewertete Evidenz gestützt",
           WEAK: "durch bewertete Evidenz schwach gestützt",
@@ -1105,7 +1112,14 @@ export const SIL_COPY = {
         pendingEvaluation: "Die kanonische Bewertung ist für jede Anforderung dieser Rolle ausstehend.",
         apertureOpen: "Eine Prüfapertur ist geöffnet.",
         matchingRead: "Für diesen Pool wurde ein Präsentations-Matching gelesen.",
-        matchingNotRead: "Es wurde kein Präsentations-Matching gelesen."
+        matchingNotRead: "Es wurde kein Präsentations-Matching gelesen.",
+        nouns: {
+          organizations: { one: "Organisation", other: "Organisationen" },
+          roles: { one: "Rolle", other: "Rollen" },
+          requirements: { one: "Anforderung", other: "Anforderungen" },
+          traces: { one: "Evidenzspur", other: "Evidenzspuren" },
+          sources: { one: "Quelle", other: "Quellen" }
+        }
       },
       stale: {
         ORGANIZATION: "ORGANISATIONS-ID NICHT IN DIESEM POOL",

@@ -96,7 +96,7 @@ describe("SYNTX field (server-rendered)", () => {
     expect(html).not.toContain('data-testid="syntx-aperture"');
     for (const id of RETIRED) expect(html).not.toContain(`data-testid="${id}`);
     // BR-4: the summary for the observation point.
-    expect(html).toMatch(new RegExp(`data-testid="syntx-summary"[^>]*data-summary-for="${UPLOAD_ID}"[^>]*aria-live="polite"[^>]*>Job pool Sample Pool, version 1, ACTIVE: 1 organizations containing 2 roles. A presentation matching was read for this pool.<`));
+    expect(html).toMatch(new RegExp(`data-testid="syntx-summary"[^>]*data-summary-for="${UPLOAD_ID}"[^>]*aria-live="polite"[^>]*>Job pool Sample Pool, version 1, ACTIVE: 1 organization containing 2 roles. A presentation matching was read for this pool.<`));
     // The field-edge semantic line and the boundary aperture (folded) carry the authority; the labels are attributes and folded text, never a permanent panel.
     expect(html).toContain("PRESENTED != EVALUATED");
     expect(html).toContain("COVERED != SCORED");
@@ -151,7 +151,7 @@ describe("SYNTX field (server-rendered)", () => {
     expect(html).toContain('data-aperture-open="false"');
     expect(html).not.toContain('data-testid="syntx-aperture"');
     expect(html).toMatch(/data-testid="syntx-canvas"[^>]*data-camera-scale="2.4"/);
-    expect(html).toMatch(/data-summary-for="REQ_1"[^>]*>Requirement TypeScript of role Platform Engineer: supported by scored evidence; 1 evidence traces from 1 sources.</);
+    expect(html).toMatch(/data-summary-for="REQ_1"[^>]*>Requirement TypeScript of role Platform Engineer: supported by scored evidence; 1 evidence trace from 1 source.</);
   });
 
   it("names a stale observation id and falls back to its parent level", () => {
