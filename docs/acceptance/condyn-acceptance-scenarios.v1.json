@@ -1,9 +1,9 @@
 {
   "plan": "docs/acceptance/CONDYN_SYSTEM_ACCEPTANCE_TEST_PLAN_v1.2.md",
-  "version": "1.2.3",
-  "tip": "142df0f",
+  "version": "1.2.5",
+  "tip": "ee4c4dc",
   "generated": "2026-10-11",
-  "scenarioCount": 136,
+  "scenarioCount": 140,
   "scenarios": [
     {
       "id": "A-01",
@@ -657,6 +657,22 @@
       ]
     },
     {
+      "id": "D-15",
+      "suite": "TS-D Job Pool workflow",
+      "title": "Pool Field nebulae and folds (b64e2c9)",
+      "sequences": [
+        "S2"
+      ],
+      "risk": [
+        "R2",
+        "R7"
+      ],
+      "video": false,
+      "evidence": [
+        "D-15-*.png"
+      ]
+    },
+    {
       "id": "E-01",
       "suite": "TS-E Spatial Job Field",
       "title": "Enter JOB focus",
@@ -830,6 +846,23 @@
       "video": true,
       "evidence": [
         "E-11.webm"
+      ]
+    },
+    {
+      "id": "E-12",
+      "suite": "TS-E Spatial Job Field",
+      "title": "Galaxy structures (b64e2c9)",
+      "sequences": [
+        "S3"
+      ],
+      "risk": [
+        "R2",
+        "R7"
+      ],
+      "video": false,
+      "evidence": [
+        "E-12.png",
+        "E-12-diff.txt"
       ]
     },
     {
@@ -1382,6 +1415,22 @@
       "video": true,
       "evidence": [
         "J-10-*.webm"
+      ]
+    },
+    {
+      "id": "J-11",
+      "suite": "TS-J Visual coherence and motion",
+      "title": "Galaxy motion (b64e2c9)",
+      "sequences": [
+        "S3"
+      ],
+      "risk": [
+        "R4"
+      ],
+      "video": true,
+      "evidence": [
+        "J-11.webm",
+        "J-11-computed.txt"
       ]
     },
     {
@@ -1939,6 +1988,21 @@
       "video": false,
       "evidence": [
         "O-11.png"
+      ]
+    },
+    {
+      "id": "O-12",
+      "suite": "TS-O Semiontic quality review",
+      "title": "Galaxy: nebula, thread, moons, reading sentence (b64e2c9)",
+      "sequences": [
+        "S6"
+      ],
+      "risk": [
+        "R2"
+      ],
+      "video": false,
+      "evidence": [
+        "O-12.png"
       ]
     },
     {

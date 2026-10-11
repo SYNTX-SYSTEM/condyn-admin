@@ -187,6 +187,29 @@ describe.skipIf(playwrightModule === null || !jobFocusPresent)("PINK Job Field: 
     const reason = (await page.getByTestId("job-field-pending-reason").textContent()) ?? "";
     expect(reason).toContain("NOT_EVALUATED");
     expect(reason).toContain("VERIFIED_CAPABILITY_SNAPSHOT_ABSENT");
+    // Galaxy grammar (ee4c4dc, SG-6 / G6): the canonical reason is folded but reachable and keyboard-operable.
+    // The fold is a real <button> with aria-expanded; Enter from keyboard focus reveals the reason, Enter again hides it.
+    const why = page.getByTestId("job-field-pending-why");
+    if (await why.count()) {
+      expect(await page.getByTestId("job-field-pending-reason").isVisible()).toBe(false);
+      expect(await why.getAttribute("aria-expanded")).toBe("false");
+      await why.focus();
+      await page.keyboard.press("Enter");
+      await page.locator('[data-testid="job-field-pending-reason"][data-jf-reveal="true"]').waitFor({ timeout: 10_000 });
+      expect(await page.getByTestId("job-field-pending-reason").isVisible()).toBe(true);
+      expect(await why.getAttribute("aria-expanded")).toBe("true");
+      expect(((await page.getByTestId("job-field-pending-reason").textContent()) ?? "")).toContain("VERIFIED_CAPABILITY_SNAPSHOT_ABSENT");
+      await page.keyboard.press("Space");
+      expect(await page.getByTestId("job-field-pending-reason").isVisible()).toBe(false);
+    }
+    // The legend fold is keyboard-operable the same way; the source wording is present before and visible after.
+    const legendToggle = page.getByTestId("job-field-legend-toggle");
+    if (await legendToggle.count()) {
+      await legendToggle.focus();
+      await page.keyboard.press("Enter");
+      expect(await legendToggle.getAttribute("aria-expanded")).toBe("true");
+      expect(((await page.getByTestId("job-field-legend").innerText()) ?? "").toUpperCase()).toContain("SCORED SOURCE");
+    }
     await page.screenshot({ path: resolve(EVIDENCE_DIR, "pink-04-job-field-job-focus.png") });
 
     // Finding E-07 (PINK, 2026-10-11) fixed by GRÜN in 627ec07: an explicit exit must survive a reload.
