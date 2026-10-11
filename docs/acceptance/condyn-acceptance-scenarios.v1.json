@@ -1,7 +1,7 @@
 {
   "plan": "docs/acceptance/CONDYN_SYSTEM_ACCEPTANCE_TEST_PLAN_v1.2.md",
-  "version": "1.2.0",
-  "tip": "093b9e6 (+ frontend 1e5c2e3 pending integration)",
+  "version": "1.2.1",
+  "tip": "d17b042",
   "generated": "2026-10-11",
   "scenarioCount": 136,
   "scenarios": [
