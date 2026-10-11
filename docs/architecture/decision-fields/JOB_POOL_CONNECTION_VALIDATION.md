@@ -709,7 +709,10 @@ the strip or the intake?) probed in the field-states test (`Q-08-focus-entry.txt
 defect (Tab returns to the strip); typing in the intake keeps focus; a pointer selection focuses the clicked sign
 natively; Escape with the intake open closes the intake first (R8). F-SX-1 closed, O-SX-1 closed. Plan 1.5.1 binds
 `8cb4a50`; evidence `evidence/syntx-walk-8cb4a50/`. The Q-12 gate is green; the owner environment `127.0.0.1:3017`
-(still `d07017a`, untouched) moves on the owner's instruction, followed by PINK's GET-only check there.
+(still `d07017a`, untouched) moves on the owner's instruction, followed by PINK's GET-only check there with
+`test/job-pool-validation/support/syntx-readonly-walk.mjs` (existing upload and analyses only; signs = bodies at FIELD,
+ORGANIZATION, ROLE, REQUIREMENT, the matched / sweep / pending apertures, focus-follow on return, reduced motion, bodies
+unchanged; dry-run on PINK's disposable environment `condyn_test_8776be3f32fcc17d`: 68/68 checks, 0 non-GET requests).
 
 ## 4. Boundaries and findings for coordination
 
