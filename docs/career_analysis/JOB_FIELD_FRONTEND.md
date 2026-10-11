@@ -399,3 +399,146 @@ relational state after it is the inline style. The e2e asserts the computed opac
 | 2026-10-11 | `af53a58` + fix | frame 17: the nearest caption, placed on the inner side of its body, covered the candidate core → the caption sits outward from the core (`data-caption-side` = right for bodies on the right half, left otherwise) | my e2e 10/10 + job-field SSR 7/7 · PINK browser-walk 1/1 + job-field.e2e 2/2; tsc 0 |
 | 2026-10-11 | `2ce8266` + fix | GELB governance note: the authority label in the caption was the smallest text (8.5 px) → 10.5 px (`job-field-authority-label`), asserted by SSR | job-field SSR 7/7; tsc 0 |
 
+
+## 13. SYNTX semiontic field: the field is the language (owner mandate "SFE — SYNTX SEMIONTIC FIELD RECONSTRUCTION", execution authorization 2026-10-11)
+
+Target architecture: `docs/architecture/decision-fields/SYNTX_SEMIOTIC_RECONSTRUCTION_SPEC.md` (owner, verbatim).
+Governing contract: `docs/architecture/decision-fields/SYNTX_FIELD_CONTRACT_BINDING.md` (GELB): §2 binding table sign → repository
+field → proof reference, §3 unsupported list, rulings R1–R14. A sign the binding does not bind is not rendered.
+
+The former Pool Field (`focus=POOL`) and Job Field (`focus=JOB`) are one field. The spec's §8 (pool topology) is the FIELD and
+ORGANIZATION state of that field, its §9 (role-centred constraint ecology) the ROLE and REQUIREMENT state. `focus=FIELD` opens it;
+`JOB` and `POOL` are accepted as legacy aliases of `FIELD`; an exact `jobPoolUploadId` without a focus opens it (B-POOL-INITIAL-FOCUS
+unchanged); exits write `focus=CAPABILITY` while an upload is selected. The Capability Field is untouched (R10, B-CAPABILITY-CHROME).
+
+### 13.1 Architecture
+
+| Layer | File | Role |
+|---|---|---|
+| View model (pure, no React) | `lib/career/job-pool/syntx-field-view-model.ts` | `deriveSyntxField(view, matching, analysisSources, observation)` → entities, relations, visual signs (§14.3), transitions, proof references, camera, summary facts. `resolveObservation`, `observeOrganization/Role/Requirement`, `inspectSign`, `returnFrom`, `observationFromParams`, `summarySentence`. Grammar id `SYNTX_FIELD_V1`. |
+| Analysis sources (the permitted second read, R12) | `lib/career/job-pool/analysis-sources.ts`, `lib/career/ui/useJobPoolSources.ts` | `GET /api/career/analyses/{id}` decoded to exactly three surfaces: documents (docId → title), capability evidence (CAP_*, docId, quote, location), proposal evidence (PCAP_*, EVD_*, docId, quote). `matching`, `recommendations`, inferred organizations and roles are never decoded (binding §1). |
+| Renderer | `app/components/career/demo/SyntxField.tsx` | SVG field under a camera (recenter), HTML apertures, edge affordances; every rendered sign carries the attributes of §13.3. Replaces `JobField.tsx` and `JobPoolMatchPanel.tsx` (deleted). |
+| Requirement states / pending kinds | `lib/career/job-pool/job-field-presentation.ts` | kept: `deriveRequirements`, `countRequirements`, `derivePending` (F-LF-1 dimensions), `provenanceOf`; the 1 − resonance geometry, the nearest presented role, moons, nebulae and threads are removed (R13/R14). `pool-field-presentation.ts` and `job-field-motion.ts` are deleted. |
+| SIL field | `SemanticCareerIntelligenceField.tsx` | `fieldFocus: "CAPABILITY" \| "FIELD"`; observation point from `jobOrganizationId` / `jobRoleId` / `jobRequirementId` (URL, additive; the aperture is never in the URL); strip of two constant states `◈ CAPABILITY` · `⬡ JOB FIELD` (`field-focus-capability-btn`, `job-pool-panel-toggle`). |
+
+### 13.2 Observation points and geometry
+
+| Level | Trigger | Field reorganisation (camera) | Geometry (R4, R14, §9.2) |
+|---|---|---|---|
+| FIELD | enter, RETURN | centre, scale 1 | pool = total field (faint boundary); organizations as named regions on one ring, region radius = density (number of roles, never importance); roles as readable carriers inside their region (containment from `organization_id` = canonical binding, never label text); requirement density preview as ticks; **no score, no coupling, no delivered-order position** |
+| ORGANIZATION | select region (click / Enter) | recenter on the region, scale ≤ 2.6 | the region unfolds (roles spread), other regions recede (opacity), the pool stays faintly recoverable |
+| ROLE | select carrier | recenter on the role, scale 1.8 | the role is the centre of its constraint ecology: anchors at a distance by support category only (`SUPPORTED` 78 < `WEAK` 98 < `SWEEP_ONLY` 118 < `OPEN` 138; `UNREAD` 104 without a matching read); traces from anchor to source carriers (stable / thin / dotted; contribution modulates the weight only within a category); one suspended boundary (dashed circle, radius 158) for the pending canonical evaluation of the whole ecology (R2); source carriers on an outer ring (one per delivered docId); the organization region stays behind as origin context; other roles recede |
+| REQUIREMENT | select anchor | recenter between anchor and role, scale 2.4 | the anchor is selected, its traces are inspectable, every other anchor and trace recedes |
+| aperture | inspect a trace, an open boundary or the suspended boundary (click / Enter) | none (the aperture is HTML beside the inspected sign) | one temporary element; closes on Escape, CLOSE or any return |
+| RETURN | Escape · `← RETURN` · the path · the background · the aperture CLOSE | restore | aperture → REQUIREMENT → ROLE → ORGANIZATION → FIELD; nothing mutates stored data |
+
+Manifestations are shape-encoded, never colour-only (§13.4 keyboard/accessibility): supported = filled anchor, stable trace; weak =
+thin-stroked anchor, thin trace; sweep-only = dotted anchor, dotted trace; open = arc whose gap faces outward from the role, no
+trace; pending = dashed circle around the ecology; unread = plain thin ring. No red family anywhere (R3). Motion: recenter (camera
+transform .78 s), recede/trace rise (opacity .45 s), aperture open (opacity rise, fill-mode backwards, B-LENS-FILL), boundary suspend
+(slow dash drift, never a pulse). `prefers-reduced-motion` zeroes every animation and transition; no meaning depends on motion.
+
+### 13.3 DOM contract (PINK BR-1 … BR-5; GELB conditions a/b)
+
+**BR-1 field root** `data-testid="syntx-field"`: `data-field-grammar="SYNTX_FIELD_V1"`, `data-observation-kind` FIELD|ORGANIZATION|ROLE|REQUIREMENT
+(EVIDENCE is a REQUIREMENT or ROLE observation with `data-aperture-open="true"`), `data-observation-id` (upload id at FIELD, else the
+organization / role / requirement id), `data-aperture-open`, `data-motion-mode` LIVE|REDUCED. Also: `data-field-state`
+NO_POOL|NO_ANALYSIS|LOADING|AVAILABLE|NOT_FOUND|INACTIVE_POOL|NOT_PROVISIONED|FAILED, `data-matching-delivered`, `data-sources-state`,
+`data-sign-count`, `data-organization-count`, `data-role-count`, `data-requirement-count`, `data-pools-visible`, `data-intake-visible`,
+`data-boundary-visible`, and the workflow attributes of the former panel (`data-pools-state`, `data-upload-state`, `data-selection-kind`,
+`data-selected-pool`, `data-view-state`, `data-matches-state`, `data-analysis-id`, `data-analysis-source`, `data-pool-id`).
+
+**BR-2 one element per visual sign**, with `data-sign-id` (stable, derived from the proof tuple) and the §14.3 enums verbatim:
+`data-sign-source`, `data-sign-relation`, `data-sign-state`, `data-sign-manifestation`, `data-sign-interaction`, `data-sign-transition`.
+Proof attributes present iff binding §2 names them for the sign: `data-proof-upload-id`, `data-proof-organization-id`, `data-proof-role-id`,
+`data-proof-requirement-id`, `data-proof-target-id` (canonical target: organization entity, role↔organization binding revision, TRPREV),
+`data-proof-trqrev-id` (one TRQREV on an anchor; every TRQREV of the ecology, space-separated, on the suspended boundary),
+`data-proof-analysis-id`, `data-proof-capability-id` (CAP_* scored/weak, PCAP_* sweep), `data-proof-doc-id`, `data-proof-evidence-id`
+(EVD_* only when the exact join into the proposal projection resolves). Proof values are attributes only; no id is default-state text.
+
+| Sign | Element (test id) | source | relation | manifestation | interaction / transition |
+|---|---|---|---|---|---|
+| pool | `syntx-pool` | canonical_entity | contains | region | none / unfold (FIELD), return / restore |
+| organization | `syntx-organization-<orgId>` (`data-role-count`) | canonical_entity | contains | region | select / recenter · receded: recede · selected: return / unfold |
+| role | `syntx-role-<roleId>` (`data-requirement-count`, `data-matching-read`) | canonical_entity | contains | carrier | select / recenter · selected: return / unfold |
+| requirement anchor | inner `g` of `syntx-requirement-<reqId>` (`data-support`, `data-evaluation-state="NOT_EVALUATED"` while a matching is read, `data-trace-count`) | canonical_entity | requires | anchor | select / unfold · selected: return / recenter |
+| scored trace | `syntx-trace-trace:<reqId>:supports:<docId>:<n>` | evidence | supports | trace_stable | inspect / trace_rise |
+| weak trace | `syntx-trace-trace:<reqId>:weakly_supports:<docId>:<n>` | evidence | weakly_supports | trace_thin | inspect / trace_rise |
+| sweep trace | `syntx-trace-trace:<reqId>:covers_unscored:<docId>:<n>` | gemini_sweep | covers_unscored | trace_dotted | inspect / trace_rise |
+| open boundary | `syntx-open-<reqId>` | matching_contribution | missing_support | open_boundary | inspect / trace_rise |
+| suspended boundary (once per ecology) | `syntx-pending-<roleId>` | evaluation_state | pending_evaluation | suspended_boundary | inspect / boundary_suspend |
+| source carrier | `syntx-source-<docId>` (`data-source-title-state` RESOLVED|UNRESOLVED|NOT_READ, `data-trace-count`) | evidence or gemini_sweep | strongest delivered relation of its traces | carrier | none / trace_rise |
+| aperture | `syntx-aperture` (`data-aperture-for=<sign id>`, `data-aperture-kind` trace|open|pending) | inherits | inherits | temporary_aperture | return / restore |
+
+States: the observed entity is `*_selected`; the traces of the observed requirement are `inspectable`; everything outside the focused
+neighbourhood is `receded`; the rest is `field`. Only one sign carries `pending_evaluation` per ecology (R2); no closure manifestation
+exists (R1).
+
+**BR-3 aperture**: `syntx-aperture-quote` carries the quote verbatim; `syntx-aperture-source` carries the source title only when docId
+joins `documents[].entity_id` of the same analysis (`data-source-title-state="RESOLVED"`), otherwise `UNRESOLVED` (or `NOT_READ` before
+the analysis sources arrive) and no title; `syntx-aperture-contribution` (scored/weak only), `syntx-aperture-sweep-status` (`data-scored="false"`),
+`syntx-aperture-open-text`, `syntx-aperture-pending-text` (+ `syntx-aperture-resonance`: the score, numeric, only here), `syntx-aperture-authority`,
+`syntx-aperture-close`. The §12 inspected texts are the SIL `syntx.texts` copy (R5 wording for the sweep).
+
+**BR-4 summary**: `syntx-summary` (`data-summary-for=<observation id>`, `aria-live="polite"`, visually hidden) = `summarySentence(field.summary)`
+from the same view model; en/de.
+
+**BR-5 retired ids** (removed, never reused; PINK plan change under R11): `job-field`, `job-field-*` (canvas, stage, core, nearest,
+nearest-ray, no-nearest, thread-*, nebula-*, organization-*, role-*, moon-*, lens, role-detail, role-back, reading, resonance-bar,
+composition, requirement-*, requirement-toggle-*, requirement-evidence-*, reveal-all, pending, pending-*, pending-why, pending-reason,
+pending-ids, legend, legend-text, legend-toggle, exit-btn, state, non-claims, pool-selection, select-pool-*, no-analysis, role-not-delivered,
+authority-label, open-nearest, evidence-quote), `job-pool-panel`, `job-pool-orbit`, `job-pool-structure-*`, `job-pool-core`, `job-pool-nebula-*`,
+`job-pool-role-list`, `job-pool-role-lens-*`, `job-pool-role-<id>` (+ `-toggle`, `-matched-*`, `-weak-*`, `-missing-*`, `-sweep`, `-sweep-only`,
+`-canonical`), `job-pool-trqrev-*`, `job-pool-matched-constituent`, `job-pool-evidence-quote`, `job-pool-selected`, `job-pool-selection-none`,
+`job-pool-view-*`, `job-pool-matches-*` (idle/not-found/inactive/failed/not-provisioned), `job-pool-matching-details(-toggle)`,
+`job-pool-organizations`, `job-pool-organization-*`, `job-pool-layer-c-toggle`, `job-pool-enter-job-field`, `job-pool-panel-collapse`,
+`job-pool-list-state`, `job-pool-analysis(-none)`, `job-pool-list-*` at-core/delivered geometry attributes (`data-at-core`), `field-focus-job-btn`,
+`data-field-focus="JOB"|"POOL"`, `data-field-grammar="POOL_FIELD_V1"`, `data-interaction-grammar`, `data-focus-level`, `data-galaxy-grammar`,
+`data-motion-grammar`, `data-structure-role`, `data-upload-count`, `data-intake-visible` semantics of the panel.
+**Kept (operational, same meaning)**: `job-pool-panel-toggle` (strip), `job-pool-list` (`data-pool-count`, `data-list-state`), `job-pool-item-<id>`
+(`data-selected`, `data-pool-status`, `data-delivered-index`), `job-pool-select-<id>`, `job-pool-list-loading/empty/not-provisioned/failed`,
+`job-pool-selection-not-listed`, `job-pool-intake-toggle`, `job-pool-upload`, `job-pool-actor-input`, `job-pool-file-input`, `job-pool-file-name`,
+`job-pool-upload-btn`, `job-pool-upload-result` (`data-upload-outcome`, `data-upload-id`), `job-pool-upload-rejected`, `job-pool-upload-issue`,
+`job-pool-upload-not-provisioned`, `job-pool-upload-failed`, `job-pool-matches` (now the folded BOUNDARY aperture: `data-matches-state`,
+`data-ranking`), `job-pool-presentation-labels`, `job-pool-label-*`, `job-pool-ranking`, `job-pool-canonical-mapping` (state attributes),
+`job-pool-capability-sweep`, `job-pool-non-claims`, `field-focus-strip`, `field-focus-capability-btn`, `data-field-focus="CAPABILITY"|"FIELD"`.
+**New (Appendix A)**: `syntx-field`, `syntx-summary`, `syntx-stage`, `syntx-canvas` (`data-camera-scale`), `syntx-pool`, `syntx-organization-*`,
+`syntx-role-*`, `syntx-ecology` (`data-role-id`), `syntx-pending-*`, `syntx-source-*`, `syntx-trace-*`, `syntx-requirement-*`, `syntx-open-*`,
+`syntx-aperture` (+ `-quote`, `-source`, `-contribution`, `-sweep-status`, `-open-text`, `-pending-text`, `-resonance`, `-authority`, `-close`),
+`syntx-stale` (`data-stale-kind`, `data-stale-id`), `syntx-no-pool`, `syntx-no-analysis`, `syntx-exit-btn`, `syntx-path`, `syntx-path-<LEVEL>`
+(`data-current`), `syntx-return-btn`, `syntx-state` (`data-state`), `syntx-pools-toggle`, `syntx-boundary-toggle`.
+
+### 13.4 Accessibility and keyboard (spec §13.4, R8, R9)
+
+Every carrier, anchor, trace and boundary is a focusable `role="button"` (`tabIndex` 0 while not receded) with an `aria-label` from the
+same view model; Enter / Space selects or inspects; Escape returns one level (closing an edge aperture or the inspection aperture first);
+the observation path (`syntx-path-*`) and `← RETURN` are buttons. The summary (`syntx-summary`) is the screen-reader reading of the
+observation point. Readable labels wrap at word boundaries (`wrapLines`), never truncated as the primary display (§9.3).
+
+### 13.5 Boundaries
+
+- B-SYNTX-UNSUPPORTED: nothing from binding §3 is rendered: no closure, no verified seal, no HR recommendation, no confidence or
+  thickness for sweep coverage, no synthesised evidence id, no source URI, no role-to-role or requirement-to-requirement relation.
+- B-SYNTX-JOIN: source title, evidence location and EVD_* come only from exact joins inside the same analysis; a miss omits the field
+  (`UNRESOLVED`), the title is never guessed. `analysis-sources.ts` reads `documents[].identity.name` of the analysis documents (source
+  carriers) and nothing of the inferred organizations or roles; PINK's SG-1 string heuristic in `job-field-static.test.ts` scans only
+  `JobField|job-field` named files and therefore not this module: declared openly, to be re-bound by PINK.
+- B-SYNTX-SCORE: `resonanceScore` appears only inside the pending-boundary aperture (`syntx-aperture-resonance`), never in FIELD,
+  ORGANIZATION or ROLE signs; `organizationMatches[].aggregateScore` is not rendered at all (no organization aperture carries a number yet).
+- B-SYNTX-URL: the observation point is in the URL (`jobOrganizationId`, `jobRoleId`, `jobRequirementId`); the aperture never is.
+- B-LENS-FILL, B-LENS-TRANSFORM, B-LENS-HIT, B-JF-GROUND-LINE, B-JF-FONTS continue to hold for the apertures and edge lenses.
+
+### 13.6 Proofs
+
+| Suite | Scope |
+|---|---|
+| `test/career/job-pool/syntx-field-view-model.test.ts` (13) | containment geometry, relation-state geometry, sign enums and proofs, exact joins / omit on miss, overlap (F-LF-1), open boundary, pending once, no closure, stale ids, reversible transitions, summary sentences, analysis-sources decoder |
+| `test/career/job-pool/syntx-field-ssr.test.tsx` (7) | BR-1 root, BR-2 sign and proof attributes per state (FIELD, ROLE, REQUIREMENT), BR-4 summary, BR-5 retired ids absent, proof ids never as text, no score in FIELD/ROLE text, stale ids, locale, dashboard threading, legacy focus aliases |
+| `test/career/job-pool/e2e/job-pool-workflow.e2e.test.ts` (10) | HTTP contract unchanged (5); browser: entry, edge intake upload, explicit selection, FIELD → ORGANIZATION → ROLE → REQUIREMENT → EVIDENCE → RETURN with URL state, keyboard (Enter, Escape), stored matching unchanged by the walk, exit + reload; DRAFT pool as containment without a matching; URL entry at a requirement, weak / open / pending apertures, legacy `focus=JOB`, stale role, reduced motion, pool selection from the field; stale selection. Evidence 21–26 in `docs/career_analysis/evidence/job-pool/` |
+| `test/career/job-pool/job-field-presentation.test.ts` (4), `semantic-governance.test.ts` (4, file set extended to `Syntx*`), PINK `job-field-static` (3), `layer-separation` (4), the sealed SIL language suites | unchanged semantics |
+
+### 13.7 Run record
+
+| Date | Revision | Run | Result |
+|---|---|---|---|
+| 2026-10-11 | SYNTX reconstruction (this delta on 41abe12) | view model, SSR, presentation, governance (file set extended to `Syntx*`), PINK static + layer separation, sealed SIL suites, client reads: 24 files / 153 tests on a disposable database; e2e 10/10 in two consecutive runs on the final build (evidence 21–26 regenerated); tsc 0. Browser lessons: thin SVG signs need transparent hit areas (`data-sx-hit`); a ring or region is clicked on its stroke/body, a trace by absolute coordinates (Playwright's position reference for SVG groups is not their client rect); wrapped `tspan`s concatenate in `textContent`; the legacy analysis route needs a `presentation` block, so the e2e fixture carries the adapter's empty one plus one source document for the title join | green |

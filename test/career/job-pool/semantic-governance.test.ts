@@ -22,8 +22,8 @@ const JOB_FIELD_FILES = [
   ...walk(join(ROOT, "lib/career/job-pool")),
   ...walk(join(ROOT, "lib/career/job-field")),
   ...walk(join(ROOT, "app/api/career/job-pools")),
-  ...walk(join(ROOT, "app/components/career/demo")).filter(path => /JobPool|JobField/.test(path)),
-  ...walk(join(ROOT, "lib/career/ui")).filter(path => /JobPool|JobField|useJob/.test(path))
+  ...walk(join(ROOT, "app/components/career/demo")).filter(path => /JobPool|JobField|Syntx/.test(path)),
+  ...walk(join(ROOT, "lib/career/ui")).filter(path => /JobPool|JobField|useJob|Syntx/.test(path))
 ].map(path => relative(ROOT, path)).sort();
 
 const FORBIDDEN_IMPORTS = [
@@ -34,7 +34,8 @@ const importsOf = (file: string) => [...readFileSync(join(ROOT, file), "utf8").m
 
 describe("Job Field semantic governance", () => {
   it("covers the job pool and job field files", () => {
-    expect(JOB_FIELD_FILES).toEqual(expect.arrayContaining(["lib/career/job-pool/presentation-matching.ts", "app/components/career/demo/JobPoolMatchPanel.tsx", "lib/career/ui/useJobPool.ts"]));
+    // SYNTX reconstruction (2026-10-11): the renderer is SyntxField.tsx over the pure view model; JobPoolMatchPanel.tsx and JobField.tsx are retired.
+    expect(JOB_FIELD_FILES).toEqual(expect.arrayContaining(["lib/career/job-pool/presentation-matching.ts", "app/components/career/demo/SyntxField.tsx", "lib/career/job-pool/syntx-field-view-model.ts", "lib/career/job-pool/analysis-sources.ts", "lib/career/ui/useJobPool.ts", "lib/career/ui/useJobPoolSources.ts"]));
   });
 
   it("never imports canonical relation producers, relation persistence, decision fields or the HR loop", () => {

@@ -132,3 +132,22 @@ Several sessions run `next dev` and career workers on this machine. Never `pkill
 model call); run it with the manual server stopped:
 `CONDYN_PLAYWRIGHT_MODULE=/home/codi/Entwicklung/nquiry/node_modules/playwright/index.mjs npm run -s test:isolated -- test/career/job-pool/e2e`.
 The PDF → Gemini leg is manual by design (real model call, operator key).
+
+## 3c. SYNTX field (focus=FIELD): FIELD → ORGANIZATION → ROLE → REQUIREMENT → EVIDENCE → RETURN
+
+Sections 3a and 3b describe the retired Pool Field and Job Field (LENS_V1); since the SYNTX reconstruction the two are one field. Open
+`http://127.0.0.1:3017/career/demo?analysisId=<ANL…>` and close the onboarding.
+
+| Step | Action | Expected |
+|---|---|---|
+| S1 | Click `⬡ JOB FIELD` in the strip | The planetarium recedes; the field opens with `focus=FIELD` in the URL; nothing is at the field; the POOLS aperture at the left edge lists the persisted uploads; the intake is folded behind `+ INTAKE`; the semantic line reads at the bottom |
+| S2 | `+ INTAKE`, choose a pool JSON, UPLOAD → | `UPLOAD PERSISTED (NEW)` with the new id and `UPLOADED != SELECTED`; the list grows; nothing is selected |
+| S3 | SELECT an upload | The pool becomes the whole field: its organizations are named regions, their roles readable carriers inside them (ticks = number of requirements); no number, no score, no rank anywhere; the POOLS aperture folds; the summary (screen reader) names pool, organizations and roles |
+| S4 | BOUNDARY | The authority of what was read unfolds at the right edge: DETERMINISTIC PRESENTATION · NOT A CANONICAL EVALUATION · NOT A DECISION, the ranking character, MAPPED · PROPOSAL_ONLY · authority NONE, the sweep state (UNSCORED). Fold it again |
+| S5 | Click an organization region | It recenters and unfolds; the other regions recede; the path reads `<pool> › <organization>`; URL `jobOrganizationId` |
+| S6 | Click a role carrier | The role is the centre of its constraint ecology: requirement anchors by support (filled = scored support, thin = weak, dotted = sweep only, open arc = no delivered support), traces to the source carriers (stable / thin / dotted), one dashed suspended boundary around the ecology (pending canonical evaluation); other roles recede; no score; URL `jobRoleId` |
+| S7 | Click a requirement anchor | It becomes the observation point; its traces are inspectable, the others recede; URL `jobRequirementId` |
+| S8 | Click a trace | The aperture opens beside the anchor: the quote verbatim, SOURCE with the document title (or `SOURCE TITLE NOT RESOLVED …`), the capability reference and basis, contribution and confidence (scored/weak) or the unscored sweep status, the §12 sentence, the authority line. Esc closes it |
+| S9 | Click the open arc of a requirement without support, then the dashed boundary | `No delivered support is available for this requirement in the current analysis.` (neutral, never a failure); `Authoritative evaluation has not occurred for this relation.` with POOL RESONANCE (PRESENTATION) as a number here and nowhere else |
+| S10 | Esc · Esc · `← RETURN` · the pool name in the path | aperture → requirement → role → organization → field, each a continuous camera move; the URL loses the ids; nothing in the stored analysis changed. `← CAPABILITY FIELD` leaves; a reload keeps CAPABILITY |
+| S11 | Tab · Enter · Esc | Carriers, anchors, traces and boundaries are reachable by Tab; Enter selects / inspects; Esc returns. With `prefers-reduced-motion` every move is instant and every sign keeps its meaning |

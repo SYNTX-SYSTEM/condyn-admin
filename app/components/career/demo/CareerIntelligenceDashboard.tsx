@@ -12,8 +12,10 @@ export interface CareerIntelligenceDashboardProps {
   decisionContextRevisionId?: string;
   analysisId?: string;
   jobPoolUploadId?: string;
-  fieldFocus?: "CAPABILITY" | "JOB" | "POOL";
+  fieldFocus?: "CAPABILITY" | "FIELD";
+  jobOrganizationId?: string;
   jobRoleId?: string;
+  jobRequirementId?: string;
 }
 
 /**
@@ -25,7 +27,7 @@ export interface CareerIntelligenceDashboardProps {
  * TensionLayer, EvolutionLayer) are not mounted here: they label absent scores as
  * "UNSUPPORTED" or "0%", which the field semantics forbid (PINK finding F-JF-5).
  */
-export function CareerIntelligenceDashboard({ data, canonicalSilAssociationId, careerDecisionContextRevisionId, decisionContextRevisionId, analysisId, jobPoolUploadId, fieldFocus, jobRoleId }: CareerIntelligenceDashboardProps) {
+export function CareerIntelligenceDashboard({ data, canonicalSilAssociationId, careerDecisionContextRevisionId, decisionContextRevisionId, analysisId, jobPoolUploadId, fieldFocus, jobOrganizationId, jobRoleId, jobRequirementId }: CareerIntelligenceDashboardProps) {
   return (
     <div
       data-testid="career-intelligence-dashboard"
@@ -74,7 +76,9 @@ export function CareerIntelligenceDashboard({ data, canonicalSilAssociationId, c
         analysisId={analysisId}
         jobPoolUploadId={jobPoolUploadId}
         fieldFocus={fieldFocus}
+        jobOrganizationId={jobOrganizationId}
         jobRoleId={jobRoleId}
+        jobRequirementId={jobRequirementId}
       />
     </div>
   );
