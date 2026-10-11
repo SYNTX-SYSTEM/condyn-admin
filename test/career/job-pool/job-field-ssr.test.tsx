@@ -121,6 +121,20 @@ describe("SIL Job Field focus (server-rendered)", () => {
     expect(html).toMatch(/data-jf-surface="right"/);
     expect(html).not.toMatch(/data-testid="job-field-legend"[^>]*style="[^"]*border/);
     expect(html).not.toMatch(/data-testid="job-field-nearest"[^>]*style="[^"]*border/);
+    // Galaxy grammar: one nebula per pool organisation lit by its delivered aggregate, a thread only to roles with scored evidence,
+    // one moon per requirement in state order, a reading sentence from delivered facts, the canonical reason folded behind WHY.
+    expect(html).toMatch(/data-testid="job-field"[^>]*data-galaxy-grammar="GALAXY_V1"/);
+    expect(html).toMatch(/data-testid="job-field-nebula-ORG_1"[^>]*data-aggregate-score="0.525"[^>]*data-hue="190"[^>]*data-motion="BREATH"/);
+    expect(html).toMatch(/data-testid="job-field-thread-ROLE_A"[^>]*data-resonance-score="0.75"/);
+    expect(html).not.toContain('data-testid="job-field-thread-ROLE_B"');
+    expect(html).toMatch(/data-testid="job-field-moon-REQ_1"[^>]*data-segment-state="MATCHED"[^>]*data-motion="STEADY"/);
+    expect(html).toMatch(/data-testid="job-field-moon-REQ_2"[^>]*data-segment-state="COVERED_UNSCORED"[^>]*data-motion="CIRCULATE"/);
+    expect(html).toMatch(/data-testid="job-field-moon-REQ_3"[^>]*data-segment-state="UNRESOLVED"[^>]*data-motion="WAVER"/);
+    expect(html).toContain("Platform Engineer at Acme: pool resonance 75% (presentation). 1 of 2 requirements matched with scored evidence, 0 unresolved, 1 covered by the sweep without a score, 0 without delivered evidence.");
+    expect(html).toContain('data-testid="job-field-pending-why"');
+    expect(html).toMatch(/data-testid="job-field-pending-reason"[^>]*hidden/);
+    expect(html).toContain("VERIFIED_CAPABILITY_SNAPSHOT_ABSENT");
+    expect(html).toContain("nebula = one pool organisation");
   });
 
   it("reveals requirement evidence progressively: lines carry their motion and start collapsed with the evidence in the DOM", () => {

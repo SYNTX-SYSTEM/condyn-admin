@@ -288,3 +288,54 @@ Boundary B-POOL-INITIAL-FOCUS: an exact `jobPoolUploadId` without any `focus` op
 is a field state); an explicit `focus` (JOB, POOL or CAPABILITY) always wins. Exits write `focus=CAPABILITY` whenever an
 upload is selected, so an explicit exit survives a reload (PINK's E-07 observation, 2026-10-11).
 
+## 11. Galaxy grammar (owner mandate "SFE — GALAXY / NEBULA FIELD RECONSTRUCTION", 2026-10-11)
+
+Frontend and interaction only; models, routes, semantics, provenance, scoring, governance, authority and the DOM
+contracts of §4, §8.3, §9, §10 are unchanged. Galaxy grammar `GALAXY_V1` (`data-galaxy-grammar` on `job-field` and
+`job-pool-panel`). Every new structure expresses one delivered fact; nothing is decorative.
+
+### 11.1 Structures
+
+| Structure | Delivered fact | Rendered as | Where |
+| --- | --- | --- | --- |
+| Nebula | one pool organisation (identity) and its delivered organisation aggregate (`organizationMatches[].aggregateScore`, POOL RESONANCE, PRESENTATION) | a blurred annular sector over the organisation's angular range; hue = identity only, by delivered position (`ORGANIZATION_HUES`, 190 · 262 · 158 · 222 · 300 · 120); light = 0.05 + 0.30 × aggregate, breathing at 1.6 × the core period; without a delivered aggregate a faint constant 0.045 (identity, no value) and no breath | `job-field-nebula-<org>` (`data-aggregate-score`, `data-hue`, `data-motion` BREATH | STILL), `job-pool-nebula-<org>` (aggregate only when a matching of the exact upload was delivered) |
+| Thread | scored evidence between the candidate and a role (`resonanceScore > 0 && matched.length > 0`) | a line from the core to the role, opacity 0.08 + 0.42 × resonance; no thread without a scored match | `job-field-thread-<role>` (`data-resonance-score`); the nearest ray (FLOW) stays on top |
+| Moon | one requirement of a role and its state | one small body per requirement around the node (`requirementMoons`, radius + 10, fixed state order MATCHED · UNRESOLVED · COVERED_UNSCORED · NO_EVIDENCE_DELIVERED, never by weight): solid cyan steady, amber wavering, dashed cyan spinning, hollow red still | `job-field-moon-<req>` (`data-segment-state`, `data-motion`); replaces the ring arcs on the node (the composition bar keeps `data-segment-state` segments) |
+| Reading | delivered title, organisation, resonance and the four counts | one plain sentence per surface, from a copy template (`jobField.reading`, en/de) | `job-field-reading` on the nearest reading and the role detail |
+
+Organisation arcs and labels keep their hue; in the Pool Field the organisation name runs along its arc as curved
+text (`labelArc`, counter-clockwise on the lower half so it reads upright) so no upload node can cover it.
+
+### 11.2 Less information
+
+| Surface | Visible by default | Folded (in the DOM, one affordance) |
+| --- | --- | --- |
+| Job Field left | title, exit, subtitle, state line, the four state words | `LEGEND`: source counts, ranking, geometry, motion grammar, galaxy grammar, hover hint |
+| Job Field nearest | section label, title, organisation, reading sentence, tether, resonance, rank, authority label, four pending tokens, `OPEN ROLE` | `WHY PENDING` → `job-field-pending-reason` |
+| Job Field role detail | title, reading sentence, seniority · domain · ids, resonance, composition, relation lines (name + state word) | per line: necessity, weight, level, provenance, confidence, quotes, weak reason; `WHY PENDING` |
+| Pool Field selected upload | title, id, tether, ORG · ROLES · REQ, mapping state words | `LAYER C DETAILS` → provider, TOREV/TRPREV/TRQREV counts, sha256, boundary (`job-pool-layer-c-toggle`, `data-revealed` on `job-pool-canonical-mapping`) |
+| Pool Field matching | labels, ranking, `ENTER JOB FIELD →`, role readings (resonance, title, rank · organisation · seniority · domain, counts) | `MATCHING DETAILS` → kind/policy/authority line, candidate capabilities and threshold, sweep block, missing boundary, organisation aggregates (`job-pool-matching-details-toggle`, `job-pool-matching-details`); per role `REVEAL RELATIONS` |
+
+Typography: titles 20 px sans, prose 12.5 px sans, micro and labels 9 px mono, display resonance 34 px (Job Field)
+and 30 px (Pool Field), node titles 12 px sans, requirement names 14 px sans.
+
+### 11.3 Proofs
+
+| Proof | Content |
+| --- | --- |
+| P-JF-U (+1) | organisations carry the delivered aggregate as nebula light (null when not delivered) and an identity hue by position; moons in fixed state order with exact geometry; sector paths |
+| P-PF-U (+) | Pool Field organisations carry the aggregate only with a matching of the exact upload; label arcs run counter-clockwise on the lower half |
+| P-JF-S (+) | `data-galaxy-grammar`; nebula with aggregate 0.525, hue 190, BREATH; thread only for ROLE_A; moons REQ_1 MATCHED/STEADY, REQ_2 COVERED_UNSCORED/CIRCULATE, REQ_3 UNRESOLVED/WAVER; the reading sentence verbatim; `job-field-pending-why` with the reason folded; galaxy sentence in the legend |
+| P-JP-S (+) | `data-galaxy-grammar`, matching details folded with the sweep block, aggregates and labels in the DOM |
+| P-JF-B (+) | Chromium: nebula count = pool organisations with their delivered aggregates; thread count = roles with scored evidence; moon count per role = its TRQREV count; reading sentence present; reason hidden → `WHY PENDING` → visible; Pool Field: nebula count, matching details hidden → toggle → visible |
+| PINK browser-walk, job-field.e2e, static, layer separation; sealed SIL suites; dock SSR; governance guard | unchanged |
+
+### 11.4 Run record
+
+| Date | Revision | Run | Result |
+| --- | --- | --- | --- |
+| 2026-10-11 | working tree on `142df0f` | `tsc --noEmit` | 0 errors |
+| 2026-10-11 | same | first SSR run | 1 red: my assertion guessed REQ_3 as MATCHED; the fixture delivers it as weak evidence (UNRESOLVED/WAVER); assertion corrected |
+| 2026-10-11 | same | frames reviewed: the open legend overflowed the left surface → the surface scrolls; moons 3.2 → 3.8; an upload node could cover an organisation name in the Pool Field → names as curved text on the arc | rerun below |
+| 2026-10-11 | same | rerun: unit/SSR/governance/PINK static + layer separation/5 sealed SIL suites/dock SSR (16 files) · my e2e · PINK browser-walk + job-field.e2e, three disposable DBs in parallel | 103 passed · 10/10 · 3/3; tsc 0 |
+
