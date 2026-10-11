@@ -27,7 +27,7 @@
  */
 import { spawn, type ChildProcess } from "node:child_process";
 import { randomBytes } from "node:crypto";
-import { mkdirSync, readFileSync, writeFileSync, existsSync, unlinkSync } from "node:fs";
+import { chmodSync, mkdirSync, readFileSync, writeFileSync, existsSync, unlinkSync } from "node:fs";
 import { resolve } from "node:path";
 import { createServer } from "node:net";
 import postgres from "postgres";
@@ -177,8 +177,12 @@ async function createAndSeed(): Promise<LocalState> {
       decisionRevisionBindingId: data.g2.decisionRevisionBindingId,
       humanDecisionRecordId: data.chain.humanDecisionRecordId
     };
-    mkdirSync(STATE_DIR, { recursive: true });
-    writeFileSync(STATE_FILE, JSON.stringify(state, null, 2));
+    // The state carries the verified database URL including the test role's password: owner-only, like
+    // ~/.config/condyn/test-db-role.env (mode 600). chmod also tightens a file created by an earlier version.
+    mkdirSync(STATE_DIR, { recursive: true, mode: 0o700 });
+    chmodSync(STATE_DIR, 0o700);
+    writeFileSync(STATE_FILE, JSON.stringify(state, null, 2), { mode: 0o600 });
+    chmodSync(STATE_FILE, 0o600);
     return state;
   } catch (error) {
     await sql.end({ timeout: 5 }).catch(() => undefined);
