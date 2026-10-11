@@ -442,6 +442,49 @@ trace of the same requirement and source already took (`routeTraceBows`, F-SX-2 
 is taken, so every trace is drawn and distinct. Angle and bow position nothing semantically (R14): distance alone carries the support
 category. The requirement label geometry (`requirementLabel`) is shared by the routing and the renderer.
 
+#### 13.2.1 The living field (owner mandate "SFE — SYNTX LIVING FIELD · VISUAL RECONSTRUCTION", 2026-10-12)
+
+The Job Field adopts the Capability Field's (planetarium) visual grammar, reconstructed from `SemanticCareerIntelligenceField.tsx`,
+`SILTokens.ts`, `IdentityCoreDropZone.tsx`, `OrbitalResonanceBubble.tsx`, `SilOrbitEmptyState.tsx` and `CapabilityDeepFocusView.tsx`
+(read only; those files stay byte-identical, B-CAPABILITY-CHROME / B-ORBIT-COPY untouched). Everything lives in `SyntxField.tsx`;
+the view model, sign ids, enums, proofs, summaries and the DOM contract are unchanged; attributes are additive only.
+
+Materials (static, each with a sign referent): the pool carries the atmosphere (`#sxField` radial, cyan .16 → 0), the three orbit
+paths (.35R / .68R / R at `rgba(56,229,255,.12)`, the middle one dashed `4 4`), the containment ring (R−40, dash `12 18`), the six
+ambient dots (.82R) and four dust points (.5R) of the planetarium, and one containment spoke per region (`3 3`, .22, mid bead) —
+the relation `contains` drawn from the pool centre to each region. A region is a membrane: soft glow underlay (`#sxGlow` feGaussianBlur,
+cyan .09, selected .16), radial fill (`#sxMembrane`), a dashed outer ring (r+8, `3 3`), the body stroke, the name in mono and a
+density line (`N ROLES`). A role carrier is a core: glow underlay (.12, lit .26), dashed halo (r+9), the body filled with `#sxCore`,
+the density ticks, a density line (`N REQUIREMENTS`) under the title, and the title inside the body in the ecology. Source carriers
+and the observed anchor carry a glow underlay; traces carry a wide low-opacity underlay that appears only while `inspectable`.
+Glow referents (the only elements with glow): `data-sign-manifestation="region"`, `data-sign-manifestation="carrier"` (roles and source
+carriers; stronger for `role_selected`, source glow with `field` / `inspectable`), `data-sign-state="requirement_selected"`,
+`data-sign-state="inspectable"` (trace underlay), plus the existing focus-visible drop shadow. The stage sits on the deep-focus
+vignette (`rgba(14,66,73,.2)` top light over `rgba(2,12,20,.45)`).
+
+Depth: once a role is observed, regions still in state `field` and receded carriers (both without visible labels) carry
+`data-sx-depth="far"` → `filter: blur(1.4px)` with a .62 s transition; no visible text is ever blurred or scaled at rest.
+
+Transitions (finite, fill-mode backwards, bound to the sign): `sxUnfold` — anchors with `data-sign-transition="unfold"` grow out of
+the role centre (`transform-box: view-box`, `transform-origin: var(--sx-origin)` = the observed role, scale .3 → 1 + opacity, .78 s,
+the planetarium's focus easing `cubic-bezier(.16,1,.3,1)`); `sxTraceRise` — traces, source carriers and open boundaries with
+`trace_rise` rise from the same origin (.78 s, .12 s later); `sxSuspendEnter` — the pending boundary enters once (`boundary_suspend`,
+scale .94 → 1), then only the existing `sxSuspend` dash drift; `sxRecenter` — one pulse ring (scale 1 → 1.45, opacity .7 → 0, .9 s,
+fill-mode forwards) on the sign that enters `organization_selected` / `role_selected` / `requirement_selected`; `recede` and `restore`
+stay the opacity transition (.45 s). Roles move with the region's unfolding (`transform: translate` with the .78 s focus easing; the
+body is drawn at the group's local origin). The camera is unchanged (1 / ≤ 2.6 / 1.8 / 2.4, .78 s). Hover brightens the halo / outer
+ring of a selectable sign. Hit areas cover the rings (region hit circle r+9, carrier hit rect r+11, anchor hit rect r+10), so a click at
+the edge of a sign's box still selects it.
+
+Ambient life (the one separable switch `SYNTX_AMBIENT_MOTION`, root attribute `data-sx-ambient`): LIVE mode, FIELD and
+ORGANIZATION levels only, signs in state `field` only, uniform per kind, phase by containment only (`--sx-phase` = organization
+index × −1.05 s): `sxOrbit` — the pool's containment ring turns (120 s linear, FIELD level only); `sxBreathe` — region membranes
+(both membrane circles) and role halos breathe in opacity (.72 → 1 → .72) with a dash drift (−30 per 6.2 s, linear); never a
+transform, so every sign's bounding box is static. Closed list of infinite animations in LIVE: `sxOrbit`, `sxBreathe`, `sxSuspend`
+(`SYNTX_AMBIENT_NAMES`). At ROLE and REQUIREMENT nothing infinite runs except `sxSuspend`. Nothing derives from a score (M1). REDUCED:
+unchanged — every animation and transition zeroed, identical sign set. This block implements option B of GELB's escalation; under
+option A (spec §1 / §6.2 stand) the switch is set to `false` and the field lives through transitions and static depth alone.
+
 Manifestations are shape-encoded, never colour-only (§13.4 keyboard/accessibility): supported = filled anchor, stable trace; weak =
 thin-stroked anchor, thin trace; sweep-only = dotted anchor, dotted trace; open = arc whose gap faces outward from the role, no
 trace; pending = dashed circle around the ecology; unread = plain thin ring. No red family anywhere (R3). Motion: recenter (camera
@@ -550,6 +593,13 @@ observation point. Readable labels wrap at word boundaries (`wrapLines`), never 
 - B-SYNTX-NUMBER (O-SX-3, PINK ruling: repair): the summary agrees in number in both locales (`nouns` block of the summary copy:
   organization/s, role/s, requirement/s, evidence trace/s, source/s; de Organisation/en, Rolle/n, Anforderung/en, Evidenzspur/en,
   Quelle/n); the reading is the screen-reader contract surface (R9 / BR-4).
+- B-SYNTX-MOTION (living field, 2026-10-12; GELB M1–M10): every animation sits on a `[data-sign-id]` element and is explained by its
+  `data-sign-transition` or `data-sign-state`; infinite animations are the closed list `sxOrbit`, `sxBreathe`, `sxSuspend`, run in
+  LIVE only, `sxOrbit` / `sxBreathe` only at FIELD / ORGANIZATION on signs in state `field`, uniform per kind, phase by containment;
+  no motion parameter derives from a score; no closure-looking settle, no pulse on pending, no red family, no transform on labels at
+  rest; `data-sx-depth="far"` only on regions in state `field` and receded carriers while a role is observed (labels hidden there).
+  Ruling pending: GELB escalated whether spec §1 / §6.2 stand (A) or the mandate supersedes them with this list (B, → R15);
+  `SYNTX_AMBIENT_MOTION` is the one-line switch between the two.
 - Not provable in this worktree's browser world: a stable + dotted co-terminal pair (the seeded e2e analysis carries one quote per
   requirement and no sweep; GELB's fixture evidence is pinned by `presentation-matching.test.ts`). The pair is proven in the view-model
   suite with the owner-shaped overlap (two stable quotes + one sweep quote on one document) and by GELB's walk on the owner data.
@@ -561,7 +611,7 @@ observation point. Readable labels wrap at word boundaries (`wrapLines`), never 
 |---|---|
 | `test/career/job-pool/syntx-field-view-model.test.ts` (14; perceptual closure: distinct bows/paths/midpoints for co-terminal traces, clearance of the role disc and every label for every trace, carriers on the ring, REQUIREMENT camera reach, number agreement en/de) | containment geometry, relation-state geometry, sign enums and proofs, exact joins / omit on miss, overlap (F-LF-1), open boundary, pending once, no closure, stale ids, reversible transitions, summary sentences, analysis-sources decoder |
 | `test/career/job-pool/syntx-field-ssr.test.tsx` (7) | BR-1 root, BR-2 sign and proof attributes per state (FIELD, ROLE, REQUIREMENT), BR-4 summary, BR-5 retired ids absent, proof ids never as text, no score in FIELD/ROLE text, stale ids, locale, dashboard threading, legacy focus aliases |
-| `test/career/job-pool/e2e/job-pool-workflow.e2e.test.ts` (10; perceptual closure at ROLE and REQUIREMENT: every trace a path with the hit path first, distinct paths, pointer-owned points on each trace's own path, no trace through the role title, carriers inside the stage, summary number agreement) | HTTP contract unchanged (5); browser: entry, edge intake upload, explicit selection, FIELD → ORGANIZATION → ROLE → REQUIREMENT → EVIDENCE → RETURN with URL state, keyboard (Enter, Escape), stored matching unchanged by the walk, exit + reload; DRAFT pool as containment without a matching; URL entry at a requirement, weak / open / pending apertures, legacy `focus=JOB`, stale role, reduced motion, pool selection from the field; stale selection. Evidence 21–26 in `docs/career_analysis/evidence/job-pool/` |
+| `test/career/job-pool/e2e/job-pool-workflow.e2e.test.ts` (10; living field: settle ignores infinite animations, carrier containment and anchor distances read through the group transform; perceptual closure at ROLE and REQUIREMENT: every trace a path with the hit path first, distinct paths, pointer-owned points on each trace's own path, no trace through the role title, carriers inside the stage, summary number agreement) | HTTP contract unchanged (5); browser: entry, edge intake upload, explicit selection, FIELD → ORGANIZATION → ROLE → REQUIREMENT → EVIDENCE → RETURN with URL state, keyboard (Enter, Escape), stored matching unchanged by the walk, exit + reload; DRAFT pool as containment without a matching; URL entry at a requirement, weak / open / pending apertures, legacy `focus=JOB`, stale role, reduced motion, pool selection from the field; stale selection. Evidence 21–26 in `docs/career_analysis/evidence/job-pool/` |
 | `test/career/job-pool/job-field-presentation.test.ts` (4), `semantic-governance.test.ts` (4, file set extended to `Syntx*`), PINK `job-field-static` (3), `layer-separation` (4), the sealed SIL language suites | unchanged semantics |
 
 ### 13.7 Run record
@@ -571,3 +621,4 @@ observation point. Readable labels wrap at word boundaries (`wrapLines`), never 
 | 2026-10-11 | SYNTX reconstruction (this delta on 41abe12) | view model, SSR, presentation, governance (file set extended to `Syntx*`), PINK static + layer separation, sealed SIL suites, client reads: 24 files / 153 tests on a disposable database; e2e 10/10 in two consecutive runs on the final build (evidence 21–26 regenerated); tsc 0. Browser lessons: thin SVG signs need transparent hit areas (`data-sx-hit`); a ring or region is clicked on its stroke/body, a trace by absolute coordinates (Playwright's position reference for SVG groups is not their client rect); wrapped `tspan`s concatenate in `textContent`; the legacy analysis route needs a `presentation` block, so the e2e fixture carries the adapter's empty one plus one source document for the title join | green |
 | 2026-10-11 | F-SX-1 / O-SX-1 (PINK, on 3d50c0a) | keyboard focus left the field when a return or an aperture close unmounted the focused sign (Escape then did nothing) → focus follows the observation point (B-SYNTX-FOCUS); a receded trace could capture the pointer over the inspectable one where traces converge → inspectable traces render last (B-SYNTX-TRACE-ORDER). e2e keyboard walk extended (REQUIREMENT aperture → ROLE → ORGANIZATION → FIELD with focus inside at every step) and trace order asserted | e2e 10/10 ×2 · SSR 7/7 · view model 13/13 · GELB governance 10/10 · static 3/3 · semantic governance 4/4 · tsc 0 |
 | 2026-10-11 | Perceptual closure F-SX-2 / O-SX-2 / O-SX-3 / O-SX-4 (GELB on the owner data at :3017 = 8cb4a50; PINK ruling on O-SX-3) | co-terminal traces were drawn on identical endpoints (the dotted sweep trace invisible under the stable one and, DOM-later, owning every pointer point: the matched aperture could not be opened by pointer) → traces are paths with distinct bows (B-SYNTX-BOW); traces crossed the role title → traces bend around the role disc and the labels, carriers are placed beside the requirements that reach them; the carrier was cropped at REQUIREMENT → the camera keeps scale 2.4 and shifts to reach (B-SYNTX-REACH); "1 sources" → number agreement (B-SYNTX-NUMBER) | view model 14/14 · SSR 7/7 · GELB governance 10/10 · semantic governance 4/4 · presentation 9/9 + 4/4 · e2e 10/10 · tsc 0 |
+| 2026-10-12 | Living field (owner mandate "SFE — SYNTX LIVING FIELD · VISUAL RECONSTRUCTION", on 1ca3ca9) | planetarium grammar reconstructed from the sealed Capability Field files (read only) and applied in `SyntxField.tsx`: atmosphere, orbit paths, containment ring and spokes, membranes, cores, glow referents, depth blur, unfold / rise / recenter / suspend-enter transitions, role positions moving with the region, ambient breathing + ring orbit behind one switch (B-SYNTX-MOTION); hit areas cover the rings | view model 14/14 · SSR 7/7 · GELB governance 10/10 · semantic governance 4/4 · presentation 9/9 + 4/4 · PINK static 3/3 + layer · client reads · e2e 10/10 · tsc 0 · sealed files byte-identical |

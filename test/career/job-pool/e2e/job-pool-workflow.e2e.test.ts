@@ -235,7 +235,8 @@ describe.skipIf(playwrightModule === null)("SYNTX field in a real browser: FIELD
   async function settled(page: Page, selector = '[data-testid="syntx-field"]'): Promise<void> {
     const deadline = Date.now() + 10_000;
     while (Date.now() < deadline) {
-      const running = await page.locator(selector).first().evaluate(element => element.getAnimations({ subtree: true }).filter(animation => animation.playState === "running" && !(animation as CSSAnimation).animationName?.startsWith("sxSuspend")).length);
+      // Ambient loops of the living field (infinite iterations: sxOrbit, sxBreathe, sxSuspend) never settle; only finite transitions are awaited.
+      const running = await page.locator(selector).first().evaluate(element => element.getAnimations({ subtree: true }).filter(animation => animation.playState === "running" && !(animation as CSSAnimation).animationName?.startsWith("sxSuspend") && animation.effect?.getTiming().iterations !== Infinity).length);
       if (running === 0) break;
       await page.waitForTimeout(120);
     }
@@ -371,9 +372,10 @@ describe.skipIf(playwrightModule === null)("SYNTX field in a real browser: FIELD
       // Containment as geometry: the role carrier sits inside its organization region.
       const inside = await carrier.evaluate(element => {
         const organizationId = element.getAttribute("data-proof-organization-id");
-        const region = element.ownerDocument.querySelector(`[data-testid="syntx-organization-${organizationId}"] circle`) as SVGCircleElement;
-        const body = element.querySelector("circle") as SVGCircleElement;
-        return Math.hypot(body.cx.baseVal.value - region.cx.baseVal.value, body.cy.baseVal.value - region.cy.baseVal.value) < region.r.baseVal.value;
+        // The carrier is positioned by its group transform (its body is drawn at the local origin); the region body is the membrane circle, not its glow.
+        const region = element.ownerDocument.querySelector(`[data-testid="syntx-organization-${organizationId}"] circle:not([data-sx-glow])`) as SVGCircleElement;
+        const matrix = new DOMMatrix(getComputedStyle(element).transform);
+        return Math.hypot(matrix.e - region.cx.baseVal.value, matrix.f - region.cy.baseVal.value) < region.r.baseVal.value;
       });
       expect(inside).toBe(true);
     }
@@ -441,9 +443,9 @@ describe.skipIf(playwrightModule === null)("SYNTX field in a real browser: FIELD
     expect(supportOf("req_005")).toBe("OPEN");
     // Relation-state geometry (§9.2): supported anchors sit closer to the role than weak ones, open ones at the boundary.
     const distanceOf = (id: string) => page.getByTestId(`syntx-requirement-${id}`).evaluate(element => {
-      const role = element.ownerDocument.querySelector('[data-sign-state="role_selected"] circle') as SVGCircleElement;
-      const anchor = element.querySelector("[data-sign-manifestation=\"anchor\"] circle") as SVGCircleElement;
-      return Math.hypot(anchor.cx.baseVal.value - role.cx.baseVal.value, anchor.cy.baseVal.value - role.cy.baseVal.value);
+      const role = new DOMMatrix(getComputedStyle(element.ownerDocument.querySelector('[data-sign-state="role_selected"]') as SVGGElement).transform);
+      const anchor = element.querySelector("[data-sign-manifestation=\"anchor\"] circle:not([data-sx-glow])") as SVGCircleElement;
+      return Math.hypot(anchor.cx.baseVal.value - role.e, anchor.cy.baseVal.value - role.f);
     });
     expect(await distanceOf(T.requirementId)).toBeLessThan(await distanceOf("req_003"));
     expect(await distanceOf("req_003")).toBeLessThan(await distanceOf("req_005"));
