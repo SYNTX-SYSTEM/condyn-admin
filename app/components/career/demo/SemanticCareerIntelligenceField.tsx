@@ -20,7 +20,10 @@ import { OrbitalCosmosView } from "./OrbitalCosmosView";
 import { OrbitalDeepFocusView } from "./OrbitalDeepFocusView";
 import { InferenceTelemetryHUD } from "./InferenceTelemetryHUD";
 import { HrDecisionLoopDock } from "./HrDecisionLoopDock";
-import { JobPoolMatchPanel } from "./JobPoolMatchPanel";
+import { JobPoolMatchPanelView } from "./JobPoolMatchPanel";
+import { JobField } from "./JobField";
+import { useJobPoolWorkflow } from "../../../../lib/career/ui/useJobPool";
+import { describeAnalysisSource } from "../../../../lib/career/job-pool/frontend-presentation";
 import { buildEvidenceGraph } from "../../../../lib/career/evidence/traversal";
 import { computeGraphFocus } from "../../../../lib/career/evidence/highlight";
 import { DecisionGraphInspector } from "./DecisionGraphInspector";
@@ -48,6 +51,10 @@ export interface SemanticCareerIntelligenceFieldProps {
   analysisId?: string;
   /** Exact Job Pool upload selected for matching (URL). */
   jobPoolUploadId?: string;
+  /** Planetarium focus: the capability field (default) or the Job Pool as the central field (URL focus=JOB). */
+  fieldFocus?: "CAPABILITY" | "JOB";
+  /** Exact pool role opened in the Job Field (URL jobRoleId); never inferred. */
+  jobRoleId?: string;
   initialAnalysisState?: {
     isAnalyzing?: boolean;
     analysisStep?: string | null;
@@ -354,6 +361,8 @@ export function SemanticCareerIntelligenceField({
   decisionContextRevisionId,
   analysisId,
   jobPoolUploadId,
+  fieldFocus: initialFieldFocus = "CAPABILITY",
+  jobRoleId: initialJobRoleId,
   initialAnalysisState,
   initialLocale = SIL_COPY.defaultLocale,
   initialFocus
@@ -393,6 +402,22 @@ export function SemanticCareerIntelligenceField({
         )
       : null;
 
+  // Job Connection: one workflow read shared by the control panel and the Job Field focus (presentation only).
+  const jobPoolAnalysisSource = describeAnalysisSource(jobState === "SUCCEEDED" ? job.state.resultAnalysisId : null, analysisId ?? null);
+  const jobPoolWorkflow = useJobPoolWorkflow({ analysisId: jobPoolAnalysisSource.kind === "NONE" ? null : jobPoolAnalysisSource.analysisId, initialJobPoolUploadId: jobPoolUploadId ?? null });
+  const [fieldFocus, setFieldFocus] = useState<"CAPABILITY" | "JOB">(initialFieldFocus);
+  const [jobRoleId, setJobRoleId] = useState<string | null>(initialJobRoleId && initialJobRoleId.length > 0 ? initialJobRoleId : null);
+  const replaceUrlParam = (name: string, value: string | null) => {
+    if (typeof window === "undefined" || typeof window.history?.replaceState !== "function") return;
+    try {
+      const url = new URL(window.location.href);
+      if (value === null) url.searchParams.delete(name); else url.searchParams.set(name, value);
+      window.history.replaceState(window.history.state, "", url.toString());
+    } catch { /* navigation state is a convenience, never a requirement */ }
+  };
+  const switchFieldFocus = (next: "CAPABILITY" | "JOB") => { setFieldFocus(next); replaceUrlParam("focus", next === "JOB" ? "JOB" : null); if (next === "CAPABILITY") { setJobRoleId(null); replaceUrlParam("jobRoleId", null); } };
+  const selectJobRole = (poolRoleId: string | null) => { setJobRoleId(poolRoleId); replaceUrlParam("jobRoleId", poolRoleId); };
+  const selectJobPool = (id: string) => { jobPoolWorkflow.select(id); replaceUrlParam("jobPoolUploadId", id); };
   const [inferenceTelemetry, setInferenceTelemetry] = useState<any>(initialAnalysisState?.inferenceTelemetry ?? null);
   const [lastStagedDocs, setLastStagedDocs] = useState<any[]>([]);
   const [isCodexOpen, setIsCodexOpen] = useState(false);
@@ -650,6 +675,7 @@ export function SemanticCareerIntelligenceField({
       data-sil-mode={canonicalSilPresentation?.mode ?? "PRE_CANONICAL_DISCOVERY"}
       data-hr-decision-loop-context={careerDecisionContextRevisionId ?? ""}
       data-job-pool-upload={jobPoolUploadId ?? ""}
+      data-field-focus={fieldFocus}
       data-camera-scale={cameraScale}
       onClick={() => {
         if (graphFocus) {
@@ -1645,12 +1671,38 @@ export function SemanticCareerIntelligenceField({
         />
       )}
 
+      {/* JOB focus: the selected Job Pool as the central field; the capability planetarium recedes underneath (still rendered, not interactive). */}
+      {fieldFocus === "JOB" && (
+        <JobField
+          workflow={jobPoolWorkflow}
+          analysisSource={jobPoolAnalysisSource}
+          selectedRoleId={jobRoleId}
+          onSelectRole={selectJobRole}
+          onSelectPool={selectJobPool}
+          onExit={() => switchFieldFocus("CAPABILITY")}
+          locale={locale}
+        />
+      )}
+
+      {/* Field focus switch (top-left): CAPABILITY field (default) or JOB field. */}
+      <button
+        data-testid="field-focus-job-btn"
+        data-field-focus-active={fieldFocus === "JOB" ? "true" : "false"}
+        onClick={() => switchFieldFocus(fieldFocus === "JOB" ? "CAPABILITY" : "JOB")}
+        style={{ position: "fixed", left: "24px", top: "84px", zIndex: 60, backgroundColor: fieldFocus === "JOB" ? "rgba(56, 229, 255, 0.18)" : "rgba(10, 14, 20, 0.85)", border: `1px solid ${SIL_TOKENS.colors.cyanActive}`, borderRadius: "8px", padding: "8px 14px", color: SIL_TOKENS.colors.cyanActive, fontFamily: SIL_TOKENS.typography.mono, fontSize: "11px", fontWeight: 700, cursor: "pointer", boxShadow: `0 0 12px ${SIL_TOKENS.colors.cyanGlow}` }}
+      >
+        {fieldFocus === "JOB" ? t.jobField.exit : t.jobField.enter}
+      </button>
+
       {/* Left Job Pool panel: upload, explicit selection and the presentation matching of one exact analysis. No edge to the dock. */}
-      <JobPoolMatchPanel
-        jobResultAnalysisId={jobState === "SUCCEEDED" ? job.state.resultAnalysisId : null}
-        analysisId={analysisId ?? null}
+      <JobPoolMatchPanelView
+        key={fieldFocus}
+        workflow={jobPoolWorkflow}
+        analysisSource={jobPoolAnalysisSource}
         jobPoolUploadId={jobPoolUploadId ?? null}
         locale={locale}
+        anchor={fieldFocus === "JOB" ? "BOTTOM_LEFT" : "TOP_LEFT"}
+        initialOpen={fieldFocus === "JOB" ? false : undefined}
       />
 
       <SystemCodexModal

@@ -70,6 +70,20 @@ not authenticated (B-JP-ACTOR); default `JOB_POOL_UPLOADER_LOCAL`.
 Exact scores vary between sweeps because the model names capabilities differently each run (text source runs gave the
 full-stack role 46–84 %, the PDF run 36 %); the structure above is stable.
 
+## 3b. Job Field (JOB focus): the pool as the central field
+
+| Step | Action | Expected state |
+| --- | --- | --- |
+| J1 | With a pool selected and an analysis present (after step 9 or with `&analysisId=ANL_…`), click `◉ JOB` top-left | The capability planetarium recedes (dimmed, not interactive, still present); the Job Field opens: `JOB FIELD · THE JOB POOL AS THE CENTRAL FIELD · PRESENTATION · AUTHORITY NONE`, state `PRESENTATION MATCHING READ`; URL gains `focus=JOB`; the Job Pool panel collapses to a bottom-left toggle |
+| J2 | Read the canvas | Core `CANDIDATE` with `scored · unscored` counts; roles as nodes around it, grouped under their POOL organisation arcs; distance from the core = 1 − pool resonance (legend); each node shows `POOL RESONANCE` %, delivered rank, a ring of segments (cyan matched, amber unresolved, dashed cyan sweep-covered unscored, red no evidence); roles at 0 % sit on the outer ring with `NO SCORED MATCH`; a dashed ray marks the nearest presented role |
+| J3 | Read the right column | `NEAREST PRESENTED ROLE` with the label `presentation · authority NONE · not a role relation (RRL) · not a recommendation (RCP) · not a decision`, its `PENDING TOWARD THIS ROLE` in four kinds (UNPROVEN (CANONICAL) with the TRQREV ids, UNRESOLVED (WEAK EVIDENCE), UNSCORED (SWEEP COVERAGE ONLY), NO EVIDENCE DELIVERED) and the canonical reason `NOT_EVALUATED · VERIFIED_CAPABILITY_SNAPSHOT_ABSENT` |
+| J4 | Click a role node (or `OPEN ROLE`) | Other roles dim; the right column shows the role: delivered rank, pool resonance, four counts, `REQUIREMENT RELATIONS (PRESENTATION)` with one line per requirement: state chip, provenance (`analysis capability (scored)` with confidence and quotes, or `capability sweep proposal (unscored, source-verified quote)`, or `no evidence delivered · absence of evidence is not absence of capability`), then `PENDING TOWARD THIS ROLE`; URL gains `jobRoleId=` |
+| J5 | `ALL ROLES`, then `← CAPABILITY FIELD` | Back to the overview, then back to the capability planetarium; `focus` and `jobRoleId` leave the URL; the panel returns to its top-left anchor |
+| J6 | Open `/career/demo?focus=JOB&analysisId=ANL_…&jobPoolUploadId=JPOOL_…&jobRoleId=role_fullstack` | The Job Field opens directly on that role. A stale `jobRoleId` is named (`… POOL OR ANALYSIS NOT FOUND`), never silently dropped |
+| J7 | Open `/career/demo?focus=JOB&analysisId=ANL_…` without a pool | State `NO JOB POOL UPLOAD SELECTED` with the persisted uploads to select inside the field; selecting one reads the field and writes `jobPoolUploadId` to the URL |
+
+Evidence of the automated run: `17-job-field-overview-nearest-presented-role.png`, `18-job-field-role-pending.png`, `19-job-field-selected-from-field.png`.
+
 ## 4. Inverse checks (optional, each a distinct visible state)
 
 - Upload a copy of the sample with `"status": "DRAFT"` and select it: `POOL IS NOT ACTIVE: no matching for DRAFT or ARCHIVED pools` (HTTP 409).
