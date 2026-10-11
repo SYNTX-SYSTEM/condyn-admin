@@ -1,7 +1,8 @@
 /**
  * Job Pool workflow e2e: real `next dev` server on a disposable PostgreSQL database with one
  * directly seeded VERIFIED analysis, real HTTP against the job-pool routes, and (when Playwright
- * is resolvable) a real Chromium session driving upload → explicit selection → role matches.
+ * is resolvable) a real Chromium session driving the SYNTX field: upload → explicit selection →
+ * FIELD → ORGANIZATION → ROLE → REQUIREMENT → EVIDENCE → RETURN.
  *
  * Playwright is not a dependency of this repository. Point CONDYN_PLAYWRIGHT_MODULE at a
  * `playwright` package directory to run the browser section; otherwise it is reported as
@@ -17,7 +18,8 @@ import { spawn, type ChildProcess } from "node:child_process";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import { decodeJobPoolMatchPresentation, decodeJobPoolUploadView, describeRanking } from "../../../../lib/career/job-pool/frontend-presentation";
 import { fetchJobPoolMatches, listJobPools, readJobPoolUpload, uploadJobPool } from "../../../../lib/career/ui/useJobPool";
-import { createJobPoolPostgresWorld, JOB_POOL_E2E_TARGET as T, JOB_POOL_E2E_UPLOADER, type JobPoolWorld } from "../fixtures/job-pool-postgres-world";
+import { decodeAnalysisSources } from "../../../../lib/career/job-pool/analysis-sources";
+import { createJobPoolPostgresWorld, JOB_POOL_E2E_SOURCE, JOB_POOL_E2E_TARGET as T, JOB_POOL_E2E_UPLOADER, type JobPoolWorld } from "../fixtures/job-pool-postgres-world";
 
 const EVIDENCE_DIR = resolve(process.cwd(), "docs/career_analysis/evidence/job-pool");
 
@@ -175,6 +177,16 @@ describe("Job Pool workflow over HTTP against the production routes", () => {
     expect(absentPool.state).toBe("NOT_FOUND");
   }, 60_000);
 
+  it("serves the analysis sources the SYNTX aperture may join: the seeded document title, the capability evidence location, no projection", async () => {
+    const response = await fetch(`${base()}/api/career/analyses/${world.analysisId}`);
+    const bodyText = await response.text();
+    expect(response.status, bodyText).toBe(200);
+    const sources = decodeAnalysisSources(world.analysisId, JSON.parse(bodyText));
+    expect(sources.documents).toEqual([{ docId: JOB_POOL_E2E_SOURCE.docId, title: JOB_POOL_E2E_SOURCE.title }]);
+    expect(sources.capabilityEvidence.find(item => item.capabilityEntityId === T.capabilityEntityId && item.quote === T.quote)).toMatchObject({ docId: T.docId, location: "page 1" });
+    expect(sources.proposalEvidence).toEqual([]);
+  }, 60_000);
+
   it("persists a DRAFT copy of the pool and refuses matching for it with 409, so an inactive pool is visible as inactive", async () => {
     const draft = JSON.parse(world.samplePoolText) as { pool: { id: string; status: string; name: string } };
     draft.pool.status = "DRAFT";
@@ -189,21 +201,23 @@ describe("Job Pool workflow over HTTP against the production routes", () => {
     expect(result.state).toBe("INACTIVE_POOL");
   }, 60_000);
 
-  it("server-renders the collapsed panel toggle on the field and never a dock without an exact DCTXREV", async () => {
+  it("server-renders the field-state strip on the capability field and the SYNTX field for an exact upload, never a dock without an exact DCTXREV", async () => {
     const html = await (await fetch(`${base()}/career/demo?analysisId=${world.analysisId}`)).text();
     expect(html).toContain('data-testid="job-pool-panel-toggle"');
+    expect(html).not.toContain('data-testid="syntx-field"');
     expect(html).not.toContain("hr-decision-loop-dock");
     const open = await (await fetch(`${base()}/career/demo?analysisId=${world.analysisId}&jobPoolUploadId=${uploadedId}`)).text();
-    expect(open).toContain('data-testid="job-pool-panel"');
+    expect(open).toMatch(/data-testid="syntx-field"[^>]*data-field-grammar="SYNTX_FIELD_V1"/);
     expect(open).toContain(`data-job-pool-upload="${uploadedId}"`);
     expect(open).toContain('data-analysis-source="URL"');
+    expect(open).toContain('data-field-focus="FIELD"');
   }, 60_000);
 });
 
-describe.skipIf(playwrightModule === null)("Job Pool workflow in a real browser", () => {
+describe.skipIf(playwrightModule === null)("SYNTX field in a real browser: FIELD → ORGANIZATION → ROLE → REQUIREMENT → EVIDENCE → RETURN", () => {
   type Browser = { newPage(options: { viewport: { width: number; height: number }; reducedMotion?: "reduce" | "no-preference" }): Promise<Page>; close(): Promise<void> };
-  type Locator = { waitFor(options?: { timeout?: number; state?: string }): Promise<void>; count(): Promise<number>; textContent(): Promise<string | null>; getAttribute(name: string): Promise<string | null>; click(): Promise<void>; fill(value: string): Promise<void>; isDisabled(): Promise<boolean>; setInputFiles(files: string | string[]): Promise<void>; first(): Locator; hover(): Promise<void>; isVisible(): Promise<boolean>; evaluate<T>(fn: (element: Element) => T): Promise<T> };
-  type Page = { goto(url: string, options?: { waitUntil?: string; timeout?: number }): Promise<unknown>; reload(options?: { waitUntil?: string }): Promise<unknown>; url(): string; locator(selector: string): Locator; getByTestId(id: string): Locator; screenshot(options: { path: string; fullPage?: boolean }): Promise<unknown>; waitForTimeout(ms: number): Promise<void>; on(event: string, handler: (payload: unknown) => void): void; close(): Promise<void> };
+  type Locator = { waitFor(options?: { timeout?: number; state?: string }): Promise<void>; count(): Promise<number>; textContent(): Promise<string | null>; getAttribute(name: string): Promise<string | null>; click(options?: { position?: { x: number; y: number } }): Promise<void>; fill(value: string): Promise<void>; isDisabled(): Promise<boolean>; setInputFiles(files: string | string[]): Promise<void>; first(): Locator; hover(): Promise<void>; isVisible(): Promise<boolean>; focus(): Promise<void>; evaluate<T, A = undefined>(fn: (element: Element, arg: A) => T, arg?: A): Promise<T> };
+  type Page = { goto(url: string, options?: { waitUntil?: string; timeout?: number }): Promise<unknown>; reload(options?: { waitUntil?: string }): Promise<unknown>; url(): string; locator(selector: string): Locator; getByTestId(id: string): Locator; screenshot(options: { path: string; fullPage?: boolean }): Promise<unknown>; waitForTimeout(ms: number): Promise<void>; keyboard: { press(key: string): Promise<void> }; mouse: { click(x: number, y: number): Promise<void> }; on(event: string, handler: (payload: unknown) => void): void; close(): Promise<void> };
   let browser: Browser;
   let pageErrors: string[] = [];
 
@@ -217,6 +231,34 @@ describe.skipIf(playwrightModule === null)("Job Pool workflow in a real browser"
     await page.getByTestId("guided-onboarding-overlay").waitFor({ state: "detached", timeout: 30_000 });
     return page;
   }
+  /** The camera recenters with a .78 s transition and the entrance may idle at time 0 in headless Chromium: read a frame only once no animation runs (PINK J-12). */
+  async function settled(page: Page, selector = '[data-testid="syntx-field"]'): Promise<void> {
+    const deadline = Date.now() + 10_000;
+    while (Date.now() < deadline) {
+      const running = await page.locator(selector).first().evaluate(element => element.getAnimations({ subtree: true }).filter(animation => animation.playState === "running" && !(animation as CSSAnimation).animationName?.startsWith("sxSuspend")).length);
+      if (running === 0) break;
+      await page.waitForTimeout(120);
+    }
+    await page.waitForTimeout(200);
+  }
+  const params = (page: Page) => new URL(page.url()).searchParams;
+  /** SVG labels wrap into tspans: compare names without whitespace. */
+  const squash = (text: string | null) => (text ?? "").replace(/\s+/g, "");
+  /** A region is clicked on its own body (bottom of the circle, where no contained role sits); a ring on its stroke (top), never at the bounding-box centre. */
+  const bottomOf = (locator: Locator) => locator.evaluate(element => { const box = element.getBoundingClientRect(); return { x: box.width / 2, y: box.height - 6 }; });
+  const topOf = (locator: Locator) => locator.evaluate(element => { const box = element.getBoundingClientRect(); return { x: box.width / 2, y: 5 }; });
+  /** A trace is clicked on its own line near the source end (absolute viewport coordinates: Playwright's position reference for SVG groups is not their client rect), where no anchor of a neighbouring requirement covers it. */
+  const alongTrace = (locator: Locator, fraction: number) => locator.evaluate((element, fraction) => {
+    // getScreenCTM ignores the camera's CSS transform; the line's own client rect does not: its endpoints are two opposite corners.
+    const line = element.querySelector("line:not([data-sx-hit])") as SVGLineElement;
+    const rect = line.getBoundingClientRect();
+    const dx = line.x2.baseVal.value - line.x1.baseVal.value;
+    const dy = line.y2.baseVal.value - line.y1.baseVal.value;
+    const a = { x: dx >= 0 ? rect.left : rect.right, y: dy >= 0 ? rect.top : rect.bottom };
+    const b = { x: dx >= 0 ? rect.right : rect.left, y: dy >= 0 ? rect.bottom : rect.top };
+    return { x: a.x + (b.x - a.x) * fraction, y: a.y + (b.y - a.y) * fraction };
+  }, fraction);
+  const field = (page: Page) => page.getByTestId("syntx-field");
 
   beforeAll(async () => {
     const playwright = await import(playwrightModule as string) as { chromium: { launch(options: { headless: boolean }): Promise<Browser> } };
@@ -226,31 +268,32 @@ describe.skipIf(playwrightModule === null)("Job Pool workflow in a real browser"
 
   afterAll(async () => { if (browser) await browser.close(); }, 30_000);
 
-  it("uploads a second pool version through the file chooser, lists it without selecting it, selects it explicitly, and renders ranked role matches with the three layer labels", async () => {
+  it("enters the field, uploads a second pool version through the edge intake, lists it without selecting it, selects it explicitly, and walks FIELD → ORGANIZATION → ROLE → REQUIREMENT → EVIDENCE → RETURN", async () => {
     pageErrors = [];
     const page = await openPage(`/career/demo?analysisId=${world.analysisId}`);
     expect(await page.locator('[data-testid^="hr-decision-loop"]').count()).toBe(0);
     expect(await page.getByTestId("semantic-career-intelligence-field").getAttribute("data-field-focus")).toBe("CAPABILITY");
+    expect(await page.getByTestId("field-focus-job-btn").count()).toBe(0);
     await page.getByTestId("job-pool-panel-toggle").click();
-    // Activating JOB POOL is a change of field state: the planetarium recedes, the Pool Field opens, the URL names the focus.
-    await page.locator('[data-testid="semantic-career-intelligence-field"][data-field-focus="POOL"]').waitFor({ timeout: 30_000 });
-    expect(new URL(page.url()).searchParams.get("focus")).toBe("POOL");
-    const panel = page.getByTestId("job-pool-panel");
-    await panel.waitFor({ timeout: 30_000 });
-    expect(await panel.getAttribute("data-field-grammar")).toBe("POOL_FIELD_V1");
+    // Entering the field is a change of field state: the planetarium recedes, the field opens, the URL names the focus.
+    await page.locator('[data-testid="semantic-career-intelligence-field"][data-field-focus="FIELD"]').waitFor({ timeout: 30_000 });
+    expect(params(page).get("focus")).toBe("FIELD");
+    await field(page).waitFor({ timeout: 30_000 });
+    expect(await field(page).getAttribute("data-field-grammar")).toBe("SYNTX_FIELD_V1");
+    expect(await field(page).getAttribute("data-observation-kind")).toBe("FIELD");
+    expect(await field(page).getAttribute("data-field-state")).toBe("NO_POOL");
     expect(await page.getByTestId("job-pool-panel-toggle").getAttribute("data-field-focus-active")).toBe("true");
+    // Nothing at the field: the pools aperture is the contextual action; the intake opens only on explicit action.
     await page.locator('[data-testid="job-pool-list"][data-pool-count="2"]').waitFor({ timeout: 60_000 });
-    expect(await page.locator('[data-testid^="job-pool-item-"][data-at-core="true"]').count()).toBe(0);
-    expect(await panel.getAttribute("data-analysis-source")).toBe("URL");
-    expect(await panel.getAttribute("data-selected-pool")).toBe("");
-    expect(await panel.getAttribute("data-matches-state")).toBe("IDLE");
+    expect(await field(page).getAttribute("data-pools-visible")).toBe("true");
+    expect(await page.getByTestId("job-pool-upload").isVisible()).toBe(false);
+    expect(await field(page).getAttribute("data-selected-pool")).toBe("");
+    expect(await field(page).getAttribute("data-matches-state")).toBe("IDLE");
+    await page.getByTestId("job-pool-intake-toggle").click();
+    await page.getByTestId("job-pool-upload").waitFor({ state: "visible", timeout: 10_000 });
     expect(await page.getByTestId("job-pool-upload-btn").isDisabled()).toBe(true);
-    // Lens model: nothing at the core → the intake is the contextual action and is visible; no reading lens is open.
-    expect(await panel.getAttribute("data-interaction-grammar")).toBe("LENS_V1");
-    expect(await panel.getAttribute("data-focus-level")).toBe("FIELD");
-    expect(await page.getByTestId("job-pool-upload").isVisible()).toBe(true);
-    await page.waitForTimeout(900); // let the field entrance and the ring emergence settle before the evidence frame
-    await page.screenshot({ path: resolve(EVIDENCE_DIR, "01-panel-open-two-uploads-none-selected.png") });
+    await settled(page);
+    await page.screenshot({ path: resolve(EVIDENCE_DIR, "21-syntx-field-no-pool-edge-apertures.png") });
 
     // A new pool version is a new upload with new canonical entities (B-JP-CONTINUITY); the browser sends the file bytes.
     const versionTwo = JSON.parse(world.samplePoolText) as { pool: { version: number } };
@@ -263,338 +306,322 @@ describe.skipIf(playwrightModule === null)("Job Pool workflow in a real browser"
     await page.getByTestId("job-pool-upload-btn").click();
     const result = page.locator('[data-testid="job-pool-upload-result"][data-upload-outcome="CREATED"]');
     await result.waitFor({ timeout: 60_000 });
-    const resultText = (await result.textContent()) ?? "";
     const newId = (await result.getAttribute("data-upload-id")) ?? "";
     expect(newId).toMatch(/^JPOOL_[0-9A-F]{32}$/);
-    expect(resultText).toContain(newId);
+    expect((await result.textContent()) ?? "").toContain("UPLOADED != SELECTED");
     expect([uploadedId, draftUploadId]).not.toContain(newId);
-    expect(resultText).toContain("UPLOADED != SELECTED");
     await page.locator('[data-testid="job-pool-list"][data-pool-count="3"]').waitFor({ timeout: 60_000 });
-    expect(await panel.getAttribute("data-selected-pool")).toBe("");
-    expect(await panel.getAttribute("data-matches-state")).toBe("IDLE");
-    await page.waitForTimeout(900); // let the field entrance and the ring emergence settle before the evidence frame
-    await page.screenshot({ path: resolve(EVIDENCE_DIR, "02-upload-persisted-not-selected.png") });
-
-    await page.getByTestId(`job-pool-select-${newId}`).click();
-    await page.locator('[data-testid="job-pool-matches"][data-matches-state="AVAILABLE"]').waitFor({ timeout: 60_000 });
-    expect(new URL(page.url()).searchParams.get("jobPoolUploadId")).toBe(newId);
-    expect(new URL(page.url()).searchParams.get("analysisId")).toBe(world.analysisId);
-    expect(await page.getByTestId(`job-pool-item-${newId}`).getAttribute("data-selected")).toBe("true");
-    expect(await page.getByTestId(`job-pool-item-${uploadedId}`).getAttribute("data-selected")).toBe("false");
-    // UPLOADED != SELECTED as geometry: only the explicitly selected upload sits at the core; the others keep their ring slots.
-    expect(await page.getByTestId(`job-pool-item-${newId}`).getAttribute("data-at-core")).toBe("true");
-    expect(await page.locator('[data-testid^="job-pool-item-"][data-at-core="true"]').count()).toBe(1);
-    expect(await page.getByTestId(`job-pool-select-${newId}`).isDisabled()).toBe(true);
-    // The selected pool's structure manifests around the core from its canonical mapping; roles carry light from the delivered matching.
-    await page.locator('[data-testid="job-pool-panel"][data-view-state="AVAILABLE"]').waitFor({ timeout: 60_000 });
-    // With an upload at the core the intake recedes behind its affordance; the core lens reads the selection.
-    expect(await panel.getAttribute("data-focus-level")).toBe("POOL");
-    expect(await page.getByTestId("job-pool-upload").isVisible()).toBe(false);
-    await page.getByTestId("job-pool-intake-toggle").click();
-    await page.getByTestId("job-pool-upload").waitFor({ state: "visible", timeout: 10_000 });
+    expect(await field(page).getAttribute("data-selected-pool")).toBe("");
+    expect(await field(page).getAttribute("data-matches-state")).toBe("IDLE");
     await page.getByTestId("job-pool-intake-toggle").click();
     await page.getByTestId("job-pool-upload").waitFor({ state: "hidden", timeout: 10_000 });
-    expect(await page.locator('[data-testid^="job-pool-structure-role-"]:not([data-testid="job-pool-structure-role-detail"])').count()).toBe(world.samplePool.roles.length);
-    expect(await page.locator('[data-testid^="job-pool-structure-organization-"]').count()).toBe(world.samplePool.organizations.length);
-    expect(await page.locator('[data-testid^="job-pool-nebula-"]').count()).toBe(world.samplePool.organizations.length);
-    expect(await page.getByTestId("job-pool-matching-details").isVisible()).toBe(false);
-    await page.getByTestId("job-pool-matching-details-toggle").click();
-    await page.getByTestId("job-pool-matching-details").waitFor({ state: "visible", timeout: 10_000 });
-    const litRole = page.getByTestId(`job-pool-structure-role-${T.roleId}`);
-    expect(await litRole.getAttribute("data-scored-match")).toBe("true");
-    expect(await litRole.getAttribute("data-motion")).toBe("BREATH");
-    await litRole.click();
-    await page.locator(`[data-testid="job-pool-structure-role-detail"][data-role-id="${T.roleId}"]`).waitFor({ timeout: 10_000 });
-    expect(await panel.getAttribute("data-focus-level")).toBe("ROLE");
-    expect(await page.getByTestId(`job-pool-role-lens-${T.roleId}`).isVisible()).toBe(true);
-    expect(await page.locator('[data-testid^="job-pool-structure-requirement-"]').count()).toBe(world.samplePool.requirements.filter(requirement => requirement.role_id === T.roleId).length);
-    // F-LF-2 (PINK): the core lens recedes while a structure role is focused and returns after ALL ROLES; the reveal
-    // animation must not pin its opacity (fill-mode backwards). Polled: the dim is a .4s transition, the read is the settled state.
-    const coreLensState = () => page.getByTestId("job-pool-selected").evaluate(element => ({
-      computedOpacity: Number(getComputedStyle(element).opacity),
-      inlineOpacity: (element as HTMLElement).style.opacity,
-      pointerEvents: getComputedStyle(element).pointerEvents,
-      animations: element.getAnimations().map(animation => ({ name: (animation as CSSAnimation).animationName, state: animation.playState })),
-      focusLevel: element.closest('[data-testid="job-pool-panel"]')?.getAttribute("data-focus-level") ?? null,
-      structureRole: element.closest('[data-testid="job-pool-panel"]')?.getAttribute("data-structure-role") ?? null
-    }));
-    const settledCoreLens = async (settled: (state: Awaited<ReturnType<typeof coreLensState>>) => boolean) => {
-      const deadline = Date.now() + 10_000;
-      let state = await coreLensState();
-      while (!settled(state) && Date.now() < deadline) { await page.waitForTimeout(150); state = await coreLensState(); }
-      return state;
-    };
-    const receded = await settledCoreLens(state => state.computedOpacity === 0.25);
-    expect(receded, JSON.stringify(receded)).toMatchObject({ computedOpacity: 0.25, inlineOpacity: "0.25", pointerEvents: "none", focusLevel: "ROLE", structureRole: T.roleId });
-    await page.getByTestId("job-pool-structure-role-back").click();
-    await page.getByTestId(`job-pool-role-lens-${T.roleId}`).waitFor({ state: "hidden", timeout: 10_000 });
-    const returned = await settledCoreLens(state => state.computedOpacity === 1);
-    expect(returned, JSON.stringify(returned)).toMatchObject({ computedOpacity: 1, inlineOpacity: "1", pointerEvents: "auto", focusLevel: "POOL", structureRole: "" });
-    await page.locator('[data-testid="job-pool-canonical-mapping"][data-mapping-state="MAPPED"][data-proposal-state="PROPOSAL_ONLY"][data-authority-state="NONE"]').waitFor({ timeout: 30_000 });
+
+    // FIELD: explicit selection; the pool becomes the total field — organizations as named regions, roles inside them, no score anywhere.
+    await page.getByTestId(`job-pool-select-${newId}`).click();
+    await page.locator('[data-testid="syntx-field"][data-field-state="AVAILABLE"][data-matching-delivered="true"]').waitFor({ timeout: 60_000 });
+    expect(params(page).get("jobPoolUploadId")).toBe(newId);
+    expect(params(page).get("analysisId")).toBe(world.analysisId);
+    expect(await field(page).getAttribute("data-observation-kind")).toBe("FIELD");
+    expect(await field(page).getAttribute("data-observation-id")).toBe(newId);
+    expect(await field(page).getAttribute("data-pools-visible")).toBe("false");
+    expect(await field(page).getAttribute("data-organization-count")).toBe(String(world.samplePool.organizations.length));
+    expect(await field(page).getAttribute("data-role-count")).toBe(String(world.samplePool.roles.length));
+    expect(await page.locator('[data-testid^="syntx-organization-"]').count()).toBe(world.samplePool.organizations.length);
+    expect(await page.locator('[data-testid^="syntx-role-"]').count()).toBe(world.samplePool.roles.length);
+    for (const organization of world.samplePool.organizations) {
+      const region = page.getByTestId(`syntx-organization-${organization.id}`);
+      expect(await region.getAttribute("data-role-count")).toBe(String(world.samplePool.roles.filter(role => role.organization_id === organization.id).length));
+      expect(await region.getAttribute("data-sign-relation")).toBe("contains");
+      expect(await region.getAttribute("data-proof-organization-id")).toBe(organization.id);
+      expect(squash(await region.textContent())).toContain(squash(organization.name));
+    }
+    for (const role of world.samplePool.roles) {
+      const carrier = page.getByTestId(`syntx-role-${role.id}`);
+      expect(await carrier.getAttribute("data-proof-organization-id")).toBe(role.organization_id);
+      expect(await carrier.getAttribute("data-requirement-count")).toBe(String(world.samplePool.requirements.filter(requirement => requirement.role_id === role.id).length));
+      expect(await carrier.getAttribute("data-sign-manifestation")).toBe("carrier");
+      expect(squash(await carrier.textContent())).toContain(squash(role.title));
+      // Containment as geometry: the role carrier sits inside its organization region.
+      const inside = await carrier.evaluate(element => {
+        const organizationId = element.getAttribute("data-proof-organization-id");
+        const region = element.ownerDocument.querySelector(`[data-testid="syntx-organization-${organizationId}"] circle`) as SVGCircleElement;
+        const body = element.querySelector("circle") as SVGCircleElement;
+        return Math.hypot(body.cx.baseVal.value - region.cx.baseVal.value, body.cy.baseVal.value - region.cy.baseVal.value) < region.r.baseVal.value;
+      });
+      expect(inside).toBe(true);
+    }
+    expect(await page.locator('[data-resonance-score]').count()).toBe(0);
+    expect(await page.getByTestId("syntx-canvas").textContent()).not.toMatch(/\d+(\.\d+)?%/);
+    expect(await page.getByTestId("syntx-canvas").getAttribute("data-camera-scale")).toBe("1");
+    expect(await page.getByTestId("syntx-ecology").count()).toBe(0);
+    expect((await page.getByTestId("syntx-summary").textContent()) ?? "").toContain(`${world.samplePool.organizations.length} organizations containing ${world.samplePool.roles.length} roles`);
+    // No permanent panel: the boundary (labels, canonical mapping state, sweep state) is an edge aperture opened on demand.
+    expect(await page.getByTestId("job-pool-matches").isVisible()).toBe(false);
+    await page.getByTestId("syntx-boundary-toggle").click();
+    await page.getByTestId("job-pool-matches").waitFor({ state: "visible", timeout: 10_000 });
     for (const label of ["DETERMINISTIC_PRESENTATION", "NOT_A_CANONICAL_EVALUATION", "NOT_A_DECISION"]) expect(await page.getByTestId(`job-pool-label-${label}`).count()).toBe(1);
-    const labels = (await page.getByTestId("job-pool-presentation-labels").textContent()) ?? "";
-    expect(labels).toContain("DETERMINISTIC PRESENTATION");
-    expect(labels).toContain("NOT A CANONICAL EVALUATION");
-    expect(labels).toContain("NOT A DECISION");
     expect(await page.getByTestId("job-pool-ranking").getAttribute("data-ranking")).toBe("MONOTONE_BY_RESONANCE");
+    expect(await page.locator('[data-testid="job-pool-canonical-mapping"][data-mapping-state="MAPPED"][data-proposal-state="PROPOSAL_ONLY"][data-authority-state="NONE"]').count()).toBe(1);
     expect(await page.getByTestId("job-pool-capability-sweep").getAttribute("data-sweep-state")).toBe("NOT_PRODUCED");
     expect(await page.getByTestId("job-pool-capability-sweep").getAttribute("data-scored")).toBe("false");
-    expect(await page.getByTestId("job-pool-capability-sweep").textContent()).toContain("UNSCORED");
-    expect(await page.locator('[data-testid$="-sweep"][data-sweep-basis]').count()).toBe(0);
-    expect(await page.getByTestId("job-pool-role-list").getAttribute("data-role-count")).toBe(String(world.samplePool.roles.length));
-    const first = page.getByTestId(`job-pool-role-${T.roleId}`);
-    expect(await first.getAttribute("data-rank")).toBe("1");
-    const hit = page.getByTestId(`job-pool-role-${T.roleId}-matched-${T.requirementId}`);
-    expect(await hit.getAttribute("data-match-basis")).toBe("EXACT");
-    expect(await hit.textContent()).toContain(T.quote);
-    expect(await page.getByTestId(`job-pool-role-${T.roleId}-matched-req_002`).getAttribute("data-match-basis")).toBe("ALIAS");
-    expect(await page.getByTestId(`job-pool-role-${T.roleId}-weak-req_003`).getAttribute("data-match-basis")).toBe("TOKEN_CONTAINMENT");
-    expect(await page.getByTestId(`job-pool-role-${T.roleId}-missing-req_005`).count()).toBe(1);
-    const canonical = page.getByTestId(`job-pool-role-${T.roleId}-canonical`);
-    expect(await canonical.getAttribute("data-relation-state")).toBe("NOT_EVALUATED");
-    expect(await canonical.getAttribute("data-relation-reason")).toBe("VERIFIED_CAPABILITY_SNAPSHOT_ABSENT");
-    expect(await canonical.textContent()).toContain("TRPREV");
-    expect(await page.locator('[data-testid^="job-pool-trqrev-"]').count()).toBe(world.samplePool.requirements.length);
+    await page.getByTestId("syntx-boundary-toggle").click();
+    await page.getByTestId("job-pool-matches").waitFor({ state: "hidden", timeout: 10_000 });
     expect(await page.getByTestId("job-pool-non-claims").textContent()).toContain("COVERED != SCORED");
-    // Preservation: planetarium geometry and the absence of any dock without an exact DCTXREV.
+    // Preservation: planetarium geometry rendered underneath; no dock without an exact DCTXREV.
     for (const stage of ["01", "02", "03", "04", "05", "06"]) expect(await page.getByTestId(`focus-transition-stage-shell-${stage}`).count()).toBe(1);
-    expect(await page.getByTestId("semantic-zoom-telemetry").count()).toBe(1);
     expect(await page.locator('[data-testid^="hr-decision-loop"]').count()).toBe(0);
-    await page.waitForTimeout(900); // let the selected upload settle at the core before the evidence frame
-    await page.screenshot({ path: resolve(EVIDENCE_DIR, "03-selected-upload-ranked-role-matches.png"), fullPage: false });
-    // Relations are readings revealed on demand at the body; the delivered quote is in the DOM throughout.
-    expect(await first.getAttribute("data-revealed")).toBe("false");
-    expect(await first.isVisible()).toBe(false);
-    await litRole.click();
-    await page.getByTestId(`job-pool-role-lens-${T.roleId}`).waitFor({ state: "visible", timeout: 10_000 });
-    await page.getByTestId(`job-pool-role-${T.roleId}-toggle`).click();
-    await page.locator(`[data-testid="job-pool-role-${T.roleId}"][data-revealed="true"]`).waitFor({ timeout: 10_000 });
-    expect(await hit.isVisible()).toBe(true);
-    await page.getByTestId("job-pool-structure-role-back").click();
-    await page.getByTestId(`job-pool-role-lens-${T.roleId}`).waitFor({ state: "hidden", timeout: 10_000 });
-    // From the Pool Field into the Job Field: the same selection, a different field state.
-    await page.getByTestId("job-pool-enter-job-field").click();
-    await page.locator('[data-testid="semantic-career-intelligence-field"][data-field-focus="JOB"]').waitFor({ timeout: 30_000 });
-    await page.locator('[data-testid="job-field"][data-field-state="AVAILABLE"]').waitFor({ timeout: 60_000 });
-    expect(await page.getByTestId("job-field").getAttribute("data-pool-id")).toBe(newId);
-    expect(await page.getByTestId("job-pool-panel").count()).toBe(0);
-    // And back to the ground state through the strip.
-    await page.getByTestId("job-pool-panel-toggle").click();
-    await page.locator('[data-testid="semantic-career-intelligence-field"][data-field-focus="POOL"]').waitFor({ timeout: 30_000 });
-    expect(await page.getByTestId("job-field").count()).toBe(0);
-    await page.getByTestId("job-pool-panel-collapse").click();
+    await settled(page);
+    await page.screenshot({ path: resolve(EVIDENCE_DIR, "22-syntx-field-pool-containment.png") });
+
+    // ORGANIZATION: selecting a region recenters it and recedes the others; the roles stay contained.
+    const organizationId = world.samplePool.roles.find(role => role.id === T.roleId)!.organization_id;
+    await page.getByTestId(`syntx-organization-${organizationId}`).click({ position: await bottomOf(page.getByTestId(`syntx-organization-${organizationId}`)) });
+    await page.locator('[data-testid="syntx-field"][data-observation-kind="ORGANIZATION"]').waitFor({ timeout: 10_000 });
+    expect(await field(page).getAttribute("data-observation-id")).toBe(organizationId);
+    expect(params(page).get("jobOrganizationId")).toBe(organizationId);
+    expect(await page.getByTestId(`syntx-organization-${organizationId}`).getAttribute("data-sign-state")).toBe("organization_selected");
+    expect(await page.locator('[data-testid^="syntx-organization-"][data-sign-state="receded"]').count()).toBe(world.samplePool.organizations.length - 1);
+    expect(Number(await page.getByTestId("syntx-canvas").getAttribute("data-camera-scale"))).toBeGreaterThan(1);
+    expect(await page.getByTestId(`syntx-role-${T.roleId}`).getAttribute("data-sign-state")).toBe("field");
+    expect(await page.getByTestId("syntx-path-ORGANIZATION").getAttribute("data-current")).toBe("true");
+    await settled(page);
+    await page.screenshot({ path: resolve(EVIDENCE_DIR, "23-syntx-organization-recentered.png") });
+
+    // ROLE: the role becomes the centre of its constraint ecology; requirements are anchors by support, evidence is trace substrate, one suspended boundary.
+    const delivered = await fetchJobPoolMatches(newId, world.analysisId, serverFetch);
+    expect(delivered.state).toBe("AVAILABLE");
+    if (delivered.state !== "AVAILABLE") return;
+    const roleMatch = delivered.matches.roleMatches.find(role => role.poolRoleId === T.roleId)!;
+    await page.getByTestId(`syntx-role-${T.roleId}`).click();
+    await page.locator('[data-testid="syntx-field"][data-observation-kind="ROLE"]').waitFor({ timeout: 10_000 });
+    expect(await field(page).getAttribute("data-observation-id")).toBe(T.roleId);
+    expect(params(page).get("jobRoleId")).toBe(T.roleId);
+    expect(await page.getByTestId(`syntx-role-${T.roleId}`).getAttribute("data-sign-state")).toBe("role_selected");
+    expect(await page.locator('[data-testid^="syntx-role-"][data-sign-state="receded"]').count()).toBe(world.samplePool.roles.length - 1);
+    expect(await page.getByTestId("syntx-ecology").getAttribute("data-role-id")).toBe(T.roleId);
+    const requirementIds = world.samplePool.requirements.filter(requirement => requirement.role_id === T.roleId).map(requirement => requirement.id);
+    expect(await page.locator('[data-testid^="syntx-requirement-"]').count()).toBe(requirementIds.length);
+    expect(await field(page).getAttribute("data-requirement-count")).toBe(String(requirementIds.length));
+    const supportOf = (id: string) => roleMatch.matched.some(item => item.poolRequirementId === id) ? "SUPPORTED" : roleMatch.weakEvidence.some(item => item.poolRequirementId === id) ? "WEAK" : roleMatch.missing.find(item => item.poolRequirementId === id)!.sweepProposal !== null ? "SWEEP_ONLY" : "OPEN";
+    for (const id of requirementIds) {
+      const anchor = page.getByTestId(`syntx-requirement-${id}`);
+      expect(await anchor.getAttribute("data-support")).toBe(supportOf(id));
+      expect(await anchor.getAttribute("data-evaluation-state")).toBe("NOT_EVALUATED");
+      expect(squash(await anchor.textContent())).toContain(squash(world.samplePool.requirements.find(requirement => requirement.id === id)!.capability_name));
+    }
+    expect(supportOf(T.requirementId)).toBe("SUPPORTED");
+    expect(supportOf("req_003")).toBe("WEAK");
+    expect(supportOf("req_005")).toBe("OPEN");
+    // Relation-state geometry (§9.2): supported anchors sit closer to the role than weak ones, open ones at the boundary.
+    const distanceOf = (id: string) => page.getByTestId(`syntx-requirement-${id}`).evaluate(element => {
+      const role = element.ownerDocument.querySelector('[data-sign-state="role_selected"] circle') as SVGCircleElement;
+      const anchor = element.querySelector("[data-sign-manifestation=\"anchor\"] circle") as SVGCircleElement;
+      return Math.hypot(anchor.cx.baseVal.value - role.cx.baseVal.value, anchor.cy.baseVal.value - role.cy.baseVal.value);
+    });
+    expect(await distanceOf(T.requirementId)).toBeLessThan(await distanceOf("req_003"));
+    expect(await distanceOf("req_003")).toBeLessThan(await distanceOf("req_005"));
+    // Traces: one per delivered quote, stable for scored, thin for weak; none for the open requirement, whose boundary faces outward.
+    const expectedTraces = [...roleMatch.matched, ...roleMatch.weakEvidence].reduce((sum, item) => sum + item.evidence.length, 0);
+    expect(await page.locator('[data-testid^="syntx-trace-"]').count()).toBe(expectedTraces);
+    expect(await page.locator('[data-testid^="syntx-trace-"][data-sign-manifestation="trace_stable"]').count()).toBe(roleMatch.matched.reduce((sum, item) => sum + item.evidence.length, 0));
+    expect(await page.locator('[data-testid^="syntx-trace-"][data-sign-manifestation="trace_thin"]').count()).toBe(roleMatch.weakEvidence.reduce((sum, item) => sum + item.evidence.length, 0));
+    expect(await page.locator('[data-testid^="syntx-trace-"][data-sign-manifestation="trace_dotted"]').count()).toBe(0);
+    expect(await page.getByTestId("syntx-open-req_005").getAttribute("data-sign-relation")).toBe("missing_support");
+    expect(await page.getByTestId("syntx-open-req_005").getAttribute("data-sign-manifestation")).toBe("open_boundary");
+    // One source carrier per delivered document; its title resolves through the exact join into the seeded analysis.
+    const docIds = new Set([...roleMatch.matched, ...roleMatch.weakEvidence].flatMap(item => item.evidence.map(quote => quote.docId)));
+    expect(await page.locator('[data-testid^="syntx-source-"]').count()).toBe(docIds.size);
+    await page.locator('[data-testid="syntx-field"]:not([data-sources-state="LOADING"]):not([data-sources-state="IDLE"])').waitFor({ timeout: 30_000 });
+    expect(await field(page).getAttribute("data-sources-state")).toBe("AVAILABLE");
+    await page.locator(`[data-testid="syntx-source-${T.docId}"][data-source-title-state="RESOLVED"]`).waitFor({ timeout: 30_000 });
+    expect(squash(await page.getByTestId(`syntx-source-${T.docId}`).textContent())).toContain(squash(JOB_POOL_E2E_SOURCE.title));
+    // The one suspended boundary of the ecology carries the pending evaluation with every TRQREV as proof; no closure anywhere.
+    const pending = page.getByTestId(`syntx-pending-${T.roleId}`);
+    expect(await pending.getAttribute("data-sign-relation")).toBe("pending_evaluation");
+    expect(await pending.getAttribute("data-sign-manifestation")).toBe("suspended_boundary");
+    expect(await pending.getAttribute("data-proof-target-id")).toBe(roleMatch.canonical.targetRoleProfileRevisionId);
+    expect(((await pending.getAttribute("data-proof-trqrev-id")) ?? "").split(" ")).toEqual(roleMatch.canonical.targetRequirementRevisionIds);
+    expect(await page.locator('[data-sign-relation="pending_evaluation"]').count()).toBe(1);
+    expect(await page.locator('[data-sign-manifestation*="closed"]').count()).toBe(0);
+    // Proof ids and the score are attributes, never default-state text; the score appears only in an aperture.
+    const stageText = (await page.getByTestId("syntx-stage").textContent()) ?? "";
+    expect(stageText).not.toMatch(/CAP_|PCAP_|TRQREV_|TRPREV_|DOC_0|ANL_|JPOOL_/);
+    expect(stageText).not.toMatch(/\d+(\.\d+)?%/);
+    expect(stageText).not.toContain(T.quote);
+    expect((await page.getByTestId("syntx-summary").textContent()) ?? "").toContain("Canonical evaluation is pending");
+    await settled(page);
+    await page.screenshot({ path: resolve(EVIDENCE_DIR, "24-syntx-role-constraint-ecology.png") });
+
+    // REQUIREMENT: the anchor becomes the observation point; its traces are inspectable, everything else recedes.
+    await page.getByTestId(`syntx-requirement-${T.requirementId}`).click();
+    await page.locator('[data-testid="syntx-field"][data-observation-kind="REQUIREMENT"]').waitFor({ timeout: 10_000 });
+    expect(await field(page).getAttribute("data-observation-id")).toBe(T.requirementId);
+    expect(params(page).get("jobRequirementId")).toBe(T.requirementId);
+    expect(await page.locator(`[data-sign-id="req:${T.requirementId}"]`).getAttribute("data-sign-state")).toBe("requirement_selected");
+    expect(await page.locator(`[data-sign-id^="trace:${T.requirementId}:"]`).first().getAttribute("data-sign-state")).toBe("inspectable");
+    expect(await page.locator('[data-sign-id="req:req_003"]').getAttribute("data-sign-state")).toBe("receded");
+    expect(await field(page).getAttribute("data-aperture-open")).toBe("false");
+    expect(await page.getByTestId("syntx-canvas").getAttribute("data-camera-scale")).toBe("2.4");
+    await settled(page);
+    await page.screenshot({ path: resolve(EVIDENCE_DIR, "25-syntx-requirement-observation.png") });
+
+    // EVIDENCE: inspecting a trace opens the temporary aperture with the quote verbatim, the resolved source title and the authority boundary.
+    const trace = page.locator(`[data-testid^="syntx-trace-trace:${T.requirementId}:supports:${T.docId}:"]`).first();
+    const traceId = (await trace.getAttribute("data-sign-id")) ?? "";
+    expect(await trace.getAttribute("data-proof-capability-id")).toBe(T.capabilityEntityId);
+    expect(await trace.getAttribute("data-proof-doc-id")).toBe(T.docId);
+    expect(await trace.getAttribute("data-proof-analysis-id")).toBe(world.analysisId);
+    expect(await trace.getAttribute("data-proof-evidence-id")).toBeNull();
+    await settled(page);
+    const tracePoint = await alongTrace(trace, 0.72);
+    await page.mouse.click(tracePoint.x, tracePoint.y);
+    await page.locator('[data-testid="syntx-field"][data-aperture-open="true"]').waitFor({ timeout: 10_000 });
+    const aperture = page.getByTestId("syntx-aperture");
+    expect(await aperture.getAttribute("data-aperture-for")).toBe(traceId);
+    expect(await aperture.getAttribute("data-sign-manifestation")).toBe("temporary_aperture");
+    expect(await page.getByTestId("syntx-aperture-quote").textContent()).toContain(T.quote);
+    expect(await page.getByTestId("syntx-aperture-source").getAttribute("data-source-title-state")).toBe("RESOLVED");
+    expect(await page.getByTestId("syntx-aperture-source").textContent()).toContain(JOB_POOL_E2E_SOURCE.title);
+    expect(await page.getByTestId("syntx-aperture-contribution").textContent()).toContain(String(roleMatch.matched.find(item => item.poolRequirementId === T.requirementId)!.contribution));
+    expect(((await page.getByTestId("syntx-aperture-authority").textContent()) ?? "").toLowerCase()).toContain("authority none");
+    expect(await field(page).getAttribute("data-observation-kind")).toBe("REQUIREMENT");
+    await settled(page);
+    await page.screenshot({ path: resolve(EVIDENCE_DIR, "26-syntx-evidence-aperture.png") });
+
+    // RETURN: Escape closes the aperture, Escape again returns to the role, the return affordance to the organization, the path to the field. Reversible, nothing mutated.
+    await page.keyboard.press("Escape");
+    await page.locator('[data-testid="syntx-field"][data-aperture-open="false"]').waitFor({ timeout: 10_000 });
+    expect(await field(page).getAttribute("data-observation-kind")).toBe("REQUIREMENT");
+    await page.keyboard.press("Escape");
+    await page.locator('[data-testid="syntx-field"][data-observation-kind="ROLE"]').waitFor({ timeout: 10_000 });
+    expect(params(page).get("jobRequirementId")).toBeNull();
+    await page.getByTestId("syntx-return-btn").click();
+    await page.locator('[data-testid="syntx-field"][data-observation-kind="ORGANIZATION"]').waitFor({ timeout: 10_000 });
+    expect(params(page).get("jobRoleId")).toBeNull();
+    await page.getByTestId("syntx-path-FIELD").click();
+    await page.locator('[data-testid="syntx-field"][data-observation-kind="FIELD"]').waitFor({ timeout: 10_000 });
+    expect(params(page).get("jobOrganizationId")).toBeNull();
+    expect(await page.getByTestId("syntx-canvas").getAttribute("data-camera-scale")).toBe("1");
+    expect(await page.locator('[data-sign-state="receded"]').count()).toBe(0);
+    // Keyboard: Tab reaches the carriers, Enter selects.
+    await page.getByTestId(`syntx-role-${T.roleId}`).focus();
+    await page.keyboard.press("Enter");
+    await page.locator('[data-testid="syntx-field"][data-observation-kind="ROLE"]').waitFor({ timeout: 10_000 });
+    await page.keyboard.press("Escape");
+    await page.keyboard.press("Escape");
+    await page.locator('[data-testid="syntx-field"][data-observation-kind="FIELD"]').waitFor({ timeout: 10_000 });
+    // The matching read is unchanged by the walk (no selection mutates stored analysis).
+    const after = await fetchJobPoolMatches(newId, world.analysisId, serverFetch);
+    expect(after).toEqual(delivered);
+    // Exit to the ground state through the field; the explicit exit survives a reload (B-POOL-INITIAL-FOCUS).
+    await page.getByTestId("syntx-exit-btn").click();
     await page.locator('[data-testid="semantic-career-intelligence-field"][data-field-focus="CAPABILITY"]').waitFor({ timeout: 30_000 });
-    expect(await page.getByTestId("job-pool-panel").count()).toBe(0);
-    // The explicit exit survives a reload: with an upload still selected, the ground state is named in the URL.
-    expect(new URL(page.url()).searchParams.get("focus")).toBe("CAPABILITY");
+    expect(await field(page).count()).toBe(0);
+    expect(params(page).get("focus")).toBe("CAPABILITY");
     await page.reload({ waitUntil: "domcontentloaded" });
     await page.locator('[data-testid="semantic-career-intelligence-field"][data-field-focus="CAPABILITY"]').waitFor({ timeout: 60_000 });
-    expect(await page.getByTestId("job-pool-panel").count()).toBe(0);
+    expect(await field(page).count()).toBe(0);
     expect(pageErrors).toEqual([]);
     await page.close();
-  }, 300_000);
+  }, 400_000);
 
-  it("reopens the exact selection from the URL and shows a DRAFT pool as inactive instead of matching it", async () => {
+  it("reopens the exact selection from the URL and shows a DRAFT pool as inactive instead of matching it; its structure stays a containment field without a matching read", async () => {
     pageErrors = [];
     const page = await openPage(`/career/demo?analysisId=${world.analysisId}&jobPoolUploadId=${uploadedId}`);
-    const panel = page.getByTestId("job-pool-panel");
-    await panel.waitFor({ timeout: 30_000 });
-    await page.locator('[data-testid="job-pool-matches"][data-matches-state="AVAILABLE"]').waitFor({ timeout: 60_000 });
-    expect(await panel.getAttribute("data-selection-kind")).toBe("LISTED");
-    expect(await panel.getAttribute("data-selected-pool")).toBe(uploadedId);
+    await page.locator('[data-testid="syntx-field"][data-field-state="AVAILABLE"]').waitFor({ timeout: 60_000 });
+    expect(await field(page).getAttribute("data-selection-kind")).toBe("LISTED");
+    expect(await field(page).getAttribute("data-selected-pool")).toBe(uploadedId);
+    await page.getByTestId("syntx-pools-toggle").click();
     await page.getByTestId(`job-pool-select-${draftUploadId}`).click();
-    await page.locator('[data-testid="job-pool-matches"][data-matches-state="INACTIVE_POOL"]').waitFor({ timeout: 60_000 });
-    expect(await page.getByTestId("job-pool-matches-inactive").textContent()).toContain("POOL IS NOT ACTIVE");
+    await page.locator('[data-testid="syntx-field"][data-matches-state="INACTIVE_POOL"]').waitFor({ timeout: 60_000 });
+    expect(await page.getByTestId("syntx-state").textContent()).toContain("POOL IS NOT ACTIVE");
     expect(await page.getByTestId(`job-pool-item-${draftUploadId}`).getAttribute("data-pool-status")).toBe("DRAFT");
-    expect(new URL(page.url()).searchParams.get("jobPoolUploadId")).toBe(draftUploadId);
+    expect(params(page).get("jobPoolUploadId")).toBe(draftUploadId);
+    expect(await field(page).getAttribute("data-matching-delivered")).toBe("false");
+    await page.getByTestId(`syntx-role-${T.roleId}`).click();
+    await page.locator('[data-testid="syntx-field"][data-observation-kind="ROLE"]').waitFor({ timeout: 10_000 });
+    expect(await page.locator('[data-testid^="syntx-requirement-"][data-support="UNREAD"]').count()).toBe(world.samplePool.requirements.filter(requirement => requirement.role_id === T.roleId).length);
+    expect(await page.locator('[data-testid^="syntx-trace-"]').count()).toBe(0);
+    expect(await page.locator('[data-testid^="syntx-pending-"]').count()).toBe(0);
+    await settled(page);
     await page.screenshot({ path: resolve(EVIDENCE_DIR, "04-draft-pool-inactive-no-matching.png") });
     expect(pageErrors).toEqual([]);
     await page.close();
   }, 240_000);
 
-  it("opens the Job Field: the pool as the central field with roles by pool resonance, the nearest presented role, exact role navigation with pending kinds, and the planetarium receded but preserved", async () => {
+  it("reopens the field at an exact requirement from the URL, accepts the legacy JOB focus name, names a stale role id, and preserves meaning under reduced motion", async () => {
     pageErrors = [];
-    const page = await openPage(`/career/demo?analysisId=${world.analysisId}&jobPoolUploadId=${uploadedId}`);
-    // An exact upload id without a focus opens the Pool Field; the Job Field is one strip switch away.
-    expect(await page.getByTestId("semantic-career-intelligence-field").getAttribute("data-field-focus")).toBe("POOL");
-    expect(await page.getByTestId("field-focus-job-btn").getAttribute("data-field-focus-active")).toBe("false");
-    await page.getByTestId("field-focus-job-btn").click();
-    const field = page.locator('[data-testid="job-field"][data-field-state="AVAILABLE"]');
-    await field.waitFor({ timeout: 120_000 });
-    expect(await page.getByTestId("semantic-career-intelligence-field").getAttribute("data-field-focus")).toBe("JOB");
-    expect(new URL(page.url()).searchParams.get("focus")).toBe("JOB");
-    expect(await field.getAttribute("data-role-count")).toBe(String(world.samplePool.roles.length));
-    expect(await field.getAttribute("data-ranking")).toBe("MONOTONE_BY_RESONANCE");
-    expect(await field.getAttribute("data-nearest-role")).toBe(T.roleId);
-    expect(await field.getAttribute("data-selected-role")).toBe("");
-    expect(await field.getAttribute("data-sweep-state")).toBe("NOT_PRODUCED");
-    expect(await page.getByTestId("job-field-core").getAttribute("data-candidate-capability-count")).toBe("6");
-    expect(await page.locator('[data-testid^="job-field-organization-"]').count()).toBe(world.samplePool.organizations.length);
-    const nearest = page.getByTestId(`job-field-role-${T.roleId}`);
-    expect(await nearest.getAttribute("data-delivered-rank")).toBe("1");
-    expect(await nearest.getAttribute("data-nearest")).toBe("true");
-    expect(await nearest.getAttribute("data-scored-match")).toBe("true");
-    // Resonance and distance are the delivered value and its complement, never re-scored.
-    const delivered = await fetchJobPoolMatches(uploadedId, world.analysisId, serverFetch);
-    expect(delivered.state).toBe("AVAILABLE");
-    if (delivered.state !== "AVAILABLE") return;
-    for (const role of delivered.matches.roleMatches) {
-      const node = page.getByTestId(`job-field-role-${role.poolRoleId}`);
-      expect(await node.getAttribute("data-resonance-score")).toBe(String(role.resonanceScore));
-      expect(Number(await node.getAttribute("data-distance"))).toBeCloseTo(1 - role.resonanceScore, 10);
-      const counts = ["data-matched", "data-unresolved", "data-covered-unscored", "data-no-evidence"];
-      const sum = (await Promise.all(counts.map(name => node.getAttribute(name)))).reduce((total, value) => total + Number(value), 0);
-      expect(sum).toBe(role.canonical.targetRequirementRevisionIds.length);
-      expect(await node.getAttribute("data-scored-match")).toBe(role.resonanceScore > 0 && role.matched.length > 0 ? "true" : "false");
-    }
-    expect(await page.locator('[data-testid^="job-field-role-"][data-scored-match="false"]').count()).toBeGreaterThan(0);
-    // Galaxy: one nebula per pool organisation with its delivered aggregate, one thread per role with scored evidence, one moon per requirement.
-    expect(await page.getByTestId("job-field").getAttribute("data-galaxy-grammar")).toBe("GALAXY_V1");
-    expect(await page.locator('[data-testid^="job-field-nebula-"]').count()).toBe(world.samplePool.organizations.length);
-    for (const organization of delivered.matches.organizationMatches) expect(await page.getByTestId(`job-field-nebula-${organization.poolOrganizationId}`).getAttribute("data-aggregate-score")).toBe(String(organization.aggregateScore));
-    expect(await page.locator('[data-testid^="job-field-thread-"]').count()).toBe(delivered.matches.roleMatches.filter(role => role.resonanceScore > 0 && role.matched.length > 0).length);
-    for (const role of delivered.matches.roleMatches) expect(await page.locator(`[data-testid="job-field-role-${role.poolRoleId}"] [data-testid^="job-field-moon-"]`).count()).toBe(role.canonical.targetRequirementRevisionIds.length);
-    expect((await page.getByTestId("job-field-reading").first().textContent()) ?? "").toContain("pool resonance");
-    // Lens model: at FIELD level only the nearest caption exists (pointer-transparent), no lens; the camera rests.
-    expect(await field.getAttribute("data-interaction-grammar")).toBe("LENS_V1");
-    expect(await field.getAttribute("data-focus-level")).toBe("FIELD");
-    expect(await page.getByTestId("job-field-canvas").getAttribute("data-camera-scale")).toBe("1");
-    expect(await page.getByTestId("job-field-lens").count()).toBe(0);
-    expect(await page.getByTestId("job-field-legend-text").isVisible()).toBe(false);
-    expect(await page.getByTestId("job-field-nearest").getAttribute("data-role-id")).toBe(T.roleId);
-    expect(await page.getByTestId("job-field-nearest").textContent()).toContain("not a role relation (RRL) · not a recommendation (RCP) · not a decision");
-    expect(await page.getByTestId("job-field-legend").textContent()).toContain("POOL RESONANCE (PRESENTATION)");
-    expect(await page.getByTestId("job-field-legend").textContent()).toContain("absence of evidence is not absence of capability");
-    expect(await page.getByTestId("job-field-non-claims").textContent()).toContain("NEAREST != CHOSEN");
-    const fieldText = (await page.getByTestId("job-field").textContent()) ?? "";
-    expect(fieldText).not.toMatch(/\b(RRL|TSN|EIS|RCP|DCTXREV|DCR|DREV)_[0-9A-Z]/);
-    expect(fieldText).not.toContain("verified capability");
-    // The planetarium recedes but stays rendered; no dock without an exact DCTXREV.
-    for (const stage of ["01", "02", "03", "04", "05", "06"]) expect(await page.getByTestId(`focus-transition-stage-shell-${stage}`).count()).toBe(1);
-    expect(await page.locator('[data-testid^="hr-decision-loop"]').count()).toBe(0);
-    await page.waitForTimeout(450); // let the reveal and emergence animations settle before the evidence frame
-    await page.screenshot({ path: resolve(EVIDENCE_DIR, "17-job-field-overview-nearest-presented-role.png") });
-
-    // Semiontic layer: light breathes only on roles with a scored match; an unlit role is still; the nearest ray flows;
-    // every animation is bound to a derived data-motion attribute, and the legend text is collapsed until asked for.
-    expect(await field.getAttribute("data-motion-grammar")).toBe("SEMIONTIC_V1");
-    expect(await field.getAttribute("data-motion-mode")).toBe("LIVE");
-    const animationOf = (selector: string) => page.locator(selector).first().evaluate(element => getComputedStyle(element).animationName);
-    expect(await nearest.getAttribute("data-motion")).toBe("BREATH");
-    expect(await animationOf(`[data-testid="job-field-role-${T.roleId}"] [data-jf-light]`)).toBe("jfBreathLight");
-    const unlitId = await page.locator('[data-testid^="job-field-role-"][data-scored-match="false"]').first().getAttribute("data-testid");
-    expect(await page.getByTestId(unlitId!).getAttribute("data-motion")).toBe("STILL");
-    expect(await page.locator(`[data-testid="${unlitId}"] [data-jf-light]`).count()).toBe(0);
-    expect(await animationOf('[data-testid="job-field-nearest-ray"]')).toBe("jfFlow");
-    expect(await animationOf('[data-testid="job-field-core"] [data-sweep-halo]')).toBe(delivered.matches.capabilitySweep.proposalCount > 0 ? "jfCirculate" : "none");
-    const waverCount = await page.locator('[data-testid^="job-field-role-"] [data-segment-state="UNRESOLVED"][data-motion="WAVER"]').count();
-    if (waverCount > 0) expect(await animationOf('[data-testid^="job-field-role-"] [data-segment-state="UNRESOLVED"]')).toBe("jfWaver");
-    expect(await page.getByTestId("job-field-legend-text").isVisible()).toBe(false);
-    await page.getByTestId("job-field-legend-toggle").click();
-    await page.getByTestId("job-field-legend-text").waitFor({ state: "visible", timeout: 10_000 });
-    expect(await page.getByTestId("job-field-legend").getAttribute("data-legend-open")).toBe("true");
-    expect(await page.getByTestId("job-field-legend-text").textContent()).toContain("Light and breath = pool resonance (presentation)");
-    // Hovering a role reveals its pending field as orbiting rings, one per pending kind that has ids.
-    await page.getByTestId(`job-field-role-${T.roleId}`).hover();
-    await page.locator(`[data-testid="job-field-role-${T.roleId}"][data-focused="true"]`).waitFor({ timeout: 10_000 });
-    const nearestRole = delivered.matches.roleMatches.find(role => role.poolRoleId === T.roleId)!;
-    const expectedRings = [nearestRole.canonical.targetRequirementRevisionIds.length > 0, nearestRole.weakEvidence.length > 0, [...nearestRole.weakEvidence, ...nearestRole.missing].some(item => item.sweepProposal !== null), nearestRole.missing.some(item => item.sweepProposal === null)].filter(Boolean).length;
-    expect(await page.locator(`[data-testid="job-field-role-${T.roleId}"] [data-motion="ORBIT"]`).count()).toBe(expectedRings);
-    await page.waitForTimeout(450); // let the reveal and emergence animations settle before the evidence frame
-    await page.screenshot({ path: resolve(EVIDENCE_DIR, "20-job-field-semiontic-legend-hover.png") });
-
-    await page.getByTestId(`job-field-role-${T.roleId}`).click();
-    await page.locator(`[data-testid="job-field-role-detail"][data-role-id="${T.roleId}"]`).waitFor({ timeout: 30_000 });
-    // ROLE level: the camera moves onto the role, its moons spread with their names, one lens opens beside it, the caption is gone.
-    expect(await field.getAttribute("data-focus-level")).toBe("ROLE");
-    expect(await page.getByTestId("job-field-canvas").getAttribute("data-camera-scale")).toBe("1.5");
-    expect(await page.getByTestId("job-field-lens").getAttribute("data-role-id")).toBe(T.roleId);
-    expect(await page.getByTestId("job-field-nearest").count()).toBe(0);
-    expect(await page.locator(`[data-testid="job-field-role-${T.roleId}"] [data-jf-moon-label]`).count()).toBe(5);
-    expect(new URL(page.url()).searchParams.get("jobRoleId")).toBe(T.roleId);
-    expect(await field.getAttribute("data-selected-role")).toBe(T.roleId);
-    const hit = page.getByTestId(`job-field-requirement-${T.requirementId}`);
-    expect(await hit.getAttribute("data-state")).toBe("MATCHED");
-    expect(await hit.getAttribute("data-provenance")).toBe("ANALYSIS_CAPABILITY");
-    expect(await hit.getAttribute("data-basis")).toBe("EXACT");
-    expect(await hit.textContent()).toContain(T.quote);
-    expect(await page.getByTestId(`job-field-requirement-req_003`).getAttribute("data-state")).toBe("UNRESOLVED");
-    expect(await page.getByTestId(`job-field-requirement-req_005`).getAttribute("data-state")).toBe("NO_EVIDENCE_DELIVERED");
-    expect(await page.getByTestId(`job-field-requirement-req_005`).getAttribute("data-provenance")).toBe("NONE");
-    expect(await page.getByTestId("job-field-pending").getAttribute("data-role-id")).toBe(T.roleId);
-    expect(await page.getByTestId("job-field-pending-UNPROVEN_CANONICAL").getAttribute("data-count")).toBe("5");
-    expect(await page.getByTestId("job-field-pending-UNRESOLVED_EVIDENCE").getAttribute("data-ids")).toBe("req_003");
-    expect(await page.getByTestId("job-field-pending-UNSCORED_COVERAGE").getAttribute("data-count")).toBe("0");
-    expect(await page.getByTestId("job-field-pending-NO_EVIDENCE_DELIVERED").getAttribute("data-ids")).toBe("req_005");
-    expect(await page.getByTestId("job-field-pending-reason").textContent()).toContain("VERIFIED_CAPABILITY_SNAPSHOT_ABSENT");
-    expect(await page.getByTestId("job-field-pending-reason").isVisible()).toBe(false);
-    await page.getByTestId("job-field-pending-why").click();
-    await page.getByTestId("job-field-pending-reason").waitFor({ state: "visible", timeout: 10_000 });
-    // Progressive disclosure: evidence is in the DOM but hidden until revealed per line or for all lines.
-    expect(await hit.getAttribute("data-revealed")).toBe("false");
-    expect(await page.getByTestId(`job-field-requirement-evidence-${T.requirementId}`).isVisible()).toBe(false);
-    await page.getByTestId(`job-field-requirement-toggle-${T.requirementId}`).click();
-    await page.locator(`[data-testid="job-field-requirement-${T.requirementId}"][data-revealed="true"]`).waitFor({ timeout: 10_000 });
-    expect(await page.getByTestId(`job-field-requirement-evidence-${T.requirementId}`).isVisible()).toBe(true);
-    expect(await page.locator(`[data-testid="job-field-requirement-evidence-${T.requirementId}"] [data-testid="job-field-evidence-quote"]`).first().textContent()).toContain(T.quote);
-    await page.getByTestId("job-field-reveal-all").click();
-    await page.locator('[data-testid="job-field-reveal-all"][data-revealed-all="true"]').waitFor({ timeout: 10_000 });
-    expect(await page.locator('[data-testid^="job-field-requirement-"][data-revealed="false"]').count()).toBe(0);
-    expect(await page.getByTestId("job-field-resonance-bar").getAttribute("data-resonance-score")).toBe(String(nearestRole.resonanceScore));
-    await page.waitForTimeout(450); // let the reveal and emergence animations settle before the evidence frame
-    await page.screenshot({ path: resolve(EVIDENCE_DIR, "18-job-field-role-pending.png") });
-
-    await page.getByTestId("job-field-role-back").click();
-    await page.locator('[data-testid="job-field"][data-selected-role=""]').waitFor({ timeout: 10_000 });
-    expect(new URL(page.url()).searchParams.get("jobRoleId")).toBeNull();
-    await page.getByTestId("job-field-exit-btn").click();
-    await page.locator('[data-testid="semantic-career-intelligence-field"][data-field-focus="CAPABILITY"]').waitFor({ timeout: 10_000 });
-    expect(await page.getByTestId("job-field").count()).toBe(0);
-    // With an upload still selected, the exit names the ground state so a reload keeps it (B-POOL-INITIAL-FOCUS).
-    expect(new URL(page.url()).searchParams.get("focus")).toBe("CAPABILITY");
-    expect(await page.getByTestId("semantic-zoom-telemetry").count()).toBe(1);
-    expect(pageErrors).toEqual([]);
+    const page = await openPage(`/career/demo?focus=JOB&analysisId=${world.analysisId}&jobPoolUploadId=${uploadedId}&jobRoleId=${T.roleId}&jobRequirementId=req_003`);
+    await page.locator('[data-testid="syntx-field"][data-observation-kind="REQUIREMENT"][data-field-state="AVAILABLE"]').waitFor({ timeout: 120_000 });
+    expect(await page.getByTestId("semantic-career-intelligence-field").getAttribute("data-field-focus")).toBe("FIELD");
+    expect(await field(page).getAttribute("data-observation-id")).toBe("req_003");
+    expect(await page.getByTestId("syntx-requirement-req_003").getAttribute("data-support")).toBe("WEAK");
+    expect(await field(page).getAttribute("data-aperture-open")).toBe("false");
+    // The thin trace of weak support inspects to the weak-evidence text and reason; weak support never closes.
+    const weakTrace = page.locator('[data-testid^="syntx-trace-trace:req_003:weakly_supports:"]').first();
+    await settled(page);
+    const weakPoint = await alongTrace(weakTrace, 0.72);
+    await page.mouse.click(weakPoint.x, weakPoint.y);
+    await page.locator('[data-testid="syntx-field"][data-aperture-open="true"]').waitFor({ timeout: 10_000 });
+    expect(await page.getByTestId("syntx-aperture").getAttribute("data-sign-relation")).toBe("weakly_supports");
+    expect(await page.getByTestId("syntx-aperture").textContent()).toContain("Evidence exists but contributes limited matching support.");
+    // The open boundary of a requirement without delivered support inspects to the neutral text, never a failure.
+    await page.getByTestId("syntx-aperture-close").click();
+    await page.locator('[data-testid="syntx-field"][data-aperture-open="false"]').waitFor({ timeout: 10_000 });
+    await page.getByTestId("syntx-return-btn").click();
+    await page.locator('[data-testid="syntx-field"][data-observation-kind="ROLE"]').waitFor({ timeout: 10_000 });
+    await settled(page);
+    await page.getByTestId("syntx-open-req_005").click({ position: await topOf(page.getByTestId("syntx-open-req_005")) });
+    await page.locator('[data-testid="syntx-field"][data-observation-kind="REQUIREMENT"][data-aperture-open="true"]').waitFor({ timeout: 10_000 });
+    expect(await page.getByTestId("syntx-aperture").getAttribute("data-aperture-kind")).toBe("open");
+    expect(await page.getByTestId("syntx-aperture-open-text").textContent()).toBe("No delivered support is available for this requirement in the current analysis.");
+    expect(((await page.getByTestId("syntx-aperture").textContent()) ?? "").toLowerCase()).not.toMatch(/fail|incompet|disqualif/);
+    // The suspended boundary inspects to the authority statement; the score appears here, numerically, and nowhere before.
+    await page.keyboard.press("Escape");
+    await page.keyboard.press("Escape");
+    await page.locator('[data-testid="syntx-field"][data-observation-kind="ROLE"][data-aperture-open="false"]').waitFor({ timeout: 10_000 });
+    await settled(page);
+    await page.getByTestId(`syntx-pending-${T.roleId}`).click({ position: await topOf(page.getByTestId(`syntx-pending-${T.roleId}`)) });
+    await page.locator('[data-testid="syntx-field"][data-observation-kind="ROLE"][data-aperture-open="true"]').waitFor({ timeout: 10_000 });
+    expect(await page.getByTestId("syntx-aperture-pending-text").textContent()).toBe("Authoritative evaluation has not occurred for this relation.");
+    expect(await page.getByTestId("syntx-aperture-resonance").count()).toBe(1);
+    expect(await page.getByTestId("syntx-aperture").textContent()).toContain("POOL RESONANCE (PRESENTATION)");
     await page.close();
-  }, 300_000);
 
-  it("reopens the Job Field from the URL with an exact role, names a stale role id, and shows the pool selection when no pool is selected", async () => {
-    pageErrors = [];
-    const page = await openPage(`/career/demo?focus=JOB&analysisId=${world.analysisId}&jobPoolUploadId=${uploadedId}&jobRoleId=${T.roleId}`);
-    await page.locator(`[data-testid="job-field-role-detail"][data-role-id="${T.roleId}"]`).waitFor({ timeout: 120_000 });
-    expect(await page.getByTestId("semantic-career-intelligence-field").getAttribute("data-field-focus")).toBe("JOB");
-    await page.close();
-    const stale = await openPage(`/career/demo?focus=JOB&analysisId=${world.analysisId}&jobPoolUploadId=${uploadedId}&jobRoleId=role_stale`);
-    await stale.getByTestId("job-field-role-not-delivered").waitFor({ timeout: 120_000 });
-    expect(await stale.getByTestId("job-field").getAttribute("data-selected-role")).toBe("");
+    const stale = await openPage(`/career/demo?focus=FIELD&analysisId=${world.analysisId}&jobPoolUploadId=${uploadedId}&jobRoleId=role_stale`);
+    await stale.locator('[data-testid="syntx-stale"][data-stale-kind="ROLE"][data-stale-id="role_stale"]').waitFor({ timeout: 120_000 });
+    expect(await stale.getByTestId("syntx-field").getAttribute("data-observation-kind")).toBe("FIELD");
     await stale.close();
-    // prefers-reduced-motion: every duration is zero, every light value stays; the field names the mode.
+
+    // prefers-reduced-motion: instant topology change, no animation, every sign and its meaning stays.
     const calm = await browser.newPage({ viewport: { width: 1600, height: 1000 }, reducedMotion: "reduce" });
     calm.on("pageerror", (error: unknown) => pageErrors.push(String(error)));
-    await calm.goto(`${base()}/career/demo?focus=JOB&analysisId=${world.analysisId}&jobPoolUploadId=${uploadedId}`, { waitUntil: "domcontentloaded", timeout: 120_000 });
-    await calm.locator('[data-testid="job-field"][data-field-state="AVAILABLE"][data-motion-mode="REDUCED"]').waitFor({ timeout: 120_000 });
-    expect(await calm.locator(`[data-testid="job-field-role-${T.roleId}"] [data-jf-light]`).first().evaluate(element => getComputedStyle(element).animationName)).toBe("none");
-    expect(await calm.locator('[data-testid="job-field-nearest-ray"]').evaluate(element => getComputedStyle(element).animationName)).toBe("none");
-    expect(Number(await calm.locator(`[data-testid="job-field-role-${T.roleId}"] [data-jf-light]`).first().evaluate(element => getComputedStyle(element).opacity))).toBeGreaterThan(0);
+    await calm.goto(`${base()}/career/demo?focus=FIELD&analysisId=${world.analysisId}&jobPoolUploadId=${uploadedId}&jobRoleId=${T.roleId}`, { waitUntil: "domcontentloaded", timeout: 120_000 });
+    await calm.locator('[data-testid="syntx-field"][data-field-state="AVAILABLE"][data-motion-mode="REDUCED"][data-observation-kind="ROLE"]').waitFor({ timeout: 120_000 });
+    expect(await calm.locator("[data-sx-camera]").evaluate(element => getComputedStyle(element).transitionDuration)).toBe("0s");
+    expect(await calm.locator(`[data-testid="syntx-pending-${T.roleId}"] circle:not([data-sx-hit])`).evaluate(element => getComputedStyle(element).animationName)).toBe("none");
+    expect(await calm.getByTestId(`syntx-requirement-${T.requirementId}`).getAttribute("data-support")).toBe("SUPPORTED");
+    expect(await calm.locator('[data-testid^="syntx-trace-"]').count()).toBeGreaterThan(0);
+    expect(await calm.getByTestId(`syntx-pending-${T.roleId}`).count()).toBe(1);
     await calm.close();
 
-    const noPool = await openPage(`/career/demo?focus=JOB&analysisId=${world.analysisId}`);
-    await noPool.locator('[data-testid="job-field"][data-field-state="NO_POOL"]').waitFor({ timeout: 120_000 });
-    await noPool.getByTestId(`job-field-select-pool-${uploadedId}`).waitFor({ timeout: 60_000 });
-    await noPool.getByTestId(`job-field-select-pool-${uploadedId}`).click();
-    await noPool.locator('[data-testid="job-field"][data-field-state="AVAILABLE"]').waitFor({ timeout: 120_000 });
-    expect(new URL(noPool.url()).searchParams.get("jobPoolUploadId")).toBe(uploadedId);
-    await noPool.screenshot({ path: resolve(EVIDENCE_DIR, "19-job-field-selected-from-field.png") });
+    const noPool = await openPage(`/career/demo?focus=FIELD&analysisId=${world.analysisId}`);
+    await noPool.locator('[data-testid="syntx-field"][data-field-state="NO_POOL"]').waitFor({ timeout: 120_000 });
+    await noPool.getByTestId(`job-pool-select-${uploadedId}`).waitFor({ timeout: 60_000 });
+    await noPool.getByTestId(`job-pool-select-${uploadedId}`).click();
+    await noPool.locator('[data-testid="syntx-field"][data-field-state="AVAILABLE"]').waitFor({ timeout: 120_000 });
+    expect(params(noPool).get("jobPoolUploadId")).toBe(uploadedId);
     expect(pageErrors).toEqual([]);
     await noPool.close();
-  }, 300_000);
+  }, 400_000);
 
   it("names a stale selection that is not among the persisted uploads and leaves the field without a dock", async () => {
     pageErrors = [];
     const page = await openPage(`/career/demo?jobPoolUploadId=JPOOL_STALE_SELECTION`);
-    await page.locator('[data-testid="job-pool-panel"][data-pools-state="AVAILABLE"]').waitFor({ timeout: 60_000 });
+    await page.locator('[data-testid="syntx-field"][data-pools-state="AVAILABLE"]').waitFor({ timeout: 60_000 });
+    expect(await field(page).getAttribute("data-selection-kind")).toBe("NOT_LISTED");
     expect(await page.getByTestId("job-pool-selection-not-listed").count()).toBe(1);
-    expect(await page.getByTestId("job-pool-analysis-none").count()).toBe(1);
-    expect(await page.getByTestId("job-pool-panel").getAttribute("data-matches-state")).toBe("IDLE");
+    expect(await field(page).getAttribute("data-matches-state")).toBe("IDLE");
     expect(await page.locator('[data-testid^="hr-decision-loop"]').count()).toBe(0);
     await page.screenshot({ path: resolve(EVIDENCE_DIR, "05-stale-selection-named-no-analysis.png") });
     expect(pageErrors).toEqual([]);

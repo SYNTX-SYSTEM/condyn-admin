@@ -41,8 +41,23 @@ export function readSamplePool(): { text: string; pool: SamplePoolShape } {
 }
 
 /** GELB's fixture analysis (test/career/job-pool/fixtures.ts) under the e2e id: six capabilities, documented bases per requirement. */
+/** The one source document of the seeded analysis: its title is what the SYNTX aperture may show for DOC_001 (exact join, binding §2.3). */
+export const JOB_POOL_E2E_SOURCE = Object.freeze({ docId: "DOC_001", title: "cv.synthetic.pdf" });
+
 export function buildSeededAnalysis(): VerifiedCareerAnalysis {
-  return verifiedAnalysis(JOB_POOL_E2E_ANALYSIS_ID, fixtureCapabilities()) as unknown as VerifiedCareerAnalysis;
+  const analysis = verifiedAnalysis(JOB_POOL_E2E_ANALYSIS_ID, fixtureCapabilities()) as unknown as VerifiedCareerAnalysis & { structured_data: { analysis: { documents: unknown[] }; presentation: unknown } };
+  // The legacy analysis read route runs the perception chain over `presentation`; the adapter's empty assembly shape (adapter.ts) is what a real analysis carries at minimum.
+  analysis.structured_data.presentation = { semantic_graph: { nodes: [], edges: [] }, ui_layout: { center_node_id: "CAP_TS", concentric_rings: [], color_tokens: {} } };
+  analysis.structured_data.analysis.documents = [{
+    entity_id: JOB_POOL_E2E_SOURCE.docId,
+    identity: { type: "DOCUMENT", name: JOB_POOL_E2E_SOURCE.title },
+    properties: { category: "Source" },
+    relationships: [],
+    evidence: [{ doc_id: JOB_POOL_E2E_SOURCE.docId, location: "page 1", context_quote: JOB_POOL_E2E_TARGET.quote, evidence_score: 1 }],
+    confidence: 1,
+    validation: { status: "PASSED" }
+  }];
+  return analysis;
 }
 
 export interface JobPoolWorld {

@@ -20,8 +20,8 @@ import { OrbitalCosmosView } from "./OrbitalCosmosView";
 import { OrbitalDeepFocusView } from "./OrbitalDeepFocusView";
 import { InferenceTelemetryHUD } from "./InferenceTelemetryHUD";
 import { HrDecisionLoopDock } from "./HrDecisionLoopDock";
-import { JobPoolMatchPanelView } from "./JobPoolMatchPanel";
-import { JobField } from "./JobField";
+import { SyntxField } from "./SyntxField";
+import { observationFromParams, type SyntxObservation } from "../../../../lib/career/job-pool/syntx-field-view-model";
 import { useJobPoolWorkflow } from "../../../../lib/career/ui/useJobPool";
 import { describeAnalysisSource } from "../../../../lib/career/job-pool/frontend-presentation";
 import { buildEvidenceGraph } from "../../../../lib/career/evidence/traversal";
@@ -51,10 +51,12 @@ export interface SemanticCareerIntelligenceFieldProps {
   analysisId?: string;
   /** Exact Job Pool upload selected for matching (URL). */
   jobPoolUploadId?: string;
-  /** Planetarium focus: CAPABILITY (default), JOB (the Job Field, URL focus=JOB) or POOL (the Job Pool Field, URL focus=POOL). Without an explicit focus, an exact jobPoolUploadId opens the Pool Field. */
-  fieldFocus?: "CAPABILITY" | "JOB" | "POOL";
-  /** Exact pool role opened in the Job Field (URL jobRoleId); never inferred. */
+  /** Planetarium focus: CAPABILITY (default) or FIELD (the SYNTX Job Field, URL focus=FIELD; JOB and POOL are accepted as legacy aliases). Without an explicit focus, an exact jobPoolUploadId opens the field. */
+  fieldFocus?: "CAPABILITY" | "FIELD";
+  /** Exact observation point of the field (URL jobOrganizationId / jobRoleId / jobRequirementId); never inferred. */
+  jobOrganizationId?: string;
   jobRoleId?: string;
+  jobRequirementId?: string;
   initialAnalysisState?: {
     isAnalyzing?: boolean;
     analysisStep?: string | null;
@@ -362,7 +364,9 @@ export function SemanticCareerIntelligenceField({
   analysisId,
   jobPoolUploadId,
   fieldFocus: initialFieldFocus,
+  jobOrganizationId: initialJobOrganizationId,
   jobRoleId: initialJobRoleId,
+  jobRequirementId: initialJobRequirementId,
   initialAnalysisState,
   initialLocale = SIL_COPY.defaultLocale,
   initialFocus
@@ -405,8 +409,8 @@ export function SemanticCareerIntelligenceField({
   // Job Connection: one workflow read shared by the control panel and the Job Field focus (presentation only).
   const jobPoolAnalysisSource = describeAnalysisSource(jobState === "SUCCEEDED" ? job.state.resultAnalysisId : null, analysisId ?? null);
   const jobPoolWorkflow = useJobPoolWorkflow({ analysisId: jobPoolAnalysisSource.kind === "NONE" ? null : jobPoolAnalysisSource.analysisId, initialJobPoolUploadId: jobPoolUploadId ?? null });
-  const [fieldFocus, setFieldFocus] = useState<"CAPABILITY" | "JOB" | "POOL">(initialFieldFocus ?? (jobPoolUploadId && jobPoolUploadId.length > 0 ? "POOL" : "CAPABILITY"));
-  const [jobRoleId, setJobRoleId] = useState<string | null>(initialJobRoleId && initialJobRoleId.length > 0 ? initialJobRoleId : null);
+  const [fieldFocus, setFieldFocus] = useState<"CAPABILITY" | "FIELD">(initialFieldFocus ?? (jobPoolUploadId && jobPoolUploadId.length > 0 ? "FIELD" : "CAPABILITY"));
+  const [observation, setObservation] = useState<SyntxObservation>(() => observationFromParams(initialJobOrganizationId, initialJobRoleId, initialJobRequirementId));
   const replaceUrlParam = (name: string, value: string | null) => {
     if (typeof window === "undefined" || typeof window.history?.replaceState !== "function") return;
     try {
@@ -416,14 +420,21 @@ export function SemanticCareerIntelligenceField({
     } catch { /* navigation state is a convenience, never a requirement */ }
   };
   /** The ground state is written explicitly (focus=CAPABILITY) whenever an exact upload is in the URL: otherwise a reload would reopen the Pool Field after an explicit exit (B-POOL-INITIAL-FOCUS). */
-  const switchFieldFocus = (next: "CAPABILITY" | "JOB" | "POOL") => {
+  const FIELD_LEVEL: SyntxObservation = { kind: "FIELD", organizationId: null, roleId: null, requirementId: null, apertureSignId: null };
+  const writeObservation = (next: SyntxObservation) => {
+    replaceUrlParam("jobOrganizationId", next.kind === "FIELD" ? null : next.organizationId);
+    replaceUrlParam("jobRoleId", next.kind === "ROLE" || next.kind === "REQUIREMENT" ? next.roleId : null);
+    replaceUrlParam("jobRequirementId", next.kind === "REQUIREMENT" ? next.requirementId : null);
+  };
+  const switchFieldFocus = (next: "CAPABILITY" | "FIELD") => {
     setFieldFocus(next);
     const selectedUpload = jobPoolWorkflow.selectedJobPoolUploadId ?? jobPoolUploadId ?? null;
     replaceUrlParam("focus", next === "CAPABILITY" ? (selectedUpload ? "CAPABILITY" : null) : next);
-    if (next !== "JOB") { setJobRoleId(null); replaceUrlParam("jobRoleId", null); }
+    if (next === "CAPABILITY") { setObservation(FIELD_LEVEL); writeObservation(FIELD_LEVEL); }
   };
-  const selectJobRole = (poolRoleId: string | null) => { setJobRoleId(poolRoleId); replaceUrlParam("jobRoleId", poolRoleId); };
-  const selectJobPool = (id: string) => { jobPoolWorkflow.select(id); replaceUrlParam("jobPoolUploadId", id); };
+  /** Selection reorganises the field and is reversible; the observation point is written to the URL (the aperture never is). */
+  const observeField = (next: SyntxObservation) => { setObservation(next); writeObservation(next); };
+  const selectJobPool = (id: string) => { jobPoolWorkflow.select(id); replaceUrlParam("jobPoolUploadId", id); observeField(FIELD_LEVEL); };
   const [inferenceTelemetry, setInferenceTelemetry] = useState<any>(initialAnalysisState?.inferenceTelemetry ?? null);
   const [lastStagedDocs, setLastStagedDocs] = useState<any[]>([]);
   const [isCodexOpen, setIsCodexOpen] = useState(false);
@@ -1679,25 +1690,24 @@ export function SemanticCareerIntelligenceField({
         />
       )}
 
-      {/* JOB focus: the selected Job Pool as the central field; the capability planetarium recedes underneath (still rendered, not interactive). */}
-      {fieldFocus === "JOB" && (
-        <JobField
+      {/* FIELD focus: the SYNTX semiontic field — the selected Job Pool as the relational field; the capability planetarium recedes underneath (still rendered, not interactive). */}
+      {fieldFocus === "FIELD" && (
+        <SyntxField
           workflow={jobPoolWorkflow}
           analysisSource={jobPoolAnalysisSource}
-          selectedRoleId={jobRoleId}
-          onSelectRole={selectJobRole}
+          observation={observation}
+          onObserve={observeField}
           onSelectPool={selectJobPool}
           onExit={() => switchFieldFocus("CAPABILITY")}
           locale={locale}
         />
       )}
 
-      {/* Field-state strip (top-left): the three states of the same system, named constantly; the active one glows. Clicking the active state returns to CAPABILITY. */}
+      {/* Field-state strip (top-left): the two states of the same system, named constantly; the active one is lit. Clicking the active field state returns to CAPABILITY. */}
       <div data-testid="field-focus-strip" data-field-focus={fieldFocus} style={{ position: "fixed", left: "24px", top: "84px", zIndex: 60, display: "flex", gap: "6px", alignItems: "center" }}>
         {([
           { id: "field-focus-capability-btn", focus: "CAPABILITY" as const, labelText: t.jobField.capabilityField, next: "CAPABILITY" as const },
-          { id: "job-pool-panel-toggle", focus: "POOL" as const, labelText: t.jobPool.toggleOpen, next: fieldFocus === "POOL" ? ("CAPABILITY" as const) : ("POOL" as const) },
-          { id: "field-focus-job-btn", focus: "JOB" as const, labelText: t.jobField.enter, next: fieldFocus === "JOB" ? ("CAPABILITY" as const) : ("JOB" as const) }
+          { id: "job-pool-panel-toggle", focus: "FIELD" as const, labelText: t.syntx.toggle, next: fieldFocus === "FIELD" ? ("CAPABILITY" as const) : ("FIELD" as const) }
         ]).map(state => {
           const active = fieldFocus === state.focus;
           return (
@@ -1707,25 +1717,13 @@ export function SemanticCareerIntelligenceField({
               data-field-focus-active={active ? "true" : "false"}
               aria-pressed={active}
               onClick={() => switchFieldFocus(state.next)}
-              style={{ backgroundColor: active ? "rgba(56, 229, 255, 0.18)" : "rgba(10, 14, 20, 0.85)", border: `1px solid ${active ? SIL_TOKENS.colors.cyanActive : "rgba(56, 229, 255, 0.45)"}`, borderRadius: "8px", padding: "8px 14px", color: active ? SIL_TOKENS.colors.cyanActive : "rgba(56, 229, 255, 0.7)", fontFamily: SIL_TOKENS.typography.mono, fontSize: "11px", fontWeight: 700, cursor: "pointer", boxShadow: active ? `0 0 12px ${SIL_TOKENS.colors.cyanGlow}` : "none", transition: "background-color .35s ease, box-shadow .35s ease, color .35s ease, border-color .35s ease", animation: active && state.focus !== "CAPABILITY" ? "fieldFocusSwitchBreath 6s ease-in-out infinite" : undefined }}
+              style={{ backgroundColor: active ? "rgba(56, 229, 255, 0.18)" : "rgba(10, 14, 20, 0.85)", border: `1px solid ${active ? SIL_TOKENS.colors.cyanActive : "rgba(56, 229, 255, 0.45)"}`, borderRadius: "8px", padding: "8px 14px", color: active ? SIL_TOKENS.colors.textPrimary : SIL_TOKENS.colors.cyanActive, fontFamily: SIL_TOKENS.typography.mono, fontSize: "11px", cursor: "pointer", boxShadow: active ? `0 0 16px ${SIL_TOKENS.colors.cyanGlow}` : undefined, transition: "background-color .3s ease, color .3s ease, box-shadow .3s ease" }}
             >
               {state.labelText}
             </button>
           );
         })}
       </div>
-
-      {/* POOL focus: the Job Pool as its own field (upload, explicit selection, structure, delivered matching). No edge to the dock. */}
-      <JobPoolMatchPanelView
-        workflow={jobPoolWorkflow}
-        analysisSource={jobPoolAnalysisSource}
-        jobPoolUploadId={jobPoolUploadId ?? null}
-        locale={locale}
-        open={fieldFocus === "POOL"}
-        onOpenChange={open => switchFieldFocus(open ? "POOL" : "CAPABILITY")}
-        showToggle={false}
-        onEnterJobField={() => switchFieldFocus("JOB")}
-      />
 
       <SystemCodexModal
         isOpen={isCodexOpen}

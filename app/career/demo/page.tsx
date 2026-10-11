@@ -12,14 +12,16 @@ interface CareerIntelligenceDemoSearchParams {
   analysisId?: string;
   /** Exact Job Pool upload selected for matching. Never inferred, never a latest pool. */
   jobPoolUploadId?: string;
-  /** Planetarium focus: JOB opens the Job Field, POOL the Job Pool Field; anything else is the capability field (an exact jobPoolUploadId without focus opens the Pool Field). */
+  /** Planetarium focus: FIELD opens the SYNTX Job Field (JOB and POOL are accepted as legacy aliases); anything else is the capability field (an exact jobPoolUploadId without focus opens the field). */
   focus?: string;
-  /** Exact pool role opened in the Job Field. */
+  /** Exact observation point of the field; never inferred. */
+  jobOrganizationId?: string;
   jobRoleId?: string;
+  jobRequirementId?: string;
 }
 
 export default async function CareerIntelligenceDemoPage({ searchParams }: { searchParams: Promise<CareerIntelligenceDemoSearchParams> }) {
-  const { canonicalSilAssociationId, careerDecisionContextRevisionId, decisionContextRevisionId, analysisId, jobPoolUploadId, focus, jobRoleId } = await searchParams;
+  const { canonicalSilAssociationId, careerDecisionContextRevisionId, decisionContextRevisionId, analysisId, jobPoolUploadId, focus, jobOrganizationId, jobRoleId, jobRequirementId } = await searchParams;
   return (
     <CareerIntelligenceDashboard
       data={EMPTY_CAREER_INTELLIGENCE_DATA}
@@ -28,8 +30,10 @@ export default async function CareerIntelligenceDemoPage({ searchParams }: { sea
       decisionContextRevisionId={decisionContextRevisionId}
       analysisId={analysisId}
       jobPoolUploadId={jobPoolUploadId}
-      fieldFocus={focus === "JOB" ? "JOB" : focus === "POOL" ? "POOL" : focus === "CAPABILITY" ? "CAPABILITY" : undefined}
+      fieldFocus={focus === "FIELD" || focus === "JOB" || focus === "POOL" ? "FIELD" : focus === "CAPABILITY" ? "CAPABILITY" : undefined}
+      jobOrganizationId={jobOrganizationId}
       jobRoleId={jobRoleId}
+      jobRequirementId={jobRequirementId}
     />
   );
 }
