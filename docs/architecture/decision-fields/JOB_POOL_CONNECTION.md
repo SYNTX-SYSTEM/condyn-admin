@@ -276,7 +276,7 @@ drift; B-ANALYZE-PAGE legacy `/career/analyze` page; B-JP-CONTINUITY; B-JP-ACTOR
 ## 12. Semantic governance of the Job Field (2026-10-11)
 
 Owner mandate "SFE — JOB FIELD SEMANTIC GOVERNANCE": the capability, job-role, resonance and pending relations keep
-one meaning per layer. The same word on one screen never transfers authority, provenance or score between layers.
+one meaning per layer (reconstructed by GELB and, independently, by GRÜN for the Job Field). The same word on one screen never transfers authority, provenance or score between layers.
 
 ### 12.1 Glossary per layer
 
@@ -286,7 +286,10 @@ one meaning per layer. The same word on one screen never transfers authority, pr
 | job role | `TargetRoleProfileRevision` (`TRPREV_`, PROPOSAL_ONLY, authority NONE) mapped from a pool role | pool role (`poolRoleId`) with its `resonanceScore` | Role Manifestation: LLM-inferred career roles of the analysis, or canonical `RoleRelation` via the canonical SIL association | none |
 | resonance | forbidden term inside canonical relations (role relation, tension, evolution contracts); in the canonical SIL read model only the region name for `OrganizationRelation` | `resonanceScore` = Σ contribution / Σ weight (CP-I, deterministic, authority NONE) | Resonance Orbits: LLM-generated organizations with `resonance_score` | none |
 | relation | `CapabilityRequirementRelation`, aggregates, `RoleRelation`, tension, evolution input, recommendation proposal: produced only by governed producers; **the job pool produces none** | none; a match is not a relation | proposed relations between capability proposals (`PROPOSED`) | DCDRB and the post-decision chain |
-| pending | `capabilityRequirementRelationState: NOT_EVALUATED`, reason `VERIFIED_CAPABILITY_SNAPSHOT_ABSENT` | weak evidence (reason stated), unscored sweep coverage, no evidence delivered | `PRE_CANONICAL_DISCOVERY`, `NOT_PRODUCED`, `EMPTY` region states | none |
+| organization | `TargetOrganizationRevision` (`DECLARED_NAME`, upload-scoped entity) | pool organization (`poolOrganizationId`) | Resonance Orbits: LLM-inferred organizations of the analysis | none |
+| gap | forbidden term inside canonical relations | not used; the presentation names missing requirements and pending kinds | Tension Field `capabilityGaps` (legacy projection, empty for real analyses) | none |
+| evidence | requirement evidence = exact lines of the pool source (`SOURCE_MATCH_VERIFIED`) | analysis evidence quotes behind a scored match; source-verified sweep quotes behind unscored coverage; provenance printed per requirement | evidence inspector of the analysis | DAR/DCR evidence references |
+| pending | `capabilityRequirementRelationState: NOT_EVALUATED`, reason `VERIFIED_CAPABILITY_SNAPSHOT_ABSENT` | per pool role four kinds: UNPROVEN_CANONICAL, UNRESOLVED_EVIDENCE (weak, reason stated), UNSCORED_COVERAGE, NO_EVIDENCE_DELIVERED | `PRE_CANONICAL_DISCOVERY`, `NOT_PRODUCED`, `EMPTY` region states | none |
 
 ### 12.2 Rules
 
