@@ -1,9 +1,9 @@
 {
   "plan": "docs/acceptance/CONDYN_SYSTEM_ACCEPTANCE_TEST_PLAN_v1.0.md",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "tip": "cccd647",
   "generated": "2026-10-11",
-  "scenarioCount": 126,
+  "scenarioCount": 127,
   "scenarios": [
     {
       "id": "A-01",
@@ -88,6 +88,21 @@
       "video": false,
       "evidence": [
         "A-06-baseline.txt"
+      ]
+    },
+    {
+      "id": "A-07",
+      "suite": "TS-A Environment and safety",
+      "title": "State file permissions",
+      "sequences": [
+        "S0"
+      ],
+      "risk": [
+        "R7"
+      ],
+      "video": false,
+      "evidence": [
+        "A-07-perms.txt"
       ]
     },
     {
