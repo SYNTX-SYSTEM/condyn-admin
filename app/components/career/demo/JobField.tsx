@@ -622,7 +622,7 @@ export function JobField({ workflow, analysisSource, selectedRoleId, onSelectRol
             <p data-testid="job-field-reading" style={{ ...prose, fontSize: "12px" }}>{readingSentence(t.reading, nearestNode)}</p>
             <ResonanceReading role={nearestNode} t={t} />
             <PendingField roleId={nearestNode.poolRoleId} pending={nearestNode.pending} t={t} />
-            <span style={{ ...amber, fontSize: "8.5px" }}>{t.nearestLabel}</span>
+            <span data-testid="job-field-authority-label" style={{ ...amber, fontSize: "10.5px", lineHeight: 1.5, opacity: 1 }}>{t.nearestLabel}</span>
             <button data-testid="job-field-open-nearest" onClick={() => onSelectRole(nearestNode.poolRoleId)} style={{ ...action("cyan"), alignSelf: "flex-start" }}>{t.open} →</button>
           </section>
         )}
@@ -630,7 +630,7 @@ export function JobField({ workflow, analysisSource, selectedRoleId, onSelectRol
           <section data-testid="job-field-no-nearest" data-jf-reveal="true" style={{ ...lens, position: "absolute", left: "50%", top: "calc(50% + 96px)", transform: "translateX(-50%)", width: "min(320px, 40%)", ...stack(8), zIndex: 3, textAlign: "center" }}>
             <span style={sectionTitle}>{t.nearest}</span>
             <span style={{ ...prose, color: RED }}>{t.noNearest}</span>
-            <span style={{ ...amber, fontSize: "8.5px" }}>{t.nearestLabel}</span>
+            <span data-testid="job-field-authority-label" style={{ ...amber, fontSize: "10.5px", lineHeight: 1.5, opacity: 1 }}>{t.nearestLabel}</span>
           </section>
         )}
 
