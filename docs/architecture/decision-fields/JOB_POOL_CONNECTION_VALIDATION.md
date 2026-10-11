@@ -616,6 +616,14 @@ held the worktree's Next dev lock — sequencing, not the delta; green once it w
 against the delta. Plan 1.3.2 binds on `8356bab` (D-11 dim expectation, J-12 fill mode and settled reads, Appendix C
 B-LENS-FILL). The owner environment stays on `ef75f1e` until the owner's F-LF-2 handover.
 
+F-LF-2 handover (GELB, 2026-10-11): the owner environment on port 3017 was fast-forwarded via HMR to `d07017a`
+(= `8356bab` + plan 1.3.2, docs/acceptance identical to `a7d9211`), same server process and database, inventory
+identical. PINK's short read-only check on it (`support/core-lens-state-readonly.mjs`,
+`support/pending-reason-state-readonly.mjs`, `support/pending-label-readonly-check.mjs`; GET only, `nonGet = []`):
+`role_fullstack` / …612 — core lens 1 / `auto` at POOL and 0.25 / `none` at ROLE with `fill-mode: backwards`;
+canonical reason settled at computed 0.85 = inline; pending 5/1/3/1 with the UNSCORED ids equal to the GET body and
+the F-LF-1 label present. Identical to GELB's readings. Plan 1.3.3 (header only) states the handed-over environment.
+
 ## 4. Boundaries and findings for coordination
 
 - F-JP-1 (closed in `b782793`): `JOB_POOL_CONNECTION.md` §4 followed the per-role `JOB_POOL_JSON_ROLE` design;
