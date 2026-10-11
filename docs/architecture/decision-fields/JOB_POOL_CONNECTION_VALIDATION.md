@@ -714,6 +714,48 @@ natively; Escape with the intake open closes the intake first (R8). F-SX-1 close
 ORGANIZATION, ROLE, REQUIREMENT, the matched / sweep / pending apertures, focus-follow on return, reduced motion, bodies
 unchanged; dry-run on PINK's disposable environment `condyn_test_8776be3f32fcc17d`: 68/68 checks, 0 non-GET requests).
 
+### 3.19 Owner environment on `1bd26a7`: PINK's GET-only walk, F-SX-2 sharpened, O-SX-3 ruled (2026-10-11)
+
+GELB executed the owner mandate "SFE — SYNTX FINAL RUNTIME HANDOVER": port 3017 runs `1bd26a7` (= `8cb4a50` + plan
+1.5.1 + evidence; `app`, `lib`, `scripts` identical to `8cb4a50`), restarted with `up --with-worker` without `--fresh`
+on the preserved database `condyn_test_e46502b73c9f316f` (GELB's inventory identical before and after; rollback point
+`801828c`). PINK ran `test/job-pool-validation/support/syntx-readonly-walk.mjs` against it (GET only; upload
+`JPOOL_30F7145E21F34BEF0FCE510DFC75837B`, analyses `…_612` and `…_831`): **129/132 checks, 0 non-GET requests, bodies
+identical before and after**, evidence `evidence/syntx-readonly-3017-1bd26a7/` (bodies, signs per observation point,
+screenshots, `report.json`, `manifest.sha256`). Green: grammar, counts = mapping, retired ids absent, every sign with a
+canonical proof that resolves in the bodies, §14.3 enums only, pending at most once and no closure, no proof id as
+text, ROLE anchors / traces / source carriers / suspended boundary per body, matched and sweep apertures (quote
+verbatim, source RESOLVED `cv.synthetic.pdf` with location, authority NONE, `data-scored=false` on the sweep), the
+pending aperture (resonance 0.3636 = body, rank, no recommendation), the Escape chain with focus-follow
+(`org:org_nordlicht`, `org:org_rheinwerk`), FIELD restored with an identical sign set, reduced motion, GET-only.
+
+Red, all perceptual, none a data or governance defect:
+- **F-SX-2 (S3, GRÜN; GELB's finding, sharpened)**: on `req_001` the stable trace (`supports`, width 3.08) and the
+  dotted trace (`covers_unscored`, width 1.4, dash 2 3) to `DOC_001` have identical endpoints; the dotted trace is
+  invisible under the stable one and, being rendered later, its 10 px hit line owns every pointer point of the line
+  (`elementFromPoint` at 19 fractions: owner `trace:req_001:covers_unscored:DOC_001:0` throughout, the stable trace owns
+  none). The matched aperture is therefore unreachable by pointer; Enter on the focused stable trace opens it with the
+  contribution, Enter on the dotted one opens the sweep aperture (both verified). R7 pointer inspection is violated for
+  this configuration; the keyboard path (R8) is intact. The walk records the pointer owner and inspects by keyboard so the
+  aperture assertions still run.
+- **O-SX-3 (S4)** — PINK ruling, as asked by GELB: **repair**. `syntx-summary` is the aria-live reading of the
+  observation point (R9/BR-4); "2 evidence traces from 1 sources" / "1 requirements" is a defect of that reading, not
+  of the view model. Plural-aware template (en/de), view model unchanged, no new ids. The walk asserts number agreement
+  at every observation point (regex over "1 sources|traces|requirements|roles|organizations" and the German forms).
+- **O-SX-4 (S4)**: at REQUIREMENT (camera 2.4) the inspected trace's source carrier lies at the bottom edge with its
+  title cut (1600×1000). The walk asserts the carrier of the inspected trace inside the viewport.
+- **O-SX-2 (S4)**: confirmed visually (`612-Q-03-role.png`: the TypeScript trace runs through "Senior Full-Stack
+  Engineer"); not asserted by the walk.
+- Analysis `…_831` delivers no SUPPORTED or weak requirement and no sweep-covered item on any role (`matched 0 / weak 0`
+  on all six roles, `capabilitySweep` AVAILABLE with 6 proposals joined to no requirement): the matched-aperture walk
+  is recorded as a data skip, the pending aperture, return, reduced motion and body identity ran green.
+
+Script delta (`d49e86f` → this commit): a per-analysis exception is recorded as a failed check and the walk continues;
+`alongTrace` reports the pointer owner; keyboard fallback for the matched and the sweep trace; O-SX-3 and O-SX-4
+checks; the missing-SUPPORTED case is a data skip. Plan 1.5.2 (header only; application unchanged at `8cb4a50`) binds
+the owner environment `1bd26a7`; the repairs under "SFE — SYNTX FINAL PERCEPTUAL CLOSURE" are validated by PINK on
+disposable environments; port 3017 is not modified again without a separate owner authorization.
+
 ## 4. Boundaries and findings for coordination
 
 - F-JP-1 (closed in `b782793`): `JOB_POOL_CONNECTION.md` §4 followed the per-role `JOB_POOL_JSON_ROLE` design;

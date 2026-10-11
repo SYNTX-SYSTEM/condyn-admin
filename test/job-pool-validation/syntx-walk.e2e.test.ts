@@ -139,19 +139,30 @@ describe.skipIf(playwrightModule === null)("PINK Q-12: SYNTX field walk FIELD â†
    * document every trace of the ecology converges on the same carrier, and a receded trace rendered later sits on top of
    * the inspectable one near that end (O-SX-1, observed on 434ef49 / 3d50c0a): the walk therefore probes from the anchor side.
    */
+  // A point the trace owns under the pointer: visible <line> (8cb4a50; client point from the bounding box) or <path>
+  // (GRÃœN's perceptual-closure delta, straight or bowed; client point via getPointAtLength and the screen CTM).
   const alongTrace = (locator: any, fractions: number[] = [0.3, 0.38, 0.46, 0.54, 0.62, 0.7, 0.78, 0.22]) => locator.evaluate((element: Element, fractions: number[]) => {
-    const line = element.querySelector("line:not([data-sx-hit])") as SVGLineElement;
-    const rect = line.getBoundingClientRect();
-    const dx = line.x2.baseVal.value - line.x1.baseVal.value;
-    const dy = line.y2.baseVal.value - line.y1.baseVal.value;
-    const a = { x: dx >= 0 ? rect.left : rect.right, y: dy >= 0 ? rect.top : rect.bottom };
-    const b = { x: dx >= 0 ? rect.right : rect.left, y: dy >= 0 ? rect.bottom : rect.top };
+    const geo = element.querySelector("path:not([data-sx-hit]), line:not([data-sx-hit])") as SVGGeometryElement;
+    let at: (fraction: number) => { x: number; y: number };
+    if (geo.tagName.toLowerCase() === "path") {
+      const total = geo.getTotalLength();
+      const ctm = geo.getScreenCTM() as DOMMatrix;
+      at = (fraction) => { const p = geo.getPointAtLength(total * fraction); const sp = new DOMPoint(p.x, p.y).matrixTransform(ctm); return { x: sp.x, y: sp.y }; };
+    } else {
+      const line = geo as SVGLineElement;
+      const rect = line.getBoundingClientRect();
+      const dx = line.x2.baseVal.value - line.x1.baseVal.value;
+      const dy = line.y2.baseVal.value - line.y1.baseVal.value;
+      const a = { x: dx >= 0 ? rect.left : rect.right, y: dy >= 0 ? rect.top : rect.bottom };
+      const b = { x: dx >= 0 ? rect.right : rect.left, y: dy >= 0 ? rect.bottom : rect.top };
+      at = (fraction) => ({ x: a.x + (b.x - a.x) * fraction, y: a.y + (b.y - a.y) * fraction });
+    }
     for (const fraction of fractions) {
-      const point = { x: a.x + (b.x - a.x) * fraction, y: a.y + (b.y - a.y) * fraction };
+      const point = at(fraction);
       const hit = element.ownerDocument.elementFromPoint(point.x, point.y);
       if (hit !== null && element.contains(hit)) return { ...point, fraction, owned: true };
     }
-    return { x: a.x + (b.x - a.x) * 0.5, y: a.y + (b.y - a.y) * 0.5, fraction: 0.5, owned: false };
+    return { ...at(0.5), fraction: 0.5, owned: false };
   }, fractions);
   /** Every rendered visual sign with its sign and proof attributes (BR-2). */
   const collectSigns = (page: any): Promise<SignRecord[]> => field(page).evaluate((root: Element) => Array.from(root.querySelectorAll("[data-sign-id]")).map((element) => {

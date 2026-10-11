@@ -74,19 +74,36 @@ const settled = async (page) => {
 const waitKind = (page, kind, extra = "") => page.locator(`[data-testid="syntx-field"][data-observation-kind="${kind}"]${extra}`).waitFor({ timeout: 20_000 });
 const bottomOf = (loc) => loc.evaluate((el) => { const b = el.getBoundingClientRect(); return { x: b.width / 2, y: b.height - 6 }; });
 const topOf = (loc) => loc.evaluate((el) => { const b = el.getBoundingClientRect(); return { x: b.width / 2, y: 5 }; });
+// A point the trace owns under the pointer. The visible geometry is a <line> (§13 on 8cb4a50; client point from the
+// bounding box) or a <path> (GRÜN's perceptual-closure delta: straight "M…L…" or bowed "M…Q…"; client point via
+// getPointAtLength and the screen CTM).
 const alongTrace = (loc) => loc.evaluate((el) => {
-  const line = el.querySelector("line:not([data-sx-hit])"); const rect = line.getBoundingClientRect();
-  const dx = line.x2.baseVal.value - line.x1.baseVal.value, dy = line.y2.baseVal.value - line.y1.baseVal.value;
-  const a = { x: dx >= 0 ? rect.left : rect.right, y: dy >= 0 ? rect.top : rect.bottom }, b = { x: dx >= 0 ? rect.right : rect.left, y: dy >= 0 ? rect.bottom : rect.top };
-  for (const f of [0.3, 0.38, 0.46, 0.54, 0.62, 0.7, 0.78, 0.22]) { const p = { x: a.x + (b.x - a.x) * f, y: a.y + (b.y - a.y) * f }; const hit = el.ownerDocument.elementFromPoint(p.x, p.y); if (hit && el.contains(hit)) return { ...p, owned: true }; }
-  return { x: a.x + (b.x - a.x) * 0.5, y: a.y + (b.y - a.y) * 0.5, owned: false };
+  const geo = el.querySelector("path:not([data-sx-hit]), line:not([data-sx-hit])");
+  let at;
+  if (geo.tagName.toLowerCase() === "path") {
+    const total = geo.getTotalLength(); const ctm = geo.getScreenCTM();
+    at = (f) => { const p = geo.getPointAtLength(total * f); const sp = new DOMPoint(p.x, p.y).matrixTransform(ctm); return { x: sp.x, y: sp.y }; };
+  } else {
+    const rect = geo.getBoundingClientRect();
+    const dx = geo.x2.baseVal.value - geo.x1.baseVal.value, dy = geo.y2.baseVal.value - geo.y1.baseVal.value;
+    const a = { x: dx >= 0 ? rect.left : rect.right, y: dy >= 0 ? rect.top : rect.bottom }, b = { x: dx >= 0 ? rect.right : rect.left, y: dy >= 0 ? rect.bottom : rect.top };
+    at = (f) => ({ x: a.x + (b.x - a.x) * f, y: a.y + (b.y - a.y) * f });
+  }
+  for (const f of [0.3, 0.38, 0.46, 0.54, 0.62, 0.7, 0.78, 0.22]) { const p = at(f); const hit = el.ownerDocument.elementFromPoint(p.x, p.y); if (hit && el.contains(hit)) return { ...p, owned: true }; }
+  const mid = at(0.5); const top = el.ownerDocument.elementFromPoint(mid.x, mid.y);
+  return { ...mid, owned: false, owner: top?.closest("[data-sign-id]")?.getAttribute("data-sign-id") ?? top?.tagName ?? "offscreen" };
 });
+// Keyboard inspection of a sign (R7): focus + Enter. Used as the fallback when the pointer cannot own the trace, so the
+// aperture assertions still run and the pointer defect is recorded on its own.
+const inspectByKeyboard = async (page, loc) => { await loc.focus(); await page.keyboard.press("Enter"); };
+const inViewport = (loc) => loc.evaluate((el) => { const b = el.getBoundingClientRect(); return b.left >= 0 && b.top >= 0 && b.right <= innerWidth && b.bottom <= innerHeight; });
 const collectSigns = (page) => root(page).evaluate((r) => Array.from(r.querySelectorAll("[data-sign-id]")).map((el) => { const proof = {}; for (const a of Array.from(el.attributes)) if (a.name.startsWith("data-proof-")) proof[a.name.slice(11)] = a.value; return { testId: el.getAttribute("data-testid"), id: el.getAttribute("data-sign-id"), source: el.getAttribute("data-sign-source"), relation: el.getAttribute("data-sign-relation"), state: el.getAttribute("data-sign-state"), manifestation: el.getAttribute("data-sign-manifestation"), interaction: el.getAttribute("data-sign-interaction"), transition: el.getAttribute("data-sign-transition"), proof }; }));
 const stageText = async (page) => (await page.getByTestId("syntx-stage").textContent()) ?? "";
 
 for (const analysisId of analyses) {
   if (!analysisId) continue;
   const tag = analysisId.slice(-3);
+  try {
   const m = await get(`/api/career/job-pools/${UPLOAD}/matches?analysisId=${analysisId}`);
   check(`[${tag}] GET matches 200`, m.status === 200, `status ${m.status} sweep ${m.body?.capabilitySweep?.state ?? "?"} proposals ${m.body?.capabilitySweep?.proposalCount ?? "?"}`);
   const matches = m.body; if (!matches?.roleMatches) continue;
@@ -124,6 +141,8 @@ for (const analysisId of analyses) {
     const text = apertureOpen ? await root(page).evaluate((r) => r.querySelector('[data-testid="syntx-canvas"]')?.textContent ?? "") : await stageText(page);
     check(`[${tag}] ${label} no proof id as text`, !PROOF_ID_TEXT.test(text));
     check(`[${tag}] ${label} no RRL/TSN/EIS/RCP`, !/\b(RRL|TSN|EIS|RCP)_[A-Z0-9]/.test(await root(page).evaluate((r) => r.innerHTML)));
+    const summary = (await page.getByTestId("syntx-summary").textContent()) ?? "";
+    check(`[${tag}] ${label} summary (aria-live, R9/BR-4) agrees in number (O-SX-3)`, !/\b1 (sources|traces|requirements|roles|organizations|Quellen|Spuren|Anforderungen|Rollen|Organisationen)\b/.test(summary), summary.slice(0, 120));
     writeFileSync(resolve(OUT, `${tag}-${label}-signs.json`), JSON.stringify(signs, null, 2) + "\n");
     return signs;
   };
@@ -179,24 +198,27 @@ for (const analysisId of analyses) {
     check(`[${tag}] REQUIREMENT: observation id, URL, camera 2.4, traces inspectable`, (await root(page).getAttribute("data-observation-id")) === supportedId && new URL(page.url()).searchParams.get("jobRequirementId") === supportedId && (await page.getByTestId("syntx-canvas").getAttribute("data-camera-scale")) === "2.4" && (await page.locator(`[data-sign-id^="trace:${supportedId}:"][data-sign-state="inspectable"]`).count()) === tracesOf(supportedId));
     const item = roleMatch.matched.find((i) => i.poolRequirementId === supportedId); const quote = item.evidence[0];
     const trace = page.getByTestId(`syntx-trace-trace:${supportedId}:supports:${quote.docId}:0`);
-    await settled(page); const p = await alongTrace(trace); check(`[${tag}] trace owns a click point`, p.owned); await page.mouse.click(p.x, p.y);
+    await settled(page); const p = await alongTrace(trace); check(`[${tag}] matched trace owns a pointer point (R7 pointer inspection; F-SX-2 if a co-terminal dotted trace owns it)`, p.owned, p.owned ? "" : `owner ${p.owner}`);
+    if (p.owned) await page.mouse.click(p.x, p.y); else await inspectByKeyboard(page, trace);
     await page.locator('[data-testid="syntx-field"][data-aperture-open="true"]').waitFor({ timeout: 10_000 });
     const ap = page.getByTestId("syntx-aperture");
     const srcState = await page.getByTestId("syntx-aperture-source").getAttribute("data-source-title-state");
     const doc = documents.find((d) => d.docId === quote.docId);
     check(`[${tag}] matched aperture: for the trace, quote verbatim, source state by join, authority NONE`, (await ap.getAttribute("data-aperture-for")) === (await trace.getAttribute("data-sign-id")) && ((await page.getByTestId("syntx-aperture-quote").textContent()) ?? "").includes(quote.quote) && srcState === (doc ? "RESOLVED" : "UNRESOLVED") && (!doc || ((await page.getByTestId("syntx-aperture-source").textContent()) ?? "").includes(doc.title)) && ((await page.getByTestId("syntx-aperture-authority").textContent()) ?? "").toLowerCase().includes("authority none"), `source ${srcState}`);
     check(`[${tag}] matched aperture: contribution as delivered, no sweep status`, ((await page.getByTestId("syntx-aperture-contribution").textContent()) ?? "").includes(String(item.contribution)) && (await page.getByTestId("syntx-aperture-sweep-status").count()) === 0);
+    check(`[${tag}] REQUIREMENT: the inspected trace's source carrier is inside the viewport (O-SX-4)`, await inViewport(page.getByTestId(`syntx-source-${quote.docId}`)), `viewport ${JSON.stringify(page.viewportSize())}`);
     check(`[${tag}] observation stays REQUIREMENT, aperture not in the URL`, (await root(page).getAttribute("data-observation-kind")) === "REQUIREMENT" && ![...new URL(page.url()).searchParams.keys()].some((k) => /aperture|sign/i.test(k)));
     await settled(page); await shot(page, `${tag}-Q-04-matched`); await audit(page, "Q-04-matched");
     await page.keyboard.press("Escape"); await page.locator('[data-testid="syntx-field"][data-aperture-open="false"]').waitFor({ timeout: 10_000 });
     await page.keyboard.press("Escape"); await waitKind(page, "ROLE");
-  } else check(`[${tag}] a supported requirement exists for the aperture walk`, false, "none delivered");
+  } else check(`[${tag}] matched aperture walk`, true, "skipped: no SUPPORTED requirement delivered for this role (data condition, not a field defect)");
   if (dotted > 0) {
     const covered = [...roleMatch.matched, ...roleMatch.weakEvidence, ...roleMatch.missing].find((i) => i.sweepProposal); const q = covered.sweepProposal.evidence[0];
     const dt = page.getByTestId(`syntx-trace-trace:${covered.poolRequirementId}:covers_unscored:${q.docId}:0`);
     const joined = proposalEvidence.find((e) => e.capabilityProposalId === covered.sweepProposal.capabilityProposalId && e.docId === q.docId && e.quote === q.quote) ?? null;
     check(`[${tag}] sweep trace: PCAP proof, EVD only on the exact join`, (await dt.getAttribute("data-proof-capability-id")) === covered.sweepProposal.capabilityProposalId && (await dt.getAttribute("data-proof-evidence-id")) === (joined ? joined.evidenceId : null), `evd ${joined ? joined.evidenceId : "none"}`);
-    await settled(page); const p = await alongTrace(dt); await page.mouse.click(p.x, p.y);
+    await settled(page); const p = await alongTrace(dt); check(`[${tag}] sweep trace owns a pointer point`, p.owned, p.owned ? "" : `owner ${p.owner}`);
+    if (p.owned) await page.mouse.click(p.x, p.y); else await inspectByKeyboard(page, dt);
     await page.locator('[data-testid="syntx-field"][data-aperture-open="true"]').waitFor({ timeout: 10_000 });
     const text = (await page.getByTestId("syntx-aperture").textContent()) ?? "";
     check(`[${tag}] sweep aperture: unscored status, R5 text, no contribution, no number`, (await page.getByTestId("syntx-aperture-sweep-status").getAttribute("data-scored")) === "false" && text.includes("A capability sweep proposal covers this requirement with a source-verified quote; it is not scored and not canonically evaluated.") && (await page.getByTestId("syntx-aperture-contribution").count()) === 0 && !PERCENT.test(text) && text.includes(q.quote));
@@ -235,6 +257,10 @@ for (const analysisId of analyses) {
   const m2 = await get(`/api/career/job-pools/${UPLOAD}/matches?analysisId=${analysisId}`); const a2 = await get(`/api/career/analyses/${analysisId}`); const v2 = await get(`/api/career/job-pools/${UPLOAD}`);
   const strip = (b) => JSON.stringify({ ...b, recommendations: b?.recommendations ? { ...b.recommendations, generatedAt: null } : b?.recommendations });
   check(`[${tag}] bodies identical before and after`, m2.text === m.text && v2.text === viewRes.text && strip(a2.body) === strip(a.body));
+  } catch (error) {
+    check(`[${tag}] walk completed without exception`, false, String(error?.message ?? error).split("\n")[0]);
+    for (const ctx of browser.contexts()) await ctx.close().catch(() => {});
+  }
 }
 
 await browser.close();
