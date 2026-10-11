@@ -123,6 +123,8 @@ describe("SIL Job Field focus (server-rendered)", () => {
     expect(html).toMatch(/data-jf-surface="header"/);
     expect(html).toMatch(/data-testid="job-field-nearest"[^>]*data-caption-side="(left|right)"[^>]*style="[^"]*pointer-events:none/);
     expect(html).toMatch(/data-camera-scale="1"/);
+    // The authority statement is never the smallest text (GELB governance note): 10.5 px in the caption.
+    expect(html).toMatch(/data-testid="job-field-authority-label"[^>]*style="[^"]*font-size:10.5px/);
     expect(html).not.toContain('<div data-testid="job-field-lens"');
     expect(html).not.toMatch(/data-testid="job-field-legend"[^>]*style="[^"]*[;"]border:/);
     expect(html).not.toMatch(/data-testid="job-field-nearest"[^>]*style="[^"]*[;"]border:/);
