@@ -218,3 +218,68 @@ Boundary B-JF-GROUND-LINE: bottom-anchored content inside the planetarium root i
 and fixed positioning is captured by the overlay's backdrop filter. The ground line reads the custom property
 `--condyn-page-header-height` (fallback 60 px); if the app shell changes the header height it should set that property.
 
+## 10. Three field states: CAPABILITY · POOL · JOB (owner mandate "SFE — SEMIONTIC JOB POOL FIELD", 2026-10-11)
+
+The Job Pool is no longer a control panel beside the planetarium but the third field state of the same system.
+Frontend and interaction only; the routes, the workflow hook, the pure models, every semantic distinction, provenance,
+governance and authority boundary and every `job-pool-*` test id and data attribute are unchanged. Field grammar
+`POOL_FIELD_V1` on `job-pool-panel` (the panel's root element is now the field), with the surface grammar
+`FIELD_EXTENSION_V1` and the motion grammar `SEMIONTIC_V1` of §8/§9.
+
+### 10.1 Field states and transitions
+
+| State | URL | Opened by | What the field is |
+| --- | --- | --- | --- |
+| CAPABILITY (ground) | no `focus` | default; `field-focus-capability-btn`; the in-field exits | the capability planetarium, orbits 01–06 |
+| POOL | `focus=POOL`; also an exact `jobPoolUploadId` without a `focus` | `job-pool-panel-toggle` (strip) | the Job Pool Field: persisted uploads on a ring, the explicitly selected upload at the core, its organisations and roles around it, intake and the delivered matching as readings |
+| JOB | `focus=JOB` | `field-focus-job-btn` (strip); `job-pool-enter-job-field` from the Pool Field | the Job Field of §1–§9 |
+
+The field-state strip (`field-focus-strip`, `data-field-focus`) names the three states constantly (◈ CAPABILITY ·
+⬡ JOB POOL · ◉ JOB, `data-field-focus-active`, `aria-pressed`); the active state glows and breathes; clicking it returns
+to the ground state. Entering POOL or JOB is the same kind of transition: the planetarium recedes under a blurred
+overlay (620 ms), the field's nodes emerge in delivered order. An explicit `focus=JOB` wins over an upload id.
+
+### 10.2 The Pool Field (`lib/career/job-pool/pool-field-presentation.ts`, pure; `JobPoolMatchPanel.tsx`)
+
+| Element | Derivation | Rendered as |
+| --- | --- | --- |
+| Upload ring | `uploadOrbit`: persisted uploads in delivered order, slots offset by half a slot, radius 345 | HTML nodes (`job-pool-item-<id>`, `data-selected`, `data-pool-status`, `data-at-core`, `data-delivered-index`) positioned by the same geometry as the SVG; each node is its own `job-pool-select-<id>` button (disabled and `aria-pressed` when selected); DRAFT/ARCHIVED dashed amber |
+| Selection | the explicitly selected upload has no angle: `x = y = center` | the node is drawn into the core (780 ms, the planetarium's own focus curve). UPLOADED != SELECTED is geometry: the ring never moves a "latest" upload to the core |
+| Core | `job-pool-core` (`data-motion="BREATH"`), 7 s breath, dashed halo circulating only when a pool is at the core | empty core: "NO UPLOAD AT THE CORE · select an upload on the ring; it moves to the core" |
+| Structure | `derivePoolStructure(view, matching)`: organisations as arcs (radius 245) from the canonical mapping, one slot per role on the inner ring (190), grouped by pool organisation in delivered order, requirement ticks around each role | `job-pool-structure-canvas`, `job-pool-structure-organization-<org>` (`data-role-count`), `job-pool-structure-role-<role>` (`data-requirement-count`, `data-resonance-score`, `data-scored-match`, `data-motion` UNLIT | BREATH | STILL, `data-selected`, `data-focused`) |
+| Light | a role carries light only when the delivered matching names it for this exact upload (`matchingDelivered`); same `roleMotion` as the Job Field | unlit nodes show their requirement count; lit nodes show POOL RESONANCE (PRESENTATION) |
+| Role reading | click a structure role | `job-pool-structure-role-detail` (`data-role-id`) with `job-pool-structure-requirement-<req>` (`data-necessity`, `data-eligibility`), `job-pool-structure-role-back` |
+| Left surface | title, `fieldSubtitle`, list state (`job-pool-list-state`, `data-list-state`), `job-pool-analysis`, intake (`job-pool-upload` with the unchanged inputs, button and result ids; underline inputs, text affordances) | |
+| Right surface | `job-pool-selected` (title, id, tether, ORG · ROLES · REQ readings, `job-pool-canonical-mapping`), the structure role reading, `job-pool-matches` with `job-pool-enter-job-field`, labels as state words, ranking, `job-pool-capability-sweep`, `job-pool-role-list` of `job-pool-role-<id>` readings (display resonance, title, counts; relations folded behind `job-pool-role-<id>-toggle`, `data-revealed`, in the DOM throughout incl. `job-pool-trqrev-*`), organisation aggregates | |
+| Ground line | `job-pool-non-claims`, lifted by the header height (B-JF-GROUND-LINE) | |
+| Exit | `job-pool-panel-collapse` (← CAPABILITY FIELD) in the field; the strip | |
+
+Removed: the panel's `anchor` prop and `data-anchor` (bound only by my own SSR proof, replaced by the strip
+assertion); the panel's own fixed toggle (still rendered by the standalone `JobPoolMatchPanel` wrapper when closed,
+`showToggle`). Copy: `collapse` now reads "← CAPABILITY FIELD" / "← CAPABILITY-FELD"; additive keys `fieldSubtitle`,
+`orbit`, `coreEmpty`, `coreHint`, `structure`, `structureHint`, `structureRole`, `requirements`, `revealRequirements`,
+`hideRequirements`, `revealRole`, `hideRole`, `enterJobField`, `intake`, `allRoles` (jobPool) and `capabilityField`
+(jobField), en/de. No other copy changed.
+
+### 10.3 Proofs
+
+| Proof | Content |
+| --- | --- |
+| P-PF-U `pool-field-presentation.test.ts` | ring in delivered order with half-slot offset, only the explicit selection at the core, slots kept, stale selection moves nothing; structure grouped from the canonical mapping, unlit without a matching; light only from a matching of the exact same upload with delivered score and rank; list state; no canonical/decision/verified claim |
+| P-JP-S `panel-ssr.test.tsx` (+2) | POOL focus from an upload id: strip states, field/surface/motion grammar, orbit, structure canvas, core, veils, exit; explicit JOB wins; standalone wrapper renders the orbit (empty list) and the matching readings folded with the quotes and TRQREV ids in the DOM |
+| P-JF-S | JOB focus: strip with the inactive POOL switch; default focus mounts no field |
+| P-JF-B (my e2e, case 5 extended) | toggle = change of field state (`data-field-focus="POOL"`, `focus=POOL`), no node at the core before selection; after selecting: exactly one node at the core, its button disabled, structure roles = pool roles, organisations = pool organisations, the fullstack role lit (`BREATH`, `data-scored-match="true"`), role reading with its requirement count; relations folded → revealed; `job-pool-enter-job-field` → JOB with the same `data-pool-id`, Pool Field unmounted; strip back to POOL, in-field exit → CAPABILITY, `focus` removed. Case 7: an upload id without focus opens POOL; JOB reached through the strip |
+| PINK `browser-walk.e2e` 1/1, `job-field.e2e` 2/2, `layer-separation` 4/4, `job-field-static` 3/3 | unchanged assertions on the carried contract |
+| sealed SIL suites, dock SSR, governance guard | preservation |
+
+### 10.4 Run record
+
+| Date | Revision | Run | Result |
+| --- | --- | --- | --- |
+| 2026-10-11 | working tree on `093b9e6` | `tsc --noEmit` | 0 errors |
+| 2026-10-11 | same | unit/SSR/governance/PINK static/layer separation/5 sealed SIL suites/dock SSR (16 files) | 102 passed |
+| 2026-10-11 | same | my e2e (10) · PINK browser-walk (1) + job-field.e2e (2), three disposable DBs in parallel | 10/10 · 3/3 |
+| 2026-10-11 | same | frames reviewed: upload slot 1 sat on the ring label at 12 o'clock → half-slot offset; the strip read "◉ JOB · ← CAPABILITY FIELD" → three constant state names with active glow and a CAPABILITY ground-state switch; frame 01 captured mid-entrance → 900 ms settle; node names clamped to two lines; exit link on its own line | rerun below |
+| 2026-10-11 | same | rerun after the corrections (16 files; my e2e; PINK browser-walk + job-field.e2e) | 102 passed · 10/10 · 3/3 |
+| 2026-10-11 | same | frames reviewed again: an upload node clipped an organisation label → upload ring 345, nodes 88 px; my e2e rerun for the evidence frames | 10/10 (see commit) |
+

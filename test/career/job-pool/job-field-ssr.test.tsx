@@ -34,6 +34,7 @@ describe("SIL Job Field focus (server-rendered)", () => {
     expect(html).toContain('data-testid="field-focus-job-btn"');
     expect(html).toContain('data-field-focus-active="false"');
     expect(html).not.toContain('data-testid="job-field"');
+    expect(html).not.toContain('data-testid="job-pool-panel"');
     for (const id of chrome) expect(html).toContain(`data-testid="${id}"`);
     for (const stage of stages) expect(html).toContain(`data-testid="focus-transition-stage-shell-${stage}"`);
   });
@@ -46,8 +47,9 @@ describe("SIL Job Field focus (server-rendered)", () => {
     expect(noPool).toContain('data-testid="job-field-exit-btn"');
     expect(noPool).toContain("NO JOB POOL UPLOAD SELECTED");
     expect(noPool).not.toContain("hr-decision-loop-dock");
-    // The control panel yields the top-left column to the Job Field: collapsed, anchored bottom-left.
-    expect(noPool).toMatch(/data-testid="job-pool-panel-toggle"[^>]*data-anchor="BOTTOM_LEFT"/);
+    // The Pool Field is a sibling field state: its switch sits in the field-state strip, inactive while JOB owns the field.
+    expect(noPool).toMatch(/data-testid="field-focus-strip"[^>]*data-field-focus="JOB"/);
+    expect(noPool).toMatch(/data-testid="job-pool-panel-toggle"[^>]*data-field-focus-active="false"/);
     expect(noPool).not.toContain('data-testid="job-pool-panel"');
     for (const id of chrome) expect(noPool).toContain(`data-testid="${id}"`);
     for (const stage of stages) expect(noPool).toContain(`data-testid="focus-transition-stage-shell-${stage}"`);

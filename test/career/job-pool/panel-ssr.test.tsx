@@ -91,6 +91,40 @@ describe("SIL Job Pool panel (server-rendered field)", () => {
     expect((html.match(/UNSCORED/g) ?? []).length).toBeGreaterThanOrEqual(2);
   });
 
+  it("manifests as the POOL field state: the selected upload at the core, the others on the ring, the structure around the core, the matching as a reading", () => {
+    const listed = renderToString(<SemanticCareerIntelligenceField data={EMPTY_CAREER_INTELLIGENCE_DATA} jobPoolUploadId="JPOOL_SSR" />);
+    expect(listed).toContain('data-field-focus="POOL"');
+    expect(listed).toMatch(/data-testid="field-focus-strip"[^>]*data-field-focus="POOL"/);
+    expect(listed).toMatch(/data-testid="job-pool-panel-toggle"[^>]*data-field-focus-active="true"/);
+    expect(listed).toMatch(/data-testid="field-focus-capability-btn"[^>]*data-field-focus-active="false"/);
+    expect(listed).toMatch(/data-testid="field-focus-job-btn"[^>]*data-field-focus-active="false"/);
+    expect(listed).toMatch(/data-testid="job-pool-panel"[^>]*data-field-grammar="POOL_FIELD_V1"[^>]*data-surface-grammar="FIELD_EXTENSION_V1"[^>]*data-motion-grammar="SEMIONTIC_V1"/);
+    expect(listed).toContain('data-testid="job-pool-orbit"');
+    expect(listed).toContain('data-testid="job-pool-structure-canvas"');
+    expect(listed).toContain('data-testid="job-pool-core"');
+    expect(listed).toContain('data-jp-veil="left"');
+    expect(listed).toContain('data-testid="job-pool-panel-collapse"');
+    expect(listed).toContain("← CAPABILITY FIELD");
+    expect(listed).not.toContain('data-testid="job-field"');
+    // An explicit JOB focus wins over the upload id: the Pool Field is not mounted, the Job Field is.
+    const job = renderToString(<SemanticCareerIntelligenceField data={EMPTY_CAREER_INTELLIGENCE_DATA} jobPoolUploadId="JPOOL_SSR" fieldFocus="JOB" />);
+    expect(job).toContain('data-field-focus="JOB"');
+    expect(job).not.toContain('data-testid="job-pool-panel"');
+    expect(job).toContain('data-testid="job-field"');
+  });
+
+  it("renders the orbit from the delivered list: the selected upload at the core and disabled, the others on the ring in delivered order", () => {
+    const html = renderToString(<JobPoolMatchPanel jobPoolUploadId="JPOOL_WITH_MATCHES" analysisId="ANL_TEST" />);
+    // The mocked workflow lists no pools for this id, so the orbit is empty and the matching reading still renders every role.
+    expect(html).toMatch(/data-testid="job-pool-list"[^>]*data-pool-count="0"/);
+    expect(html).toMatch(/data-testid="job-pool-role-ROLE_A"[^>]*data-rank="1"[^>]*data-resonance-score="0.75"/);
+    expect(html).toMatch(/data-testid="job-pool-role-ROLE_A"[^>]*data-revealed="false"/);
+    expect(html).toContain('data-testid="job-pool-role-ROLE_A-toggle"');
+    expect(html).toContain("Built services in TypeScript for six years.");
+    expect(html).toContain('data-testid="job-pool-trqrev-TRQREV_1"');
+    expect(html).toContain('data-testid="job-pool-non-claims"');
+  });
+
   it("threads the exact ids from the dashboard to the field", () => {
     const html = renderToString(<CareerIntelligenceDashboard data={EMPTY_CAREER_INTELLIGENCE_DATA} analysisId="ANL_DASH" jobPoolUploadId="JPOOL_DASH" />);
     expect(html).toContain('data-job-pool-upload="JPOOL_DASH"');

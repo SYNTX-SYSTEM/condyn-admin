@@ -51,8 +51,8 @@ export interface SemanticCareerIntelligenceFieldProps {
   analysisId?: string;
   /** Exact Job Pool upload selected for matching (URL). */
   jobPoolUploadId?: string;
-  /** Planetarium focus: the capability field (default) or the Job Pool as the central field (URL focus=JOB). */
-  fieldFocus?: "CAPABILITY" | "JOB";
+  /** Planetarium focus: CAPABILITY (default), JOB (the Job Field, URL focus=JOB) or POOL (the Job Pool Field, URL focus=POOL). Without an explicit focus, an exact jobPoolUploadId opens the Pool Field. */
+  fieldFocus?: "CAPABILITY" | "JOB" | "POOL";
   /** Exact pool role opened in the Job Field (URL jobRoleId); never inferred. */
   jobRoleId?: string;
   initialAnalysisState?: {
@@ -361,7 +361,7 @@ export function SemanticCareerIntelligenceField({
   decisionContextRevisionId,
   analysisId,
   jobPoolUploadId,
-  fieldFocus: initialFieldFocus = "CAPABILITY",
+  fieldFocus: initialFieldFocus,
   jobRoleId: initialJobRoleId,
   initialAnalysisState,
   initialLocale = SIL_COPY.defaultLocale,
@@ -405,7 +405,7 @@ export function SemanticCareerIntelligenceField({
   // Job Connection: one workflow read shared by the control panel and the Job Field focus (presentation only).
   const jobPoolAnalysisSource = describeAnalysisSource(jobState === "SUCCEEDED" ? job.state.resultAnalysisId : null, analysisId ?? null);
   const jobPoolWorkflow = useJobPoolWorkflow({ analysisId: jobPoolAnalysisSource.kind === "NONE" ? null : jobPoolAnalysisSource.analysisId, initialJobPoolUploadId: jobPoolUploadId ?? null });
-  const [fieldFocus, setFieldFocus] = useState<"CAPABILITY" | "JOB">(initialFieldFocus);
+  const [fieldFocus, setFieldFocus] = useState<"CAPABILITY" | "JOB" | "POOL">(initialFieldFocus ?? (jobPoolUploadId && jobPoolUploadId.length > 0 ? "POOL" : "CAPABILITY"));
   const [jobRoleId, setJobRoleId] = useState<string | null>(initialJobRoleId && initialJobRoleId.length > 0 ? initialJobRoleId : null);
   const replaceUrlParam = (name: string, value: string | null) => {
     if (typeof window === "undefined" || typeof window.history?.replaceState !== "function") return;
@@ -415,7 +415,7 @@ export function SemanticCareerIntelligenceField({
       window.history.replaceState(window.history.state, "", url.toString());
     } catch { /* navigation state is a convenience, never a requirement */ }
   };
-  const switchFieldFocus = (next: "CAPABILITY" | "JOB") => { setFieldFocus(next); replaceUrlParam("focus", next === "JOB" ? "JOB" : null); if (next === "CAPABILITY") { setJobRoleId(null); replaceUrlParam("jobRoleId", null); } };
+  const switchFieldFocus = (next: "CAPABILITY" | "JOB" | "POOL") => { setFieldFocus(next); replaceUrlParam("focus", next === "CAPABILITY" ? null : next); if (next !== "JOB") { setJobRoleId(null); replaceUrlParam("jobRoleId", null); } };
   const selectJobRole = (poolRoleId: string | null) => { setJobRoleId(poolRoleId); replaceUrlParam("jobRoleId", poolRoleId); };
   const selectJobPool = (id: string) => { jobPoolWorkflow.select(id); replaceUrlParam("jobPoolUploadId", id); };
   const [inferenceTelemetry, setInferenceTelemetry] = useState<any>(initialAnalysisState?.inferenceTelemetry ?? null);
@@ -954,7 +954,7 @@ export function SemanticCareerIntelligenceField({
       {/* Center Radial Organism Field */}
       <style>{`
         @keyframes fieldFocusSwitchBreath { 0%, 100% { box-shadow: 0 0 12px rgba(56, 229, 255, 0.18); } 50% { box-shadow: 0 0 22px rgba(56, 229, 255, 0.45); } }
-        @media (prefers-reduced-motion: reduce) { [data-testid="field-focus-job-btn"] { animation: none !important; } }
+        @media (prefers-reduced-motion: reduce) { [data-testid="field-focus-strip"] button { animation: none !important; } }
         @keyframes rotateClockwise {
           0% { transform: rotate(0deg); }
           100% { transform: rotate(360deg); }
@@ -1686,25 +1686,39 @@ export function SemanticCareerIntelligenceField({
         />
       )}
 
-      {/* Field focus switch (top-left): CAPABILITY field (default) or JOB field. */}
-      <button
-        data-testid="field-focus-job-btn"
-        data-field-focus-active={fieldFocus === "JOB" ? "true" : "false"}
-        onClick={() => switchFieldFocus(fieldFocus === "JOB" ? "CAPABILITY" : "JOB")}
-        style={{ position: "fixed", left: "24px", top: "84px", zIndex: 60, backgroundColor: fieldFocus === "JOB" ? "rgba(56, 229, 255, 0.18)" : "rgba(10, 14, 20, 0.85)", border: `1px solid ${SIL_TOKENS.colors.cyanActive}`, borderRadius: "8px", padding: "8px 14px", color: SIL_TOKENS.colors.cyanActive, fontFamily: SIL_TOKENS.typography.mono, fontSize: "11px", fontWeight: 700, cursor: "pointer", boxShadow: `0 0 12px ${SIL_TOKENS.colors.cyanGlow}`, transition: "background-color .35s ease, box-shadow .35s ease", animation: fieldFocus === "JOB" ? "fieldFocusSwitchBreath 6s ease-in-out infinite" : undefined }}
-      >
-        {fieldFocus === "JOB" ? t.jobField.exit : t.jobField.enter}
-      </button>
+      {/* Field-state strip (top-left): the three states of the same system, named constantly; the active one glows. Clicking the active state returns to CAPABILITY. */}
+      <div data-testid="field-focus-strip" data-field-focus={fieldFocus} style={{ position: "fixed", left: "24px", top: "84px", zIndex: 60, display: "flex", gap: "6px", alignItems: "center" }}>
+        {([
+          { id: "field-focus-capability-btn", focus: "CAPABILITY" as const, labelText: t.jobField.capabilityField, next: "CAPABILITY" as const },
+          { id: "job-pool-panel-toggle", focus: "POOL" as const, labelText: t.jobPool.toggleOpen, next: fieldFocus === "POOL" ? ("CAPABILITY" as const) : ("POOL" as const) },
+          { id: "field-focus-job-btn", focus: "JOB" as const, labelText: t.jobField.enter, next: fieldFocus === "JOB" ? ("CAPABILITY" as const) : ("JOB" as const) }
+        ]).map(state => {
+          const active = fieldFocus === state.focus;
+          return (
+            <button
+              key={state.id}
+              data-testid={state.id}
+              data-field-focus-active={active ? "true" : "false"}
+              aria-pressed={active}
+              onClick={() => switchFieldFocus(state.next)}
+              style={{ backgroundColor: active ? "rgba(56, 229, 255, 0.18)" : "rgba(10, 14, 20, 0.85)", border: `1px solid ${active ? SIL_TOKENS.colors.cyanActive : "rgba(56, 229, 255, 0.45)"}`, borderRadius: "8px", padding: "8px 14px", color: active ? SIL_TOKENS.colors.cyanActive : "rgba(56, 229, 255, 0.7)", fontFamily: SIL_TOKENS.typography.mono, fontSize: "11px", fontWeight: 700, cursor: "pointer", boxShadow: active ? `0 0 12px ${SIL_TOKENS.colors.cyanGlow}` : "none", transition: "background-color .35s ease, box-shadow .35s ease, color .35s ease, border-color .35s ease", animation: active && state.focus !== "CAPABILITY" ? "fieldFocusSwitchBreath 6s ease-in-out infinite" : undefined }}
+            >
+              {state.labelText}
+            </button>
+          );
+        })}
+      </div>
 
-      {/* Left Job Pool panel: upload, explicit selection and the presentation matching of one exact analysis. No edge to the dock. */}
+      {/* POOL focus: the Job Pool as its own field (upload, explicit selection, structure, delivered matching). No edge to the dock. */}
       <JobPoolMatchPanelView
-        key={fieldFocus}
         workflow={jobPoolWorkflow}
         analysisSource={jobPoolAnalysisSource}
         jobPoolUploadId={jobPoolUploadId ?? null}
         locale={locale}
-        anchor={fieldFocus === "JOB" ? "BOTTOM_LEFT" : "TOP_LEFT"}
-        initialOpen={fieldFocus === "JOB" ? false : undefined}
+        open={fieldFocus === "POOL"}
+        onOpenChange={open => switchFieldFocus(open ? "POOL" : "CAPABILITY")}
+        showToggle={false}
+        onEnterJobField={() => switchFieldFocus("JOB")}
       />
 
       <SystemCodexModal

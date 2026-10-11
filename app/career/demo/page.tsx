@@ -12,7 +12,7 @@ interface CareerIntelligenceDemoSearchParams {
   analysisId?: string;
   /** Exact Job Pool upload selected for matching. Never inferred, never a latest pool. */
   jobPoolUploadId?: string;
-  /** Planetarium focus: JOB opens the Job Field; anything else is the capability field. */
+  /** Planetarium focus: JOB opens the Job Field, POOL the Job Pool Field; anything else is the capability field (an exact jobPoolUploadId without focus opens the Pool Field). */
   focus?: string;
   /** Exact pool role opened in the Job Field. */
   jobRoleId?: string;
@@ -28,7 +28,7 @@ export default async function CareerIntelligenceDemoPage({ searchParams }: { sea
       decisionContextRevisionId={decisionContextRevisionId}
       analysisId={analysisId}
       jobPoolUploadId={jobPoolUploadId}
-      fieldFocus={focus === "JOB" ? "JOB" : "CAPABILITY"}
+      fieldFocus={focus === "JOB" ? "JOB" : focus === "POOL" ? "POOL" : undefined}
       jobRoleId={jobRoleId}
     />
   );
