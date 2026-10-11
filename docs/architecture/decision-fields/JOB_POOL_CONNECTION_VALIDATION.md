@@ -424,6 +424,34 @@ delivered order, nearest-role rule, distance, pending kinds with counts and ids,
 legend and non-claims, no RRL_/TSN_/EIS_/RCP_ in the DOM, stage shells 01–06 kept, HR dock absent; distinct
 NO_ANALYSIS / NO_POOL / INACTIVE_POOL states).
 
+#### 3.13.1 GELB's root repair `cf2d084` (integration/job-field-governance) validated, merged as `a5dc75e`
+
+Delta: `lib/career/ui-adapter.ts` wraps `evaluateAlignment` per REQUIRES requirement; when a capability of the same
+name exists and the proof chain refuses with `ERR_EPISTEMIC_VIOLATION` (one document proving both sides, the normal
+single-CV case) or `ERR_PROOF_CHAIN_BROKEN` (document absent from a source manifest, which the analyses route never
+delivers), the relation is stated `UNRESOLVED` with the capability id; every other error still propagates. GELB's
+probe of both real PDF analyses in the owner environment found 0 role→REQUIRES relations, so the exact-equality
+alignment is dormant and the real defect was a latent whole-field crash on any name coincidence. Proof
+`test/career/planetarium-role-alignment.test.ts`.
+
+PINK inverse (same test file against the pre-repair adapter `990130c` checked out temporarily, then restored):
+
+```
+pre-repair:  2 failed | 1 passed  (ERR_EPISTEMIC_VIOLATION: Document DOC_001 cannot be used to prove both …;
+                                   ERR_PROOF_CHAIN_BROKEN: Document DOC_001 exists but missing from origin source manifest)
+repaired:    3 passed
+```
+
+Regression on the merged head (`condyn_test_172764f305a11d58`): ui-adapter, recommendation proof chain,
+capability-requirement alignment, SIL orbit contract, proposal SIL projection, semantic governance, DB-1 recovery
+candidate, PINK layer and sweep suites: 9 files / 37 tests green.
+
+Resolution of PINK's findings (GELB §12.3): F-JF-2 repaired as above (equality semantics left dormant and unchanged,
+recorded); F-JF-3 not changed at the source: `REC_<Date.now()>_<random>` is the G1 legacy lifecycle id format under
+the legacy freeze, the DB-1 recovery candidate depends on it, and the planetarium exposes neither the id nor the
+derivation (proven) → owner boundary **B-JF-REC-ID**, accepted by PINK. F-JF-1, 4, 5, 6 assigned to GRÜN as
+presentation items; PINK's Job Field proofs bind their labels when the Job Field lands.
+
 ## 4. Boundaries and findings for coordination
 
 - F-JP-1 (closed in `b782793`): `JOB_POOL_CONNECTION.md` §4 followed the per-role `JOB_POOL_JSON_ROLE` design;
