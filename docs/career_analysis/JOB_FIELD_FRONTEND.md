@@ -339,3 +339,54 @@ and 30 px (Pool Field), node titles 12 px sans, requirement names 14 px sans.
 | 2026-10-11 | same | frames reviewed: the open legend overflowed the left surface → the surface scrolls; moons 3.2 → 3.8; an upload node could cover an organisation name in the Pool Field → names as curved text on the arc | rerun below |
 | 2026-10-11 | same | rerun: unit/SSR/governance/PINK static + layer separation/5 sealed SIL suites/dock SSR (16 files) · my e2e · PINK browser-walk + job-field.e2e, three disposable DBs in parallel | 103 passed · 10/10 · 3/3; tsc 0 |
 
+## 12. Lens model: the galaxy is the interface (owner mandate "SFE — PURE SEMIONTIC INTERFACE RECONSTRUCTION", 2026-10-11)
+
+Frontend and interaction only; every model, route, semantic distinction, provenance, scoring, governance and authority
+boundary and every bound id are unchanged. Interaction grammar `LENS_V1` (`data-interaction-grammar`,
+`data-focus-level` on `job-field` and `job-pool-panel`). The columns of §9 are gone; information exists only in context.
+
+### 12.1 Focus levels
+
+| Level | Job Field | Pool Field |
+| --- | --- | --- |
+| FIELD | the galaxy; one caption at the nearest presented role (`job-field-nearest`, pointer-transparent except its button, placed on the free side of the body, `data-caption-side`); a one-line header (title, exit, state); the legend affordance; the ground line | the ring and the empty core; the intake lens (`job-pool-upload`) is the contextual action while nothing is at the core (`data-intake-visible`); header line with list state and analysis; the core lens (`job-pool-selected`) reads the selection state |
+| POOL (Pool Field) | — | the selected upload at the core; the core lens reads it (ORG · ROLES · REQ, id, mapping state words, LAYER C fold) and carries `job-pool-matches` (labels, ranking, readings hint, MATCHING DETAILS fold, ENTER JOB FIELD); the intake recedes behind `job-pool-intake-toggle` |
+| ROLE | the camera moves onto the role (`data-camera-scale="1.5"`, 780 ms on the planetarium's focus curve, the role at 35 % of the stage); its moons spread to `radius + 40` (`data-moon-radius`) with their capability names (`data-jf-moon-label`); hovering a moon enlarges it and reveals its line; everything else recedes (roles 0.22, nebulae 0.5, threads 0.3, core 0.55); one lens (`job-field-lens`, `data-role-id`) opens beside the role with `job-field-role-detail`; the caption is gone | a structure role is focused: its lens opens at the body (`job-pool-role-lens-<role>`: `job-pool-structure-role-detail` with its requirements and, when a matching was delivered, the role's reading `job-pool-role-<role>` with relations folded); the upload ring recedes (0.18), the core lens dims and ignores pointer events; `job-pool-structure-role-back` returns |
+
+Every reading of every role is in the DOM at all times (`job-pool-role-list` is the layer of lenses, one per
+delivered role, hidden unless focused), so every textContent-based proof keeps binding; only the focused one shows.
+
+### 12.2 What is never permanent
+
+Legend (`job-field-legend-toggle` → `job-field-legend-text`, bottom-left), intake (`job-pool-intake-toggle`),
+canonical reason (`job-field-pending-why`), evidence (`job-field-requirement-toggle-<req>`, `job-field-reveal-all`),
+layer C details, matching details, relations per role. Visible at all times: the field-state strip, one header line, the
+caption or the lens of the current focus, the ground line.
+
+### 12.3 Proofs
+
+| Proof | Content |
+| --- | --- |
+| P-JF-S (+) | FIELD: `LENS_V1`, `data-focus-level="FIELD"`, stage, no veils, no left/right surfaces, header line, caption with side and pointer-events none, camera 1, no lens. ROLE: `data-focus-level="ROLE"`, camera 1.5, lens with the role id, moon radius 68, moon labels, no caption |
+| P-JP-S (+) | no veils; `LENS_V1`, FIELD level and intake hidden for a given upload id; intake affordance; role lenses in the DOM hidden; role-list count |
+| P-JF-B (+) | Chromium: FIELD level with camera 1, no lens, legend hidden → role click → ROLE level, camera 1.5, lens for the role, caption gone, five moon labels on the fullstack role; Pool Field: intake visible with an empty core → hidden after selection → affordance shows and hides it; structure focus → ROLE level with the role lens visible → back hides it; relations toggled inside the lens; all earlier assertions unchanged |
+| PINK browser-walk 1/1, job-field.e2e 2/2, static, layer separation; sealed SIL suites; dock SSR; governance guard | unchanged assertions on the carried contract |
+
+Boundary B-CAPABILITY-CHROME: the CAPABILITY ground state keeps its pre-existing chrome (source dock, decision graph
+inspector, telemetry HUD, zoom HUD); it is bound by the sealed SIL suites and the planetarium chrome proofs and was not
+reconstructed under this mandate. Bringing it under the lens model is an owner decision over those sealed contracts.
+Boundary B-LENS-HIT: a caption is pointer-transparent except its buttons so no body is ever covered for a click; a lens
+is interactive and sits on the free side of its body; a viewport-anchored lens must be a child of the overlay root, never
+of the transformed stage (a transform makes `position: fixed` relative to it).
+Boundary B-LENS-TRANSFORM: entrance animations on positioned lenses animate opacity only; a keyframe that ends on
+`transform: none` with a fill mode overrides the inline transform that places the lens.
+
+### 12.4 Run record
+
+| Date | Revision | Run | Result |
+| --- | --- | --- | --- |
+| 2026-10-11 | working tree on `ee4c4dc` | `tsc --noEmit` | 0 errors |
+| 2026-10-11 | same | first run: my e2e 10/10 · PINK browser-walk 1/1 + job-field.e2e 2/2 · unit/SSR batch 100/103 | the 3 reds were my SSR assertions matching the stylesheet text (the ids now appear in selectors); matched the element markup instead → 7/7 |
+| 2026-10-11 | same | frames reviewed: the nearest caption sat on its body. Cause: the reveal keyframe ended on `transform: none` with `fill-mode: both`, cancelling the inline transform that places a caption beside its body → reveal animations are opacity-only (B-LENS-TRANSFORM). The role lens covered the spread moon labels → moved to 35 % + 210 px. The Pool Field core lens below the core covered the lower bodies → a tethered reading at the viewport edge, vertically centred | — |
+| 2026-10-11 | same | the core lens, declared `position: fixed` inside the transformed stage, was pinned to the stage and intercepted a click on a body (my e2e, 37 retries) → moved to the overlay root (B-LENS-HIT) | my e2e 10/10 + panel SSR 8/8 · PINK browser-walk 1/1 + job-field.e2e 2/2 · 16 files / 103; tsc 0 |
+

@@ -102,7 +102,11 @@ describe("SIL Job Pool panel (server-rendered field)", () => {
     expect(listed).toContain('data-testid="job-pool-orbit"');
     expect(listed).toContain('data-testid="job-pool-structure-canvas"');
     expect(listed).toContain('data-testid="job-pool-core"');
-    expect(listed).toContain('data-jp-veil="left"');
+    // Lens model: no veils, no columns; intake is an affordance (hidden while an upload id is given), the core lens carries the selection and the matching.
+    expect(listed).not.toContain("data-jp-veil");
+    expect(listed).toMatch(/data-testid="job-pool-panel"[^>]*data-interaction-grammar="LENS_V1"[^>]*data-focus-level="FIELD"[^>]*data-intake-visible="false"/);
+    expect(listed).toContain('data-testid="job-pool-intake-toggle"');
+    expect(listed).toMatch(/data-testid="job-pool-upload"[^>]*hidden/);
     expect(listed).toContain('data-testid="job-pool-panel-collapse"');
     expect(listed).toContain("← CAPABILITY FIELD");
     expect(listed).not.toContain('data-testid="job-field"');
@@ -122,6 +126,9 @@ describe("SIL Job Pool panel (server-rendered field)", () => {
     const html = renderToString(<JobPoolMatchPanel jobPoolUploadId="JPOOL_WITH_MATCHES" analysisId="ANL_TEST" />);
     // The mocked workflow lists no pools for this id, so the orbit is empty and the matching reading still renders every role.
     expect(html).toMatch(/data-testid="job-pool-list"[^>]*data-pool-count="0"/);
+    // Role readings are lenses at their bodies, in the DOM, hidden until a body is focused.
+    expect(html).toMatch(/data-testid="job-pool-role-list"[^>]*data-role-count="2"/);
+    expect(html).toMatch(/data-testid="job-pool-role-lens-ROLE_A"[^>]*hidden/);
     expect(html).toMatch(/data-testid="job-pool-role-ROLE_A"[^>]*data-rank="1"[^>]*data-resonance-score="0.75"/);
     expect(html).toMatch(/data-testid="job-pool-role-ROLE_A"[^>]*data-revealed="false"/);
     expect(html).toContain('data-testid="job-pool-role-ROLE_A-toggle"');

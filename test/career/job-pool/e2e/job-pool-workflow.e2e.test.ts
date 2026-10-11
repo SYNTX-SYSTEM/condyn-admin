@@ -245,6 +245,10 @@ describe.skipIf(playwrightModule === null)("Job Pool workflow in a real browser"
     expect(await panel.getAttribute("data-selected-pool")).toBe("");
     expect(await panel.getAttribute("data-matches-state")).toBe("IDLE");
     expect(await page.getByTestId("job-pool-upload-btn").isDisabled()).toBe(true);
+    // Lens model: nothing at the core → the intake is the contextual action and is visible; no reading lens is open.
+    expect(await panel.getAttribute("data-interaction-grammar")).toBe("LENS_V1");
+    expect(await panel.getAttribute("data-focus-level")).toBe("FIELD");
+    expect(await page.getByTestId("job-pool-upload").isVisible()).toBe(true);
     await page.waitForTimeout(900); // let the field entrance and the ring emergence settle before the evidence frame
     await page.screenshot({ path: resolve(EVIDENCE_DIR, "01-panel-open-two-uploads-none-selected.png") });
 
@@ -283,6 +287,13 @@ describe.skipIf(playwrightModule === null)("Job Pool workflow in a real browser"
     expect(await page.getByTestId(`job-pool-select-${newId}`).isDisabled()).toBe(true);
     // The selected pool's structure manifests around the core from its canonical mapping; roles carry light from the delivered matching.
     await page.locator('[data-testid="job-pool-panel"][data-view-state="AVAILABLE"]').waitFor({ timeout: 60_000 });
+    // With an upload at the core the intake recedes behind its affordance; the core lens reads the selection.
+    expect(await panel.getAttribute("data-focus-level")).toBe("POOL");
+    expect(await page.getByTestId("job-pool-upload").isVisible()).toBe(false);
+    await page.getByTestId("job-pool-intake-toggle").click();
+    await page.getByTestId("job-pool-upload").waitFor({ state: "visible", timeout: 10_000 });
+    await page.getByTestId("job-pool-intake-toggle").click();
+    await page.getByTestId("job-pool-upload").waitFor({ state: "hidden", timeout: 10_000 });
     expect(await page.locator('[data-testid^="job-pool-structure-role-"]:not([data-testid="job-pool-structure-role-detail"])').count()).toBe(world.samplePool.roles.length);
     expect(await page.locator('[data-testid^="job-pool-structure-organization-"]').count()).toBe(world.samplePool.organizations.length);
     expect(await page.locator('[data-testid^="job-pool-nebula-"]').count()).toBe(world.samplePool.organizations.length);
@@ -294,8 +305,11 @@ describe.skipIf(playwrightModule === null)("Job Pool workflow in a real browser"
     expect(await litRole.getAttribute("data-motion")).toBe("BREATH");
     await litRole.click();
     await page.locator(`[data-testid="job-pool-structure-role-detail"][data-role-id="${T.roleId}"]`).waitFor({ timeout: 10_000 });
+    expect(await panel.getAttribute("data-focus-level")).toBe("ROLE");
+    expect(await page.getByTestId(`job-pool-role-lens-${T.roleId}`).isVisible()).toBe(true);
     expect(await page.locator('[data-testid^="job-pool-structure-requirement-"]').count()).toBe(world.samplePool.requirements.filter(requirement => requirement.role_id === T.roleId).length);
     await page.getByTestId("job-pool-structure-role-back").click();
+    await page.getByTestId(`job-pool-role-lens-${T.roleId}`).waitFor({ state: "hidden", timeout: 10_000 });
     await page.locator('[data-testid="job-pool-canonical-mapping"][data-mapping-state="MAPPED"][data-proposal-state="PROPOSAL_ONLY"][data-authority-state="NONE"]').waitFor({ timeout: 30_000 });
     for (const label of ["DETERMINISTIC_PRESENTATION", "NOT_A_CANONICAL_EVALUATION", "NOT_A_DECISION"]) expect(await page.getByTestId(`job-pool-label-${label}`).count()).toBe(1);
     const labels = (await page.getByTestId("job-pool-presentation-labels").textContent()) ?? "";
@@ -328,11 +342,16 @@ describe.skipIf(playwrightModule === null)("Job Pool workflow in a real browser"
     expect(await page.locator('[data-testid^="hr-decision-loop"]').count()).toBe(0);
     await page.waitForTimeout(900); // let the selected upload settle at the core before the evidence frame
     await page.screenshot({ path: resolve(EVIDENCE_DIR, "03-selected-upload-ranked-role-matches.png"), fullPage: false });
-    // Relations are readings revealed on demand; the delivered quote is in the DOM throughout.
+    // Relations are readings revealed on demand at the body; the delivered quote is in the DOM throughout.
     expect(await first.getAttribute("data-revealed")).toBe("false");
+    expect(await first.isVisible()).toBe(false);
+    await litRole.click();
+    await page.getByTestId(`job-pool-role-lens-${T.roleId}`).waitFor({ state: "visible", timeout: 10_000 });
     await page.getByTestId(`job-pool-role-${T.roleId}-toggle`).click();
     await page.locator(`[data-testid="job-pool-role-${T.roleId}"][data-revealed="true"]`).waitFor({ timeout: 10_000 });
     expect(await hit.isVisible()).toBe(true);
+    await page.getByTestId("job-pool-structure-role-back").click();
+    await page.getByTestId(`job-pool-role-lens-${T.roleId}`).waitFor({ state: "hidden", timeout: 10_000 });
     // From the Pool Field into the Job Field: the same selection, a different field state.
     await page.getByTestId("job-pool-enter-job-field").click();
     await page.locator('[data-testid="semantic-career-intelligence-field"][data-field-focus="JOB"]').waitFor({ timeout: 30_000 });
@@ -416,6 +435,12 @@ describe.skipIf(playwrightModule === null)("Job Pool workflow in a real browser"
     expect(await page.locator('[data-testid^="job-field-thread-"]').count()).toBe(delivered.matches.roleMatches.filter(role => role.resonanceScore > 0 && role.matched.length > 0).length);
     for (const role of delivered.matches.roleMatches) expect(await page.locator(`[data-testid="job-field-role-${role.poolRoleId}"] [data-testid^="job-field-moon-"]`).count()).toBe(role.canonical.targetRequirementRevisionIds.length);
     expect((await page.getByTestId("job-field-reading").first().textContent()) ?? "").toContain("pool resonance");
+    // Lens model: at FIELD level only the nearest caption exists (pointer-transparent), no lens; the camera rests.
+    expect(await field.getAttribute("data-interaction-grammar")).toBe("LENS_V1");
+    expect(await field.getAttribute("data-focus-level")).toBe("FIELD");
+    expect(await page.getByTestId("job-field-canvas").getAttribute("data-camera-scale")).toBe("1");
+    expect(await page.getByTestId("job-field-lens").count()).toBe(0);
+    expect(await page.getByTestId("job-field-legend-text").isVisible()).toBe(false);
     expect(await page.getByTestId("job-field-nearest").getAttribute("data-role-id")).toBe(T.roleId);
     expect(await page.getByTestId("job-field-nearest").textContent()).toContain("not a role relation (RRL) · not a recommendation (RCP) · not a decision");
     expect(await page.getByTestId("job-field-legend").textContent()).toContain("POOL RESONANCE (PRESENTATION)");
@@ -460,6 +485,12 @@ describe.skipIf(playwrightModule === null)("Job Pool workflow in a real browser"
 
     await page.getByTestId(`job-field-role-${T.roleId}`).click();
     await page.locator(`[data-testid="job-field-role-detail"][data-role-id="${T.roleId}"]`).waitFor({ timeout: 30_000 });
+    // ROLE level: the camera moves onto the role, its moons spread with their names, one lens opens beside it, the caption is gone.
+    expect(await field.getAttribute("data-focus-level")).toBe("ROLE");
+    expect(await page.getByTestId("job-field-canvas").getAttribute("data-camera-scale")).toBe("1.5");
+    expect(await page.getByTestId("job-field-lens").getAttribute("data-role-id")).toBe(T.roleId);
+    expect(await page.getByTestId("job-field-nearest").count()).toBe(0);
+    expect(await page.locator(`[data-testid="job-field-role-${T.roleId}"] [data-jf-moon-label]`).count()).toBe(5);
     expect(new URL(page.url()).searchParams.get("jobRoleId")).toBe(T.roleId);
     expect(await field.getAttribute("data-selected-role")).toBe(T.roleId);
     const hit = page.getByTestId(`job-field-requirement-${T.requirementId}`);
