@@ -24,7 +24,13 @@ afterAll(async () => { if (sql) await sql.end({ timeout: 5 }); });
 describe("HR Decision Loop local composition root", () => {
   it("registers the unified persistence order on construction and reads an absent context as NOT_FOUND, with every family provisioned", async () => {
     const before = await listRegisteredTables(sql);
-    expect(before).not.toContain(careerDecisionContextDecisionRevisionBindingTableName);
+    // The runner database is shared by all files of one run. Another composition root (the job pool routes'
+    // gate) may already have run the same idempotent unified registration; the precondition is therefore
+    // "nothing or the complete unified set", never a partial set. That construction itself registers is proven
+    // by local-composition-gate.test.ts.
+    const unified = [...postDecisionChainTableNames.map(name => (name.length > 63 ? name.slice(0, 63) : name)), careerDecisionContextDecisionRevisionBindingTableName, "decision_context_revisions", "human_decision_records"];
+    const present = unified.filter(name => before.includes(name));
+    expect([0, unified.length]).toContain(present.length);
     const { createLocalHrDecisionLoopHttpApplication } = await import("../../../lib/career/hr-decision-loop/local-composition");
     const application = await createLocalHrDecisionLoopHttpApplication();
     const after = await listRegisteredTables(sql);
