@@ -8,7 +8,8 @@ import {
   deriveJobField,
   describeRoleSelection,
   provenanceOf,
-  ringSegments,
+  requirementMoons,
+  sectorPath,
   type JobField as JobFieldModel,
   type JobFieldPending,
   type JobFieldPendingKind,
@@ -39,6 +40,22 @@ import type { JobPoolWorkflow } from "./JobPoolMatchPanel";
  * (test ids and data attributes, JOB_FIELD_FRONTEND.md §4) is unchanged.
  */
 type JobFieldCopy = (typeof SIL_COPY)[SilLocale]["jobField"];
+
+/** Identity hues of the pool organisations (nebulae), by delivered position; a hue is never a value. */
+export const ORGANIZATION_HUES = [190, 262, 158, 222, 300, 120] as const;
+export const organizationHue = (hueIndex: number): number => ORGANIZATION_HUES[hueIndex % ORGANIZATION_HUES.length];
+/** Reading sentence from delivered facts only. */
+export function readingSentence(template: string, role: JobFieldRoleNode): string {
+  return template
+    .replace("{title}", role.title)
+    .replace("{organization}", role.organizationName)
+    .replace("{resonance}", `${Math.round(role.resonanceScore * 1000) / 10}%`)
+    .replace("{matched}", String(role.counts.matched))
+    .replace("{total}", String(role.counts.total))
+    .replace("{unresolved}", String(role.counts.unresolved))
+    .replace("{covered}", String(role.counts.coveredUnscored))
+    .replace("{none}", String(role.counts.noEvidence));
+}
 
 export type JobFieldState = "NO_POOL" | "NO_ANALYSIS" | "LOADING" | "AVAILABLE" | "NOT_FOUND" | "INACTIVE_POOL" | "NOT_PROVISIONED" | "FAILED";
 
@@ -76,11 +93,11 @@ const MUTED = SIL_TOKENS.colors.textMuted;
 /** Typographic scale of the information surfaces: mono for identifiers, numbers and tracked labels; sans for titles and prose. */
 const mono: React.CSSProperties = { fontFamily: MONO, fontSize: "10px", color: INK, wordBreak: "break-word" };
 const muted: React.CSSProperties = { ...mono, color: MUTED };
-const micro: React.CSSProperties = { fontFamily: MONO, fontSize: "8.5px", color: MUTED, letterSpacing: "0.3px", lineHeight: 1.5, wordBreak: "break-word" };
-const label: React.CSSProperties = { fontFamily: MONO, fontSize: "8.5px", fontWeight: 600, letterSpacing: "1.8px", textTransform: "uppercase", color: MUTED, margin: 0 };
-const prose: React.CSSProperties = { fontFamily: SANS, fontSize: "11.5px", lineHeight: 1.6, color: INK_SOFT, margin: 0 };
-const title: React.CSSProperties = { fontFamily: SANS, fontSize: "17px", fontWeight: 600, letterSpacing: "-0.2px", lineHeight: 1.25, color: INK, margin: 0 };
-const display: React.CSSProperties = { fontFamily: MONO, fontSize: "30px", fontWeight: 300, letterSpacing: "-1px", lineHeight: 1, color: CYAN };
+const micro: React.CSSProperties = { fontFamily: MONO, fontSize: "9px", color: MUTED, letterSpacing: "0.3px", lineHeight: 1.55, wordBreak: "break-word" };
+const label: React.CSSProperties = { fontFamily: MONO, fontSize: "9px", fontWeight: 600, letterSpacing: "1.8px", textTransform: "uppercase", color: MUTED, margin: 0 };
+const prose: React.CSSProperties = { fontFamily: SANS, fontSize: "12.5px", lineHeight: 1.65, color: INK_SOFT, margin: 0 };
+const title: React.CSSProperties = { fontFamily: SANS, fontSize: "20px", fontWeight: 600, letterSpacing: "-0.3px", lineHeight: 1.2, color: INK, margin: 0 };
+const display: React.CSSProperties = { fontFamily: MONO, fontSize: "34px", fontWeight: 300, letterSpacing: "-1.2px", lineHeight: 1, color: CYAN };
 const amber: React.CSSProperties = { ...micro, color: AMBER, opacity: 0.85 };
 const red: React.CSSProperties = { ...mono, color: RED };
 const sectionTitle: React.CSSProperties = { ...label, color: "rgba(56, 229, 255, 0.8)" };
@@ -88,7 +105,7 @@ const stack = (gap = 8): React.CSSProperties => ({ display: "flex", flexDirectio
 const row = (gap = 8): React.CSSProperties => ({ display: "flex", alignItems: "center", gap: `${gap}px`, flexWrap: "wrap" });
 /** A relation line from the field into a surface: cyan for a lit (scored) subject, red-tinted for an unlit one. */
 const tether = (lit: boolean): React.CSSProperties => ({ height: "1px", width: "100%", background: `linear-gradient(90deg, ${lit ? "rgba(56, 229, 255, 0.7)" : "rgba(255, 91, 101, 0.45)"} 0%, transparent 100%)` });
-const stateWord = (color: string): React.CSSProperties => ({ fontFamily: MONO, fontSize: "8px", fontWeight: 600, letterSpacing: "1.2px", textTransform: "uppercase", color, whiteSpace: "nowrap", display: "inline-flex", alignItems: "center", gap: "5px" });
+const stateWord = (color: string): React.CSSProperties => ({ fontFamily: MONO, fontSize: "8.5px", fontWeight: 600, letterSpacing: "1.2px", textTransform: "uppercase", color, whiteSpace: "nowrap", display: "inline-flex", alignItems: "center", gap: "5px" });
 /** Buttons stay buttons (semantics, proofs); they read as text affordances of the field, not as controls of a panel. */
 const action = (tone: "cyan" | "muted" = "cyan"): React.CSSProperties => ({ background: "transparent", border: "none", padding: "4px 0", fontFamily: MONO, fontSize: "9px", fontWeight: 600, letterSpacing: "1.4px", textTransform: "uppercase", color: tone === "cyan" ? CYAN : MUTED, cursor: "pointer", textShadow: tone === "cyan" ? `0 0 10px ${SIL_TOKENS.colors.cyanGlow}` : undefined, transition: "color .25s ease, text-shadow .25s ease" });
 const ghost: React.CSSProperties = { ...action("muted"), fontSize: "8px", letterSpacing: "1px" };
@@ -138,6 +155,8 @@ const MOTION_CSS = `
 @keyframes jfPulse { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; } }
 @keyframes jfDotWaver { 0%, 100% { opacity: 1; } 40% { opacity: 0.35; } 65% { opacity: 0.8; } }
 @keyframes jfDotCirculate { to { transform: rotate(360deg); } }
+@keyframes jfSpin { to { transform: rotate(360deg); } }
+@keyframes jfNebula { 0%, 100% { opacity: var(--jf-lo); } 50% { opacity: var(--jf-hi); } }
 [data-testid="job-field"] [data-jf-reveal] { animation: jfRise .32s ease-out both; }
 [data-testid="job-field"] button:hover { color: #e6f1f8; text-shadow: 0 0 12px rgba(56, 229, 255, 0.45); }
 [data-testid="job-field"] button:focus-visible, [data-testid="job-field"] [role="button"]:focus-visible { outline: 1px solid rgba(56, 229, 255, 0.7); outline-offset: 3px; border-radius: 2px; }
@@ -231,17 +250,15 @@ function RequirementLine({ requirement, t, revealed, onToggle, onHover }: { requ
       onMouseLeave={() => onHover(false)}
       style={{ ...stack(4), padding: "7px 0" }}
     >
-      <div style={{ display: "grid", gridTemplateColumns: "10px minmax(0, 1fr) auto", columnGap: "10px", rowGap: "2px", alignItems: "baseline" }}>
-        <span style={{ display: "inline-flex", alignItems: "center", height: "14px" }}><StateDot state={requirement.state} /></span>
-        <span style={{ fontFamily: SANS, fontSize: "12.5px", fontWeight: 500, color: INK, lineHeight: 1.3 }}>{requirement.capabilityName}</span>
+      <div style={{ display: "grid", gridTemplateColumns: "10px minmax(0, 1fr) auto", columnGap: "10px", rowGap: "3px", alignItems: "baseline" }}>
+        <span style={{ display: "inline-flex", alignItems: "center", height: "16px" }}><StateDot state={requirement.state} /></span>
+        <span style={{ fontFamily: SANS, fontSize: "14px", fontWeight: 500, color: INK, lineHeight: 1.3 }}>{requirement.capabilityName}</span>
         <button data-testid={`job-field-requirement-toggle-${requirement.poolRequirementId}`} aria-expanded={revealed} onClick={event => { event.stopPropagation(); onToggle(); }} style={ghost}>{revealed ? t.hide : t.reveal}</button>
         <span />
-        <span style={{ ...row(10), alignItems: "baseline" }}>
-          <span style={stateWord(color)}>{t.requirementStates[requirement.state]}</span>
-          <span style={micro}>{requirement.necessity} · w {requirement.weight}{requirement.requiredLevel ? ` · ${requirement.requiredLevel}` : ""}</span>
-        </span>
+        <span style={stateWord(color)}>{t.requirementStates[requirement.state]}</span>
       </div>
       <div data-testid={`job-field-requirement-evidence-${requirement.poolRequirementId}`} hidden={!revealed} data-jf-reveal={revealed ? "true" : undefined} style={{ display: revealed ? "flex" : "none", flexDirection: "column", gap: "6px", paddingLeft: "20px" }}>
+        <span style={micro}>{requirement.necessity} · w {requirement.weight}{requirement.requiredLevel ? ` · ${requirement.requiredLevel}` : ""}</span>
         {requirement.match !== null && (
           <span style={micro}>
             {t.provenance.ANALYSIS_CAPABILITY} · <span style={{ color: INK }}>{requirement.match.matchedCapabilityName}</span>{requirement.match.matchedConstituent !== null ? ` · ${t.constituent} ${requirement.match.matchedConstituent}` : ""} · {t.basis} {requirement.match.basis} · {t.confidence} {requirement.match.confidence}
@@ -263,6 +280,7 @@ function RequirementLine({ requirement, t, revealed, onToggle, onHover }: { requ
 
 function PendingField({ roleId, pending, t }: { roleId: string; pending: readonly JobFieldPending[]; t: JobFieldCopy }) {
   const [openKind, setOpenKind] = useState<JobFieldPendingKind | null>(null);
+  const [whyOpen, setWhyOpen] = useState(false);
   const open = pending.find(item => item.kind === openKind) ?? null;
   return (
     <div data-testid="job-field-pending" data-role-id={roleId} style={stack(8)}>
@@ -295,7 +313,8 @@ function PendingField({ roleId, pending, t }: { roleId: string; pending: readonl
         })}
       </div>
       {open !== null && <span data-testid="job-field-pending-ids" data-kind={open.kind} data-jf-reveal="true" style={{ ...micro, color: INK_SOFT }}>{t.ids} · {t.pendingKinds[open.kind]}: {open.ids.length === 0 ? t.none : open.ids.join(" · ")}</span>}
-      <span data-testid="job-field-pending-reason" style={{ ...prose, fontSize: "10.5px", color: AMBER, opacity: 0.8 }}>{t.canonicalReason}</span>
+      <button data-testid="job-field-pending-why" aria-expanded={whyOpen} onClick={event => { event.stopPropagation(); setWhyOpen(value => !value); }} style={{ ...ghost, alignSelf: "flex-start" }}>{whyOpen ? t.whyHide : t.why}</button>
+      <span data-testid="job-field-pending-reason" hidden={!whyOpen} data-jf-reveal={whyOpen ? "true" : undefined} style={{ ...prose, fontSize: "11.5px", color: AMBER, opacity: 0.85, display: whyOpen ? "block" : "none" }}>{t.canonicalReason}</span>
     </div>
   );
 }
@@ -313,6 +332,7 @@ function RoleDetail({ role, t, onBack }: { role: JobFieldRoleNode; t: JobFieldCo
           <button data-testid="job-field-role-back" onClick={onBack} style={action("muted")}>{t.back}</button>
         </div>
         <h4 style={title}>{role.title}</h4>
+        <p data-testid="job-field-reading" style={prose}>{readingSentence(t.reading, role)}</p>
         <span style={micro}>{role.seniority || "—"} · {role.domainFocus || "—"} · <span style={{ opacity: 0.7 }}>{role.poolRoleId} · {role.poolOrganizationId}</span></span>
         <div style={tether(role.hasScoredMatch)} />
       </div>
@@ -343,7 +363,7 @@ function RoleDetail({ role, t, onBack }: { role: JobFieldRoleNode; t: JobFieldCo
 
 function RoleNode({ role, selected, nearest, dimmed, focused, mode, t, onSelect, onHover }: { role: JobFieldRoleNode; selected: boolean; nearest: boolean; dimmed: boolean; focused: boolean; mode: JobFieldMotionMode; t: JobFieldCopy; onSelect(): void; onHover(entered: boolean): void }) {
   const radius = 26 + Math.min(10, role.counts.total);
-  const segments = ringSegments(role.counts);
+  const moons = requirementMoons(role.requirements, radius + 10);
   const motion = roleMotion(role, mode);
   const rings = focused ? pendingRings(role.pending, mode) : [];
   const breathing = motion.kind === "BREATH" && motion.periodMs > 0;
@@ -381,32 +401,36 @@ function RoleNode({ role, selected, nearest, dimmed, focused, mode, t, onSelect,
         {rings.map(ring => (
           <circle key={ring.kind} data-pending-kind={ring.kind} data-pending-count={ring.count} data-motion="ORBIT" r={radius + 7 + ring.radiusOffset} fill="none" stroke={PENDING_COLOR[ring.kind]} strokeWidth={1} strokeDasharray={ring.dasharray} style={{ opacity: ring.opacity, animation: ring.durationMs > 0 ? `jfOrbit ${ring.durationMs}ms linear infinite${ring.index % 2 === 1 ? " reverse" : ""}` : undefined }} />
         ))}
-        <circle r={radius + 14} fill="none" stroke={selected ? CYAN : nearest ? "rgba(56, 229, 255, 0.45)" : "transparent"} strokeWidth={selected ? 1.6 : 1} strokeDasharray={nearest && !selected ? "4 4" : undefined} style={{ transition: "stroke .3s ease" }} />
-        {segments.map(segment => {
-          const segmentStyle = segmentMotion(segment.state, mode);
+        <circle r={radius + 16} fill="none" stroke={selected ? CYAN : nearest ? "rgba(56, 229, 255, 0.45)" : "transparent"} strokeWidth={selected ? 1.6 : 1} strokeDasharray={nearest && !selected ? "4 4" : undefined} style={{ transition: "stroke .3s ease" }} />
+        {moons.map(moon => {
+          const moonStyle = segmentMotion(moon.state, mode);
+          const hollow = moon.state === "NO_EVIDENCE_DELIVERED";
+          const dashed = moon.state === "COVERED_UNSCORED";
           return (
-            <path
-              key={segment.state}
-              data-segment-state={segment.state}
-              data-motion={segmentStyle.kind}
-              d={arcPath(0, 0, radius + 7, segment.startAngle + 1, segment.endAngle - 1)}
-              fill="none"
-              stroke={STATE_COLOR[segment.state]}
-              strokeWidth={segment.state === "NO_EVIDENCE_DELIVERED" ? 3 : 5}
-              strokeDasharray={segmentStyle.dasharray ?? undefined}
-              strokeLinecap="butt"
-              style={{ opacity: segmentStyle.opacity, animation: segmentStyle.durationMs > 0 ? `${segmentStyle.kind === "WAVER" ? "jfWaver" : "jfCirculate"} ${segmentStyle.durationMs}ms ${segmentStyle.kind === "WAVER" ? "ease-in-out" : "linear"} infinite` : undefined }}
+            <circle
+              key={moon.poolRequirementId}
+              data-testid={`job-field-moon-${moon.poolRequirementId}`}
+              data-segment-state={moon.state}
+              data-motion={moonStyle.kind}
+              cx={moon.x}
+              cy={moon.y}
+              r={3.8}
+              fill={hollow || dashed ? "none" : STATE_COLOR[moon.state]}
+              stroke={STATE_COLOR[moon.state]}
+              strokeWidth={hollow ? 1 : dashed ? 1.4 : 0}
+              strokeDasharray={dashed ? "2 2" : undefined}
+              style={{ opacity: moonStyle.opacity, transformBox: "fill-box", transformOrigin: "center", animation: moonStyle.durationMs > 0 ? `${moonStyle.kind === "WAVER" ? "jfWaver" : "jfSpin"} ${moonStyle.durationMs}ms ${moonStyle.kind === "WAVER" ? "ease-in-out" : "linear"} infinite` : undefined, filter: moon.state === "MATCHED" ? `drop-shadow(0 0 3px ${SIL_TOKENS.colors.cyanGlowStrong})` : undefined }}
             />
           );
         })}
         <g data-jf-body>
           <circle r={radius} fill={`rgba(56, 229, 255, ${motion.bodyOpacity})`} stroke={role.hasScoredMatch ? CYAN : "rgba(255, 91, 101, 0.5)"} strokeWidth={role.hasScoredMatch ? 1.2 : 0.9} style={{ ["--jf-lo" as string]: 1 - motion.amplitude * 0.5, ["--jf-hi" as string]: 1, animation: breathing ? `jfBreathLight ${motion.periodMs}ms ease-in-out infinite` : undefined } as React.CSSProperties} />
-          <text textAnchor="middle" y={-1} fill={role.hasScoredMatch ? SIL_TOKENS.colors.textPrimary : SIL_TOKENS.colors.textMuted} fontFamily={SIL_TOKENS.typography.mono} fontSize={11} fontWeight={700}>{percent(role.resonanceScore)}</text>
-          <text textAnchor="middle" y={11} fill={SIL_TOKENS.colors.textMuted} fontFamily={SIL_TOKENS.typography.mono} fontSize={7.5}>#{role.deliveredRank}</text>
+          <text textAnchor="middle" y={0} fill={role.hasScoredMatch ? SIL_TOKENS.colors.textPrimary : SIL_TOKENS.colors.textMuted} fontFamily={SIL_TOKENS.typography.mono} fontSize={12} fontWeight={700}>{percent(role.resonanceScore)}</text>
+          <text textAnchor="middle" y={12} fill={SIL_TOKENS.colors.textMuted} fontFamily={SIL_TOKENS.typography.mono} fontSize={8}>#{role.deliveredRank}</text>
         </g>
-        <text textAnchor="middle" y={radius + 24} fill={role.hasScoredMatch ? SIL_TOKENS.colors.textPrimary : SIL_TOKENS.colors.textMuted} fontFamily={SIL_TOKENS.typography.mono} fontSize={10} fontWeight={700}>{shortTitle(role.title)}</text>
-        {focused && <text data-jf-hover-label textAnchor="middle" y={radius + 36} fill={SIL_TOKENS.colors.textMuted} fontFamily={SIL_TOKENS.typography.mono} fontSize={8}>{shortTitle(role.organizationName, 28)}</text>}
-        {focused && !role.hasScoredMatch && <text data-jf-hover-label textAnchor="middle" y={radius + 48} fill={RED} fontFamily={SIL_TOKENS.typography.mono} fontSize={8}>{t.noScoredMatch}</text>}
+        <text textAnchor="middle" y={radius + 28} fill={role.hasScoredMatch ? SIL_TOKENS.colors.textPrimary : SIL_TOKENS.colors.textMuted} fontFamily={SIL_TOKENS.typography.sans} fontSize={12} fontWeight={600}>{shortTitle(role.title)}</text>
+        {focused && <text data-jf-hover-label textAnchor="middle" y={radius + 41} fill={SIL_TOKENS.colors.textMuted} fontFamily={SIL_TOKENS.typography.mono} fontSize={8.5}>{shortTitle(role.organizationName, 28)}</text>}
+        {focused && !role.hasScoredMatch && <text data-jf-hover-label textAnchor="middle" y={radius + 53} fill={RED} fontFamily={SIL_TOKENS.typography.mono} fontSize={8.5}>{t.noScoredMatch}</text>}
       </g>
     </g>
   );
@@ -422,10 +446,33 @@ function FieldCanvas({ field, selectedRoleId, hoveredRoleId, mode, t, onSelectRo
       <defs>
         <filter id="jfBlur" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="9" /></filter>
         <filter id="jfBlurSoft" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="22" /></filter>
+        <filter id="jfNebula" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="34" /></filter>
         <radialGradient id="jfCoreGradient"><stop offset="0%" stopColor="rgba(56, 229, 255, 0.55)" /><stop offset="55%" stopColor="rgba(56, 229, 255, 0.12)" /><stop offset="100%" stopColor="rgba(56, 229, 255, 0)" /></radialGradient>
         <radialGradient id="jfFieldGradient"><stop offset="0%" stopColor="rgba(56, 229, 255, 0.06)" /><stop offset="70%" stopColor="rgba(56, 229, 255, 0.015)" /><stop offset="100%" stopColor="rgba(3, 5, 8, 0)" /></radialGradient>
       </defs>
       <circle cx={center} cy={center} r={outerRadius + 60} fill="url(#jfFieldGradient)" />
+      {field.organizations.map(organization => {
+        const hue = organizationHue(organization.hueIndex);
+        const lit = organization.aggregateScore !== null;
+        const light = lit ? 0.05 + 0.3 * Math.min(1, Math.max(0, organization.aggregateScore ?? 0)) : 0.045;
+        const focusedHere = organization.roleIds.some(id => id === hoveredRoleId || id === selectedRoleId);
+        return (
+          <path
+            key={organization.poolOrganizationId}
+            data-testid={`job-field-nebula-${organization.poolOrganizationId}`}
+            data-aggregate-score={organization.aggregateScore ?? ""}
+            data-hue={hue}
+            data-motion={lit && motion.core.periodMs > 0 ? "BREATH" : "STILL"}
+            d={sectorPath(center, center, innerRadius - 14, outerRadius + 46, organization.startAngle + 1, organization.endAngle - 1)}
+            fill={`hsla(${hue}, 85%, 62%, 1)`}
+            filter="url(#jfNebula)"
+            style={{ opacity: light * (focusedHere ? 1.35 : 1), ["--jf-lo" as string]: light * 0.75, ["--jf-hi" as string]: light * 1.25, animation: lit && motion.core.periodMs > 0 ? `jfNebula ${motion.core.periodMs * 1.6}ms ease-in-out infinite` : undefined, transition: "opacity .4s ease", pointerEvents: "none" } as React.CSSProperties}
+          />
+        );
+      })}
+      {field.roles.filter(role => role.hasScoredMatch).map(role => (
+        <line key={`thread-${role.poolRoleId}`} data-testid={`job-field-thread-${role.poolRoleId}`} data-resonance-score={role.resonanceScore} x1={center} y1={center} x2={role.x} y2={role.y} stroke={CYAN} strokeWidth={0.8} style={{ opacity: 0.08 + 0.42 * role.resonanceScore, pointerEvents: "none" }} />
+      ))}
       <circle cx={center} cy={center} r={innerRadius} fill="none" stroke="rgba(56, 229, 255, 0.16)" strokeDasharray="2 6" />
       <circle cx={center} cy={center} r={(innerRadius + outerRadius) / 2} fill="none" stroke="rgba(56, 229, 255, 0.09)" strokeDasharray="2 6" />
       <circle cx={center} cy={center} r={outerRadius} fill="none" stroke="rgba(255, 91, 101, 0.2)" strokeDasharray="2 6" />
@@ -438,8 +485,8 @@ function FieldCanvas({ field, selectedRoleId, hoveredRoleId, mode, t, onSelectRo
         const focusedHere = organization.roleIds.some(id => id === hoveredRoleId || id === selectedRoleId);
         return (
           <g key={organization.poolOrganizationId} data-testid={`job-field-organization-${organization.poolOrganizationId}`} data-role-count={organization.roleIds.length} style={{ transition: "opacity .3s ease", opacity: selectedRoleId !== null && !focusedHere ? 0.45 : 1 }}>
-            <path d={arcPath(center, center, outerRadius + 40, organization.startAngle + 2, organization.endAngle - 2)} fill="none" stroke={focusedHere ? "rgba(56, 229, 255, 0.6)" : "rgba(56, 229, 255, 0.26)"} strokeWidth={focusedHere ? 2 : 1.5} style={{ transition: "stroke .3s ease" }} />
-            <text x={center + labelRadius * Math.cos(radians)} y={center + labelRadius * Math.sin(radians)} textAnchor="middle" dominantBaseline="middle" fill={focusedHere ? SIL_TOKENS.colors.textPrimary : SIL_TOKENS.colors.textMuted} fontFamily={SIL_TOKENS.typography.mono} fontSize={9} letterSpacing={1}>{shortTitle(organization.name.toUpperCase(), 30)}</text>
+            <path d={arcPath(center, center, outerRadius + 40, organization.startAngle + 2, organization.endAngle - 2)} fill="none" stroke={focusedHere ? `hsla(${organizationHue(organization.hueIndex)}, 85%, 70%, 0.7)` : `hsla(${organizationHue(organization.hueIndex)}, 85%, 70%, 0.28)`} strokeWidth={focusedHere ? 1.6 : 1} style={{ transition: "stroke .3s ease" }} />
+            <text x={center + labelRadius * Math.cos(radians)} y={center + labelRadius * Math.sin(radians)} textAnchor="middle" dominantBaseline="middle" fill={focusedHere ? SIL_TOKENS.colors.textPrimary : SIL_TOKENS.colors.textMuted} fontFamily={SIL_TOKENS.typography.mono} fontSize={9.5} letterSpacing={1.4}>{shortTitle(organization.name.toUpperCase(), 30)}</text>
           </g>
         );
       })}
@@ -513,6 +560,7 @@ export function JobField({ workflow, analysisSource, selectedRoleId, onSelectRol
       data-motion-mode={mode}
       data-hovered-role={hoveredRoleId ?? ""}
       data-surface-grammar="FIELD_EXTENSION_V1"
+      data-galaxy-grammar="GALAXY_V1"
       style={{ position: "absolute", inset: 0, zIndex: 45, backgroundColor: "rgba(3, 5, 8, 0.9)", backdropFilter: "blur(8px)", fontFamily: MONO, color: INK, animation: motion.enterMs > 0 ? `jfEnter ${motion.enterMs}ms ease-out both` : undefined }}
     >
       <style>{MOTION_CSS}</style>
@@ -522,7 +570,7 @@ export function JobField({ workflow, analysisSource, selectedRoleId, onSelectRol
       <div aria-hidden="true" data-jf-veil="left" style={{ position: "absolute", left: 0, top: 0, bottom: 0, width: "min(380px, 32vw)", background: "linear-gradient(90deg, rgba(3, 5, 8, 0.96) 0%, rgba(3, 5, 8, 0.72) 55%, rgba(3, 5, 8, 0) 100%)", pointerEvents: "none", zIndex: 45 }} />
       <div aria-hidden="true" data-jf-veil="right" style={{ position: "absolute", right: 0, top: 0, bottom: 0, width: "min(560px, 42vw)", background: "linear-gradient(270deg, rgba(3, 5, 8, 0.97) 0%, rgba(3, 5, 8, 0.8) 60%, rgba(3, 5, 8, 0) 100%)", pointerEvents: "none", zIndex: 45 }} />
 
-      <div data-jf-surface="left" style={{ position: "absolute", left: "28px", top: "136px", width: "min(284px, 25vw)", ...stack(14), zIndex: 46 }}>
+      <div data-jf-surface="left" style={{ position: "absolute", left: "28px", top: "136px", width: "min(284px, 25vw)", maxHeight: "calc(100vh - 200px)", overflowY: "auto", paddingRight: "6px", ...stack(14), zIndex: 46 }}>
         <div style={stack(6)}>
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", gap: "10px" }}>
             <h3 style={{ ...label, color: CYAN, fontSize: "10px", letterSpacing: "2.4px", textShadow: `0 0 14px ${SIL_TOKENS.colors.cyanGlowStrong}` }}>{t.title}</h3>
@@ -545,18 +593,19 @@ export function JobField({ workflow, analysisSource, selectedRoleId, onSelectRol
         {state === "NO_ANALYSIS" && <span data-testid="job-field-no-analysis" data-jf-reveal="true" style={{ ...prose, color: AMBER }}>{t.states.NO_ANALYSIS}</span>}
         {field !== null && (
           <div data-testid="job-field-legend" data-legend-open={legendOpen ? "true" : "false"} data-jf-reveal="true" style={stack(12)}>
-            <div style={{ display: "flex", gap: "22px" }}>
-              <span style={{ display: "flex", flexDirection: "column-reverse", gap: "3px" }}><span style={{ ...micro, fontSize: "7.5px", letterSpacing: "1px", textTransform: "uppercase" }}>{t.coreCapabilities}: </span><span style={{ ...display, fontSize: "22px" }}>{field.candidateCapabilityCount}</span></span>
-              <span style={{ display: "flex", flexDirection: "column-reverse", gap: "3px" }}><span style={{ ...micro, fontSize: "7.5px", letterSpacing: "1px", textTransform: "uppercase" }}>{t.coreSweep}: </span><span style={{ ...display, fontSize: "22px", color: INK_SOFT }}>{field.capabilitySweep.proposalCount}<span style={{ ...micro, marginLeft: "6px", letterSpacing: "0.6px" }}>({field.capabilitySweep.state})</span></span></span>
+            <div style={stack(6)}>
+              {STATES.map(stateKey => <span key={stateKey} style={stateWord(STATE_COLOR[stateKey])}><StateDot state={stateKey} size={7} />{t.requirementStates[stateKey]}</span>)}
             </div>
-            <div style={stack(5)}>
-              {STATES.map(stateKey => <span key={stateKey} style={stateWord(STATE_COLOR[stateKey])}><StateDot state={stateKey} size={6} />{t.requirementStates[stateKey]}</span>)}
-            </div>
-            <span style={micro}>{t.ranking[field.ranking]}</span>
             <button data-testid="job-field-legend-toggle" aria-expanded={legendOpen} onClick={() => setLegendOpen(value => !value)} style={{ ...ghost, alignSelf: "flex-start" }}>{legendOpen ? t.legendHide : t.legendToggle}</button>
-            <div data-testid="job-field-legend-text" hidden={!legendOpen} data-jf-reveal={legendOpen ? "true" : undefined} style={{ display: legendOpen ? "flex" : "none", flexDirection: "column", gap: "8px" }}>
+            <div data-testid="job-field-legend-text" hidden={!legendOpen} data-jf-reveal={legendOpen ? "true" : undefined} style={{ display: legendOpen ? "flex" : "none", flexDirection: "column", gap: "10px" }}>
+              <div style={{ display: "flex", gap: "22px" }}>
+                <span style={{ display: "flex", flexDirection: "column-reverse", gap: "3px" }}><span style={{ ...micro, fontSize: "8px", letterSpacing: "1px", textTransform: "uppercase" }}>{t.coreCapabilities}: </span><span style={{ ...display, fontSize: "22px" }}>{field.candidateCapabilityCount}</span></span>
+                <span style={{ display: "flex", flexDirection: "column-reverse", gap: "3px" }}><span style={{ ...micro, fontSize: "8px", letterSpacing: "1px", textTransform: "uppercase" }}>{t.coreSweep}: </span><span style={{ ...display, fontSize: "22px", color: INK_SOFT }}>{field.capabilitySweep.proposalCount}<span style={{ ...micro, marginLeft: "6px", letterSpacing: "0.6px" }}>({field.capabilitySweep.state})</span></span></span>
+              </div>
+              <span style={micro}>{t.ranking[field.ranking]}</span>
               <p style={prose}>{t.legend}</p>
               <p style={{ ...prose, color: "rgba(56, 229, 255, 0.78)" }}>{t.motion}</p>
+              <p style={{ ...prose, color: "rgba(56, 229, 255, 0.78)" }}>{t.galaxy}</p>
               <span style={micro}>{t.hoverHint}</span>
             </div>
           </div>
@@ -572,6 +621,7 @@ export function JobField({ workflow, analysisSource, selectedRoleId, onSelectRol
               <span style={sectionTitle}>{t.nearest}</span>
               <h4 style={title}>{nearestNode.title}</h4>
               <span style={micro}>{nearestNode.organizationName}</span>
+              <p data-testid="job-field-reading" style={prose}>{readingSentence(t.reading, nearestNode)}</p>
               <div style={tether(true)} />
             </div>
             <ResonanceReading role={nearestNode} t={t} />

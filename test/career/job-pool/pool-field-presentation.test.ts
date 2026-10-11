@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { derivePoolStructure, describePoolListState, POOL_FIELD_LAYOUT, uploadOrbit } from "../../../lib/career/job-pool/pool-field-presentation";
+import { derivePoolStructure, describePoolListState, POOL_FIELD_LAYOUT, reversedArcPath, uploadOrbit } from "../../../lib/career/job-pool/pool-field-presentation";
 import { matches, summary, view, UPLOAD_ID } from "./fixtures/match-bodies";
 
 /** P-PF-U: the Pool Field is a pure derivation; selection is geometry, light is delivered resonance, nothing is inferred. */
@@ -31,6 +31,9 @@ describe("Pool Field presentation (pure derivation)", () => {
     expect(structure.roles.every(role => role.resonanceScore === null && role.hasScoredMatch === null && role.deliveredRank === null)).toBe(true);
     expect(structure.roles[0].requirements.map(requirement => [requirement.capabilityName, requirement.necessityState, requirement.targetRequirementRevisionId])).toEqual([["TypeScript", "REQUIRED", "TRQREV_1"], ["Kubernetes", "UNKNOWN", "TRQREV_2"]]);
     expect(structure.organizations[0].arc.startsWith("M ")).toBe(true);
+    // One organisation spans the whole circle (mid 180°, lower half): its label arc runs counter-clockwise so the name reads upright.
+    expect(structure.organizations[0].labelArc).toMatch(/A \d+(\.\d+)? \d+(\.\d+)? 0 1 0 /);
+    expect(reversedArcPath(0, 0, 10, 0, 0)).toBe("");
   });
 
   it("lights roles only from a delivered matching of the exact same upload, with the delivered score and rank", () => {
@@ -38,6 +41,8 @@ describe("Pool Field presentation (pure derivation)", () => {
     expect(lit.matchingDelivered).toBe(true);
     expect(lit.roles.find(role => role.poolRoleId === "ROLE_A")).toMatchObject({ resonanceScore: 0.75, hasScoredMatch: true, deliveredRank: 1 });
     expect(lit.roles.find(role => role.poolRoleId === "ROLE_B")).toMatchObject({ resonanceScore: 0.3, hasScoredMatch: false, deliveredRank: 2 });
+    expect(lit.organizations[0]).toMatchObject({ aggregateScore: matches.organizationMatches[0].aggregateScore, hueIndex: 0 });
+    expect(derivePoolStructure(view, null).organizations[0].aggregateScore).toBeNull();
     const foreign = derivePoolStructure(view, { ...matches, jobPoolUploadId: "JPOOL_OTHER" });
     expect(foreign.matchingDelivered).toBe(false);
     expect(foreign.roles.every(role => role.resonanceScore === null)).toBe(true);

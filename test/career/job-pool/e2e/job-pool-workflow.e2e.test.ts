@@ -285,6 +285,10 @@ describe.skipIf(playwrightModule === null)("Job Pool workflow in a real browser"
     await page.locator('[data-testid="job-pool-panel"][data-view-state="AVAILABLE"]').waitFor({ timeout: 60_000 });
     expect(await page.locator('[data-testid^="job-pool-structure-role-"]:not([data-testid="job-pool-structure-role-detail"])').count()).toBe(world.samplePool.roles.length);
     expect(await page.locator('[data-testid^="job-pool-structure-organization-"]').count()).toBe(world.samplePool.organizations.length);
+    expect(await page.locator('[data-testid^="job-pool-nebula-"]').count()).toBe(world.samplePool.organizations.length);
+    expect(await page.getByTestId("job-pool-matching-details").isVisible()).toBe(false);
+    await page.getByTestId("job-pool-matching-details-toggle").click();
+    await page.getByTestId("job-pool-matching-details").waitFor({ state: "visible", timeout: 10_000 });
     const litRole = page.getByTestId(`job-pool-structure-role-${T.roleId}`);
     expect(await litRole.getAttribute("data-scored-match")).toBe("true");
     expect(await litRole.getAttribute("data-motion")).toBe("BREATH");
@@ -405,6 +409,13 @@ describe.skipIf(playwrightModule === null)("Job Pool workflow in a real browser"
       expect(await node.getAttribute("data-scored-match")).toBe(role.resonanceScore > 0 && role.matched.length > 0 ? "true" : "false");
     }
     expect(await page.locator('[data-testid^="job-field-role-"][data-scored-match="false"]').count()).toBeGreaterThan(0);
+    // Galaxy: one nebula per pool organisation with its delivered aggregate, one thread per role with scored evidence, one moon per requirement.
+    expect(await page.getByTestId("job-field").getAttribute("data-galaxy-grammar")).toBe("GALAXY_V1");
+    expect(await page.locator('[data-testid^="job-field-nebula-"]').count()).toBe(world.samplePool.organizations.length);
+    for (const organization of delivered.matches.organizationMatches) expect(await page.getByTestId(`job-field-nebula-${organization.poolOrganizationId}`).getAttribute("data-aggregate-score")).toBe(String(organization.aggregateScore));
+    expect(await page.locator('[data-testid^="job-field-thread-"]').count()).toBe(delivered.matches.roleMatches.filter(role => role.resonanceScore > 0 && role.matched.length > 0).length);
+    for (const role of delivered.matches.roleMatches) expect(await page.locator(`[data-testid="job-field-role-${role.poolRoleId}"] [data-testid^="job-field-moon-"]`).count()).toBe(role.canonical.targetRequirementRevisionIds.length);
+    expect((await page.getByTestId("job-field-reading").first().textContent()) ?? "").toContain("pool resonance");
     expect(await page.getByTestId("job-field-nearest").getAttribute("data-role-id")).toBe(T.roleId);
     expect(await page.getByTestId("job-field-nearest").textContent()).toContain("not a role relation (RRL) · not a recommendation (RCP) · not a decision");
     expect(await page.getByTestId("job-field-legend").textContent()).toContain("POOL RESONANCE (PRESENTATION)");
@@ -465,6 +476,9 @@ describe.skipIf(playwrightModule === null)("Job Pool workflow in a real browser"
     expect(await page.getByTestId("job-field-pending-UNSCORED_COVERAGE").getAttribute("data-count")).toBe("0");
     expect(await page.getByTestId("job-field-pending-NO_EVIDENCE_DELIVERED").getAttribute("data-ids")).toBe("req_005");
     expect(await page.getByTestId("job-field-pending-reason").textContent()).toContain("VERIFIED_CAPABILITY_SNAPSHOT_ABSENT");
+    expect(await page.getByTestId("job-field-pending-reason").isVisible()).toBe(false);
+    await page.getByTestId("job-field-pending-why").click();
+    await page.getByTestId("job-field-pending-reason").waitFor({ state: "visible", timeout: 10_000 });
     // Progressive disclosure: evidence is in the DOM but hidden until revealed per line or for all lines.
     expect(await hit.getAttribute("data-revealed")).toBe("false");
     expect(await page.getByTestId(`job-field-requirement-evidence-${T.requirementId}`).isVisible()).toBe(false);

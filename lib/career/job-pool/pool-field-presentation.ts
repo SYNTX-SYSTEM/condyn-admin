@@ -88,6 +88,11 @@ export interface PoolFieldOrganization {
   startAngle: number;
   endAngle: number;
   arc: string;
+  /** The same arc drawn so that text along it reads upright: clockwise on the upper half, counter-clockwise on the lower half. */
+  labelArc: string;
+  /** Delivered organisation aggregate (POOL RESONANCE, PRESENTATION) when a matching of this exact upload was delivered; null otherwise. */
+  aggregateScore: number | null;
+  hueIndex: number;
 }
 
 export interface PoolFieldStructure {
@@ -141,7 +146,10 @@ export function derivePoolStructure(view: JobPoolUploadView, matching: JobPoolMa
       slotIndex += 1;
     }
     const endAngle = slotIndex * slot;
-    organizations.push({ poolOrganizationId: group.poolOrganizationId, name: organizationName(group.poolOrganizationId), roleIds: group.roles.map(role => role.poolRoleId), startAngle, endAngle, arc: arcPath(layout.center, layout.center, layout.organizationRadius, startAngle + 2, endAngle - 2) });
+    const aggregate = matchingDelivered ? (matching!.organizationMatches.find(organization => organization.poolOrganizationId === group.poolOrganizationId) ?? null) : null;
+    const mid = (startAngle + endAngle) / 2;
+    const lower = mid > 90 && mid < 270;
+    organizations.push({ poolOrganizationId: group.poolOrganizationId, name: organizationName(group.poolOrganizationId), roleIds: group.roles.map(role => role.poolRoleId), startAngle, endAngle, arc: arcPath(layout.center, layout.center, layout.organizationRadius, startAngle + 2, endAngle - 2), labelArc: lower ? reversedArcPath(layout.center, layout.center, layout.organizationRadius + 16, startAngle + 2, endAngle - 2) : arcPath(layout.center, layout.center, layout.organizationRadius - 16, startAngle + 2, endAngle - 2), aggregateScore: aggregate === null ? null : aggregate.aggregateScore, hueIndex: organizations.length });
   }
   return {
     jobPoolUploadId: view.jobPoolUploadId,
@@ -154,6 +162,16 @@ export function derivePoolStructure(view: JobPoolUploadView, matching: JobPoolMa
     requirementCount: roles.reduce((sum, role) => sum + role.requirements.length, 0),
     matchingDelivered
   };
+}
+
+/** The arc from endAngle back to startAngle (counter-clockwise), so a text path along it reads upright on the lower half of the field. */
+export function reversedArcPath(cx: number, cy: number, radius: number, startAngle: number, endAngle: number): string {
+  const toPoint = (angle: number) => { const radians = ((angle - 90) * Math.PI) / 180; return [cx + radius * Math.cos(radians), cy + radius * Math.sin(radians)] as const; };
+  const sweep = endAngle - startAngle;
+  if (sweep <= 0) return "";
+  const [x1, y1] = toPoint(endAngle);
+  const [x2, y2] = toPoint(startAngle);
+  return `M ${x1} ${y1} A ${radius} ${radius} 0 ${sweep > 180 ? 1 : 0} 0 ${x2} ${y2}`;
 }
 
 export type PoolFieldListState = "LOADING" | "EMPTY" | "NOT_PROVISIONED" | "FAILED" | "AVAILABLE";
