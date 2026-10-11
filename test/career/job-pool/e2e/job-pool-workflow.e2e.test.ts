@@ -201,8 +201,8 @@ describe("Job Pool workflow over HTTP against the production routes", () => {
 });
 
 describe.skipIf(playwrightModule === null)("Job Pool workflow in a real browser", () => {
-  type Browser = { newPage(options: { viewport: { width: number; height: number } }): Promise<Page>; close(): Promise<void> };
-  type Locator = { waitFor(options?: { timeout?: number; state?: string }): Promise<void>; count(): Promise<number>; textContent(): Promise<string | null>; getAttribute(name: string): Promise<string | null>; click(): Promise<void>; fill(value: string): Promise<void>; isDisabled(): Promise<boolean>; setInputFiles(files: string | string[]): Promise<void>; first(): Locator };
+  type Browser = { newPage(options: { viewport: { width: number; height: number }; reducedMotion?: "reduce" | "no-preference" }): Promise<Page>; close(): Promise<void> };
+  type Locator = { waitFor(options?: { timeout?: number; state?: string }): Promise<void>; count(): Promise<number>; textContent(): Promise<string | null>; getAttribute(name: string): Promise<string | null>; click(): Promise<void>; fill(value: string): Promise<void>; isDisabled(): Promise<boolean>; setInputFiles(files: string | string[]): Promise<void>; first(): Locator; hover(): Promise<void>; isVisible(): Promise<boolean>; evaluate<T>(fn: (element: Element) => T): Promise<T> };
   type Page = { goto(url: string, options?: { waitUntil?: string; timeout?: number }): Promise<unknown>; url(): string; locator(selector: string): Locator; getByTestId(id: string): Locator; screenshot(options: { path: string; fullPage?: boolean }): Promise<unknown>; on(event: string, handler: (payload: unknown) => void): void; close(): Promise<void> };
   let browser: Browser;
   let pageErrors: string[] = [];
@@ -369,6 +369,33 @@ describe.skipIf(playwrightModule === null)("Job Pool workflow in a real browser"
     expect(await page.locator('[data-testid^="hr-decision-loop"]').count()).toBe(0);
     await page.screenshot({ path: resolve(EVIDENCE_DIR, "17-job-field-overview-nearest-presented-role.png") });
 
+    // Semiontic layer: light breathes only on roles with a scored match; an unlit role is still; the nearest ray flows;
+    // every animation is bound to a derived data-motion attribute, and the legend text is collapsed until asked for.
+    expect(await field.getAttribute("data-motion-grammar")).toBe("SEMIONTIC_V1");
+    expect(await field.getAttribute("data-motion-mode")).toBe("LIVE");
+    const animationOf = (selector: string) => page.locator(selector).first().evaluate(element => getComputedStyle(element).animationName);
+    expect(await nearest.getAttribute("data-motion")).toBe("BREATH");
+    expect(await animationOf(`[data-testid="job-field-role-${T.roleId}"] [data-jf-light]`)).toBe("jfBreathLight");
+    const unlitId = await page.locator('[data-testid^="job-field-role-"][data-scored-match="false"]').first().getAttribute("data-testid");
+    expect(await page.getByTestId(unlitId!).getAttribute("data-motion")).toBe("STILL");
+    expect(await page.locator(`[data-testid="${unlitId}"] [data-jf-light]`).count()).toBe(0);
+    expect(await animationOf('[data-testid="job-field-nearest-ray"]')).toBe("jfFlow");
+    expect(await animationOf('[data-testid="job-field-core"] [data-sweep-halo]')).toBe(delivered.matches.capabilitySweep.proposalCount > 0 ? "jfCirculate" : "none");
+    const waverCount = await page.locator('[data-testid^="job-field-role-"] [data-segment-state="UNRESOLVED"][data-motion="WAVER"]').count();
+    if (waverCount > 0) expect(await animationOf('[data-testid^="job-field-role-"] [data-segment-state="UNRESOLVED"]')).toBe("jfWaver");
+    expect(await page.getByTestId("job-field-legend-text").isVisible()).toBe(false);
+    await page.getByTestId("job-field-legend-toggle").click();
+    await page.getByTestId("job-field-legend-text").waitFor({ state: "visible", timeout: 10_000 });
+    expect(await page.getByTestId("job-field-legend").getAttribute("data-legend-open")).toBe("true");
+    expect(await page.getByTestId("job-field-legend-text").textContent()).toContain("Light and breath = pool resonance (presentation)");
+    // Hovering a role reveals its pending field as orbiting rings, one per pending kind that has ids.
+    await page.getByTestId(`job-field-role-${T.roleId}`).hover();
+    await page.locator(`[data-testid="job-field-role-${T.roleId}"][data-focused="true"]`).waitFor({ timeout: 10_000 });
+    const nearestRole = delivered.matches.roleMatches.find(role => role.poolRoleId === T.roleId)!;
+    const expectedRings = [nearestRole.canonical.targetRequirementRevisionIds.length > 0, nearestRole.weakEvidence.length > 0, [...nearestRole.weakEvidence, ...nearestRole.missing].some(item => item.sweepProposal !== null), nearestRole.missing.some(item => item.sweepProposal === null)].filter(Boolean).length;
+    expect(await page.locator(`[data-testid="job-field-role-${T.roleId}"] [data-motion="ORBIT"]`).count()).toBe(expectedRings);
+    await page.screenshot({ path: resolve(EVIDENCE_DIR, "20-job-field-semiontic-legend-hover.png") });
+
     await page.getByTestId(`job-field-role-${T.roleId}`).click();
     await page.locator(`[data-testid="job-field-role-detail"][data-role-id="${T.roleId}"]`).waitFor({ timeout: 30_000 });
     expect(new URL(page.url()).searchParams.get("jobRoleId")).toBe(T.roleId);
@@ -387,6 +414,17 @@ describe.skipIf(playwrightModule === null)("Job Pool workflow in a real browser"
     expect(await page.getByTestId("job-field-pending-UNSCORED_COVERAGE").getAttribute("data-count")).toBe("0");
     expect(await page.getByTestId("job-field-pending-NO_EVIDENCE_DELIVERED").getAttribute("data-ids")).toBe("req_005");
     expect(await page.getByTestId("job-field-pending-reason").textContent()).toContain("VERIFIED_CAPABILITY_SNAPSHOT_ABSENT");
+    // Progressive disclosure: evidence is in the DOM but hidden until revealed per line or for all lines.
+    expect(await hit.getAttribute("data-revealed")).toBe("false");
+    expect(await page.getByTestId(`job-field-requirement-evidence-${T.requirementId}`).isVisible()).toBe(false);
+    await page.getByTestId(`job-field-requirement-toggle-${T.requirementId}`).click();
+    await page.locator(`[data-testid="job-field-requirement-${T.requirementId}"][data-revealed="true"]`).waitFor({ timeout: 10_000 });
+    expect(await page.getByTestId(`job-field-requirement-evidence-${T.requirementId}`).isVisible()).toBe(true);
+    expect(await page.locator(`[data-testid="job-field-requirement-evidence-${T.requirementId}"] [data-testid="job-field-evidence-quote"]`).first().textContent()).toContain(T.quote);
+    await page.getByTestId("job-field-reveal-all").click();
+    await page.locator('[data-testid="job-field-reveal-all"][data-revealed-all="true"]').waitFor({ timeout: 10_000 });
+    expect(await page.locator('[data-testid^="job-field-requirement-"][data-revealed="false"]').count()).toBe(0);
+    expect(await page.getByTestId("job-field-resonance-bar").getAttribute("data-resonance-score")).toBe(String(nearestRole.resonanceScore));
     await page.screenshot({ path: resolve(EVIDENCE_DIR, "18-job-field-role-pending.png") });
 
     await page.getByTestId("job-field-role-back").click();
@@ -411,6 +449,16 @@ describe.skipIf(playwrightModule === null)("Job Pool workflow in a real browser"
     await stale.getByTestId("job-field-role-not-delivered").waitFor({ timeout: 120_000 });
     expect(await stale.getByTestId("job-field").getAttribute("data-selected-role")).toBe("");
     await stale.close();
+    // prefers-reduced-motion: every duration is zero, every light value stays; the field names the mode.
+    const calm = await browser.newPage({ viewport: { width: 1600, height: 1000 }, reducedMotion: "reduce" });
+    calm.on("pageerror", (error: unknown) => pageErrors.push(String(error)));
+    await calm.goto(`${base()}/career/demo?focus=JOB&analysisId=${world.analysisId}&jobPoolUploadId=${uploadedId}`, { waitUntil: "domcontentloaded", timeout: 120_000 });
+    await calm.locator('[data-testid="job-field"][data-field-state="AVAILABLE"][data-motion-mode="REDUCED"]').waitFor({ timeout: 120_000 });
+    expect(await calm.locator(`[data-testid="job-field-role-${T.roleId}"] [data-jf-light]`).first().evaluate(element => getComputedStyle(element).animationName)).toBe("none");
+    expect(await calm.locator('[data-testid="job-field-nearest-ray"]').evaluate(element => getComputedStyle(element).animationName)).toBe("none");
+    expect(Number(await calm.locator(`[data-testid="job-field-role-${T.roleId}"] [data-jf-light]`).first().evaluate(element => getComputedStyle(element).opacity))).toBeGreaterThan(0);
+    await calm.close();
+
     const noPool = await openPage(`/career/demo?focus=JOB&analysisId=${world.analysisId}`);
     await noPool.locator('[data-testid="job-field"][data-field-state="NO_POOL"]').waitFor({ timeout: 120_000 });
     await noPool.getByTestId(`job-field-select-pool-${uploadedId}`).waitFor({ timeout: 60_000 });

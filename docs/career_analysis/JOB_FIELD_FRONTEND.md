@@ -97,3 +97,77 @@ Laws visible in the field: `NEAREST != CHOSEN · PENDING != MISSING CAPABILITY �
 | 2026-10-11 | same | sealed SIL language suites (5 files) + panel SSR + dock SSR + job-field SSR | 54 passed |
 | 2026-10-11 | `3b0fc38` | preservation batch: `test/career/job-pool` + `test/career/hr-decision-loop` (without e2e) + 5 sealed SIL language suites + view-model (29 files) | first run 151/152: `hr-decision-loop/local-composition.postgres` "registers the unified persistence order on construction …" failed after 42 ms; alone 2/2, with the Job Pool composition suites 13/13, full batch rerun 152/152. Observed once in that run. GELB reproduced it deterministically (`--sequence.shuffle.files --sequence.seed=3`: `job-pool.postgres` first): the Job Pool route gate runs the same idempotent unified registration on the shared runner database, so my precondition "DCDRB table absent" failed. `a9121b9` relaxed the precondition to "nothing or the complete unified set"; GELB's full tree showed that is not enough either: other suites leave partial table sets (1 of 40) and rows (seeding collided on the action intent table) in the shared runner database. Root repair `8f95afc`: the test provisions, verifies and drops its own fresh disposable database and imports registration, composition and app client dynamically after binding DATABASE_URL to it; the original strict precondition (no table at all) is back. The fix is a dedicated database, not a relaxed precondition. Verified here after the Job Pool suite in shuffled order (seed 3): 13/13 |
 | 2026-10-11 | `3b0fc38` | `tsc --noEmit` | 0 errors |
+
+## 8. Semiontic layer (owner mandate "SFE — SEMIONTIC FRONTEND RECONSTRUCTION", 2026-10-11)
+
+Frontend and interaction only. The pure model (`job-field-presentation.ts`), the contract, provenance, scoring
+authority, governance and the DOM contract of §4 are unchanged; everything below is additive.
+
+### 8.1 Motion grammar (`lib/career/job-pool/job-field-motion.ts`, pure; `JOB_FIELD_MOTION_GRAMMAR`, version `SEMIONTIC_V1`)
+
+| Effect | Carries | Derivation | Rendered as |
+| --- | --- | --- | --- |
+| BREATH | POOL RESONANCE (PRESENTATION) of a role with a scored match | glow radius 6 + 20·s, glow opacity 0.22 + 0.58·s, body opacity 0.1 + 0.5·s, period 9 s − 4 s·s, light swing 0.35 + 0.35·s (all monotone in s) | blurred light under the node and the body fill breathe in opacity. Breath is light, never geometry: node bounds stay still (Playwright actionability, PINK's clicks) |
+| STILL | no scored match delivered | glow 0, period 0, body opacity 0.07 | unlit node with a thin red-tinted outline on the outer ring, still, visible. PENDING != MISSING CAPABILITY |
+| STEADY | MATCHED (scored) | no duration | solid cyan ring segment, steady dot |
+| WAVER | UNRESOLVED (weak evidence) | 2.6 s | amber segment and dot waver in opacity: uncertainty as instability, never a verdict |
+| CIRCULATE | COVERED_UNSCORED | 7 s, dash 3 3 | dashed cyan segment circulates (dash offset); dashed dot rotates. COVERED != SCORED |
+| VOID | NO_EVIDENCE_DELIVERED | no duration, dash 1 3, opacity 0.45 | faint static gap in the ring; hollow dot. Absence of evidence, not of capability |
+| FLOW | NEAREST PRESENTED ROLE | 2.4 s, dash 6 7 | the ray from the core flows outward; dashed because it is a direction, not a choice (NEAREST != CHOSEN) |
+| ORBIT | one PENDING kind with ids | ring index i: radius +12 + 6i, dash (2 + min(10, n)) 9, period 14 s + 4 s·i, alternating direction | dashed rings orbit the hovered or selected role: grey unproven canonical, amber unresolved, dashed cyan unscored coverage, red no evidence. Kinds without ids draw nothing |
+| EMERGE | delivered order | delay 110 ms·(rank − 1), capped 1.8 s, 760 ms | roles appear from the core in delivered order when the field opens; the planetarium recedes behind the blurred overlay (620 ms) |
+| core | candidate | 7 s breath, scale 1.035; sweep halo circulates 26 s only when proposalCount > 0 | |
+
+REDUCED mode (`prefers-reduced-motion`, `data-motion-mode="REDUCED"`): every duration is 0, every light value stays
+(light is meaning, motion is emphasis). The stylesheet additionally forces `animation: none` under the media query.
+
+### 8.2 Progressive disclosure
+
+- Overview: title, exit, one state line with a living dot (pulses while LOADING), a legend card with the two source
+  counts, the four state chips (each with its motion glyph) and the ranking line; the legend text (geometry sentence,
+  motion grammar sentence, hover hint) is in the DOM but folded behind `job-field-legend-toggle`.
+- Role node: resonance and delivered rank inside, short title below; organisation name and `NO SCORED MATCH` appear on
+  hover or selection together with the orbiting pending rings (`data-focused`).
+- Nearest card: title, organisation, resonance bar (`job-field-resonance-bar`), the authority label, the four PENDING
+  cells (count large, kind small; click a cell for its ids), the canonical reason, `OPEN ROLE`.
+- Role detail: header, resonance bar, `REQUIREMENT COMPOSITION` (segmented bar + chips with counts,
+  `job-field-composition`), requirement lines with name, state chip, necessity, weight and level; provenance,
+  confidence, quotes and weak-evidence reason are in the DOM but folded (`data-revealed`,
+  `job-field-requirement-toggle-<req>`, `job-field-reveal-all`, hover reveals transiently); then the PENDING field.
+- Organisation arcs brighten for the hovered or selected role's organisation; other organisations recede while a role is open.
+
+### 8.3 Additive DOM contract
+
+- `job-field`: `data-motion-grammar="SEMIONTIC_V1"`, `data-motion-mode` (LIVE | REDUCED), `data-hovered-role`.
+- `job-field-role-<id>`: `data-motion` (BREATH | STILL), `data-focused`; inside: `[data-jf-light]` (only when BREATH),
+  `[data-segment-state][data-motion]` (STEADY | WAVER | CIRCULATE | VOID), `[data-pending-kind][data-pending-count][data-motion="ORBIT"]` when focused.
+- `job-field-nearest-ray`: `data-motion="FLOW"`; `job-field-core`: `data-motion="BREATH"`, `[data-sweep-halo][data-motion="CIRCULATE"]`.
+- `job-field-legend`: `data-legend-open`; `job-field-legend-toggle`; `job-field-legend-text` (hidden until open).
+- `job-field-resonance-bar` (`data-resonance-score`, `data-motion`); `job-field-composition` with `[data-segment-state][data-motion]`.
+- `job-field-requirement-<req>`: `data-motion`, `data-revealed`; `job-field-requirement-toggle-<req>`; `job-field-requirement-evidence-<req>` (hidden until revealed); `job-field-reveal-all` (`data-revealed-all`).
+- `job-field-pending-<KIND>`: `data-present`, `aria-expanded`, keyboard operable (Enter/Space lists the ids).
+- `field-focus-job-btn` (planetarium): breathing glow while JOB focus is active (`fieldFocusSwitchBreath`, 6 s, reduced-motion guard).
+- Copy keys added to `jobField` (en/de): `legendToggle`, `legendHide`, `motion`, `reveal`, `hide`, `revealAll`, `hideAll`, `ids`, `composition`, `hoverHint`. No existing copy changed.
+
+### 8.4 Proofs
+
+| Proof | File | Content |
+| --- | --- | --- |
+| P-JF-M | `test/career/job-pool/job-field-motion.test.ts` | one meaning per effect, vocabulary free of recommend/chosen/decision/verified/gap/rank; light, breath, body and tempo monotone in delivered resonance and only with a scored match; unlit roles still, visible, never zero; emergence by delivered rank, bounded; one motion per requirement state; one orbit ring per present pending kind; REDUCED zeroes every duration and keeps every light value |
+| P-JF-S (extended) | `job-field-ssr.test.tsx` | server-rendered attributes: grammar version and LIVE mode, BREATH/STILL per role, STEADY/CIRCULATE per segment, FLOW on the ray, BREATH on the core, light element present, legend folded with its text in the DOM, resonance bar, pending cells with `data-present`, reduced-motion media rule; role detail lines folded with the evidence in the DOM, reveal-all, composition, selected role focused with its ORBIT rings only for present kinds |
+| P-JF-B (extended) | `e2e/job-pool-workflow.e2e.test.ts` | Chromium: computed `animation-name` is `jfBreathLight` on the nearest role's light, no light element on an unlit role (`STILL`), `jfFlow` on the ray, `jfCirculate` on the sweep halo only with proposals, `jfWaver` on unresolved segments; legend text hidden → toggle → visible with the grammar sentence; hover → `data-focused` and exactly one ORBIT ring per pending kind with ids; role detail: evidence hidden → per-line reveal shows the delivered quote → reveal all leaves no folded line; resonance bar equals the delivered score; a page with `reducedMotion: "reduce"` renders `data-motion-mode="REDUCED"`, `animation-name: none` on light and ray, light opacity > 0 |
+| P-JF-G, PINK static, sealed SIL suites, panel SSR, dock SSR | unchanged | preservation: the motion module sits under `lib/career/job-pool` and is covered by both import guards |
+
+### 8.5 Run record
+
+| Date | Revision | Run | Result |
+| --- | --- | --- | --- |
+| 2026-10-11 | working tree on `cccd647` | `tsc --noEmit` | 0 errors |
+| 2026-10-11 | same | job-field motion/ssr/presentation, panel SSR, frontend presentation, GELB governance, PINK static | 45 passed |
+| 2026-10-11 | same | 11 SIL language/orbit suites (incl. the 5 sealed ones) | 79 passed |
+| 2026-10-11 | same | Job Pool e2e (HTTP 5 + Chromium 5) with the semiontic checks, fresh disposable DB | 10/10, 94 s; evidence 17, 18, 19 refreshed, 20 added |
+| 2026-10-11 | same, canvas centre shifted 64 px left so the right organisation label clears the nearest card | full tree `test/career/job-pool` (with e2e) + PINK static + 5 sealed SIL suites + dock SSR, fresh disposable DB | 20 files, 131 passed |
+
+Boundaries added: B-JF-MOTION-GEOMETRY (breath is light only; any future geometry animation on a clickable node must
+be finite, because Playwright waits for a stable bounding box); B-JF-REVEAL (folded text stays in the DOM so every
+textContent-based proof keeps binding; `hidden` + `display: none`, not removal).

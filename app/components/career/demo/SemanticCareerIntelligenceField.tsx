@@ -953,6 +953,8 @@ export function SemanticCareerIntelligenceField({
 
       {/* Center Radial Organism Field */}
       <style>{`
+        @keyframes fieldFocusSwitchBreath { 0%, 100% { box-shadow: 0 0 12px rgba(56, 229, 255, 0.18); } 50% { box-shadow: 0 0 22px rgba(56, 229, 255, 0.45); } }
+        @media (prefers-reduced-motion: reduce) { [data-testid="field-focus-job-btn"] { animation: none !important; } }
         @keyframes rotateClockwise {
           0% { transform: rotate(0deg); }
           100% { transform: rotate(360deg); }
@@ -1689,7 +1691,7 @@ export function SemanticCareerIntelligenceField({
         data-testid="field-focus-job-btn"
         data-field-focus-active={fieldFocus === "JOB" ? "true" : "false"}
         onClick={() => switchFieldFocus(fieldFocus === "JOB" ? "CAPABILITY" : "JOB")}
-        style={{ position: "fixed", left: "24px", top: "84px", zIndex: 60, backgroundColor: fieldFocus === "JOB" ? "rgba(56, 229, 255, 0.18)" : "rgba(10, 14, 20, 0.85)", border: `1px solid ${SIL_TOKENS.colors.cyanActive}`, borderRadius: "8px", padding: "8px 14px", color: SIL_TOKENS.colors.cyanActive, fontFamily: SIL_TOKENS.typography.mono, fontSize: "11px", fontWeight: 700, cursor: "pointer", boxShadow: `0 0 12px ${SIL_TOKENS.colors.cyanGlow}` }}
+        style={{ position: "fixed", left: "24px", top: "84px", zIndex: 60, backgroundColor: fieldFocus === "JOB" ? "rgba(56, 229, 255, 0.18)" : "rgba(10, 14, 20, 0.85)", border: `1px solid ${SIL_TOKENS.colors.cyanActive}`, borderRadius: "8px", padding: "8px 14px", color: SIL_TOKENS.colors.cyanActive, fontFamily: SIL_TOKENS.typography.mono, fontSize: "11px", fontWeight: 700, cursor: "pointer", boxShadow: `0 0 12px ${SIL_TOKENS.colors.cyanGlow}`, transition: "background-color .35s ease, box-shadow .35s ease", animation: fieldFocus === "JOB" ? "fieldFocusSwitchBreath 6s ease-in-out infinite" : undefined }}
       >
         {fieldFocus === "JOB" ? t.jobField.exit : t.jobField.enter}
       </button>
