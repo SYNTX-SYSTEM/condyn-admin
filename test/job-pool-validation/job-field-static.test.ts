@@ -26,7 +26,9 @@ describe("Job Field semantic governance (static)", () => {
   it.skipIf(jobFieldFiles.length === 0)("SG-1: Job Field files never read LLM-inferred organizations, roles or entity names of the analysis", () => {
     const offenders = jobFieldFiles.flatMap((file) => {
       const text = readFileSync(file, "utf8");
-      const hits = ["structured_data", "identity.name", "analysis.organizations", "analysis.roles", "companyMatches", "roleMatches", "organizationName.toLowerCase", "ROLE_IN_ORGANIZATION"].filter((token) => text.includes(token));
+      // `presentation.roleMatches` is the pool body (SG-5); the LLM-inferred demo state is reached only through
+      // the demo-data / ui-adapter shapes, `structured_data` or the entity grammar (`identity.name`).
+      const hits = ["structured_data", "identity.name", "analysis.organizations", "analysis.roles", "activeData.roleMatches", "activeData.companyMatches", "demo-data", "ui-adapter", "organizationName.toLowerCase", "ROLE_IN_ORGANIZATION"].filter((token) => text.includes(token));
       return hits.length ? [`${relative(root, file)}: ${hits.join(", ")}`] : [];
     });
     expect(offenders).toEqual([]);
@@ -39,8 +41,10 @@ describe("Job Field semantic governance (static)", () => {
   });
 
   it.skipIf(jobFieldFiles.length === 0)("SG-5/SG-6 vocabulary: the Job Field names its resonance as presentation and never a canonical relation id prefix", () => {
+    // Copy lives in the SIL language block; the Job Field sources must carry no canonical relation id prefix.
+    const copy = readFileSync(join(root, "lib/career/view-model/sil-language.ts"), "utf8");
+    expect(copy).toMatch(/POOL RESONANCE \(PRESENTATION\)/);
     const text = jobFieldFiles.map((file) => readFileSync(file, "utf8")).join("\n");
-    expect(text).toMatch(/POOL RESONANCE \(PRESENTATION\)/);
     expect(text).not.toMatch(/\b(RRL|TSN|EIS|RCP)_[A-Z0-9]/);
   });
 });

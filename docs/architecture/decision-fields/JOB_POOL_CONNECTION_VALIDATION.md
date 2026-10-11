@@ -452,6 +452,38 @@ the legacy freeze, the DB-1 recovery candidate depends on it, and the planetariu
 derivation (proven) → owner boundary **B-JF-REC-ID**, accepted by PINK. F-JF-1, 4, 5, 6 assigned to GRÜN as
 presentation items; PINK's Job Field proofs bind their labels when the Job Field lands.
 
+#### 3.13.2 GRÜN's Job Field `frontend/job-field` @ `8e876fd` validated, merged as `22bb539` (with GELB's `cf2d084`)
+
+Contract clarifications bound (GRÜN, 2026-10-11): `data-resonance-score` verbatim body value, `data-distance` =
+clamp01(1 − score) unrounded (numeric tolerance), `data-pool-id` = the selected upload id (`JPOOL_…`),
+`data-ids` of `UNPROVEN_CANONICAL` = the role's TRQREV ids in delivered order, other kinds = pool requirement ids,
+`data-field-state` authoritative. Source wording (F-JF-1) in the legend: "ANALYSIS CAPABILITIES (SCORED SOURCE): n ·
+SWEEP PROPOSALS (UNSCORED): m"; authority wording on the nearest presented role; laws on the non-claims line.
+
+PINK-side corrections while binding (no Job Field finding): the SG-1 token `roleMatches` also names the pool body
+field (now `activeData.roleMatches`, `demo-data`, `ui-adapter` imports and the entity grammar are the forbidden
+tokens); the legend copy lives in `sil-language.ts`, not in the Job Field sources; the authority wording sits on the
+nearest element, not the legend.
+
+Reconstruction: `lib/career/job-pool/job-field-presentation.ts` derives everything from `JobPoolMatchPresentation`
+only (requirement states MATCHED / UNRESOLVED / COVERED_UNSCORED / NO_EVIDENCE_DELIVERED, four pending kinds never
+merged, distance = clamp01(1 − resonanceScore), grouping by `poolOrganizationId` only, nearest = first delivered role
+with a scored match); `JobField.tsx` renders it with the contract ids. GRÜN resolved F-JF-1 (legend), F-JF-5 (legacy
+list components no longer imported), F-JF-6 (orbit 03 subtitle "Inferred organisations (analysis) · not pool
+resonance"); F-JF-4 and the orbit 02/04 relabels are blocked by sealed SIL language tests → owner boundary
+**B-ORBIT-COPY** (recorded in `JOB_FIELD_FRONTEND.md` §5).
+
+Runs as the role (load 5–14 from peer batches; no timeout):
+
+```
+condyn_test_3f85a9d211cd974d  Job Field + Job Pool + adapter suites: 23 files green (GRÜN e2e 10/10, PINK browser walk,
+                              HTTP/canonical/inverse, PDF path, SSR, governance, planetarium alignment, orbit contract);
+                              PINK job-field proofs red on three PINK-side assumptions (above)
+condyn_test_58133f9f9e6c9583  PINK job-field.e2e 2/2 and job-field-static 3/3 green after the corrections
+```
+
+Evidence: `evidence/job-pool-validation/pink-04-job-field-job-focus.png`.
+
 ## 4. Boundaries and findings for coordination
 
 - F-JP-1 (closed in `b782793`): `JOB_POOL_CONNECTION.md` §4 followed the per-role `JOB_POOL_JSON_ROLE` design;

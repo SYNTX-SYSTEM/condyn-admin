@@ -105,7 +105,8 @@ describe.skipIf(playwrightModule === null || !jobFocusPresent)("PINK Job Field: 
     const field = page.getByTestId("job-field");
     await page.locator('[data-testid="job-field"][data-field-state="AVAILABLE"]').waitFor({ timeout: 60_000 });
     expect(await field.getAttribute("data-analysis-id")).toBe(ANALYSIS_ID);
-    expect(await field.getAttribute("data-pool-id")).toBe(validationPool.pool.id);
+    // GRÜN: data-pool-id carries the exact selected upload id (JPOOL_…), never the declared pool.id.
+    expect(await field.getAttribute("data-pool-id")).toBe(uploadId);
     expect(await field.getAttribute("data-role-count")).toBe(String(matches.roleMatches.length));
     expect(await field.getAttribute("data-sweep-state")).toBe(matches.capabilitySweep.state);
     expect(await page.getByTestId("job-field-core").getAttribute("data-candidate-capability-count")).toBe(String(matches.candidateCapabilityCount));
@@ -136,8 +137,15 @@ describe.skipIf(playwrightModule === null || !jobFocusPresent)("PINK Job Field: 
 
     const legend = (await page.getByTestId("job-field-legend").textContent()) ?? "";
     expect(legend).toContain("POOL RESONANCE (PRESENTATION)");
-    expect(legend.toLowerCase()).toContain("authority none");
-    expect(await page.getByTestId("job-field-non-claims").count()).toBe(1);
+    expect(legend.toLowerCase()).toContain("not a canonical metric");
+    // The authority wording sits on the nearest presented role (GRÜN copy `nearestLabel`), the laws on the non-claims line.
+    if (nearest) {
+      const nearestText = ((await page.getByTestId("job-field-nearest").textContent()) ?? "").toLowerCase();
+      expect(nearestText).toContain("authority none");
+      expect(nearestText).toContain("not a decision");
+    }
+    const nonClaims = (await page.getByTestId("job-field-non-claims").textContent()) ?? "";
+    for (const law of ["NEAREST != CHOSEN", "PENDING != MISSING CAPABILITY", "COVERED != SCORED", "DISTANCE != TRUTH", "POOL ROLE != INFERRED ROLE"]) expect(nonClaims).toContain(law);
     const fieldText = (await field.innerHTML()) ?? "";
     expect(fieldText).not.toMatch(/\b(RRL|TSN|EIS|RCP)_[A-Z0-9]/);
 
@@ -162,8 +170,20 @@ describe.skipIf(playwrightModule === null || !jobFocusPresent)("PINK Job Field: 
     expect(await pendingCount("UNRESOLVED_EVIDENCE")).toBe(focus.weakEvidence.length);
     expect(await pendingCount("UNSCORED_COVERAGE")).toBe([...focus.weakEvidence, ...focus.missing].filter((item: any) => item.sweepProposal !== null).length);
     expect(await pendingCount("NO_EVIDENCE_DELIVERED")).toBe(focus.missing.filter((item: any) => item.sweepProposal === null).length);
+    // GRÜN (b): UNPROVEN_CANONICAL lists the role's TRQREV ids in delivered order; the other kinds list pool requirement ids.
     const unprovenIds = ((await page.getByTestId("job-field-pending-UNPROVEN_CANONICAL").getAttribute("data-ids")) ?? "").split(",").filter(Boolean);
-    expect(unprovenIds.length).toBe(requirementCountOf(focus.poolRoleId));
+    expect(unprovenIds).toEqual(focus.canonical.targetRequirementRevisionIds);
+    const noEvidenceIds = ((await page.getByTestId("job-field-pending-NO_EVIDENCE_DELIVERED").getAttribute("data-ids")) ?? "").split(",").filter(Boolean);
+    expect(noEvidenceIds).toEqual(focus.missing.filter((item: any) => item.sweepProposal === null).map((item: any) => item.poolRequirementId));
+    const unresolvedIds = ((await page.getByTestId("job-field-pending-UNRESOLVED_EVIDENCE").getAttribute("data-ids")) ?? "").split(",").filter(Boolean);
+    expect(unresolvedIds).toEqual(focus.weakEvidence.map((item: any) => item.poolRequirementId));
+    // F-JF-1 handled by GRÜN: the core names both capability sources with their scoring status.
+    const core = page.getByTestId("job-field-core");
+    expect(await core.getAttribute("data-sweep-proposal-count")).toBe(String(matches.capabilitySweep.proposalCount));
+    // The source wording (F-JF-1) is rendered in the legend next to the core counts.
+    const legendText = ((await page.getByTestId("job-field-legend").textContent()) ?? "").toUpperCase();
+    expect(legendText).toContain(`ANALYSIS CAPABILITIES (SCORED SOURCE): ${matches.candidateCapabilityCount}`);
+    expect(legendText).toContain(`SWEEP PROPOSALS (UNSCORED): ${matches.capabilitySweep.proposalCount}`);
     const reason = (await page.getByTestId("job-field-pending-reason").textContent()) ?? "";
     expect(reason).toContain("NOT_EVALUATED");
     expect(reason).toContain("VERIFIED_CAPABILITY_SNAPSHOT_ABSENT");
