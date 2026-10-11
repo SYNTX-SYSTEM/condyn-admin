@@ -624,6 +624,21 @@ identical. PINK's short read-only check on it (`support/core-lens-state-readonly
 canonical reason settled at computed 0.85 = inline; pending 5/1/3/1 with the UNSCORED ids equal to the GET body and
 the F-LF-1 label present. Identical to GELB's readings. Plan 1.3.3 (header only) states the handed-over environment.
 
+### 3.16 SYNTX semiotic reconstruction: acceptance pre-binding (2026-10-11)
+
+Owner mandate "SFE — SYNTX SEMIONTIC FIELD RECONSTRUCTION" (relayed by GELB; spec recorded verbatim in `f8e7c0b`,
+binding table with rulings R1–R14 in `4a4a7fe`). Roles: GRÜN rebuilds the Pool Field / Job Field as the path
+FIELD → ORGANIZATION → ROLE → REQUIREMENT → EVIDENCE → RETURN, GELB binds signs to repository fields and tests the pure
+view model, PINK does the independent acceptance incl. the running browser walk. PINK's deliverable before any
+implementation exists: plan 1.4.0 (`CONDYN_SYSTEM_ACCEPTANCE_TEST_PLAN_v1.4.md`) with suite TS-Q (Q-01 … Q-12) derived
+from the spec and the binding table only, the DOM binding requirements BR-1 … BR-5 (observation point and per-sign
+`data-sign-*` / `data-proof-*` attributes with the spec's §14.3 enums, aperture and summary anchors, retired ids not
+reused) so that the walk binds independently of CSS and copy, risk R9, sequence S8, O-13, boundaries
+B-SYNTX-PREBINDING / -UNSUPPORTED / -CLOSURE, the verdict NOT-BOUND. Pre-announced plan change at the delta (R13, R14):
+E-04 caption, E-12 threads, K geometry and the matching assertions of `job-field.e2e.test.ts` are retired; the walk
+`syntx-walk.e2e.test.ts` (Q-12) is written against GRÜN's published contract. Application code unchanged (`8356bab`);
+owner environment stays on `801828c` until Q-12 is green. GRÜN had not started at the time of writing.
+
 ## 4. Boundaries and findings for coordination
 
 - F-JP-1 (closed in `b782793`): `JOB_POOL_CONNECTION.md` §4 followed the per-role `JOB_POOL_JSON_ROLE` design;

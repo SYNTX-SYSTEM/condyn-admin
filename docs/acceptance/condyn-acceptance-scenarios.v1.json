@@ -1,9 +1,9 @@
 {
-  "plan": "docs/acceptance/CONDYN_SYSTEM_ACCEPTANCE_TEST_PLAN_v1.3.md",
-  "version": "1.3.3",
+  "plan": "docs/acceptance/CONDYN_SYSTEM_ACCEPTANCE_TEST_PLAN_v1.4.md",
+  "version": "1.4.0",
   "tip": "8356bab",
   "generated": "2026-10-11",
-  "scenarioCount": 141,
+  "scenarioCount": 153,
   "scenarios": [
     {
       "id": "A-01",
@@ -2059,6 +2059,233 @@
       "evidence": [
         "P-03.txt"
       ]
+    },
+    {
+      "id": "Q-01",
+      "suite": "TS-Q SYNTX field path",
+      "title": "STATE A FIELD composition (spec §5 A, §8.2; table §2.1, R4, R13, R14)",
+      "sequences": [
+        "S8"
+      ],
+      "risk": [
+        "R2",
+        "R9"
+      ],
+      "video": false,
+      "evidence": [
+        "Q-01.png",
+        "Q-01-signs.json",
+        "Q-01-diff.txt"
+      ],
+      "binding": "PRE-BINDING"
+    },
+    {
+      "id": "Q-02",
+      "suite": "TS-Q SYNTX field path",
+      "title": "STATE B ORGANIZATION (spec §5 B, §4.1, §4.2; table §2.1, §3)",
+      "sequences": [
+        "S8"
+      ],
+      "risk": [
+        "R3",
+        "R9"
+      ],
+      "video": true,
+      "evidence": [
+        "Q-02.png",
+        "Q-02.webm",
+        "Q-02-signs.json"
+      ],
+      "binding": "PRE-BINDING"
+    },
+    {
+      "id": "Q-03",
+      "suite": "TS-Q SYNTX field path",
+      "title": "STATE C ROLE (spec §5 C, §4.3, §9; table §2.2, §2.4, R4, R6, R14)",
+      "sequences": [
+        "S8"
+      ],
+      "risk": [
+        "R2",
+        "R7",
+        "R9"
+      ],
+      "video": false,
+      "evidence": [
+        "Q-03.png",
+        "Q-03-signs.json",
+        "Q-03-diff.txt"
+      ],
+      "binding": "PRE-BINDING"
+    },
+    {
+      "id": "Q-04",
+      "suite": "TS-Q SYNTX field path",
+      "title": "STATE D REQUIREMENT and the evidence aperture (spec §5 D, §4.4, §12; table §2.2, §2.3, §3, R3, R5, R6)",
+      "sequences": [
+        "S8"
+      ],
+      "risk": [
+        "R2",
+        "R7",
+        "R9"
+      ],
+      "video": false,
+      "evidence": [
+        "Q-04-matched.png",
+        "Q-04-weak.png",
+        "Q-04-sweep.png",
+        "Q-04-missing.png",
+        "Q-04-aperture.json"
+      ],
+      "binding": "PRE-BINDING"
+    },
+    {
+      "id": "Q-05",
+      "suite": "TS-Q SYNTX field path",
+      "title": "STATE E RETURN and reversibility (spec §5 E, §13.3, §13.4; R8, R12)",
+      "sequences": [
+        "S8"
+      ],
+      "risk": [
+        "R3",
+        "R7",
+        "R9"
+      ],
+      "video": true,
+      "evidence": [
+        "Q-05.webm",
+        "Q-05-requests.txt",
+        "Q-05-diff.txt"
+      ],
+      "binding": "PRE-BINDING"
+    },
+    {
+      "id": "Q-06",
+      "suite": "TS-Q SYNTX field path",
+      "title": "Motion contract (spec §6)",
+      "sequences": [
+        "S8"
+      ],
+      "risk": [
+        "R4",
+        "R9"
+      ],
+      "video": true,
+      "evidence": [
+        "Q-06.webm",
+        "Q-06-reduced.webm",
+        "Q-06-computed.txt"
+      ],
+      "binding": "PRE-BINDING"
+    },
+    {
+      "id": "Q-07",
+      "suite": "TS-Q SYNTX field path",
+      "title": "Authority grammar and the unsupported list (spec §11, §12.5, §4.6; table §3, R1, R3)",
+      "sequences": [
+        "S8"
+      ],
+      "risk": [
+        "R9"
+      ],
+      "video": false,
+      "evidence": [
+        "Q-07-audit.txt"
+      ],
+      "binding": "PRE-BINDING"
+    },
+    {
+      "id": "Q-08",
+      "suite": "TS-Q SYNTX field path",
+      "title": "Keyboard and accessibility of the path (spec §13.4; R8, R9)",
+      "sequences": [
+        "S8"
+      ],
+      "risk": [
+        "R8",
+        "R9"
+      ],
+      "video": true,
+      "evidence": [
+        "Q-08.webm",
+        "Q-08-summary.txt"
+      ],
+      "binding": "PRE-BINDING"
+    },
+    {
+      "id": "Q-09",
+      "suite": "TS-Q SYNTX field path",
+      "title": "Information compression and score handling (spec §7, §7.1; table §2.4, R4, R13, R14)",
+      "sequences": [
+        "S8"
+      ],
+      "risk": [
+        "R2",
+        "R9"
+      ],
+      "video": false,
+      "evidence": [
+        "Q-09-numbers.txt",
+        "Q-09-first-paint.png",
+        "data-observation-kind=ROLE"
+      ],
+      "binding": "PRE-BINDING"
+    },
+    {
+      "id": "Q-10",
+      "suite": "TS-Q SYNTX field path",
+      "title": "Proof-reference integrity (spec §15.1, §14.3; table §2, BR-2)",
+      "sequences": [
+        "S8"
+      ],
+      "risk": [
+        "R7",
+        "R9"
+      ],
+      "video": false,
+      "evidence": [
+        "Q-10-signs.json",
+        "Q-10-diff.txt"
+      ],
+      "binding": "PRE-BINDING"
+    },
+    {
+      "id": "Q-11",
+      "suite": "TS-Q SYNTX field path",
+      "title": "Capability Field and the carried contracts untouched (R10, R11; spec §1.2, §10.3)",
+      "sequences": [
+        "S8"
+      ],
+      "risk": [
+        "R3",
+        "R9"
+      ],
+      "video": false,
+      "evidence": [
+        "Q-11.png",
+        "Q-11-ids.txt"
+      ],
+      "binding": "PRE-BINDING"
+    },
+    {
+      "id": "Q-12",
+      "suite": "TS-Q SYNTX field path",
+      "title": "PINK's running browser walk (binding table §5; the acceptance gate for the owner environment)",
+      "sequences": [
+        "S8"
+      ],
+      "risk": [
+        "R3",
+        "R7",
+        "R9"
+      ],
+      "video": false,
+      "evidence": [
+        "Q-12-report.json"
+      ],
+      "binding": "PRE-BINDING"
     }
-  ]
+  ],
+  "docsTip": "4a4a7fe"
 }
