@@ -3,15 +3,15 @@
 | Field | Value |
 | --- | --- |
 | Document | `CONDYN_SYSTEM_ACCEPTANCE_TEST_PLAN_v1.2.md` |
-| Version | 1.2.2 (2026-10-11) |
+| Version | 1.2.3 (2026-10-11) |
 | Authored by | PINK (independent SFE validation field) under the owner mandate "SFE — COMPLETE SYSTEM ACCEPTANCE TEST PLAN" |
-| Application version under test | `integration/job-field-governance` @ `d17b042` (authoritative, GELB 2026-10-11) = `cccd647` + GELB's `e762972` state-file fix + GRÜN's semiontic Job Field `ce76bc7` + information surfaces `a3a4f04` + Pool Field `1e5c2e3` (third field state POOL, `JOB_FIELD_FRONTEND.md` §10, manual P1–P7) + plan 1.1.2; **plus** GRÜN's exit-state fix `frontend/job-field` @ `627ec07` (finding E-07: an explicit exit writes `focus=CAPABILITY` and survives a reload; `page.tsx` and the field component only), pending GELB's integration hash. Scenarios marked (1e5c2e3) bind on this tip; the E-07 rule binds on tips carrying `627ec07`. The owner's environment on port 3017 is moved to this tip under the owner mandate "POOL FIELD RUNTIME HANDOVER" (GELB's controlled transition, reversible to `093b9e6`/`0353cd9`). Every scenario cites this tip; a different tip requires a new plan version or a documented delta (§5.3). | Every scenario cites this tip; a different tip requires a new plan version or a documented delta (§5.3). |
+| Application version under test | `integration/job-field-governance` @ `142df0f` (authoritative, GELB 2026-10-11) = `cccd647` + GELB's `e762972` state-file fix + GRÜN's semiontic Job Field `ce76bc7` + information surfaces `a3a4f04` + Pool Field `1e5c2e3` (third field state POOL, `JOB_FIELD_FRONTEND.md` §10, manual P1–P7) + GRÜN's exit-state fix `627ec07` (finding E-07) + plan 1.2.1. Every scenario binds on this tip. The owner's environment on port 3017 runs `d17b042` until the owner mandates a move; the completed E-07 rule (exit survives a reload) binds there only after that move, and until then the E-07 history behaviour is expected on port 3017. | Every scenario cites this tip; a different tip requires a new plan version or a documented delta (§5.3). | Every scenario cites this tip; a different tip requires a new plan version or a documented delta (§5.3). |
 | Executing agent | an independent external testing agent operating through Gemini Antigravity (browser automation, screenshots, video, HTTP, read-only SQL) |
 | Scope | the complete CONDYN application: Capability Discovery (F10/F11 Gemini sweep), Gemini processing of PDF/text sources, the legacy canonical analysis, the Job Pool Connection (JSON upload, canonical mapping, presentation matching), the spatial Job Field (JOB focus), PENDING relations, the HR Decision Loop dock, and the semiontic SIL frontend (planetarium, zoom, motion) |
 | Out of scope | production deployment (forbidden), the shared `condyn` database (forbidden), role/privilege administration (forbidden), application changes (forbidden) |
 | Machine-readable index | `docs/acceptance/condyn-acceptance-scenarios.v1.json` (one row per scenario: id, suite, sequence, risk, evidence) |
 
-Change log: 1.0.0 initial release against `cccd647`; 1.0.1 GELB's code review folded in (start-up log lines, status output, state-file secret rule, HR route status codes, jobs route bodies); 1.0.2 A-07 state-file permission check added; 1.1.0 tip moved to `0353cd9` (GELB's integration of GRÜN's final semiontic Job Field `ce76bc7`): Appendix A regenerated (235 ids), root and dock data-* states in §2.3, E-11 progressive disclosure, J-07/J-09 bound to the motion grammar, J-10 planetarium motion inventory, I-08 OBSERVE items, K geometry facts, L-07 accessibility gap register, O intent table, Appendix C/D extended with GRÜN's boundaries and §8/J8–J11; 1.1.1 GRÜN's information surfaces `a3a4f04` (surface grammar FIELD_EXTENSION_V1, veils, pending ids line, ground line, fonts) folded into §2.3, E-11, I-08, TS-O, Appendix A (236 ids), C and D; 1.1.2 single tip `093b9e6` (GELB's integration of `a3a4f04`), documentation-only; 1.2.0 GRÜN's Pool Field `1e5c2e3`: third field state POOL and the field-state strip (§2.3), TS-D rewritten as the Pool Field (D-01 … D-14), E-01/E-07, H-02/H-04, I-07/I-08, J-07/J-09, TS-O (O-11), Appendix A (247 ids), C (B-POOL-INITIAL-FOCUS), D (§10, P1–P7); 1.2.1 single tip `d17b042` (GELB's integration of `1e5c2e3`), documentation-only; 1.2.2 finding E-07 (exit state lost on reload) fixed by GRÜN in `627ec07`: E-07, H-02, D-10 and B-POOL-INITIAL-FOCUS state the explicit-focus rule; PINK's Job Field proof asserts it.
+Change log: 1.0.0 initial release against `cccd647`; 1.0.1 GELB's code review folded in (start-up log lines, status output, state-file secret rule, HR route status codes, jobs route bodies); 1.0.2 A-07 state-file permission check added; 1.1.0 tip moved to `0353cd9` (GELB's integration of GRÜN's final semiontic Job Field `ce76bc7`): Appendix A regenerated (235 ids), root and dock data-* states in §2.3, E-11 progressive disclosure, J-07/J-09 bound to the motion grammar, J-10 planetarium motion inventory, I-08 OBSERVE items, K geometry facts, L-07 accessibility gap register, O intent table, Appendix C/D extended with GRÜN's boundaries and §8/J8–J11; 1.1.1 GRÜN's information surfaces `a3a4f04` (surface grammar FIELD_EXTENSION_V1, veils, pending ids line, ground line, fonts) folded into §2.3, E-11, I-08, TS-O, Appendix A (236 ids), C and D; 1.1.2 single tip `093b9e6` (GELB's integration of `a3a4f04`), documentation-only; 1.2.0 GRÜN's Pool Field `1e5c2e3`: third field state POOL and the field-state strip (§2.3), TS-D rewritten as the Pool Field (D-01 … D-14), E-01/E-07, H-02/H-04, I-07/I-08, J-07/J-09, TS-O (O-11), Appendix A (247 ids), C (B-POOL-INITIAL-FOCUS), D (§10, P1–P7); 1.2.1 single tip `d17b042` (GELB's integration of `1e5c2e3`), documentation-only; 1.2.2 finding E-07 (exit state lost on reload) fixed by GRÜN in `627ec07`: E-07, H-02, D-10 and B-POOL-INITIAL-FOCUS state the explicit-focus rule; PINK's Job Field proof asserts it; 1.2.3 single tip `142df0f` (GELB's integration of `627ec07`, HR-loop preservation set green), documentation-only.
 
 ---
 
@@ -135,7 +135,7 @@ Every interactive element carries a `data-testid`. Appendix A lists all 247 ids 
 
 | Id | Step | Command / action | Verify (expected observable) |
 | --- | --- | --- | --- |
-| E-01 | Own worktree of the tip | `git -C /home/codi/Entwicklung/condyn-admin worktree add /home/codi/Entwicklung/condyn-admin-acceptance d17b042` then `cp -al /home/codi/Entwicklung/condyn-admin/node_modules /home/codi/Entwicklung/condyn-admin-acceptance/node_modules` | `git rev-parse HEAD` prints `d17b042…`; `ls node_modules/next/package.json` exists; `node_modules` is a directory, not a symlink |
+| E-01 | Own worktree of the tip | `git -C /home/codi/Entwicklung/condyn-admin worktree add /home/codi/Entwicklung/condyn-admin-acceptance 142df0f` then `cp -al /home/codi/Entwicklung/condyn-admin/node_modules /home/codi/Entwicklung/condyn-admin-acceptance/node_modules` | `git rev-parse HEAD` prints `142df0f…`; `ls node_modules/next/package.json` exists; `node_modules` is a directory, not a symlink |
 | E-02 | Role credentials | `set -a; . ~/.config/condyn/test-db-role.env; set +a` in every shell you use | `echo ${TEST_DATABASE_ADMIN_URL%%:*}` prints `postgresql`; never print the full URL |
 | E-03 | Type check (sanity) | `npx tsc --noEmit -p tsconfig.json` | exit 0 |
 | E-04 | Disposable database + server + worker (live path) | `export GEMINI_API_KEY=<from operator shell>; export GEMINI_MODEL=gemini-3.1-pro-preview; HR_LOOP_LOCAL_PORT=3117 npm run job-pool:local -- --fresh` | log lines in order: `[hr-loop:local] admin role condyn_test_runner (least privilege)`, `created disposable database condyn_test_…`, `registered schema: CAREER_FIELD_SCHEMA -> … -> CAREER_DECISION_CONTEXT_DECISION_REVISION_BINDINGS`, `registered job-pool persistence`, `seeded the sealed-producer world (context A full chain + DCDRB, context B empty)`, `starting career worker against condyn_test_… (GEMINI_MODEL …, fresh PROMPT_ENCRYPTION_KEY, in-memory prompt repository)`, `starting next dev --webpack on 127.0.0.1:3117 against condyn_test_…`, `[worker] Worker started. Polling for jobs...`; then the banner `HR DECISION LOOPER · LOCAL MANUAL TEST ENVIRONMENT` with the Context A/B URLs for the HR dock |
@@ -158,7 +158,7 @@ Allowed only against your own disposable database, addressed by NAME from the E-
 
 ## 5. Proof landscape and the recursion gate (SFE::RECURSION_GATE)
 
-### 5.1 What is already proven by automated suites on `d17b042`
+### 5.1 What is already proven by automated suites on `142df0f`
 
 | Area | Suites (run with `npm run test:isolated -- <paths>`) | Proven claims |
 | --- | --- | --- |
@@ -189,7 +189,7 @@ Known non-green by design (classify, do not report as new): the four G1 lifecycl
 
 1. A delta is material when it changes any file under `app/`, `lib/`, `scripts/`, `package.json`, or a contract document cited in §2. Documentation-only deltas are not material.
 2. After a material delta, re-execute the targeted automated set for the touched area (table 5.1 row) plus the agent scenarios tagged with that area's risk classes in §6, then S0. Do not re-run the full tree unless the delta touches `lib/career/db`, `lib/persistence`, `lib/database-isolation`, or `scripts/test-db`.
-3. A full-tree run (`npm run test:isolated` with no path) is a release-level act: run it once per campaign on an idle machine (load < 3) and classify every red with Appendix C before reporting. Expected baseline on `d17b042`: F-JP-5 reds and load timeouts only.
+3. A full-tree run (`npm run test:isolated` with no path) is a release-level act: run it once per campaign on an idle machine (load < 3) and classify every red with Appendix C before reporting. Expected baseline on `142df0f`: F-JP-5 reds and load timeouts only.
 4. Any new red that is not in Appendix C is a defect candidate for the field named in table 5.1 (GELB for backend/contracts, GRÜN for frontend, owner for boundaries) and triggers one repair → re-proof loop, then the gate again. Three loops without convergence escalate to the owner.
 5. Never weaken a test, raise a timeout in a committed file, or edit application code to make a scenario pass. The `--testTimeout=60000` diagnostic is allowed only as a classification tool, never committed.
 
@@ -201,7 +201,7 @@ Scenario format: **Id · Title** · Objective · Preconditions · Procedure · E
 
 ### TS-A Environment and safety
 
-**A-01 · Worktree and tip** · Objective: the agent tests `d17b042`. · Pre: E-01. · Procedure: `git rev-parse HEAD`; `git status --short`. · Expected: `d17b042…`, clean tree. · Evidence: `A-01-tip.txt`. · Risk: R7.
+**A-01 · Worktree and tip** · Objective: the agent tests `142df0f`. · Pre: E-01. · Procedure: `git rev-parse HEAD`; `git status --short`. · Expected: `142df0f…`, clean tree. · Evidence: `A-01-tip.txt`. · Risk: R7.
 
 **A-02 · Database identity fail-closed** · Objective: the application refuses a non-disposable database. · Pre: E-01, E-02. · Procedure: `DATABASE_URL="postgresql://condyn_test_runner:<any-placeholder>@localhost:5432/condyn_other" npx tsx -e 'import("./lib/career/db/client").then(m=>console.log(Object.keys(m)))'` and separately start `HR_LOOP_LOCAL_PORT=3119 npm run hr-loop:local:serve` after editing nothing (it must refuse without a state file). · Expected: the client resolves an unroutable `.invalid` host or the script fails with `ERR_HR_LOOP_LOCAL_STATE_MISSING`; no connection to any protected database. · Evidence: `A-02-fail-closed.txt`. · Risk: R7.
 
@@ -303,7 +303,7 @@ Pre: C-02 succeeded in the same browser session (analysis source `JOB_RESULT`) o
 
 ### TS-E Spatial Job Field (JOB focus)
 
-Pre: D-04 state (pool selected, analysis present). The DOM contract is `JOB_FIELD_FRONTEND.md` §4 plus the additive §8.3, §9 and §10 (stable on `d17b042`). Record video for E-01, E-04, E-05, E-07 (see §8).
+Pre: D-04 state (pool selected, analysis present). The DOM contract is `JOB_FIELD_FRONTEND.md` §4 plus the additive §8.3, §9 and §10 (stable on `142df0f`). Record video for E-01, E-04, E-05, E-07 (see §8).
 
 **E-01 · Enter JOB focus** · click `field-focus-job-btn`. · Expected: `semantic-career-intelligence-field[data-field-focus=JOB]`, `field-focus-job-btn[data-field-focus-active=true]`, the capability planetarium recedes (dimmed, still present: all six `focus-transition-stage-shell-*` rendered), `job-field[data-field-state=AVAILABLE]` with `data-analysis-id`, `data-pool-id` = the upload id, `data-role-count=6`, `data-sweep-state`, `field-focus-job-btn[data-field-focus-active=true][aria-pressed=true]` in the strip (1e5c2e3; before that tip the panel sits at `data-anchor=BOTTOM_LEFT`); no `hr-decision-loop-*` element. · Evidence: `E-01.png`, `E-01.webm` (the transition). R3/R4.
 
@@ -542,7 +542,7 @@ acceptance-evidence/<campaign-id>/
   scores/O-xx-<reviewer>.json   # semiontic score sheets
 ```
 
-`<campaign-id>` = `AT-<yyyymmdd>-<tip7>` (for this plan `AT-20261011-d17b042`). Every screenshot name is prefixed by the scenario id. Evidence is stored outside the repository and referenced from the report; the repository receives nothing from a campaign.
+`<campaign-id>` = `AT-<yyyymmdd>-<tip7>` (for this plan `AT-20261011-142df0f`). Every screenshot name is prefixed by the scenario id. Evidence is stored outside the repository and referenced from the report; the repository receives nothing from a campaign.
 
 ### 8.2 Screenshots
 
@@ -591,7 +591,7 @@ One report per distinct cause, in this shape:
 ```
 ID: AT-<campaign>-<nnn>
 Title: <one sentence, observable>
-Scenario: <id> · Sequence: <S#> · Tip: d17b042 (+ delta hash if any)
+Scenario: <id> · Sequence: <S#> · Tip: 142df0f (+ delta hash if any)
 Classification: Case 1 (derivable from code/contract) | Case 2 (owner decision needed) | Case 3 (unknown cause)
 Responsible field: GELB (backend, contracts, worker, database) | GRÜN (frontend, copy, motion, a11y) | owner (boundaries, HIA)
 Severity: S1 | S2 | S3 | S4
@@ -609,7 +609,7 @@ Rules: never bundle two causes; never report a BOUNDARY-MATCH as a defect; quote
 
 ---
 
-## Appendix A. Stable test ids of the demo surface (247 on `d17b042`)
+## Appendix A. Stable test ids of the demo surface (247 on `142df0f`)
 
 Generated from `app/components/career/demo/*.tsx` and `app/career/demo/*.tsx`. `${…}` marks a parameter. Owning component in parentheses.
 
@@ -863,7 +863,7 @@ Generated from `app/components/career/demo/*.tsx` and `app/career/demo/*.tsx`. `
 - `zoom-level-1-clusters` (OrbitalSubspaceView)
 - `zoom-level-2-evidence` (OrbitalSubspaceView)
 
-## Appendix B. HTTP status reference (KNOWN on `d17b042`)
+## Appendix B. HTTP status reference (KNOWN on `142df0f`)
 
 | Route | Success | Errors |
 | --- | --- | --- |
@@ -971,5 +971,5 @@ The repository's own reference implementations of these walks: `test/career/job-
 ## Appendix G. Plan maintenance
 
 - A new application tip requires: diff of `app/`, `lib/`, `scripts/`, contracts against the tip named in the header; update §2, Appendix A (regenerate), Appendix B/C; bump the version; record the delta in the change log.
-- 1.1.0 bound `0353cd9`; 1.1.2 binds `093b9e6`; 1.2.0 added GRÜN's Pool Field `1e5c2e3`; 1.2.1 binds GELB's integration tip `d17b042`; 1.2.2 adds GRÜN's `627ec07` pending integration (1.2.3 documentation-only).
+- 1.1.0 bound `0353cd9`; 1.1.2 binds `093b9e6`; 1.2.0 added GRÜN's Pool Field `1e5c2e3`; 1.2.1 binds GELB's integration tip `d17b042`; 1.2.2 added GRÜN's `627ec07`; 1.2.3 binds GELB's integration tip `142df0f`.
 - Owner decisions on HIA-1/2/3 or B-ORBIT-COPY change expected outcomes in TS-E, TS-F, TS-O and must be reflected before execution.
