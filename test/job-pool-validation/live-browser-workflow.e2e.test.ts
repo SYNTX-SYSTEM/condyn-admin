@@ -19,6 +19,7 @@ import { join, resolve } from "node:path";
 import { drizzle } from "drizzle-orm/postgres-js";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import { createCapabilityProposalProjectionReader, PostgresCapabilityCoreRepository, PostgresCapabilityProposalProjectionReferenceRepository } from "../../lib/career/capability-core";
+import { decodeAnalysisSources } from "../../lib/career/job-pool/analysis-sources";
 import { registerJobPoolPersistenceSchema } from "../../lib/career/job-pool/persistence-schema";
 import { createJobPoolPostgresWorld, type JobPoolWorld } from "../career/job-pool/fixtures/job-pool-postgres-world";
 import { validationPool } from "./fixtures/pool";
@@ -120,13 +121,17 @@ describe.skipIf(playwrightModule === null || !liveKeyPresent)("PINK JP-LIVE: PDF
     const sweepSeconds = Math.round((Date.now() - sweepStartedAt) / 1000);
     await page.screenshot({ path: resolve(EVIDENCE_DIR, "pink-02-live-sweep-completed.png") });
 
+    // The SYNTX field (434ef49): the strip toggle opens the one field; the analysis of this session is its source.
     await page.getByTestId("job-pool-panel-toggle").click();
-    const panel = page.getByTestId("job-pool-panel");
-    await panel.waitFor({ timeout: 30_000 });
-    await page.locator('[data-testid="job-pool-panel"][data-analysis-source="JOB_RESULT"]').waitFor({ timeout: 30_000 });
-    const analysisId = (await panel.getAttribute("data-analysis-id")) ?? "";
+    const field = page.getByTestId("syntx-field");
+    await field.waitFor({ timeout: 30_000 });
+    await page.locator('[data-testid="syntx-field"][data-analysis-source="JOB_RESULT"]').waitFor({ timeout: 30_000 });
+    const analysisId = (await field.getAttribute("data-analysis-id")) ?? "";
     expect(analysisId).toMatch(/^ANL_/);
 
+    // Intake is an edge aperture opened on explicit action; the upload is persisted, listed and not selected; selection is explicit.
+    await page.getByTestId("job-pool-intake-toggle").click();
+    await page.getByTestId("job-pool-upload").waitFor({ state: "visible", timeout: 10_000 });
     const poolPath = join(mkdtempSync(join(tmpdir(), "pink-live-pool-")), "pink-validation-pool.json");
     writeFileSync(poolPath, JSON.stringify(validationPool, null, 2));
     await page.getByTestId("job-pool-file-input").setInputFiles(poolPath);
@@ -136,12 +141,14 @@ describe.skipIf(playwrightModule === null || !liveKeyPresent)("PINK JP-LIVE: PDF
     const result = page.locator('[data-testid="job-pool-upload-result"][data-upload-outcome="CREATED"]');
     await result.waitFor({ timeout: 60_000 });
     const uploadId = (await result.getAttribute("data-upload-id")) ?? "";
+    expect(await field.getAttribute("data-field-state")).toBe("NO_POOL");
     await page.getByTestId(`job-pool-select-${uploadId}`).click();
-    await page.locator('[data-testid="job-pool-matches"][data-matches-state="AVAILABLE"]').waitFor({ timeout: 60_000 });
+    await page.locator('[data-testid="syntx-field"][data-field-state="AVAILABLE"][data-sources-state="AVAILABLE"]').waitFor({ timeout: 90_000 });
 
     // Oracle: the same server's bodies and the database behind it.
     const analysisResponse = await fetch(`${base()}/api/career/analyses/${analysisId}`);
     expect(analysisResponse.status).toBe(200);
+    const analysisSources = decodeAnalysisSources(analysisId, await analysisResponse.json());
     const matches = await (await fetch(`${base()}/api/career/job-pools/${uploadId}/matches?analysisId=${analysisId}`)).json();
     expect(matches.capabilitySweep.state).toBe("AVAILABLE");
     expect(matches.capabilitySweep.scored).toBe(false);
@@ -153,38 +160,101 @@ describe.skipIf(playwrightModule === null || !liveKeyPresent)("PINK JP-LIVE: PDF
     const projection = await createCapabilityProposalProjectionReader({ references: new PostgresCapabilityProposalProjectionReferenceRepository(database as never), capabilityRepository: new PostgresCapabilityCoreRepository(database as never) }).read(analysisId);
     expect(projection?.capabilities.length).toBe(matches.capabilitySweep.proposalCount);
 
+    // The boundary aperture names the sweep state unscored (D-06); it is folded until asked for.
+    expect(await page.getByTestId("job-pool-matches").isVisible()).toBe(false);
+    await page.getByTestId("syntx-boundary-toggle").click();
+    await page.getByTestId("job-pool-matches").waitFor({ state: "visible", timeout: 10_000 });
     const sweep = page.getByTestId("job-pool-capability-sweep");
     expect(await sweep.getAttribute("data-sweep-state")).toBe("AVAILABLE");
     expect(await sweep.getAttribute("data-proposal-count")).toBe(String(matches.capabilitySweep.proposalCount));
     expect(await sweep.getAttribute("data-scored")).toBe("false");
-    let coveredLines = 0;
+    await page.getByTestId("syntx-boundary-toggle").click();
+    await page.getByTestId("job-pool-matches").waitFor({ state: "hidden", timeout: 10_000 });
+
+    /** A trace is clicked on its visible line (absolute viewport coordinates; the camera's CSS transform is not in getScreenCTM). */
+    const alongTrace = (locator: any, fraction: number) => locator.evaluate((element: Element, fraction: number) => {
+      const line = element.querySelector("line:not([data-sx-hit])") as SVGLineElement;
+      const rect = line.getBoundingClientRect();
+      const dx = line.x2.baseVal.value - line.x1.baseVal.value;
+      const dy = line.y2.baseVal.value - line.y1.baseVal.value;
+      const a = { x: dx >= 0 ? rect.left : rect.right, y: dy >= 0 ? rect.top : rect.bottom };
+      const b = { x: dx >= 0 ? rect.right : rect.left, y: dy >= 0 ? rect.bottom : rect.top };
+      return { x: a.x + (b.x - a.x) * fraction, y: a.y + (b.y - a.y) * fraction };
+    }, fraction);
+    const settled = async () => {
+      const deadline = Date.now() + 10_000;
+      while (Date.now() < deadline) {
+        const running = await field.evaluate((element: Element) => element.getAnimations({ subtree: true }).filter((animation: any) => animation.playState === "running" && !String(animation.animationName ?? "").startsWith("sxSuspend")).length);
+        if (running === 0) break;
+        await page.waitForTimeout(120);
+      }
+      await page.waitForTimeout(200);
+    };
+
+    // Sweep coverage is a dotted trace per delivered proposal quote (covers_unscored / trace_dotted, R5): PCAP_* as proof, EVD_* only on the exact projection join, never scored.
+    let renderedDottedTraces = 0;
+    let inspectedSweep = false;
     for (const role of matches.roleMatches as any[]) {
-      const row = page.getByTestId(`job-pool-role-${role.poolRoleId}`);
-      expect(await row.getAttribute("data-resonance-score")).toBe(String(role.resonanceScore));
-      expect(await page.getByTestId(`job-pool-role-${role.poolRoleId}-sweep-only`).getAttribute("data-count")).toBe(String(role.sweepOnlyCoverageCount));
-      for (const [kind, items] of [["matched", role.matched], ["weak", role.weakEvidence], ["missing", role.missing]] as const) {
-        for (const item of items as any[]) {
-          const line = page.getByTestId(`job-pool-role-${role.poolRoleId}-${kind}-${item.poolRequirementId}-sweep`);
-          if (item.sweepProposal === null) { expect(await line.count()).toBe(0); continue; }
-          coveredLines += 1;
-          expect(await line.getAttribute("data-sweep-basis")).toBe(item.sweepProposal.matchBasis);
-          expect(await line.getAttribute("data-proposal-id")).toBe(item.sweepProposal.capabilityProposalId);
-          expect(await line.getAttribute("data-scored")).toBe("false");
-          expect((await line.textContent()) ?? "").toContain(item.sweepProposal.name);
-          expect(item.sweepProposal.scored).toBe(false);
-          expect(item.sweepProposal.evidenceState).toBe("SOURCE_MATCH_VERIFIED");
-          expect(item.sweepProposal.authorityState).toBe("NONE");
+      const covered = [...role.matched, ...role.weakEvidence, ...role.missing].filter((item: any) => item.sweepProposal !== null);
+      if (covered.length === 0) continue;
+      await page.getByTestId(`syntx-role-${role.poolRoleId}`).click();
+      await page.locator(`[data-testid="syntx-field"][data-observation-kind="ROLE"][data-observation-id="${role.poolRoleId}"]`).waitFor({ timeout: 15_000 });
+      expect(await page.locator('[data-testid^="syntx-requirement-"][data-support="SWEEP_ONLY"]').count()).toBe(role.sweepOnlyCoverageCount);
+      expect(await page.locator('[data-sign-manifestation="trace_dotted"]').count()).toBe(covered.reduce((sum: number, item: any) => sum + item.sweepProposal.evidence.length, 0));
+      for (const item of covered) {
+        expect(item.sweepProposal.scored).toBe(false);
+        expect(item.sweepProposal.evidenceState).toBe("SOURCE_MATCH_VERIFIED");
+        expect(item.sweepProposal.authorityState).toBe("NONE");
+        for (const [index, quote] of (item.sweepProposal.evidence as any[]).entries()) {
+          const trace = page.getByTestId(`syntx-trace-trace:${item.poolRequirementId}:covers_unscored:${quote.docId}:${index}`);
+          expect(await trace.count()).toBe(1);
+          renderedDottedTraces += 1;
+          expect(await trace.getAttribute("data-sign-source")).toBe("gemini_sweep");
+          expect(await trace.getAttribute("data-sign-relation")).toBe("covers_unscored");
+          expect(await trace.getAttribute("data-sign-manifestation")).toBe("trace_dotted");
+          expect(await trace.getAttribute("data-proof-capability-id")).toBe(item.sweepProposal.capabilityProposalId);
+          expect(await trace.getAttribute("data-proof-doc-id")).toBe(quote.docId);
+          expect(await trace.getAttribute("data-proof-analysis-id")).toBe(analysisId);
+          const joined = analysisSources.proposalEvidence.find((candidate) => candidate.capabilityProposalId === item.sweepProposal.capabilityProposalId && candidate.docId === quote.docId && candidate.quote === quote.quote) ?? null;
+          expect(await trace.getAttribute("data-proof-evidence-id")).toBe(joined === null ? null : joined.evidenceId);
         }
       }
+      if (!inspectedSweep) {
+        const item = covered[0];
+        const quote = item.sweepProposal.evidence[0];
+        const trace = page.getByTestId(`syntx-trace-trace:${item.poolRequirementId}:covers_unscored:${quote.docId}:0`);
+        await settled();
+        const point = await alongTrace(trace, 0.72);
+        await page.mouse.click(point.x, point.y);
+        await page.locator('[data-testid="syntx-field"][data-aperture-open="true"]').waitFor({ timeout: 10_000 });
+        const aperture = page.getByTestId("syntx-aperture");
+        expect(await aperture.getAttribute("data-sign-relation")).toBe("covers_unscored");
+        expect(await aperture.getAttribute("data-aperture-kind")).toBe("trace");
+        expect(await page.getByTestId("syntx-aperture-quote").textContent()).toContain(quote.quote);
+        expect(await page.getByTestId("syntx-aperture-sweep-status").getAttribute("data-scored")).toBe("false");
+        expect(((await page.getByTestId("syntx-aperture-sweep-status").textContent()) ?? "").toLowerCase()).toContain("unscored");
+        expect(await aperture.textContent()).toContain("A capability sweep proposal covers this requirement with a source-verified quote; it is not scored and not canonically evaluated.");
+        expect(await aperture.textContent()).toContain(item.sweepProposal.name);
+        expect(await page.getByTestId("syntx-aperture-contribution").count()).toBe(0);
+        expect((await aperture.textContent()) ?? "").not.toMatch(/\d+(\.\d+)?\s?%/);
+        await settled();
+        await page.screenshot({ path: resolve(EVIDENCE_DIR, "pink-03-live-sweep-aperture.png") });
+        await page.keyboard.press("Escape");
+        await page.locator('[data-testid="syntx-field"][data-aperture-open="false"]').waitFor({ timeout: 10_000 });
+        inspectedSweep = true;
+      }
+      await page.getByTestId("syntx-path-FIELD").click();
+      await page.locator('[data-testid="syntx-field"][data-observation-kind="FIELD"]').waitFor({ timeout: 15_000 });
     }
+    expect(renderedDottedTraces).toBeGreaterThan(0);
     expect(await page.locator('[data-testid^="hr-decision-loop"]').count()).toBe(0);
-    await page.screenshot({ path: resolve(EVIDENCE_DIR, "pink-03-live-sweep-coverage-in-panel.png") });
+    await page.screenshot({ path: resolve(EVIDENCE_DIR, "pink-03-live-sweep-coverage-in-field.png") });
     expect(pageErrors).toEqual([]);
 
     writeFileSync(resolve(EVIDENCE_DIR, "pink-live-run.json"), `${JSON.stringify({
-      recordedAt: new Date().toISOString(), tip: "b4091f5", database: world.databaseName, geminiModel: process.env.GEMINI_MODEL ?? "provider default cascade",
+      recordedAt: new Date().toISOString(), tip: "434ef49", database: world.databaseName, geminiModel: process.env.GEMINI_MODEL ?? "provider default cascade",
       analysisId, jobPoolUploadId: uploadId, sweepSeconds, totalSeconds: Math.round((Date.now() - startedAt) / 1000),
-      capabilitySweep: matches.capabilitySweep, candidateCapabilityCount: matches.candidateCapabilityCount, renderedCoveredLines: coveredLines,
+      capabilitySweep: matches.capabilitySweep, candidateCapabilityCount: matches.candidateCapabilityCount, renderedDottedTraces,
       roles: (matches.roleMatches as any[]).map((role) => ({ poolRoleId: role.poolRoleId, resonanceScore: role.resonanceScore, matched: role.matched.length, weak: role.weakEvidence.length, missing: role.missing.length, sweepOnlyCoverageCount: role.sweepOnlyCoverageCount })),
       workerFailedAttempts: (workerOutput.match(/failed attempt/gi) ?? []).length
     }, null, 2)}\n`);

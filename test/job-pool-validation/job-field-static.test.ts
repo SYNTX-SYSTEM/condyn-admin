@@ -1,7 +1,14 @@
 /**
- * PINK static proofs for the owner's Job Field (GRÜN, frontend/job-field) under the semantic governance rules
- * (JOB_POOL_CONNECTION.md §12): SG-1 no identity inference across sources, SG-4 no canonical relation or decision.
- * File set is path-pattern based (JobField | job-field), so it binds as soon as the files exist and skips before.
+ * PINK static proofs for the owner's SYNTX Job Field (GRÜN, frontend/job-field, 434ef49) under the semantic governance
+ * rules (JOB_POOL_CONNECTION.md §12): SG-1 no identity inference across sources, SG-4 no canonical relation or decision.
+ * File set is path-pattern based (SyntxField | syntx-field | job-field | analysis-sources | useJobPoolSources), so it
+ * binds as soon as the files exist and skips before.
+ *
+ * B-SYNTX-JOIN (GRÜN §13.5): `lib/career/job-pool/analysis-sources.ts` is the one permitted second read of the analysis
+ * body (binding §1, §2.3, R12). It may read `documents[].identity.name` (source carriers) and the evidence of
+ * `capabilities[]` and of `capabilityProposalProjection`; it must never decode the inferred organizations, roles, the
+ * legacy `matching` or the `recommendations`. SG-1 is therefore split: the generic token rule for every field file and
+ * an allow-list rule for the sources module.
  */
 import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
 import { join, relative } from "node:path";
@@ -19,7 +26,10 @@ function sources(dir: string): string[] {
   }
   return out;
 }
-const jobFieldFiles = [...sources(join(root, "app")), ...sources(join(root, "lib"))].filter((file) => /JobField|job-field/.test(relative(root, file)));
+const SOURCES_MODULE = "lib/career/job-pool/analysis-sources.ts";
+const allFieldFiles = [...sources(join(root, "app")), ...sources(join(root, "lib"))].filter((file) => /SyntxField|syntx-field|JobField|job-field|analysis-sources|useJobPoolSources/.test(relative(root, file)));
+const jobFieldFiles = allFieldFiles.filter((file) => relative(root, file) !== SOURCES_MODULE);
+const sourcesModule = allFieldFiles.find((file) => relative(root, file) === SOURCES_MODULE) ?? null;
 const importsOf = (text: string) => [...text.matchAll(/from\s+["']([^"']+)["']/g)].map((m) => m[1]);
 
 describe("Job Field semantic governance (static)", () => {
@@ -34,17 +44,34 @@ describe("Job Field semantic governance (static)", () => {
     expect(offenders).toEqual([]);
   });
 
-  it.skipIf(jobFieldFiles.length === 0)("SG-4: Job Field files import no relation producer, persistence, decision field or HR loop", () => {
+  it.skipIf(sourcesModule === null)("SG-1 / B-SYNTX-JOIN: the analysis-sources module reads documents, capability evidence and the proposal projection only, never the inferred organizations, roles, matching or recommendations", () => {
+    const text = readFileSync(sourcesModule as string, "utf8");
+    const forbidden = ["organizations", "roles", "matching", "recommendations", "role_matches", "company_matches", "organizationName", "domains", "opportunities", "strategies", "organization_classes"];
+    // Tokens are checked as property reads of the decoded body (`.x` / `["x"]` / `x:`), not inside comments.
+    const code = text.replace(/\/\*[\s\S]*?\*\//g, "").replace(/\/\/.*$/gm, "");
+    const offenders = forbidden.filter((token) => new RegExp(`(\\.${token}\\b|\\[\\s*["']${token}["']\\s*\\]|\\b${token}\\s*:)`).test(code));
+    expect(offenders).toEqual([]);
+    for (const required of ["inner.documents", "identity", "entity.evidence", "capabilityProposalProjection", "evidenceId", "exactQuote", "sourceDocumentId"]) expect(code).toContain(required);
+    expect(code).not.toMatch(/toLowerCase|includes\(|indexOf\(|similarity|fuzzy|levenshtein/);
+  });
+
+  it.skipIf(allFieldFiles.length === 0)("SG-4: Job Field files import no relation producer, persistence, decision field or HR loop", () => {
     const forbidden = /relation|target\/|target-adapters|decision-core|decision-runtime|decision-adapters|hr-decision|human-decision|capability-core\/(repository|verification|convergence|discovery)|db\/client|persistence/;
-    const offenders = jobFieldFiles.flatMap((file) => importsOf(readFileSync(file, "utf8")).filter((spec) => forbidden.test(spec)).map((spec) => `${relative(root, file)} -> ${spec}`));
+    const offenders = allFieldFiles.flatMap((file) => importsOf(readFileSync(file, "utf8")).filter((spec) => forbidden.test(spec)).map((spec) => `${relative(root, file)} -> ${spec}`));
     expect(offenders).toEqual([]);
   });
 
-  it.skipIf(jobFieldFiles.length === 0)("SG-5/SG-6 vocabulary: the Job Field names its resonance as presentation and never a canonical relation id prefix", () => {
+  it.skipIf(allFieldFiles.length === 0)("SG-5/SG-6 vocabulary: the Job Field names its resonance as presentation and never a canonical relation id prefix", () => {
     // Copy lives in the SIL language block; the Job Field sources must carry no canonical relation id prefix.
     const copy = readFileSync(join(root, "lib/career/view-model/sil-language.ts"), "utf8");
     expect(copy).toMatch(/POOL RESONANCE \(PRESENTATION\)/);
-    const text = jobFieldFiles.map((file) => readFileSync(file, "utf8")).join("\n");
+    const text = allFieldFiles.map((file) => readFileSync(file, "utf8")).join("\n");
     expect(text).not.toMatch(/\b(RRL|TSN|EIS|RCP)_[A-Z0-9]/);
+  });
+
+  it.skipIf(allFieldFiles.length === 0)("R1 / B-SYNTX-CLOSURE and binding §3: the field sources name no closure manifestation and no unsupported sign", () => {
+    const text = allFieldFiles.map((file) => readFileSync(file, "utf8").replace(/\/\*[\s\S]*?\*\//g, "").replace(/\/\/.*$/gm, "")).join("\n");
+    expect(text).not.toMatch(/"(closed|closure|sealed|verified_seal|verified_capability|recommendation|fit)"/);
+    expect(text).not.toMatch(/capabilityGaps|nextActions|aggregateScore\s*[}%]/);
   });
 });
