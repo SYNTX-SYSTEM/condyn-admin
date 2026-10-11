@@ -44,7 +44,7 @@ Expected log, in order:
 ```
 
 Without `GEMINI_API_KEY` the script stops before anything starts: `ERR_HR_LOOP_LOCAL_GEMINI_API_KEY_MISSING`.
-`up --fresh` forces a new database; plain `up` reuses the one in `.hr-loop-local/state.json` when it still verifies.
+`up --fresh` forces a new database; plain `up` reuses the one in `.hr-loop-local/state.json` when it still verifies. The state file holds the database URL with the runner password (owner-only, 600 in a 700 directory): never print, attach or quote it; evidence names the database only.
 
 URL: `http://127.0.0.1:3017/career/demo` — credential: none. The uploader actor id in the panel is self-declared and
 not authenticated (B-JP-ACTOR); default `JOB_POOL_UPLOADER_LOCAL`.
