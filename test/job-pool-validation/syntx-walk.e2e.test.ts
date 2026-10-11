@@ -1,7 +1,7 @@
 /**
  * PINK Q-12: the running browser walk of the SYNTX semiontic field (owner mandate "SFE — SYNTX SEMIONTIC FIELD
  * RECONSTRUCTION", 2026-10-11; spec §5 states A–E, GELB binding table §2/§3 and rulings R1–R14; GRÜN's DOM contract
- * `JOB_FIELD_FRONTEND.md` §13 = PINK's BR-1 … BR-5). Acceptance plan `docs/acceptance/CONDYN_SYSTEM_ACCEPTANCE_TEST_PLAN_v1.5.md`
+ * `JOB_FIELD_FRONTEND.md` §13 = PINK's BR-1 … BR-5). Acceptance plan `docs/acceptance/CONDYN_SYSTEM_ACCEPTANCE_TEST_PLAN_v1.6.md`
  * suite TS-Q: this file binds Q-01 … Q-11 at their observation points and is the gate for the owner environment.
  *
  * Oracle: the GET bodies of the same server (upload view, matches, analysis) saved as Q-00-*.json before any browser
@@ -39,7 +39,7 @@ function resolvePlaywright(): string | null {
   try { return createRequire(resolve(process.cwd(), "package.json")).resolve("playwright"); } catch { return null; }
 }
 const playwrightModule = resolvePlaywright();
-const EVIDENCE_DIR = resolve(process.cwd(), "docs/architecture/decision-fields/evidence/syntx-walk-8cb4a50");
+const EVIDENCE_DIR = resolve(process.cwd(), "docs/architecture/decision-fields/evidence/syntx-walk-fa14d8e");
 const ANALYSIS_ID = "ANL_PINK_SYNTX_WALK";
 const GRAMMAR = "SYNTX_FIELD_V1";
 const ROLE_ID = "role_pink_alpha_architect";
@@ -101,7 +101,7 @@ describe.skipIf(playwrightModule === null)("PINK Q-12: SYNTX field walk FIELD �
   let analysisBody: any;
   let roleMatch: any;
   let mappedRole: any;
-  const report: Report = { tip: "8cb4a50", recordedAt: new Date().toISOString(), database: "", analysisId: ANALYSIS_ID, jobPoolUploadId: "", scenarios: {} };
+  const report: Report = { tip: "fa14d8e", recordedAt: new Date().toISOString(), database: "", analysisId: ANALYSIS_ID, jobPoolUploadId: "", scenarios: {} };
   const pass = (id: string, counts?: Record<string, number>, note?: string) => { report.scenarios[id] = { verdict: "PASS", ...(counts ? { counts } : {}), ...(note ? { note } : {}) }; };
   const boundary = (id: string, note: string) => { report.scenarios[id] = { verdict: "BOUNDARY-MATCH", note }; };
   const liveSigns: Record<string, SignRecord[]> = {};
@@ -416,7 +416,7 @@ describe.skipIf(playwrightModule === null)("PINK Q-12: SYNTX field walk FIELD �
     expect(await page.getByTestId("syntx-path-ORGANIZATION").getAttribute("data-current")).toBe("true");
     expect(await page.getByTestId("syntx-return-btn").count()).toBe(1);
     expect(await page.getByTestId("syntx-summary").getAttribute("data-summary-for")).toBe(ORG_ID);
-    expect(await summaryText(page)).toContain(`Organization ${validationPool.organizations.find((organization) => organization.id === ORG_ID)!.name} contains 1 roles: ${validationPool.roles.find((role) => role.id === ROLE_ID)!.title}.`);
+    expect(await summaryText(page)).toContain(`Organization ${validationPool.organizations.find((organization) => organization.id === ORG_ID)!.name} contains 1 role: ${validationPool.roles.find((role) => role.id === ROLE_ID)!.title}.`);
     expect(await stageText(page)).not.toMatch(PERCENT);
     expect(await page.locator('[data-sign-relation="contains"][data-sign-manifestation="carrier"][data-proof-role-id]').count()).toBe(view.canonicalMapping.roles.length);
     await settled(page);
@@ -623,7 +623,7 @@ describe.skipIf(playwrightModule === null)("PINK Q-12: SYNTX field walk FIELD �
     expect(matches.presentation.canonicalEvaluation).toBe(false);
     expect(matches.presentation.decision).toBe(false);
     expect(await summaryText(page)).toContain("An inspection aperture is open.");
-    expect(await summaryText(page)).toContain(`${expectedTracesOf(supportedId)} evidence traces from 1 sources`);
+    expect(await summaryText(page)).toContain(`${expectedTracesOf(supportedId)} evidence trace${expectedTracesOf(supportedId) === 1 ? "" : "s"} from 1 source.`);
     await settled(page);
     await page.screenshot({ path: resolve(EVIDENCE_DIR, "Q-04-matched.png") });
     await auditSigns(page, "Q-04-matched");

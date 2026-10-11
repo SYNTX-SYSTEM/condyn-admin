@@ -142,7 +142,7 @@ for (const analysisId of analyses) {
     check(`[${tag}] ${label} no proof id as text`, !PROOF_ID_TEXT.test(text));
     check(`[${tag}] ${label} no RRL/TSN/EIS/RCP`, !/\b(RRL|TSN|EIS|RCP)_[A-Z0-9]/.test(await root(page).evaluate((r) => r.innerHTML)));
     const summary = (await page.getByTestId("syntx-summary").textContent()) ?? "";
-    check(`[${tag}] ${label} summary (aria-live, R9/BR-4) agrees in number (O-SX-3)`, !/\b1 (sources|traces|requirements|roles|organizations|Quellen|Spuren|Anforderungen|Rollen|Organisationen)\b/.test(summary), summary.slice(0, 120));
+    check(`[${tag}] ${label} summary (aria-live, R9/BR-4) agrees in number (O-SX-3)`, !/\b1 (sources|traces|requirements|roles|organizations|Quellen|Evidenzspuren|Anforderungen|Rollen|Organisationen)\b/.test(summary), summary.slice(0, 120));
     writeFileSync(resolve(OUT, `${tag}-${label}-signs.json`), JSON.stringify(signs, null, 2) + "\n");
     return signs;
   };

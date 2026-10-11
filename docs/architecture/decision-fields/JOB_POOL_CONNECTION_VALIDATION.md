@@ -756,6 +756,34 @@ checks; the missing-SUPPORTED case is a data skip. Plan 1.5.2 (header only; appl
 the owner environment `1bd26a7`; the repairs under "SFE — SYNTX FINAL PERCEPTUAL CLOSURE" are validated by PINK on
 disposable environments; port 3017 is not modified again without a separate owner authorization.
 
+### 3.20 Perceptual closure `fa14d8e` validated; integration `1ca3ca9` (2026-10-12)
+
+GRÜN's `fa14d8e` (parent `8cb4a50`; `SyntxField.tsx`, `syntx-field-view-model.ts`, `sil-language.ts`, its own tests and
+`JOB_FIELD_FRONTEND.md` §13.5 with B-SYNTX-BOW, B-SYNTX-REACH, B-SYNTX-NUMBER): traces become `<path>` elements (hit path
+first, visible path second, `data-trace-bow` on the group) with bows that co-terminal traces never share and that bend
+around the role disc and the labels; source carriers sit beside the requirements that reach them and the REQUIREMENT
+camera shifts so every reached carrier is inside the stage; the summary copy gains `nouns` with one/other forms. Sign
+ids, enums, proofs and support categories unchanged; Appendix A regenerated identical (215). GELB integrated it as
+`1ca3ca9` (= `b95bed1` + `fa14d8e`; governance 10/10, 15 files / 97 green, tsc 0); `app`, `lib`, `scripts` of `1ca3ca9`
+are identical to PINK's merge `1e2986f`.
+
+PINK on `fa14d8e`: tsc 0; static / governance / view-model / SSR batch 4 files / 36 green; the e2e walk 3/3 on a
+disposable database `condyn_test_33f1937be22cb6d3` (evidence `evidence/syntx-walk-fa14d8e/`; both walks now query
+`path:not([data-sx-hit]), line:not([data-sx-hit])` and map path points through `getPointAtLength` and the screen CTM —
+the CSS camera transform is carried by the CTM in headless Chromium: every trace click landed on an owned point; the
+literal summary expectations read "contains 1 role" and "1 evidence trace from 1 source"). Read-only walk on GELB's
+owner-shaped disposable clone `127.0.0.1:3027` @ `1ca3ca9` (a read-only `pg_dump` clone of the owner database into a
+marked disposable database `condyn_test_1817582a536300a1`; the owner database's content hash unchanged, `:3017`
+untouched on `1bd26a7`): **132/132 checks, 0 non-GET** (evidence `evidence/syntx-readonly-3027-1ca3ca9/`) — the matched
+trace of `req_001` owns a pointer point beside its dotted twin and opens the matched aperture (F-SX-2 closed), the
+sweep trace owns its own point, the inspected trace's carrier is inside the viewport (O-SX-4 closed), every summary
+agrees in number (O-SX-3 closed), the `_831` role without a supported requirement is a data skip as before. O-SX-2 is
+closed on GELB's 36-observation-point check (0 label crossings) and PINK's visual judgement. B-SYNTX-PAIR: the pair's
+pointer ownership is provable on owner-shaped data only (no sweep in PINK's or GRÜN's fixtures). Plan 1.6.0 binds
+`1ca3ca9`; the owner environment stays on `1bd26a7` under plan 1.5.2 until the owner authorizes the move, after which
+PINK repeats the GET-only walk there. PINK's own `3117` dry-run environment of this round never started (role env not
+exported in that shell) — no own server, no own database.
+
 ## 4. Boundaries and findings for coordination
 
 - F-JP-1 (closed in `b782793`): `JOB_POOL_CONNECTION.md` §4 followed the per-role `JOB_POOL_JSON_ROLE` design;
