@@ -1,9 +1,9 @@
 {
-  "plan": "docs/acceptance/CONDYN_SYSTEM_ACCEPTANCE_TEST_PLAN_v1.0.md",
-  "version": "1.0.2",
-  "tip": "cccd647",
+  "plan": "docs/acceptance/CONDYN_SYSTEM_ACCEPTANCE_TEST_PLAN_v1.1.md",
+  "version": "1.1.0",
+  "tip": "0353cd9",
   "generated": "2026-10-11",
-  "scenarioCount": 127,
+  "scenarioCount": 131,
   "scenarios": [
     {
       "id": "A-01",
@@ -750,6 +750,23 @@
       ]
     },
     {
+      "id": "E-11",
+      "suite": "TS-E Spatial Job Field",
+      "title": "Progressive disclosure (ce76bc7)",
+      "sequences": [
+        "S2",
+        "S3"
+      ],
+      "risk": [
+        "R2",
+        "R4"
+      ],
+      "video": true,
+      "evidence": [
+        "E-11.webm"
+      ]
+    },
+    {
       "id": "F-01",
       "suite": "TS-F PENDING relations",
       "title": "Pending is not missing capability",
@@ -1143,6 +1160,22 @@
       ]
     },
     {
+      "id": "I-08",
+      "suite": "TS-I Interaction surfaces",
+      "title": "OBSERVE items from the code survey (ce76bc7)",
+      "sequences": [
+        "S5"
+      ],
+      "risk": [
+        "R2",
+        "R3"
+      ],
+      "video": false,
+      "evidence": [
+        "I-08-*.png"
+      ]
+    },
+    {
       "id": "J-01",
       "suite": "TS-J Visual coherence and motion",
       "title": "Idle planetarium",
@@ -1256,14 +1289,33 @@
     {
       "id": "J-09",
       "suite": "TS-J Visual coherence and motion",
-      "title": "In-flight motion layer (GR\u00dcN, not on `cccd647`)",
-      "sequences": [],
+      "title": "Job Field motion grammar (ce76bc7)",
+      "sequences": [
+        "S3"
+      ],
       "risk": [
         "R4"
       ],
       "video": true,
       "evidence": [
-        "J-09-*.webm"
+        "J-09-grammar.webm",
+        "J-09-hover.webm",
+        "J-09-computed.txt"
+      ]
+    },
+    {
+      "id": "J-10",
+      "suite": "TS-J Visual coherence and motion",
+      "title": "Planetarium motion inventory (pre-existing, record as-is)",
+      "sequences": [
+        "S3"
+      ],
+      "risk": [
+        "R4"
+      ],
+      "video": true,
+      "evidence": [
+        "J-10-*.webm"
       ]
     },
     {
@@ -1406,6 +1458,21 @@
       "video": false,
       "evidence": [
         "L-06.txt"
+      ]
+    },
+    {
+      "id": "L-07",
+      "suite": "TS-L Cognitive accessibility",
+      "title": "Accessibility gap register (pre-existing, report not score)",
+      "sequences": [
+        "S5"
+      ],
+      "risk": [
+        "R8"
+      ],
+      "video": false,
+      "evidence": [
+        "L-07-register.txt"
       ]
     },
     {
