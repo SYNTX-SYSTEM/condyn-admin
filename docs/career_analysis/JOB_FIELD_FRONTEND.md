@@ -230,7 +230,7 @@ governance and authority boundary and every `job-pool-*` test id and data attrib
 
 | State | URL | Opened by | What the field is |
 | --- | --- | --- | --- |
-| CAPABILITY (ground) | no `focus` | default; `field-focus-capability-btn`; the in-field exits | the capability planetarium, orbits 01–06 |
+| CAPABILITY (ground) | no `focus`, or `focus=CAPABILITY` (written on every exit while an exact upload is selected, so a reload keeps the ground state; PINK E-07) | default; `field-focus-capability-btn`; the in-field exits | the capability planetarium, orbits 01–06 |
 | POOL | `focus=POOL`; also an exact `jobPoolUploadId` without a `focus` | `job-pool-panel-toggle` (strip) | the Job Pool Field: persisted uploads on a ring, the explicitly selected upload at the core, its organisations and roles around it, intake and the delivered matching as readings |
 | JOB | `focus=JOB` | `field-focus-job-btn` (strip); `job-pool-enter-job-field` from the Pool Field | the Job Field of §1–§9 |
 
@@ -282,4 +282,9 @@ assertion); the panel's own fixed toggle (still rendered by the standalone `JobP
 | 2026-10-11 | same | frames reviewed: upload slot 1 sat on the ring label at 12 o'clock → half-slot offset; the strip read "◉ JOB · ← CAPABILITY FIELD" → three constant state names with active glow and a CAPABILITY ground-state switch; frame 01 captured mid-entrance → 900 ms settle; node names clamped to two lines; exit link on its own line | rerun below |
 | 2026-10-11 | same | rerun after the corrections (16 files; my e2e; PINK browser-walk + job-field.e2e) | 102 passed · 10/10 · 3/3 |
 | 2026-10-11 | same | frames reviewed again: an upload node clipped an organisation label → upload ring 345, nodes 88 px; my e2e rerun for the evidence frames | 10/10 (see commit) |
+| 2026-10-11 | `1e5c2e3` + fix | PINK E-07: after an exit the URL kept `jobPoolUploadId` without `focus`, so a reload reopened the Pool Field. Repair: exits write `focus=CAPABILITY` while an upload is selected; page.tsx accepts it; proven by reload in the e2e and by SSR | panel SSR 9/9, job-field SSR 7/7, e2e 10/10, tsc 0 |
+
+Boundary B-POOL-INITIAL-FOCUS: an exact `jobPoolUploadId` without any `focus` opens the Pool Field (an exact selection
+is a field state); an explicit `focus` (JOB, POOL or CAPABILITY) always wins. Exits write `focus=CAPABILITY` whenever an
+upload is selected, so an explicit exit survives a reload (PINK's E-07 observation, 2026-10-11).
 

@@ -28,7 +28,7 @@ export default async function CareerIntelligenceDemoPage({ searchParams }: { sea
       decisionContextRevisionId={decisionContextRevisionId}
       analysisId={analysisId}
       jobPoolUploadId={jobPoolUploadId}
-      fieldFocus={focus === "JOB" ? "JOB" : focus === "POOL" ? "POOL" : undefined}
+      fieldFocus={focus === "JOB" ? "JOB" : focus === "POOL" ? "POOL" : focus === "CAPABILITY" ? "CAPABILITY" : undefined}
       jobRoleId={jobRoleId}
     />
   );
