@@ -308,8 +308,28 @@ describe.skipIf(playwrightModule === null)("Job Pool workflow in a real browser"
     expect(await panel.getAttribute("data-focus-level")).toBe("ROLE");
     expect(await page.getByTestId(`job-pool-role-lens-${T.roleId}`).isVisible()).toBe(true);
     expect(await page.locator('[data-testid^="job-pool-structure-requirement-"]').count()).toBe(world.samplePool.requirements.filter(requirement => requirement.role_id === T.roleId).length);
+    // F-LF-2 (PINK): the core lens recedes while a structure role is focused and returns after ALL ROLES; the reveal
+    // animation must not pin its opacity (fill-mode backwards). Polled: the dim is a .4s transition, the read is the settled state.
+    const coreLensState = () => page.getByTestId("job-pool-selected").evaluate(element => ({
+      computedOpacity: Number(getComputedStyle(element).opacity),
+      inlineOpacity: (element as HTMLElement).style.opacity,
+      pointerEvents: getComputedStyle(element).pointerEvents,
+      animations: element.getAnimations().map(animation => ({ name: (animation as CSSAnimation).animationName, state: animation.playState })),
+      focusLevel: element.closest('[data-testid="job-pool-panel"]')?.getAttribute("data-focus-level") ?? null,
+      structureRole: element.closest('[data-testid="job-pool-panel"]')?.getAttribute("data-structure-role") ?? null
+    }));
+    const settledCoreLens = async (settled: (state: Awaited<ReturnType<typeof coreLensState>>) => boolean) => {
+      const deadline = Date.now() + 10_000;
+      let state = await coreLensState();
+      while (!settled(state) && Date.now() < deadline) { await page.waitForTimeout(150); state = await coreLensState(); }
+      return state;
+    };
+    const receded = await settledCoreLens(state => state.computedOpacity === 0.25);
+    expect(receded, JSON.stringify(receded)).toMatchObject({ computedOpacity: 0.25, inlineOpacity: "0.25", pointerEvents: "none", focusLevel: "ROLE", structureRole: T.roleId });
     await page.getByTestId("job-pool-structure-role-back").click();
     await page.getByTestId(`job-pool-role-lens-${T.roleId}`).waitFor({ state: "hidden", timeout: 10_000 });
+    const returned = await settledCoreLens(state => state.computedOpacity === 1);
+    expect(returned, JSON.stringify(returned)).toMatchObject({ computedOpacity: 1, inlineOpacity: "1", pointerEvents: "auto", focusLevel: "POOL", structureRole: "" });
     await page.locator('[data-testid="job-pool-canonical-mapping"][data-mapping-state="MAPPED"][data-proposal-state="PROPOSAL_ONLY"][data-authority-state="NONE"]').waitFor({ timeout: 30_000 });
     for (const label of ["DETERMINISTIC_PRESENTATION", "NOT_A_CANONICAL_EVALUATION", "NOT_A_DECISION"]) expect(await page.getByTestId(`job-pool-label-${label}`).count()).toBe(1);
     const labels = (await page.getByTestId("job-pool-presentation-labels").textContent()) ?? "";

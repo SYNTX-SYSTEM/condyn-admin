@@ -150,4 +150,11 @@ describe("SIL Job Pool panel (server-rendered field)", () => {
     expect(html).toContain('data-analysis-id="ANL_DASH"');
     expect(html).toContain('data-selected-pool="JPOOL_DASH"');
   });
+
+  it("lets the reveal animation release the element after it rises, so a state-dependent opacity (the receding core lens) is never pinned to 1 (F-LF-2)", () => {
+    const html = renderToString(<JobPoolMatchPanel jobPoolUploadId="JPOOL_WITH_MATCHES" analysisId="ANL_TEST" />);
+    expect(html).toContain("@keyframes jpRise { from { opacity: 0; } to { opacity: 1; } }");
+    expect(html).toContain("[data-jp-reveal] { animation: jpRise .32s ease-out backwards; }");
+    expect(html).not.toMatch(/jpRise [^;]*\bboth\b/);
+  });
 });

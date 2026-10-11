@@ -82,7 +82,7 @@ const POOL_CSS = `
 @keyframes jpCirculate { to { stroke-dashoffset: -60; } }
 @keyframes jpPulse { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; } }
 @keyframes jpNebula { 0%, 100% { opacity: var(--jp-lo); } 50% { opacity: var(--jp-hi); } }
-[data-testid="job-pool-panel"] [data-jp-reveal] { animation: jpRise .32s ease-out both; }
+[data-testid="job-pool-panel"] [data-jp-reveal] { animation: jpRise .32s ease-out backwards; }
 [data-testid="job-pool-panel"] button:hover:not(:disabled) { color: #e6f1f8; text-shadow: 0 0 12px rgba(56, 229, 255, 0.45); }
 [data-testid="job-pool-panel"] button:focus-visible, [data-testid="job-pool-panel"] input:focus-visible { outline: 1px solid rgba(56, 229, 255, 0.7); outline-offset: 3px; border-radius: 2px; }
 [data-testid="job-pool-panel"] input:focus { border-bottom-color: #38e5ff; }
