@@ -102,7 +102,18 @@ export function adaptCanonicalToDemoState(
       const cap = analysis.capabilities?.find((c: any) => 
         c.identity.name.trim().toLowerCase() === req.identity.name.trim().toLowerCase()
       );
-      return evaluateAlignment(cap || null, req, analysis, manifest);
+      try {
+        return evaluateAlignment(cap || null, req, analysis, manifest);
+      } catch (error) {
+        // F-JF-2: the capability proof chain refuses (a) a document that both defines the target requirement and
+        // proves the candidate capability (ERR_EPISTEMIC_VIOLATION, the normal case for a single CV) and (b) a
+        // document absent from the source manifest (ERR_PROOF_CHAIN_BROKEN; the analyses route delivers none).
+        // Either way the relation is unresolved: never absent, never satisfied, never a reason to drop the field.
+        if (cap && error instanceof Error && /^ERR_(EPISTEMIC_VIOLATION|PROOF_CHAIN_BROKEN)\b/.test(error.message)) {
+          return { ...evaluateAlignment(null, req, analysis, manifest), capabilityId: cap.entity_id, state: "UNRESOLVED" as const };
+        }
+        throw error;
+      }
     });
 
     const recommendation = buildRoleRecommendation(role.entity_id, alignments);
