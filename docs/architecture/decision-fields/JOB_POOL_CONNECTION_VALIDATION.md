@@ -784,6 +784,37 @@ pointer ownership is provable on owner-shaped data only (no sweep in PINK's or G
 PINK repeats the GET-only walk there. PINK's own `3117` dry-run environment of this round never started (role env not
 exported in that shell) — no own server, no own database.
 
+### 3.21 Living field under R15: `a856b5a` validated, integration `e6486b1` (2026-10-12)
+
+Owner mandate "SFE — SYNTX LIVING FIELD · VISUAL RECONSTRUCTION" (GRÜN `a856b5a`, parent `1ca3ca9`: planetarium materials,
+depth, finite transitions, ambient life behind `SYNTX_AMBIENT_MOTION` / `data-sx-ambient`; §13.2.1). PINK raised the conflict
+with spec §1 (lines 99–101) and §6.2 (decorative orbit, ambient swirl, glow without evidence referent) before any rebinding;
+GELB escalated with options A (spec stands) / B (supersede with a bound list); the owner ruled B — **R15 "Supersede, bound
+motion"** (`747cefa`, `SYNTX_FIELD_CONTRACT_BINDING.md` §4) with the instruction to finish now and for PINK to check only the
+affected functions. GELB's integration `e6486b1` = `6d9bf32` + `747cefa` + `a856b5a` (governance 10/10, `app`/`lib`/`scripts`
+identical to `a856b5a`; Appendix A regenerated identical, 215).
+
+PINK's checks (affected functions only), merged as `ef8ea69`:
+- Q-06 / J-12 rebound to R15 in `syntx-walk.e2e.test.ts`: at FIELD after settle the infinite animations are exactly
+  `sxBreathe`, `sxOrbit`, all on signs in state `field`, switch `on`; at ROLE the running names are `sxEnter`, `sxRecenter`,
+  `sxSuspend` (no ambient name); sign transitions `opacity` or `opacity, filter` (the depth blur); REDUCED: zero running,
+  names `none`, camera 0 s, identical sign set. While the ruling was pending, the same test recorded `FAIL R15-PENDING` on
+  the probe merge of `a856b5a` with every contract fact green — red by design, never masked.
+- Pointer ownership and apertures with the grown hit areas, keyboard / Escape with focus-follow, containment and
+  anchor-distance reads (now from bounding boxes and the screen CTM, since role carriers sit in a group transform):
+  e2e walk 3/3 on `e6486b1` (disposable `condyn_test_07de17d3284dc468`, evidence `evidence/syntx-walk-e6486b1/`,
+  `SYNTX_WALK_TIP=e6486b1`); the field batch 4 files / 36 green; tsc 0.
+- Read-only walk on GELB's owner-shaped disposable clone `127.0.0.1:3027` @ `e6486b1` (`condyn_test_89d52eb3e5694f2d`, a
+  fresh read-only clone of the owner database, its content hash unchanged; `:3017` untouched on `1bd26a7`): **136/136,
+  0 non-GET** (evidence `evidence/syntx-readonly-3027-e6486b1/`) — R15 at FIELD (`sxBreathe`, `sxOrbit`, switch on,
+  nothing outside `field` signs) and at ROLE (`sxSuspend` only) for both analyses, the matched trace of `req_001` and the
+  sweep trace own pointer points and open their apertures, containment, Escape chain with focus-follow, reduced motion,
+  bodies identical.
+- Both walks' settle rule excludes any infinite-iteration animation (`f03362d`), so the ambient life never blocks a read.
+
+Plan 1.7.0 binds `e6486b1` (Appendix C: R15 / B-SYNTX-AMBIENT, B-SYNTX-GLOW, B-SYNTX-DEPTH, B-SYNTX-HIT). The owner
+environment stays on `1bd26a7` under plan 1.5.2 until the owner authorizes the move; PINK's GET-only walk follows it.
+
 ## 4. Boundaries and findings for coordination
 
 - F-JP-1 (closed in `b782793`): `JOB_POOL_CONNECTION.md` §4 followed the per-role `JOB_POOL_JSON_ROLE` design;

@@ -1,0 +1,4 @@
+after keyboard entry from the strip (Enter on job-pool-panel-toggle): section#syntx-field
+after typing in the intake: input#job-pool-actor-input
+after a pointer observation change (native click focus on the sign): g#syntx-organization-org_pink_alpha[org:org_pink_alpha]
+after Escape (closes the intake first, R8): g#syntx-organization-org_pink_alpha[org:org_pink_alpha], observation ORGANIZATION

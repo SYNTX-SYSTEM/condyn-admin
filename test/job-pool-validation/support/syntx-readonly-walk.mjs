@@ -96,6 +96,15 @@ const alongTrace = (loc) => loc.evaluate((el) => {
 // Keyboard inspection of a sign (R7): focus + Enter. Used as the fallback when the pointer cannot own the trace, so the
 // aperture assertions still run and the pointer defect is recorded on its own.
 const inspectByKeyboard = async (page, loc) => { await loc.focus(); await page.keyboard.press("Enter"); };
+// R15 (owner 2026-10-12): infinite rest-state motion in LIVE is bound — names ⊆ SYNTX_AMBIENT_NAMES, at FIELD / ORGANIZATION only on
+// signs in state "field"; at ROLE / REQUIREMENT nothing infinite but sxSuspend; the switch is data-sx-ambient (absent = off).
+const infiniteMotion = (page) => root(page).evaluate((r) => {
+  const infinite = r.getAnimations({ subtree: true }).filter((a) => a.playState === "running" && a.effect?.getTiming?.().iterations === Infinity);
+  const names = [...new Set(infinite.map((a) => String(a.animationName ?? "")))].sort();
+  const outsideField = infinite.filter((a) => { const sign = a.effect?.target?.closest?.("[data-sign-id]"); return !sign || sign.getAttribute("data-sign-state") !== "field"; }).map((a) => String(a.animationName ?? ""));
+  return { switch: r.getAttribute("data-sx-ambient") ?? "off", mode: r.getAttribute("data-motion-mode"), names, outsideField };
+});
+const AMBIENT_NAMES = ["sxOrbit", "sxBreathe", "sxSuspend"];
 const inViewport = (loc) => loc.evaluate((el) => { const b = el.getBoundingClientRect(); return b.left >= 0 && b.top >= 0 && b.right <= innerWidth && b.bottom <= innerHeight; });
 const collectSigns = (page) => root(page).evaluate((r) => Array.from(r.querySelectorAll("[data-sign-id]")).map((el) => { const proof = {}; for (const a of Array.from(el.attributes)) if (a.name.startsWith("data-proof-")) proof[a.name.slice(11)] = a.value; return { testId: el.getAttribute("data-testid"), id: el.getAttribute("data-sign-id"), source: el.getAttribute("data-sign-source"), relation: el.getAttribute("data-sign-relation"), state: el.getAttribute("data-sign-state"), manifestation: el.getAttribute("data-sign-manifestation"), interaction: el.getAttribute("data-sign-interaction"), transition: el.getAttribute("data-sign-transition"), proof }; }));
 const stageText = async (page) => (await page.getByTestId("syntx-stage").textContent()) ?? "";
@@ -165,6 +174,8 @@ for (const analysisId of analyses) {
   check(`[${tag}] no number at FIELD`, !PERCENT.test(await stageText(page)) && (await page.locator("[data-resonance-score]").count()) === 0);
   check(`[${tag}] summary for the upload`, (await page.getByTestId("syntx-summary").getAttribute("data-summary-for")) === UPLOAD);
   await settled(page); await shot(page, `${tag}-Q-01-field`); await audit(page, "Q-01");
+  const fieldMotion = await infiniteMotion(page);
+  check(`[${tag}] R15 at FIELD: infinite motion ⊆ SYNTX_AMBIENT_NAMES, only on signs in state field (switch ${fieldMotion.switch})`, fieldMotion.names.every((n) => AMBIENT_NAMES.includes(n)) && fieldMotion.outsideField.length === 0 && (fieldMotion.switch === "on" || fieldMotion.names.length === 0), JSON.stringify(fieldMotion));
 
   // 3. ORGANIZATION → ROLE (the first delivered role with a scored match, else the first delivered)
   const roleMatch = roles.find((r) => r.matched.length > 0) ?? roles[0];
@@ -190,6 +201,8 @@ for (const analysisId of analyses) {
   check(`[${tag}] ROLE: one source carrier per docId, title state = join`, roleDocIds.every((d) => sourceStates[d] === (documents.some((x) => x.docId === d) ? "RESOLVED" : "UNRESOLVED")), JSON.stringify(sourceStates));
   check(`[${tag}] ROLE: no number, no quote before inspection`, !PERCENT.test(await stageText(page)) && (await page.getByTestId("syntx-aperture").count()) === 0);
   await settled(page); await shot(page, `${tag}-Q-03-role`); await audit(page, "Q-03");
+  const roleMotion = await infiniteMotion(page);
+  check(`[${tag}] R15 at ROLE: nothing infinite but sxSuspend`, roleMotion.names.every((n) => n === "sxSuspend"), JSON.stringify(roleMotion.names));
 
   // 4. REQUIREMENT + apertures (matched, sweep if delivered, pending)
   const supportedId = mappedRole.requirements.map((q) => q.poolRequirementId).find((id) => supportOf(id) === "SUPPORTED");

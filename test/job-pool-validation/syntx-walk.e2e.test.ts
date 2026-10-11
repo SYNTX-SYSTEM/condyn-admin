@@ -1,7 +1,7 @@
 /**
  * PINK Q-12: the running browser walk of the SYNTX semiontic field (owner mandate "SFE — SYNTX SEMIONTIC FIELD
  * RECONSTRUCTION", 2026-10-11; spec §5 states A–E, GELB binding table §2/§3 and rulings R1–R14; GRÜN's DOM contract
- * `JOB_FIELD_FRONTEND.md` §13 = PINK's BR-1 … BR-5). Acceptance plan `docs/acceptance/CONDYN_SYSTEM_ACCEPTANCE_TEST_PLAN_v1.6.md`
+ * `JOB_FIELD_FRONTEND.md` §13 = PINK's BR-1 … BR-5). Acceptance plan `docs/acceptance/CONDYN_SYSTEM_ACCEPTANCE_TEST_PLAN_v1.7.md`
  * suite TS-Q: this file binds Q-01 … Q-11 at their observation points and is the gate for the owner environment.
  *
  * Oracle: the GET bodies of the same server (upload view, matches, analysis) saved as Q-00-*.json before any browser
@@ -876,7 +876,7 @@ describe.skipIf(playwrightModule === null)("PINK Q-12: SYNTX field walk FIELD �
     // running after settle are exactly a subset of SYNTX_AMBIENT_NAMES and run only inside signs in state "field"; with "off", none.
     // Ruling: spec §1 (lines 99–101) and §6.2 forbid decorative orbital motion and ambient swirl; until GELB records the owner's
     // supersession (R15, option B), the expected switch position is "off" — a tip with "on" fails Q-06 by design (finding R15-PENDING).
-    const EXPECTED_AMBIENT = "off";
+    const EXPECTED_AMBIENT = "on"; // R15 (owner 2026-10-12, SYNTX_FIELD_CONTRACT_BINDING.md §4): supersede, bound motion
     const atField = await open(`/career/demo?focus=FIELD&analysisId=${ANALYSIS_ID}&jobPoolUploadId=${uploadId}`);
     await atField.locator('[data-testid="syntx-field"][data-field-state="AVAILABLE"][data-sources-state="AVAILABLE"][data-observation-kind="FIELD"][data-motion-mode="LIVE"]').waitFor({ timeout: 120_000 });
     await settled(atField);
