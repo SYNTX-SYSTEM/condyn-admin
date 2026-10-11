@@ -39,7 +39,9 @@ function resolvePlaywright(): string | null {
   try { return createRequire(resolve(process.cwd(), "package.json")).resolve("playwright"); } catch { return null; }
 }
 const playwrightModule = resolvePlaywright();
-const EVIDENCE_DIR = resolve(process.cwd(), "docs/architecture/decision-fields/evidence/syntx-walk-fa14d8e");
+// The tip under test names the evidence directory and the report (SYNTX_WALK_TIP=<hash>; default = the plan's tip).
+const WALK_TIP = process.env.SYNTX_WALK_TIP ?? "fa14d8e";
+const EVIDENCE_DIR = resolve(process.cwd(), `docs/architecture/decision-fields/evidence/syntx-walk-${WALK_TIP}`);
 const ANALYSIS_ID = "ANL_PINK_SYNTX_WALK";
 const GRAMMAR = "SYNTX_FIELD_V1";
 const ROLE_ID = "role_pink_alpha_architect";
@@ -101,7 +103,7 @@ describe.skipIf(playwrightModule === null)("PINK Q-12: SYNTX field walk FIELD �
   let analysisBody: any;
   let roleMatch: any;
   let mappedRole: any;
-  const report: Report = { tip: "fa14d8e", recordedAt: new Date().toISOString(), database: "", analysisId: ANALYSIS_ID, jobPoolUploadId: "", scenarios: {} };
+  const report: Report = { tip: WALK_TIP, recordedAt: new Date().toISOString(), database: "", analysisId: ANALYSIS_ID, jobPoolUploadId: "", scenarios: {} };
   const pass = (id: string, counts?: Record<string, number>, note?: string) => { report.scenarios[id] = { verdict: "PASS", ...(counts ? { counts } : {}), ...(note ? { note } : {}) }; };
   const boundary = (id: string, note: string) => { report.scenarios[id] = { verdict: "BOUNDARY-MATCH", note }; };
   const liveSigns: Record<string, SignRecord[]> = {};
@@ -354,9 +356,12 @@ describe.skipIf(playwrightModule === null)("PINK Q-12: SYNTX field walk FIELD �
       expect(await carrier.getAttribute("tabindex")).toBe("0");
       expect(squash(await carrier.textContent())).toContain(squash(role.title));
       const inside = await carrier.evaluate((element: Element) => {
-        const region = element.ownerDocument.querySelector(`[data-testid="syntx-organization-${element.getAttribute("data-proof-organization-id")}"] circle`) as SVGCircleElement;
-        const body = element.querySelector("circle") as SVGCircleElement;
-        return Math.hypot(body.cx.baseVal.value - region.cx.baseVal.value, body.cy.baseVal.value - region.cy.baseVal.value) < region.r.baseVal.value;
+        // Geometry read in screen space (bounding boxes), so group transforms, glow underlays and the camera do not matter.
+        const region = element.ownerDocument.querySelector(`[data-testid="syntx-organization-${element.getAttribute("data-proof-organization-id")}"] circle:not([data-sx-glow]):not([data-sx-hit])`) as SVGCircleElement;
+        const body = element.querySelector("circle:not([data-sx-glow]):not([data-sx-hit])") as SVGCircleElement;
+        const centre = (circle: SVGCircleElement) => { const box = circle.getBoundingClientRect(); return { x: box.left + box.width / 2, y: box.top + box.height / 2, r: box.width / 2 }; };
+        const r = centre(region), b = centre(body);
+        return Math.hypot(b.x - r.x, b.y - r.y) < r.r;
       });
       expect(inside, `${role.poolRoleId} inside its region`).toBe(true);
     }
@@ -499,9 +504,13 @@ describe.skipIf(playwrightModule === null)("PINK Q-12: SYNTX field walk FIELD �
     expect(await page.locator('[data-sign-manifestation="trace_dotted"]').count()).toBe(0);
     // Relation-state geometry (§9.2, R14): distance by support category only; equal within a category.
     const distanceOf = (id: string) => page.locator(`[data-sign-id="req:${id}"]`).evaluate((element: Element) => {
-      const role = element.ownerDocument.querySelector('[data-sign-state="role_selected"] circle') as SVGCircleElement;
-      const anchor = element.querySelector("circle") as SVGCircleElement;
-      return Math.round(Math.hypot(anchor.cx.baseVal.value - role.cx.baseVal.value, anchor.cy.baseVal.value - role.cy.baseVal.value) * 10) / 10;
+      // Centres in screen space (bounding boxes), converted to user units through the screen CTM scale.
+      const role = element.ownerDocument.querySelector('[data-sign-state="role_selected"] circle:not([data-sx-glow]):not([data-sx-hit])') as SVGCircleElement;
+      const anchor = element.querySelector("circle:not([data-sx-glow]):not([data-sx-hit])") as SVGCircleElement;
+      const centre = (circle: SVGCircleElement) => { const box = circle.getBoundingClientRect(); return { x: box.left + box.width / 2, y: box.top + box.height / 2 }; };
+      const scale = (anchor.getScreenCTM() as DOMMatrix).a;
+      const r = centre(role), a = centre(anchor);
+      return Math.round((Math.hypot(a.x - r.x, a.y - r.y) / scale) * 10) / 10;
     });
     const distances = new Map<string, number[]>();
     for (const id of requirementIds) distances.set(supportOf(id), [...(distances.get(supportOf(id)) ?? []), await distanceOf(id)]);
@@ -855,10 +864,32 @@ describe.skipIf(playwrightModule === null)("PINK Q-12: SYNTX field walk FIELD �
     expect(computed.pendingDash).toBe("sxSuspend");
     expect(computed.camera?.transition).toBe("transform");
     expect(computed.camera?.duration).toBe("0.78s");
-    expect(computed.sign?.transition).toBe("opacity");
-    for (const name of computed.names) expect(["sxEnter", "sxRise", "sxSuspend", "transition"], `allowed motion ${name}`).toContain(name);
+    // Sign transitions: opacity (recede / restore); since the living field (a856b5a) also filter (the depth blur, data-sx-depth).
+    expect(["opacity", "opacity, filter"], `sign transition ${computed.sign?.transition}`).toContain(computed.sign?.transition);
+    // At ROLE after settle: the entrance, reveals, the suspend drift and the finite state-bound transitions of §13.2.1 — never an ambient name.
+    for (const name of computed.names) expect(["sxEnter", "sxRise", "sxSuspend", "sxUnfold", "sxTraceRise", "sxSuspendEnter", "sxRecenter", "transition"], `allowed motion at ROLE ${name}`).toContain(name);
+    expect(computed.names.filter((name: string) => ["sxOrbit", "sxBreathe"].includes(name)), "no ambient motion at ROLE").toEqual([]);
     const liveRoleSigns = await collectSigns(live);
     await live.close();
+
+    // FIELD level: the ambient switch (§13.2.1, SYNTX_AMBIENT_MOTION → data-sx-ambient). Contract: with "on", the infinite animations
+    // running after settle are exactly a subset of SYNTX_AMBIENT_NAMES and run only inside signs in state "field"; with "off", none.
+    // Ruling: spec §1 (lines 99–101) and §6.2 forbid decorative orbital motion and ambient swirl; until GELB records the owner's
+    // supersession (R15, option B), the expected switch position is "off" — a tip with "on" fails Q-06 by design (finding R15-PENDING).
+    const EXPECTED_AMBIENT = "off";
+    const atField = await open(`/career/demo?focus=FIELD&analysisId=${ANALYSIS_ID}&jobPoolUploadId=${uploadId}`);
+    await atField.locator('[data-testid="syntx-field"][data-field-state="AVAILABLE"][data-sources-state="AVAILABLE"][data-observation-kind="FIELD"][data-motion-mode="LIVE"]').waitFor({ timeout: 120_000 });
+    await settled(atField);
+    const ambient = await field(atField).evaluate((root: Element) => {
+      const infinite = root.getAnimations({ subtree: true }).filter((animation: any) => animation.playState === "running" && animation.effect?.getTiming?.().iterations === Infinity);
+      const names = [...new Set(infinite.map((animation: any) => String(animation.animationName ?? "")))].sort();
+      const outsideField = infinite.filter((animation: any) => { const sign = (animation.effect?.target as Element | null)?.closest("[data-sign-id]"); return sign === null || sign === undefined || sign.getAttribute("data-sign-state") !== "field"; }).map((animation: any) => String(animation.animationName ?? ""));
+      return { switch: root.getAttribute("data-sx-ambient") ?? "off", names, outsideField }; // no attribute (≤ 1ca3ca9) = no ambient life
+    });
+    writeFileSync(resolve(EVIDENCE_DIR, "Q-06-ambient.txt"), `FIELD: ${JSON.stringify(ambient)}\nexpected switch: ${EXPECTED_AMBIENT}\n`);
+    if (ambient.switch === "on") { for (const name of ambient.names) expect(["sxOrbit", "sxBreathe", "sxSuspend"], `ambient name ${name}`).toContain(name); expect(ambient.outsideField, "ambient motion only inside signs in state field").toEqual([]); }
+    else expect(ambient.names, "no infinite animation at FIELD with the switch off").toEqual([]);
+    await atField.close();
 
     const calm = await open(`/career/demo?focus=FIELD&analysisId=${ANALYSIS_ID}&jobPoolUploadId=${uploadId}&jobRoleId=${ROLE_ID}`, { reducedMotion: "reduce" });
     await calm.locator('[data-testid="syntx-field"][data-field-state="AVAILABLE"][data-sources-state="AVAILABLE"][data-observation-kind="ROLE"][data-motion-mode="REDUCED"]').waitFor({ timeout: 120_000 });
@@ -879,9 +910,11 @@ describe.skipIf(playwrightModule === null)("PINK Q-12: SYNTX field walk FIELD �
     expect(await calm.getByTestId("syntx-aperture").evaluate((element: Element) => getComputedStyle(element).animationName)).toBe("none");
     await calm.screenshot({ path: resolve(EVIDENCE_DIR, "Q-06-reduced.png") });
     writeFileSync(resolve(EVIDENCE_DIR, "Q-06-computed.txt"), `LIVE: ${JSON.stringify(computed)}\nREDUCED: ${JSON.stringify(reduced)}\n`);
-    pass("Q-06", { liveAnimationNames: computed.names.length }, "LIVE: sxEnter (root), sxSuspend (pending dash drift), opacity transitions, camera transform .78s; REDUCED: none running, same signs");
     expect(pageErrors).toEqual([]);
     await calm.close();
+    if (ambient.switch === EXPECTED_AMBIENT) pass("Q-06", { liveAnimationNames: computed.names.length, ambientNames: ambient.names.length }, `LIVE at ROLE: ${computed.names.join(", ") || "nothing running"}; FIELD ambient switch ${ambient.switch} (${ambient.names.join(", ") || "none"}); REDUCED: none running, same signs`);
+    else report.scenarios["Q-06"] = { verdict: "FAIL", finding: "R15-PENDING", note: `ambient switch is ${ambient.switch} (${ambient.names.join(", ")}) while spec §1 / §6.2 stand (expected ${EXPECTED_AMBIENT}); the contract of the switch itself holds (names ⊆ SYNTX_AMBIENT_NAMES, inside signs in state field only; nothing ambient at ROLE; REDUCED total); flips to PASS when GELB records the owner's ruling R15 (option B → expected on)` };
+    expect(ambient.switch, `ambient switch per the recorded contract (R15 pending: spec §1 / §6.2 stand)`).toBe(EXPECTED_AMBIENT);
   }, 300_000);
 
   it("carried field states and stale ids (E-08, E-09, H-05, D-02, D-04, D-08, D-10): NO_ANALYSIS, NO_POOL with the intake, DRAFT pool as containment without a matching, NOT_FOUND, stale observation ids, legacy focus aliases", async () => {
