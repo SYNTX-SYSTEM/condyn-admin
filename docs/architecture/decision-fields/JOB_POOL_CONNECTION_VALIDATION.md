@@ -394,6 +394,36 @@ legacy exception: F-JP-5. Authority boundaries unchanged: HIA-1, HIA-2, HIA-3 (s
 B-JP-ACTOR, B-GEMINI (key from the operator's shell), B-JP-SWEEP-AVAILABLE now closed at HTTP level by JP-LIVE for
 `AVAILABLE` (`FAILED` remains unit-level only). No open PINK finding against the tip.
 
+### 3.13 Job Field semantic validation (owner mandate "SFE — INDEPENDENT JOB FIELD VALIDATION", 2026-10-11)
+
+Synchronization: GELB's governance base `integration/job-field-governance` @ `990130c` (glossary and rules SG-1..SG-6 in
+`JOB_POOL_CONNECTION.md` §12, guard `test/career/job-pool/semantic-governance.test.ts`); GRÜN's Job Field on
+`frontend/job-field` (JOB focus, contract of 2026-10-11: `data-field-focus`, `job-field*` test ids, pending kinds
+UNPROVEN_CANONICAL / UNRESOLVED_EVIDENCE / UNSCORED_COVERAGE / NO_EVIDENCE_DELIVERED, nearest presented role, distance
+= 1 − resonanceScore, "POOL RESONANCE (PRESENTATION)"). Owner environment not touched: 127.0.0.1:3017 and
+`condyn_test_e46502b73c9f316f`.
+
+PINK reconstruction of the Job Field at `04ded74` (adapter `lib/career/ui-adapter.ts`, orbit views, derivation
+`lib/career/matching/{alignment,derivation}.ts`, F11 overlay `lib/career/capability-proposal-sil-adapter.ts`, panel):
+
+| Relation | Source → surface | PINK finding |
+| --- | --- | --- |
+| capability | analysis.capabilities → orbit 02; replaced by F11 proposals when a projection exists; panel candidates = analysis.capabilities | F-JF-1: two sources on one screen without a source label (live run: orbit 17 items, panel 3 candidates) |
+| job role | analysis.roles with REQUIRES → orbit 04, fit = equal-weight fraction of requirements aligned by exact lowercase name equality | F-JF-2: one name relation, two equality semantics (exact vs NFKC/alias/composite in the panel); F-JF-3: `recommendationId` from `Date.now()`/random inside a proof chain |
+| resonance | analysis.organizations → orbit 03, never scored; pool aggregates → panel only | F-JF-6: naming collision, resolved for the Job Field by GELB's G2 qualifier |
+| pending | F11 proposed relations validated by the reader, dropped by the SIL adapter; `capabilityGaps` always `[]` → orbit 05 structurally empty | F-JF-4 |
+| legacy list views | `RoleManifestation`, `ResonanceOrbits`, `CapabilityField` imported, not rendered; label `fitScore == null` as "UNSUPPORTED", undefined confidence as "0%" | F-JF-5 (latent SG-2 violation) |
+
+Findings sent to GELB (F-JF-2/3 and the list) and GRÜN (F-JF-1/4/5) for root repair on 2026-10-11.
+
+PINK proofs prepared against the contract (skip with reason until GRÜN's push is integrated):
+`test/job-pool-validation/job-field-static.test.ts` (SG-1: Job Field files read no LLM-inferred organizations, roles
+or entity names; SG-4 imports; SG-5/6 vocabulary), `test/job-pool-validation/job-field.e2e.test.ts` (JOB focus in a
+real browser on a disposable database: every role value equals the matches body, count sums equal the TRQREV count,
+delivered order, nearest-role rule, distance, pending kinds with counts and ids, requirement states and provenance,
+legend and non-claims, no RRL_/TSN_/EIS_/RCP_ in the DOM, stage shells 01–06 kept, HR dock absent; distinct
+NO_ANALYSIS / NO_POOL / INACTIVE_POOL states).
+
 ## 4. Boundaries and findings for coordination
 
 - F-JP-1 (closed in `b782793`): `JOB_POOL_CONNECTION.md` §4 followed the per-role `JOB_POOL_JSON_ROLE` design;
