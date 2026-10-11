@@ -67,13 +67,15 @@ const tether = (lit: boolean): React.CSSProperties => ({ height: "1px", width: "
 const word = (color: string): React.CSSProperties => ({ fontFamily: MONO, fontSize: "8px", fontWeight: 600, letterSpacing: "1.2px", textTransform: "uppercase", color, whiteSpace: "nowrap" });
 const action = (tone: "cyan" | "muted" = "cyan", enabled = true): React.CSSProperties => ({ background: "transparent", border: "none", padding: "4px 0", fontFamily: MONO, fontSize: "9px", fontWeight: 600, letterSpacing: "1.4px", textTransform: "uppercase", color: !enabled ? "rgba(99, 120, 138, 0.6)" : tone === "cyan" ? CYAN : MUTED, cursor: enabled ? "pointer" : "not-allowed", textShadow: enabled && tone === "cyan" ? `0 0 10px ${SIL_TOKENS.colors.cyanGlow}` : undefined, transition: "color .25s ease, text-shadow .25s ease" });
 const ghost: React.CSSProperties = { ...action("muted"), fontSize: "8px", letterSpacing: "1px" };
+/** A lens: one contextual reading at the focused body; no border, a faint void behind the text. */
+const lensStyle: React.CSSProperties = { background: "radial-gradient(ellipse at 20% 0%, rgba(3, 5, 8, 0.94) 0%, rgba(3, 5, 8, 0.82) 60%, rgba(3, 5, 8, 0.6) 100%)", backdropFilter: "blur(6px)", borderRadius: "14px", padding: "14px 16px" };
 const field: React.CSSProperties = { width: "100%", boxSizing: "border-box", background: "transparent", border: "none", borderBottom: "1px solid rgba(99, 120, 138, 0.4)", color: INK, fontFamily: MONO, fontSize: "10px", padding: "5px 0", outline: "none" };
 const percent = (value: number): string => `${Math.round(value * 1000) / 10}%`;
 const shortTitle = (text: string, max = 22): string => (text.length <= max ? text : `${text.slice(0, max - 1)}…`);
 
 const POOL_CSS = `
 @keyframes jpEnter { from { opacity: 0; } to { opacity: 1; } }
-@keyframes jpRise { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+@keyframes jpRise { from { opacity: 0; } to { opacity: 1; } }
 @keyframes jpEmerge { from { opacity: 0; transform: translate(-50%, -50%) scale(0.4); } to { opacity: 1; transform: translate(-50%, -50%) scale(1); } }
 @keyframes jpBreathLight { 0%, 100% { opacity: var(--jp-lo); } 50% { opacity: var(--jp-hi); } }
 @keyframes jpBreathScale { 0%, 100% { transform: scale(1); } 50% { transform: scale(var(--jp-amp, 1.03)); } }
@@ -404,6 +406,7 @@ export function JobPoolMatchPanelView({ workflow, analysisSource, jobPoolUploadI
   const [structureRoleId, setStructureRoleId] = useState<string | null>(null);
   const [hoveredRoleId, setHoveredRoleId] = useState<string | null>(null);
   const [detailsOpen, setDetailsOpen] = useState(false);
+  const [intakeOpen, setIntakeOpen] = useState(false);
 
   const selectPool = (id: string) => {
     workflow.select(id);
@@ -450,6 +453,7 @@ export function JobPoolMatchPanelView({ workflow, analysisSource, jobPoolUploadI
 
   const stateTone = listState === "AVAILABLE" ? CYAN : listState === "FAILED" ? RED : AMBER;
   const inputStyle = field;
+  const intakeVisible = selection.kind === "NONE" || intakeOpen;
   return (
     <section
       data-testid="job-pool-panel"
@@ -468,12 +472,15 @@ export function JobPoolMatchPanelView({ workflow, analysisSource, jobPoolUploadI
       data-motion-mode={mode}
       data-structure-role={structureRole?.poolRoleId ?? ""}
       data-upload-count={orbit.length}
+      data-interaction-grammar="LENS_V1"
+      data-focus-level={structureRole !== null ? "ROLE" : selectedNode !== null ? "POOL" : "FIELD"}
+      data-intake-visible={intakeVisible ? "true" : "false"}
       style={{ position: "absolute", inset: 0, zIndex: 45, backgroundColor: "rgba(3, 5, 8, 0.9)", backdropFilter: "blur(8px)", fontFamily: MONO, color: INK, animation: motion.enterMs > 0 ? `jpEnter ${motion.enterMs}ms ease-out both` : undefined }}
     >
       <style>{POOL_CSS}</style>
 
       {/* The orbit: structure canvas (SVG) beneath, upload nodes (HTML, positioned by the same geometry) above. */}
-      <div data-testid="job-pool-orbit" style={{ position: "absolute", top: "50%", left: "calc(50% - 64px)", transform: "translate(-50%, -50%)", width: "min(88vh, 50vw, 760px)", height: "min(88vh, 50vw, 760px)" }}>
+      <div data-testid="job-pool-orbit" style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)", width: "min(90vh, 62vw, 820px)", height: "min(90vh, 62vw, 820px)" }}>
         <StructureCanvas structure={structure} selectedRoleId={structureRoleId} hoveredRoleId={hoveredRoleId} mode={mode} t={t} onSelectRole={setStructureRoleId} onHoverRole={setHoveredRoleId} />
         <div data-testid="job-pool-list" data-pool-count={listed.length} data-list-state={listState} style={{ position: "absolute", inset: 0, pointerEvents: "none" }}>
           {(workflow.pools.state === "IDLE" || workflow.pools.state === "LOADING") && <span data-testid="job-pool-list-loading" style={{ ...micro, position: "absolute", left: "50%", top: "50%", transform: "translate(-50%, -50%)", textAlign: "center", width: "120px", color: AMBER, animation: motion.enterMs > 0 ? "jpPulse 1.4s ease-in-out infinite" : undefined }}>{t.poolsLoading}</span>}
@@ -481,7 +488,7 @@ export function JobPoolMatchPanelView({ workflow, analysisSource, jobPoolUploadI
           {workflow.pools.state === "NOT_PROVISIONED" && <span data-testid="job-pool-list-not-provisioned" style={{ ...micro, position: "absolute", left: "50%", top: "50%", transform: "translate(-50%, -50%)", textAlign: "center", width: "140px", color: AMBER }}>{t.notProvisioned}</span>}
           {workflow.pools.state === "FAILED" && <span data-testid="job-pool-list-failed" style={{ ...micro, position: "absolute", left: "50%", top: "50%", transform: "translate(-50%, -50%)", textAlign: "center", width: "140px", color: RED }}>{t.poolsFailed}{workflow.pools.code ? ` · ${workflow.pools.code}` : ""}</span>}
           {workflow.pools.state === "AVAILABLE" && selectedNode === null && <span style={{ ...micro, position: "absolute", left: "50%", top: "50%", transform: "translate(-50%, -50%)", textAlign: "center", width: "110px" }}>{t.coreEmpty}<br /><span style={{ opacity: 0.7 }}>{t.coreHint}</span></span>}
-          <ul style={{ margin: 0, padding: 0, listStyle: "none" }}>
+          <ul style={{ margin: 0, padding: 0, listStyle: "none", opacity: structureRoleId !== null ? 0.18 : 1, transition: "opacity .4s ease" }}>
             {orbit.map(node => {
               const draft = node.poolStatus !== "ACTIVE";
               const delay = motion.enterMs > 0 ? Math.min(1600, 90 * (node.deliveredIndex - 1)) : 0;
@@ -514,72 +521,35 @@ export function JobPoolMatchPanelView({ workflow, analysisSource, jobPoolUploadI
             })}
           </ul>
         </div>
+
+        {/* Role lenses: one reading per focused body, at the body. Every role's reading is in the DOM; only the focused one shows. */}
+        {workflow.matches.state === "AVAILABLE" && (
+          <div data-testid="job-pool-role-list" data-role-count={workflow.matches.matches.roleMatches.length} style={{ position: "absolute", inset: 0, pointerEvents: "none", zIndex: 4 }}>
+            {workflow.matches.matches.roleMatches.map((role, index) => {
+              const node = structure?.roles.find(candidate => candidate.poolRoleId === role.poolRoleId) ?? null;
+              const focusedHere = structureRoleId === role.poolRoleId;
+              const side = node !== null && node.x > POOL_FIELD_LAYOUT.center ? "left" : "right";
+              return (
+                <div key={role.poolRoleId} data-testid={`job-pool-role-lens-${role.poolRoleId}`} hidden={!focusedHere} style={{ ...lensStyle, display: focusedHere ? "flex" : "none", flexDirection: "column", gap: "10px", position: "absolute", left: node === null ? "50%" : side === "right" ? `calc(${(node.x / POOL_FIELD_LAYOUT.size) * 100}% + 56px)` : `calc(${(node.x / POOL_FIELD_LAYOUT.size) * 100}% - 56px)`, top: node === null ? "50%" : `${(node.y / POOL_FIELD_LAYOUT.size) * 100}%`, transform: node === null ? "translate(-50%, -50%)" : side === "right" ? "translateY(-50%)" : "translate(-100%, -50%)", width: "min(380px, 52%)", maxHeight: "86%", overflowY: "auto", pointerEvents: "auto" }}>
+                  {focusedHere && structureRole !== null && <StructureRoleReading role={structureRole} t={t} onBack={() => setStructureRoleId(null)} />}
+                  <RoleReading role={role} rank={index + 1} t={t} />
+                </div>
+              );
+            })}
+          </div>
+        )}
+        {workflow.matches.state !== "AVAILABLE" && structureRole !== null && (
+          <div data-testid={`job-pool-role-lens-${structureRole.poolRoleId}`} style={{ ...lensStyle, position: "absolute", left: structureRole.x > POOL_FIELD_LAYOUT.center ? `calc(${(structureRole.x / POOL_FIELD_LAYOUT.size) * 100}% - 56px)` : `calc(${(structureRole.x / POOL_FIELD_LAYOUT.size) * 100}% + 56px)`, top: `${(structureRole.y / POOL_FIELD_LAYOUT.size) * 100}%`, transform: structureRole.x > POOL_FIELD_LAYOUT.center ? "translate(-100%, -50%)" : "translateY(-50%)", width: "min(360px, 50%)", maxHeight: "86%", overflowY: "auto", zIndex: 4 }}>
+            <StructureRoleReading role={structureRole} t={t} onBack={() => setStructureRoleId(null)} />
+          </div>
+        )}
       </div>
 
-      <div aria-hidden="true" data-jp-veil="left" style={{ position: "absolute", left: 0, top: 0, bottom: 0, width: "min(380px, 32vw)", background: "linear-gradient(90deg, rgba(3, 5, 8, 0.96) 0%, rgba(3, 5, 8, 0.72) 55%, rgba(3, 5, 8, 0) 100%)", pointerEvents: "none", zIndex: 45 }} />
-      <div aria-hidden="true" data-jp-veil="right" style={{ position: "absolute", right: 0, top: 0, bottom: 0, width: "min(560px, 42vw)", background: "linear-gradient(270deg, rgba(3, 5, 8, 0.97) 0%, rgba(3, 5, 8, 0.8) 60%, rgba(3, 5, 8, 0) 100%)", pointerEvents: "none", zIndex: 45 }} />
-
-      {/* Left surface: title, state, analysis, intake. */}
-      <div data-jp-surface="left" style={{ position: "absolute", left: "28px", top: "136px", width: "min(284px, 25vw)", maxHeight: "calc(100vh - 200px)", overflowY: "auto", ...stack(14), zIndex: 46 }}>
-        <div style={stack(6)}>
-          <h3 style={{ ...label, color: CYAN, fontSize: "10px", letterSpacing: "2.4px", textShadow: `0 0 14px ${SIL_TOKENS.colors.cyanGlowStrong}` }}>{t.title}</h3>
-          <span style={{ ...micro, opacity: 0.8 }}>{t.fieldSubtitle}</span>
-          <button data-testid="job-pool-panel-collapse" onClick={() => setOpen(false)} style={{ ...action("muted"), alignSelf: "flex-start" }}>{t.collapse}</button>
-          <span data-testid="job-pool-list-state" data-list-state={listState} style={{ ...micro, display: "inline-flex", alignItems: "center", gap: "8px", color: listState === "AVAILABLE" ? MUTED : stateTone }}>
-            <span aria-hidden="true" style={{ width: "6px", height: "6px", borderRadius: "50%", backgroundColor: stateTone, boxShadow: `0 0 8px ${stateTone}`, flexShrink: 0, animation: listState === "LOADING" && motion.enterMs > 0 ? "jpPulse 1.4s ease-in-out infinite" : undefined }} />
-            {listState === "AVAILABLE" ? `${t.pools} · ${listed.length}` : listState === "LOADING" ? t.poolsLoading : listState === "EMPTY" ? t.poolsEmpty : listState === "NOT_PROVISIONED" ? t.notProvisioned : t.poolsFailed}
-          </span>
-        </div>
-
-        <section data-testid="job-pool-analysis" data-analysis-source={analysisSource.kind} style={stack(4)}>
-          <span style={label}>{t.analysis}</span>
-          {analysisSource.kind === "NONE" && <span data-testid="job-pool-analysis-none" style={{ ...prose, fontSize: "10.5px", color: AMBER }}>{t.analysisNone}</span>}
-          {analysisSource.kind !== "NONE" && (
-            <>
-              <span style={{ ...mono, color: INK }}>{analysisSource.analysisId}</span>
-              <span style={micro}>{analysisSource.kind === "JOB_RESULT" ? t.analysisFromJob : t.analysisFromUrl}</span>
-            </>
-          )}
-        </section>
-
-        <section data-testid="job-pool-upload" style={stack(8)}>
-          <span style={label}>{t.intake} · {t.upload}</span>
-          <label style={{ ...micro, ...stack(2) }}>{t.uploader}
-            <input data-testid="job-pool-actor-input" value={actorId} onChange={event => setActorId(event.target.value)} style={inputStyle} />
-          </label>
-          <label style={{ ...micro, ...stack(2) }}>{t.chooseFile}
-            <input data-testid="job-pool-file-input" type="file" accept="application/json,.json" onChange={event => { void onFile(event); }} style={{ ...inputStyle, fontSize: "9px", color: MUTED }} />
-          </label>
-          <span data-testid="job-pool-file-name" style={micro}>{fileName ?? t.noFile}</span>
-          <button data-testid="job-pool-upload-btn" disabled={!canUpload} onClick={() => { if (fileText !== null) void workflow.submitUpload(fileText, actorId); }} style={{ ...action("cyan", canUpload), alignSelf: "flex-start" }}>
-            {workflow.upload.state === "SUBMITTING" ? t.submitting : `${t.submit} →`}
-          </button>
-          {(workflow.upload.state === "CREATED" || workflow.upload.state === "IDENTICAL_EXISTS") && (
-            <div data-testid="job-pool-upload-result" data-upload-outcome={workflow.upload.state} data-upload-id={workflow.upload.upload.jobPoolUploadId} data-jp-reveal="true" style={stack(3)}>
-              <span style={{ ...word(GREEN), whiteSpace: "normal" }}>{workflow.upload.state === "CREATED" ? t.uploadCreated : t.uploadIdentical}</span>
-              <span style={{ ...mono, color: INK }}>{workflow.upload.upload.jobPoolUploadId}</span>
-              <span style={micro}>{workflow.upload.upload.poolName} v{workflow.upload.upload.poolVersion} · {workflow.upload.upload.poolStatus} · raw sha256 {workflow.upload.upload.rawSha256.slice(0, 16)}…</span>
-              {workflow.selectedJobPoolUploadId !== workflow.upload.upload.jobPoolUploadId && <span style={amber}>{t.uploadNotSelected}</span>}
-            </div>
-          )}
-          {workflow.upload.state === "REJECTED" && (
-            <div data-testid="job-pool-upload-rejected" data-rejection-code={workflow.upload.code} data-rejection-status={workflow.upload.status} data-jp-reveal="true" style={stack(3)}>
-              <span style={red}>{t.uploadRejected} · HTTP {workflow.upload.status} · {workflow.upload.code}</span>
-              <span style={micro}>{workflow.upload.message}</span>
-              {workflow.upload.issues.map((issue, index) => <span key={`${issue.path}:${index}`} data-testid="job-pool-upload-issue" style={micro}>{issue.path || "(root)"}: {issue.message}</span>)}
-            </div>
-          )}
-          {workflow.upload.state === "NOT_PROVISIONED" && <span data-testid="job-pool-upload-not-provisioned" style={amber}>{t.notProvisioned}</span>}
-          {workflow.upload.state === "FAILED" && <span data-testid="job-pool-upload-failed" style={red}>{t.uploadFailed}{workflow.upload.code ? ` · ${workflow.upload.code}` : ""}</span>}
-        </section>
-      </div>
-
-      {/* Right surface: the selected upload (core reading), the pool structure, the delivered matching. */}
-      <div data-jp-surface="right" style={{ position: "absolute", right: "32px", top: "136px", width: "min(420px, 32vw)", maxHeight: "calc(100vh - 200px)", overflowY: "auto", paddingRight: "6px", ...stack(18), zIndex: 46 }}>
-        <section data-testid="job-pool-selected" data-selection-kind={selection.kind} style={stack(8)}>
-          <span style={sectionTitle}>{t.selectedPool}</span>
-          {selection.kind === "NONE" && <span data-testid="job-pool-selection-none" style={{ ...prose, fontSize: "10.5px" }}>{t.selectionNone}</span>}
-          {selection.kind === "NOT_LISTED" && <span data-testid="job-pool-selection-not-listed" style={{ ...prose, fontSize: "10.5px", color: AMBER }}>{t.selectionNotListed} · {selection.jobPoolUploadId}</span>}
+      {/* Core lens: the one reading of what is at the core, at the viewport edge with a tether toward the core; it dims while a body is focused. */}
+        <section data-testid="job-pool-selected" data-selection-kind={selection.kind} data-jp-reveal="true" style={{ ...lensStyle, position: "fixed", right: "32px", top: "50%", transform: "translateY(-50%)", width: "min(340px, 22vw)", maxHeight: "calc(100vh - 220px)", overflowY: "auto", ...stack(8), zIndex: 46, opacity: structureRoleId !== null ? 0.25 : 1, pointerEvents: structureRoleId !== null ? "none" : "auto", transition: "opacity .4s ease" }}>
+          <div aria-hidden="true" style={{ height: "1px", background: "linear-gradient(270deg, rgba(56, 229, 255, 0.7) 0%, transparent 100%)", marginBottom: "2px" }} />
+          {selection.kind === "NONE" && <span data-testid="job-pool-selection-none" style={{ ...prose, fontSize: "11px", textAlign: "center" }}>{t.selectionNone}</span>}
+          {selection.kind === "NOT_LISTED" && <span data-testid="job-pool-selection-not-listed" style={{ ...prose, fontSize: "11px", color: AMBER, textAlign: "center" }}>{t.selectionNotListed} · {selection.jobPoolUploadId}</span>}
           {selection.kind !== "NONE" && (
             <>
               {workflow.view.state === "LOADING" && <span style={micro}>{t.viewLoading}</span>}
@@ -587,72 +557,112 @@ export function JobPoolMatchPanelView({ workflow, analysisSource, jobPoolUploadI
               {workflow.view.state === "NOT_PROVISIONED" && <span style={amber}>{t.notProvisioned}</span>}
               {workflow.view.state === "FAILED" && <span data-testid="job-pool-view-failed" style={red}>{t.viewFailed}{workflow.view.code ? ` · ${workflow.view.code}` : ""}</span>}
               {workflow.view.state === "AVAILABLE" && structure !== null && (
-                <div data-jp-reveal="true" style={stack(8)}>
-                  <h4 style={title}>{workflow.view.upload.poolName} <span style={{ ...micro, fontSize: "10px" }}>v{workflow.view.upload.poolVersion} · {workflow.view.upload.poolStatus}</span></h4>
-                  <span style={{ ...mono, color: INK_SOFT }}>{workflow.view.upload.jobPoolUploadId}</span>
-                  <div style={tether(true)} />
+                <div style={stack(8)}>
                   <span style={row(16)}>
                     <span style={{ display: "flex", flexDirection: "column-reverse", gap: "2px" }}><span style={{ ...micro, fontSize: "7.5px", letterSpacing: "1px" }}>ORG</span><span style={{ ...display, fontSize: "20px", color: INK_SOFT }}>{structure.organizations.length}</span></span>
                     <span style={{ display: "flex", flexDirection: "column-reverse", gap: "2px" }}><span style={{ ...micro, fontSize: "7.5px", letterSpacing: "1px" }}>ROLES</span><span style={{ ...display, fontSize: "20px", color: INK_SOFT }}>{structure.roles.length}</span></span>
                     <span style={{ display: "flex", flexDirection: "column-reverse", gap: "2px" }}><span style={{ ...micro, fontSize: "7.5px", letterSpacing: "1px" }}>REQ</span><span style={{ ...display, fontSize: "20px", color: INK_SOFT }}>{structure.requirementCount}</span></span>
+                    <span style={{ ...mono, color: INK_SOFT, marginLeft: "auto", fontSize: "9px" }}>{workflow.view.upload.jobPoolUploadId}</span>
                   </span>
-                  <span style={micro}>{t.structure} · {t.structureHint}</span>
                   <CanonicalMappingReading upload={workflow.view.upload} t={t} />
                 </div>
               )}
             </>
           )}
-        </section>
-
-        {structureRole !== null && <StructureRoleReading role={structureRole} t={t} onBack={() => setStructureRoleId(null)} />}
-
-        <section data-testid="job-pool-matches" data-matches-state={workflow.matches.state} data-ranking={workflow.matches.state === "AVAILABLE" ? describeRanking(workflow.matches.matches.roleMatches) : ""} style={stack(10)}>
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", gap: "10px" }}>
-            <span style={sectionTitle}>{t.matches}</span>
-            {workflow.matches.state === "AVAILABLE" && onEnterJobField !== undefined && <button data-testid="job-pool-enter-job-field" onClick={onEnterJobField} style={action("cyan")}>{t.enterJobField}</button>}
+          <div data-testid="job-pool-matches" data-matches-state={workflow.matches.state} data-ranking={workflow.matches.state === "AVAILABLE" ? describeRanking(workflow.matches.matches.roleMatches) : ""} style={{ ...stack(8), paddingTop: "6px", borderTop: "1px solid rgba(99, 120, 138, 0.2)" }}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", gap: "10px" }}>
+              <span style={sectionTitle}>{t.matches}</span>
+              {workflow.matches.state === "AVAILABLE" && onEnterJobField !== undefined && <button data-testid="job-pool-enter-job-field" onClick={onEnterJobField} style={action("cyan")}>{t.enterJobField}</button>}
+            </div>
+            {workflow.matches.state === "IDLE" && <span data-testid="job-pool-matches-idle" style={{ ...prose, fontSize: "11px" }}>{t.matchesIdle}</span>}
+            {workflow.matches.state === "LOADING" && <span style={micro}>{t.matchesLoading}</span>}
+            {workflow.matches.state === "NOT_FOUND" && <span data-testid="job-pool-matches-not-found" style={red}>{t.matchesNotFound}{workflow.matches.code ? ` · ${workflow.matches.code}` : ""}{workflow.matches.message ? ` · ${workflow.matches.message}` : ""}</span>}
+            {workflow.matches.state === "INACTIVE_POOL" && <span data-testid="job-pool-matches-inactive" style={{ ...prose, fontSize: "11px", color: AMBER }}>{t.matchesInactive}{workflow.matches.message ? ` · ${workflow.matches.message}` : ""}</span>}
+            {workflow.matches.state === "NOT_PROVISIONED" && <span data-testid="job-pool-matches-not-provisioned" style={amber}>{t.notProvisioned}</span>}
+            {workflow.matches.state === "FAILED" && <span data-testid="job-pool-matches-failed" style={red}>{t.matchesFailed}{workflow.matches.code ? ` · ${workflow.matches.code}` : ""}</span>}
+            {workflow.matches.state === "AVAILABLE" && (() => {
+              const presentation = workflow.matches.matches;
+              const ranking = describeRanking(presentation.roleMatches);
+              return (
+                <div data-jp-reveal="true" style={stack(8)}>
+                  <div data-testid="job-pool-presentation-labels" data-policy-version={presentation.presentation.policyVersion} data-authority-state={presentation.presentation.authorityState} style={row(12)}>
+                    {presentationLabels(presentation.presentation).map(item => <span key={item} data-testid={`job-pool-label-${item}`} style={word(AMBER)}>{t.labels[item]}</span>)}
+                  </div>
+                  <span data-testid="job-pool-ranking" data-ranking={ranking} style={{ ...micro, color: ranking === "DELIVERED_ORDER_NOT_MONOTONE" ? AMBER : MUTED }}>{t.ranking[ranking]}</span>
+                  <span style={micro}>{t.readingsHint}</span>
+                  <button data-testid="job-pool-matching-details-toggle" aria-expanded={detailsOpen} onClick={() => setDetailsOpen(value => !value)} style={{ ...ghost, alignSelf: "flex-start" }}>{detailsOpen ? t.matchingDetailsHide : t.matchingDetails}</button>
+                  <div data-testid="job-pool-matching-details" hidden={!detailsOpen} data-jp-reveal={detailsOpen ? "true" : undefined} style={{ display: detailsOpen ? "flex" : "none", flexDirection: "column", gap: "8px" }}>
+                    <span style={micro}>{presentation.presentation.kind} · {presentation.presentation.policyVersion} · authority {presentation.presentation.authorityState} · canonicalEvaluation {String(presentation.presentation.canonicalEvaluation)} · decision {String(presentation.presentation.decision)}</span>
+                    <span style={micro}>{t.candidateCapabilities} {presentation.candidateCapabilityCount} · {t.weakThreshold} {presentation.presentation.weakEvidenceThreshold} · {presentation.poolId} v{presentation.poolVersion}</span>
+                    <div data-testid="job-pool-capability-sweep" data-sweep-state={presentation.capabilitySweep.state} data-proposal-count={presentation.capabilitySweep.proposalCount} data-scored="false" style={{ ...stack(4), padding: "8px 0", borderTop: "1px dashed rgba(99, 120, 138, 0.3)", borderBottom: "1px dashed rgba(99, 120, 138, 0.3)" }}>
+                      <span style={sectionTitle}>{t.sweep}</span>
+                      <span style={{ ...micro, color: presentation.capabilitySweep.state === "FAILED" ? RED : presentation.capabilitySweep.state === "NOT_PRODUCED" ? AMBER : MUTED }}>{t.sweepStates[presentation.capabilitySweep.state]} · {t.sweepProposals} {presentation.capabilitySweep.proposalCount} · <span style={word(AMBER)}>{t.unscored}</span></span>
+                      <span style={{ ...prose, fontSize: "11px" }}>{t.sweepBoundary}</span>
+                    </div>
+                    <span style={{ ...prose, fontSize: "11px" }}>{t.missingBoundary}</span>
+                    <div data-testid="job-pool-organizations" style={stack(4)}>
+                      <span style={sectionTitle}>{t.organizations}</span>
+                      {presentation.organizationMatches.map(organization => (
+                        <span key={organization.poolOrganizationId} data-testid={`job-pool-organization-${organization.poolOrganizationId}`} style={micro}>
+                          <span style={{ color: INK }}>{organization.name}</span> · {organization.industry || "—"} · {percent(organization.aggregateScore)} · {organization.roleCount} roles · top: {organization.topRoleTitle ?? "—"}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              );
+            })()}
           </div>
-          {workflow.matches.state === "IDLE" && <span data-testid="job-pool-matches-idle" style={{ ...prose, fontSize: "10.5px" }}>{t.matchesIdle}</span>}
-          {workflow.matches.state === "LOADING" && <span style={micro}>{t.matchesLoading}</span>}
-          {workflow.matches.state === "NOT_FOUND" && <span data-testid="job-pool-matches-not-found" style={red}>{t.matchesNotFound}{workflow.matches.code ? ` · ${workflow.matches.code}` : ""}{workflow.matches.message ? ` · ${workflow.matches.message}` : ""}</span>}
-          {workflow.matches.state === "INACTIVE_POOL" && <span data-testid="job-pool-matches-inactive" style={{ ...prose, fontSize: "10.5px", color: AMBER }}>{t.matchesInactive}{workflow.matches.message ? ` · ${workflow.matches.message}` : ""}</span>}
-          {workflow.matches.state === "NOT_PROVISIONED" && <span data-testid="job-pool-matches-not-provisioned" style={amber}>{t.notProvisioned}</span>}
-          {workflow.matches.state === "FAILED" && <span data-testid="job-pool-matches-failed" style={red}>{t.matchesFailed}{workflow.matches.code ? ` · ${workflow.matches.code}` : ""}</span>}
-          {workflow.matches.state === "AVAILABLE" && (() => {
-            const presentation = workflow.matches.matches;
-            const ranking = describeRanking(presentation.roleMatches);
-            return (
-              <div data-jp-reveal="true" style={stack(10)}>
-                <div data-testid="job-pool-presentation-labels" data-policy-version={presentation.presentation.policyVersion} data-authority-state={presentation.presentation.authorityState} style={row(12)}>
-                  {presentationLabels(presentation.presentation).map(item => <span key={item} data-testid={`job-pool-label-${item}`} style={word(AMBER)}>{t.labels[item]}</span>)}
-                </div>
-                <span data-testid="job-pool-ranking" data-ranking={ranking} style={{ ...micro, color: ranking === "DELIVERED_ORDER_NOT_MONOTONE" ? AMBER : MUTED }}>{t.ranking[ranking]}</span>
-                <button data-testid="job-pool-matching-details-toggle" aria-expanded={detailsOpen} onClick={() => setDetailsOpen(value => !value)} style={{ ...ghost, alignSelf: "flex-start" }}>{detailsOpen ? t.matchingDetailsHide : t.matchingDetails}</button>
-                <div data-testid="job-pool-matching-details" hidden={!detailsOpen} data-jp-reveal={detailsOpen ? "true" : undefined} style={{ display: detailsOpen ? "flex" : "none", flexDirection: "column", gap: "8px" }}>
-                  <span style={micro}>{presentation.presentation.kind} · {presentation.presentation.policyVersion} · authority {presentation.presentation.authorityState} · canonicalEvaluation {String(presentation.presentation.canonicalEvaluation)} · decision {String(presentation.presentation.decision)}</span>
-                  <span style={micro}>{t.candidateCapabilities} {presentation.candidateCapabilityCount} · {t.weakThreshold} {presentation.presentation.weakEvidenceThreshold} · {presentation.poolId} v{presentation.poolVersion}</span>
-                  <div data-testid="job-pool-capability-sweep" data-sweep-state={presentation.capabilitySweep.state} data-proposal-count={presentation.capabilitySweep.proposalCount} data-scored="false" style={{ ...stack(4), padding: "8px 0", borderTop: "1px dashed rgba(99, 120, 138, 0.3)", borderBottom: "1px dashed rgba(99, 120, 138, 0.3)" }}>
-                    <span style={sectionTitle}>{t.sweep}</span>
-                    <span style={{ ...micro, color: presentation.capabilitySweep.state === "FAILED" ? RED : presentation.capabilitySweep.state === "NOT_PRODUCED" ? AMBER : MUTED }}>{t.sweepStates[presentation.capabilitySweep.state]} · {t.sweepProposals} {presentation.capabilitySweep.proposalCount} · <span style={word(AMBER)}>{t.unscored}</span></span>
-                    <span style={{ ...prose, fontSize: "11.5px" }}>{t.sweepBoundary}</span>
-                  </div>
-                  <span style={{ ...prose, fontSize: "11.5px" }}>{t.missingBoundary}</span>
-                  <div data-testid="job-pool-organizations" style={stack(4)}>
-                    <span style={sectionTitle}>{t.organizations}</span>
-                    {presentation.organizationMatches.map(organization => (
-                      <span key={organization.poolOrganizationId} data-testid={`job-pool-organization-${organization.poolOrganizationId}`} style={micro}>
-                        <span style={{ color: INK }}>{organization.name}</span> · {organization.industry || "—"} · {percent(organization.aggregateScore)} · {organization.roleCount} roles · top: {organization.topRoleTitle ?? "—"}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-                <div data-testid="job-pool-role-list" data-role-count={presentation.roleMatches.length} style={stack(2)}>
-                  {presentation.roleMatches.map((role, index) => <RoleReading key={role.poolRoleId} role={role} rank={index + 1} t={t} />)}
-                </div>
-              </div>
-            );
-          })()}
         </section>
+
+      {/* Orientation: one small line. */}
+      <div data-jp-surface="header" style={{ position: "absolute", left: "28px", top: "136px", ...stack(6), zIndex: 46, maxWidth: "min(300px, 26vw)" }}>
+        <div style={{ display: "flex", alignItems: "baseline", gap: "14px", flexWrap: "wrap" }}>
+          <h3 style={{ ...label, color: CYAN, fontSize: "10px", letterSpacing: "2.4px", textShadow: `0 0 14px ${SIL_TOKENS.colors.cyanGlowStrong}` }}>{t.title}</h3>
+          <button data-testid="job-pool-panel-collapse" onClick={() => setOpen(false)} style={action("muted")}>{t.collapse}</button>
+        </div>
+        <span data-testid="job-pool-list-state" data-list-state={listState} style={{ ...micro, display: "inline-flex", alignItems: "center", gap: "8px", color: listState === "AVAILABLE" ? MUTED : stateTone }}>
+          <span aria-hidden="true" style={{ width: "6px", height: "6px", borderRadius: "50%", backgroundColor: stateTone, boxShadow: `0 0 8px ${stateTone}`, flexShrink: 0, animation: listState === "LOADING" && motion.enterMs > 0 ? "jpPulse 1.4s ease-in-out infinite" : undefined }} />
+          {listState === "AVAILABLE" ? `${t.pools} · ${listed.length}` : listState === "LOADING" ? t.poolsLoading : listState === "EMPTY" ? t.poolsEmpty : listState === "NOT_PROVISIONED" ? t.notProvisioned : t.poolsFailed}
+        </span>
+        <section data-testid="job-pool-analysis" data-analysis-source={analysisSource.kind} style={stack(2)}>
+          {analysisSource.kind === "NONE" && <span data-testid="job-pool-analysis-none" style={{ ...micro, color: AMBER }}>{t.analysisNone}</span>}
+          {analysisSource.kind !== "NONE" && <span style={micro}>{t.analysis} · <span style={{ color: INK }}>{analysisSource.analysisId}</span> · {analysisSource.kind === "JOB_RESULT" ? t.analysisFromJob : t.analysisFromUrl}</span>}
+        </section>
+        <button data-testid="job-pool-intake-toggle" aria-expanded={intakeVisible} onClick={() => setIntakeOpen(value => !value)} style={{ ...ghost, alignSelf: "flex-start", fontSize: "9px" }}>{intakeVisible ? t.intakeHide : t.intakeOpen}</button>
       </div>
+
+      {/* Intake: the contextual action while nothing is at the core; an affordance afterwards. */}
+      <section data-testid="job-pool-upload" hidden={!intakeVisible} data-jp-reveal={intakeVisible ? "true" : undefined} style={{ ...lensStyle, display: intakeVisible ? "flex" : "none", flexDirection: "column", gap: "8px", position: "absolute", left: "28px", top: "262px", width: "min(284px, 25vw)", zIndex: 46 }}>
+        <span style={label}>{t.intake} · {t.upload}</span>
+        <label style={{ ...micro, ...stack(2) }}>{t.uploader}
+          <input data-testid="job-pool-actor-input" value={actorId} onChange={event => setActorId(event.target.value)} style={inputStyle} />
+        </label>
+        <label style={{ ...micro, ...stack(2) }}>{t.chooseFile}
+          <input data-testid="job-pool-file-input" type="file" accept="application/json,.json" onChange={event => { void onFile(event); }} style={{ ...inputStyle, fontSize: "9px", color: MUTED }} />
+        </label>
+        <span data-testid="job-pool-file-name" style={micro}>{fileName ?? t.noFile}</span>
+        <button data-testid="job-pool-upload-btn" disabled={!canUpload} onClick={() => { if (fileText !== null) void workflow.submitUpload(fileText, actorId); }} style={{ ...action("cyan", canUpload), alignSelf: "flex-start" }}>
+          {workflow.upload.state === "SUBMITTING" ? t.submitting : `${t.submit} →`}
+        </button>
+        {(workflow.upload.state === "CREATED" || workflow.upload.state === "IDENTICAL_EXISTS") && (
+          <div data-testid="job-pool-upload-result" data-upload-outcome={workflow.upload.state} data-upload-id={workflow.upload.upload.jobPoolUploadId} data-jp-reveal="true" style={stack(3)}>
+            <span style={{ ...word(GREEN), whiteSpace: "normal" }}>{workflow.upload.state === "CREATED" ? t.uploadCreated : t.uploadIdentical}</span>
+            <span style={{ ...mono, color: INK }}>{workflow.upload.upload.jobPoolUploadId}</span>
+            <span style={micro}>{workflow.upload.upload.poolName} v{workflow.upload.upload.poolVersion} · {workflow.upload.upload.poolStatus} · raw sha256 {workflow.upload.upload.rawSha256.slice(0, 16)}…</span>
+            {workflow.selectedJobPoolUploadId !== workflow.upload.upload.jobPoolUploadId && <span style={amber}>{t.uploadNotSelected}</span>}
+          </div>
+        )}
+        {workflow.upload.state === "REJECTED" && (
+          <div data-testid="job-pool-upload-rejected" data-rejection-code={workflow.upload.code} data-rejection-status={workflow.upload.status} data-jp-reveal="true" style={stack(3)}>
+            <span style={red}>{t.uploadRejected} · HTTP {workflow.upload.status} · {workflow.upload.code}</span>
+            <span style={micro}>{workflow.upload.message}</span>
+            {workflow.upload.issues.map((issue, index) => <span key={`${issue.path}:${index}`} data-testid="job-pool-upload-issue" style={micro}>{issue.path || "(root)"}: {issue.message}</span>)}
+          </div>
+        )}
+        {workflow.upload.state === "NOT_PROVISIONED" && <span data-testid="job-pool-upload-not-provisioned" style={amber}>{t.notProvisioned}</span>}
+        {workflow.upload.state === "FAILED" && <span data-testid="job-pool-upload-failed" style={red}>{t.uploadFailed}{workflow.upload.code ? ` · ${workflow.upload.code}` : ""}</span>}
+      </section>
 
       <span data-testid="job-pool-non-claims" style={{ position: "absolute", left: "50%", bottom: "calc(var(--condyn-page-header-height, 60px) + 22px)", transform: "translateX(-50%)", maxWidth: "min(900px, 80vw)", textAlign: "center", ...micro, fontSize: "8.5px", letterSpacing: "1.4px", color: "rgba(230, 241, 248, 0.55)", zIndex: 46 }}>{t.nonClaims}</span>
     </section>

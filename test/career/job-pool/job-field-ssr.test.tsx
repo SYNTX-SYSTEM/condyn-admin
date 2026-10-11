@@ -115,12 +115,17 @@ describe("SIL Job Field focus (server-rendered)", () => {
     expect(html).toContain("@media (prefers-reduced-motion: reduce)");
     // Information surfaces are field extensions: veils instead of containers, a ground line for the laws, a tether on the nearest reading.
     expect(html).toMatch(/data-testid="job-field"[^>]*data-surface-grammar="FIELD_EXTENSION_V1"/);
-    expect(html).toContain('data-jf-veil="left"');
-    expect(html).toContain('data-jf-veil="right"');
-    expect(html).toMatch(/data-jf-surface="left"/);
-    expect(html).toMatch(/data-jf-surface="right"/);
-    expect(html).not.toMatch(/data-testid="job-field-legend"[^>]*style="[^"]*border/);
-    expect(html).not.toMatch(/data-testid="job-field-nearest"[^>]*style="[^"]*border/);
+    // Lens model: no columns, no veils; one stage; the nearest reading is a caption at its body, pointer-transparent; the legend is an affordance.
+    expect(html).toMatch(/data-testid="job-field"[^>]*data-interaction-grammar="LENS_V1"[^>]*data-focus-level="FIELD"/);
+    expect(html).toContain('data-testid="job-field-stage"');
+    expect(html).not.toContain("data-jf-veil");
+    expect(html).not.toMatch(/data-jf-surface="(left|right)"/);
+    expect(html).toMatch(/data-jf-surface="header"/);
+    expect(html).toMatch(/data-testid="job-field-nearest"[^>]*data-caption-side="(left|right)"[^>]*style="[^"]*pointer-events:none/);
+    expect(html).toMatch(/data-camera-scale="1"/);
+    expect(html).not.toContain('<div data-testid="job-field-lens"');
+    expect(html).not.toMatch(/data-testid="job-field-legend"[^>]*style="[^"]*[;"]border:/);
+    expect(html).not.toMatch(/data-testid="job-field-nearest"[^>]*style="[^"]*[;"]border:/);
     // Galaxy grammar: one nebula per pool organisation lit by its delivered aggregate, a thread only to roles with scored evidence,
     // one moon per requirement in state order, a reading sentence from delivered facts, the canonical reason folded behind WHY.
     expect(html).toMatch(/data-testid="job-field"[^>]*data-galaxy-grammar="GALAXY_V1"/);
@@ -146,6 +151,13 @@ describe("SIL Job Field focus (server-rendered)", () => {
     expect(html).toMatch(/data-testid="job-field-reveal-all"[^>]*data-revealed-all="false"/);
     expect(html).toContain('data-testid="job-field-composition"');
     expect(html).toMatch(/data-testid="job-field-role-ROLE_A"[^>]*data-selected="true"[^>]*[^>]*data-focused="true"/);
+    // ROLE level: the camera sits on the role, the reading is one lens beside it, moons spread with their names, the caption is gone.
+    expect(html).toMatch(/data-testid="job-field"[^>]*data-focus-level="ROLE"/);
+    expect(html).toMatch(/data-camera-scale="1.5"/);
+    expect(html).toMatch(/data-testid="job-field-lens"[^>]*data-role-id="ROLE_A"/);
+    expect(html).toMatch(/data-testid="job-field-role-ROLE_A"[^>]*data-moon-radius="68"/);
+    expect(html).toContain("data-jf-moon-label");
+    expect(html).not.toContain('<section data-testid="job-field-nearest"');
     expect(html).toMatch(/data-pending-kind="UNPROVEN_CANONICAL"[^>]*data-pending-count="2"[^>]*data-motion="ORBIT"/);
     expect(html).not.toMatch(/data-pending-kind="UNRESOLVED_EVIDENCE"/);
   });
@@ -160,7 +172,7 @@ describe("SIL Job Field focus (server-rendered)", () => {
     expect(html).toContain("Operated the Kubernetes test cluster for the platform team.");
     expect(html).toContain("analysis capability (scored)");
     expect(html).toContain("capability sweep proposal (unscored, source-verified quote)");
-    expect(html).not.toContain('data-testid="job-field-nearest"');
+    expect(html).not.toContain('<section data-testid="job-field-nearest"');
     const stale = renderToString(<SemanticCareerIntelligenceField data={EMPTY_CAREER_INTELLIGENCE_DATA} fieldFocus="JOB" jobPoolUploadId="JPOOL_WITH_MATCHES" analysisId="ANL_TEST" jobRoleId="ROLE_STALE" />);
     expect(stale).toContain('data-testid="job-field-role-not-delivered"');
     expect(stale).toContain('data-selected-role=""');
