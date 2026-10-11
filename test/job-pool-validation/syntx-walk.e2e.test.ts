@@ -124,7 +124,7 @@ describe.skipIf(playwrightModule === null)("PINK Q-12: SYNTX field walk FIELD â†
   async function settled(page: any): Promise<void> {
     const deadline = Date.now() + 10_000;
     while (Date.now() < deadline) {
-      const running = await field(page).evaluate((element: Element) => element.getAnimations({ subtree: true }).filter((animation: any) => animation.playState === "running" && !String(animation.animationName ?? "").startsWith("sxSuspend")).length);
+      const running = await field(page).evaluate((element: Element) => element.getAnimations({ subtree: true }).filter((animation: any) => animation.playState === "running" && !String(animation.animationName ?? "").startsWith("sxSuspend") && animation.effect?.getTiming?.().iterations !== Infinity).length);
       if (running === 0) break;
       await page.waitForTimeout(120);
     }

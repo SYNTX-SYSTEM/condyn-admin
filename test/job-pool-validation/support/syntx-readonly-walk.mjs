@@ -65,7 +65,7 @@ const root = (page) => page.getByTestId("syntx-field");
 const settled = async (page) => {
   const deadline = Date.now() + 10_000;
   while (Date.now() < deadline) {
-    const running = await root(page).evaluate((el) => el.getAnimations({ subtree: true }).filter((a) => a.playState === "running" && !String(a.animationName ?? "").startsWith("sxSuspend")).length);
+    const running = await root(page).evaluate((el) => el.getAnimations({ subtree: true }).filter((a) => a.playState === "running" && !String(a.animationName ?? "").startsWith("sxSuspend") && a.effect?.getTiming?.().iterations !== Infinity).length);
     if (running === 0) break;
     await page.waitForTimeout(120);
   }
