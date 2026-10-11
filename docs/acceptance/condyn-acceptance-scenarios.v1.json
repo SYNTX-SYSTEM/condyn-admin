@@ -1,0 +1,1821 @@
+{
+  "plan": "docs/acceptance/CONDYN_SYSTEM_ACCEPTANCE_TEST_PLAN_v1.0.md",
+  "version": "1.0.1",
+  "tip": "cccd647",
+  "generated": "2026-10-11",
+  "scenarioCount": 126,
+  "scenarios": [
+    {
+      "id": "A-01",
+      "suite": "TS-A Environment and safety",
+      "title": "Worktree and tip",
+      "sequences": [
+        "S0"
+      ],
+      "risk": [
+        "R7"
+      ],
+      "video": false,
+      "evidence": [
+        "A-01-tip.txt"
+      ]
+    },
+    {
+      "id": "A-02",
+      "suite": "TS-A Environment and safety",
+      "title": "Database identity fail-closed",
+      "sequences": [],
+      "risk": [
+        "R7"
+      ],
+      "video": false,
+      "evidence": [
+        "A-02-fail-closed.txt"
+      ]
+    },
+    {
+      "id": "A-03",
+      "suite": "TS-A Environment and safety",
+      "title": "Disposable database marker",
+      "sequences": [],
+      "risk": [
+        "R7"
+      ],
+      "video": false,
+      "evidence": [
+        "A-03-marker.txt"
+      ]
+    },
+    {
+      "id": "A-04",
+      "suite": "TS-A Environment and safety",
+      "title": "Owner environment untouched",
+      "sequences": [
+        "S7"
+      ],
+      "risk": [
+        "R7"
+      ],
+      "video": false,
+      "evidence": [
+        "A-04-owner-env-after.txt",
+        "A-04-owner-env-before.txt"
+      ]
+    },
+    {
+      "id": "A-05",
+      "suite": "TS-A Environment and safety",
+      "title": "Secret hygiene",
+      "sequences": [
+        "S7"
+      ],
+      "risk": [],
+      "video": false,
+      "evidence": [
+        "A-05-secret-scan.txt"
+      ]
+    },
+    {
+      "id": "A-06",
+      "suite": "TS-A Environment and safety",
+      "title": "Automated baseline",
+      "sequences": [
+        "S0"
+      ],
+      "risk": [
+        "R7"
+      ],
+      "video": false,
+      "evidence": [
+        "A-06-baseline.txt"
+      ]
+    },
+    {
+      "id": "B-01",
+      "suite": "TS-B API contracts",
+      "title": "Analyze rejects empty input",
+      "sequences": [
+        "S1"
+      ],
+      "risk": [
+        "R6"
+      ],
+      "video": false,
+      "evidence": [
+        "B-01.json"
+      ]
+    },
+    {
+      "id": "B-02",
+      "suite": "TS-B API contracts",
+      "title": "Analyze rejects empty text / bad URLs",
+      "sequences": [
+        "S1"
+      ],
+      "risk": [
+        "R6"
+      ],
+      "video": false,
+      "evidence": [
+        "B-02-*.json"
+      ]
+    },
+    {
+      "id": "B-03",
+      "suite": "TS-B API contracts",
+      "title": "Analyze accepts a PDF and returns a job",
+      "sequences": [
+        "S2"
+      ],
+      "risk": [
+        "R1"
+      ],
+      "video": false,
+      "evidence": [
+        "B-03.json"
+      ]
+    },
+    {
+      "id": "B-04",
+      "suite": "TS-B API contracts",
+      "title": "Idempotency key",
+      "sequences": [],
+      "risk": [
+        "R6",
+        "R7"
+      ],
+      "video": false,
+      "evidence": [
+        "B-04-*.json"
+      ]
+    },
+    {
+      "id": "B-05",
+      "suite": "TS-B API contracts",
+      "title": "Job polling states",
+      "sequences": [],
+      "risk": [
+        "R1",
+        "R6"
+      ],
+      "video": false,
+      "evidence": [
+        "B-05-polls.json"
+      ]
+    },
+    {
+      "id": "B-06",
+      "suite": "TS-B API contracts",
+      "title": "Analysis read",
+      "sequences": [],
+      "risk": [
+        "R1",
+        "R7"
+      ],
+      "video": false,
+      "evidence": [
+        "B-06.json"
+      ]
+    },
+    {
+      "id": "B-07",
+      "suite": "TS-B API contracts",
+      "title": "Analyses index",
+      "sequences": [
+        "S2"
+      ],
+      "risk": [
+        "R7"
+      ],
+      "video": false,
+      "evidence": [
+        "B-07.json"
+      ]
+    },
+    {
+      "id": "B-08",
+      "suite": "TS-B API contracts",
+      "title": "Job pool upload: new, identical, reordered",
+      "sequences": [
+        "S1"
+      ],
+      "risk": [
+        "R7"
+      ],
+      "video": false,
+      "evidence": [
+        "B-08-*.json"
+      ]
+    },
+    {
+      "id": "B-09",
+      "suite": "TS-B API contracts",
+      "title": "Job pool upload errors",
+      "sequences": [],
+      "risk": [
+        "R6"
+      ],
+      "video": false,
+      "evidence": [
+        "B-09-*.json"
+      ]
+    },
+    {
+      "id": "B-10",
+      "suite": "TS-B API contracts",
+      "title": "List and read",
+      "sequences": [
+        "S1"
+      ],
+      "risk": [
+        "R7"
+      ],
+      "video": false,
+      "evidence": [
+        "B-10-*.json"
+      ]
+    },
+    {
+      "id": "B-11",
+      "suite": "TS-B API contracts",
+      "title": "Matches",
+      "sequences": [
+        "S2"
+      ],
+      "risk": [
+        "R1",
+        "R7"
+      ],
+      "video": false,
+      "evidence": [
+        "B-11-recompute.txt",
+        "B-11.json"
+      ]
+    },
+    {
+      "id": "B-12",
+      "suite": "TS-B API contracts",
+      "title": "Matches errors",
+      "sequences": [
+        "S1"
+      ],
+      "risk": [
+        "R6"
+      ],
+      "video": false,
+      "evidence": [
+        "B-12-*.json"
+      ]
+    },
+    {
+      "id": "B-13",
+      "suite": "TS-B API contracts",
+      "title": "Matches persist nothing",
+      "sequences": [
+        "S1"
+      ],
+      "risk": [
+        "R7"
+      ],
+      "video": false,
+      "evidence": [
+        "B-13-census.txt"
+      ]
+    },
+    {
+      "id": "B-14",
+      "suite": "TS-B API contracts",
+      "title": "HR context read",
+      "sequences": [
+        "S1"
+      ],
+      "risk": [
+        "R6",
+        "R7"
+      ],
+      "video": false,
+      "evidence": [
+        "B-14-*.json"
+      ]
+    },
+    {
+      "id": "B-15",
+      "suite": "TS-B API contracts",
+      "title": "HR declaration gate",
+      "sequences": [
+        "S1"
+      ],
+      "risk": [
+        "R6",
+        "R7"
+      ],
+      "video": false,
+      "evidence": [
+        "B-15-*.json"
+      ]
+    },
+    {
+      "id": "B-16",
+      "suite": "TS-B API contracts",
+      "title": "Gate 503 on a non-disposable database",
+      "sequences": [
+        "S1"
+      ],
+      "risk": [
+        "R6",
+        "R7"
+      ],
+      "video": false,
+      "evidence": [
+        "B-16-tables.txt",
+        "B-16.json"
+      ]
+    },
+    {
+      "id": "C-01",
+      "suite": "TS-C Capability Discovery and Gemini",
+      "title": "Text source sweep",
+      "sequences": [
+        "S2"
+      ],
+      "risk": [
+        "R1"
+      ],
+      "video": false,
+      "evidence": [
+        "C-01-job.json"
+      ]
+    },
+    {
+      "id": "C-02",
+      "suite": "TS-C Capability Discovery and Gemini",
+      "title": "PDF source sweep",
+      "sequences": [],
+      "risk": [
+        "R1"
+      ],
+      "video": false,
+      "evidence": [
+        "C-02-*.png",
+        "C-02-analysis.json"
+      ]
+    },
+    {
+      "id": "C-03",
+      "suite": "TS-C Capability Discovery and Gemini",
+      "title": "Proposal lineage",
+      "sequences": [],
+      "risk": [
+        "R1",
+        "R7"
+      ],
+      "video": false,
+      "evidence": [
+        "C-02-analysis.json",
+        "C-03-quotes.txt"
+      ]
+    },
+    {
+      "id": "C-04",
+      "suite": "TS-C Capability Discovery and Gemini",
+      "title": "Retry resilience",
+      "sequences": [],
+      "risk": [
+        "R1"
+      ],
+      "video": false,
+      "evidence": [
+        "C-04-attempts.txt"
+      ]
+    },
+    {
+      "id": "C-05",
+      "suite": "TS-C Capability Discovery and Gemini",
+      "title": "Same PDF twice",
+      "sequences": [
+        "S2"
+      ],
+      "risk": [
+        "R1"
+      ],
+      "video": false,
+      "evidence": [
+        "C-05-compare.txt"
+      ]
+    },
+    {
+      "id": "C-06",
+      "suite": "TS-C Capability Discovery and Gemini",
+      "title": "Model absent / wrong",
+      "sequences": [
+        "S4"
+      ],
+      "risk": [
+        "R6"
+      ],
+      "video": false,
+      "evidence": [
+        "C-06-error.png",
+        "C-06-job.json"
+      ]
+    },
+    {
+      "id": "C-07",
+      "suite": "TS-C Capability Discovery and Gemini",
+      "title": "Key absent",
+      "sequences": [
+        "S4"
+      ],
+      "risk": [
+        "R6"
+      ],
+      "video": false,
+      "evidence": [
+        "C-07.txt"
+      ]
+    },
+    {
+      "id": "D-01",
+      "suite": "TS-D Job Pool workflow",
+      "title": "Panel opens empty on a fresh database",
+      "sequences": [
+        "S1",
+        "S2"
+      ],
+      "risk": [
+        "R3"
+      ],
+      "video": false,
+      "evidence": [
+        "D-01.png"
+      ]
+    },
+    {
+      "id": "D-02",
+      "suite": "TS-D Job Pool workflow",
+      "title": "Upload persisted, not selected",
+      "sequences": [],
+      "risk": [
+        "R3",
+        "R7"
+      ],
+      "video": false,
+      "evidence": [
+        "D-02.png"
+      ]
+    },
+    {
+      "id": "D-03",
+      "suite": "TS-D Job Pool workflow",
+      "title": "Identical re-upload",
+      "sequences": [],
+      "risk": [
+        "R7"
+      ],
+      "video": false,
+      "evidence": [
+        "D-03.png"
+      ]
+    },
+    {
+      "id": "D-04",
+      "suite": "TS-D Job Pool workflow",
+      "title": "Explicit selection and matching",
+      "sequences": [
+        "S1",
+        "S1"
+      ],
+      "risk": [
+        "R3",
+        "R7"
+      ],
+      "video": false,
+      "evidence": [
+        "D-04-matches.json",
+        "D-04.png"
+      ]
+    },
+    {
+      "id": "D-05",
+      "suite": "TS-D Job Pool workflow",
+      "title": "Card content equals the body",
+      "sequences": [],
+      "risk": [
+        "R7"
+      ],
+      "video": false,
+      "evidence": [
+        "D-05-diff.txt"
+      ]
+    },
+    {
+      "id": "D-06",
+      "suite": "TS-D Job Pool workflow",
+      "title": "Sweep coverage shown unscored",
+      "sequences": [],
+      "risk": [
+        "R2",
+        "R7"
+      ],
+      "video": false,
+      "evidence": [
+        "D-06.png"
+      ]
+    },
+    {
+      "id": "D-07",
+      "suite": "TS-D Job Pool workflow",
+      "title": "Organisation aggregates and non-claims",
+      "sequences": [],
+      "risk": [
+        "R2"
+      ],
+      "video": false,
+      "evidence": [
+        "D-07.png"
+      ]
+    },
+    {
+      "id": "D-08",
+      "suite": "TS-D Job Pool workflow",
+      "title": "DRAFT pool",
+      "sequences": [],
+      "risk": [
+        "R6"
+      ],
+      "video": false,
+      "evidence": [
+        "D-08.png"
+      ]
+    },
+    {
+      "id": "D-09",
+      "suite": "TS-D Job Pool workflow",
+      "title": "Rejected uploads",
+      "sequences": [],
+      "risk": [
+        "R6"
+      ],
+      "video": false,
+      "evidence": [
+        "D-09-*.png"
+      ]
+    },
+    {
+      "id": "D-10",
+      "suite": "TS-D Job Pool workflow",
+      "title": "Reload semantics (B-JF-SESSION)",
+      "sequences": [
+        "S2"
+      ],
+      "risk": [
+        "R3"
+      ],
+      "video": false,
+      "evidence": [
+        "D-10-*.png"
+      ]
+    },
+    {
+      "id": "E-01",
+      "suite": "TS-E Spatial Job Field",
+      "title": "Enter JOB focus",
+      "sequences": [
+        "S2"
+      ],
+      "risk": [
+        "R3",
+        "R4"
+      ],
+      "video": true,
+      "evidence": [
+        "E-01.png",
+        "E-01.webm"
+      ]
+    },
+    {
+      "id": "E-02",
+      "suite": "TS-E Spatial Job Field",
+      "title": "Canvas reads as a field, numbers equal the body",
+      "sequences": [],
+      "risk": [
+        "R2",
+        "R7"
+      ],
+      "video": false,
+      "evidence": [
+        "E-02-diff.txt",
+        "E-02.png"
+      ]
+    },
+    {
+      "id": "E-03",
+      "suite": "TS-E Spatial Job Field",
+      "title": "Legend, laws, source naming",
+      "sequences": [],
+      "risk": [
+        "R2"
+      ],
+      "video": false,
+      "evidence": [
+        "E-03-dom.txt",
+        "E-03.png"
+      ]
+    },
+    {
+      "id": "E-04",
+      "suite": "TS-E Spatial Job Field",
+      "title": "Nearest presented role",
+      "sequences": [
+        "S2"
+      ],
+      "risk": [
+        "R2",
+        "R4"
+      ],
+      "video": true,
+      "evidence": [
+        "E-04.png",
+        "E-04.webm"
+      ]
+    },
+    {
+      "id": "E-05",
+      "suite": "TS-E Spatial Job Field",
+      "title": "Role selection and disclosure",
+      "sequences": [
+        "S1"
+      ],
+      "risk": [
+        "R2",
+        "R3",
+        "R4"
+      ],
+      "video": true,
+      "evidence": [
+        "E-05.png",
+        "E-05.webm"
+      ]
+    },
+    {
+      "id": "E-06",
+      "suite": "TS-E Spatial Job Field",
+      "title": "PENDING block",
+      "sequences": [],
+      "risk": [
+        "R2",
+        "R7"
+      ],
+      "video": false,
+      "evidence": [
+        "E-06-ids.txt",
+        "E-06.png"
+      ]
+    },
+    {
+      "id": "E-07",
+      "suite": "TS-E Spatial Job Field",
+      "title": "Exit and return",
+      "sequences": [],
+      "risk": [
+        "R3",
+        "R4"
+      ],
+      "video": true,
+      "evidence": [
+        "E-07.webm"
+      ]
+    },
+    {
+      "id": "E-08",
+      "suite": "TS-E Spatial Job Field",
+      "title": "Deep links",
+      "sequences": [
+        "S7"
+      ],
+      "risk": [
+        "R3",
+        "R6"
+      ],
+      "video": false,
+      "evidence": [
+        "E-08-*.png"
+      ]
+    },
+    {
+      "id": "E-09",
+      "suite": "TS-E Spatial Job Field",
+      "title": "Field states",
+      "sequences": [
+        "S1"
+      ],
+      "risk": [
+        "R3",
+        "R6"
+      ],
+      "video": false,
+      "evidence": [
+        "E-09-*.png"
+      ]
+    },
+    {
+      "id": "E-10",
+      "suite": "TS-E Spatial Job Field",
+      "title": "Sweep NOT_PRODUCED and AVAILABLE",
+      "sequences": [
+        "S2"
+      ],
+      "risk": [
+        "R2",
+        "R7"
+      ],
+      "video": false,
+      "evidence": [
+        "E-10-*.png"
+      ]
+    },
+    {
+      "id": "F-01",
+      "suite": "TS-F PENDING relations",
+      "title": "Pending is not missing capability",
+      "sequences": [
+        "S2"
+      ],
+      "risk": [
+        "R2"
+      ],
+      "video": false,
+      "evidence": [
+        "F-01-dom.txt"
+      ]
+    },
+    {
+      "id": "F-02",
+      "suite": "TS-F PENDING relations",
+      "title": "Four kinds never merged",
+      "sequences": [],
+      "risk": [
+        "R7"
+      ],
+      "video": false,
+      "evidence": [
+        "F-02-counts.txt"
+      ]
+    },
+    {
+      "id": "F-03",
+      "suite": "TS-F PENDING relations",
+      "title": "Canonical state cites its reason everywhere",
+      "sequences": [],
+      "risk": [
+        "R7"
+      ],
+      "video": false,
+      "evidence": [
+        "F-03.txt"
+      ]
+    },
+    {
+      "id": "F-04",
+      "suite": "TS-F PENDING relations",
+      "title": "Unscored stays unscored",
+      "sequences": [],
+      "risk": [
+        "R7"
+      ],
+      "video": false,
+      "evidence": [
+        "F-04-compare.txt"
+      ]
+    },
+    {
+      "id": "F-05",
+      "suite": "TS-F PENDING relations",
+      "title": "Planetarium pending labels",
+      "sequences": [
+        "S2"
+      ],
+      "risk": [
+        "R2"
+      ],
+      "video": false,
+      "evidence": [
+        "F-05-*.png"
+      ]
+    },
+    {
+      "id": "G-01",
+      "suite": "TS-G HR Decision Loop dock",
+      "title": "Context A read",
+      "sequences": [
+        "S1"
+      ],
+      "risk": [
+        "R3",
+        "R7"
+      ],
+      "video": false,
+      "evidence": [
+        "G-01.png"
+      ]
+    },
+    {
+      "id": "G-02",
+      "suite": "TS-G HR Decision Loop dock",
+      "title": "DREV walk",
+      "sequences": [],
+      "risk": [
+        "R3",
+        "R7"
+      ],
+      "video": false,
+      "evidence": [
+        "G-02-*.png"
+      ]
+    },
+    {
+      "id": "G-03",
+      "suite": "TS-G HR Decision Loop dock",
+      "title": "Context B empty families",
+      "sequences": [],
+      "risk": [
+        "R7"
+      ],
+      "video": false,
+      "evidence": [
+        "G-03.png"
+      ]
+    },
+    {
+      "id": "G-04",
+      "suite": "TS-G HR Decision Loop dock",
+      "title": "Declaration gate",
+      "sequences": [],
+      "risk": [
+        "R6",
+        "R7"
+      ],
+      "video": false,
+      "evidence": [
+        "G-04-*.png"
+      ]
+    },
+    {
+      "id": "G-05",
+      "suite": "TS-G HR Decision Loop dock",
+      "title": "Co-existence with the Job Pool panel",
+      "sequences": [],
+      "risk": [
+        "R2",
+        "R3"
+      ],
+      "video": false,
+      "evidence": [
+        "G-05.png"
+      ]
+    },
+    {
+      "id": "G-06",
+      "suite": "TS-G HR Decision Loop dock",
+      "title": "Field without the dock",
+      "sequences": [],
+      "risk": [
+        "R3"
+      ],
+      "video": false,
+      "evidence": [
+        "G-06.png"
+      ]
+    },
+    {
+      "id": "G-07",
+      "suite": "TS-G HR Decision Loop dock",
+      "title": "Inverse by hand",
+      "sequences": [
+        "S1"
+      ],
+      "risk": [
+        "R7"
+      ],
+      "video": false,
+      "evidence": [
+        "G-07-ids.txt"
+      ]
+    },
+    {
+      "id": "G-08",
+      "suite": "TS-G HR Decision Loop dock",
+      "title": "Dock on a NOT_PROVISIONED family",
+      "sequences": [
+        "S4"
+      ],
+      "risk": [
+        "R6"
+      ],
+      "video": false,
+      "evidence": [
+        "G-08.png"
+      ]
+    },
+    {
+      "id": "H-01",
+      "suite": "TS-H Navigation and URL state",
+      "title": "First visit",
+      "sequences": [
+        "S1"
+      ],
+      "risk": [
+        "R3"
+      ],
+      "video": false,
+      "evidence": [
+        "H-01-*.png"
+      ]
+    },
+    {
+      "id": "H-02",
+      "suite": "TS-H Navigation and URL state",
+      "title": "URL as the only selection carrier",
+      "sequences": [],
+      "risk": [
+        "R3"
+      ],
+      "video": false,
+      "evidence": [
+        "H-02-*.png"
+      ]
+    },
+    {
+      "id": "H-03",
+      "suite": "TS-H Navigation and URL state",
+      "title": "Browser back/forward",
+      "sequences": [
+        "S3"
+      ],
+      "risk": [
+        "R3"
+      ],
+      "video": true,
+      "evidence": [
+        "H-03.webm"
+      ]
+    },
+    {
+      "id": "H-04",
+      "suite": "TS-H Navigation and URL state",
+      "title": "Mixed parameters",
+      "sequences": [
+        "S3"
+      ],
+      "risk": [
+        "R3"
+      ],
+      "video": false,
+      "evidence": [
+        "H-04.png"
+      ]
+    },
+    {
+      "id": "H-05",
+      "suite": "TS-H Navigation and URL state",
+      "title": "Stale ids are named",
+      "sequences": [
+        "S1"
+      ],
+      "risk": [
+        "R6"
+      ],
+      "video": false,
+      "evidence": [
+        "H-05-*.png"
+      ]
+    },
+    {
+      "id": "H-06",
+      "suite": "TS-H Navigation and URL state",
+      "title": "Legacy pages",
+      "sequences": [
+        "S1"
+      ],
+      "risk": [
+        "R3"
+      ],
+      "video": false,
+      "evidence": [
+        "H-06-*.png"
+      ]
+    },
+    {
+      "id": "H-07",
+      "suite": "TS-H Navigation and URL state",
+      "title": "Direct API links from the start banner",
+      "sequences": [],
+      "risk": [
+        "R7"
+      ],
+      "video": false,
+      "evidence": [
+        "H-07.txt"
+      ]
+    },
+    {
+      "id": "I-01",
+      "suite": "TS-I Interaction surfaces",
+      "title": "Onboarding steps",
+      "sequences": [
+        "S1"
+      ],
+      "risk": [
+        "R2",
+        "R3"
+      ],
+      "video": true,
+      "evidence": [
+        "I-01.webm"
+      ]
+    },
+    {
+      "id": "I-02",
+      "suite": "TS-I Interaction surfaces",
+      "title": "System Codex and language",
+      "sequences": [
+        "S6"
+      ],
+      "risk": [
+        "R2"
+      ],
+      "video": false,
+      "evidence": [
+        "I-02-de.png",
+        "I-02-en.png"
+      ]
+    },
+    {
+      "id": "I-03",
+      "suite": "TS-I Interaction surfaces",
+      "title": "Semantic guide drawer",
+      "sequences": [],
+      "risk": [
+        "R2"
+      ],
+      "video": false,
+      "evidence": [
+        "I-03-*.png"
+      ]
+    },
+    {
+      "id": "I-04",
+      "suite": "TS-I Interaction surfaces",
+      "title": "Source dock",
+      "sequences": [
+        "S1"
+      ],
+      "risk": [
+        "R3",
+        "R6"
+      ],
+      "video": false,
+      "evidence": [
+        "I-04-*.png"
+      ]
+    },
+    {
+      "id": "I-05",
+      "suite": "TS-I Interaction surfaces",
+      "title": "Orbit HUD and zoom",
+      "sequences": [
+        "S2"
+      ],
+      "risk": [
+        "R2",
+        "R4"
+      ],
+      "video": true,
+      "evidence": [
+        "I-05-l1.png",
+        "I-05-l2.png",
+        "I-05.webm"
+      ]
+    },
+    {
+      "id": "I-06",
+      "suite": "TS-I Interaction surfaces",
+      "title": "Decision graph inspector",
+      "sequences": [
+        "S2"
+      ],
+      "risk": [
+        "R2"
+      ],
+      "video": false,
+      "evidence": [
+        "I-06-*.png"
+      ]
+    },
+    {
+      "id": "I-07",
+      "suite": "TS-I Interaction surfaces",
+      "title": "Panel anchors and collapse",
+      "sequences": [
+        "S1"
+      ],
+      "risk": [
+        "R3"
+      ],
+      "video": false,
+      "evidence": [
+        "I-07-*.png"
+      ]
+    },
+    {
+      "id": "J-01",
+      "suite": "TS-J Visual coherence and motion",
+      "title": "Idle planetarium",
+      "sequences": [
+        "S3"
+      ],
+      "risk": [
+        "R4"
+      ],
+      "video": true,
+      "evidence": [
+        "J-01.webm"
+      ]
+    },
+    {
+      "id": "J-02",
+      "suite": "TS-J Visual coherence and motion",
+      "title": "Focus transition into an orbit",
+      "sequences": [],
+      "risk": [
+        "R4"
+      ],
+      "video": true,
+      "evidence": [
+        "J-02.webm"
+      ]
+    },
+    {
+      "id": "J-03",
+      "suite": "TS-J Visual coherence and motion",
+      "title": "Deep focus (L2) and satellites",
+      "sequences": [],
+      "risk": [
+        "R4"
+      ],
+      "video": true,
+      "evidence": [
+        "J-03.png",
+        "J-03.webm"
+      ]
+    },
+    {
+      "id": "J-04",
+      "suite": "TS-J Visual coherence and motion",
+      "title": "Empty orbit semantics",
+      "sequences": [],
+      "risk": [
+        "R2",
+        "R4"
+      ],
+      "video": true,
+      "evidence": [
+        "J-04.webm"
+      ]
+    },
+    {
+      "id": "J-05",
+      "suite": "TS-J Visual coherence and motion",
+      "title": "Job Field entry and nearest ray",
+      "sequences": [],
+      "risk": [
+        "R4"
+      ],
+      "video": true,
+      "evidence": [
+        "J-05.webm"
+      ]
+    },
+    {
+      "id": "J-06",
+      "suite": "TS-J Visual coherence and motion",
+      "title": "Role selection dimming",
+      "sequences": [],
+      "risk": [
+        "R4"
+      ],
+      "video": true,
+      "evidence": [
+        "J-06.webm"
+      ]
+    },
+    {
+      "id": "J-07",
+      "suite": "TS-J Visual coherence and motion",
+      "title": "Reduced motion",
+      "sequences": [],
+      "risk": [
+        "R4",
+        "R8"
+      ],
+      "video": true,
+      "evidence": [
+        "J-07-*.webm"
+      ]
+    },
+    {
+      "id": "J-08",
+      "suite": "TS-J Visual coherence and motion",
+      "title": "Visual coherence audit",
+      "sequences": [
+        "S3"
+      ],
+      "risk": [
+        "R2"
+      ],
+      "video": false,
+      "evidence": [
+        "J-08-*.png"
+      ]
+    },
+    {
+      "id": "J-09",
+      "suite": "TS-J Visual coherence and motion",
+      "title": "In-flight motion layer (GR\u00dcN, not on `cccd647`)",
+      "sequences": [],
+      "risk": [
+        "R4"
+      ],
+      "video": true,
+      "evidence": [
+        "J-09-*.webm"
+      ]
+    },
+    {
+      "id": "K-01",
+      "suite": "TS-K Responsive behaviour",
+      "title": "Desktop 1600\u00d71000 and 1366\u00d7768",
+      "sequences": [
+        "S5"
+      ],
+      "risk": [
+        "R5"
+      ],
+      "video": false,
+      "evidence": [
+        "K-01-*.png"
+      ]
+    },
+    {
+      "id": "K-02",
+      "suite": "TS-K Responsive behaviour",
+      "title": "Tablet 1024\u00d7768 and 820\u00d71180",
+      "sequences": [],
+      "risk": [
+        "R5"
+      ],
+      "video": false,
+      "evidence": [
+        "K-02-*.png"
+      ]
+    },
+    {
+      "id": "K-03",
+      "suite": "TS-K Responsive behaviour",
+      "title": "Phone 390\u00d7844",
+      "sequences": [],
+      "risk": [
+        "R5"
+      ],
+      "video": false,
+      "evidence": [
+        "K-03-*.png"
+      ]
+    },
+    {
+      "id": "K-04",
+      "suite": "TS-K Responsive behaviour",
+      "title": "Zoom 200 % and window resize mid-transition",
+      "sequences": [
+        "S5"
+      ],
+      "risk": [
+        "R4",
+        "R5"
+      ],
+      "video": true,
+      "evidence": [
+        "K-04.webm"
+      ]
+    },
+    {
+      "id": "L-01",
+      "suite": "TS-L Cognitive accessibility",
+      "title": "Keyboard reachability",
+      "sequences": [
+        "S5"
+      ],
+      "risk": [
+        "R8"
+      ],
+      "video": true,
+      "evidence": [
+        "L-01-order.txt",
+        "L-01.webm"
+      ]
+    },
+    {
+      "id": "L-02",
+      "suite": "TS-L Cognitive accessibility",
+      "title": "Screen-reader semantics",
+      "sequences": [],
+      "risk": [
+        "R8"
+      ],
+      "video": false,
+      "evidence": [
+        "L-02-tree.txt"
+      ]
+    },
+    {
+      "id": "L-03",
+      "suite": "TS-L Cognitive accessibility",
+      "title": "Contrast",
+      "sequences": [],
+      "risk": [
+        "R2",
+        "R8"
+      ],
+      "video": false,
+      "evidence": [
+        "L-03-contrast.txt"
+      ]
+    },
+    {
+      "id": "L-04",
+      "suite": "TS-L Cognitive accessibility",
+      "title": "Meaning without reading the docs",
+      "sequences": [],
+      "risk": [
+        "R2"
+      ],
+      "video": false,
+      "evidence": [
+        "L-04-answers.txt"
+      ]
+    },
+    {
+      "id": "L-05",
+      "suite": "TS-L Cognitive accessibility",
+      "title": "Error disclosure legibility",
+      "sequences": [],
+      "risk": [
+        "R2",
+        "R6"
+      ],
+      "video": false,
+      "evidence": [
+        "L-05-table.txt"
+      ]
+    },
+    {
+      "id": "L-06",
+      "suite": "TS-L Cognitive accessibility",
+      "title": "Language consistency",
+      "sequences": [
+        "S5"
+      ],
+      "risk": [
+        "R2"
+      ],
+      "video": false,
+      "evidence": [
+        "L-06.txt"
+      ]
+    },
+    {
+      "id": "M-01",
+      "suite": "TS-M Persistence and data integrity",
+      "title": "Analysis persisted once",
+      "sequences": [
+        "S2"
+      ],
+      "risk": [
+        "R7"
+      ],
+      "video": false,
+      "evidence": [
+        "M-01.txt"
+      ]
+    },
+    {
+      "id": "M-02",
+      "suite": "TS-M Persistence and data integrity",
+      "title": "Candidate source bundle immutable",
+      "sequences": [],
+      "risk": [
+        "R7"
+      ],
+      "video": false,
+      "evidence": [
+        "M-02.txt"
+      ]
+    },
+    {
+      "id": "M-03",
+      "suite": "TS-M Persistence and data integrity",
+      "title": "Projection reference lineage",
+      "sequences": [],
+      "risk": [
+        "R7"
+      ],
+      "video": false,
+      "evidence": [
+        "M-03.txt"
+      ]
+    },
+    {
+      "id": "M-04",
+      "suite": "TS-M Persistence and data integrity",
+      "title": "Job pool upload and canonical chain",
+      "sequences": [],
+      "risk": [
+        "R7"
+      ],
+      "video": false,
+      "evidence": [
+        "B-08.json",
+        "M-04.txt"
+      ]
+    },
+    {
+      "id": "M-05",
+      "suite": "TS-M Persistence and data integrity",
+      "title": "Nothing written by reads",
+      "sequences": [],
+      "risk": [
+        "R7"
+      ],
+      "video": false,
+      "evidence": [
+        "M-05.txt"
+      ]
+    },
+    {
+      "id": "M-06",
+      "suite": "TS-M Persistence and data integrity",
+      "title": "HR decision immutability",
+      "sequences": [
+        "S2"
+      ],
+      "risk": [
+        "R7"
+      ],
+      "video": false,
+      "evidence": [
+        "M-06.txt"
+      ]
+    },
+    {
+      "id": "N-01",
+      "suite": "TS-N Failure and exception conditions",
+      "title": "Worker absent",
+      "sequences": [
+        "S4"
+      ],
+      "risk": [
+        "R6"
+      ],
+      "video": false,
+      "evidence": [
+        "N-01.*"
+      ]
+    },
+    {
+      "id": "N-02",
+      "suite": "TS-N Failure and exception conditions",
+      "title": "Model error",
+      "sequences": [],
+      "risk": [
+        "R6"
+      ],
+      "video": false,
+      "evidence": [
+        "N-02.*"
+      ]
+    },
+    {
+      "id": "N-03",
+      "suite": "TS-N Failure and exception conditions",
+      "title": "Key absent",
+      "sequences": [
+        "S4"
+      ],
+      "risk": [
+        "R6"
+      ],
+      "video": false,
+      "evidence": [
+        "N-03.*"
+      ]
+    },
+    {
+      "id": "N-04",
+      "suite": "TS-N Failure and exception conditions",
+      "title": "Non-disposable database",
+      "sequences": [
+        "S1"
+      ],
+      "risk": [
+        "R6"
+      ],
+      "video": false,
+      "evidence": [
+        "N-04.*"
+      ]
+    },
+    {
+      "id": "N-05",
+      "suite": "TS-N Failure and exception conditions",
+      "title": "Inactive pool",
+      "sequences": [],
+      "risk": [
+        "R6"
+      ],
+      "video": false,
+      "evidence": [
+        "N-05.*"
+      ]
+    },
+    {
+      "id": "N-06",
+      "suite": "TS-N Failure and exception conditions",
+      "title": "Invalid upload",
+      "sequences": [],
+      "risk": [
+        "R6"
+      ],
+      "video": false,
+      "evidence": [
+        "N-06.*"
+      ]
+    },
+    {
+      "id": "N-07",
+      "suite": "TS-N Failure and exception conditions",
+      "title": "Stale ids",
+      "sequences": [],
+      "risk": [
+        "R6"
+      ],
+      "video": false,
+      "evidence": [
+        "N-07.*"
+      ]
+    },
+    {
+      "id": "N-08",
+      "suite": "TS-N Failure and exception conditions",
+      "title": "Oversized upload",
+      "sequences": [
+        "S1"
+      ],
+      "risk": [
+        "R6"
+      ],
+      "video": false,
+      "evidence": [
+        "N-08.*"
+      ]
+    },
+    {
+      "id": "N-09",
+      "suite": "TS-N Failure and exception conditions",
+      "title": "Network loss mid-poll",
+      "sequences": [
+        "S4"
+      ],
+      "risk": [
+        "R6"
+      ],
+      "video": false,
+      "evidence": [
+        "N-09.*"
+      ]
+    },
+    {
+      "id": "N-10",
+      "suite": "TS-N Failure and exception conditions",
+      "title": "Server restart with persisted state",
+      "sequences": [
+        "S7"
+      ],
+      "risk": [
+        "R6"
+      ],
+      "video": false,
+      "evidence": [
+        "N-10.*"
+      ]
+    },
+    {
+      "id": "N-11",
+      "suite": "TS-N Failure and exception conditions",
+      "title": "Database dropped under a running page",
+      "sequences": [
+        "S7"
+      ],
+      "risk": [
+        "R6"
+      ],
+      "video": false,
+      "evidence": [
+        "N-11.*"
+      ]
+    },
+    {
+      "id": "N-12",
+      "suite": "TS-N Failure and exception conditions",
+      "title": "Declaration conflicts",
+      "sequences": [
+        "S4"
+      ],
+      "risk": [
+        "R6"
+      ],
+      "video": false,
+      "evidence": [
+        "N-12.*"
+      ]
+    },
+    {
+      "id": "O-01",
+      "suite": "TS-O Semiontic quality review",
+      "title": "What is the centre and what orbits it? (identity core \u2194 six orbits, semantic radii)",
+      "sequences": [
+        "S6"
+      ],
+      "risk": [
+        "R2"
+      ],
+      "video": false,
+      "evidence": []
+    },
+    {
+      "id": "O-02",
+      "suite": "TS-O Semiontic quality review",
+      "title": "Which capabilities are extracted facts and which are proposals? (PROPOSED, EVIDENCE PASSED, confidence vs none)",
+      "sequences": [
+        "S6"
+      ],
+      "risk": [
+        "R2"
+      ],
+      "video": false,
+      "evidence": []
+    },
+    {
+      "id": "O-03",
+      "suite": "TS-O Semiontic quality review",
+      "title": "What does the Job Field distance mean, and that it is presentation, not truth?",
+      "sequences": [
+        "S6"
+      ],
+      "risk": [
+        "R2"
+      ],
+      "video": false,
+      "evidence": []
+    },
+    {
+      "id": "O-04",
+      "suite": "TS-O Semiontic quality review",
+      "title": "Why is this role \"nearest\", and that nearest \u2260 chosen?",
+      "sequences": [
+        "S6"
+      ],
+      "risk": [
+        "R2"
+      ],
+      "video": false,
+      "evidence": []
+    },
+    {
+      "id": "O-05",
+      "suite": "TS-O Semiontic quality review",
+      "title": "What is pending, in four kinds, and that pending \u2260 missing capability?",
+      "sequences": [
+        "S6"
+      ],
+      "risk": [
+        "R2"
+      ],
+      "video": false,
+      "evidence": []
+    },
+    {
+      "id": "O-06",
+      "suite": "TS-O Semiontic quality review",
+      "title": "Which evidence backs a match, and where it comes from (analysis vs sweep)?",
+      "sequences": [
+        "S6"
+      ],
+      "risk": [
+        "R2"
+      ],
+      "video": false,
+      "evidence": []
+    },
+    {
+      "id": "O-07",
+      "suite": "TS-O Semiontic quality review",
+      "title": "What the system refuses to claim (laws) and why there is no decision here",
+      "sequences": [
+        "S6"
+      ],
+      "risk": [
+        "R2"
+      ],
+      "video": false,
+      "evidence": []
+    },
+    {
+      "id": "O-08",
+      "suite": "TS-O Semiontic quality review",
+      "title": "Where am I and how do I get back? (focus, zoom level, URL state)",
+      "sequences": [
+        "S3"
+      ],
+      "risk": [
+        "R2"
+      ],
+      "video": false,
+      "evidence": []
+    },
+    {
+      "id": "O-09",
+      "suite": "TS-O Semiontic quality review",
+      "title": "Is motion telling me something? (pulse = resonance, ray = activation, breathing = emptiness)",
+      "sequences": [
+        "S3"
+      ],
+      "risk": [
+        "R2"
+      ],
+      "video": false,
+      "evidence": []
+    },
+    {
+      "id": "O-10",
+      "suite": "TS-O Semiontic quality review",
+      "title": "Does the language switch keep the meaning (DE/EN parity of laws and chips)?",
+      "sequences": [
+        "S6"
+      ],
+      "risk": [
+        "R2"
+      ],
+      "video": false,
+      "evidence": []
+    },
+    {
+      "id": "P-01",
+      "suite": "TS-P Platform and legacy smoke",
+      "title": "Build",
+      "sequences": [],
+      "risk": [
+        "R7"
+      ],
+      "video": false,
+      "evidence": [
+        "P-01.txt"
+      ]
+    },
+    {
+      "id": "P-02",
+      "suite": "TS-P Platform and legacy smoke",
+      "title": "Lint and types",
+      "sequences": [
+        "S0"
+      ],
+      "risk": [],
+      "video": false,
+      "evidence": [
+        "P-02.txt"
+      ]
+    },
+    {
+      "id": "P-03",
+      "suite": "TS-P Platform and legacy smoke",
+      "title": "Legacy routes",
+      "sequences": [],
+      "risk": [
+        "R6"
+      ],
+      "video": false,
+      "evidence": [
+        "P-03.txt"
+      ]
+    }
+  ]
+}
