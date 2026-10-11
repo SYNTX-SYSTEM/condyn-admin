@@ -467,6 +467,89 @@ export const SIL_COPY = {
       detailsHide: "HIDE DETAILS"
     },
 
+    syntx: {
+      title: "JOB FIELD",
+      toggle: "⬡ JOB FIELD",
+      exit: "← CAPABILITY FIELD",
+      observation: { FIELD: "FIELD", ORGANIZATION: "ORGANIZATION", ROLE: "ROLE", REQUIREMENT: "REQUIREMENT" },
+      returnLabel: "RETURN",
+      keys: "Esc returns · Enter selects · Tab moves between carriers",
+      pools: "POOLS",
+      poolsHide: "HIDE POOLS",
+      noPool: "NO JOB POOL UPLOAD AT THE FIELD: select one persisted upload (explicit selection only)",
+      support: {
+        SUPPORTED: "SUPPORTED (SCORED EVIDENCE)",
+        WEAK: "WEAK SUPPORT (SCORED, THIN)",
+        SWEEP_ONLY: "COVERED BY THE SWEEP (UNSCORED)",
+        OPEN: "NO DELIVERED SUPPORT (OPEN)",
+        UNREAD: "NO MATCHING READ"
+      },
+      relation: {
+        contains: "contains",
+        requires: "requires",
+        supports: "supports",
+        weakly_supports: "weakly supports",
+        covers_unscored: "covers (unscored)",
+        missing_support: "no delivered support",
+        pending_evaluation: "pending canonical evaluation"
+      },
+      source: "SOURCE",
+      sourceUnresolved: "SOURCE TITLE NOT RESOLVED IN THIS ANALYSIS",
+      sourceNotRead: "ANALYSIS SOURCES NOT READ",
+      quote: "QUOTE",
+      capabilityReference: "CAPABILITY REFERENCE",
+      constituent: "constituent",
+      basis: "basis",
+      contribution: "contribution",
+      confidence: "confidence",
+      weight: "weight",
+      level: "level",
+      necessity: "necessity",
+      location: "location",
+      hint: "hint",
+      sweepStatus: "unscored · source-match verified · not canonically evaluated",
+      inspect: "INSPECT",
+      close: "CLOSE",
+      texts: {
+        scored: "Scored evidence supports this requirement within the delivered presentation matching; it is not a certification.",
+        weak: "Evidence exists but contributes limited matching support.",
+        sweep: "A capability sweep proposal covers this requirement with a source-verified quote; it is not scored and not canonically evaluated.",
+        missing: "No delivered support is available for this requirement in the current analysis.",
+        pending: "Authoritative evaluation has not occurred for this relation."
+      },
+      authority: "presentation · authority NONE · not a canonical evaluation · not a decision · not an HR recommendation",
+      resonance: "POOL RESONANCE (PRESENTATION)",
+      rank: "delivered rank",
+      requirements: "REQUIREMENTS",
+      roles: "ROLES",
+      organizations: "ORGANIZATIONS",
+      boundary: "BOUNDARY",
+      boundaryHide: "HIDE BOUNDARY",
+      matching: "PRESENTATION MATCHING",
+      summary: {
+        field: "Job pool {poolName}, version {poolVersion}, {poolStatus}: {organizationCount} organizations containing {roleCount} roles. {matching}",
+        organization: "Organization {organizationName} contains {roleCount} roles: {roleTitles}.",
+        role: "Role {roleTitle} at {organizationName} requires {requirementCount} requirements: {supported} with scored support, {weak} with weak support, {sweepOnly} covered only by an unscored sweep proposal, {open} without delivered support, {unread} without a matching read. {pending}",
+        requirement: "Requirement {requirementName} of role {roleTitle}: {support}; {traceCount} evidence traces from {sourceCount} sources. {aperture}",
+        support: {
+          SUPPORTED: "supported by scored evidence",
+          WEAK: "weakly supported by scored evidence",
+          SWEEP_ONLY: "covered only by an unscored sweep proposal",
+          OPEN: "without delivered support",
+          UNREAD: "without a matching read"
+        },
+        pendingEvaluation: "Canonical evaluation is pending for every requirement of this role.",
+        apertureOpen: "An inspection aperture is open.",
+        matchingRead: "A presentation matching was read for this pool.",
+        matchingNotRead: "No presentation matching was read."
+      },
+      stale: {
+        ORGANIZATION: "ORGANIZATION ID NOT IN THIS POOL",
+        ROLE: "ROLE ID NOT IN THIS POOL",
+        REQUIREMENT: "REQUIREMENT ID NOT IN THIS ROLE"
+      },
+      nonClaims: "PRESENTED != EVALUATED · UPLOADED != SELECTED · RANKED != RECOMMENDED · MISSING != GAP DECISION · COVERED != SCORED · PENDING != MISSING CAPABILITY · POOL ROLE != INFERRED ROLE"
+    },
     emptyStates: {
       "01": {
         title: "NO SOURCES PROJECTED",
@@ -948,6 +1031,89 @@ export const SIL_COPY = {
       detailsHide: "DETAILS AUSBLENDEN"
     },
 
+    syntx: {
+      title: "JOB-FELD",
+      toggle: "⬡ JOB-FELD",
+      exit: "← CAPABILITY-FELD",
+      observation: { FIELD: "FELD", ORGANIZATION: "ORGANISATION", ROLE: "ROLLE", REQUIREMENT: "ANFORDERUNG" },
+      returnLabel: "ZURÜCK",
+      keys: "Esc kehrt zurück · Enter wählt · Tab wechselt zwischen Trägern",
+      pools: "POOLS",
+      poolsHide: "POOLS VERBERGEN",
+      noPool: "KEIN JOB-POOL-UPLOAD IM FELD: einen persistierten Upload wählen (nur explizite Auswahl)",
+      support: {
+        SUPPORTED: "GESTÜTZT (BEWERTETE EVIDENZ)",
+        WEAK: "SCHWACHE STÜTZUNG (BEWERTET, DÜNN)",
+        SWEEP_ONLY: "VOM SWEEP ABGEDECKT (UNBEWERTET)",
+        OPEN: "KEINE GELIEFERTE STÜTZUNG (OFFEN)",
+        UNREAD: "KEIN MATCHING GELESEN"
+      },
+      relation: {
+        contains: "enthält",
+        requires: "erfordert",
+        supports: "stützt",
+        weakly_supports: "stützt schwach",
+        covers_unscored: "deckt ab (unbewertet)",
+        missing_support: "keine gelieferte Stützung",
+        pending_evaluation: "kanonische Bewertung ausstehend"
+      },
+      source: "QUELLE",
+      sourceUnresolved: "QUELLENTITEL IN DIESER ANALYSE NICHT AUFGELÖST",
+      sourceNotRead: "ANALYSEQUELLEN NICHT GELESEN",
+      quote: "ZITAT",
+      capabilityReference: "FÄHIGKEITSREFERENZ",
+      constituent: "Bestandteil",
+      basis: "Basis",
+      contribution: "Beitrag",
+      confidence: "Konfidenz",
+      weight: "Gewicht",
+      level: "Niveau",
+      necessity: "Notwendigkeit",
+      location: "Fundstelle",
+      hint: "Hinweis",
+      sweepStatus: "unbewertet · Quellenabgleich verifiziert · nicht kanonisch bewertet",
+      inspect: "PRÜFEN",
+      close: "SCHLIESSEN",
+      texts: {
+        scored: "Bewertete Evidenz stützt diese Anforderung innerhalb des gelieferten Präsentations-Matchings; sie ist keine Zertifizierung.",
+        weak: "Evidenz existiert, trägt aber nur begrenzt zur Matching-Stützung bei.",
+        sweep: "Ein Capability-Sweep-Vorschlag deckt diese Anforderung mit einem quellenverifizierten Zitat ab; er ist nicht bewertet und nicht kanonisch evaluiert.",
+        missing: "Für diese Anforderung ist in der aktuellen Analyse keine gelieferte Stützung verfügbar.",
+        pending: "Eine autoritative Bewertung dieser Relation hat nicht stattgefunden."
+      },
+      authority: "Präsentation · Autorität NONE · keine kanonische Bewertung · keine Entscheidung · keine HR-Empfehlung",
+      resonance: "POOL-RESONANZ (PRÄSENTATION)",
+      rank: "gelieferter Rang",
+      requirements: "ANFORDERUNGEN",
+      roles: "ROLLEN",
+      organizations: "ORGANISATIONEN",
+      boundary: "GRENZE",
+      boundaryHide: "GRENZE VERBERGEN",
+      matching: "PRÄSENTATIONS-MATCHING",
+      summary: {
+        field: "Job-Pool {poolName}, Version {poolVersion}, {poolStatus}: {organizationCount} Organisationen mit {roleCount} Rollen. {matching}",
+        organization: "Organisation {organizationName} enthält {roleCount} Rollen: {roleTitles}.",
+        role: "Rolle {roleTitle} bei {organizationName} erfordert {requirementCount} Anforderungen: {supported} mit bewerteter Stützung, {weak} mit schwacher Stützung, {sweepOnly} nur durch einen unbewerteten Sweep-Vorschlag abgedeckt, {open} ohne gelieferte Stützung, {unread} ohne gelesenes Matching. {pending}",
+        requirement: "Anforderung {requirementName} der Rolle {roleTitle}: {support}; {traceCount} Evidenzspuren aus {sourceCount} Quellen. {aperture}",
+        support: {
+          SUPPORTED: "durch bewertete Evidenz gestützt",
+          WEAK: "durch bewertete Evidenz schwach gestützt",
+          SWEEP_ONLY: "nur durch einen unbewerteten Sweep-Vorschlag abgedeckt",
+          OPEN: "ohne gelieferte Stützung",
+          UNREAD: "ohne gelesenes Matching"
+        },
+        pendingEvaluation: "Die kanonische Bewertung ist für jede Anforderung dieser Rolle ausstehend.",
+        apertureOpen: "Eine Prüfapertur ist geöffnet.",
+        matchingRead: "Für diesen Pool wurde ein Präsentations-Matching gelesen.",
+        matchingNotRead: "Es wurde kein Präsentations-Matching gelesen."
+      },
+      stale: {
+        ORGANIZATION: "ORGANISATIONS-ID NICHT IN DIESEM POOL",
+        ROLE: "ROLLEN-ID NICHT IN DIESEM POOL",
+        REQUIREMENT: "ANFORDERUNGS-ID NICHT IN DIESER ROLLE"
+      },
+      nonClaims: "PRESENTED != EVALUATED · UPLOADED != SELECTED · RANKED != RECOMMENDED · MISSING != GAP DECISION · COVERED != SCORED · PENDING != MISSING CAPABILITY · POOL ROLE != INFERRED ROLE"
+    },
     emptyStates: {
       "01": {
         title: "KEINE QUELLEN PROJIZIERT",

@@ -1,27 +1,22 @@
 /**
- * Job Field: the Job Pool as the central, spatially navigable field of the planetarium
- * (owner mandate "SFE — JOB FIELD RECONSTRUCTION", 2026-10-11).
+ * Job Field requirement states and pending kinds (owner mandate "SFE — JOB FIELD RECONSTRUCTION", 2026-10-11;
+ * geometry retired by "SFE — SYNTX SEMIONTIC FIELD RECONSTRUCTION", rulings R13/R14: no 1 − resonance distance,
+ * no nearest presented role; the SYNTX view model (syntx-field-view-model.ts) carries the field).
  *
- * Everything here is a pure, client-safe derivation from one delivered
- * JobPoolMatchPresentation. It re-scores nothing: the distance of a role from
- * the candidate core is 1 − resonanceScore as delivered, the order is the
- * delivered order, and the "nearest defensible relation" is a presentation
- * rule over delivered facts (first delivered role with a positive score and at
- * least one scored match). Absent evidence is represented as NO_EVIDENCE_DELIVERED,
- * never as an absent capability. Nothing here is a decision or leads to one.
+ * Everything here is a pure, client-safe derivation from one delivered JobPoolMatchPresentation. It re-scores
+ * nothing. The four pending kinds are dimensions, not a partition (F-LF-1). Absent evidence is represented as
+ * NO_EVIDENCE_DELIVERED, never as an absent capability. Nothing here is a decision or leads to one.
  *
  * NEAREST != CHOSEN · PENDING != MISSING CAPABILITY · COVERED != SCORED · DISTANCE != TRUTH · POOL ROLE != INFERRED ROLE
  */
 import type {
   JobPoolMatchBasis,
-  JobPoolMatchPresentation,
   JobPoolMissingRequirement,
   JobPoolRoleMatch,
   JobPoolSweepProposalCoverage,
   JobPoolWeakRequirement,
   JobPoolMatchedRequirement
 } from "./types";
-import { describeRanking, type JobPoolRankingCharacter } from "./frontend-presentation";
 
 export type JobFieldRequirementState = "MATCHED" | "UNRESOLVED" | "COVERED_UNSCORED" | "NO_EVIDENCE_DELIVERED";
 
@@ -57,63 +52,6 @@ export interface JobFieldCounts {
   total: number;
 }
 
-export interface JobFieldRoleNode {
-  poolRoleId: string;
-  title: string;
-  seniority: string;
-  domainFocus: string;
-  poolOrganizationId: string;
-  organizationName: string;
-  /** 1-based position in the delivered order. */
-  deliveredRank: number;
-  resonanceScore: number;
-  /** Polar placement: degrees from 12 o'clock clockwise; distance 0 (core) … 1 (outer rim) = 1 − resonanceScore. */
-  angle: number;
-  distance: number;
-  x: number;
-  y: number;
-  requirements: JobFieldRequirement[];
-  counts: JobFieldCounts;
-  pending: JobFieldPending[];
-  canonical: JobPoolRoleMatch["canonical"];
-  /** resonanceScore > 0 and at least one scored match (delivered, scored evidence behind the presentation). */
-  hasScoredMatch: boolean;
-}
-
-export interface JobFieldOrganization {
-  poolOrganizationId: string;
-  name: string;
-  roleIds: string[];
-  startAngle: number;
-  endAngle: number;
-  /** Delivered organisation aggregate (POOL RESONANCE, PRESENTATION) from organizationMatches, or null when not delivered. The nebula's light. */
-  aggregateScore: number | null;
-  /** Position among the delivered organisations (0-based): the nebula's hue is identity only, never a value. */
-  hueIndex: number;
-}
-
-export interface JobFieldLayout {
-  size: number;
-  center: number;
-  innerRadius: number;
-  outerRadius: number;
-}
-
-export interface JobField {
-  analysisId: string;
-  jobPoolUploadId: string;
-  candidateCapabilityCount: number;
-  capabilitySweep: JobPoolMatchPresentation["capabilitySweep"];
-  layout: JobFieldLayout;
-  organizations: JobFieldOrganization[];
-  roles: JobFieldRoleNode[];
-  ranking: JobPoolRankingCharacter;
-  /** NEAREST PRESENTED ROLE: first delivered role with a scored match, or null. NEAREST != CHOSEN. */
-  nearestPresentedRole: { poolRoleId: string; pending: JobFieldPending[] } | null;
-}
-
-export const JOB_FIELD_LAYOUT: JobFieldLayout = Object.freeze({ size: 800, center: 400, innerRadius: 150, outerRadius: 340 });
-
 function matchFacts(item: JobPoolMatchedRequirement): JobFieldRequirement["match"] {
   return { basis: item.matchBasis, matchedCapabilityName: item.matchedCapabilityName, matchedConstituent: item.matchedConstituent, confidence: item.confidence, contribution: item.contribution, evidence: item.evidence };
 }
@@ -144,73 +82,6 @@ export function hasScoredMatch(role: JobPoolRoleMatch): boolean {
   return role.resonanceScore > 0 && role.matched.length > 0;
 }
 
-const clamp01 = (value: number): number => Math.min(1, Math.max(0, value));
-
-/** Organizations in order of first appearance among the delivered roles; roles keep the delivered order inside each. */
-function groupByOrganization(roles: readonly JobPoolRoleMatch[]): Array<{ poolOrganizationId: string; name: string; roles: JobPoolRoleMatch[] }> {
-  const groups: Array<{ poolOrganizationId: string; name: string; roles: JobPoolRoleMatch[] }> = [];
-  for (const role of roles) {
-    let group = groups.find(candidate => candidate.poolOrganizationId === role.poolOrganizationId);
-    if (group === undefined) { group = { poolOrganizationId: role.poolOrganizationId, name: role.organizationName, roles: [] }; groups.push(group); }
-    group.roles.push(role);
-  }
-  return groups;
-}
-
-export function deriveJobField(presentation: JobPoolMatchPresentation, layout: JobFieldLayout = JOB_FIELD_LAYOUT): JobField {
-  const groups = groupByOrganization(presentation.roleMatches);
-  const roleCount = presentation.roleMatches.length;
-  const slot = roleCount === 0 ? 0 : 360 / roleCount;
-  const organizations: JobFieldOrganization[] = [];
-  const roles: JobFieldRoleNode[] = [];
-  let slotIndex = 0;
-  for (const group of groups) {
-    const startAngle = slotIndex * slot;
-    for (const role of group.roles) {
-      const angle = (slotIndex + 0.5) * slot;
-      const distance = clamp01(1 - role.resonanceScore);
-      const radius = layout.innerRadius + distance * (layout.outerRadius - layout.innerRadius);
-      const radians = ((angle - 90) * Math.PI) / 180;
-      const requirements = deriveRequirements(role);
-      roles.push({
-        poolRoleId: role.poolRoleId,
-        title: role.title,
-        seniority: role.seniority,
-        domainFocus: role.domainFocus,
-        poolOrganizationId: role.poolOrganizationId,
-        organizationName: role.organizationName,
-        deliveredRank: presentation.roleMatches.indexOf(role) + 1,
-        resonanceScore: role.resonanceScore,
-        angle,
-        distance,
-        x: Math.round((layout.center + radius * Math.cos(radians)) * 100) / 100,
-        y: Math.round((layout.center + radius * Math.sin(radians)) * 100) / 100,
-        requirements,
-        counts: countRequirements(requirements),
-        pending: derivePending(role, requirements),
-        canonical: role.canonical,
-        hasScoredMatch: hasScoredMatch(role)
-      });
-      slotIndex += 1;
-    }
-    const aggregate = presentation.organizationMatches.find(organization => organization.poolOrganizationId === group.poolOrganizationId) ?? null;
-    organizations.push({ poolOrganizationId: group.poolOrganizationId, name: group.name, roleIds: group.roles.map(role => role.poolRoleId), startAngle, endAngle: slotIndex * slot, aggregateScore: aggregate === null ? null : aggregate.aggregateScore, hueIndex: organizations.length });
-  }
-  const nearestRole = roles.find(role => role.hasScoredMatch) ?? null;
-  return {
-    analysisId: presentation.analysisId,
-    jobPoolUploadId: presentation.jobPoolUploadId,
-    candidateCapabilityCount: presentation.candidateCapabilityCount,
-    capabilitySweep: presentation.capabilitySweep,
-    layout,
-    organizations,
-    roles,
-    ranking: describeRanking(presentation.roleMatches),
-    nearestPresentedRole: nearestRole === null ? null : { poolRoleId: nearestRole.poolRoleId, pending: nearestRole.pending }
-  };
-}
-
-/** Exact role selection from the URL: the id must be one of the delivered roles; a stale id is named, not dropped. */
 /** Provenance of what stands behind a requirement line; never "verified capability" (no PHASE4 snapshot exists). */
 export type JobFieldProvenance = "ANALYSIS_CAPABILITY" | "SWEEP_PROPOSAL" | "NONE";
 
@@ -219,71 +90,3 @@ export function provenanceOf(requirement: JobFieldRequirement): JobFieldProvenan
   if (requirement.sweep !== null) return "SWEEP_PROPOSAL";
   return "NONE";
 }
-
-export type JobFieldRoleSelection = { kind: "NONE" } | { kind: "ROLE"; role: JobFieldRoleNode } | { kind: "NOT_DELIVERED"; poolRoleId: string };
-
-export function describeRoleSelection(poolRoleId: string | null, field: JobField): JobFieldRoleSelection {
-  if (poolRoleId === null || poolRoleId.length === 0) return { kind: "NONE" };
-  const role = field.roles.find(candidate => candidate.poolRoleId === poolRoleId);
-  return role === undefined ? { kind: "NOT_DELIVERED", poolRoleId } : { kind: "ROLE", role };
-}
-
-/** SVG arc path for a ring segment, used for the per-role requirement ring (angles in degrees from 12 o'clock). */
-export function arcPath(cx: number, cy: number, radius: number, startAngle: number, endAngle: number): string {
-  const toPoint = (angle: number) => { const radians = ((angle - 90) * Math.PI) / 180; return [cx + radius * Math.cos(radians), cy + radius * Math.sin(radians)] as const; };
-  const sweep = endAngle - startAngle;
-  if (sweep <= 0) return "";
-  if (sweep >= 360) { const [x, y] = toPoint(0); const [x2, y2] = toPoint(180); return `M ${x} ${y} A ${radius} ${radius} 0 1 1 ${x2} ${y2} A ${radius} ${radius} 0 1 1 ${x} ${y}`; }
-  const [x1, y1] = toPoint(startAngle);
-  const [x2, y2] = toPoint(endAngle);
-  return `M ${x1} ${y1} A ${radius} ${radius} 0 ${sweep > 180 ? 1 : 0} 1 ${x2} ${y2}`;
-}
-
-/** Ring segments of one role in a fixed state order; proportional to counts, never to weights or scores. */
-export function ringSegments(counts: JobFieldCounts): Array<{ state: JobFieldRequirementState; startAngle: number; endAngle: number }> {
-  if (counts.total === 0) return [];
-  const order: Array<[JobFieldRequirementState, number]> = [["MATCHED", counts.matched], ["UNRESOLVED", counts.unresolved], ["COVERED_UNSCORED", counts.coveredUnscored], ["NO_EVIDENCE_DELIVERED", counts.noEvidence]];
-  const segments: Array<{ state: JobFieldRequirementState; startAngle: number; endAngle: number }> = [];
-  let angle = 0;
-  for (const [state, count] of order) {
-    if (count === 0) continue;
-    const end = angle + (count / counts.total) * 360;
-    segments.push({ state, startAngle: angle, endAngle: end });
-    angle = end;
-  }
-  return segments;
-}
-
-/** SVG path of an annular sector (a nebula) between two radii, angles in degrees from 12 o'clock. */
-export function sectorPath(cx: number, cy: number, innerRadius: number, outerRadius: number, startAngle: number, endAngle: number): string {
-  const toPoint = (radius: number, angle: number) => { const radians = ((angle - 90) * Math.PI) / 180; return [cx + radius * Math.cos(radians), cy + radius * Math.sin(radians)] as const; };
-  const sweep = Math.min(359.999, Math.max(0, endAngle - startAngle));
-  if (sweep <= 0) return "";
-  const large = sweep > 180 ? 1 : 0;
-  const [ox1, oy1] = toPoint(outerRadius, startAngle);
-  const [ox2, oy2] = toPoint(outerRadius, startAngle + sweep);
-  const [ix1, iy1] = toPoint(innerRadius, startAngle + sweep);
-  const [ix2, iy2] = toPoint(innerRadius, startAngle);
-  return `M ${ox1} ${oy1} A ${outerRadius} ${outerRadius} 0 ${large} 1 ${ox2} ${oy2} L ${ix1} ${iy1} A ${innerRadius} ${innerRadius} 0 ${large} 0 ${ix2} ${iy2} Z`;
-}
-
-export interface JobFieldMoon {
-  poolRequirementId: string;
-  state: JobFieldRequirementState;
-  angle: number;
-  x: number;
-  y: number;
-}
-
-/** Requirements as moons around their role: one body per requirement, evenly spaced, in a fixed state order (MATCHED, UNRESOLVED, COVERED_UNSCORED, NO_EVIDENCE_DELIVERED), never by weight or score. */
-export function requirementMoons(requirements: readonly JobFieldRequirement[], radius: number): JobFieldMoon[] {
-  const order: JobFieldRequirementState[] = ["MATCHED", "UNRESOLVED", "COVERED_UNSCORED", "NO_EVIDENCE_DELIVERED"];
-  const sorted = order.flatMap(state => requirements.filter(requirement => requirement.state === state));
-  const slot = sorted.length === 0 ? 0 : 360 / sorted.length;
-  return sorted.map((requirement, index) => {
-    const angle = index * slot;
-    const radians = ((angle - 90) * Math.PI) / 180;
-    return { poolRequirementId: requirement.poolRequirementId, state: requirement.state, angle, x: Math.round(radius * Math.cos(radians) * 100) / 100, y: Math.round(radius * Math.sin(radians) * 100) / 100 };
-  });
-}
-

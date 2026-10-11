@@ -1,18 +1,5 @@
 import { describe, expect, it } from "vitest";
-import {
-  arcPath,
-  countRequirements,
-  deriveJobField,
-  derivePending,
-  deriveRequirements,
-  describeRoleSelection,
-  requirementMoons,
-  sectorPath,
-  hasScoredMatch,
-  JOB_FIELD_LAYOUT,
-  provenanceOf,
-  ringSegments
-} from "../../../lib/career/job-pool/job-field-presentation";
+import { countRequirements, derivePending, deriveRequirements, hasScoredMatch, provenanceOf } from "../../../lib/career/job-pool/job-field-presentation";
 import { SIL_COPY } from "../../../lib/career/view-model/sil-language";
 import { kubernetesSweepCoverage, matches } from "./fixtures/match-bodies";
 
@@ -69,88 +56,12 @@ describe("Job Field presentation (pure derivation over one delivered body)", () 
     for (const label of [SIL_COPY.en.jobField.pendingKinds.UNSCORED_COVERAGE, SIL_COPY.de.jobField.pendingKinds.UNSCORED_COVERAGE]) expect(label).not.toMatch(/\b(ONLY|NUR)\b/);
   });
 
-  it("places roles by delivered pool resonance only, grouped by pool organization, in delivered order", () => {
-    const field = deriveJobField(matches);
-    expect(field.roles.map(role => [role.poolRoleId, role.deliveredRank, role.resonanceScore, role.distance, role.angle])).toEqual([
-      ["ROLE_A", 1, 0.75, 0.25, 90],
-      ["ROLE_B", 2, 0.3, 0.7, 270]
-    ]);
-    const { center, innerRadius, outerRadius } = JOB_FIELD_LAYOUT;
-    expect(field.roles[0].x).toBeCloseTo(center + innerRadius + 0.25 * (outerRadius - innerRadius), 1);
-    expect(field.roles[0].y).toBeCloseTo(center, 1);
-    expect(field.organizations).toEqual([{ poolOrganizationId: "ORG_1", name: "Acme", roleIds: ["ROLE_A", "ROLE_B"], startAngle: 0, endAngle: 360, aggregateScore: matches.organizationMatches[0].aggregateScore, hueIndex: 0 }]);
-    expect(field.ranking).toBe("MONOTONE_BY_RESONANCE");
-    expect(field.candidateCapabilityCount).toBe(2);
-    expect(field.capabilitySweep).toEqual({ state: "AVAILABLE", proposalCount: 3, scored: false });
-  });
-
-  it("keeps roles at zero resonance visible on the outer ring and never reorders a non-monotone delivery", () => {
-    const body = clone(matches);
-    body.roleMatches[1].resonanceScore = 0;
-    body.roleMatches[1].weakEvidence = [];
-    body.roleMatches[1].missing = [{ poolRequirementId: "REQ_3", capabilityName: "SQL", requiredLevel: "L2", weight: 0.6, necessity: "PREFERRED", evidenceHint: null, sweepProposal: null }];
-    const field = deriveJobField(body);
-    expect(field.roles[1]).toMatchObject({ distance: 1, hasScoredMatch: false, counts: { matched: 0, unresolved: 0, coveredUnscored: 0, noEvidence: 1, total: 1 } });
-    const reversed = clone(matches);
-    reversed.roleMatches.reverse();
-    const nonMonotone = deriveJobField(reversed);
-    expect(nonMonotone.ranking).toBe("DELIVERED_ORDER_NOT_MONOTONE");
-    expect(nonMonotone.roles.map(role => role.poolRoleId)).toEqual(["ROLE_B", "ROLE_A"]);
-  });
-
-  it("names the nearest presented role as the first delivered role with a scored match, or none", () => {
-    expect(deriveJobField(matches).nearestPresentedRole).toEqual({ poolRoleId: "ROLE_A", pending: derivePending(matches.roleMatches[0], deriveRequirements(matches.roleMatches[0])) });
-    expect(hasScoredMatch(matches.roleMatches[1])).toBe(false);
-    const reversed = clone(matches);
-    reversed.roleMatches.reverse();
-    // Delivered order wins: the weak-only role comes first but has no scored match, so ROLE_A is still nearest.
-    expect(deriveJobField(reversed).nearestPresentedRole?.poolRoleId).toBe("ROLE_A");
-    const none = clone(matches);
-    for (const role of none.roleMatches) { role.matched = []; role.resonanceScore = 0; }
-    expect(deriveJobField(none).nearestPresentedRole).toBeNull();
-    const positiveButUnscored = clone(matches);
-    positiveButUnscored.roleMatches[0].matched = [];
-    expect(deriveJobField(positiveButUnscored).nearestPresentedRole).toBeNull();
-  });
-
-  it("builds ring segments proportional to counts in a fixed state order and valid arc paths", () => {
-    expect(ringSegments(countRequirements(deriveRequirements(matches.roleMatches[0])))).toEqual([
-      { state: "MATCHED", startAngle: 0, endAngle: 180 },
-      { state: "COVERED_UNSCORED", startAngle: 180, endAngle: 360 }
-    ]);
-    expect(ringSegments({ matched: 0, unresolved: 0, coveredUnscored: 0, noEvidence: 0, total: 0 })).toEqual([]);
-    expect(arcPath(0, 0, 10, 0, 90)).toMatch(/^M .* A 10 10 0 0 1 /);
-    expect(arcPath(0, 0, 10, 0, 270)).toMatch(/ A 10 10 0 1 1 /);
-    expect(arcPath(0, 0, 10, 10, 10)).toBe("");
-  });
-
-  it("keeps role selection exact: delivered, none, or a named stale id", () => {
-    const field = deriveJobField(matches);
-    expect(describeRoleSelection(null, field)).toEqual({ kind: "NONE" });
-    expect(describeRoleSelection("ROLE_B", field)).toMatchObject({ kind: "ROLE", role: { poolRoleId: "ROLE_B" } });
-    expect(describeRoleSelection("ROLE_STALE", field)).toEqual({ kind: "NOT_DELIVERED", poolRoleId: "ROLE_STALE" });
-  });
-
   it("never carries a canonical relation, decision or verified-capability claim", () => {
-    const text = JSON.stringify(deriveJobField(matches));
+    expect(hasScoredMatch(matches.roleMatches[0])).toBe(true);
+    expect(hasScoredMatch(matches.roleMatches[1])).toBe(false);
+    const text = JSON.stringify(matches.roleMatches.map(role => ({ requirements: deriveRequirements(role), pending: derivePending(role, deriveRequirements(role)), canonical: role.canonical })));
     expect(text).not.toMatch(/\b(CRR|RRA|RRL|TSN|EIS|RPR|RCP|DAR|DCTXREV|DCR|DREV|DCDRB)_[0-9A-Z]/);
     expect(text).not.toMatch(/PHASE4_VERIFIED|VERIFIED_CAPABILITY"|AUTHORITATIVE|"decision":true|"scored":true/);
     expect(text).toContain('"capabilityRequirementRelationState":"NOT_EVALUATED"');
-  });
-
-  it("gives each organisation its delivered aggregate as nebula light and an identity hue, and places requirements as moons in a fixed state order", () => {
-    const field = deriveJobField(matches);
-    expect(field.organizations.map(organization => [organization.poolOrganizationId, organization.aggregateScore, organization.hueIndex])).toEqual([["ORG_1", matches.organizationMatches[0].aggregateScore, 0]]);
-    const absent = deriveJobField({ ...matches, organizationMatches: [] });
-    expect(absent.organizations[0].aggregateScore).toBeNull();
-    const roleA = field.roles.find(role => role.poolRoleId === "ROLE_A")!;
-    const moons = requirementMoons(roleA.requirements, 40);
-    expect(moons.map(moon => [moon.poolRequirementId, moon.state, moon.angle])).toEqual([["REQ_1", "MATCHED", 0], ["REQ_2", "COVERED_UNSCORED", 180]]);
-    expect(moons[0]).toMatchObject({ x: 0, y: -40 });
-    expect(requirementMoons([], 40)).toEqual([]);
-    const sector = sectorPath(400, 400, 100, 200, 0, 90);
-    expect(sector.startsWith("M 400 200")).toBe(true);
-    expect(sector.endsWith("Z")).toBe(true);
-    expect(sectorPath(400, 400, 100, 200, 90, 90)).toBe("");
   });
 });
