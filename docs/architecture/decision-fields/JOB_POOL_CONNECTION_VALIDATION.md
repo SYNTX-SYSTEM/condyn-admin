@@ -484,6 +484,20 @@ condyn_test_58133f9f9e6c9583  PINK job-field.e2e 2/2 and job-field-static 3/3 gr
 
 Evidence: `evidence/job-pool-validation/pink-04-job-field-job-focus.png`.
 
+#### 3.13.3 HR composition proof on the shared runner database: `a9121b9` superseded by root repair `8f95afc`
+
+`a9121b9` relaxed the precondition of `test/career/hr-decision-loop/local-composition.postgres.test.ts` to "nothing or
+the complete unified set"; GELB's own full tree showed it still red (1 of 40 unified tables pre-created by another
+suite; seeding on a table another suite had created). Root repair `8f95afc`: the proof creates, verifies and drops its
+**own** disposable database (`createDisposableTestDatabaseNamed` on the runner's verified basis,
+`verifyDisposableTestDatabase`, `dropDisposableTestDatabase`), binds `DATABASE_URL` to it in `beforeAll` before the
+unified registration, composition and application client are imported (dynamic imports), and restores the runner URL
+afterwards. The original strict precondition `expect(before).toEqual([])` is back, a stronger claim than before.
+PINK reading: correct root cause (one shared runner database per run); the repair removes the file-order dependence
+for this proof without touching any other database; marker verification and drop keep the hard boundary. Combined tip
+retargeted to `integration/job-field-governance` @ `d339c8c` (includes GRÜN's docs `5b788fc`), merged as the current
+PINK head; tree-identical outside PINK's files.
+
 ## 4. Boundaries and findings for coordination
 
 - F-JP-1 (closed in `b782793`): `JOB_POOL_CONNECTION.md` §4 followed the per-role `JOB_POOL_JSON_ROLE` design;
