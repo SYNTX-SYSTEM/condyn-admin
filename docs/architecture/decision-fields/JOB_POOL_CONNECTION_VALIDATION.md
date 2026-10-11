@@ -498,6 +498,34 @@ for this proof without touching any other database; marker verification and drop
 retargeted to `integration/job-field-governance` @ `d339c8c` (includes GRÜN's docs `5b788fc`), merged as the current
 PINK head; tree-identical outside PINK's files.
 
+#### 3.13.4 Full-tree JP-R on the combined tip `d339c8c` (PINK head `ec39b40`), classification and verdict
+
+Run as the role on `condyn_test_1a81c4bc6953fe4f` (dropped), 2026-10-11 04:14–04:33, started at load 2.9, load 5–8
+during the run (an operator browser process and a peer batch):
+
+```
+ Test Files  13 failed | 368 passed | 9 skipped (390)
+      Tests  44 failed | 2388 passed | 9 skipped (2441)
+   Duration  1113 s · timeouts: 34 · other non-lifecycle reasons: none
+```
+
+| Class | Files | Evidence |
+| --- | --- | --- |
+| F-JP-5 legacy DDL drift (pre-existing) | 4 lifecycle suites, 27 tests | unchanged cause (§3.5) |
+| load timeouts at the 5 s default | 9 files (5 COVFCR suites, decision-core context/contract, structural-consequences/reconstruct, validation/authority, g2-g3-cross-relation) | every red is `Test timed out in 5000ms`; sequential re-run at load 3–5: 2 files green, 7 still timing out; diagnostic run of those 7 with `--testTimeout=60000` (no committed test changed): 7 files / 71 tests green at load 5–6 (`condyn_test_42b042889205e1b2`); none of the suites imports `ui-adapter.ts`, `job-field-presentation.ts`, `sil-language.ts` or `JobField.tsx` (grep over the relation, decision-core, decision-runtime, outcome-valence libs and the suites: no edge) |
+
+No red is attributable to the Job Field round. The idle re-run of the COVFCR and decision-core suites at load 1.9
+(§3.8, same files) stands as the reference for their default-timeout behaviour; a truly idle machine was not available
+during this round (owner environment and peers active).
+
+**Verdict (owner mandate "SFE — INDEPENDENT JOB FIELD VALIDATION").** Verified on `d339c8c`: semantic reconstruction
+of the four relations, findings F-JF-1..6 resolved at their source or recorded as owner boundaries (B-JF-REC-ID,
+B-ORBIT-COPY), GELB's root repairs `cf2d084` and `8f95afc` proven by inverse, GRÜN's Job Field proven by SSR, Chromium
+e2e and PINK's independent JOB-focus browser proof, static SG guards green, Job Pool and HR loop suites green, full
+tree classified. Documented legacy exception: F-JP-5. Authority boundaries unchanged: HIA-1/2/3, B-JP-CONTINUITY,
+B-JP-ACTOR, B-GEMINI, B-JF-REC-ID, B-ORBIT-COPY, B-JF-SESSION. The shared `condyn` database and the owner's manual
+environment (`127.0.0.1:3017`, `condyn_test_e46502b73c9f316f`) were never touched.
+
 ## 4. Boundaries and findings for coordination
 
 - F-JP-1 (closed in `b782793`): `JOB_POOL_CONNECTION.md` §4 followed the per-role `JOB_POOL_JSON_ROLE` design;
