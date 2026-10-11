@@ -590,8 +590,8 @@ export function JobField({ workflow, analysisSource, selectedRoleId, onSelectRol
         )}
       </div>
 
-      {/* Ground line: the laws of the field, always visible, never in the way. */}
-      <span data-testid="job-field-non-claims" style={{ position: "absolute", left: "50%", bottom: "26px", transform: "translateX(-50%)", maxWidth: "min(900px, 80vw)", textAlign: "center", ...micro, fontSize: "8.5px", letterSpacing: "1.4px", color: "rgba(230, 241, 248, 0.55)", zIndex: 46 }}>{t.nonClaims}</span>
+      {/* Ground line: the laws of the field, always visible, never in the way. The planetarium root starts below the page header with a full-viewport height, so its own bottom edge is off-screen, and the overlay's backdrop filter pins fixed descendants to it as well; the line is lifted by the header height (B-JF-GROUND-LINE). */}
+      <span data-testid="job-field-non-claims" style={{ position: "absolute", left: "50%", bottom: "calc(var(--condyn-page-header-height, 60px) + 22px)", transform: "translateX(-50%)", maxWidth: "min(900px, 80vw)", textAlign: "center", ...micro, fontSize: "8.5px", letterSpacing: "1.4px", color: "rgba(230, 241, 248, 0.55)", zIndex: 46 }}>{t.nonClaims}</span>
     </div>
   );
 }

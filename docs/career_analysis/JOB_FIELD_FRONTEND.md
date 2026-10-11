@@ -209,7 +209,12 @@ visible focus ring) rather than as controls of a panel.
 | 2026-10-11 | same | job-field SSR/motion/presentation, panel SSR, GELB governance, PINK static, 2 sealed SIL suites | 56 passed |
 | 2026-10-11 | same | my e2e (10) and PINK's job-field.e2e (2), each on its own disposable DB, in parallel | 12/12; first frames showed the laws line too faint and the role-detail frame captured mid-reveal (jfRise 320 ms): ground line set to 8.5 px at 55 % ink, 450 ms settle before each evidence frame |
 | 2026-10-11 | same | rerun after the two corrections: full `test/career/job-pool` tree with e2e + PINK static + 5 sealed SIL suites + dock SSR; PINK's `job-field.e2e` in parallel on its own DB | 20 files / 131 passed; 2/2; tsc 0 |
+| 2026-10-11 | `7006014` | evidence frame 17 reviewed: the ground line was still invisible. Cause: the planetarium root starts below the page header with `height: 100vh`, so its bottom edge is off-screen; `position: fixed` did not help because the overlay's `backdrop-filter` makes it the containing block of fixed descendants. Repair: the line is absolute, lifted by `var(--condyn-page-header-height, 60px) + 22px` (B-JF-GROUND-LINE) | e2e 10/10 + SSR 7/7 rerun; frame 17 shows the laws under the canvas |
 
 Boundary B-JF-FONTS: no web font is loaded by the app shell; the mono and sans tokens resolve to the system faces
 (`'JetBrains Mono', monospace` / `system-ui`). Loading a face is an app-shell decision outside this field.
+
+Boundary B-JF-GROUND-LINE: bottom-anchored content inside the planetarium root is off-screen by the page header height,
+and fixed positioning is captured by the overlay's backdrop filter. The ground line reads the custom property
+`--condyn-page-header-height` (fallback 60 px); if the app shell changes the header height it should set that property.
 
