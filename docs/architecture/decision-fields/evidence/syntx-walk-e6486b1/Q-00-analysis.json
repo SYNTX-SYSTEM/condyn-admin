@@ -1,0 +1,906 @@
+{
+  "success": true,
+  "status": "VERIFIED",
+  "analysisId": "ANL_PINK_SYNTX_WALK",
+  "metadata": {
+    "analysis_id": "ANL_PINK_SYNTX_WALK",
+    "document_count": 1,
+    "schema_version": "1.0",
+    "protocol_version": "1.0",
+    "total_word_count": 120,
+    "validation_state": "VERIFIED",
+    "execution_duration_ms": 1000,
+    "prompt_contract_version": "1.0"
+  },
+  "matching": {
+    "analysis_id": "ANL_PINK_SYNTX_WALK",
+    "pool_id": "pool_demo_master_v1",
+    "pool_version": 1,
+    "role_matches": [
+      {
+        "roleId": "role_siemens_arch",
+        "title": "Principal Edge Systems Architect",
+        "seniority": "Principal / L6",
+        "organizationId": "org_siemens",
+        "organizationName": "Siemens AG",
+        "resonanceScore": 0,
+        "matchedCapabilities": [],
+        "missingCapabilities": [
+          {
+            "requirementId": "req_siemens_1",
+            "capabilityName": "Distributed Systems",
+            "requiredWeight": 0.4,
+            "requiredLevel": "L5 - Expert",
+            "evidenceHint": "Demonstrated production leadership in distributed clustering or consensus protocols."
+          },
+          {
+            "requirementId": "req_siemens_2",
+            "capabilityName": "Edge Computing Architecture",
+            "requiredWeight": 0.35,
+            "requiredLevel": "L5 - Expert",
+            "evidenceHint": "Experience architecting edge gateways and real-time processing pipelines."
+          },
+          {
+            "requirementId": "req_siemens_3",
+            "capabilityName": "Industrial IoT Protocol Design",
+            "requiredWeight": 0.25,
+            "requiredLevel": "L4 - Advanced",
+            "evidenceHint": "Hands-on experience with industrial messaging and deterministic networking."
+          }
+        ],
+        "scoreBreakdown": [
+          {
+            "capabilityName": "Distributed Systems",
+            "status": "MISSING",
+            "weight": 0.4,
+            "contribution": 0,
+            "message": "Missing required capability \"Distributed Systems\" (Required Level: L5 - Expert, Weight: 0.40)."
+          },
+          {
+            "capabilityName": "Edge Computing Architecture",
+            "status": "MISSING",
+            "weight": 0.35,
+            "contribution": 0,
+            "message": "Missing required capability \"Edge Computing Architecture\" (Required Level: L5 - Expert, Weight: 0.35)."
+          },
+          {
+            "capabilityName": "Industrial IoT Protocol Design",
+            "status": "MISSING",
+            "weight": 0.25,
+            "contribution": 0,
+            "message": "Missing required capability \"Industrial IoT Protocol Design\" (Required Level: L4 - Advanced, Weight: 0.25)."
+          }
+        ]
+      },
+      {
+        "roleId": "role_helsing_ai",
+        "title": "Senior Autonomous Defense Systems Engineer",
+        "seniority": "Senior / L5",
+        "organizationId": "org_helsing",
+        "organizationName": "Helsing GmbH",
+        "resonanceScore": 0,
+        "matchedCapabilities": [],
+        "missingCapabilities": [
+          {
+            "requirementId": "req_helsing_1",
+            "capabilityName": "Real-Time Sensor Fusion",
+            "requiredWeight": 0.45,
+            "requiredLevel": "L5 - Expert"
+          },
+          {
+            "requirementId": "req_helsing_2",
+            "capabilityName": "High-Performance Rust & C++",
+            "requiredWeight": 0.35,
+            "requiredLevel": "L4 - Advanced"
+          },
+          {
+            "requirementId": "req_helsing_3",
+            "capabilityName": "Embedded ML Inference",
+            "requiredWeight": 0.2,
+            "requiredLevel": "L4 - Advanced"
+          }
+        ],
+        "scoreBreakdown": [
+          {
+            "capabilityName": "Real-Time Sensor Fusion",
+            "status": "MISSING",
+            "weight": 0.45,
+            "contribution": 0,
+            "message": "Missing required capability \"Real-Time Sensor Fusion\" (Required Level: L5 - Expert, Weight: 0.45)."
+          },
+          {
+            "capabilityName": "High-Performance Rust & C++",
+            "status": "MISSING",
+            "weight": 0.35,
+            "contribution": 0,
+            "message": "Missing required capability \"High-Performance Rust & C++\" (Required Level: L4 - Advanced, Weight: 0.35)."
+          },
+          {
+            "capabilityName": "Embedded ML Inference",
+            "status": "MISSING",
+            "weight": 0.2,
+            "contribution": 0,
+            "message": "Missing required capability \"Embedded ML Inference\" (Required Level: L4 - Advanced, Weight: 0.20)."
+          }
+        ]
+      },
+      {
+        "roleId": "role_sap_cloud",
+        "title": "Chief Enterprise Platform Architect",
+        "seniority": "Fellow / L7",
+        "organizationId": "org_sap",
+        "organizationName": "SAP SE",
+        "resonanceScore": 0,
+        "matchedCapabilities": [],
+        "missingCapabilities": [],
+        "scoreBreakdown": []
+      }
+    ],
+    "organization_matches": [
+      {
+        "organizationId": "org_siemens",
+        "name": "Siemens AG",
+        "industry": "Industrial Edge & Automation Systems",
+        "aggregateScore": 0,
+        "roleMatchCount": 1,
+        "topRoleTitle": "Principal Edge Systems Architect"
+      },
+      {
+        "organizationId": "org_helsing",
+        "name": "Helsing GmbH",
+        "industry": "Defense AI & Sensor Fusion",
+        "aggregateScore": 0,
+        "roleMatchCount": 1,
+        "topRoleTitle": "Senior Autonomous Defense Systems Engineer"
+      },
+      {
+        "organizationId": "org_sap",
+        "name": "SAP SE",
+        "industry": "Enterprise Cloud Platforms",
+        "aggregateScore": 0,
+        "roleMatchCount": 1,
+        "topRoleTitle": "Chief Enterprise Platform Architect"
+      }
+    ],
+    "search_queries": [
+      {
+        "id": "sq_siemens_1",
+        "pool_id": "pool_demo_master_v1",
+        "query": "Siemens Principal Edge Systems Architect Industrial IoT",
+        "target": "org_siemens",
+        "priority": 1
+      }
+    ]
+  },
+  "recommendations": {
+    "analysisId": "ANL_PINK_SYNTX_WALK",
+    "generatedAt": "2026-10-11T23:49:03.024Z",
+    "capabilityGaps": [
+      {
+        "capabilityName": "Real-Time Sensor Fusion",
+        "domain": "General",
+        "requiredByRoleId": "role_helsing_ai",
+        "requiredByRoleTitle": "Senior Autonomous Defense Systems Engineer",
+        "organizationId": "org_helsing",
+        "organizationName": "Helsing GmbH",
+        "requiredWeight": 0.45,
+        "severity": "LOW",
+        "reason": "Role 'Senior Autonomous Defense Systems Engineer' at Helsing GmbH requires capability 'Real-Time Sensor Fusion' (weight: 0.45, level: L5 - Expert)."
+      },
+      {
+        "capabilityName": "Distributed Systems",
+        "domain": "General",
+        "requiredByRoleId": "role_siemens_arch",
+        "requiredByRoleTitle": "Principal Edge Systems Architect",
+        "organizationId": "org_siemens",
+        "organizationName": "Siemens AG",
+        "requiredWeight": 0.4,
+        "severity": "LOW",
+        "reason": "Role 'Principal Edge Systems Architect' at Siemens AG requires capability 'Distributed Systems' (weight: 0.40, level: L5 - Expert)."
+      },
+      {
+        "capabilityName": "Edge Computing Architecture",
+        "domain": "General",
+        "requiredByRoleId": "role_siemens_arch",
+        "requiredByRoleTitle": "Principal Edge Systems Architect",
+        "organizationId": "org_siemens",
+        "organizationName": "Siemens AG",
+        "requiredWeight": 0.35,
+        "severity": "LOW",
+        "reason": "Role 'Principal Edge Systems Architect' at Siemens AG requires capability 'Edge Computing Architecture' (weight: 0.35, level: L5 - Expert)."
+      },
+      {
+        "capabilityName": "High-Performance Rust & C++",
+        "domain": "General",
+        "requiredByRoleId": "role_helsing_ai",
+        "requiredByRoleTitle": "Senior Autonomous Defense Systems Engineer",
+        "organizationId": "org_helsing",
+        "organizationName": "Helsing GmbH",
+        "requiredWeight": 0.35,
+        "severity": "LOW",
+        "reason": "Role 'Senior Autonomous Defense Systems Engineer' at Helsing GmbH requires capability 'High-Performance Rust & C++' (weight: 0.35, level: L4 - Advanced)."
+      },
+      {
+        "capabilityName": "Industrial IoT Protocol Design",
+        "domain": "General",
+        "requiredByRoleId": "role_siemens_arch",
+        "requiredByRoleTitle": "Principal Edge Systems Architect",
+        "organizationId": "org_siemens",
+        "organizationName": "Siemens AG",
+        "requiredWeight": 0.25,
+        "severity": "LOW",
+        "reason": "Role 'Principal Edge Systems Architect' at Siemens AG requires capability 'Industrial IoT Protocol Design' (weight: 0.25, level: L4 - Advanced)."
+      },
+      {
+        "capabilityName": "Embedded ML Inference",
+        "domain": "General",
+        "requiredByRoleId": "role_helsing_ai",
+        "requiredByRoleTitle": "Senior Autonomous Defense Systems Engineer",
+        "organizationId": "org_helsing",
+        "organizationName": "Helsing GmbH",
+        "requiredWeight": 0.2,
+        "severity": "LOW",
+        "reason": "Role 'Senior Autonomous Defense Systems Engineer' at Helsing GmbH requires capability 'Embedded ML Inference' (weight: 0.20, level: L4 - Advanced)."
+      }
+    ],
+    "evidenceEnhancements": [
+      {
+        "entityId": "CAP_PINK_WEAK",
+        "entityName": "Unknown Capability",
+        "currentConfidence": 0.45,
+        "targetConfidence": 0.85,
+        "missingEvidenceType": "Technical Documentation / Verifiable Artifact",
+        "suggestedSourceTypes": [
+          "GitHub Repository",
+          "Architecture Document",
+          "Project Case Study",
+          "Certification / Reference"
+        ],
+        "reason": "Capability 'Unknown Capability' exhibits low confidence (0.45 < 0.70). Additional authoritative evidence is required to increase verified readiness."
+      }
+    ],
+    "nextActions": [
+      {
+        "actionId": "ACT_001",
+        "title": "Acquire capability: Real-Time Sensor Fusion",
+        "priority": "LOW",
+        "category": "CAPABILITY_ACQUISITION",
+        "description": "Targeting role 'Senior Autonomous Defense Systems Engineer' at Helsing GmbH. Role 'Senior Autonomous Defense Systems Engineer' at Helsing GmbH requires capability 'Real-Time Sensor Fusion' (weight: 0.45, level: L5 - Expert).",
+        "targetRoleTitle": "Senior Autonomous Defense Systems Engineer",
+        "targetCapabilityName": "Real-Time Sensor Fusion"
+      },
+      {
+        "actionId": "ACT_002",
+        "title": "Acquire capability: Distributed Systems",
+        "priority": "LOW",
+        "category": "CAPABILITY_ACQUISITION",
+        "description": "Targeting role 'Principal Edge Systems Architect' at Siemens AG. Role 'Principal Edge Systems Architect' at Siemens AG requires capability 'Distributed Systems' (weight: 0.40, level: L5 - Expert).",
+        "targetRoleTitle": "Principal Edge Systems Architect",
+        "targetCapabilityName": "Distributed Systems"
+      },
+      {
+        "actionId": "ACT_003",
+        "title": "Acquire capability: Edge Computing Architecture",
+        "priority": "LOW",
+        "category": "CAPABILITY_ACQUISITION",
+        "description": "Targeting role 'Principal Edge Systems Architect' at Siemens AG. Role 'Principal Edge Systems Architect' at Siemens AG requires capability 'Edge Computing Architecture' (weight: 0.35, level: L5 - Expert).",
+        "targetRoleTitle": "Principal Edge Systems Architect",
+        "targetCapabilityName": "Edge Computing Architecture"
+      },
+      {
+        "actionId": "ACT_004",
+        "title": "Acquire capability: High-Performance Rust & C++",
+        "priority": "LOW",
+        "category": "CAPABILITY_ACQUISITION",
+        "description": "Targeting role 'Senior Autonomous Defense Systems Engineer' at Helsing GmbH. Role 'Senior Autonomous Defense Systems Engineer' at Helsing GmbH requires capability 'High-Performance Rust & C++' (weight: 0.35, level: L4 - Advanced).",
+        "targetRoleTitle": "Senior Autonomous Defense Systems Engineer",
+        "targetCapabilityName": "High-Performance Rust & C++"
+      },
+      {
+        "actionId": "ACT_005",
+        "title": "Acquire capability: Industrial IoT Protocol Design",
+        "priority": "LOW",
+        "category": "CAPABILITY_ACQUISITION",
+        "description": "Targeting role 'Principal Edge Systems Architect' at Siemens AG. Role 'Principal Edge Systems Architect' at Siemens AG requires capability 'Industrial IoT Protocol Design' (weight: 0.25, level: L4 - Advanced).",
+        "targetRoleTitle": "Principal Edge Systems Architect",
+        "targetCapabilityName": "Industrial IoT Protocol Design"
+      },
+      {
+        "actionId": "ACT_006",
+        "title": "Enhance evidence for capability: Unknown Capability",
+        "priority": "HIGH",
+        "category": "EVIDENCE_ENHANCEMENT",
+        "description": "Upload authoritative artifacts (GitHub Repository or Architecture Document) to raise confidence from 0.45 to 0.85+.",
+        "targetCapabilityName": "Unknown Capability"
+      }
+    ]
+  },
+  "capabilityProposalProjection": null,
+  "analysis": {
+    "report_markdown": "# Career Analysis Report: Principal Edge Systems Architect\n\n## 1. Executive Summary\nElena Rostova is a top-tier Senior Distributed Systems Architect with a focus on IIoT Edge Computing and Gossip Protocols.\n\n## 2. Structural Consistency & Cohesion\nHigh cohesion across all experience records.\n\n## 3. Reconstructed Capability Architecture\n- Distributed Systems Architecture\n- Gossip Protocols\n\n## 4. Target Ecosystem & Organization Resonance\nStrong resonance with Tier-1 industrial automation providers like Siemens AG.\n\n## 5. Strategic Entry Strategies\nPosition as Principal Edge Systems Architect targeting high-availability infrastructure teams.",
+    "structured_data": {
+      "analysis": {
+        "roles": [
+          {
+            "evidence": [
+              {
+                "doc_id": "DOC_001",
+                "location": "Section 2",
+                "context_quote": "Siemens AG — Principal Edge Systems Architect (2021 – Present)",
+                "evidence_score": 0.95
+              }
+            ],
+            "identity": {
+              "name": "Principal Edge Systems Architect",
+              "type": "ROLE"
+            },
+            "entity_id": "ROL_001",
+            "confidence": 0.92,
+            "properties": {
+              "seniority": "PRINCIPAL",
+              "domain_focus": "IIOT_EDGE"
+            },
+            "validation": {
+              "status": "PASSED"
+            },
+            "relationships": [
+              {
+                "weight": 0.95,
+                "target_id": "ORG_001",
+                "relation_type": "ROLE_IN_ORGANIZATION"
+              }
+            ]
+          }
+        ],
+        "domains": [
+          {
+            "evidence": [
+              {
+                "doc_id": "DOC_001",
+                "location": "Section 2",
+                "context_quote": "Implemented fault-tolerant gossip protocols across 5,000+ edge nodes in EMEA.",
+                "evidence_score": 0.94
+              }
+            ],
+            "identity": {
+              "name": "IIoT Edge Computing",
+              "type": "DOMAIN"
+            },
+            "entity_id": "DOM_001",
+            "confidence": 0.92,
+            "properties": {
+              "maturity": "HIGH"
+            },
+            "validation": {
+              "status": "PASSED"
+            },
+            "relationships": []
+          }
+        ],
+        "metadata": {
+          "analysis_id": "ANL_PINK_SYNTX_WALK",
+          "document_count": 1,
+          "schema_version": "1.0",
+          "protocol_version": "1.0",
+          "total_word_count": 120,
+          "validation_state": "VERIFIED",
+          "execution_duration_ms": 1000,
+          "prompt_contract_version": "1.0"
+        },
+        "pipeline": {
+          "steps": []
+        },
+        "documents": [
+          {
+            "evidence": [
+              {
+                "doc_id": "DOC_001",
+                "location": "Header",
+                "context_quote": "Over 10 years of experience architecting resilient distributed systems and IoT infrastructure.",
+                "evidence_score": 0.98,
+                "significance_explanation": "Establishes baseline professional identity."
+              }
+            ],
+            "identity": {
+              "name": "doc1.md",
+              "type": "DOCUMENT"
+            },
+            "entity_id": "DOC_001",
+            "confidence": 0.98,
+            "properties": {
+              "language": "en",
+              "word_count": 120
+            },
+            "validation": {
+              "status": "PASSED"
+            },
+            "relationships": []
+          }
+        ],
+        "strategies": [
+          {
+            "evidence": [
+              {
+                "doc_id": "DOC_001",
+                "location": "Section 1",
+                "context_quote": "Specialized in fault-tolerant gossip protocols and high-throughput edge automation.",
+                "evidence_score": 0.9
+              }
+            ],
+            "identity": {
+              "name": "Resilience Architecture Leadership",
+              "type": "STRATEGY"
+            },
+            "entity_id": "STR_001",
+            "confidence": 0.9,
+            "properties": {
+              "timeframe": "IMMEDIATE"
+            },
+            "validation": {
+              "status": "PASSED"
+            },
+            "relationships": [
+              {
+                "weight": 0.92,
+                "target_id": "ROL_001",
+                "relation_type": "SUPPORTS"
+              }
+            ]
+          }
+        ],
+        "consistency": {
+          "summary": "Full structural coherence across all provided resumes.",
+          "clusters": [
+            {
+              "name": "Distributed Systems Resilience",
+              "doc_ids": [
+                "DOC_001"
+              ],
+              "cluster_id": "CLU_001",
+              "cohesion_score": 0.95
+            }
+          ],
+          "contradictions": [],
+          "outlier_doc_ids": [],
+          "overall_cohesion_score": 0.95
+        },
+        "capabilities": [
+          {
+            "evidence": [
+              {
+                "doc_id": "DOC_001",
+                "location": "Section 2",
+                "context_quote": "Architected distributed IIoT Edge Computing system for resilient operation",
+                "evidence_score": 0.95,
+                "significance_explanation": "Direct proof of enterprise-grade reliability engineering."
+              }
+            ],
+            "identity": {
+              "name": "Distributed Systems Architecture",
+              "type": "CAPABILITY"
+            },
+            "entity_id": "CAP_PINK_EXACT",
+            "confidence": 0.95,
+            "properties": {
+              "category": "CORE_TECHNICAL",
+              "seniority_level": "EXPERT"
+            },
+            "validation": {
+              "status": "PASSED"
+            },
+            "relationships": []
+          },
+          {
+            "evidence": [
+              {
+                "doc_id": "DOC_001",
+                "location": "Section 2",
+                "context_quote": "Operated k8s clusters across three regions with GitOps",
+                "evidence_score": 0.9,
+                "significance_explanation": "Direct proof of enterprise-grade reliability engineering."
+              }
+            ],
+            "identity": {
+              "name": "k8s",
+              "type": "CAPABILITY"
+            },
+            "entity_id": "CAP_PINK_ALIAS",
+            "confidence": 0.9,
+            "properties": {
+              "category": "CORE_TECHNICAL",
+              "seniority_level": "EXPERT"
+            },
+            "validation": {
+              "status": "PASSED"
+            },
+            "relationships": []
+          },
+          {
+            "evidence": [
+              {
+                "doc_id": "DOC_001",
+                "location": "Section 2",
+                "context_quote": "Supported an edge computing pilot for two months",
+                "evidence_score": 0.45,
+                "significance_explanation": "Direct proof of enterprise-grade reliability engineering."
+              }
+            ],
+            "identity": {
+              "name": "Edge Computing",
+              "type": "CAPABILITY"
+            },
+            "entity_id": "CAP_PINK_WEAK",
+            "confidence": 0.45,
+            "properties": {
+              "category": "CORE_TECHNICAL",
+              "seniority_level": "EXPERT"
+            },
+            "validation": {
+              "status": "PASSED"
+            },
+            "relationships": []
+          },
+          {
+            "evidence": [
+              {
+                "doc_id": "DOC_001",
+                "location": "Section 2",
+                "context_quote": "Built payment services in TypeScript and Node.js with full test coverage",
+                "evidence_score": 0.8,
+                "significance_explanation": "Direct proof of enterprise-grade reliability engineering."
+              }
+            ],
+            "identity": {
+              "name": "TypeScript and Node.js",
+              "type": "CAPABILITY"
+            },
+            "entity_id": "CAP_PINK_COMPOSITE",
+            "confidence": 0.8,
+            "properties": {
+              "category": "CORE_TECHNICAL",
+              "seniority_level": "EXPERT"
+            },
+            "validation": {
+              "status": "PASSED"
+            },
+            "relationships": []
+          },
+          {
+            "evidence": [
+              {
+                "doc_id": "DOC_001",
+                "location": "Section 2",
+                "context_quote": "Exhibited watercolour paintings at a local gallery",
+                "evidence_score": 0.8,
+                "significance_explanation": "Direct proof of enterprise-grade reliability engineering."
+              }
+            ],
+            "identity": {
+              "name": "Watercolour Painting",
+              "type": "CAPABILITY"
+            },
+            "entity_id": "CAP_PINK_UNRELATED",
+            "confidence": 0.8,
+            "properties": {
+              "category": "CORE_TECHNICAL",
+              "seniority_level": "EXPERT"
+            },
+            "validation": {
+              "status": "PASSED"
+            },
+            "relationships": []
+          }
+        ],
+        "requirements": [],
+        "opportunities": [
+          {
+            "evidence": [
+              {
+                "doc_id": "DOC_001",
+                "location": "Section 2",
+                "context_quote": "fault-tolerant gossip protocols across 5,000+ edge nodes in EMEA.",
+                "evidence_score": 0.88
+              }
+            ],
+            "identity": {
+              "name": "Decentralized Edge Consensus",
+              "type": "OPPORTUNITY"
+            },
+            "entity_id": "OPP_001",
+            "confidence": 0.88,
+            "properties": {
+              "demand_level": "HIGH"
+            },
+            "validation": {
+              "status": "PASSED"
+            },
+            "relationships": []
+          }
+        ],
+        "organizations": [
+          {
+            "evidence": [
+              {
+                "doc_id": "DOC_001",
+                "location": "Section 2",
+                "context_quote": "Led the worldwide IoT infrastructure transformation at Siemens Industrial Automation.",
+                "evidence_score": 0.98,
+                "significance_explanation": "Direct organizational resonance."
+              }
+            ],
+            "identity": {
+              "code": "SIE",
+              "name": "Siemens AG",
+              "type": "ORGANIZATION"
+            },
+            "entity_id": "ORG_001",
+            "confidence": 0.95,
+            "properties": {
+              "scale_tier": "ENTERPRISE_GLOBAL",
+              "country_iso": "DE",
+              "region_code": "EMEA",
+              "industry_enum": "INDUSTRIAL_AUTOMATION",
+              "resonance_score": 0.94,
+              "workplace_model": "HYBRID",
+              "recruiter_pool_id": "POOL_DACH_01"
+            },
+            "validation": {
+              "status": "PASSED"
+            },
+            "relationships": [
+              {
+                "weight": 1,
+                "target_id": "CLS_001",
+                "relation_type": "BELONGS_TO_CLASS"
+              }
+            ]
+          }
+        ],
+        "search_queries": [
+          {
+            "evidence": [
+              {
+                "doc_id": "DOC_001",
+                "location": "Section 2",
+                "context_quote": "Implemented fault-tolerant gossip protocols across 5,000+ edge nodes in EMEA.",
+                "evidence_score": 0.95
+              }
+            ],
+            "identity": {
+              "name": "Principal Distributed Systems Architect EMEA",
+              "type": "SEARCH_QUERY"
+            },
+            "entity_id": "QRY_001",
+            "confidence": 0.94,
+            "properties": {
+              "query": "(\"Distributed Systems\" OR \"Gossip Protocol\") AND (\"IIoT\" OR \"Edge\") AND EMEA",
+              "title": "Principal Distributed Systems Architect",
+              "target": "ENGINEERING_LEADERSHIP",
+              "purpose": "Targeting Tier-1 Industrial Edge Providers",
+              "priority": "HIGH_IMMEDIATE"
+            },
+            "validation": {
+              "status": "PASSED"
+            },
+            "relationships": []
+          }
+        ],
+        "organization_classes": [
+          {
+            "evidence": [
+              {
+                "doc_id": "DOC_001",
+                "location": "Section 1",
+                "context_quote": "resilient distributed systems and IoT infrastructure for Tier-1 enterprise organizations.",
+                "evidence_score": 0.9
+              }
+            ],
+            "identity": {
+              "name": "Enterprise Industrial Automation",
+              "type": "ORGANIZATION_CLASS"
+            },
+            "entity_id": "CLS_001",
+            "confidence": 0.9,
+            "properties": {
+              "market_segment": "TIER_1_ENTERPRISE"
+            },
+            "validation": {
+              "status": "PASSED"
+            },
+            "relationships": []
+          }
+        ]
+      },
+      "presentation": {
+        "ui_layout": {
+          "color_tokens": {
+            "CAPABILITY": "#1565C0",
+            "CONCRETE_ORGANIZATION": "#4CAF50"
+          },
+          "center_node_id": "CAP_001",
+          "priority_groups": [
+            {
+              "label": "Immediate Market Match",
+              "group_id": "GRP_TOP_RESONANCE",
+              "node_ids": [
+                "ORG_001"
+              ]
+            }
+          ],
+          "concentric_rings": [
+            {
+              "name": "Core Capabilities",
+              "node_ids": [
+                "CAP_001"
+              ],
+              "ring_index": 0
+            },
+            {
+              "name": "Target Organizations",
+              "node_ids": [
+                "ORG_001"
+              ],
+              "ring_index": 1
+            },
+            {
+              "name": "Target Roles",
+              "node_ids": [
+                "ROL_001"
+              ],
+              "ring_index": 2
+            }
+          ]
+        },
+        "semantic_graph": {
+          "edges": [
+            {
+              "source_id": "ORG_001",
+              "target_id": "CAP_001",
+              "interaction_force": 0.89
+            },
+            {
+              "source_id": "ROL_001",
+              "target_id": "ORG_001",
+              "interaction_force": 0.95
+            }
+          ],
+          "nodes": [
+            {
+              "weight": 0.95,
+              "node_id": "CAP_001",
+              "entity_type": "CAPABILITY"
+            },
+            {
+              "weight": 0.94,
+              "node_id": "ORG_001",
+              "entity_type": "CONCRETE_ORGANIZATION"
+            },
+            {
+              "weight": 0.92,
+              "node_id": "ROL_001",
+              "entity_type": "ROLE"
+            }
+          ]
+        }
+      }
+    }
+  },
+  "reactFlowGraph": {
+    "nodes": [
+      {
+        "id": "CAP_001",
+        "type": "careerNode",
+        "position": {
+          "x": 0,
+          "y": 0
+        },
+        "data": {
+          "label": "CAP_001",
+          "type": "CAPABILITY",
+          "ringName": "Core Capabilities",
+          "ringIndex": 0,
+          "weight": 0.95,
+          "tooltip": "CAP_001 (CAPABILITY) — Weight: 95%",
+          "isCollapsible": false,
+          "isExpandedByDefault": true,
+          "style": {
+            "colorToken": "#1565C0",
+            "shape": "HEXAGON",
+            "borderWidth": 3,
+            "opacity": 1
+          }
+        },
+        "style": {
+          "opacity": 1
+        }
+      },
+      {
+        "id": "ORG_001",
+        "type": "careerNode",
+        "position": {
+          "x": 0,
+          "y": -250
+        },
+        "data": {
+          "label": "Siemens AG",
+          "type": "ORGANIZATION",
+          "ringName": "Target Organizations",
+          "ringIndex": 1,
+          "priorityGroup": "Immediate Market Match",
+          "weight": 0.94,
+          "tooltip": "Siemens AG (ORGANIZATION) — Weight: 94%",
+          "isCollapsible": true,
+          "isExpandedByDefault": true,
+          "style": {
+            "colorToken": "#4CAF50",
+            "shape": "CIRCLE",
+            "borderWidth": 1,
+            "opacity": 1
+          }
+        },
+        "style": {
+          "opacity": 1
+        }
+      },
+      {
+        "id": "ROL_001",
+        "type": "careerNode",
+        "position": {
+          "x": 0,
+          "y": -500
+        },
+        "data": {
+          "label": "Principal Edge Systems Architect",
+          "type": "ROLE",
+          "ringName": "Target Roles",
+          "ringIndex": 2,
+          "weight": 0.92,
+          "tooltip": "Principal Edge Systems Architect (ROLE) — Weight: 92%",
+          "isCollapsible": true,
+          "isExpandedByDefault": false,
+          "style": {
+            "colorToken": "#808080",
+            "shape": "PILL",
+            "borderWidth": 1,
+            "opacity": 1
+          }
+        },
+        "style": {
+          "opacity": 1
+        }
+      }
+    ],
+    "edges": [
+      {
+        "id": "edge-ORG_001-CAP_001",
+        "source": "ORG_001",
+        "target": "CAP_001",
+        "animated": false,
+        "style": {
+          "strokeWidth": 1,
+          "stroke": "#999999",
+          "strokeDasharray": "5 5"
+        },
+        "data": {
+          "interactionForce": 0.89,
+          "tooltip": "Connection force: 89%"
+        }
+      },
+      {
+        "id": "edge-ROL_001-ORG_001",
+        "source": "ROL_001",
+        "target": "ORG_001",
+        "animated": true,
+        "style": {
+          "strokeWidth": 2,
+          "stroke": "#999999"
+        },
+        "data": {
+          "interactionForce": 0.95,
+          "relationType": "ROLE_IN_ORGANIZATION",
+          "tooltip": "Connection force: 95%"
+        }
+      }
+    ]
+  }
+}

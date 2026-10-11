@@ -1,0 +1,25 @@
+Q-03
+visible text:
+Role Distributed Systems Architect at Alpha Industrial Systems requires 3 requirements: 1 with scored support, 1 with weak support, 0 covered only by an unscored sweep proposal, 1 without delivered support, 0 without a matching read. Canonical evaluation is pending for every requirement of this role.
+
+Beta Cloud GmbH
+2 ROLES
+DistributedSystemsArchitect
+doc1.md
+DistributedSystemsArchitecture
+Edge Computing
+Industrial IoTProtocol Design
+JOB FIELD
+← CAPABILITY FIELD
+PINK validation pool
+›
+Alpha Industrial Systems
+›
+Distributed Systems Architect
+← RETURN
+PRESENTATION MATCHING
+Esc returns · Enter selects · Tab moves between carriers
+⬡ POOLS · 2
++ INTAKE
+BOUNDARY
+PRESENTED != EVALUATED · UPLOADED != SELECTED · RANKED != RECOMMENDED · MISSING != GAP DECISION · COVERED != SCORED · PENDING != MISSING CAPABILITY · POOL ROLE != INFERRED ROLE

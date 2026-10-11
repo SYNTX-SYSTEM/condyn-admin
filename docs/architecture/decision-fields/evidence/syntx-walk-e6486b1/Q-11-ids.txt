@@ -1,0 +1,2 @@
+retired selectors absent: 36
+strip buttons: field-focus-capability-btn, job-pool-panel-toggle

@@ -1,0 +1,23 @@
+Q-01
+visible text:
+Job pool PINK validation pool, version 1, ACTIVE: 2 organizations containing 3 roles. A presentation matching was read for this pool.
+
+Alpha IndustrialSystems
+1 ROLES
+Beta Cloud GmbH
+2 ROLES
+DistributedSystems Architect
+3 REQUIREMENTS
+Platform Engineer
+3 REQUIREMENTS
+Role WithoutRequirements
+0 REQUIREMENTS
+JOB FIELD
+← CAPABILITY FIELD
+PINK validation pool
+PRESENTATION MATCHING
+Esc returns · Enter selects · Tab moves between carriers
+⬡ POOLS · 2
++ INTAKE
+BOUNDARY
+PRESENTED != EVALUATED · UPLOADED != SELECTED · RANKED != RECOMMENDED · MISSING != GAP DECISION · COVERED != SCORED · PENDING != MISSING CAPABILITY · POOL ROLE != INFERRED ROLE

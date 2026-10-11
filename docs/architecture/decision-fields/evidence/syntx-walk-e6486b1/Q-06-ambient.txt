@@ -1,0 +1,2 @@
+FIELD: {"switch":"on","names":["sxBreathe","sxOrbit"],"outsideField":[]}
+expected switch: on
