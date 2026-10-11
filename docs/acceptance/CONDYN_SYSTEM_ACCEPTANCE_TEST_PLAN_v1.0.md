@@ -3,7 +3,7 @@
 | Field | Value |
 | --- | --- |
 | Document | `CONDYN_SYSTEM_ACCEPTANCE_TEST_PLAN_v1.0.md` |
-| Version | 1.0.0 (2026-10-11) |
+| Version | 1.0.1 (2026-10-11) |
 | Authored by | PINK (independent SFE validation field) under the owner mandate "SFE — COMPLETE SYSTEM ACCEPTANCE TEST PLAN" |
 | Application version under test | `integration/job-field-governance` @ `cccd647` (authoritative, GELB 2026-10-11). Every scenario cites this tip; a different tip requires a new plan version or a documented delta (§5.3). |
 | Executing agent | an independent external testing agent operating through Gemini Antigravity (browser automation, screenshots, video, HTTP, read-only SQL) |
@@ -11,7 +11,7 @@
 | Out of scope | production deployment (forbidden), the shared `condyn` database (forbidden), role/privilege administration (forbidden), application changes (forbidden) |
 | Machine-readable index | `docs/acceptance/condyn-acceptance-scenarios.v1.json` (one row per scenario: id, suite, sequence, risk, evidence) |
 
-Change log: 1.0.0 initial release against `cccd647`.
+Change log: 1.0.0 initial release against `cccd647`; 1.0.1 GELB's code review folded in (start-up log lines, status output, state-file secret rule, HR route status codes, jobs route bodies).
 
 ---
 
@@ -109,7 +109,7 @@ Every interactive element carries a `data-testid`. Appendix A lists all 228 ids 
 | Never touch the owner's running environment: worktree `/home/codi/Entwicklung/condyn-admin-job-pool`, port `3017`, database `condyn_test_e46502b73c9f316f`. Never run `next dev`, scripts, tests or drops there. | Campaign invalid. |
 | Never set `CONDYN_ALLOW_SHARED_DATABASE`, never pass a `DATABASE_URL` naming a protected database, never run `scripts/test-db/provision-role.ts`, never run `scripts/db-hardening/*`, never alter roles or privileges. | Campaign invalid. |
 | Never run `npm run worker:career` (reads `.env.local`). Never run plain `npx vitest` (refused by design). | Scenario invalid. |
-| Credentials: `GEMINI_API_KEY` comes from the operator's shell only; never print, log, screenshot, store or commit it; redact worker logs before attaching them. The role file `~/.config/condyn/test-db-role.env` (mode 600) is sourced, never copied. | Campaign invalid if a secret appears in evidence. |
+| Credentials: `GEMINI_API_KEY` comes from the operator's shell only; never print, log, screenshot, store or commit it; redact worker logs before attaching them. The role file `~/.config/condyn/test-db-role.env` (mode 600) is sourced, never copied. The manual environment's state file `.hr-loop-local/state.json` contains the database URL with the role password: never read it out, attach it, upload it or commit it; refer to databases by name only. | Campaign invalid if a secret appears in evidence. |
 | Stop only processes of your own PID tree after checking `/proc/<pid>/cwd` is your worktree. Never `pkill`/`pgrep` by pattern. | Peer environments killed; campaign invalid. |
 | No production deployment, no `next start` against anything but your disposable database, no application change. | Campaign invalid. |
 | Test data is synthetic: `docs/examples/cv.synthetic.pdf`, `docs/examples/job-pool.sample.json`, the fixtures of `test/job-pool-validation/fixtures`. No real person's CV. | Campaign invalid. |
@@ -132,9 +132,9 @@ Every interactive element carries a `data-testid`. Appendix A lists all 228 ids 
 | E-01 | Own worktree of the tip | `git -C /home/codi/Entwicklung/condyn-admin worktree add /home/codi/Entwicklung/condyn-admin-acceptance cccd647` then `cp -al /home/codi/Entwicklung/condyn-admin/node_modules /home/codi/Entwicklung/condyn-admin-acceptance/node_modules` | `git rev-parse HEAD` prints `cccd647…`; `ls node_modules/next/package.json` exists; `node_modules` is a directory, not a symlink |
 | E-02 | Role credentials | `set -a; . ~/.config/condyn/test-db-role.env; set +a` in every shell you use | `echo ${TEST_DATABASE_ADMIN_URL%%:*}` prints `postgresql`; never print the full URL |
 | E-03 | Type check (sanity) | `npx tsc --noEmit -p tsconfig.json` | exit 0 |
-| E-04 | Disposable database + server + worker (live path) | `export GEMINI_API_KEY=<from operator shell>; export GEMINI_MODEL=gemini-3.1-pro-preview; HR_LOOP_LOCAL_PORT=3117 npm run job-pool:local -- --fresh` | log lines `created condyn_test_…`, `verified disposable test database`, `registered schema: …`, `registered job-pool persistence`, `starting career worker against condyn_test_…`, `Worker started. Polling for jobs...`, server ready on `http://127.0.0.1:3117`; the start banner prints the seeded "Context A"/"Context B" URLs for the HR dock |
+| E-04 | Disposable database + server + worker (live path) | `export GEMINI_API_KEY=<from operator shell>; export GEMINI_MODEL=gemini-3.1-pro-preview; HR_LOOP_LOCAL_PORT=3117 npm run job-pool:local -- --fresh` | log lines in order: `[hr-loop:local] admin role condyn_test_runner (least privilege)`, `created disposable database condyn_test_…`, `registered schema: CAREER_FIELD_SCHEMA -> … -> CAREER_DECISION_CONTEXT_DECISION_REVISION_BINDINGS`, `registered job-pool persistence`, `seeded the sealed-producer world (context A full chain + DCDRB, context B empty)`, `starting career worker against condyn_test_… (GEMINI_MODEL …, fresh PROMPT_ENCRYPTION_KEY, in-memory prompt repository)`, `starting next dev --webpack on 127.0.0.1:3117 against condyn_test_…`, `[worker] Worker started. Polling for jobs...`; then the banner `HR DECISION LOOPER · LOCAL MANUAL TEST ENVIRONMENT` with the Context A/B URLs for the HR dock |
 | E-05 | Server without worker (stub/offline path) | `HR_LOOP_LOCAL_PORT=3118 npm run hr-loop:local -- --fresh` (no Gemini key needed) | as E-04 without the worker lines |
-| E-06 | Status / state file | `npm run hr-loop:local:status` | prints the state JSON with `databaseName`, `databaseUrl` (loopback, `condyn_test_…`), port |
+| E-06 | Status | `npm run hr-loop:local:status` | prints the banner (database NAME `condyn_test_…`, declarant, URLs, drop hint). SECURITY: the script's state file `.hr-loop-local/state.json` stores the database URL WITH the role password; never `cat`, print, attach, upload or commit it (it is untracked). Evidence carries the database NAME only. |
 | E-07 | Automated proof landscape sanity | `npm run test:isolated -- test/job-pool-validation test/career/job-pool test/career/hr-decision-loop/local-composition-gate.test.ts` with `CONDYN_PLAYWRIGHT_MODULE` set | all green (live suite skipped without key); the runner prints `created condyn_test_…` and `dropped condyn_test_…` |
 | E-08 | Cleanup at the end | `Ctrl+C` the server/worker started in E-04/E-05 (own PID tree); `npm run hr-loop:local:drop` in your worktree | `dropped condyn_test_…`; `psql "$TEST_DATABASE_ADMIN_URL" -Atc "select datname from pg_database where datname like 'condyn_test_%'"` no longer lists your database; the owner's `condyn_test_e46502b73c9f316f` may still be listed and is not yours |
 
@@ -146,7 +146,7 @@ Base URL `http://127.0.0.1:<port>`; JSON bodies; headers of note: `Idempotency-K
 
 ### 4.4 Read-only database inspection
 
-Allowed only against your own disposable database: `psql "<databaseUrl from E-06>" -Atc "<SELECT …>"`. Allowed statements: `SELECT` on `information_schema`, `pg_database` (name list), and the application tables named in §6 TS-M. No INSERT/UPDATE/DELETE/DDL. Never a URL naming `condyn`.
+Allowed only against your own disposable database, addressed by NAME from the E-06 banner and the role URL from the shell, never by a printed URL: `psql "${TEST_DATABASE_ADMIN_URL%/*}/<databaseName>" -Atc "<SELECT …>"` (the role URL's last path segment is replaced by your database name inside the shell). Allowed statements: `SELECT` on `information_schema`, `pg_database` (name list), and the application tables named in §6 TS-M. No INSERT/UPDATE/DELETE/DDL. Never a URL naming `condyn`.
 
 ---
 
@@ -199,7 +199,7 @@ Scenario format: **Id · Title** · Objective · Preconditions · Procedure · E
 
 **A-02 · Database identity fail-closed** · Objective: the application refuses a non-disposable database. · Pre: E-01, E-02. · Procedure: `DATABASE_URL="postgresql://condyn_test_runner:<any-placeholder>@localhost:5432/condyn_other" npx tsx -e 'import("./lib/career/db/client").then(m=>console.log(Object.keys(m)))'` and separately start `HR_LOOP_LOCAL_PORT=3119 npm run hr-loop:local:serve` after editing nothing (it must refuse without a state file). · Expected: the client resolves an unroutable `.invalid` host or the script fails with `ERR_HR_LOOP_LOCAL_STATE_MISSING`; no connection to any protected database. · Evidence: `A-02-fail-closed.txt`. · Risk: R7.
 
-**A-03 · Disposable database marker** · Objective: your database carries the marker. · Pre: E-04/E-05. · Procedure: `psql "<databaseUrl>" -Atc "select obj_description(oid,'pg_database') from pg_database where datname = current_database()"`. · Expected: `CONDYN_DISPOSABLE_TEST_DATABASE <name>`. · Evidence: `A-03-marker.txt`. · Risk: R7.
+**A-03 · Disposable database marker** · Objective: your database carries the marker. · Pre: E-04/E-05. · Procedure: `psql "${TEST_DATABASE_ADMIN_URL%/*}/<databaseName>" -Atc "select obj_description(oid,'pg_database') from pg_database where datname = current_database()"`. · Expected: `CONDYN_DISPOSABLE_TEST_DATABASE <name>`. · Evidence: `A-03-marker.txt`. · Risk: R7.
 
 **A-04 · Owner environment untouched** · Objective: nothing of yours ran against port 3017 or `condyn_test_e46502b73c9f316f`. · Procedure: before and after the campaign, `curl -s -o /dev/null -w '%{http_code}' http://127.0.0.1:3017/api/career/job-pools` (read only) and list databases. · Expected: the owner's server answers unchanged (or is absent) and its database is neither dropped nor altered by you; your own databases are gone after E-08. · Evidence: `A-04-owner-env-before.txt`, `A-04-owner-env-after.txt`. · Risk: R7.
 
@@ -237,9 +237,9 @@ Use the live server of E-04 (or E-05 for everything that needs no model). Captur
 
 **B-13 · Matches persist nothing** · read `select count(*)` of every public table before and after B-11 (read-only SQL, own DB) → identical counts; no table name matches `/match|presentation|resonance/`. Evidence `B-13-census.txt`. R7.
 
-**B-14 · HR context read** · `GET /api/career/hr-decision-loop/contexts/{DCTXREV from the E-04 banner, Context A}` → `200` read model with the fifteen families `PERSISTED · 1`; Context B → families `EMPTY`; opaque id → `404 ERR_HR_DECISION_LOOP_API_NOT_FOUND`; malformed id → `422 ERR_HR_DECISION_LOOP_API_REQUEST_REJECTED`. Evidence `B-14-*.json`. R6/R7.
+**B-14 · HR context read** · `GET /api/career/hr-decision-loop/contexts/{DCTXREV from the E-04 banner, Context A}` → `200` read model with the fifteen families `PERSISTED · 1`; Context B → families `EMPTY`; opaque id → `404 ERR_HR_DECISION_LOOP_API_NOT_FOUND`; malformed id → `422 ERR_HR_DECISION_LOOP_API_REQUEST_REJECTED`; the HR routes never answer `503`. Evidence `B-14-*.json`. R6/R7.
 
-**B-15 · HR declaration gate** · `POST /api/career/hr-decision-loop/decisions` with the Context B subject, declarant `INTRUDER` → rejected `ERR_HUMAN_DECISION_DECLARANT_MISMATCH`; declarant `HR_DECIDER_LOCAL`, class `REQUEST_FURTHER_EVIDENCE` → `ERR_HUMAN_DECISION_SUBJECT_NOT_ADMISSIBLE`; class `REJECT_RECOMMENDATION` → `201` `DCR_…`; identical declaration again → `409` immutable identity. Evidence `B-15-*.json`. R6/R7.
+**B-15 · HR declaration gate** · `POST /api/career/hr-decision-loop/decisions` (with the `x-condyn-principal-*` headers the dock sends; without them `401 ERR_HR_DECISION_LOOP_API_UNAUTHENTICATED`) with the Context B subject, declarant `INTRUDER` → `422 ERR_HR_DECISION_LOOP_API_REQUEST_REJECTED` with detail `DECLARANT_MISMATCH`; declarant `HR_DECIDER_LOCAL`, class `REQUEST_FURTHER_EVIDENCE` → `422` with detail `SUBJECT_NOT_ADMISSIBLE`; class `REJECT_RECOMMENDATION` → `201` `DCR_…`; identical declaration again → `409 ERR_HR_DECISION_LOOP_API_CONFLICT`. Evidence `B-15-*.json`. R6/R7.
 
 **B-16 · Gate 503 on a non-disposable database** · start the server against an unmarked database name in the pattern (create `condyn_test_<16 hex>` with plain `CREATE DATABASE` through `$TEST_DATABASE_ADMIN_URL`, no marker), `GET /api/career/job-pools` → `503 ERR_JOB_POOL_PERSISTENCE_NOT_PROVISIONED`; `select count(*) from information_schema.tables where table_schema='public'` → `0`; then `DROP DATABASE` that one (yours, unmarked). Evidence `B-16.json`, `B-16-tables.txt`. R6/R7.
 
@@ -444,7 +444,7 @@ Each scenario must end with the system still usable (no blank page, no stuck spi
 | N-01 | Worker absent | E-05 server (no worker), submit C-01 | job stays `PENDING`; banner `QUEUED`; no false success; after restart with worker it proceeds |
 | N-02 | Model error | C-06 | `intake-error-banner` + `retry-intake-btn`; job `FAILED` after ≤ 3 attempts; boundary B-GEMINI-MODEL |
 | N-03 | Key absent | C-07 | fail-closed start, nothing left behind |
-| N-04 | Non-disposable database | B-16 | `503 ERR_JOB_POOL_PERSISTENCE_NOT_PROVISIONED`; panel `job-pool-list-not-provisioned`, Job Field `NOT_PROVISIONED`; zero DDL |
+| N-04 | Non-disposable database | B-16 | job pool: `503 ERR_JOB_POOL_PERSISTENCE_NOT_PROVISIONED`, panel `job-pool-list-not-provisioned`, Job Field `NOT_PROVISIONED`; HR routes: `200` read model with regions `NOT_PROVISIONED` and the dock's `hr-decision-loop-bound-revisions-not-provisioned`; zero DDL in both |
 | N-05 | Inactive pool | D-08 / E-09 | `409`, `job-pool-matches-inactive`, `INACTIVE_POOL` |
 | N-06 | Invalid upload | D-09, B-09 | rejection with code and issues; list unchanged |
 | N-07 | Stale ids | H-05, E-08 | named absence on every surface |
@@ -529,7 +529,7 @@ Required for E-01, E-04, E-05, E-07, H-03, I-01, I-05, J-01 … J-07, K-04, L-01
 
 ### 8.4 Logs, bodies, SQL
 
-HTTP bodies are saved verbatim as JSON. Worker/server logs are saved after redaction: remove any line containing `AIza`, `GEMINI_API_KEY`, `postgresql://` with credentials, `PROMPT_ENCRYPTION_KEY`. SQL evidence contains the statement and its result; never the connection string.
+HTTP bodies are saved verbatim as JSON. Worker/server logs are saved after redaction: remove any line containing `AIza`, `GEMINI_API_KEY`, `postgresql://` with credentials, `PROMPT_ENCRYPTION_KEY`. SQL evidence contains the statement and its result; never the connection string. Never attach: `.hr-loop-local/` (state file with credentials), `~/.config/condyn/`, `.env*` files, shell history.
 
 ### 8.5 Manifest and integrity
 
@@ -824,16 +824,16 @@ Generated from `app/components/career/demo/*.tsx` and `app/career/demo/*.tsx`. `
 | Route | Success | Errors |
 | --- | --- | --- |
 | `POST /api/career/analyze` | `202 {jobId, status:"PENDING", statusUrl}` | `400` `ERR_NO_DOCUMENTS` / `ERR_MISSING_SOURCE_URL` / `ERR_INVALID_WEBSITE_URL` / `ERR_INVALID_GITHUB_URL`; `409 ERR_JOB_IDEMPOTENCY_CONFLICT`; `500 ERR_SERVER_FATAL` |
-| `GET /api/career/jobs/{jobId}` | `200 {status PENDING|RUNNING|SUCCEEDED|FAILED, currentOperation, attemptCount, resultAnalysisId, errorSummary}` | `400` missing id; `404` unknown |
+| `GET /api/career/jobs/{jobId}` | `200 {status PENDING|RUNNING|SUCCEEDED|FAILED, currentOperation, attemptCount, resultAnalysisId, errorSummary}` | `400 {error:"Missing jobId"}`; `404` not-found body; `500 ERR_SERVER_FATAL` |
 | `GET /api/career/analyses` | `200` index | `500` |
 | `GET /api/career/analyses/{id}` | `200 {success, status:"VERIFIED", analysisId, metadata, matching*, recommendations*, capabilityProposalProjection|null, analysis, reactFlowGraph}` (*legacy demo pool, rendered nowhere) | `400 ERR_MISSING_ID`; `404 ERR_ANALYSIS_NOT_FOUND`; `500 ERR_SERVER_FATAL` |
 | `POST /api/career/job-pools` | `201` new / `200` identical `JobPoolUploadView` | `400 ERR_JOB_POOL_JSON_INVALID`, `400 ERR_JOB_POOL_ACTOR_INVALID`, `413 ERR_JOB_POOL_TOO_LARGE`, `422 ERR_JOB_POOL_SCHEMA_INVALID` (issues), `422 ERR_JOB_POOL_REFERENCE_INVALID`, `503 ERR_JOB_POOL_PERSISTENCE_NOT_PROVISIONED`, `500 ERR_JOB_POOL_INTERNAL` |
 | `GET /api/career/job-pools` | `200 {jobPools: summary[]}` ordered by poolId, version, uploadId | `503` |
 | `GET /api/career/job-pools/{id}` | `200 JobPoolUploadView` | `404 ERR_JOB_POOL_NOT_FOUND`; `503` |
 | `GET /api/career/job-pools/{id}/matches?analysisId=` | `200 JobPoolMatchPresentation` | `400 ERR_ANALYSIS_ID_REQUIRED`; `404 ERR_JOB_POOL_NOT_FOUND` / `ERR_ANALYSIS_NOT_FOUND`; `409 ERR_INACTIVE_COMPANY_POOL`; `503` |
-| `GET /api/career/hr-decision-loop/contexts/{DCTXREV}` | `200` read model (families, bindings) | `404 ERR_HR_DECISION_LOOP_API_NOT_FOUND`; `422 ERR_HR_DECISION_LOOP_API_REQUEST_REJECTED`; `503` without disposable DB |
-| `POST /api/career/hr-decision-loop/decisions` | `201 DCR_…` | gate codes verbatim (`ERR_HUMAN_DECISION_DECLARANT_MISMATCH`, `ERR_HUMAN_DECISION_SUBJECT_NOT_ADMISSIBLE`, …); `409` immutable identity |
-| `GET /api/career/hr-decision-loop/decisions/{DCR}` | `200` | `404` |
+| `GET /api/career/hr-decision-loop/contexts/{DCTXREV}` | `200` read model (families, bindings); without a disposable database the routes issue no DDL and missing tables read as region state `NOT_PROVISIONED` inside a `200` read model (never `503`) | `404 ERR_HR_DECISION_LOOP_API_NOT_FOUND`; `422 ERR_HR_DECISION_LOOP_API_REQUEST_REJECTED`; `500 ERR_HR_DECISION_LOOP_API_INTERNAL` |
+| `POST /api/career/hr-decision-loop/decisions` | `201 DCR_…` | `400 ERR_HR_DECISION_LOOP_API_INVALID_JSON`; `401 ERR_HR_DECISION_LOOP_API_UNAUTHENTICATED` (no principal headers); `403 ERR_HR_DECISION_LOOP_API_PRINCIPAL_MISMATCH`; `404 ERR_HR_DECISION_LOOP_API_NOT_FOUND`; `409 ERR_HR_DECISION_LOOP_API_CONFLICT` (immutable identity); `422 ERR_HR_DECISION_LOOP_API_REQUEST_REJECTED` carrying the gate code as detail (`DECLARANT_MISMATCH`, `SUBJECT_NOT_ADMISSIBLE`, …); `500 ERR_HR_DECISION_LOOP_API_INTERNAL` |
+| `GET /api/career/hr-decision-loop/decisions/{DCR}` | `200` | `404 ERR_HR_DECISION_LOOP_API_NOT_FOUND`; `500` |
 | `POST /api/career/canonical-sil/execute`, `GET …/{associationId}` | `201` / `200` | `404 ERR_CANONICAL_SIL_RUNTIME_ASSOCIATION_NOT_FOUND` (frozen runtime; smoke only) |
 | `POST /api/decision-contexts`, `GET /api/decision-contexts/{revisionId}` | frozen API v1 (`docs/decision-runtime/LOCAL-DECISION-CONTEXT-API.md`) | boundary B1 (500 vs 422) |
 
