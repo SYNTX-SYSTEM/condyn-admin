@@ -247,17 +247,44 @@ describe.skipIf(playwrightModule === null)("SYNTX field in a real browser: FIELD
   /** A region is clicked on its own body (bottom of the circle, where no contained role sits); a ring on its stroke (top), never at the bounding-box centre. */
   const bottomOf = (locator: Locator) => locator.evaluate(element => { const box = element.getBoundingClientRect(); return { x: box.width / 2, y: box.height - 6 }; });
   const topOf = (locator: Locator) => locator.evaluate(element => { const box = element.getBoundingClientRect(); return { x: box.width / 2, y: 5 }; });
-  /** A trace is clicked on its own line near the source end (absolute viewport coordinates: Playwright's position reference for SVG groups is not their client rect), where no anchor of a neighbouring requirement covers it. */
+  /**
+   * A point on a trace's visible path in absolute viewport coordinates (Playwright's position reference for SVG groups is
+   * not their client rect, and getScreenCTM ignores the camera's CSS transform): the path point is mapped through the
+   * camera's computed transform and the canvas viewBox. Traces are paths since the perceptual closure (straight "M…L…" or bowed "M…Q…").
+   */
   const alongTrace = (locator: Locator, fraction: number) => locator.evaluate((element, fraction) => {
-    // getScreenCTM ignores the camera's CSS transform; the line's own client rect does not: its endpoints are two opposite corners.
-    const line = element.querySelector("line:not([data-sx-hit])") as SVGLineElement;
-    const rect = line.getBoundingClientRect();
-    const dx = line.x2.baseVal.value - line.x1.baseVal.value;
-    const dy = line.y2.baseVal.value - line.y1.baseVal.value;
-    const a = { x: dx >= 0 ? rect.left : rect.right, y: dy >= 0 ? rect.top : rect.bottom };
-    const b = { x: dx >= 0 ? rect.right : rect.left, y: dy >= 0 ? rect.bottom : rect.top };
-    return { x: a.x + (b.x - a.x) * fraction, y: a.y + (b.y - a.y) * fraction };
+    const path = element.querySelector("path:not([data-sx-hit])") as SVGPathElement;
+    const point = path.getPointAtLength(path.getTotalLength() * fraction);
+    const camera = element.closest("[data-sx-camera]") as SVGGElement;
+    const matrix = new DOMMatrix(getComputedStyle(camera).transform);
+    const svg = element.closest("svg") as SVGSVGElement;
+    const box = svg.getBoundingClientRect();
+    const unit = box.width / svg.viewBox.baseVal.width;
+    return { x: box.left + (matrix.a * point.x + matrix.e) * unit, y: box.top + (matrix.d * point.y + matrix.f) * unit };
   }, fraction);
+  /** Perceptual closure checks over the rendered ecology (F-SX-2 pointer ownership, O-SX-2 label clearance, O-SX-4 reach), read once the camera has settled. */
+  const ecologyGeometry = (page: Page) => page.getByTestId("syntx-ecology").evaluate(ecology => {
+    const svg = ecology.closest("svg") as SVGSVGElement;
+    const box = svg.getBoundingClientRect();
+    const unit = box.width / svg.viewBox.baseVal.width;
+    const matrix = new DOMMatrix(getComputedStyle(ecology.closest("[data-sx-camera]") as SVGGElement).transform);
+    const toClient = (point: { x: number; y: number }) => ({ x: box.left + (matrix.a * point.x + matrix.e) * unit, y: box.top + (matrix.d * point.y + matrix.f) * unit });
+    const roleLabel = (document.querySelector(`[data-testid="syntx-role-${ecology.getAttribute("data-role-id")}"] text`) as SVGTextElement).getBoundingClientRect();
+    const stage = (document.querySelector('[data-testid="syntx-stage"]') as HTMLElement).getBoundingClientRect();
+    const traces = Array.from(ecology.querySelectorAll('[data-testid^="syntx-trace-"]')).map(trace => {
+      const path = trace.querySelector("path:not([data-sx-hit])") as SVGPathElement;
+      const length = path.getTotalLength();
+      const samples = Array.from({ length: 15 }, (_, index) => toClient(path.getPointAtLength((length * (index + 1)) / 16)));
+      const crossesRoleLabel = samples.some(point => point.x >= roleLabel.left && point.x <= roleLabel.right && point.y >= roleLabel.top && point.y <= roleLabel.bottom);
+      const owned = samples.filter(point => { const hit = document.elementFromPoint(point.x, point.y); return hit !== null && trace.contains(hit); }).length;
+      return { id: trace.getAttribute("data-sign-id"), state: trace.getAttribute("data-sign-state"), bow: trace.getAttribute("data-trace-bow"), d: path.getAttribute("d"), crossesRoleLabel, owned, hitFirst: trace.firstElementChild?.hasAttribute("data-sx-hit") === true };
+    });
+    const sources = Array.from(ecology.querySelectorAll('[data-testid^="syntx-source-"]')).map(source => {
+      const rect = source.getBoundingClientRect();
+      return { docId: source.getAttribute("data-proof-doc-id"), state: source.getAttribute("data-sign-state"), inside: rect.left >= stage.left && rect.right <= stage.right && rect.top >= stage.top && rect.bottom <= stage.bottom };
+    });
+    return { traces, sources };
+  });
   const field = (page: Page) => page.getByTestId("syntx-field");
 
   beforeAll(async () => {
@@ -450,6 +477,18 @@ describe.skipIf(playwrightModule === null)("SYNTX field in a real browser: FIELD
     expect(stageText).not.toContain(T.quote);
     expect((await page.getByTestId("syntx-summary").textContent()) ?? "").toContain("Canonical evaluation is pending");
     await settled(page);
+    // Perceptual closure at ROLE: every trace is a path whose hit path comes first; every trace owns pointer points on its own visible path (F-SX-2);
+    // no trace crosses the role carrier's title (O-SX-2); every carrier of the ecology lies inside the stage.
+    const roleGeometry = await ecologyGeometry(page);
+    expect(roleGeometry.traces.length).toBe(expectedTraces);
+    for (const trace of roleGeometry.traces) {
+      expect(trace.hitFirst, `${trace.id} hit path first`).toBe(true);
+      expect(trace.d, `${trace.id} path`).toMatch(/^M [\d.-]+ [\d.-]+ (L|Q) /);
+      expect(trace.owned, `${trace.id} owns pointer points`).toBeGreaterThan(0);
+      expect(trace.crossesRoleLabel, `${trace.id} crosses the role title`).toBe(false);
+    }
+    expect(new Set(roleGeometry.traces.map(trace => trace.d)).size).toBe(roleGeometry.traces.length);
+    for (const source of roleGeometry.sources) expect(source.inside, `${source.docId} inside the stage at ROLE`).toBe(true);
     await page.screenshot({ path: resolve(EVIDENCE_DIR, "24-syntx-role-constraint-ecology.png") });
 
     // REQUIREMENT: the anchor becomes the observation point; its traces are inspectable, everything else recedes.
@@ -469,6 +508,16 @@ describe.skipIf(playwrightModule === null)("SYNTX field in a real browser: FIELD
       return states.lastIndexOf("inspectable") === states.length - 1 && states.indexOf("inspectable") > states.lastIndexOf("receded");
     })).toBe(true);
     await settled(page);
+    // Perceptual closure at REQUIREMENT: the inspectable traces own pointer points and avoid the role title; the reached carrier is inside the stage (O-SX-4);
+    // the reading agrees in number (O-SX-3).
+    const requirementGeometry = await ecologyGeometry(page);
+    for (const trace of requirementGeometry.traces.filter(trace => trace.state === "inspectable")) {
+      expect(trace.owned, `${trace.id} owns pointer points`).toBeGreaterThan(0);
+      expect(trace.crossesRoleLabel, `${trace.id} crosses the role title`).toBe(false);
+    }
+    for (const source of requirementGeometry.sources.filter(source => source.state === "inspectable")) expect(source.inside, `${source.docId} inside the stage at REQUIREMENT`).toBe(true);
+    expect((await page.getByTestId("syntx-summary").textContent()) ?? "").toMatch(/ 1 evidence trace from 1 source\./);
+    expect((await page.getByTestId("syntx-summary").textContent()) ?? "").not.toMatch(/\b1 (sources|traces|requirements|roles|organizations)\b/);
     await page.screenshot({ path: resolve(EVIDENCE_DIR, "25-syntx-requirement-observation.png") });
 
     // EVIDENCE: inspecting a trace opens the temporary aperture with the quote verbatim, the resolved source title and the authority boundary.

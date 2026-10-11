@@ -428,9 +428,19 @@ unchanged); exits write `focus=CAPABILITY` while an upload is selected. The Capa
 | FIELD | enter, RETURN | centre, scale 1 | pool = total field (faint boundary); organizations as named regions on one ring, region radius = density (number of roles, never importance); roles as readable carriers inside their region (containment from `organization_id` = canonical binding, never label text); requirement density preview as ticks; **no score, no coupling, no delivered-order position** |
 | ORGANIZATION | select region (click / Enter) | recenter on the region, scale ≤ 2.6 | the region unfolds (roles spread), other regions recede (opacity), the pool stays faintly recoverable |
 | ROLE | select carrier | recenter on the role, scale 1.8 | the role is the centre of its constraint ecology: anchors at a distance by support category only (`SUPPORTED` 78 < `WEAK` 98 < `SWEEP_ONLY` 118 < `OPEN` 138; `UNREAD` 104 without a matching read); traces from anchor to source carriers (stable / thin / dotted; contribution modulates the weight only within a category); one suspended boundary (dashed circle, radius 158) for the pending canonical evaluation of the whole ecology (R2); source carriers on an outer ring (one per delivered docId); the organization region stays behind as origin context; other roles recede |
-| REQUIREMENT | select anchor | recenter between anchor and role, scale 2.4 | the anchor is selected, its traces are inspectable, every other anchor and trace recedes |
+| REQUIREMENT | select anchor | recenter between anchor and role, scale 2.4, shifted the least that keeps the anchor with its label and every reached source carrier (title included) inside the view (O-SX-4) | the anchor is selected, its traces are inspectable, every other anchor and trace recedes |
 | aperture | inspect a trace, an open boundary or the suspended boundary (click / Enter) | none (the aperture is HTML beside the inspected sign) | one temporary element; closes on Escape, CLOSE or any return |
 | RETURN | Escape · `← RETURN` · the path · the background · the aperture CLOSE | restore | aperture → REQUIREMENT → ROLE → ORGANIZATION → FIELD; nothing mutates stored data |
+
+Ecology geometry since the perceptual closure (owner mandate "SFE — SYNTX FINAL PERCEPTUAL CLOSURE", 2026-10-11; all of it in
+`syntx-field-view-model.ts`, the renderer draws the same numbers): source carriers sit on the outer ring (212) at the angle where the
+straight traces of the requirements that reach them clear the role carrier and every requirement label best, nearest to the mean
+direction of those requirements, with a minimum separation of 28° between carriers (`placeSourceAngles`); every trace is a path with a
+`bow` (perpendicular midpoint offset, 0 = straight; candidates 0, ±18, ±36, ±54, ±72) chosen as the first bow that clears the role disc
+(48, body with its inner title), every requirement label box, every other anchor and every other carrier, never a bow a co-terminal
+trace of the same requirement and source already took (`routeTraceBows`, F-SX-2 / O-SX-2); when nothing clears, the clearest unused bow
+is taken, so every trace is drawn and distinct. Angle and bow position nothing semantically (R14): distance alone carries the support
+category. The requirement label geometry (`requirementLabel`) is shared by the routing and the renderer.
 
 Manifestations are shape-encoded, never colour-only (§13.4 keyboard/accessibility): supported = filled anchor, stable trace; weak =
 thin-stroked anchor, thin trace; sweep-only = dotted anchor, dotted trace; open = arc whose gap faces outward from the role, no
@@ -531,15 +541,27 @@ observation point. Readable labels wrap at word boundaries (`wrapLines`), never 
   level (R8) and the keyboard never falls out of the field. Pinned in the e2e keyboard walk (REQUIREMENT → ROLE → ORGANIZATION → FIELD).
 - B-SYNTX-TRACE-ORDER (O-SX-1, PINK): traces render receded first, field next, inspectable last, so where every trace converges on one
   source carrier the inspectable trace owns the pointer.
+- B-SYNTX-BOW (F-SX-2 / O-SX-2, GELB on the owner data): a trace is a `<path>` (hit path with `data-sx-hit` first, visible path second,
+  `data-trace-bow` on the group); co-terminal traces never share a bow, so each remains visible and owns pointer points on its own
+  path (R7 pointer inspection); no trace crosses the role carrier's title or a requirement label when a bow can avoid it. The bow is
+  geometry on the trace object, never part of the sign or its proof; sign ids, enums, proofs and support categories are unchanged.
+- B-SYNTX-REACH (O-SX-4, GELB): at REQUIREMENT the camera keeps scale 2.4 and shifts so every source carrier the observed requirement
+  reaches lies inside the stage with its title; source carriers are placed beside the requirements that reach them.
+- B-SYNTX-NUMBER (O-SX-3, PINK ruling: repair): the summary agrees in number in both locales (`nouns` block of the summary copy:
+  organization/s, role/s, requirement/s, evidence trace/s, source/s; de Organisation/en, Rolle/n, Anforderung/en, Evidenzspur/en,
+  Quelle/n); the reading is the screen-reader contract surface (R9 / BR-4).
+- Not provable in this worktree's browser world: a stable + dotted co-terminal pair (the seeded e2e analysis carries one quote per
+  requirement and no sweep; GELB's fixture evidence is pinned by `presentation-matching.test.ts`). The pair is proven in the view-model
+  suite with the owner-shaped overlap (two stable quotes + one sweep quote on one document) and by GELB's walk on the owner data.
 - B-LENS-FILL, B-LENS-TRANSFORM, B-LENS-HIT, B-JF-GROUND-LINE, B-JF-FONTS continue to hold for the apertures and edge lenses.
 
 ### 13.6 Proofs
 
 | Suite | Scope |
 |---|---|
-| `test/career/job-pool/syntx-field-view-model.test.ts` (13) | containment geometry, relation-state geometry, sign enums and proofs, exact joins / omit on miss, overlap (F-LF-1), open boundary, pending once, no closure, stale ids, reversible transitions, summary sentences, analysis-sources decoder |
+| `test/career/job-pool/syntx-field-view-model.test.ts` (14; perceptual closure: distinct bows/paths/midpoints for co-terminal traces, clearance of the role disc and every label for every trace, carriers on the ring, REQUIREMENT camera reach, number agreement en/de) | containment geometry, relation-state geometry, sign enums and proofs, exact joins / omit on miss, overlap (F-LF-1), open boundary, pending once, no closure, stale ids, reversible transitions, summary sentences, analysis-sources decoder |
 | `test/career/job-pool/syntx-field-ssr.test.tsx` (7) | BR-1 root, BR-2 sign and proof attributes per state (FIELD, ROLE, REQUIREMENT), BR-4 summary, BR-5 retired ids absent, proof ids never as text, no score in FIELD/ROLE text, stale ids, locale, dashboard threading, legacy focus aliases |
-| `test/career/job-pool/e2e/job-pool-workflow.e2e.test.ts` (10) | HTTP contract unchanged (5); browser: entry, edge intake upload, explicit selection, FIELD → ORGANIZATION → ROLE → REQUIREMENT → EVIDENCE → RETURN with URL state, keyboard (Enter, Escape), stored matching unchanged by the walk, exit + reload; DRAFT pool as containment without a matching; URL entry at a requirement, weak / open / pending apertures, legacy `focus=JOB`, stale role, reduced motion, pool selection from the field; stale selection. Evidence 21–26 in `docs/career_analysis/evidence/job-pool/` |
+| `test/career/job-pool/e2e/job-pool-workflow.e2e.test.ts` (10; perceptual closure at ROLE and REQUIREMENT: every trace a path with the hit path first, distinct paths, pointer-owned points on each trace's own path, no trace through the role title, carriers inside the stage, summary number agreement) | HTTP contract unchanged (5); browser: entry, edge intake upload, explicit selection, FIELD → ORGANIZATION → ROLE → REQUIREMENT → EVIDENCE → RETURN with URL state, keyboard (Enter, Escape), stored matching unchanged by the walk, exit + reload; DRAFT pool as containment without a matching; URL entry at a requirement, weak / open / pending apertures, legacy `focus=JOB`, stale role, reduced motion, pool selection from the field; stale selection. Evidence 21–26 in `docs/career_analysis/evidence/job-pool/` |
 | `test/career/job-pool/job-field-presentation.test.ts` (4), `semantic-governance.test.ts` (4, file set extended to `Syntx*`), PINK `job-field-static` (3), `layer-separation` (4), the sealed SIL language suites | unchanged semantics |
 
 ### 13.7 Run record
@@ -548,3 +570,4 @@ observation point. Readable labels wrap at word boundaries (`wrapLines`), never 
 |---|---|---|---|
 | 2026-10-11 | SYNTX reconstruction (this delta on 41abe12) | view model, SSR, presentation, governance (file set extended to `Syntx*`), PINK static + layer separation, sealed SIL suites, client reads: 24 files / 153 tests on a disposable database; e2e 10/10 in two consecutive runs on the final build (evidence 21–26 regenerated); tsc 0. Browser lessons: thin SVG signs need transparent hit areas (`data-sx-hit`); a ring or region is clicked on its stroke/body, a trace by absolute coordinates (Playwright's position reference for SVG groups is not their client rect); wrapped `tspan`s concatenate in `textContent`; the legacy analysis route needs a `presentation` block, so the e2e fixture carries the adapter's empty one plus one source document for the title join | green |
 | 2026-10-11 | F-SX-1 / O-SX-1 (PINK, on 3d50c0a) | keyboard focus left the field when a return or an aperture close unmounted the focused sign (Escape then did nothing) → focus follows the observation point (B-SYNTX-FOCUS); a receded trace could capture the pointer over the inspectable one where traces converge → inspectable traces render last (B-SYNTX-TRACE-ORDER). e2e keyboard walk extended (REQUIREMENT aperture → ROLE → ORGANIZATION → FIELD with focus inside at every step) and trace order asserted | e2e 10/10 ×2 · SSR 7/7 · view model 13/13 · GELB governance 10/10 · static 3/3 · semantic governance 4/4 · tsc 0 |
+| 2026-10-11 | Perceptual closure F-SX-2 / O-SX-2 / O-SX-3 / O-SX-4 (GELB on the owner data at :3017 = 8cb4a50; PINK ruling on O-SX-3) | co-terminal traces were drawn on identical endpoints (the dotted sweep trace invisible under the stable one and, DOM-later, owning every pointer point: the matched aperture could not be opened by pointer) → traces are paths with distinct bows (B-SYNTX-BOW); traces crossed the role title → traces bend around the role disc and the labels, carriers are placed beside the requirements that reach them; the carrier was cropped at REQUIREMENT → the camera keeps scale 2.4 and shifts to reach (B-SYNTX-REACH); "1 sources" → number agreement (B-SYNTX-NUMBER) | view model 14/14 · SSR 7/7 · GELB governance 10/10 · semantic governance 4/4 · presentation 9/9 + 4/4 · e2e 10/10 · tsc 0 |
