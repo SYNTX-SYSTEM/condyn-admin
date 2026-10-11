@@ -1,0 +1,22 @@
+// Read-only: the pending row of role_fullstack on …612 against the owner env (GET only; no POST may occur).
+const { chromium } = await import(process.env.CONDYN_PLAYWRIGHT_MODULE ?? "/home/codi/Entwicklung/nquiry/node_modules/playwright/index.mjs");
+const BASE = "http://127.0.0.1:3017", UPLOAD = "JPOOL_30F7145E21F34BEF0FCE510DFC75837B";
+const list = await (await fetch(`${BASE}/api/career/analyses`)).json();
+const analysisId = list.analyses.map(a => a.analysisId).find(id => id.endsWith("612"));
+const matches = await (await fetch(`${BASE}/api/career/job-pools/${UPLOAD}/matches?analysisId=${analysisId}`)).json();
+const role = matches.roleMatches.find(r => r.poolRoleId === "role_fullstack");
+const expectUnscored = [...role.weakEvidence, ...role.missing].filter(i => i.sweepProposal !== null).map(i => i.poolRequirementId);
+const b = await chromium.launch(); const p = await b.newPage({ viewport: { width: 1600, height: 1000 } });
+const nonGet = []; p.on("request", r => { if (r.method() !== "GET" && r.url().startsWith(BASE)) nonGet.push(r.method() + " " + r.url()); });
+await p.goto(`${BASE}/career/demo?focus=JOB&analysisId=${analysisId}&jobPoolUploadId=${UPLOAD}`, { waitUntil: "domcontentloaded" });
+await p.getByTestId("guided-onboarding-overlay").waitFor({ timeout: 60000 }); await p.getByTestId("onboarding-close-btn").click();
+await p.locator('[data-testid="job-field"][data-field-state="AVAILABLE"]').waitFor({ timeout: 90000 });
+await p.getByTestId("job-field-role-role_fullstack").click();
+await p.locator('[data-testid="job-field-lens"][data-role-id="role_fullstack"]').waitFor({ timeout: 30000 });
+const counts = {}; for (const k of ["UNPROVEN_CANONICAL", "UNRESOLVED_EVIDENCE", "UNSCORED_COVERAGE", "NO_EVIDENCE_DELIVERED"]) counts[k] = Number(await p.getByTestId(`job-field-pending-${k}`).getAttribute("data-count"));
+const ids = ((await p.getByTestId("job-field-pending-UNSCORED_COVERAGE").getAttribute("data-ids")) ?? "").split(",").filter(Boolean);
+const label = (await p.getByTestId("job-field-pending-UNSCORED_COVERAGE").textContent()) ?? "";
+const fieldHtml = await p.getByTestId("job-field").innerHTML();
+console.log(JSON.stringify({ analysisId, counts, ids, expectUnscored, idsEqual: JSON.stringify(ids) === JSON.stringify(expectUnscored), label: label.replace(/\s+/g, " ").trim(), newLabelPresent: /UNSCORED SWEEP COVERAGE/.test(fieldHtml), oldLabelPresent: /SWEEP COVERAGE ONLY/.test(fieldHtml), nonGet }, null, 1));
+await p.screenshot({ path: "owner-6b1a7b4-612-pending-row.png" });
+await b.close();

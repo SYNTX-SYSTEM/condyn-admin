@@ -591,6 +591,14 @@ weak evidence, so the sweep is not its only coverage. PINK's reading: a label de
 proposal unscored"), not a count defect; narrowing the kind to missing-only would be a §4 contract change that
 PINK's proof and plan E-06 would follow, owner decision.
 
+Resolution of F-LF-1 (owner-approved as a label correction only, GELB `6b1a7b4` on `bfe0d27`): the labels read
+`UNSCORED SWEEP COVERAGE` / `UNBEWERTETE SWEEP-ABDECKUNG`, the kind definition is unchanged and a unit case pins
+the weak+sweep dual membership. PINK's targeted read-only check on the owner environment (HMR on `6b1a7b4`,
+database identical; `support/pending-label-readonly-check.mjs`, `nonGet = []`): `role_fullstack` / …612 pending
+5/1/3/1, `UNSCORED_COVERAGE` ids `req_003 · req_004 · req_005` = the weak-or-missing requirements with a proposal
+from the GET body, the new label in the DOM, the old wording absent (`evidence/lens-owner-bfe0d27/owner-6b1a7b4-612-pending-row.png`).
+Plan 1.3.1 binds on `6b1a7b4` (E-06 names the label and the dual membership; D-11 carries F-LF-2 as known open).
+
 ## 4. Boundaries and findings for coordination
 
 - F-JP-1 (closed in `b782793`): `JOB_POOL_CONNECTION.md` §4 followed the per-role `JOB_POOL_JSON_ROLE` design;
