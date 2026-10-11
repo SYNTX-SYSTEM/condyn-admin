@@ -153,8 +153,14 @@ export interface SyntxTrace {
   weakReason: string | null;
   /** Trace weight within its category: stable 1 … 2.2 by relative contribution, thin 0.6 … 1.2, dotted constant 1. */
   weight: number;
-  /** Angle (degrees from 12 o'clock) of the source carrier the trace reaches. */
+  /** Index of the source carrier the trace reaches (field.sources). */
   sourceDocIndex: number;
+  /**
+   * Perpendicular offset (field units) of the trace's midpoint from the straight line anchor → carrier; 0 = straight.
+   * Geometry only (never part of the sign or its proof): co-terminal traces receive distinct bows so no trace hides
+   * another (F-SX-2), and a trace bends around the role carrier and the requirement labels instead of crossing them (O-SX-2).
+   */
+  bow: number;
 }
 
 export interface SyntxRequirement {
@@ -295,6 +301,153 @@ const SUPPORT_ORDER: readonly SyntxSupport[] = ["SUPPORTED", "WEAK", "SWEEP_ONLY
 
 export const CAMERA_SCALE = Object.freeze({ FIELD: 1, ROLE: 1.8, REQUIREMENT: 2.4 });
 
+/* ----------------------------------------------------------------------------------------------------------------
+ * Ecology geometry (perceptual closure, owner mandate "SFE — SYNTX FINAL PERCEPTUAL CLOSURE", 2026-10-11)
+ *
+ * Positions and bows are presentation geometry: they position nothing semantically (R14 — angle and curvature encode
+ * no relation, distance alone carries the support category). The renderer and the proofs read the same numbers.
+ * ---------------------------------------------------------------------------------------------------------------- */
+
+/** Wraps a label into at most `maxLines` lines of about `maxChars` characters (the last line takes the rest). */
+export function wrapLines(text: string, maxChars: number, maxLines = 3): string[] {
+  const words = text.split(/\s+/).filter(Boolean);
+  const lines: string[] = [];
+  let current = "";
+  for (const wordText of words) {
+    const candidate = current.length === 0 ? wordText : `${current} ${wordText}`;
+    if (candidate.length <= maxChars || current.length === 0) current = candidate;
+    else { lines.push(current); current = wordText; }
+  }
+  if (current.length > 0) lines.push(current);
+  if (lines.length <= maxLines) return lines;
+  return [...lines.slice(0, maxLines - 1), lines.slice(maxLines - 1).join(" ")];
+}
+
+export interface LabelBox { x: number; y: number; width: number; height: number }
+export interface RequirementLabel { lines: string[]; x: number; y: number; anchor: "middle" | "start" | "end"; box: LabelBox }
+
+/** Requirement label metrics (font size and character width in field units, as the renderer draws them). */
+export const REQUIREMENT_LABEL = Object.freeze({ maxChars: 16, maxLines: 3, size: 7.8, charWidth: 4.4, lineHeight: 9.2, gap: 12 });
+/** The role carrier with its inner title: no trace enters this disc (O-SX-2). */
+export const ROLE_CLEARANCE_RADIUS = 48;
+/** Source carrier square (±9) with its two-line title below: no foreign trace crosses it. */
+export const SOURCE_BOX = Object.freeze({ halfWidth: 52, above: 10, below: 46 });
+/** Bows tried in order; co-terminal traces never share a bow, so each remains visible and hit-testable (F-SX-2). */
+export const TRACE_BOWS: readonly number[] = Object.freeze([0, 18, -18, 36, -36, 54, -54, 72, -72]);
+const TRACE_CLEARANCE = 2;
+const SOURCE_SEPARATION = 28;
+
+/** The requirement label outward from its anchor (never toward the role): position, anchor and bounding box. */
+export function requirementLabel(requirement: { x: number; y: number; angle: number; name: string }): RequirementLabel {
+  const { maxChars, maxLines, size, charWidth, lineHeight, gap } = REQUIREMENT_LABEL;
+  const lines = wrapLines(requirement.name, maxChars, maxLines);
+  const radians = ((requirement.angle - 90) * Math.PI) / 180;
+  const outward = Math.cos(radians);
+  const anchor: RequirementLabel["anchor"] = Math.abs(outward) < 0.3 ? "middle" : outward > 0 ? "start" : "end";
+  const x = requirement.x + Math.cos(radians) * gap;
+  const y = requirement.y + Math.sin(radians) * gap + (anchor === "middle" ? (Math.sin(radians) > 0 ? 10 : -(lines.length - 1) * 10 - 2) : 3);
+  const width = Math.max(...lines.map(line => line.length)) * charWidth;
+  const left = anchor === "start" ? x : anchor === "end" ? x - width : x - width / 2;
+  return { lines, x: round(x), y: round(y), anchor, box: { x: round(left), y: round(y - size), width: round(width), height: round((lines.length - 1) * lineHeight + size + 2) } };
+}
+
+type Point = { x: number; y: number };
+interface Obstacles { discs: Array<Point & { r: number }>; rects: LabelBox[] }
+
+/** A point on the trace: straight for bow 0, otherwise the quadratic curve whose midpoint is offset by `bow` to the left normal. */
+export function tracePoint(from: Point, to: Point, bow: number, t: number): Point {
+  const dx = to.x - from.x;
+  const dy = to.y - from.y;
+  const length = Math.hypot(dx, dy) || 1;
+  const cx = (from.x + to.x) / 2 + (-dy / length) * 2 * bow;
+  const cy = (from.y + to.y) / 2 + (dx / length) * 2 * bow;
+  const u = 1 - t;
+  return { x: u * u * from.x + 2 * u * t * cx + t * t * to.x, y: u * u * from.y + 2 * u * t * cy + t * t * to.y };
+}
+
+/** The SVG path of a trace (the renderer and the proofs draw the same curve). */
+export function tracePath(from: Point, to: Point, bow: number): string {
+  const f = (value: number) => Math.round(value * 100) / 100;
+  if (bow === 0) return `M ${f(from.x)} ${f(from.y)} L ${f(to.x)} ${f(to.y)}`;
+  const dx = to.x - from.x;
+  const dy = to.y - from.y;
+  const length = Math.hypot(dx, dy) || 1;
+  const cx = (from.x + to.x) / 2 + (-dy / length) * 2 * bow;
+  const cy = (from.y + to.y) / 2 + (dx / length) * 2 * bow;
+  return `M ${f(from.x)} ${f(from.y)} Q ${f(cx)} ${f(cy)} ${f(to.x)} ${f(to.y)}`;
+}
+
+const distanceToRect = (point: Point, rect: LabelBox): number => {
+  const dx = Math.max(rect.x - point.x, 0, point.x - (rect.x + rect.width));
+  const dy = Math.max(rect.y - point.y, 0, point.y - (rect.y + rect.height));
+  return Math.hypot(dx, dy);
+};
+
+/** Smallest clearance (field units) between the trace and any obstacle, sampled along the curve without its endpoints. */
+export function traceClearance(from: Point, to: Point, bow: number, obstacles: Obstacles): number {
+  let clearance = Infinity;
+  for (let step = 1; step < 16; step += 1) {
+    const point = tracePoint(from, to, bow, step / 16);
+    for (const disc of obstacles.discs) clearance = Math.min(clearance, Math.hypot(point.x - disc.x, point.y - disc.y) - disc.r);
+    for (const rect of obstacles.rects) clearance = Math.min(clearance, distanceToRect(point, rect));
+  }
+  return clearance;
+}
+
+const angleBetween = (a: number, b: number): number => { const delta = Math.abs(((a - b) % 360 + 540) % 360 - 180); return delta; };
+
+/**
+ * Source carrier angles on the outer ring: each carrier sits where the straight traces of the requirements that reach
+ * it clear the role carrier and every requirement label best, nearest to the mean direction of those requirements;
+ * carriers keep a minimum angular separation. Deterministic (first best angle wins), observation-independent.
+ */
+export function placeSourceAngles(role: Point, reaching: ReadonlyArray<Point[]>, requirements: ReadonlyArray<{ x: number; y: number; angle: number; name: string }>): number[] {
+  const rects = requirements.map(requirement => requirementLabel(requirement).box);
+  const anchors = requirements.map(requirement => ({ x: requirement.x, y: requirement.y, r: 7 }));
+  const placed: number[] = [];
+  return reaching.map(points => {
+    const vector = points.reduce((sum, point) => { const angle = Math.atan2(point.x - role.x, -(point.y - role.y)); return { x: sum.x + Math.sin(angle), y: sum.y + Math.cos(angle) }; }, { x: 0, y: 0 });
+    const mean = points.length === 0 || Math.hypot(vector.x, vector.y) < 1e-6 ? 180 : ((Math.atan2(vector.x, vector.y) * 180) / Math.PI + 360) % 360;
+    let best: { angle: number; score: number } | null = null;
+    const evaluate = (separated: boolean) => {
+      for (let angle = 0; angle < 360; angle += 5) {
+        if (separated && placed.some(other => angleBetween(other, angle) < SOURCE_SEPARATION)) continue;
+        const [x, y] = polar(role.x, role.y, SOURCE_RING_RADIUS, angle);
+        const carrier = { x, y };
+        let clearance = 24;
+        for (const point of points) {
+          const discs = [{ x: role.x, y: role.y, r: ROLE_CLEARANCE_RADIUS }, ...anchors.filter(anchor => anchor.x !== point.x || anchor.y !== point.y)];
+          clearance = Math.min(clearance, traceClearance(point, carrier, 0, { discs, rects }));
+        }
+        const score = clearance - 0.05 * angleBetween(angle, mean);
+        if (best === null || score > best.score + 1e-9) best = { angle, score };
+      }
+    };
+    evaluate(true);
+    if (best === null) evaluate(false);
+    const angle = best === null ? mean : (best as { angle: number }).angle;
+    placed.push(angle);
+    return angle;
+  });
+}
+
+/**
+ * Bows for the traces of one requirement grouped by source carrier: the first bow (straight first) that clears the role
+ * carrier, every requirement label and every other anchor and carrier, never one a co-terminal trace already took.
+ * When nothing clears, the clearest unused bow is taken, so every trace is drawn and distinct.
+ */
+export function routeTraceBows(from: Point, to: Point, taken: readonly number[], obstacles: Obstacles): number {
+  const candidates = TRACE_BOWS.filter(bow => taken.every(used => Math.abs(used - bow) >= 18));
+  const pool = candidates.length > 0 ? candidates : TRACE_BOWS.filter(bow => !taken.includes(bow));
+  let fallback: { bow: number; clearance: number } | null = null;
+  for (const bow of pool) {
+    const clearance = traceClearance(from, to, bow, obstacles);
+    if (clearance >= TRACE_CLEARANCE) return bow;
+    if (fallback === null || clearance > fallback.clearance) fallback = { bow, clearance };
+  }
+  return fallback === null ? 0 : fallback.bow;
+}
+
 /** Organization regions on one ring around the field centre; the region radius grows with the number of roles (density, never importance). */
 function placeOrganizations(groups: ReadonlyArray<{ id: string; roleIds: string[] }>): Map<string, { x: number; y: number; radius: number }> {
   const placed = new Map<string, { x: number; y: number; radius: number }>();
@@ -362,6 +515,26 @@ export function resolveObservation(view: JobPoolUploadView | null, requested: Sy
   const requirement = requested.requirementId === null ? null : role.requirements.find(candidate => candidate.poolRequirementId === requested.requirementId) ?? null;
   if (requirement === null) return { observation: { ...FIELD_OBSERVATION, kind: "ROLE", organizationId: role.poolOrganizationId, roleId: role.poolRoleId }, stale: { kind: "REQUIREMENT", id: requested.requirementId ?? "" } };
   return { observation: { kind: "REQUIREMENT", organizationId: role.poolOrganizationId, roleId: role.poolRoleId, requirementId: requirement.poolRequirementId, apertureSignId: requested.apertureSignId }, stale: null };
+}
+
+/**
+ * The REQUIREMENT camera: constant scale, centred between the anchor and the role, then shifted the least that keeps the
+ * observed anchor with its label and every source carrier its traces reach inside the view (O-SX-4).
+ */
+export function requirementCamera(requirement: SyntxRequirement, role: Point, reached: ReadonlyArray<Point>): SyntxCamera {
+  const scale = CAMERA_SCALE.REQUIREMENT;
+  const half = SYNTX_LAYOUT.center / scale;
+  const margin = 10;
+  const label = requirementLabel(requirement).box;
+  const xs = [requirement.x - 14, requirement.x + 14, label.x, label.x + label.width, ...reached.flatMap(point => [point.x - SOURCE_BOX.halfWidth, point.x + SOURCE_BOX.halfWidth])];
+  const ys = [requirement.y - 14, requirement.y + 14, label.y, label.y + label.height, ...reached.flatMap(point => [point.y - SOURCE_BOX.above, point.y + SOURCE_BOX.below])];
+  const fit = (values: number[], preferred: number): number => {
+    const lo = Math.min(...values) - margin;
+    const hi = Math.max(...values) + margin;
+    if (hi - lo > 2 * half) return round((lo + hi) / 2);
+    return round(Math.min(Math.max(preferred, hi - half), lo + half));
+  };
+  return { x: fit(xs, (requirement.x * 2 + role.x) / 3), y: fit(ys, (requirement.y * 2 + role.y) / 3), scale };
 }
 
 export function deriveSyntxField(view: JobPoolUploadView | null, matching: JobPoolMatchPresentation | null, analysisSources: AnalysisSources | null, requested: SyntxObservation): SyntxField | null {
@@ -485,7 +658,7 @@ export function deriveSyntxField(view: JobPoolUploadView | null, matching: JobPo
             kind, requirementId: id, roleId: observedRole.id, docId: quote.docId, quote: quote.quote,
             sourceTitle: title.title, sourceTitleState: title.state, location: provenance?.location ?? null, evidenceId: null,
             capabilityId: scored.matchedCapabilityEntityId, capabilityName: scored.matchedCapabilityName, matchedConstituent: scored.matchedConstituent, basis: scored.matchBasis,
-            contribution: scored.contribution, confidence: scored.confidence, weakReason: entry.weak !== null ? entry.weak.reason : null, weight, sourceDocIndex: docIndex(quote.docId)
+            contribution: scored.contribution, confidence: scored.confidence, weakReason: entry.weak !== null ? entry.weak.reason : null, weight, sourceDocIndex: docIndex(quote.docId), bow: 0
           });
         });
       }
@@ -500,7 +673,7 @@ export function deriveSyntxField(view: JobPoolUploadView | null, matching: JobPo
             kind: "covers_unscored", requirementId: id, roleId: observedRole.id, docId: quote.docId, quote: quote.quote,
             sourceTitle: title.title, sourceTitleState: title.state, location: null, evidenceId: joined?.evidenceId ?? null,
             capabilityId: sweep.capabilityProposalId, capabilityName: sweep.name, matchedConstituent: sweep.matchedConstituent, basis: sweep.matchBasis,
-            contribution: null, confidence: null, weakReason: null, weight: 1, sourceDocIndex: docIndex(quote.docId)
+            contribution: null, confidence: null, weakReason: null, weight: 1, sourceDocIndex: docIndex(quote.docId), bow: 0
           });
         });
       }
@@ -517,17 +690,33 @@ export function deriveSyntxField(view: JobPoolUploadView | null, matching: JobPo
       };
     });
 
-    // Source carriers: one per delivered docId, on the outer ring, ordered by first appearance; their relation is the strongest delivered relation among their traces.
-    const sourceSlot = docOrder.length === 0 ? 0 : 360 / docOrder.length;
+    // Source carriers: one per delivered docId, on the outer ring beside the requirements that reach it (O-SX-2, O-SX-4), ordered by first appearance; their relation is the strongest delivered relation among their traces.
+    const sourceAngles = placeSourceAngles(observedRole, docOrder.map(docId => requirements.filter(requirement => requirement.traces.some(trace => trace.docId === docId)).map(requirement => ({ x: requirement.x, y: requirement.y }))), requirements);
     sourceCarriers = docOrder.map((docId, index) => {
       const traces = requirements.flatMap(requirement => requirement.traces.filter(trace => trace.docId === docId));
       const relation: SignRelation = traces.some(trace => trace.kind === "supports") ? "supports" : traces.some(trace => trace.kind === "weakly_supports") ? "weakly_supports" : "covers_unscored";
       const source: SignSource = relation === "covers_unscored" ? "gemini_sweep" : "evidence";
       const title = titleOf(docId);
       const reached = observation.kind === "ROLE" || traces.some(trace => trace.requirementId === observedRequirementId);
-      const [x, y] = polar(observedRole.x, observedRole.y, SOURCE_RING_RADIUS, index * sourceSlot + sourceSlot / 2 + 18);
+      const [x, y] = polar(observedRole.x, observedRole.y, SOURCE_RING_RADIUS, sourceAngles[index]);
       return { docId, title: title.title, titleState: title.state, x, y, traceCount: traces.length, sign: push(sign(`source:${docId}`, source, relation, "carrier", "none", reached ? "trace_rise" : "recede", { uploadId: view.jobPoolUploadId, roleId: observedRole.id, ...(analysisId !== null ? { analysisId } : {}), docId }, reached ? (observation.kind === "ROLE" ? "field" : "inspectable") : "receded")) };
     });
+
+    // Trace routing (F-SX-2, O-SX-2): co-terminal traces take distinct bows; every trace bends around the role carrier, the requirement labels, other anchors and other carriers.
+    const labelRects = requirements.map(requirement => requirementLabel(requirement).box);
+    for (const requirement of requirements) {
+      const taken = new Map<string, number[]>();
+      for (const trace of requirement.traces) {
+        const carrier = sourceCarriers[trace.sourceDocIndex];
+        const used = taken.get(trace.docId) ?? [];
+        const obstacles: Obstacles = {
+          discs: [{ x: observedRole.x, y: observedRole.y, r: ROLE_CLEARANCE_RADIUS }, ...requirements.filter(other => other.id !== requirement.id).map(other => ({ x: other.x, y: other.y, r: 7 }))],
+          rects: [...labelRects, ...sourceCarriers.filter(other => other.docId !== trace.docId).map(other => ({ x: other.x - SOURCE_BOX.halfWidth, y: other.y - SOURCE_BOX.above, width: SOURCE_BOX.halfWidth * 2, height: SOURCE_BOX.above + SOURCE_BOX.below }))]
+        };
+        trace.bow = routeTraceBows(requirement, carrier, used, obstacles);
+        taken.set(trace.docId, [...used, trace.bow]);
+      }
+    }
 
     // The one suspended boundary of the role ecology (R2): NOT_EVALUATED holds for every requirement while no verified capability snapshot exists.
     if (match !== null) {
@@ -567,7 +756,7 @@ export function deriveSyntxField(view: JobPoolUploadView | null, matching: JobPo
       : observation.kind === "ROLE" && observedRole !== null
         ? { x: observedRole.x, y: observedRole.y, scale: CAMERA_SCALE.ROLE }
         : observedRequirement !== null && observedRole !== null
-          ? { x: round((observedRequirement.x * 2 + observedRole.x) / 3), y: round((observedRequirement.y * 2 + observedRole.y) / 3), scale: CAMERA_SCALE.REQUIREMENT }
+          ? requirementCamera(observedRequirement, observedRole, sourceCarriers.filter(source => observedRequirement.traces.some(trace => trace.docId === source.docId)))
           : { x: SYNTX_LAYOUT.center, y: SYNTX_LAYOUT.center, scale: CAMERA_SCALE.FIELD };
 
   const boundary: SyntxBoundary | null = matchingDelivered ? { authorityState: matching!.presentation.authorityState, canonicalEvaluation: matching!.presentation.canonicalEvaluation, decision: matching!.presentation.decision, labels: presentationLabels(matching!.presentation), policyVersion: matching!.presentation.policyVersion, weakEvidenceThreshold: matching!.presentation.weakEvidenceThreshold, candidateCapabilityCount: matching!.candidateCapabilityCount, capabilitySweep: matching!.capabilitySweep } : null;
@@ -656,15 +845,18 @@ export interface SyntxSummaryCopy {
   apertureOpen: string;
   matchingRead: string;
   matchingNotRead: string;
+  /** Count nouns in singular and plural (O-SX-3): the summary is the screen-reader reading of the observation point, so it agrees in number. */
+  nouns: Record<"organizations" | "roles" | "requirements" | "traces" | "sources", { one: string; other: string }>;
 }
 
 const fill = (template: string, values: Record<string, string | number>): string => template.replace(/\{(\w+)\}/g, (_, key: string) => String(values[key] ?? ""));
+const noun = (copy: SyntxSummaryCopy, key: keyof SyntxSummaryCopy["nouns"], count: number): string => (count === 1 ? copy.nouns[key].one : copy.nouns[key].other);
 
 export function summarySentence(summary: SyntxSummary, copy: SyntxSummaryCopy): string {
   switch (summary.kind) {
-    case "FIELD": return fill(copy.field, { poolName: summary.poolName, poolVersion: summary.poolVersion, poolStatus: summary.poolStatus, organizationCount: summary.organizationCount, roleCount: summary.roleCount, matching: summary.matchingDelivered ? copy.matchingRead : copy.matchingNotRead });
-    case "ORGANIZATION": return fill(copy.organization, { organizationName: summary.organizationName, roleCount: summary.roleTitles.length, roleTitles: summary.roleTitles.join(", ") });
-    case "ROLE": return fill(copy.role, { roleTitle: summary.roleTitle, organizationName: summary.organizationName, requirementCount: summary.requirementCount, supported: summary.supported, weak: summary.weak, sweepOnly: summary.sweepOnly, open: summary.open, unread: summary.unread, pending: summary.pendingEvaluation ? copy.pendingEvaluation : "" }).replace(/\s+\./g, ".").trim();
-    case "REQUIREMENT": return fill(copy.requirement, { requirementName: summary.requirementName, roleTitle: summary.roleTitle, support: copy.support[summary.support], traceCount: summary.traceCount, sourceCount: summary.sourceCount, aperture: summary.apertureOpen ? copy.apertureOpen : "" }).trim();
+    case "FIELD": return fill(copy.field, { poolName: summary.poolName, poolVersion: summary.poolVersion, poolStatus: summary.poolStatus, organizationCount: summary.organizationCount, organizations: noun(copy, "organizations", summary.organizationCount), roleCount: summary.roleCount, roles: noun(copy, "roles", summary.roleCount), matching: summary.matchingDelivered ? copy.matchingRead : copy.matchingNotRead });
+    case "ORGANIZATION": return fill(copy.organization, { organizationName: summary.organizationName, roleCount: summary.roleTitles.length, roles: noun(copy, "roles", summary.roleTitles.length), roleTitles: summary.roleTitles.join(", ") });
+    case "ROLE": return fill(copy.role, { roleTitle: summary.roleTitle, organizationName: summary.organizationName, requirementCount: summary.requirementCount, requirements: noun(copy, "requirements", summary.requirementCount), supported: summary.supported, weak: summary.weak, sweepOnly: summary.sweepOnly, open: summary.open, unread: summary.unread, pending: summary.pendingEvaluation ? copy.pendingEvaluation : "" }).replace(/\s+\./g, ".").trim();
+    case "REQUIREMENT": return fill(copy.requirement, { requirementName: summary.requirementName, roleTitle: summary.roleTitle, support: copy.support[summary.support], traceCount: summary.traceCount, traces: noun(copy, "traces", summary.traceCount), sourceCount: summary.sourceCount, sources: noun(copy, "sources", summary.sourceCount), aperture: summary.apertureOpen ? copy.apertureOpen : "" }).trim();
   }
 }

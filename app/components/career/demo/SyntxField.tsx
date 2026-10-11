@@ -12,11 +12,14 @@ import {
   observeOrganization,
   observeRequirement,
   observeRole,
+  requirementLabel,
   resolveObservation,
   returnFrom,
   summarySentence,
   SYNTX_FIELD_GRAMMAR,
   SYNTX_LAYOUT,
+  tracePath,
+  wrapLines,
   type SyntxAperture,
   type SyntxField as SyntxFieldModel,
   type SyntxObservation,
@@ -81,19 +84,7 @@ const percent = (value: number): string => `${Math.round(value * 1000) / 10}%`;
 const visuallyHidden: React.CSSProperties = { position: "absolute", width: "1px", height: "1px", margin: "-1px", padding: 0, overflow: "hidden", clip: "rect(0 0 0 0)", whiteSpace: "nowrap", border: 0 };
 
 /** Readable labels: wrap at word boundaries, never truncate as the primary display (spec §9.3). */
-export function wrapLines(text: string, maxChars: number, maxLines = 3): string[] {
-  const words = text.split(/\s+/).filter(Boolean);
-  const lines: string[] = [];
-  let current = "";
-  for (const wordText of words) {
-    const candidate = current.length === 0 ? wordText : `${current} ${wordText}`;
-    if (candidate.length <= maxChars || current.length === 0) current = candidate;
-    else { lines.push(current); current = wordText; }
-  }
-  if (current.length > 0) lines.push(current);
-  if (lines.length <= maxLines) return lines;
-  return [...lines.slice(0, maxLines - 1), lines.slice(maxLines - 1).join(" ")];
-}
+export { wrapLines };
 
 const SYNTX_CSS = `
 @keyframes sxEnter { from { opacity: 0; } to { opacity: 1; } }
@@ -346,12 +337,13 @@ function FieldCanvas({ field, mode, t, onObserve }: CanvasProps) {
               const source = field.sources[trace.sourceDocIndex];
               const stroke = TRACE_STROKE[trace.kind];
               const inspectable = trace.sign.state === "inspectable";
-              const x2 = source?.x ?? requirement.x;
-              const y2 = source?.y ?? requirement.y;
+              // The trace is a path (straight or bowed): co-terminal traces bow apart (F-SX-2) and bend around the role carrier and labels (O-SX-2).
+              const d = tracePath(requirement, source ?? requirement, trace.bow);
               return (
                 <g
                   key={trace.sign.id}
                   data-testid={`syntx-trace-${trace.sign.id}`}
+                  data-trace-bow={trace.bow}
                   {...signAttributes(trace.sign)}
                   role="button"
                   tabIndex={receded(trace.sign) ? -1 : 0}
@@ -360,20 +352,17 @@ function FieldCanvas({ field, mode, t, onObserve }: CanvasProps) {
                   onKeyDown={key(() => inspectTrace(trace))}
                   style={{ cursor: "pointer", opacity: recedeOpacity(trace.sign, 0.12) }}
                 >
-                  <line data-sx-hit x1={requirement.x} y1={requirement.y} x2={x2} y2={y2} stroke="transparent" strokeWidth={10} />
-                  <line x1={requirement.x} y1={requirement.y} x2={x2} y2={y2} stroke={stroke.color} strokeWidth={trace.weight * (inspectable ? 1.4 : 1)} strokeDasharray={stroke.dash} strokeLinecap="round" style={{ pointerEvents: "none" }} />
+                  <path data-sx-hit d={d} fill="none" stroke="transparent" strokeWidth={10} />
+                  <path d={d} fill="none" stroke={stroke.color} strokeWidth={trace.weight * (inspectable ? 1.4 : 1)} strokeDasharray={stroke.dash} strokeLinecap="round" style={{ pointerEvents: "none" }} />
                 </g>
               );
             })}
             {field.requirements.map(requirement => {
               const shape = SUPPORT_SHAPE[requirement.support];
               const selected = requirement.sign.state === "requirement_selected";
-              const lines = wrapLines(requirement.name, 16, 3);
-              const radians = ((requirement.angle - 90) * Math.PI) / 180;
-              const outward = Math.cos(radians);
-              const anchorText = Math.abs(outward) < 0.3 ? "middle" : outward > 0 ? "start" : "end";
-              const labelX = requirement.x + Math.cos(radians) * 12;
-              const labelY = requirement.y + Math.sin(radians) * 12 + (Math.abs(outward) < 0.3 ? (Math.sin(radians) > 0 ? 10 : -(lines.length - 1) * 10 - 2) : 3);
+              // Label geometry comes from the view model (the same box the trace routing keeps clear).
+              const label = requirementLabel(requirement);
+              const { lines, anchor: anchorText, x: labelX, y: labelY } = label;
               return (
                 <g key={requirement.id} data-testid={`syntx-requirement-${requirement.id}`} data-support={requirement.support} data-evaluation-state={requirement.evaluationState ?? ""} data-trace-count={requirement.traces.length} data-role-id={requirement.roleId}>
                   <g
@@ -386,7 +375,7 @@ function FieldCanvas({ field, mode, t, onObserve }: CanvasProps) {
                     onKeyDown={key(() => onObserve(observeRequirement(observation, requirement.id)))}
                     style={{ cursor: "pointer", opacity: recedeOpacity(requirement.sign, 0.22) }}
                   >
-                    <rect data-sx-hit x={Math.min(requirement.x - shape.r - 3, anchorText === "end" ? labelX - Math.max(...lines.map(line => line.length)) * 4.4 : anchorText === "middle" ? labelX - Math.max(...lines.map(line => line.length)) * 2.2 : requirement.x - shape.r - 3)} y={Math.min(requirement.y - shape.r - 3, labelY - 8)} width={Math.max(...lines.map(line => line.length)) * 4.4 + shape.r * 2 + 18} height={Math.max(shape.r * 2 + 6, Math.abs(labelY - requirement.y) + lines.length * 9.5 + 10)} fill="transparent" />
+                    <rect data-sx-hit x={Math.min(requirement.x - shape.r - 3, label.box.x)} y={Math.min(requirement.y - shape.r - 3, label.box.y)} width={Math.max(requirement.x + shape.r + 3, label.box.x + label.box.width) - Math.min(requirement.x - shape.r - 3, label.box.x)} height={Math.max(requirement.y + shape.r + 3, label.box.y + label.box.height) - Math.min(requirement.y - shape.r - 3, label.box.y)} fill="transparent" />
                     <circle cx={requirement.x} cy={requirement.y} r={selected ? shape.r + 1.5 : shape.r} fill={shape.fill} stroke={shape.stroke} strokeWidth={shape.strokeWidth} strokeDasharray={shape.dash} style={{ transition: "r .25s ease" }} />
                     {selected && <circle cx={requirement.x} cy={requirement.y} r={shape.r + 7} fill="none" stroke="rgba(56, 229, 255, 0.45)" strokeWidth={0.6} />}
                     <SvgLabel lines={lines} x={labelX} y={labelY} size={7.8} fill={selected ? INK : INK_SOFT} weight={600} anchor={anchorText} />
