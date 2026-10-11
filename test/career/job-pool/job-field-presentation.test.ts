@@ -13,6 +13,7 @@ import {
   provenanceOf,
   ringSegments
 } from "../../../lib/career/job-pool/job-field-presentation";
+import { SIL_COPY } from "../../../lib/career/view-model/sil-language";
 import { kubernetesSweepCoverage, matches } from "./fixtures/match-bodies";
 
 const clone = <T>(value: T): T => structuredClone(value);
@@ -48,6 +49,24 @@ describe("Job Field presentation (pure derivation over one delivered body)", () 
     const uncovered = clone(role);
     uncovered.missing[0].sweepProposal = null;
     expect(derivePending(uncovered, deriveRequirements(uncovered)).map(item => item.ids)).toEqual([["TRQREV_1", "TRQREV_2"], [], [], ["REQ_2"]]);
+  });
+
+  it("keeps a weak requirement with sweep coverage in both pending dimensions, and its label claims no exclusivity (F-LF-1)", () => {
+    const role = clone(matches.roleMatches[1]);
+    role.weakEvidence[0].sweepProposal = kubernetesSweepCoverage;
+    const requirements = deriveRequirements(role);
+    expect(requirements.map(item => [item.poolRequirementId, item.state])).toEqual([["REQ_3", "UNRESOLVED"]]);
+    expect(role.weakEvidence[0].contribution).toBeGreaterThan(0);
+    expect(derivePending(role, requirements)).toEqual([
+      { kind: "UNPROVEN_CANONICAL", ids: ["TRQREV_3"] },
+      { kind: "UNRESOLVED_EVIDENCE", ids: ["REQ_3"] },
+      { kind: "UNSCORED_COVERAGE", ids: ["REQ_3"] },
+      { kind: "NO_EVIDENCE_DELIVERED", ids: [] }
+    ]);
+    expect(countRequirements(requirements)).toMatchObject({ unresolved: 1, coveredUnscored: 0, total: 1 });
+    expect(SIL_COPY.en.jobField.pendingKinds.UNSCORED_COVERAGE).toBe("UNSCORED SWEEP COVERAGE");
+    expect(SIL_COPY.de.jobField.pendingKinds.UNSCORED_COVERAGE).toBe("UNBEWERTETE SWEEP-ABDECKUNG");
+    for (const label of [SIL_COPY.en.jobField.pendingKinds.UNSCORED_COVERAGE, SIL_COPY.de.jobField.pendingKinds.UNSCORED_COVERAGE]) expect(label).not.toMatch(/\b(ONLY|NUR)\b/);
   });
 
   it("places roles by delivered pool resonance only, grouped by pool organization, in delivered order", () => {

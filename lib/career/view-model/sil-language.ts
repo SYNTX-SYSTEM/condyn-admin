@@ -443,7 +443,7 @@ export const SIL_COPY = {
       pendingKinds: {
         UNPROVEN_CANONICAL: "UNPROVEN (CANONICAL)",
         UNRESOLVED_EVIDENCE: "UNRESOLVED (WEAK EVIDENCE)",
-        UNSCORED_COVERAGE: "UNSCORED (SWEEP COVERAGE ONLY)",
+        UNSCORED_COVERAGE: "UNSCORED SWEEP COVERAGE",
         NO_EVIDENCE_DELIVERED: "NO EVIDENCE DELIVERED"
       },
       canonicalReason: "Capability-Requirement Relation: NOT_EVALUATED · VERIFIED_CAPABILITY_SNAPSHOT_ABSENT. A canonical evaluation requires an owner decision (HIA-1/2); nothing in this field evaluates, proves or decides it.",
@@ -924,7 +924,7 @@ export const SIL_COPY = {
       pendingKinds: {
         UNPROVEN_CANONICAL: "UNBEWIESEN (KANONISCH)",
         UNRESOLVED_EVIDENCE: "UNGELÖST (SCHWACHE EVIDENZ)",
-        UNSCORED_COVERAGE: "UNBEWERTET (NUR SWEEP-ABDECKUNG)",
+        UNSCORED_COVERAGE: "UNBEWERTETE SWEEP-ABDECKUNG",
         NO_EVIDENCE_DELIVERED: "KEINE EVIDENZ GELIEFERT"
       },
       canonicalReason: "Capability-Requirement-Relation: NOT_EVALUATED · VERIFIED_CAPABILITY_SNAPSHOT_ABSENT. Eine kanonische Bewertung erfordert eine Eigentümerentscheidung (HIA-1/2); nichts in diesem Feld bewertet, beweist oder entscheidet sie.",
