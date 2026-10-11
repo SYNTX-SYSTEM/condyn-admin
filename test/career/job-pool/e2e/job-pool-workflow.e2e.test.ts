@@ -321,6 +321,107 @@ describe.skipIf(playwrightModule === null)("Job Pool workflow in a real browser"
     await page.close();
   }, 240_000);
 
+  it("opens the Job Field: the pool as the central field with roles by pool resonance, the nearest presented role, exact role navigation with pending kinds, and the planetarium receded but preserved", async () => {
+    pageErrors = [];
+    const page = await openPage(`/career/demo?analysisId=${world.analysisId}&jobPoolUploadId=${uploadedId}`);
+    expect(await page.getByTestId("semantic-career-intelligence-field").getAttribute("data-field-focus")).toBe("CAPABILITY");
+    expect(await page.getByTestId("field-focus-job-btn").getAttribute("data-field-focus-active")).toBe("false");
+    await page.getByTestId("field-focus-job-btn").click();
+    const field = page.locator('[data-testid="job-field"][data-field-state="AVAILABLE"]');
+    await field.waitFor({ timeout: 120_000 });
+    expect(await page.getByTestId("semantic-career-intelligence-field").getAttribute("data-field-focus")).toBe("JOB");
+    expect(new URL(page.url()).searchParams.get("focus")).toBe("JOB");
+    expect(await field.getAttribute("data-role-count")).toBe(String(world.samplePool.roles.length));
+    expect(await field.getAttribute("data-ranking")).toBe("MONOTONE_BY_RESONANCE");
+    expect(await field.getAttribute("data-nearest-role")).toBe(T.roleId);
+    expect(await field.getAttribute("data-selected-role")).toBe("");
+    expect(await field.getAttribute("data-sweep-state")).toBe("NOT_PRODUCED");
+    expect(await page.getByTestId("job-field-core").getAttribute("data-candidate-capability-count")).toBe("6");
+    expect(await page.locator('[data-testid^="job-field-organization-"]').count()).toBe(world.samplePool.organizations.length);
+    const nearest = page.getByTestId(`job-field-role-${T.roleId}`);
+    expect(await nearest.getAttribute("data-delivered-rank")).toBe("1");
+    expect(await nearest.getAttribute("data-nearest")).toBe("true");
+    expect(await nearest.getAttribute("data-scored-match")).toBe("true");
+    // Resonance and distance are the delivered value and its complement, never re-scored.
+    const delivered = await fetchJobPoolMatches(uploadedId, world.analysisId, serverFetch);
+    expect(delivered.state).toBe("AVAILABLE");
+    if (delivered.state !== "AVAILABLE") return;
+    for (const role of delivered.matches.roleMatches) {
+      const node = page.getByTestId(`job-field-role-${role.poolRoleId}`);
+      expect(await node.getAttribute("data-resonance-score")).toBe(String(role.resonanceScore));
+      expect(Number(await node.getAttribute("data-distance"))).toBeCloseTo(1 - role.resonanceScore, 10);
+      const counts = ["data-matched", "data-unresolved", "data-covered-unscored", "data-no-evidence"];
+      const sum = (await Promise.all(counts.map(name => node.getAttribute(name)))).reduce((total, value) => total + Number(value), 0);
+      expect(sum).toBe(role.canonical.targetRequirementRevisionIds.length);
+      expect(await node.getAttribute("data-scored-match")).toBe(role.resonanceScore > 0 && role.matched.length > 0 ? "true" : "false");
+    }
+    expect(await page.locator('[data-testid^="job-field-role-"][data-scored-match="false"]').count()).toBeGreaterThan(0);
+    expect(await page.getByTestId("job-field-nearest").getAttribute("data-role-id")).toBe(T.roleId);
+    expect(await page.getByTestId("job-field-nearest").textContent()).toContain("not a role relation (RRL) · not a recommendation (RCP) · not a decision");
+    expect(await page.getByTestId("job-field-legend").textContent()).toContain("POOL RESONANCE (PRESENTATION)");
+    expect(await page.getByTestId("job-field-legend").textContent()).toContain("absence of evidence is not absence of capability");
+    expect(await page.getByTestId("job-field-non-claims").textContent()).toContain("NEAREST != CHOSEN");
+    const fieldText = (await page.getByTestId("job-field").textContent()) ?? "";
+    expect(fieldText).not.toMatch(/\b(RRL|TSN|EIS|RCP|DCTXREV|DCR|DREV)_[0-9A-Z]/);
+    expect(fieldText).not.toContain("verified capability");
+    // The planetarium recedes but stays rendered; no dock without an exact DCTXREV.
+    for (const stage of ["01", "02", "03", "04", "05", "06"]) expect(await page.getByTestId(`focus-transition-stage-shell-${stage}`).count()).toBe(1);
+    expect(await page.locator('[data-testid^="hr-decision-loop"]').count()).toBe(0);
+    await page.screenshot({ path: resolve(EVIDENCE_DIR, "17-job-field-overview-nearest-presented-role.png") });
+
+    await page.getByTestId(`job-field-role-${T.roleId}`).click();
+    await page.locator(`[data-testid="job-field-role-detail"][data-role-id="${T.roleId}"]`).waitFor({ timeout: 30_000 });
+    expect(new URL(page.url()).searchParams.get("jobRoleId")).toBe(T.roleId);
+    expect(await field.getAttribute("data-selected-role")).toBe(T.roleId);
+    const hit = page.getByTestId(`job-field-requirement-${T.requirementId}`);
+    expect(await hit.getAttribute("data-state")).toBe("MATCHED");
+    expect(await hit.getAttribute("data-provenance")).toBe("ANALYSIS_CAPABILITY");
+    expect(await hit.getAttribute("data-basis")).toBe("EXACT");
+    expect(await hit.textContent()).toContain(T.quote);
+    expect(await page.getByTestId(`job-field-requirement-req_003`).getAttribute("data-state")).toBe("UNRESOLVED");
+    expect(await page.getByTestId(`job-field-requirement-req_005`).getAttribute("data-state")).toBe("NO_EVIDENCE_DELIVERED");
+    expect(await page.getByTestId(`job-field-requirement-req_005`).getAttribute("data-provenance")).toBe("NONE");
+    expect(await page.getByTestId("job-field-pending").getAttribute("data-role-id")).toBe(T.roleId);
+    expect(await page.getByTestId("job-field-pending-UNPROVEN_CANONICAL").getAttribute("data-count")).toBe("5");
+    expect(await page.getByTestId("job-field-pending-UNRESOLVED_EVIDENCE").getAttribute("data-ids")).toBe("req_003");
+    expect(await page.getByTestId("job-field-pending-UNSCORED_COVERAGE").getAttribute("data-count")).toBe("0");
+    expect(await page.getByTestId("job-field-pending-NO_EVIDENCE_DELIVERED").getAttribute("data-ids")).toBe("req_005");
+    expect(await page.getByTestId("job-field-pending-reason").textContent()).toContain("VERIFIED_CAPABILITY_SNAPSHOT_ABSENT");
+    await page.screenshot({ path: resolve(EVIDENCE_DIR, "18-job-field-role-pending.png") });
+
+    await page.getByTestId("job-field-role-back").click();
+    await page.locator('[data-testid="job-field"][data-selected-role=""]').waitFor({ timeout: 10_000 });
+    expect(new URL(page.url()).searchParams.get("jobRoleId")).toBeNull();
+    await page.getByTestId("job-field-exit-btn").click();
+    await page.locator('[data-testid="semantic-career-intelligence-field"][data-field-focus="CAPABILITY"]').waitFor({ timeout: 10_000 });
+    expect(await page.getByTestId("job-field").count()).toBe(0);
+    expect(new URL(page.url()).searchParams.get("focus")).toBeNull();
+    expect(await page.getByTestId("semantic-zoom-telemetry").count()).toBe(1);
+    expect(pageErrors).toEqual([]);
+    await page.close();
+  }, 300_000);
+
+  it("reopens the Job Field from the URL with an exact role, names a stale role id, and shows the pool selection when no pool is selected", async () => {
+    pageErrors = [];
+    const page = await openPage(`/career/demo?focus=JOB&analysisId=${world.analysisId}&jobPoolUploadId=${uploadedId}&jobRoleId=${T.roleId}`);
+    await page.locator(`[data-testid="job-field-role-detail"][data-role-id="${T.roleId}"]`).waitFor({ timeout: 120_000 });
+    expect(await page.getByTestId("semantic-career-intelligence-field").getAttribute("data-field-focus")).toBe("JOB");
+    await page.close();
+    const stale = await openPage(`/career/demo?focus=JOB&analysisId=${world.analysisId}&jobPoolUploadId=${uploadedId}&jobRoleId=role_stale`);
+    await stale.getByTestId("job-field-role-not-delivered").waitFor({ timeout: 120_000 });
+    expect(await stale.getByTestId("job-field").getAttribute("data-selected-role")).toBe("");
+    await stale.close();
+    const noPool = await openPage(`/career/demo?focus=JOB&analysisId=${world.analysisId}`);
+    await noPool.locator('[data-testid="job-field"][data-field-state="NO_POOL"]').waitFor({ timeout: 120_000 });
+    await noPool.getByTestId(`job-field-select-pool-${uploadedId}`).waitFor({ timeout: 60_000 });
+    await noPool.getByTestId(`job-field-select-pool-${uploadedId}`).click();
+    await noPool.locator('[data-testid="job-field"][data-field-state="AVAILABLE"]').waitFor({ timeout: 120_000 });
+    expect(new URL(noPool.url()).searchParams.get("jobPoolUploadId")).toBe(uploadedId);
+    await noPool.screenshot({ path: resolve(EVIDENCE_DIR, "19-job-field-selected-from-field.png") });
+    expect(pageErrors).toEqual([]);
+    await noPool.close();
+  }, 300_000);
+
   it("names a stale selection that is not among the persisted uploads and leaves the field without a dock", async () => {
     pageErrors = [];
     const page = await openPage(`/career/demo?jobPoolUploadId=JPOOL_STALE_SELECTION`);

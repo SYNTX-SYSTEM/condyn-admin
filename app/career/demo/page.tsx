@@ -12,10 +12,14 @@ interface CareerIntelligenceDemoSearchParams {
   analysisId?: string;
   /** Exact Job Pool upload selected for matching. Never inferred, never a latest pool. */
   jobPoolUploadId?: string;
+  /** Planetarium focus: JOB opens the Job Field; anything else is the capability field. */
+  focus?: string;
+  /** Exact pool role opened in the Job Field. */
+  jobRoleId?: string;
 }
 
 export default async function CareerIntelligenceDemoPage({ searchParams }: { searchParams: Promise<CareerIntelligenceDemoSearchParams> }) {
-  const { canonicalSilAssociationId, careerDecisionContextRevisionId, decisionContextRevisionId, analysisId, jobPoolUploadId } = await searchParams;
+  const { canonicalSilAssociationId, careerDecisionContextRevisionId, decisionContextRevisionId, analysisId, jobPoolUploadId, focus, jobRoleId } = await searchParams;
   return (
     <CareerIntelligenceDashboard
       data={EMPTY_CAREER_INTELLIGENCE_DATA}
@@ -24,6 +28,8 @@ export default async function CareerIntelligenceDemoPage({ searchParams }: { sea
       decisionContextRevisionId={decisionContextRevisionId}
       analysisId={analysisId}
       jobPoolUploadId={jobPoolUploadId}
+      fieldFocus={focus === "JOB" ? "JOB" : "CAPABILITY"}
+      jobRoleId={jobRoleId}
     />
   );
 }

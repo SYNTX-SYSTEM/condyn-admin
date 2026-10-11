@@ -8,7 +8,8 @@ import {
   describeRanking,
   describeSelection,
   presentationLabels,
-  requirementCounts
+  requirementCounts,
+  type JobPoolAnalysisSource
 } from "../../../../lib/career/job-pool/frontend-presentation";
 import { useJobPoolWorkflow } from "../../../../lib/career/ui/useJobPool";
 import type { JobPoolMatchedRequirement, JobPoolMissingRequirement, JobPoolRoleMatch, JobPoolSweepProposalCoverage, JobPoolUploadSummary, JobPoolUploadView, JobPoolWeakRequirement } from "../../../../lib/career/job-pool/types";
@@ -181,11 +182,29 @@ function CanonicalMappingSummary({ upload, t }: { upload: JobPoolUploadView; t: 
   );
 }
 
+export type JobPoolWorkflow = ReturnType<typeof useJobPoolWorkflow>;
+
+export interface JobPoolMatchPanelViewProps {
+  workflow: JobPoolWorkflow;
+  analysisSource: JobPoolAnalysisSource;
+  jobPoolUploadId?: string | null;
+  locale?: SilLocale;
+  initialOpen?: boolean;
+  /** TOP_LEFT beside the planetarium (default); BOTTOM_LEFT while the Job Field owns the top-left column (JOB focus). */
+  anchor?: "TOP_LEFT" | "BOTTOM_LEFT";
+}
+
+/** Owns the workflow hook; the SIL field uses the View with a lifted hook so the Job Field shares one read. */
 export function JobPoolMatchPanel({ jobResultAnalysisId = null, analysisId = null, jobPoolUploadId = null, locale = SIL_COPY.defaultLocale, initialOpen }: JobPoolMatchPanelProps) {
-  const t = SIL_COPY[locale].jobPool;
   const analysisSource = describeAnalysisSource(jobResultAnalysisId, analysisId);
+  const workflow = useJobPoolWorkflow({ analysisId: analysisSource.kind === "NONE" ? null : analysisSource.analysisId, initialJobPoolUploadId: jobPoolUploadId });
+  return <JobPoolMatchPanelView workflow={workflow} analysisSource={analysisSource} jobPoolUploadId={jobPoolUploadId} locale={locale} initialOpen={initialOpen} />;
+}
+
+export function JobPoolMatchPanelView({ workflow, analysisSource, jobPoolUploadId = null, locale = SIL_COPY.defaultLocale, initialOpen, anchor = "TOP_LEFT" }: JobPoolMatchPanelViewProps) {
+  const anchorStyle: React.CSSProperties = anchor === "BOTTOM_LEFT" ? { left: "24px", bottom: "24px" } : { left: "24px", top: "132px" };
+  const t = SIL_COPY[locale].jobPool;
   const effectiveAnalysisId = analysisSource.kind === "NONE" ? null : analysisSource.analysisId;
-  const workflow = useJobPoolWorkflow({ analysisId: effectiveAnalysisId, initialJobPoolUploadId: jobPoolUploadId });
   const [isOpen, setIsOpen] = useState<boolean>(initialOpen ?? (jobPoolUploadId !== null && jobPoolUploadId.length > 0));
   const [actorId, setActorId] = useState("JOB_POOL_UPLOADER_LOCAL");
   const [fileName, setFileName] = useState<string | null>(null);
@@ -218,7 +237,8 @@ export function JobPoolMatchPanel({ jobResultAnalysisId = null, analysisId = nul
       <button
         data-testid="job-pool-panel-toggle"
         onClick={() => setIsOpen(true)}
-        style={{ position: "fixed", left: "24px", top: "132px", zIndex: 50, backgroundColor: "rgba(10, 14, 20, 0.85)", border: `1px solid ${SIL_TOKENS.colors.cyanActive}`, borderRadius: "8px", padding: "8px 14px", color: SIL_TOKENS.colors.cyanActive, fontFamily: SIL_TOKENS.typography.mono, fontSize: "11px", cursor: "pointer", boxShadow: `0 0 12px ${SIL_TOKENS.colors.cyanGlow}` }}
+        data-anchor={anchor}
+        style={{ position: "fixed", ...anchorStyle, zIndex: 50, backgroundColor: "rgba(10, 14, 20, 0.85)", border: `1px solid ${SIL_TOKENS.colors.cyanActive}`, borderRadius: "8px", padding: "8px 14px", color: SIL_TOKENS.colors.cyanActive, fontFamily: SIL_TOKENS.typography.mono, fontSize: "11px", cursor: "pointer", boxShadow: `0 0 12px ${SIL_TOKENS.colors.cyanGlow}` }}
       >
         {t.toggleOpen}
       </button>
@@ -236,7 +256,8 @@ export function JobPoolMatchPanel({ jobResultAnalysisId = null, analysisId = nul
       data-analysis-source={analysisSource.kind}
       data-analysis-id={effectiveAnalysisId ?? ""}
       data-matches-state={workflow.matches.state}
-      style={{ position: "fixed", left: "24px", top: "132px", width: "440px", maxHeight: "calc(100vh - 180px)", overflowY: "auto", zIndex: 50, backgroundColor: "rgba(10, 14, 20, 0.94)", border: `1px solid ${SIL_TOKENS.colors.cyanActive}`, borderRadius: "12px", padding: "14px", fontFamily: SIL_TOKENS.typography.mono, color: SIL_TOKENS.colors.textPrimary, boxShadow: `0 0 24px ${SIL_TOKENS.colors.cyanGlow}`, backdropFilter: "blur(12px)", display: "flex", flexDirection: "column", gap: "12px" }}
+      data-anchor={anchor}
+      style={{ position: "fixed", ...anchorStyle, width: "440px", maxHeight: anchor === "BOTTOM_LEFT" ? "45vh" : "calc(100vh - 180px)", overflowY: "auto", zIndex: 50, backgroundColor: "rgba(10, 14, 20, 0.94)", border: `1px solid ${SIL_TOKENS.colors.cyanActive}`, borderRadius: "12px", padding: "14px", fontFamily: SIL_TOKENS.typography.mono, color: SIL_TOKENS.colors.textPrimary, boxShadow: `0 0 24px ${SIL_TOKENS.colors.cyanGlow}`, backdropFilter: "blur(12px)", display: "flex", flexDirection: "column", gap: "12px" }}
     >
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
         <h3 style={{ margin: 0, fontSize: "12px", color: SIL_TOKENS.colors.cyanActive, letterSpacing: "1px" }}>{t.title}</h3>

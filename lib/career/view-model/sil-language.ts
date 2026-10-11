@@ -28,7 +28,7 @@ export const SIL_COPY = {
       },
       "03": {
         name: "RESONANCE ORBITS",
-        subtitle: "Organisations in the field"
+        subtitle: "Inferred organisations (analysis) · not pool resonance"
       },
       "04": {
         name: "ROLE MANIFESTATION",
@@ -366,6 +366,66 @@ export const SIL_COPY = {
       nonClaims: "PRESENTED != EVALUATED · UPLOADED != SELECTED · RANKED != RECOMMENDED · MISSING != GAP DECISION · COVERED != SCORED"
     },
 
+    jobField: {
+      title: "JOB FIELD",
+      subtitle: "THE JOB POOL AS THE CENTRAL FIELD · PRESENTATION · AUTHORITY NONE",
+      enter: "◉ JOB",
+      exit: "← CAPABILITY FIELD",
+      states: {
+        NO_POOL: "NO JOB POOL UPLOAD SELECTED: select one persisted upload (explicit selection only)",
+        NO_ANALYSIS: "NO ANALYSIS: run the capability sweep (identity core) or open the page with an exact analysisId",
+        LOADING: "READING PRESENTATION MATCHING...",
+        AVAILABLE: "PRESENTATION MATCHING READ",
+        NOT_FOUND: "POOL OR ANALYSIS NOT FOUND",
+        INACTIVE_POOL: "POOL IS NOT ACTIVE: no matching for DRAFT or ARCHIVED pools",
+        NOT_PROVISIONED: "JOB POOL PERSISTENCE NOT PROVISIONED (no verified disposable database)",
+        FAILED: "MATCHING COULD NOT BE READ"
+      },
+      select: "SELECT",
+      core: "CANDIDATE",
+      coreCapabilities: "ANALYSIS CAPABILITIES (SCORED SOURCE)",
+      coreSweep: "SWEEP PROPOSALS (UNSCORED)",
+      resonance: "POOL RESONANCE (PRESENTATION)",
+      legend: "Distance from the core = 1 − POOL RESONANCE (PRESENTATION): presentation geometry, not a canonical metric. Roles without a scored match stay visible on the outer ring. Roles are grouped by POOL organization only; no pool role or organization is joined with an inferred one. No evidence delivered is not absence of capability: absence of evidence is not absence of capability.",
+      ranking: {
+        MONOTONE_BY_RESONANCE: "ORDER AS DELIVERED (monotone by pool resonance)",
+        DELIVERED_ORDER_NOT_MONOTONE: "ORDER AS DELIVERED (not monotone by pool resonance; shown unchanged)",
+        EMPTY: "NO ROLES IN THIS POOL"
+      },
+      nearest: "NEAREST PRESENTED ROLE",
+      nearestLabel: "presentation · authority NONE · not a role relation (RRL) · not a recommendation (RCP) · not a decision",
+      noNearest: "NO SCORED MATCH DELIVERED FOR ANY ROLE",
+      noScoredMatch: "NO SCORED MATCH",
+      rank: "DELIVERED RANK",
+      open: "OPEN ROLE",
+      back: "ALL ROLES",
+      relations: "REQUIREMENT RELATIONS (PRESENTATION)",
+      requirementStates: {
+        MATCHED: "MATCHED (SCORED)",
+        UNRESOLVED: "UNRESOLVED (WEAK EVIDENCE)",
+        COVERED_UNSCORED: "COVERED BY THE CAPABILITY SWEEP (UNSCORED)",
+        NO_EVIDENCE_DELIVERED: "NO EVIDENCE DELIVERED"
+      },
+      provenance: {
+        ANALYSIS_CAPABILITY: "analysis capability (scored)",
+        SWEEP_PROPOSAL: "capability sweep proposal (unscored, source-verified quote)",
+        NONE: "no evidence delivered · absence of evidence is not absence of capability"
+      },
+      confidence: "confidence",
+      basis: "basis",
+      constituent: "constituent",
+      pending: "PENDING TOWARD THIS ROLE",
+      pendingKinds: {
+        UNPROVEN_CANONICAL: "UNPROVEN (CANONICAL)",
+        UNRESOLVED_EVIDENCE: "UNRESOLVED (WEAK EVIDENCE)",
+        UNSCORED_COVERAGE: "UNSCORED (SWEEP COVERAGE ONLY)",
+        NO_EVIDENCE_DELIVERED: "NO EVIDENCE DELIVERED"
+      },
+      canonicalReason: "Capability-Requirement Relation: NOT_EVALUATED · VERIFIED_CAPABILITY_SNAPSHOT_ABSENT. A canonical evaluation requires an owner decision (HIA-1/2); nothing in this field evaluates, proves or decides it.",
+      none: "NONE",
+      nonClaims: "NEAREST != CHOSEN · PENDING != MISSING CAPABILITY · COVERED != SCORED · DISTANCE != TRUTH · POOL ROLE != INFERRED ROLE"
+    },
+
     emptyStates: {
       "01": {
         title: "NO SOURCES PROJECTED",
@@ -408,7 +468,7 @@ export const SIL_COPY = {
       },
       "03": {
         name: "RESONANZ-ORBITS",
-        subtitle: "Organisationen im Feld"
+        subtitle: "Inferierte Organisationen (Analyse) · keine Pool-Resonanz"
       },
       "04": {
         name: "ROLLENMANIFESTATION",
@@ -744,6 +804,66 @@ export const SIL_COPY = {
       sweepOnlyCoverage: "FEHLENDE ANFORDERUNGEN, DIE DER SWEEP ABDECKT (UNBEWERTET)",
       unscored: "UNBEWERTET",
       nonClaims: "PRÄSENTIERT != BEWERTET · HOCHGELADEN != AUSGEWÄHLT · GEREIHT != EMPFOHLEN · FEHLEND != LÜCKENENTSCHEIDUNG · ABGEDECKT != BEWERTET"
+    },
+
+    jobField: {
+      title: "JOB-FELD",
+      subtitle: "DER JOB-POOL ALS ZENTRALES FELD · PRÄSENTATION · AUTORITÄT NONE",
+      enter: "◉ JOB",
+      exit: "← CAPABILITY-FELD",
+      states: {
+        NO_POOL: "KEIN JOB-POOL-UPLOAD AUSGEWÄHLT: einen persistierten Upload auswählen (nur explizite Auswahl)",
+        NO_ANALYSIS: "KEINE ANALYSE: Capability-Sweep starten (Identitätskern) oder Seite mit exakter analysisId öffnen",
+        LOADING: "PRÄSENTATIONS-MATCHING WIRD GELESEN...",
+        AVAILABLE: "PRÄSENTATIONS-MATCHING GELESEN",
+        NOT_FOUND: "POOL ODER ANALYSE NICHT GEFUNDEN",
+        INACTIVE_POOL: "POOL IST NICHT AKTIV: kein Matching für DRAFT- oder ARCHIVED-Pools",
+        NOT_PROVISIONED: "JOB-POOL-PERSISTENZ NICHT BEREITGESTELLT (keine verifizierte Wegwerf-Datenbank)",
+        FAILED: "MATCHING KONNTE NICHT GELESEN WERDEN"
+      },
+      select: "AUSWÄHLEN",
+      core: "KANDIDAT:IN",
+      coreCapabilities: "ANALYSE-CAPABILITIES (BEWERTETE QUELLE)",
+      coreSweep: "SWEEP-VORSCHLÄGE (UNBEWERTET)",
+      resonance: "POOL-RESONANZ (PRÄSENTATION)",
+      legend: "Abstand vom Kern = 1 − POOL-RESONANZ (PRÄSENTATION): Präsentationsgeometrie, keine kanonische Metrik. Rollen ohne bewerteten Match bleiben am äußeren Ring sichtbar. Rollen sind nur nach POOL-Organisation gruppiert; keine Pool-Rolle oder -Organisation wird mit einer inferierten verbunden. Keine gelieferte Evidenz ist keine fehlende Capability.",
+      ranking: {
+        MONOTONE_BY_RESONANCE: "REIHENFOLGE WIE GELIEFERT (monoton nach Pool-Resonanz)",
+        DELIVERED_ORDER_NOT_MONOTONE: "REIHENFOLGE WIE GELIEFERT (nicht monoton nach Pool-Resonanz; unverändert gezeigt)",
+        EMPTY: "KEINE ROLLEN IN DIESEM POOL"
+      },
+      nearest: "NÄCHSTE PRÄSENTIERTE ROLLE",
+      nearestLabel: "Präsentation · Autorität NONE · keine Rollenrelation (RRL) · keine Empfehlung (RCP) · keine Entscheidung",
+      noNearest: "FÜR KEINE ROLLE EIN BEWERTETER MATCH GELIEFERT",
+      noScoredMatch: "KEIN BEWERTETER MATCH",
+      rank: "GELIEFERTER RANG",
+      open: "ROLLE ÖFFNEN",
+      back: "ALLE ROLLEN",
+      relations: "ANFORDERUNGSRELATIONEN (PRÄSENTATION)",
+      requirementStates: {
+        MATCHED: "ERFÜLLT (BEWERTET)",
+        UNRESOLVED: "UNGELÖST (SCHWACHE EVIDENZ)",
+        COVERED_UNSCORED: "DURCH DEN CAPABILITY-SWEEP ABGEDECKT (UNBEWERTET)",
+        NO_EVIDENCE_DELIVERED: "KEINE EVIDENZ GELIEFERT"
+      },
+      provenance: {
+        ANALYSIS_CAPABILITY: "Analyse-Capability (bewertet)",
+        SWEEP_PROPOSAL: "Capability-Sweep-Vorschlag (unbewertet, quellverifiziertes Zitat)",
+        NONE: "keine Evidenz geliefert · fehlende Evidenz ist keine fehlende Capability"
+      },
+      confidence: "Konfidenz",
+      basis: "Basis",
+      constituent: "Bestandteil",
+      pending: "AUSSTEHEND FÜR DIESE ROLLE",
+      pendingKinds: {
+        UNPROVEN_CANONICAL: "UNBEWIESEN (KANONISCH)",
+        UNRESOLVED_EVIDENCE: "UNGELÖST (SCHWACHE EVIDENZ)",
+        UNSCORED_COVERAGE: "UNBEWERTET (NUR SWEEP-ABDECKUNG)",
+        NO_EVIDENCE_DELIVERED: "KEINE EVIDENZ GELIEFERT"
+      },
+      canonicalReason: "Capability-Requirement-Relation: NOT_EVALUATED · VERIFIED_CAPABILITY_SNAPSHOT_ABSENT. Eine kanonische Bewertung erfordert eine Eigentümerentscheidung (HIA-1/2); nichts in diesem Feld bewertet, beweist oder entscheidet sie.",
+      none: "KEINE",
+      nonClaims: "NÄCHSTE != GEWÄHLT · AUSSTEHEND != FEHLENDE CAPABILITY · ABGEDECKT != BEWERTET · ABSTAND != WAHRHEIT · POOL-ROLLE != INFERIERTE ROLLE"
     },
 
     emptyStates: {

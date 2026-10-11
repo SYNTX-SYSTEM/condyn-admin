@@ -1,13 +1,7 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import { DemoCareerIntelligenceData } from "../../../career/demo/demo-data";
-import { IdentityCoreNode } from "./IdentityCoreNode";
-import { CapabilityField } from "./CapabilityField";
-import { ResonanceOrbits } from "./ResonanceOrbits";
-import { RoleManifestation } from "./RoleManifestation";
-import { TensionLayer } from "./TensionLayer";
-import { EvolutionLayer } from "./EvolutionLayer";
 import { SemanticCareerIntelligenceField } from "./SemanticCareerIntelligenceField";
 import { SIL_TOKENS } from "./SILTokens";
 
@@ -18,17 +12,20 @@ export interface CareerIntelligenceDashboardProps {
   decisionContextRevisionId?: string;
   analysisId?: string;
   jobPoolUploadId?: string;
+  fieldFocus?: "CAPABILITY" | "JOB";
+  jobRoleId?: string;
 }
 
 /**
  * CONDYN / SYNTX — Semantic Interface Language (SIL v2.0)
  * CAREER INTELLIGENCE FIELD (`app/components/career/demo/CareerIntelligenceDashboard.tsx`)
  *
- * Supports switching between FIELD MODE (Radial Organism) and LIST MODE (Vertical Flow).
+ * Renders the Semantic Career Intelligence Field only. The legacy LIST-mode
+ * components (IdentityCoreNode, CapabilityField, ResonanceOrbits, RoleManifestation,
+ * TensionLayer, EvolutionLayer) are not mounted here: they label absent scores as
+ * "UNSUPPORTED" or "0%", which the field semantics forbid (PINK finding F-JF-5).
  */
-export function CareerIntelligenceDashboard({ data, canonicalSilAssociationId, careerDecisionContextRevisionId, decisionContextRevisionId, analysisId, jobPoolUploadId }: CareerIntelligenceDashboardProps) {
-  const [mode, setMode] = useState<"FIELD" | "LIST">("FIELD");
-
+export function CareerIntelligenceDashboard({ data, canonicalSilAssociationId, careerDecisionContextRevisionId, decisionContextRevisionId, analysisId, jobPoolUploadId, fieldFocus, jobRoleId }: CareerIntelligenceDashboardProps) {
   return (
     <div
       data-testid="career-intelligence-dashboard"
@@ -76,6 +73,8 @@ export function CareerIntelligenceDashboard({ data, canonicalSilAssociationId, c
         decisionContextRevisionId={decisionContextRevisionId}
         analysisId={analysisId}
         jobPoolUploadId={jobPoolUploadId}
+        fieldFocus={fieldFocus}
+        jobRoleId={jobRoleId}
       />
     </div>
   );
