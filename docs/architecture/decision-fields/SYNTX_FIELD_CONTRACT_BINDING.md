@@ -149,6 +149,32 @@ join omits the field; it never falls back to fuzzy matching.
   `roleMatches` positions nothing.
 - **R12 No new data path.** The view model reads only §1 surfaces. A second read (`/api/career/analyses/{id}`) for source
   title/provenance is permitted; no new route, table, write or persisted presentation state.
+- **R15 Bound rest-state motion (owner decision 2026-10-12 on "SFE — SYNTX LIVING FIELD · VISUAL RECONSTRUCTION":
+  "Supersede, bound motion").** It supersedes spec §1 "No decorative orbital motion. No arbitrary glow." and the §6.2 rows
+  "decorative orbit", "ambient swirl" and "glow without evidence referent", only for the closed list below. Every other
+  line of §1 and §6.2 stands, including "pulsing without pending state", "celebratory match animation" and "animated score
+  reveal as primary".
+  - Closed list of infinite (rest-state) animations, `SYNTX_AMBIENT_NAMES` in `SyntxField.tsx`:
+    - `sxOrbit`: rotation of the pool's containment ring. FIELD level only, pool sign in state `field`.
+    - `sxBreathe`: opacity and dash drift of organization region membranes and role halos, with no transform. FIELD and
+      ORGANIZATION levels only, signs in state `field`. One period for every region and every role; the phase is set
+      only by the organization index (containment).
+    - `sxSuspend`: the dash drift of the suspended boundary, which already existed and is never a pulse (R2).
+    No other infinite animation may run at any level. At ROLE and REQUIREMENT only `sxSuspend` runs, so inspection and
+    hit-testing are at rest.
+  - Each rest motion manifests the containment or pending state that its sign carries. It never implies a state change
+    or relational activity. No parameter (period, amplitude, phase, glow, size, speed) derives from `resonanceScore`,
+    `aggregateScore`, delivered rank, `contribution` or `confidence` (R4, R14).
+  - Glow and material layers sit only inside a sign and are keyed to its `data-sign-manifestation` or `data-sign-state`
+    (region membrane, carrier core, `role_selected`, inspectable trace, source carrier). There is no glow on an element
+    without a sign, no red family, and no closure-looking settle (R1, R3). The suspended boundary is dashed in every frame.
+  - Finite transitions are bound to `data-sign-transition`: `sxRecenter` (one ring, iterations 1, on the sign entering
+    `*_selected`), `sxUnfold`, `sxTraceRise` and `sxSuspendEnter`. Recede and restore are opacity plus a depth blur on
+    `data-sx-depth="far"` signs, and never on visible text.
+  - `data-motion-mode="REDUCED"` is total: zero running animations, camera transition 0 s, and a sign set identical to
+    LIVE. The root carries `data-sx-ambient="on|off"` (the switch `SYNTX_AMBIENT_MOTION`).
+  - Verification: GELB's motion audit maps every running animation on a `[data-sign-id]` element to this list or its
+    transition. PINK rebinds Q-06/J-12 to this ruling.
 
 ## 5. Governance tests (GELB, bound to GRÜN's pure view model)
 
