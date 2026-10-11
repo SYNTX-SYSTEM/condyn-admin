@@ -160,3 +160,16 @@ state carriers; org ⊃ role and role ⊃ requirement equal the canonical bindin
 §3 list or from `analysis.recommendations` / `analysis.matching` appears. Interaction tests (recenter, recede, return,
 reduced motion) are GRÜN's; the running walk FIELD → ORGANIZATION → ROLE → REQUIREMENT → EVIDENCE → RETURN is PINK's
 independent acceptance.
+
+### 5.1 Status (2026-10-11)
+
+GRÜN's renderer and view model (434ef49) are integrated on `integration/job-field-governance`. The governance test
+`test/career/job-pool/syntx-field-governance.test.ts` (10 cases) walks every observation point of a two-organization
+field (FIELD, each ORGANIZATION, each ROLE, each REQUIREMENT, every aperture) and resolves every sign's proof against §2.
+Rulings on GRÜN's two notes:
+- The coverage pin in `semantic-governance.test.ts` now names `SyntxField.tsx`, `syntx-field-view-model.ts`,
+  `analysis-sources.ts` and `useJobPoolSources.ts`; taken as delivered.
+- **B-SYNTX-JOIN accepted:** `analysis-sources.ts` reads `documents[].identity.name` as the §2.3 source title and
+  nothing of the inferred organizations or roles. The text heuristic SG-1 does not scan the file, so the governance test
+  covers it semantically: sentinels placed in `analysis.matching`, `analysis.recommendations` and the inferred
+  organizations and roles never reach the decoded sources or the field.
