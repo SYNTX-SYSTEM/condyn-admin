@@ -161,6 +161,25 @@ describe.skipIf(playwrightModule === null)("PINK JP-B: Job Pool panel in a real 
     }
     expect(await page.locator('[data-testid^="job-pool-trqrev-"]').count()).toBe(validationPool.requirements.length);
 
+    // Galaxy grammar (ee4c4dc, SG-6): layer C details and the matching details are folded behind real buttons and
+    // keyboard-operable; the DOM carries them before the toggle, they are visible after it.
+    const layerC = page.getByTestId("job-pool-layer-c-toggle");
+    if (await layerC.count()) {
+      expect(await layerC.getAttribute("aria-expanded")).toBe("false");
+      await layerC.focus();
+      await page.keyboard.press("Enter");
+      await page.locator('[data-testid="job-pool-canonical-mapping"][data-revealed="true"]').waitFor({ timeout: 10_000 });
+      expect(await layerC.getAttribute("aria-expanded")).toBe("true");
+    }
+    const detailsToggle = page.getByTestId("job-pool-matching-details-toggle");
+    if (await detailsToggle.count()) {
+      expect(await page.getByTestId("job-pool-matching-details").isVisible()).toBe(false);
+      await detailsToggle.focus();
+      await page.keyboard.press("Enter");
+      await page.locator('[data-testid="job-pool-matching-details"][data-jp-reveal="true"]').waitFor({ timeout: 10_000 });
+      expect(await page.getByTestId("job-pool-matching-details").isVisible()).toBe(true);
+      expect(await page.getByTestId("job-pool-capability-sweep").isVisible()).toBe(true);
+    }
     // Sweep coverage (GRÜN 5839762): a seeded analysis has no capability sweep; the panel says so and shows no coverage line.
     const sweep = page.getByTestId("job-pool-capability-sweep");
     expect(await sweep.getAttribute("data-sweep-state")).toBe(matches.capabilitySweep.state);
