@@ -1,9 +1,9 @@
 {
-  "plan": "docs/acceptance/CONDYN_SYSTEM_ACCEPTANCE_TEST_PLAN_v1.1.md",
-  "version": "1.1.2",
-  "tip": "093b9e6",
+  "plan": "docs/acceptance/CONDYN_SYSTEM_ACCEPTANCE_TEST_PLAN_v1.2.md",
+  "version": "1.2.0",
+  "tip": "093b9e6 (+ frontend 1e5c2e3 pending integration)",
   "generated": "2026-10-11",
-  "scenarioCount": 131,
+  "scenarioCount": 136,
   "scenarios": [
     {
       "id": "A-01",
@@ -452,7 +452,7 @@
     {
       "id": "D-01",
       "suite": "TS-D Job Pool workflow",
-      "title": "Panel opens empty on a fresh database",
+      "title": "Enter the Pool Field on a fresh database",
       "sequences": [
         "S1",
         "S2"
@@ -460,7 +460,7 @@
       "risk": [
         "R3"
       ],
-      "video": false,
+      "video": true,
       "evidence": [
         "D-01.png"
       ]
@@ -495,7 +495,7 @@
     {
       "id": "D-04",
       "suite": "TS-D Job Pool workflow",
-      "title": "Explicit selection and matching",
+      "title": "Explicit selection: node to the core, structure, matching",
       "sequences": [
         "S1",
         "S1"
@@ -504,7 +504,7 @@
         "R3",
         "R7"
       ],
-      "video": false,
+      "video": true,
       "evidence": [
         "D-04-matches.json",
         "D-04.png"
@@ -513,7 +513,7 @@
     {
       "id": "D-05",
       "suite": "TS-D Job Pool workflow",
-      "title": "Card content equals the body",
+      "title": "Readings equal the body",
       "sequences": [],
       "risk": [
         "R7"
@@ -540,7 +540,7 @@
     {
       "id": "D-07",
       "suite": "TS-D Job Pool workflow",
-      "title": "Organisation aggregates and non-claims",
+      "title": "Organisation aggregates and the ground line",
       "sequences": [],
       "risk": [
         "R2"
@@ -579,7 +579,7 @@
     {
       "id": "D-10",
       "suite": "TS-D Job Pool workflow",
-      "title": "Reload semantics (B-JF-SESSION)",
+      "title": "Reload semantics (B-JF-SESSION, B-POOL-INITIAL-FOCUS)",
       "sequences": [
         "S2"
       ],
@@ -589,6 +589,71 @@
       "video": false,
       "evidence": [
         "D-10-*.png"
+      ]
+    },
+    {
+      "id": "D-11",
+      "suite": "TS-D Job Pool workflow",
+      "title": "Structure role reading (1e5c2e3)",
+      "sequences": [
+        "S2"
+      ],
+      "risk": [
+        "R2",
+        "R7"
+      ],
+      "video": false,
+      "evidence": [
+        "D-11.png",
+        "D-11-diff.txt"
+      ]
+    },
+    {
+      "id": "D-12",
+      "suite": "TS-D Job Pool workflow",
+      "title": "Enter the Job Field from the Pool Field (1e5c2e3)",
+      "sequences": [
+        "S2"
+      ],
+      "risk": [
+        "R3",
+        "R4"
+      ],
+      "video": true,
+      "evidence": [
+        "D-12.webm"
+      ]
+    },
+    {
+      "id": "D-13",
+      "suite": "TS-D Job Pool workflow",
+      "title": "Pool Field motion (1e5c2e3)",
+      "sequences": [
+        "S3"
+      ],
+      "risk": [
+        "R4"
+      ],
+      "video": true,
+      "evidence": [
+        "D-13.webm",
+        "D-13-computed.txt"
+      ]
+    },
+    {
+      "id": "D-14",
+      "suite": "TS-D Job Pool workflow",
+      "title": "Pool Field meaning (1e5c2e3)",
+      "sequences": [
+        "S2",
+        "S6"
+      ],
+      "risk": [
+        "R2"
+      ],
+      "video": false,
+      "evidence": [
+        "D-14-score.json"
       ]
     },
     {
@@ -1147,7 +1212,7 @@
     {
       "id": "I-07",
       "suite": "TS-I Interaction surfaces",
-      "title": "Panel anchors and collapse",
+      "title": "Field-state strip (1e5c2e3)",
       "sequences": [
         "S1"
       ],
@@ -1859,6 +1924,21 @@
       ],
       "video": false,
       "evidence": []
+    },
+    {
+      "id": "O-11",
+      "suite": "TS-O Semiontic quality review",
+      "title": "Pool Field: ring = persisted, core = selected (1e5c2e3)",
+      "sequences": [
+        "S6"
+      ],
+      "risk": [
+        "R2"
+      ],
+      "video": false,
+      "evidence": [
+        "O-11.png"
+      ]
     },
     {
       "id": "P-01",
