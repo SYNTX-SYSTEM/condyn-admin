@@ -70,6 +70,23 @@ not authenticated (B-JP-ACTOR); default `JOB_POOL_UPLOADER_LOCAL`.
 Exact scores vary between sweeps because the model names capabilities differently each run (text source runs gave the
 full-stack role 46–84 %, the PDF run 36 %); the structure above is stable.
 
+## 3a. Job Pool Field (POOL focus): the pool as its own field state
+
+Since the "SFE — SEMIONTIC JOB POOL FIELD" reconstruction the Job Pool is not a panel. Wherever §3 says "panel", read:
+the Pool Field. Every id of §3 is unchanged; the geometry is new.
+
+| Step | Action | Expected state |
+| --- | --- | --- |
+| P1 | Click `⬡ JOB POOL` in the field-state strip (top-left: ◈ CAPABILITY · ⬡ JOB POOL · ◉ JOB) | The whole field changes state: the planetarium recedes under a blurred void, the Pool Field fades in, the persisted uploads emerge one by one on a ring around an empty core ("NO UPLOAD AT THE CORE"); the switch glows; the URL gains `focus=POOL`. Left: title, subtitle, the list state with a living dot, ANALYSIS FOR MATCHING, INTAKE (uploader id, file, UPLOAD →). Right: SELECTED UPLOAD (none), ROLE MATCHES (idle) |
+| P2 | Choose a JSON file, UPLOAD → | UPLOAD PERSISTED (NEW) with the id and `UPLOADED != SELECTED`; a new node appears on the ring; the core stays empty (nothing is selected for you) |
+| P3 | Click an upload node on the ring | It is drawn into the core and lights up (SELECTED, disabled); the ring keeps its other nodes in place; the selected pool's organisations appear as arcs and its roles as small nodes on the inner ring, each with its requirement ticks; the right surface reads the upload (ORG · ROLES · REQ, canonical mapping MAPPED · PROPOSAL_ONLY · authority NONE) and, with an analysis, ROLE MATCHES: the roles on the inner ring now carry light by POOL RESONANCE (unlit = no scored match), the readings list each role with its resonance and counts, relations behind REVEAL RELATIONS |
+| P4 | Click a role node on the inner ring | Its organisation arc brightens, the others recede; the right surface shows the POOL ROLE with its requirements (necessity, eligibility, TRQREV id); ALL ROLES returns |
+| P5 | Click `ENTER JOB FIELD →` | The field changes state again: the Job Field opens on the same selection (JOB glows in the strip); `⬡ JOB POOL` returns to the Pool Field; `← CAPABILITY FIELD` (or the active switch) returns to the ground state and removes `focus` from the URL |
+| P6 | Open `/career/demo?analysisId=ANL_…&jobPoolUploadId=JPOOL_…` without `focus` | The Pool Field opens with that upload at the core (an exact selection is a field state); `focus=JOB` in the URL wins over it |
+| P7 | Select a DRAFT upload (dashed amber node) | It moves to the core; ROLE MATCHES says `POOL IS NOT ACTIVE`; nothing is scored |
+
+Evidence of the automated run: `01-panel-open-two-uploads-none-selected.png` (Pool Field, empty core), `02-upload-persisted-not-selected.png`, `03-selected-upload-ranked-role-matches.png` (selected upload at the core, structure lit by the delivered matching).
+
 ## 3b. Job Field (JOB focus): the pool as the central field
 
 | Step | Action | Expected state |

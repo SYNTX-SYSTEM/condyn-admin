@@ -230,14 +230,22 @@ describe.skipIf(playwrightModule === null)("Job Pool workflow in a real browser"
     pageErrors = [];
     const page = await openPage(`/career/demo?analysisId=${world.analysisId}`);
     expect(await page.locator('[data-testid^="hr-decision-loop"]').count()).toBe(0);
+    expect(await page.getByTestId("semantic-career-intelligence-field").getAttribute("data-field-focus")).toBe("CAPABILITY");
     await page.getByTestId("job-pool-panel-toggle").click();
+    // Activating JOB POOL is a change of field state: the planetarium recedes, the Pool Field opens, the URL names the focus.
+    await page.locator('[data-testid="semantic-career-intelligence-field"][data-field-focus="POOL"]').waitFor({ timeout: 30_000 });
+    expect(new URL(page.url()).searchParams.get("focus")).toBe("POOL");
     const panel = page.getByTestId("job-pool-panel");
     await panel.waitFor({ timeout: 30_000 });
+    expect(await panel.getAttribute("data-field-grammar")).toBe("POOL_FIELD_V1");
+    expect(await page.getByTestId("job-pool-panel-toggle").getAttribute("data-field-focus-active")).toBe("true");
     await page.locator('[data-testid="job-pool-list"][data-pool-count="2"]').waitFor({ timeout: 60_000 });
+    expect(await page.locator('[data-testid^="job-pool-item-"][data-at-core="true"]').count()).toBe(0);
     expect(await panel.getAttribute("data-analysis-source")).toBe("URL");
     expect(await panel.getAttribute("data-selected-pool")).toBe("");
     expect(await panel.getAttribute("data-matches-state")).toBe("IDLE");
     expect(await page.getByTestId("job-pool-upload-btn").isDisabled()).toBe(true);
+    await page.waitForTimeout(900); // let the field entrance and the ring emergence settle before the evidence frame
     await page.screenshot({ path: resolve(EVIDENCE_DIR, "01-panel-open-two-uploads-none-selected.png") });
 
     // A new pool version is a new upload with new canonical entities (B-JP-CONTINUITY); the browser sends the file bytes.
@@ -260,6 +268,7 @@ describe.skipIf(playwrightModule === null)("Job Pool workflow in a real browser"
     await page.locator('[data-testid="job-pool-list"][data-pool-count="3"]').waitFor({ timeout: 60_000 });
     expect(await panel.getAttribute("data-selected-pool")).toBe("");
     expect(await panel.getAttribute("data-matches-state")).toBe("IDLE");
+    await page.waitForTimeout(900); // let the field entrance and the ring emergence settle before the evidence frame
     await page.screenshot({ path: resolve(EVIDENCE_DIR, "02-upload-persisted-not-selected.png") });
 
     await page.getByTestId(`job-pool-select-${newId}`).click();
@@ -268,6 +277,21 @@ describe.skipIf(playwrightModule === null)("Job Pool workflow in a real browser"
     expect(new URL(page.url()).searchParams.get("analysisId")).toBe(world.analysisId);
     expect(await page.getByTestId(`job-pool-item-${newId}`).getAttribute("data-selected")).toBe("true");
     expect(await page.getByTestId(`job-pool-item-${uploadedId}`).getAttribute("data-selected")).toBe("false");
+    // UPLOADED != SELECTED as geometry: only the explicitly selected upload sits at the core; the others keep their ring slots.
+    expect(await page.getByTestId(`job-pool-item-${newId}`).getAttribute("data-at-core")).toBe("true");
+    expect(await page.locator('[data-testid^="job-pool-item-"][data-at-core="true"]').count()).toBe(1);
+    expect(await page.getByTestId(`job-pool-select-${newId}`).isDisabled()).toBe(true);
+    // The selected pool's structure manifests around the core from its canonical mapping; roles carry light from the delivered matching.
+    await page.locator('[data-testid="job-pool-panel"][data-view-state="AVAILABLE"]').waitFor({ timeout: 60_000 });
+    expect(await page.locator('[data-testid^="job-pool-structure-role-"]:not([data-testid="job-pool-structure-role-detail"])').count()).toBe(world.samplePool.roles.length);
+    expect(await page.locator('[data-testid^="job-pool-structure-organization-"]').count()).toBe(world.samplePool.organizations.length);
+    const litRole = page.getByTestId(`job-pool-structure-role-${T.roleId}`);
+    expect(await litRole.getAttribute("data-scored-match")).toBe("true");
+    expect(await litRole.getAttribute("data-motion")).toBe("BREATH");
+    await litRole.click();
+    await page.locator(`[data-testid="job-pool-structure-role-detail"][data-role-id="${T.roleId}"]`).waitFor({ timeout: 10_000 });
+    expect(await page.locator('[data-testid^="job-pool-structure-requirement-"]').count()).toBe(world.samplePool.requirements.filter(requirement => requirement.role_id === T.roleId).length);
+    await page.getByTestId("job-pool-structure-role-back").click();
     await page.locator('[data-testid="job-pool-canonical-mapping"][data-mapping-state="MAPPED"][data-proposal-state="PROPOSAL_ONLY"][data-authority-state="NONE"]').waitFor({ timeout: 30_000 });
     for (const label of ["DETERMINISTIC_PRESENTATION", "NOT_A_CANONICAL_EVALUATION", "NOT_A_DECISION"]) expect(await page.getByTestId(`job-pool-label-${label}`).count()).toBe(1);
     const labels = (await page.getByTestId("job-pool-presentation-labels").textContent()) ?? "";
@@ -298,7 +322,27 @@ describe.skipIf(playwrightModule === null)("Job Pool workflow in a real browser"
     for (const stage of ["01", "02", "03", "04", "05", "06"]) expect(await page.getByTestId(`focus-transition-stage-shell-${stage}`).count()).toBe(1);
     expect(await page.getByTestId("semantic-zoom-telemetry").count()).toBe(1);
     expect(await page.locator('[data-testid^="hr-decision-loop"]').count()).toBe(0);
+    await page.waitForTimeout(900); // let the selected upload settle at the core before the evidence frame
     await page.screenshot({ path: resolve(EVIDENCE_DIR, "03-selected-upload-ranked-role-matches.png"), fullPage: false });
+    // Relations are readings revealed on demand; the delivered quote is in the DOM throughout.
+    expect(await first.getAttribute("data-revealed")).toBe("false");
+    await page.getByTestId(`job-pool-role-${T.roleId}-toggle`).click();
+    await page.locator(`[data-testid="job-pool-role-${T.roleId}"][data-revealed="true"]`).waitFor({ timeout: 10_000 });
+    expect(await hit.isVisible()).toBe(true);
+    // From the Pool Field into the Job Field: the same selection, a different field state.
+    await page.getByTestId("job-pool-enter-job-field").click();
+    await page.locator('[data-testid="semantic-career-intelligence-field"][data-field-focus="JOB"]').waitFor({ timeout: 30_000 });
+    await page.locator('[data-testid="job-field"][data-field-state="AVAILABLE"]').waitFor({ timeout: 60_000 });
+    expect(await page.getByTestId("job-field").getAttribute("data-pool-id")).toBe(newId);
+    expect(await page.getByTestId("job-pool-panel").count()).toBe(0);
+    // And back to the ground state through the strip.
+    await page.getByTestId("job-pool-panel-toggle").click();
+    await page.locator('[data-testid="semantic-career-intelligence-field"][data-field-focus="POOL"]').waitFor({ timeout: 30_000 });
+    expect(await page.getByTestId("job-field").count()).toBe(0);
+    await page.getByTestId("job-pool-panel-collapse").click();
+    await page.locator('[data-testid="semantic-career-intelligence-field"][data-field-focus="CAPABILITY"]').waitFor({ timeout: 30_000 });
+    expect(await page.getByTestId("job-pool-panel").count()).toBe(0);
+    expect(new URL(page.url()).searchParams.get("focus")).toBeNull();
     expect(pageErrors).toEqual([]);
     await page.close();
   }, 300_000);
@@ -324,7 +368,8 @@ describe.skipIf(playwrightModule === null)("Job Pool workflow in a real browser"
   it("opens the Job Field: the pool as the central field with roles by pool resonance, the nearest presented role, exact role navigation with pending kinds, and the planetarium receded but preserved", async () => {
     pageErrors = [];
     const page = await openPage(`/career/demo?analysisId=${world.analysisId}&jobPoolUploadId=${uploadedId}`);
-    expect(await page.getByTestId("semantic-career-intelligence-field").getAttribute("data-field-focus")).toBe("CAPABILITY");
+    // An exact upload id without a focus opens the Pool Field; the Job Field is one strip switch away.
+    expect(await page.getByTestId("semantic-career-intelligence-field").getAttribute("data-field-focus")).toBe("POOL");
     expect(await page.getByTestId("field-focus-job-btn").getAttribute("data-field-focus-active")).toBe("false");
     await page.getByTestId("field-focus-job-btn").click();
     const field = page.locator('[data-testid="job-field"][data-field-state="AVAILABLE"]');

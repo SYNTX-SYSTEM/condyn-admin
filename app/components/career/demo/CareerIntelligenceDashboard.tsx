@@ -12,7 +12,7 @@ export interface CareerIntelligenceDashboardProps {
   decisionContextRevisionId?: string;
   analysisId?: string;
   jobPoolUploadId?: string;
-  fieldFocus?: "CAPABILITY" | "JOB";
+  fieldFocus?: "CAPABILITY" | "JOB" | "POOL";
   jobRoleId?: string;
 }
 
