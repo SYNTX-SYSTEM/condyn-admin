@@ -2,16 +2,16 @@
 
 | Field | Value |
 | --- | --- |
-| Document | `CONDYN_SYSTEM_ACCEPTANCE_TEST_PLAN_v1.0.md` |
-| Version | 1.0.2 (2026-10-11) |
+| Document | `CONDYN_SYSTEM_ACCEPTANCE_TEST_PLAN_v1.1.md` |
+| Version | 1.1.0 (2026-10-11) |
 | Authored by | PINK (independent SFE validation field) under the owner mandate "SFE — COMPLETE SYSTEM ACCEPTANCE TEST PLAN" |
-| Application version under test | `integration/job-field-governance` @ `cccd647` (authoritative, GELB 2026-10-11). Every scenario cites this tip; a different tip requires a new plan version or a documented delta (§5.3). |
+| Application version under test | `integration/job-field-governance` @ `0353cd9` (authoritative, GELB 2026-10-11) = `cccd647` + GELB's `e762972` state-file fix + GRÜN's final semiontic Job Field `ce76bc7` (`06e55dc` motion grammar and JobField rebuild) + plan 1.0.2. Every scenario cites this tip; a different tip requires a new plan version or a documented delta (§5.3). |
 | Executing agent | an independent external testing agent operating through Gemini Antigravity (browser automation, screenshots, video, HTTP, read-only SQL) |
 | Scope | the complete CONDYN application: Capability Discovery (F10/F11 Gemini sweep), Gemini processing of PDF/text sources, the legacy canonical analysis, the Job Pool Connection (JSON upload, canonical mapping, presentation matching), the spatial Job Field (JOB focus), PENDING relations, the HR Decision Loop dock, and the semiontic SIL frontend (planetarium, zoom, motion) |
 | Out of scope | production deployment (forbidden), the shared `condyn` database (forbidden), role/privilege administration (forbidden), application changes (forbidden) |
 | Machine-readable index | `docs/acceptance/condyn-acceptance-scenarios.v1.json` (one row per scenario: id, suite, sequence, risk, evidence) |
 
-Change log: 1.0.0 initial release against `cccd647`; 1.0.1 GELB's code review folded in (start-up log lines, status output, state-file secret rule, HR route status codes, jobs route bodies); 1.0.2 A-07 state-file permission check added (binding on tips that carry `e762972`, the 600/700 fix of the manual-environment state file; `cccd647` itself predates it).
+Change log: 1.0.0 initial release against `cccd647`; 1.0.1 GELB's code review folded in (start-up log lines, status output, state-file secret rule, HR route status codes, jobs route bodies); 1.0.2 A-07 state-file permission check added; 1.1.0 tip moved to `0353cd9` (GELB's integration of GRÜN's final semiontic Job Field `ce76bc7`): Appendix A regenerated (235 ids), root and dock data-* states in §2.3, E-11 progressive disclosure, J-07/J-09 bound to the motion grammar, J-10 planetarium motion inventory, I-08 OBSERVE items, K geometry facts, L-07 accessibility gap register, O intent table, Appendix C/D extended with GRÜN's boundaries and §8/J8–J11.
 
 ---
 
@@ -92,11 +92,15 @@ Job Field (`job-field`, attribute `data-field-state`): `NO_POOL | NO_ANALYSIS | 
 
 HR dock (`hr-decision-loop-dock`): `LOADING | AVAILABLE | NOT_FOUND | FAILED`; per family region `AVAILABLE | EMPTY | NOT_PROVISIONED | FAILED`; declaration `DECLARED | REJECTED(code) | FAILED`.
 
-Planetarium: focus `CAPABILITY | JOB` (`data-field-focus`); zoom `0 planetarium | 1 clusters | 2 evidence | 3 source`; per orbit `canonical-sil-region-state-<stage>` `PRE_CANONICAL | AVAILABLE | EMPTY | NOT_PRODUCED | UNKNOWN | FAILED`.
+Planetarium root `semantic-career-intelligence-field`: `data-field-focus` `CAPABILITY | JOB`, `data-zoom-level` `0..4` (0/1/2 reachable; L3/L4 buttons always disabled), `data-focused-stage-id` `"" | 01..06`, `data-sil-mode` `PRE_CANONICAL_DISCOVERY | CANONICAL_TARGET_BOUND_SIL`, `data-hr-decision-loop-context`, `data-job-pool-upload`, `data-camera-scale` (always `1`, dead); per orbit `canonical-sil-region-state-<stage>` `PRE_CANONICAL | AVAILABLE | EMPTY | NOT_PRODUCED | UNKNOWN | FAILED`; `orbital-physics-<stage>[data-attention-state]`; runtime rail `data-runtime-operation` `RECOVERY_CHECK | SOURCE_PREPARATION | INFERENCE | ANALYSIS_VALIDATION | PERSISTENCE` with `data-runtime-operation-active`. Zoom navigation: different orbit → L1; same orbit with item → L1, without → L0; cosmos node → L2; cosmos background/centre → L0; deep-focus nucleus → L1. Default page data is EMPTY until an intake job SUCCEEDED or a `canonicalSilAssociationId` is given.
+
+Job Field motion (`JOB_FIELD_FRONTEND.md` §8, tip `ce76bc7`): `job-field[data-motion-mode=LIVE|REDUCED]`, `data-motion`/`data-motion-grammar` on animated elements, `data-focused`, `data-revealed`; roles are `BREATH` (scored match: light swings, node still), `STILL` (no light, no animation) or `VOID`; affordances `job-field-legend-toggle` (aria-expanded), `job-field-requirement-toggle-<req>`, `job-field-reveal-all` (aria-pressed), `job-field-resonance-bar`, `job-field-composition`; folded text stays in the DOM, hidden (B-JF-REVEAL).
+
+HR dock data states: `hr-decision-loop-dock[data-loop-read-state IDLE|LOADING|AVAILABLE|NOT_FOUND|FAILED][data-declaration-state IDLE|SUBMITTING|DECLARED|REJECTED|FAILED][data-next-context-state …]`, regions `hr-decision-loop-region-<name>[data-region-state]`, bindings `hr-decision-loop-bound-revisions[data-bound-count][data-binding-region-state incl. ABSENT]`, `next-context-entry[data-entry-kind URL|INPUT|BINDING]`, `decision-context-revision-<id>[data-revision-position][data-return-character][data-binding-state]`. Locale: page-wide, default `en`, not in the URL, not persisted; hard-coded strings outside the SIL copy stay English (B-LOCALE).
 
 ### 2.4 Surfaces and their stable identifiers
 
-Every interactive element carries a `data-testid`. Appendix A lists all 228 ids of the demo surface with their owning component. The tester binds to ids, never to visual position or copy wording, except where a scenario explicitly tests copy.
+Every interactive element carries a `data-testid`. Appendix A lists all 235 ids of the demo surface with their owning component. Ids that no UI path reaches on `ce76bc7` (GRÜN survey): `subspace-cluster`, `evidence-node`, `decision-graph-inspector` (focused), `decision-state-*`, `evidence-quality-badge`, `traversal-animation`, `identity-core-node`, `orbital-subspace-view`; scenarios never wait for them. The tester binds to ids, never to visual position or copy wording, except where a scenario explicitly tests copy.
 
 ---
 
@@ -129,7 +133,7 @@ Every interactive element carries a `data-testid`. Appendix A lists all 228 ids 
 
 | Id | Step | Command / action | Verify (expected observable) |
 | --- | --- | --- | --- |
-| E-01 | Own worktree of the tip | `git -C /home/codi/Entwicklung/condyn-admin worktree add /home/codi/Entwicklung/condyn-admin-acceptance cccd647` then `cp -al /home/codi/Entwicklung/condyn-admin/node_modules /home/codi/Entwicklung/condyn-admin-acceptance/node_modules` | `git rev-parse HEAD` prints `cccd647…`; `ls node_modules/next/package.json` exists; `node_modules` is a directory, not a symlink |
+| E-01 | Own worktree of the tip | `git -C /home/codi/Entwicklung/condyn-admin worktree add /home/codi/Entwicklung/condyn-admin-acceptance 0353cd9` then `cp -al /home/codi/Entwicklung/condyn-admin/node_modules /home/codi/Entwicklung/condyn-admin-acceptance/node_modules` | `git rev-parse HEAD` prints `0353cd9…`; `ls node_modules/next/package.json` exists; `node_modules` is a directory, not a symlink |
 | E-02 | Role credentials | `set -a; . ~/.config/condyn/test-db-role.env; set +a` in every shell you use | `echo ${TEST_DATABASE_ADMIN_URL%%:*}` prints `postgresql`; never print the full URL |
 | E-03 | Type check (sanity) | `npx tsc --noEmit -p tsconfig.json` | exit 0 |
 | E-04 | Disposable database + server + worker (live path) | `export GEMINI_API_KEY=<from operator shell>; export GEMINI_MODEL=gemini-3.1-pro-preview; HR_LOOP_LOCAL_PORT=3117 npm run job-pool:local -- --fresh` | log lines in order: `[hr-loop:local] admin role condyn_test_runner (least privilege)`, `created disposable database condyn_test_…`, `registered schema: CAREER_FIELD_SCHEMA -> … -> CAREER_DECISION_CONTEXT_DECISION_REVISION_BINDINGS`, `registered job-pool persistence`, `seeded the sealed-producer world (context A full chain + DCDRB, context B empty)`, `starting career worker against condyn_test_… (GEMINI_MODEL …, fresh PROMPT_ENCRYPTION_KEY, in-memory prompt repository)`, `starting next dev --webpack on 127.0.0.1:3117 against condyn_test_…`, `[worker] Worker started. Polling for jobs...`; then the banner `HR DECISION LOOPER · LOCAL MANUAL TEST ENVIRONMENT` with the Context A/B URLs for the HR dock |
@@ -152,7 +156,7 @@ Allowed only against your own disposable database, addressed by NAME from the E-
 
 ## 5. Proof landscape and the recursion gate (SFE::RECURSION_GATE)
 
-### 5.1 What is already proven by automated suites on `cccd647`
+### 5.1 What is already proven by automated suites on `0353cd9`
 
 | Area | Suites (run with `npm run test:isolated -- <paths>`) | Proven claims |
 | --- | --- | --- |
@@ -183,7 +187,7 @@ Known non-green by design (classify, do not report as new): the four G1 lifecycl
 
 1. A delta is material when it changes any file under `app/`, `lib/`, `scripts/`, `package.json`, or a contract document cited in §2. Documentation-only deltas are not material.
 2. After a material delta, re-execute the targeted automated set for the touched area (table 5.1 row) plus the agent scenarios tagged with that area's risk classes in §6, then S0. Do not re-run the full tree unless the delta touches `lib/career/db`, `lib/persistence`, `lib/database-isolation`, or `scripts/test-db`.
-3. A full-tree run (`npm run test:isolated` with no path) is a release-level act: run it once per campaign on an idle machine (load < 3) and classify every red with Appendix C before reporting. Expected baseline on `cccd647`: F-JP-5 reds and load timeouts only.
+3. A full-tree run (`npm run test:isolated` with no path) is a release-level act: run it once per campaign on an idle machine (load < 3) and classify every red with Appendix C before reporting. Expected baseline on `0353cd9`: F-JP-5 reds and load timeouts only.
 4. Any new red that is not in Appendix C is a defect candidate for the field named in table 5.1 (GELB for backend/contracts, GRÜN for frontend, owner for boundaries) and triggers one repair → re-proof loop, then the gate again. Three loops without convergence escalate to the owner.
 5. Never weaken a test, raise a timeout in a committed file, or edit application code to make a scenario pass. The `--testTimeout=60000` diagnostic is allowed only as a classification tool, never committed.
 
@@ -195,7 +199,7 @@ Scenario format: **Id · Title** · Objective · Preconditions · Procedure · E
 
 ### TS-A Environment and safety
 
-**A-01 · Worktree and tip** · Objective: the agent tests `cccd647`. · Pre: E-01. · Procedure: `git rev-parse HEAD`; `git status --short`. · Expected: `cccd647…`, clean tree. · Evidence: `A-01-tip.txt`. · Risk: R7.
+**A-01 · Worktree and tip** · Objective: the agent tests `0353cd9`. · Pre: E-01. · Procedure: `git rev-parse HEAD`; `git status --short`. · Expected: `0353cd9…`, clean tree. · Evidence: `A-01-tip.txt`. · Risk: R7.
 
 **A-02 · Database identity fail-closed** · Objective: the application refuses a non-disposable database. · Pre: E-01, E-02. · Procedure: `DATABASE_URL="postgresql://condyn_test_runner:<any-placeholder>@localhost:5432/condyn_other" npx tsx -e 'import("./lib/career/db/client").then(m=>console.log(Object.keys(m)))'` and separately start `HR_LOOP_LOCAL_PORT=3119 npm run hr-loop:local:serve` after editing nothing (it must refuse without a state file). · Expected: the client resolves an unroutable `.invalid` host or the script fails with `ERR_HR_LOOP_LOCAL_STATE_MISSING`; no connection to any protected database. · Evidence: `A-02-fail-closed.txt`. · Risk: R7.
 
@@ -289,7 +293,7 @@ Pre: C-02 succeeded in the same browser session (analysis source `JOB_RESULT`) o
 
 ### TS-E Spatial Job Field (JOB focus)
 
-Pre: D-04 state (pool selected, analysis present). The DOM contract is `JOB_FIELD_FRONTEND.md` §4 (stable on `cccd647`). Record video for E-01, E-04, E-05, E-07 (see §8).
+Pre: D-04 state (pool selected, analysis present). The DOM contract is `JOB_FIELD_FRONTEND.md` §4 plus the additive §8.3 (stable on `0353cd9`). Record video for E-01, E-04, E-05, E-07 (see §8).
 
 **E-01 · Enter JOB focus** · click `field-focus-job-btn`. · Expected: `semantic-career-intelligence-field[data-field-focus=JOB]`, `field-focus-job-btn[data-field-focus-active=true]`, the capability planetarium recedes (dimmed, still present: all six `focus-transition-stage-shell-*` rendered), `job-field[data-field-state=AVAILABLE]` with `data-analysis-id`, `data-pool-id` = the upload id, `data-role-count=6`, `data-sweep-state`, `job-pool-panel[data-anchor=BOTTOM_LEFT]` collapsed; no `hr-decision-loop-*` element. · Evidence: `E-01.png`, `E-01.webm` (the transition). R3/R4.
 
@@ -308,6 +312,8 @@ Pre: D-04 state (pool selected, analysis present). The DOM contract is `JOB_FIEL
 **E-08 · Deep links** · open `/career/demo?focus=JOB&analysisId=…&jobPoolUploadId=…&jobRoleId=role_fullstack` → field opens on that role; `…&jobRoleId=role_stale` → `job-field-role-not-delivered` naming the id, never silently dropped. · Evidence: `E-08-*.png`. R3/R6.
 
 **E-09 · Field states** · `?focus=JOB&jobPoolUploadId=…` → `data-field-state=NO_ANALYSIS` + `job-field-no-analysis`; `?focus=JOB&analysisId=…` → `NO_POOL` + `job-field-pool-selection` with `job-field-select-pool-<id>` (selecting writes the URL and reads the field); DRAFT pool → `INACTIVE_POOL`; `jobPoolUploadId=JPOOL_STALE` → `NOT_FOUND`. · Evidence: `E-09-*.png`. R6/R3.
+
+**E-11 · Progressive disclosure (ce76bc7)** · `job-field-legend-toggle` (aria-expanded) reveals the legend text (geometry sentence, motion grammar sentence, hover hint) with `jfRise` 320 ms; in a role detail `job-field-requirement-toggle-<req>` reveals that line's evidence, `job-field-reveal-all` (aria-pressed) reveals every line; folded text is present in the DOM and hidden (B-JF-REVEAL), so E-03/E-05 text assertions hold before and after; `job-field-resonance-bar` and `job-field-composition` are visible before any reveal. · Evidence: `E-11.webm`, `E-11-*.png`. R2/R4.
 
 **E-10 · Sweep NOT_PRODUCED and AVAILABLE** · with a seeded/URL analysis without sweep: `data-sweep-state=NOT_PRODUCED`, no `…-sweep` lines, `…-sweep-only[data-count=0]`; with the live analysis: `AVAILABLE`, covered lines present, scores unchanged versus the panel. · Evidence: `E-10-*.png`. R2/R7.
 
@@ -373,6 +379,8 @@ Pre: the two context URLs printed by E-04/E-05 at start (Context A persisted cha
 
 **I-06 · Decision graph inspector** · with an analysis loaded, open `decision-graph-inspector`; nodes show `decision-state-supported` / `decision-state-blocked`; idle state `decision-graph-inspector-idle` without an analysis. · Evidence: `I-06-*.png`. R2.
 
+**I-08 · OBSERVE items from the code survey (ce76bc7)** · Each is a code fact whose rendered effect was not verified on screen; record the observed state with a screenshot: (a) `semantic-zoom-telemetry` is absolutely positioned at top −46 px inside an overflow-hidden root: is it visible at all? (b) the opened `semantic-guide-drawer`: right side or normal flow top-left? (c) in JOB focus `decision-graph-inspector-idle` shares the bottom-left corner with the collapsed panel toggle: overlap? (d) `hud-action-inspect-sources` is always disabled; L3/L4 zoom buttons always disabled; (e) the identity-core drop zone shows `⚡ DROP SOURCE NOW` while dragging but drop is non-functional; (f) `InferenceTelemetryHUD` (fixed bottom-right) overlaps `semantic-focus-panel`. Classify (d)–(f) under B-PLANETARIUM-MOTION / existing-field boundaries unless they block a journey. · Evidence: `I-08-*.png`. R3/R2.
+
 **I-07 · Panel anchors and collapse** · `job-pool-panel-collapse` collapses, toggle re-opens; anchor `TOP_LEFT` in capability focus, `BOTTOM_LEFT` in JOB focus; the exit button of the Job Field is never covered by the panel. · Evidence: `I-07-*.png`. R3.
 
 ### TS-J Visual coherence and motion (video required)
@@ -391,15 +399,17 @@ Record each scenario as a video (§8.3) at 1600×1000 and attach one still per n
 
 **J-06 · Role selection dimming** · E-05 as video. · Expected: non-selected roles dim, the selected role stays at full opacity, the detail column slides/fades in, `job-field-role-back` restores all within ≈0.5 s. · Evidence: `J-06.webm`. R4.
 
-**J-07 · Reduced motion** · set the OS or browser `prefers-reduced-motion: reduce` (Playwright: `reducedMotion: 'reduce'`), repeat J-01, J-02, J-05. · Expected: continuous animations stop or reduce (components `CapabilityCosmosView`, `CapabilityDeepFocusView`, `SilOrbitEmptyState`, `OrbitalResonanceBubble`, `OrbitalCosmosView`, `OrbitalSatelliteMotion` honour the media query), transitions remain functional, no content depends on motion to be reachable. Record which surfaces still animate (OBSERVED) for GRÜN. · Evidence: `J-07-*.webm`. R4/R8.
+**J-07 · Reduced motion** · set `prefers-reduced-motion: reduce` (Playwright `reducedMotion: 'reduce'`, or DevTools Rendering), reload, repeat J-01, J-02, J-05, J-06. · Expected, Job Field (`0353cd9`): `job-field[data-motion-mode=REDUCED]`, every computed `animation-name` is `none`, light values stay (light opacity > 0 on scored roles), the JOB switch glow is off, all content reachable. Expected, planetarium: guarded surfaces stop (`CapabilityCosmosView`, `CapabilityDeepFocusView`, `SilOrbitEmptyState`, `OrbitalResonanceBubble` empty-projection breathing, `OrbitalCosmosView`, satellites static at phase 0); KNOWN unguarded and therefore still moving (boundary B-PLANETARIUM-MOTION, report as OBSERVED, not as a regression): SMIL photon streams, background ring rotation, identity-core plasma/breathe/wave/particles, runtime-operation pulse, intake banner glow. · Evidence: `J-07-*.webm`, a per-surface table. R4/R8.
 
 **J-08 · Visual coherence audit** · one full-page screenshot per surface state: capability focus idle, L1, L2, JOB focus overview, role detail, panel open, dock open, codex, DE and EN. · Expected: consistent SIL tokens (void field background `#03060a…#080c12`, cyan active accents, mono typography), no clipped text at 1600×1000, no overlapping controls, consistent chip grammar (`MAPPED · PROPOSAL_ONLY · authority NONE`). · Evidence: `J-08-*.png`. R2.
 
-**J-09 · In-flight motion layer (GRÜN, not on `cccd647`)** · GRÜN's semiontic reconstruction adds `lib/career/job-pool/job-field-motion.ts` and additive attributes `data-motion`, `data-motion-grammar`, `data-motion-mode`, `data-focused`, `data-revealed`, affordances `job-field-legend-toggle`, `job-field-requirement-toggle-<req>`, `job-field-reveal-all`, `job-field-resonance-bar`, `job-field-composition`, progressive reveal of evidence/legend text, JOB switch glow. Execute this scenario only on a tip that carries them (plan version ≥ 1.1): verify that reveal toggles expose text present in the DOM but hidden, that reduced motion collapses the grammar to static states, and that every value of E-02 is unchanged. · Evidence: `J-09-*.webm`. R4.
+**J-09 · Job Field motion grammar (ce76bc7, `JOB_FIELD_FRONTEND.md` §8.1, manual J8–J11)** · Record 15 s after entering JOB focus, then hover and select a role. · Expected (name · duration · meaning): `jfEnter` 620 ms, overlay fades in over the blurred planetarium; `jfEmerge` 760 ms + 110 ms × (rank − 1), roles appear from the core in delivered order; `jfBreathLight` period 9 s − 4 s × resonance on `[data-jf-light]` of BREATH roles only, the light swings while the node does not move; STILL roles (no scored match) have no light element and no animation (not a verdict); `jfWaver` 2.6 s on UNRESOLVED segments and dots; `jfCirculate` 7 s on COVERED_UNSCORED segments and 26 s on the sweep halo only when `proposalCount > 0`; VOID nothing; `jfFlow` 2.4 s on `job-field-nearest-ray`, dashes travel core → role (flowing but dashed = not chosen); `jfOrbit` 14 s + 4 s × i, alternating direction, on `[data-motion=ORBIT]` rings while a role is hovered or selected, exactly one ring per pending kind that has ids (grey unproven canonical, amber unresolved, cyan covered-unscored, faint no-evidence); core `jfBreathScale` 7 s (scale 1.035); `jfPulse` 1.4 s on the state dot while LOADING; `jfRise` 320 ms on every revealed block; `fieldFocusSwitchBreath` 6 s on `field-focus-job-btn` while JOB. Geometry of clickable nodes never animates continuously (B-JF-MOTION-GEOMETRY). Verify computed `animation-name` on one element of each kind and that every value of E-02 is unchanged during motion. · Evidence: `J-09-grammar.webm`, `J-09-hover.webm`, `J-09-computed.txt`. R4/R2.
+
+**J-10 · Planetarium motion inventory (pre-existing, record as-is)** · 20 s video idle, 10 s hovering orbit 02, 10 s at L1, 10 s at L2. · Expected names and periods (OBSERVE, classify under B-PLANETARIUM-MOTION when different): `rotateClockwise` 120 s background rings / 160 s L1 carrier, `rotateCounterClockwise` 160 s, SMIL photons 3.6–6.0 s per ray (1.6/2.1 s when focused), `focusTransitionPulse` 1.6 s while hovered/active, stage shell transforms 780 ms (anchor scale 1.12; others scale .72, opacity .12, blur + grayscale), bubble `orbitFloatPhase2` 25 s staggered, `ringPulse` 2.4 s when highlighted, `hologramFloat` 6 s on the hover HUD, `moonOrbit` 160 s, empty-projection breathing 2.8 s, identity core `coreBreathe` 14 s / `waveExpand` 6 s / `corePulseCommunicate` 1.8 s while focused / plasma rotations 20 s and 14 s / `plasmaFlarePulse` 11 s, `careerRuntimeOperationPulse` 1 s on the active operation, `atmosphereGlow` 1.5 s on the intake banner, deep-focus settle 780 ms and satellites 720 ms, ghost keyframes 2.35–3.1 s. KNOWN defects to classify, not to fix: keyframe name collisions `ringPulse` (globals vs bubble) and `rotateCounterClockwise` (root vs cosmos view); HUD and inspector wrappers receive `filter: blur` during orbit focus and become the containing block of their fixed children (OBSERVE a jump). · Evidence: `J-10-*.webm`. R4.
 
 ### TS-K Responsive behaviour
 
-No explicit CSS breakpoints exist in the demo components (KNOWN); the field is a fixed-geometry SVG with flex side panels. Test empirically and report OBSERVED behaviour; expected outcomes below are the minimum acceptable, not a design claim.
+No width breakpoints exist anywhere (components or `globals.css`) and no viewport JavaScript (KNOWN, GRÜN survey). Fixed geometry: root `minHeight 960px / height 100vh / overflow hidden`; planetarium 800×800 centred, orbit radius 330; source dock 340 px at left 40; HUD max 560; error banner max 600. Fluid: onboarding card 92vw; codex 95vw × 88vh; HR dock `maxHeight calc(100vh − 332px)`; Job Field canvas `min(88vh, 50vw, 760px)` centred 64 px left of the viewport centre, left column `min(300px, 26vw)`, right column `min(440px, 34vw)`; cosmos/deep-focus views use a ResizeObserver with a 320×300 minimum. Design target is desktop ≥ 1440 px wide; at tablet width the Job Field columns narrow and planetarium chrome overlaps; at phone width the field is not designed to operate. Minimum operability to assert: no page error, every `data-field-state` reachable, every toggle clickable. Report OBSERVED behaviour; findings are for GRÜN with severity by §10.
 
 **K-01 · Desktop 1600×1000 and 1366×768** · all surfaces of J-08. · Expected: no horizontal page scroll at 1366, panel and dock not overlapping the field core, Job Field canvas fully visible. · Evidence: `K-01-*.png`. R5.
 
@@ -420,6 +430,8 @@ No explicit CSS breakpoints exist in the demo components (KNOWN); the field is a
 **L-04 · Meaning without reading the docs** · a reader who has only seen the onboarding must be able to answer, from the UI alone: what the Job Field number means, why a role is "nearest", what "pending" means, what the system does NOT claim. Write the four answers as the UI states them and mark each as perceivable (text visible at the moment of need) or hidden (needs codex/docs). · Evidence: `L-04-answers.txt`. R2.
 
 **L-05 · Error disclosure legibility** · for each failure state of TS-N: is the cause named, is the next action offered (retry, select, append analysisId), is the wording free of internal codes without explanation? Internal codes are acceptable only when paired with a plain sentence. · Evidence: `L-05-table.txt`. R2/R6.
+
+**L-07 · Accessibility gap register (pre-existing, report not score)** · Verify and record the state of each KNOWN gap on `ce76bc7`; a gap that is present is OBSERVED and matches boundary B-A11Y-GAPS, a gap that is closed is noted: orbit spheres `orbital-physics-*` click-only with mouse-only hover HUD (no keyboard path L0→L1); subspace clusters and inspector rows click-only; drop zone drag-only; onboarding and codex without dialog role, focus trap, focus return or Escape; glyph-only ✕ buttons without `aria-label`; source dock inputs placeholder-only; global `input:focus { outline: none }`; no `aria-live` on banners or the runtime rail; language buttons without pressed state; Job Field role nodes click/hover only (keyboard paths: URL `jobRoleId`, `job-field-open-nearest`); muted metadata `#63788a` on `#030508` below 4.5:1 at 8–9 px by design of the identity (primary `#e6f1f8` and cyan `#38e5ff` pass). What exists and must keep working: zoom HUD `aria-current`/`aria-disabled`, `aria-hidden` on decoration, HR class buttons `aria-pressed`, cosmos/deep-focus nodes as real buttons, Job Field toggles as buttons with `aria-expanded`/`aria-pressed`, pending cells `role=button` with Enter/Space, logo `alt`. · Evidence: `L-07-register.txt`. R8.
 
 **L-06 · Language consistency** · after I-02, scan all visible text for mixed language; count mismatches per surface. · Evidence: `L-06.txt`. R2.
 
@@ -460,7 +472,7 @@ Evidence: one screenshot or body per row, `N-xx.*`. R6.
 
 ### TS-O Semiontic quality review (perceptual usability)
 
-Technical correctness is settled by TS-B…TS-N. This suite judges whether meaning becomes perceivable. Score each item 0–3: 0 not perceivable (needs the docs), 1 perceivable after reading the codex, 2 perceivable from on-screen copy at the moment of need, 3 perceivable from form, position and motion before reading. Two reviewers (or two independent passes) score; disagreement > 1 is discussed and recorded.
+Technical correctness is settled by TS-B…TS-N. This suite judges whether meaning becomes perceivable, scored against the stated semiontic intent per surface (GRÜN, 2026-10-11): identity core "my sources are the centre; everything orbits them"; orbits 01–06 "six distinct kinds of projection; a focused orbit comes forward, the rest recede"; empty orbit ghost "nothing was projected here and the place is kept, not hidden"; intake banners/HUD "working / finished / failed, and which step"; zoom HUD "how deep I am"; source dock "what I gave the system"; codex/onboarding/guide "explanation on demand, never in the way"; JOB switch "a second focus exists; its glow means you are in it"; Job Field overlay "the pool is now the field; the planetarium is behind me"; core "the candidate with a scored and an unscored source count"; role node "light = resonance, distance = 1 − resonance, unlit and still = no scored match delivered (not a verdict), segments = composition of requirements by state"; ray "the nearest presented role is in this direction, flowing but dashed = not chosen"; orbiting rings on hover "what remains pending toward this role, in distinct kinds"; nearest card "the nearest role, how pending it still is, and that nothing here decides"; role detail "resonance bar and composition first, facts on demand; waver = uncertain, circulating dashes = covered but unscored, faint gap = nothing delivered"; legend "folded; the field should be readable without it"; non-claims "the laws, always visible, small". A score of 3 is earned only when the intent is perceived from form, position and motion before reading. Score each item 0–3: 0 not perceivable (needs the docs), 1 perceivable after reading the codex, 2 perceivable from on-screen copy at the moment of need, 3 perceivable from form, position and motion before reading. Two reviewers (or two independent passes) score; disagreement > 1 is discussed and recorded.
 
 | Id | Question the UI must answer by itself | Surfaces | Evidence |
 | --- | --- | --- | --- |
@@ -494,9 +506,9 @@ Acceptance for TS-O: mean score ≥ 2.0 and no item at 0. Items at 1 are finding
 | S0 | Safety and smoke | A-01 … A-07, P-02 | E-01…E-03 done | all PASS; the baseline is green | 30 min |
 | S1 | Stub path, no model | E-05 server (no worker, no key): B-01, B-02, B-08 … B-10, B-12, B-13, B-14, B-15, D-01 … D-03, E-09 (NO_ANALYSIS and NO_POOL states only), G-01 … G-07, H-01, H-05, H-06, I-01 … I-04, I-07, B-16, N-04 … N-08. Scenarios that need an analysis (D-04 onward, B-11, E-01 …) wait for S2; no analysis is seeded by hand into a server database | S0 PASS | every listed scenario executed with evidence | 2 h |
 | S2 | Live model path | E-04 server: B-03 … B-07, C-01 … C-05, D-01 … D-10, B-11, E-01 … E-10, F-01 … F-05, M-01 … M-06, I-05, I-06 | S1 PASS, key and model available | live sweep succeeded at least once; all evidence | 3 h |
-| S3 | Spatial and motion | J-01 … J-08, H-03, H-04, O-08, O-09 | S2 analysis loaded | videos recorded and reviewed | 1.5 h |
+| S3 | Spatial and motion | J-01 … J-10, E-11, H-03, H-04, O-08, O-09 | S2 analysis loaded | videos recorded and reviewed | 1.5 h |
 | S4 | Exceptions | C-06, C-07, N-01 … N-03, N-09 … N-12, G-08 | S2 done (restart environments as needed) | every failure state named and recovered | 1.5 h |
-| S5 | Responsive and accessibility | K-01 … K-04, L-01 … L-06 | S2 analysis loaded | findings recorded per surface | 1.5 h |
+| S5 | Responsive and accessibility | K-01 … K-04, L-01 … L-07, I-08 | S2 analysis loaded | findings recorded per surface | 1.5 h |
 | S6 | Semiontic review | O-01 … O-10, I-02 | S2, S3 done | score sheets from two passes | 1 h |
 | S7 | Persistence, restart, cleanup | N-10, N-11, A-04 (after), A-05, E-08 | all above | no database of yours left; secret scan clean | 30 min |
 
@@ -519,7 +531,7 @@ acceptance-evidence/<campaign-id>/
   scores/O-xx-<reviewer>.json   # semiontic score sheets
 ```
 
-`<campaign-id>` = `AT-<yyyymmdd>-<tip7>` (for this plan `AT-20261011-cccd647`). Every screenshot name is prefixed by the scenario id. Evidence is stored outside the repository and referenced from the report; the repository receives nothing from a campaign.
+`<campaign-id>` = `AT-<yyyymmdd>-<tip7>` (for this plan `AT-20261011-0353cd9`). Every screenshot name is prefixed by the scenario id. Evidence is stored outside the repository and referenced from the report; the repository receives nothing from a campaign.
 
 ### 8.2 Screenshots
 
@@ -551,7 +563,7 @@ Per suite gate:
 | TS-B, TS-D, TS-E, TS-F, TS-G, TS-M | all PASS or BOUNDARY-MATCH |
 | TS-C | C-01, C-02, C-03 PASS; C-04/C-05 recorded; C-06/C-07 PASS as fail-closed |
 | TS-H, TS-I, TS-N | all PASS or BOUNDARY-MATCH; any blank page or stuck state is FAIL |
-| TS-J | J-01 … J-06 PASS; J-07 PASS or documented partial (reduced-motion gaps are findings, not blockers); J-09 only on a tip that carries it |
+| TS-J | J-01 … J-06, J-09 PASS; J-07 PASS with the Job Field in REDUCED mode and the KNOWN unguarded planetarium surfaces recorded; J-10 recorded and classified |
 | TS-K | K-01 PASS; K-02/K-03 recorded, usability losses are findings with severity |
 | TS-L | L-01 … L-06 recorded; a control unreachable by keyboard is a finding of severity S2 |
 | TS-O | mean ≥ 2.0, no 0 |
@@ -568,7 +580,7 @@ One report per distinct cause, in this shape:
 ```
 ID: AT-<campaign>-<nnn>
 Title: <one sentence, observable>
-Scenario: <id> · Sequence: <S#> · Tip: cccd647 (+ delta hash if any)
+Scenario: <id> · Sequence: <S#> · Tip: 0353cd9 (+ delta hash if any)
 Classification: Case 1 (derivable from code/contract) | Case 2 (owner decision needed) | Case 3 (unknown cause)
 Responsible field: GELB (backend, contracts, worker, database) | GRÜN (frontend, copy, motion, a11y) | owner (boundaries, HIA)
 Severity: S1 | S2 | S3 | S4
@@ -586,7 +598,7 @@ Rules: never bundle two causes; never report a BOUNDARY-MATCH as a defect; quote
 
 ---
 
-## Appendix A. Stable test ids of the demo surface (228 on `cccd647`)
+## Appendix A. Stable test ids of the demo surface (235 on `0353cd9`)
 
 Generated from `app/components/career/demo/*.tsx` and `app/career/demo/*.tsx`. `${…}` marks a parameter. Owning component in parentheses.
 
@@ -672,11 +684,14 @@ Generated from `app/components/career/demo/*.tsx` and `app/career/demo/*.tsx`. `
 - `intake-telemetry-banner` (SemanticCareerIntelligenceField)
 - `inter-orbital-coupling` (SemanticCareerIntelligenceField)
 - `job-field-canvas` (JobField)
+- `job-field-composition` (JobField)
 - `job-field-core` (JobField)
 - `job-field-evidence-quote` (JobField)
 - `job-field-exit-btn` (JobField)
 - `job-field` (JobField)
 - `job-field-legend` (JobField)
+- `job-field-legend-text` (JobField)
+- `job-field-legend-toggle` (JobField)
 - `job-field-nearest` (JobField)
 - `job-field-nearest-ray` (JobField)
 - `job-field-no-analysis` (JobField)
@@ -689,6 +704,10 @@ Generated from `app/components/career/demo/*.tsx` and `app/career/demo/*.tsx`. `
 - `job-field-pending-reason` (JobField)
 - `job-field-pool-selection` (JobField)
 - `job-field-requirement-${requirement.poolRequirementId}` (JobField)
+- `job-field-requirement-evidence-${requirement.poolRequirementId}` (JobField)
+- `job-field-requirement-toggle-${requirement.poolRequirementId}` (JobField)
+- `job-field-resonance-bar` (JobField)
+- `job-field-reveal-all` (JobField)
 - `job-field-role-${role.poolRoleId}` (JobField)
 - `job-field-role-back` (JobField)
 - `job-field-role-detail` (JobField)
@@ -821,7 +840,7 @@ Generated from `app/components/career/demo/*.tsx` and `app/career/demo/*.tsx`. `
 - `zoom-level-1-clusters` (OrbitalSubspaceView)
 - `zoom-level-2-evidence` (OrbitalSubspaceView)
 
-## Appendix B. HTTP status reference (KNOWN on `cccd647`)
+## Appendix B. HTTP status reference (KNOWN on `0353cd9`)
 
 | Route | Success | Errors |
 | --- | --- | --- |
@@ -865,12 +884,19 @@ Generated from `app/components/career/demo/*.tsx` and `app/career/demo/*.tsx`. `
 | legacy matching fields | `matching`/`recommendations` in `GET /api/career/analyses/{id}` use the hardcoded demo pool and are rendered nowhere | GELB 2026-10-11 |
 | B-WORKTREE | Turbopack rejects a `node_modules` symlink; use a hardlink copy and `--webpack` | `JOB_POOL_WORKFLOW_FRONTEND.md` §5 |
 | B-PEER-KILL | Several sessions run servers and workers on one machine; stop only your own PID tree | §5 |
+| B-JF-MOTION-GEOMETRY | Breath is light only; geometry animation on clickable nodes is finite | `JOB_FIELD_FRONTEND.md` §8 |
+| B-JF-REVEAL | Folded text stays in the DOM, hidden; text proofs keep binding | §8.2 |
+| B-PLANETARIUM-MOTION | Pre-existing unguarded animations, keyframe name collisions, unreachable L1/L2 branches, dead `data-camera-scale`, non-functional drop zone: observed and reported, not reconstructed | GRÜN 2026-10-11 |
+| B-LOCALE | Locale is page-wide, not URL-driven, not persisted; hard-coded English strings outside the SIL copy (zoom HUD, guide label, orbit state copy, cosmos node text) | GRÜN 2026-10-11 |
+| B-A11Y-GAPS | The accessibility gaps listed in L-07 are pre-existing; reported, not scored as regressions | GRÜN 2026-10-11 |
+| B-JP-REC, B-JP-CANDIDATES | "Recommendations" have no object in v1; the scored candidate set is the legacy analysis's capabilities (1–7 per run) | `JOB_POOL_WORKFLOW_FRONTEND.md` §5 |
+| B-STATE-FILE | `.hr-loop-local/state.json` holds credentials; 600/700 since `e762972`; never attached | GELB 2026-10-11 |
 
 ## Appendix D. Contract documents to read (authoritative list, GELB 2026-10-11)
 
 - `docs/architecture/decision-fields/JOB_POOL_CONNECTION.md` §2, §3, §4, §5, §8, §11, §12 (glossary, SG-1..6, F-JF table, §12.4)
 - `docs/career_analysis/JOB_POOL_WORKFLOW_FRONTEND.md`, `JOB_POOL_WORKFLOW_MANUAL_TEST.md` (§3 path, §3b Job Field)
-- `docs/career_analysis/JOB_FIELD_FRONTEND.md` §4 DOM contract, §5 boundaries
+- `docs/career_analysis/JOB_FIELD_FRONTEND.md` §4 DOM contract, §5 boundaries, §8 semiontic layer (motion grammar, progressive disclosure, additive DOM contract); `JOB_POOL_WORKFLOW_MANUAL_TEST.md` steps J8–J11
 - `docs/architecture/decision-fields/JOB_POOL_CONNECTION_VALIDATION.md` (PINK proofs and findings)
 - `docs/career_analysis/F10_F11_F12_RUNTIME_SIL_DECISION_CONTRACTS.md`; `docs/capability-core/ARCHITECTURE.md`, `ARTIFACT-CONTRACTS.md`, `INVARIANTS.md`
 - `docs/architecture/decision-fields/HR_DECISION_LOOP_INTEGRATION.md`; `docs/career_analysis/HR_DECISION_LOOP_MANUAL_TEST.md`, `HR_DECISION_LOOP_FRONTEND_INTEGRATION.md`; `docs/decision-runtime/LOCAL-DECISION-CONTEXT-API.md`
@@ -918,6 +944,6 @@ The repository's own reference implementations of these walks: `test/career/job-
 
 ## Appendix G. Plan maintenance
 
-- A new application tip requires: diff of `app/`, `lib/`, `scripts/`, contracts against `cccd647`; update §2, Appendix A (regenerate), Appendix B/C; bump the version; record the delta in the change log.
-- GRÜN's in-flight motion layer (J-09) enters as version 1.1 together with GRÜN's 7-point frontend list (surfaces, test ids, animations with durations and reduced-motion behaviour, breakpoints, accessibility intent, semiontic intent per surface, boundaries).
+- A new application tip requires: diff of `app/`, `lib/`, `scripts/`, contracts against `0353cd9`; update §2, Appendix A (regenerate), Appendix B/C; bump the version; record the delta in the change log.
+- 1.1.0 binds GELB's integration tip `0353cd9` (GRÜN's final frontend state `ce76bc7` inside it).
 - Owner decisions on HIA-1/2/3 or B-ORBIT-COPY change expected outcomes in TS-E, TS-F, TS-O and must be reflected before execution.
