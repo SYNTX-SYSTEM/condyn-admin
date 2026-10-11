@@ -2,16 +2,16 @@
 
 | Field | Value |
 | --- | --- |
-| Document | `CONDYN_SYSTEM_ACCEPTANCE_TEST_PLAN_v1.1.md` |
-| Version | 1.1.2 (2026-10-11) |
+| Document | `CONDYN_SYSTEM_ACCEPTANCE_TEST_PLAN_v1.2.md` |
+| Version | 1.2.1 (2026-10-11) |
 | Authored by | PINK (independent SFE validation field) under the owner mandate "SFE — COMPLETE SYSTEM ACCEPTANCE TEST PLAN" |
-| Application version under test | `integration/job-field-governance` @ `093b9e6` (authoritative, GELB 2026-10-11) = `cccd647` + GELB's `e762972` state-file fix + GRÜN's semiontic Job Field `ce76bc7` (motion grammar) + GRÜN's information surfaces `a3a4f04` (`JOB_FIELD_FRONTEND.md` §9) + plan 1.1.0. Scenarios marked (a3a4f04) bind on this tip; the owner's environment on port 3017 stays on `0353cd9` until the owner mandates the move, so they do not bind there. Every scenario cites this tip; a different tip requires a new plan version or a documented delta (§5.3). | Every scenario cites this tip; a different tip requires a new plan version or a documented delta (§5.3). |
+| Application version under test | `integration/job-field-governance` @ `d17b042` (authoritative, GELB 2026-10-11) = `cccd647` + GELB's `e762972` state-file fix + GRÜN's semiontic Job Field `ce76bc7` + information surfaces `a3a4f04` + Pool Field `1e5c2e3` (third field state POOL, `JOB_FIELD_FRONTEND.md` §10, manual P1–P7) + plan 1.1.2. Scenarios marked (1e5c2e3) bind on this tip. The owner's environment on port 3017 is moved to this tip under the owner mandate "POOL FIELD RUNTIME HANDOVER" (GELB's controlled transition, reversible to `093b9e6`/`0353cd9`). Every scenario cites this tip; a different tip requires a new plan version or a documented delta (§5.3). | Every scenario cites this tip; a different tip requires a new plan version or a documented delta (§5.3). |
 | Executing agent | an independent external testing agent operating through Gemini Antigravity (browser automation, screenshots, video, HTTP, read-only SQL) |
 | Scope | the complete CONDYN application: Capability Discovery (F10/F11 Gemini sweep), Gemini processing of PDF/text sources, the legacy canonical analysis, the Job Pool Connection (JSON upload, canonical mapping, presentation matching), the spatial Job Field (JOB focus), PENDING relations, the HR Decision Loop dock, and the semiontic SIL frontend (planetarium, zoom, motion) |
 | Out of scope | production deployment (forbidden), the shared `condyn` database (forbidden), role/privilege administration (forbidden), application changes (forbidden) |
 | Machine-readable index | `docs/acceptance/condyn-acceptance-scenarios.v1.json` (one row per scenario: id, suite, sequence, risk, evidence) |
 
-Change log: 1.0.0 initial release against `cccd647`; 1.0.1 GELB's code review folded in (start-up log lines, status output, state-file secret rule, HR route status codes, jobs route bodies); 1.0.2 A-07 state-file permission check added; 1.1.0 tip moved to `0353cd9` (GELB's integration of GRÜN's final semiontic Job Field `ce76bc7`): Appendix A regenerated (235 ids), root and dock data-* states in §2.3, E-11 progressive disclosure, J-07/J-09 bound to the motion grammar, J-10 planetarium motion inventory, I-08 OBSERVE items, K geometry facts, L-07 accessibility gap register, O intent table, Appendix C/D extended with GRÜN's boundaries and §8/J8–J11; 1.1.1 GRÜN's information surfaces `a3a4f04` (surface grammar FIELD_EXTENSION_V1, veils, pending ids line, ground line, fonts) folded into §2.3, E-11, I-08, TS-O, Appendix A (236 ids), C and D; 1.1.2 single tip `093b9e6` (GELB's integration of `a3a4f04`), documentation-only.
+Change log: 1.0.0 initial release against `cccd647`; 1.0.1 GELB's code review folded in (start-up log lines, status output, state-file secret rule, HR route status codes, jobs route bodies); 1.0.2 A-07 state-file permission check added; 1.1.0 tip moved to `0353cd9` (GELB's integration of GRÜN's final semiontic Job Field `ce76bc7`): Appendix A regenerated (235 ids), root and dock data-* states in §2.3, E-11 progressive disclosure, J-07/J-09 bound to the motion grammar, J-10 planetarium motion inventory, I-08 OBSERVE items, K geometry facts, L-07 accessibility gap register, O intent table, Appendix C/D extended with GRÜN's boundaries and §8/J8–J11; 1.1.1 GRÜN's information surfaces `a3a4f04` (surface grammar FIELD_EXTENSION_V1, veils, pending ids line, ground line, fonts) folded into §2.3, E-11, I-08, TS-O, Appendix A (236 ids), C and D; 1.1.2 single tip `093b9e6` (GELB's integration of `a3a4f04`), documentation-only; 1.2.0 GRÜN's Pool Field `1e5c2e3`: third field state POOL and the field-state strip (§2.3), TS-D rewritten as the Pool Field (D-01 … D-14), E-01/E-07, H-02/H-04, I-07/I-08, J-07/J-09, TS-O (O-11), Appendix A (247 ids), C (B-POOL-INITIAL-FOCUS), D (§10, P1–P7); 1.2.1 single tip `d17b042` (GELB's integration of `1e5c2e3`), documentation-only.
 
 ---
 
@@ -92,7 +92,9 @@ Job Field (`job-field`, attribute `data-field-state`): `NO_POOL | NO_ANALYSIS | 
 
 HR dock (`hr-decision-loop-dock`): `LOADING | AVAILABLE | NOT_FOUND | FAILED`; per family region `AVAILABLE | EMPTY | NOT_PROVISIONED | FAILED`; declaration `DECLARED | REJECTED(code) | FAILED`.
 
-Planetarium root `semantic-career-intelligence-field`: `data-field-focus` `CAPABILITY | JOB`, `data-zoom-level` `0..4` (0/1/2 reachable; L3/L4 buttons always disabled), `data-focused-stage-id` `"" | 01..06`, `data-sil-mode` `PRE_CANONICAL_DISCOVERY | CANONICAL_TARGET_BOUND_SIL`, `data-hr-decision-loop-context`, `data-job-pool-upload`, `data-camera-scale` (always `1`, dead); per orbit `canonical-sil-region-state-<stage>` `PRE_CANONICAL | AVAILABLE | EMPTY | NOT_PRODUCED | UNKNOWN | FAILED`; `orbital-physics-<stage>[data-attention-state]`; runtime rail `data-runtime-operation` `RECOVERY_CHECK | SOURCE_PREPARATION | INFERENCE | ANALYSIS_VALIDATION | PERSISTENCE` with `data-runtime-operation-active`. Zoom navigation: different orbit → L1; same orbit with item → L1, without → L0; cosmos node → L2; cosmos background/centre → L0; deep-focus nucleus → L1. Default page data is EMPTY until an intake job SUCCEEDED or a `canonicalSilAssociationId` is given.
+Planetarium root `semantic-career-intelligence-field`: `data-field-focus` `CAPABILITY | JOB | POOL` (1e5c2e3; URL `focus=JOB|POOL`; an exact `jobPoolUploadId` without a `focus` opens POOL, explicit `focus=JOB` wins: B-POOL-INITIAL-FOCUS), `data-zoom-level` `0..4` (0/1/2 reachable; L3/L4 buttons always disabled), `data-focused-stage-id` `"" | 01..06`, `data-sil-mode` `PRE_CANONICAL_DISCOVERY | CANONICAL_TARGET_BOUND_SIL`, `data-hr-decision-loop-context`, `data-job-pool-upload`, `data-camera-scale` (always `1`, dead); per orbit `canonical-sil-region-state-<stage>` `PRE_CANONICAL | AVAILABLE | EMPTY | NOT_PRODUCED | UNKNOWN | FAILED`; `orbital-physics-<stage>[data-attention-state]`; runtime rail `data-runtime-operation` `RECOVERY_CHECK | SOURCE_PREPARATION | INFERENCE | ANALYSIS_VALIDATION | PERSISTENCE` with `data-runtime-operation-active`. Zoom navigation: different orbit → L1; same orbit with item → L1, without → L0; cosmos node → L2; cosmos background/centre → L0; deep-focus nucleus → L1. Default page data is EMPTY until an intake job SUCCEEDED or a `canonicalSilAssociationId` is given.
+
+Field-state strip (1e5c2e3): `field-focus-strip[data-field-focus]` with three constant buttons `field-focus-capability-btn` (◈ CAPABILITY), `job-pool-panel-toggle` (⬡ JOB POOL), `field-focus-job-btn` (◉ JOB), each `data-field-focus-active` and `aria-pressed`; the active one glows (`fieldFocusSwitchBreath` 6 s, reduced-motion guarded); clicking the active state returns to CAPABILITY; in-field exits `job-field-exit-btn` and `job-pool-panel-collapse` read "← CAPABILITY FIELD". Pool Field (1e5c2e3, §10): `job-pool-panel` is the field root (absolute overlay) with all its former data-* attributes plus `data-field-grammar=POOL_FIELD_V1`, `data-surface-grammar`, `data-motion-grammar`, `data-motion-mode`, `data-structure-role`, `data-upload-count`; `job-pool-orbit` (upload ring), `job-pool-core[data-motion=BREATH]`, `job-pool-list[data-pool-count][data-list-state]`, `job-pool-list-state`, `job-pool-item-<id>[data-at-core][data-delivered-index][data-selected][data-pool-status]` (exactly one node `data-at-core=true` after an explicit selection, none before), `job-pool-select-<id>` as the node body (disabled + `aria-pressed` when selected), `job-pool-structure-canvas`, `job-pool-structure-organization-<org>[data-role-count]`, `job-pool-structure-role-<role>[data-requirement-count][data-resonance-score][data-scored-match][data-motion UNLIT|BREATH|STILL][data-selected][data-focused]`, `job-pool-structure-role-detail[data-role-id]` with `job-pool-structure-requirement-<req>[data-necessity][data-eligibility]` and `job-pool-structure-role-back`, `job-pool-role-<id>[data-revealed]` with `job-pool-role-<id>-toggle` (relations folded in the DOM, B-JF-REVEAL rule), `job-pool-enter-job-field` (only when matches AVAILABLE), `job-pool-non-claims` as the ground line. The panel's `data-anchor` is removed.
 
 Job Field motion (`JOB_FIELD_FRONTEND.md` §8, tip `ce76bc7`): `job-field[data-motion-mode=LIVE|REDUCED]`, `data-motion`/`data-motion-grammar` on animated elements, `data-focused`, `data-revealed`; roles are `BREATH` (scored match: light swings, node still), `STILL` (no light, no animation) or `VOID`; affordances `job-field-legend-toggle` (aria-expanded), `job-field-requirement-toggle-<req>`, `job-field-reveal-all` (aria-pressed), `job-field-resonance-bar`, `job-field-composition`; folded text stays in the DOM, hidden (B-JF-REVEAL). Information surfaces (a3a4f04, §9): `job-field[data-surface-grammar=FIELD_EXTENSION_V1]`, two veils `[data-jf-veil=left|right]` (aria-hidden, pointer-events none), surfaces `[data-jf-surface=left|right]`, `job-field-pending-ids[data-kind]` as the single ids line shown when a pending token is clicked (the cell keeps `data-ids`, `title`, `aria-expanded`), `job-field-non-claims` as a centred ground line under the canvas lifted by the header height (B-JF-GROUND-LINE).
 
@@ -100,7 +102,7 @@ HR dock data states: `hr-decision-loop-dock[data-loop-read-state IDLE|LOADING|AV
 
 ### 2.4 Surfaces and their stable identifiers
 
-Every interactive element carries a `data-testid`. Appendix A lists all 236 ids of the demo surface with their owning component. Ids that no UI path reaches on `ce76bc7` (GRÜN survey): `subspace-cluster`, `evidence-node`, `decision-graph-inspector` (focused), `decision-state-*`, `evidence-quality-badge`, `traversal-animation`, `identity-core-node`, `orbital-subspace-view`; scenarios never wait for them. The tester binds to ids, never to visual position or copy wording, except where a scenario explicitly tests copy.
+Every interactive element carries a `data-testid`. Appendix A lists all 247 ids of the demo surface with their owning component. Ids that no UI path reaches on `ce76bc7` (GRÜN survey): `subspace-cluster`, `evidence-node`, `decision-graph-inspector` (focused), `decision-state-*`, `evidence-quality-badge`, `traversal-animation`, `identity-core-node`, `orbital-subspace-view`; scenarios never wait for them. The tester binds to ids, never to visual position or copy wording, except where a scenario explicitly tests copy.
 
 ---
 
@@ -133,7 +135,7 @@ Every interactive element carries a `data-testid`. Appendix A lists all 236 ids 
 
 | Id | Step | Command / action | Verify (expected observable) |
 | --- | --- | --- | --- |
-| E-01 | Own worktree of the tip | `git -C /home/codi/Entwicklung/condyn-admin worktree add /home/codi/Entwicklung/condyn-admin-acceptance 093b9e6` then `cp -al /home/codi/Entwicklung/condyn-admin/node_modules /home/codi/Entwicklung/condyn-admin-acceptance/node_modules` | `git rev-parse HEAD` prints `093b9e6…`; `ls node_modules/next/package.json` exists; `node_modules` is a directory, not a symlink |
+| E-01 | Own worktree of the tip | `git -C /home/codi/Entwicklung/condyn-admin worktree add /home/codi/Entwicklung/condyn-admin-acceptance d17b042` then `cp -al /home/codi/Entwicklung/condyn-admin/node_modules /home/codi/Entwicklung/condyn-admin-acceptance/node_modules` | `git rev-parse HEAD` prints `d17b042…`; `ls node_modules/next/package.json` exists; `node_modules` is a directory, not a symlink |
 | E-02 | Role credentials | `set -a; . ~/.config/condyn/test-db-role.env; set +a` in every shell you use | `echo ${TEST_DATABASE_ADMIN_URL%%:*}` prints `postgresql`; never print the full URL |
 | E-03 | Type check (sanity) | `npx tsc --noEmit -p tsconfig.json` | exit 0 |
 | E-04 | Disposable database + server + worker (live path) | `export GEMINI_API_KEY=<from operator shell>; export GEMINI_MODEL=gemini-3.1-pro-preview; HR_LOOP_LOCAL_PORT=3117 npm run job-pool:local -- --fresh` | log lines in order: `[hr-loop:local] admin role condyn_test_runner (least privilege)`, `created disposable database condyn_test_…`, `registered schema: CAREER_FIELD_SCHEMA -> … -> CAREER_DECISION_CONTEXT_DECISION_REVISION_BINDINGS`, `registered job-pool persistence`, `seeded the sealed-producer world (context A full chain + DCDRB, context B empty)`, `starting career worker against condyn_test_… (GEMINI_MODEL …, fresh PROMPT_ENCRYPTION_KEY, in-memory prompt repository)`, `starting next dev --webpack on 127.0.0.1:3117 against condyn_test_…`, `[worker] Worker started. Polling for jobs...`; then the banner `HR DECISION LOOPER · LOCAL MANUAL TEST ENVIRONMENT` with the Context A/B URLs for the HR dock |
@@ -156,7 +158,7 @@ Allowed only against your own disposable database, addressed by NAME from the E-
 
 ## 5. Proof landscape and the recursion gate (SFE::RECURSION_GATE)
 
-### 5.1 What is already proven by automated suites on `093b9e6`
+### 5.1 What is already proven by automated suites on `d17b042`
 
 | Area | Suites (run with `npm run test:isolated -- <paths>`) | Proven claims |
 | --- | --- | --- |
@@ -187,7 +189,7 @@ Known non-green by design (classify, do not report as new): the four G1 lifecycl
 
 1. A delta is material when it changes any file under `app/`, `lib/`, `scripts/`, `package.json`, or a contract document cited in §2. Documentation-only deltas are not material.
 2. After a material delta, re-execute the targeted automated set for the touched area (table 5.1 row) plus the agent scenarios tagged with that area's risk classes in §6, then S0. Do not re-run the full tree unless the delta touches `lib/career/db`, `lib/persistence`, `lib/database-isolation`, or `scripts/test-db`.
-3. A full-tree run (`npm run test:isolated` with no path) is a release-level act: run it once per campaign on an idle machine (load < 3) and classify every red with Appendix C before reporting. Expected baseline on `093b9e6`: F-JP-5 reds and load timeouts only.
+3. A full-tree run (`npm run test:isolated` with no path) is a release-level act: run it once per campaign on an idle machine (load < 3) and classify every red with Appendix C before reporting. Expected baseline on `d17b042`: F-JP-5 reds and load timeouts only.
 4. Any new red that is not in Appendix C is a defect candidate for the field named in table 5.1 (GELB for backend/contracts, GRÜN for frontend, owner for boundaries) and triggers one repair → re-proof loop, then the gate again. Three loops without convergence escalate to the owner.
 5. Never weaken a test, raise a timeout in a committed file, or edit application code to make a scenario pass. The `--testTimeout=60000` diagnostic is allowed only as a classification tool, never committed.
 
@@ -199,7 +201,7 @@ Scenario format: **Id · Title** · Objective · Preconditions · Procedure · E
 
 ### TS-A Environment and safety
 
-**A-01 · Worktree and tip** · Objective: the agent tests `093b9e6`. · Pre: E-01. · Procedure: `git rev-parse HEAD`; `git status --short`. · Expected: `093b9e6…`, clean tree. · Evidence: `A-01-tip.txt`. · Risk: R7.
+**A-01 · Worktree and tip** · Objective: the agent tests `d17b042`. · Pre: E-01. · Procedure: `git rev-parse HEAD`; `git status --short`. · Expected: `d17b042…`, clean tree. · Evidence: `A-01-tip.txt`. · Risk: R7.
 
 **A-02 · Database identity fail-closed** · Objective: the application refuses a non-disposable database. · Pre: E-01, E-02. · Procedure: `DATABASE_URL="postgresql://condyn_test_runner:<any-placeholder>@localhost:5432/condyn_other" npx tsx -e 'import("./lib/career/db/client").then(m=>console.log(Object.keys(m)))'` and separately start `HR_LOOP_LOCAL_PORT=3119 npm run hr-loop:local:serve` after editing nothing (it must refuse without a state file). · Expected: the client resolves an unroutable `.invalid` host or the script fails with `ERR_HR_LOOP_LOCAL_STATE_MISSING`; no connection to any protected database. · Evidence: `A-02-fail-closed.txt`. · Risk: R7.
 
@@ -267,35 +269,43 @@ Pre: E-04 with a valid key and model. Each scenario records the worker log (reda
 
 **C-07 · Key absent** · `npm run job-pool:local -- --fresh` without `GEMINI_API_KEY`. · Expected: fails closed with `ERR_HR_LOOP_LOCAL_GEMINI_API_KEY_MISSING`, no server, no worker, no database left (verify list). · Evidence: `C-07.txt`. R6.
 
-### TS-D Job Pool workflow (panel)
+### TS-D Job Pool workflow (the Pool Field, 1e5c2e3; before that tip the same ids live in a side panel)
 
-Pre: C-02 succeeded in the same browser session (analysis source `JOB_RESULT`) or open `/career/demo?analysisId=ANL_…`.
+Pre: C-02 succeeded in the same browser session (analysis source `JOB_RESULT`) or open `/career/demo?analysisId=ANL_…`. Contract: `JOB_FIELD_FRONTEND.md` §10, manual steps P1–P7. Record video for D-01, D-04, D-12, D-13.
 
-**D-01 · Panel opens empty on a fresh database** · click `job-pool-panel-toggle`. · Expected: `job-pool-list-empty`, `job-pool-selection-none`, `job-pool-analysis` shows the analysis id with source text, `job-pool-matches-idle`. · Evidence: `D-01.png`. R3.
+**D-01 · Enter the Pool Field on a fresh database** · click `job-pool-panel-toggle` in `field-focus-strip`. · Expected: `semantic-career-intelligence-field[data-field-focus=POOL]`, URL `focus=POOL`, the planetarium recedes under the blurred overlay, `job-pool-panel[data-field-grammar=POOL_FIELD_V1][data-upload-count=0]`, `job-pool-list-empty` / `job-pool-list-state`, `job-pool-core` empty with the copy "NO UPLOAD AT THE CORE · select an upload on the ring", no node with `data-at-core=true`, `job-pool-analysis` names the analysis and its source, `job-pool-matches-idle`, ground line `job-pool-non-claims` visible. · Evidence: `D-01.webm`, `D-01.png`. R3/R2.
 
-**D-02 · Upload persisted, not selected** · `job-pool-file-input` ← `job-pool.sample.json`, actor `AT_AGENT`, `job-pool-upload-btn`. · Expected: `job-pool-upload-result[data-upload-outcome=CREATED]` with `JPOOL_…`, list `data-pool-count=1`, panel `data-selected-pool=""`, matches still IDLE, copy `UPLOADED != SELECTED`. · Evidence: `D-02.png`. R3/R7.
+**D-02 · Upload persisted, not selected** · `job-pool-file-input` ← `job-pool.sample.json`, actor `AT_AGENT`, `job-pool-upload-btn`. · Expected: `job-pool-upload-result[data-upload-outcome=CREATED]` with `JPOOL_…` and the copy `UPLOADED != SELECTED`; a new node `job-pool-item-<id>[data-delivered-index]` emerges on `job-pool-orbit`; `data-upload-count=1`; the core stays empty (`data-at-core=true` count 0); matches still IDLE. · Evidence: `D-02.png`. R3/R7.
 
-**D-03 · Identical re-upload** · upload the same file again. · Expected: outcome `EXISTING`, same id, list unchanged. · Evidence: `D-03.png`. R7.
+**D-03 · Identical re-upload** · upload the same file again. · Expected: outcome `EXISTING`, same id, ring unchanged (`data-upload-count` unchanged). · Evidence: `D-03.png`. R7.
 
-**D-04 · Explicit selection and matching** · click `job-pool-select-<id>`. · Expected: `job-pool-item-<id>[data-selected=true]`, URL gains `jobPoolUploadId`, `job-pool-canonical-mapping[data-mapping-state=MAPPED][data-proposal-state=PROPOSAL_ONLY][data-authority-state=NONE]` with `3 TOREV · 6 TRPREV · 28 TRQREV`, HIA-1 boundary text, `job-pool-matches[data-matches-state=AVAILABLE]`, labels `job-pool-label-DETERMINISTIC_PRESENTATION / NOT_A_CANONICAL_EVALUATION / NOT_A_DECISION`, `job-pool-ranking[data-ranking=MONOTONE_BY_RESONANCE]`, six `job-pool-role-*` cards in body order. · Evidence: `D-04.png`, `D-04-matches.json` (fetch the same URL the panel used). R3/R7.
+**D-04 · Explicit selection: node to the core, structure, matching** · click `job-pool-select-<id>` (the node body). · Expected: the node travels into the core (780 ms) and is the only `job-pool-item-*[data-at-core=true]`, its button disabled with `aria-pressed=true`; the other ring nodes keep their slots; URL gains `jobPoolUploadId`; `job-pool-selected` with `job-pool-canonical-mapping[data-mapping-state=MAPPED][data-proposal-state=PROPOSAL_ONLY][data-authority-state=NONE]` reading `3 TOREV · 6 TRPREV · 28 TRQREV`; `job-pool-structure-canvas` shows one `job-pool-structure-organization-<org>[data-role-count]` per pool organisation and one `job-pool-structure-role-<role>[data-requirement-count]` per pool role grouped by organisation in delivered order; `job-pool-matches[data-matches-state=AVAILABLE]` with the labels `job-pool-label-DETERMINISTIC_PRESENTATION / NOT_A_CANONICAL_EVALUATION / NOT_A_DECISION`, `job-pool-ranking[data-ranking=MONOTONE_BY_RESONANCE]`, six `job-pool-role-*` cards in body order, and `job-pool-enter-job-field` present. · Evidence: `D-04.webm`, `D-04.png`, `D-04-matches.json`. R3/R7/R4.
 
-**D-05 · Card content equals the body** · for the rank-1 role compare DOM and body: `data-rank`, `data-resonance-score`, matched entries `job-pool-role-<r>-matched-<req>[data-match-basis]`, weak entries, missing entries, evidence quotes, `job-pool-role-<r>-canonical[data-relation-state=NOT_EVALUATED]`, `job-pool-trqrev-*` count = TRQREV of that role. · Expected: all equal. · Evidence: `D-05-diff.txt`. R7.
+**D-05 · Readings equal the body** · for the rank-1 role compare DOM and body: `data-rank`, `data-resonance-score`, matched entries `job-pool-role-<r>-matched-<req>[data-match-basis]`, weak entries, missing entries, evidence quotes, `job-pool-role-<r>-canonical[data-relation-state=NOT_EVALUATED]`, `job-pool-trqrev-*` count = TRQREV of that role; relations of a card are folded (`job-pool-role-<r>[data-revealed]`, `job-pool-role-<r>-toggle`): the text is in the DOM before the toggle (B-JF-REVEAL) and visible after it. Structure light: `job-pool-structure-role-<r>[data-resonance-score][data-scored-match][data-motion]` equals the body (BREATH only with a scored match, STILL otherwise, UNLIT when no matching is delivered for this upload). · Expected: all equal. · Evidence: `D-05-diff.txt`. R7.
 
-**D-06 · Sweep coverage shown unscored** · `job-pool-capability-sweep[data-sweep-state=AVAILABLE][data-scored=false]` with `data-proposal-count` = body; covered requirement lines `…-sweep[data-scored=false]`; role `…-sweep-only[data-count]` = body `sweepOnlyCoverageCount`; `resonanceScore` unchanged versus `B-11`. · Evidence: `D-06.png`. R2/R7.
+**D-06 · Sweep coverage shown unscored** · `job-pool-capability-sweep[data-sweep-state=AVAILABLE][data-scored=false]` with `data-proposal-count` = body; covered requirement lines `…-sweep[data-scored=false]`; role `…-sweep-only[data-count]` = body `sweepOnlyCoverageCount`; `resonanceScore` unchanged versus B-11. · Evidence: `D-06.png`. R2/R7.
 
-**D-07 · Organisation aggregates and non-claims** · scroll to `job-pool-organizations` and `job-pool-non-claims`. · Expected: aggregates ordered by max role score; the five laws present. · Evidence: `D-07.png`. R2.
+**D-07 · Organisation aggregates and the ground line** · `job-pool-organizations` ordered by max role score; `job-pool-non-claims` carries the five laws as the ground line under the canvas, visible at 1600×1000 and 1440×900. · Evidence: `D-07.png`. R2.
 
-**D-08 · DRAFT pool** · upload a DRAFT copy, select it. · Expected: `job-pool-matches-inactive` (409) with copy `POOL IS NOT ACTIVE`; the ACTIVE upload remains listed. · Evidence: `D-08.png`. R6.
+**D-08 · DRAFT pool** · upload a DRAFT copy (dashed amber node), select it. · Expected: it moves to the core; `job-pool-matches-inactive` (409) with copy `POOL IS NOT ACTIVE`; structure roles all UNLIT; the ACTIVE upload stays on the ring. · Evidence: `D-08.png`. R6.
 
-**D-09 · Rejected uploads** · upload `{"pool":{"id":"X"}}` and a non-JSON file. · Expected: `job-pool-upload-rejected` with `HTTP 422 · ERR_JOB_POOL_SCHEMA_INVALID` and listed `job-pool-upload-issue`s; then `HTTP 400 · ERR_JOB_POOL_JSON_INVALID`; the list is unchanged. · Evidence: `D-09-*.png`. R6.
+**D-09 · Rejected uploads** · upload `{"pool":{"id":"X"}}` and a non-JSON file. · Expected: `job-pool-upload-rejected` with `HTTP 422 · ERR_JOB_POOL_SCHEMA_INVALID` and listed `job-pool-upload-issue`s; then `HTTP 400 · ERR_JOB_POOL_JSON_INVALID`; the ring is unchanged. · Evidence: `D-09-*.png`. R6.
 
-**D-10 · Reload semantics (B-JF-SESSION)** · reload with `?jobPoolUploadId=…` only, then with `&analysisId=…`. · Expected: first: selection returns, `job-pool-analysis-none`, matches IDLE; second: `job-pool-analysis` shows `FROM THE URL (EXACT ID, ASSUMED PERSISTED)` and matches read again. · Evidence: `D-10-*.png`. R3.
+**D-10 · Reload semantics (B-JF-SESSION, B-POOL-INITIAL-FOCUS)** · reload with `?jobPoolUploadId=…` only, then with `&analysisId=…`. · Expected: both open the Pool Field (`data-field-focus=POOL`) with that upload at the core; first: `job-pool-analysis-none`, matches IDLE; second: `job-pool-analysis` shows `FROM THE URL (EXACT ID, ASSUMED PERSISTED)` and matches read again; `focus=JOB` in the URL wins over the upload id. · Evidence: `D-10-*.png`. R3.
+
+**D-11 · Structure role reading (1e5c2e3)** · click `job-pool-structure-role-<role>`. · Expected: its organisation arc brightens, others recede; `job-pool-structure-role-detail[data-role-id]` lists one `job-pool-structure-requirement-<req>[data-necessity][data-eligibility]` per requirement with its TRQREV id, equal to the canonical mapping of the view; `job-pool-structure-role-back` returns to the overview. · Evidence: `D-11.png`, `D-11-diff.txt`. R7/R2.
+
+**D-12 · Enter the Job Field from the Pool Field (1e5c2e3)** · click `job-pool-enter-job-field`. · Expected: `data-field-focus=JOB` with the same selection, `field-focus-job-btn[data-field-focus-active=true]` glows; `job-pool-panel-toggle` returns to the Pool Field; `job-pool-panel-collapse` ("← CAPABILITY FIELD") or the active strip button returns to the ground state. · Evidence: `D-12.webm`. R3/R4.
+
+**D-13 · Pool Field motion (1e5c2e3)** · video of D-01 … D-04. · Expected: `jpEnter` 620 ms; `jpEmerge` 760 ms + 90 ms × index on upload nodes; selection travel 780 ms (left/top transition, `cubic-bezier(.16,1,.3,1)`); core `jpBreathScale`/`jpBreathLight` 7 s; halo `jpCirculate` 26 s only with a pool at the core; structure roles `jpBreathLight` by resonance; under `prefers-reduced-motion` `job-pool-panel[data-motion-mode=REDUCED]` and no animation. Nothing moves to the core by itself. · Evidence: `D-13.webm`, `D-13-computed.txt`. R4.
+
+**D-14 · Pool Field meaning (1e5c2e3)** · one reviewer pass before reading any text: ring = persisted, core = selected, arcs and inner ring = the pool's own structure (layer C, authority NONE), light on the inner ring = delivered pool resonance, unlit = no scored match, the strip = three states of one system. Score per O-rubric. · Evidence: `D-14-score.json`. R2.
 
 ### TS-E Spatial Job Field (JOB focus)
 
-Pre: D-04 state (pool selected, analysis present). The DOM contract is `JOB_FIELD_FRONTEND.md` §4 plus the additive §8.3 and §9 (stable on `093b9e6`). Record video for E-01, E-04, E-05, E-07 (see §8).
+Pre: D-04 state (pool selected, analysis present). The DOM contract is `JOB_FIELD_FRONTEND.md` §4 plus the additive §8.3, §9 and §10 (stable on `d17b042`). Record video for E-01, E-04, E-05, E-07 (see §8).
 
-**E-01 · Enter JOB focus** · click `field-focus-job-btn`. · Expected: `semantic-career-intelligence-field[data-field-focus=JOB]`, `field-focus-job-btn[data-field-focus-active=true]`, the capability planetarium recedes (dimmed, still present: all six `focus-transition-stage-shell-*` rendered), `job-field[data-field-state=AVAILABLE]` with `data-analysis-id`, `data-pool-id` = the upload id, `data-role-count=6`, `data-sweep-state`, `job-pool-panel[data-anchor=BOTTOM_LEFT]` collapsed; no `hr-decision-loop-*` element. · Evidence: `E-01.png`, `E-01.webm` (the transition). R3/R4.
+**E-01 · Enter JOB focus** · click `field-focus-job-btn`. · Expected: `semantic-career-intelligence-field[data-field-focus=JOB]`, `field-focus-job-btn[data-field-focus-active=true]`, the capability planetarium recedes (dimmed, still present: all six `focus-transition-stage-shell-*` rendered), `job-field[data-field-state=AVAILABLE]` with `data-analysis-id`, `data-pool-id` = the upload id, `data-role-count=6`, `data-sweep-state`, `field-focus-job-btn[data-field-focus-active=true][aria-pressed=true]` in the strip (1e5c2e3; before that tip the panel sits at `data-anchor=BOTTOM_LEFT`); no `hr-decision-loop-*` element. · Evidence: `E-01.png`, `E-01.webm` (the transition). R3/R4.
 
 **E-02 · Canvas reads as a field, numbers equal the body** · fetch the matches body; for every role `job-field-role-<id>`: `data-delivered-rank` = position in `roleMatches`, `data-resonance-score` = body verbatim, `data-distance` ≈ 1 − score (±0.001), `data-scored-match`, `data-matched`/`data-unresolved`/`data-covered-unscored`/`data-no-evidence` summing to the role's TRQREV count; `job-field-core[data-candidate-capability-count][data-sweep-proposal-count]` = body; `job-field-organization-<org>[data-role-count]` = aggregates; roles at score 0 remain visible on the outer ring. · Evidence: `E-02.png`, `E-02-diff.txt`. R7/R2.
 
@@ -307,7 +317,7 @@ Pre: D-04 state (pool selected, analysis present). The DOM contract is `JOB_FIEL
 
 **E-06 · PENDING block** · for the selected role `job-field-pending[data-role-id]` with `job-field-pending-UNPROVEN_CANONICAL[data-count = TRQREV count][data-ids = TRQREV ids in delivered order]`, `…-UNRESOLVED_EVIDENCE[data-ids = weak pool requirement ids]`, `…-UNSCORED_COVERAGE`, `…-NO_EVIDENCE_DELIVERED`; `job-field-pending-reason` contains `NOT_EVALUATED · VERIFIED_CAPABILITY_SNAPSHOT_ABSENT` and the HIA-1/2 sentence. · Evidence: `E-06.png`, `E-06-ids.txt`. R2/R7.
 
-**E-07 · Exit and return** · `job-field-exit-btn`. · Expected: `data-field-focus=CAPABILITY`, `focus` and `jobRoleId` leave the URL, `jobPoolUploadId` stays, panel anchor returns to `TOP_LEFT`, the planetarium is interactive again. · Evidence: `E-07.webm`. R3/R4.
+**E-07 · Exit and return** · `job-field-exit-btn`. · Expected: `data-field-focus=CAPABILITY`, `focus` and `jobRoleId` leave the URL, `jobPoolUploadId` stays, the strip shows CAPABILITY active, the planetarium is interactive again. OBSERVE (1e5c2e3): the URL left behind carries `jobPoolUploadId` without `focus`, which on a reload opens the Pool Field (B-POOL-INITIAL-FOCUS); record whether exit state and reload state differ and report it as a finding candidate for GRÜN if they do. · Evidence: `E-07.webm`. R3/R4.
 
 **E-08 · Deep links** · open `/career/demo?focus=JOB&analysisId=…&jobPoolUploadId=…&jobRoleId=role_fullstack` → field opens on that role; `…&jobRoleId=role_stale` → `job-field-role-not-delivered` naming the id, never silently dropped. · Evidence: `E-08-*.png`. R3/R6.
 
@@ -353,11 +363,11 @@ Pre: the two context URLs printed by E-04/E-05 at start (Context A persisted cha
 
 **H-01 · First visit** · fresh browser profile, `/career/demo`. · Expected: `guided-onboarding-overlay` appears after the first content render; `onboarding-step-card`, prev/next/finish buttons, `open-codex-from-onboarding`; closing sets `localStorage.condyn_onboarding_seen`; a reload does not reopen it; a cleared storage reopens it. · Evidence: `H-01-*.png`. R3.
 
-**H-02 · URL as the only selection carrier** · after D-04, copy the URL into a new tab: selection and matches (with `analysisId`) return; without `analysisId` the analysis does not (B-JF-SESSION). No "latest pool" or "latest analysis" is ever chosen. · Evidence: `H-02-*.png`. R3.
+**H-02 · URL as the only selection carrier** · after D-04, copy the URL into a new tab: the Pool Field opens with the selection at the core (1e5c2e3, B-POOL-INITIAL-FOCUS) and matches read (with `analysisId`); without `analysisId` the analysis does not return (B-JF-SESSION). No "latest pool" or "latest analysis" is ever chosen and no node moves to the core without an explicit selection or an exact id. · Evidence: `H-02-*.png`. R3.
 
 **H-03 · Browser back/forward** · enter JOB focus, select a role, exit; press Back twice and Forward twice. · Expected: focus and selection follow the URL at every step without a stuck state or a dock appearing. · Evidence: `H-03.webm`. R3.
 
-**H-04 · Mixed parameters** · `?careerDecisionContextRevisionId=…&jobPoolUploadId=…&analysisId=…&focus=JOB` → dock right, Job Field centre, panel bottom-left collapsed; each surface reads only its own ids. · Evidence: `H-04.png`. R3.
+**H-04 · Mixed parameters** · `?careerDecisionContextRevisionId=…&jobPoolUploadId=…&analysisId=…&focus=JOB` → dock right, Job Field centre (explicit JOB wins); the same without `focus` → dock right, Pool Field centre; each surface reads only its own ids. · Evidence: `H-04.png`. R3.
 
 **H-05 · Stale ids are named** · `jobPoolUploadId=JPOOL_STALE` → `job-pool-selection-not-listed`; `careerDecisionContextRevisionId=DCTXREV_STALE` → `hr-decision-loop-not-found`; `analysisId=ANL_STALE` → panel `job-pool-matches-not-found` on selection; `jobRoleId` stale → E-08. Never a blank screen. · Evidence: `H-05-*.png`. R6.
 
@@ -379,9 +389,9 @@ Pre: the two context URLs printed by E-04/E-05 at start (Context A persisted cha
 
 **I-06 · Decision graph inspector** · with an analysis loaded, open `decision-graph-inspector`; nodes show `decision-state-supported` / `decision-state-blocked`; idle state `decision-graph-inspector-idle` without an analysis. · Evidence: `I-06-*.png`. R2.
 
-**I-08 · OBSERVE items from the code survey (ce76bc7)** · Each is a code fact whose rendered effect was not verified on screen; record the observed state with a screenshot: (a) `semantic-zoom-telemetry` is absolutely positioned at top −46 px inside an overflow-hidden root: is it visible at all? (b) the opened `semantic-guide-drawer`: right side or normal flow top-left? (c) in JOB focus `decision-graph-inspector-idle` shares the bottom-left corner with the collapsed panel toggle: overlap? (d) `hud-action-inspect-sources` is always disabled; L3/L4 zoom buttons always disabled; (e) the identity-core drop zone shows `⚡ DROP SOURCE NOW` while dragging but drop is non-functional; (f) `InferenceTelemetryHUD` (fixed bottom-right) overlaps `semantic-focus-panel`. Classify (d)–(f) under B-PLANETARIUM-MOTION / existing-field boundaries unless they block a journey. On `a3a4f04` also: (g) legibility of the 8.5 px tracked mono labels at 1440 px width; (h) whether the right veil dims the right-most organisation label too much. · Evidence: `I-08-*.png`. R3/R2.
+**I-08 · OBSERVE items from the code survey (ce76bc7)** · Each is a code fact whose rendered effect was not verified on screen; record the observed state with a screenshot: (a) `semantic-zoom-telemetry` is absolutely positioned at top −46 px inside an overflow-hidden root: is it visible at all? (b) the opened `semantic-guide-drawer`: right side or normal flow top-left? (c) in JOB and POOL focus `decision-graph-inspector-idle` (fixed bottom-left) versus the ground line and the strip: overlap? (d) `hud-action-inspect-sources` is always disabled; L3/L4 zoom buttons always disabled; (e) the identity-core drop zone shows `⚡ DROP SOURCE NOW` while dragging but drop is non-functional; (f) `InferenceTelemetryHUD` (fixed bottom-right) overlaps `semantic-focus-panel`. Classify (d)–(f) under B-PLANETARIUM-MOTION / existing-field boundaries unless they block a journey. On `a3a4f04` also: (g) legibility of the 8.5 px tracked mono labels at 1440 px width; (h) whether the right veil dims the right-most organisation label too much. · Evidence: `I-08-*.png`. R3/R2.
 
-**I-07 · Panel anchors and collapse** · `job-pool-panel-collapse` collapses, toggle re-opens; anchor `TOP_LEFT` in capability focus, `BOTTOM_LEFT` in JOB focus; the exit button of the Job Field is never covered by the panel. · Evidence: `I-07-*.png`. R3.
+**I-07 · Field-state strip (1e5c2e3)** · `field-focus-strip[data-field-focus]` with `field-focus-capability-btn`, `job-pool-panel-toggle`, `field-focus-job-btn`, labels constantly ◈ CAPABILITY · ⬡ JOB POOL · ◉ JOB. · Expected: exactly one button `data-field-focus-active=true` / `aria-pressed=true` at any time; it glows (`fieldFocusSwitchBreath` 6 s, none under reduced motion); clicking the active button returns to CAPABILITY; `job-pool-panel-collapse` and `job-field-exit-btn` read "← CAPABILITY FIELD" and return to CAPABILITY; no field's exit is ever covered by another field. · Evidence: `I-07-*.png`, `I-07.webm`. R3.
 
 ### TS-J Visual coherence and motion (video required)
 
@@ -399,11 +409,11 @@ Record each scenario as a video (§8.3) at 1600×1000 and attach one still per n
 
 **J-06 · Role selection dimming** · E-05 as video. · Expected: non-selected roles dim, the selected role stays at full opacity, the detail column slides/fades in, `job-field-role-back` restores all within ≈0.5 s. · Evidence: `J-06.webm`. R4.
 
-**J-07 · Reduced motion** · set `prefers-reduced-motion: reduce` (Playwright `reducedMotion: 'reduce'`, or DevTools Rendering), reload, repeat J-01, J-02, J-05, J-06. · Expected, Job Field (`0353cd9`): `job-field[data-motion-mode=REDUCED]`, every computed `animation-name` is `none`, light values stay (light opacity > 0 on scored roles), the JOB switch glow is off, all content reachable. Expected, planetarium: guarded surfaces stop (`CapabilityCosmosView`, `CapabilityDeepFocusView`, `SilOrbitEmptyState`, `OrbitalResonanceBubble` empty-projection breathing, `OrbitalCosmosView`, satellites static at phase 0); KNOWN unguarded and therefore still moving (boundary B-PLANETARIUM-MOTION, report as OBSERVED, not as a regression): SMIL photon streams, background ring rotation, identity-core plasma/breathe/wave/particles, runtime-operation pulse, intake banner glow. · Evidence: `J-07-*.webm`, a per-surface table. R4/R8.
+**J-07 · Reduced motion** · set `prefers-reduced-motion: reduce` (Playwright `reducedMotion: 'reduce'`, or DevTools Rendering), reload, repeat J-01, J-02, J-05, J-06. · Expected, Job Field and Pool Field: `job-field[data-motion-mode=REDUCED]` and `job-pool-panel[data-motion-mode=REDUCED]` (1e5c2e3), every computed `animation-name` is `none`, light values stay (light opacity > 0 on scored roles), the JOB switch glow is off, all content reachable. Expected, planetarium: guarded surfaces stop (`CapabilityCosmosView`, `CapabilityDeepFocusView`, `SilOrbitEmptyState`, `OrbitalResonanceBubble` empty-projection breathing, `OrbitalCosmosView`, satellites static at phase 0); KNOWN unguarded and therefore still moving (boundary B-PLANETARIUM-MOTION, report as OBSERVED, not as a regression): SMIL photon streams, background ring rotation, identity-core plasma/breathe/wave/particles, runtime-operation pulse, intake banner glow. · Evidence: `J-07-*.webm`, a per-surface table. R4/R8.
 
 **J-08 · Visual coherence audit** · one full-page screenshot per surface state: capability focus idle, L1, L2, JOB focus overview, role detail, panel open, dock open, codex, DE and EN. · Expected: consistent SIL tokens (void field background `#03060a…#080c12`, cyan active accents, mono typography), no clipped text at 1600×1000, no overlapping controls, consistent chip grammar (`MAPPED · PROPOSAL_ONLY · authority NONE`). · Evidence: `J-08-*.png`. R2.
 
-**J-09 · Job Field motion grammar (ce76bc7, `JOB_FIELD_FRONTEND.md` §8.1, manual J8–J11)** · Record 15 s after entering JOB focus, then hover and select a role. · Expected (name · duration · meaning): `jfEnter` 620 ms, overlay fades in over the blurred planetarium; `jfEmerge` 760 ms + 110 ms × (rank − 1), roles appear from the core in delivered order; `jfBreathLight` period 9 s − 4 s × resonance on `[data-jf-light]` of BREATH roles only, the light swings while the node does not move; STILL roles (no scored match) have no light element and no animation (not a verdict); `jfWaver` 2.6 s on UNRESOLVED segments and dots; `jfCirculate` 7 s on COVERED_UNSCORED segments and 26 s on the sweep halo only when `proposalCount > 0`; VOID nothing; `jfFlow` 2.4 s on `job-field-nearest-ray`, dashes travel core → role (flowing but dashed = not chosen); `jfOrbit` 14 s + 4 s × i, alternating direction, on `[data-motion=ORBIT]` rings while a role is hovered or selected, exactly one ring per pending kind that has ids (grey unproven canonical, amber unresolved, cyan covered-unscored, faint no-evidence); core `jfBreathScale` 7 s (scale 1.035); `jfPulse` 1.4 s on the state dot while LOADING; `jfRise` 320 ms on every revealed block; `fieldFocusSwitchBreath` 6 s on `field-focus-job-btn` while JOB. Geometry of clickable nodes never animates continuously (B-JF-MOTION-GEOMETRY). Verify computed `animation-name` on one element of each kind and that every value of E-02 is unchanged during motion. · Evidence: `J-09-grammar.webm`, `J-09-hover.webm`, `J-09-computed.txt`. R4/R2.
+**J-09 · Job Field motion grammar (ce76bc7, `JOB_FIELD_FRONTEND.md` §8.1, manual J8–J11)** · Record 15 s after entering JOB focus, then hover and select a role. · Expected (name · duration · meaning): `jfEnter` 620 ms, overlay fades in over the blurred planetarium; `jfEmerge` 760 ms + 110 ms × (rank − 1), roles appear from the core in delivered order; `jfBreathLight` period 9 s − 4 s × resonance on `[data-jf-light]` of BREATH roles only, the light swings while the node does not move; STILL roles (no scored match) have no light element and no animation (not a verdict); `jfWaver` 2.6 s on UNRESOLVED segments and dots; `jfCirculate` 7 s on COVERED_UNSCORED segments and 26 s on the sweep halo only when `proposalCount > 0`; VOID nothing; `jfFlow` 2.4 s on `job-field-nearest-ray`, dashes travel core → role (flowing but dashed = not chosen); `jfOrbit` 14 s + 4 s × i, alternating direction, on `[data-motion=ORBIT]` rings while a role is hovered or selected, exactly one ring per pending kind that has ids (grey unproven canonical, amber unresolved, cyan covered-unscored, faint no-evidence); core `jfBreathScale` 7 s (scale 1.035); `jfPulse` 1.4 s on the state dot while LOADING; `jfRise` 320 ms on every revealed block; `fieldFocusSwitchBreath` 6 s on `field-focus-job-btn` while JOB. Geometry of clickable nodes never animates continuously (B-JF-MOTION-GEOMETRY). Pool Field names (1e5c2e3): `jpEnter`, `jpEmerge`, selection travel, `jpBreathScale`, `jpBreathLight`, `jpCirculate` (D-13). Verify computed `animation-name` on one element of each kind and that every value of E-02 is unchanged during motion. · Evidence: `J-09-grammar.webm`, `J-09-hover.webm`, `J-09-computed.txt`. R4/R2.
 
 **J-10 · Planetarium motion inventory (pre-existing, record as-is)** · 20 s video idle, 10 s hovering orbit 02, 10 s at L1, 10 s at L2. · Expected names and periods (OBSERVE, classify under B-PLANETARIUM-MOTION when different): `rotateClockwise` 120 s background rings / 160 s L1 carrier, `rotateCounterClockwise` 160 s, SMIL photons 3.6–6.0 s per ray (1.6/2.1 s when focused), `focusTransitionPulse` 1.6 s while hovered/active, stage shell transforms 780 ms (anchor scale 1.12; others scale .72, opacity .12, blur + grayscale), bubble `orbitFloatPhase2` 25 s staggered, `ringPulse` 2.4 s when highlighted, `hologramFloat` 6 s on the hover HUD, `moonOrbit` 160 s, empty-projection breathing 2.8 s, identity core `coreBreathe` 14 s / `waveExpand` 6 s / `corePulseCommunicate` 1.8 s while focused / plasma rotations 20 s and 14 s / `plasmaFlarePulse` 11 s, `careerRuntimeOperationPulse` 1 s on the active operation, `atmosphereGlow` 1.5 s on the intake banner, deep-focus settle 780 ms and satellites 720 ms, ghost keyframes 2.35–3.1 s. KNOWN defects to classify, not to fix: keyframe name collisions `ringPulse` (globals vs bubble) and `rotateCounterClockwise` (root vs cosmos view); HUD and inspector wrappers receive `filter: blur` during orbit focus and become the containing block of their fixed children (OBSERVE a jump). · Evidence: `J-10-*.webm`. R4.
 
@@ -486,6 +496,7 @@ Technical correctness is settled by TS-B…TS-N. This suite judges whether meani
 | O-08 | Where am I and how do I get back? (focus, zoom level, URL state) | JOB button, exit, zoom telemetry | `O-08.webm` |
 | O-09 | Is motion telling me something? (pulse = resonance, ray = activation, breathing = emptiness) | J-01…J-06 videos | score sheet |
 | O-10 | Does the language switch keep the meaning (DE/EN parity of laws and chips)? | I-02 | score sheet |
+| O-11 | In the Pool Field: ring = persisted, core = selected, nothing moves to the core by itself; arcs and inner ring = the pool's own structure; light = delivered resonance; the strip = three states of one system (1e5c2e3) | D-01 … D-04, D-13 | `O-11.png` + score sheet |
 
 Acceptance for TS-O: mean score ≥ 2.0 and no item at 0. Items at 1 are findings for GRÜN with the reviewer's wording proposal; items at 0 are blocking semiontic defects.
 
@@ -505,11 +516,11 @@ Acceptance for TS-O: mean score ≥ 2.0 and no item at 0. Items at 1 are finding
 | --- | --- | --- | --- | --- | --- |
 | S0 | Safety and smoke | A-01 … A-07, P-02 | E-01…E-03 done | all PASS; the baseline is green | 30 min |
 | S1 | Stub path, no model | E-05 server (no worker, no key): B-01, B-02, B-08 … B-10, B-12, B-13, B-14, B-15, D-01 … D-03, E-09 (NO_ANALYSIS and NO_POOL states only), G-01 … G-07, H-01, H-05, H-06, I-01 … I-04, I-07, B-16, N-04 … N-08. Scenarios that need an analysis (D-04 onward, B-11, E-01 …) wait for S2; no analysis is seeded by hand into a server database | S0 PASS | every listed scenario executed with evidence | 2 h |
-| S2 | Live model path | E-04 server: B-03 … B-07, C-01 … C-05, D-01 … D-10, B-11, E-01 … E-10, F-01 … F-05, M-01 … M-06, I-05, I-06 | S1 PASS, key and model available | live sweep succeeded at least once; all evidence | 3 h |
-| S3 | Spatial and motion | J-01 … J-10, E-11, H-03, H-04, O-08, O-09 | S2 analysis loaded | videos recorded and reviewed | 1.5 h |
+| S2 | Live model path | E-04 server: B-03 … B-07, C-01 … C-05, D-01 … D-12, D-14, B-11, E-01 … E-10, F-01 … F-05, M-01 … M-06, I-05, I-06 | S1 PASS, key and model available | live sweep succeeded at least once; all evidence | 3 h |
+| S3 | Spatial and motion | J-01 … J-10, E-11, D-13, H-03, H-04, O-08, O-09 | S2 analysis loaded | videos recorded and reviewed | 1.5 h |
 | S4 | Exceptions | C-06, C-07, N-01 … N-03, N-09 … N-12, G-08 | S2 done (restart environments as needed) | every failure state named and recovered | 1.5 h |
 | S5 | Responsive and accessibility | K-01 … K-04, L-01 … L-07, I-08 | S2 analysis loaded | findings recorded per surface | 1.5 h |
-| S6 | Semiontic review | O-01 … O-10, I-02 | S2, S3 done | score sheets from two passes | 1 h |
+| S6 | Semiontic review | O-01 … O-11, I-02 | S2, S3 done | score sheets from two passes | 1 h |
 | S7 | Persistence, restart, cleanup | N-10, N-11, A-04 (after), A-05, E-08 | all above | no database of yours left; secret scan clean | 30 min |
 
 Recursion: after any material delta during the campaign apply §5.3; re-run S0 and the targeted scenarios; record the delta hash in the report.
@@ -531,7 +542,7 @@ acceptance-evidence/<campaign-id>/
   scores/O-xx-<reviewer>.json   # semiontic score sheets
 ```
 
-`<campaign-id>` = `AT-<yyyymmdd>-<tip7>` (for this plan `AT-20261011-093b9e6`). Every screenshot name is prefixed by the scenario id. Evidence is stored outside the repository and referenced from the report; the repository receives nothing from a campaign.
+`<campaign-id>` = `AT-<yyyymmdd>-<tip7>` (for this plan `AT-20261011-d17b042`). Every screenshot name is prefixed by the scenario id. Evidence is stored outside the repository and referenced from the report; the repository receives nothing from a campaign.
 
 ### 8.2 Screenshots
 
@@ -580,7 +591,7 @@ One report per distinct cause, in this shape:
 ```
 ID: AT-<campaign>-<nnn>
 Title: <one sentence, observable>
-Scenario: <id> · Sequence: <S#> · Tip: 093b9e6 (+ delta hash if any)
+Scenario: <id> · Sequence: <S#> · Tip: d17b042 (+ delta hash if any)
 Classification: Case 1 (derivable from code/contract) | Case 2 (owner decision needed) | Case 3 (unknown cause)
 Responsible field: GELB (backend, contracts, worker, database) | GRÜN (frontend, copy, motion, a11y) | owner (boundaries, HIA)
 Severity: S1 | S2 | S3 | S4
@@ -598,7 +609,7 @@ Rules: never bundle two causes; never report a BOUNDARY-MATCH as a defect; quote
 
 ---
 
-## Appendix A. Stable test ids of the demo surface (236 on `093b9e6`)
+## Appendix A. Stable test ids of the demo surface (247 on `d17b042`)
 
 Generated from `app/components/career/demo/*.tsx` and `app/career/demo/*.tsx`. `${…}` marks a parameter. Owning component in parentheses.
 
@@ -640,7 +651,7 @@ Generated from `app/components/career/demo/*.tsx` and `app/career/demo/*.tsx`. `
 - `evidence-node` (SemanticCareerIntelligenceField)
 - `evidence-quality-badge` (DecisionGraphInspector)
 - `evolution-layer` (EvolutionLayer)
-- `field-focus-job-btn` (SemanticCareerIntelligenceField)
+- `field-focus-strip` (SemanticCareerIntelligenceField)
 - `focused-stage-bubble-${stageId}` (SemanticCareerIntelligenceField)
 - `focus-stage-visual-${stageId}` (SemanticCareerIntelligenceField)
 - `focus-transition-pulse-${stageId}` (SemanticCareerIntelligenceField)
@@ -720,16 +731,19 @@ Generated from `app/components/career/demo/*.tsx` and `app/career/demo/*.tsx`. `
 - `job-pool-analysis-none` (JobPoolMatchPanel)
 - `job-pool-canonical-mapping` (JobPoolMatchPanel)
 - `job-pool-capability-sweep` (JobPoolMatchPanel)
+- `job-pool-core` (JobPoolMatchPanel)
+- `job-pool-enter-job-field` (JobPoolMatchPanel)
 - `job-pool-evidence-quote` (JobPoolMatchPanel)
 - `job-pool-file-input` (JobPoolMatchPanel)
 - `job-pool-file-name` (JobPoolMatchPanel)
-- `job-pool-item-${pool.jobPoolUploadId}` (JobPoolMatchPanel)
-- `job-pool-label-${label}` (JobPoolMatchPanel)
+- `job-pool-item-${node.jobPoolUploadId}` (JobPoolMatchPanel)
+- `job-pool-label-${item}` (JobPoolMatchPanel)
 - `job-pool-list-empty` (JobPoolMatchPanel)
 - `job-pool-list-failed` (JobPoolMatchPanel)
 - `job-pool-list` (JobPoolMatchPanel)
 - `job-pool-list-loading` (JobPoolMatchPanel)
 - `job-pool-list-not-provisioned` (JobPoolMatchPanel)
+- `job-pool-list-state` (JobPoolMatchPanel)
 - `job-pool-matched-constituent` (JobPoolMatchPanel)
 - `job-pool-matches-failed` (JobPoolMatchPanel)
 - `job-pool-matches-idle` (JobPoolMatchPanel)
@@ -738,6 +752,7 @@ Generated from `app/components/career/demo/*.tsx` and `app/career/demo/*.tsx`. `
 - `job-pool-matches-not-found` (JobPoolMatchPanel)
 - `job-pool-matches-not-provisioned` (JobPoolMatchPanel)
 - `job-pool-non-claims` (JobPoolMatchPanel)
+- `job-pool-orbit` (JobPoolMatchPanel)
 - `job-pool-organization-${organization.poolOrganizationId}` (JobPoolMatchPanel)
 - `job-pool-organizations` (JobPoolMatchPanel)
 - `job-pool-panel-collapse` (JobPoolMatchPanel)
@@ -750,11 +765,18 @@ Generated from `app/components/career/demo/*.tsx` and `app/career/demo/*.tsx`. `
 - `job-pool-role-${role.poolRoleId}-canonical` (JobPoolMatchPanel)
 - `job-pool-role-${role.poolRoleId}` (JobPoolMatchPanel)
 - `job-pool-role-${role.poolRoleId}-sweep-only` (JobPoolMatchPanel)
+- `job-pool-role-${role.poolRoleId}-toggle` (JobPoolMatchPanel)
 - `job-pool-role-list` (JobPoolMatchPanel)
-- `job-pool-select-${pool.jobPoolUploadId}` (JobPoolMatchPanel)
+- `job-pool-select-${node.jobPoolUploadId}` (JobPoolMatchPanel)
 - `job-pool-selected` (JobPoolMatchPanel)
 - `job-pool-selection-none` (JobPoolMatchPanel)
 - `job-pool-selection-not-listed` (JobPoolMatchPanel)
+- `job-pool-structure-canvas` (JobPoolMatchPanel)
+- `job-pool-structure-organization-${organization.poolOrganizationId}` (JobPoolMatchPanel)
+- `job-pool-structure-requirement-${requirement.poolRequirementId}` (JobPoolMatchPanel)
+- `job-pool-structure-role-${role.poolRoleId}` (JobPoolMatchPanel)
+- `job-pool-structure-role-back` (JobPoolMatchPanel)
+- `job-pool-structure-role-detail` (JobPoolMatchPanel)
 - `job-pool-trqrev-${id}` (JobPoolMatchPanel)
 - `job-pool-upload-btn` (JobPoolMatchPanel)
 - `job-pool-upload-failed` (JobPoolMatchPanel)
@@ -841,7 +863,7 @@ Generated from `app/components/career/demo/*.tsx` and `app/career/demo/*.tsx`. `
 - `zoom-level-1-clusters` (OrbitalSubspaceView)
 - `zoom-level-2-evidence` (OrbitalSubspaceView)
 
-## Appendix B. HTTP status reference (KNOWN on `093b9e6`)
+## Appendix B. HTTP status reference (KNOWN on `d17b042`)
 
 | Route | Success | Errors |
 | --- | --- | --- |
@@ -894,12 +916,13 @@ Generated from `app/components/career/demo/*.tsx` and `app/career/demo/*.tsx`. `
 | B-STATE-FILE | `.hr-loop-local/state.json` holds credentials; 600/700 since `e762972`; never attached | GELB 2026-10-11 |
 | B-JF-GROUND-LINE | Bottom-anchored content inside the planetarium root sits below the page header by the header height; the ground line is lifted accordingly | `JOB_FIELD_FRONTEND.md` §9 |
 | B-JF-FONTS | No web font is loaded; mono and sans resolve to the system monospace and `system-ui` | §9 |
+| B-POOL-INITIAL-FOCUS | An exact `jobPoolUploadId` without a `focus` opens the Pool Field; explicit `focus=JOB` wins (1e5c2e3) | `JOB_FIELD_FRONTEND.md` §10 |
 
 ## Appendix D. Contract documents to read (authoritative list, GELB 2026-10-11)
 
 - `docs/architecture/decision-fields/JOB_POOL_CONNECTION.md` §2, §3, §4, §5, §8, §11, §12 (glossary, SG-1..6, F-JF table, §12.4)
 - `docs/career_analysis/JOB_POOL_WORKFLOW_FRONTEND.md`, `JOB_POOL_WORKFLOW_MANUAL_TEST.md` (§3 path, §3b Job Field)
-- `docs/career_analysis/JOB_FIELD_FRONTEND.md` §4 DOM contract, §5 boundaries, §8 semiontic layer (motion grammar, progressive disclosure, additive DOM contract), §9 information surfaces as field extensions (a3a4f04); `JOB_POOL_WORKFLOW_MANUAL_TEST.md` steps J8–J11
+- `docs/career_analysis/JOB_FIELD_FRONTEND.md` §4 DOM contract, §5 boundaries, §8 semiontic layer (motion grammar, progressive disclosure, additive DOM contract), §9 information surfaces as field extensions (a3a4f04), §10 three field states and the Pool Field (1e5c2e3); `JOB_POOL_WORKFLOW_MANUAL_TEST.md` steps J8–J11 and P1–P7
 - `docs/architecture/decision-fields/JOB_POOL_CONNECTION_VALIDATION.md` (PINK proofs and findings)
 - `docs/career_analysis/F10_F11_F12_RUNTIME_SIL_DECISION_CONTRACTS.md`; `docs/capability-core/ARCHITECTURE.md`, `ARTIFACT-CONTRACTS.md`, `INVARIANTS.md`
 - `docs/architecture/decision-fields/HR_DECISION_LOOP_INTEGRATION.md`; `docs/career_analysis/HR_DECISION_LOOP_MANUAL_TEST.md`, `HR_DECISION_LOOP_FRONTEND_INTEGRATION.md`; `docs/decision-runtime/LOCAL-DECISION-CONTEXT-API.md`
@@ -947,6 +970,6 @@ The repository's own reference implementations of these walks: `test/career/job-
 
 ## Appendix G. Plan maintenance
 
-- A new application tip requires: diff of `app/`, `lib/`, `scripts/`, contracts against `093b9e6`; update §2, Appendix A (regenerate), Appendix B/C; bump the version; record the delta in the change log.
-- 1.1.0 bound `0353cd9`; 1.1.2 binds `093b9e6` (GRÜN's `a3a4f04` integrated).
+- A new application tip requires: diff of `app/`, `lib/`, `scripts/`, contracts against the tip named in the header; update §2, Appendix A (regenerate), Appendix B/C; bump the version; record the delta in the change log.
+- 1.1.0 bound `0353cd9`; 1.1.2 binds `093b9e6`; 1.2.0 added GRÜN's Pool Field `1e5c2e3`; 1.2.1 binds GELB's integration tip `d17b042`.
 - Owner decisions on HIA-1/2/3 or B-ORBIT-COPY change expected outcomes in TS-E, TS-F, TS-O and must be reflected before execution.
