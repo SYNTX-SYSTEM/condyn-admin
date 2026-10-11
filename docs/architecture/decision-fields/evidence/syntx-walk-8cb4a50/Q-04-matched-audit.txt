@@ -1,0 +1,39 @@
+Q-04-matched
+visible text:
+Requirement Distributed Systems Architecture of role Distributed Systems Architect: supported by scored evidence; 1 evidence traces from 1 sources. An inspection aperture is open.
+
+Beta Cloud GmbH
+DistributedSystemsArchitect
+doc1.md
+DistributedSystemsArchitecture
+Edge Computing
+Industrial IoTProtocol Design
+DISTRIBUTED SYSTEMS ARCHITECTURE
+CLOSE
+SUPPORTS
+
+“Architected distributed IIoT Edge Computing system for resilient operation”
+
+SOURCE: doc1.md · location Section 2
+CAPABILITY REFERENCE: Distributed Systems Architecture · basis EXACT
+contribution 0.95 · confidence 0.95 · weight 1
+
+Scored evidence supports this requirement within the delivered presentation matching; it is not a certification.
+
+presentation · authority NONE · not a canonical evaluation · not a decision · not an HR recommendation
+JOB FIELD
+← CAPABILITY FIELD
+PINK validation pool
+›
+Alpha Industrial Systems
+›
+Distributed Systems Architect
+›
+Distributed Systems Architecture
+← RETURN
+PRESENTATION MATCHING
+Esc returns · Enter selects · Tab moves between carriers
+⬡ POOLS · 2
++ INTAKE
+BOUNDARY
+PRESENTED != EVALUATED · UPLOADED != SELECTED · RANKED != RECOMMENDED · MISSING != GAP DECISION · COVERED != SCORED · PENDING != MISSING CAPABILITY · POOL ROLE != INFERRED ROLE

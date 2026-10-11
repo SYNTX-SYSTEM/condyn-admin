@@ -1,7 +1,7 @@
 {
   "plan": "docs/acceptance/CONDYN_SYSTEM_ACCEPTANCE_TEST_PLAN_v1.5.md",
-  "version": "1.5.0",
-  "tip": "3d50c0a",
+  "version": "1.5.1",
+  "tip": "8cb4a50",
   "generated": "2026-10-11",
   "scenarioCount": 154,
   "scenarios": [
@@ -2186,7 +2186,8 @@
       "video": true,
       "evidence": [
         "Q-08.webm",
-        "Q-08-summary.txt"
+        "Q-08-summary.txt",
+        "Q-08-focus-entry.txt"
       ],
       "binding": "BOUND"
     },
@@ -2259,7 +2260,7 @@
       ],
       "video": false,
       "evidence": [
-        "docs/architecture/decision-fields/evidence/syntx-walk-3d50c0a/",
+        "docs/architecture/decision-fields/evidence/syntx-walk-8cb4a50/",
         "Q-04-aperture.json",
         "Q-05-requests.txt",
         "Q-06-computed.txt",
@@ -2271,8 +2272,8 @@
       "binding": "BOUND"
     }
   ],
-  "docsTip": "3d50c0a",
+  "docsTip": "8cb4a50",
   "activeScenarioCount": 134,
   "retiredScenarioCount": 20,
-  "suiteNote": "TS-Q bound on 3d50c0a (GRÜN 434ef49 + GELB governance); retired ids (plan change under R11/R13/R14) keep their numbers and are never reused"
+  "suiteNote": "TS-Q bound on 8cb4a50 (GRÜN 434ef49 + GELB governance + GRÜN F-SX-1/O-SX-1 repair d5105e6); retired ids (plan change under R11/R13/R14) keep their numbers and are never reused"
 }

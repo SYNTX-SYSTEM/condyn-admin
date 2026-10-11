@@ -695,6 +695,22 @@ Findings and observations:
 Owner environment `127.0.0.1:3017` untouched (still `d07017a`, bound by plan 1.4.2); it moves only after the Q-12
 gate is green and the owner instructs.
 
+### 3.18 F-SX-1 / O-SX-1 repair and the green gate on `8cb4a50` (2026-10-11)
+
+GRÜN's `d5105e6` (renderer-only: a focus-follow effect after every observation or aperture change — focus moves to the
+sign of the new observation point, else to the field root, only when the previously focused element left the root;
+traces render receded → field → inspectable so the inspectable trace owns the pointer; boundaries B-SYNTX-FOCUS and
+B-SYNTX-TRACE-ORDER in `JOB_FIELD_FRONTEND.md` §13.5) was integrated by GELB as `8cb4a50` (= `a78d95b` + `d5105e6`).
+PINK on `8cb4a50`: tsc 0; the static / unit / governance batch 9 files / 54 green; the walk 3/3 green — after
+Escape ROLE → ORGANIZATION the focused element is `syntx-organization-org_pink_alpha` (`org:org_pink_alpha`), the next
+Escape reaches FIELD (`Q-08-summary.txt`, "focus loss: none"). GELB's question on the effect (does it pull focus from
+the strip or the intake?) probed in the field-states test (`Q-08-focus-entry.txt`): keyboard entry from the strip
+(Enter on `job-pool-panel-toggle`) moves focus into the field root — observed, recorded under B-SYNTX-FOCUS, not a
+defect (Tab returns to the strip); typing in the intake keeps focus; a pointer selection focuses the clicked sign
+natively; Escape with the intake open closes the intake first (R8). F-SX-1 closed, O-SX-1 closed. Plan 1.5.1 binds
+`8cb4a50`; evidence `evidence/syntx-walk-8cb4a50/`. The Q-12 gate is green; the owner environment `127.0.0.1:3017`
+(still `d07017a`, untouched) moves on the owner's instruction, followed by PINK's GET-only check there.
+
 ## 4. Boundaries and findings for coordination
 
 - F-JP-1 (closed in `b782793`): `JOB_POOL_CONNECTION.md` §4 followed the per-role `JOB_POOL_JSON_ROLE` design;

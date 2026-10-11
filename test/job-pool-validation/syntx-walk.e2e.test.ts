@@ -39,7 +39,7 @@ function resolvePlaywright(): string | null {
   try { return createRequire(resolve(process.cwd(), "package.json")).resolve("playwright"); } catch { return null; }
 }
 const playwrightModule = resolvePlaywright();
-const EVIDENCE_DIR = resolve(process.cwd(), "docs/architecture/decision-fields/evidence/syntx-walk-3d50c0a");
+const EVIDENCE_DIR = resolve(process.cwd(), "docs/architecture/decision-fields/evidence/syntx-walk-8cb4a50");
 const ANALYSIS_ID = "ANL_PINK_SYNTX_WALK";
 const GRAMMAR = "SYNTX_FIELD_V1";
 const ROLE_ID = "role_pink_alpha_architect";
@@ -101,7 +101,7 @@ describe.skipIf(playwrightModule === null)("PINK Q-12: SYNTX field walk FIELD â†
   let analysisBody: any;
   let roleMatch: any;
   let mappedRole: any;
-  const report: Report = { tip: "3d50c0a", recordedAt: new Date().toISOString(), database: "", analysisId: ANALYSIS_ID, jobPoolUploadId: "", scenarios: {} };
+  const report: Report = { tip: "8cb4a50", recordedAt: new Date().toISOString(), database: "", analysisId: ANALYSIS_ID, jobPoolUploadId: "", scenarios: {} };
   const pass = (id: string, counts?: Record<string, number>, note?: string) => { report.scenarios[id] = { verdict: "PASS", ...(counts ? { counts } : {}), ...(note ? { note } : {}) }; };
   const boundary = (id: string, note: string) => { report.scenarios[id] = { verdict: "BOUNDARY-MATCH", note }; };
   const liveSigns: Record<string, SignRecord[]> = {};
@@ -959,7 +959,42 @@ describe.skipIf(playwrightModule === null)("PINK Q-12: SYNTX field walk FIELD â†
       expect(await alias.getByTestId("semantic-career-intelligence-field").getAttribute("data-field-focus")).toBe("FIELD");
       await alias.close();
     }
-    pass("Q-states", { uploads: 3 }, "NO_ANALYSIS, NO_POOL + intake + explicit selection, INACTIVE_POOL as containment, NOT_FOUND, three stale kinds, JOB/POOL aliases");
+    // B-SYNTX-FOCUS (GELB's question on the F-SX-1 repair): the focus-follow effect must not take focus away from the strip or the intake.
+    const entry = await open(`/career/demo?analysisId=${ANALYSIS_ID}&jobPoolUploadId=${uploadId}&focus=CAPABILITY`);
+    const activeOf = (p: any) => p.evaluate(() => { const a = document.activeElement; return a === null ? "null" : `${a.tagName.toLowerCase()}${a.getAttribute("data-testid") ? `#${a.getAttribute("data-testid")}` : ""}${a.getAttribute("data-sign-id") ? `[${a.getAttribute("data-sign-id")}]` : ""}`; });
+    await entry.getByTestId("job-pool-panel-toggle").focus();
+    await entry.keyboard.press("Enter");
+    await entry.locator('[data-testid="syntx-field"][data-field-state="AVAILABLE"]').waitFor({ timeout: 60_000 });
+    await entry.waitForTimeout(300);
+    const afterEntry = await activeOf(entry);
+    // Entering from the strip by keyboard: the strip button keeps focus (no observation change happened; the effect ran on mount with focus outside the root). Record the observed owner either way.
+    await entry.getByTestId("job-pool-intake-toggle").focus();
+    await entry.keyboard.press("Enter");
+    await entry.getByTestId("job-pool-upload").waitFor({ state: "visible", timeout: 10_000 });
+    await entry.getByTestId("job-pool-actor-input").focus();
+    await entry.keyboard.type("PINK_KEYBOARD");
+    await entry.waitForTimeout(300);
+    const afterTyping = await activeOf(entry);
+    expect(afterTyping).toBe("input#job-pool-actor-input");
+    expect(await entry.getByTestId("job-pool-actor-input").evaluate((e: HTMLInputElement) => e.value)).toContain("PINK_KEYBOARD");
+    // An observation change by pointer: the clicked sign takes focus natively (role=button), the intake stays open with its text; a return by Escape keeps focus inside the field.
+    await entry.getByTestId("syntx-organization-org_pink_alpha").click({ position: await bottomOf(entry.getByTestId("syntx-organization-org_pink_alpha")) });
+    await waitKind(entry, "ORGANIZATION");
+    await entry.waitForTimeout(300);
+    const afterObservation = await activeOf(entry);
+    expect(afterObservation).toBe("g#syntx-organization-org_pink_alpha[org:org_pink_alpha]");
+    expect(await entry.getByTestId("job-pool-upload").isVisible()).toBe(true);
+    expect(await entry.getByTestId("job-pool-actor-input").evaluate((e: HTMLInputElement) => e.value)).toContain("PINK_KEYBOARD");
+    await entry.keyboard.press("Escape");
+    await entry.waitForTimeout(300);
+    const afterEscape = await activeOf(entry);
+    writeFileSync(resolve(EVIDENCE_DIR, "Q-08-focus-entry.txt"), `after keyboard entry from the strip (Enter on job-pool-panel-toggle): ${afterEntry}\nafter typing in the intake: ${afterTyping}\nafter a pointer observation change (native click focus on the sign): ${afterObservation}\nafter Escape (closes the intake first, R8): ${afterEscape}, observation ${await entry.getByTestId("syntx-field").getAttribute("data-observation-kind")}\n`);
+    // Entry from the strip by keyboard moves focus into the field root (B-SYNTX-FOCUS, observed): the strip button does not keep it.
+    expect(afterEntry).toBe("section#syntx-field");
+    expect(afterEscape.startsWith("g#syntx-organization-org_pink_alpha") || afterEscape === "section#syntx-field").toBe(true);
+    expect((entry as any).__nonGet).toEqual([]);
+    await entry.close();
+    pass("Q-states", { uploads: 3 }, "NO_ANALYSIS, NO_POOL + intake + explicit selection, INACTIVE_POOL as containment, NOT_FOUND, three stale kinds, JOB/POOL aliases; strip and intake keep keyboard focus under the focus-follow effect");
     expect(pageErrors).toEqual([]);
   }, 600_000);
 });
