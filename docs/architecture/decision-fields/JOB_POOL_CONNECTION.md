@@ -311,3 +311,14 @@ one meaning per layer (reconstructed by GELB and, independently, by GRÜN for th
 Proof: `test/career/job-pool/semantic-governance.test.ts` (SG-3, SG-4, SG-5; its file set includes GRÜN's Job Field
 files by path pattern), `test/job-pool-validation/layer-separation.test.ts` (PINK), and the presentation suites
 (SG-2, SG-6 states). SG-1 and the labels of SG-5/SG-6 are frontend rules reviewed with GRÜN (conditions G1–G6).
+
+### 12.3 PINK's semantic findings F-JF-1 … F-JF-6 and their resolution
+
+| Finding | Field | Resolution |
+| --- | --- | --- |
+| F-JF-1 two capability sources on one screen without a source label (orbit 02 shows sweep proposals, the panel counts analysis capabilities) | GRÜN | label each surface with its source (SG rule G5); which source is scored stays HIA-3 |
+| F-JF-2 the planetarium's role alignment uses exact lowercase name equality, presentation matching a normalized equality | GELB | equality left unchanged: real analyses carry no role→requirement relations, so the path is dormant, and widening it would only trigger the proof-chain guards more often. The actual source defect was a latent crash: any name coincidence failed the whole projection with `ERR_EPISTEMIC_VIOLATION` (same CV document) or `ERR_PROOF_CHAIN_BROKEN` (no source manifest from the analyses route). `lib/career/ui-adapter.ts` now states such a relation UNRESOLVED (never absent, never satisfied). Proof: `test/career/planetarium-role-alignment.test.ts` (red before, green after). Labels for the two equalities: GRÜN |
+| F-JF-3 `buildRoleRecommendation` builds `REC_<Date.now()>_<random>` on every render | GELB | not changed at the source: the id format is the G1 legacy lifecycle format, the DB-1 recovery candidate reproduces the deleted rows through exactly this derivation, and the legacy career freeze applies. The planetarium uses only `fitScore` and `recommendationState`; the test proves that the projection exposes no `REC_` id. Owner boundary B-JF-REC-ID |
+| F-JF-4 proposed capability relations are not projected; orbit 05 `capabilityGaps` is always empty | GRÜN | presentation: state "NOT PROJECTED" on orbit 05 or project delivered facts with provenance (SG-2, SG-6) |
+| F-JF-5 dead list components label a missing fitScore "UNSUPPORTED" and undefined confidence "0%" | GRÜN | remove or relabel before any list mode becomes reachable (SG-2) |
+| F-JF-6 orbit 03 "resonance" for unscored CV organizations | GRÜN | Job Field qualifies "POOL RESONANCE (PRESENTATION)" (G2); orbit 03 subtitle is presentation copy |
