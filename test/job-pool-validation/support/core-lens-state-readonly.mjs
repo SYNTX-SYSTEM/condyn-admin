@@ -1,0 +1,15 @@
+const { chromium } = await import(process.env.CONDYN_PLAYWRIGHT_MODULE ?? "/home/codi/Entwicklung/nquiry/node_modules/playwright/index.mjs");
+const [BASE, ANALYSIS, UPLOAD, ROLE] = process.argv.slice(2);
+const b = await chromium.launch(); const p = await b.newPage({ viewport: { width: 1600, height: 1000 } });
+await p.goto(`${BASE}/career/demo?analysisId=${ANALYSIS}&jobPoolUploadId=${UPLOAD}`, { waitUntil: "domcontentloaded" });
+await p.getByTestId("guided-onboarding-overlay").waitFor({ timeout: 60000 }); await p.getByTestId("onboarding-close-btn").click();
+await p.locator('[data-testid="job-pool-matches"][data-matches-state="AVAILABLE"]').waitFor({ timeout: 90000 });
+const read = () => p.getByTestId("job-pool-selected").evaluate(el => { const c = getComputedStyle(el); return { inlineOpacity: el.style.opacity, computedOpacity: c.opacity, pointerEvents: c.pointerEvents, animationName: c.animationName, fillMode: c.animationFillMode, duration: c.animationDuration, revealAttr: el.getAttribute("data-jp-reveal") }; });
+console.log("POOL", JSON.stringify(await read()));
+await p.getByTestId(`job-pool-structure-role-${ROLE}`).click();
+await p.locator('[data-testid="job-pool-panel"][data-focus-level="ROLE"]').waitFor({ timeout: 15000 });
+await p.waitForTimeout(1500);
+console.log("ROLE", JSON.stringify(await read()));
+const rule = await p.evaluate(() => { const out = []; for (const s of document.styleSheets) { try { for (const r of s.cssRules) if (r.cssText.includes("data-jp-reveal") && r.cssText.includes("animation")) out.push(r.cssText.slice(0, 300)); } catch {} } return out; });
+console.log("RULES", JSON.stringify(rule));
+await b.close();

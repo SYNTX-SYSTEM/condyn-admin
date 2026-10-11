@@ -599,6 +599,23 @@ database identical; `support/pending-label-readonly-check.mjs`, `nonGet = []`): 
 from the GET body, the new label in the DOM, the old wording absent (`evidence/lens-owner-bfe0d27/owner-6b1a7b4-612-pending-row.png`).
 Plan 1.3.1 binds on `6b1a7b4` (E-06 names the label and the dual membership; D-11 carries F-LF-2 as known open).
 
+Resolution of F-LF-2 (owner mandate "F-LF-2 FOCUS RELATION REPAIR", GRÜN `e419d9c`, integrated by GELB as `8356bab`
+= `e419d9c` + plan 1.3.1): both reveal rules use `fill-mode: backwards` (boundary B-LENS-FILL, `JOB_FIELD_FRONTEND.md`
+§12); the Job Field twin (the canonical reason pinned to 1 instead of 0.85) is repaired by the same change. PINK's
+independent verification on `8356bab` (merge `5c15d4d`, tree identical outside PINK's files, `tsc` 0), all on
+disposable databases: lens proof 50/50 on a fresh environment with the delta (`condyn_test_6464fc5cc765a4e5`, port
+3117, dropped afterwards) — core lens computed opacity 0.25 with `pointer-events: none` at ROLE, 1 / `auto` after
+ALL ROLES, `fill-mode: backwards` on both lenses; the revealed canonical reason settles at computed 0.85 = inline
+(the entrance sat at animation time 0 for about one second under headless rendering before running, so a single
+timed read within that second reads 0 under `both` and `backwards` alike — read the settled state, J-12 says so now);
+`support/core-lens-state-readonly.mjs`, `support/pending-reason-state-readonly.mjs`, frames and report in
+`evidence/lens-delta-8356bab/`. Suites as the role: job-field-static, layer-separation, panel SSR 9/9, job-field SSR
+8/8, job-field-presentation, dock SSR (6 files / 38 green); PINK's Job Field e2e, browser walk and GRÜN's e2e 3 files /
+13 green (a first run of the three was red with "Another next dev server is already running": PINK's own 3117 server
+held the worktree's Next dev lock — sequencing, not the delta; green once it was stopped). Verdict: green, no finding
+against the delta. Plan 1.3.2 binds on `8356bab` (D-11 dim expectation, J-12 fill mode and settled reads, Appendix C
+B-LENS-FILL). The owner environment stays on `ef75f1e` until the owner's F-LF-2 handover.
+
 ## 4. Boundaries and findings for coordination
 
 - F-JP-1 (closed in `b782793`): `JOB_POOL_CONNECTION.md` §4 followed the per-role `JOB_POOL_JSON_ROLE` design;
