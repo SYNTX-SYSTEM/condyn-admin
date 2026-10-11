@@ -275,6 +275,8 @@ drift; B-ANALYZE-PAGE legacy `/career/analyze` page; B-JP-CONTINUITY; B-JP-ACTOR
 
 ## 12. Semantic governance of the Job Field (2026-10-11)
 
+> SYNTX reconstruction (2026-10-11): the binding of the SYNTX semiotic spec to these contracts, its unsupported list and rulings R1–R12 are in [SYNTX_FIELD_CONTRACT_BINDING.md](SYNTX_FIELD_CONTRACT_BINDING.md).
+
 Owner mandate "SFE — JOB FIELD SEMANTIC GOVERNANCE": the capability, job-role, resonance and pending relations keep
 one meaning per layer (reconstructed by GELB and, independently, by GRÜN for the Job Field). The same word on one screen never transfers authority, provenance or score between layers.
 
