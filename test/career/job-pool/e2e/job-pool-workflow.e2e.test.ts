@@ -462,6 +462,12 @@ describe.skipIf(playwrightModule === null)("SYNTX field in a real browser: FIELD
     expect(await page.locator('[data-sign-id="req:req_003"]').getAttribute("data-sign-state")).toBe("receded");
     expect(await field(page).getAttribute("data-aperture-open")).toBe("false");
     expect(await page.getByTestId("syntx-canvas").getAttribute("data-camera-scale")).toBe("2.4");
+    // O-SX-1: where every trace converges on one source carrier, the inspectable trace is rendered last and owns the pointer there.
+    expect(await page.locator('[data-testid^="syntx-trace-"]').first().evaluate(first => {
+      const traces = [...first.parentElement!.querySelectorAll('[data-testid^="syntx-trace-"]')];
+      const states = traces.map(trace => trace.getAttribute("data-sign-state"));
+      return states.lastIndexOf("inspectable") === states.length - 1 && states.indexOf("inspectable") > states.lastIndexOf("receded");
+    })).toBe(true);
     await settled(page);
     await page.screenshot({ path: resolve(EVIDENCE_DIR, "25-syntx-requirement-observation.png") });
 
@@ -503,13 +509,31 @@ describe.skipIf(playwrightModule === null)("SYNTX field in a real browser: FIELD
     expect(params(page).get("jobOrganizationId")).toBeNull();
     expect(await page.getByTestId("syntx-canvas").getAttribute("data-camera-scale")).toBe("1");
     expect(await page.locator('[data-sign-state="receded"]').count()).toBe(0);
-    // Keyboard: Tab reaches the carriers, Enter selects.
+    // Keyboard: Tab reaches the carriers, Enter selects; Escape returns at every level even when the focused sign unmounts (F-SX-1).
+    const focusInside = () => page.getByTestId("syntx-field").evaluate(element => { const active = element.ownerDocument.activeElement; return { inside: active !== null && element.contains(active), signId: active?.getAttribute("data-sign-id") ?? active?.getAttribute("data-testid") ?? active?.tagName ?? null }; });
     await page.getByTestId(`syntx-role-${T.roleId}`).focus();
     await page.keyboard.press("Enter");
     await page.locator('[data-testid="syntx-field"][data-observation-kind="ROLE"]').waitFor({ timeout: 10_000 });
+    await page.locator(`[data-sign-id="req:${T.requirementId}"]`).focus();
+    await page.keyboard.press("Enter");
+    await page.locator('[data-testid="syntx-field"][data-observation-kind="REQUIREMENT"]').waitFor({ timeout: 10_000 });
+    await page.locator(`[data-sign-id="${traceId}"]`).focus();
+    await page.keyboard.press("Enter");
+    await page.locator('[data-testid="syntx-field"][data-aperture-open="true"]').waitFor({ timeout: 10_000 });
+    await page.getByTestId("syntx-aperture-close").focus();
     await page.keyboard.press("Escape");
+    await page.locator('[data-testid="syntx-field"][data-aperture-open="false"]').waitFor({ timeout: 10_000 });
+    expect(await focusInside(), "focus after the aperture closed").toMatchObject({ inside: true });
+    await page.keyboard.press("Escape");
+    await page.locator('[data-testid="syntx-field"][data-observation-kind="ROLE"]').waitFor({ timeout: 10_000 });
+    // The anchor stays mounted at ROLE level, so focus may stay on it; it must only never leave the field.
+    expect(await focusInside(), "focus after REQUIREMENT → ROLE").toMatchObject({ inside: true });
+    await page.keyboard.press("Escape");
+    await page.locator('[data-testid="syntx-field"][data-observation-kind="ORGANIZATION"]').waitFor({ timeout: 10_000 });
+    expect(await focusInside(), "focus after ROLE → ORGANIZATION (the ecology unmounted)").toMatchObject({ inside: true, signId: `org:${organizationId}` });
     await page.keyboard.press("Escape");
     await page.locator('[data-testid="syntx-field"][data-observation-kind="FIELD"]').waitFor({ timeout: 10_000 });
+    expect(await focusInside(), "focus after ORGANIZATION → FIELD").toMatchObject({ inside: true });
     // The matching read is unchanged by the walk (no selection mutates stored analysis).
     const after = await fetchJobPoolMatches(newId, world.analysisId, serverFetch);
     expect(after).toEqual(delivered);
