@@ -1,9 +1,9 @@
 {
-  "plan": "docs/acceptance/CONDYN_SYSTEM_ACCEPTANCE_TEST_PLAN_v1.2.md",
-  "version": "1.2.5",
-  "tip": "ee4c4dc",
+  "plan": "docs/acceptance/CONDYN_SYSTEM_ACCEPTANCE_TEST_PLAN_v1.3.md",
+  "version": "1.3.0",
+  "tip": "01b1d7b",
   "generated": "2026-10-11",
-  "scenarioCount": 140,
+  "scenarioCount": 141,
   "scenarios": [
     {
       "id": "A-01",
@@ -1431,6 +1431,22 @@
       "evidence": [
         "J-11.webm",
         "J-11-computed.txt"
+      ]
+    },
+    {
+      "id": "J-12",
+      "suite": "TS-J Visual coherence and motion",
+      "title": "Lens motion (01b1d7b)",
+      "sequences": [
+        "S3"
+      ],
+      "risk": [
+        "R4"
+      ],
+      "video": true,
+      "evidence": [
+        "J-12.webm",
+        "J-12-computed.txt"
       ]
     },
     {
