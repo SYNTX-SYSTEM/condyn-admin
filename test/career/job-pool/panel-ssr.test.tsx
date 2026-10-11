@@ -128,6 +128,13 @@ describe("SIL Job Pool panel (server-rendered field)", () => {
     expect(html).toContain("Built services in TypeScript for six years.");
     expect(html).toContain('data-testid="job-pool-trqrev-TRQREV_1"');
     expect(html).toContain('data-testid="job-pool-non-claims"');
+    // Galaxy grammar: matching details and organisation aggregates fold behind one affordance; the sweep block stays in the DOM.
+    expect(html).toMatch(/data-testid="job-pool-panel"[^>]*data-galaxy-grammar="GALAXY_V1"/);
+    expect(html).toContain('data-testid="job-pool-matching-details-toggle"');
+    expect(html).toMatch(/data-testid="job-pool-matching-details"[^>]*hidden/);
+    expect(html).toContain('data-testid="job-pool-capability-sweep"');
+    expect(html).toContain('data-testid="job-pool-organization-ORG_1"');
+    expect(html).toContain('data-testid="job-pool-label-NOT_A_DECISION"');
   });
 
   it("threads the exact ids from the dashboard to the field", () => {

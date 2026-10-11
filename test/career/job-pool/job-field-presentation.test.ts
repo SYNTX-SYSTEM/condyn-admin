@@ -6,6 +6,8 @@ import {
   derivePending,
   deriveRequirements,
   describeRoleSelection,
+  requirementMoons,
+  sectorPath,
   hasScoredMatch,
   JOB_FIELD_LAYOUT,
   provenanceOf,
@@ -57,7 +59,7 @@ describe("Job Field presentation (pure derivation over one delivered body)", () 
     const { center, innerRadius, outerRadius } = JOB_FIELD_LAYOUT;
     expect(field.roles[0].x).toBeCloseTo(center + innerRadius + 0.25 * (outerRadius - innerRadius), 1);
     expect(field.roles[0].y).toBeCloseTo(center, 1);
-    expect(field.organizations).toEqual([{ poolOrganizationId: "ORG_1", name: "Acme", roleIds: ["ROLE_A", "ROLE_B"], startAngle: 0, endAngle: 360 }]);
+    expect(field.organizations).toEqual([{ poolOrganizationId: "ORG_1", name: "Acme", roleIds: ["ROLE_A", "ROLE_B"], startAngle: 0, endAngle: 360, aggregateScore: matches.organizationMatches[0].aggregateScore, hueIndex: 0 }]);
     expect(field.ranking).toBe("MONOTONE_BY_RESONANCE");
     expect(field.candidateCapabilityCount).toBe(2);
     expect(field.capabilitySweep).toEqual({ state: "AVAILABLE", proposalCount: 3, scored: false });
@@ -115,5 +117,21 @@ describe("Job Field presentation (pure derivation over one delivered body)", () 
     expect(text).not.toMatch(/\b(CRR|RRA|RRL|TSN|EIS|RPR|RCP|DAR|DCTXREV|DCR|DREV|DCDRB)_[0-9A-Z]/);
     expect(text).not.toMatch(/PHASE4_VERIFIED|VERIFIED_CAPABILITY"|AUTHORITATIVE|"decision":true|"scored":true/);
     expect(text).toContain('"capabilityRequirementRelationState":"NOT_EVALUATED"');
+  });
+
+  it("gives each organisation its delivered aggregate as nebula light and an identity hue, and places requirements as moons in a fixed state order", () => {
+    const field = deriveJobField(matches);
+    expect(field.organizations.map(organization => [organization.poolOrganizationId, organization.aggregateScore, organization.hueIndex])).toEqual([["ORG_1", matches.organizationMatches[0].aggregateScore, 0]]);
+    const absent = deriveJobField({ ...matches, organizationMatches: [] });
+    expect(absent.organizations[0].aggregateScore).toBeNull();
+    const roleA = field.roles.find(role => role.poolRoleId === "ROLE_A")!;
+    const moons = requirementMoons(roleA.requirements, 40);
+    expect(moons.map(moon => [moon.poolRequirementId, moon.state, moon.angle])).toEqual([["REQ_1", "MATCHED", 0], ["REQ_2", "COVERED_UNSCORED", 180]]);
+    expect(moons[0]).toMatchObject({ x: 0, y: -40 });
+    expect(requirementMoons([], 40)).toEqual([]);
+    const sector = sectorPath(400, 400, 100, 200, 0, 90);
+    expect(sector.startsWith("M 400 200")).toBe(true);
+    expect(sector.endsWith("Z")).toBe(true);
+    expect(sectorPath(400, 400, 100, 200, 90, 90)).toBe("");
   });
 });

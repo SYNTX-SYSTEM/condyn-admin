@@ -12,6 +12,8 @@ import {
   type JobPoolAnalysisSource
 } from "../../../../lib/career/job-pool/frontend-presentation";
 import { derivePoolStructure, describePoolListState, POOL_FIELD_LAYOUT, uploadOrbit, type PoolFieldStructure, type PoolFieldStructureRole } from "../../../../lib/career/job-pool/pool-field-presentation";
+import { sectorPath } from "../../../../lib/career/job-pool/job-field-presentation";
+import { organizationHue } from "./JobField";
 import { fieldMotion, roleMotion, JOB_FIELD_MOTION_VERSION, type JobFieldMotionMode } from "../../../../lib/career/job-pool/job-field-motion";
 import { useJobPoolWorkflow } from "../../../../lib/career/ui/useJobPool";
 import type { JobPoolMatchedRequirement, JobPoolMissingRequirement, JobPoolRoleMatch, JobPoolSweepProposalCoverage, JobPoolUploadView, JobPoolWeakRequirement } from "../../../../lib/career/job-pool/types";
@@ -50,11 +52,11 @@ const MUTED = SIL_TOKENS.colors.textMuted;
 
 const mono: React.CSSProperties = { fontFamily: MONO, fontSize: "10px", color: INK, wordBreak: "break-all" };
 const muted: React.CSSProperties = { ...mono, color: MUTED };
-const micro: React.CSSProperties = { fontFamily: MONO, fontSize: "8.5px", color: MUTED, letterSpacing: "0.3px", lineHeight: 1.5, wordBreak: "break-word" };
-const label: React.CSSProperties = { fontFamily: MONO, fontSize: "8.5px", fontWeight: 600, letterSpacing: "1.8px", textTransform: "uppercase", color: MUTED, margin: 0 };
-const prose: React.CSSProperties = { fontFamily: SANS, fontSize: "11.5px", lineHeight: 1.6, color: INK_SOFT, margin: 0 };
-const title: React.CSSProperties = { fontFamily: SANS, fontSize: "17px", fontWeight: 600, letterSpacing: "-0.2px", lineHeight: 1.25, color: INK, margin: 0 };
-const display: React.CSSProperties = { fontFamily: MONO, fontSize: "26px", fontWeight: 300, letterSpacing: "-1px", lineHeight: 1, color: CYAN };
+const micro: React.CSSProperties = { fontFamily: MONO, fontSize: "9px", color: MUTED, letterSpacing: "0.3px", lineHeight: 1.55, wordBreak: "break-word" };
+const label: React.CSSProperties = { fontFamily: MONO, fontSize: "9px", fontWeight: 600, letterSpacing: "1.8px", textTransform: "uppercase", color: MUTED, margin: 0 };
+const prose: React.CSSProperties = { fontFamily: SANS, fontSize: "12.5px", lineHeight: 1.65, color: INK_SOFT, margin: 0 };
+const title: React.CSSProperties = { fontFamily: SANS, fontSize: "20px", fontWeight: 600, letterSpacing: "-0.3px", lineHeight: 1.2, color: INK, margin: 0 };
+const display: React.CSSProperties = { fontFamily: MONO, fontSize: "30px", fontWeight: 300, letterSpacing: "-1.2px", lineHeight: 1, color: CYAN };
 const amber: React.CSSProperties = { ...micro, color: AMBER, opacity: 0.9 };
 const red: React.CSSProperties = { ...mono, color: RED };
 const green: React.CSSProperties = { ...mono, color: GREEN };
@@ -77,6 +79,7 @@ const POOL_CSS = `
 @keyframes jpBreathScale { 0%, 100% { transform: scale(1); } 50% { transform: scale(var(--jp-amp, 1.03)); } }
 @keyframes jpCirculate { to { stroke-dashoffset: -60; } }
 @keyframes jpPulse { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; } }
+@keyframes jpNebula { 0%, 100% { opacity: var(--jp-lo); } 50% { opacity: var(--jp-hi); } }
 [data-testid="job-pool-panel"] [data-jp-reveal] { animation: jpRise .32s ease-out both; }
 [data-testid="job-pool-panel"] button:hover:not(:disabled) { color: #e6f1f8; text-shadow: 0 0 12px rgba(56, 229, 255, 0.45); }
 [data-testid="job-pool-panel"] button:focus-visible, [data-testid="job-pool-panel"] input:focus-visible { outline: 1px solid rgba(56, 229, 255, 0.7); outline-offset: 3px; border-radius: 2px; }
@@ -189,8 +192,8 @@ function RoleReading({ role, rank, t }: { role: JobPoolRoleMatch; rank: number; 
       <div style={{ display: "grid", gridTemplateColumns: "auto minmax(0, 1fr) auto", columnGap: "14px", alignItems: "baseline" }}>
         <span style={{ ...display, fontSize: "22px", color: lit ? CYAN : MUTED, textShadow: lit ? `0 0 ${motion.glowRadius}px rgba(56, 229, 255, ${motion.glowOpacity * 0.6})` : undefined }}>{percent(role.resonanceScore)}</span>
         <span style={stack(2)}>
-          <span style={{ fontFamily: SANS, fontSize: "13.5px", fontWeight: 600, color: INK }}>{role.title}</span>
-          <span style={micro}>#{rank} · {role.organizationName} ({role.poolOrganizationId}) · {role.seniority || "—"} · {role.domainFocus || "—"} · {role.poolRoleId}</span>
+          <span style={{ fontFamily: SANS, fontSize: "15px", fontWeight: 600, color: INK }}>{role.title}</span>
+          <span style={micro}>#{rank} · {role.organizationName} · {role.seniority || "—"} · {role.domainFocus || "—"}</span>
         </span>
         <button data-testid={`job-pool-role-${role.poolRoleId}-toggle`} aria-expanded={revealed} onClick={() => setRevealed(value => !value)} style={ghost}>{revealed ? t.hideRole : t.revealRole}</button>
       </div>
@@ -222,14 +225,18 @@ function RoleReading({ role, rank, t }: { role: JobPoolRoleMatch; rank: number; 
 
 function CanonicalMappingReading({ upload, t }: { upload: JobPoolUploadView; t: JobPoolCopy }) {
   const mapping = upload.canonicalMapping;
+  const [open, setOpen] = useState(false);
   return (
-    <div data-testid="job-pool-canonical-mapping" data-mapping-state={mapping.mappingState} data-proposal-state={mapping.proposalState} data-authority-state={mapping.authorityState} style={stack(6)}>
-      <span style={sectionTitle}>{t.canonicalMapping}</span>
+    <div data-testid="job-pool-canonical-mapping" data-mapping-state={mapping.mappingState} data-proposal-state={mapping.proposalState} data-authority-state={mapping.authorityState} data-revealed={open ? "true" : "false"} style={stack(6)}>
       <span style={row(12)}>
-        <span style={word(GREEN)}>{mapping.mappingState}</span> <span style={word(AMBER)}>{mapping.proposalState}</span> <span style={word(AMBER)}>authority {mapping.authorityState}</span> <span style={micro}>{mapping.provider}</span>
+        <span style={word(GREEN)}>{mapping.mappingState}</span> <span style={word(AMBER)}>{mapping.proposalState}</span> <span style={word(AMBER)}>authority {mapping.authorityState}</span>
+        <button data-testid="job-pool-layer-c-toggle" aria-expanded={open} onClick={() => setOpen(value => !value)} style={ghost}>{open ? t.layerCHide : t.layerC}</button>
       </span>
-      <span style={micro}>{mapping.organizations.length} TOREV · {mapping.roles.length} TRPREV · {mapping.roles.reduce((sum, role) => sum + role.requirements.length, 0)} TRQREV · raw sha256 {upload.rawSha256.slice(0, 16)}… · canonical sha256 {upload.canonicalSha256.slice(0, 16)}…</span>
-      <span style={{ ...prose, fontSize: "10.5px" }}>{t.canonicalMappingBoundary}</span>
+      <div hidden={!open} data-jp-reveal={open ? "true" : undefined} style={{ display: open ? "flex" : "none", flexDirection: "column", gap: "6px" }}>
+        <span style={sectionTitle}>{t.canonicalMapping}</span>
+        <span style={micro}>{mapping.provider} · {mapping.organizations.length} TOREV · {mapping.roles.length} TRPREV · {mapping.roles.reduce((sum, role) => sum + role.requirements.length, 0)} TRQREV · raw sha256 {upload.rawSha256.slice(0, 16)}… · canonical sha256 {upload.canonicalSha256.slice(0, 16)}…</span>
+        <span style={{ ...prose, fontSize: "11.5px" }}>{t.canonicalMappingBoundary}</span>
+      </div>
     </div>
   );
 }
@@ -272,6 +279,7 @@ function StructureCanvas({ structure, selectedRoleId, hoveredRoleId, mode, t, on
       <defs>
         <filter id="jpBlur" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="9" /></filter>
         <filter id="jpBlurSoft" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="22" /></filter>
+        <filter id="jpNebula" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="30" /></filter>
         <radialGradient id="jpCoreGradient"><stop offset="0%" stopColor="rgba(56, 229, 255, 0.5)" /><stop offset="55%" stopColor="rgba(56, 229, 255, 0.1)" /><stop offset="100%" stopColor="rgba(56, 229, 255, 0)" /></radialGradient>
         <radialGradient id="jpFieldGradient"><stop offset="0%" stopColor="rgba(56, 229, 255, 0.05)" /><stop offset="70%" stopColor="rgba(56, 229, 255, 0.012)" /><stop offset="100%" stopColor="rgba(3, 5, 8, 0)" /></radialGradient>
       </defs>
@@ -279,6 +287,25 @@ function StructureCanvas({ structure, selectedRoleId, hoveredRoleId, mode, t, on
       <circle cx={center} cy={center} r={uploadRadius} fill="none" stroke="rgba(56, 229, 255, 0.16)" strokeDasharray="2 6" />
       <text x={center} y={center - uploadRadius - 22} textAnchor="middle" fill={MUTED} fontFamily={MONO} fontSize={8} letterSpacing={1}>{t.orbit}</text>
       <circle cx={center} cy={center} r={structureRadius} fill="none" stroke="rgba(56, 229, 255, 0.1)" strokeDasharray="2 6" />
+      {structure !== null && structure.organizations.map(organization => {
+        const hue = organizationHue(organization.hueIndex);
+        const lit = organization.aggregateScore !== null;
+        const light = lit ? 0.06 + 0.3 * Math.min(1, Math.max(0, organization.aggregateScore ?? 0)) : 0.05;
+        const focusedHere = organization.roleIds.some(id => id === hoveredRoleId || id === selectedRoleId);
+        return (
+          <path
+            key={`nebula-${organization.poolOrganizationId}`}
+            data-testid={`job-pool-nebula-${organization.poolOrganizationId}`}
+            data-aggregate-score={organization.aggregateScore ?? ""}
+            data-hue={hue}
+            data-motion={lit && motion.core.periodMs > 0 ? "BREATH" : "STILL"}
+            d={sectorPath(center, center, structureRadius - 48, organizationRadius + 14, organization.startAngle + 1, organization.endAngle - 1)}
+            fill={`hsla(${hue}, 85%, 62%, 1)`}
+            filter="url(#jpNebula)"
+            style={{ opacity: light * (focusedHere ? 1.35 : 1), ["--jp-lo" as string]: light * 0.75, ["--jp-hi" as string]: light * 1.25, animation: lit && motion.core.periodMs > 0 ? `jpNebula ${motion.core.periodMs * 1.6}ms ease-in-out infinite` : undefined, transition: "opacity .4s ease", pointerEvents: "none" } as React.CSSProperties}
+          />
+        );
+      })}
       <g data-testid="job-pool-core" data-motion="BREATH" transform={`translate(${center} ${center})`}>
         <circle r={coreRadius + 50} fill="url(#jpCoreGradient)" filter="url(#jpBlurSoft)" style={{ ["--jp-lo" as string]: 0.55, ["--jp-hi" as string]: 1, animation: motion.core.periodMs > 0 ? `jpBreathLight ${motion.core.periodMs}ms ease-in-out infinite` : undefined } as React.CSSProperties} />
         <g style={{ ["--jp-amp" as string]: motion.core.amplitudeScale, animation: motion.core.periodMs > 0 ? `jpBreathScale ${motion.core.periodMs}ms ease-in-out infinite` : undefined, transformBox: "fill-box", transformOrigin: "center" } as React.CSSProperties}>
@@ -287,13 +314,15 @@ function StructureCanvas({ structure, selectedRoleId, hoveredRoleId, mode, t, on
         <circle r={coreRadius + 9} fill="none" stroke="rgba(56, 229, 255, 0.3)" strokeDasharray="3 5" style={{ animation: motion.sweepHalo.durationMs > 0 && structure !== null ? `jpCirculate ${motion.sweepHalo.durationMs}ms linear infinite` : undefined }} />
       </g>
       {structure !== null && structure.organizations.map(organization => {
-        const mid = (organization.startAngle + organization.endAngle) / 2;
-        const radians = ((mid - 90) * Math.PI) / 180;
         const focusedHere = organization.roleIds.some(id => id === hoveredRoleId || id === selectedRoleId);
+        const labelPathId = `jp-label-arc-${organization.poolOrganizationId}`;
         return (
           <g key={organization.poolOrganizationId} data-testid={`job-pool-structure-organization-${organization.poolOrganizationId}`} data-role-count={organization.roleIds.length} style={{ transition: "opacity .3s ease", opacity: selectedRoleId !== null && !focusedHere ? 0.45 : 1 }}>
-            <path d={organization.arc} fill="none" stroke={focusedHere ? "rgba(56, 229, 255, 0.6)" : "rgba(56, 229, 255, 0.26)"} strokeWidth={focusedHere ? 2 : 1.5} style={{ transition: "stroke .3s ease" }} />
-            <text x={center + (organizationRadius + 22) * Math.cos(radians)} y={center + (organizationRadius + 22) * Math.sin(radians)} textAnchor="middle" dominantBaseline="middle" fill={focusedHere ? INK : MUTED} fontFamily={MONO} fontSize={9} letterSpacing={1}>{shortTitle(organization.name.toUpperCase(), 28)}</text>
+            <path d={organization.arc} fill="none" stroke={`hsla(${organizationHue(organization.hueIndex)}, 85%, 70%, ${focusedHere ? 0.7 : 0.28})`} strokeWidth={focusedHere ? 1.6 : 1} style={{ transition: "stroke .3s ease" }} />
+            <defs><path id={labelPathId} d={organization.labelArc} /></defs>
+            <text fill={focusedHere ? INK : MUTED} fontFamily={MONO} fontSize={9.5} letterSpacing={1.6} dominantBaseline="middle">
+              <textPath href={`#${labelPathId}`} startOffset="50%" textAnchor="middle">{shortTitle(organization.name.toUpperCase(), 30)}</textPath>
+            </text>
           </g>
         );
       })}
@@ -328,7 +357,7 @@ function StructureCanvas({ structure, selectedRoleId, hoveredRoleId, mode, t, on
             })}
             <circle r={radius} fill={`rgba(56, 229, 255, ${light === null ? 0.06 : light.bodyOpacity})`} stroke={light === null ? "rgba(56, 229, 255, 0.4)" : lit ? CYAN : "rgba(255, 91, 101, 0.5)"} strokeWidth={1} />
             <text textAnchor="middle" y={3} fill={INK} fontFamily={MONO} fontSize={8.5} fontWeight={700}>{role.resonanceScore === null ? role.requirements.length : percent(role.resonanceScore)}</text>
-            <text textAnchor="middle" y={radius + 16} fill={lit || light === null ? INK : MUTED} fontFamily={MONO} fontSize={9} fontWeight={700}>{shortTitle(role.title, 20)}</text>
+            <text textAnchor="middle" y={radius + 17} fill={lit || light === null ? INK : MUTED} fontFamily={SANS} fontSize={11} fontWeight={600}>{shortTitle(role.title, 20)}</text>
             {focused && <text textAnchor="middle" y={radius + 27} fill={MUTED} fontFamily={MONO} fontSize={7.5}>{role.requirements.length} {t.requirements.toLowerCase()}</text>}
           </g>
         );
@@ -374,6 +403,7 @@ export function JobPoolMatchPanelView({ workflow, analysisSource, jobPoolUploadI
   const [fileText, setFileText] = useState<string | null>(null);
   const [structureRoleId, setStructureRoleId] = useState<string | null>(null);
   const [hoveredRoleId, setHoveredRoleId] = useState<string | null>(null);
+  const [detailsOpen, setDetailsOpen] = useState(false);
 
   const selectPool = (id: string) => {
     workflow.select(id);
@@ -433,6 +463,7 @@ export function JobPoolMatchPanelView({ workflow, analysisSource, jobPoolUploadI
       data-matches-state={workflow.matches.state}
       data-field-grammar="POOL_FIELD_V1"
       data-surface-grammar="FIELD_EXTENSION_V1"
+      data-galaxy-grammar="GALAXY_V1"
       data-motion-grammar={JOB_FIELD_MOTION_VERSION}
       data-motion-mode={mode}
       data-structure-role={structureRole?.poolRoleId ?? ""}
@@ -594,25 +625,28 @@ export function JobPoolMatchPanelView({ workflow, analysisSource, jobPoolUploadI
                 <div data-testid="job-pool-presentation-labels" data-policy-version={presentation.presentation.policyVersion} data-authority-state={presentation.presentation.authorityState} style={row(12)}>
                   {presentationLabels(presentation.presentation).map(item => <span key={item} data-testid={`job-pool-label-${item}`} style={word(AMBER)}>{t.labels[item]}</span>)}
                 </div>
-                <span style={micro}>{presentation.presentation.kind} · {presentation.presentation.policyVersion} · authority {presentation.presentation.authorityState} · canonicalEvaluation {String(presentation.presentation.canonicalEvaluation)} · decision {String(presentation.presentation.decision)}</span>
-                <span style={micro}>{t.candidateCapabilities} {presentation.candidateCapabilityCount} · {t.weakThreshold} {presentation.presentation.weakEvidenceThreshold} · {presentation.poolId} v{presentation.poolVersion}</span>
                 <span data-testid="job-pool-ranking" data-ranking={ranking} style={{ ...micro, color: ranking === "DELIVERED_ORDER_NOT_MONOTONE" ? AMBER : MUTED }}>{t.ranking[ranking]}</span>
-                <div data-testid="job-pool-capability-sweep" data-sweep-state={presentation.capabilitySweep.state} data-proposal-count={presentation.capabilitySweep.proposalCount} data-scored="false" style={{ ...stack(4), padding: "8px 0", borderTop: "1px dashed rgba(99, 120, 138, 0.3)", borderBottom: "1px dashed rgba(99, 120, 138, 0.3)" }}>
-                  <span style={sectionTitle}>{t.sweep}</span>
-                  <span style={{ ...micro, color: presentation.capabilitySweep.state === "FAILED" ? RED : presentation.capabilitySweep.state === "NOT_PRODUCED" ? AMBER : MUTED }}>{t.sweepStates[presentation.capabilitySweep.state]} · {t.sweepProposals} {presentation.capabilitySweep.proposalCount} · <span style={word(AMBER)}>{t.unscored}</span></span>
-                  <span style={{ ...prose, fontSize: "10.5px" }}>{t.sweepBoundary}</span>
+                <button data-testid="job-pool-matching-details-toggle" aria-expanded={detailsOpen} onClick={() => setDetailsOpen(value => !value)} style={{ ...ghost, alignSelf: "flex-start" }}>{detailsOpen ? t.matchingDetailsHide : t.matchingDetails}</button>
+                <div data-testid="job-pool-matching-details" hidden={!detailsOpen} data-jp-reveal={detailsOpen ? "true" : undefined} style={{ display: detailsOpen ? "flex" : "none", flexDirection: "column", gap: "8px" }}>
+                  <span style={micro}>{presentation.presentation.kind} · {presentation.presentation.policyVersion} · authority {presentation.presentation.authorityState} · canonicalEvaluation {String(presentation.presentation.canonicalEvaluation)} · decision {String(presentation.presentation.decision)}</span>
+                  <span style={micro}>{t.candidateCapabilities} {presentation.candidateCapabilityCount} · {t.weakThreshold} {presentation.presentation.weakEvidenceThreshold} · {presentation.poolId} v{presentation.poolVersion}</span>
+                  <div data-testid="job-pool-capability-sweep" data-sweep-state={presentation.capabilitySweep.state} data-proposal-count={presentation.capabilitySweep.proposalCount} data-scored="false" style={{ ...stack(4), padding: "8px 0", borderTop: "1px dashed rgba(99, 120, 138, 0.3)", borderBottom: "1px dashed rgba(99, 120, 138, 0.3)" }}>
+                    <span style={sectionTitle}>{t.sweep}</span>
+                    <span style={{ ...micro, color: presentation.capabilitySweep.state === "FAILED" ? RED : presentation.capabilitySweep.state === "NOT_PRODUCED" ? AMBER : MUTED }}>{t.sweepStates[presentation.capabilitySweep.state]} · {t.sweepProposals} {presentation.capabilitySweep.proposalCount} · <span style={word(AMBER)}>{t.unscored}</span></span>
+                    <span style={{ ...prose, fontSize: "11.5px" }}>{t.sweepBoundary}</span>
+                  </div>
+                  <span style={{ ...prose, fontSize: "11.5px" }}>{t.missingBoundary}</span>
+                  <div data-testid="job-pool-organizations" style={stack(4)}>
+                    <span style={sectionTitle}>{t.organizations}</span>
+                    {presentation.organizationMatches.map(organization => (
+                      <span key={organization.poolOrganizationId} data-testid={`job-pool-organization-${organization.poolOrganizationId}`} style={micro}>
+                        <span style={{ color: INK }}>{organization.name}</span> · {organization.industry || "—"} · {percent(organization.aggregateScore)} · {organization.roleCount} roles · top: {organization.topRoleTitle ?? "—"}
+                      </span>
+                    ))}
+                  </div>
                 </div>
                 <div data-testid="job-pool-role-list" data-role-count={presentation.roleMatches.length} style={stack(2)}>
                   {presentation.roleMatches.map((role, index) => <RoleReading key={role.poolRoleId} role={role} rank={index + 1} t={t} />)}
-                </div>
-                <span style={{ ...prose, fontSize: "10.5px" }}>{t.missingBoundary}</span>
-                <div data-testid="job-pool-organizations" style={stack(4)}>
-                  <span style={sectionTitle}>{t.organizations}</span>
-                  {presentation.organizationMatches.map(organization => (
-                    <span key={organization.poolOrganizationId} data-testid={`job-pool-organization-${organization.poolOrganizationId}`} style={micro}>
-                      <span style={{ color: INK }}>{organization.name}</span> · {organization.industry || "—"} · {percent(organization.aggregateScore)} · {organization.roleCount} roles · top: {organization.topRoleTitle ?? "—"}
-                    </span>
-                  ))}
                 </div>
               </div>
             );

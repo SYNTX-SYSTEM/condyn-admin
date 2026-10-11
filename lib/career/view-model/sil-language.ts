@@ -300,6 +300,12 @@ export const SIL_COPY = {
       enterJobField: "ENTER JOB FIELD →",
       intake: "INTAKE",
       allRoles: "ALL ROLES",
+      layerC: "LAYER C DETAILS",
+      layerCHide: "HIDE LAYER C",
+      aggregates: "ORGANISATION AGGREGATES",
+      aggregatesHide: "HIDE AGGREGATES",
+      matchingDetails: "MATCHING DETAILS",
+      matchingDetailsHide: "HIDE MATCHING DETAILS",
       upload: "UPLOAD JOB POOL (JSON)",
       uploader: "UPLOADER ACTOR ID (SELF-DECLARED, NOT AUTHENTICATED)",
       chooseFile: "CHOOSE JSON FILE",
@@ -449,7 +455,13 @@ export const SIL_COPY = {
       hideAll: "HIDE ALL EVIDENCE",
       ids: "IDS",
       composition: "REQUIREMENT COMPOSITION",
-      hoverHint: "hover a role for its pending field · click to open it"
+      hoverHint: "hover a role for its pending field · click to open it",
+      reading: "{title} at {organization}: pool resonance {resonance} (presentation). {matched} of {total} requirements matched with scored evidence, {unresolved} unresolved, {covered} covered by the sweep without a score, {none} without delivered evidence.",
+      why: "WHY PENDING",
+      whyHide: "HIDE",
+      galaxy: "nebula = one pool organisation (its colour is identity only) · its light = delivered organisation resonance (presentation) · thread from the core = scored evidence, brighter with more pool resonance; no thread = no scored match · moons around a role = its requirements, one body each, in state order",
+      details: "DETAILS",
+      detailsHide: "HIDE DETAILS"
     },
 
     emptyStates: {
@@ -766,6 +778,12 @@ export const SIL_COPY = {
       enterJobField: "JOB-FELD BETRETEN →",
       intake: "AUFNAHME",
       allRoles: "ALLE ROLLEN",
+      layerC: "LAYER-C-DETAILS",
+      layerCHide: "LAYER C AUSBLENDEN",
+      aggregates: "ORGANISATIONSAGGREGATE",
+      aggregatesHide: "AGGREGATE AUSBLENDEN",
+      matchingDetails: "MATCHING-DETAILS",
+      matchingDetailsHide: "MATCHING-DETAILS AUSBLENDEN",
       upload: "JOB-POOL HOCHLADEN (JSON)",
       uploader: "HOCHLADENDE AKTEUR-ID (SELBSTDEKLARIERT, NICHT AUTHENTIFIZIERT)",
       chooseFile: "JSON-DATEI WÄHLEN",
@@ -915,7 +933,13 @@ export const SIL_COPY = {
       hideAll: "ALLE EVIDENZ AUSBLENDEN",
       ids: "IDS",
       composition: "ANFORDERUNGSZUSAMMENSETZUNG",
-      hoverHint: "Rolle überfahren für ihr Ausstehend-Feld · klicken zum Öffnen"
+      hoverHint: "Rolle überfahren für ihr Ausstehend-Feld · klicken zum Öffnen",
+      reading: "{title} bei {organization}: Pool-Resonanz {resonance} (Präsentation). {matched} von {total} Anforderungen mit bewerteter Evidenz erfüllt, {unresolved} ungelöst, {covered} durch den Sweep abgedeckt ohne Bewertung, {none} ohne gelieferte Evidenz.",
+      why: "WARUM AUSSTEHEND",
+      whyHide: "AUSBLENDEN",
+      galaxy: "Nebel = eine Pool-Organisation (Farbe nur Identität) · sein Licht = gelieferte Organisationsresonanz (Präsentation) · Faden vom Kern = bewertete Evidenz, heller bei mehr Pool-Resonanz; kein Faden = kein bewerteter Match · Monde um eine Rolle = ihre Anforderungen, ein Körper je Anforderung, in Zustandsreihenfolge",
+      details: "DETAILS",
+      detailsHide: "DETAILS AUSBLENDEN"
     },
 
     emptyStates: {

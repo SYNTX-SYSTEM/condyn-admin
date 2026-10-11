@@ -86,6 +86,10 @@ export interface JobFieldOrganization {
   roleIds: string[];
   startAngle: number;
   endAngle: number;
+  /** Delivered organisation aggregate (POOL RESONANCE, PRESENTATION) from organizationMatches, or null when not delivered. The nebula's light. */
+  aggregateScore: number | null;
+  /** Position among the delivered organisations (0-based): the nebula's hue is identity only, never a value. */
+  hueIndex: number;
 }
 
 export interface JobFieldLayout {
@@ -189,7 +193,8 @@ export function deriveJobField(presentation: JobPoolMatchPresentation, layout: J
       });
       slotIndex += 1;
     }
-    organizations.push({ poolOrganizationId: group.poolOrganizationId, name: group.name, roleIds: group.roles.map(role => role.poolRoleId), startAngle, endAngle: slotIndex * slot });
+    const aggregate = presentation.organizationMatches.find(organization => organization.poolOrganizationId === group.poolOrganizationId) ?? null;
+    organizations.push({ poolOrganizationId: group.poolOrganizationId, name: group.name, roleIds: group.roles.map(role => role.poolRoleId), startAngle, endAngle: slotIndex * slot, aggregateScore: aggregate === null ? null : aggregate.aggregateScore, hueIndex: organizations.length });
   }
   const nearestRole = roles.find(role => role.hasScoredMatch) ?? null;
   return {
@@ -248,3 +253,37 @@ export function ringSegments(counts: JobFieldCounts): Array<{ state: JobFieldReq
   }
   return segments;
 }
+
+/** SVG path of an annular sector (a nebula) between two radii, angles in degrees from 12 o'clock. */
+export function sectorPath(cx: number, cy: number, innerRadius: number, outerRadius: number, startAngle: number, endAngle: number): string {
+  const toPoint = (radius: number, angle: number) => { const radians = ((angle - 90) * Math.PI) / 180; return [cx + radius * Math.cos(radians), cy + radius * Math.sin(radians)] as const; };
+  const sweep = Math.min(359.999, Math.max(0, endAngle - startAngle));
+  if (sweep <= 0) return "";
+  const large = sweep > 180 ? 1 : 0;
+  const [ox1, oy1] = toPoint(outerRadius, startAngle);
+  const [ox2, oy2] = toPoint(outerRadius, startAngle + sweep);
+  const [ix1, iy1] = toPoint(innerRadius, startAngle + sweep);
+  const [ix2, iy2] = toPoint(innerRadius, startAngle);
+  return `M ${ox1} ${oy1} A ${outerRadius} ${outerRadius} 0 ${large} 1 ${ox2} ${oy2} L ${ix1} ${iy1} A ${innerRadius} ${innerRadius} 0 ${large} 0 ${ix2} ${iy2} Z`;
+}
+
+export interface JobFieldMoon {
+  poolRequirementId: string;
+  state: JobFieldRequirementState;
+  angle: number;
+  x: number;
+  y: number;
+}
+
+/** Requirements as moons around their role: one body per requirement, evenly spaced, in a fixed state order (MATCHED, UNRESOLVED, COVERED_UNSCORED, NO_EVIDENCE_DELIVERED), never by weight or score. */
+export function requirementMoons(requirements: readonly JobFieldRequirement[], radius: number): JobFieldMoon[] {
+  const order: JobFieldRequirementState[] = ["MATCHED", "UNRESOLVED", "COVERED_UNSCORED", "NO_EVIDENCE_DELIVERED"];
+  const sorted = order.flatMap(state => requirements.filter(requirement => requirement.state === state));
+  const slot = sorted.length === 0 ? 0 : 360 / sorted.length;
+  return sorted.map((requirement, index) => {
+    const angle = index * slot;
+    const radians = ((angle - 90) * Math.PI) / 180;
+    return { poolRequirementId: requirement.poolRequirementId, state: requirement.state, angle, x: Math.round(radius * Math.cos(radians) * 100) / 100, y: Math.round(radius * Math.sin(radians) * 100) / 100 };
+  });
+}
+
