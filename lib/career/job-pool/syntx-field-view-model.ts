@@ -332,6 +332,10 @@ export const REQUIREMENT_LABEL = Object.freeze({ maxChars: 16, maxLines: 3, size
 export const ROLE_CLEARANCE_RADIUS = 48;
 /** Source carrier (document glyph ±12) with its SOURCE kicker and two-line title below: no foreign trace crosses it; the REQUIREMENT camera keeps it in view. */
 export const SOURCE_BOX = Object.freeze({ halfWidth: 52, above: 14, below: 68 });
+/** The carrier lives in orbit: it circles its routed place on the evidence ring on a small loop of this radius (renderer motion, the field's mote drift; the routed place stays the proofs' truth). */
+export const SOURCE_ORBIT_RADIUS = 10;
+/** Reach of that loop in field units (the REQUIREMENT camera keeps the circling carrier in view). */
+export const SOURCE_ORBIT_REACH = SOURCE_ORBIT_RADIUS;
 /** Bows tried in order; co-terminal traces never share a bow, so each remains visible and hit-testable (F-SX-2). */
 export const TRACE_BOWS: readonly number[] = Object.freeze([0, 18, -18, 36, -36, 54, -54, 72, -72]);
 const TRACE_CLEARANCE = 2;
@@ -558,8 +562,8 @@ export function requirementCamera(requirement: SyntxRequirement, role: Point, re
   const half = SYNTX_LAYOUT.center / scale;
   const margin = 10;
   const label = requirementLabel(requirement).box;
-  const xs = [requirement.x - 14, requirement.x + 14, label.x, label.x + label.width, ...reached.flatMap(point => [point.x - SOURCE_BOX.halfWidth, point.x + SOURCE_BOX.halfWidth])];
-  const ys = [requirement.y - 14, requirement.y + 14, label.y, label.y + label.height, ...reached.flatMap(point => [point.y - SOURCE_BOX.above, point.y + SOURCE_BOX.below])];
+  const xs = [requirement.x - 14, requirement.x + 14, label.x, label.x + label.width, ...reached.flatMap(point => [point.x - SOURCE_BOX.halfWidth - SOURCE_ORBIT_REACH, point.x + SOURCE_BOX.halfWidth + SOURCE_ORBIT_REACH])];
+  const ys = [requirement.y - 14, requirement.y + 14, label.y, label.y + label.height, ...reached.flatMap(point => [point.y - SOURCE_BOX.above - SOURCE_ORBIT_REACH, point.y + SOURCE_BOX.below + SOURCE_ORBIT_REACH])];
   const fit = (values: number[], preferred: number): number => {
     const lo = Math.min(...values) - margin;
     const hi = Math.max(...values) + margin;
