@@ -143,6 +143,7 @@ ${SYNTX_CORE_KEYFRAMES}
 ${SYNTX_FOCUS_PULSE_KEYFRAMES}
 @keyframes rotateClockwise { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 @keyframes sxEnter { from { opacity: 0; } to { opacity: 1; } }
+@keyframes sxApertureBreathe { 0%, 100% { opacity: .55; } 50% { opacity: 1; } }
 @keyframes sxRise { from { opacity: 0; } to { opacity: 1; } }
 @keyframes sxSuspend { to { stroke-dashoffset: -120; } }
 @keyframes sxUnfold { from { opacity: 0; transform: scale(.62); } to { opacity: 1; transform: scale(1); } }
@@ -961,7 +962,7 @@ function FieldStage({ field, mode, t, locale, onObserve, size }: LayerProps) {
 /** Where the inspection aperture attaches: the evidence row of the inspected relation, or the suspended boundary of the role. */
 function apertureAnchor(field: SyntxFieldModel, size: { width: number; height: number }, focus: SyntxEvidenceRows | null, scrollTop: number): ApertureAnchor {
   const aperture = field.aperture;
-  const roomRight = (x: number) => size.width - x - 64 - 380 - SYNTX_MARGIN >= 0;
+  const roomRight = (x: number) => size.width - x - 64 - APERTURE_WIDTH - SYNTX_MARGIN >= 0;
   if (aperture !== null && focus !== null) {
     const { surface, rows, layout } = focus;
     const inspected = aperture.inspects;
@@ -982,14 +983,52 @@ function apertureAnchor(field: SyntxFieldModel, size: { width: number; height: n
  * EVIDENCE · the inspection aperture as the planetarium's hologram HUD on its tether (a reading surface: it holds still)
  * ================================================================================================================ */
 
+/** The aperture: a calm hologram surface (rounded HUD, fine mint / cyan frame, atmospheric interior) in semantic layers. */
+const APERTURE_WIDTH = 400;
+const APERTURE_SURFACE: React.CSSProperties = {
+  position: "absolute",
+  width: `${APERTURE_WIDTH}px`,
+  boxSizing: "border-box",
+  borderRadius: "14px",
+  border: "1px solid rgba(126, 255, 204, 0.5)",
+  background: "radial-gradient(120% 80% at 0% 0%, rgba(126, 255, 204, 0.1), transparent 55%), radial-gradient(90% 70% at 100% 0%, rgba(56, 229, 255, 0.1), transparent 60%), radial-gradient(80% 60% at 50% 115%, rgba(107, 142, 255, 0.08), transparent 70%), linear-gradient(160deg, #0a1d29 0%, #061420 45%, #030a12 100%)",
+  boxShadow: "0 18px 48px rgba(0, 0, 0, 0.85), 0 0 0 1px rgba(56, 229, 255, 0.1), 0 0 28px rgba(56, 229, 255, 0.18), inset 0 0 40px rgba(56, 229, 255, 0.05)",
+  color: INK,
+  fontFamily: MONO,
+  textAlign: "left",
+  WebkitFontSmoothing: "antialiased",
+  isolation: "isolate"
+};
+const apertureKicker: React.CSSProperties = { fontFamily: MONO, fontSize: "8.5px", fontWeight: 700, letterSpacing: "2px", textTransform: "uppercase", color: "rgba(126, 255, 204, 0.72)" };
+const apertureLabel: React.CSSProperties = { fontFamily: MONO, fontSize: "8.5px", fontWeight: 700, letterSpacing: "1.2px", textTransform: "uppercase", color: "rgba(206, 232, 241, 0.55)" };
+const apertureChip = (tone: string, dashed = false): React.CSSProperties => ({ display: "inline-flex", alignItems: "baseline", gap: "6px", padding: "4px 9px", borderRadius: "999px", border: `1px ${dashed ? "dashed" : "solid"} ${tone}`, background: "rgba(3, 14, 22, 0.7)", fontFamily: MONO, fontSize: "10.5px", color: INK, whiteSpace: "nowrap" });
+/** The relation of the inspected sign as its own line: the stroke it is drawn with, the relation, scored or unscored. */
+function ApertureRelation({ kind, label: text, tone }: { kind: SyntxTrace["kind"] | "missing_support" | "pending_evaluation"; label: string; tone: string }) {
+  const stroke = kind === "supports" || kind === "weakly_supports" || kind === "covers_unscored" ? TRACE_STROKE[kind] : null;
+  return (
+    <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+      <svg aria-hidden="true" width={34} height={10} style={{ flexShrink: 0, overflow: "visible" }}>
+        {stroke !== null
+          ? <line x1={1} y1={5} x2={33} y2={5} stroke={stroke.lit} strokeWidth={stroke.width + 0.6} strokeDasharray={stroke.dash} strokeLinecap="round" />
+          : <path d={kind === "missing_support" ? openArc(17, 5, 4.5, 90) : "M 1 5 L 33 5"} fill="none" stroke={NEUTRAL} strokeWidth={1.2} strokeDasharray={kind === "pending_evaluation" ? "5 4" : undefined} strokeLinecap="round" />}
+      </svg>
+      <span style={{ fontFamily: MONO, fontSize: "10.5px", fontWeight: 800, letterSpacing: "1.4px", textTransform: "uppercase", color: tone }}>{text}</span>
+    </div>
+  );
+}
+
 function Aperture({ aperture, field, t, anchor, onClose }: { aperture: SyntxAperture; field: SyntxFieldModel; t: SyntxCopy; anchor: ApertureAnchor; onClose(): void }) {
   const observedRole = field.roles.find(role => role.id === field.observation.roleId) ?? null;
   const content = aperture.inspects;
-  const hudLeft = anchor.side === "right" ? anchor.x + 64 : anchor.x - 64 - 380;
+  const hudLeft = anchor.side === "right" ? anchor.x + 64 : anchor.x - 64 - APERTURE_WIDTH;
+  const left = Math.max(SYNTX_MARGIN, hudLeft);
+  const authorityParts = t.authority.split(" · ");
+  const unscored = content.kind === "trace" && content.trace.kind === "covers_unscored";
+  const relationTone = content.kind !== "trace" ? NEUTRAL : unscored ? "rgba(142, 239, 255, 0.95)" : MINT;
   return (
     <>
       <svg data-sx-aperture-tether aria-hidden="true" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", pointerEvents: "none", zIndex: 39, overflow: "visible" }}>
-        <line x1={anchor.x} y1={anchor.y} x2={anchor.side === "right" ? hudLeft : hudLeft + 380} y2={anchor.y} stroke={CYAN} strokeWidth={1.5} strokeDasharray="4 3" opacity={0.85} />
+        <line x1={anchor.x} y1={anchor.y} x2={anchor.side === "right" ? left : left + APERTURE_WIDTH} y2={anchor.y} stroke={CYAN} strokeWidth={1.5} strokeDasharray="4 3" opacity={0.85} />
         <circle cx={anchor.x} cy={anchor.y} r={3} fill={CYAN} />
       </svg>
       <aside
@@ -1002,46 +1041,73 @@ function Aperture({ aperture, field, t, anchor, onClose }: { aperture: SyntxAper
         role="dialog"
         aria-label={t.inspect}
         onClick={event => event.stopPropagation()}
-        style={{ ...SYNTX_HUD_SURFACE, left: `${Math.max(SYNTX_MARGIN, hudLeft)}px`, top: `${anchor.y}px`, transform: "translateY(-50%)", maxHeight: "72%", overflowY: "auto", zIndex: 40, ...stack(8) }}
+        style={{ ...APERTURE_SURFACE, left: `${left}px`, top: `${anchor.y}px`, transform: "translateY(-50%)", maxHeight: "74%", overflowY: "auto", zIndex: 40 }}
       >
-        <div style={{ ...hudTitle, marginBottom: 0 }}>
-          <span>{aperture.requirement !== null ? aperture.requirement.name : observedRole?.title ?? ""}</span>
-          <button data-testid="syntx-aperture-close" onClick={onClose} style={action("muted")}>{t.close}</button>
-        </div>
-      {content.kind === "trace" && (
-        <div style={stack(8)}>
-          <span style={{ ...word(CYAN), whiteSpace: "normal" }}>{t.relation[content.trace.kind]}</span>
-          <p data-testid="syntx-aperture-quote" style={{ ...prose, fontStyle: "italic", color: INK, paddingLeft: "10px", borderLeft: `1px ${content.trace.kind === "covers_unscored" ? "dashed" : "solid"} rgba(56, 229, 255, 0.5)` }}>“{content.trace.quote}”</p>
-          <span data-testid="syntx-aperture-source" data-source-title-state={content.trace.sourceTitleState} style={micro}>
-            {t.source}: <span style={{ color: INK }}>{content.trace.sourceTitle ?? (content.trace.sourceTitleState === "NOT_READ" ? t.sourceNotRead : t.sourceUnresolved)}</span>
-            {content.trace.location !== null && <> · {t.location} <span style={{ color: INK }}>{content.trace.location}</span></>}
-          </span>
-          <span style={micro}>{t.capabilityReference}: <span style={{ color: INK }}>{content.trace.capabilityName}</span>{content.trace.matchedConstituent !== null ? ` · ${t.constituent} ${content.trace.matchedConstituent}` : ""} · {t.basis} {content.trace.basis}</span>
-          {content.trace.contribution !== null && content.trace.confidence !== null && (
-            <span data-testid="syntx-aperture-contribution" style={micro}>{t.contribution} <span style={{ color: INK }}>{content.trace.contribution}</span> · {t.confidence} <span style={{ color: INK }}>{content.trace.confidence}</span>{aperture.requirement?.weight !== null && aperture.requirement?.weight !== undefined ? ` · ${t.weight} ${aperture.requirement.weight}` : ""}</span>
+        {/* The surface breathes: its glow alone rises and falls (no movement — the reading surface holds still). */}
+        <span data-sx-aperture-glow aria-hidden="true" style={{ position: "absolute", inset: 0, borderRadius: "14px", pointerEvents: "none", boxShadow: "0 0 34px rgba(126, 255, 204, 0.16), inset 0 0 0 1px rgba(126, 255, 204, 0.18)", animation: "sxApertureBreathe 7s ease-in-out infinite", zIndex: -1 }} />
+
+        {/* Head: what is inspected — the requirement (or the role) it belongs to. */}
+        <header style={{ padding: "15px 20px 13px", borderBottom: "1px solid rgba(126, 255, 204, 0.16)", background: "linear-gradient(180deg, rgba(126, 255, 204, 0.06), transparent)", borderRadius: "14px 14px 0 0" }}>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: "12px" }}>
+            <span style={apertureKicker}>{content.kind === "pending" ? t.manifest.role : t.manifest.requirement}{content.kind === "trace" ? ` · ${t.manifest.evidence}` : ""}</span>
+            <button data-testid="syntx-aperture-close" onClick={onClose} style={{ ...action("muted"), fontSize: "8.5px", padding: "2px 0" }}>{t.close}</button>
+          </div>
+          <div style={{ marginTop: "8px", fontFamily: MONO, fontSize: "15px", fontWeight: 800, letterSpacing: "0.6px", lineHeight: 1.3, textTransform: "uppercase", color: "#e9fbff", textShadow: `0 0 14px ${SIL_TOKENS.colors.cyanGlowStrong}` }}>{aperture.requirement !== null ? aperture.requirement.name : observedRole?.title ?? ""}</div>
+        </header>
+
+        <div style={{ padding: "14px 20px 16px", ...stack(13) }}>
+          {content.kind === "trace" && (
+            <>
+              <ApertureRelation kind={content.trace.kind} label={`${t.relation[content.trace.kind]} · ${unscored ? t.manifest.unscored : t.manifest.scored}`} tone={relationTone} />
+              <span data-testid="syntx-aperture-source" data-source-title-state={content.trace.sourceTitleState} style={{ display: "flex", alignItems: "center", flexWrap: "wrap", gap: "8px" }}>
+                <span aria-hidden="true" style={{ width: "22px", height: "22px", borderRadius: "50%", border: `1px ${unscored ? "dashed" : "solid"} rgba(126, 255, 204, 0.75)`, display: "inline-flex", alignItems: "center", justifyContent: "center", color: MINT, fontSize: "10px", boxShadow: "0 0 10px rgba(126, 255, 204, 0.2)", flexShrink: 0 }}>◈</span>
+                <span style={apertureLabel}>{t.source}:</span>
+                <span style={{ fontFamily: SANS, fontSize: "13px", fontWeight: 600, color: INK }}>{content.trace.sourceTitle ?? (content.trace.sourceTitleState === "NOT_READ" ? t.sourceNotRead : t.sourceUnresolved)}</span>
+                {content.trace.location !== null && <span style={{ ...apertureChip("rgba(126, 255, 204, 0.35)"), fontSize: "9.5px" }}><span style={apertureLabel}>{t.location}</span>{content.trace.location}</span>}
+              </span>
+              <p data-testid="syntx-aperture-quote" style={{ margin: 0, padding: "13px 16px", borderRadius: "10px", borderLeft: `2px ${unscored ? "dashed" : "solid"} ${unscored ? "rgba(142, 239, 255, 0.7)" : "rgba(126, 255, 204, 0.85)"}`, background: "linear-gradient(90deg, rgba(126, 255, 204, 0.07), rgba(126, 255, 204, 0.015))", fontFamily: SANS, fontSize: "15px", lineHeight: 1.6, color: "#f1fbfd", letterSpacing: "0.1px" }}>“{content.trace.quote}”</p>
+              <span style={{ ...micro, fontSize: "10px", color: "rgba(206, 232, 241, 0.7)" }}><span style={apertureLabel}>{t.capabilityReference}:</span> <span style={{ color: INK }}>{content.trace.capabilityName}</span>{content.trace.matchedConstituent !== null ? ` · ${t.constituent} ${content.trace.matchedConstituent}` : ""} · {t.basis} <span style={{ color: INK }}>{content.trace.basis}</span></span>
+              {content.trace.contribution !== null && content.trace.confidence !== null && (
+                <span data-testid="syntx-aperture-contribution" style={{ display: "flex", flexWrap: "wrap", gap: "7px" }}>
+                  <span style={apertureChip("rgba(56, 229, 255, 0.35)")}><span style={apertureLabel}>{t.contribution}</span> {content.trace.contribution}</span>
+                  <span style={apertureChip("rgba(56, 229, 255, 0.35)")}><span style={apertureLabel}>{t.confidence}</span> {content.trace.confidence}</span>
+                  {aperture.requirement?.weight !== null && aperture.requirement?.weight !== undefined && <span style={apertureChip("rgba(56, 229, 255, 0.35)")}><span style={apertureLabel}>{t.weight}</span> {aperture.requirement.weight}</span>}
+                </span>
+              )}
+              {unscored && <span data-testid="syntx-aperture-sweep-status" data-scored="false" style={{ ...apertureChip("rgba(142, 239, 255, 0.6)", true), alignSelf: "flex-start", fontSize: "9.5px", color: "rgba(142, 239, 255, 0.95)", whiteSpace: "normal" }}>{t.sweepStatus}</span>}
+              <p style={{ ...prose, fontSize: "12.5px", color: "rgba(230, 241, 248, 0.86)" }}>{content.trace.kind === "supports" ? t.texts.scored : content.trace.kind === "weakly_supports" ? t.texts.weak : t.texts.sweep}</p>
+              {content.trace.weakReason !== null && <span style={{ ...micro, fontSize: "10px", color: AMBER }}>{content.trace.weakReason}</span>}
+            </>
           )}
-          {content.trace.kind === "covers_unscored" && <span data-testid="syntx-aperture-sweep-status" data-scored="false" style={{ ...micro, color: "rgba(56, 229, 255, 0.8)" }}>{t.sweepStatus}</span>}
-          <p style={{ ...prose, fontSize: "11.5px" }}>{content.trace.kind === "supports" ? t.texts.scored : content.trace.kind === "weakly_supports" ? t.texts.weak : t.texts.sweep}</p>
-          {content.trace.weakReason !== null && <span style={{ ...micro, color: AMBER }}>{content.trace.weakReason}</span>}
+          {content.kind === "open" && (
+            <>
+              <ApertureRelation kind="missing_support" label={t.relation.missing_support} tone={NEUTRAL} />
+              <p data-testid="syntx-aperture-open-text" style={{ ...prose, fontSize: "14px", lineHeight: 1.6, color: "#eef8fb" }}>{t.texts.missing}</p>
+              {content.requirement.evidenceHint !== null && <span style={{ ...micro, fontSize: "10px" }}><span style={apertureLabel}>{t.hint}:</span> <span style={{ color: INK }}>{content.requirement.evidenceHint}</span></span>}
+              <span style={{ ...micro, fontSize: "10px", color: "rgba(206, 232, 241, 0.7)" }}>{content.requirement.necessity ?? ""}{content.requirement.weight !== null ? ` · ${t.weight} ${content.requirement.weight}` : ""}{content.requirement.requiredLevel !== null ? ` · ${t.level} ${content.requirement.requiredLevel}` : ""}</span>
+            </>
+          )}
+          {content.kind === "pending" && (
+            <>
+              <ApertureRelation kind="pending_evaluation" label={t.relation.pending_evaluation} tone={NEUTRAL} />
+              <p data-testid="syntx-aperture-pending-text" style={{ ...prose, fontSize: "14px", lineHeight: 1.6, color: "#eef8fb" }}>{t.texts.pending}</p>
+              <span style={{ ...micro, fontSize: "10px", color: "rgba(206, 232, 241, 0.7)" }}>{content.boundary.targetRoleProfileRevisionId} · {content.boundary.targetRequirementRevisionIds.length} TRQREV</span>
+              {observedRole?.matching && <span data-testid="syntx-aperture-resonance" data-resonance-score={observedRole.matching.resonanceScore} style={{ display: "flex", flexWrap: "wrap", gap: "7px" }}><span style={apertureChip("rgba(56, 229, 255, 0.35)")}><span style={apertureLabel}>{t.resonance}</span> {percent(observedRole.matching.resonanceScore)}</span> <span style={apertureChip("rgba(56, 229, 255, 0.35)")}><span style={apertureLabel}>{t.rank}</span> #{observedRole.matching.deliveredRank}</span></span>}
+            </>
+          )}
         </div>
-      )}
-      {content.kind === "open" && (
-        <div style={stack(6)}>
-          <span style={{ ...word(NEUTRAL), whiteSpace: "normal" }}>{t.relation.missing_support}</span>
-          <p data-testid="syntx-aperture-open-text" style={prose}>{t.texts.missing}</p>
-          {content.requirement.evidenceHint !== null && <span style={micro}>{t.hint}: {content.requirement.evidenceHint}</span>}
-          <span style={micro}>{content.requirement.necessity ?? ""}{content.requirement.weight !== null ? ` · ${t.weight} ${content.requirement.weight}` : ""}{content.requirement.requiredLevel !== null ? ` · ${t.level} ${content.requirement.requiredLevel}` : ""}</span>
-        </div>
-      )}
-      {content.kind === "pending" && (
-        <div style={stack(6)}>
-          <span style={{ ...word(NEUTRAL), whiteSpace: "normal" }}>{t.relation.pending_evaluation}</span>
-          <p data-testid="syntx-aperture-pending-text" style={prose}>{t.texts.pending}</p>
-          <span style={micro}>{content.boundary.targetRoleProfileRevisionId} · {content.boundary.targetRequirementRevisionIds.length} TRQREV</span>
-          {observedRole?.matching && <span data-testid="syntx-aperture-resonance" data-resonance-score={observedRole.matching.resonanceScore} style={micro}>{t.resonance} <span style={{ color: INK }}>{percent(observedRole.matching.resonanceScore)}</span> · {t.rank} #{observedRole.matching.deliveredRank}</span>}
-        </div>
-      )}
-        <span data-testid="syntx-aperture-authority" style={{ ...micro, color: AMBER, fontSize: "10.5px", lineHeight: 1.5 }}>{t.authority}</span>
+
+        {/* Boundary zone: the authority statement, separated from the evidence it qualifies. */}
+        <footer style={{ padding: "12px 20px 14px", borderTop: "1px dashed rgba(255, 179, 56, 0.32)", background: "linear-gradient(180deg, rgba(255, 179, 56, 0.05), rgba(255, 179, 56, 0.015))", borderRadius: "0 0 14px 14px" }}>
+          <span data-testid="syntx-aperture-authority" style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: "5px 6px", fontFamily: MONO, fontSize: "10px", lineHeight: 1.4, color: AMBER }}>
+            {authorityParts.map((part, index) => (
+              <React.Fragment key={part}>
+                {index > 0 && <span style={visuallyHidden}> · </span>}
+                <span style={{ padding: "2px 8px", borderRadius: "6px", border: "1px solid rgba(255, 179, 56, 0.28)", background: "rgba(255, 179, 56, 0.06)" }}>{part}</span>
+              </React.Fragment>
+            ))}
+          </span>
+        </footer>
       </aside>
     </>
   );

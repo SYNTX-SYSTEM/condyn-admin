@@ -44,6 +44,7 @@ closed list (LIVE only; REDUCED total — no CSS animation, no SMIL photon, the 
 | cosmos satellites (rAF, periods 130 s + 35 s per orbit) | the roles of the observed organization | continuous, shared clock |
 | role cosmos rotation (rAF, 160 s, all orbits together) | requirements, source documents and their traces (recomputed every frame; `data-orbital-motion-*` on each source body) | continuous, shared clock |
 | `sxSuspend` (48 s dash drift) | the one suspended boundary | infinite (as R15) |
+| `sxApertureBreathe` (7 s, opacity of the glow layer only) | the open inspection aperture (the surface itself holds still) | infinite |
 | `sxEnter`, `sxRise`, `sxUnfold`, `sxTraceDraw`, `sxSuspendEnter`, `sxNucleusSettle`, `sxSatelliteSettle` | level entry, requirement unfold, trace rise, deep-focus settle | finite |
 
 No longer emitted: `sxOrbit`, `sxBreathe`, `sxMoonOrbit`, `sxAtmosphere`, `sxRingPulse`, `sxSettle`, `sxRecenter`,
