@@ -1,0 +1,318 @@
+[
+  {
+    "testId": "syntx-pool",
+    "id": "field:JPOOL_30F7145E21F34BEF0FCE510DFC75837B",
+    "source": "canonical_entity",
+    "relation": "contains",
+    "state": "receded",
+    "manifestation": "region",
+    "interaction": "return",
+    "transition": "restore",
+    "proof": {
+      "upload-id": "JPOOL_30F7145E21F34BEF0FCE510DFC75837B"
+    }
+  },
+  {
+    "testId": "syntx-organization-org_nordlicht",
+    "id": "org:org_nordlicht",
+    "source": "canonical_entity",
+    "relation": "contains",
+    "state": "receded",
+    "manifestation": "region",
+    "interaction": "select",
+    "transition": "recede",
+    "proof": {
+      "upload-id": "JPOOL_30F7145E21F34BEF0FCE510DFC75837B",
+      "organization-id": "org_nordlicht",
+      "target-id": "TORGENT_FCAEB4555C6CA576BDEE33D88438A838"
+    }
+  },
+  {
+    "testId": "syntx-organization-org_rheinwerk",
+    "id": "org:org_rheinwerk",
+    "source": "canonical_entity",
+    "relation": "contains",
+    "state": "field",
+    "manifestation": "region",
+    "interaction": "select",
+    "transition": "recenter",
+    "proof": {
+      "upload-id": "JPOOL_30F7145E21F34BEF0FCE510DFC75837B",
+      "organization-id": "org_rheinwerk",
+      "target-id": "TORGENT_72792D16C29EFDFD34A2DC7676F968DA"
+    }
+  },
+  {
+    "testId": "syntx-organization-org_alpendata",
+    "id": "org:org_alpendata",
+    "source": "canonical_entity",
+    "relation": "contains",
+    "state": "receded",
+    "manifestation": "region",
+    "interaction": "select",
+    "transition": "recede",
+    "proof": {
+      "upload-id": "JPOOL_30F7145E21F34BEF0FCE510DFC75837B",
+      "organization-id": "org_alpendata",
+      "target-id": "TORGENT_0657822E4939AE2E9CEF56E7389DACA3"
+    }
+  },
+  {
+    "testId": "syntx-role-role_fullstack",
+    "id": "role:role_fullstack",
+    "source": "canonical_entity",
+    "relation": "contains",
+    "state": "receded",
+    "manifestation": "carrier",
+    "interaction": "select",
+    "transition": "recede",
+    "proof": {
+      "upload-id": "JPOOL_30F7145E21F34BEF0FCE510DFC75837B",
+      "organization-id": "org_nordlicht",
+      "role-id": "role_fullstack",
+      "target-id": "TROBREV_A2BC5D6C70543C8A23ADC9F1441C4E32"
+    }
+  },
+  {
+    "testId": "syntx-role-role_frontend_lead",
+    "id": "role:role_frontend_lead",
+    "source": "canonical_entity",
+    "relation": "contains",
+    "state": "receded",
+    "manifestation": "carrier",
+    "interaction": "select",
+    "transition": "recede",
+    "proof": {
+      "upload-id": "JPOOL_30F7145E21F34BEF0FCE510DFC75837B",
+      "organization-id": "org_nordlicht",
+      "role-id": "role_frontend_lead",
+      "target-id": "TROBREV_EC1C367BA819716D795B331BA90D389B"
+    }
+  },
+  {
+    "testId": "syntx-role-role_platform",
+    "id": "role:role_platform",
+    "source": "canonical_entity",
+    "relation": "contains",
+    "state": "receded",
+    "manifestation": "carrier",
+    "interaction": "select",
+    "transition": "recede",
+    "proof": {
+      "upload-id": "JPOOL_30F7145E21F34BEF0FCE510DFC75837B",
+      "organization-id": "org_rheinwerk",
+      "role-id": "role_platform",
+      "target-id": "TROBREV_8DEB18ED09E699321E57FE4043F29506"
+    }
+  },
+  {
+    "testId": "syntx-role-role_architect",
+    "id": "role:role_architect",
+    "source": "canonical_entity",
+    "relation": "contains",
+    "state": "role_selected",
+    "manifestation": "carrier",
+    "interaction": "return",
+    "transition": "unfold",
+    "proof": {
+      "upload-id": "JPOOL_30F7145E21F34BEF0FCE510DFC75837B",
+      "organization-id": "org_rheinwerk",
+      "role-id": "role_architect",
+      "target-id": "TROBREV_1A31E13F63A4958C389F6762D34A3662"
+    }
+  },
+  {
+    "testId": "syntx-role-role_ml",
+    "id": "role:role_ml",
+    "source": "canonical_entity",
+    "relation": "contains",
+    "state": "receded",
+    "manifestation": "carrier",
+    "interaction": "select",
+    "transition": "recede",
+    "proof": {
+      "upload-id": "JPOOL_30F7145E21F34BEF0FCE510DFC75837B",
+      "organization-id": "org_alpendata",
+      "role-id": "role_ml",
+      "target-id": "TROBREV_32726D207BECD6E78ED1CF878EAC8050"
+    }
+  },
+  {
+    "testId": "syntx-role-role_data",
+    "id": "role:role_data",
+    "source": "canonical_entity",
+    "relation": "contains",
+    "state": "receded",
+    "manifestation": "carrier",
+    "interaction": "select",
+    "transition": "recede",
+    "proof": {
+      "upload-id": "JPOOL_30F7145E21F34BEF0FCE510DFC75837B",
+      "organization-id": "org_alpendata",
+      "role-id": "role_data",
+      "target-id": "TROBREV_1403D0C894B12F7FA20A84C16C276DA5"
+    }
+  },
+  {
+    "testId": "syntx-pending-role_architect",
+    "id": "pending:role_architect",
+    "source": "evaluation_state",
+    "relation": "pending_evaluation",
+    "state": "field",
+    "manifestation": "suspended_boundary",
+    "interaction": "inspect",
+    "transition": "boundary_suspend",
+    "proof": {
+      "upload-id": "JPOOL_30F7145E21F34BEF0FCE510DFC75837B",
+      "role-id": "role_architect",
+      "target-id": "TRPREV_43FE35D6B279D109978F53F4596F19DD",
+      "trqrev-id": "TRQREV_1734346F48A65262EE1A5F295D78A97E TRQREV_125A42C4489C2277116EAB8334A69611 TRQREV_6C5A3654BE25208081FEDD9667939063 TRQREV_DDE22126E2870EE3BF925CD8033423CD",
+      "analysis-id": "ANL_1791697406804_831"
+    }
+  },
+  {
+    "testId": null,
+    "id": "req:req_016",
+    "source": "canonical_entity",
+    "relation": "requires",
+    "state": "field",
+    "manifestation": "anchor",
+    "interaction": "select",
+    "transition": "unfold",
+    "proof": {
+      "upload-id": "JPOOL_30F7145E21F34BEF0FCE510DFC75837B",
+      "role-id": "role_architect",
+      "requirement-id": "req_016",
+      "trqrev-id": "TRQREV_1734346F48A65262EE1A5F295D78A97E"
+    }
+  },
+  {
+    "testId": "syntx-open-req_016",
+    "id": "open:req_016",
+    "source": "matching_contribution",
+    "relation": "missing_support",
+    "state": "field",
+    "manifestation": "open_boundary",
+    "interaction": "inspect",
+    "transition": "trace_rise",
+    "proof": {
+      "upload-id": "JPOOL_30F7145E21F34BEF0FCE510DFC75837B",
+      "role-id": "role_architect",
+      "requirement-id": "req_016",
+      "analysis-id": "ANL_1791697406804_831"
+    }
+  },
+  {
+    "testId": null,
+    "id": "req:req_017",
+    "source": "canonical_entity",
+    "relation": "requires",
+    "state": "field",
+    "manifestation": "anchor",
+    "interaction": "select",
+    "transition": "unfold",
+    "proof": {
+      "upload-id": "JPOOL_30F7145E21F34BEF0FCE510DFC75837B",
+      "role-id": "role_architect",
+      "requirement-id": "req_017",
+      "trqrev-id": "TRQREV_125A42C4489C2277116EAB8334A69611"
+    }
+  },
+  {
+    "testId": "syntx-open-req_017",
+    "id": "open:req_017",
+    "source": "matching_contribution",
+    "relation": "missing_support",
+    "state": "field",
+    "manifestation": "open_boundary",
+    "interaction": "inspect",
+    "transition": "trace_rise",
+    "proof": {
+      "upload-id": "JPOOL_30F7145E21F34BEF0FCE510DFC75837B",
+      "role-id": "role_architect",
+      "requirement-id": "req_017",
+      "analysis-id": "ANL_1791697406804_831"
+    }
+  },
+  {
+    "testId": null,
+    "id": "req:req_018",
+    "source": "canonical_entity",
+    "relation": "requires",
+    "state": "field",
+    "manifestation": "anchor",
+    "interaction": "select",
+    "transition": "unfold",
+    "proof": {
+      "upload-id": "JPOOL_30F7145E21F34BEF0FCE510DFC75837B",
+      "role-id": "role_architect",
+      "requirement-id": "req_018",
+      "trqrev-id": "TRQREV_6C5A3654BE25208081FEDD9667939063"
+    }
+  },
+  {
+    "testId": "syntx-open-req_018",
+    "id": "open:req_018",
+    "source": "matching_contribution",
+    "relation": "missing_support",
+    "state": "field",
+    "manifestation": "open_boundary",
+    "interaction": "inspect",
+    "transition": "trace_rise",
+    "proof": {
+      "upload-id": "JPOOL_30F7145E21F34BEF0FCE510DFC75837B",
+      "role-id": "role_architect",
+      "requirement-id": "req_018",
+      "analysis-id": "ANL_1791697406804_831"
+    }
+  },
+  {
+    "testId": null,
+    "id": "req:req_019",
+    "source": "canonical_entity",
+    "relation": "requires",
+    "state": "field",
+    "manifestation": "anchor",
+    "interaction": "select",
+    "transition": "unfold",
+    "proof": {
+      "upload-id": "JPOOL_30F7145E21F34BEF0FCE510DFC75837B",
+      "role-id": "role_architect",
+      "requirement-id": "req_019",
+      "trqrev-id": "TRQREV_DDE22126E2870EE3BF925CD8033423CD"
+    }
+  },
+  {
+    "testId": "syntx-open-req_019",
+    "id": "open:req_019",
+    "source": "matching_contribution",
+    "relation": "missing_support",
+    "state": "field",
+    "manifestation": "open_boundary",
+    "interaction": "inspect",
+    "transition": "trace_rise",
+    "proof": {
+      "upload-id": "JPOOL_30F7145E21F34BEF0FCE510DFC75837B",
+      "role-id": "role_architect",
+      "requirement-id": "req_019",
+      "analysis-id": "ANL_1791697406804_831"
+    }
+  },
+  {
+    "testId": "syntx-aperture",
+    "id": "aperture:pending:role_architect",
+    "source": "evaluation_state",
+    "relation": "pending_evaluation",
+    "state": "inspectable",
+    "manifestation": "temporary_aperture",
+    "interaction": "return",
+    "transition": "restore",
+    "proof": {
+      "upload-id": "JPOOL_30F7145E21F34BEF0FCE510DFC75837B",
+      "role-id": "role_architect",
+      "target-id": "TRPREV_43FE35D6B279D109978F53F4596F19DD",
+      "trqrev-id": "TRQREV_1734346F48A65262EE1A5F295D78A97E TRQREV_125A42C4489C2277116EAB8334A69611 TRQREV_6C5A3654BE25208081FEDD9667939063 TRQREV_DDE22126E2870EE3BF925CD8033423CD",
+      "analysis-id": "ANL_1791697406804_831"
+    }
+  }
+]

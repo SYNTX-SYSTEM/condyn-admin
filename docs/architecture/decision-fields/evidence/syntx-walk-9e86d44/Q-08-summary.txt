@@ -1,0 +1,8 @@
+FIELD: Job pool PINK validation pool, version 1, ACTIVE: 2 organizations containing 3 roles. A presentation matching was read for this pool.
+buttons at FIELD: [{"id":"org:org_pink_alpha","label":"Alpha Industrial Systems","tabindex":"0"},{"id":"org:org_pink_beta","label":"Beta Cloud GmbH","tabindex":"0"},{"id":"role:role_pink_alpha_architect","label":"Distributed Systems Architect · Alpha Industrial Systems","tabindex":"0"},{"id":"role:role_pink_beta_platform","label":"Platform Engineer · Beta Cloud GmbH","tabindex":"0"},{"id":"role:role_pink_beta_empty","label":"Role Without Requirements · Beta Cloud GmbH","tabindex":"0"}]
+keyboard trace:
+Escape → expected REQUIREMENT, observed REQUIREMENT, aperture false, focus g#syntx-trace-trace:req_pink_alpha_1:supports:DOC_001:0[trace:req_pink_alpha_1:supports:DOC_001:0] (inside: true)
+Escape → expected ROLE, observed ROLE, aperture false, focus g#syntx-trace-trace:req_pink_alpha_1:supports:DOC_001:0[trace:req_pink_alpha_1:supports:DOC_001:0] (inside: true)
+Escape → expected ORGANIZATION, observed ORGANIZATION, aperture false, focus g#syntx-organization-org_pink_alpha[org:org_pink_alpha] (inside: true)
+Escape → expected FIELD, observed FIELD, aperture false, focus g#syntx-organization-org_pink_alpha[org:org_pink_alpha] (inside: true)
+focus loss: none

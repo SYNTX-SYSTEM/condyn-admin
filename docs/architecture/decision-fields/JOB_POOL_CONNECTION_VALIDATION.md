@@ -860,6 +860,47 @@ delivered for its role). Plan 1.8.1 binds the owner environment `010f082` (heade
 to the owner is GELB's: running CONDYN on `:3017`, the verified data set, exact Firefox links; the owner's personal visual
 acceptance and full product run-through follow.
 
+### 3.24 Evidence ecology `9f225f2` under R15a accepted; integration `9e86d44` (2026-10-12)
+
+Owner mandate "CONDYN / SYNTX — FINAL INTEGRATION & PRODUCT TEST" (relayed by GELB; SFE::RECURSION_GATE, affected functions
+only). GRÜN's `9f225f2` (lab lineage `424c3f7` … `7bda76a`, owner visual corrections; design freeze) composes the evidence
+ecology as the Capability Field's deep focus: role nucleus ×1.5, anchors as satellites fanned from the top, source carriers
+on ring 135 inside the pending boundary 205 in the evidence sector 180° ± 45°, SUPPORT_DISTANCE ×1.3 (categories and order
+unchanged), traces always quadratic arcs (hit path, visible path, ray, glow, bead, two SMIL photons); the carrier orbits on
+the shared rAF clock (ellipse 14 × 9, 60 s, `data-orbital-motion-*` on `data-sx-carrier-body`; every trace recomputed from
+the moving body); `sxMoonOrbit` on carriers, `sxAtmosphere` / `sxRingPulse` on the inspectable carrier, finite `sxSettle`.
+GELB's integration `0c2c68a` = `010f082` + `9f225f2`; `9e86d44` adds binding §4 R15a (owner decision "Alles zulassen":
+the R15 sentence "at ROLE / REQUIREMENT only `sxSuspend`" replaced by that list; moons / atmosphere / pulses gated by
+`data-sx-ambient=on`, orbit and photons by LIVE; FIELD / ORGANIZATION unchanged; REDUCED total). Application delta: two
+files (`SyntxField.tsx`, `syntx-field-view-model.ts`); sign ids, enums, proofs, summaries unchanged (Appendix A 215
+identical). PINK's merge `c653f02`: `app` / `lib` / `scripts` identical to `9e86d44`.
+
+Rebinding (walk code only): both walks read an ecology frame — infinite animations by name with their host
+(`carrier:<state>` or the sign manifestation), carrier bodies (`driver`, x, y), per trace quadratic / carrier end on the body
+(< 0.05 units) / photon count — in two frames 1.5 s apart, and probe pointer ownership of every trace in both frames; the
+e2e ROLE allow-list admits `sxSettle`, `sxMoonOrbit`, `sxAtmosphere`, `sxRingPulse`; attribution at the matched aperture;
+Tab sweep, Enter, Escape at ROLE; REDUCED adds photons = 0 and static carriers. Before the rebind the unchanged walk on the
+clone read 135/136 — the single red was the superseded "nothing infinite but `sxSuspend`" (`sxMoonOrbit` beside it), every
+other check held. Three walk-code defects fixed on the first rebound run (a Tab sweep that stopped on a count match while
+the observed role sits in the order; Enter on a trace moves the observation to REQUIREMENT as the pointer does, so the
+"stays ROLE" expectation was wrong; a role without traces needs data skips) — none a field defect.
+
+Results on the owner's five checks (affected functions only): field batch 4 files / 36 green, tsc 0; e2e walk 3/3 on
+`9e86d44` (disposable database, evidence `evidence/syntx-walk-9e86d44/`; Q-06 LIVE at ROLE `sxEnter`, `sxRecenter`,
+`sxSuspend`, `sxMoonOrbit`; frame A → B: carrier DOC_001 499.035,382.934 → 497.873,384.419, both traces coupled, 2 photons
+each, owned in both frames; Q-04 attribution: inspectable carrier = DOC_001 = the aperture trace's document, atmosphere and
+both ring pulses on that carrier only; REDUCED: 0 running, 0 photons, carriers static); read-only walk on GELB's clone
+`127.0.0.1:3027` @ `9e86d44` (database `condyn_test_cb8e292df603ddc3`, GELB's product flow writing a fifth analysis
+concurrently): **149/149, 0 non-GET** (evidence `evidence/syntx-readonly-3027-9e86d44/`) — (1) R15a at ROLE and at
+REQUIREMENT with the aperture open (`sxSuspend`, `sxMoonOrbit`; plus `sxAtmosphere`, `sxRingPulse` on the inspectable carrier
+only), (2) 612: six traces own a pointer point in both frames while the carrier moved (554.851,348.225 → 552.396,347.963),
+(3) attribution DOC_001 ↔ `trace:req_001:supports:DOC_001:0`, aperture source "cv.synthetic.pdf" by join, (4) Tab reaches 7/7
+targets in 8 Tabs, Enter opens the focused trace's aperture (observation → REQUIREMENT), Escape closes it and the chain
+returns to ROLE, then the full Escape chain with focus-follow to FIELD, (5) GET only, bodies identical before and after;
+831 has no traces for its role — the trace-based steps are recorded data skips. Plan 1.9.0 binds `9e86d44` (Appendix C: R15a
+/ B-SYNTX-ECOLOGY; Q-06 / J-12 rebound). GELB moves `:3017` to `9e86d44` on this green (owner-authorized in the mandate);
+PINK's GET-only walk there follows.
+
 ## 4. Boundaries and findings for coordination
 
 - F-JP-1 (closed in `b782793`): `JOB_POOL_CONNECTION.md` §4 followed the per-role `JOB_POOL_JSON_ROLE` design;

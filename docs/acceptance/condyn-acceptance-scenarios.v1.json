@@ -1,7 +1,7 @@
 {
-  "plan": "docs/acceptance/CONDYN_SYSTEM_ACCEPTANCE_TEST_PLAN_v1.8.md",
-  "version": "1.8.1",
-  "tip": "36058a4",
+  "plan": "docs/acceptance/CONDYN_SYSTEM_ACCEPTANCE_TEST_PLAN_v1.9.md",
+  "version": "1.9.0",
+  "tip": "9e86d44",
   "generated": "2026-10-11",
   "scenarioCount": 154,
   "scenarios": [
@@ -2272,7 +2272,7 @@
       "binding": "BOUND"
     }
   ],
-  "docsTip": "36058a4",
+  "docsTip": "9e86d44",
   "activeScenarioCount": 134,
   "retiredScenarioCount": 20,
   "suiteNote": "TS-Q bound on 8cb4a50 (GRÜN 434ef49 + GELB governance + GRÜN F-SX-1/O-SX-1 repair d5105e6); retired ids (plan change under R11/R13/R14) keep their numbers and are never reused"
