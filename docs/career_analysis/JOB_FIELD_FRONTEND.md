@@ -485,6 +485,31 @@ transform, so every sign's bounding box is static. Closed list of infinite anima
 unchanged — every animation and transition zeroed, identical sign set. This block implements option B of GELB's escalation; under
 option A (spec §1 / §6.2 stand) the switch is set to `false` and the field lives through transitions and static depth alone.
 
+#### 13.2.2 Visual grammar transfer (owner mandates "SFE — GREEN · VISUAL FIELD RECONSTRUCTION" and "VISUAL GRAMMAR TRANSFER", 2026-10-12)
+
+Iterated in a visual lab (disposable world + Next dev on a free port in the GRÜN worktree, Chromium 1600×1000, the Capability Field
+captured in the same environment as the reference) until the Job Field reads as the same planetarium. The inspectable sequence lives in
+`docs/career_analysis/evidence/job-pool/living-field/` (00 reference, 01a before, 01 FIELD, 02a/02 ORGANIZATION transition and rest,
+03a/03 ROLE unfolding and rest, 04 REQUIREMENT, 05 EVIDENCE, 06 RETURN).
+
+What transferred, in the Capability Field's own grammar: (1) regions are planetarium nodes — glass body (`rgba(10,14,20,.35)`, rim
+`rgba(56,229,255,.4)` 1.3 px, lit `#38e5ff` 1.6 px), inner ring, dashed outer ring, signature ring at .78 r, and inside the node the
+identity block (kicker `01`, `⬡ NAME` mono 12.2 / 700 / tracked, subtitle `industry · region` mono 8 muted) above the roles and the
+density pill (`N ROLES`) below; the region radius is `min(190, 92 + 30·√roles)` and the roles sit on an inner ring in the lower part of
+the region (centre +.14 r, ring .44 r, .52 r unfolded) so the block reads above them; (2) role carriers are cores with a signature
+(inner dashed ring .55 r + centre point), the title below the body in mono 9.6 / 700 uppercase with its `N REQUIREMENTS` line; in the
+ecology the title sits inside the core in mono uppercase and two plasma rings (dash `24 12 8 16` / `16 8 4 12`) settle into place once
+(`sxCoreSettle`, finite, bound to `role_selected`); (3) the pool has a core at the field centre — glow, `#sxCore` body, two dashed
+plasma rings (`sxOrbit` 120 s and 90 s reverse, FIELD only, pool sign in state `field`, R15), the pool name and `N ORGANIZATIONS` —
+from which the containment spokes radiate; (4) evidence carriers use the planetarium's evidence colour (mint `#7effcc`): a document
+glyph with a `SOURCE` kicker and the title, and each trace carries a ray underlay that draws on from the source carrier to the anchor
+(`sxTraceDraw`, finite, `trace_rise`; `pathLength` 1, dash offset 1 → 0) while the trace pattern fades in behind it; (5) requirement
+labels are mono 7.8 / 700 (`REQUIREMENT_LABEL.charWidth` 4.9, routing and renderer alike); (6) the aperture carries the hover-HUD
+surface of the planetarium (starfield gradient, 1.5 px cyan border, layered shadow); (7) `SOURCE_BOX` grew to the carrier's real reach
+(above 14, below 68) so the REQUIREMENT camera keeps the carrier with its kicker and title in view (O-SX-4 holds).
+Reference values come from the sealed files (`SemanticCareerIntelligenceField.tsx`, `OrbitalResonanceBubble.tsx`,
+`IdentityCoreDropZone.tsx`, `CapabilityDeepFocusView.tsx`), read only.
+
 Manifestations are shape-encoded, never colour-only (§13.4 keyboard/accessibility): supported = filled anchor, stable trace; weak =
 thin-stroked anchor, thin trace; sweep-only = dotted anchor, dotted trace; open = arc whose gap faces outward from the role, no
 trace; pending = dashed circle around the ecology; unread = plain thin ring. No red family anywhere (R3). Motion: recenter (camera
@@ -622,3 +647,4 @@ observation point. Readable labels wrap at word boundaries (`wrapLines`), never 
 | 2026-10-11 | F-SX-1 / O-SX-1 (PINK, on 3d50c0a) | keyboard focus left the field when a return or an aperture close unmounted the focused sign (Escape then did nothing) → focus follows the observation point (B-SYNTX-FOCUS); a receded trace could capture the pointer over the inspectable one where traces converge → inspectable traces render last (B-SYNTX-TRACE-ORDER). e2e keyboard walk extended (REQUIREMENT aperture → ROLE → ORGANIZATION → FIELD with focus inside at every step) and trace order asserted | e2e 10/10 ×2 · SSR 7/7 · view model 13/13 · GELB governance 10/10 · static 3/3 · semantic governance 4/4 · tsc 0 |
 | 2026-10-11 | Perceptual closure F-SX-2 / O-SX-2 / O-SX-3 / O-SX-4 (GELB on the owner data at :3017 = 8cb4a50; PINK ruling on O-SX-3) | co-terminal traces were drawn on identical endpoints (the dotted sweep trace invisible under the stable one and, DOM-later, owning every pointer point: the matched aperture could not be opened by pointer) → traces are paths with distinct bows (B-SYNTX-BOW); traces crossed the role title → traces bend around the role disc and the labels, carriers are placed beside the requirements that reach them; the carrier was cropped at REQUIREMENT → the camera keeps scale 2.4 and shifts to reach (B-SYNTX-REACH); "1 sources" → number agreement (B-SYNTX-NUMBER) | view model 14/14 · SSR 7/7 · GELB governance 10/10 · semantic governance 4/4 · presentation 9/9 + 4/4 · e2e 10/10 · tsc 0 |
 | 2026-10-12 | Living field (owner mandate "SFE — SYNTX LIVING FIELD · VISUAL RECONSTRUCTION", on 1ca3ca9) | planetarium grammar reconstructed from the sealed Capability Field files (read only) and applied in `SyntxField.tsx`: atmosphere, orbit paths, containment ring and spokes, membranes, cores, glow referents, depth blur, unfold / rise / recenter / suspend-enter transitions, role positions moving with the region, ambient breathing + ring orbit behind one switch (B-SYNTX-MOTION); hit areas cover the rings | view model 14/14 · SSR 7/7 · GELB governance 10/10 · semantic governance 4/4 · presentation 9/9 + 4/4 · PINK static 3/3 + layer · client reads · e2e 10/10 · tsc 0 · sealed files byte-identical |
+| 2026-10-12 | Visual grammar transfer (owner mandates "GREEN · VISUAL FIELD RECONSTRUCTION", "VISUAL GRAMMAR TRANSFER", on e6486b1) | three lab rounds against the Capability Field reference: regions as planetarium nodes with identity block and density pill, roles on a lower inner ring with node typography and core signatures, pool core with plasma rings at the centre, mint evidence carriers with draw-on rays, HUD aperture surface, carrier reach box; sequence recorded under evidence/job-pool/living-field | view model 14/14 · SSR 7/7 · GELB governance 10/10 · semantic governance 4/4 · presentation 9/9 + 4/4 · PINK static 3/3 + layer · client reads · e2e 10/10 · tsc 0 · sealed files byte-identical |

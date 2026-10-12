@@ -78,7 +78,7 @@ const word = (color: string): React.CSSProperties => ({ fontFamily: MONO, fontSi
 const action = (tone: "cyan" | "muted" = "cyan", enabled = true): React.CSSProperties => ({ background: "transparent", border: "none", padding: "4px 0", fontFamily: MONO, fontSize: "9px", fontWeight: 600, letterSpacing: "1.4px", textTransform: "uppercase", color: !enabled ? "rgba(99, 120, 138, 0.6)" : tone === "cyan" ? CYAN : MUTED, cursor: enabled ? "pointer" : "not-allowed", textShadow: enabled && tone === "cyan" ? `0 0 10px ${SIL_TOKENS.colors.cyanGlow}` : undefined, transition: "color .25s ease" });
 const ghost: React.CSSProperties = { ...action("muted"), fontSize: "8px", letterSpacing: "1px" };
 /** An aperture or edge lens: a faint void behind text, no border, no card chrome. */
-const lens: React.CSSProperties = { background: "radial-gradient(ellipse at 20% 0%, rgba(3, 5, 8, 0.94) 0%, rgba(3, 5, 8, 0.84) 60%, rgba(3, 5, 8, 0.64) 100%)", backdropFilter: "blur(6px)", borderRadius: "14px", padding: "14px 16px" };
+const lens: React.CSSProperties = { background: "radial-gradient(circle at 82% 12%, rgba(56, 229, 255, 0.14), transparent 38%), radial-gradient(circle at 18% 88%, rgba(107, 142, 255, 0.1), transparent 42%), linear-gradient(145deg, #0a1c2b, #071321 28%, #050c18 62%, #02070d)", border: "1.5px solid rgba(56, 229, 255, 0.85)", boxShadow: "0 16px 44px rgba(0, 0, 0, 0.92), 0 0 34px rgba(56, 229, 255, 0.28), 0 0 72px rgba(56, 229, 255, 0.1), inset 0 0 54px rgba(0, 0, 0, 0.88)", backdropFilter: "blur(10px)", borderRadius: "10px", padding: "16px 18px" };
 const input: React.CSSProperties = { width: "100%", boxSizing: "border-box", background: "transparent", border: "none", borderBottom: "1px solid rgba(99, 120, 138, 0.4)", color: INK, fontFamily: MONO, fontSize: "10px", padding: "5px 0", outline: "none" };
 const percent = (value: number): string => `${Math.round(value * 1000) / 10}%`;
 const visuallyHidden: React.CSSProperties = { position: "absolute", width: "1px", height: "1px", margin: "-1px", padding: 0, overflow: "hidden", clip: "rect(0 0 0 0)", whiteSpace: "nowrap", border: 0 };
@@ -107,10 +107,17 @@ const SYNTX_CSS = `
 @keyframes sxUnfold { from { opacity: 0; transform: scale(.3); } to { opacity: 1; transform: scale(1); } }
 @keyframes sxTraceRise { from { opacity: 0; transform: scale(.3); } to { opacity: 1; transform: scale(1); } }
 @keyframes sxSuspendEnter { from { opacity: 0; transform: scale(.94); } to { opacity: 1; transform: scale(1); } }
+@keyframes sxTraceDraw { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
+@keyframes sxCoreSettle { from { opacity: 0; transform: rotate(-70deg) scale(.86); } to { opacity: 1; transform: rotate(0deg) scale(1); } }
 [data-testid="syntx-field"] [data-sx-reveal] { animation: sxRise .32s ease-out backwards; }
 /* Transitions of the living field: each finite, each bound to the sign's transition or state (recenter, unfold, trace_rise, boundary_suspend). */
 [data-testid="syntx-canvas"] [data-sign-transition="unfold"][data-sign-manifestation="anchor"] { transform-box: view-box; transform-origin: var(--sx-origin); animation: sxUnfold .78s cubic-bezier(.16,1,.3,1) backwards; }
 [data-testid="syntx-canvas"] [data-sign-transition="trace_rise"] { transform-box: view-box; transform-origin: var(--sx-origin); animation: sxTraceRise .78s cubic-bezier(.16,1,.3,1) .12s backwards; }
+/* Evidence rises: the trace's ray draws on from the source carrier to the anchor (trace_rise), the pattern fades in behind it. */
+[data-testid="syntx-canvas"] [data-sign-transition="trace_rise"] > [data-sx-trace-ray] { animation: sxTraceDraw 1.1s cubic-bezier(.3,0,.2,1) .2s backwards; }
+[data-testid="syntx-canvas"] [data-sign-transition="trace_rise"] > path:not([data-sx-hit]):not([data-sx-trace-ray]):not([data-sx-trace-glow]) { animation: sxRise .6s ease-out .7s backwards; }
+/* The observed role settles as the core of its ecology (role_selected): its plasma rings turn into place once. */
+[data-testid="syntx-canvas"] [data-sign-state="role_selected"] > [data-sx-core-ring] { transform-box: fill-box; transform-origin: center; animation: sxCoreSettle 1.2s cubic-bezier(.16,1,.3,1) backwards; }
 [data-testid="syntx-canvas"] [data-sign-transition="boundary_suspend"] { transform-box: view-box; transform-origin: var(--sx-origin); animation: sxSuspendEnter .78s cubic-bezier(.16,1,.3,1) backwards; }
 [data-testid="syntx-canvas"] :is([data-sign-state="organization_selected"], [data-sign-state="role_selected"], [data-sign-state="requirement_selected"]) > [data-sx-pulse] { transform-box: fill-box; transform-origin: center; animation: sxRecenter .9s ease-out forwards; }
 /* Depth: receded regions and carriers whose labels are hidden fall back behind the ecology (no visible text is blurred). */
@@ -125,6 +132,7 @@ const SYNTX_CSS = `
 [data-testid="syntx-canvas"] [data-sign-interaction="select"]:hover > [data-sx-membrane] > circle:last-child { stroke: rgba(56, 229, 255, 0.5); }
 /* Ambient life (separable: SYNTX_AMBIENT_MOTION): LIVE, FIELD / ORGANIZATION, signs in state "field", uniform per kind, phase by containment. */
 [data-testid="syntx-field"][data-sx-ambient="on"][data-motion-mode="LIVE"][data-observation-kind="FIELD"] [data-testid="syntx-pool"][data-sign-state="field"] [data-sx-orbit] { transform-box: fill-box; transform-origin: center; animation: sxOrbit 120s linear infinite; }
+[data-testid="syntx-field"][data-sx-ambient="on"][data-motion-mode="LIVE"][data-observation-kind="FIELD"] [data-testid="syntx-pool"][data-sign-state="field"] [data-sx-orbit-ccw] { transform-box: fill-box; transform-origin: center; animation: sxOrbit 90s linear infinite reverse; }
 [data-testid="syntx-field"][data-sx-ambient="on"][data-motion-mode="LIVE"]:is([data-observation-kind="FIELD"], [data-observation-kind="ORGANIZATION"]) [data-sign-manifestation="region"][data-sign-state="field"] > [data-sx-membrane] > circle,
 [data-testid="syntx-field"][data-sx-ambient="on"][data-motion-mode="LIVE"]:is([data-observation-kind="FIELD"], [data-observation-kind="ORGANIZATION"]) [data-testid^="syntx-role-"][data-sign-state="field"] > [data-sx-halo] { animation: sxBreathe 6.2s linear infinite; animation-delay: var(--sx-phase, 0s); }
 [data-testid="syntx-field"] button:hover:not(:disabled) { color: #e6f1f8; }
@@ -200,9 +208,10 @@ const receded = (sign: VisualSign): boolean => sign.state === "receded";
 const traceOrder = (trace: SyntxTrace): number => (trace.sign.state === "inspectable" ? 2 : trace.sign.state === "receded" ? 0 : 1);
 const recedeOpacity = (sign: VisualSign, deep = 0.22): number => (receded(sign) ? deep : 1);
 
-function SvgLabel({ lines, x, y, size, fill, weight = 600, anchor = "middle", family = SANS, spacing }: { lines: string[]; x: number; y: number; size: number; fill: string; weight?: number; anchor?: "middle" | "start" | "end"; family?: string; spacing?: number }) {
+function SvgLabel({ lines, x, y, size, fill, weight = 600, anchor = "middle", family = SANS, spacing, uppercase = false }: { lines: string[]; x: number; y: number; size: number; fill: string; weight?: number; anchor?: "middle" | "start" | "end"; family?: string; spacing?: number; uppercase?: boolean }) {
+  // Uppercase is presentation only (CSS): the DOM text keeps the delivered name.
   return (
-    <text x={x} y={y} textAnchor={anchor} fill={fill} fontFamily={family} fontSize={size} fontWeight={weight} letterSpacing={spacing} style={{ pointerEvents: "none" }}>
+    <text x={x} y={y} textAnchor={anchor} fill={fill} fontFamily={family} fontSize={size} fontWeight={weight} letterSpacing={spacing} style={{ pointerEvents: "none", textTransform: uppercase ? "uppercase" : undefined }}>
       {lines.map((line, index) => <tspan key={index} x={x} dy={index === 0 ? 0 : size * 1.18}>{line}</tspan>)}
     </text>
   );
@@ -256,7 +265,7 @@ function FieldCanvas({ field, mode, t, onObserve }: CanvasProps) {
     <svg data-testid="syntx-canvas" data-motion-mode={mode} data-camera-scale={camera.scale} viewBox={`0 0 ${size} ${size}`} style={{ position: "absolute", inset: 0, width: "100%", height: "100%", overflow: "visible" }} onClick={() => onObserve(returnFrom(observation))}>
       <defs>
         {/* Materials of the Capability Field (planetarium): atmosphere, membrane, core light, soft glow. */}
-        <radialGradient id="sxField"><stop offset="0%" stopColor="#38e5ff" stopOpacity="0.16" /><stop offset="58%" stopColor="#38e5ff" stopOpacity="0.035" /><stop offset="100%" stopColor="#030508" stopOpacity="0" /></radialGradient>
+        <radialGradient id="sxField"><stop offset="0%" stopColor="#38e5ff" stopOpacity="0.2" /><stop offset="58%" stopColor="#38e5ff" stopOpacity="0.04" /><stop offset="100%" stopColor="#030508" stopOpacity="0" /></radialGradient>
         <radialGradient id="sxMembrane"><stop offset="0%" stopColor="#38e5ff" stopOpacity="0.11" /><stop offset="56%" stopColor="#38e5ff" stopOpacity="0.035" /><stop offset="100%" stopColor="#38e5ff" stopOpacity="0.01" /></radialGradient>
         <radialGradient id="sxCore"><stop offset="0%" stopColor="#38e5ff" stopOpacity="0.3" /><stop offset="62%" stopColor="#38e5ff" stopOpacity="0.08" /><stop offset="100%" stopColor="#38e5ff" stopOpacity="0.02" /></radialGradient>
         <filter id="sxGlow" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur stdDeviation="7" /></filter>
@@ -287,6 +296,17 @@ function FieldCanvas({ field, mode, t, onObserve }: CanvasProps) {
                 );
               })}
               <circle cx={center} cy={center} r={R} fill="none" stroke="rgba(56, 229, 255, 0.14)" strokeDasharray="2 7" />
+              {/* The pool core: the field's organism at the centre, where the containment spokes originate (planetarium core grammar). */}
+              <g data-sx-pool-core style={{ opacity: field.pool.sign.state === "field" ? 1 : 0, transition: "opacity .45s ease" }}>
+                <circle cx={center} cy={center} r={62} fill="rgba(56, 229, 255, 0.16)" filter="url(#sxGlow)" />
+                <circle cx={center} cy={center} r={48} fill="url(#sxCore)" stroke="rgba(56, 229, 255, 0.45)" strokeWidth={1.4} />
+                <circle data-sx-orbit cx={center} cy={center} r={58} fill="none" stroke={CYAN} strokeWidth={1.1} strokeDasharray="24 12 8 16" opacity={0.55} />
+                <circle data-sx-orbit-ccw cx={center} cy={center} r={68} fill="none" stroke={SIL_TOKENS.colors.cyanGlowStrong} strokeWidth={0.9} strokeDasharray="16 8 4 12" opacity={0.6} />
+                <circle cx={center} cy={center} r={40} fill="none" stroke="rgba(56, 229, 255, 0.22)" strokeWidth={0.8} />
+                <text x={center} y={center - 10} textAnchor="middle" fill={MUTED} fontFamily={MONO} fontSize={6.6} fontWeight={700} letterSpacing={1.6}>{t.pools}</text>
+                <SvgLabel lines={wrapLines(field.pool.poolName, 14, 2)} x={center} y={center + 2} size={7.6} fill={INK} weight={700} family={MONO} spacing={0.8} uppercase />
+                <text x={center} y={center + 2 + wrapLines(field.pool.poolName, 14, 2).length * 9 + 4} textAnchor="middle" fill={CYAN} fontFamily={MONO} fontSize={6.2} fontWeight={600} letterSpacing={1.2}>{field.organizations.length} {t.organizations}</text>
+              </g>
             </g>
           );
         })()}
@@ -294,9 +314,12 @@ function FieldCanvas({ field, mode, t, onObserve }: CanvasProps) {
         {/* Organizations: named membranes; roles are visibly contained. Far regions recede with depth once a role is observed. */}
         {field.organizations.map(organization => {
           const selected = organization.sign.state === "organization_selected";
-          const far = observedRole !== null && organization.sign.state === "field";
-          const lines = wrapLines(organization.name, 22, 2);
+          const far = (observedRole !== null && organization.sign.state === "field") || (observation.kind === "ORGANIZATION" && organization.sign.state === "receded");
+          const index = field.organizations.indexOf(organization);
+          const nameLines = wrapLines(organization.name, 18, 2);
+          const subtitle = [organization.industry, organization.region].filter((part): part is string => part !== null).join(" · ");
           const r = organization.radius;
+          const top = organization.y - r;
           return (
             <g
               key={organization.id}
@@ -318,14 +341,19 @@ function FieldCanvas({ field, mode, t, onObserve }: CanvasProps) {
                 <circle cx={organization.x} cy={organization.y} r={r} fill="url(#sxMembrane)" />
                 <circle cx={organization.x} cy={organization.y} r={r + 8} fill="none" stroke={selected ? "rgba(56, 229, 255, 0.42)" : "rgba(56, 229, 255, 0.18)"} strokeWidth={1} strokeDasharray="3 3" style={{ transition: "stroke .4s ease" }} />
               </g>
-              <circle cx={organization.x} cy={organization.y} r={r} fill={selected ? "rgba(56, 229, 255, 0.05)" : "rgba(56, 229, 255, 0.02)"} stroke={selected ? "rgba(56, 229, 255, 0.7)" : "rgba(56, 229, 255, 0.26)"} strokeWidth={selected ? 1.4 : 1} style={{ transition: "stroke .4s ease, fill .4s ease" }} />
+              {/* Semiotic signature of a region: a faint inner ring, as every planetarium node carries one. */}
+              <circle cx={organization.x} cy={organization.y} r={r * 0.78} fill="none" stroke="rgba(56, 229, 255, 0.1)" strokeWidth={0.8} strokeDasharray="6 4" style={{ pointerEvents: "none" }} />
+              <circle cx={organization.x} cy={organization.y} r={r} fill={selected ? "rgba(56, 229, 255, 0.05)" : "rgba(10, 14, 20, 0.35)"} stroke={selected ? "#38e5ff" : "rgba(56, 229, 255, 0.4)"} strokeWidth={selected ? 1.6 : 1.3} style={{ transition: "stroke .4s ease, fill .4s ease" }} />
+              <circle cx={organization.x} cy={organization.y} r={r - 4} fill="none" stroke="rgba(56, 229, 255, 0.1)" strokeWidth={0.8} style={{ pointerEvents: "none" }} />
               {selected && <circle data-sx-pulse cx={organization.x} cy={organization.y} r={r + 8} fill="none" stroke={CYAN} strokeWidth={1.4} style={{ pointerEvents: "none" }} />}
-              {!far && (
-                <>
-                  <SvgLabel lines={lines} x={organization.x} y={organization.y - r - 24 - (lines.length - 1) * 15} size={13} fill={selected ? INK : INK_SOFT} weight={600} family={MONO} spacing={1.4} />
-                  <text x={organization.x} y={organization.y - r - 10} textAnchor="middle" fill={selected ? CYAN : MUTED} fontFamily={MONO} fontSize={7.5} fontWeight={600} letterSpacing={1.6} style={{ pointerEvents: "none" }}>{organization.roleIds.length} {t.roles}</text>
-                </>
-              )}
+              {/* Identity block (planetarium node grammar): kicker, glyph + name, subtitle; the density pill below the roles. Hidden text stays in the DOM when the region is far. */}
+              <g style={{ pointerEvents: "none", opacity: far ? 0 : 1, transition: "opacity .45s ease" }}>
+                <text x={organization.x} y={top + 22} textAnchor="middle" fill={selected ? CYAN : MUTED} fontFamily={MONO} fontSize={7.5} fontWeight={700} letterSpacing={1.2}>{String(index + 1).padStart(2, "0")}</text>
+                <SvgLabel lines={nameLines.map((line, lineIndex) => (lineIndex === 0 ? `⬡ ${line}` : line))} x={organization.x} y={top + 39} size={12.2} fill={selected ? INK : INK_SOFT} weight={700} family={MONO} spacing={1.1} uppercase />
+                {subtitle.length > 0 && <text x={organization.x} y={top + 39 + nameLines.length * 14.4 + 1} textAnchor="middle" fill={MUTED} fontFamily={MONO} fontSize={8}>{subtitle}</text>}
+                <rect x={organization.x - 30} y={organization.y + r - 30} width={60} height={15} rx={7.5} fill={selected ? "rgba(56, 229, 255, 0.15)" : "rgba(255, 255, 255, 0.05)"} stroke={selected ? "rgba(56, 229, 255, 0.4)" : "transparent"} strokeWidth={0.8} />
+                <text x={organization.x} y={organization.y + r - 19.5} textAnchor="middle" fill={selected ? CYAN : INK_SOFT} fontFamily={MONO} fontSize={7.4} fontWeight={600} letterSpacing={1}>{organization.roleIds.length} {t.roles}</text>
+              </g>
             </g>
           );
         })}
@@ -334,22 +362,16 @@ function FieldCanvas({ field, mode, t, onObserve }: CanvasProps) {
         {field.roles.map(role => {
           const selected = role.sign.state === "role_selected";
           const inEcology = observedRole !== null && observedRole.id === role.id;
-          const lines = wrapLines(role.title, 17, 3);
+          const lines = wrapLines(role.title, 13, 3);
           const ticks = Math.min(14, role.requirementCount);
           const region = field.organizations.find(organization => organization.id === role.organizationId)!;
-          const siblings = region.roleIds.length;
           const organizationIndex = field.organizations.indexOf(region);
-          // The label sits outward from the region centre (readable, never colliding with a sibling's label); a single role reads below its body.
-          const ox = siblings > 1 ? role.x - region.x : 0;
-          const oy = siblings > 1 ? role.y - region.y : 1;
-          const norm = Math.hypot(ox, oy) || 1;
-          const ux = ox / norm;
-          const uy = oy / norm;
-          const labelAnchor: "middle" | "start" | "end" = Math.abs(ux) < 0.35 ? "middle" : ux > 0 ? "start" : "end";
-          const labelX = ux * (role.radius + 12);
-          const labelY = uy * (role.radius + 12) + (Math.abs(ux) < 0.35 ? (uy > 0 ? 12 : -(lines.length - 1) * 14.75 - 4) : -(lines.length - 1) * 7.4 + 4);
+          // The label reads below the body inside the region, in the node grammar (mono, tracked); the ecology shows the title inside the core.
+          const labelAnchor = "middle" as const;
+          const labelX = 0;
+          const labelY = role.radius + 19;
           const labelHidden = observedRole !== null && !inEcology;
-          const far = labelHidden && role.sign.state === "receded";
+          const far = (labelHidden && role.sign.state === "receded") || (observation.kind === "ORGANIZATION" && region.sign.state === "receded");
           const lit = selected || inEcology;
           const r = role.radius;
           return (
@@ -370,10 +392,10 @@ function FieldCanvas({ field, mode, t, onObserve }: CanvasProps) {
             >
               {(() => {
                 // The hit area covers body and label together, so the carrier's bounding-box centre is always a hit (keyboard, pointer, automation alike).
-                const labelWidth = labelHidden || inEcology ? 0 : Math.max(...lines.map(line => line.length)) * 6.9;
-                const labelLeft = labelAnchor === "start" ? labelX : labelAnchor === "end" ? labelX - labelWidth : labelX - labelWidth / 2;
-                const labelTop = labelY - 12.5;
-                const labelBottom = labelY + (lines.length - 1) * 14.75 + 4;
+                const labelWidth = labelHidden || inEcology ? 0 : Math.max(...lines.map(line => line.length)) * 5.6;
+                const labelLeft = labelX - labelWidth / 2;
+                const labelTop = labelY - 9;
+                const labelBottom = labelY + (lines.length - 1) * 10.6 + 14;
                 const left = Math.min(-r - 11, labelWidth > 0 ? labelLeft : Infinity);
                 const right = Math.max(r + 11, labelWidth > 0 ? labelLeft + labelWidth : -Infinity);
                 const top = Math.min(-r - 11, labelWidth > 0 ? labelTop : Infinity);
@@ -390,9 +412,22 @@ function FieldCanvas({ field, mode, t, onObserve }: CanvasProps) {
                 const radians = ((angle - 90) * Math.PI) / 180;
                 return <line key={index} x1={(r + 3) * Math.cos(radians)} y1={(r + 3) * Math.sin(radians)} x2={(r + 7) * Math.cos(radians)} y2={(r + 7) * Math.sin(radians)} stroke="rgba(56, 229, 255, 0.5)" strokeWidth={1} />;
               })}
-              {!inEcology && !labelHidden && <SvgLabel lines={lines} x={labelX} y={labelY} size={12.5} fill={INK} weight={600} anchor={labelAnchor} />}
-              {!inEcology && !labelHidden && <text x={labelX} y={labelY + (lines.length - 1) * 14.75 + 13} textAnchor={labelAnchor} fill={MUTED} fontFamily={MONO} fontSize={7.5} fontWeight={600} letterSpacing={1.4} style={{ pointerEvents: "none" }}>{role.requirementCount} {t.requirements}</text>}
-              {inEcology && <SvgLabel lines={wrapLines(role.title, 15, 3)} x={0} y={-4 - (wrapLines(role.title, 15, 3).length - 1) * 5.5} size={8.5} fill={INK} weight={700} />}
+              {/* Signature of a carrier: the inner ring and centre point of a planetarium node. */}
+              <circle cx={0} cy={0} r={r * 0.55} fill="none" stroke="rgba(56, 229, 255, 0.28)" strokeWidth={0.7} strokeDasharray="3 3" style={{ pointerEvents: "none" }} />
+              {!inEcology && <circle cx={0} cy={0} r={2.2} fill={lit ? CYAN : "rgba(56, 229, 255, 0.6)"} style={{ pointerEvents: "none" }} />}
+              {inEcology && (
+                <>
+                  <circle data-sx-core-ring cx={0} cy={0} r={r + 16} fill="none" stroke={CYAN} strokeWidth={1.2} strokeDasharray="24 12 8 16" opacity={0.55} style={{ pointerEvents: "none" }} />
+                  <circle data-sx-core-ring cx={0} cy={0} r={r + 23} fill="none" stroke={SIL_TOKENS.colors.cyanGlowStrong} strokeWidth={1} strokeDasharray="16 8 4 12" opacity={0.5} style={{ pointerEvents: "none" }} />
+                </>
+              )}
+              {!inEcology && (
+                <g style={{ pointerEvents: "none", opacity: labelHidden ? 0 : 1, transition: "opacity .45s ease" }}>
+                  <SvgLabel lines={lines} x={labelX} y={labelY} size={9.6} fill={INK} weight={700} anchor={labelAnchor} family={MONO} spacing={0.9} uppercase />
+                  <text x={labelX} y={labelY + (lines.length - 1) * 10.6 + 11} textAnchor={labelAnchor} fill={MUTED} fontFamily={MONO} fontSize={7} fontWeight={600} letterSpacing={1.2}>{role.requirementCount} {t.requirements}</text>
+                </g>
+              )}
+              {inEcology && <SvgLabel lines={wrapLines(role.title, 11, 3)} x={0} y={-3 - (wrapLines(role.title, 11, 3).length - 1) * 4.6} size={7.2} fill={INK} weight={700} family={MONO} spacing={0.6} uppercase />}
             </g>
           );
         })}
@@ -419,9 +454,11 @@ function FieldCanvas({ field, mode, t, onObserve }: CanvasProps) {
               const lines = source.title !== null ? wrapLines(source.title, 20, 2) : [t.source];
               return (
                 <g key={source.docId} data-testid={`syntx-source-${source.docId}`} data-source-title-state={source.titleState} data-trace-count={source.traceCount} {...signAttributes(source.sign)} style={{ opacity: recedeOpacity(source.sign, 0.18), ...origin(observedRole.x, observedRole.y) }}>
-                  <rect data-sx-carrier-glow x={source.x - 16} y={source.y - 16} width={32} height={32} rx={8} fill="rgba(56, 229, 255, 0.22)" filter="url(#sxGlow)" style={{ pointerEvents: "none" }} />
-                  <rect x={source.x - 9} y={source.y - 9} width={18} height={18} rx={3} fill="rgba(3, 5, 8, 0.9)" stroke={source.sign.relation === "covers_unscored" ? "rgba(56, 229, 255, 0.55)" : "rgba(56, 229, 255, 0.8)"} strokeWidth={0.9} strokeDasharray={source.sign.relation === "covers_unscored" ? "2 2" : undefined} />
-                  <SvgLabel lines={lines} x={source.x} y={source.y + 22} size={7.5 * (1 + labelScale) / 2 + 3} fill={source.title !== null ? INK_SOFT : MUTED} weight={500} family={MONO} />
+                  <rect data-sx-carrier-glow x={source.x - 16} y={source.y - 16} width={32} height={32} rx={8} fill="rgba(126, 255, 204, 0.2)" filter="url(#sxGlow)" style={{ pointerEvents: "none" }} />
+                  <rect x={source.x - 10} y={source.y - 12} width={20} height={24} rx={3} fill="rgba(3, 14, 20, 0.96)" stroke={source.sign.relation === "covers_unscored" ? "rgba(126, 255, 204, 0.5)" : "rgba(126, 255, 204, 0.8)"} strokeWidth={0.9} strokeDasharray={source.sign.relation === "covers_unscored" ? "2 2" : undefined} />
+                  {[-5, 0, 5].map(offset => <line key={offset} x1={source.x - 5} y1={source.y + offset} x2={source.x + (offset === 5 ? 1 : 5)} y2={source.y + offset} stroke="rgba(126, 255, 204, 0.5)" strokeWidth={0.8} />)}
+                  <text x={source.x} y={source.y + 32} textAnchor="middle" fill="rgba(126, 255, 204, 0.75)" fontFamily={MONO} fontSize={5.6 * (1 + labelScale) / 2 + 2} fontWeight={700} letterSpacing={1.2}>{t.source}</text>
+                  <SvgLabel lines={lines} x={source.x} y={source.y + 44} size={7.5 * (1 + labelScale) / 2 + 3} fill={source.title !== null ? INK_SOFT : MUTED} weight={500} family={MONO} />
                 </g>
               );
             })}
@@ -446,6 +483,7 @@ function FieldCanvas({ field, mode, t, onObserve }: CanvasProps) {
                 >
                   <path data-sx-hit d={d} fill="none" stroke="transparent" strokeWidth={10} />
                   <path d={d} fill="none" stroke={stroke.color} strokeWidth={trace.weight * (inspectable ? 1.4 : 1)} strokeDasharray={stroke.dash} strokeLinecap="round" style={{ pointerEvents: "none" }} />
+                  <path data-sx-trace-ray d={tracePath(source ?? requirement, requirement, -trace.bow)} pathLength={1} fill="none" stroke={trace.kind === "covers_unscored" ? "rgba(142, 239, 255, 0.28)" : "rgba(142, 239, 255, 0.45)"} strokeWidth={0.8} strokeDasharray="1 1" strokeLinecap="round" style={{ pointerEvents: "none" }} />
                   <path data-sx-trace-glow d={d} fill="none" stroke="rgba(56, 229, 255, 0.16)" strokeWidth={trace.weight * 4} strokeLinecap="round" style={{ pointerEvents: "none" }} />
                 </g>
               );
@@ -473,7 +511,7 @@ function FieldCanvas({ field, mode, t, onObserve }: CanvasProps) {
                     <circle cx={requirement.x} cy={requirement.y} r={selected ? shape.r + 1.5 : shape.r} fill={shape.fill} stroke={shape.stroke} strokeWidth={shape.strokeWidth} strokeDasharray={shape.dash} style={{ transition: "r .25s ease" }} />
                     {selected && <circle cx={requirement.x} cy={requirement.y} r={shape.r + 7} fill="none" stroke="rgba(56, 229, 255, 0.45)" strokeWidth={0.6} />}
                     {selected && <circle data-sx-pulse cx={requirement.x} cy={requirement.y} r={shape.r + 7} fill="none" stroke={CYAN} strokeWidth={1} style={{ pointerEvents: "none" }} />}
-                    <SvgLabel lines={lines} x={labelX} y={labelY} size={7.8} fill={selected ? INK : INK_SOFT} weight={600} anchor={anchorText} />
+                    <SvgLabel lines={lines} x={labelX} y={labelY} size={7.8} fill={selected ? INK : INK_SOFT} weight={700} anchor={anchorText} family={MONO} spacing={0.4} />
                   </g>
                   {requirement.openBoundary !== null && (
                     <g

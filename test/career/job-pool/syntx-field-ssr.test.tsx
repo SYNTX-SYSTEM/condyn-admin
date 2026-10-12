@@ -88,7 +88,8 @@ describe("SYNTX field (server-rendered)", () => {
     // Readable names, no truncation as the primary display.
     expect(html).toContain("Platform Engineer");
     expect(html).toContain("Data Analyst");
-    expect(html).toContain(">Acme<");
+    // The region name reads inside the node behind the field glyph (visual grammar transfer); the delivered name itself is the DOM text.
+    expect(html).toMatch(/>(⬡ )?Acme</);
     // No score, rank or coupling in the FIELD state (R4/R14); no requirement ecology before a role is observed.
     expect(html).not.toContain("data-resonance-score");
     expect(textOf(html, ...STAGE)).not.toMatch(/\d+(\.\d+)?%|#\d/);
