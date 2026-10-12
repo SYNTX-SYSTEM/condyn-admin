@@ -327,11 +327,11 @@ export interface LabelBox { x: number; y: number; width: number; height: number 
 export interface RequirementLabel { lines: string[]; x: number; y: number; anchor: "middle" | "start" | "end"; box: LabelBox }
 
 /** Requirement label metrics (font size and character width in field units, as the renderer draws them). */
-export const REQUIREMENT_LABEL = Object.freeze({ maxChars: 16, maxLines: 3, size: 7.8, charWidth: 4.4, lineHeight: 9.2, gap: 12 });
+export const REQUIREMENT_LABEL = Object.freeze({ maxChars: 16, maxLines: 3, size: 7.8, charWidth: 4.9, lineHeight: 9.2, gap: 12 });
 /** The role carrier with its inner title: no trace enters this disc (O-SX-2). */
 export const ROLE_CLEARANCE_RADIUS = 48;
-/** Source carrier square (±9) with its two-line title below: no foreign trace crosses it. */
-export const SOURCE_BOX = Object.freeze({ halfWidth: 52, above: 10, below: 46 });
+/** Source carrier (document glyph ±12) with its SOURCE kicker and two-line title below: no foreign trace crosses it; the REQUIREMENT camera keeps it in view. */
+export const SOURCE_BOX = Object.freeze({ halfWidth: 52, above: 14, below: 68 });
 /** Bows tried in order; co-terminal traces never share a bow, so each remains visible and hit-testable (F-SX-2). */
 export const TRACE_BOWS: readonly number[] = Object.freeze([0, 18, -18, 36, -36, 54, -54, 72, -72]);
 const TRACE_CLEARANCE = 2;
@@ -454,8 +454,9 @@ function placeOrganizations(groups: ReadonlyArray<{ id: string; roleIds: string[
   const count = groups.length;
   const { center } = SYNTX_LAYOUT;
   if (count === 0) return placed;
-  const density = (roleIds: string[]) => Math.min(165, 62 + 26 * Math.sqrt(Math.max(1, roleIds.length)));
-  if (count === 1) { placed.set(groups[0].id, { x: center, y: center, radius: Math.min(240, density(groups[0].roleIds) + 60) }); return placed; }
+  // A region is a planetarium node: room for its identity block above the roles and its density pill below (living field, 2026-10-12).
+  const density = (roleIds: string[]) => Math.min(190, 92 + 30 * Math.sqrt(Math.max(1, roleIds.length)));
+  if (count === 1) { placed.set(groups[0].id, { x: center, y: center, radius: Math.min(250, density(groups[0].roleIds) + 50) }); return placed; }
   const maxRadius = Math.max(...groups.map(group => density(group.roleIds)));
   // Regions are spaced so that a role label reaching outward from one region (≈ 138 units) never crosses into the next region.
   const ring = Math.min(500 - maxRadius - 24, Math.max(170, (maxRadius + 138) / Math.sin(Math.PI / count)));
@@ -470,10 +471,12 @@ function placeOrganizations(groups: ReadonlyArray<{ id: string; roleIds: string[
 /** Roles inside their organization region: one at the centre, otherwise on an inner ring; unfolded (wider) when the organization is observed. */
 function placeRoles(region: { x: number; y: number; radius: number }, roleIds: readonly string[], unfolded: boolean): Map<string, { x: number; y: number }> {
   const placed = new Map<string, { x: number; y: number }>();
-  if (roleIds.length === 1) { placed.set(roleIds[0], { x: region.x, y: region.y }); return placed; }
-  const inner = region.radius * (unfolded ? 0.66 : 0.52);
+  // The roles sit in the lower part of the region (the identity block reads above them), on an inner ring that widens when the region unfolds.
+  const centreY = region.y + region.radius * 0.14;
+  if (roleIds.length === 1) { placed.set(roleIds[0], { x: region.x, y: round(centreY) }); return placed; }
+  const inner = region.radius * (unfolded ? 0.52 : 0.44);
   const slot = 360 / roleIds.length;
-  roleIds.forEach((id, index) => { const [x, y] = polar(region.x, region.y, inner, index * slot + (roleIds.length === 2 ? 90 : 0)); placed.set(id, { x, y }); });
+  roleIds.forEach((id, index) => { const [x, y] = polar(region.x, centreY, inner, index * slot + (roleIds.length === 2 ? 90 : 0)); placed.set(id, { x, y }); });
   return placed;
 }
 
