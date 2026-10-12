@@ -209,8 +209,13 @@ describe("SYNTX field view model (read-only adapter over the delivered Job Pool 
         expect(field.camera.y - (source.y - SOURCE_BOX.above), `${requirementId} ${source.docId} -y`).toBeLessThanOrEqual(half);
       }
     }
-    // A single trace stays straight; nothing about the signs changed against the unmodified matching.
-    expect(deriveSyntxField(view, matches, null, REQ_1)!.requirements.find(requirement => requirement.id === "REQ_1")!.traces.map(trace => trace.bow)).toEqual([0]);
+    // A single trace takes exactly one bow, the one that bends it around the nucleus; nothing about the signs changed against the unmodified matching.
+    const single = deriveSyntxField(view, matches, null, REQ_1)!;
+    const singleRequirement = single.requirements.find(requirement => requirement.id === "REQ_1")!;
+    expect(singleRequirement.traces).toHaveLength(1);
+    const singleRole = single.roles.find(role => role.id === singleRequirement.roleId)!;
+    const singleSource = single.sources[singleRequirement.traces[0].sourceDocIndex];
+    expect(traceClearance(singleRequirement, singleSource, singleRequirement.traces[0].bow, { discs: [{ x: singleRole.x, y: singleRole.y, r: ROLE_CLEARANCE_RADIUS }], rects: [] })).toBeGreaterThanOrEqual(2);
   });
 
   it("joins source title, evidence location and sweep evidence id only by exact match inside the same analysis; a miss omits the field", () => {

@@ -294,9 +294,13 @@ const polar = (cx: number, cy: number, radius: number, angle: number): [number, 
 };
 
 /** Anchor distance by support category (§9.2): supported closest, weak farther, sweep-only exploratory, open at the boundary. */
-export const SUPPORT_DISTANCE: Record<SyntxSupport, number> = Object.freeze({ SUPPORTED: 78, WEAK: 98, SWEEP_ONLY: 118, OPEN: 138, UNREAD: 104 });
-export const PENDING_BOUNDARY_RADIUS = 158;
-export const SOURCE_RING_RADIUS = 212;
+export const SUPPORT_DISTANCE: Record<SyntxSupport, number> = Object.freeze({ SUPPORTED: 101, WEAK: 127, SWEEP_ONLY: 153, OPEN: 179, UNREAD: 135 });
+export const PENDING_BOUNDARY_RADIUS = 205;
+/** Evidence sector of the ecology (deep-focus composition of the Capability Field: the evidence surface sits directly beneath the nucleus): the
+ * arc at the bottom of the role ecology, measured from straight below, kept free of requirement anchors and holding the source carriers. */
+export const EVIDENCE_SECTOR = Object.freeze({ center: 180, halfWidth: 45 });
+/** Source carriers sit inside the ecology, beneath the role core, inside the suspended boundary (205): evidence attached to the focused entity, not a satellite outside it. */
+export const SOURCE_RING_RADIUS = 135;
 const SUPPORT_ORDER: readonly SyntxSupport[] = ["SUPPORTED", "WEAK", "SWEEP_ONLY", "OPEN", "UNREAD"];
 
 export const CAMERA_SCALE = Object.freeze({ FIELD: 1, ROLE: 1.8, REQUIREMENT: 2.4 });
@@ -329,7 +333,9 @@ export interface RequirementLabel { lines: string[]; x: number; y: number; ancho
 /** Requirement label metrics (font size and character width in field units, as the renderer draws them). */
 export const REQUIREMENT_LABEL = Object.freeze({ maxChars: 16, maxLines: 3, size: 7.8, charWidth: 4.9, lineHeight: 9.2, gap: 12 });
 /** The role carrier with its inner title: no trace enters this disc (O-SX-2). */
-export const ROLE_CLEARANCE_RADIUS = 48;
+export const ROLE_CLEARANCE_RADIUS = 62;
+/** The observed role as the nucleus of its ecology (Capability Field L2 nucleus): its body radius there; the ecology radii above are scaled with it (×1.3), categories and order unchanged. */
+export const ECOLOGY_NUCLEUS_RADIUS = 45;
 /** Source carrier (document glyph ±12) with its SOURCE kicker and two-line title below: no foreign trace crosses it; the REQUIREMENT camera keeps it in view. */
 export const SOURCE_BOX = Object.freeze({ halfWidth: 52, above: 14, below: 68 });
 /** Bows tried in order; co-terminal traces never share a bow, so each remains visible and hit-testable (F-SX-2). */
@@ -354,27 +360,37 @@ export function requirementLabel(requirement: { x: number; y: number; angle: num
 type Point = { x: number; y: number };
 interface Obstacles { discs: Array<Point & { r: number }>; rects: LabelBox[] }
 
-/** A point on the trace: straight for bow 0, otherwise the quadratic curve whose midpoint is offset by `bow` to the left normal. */
-export function tracePoint(from: Point, to: Point, bow: number, t: number): Point {
+/** Base sweep of every trace (fraction of its span): evidence couples in an arc, as the planetarium's inter-orbital couplings do (quadratic paths), never as a straight wire. */
+export const TRACE_SWEEP = 0.14;
+
+/** The control point of a trace's quadratic arc: the midpoint deviates by the base sweep plus `bow` to the left normal (distinct bows stay distinct). Geometry only (R14). */
+function traceControl(from: Point, to: Point, bow: number): Point {
   const dx = to.x - from.x;
   const dy = to.y - from.y;
   const length = Math.hypot(dx, dy) || 1;
-  const cx = (from.x + to.x) / 2 + (-dy / length) * 2 * bow;
-  const cy = (from.y + to.y) / 2 + (dx / length) * 2 * bow;
-  const u = 1 - t;
-  return { x: u * u * from.x + 2 * u * t * cx + t * t * to.x, y: u * u * from.y + 2 * u * t * cy + t * t * to.y };
+  const offset = 2 * (TRACE_SWEEP * length + bow);
+  return { x: (from.x + to.x) / 2 + (-dy / length) * offset, y: (from.y + to.y) / 2 + (dx / length) * offset };
 }
 
-/** The SVG path of a trace (the renderer and the proofs draw the same curve). */
+/** A point on the trace: the quadratic arc whose midpoint is offset by the base sweep plus `bow` to the left normal. */
+export function tracePoint(from: Point, to: Point, bow: number, t: number): Point {
+  const c = traceControl(from, to, bow);
+  const u = 1 - t;
+  return { x: u * u * from.x + 2 * u * t * c.x + t * t * to.x, y: u * u * from.y + 2 * u * t * c.y + t * t * to.y };
+}
+
+const formatPath = (value: number) => Math.round(value * 100) / 100;
+
+/** The SVG path of a trace from the anchor to the carrier (the renderer and the proofs draw the same curve). */
 export function tracePath(from: Point, to: Point, bow: number): string {
-  const f = (value: number) => Math.round(value * 100) / 100;
-  if (bow === 0) return `M ${f(from.x)} ${f(from.y)} L ${f(to.x)} ${f(to.y)}`;
-  const dx = to.x - from.x;
-  const dy = to.y - from.y;
-  const length = Math.hypot(dx, dy) || 1;
-  const cx = (from.x + to.x) / 2 + (-dy / length) * 2 * bow;
-  const cy = (from.y + to.y) / 2 + (dx / length) * 2 * bow;
-  return `M ${f(from.x)} ${f(from.y)} Q ${f(cx)} ${f(cy)} ${f(to.x)} ${f(to.y)}`;
+  const c = traceControl(from, to, bow);
+  return `M ${formatPath(from.x)} ${formatPath(from.y)} Q ${formatPath(c.x)} ${formatPath(c.y)} ${formatPath(to.x)} ${formatPath(to.y)}`;
+}
+
+/** The same curve walked from the carrier to the anchor: the direction in which evidence streams along the trace. */
+export function traceRayPath(from: Point, to: Point, bow: number): string {
+  const c = traceControl(from, to, bow);
+  return `M ${formatPath(to.x)} ${formatPath(to.y)} Q ${formatPath(c.x)} ${formatPath(c.y)} ${formatPath(from.x)} ${formatPath(from.y)}`;
 }
 
 const distanceToRect = (point: Point, rect: LabelBox): number => {
@@ -407,10 +423,10 @@ export function placeSourceAngles(role: Point, reaching: ReadonlyArray<Point[]>,
   const placed: number[] = [];
   return reaching.map(points => {
     const vector = points.reduce((sum, point) => { const angle = Math.atan2(point.x - role.x, -(point.y - role.y)); return { x: sum.x + Math.sin(angle), y: sum.y + Math.cos(angle) }; }, { x: 0, y: 0 });
-    const mean = points.length === 0 || Math.hypot(vector.x, vector.y) < 1e-6 ? 180 : ((Math.atan2(vector.x, vector.y) * 180) / Math.PI + 360) % 360;
+    const mean = points.length === 0 || Math.hypot(vector.x, vector.y) < 1e-6 ? EVIDENCE_SECTOR.center : ((Math.atan2(vector.x, vector.y) * 180) / Math.PI + 360) % 360;
     let best: { angle: number; score: number } | null = null;
     const evaluate = (separated: boolean) => {
-      for (let angle = 0; angle < 360; angle += 5) {
+      for (let angle = EVIDENCE_SECTOR.center - EVIDENCE_SECTOR.halfWidth; angle <= EVIDENCE_SECTOR.center + EVIDENCE_SECTOR.halfWidth; angle += 5) {
         if (separated && placed.some(other => angleBetween(other, angle) < SOURCE_SEPARATION)) continue;
         const [x, y] = polar(role.x, role.y, SOURCE_RING_RADIUS, angle);
         const carrier = { x, y };
@@ -419,7 +435,8 @@ export function placeSourceAngles(role: Point, reaching: ReadonlyArray<Point[]>,
           const discs = [{ x: role.x, y: role.y, r: ROLE_CLEARANCE_RADIUS }, ...anchors.filter(anchor => anchor.x !== point.x || anchor.y !== point.y)];
           clearance = Math.min(clearance, traceClearance(point, carrier, 0, { discs, rects }));
         }
-        const score = clearance - 0.05 * angleBetween(angle, mean);
+        // Evidence sits beneath the nucleus (L2 deep focus): nearest to the sector centre wins; clearance only breaks ties.
+        const score = -angleBetween(angle, EVIDENCE_SECTOR.center) + 0.001 * clearance;
         if (best === null || score > best.score + 1e-9) best = { angle, score };
       }
     };
@@ -529,8 +546,10 @@ export function requirementCamera(requirement: SyntxRequirement, role: Point, re
   const half = SYNTX_LAYOUT.center / scale;
   const margin = 10;
   const label = requirementLabel(requirement).box;
-  const xs = [requirement.x - 14, requirement.x + 14, label.x, label.x + label.width, ...reached.flatMap(point => [point.x - SOURCE_BOX.halfWidth, point.x + SOURCE_BOX.halfWidth])];
-  const ys = [requirement.y - 14, requirement.y + 14, label.y, label.y + label.height, ...reached.flatMap(point => [point.y - SOURCE_BOX.above, point.y + SOURCE_BOX.below])];
+  // The nucleus stays in view (hierarchy: nucleus, selected requirement, evidence body).
+  const nucleus = ECOLOGY_NUCLEUS_RADIUS + 12;
+  const xs = [role.x - nucleus, role.x + nucleus, requirement.x - 14, requirement.x + 14, label.x, label.x + label.width, ...reached.flatMap(point => [point.x - SOURCE_BOX.halfWidth, point.x + SOURCE_BOX.halfWidth])];
+  const ys = [role.y - nucleus, role.y + nucleus, requirement.y - 14, requirement.y + 14, label.y, label.y + label.height, ...reached.flatMap(point => [point.y - SOURCE_BOX.above, point.y + SOURCE_BOX.below])];
   const fit = (values: number[], preferred: number): number => {
     const lo = Math.min(...values) - margin;
     const hi = Math.max(...values) + margin;
@@ -633,13 +652,18 @@ export function deriveSyntxField(view: JobPoolUploadView | null, matching: JobPo
       return { requirement, matched, weak, missing, support };
     });
     const ordered = SUPPORT_ORDER.flatMap(support => entries.filter(entry => entry.support === support));
-    const slot = ordered.length === 0 ? 0 : 360 / ordered.length;
+    // Anchors are the satellites of the role core on the arc outside the evidence sector (top-centred, strongest support first).
+    const arc = 360 - 2 * EVIDENCE_SECTOR.halfWidth;
+    const slot = ordered.length === 0 ? 0 : arc / ordered.length;
     const observedRequirementId = observation.kind === "REQUIREMENT" ? observation.requirementId : null;
 
+    // Satellites fan out from the top of the nucleus: the strongest support takes the middle slot of the arc, the next ones alternate to either
+    // side, so the evidence beneath reaches them as a fan around the nucleus instead of one converging bundle.
+    const slotOrder = Array.from({ length: ordered.length }, (_, slotIndex) => slotIndex).sort((a, b) => Math.abs(a - (ordered.length - 1) / 2) - Math.abs(b - (ordered.length - 1) / 2) || b - a);
     requirements = ordered.map((entry, index) => {
       const { requirement, support } = entry;
       const id = requirement.poolRequirementId;
-      const angle = index * slot + slot / 2;
+      const angle = (EVIDENCE_SECTOR.center + EVIDENCE_SECTOR.halfWidth + slotOrder[index] * slot + slot / 2) % 360;
       const distance = SUPPORT_DISTANCE[support];
       const [x, y] = polar(observedRole.x, observedRole.y, distance, angle);
       const observedHere = observedRequirementId === id;
