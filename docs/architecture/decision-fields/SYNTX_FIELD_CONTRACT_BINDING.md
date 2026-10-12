@@ -175,6 +175,40 @@ join omits the field; it never falls back to fuzzy matching.
     LIVE. The root carries `data-sx-ambient="on|off"` (the switch `SYNTX_AMBIENT_MOTION`).
   - Verification: GELB's motion audit maps every running animation on a `[data-sign-id]` element to this list or its
     transition. PINK rebinds Q-06/J-12 to this ruling.
+- **R15a Evidence ecology motion (owner decision 2026-10-12 on "CONDYN / SYNTX — FINAL INTEGRATION & PRODUCT TEST",
+  GRÜN 9f225f2, design freeze; asked by GELB, answer "Alles zulassen").** It amends R15 for the ROLE and REQUIREMENT
+  levels and only for the source carrier and its evidence traces. The sentence "At ROLE and REQUIREMENT only `sxSuspend`
+  runs" is replaced by the list below. Every other part of R15 stands, including the FIELD/ORGANIZATION list.
+  - Continuous motion that is admitted, all of it `data-motion-mode="LIVE"` only:
+    - **Carrier orbit** (the owner's request): each source carrier (`data-sign-manifestation="carrier"`) moves on a
+      fixed ellipse of 14 × 9 field units through its routed place. One turn takes 60 s, and the phase is set only by the
+      source index. The motion is driven by the shared rAF clock `useOrbitalMotionElapsedMs`, and
+      `data-orbital-motion-*` exposes it.
+      - Every trace of that carrier, with its hit path, visible path, ray, bead and photons, is recomputed from the same
+        position in every frame. The traces are geometrically coupled and never detach, so their hit-testability holds
+        in every frame.
+    - `sxMoonOrbit`: the carrier's moons orbit it, 160 s linear. The number of moons is `min(traceCount, 12)`.
+    - **Photon streams** (SMIL `animateMotion`, `data-sx-photon`): they run along every trace, in both directions, in
+      every relation kind.
+      - Pacing comes from the trace index, and the inspectable trace is faster.
+      - Photons carry no relation, score or kind distinction. The kind distinction stays in the trace stroke
+        (`TRACE_STROKE`), so a sweep trace still shows no scored manifestation.
+    - `sxAtmosphere` and `sxRingPulse`: glow and two ring pulses, only on the carrier in state `inspectable` (the source of
+      the aperture being observed). The owner expressly admits this as an exception to the spec §6.2 line "pulsing
+      without pending state" for this carrier state only. It is not a closure or match celebration (R1).
+  - These motions are not governed by the switch `SYNTX_AMBIENT_MOTION`, and `SYNTX_AMBIENT_NAMES` remains the
+    FIELD/ORGANIZATION list:
+    - `sxMoonOrbit`, `sxAtmosphere` and `sxRingPulse` additionally require `data-sx-ambient="on"`.
+    - The carrier orbit and the photons depend only on LIVE.
+  - Nothing else may run continuously at ROLE or REQUIREMENT. No parameter derives from a score, rank, contribution or
+    confidence (R4, R14).
+  - REDUCED stays total: zero CSS animations, no photons rendered, the rAF clock never starts, the carriers hold their
+    routed place, and the sign set is identical to LIVE.
+  - Finite transitions added: `sxSettle` (carrier entry). `sxTraceDraw` and `sxCoreSettle` are as in R15.
+  - Verification:
+    - GELB's motion audit maps every running animation and the photon set per level to R15 plus R15a.
+    - PINK rebinds Q-06/J-12 (ROLE: `sxSuspend`, the carrier list above, the moving carrier, every trace clickable while
+      it moves).
 
 ## 5. Governance tests (GELB, bound to GRÜN's pure view model)
 
