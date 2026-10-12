@@ -296,7 +296,11 @@ const polar = (cx: number, cy: number, radius: number, angle: number): [number, 
 /** Anchor distance by support category (§9.2): supported closest, weak farther, sweep-only exploratory, open at the boundary. */
 export const SUPPORT_DISTANCE: Record<SyntxSupport, number> = Object.freeze({ SUPPORTED: 78, WEAK: 98, SWEEP_ONLY: 118, OPEN: 138, UNREAD: 104 });
 export const PENDING_BOUNDARY_RADIUS = 158;
-export const SOURCE_RING_RADIUS = 212;
+/** Evidence sector of the ecology (deep-focus composition of the Capability Field: the evidence surface sits directly beneath the nucleus): the
+ * arc at the bottom of the role ecology, measured from straight below, kept free of requirement anchors and holding the source carriers. */
+export const EVIDENCE_SECTOR = Object.freeze({ center: 180, halfWidth: 45 });
+/** Source carriers sit inside the ecology, beneath the role core, inside the suspended boundary (158): evidence attached to the focused entity, not a satellite outside it. */
+export const SOURCE_RING_RADIUS = 104;
 const SUPPORT_ORDER: readonly SyntxSupport[] = ["SUPPORTED", "WEAK", "SWEEP_ONLY", "OPEN", "UNREAD"];
 
 export const CAMERA_SCALE = Object.freeze({ FIELD: 1, ROLE: 1.8, REQUIREMENT: 2.4 });
@@ -417,10 +421,10 @@ export function placeSourceAngles(role: Point, reaching: ReadonlyArray<Point[]>,
   const placed: number[] = [];
   return reaching.map(points => {
     const vector = points.reduce((sum, point) => { const angle = Math.atan2(point.x - role.x, -(point.y - role.y)); return { x: sum.x + Math.sin(angle), y: sum.y + Math.cos(angle) }; }, { x: 0, y: 0 });
-    const mean = points.length === 0 || Math.hypot(vector.x, vector.y) < 1e-6 ? 180 : ((Math.atan2(vector.x, vector.y) * 180) / Math.PI + 360) % 360;
+    const mean = points.length === 0 || Math.hypot(vector.x, vector.y) < 1e-6 ? EVIDENCE_SECTOR.center : ((Math.atan2(vector.x, vector.y) * 180) / Math.PI + 360) % 360;
     let best: { angle: number; score: number } | null = null;
     const evaluate = (separated: boolean) => {
-      for (let angle = 0; angle < 360; angle += 5) {
+      for (let angle = EVIDENCE_SECTOR.center - EVIDENCE_SECTOR.halfWidth; angle <= EVIDENCE_SECTOR.center + EVIDENCE_SECTOR.halfWidth; angle += 5) {
         if (separated && placed.some(other => angleBetween(other, angle) < SOURCE_SEPARATION)) continue;
         const [x, y] = polar(role.x, role.y, SOURCE_RING_RADIUS, angle);
         const carrier = { x, y };
@@ -643,13 +647,15 @@ export function deriveSyntxField(view: JobPoolUploadView | null, matching: JobPo
       return { requirement, matched, weak, missing, support };
     });
     const ordered = SUPPORT_ORDER.flatMap(support => entries.filter(entry => entry.support === support));
-    const slot = ordered.length === 0 ? 0 : 360 / ordered.length;
+    // Anchors are the satellites of the role core on the arc outside the evidence sector (top-centred, strongest support first).
+    const arc = 360 - 2 * EVIDENCE_SECTOR.halfWidth;
+    const slot = ordered.length === 0 ? 0 : arc / ordered.length;
     const observedRequirementId = observation.kind === "REQUIREMENT" ? observation.requirementId : null;
 
     requirements = ordered.map((entry, index) => {
       const { requirement, support } = entry;
       const id = requirement.poolRequirementId;
-      const angle = index * slot + slot / 2;
+      const angle = (EVIDENCE_SECTOR.center + EVIDENCE_SECTOR.halfWidth + index * slot + slot / 2) % 360;
       const distance = SUPPORT_DISTANCE[support];
       const [x, y] = polar(observedRole.x, observedRole.y, distance, angle);
       const observedHere = observedRequirementId === id;

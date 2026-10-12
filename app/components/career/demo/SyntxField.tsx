@@ -493,6 +493,11 @@ function FieldCanvas({ field, mode, t, onObserve }: CanvasProps) {
                 <circle cx={observedRole.x} cy={observedRole.y} r={field.pendingBoundary.radius} fill="none" stroke="rgba(230, 241, 248, 0.32)" strokeWidth={0.9} strokeDasharray="5 7" style={{ pointerEvents: "none", animation: mode === "LIVE" ? "sxSuspend 48s linear infinite" : undefined }} />
               </g>
             )}
+            {/* Composition of the deep-focus view (CapabilityDeepFocusView): the anchors are the satellites of the role core, each on a faint dashed spoke (3 10, .12); the evidence sits beneath the core, attached by the mint evidence link (3 6, 1.4, .42). No signs, no pointer. */}
+            <g data-sx-ecology-composition style={{ pointerEvents: "none" }}>
+              {field.requirements.map(requirement => <line key={`spoke-${requirement.id}`} x1={observedRole.x} y1={observedRole.y} x2={requirement.x} y2={requirement.y} stroke="rgba(56, 229, 255, 0.12)" strokeWidth={1} strokeDasharray="3 10" style={{ opacity: recedeOpacity(requirement.sign, 0.35) }} />)}
+              {field.sources.map(source => <line key={`link-${source.docId}`} x1={observedRole.x} y1={observedRole.y} x2={source.x} y2={source.y} stroke="rgba(126, 255, 204, 0.42)" strokeWidth={1.4} strokeDasharray="3 6" style={{ opacity: recedeOpacity(source.sign, 0.2) }} />)}
+            </g>
             {/* Source carriers as planetarium nodes (OrbitalResonanceBubble grammar): atmosphere glow, ring pulses when highlighted, the outer semiotic ring (dashed; solid when highlighted), the body with the sources glyph ◈, its evidence items as moons, the SOURCE kicker and the title. */}
             {field.sources.map((source, index) => {
               const lines = source.title !== null ? wrapLines(source.title, 20, 2) : [t.source];
