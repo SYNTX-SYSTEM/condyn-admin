@@ -19,6 +19,7 @@ import {
   summarySentence,
   SYNTX_FIELD_GRAMMAR,
   SYNTX_LAYOUT,
+  ECOLOGY_NUCLEUS_RADIUS,
   tracePath,
   tracePoint,
   traceRayPath,
@@ -265,7 +266,7 @@ const SUPPORT_SHAPE: Record<SyntxSupport, { fill: string; stroke: string; stroke
 
 /** Manifestation of a trace at rest: the deep-focus evidence link of the Capability Field (CapabilityDeepFocusView: mint rgba(126,255,204,.42), 1.4, dash 3 6); weak support fainter, unscored coverage dotted. The inspectable trace is the active energy ray (solid 2.5 cyan). */
 const TRACE_STROKE: Record<SyntxTrace["kind"], { width: number; dash: string; color: string }> = {
-  supports: { width: 1.4, dash: "3 6", color: "rgba(126, 255, 204, 0.42)" },
+  supports: { width: 1.2, dash: "3 6", color: "rgba(126, 255, 204, 0.42)" },
   weakly_supports: { width: 1, dash: "3 6", color: "rgba(126, 255, 204, 0.26)" },
   covers_unscored: { width: 1, dash: "1 5", color: "rgba(126, 255, 204, 0.34)" }
 };
@@ -291,6 +292,8 @@ function FieldCanvas({ field, mode, t, onObserve }: CanvasProps) {
   const inspectTrace = (trace: SyntxTrace) => onObserve({ kind: "REQUIREMENT", organizationId: observation.organizationId, roleId: trace.roleId, requirementId: trace.requirementId, apertureSignId: trace.sign.id });
   const inspectOpen = (requirement: SyntxRequirement) => requirement.openBoundary !== null && onObserve({ kind: "REQUIREMENT", organizationId: observation.organizationId, roleId: requirement.roleId, requirementId: requirement.id, apertureSignId: requirement.openBoundary.id });
   const labelScale = 1 / Math.max(1, camera.scale * 0.72);
+  /** Field units for a size meant in screen pixels at the current camera (thin relations stay thin when the camera closes in). */
+  const screen = (pixels: number) => Math.round((pixels / camera.scale) * 100) / 100;
   // The evidence moves as the cosmos's satellites move (OrbitalSatelliteMotion: one shared linear rAF clock, an elliptical orbit, the body upright,
   // the tethers recomputed from the same position every frame): each carrier orbits a small ellipse (14 × 9) whose orbit passes through its routed
   // place at t = 0, one turn per 60 s (calm, yet visible within a quarter minute), phased by index. LIVE only; reduced motion and the server hold the routed place.
@@ -312,6 +315,11 @@ function FieldCanvas({ field, mode, t, onObserve }: CanvasProps) {
         <radialGradient id="sxField"><stop offset="0%" stopColor="#38e5ff" stopOpacity="0.2" /><stop offset="58%" stopColor="#38e5ff" stopOpacity="0.04" /><stop offset="100%" stopColor="#030508" stopOpacity="0" /></radialGradient>
         <radialGradient id="sxMembrane"><stop offset="0%" stopColor="#38e5ff" stopOpacity="0.16" /><stop offset="56%" stopColor="#38e5ff" stopOpacity="0.06" /><stop offset="100%" stopColor="#38e5ff" stopOpacity="0.02" /></radialGradient>
         <radialGradient id="sxCore"><stop offset="0%" stopColor="#38e5ff" stopOpacity="0.3" /><stop offset="62%" stopColor="#38e5ff" stopOpacity="0.08" /><stop offset="100%" stopColor="#38e5ff" stopOpacity="0.02" /></radialGradient>
+        {/* Capability Field L2 nucleus (CapabilityDeepFocusView): depth radial-gradient(circle, rgba(7,45,53,.98), rgba(2,8,14,1) 76%) under a mint highlight at 50% 30%, transparent at 40%. */}
+        <radialGradient id="sxNucleusDepth"><stop offset="0%" stopColor="rgb(7, 45, 53)" stopOpacity="0.98" /><stop offset="76%" stopColor="rgb(2, 8, 14)" stopOpacity="1" /></radialGradient>
+        <radialGradient id="sxNucleusLight" cx="50%" cy="30%" r="40%"><stop offset="0%" stopColor="#7effcc" stopOpacity="0.28" /><stop offset="100%" stopColor="#7effcc" stopOpacity="0" /></radialGradient>
+        {/* The deep-focus backdrop (radial-gradient(circle at 50% 42%, rgba(14,66,73,.22), transparent …)) as the resonance region of the ecology. */}
+        <radialGradient id="sxResonance"><stop offset="0%" stopColor="rgb(14, 66, 73)" stopOpacity="0.34" /><stop offset="58%" stopColor="rgb(14, 66, 73)" stopOpacity="0.14" /><stop offset="100%" stopColor="rgb(14, 66, 73)" stopOpacity="0" /></radialGradient>
         <filter id="sxGlow" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur stdDeviation="7" /></filter>
       </defs>
       <g data-sx-camera style={{ transform: `translate(${tx}px, ${ty}px) scale(${camera.scale})`, transformOrigin: "0 0" }}>
@@ -431,7 +439,7 @@ function FieldCanvas({ field, mode, t, onObserve }: CanvasProps) {
           const labelHidden = observedRole !== null && !inEcology;
           const far = (labelHidden && role.sign.state === "receded") || (observation.kind === "ORGANIZATION" && region.sign.state === "receded");
           const lit = selected || inEcology;
-          const r = role.radius;
+          const r = inEcology ? ECOLOGY_NUCLEUS_RADIUS : role.radius;
           return (
             <g
               key={role.id}
@@ -446,7 +454,7 @@ function FieldCanvas({ field, mode, t, onObserve }: CanvasProps) {
               aria-pressed={selected}
               onClick={event => { event.stopPropagation(); onObserve(observeRole(observation, role.organizationId, role.id)); }}
               onKeyDown={key(() => onObserve(observeRole(observation, role.organizationId, role.id)))}
-              style={{ cursor: "pointer", opacity: recedeOpacity(role.sign, inEcology ? 1 : 0.2), transform: `translate(${role.x}px, ${role.y}px) scale(${selected ? 1.12 : far ? 0.72 : 1})`, transformBox: "view-box", transformOrigin: "0px 0px", transition: `transform .78s ${ease}, opacity .45s ease, filter .62s ease`, "--sx-phase": `${-(organizationIndex % 6) * 1.05}s` } as React.CSSProperties}
+              style={{ cursor: "pointer", opacity: recedeOpacity(role.sign, inEcology ? 1 : 0.2), transform: `translate(${role.x}px, ${role.y}px) scale(${far ? 0.72 : 1})`, transformBox: "view-box", transformOrigin: "0px 0px", transition: `transform .78s ${ease}, opacity .45s ease, filter .62s ease`, "--sx-phase": `${-(organizationIndex % 6) * 1.05}s` } as React.CSSProperties}
             >
               {(() => {
                 // The hit area covers body and label together, so the carrier's bounding-box centre is always a hit (keyboard, pointer, automation alike).
@@ -460,9 +468,10 @@ function FieldCanvas({ field, mode, t, onObserve }: CanvasProps) {
                 const bottom = Math.max(r + 11, labelWidth > 0 ? labelBottom : -Infinity);
                 return <rect data-sx-hit x={left} y={top} width={right - left} height={bottom - top} fill="transparent" />;
               })()}
-              <circle data-sx-glow cx={0} cy={0} r={r + 10} fill={lit ? "rgba(56, 229, 255, 0.26)" : "rgba(56, 229, 255, 0.12)"} filter="url(#sxGlow)" style={{ pointerEvents: "none", transition: "fill .4s ease" }} />
+              <circle data-sx-glow cx={0} cy={0} r={r + 10} fill={inEcology ? "rgba(56, 229, 255, 0.36)" : lit ? "rgba(56, 229, 255, 0.26)" : "rgba(56, 229, 255, 0.12)"} filter="url(#sxGlow)" style={{ pointerEvents: "none", transition: "r .78s cubic-bezier(.16,1,.3,1), fill .4s ease" }} />
               <circle data-sx-halo cx={0} cy={0} r={r + 9} fill="none" stroke={lit ? "rgba(56, 229, 255, 0.5)" : "rgba(56, 229, 255, 0.22)"} strokeWidth={1} strokeDasharray="3 3" style={{ pointerEvents: "none", transition: "stroke .3s ease" }} />
-              <circle cx={0} cy={0} r={r} fill="url(#sxCore)" stroke={lit ? CYAN : "rgba(56, 229, 255, 0.55)"} strokeWidth={lit ? 1.3 : 1} style={{ transition: "stroke .4s ease" }} />
+              <circle cx={0} cy={0} r={r} fill={inEcology ? "url(#sxNucleusDepth)" : "url(#sxCore)"} stroke={lit ? CYAN : "rgba(56, 229, 255, 0.55)"} strokeWidth={inEcology ? 1.5 : lit ? 1.3 : 1} style={{ transition: "stroke .4s ease, r .78s cubic-bezier(.16,1,.3,1)" }} />
+              {inEcology && <circle data-sx-nucleus-light cx={0} cy={0} r={r} fill="url(#sxNucleusLight)" style={{ pointerEvents: "none" }} />}
               {lit && <circle cx={0} cy={0} r={r + 4} fill="none" stroke="rgba(56, 229, 255, 0.45)" strokeWidth={0.6} style={{ pointerEvents: "none" }} />}
               {selected && <circle data-sx-pulse cx={0} cy={0} r={r + 9} fill="none" stroke={CYAN} strokeWidth={1.4} style={{ pointerEvents: "none" }} />}
               {Array.from({ length: ticks }, (_, index) => {
@@ -475,8 +484,8 @@ function FieldCanvas({ field, mode, t, onObserve }: CanvasProps) {
               {!inEcology && <circle cx={0} cy={0} r={2.2} fill={lit ? CYAN : "rgba(56, 229, 255, 0.6)"} style={{ pointerEvents: "none" }} />}
               {inEcology && (
                 <>
-                  <circle data-sx-core-ring cx={0} cy={0} r={r + 16} fill="none" stroke={CYAN} strokeWidth={1.2} strokeDasharray="24 12 8 16" opacity={0.55} style={{ pointerEvents: "none" }} />
-                  <circle data-sx-core-ring cx={0} cy={0} r={r + 23} fill="none" stroke={SIL_TOKENS.colors.cyanGlowStrong} strokeWidth={1} strokeDasharray="16 8 4 12" opacity={0.5} style={{ pointerEvents: "none" }} />
+                  <circle data-sx-core-ring cx={0} cy={0} r={r + 12} fill="none" stroke={CYAN} strokeWidth={1.2} strokeDasharray="24 12 8 16" opacity={0.55} style={{ pointerEvents: "none" }} />
+                  <circle data-sx-core-ring cx={0} cy={0} r={r + 19} fill="none" stroke={SIL_TOKENS.colors.cyanGlowStrong} strokeWidth={1} strokeDasharray="16 8 4 12" opacity={0.5} style={{ pointerEvents: "none" }} />
                 </>
               )}
               {!inEcology && (
@@ -485,7 +494,7 @@ function FieldCanvas({ field, mode, t, onObserve }: CanvasProps) {
                   <text x={labelX} y={labelY + (lines.length - 1) * 10.6 + 11} textAnchor={labelAnchor} fill={MUTED} fontFamily={MONO} fontSize={7} fontWeight={600} letterSpacing={1.2}>{role.requirementCount} {t.requirements}</text>
                 </g>
               )}
-              {inEcology && <SvgLabel lines={wrapLines(role.title, 11, 3)} x={0} y={-3 - (wrapLines(role.title, 11, 3).length - 1) * 4.6} size={7.2} fill={INK} weight={700} family={MONO} spacing={0.6} uppercase />}
+              {inEcology && <SvgLabel lines={wrapLines(role.title, 12, 3)} x={0} y={-1 - (wrapLines(role.title, 12, 3).length - 1) * 5.6} size={9.2} fill={INK} weight={700} family={MONO} spacing={0.6} uppercase />}
             </g>
           );
         })}
@@ -510,8 +519,9 @@ function FieldCanvas({ field, mode, t, onObserve }: CanvasProps) {
             )}
             {/* Composition of the deep-focus view (CapabilityDeepFocusView): the anchors are the satellites of the role core, each on a faint dashed spoke (3 10, .12); the evidence sits beneath the core, attached by the mint evidence link (3 6, 1.4, .42). No signs, no pointer. */}
             <g data-sx-ecology-composition style={{ pointerEvents: "none" }}>
-              {field.requirements.map(requirement => <line key={`spoke-${requirement.id}`} x1={observedRole.x} y1={observedRole.y} x2={requirement.x} y2={requirement.y} stroke="rgba(56, 229, 255, 0.12)" strokeWidth={1} strokeDasharray="3 10" style={{ opacity: recedeOpacity(requirement.sign, 0.35) }} />)}
-              {field.sources.map((source, index) => <line key={`link-${source.docId}`} x1={observedRole.x} y1={observedRole.y} x2={bodies[index].x} y2={bodies[index].y} stroke="rgba(126, 255, 204, 0.42)" strokeWidth={1.4} strokeDasharray="3 6" style={{ opacity: recedeOpacity(source.sign, 0.2) }} />)}
+              <circle data-sx-resonance-region cx={observedRole.x} cy={observedRole.y} r={(field.pendingBoundary?.radius ?? 205) + 24} fill="url(#sxResonance)" />
+              {field.requirements.map(requirement => <line key={`spoke-${requirement.id}`} x1={observedRole.x} y1={observedRole.y} x2={requirement.x} y2={requirement.y} stroke="rgba(56, 229, 255, 0.12)" strokeWidth={1} strokeDasharray="3 10" vectorEffect="non-scaling-stroke" style={{ opacity: recedeOpacity(requirement.sign, 0.35) }} />)}
+              {field.sources.map((source, index) => <line key={`link-${source.docId}`} x1={observedRole.x} y1={observedRole.y} x2={bodies[index].x} y2={bodies[index].y} stroke="rgba(126, 255, 204, 0.3)" strokeWidth={1} strokeDasharray="3 6" vectorEffect="non-scaling-stroke" style={{ opacity: recedeOpacity(source.sign, 0.2) }} />)}
             </g>
             {/* Source carriers as planetarium nodes (OrbitalResonanceBubble grammar): atmosphere glow, ring pulses when highlighted, the outer semiotic ring (dashed; solid when highlighted), the body with the sources glyph ◈, its evidence items as moons, the SOURCE kicker and the title. */}
             {field.sources.map((source, index) => {
@@ -561,21 +571,21 @@ function FieldCanvas({ field, mode, t, onObserve }: CanvasProps) {
                   style={{ cursor: "pointer", opacity: recedeOpacity(trace.sign, 0.12), "--sx-stagger": `${trace.sourceDocIndex * 0.3}s`, ...origin(observedRole.x, observedRole.y) } as React.CSSProperties}
                 >
                   <path data-sx-hit d={d} fill="none" stroke="transparent" strokeWidth={12} />
-                  <path d={d} fill="none" stroke={inspectable ? CYAN : stroke.color} strokeWidth={inspectable ? 2.5 : stroke.width} strokeDasharray={inspectable ? undefined : stroke.dash} strokeLinecap="round" style={{ pointerEvents: "none", transition: "stroke .35s ease, stroke-width .35s ease" }} />
-                  <path data-sx-trace-ray d={ray} pathLength={1} fill="none" stroke={trace.kind === "covers_unscored" ? "rgba(142, 239, 255, 0.28)" : "rgba(142, 239, 255, 0.45)"} strokeWidth={0.8} strokeDasharray="1 1" strokeLinecap="round" style={{ pointerEvents: "none" }} />
-                  <path data-sx-trace-glow d={d} fill="none" stroke="rgba(56, 229, 255, 0.16)" strokeWidth={10} strokeLinecap="round" style={{ pointerEvents: "none" }} />
+                  <path d={d} fill="none" vectorEffect="non-scaling-stroke" stroke={inspectable ? CYAN : stroke.color} strokeWidth={inspectable ? 1.5 : stroke.width} strokeDasharray={inspectable ? undefined : stroke.dash} strokeLinecap="round" style={{ pointerEvents: "none", transition: "stroke .35s ease, stroke-width .35s ease" }} />
+                  <path data-sx-trace-ray d={ray} pathLength={1} fill="none" vectorEffect="non-scaling-stroke" stroke={trace.kind === "covers_unscored" ? "rgba(142, 239, 255, 0.22)" : "rgba(142, 239, 255, 0.35)"} strokeWidth={0.8} strokeDasharray="1 1" strokeLinecap="round" style={{ pointerEvents: "none" }} />
+                  <path data-sx-trace-glow d={d} fill="none" vectorEffect="non-scaling-stroke" stroke="rgba(56, 229, 255, 0.07)" strokeWidth={6} strokeLinecap="round" style={{ pointerEvents: "none" }} />
                   {/* Photon streams of the planetarium's energy rays (SemanticCareerIntelligenceField photon-stream-core-to-orbit / orbit-to-core): one light from the carrier to the anchor, one back; faster and white when inspectable. Not rendered in REDUCED. */}
                   {mode === "LIVE" && (
                     <>
-                      <circle data-sx-photon="out" r={inspectable ? 3 : 1.8} fill={inspectable ? "#ffffff" : CYAN} opacity={inspectable ? 1 : 0.65} style={{ pointerEvents: "none" }}>
+                      <circle data-sx-photon="out" r={screen(inspectable ? 2.6 : 1.8)} fill={inspectable ? "#ffffff" : CYAN} opacity={inspectable ? 1 : 0.65} style={{ pointerEvents: "none" }}>
                         <animateMotion path={ray} dur={outDur} repeatCount="indefinite" />
                       </circle>
-                      <circle data-sx-photon="in" r={inspectable ? 3 : 1.8} fill={inspectable ? CYAN : "#8eefff"} opacity={inspectable ? 0.95 : 0.6} style={{ pointerEvents: "none" }}>
+                      <circle data-sx-photon="in" r={screen(inspectable ? 2.6 : 1.8)} fill={inspectable ? CYAN : "#8eefff"} opacity={inspectable ? 0.95 : 0.6} style={{ pointerEvents: "none" }}>
                         <animateMotion path={d} dur={inDur} repeatCount="indefinite" />
                       </circle>
                     </>
                   )}
-                  <circle data-sx-trace-bead cx={bead.x} cy={bead.y} r={inspectable ? 4 : 2} fill={inspectable ? CYAN : "rgba(56, 229, 255, 0.6)"} style={{ pointerEvents: "none", transition: "r .35s ease, fill .35s ease" }} />
+                  <circle data-sx-trace-bead cx={bead.x} cy={bead.y} r={screen(inspectable ? 2.6 : 1.6)} fill={inspectable ? CYAN : "rgba(56, 229, 255, 0.6)"} style={{ pointerEvents: "none", transition: "r .35s ease, fill .35s ease" }} />
                 </g>
               );
             })}
@@ -598,7 +608,7 @@ function FieldCanvas({ field, mode, t, onObserve }: CanvasProps) {
                     style={{ cursor: "pointer", opacity: recedeOpacity(requirement.sign, 0.22), ...origin(observedRole.x, observedRole.y) }}
                   >
                     <rect data-sx-hit x={Math.min(requirement.x - shape.r - 10, label.box.x)} y={Math.min(requirement.y - shape.r - 10, label.box.y)} width={Math.max(requirement.x + shape.r + 10, label.box.x + label.box.width) - Math.min(requirement.x - shape.r - 10, label.box.x)} height={Math.max(requirement.y + shape.r + 10, label.box.y + label.box.height) - Math.min(requirement.y - shape.r - 10, label.box.y)} fill="transparent" />
-                    {selected && <circle data-sx-glow cx={requirement.x} cy={requirement.y} r={shape.r + 9} fill="rgba(56, 229, 255, 0.3)" filter="url(#sxGlow)" style={{ pointerEvents: "none" }} />}
+                    {selected && <circle data-sx-glow cx={requirement.x} cy={requirement.y} r={shape.r + 11} fill="rgba(56, 229, 255, 0.45)" filter="url(#sxGlow)" style={{ pointerEvents: "none" }} />}
                     <circle cx={requirement.x} cy={requirement.y} r={selected ? shape.r + 1.5 : shape.r} fill={shape.fill} stroke={shape.stroke} strokeWidth={shape.strokeWidth} strokeDasharray={shape.dash} style={{ transition: "r .25s ease" }} />
                     {selected && <circle cx={requirement.x} cy={requirement.y} r={shape.r + 7} fill="none" stroke="rgba(56, 229, 255, 0.45)" strokeWidth={0.6} />}
                     {selected && <circle data-sx-pulse cx={requirement.x} cy={requirement.y} r={shape.r + 7} fill="none" stroke={CYAN} strokeWidth={1} style={{ pointerEvents: "none" }} />}
