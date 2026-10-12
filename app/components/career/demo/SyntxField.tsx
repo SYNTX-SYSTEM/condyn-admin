@@ -2,6 +2,7 @@
 
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { SIL_TOKENS } from "./SILTokens";
+import { getOrbitalSatellitePosition, useOrbitalMotionElapsedMs } from "./OrbitalSatelliteMotion";
 import { SIL_COPY, type SilLocale } from "../../../../lib/career/view-model/sil-language";
 import { describeRanking, describeSelection, type JobPoolAnalysisSource } from "../../../../lib/career/job-pool/frontend-presentation";
 import { useJobPoolWorkflow } from "../../../../lib/career/ui/useJobPool";
@@ -106,9 +107,8 @@ const SYNTX_CSS = `
 @keyframes sxOrbit { to { transform: rotate(360deg); } }
 @keyframes sxBreathe { 0% { opacity: .5; stroke-dashoffset: 0; animation-timing-function: ease-in-out; } 50% { opacity: 1; animation-timing-function: ease-in-out; } 100% { opacity: .5; stroke-dashoffset: -30; } }
 @keyframes sxRecenter { from { transform: scale(1); opacity: .7; } to { transform: scale(1.45); opacity: 0; } }
-@keyframes sxUnfold { from { opacity: 0; transform: scale(.3); } to { opacity: 1; transform: scale(1); } }
+@keyframes sxUnfold { from { opacity: 0; transform: scale(.62); } to { opacity: 1; transform: scale(1); } }
 @keyframes sxSettle { from { opacity: 0; transform: scale(.78); } to { opacity: 1; transform: scale(1); } }
-@keyframes sxFloat { 0% { transform: translate(0px, 0px) scale(1); } 30% { transform: translate(-1px, 2px) scale(1.005); } 65% { transform: translate(1px, -3px) scale(1.01); } 100% { transform: translate(0px, 0px) scale(1); } }
 @keyframes sxMoonOrbit { from { transform: rotate(0deg) translateX(var(--sx-moon-r, 22px)) rotate(0deg); } to { transform: rotate(360deg) translateX(var(--sx-moon-r, 22px)) rotate(-360deg); } }
 @keyframes sxRingPulse { 0% { transform: scale(1); opacity: .75; } 100% { transform: scale(1.35); opacity: 0; } }
 @keyframes sxAtmosphere { 0%, 100% { opacity: .5; } 50% { opacity: .9; } }
@@ -117,11 +117,10 @@ const SYNTX_CSS = `
 @keyframes sxCoreSettle { from { opacity: 0; transform: rotate(-70deg) scale(.86); } to { opacity: 1; transform: rotate(0deg) scale(1); } }
 [data-testid="syntx-field"] [data-sx-reveal] { animation: sxRise .32s ease-out backwards; }
 /* Transitions of the living field: each finite, each bound to the sign's transition or state (recenter, unfold, trace_rise, boundary_suspend). */
-[data-testid="syntx-canvas"] [data-sign-transition="unfold"][data-sign-manifestation="anchor"] { transform-box: view-box; transform-origin: var(--sx-origin); animation: sxUnfold .78s cubic-bezier(.16,1,.3,1) backwards; }
+[data-testid="syntx-canvas"] [data-sign-transition="unfold"][data-sign-manifestation="anchor"] { transform-box: view-box; transform-origin: var(--sx-origin); animation: sxUnfold .72s cubic-bezier(.16,1,.3,1) backwards; }
 /* Carriers settle into the ecology as planetarium nodes settle into deep focus (CapabilityDeepFocusView capabilityDeepFocusSettle: opacity 0 → 1, scale .78 → 1, .78 s cubic-bezier(.16,1,.3,1)), staggered per carrier. */
 [data-testid="syntx-canvas"] [data-sign-transition="trace_rise"][data-sign-manifestation="carrier"] { transform-box: view-box; transform-origin: var(--sx-carrier-origin); animation: sxSettle .78s cubic-bezier(.16,1,.3,1) var(--sx-stagger, 0s) backwards; }
 /* Carriers live as planetarium nodes live (OrbitalResonanceBubble): the bubble float (orbitFloatPhase2, 25 s ease-in-out), their evidence items as moons (moonOrbit, 160 s linear, upright by counter-rotation, phased by index), and — highlighted (inspectable) — the atmosphere glow (atmosphereGlow 3 s) with two ring pulses (ringPulse 2.4 s ease-out, the second 1.2 s behind). Ambient switch, LIVE only. */
-[data-testid="syntx-field"][data-sx-ambient="on"][data-motion-mode="LIVE"] [data-sign-manifestation="carrier"] > [data-sx-carrier-body] { transform-box: view-box; transform-origin: var(--sx-carrier-origin); animation: sxFloat 25s ease-in-out infinite; animation-delay: var(--sx-phase, 0s); }
 [data-testid="syntx-field"][data-sx-ambient="on"][data-motion-mode="LIVE"] [data-sign-manifestation="carrier"] [data-sx-moon] { transform-box: view-box; transform-origin: var(--sx-carrier-origin); animation: sxMoonOrbit 160s linear infinite; animation-delay: var(--sx-moon-phase, 0s); }
 [data-testid="syntx-canvas"] [data-sx-ring-pulse] { opacity: 0; }
 [data-testid="syntx-field"][data-sx-ambient="on"][data-motion-mode="LIVE"] [data-sign-state="inspectable"][data-sign-manifestation="carrier"] [data-sx-carrier-glow] { animation: sxAtmosphere 3s ease-in-out infinite; }
@@ -135,7 +134,12 @@ const SYNTX_CSS = `
 [data-testid="syntx-canvas"] [data-sign-transition="boundary_suspend"] { transform-box: view-box; transform-origin: var(--sx-origin); animation: sxSuspendEnter .78s cubic-bezier(.16,1,.3,1) backwards; }
 [data-testid="syntx-canvas"] :is([data-sign-state="organization_selected"], [data-sign-state="role_selected"], [data-sign-state="requirement_selected"]) > [data-sx-pulse] { transform-box: fill-box; transform-origin: center; animation: sxRecenter .9s ease-out forwards; }
 /* Depth: receded regions and carriers whose labels are hidden fall back behind the ecology (no visible text is blurred). */
-[data-testid="syntx-field"] [data-sx-depth="far"] { filter: blur(1.4px); }
+/* Deep-focus transformation of the Capability Field (FocusTransitionStageShell): what recedes falls back with blur(3px) grayscale(86%) — nodes also to scale .72 — and the focused entity rises to 1.12, each over .78 s on the field's one easing. Regions keep their size (they contain their roles); receded anchors and carriers keep their labels unblurred (grayscale and scale only). */
+[data-testid="syntx-field"] [data-sx-depth="far"] { filter: blur(3px) grayscale(86%); }
+[data-testid="syntx-canvas"] [data-sign-state="receded"][data-sign-manifestation="anchor"], [data-testid="syntx-canvas"] [data-sign-state="receded"][data-sign-manifestation="carrier"] { filter: grayscale(86%); transform-box: fill-box; transform-origin: center; transform: scale(.72); transition: opacity .62s ease, filter .62s ease, transform .78s cubic-bezier(.16,1,.3,1); }
+[data-testid="syntx-canvas"] [data-sign-state="receded"][data-sign-manifestation^="trace"] { filter: grayscale(86%); }
+[data-testid="syntx-canvas"] [data-sign-state="requirement_selected"][data-sign-manifestation="anchor"] { transform-box: fill-box; transform-origin: center; transform: scale(1.12); transition: opacity .62s ease, filter .62s ease, transform .78s cubic-bezier(.16,1,.3,1); }
+[data-testid="syntx-canvas"] [data-sign-manifestation="anchor"], [data-testid="syntx-canvas"] [data-sign-manifestation="carrier"] { transition: opacity .62s ease, filter .62s ease, transform .78s cubic-bezier(.16,1,.3,1); }
 /* Glow referents: carrier glow with the carrier's reach, trace glow only while inspectable. */
 [data-testid="syntx-canvas"] [data-sx-carrier-glow] { opacity: 0; transition: opacity .45s ease; }
 [data-testid="syntx-canvas"] :is([data-sign-state="field"], [data-sign-state="inspectable"]) [data-sx-carrier-glow] { opacity: 1; }
@@ -287,6 +291,17 @@ function FieldCanvas({ field, mode, t, onObserve }: CanvasProps) {
   const inspectTrace = (trace: SyntxTrace) => onObserve({ kind: "REQUIREMENT", organizationId: observation.organizationId, roleId: trace.roleId, requirementId: trace.requirementId, apertureSignId: trace.sign.id });
   const inspectOpen = (requirement: SyntxRequirement) => requirement.openBoundary !== null && onObserve({ kind: "REQUIREMENT", organizationId: observation.organizationId, roleId: requirement.roleId, requirementId: requirement.id, apertureSignId: requirement.openBoundary.id });
   const labelScale = 1 / Math.max(1, camera.scale * 0.72);
+  // The evidence moves as the cosmos's satellites move (OrbitalSatelliteMotion: one shared linear rAF clock, an elliptical orbit, the body upright,
+  // the tethers recomputed from the same position every frame): each carrier orbits a small ellipse (14 × 9) whose orbit passes through its routed
+  // place at t = 0, one turn per 60 s (calm, yet visible within a quarter minute), phased by index. LIVE only; reduced motion and the server hold the routed place.
+  const elapsedMs = useOrbitalMotionElapsedMs();
+  const orbitMs = mode === "LIVE" ? elapsedMs : 0;
+  const bodies = field.sources.map((source, index) => {
+    const initialPhase = (index * 2 * Math.PI) / Math.max(1, field.sources.length);
+    const rx = 14;
+    const ry = 9;
+    return getOrbitalSatellitePosition({ cx: source.x - rx * Math.cos(initialPhase), cy: source.y - ry * Math.sin(initialPhase), rx, ry, initialPhase, angularVelocity: (2 * Math.PI) / 60, elapsedMs: orbitMs });
+  });
   /** Entrance origin of an ecology sign: the observed role's centre (anchors, traces, carriers and the boundary unfold out of the role). */
   const origin = (x: number, y: number) => ({ "--sx-origin": `${x}px ${y}px` }) as React.CSSProperties;
   const ease = "cubic-bezier(.16,1,.3,1)";
@@ -431,7 +446,7 @@ function FieldCanvas({ field, mode, t, onObserve }: CanvasProps) {
               aria-pressed={selected}
               onClick={event => { event.stopPropagation(); onObserve(observeRole(observation, role.organizationId, role.id)); }}
               onKeyDown={key(() => onObserve(observeRole(observation, role.organizationId, role.id)))}
-              style={{ cursor: "pointer", opacity: recedeOpacity(role.sign, inEcology ? 1 : 0.2), transform: `translate(${role.x}px, ${role.y}px)`, transition: `transform .78s ${ease}, opacity .45s ease, filter .62s ease`, "--sx-phase": `${-(organizationIndex % 6) * 1.05}s` } as React.CSSProperties}
+              style={{ cursor: "pointer", opacity: recedeOpacity(role.sign, inEcology ? 1 : 0.2), transform: `translate(${role.x}px, ${role.y}px) scale(${selected ? 1.12 : far ? 0.72 : 1})`, transformBox: "view-box", transformOrigin: "0px 0px", transition: `transform .78s ${ease}, opacity .45s ease, filter .62s ease`, "--sx-phase": `${-(organizationIndex % 6) * 1.05}s` } as React.CSSProperties}
             >
               {(() => {
                 // The hit area covers body and label together, so the carrier's bounding-box centre is always a hit (keyboard, pointer, automation alike).
@@ -496,7 +511,7 @@ function FieldCanvas({ field, mode, t, onObserve }: CanvasProps) {
             {/* Composition of the deep-focus view (CapabilityDeepFocusView): the anchors are the satellites of the role core, each on a faint dashed spoke (3 10, .12); the evidence sits beneath the core, attached by the mint evidence link (3 6, 1.4, .42). No signs, no pointer. */}
             <g data-sx-ecology-composition style={{ pointerEvents: "none" }}>
               {field.requirements.map(requirement => <line key={`spoke-${requirement.id}`} x1={observedRole.x} y1={observedRole.y} x2={requirement.x} y2={requirement.y} stroke="rgba(56, 229, 255, 0.12)" strokeWidth={1} strokeDasharray="3 10" style={{ opacity: recedeOpacity(requirement.sign, 0.35) }} />)}
-              {field.sources.map(source => <line key={`link-${source.docId}`} x1={observedRole.x} y1={observedRole.y} x2={source.x} y2={source.y} stroke="rgba(126, 255, 204, 0.42)" strokeWidth={1.4} strokeDasharray="3 6" style={{ opacity: recedeOpacity(source.sign, 0.2) }} />)}
+              {field.sources.map((source, index) => <line key={`link-${source.docId}`} x1={observedRole.x} y1={observedRole.y} x2={bodies[index].x} y2={bodies[index].y} stroke="rgba(126, 255, 204, 0.42)" strokeWidth={1.4} strokeDasharray="3 6" style={{ opacity: recedeOpacity(source.sign, 0.2) }} />)}
             </g>
             {/* Source carriers as planetarium nodes (OrbitalResonanceBubble grammar): atmosphere glow, ring pulses when highlighted, the outer semiotic ring (dashed; solid when highlighted), the body with the sources glyph ◈, its evidence items as moons, the SOURCE kicker and the title. */}
             {field.sources.map((source, index) => {
@@ -506,7 +521,7 @@ function FieldCanvas({ field, mode, t, onObserve }: CanvasProps) {
               const moons = Math.min(source.traceCount, 12);
               return (
                 <g key={source.docId} data-testid={`syntx-source-${source.docId}`} data-source-title-state={source.titleState} data-trace-count={source.traceCount} {...signAttributes(source.sign)} style={{ opacity: recedeOpacity(source.sign, 0.18), "--sx-stagger": `${index * 0.3}s`, "--sx-phase": `${-index * 4}s`, "--sx-carrier-origin": `${source.x}px ${source.y}px`, ...origin(observedRole.x, observedRole.y) } as React.CSSProperties}>
-                  <g data-sx-carrier-body style={{ pointerEvents: "none" }}>
+                  <g data-sx-carrier-body data-orbital-motion-driver="shared-rAF" data-orbital-motion-phase={bodies[index].phase.toFixed(6)} data-orbital-motion-x={bodies[index].x.toFixed(3)} data-orbital-motion-y={bodies[index].y.toFixed(3)} style={{ pointerEvents: "none", transform: `translate(${(bodies[index].x - source.x).toFixed(3)}px, ${(bodies[index].y - source.y).toFixed(3)}px)` }}>
                     <circle data-sx-carrier-glow cx={source.x} cy={source.y} r={r + 14} fill="rgba(126, 255, 204, 0.18)" filter="url(#sxGlow)" />
                     <circle data-sx-ring-pulse cx={source.x} cy={source.y} r={r + 6} fill="none" stroke={CYAN} strokeWidth={0.8} style={{ "--sx-ring-delay": "0s" } as React.CSSProperties} />
                     <circle data-sx-ring-pulse cx={source.x} cy={source.y} r={r + 6} fill="none" stroke={CYAN} strokeWidth={0.8} style={{ "--sx-ring-delay": "1.2s" } as React.CSSProperties} />
@@ -524,7 +539,7 @@ function FieldCanvas({ field, mode, t, onObserve }: CanvasProps) {
               const source = field.sources[trace.sourceDocIndex];
               const stroke = TRACE_STROKE[trace.kind];
               const inspectable = trace.sign.state === "inspectable";
-              const carrier = source ?? requirement;
+              const carrier = source === undefined ? requirement : bodies[trace.sourceDocIndex];
               // The trace is an energy ray of the planetarium: a coupling arc (co-terminal traces bow apart, F-SX-2; bending around the role carrier and labels, O-SX-2), dashed at rest and solid when inspectable, with its photon stream and midpoint bead.
               const d = tracePath(requirement, carrier, trace.bow);
               const ray = traceRayPath(requirement, carrier, trace.bow);
