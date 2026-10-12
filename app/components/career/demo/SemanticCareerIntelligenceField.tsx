@@ -21,6 +21,8 @@ import { OrbitalDeepFocusView } from "./OrbitalDeepFocusView";
 import { InferenceTelemetryHUD } from "./InferenceTelemetryHUD";
 import { HrDecisionLoopDock } from "./HrDecisionLoopDock";
 import { SyntxField } from "./SyntxField";
+import { SyntxEnergyRay, SyntxPlanetariumBackdrop } from "./manifestation/SyntxPlanetarium";
+import { FocusTransitionStageShell } from "./manifestation/SyntxFocusShell";
 import { observationFromParams, type SyntxObservation } from "../../../../lib/career/job-pool/syntx-field-view-model";
 import { useJobPoolWorkflow } from "../../../../lib/career/ui/useJobPool";
 import { describeAnalysisSource } from "../../../../lib/career/job-pool/frontend-presentation";
@@ -71,153 +73,7 @@ export interface SemanticCareerIntelligenceFieldProps {
   };
 }
 
-export interface FocusTransitionStageShellProps {
-  stageId: string;
-  x: number;
-  y: number;
-  isCosmosAnchor: boolean;
-  isCosmosBackground: boolean;
-  showFocusPulse: boolean;
-  emptyVisualUnderlay?: React.ReactNode;
-  emptyCopyForeground?: React.ReactNode;
-  children: React.ReactNode;
-}
-
-const FOCUSED_STAGE_BUBBLE_OUTER_RADIUS = (168 + 16 * 2 + 1.5 * 2) / 2;
-const FOCUSED_EMPTY_COPY_GAP = 24;
-
-/**
- * The position shell owns orbit-to-focus coordinates, while this visual shell
- * owns scale. Every center-dependent focus visual remains beneath both owners.
- */
-export function FocusTransitionStageShell({
-  stageId,
-  x,
-  y,
-  isCosmosAnchor,
-  isCosmosBackground,
-  showFocusPulse,
-  emptyVisualUnderlay,
-  emptyCopyForeground,
-  children
-}: FocusTransitionStageShellProps) {
-  return (
-    <div
-      data-testid={`focus-transition-stage-shell-${stageId}`}
-      data-focus-translation-owner="stage-position"
-      style={{
-        position: "absolute",
-        left: `calc(50% + ${x}px - 84px)`,
-        top: `calc(50% + ${y}px - 84px)`,
-        pointerEvents: isCosmosBackground ? "none" : "auto",
-        opacity: isCosmosBackground ? 0.12 : isCosmosAnchor ? 0.42 : 1,
-        filter: isCosmosBackground ? "blur(3px) grayscale(86%)" : undefined,
-        transform: isCosmosAnchor
-          ? `translate(${-x}px, ${-y}px)`
-          : "translate(0px, 0px)",
-        transformOrigin: "center center",
-        transition: "transform 0.78s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.62s ease, filter 0.62s ease"
-      }}
-    >
-      <div
-        data-testid={`focus-stage-visual-${stageId}`}
-        data-focus-scale-owner="stage-visual"
-        style={{
-          position: "relative",
-          isolation: "isolate",
-          transform: `scale(${isCosmosAnchor ? 1.12 : isCosmosBackground ? 0.72 : 1})`,
-          transformOrigin: "center center",
-          transition: "transform 0.78s cubic-bezier(0.16, 1, 0.3, 1)"
-        }}
-      >
-        {emptyVisualUnderlay && (
-          <div
-            data-testid={`empty-visual-underlay-${stageId}`}
-            style={{
-              position: "absolute",
-              left: "50%",
-              top: "50%",
-              width: 0,
-              height: 0,
-              zIndex: 0,
-              pointerEvents: "none"
-            }}
-          >
-            {emptyVisualUnderlay}
-          </div>
-        )}
-
-        <div
-          data-testid={`focused-stage-bubble-${stageId}`}
-          style={{ position: "relative", zIndex: 1 }}
-        >
-          {children}
-        </div>
-
-        {emptyCopyForeground && (
-          <div
-            data-testid={`empty-copy-foreground-${stageId}`}
-            style={{
-              position: "absolute",
-              left: "50%",
-              top: `calc(50% - ${FOCUSED_STAGE_BUBBLE_OUTER_RADIUS + FOCUSED_EMPTY_COPY_GAP}px)`,
-              width: "390px",
-              transform: "translateX(-50%) translateY(-100%)",
-              zIndex: 3,
-              pointerEvents: "none"
-            }}
-          >
-            {emptyCopyForeground}
-          </div>
-        )}
-
-        {showFocusPulse && (
-          <>
-            <style>{`
-              @keyframes focusTransitionPulse {
-                0% { transform: scale(1); opacity: 0.7; }
-                100% { transform: scale(1.45); opacity: 0; }
-              }
-            `}</style>
-            <div
-              data-testid={`focus-transition-pulse-${stageId}`}
-              aria-hidden="true"
-              style={{
-                position: "absolute",
-                inset: 0,
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                pointerEvents: "none",
-                zIndex: 0,
-                // The previous field-SVG pulse inherited its focused 0.18
-                // opacity; retain that intensity after relocating it.
-                opacity: isCosmosAnchor ? 0.4285714286 : 1
-              }}
-            >
-              <svg width="620" height="620" viewBox="0 0 620 620">
-                <circle
-                  cx="310"
-                  cy="310"
-                  r="310"
-                  fill="none"
-                  stroke={SIL_TOKENS.colors.cyanActive}
-                  strokeWidth="1.8"
-                  style={{
-                    animation: "focusTransitionPulse 1.6s ease-out infinite",
-                    transformBox: "fill-box",
-                    transformOrigin: "center"
-                  }}
-                />
-              </svg>
-            </div>
-          </>
-        )}
-      </div>
-    </div>
-  );
-}
-
+export { FocusTransitionStageShell, type FocusTransitionStageShellProps } from "./manifestation/SyntxFocusShell";
 
 /**
  * CONDYN / SYNTX — Semantic Interface Language (SIL v3.0 Phase 3c Continuous Semantic Space)
@@ -1012,86 +868,7 @@ export function SemanticCareerIntelligenceField({
                 transition: "opacity 0.72s cubic-bezier(0.16, 1, 0.3, 1), filter 0.72s cubic-bezier(0.16, 1, 0.3, 1)"
               }}
             >
-              <defs>
-                <radialGradient id="fieldGlow" cx="50%" cy="50%" r="50%">
-                  <stop offset="0%" stopColor="#38e5ff" stopOpacity={focusedStageId ? "0.32" : "0.22"} />
-                  <stop offset="100%" stopColor="#030508" stopOpacity="0" />
-                </radialGradient>
-              </defs>
-
-              {/* Phase 2a: Atmospheric Field Glow Background */}
-              <circle
-                cx={center}
-                cy={center}
-                r={radius + 30}
-                fill="url(#fieldGlow)"
-              />
-
-              {/* Concentric Orbit Paths */}
-              {[radius * 0.35, radius * 0.68, radius].map((r, i) => (
-                <circle
-                  key={i}
-                  cx={center}
-                  cy={center}
-                  r={r}
-                  fill="none"
-                  stroke="rgba(56, 229, 255, 0.12)"
-                  strokeWidth="1"
-                  strokeDasharray={i === 1 ? "4 4" : undefined}
-                />
-              ))}
-
-              {/* Phase 2b: Rotating Background Resonance Rings */}
-              <g data-testid="rotating-background-rings" style={{ transformOrigin: `${center}px ${center}px` }}>
-                <circle
-                  cx={center}
-                  cy={center}
-                  r={radius - 40}
-                  fill="none"
-                  stroke="rgba(56, 229, 255, 0.16)"
-                  strokeWidth="1"
-                  strokeDasharray="12 18"
-                  style={{ animation: "rotateClockwise 120s linear infinite", transformOrigin: `${center}px ${center}px` }}
-                />
-              </g>
-
-              {/* Phase 2b: Living Ecosystem Field Ambient Elements */}
-              <g data-testid="ambient-energy-nodes">
-                {[0, 60, 120, 180, 240, 300].map((deg, idx) => {
-                  const rAmbient = radius * 0.82;
-                  const rad = (deg * Math.PI) / 180;
-                  const ax = Math.round((center + Math.cos(rad) * rAmbient) * 100) / 100;
-                  const ay = Math.round((center + Math.sin(rad) * rAmbient) * 100) / 100;
-                  return (
-                    <circle
-                      key={idx}
-                      cx={ax}
-                      cy={ay}
-                      r="1.5"
-                      fill="rgba(56, 229, 255, 0.38)"
-                    />
-                  );
-                })}
-              </g>
-
-              {/* Phase 2b: Semantic Dust Particles */}
-              <g data-testid="semantic-dust-particles">
-                {[45, 135, 225, 315].map((deg, idx) => {
-                  const rDust = radius * 0.5;
-                  const rad = (deg * Math.PI) / 180;
-                  const dx = center + Math.cos(rad) * rDust;
-                  const dy = center + Math.sin(rad) * rDust;
-                  return (
-                    <circle
-                      key={idx}
-                      cx={dx}
-                      cy={dy}
-                      r="1"
-                      fill="rgba(56, 229, 255, 0.25)"
-                    />
-                  );
-                })}
-              </g>
+              <SyntxPlanetariumBackdrop center={center} radius={radius} glowOpacity={focusedStageId ? "0.32" : "0.22"} />
 
               {/* Phase 2d: Inter-Orbital Coupling weighted relationships */}
               <g data-testid="inter-orbital-coupling">
@@ -1133,52 +910,22 @@ export function SemanticCareerIntelligenceField({
                   : (isRayActive ? SIL_TOKENS.colors.cyanActive : "rgba(56, 229, 255, 0.28)");
 
                 return (
-                  <g key={`ray-${st.stageId}`} data-testid={`energy-ray-${st.stageId}`}>
-                    <line
-                      x1={center}
-                      y1={center}
-                      x2={targetX}
-                      y2={targetY}
-                      stroke={rayStroke}
-                      strokeWidth={isRayActive || (graphFocus && isRayRelated) ? "2.5" : "1.2"}
-                      strokeDasharray={isRayActive || (graphFocus && isRayRelated) ? undefined : "3 3"}
-                      style={{ transition: "all 0.35s ease" }}
-                    />
-
-                    <circle
-                      data-testid="photon-stream-core-to-orbit"
-                      r={isRayActive || (graphFocus && isRayRelated) ? "3" : "1.8"}
-                      fill={isRayActive || (graphFocus && isRayRelated) ? "#ffffff" : SIL_TOKENS.colors.cyanActive}
-                      opacity={isRayActive || (graphFocus && isRayRelated) ? 1 : (graphFocus ? 0.1 : 0.65)}
-                    >
-                      <animateMotion
-                        path={`M ${center} ${center} L ${targetX} ${targetY}`}
-                        dur={isRayActive ? "1.6s" : st.photonOutDur}
-                        repeatCount="indefinite"
-                      />
-                    </circle>
-
-                    <circle
-                      data-testid="photon-stream-orbit-to-core"
-                      r={isRayActive ? "3" : "1.8"}
-                      fill={isRayActive ? "#38e5ff" : "#8eefff"}
-                      opacity={isRayActive ? 0.95 : 0.6}
-                    >
-                      <animateMotion
-                        path={`M ${targetX} ${targetY} L ${center} ${center}`}
-                        dur={isRayActive ? "2.1s" : st.photonInDur}
-                        repeatCount="indefinite"
-                      />
-                    </circle>
-
-                    <circle
-                      cx={(center + targetX) / 2}
-                      cy={(center + targetY) / 2}
-                      r={isRayActive ? "4" : "2"}
-                      fill={isRayActive ? SIL_TOKENS.colors.cyanActive : "rgba(56, 229, 255, 0.6)"}
-                      style={{ transition: "all 0.35s ease" }}
-                    />
-                  </g>
+                  <SyntxEnergyRay
+                    key={`ray-${st.stageId}`}
+                    testId={`energy-ray-${st.stageId}`}
+                    x1={center}
+                    y1={center}
+                    x2={targetX}
+                    y2={targetY}
+                    stroke={rayStroke}
+                    strokeWidth={isRayActive || (graphFocus && isRayRelated) ? "2.5" : "1.2"}
+                    dash={isRayActive || (graphFocus && isRayRelated) ? undefined : "3 3"}
+                    photons={{
+                      out: { r: isRayActive || (graphFocus && isRayRelated) ? "3" : "1.8", fill: isRayActive || (graphFocus && isRayRelated) ? "#ffffff" : SIL_TOKENS.colors.cyanActive, opacity: isRayActive || (graphFocus && isRayRelated) ? 1 : (graphFocus ? 0.1 : 0.65), dur: isRayActive ? "1.6s" : st.photonOutDur },
+                      in: { r: isRayActive ? "3" : "1.8", fill: isRayActive ? "#38e5ff" : "#8eefff", opacity: isRayActive ? 0.95 : 0.6, dur: isRayActive ? "2.1s" : st.photonInDur }
+                    }}
+                    bead={{ r: isRayActive ? "4" : "2", fill: isRayActive ? SIL_TOKENS.colors.cyanActive : "rgba(56, 229, 255, 0.6)" }}
+                  />
                 );
               })}
             </svg>

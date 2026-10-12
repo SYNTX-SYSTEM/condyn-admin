@@ -151,7 +151,9 @@ describe("SYNTX field (server-rendered)", () => {
     expect(html).toMatch(/data-sign-id="role:ROLE_A"[^>]*data-sign-state="field"/);
     expect(html).toContain('data-aperture-open="false"');
     expect(html).not.toContain('data-testid="syntx-aperture"');
-    expect(html).toMatch(/data-testid="syntx-canvas"[^>]*data-camera-scale="2.4"/);
+    // Deep focus (depth 3): the planetarium's focus anchor stays the observed organization's body at 1.12; nothing zooms.
+    expect(html).toMatch(/data-testid="syntx-canvas"[^>]*data-depth="3"[^>]*data-camera-scale="1.12"/);
+    expect(html).toContain('data-testid="syntx-deep-focus"');
     expect(html).toMatch(/data-summary-for="REQ_1"[^>]*>Requirement TypeScript of role Platform Engineer: supported by scored evidence; 1 evidence trace from 1 source.</);
   });
 

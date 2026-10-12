@@ -24,7 +24,16 @@ import type { AnalysisSources } from "./analysis-sources";
 import { presentationLabels, type JobPoolPresentationLabel } from "./frontend-presentation";
 
 export const SYNTX_FIELD_GRAMMAR = "SYNTX_FIELD_V1";
-export const SYNTX_LAYOUT = Object.freeze({ size: 1000, center: 500 });
+/**
+ * The planetarium of the field (SYNTX manifestation grammar, the Capability Field's L0): an 800-unit box, the core at its
+ * centre, the resonance bodies on the orbit of radius 330 and — when one orbit cannot hold every body at full size — on the
+ * dashed middle orbit (0.68 R) as well, both bodies shrinking together so that no body is ever dropped or overlapped.
+ */
+export const SYNTX_LAYOUT = Object.freeze({ size: 800, center: 400, radius: 330 });
+/** Resonance body (168 units), the gap between neighbours on an orbit, the core's reach (220 / 2 + its 24-unit outer ring) and the moon orbit of a body. */
+export const PLANETARIUM_BODY = Object.freeze({ size: 168, gap: 24, coreReach: 134, moonOrbit: 110, containment: 116, minScale: 0.3 });
+export const PLANETARIUM_INNER_ORBIT = round2(SYNTX_LAYOUT.radius * 0.68);
+function round2(value: number): number { return Math.round(value * 100) / 100; }
 
 /* ----------------------------------------------------------------------------------------------------------------
  * Observation point and sign vocabulary (spec §5, §14.3; only values the binding produces)
@@ -90,8 +99,15 @@ export interface SyntxOrganization {
   region: string | null;
   targetEntityId: string;
   roleIds: string[];
+  /** Centre of the resonance body in the planetarium box, its direction from the core (degrees, 0 = east, clockwise) and its orbit. */
   x: number;
   y: number;
+  angle: number;
+  orbit: number;
+  /** Body scale (1 = 168 units) and the body's radius at that scale. */
+  bodyScale: number;
+  bodyRadius: number;
+  /** Radius of the organization's region: the orbit its moons keep (organization ⊃ role), drawn as its containment ring. */
   radius: number;
   sign: VisualSign;
 }
@@ -116,9 +132,12 @@ export interface SyntxRole {
   bindingRevisionId: string;
   targetRoleProfileRevisionId: string;
   requirementCount: number;
+  /** In the planetarium the role is a moon of its organization: its place at t = 0 on the body's moon orbit, its index and the moon count. */
   x: number;
   y: number;
   radius: number;
+  moonIndex: number;
+  moonCount: number;
   sign: VisualSign;
   /** Delivered presentation matching for this role, when the matching of this exact upload was delivered; else null. */
   matching: SyntxRoleMatching | null;
@@ -210,11 +229,23 @@ export interface SyntxAperture {
   requirement: SyntxRequirement | null;
 }
 
+/**
+ * Depth of the observation (the focus transformation): 0 planetarium (FIELD), 1 organization cosmos, 2 role cosmos,
+ * 3 requirement deep focus. Each level recedes the one before it; nothing zooms.
+ */
+export type SyntxDepth = 0 | 1 | 2 | 3;
+
+/**
+ * The focus anchor of the planetarium (the Capability Field's FocusTransitionStageShell): from ORGANIZATION on, the observed
+ * organization's body translates from (x, y) to the centre and rises to 1.12 while every other body recedes; at FIELD the
+ * anchor is the core at scale 1. Containment geometry only (R4, R14).
+ */
 export interface SyntxCamera {
   x: number;
   y: number;
   scale: number;
 }
+export const FOCUS_ANCHOR_SCALE = 1.12;
 
 export interface SyntxBoundary {
   authorityState: "NONE";
@@ -239,6 +270,7 @@ export interface SyntxField {
   pendingBoundary: SyntxPendingBoundary | null;
   aperture: SyntxAperture | null;
   camera: SyntxCamera;
+  depth: SyntxDepth;
   /** Whether the presentation matching of this exact upload (and this analysis) was delivered. */
   matchingDelivered: boolean;
   analysisId: string | null;
@@ -303,7 +335,6 @@ export const EVIDENCE_SECTOR = Object.freeze({ center: 180, halfWidth: 45 });
 export const SOURCE_RING_RADIUS = 135;
 const SUPPORT_ORDER: readonly SyntxSupport[] = ["SUPPORTED", "WEAK", "SWEEP_ONLY", "OPEN", "UNREAD"];
 
-export const CAMERA_SCALE = Object.freeze({ FIELD: 1, ROLE: 1.8, REQUIREMENT: 2.4 });
 
 /* ----------------------------------------------------------------------------------------------------------------
  * Ecology geometry (perceptual closure, owner mandate "SFE — SYNTX FINAL PERCEPTUAL CLOSURE", 2026-10-11)
@@ -336,7 +367,7 @@ export const REQUIREMENT_LABEL = Object.freeze({ maxChars: 16, maxLines: 3, size
 export const ROLE_CLEARANCE_RADIUS = 62;
 /** The observed role as the nucleus of its ecology (Capability Field L2 nucleus): its body radius there; the ecology radii above are scaled with it (×1.3), categories and order unchanged. */
 export const ECOLOGY_NUCLEUS_RADIUS = 45;
-/** Source carrier (document glyph ±12) with its SOURCE kicker and two-line title below: no foreign trace crosses it; the REQUIREMENT camera keeps it in view. */
+/** Source carrier with its SOURCE kicker and two-line title below (ecology units): no foreign trace crosses it. */
 export const SOURCE_BOX = Object.freeze({ halfWidth: 52, above: 14, below: 68 });
 /** Bows tried in order; co-terminal traces never share a bow, so each remains visible and hit-testable (F-SX-2). */
 export const TRACE_BOWS: readonly number[] = Object.freeze([0, 18, -18, 36, -36, 54, -54, 72, -72]);
@@ -465,36 +496,50 @@ export function routeTraceBows(from: Point, to: Point, taken: readonly number[],
   return fallback === null ? 0 : fallback.bow;
 }
 
-/** Organization regions on one ring around the field centre; the region radius grows with the number of roles (density, never importance). */
-function placeOrganizations(groups: ReadonlyArray<{ id: string; roleIds: string[] }>): Map<string, { x: number; y: number; radius: number }> {
-  const placed = new Map<string, { x: number; y: number; radius: number }>();
-  const count = groups.length;
-  const { center } = SYNTX_LAYOUT;
-  if (count === 0) return placed;
-  // A region is a planetarium node: room for its identity block above the roles and its density pill below (living field, 2026-10-12).
-  const density = (roleIds: string[]) => Math.min(190, 92 + 30 * Math.sqrt(Math.max(1, roleIds.length)));
-  if (count === 1) { placed.set(groups[0].id, { x: center, y: center, radius: Math.min(250, density(groups[0].roleIds) + 50) }); return placed; }
-  const maxRadius = Math.max(...groups.map(group => density(group.roleIds)));
-  // Regions are spaced so that a role label reaching outward from one region (≈ 138 units) never crosses into the next region.
-  const ring = Math.min(500 - maxRadius - 24, Math.max(170, (maxRadius + 138) / Math.sin(Math.PI / count)));
-  const slot = 360 / count;
-  groups.forEach((group, index) => {
-    const [x, y] = polar(center, center, ring, index * slot);
-    placed.set(group.id, { x, y, radius: Math.min(density(group.roleIds), Math.max(60, ring * Math.sin(Math.PI / count) - 14)) });
-  });
-  return placed;
+/**
+ * Resonance bodies on the planetarium orbits, in delivered mapping order from 12 o'clock clockwise: one orbit while it holds
+ * every body at full size; otherwise the outer orbit and the middle orbit together, every body at the largest common scale
+ * that keeps neighbours apart and the inner bodies clear of the core. Count and order only — never a score (R4, R14).
+ */
+export function placeOrganizations(count: number): Array<{ x: number; y: number; angle: number; orbit: number; bodyScale: number }> {
+  const { center, radius } = SYNTX_LAYOUT;
+  const { size, gap, coreReach, minScale } = PLANETARIUM_BODY;
+  if (count === 0) return [];
+  const capacity = (orbit: number, scale: number) => Math.max(1, Math.floor((2 * Math.PI * orbit) / (size * scale + gap)));
+  // The middle orbit holds bodies only while they clear the core and never reach the outer orbit's bodies (radial gap ≥ one body).
+  const innerFits = (scale: number) => PLANETARIUM_INNER_ORBIT - (size / 2) * scale - 12 >= coreReach && radius - PLANETARIUM_INNER_ORBIT - 6 >= size * scale;
+  let scale = 1;
+  let outer = count;
+  let inner = 0;
+  for (let step = 0; ; step += 1) {
+    scale = Math.max(minScale, 1 - step * 0.01);
+    if (count <= capacity(radius, scale)) { outer = count; inner = 0; break; }
+    if (innerFits(scale) && count <= capacity(radius, scale) + capacity(PLANETARIUM_INNER_ORBIT, scale)) {
+      outer = Math.min(capacity(radius, scale), Math.ceil((count * radius) / (radius + PLANETARIUM_INNER_ORBIT)));
+      inner = count - outer;
+      if (inner > capacity(PLANETARIUM_INNER_ORBIT, scale)) { inner = capacity(PLANETARIUM_INNER_ORBIT, scale); outer = count - inner; }
+      break;
+    }
+    // Beyond the smallest scale both orbits share the remaining bodies evenly (they may touch; none is dropped).
+    if (scale === minScale) { outer = Math.ceil(count / 2); inner = count - outer; break; }
+  }
+  const place = (index: number, ofCount: number, orbit: number, offset: number) => {
+    const angle = round(((-90 + offset + (index * 360) / ofCount) % 360 + 360) % 360);
+    const radians = (angle * Math.PI) / 180;
+    return { x: round(center + Math.cos(radians) * orbit), y: round(center + Math.sin(radians) * orbit), angle, orbit, bodyScale: round(scale) };
+  };
+  // Two bodies face each other across the core on the horizontal axis (the wide field); every other count starts at 12 o'clock.
+  const start = count === 2 ? -90 : 0;
+  return Array.from({ length: count }, (_, index) => (index < outer ? place(index, outer, radius, start) : place(index - outer, inner, PLANETARIUM_INNER_ORBIT, 180 / Math.max(1, inner))));
 }
 
-/** Roles inside their organization region: one at the centre, otherwise on an inner ring; unfolded (wider) when the organization is observed. */
-function placeRoles(region: { x: number; y: number; radius: number }, roleIds: readonly string[], unfolded: boolean): Map<string, { x: number; y: number }> {
-  const placed = new Map<string, { x: number; y: number }>();
-  // The roles sit in the lower part of the region (the identity block reads above them), on an inner ring that widens when the region unfolds.
-  const centreY = region.y + region.radius * 0.14;
-  if (roleIds.length === 1) { placed.set(roleIds[0], { x: region.x, y: round(centreY) }); return placed; }
-  const inner = region.radius * (unfolded ? 0.52 : 0.44);
-  const slot = 360 / roleIds.length;
-  roleIds.forEach((id, index) => { const [x, y] = polar(region.x, centreY, inner, index * slot + (roleIds.length === 2 ? 90 : 0)); placed.set(id, { x, y }); });
-  return placed;
+/** A role as the moon of its organization at t = 0: moonOrbit turns moon i of n by i / n of a turn (the planetarium's phase by index). */
+const depth0 = (kind: SyntxObservationKind, organization: SyntxOrganization | null): boolean => kind === "FIELD" || organization === null;
+
+function placeMoon(body: { x: number; y: number; bodyScale: number }, index: number, count: number): { x: number; y: number } {
+  const radians = (2 * Math.PI * index) / Math.max(1, count);
+  const orbit = PLANETARIUM_BODY.moonOrbit * body.bodyScale;
+  return { x: round(body.x + Math.cos(radians) * orbit), y: round(body.y + Math.sin(radians) * orbit) };
 }
 
 /* ----------------------------------------------------------------------------------------------------------------
@@ -537,28 +582,6 @@ export function resolveObservation(view: JobPoolUploadView | null, requested: Sy
   return { observation: { kind: "REQUIREMENT", organizationId: role.poolOrganizationId, roleId: role.poolRoleId, requirementId: requirement.poolRequirementId, apertureSignId: requested.apertureSignId }, stale: null };
 }
 
-/**
- * The REQUIREMENT camera: constant scale, centred between the anchor and the role, then shifted the least that keeps the
- * observed anchor with its label and every source carrier its traces reach inside the view (O-SX-4).
- */
-export function requirementCamera(requirement: SyntxRequirement, role: Point, reached: ReadonlyArray<Point>): SyntxCamera {
-  const scale = CAMERA_SCALE.REQUIREMENT;
-  const half = SYNTX_LAYOUT.center / scale;
-  const margin = 10;
-  const label = requirementLabel(requirement).box;
-  // The nucleus stays in view (hierarchy: nucleus, selected requirement, evidence body).
-  const nucleus = ECOLOGY_NUCLEUS_RADIUS + 12;
-  const xs = [role.x - nucleus, role.x + nucleus, requirement.x - 14, requirement.x + 14, label.x, label.x + label.width, ...reached.flatMap(point => [point.x - SOURCE_BOX.halfWidth, point.x + SOURCE_BOX.halfWidth])];
-  const ys = [role.y - nucleus, role.y + nucleus, requirement.y - 14, requirement.y + 14, label.y, label.y + label.height, ...reached.flatMap(point => [point.y - SOURCE_BOX.above, point.y + SOURCE_BOX.below])];
-  const fit = (values: number[], preferred: number): number => {
-    const lo = Math.min(...values) - margin;
-    const hi = Math.max(...values) + margin;
-    if (hi - lo > 2 * half) return round((lo + hi) / 2);
-    return round(Math.min(Math.max(preferred, hi - half), lo + half));
-  };
-  return { x: fit(xs, (requirement.x * 2 + role.x) / 3), y: fit(ys, (requirement.y * 2 + role.y) / 3), scale };
-}
-
 export function deriveSyntxField(view: JobPoolUploadView | null, matching: JobPoolMatchPresentation | null, analysisSources: AnalysisSources | null, requested: SyntxObservation): SyntxField | null {
   if (view === null) return null;
   const { observation } = resolveObservation(view, requested);
@@ -574,13 +597,13 @@ export function deriveSyntxField(view: JobPoolUploadView | null, matching: JobPo
   // Containment: organizations in delivered mapping order, roles grouped by their stored organization id (never by label text).
   const groups = mapping.organizations.map(organization => ({ id: organization.poolOrganizationId, roleIds: mapping.roles.filter(role => role.poolOrganizationId === organization.poolOrganizationId).map(role => role.poolRoleId) }));
   for (const role of mapping.roles) if (!groups.some(group => group.id === role.poolOrganizationId)) groups.push({ id: role.poolOrganizationId, roleIds: [role.poolRoleId] });
-  const regions = placeOrganizations(groups);
+  const bodies = placeOrganizations(groups.length);
 
   const poolSign = push(sign(`field:${view.jobPoolUploadId}`, "canonical_entity", "contains", "region", observation.kind === "FIELD" ? "none" : "return", observation.kind === "FIELD" ? "unfold" : "restore", { uploadId: view.jobPoolUploadId }, observation.kind === "FIELD" ? "field" : "receded"));
 
-  const organizations: SyntxOrganization[] = groups.map(group => {
+  const organizations: SyntxOrganization[] = groups.map((group, groupIndex) => {
     const mapped = mapping.organizations.find(organization => organization.poolOrganizationId === group.id) ?? null;
-    const region = regions.get(group.id)!;
+    const body = bodies[groupIndex];
     const observedHere = observation.organizationId === group.id;
     const state: SignState = observation.kind === "FIELD" ? "field" : observation.kind === "ORGANIZATION" ? (observedHere ? "organization_selected" : "receded") : observedHere ? "field" : "receded";
     const extraOrg = extra.organizations.get(group.id) ?? null;
@@ -591,21 +614,24 @@ export function deriveSyntxField(view: JobPoolUploadView | null, matching: JobPo
       region: extraOrg?.region ?? null,
       targetEntityId: mapped?.targetOrganizationEntityId ?? "",
       roleIds: group.roleIds,
-      ...region,
+      ...body,
+      bodyRadius: round((PLANETARIUM_BODY.size / 2) * body.bodyScale),
+      radius: round(PLANETARIUM_BODY.containment * body.bodyScale),
       sign: push(sign(`org:${group.id}`, "canonical_entity", "contains", "region", observation.kind === "ORGANIZATION" && observedHere ? "return" : "select", observation.kind === "ORGANIZATION" && observedHere ? "unfold" : state === "receded" ? "recede" : "recenter", { uploadId: view.jobPoolUploadId, organizationId: group.id, ...(mapped !== null ? { targetId: mapped.targetOrganizationEntityId } : {}) }, state))
     };
   });
 
   const roles: SyntxRole[] = [];
   for (const organization of organizations) {
-    const placed = placeRoles(organization, organization.roleIds, observation.kind !== "FIELD" && observation.organizationId === organization.id);
-    for (const roleId of organization.roleIds) {
+    // Organizations first: a role manifests as a moon of its organization (no interaction) until its organization is observed; then it is a satellite of the organization's cosmos.
+    const unfolded = observation.kind !== "FIELD" && observation.organizationId === organization.id;
+    for (const [moonIndex, roleId] of organization.roleIds.entries()) {
       const mapped = mapping.roles.find(role => role.poolRoleId === roleId)!;
       const match = delivered.find(candidate => candidate.poolRoleId === roleId) ?? null;
       const observedHere = observation.roleId === roleId;
       const state: SignState = observation.kind === "FIELD" ? "field" : observation.kind === "ORGANIZATION" ? (observation.organizationId === organization.id ? "field" : "receded") : observedHere ? (observation.kind === "ROLE" ? "role_selected" : "field") : "receded";
       const extraRole = extra.roles.get(roleId) ?? null;
-      const position = placed.get(roleId)!;
+      const position = placeMoon(organization, moonIndex, organization.roleIds.length);
       roles.push({
         id: roleId,
         title: mapped.title,
@@ -619,9 +645,11 @@ export function deriveSyntxField(view: JobPoolUploadView | null, matching: JobPo
         requirementCount: mapped.requirements.length,
         x: position.x,
         y: position.y,
-        radius: 30,
+        radius: 4.5,
+        moonIndex,
+        moonCount: organization.roleIds.length,
         matching: match === null ? null : { resonanceScore: match.resonanceScore, deliveredRank: delivered.indexOf(match) + 1, targetRoleProfileRevisionId: match.canonical.targetRoleProfileRevisionId, targetRequirementRevisionIds: [...match.canonical.targetRequirementRevisionIds], relationState: match.canonical.capabilityRequirementRelationState, reason: match.canonical.reason },
-        sign: push(sign(`role:${roleId}`, "canonical_entity", "contains", "carrier", observation.kind === "ROLE" && observedHere ? "return" : "select", observation.kind === "ROLE" && observedHere ? "unfold" : state === "receded" ? "recede" : "recenter", { uploadId: view.jobPoolUploadId, organizationId: organization.id, roleId, targetId: mapped.targetRoleOrganizationBindingRevisionId }, state))
+        sign: push(sign(`role:${roleId}`, "canonical_entity", "contains", "carrier", !unfolded ? "none" : observation.kind === "ROLE" && observedHere ? "return" : "select", observation.kind === "ROLE" && observedHere ? "unfold" : state === "receded" ? "recede" : "recenter", { uploadId: view.jobPoolUploadId, organizationId: organization.id, roleId, targetId: mapped.targetRoleOrganizationBindingRevisionId }, state))
       });
     }
   }
@@ -773,18 +801,11 @@ export function deriveSyntxField(view: JobPoolUploadView | null, matching: JobPo
     }
   }
 
-  // Camera (recenter): the observation point sits at the centre of the view.
+  // Depth (the focus transformation): each observation level recedes the one before it.
   const observedOrganization = observation.organizationId === null ? null : organizations.find(organization => organization.id === observation.organizationId) ?? null;
   const observedRequirement = observation.kind === "REQUIREMENT" ? requirements.find(requirement => requirement.id === observation.requirementId) ?? null : null;
-  const camera: SyntxCamera = observation.kind === "FIELD" || observedOrganization === null
-    ? { x: SYNTX_LAYOUT.center, y: SYNTX_LAYOUT.center, scale: CAMERA_SCALE.FIELD }
-    : observation.kind === "ORGANIZATION"
-      ? { x: observedOrganization.x, y: observedOrganization.y, scale: round(Math.min(2.6, 400 / (observedOrganization.radius + 30))) }
-      : observation.kind === "ROLE" && observedRole !== null
-        ? { x: observedRole.x, y: observedRole.y, scale: CAMERA_SCALE.ROLE }
-        : observedRequirement !== null && observedRole !== null
-          ? requirementCamera(observedRequirement, observedRole, sourceCarriers.filter(source => observedRequirement.traces.some(trace => trace.docId === source.docId)))
-          : { x: SYNTX_LAYOUT.center, y: SYNTX_LAYOUT.center, scale: CAMERA_SCALE.FIELD };
+  const camera: SyntxCamera = depth0(observation.kind, observedOrganization) ? { x: SYNTX_LAYOUT.center, y: SYNTX_LAYOUT.center, scale: 1 } : { x: observedOrganization!.x, y: observedOrganization!.y, scale: FOCUS_ANCHOR_SCALE };
+  const depth: SyntxDepth = observation.kind === "FIELD" || observedOrganization === null ? 0 : observation.kind === "ORGANIZATION" ? 1 : observation.kind === "ROLE" ? 2 : 3;
 
   const boundary: SyntxBoundary | null = matchingDelivered ? { authorityState: matching!.presentation.authorityState, canonicalEvaluation: matching!.presentation.canonicalEvaluation, decision: matching!.presentation.decision, labels: presentationLabels(matching!.presentation), policyVersion: matching!.presentation.policyVersion, weakEvidenceThreshold: matching!.presentation.weakEvidenceThreshold, candidateCapabilityCount: matching!.candidateCapabilityCount, capabilitySweep: matching!.capabilitySweep } : null;
 
@@ -809,6 +830,7 @@ export function deriveSyntxField(view: JobPoolUploadView | null, matching: JobPo
     pendingBoundary,
     aperture,
     camera,
+    depth,
     matchingDelivered,
     analysisId,
     boundary,

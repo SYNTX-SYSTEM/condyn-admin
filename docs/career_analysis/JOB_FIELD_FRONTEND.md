@@ -564,6 +564,46 @@ trace; pending = dashed circle around the ecology; unread = plain thin ring. No 
 transform .78 s), recede/trace rise (opacity .45 s), aperture open (opacity rise, fill-mode backwards, B-LENS-FILL), boundary suspend
 (slow dash drift, never a pulse). `prefers-reduced-motion` zeroes every animation and transition; no meaning depends on motion.
 
+#### 13.2.3 Semiotic transfer — one manifestation grammar for both fields (owner mandate "GRÜN — SYNTX SEMIOTIC TRANSFER", GO 2026-10-12, variant A)
+
+The Job Field no longer re-draws the Capability Field's grammar inside one zooming SVG. Both fields now render from one set of
+domain-neutral SYNTX manifestation components, extracted from the Capability Field without changing its rendering
+(`app/components/career/demo/manifestation/`):
+
+| Component | Extracted from | What it is |
+|---|---|---|
+| `SyntxResonanceBody` | `OrbitalResonanceBubble` | the 168 px floating body, atmosphere and ring pulses, attention shell, semiotic ring, signature slot, moons (`renderMoon`), tether + HUD slot |
+| `SyntxHudSurface` | `OrbitalResonanceBubble` (`getTooltipStyle`) | the opaque hologram HUD surface and its placement table |
+| `SyntxCoreOrganism` | `IdentityCoreDropZone` | the breathing core with plasma rings, flare, waves, outer rings, particles; emblem slot |
+| `SyntxPlanetariumBackdrop`, `SyntxEnergyRay` | `SemanticCareerIntelligenceField` | field glow, concentric orbits, 120 s ring, ambient nodes, dust; energy ray with SMIL photon streams and bead |
+| `FocusTransitionStageShell`, `SYNTX_FOCUS` | `SemanticCareerIntelligenceField` (re-exported there) | the focus transformation: anchor to the centre at 1.12 / .42, everything else recedes blur(3px) grayscale(86%) .72 / .12 |
+| `SyntxCosmosShell` (+ node and centre materials) | `CapabilityCosmosView`, `OrbitalCosmosView` | L1 cosmos: backdrop, stars, dashed orbit ellipses, per-frame tethers, satellites on the shared rAF clock |
+| `SyntxDeepFocusShell` (+ nucleus, satellite, evidence-surface materials, evidence link) | `CapabilityDeepFocusView`, `OrbitalDeepFocusView` | L2 deep focus: backdrop, spokes, the slots for nucleus, receded siblings and evidence surface |
+
+The Capability components are now thin callers of these components. Proof of "unchanged": 374 server renders of every touched
+Capability component (all six stages × seven variants × seven angles, both cores, both cosmos and deep-focus views at three clock
+times, the focus shell in five states, the whole field in four job states with and without data), captured before the
+extraction and compared byte for byte after every step: 374 / 374 identical (sha256 `7d0e5c91…bdc18b2` before and after). The
+sealed SIL language suites and every Capability test pass unchanged. The optional switches added for the Job Field (`keyframes`,
+`pulseKeyframes`) default to the Capability Field's behaviour.
+
+**Levels.** JOB POOL = L0 planetarium: the pool is the core, organizations are resonance bodies on the orbit (several orbits and a
+common smaller scale when the pool is large: count and order only), each role is a moon of its organization (`data-manifestation-form="moon"`,
+interaction `none`, `tabindex -1` — organizations first). ORGANIZATION = the body moves to the centre (focus transformation), the
+planetarium recedes, the roles orbit as cosmos satellites (the shared L1 packing; compact cards, then a compact uniform packing for
+very large organizations — never fewer satellites). ROLE = the organization cosmos recedes; the role is the centre of its own cosmos:
+requirements on circular orbits by support category (R14: distance is the category, equal within it), source documents on theirs
+(the stage-01 source-satellite grammar), evidence traces between them (quadratic, recomputed every frame from both positions), the
+suspended boundary around; the whole constellation turns once per 160 s. REQUIREMENT = L2 deep focus: the requirement as nucleus,
+its siblings receded, the evidence surface beneath with one row per evidence relation grouped by document; every relation is its own
+curve from the nucleus to its row. EVIDENCE = the aperture as the hologram HUD on its tether (a reading surface: it holds still).
+
+**Semantics carried over unchanged.** View model signs, proofs, observation, summaries (GELB governance 10/10 unchanged); support
+category = orbit and glyph; scored and unscored relations keep their stroke in every state (inspectable brightens, never solidifies),
+their own rows and their own apertures even on one document; sweep coverage is never scored; one suspended boundary, no closure;
+missing support neutral; score only in the pending aperture; no red attention ring (no HR state has the meaning
+EMPTY_PROJECTION_ATTENTION). Proposals for GELB/PINK (R10a, R15b, walk rebinding): `docs/career_analysis/proposals/SYNTX_SEMIOTIC_TRANSFER_PROPOSALS.md`.
+
 ### 13.3 DOM contract (PINK BR-1 … BR-5; GELB conditions a/b)
 
 **BR-1 field root** `data-testid="syntx-field"`: `data-field-grammar="SYNTX_FIELD_V1"`, `data-observation-kind` FIELD|ORGANIZATION|ROLE|REQUIREMENT
@@ -633,6 +673,12 @@ authority-label, open-nearest, evidence-quote), `job-pool-panel`, `job-pool-orbi
 `syntx-aperture` (+ `-quote`, `-source`, `-contribution`, `-sweep-status`, `-open-text`, `-pending-text`, `-resonance`, `-authority`, `-close`),
 `syntx-stale` (`data-stale-kind`, `data-stale-id`), `syntx-no-pool`, `syntx-no-analysis`, `syntx-exit-btn`, `syntx-path`, `syntx-path-<LEVEL>`
 (`data-current`), `syntx-return-btn`, `syntx-state` (`data-state`), `syntx-pools-toggle`, `syntx-boundary-toggle`.
+**Added by the semiotic transfer (2026-10-12)**: `syntx-canvas` `data-depth` (0 planetarium … 3 deep focus; `data-camera-scale` is now
+the planetarium focus anchor's scale, 1 or 1.12), `syntx-orbits`, `syntx-pool-core`, `syntx-ray-<org>`, `syntx-body-<org>`,
+`syntx-body-surface-<org>`, `syntx-hud-<org>`, `syntx-tether-<org>`, `focus-transition-stage-shell-syntx-<org>` (+ `focus-stage-visual-…`,
+`focused-stage-bubble-…`, `focus-transition-pulse-…`), `syntx-cosmos-organization`, `syntx-cosmos-centre`, `syntx-deep-focus`,
+`syntx-evidence-surface`, `data-manifestation-form` (`moon` / `satellite` / `centre`), `data-sx-level`, `data-sx-evidence-row`,
+`data-trace-kind`, `data-rotation`, `data-card-mode`. Retired: `data-sx-camera`.
 
 ### 13.4 Accessibility and keyboard (spec §13.4, R8, R9)
 
@@ -703,3 +749,4 @@ observation point. Readable labels wrap at word boundaries (`wrapLines`), never 
 | 2026-10-12 | Semiontic field reconstruction — composition (owner mandate "SFE — GREEN · SEMIONTIC FIELD RECONSTRUCTION", on 0327d8d; GREEN only, isolated lab) | Phase 01 with a populated reference: the lab now runs the application's own intake (text source → `/api/career/analyze` → job → worker with PINK's deterministic MockInferenceProvider answering the gold case extended to five capabilities) so the Capability Field fills in-session (L0 counts 1/5/1/1/0/1, HUD with DOC pill and top items, L1 cosmos with five orbiting cluster cards on tethers, L2 deep focus: nucleus, four satellites on spokes, the EVIDENCE surface beneath the nucleus on the mint link) and the Job Field of the same session reads the same analysis. Identified: the existing application never places a source as a distant node tied to entities by lines; evidence is attached beneath the focused entity. Phase 02: the ecology takes that composition — anchors as satellites of the role core on faint spokes (arc outside a 90° evidence sector at the bottom), source carriers inside the ecology beneath the core (ring 104, inside the boundary 158) on the mint link, traces as short energy rays from the evidence body to its anchors. Evidence: `capability-vs-jobfield.webm` (comparable complexity, one session), `populated-session.webm`, `reference-*.png` | view model 14/14 · SSR 7/7 · governance 10/10 + 4/4 · e2e 10/10 · PINK walk: all scenarios green except the Q-06 ROLE-name assertion (`sxFloat` / `sxMoonOrbit`, R15; expected) · tsc 0 · sealed files byte-identical |
 | 2026-10-12 | Final deep-focus delta (owner mandate "SFE — GREEN · FINAL DEEP-FOCUS DELTA", on dac4bf0; GREEN only, isolated lab, same populated reference session) | the Capability Field's deep-focus transformation is reused for the whole ecology (recede blur(3px) grayscale(86%) / scale .72, focus 1.12, .78 s; anchors settle as deep-focus satellites .62 → 1, .72 s); the carrier float is replaced by the cosmos's `OrbitalSatelliteMotion` (shared rAF clock, ellipse 14 × 9, 60 s per turn) and its link and traces are recomputed from that position every frame (probe over 6 s: carrier x/y and trace end coincide to 0.1 field units in every sample). Side-by-side 16 s from one populated session: `capability-vs-jobfield.webm` | view model 14/14 · SSR 7/7 · governance 10/10 + 4/4 · e2e 10/10 · PINK walk: all scenarios green except the Q-06 ROLE-name assertion (`sxMoonOrbit`, R15; expected) · tsc 0 · sealed files byte-identical |
 | 2026-10-12 | Concrete visual correction (owner mandate "GREEN — CONCRETE VISUAL CORRECTION", on 7bda76a; GREEN only, same populated reference session) | nucleus ×1.5 with the L2 nucleus materials and one resonance region; ecology radii ×1.3 (categories, order, camera scales unchanged; nucleus kept in the REQUIREMENT framing); evidence straight beneath the nucleus and satellites fanned from the top (the regression the e2e caught on the first attempt — a short trace buried in a converging bundle, 0 owned pointer points — is gone: 7 / 11 / 14 / 14); traces as screen-constant filaments with a faint halo, photons and beads in screen pixels, emphasis on the selected anchor. View-model expectation "a single trace stays straight" replaced by the clearance it stands for. Comparison: `capability-vs-jobfield.webm` (21 s, L2 deep focus left, Job Field REQUIREMENT → EVIDENCE right, one session) | view model 14/14 · SSR 7/7 · governance 10/10 + 4/4 · e2e 10/10 · PINK walk: all scenarios green except the Q-06 ROLE-name assertion (`sxMoonOrbit`, R15; expected) · tsc 0 · sealed files byte-identical |
+| 2026-10-12 | Semiotic transfer (owner "GRÜN — SYNTX SEMIOTIC TRANSFER", GO for variant A; on 5898def = 9e86d44 + plan 1.9.0; GREEN only, isolated lab) | §13.2.3: seven domain-neutral manifestation components extracted from the Capability Field (374/374 renders byte-identical); the Job Field rebuilt on them as planetarium → organization cosmos → role cosmos → requirement deep focus → evidence HUD; organizations first (roles as moons); scored/unscored separated per row and curve; scale check with 16 organizations / 53 roles / 191 requirements. Findings fixed on the way: keyframe text inside the stage (now at the field root), zero-size sign wrappers (now real extents), colliding test-id prefixes (renamed), floating aperture (now still), global button ripple (suppressed in the field) | tsc 0; unit/SSR/governance/sealed SIL/Capability batch 40 files / 230; workflow e2e 10/10; PINK walk unchanged 0/3 (expected: Q-01 role buttons, Q-06 camera, focus tag); PINK walk with the proposed rebinding 3/3 |

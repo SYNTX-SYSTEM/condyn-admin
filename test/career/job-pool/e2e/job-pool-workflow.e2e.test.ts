@@ -248,41 +248,42 @@ describe.skipIf(playwrightModule === null)("SYNTX field in a real browser: FIELD
   /** A region is clicked on its own body (bottom of the circle, where no contained role sits); a ring on its stroke (top), never at the bounding-box centre. */
   const bottomOf = (locator: Locator) => locator.evaluate(element => { const box = element.getBoundingClientRect(); return { x: box.width / 2, y: box.height - 6 }; });
   const topOf = (locator: Locator) => locator.evaluate(element => { const box = element.getBoundingClientRect(); return { x: box.width / 2, y: 5 }; });
-  /**
-   * A point on a trace's visible path in absolute viewport coordinates (Playwright's position reference for SVG groups is
-   * not their client rect, and getScreenCTM ignores the camera's CSS transform): the path point is mapped through the
-   * camera's computed transform and the canvas viewBox. Traces are paths since the perceptual closure (straight "M…L…" or bowed "M…Q…").
-   */
+  /** A point on a trace's visible path in viewport coordinates (the field's levels are unscaled SVG in screen space: the path's screen CTM). */
   const alongTrace = (locator: Locator, fraction: number) => locator.evaluate((element, fraction) => {
     const path = element.querySelector("path:not([data-sx-hit])") as SVGPathElement;
     const point = path.getPointAtLength(path.getTotalLength() * fraction);
-    const camera = element.closest("[data-sx-camera]") as SVGGElement;
-    const matrix = new DOMMatrix(getComputedStyle(camera).transform);
-    const svg = element.closest("svg") as SVGSVGElement;
-    const box = svg.getBoundingClientRect();
-    const unit = box.width / svg.viewBox.baseVal.width;
-    return { x: box.left + (matrix.a * point.x + matrix.e) * unit, y: box.top + (matrix.d * point.y + matrix.f) * unit };
+    const screen = new DOMPoint(point.x, point.y).matrixTransform(path.getScreenCTM() as DOMMatrix);
+    return { x: screen.x, y: screen.y };
   }, fraction);
-  /** Perceptual closure checks over the rendered ecology (F-SX-2 pointer ownership, O-SX-2 label clearance, O-SX-4 reach), read once the camera has settled. */
-  const ecologyGeometry = (page: Page) => page.getByTestId("syntx-ecology").evaluate(ecology => {
-    const svg = ecology.closest("svg") as SVGSVGElement;
-    const box = svg.getBoundingClientRect();
-    const unit = box.width / svg.viewBox.baseVal.width;
-    const matrix = new DOMMatrix(getComputedStyle(ecology.closest("[data-sx-camera]") as SVGGElement).transform);
-    const toClient = (point: { x: number; y: number }) => ({ x: box.left + (matrix.a * point.x + matrix.e) * unit, y: box.top + (matrix.d * point.y + matrix.f) * unit });
-    const roleLabel = (document.querySelector(`[data-testid="syntx-role-${ecology.getAttribute("data-role-id")}"] text`) as SVGTextElement).getBoundingClientRect();
-    const stage = (document.querySelector('[data-testid="syntx-stage"]') as HTMLElement).getBoundingClientRect();
-    const traces = Array.from(ecology.querySelectorAll('[data-testid^="syntx-trace-"]')).map(trace => {
+  /**
+   * A satellite of a cosmos moves on the shared orbital clock, so a pointer acts on its current centre — and only where the satellite itself owns
+   * the pointer there (elementFromPoint), which is stronger than an actionability wait (a moving target is never "stable" for Playwright).
+   */
+  const clickCentre = async (page: Page, locator: Locator) => {
+    const point = await locator.evaluate(element => { const box = element.getBoundingClientRect(); const x = box.left + box.width / 2; const y = box.top + box.height / 2; const hit = element.ownerDocument.elementFromPoint(x, y); return { x, y, owned: hit !== null && element.contains(hit) }; });
+    expect(point.owned, "the satellite owns the pointer at its centre").toBe(true);
+    await page.mouse.click(point.x, point.y);
+  };
+  /** Perceptual closure checks over the rendered levels (F-SX-2 pointer ownership, O-SX-2 title clearance, O-SX-4 reach), in screen space. */
+  const ecologyGeometry = (page: Page) => page.getByTestId("syntx-field").evaluate(root => {
+    const roleId = (root.querySelector('[data-testid="syntx-ecology"]') as HTMLElement).getAttribute("data-role-id");
+    const roleCentre = root.querySelector(`[data-testid="syntx-role-${roleId}"][data-manifestation-form="centre"]`) as HTMLElement;
+    const roleLabel = (Array.from(roleCentre.querySelectorAll("span")).find(span => span.textContent !== null && span.textContent.trim().length > 0 && getComputedStyle(span).textTransform === "uppercase") as HTMLElement).getBoundingClientRect();
+    const stage = (root.querySelector('[data-testid="syntx-stage"]') as HTMLElement).getBoundingClientRect();
+    const traces = Array.from(root.querySelectorAll('[data-testid^="syntx-trace-"]')).map(trace => {
       const path = trace.querySelector("path:not([data-sx-hit])") as SVGPathElement;
       const length = path.getTotalLength();
-      const samples = Array.from({ length: 15 }, (_, index) => toClient(path.getPointAtLength((length * (index + 1)) / 16)));
+      const ctm = path.getScreenCTM() as DOMMatrix;
+      const samples = Array.from({ length: 15 }, (_, index) => { const p = path.getPointAtLength((length * (index + 1)) / 16); return new DOMPoint(p.x, p.y).matrixTransform(ctm); });
       const crossesRoleLabel = samples.some(point => point.x >= roleLabel.left && point.x <= roleLabel.right && point.y >= roleLabel.top && point.y <= roleLabel.bottom);
       const owned = samples.filter(point => { const hit = document.elementFromPoint(point.x, point.y); return hit !== null && trace.contains(hit); }).length;
-      return { id: trace.getAttribute("data-sign-id"), state: trace.getAttribute("data-sign-state"), bow: trace.getAttribute("data-trace-bow"), d: path.getAttribute("d"), crossesRoleLabel, owned, hitFirst: trace.firstElementChild?.hasAttribute("data-sx-hit") === true };
+      return { id: trace.getAttribute("data-sign-id"), state: trace.getAttribute("data-sign-state"), bow: trace.getAttribute("data-trace-bow"), d: path.getAttribute("d"), crossesRoleLabel, owned, hitFirst: trace.firstElementChild?.hasAttribute("data-sx-hit") === true, level: trace.closest("[data-sx-level]")?.getAttribute("data-sx-level") ?? null };
     });
-    const sources = Array.from(ecology.querySelectorAll('[data-testid^="syntx-source-"]')).map(source => {
-      const rect = source.getBoundingClientRect();
-      return { docId: source.getAttribute("data-proof-doc-id"), state: source.getAttribute("data-sign-state"), inside: rect.left >= stage.left && rect.right <= stage.right && rect.top >= stage.top && rect.bottom <= stage.bottom };
+    // A source's extent is its body and its card (its own box is a positioning origin).
+    const sources = Array.from(root.querySelectorAll('[data-testid^="syntx-source-"]')).map(source => {
+      const rects = [source, ...Array.from(source.querySelectorAll("*"))].map(element => element.getBoundingClientRect()).filter(rect => rect.width > 0 && rect.height > 0);
+      const rect = { left: Math.min(...rects.map(item => item.left)), right: Math.max(...rects.map(item => item.right)), top: Math.min(...rects.map(item => item.top)), bottom: Math.max(...rects.map(item => item.bottom)) };
+      return { docId: source.getAttribute("data-proof-doc-id"), state: source.getAttribute("data-sign-state"), inside: rects.length > 0 && rect.left >= stage.left && rect.right <= stage.right && rect.top >= stage.top && rect.bottom <= stage.bottom };
     });
     return { traces, sources };
   });
@@ -369,19 +370,25 @@ describe.skipIf(playwrightModule === null)("SYNTX field in a real browser: FIELD
       expect(await carrier.getAttribute("data-requirement-count")).toBe(String(world.samplePool.requirements.filter(requirement => requirement.role_id === role.id).length));
       expect(await carrier.getAttribute("data-sign-manifestation")).toBe("carrier");
       expect(squash(await carrier.textContent())).toContain(squash(role.title));
-      // Containment as geometry: the role carrier sits inside its organization region.
+      // Containment as geometry (screen space): the role is a moon inside its organization's region (the orbit of its moons).
       const inside = await carrier.evaluate(element => {
         const organizationId = element.getAttribute("data-proof-organization-id");
-        // The carrier is positioned by its group transform (its body is drawn at the local origin); the region body is the membrane circle, not its glow.
-        const region = element.ownerDocument.querySelector(`[data-testid="syntx-organization-${organizationId}"] circle:not([data-sx-glow])`) as SVGCircleElement;
-        const matrix = new DOMMatrix(getComputedStyle(element).transform);
-        return Math.hypot(matrix.e - region.cx.baseVal.value, matrix.f - region.cy.baseVal.value) < region.r.baseVal.value;
+        const region = element.ownerDocument.querySelector(`[data-testid="syntx-organization-${organizationId}"] circle`) as SVGCircleElement;
+        const body = element.querySelector("circle") as SVGCircleElement;
+        const centre = (circle: SVGCircleElement) => { const box = circle.getBoundingClientRect(); return { x: box.left + box.width / 2, y: box.top + box.height / 2, r: box.width / 2 }; };
+        const r = centre(region), b = centre(body);
+        return Math.hypot(b.x - r.x, b.y - r.y) < r.r;
       });
       expect(inside).toBe(true);
+      // Organizations first: in the planetarium a role is a moon — a sign with its proofs, not yet selectable, not in the tab order.
+      expect(await carrier.getAttribute("data-manifestation-form")).toBe("moon");
+      expect(await carrier.getAttribute("data-sign-interaction")).toBe("none");
+      expect(await carrier.getAttribute("tabindex")).toBe("-1");
     }
     expect(await page.locator('[data-resonance-score]').count()).toBe(0);
     expect(await page.getByTestId("syntx-canvas").textContent()).not.toMatch(/\d+(\.\d+)?%/);
     expect(await page.getByTestId("syntx-canvas").getAttribute("data-camera-scale")).toBe("1");
+    expect(await page.getByTestId("syntx-canvas").getAttribute("data-depth")).toBe("0");
     expect(await page.getByTestId("syntx-ecology").count()).toBe(0);
     expect((await page.getByTestId("syntx-summary").textContent()) ?? "").toContain(`${world.samplePool.organizations.length} organizations containing ${world.samplePool.roles.length} roles`);
     // No permanent panel: the boundary (labels, canonical mapping state, sweep state) is an edge aperture opened on demand.
@@ -411,7 +418,11 @@ describe.skipIf(playwrightModule === null)("SYNTX field in a real browser: FIELD
     expect(await page.getByTestId(`syntx-organization-${organizationId}`).getAttribute("data-sign-state")).toBe("organization_selected");
     expect(await page.locator('[data-testid^="syntx-organization-"][data-sign-state="receded"]').count()).toBe(world.samplePool.organizations.length - 1);
     expect(Number(await page.getByTestId("syntx-canvas").getAttribute("data-camera-scale"))).toBeGreaterThan(1);
+    expect(await page.getByTestId("syntx-canvas").getAttribute("data-depth")).toBe("1");
+    // The organization's roles unfold as the satellites of its cosmos and become selectable.
     expect(await page.getByTestId(`syntx-role-${T.roleId}`).getAttribute("data-sign-state")).toBe("field");
+    expect(await page.getByTestId(`syntx-role-${T.roleId}`).getAttribute("data-manifestation-form")).toBe("satellite");
+    expect(await page.getByTestId(`syntx-role-${T.roleId}`).getAttribute("data-sign-interaction")).toBe("select");
     expect(await page.getByTestId("syntx-path-ORGANIZATION").getAttribute("data-current")).toBe("true");
     await settled(page);
     await page.screenshot({ path: resolve(EVIDENCE_DIR, "23-syntx-organization-recentered.png") });
@@ -421,7 +432,8 @@ describe.skipIf(playwrightModule === null)("SYNTX field in a real browser: FIELD
     expect(delivered.state).toBe("AVAILABLE");
     if (delivered.state !== "AVAILABLE") return;
     const roleMatch = delivered.matches.roleMatches.find(role => role.poolRoleId === T.roleId)!;
-    await page.getByTestId(`syntx-role-${T.roleId}`).click();
+    await settled(page);
+    await clickCentre(page, page.getByTestId(`syntx-role-${T.roleId}`));
     await page.locator('[data-testid="syntx-field"][data-observation-kind="ROLE"]').waitFor({ timeout: 10_000 });
     expect(await field(page).getAttribute("data-observation-id")).toBe(T.roleId);
     expect(params(page).get("jobRoleId")).toBe(T.roleId);
@@ -441,11 +453,12 @@ describe.skipIf(playwrightModule === null)("SYNTX field in a real browser: FIELD
     expect(supportOf(T.requirementId)).toBe("SUPPORTED");
     expect(supportOf("req_003")).toBe("WEAK");
     expect(supportOf("req_005")).toBe("OPEN");
-    // Relation-state geometry (§9.2): supported anchors sit closer to the role than weak ones, open ones at the boundary.
+    // Relation-state geometry (§9.2): supported anchors sit closer to the role than weak ones, open ones at the boundary (screen space, while the cosmos turns).
     const distanceOf = (id: string) => page.getByTestId(`syntx-requirement-${id}`).evaluate(element => {
-      const role = new DOMMatrix(getComputedStyle(element.ownerDocument.querySelector('[data-sign-state="role_selected"]') as SVGGElement).transform);
-      const anchor = element.querySelector("[data-sign-manifestation=\"anchor\"] circle:not([data-sx-glow])") as SVGCircleElement;
-      return Math.hypot(anchor.cx.baseVal.value - role.e, anchor.cy.baseVal.value - role.f);
+      const centre = (circle: Element) => { const box = circle.getBoundingClientRect(); return { x: box.left + box.width / 2, y: box.top + box.height / 2 }; };
+      const role = centre(element.ownerDocument.querySelector('[data-sign-state="role_selected"] circle') as SVGCircleElement);
+      const anchor = centre(element.querySelector('[data-sign-manifestation="anchor"] circle') as SVGCircleElement);
+      return Math.hypot(anchor.x - role.x, anchor.y - role.y);
     });
     expect(await distanceOf(T.requirementId)).toBeLessThan(await distanceOf("req_003"));
     expect(await distanceOf("req_003")).toBeLessThan(await distanceOf("req_005"));
@@ -494,7 +507,7 @@ describe.skipIf(playwrightModule === null)("SYNTX field in a real browser: FIELD
     await page.screenshot({ path: resolve(EVIDENCE_DIR, "24-syntx-role-constraint-ecology.png") });
 
     // REQUIREMENT: the anchor becomes the observation point; its traces are inspectable, everything else recedes.
-    await page.getByTestId(`syntx-requirement-${T.requirementId}`).click();
+    await clickCentre(page, page.locator(`[data-sign-id="req:${T.requirementId}"]`));
     await page.locator('[data-testid="syntx-field"][data-observation-kind="REQUIREMENT"]').waitFor({ timeout: 10_000 });
     expect(await field(page).getAttribute("data-observation-id")).toBe(T.requirementId);
     expect(params(page).get("jobRequirementId")).toBe(T.requirementId);
@@ -502,13 +515,11 @@ describe.skipIf(playwrightModule === null)("SYNTX field in a real browser: FIELD
     expect(await page.locator(`[data-sign-id^="trace:${T.requirementId}:"]`).first().getAttribute("data-sign-state")).toBe("inspectable");
     expect(await page.locator('[data-sign-id="req:req_003"]').getAttribute("data-sign-state")).toBe("receded");
     expect(await field(page).getAttribute("data-aperture-open")).toBe("false");
-    expect(await page.getByTestId("syntx-canvas").getAttribute("data-camera-scale")).toBe("2.4");
-    // O-SX-1: where every trace converges on one source carrier, the inspectable trace is rendered last and owns the pointer there.
-    expect(await page.locator('[data-testid^="syntx-trace-"]').first().evaluate(first => {
-      const traces = [...first.parentElement!.querySelectorAll('[data-testid^="syntx-trace-"]')];
-      const states = traces.map(trace => trace.getAttribute("data-sign-state"));
-      return states.lastIndexOf("inspectable") === states.length - 1 && states.indexOf("inspectable") > states.lastIndexOf("receded");
-    })).toBe(true);
+    // Deep focus: the requirement is the nucleus, the planetarium anchor stays the organization's body at 1.12; nothing zooms.
+    expect(await page.getByTestId("syntx-canvas").getAttribute("data-depth")).toBe("3");
+    expect(await page.getByTestId("syntx-canvas").getAttribute("data-camera-scale")).toBe("1.12");
+    // O-SX-1: the inspectable traces are drawn in the deep-focus level above every receded trace (they own the pointer there).
+    expect(await page.getByTestId("syntx-field").evaluate(root => Array.from(root.querySelectorAll('[data-testid^="syntx-trace-"]')).every(trace => (trace.getAttribute("data-sign-state") === "inspectable") === (trace.closest('[data-sx-level="requirement"]') !== null)))).toBe(true);
     await settled(page);
     // Perceptual closure at REQUIREMENT: the inspectable traces own pointer points and avoid the role title; the reached carrier is inside the stage (O-SX-4);
     // the reading agrees in number (O-SX-3).
@@ -518,6 +529,7 @@ describe.skipIf(playwrightModule === null)("SYNTX field in a real browser: FIELD
       expect(trace.crossesRoleLabel, `${trace.id} crosses the role title`).toBe(false);
     }
     for (const source of requirementGeometry.sources.filter(source => source.state === "inspectable")) expect(source.inside, `${source.docId} inside the stage at REQUIREMENT`).toBe(true);
+    expect(requirementGeometry.sources.filter(source => source.state === "inspectable").length).toBeGreaterThan(0);
     expect((await page.getByTestId("syntx-summary").textContent()) ?? "").toMatch(/ 1 evidence trace from 1 source\./);
     expect((await page.getByTestId("syntx-summary").textContent()) ?? "").not.toMatch(/\b1 (sources|traces|requirements|roles|organizations)\b/);
     await page.screenshot({ path: resolve(EVIDENCE_DIR, "25-syntx-requirement-observation.png") });
@@ -560,8 +572,11 @@ describe.skipIf(playwrightModule === null)("SYNTX field in a real browser: FIELD
     expect(params(page).get("jobOrganizationId")).toBeNull();
     expect(await page.getByTestId("syntx-canvas").getAttribute("data-camera-scale")).toBe("1");
     expect(await page.locator('[data-sign-state="receded"]').count()).toBe(0);
-    // Keyboard: Tab reaches the carriers, Enter selects; Escape returns at every level even when the focused sign unmounts (F-SX-1).
+    // Keyboard: Tab reaches the carriers, Enter selects (organization first, then its role); Escape returns at every level even when the focused sign unmounts (F-SX-1).
     const focusInside = () => page.getByTestId("syntx-field").evaluate(element => { const active = element.ownerDocument.activeElement; return { inside: active !== null && element.contains(active), signId: active?.getAttribute("data-sign-id") ?? active?.getAttribute("data-testid") ?? active?.tagName ?? null }; });
+    await page.getByTestId(`syntx-organization-${organizationId}`).focus();
+    await page.keyboard.press("Enter");
+    await page.locator('[data-testid="syntx-field"][data-observation-kind="ORGANIZATION"]').waitFor({ timeout: 10_000 });
     await page.getByTestId(`syntx-role-${T.roleId}`).focus();
     await page.keyboard.press("Enter");
     await page.locator('[data-testid="syntx-field"][data-observation-kind="ROLE"]').waitFor({ timeout: 10_000 });
@@ -613,7 +628,11 @@ describe.skipIf(playwrightModule === null)("SYNTX field in a real browser: FIELD
     expect(await page.getByTestId(`job-pool-item-${draftUploadId}`).getAttribute("data-pool-status")).toBe("DRAFT");
     expect(params(page).get("jobPoolUploadId")).toBe(draftUploadId);
     expect(await field(page).getAttribute("data-matching-delivered")).toBe("false");
-    await page.getByTestId(`syntx-role-${T.roleId}`).click();
+    const draftOrganization = page.getByTestId(`syntx-organization-${world.samplePool.roles.find(role => role.id === T.roleId)!.organization_id}`);
+    await draftOrganization.click({ position: await bottomOf(draftOrganization) });
+    await page.locator('[data-testid="syntx-field"][data-observation-kind="ORGANIZATION"]').waitFor({ timeout: 10_000 });
+    await settled(page);
+    await clickCentre(page, page.getByTestId(`syntx-role-${T.roleId}`));
     await page.locator('[data-testid="syntx-field"][data-observation-kind="ROLE"]').waitFor({ timeout: 10_000 });
     expect(await page.locator('[data-testid^="syntx-requirement-"][data-support="UNREAD"]').count()).toBe(world.samplePool.requirements.filter(requirement => requirement.role_id === T.roleId).length);
     expect(await page.locator('[data-testid^="syntx-trace-"]').count()).toBe(0);
@@ -646,7 +665,7 @@ describe.skipIf(playwrightModule === null)("SYNTX field in a real browser: FIELD
     await page.getByTestId("syntx-return-btn").click();
     await page.locator('[data-testid="syntx-field"][data-observation-kind="ROLE"]').waitFor({ timeout: 10_000 });
     await settled(page);
-    await page.getByTestId("syntx-open-req_005").click({ position: await topOf(page.getByTestId("syntx-open-req_005")) });
+    await clickCentre(page, page.getByTestId("syntx-open-req_005"));
     await page.locator('[data-testid="syntx-field"][data-observation-kind="REQUIREMENT"][data-aperture-open="true"]').waitFor({ timeout: 10_000 });
     expect(await page.getByTestId("syntx-aperture").getAttribute("data-aperture-kind")).toBe("open");
     expect(await page.getByTestId("syntx-aperture-open-text").textContent()).toBe("No delivered support is available for this requirement in the current analysis.");
@@ -673,7 +692,14 @@ describe.skipIf(playwrightModule === null)("SYNTX field in a real browser: FIELD
     calm.on("pageerror", (error: unknown) => pageErrors.push(String(error)));
     await calm.goto(`${base()}/career/demo?focus=FIELD&analysisId=${world.analysisId}&jobPoolUploadId=${uploadedId}&jobRoleId=${T.roleId}`, { waitUntil: "domcontentloaded", timeout: 120_000 });
     await calm.locator('[data-testid="syntx-field"][data-field-state="AVAILABLE"][data-motion-mode="REDUCED"][data-observation-kind="ROLE"]').waitFor({ timeout: 120_000 });
-    expect(await calm.locator("[data-sx-camera]").evaluate(element => getComputedStyle(element).transitionDuration)).toBe("0s");
+    // REDUCED is total: the focus transformation has no transition, nothing animates, the role cosmos does not turn (its clock never starts).
+    expect(await calm.locator('[data-testid^="focus-transition-stage-shell-syntx-"]').first().evaluate(element => getComputedStyle(element).transitionDuration)).toBe("0s");
+    const rotation = await calm.getByTestId("syntx-ecology").getAttribute("data-rotation");
+    await calm.waitForTimeout(1500);
+    expect(await calm.getByTestId("syntx-ecology").getAttribute("data-rotation")).toBe(rotation);
+    expect(rotation).toBe("0.000000");
+    expect(await calm.getByTestId("syntx-field").evaluate(element => element.getAnimations({ subtree: true }).filter(animation => animation.playState === "running").length)).toBe(0);
+    expect(await calm.locator("[data-sx-photon]").count()).toBe(0);
     expect(await calm.locator(`[data-testid="syntx-pending-${T.roleId}"] circle:not([data-sx-hit])`).evaluate(element => getComputedStyle(element).animationName)).toBe("none");
     expect(await calm.getByTestId(`syntx-requirement-${T.requirementId}`).getAttribute("data-support")).toBe("SUPPORTED");
     expect(await calm.locator('[data-testid^="syntx-trace-"]').count()).toBeGreaterThan(0);

@@ -1,0 +1,218 @@
+--- a/test/job-pool-validation/syntx-walk.e2e.test.ts
++++ b/test/job-pool-validation/syntx-walk.e2e.test.ts
+@@ -166,6 +166,12 @@
+     }
+     return { ...at(0.5), fraction: 0.5, owned: false };
+   }, fractions);
++  /** PROPOSAL (GRÜN semiotic transfer): satellites of a cosmos move on the shared orbital clock — a pointer acts on the current centre, where the satellite itself owns the pointer (elementFromPoint). */
++  const pointAt = async (page: any, locator: any) => {
++    const point = await locator.evaluate((element: Element) => { const box = element.getBoundingClientRect(); const x = box.left + box.width / 2; const y = box.top + box.height / 2; const hit = element.ownerDocument.elementFromPoint(x, y); return { x, y, owned: hit !== null && element.contains(hit) }; });
++    expect(point.owned, "the satellite owns the pointer at its centre").toBe(true);
++    await page.mouse.click(point.x, point.y);
++  };
+   /** R15a evidence ecology read (one frame): infinite animations by name with their host (carrier:<state> or the sign manifestation),
+    * carrier bodies (data-orbital-motion-*), and per trace: quadratic arc, carrier end on the body, photon count. */
+   const ecologyMotion = (page: any) => field(page).evaluate((root: Element) => {
+@@ -381,8 +387,11 @@
+       expect(await carrier.getAttribute("data-proof-target-id")).toBe(role.targetRoleOrganizationBindingRevisionId);
+       expect(await carrier.getAttribute("data-requirement-count")).toBe(String(role.requirements.length));
+       expect(await carrier.getAttribute("data-matching-read")).toBe("true");
+-      expect(await carrier.getAttribute("role")).toBe("button");
+-      expect(await carrier.getAttribute("tabindex")).toBe("0");
++      // PROPOSAL (owner: organizations first): at JOB POOL a role is a moon of its organization — a sign with its proofs, not selectable, not a tab stop.
++      expect(await carrier.getAttribute("data-manifestation-form")).toBe("moon");
++      expect(await carrier.getAttribute("data-sign-interaction")).toBe("none");
++      expect(await carrier.getAttribute("role")).toBeNull();
++      expect(await carrier.getAttribute("tabindex")).toBe("-1");
+       expect(squash(await carrier.textContent())).toContain(squash(role.title));
+       const inside = await carrier.evaluate((element: Element) => {
+         // Geometry read in screen space (bounding boxes), so group transforms, glow underlays and the camera do not matter.
+@@ -401,6 +410,7 @@
+     expect(await page.locator('[data-resonance-score]').count()).toBe(0);
+     expect(await page.getByTestId("syntx-ecology").count()).toBe(0);
+     expect(await page.getByTestId("syntx-canvas").getAttribute("data-camera-scale")).toBe("1");
++    expect(await page.getByTestId("syntx-canvas").getAttribute("data-depth")).toBe("0");
+     for (const selector of RETIRED_SELECTORS) expect(await page.locator(selector).count(), `retired ${selector}`).toBe(0);
+     expect(await page.getByTestId("field-focus-capability-btn").count()).toBe(1);
+     expect(await page.getByTestId("job-pool-panel-toggle").getAttribute("data-field-focus-active")).toBe("true");
+@@ -447,6 +457,7 @@
+       expect(await page.getByTestId(`syntx-role-${role.poolRoleId}`).getAttribute("data-proof-organization-id")).toBe(role.poolOrganizationId);
+     }
+     expect(Number(await page.getByTestId("syntx-canvas").getAttribute("data-camera-scale"))).toBeGreaterThan(1);
++    expect(await page.getByTestId("syntx-canvas").getAttribute("data-depth")).toBe("1");
+     expect(await page.getByTestId("syntx-path-ORGANIZATION").getAttribute("data-current")).toBe("true");
+     expect(await page.getByTestId("syntx-return-btn").count()).toBe(1);
+     expect(await page.getByTestId("syntx-summary").getAttribute("data-summary-for")).toBe(ORG_ID);
+@@ -461,7 +472,7 @@
+ 
+     // ---- Q-03 STATE C ROLE (spec §5 C, §9; table §2.2, §2.4, R2, R4, R6, R7, R14) ----
+     await settled(page);
+-    await page.getByTestId(`syntx-role-${ROLE_ID}`).click();
++    await pointAt(page, page.getByTestId(`syntx-role-${ROLE_ID}`));
+     await waitKind(page, "ROLE");
+     expect(await root.getAttribute("data-observation-id")).toBe(ROLE_ID);
+     expect(params(page).get("jobRoleId")).toBe(ROLE_ID);
+@@ -471,7 +482,9 @@
+     expect(await page.locator('[data-testid^="syntx-role-"][data-sign-state="receded"][tabindex="-1"]').count()).toBe(view.canonicalMapping.roles.length - 1);
+     expect(await region.getAttribute("data-sign-state")).toBe("field");
+     expect(await page.getByTestId("syntx-ecology").getAttribute("data-role-id")).toBe(ROLE_ID);
+-    expect(await page.getByTestId("syntx-canvas").getAttribute("data-camera-scale")).toBe("1.8");
++    // PROPOSAL: no zoom — the role cosmos is depth 2; the planetarium's focus anchor stays the organization's body at 1.12.
++    expect(await page.getByTestId("syntx-canvas").getAttribute("data-depth")).toBe("2");
++    expect(await page.getByTestId("syntx-canvas").getAttribute("data-camera-scale")).toBe("1.12");
+     const requirementIds: string[] = mappedRole.requirements.map((requirement: any) => requirement.poolRequirementId);
+     expect(await page.locator('[data-testid^="syntx-requirement-"]').count()).toBe(requirementIds.length);
+     expect(await root.getAttribute("data-requirement-count")).toBe(String(requirementIds.length));
+@@ -600,7 +613,7 @@
+     const weakId = requirementIds.find((id) => supportOf(id) === "WEAK")!;
+     const openId = requirementIds.find((id) => supportOf(id) === "OPEN")!;
+     await settled(page);
+-    await page.getByTestId(`syntx-requirement-${supportedId}`).click();
++    await pointAt(page, page.locator(`[data-sign-id="req:${supportedId}"]`));
+     await waitKind(page, "REQUIREMENT");
+     expect(await root.getAttribute("data-observation-id")).toBe(supportedId);
+     expect(params(page).get("jobRequirementId")).toBe(supportedId);
+@@ -612,7 +625,9 @@
+     expect(await page.locator(`[data-sign-id="req:${weakId}"]`).getAttribute("tabindex")).toBe("-1");
+     expect(await page.locator(`[data-sign-id^="trace:${weakId}:"]`).first().getAttribute("data-sign-state")).toBe("receded");
+     expect(await root.getAttribute("data-aperture-open")).toBe("false");
+-    expect(await page.getByTestId("syntx-canvas").getAttribute("data-camera-scale")).toBe("2.4");
++    // PROPOSAL: deep focus is depth 3; the planetarium anchor stays at 1.12.
++    expect(await page.getByTestId("syntx-canvas").getAttribute("data-depth")).toBe("3");
++    expect(await page.getByTestId("syntx-canvas").getAttribute("data-camera-scale")).toBe("1.12");
+     expect(await page.getByTestId("syntx-path-REQUIREMENT").getAttribute("data-current")).toBe("true");
+     await settled(page);
+     await page.screenshot({ path: resolve(EVIDENCE_DIR, "Q-04-requirement.png") });
+@@ -639,6 +654,8 @@
+     expect(inspectableCarriers.map((carrier: any) => carrier.docId), "exactly the trace's source carrier is inspectable").toEqual([quote.docId]);
+     expect(traceId.includes(`:${quote.docId}:`), "the aperture's trace names the same document").toBe(true);
+     expect([...(attribution.infinite.sxAtmosphere ?? []), ...(attribution.infinite.sxRingPulse ?? [])].filter((host: string) => host !== "carrier:inspectable"), "atmosphere / pulses on the inspectable carrier only").toEqual([]);
++    // PROPOSAL R15b: the planetarium's atmosphere and ring pulses run only on a highlighted resonance body (the focus anchor organization).
++    expect([...(attribution.infinite.atmosphereGlow ?? []), ...(attribution.infinite.ringPulse ?? [])].filter((host: string) => host !== "region"), "atmosphereGlow / ringPulse only on organization bodies").toEqual([]);
+     writeFileSync(resolve(EVIDENCE_DIR, "Q-04-attribution.txt"), `aperture for ${traceId}\ninspectable carriers ${JSON.stringify(inspectableCarriers)}\ninfinite ${JSON.stringify(attribution.infinite)}\n`);
+     expect(await aperture.getAttribute("data-aperture-kind")).toBe("trace");
+     expect(await aperture.getAttribute("data-sign-manifestation")).toBe("temporary_aperture");
+@@ -685,7 +702,7 @@
+     await page.keyboard.press("Escape");
+     await waitKind(page, "ROLE");
+     await settled(page);
+-    await page.getByTestId(`syntx-requirement-${weakId}`).click();
++    await pointAt(page, page.locator(`[data-sign-id="req:${weakId}"]`));
+     await waitKind(page, "REQUIREMENT");
+     expect(await root.getAttribute("data-observation-id")).toBe(weakId);
+     const weak = roleMatch.weakEvidence.find((item: any) => item.poolRequirementId === weakId);
+@@ -716,7 +733,7 @@
+     await waitKind(page, "ROLE");
+     await settled(page);
+     const openBoundary = page.getByTestId(`syntx-open-${openId}`);
+-    await openBoundary.click({ position: await topOf(openBoundary) });
++    await pointAt(page, openBoundary);
+     await page.locator('[data-testid="syntx-field"][data-observation-kind="REQUIREMENT"][data-aperture-open="true"]').waitFor({ timeout: 10_000 });
+     expect(await root.getAttribute("data-observation-id")).toBe(openId);
+     expect(await aperture.getAttribute("data-aperture-kind")).toBe("open");
+@@ -786,10 +803,10 @@
+     await region.click({ position: await bottomOf(region) });
+     await waitKind(page, "ORGANIZATION");
+     await settled(page);
+-    await page.getByTestId(`syntx-role-${ROLE_ID}`).click();
++    await pointAt(page, page.getByTestId(`syntx-role-${ROLE_ID}`));
+     await waitKind(page, "ROLE");
+     await settled(page);
+-    await page.getByTestId(`syntx-requirement-${supportedId}`).click();
++    await pointAt(page, page.locator(`[data-sign-id="req:${supportedId}"]`));
+     await waitKind(page, "REQUIREMENT");
+     const requirementAgain = await collectSigns(page);
+     expect(requirementAgain.map((sign) => [sign.id, sign.state, sign.proof])).toEqual(liveSigns.REQUIREMENT.map((sign) => [sign.id, sign.state, sign.proof]));
+@@ -850,7 +867,8 @@
+     }
+     // Every carrier, anchor, trace and boundary is a named button; receded ones leave the tab order.
+     const buttons = await field(page).evaluate((root: Element) => Array.from(root.querySelectorAll('[data-sign-id][role="button"]')).map((element) => ({ id: element.getAttribute("data-sign-id"), label: element.getAttribute("aria-label") ?? "", tabindex: element.getAttribute("tabindex") })));
+-    expect(buttons.length).toBe(view.canonicalMapping.organizations.length + view.canonicalMapping.roles.length);
++    // PROPOSAL (organizations first): at JOB POOL the named buttons are the organizations; roles become buttons when their organization is observed.
++    expect(buttons.length).toBe(view.canonicalMapping.organizations.length);
+     for (const button of buttons) { expect(button.label.length).toBeGreaterThan(0); expect(button.tabindex).toBe("0"); }
+     writeFileSync(resolve(EVIDENCE_DIR, "Q-08-summary.txt"), `FIELD: ${await summaryText(page)}\nbuttons at FIELD: ${JSON.stringify(buttons)}\nkeyboard trace:\n${keyboardTrace.join("\n")}\nfocus loss: ${focusLoss.length === 0 ? "none" : focusLoss.join("; ")}\n`);
+     if (focusLoss.length === 0) pass("Q-08", { buttons: buttons.length });
+@@ -895,19 +913,22 @@
+     await settled(live);
+     const computed = await field(live).evaluate((root: Element) => {
+       const read = (selector: string) => { const element = root.querySelector(selector); return element === null ? null : { animation: getComputedStyle(element).animationName, transition: getComputedStyle(element).transitionProperty, duration: getComputedStyle(element).transitionDuration }; };
+-      return { root: getComputedStyle(root).animationName, camera: read("[data-sx-camera]"), pendingDash: (() => { const element = root.querySelector('[data-testid^="syntx-pending-"] circle:not([data-sx-hit])'); return element === null ? null : getComputedStyle(element).animationName; })(), sign: read("[data-sign-id]"), names: Array.from(new Set(root.getAnimations({ subtree: true }).map((animation: any) => (typeof animation.animationName === "string" ? animation.animationName : "transition")))) };
++      return { root: getComputedStyle(root).animationName, shell: read('[data-testid^="focus-transition-stage-shell-syntx-"]'), pendingDash: (() => { const element = root.querySelector('[data-testid^="syntx-pending-"] circle:not([data-sx-hit])'); return element === null ? null : getComputedStyle(element).animationName; })(), sign: read("[data-sign-id]"), names: Array.from(new Set(root.getAnimations({ subtree: true }).map((animation: any) => (typeof animation.animationName === "string" ? animation.animationName : "transition")))) };
+     });
+     expect(computed.root).toBe("sxEnter");
+     expect(computed.pendingDash).toBe("sxSuspend");
+-    expect(computed.camera?.transition).toBe("transform");
+-    expect(computed.camera?.duration).toBe("0.78s");
++    // PROPOSAL: the focus transformation (FocusTransitionStageShell) replaces the camera: transform over .78 s, opacity / filter over .62 s.
++    expect(computed.shell?.transition).toBe("transform, opacity, filter");
++    expect(computed.shell?.duration).toBe("0.78s, 0.62s, 0.62s");
+     // Sign transitions: opacity (recede / restore); since the living field (a856b5a) also filter (the depth blur, data-sx-depth).
+     expect(["opacity", "opacity, filter"], `sign transition ${computed.sign?.transition}`).toContain(computed.sign?.transition);
+     // At ROLE after settle: the entrance, reveals, the suspend drift and the finite state-bound transitions of §13.2.1 — never a FIELD ambient name.
+     // R15a (owner 2026-10-12 "Alles zulassen", SYNTX_FIELD_CONTRACT_BINDING.md §4; GRÜN 9f225f2): the evidence ecology adds the finite
+     // `sxSettle` (carrier entry) and, continuously, the carrier orbit (rAF, no animation), `sxMoonOrbit` on carriers, SMIL photons on
+     // every trace and `sxAtmosphere` / `sxRingPulse` on the inspectable carrier only.
+-    for (const name of computed.names) expect(["sxEnter", "sxRise", "sxSuspend", "sxUnfold", "sxTraceRise", "sxTraceDraw", "sxSuspendEnter", "sxRecenter", "sxCoreSettle", "sxSettle", "sxMoonOrbit", "sxAtmosphere", "sxRingPulse", "transition"], `allowed motion at ROLE ${name}`).toContain(name);
++    // PROPOSAL R15b: the Capability Field's own motion names (planetarium, core, focus pulse, HUD) join the field's finite transitions.
++    const R15B = ["orbitFloatPhase2", "moonOrbit", "ringPulse", "atmosphereGlow", "hologramFloat", "coreBreathe", "corePulseCommunicate", "plasmaRotateCw", "plasmaRotateCcw", "plasmaFlarePulse", "waveExpand", "particleIn", "rotateClockwise", "focusTransitionPulse"];
++    for (const name of computed.names) expect(["sxEnter", "sxRise", "sxSuspend", "sxUnfold", "sxTraceRise", "sxTraceDraw", "sxSuspendEnter", "sxRecenter", "sxCoreSettle", "sxSettle", "sxNucleusSettle", "sxSatelliteSettle", ...R15B, "transition"], `allowed motion at ROLE ${name}`).toContain(name);
+     expect(computed.names.filter((name: string) => ["sxOrbit", "sxBreathe"].includes(name)), "no ambient motion at ROLE").toEqual([]);
+     // R15a at ROLE in two frames ~1.5 s apart: the infinite set is ⊆ {sxSuspend, sxMoonOrbit, sxAtmosphere, sxRingPulse}; moons only inside
+     // carriers, atmosphere and pulses only inside a carrier in state inspectable (none at ROLE rest); the three carrier animations only with
+@@ -920,8 +941,9 @@
+     const ownedB = await everyTraceOwned(live);
+     writeFileSync(resolve(EVIDENCE_DIR, "Q-06-ecology.txt"), `frame A: ${JSON.stringify(frameA)}\nowned A: ${JSON.stringify(ownedA)}\nframe B: ${JSON.stringify(frameB)}\nowned B: ${JSON.stringify(ownedB)}\n`);
+     for (const frame of [frameA, frameB]) {
+-      for (const name of Object.keys(frame.infinite)) expect(["sxSuspend", "sxMoonOrbit", "sxAtmosphere", "sxRingPulse"], `R15a infinite at ROLE ${name}`).toContain(name);
+-      expect(frame.infinite.sxMoonOrbit?.filter((host: string) => !host.startsWith("carrier:")) ?? [], "sxMoonOrbit only inside carriers").toEqual([]);
++      for (const name of Object.keys(frame.infinite)) expect(["sxSuspend", ...R15B], `R15b infinite at ROLE ${name}`).toContain(name);
++      // PROPOSAL R15b: moons orbit only as the role moons of a (receded) organization body.
++      expect(frame.infinite.moonOrbit?.filter((host: string) => host !== "carrier") ?? [], "moonOrbit only on role moons").toEqual([]);
+       expect([...(frame.infinite.sxAtmosphere ?? []), ...(frame.infinite.sxRingPulse ?? [])].filter((host: string) => host !== "carrier:inspectable"), "atmosphere / pulses only on the inspectable carrier").toEqual([]);
+       if (frame.switch !== "on") expect(Object.keys(frame.infinite).filter((name) => name !== "sxSuspend"), "carrier animations gated by the switch").toEqual([]);
+       expect(frame.carriers.every((carrier: any) => carrier.driver === "shared-rAF" && Number.isFinite(carrier.x) && Number.isFinite(carrier.y)), "every carrier body on the shared rAF clock").toBe(true);
+@@ -950,14 +972,14 @@
+       return { switch: root.getAttribute("data-sx-ambient") ?? "off", names, outsideField }; // no attribute (≤ 1ca3ca9) = no ambient life
+     });
+     writeFileSync(resolve(EVIDENCE_DIR, "Q-06-ambient.txt"), `FIELD: ${JSON.stringify(ambient)}\nexpected switch: ${EXPECTED_AMBIENT}\n`);
+-    if (ambient.switch === "on") { for (const name of ambient.names) expect(["sxOrbit", "sxBreathe", "sxSuspend"], `ambient name ${name}`).toContain(name); expect(ambient.outsideField, "ambient motion only inside signs in state field").toEqual([]); }
++    if (ambient.switch === "on") { for (const name of ambient.names) expect(["sxSuspend", ...R15B], `ambient name ${name}`).toContain(name); expect(ambient.outsideField, "ambient motion only inside signs in state field").toEqual([]); }
+     else expect(ambient.names, "no infinite animation at FIELD with the switch off").toEqual([]);
+     await atField.close();
+ 
+     const calm = await open(`/career/demo?focus=FIELD&analysisId=${ANALYSIS_ID}&jobPoolUploadId=${uploadId}&jobRoleId=${ROLE_ID}`, { reducedMotion: "reduce" });
+     await calm.locator('[data-testid="syntx-field"][data-field-state="AVAILABLE"][data-sources-state="AVAILABLE"][data-observation-kind="ROLE"][data-motion-mode="REDUCED"]').waitFor({ timeout: 120_000 });
+     await calm.waitForTimeout(400);
+-    const reduced = await field(calm).evaluate((root: Element) => ({ running: root.getAnimations({ subtree: true }).filter((animation: any) => animation.playState === "running").length, root: getComputedStyle(root).animationName, pendingDash: (() => { const element = root.querySelector('[data-testid^="syntx-pending-"] circle:not([data-sx-hit])'); return element === null ? null : getComputedStyle(element).animationName; })(), camera: getComputedStyle(root.querySelector("[data-sx-camera]")!).transitionDuration }));
++    const reduced = await field(calm).evaluate((root: Element) => ({ running: root.getAnimations({ subtree: true }).filter((animation: any) => animation.playState === "running").length, root: getComputedStyle(root).animationName, shell: (() => { const element = root.querySelector('[data-testid^="focus-transition-stage-shell-syntx-"]'); return element === null ? null : getComputedStyle(element).transitionDuration; })(), pendingDash: (() => { const element = root.querySelector('[data-testid^="syntx-pending-"] circle:not([data-sx-hit])'); return element === null ? null : getComputedStyle(element).animationName; })() }));
+     expect(reduced.running).toBe(0);
+     expect(reduced.root).toBe("none");
+     // R15a REDUCED stays total: no photons rendered, the rAF clock never starts (carrier bodies hold their routed place across a second).
+@@ -968,7 +990,7 @@
+     expect(Object.keys(calmA.infinite), "nothing infinite in REDUCED").toEqual([]);
+     expect(calmA.carriers.map((carrier: any) => `${carrier.x},${carrier.y}`), "carriers hold their place in REDUCED").toEqual(calmB.carriers.map((carrier: any) => `${carrier.x},${carrier.y}`));
+     expect(reduced.pendingDash).toBe("none");
+-    expect(reduced.camera).toBe("0s");
++    expect(reduced.shell).toBe("0s");
+     const calmSigns = await collectSigns(calm);
+     expect(calmSigns.map((sign) => [sign.id, sign.source, sign.relation, sign.state, sign.manifestation, sign.proof])).toEqual(liveRoleSigns.map((sign) => [sign.id, sign.source, sign.relation, sign.state, sign.manifestation, sign.proof]));
+     expect(await field(calm).getAttribute("data-requirement-count")).toBe(String(mappedRole.requirements.length));
+@@ -1096,7 +1118,7 @@
+     await waitKind(entry, "ORGANIZATION");
+     await entry.waitForTimeout(300);
+     const afterObservation = await activeOf(entry);
+-    expect(afterObservation).toBe("g#syntx-organization-org_pink_alpha[org:org_pink_alpha]");
++    expect(afterObservation).toBe("div#syntx-organization-org_pink_alpha[org:org_pink_alpha]");
+     expect(await entry.getByTestId("job-pool-upload").isVisible()).toBe(true);
+     expect(await entry.getByTestId("job-pool-actor-input").evaluate((e: HTMLInputElement) => e.value)).toContain("PINK_KEYBOARD");
+     await entry.keyboard.press("Escape");
+@@ -1105,7 +1127,7 @@
+     writeFileSync(resolve(EVIDENCE_DIR, "Q-08-focus-entry.txt"), `after keyboard entry from the strip (Enter on job-pool-panel-toggle): ${afterEntry}\nafter typing in the intake: ${afterTyping}\nafter a pointer observation change (native click focus on the sign): ${afterObservation}\nafter Escape (closes the intake first, R8): ${afterEscape}, observation ${await entry.getByTestId("syntx-field").getAttribute("data-observation-kind")}\n`);
+     // Entry from the strip by keyboard moves focus into the field root (B-SYNTX-FOCUS, observed): the strip button does not keep it.
+     expect(afterEntry).toBe("section#syntx-field");
+-    expect(afterEscape.startsWith("g#syntx-organization-org_pink_alpha") || afterEscape === "section#syntx-field").toBe(true);
++    expect(afterEscape.startsWith("div#syntx-organization-org_pink_alpha") || afterEscape === "section#syntx-field").toBe(true);
+     expect((entry as any).__nonGet).toEqual([]);
+     await entry.close();
+     pass("Q-states", { uploads: 3 }, "NO_ANALYSIS, NO_POOL + intake + explicit selection, INACTIVE_POOL as containment, NOT_FOUND, three stale kinds, JOB/POOL aliases; strip and intake keep keyboard focus under the focus-follow effect");
