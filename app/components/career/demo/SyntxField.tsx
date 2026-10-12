@@ -19,6 +19,7 @@ import {
   SYNTX_FIELD_GRAMMAR,
   SYNTX_LAYOUT,
   tracePath,
+  traceRayPath,
   wrapLines,
   type SyntxAperture,
   type SyntxField as SyntxFieldModel,
@@ -102,7 +103,7 @@ const SYNTX_CSS = `
 @keyframes sxRise { from { opacity: 0; } to { opacity: 1; } }
 @keyframes sxSuspend { to { stroke-dashoffset: -120; } }
 @keyframes sxOrbit { to { transform: rotate(360deg); } }
-@keyframes sxBreathe { 0% { opacity: .72; stroke-dashoffset: 0; } 25% { opacity: .86; } 50% { opacity: 1; } 75% { opacity: .86; } 100% { opacity: .72; stroke-dashoffset: -30; } }
+@keyframes sxBreathe { 0% { opacity: .5; stroke-dashoffset: 0; animation-timing-function: ease-in-out; } 50% { opacity: 1; animation-timing-function: ease-in-out; } 100% { opacity: .5; stroke-dashoffset: -30; } }
 @keyframes sxRecenter { from { transform: scale(1); opacity: .7; } to { transform: scale(1.45); opacity: 0; } }
 @keyframes sxUnfold { from { opacity: 0; transform: scale(.3); } to { opacity: 1; transform: scale(1); } }
 @keyframes sxTraceRise { from { opacity: 0; transform: scale(.3); } to { opacity: 1; transform: scale(1); } }
@@ -115,7 +116,9 @@ const SYNTX_CSS = `
 [data-testid="syntx-canvas"] [data-sign-transition="trace_rise"] { transform-box: view-box; transform-origin: var(--sx-origin); animation: sxTraceRise .78s cubic-bezier(.16,1,.3,1) .12s backwards; }
 /* Evidence rises: the trace's ray draws on from the source carrier to the anchor (trace_rise), the pattern fades in behind it. */
 [data-testid="syntx-canvas"] [data-sign-transition="trace_rise"] > [data-sx-trace-ray] { animation: sxTraceDraw 1.1s cubic-bezier(.3,0,.2,1) .2s backwards; }
-[data-testid="syntx-canvas"] [data-sign-transition="trace_rise"] > path:not([data-sx-hit]):not([data-sx-trace-ray]):not([data-sx-trace-glow]) { animation: sxRise .6s ease-out .7s backwards; }
+[data-testid="syntx-canvas"] [data-sign-transition="trace_rise"] > path:not([data-sx-hit]):not([data-sx-trace-ray]):not([data-sx-trace-glow]):not([data-sx-trace-pulse]) { animation: sxRise .6s ease-out .7s backwards; }
+/* One light emerges at the source once the trace has risen, runs it to the anchor and fades at arrival (trace_rise; finite: enter, draw, fade-out). */
+[data-testid="syntx-canvas"] [data-sign-transition="trace_rise"] > [data-sx-trace-pulse] { animation: sxTraceDraw 1.5s cubic-bezier(.4,0,.3,1) 1.25s backwards, sxRise 1.5s ease-out 1.25s backwards reverse, sxEnter .35s ease-out 1.25s backwards; }
 /* The observed role settles as the core of its ecology (role_selected): its plasma rings turn into place once. */
 [data-testid="syntx-canvas"] [data-sign-state="role_selected"] > [data-sx-core-ring] { transform-box: fill-box; transform-origin: center; animation: sxCoreSettle 1.2s cubic-bezier(.16,1,.3,1) backwards; }
 [data-testid="syntx-canvas"] [data-sign-transition="boundary_suspend"] { transform-box: view-box; transform-origin: var(--sx-origin); animation: sxSuspendEnter .78s cubic-bezier(.16,1,.3,1) backwards; }
@@ -127,14 +130,26 @@ const SYNTX_CSS = `
 [data-testid="syntx-canvas"] :is([data-sign-state="field"], [data-sign-state="inspectable"]) > [data-sx-carrier-glow] { opacity: 1; }
 [data-testid="syntx-canvas"] [data-sx-trace-glow] { opacity: 0; transition: opacity .45s ease; }
 [data-testid="syntx-canvas"] [data-sign-state="inspectable"] > [data-sx-trace-glow] { opacity: 1; }
+[data-testid="syntx-canvas"] [data-sx-trace-aura] { transition: opacity .45s ease; }
+[data-testid="syntx-canvas"] [data-sign-state="inspectable"] > [data-sx-trace-aura] { opacity: 1; }
 /* Hover affordance on selectable signs. */
 [data-testid="syntx-canvas"] [data-sign-interaction="select"]:hover > [data-sx-halo] { stroke: #38e5ff; }
 [data-testid="syntx-canvas"] [data-sign-interaction="select"]:hover > [data-sx-membrane] > circle:last-child { stroke: rgba(56, 229, 255, 0.5); }
 /* Ambient life (separable: SYNTX_AMBIENT_MOTION): LIVE, FIELD / ORGANIZATION, signs in state "field", uniform per kind, phase by containment. */
 [data-testid="syntx-field"][data-sx-ambient="on"][data-motion-mode="LIVE"][data-observation-kind="FIELD"] [data-testid="syntx-pool"][data-sign-state="field"] [data-sx-orbit] { transform-box: fill-box; transform-origin: center; animation: sxOrbit 120s linear infinite; }
 [data-testid="syntx-field"][data-sx-ambient="on"][data-motion-mode="LIVE"][data-observation-kind="FIELD"] [data-testid="syntx-pool"][data-sign-state="field"] [data-sx-orbit-ccw] { transform-box: fill-box; transform-origin: center; animation: sxOrbit 90s linear infinite reverse; }
+/* Orbital tension of the pool (FIELD, pool sign): its orbit paths and the resonance rings around each region turn slowly, each at its own pace; ambient light drifts in small circles. */
+[data-testid="syntx-field"][data-sx-ambient="on"][data-motion-mode="LIVE"][data-observation-kind="FIELD"] [data-testid="syntx-pool"][data-sign-state="field"] [data-sx-orbit-slow] { transform-box: fill-box; transform-origin: center; animation: sxOrbit var(--sx-period, 240s) linear infinite; }
+[data-testid="syntx-field"][data-sx-ambient="on"][data-motion-mode="LIVE"][data-observation-kind="FIELD"] [data-testid="syntx-pool"][data-sign-state="field"] [data-sx-orbit-slow-ccw] { transform-box: fill-box; transform-origin: center; animation: sxOrbit var(--sx-period, 200s) linear infinite reverse; }
+[data-testid="syntx-field"][data-sx-ambient="on"][data-motion-mode="LIVE"][data-observation-kind="FIELD"] [data-testid="syntx-pool"][data-sign-state="field"] [data-sx-drift] { transform-box: view-box; transform-origin: var(--sx-drift-origin); animation: sxOrbit var(--sx-period, 32s) linear infinite; }
+[data-testid="syntx-field"][data-sx-ambient="on"][data-motion-mode="LIVE"][data-observation-kind="FIELD"] [data-testid="syntx-pool"][data-sign-state="field"] [data-sx-drift="ccw"] { animation-direction: reverse; }
+/* Resonance of the pool (FIELD, pool sign): the core breathes, its light streams along the containment spokes toward the regions, the dashed rings flow. */
+[data-testid="syntx-field"][data-sx-ambient="on"][data-motion-mode="LIVE"][data-observation-kind="FIELD"] [data-testid="syntx-pool"][data-sign-state="field"] :is([data-sx-core-breath], [data-sx-stream], [data-sx-flow]) { animation: sxBreathe var(--sx-period, 6.2s) linear infinite; animation-delay: var(--sx-phase, 0s); }
+/* Breathing membranes (FIELD / ORGANIZATION, signs in state field): membrane, glow and signature ring of a region, halo of a role; the regions answer the core with a phase delay. */
 [data-testid="syntx-field"][data-sx-ambient="on"][data-motion-mode="LIVE"]:is([data-observation-kind="FIELD"], [data-observation-kind="ORGANIZATION"]) [data-sign-manifestation="region"][data-sign-state="field"] > [data-sx-membrane] > circle,
-[data-testid="syntx-field"][data-sx-ambient="on"][data-motion-mode="LIVE"]:is([data-observation-kind="FIELD"], [data-observation-kind="ORGANIZATION"]) [data-testid^="syntx-role-"][data-sign-state="field"] > [data-sx-halo] { animation: sxBreathe 6.2s linear infinite; animation-delay: var(--sx-phase, 0s); }
+[data-testid="syntx-field"][data-sx-ambient="on"][data-motion-mode="LIVE"]:is([data-observation-kind="FIELD"], [data-observation-kind="ORGANIZATION"]) [data-sign-manifestation="region"][data-sign-state="field"] > [data-sx-glow],
+[data-testid="syntx-field"][data-sx-ambient="on"][data-motion-mode="LIVE"]:is([data-observation-kind="FIELD"], [data-observation-kind="ORGANIZATION"]) [data-testid^="syntx-role-"][data-sign-state="field"] > :is([data-sx-halo], [data-sx-glow]) { animation: sxBreathe 6.2s linear infinite; animation-delay: var(--sx-phase, 0s); }
+[data-testid="syntx-field"][data-sx-ambient="on"][data-motion-mode="LIVE"]:is([data-observation-kind="FIELD"], [data-observation-kind="ORGANIZATION"]) [data-sign-manifestation="region"][data-sign-state="field"] > [data-sx-signature] { animation: sxBreathe 12.4s linear infinite; animation-delay: var(--sx-phase, 0s); }
 [data-testid="syntx-field"] button:hover:not(:disabled) { color: #e6f1f8; }
 [data-testid="syntx-field"] button:focus-visible, [data-testid="syntx-field"] input:focus-visible, [data-testid="syntx-field"] [tabindex="0"]:focus-visible { outline: 1px solid rgba(56, 229, 255, 0.75); outline-offset: 3px; border-radius: 2px; }
 [data-testid="syntx-field"] [data-sx-camera] { transition: transform .78s cubic-bezier(.16,1,.3,1); }
@@ -235,11 +250,13 @@ const SUPPORT_SHAPE: Record<SyntxSupport, { fill: string; stroke: string; stroke
   UNREAD: { fill: "none", stroke: "rgba(230, 241, 248, 0.5)", strokeWidth: 0.8, r: 4.8 }
 };
 
-const TRACE_STROKE: Record<SyntxTrace["kind"], { color: string; dash?: string }> = {
-  supports: { color: "rgba(56, 229, 255, 0.85)" },
-  weakly_supports: { color: "rgba(56, 229, 255, 0.55)" },
-  covers_unscored: { color: "rgba(56, 229, 255, 0.6)", dash: "2 3" }
+/** Manifestation of a trace: its body width, the light at its source end and at the anchor, its aura at rest; unscored coverage is a chain of beads, never a continuous line. */
+const TRACE_STROKE: Record<SyntxTrace["kind"], { width: number; source: number; anchor: number; aura: number; dash?: string }> = {
+  supports: { width: 1.7, source: 0.95, anchor: 0.9, aura: 0.5 },
+  weakly_supports: { width: 1.15, source: 0.7, anchor: 0.6, aura: 0.3 },
+  covers_unscored: { width: 1.25, source: 0.65, anchor: 0.7, aura: 0.22, dash: "0.4 4.4" }
 };
+const MINT = "#7effcc";
 
 interface CanvasProps {
   field: SyntxFieldModel;
@@ -266,9 +283,10 @@ function FieldCanvas({ field, mode, t, onObserve }: CanvasProps) {
       <defs>
         {/* Materials of the Capability Field (planetarium): atmosphere, membrane, core light, soft glow. */}
         <radialGradient id="sxField"><stop offset="0%" stopColor="#38e5ff" stopOpacity="0.2" /><stop offset="58%" stopColor="#38e5ff" stopOpacity="0.04" /><stop offset="100%" stopColor="#030508" stopOpacity="0" /></radialGradient>
-        <radialGradient id="sxMembrane"><stop offset="0%" stopColor="#38e5ff" stopOpacity="0.11" /><stop offset="56%" stopColor="#38e5ff" stopOpacity="0.035" /><stop offset="100%" stopColor="#38e5ff" stopOpacity="0.01" /></radialGradient>
+        <radialGradient id="sxMembrane"><stop offset="0%" stopColor="#38e5ff" stopOpacity="0.16" /><stop offset="56%" stopColor="#38e5ff" stopOpacity="0.06" /><stop offset="100%" stopColor="#38e5ff" stopOpacity="0.02" /></radialGradient>
         <radialGradient id="sxCore"><stop offset="0%" stopColor="#38e5ff" stopOpacity="0.3" /><stop offset="62%" stopColor="#38e5ff" stopOpacity="0.08" /><stop offset="100%" stopColor="#38e5ff" stopOpacity="0.02" /></radialGradient>
         <filter id="sxGlow" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur stdDeviation="7" /></filter>
+        <filter id="sxTraceGlow" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="2.4" /></filter>
       </defs>
       <g data-sx-camera style={{ transform: `translate(${tx}px, ${ty}px) scale(${camera.scale})`, transformOrigin: "0 0" }}>
         {/* The pool: the total field — atmosphere, orbit paths, the slowly turning containment ring, and one containment spoke per region. */}
@@ -277,11 +295,16 @@ function FieldCanvas({ field, mode, t, onObserve }: CanvasProps) {
           return (
             <g data-testid="syntx-pool" {...signAttributes(field.pool.sign)} style={{ opacity: recedeOpacity(field.pool.sign, 0.5), pointerEvents: "none" }}>
               <circle cx={center} cy={center} r={R + 30} fill="url(#sxField)" />
-              {[0.35, 0.68, 1].map((fraction, index) => <circle key={index} cx={center} cy={center} r={R * fraction} fill="none" stroke="rgba(56, 229, 255, 0.12)" strokeWidth={1} strokeDasharray={index === 1 ? "4 4" : undefined} />)}
+              {/* Orbit paths: the inner and middle orbits turn against each other (ambient, FIELD only); the outer orbit holds. */}
+              <circle data-sx-orbit-slow-ccw cx={center} cy={center} r={R * 0.35} fill="none" stroke="rgba(56, 229, 255, 0.14)" strokeWidth={1} strokeDasharray="1.5 7" style={{ "--sx-period": "170s" } as React.CSSProperties} />
+              <circle data-sx-orbit-slow cx={center} cy={center} r={R * 0.68} fill="none" stroke="rgba(56, 229, 255, 0.12)" strokeWidth={1} strokeDasharray="4 4" style={{ "--sx-period": "260s" } as React.CSSProperties} />
+              <circle cx={center} cy={center} r={R} fill="none" stroke="rgba(56, 229, 255, 0.12)" strokeWidth={1} />
               <circle data-sx-orbit cx={center} cy={center} r={R - 40} fill="none" stroke="rgba(56, 229, 255, 0.16)" strokeWidth={1} strokeDasharray="12 18" />
-              {[0, 60, 120, 180, 240, 300].map(degrees => { const radians = (degrees * Math.PI) / 180; return <circle key={`a${degrees}`} cx={center + Math.cos(radians) * R * 0.82} cy={center + Math.sin(radians) * R * 0.82} r={1.5} fill="rgba(56, 229, 255, 0.38)" />; })}
-              {[45, 135, 225, 315].map(degrees => { const radians = (degrees * Math.PI) / 180; return <circle key={`d${degrees}`} cx={center + Math.cos(radians) * R * 0.5} cy={center + Math.sin(radians) * R * 0.5} r={1} fill="rgba(56, 229, 255, 0.25)" />; })}
-              {field.organizations.map(organization => {
+              {/* Ambient light: each mote drifts in a small circle of its own (ambient, FIELD only). */}
+              {[0, 60, 120, 180, 240, 300].map((degrees, index) => { const radians = (degrees * Math.PI) / 180; const x = center + Math.cos(radians) * R * 0.82; const y = center + Math.sin(radians) * R * 0.82; return <g key={`a${degrees}`} data-sx-drift={index % 2 === 0 ? "cw" : "ccw"} style={{ "--sx-drift-origin": `${x + 10}px ${y - 4}px`, "--sx-period": `${26 + index * 5}s` } as React.CSSProperties}><circle cx={x} cy={y} r={1.8} fill="rgba(56, 229, 255, 0.5)" /></g>; })}
+              {[45, 135, 225, 315].map((degrees, index) => { const radians = (degrees * Math.PI) / 180; const x = center + Math.cos(radians) * R * 0.5; const y = center + Math.sin(radians) * R * 0.5; return <g key={`d${degrees}`} data-sx-drift={index % 2 === 0 ? "ccw" : "cw"} style={{ "--sx-drift-origin": `${x - 8}px ${y + 6}px`, "--sx-period": `${38 + index * 7}s` } as React.CSSProperties}><circle cx={x} cy={y} r={1} fill="rgba(56, 229, 255, 0.25)" /></g>; })}
+              {/* Containment spokes: a still line, and the core's light streaming outward along it toward the region (ambient). */}
+              {field.organizations.map((organization, index) => {
                 const distance = Math.hypot(organization.x - center, organization.y - center);
                 if (distance < organization.radius + 24) return null;
                 const ux = (organization.x - center) / distance;
@@ -291,17 +314,26 @@ function FieldCanvas({ field, mode, t, onObserve }: CanvasProps) {
                 return (
                   <g key={organization.id} data-sx-spoke>
                     <line x1={center} y1={center} x2={x2} y2={y2} stroke="rgba(56, 229, 255, 0.22)" strokeWidth={1.2} strokeDasharray="3 3" />
+                    <line data-sx-stream x1={center} y1={center} x2={x2} y2={y2} stroke="rgba(56, 229, 255, 0.8)" strokeWidth={2} strokeDasharray="2 13" strokeLinecap="round" opacity={0.3} style={{ "--sx-phase": `${-index * 0.9}s` } as React.CSSProperties} />
                     <circle cx={(center + x2) / 2} cy={(center + y2) / 2} r={2} fill="rgba(56, 229, 255, 0.55)" />
                   </g>
                 );
               })}
-              <circle cx={center} cy={center} r={R} fill="none" stroke="rgba(56, 229, 255, 0.14)" strokeDasharray="2 7" />
-              {/* The pool core: the field's organism at the centre, where the containment spokes originate (planetarium core grammar). */}
+              {/* Resonance rings around each region: orbital tension between the pool and its organizations (ambient, FIELD only; outside the region's hit area). */}
+              {field.organizations.map((organization, index) => (
+                <g key={`resonance-${organization.id}`} data-sx-resonance>
+                  <circle data-sx-orbit-slow cx={organization.x} cy={organization.y} r={organization.radius + 17} fill="none" stroke="rgba(56, 229, 255, 0.26)" strokeWidth={1} strokeDasharray="14 26" style={{ "--sx-period": `${64 + index * 9}s` } as React.CSSProperties} />
+                  <circle data-sx-orbit-slow-ccw cx={organization.x} cy={organization.y} r={organization.radius + 27} fill="none" stroke="rgba(56, 229, 255, 0.18)" strokeWidth={0.9} strokeDasharray="2 10" style={{ "--sx-period": `${96 + index * 11}s` } as React.CSSProperties} />
+                </g>
+              ))}
+              <circle data-sx-flow cx={center} cy={center} r={R} fill="none" stroke="rgba(56, 229, 255, 0.14)" strokeDasharray="2 8" style={{ "--sx-period": "44s" } as React.CSSProperties} />
+              {/* The pool core: the field's organism at the centre, where the containment spokes originate (planetarium core grammar); its glow breathes (ambient). */}
               <g data-sx-pool-core style={{ opacity: field.pool.sign.state === "field" ? 1 : 0, transition: "opacity .45s ease" }}>
-                <circle cx={center} cy={center} r={62} fill="rgba(56, 229, 255, 0.16)" filter="url(#sxGlow)" />
+                <circle data-sx-core-breath cx={center} cy={center} r={74} fill="rgba(56, 229, 255, 0.27)" filter="url(#sxGlow)" />
                 <circle cx={center} cy={center} r={48} fill="url(#sxCore)" stroke="rgba(56, 229, 255, 0.45)" strokeWidth={1.4} />
                 <circle data-sx-orbit cx={center} cy={center} r={58} fill="none" stroke={CYAN} strokeWidth={1.1} strokeDasharray="24 12 8 16" opacity={0.55} />
                 <circle data-sx-orbit-ccw cx={center} cy={center} r={68} fill="none" stroke={SIL_TOKENS.colors.cyanGlowStrong} strokeWidth={0.9} strokeDasharray="16 8 4 12" opacity={0.6} />
+                <circle data-sx-orbit-slow cx={center} cy={center} r={80} fill="none" stroke="rgba(56, 229, 255, 0.2)" strokeWidth={0.7} strokeDasharray="2 10" style={{ "--sx-period": "150s" } as React.CSSProperties} />
                 <circle cx={center} cy={center} r={40} fill="none" stroke="rgba(56, 229, 255, 0.22)" strokeWidth={0.8} />
                 <text x={center} y={center - 10} textAnchor="middle" fill={MUTED} fontFamily={MONO} fontSize={6.6} fontWeight={700} letterSpacing={1.6}>{t.pools}</text>
                 <SvgLabel lines={wrapLines(field.pool.poolName, 14, 2)} x={center} y={center + 2} size={7.6} fill={INK} weight={700} family={MONO} spacing={0.8} uppercase />
@@ -333,16 +365,16 @@ function FieldCanvas({ field, mode, t, onObserve }: CanvasProps) {
               aria-pressed={selected}
               onClick={event => { event.stopPropagation(); onObserve(observeOrganization(observation, organization.id)); }}
               onKeyDown={key(() => onObserve(observeOrganization(observation, organization.id)))}
-              style={{ cursor: "pointer", opacity: far ? 0.38 : recedeOpacity(organization.sign, observation.kind === "ORGANIZATION" ? 0.28 : 0.18) }}
+              style={{ cursor: "pointer", opacity: far ? 0.38 : recedeOpacity(organization.sign, observation.kind === "ORGANIZATION" ? 0.28 : 0.18), "--sx-phase": `${-(6.2 - 1.2 - (index % 6) * 0.35)}s` } as React.CSSProperties}
             >
               <circle data-sx-hit cx={organization.x} cy={organization.y} r={r + 9} fill="transparent" />
-              <circle data-sx-glow cx={organization.x} cy={organization.y} r={r + 6} fill={selected ? "rgba(56, 229, 255, 0.16)" : "rgba(56, 229, 255, 0.09)"} filter="url(#sxGlow)" style={{ pointerEvents: "none", transition: "fill .4s ease" }} />
+              <circle data-sx-glow cx={organization.x} cy={organization.y} r={r + 6} fill={selected ? "rgba(56, 229, 255, 0.2)" : "rgba(56, 229, 255, 0.14)"} filter="url(#sxGlow)" style={{ pointerEvents: "none", transition: "fill .4s ease" }} />
               <g data-sx-membrane style={{ pointerEvents: "none" }}>
                 <circle cx={organization.x} cy={organization.y} r={r} fill="url(#sxMembrane)" />
                 <circle cx={organization.x} cy={organization.y} r={r + 8} fill="none" stroke={selected ? "rgba(56, 229, 255, 0.42)" : "rgba(56, 229, 255, 0.18)"} strokeWidth={1} strokeDasharray="3 3" style={{ transition: "stroke .4s ease" }} />
               </g>
               {/* Semiotic signature of a region: a faint inner ring, as every planetarium node carries one. */}
-              <circle cx={organization.x} cy={organization.y} r={r * 0.78} fill="none" stroke="rgba(56, 229, 255, 0.1)" strokeWidth={0.8} strokeDasharray="6 4" style={{ pointerEvents: "none" }} />
+              <circle data-sx-signature cx={organization.x} cy={organization.y} r={r * 0.78} fill="none" stroke="rgba(56, 229, 255, 0.14)" strokeWidth={0.8} strokeDasharray="6 4" style={{ pointerEvents: "none" }} />
               <circle cx={organization.x} cy={organization.y} r={r} fill={selected ? "rgba(56, 229, 255, 0.05)" : "rgba(10, 14, 20, 0.35)"} stroke={selected ? "#38e5ff" : "rgba(56, 229, 255, 0.4)"} strokeWidth={selected ? 1.6 : 1.3} style={{ transition: "stroke .4s ease, fill .4s ease" }} />
               <circle cx={organization.x} cy={organization.y} r={r - 4} fill="none" stroke="rgba(56, 229, 255, 0.1)" strokeWidth={0.8} style={{ pointerEvents: "none" }} />
               {selected && <circle data-sx-pulse cx={organization.x} cy={organization.y} r={r + 8} fill="none" stroke={CYAN} strokeWidth={1.4} style={{ pointerEvents: "none" }} />}
@@ -462,12 +494,15 @@ function FieldCanvas({ field, mode, t, onObserve }: CanvasProps) {
                 </g>
               );
             })}
-            {field.requirements.flatMap(requirement => requirement.traces.map(trace => ({ requirement, trace }))).sort((a, b) => traceOrder(a.trace) - traceOrder(b.trace)).map(({ requirement, trace }) => {
+            {field.requirements.flatMap(requirement => requirement.traces.map(trace => ({ requirement, trace }))).sort((a, b) => traceOrder(a.trace) - traceOrder(b.trace)).map(({ requirement, trace }, traceIndex) => {
               const source = field.sources[trace.sourceDocIndex];
               const stroke = TRACE_STROKE[trace.kind];
               const inspectable = trace.sign.state === "inspectable";
-              // The trace is a path (straight or bowed): co-terminal traces bow apart (F-SX-2) and bend around the role carrier and labels (O-SX-2).
-              const d = tracePath(requirement, source ?? requirement, trace.bow);
+              const carrier = source ?? requirement;
+              // The trace is an arc: co-terminal traces bow apart (F-SX-2) and bend around the role carrier and labels (O-SX-2); it emerges from its source (mint) and arrives at the anchor (cyan).
+              const d = tracePath(requirement, carrier, trace.bow);
+              const ray = traceRayPath(requirement, carrier, trace.bow);
+              const gradientId = `sxTrace${traceIndex}`;
               return (
                 <g
                   key={trace.sign.id}
@@ -481,10 +516,20 @@ function FieldCanvas({ field, mode, t, onObserve }: CanvasProps) {
                   onKeyDown={key(() => inspectTrace(trace))}
                   style={{ cursor: "pointer", opacity: recedeOpacity(trace.sign, 0.12), ...origin(observedRole.x, observedRole.y) }}
                 >
-                  <path data-sx-hit d={d} fill="none" stroke="transparent" strokeWidth={10} />
-                  <path d={d} fill="none" stroke={stroke.color} strokeWidth={trace.weight * (inspectable ? 1.4 : 1)} strokeDasharray={stroke.dash} strokeLinecap="round" style={{ pointerEvents: "none" }} />
-                  <path data-sx-trace-ray d={tracePath(source ?? requirement, requirement, -trace.bow)} pathLength={1} fill="none" stroke={trace.kind === "covers_unscored" ? "rgba(142, 239, 255, 0.28)" : "rgba(142, 239, 255, 0.45)"} strokeWidth={0.8} strokeDasharray="1 1" strokeLinecap="round" style={{ pointerEvents: "none" }} />
-                  <path data-sx-trace-glow d={d} fill="none" stroke="rgba(56, 229, 255, 0.16)" strokeWidth={trace.weight * 4} strokeLinecap="round" style={{ pointerEvents: "none" }} />
+                  <path data-sx-hit d={d} fill="none" stroke="transparent" strokeWidth={12} />
+                  <path d={d} fill="none" stroke={`url(#${gradientId})`} strokeWidth={stroke.width * (inspectable ? 1.35 : 1)} strokeDasharray={stroke.dash} strokeLinecap="round" style={{ pointerEvents: "none", transition: "stroke-width .3s ease" }} />
+                  <defs>
+                    <linearGradient id={gradientId} gradientUnits="userSpaceOnUse" x1={carrier.x} y1={carrier.y} x2={requirement.x} y2={requirement.y}>
+                      <stop offset="0%" stopColor={MINT} stopOpacity={stroke.source} />
+                      <stop offset="58%" stopColor={CYAN} stopOpacity={stroke.anchor} />
+                      <stop offset="100%" stopColor={CYAN} stopOpacity={stroke.anchor} />
+                    </linearGradient>
+                  </defs>
+                  <path data-sx-trace-aura d={d} fill="none" stroke={`url(#${gradientId})`} strokeWidth={stroke.width * 4.2} strokeLinecap="round" opacity={stroke.aura} filter="url(#sxTraceGlow)" style={{ pointerEvents: "none" }} />
+                  <circle data-sx-trace-bloom cx={carrier.x} cy={carrier.y} r={3.4} fill={MINT} opacity={0.32} filter="url(#sxTraceGlow)" style={{ pointerEvents: "none" }} />
+                  <path data-sx-trace-ray d={ray} pathLength={1} fill="none" stroke={trace.kind === "covers_unscored" ? "rgba(214, 250, 255, 0.3)" : "rgba(214, 250, 255, 0.5)"} strokeWidth={0.8} strokeDasharray="1 1" strokeLinecap="round" style={{ pointerEvents: "none" }} />
+                  <path data-sx-trace-pulse d={ray} pathLength={1} fill="none" stroke="rgba(226, 252, 255, 0.95)" strokeWidth={stroke.width * 2.2} strokeDasharray="0.14 0.86" strokeLinecap="round" opacity={0} style={{ pointerEvents: "none" }} />
+                  <path data-sx-trace-glow d={d} fill="none" stroke="rgba(56, 229, 255, 0.18)" strokeWidth={stroke.width * 5} strokeLinecap="round" style={{ pointerEvents: "none" }} />
                 </g>
               );
             })}

@@ -354,27 +354,56 @@ export function requirementLabel(requirement: { x: number; y: number; angle: num
 type Point = { x: number; y: number };
 interface Obstacles { discs: Array<Point & { r: number }>; rects: LabelBox[] }
 
-/** A point on the trace: straight for bow 0, otherwise the quadratic curve whose midpoint is offset by `bow` to the left normal. */
-export function tracePoint(from: Point, to: Point, bow: number, t: number): Point {
+/** Base sweep of every trace (fraction of its span): evidence arcs around the role with one handedness instead of running as a straight wire. */
+export const TRACE_SWEEP = 0.14;
+
+/**
+ * The cubic control points of a trace from the anchor to the carrier: an arc whose midpoint lies `bow` beyond the base
+ * sweep on the left normal (so distinct bows stay distinct), fuller toward the carrier so the evidence visibly emerges
+ * from its source. Geometry only (R14): the curvature encodes nothing.
+ */
+function traceControls(from: Point, to: Point, bow: number): [Point, Point] {
   const dx = to.x - from.x;
   const dy = to.y - from.y;
   const length = Math.hypot(dx, dy) || 1;
-  const cx = (from.x + to.x) / 2 + (-dy / length) * 2 * bow;
-  const cy = (from.y + to.y) / 2 + (dx / length) * 2 * bow;
-  const u = 1 - t;
-  return { x: u * u * from.x + 2 * u * t * cx + t * t * to.x, y: u * u * from.y + 2 * u * t * cy + t * t * to.y };
+  const ux = dx / length;
+  const uy = dy / length;
+  const nx = -uy;
+  const ny = ux;
+  // A cubic's midpoint deviates by 3 (k1 + k2) / 8 from the chord: k1 + k2 = 8 (sweep + bow) / 3.
+  const deviation = ((TRACE_SWEEP * length + bow) * 8) / 3;
+  const k1 = deviation * 0.42;
+  const k2 = deviation * 0.58;
+  const along = length * 0.34;
+  return [
+    { x: from.x + ux * along + nx * k1, y: from.y + uy * along + ny * k1 },
+    { x: to.x - ux * along + nx * k2, y: to.y - uy * along + ny * k2 }
+  ];
 }
 
-/** The SVG path of a trace (the renderer and the proofs draw the same curve). */
+/** A point on the trace: the cubic arc whose midpoint is offset by the base sweep plus `bow` to the left normal. */
+export function tracePoint(from: Point, to: Point, bow: number, t: number): Point {
+  const [c1, c2] = traceControls(from, to, bow);
+  const u = 1 - t;
+  const a = u * u * u;
+  const b = 3 * u * u * t;
+  const c = 3 * u * t * t;
+  const d = t * t * t;
+  return { x: a * from.x + b * c1.x + c * c2.x + d * to.x, y: a * from.y + b * c1.y + c * c2.y + d * to.y };
+}
+
+const formatPath = (value: number) => Math.round(value * 100) / 100;
+
+/** The SVG path of a trace from the anchor to the carrier (the renderer and the proofs draw the same curve). */
 export function tracePath(from: Point, to: Point, bow: number): string {
-  const f = (value: number) => Math.round(value * 100) / 100;
-  if (bow === 0) return `M ${f(from.x)} ${f(from.y)} L ${f(to.x)} ${f(to.y)}`;
-  const dx = to.x - from.x;
-  const dy = to.y - from.y;
-  const length = Math.hypot(dx, dy) || 1;
-  const cx = (from.x + to.x) / 2 + (-dy / length) * 2 * bow;
-  const cy = (from.y + to.y) / 2 + (dx / length) * 2 * bow;
-  return `M ${f(from.x)} ${f(from.y)} Q ${f(cx)} ${f(cy)} ${f(to.x)} ${f(to.y)}`;
+  const [c1, c2] = traceControls(from, to, bow);
+  return `M ${formatPath(from.x)} ${formatPath(from.y)} C ${formatPath(c1.x)} ${formatPath(c1.y)} ${formatPath(c2.x)} ${formatPath(c2.y)} ${formatPath(to.x)} ${formatPath(to.y)}`;
+}
+
+/** The same curve walked from the carrier to the anchor: the direction in which evidence rises along the trace. */
+export function traceRayPath(from: Point, to: Point, bow: number): string {
+  const [c1, c2] = traceControls(from, to, bow);
+  return `M ${formatPath(to.x)} ${formatPath(to.y)} C ${formatPath(c2.x)} ${formatPath(c2.y)} ${formatPath(c1.x)} ${formatPath(c1.y)} ${formatPath(from.x)} ${formatPath(from.y)}`;
 }
 
 const distanceToRect = (point: Point, rect: LabelBox): number => {

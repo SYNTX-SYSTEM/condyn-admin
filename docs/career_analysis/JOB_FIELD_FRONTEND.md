@@ -435,8 +435,9 @@ unchanged); exits write `focus=CAPABILITY` while an upload is selected. The Capa
 Ecology geometry since the perceptual closure (owner mandate "SFE — SYNTX FINAL PERCEPTUAL CLOSURE", 2026-10-11; all of it in
 `syntx-field-view-model.ts`, the renderer draws the same numbers): source carriers sit on the outer ring (212) at the angle where the
 straight traces of the requirements that reach them clear the role carrier and every requirement label best, nearest to the mean
-direction of those requirements, with a minimum separation of 28° between carriers (`placeSourceAngles`); every trace is a path with a
-`bow` (perpendicular midpoint offset, 0 = straight; candidates 0, ±18, ±36, ±54, ±72) chosen as the first bow that clears the role disc
+direction of those requirements, with a minimum separation of 28° between carriers (`placeSourceAngles`); every trace is a cubic arc
+(`tracePath`: base sweep `TRACE_SWEEP` = 0.14 of the span to the left normal, one handedness for all traces, fuller toward the carrier)
+with a `bow` (further perpendicular midpoint offset, 0 = the base arc; candidates 0, ±18, ±36, ±54, ±72) chosen as the first bow that clears the role disc
 (48, body with its inner title), every requirement label box, every other anchor and every other carrier, never a bow a co-terminal
 trace of the same requirement and source already took (`routeTraceBows`, F-SX-2 / O-SX-2); when nothing clears, the clearest unused bow
 is taken, so every trace is drawn and distinct. Angle and bow position nothing semantically (R14): distance alone carries the support
@@ -478,9 +479,14 @@ the edge of a sign's box still selects it.
 
 Ambient life (the one separable switch `SYNTX_AMBIENT_MOTION`, root attribute `data-sx-ambient`): LIVE mode, FIELD and
 ORGANIZATION levels only, signs in state `field` only, uniform per kind, phase by containment only (`--sx-phase` = organization
-index × −1.05 s): `sxOrbit` — the pool's containment ring turns (120 s linear, FIELD level only); `sxBreathe` — region membranes
-(both membrane circles) and role halos breathe in opacity (.72 → 1 → .72) with a dash drift (−30 per 6.2 s, linear); never a
-transform, so every sign's bounding box is static. Closed list of infinite animations in LIVE: `sxOrbit`, `sxBreathe`, `sxSuspend`
+index × −1.05 s for roles; regions answer the core 1.2 s later, 0.35 s apart): `sxOrbit` — inside the pool sign only (FIELD level):
+the containment ring (120 s), the core's plasma rings (120 s / 90 s reverse), the inner and middle orbit paths and a third core ring
+(`--sx-period` 150–260 s), the two resonance rings around each region (64–118 s, counter-turning) and the ambient motes drifting in
+small circles about an offset origin (`data-sx-drift`, 26–59 s); `sxBreathe` — region membranes (both membrane circles), region glow,
+region signature ring (12.4 s dash flow), role halos and role glow breathe in opacity (.5 → 1 → .5, ease-in-out) with a dash drift
+(−30 per cycle); inside the pool sign the core glow breathes (`data-sx-core-breath`), the containment spokes carry a dash stream from
+the core toward each region (`data-sx-stream`, dash `2 13`) and the boundary ring's dashes flow (`data-sx-flow`); never a transform on a
+clickable sign, so every sign's bounding box is static (the pool sign takes no pointer). Closed list of infinite animations in LIVE: `sxOrbit`, `sxBreathe`, `sxSuspend`
 (`SYNTX_AMBIENT_NAMES`). At ROLE and REQUIREMENT nothing infinite runs except `sxSuspend`. Nothing derives from a score (M1). REDUCED:
 unchanged — every animation and transition zeroed, identical sign set. This block implements option B of GELB's escalation; under
 option A (spec §1 / §6.2 stand) the switch is set to `false` and the field lives through transitions and static depth alone.
@@ -503,7 +509,12 @@ ecology the title sits inside the core in mono uppercase and two plasma rings (d
 plasma rings (`sxOrbit` 120 s and 90 s reverse, FIELD only, pool sign in state `field`, R15), the pool name and `N ORGANIZATIONS` —
 from which the containment spokes radiate; (4) evidence carriers use the planetarium's evidence colour (mint `#7effcc`): a document
 glyph with a `SOURCE` kicker and the title, and each trace carries a ray underlay that draws on from the source carrier to the anchor
-(`sxTraceDraw`, finite, `trace_rise`; `pathLength` 1, dash offset 1 → 0) while the trace pattern fades in behind it; (5) requirement
+(`sxTraceDraw`, finite, `trace_rise`; `pathLength` 1, dash offset 1 → 0) while the trace pattern fades in behind it, then one light
+emerges at the carrier and runs the arc to the anchor, fading at arrival (`data-sx-trace-pulse`: `sxEnter` .35 s, `sxTraceDraw` with
+dash `0.14 0.86`, `sxRise` reversed, all finite, 1.25 s after the rise); the trace body is a mint → cyan gradient along the arc
+(`userSpaceOnUse`, carrier to anchor) with a soft aura at rest (`data-sx-trace-aura`, stronger when inspectable) and a bloom at the
+carrier end (`data-sx-trace-bloom`); unscored coverage is a chain of beads (dash `0.4 4.4`, round caps), never a continuous line; no
+arrowheads anywhere; (5) requirement
 labels are mono 7.8 / 700 (`REQUIREMENT_LABEL.charWidth` 4.9, routing and renderer alike); (6) the aperture carries the hover-HUD
 surface of the planetarium (starfield gradient, 1.5 px cyan border, layered shadow); (7) `SOURCE_BOX` grew to the carrier's real reach
 (above 14, below 68) so the REQUIREMENT camera keeps the carrier with its kicker and title in view (O-SX-4 holds).
@@ -648,3 +659,4 @@ observation point. Readable labels wrap at word boundaries (`wrapLines`), never 
 | 2026-10-11 | Perceptual closure F-SX-2 / O-SX-2 / O-SX-3 / O-SX-4 (GELB on the owner data at :3017 = 8cb4a50; PINK ruling on O-SX-3) | co-terminal traces were drawn on identical endpoints (the dotted sweep trace invisible under the stable one and, DOM-later, owning every pointer point: the matched aperture could not be opened by pointer) → traces are paths with distinct bows (B-SYNTX-BOW); traces crossed the role title → traces bend around the role disc and the labels, carriers are placed beside the requirements that reach them; the carrier was cropped at REQUIREMENT → the camera keeps scale 2.4 and shifts to reach (B-SYNTX-REACH); "1 sources" → number agreement (B-SYNTX-NUMBER) | view model 14/14 · SSR 7/7 · GELB governance 10/10 · semantic governance 4/4 · presentation 9/9 + 4/4 · e2e 10/10 · tsc 0 |
 | 2026-10-12 | Living field (owner mandate "SFE — SYNTX LIVING FIELD · VISUAL RECONSTRUCTION", on 1ca3ca9) | planetarium grammar reconstructed from the sealed Capability Field files (read only) and applied in `SyntxField.tsx`: atmosphere, orbit paths, containment ring and spokes, membranes, cores, glow referents, depth blur, unfold / rise / recenter / suspend-enter transitions, role positions moving with the region, ambient breathing + ring orbit behind one switch (B-SYNTX-MOTION); hit areas cover the rings | view model 14/14 · SSR 7/7 · GELB governance 10/10 · semantic governance 4/4 · presentation 9/9 + 4/4 · PINK static 3/3 + layer · client reads · e2e 10/10 · tsc 0 · sealed files byte-identical |
 | 2026-10-12 | Visual grammar transfer (owner mandates "GREEN · VISUAL FIELD RECONSTRUCTION", "VISUAL GRAMMAR TRANSFER", on e6486b1) | three lab rounds against the Capability Field reference: regions as planetarium nodes with identity block and density pill, roles on a lower inner ring with node typography and core signatures, pool core with plasma rings at the centre, mint evidence carriers with draw-on rays, HUD aperture surface, carrier reach box; sequence recorded under evidence/job-pool/living-field | view model 14/14 · SSR 7/7 · GELB governance 10/10 · semantic governance 4/4 · presentation 9/9 + 4/4 · PINK static 3/3 + layer · client reads · e2e 10/10 · tsc 0 · sealed files byte-identical |
+| 2026-10-12 | Semiontic motion & trace reconstruction (owner mandate "SFE — GREEN · SEMIONTIC MOTION & TRACE RECONSTRUCTION", on 36058a4; GREEN only, isolated lab) | DELTA 01: ambient life substantially increased inside the accepted names — pool core glow breathing, dash streams along the containment spokes, counter-turning resonance rings around each region, drifting motes, turning orbit paths, membrane / glow / signature breathing with regions answering the core 1.2 s later (measured in the lab: core region brightness 80 → 95, membrane 23 → 31 per 6.2 s cycle, phase-coupled); DELTA 02: traces are cubic arcs with one handedness and a mint → cyan gradient, aura, carrier bloom, bead chains for unscored coverage and one finite light running each risen trace; geometry (`tracePoint` / `tracePath` / `traceRayPath`) stays the routing's truth, bows unchanged. Evidence: `evidence/job-pool/living-field/motion/` (video, breathing and emergence frame sheets, stills) | view model 14/14 · SSR 7/7 · PINK walk 3/3 (Q-06 names ⊆ allowed, FIELD infinite names {sxBreathe, sxOrbit}, all inside signs in state field) · e2e 10/10 · tsc 0 · sealed files byte-identical |
