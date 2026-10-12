@@ -1,0 +1,156 @@
+[
+  {
+    "testId": "syntx-pool",
+    "id": "field:JPOOL_30F7145E21F34BEF0FCE510DFC75837B",
+    "source": "canonical_entity",
+    "relation": "contains",
+    "state": "field",
+    "manifestation": "region",
+    "interaction": "none",
+    "transition": "unfold",
+    "proof": {
+      "upload-id": "JPOOL_30F7145E21F34BEF0FCE510DFC75837B"
+    }
+  },
+  {
+    "testId": "syntx-organization-org_nordlicht",
+    "id": "org:org_nordlicht",
+    "source": "canonical_entity",
+    "relation": "contains",
+    "state": "field",
+    "manifestation": "region",
+    "interaction": "select",
+    "transition": "recenter",
+    "proof": {
+      "upload-id": "JPOOL_30F7145E21F34BEF0FCE510DFC75837B",
+      "organization-id": "org_nordlicht",
+      "target-id": "TORGENT_FCAEB4555C6CA576BDEE33D88438A838"
+    }
+  },
+  {
+    "testId": "syntx-organization-org_rheinwerk",
+    "id": "org:org_rheinwerk",
+    "source": "canonical_entity",
+    "relation": "contains",
+    "state": "field",
+    "manifestation": "region",
+    "interaction": "select",
+    "transition": "recenter",
+    "proof": {
+      "upload-id": "JPOOL_30F7145E21F34BEF0FCE510DFC75837B",
+      "organization-id": "org_rheinwerk",
+      "target-id": "TORGENT_72792D16C29EFDFD34A2DC7676F968DA"
+    }
+  },
+  {
+    "testId": "syntx-organization-org_alpendata",
+    "id": "org:org_alpendata",
+    "source": "canonical_entity",
+    "relation": "contains",
+    "state": "field",
+    "manifestation": "region",
+    "interaction": "select",
+    "transition": "recenter",
+    "proof": {
+      "upload-id": "JPOOL_30F7145E21F34BEF0FCE510DFC75837B",
+      "organization-id": "org_alpendata",
+      "target-id": "TORGENT_0657822E4939AE2E9CEF56E7389DACA3"
+    }
+  },
+  {
+    "testId": "syntx-role-role_fullstack",
+    "id": "role:role_fullstack",
+    "source": "canonical_entity",
+    "relation": "contains",
+    "state": "field",
+    "manifestation": "carrier",
+    "interaction": "select",
+    "transition": "recenter",
+    "proof": {
+      "upload-id": "JPOOL_30F7145E21F34BEF0FCE510DFC75837B",
+      "organization-id": "org_nordlicht",
+      "role-id": "role_fullstack",
+      "target-id": "TROBREV_A2BC5D6C70543C8A23ADC9F1441C4E32"
+    }
+  },
+  {
+    "testId": "syntx-role-role_frontend_lead",
+    "id": "role:role_frontend_lead",
+    "source": "canonical_entity",
+    "relation": "contains",
+    "state": "field",
+    "manifestation": "carrier",
+    "interaction": "select",
+    "transition": "recenter",
+    "proof": {
+      "upload-id": "JPOOL_30F7145E21F34BEF0FCE510DFC75837B",
+      "organization-id": "org_nordlicht",
+      "role-id": "role_frontend_lead",
+      "target-id": "TROBREV_EC1C367BA819716D795B331BA90D389B"
+    }
+  },
+  {
+    "testId": "syntx-role-role_platform",
+    "id": "role:role_platform",
+    "source": "canonical_entity",
+    "relation": "contains",
+    "state": "field",
+    "manifestation": "carrier",
+    "interaction": "select",
+    "transition": "recenter",
+    "proof": {
+      "upload-id": "JPOOL_30F7145E21F34BEF0FCE510DFC75837B",
+      "organization-id": "org_rheinwerk",
+      "role-id": "role_platform",
+      "target-id": "TROBREV_8DEB18ED09E699321E57FE4043F29506"
+    }
+  },
+  {
+    "testId": "syntx-role-role_architect",
+    "id": "role:role_architect",
+    "source": "canonical_entity",
+    "relation": "contains",
+    "state": "field",
+    "manifestation": "carrier",
+    "interaction": "select",
+    "transition": "recenter",
+    "proof": {
+      "upload-id": "JPOOL_30F7145E21F34BEF0FCE510DFC75837B",
+      "organization-id": "org_rheinwerk",
+      "role-id": "role_architect",
+      "target-id": "TROBREV_1A31E13F63A4958C389F6762D34A3662"
+    }
+  },
+  {
+    "testId": "syntx-role-role_ml",
+    "id": "role:role_ml",
+    "source": "canonical_entity",
+    "relation": "contains",
+    "state": "field",
+    "manifestation": "carrier",
+    "interaction": "select",
+    "transition": "recenter",
+    "proof": {
+      "upload-id": "JPOOL_30F7145E21F34BEF0FCE510DFC75837B",
+      "organization-id": "org_alpendata",
+      "role-id": "role_ml",
+      "target-id": "TROBREV_32726D207BECD6E78ED1CF878EAC8050"
+    }
+  },
+  {
+    "testId": "syntx-role-role_data",
+    "id": "role:role_data",
+    "source": "canonical_entity",
+    "relation": "contains",
+    "state": "field",
+    "manifestation": "carrier",
+    "interaction": "select",
+    "transition": "recenter",
+    "proof": {
+      "upload-id": "JPOOL_30F7145E21F34BEF0FCE510DFC75837B",
+      "organization-id": "org_alpendata",
+      "role-id": "role_data",
+      "target-id": "TROBREV_1403D0C894B12F7FA20A84C16C276DA5"
+    }
+  }
+]

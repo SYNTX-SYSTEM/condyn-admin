@@ -837,6 +837,29 @@ carrier inside the viewport (`SOURCE_BOX`), containment and anchor categories un
 focus-follow, reduced motion, bodies identical. Plan 1.8.0 binds `36058a4` (Appendix C: B-SYNTX-VISUAL). The owner
 environment stays on `1bd26a7` under plan 1.5.2 until the owner authorizes the move.
 
+### 3.23 Owner environment `:3017` moved to `010f082`; GET-only acceptance 136/136 (2026-10-12)
+
+The owner gave the GO directly in GELB's session (a GO relayed through GRÜN had been received earlier; GELB deliberately
+did not take it as the gate the owner set, and `:3017` stayed on `1bd26a7` until the direct confirmation). GELB's handover:
+worktree `condyn-admin-job-pool` fast-forwarded `1bd26a7` → `010f082` (= `36058a4` + plan 1.8.0 `013d91d`; `app`, `lib`,
+`scripts` identical to the accepted `36058a4`, verified by PINK as tree-identical to `013d91d`), restart `up --with-worker`
+without `--fresh`, reusing the preserved database `condyn_test_e46502b73c9f316f`; read-only snapshot before and after
+identical ("OWNER DB IDENTICAL": 123 tables / 280 rows, countsHash `3644dcdf00006a7f`, contentHash `a5050f17b5264235`);
+worker polling with Gemini; smoke: all four SYNTX levels and the pool/analysis/matches APIs 200, Firefox 157 renders all
+four levels with 0 page errors.
+
+PINK (GET-only, nothing started, stopped, uploaded or written against `:3017`): the served FIELD page carries the
+`36058a4`-only grammar tokens (`data-sx-ambient`, `sxTraceDraw`, `sxCoreSettle`; absent from `1bd26a7`); read-only walk
+`syntx-readonly-walk.mjs` on `BASE=http://127.0.0.1:3017`, upload `JPOOL_30F7145E21F34BEF0FCE510DFC75837B`, analyses
+`612` / `831`: **136/136, 0 non-GET** (evidence `evidence/syntx-readonly-3017-010f082/`, 28 files) — the same result as on
+GELB's clone `:3027` @ `36058a4` (§3.22): R15 at FIELD (`sxBreathe` + `sxOrbit` on `field` signs only, switch on, mode
+LIVE) and at ROLE (only `sxSuspend`) for both analyses, the matched and the sweep trace own pointer points and open their
+apertures, the inspected carrier inside the viewport, containment and anchor categories, Escape chain with focus-follow,
+reduced motion, bodies identical; the `831` matched-aperture walk is a recorded data skip (no SUPPORTED requirement
+delivered for its role). Plan 1.8.1 binds the owner environment `010f082` (header only, application unchanged). Delivery
+to the owner is GELB's: running CONDYN on `:3017`, the verified data set, exact Firefox links; the owner's personal visual
+acceptance and full product run-through follow.
+
 ## 4. Boundaries and findings for coordination
 
 - F-JP-1 (closed in `b782793`): `JOB_POOL_CONNECTION.md` §4 followed the per-role `JOB_POOL_JSON_ROLE` design;

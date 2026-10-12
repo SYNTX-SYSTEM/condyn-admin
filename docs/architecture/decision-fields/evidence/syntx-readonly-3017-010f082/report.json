@@ -1,0 +1,692 @@
+{
+  "base": "http://127.0.0.1:3017",
+  "upload": "JPOOL_30F7145E21F34BEF0FCE510DFC75837B",
+  "analyses": [
+    "ANL_1791660225500_612",
+    "ANL_1791697406804_831"
+  ],
+  "recordedAt": "2026-10-12T08:13:03.989Z",
+  "failures": 0,
+  "results": [
+    {
+      "name": "GET analyses 200",
+      "ok": true,
+      "detail": "status 200"
+    },
+    {
+      "name": "analyses resolved",
+      "ok": true,
+      "detail": "ANL_1791660225500_612,ANL_1791697406804_831"
+    },
+    {
+      "name": "GET upload view 200",
+      "ok": true,
+      "detail": "status 200"
+    },
+    {
+      "name": "canonical mapping present",
+      "ok": true,
+      "detail": "orgs 3 roles 6"
+    },
+    {
+      "name": "[612] GET matches 200",
+      "ok": true,
+      "detail": "status 200 sweep AVAILABLE proposals 9"
+    },
+    {
+      "name": "[612] GET analysis 200",
+      "ok": true,
+      "detail": "status 200"
+    },
+    {
+      "name": "[612] grammar SYNTX_FIELD_V1 at FIELD",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "[612] counts = mapping",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "[612] retired ids absent",
+      "ok": true,
+      "detail": "0"
+    },
+    {
+      "name": "[612] strip has two buttons",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "[612] every region and carrier with its canonical proof, roles inside their region",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "[612] full names readable",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "[612] no number at FIELD",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "[612] summary for the upload",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "[612] Q-01 signs unique",
+      "ok": true,
+      "detail": "10 signs"
+    },
+    {
+      "name": "[612] Q-01 data-sign-count",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "[612] Q-01 §14.3 enums only",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "[612] Q-01 every proof resolves in the bodies",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "[612] Q-01 pending at most once, no closure",
+      "ok": true,
+      "detail": "pending 0"
+    },
+    {
+      "name": "[612] Q-01 no proof id as text",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "[612] Q-01 no RRL/TSN/EIS/RCP",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "[612] Q-01 summary (aria-live, R9/BR-4) agrees in number (O-SX-3)",
+      "ok": true,
+      "detail": "Job pool CONDYN Sample Tech Job Pool, version 1, ACTIVE: 3 organizations containing 6 roles. A presentation matching was"
+    },
+    {
+      "name": "[612] R15 at FIELD: infinite motion ⊆ SYNTX_AMBIENT_NAMES, only on signs in state field (switch on)",
+      "ok": true,
+      "detail": "{\"switch\":\"on\",\"mode\":\"LIVE\",\"names\":[\"sxBreathe\",\"sxOrbit\"],\"outsideField\":[]}"
+    },
+    {
+      "name": "[612] ORGANIZATION: selected region, others receded, URL",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "[612] Q-02 signs unique",
+      "ok": true,
+      "detail": "10 signs"
+    },
+    {
+      "name": "[612] Q-02 data-sign-count",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "[612] Q-02 §14.3 enums only",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "[612] Q-02 every proof resolves in the bodies",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "[612] Q-02 pending at most once, no closure",
+      "ok": true,
+      "detail": "pending 0"
+    },
+    {
+      "name": "[612] Q-02 no proof id as text",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "[612] Q-02 no RRL/TSN/EIS/RCP",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "[612] Q-02 summary (aria-live, R9/BR-4) agrees in number (O-SX-3)",
+      "ok": true,
+      "detail": "Organization Nordlicht Software GmbH contains 2 roles: Senior Full-Stack Engineer, Frontend Lead."
+    },
+    {
+      "name": "[612] ROLE: one anchor per TRQREV with support, NOT_EVALUATED, trace count and open boundary per body",
+      "ok": true,
+      "detail": "{\"SUPPORTED\":1,\"OPEN\":1,\"WEAK\":1,\"SWEEP_ONLY\":2}"
+    },
+    {
+      "name": "[612] ROLE: traces = delivered quotes",
+      "ok": true,
+      "detail": "traces 6, dotted 4"
+    },
+    {
+      "name": "[612] ROLE: one suspended boundary with TRPREV and every TRQREV",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "[612] ROLE: one source carrier per docId, title state = join",
+      "ok": true,
+      "detail": "{\"DOC_001\":\"RESOLVED\"}"
+    },
+    {
+      "name": "[612] ROLE: no number, no quote before inspection",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "[612] Q-03 signs unique",
+      "ok": true,
+      "detail": "24 signs"
+    },
+    {
+      "name": "[612] Q-03 data-sign-count",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "[612] Q-03 §14.3 enums only",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "[612] Q-03 every proof resolves in the bodies",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "[612] Q-03 pending at most once, no closure",
+      "ok": true,
+      "detail": "pending 1"
+    },
+    {
+      "name": "[612] Q-03 no proof id as text",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "[612] Q-03 no RRL/TSN/EIS/RCP",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "[612] Q-03 summary (aria-live, R9/BR-4) agrees in number (O-SX-3)",
+      "ok": true,
+      "detail": "Role Senior Full-Stack Engineer at Nordlicht Software GmbH requires 5 requirements: 1 with scored support, 1 with weak s"
+    },
+    {
+      "name": "[612] R15 at ROLE: nothing infinite but sxSuspend",
+      "ok": true,
+      "detail": "[\"sxSuspend\"]"
+    },
+    {
+      "name": "[612] REQUIREMENT: observation id, URL, camera 2.4, traces inspectable",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "[612] matched trace owns a pointer point (R7 pointer inspection; F-SX-2 if a co-terminal dotted trace owns it)",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "[612] matched aperture: for the trace, quote verbatim, source state by join, authority NONE",
+      "ok": true,
+      "detail": "source RESOLVED"
+    },
+    {
+      "name": "[612] matched aperture: contribution as delivered, no sweep status",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "[612] REQUIREMENT: the inspected trace's source carrier is inside the viewport (O-SX-4)",
+      "ok": true,
+      "detail": "viewport {\"width\":1600,\"height\":1000}"
+    },
+    {
+      "name": "[612] observation stays REQUIREMENT, aperture not in the URL",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "[612] Q-04-matched signs unique",
+      "ok": true,
+      "detail": "25 signs"
+    },
+    {
+      "name": "[612] Q-04-matched data-sign-count",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "[612] Q-04-matched §14.3 enums only",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "[612] Q-04-matched every proof resolves in the bodies",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "[612] Q-04-matched pending at most once, no closure",
+      "ok": true,
+      "detail": "pending 1"
+    },
+    {
+      "name": "[612] Q-04-matched no proof id as text",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "[612] Q-04-matched no RRL/TSN/EIS/RCP",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "[612] Q-04-matched summary (aria-live, R9/BR-4) agrees in number (O-SX-3)",
+      "ok": true,
+      "detail": "Requirement TypeScript of role Senior Full-Stack Engineer: supported by scored evidence; 2 evidence traces from 1 source"
+    },
+    {
+      "name": "[612] sweep trace: PCAP proof, EVD only on the exact join",
+      "ok": true,
+      "detail": "evd EVD_CF0CC82147835725AB93A490"
+    },
+    {
+      "name": "[612] sweep trace owns a pointer point",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "[612] sweep aperture: unscored status, R5 text, no contribution, no number",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "[612] pending aperture: text, TRPREV, resonance = body, rank, no recommendation",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "[612] Q-04-pending signs unique",
+      "ok": true,
+      "detail": "25 signs"
+    },
+    {
+      "name": "[612] Q-04-pending data-sign-count",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "[612] Q-04-pending §14.3 enums only",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "[612] Q-04-pending every proof resolves in the bodies",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "[612] Q-04-pending pending at most once, no closure",
+      "ok": true,
+      "detail": "pending 1"
+    },
+    {
+      "name": "[612] Q-04-pending no proof id as text",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "[612] Q-04-pending no RRL/TSN/EIS/RCP",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "[612] Q-04-pending summary (aria-live, R9/BR-4) agrees in number (O-SX-3)",
+      "ok": true,
+      "detail": "Role Senior Full-Stack Engineer at Nordlicht Software GmbH requires 5 requirements: 1 with scored support, 1 with weak s"
+    },
+    {
+      "name": "[612] RETURN: focus follows the observation point after the ecology unmounts",
+      "ok": true,
+      "detail": "org:org_nordlicht"
+    },
+    {
+      "name": "[612] RETURN: FIELD restored (camera 1, nothing receded, URL clean)",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "[612] RETURN: FIELD sign set identical to the first FIELD read",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "[612] REDUCED: nothing running, same ROLE signs",
+      "ok": true,
+      "detail": "{\"running\":0,\"root\":\"none\",\"camera\":\"0s\"}"
+    },
+    {
+      "name": "[612] bodies identical before and after",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "[831] GET matches 200",
+      "ok": true,
+      "detail": "status 200 sweep AVAILABLE proposals 6"
+    },
+    {
+      "name": "[831] GET analysis 200",
+      "ok": true,
+      "detail": "status 200"
+    },
+    {
+      "name": "[831] grammar SYNTX_FIELD_V1 at FIELD",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "[831] counts = mapping",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "[831] retired ids absent",
+      "ok": true,
+      "detail": "0"
+    },
+    {
+      "name": "[831] strip has two buttons",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "[831] every region and carrier with its canonical proof, roles inside their region",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "[831] full names readable",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "[831] no number at FIELD",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "[831] summary for the upload",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "[831] Q-01 signs unique",
+      "ok": true,
+      "detail": "10 signs"
+    },
+    {
+      "name": "[831] Q-01 data-sign-count",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "[831] Q-01 §14.3 enums only",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "[831] Q-01 every proof resolves in the bodies",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "[831] Q-01 pending at most once, no closure",
+      "ok": true,
+      "detail": "pending 0"
+    },
+    {
+      "name": "[831] Q-01 no proof id as text",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "[831] Q-01 no RRL/TSN/EIS/RCP",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "[831] Q-01 summary (aria-live, R9/BR-4) agrees in number (O-SX-3)",
+      "ok": true,
+      "detail": "Job pool CONDYN Sample Tech Job Pool, version 1, ACTIVE: 3 organizations containing 6 roles. A presentation matching was"
+    },
+    {
+      "name": "[831] R15 at FIELD: infinite motion ⊆ SYNTX_AMBIENT_NAMES, only on signs in state field (switch on)",
+      "ok": true,
+      "detail": "{\"switch\":\"on\",\"mode\":\"LIVE\",\"names\":[\"sxBreathe\",\"sxOrbit\"],\"outsideField\":[]}"
+    },
+    {
+      "name": "[831] ORGANIZATION: selected region, others receded, URL",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "[831] Q-02 signs unique",
+      "ok": true,
+      "detail": "10 signs"
+    },
+    {
+      "name": "[831] Q-02 data-sign-count",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "[831] Q-02 §14.3 enums only",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "[831] Q-02 every proof resolves in the bodies",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "[831] Q-02 pending at most once, no closure",
+      "ok": true,
+      "detail": "pending 0"
+    },
+    {
+      "name": "[831] Q-02 no proof id as text",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "[831] Q-02 no RRL/TSN/EIS/RCP",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "[831] Q-02 summary (aria-live, R9/BR-4) agrees in number (O-SX-3)",
+      "ok": true,
+      "detail": "Organization Rheinwerk Systems AG contains 2 roles: Platform Engineer, Principal Systems Architect."
+    },
+    {
+      "name": "[831] ROLE: one anchor per TRQREV with support, NOT_EVALUATED, trace count and open boundary per body",
+      "ok": true,
+      "detail": "{\"OPEN\":4}"
+    },
+    {
+      "name": "[831] ROLE: traces = delivered quotes",
+      "ok": true,
+      "detail": "traces 0, dotted 0"
+    },
+    {
+      "name": "[831] ROLE: one suspended boundary with TRPREV and every TRQREV",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "[831] ROLE: one source carrier per docId, title state = join",
+      "ok": true,
+      "detail": "{}"
+    },
+    {
+      "name": "[831] ROLE: no number, no quote before inspection",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "[831] Q-03 signs unique",
+      "ok": true,
+      "detail": "19 signs"
+    },
+    {
+      "name": "[831] Q-03 data-sign-count",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "[831] Q-03 §14.3 enums only",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "[831] Q-03 every proof resolves in the bodies",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "[831] Q-03 pending at most once, no closure",
+      "ok": true,
+      "detail": "pending 1"
+    },
+    {
+      "name": "[831] Q-03 no proof id as text",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "[831] Q-03 no RRL/TSN/EIS/RCP",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "[831] Q-03 summary (aria-live, R9/BR-4) agrees in number (O-SX-3)",
+      "ok": true,
+      "detail": "Role Principal Systems Architect at Rheinwerk Systems AG requires 4 requirements: 0 with scored support, 0 with weak sup"
+    },
+    {
+      "name": "[831] R15 at ROLE: nothing infinite but sxSuspend",
+      "ok": true,
+      "detail": "[\"sxSuspend\"]"
+    },
+    {
+      "name": "[831] matched aperture walk",
+      "ok": true,
+      "detail": "skipped: no SUPPORTED requirement delivered for this role (data condition, not a field defect)"
+    },
+    {
+      "name": "[831] sweep traces",
+      "ok": true,
+      "detail": "none delivered for this analysis (BOUNDARY-MATCH B-JP-GEMINI-FIXTURE if seeded)"
+    },
+    {
+      "name": "[831] pending aperture: text, TRPREV, resonance = body, rank, no recommendation",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "[831] Q-04-pending signs unique",
+      "ok": true,
+      "detail": "20 signs"
+    },
+    {
+      "name": "[831] Q-04-pending data-sign-count",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "[831] Q-04-pending §14.3 enums only",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "[831] Q-04-pending every proof resolves in the bodies",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "[831] Q-04-pending pending at most once, no closure",
+      "ok": true,
+      "detail": "pending 1"
+    },
+    {
+      "name": "[831] Q-04-pending no proof id as text",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "[831] Q-04-pending no RRL/TSN/EIS/RCP",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "[831] Q-04-pending summary (aria-live, R9/BR-4) agrees in number (O-SX-3)",
+      "ok": true,
+      "detail": "Role Principal Systems Architect at Rheinwerk Systems AG requires 4 requirements: 0 with scored support, 0 with weak sup"
+    },
+    {
+      "name": "[831] RETURN: focus follows the observation point after the ecology unmounts",
+      "ok": true,
+      "detail": "org:org_rheinwerk"
+    },
+    {
+      "name": "[831] RETURN: FIELD restored (camera 1, nothing receded, URL clean)",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "[831] RETURN: FIELD sign set identical to the first FIELD read",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "[831] REDUCED: nothing running, same ROLE signs",
+      "ok": true,
+      "detail": "{\"running\":0,\"root\":\"none\",\"camera\":\"0s\"}"
+    },
+    {
+      "name": "[831] bodies identical before and after",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "page issued GET only",
+      "ok": true,
+      "detail": ""
+    }
+  ]
+}
