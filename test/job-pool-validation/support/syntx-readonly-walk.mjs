@@ -105,6 +105,31 @@ const infiniteMotion = (page) => root(page).evaluate((r) => {
   return { switch: r.getAttribute("data-sx-ambient") ?? "off", mode: r.getAttribute("data-motion-mode"), names, outsideField };
 });
 const AMBIENT_NAMES = ["sxOrbit", "sxBreathe", "sxSuspend"];
+// R15a (owner 2026-10-12 "Alles zulassen", binding §4; GRÜN 9f225f2): at ROLE / REQUIREMENT the evidence ecology may run continuously the
+// carrier orbit (shared rAF clock, data-orbital-motion-* on [data-sx-carrier-body]; every trace recomputed from the moving body), sxMoonOrbit
+// on carriers, SMIL photons [data-sx-photon] on every trace, sxAtmosphere / sxRingPulse on the carrier in state inspectable only, and
+// sxSuspend as before. Moons / atmosphere / pulses need data-sx-ambient="on"; orbit and photons only LIVE. REDUCED stays total.
+const ECOLOGY_NAMES = ["sxSuspend", "sxMoonOrbit", "sxAtmosphere", "sxRingPulse"];
+const ecologyMotion = (page) => root(page).evaluate((r) => {
+  const infinite = {};
+  for (const a of r.getAnimations({ subtree: true })) {
+    if (a.playState !== "running" || a.effect?.getTiming?.().iterations !== Infinity) continue;
+    const target = a.effect?.target; const carrier = target?.closest?.('[data-sign-manifestation="carrier"][data-testid^="syntx-source-"]');
+    const host = carrier ? `carrier:${carrier.getAttribute("data-sign-state")}` : (target?.closest?.("[data-sign-id]")?.getAttribute("data-sign-manifestation") ?? "none");
+    (infinite[String(a.animationName ?? "")] ??= []).push(host);
+  }
+  const carriers = Array.from(r.querySelectorAll('[data-testid^="syntx-source-"]')).map((el) => { const body = el.querySelector("[data-sx-carrier-body]"); return { docId: el.getAttribute("data-testid").slice("syntx-source-".length), state: el.getAttribute("data-sign-state"), driver: body?.getAttribute("data-orbital-motion-driver") ?? null, x: Number(body?.getAttribute("data-orbital-motion-x")), y: Number(body?.getAttribute("data-orbital-motion-y")) }; });
+  const traces = Array.from(r.querySelectorAll('[data-testid^="syntx-trace-"]')).map((el) => {
+    const id = el.getAttribute("data-sign-id") ?? ""; const d = el.querySelector("[data-sx-hit]")?.getAttribute("d") ?? "";
+    const nums = (d.match(/-?\d+(?:\.\d+)?/g) ?? []).map(Number); const end = { x: nums[nums.length - 2], y: nums[nums.length - 1] };
+    const carrier = carriers.find((c) => id.includes(`:${c.docId}:`));
+    return { id, quadratic: /^M -?[\d.]+ -?[\d.]+ Q -?[\d.]+ -?[\d.]+ -?[\d.]+ -?[\d.]+$/.test(d), coupled: carrier ? Math.hypot(end.x - carrier.x, end.y - carrier.y) < 0.05 : null, photons: el.querySelectorAll("[data-sx-photon]").length };
+  });
+  return { switch: r.getAttribute("data-sx-ambient") ?? "off", mode: r.getAttribute("data-motion-mode"), infinite, carriers, traces, photons: r.querySelectorAll("[data-sx-photon]").length };
+});
+const everyTraceOwned = async (page) => { const ids = await root(page).evaluate((r) => Array.from(r.querySelectorAll('[data-testid^="syntx-trace-"][tabindex="0"]')).map((el) => el.getAttribute("data-testid"))); const out = []; for (const id of ids) out.push({ id, owned: (await alongTrace(page.getByTestId(id))).owned }); return out; };
+const ecologyFrameOk = (f) => Object.keys(f.infinite).every((n) => ECOLOGY_NAMES.includes(n)) && (f.infinite.sxMoonOrbit ?? []).every((h) => h.startsWith("carrier:")) && [...(f.infinite.sxAtmosphere ?? []), ...(f.infinite.sxRingPulse ?? [])].every((h) => h === "carrier:inspectable") && (f.switch === "on" || Object.keys(f.infinite).every((n) => n === "sxSuspend")) && f.carriers.every((c) => c.driver === "shared-rAF" && Number.isFinite(c.x) && Number.isFinite(c.y)) && f.traces.every((tr) => tr.quadratic && tr.coupled !== false && tr.photons === 2);
+const pos = (f) => f.carriers.map((c) => `${c.x},${c.y}`).join(" ");
 const inViewport = (loc) => loc.evaluate((el) => { const b = el.getBoundingClientRect(); return b.left >= 0 && b.top >= 0 && b.right <= innerWidth && b.bottom <= innerHeight; });
 const collectSigns = (page) => root(page).evaluate((r) => Array.from(r.querySelectorAll("[data-sign-id]")).map((el) => { const proof = {}; for (const a of Array.from(el.attributes)) if (a.name.startsWith("data-proof-")) proof[a.name.slice(11)] = a.value; return { testId: el.getAttribute("data-testid"), id: el.getAttribute("data-sign-id"), source: el.getAttribute("data-sign-source"), relation: el.getAttribute("data-sign-relation"), state: el.getAttribute("data-sign-state"), manifestation: el.getAttribute("data-sign-manifestation"), interaction: el.getAttribute("data-sign-interaction"), transition: el.getAttribute("data-sign-transition"), proof }; }));
 const stageText = async (page) => (await page.getByTestId("syntx-stage").textContent()) ?? "";
@@ -201,8 +226,37 @@ for (const analysisId of analyses) {
   check(`[${tag}] ROLE: one source carrier per docId, title state = join`, roleDocIds.every((d) => sourceStates[d] === (documents.some((x) => x.docId === d) ? "RESOLVED" : "UNRESOLVED")), JSON.stringify(sourceStates));
   check(`[${tag}] ROLE: no number, no quote before inspection`, !PERCENT.test(await stageText(page)) && (await page.getByTestId("syntx-aperture").count()) === 0);
   await settled(page); await shot(page, `${tag}-Q-03-role`); await audit(page, "Q-03");
-  const roleMotion = await infiniteMotion(page);
-  check(`[${tag}] R15 at ROLE: nothing infinite but sxSuspend`, roleMotion.names.every((n) => n === "sxSuspend"), JSON.stringify(roleMotion.names));
+  // R15a at ROLE in two frames ~1.5 s apart: infinite set ⊆ ECOLOGY_NAMES with the right hosts, carrier bodies on the rAF clock and moved
+  // between the frames, every trace a quadratic arc ending on its carrier's current body with two photons, every trace owning a pointer
+  // point in both frames (clickable while the carrier moves).
+  const frameA = await ecologyMotion(page); const ownedA = await everyTraceOwned(page);
+  await page.waitForTimeout(1500);
+  const frameB = await ecologyMotion(page); const ownedB = await everyTraceOwned(page);
+  writeFileSync(resolve(OUT, `${tag}-Q-06-ecology.json`), JSON.stringify({ frameA, ownedA, frameB, ownedB }, null, 2) + "\n");
+  check(`[${tag}] R15a at ROLE: infinite ⊆ {sxSuspend, sxMoonOrbit, sxAtmosphere, sxRingPulse}, moons on carriers, glow/pulse on the inspectable carrier only, switch-gated; carriers on the rAF clock; traces quadratic, coupled to the body, two photons (switch ${frameA.switch})`, ecologyFrameOk(frameA) && ecologyFrameOk(frameB), JSON.stringify({ infinite: Object.keys(frameA.infinite), carriers: frameA.carriers.length, traces: frameA.traces.length, photons: frameA.photons }));
+  check(`[${tag}] R15a at ROLE: the carrier bodies moved between the frames and every trace followed`, frameA.carriers.length === 0 || (pos(frameA) !== pos(frameB) && frameB.traces.every((tr) => tr.coupled !== false)), `${pos(frameA)} → ${pos(frameB)}`);
+  if (ownedA.length > 0) check(`[${tag}] R15a at ROLE: every trace owns a pointer point while the carrier moves (both frames)`, ownedA.every((o) => o.owned) && ownedB.every((o) => o.owned), `${ownedA.length} traces; not owned: ${[...ownedA, ...ownedB].filter((o) => !o.owned).map((o) => o.id).join(", ") || "none"}`);
+  else check(`[${tag}] R15a at ROLE: every trace owns a pointer point while the carrier moves`, true, "skipped: no trace delivered for this role (data condition, not a field defect)");
+  // Keyboard at ROLE (owner check 4): Tab reaches every trace, every anchor and the suspended boundary (other focusables such as the
+  // observed role are passed through); Enter on a trace opens its aperture (the observation may move to the trace's requirement, as the
+  // pointer does); Escape closes it; the chain back to ROLE is taken before the walk goes on (the chain to FIELD follows in step 5).
+  const tabTargets = await root(page).evaluate((r) => Array.from(r.querySelectorAll('[data-testid^="syntx-trace-"][tabindex="0"], [data-testid^="syntx-requirement-"][tabindex="0"], [data-testid^="syntx-pending-"][tabindex="0"]')).map((el) => el.getAttribute("data-sign-id")));
+  await root(page).focus(); const reached = new Set(); const tabOrder = [];
+  for (let i = 0; i < tabTargets.length + 24 && !tabTargets.every((id) => reached.has(id)); i++) { await page.keyboard.press("Tab"); const id = await page.evaluate(() => document.activeElement?.getAttribute("data-sign-id") ?? document.activeElement?.getAttribute("data-testid") ?? null); if (id) { reached.add(id); tabOrder.push(id); } }
+  writeFileSync(resolve(OUT, `${tag}-Q-08-tab-order.txt`), tabOrder.join("\n") + "\n");
+  check(`[${tag}] keyboard at ROLE: Tab reaches every trace, anchor and the suspended boundary`, tabTargets.every((id) => reached.has(id)), `${tabTargets.filter((id) => reached.has(id)).length}/${tabTargets.length} targets in ${tabOrder.length} Tabs; missing ${tabTargets.filter((id) => !reached.has(id)).join(", ") || "none"}`);
+  const firstTrace = page.locator('[data-testid^="syntx-trace-"][tabindex="0"]').first();
+  if ((await firstTrace.count()) > 0) {
+    const firstTraceId = await firstTrace.getAttribute("data-sign-id");
+    await firstTrace.focus(); await page.keyboard.press("Enter"); await page.locator('[data-testid="syntx-field"][data-aperture-open="true"]').waitFor({ timeout: 10_000 });
+    const kindAfterEnter = await root(page).getAttribute("data-observation-kind");
+    check(`[${tag}] keyboard at ROLE: Enter on the focused trace opens its aperture`, (await page.getByTestId("syntx-aperture").getAttribute("data-aperture-for")) === firstTraceId, `${firstTraceId} → ${kindAfterEnter}`);
+    await page.keyboard.press("Escape"); await page.locator('[data-testid="syntx-field"][data-aperture-open="false"]').waitFor({ timeout: 10_000 });
+    const kindAfterEscape = await root(page).getAttribute("data-observation-kind");
+    if (kindAfterEscape === "REQUIREMENT") { await page.keyboard.press("Escape"); await waitKind(page, "ROLE"); }
+    check(`[${tag}] keyboard at ROLE: Escape closes the aperture; the chain returns to ROLE`, (kindAfterEscape === "ROLE" || kindAfterEscape === "REQUIREMENT") && (await root(page).getAttribute("data-observation-kind")) === "ROLE", `after Escape: ${kindAfterEscape}`);
+  } else check(`[${tag}] keyboard at ROLE: Enter / Escape on a trace`, true, "skipped: no trace delivered for this role (data condition, not a field defect)");
+  await settled(page);
 
   // 4. REQUIREMENT + apertures (matched, sweep if delivered, pending)
   const supportedId = mappedRole.requirements.map((q) => q.poolRequirementId).find((id) => supportOf(id) === "SUPPORTED");
@@ -220,6 +274,12 @@ for (const analysisId of analyses) {
     check(`[${tag}] matched aperture: for the trace, quote verbatim, source state by join, authority NONE`, (await ap.getAttribute("data-aperture-for")) === (await trace.getAttribute("data-sign-id")) && ((await page.getByTestId("syntx-aperture-quote").textContent()) ?? "").includes(quote.quote) && srcState === (doc ? "RESOLVED" : "UNRESOLVED") && (!doc || ((await page.getByTestId("syntx-aperture-source").textContent()) ?? "").includes(doc.title)) && ((await page.getByTestId("syntx-aperture-authority").textContent()) ?? "").toLowerCase().includes("authority none"), `source ${srcState}`);
     check(`[${tag}] matched aperture: contribution as delivered, no sweep status`, ((await page.getByTestId("syntx-aperture-contribution").textContent()) ?? "").includes(String(item.contribution)) && (await page.getByTestId("syntx-aperture-sweep-status").count()) === 0);
     check(`[${tag}] REQUIREMENT: the inspected trace's source carrier is inside the viewport (O-SX-4)`, await inViewport(page.getByTestId(`syntx-source-${quote.docId}`)), `viewport ${JSON.stringify(page.viewportSize())}`);
+    // Source attribution under the moving carrier (owner check 3): the one inspectable carrier is the trace's document, the aperture names
+    // it (title by join), and with the switch on atmosphere / pulses run on that carrier only (R15a at REQUIREMENT).
+    const attribution = await ecologyMotion(page); const inspectableDocs = attribution.carriers.filter((c) => c.state === "inspectable").map((c) => c.docId);
+    const apFor = (await ap.getAttribute("data-aperture-for")) ?? ""; const srcText = (await page.getByTestId("syntx-aperture-source").textContent()) ?? "";
+    check(`[${tag}] attribution: the inspectable carrier is the aperture trace's document; aperture source title by join`, inspectableDocs.join() === quote.docId && apFor.includes(`:${quote.docId}:`) && (!doc || squash(srcText).includes(squash(doc.title ?? "").slice(0, 24))), JSON.stringify({ inspectableDocs, apFor, srcText: srcText.slice(0, 80) }));
+    check(`[${tag}] R15a at REQUIREMENT (aperture open): infinite ⊆ ecology names, glow/pulse on the inspectable carrier only, traces coupled`, ecologyFrameOk(attribution), JSON.stringify(Object.keys(attribution.infinite)));
     check(`[${tag}] observation stays REQUIREMENT, aperture not in the URL`, (await root(page).getAttribute("data-observation-kind")) === "REQUIREMENT" && ![...new URL(page.url()).searchParams.keys()].some((k) => /aperture|sign/i.test(k)));
     await settled(page); await shot(page, `${tag}-Q-04-matched`); await audit(page, "Q-04-matched");
     await page.keyboard.press("Escape"); await page.locator('[data-testid="syntx-field"][data-aperture-open="false"]').waitFor({ timeout: 10_000 });
@@ -264,6 +324,8 @@ for (const analysisId of analyses) {
   const reduced = await root(calm).evaluate((r) => ({ running: r.getAnimations({ subtree: true }).filter((a) => a.playState === "running").length, root: getComputedStyle(r).animationName, camera: getComputedStyle(r.querySelector("[data-sx-camera]")).transitionDuration }));
   const calmSigns = await collectSigns(calm); const roleSigns = JSON.parse(readFileSync(resolve(OUT, `${tag}-Q-03-signs.json`), "utf8"));
   check(`[${tag}] REDUCED: nothing running, same ROLE signs`, reduced.running === 0 && reduced.root === "none" && reduced.camera === "0s" && JSON.stringify(calmSigns.map((s) => [s.id, s.relation, s.manifestation, s.proof])) === JSON.stringify(roleSigns.map((s) => [s.id, s.relation, s.manifestation, s.proof])), JSON.stringify(reduced));
+  const calmA = await ecologyMotion(calm); await calm.waitForTimeout(1000); const calmB = await ecologyMotion(calm);
+  check(`[${tag}] R15a REDUCED total: no photons, nothing infinite, carriers hold their place`, calmA.photons === 0 && Object.keys(calmA.infinite).length === 0 && pos(calmA) === pos(calmB), JSON.stringify({ photons: calmA.photons, infinite: Object.keys(calmA.infinite), carriers: pos(calmA) }));
   await shot(calm, `${tag}-Q-06-reduced`); await calm.close();
 
   // 7. Bodies unchanged (the legacy recommendations.generatedAt request stamp excluded).

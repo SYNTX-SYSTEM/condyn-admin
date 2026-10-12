@@ -1,7 +1,7 @@
 /**
  * PINK Q-12: the running browser walk of the SYNTX semiontic field (owner mandate "SFE — SYNTX SEMIONTIC FIELD
  * RECONSTRUCTION", 2026-10-11; spec §5 states A–E, GELB binding table §2/§3 and rulings R1–R14; GRÜN's DOM contract
- * `JOB_FIELD_FRONTEND.md` §13 = PINK's BR-1 … BR-5). Acceptance plan `docs/acceptance/CONDYN_SYSTEM_ACCEPTANCE_TEST_PLAN_v1.8.md`
+ * `JOB_FIELD_FRONTEND.md` §13 = PINK's BR-1 … BR-5). Acceptance plan `docs/acceptance/CONDYN_SYSTEM_ACCEPTANCE_TEST_PLAN_v1.9.md`
  * suite TS-Q: this file binds Q-01 … Q-11 at their observation points and is the gate for the owner environment.
  *
  * Oracle: the GET bodies of the same server (upload view, matches, analysis) saved as Q-00-*.json before any browser
@@ -40,7 +40,7 @@ function resolvePlaywright(): string | null {
 }
 const playwrightModule = resolvePlaywright();
 // The tip under test names the evidence directory and the report (SYNTX_WALK_TIP=<hash>; default = the plan's tip).
-const WALK_TIP = process.env.SYNTX_WALK_TIP ?? "fa14d8e";
+const WALK_TIP = process.env.SYNTX_WALK_TIP ?? "9e86d44";
 const EVIDENCE_DIR = resolve(process.cwd(), `docs/architecture/decision-fields/evidence/syntx-walk-${WALK_TIP}`);
 const ANALYSIS_ID = "ANL_PINK_SYNTX_WALK";
 const GRAMMAR = "SYNTX_FIELD_V1";
@@ -166,6 +166,35 @@ describe.skipIf(playwrightModule === null)("PINK Q-12: SYNTX field walk FIELD �
     }
     return { ...at(0.5), fraction: 0.5, owned: false };
   }, fractions);
+  /** R15a evidence ecology read (one frame): infinite animations by name with their host (carrier:<state> or the sign manifestation),
+   * carrier bodies (data-orbital-motion-*), and per trace: quadratic arc, carrier end on the body, photon count. */
+  const ecologyMotion = (page: any) => field(page).evaluate((root: Element) => {
+    const infinite: Record<string, string[]> = {};
+    for (const animation of root.getAnimations({ subtree: true }) as any[]) {
+      if (animation.playState !== "running" || animation.effect?.getTiming?.().iterations !== Infinity) continue;
+      const target = animation.effect?.target as Element | null;
+      const carrier = target?.closest('[data-sign-manifestation="carrier"][data-testid^="syntx-source-"]');
+      const host = carrier ? `carrier:${carrier.getAttribute("data-sign-state")}` : (target?.closest("[data-sign-id]")?.getAttribute("data-sign-manifestation") ?? "none");
+      (infinite[String(animation.animationName ?? "")] ??= []).push(host);
+    }
+    const carriers = Array.from(root.querySelectorAll('[data-testid^="syntx-source-"]')).map((element) => { const body = element.querySelector("[data-sx-carrier-body]"); return { docId: (element.getAttribute("data-testid") ?? "").slice("syntx-source-".length), state: element.getAttribute("data-sign-state"), driver: body?.getAttribute("data-orbital-motion-driver") ?? null, x: Number(body?.getAttribute("data-orbital-motion-x")), y: Number(body?.getAttribute("data-orbital-motion-y")) }; });
+    const traces = Array.from(root.querySelectorAll('[data-testid^="syntx-trace-"]')).map((element) => {
+      const id = element.getAttribute("data-sign-id") ?? "";
+      const d = element.querySelector("[data-sx-hit]")?.getAttribute("d") ?? "";
+      const numbers = (d.match(/-?\d+(?:\.\d+)?/g) ?? []).map(Number);
+      const end = { x: numbers[numbers.length - 2], y: numbers[numbers.length - 1] };
+      const carrier = carriers.find((candidate) => id.includes(`:${candidate.docId}:`));
+      return { id, quadratic: /^M -?[\d.]+ -?[\d.]+ Q -?[\d.]+ -?[\d.]+ -?[\d.]+ -?[\d.]+$/.test(d), coupled: carrier ? Math.hypot(end.x - carrier.x, end.y - carrier.y) < 0.05 : null, photons: element.querySelectorAll("[data-sx-photon]").length };
+    });
+    return { switch: root.getAttribute("data-sx-ambient") ?? "off", mode: root.getAttribute("data-motion-mode"), infinite, carriers, traces, photons: root.querySelectorAll("[data-sx-photon]").length };
+  });
+  /** Pointer ownership of every trace in the tab order (one frame each). */
+  const everyTraceOwned = async (page: any) => {
+    const ids: string[] = await field(page).evaluate((root: Element) => Array.from(root.querySelectorAll('[data-testid^="syntx-trace-"][tabindex="0"]')).map((element) => element.getAttribute("data-testid") ?? ""));
+    const out: { id: string; owned: boolean }[] = [];
+    for (const id of ids) out.push({ id, owned: (await alongTrace(page.getByTestId(id))).owned });
+    return out;
+  };
   /** Every rendered visual sign with its sign and proof attributes (BR-2). */
   const collectSigns = (page: any): Promise<SignRecord[]> => field(page).evaluate((root: Element) => Array.from(root.querySelectorAll("[data-sign-id]")).map((element) => {
     const proof: Record<string, string> = {};
@@ -603,6 +632,14 @@ describe.skipIf(playwrightModule === null)("PINK Q-12: SYNTX field walk FIELD �
     const aperture = page.getByTestId("syntx-aperture");
     expect(await aperture.count()).toBe(1);
     expect(await aperture.getAttribute("data-aperture-for")).toBe(traceId);
+    // Source attribution under the moving carrier (R15a): the one carrier in state inspectable is the trace's source document, and the
+    // aperture names that document; with the switch on, atmosphere and pulses run on that carrier only.
+    const attribution = await ecologyMotion(page);
+    const inspectableCarriers = attribution.carriers.filter((carrier: any) => carrier.state === "inspectable");
+    expect(inspectableCarriers.map((carrier: any) => carrier.docId), "exactly the trace's source carrier is inspectable").toEqual([quote.docId]);
+    expect(traceId.includes(`:${quote.docId}:`), "the aperture's trace names the same document").toBe(true);
+    expect([...(attribution.infinite.sxAtmosphere ?? []), ...(attribution.infinite.sxRingPulse ?? [])].filter((host: string) => host !== "carrier:inspectable"), "atmosphere / pulses on the inspectable carrier only").toEqual([]);
+    writeFileSync(resolve(EVIDENCE_DIR, "Q-04-attribution.txt"), `aperture for ${traceId}\ninspectable carriers ${JSON.stringify(inspectableCarriers)}\ninfinite ${JSON.stringify(attribution.infinite)}\n`);
     expect(await aperture.getAttribute("data-aperture-kind")).toBe("trace");
     expect(await aperture.getAttribute("data-sign-manifestation")).toBe("temporary_aperture");
     expect(await aperture.getAttribute("data-sign-interaction")).toBe("return");
@@ -866,9 +903,35 @@ describe.skipIf(playwrightModule === null)("PINK Q-12: SYNTX field walk FIELD �
     expect(computed.camera?.duration).toBe("0.78s");
     // Sign transitions: opacity (recede / restore); since the living field (a856b5a) also filter (the depth blur, data-sx-depth).
     expect(["opacity", "opacity, filter"], `sign transition ${computed.sign?.transition}`).toContain(computed.sign?.transition);
-    // At ROLE after settle: the entrance, reveals, the suspend drift and the finite state-bound transitions of §13.2.1 — never an ambient name.
-    for (const name of computed.names) expect(["sxEnter", "sxRise", "sxSuspend", "sxUnfold", "sxTraceRise", "sxTraceDraw", "sxSuspendEnter", "sxRecenter", "sxCoreSettle", "transition"], `allowed motion at ROLE ${name}`).toContain(name);
+    // At ROLE after settle: the entrance, reveals, the suspend drift and the finite state-bound transitions of §13.2.1 — never a FIELD ambient name.
+    // R15a (owner 2026-10-12 "Alles zulassen", SYNTX_FIELD_CONTRACT_BINDING.md §4; GRÜN 9f225f2): the evidence ecology adds the finite
+    // `sxSettle` (carrier entry) and, continuously, the carrier orbit (rAF, no animation), `sxMoonOrbit` on carriers, SMIL photons on
+    // every trace and `sxAtmosphere` / `sxRingPulse` on the inspectable carrier only.
+    for (const name of computed.names) expect(["sxEnter", "sxRise", "sxSuspend", "sxUnfold", "sxTraceRise", "sxTraceDraw", "sxSuspendEnter", "sxRecenter", "sxCoreSettle", "sxSettle", "sxMoonOrbit", "sxAtmosphere", "sxRingPulse", "transition"], `allowed motion at ROLE ${name}`).toContain(name);
     expect(computed.names.filter((name: string) => ["sxOrbit", "sxBreathe"].includes(name)), "no ambient motion at ROLE").toEqual([]);
+    // R15a at ROLE in two frames ~1.5 s apart: the infinite set is ⊆ {sxSuspend, sxMoonOrbit, sxAtmosphere, sxRingPulse}; moons only inside
+    // carriers, atmosphere and pulses only inside a carrier in state inspectable (none at ROLE rest); the three carrier animations only with
+    // the switch on; every carrier body moves on the shared rAF clock; every trace is a quadratic arc whose carrier end sits on the moving
+    // body in both frames (geometrically coupled), carries two photons, and owns a pointer point in both frames (clickable while it moves).
+    const frameA = await ecologyMotion(live);
+    const ownedA = await everyTraceOwned(live);
+    await live.waitForTimeout(1500);
+    const frameB = await ecologyMotion(live);
+    const ownedB = await everyTraceOwned(live);
+    writeFileSync(resolve(EVIDENCE_DIR, "Q-06-ecology.txt"), `frame A: ${JSON.stringify(frameA)}\nowned A: ${JSON.stringify(ownedA)}\nframe B: ${JSON.stringify(frameB)}\nowned B: ${JSON.stringify(ownedB)}\n`);
+    for (const frame of [frameA, frameB]) {
+      for (const name of Object.keys(frame.infinite)) expect(["sxSuspend", "sxMoonOrbit", "sxAtmosphere", "sxRingPulse"], `R15a infinite at ROLE ${name}`).toContain(name);
+      expect(frame.infinite.sxMoonOrbit?.filter((host: string) => !host.startsWith("carrier:")) ?? [], "sxMoonOrbit only inside carriers").toEqual([]);
+      expect([...(frame.infinite.sxAtmosphere ?? []), ...(frame.infinite.sxRingPulse ?? [])].filter((host: string) => host !== "carrier:inspectable"), "atmosphere / pulses only on the inspectable carrier").toEqual([]);
+      if (frame.switch !== "on") expect(Object.keys(frame.infinite).filter((name) => name !== "sxSuspend"), "carrier animations gated by the switch").toEqual([]);
+      expect(frame.carriers.every((carrier: any) => carrier.driver === "shared-rAF" && Number.isFinite(carrier.x) && Number.isFinite(carrier.y)), "every carrier body on the shared rAF clock").toBe(true);
+      expect(frame.traces.filter((trace: any) => !trace.quadratic).map((trace: any) => trace.id), "every trace a quadratic arc").toEqual([]);
+      expect(frame.traces.filter((trace: any) => trace.coupled === false).map((trace: any) => trace.id), "every trace ends on its carrier's current body").toEqual([]);
+      expect(frame.traces.filter((trace: any) => trace.photons !== 2).map((trace: any) => trace.id), "two photons per trace in LIVE").toEqual([]);
+    }
+    if (frameA.carriers.length > 0) expect(frameA.carriers.map((carrier: any) => `${carrier.x},${carrier.y}`), "the carriers moved between the frames").not.toEqual(frameB.carriers.map((carrier: any) => `${carrier.x},${carrier.y}`));
+    expect(ownedA.filter((trace: any) => !trace.owned).map((trace: any) => trace.id), "every trace owns a pointer point (frame A)").toEqual([]);
+    expect(ownedB.filter((trace: any) => !trace.owned).map((trace: any) => trace.id), "every trace owns a pointer point (frame B, carrier moved)").toEqual([]);
     const liveRoleSigns = await collectSigns(live);
     await live.close();
 
@@ -897,6 +960,13 @@ describe.skipIf(playwrightModule === null)("PINK Q-12: SYNTX field walk FIELD �
     const reduced = await field(calm).evaluate((root: Element) => ({ running: root.getAnimations({ subtree: true }).filter((animation: any) => animation.playState === "running").length, root: getComputedStyle(root).animationName, pendingDash: (() => { const element = root.querySelector('[data-testid^="syntx-pending-"] circle:not([data-sx-hit])'); return element === null ? null : getComputedStyle(element).animationName; })(), camera: getComputedStyle(root.querySelector("[data-sx-camera]")!).transitionDuration }));
     expect(reduced.running).toBe(0);
     expect(reduced.root).toBe("none");
+    // R15a REDUCED stays total: no photons rendered, the rAF clock never starts (carrier bodies hold their routed place across a second).
+    const calmA = await ecologyMotion(calm);
+    await calm.waitForTimeout(1000);
+    const calmB = await ecologyMotion(calm);
+    expect(calmA.photons, "no photons in REDUCED").toBe(0);
+    expect(Object.keys(calmA.infinite), "nothing infinite in REDUCED").toEqual([]);
+    expect(calmA.carriers.map((carrier: any) => `${carrier.x},${carrier.y}`), "carriers hold their place in REDUCED").toEqual(calmB.carriers.map((carrier: any) => `${carrier.x},${carrier.y}`));
     expect(reduced.pendingDash).toBe("none");
     expect(reduced.camera).toBe("0s");
     const calmSigns = await collectSigns(calm);

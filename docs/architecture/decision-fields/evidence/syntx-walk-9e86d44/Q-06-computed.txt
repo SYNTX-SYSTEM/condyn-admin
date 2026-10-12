@@ -1,0 +1,2 @@
+LIVE: {"root":"sxEnter","camera":{"animation":"none","transition":"transform","duration":"0.78s"},"pendingDash":"sxSuspend","sign":{"animation":"none","transition":"opacity, filter","duration":"0.45s, 0.62s"},"names":["sxEnter","sxRecenter","sxSuspend","sxMoonOrbit"]}
+REDUCED: {"running":0,"root":"none","pendingDash":"none","camera":"0s"}

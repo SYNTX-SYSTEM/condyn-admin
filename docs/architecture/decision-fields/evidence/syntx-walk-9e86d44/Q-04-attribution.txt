@@ -1,0 +1,3 @@
+aperture for trace:req_pink_alpha_1:supports:DOC_001:0
+inspectable carriers [{"docId":"DOC_001","state":"inspectable","driver":"shared-rAF","x":474.233,"y":384.526}]
+infinite {"sxSuspend":["suspended_boundary"],"sxAtmosphere":["carrier:inspectable"],"sxRingPulse":["carrier:inspectable","carrier:inspectable"],"sxMoonOrbit":["carrier:inspectable","carrier:inspectable"]}
