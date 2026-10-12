@@ -106,19 +106,23 @@ const SYNTX_CSS = `
 @keyframes sxBreathe { 0% { opacity: .5; stroke-dashoffset: 0; animation-timing-function: ease-in-out; } 50% { opacity: 1; animation-timing-function: ease-in-out; } 100% { opacity: .5; stroke-dashoffset: -30; } }
 @keyframes sxRecenter { from { transform: scale(1); opacity: .7; } to { transform: scale(1.45); opacity: 0; } }
 @keyframes sxUnfold { from { opacity: 0; transform: scale(.3); } to { opacity: 1; transform: scale(1); } }
-@keyframes sxTraceRise { from { opacity: 0; transform: scale(.3); } to { opacity: 1; transform: scale(1); } }
+@keyframes sxCarrierOrbit { from { opacity: 0; transform: rotate(var(--sx-orbit-from, -44deg)) scale(1.18); } 35% { opacity: 1; } to { opacity: 1; transform: rotate(0deg) scale(1); } }
+@keyframes sxCouple { from { opacity: .85; transform: scale(.35); } to { opacity: 0; transform: scale(1.7); } }
 @keyframes sxSuspendEnter { from { opacity: 0; transform: scale(.94); } to { opacity: 1; transform: scale(1); } }
 @keyframes sxTraceDraw { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
 @keyframes sxCoreSettle { from { opacity: 0; transform: rotate(-70deg) scale(.86); } to { opacity: 1; transform: rotate(0deg) scale(1); } }
 [data-testid="syntx-field"] [data-sx-reveal] { animation: sxRise .32s ease-out backwards; }
 /* Transitions of the living field: each finite, each bound to the sign's transition or state (recenter, unfold, trace_rise, boundary_suspend). */
 [data-testid="syntx-canvas"] [data-sign-transition="unfold"][data-sign-manifestation="anchor"] { transform-box: view-box; transform-origin: var(--sx-origin); animation: sxUnfold .78s cubic-bezier(.16,1,.3,1) backwards; }
-[data-testid="syntx-canvas"] [data-sign-transition="trace_rise"] { transform-box: view-box; transform-origin: var(--sx-origin); animation: sxTraceRise .78s cubic-bezier(.16,1,.3,1) .12s backwards; }
-/* Evidence rises: the trace's ray draws on from the source carrier to the anchor (trace_rise), the pattern fades in behind it. */
-[data-testid="syntx-canvas"] [data-sign-transition="trace_rise"] > [data-sx-trace-ray] { animation: sxTraceDraw 1.1s cubic-bezier(.3,0,.2,1) .2s backwards; }
-[data-testid="syntx-canvas"] [data-sign-transition="trace_rise"] > path:not([data-sx-hit]):not([data-sx-trace-ray]):not([data-sx-trace-glow]):not([data-sx-trace-pulse]) { animation: sxRise .6s ease-out .7s backwards; }
-/* One light emerges at the source once the trace has risen, runs it to the anchor and fades at arrival (trace_rise; finite: enter, draw, fade-out). */
-[data-testid="syntx-canvas"] [data-sign-transition="trace_rise"] > [data-sx-trace-pulse] { animation: sxTraceDraw 1.5s cubic-bezier(.4,0,.3,1) 1.25s backwards, sxRise 1.5s ease-out 1.25s backwards reverse, sxEnter .35s ease-out 1.25s backwards; }
+/* Evidence orbit (trace_rise, carriers): the source carrier spirals in along the role's evidence ring — from 44° before its place, slightly outside — decelerates and settles; its orbit trail draws beneath it. Carriers are staggered (--sx-stagger). */
+[data-testid="syntx-canvas"] [data-sign-transition="trace_rise"][data-sign-manifestation="carrier"] { transform-box: view-box; transform-origin: var(--sx-origin); animation: sxCarrierOrbit 1.7s cubic-bezier(.2,.7,.2,1) var(--sx-stagger, 0s) backwards; }
+[data-testid="syntx-canvas"] [data-sx-evidence-orbit] > [data-sx-carrier-trail] { animation: sxTraceDraw 1.7s cubic-bezier(.2,.7,.2,1) var(--sx-stagger, 0s) backwards; }
+/* Relational emergence (trace_rise, traces): once its carrier has settled, the ray grows out of the carrier to the anchor, the trace body condenses behind it, one light runs it to the anchor and the anchor couples (one ring, once). All finite. */
+[data-testid="syntx-canvas"] [data-sign-transition="trace_rise"][data-sign-manifestation^="trace"] { animation: sxRise .5s ease-out calc(var(--sx-stagger, 0s) + 1.45s) backwards; }
+[data-testid="syntx-canvas"] [data-sign-transition="trace_rise"] > [data-sx-trace-ray] { animation: sxTraceDraw 1.1s cubic-bezier(.3,0,.2,1) calc(var(--sx-stagger, 0s) + 1.5s) backwards; }
+[data-testid="syntx-canvas"] [data-sign-transition="trace_rise"] > path:not([data-sx-hit]):not([data-sx-trace-ray]):not([data-sx-trace-glow]):not([data-sx-trace-pulse]) { animation: sxRise .6s ease-out calc(var(--sx-stagger, 0s) + 2.3s) backwards; }
+[data-testid="syntx-canvas"] [data-sign-transition="trace_rise"] > [data-sx-trace-pulse] { animation: sxTraceDraw 1.5s cubic-bezier(.4,0,.3,1) calc(var(--sx-stagger, 0s) + 2.9s) backwards, sxRise 1.5s ease-out calc(var(--sx-stagger, 0s) + 2.9s) backwards reverse, sxEnter .35s ease-out calc(var(--sx-stagger, 0s) + 2.9s) backwards; }
+[data-testid="syntx-canvas"] [data-sign-transition="trace_rise"] > [data-sx-trace-couple] { transform-box: fill-box; transform-origin: center; animation: sxCouple .7s ease-out calc(var(--sx-stagger, 0s) + 4.15s); }
 /* The observed role settles as the core of its ecology (role_selected): its plasma rings turn into place once. */
 [data-testid="syntx-canvas"] [data-sign-state="role_selected"] > [data-sx-core-ring] { transform-box: fill-box; transform-origin: center; animation: sxCoreSettle 1.2s cubic-bezier(.16,1,.3,1) backwards; }
 [data-testid="syntx-canvas"] [data-sign-transition="boundary_suspend"] { transform-box: view-box; transform-origin: var(--sx-origin); animation: sxSuspendEnter .78s cubic-bezier(.16,1,.3,1) backwards; }
@@ -482,10 +486,20 @@ function FieldCanvas({ field, mode, t, onObserve }: CanvasProps) {
                 <circle cx={observedRole.x} cy={observedRole.y} r={field.pendingBoundary.radius} fill="none" stroke="rgba(230, 241, 248, 0.32)" strokeWidth={0.9} strokeDasharray="5 7" style={{ pointerEvents: "none", animation: mode === "LIVE" ? "sxSuspend 48s linear infinite" : undefined }} />
               </g>
             )}
-            {field.sources.map(source => {
+            {/* Evidence orbit trails: the arc of the ring each carrier travels before it settles (drawn beneath the carrier, no sign). */}
+            <g data-sx-evidence-orbit style={{ pointerEvents: "none" }}>
+              {field.sources.map((source, index) => {
+                const radius = Math.hypot(source.x - observedRole.x, source.y - observedRole.y);
+                const end = Math.atan2(source.y - observedRole.y, source.x - observedRole.x);
+                const start = end - (44 * Math.PI) / 180;
+                const point = (radians: number) => `${Math.round((observedRole.x + Math.cos(radians) * radius) * 100) / 100} ${Math.round((observedRole.y + Math.sin(radians) * radius) * 100) / 100}`;
+                return <path key={source.docId} data-sx-carrier-trail d={`M ${point(start)} A ${radius} ${radius} 0 0 1 ${point(end)}`} pathLength={1} fill="none" stroke="rgba(126, 255, 204, 0.3)" strokeWidth={0.9} strokeDasharray="1 1" strokeLinecap="round" style={{ opacity: recedeOpacity(source.sign, 0), "--sx-stagger": `${index * 0.3}s` } as React.CSSProperties} />;
+              })}
+            </g>
+            {field.sources.map((source, index) => {
               const lines = source.title !== null ? wrapLines(source.title, 20, 2) : [t.source];
               return (
-                <g key={source.docId} data-testid={`syntx-source-${source.docId}`} data-source-title-state={source.titleState} data-trace-count={source.traceCount} {...signAttributes(source.sign)} style={{ opacity: recedeOpacity(source.sign, 0.18), ...origin(observedRole.x, observedRole.y) }}>
+                <g key={source.docId} data-testid={`syntx-source-${source.docId}`} data-source-title-state={source.titleState} data-trace-count={source.traceCount} {...signAttributes(source.sign)} style={{ opacity: recedeOpacity(source.sign, 0.18), "--sx-stagger": `${index * 0.3}s`, ...origin(observedRole.x, observedRole.y) } as React.CSSProperties}>
                   <rect data-sx-carrier-glow x={source.x - 16} y={source.y - 16} width={32} height={32} rx={8} fill="rgba(126, 255, 204, 0.2)" filter="url(#sxGlow)" style={{ pointerEvents: "none" }} />
                   <rect x={source.x - 10} y={source.y - 12} width={20} height={24} rx={3} fill="rgba(3, 14, 20, 0.96)" stroke={source.sign.relation === "covers_unscored" ? "rgba(126, 255, 204, 0.5)" : "rgba(126, 255, 204, 0.8)"} strokeWidth={0.9} strokeDasharray={source.sign.relation === "covers_unscored" ? "2 2" : undefined} />
                   {[-5, 0, 5].map(offset => <line key={offset} x1={source.x - 5} y1={source.y + offset} x2={source.x + (offset === 5 ? 1 : 5)} y2={source.y + offset} stroke="rgba(126, 255, 204, 0.5)" strokeWidth={0.8} />)}
@@ -514,7 +528,7 @@ function FieldCanvas({ field, mode, t, onObserve }: CanvasProps) {
                   aria-label={`${t.relation[trace.kind]} · ${requirement.name}`}
                   onClick={event => { event.stopPropagation(); inspectTrace(trace); }}
                   onKeyDown={key(() => inspectTrace(trace))}
-                  style={{ cursor: "pointer", opacity: recedeOpacity(trace.sign, 0.12), ...origin(observedRole.x, observedRole.y) }}
+                  style={{ cursor: "pointer", opacity: recedeOpacity(trace.sign, 0.12), "--sx-stagger": `${trace.sourceDocIndex * 0.3}s`, ...origin(observedRole.x, observedRole.y) } as React.CSSProperties}
                 >
                   <path data-sx-hit d={d} fill="none" stroke="transparent" strokeWidth={12} />
                   <path d={d} fill="none" stroke={`url(#${gradientId})`} strokeWidth={stroke.width * (inspectable ? 1.35 : 1)} strokeDasharray={stroke.dash} strokeLinecap="round" style={{ pointerEvents: "none", transition: "stroke-width .3s ease" }} />
@@ -530,6 +544,7 @@ function FieldCanvas({ field, mode, t, onObserve }: CanvasProps) {
                   <path data-sx-trace-ray d={ray} pathLength={1} fill="none" stroke={trace.kind === "covers_unscored" ? "rgba(214, 250, 255, 0.3)" : "rgba(214, 250, 255, 0.5)"} strokeWidth={0.8} strokeDasharray="1 1" strokeLinecap="round" style={{ pointerEvents: "none" }} />
                   <path data-sx-trace-pulse d={ray} pathLength={1} fill="none" stroke="rgba(226, 252, 255, 0.95)" strokeWidth={stroke.width * 2.2} strokeDasharray="0.14 0.86" strokeLinecap="round" opacity={0} style={{ pointerEvents: "none" }} />
                   <path data-sx-trace-glow d={d} fill="none" stroke="rgba(56, 229, 255, 0.18)" strokeWidth={stroke.width * 5} strokeLinecap="round" style={{ pointerEvents: "none" }} />
+                  <circle data-sx-trace-couple cx={requirement.x} cy={requirement.y} r={7} fill="none" stroke={CYAN} strokeWidth={1} opacity={0} style={{ pointerEvents: "none" }} />
                 </g>
               );
             })}
