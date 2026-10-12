@@ -901,6 +901,26 @@ returns to ROLE, then the full Escape chain with focus-follow to FIELD, (5) GET 
 / B-SYNTX-ECOLOGY; Q-06 / J-12 rebound). GELB moves `:3017` to `9e86d44` on this green (owner-authorized in the mandate);
 PINK's GET-only walk there follows.
 
+### 3.25 Owner environment `:3017` moved to `5898def`; GET-only acceptance 149/149 (2026-10-12)
+
+On PINK's green for plan 1.9.0, GELB moved `:3017` under the owner's authorization in the mandate "CONDYN / SYNTX — FINAL
+INTEGRATION & PRODUCT TEST": worktree `condyn-admin-job-pool` fast-forwarded `010f082` → `5898def` (= `9e86d44` + plan 1.9.0
+`507136c`; `app`, `lib`, `scripts` identical to `9e86d44`, tree identical to PINK's `507136c`, both verified by PINK),
+restart `up --with-worker` without `--fresh`, reusing the preserved database `condyn_test_e46502b73c9f316f`; read-only
+snapshot before and after identical ("OWNER DB IDENTICAL": 123 tables / 280 rows, countsHash `3644dcdf00006a7f`,
+contentHash `a5050f17b5264235`); worker polling with Gemini; routes warmed with GETs only (a non-existent job id → 404,
+`/api/career/analyze` → 405), because on the clone the first compile of the jobs route in `next dev` had reloaded the page
+once mid-analysis; GELB's clone `:3027` stopped and `condyn_test_cb8e292df603ddc3` dropped.
+
+PINK (GET-only, nothing started, stopped, uploaded or written against `:3017`): the served FIELD page carries the R15a
+tokens (`sxSettle`, `sxMoonOrbit`, `sxAtmosphere`, `sxRingPulse`; absent from `010f082`); read-only walk on
+`BASE=http://127.0.0.1:3017`, analyses `612` / `831`: **149/149, 0 non-GET** (evidence
+`evidence/syntx-readonly-3017-5898def/`) — the same result as on the clone (§3.24): R15a at ROLE and at REQUIREMENT with the
+aperture open, the carrier moved between the frames (551.021,347.686 → 548.052,346.703) and all six traces of 612 own a
+pointer point in both frames, attribution DOC_001 ↔ `trace:req_001:supports:DOC_001:0` with the source title by join, Tab
+7/7 in 8 Tabs, Enter / Escape chain with focus-follow, REDUCED total, bodies identical; 831 without traces is the recorded
+data skip. Plan 1.9.1 binds the owner environment `5898def` (header only, application unchanged).
+
 ## 4. Boundaries and findings for coordination
 
 - F-JP-1 (closed in `b782793`): `JOB_POOL_CONNECTION.md` §4 followed the per-role `JOB_POOL_JSON_ROLE` design;

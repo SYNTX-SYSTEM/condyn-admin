@@ -1,0 +1,28 @@
+{
+  "frameA": {
+    "switch": "on",
+    "mode": "LIVE",
+    "infinite": {
+      "sxSuspend": [
+        "suspended_boundary"
+      ]
+    },
+    "carriers": [],
+    "traces": [],
+    "photons": 0
+  },
+  "ownedA": [],
+  "frameB": {
+    "switch": "on",
+    "mode": "LIVE",
+    "infinite": {
+      "sxSuspend": [
+        "suspended_boundary"
+      ]
+    },
+    "carriers": [],
+    "traces": [],
+    "photons": 0
+  },
+  "ownedB": []
+}
