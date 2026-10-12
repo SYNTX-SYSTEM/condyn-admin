@@ -332,10 +332,6 @@ export const REQUIREMENT_LABEL = Object.freeze({ maxChars: 16, maxLines: 3, size
 export const ROLE_CLEARANCE_RADIUS = 48;
 /** Source carrier (document glyph ±12) with its SOURCE kicker and two-line title below: no foreign trace crosses it; the REQUIREMENT camera keeps it in view. */
 export const SOURCE_BOX = Object.freeze({ halfWidth: 52, above: 14, below: 68 });
-/** The carrier lives in orbit: it circles its routed place on the evidence ring on a small loop of this radius (renderer motion, the field's mote drift; the routed place stays the proofs' truth). */
-export const SOURCE_ORBIT_RADIUS = 10;
-/** Reach of that loop in field units (the REQUIREMENT camera keeps the circling carrier in view). */
-export const SOURCE_ORBIT_REACH = SOURCE_ORBIT_RADIUS;
 /** Bows tried in order; co-terminal traces never share a bow, so each remains visible and hit-testable (F-SX-2). */
 export const TRACE_BOWS: readonly number[] = Object.freeze([0, 18, -18, 36, -36, 54, -54, 72, -72]);
 const TRACE_CLEARANCE = 2;
@@ -358,56 +354,37 @@ export function requirementLabel(requirement: { x: number; y: number; angle: num
 type Point = { x: number; y: number };
 interface Obstacles { discs: Array<Point & { r: number }>; rects: LabelBox[] }
 
-/** Base sweep of every trace (fraction of its span): evidence arcs around the role with one handedness instead of running as a straight wire. */
+/** Base sweep of every trace (fraction of its span): evidence couples in an arc, as the planetarium's inter-orbital couplings do (quadratic paths), never as a straight wire. */
 export const TRACE_SWEEP = 0.14;
 
-/**
- * The cubic control points of a trace from the anchor to the carrier: an arc whose midpoint lies `bow` beyond the base
- * sweep on the left normal (so distinct bows stay distinct), fuller toward the carrier so the evidence visibly emerges
- * from its source. Geometry only (R14): the curvature encodes nothing.
- */
-function traceControls(from: Point, to: Point, bow: number): [Point, Point] {
+/** The control point of a trace's quadratic arc: the midpoint deviates by the base sweep plus `bow` to the left normal (distinct bows stay distinct). Geometry only (R14). */
+function traceControl(from: Point, to: Point, bow: number): Point {
   const dx = to.x - from.x;
   const dy = to.y - from.y;
   const length = Math.hypot(dx, dy) || 1;
-  const ux = dx / length;
-  const uy = dy / length;
-  const nx = -uy;
-  const ny = ux;
-  // A cubic's midpoint deviates by 3 (k1 + k2) / 8 from the chord: k1 + k2 = 8 (sweep + bow) / 3.
-  const deviation = ((TRACE_SWEEP * length + bow) * 8) / 3;
-  const k1 = deviation * 0.42;
-  const k2 = deviation * 0.58;
-  const along = length * 0.34;
-  return [
-    { x: from.x + ux * along + nx * k1, y: from.y + uy * along + ny * k1 },
-    { x: to.x - ux * along + nx * k2, y: to.y - uy * along + ny * k2 }
-  ];
+  const offset = 2 * (TRACE_SWEEP * length + bow);
+  return { x: (from.x + to.x) / 2 + (-dy / length) * offset, y: (from.y + to.y) / 2 + (dx / length) * offset };
 }
 
-/** A point on the trace: the cubic arc whose midpoint is offset by the base sweep plus `bow` to the left normal. */
+/** A point on the trace: the quadratic arc whose midpoint is offset by the base sweep plus `bow` to the left normal. */
 export function tracePoint(from: Point, to: Point, bow: number, t: number): Point {
-  const [c1, c2] = traceControls(from, to, bow);
+  const c = traceControl(from, to, bow);
   const u = 1 - t;
-  const a = u * u * u;
-  const b = 3 * u * u * t;
-  const c = 3 * u * t * t;
-  const d = t * t * t;
-  return { x: a * from.x + b * c1.x + c * c2.x + d * to.x, y: a * from.y + b * c1.y + c * c2.y + d * to.y };
+  return { x: u * u * from.x + 2 * u * t * c.x + t * t * to.x, y: u * u * from.y + 2 * u * t * c.y + t * t * to.y };
 }
 
 const formatPath = (value: number) => Math.round(value * 100) / 100;
 
 /** The SVG path of a trace from the anchor to the carrier (the renderer and the proofs draw the same curve). */
 export function tracePath(from: Point, to: Point, bow: number): string {
-  const [c1, c2] = traceControls(from, to, bow);
-  return `M ${formatPath(from.x)} ${formatPath(from.y)} C ${formatPath(c1.x)} ${formatPath(c1.y)} ${formatPath(c2.x)} ${formatPath(c2.y)} ${formatPath(to.x)} ${formatPath(to.y)}`;
+  const c = traceControl(from, to, bow);
+  return `M ${formatPath(from.x)} ${formatPath(from.y)} Q ${formatPath(c.x)} ${formatPath(c.y)} ${formatPath(to.x)} ${formatPath(to.y)}`;
 }
 
-/** The same curve walked from the carrier to the anchor: the direction in which evidence rises along the trace. */
+/** The same curve walked from the carrier to the anchor: the direction in which evidence streams along the trace. */
 export function traceRayPath(from: Point, to: Point, bow: number): string {
-  const [c1, c2] = traceControls(from, to, bow);
-  return `M ${formatPath(to.x)} ${formatPath(to.y)} C ${formatPath(c2.x)} ${formatPath(c2.y)} ${formatPath(c1.x)} ${formatPath(c1.y)} ${formatPath(from.x)} ${formatPath(from.y)}`;
+  const c = traceControl(from, to, bow);
+  return `M ${formatPath(to.x)} ${formatPath(to.y)} Q ${formatPath(c.x)} ${formatPath(c.y)} ${formatPath(from.x)} ${formatPath(from.y)}`;
 }
 
 const distanceToRect = (point: Point, rect: LabelBox): number => {
@@ -562,8 +539,8 @@ export function requirementCamera(requirement: SyntxRequirement, role: Point, re
   const half = SYNTX_LAYOUT.center / scale;
   const margin = 10;
   const label = requirementLabel(requirement).box;
-  const xs = [requirement.x - 14, requirement.x + 14, label.x, label.x + label.width, ...reached.flatMap(point => [point.x - SOURCE_BOX.halfWidth - SOURCE_ORBIT_REACH, point.x + SOURCE_BOX.halfWidth + SOURCE_ORBIT_REACH])];
-  const ys = [requirement.y - 14, requirement.y + 14, label.y, label.y + label.height, ...reached.flatMap(point => [point.y - SOURCE_BOX.above - SOURCE_ORBIT_REACH, point.y + SOURCE_BOX.below + SOURCE_ORBIT_REACH])];
+  const xs = [requirement.x - 14, requirement.x + 14, label.x, label.x + label.width, ...reached.flatMap(point => [point.x - SOURCE_BOX.halfWidth, point.x + SOURCE_BOX.halfWidth])];
+  const ys = [requirement.y - 14, requirement.y + 14, label.y, label.y + label.height, ...reached.flatMap(point => [point.y - SOURCE_BOX.above, point.y + SOURCE_BOX.below])];
   const fit = (values: number[], preferred: number): number => {
     const lo = Math.min(...values) - margin;
     const hi = Math.max(...values) + margin;

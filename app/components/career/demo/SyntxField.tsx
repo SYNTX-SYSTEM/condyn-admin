@@ -18,8 +18,8 @@ import {
   summarySentence,
   SYNTX_FIELD_GRAMMAR,
   SYNTX_LAYOUT,
-  SOURCE_ORBIT_RADIUS,
   tracePath,
+  tracePoint,
   traceRayPath,
   wrapLines,
   type SyntxAperture,
@@ -107,26 +107,29 @@ const SYNTX_CSS = `
 @keyframes sxBreathe { 0% { opacity: .5; stroke-dashoffset: 0; animation-timing-function: ease-in-out; } 50% { opacity: 1; animation-timing-function: ease-in-out; } 100% { opacity: .5; stroke-dashoffset: -30; } }
 @keyframes sxRecenter { from { transform: scale(1); opacity: .7; } to { transform: scale(1.45); opacity: 0; } }
 @keyframes sxUnfold { from { opacity: 0; transform: scale(.3); } to { opacity: 1; transform: scale(1); } }
-@keyframes sxCarrierOrbit { from { opacity: 0; transform: rotate(var(--sx-orbit-from, -44deg)) scale(1.18); } 35% { opacity: 1; } to { opacity: 1; transform: rotate(0deg) scale(1); } }
-@keyframes sxCouple { from { opacity: .85; transform: scale(.35); } to { opacity: 0; transform: scale(1.7); } }
+@keyframes sxSettle { from { opacity: 0; transform: scale(.78); } to { opacity: 1; transform: scale(1); } }
+@keyframes sxFloat { 0% { transform: translate(0px, 0px) scale(1); } 30% { transform: translate(-1px, 2px) scale(1.005); } 65% { transform: translate(1px, -3px) scale(1.01); } 100% { transform: translate(0px, 0px) scale(1); } }
+@keyframes sxMoonOrbit { from { transform: rotate(0deg) translateX(var(--sx-moon-r, 22px)) rotate(0deg); } to { transform: rotate(360deg) translateX(var(--sx-moon-r, 22px)) rotate(-360deg); } }
+@keyframes sxRingPulse { 0% { transform: scale(1); opacity: .75; } 100% { transform: scale(1.35); opacity: 0; } }
+@keyframes sxAtmosphere { 0%, 100% { opacity: .5; } 50% { opacity: .9; } }
 @keyframes sxSuspendEnter { from { opacity: 0; transform: scale(.94); } to { opacity: 1; transform: scale(1); } }
 @keyframes sxTraceDraw { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
 @keyframes sxCoreSettle { from { opacity: 0; transform: rotate(-70deg) scale(.86); } to { opacity: 1; transform: rotate(0deg) scale(1); } }
 [data-testid="syntx-field"] [data-sx-reveal] { animation: sxRise .32s ease-out backwards; }
 /* Transitions of the living field: each finite, each bound to the sign's transition or state (recenter, unfold, trace_rise, boundary_suspend). */
 [data-testid="syntx-canvas"] [data-sign-transition="unfold"][data-sign-manifestation="anchor"] { transform-box: view-box; transform-origin: var(--sx-origin); animation: sxUnfold .78s cubic-bezier(.16,1,.3,1) backwards; }
-/* Evidence orbit (trace_rise, carriers): the source carrier spirals in along the role's evidence ring — from 44° before its place, slightly outside — decelerates and settles; its orbit trail draws beneath it. Carriers are staggered (--sx-stagger). */
-[data-testid="syntx-canvas"] [data-sign-transition="trace_rise"][data-sign-manifestation="carrier"] { transform-box: view-box; transform-origin: var(--sx-origin); animation: sxCarrierOrbit 1.7s cubic-bezier(.2,.7,.2,1) var(--sx-stagger, 0s) backwards; }
-/* The evidence lives (the field's mote drift, same name, same calm): every carrier of the ecology circles its routed place on a small loop — the drift group turns about an origin SOURCE_ORBIT_RADIUS beside the carrier, the upright group turns back about the carrier's centre, so the body travels the loop and stays upright; the traces follow its body every frame (FieldCanvas). Ambient switch, LIVE only; phase by carrier. */
-[data-testid="syntx-field"][data-sx-ambient="on"][data-motion-mode="LIVE"] [data-sign-manifestation="carrier"] > [data-sx-carrier-drift] { transform-box: view-box; transform-origin: var(--sx-drift-origin); animation: sxOrbit 26s linear infinite; animation-delay: var(--sx-phase, 0s); }
-[data-testid="syntx-field"][data-sx-ambient="on"][data-motion-mode="LIVE"] [data-sign-manifestation="carrier"] > [data-sx-carrier-drift] > [data-sx-carrier-upright] { transform-box: view-box; transform-origin: var(--sx-upright-origin); animation: sxOrbit 26s linear infinite reverse; animation-delay: var(--sx-phase, 0s); }
-[data-testid="syntx-canvas"] [data-sx-evidence-orbit] > [data-sx-carrier-trail] { animation: sxTraceDraw 1.7s cubic-bezier(.2,.7,.2,1) var(--sx-stagger, 0s) backwards; }
-/* Relational emergence (trace_rise, traces): once its carrier has settled, the ray grows out of the carrier to the anchor, the trace body condenses behind it, one light runs it to the anchor and the anchor couples (one ring, once). All finite. */
-[data-testid="syntx-canvas"] [data-sign-transition="trace_rise"][data-sign-manifestation^="trace"] { animation: sxRise .5s ease-out calc(var(--sx-stagger, 0s) + 1.45s) backwards; }
-[data-testid="syntx-canvas"] [data-sign-transition="trace_rise"] > [data-sx-trace-ray] { animation: sxTraceDraw 1.1s cubic-bezier(.3,0,.2,1) calc(var(--sx-stagger, 0s) + 1.5s) backwards; }
-[data-testid="syntx-canvas"] [data-sign-transition="trace_rise"] > path:not([data-sx-hit]):not([data-sx-trace-ray]):not([data-sx-trace-glow]):not([data-sx-trace-pulse]) { animation: sxRise .6s ease-out calc(var(--sx-stagger, 0s) + 2.3s) backwards; }
-[data-testid="syntx-canvas"] [data-sign-transition="trace_rise"] > [data-sx-trace-pulse] { animation: sxTraceDraw 1.5s cubic-bezier(.4,0,.3,1) calc(var(--sx-stagger, 0s) + 2.9s) backwards, sxRise 1.5s ease-out calc(var(--sx-stagger, 0s) + 2.9s) backwards reverse, sxEnter .35s ease-out calc(var(--sx-stagger, 0s) + 2.9s) backwards; }
-[data-testid="syntx-canvas"] [data-sign-transition="trace_rise"] > [data-sx-trace-couple] { transform-box: fill-box; transform-origin: center; animation: sxCouple .7s ease-out calc(var(--sx-stagger, 0s) + 4.15s); }
+/* Carriers settle into the ecology as planetarium nodes settle into deep focus (CapabilityDeepFocusView capabilityDeepFocusSettle: opacity 0 → 1, scale .78 → 1, .78 s cubic-bezier(.16,1,.3,1)), staggered per carrier. */
+[data-testid="syntx-canvas"] [data-sign-transition="trace_rise"][data-sign-manifestation="carrier"] { transform-box: view-box; transform-origin: var(--sx-carrier-origin); animation: sxSettle .78s cubic-bezier(.16,1,.3,1) var(--sx-stagger, 0s) backwards; }
+/* Carriers live as planetarium nodes live (OrbitalResonanceBubble): the bubble float (orbitFloatPhase2, 25 s ease-in-out), their evidence items as moons (moonOrbit, 160 s linear, upright by counter-rotation, phased by index), and — highlighted (inspectable) — the atmosphere glow (atmosphereGlow 3 s) with two ring pulses (ringPulse 2.4 s ease-out, the second 1.2 s behind). Ambient switch, LIVE only. */
+[data-testid="syntx-field"][data-sx-ambient="on"][data-motion-mode="LIVE"] [data-sign-manifestation="carrier"] > [data-sx-carrier-body] { transform-box: view-box; transform-origin: var(--sx-carrier-origin); animation: sxFloat 25s ease-in-out infinite; animation-delay: var(--sx-phase, 0s); }
+[data-testid="syntx-field"][data-sx-ambient="on"][data-motion-mode="LIVE"] [data-sign-manifestation="carrier"] [data-sx-moon] { transform-box: view-box; transform-origin: var(--sx-carrier-origin); animation: sxMoonOrbit 160s linear infinite; animation-delay: var(--sx-moon-phase, 0s); }
+[data-testid="syntx-canvas"] [data-sx-ring-pulse] { opacity: 0; }
+[data-testid="syntx-field"][data-sx-ambient="on"][data-motion-mode="LIVE"] [data-sign-state="inspectable"][data-sign-manifestation="carrier"] [data-sx-carrier-glow] { animation: sxAtmosphere 3s ease-in-out infinite; }
+[data-testid="syntx-field"][data-sx-ambient="on"][data-motion-mode="LIVE"] [data-sign-state="inspectable"][data-sign-manifestation="carrier"] [data-sx-ring-pulse] { transform-box: fill-box; transform-origin: center; animation: sxRingPulse 2.4s ease-out infinite; animation-delay: var(--sx-ring-delay, 0s); }
+/* Evidence rises (trace_rise, traces): the ray draws on from the carrier to the anchor (sxTraceDraw) and the relation fades in behind it; from then on its photons stream as every energy ray of the planetarium streams (SMIL animateMotion, see the canvas). All finite here. */
+[data-testid="syntx-canvas"] [data-sign-transition="trace_rise"][data-sign-manifestation^="trace"] { animation: sxRise .5s ease-out calc(var(--sx-stagger, 0s) + .5s) backwards; }
+[data-testid="syntx-canvas"] [data-sign-transition="trace_rise"] > [data-sx-trace-ray] { animation: sxTraceDraw 1.1s cubic-bezier(.3,0,.2,1) calc(var(--sx-stagger, 0s) + .55s) backwards; }
+[data-testid="syntx-canvas"] [data-sign-transition="trace_rise"] > path:not([data-sx-hit]):not([data-sx-trace-ray]):not([data-sx-trace-glow]) { animation: sxRise .6s ease-out calc(var(--sx-stagger, 0s) + 1.3s) backwards; }
 /* The observed role settles as the core of its ecology (role_selected): its plasma rings turn into place once. */
 [data-testid="syntx-canvas"] [data-sign-state="role_selected"] > [data-sx-core-ring] { transform-box: fill-box; transform-origin: center; animation: sxCoreSettle 1.2s cubic-bezier(.16,1,.3,1) backwards; }
 [data-testid="syntx-canvas"] [data-sign-transition="boundary_suspend"] { transform-box: view-box; transform-origin: var(--sx-origin); animation: sxSuspendEnter .78s cubic-bezier(.16,1,.3,1) backwards; }
@@ -138,8 +141,6 @@ const SYNTX_CSS = `
 [data-testid="syntx-canvas"] :is([data-sign-state="field"], [data-sign-state="inspectable"]) [data-sx-carrier-glow] { opacity: 1; }
 [data-testid="syntx-canvas"] [data-sx-trace-glow] { opacity: 0; transition: opacity .45s ease; }
 [data-testid="syntx-canvas"] [data-sign-state="inspectable"] > [data-sx-trace-glow] { opacity: 1; }
-[data-testid="syntx-canvas"] [data-sx-trace-aura] { transition: opacity .45s ease; }
-[data-testid="syntx-canvas"] [data-sign-state="inspectable"] > [data-sx-trace-aura] { opacity: 1; }
 /* Hover affordance on selectable signs. */
 [data-testid="syntx-canvas"] [data-sign-interaction="select"]:hover > [data-sx-halo] { stroke: #38e5ff; }
 [data-testid="syntx-canvas"] [data-sign-interaction="select"]:hover > [data-sx-membrane] > circle:last-child { stroke: rgba(56, 229, 255, 0.5); }
@@ -258,12 +259,15 @@ const SUPPORT_SHAPE: Record<SyntxSupport, { fill: string; stroke: string; stroke
   UNREAD: { fill: "none", stroke: "rgba(230, 241, 248, 0.5)", strokeWidth: 0.8, r: 4.8 }
 };
 
-/** Manifestation of a trace: its body width, the light at its source end and at the anchor, its aura at rest; unscored coverage is a chain of beads, never a continuous line. */
-const TRACE_STROKE: Record<SyntxTrace["kind"], { width: number; source: number; anchor: number; aura: number; dash?: string }> = {
-  supports: { width: 1.7, source: 0.95, anchor: 0.9, aura: 0.5 },
-  weakly_supports: { width: 1.15, source: 0.7, anchor: 0.6, aura: 0.3 },
-  covers_unscored: { width: 1.25, source: 0.65, anchor: 0.7, aura: 0.22, dash: "0.4 4.4" }
+/** Manifestation of a trace at rest: the deep-focus evidence link of the Capability Field (CapabilityDeepFocusView: mint rgba(126,255,204,.42), 1.4, dash 3 6); weak support fainter, unscored coverage dotted. The inspectable trace is the active energy ray (solid 2.5 cyan). */
+const TRACE_STROKE: Record<SyntxTrace["kind"], { width: number; dash: string; color: string }> = {
+  supports: { width: 1.4, dash: "3 6", color: "rgba(126, 255, 204, 0.42)" },
+  weakly_supports: { width: 1, dash: "3 6", color: "rgba(126, 255, 204, 0.26)" },
+  covers_unscored: { width: 1, dash: "1 5", color: "rgba(126, 255, 204, 0.34)" }
 };
+/** Photon pacing of the planetarium's energy rays (SemanticCareerIntelligenceField stages 01–06). */
+const PHOTON_OUT = ["3.6s", "4.2s", "4.8s", "3.9s", "4.5s", "5.1s"] as const;
+const PHOTON_IN = ["4.4s", "5.0s", "5.6s", "4.7s", "5.3s", "6.0s"] as const;
 const MINT = "#7effcc";
 
 interface CanvasProps {
@@ -286,56 +290,14 @@ function FieldCanvas({ field, mode, t, onObserve }: CanvasProps) {
   /** Entrance origin of an ecology sign: the observed role's centre (anchors, traces, carriers and the boundary unfold out of the role). */
   const origin = (x: number, y: number) => ({ "--sx-origin": `${x}px ${y}px` }) as React.CSSProperties;
   const ease = "cubic-bezier(.16,1,.3,1)";
-  // Living evidence: the carriers sway in orbit (CSS, sxEvidenceOrbit); every frame the traces of the ecology are redrawn to each
-  // carrier's current body, so the relation organizes itself out of the motion. Geometry only: the routed rest position (the proofs'
-  // truth, the hit paths' home) is what React renders; REDUCED runs no frame loop.
-  const canvasRef = useRef<SVGSVGElement>(null);
-  useEffect(() => {
-    if (mode !== "LIVE" || observedRole === null || typeof window === "undefined") return undefined;
-    const svg = canvasRef.current;
-    if (svg === null) return undefined;
-    const role = { x: observedRole.x, y: observedRole.y };
-    const bindings = field.requirements.flatMap(requirement => requirement.traces.map(trace => ({ requirement, trace, source: field.sources[trace.sourceDocIndex] }))).filter(binding => binding.source !== undefined);
-    let frame = 0;
-    const tick = () => {
-      for (const { requirement, trace, source } of bindings) {
-        const carrier = svg.querySelector<SVGGElement>(`[data-testid="syntx-source-${source.docId}"]`);
-        const group = svg.querySelector<SVGGElement>(`[data-testid="syntx-trace-${trace.sign.id}"]`);
-        if (carrier === null || group === null) continue;
-        // The body: the drift loop (about its origin beside the carrier) inside the carrier's arrival orbit (about the role).
-        const drift = carrier.querySelector<SVGGElement>("[data-sx-carrier-drift]");
-        const loop = drift === null ? new DOMMatrix() : new DOMMatrix(getComputedStyle(drift).transform);
-        const ox = source.x + SOURCE_ORBIT_RADIUS;
-        const oy = source.y;
-        const lx = ox + loop.a * (source.x - ox) + loop.c * (source.y - oy);
-        const ly = oy + loop.b * (source.x - ox) + loop.d * (source.y - oy);
-        const matrix = new DOMMatrix(getComputedStyle(carrier).transform);
-        const dx = lx - role.x;
-        const dy = ly - role.y;
-        const body = { x: role.x + matrix.a * dx + matrix.c * dy, y: role.y + matrix.b * dx + matrix.d * dy };
-        const d = tracePath(requirement, body, trace.bow);
-        const ray = traceRayPath(requirement, body, trace.bow);
-        group.querySelectorAll<SVGPathElement>("path:not([data-sx-trace-ray]):not([data-sx-trace-pulse])").forEach(path => path.setAttribute("d", d));
-        group.querySelectorAll<SVGPathElement>("[data-sx-trace-ray], [data-sx-trace-pulse]").forEach(path => path.setAttribute("d", ray));
-        const gradient = group.querySelector("linearGradient");
-        if (gradient !== null) { gradient.setAttribute("x1", String(body.x)); gradient.setAttribute("y1", String(body.y)); }
-        const bloom = group.querySelector("[data-sx-trace-bloom]");
-        if (bloom !== null) { bloom.setAttribute("cx", String(body.x)); bloom.setAttribute("cy", String(body.y)); }
-      }
-      frame = window.requestAnimationFrame(tick);
-    };
-    frame = window.requestAnimationFrame(tick);
-    return () => window.cancelAnimationFrame(frame);
-  }, [field, mode, observedRole]);
   return (
-    <svg ref={canvasRef} data-testid="syntx-canvas" data-motion-mode={mode} data-camera-scale={camera.scale} viewBox={`0 0 ${size} ${size}`} style={{ position: "absolute", inset: 0, width: "100%", height: "100%", overflow: "visible" }} onClick={() => onObserve(returnFrom(observation))}>
+    <svg data-testid="syntx-canvas" data-motion-mode={mode} data-camera-scale={camera.scale} viewBox={`0 0 ${size} ${size}`} style={{ position: "absolute", inset: 0, width: "100%", height: "100%", overflow: "visible" }} onClick={() => onObserve(returnFrom(observation))}>
       <defs>
         {/* Materials of the Capability Field (planetarium): atmosphere, membrane, core light, soft glow. */}
         <radialGradient id="sxField"><stop offset="0%" stopColor="#38e5ff" stopOpacity="0.2" /><stop offset="58%" stopColor="#38e5ff" stopOpacity="0.04" /><stop offset="100%" stopColor="#030508" stopOpacity="0" /></radialGradient>
         <radialGradient id="sxMembrane"><stop offset="0%" stopColor="#38e5ff" stopOpacity="0.16" /><stop offset="56%" stopColor="#38e5ff" stopOpacity="0.06" /><stop offset="100%" stopColor="#38e5ff" stopOpacity="0.02" /></radialGradient>
         <radialGradient id="sxCore"><stop offset="0%" stopColor="#38e5ff" stopOpacity="0.3" /><stop offset="62%" stopColor="#38e5ff" stopOpacity="0.08" /><stop offset="100%" stopColor="#38e5ff" stopOpacity="0.02" /></radialGradient>
         <filter id="sxGlow" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur stdDeviation="7" /></filter>
-        <filter id="sxTraceGlow" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="2.4" /></filter>
       </defs>
       <g data-sx-camera style={{ transform: `translate(${tx}px, ${ty}px) scale(${camera.scale})`, transformOrigin: "0 0" }}>
         {/* The pool: the total field — atmosphere, orbit paths, the slowly turning containment ring, and one containment spoke per region. */}
@@ -531,29 +493,24 @@ function FieldCanvas({ field, mode, t, onObserve }: CanvasProps) {
                 <circle cx={observedRole.x} cy={observedRole.y} r={field.pendingBoundary.radius} fill="none" stroke="rgba(230, 241, 248, 0.32)" strokeWidth={0.9} strokeDasharray="5 7" style={{ pointerEvents: "none", animation: mode === "LIVE" ? "sxSuspend 48s linear infinite" : undefined }} />
               </g>
             )}
-            {/* Evidence orbit trails: the arc of the ring each carrier travels before it settles (drawn beneath the carrier, no sign). */}
-            <g data-sx-evidence-orbit style={{ pointerEvents: "none" }}>
-              {field.sources.map((source, index) => {
-                const radius = Math.hypot(source.x - observedRole.x, source.y - observedRole.y);
-                const end = Math.atan2(source.y - observedRole.y, source.x - observedRole.x);
-                const start = end - (44 * Math.PI) / 180;
-                const point = (radians: number) => `${Math.round((observedRole.x + Math.cos(radians) * radius) * 100) / 100} ${Math.round((observedRole.y + Math.sin(radians) * radius) * 100) / 100}`;
-                return <path key={source.docId} data-sx-carrier-trail d={`M ${point(start)} A ${radius} ${radius} 0 0 1 ${point(end)}`} pathLength={1} fill="none" stroke="rgba(126, 255, 204, 0.3)" strokeWidth={0.9} strokeDasharray="1 1" strokeLinecap="round" style={{ opacity: recedeOpacity(source.sign, 0), "--sx-stagger": `${index * 0.3}s` } as React.CSSProperties} />;
-              })}
-            </g>
+            {/* Source carriers as planetarium nodes (OrbitalResonanceBubble grammar): atmosphere glow, ring pulses when highlighted, the outer semiotic ring (dashed; solid when highlighted), the body with the sources glyph ◈, its evidence items as moons, the SOURCE kicker and the title. */}
             {field.sources.map((source, index) => {
               const lines = source.title !== null ? wrapLines(source.title, 20, 2) : [t.source];
+              const r = 13;
+              const highlighted = source.sign.state === "inspectable";
+              const moons = Math.min(source.traceCount, 12);
               return (
-                <g key={source.docId} data-testid={`syntx-source-${source.docId}`} data-source-title-state={source.titleState} data-trace-count={source.traceCount} {...signAttributes(source.sign)} style={{ opacity: recedeOpacity(source.sign, 0.18), "--sx-stagger": `${index * 0.3}s`, ...origin(observedRole.x, observedRole.y) } as React.CSSProperties}>
-                  {/* The living body: the drift group circles the routed place (origin SOURCE_ORBIT_RADIUS beside it), the upright group turns back so the glyph and its title stay level. */}
-                  <g data-sx-carrier-drift style={{ "--sx-drift-origin": `${source.x + SOURCE_ORBIT_RADIUS}px ${source.y}px`, "--sx-phase": `${-index * 7.3}s` } as React.CSSProperties}>
-                  <g data-sx-carrier-upright style={{ "--sx-upright-origin": `${source.x}px ${source.y}px`, "--sx-phase": `${-index * 7.3}s` } as React.CSSProperties}>
-                  <rect data-sx-carrier-glow x={source.x - 16} y={source.y - 16} width={32} height={32} rx={8} fill="rgba(126, 255, 204, 0.2)" filter="url(#sxGlow)" style={{ pointerEvents: "none" }} />
-                  <rect x={source.x - 10} y={source.y - 12} width={20} height={24} rx={3} fill="rgba(3, 14, 20, 0.96)" stroke={source.sign.relation === "covers_unscored" ? "rgba(126, 255, 204, 0.5)" : "rgba(126, 255, 204, 0.8)"} strokeWidth={0.9} strokeDasharray={source.sign.relation === "covers_unscored" ? "2 2" : undefined} />
-                  {[-5, 0, 5].map(offset => <line key={offset} x1={source.x - 5} y1={source.y + offset} x2={source.x + (offset === 5 ? 1 : 5)} y2={source.y + offset} stroke="rgba(126, 255, 204, 0.5)" strokeWidth={0.8} />)}
-                  <text x={source.x} y={source.y + 32} textAnchor="middle" fill="rgba(126, 255, 204, 0.75)" fontFamily={MONO} fontSize={5.6 * (1 + labelScale) / 2 + 2} fontWeight={700} letterSpacing={1.2}>{t.source}</text>
-                  <SvgLabel lines={lines} x={source.x} y={source.y + 44} size={7.5 * (1 + labelScale) / 2 + 3} fill={source.title !== null ? INK_SOFT : MUTED} weight={500} family={MONO} />
-                  </g>
+                <g key={source.docId} data-testid={`syntx-source-${source.docId}`} data-source-title-state={source.titleState} data-trace-count={source.traceCount} {...signAttributes(source.sign)} style={{ opacity: recedeOpacity(source.sign, 0.18), "--sx-stagger": `${index * 0.3}s`, "--sx-phase": `${-index * 4}s`, "--sx-carrier-origin": `${source.x}px ${source.y}px`, ...origin(observedRole.x, observedRole.y) } as React.CSSProperties}>
+                  <g data-sx-carrier-body style={{ pointerEvents: "none" }}>
+                    <circle data-sx-carrier-glow cx={source.x} cy={source.y} r={r + 14} fill="rgba(126, 255, 204, 0.18)" filter="url(#sxGlow)" />
+                    <circle data-sx-ring-pulse cx={source.x} cy={source.y} r={r + 6} fill="none" stroke={CYAN} strokeWidth={0.8} style={{ "--sx-ring-delay": "0s" } as React.CSSProperties} />
+                    <circle data-sx-ring-pulse cx={source.x} cy={source.y} r={r + 6} fill="none" stroke={CYAN} strokeWidth={0.8} style={{ "--sx-ring-delay": "1.2s" } as React.CSSProperties} />
+                    {Array.from({ length: moons }, (_, moon) => <circle key={moon} data-sx-moon cx={source.x} cy={source.y} r={1.3} fill={CYAN} style={{ "--sx-moon-r": `${r + 9}px`, "--sx-moon-phase": `${-(160 / moons) * moon}s` } as React.CSSProperties} />)}
+                    <circle cx={source.x} cy={source.y} r={r + 6} fill="none" stroke={highlighted ? CYAN : "rgba(56, 229, 255, 0.22)"} strokeWidth={1} strokeDasharray={highlighted ? undefined : "3 3"} style={{ transition: "stroke .3s ease" }} />
+                    <circle cx={source.x} cy={source.y} r={r} fill="rgba(3, 14, 20, 0.96)" stroke={source.sign.relation === "covers_unscored" ? "rgba(126, 255, 204, 0.5)" : "rgba(126, 255, 204, 0.8)"} strokeWidth={1} strokeDasharray={source.sign.relation === "covers_unscored" ? "2 2" : undefined} />
+                    <text x={source.x} y={source.y + 3.4} textAnchor="middle" fill={MINT} fontFamily={MONO} fontSize={9} fontWeight={700}>◈</text>
+                    <text x={source.x} y={source.y + 32} textAnchor="middle" fill="rgba(126, 255, 204, 0.75)" fontFamily={MONO} fontSize={5.6 * (1 + labelScale) / 2 + 2} fontWeight={700} letterSpacing={1.2}>{t.source}</text>
+                    <SvgLabel lines={lines} x={source.x} y={source.y + 44} size={7.5 * (1 + labelScale) / 2 + 3} fill={source.title !== null ? INK_SOFT : MUTED} weight={500} family={MONO} />
                   </g>
                 </g>
               );
@@ -563,10 +520,13 @@ function FieldCanvas({ field, mode, t, onObserve }: CanvasProps) {
               const stroke = TRACE_STROKE[trace.kind];
               const inspectable = trace.sign.state === "inspectable";
               const carrier = source ?? requirement;
-              // The trace is an arc: co-terminal traces bow apart (F-SX-2) and bend around the role carrier and labels (O-SX-2); it emerges from its source (mint) and arrives at the anchor (cyan).
+              // The trace is an energy ray of the planetarium: a coupling arc (co-terminal traces bow apart, F-SX-2; bending around the role carrier and labels, O-SX-2), dashed at rest and solid when inspectable, with its photon stream and midpoint bead.
               const d = tracePath(requirement, carrier, trace.bow);
               const ray = traceRayPath(requirement, carrier, trace.bow);
-              const gradientId = `sxTrace${traceIndex}`;
+              const bead = tracePoint(requirement, carrier, trace.bow, 0.5);
+              // Photon pacing of the planetarium's six stages (photonOutDur / photonInDur), by trace index; the active ray runs 1.6 s / 2.1 s.
+              const outDur = inspectable ? "1.6s" : PHOTON_OUT[traceIndex % 6];
+              const inDur = inspectable ? "2.1s" : PHOTON_IN[traceIndex % 6];
               return (
                 <g
                   key={trace.sign.id}
@@ -581,20 +541,21 @@ function FieldCanvas({ field, mode, t, onObserve }: CanvasProps) {
                   style={{ cursor: "pointer", opacity: recedeOpacity(trace.sign, 0.12), "--sx-stagger": `${trace.sourceDocIndex * 0.3}s`, ...origin(observedRole.x, observedRole.y) } as React.CSSProperties}
                 >
                   <path data-sx-hit d={d} fill="none" stroke="transparent" strokeWidth={12} />
-                  <path d={d} fill="none" stroke={`url(#${gradientId})`} strokeWidth={stroke.width * (inspectable ? 1.35 : 1)} strokeDasharray={stroke.dash} strokeLinecap="round" style={{ pointerEvents: "none", transition: "stroke-width .3s ease" }} />
-                  <defs>
-                    <linearGradient id={gradientId} gradientUnits="userSpaceOnUse" x1={carrier.x} y1={carrier.y} x2={requirement.x} y2={requirement.y}>
-                      <stop offset="0%" stopColor={MINT} stopOpacity={stroke.source} />
-                      <stop offset="58%" stopColor={CYAN} stopOpacity={stroke.anchor} />
-                      <stop offset="100%" stopColor={CYAN} stopOpacity={stroke.anchor} />
-                    </linearGradient>
-                  </defs>
-                  <path data-sx-trace-aura d={d} fill="none" stroke={`url(#${gradientId})`} strokeWidth={stroke.width * 4.2} strokeLinecap="round" opacity={stroke.aura} filter="url(#sxTraceGlow)" style={{ pointerEvents: "none" }} />
-                  <circle data-sx-trace-bloom cx={carrier.x} cy={carrier.y} r={3.4} fill={MINT} opacity={0.32} filter="url(#sxTraceGlow)" style={{ pointerEvents: "none" }} />
-                  <path data-sx-trace-ray d={ray} pathLength={1} fill="none" stroke={trace.kind === "covers_unscored" ? "rgba(214, 250, 255, 0.3)" : "rgba(214, 250, 255, 0.5)"} strokeWidth={0.8} strokeDasharray="1 1" strokeLinecap="round" style={{ pointerEvents: "none" }} />
-                  <path data-sx-trace-pulse d={ray} pathLength={1} fill="none" stroke="rgba(226, 252, 255, 0.95)" strokeWidth={stroke.width * 2.2} strokeDasharray="0.14 0.86" strokeLinecap="round" opacity={0} style={{ pointerEvents: "none" }} />
-                  <path data-sx-trace-glow d={d} fill="none" stroke="rgba(56, 229, 255, 0.18)" strokeWidth={stroke.width * 5} strokeLinecap="round" style={{ pointerEvents: "none" }} />
-                  <circle data-sx-trace-couple cx={requirement.x} cy={requirement.y} r={7} fill="none" stroke={CYAN} strokeWidth={1} opacity={0} style={{ pointerEvents: "none" }} />
+                  <path d={d} fill="none" stroke={inspectable ? CYAN : stroke.color} strokeWidth={inspectable ? 2.5 : stroke.width} strokeDasharray={inspectable ? undefined : stroke.dash} strokeLinecap="round" style={{ pointerEvents: "none", transition: "stroke .35s ease, stroke-width .35s ease" }} />
+                  <path data-sx-trace-ray d={ray} pathLength={1} fill="none" stroke={trace.kind === "covers_unscored" ? "rgba(142, 239, 255, 0.28)" : "rgba(142, 239, 255, 0.45)"} strokeWidth={0.8} strokeDasharray="1 1" strokeLinecap="round" style={{ pointerEvents: "none" }} />
+                  <path data-sx-trace-glow d={d} fill="none" stroke="rgba(56, 229, 255, 0.16)" strokeWidth={10} strokeLinecap="round" style={{ pointerEvents: "none" }} />
+                  {/* Photon streams of the planetarium's energy rays (SemanticCareerIntelligenceField photon-stream-core-to-orbit / orbit-to-core): one light from the carrier to the anchor, one back; faster and white when inspectable. Not rendered in REDUCED. */}
+                  {mode === "LIVE" && (
+                    <>
+                      <circle data-sx-photon="out" r={inspectable ? 3 : 1.8} fill={inspectable ? "#ffffff" : CYAN} opacity={inspectable ? 1 : 0.65} style={{ pointerEvents: "none" }}>
+                        <animateMotion path={ray} dur={outDur} repeatCount="indefinite" />
+                      </circle>
+                      <circle data-sx-photon="in" r={inspectable ? 3 : 1.8} fill={inspectable ? CYAN : "#8eefff"} opacity={inspectable ? 0.95 : 0.6} style={{ pointerEvents: "none" }}>
+                        <animateMotion path={d} dur={inDur} repeatCount="indefinite" />
+                      </circle>
+                    </>
+                  )}
+                  <circle data-sx-trace-bead cx={bead.x} cy={bead.y} r={inspectable ? 4 : 2} fill={inspectable ? CYAN : "rgba(56, 229, 255, 0.6)"} style={{ pointerEvents: "none", transition: "r .35s ease, fill .35s ease" }} />
                 </g>
               );
             })}

@@ -485,7 +485,7 @@ describe.skipIf(playwrightModule === null)("SYNTX field in a real browser: FIELD
     expect(roleGeometry.traces.length).toBe(expectedTraces);
     for (const trace of roleGeometry.traces) {
       expect(trace.hitFirst, `${trace.id} hit path first`).toBe(true);
-      expect(trace.d, `${trace.id} path`).toMatch(/^M [\d.-]+ [\d.-]+ C /);
+      expect(trace.d, `${trace.id} path`).toMatch(/^M [\d.-]+ [\d.-]+ Q /);
       expect(trace.owned, `${trace.id} owns pointer points`).toBeGreaterThan(0);
       expect(trace.crossesRoleLabel, `${trace.id} crosses the role title`).toBe(false);
     }

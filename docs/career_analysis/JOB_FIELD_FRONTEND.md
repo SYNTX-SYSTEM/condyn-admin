@@ -435,9 +435,9 @@ unchanged); exits write `focus=CAPABILITY` while an upload is selected. The Capa
 Ecology geometry since the perceptual closure (owner mandate "SFE — SYNTX FINAL PERCEPTUAL CLOSURE", 2026-10-11; all of it in
 `syntx-field-view-model.ts`, the renderer draws the same numbers): source carriers sit on the outer ring (212) at the angle where the
 straight traces of the requirements that reach them clear the role carrier and every requirement label best, nearest to the mean
-direction of those requirements, with a minimum separation of 28° between carriers (`placeSourceAngles`); every trace is a cubic arc
-(`tracePath`: base sweep `TRACE_SWEEP` = 0.14 of the span to the left normal, one handedness for all traces, fuller toward the carrier)
-with a `bow` (further perpendicular midpoint offset, 0 = the base arc; candidates 0, ±18, ±36, ±54, ±72) chosen as the first bow that clears the role disc
+direction of those requirements, with a minimum separation of 28° between carriers (`placeSourceAngles`); every trace is a quadratic
+arc as the planetarium's inter-orbital couplings are (`tracePath`: base sweep `TRACE_SWEEP` = 0.14 of the span to the left normal, one
+handedness for all traces) with a `bow` (further perpendicular midpoint offset, 0 = the base arc; candidates 0, ±18, ±36, ±54, ±72) chosen as the first bow that clears the role disc
 (48, body with its inner title), every requirement label box, every other anchor and every other carrier, never a bow a co-terminal
 trace of the same requirement and source already took (`routeTraceBows`, F-SX-2 / O-SX-2); when nothing clears, the clearest unused bow
 is taken, so every trace is drawn and distinct. Angle and bow position nothing semantically (R14): distance alone carries the support
@@ -507,26 +507,22 @@ the region (centre +.14 r, ring .44 r, .52 r unfolded) so the block reads above 
 ecology the title sits inside the core in mono uppercase and two plasma rings (dash `24 12 8 16` / `16 8 4 12`) settle into place once
 (`sxCoreSettle`, finite, bound to `role_selected`); (3) the pool has a core at the field centre — glow, `#sxCore` body, two dashed
 plasma rings (`sxOrbit` 120 s and 90 s reverse, FIELD only, pool sign in state `field`, R15), the pool name and `N ORGANIZATIONS` —
-from which the containment spokes radiate; (4) evidence carriers use the planetarium's evidence colour (mint `#7effcc`): a document
-glyph with a `SOURCE` kicker and the title; the evidence relation builds up in stages, all finite, bound to `trace_rise`, carriers
-staggered by 0.3 s (`--sx-stagger`): (a) orbit — the carrier spirals in along the role's evidence ring from 44° before its place and
-slightly outside (`sxCarrierOrbit` 1.7 s: rotate about the role centre, scale 1.18 → 1, opacity 0 → 1) and settles at its routed
-position, while its orbit trail draws beneath it (`data-sx-evidence-orbit > [data-sx-carrier-trail]`, an arc of the ring, no sign);
-(b) emergence — once the carrier has settled, each trace's ray draws on from the carrier to the anchor (`sxTraceDraw` 1.1 s at +1.5 s;
-`pathLength` 1, dash offset 1 → 0) and the trace body condenses behind it (`sxRise` at +2.3 s); (c) coupling — one light emerges at
-the carrier and runs the arc to the anchor, fading at arrival (`data-sx-trace-pulse`: `sxEnter` .35 s, `sxTraceDraw` with dash
-`0.14 0.86`, `sxRise` reversed, at +2.9 s), and the anchor answers with one expanding ring (`data-sx-trace-couple`, `sxCouple` .7 s at
-+4.15 s); (d) stabilization — the relation has settled and stays alive: every carrier of the ecology keeps circling its routed place
-on a small loop (radius `SOURCE_ORBIT_RADIUS` = 10, 26 s per turn, the field's mote drift: `data-sx-carrier-drift` turns about an
-origin beside the carrier with `sxOrbit`, `data-sx-carrier-upright` turns back about the carrier's centre so glyph and title stay
-level; phase by carrier, ambient switch, LIVE only), and the traces follow its body every frame (`FieldCanvas` redraws `d`, the
-gradient start and the bloom from the carrier's computed transform; no React state, no DOM additions). The routed rest position
-remains what React renders and what the proofs and hit paths derive from; the REQUIREMENT camera reach adds `SOURCE_ORBIT_REACH`.
-Owner ruling 2026-10-12 ("EVIDENCE ORBIT MUSS WEITER"): `sxOrbit` on ecology carriers at ROLE / REQUIREMENT extends R15's
-"FIELD only" — recorded here for GELB / PINK once the owner approves the visual. The trace body is a mint → cyan gradient along the arc
-(`userSpaceOnUse`, carrier to anchor) with a soft aura at rest (`data-sx-trace-aura`, stronger when inspectable) and a bloom at the
-carrier end (`data-sx-trace-bloom`); unscored coverage is a chain of beads (dash `0.4 4.4`, round caps), never a continuous line; no
-arrowheads anywhere; (5) requirement
+from which the containment spokes radiate; (4) evidence is manifested with the Capability Field's own mechanisms, transferred from its code (owner mandate "SFE — GREEN ·
+EXISTING SEMIOTIC SYSTEM RECONSTRUCTION", 2026-10-12): a source carrier is a planetarium node (`OrbitalResonanceBubble`): body with the
+sources glyph ◈ in the evidence colour mint `#7effcc`, the outer semiotic ring (1 px dashed `3 3` at .22, solid cyan when highlighted =
+inspectable), the bubble float (`orbitFloatPhase2` → `sxFloat`: ±3 px, 25 s ease-in-out, phased −4 s per carrier), its evidence items as
+moons (`moonOrbit` → `sxMoonOrbit`: rotate · translateX · counter-rotate, 160 s linear, delays −160/n · i; one moon per trace, max 12),
+and — highlighted — the atmosphere glow (`atmosphereGlow` → `sxAtmosphere`, 3 s) with two ring pulses (`ringPulse` → `sxRingPulse`,
+scale 1 → 1.35, opacity .75 → 0, 2.4 s ease-out, the second 1.2 s behind); it enters as a deep-focus nucleus settles
+(`capabilityDeepFocusSettle` → `sxSettle`: opacity 0 → 1, scale .78 → 1, .78 s cubic-bezier(.16,1,.3,1), staggered .3 s per carrier).
+A trace is an energy ray of the planetarium (`SemanticCareerIntelligenceField` resonance-energy-paths): at rest the deep-focus
+evidence link (mint `rgba(126,255,204,.42)`, 1.4, dash `3 6`; weak support .26, unscored coverage dotted `1 5`), inspectable the active
+ray (solid 2.5 `#38e5ff`, transition .35 s), with the planetarium's photon stream — SMIL `<animateMotion>` along the ray's path, one
+photon carrier → anchor (r 1.8 cyan .65; active r 3 white) and one back (r 1.8 `#8eefff` .6; active r 3 cyan .95), paced by the stage
+table 3.6–5.1 s / 4.4–6.0 s (active 1.6 s / 2.1 s), rendered in LIVE only — and the ray's midpoint bead (r 2 `.6`; active r 4 cyan);
+the ray still draws on once when it rises (`sxTraceDraw`, finite, `trace_rise`) and the relation fades in behind it; the inspectable
+glow stays. Nothing else: no gradient bodies, auras, blooms, pulses, orbit trails or frame loops; SMIL photons are not Web Animations
+(`getAnimations` does not list them), exactly as in the planetarium; (5) requirement
 labels are mono 7.8 / 700 (`REQUIREMENT_LABEL.charWidth` 4.9, routing and renderer alike); (6) the aperture carries the hover-HUD
 surface of the planetarium (starfield gradient, 1.5 px cyan border, layered shadow); (7) `SOURCE_BOX` grew to the carrier's real reach
 (above 14, below 68) so the REQUIREMENT camera keeps the carrier with its kicker and title in view (O-SX-4 holds).
@@ -674,3 +670,4 @@ observation point. Readable labels wrap at word boundaries (`wrapLines`), never 
 | 2026-10-12 | Semiontic motion & trace reconstruction (owner mandate "SFE — GREEN · SEMIONTIC MOTION & TRACE RECONSTRUCTION", on 36058a4; GREEN only, isolated lab) | DELTA 01: ambient life substantially increased inside the accepted names — pool core glow breathing, dash streams along the containment spokes, counter-turning resonance rings around each region, drifting motes, turning orbit paths, membrane / glow / signature breathing with regions answering the core 1.2 s later (measured in the lab: core region brightness 80 → 95, membrane 23 → 31 per 6.2 s cycle, phase-coupled); DELTA 02: traces are cubic arcs with one handedness and a mint → cyan gradient, aura, carrier bloom, bead chains for unscored coverage and one finite light running each risen trace; geometry (`tracePoint` / `tracePath` / `traceRayPath`) stays the routing's truth, bows unchanged. Evidence: `evidence/job-pool/living-field/motion/` (video, breathing and emergence frame sheets, stills) | view model 14/14 · SSR 7/7 · PINK walk 3/3 (Q-06 names ⊆ allowed, FIELD infinite names {sxBreathe, sxOrbit}, all inside signs in state field) · e2e 10/10 · tsc 0 · sealed files byte-identical |
 | 2026-10-12 | Evidence orbit / semiotic trace reconstruction (owner mandate "GRÜN — NUR DELTA EVIDENCE ORBIT / SEMIOTIC TRACE RECONSTRUCTION", on 424c3f7; GREEN only, isolated lab) | the source carrier no longer stands still beside the relation: it spirals in along the role's evidence ring and settles (orbit trail drawn beneath it), the traces grow out of the settled carrier, one light runs each trace and the anchor couples with one ring; then the relation rests (finite sequence ≈ 5 s, staggered per carrier; `sxTraceRise` retired, `sxCarrierOrbit` / `sxCouple` added, both finite). Carriers take no pointer, so the transform is Playwright-stable; trace paths, ids, proofs, pointer ownership, keyboard and reduced motion unchanged. Evidence refreshed under evidence/job-pool/living-field/motion | view model 14/14 · SSR 7/7 · governance 10/10 · PINK walk 3/3 · e2e 10/10 · tsc 0 · sealed files byte-identical |
 | 2026-10-12 | Evidence orbit must live on (owner ruling "GRÜN — OWNER RULING · EVIDENCE ORBIT MUSS WEITER", on 3ba7db8; GREEN only, isolated lab) | after the arrival the carrier no longer stands still: it circles its routed place on a 10-unit loop every 26 s, upright, in the field's own mote-drift grammar (`sxOrbit`, phase per carrier), and the traces are redrawn to its body every frame, so the relation visibly organizes itself out of the motion; REQUIREMENT camera reach widened by the loop. Known gate consequence for the owner's decision: PINK Q-06 asserts no `sxOrbit` at ROLE (R15 FIELD only) → extension of R15 needed once approved | view model 14/14 · SSR 7/7 · governance 10/10 · e2e 10/10 · PINK walk: Q-01…Q-05/Q-07…Q-11 and carried states green, Q-06 red on the `sxOrbit`-at-ROLE assertion (expected, see left) · tsc 0 · sealed files byte-identical |
+| 2026-10-12 | Existing semiotic system reconstruction (owner mandate "SFE — GREEN · EXISTING SEMIOTIC SYSTEM RECONSTRUCTION", on 71d2b1f; GREEN only, isolated lab) | Phase 01: code-grounded inventory of the Capability Field's visual grammar (energy rays with SMIL photon streams and midpoint beads, inter-orbital coupling Q-paths, OrbitalResonanceBubble anatomy with float / moons / ring pulses / atmosphere glow, deep-focus settle and the mint evidence link, satellites on a shared rAF clock, core plasma). Phase 02: transfer — the invented layers (gradient bodies, auras, blooms, pulse lights, coupling rings, spiral arrival, orbit trails, drift loops, per-frame trace following) are removed; carriers are planetarium nodes (float, moons, semiotic ring, settle), traces are energy rays (mint evidence link at rest, active ray when inspectable, photons by the stage table, bead); geometry back to quadratic coupling arcs with bows. Side-by-side capture of both fields under motion recorded (capability-vs-jobfield.webm). Gate consequence unchanged: PINK Q-06 asserts no infinite name at ROLE beyond sxSuspend (R15) and is red on `sxFloat` / `sxMoonOrbit`; SMIL photons are outside `getAnimations`, as in the planetarium itself | view model 14/14 · SSR 7/7 · governance 10/10 + 4/4 · e2e 10/10 · PINK walk: all scenarios green except the Q-06 ROLE-name assertion (expected, see left) · tsc 0 · sealed files byte-identical |
