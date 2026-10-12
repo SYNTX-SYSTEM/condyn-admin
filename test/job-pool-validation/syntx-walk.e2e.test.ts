@@ -1,7 +1,7 @@
 /**
  * PINK Q-12: the running browser walk of the SYNTX semiontic field (owner mandate "SFE — SYNTX SEMIONTIC FIELD
  * RECONSTRUCTION", 2026-10-11; spec §5 states A–E, GELB binding table §2/§3 and rulings R1–R14; GRÜN's DOM contract
- * `JOB_FIELD_FRONTEND.md` §13 = PINK's BR-1 … BR-5). Acceptance plan `docs/acceptance/CONDYN_SYSTEM_ACCEPTANCE_TEST_PLAN_v1.7.md`
+ * `JOB_FIELD_FRONTEND.md` §13 = PINK's BR-1 … BR-5). Acceptance plan `docs/acceptance/CONDYN_SYSTEM_ACCEPTANCE_TEST_PLAN_v1.8.md`
  * suite TS-Q: this file binds Q-01 … Q-11 at their observation points and is the gate for the owner environment.
  *
  * Oracle: the GET bodies of the same server (upload view, matches, analysis) saved as Q-00-*.json before any browser
@@ -867,7 +867,7 @@ describe.skipIf(playwrightModule === null)("PINK Q-12: SYNTX field walk FIELD �
     // Sign transitions: opacity (recede / restore); since the living field (a856b5a) also filter (the depth blur, data-sx-depth).
     expect(["opacity", "opacity, filter"], `sign transition ${computed.sign?.transition}`).toContain(computed.sign?.transition);
     // At ROLE after settle: the entrance, reveals, the suspend drift and the finite state-bound transitions of §13.2.1 — never an ambient name.
-    for (const name of computed.names) expect(["sxEnter", "sxRise", "sxSuspend", "sxUnfold", "sxTraceRise", "sxSuspendEnter", "sxRecenter", "transition"], `allowed motion at ROLE ${name}`).toContain(name);
+    for (const name of computed.names) expect(["sxEnter", "sxRise", "sxSuspend", "sxUnfold", "sxTraceRise", "sxTraceDraw", "sxSuspendEnter", "sxRecenter", "sxCoreSettle", "transition"], `allowed motion at ROLE ${name}`).toContain(name);
     expect(computed.names.filter((name: string) => ["sxOrbit", "sxBreathe"].includes(name)), "no ambient motion at ROLE").toEqual([]);
     const liveRoleSigns = await collectSigns(live);
     await live.close();

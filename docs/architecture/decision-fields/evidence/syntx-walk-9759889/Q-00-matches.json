@@ -1,0 +1,209 @@
+{
+  "presentation": {
+    "kind": "DETERMINISTIC_RESONANCE_PRESENTATION",
+    "policyVersion": "JOB_POOL_PRESENTATION_MATCHING_V1",
+    "authorityState": "NONE",
+    "canonicalEvaluation": false,
+    "decision": false,
+    "weakEvidenceThreshold": 0.7
+  },
+  "analysisId": "ANL_PINK_SYNTX_WALK",
+  "jobPoolUploadId": "JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7",
+  "poolId": "pool_pink_validation_v1",
+  "poolVersion": 1,
+  "candidateCapabilityCount": 5,
+  "capabilitySweep": {
+    "state": "NOT_PRODUCED",
+    "proposalCount": 0,
+    "scored": false
+  },
+  "roleMatches": [
+    {
+      "poolRoleId": "role_pink_beta_platform",
+      "title": "Platform Engineer",
+      "seniority": "MID",
+      "domainFocus": "Cloud infrastructure",
+      "poolOrganizationId": "org_pink_beta",
+      "organizationName": "Beta Cloud GmbH",
+      "resonanceScore": 0.75,
+      "matched": [
+        {
+          "poolRequirementId": "req_pink_beta_1",
+          "capabilityName": "Kubernetes Orchestration",
+          "requiredLevel": "L4",
+          "weight": 0.9,
+          "necessity": "REQUIRED",
+          "matchBasis": "ALIAS",
+          "matchedCapabilityName": "k8s",
+          "matchedConstituent": null,
+          "matchedCapabilityEntityId": "CAP_PINK_ALIAS",
+          "confidence": 0.9,
+          "contribution": 0.81,
+          "evidence": [
+            {
+              "docId": "DOC_001",
+              "quote": "Operated k8s clusters across three regions with GitOps"
+            }
+          ],
+          "sweepProposal": null
+        },
+        {
+          "poolRequirementId": "req_pink_beta_3",
+          "capabilityName": "Node.js",
+          "requiredLevel": "",
+          "weight": 0.3,
+          "necessity": "UNDECLARED",
+          "matchBasis": "COMPOSITE_CONSTITUENT",
+          "matchedCapabilityName": "TypeScript and Node.js",
+          "matchedConstituent": "Node.js",
+          "matchedCapabilityEntityId": "CAP_PINK_COMPOSITE",
+          "confidence": 0.8,
+          "contribution": 0.24,
+          "evidence": [
+            {
+              "docId": "DOC_001",
+              "quote": "Built payment services in TypeScript and Node.js with full test coverage"
+            }
+          ],
+          "sweepProposal": null
+        }
+      ],
+      "weakEvidence": [],
+      "missing": [
+        {
+          "poolRequirementId": "req_pink_beta_2",
+          "capabilityName": "German Language",
+          "requiredLevel": "C1",
+          "weight": 0.2,
+          "necessity": "OPTIONAL",
+          "evidenceHint": null,
+          "sweepProposal": null
+        }
+      ],
+      "sweepOnlyCoverageCount": 0,
+      "canonical": {
+        "targetRoleProfileRevisionId": "TRPREV_2A45EB03B2D1FEBF8D083A83D6AF1B3C",
+        "targetRequirementRevisionIds": [
+          "TRQREV_9FEA3168112FE3FD961CFBCD9D3DEE4A",
+          "TRQREV_E165EFEF5E7BE72803FD4A1E1B9418FB",
+          "TRQREV_D48D82BF772A32CC81F2E853B59F2BCB"
+        ],
+        "capabilityRequirementRelationState": "NOT_EVALUATED",
+        "reason": "VERIFIED_CAPABILITY_SNAPSHOT_ABSENT"
+      }
+    },
+    {
+      "poolRoleId": "role_pink_alpha_architect",
+      "title": "Distributed Systems Architect",
+      "seniority": "SENIOR",
+      "domainFocus": "Industrial edge platforms",
+      "poolOrganizationId": "org_pink_alpha",
+      "organizationName": "Alpha Industrial Systems",
+      "resonanceScore": 0.5425,
+      "matched": [
+        {
+          "poolRequirementId": "req_pink_alpha_1",
+          "capabilityName": "Distributed Systems Architecture",
+          "requiredLevel": "L5 expert",
+          "weight": 1,
+          "necessity": "REQUIRED",
+          "matchBasis": "EXACT",
+          "matchedCapabilityName": "Distributed Systems Architecture",
+          "matchedConstituent": null,
+          "matchedCapabilityEntityId": "CAP_PINK_EXACT",
+          "confidence": 0.95,
+          "contribution": 0.95,
+          "evidence": [
+            {
+              "docId": "DOC_001",
+              "quote": "Architected distributed IIoT Edge Computing system for resilient operation"
+            }
+          ],
+          "sweepProposal": null
+        }
+      ],
+      "weakEvidence": [
+        {
+          "poolRequirementId": "req_pink_alpha_2",
+          "capabilityName": "Edge Computing",
+          "requiredLevel": "advanced",
+          "weight": 0.6,
+          "necessity": "PREFERRED",
+          "matchBasis": "EXACT",
+          "matchedCapabilityName": "Edge Computing",
+          "matchedConstituent": null,
+          "matchedCapabilityEntityId": "CAP_PINK_WEAK",
+          "confidence": 0.45,
+          "contribution": 0.135,
+          "evidence": [
+            {
+              "docId": "DOC_001",
+              "quote": "Supported an edge computing pilot for two months"
+            }
+          ],
+          "sweepProposal": null,
+          "reason": "analysis confidence 0.45 is below 0.70"
+        }
+      ],
+      "missing": [
+        {
+          "poolRequirementId": "req_pink_alpha_3",
+          "capabilityName": "Industrial IoT Protocol Design",
+          "requiredLevel": "",
+          "weight": 0.4,
+          "necessity": "UNDECLARED",
+          "evidenceHint": null,
+          "sweepProposal": null
+        }
+      ],
+      "sweepOnlyCoverageCount": 0,
+      "canonical": {
+        "targetRoleProfileRevisionId": "TRPREV_D38DB0D9058849FFA30DB9FC2DAE91BE",
+        "targetRequirementRevisionIds": [
+          "TRQREV_29D80C3F89E61E2A3BB10754638AC45F",
+          "TRQREV_DCF8ECD04E910CF8758BBC70C9C36D38",
+          "TRQREV_DAE2665961105126306A09A302E25930"
+        ],
+        "capabilityRequirementRelationState": "NOT_EVALUATED",
+        "reason": "VERIFIED_CAPABILITY_SNAPSHOT_ABSENT"
+      }
+    },
+    {
+      "poolRoleId": "role_pink_beta_empty",
+      "title": "Role Without Requirements",
+      "seniority": "JUNIOR",
+      "domainFocus": "Unspecified",
+      "poolOrganizationId": "org_pink_beta",
+      "organizationName": "Beta Cloud GmbH",
+      "resonanceScore": 0,
+      "matched": [],
+      "weakEvidence": [],
+      "missing": [],
+      "sweepOnlyCoverageCount": 0,
+      "canonical": {
+        "targetRoleProfileRevisionId": "TRPREV_04C51C3BE258B21526BCB1658B375C08",
+        "targetRequirementRevisionIds": [],
+        "capabilityRequirementRelationState": "NOT_EVALUATED",
+        "reason": "VERIFIED_CAPABILITY_SNAPSHOT_ABSENT"
+      }
+    }
+  ],
+  "organizationMatches": [
+    {
+      "poolOrganizationId": "org_pink_beta",
+      "name": "Beta Cloud GmbH",
+      "industry": "Cloud software",
+      "aggregateScore": 0.75,
+      "roleCount": 2,
+      "topRoleTitle": "Platform Engineer"
+    },
+    {
+      "poolOrganizationId": "org_pink_alpha",
+      "name": "Alpha Industrial Systems",
+      "industry": "Industrial automation",
+      "aggregateScore": 0.5425,
+      "roleCount": 1,
+      "topRoleTitle": "Distributed Systems Architect"
+    }
+  ]
+}
