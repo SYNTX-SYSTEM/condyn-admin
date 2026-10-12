@@ -815,6 +815,28 @@ PINK's checks (affected functions only), merged as `ef8ea69`:
 Plan 1.7.0 binds `e6486b1` (Appendix C: R15 / B-SYNTX-AMBIENT, B-SYNTX-GLOW, B-SYNTX-DEPTH, B-SYNTX-HIT). The owner
 environment stays on `1bd26a7` under plan 1.5.2 until the owner authorizes the move; PINK's GET-only walk follows it.
 
+### 3.22 Visual grammar transfer `9759889` accepted; integration `36058a4` (2026-10-12)
+
+GRÜN's `9759889` (parent `e6486b1`; owner mandates "GREEN · VISUAL FIELD RECONSTRUCTION" / "VISUAL GRAMMAR TRANSFER", a
+GRÜN-owned visual iteration — PINK and GELB accept the affected functions only): planetarium nodes (region radius
+min(190, 92 + 30·√roles), roles on a lower inner ring), pool core, mint source carriers with `SOURCE_BOX`, draw-on traces
+(`sxTraceDraw` ray underlay path after the visible path), HUD aperture with the same ids, CSS-only uppercasing, count
+pills and kicker indices (never scores or ids), new finite names `sxTraceDraw` / `sxCoreSettle`, the infinite list unchanged.
+View model geometry only; sign ids, enums, proofs, summaries unchanged; Appendix A regenerated identical (215). GELB's
+integration `36058a4` = `4bfeb74` + `9759889` (governance 10/10, 15 files / 97 green, tsc 0); `app`/`lib`/`scripts`
+identical to PINK's merge `a5b86a3`.
+
+PINK (affected functions): field batch 4 files / 36 green, tsc 0; e2e walk 3/3 on `9759889` (disposable database,
+evidence `evidence/syntx-walk-9759889/`; Q-06 admits the two finite names, FIELD ambient still exactly `sxBreathe` +
+`sxOrbit` on `field` signs, ROLE `sxEnter` / `sxRecenter` / `sxSuspend`; Q-07 / Q-09: no percent, no resonance before the
+pending aperture — the count pills are counts; full names readable from `textContent`); read-only walk on GELB's clone
+`127.0.0.1:3027` @ `36058a4` (fresh read-only clone of the owner database, its hash unchanged; `:3017` untouched):
+**136/136, 0 non-GET** (evidence `evidence/syntx-readonly-3027-36058a4/`) — R15 at FIELD and ROLE for both analyses,
+the matched and the sweep trace own pointer points and open their apertures under the new geometry, the inspected
+carrier inside the viewport (`SOURCE_BOX`), containment and anchor categories under the new radii, Escape chain with
+focus-follow, reduced motion, bodies identical. Plan 1.8.0 binds `36058a4` (Appendix C: B-SYNTX-VISUAL). The owner
+environment stays on `1bd26a7` under plan 1.5.2 until the owner authorizes the move.
+
 ## 4. Boundaries and findings for coordination
 
 - F-JP-1 (closed in `b782793`): `JOB_POOL_CONNECTION.md` §4 followed the per-role `JOB_POOL_JSON_ROLE` design;

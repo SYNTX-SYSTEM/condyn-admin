@@ -1,0 +1,93 @@
+[
+  {
+    "testId": "syntx-pool",
+    "id": "field:JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7",
+    "source": "canonical_entity",
+    "relation": "contains",
+    "state": "field",
+    "manifestation": "region",
+    "interaction": "none",
+    "transition": "unfold",
+    "proof": {
+      "upload-id": "JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7"
+    }
+  },
+  {
+    "testId": "syntx-organization-org_pink_alpha",
+    "id": "org:org_pink_alpha",
+    "source": "canonical_entity",
+    "relation": "contains",
+    "state": "field",
+    "manifestation": "region",
+    "interaction": "select",
+    "transition": "recenter",
+    "proof": {
+      "upload-id": "JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7",
+      "organization-id": "org_pink_alpha",
+      "target-id": "TORGENT_CA0690821AD71539C8EDBAB4E05617E3"
+    }
+  },
+  {
+    "testId": "syntx-organization-org_pink_beta",
+    "id": "org:org_pink_beta",
+    "source": "canonical_entity",
+    "relation": "contains",
+    "state": "field",
+    "manifestation": "region",
+    "interaction": "select",
+    "transition": "recenter",
+    "proof": {
+      "upload-id": "JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7",
+      "organization-id": "org_pink_beta",
+      "target-id": "TORGENT_4B1899750C717127B7B31A685AAC7230"
+    }
+  },
+  {
+    "testId": "syntx-role-role_pink_alpha_architect",
+    "id": "role:role_pink_alpha_architect",
+    "source": "canonical_entity",
+    "relation": "contains",
+    "state": "field",
+    "manifestation": "carrier",
+    "interaction": "select",
+    "transition": "recenter",
+    "proof": {
+      "upload-id": "JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7",
+      "organization-id": "org_pink_alpha",
+      "role-id": "role_pink_alpha_architect",
+      "target-id": "TROBREV_5C16B8DE6BFE493B85F62E2D60FD9F47"
+    }
+  },
+  {
+    "testId": "syntx-role-role_pink_beta_platform",
+    "id": "role:role_pink_beta_platform",
+    "source": "canonical_entity",
+    "relation": "contains",
+    "state": "field",
+    "manifestation": "carrier",
+    "interaction": "select",
+    "transition": "recenter",
+    "proof": {
+      "upload-id": "JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7",
+      "organization-id": "org_pink_beta",
+      "role-id": "role_pink_beta_platform",
+      "target-id": "TROBREV_9C05D44693C17740A25FFC198AF05EA4"
+    }
+  },
+  {
+    "testId": "syntx-role-role_pink_beta_empty",
+    "id": "role:role_pink_beta_empty",
+    "source": "canonical_entity",
+    "relation": "contains",
+    "state": "field",
+    "manifestation": "carrier",
+    "interaction": "select",
+    "transition": "recenter",
+    "proof": {
+      "upload-id": "JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7",
+      "organization-id": "org_pink_beta",
+      "role-id": "role_pink_beta_empty",
+      "target-id": "TROBREV_0A80D92922CB79785E157F993F72703C"
+    }
+  }
+]

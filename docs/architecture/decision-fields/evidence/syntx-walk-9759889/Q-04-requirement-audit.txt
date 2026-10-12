@@ -1,0 +1,41 @@
+Q-04-requirement
+visible text:
+Requirement Distributed Systems Architecture of role Distributed Systems Architect: supported by scored evidence; 1 evidence trace from 1 source.
+
+POOLS
+PINKVALIDATION POOL
+2 ORGANIZATIONS
+01
+⬡ ALPHA INDUSTRIALSYSTEMS
+Industrial automation · Bavaria
+1 ROLES
+02
+⬡ BETA CLOUD GMBH
+Cloud software · Berlin
+2 ROLES
+DISTRIBUTEDSYSTEMSARCHITECT
+PLATFORMENGINEER
+3 REQUIREMENTS
+ROLE WITHOUTREQUIREMENTS
+0 REQUIREMENTS
+SOURCE
+doc1.md
+DistributedSystemsArchitecture
+Edge Computing
+Industrial IoTProtocol Design
+JOB FIELD
+← CAPABILITY FIELD
+PINK validation pool
+›
+Alpha Industrial Systems
+›
+Distributed Systems Architect
+›
+Distributed Systems Architecture
+← RETURN
+PRESENTATION MATCHING
+Esc returns · Enter selects · Tab moves between carriers
+⬡ POOLS · 2
++ INTAKE
+BOUNDARY
+PRESENTED != EVALUATED · UPLOADED != SELECTED · RANKED != RECOMMENDED · MISSING != GAP DECISION · COVERED != SCORED · PENDING != MISSING CAPABILITY · POOL ROLE != INFERRED ROLE

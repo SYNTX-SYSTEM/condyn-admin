@@ -1,0 +1,88 @@
+{
+  "tip": "9759889",
+  "recordedAt": "2026-10-12T00:06:05.814Z",
+  "database": "condyn_test_d08ccaad86c30d5f",
+  "analysisId": "ANL_PINK_SYNTX_WALK",
+  "jobPoolUploadId": "JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7",
+  "scenarios": {
+    "Q-01": {
+      "verdict": "PASS",
+      "counts": {
+        "signs": 6,
+        "organizations": 2,
+        "roles": 3
+      }
+    },
+    "Q-02": {
+      "verdict": "PASS",
+      "counts": {
+        "receded": 1
+      }
+    },
+    "Q-03": {
+      "verdict": "PASS",
+      "counts": {
+        "requirements": 3,
+        "traces": 2,
+        "supported": 1,
+        "weak": 1,
+        "open": 1,
+        "trqrevResolved": 3
+      }
+    },
+    "Q-09": {
+      "verdict": "PASS",
+      "note": "no number at FIELD, ORGANIZATION or ROLE; resonance only inside the pending aperture"
+    },
+    "Q-04": {
+      "verdict": "PASS",
+      "counts": {
+        "kinds": 3
+      },
+      "note": "matched, weak and missing apertures bound; sweep aperture absent on the seeded analysis (capabilitySweep NOT_PRODUCED), bound by live-browser-workflow.e2e.test.ts with a key"
+    },
+    "Q-04-sweep": {
+      "verdict": "BOUNDARY-MATCH",
+      "note": "B-JP-GEMINI: the seeded analysis has no capability sweep; trace_dotted / covers_unscored / syntx-aperture-sweep-status are asserted absent here"
+    },
+    "Q-05": {
+      "verdict": "PASS",
+      "counts": {
+        "nonGetRequests": 0
+      },
+      "note": "return affordance, background, Escape, path and reload restore the same sign sets; view and matches bodies byte-identical, the analysis body identical except the legacy recommendations.generatedAt request stamp (non-input)"
+    },
+    "Q-08": {
+      "verdict": "PASS",
+      "counts": {
+        "buttons": 5
+      }
+    },
+    "Q-07": {
+      "verdict": "PASS",
+      "note": "unsupported wording, legacy role names, aggregate numbers and closure manifestations absent at every observation point (Q-0x-audit.txt)"
+    },
+    "Q-10": {
+      "verdict": "PASS",
+      "note": "sign enums, identity, proof resolution and TRQREV database resolution bound at every observation point (Q-0x-signs.json)"
+    },
+    "Q-11": {
+      "verdict": "PASS"
+    },
+    "Q-06": {
+      "verdict": "PASS",
+      "counts": {
+        "liveAnimationNames": 3,
+        "ambientNames": 2
+      },
+      "note": "LIVE at ROLE: sxEnter, sxRecenter, sxSuspend; FIELD ambient switch on (sxBreathe, sxOrbit); REDUCED: none running, same signs"
+    },
+    "Q-states": {
+      "verdict": "PASS",
+      "counts": {
+        "uploads": 3
+      },
+      "note": "NO_ANALYSIS, NO_POOL + intake + explicit selection, INACTIVE_POOL as containment, NOT_FOUND, three stale kinds, JOB/POOL aliases; strip and intake keep keyboard focus under the focus-follow effect"
+    }
+  }
+}
