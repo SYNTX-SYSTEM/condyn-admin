@@ -8,7 +8,7 @@ import { SYNTX_RESONANCE_BODY_KEYFRAMES, SyntxResonanceBody } from "./manifestat
 import { SYNTX_CORE_KEYFRAMES, SyntxCoreOrganism } from "./manifestation/SyntxCoreOrganism";
 import { SyntxEnergyRay, SyntxPlanetariumBackdrop } from "./manifestation/SyntxPlanetarium";
 import { FocusTransitionStageShell, SYNTX_FOCUS, SYNTX_FOCUS_PULSE_KEYFRAMES } from "./manifestation/SyntxFocusShell";
-import { SYNTX_COSMOS_CENTER_MATERIAL, SYNTX_COSMOS_NODE_MATERIAL, SYNTX_COSMOS_STARS, SyntxCosmosShell } from "./manifestation/SyntxCosmosShell";
+import { SYNTX_COSMOS_CENTER_MATERIAL, SYNTX_COSMOS_NODE_MATERIAL, SYNTX_COSMOS_STARS, SyntxCosmosShell, syntxCosmosPoint } from "./manifestation/SyntxCosmosShell";
 import { SYNTX_EVIDENCE_LINK, SYNTX_EVIDENCE_SURFACE_MATERIAL, SYNTX_NUCLEUS_MATERIAL, SYNTX_SATELLITE_MATERIAL, SyntxDeepFocusShell } from "./manifestation/SyntxDeepFocusShell";
 import { SYNTX_HUD_SURFACE } from "./manifestation/SyntxHudSurface";
 import { SIL_COPY, type SilLocale } from "../../../../lib/career/view-model/sil-language";
@@ -168,8 +168,16 @@ const JOB_ROLE_CARD_MATERIAL: React.CSSProperties = {
     "radial-gradient(90% 70% at 100% 115%, rgba(84, 232, 236, 0.05), transparent 60%)",
     "linear-gradient(170deg, rgba(8, 22, 36, 0.97), rgba(3, 10, 19, 0.98))"
   ].join(", "),
-  boxShadow: `0 0 0 1px rgba(1, 5, 10, 0.6), 0 0 24px rgba(56, 160, 230, 0.15), 0 0 58px rgba(56, 160, 230, 0.05), 0 10px 22px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(190, 240, 255, 0.15), inset 0 0 22px ${azure(0.045)}`
+  borderRadius: "14px",
+  boxShadow: `0 0 0 1px rgba(1, 5, 10, 0.6), 0 0 24px rgba(56, 160, 230, 0.15), 0 0 58px rgba(56, 160, 230, 0.05), 0 10px 22px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(190, 240, 255, 0.15), inset 0 0 0 1px rgba(150, 220, 255, 0.035), inset 0 0 22px ${azure(0.045)}`
 };
+/** Where the cosmos tether reaches a role card: the point on the card's edge facing the centre, in percent of the card box (exactly on
+ * the edge whatever the card's rendered height), and the direction towards the centre. */
+function cardAnchor(dx: number, dy: number, halfWidth: number, halfHeight: number): { left: number; top: number; angle: number } {
+  const nx = dx / halfWidth, ny = dy / halfHeight;
+  const reach = Math.max(Math.abs(nx), Math.abs(ny)) || 1;
+  return { left: 50 + 50 * nx / reach, top: 50 + 50 * ny / reach, angle: Math.atan2(dy, dx) * 180 / Math.PI };
+}
 const JOB_SATELLITE_MATERIAL: React.CSSProperties = { ...SYNTX_SATELLITE_MATERIAL, border: `1px solid ${azure(0.3)}`, background: "linear-gradient(172deg, rgba(6, 17, 30, 0.95), rgba(3, 10, 19, 0.95))", boxShadow: `0 0 15px rgba(46, 132, 226, 0.1), inset 0 1px 0 rgba(180, 232, 255, 0.08)` };
 /** The rim point of a 168-unit body towards its HUD tether target (the tether box is 240 units, centred on the body). */
 const tetherFromRim = (target: { x: number; y: number }): { x: number; y: number } => {
@@ -301,10 +309,19 @@ ${SYNTX_FOCUS_PULSE_KEYFRAMES}
 [data-sx-kicker]::before { content: ""; width: 6px; height: 6px; transform: rotate(45deg); flex-shrink: 0; border: 1px solid var(--sx-kicker); box-shadow: 0 0 8px var(--sx-kicker); }
 [data-sx-kicker]::after { content: ""; flex: 1; height: 1px; min-width: 0; background: linear-gradient(90deg, rgba(92, 200, 255, 0.4), transparent); }
 [data-sx-panel] [data-sx-section] + [data-sx-section] { padding-top: 12px; border-top: 1px solid transparent; border-image: linear-gradient(90deg, rgba(92, 200, 255, 0.24), rgba(92, 200, 255, 0.04)) 1; }
+/* Pools: one conduction line (the panel's spine) carries every upload as a node; the selected upload is the lit node and the lit row. */
+[data-sx-panel="pools"] ul { position: relative; }
+[data-sx-panel="pools"] ul::before { content: ""; position: absolute; left: 9px; top: 14px; bottom: 14px; width: 1px; pointer-events: none; background: linear-gradient(180deg, rgba(92, 200, 255, 0.05), rgba(92, 200, 255, 0.34) 18%, rgba(92, 200, 255, 0.34) 82%, rgba(92, 200, 255, 0.05)); }
 [data-sx-panel="pools"] li { transition: background-color .35s ease, border-color .35s ease, box-shadow .35s ease; }
-[data-sx-panel="pools"] li:hover { background-color: rgba(92, 200, 255, 0.05); }
-[data-sx-panel="pools"] li:focus-within { border-color: rgba(56, 229, 255, 0.45); box-shadow: 0 0 16px rgba(56, 229, 255, 0.12); }
-[data-sx-panel="pools"] button[aria-pressed="false"]:hover { border-color: rgba(56, 229, 255, 0.75); background: rgba(56, 229, 255, 0.1); }
+[data-sx-panel="pools"] li::before { content: ""; position: absolute; left: 6px; top: 17px; width: 7px; height: 7px; box-sizing: border-box; border-radius: 50%; border: 1px solid rgba(92, 200, 255, 0.55); background: #04101a; pointer-events: none; transition: background-color .35s ease, box-shadow .35s ease; }
+[data-sx-panel="pools"] li[data-selected="true"]::before { border-color: #9ff3ff; background: #38e5ff; box-shadow: 0 0 8px rgba(56, 229, 255, 0.95), 0 0 16px rgba(56, 229, 255, 0.4); animation: atmosphereGlow 7s ease-in-out infinite; }
+[data-sx-panel="pools"] li[data-selected="false"]:hover { background-color: rgba(92, 200, 255, 0.045); }
+[data-sx-panel="pools"] li[data-selected="false"]:hover::before { border-color: rgba(150, 230, 255, 0.9); box-shadow: 0 0 6px rgba(92, 200, 255, 0.6); }
+[data-sx-panel="pools"] li:focus-within { border-color: rgba(56, 229, 255, 0.4); box-shadow: 0 0 16px rgba(56, 229, 255, 0.1); }
+[data-sx-panel="pools"] button[aria-pressed="false"]:hover { border-color: rgba(56, 229, 255, 0.7); background: rgba(56, 229, 255, 0.1); color: #e8fbff; }
+/* Role cards: a calm light reaction on approach (border and glow only; the card holds its place on the orbit). */
+[data-sx-role-card] { transition: border-color .4s ease, box-shadow .4s ease; }
+[data-sx-role-card]:hover { border-color: rgba(120, 224, 255, 0.7) !important; box-shadow: 0 0 0 1px rgba(1, 5, 10, 0.6), 0 0 28px rgba(56, 200, 240, 0.24), 0 0 64px rgba(56, 160, 230, 0.08), 0 10px 22px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(200, 245, 255, 0.2), inset 0 0 22px rgba(92, 200, 255, 0.07) !important; }
 [data-sx-panel="intake"] input:not([type="file"]):focus { border-color: rgba(56, 229, 255, 0.6); box-shadow: inset 0 1px 6px rgba(0, 0, 0, 0.45), 0 0 14px rgba(56, 229, 255, 0.14); }
 [data-sx-panel="intake"] input[type="file"]::file-selector-button { margin-right: 12px; padding: 6px 12px; border-radius: 6px; border: 1px solid rgba(56, 229, 255, 0.5); background: linear-gradient(180deg, rgba(56, 229, 255, 0.14), rgba(56, 229, 255, 0.04)); color: #c9f6ff; font-family: inherit; font-size: 9px; font-weight: 600; letter-spacing: 1.4px; text-transform: uppercase; cursor: pointer; }
 [data-sx-panel="intake"] input[type="file"]::file-selector-button:hover { border-color: rgba(56, 229, 255, 0.8); background: rgba(56, 229, 255, 0.16); }
@@ -738,8 +755,10 @@ function OrganizationCosmosLayer({ field, mode, t, size, onObserve, organization
       orbitStroke={JOB_ORBIT}
       stars={JOB_COSMOS_STARS}
       tether={{ stroke: JOB_TETHER, dash: "2 7" }}
-      renderNode={node => {
+      renderNode={(node, ring) => {
         const role = byId.get(node.id)!;
+        const at = syntxCosmosPoint(layout, node, ring, elapsedMs);
+        const anchorPoint = cardAnchor(layout.centerX - at.x, layout.centerY - at.y, node.width / 2, node.height / 2);
         // The observed role is now the centre of its own cosmos: here it remains as the receding anchor (no sign, no pointer).
         const anchor = recededLevel && role.id === observation.roleId;
         const select = () => onObserve(observeRole(observation, role.organizationId, role.id));
@@ -754,12 +773,18 @@ function OrganizationCosmosLayer({ field, mode, t, size, onObserve, organization
             aria-label={`${role.title} · ${role.organizationName}`}
             aria-pressed={anchor ? undefined : role.sign.state === "role_selected"}
             onClick={stop(select)}
+            data-sx-role-card
             style={{ position: "absolute", left: 0, top: 0, width: `${node.width}px`, minHeight: `${node.height}px`, transform: "translate(-50%, -50%)", ...JOB_ROLE_CARD_MATERIAL, ...(compact ? { padding: "7px 10px" } : {}), color: INK, cursor: "pointer", fontFamily: MONO, textAlign: "left", overflowWrap: "anywhere", hyphens: "auto", opacity: anchor ? 0.42 : 1 }}
           >
             <span aria-hidden="true" style={{ position: "absolute", left: "16px", right: "16px", top: "-1px", height: "1px", background: "linear-gradient(90deg, transparent, rgba(190, 244, 255, 0.7), transparent)", pointerEvents: "none" }} />
-            <span style={{ display: "flex", alignItems: "center", gap: "6px", color: CYAN, fontSize: "8.5px", fontWeight: 600, letterSpacing: "1.3px", textShadow: `0 0 8px ${SIL_TOKENS.colors.cyanGlow}` }}><span aria-hidden="true" style={{ width: "4px", height: "4px", borderRadius: "50%", flexShrink: 0, background: CYAN, boxShadow: `0 0 5px ${CYAN}` }} />{t.manifest.role}{role.seniority !== null ? ` // ${role.seniority.toUpperCase()}` : ""}</span>
+            {/* The field connection: where the tether from the centre reaches the card, a lamp on the edge and a short conduction stub. */}
+            <span data-sx-card-anchor aria-hidden="true" style={{ position: "absolute", left: `${anchorPoint.left.toFixed(2)}%`, top: `${anchorPoint.top.toFixed(2)}%`, width: 0, height: 0, pointerEvents: "none" }}>
+              <span style={{ position: "absolute", left: 0, top: "-0.5px", width: "16px", height: "1px", transformOrigin: "0 50%", transform: `rotate(${anchorPoint.angle.toFixed(1)}deg)`, background: `linear-gradient(90deg, ${azure(0.6)}, transparent)` }} />
+              <span style={{ position: "absolute", left: "-2.5px", top: "-2.5px", width: "5px", height: "5px", borderRadius: "50%", background: "#c4f5ff", boxShadow: `0 0 6px ${azure(0.95)}, 0 0 12px ${azure(0.4)}` }} />
+            </span>
+            <span style={{ display: "flex", alignItems: "center", gap: "6px", fontSize: "8.5px", fontWeight: 600, letterSpacing: "1.3px" }}><span aria-hidden="true" style={{ width: "4px", height: "4px", borderRadius: "50%", flexShrink: 0, background: CYAN, boxShadow: `0 0 5px ${CYAN}` }} /><span><span style={{ color: CYAN, textShadow: `0 0 8px ${SIL_TOKENS.colors.cyanGlow}` }}>{t.manifest.role}</span><span style={{ color: "rgba(140, 206, 238, 0.78)" }}>{role.seniority !== null ? ` // ${role.seniority.toUpperCase()}` : ""}</span></span></span>
             <span style={{ display: "-webkit-box", marginTop: "5px", fontFamily: SANS, fontSize: compact ? "11px" : "11.5px", fontWeight: 600, lineHeight: 1.24, letterSpacing: "0.1px", color: "#eef8fc", WebkitLineClamp: compact ? 2 : 4, WebkitBoxOrient: "vertical", overflow: "hidden" }}>{role.title}</span>
-            <span style={{ display: "block", marginTop: "5px", paddingTop: "3px", borderTop: `1px solid ${azure(0.14)}`, color: "rgba(178, 206, 222, 0.82)", fontSize: "7.5px", letterSpacing: "0.1px", lineHeight: 1.4 }}>{role.requirementCount} {t.requirements} // {role.matching === null ? t.manifest.matchingNotRead : t.manifest.matchingRead}</span>
+            <span style={{ display: "block", marginTop: "5px", paddingTop: "3px", borderTop: `1px solid ${azure(0.14)}`, color: "rgba(150, 182, 202, 0.78)", fontSize: "7.5px", letterSpacing: "0.1px", lineHeight: 1.4 }}><span style={{ color: "rgba(214, 236, 246, 0.92)" }}>{role.requirementCount} {t.requirements}</span> // {role.matching === null ? t.manifest.matchingNotRead : t.manifest.matchingRead}</span>
           </button>
         );
       }}
@@ -1480,17 +1505,16 @@ export function SyntxField({ workflow, analysisSource, observation: requested, o
         {workflow.pools.state === "NOT_PROVISIONED" && <span data-testid="job-pool-list-not-provisioned" style={{ ...micro, color: AMBER }}>{tp.notProvisioned}</span>}
         {workflow.pools.state === "FAILED" && <span data-testid="job-pool-list-failed" style={{ ...micro, color: AMBER }}>{tp.poolsFailed}{workflow.pools.code ? ` · ${workflow.pools.code}` : ""}</span>}
         {selection.kind === "NOT_LISTED" && <span data-testid="job-pool-selection-not-listed" style={{ ...micro, color: AMBER }}>{tp.selectionNotListed} · {selection.jobPoolUploadId}</span>}
-        <ul style={{ margin: 0, padding: 0, listStyle: "none", ...stack(6) }}>
+        <ul style={{ margin: 0, padding: 0, listStyle: "none", ...stack(4) }}>
           {listed.map((pool, index) => {
             const selected = pool.jobPoolUploadId === workflow.selectedJobPoolUploadId;
             return (
-              <li key={pool.jobPoolUploadId} data-testid={`job-pool-item-${pool.jobPoolUploadId}`} data-selected={selected ? "true" : "false"} data-pool-status={pool.poolStatus} data-delivered-index={index + 1} style={{ position: "relative", display: "flex", justifyContent: "space-between", alignItems: "center", gap: "12px", padding: "10px 12px 10px 14px", borderRadius: "9px", border: `1px solid ${selected ? "rgba(56, 229, 255, 0.34)" : "rgba(92, 200, 255, 0.08)"}`, background: selected ? "linear-gradient(100deg, rgba(56, 229, 255, 0.11), rgba(56, 229, 255, 0.02) 70%)" : "rgba(6, 16, 26, 0.45)", boxShadow: selected ? "0 0 18px rgba(56, 229, 255, 0.1), inset 0 1px 0 rgba(200, 248, 255, 0.08)" : "none" }}>
-                <span aria-hidden="true" style={{ position: "absolute", left: 0, top: "10px", bottom: "10px", width: "2px", borderRadius: "2px", background: selected ? CYAN : "transparent", boxShadow: selected ? `0 0 8px ${CYAN}` : "none" }} />
-                <span style={{ ...stack(4), minWidth: 0 }}>
-                  <span style={{ fontFamily: SANS, fontSize: "13px", fontWeight: selected ? 600 : 500, lineHeight: 1.35, color: selected ? "#f2fbff" : "rgba(226, 238, 246, 0.9)" }}>{pool.poolName}</span>
-                  <span style={{ ...panelMeta, fontSize: "9px", color: pool.poolStatus === "ACTIVE" ? "rgba(150, 178, 198, 0.78)" : AMBER }}>v{pool.poolVersion} · {pool.poolStatus} · {pool.organizationCount} org · {pool.roleCount} roles · {pool.requirementCount} req</span>
+              <li key={pool.jobPoolUploadId} data-testid={`job-pool-item-${pool.jobPoolUploadId}`} data-selected={selected ? "true" : "false"} data-pool-status={pool.poolStatus} data-delivered-index={index + 1} style={{ position: "relative", display: "grid", gridTemplateColumns: "minmax(0, 1fr) auto", columnGap: "12px", rowGap: "5px", alignItems: "center", padding: "11px 12px 11px 24px", borderRadius: "10px", border: `1px solid ${selected ? "rgba(56, 229, 255, 0.3)" : "transparent"}`, background: selected ? "linear-gradient(100deg, rgba(56, 229, 255, 0.1), rgba(56, 229, 255, 0.025) 72%, transparent)" : "transparent", boxShadow: selected ? "0 0 20px rgba(56, 229, 255, 0.08), inset 0 1px 0 rgba(200, 248, 255, 0.08)" : "none" }}>
+                <span style={{ display: "contents" }}>
+                  <span style={{ gridColumn: 1, gridRow: 1, minWidth: 0, fontFamily: SANS, fontSize: "13px", fontWeight: selected ? 600 : 500, lineHeight: 1.3, letterSpacing: "0.1px", color: selected ? "#f4fcff" : "rgba(222, 236, 245, 0.88)", textShadow: selected ? "0 0 14px rgba(56, 229, 255, 0.25)" : "none" }}>{pool.poolName}</span>
+                  <span style={{ gridColumn: "1 / -1", gridRow: 2, fontFamily: MONO, fontSize: "8.5px", letterSpacing: "0.5px", lineHeight: 1.5, color: pool.poolStatus === "ACTIVE" ? (selected ? "rgba(170, 214, 232, 0.86)" : "rgba(140, 170, 190, 0.74)") : AMBER, wordBreak: "break-word" }}>v{pool.poolVersion} · {pool.poolStatus} · {pool.organizationCount} org · {pool.roleCount} roles · {pool.requirementCount} req</span>
                 </span>
-                <button data-testid={`job-pool-select-${pool.jobPoolUploadId}`} disabled={selected} aria-pressed={selected} onClick={() => { onSelectPool(pool.jobPoolUploadId); setPoolsOpen(false); }} style={{ ...action("cyan", true), flexShrink: 0, display: "inline-flex", alignItems: "center", gap: "6px", fontSize: "8.5px", letterSpacing: "1.4px", padding: "5px 10px", borderRadius: "6px", cursor: selected ? "default" : "pointer", color: selected ? "#dffaff" : CYAN, border: `1px solid ${selected ? "rgba(56, 229, 255, 0.6)" : "rgba(56, 229, 255, 0.32)"}`, background: selected ? "rgba(56, 229, 255, 0.16)" : "transparent", boxShadow: selected ? "0 0 12px rgba(56, 229, 255, 0.2)" : "none", textShadow: selected ? `0 0 8px ${SIL_TOKENS.colors.cyanGlow}` : "none", transition: "border-color .3s ease, background .3s ease" }}>{selected && <span aria-hidden="true" style={{ width: "5px", height: "5px", borderRadius: "50%", background: CYAN, boxShadow: `0 0 6px ${CYAN}` }} />}{selected ? tp.selected : tp.select}</button>
+                <button data-testid={`job-pool-select-${pool.jobPoolUploadId}`} disabled={selected} aria-pressed={selected} onClick={() => { onSelectPool(pool.jobPoolUploadId); setPoolsOpen(false); }} style={{ ...action("cyan", true), gridColumn: 2, gridRow: 1, justifySelf: "end", minWidth: "84px", boxSizing: "border-box", display: "inline-flex", alignItems: "center", justifyContent: "center", gap: "6px", fontSize: "8px", letterSpacing: "1.5px", padding: "5px 10px", borderRadius: "999px", cursor: selected ? "default" : "pointer", color: selected ? "#e4fbff" : "rgba(56, 229, 255, 0.88)", border: `1px solid ${selected ? "rgba(56, 229, 255, 0.62)" : azure(0.26)}`, background: selected ? "linear-gradient(180deg, rgba(56, 229, 255, 0.2), rgba(56, 229, 255, 0.08))" : "rgba(4, 14, 24, 0.6)", boxShadow: selected ? "0 0 14px rgba(56, 229, 255, 0.2), inset 0 1px 0 rgba(220, 250, 255, 0.18)" : "none", textShadow: selected ? `0 0 8px ${SIL_TOKENS.colors.cyanGlow}` : "none", transition: "border-color .3s ease, background .3s ease, color .3s ease" }}>{selected && <span aria-hidden="true" style={{ width: "5px", height: "5px", borderRadius: "50%", background: CYAN, boxShadow: `0 0 6px ${CYAN}` }} />}{selected ? tp.selected : tp.select}</button>
               </li>
             );
           })}

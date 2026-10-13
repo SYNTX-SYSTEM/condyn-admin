@@ -1,0 +1,75 @@
+{
+  "before": "b156364",
+  "checks": [
+    {
+      "name": "LIVE: pools panel motion only atmosphereGlow / sxPanelCurrent",
+      "ok": true,
+      "detail": "[\"sxRise\",\"sxPanelCurrent\",\"atmosphereGlow\"]"
+    },
+    {
+      "name": "no-preference: pool meta lines read on one line at 1600 px",
+      "ok": true,
+      "detail": "[13,13,13]"
+    },
+    {
+      "name": "no-preference: every role card owns the pointer at its centre",
+      "ok": true,
+      "detail": "[true,true]"
+    },
+    {
+      "name": "no-preference: the field anchor sits on the card edge and is decoration",
+      "ok": true,
+      "detail": "[[true,true],[true,true]]"
+    },
+    {
+      "name": "no-preference: no page errors",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "REDUCED: nothing runs in the pools panel (pseudo-elements included)",
+      "ok": true,
+      "detail": "[]"
+    },
+    {
+      "name": "reduce: pool meta lines read on one line at 1600 px",
+      "ok": true,
+      "detail": "[13,13,13]"
+    },
+    {
+      "name": "reduce: every role card owns the pointer at its centre",
+      "ok": true,
+      "detail": "[true,true]"
+    },
+    {
+      "name": "reduce: the field anchor sits on the card edge and is decoration",
+      "ok": true,
+      "detail": "[[true,true],[true,true]]"
+    },
+    {
+      "name": "REDUCED: nothing runs on the role cards",
+      "ok": true,
+      "detail": "[0,0]"
+    },
+    {
+      "name": "reduce: no page errors",
+      "ok": true,
+      "detail": ""
+    }
+  ],
+  "passed": 11,
+  "total": 11,
+  "identity": {
+    "pools": {
+      "textIdentical": true,
+      "contractIdentical": true
+    },
+    "roleCards": {
+      "textIdentical": true,
+      "contractIdentical": true
+    }
+  },
+  "clearance": "selector-proof cosmos checks 4/4: tallest card 88 / 98 px unchanged, >= 41 px above the footer",
+  "panelProof": "24/24",
+  "ssr": "test/career/job-pool + job-field-static: 13 files / 89 tests"
+}

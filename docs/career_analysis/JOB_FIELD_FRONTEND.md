@@ -789,6 +789,24 @@ Proof: `evidence/job-pool/semiotic-transfer/polish/` (before / after sheets for 
 large pool; `polish-text-identity.json`; `selector-proof.json` 25 / 25; `brand-proof.json` 20 / 20; `panel-proof.json` 24 / 24;
 `selector-sweep-check.json`; PINK walk report).
 
+#### 13.2.10 Local pass: pools panel and role cards (owner "Small field. Local recursion.", GO 2026-10-13)
+
+On b156364. Local field: the pools panel (`job-pool-list`) and the role-card satellites of the organization cosmos; nothing else
+touched. Visual only; texts, ids, data attributes, states, interaction and orbit geometry unchanged.
+
+- **Pools.** One conduction line (the panel's spine) carries every upload as a node; the selected upload is the lit, breathing node
+  (`atmosphereGlow`, LIVE only) and the one lit row; other rows are unframed and react on hover. Each row on a grid: name, action
+  chip (one aligned column, 84 px), the meta line across the full width on one line.
+- **Role cards.** A precise 14 px radius and an inner hairline; the level line staggered (ROLE in cyan, the seniority softer), the
+  requirement count weighted in the metric line; a field anchor — a lamp with a short conduction stub on the card edge where the
+  tether from the centre arrives (recomputed with the orbit, placed in percent so it is always on the edge); a calm light reaction
+  on hover. Card height unchanged (tallest 88 / 98 px).
+
+Proof (local only): `evidence/job-pool/semiotic-transfer/local-pools-roles/` — text and contract of both zones identical to b156364;
+11 local checks (pointer ownership at every card centre, anchor on the edge and decorative, meta on one line, pools motion names,
+nothing in REDUCED); the directly touched existing proofs: role-card clearance 4 / 4, panel proof 24 / 24 (keyboard selection),
+Job Pool SSR 13 files / 89. No full sweep (owner rule for this pass).
+
 ### 13.3 DOM contract (PINK BR-1 … BR-5; GELB conditions a/b)
 
 **BR-1 field root** `data-testid="syntx-field"`: `data-field-grammar="SYNTX_FIELD_V1"`, `data-observation-kind` FIELD|ORGANIZATION|ROLE|REQUIREMENT
@@ -942,3 +960,4 @@ observation point. Readable labels wrap at word boundaries (`wrapLines`), never 
 | 2026-10-13 | Decision Loop Labs brand core (owner "ONE FIELD GRAMMAR. NEW BRAND CORE.", on a047f53; visual only, GREEN only, isolated lab) | §13.2.7: the DLL mark as field light in the pool core's lens, the Job Field header as Decision Loop Labs (Capability header unchanged), a static brand grid and registration frame, slight teal calibration; O-DLL-SCOPE open. Evidence: `evidence/job-pool/semiotic-transfer/brand-core/` | tsc 0; Capability renders 366 / 374 byte-identical, 374 / 374 after removing the selector and shell markers (unchanged against a047f53); unit / SSR / governance / sealed SIL / Capability batch 32 files / 193 (one new SSR test for the brand surface); workflow e2e 10/10; PINK walk with the proposed rebinding 3/3 (report under brand-core/pink-walk-proposal; the walk caught a first header test id under the retired `job-field…` prefix, renamed to `shell-brand-dll`); brand proof 20 / 20; selector proof 25 / 25 |
 | 2026-10-13 | Four panels (owner "FOUR PANELS. CLEARER SIGNAL.", on 00299f5; visual only, GREEN only, isolated lab) | §13.2.8: Job Field panel material for pools, intake and boundary (glass, edge current, breathing aura, field node), boundary in four sections with chips and ruled statements, pools as row cards with a lit selection, intake wells and action chip, selector membrane and contrast. Evidence: `evidence/job-pool/semiotic-transfer/panels/` | tsc 0; Capability renders 366 / 374 byte-identical, 374 / 374 shell-normalized; batch 32 files / 193; panel text and contract identical before / after; panel proof 24 / 24; workflow e2e and PINK walk run on the following polish pass (same tree plus the polish) |
 | 2026-10-13 | Visual polish pass (owner "FEINSTUFE / VISUAL POLISH PASS", on d79d4f8; visual only, GREEN only, isolated lab) | §13.2.9: selector balance, loop link and field-change light; role cards as semantic carriers; opaque cosmos centre (ghost text gone) and body micro-typography; edge vignette. Evidence: `evidence/job-pool/semiotic-transfer/polish/` | tsc 0; Capability renders 366 / 374 byte-identical, 374 / 374 shell-normalized; batch 32 files / 193; workflow e2e 10/10; PINK walk with the proposed rebinding 3/3 (covers d79d4f8 too; teardown could not terminate a transient superuser backend, the run's own disposable DB was then dropped with the verifying helper); selector proof 25 / 25; brand proof 20 / 20; panel proof 24 / 24; text and contract identity |
+| 2026-10-13 | Local pass: pools panel and role cards (owner "Small field. Local recursion.", on b156364; visual only, isolated lab) | §13.2.10: pools spine with nodes, grid rows, aligned action chips; role cards with staggered level line, weighted count, edge field anchor. Evidence: `evidence/job-pool/semiotic-transfer/local-pools-roles/` | tsc 0; local proof 11 / 11; text and contract identity of both zones; role-card clearance 4 / 4; panel proof 24 / 24; Job Pool SSR 13 / 89 (no full sweep by owner rule) |
