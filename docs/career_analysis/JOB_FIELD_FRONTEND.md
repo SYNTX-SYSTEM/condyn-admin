@@ -822,6 +822,20 @@ Proof (local only): `evidence/job-pool/semiotic-transfer/local-orientation/orien
 overlap with the open pools panel at FIELD, ORGANIZATION and REQUIREMENT; path step, RETURN, exit and Enter on an action behave),
 text, contract and tab order identical to aa33ddf (code marker verified for both reads); field SSR test 8 / 8.
 
+#### 13.2.12 Local pass: quiet panel glow and the boundary layers (owner "Small field. Local recursion.", GO 2026-10-13)
+
+On 801b778. Local field: the three panels (pools, intake, boundary) and the orientation surface. The panels' life is slower and
+quieter: the aura breathes over 16 s (was 12 s) with a wider, softer glow, the edge current runs every 18 s (was 11 s) at lower
+light, the node lamp breathes over 10 s (was 7 s); a finer membrane (inner hairline, lit left edge). The orientation surface gains a
+static aura and membrane and a static field node with a hairline into the field — no infinite motion there (R15: it is always
+visible). The boundary groups its statements in four layers (presentation, canonical mapping, sweep, gaps), each a quiet glass
+with its semantic rail (amber for authority, azure for the sweep, neutral for gaps); the statements inside are set at 12.5 px
+without a second rule. Texts, ids, attributes, tab order, click and keyboard behaviour unchanged.
+
+Proof (local only): `evidence/job-pool/semiotic-transfer/local-glow-boundary/local-proof.json` — text and contract of all four panels
+and of the orientation surface (with tab order, FIELD / ORGANIZATION / REQUIREMENT) identical to 801b778 (code marker verified);
+orientation proof 48 / 48; panel proof 24 / 24 (motion names, nothing in REDUCED, no overlap, keyboard selection).
+
 ### 13.3 DOM contract (PINK BR-1 … BR-5; GELB conditions a/b)
 
 **BR-1 field root** `data-testid="syntx-field"`: `data-field-grammar="SYNTX_FIELD_V1"`, `data-observation-kind` FIELD|ORGANIZATION|ROLE|REQUIREMENT
@@ -977,3 +991,4 @@ observation point. Readable labels wrap at word boundaries (`wrapLines`), never 
 | 2026-10-13 | Visual polish pass (owner "FEINSTUFE / VISUAL POLISH PASS", on d79d4f8; visual only, GREEN only, isolated lab) | §13.2.9: selector balance, loop link and field-change light; role cards as semantic carriers; opaque cosmos centre (ghost text gone) and body micro-typography; edge vignette. Evidence: `evidence/job-pool/semiotic-transfer/polish/` | tsc 0; Capability renders 366 / 374 byte-identical, 374 / 374 shell-normalized; batch 32 files / 193; workflow e2e 10/10; PINK walk with the proposed rebinding 3/3 (covers d79d4f8 too; teardown could not terminate a transient superuser backend, the run's own disposable DB was then dropped with the verifying helper); selector proof 25 / 25; brand proof 20 / 20; panel proof 24 / 24; text and contract identity |
 | 2026-10-13 | Local pass: pools panel and role cards (owner "Small field. Local recursion.", on b156364; visual only, isolated lab) | §13.2.10: pools spine with nodes, grid rows, aligned action chips; role cards with staggered level line, weighted count, edge field anchor. Evidence: `evidence/job-pool/semiotic-transfer/local-pools-roles/` | tsc 0; local proof 11 / 11; text and contract identity of both zones; role-card clearance 4 / 4; panel proof 24 / 24; Job Pool SSR 13 / 89 (no full sweep by owner rule) |
 | 2026-10-13 | Local pass: orientation surface (owner "Small field. Local recursion.", on aa33ddf; visual only, isolated lab) | §13.2.11: the top-left orientation surface as a lit glass with five layers, path rail, state chip, key caps, action chips; one finite context light. Evidence: `evidence/job-pool/semiotic-transfer/local-orientation/` | tsc 0; local proof 48 / 48; text, contract and tab order identical; field SSR 8 / 8 (no full sweep by owner rule) |
+| 2026-10-13 | Local pass: quiet panel glow and boundary layers (owner "Small field. Local recursion.", on 801b778; visual only, isolated lab) | §13.2.12: slower, softer panel aura and edge current, finer membrane; orientation aura and static field node; boundary in four layered groups with semantic rails. Evidence: `evidence/job-pool/semiotic-transfer/local-glow-boundary/` | tsc 0; text, contract and tab order identical; orientation proof 48 / 48; panel proof 24 / 24 (no full sweep by owner rule) |
