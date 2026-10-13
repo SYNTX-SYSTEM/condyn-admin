@@ -1,0 +1,1261 @@
+{
+  "pool": {
+    "id": "pool_dll_engineering_v1",
+    "name": "DLL Engineering & Architecture Pool",
+    "description": "Decision Loop Labs test pool: software engineering, architecture, platform, security and engineering leadership roles at three fictitious organizations (logistics SaaS, hospital IT, payments).",
+    "version": 1,
+    "status": "ACTIVE",
+    "created_at": "2026-10-13T00:00:00.000Z"
+  },
+  "organizations": [
+    {
+      "id": "org_kestrel",
+      "pool_id": "pool_dll_engineering_v1",
+      "org_id": "kestrel",
+      "name": "Kestrel Logistics Software GmbH",
+      "country_iso": "DE",
+      "region": "Hamburg",
+      "industry": "Logistics SaaS",
+      "scale": "Scaleup (400+)",
+      "description": "Builds a multi-tenant orchestration platform for mid-sized freight forwarders: route planning, dock scheduling, live shipment tracking and carrier settlement. Roughly 60 engineers in six product teams; TypeScript front to back, event-driven services on Kubernetes, customers in twelve European countries."
+    },
+    {
+      "id": "org_aurelion",
+      "pool_id": "pool_dll_engineering_v1",
+      "org_id": "aurelion",
+      "name": "Aurelion Health Systems AG",
+      "country_iso": "CH",
+      "region": "Zurich",
+      "industry": "Hospital Information Systems",
+      "scale": "Enterprise (3k+)",
+      "description": "Supplies clinical information systems to hospital groups in Switzerland, Germany and Austria: electronic patient records, medication management and interoperability gateways. Regulated software (MDR class IIa components), long-lived Java and .NET estates being modernised towards a service platform."
+    },
+    {
+      "id": "org_brightwater",
+      "pool_id": "pool_dll_engineering_v1",
+      "org_id": "brightwater",
+      "name": "Brightwater Payments B.V.",
+      "country_iso": "NL",
+      "region": "Amsterdam",
+      "industry": "Payments / Fintech",
+      "scale": "Scaleup (900+)",
+      "description": "Licensed payment institution processing card and account-to-account payments for e-commerce merchants across the EU. Runs a double-entry ledger, a risk engine and merchant-facing APIs with 99.99 % availability targets on AWS, under DORA and PCI DSS obligations."
+    }
+  ],
+  "roles": [
+    {
+      "id": "role_kestrel_fullstack",
+      "pool_id": "pool_dll_engineering_v1",
+      "organization_id": "org_kestrel",
+      "title": "Senior Full-Stack Engineer – Shipment Tracking",
+      "seniority": "Senior / L4",
+      "domain_focus": "Web Platforms",
+      "description": "Kestrel's tracking team owns the live shipment view that dispatchers and end customers use around the clock. You build features end to end: a React and TypeScript front end with map visualisation, Node.js services that consume carrier telematics events from Kafka, and the PostgreSQL read models behind them. Typical work includes designing a new exception-handling flow for delayed loads, reducing the time-to-first-position for new shipments, and hardening the public tracking link against abuse. You pair with product design on interaction details, write the tests that keep releases boring, and take part in a one-week-in-six on-call rotation. We expect several years of production web development, comfort across the stack, and the judgement to keep a growing codebase understandable for the next engineer."
+    },
+    {
+      "id": "role_kestrel_frontend_architect",
+      "pool_id": "pool_dll_engineering_v1",
+      "organization_id": "org_kestrel",
+      "title": "Frontend Architect",
+      "seniority": "Staff / L5",
+      "domain_focus": "Frontend Architecture",
+      "description": "Six product teams contribute to one dispatcher application that has grown to 400k lines of TypeScript. As Frontend Architect you define how it evolves: module boundaries and a micro-frontend or modular-monolith strategy, the shared design system, performance budgets for low-end warehouse terminals, and accessibility conformance for public-sector customers. You write architecture decision records, review the hardest pull requests, build proofs of concept before teams commit, and coach senior engineers. You do not manage people but you are accountable for the technical health of the front end and for a migration plan away from a legacy Angular module that still handles carrier settlement."
+    },
+    {
+      "id": "role_kestrel_engineering_lead",
+      "pool_id": "pool_dll_engineering_v1",
+      "organization_id": "org_kestrel",
+      "title": "Engineering Lead – Routing Platform",
+      "seniority": "Lead / M1",
+      "domain_focus": "Engineering Management",
+      "description": "The routing team (seven engineers, one product manager) owns the route optimisation service that plans 40,000 stops a day. As Engineering Lead you are responsible for the team's delivery and people: hiring, one-to-ones, growth plans and a healthy on-call. You stay technical enough to steer design reviews of the optimisation pipeline (a Go service wrapping an OR-Tools solver) and to challenge estimates, and you translate between dispatch operations and engineering when planning quality degrades. You set quarterly goals with product, report on reliability and delivery, and work with the other leads on cross-team architecture. Prior people leadership is expected; a background in backend or optimisation systems helps."
+    },
+    {
+      "id": "role_aurelion_principal_architect",
+      "pool_id": "pool_dll_engineering_v1",
+      "organization_id": "org_aurelion",
+      "title": "Principal Software Architect – Clinical Platform",
+      "seniority": "Principal / L6",
+      "domain_focus": "Enterprise Architecture",
+      "description": "Aurelion is consolidating three generations of clinical products (a Java EE patient record, a .NET medication module and newer Spring Boot services) into one clinical platform. The Principal Architect owns the target architecture and the roadmap to reach it: domain decomposition along clinical bounded contexts, an integration backbone, data ownership, and the non-functional envelope (availability for 24/7 wards, auditability, data residency per country). You chair the architecture board, work with regulatory affairs on how architecture choices affect MDR documentation, and guide twelve teams through the transition without disrupting hospitals in production. Expect to present to the executive board and to hospital CIOs, and to write the reference documentation others build on."
+    },
+    {
+      "id": "role_aurelion_security_engineer",
+      "pool_id": "pool_dll_engineering_v1",
+      "organization_id": "org_aurelion",
+      "title": "Security Engineer – Clinical Systems",
+      "seniority": "Senior / L4",
+      "domain_focus": "Application Security",
+      "description": "Hospitals are a target. In the product security team you protect Aurelion's clinical applications across their lifecycle: threat modelling new features with the teams, running and tuning SAST, dependency and container scanning in CI, coordinating penetration tests, and owning the vulnerability management process including customer advisories. You review authentication and authorisation designs (SAML and OIDC with hospital identity providers, break-glass access on wards), help teams fix findings rather than just reporting them, and contribute the security sections of the regulatory documentation. Occasional support of hospital security teams during incidents is part of the role."
+    },
+    {
+      "id": "role_aurelion_backend_interop",
+      "pool_id": "pool_dll_engineering_v1",
+      "organization_id": "org_aurelion",
+      "title": "Backend Engineer – Interoperability Gateway",
+      "seniority": "Mid / L3",
+      "domain_focus": "Backend Services",
+      "description": "The interoperability gateway connects Aurelion's patient record to laboratory systems, radiology, billing and national e-health services. As a backend engineer you build and maintain the gateway's Spring Boot services: mapping HL7 v2 messages to FHIR resources, implementing new interfaces for hospital customers, making message flows observable and replayable, and keeping throughput stable when a large hospital comes online. You will spend real time reading interface specifications and debugging message traces with customer integration teams. Clean, tested Java and an interest in healthcare data standards matter more than prior hospital experience."
+    },
+    {
+      "id": "role_brightwater_cloud_platform",
+      "pool_id": "pool_dll_engineering_v1",
+      "organization_id": "org_brightwater",
+      "title": "Cloud Platform Engineer",
+      "seniority": "Senior / L4",
+      "domain_focus": "Cloud Infrastructure",
+      "description": "The platform team provides Brightwater's 30 service teams with a paved road on AWS: multi-account landing zone, EKS clusters, networking with strict segmentation for the cardholder data environment, and self-service infrastructure modules. You design and code infrastructure in Terraform, operate Kubernetes at scale (cluster upgrades without merchant impact, autoscaling for peak sales days), build golden paths in our internal developer portal, and work with security and compliance on PCI DSS and DORA controls. You are on the platform on-call rotation and write the runbooks that make it calm."
+    },
+    {
+      "id": "role_brightwater_devops",
+      "pool_id": "pool_dll_engineering_v1",
+      "organization_id": "org_brightwater",
+      "title": "DevOps Engineer – Release & Reliability",
+      "seniority": "Mid / L3",
+      "domain_focus": "Delivery & Reliability",
+      "description": "Brightwater deploys more than 80 times a day while keeping payment authorisation available. In the release and reliability team you own the CI/CD system (GitHub Actions and Argo CD), progressive delivery with canaries and automatic rollback, and the observability stack (Prometheus, Grafana, OpenTelemetry). You define service level objectives with product teams, run game days, and improve incident tooling. Expect to automate toil away with scripts and small services, and to explain to engineers why a deployment was stopped."
+    },
+    {
+      "id": "role_brightwater_backend_ledger",
+      "pool_id": "pool_dll_engineering_v1",
+      "organization_id": "org_brightwater",
+      "title": "Backend Engineer – Ledger",
+      "seniority": "Senior / L4",
+      "domain_focus": "Financial Systems",
+      "description": "Every euro that moves through Brightwater is recorded in the ledger: a double-entry accounting service written in Kotlin on PostgreSQL, with strict consistency, auditability and reconciliation against banks and card schemes. You design ledger features such as multi-currency settlement and merchant reserves, keep posting latency low under peak load, and write the reconciliation jobs that finance relies on. Correctness beats cleverness here: you will reason about idempotency, transactional boundaries and failure modes, and document them so auditors can follow."
+    }
+  ],
+  "requirements": [
+    {
+      "id": "req_kestrel_fullstack_01",
+      "role_id": "role_kestrel_fullstack",
+      "capability_name": "TypeScript",
+      "domain": "Software Engineering",
+      "weight": 0.9,
+      "required_level": "L4 - Advanced",
+      "necessity": "REQUIRED",
+      "requirement_type": "TOOL_TECHNOLOGY",
+      "evidence_hint": "Production TypeScript code across front end and back end, e.g. typed domain models shared between client and services.",
+      "aliases": [
+        "TS"
+      ]
+    },
+    {
+      "id": "req_kestrel_fullstack_02",
+      "role_id": "role_kestrel_fullstack",
+      "capability_name": "React",
+      "domain": "Frontend",
+      "weight": 0.85,
+      "required_level": "L4 - Advanced",
+      "necessity": "REQUIRED",
+      "requirement_type": "TOOL_TECHNOLOGY",
+      "evidence_hint": "Shipped React applications with non-trivial state (real-time updates, optimistic UI), ideally with hooks and a component library.",
+      "aliases": [
+        "React.js",
+        "ReactJS"
+      ]
+    },
+    {
+      "id": "req_kestrel_fullstack_03",
+      "role_id": "role_kestrel_fullstack",
+      "capability_name": "Node.js",
+      "domain": "Backend",
+      "weight": 0.8,
+      "required_level": "L4 - Advanced",
+      "necessity": "REQUIRED",
+      "requirement_type": "TOOL_TECHNOLOGY",
+      "evidence_hint": "Node.js services in production: HTTP APIs, background consumers, error handling and graceful shutdown.",
+      "aliases": [
+        "NodeJS"
+      ]
+    },
+    {
+      "id": "req_kestrel_fullstack_04",
+      "role_id": "role_kestrel_fullstack",
+      "capability_name": "PostgreSQL",
+      "domain": "Data",
+      "weight": 0.65,
+      "required_level": "L3 - Proficient",
+      "necessity": "REQUIRED",
+      "requirement_type": "TOOL_TECHNOLOGY",
+      "evidence_hint": "Schema design, migrations and query tuning for a production PostgreSQL database.",
+      "aliases": [
+        "Postgres"
+      ]
+    },
+    {
+      "id": "req_kestrel_fullstack_05",
+      "role_id": "role_kestrel_fullstack",
+      "capability_name": "Event-Driven Architecture",
+      "domain": "Software Architecture",
+      "weight": 0.6,
+      "required_level": "L3 - Proficient",
+      "necessity": "PREFERRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Consumers or producers on Kafka or a comparable broker; idempotency and ordering concerns handled in practice.",
+      "aliases": [
+        "Kafka",
+        "Event Streaming"
+      ]
+    },
+    {
+      "id": "req_kestrel_fullstack_06",
+      "role_id": "role_kestrel_fullstack",
+      "capability_name": "Automated Testing",
+      "domain": "Quality Engineering",
+      "weight": 0.7,
+      "required_level": "L4 - Advanced",
+      "necessity": "REQUIRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Test suites you wrote: unit, integration and end-to-end (e.g. Playwright, Jest, Vitest) that run in CI.",
+      "aliases": [
+        "Test Automation",
+        "Unit Testing"
+      ]
+    },
+    {
+      "id": "req_kestrel_fullstack_07",
+      "role_id": "role_kestrel_fullstack",
+      "capability_name": "Geospatial Visualisation",
+      "domain": "Frontend",
+      "weight": 0.3,
+      "required_level": "L2 - Working",
+      "necessity": "OPTIONAL",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Maps with live markers or route overlays (Mapbox GL, Leaflet, deck.gl).",
+      "aliases": [
+        "Map Rendering",
+        "Mapbox"
+      ]
+    },
+    {
+      "id": "req_kestrel_fullstack_08",
+      "role_id": "role_kestrel_fullstack",
+      "capability_name": "Web Platform Engineering",
+      "domain": "Software Engineering",
+      "weight": 0.75,
+      "required_level": "5+ years",
+      "necessity": "REQUIRED",
+      "requirement_type": "EXPERIENCE",
+      "evidence_hint": "At least five years building and operating web products in production, visible in roles or projects."
+    },
+    {
+      "id": "req_kestrel_fullstack_09",
+      "role_id": "role_kestrel_fullstack",
+      "capability_name": "English",
+      "domain": "Communication",
+      "weight": 0.4,
+      "required_level": "C1",
+      "necessity": "REQUIRED",
+      "requirement_type": "LANGUAGE",
+      "evidence_hint": "Working language of the engineering organisation; documentation and reviews in English."
+    },
+    {
+      "id": "req_kestrel_frontend_architect_01",
+      "role_id": "role_kestrel_frontend_architect",
+      "capability_name": "Frontend Architecture",
+      "domain": "Software Architecture",
+      "weight": 0.95,
+      "required_level": "L5 - Expert",
+      "necessity": "REQUIRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Architecture ownership of a large single-page application: module boundaries, build tooling, migration strategy; ADRs or design docs.",
+      "aliases": [
+        "Front-End Architecture",
+        "Web Architecture"
+      ]
+    },
+    {
+      "id": "req_kestrel_frontend_architect_02",
+      "role_id": "role_kestrel_frontend_architect",
+      "capability_name": "TypeScript",
+      "domain": "Software Engineering",
+      "weight": 0.85,
+      "required_level": "L5 - Expert",
+      "necessity": "REQUIRED",
+      "requirement_type": "TOOL_TECHNOLOGY",
+      "evidence_hint": "Deep TypeScript: generics, strict mode across a large codebase, typed APIs between teams.",
+      "aliases": [
+        "TS"
+      ]
+    },
+    {
+      "id": "req_kestrel_frontend_architect_03",
+      "role_id": "role_kestrel_frontend_architect",
+      "capability_name": "React",
+      "domain": "Frontend",
+      "weight": 0.8,
+      "required_level": "L5 - Expert",
+      "necessity": "REQUIRED",
+      "requirement_type": "TOOL_TECHNOLOGY",
+      "evidence_hint": "Expert React including rendering performance, concurrent features and state architecture.",
+      "aliases": [
+        "React.js"
+      ]
+    },
+    {
+      "id": "req_kestrel_frontend_architect_04",
+      "role_id": "role_kestrel_frontend_architect",
+      "capability_name": "Design Systems",
+      "domain": "Frontend",
+      "weight": 0.7,
+      "required_level": "L4 - Advanced",
+      "necessity": "REQUIRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Built or led a shared component library used by several teams, with tokens, documentation and versioning.",
+      "aliases": [
+        "Component Library",
+        "UI Kit"
+      ]
+    },
+    {
+      "id": "req_kestrel_frontend_architect_05",
+      "role_id": "role_kestrel_frontend_architect",
+      "capability_name": "Web Performance Optimization",
+      "domain": "Frontend",
+      "weight": 0.6,
+      "required_level": "L4 - Advanced",
+      "necessity": "PREFERRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Measured and improved load and runtime performance (bundle splitting, profiling, Web Vitals budgets).",
+      "aliases": [
+        "Core Web Vitals",
+        "Frontend Performance"
+      ]
+    },
+    {
+      "id": "req_kestrel_frontend_architect_06",
+      "role_id": "role_kestrel_frontend_architect",
+      "capability_name": "Web Accessibility",
+      "domain": "Frontend",
+      "weight": 0.5,
+      "required_level": "L3 - Proficient",
+      "necessity": "PREFERRED",
+      "requirement_type": "KNOWLEDGE",
+      "evidence_hint": "WCAG 2.1 AA conformance work, audits or accessible component patterns.",
+      "aliases": [
+        "WCAG",
+        "a11y"
+      ]
+    },
+    {
+      "id": "req_kestrel_frontend_architect_07",
+      "role_id": "role_kestrel_frontend_architect",
+      "capability_name": "Micro-Frontends",
+      "domain": "Software Architecture",
+      "weight": 0.35,
+      "required_level": "L3 - Proficient",
+      "necessity": "OPTIONAL",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Module federation, independently deployable front-end modules or a documented decision against them.",
+      "aliases": [
+        "Module Federation"
+      ]
+    },
+    {
+      "id": "req_kestrel_frontend_architect_08",
+      "role_id": "role_kestrel_frontend_architect",
+      "capability_name": "Angular",
+      "domain": "Frontend",
+      "weight": 0.25,
+      "required_level": "L2 - Working",
+      "necessity": "OPTIONAL",
+      "requirement_type": "TOOL_TECHNOLOGY",
+      "evidence_hint": "Enough Angular to plan and execute an incremental migration out of a legacy module.",
+      "aliases": [
+        "AngularJS"
+      ]
+    },
+    {
+      "id": "req_kestrel_frontend_architect_09",
+      "role_id": "role_kestrel_frontend_architect",
+      "capability_name": "Technical Mentoring",
+      "domain": "Leadership",
+      "weight": 0.55,
+      "required_level": "Demonstrated with senior engineers",
+      "necessity": "REQUIRED",
+      "requirement_type": "BEHAVIORAL_EXPECTATION",
+      "evidence_hint": "Mentoring, pairing or review culture you shaped; talks, internal guilds or coaching records.",
+      "aliases": [
+        "Mentoring",
+        "Coaching"
+      ]
+    },
+    {
+      "id": "req_kestrel_frontend_architect_10",
+      "role_id": "role_kestrel_frontend_architect",
+      "capability_name": "Frontend Engineering",
+      "domain": "Software Engineering",
+      "weight": 0.6,
+      "required_level": "8+ years",
+      "necessity": "REQUIRED",
+      "requirement_type": "EXPERIENCE",
+      "evidence_hint": "Eight or more years of professional front-end work including at least one architecture-level role."
+    },
+    {
+      "id": "req_kestrel_engineering_lead_01",
+      "role_id": "role_kestrel_engineering_lead",
+      "capability_name": "Engineering Team Leadership",
+      "domain": "Leadership",
+      "weight": 0.9,
+      "required_level": "2+ years leading a team of 5+",
+      "necessity": "REQUIRED",
+      "requirement_type": "EXPERIENCE",
+      "evidence_hint": "Two or more years leading an engineering team, including hiring and performance conversations.",
+      "aliases": [
+        "Engineering Management",
+        "Team Lead"
+      ]
+    },
+    {
+      "id": "req_kestrel_engineering_lead_02",
+      "role_id": "role_kestrel_engineering_lead",
+      "capability_name": "Agile Delivery",
+      "domain": "Delivery",
+      "weight": 0.6,
+      "required_level": "L4 - Advanced",
+      "necessity": "REQUIRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Ran planning, delivery tracking and retrospectives; can show how throughput or predictability improved.",
+      "aliases": [
+        "Scrum",
+        "Kanban"
+      ]
+    },
+    {
+      "id": "req_kestrel_engineering_lead_03",
+      "role_id": "role_kestrel_engineering_lead",
+      "capability_name": "Go",
+      "domain": "Backend",
+      "weight": 0.5,
+      "required_level": "L3 - Proficient",
+      "necessity": "PREFERRED",
+      "requirement_type": "TOOL_TECHNOLOGY",
+      "evidence_hint": "Go services you wrote or reviewed in production.",
+      "aliases": [
+        "Golang"
+      ]
+    },
+    {
+      "id": "req_kestrel_engineering_lead_04",
+      "role_id": "role_kestrel_engineering_lead",
+      "capability_name": "Mathematical Optimization",
+      "domain": "Algorithms",
+      "weight": 0.45,
+      "required_level": "L2 - Working",
+      "necessity": "PREFERRED",
+      "requirement_type": "KNOWLEDGE",
+      "evidence_hint": "Exposure to vehicle routing, linear programming or constraint solvers such as OR-Tools.",
+      "aliases": [
+        "Operations Research",
+        "OR-Tools",
+        "Vehicle Routing"
+      ]
+    },
+    {
+      "id": "req_kestrel_engineering_lead_05",
+      "role_id": "role_kestrel_engineering_lead",
+      "capability_name": "System Design",
+      "domain": "Software Architecture",
+      "weight": 0.7,
+      "required_level": "L4 - Advanced",
+      "necessity": "REQUIRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Led design reviews for backend services; can explain trade-offs in a past design.",
+      "aliases": [
+        "Distributed Systems Design"
+      ]
+    },
+    {
+      "id": "req_kestrel_engineering_lead_06",
+      "role_id": "role_kestrel_engineering_lead",
+      "capability_name": "Incident Management",
+      "domain": "Reliability",
+      "weight": 0.5,
+      "required_level": "L3 - Proficient",
+      "necessity": "REQUIRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Owned incidents and blameless postmortems; improved an on-call rotation.",
+      "aliases": [
+        "On-Call",
+        "Postmortems"
+      ]
+    },
+    {
+      "id": "req_kestrel_engineering_lead_07",
+      "role_id": "role_kestrel_engineering_lead",
+      "capability_name": "Stakeholder Management",
+      "domain": "Leadership",
+      "weight": 0.55,
+      "required_level": "Regular work with operations and product",
+      "necessity": "REQUIRED",
+      "requirement_type": "BEHAVIORAL_EXPECTATION",
+      "evidence_hint": "Examples of aligning operations, product and engineering on priorities or trade-offs."
+    },
+    {
+      "id": "req_kestrel_engineering_lead_08",
+      "role_id": "role_kestrel_engineering_lead",
+      "capability_name": "Logistics Domain",
+      "domain": "Domain",
+      "weight": 0.3,
+      "required_level": "Familiarity with transport planning",
+      "necessity": "OPTIONAL",
+      "requirement_type": "DOMAIN_CONTEXT",
+      "evidence_hint": "Work for a carrier, forwarder or logistics software vendor.",
+      "aliases": [
+        "Transport Logistics",
+        "Freight"
+      ]
+    },
+    {
+      "id": "req_kestrel_engineering_lead_09",
+      "role_id": "role_kestrel_engineering_lead",
+      "capability_name": "German",
+      "domain": "Communication",
+      "weight": 0.3,
+      "required_level": "B2",
+      "necessity": "PREFERRED",
+      "requirement_type": "LANGUAGE",
+      "evidence_hint": "Day-to-day contact with German-speaking dispatch customers."
+    },
+    {
+      "id": "req_aurelion_principal_architect_01",
+      "role_id": "role_aurelion_principal_architect",
+      "capability_name": "Software Architecture",
+      "domain": "Software Architecture",
+      "weight": 1.0,
+      "required_level": "L6 - Authority",
+      "necessity": "REQUIRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Architecture authority for a multi-team product: target architecture, roadmap and documented decisions.",
+      "aliases": [
+        "Solution Architecture",
+        "System Architecture"
+      ]
+    },
+    {
+      "id": "req_aurelion_principal_architect_02",
+      "role_id": "role_aurelion_principal_architect",
+      "capability_name": "Domain-Driven Design",
+      "domain": "Software Architecture",
+      "weight": 0.8,
+      "required_level": "L5 - Expert",
+      "necessity": "REQUIRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Applied strategic DDD (context mapping, bounded contexts) in a real decomposition.",
+      "aliases": [
+        "DDD",
+        "Bounded Contexts"
+      ]
+    },
+    {
+      "id": "req_aurelion_principal_architect_03",
+      "role_id": "role_aurelion_principal_architect",
+      "capability_name": "Legacy Modernization",
+      "domain": "Software Architecture",
+      "weight": 0.75,
+      "required_level": "L5 - Expert",
+      "necessity": "REQUIRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Led migration of a long-lived monolith; strangler or incremental replacement with production evidence.",
+      "aliases": [
+        "Strangler Fig",
+        "Application Modernisation"
+      ]
+    },
+    {
+      "id": "req_aurelion_principal_architect_04",
+      "role_id": "role_aurelion_principal_architect",
+      "capability_name": "Java",
+      "domain": "Backend",
+      "weight": 0.5,
+      "required_level": "L4 - Advanced",
+      "necessity": "PREFERRED",
+      "requirement_type": "TOOL_TECHNOLOGY",
+      "evidence_hint": "Hands-on Java depth sufficient to review designs and code in Spring or Java EE estates.",
+      "aliases": [
+        "Spring Boot",
+        "Java EE"
+      ]
+    },
+    {
+      "id": "req_aurelion_principal_architect_05",
+      "role_id": "role_aurelion_principal_architect",
+      "capability_name": "Integration Architecture",
+      "domain": "Software Architecture",
+      "weight": 0.7,
+      "required_level": "L5 - Expert",
+      "necessity": "REQUIRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Designed an integration backbone (APIs, messaging, gateways) across many systems.",
+      "aliases": [
+        "Enterprise Integration",
+        "API Strategy"
+      ]
+    },
+    {
+      "id": "req_aurelion_principal_architect_06",
+      "role_id": "role_aurelion_principal_architect",
+      "capability_name": "Healthcare Interoperability Standards",
+      "domain": "Healthcare IT",
+      "weight": 0.55,
+      "required_level": "L3 - Proficient",
+      "necessity": "PREFERRED",
+      "requirement_type": "KNOWLEDGE",
+      "evidence_hint": "Worked with HL7 v2, FHIR or IHE profiles; can explain their architectural impact.",
+      "aliases": [
+        "HL7 FHIR",
+        "HL7 v2",
+        "IHE"
+      ]
+    },
+    {
+      "id": "req_aurelion_principal_architect_07",
+      "role_id": "role_aurelion_principal_architect",
+      "capability_name": "Medical Device Regulation",
+      "domain": "Regulatory",
+      "weight": 0.45,
+      "required_level": "L3 - Proficient",
+      "necessity": "PREFERRED",
+      "requirement_type": "KNOWLEDGE",
+      "evidence_hint": "Contributed architecture artefacts to a regulated software lifecycle (IEC 62304, MDR technical documentation).",
+      "aliases": [
+        "MDR",
+        "IEC 62304"
+      ]
+    },
+    {
+      "id": "req_aurelion_principal_architect_08",
+      "role_id": "role_aurelion_principal_architect",
+      "capability_name": "Architecture Governance",
+      "domain": "Leadership",
+      "weight": 0.6,
+      "required_level": "Chairing or running an architecture board",
+      "necessity": "REQUIRED",
+      "requirement_type": "RESPONSIBILITY",
+      "evidence_hint": "Ran architecture reviews or a board; standards, exceptions and their follow-up.",
+      "aliases": [
+        "Architecture Board"
+      ]
+    },
+    {
+      "id": "req_aurelion_principal_architect_09",
+      "role_id": "role_aurelion_principal_architect",
+      "capability_name": "Enterprise Software Architecture",
+      "domain": "Software Architecture",
+      "weight": 0.65,
+      "required_level": "12+ years in software, 5+ as architect",
+      "necessity": "REQUIRED",
+      "requirement_type": "EXPERIENCE",
+      "evidence_hint": "Long track record ending in architect roles with company-wide scope."
+    },
+    {
+      "id": "req_aurelion_principal_architect_10",
+      "role_id": "role_aurelion_principal_architect",
+      "capability_name": "German",
+      "domain": "Communication",
+      "weight": 0.45,
+      "required_level": "C1",
+      "necessity": "REQUIRED",
+      "requirement_type": "LANGUAGE",
+      "evidence_hint": "Board and customer communication with German-speaking hospital groups."
+    },
+    {
+      "id": "req_aurelion_security_engineer_01",
+      "role_id": "role_aurelion_security_engineer",
+      "capability_name": "Application Security",
+      "domain": "Security",
+      "weight": 0.9,
+      "required_level": "L4 - Advanced",
+      "necessity": "REQUIRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Owned AppSec activities for products: secure design reviews, finding triage, developer guidance.",
+      "aliases": [
+        "AppSec",
+        "Secure Software Development"
+      ]
+    },
+    {
+      "id": "req_aurelion_security_engineer_02",
+      "role_id": "role_aurelion_security_engineer",
+      "capability_name": "Threat Modeling",
+      "domain": "Security",
+      "weight": 0.75,
+      "required_level": "L4 - Advanced",
+      "necessity": "REQUIRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Facilitated threat models (e.g. STRIDE, attack trees) with development teams; artefacts or write-ups.",
+      "aliases": [
+        "STRIDE",
+        "Threat Modelling"
+      ]
+    },
+    {
+      "id": "req_aurelion_security_engineer_03",
+      "role_id": "role_aurelion_security_engineer",
+      "capability_name": "Identity and Access Management",
+      "domain": "Security",
+      "weight": 0.7,
+      "required_level": "L4 - Advanced",
+      "necessity": "REQUIRED",
+      "requirement_type": "KNOWLEDGE",
+      "evidence_hint": "Designed or reviewed SSO and authorisation with OIDC/SAML; break-glass or emergency access patterns are a plus.",
+      "aliases": [
+        "OIDC",
+        "SAML",
+        "OAuth 2.0"
+      ]
+    },
+    {
+      "id": "req_aurelion_security_engineer_04",
+      "role_id": "role_aurelion_security_engineer",
+      "capability_name": "Vulnerability Management",
+      "domain": "Security",
+      "weight": 0.6,
+      "required_level": "L3 - Proficient",
+      "necessity": "REQUIRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Ran a vulnerability intake-to-fix process including customer communication or advisories.",
+      "aliases": [
+        "CVE Management",
+        "Security Advisories"
+      ]
+    },
+    {
+      "id": "req_aurelion_security_engineer_05",
+      "role_id": "role_aurelion_security_engineer",
+      "capability_name": "DevSecOps Tooling",
+      "domain": "Security",
+      "weight": 0.5,
+      "required_level": "L3 - Proficient",
+      "necessity": "PREFERRED",
+      "requirement_type": "TOOL_TECHNOLOGY",
+      "evidence_hint": "Integrated scanners into CI pipelines and reduced noise to actionable findings.",
+      "aliases": [
+        "SAST",
+        "Dependency Scanning",
+        "Trivy",
+        "Semgrep"
+      ]
+    },
+    {
+      "id": "req_aurelion_security_engineer_06",
+      "role_id": "role_aurelion_security_engineer",
+      "capability_name": "Penetration Testing",
+      "domain": "Security",
+      "weight": 0.45,
+      "required_level": "L3 - Proficient",
+      "necessity": "PREFERRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Performed or coordinated penetration tests; findings reports you authored or acted on.",
+      "aliases": [
+        "Pentesting"
+      ]
+    },
+    {
+      "id": "req_aurelion_security_engineer_07",
+      "role_id": "role_aurelion_security_engineer",
+      "capability_name": "Security Certification",
+      "domain": "Security",
+      "weight": 0.3,
+      "required_level": "OSCP, CSSLP or comparable",
+      "necessity": "OPTIONAL",
+      "requirement_type": "CREDENTIAL",
+      "evidence_hint": "A recognised security certification.",
+      "aliases": [
+        "OSCP",
+        "CSSLP",
+        "CISSP"
+      ]
+    },
+    {
+      "id": "req_aurelion_security_engineer_08",
+      "role_id": "role_aurelion_security_engineer",
+      "capability_name": "Healthcare Security Context",
+      "domain": "Domain",
+      "weight": 0.3,
+      "required_level": "Hospital or regulated health IT",
+      "necessity": "OPTIONAL",
+      "requirement_type": "DOMAIN_CONTEXT",
+      "evidence_hint": "Security work in hospitals, medical devices or regulated health software.",
+      "aliases": [
+        "Health IT Security"
+      ]
+    },
+    {
+      "id": "req_aurelion_backend_interop_01",
+      "role_id": "role_aurelion_backend_interop",
+      "capability_name": "Java",
+      "domain": "Backend",
+      "weight": 0.9,
+      "required_level": "L4 - Advanced",
+      "necessity": "REQUIRED",
+      "requirement_type": "TOOL_TECHNOLOGY",
+      "evidence_hint": "Production Java services with tests; modern Java versions.",
+      "aliases": [
+        "Java 17"
+      ]
+    },
+    {
+      "id": "req_aurelion_backend_interop_02",
+      "role_id": "role_aurelion_backend_interop",
+      "capability_name": "Spring Boot",
+      "domain": "Backend",
+      "weight": 0.75,
+      "required_level": "L3 - Proficient",
+      "necessity": "REQUIRED",
+      "requirement_type": "TOOL_TECHNOLOGY",
+      "evidence_hint": "Spring Boot applications you built or maintained.",
+      "aliases": [
+        "Spring",
+        "Spring Framework"
+      ]
+    },
+    {
+      "id": "req_aurelion_backend_interop_03",
+      "role_id": "role_aurelion_backend_interop",
+      "capability_name": "HL7 FHIR",
+      "domain": "Healthcare IT",
+      "weight": 0.6,
+      "required_level": "L2 - Working",
+      "necessity": "PREFERRED",
+      "requirement_type": "KNOWLEDGE",
+      "evidence_hint": "Exposure to FHIR resources or HL7 v2 messages, e.g. a mapping or an interface project.",
+      "aliases": [
+        "FHIR",
+        "HL7"
+      ]
+    },
+    {
+      "id": "req_aurelion_backend_interop_04",
+      "role_id": "role_aurelion_backend_interop",
+      "capability_name": "Message-Oriented Middleware",
+      "domain": "Backend",
+      "weight": 0.6,
+      "required_level": "L3 - Proficient",
+      "necessity": "REQUIRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Built consumers and producers on a message broker with retries and dead-letter handling.",
+      "aliases": [
+        "Messaging",
+        "RabbitMQ",
+        "JMS"
+      ]
+    },
+    {
+      "id": "req_aurelion_backend_interop_05",
+      "role_id": "role_aurelion_backend_interop",
+      "capability_name": "Data Mapping and Transformation",
+      "domain": "Data",
+      "weight": 0.55,
+      "required_level": "L3 - Proficient",
+      "necessity": "REQUIRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Mapping between data formats with validation and error reporting.",
+      "aliases": [
+        "Data Transformation",
+        "ETL"
+      ]
+    },
+    {
+      "id": "req_aurelion_backend_interop_06",
+      "role_id": "role_aurelion_backend_interop",
+      "capability_name": "Observability",
+      "domain": "Reliability",
+      "weight": 0.4,
+      "required_level": "L2 - Working",
+      "necessity": "PREFERRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Instrumented services with logs, metrics or traces and used them to debug production.",
+      "aliases": [
+        "Logging",
+        "Tracing",
+        "OpenTelemetry"
+      ]
+    },
+    {
+      "id": "req_aurelion_backend_interop_07",
+      "role_id": "role_aurelion_backend_interop",
+      "capability_name": "SQL",
+      "domain": "Data",
+      "weight": 0.45,
+      "required_level": "L3 - Proficient",
+      "necessity": "REQUIRED",
+      "requirement_type": "TOOL_TECHNOLOGY",
+      "evidence_hint": "Relational queries and schema work in production (Oracle, SQL Server or PostgreSQL).",
+      "aliases": [
+        "Relational Databases"
+      ]
+    },
+    {
+      "id": "req_aurelion_backend_interop_08",
+      "role_id": "role_aurelion_backend_interop",
+      "capability_name": "Backend Development",
+      "domain": "Software Engineering",
+      "weight": 0.5,
+      "required_level": "3+ years",
+      "necessity": "REQUIRED",
+      "requirement_type": "EXPERIENCE",
+      "evidence_hint": "Three or more years of professional backend development."
+    },
+    {
+      "id": "req_aurelion_backend_interop_09",
+      "role_id": "role_aurelion_backend_interop",
+      "capability_name": "German",
+      "domain": "Communication",
+      "weight": 0.2,
+      "required_level": "B1",
+      "necessity": "OPTIONAL",
+      "requirement_type": "LANGUAGE",
+      "evidence_hint": "Helpful for reading German interface specifications and customer tickets."
+    },
+    {
+      "id": "req_brightwater_cloud_platform_01",
+      "role_id": "role_brightwater_cloud_platform",
+      "capability_name": "Amazon Web Services",
+      "domain": "Cloud",
+      "weight": 0.9,
+      "required_level": "L4 - Advanced",
+      "necessity": "REQUIRED",
+      "requirement_type": "TOOL_TECHNOLOGY",
+      "evidence_hint": "Designed and operated production workloads on AWS: accounts, VPC networking, IAM, managed services.",
+      "aliases": [
+        "AWS"
+      ]
+    },
+    {
+      "id": "req_brightwater_cloud_platform_02",
+      "role_id": "role_brightwater_cloud_platform",
+      "capability_name": "Kubernetes",
+      "domain": "Cloud",
+      "weight": 0.85,
+      "required_level": "L4 - Advanced",
+      "necessity": "REQUIRED",
+      "requirement_type": "TOOL_TECHNOLOGY",
+      "evidence_hint": "Operated Kubernetes in production, including upgrades, autoscaling and multi-tenant concerns.",
+      "aliases": [
+        "K8s",
+        "EKS"
+      ]
+    },
+    {
+      "id": "req_brightwater_cloud_platform_03",
+      "role_id": "role_brightwater_cloud_platform",
+      "capability_name": "Terraform",
+      "domain": "Infrastructure as Code",
+      "weight": 0.8,
+      "required_level": "L4 - Advanced",
+      "necessity": "REQUIRED",
+      "requirement_type": "TOOL_TECHNOLOGY",
+      "evidence_hint": "Authored reusable Terraform modules with testing and versioning.",
+      "aliases": [
+        "Infrastructure as Code",
+        "IaC"
+      ]
+    },
+    {
+      "id": "req_brightwater_cloud_platform_04",
+      "role_id": "role_brightwater_cloud_platform",
+      "capability_name": "Cloud Network Security",
+      "domain": "Security",
+      "weight": 0.6,
+      "required_level": "L3 - Proficient",
+      "necessity": "REQUIRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Segmented networks for regulated workloads; security groups, private endpoints, egress control.",
+      "aliases": [
+        "Network Segmentation",
+        "VPC Design"
+      ]
+    },
+    {
+      "id": "req_brightwater_cloud_platform_05",
+      "role_id": "role_brightwater_cloud_platform",
+      "capability_name": "Internal Developer Platform",
+      "domain": "Platform Engineering",
+      "weight": 0.5,
+      "required_level": "L3 - Proficient",
+      "necessity": "PREFERRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Built self-service templates or a developer portal (e.g. Backstage) used by other teams.",
+      "aliases": [
+        "Backstage",
+        "Golden Paths"
+      ]
+    },
+    {
+      "id": "req_brightwater_cloud_platform_06",
+      "role_id": "role_brightwater_cloud_platform",
+      "capability_name": "Go",
+      "domain": "Software Engineering",
+      "weight": 0.3,
+      "required_level": "L2 - Working",
+      "necessity": "OPTIONAL",
+      "requirement_type": "TOOL_TECHNOLOGY",
+      "evidence_hint": "Go tooling, operators or controllers.",
+      "aliases": [
+        "Golang"
+      ]
+    },
+    {
+      "id": "req_brightwater_cloud_platform_07",
+      "role_id": "role_brightwater_cloud_platform",
+      "capability_name": "PCI DSS",
+      "domain": "Compliance",
+      "weight": 0.45,
+      "required_level": "L3 - Proficient",
+      "necessity": "PREFERRED",
+      "requirement_type": "KNOWLEDGE",
+      "evidence_hint": "Implemented or evidenced PCI DSS controls in infrastructure.",
+      "aliases": [
+        "Payment Card Industry Data Security Standard"
+      ]
+    },
+    {
+      "id": "req_brightwater_cloud_platform_08",
+      "role_id": "role_brightwater_cloud_platform",
+      "capability_name": "AWS Professional Certification",
+      "domain": "Cloud",
+      "weight": 0.25,
+      "required_level": "AWS Solutions Architect or DevOps Engineer – Professional",
+      "necessity": "OPTIONAL",
+      "requirement_type": "CREDENTIAL",
+      "evidence_hint": "A current AWS professional-level certification.",
+      "aliases": [
+        "AWS Certified"
+      ]
+    },
+    {
+      "id": "req_brightwater_devops_01",
+      "role_id": "role_brightwater_devops",
+      "capability_name": "CI/CD Pipelines",
+      "domain": "Delivery",
+      "weight": 0.9,
+      "required_level": "L4 - Advanced",
+      "necessity": "REQUIRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Built and maintained CI/CD pipelines used by many teams; pipeline-as-code.",
+      "aliases": [
+        "Continuous Delivery",
+        "GitHub Actions",
+        "GitLab CI"
+      ]
+    },
+    {
+      "id": "req_brightwater_devops_02",
+      "role_id": "role_brightwater_devops",
+      "capability_name": "GitOps",
+      "domain": "Delivery",
+      "weight": 0.65,
+      "required_level": "L3 - Proficient",
+      "necessity": "REQUIRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Deployed with Argo CD or Flux; promotion between environments.",
+      "aliases": [
+        "Argo CD",
+        "Flux"
+      ]
+    },
+    {
+      "id": "req_brightwater_devops_03",
+      "role_id": "role_brightwater_devops",
+      "capability_name": "Progressive Delivery",
+      "domain": "Delivery",
+      "weight": 0.55,
+      "required_level": "L3 - Proficient",
+      "necessity": "PREFERRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Canary or blue-green releases with automated analysis and rollback.",
+      "aliases": [
+        "Canary Releases",
+        "Feature Flags",
+        "Argo Rollouts"
+      ]
+    },
+    {
+      "id": "req_brightwater_devops_04",
+      "role_id": "role_brightwater_devops",
+      "capability_name": "Monitoring and Alerting",
+      "domain": "Reliability",
+      "weight": 0.75,
+      "required_level": "L4 - Advanced",
+      "necessity": "REQUIRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Dashboards and alerts you designed; alert fatigue reduced with evidence.",
+      "aliases": [
+        "Prometheus",
+        "Grafana",
+        "Observability"
+      ]
+    },
+    {
+      "id": "req_brightwater_devops_05",
+      "role_id": "role_brightwater_devops",
+      "capability_name": "Site Reliability Engineering",
+      "domain": "Reliability",
+      "weight": 0.6,
+      "required_level": "L3 - Proficient",
+      "necessity": "REQUIRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Defined SLOs and error budgets with product teams.",
+      "aliases": [
+        "SRE",
+        "SLOs",
+        "Error Budgets"
+      ]
+    },
+    {
+      "id": "req_brightwater_devops_06",
+      "role_id": "role_brightwater_devops",
+      "capability_name": "Kubernetes",
+      "domain": "Cloud",
+      "weight": 0.6,
+      "required_level": "L3 - Proficient",
+      "necessity": "REQUIRED",
+      "requirement_type": "TOOL_TECHNOLOGY",
+      "evidence_hint": "Day-to-day work with Kubernetes deployments and troubleshooting.",
+      "aliases": [
+        "K8s"
+      ]
+    },
+    {
+      "id": "req_brightwater_devops_07",
+      "role_id": "role_brightwater_devops",
+      "capability_name": "Scripting",
+      "domain": "Software Engineering",
+      "weight": 0.45,
+      "required_level": "L3 - Proficient",
+      "necessity": "REQUIRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Automation scripts in Bash or Python that replaced manual operations.",
+      "aliases": [
+        "Bash",
+        "Python Scripting"
+      ]
+    },
+    {
+      "id": "req_brightwater_devops_08",
+      "role_id": "role_brightwater_devops",
+      "capability_name": "Chaos Engineering",
+      "domain": "Reliability",
+      "weight": 0.25,
+      "required_level": "L2 - Working",
+      "necessity": "OPTIONAL",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Ran game days or fault-injection experiments.",
+      "aliases": [
+        "Game Days"
+      ]
+    },
+    {
+      "id": "req_brightwater_backend_ledger_01",
+      "role_id": "role_brightwater_backend_ledger",
+      "capability_name": "Kotlin",
+      "domain": "Backend",
+      "weight": 0.8,
+      "required_level": "L4 - Advanced",
+      "necessity": "REQUIRED",
+      "requirement_type": "TOOL_TECHNOLOGY",
+      "evidence_hint": "Production Kotlin (or Java with a willingness to switch) in backend services.",
+      "aliases": [
+        "JVM"
+      ]
+    },
+    {
+      "id": "req_brightwater_backend_ledger_02",
+      "role_id": "role_brightwater_backend_ledger",
+      "capability_name": "Double-Entry Accounting Systems",
+      "domain": "Financial Systems",
+      "weight": 0.75,
+      "required_level": "L3 - Proficient",
+      "necessity": "REQUIRED",
+      "requirement_type": "KNOWLEDGE",
+      "evidence_hint": "Built or maintained a ledger, accounting or balance system with double-entry semantics.",
+      "aliases": [
+        "Ledger Design",
+        "Bookkeeping Systems"
+      ]
+    },
+    {
+      "id": "req_brightwater_backend_ledger_03",
+      "role_id": "role_brightwater_backend_ledger",
+      "capability_name": "Transactional Data Consistency",
+      "domain": "Software Architecture",
+      "weight": 0.8,
+      "required_level": "L4 - Advanced",
+      "necessity": "REQUIRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Designed idempotent APIs and transactional boundaries; handled exactly-once effects in practice.",
+      "aliases": [
+        "ACID Transactions",
+        "Idempotency"
+      ]
+    },
+    {
+      "id": "req_brightwater_backend_ledger_04",
+      "role_id": "role_brightwater_backend_ledger",
+      "capability_name": "PostgreSQL",
+      "domain": "Data",
+      "weight": 0.65,
+      "required_level": "L4 - Advanced",
+      "necessity": "REQUIRED",
+      "requirement_type": "TOOL_TECHNOLOGY",
+      "evidence_hint": "Advanced PostgreSQL: locking, isolation levels, partitioning or performance tuning.",
+      "aliases": [
+        "Postgres"
+      ]
+    },
+    {
+      "id": "req_brightwater_backend_ledger_05",
+      "role_id": "role_brightwater_backend_ledger",
+      "capability_name": "Reconciliation Processes",
+      "domain": "Financial Systems",
+      "weight": 0.5,
+      "required_level": "L3 - Proficient",
+      "necessity": "PREFERRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Reconciliation jobs against bank or scheme files; break investigation.",
+      "aliases": [
+        "Financial Reconciliation",
+        "Settlement"
+      ]
+    },
+    {
+      "id": "req_brightwater_backend_ledger_06",
+      "role_id": "role_brightwater_backend_ledger",
+      "capability_name": "Distributed Systems",
+      "domain": "Software Architecture",
+      "weight": 0.5,
+      "required_level": "L3 - Proficient",
+      "necessity": "PREFERRED",
+      "requirement_type": "KNOWLEDGE",
+      "evidence_hint": "Understanding of consistency models, outbox patterns and failure handling across services."
+    },
+    {
+      "id": "req_brightwater_backend_ledger_07",
+      "role_id": "role_brightwater_backend_ledger",
+      "capability_name": "Payments Domain",
+      "domain": "Domain",
+      "weight": 0.3,
+      "required_level": "Card or A2A payments",
+      "necessity": "OPTIONAL",
+      "requirement_type": "DOMAIN_CONTEXT",
+      "evidence_hint": "Work in card processing, acquiring, SEPA or open banking.",
+      "aliases": [
+        "Card Payments",
+        "SEPA"
+      ]
+    },
+    {
+      "id": "req_brightwater_backend_ledger_08",
+      "role_id": "role_brightwater_backend_ledger",
+      "capability_name": "Backend Development",
+      "domain": "Software Engineering",
+      "weight": 0.5,
+      "required_level": "5+ years",
+      "necessity": "REQUIRED",
+      "requirement_type": "EXPERIENCE",
+      "evidence_hint": "Five or more years of backend development, some of it on systems where money or data integrity was at stake."
+    }
+  ]
+}
