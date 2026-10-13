@@ -111,7 +111,7 @@ const MINT = "#7effcc";
  * MINT, the authority boundary AMBER, missing support NEUTRAL: no state, evidence category or boundary changes its colour. */
 const azure = (alpha: number): string => `rgba(92, 200, 255, ${alpha})`;
 const JOB_PLANETARIUM_TONE = { glow: "#4cc4f0", orbit: azure(0.13), ring: azure(0.17), node: azure(0.42), dust: azure(0.28) };
-const JOB_FIELD_ATMOSPHERE = "radial-gradient(circle at 50% 55%, rgba(56, 212, 222, 0.07), transparent 30%), radial-gradient(ellipse 72% 62% at 50% 54%, rgba(18, 66, 112, 0.14), transparent 72%), radial-gradient(ellipse 50% 40% at 88% 8%, rgba(92, 200, 255, 0.045), transparent 70%), radial-gradient(ellipse 46% 36% at 8% 96%, rgba(40, 92, 170, 0.06), transparent 70%)";
+const JOB_FIELD_ATMOSPHERE = "radial-gradient(ellipse 120% 100% at 50% 52%, transparent 58%, rgba(0, 2, 6, 0.36) 100%), radial-gradient(circle at 50% 55%, rgba(56, 212, 222, 0.07), transparent 30%), radial-gradient(ellipse 72% 62% at 50% 54%, rgba(18, 66, 112, 0.14), transparent 72%), radial-gradient(ellipse 50% 40% at 88% 8%, rgba(92, 200, 255, 0.045), transparent 70%), radial-gradient(ellipse 46% 36% at 8% 96%, rgba(40, 92, 170, 0.06), transparent 70%)";
 const JOB_COSMOS_BACKDROP = "radial-gradient(ellipse at 50% 48%, rgba(14, 52, 80, 0.24) 0%, rgba(4, 9, 20, 0.74) 50%, rgba(1, 3, 9, 0.96) 100%)";
 const JOB_COSMOS_STARS: React.CSSProperties = { ...SYNTX_COSMOS_STARS, backgroundImage: "radial-gradient(circle at 16% 22%, rgba(92, 200, 255, 0.3) 0 1px, transparent 1.5px), radial-gradient(circle at 76% 31%, rgba(126, 255, 204, 0.16) 0 1px, transparent 1.5px), radial-gradient(ellipse at 70% 76%, rgba(26, 70, 132, 0.14), transparent 52%)" };
 const JOB_DEEP_FOCUS_BACKDROP = "radial-gradient(circle at 50% 42%, rgba(16, 68, 96, 0.24), transparent 26%), radial-gradient(ellipse at 50% 54%, rgba(3, 11, 24, 0.64), rgba(1, 3, 9, 0.97) 76%)";
@@ -148,6 +148,27 @@ const JOB_NODE_MATERIAL: React.CSSProperties = {
   border: `1px solid ${azure(0.46)}`,
   background: "radial-gradient(circle at 18% 0%, rgba(120, 212, 255, 0.15), transparent 46%), linear-gradient(172deg, rgba(8, 21, 36, 0.97), rgba(4, 11, 21, 0.97))",
   boxShadow: `0 0 22px rgba(46, 132, 226, 0.16), 0 8px 20px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(180, 232, 255, 0.12), inset 0 0 18px ${azure(0.04)}`
+};
+/** The organization cosmos' centre: the shared centre material with an opaque deep core, so the receded organization body behind it
+ * no longer shows through the text; a finer membrane and a calmer glow. */
+const JOB_COSMOS_CENTRE_MATERIAL: React.CSSProperties = {
+  border: "1.5px solid rgba(56, 229, 255, 0.85)",
+  background: "radial-gradient(circle at 50% 36%, rgba(56, 229, 255, 0.2), rgba(56, 229, 255, 0.06) 46%, transparent 70%), radial-gradient(circle, #06192a 0%, #04111d 58%, #020910 100%)",
+  boxShadow: "0 0 0 4px rgba(2, 8, 14, 0.55), 0 0 0 5px rgba(92, 200, 255, 0.12), 0 0 34px rgba(56, 229, 255, 0.26), 0 0 80px rgba(56, 229, 255, 0.08), inset 0 0 26px rgba(56, 229, 255, 0.16), inset 0 1px 0 rgba(210, 250, 255, 0.25)"
+};
+/** Role cards of the organization cosmos: semantic carriers in the field — a calmer deep glass, a light edge, two registration ticks
+ * and a layered field glow (static). */
+const JOB_ROLE_CARD_MATERIAL: React.CSSProperties = {
+  ...JOB_NODE_MATERIAL,
+  border: `1px solid ${azure(0.4)}`,
+  background: [
+    `linear-gradient(${azure(0.5)}, ${azure(0.5)}) 5px 5px / 7px 1px no-repeat`, `linear-gradient(${azure(0.5)}, ${azure(0.5)}) 5px 5px / 1px 7px no-repeat`,
+    `linear-gradient(${azure(0.32)}, ${azure(0.32)}) calc(100% - 5px) calc(100% - 5px) / 7px 1px no-repeat`, `linear-gradient(${azure(0.32)}, ${azure(0.32)}) calc(100% - 5px) calc(100% - 5px) / 1px 7px no-repeat`,
+    "radial-gradient(130% 80% at 16% -10%, rgba(120, 214, 255, 0.13), transparent 52%)",
+    "radial-gradient(90% 70% at 100% 115%, rgba(84, 232, 236, 0.05), transparent 60%)",
+    "linear-gradient(170deg, rgba(8, 22, 36, 0.97), rgba(3, 10, 19, 0.98))"
+  ].join(", "),
+  boxShadow: `0 0 0 1px rgba(1, 5, 10, 0.6), 0 0 24px rgba(56, 160, 230, 0.15), 0 0 58px rgba(56, 160, 230, 0.05), 0 10px 22px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(190, 240, 255, 0.15), inset 0 0 22px ${azure(0.045)}`
 };
 const JOB_SATELLITE_MATERIAL: React.CSSProperties = { ...SYNTX_SATELLITE_MATERIAL, border: `1px solid ${azure(0.3)}`, background: "linear-gradient(172deg, rgba(6, 17, 30, 0.95), rgba(3, 10, 19, 0.95))", boxShadow: `0 0 15px rgba(46, 132, 226, 0.1), inset 0 1px 0 rgba(180, 232, 255, 0.08)` };
 /** The rim point of a 168-unit body towards its HUD tether target (the tether box is 240 units, centred on the body). */
@@ -660,10 +681,10 @@ function OrganizationBody({ organization, index, roles, observation, depth, isAn
           <span aria-hidden="true" style={{ position: "absolute", inset: "2px", borderRadius: "50%", pointerEvents: "none", boxShadow: "inset 3px 4px 7px -3px rgba(190, 238, 255, 0.34), inset -3px -5px 9px -4px rgba(24, 84, 170, 0.4)" }} />
           <span aria-hidden="true" style={{ position: "absolute", inset: 0, borderRadius: "50%", pointerEvents: "none", background: "radial-gradient(circle at 50% 50%, rgba(56, 229, 255, 0.16), transparent 66%)", opacity: highlighted ? 1 : 0, transition: "opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1)" }} />
           <span style={{ fontSize: "10px", color: highlighted ? CYAN : azure(0.78), fontWeight: 700, letterSpacing: "2px", position: "relative", zIndex: 1, textShadow: READING_HALO, transition: "color 0.6s ease" }}>{String(index + 1).padStart(2, "0")}</span>
-          <span style={{ ...readingPlate(highlighted), fontSize: "13px", color: INK, fontWeight: 700, marginTop: "4px", lineHeight: 1.2, position: "relative", zIndex: 1, textTransform: "uppercase", letterSpacing: "0.6px", textShadow: `${READING_HALO}, 0 0 14px ${highlighted ? "rgba(56, 229, 255, 0.5)" : "rgba(92, 200, 255, 0.26)"}` }}>⬡ {organization.name}</span>
-          {subtitle.length > 0 && <span style={{ ...readingPlate(highlighted), fontSize: "10px", fontWeight: 500, color: "rgba(206, 226, 238, 0.92)", marginTop: "5px", lineHeight: 1.25, letterSpacing: "0.2px", position: "relative", zIndex: 1, textShadow: READING_HALO }}>{subtitle}</span>}
-          <span style={{ ...readingPlate(highlighted), fontSize: "7.5px", fontWeight: 700, color: highlighted ? "rgba(150, 238, 255, 0.9)" : azure(0.8), marginTop: "4px", position: "relative", zIndex: 1, letterSpacing: "2.2px", textShadow: READING_HALO, transition: "color 0.6s ease" }}>{t.manifest.organization}</span>
-          <span style={{ marginTop: "7px", fontSize: "9.5px", fontWeight: 600, letterSpacing: "1.2px", color: highlighted ? CYAN : INK, backgroundColor: highlighted ? "rgba(56, 229, 255, 0.15)" : "rgba(8, 22, 38, 0.9)", padding: "2px 9px", borderRadius: "8px", border: `1px solid ${highlighted ? "rgba(56, 229, 255, 0.4)" : azure(0.24)}`, boxShadow: highlighted ? undefined : `inset 0 1px 0 ${azure(0.1)}`, position: "relative", zIndex: 1 }}>{organization.roleIds.length} {t.roles}</span>
+          <span style={{ ...readingPlate(highlighted), fontSize: "13px", color: INK, fontWeight: 700, marginTop: "4px", lineHeight: 1.24, position: "relative", zIndex: 1, textTransform: "uppercase", letterSpacing: "0.8px", textShadow: `${READING_HALO}, 0 0 14px ${highlighted ? "rgba(56, 229, 255, 0.5)" : "rgba(92, 200, 255, 0.26)"}` }}>⬡ {organization.name}</span>
+          {subtitle.length > 0 && <span style={{ ...readingPlate(highlighted), fontSize: "10px", fontWeight: 500, color: "rgba(214, 234, 244, 0.94)", marginTop: "6px", lineHeight: 1.3, letterSpacing: "0.3px", position: "relative", zIndex: 1, textShadow: READING_HALO }}>{subtitle}</span>}
+          <span style={{ ...readingPlate(highlighted), fontSize: "7.5px", fontWeight: 700, color: highlighted ? "rgba(150, 238, 255, 0.9)" : azure(0.82), marginTop: "6px", position: "relative", zIndex: 1, letterSpacing: "2.4px", textShadow: READING_HALO, transition: "color 0.6s ease" }}>{t.manifest.organization}</span>
+          <span style={{ marginTop: "8px", fontSize: "9.5px", fontWeight: 600, letterSpacing: "1.3px", color: highlighted ? CYAN : INK, backgroundColor: highlighted ? "rgba(56, 229, 255, 0.15)" : "rgba(6, 18, 32, 0.92)", padding: "2px 10px", borderRadius: "8px", border: `1px solid ${highlighted ? "rgba(56, 229, 255, 0.4)" : azure(0.28)}`, boxShadow: highlighted ? "0 0 10px rgba(56, 229, 255, 0.18)" : `0 0 8px ${azure(0.08)}, inset 0 1px 0 ${azure(0.12)}`, position: "relative", zIndex: 1 }}>{organization.roleIds.length} {t.roles}</span>
         </SyntxResonanceBody>
       </div>
     </FocusTransitionStageShell>
@@ -733,11 +754,12 @@ function OrganizationCosmosLayer({ field, mode, t, size, onObserve, organization
             aria-label={`${role.title} · ${role.organizationName}`}
             aria-pressed={anchor ? undefined : role.sign.state === "role_selected"}
             onClick={stop(select)}
-            style={{ position: "absolute", left: 0, top: 0, width: `${node.width}px`, minHeight: `${node.height}px`, transform: "translate(-50%, -50%)", ...JOB_NODE_MATERIAL, ...(compact ? { padding: "7px 10px" } : {}), color: INK, cursor: "pointer", fontFamily: MONO, textAlign: "left", overflowWrap: "anywhere", hyphens: "auto", opacity: anchor ? 0.42 : 1 }}
+            style={{ position: "absolute", left: 0, top: 0, width: `${node.width}px`, minHeight: `${node.height}px`, transform: "translate(-50%, -50%)", ...JOB_ROLE_CARD_MATERIAL, ...(compact ? { padding: "7px 10px" } : {}), color: INK, cursor: "pointer", fontFamily: MONO, textAlign: "left", overflowWrap: "anywhere", hyphens: "auto", opacity: anchor ? 0.42 : 1 }}
           >
-            <span style={{ display: "block", color: CYAN, fontSize: "8px", fontWeight: 700, letterSpacing: "0.8px" }}>{t.manifest.role}{role.seniority !== null ? ` // ${role.seniority.toUpperCase()}` : ""}</span>
-            <span style={{ display: "-webkit-box", marginTop: "5px", fontSize: compact ? "10px" : "11px", fontWeight: 700, lineHeight: 1.32, WebkitLineClamp: compact ? 2 : 4, WebkitBoxOrient: "vertical", overflow: "hidden" }}>{role.title}</span>
-            <span style={{ display: "block", marginTop: "6px", color: "rgba(206, 232, 241, 0.76)", fontSize: "7.5px", letterSpacing: "0.2px", lineHeight: 1.45 }}>{role.requirementCount} {t.requirements} // {role.matching === null ? t.manifest.matchingNotRead : t.manifest.matchingRead}</span>
+            <span aria-hidden="true" style={{ position: "absolute", left: "16px", right: "16px", top: "-1px", height: "1px", background: "linear-gradient(90deg, transparent, rgba(190, 244, 255, 0.7), transparent)", pointerEvents: "none" }} />
+            <span style={{ display: "flex", alignItems: "center", gap: "6px", color: CYAN, fontSize: "8.5px", fontWeight: 600, letterSpacing: "1.3px", textShadow: `0 0 8px ${SIL_TOKENS.colors.cyanGlow}` }}><span aria-hidden="true" style={{ width: "4px", height: "4px", borderRadius: "50%", flexShrink: 0, background: CYAN, boxShadow: `0 0 5px ${CYAN}` }} />{t.manifest.role}{role.seniority !== null ? ` // ${role.seniority.toUpperCase()}` : ""}</span>
+            <span style={{ display: "-webkit-box", marginTop: "5px", fontFamily: SANS, fontSize: compact ? "11px" : "11.5px", fontWeight: 600, lineHeight: 1.24, letterSpacing: "0.1px", color: "#eef8fc", WebkitLineClamp: compact ? 2 : 4, WebkitBoxOrient: "vertical", overflow: "hidden" }}>{role.title}</span>
+            <span style={{ display: "block", marginTop: "5px", paddingTop: "3px", borderTop: `1px solid ${azure(0.14)}`, color: "rgba(178, 206, 222, 0.82)", fontSize: "7.5px", letterSpacing: "0.1px", lineHeight: 1.4 }}>{role.requirementCount} {t.requirements} // {role.matching === null ? t.manifest.matchingNotRead : t.manifest.matchingRead}</span>
           </button>
         );
       }}
@@ -748,10 +770,12 @@ function OrganizationCosmosLayer({ field, mode, t, size, onObserve, organization
           aria-label={t.manifest.returnToField}
           tabIndex={-1}
           onClick={stop(() => onObserve(returnFrom({ ...observation, kind: "ORGANIZATION", roleId: null, requirementId: null, apertureSignId: null })))}
-          style={{ position: "absolute", left: `${layout.centerX}px`, top: `${layout.centerY}px`, transform: "translate(-50%, -50%)", ...SYNTX_COSMOS_CENTER_MATERIAL, color: INK, cursor: "pointer", fontFamily: MONO, fontSize: "10px", fontWeight: 700, letterSpacing: "1px", lineHeight: 1.55, padding: "16px 14px", opacity: recededLevel ? 0 : 1 }}
+          style={{ position: "absolute", left: `${layout.centerX}px`, top: `${layout.centerY}px`, transform: "translate(-50%, -50%)", ...SYNTX_COSMOS_CENTER_MATERIAL, ...JOB_COSMOS_CENTRE_MATERIAL, color: INK, cursor: "pointer", fontFamily: MONO, fontSize: "10.5px", fontWeight: 700, letterSpacing: "1.4px", lineHeight: 1.4, padding: "18px 16px", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: "8px", opacity: recededLevel ? 0 : 1 }}
         >
-          {String(index + 1).padStart(2, "0")} {organization.name.toUpperCase()}<br />
-          <span style={{ color: CYAN, fontSize: "8px" }}>{t.manifest.organizationCosmos} // {roles.length} {t.roles}</span>
+          <span aria-hidden="true" style={{ position: "absolute", inset: "7px", borderRadius: "50%", border: `1px solid ${azure(0.16)}`, pointerEvents: "none" }} />
+          <span style={{ display: "block", textShadow: "0 0 12px rgba(56, 229, 255, 0.35)" }}>{String(index + 1).padStart(2, "0")} {organization.name.toUpperCase()}</span>
+          <span aria-hidden="true" style={{ width: "44px", height: "1px", background: `linear-gradient(90deg, transparent, ${azure(0.6)}, transparent)` }} />
+          <span style={{ color: CYAN, fontSize: "8px", fontWeight: 600, letterSpacing: "1.6px", lineHeight: 1.55 }}><span>{t.manifest.organizationCosmos}</span> <span style={{ whiteSpace: "nowrap" }}>// {roles.length} {t.roles}</span></span>
         </button>
       }
     />

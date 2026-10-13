@@ -113,7 +113,7 @@ of the 374 Capability renders, 366 are byte-identical; the 8 shell renders diffe
 cosmos, deep focus, HUDs, core) is untouched. The selector keeps the strip contract (`field-focus-strip`, two buttons,
 `field-focus-capability-btn`, `job-pool-panel-toggle`, `data-field-focus-active`, `aria-pressed`); behaviour change: selecting the
 active field no longer toggles back to CAPABILITY. New finite shell motion: `syntxFieldVeil` (.42 s, outside the field root, none
-in REDUCED) — proposed for the R15b list as a shell transition.
+in REDUCED) — proposed for the R15b list as a shell transition (since the polish pass also `syntxFieldSweepLeft` / `syntxFieldSweepRight`, .9 s, in the selector, none in REDUCED).
 
 **Proposed wording:** "R10b — The application shell carries the SYNTX field selector (two equal fields, exactly one visible).
 Changes to the shell are admitted when every Capability manifestation render stays byte-identical and the shell renders differ only

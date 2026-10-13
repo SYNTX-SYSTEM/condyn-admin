@@ -20,6 +20,8 @@ const TONE: Record<SyntxFieldFocus, string> = { CAPABILITY: "56, 229, 255", FIEL
 
 export const SYNTX_FIELD_SELECTOR_CSS = `
 @keyframes syntxFieldVeil { from { opacity: .9; } to { opacity: 0; } }
+@keyframes syntxFieldSweepRight { from { transform: translateX(-60%); opacity: 0; } 25% { opacity: 1; } to { transform: translateX(160%); opacity: 0; } }
+@keyframes syntxFieldSweepLeft { from { transform: translateX(160%); opacity: 0; } 25% { opacity: 1; } to { transform: translateX(-60%); opacity: 0; } }
 [data-testid="field-focus-strip"] button::before { content: none; display: none; }
 [data-testid="field-focus-strip"] button:active { transform: none; }
 [data-testid="field-focus-strip"] button[data-field-focus-active="false"]:hover { color: rgba(226, 244, 252, 0.94); border-color: rgba(var(--sx-tone), 0.3); background: rgba(var(--sx-tone), 0.06); }
@@ -27,6 +29,7 @@ export const SYNTX_FIELD_SELECTOR_CSS = `
 [data-testid="field-focus-strip"] button:focus-visible { outline: 1px solid rgba(var(--sx-tone), 0.85); outline-offset: 3px; }
 @media (prefers-reduced-motion: reduce) {
   [data-testid="field-focus-strip"], [data-testid="field-focus-strip"] *, [data-sx-field-veil] { transition: none !important; animation: none !important; }
+  [data-sx-field-sweep] { display: none; }
 }
 `;
 
@@ -36,7 +39,9 @@ export function SyntxFieldSelector({ focus, groupLabel, capabilityLabel, jobLabe
     { id: "field-focus-capability-btn", focus: "CAPABILITY", label: capabilityLabel },
     { id: "job-pool-panel-toggle", focus: "FIELD", label: jobLabel }
   ];
-  const select = (next: SyntxFieldFocus) => { if (next !== focus) onSelect(next); };
+  /** The sweep belongs to a field change, never to the first paint. */
+  const switched = useRef(false);
+  const select = (next: SyntxFieldFocus) => { if (next !== focus) { switched.current = true; onSelect(next); } };
   const onKeyDown = (event: React.KeyboardEvent) => {
     const next: SyntxFieldFocus | null = event.key === "ArrowLeft" || event.key === "Home" ? "CAPABILITY" : event.key === "ArrowRight" || event.key === "End" ? "FIELD" : null;
     if (next === null) return;
@@ -51,22 +56,29 @@ export function SyntxFieldSelector({ focus, groupLabel, capabilityLabel, jobLabe
       data-sx-shell="selector"
       role="group"
       aria-label={groupLabel}
-      style={{ position: "fixed", left: "50%", top: "70px", transform: "translateX(-50%)", zIndex: 60, display: "flex", alignItems: "center", padding: "5px", borderRadius: "999px", border: "1px solid rgba(120, 214, 255, 0.3)", background: "radial-gradient(80% 140% at 50% 0%, rgba(84, 232, 236, 0.08), transparent 70%), linear-gradient(180deg, rgba(8, 21, 34, 0.92), rgba(3, 8, 15, 0.95))", boxShadow: "0 0 0 1px rgba(3, 8, 16, 0.6), 0 12px 32px rgba(0, 0, 0, 0.6), 0 0 34px rgba(56, 229, 255, 0.13), inset 0 1px 0 rgba(200, 245, 255, 0.14), inset 0 0 18px rgba(92, 200, 255, 0.05)", backdropFilter: "blur(10px)", fontFamily: SIL_TOKENS.typography.mono }}
+      style={{ position: "fixed", left: "50%", top: "70px", transform: "translateX(-50%)", zIndex: 60, display: "flex", alignItems: "center", padding: "5px", borderRadius: "999px", border: "1px solid rgba(120, 214, 255, 0.26)", overflow: "visible", background: "radial-gradient(80% 140% at 50% 0%, rgba(84, 232, 236, 0.08), transparent 70%), linear-gradient(180deg, rgba(8, 21, 34, 0.92), rgba(3, 8, 15, 0.95))", boxShadow: "0 0 0 1px rgba(3, 8, 16, 0.6), 0 12px 32px rgba(0, 0, 0, 0.6), 0 0 30px rgba(56, 229, 255, 0.11), 0 0 70px rgba(72, 210, 240, 0.05), inset 0 1px 0 rgba(200, 245, 255, 0.16), inset 0 -1px 0 rgba(0, 0, 0, 0.4), inset 0 0 18px rgba(92, 200, 255, 0.05)", backdropFilter: "blur(10px)", fontFamily: SIL_TOKENS.typography.mono }}
     >
       <style>{SYNTX_FIELD_SELECTOR_CSS}</style>
       {/* The membrane: an outer resonance ring, the upper light edge and a lower counter-light (static). */}
       <span aria-hidden="true" style={{ position: "absolute", inset: "-5px", borderRadius: "999px", border: "1px solid rgba(120, 214, 255, 0.09)", boxShadow: "0 0 22px rgba(56, 229, 255, 0.06)", pointerEvents: "none" }} />
       <span aria-hidden="true" style={{ position: "absolute", left: "28px", right: "28px", top: 0, height: "1px", background: "linear-gradient(90deg, transparent, rgba(170, 240, 255, 0.7), transparent)", pointerEvents: "none" }} />
       <span aria-hidden="true" style={{ position: "absolute", left: "34%", right: "34%", bottom: 0, height: "1px", background: "linear-gradient(90deg, transparent, rgba(92, 200, 255, 0.35), transparent)", pointerEvents: "none" }} />
+      {/* Field change: one light passes through the capsule towards the field now active (finite, .9 s; none in REDUCED). */}
+      <span aria-hidden="true" style={{ position: "absolute", inset: 0, borderRadius: "999px", overflow: "hidden", pointerEvents: "none" }}>
+        {switched.current && <span key={focus} data-sx-field-sweep style={{ position: "absolute", top: 0, bottom: 0, left: 0, width: "40%", background: "linear-gradient(90deg, transparent, rgba(170, 240, 255, 0.16), transparent)", animation: `${focus === "FIELD" ? "syntxFieldSweepRight" : "syntxFieldSweepLeft"} 0.9s cubic-bezier(0.16, 1, 0.3, 1) both` }} />}
+      </span>
       {options.map((option, index) => {
         const active = focus === option.focus;
         const tone = TONE[option.focus];
         return (
           <React.Fragment key={option.id}>
             {index > 0 && (
-              <span aria-hidden="true" style={{ position: "relative", display: "flex", alignItems: "center", width: "26px", justifyContent: "center", flexShrink: 0 }}>
-                <span style={{ width: "26px", height: "1px", background: focus === "CAPABILITY" ? "linear-gradient(90deg, rgba(56, 229, 255, 0.85), rgba(92, 200, 255, 0.18))" : "linear-gradient(90deg, rgba(56, 229, 255, 0.18), rgba(92, 200, 255, 0.85))", transition: "background 0.45s ease" }} />
-                <span style={{ position: "absolute", width: "3px", height: "3px", borderRadius: "50%", background: "rgba(170, 232, 255, 0.8)", boxShadow: "0 0 6px rgba(120, 220, 255, 0.8)" }} />
+              <span aria-hidden="true" data-sx-selector-link style={{ position: "relative", display: "flex", alignItems: "center", width: "34px", justifyContent: "center", flexShrink: 0 }}>
+                <svg width="34" height="14" viewBox="0 0 34 14" style={{ overflow: "visible" }}>
+                  <path d="M17 7 C 13 1.5, 4 1.5, 4 7 C 4 12.5, 13 12.5, 17 7" fill="none" stroke={`rgba(56, 229, 255, ${focus === "CAPABILITY" ? 0.85 : 0.22})`} strokeWidth="1" style={{ transition: "stroke 0.45s ease", filter: focus === "CAPABILITY" ? "drop-shadow(0 0 2px rgba(56, 229, 255, 0.8))" : "none" }} />
+                  <path d="M17 7 C 21 1.5, 30 1.5, 30 7 C 30 12.5, 21 12.5, 17 7" fill="none" stroke={`rgba(92, 200, 255, ${focus === "FIELD" ? 0.85 : 0.22})`} strokeWidth="1" style={{ transition: "stroke 0.45s ease", filter: focus === "FIELD" ? "drop-shadow(0 0 2px rgba(92, 200, 255, 0.8))" : "none" }} />
+                  <circle cx="17" cy="7" r="1.6" fill="#d8f7ff" style={{ filter: "drop-shadow(0 0 3px rgba(150, 230, 255, 0.9))" }} />
+                </svg>
               </span>
             )}
             <button
@@ -77,7 +89,7 @@ export function SyntxFieldSelector({ focus, groupLabel, capabilityLabel, jobLabe
               aria-pressed={active}
               onClick={() => select(option.focus)}
               onKeyDown={onKeyDown}
-              style={{ "--sx-tone": tone, position: "relative", display: "inline-flex", alignItems: "center", gap: "9px", padding: "10px 20px 10px 15px", borderRadius: "999px", border: `1px solid ${active ? `rgba(${tone}, 0.8)` : "transparent"}`, background: active ? `radial-gradient(120% 170% at 50% 0%, rgba(${tone}, 0.32), rgba(${tone}, 0.1) 62%, rgba(${tone}, 0.04))` : "transparent", boxShadow: active ? `0 0 22px rgba(${tone}, 0.3), 0 0 46px rgba(${tone}, 0.1), inset 0 1px 0 rgba(220, 250, 255, 0.28), inset 0 0 16px rgba(${tone}, 0.14)` : "none", color: active ? "#f2fdff" : "rgba(150, 188, 208, 0.62)", textShadow: active ? `0 0 12px rgba(${tone}, 0.6)` : "none", fontFamily: SIL_TOKENS.typography.mono, fontSize: "11px", fontWeight: 700, letterSpacing: "2.2px", textTransform: "uppercase", whiteSpace: "nowrap", cursor: active ? "default" : "pointer", transition: "background 0.45s ease, color 0.45s ease, box-shadow 0.45s ease, border-color 0.45s ease, text-shadow 0.45s ease" } as React.CSSProperties}
+              style={{ "--sx-tone": tone, position: "relative", display: "inline-flex", alignItems: "center", gap: "9px", padding: "10px 20px 10px 15px", width: "214px", justifyContent: "center", borderRadius: "999px", border: `1px solid ${active ? `rgba(${tone}, 0.8)` : "transparent"}`, background: active ? `radial-gradient(120% 170% at 50% 0%, rgba(${tone}, 0.32), rgba(${tone}, 0.1) 62%, rgba(${tone}, 0.04))` : "transparent", boxShadow: active ? `0 0 22px rgba(${tone}, 0.3), 0 0 46px rgba(${tone}, 0.1), inset 0 1px 0 rgba(220, 250, 255, 0.28), inset 0 0 16px rgba(${tone}, 0.14)` : "none", color: active ? "#f2fdff" : "rgba(160, 196, 214, 0.66)", textShadow: active ? `0 0 12px rgba(${tone}, 0.6)` : "none", fontFamily: SIL_TOKENS.typography.mono, fontSize: "11px", fontWeight: 700, letterSpacing: "2.2px", textTransform: "uppercase", whiteSpace: "nowrap", cursor: active ? "default" : "pointer", transition: "background 0.45s ease, color 0.45s ease, box-shadow 0.45s ease, border-color 0.45s ease, text-shadow 0.45s ease" } as React.CSSProperties}
             >
               <span data-sx-lamp aria-hidden="true" style={{ width: "7px", height: "7px", boxSizing: "border-box", borderRadius: "50%", flexShrink: 0, border: `1px solid rgba(${tone}, ${active ? 1 : 0.38})`, background: active ? `rgb(${tone})` : "transparent", boxShadow: active ? `0 0 8px rgba(${tone}, 0.95), 0 0 2px #ffffff` : "none", transition: "background 0.45s ease, box-shadow 0.45s ease, border-color 0.45s ease" }} />
               {option.label}

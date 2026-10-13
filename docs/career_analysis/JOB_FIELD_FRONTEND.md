@@ -764,6 +764,31 @@ panel motion names, nothing in REDUCED, no overlap, boundary without scrolling, 
 `panel-text-identity.json`: text and contract identical for all four panels). New motion name `sxPanelCurrent` (outside every sign;
 panels are closed in PINK's ambient read): proposed for R15b as a panel motion.
 
+#### 13.2.9 Visual polish pass (owner "FEINSTUFE / VISUAL POLISH PASS", GO 2026-10-13)
+
+On d79d4f8. Visual only, in four steps; texts, ids, data attributes, states, orbit geometry, navigation, keyboard and click logic
+unchanged (text and contract of selector, organization bodies, cosmos centre and role cards identical before / after; the only new
+nodes are decorative, `aria-hidden`, without text).
+
+1. **Field selector.** Both options the same width (214 px: balance between the fields); a calmer membrane with a finer light seam
+   and a deeper aura; the link between the options is now a small double loop — the two fields joined — whose half towards the
+   active field is lit; a field change sends one light through the capsule towards the field now active (`syntxFieldSweepLeft /
+   Right`, finite .9 s, never on first paint, none in REDUCED). Logic, exclusivity and states unchanged.
+2. **Role cards (organization cosmos).** Their own Job Field material: deeper glass, top light edge, two registration ticks, a layered
+   static field glow; the level line with a lamp at 8.5 px, the title in the sans at 11.5 px / 600, the metric line under a hairline
+   at 7.5 px. The card height stays within the clearance contract: tallest card 98 px (was 94), every card ≥ 41 px above the footer
+   statement over the whole orbit at 1600 × 1000 and 1280 × 720 (2 and 14 roles).
+3. **Centre / organization body.** The organization cosmos' centre has an opaque deep core: the receded organization body behind it
+   no longer shows through the name (the ghost text is gone); name, a short light rule and the cosmos line as three layers, an inner
+   ring and a finer membrane. The planetarium organization bodies: slightly more line and letter air for name, context line and the
+   ORGANIZATION label, a calmer role-count pill (size and geometry unchanged).
+4. **Whole field.** A quiet edge vignette in the atmosphere for depth (no brightening); the panels' nodes and the role cards share the
+   panel material's light language.
+
+Proof: `evidence/job-pool/semiotic-transfer/polish/` (before / after sheets for selector, role cards, centre and body, overview and the
+large pool; `polish-text-identity.json`; `selector-proof.json` 25 / 25; `brand-proof.json` 20 / 20; `panel-proof.json` 24 / 24;
+`selector-sweep-check.json`; PINK walk report).
+
 ### 13.3 DOM contract (PINK BR-1 … BR-5; GELB conditions a/b)
 
 **BR-1 field root** `data-testid="syntx-field"`: `data-field-grammar="SYNTX_FIELD_V1"`, `data-observation-kind` FIELD|ORGANIZATION|ROLE|REQUIREMENT
@@ -916,3 +941,4 @@ observation point. Readable labels wrap at word boundaries (`wrapLines`), never 
 | 2026-10-13 | Field selector & final readability (owner "SFE — GREEN · FIELD SELECTOR & FINAL READABILITY", on f96217f; GREEN only, isolated lab) | §13.2.6: SYNTX field selector in the application shell (two equal fields, exactly one active, exclusive visibility, calm veil, keyboard ←/→), organization body typography (signature clears the reading area, reading plates, opaque hovered interior, rim tether), organization cosmos role-label clearance (O-JF-LABEL resolved); O-JF-PANEL documented. Evidence: `evidence/job-pool/semiotic-transfer/field-selector/` | tsc 0; Capability renders 366 / 374 byte-identical, the 8 shell renders identical after removing the selector and shell markers; unit / SSR / governance / sealed SIL / Capability batch 32 files / 192; workflow e2e 10/10; PINK walk with the proposed rebinding 3/3; selector proof 25 / 25 (exclusivity, ids, deep link, keyboard, reduced motion, role-card clearance at 1600 × 1000 and 1280 × 720) |
 | 2026-10-13 | Decision Loop Labs brand core (owner "ONE FIELD GRAMMAR. NEW BRAND CORE.", on a047f53; visual only, GREEN only, isolated lab) | §13.2.7: the DLL mark as field light in the pool core's lens, the Job Field header as Decision Loop Labs (Capability header unchanged), a static brand grid and registration frame, slight teal calibration; O-DLL-SCOPE open. Evidence: `evidence/job-pool/semiotic-transfer/brand-core/` | tsc 0; Capability renders 366 / 374 byte-identical, 374 / 374 after removing the selector and shell markers (unchanged against a047f53); unit / SSR / governance / sealed SIL / Capability batch 32 files / 193 (one new SSR test for the brand surface); workflow e2e 10/10; PINK walk with the proposed rebinding 3/3 (report under brand-core/pink-walk-proposal; the walk caught a first header test id under the retired `job-field…` prefix, renamed to `shell-brand-dll`); brand proof 20 / 20; selector proof 25 / 25 |
 | 2026-10-13 | Four panels (owner "FOUR PANELS. CLEARER SIGNAL.", on 00299f5; visual only, GREEN only, isolated lab) | §13.2.8: Job Field panel material for pools, intake and boundary (glass, edge current, breathing aura, field node), boundary in four sections with chips and ruled statements, pools as row cards with a lit selection, intake wells and action chip, selector membrane and contrast. Evidence: `evidence/job-pool/semiotic-transfer/panels/` | tsc 0; Capability renders 366 / 374 byte-identical, 374 / 374 shell-normalized; batch 32 files / 193; panel text and contract identical before / after; panel proof 24 / 24; workflow e2e and PINK walk run on the following polish pass (same tree plus the polish) |
+| 2026-10-13 | Visual polish pass (owner "FEINSTUFE / VISUAL POLISH PASS", on d79d4f8; visual only, GREEN only, isolated lab) | §13.2.9: selector balance, loop link and field-change light; role cards as semantic carriers; opaque cosmos centre (ghost text gone) and body micro-typography; edge vignette. Evidence: `evidence/job-pool/semiotic-transfer/polish/` | tsc 0; Capability renders 366 / 374 byte-identical, 374 / 374 shell-normalized; batch 32 files / 193; workflow e2e 10/10; PINK walk with the proposed rebinding 3/3 (covers d79d4f8 too; teardown could not terminate a transient superuser backend, the run's own disposable DB was then dropped with the verifying helper); selector proof 25 / 25; brand proof 20 / 20; panel proof 24 / 24; text and contract identity |
