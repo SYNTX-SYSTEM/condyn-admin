@@ -527,7 +527,7 @@ export const SIL_COPY = {
       roles: "ROLES",
       organizations: "ORGANIZATIONS",
       boundary: "BOUNDARY",
-      boundaryOrientation: "Marks the governance, authority and evaluation limits of this field state.",
+      boundaryOrientation: "Marks the governance, authority and evaluation boundaries of this field state.",
       boundaryHide: "HIDE BOUNDARY",
       matching: "PRESENTATION MATCHING",
       manifest: {
@@ -1122,7 +1122,7 @@ export const SIL_COPY = {
       roles: "ROLLEN",
       organizations: "ORGANISATIONEN",
       boundary: "GRENZE",
-      boundaryOrientation: "Markiert Governance-, Autoritäts- und Bewertungsgrenzen dieses Feldzustands.",
+      boundaryOrientation: "Markiert die Governance-, Autoritäts- und Bewertungsgrenzen dieses Feldzustands.",
       boundaryHide: "GRENZE VERBERGEN",
       matching: "PRÄSENTATIONS-MATCHING",
       manifest: {

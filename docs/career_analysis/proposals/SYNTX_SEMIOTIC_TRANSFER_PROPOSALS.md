@@ -47,7 +47,7 @@ closed list (LIVE only; REDUCED total — no CSS animation, no SMIL photon, the 
 | role cosmos rotation (rAF, 160 s, all orbits together) | requirements, source documents and their traces (recomputed every frame; `data-orbital-motion-*` on each source body) | continuous, shared clock |
 | `sxSuspend` (48 s dash drift) | the one suspended boundary | infinite (as R15) |
 | `sxApertureBreathe` (9 s, opacity of the glow layer only) | the open inspection aperture (the surface itself holds still) | infinite |
-| `sxPanelCurrent` (18 s, a light segment along the upper edge), `atmosphereGlow` (16 s aura, 10 s node lamp, 7 s selected pool node, 28 s cyan shimmer behind the boundary layers — opacity only, swing ≤ 4 / 255) | the Job Field panels (pools, intake, boundary) while open; outside every sign | infinite (panel pass 2026-10-13; boundary shimmer 2026-10-13) |
+| `sxPanelCurrent` (18 s, a light segment along the upper edge), `atmosphereGlow` (16 s aura, 10 s node lamp, 7 s selected pool node; on the boundary 32 s for its aura and the cyan shimmer behind its layers — opacity only, swing mean 2 / max 12 of 255) | the Job Field panels (pools, intake, boundary) while open; outside every sign | infinite (panel pass 2026-10-13; boundary shimmer 2026-10-13) |
 | `sxBoundaryOpen` (.6 s), the boundary veil's opacity transition (.8 s) | the boundary opening at the centre; the veil above the stage while it is open (outside every sign) | finite (2026-10-13) |
 | `sxEnter`, `sxRise`, `sxUnfold`, `sxTraceDraw`, `sxSuspendEnter`, `sxNucleusSettle`, `sxSatelliteSettle` | level entry, requirement unfold, trace rise, deep-focus settle | finite |
 

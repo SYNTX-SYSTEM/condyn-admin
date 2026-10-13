@@ -1,0 +1,503 @@
+{
+  "base": "a06fe3a4a78e28370cadaccf9fb607983d806905",
+  "text": {
+    "en": {
+      "before": "Marks the governance, authority and evaluation limits of this field state.",
+      "after": "Marks the governance, authority and evaluation boundaries of this field state."
+    },
+    "de": {
+      "before": "Markiert Governance-, Autoritäts- und Bewertungsgrenzen dieses Feldzustands.",
+      "after": "Markiert die Governance-, Autoritäts- und Bewertungsgrenzen dieses Feldzustands."
+    },
+    "oneLine": "EN and DE: 13 px high (one line) at 1600 x 1000 and 1280 x 720; DE boundary box 760 x 503.3 / 512 x 512 and layers top 212 before and after"
+  },
+  "glow": {
+    "breath": "atmosphereGlow 32 s (shimmer and aura together; before 28 s shimmer, 16 s aura), opacity .5 <-> .9 only",
+    "swingBoundaryRegion": {
+      "before": {
+        "meanChannelDelta": 0.55,
+        "maxChannelDelta": 4
+      },
+      "after": {
+        "meanChannelDelta": 2.01,
+        "maxChannelDelta": 12
+      },
+      "of": 255
+    }
+  },
+  "views": {
+    "1600x1000-no-preference": {
+      "boundary": [
+        420,
+        157,
+        760,
+        479.1
+      ],
+      "boundaryIdentical": true,
+      "scrollIdentical": true,
+      "layersIdentical": true,
+      "textLeavesMoved": 0,
+      "textIdenticalExceptCorrection": true,
+      "contractIdentical": true,
+      "runningAnimations": {
+        "before": [
+          "atmosphereGlow:inf:16000",
+          "atmosphereGlow:inf:28000",
+          "sxPanelCurrent:inf:18000"
+        ],
+        "after": [
+          "atmosphereGlow:inf:32000",
+          "atmosphereGlow:inf:32000",
+          "sxPanelCurrent:inf:18000"
+        ]
+      },
+      "veilIdentical": true,
+      "sentence": {
+        "text": "Marks the governance, authority and eval",
+        "rect": [
+          445,
+          189,
+          710,
+          13
+        ],
+        "font": "system-ui 10px/13px 400 ls 0.2px",
+        "color": "rgba(204, 230, 242, 0.9)"
+      },
+      "pageErrors": 0
+    },
+    "1280x720-no-preference": {
+      "boundary": [
+        384,
+        157,
+        512,
+        512
+      ],
+      "boundaryIdentical": true,
+      "scrollIdentical": true,
+      "layersIdentical": true,
+      "textLeavesMoved": 0,
+      "textIdenticalExceptCorrection": true,
+      "contractIdentical": true,
+      "runningAnimations": {
+        "before": [
+          "atmosphereGlow:inf:16000",
+          "atmosphereGlow:inf:28000",
+          "sxPanelCurrent:inf:18000"
+        ],
+        "after": [
+          "atmosphereGlow:inf:32000",
+          "atmosphereGlow:inf:32000",
+          "sxPanelCurrent:inf:18000"
+        ]
+      },
+      "veilIdentical": true,
+      "sentence": {
+        "text": "Marks the governance, authority and eval",
+        "rect": [
+          409,
+          189,
+          462,
+          13
+        ],
+        "font": "system-ui 10px/13px 400 ls 0.2px",
+        "color": "rgba(204, 230, 242, 0.9)"
+      },
+      "pageErrors": 0
+    },
+    "1600x1000-reduce": {
+      "boundary": [
+        420,
+        157,
+        760,
+        479.1
+      ],
+      "boundaryIdentical": true,
+      "scrollIdentical": true,
+      "layersIdentical": true,
+      "textLeavesMoved": 0,
+      "textIdenticalExceptCorrection": true,
+      "contractIdentical": true,
+      "runningAnimations": {
+        "before": [],
+        "after": []
+      },
+      "veilIdentical": true,
+      "sentence": {
+        "text": "Marks the governance, authority and eval",
+        "rect": [
+          445,
+          189,
+          710,
+          13
+        ],
+        "font": "system-ui 10px/13px 400 ls 0.2px",
+        "color": "rgba(204, 230, 242, 0.9)"
+      },
+      "pageErrors": 0
+    },
+    "1600x1000-no-preference-2x": {
+      "boundary": [
+        420,
+        157,
+        760,
+        479.2
+      ],
+      "boundaryIdentical": true,
+      "scrollIdentical": true,
+      "layersIdentical": true,
+      "textLeavesMoved": 0,
+      "textIdenticalExceptCorrection": true,
+      "contractIdentical": true,
+      "runningAnimations": {
+        "before": [
+          "atmosphereGlow:inf:16000",
+          "atmosphereGlow:inf:28000",
+          "sxPanelCurrent:inf:18000"
+        ],
+        "after": [
+          "atmosphereGlow:inf:32000",
+          "atmosphereGlow:inf:32000",
+          "sxPanelCurrent:inf:18000"
+        ]
+      },
+      "veilIdentical": true,
+      "sentence": {
+        "text": "Marks the governance, authority and eval",
+        "rect": [
+          445,
+          189,
+          710,
+          13
+        ],
+        "font": "system-ui 10px/13px 400 ls 0.2px",
+        "color": "rgba(204, 230, 242, 0.9)"
+      },
+      "pageErrors": 0
+    }
+  },
+  "contrastAt1600BrightestBreath": [
+    {
+      "text": "BOUNDARY",
+      "before": 12.6,
+      "after": 12.17
+    },
+    {
+      "text": "Marks the governance, authority and eval",
+      "before": 8.69,
+      "after": 9.28
+    },
+    {
+      "text": "PRESENTATION · AUTHORITY BOUNDARY",
+      "before": 11.12,
+      "after": 10.16
+    },
+    {
+      "text": "01",
+      "before": 5.83,
+      "after": 5.54
+    },
+    {
+      "text": "DETERMINISTIC PRESENTATION",
+      "before": 11.2,
+      "after": 9.96
+    },
+    {
+      "text": "NOT A CANONICAL EVALUATION",
+      "before": 11.61,
+      "after": 10.22
+    },
+    {
+      "text": "NOT A DECISION",
+      "before": 12.23,
+      "after": 11.11
+    },
+    {
+      "text": "RANKED BY resonanceScore AS DELIVERED",
+      "before": 9.5,
+      "after": 8.62
+    },
+    {
+      "text": "CANONICAL MAPPING (LAYER C)",
+      "before": 11.63,
+      "after": 11.59
+    },
+    {
+      "text": "02",
+      "before": 5.81,
+      "after": 5.64
+    },
+    {
+      "text": "MAPPED",
+      "before": 11.31,
+      "after": 10.85
+    },
+    {
+      "text": "PROPOSAL_ONLY",
+      "before": 11.97,
+      "after": 11.88
+    },
+    {
+      "text": "authority NONE",
+      "before": 12.19,
+      "after": 12.19
+    },
+    {
+      "text": "Target revisions are PROPOSAL_ONLY with ",
+      "before": 13.41,
+      "after": 13.04
+    },
+    {
+      "text": "CAPABILITY SWEEP COVERAGE (UNSCORED)",
+      "before": 11.77,
+      "after": 11.19
+    },
+    {
+      "text": "03",
+      "before": 6.17,
+      "after": 6.01
+    },
+    {
+      "text": "NO SWEEP PROPOSALS RECORDED FOR THIS ANA",
+      "before": 9.28,
+      "after": 9.07
+    },
+    {
+      "text": "UNSCORED",
+      "before": 12.66,
+      "after": 12.56
+    },
+    {
+      "text": "Coverage by a Gemini Capability Sweep pr",
+      "before": 13.65,
+      "after": 13.56
+    },
+    {
+      "text": "MISSING REQUIREMENTS",
+      "before": 11.94,
+      "after": 11.32
+    },
+    {
+      "text": "04",
+      "before": 6.09,
+      "after": 5.77
+    },
+    {
+      "text": "CANDIDATE CAPABILITIES 6 · WEAK-EVIDENCE",
+      "before": 9.36,
+      "after": 8.84
+    },
+    {
+      "text": "Missing requirements are the delivered p",
+      "before": 13.41,
+      "after": 12.45
+    }
+  ],
+  "minContrast": {
+    "before": 5.81,
+    "after": 5.54,
+    "note": "the minimum is the decorative aria-hidden ordinal; every text >= 8.6 after"
+  },
+  "tests": "tsc 0; 6 files / 48 tests (field SSR, static, SIL language contract, language wiring, field governance, presentation)",
+  "behaviourProof": {
+    "passed": 44,
+    "total": 44,
+    "checks": [
+      {
+        "name": "1600x1000 no-preference: click opens the boundary (aria-expanded, visible)",
+        "ok": true
+      },
+      {
+        "name": "1600x1000 no-preference: the field recedes behind the veil; the veil is decoration and pointer-transparent",
+        "ok": true,
+        "detail": "{\"opacity\":\"1\",\"pointer\":\"none\",\"hidden\":\"true\",\"z\":\"44\"}"
+      },
+      {
+        "name": "1600x1000 no-preference: no collision with orientation, pools, intake, selector, footer statement",
+        "ok": true,
+        "detail": "boundary {\"left\":420,\"right\":1180,\"top\":157,\"bottom\":636.0625} "
+      },
+      {
+        "name": "1600x1000 no-preference: the boundary stays inside the viewport",
+        "ok": true
+      },
+      {
+        "name": "1600x1000 no-preference: only the quiet panel motion keeps running (no new infinite motion)",
+        "ok": true,
+        "detail": "[{\"name\":\"sxPanelCurrent\",\"infinite\":true},{\"name\":\"atmosphereGlow\",\"infinite\":true},{\"name\":\"atmosphereGlow\",\"infinite\":true}]"
+      },
+      {
+        "name": "1600x1000 no-preference: the pointer passes the veil (an organization outside the boundary owns its centre)",
+        "ok": true,
+        "detail": "{\"id\":\"syntx-organization-org_rheinwerk\",\"owned\":true,\"x\":1081.7803344726562,\"y\":723.6900024414062}"
+      },
+      {
+        "name": "1600x1000 no-preference: Escape closes the boundary",
+        "ok": true
+      },
+      {
+        "name": "1600x1000 no-preference: the veil withdraws",
+        "ok": true
+      },
+      {
+        "name": "1600x1000 no-preference: Enter on BOUNDARY opens it",
+        "ok": true
+      },
+      {
+        "name": "1600x1000 no-preference: a second click closes it",
+        "ok": true
+      },
+      {
+        "name": "1600x1000 no-preference: no page errors",
+        "ok": true,
+        "detail": ""
+      },
+      {
+        "name": "1600x1000 reduce: click opens the boundary (aria-expanded, visible)",
+        "ok": true
+      },
+      {
+        "name": "1600x1000 reduce: the field recedes behind the veil; the veil is decoration and pointer-transparent",
+        "ok": true,
+        "detail": "{\"opacity\":\"1\",\"pointer\":\"none\",\"hidden\":\"true\",\"z\":\"44\"}"
+      },
+      {
+        "name": "1600x1000 reduce: no collision with orientation, pools, intake, selector, footer statement",
+        "ok": true,
+        "detail": "boundary {\"left\":420,\"right\":1180,\"top\":157,\"bottom\":636.0625} "
+      },
+      {
+        "name": "1600x1000 reduce: the boundary stays inside the viewport",
+        "ok": true
+      },
+      {
+        "name": "1600x1000 reduce: nothing animates on the boundary or the veil",
+        "ok": true,
+        "detail": "[]"
+      },
+      {
+        "name": "1600x1000 reduce: the pointer passes the veil (an organization outside the boundary owns its centre)",
+        "ok": true,
+        "detail": "{\"id\":\"syntx-organization-org_rheinwerk\",\"owned\":true,\"x\":1081.7803344726562,\"y\":723.6900024414062}"
+      },
+      {
+        "name": "1600x1000 reduce: Escape closes the boundary",
+        "ok": true
+      },
+      {
+        "name": "1600x1000 reduce: the veil withdraws",
+        "ok": true
+      },
+      {
+        "name": "1600x1000 reduce: Enter on BOUNDARY opens it",
+        "ok": true
+      },
+      {
+        "name": "1600x1000 reduce: a second click closes it",
+        "ok": true
+      },
+      {
+        "name": "1600x1000 reduce: no page errors",
+        "ok": true,
+        "detail": ""
+      },
+      {
+        "name": "1280x720 no-preference: click opens the boundary (aria-expanded, visible)",
+        "ok": true
+      },
+      {
+        "name": "1280x720 no-preference: the field recedes behind the veil; the veil is decoration and pointer-transparent",
+        "ok": true,
+        "detail": "{\"opacity\":\"1\",\"pointer\":\"none\",\"hidden\":\"true\",\"z\":\"44\"}"
+      },
+      {
+        "name": "1280x720 no-preference: no collision with orientation, pools, intake, selector, footer statement",
+        "ok": true,
+        "detail": "boundary {\"left\":384,\"right\":896,\"top\":157,\"bottom\":669} "
+      },
+      {
+        "name": "1280x720 no-preference: the boundary stays inside the viewport",
+        "ok": true
+      },
+      {
+        "name": "1280x720 no-preference: only the quiet panel motion keeps running (no new infinite motion)",
+        "ok": true,
+        "detail": "[{\"name\":\"sxPanelCurrent\",\"infinite\":true},{\"name\":\"atmosphereGlow\",\"infinite\":true},{\"name\":\"atmosphereGlow\",\"infinite\":true}]"
+      },
+      {
+        "name": "1280x720 no-preference: the pointer passes the veil (an organization outside the boundary owns its centre)",
+        "ok": true,
+        "detail": "{\"id\":\"syntx-organization-org_rheinwerk\",\"owned\":true,\"x\":908.6343688964844,\"y\":696.1000061035156}"
+      },
+      {
+        "name": "1280x720 no-preference: Escape closes the boundary",
+        "ok": true
+      },
+      {
+        "name": "1280x720 no-preference: the veil withdraws",
+        "ok": true
+      },
+      {
+        "name": "1280x720 no-preference: Enter on BOUNDARY opens it",
+        "ok": true
+      },
+      {
+        "name": "1280x720 no-preference: a second click closes it",
+        "ok": true
+      },
+      {
+        "name": "1280x720 no-preference: no page errors",
+        "ok": true,
+        "detail": ""
+      },
+      {
+        "name": "1280x720 reduce: click opens the boundary (aria-expanded, visible)",
+        "ok": true
+      },
+      {
+        "name": "1280x720 reduce: the field recedes behind the veil; the veil is decoration and pointer-transparent",
+        "ok": true,
+        "detail": "{\"opacity\":\"1\",\"pointer\":\"none\",\"hidden\":\"true\",\"z\":\"44\"}"
+      },
+      {
+        "name": "1280x720 reduce: no collision with orientation, pools, intake, selector, footer statement",
+        "ok": true,
+        "detail": "boundary {\"left\":384,\"right\":896,\"top\":157,\"bottom\":669} "
+      },
+      {
+        "name": "1280x720 reduce: the boundary stays inside the viewport",
+        "ok": true
+      },
+      {
+        "name": "1280x720 reduce: nothing animates on the boundary or the veil",
+        "ok": true,
+        "detail": "[]"
+      },
+      {
+        "name": "1280x720 reduce: the pointer passes the veil (an organization outside the boundary owns its centre)",
+        "ok": true,
+        "detail": "{\"id\":\"syntx-organization-org_rheinwerk\",\"owned\":true,\"x\":908.6343688964844,\"y\":696.1000061035156}"
+      },
+      {
+        "name": "1280x720 reduce: Escape closes the boundary",
+        "ok": true
+      },
+      {
+        "name": "1280x720 reduce: the veil withdraws",
+        "ok": true
+      },
+      {
+        "name": "1280x720 reduce: Enter on BOUNDARY opens it",
+        "ok": true
+      },
+      {
+        "name": "1280x720 reduce: a second click closes it",
+        "ok": true
+      },
+      {
+        "name": "1280x720 reduce: no page errors",
+        "ok": true,
+        "detail": ""
+      }
+    ]
+  }
+}

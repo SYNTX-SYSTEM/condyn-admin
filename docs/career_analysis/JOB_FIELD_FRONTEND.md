@@ -918,6 +918,22 @@ to 3fb340d; text identical except the added sentence; contract identical; DE box
 with the shimmer frozen at its brightest: minimum 5.85 → 5.81, the sentence 8.7; behaviour proof 44 / 44; tsc 0; field SSR, static,
 SIL language contract, language wiring, field governance and presentation tests 48 / 48.
 
+#### 13.2.17 Boundary: visible cyan glow, corrected orientation line (owner mandate, 2026-10-13)
+
+On a06fe3a. Local field: the boundary body's light and the orientation line.
+
+- **Glow.** The existing light logic, raised in visibility only: the cyan shimmer behind the layers (alphas about 2.5×), the body's aura
+  now cyan with a clearer inner field light, the border membrane cyan. Shimmer and aura breathe together on `atmosphereGlow` at 32 s
+  (slower than before: 28 s / 16 s), opacity only. Swing over the boundary between the breath's ends: mean 2.0 / 255 per channel, max
+  12 (before 0.55 / 4) — visible, below any conscious rhythm. None in REDUCED; no new motion kind.
+- **Orientation line.** EN "Marks the governance, authority and evaluation boundaries of this field state.", DE "Markiert die
+  Governance-, Autoritäts- und Bewertungsgrenzen dieses Feldzustands." (owner wording); 10 px so that both stay one line at 1280 px.
+
+Proof (local only): `evidence/job-pool/semiotic-transfer/local-boundary-glow/local-proof.json` — boundary, scroll, layer and every text
+leaf box identical to a06fe3a (EN, 1600 × 1000 and 1280 × 720, LIVE and REDUCED; DE boxes and layer tops identical); text identical
+except the corrected word; contract identical; contrast at the brightest breath: every text ≥ 8.6, minimum (decorative ordinal)
+5.81 → 5.54; behaviour proof 44 / 44; 6 files / 48 tests; tsc 0.
+
 ### 13.3 DOM contract (PINK BR-1 … BR-5; GELB conditions a/b)
 
 **BR-1 field root** `data-testid="syntx-field"`: `data-field-grammar="SYNTX_FIELD_V1"`, `data-observation-kind` FIELD|ORGANIZATION|ROLE|REQUIREMENT
@@ -1078,3 +1094,4 @@ observation point. Readable labels wrap at word boundaries (`wrapLines`), never 
 | 2026-10-13 | Local pass: boundary as a focus state (owner "Small-to-medium field. Local recursion.", on 2f7d0ee; visual only, isolated lab) | §13.2.14: receding field behind a pointer-transparent veil, the boundary as a centred governance body with a layer grid and amber as accent only. Evidence: `evidence/job-pool/semiotic-transfer/local-boundary-focus/` | tsc 0; local proof 44 / 44; boundary text and contract identical; field SSR 8 / 8 (no full sweep by owner rule) |
 | 2026-10-13 | Boundary micro-finish (owner "SFE::BOUNDARY MICRO-FINISH", on f136859; visual only, isolated lab) | §13.2.15: static light membrane, sheen and layer rims; shared azure layer grammar, amber only on limits and status dots; heading, meta and statement typography. Evidence: `evidence/job-pool/semiotic-transfer/local-boundary-microfinish/` | tsc 0; geometry of boundary, layers and every text leaf identical; text and contract identical; animations unchanged; min contrast 4.07 → 5.85; behaviour proof 44 / 44; field SSR + static 13 / 13 (no full sweep by owner rule) |
 | 2026-10-13 | Boundary cyan presence + orientation sentence (owner mandate, on 3fb340d; visual + one copy line, isolated lab) | §13.2.16: resting cyan shimmer behind the layers (`atmosphereGlow` 28 s, opacity only), orientation sentence EN / DE under BOUNDARY in the space the kicker gave up. Evidence: `evidence/job-pool/semiotic-transfer/local-boundary-orientation/` | tsc 0; boundary, layers and text leaves identical (kicker −9 px by design); text identical except the sentence; contract identical; behaviour proof 44 / 44; 6 files / 48 tests (no full sweep by owner rule) |
+| 2026-10-13 | Boundary visible cyan glow + corrected orientation line (owner mandate, on a06fe3a; visual + copy, isolated lab) | §13.2.17: shimmer, aura and membrane in cyan with higher amplitude, one shared 32 s breath; owner wording EN / DE. Evidence: `evidence/job-pool/semiotic-transfer/local-boundary-glow/` | tsc 0; geometry identical; text identical except the corrected word; contract identical; swing 0.55 → 2.0 / 255; every text ≥ 8.6 at the brightest breath; behaviour proof 44 / 44; 6 files / 48 tests (no full sweep by owner rule) |
