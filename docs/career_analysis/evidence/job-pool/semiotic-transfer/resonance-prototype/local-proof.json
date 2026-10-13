@@ -1,0 +1,189 @@
+{
+  "base": "6c88d9ba4b70a7a1218aad41a3511142e535efbb",
+  "carriers": {
+    "organization": "the first organization of the pool (index 0; here org_nordlicht) — the only organization with data-sx-resonance / [data-sx-halo]",
+    "panel": "the orientation surface (top left, always visible, the current field state)"
+  },
+  "stateSources": {
+    "organization": {
+      "active": "hovered at JOB POOL or observed (existing highlighted), or keyboard focus (:focus-visible)",
+      "retreated": "another organization hovered (existing dimmed) or the body behind the observed level (existing isCosmosBackground)",
+      "inactive": "otherwise"
+    },
+    "panel": {
+      "active": ":hover or keyboard focus inside (:has(:focus-visible))",
+      "retreated": "the boundary is open (existing boundaryOpen), unless hovered / keyboard-focused",
+      "inactive": "otherwise"
+    }
+  },
+  "ringOutsideContourMeanBrightness": {
+    "method": "reduced motion (deterministic), identical steps before / after; organization ring 1–14 px beyond the rim, panel ring 1–18 px beyond the rectangle",
+    "ring": {
+      "org-1-inactive": {
+        "state": "inactive",
+        "before": 23.33,
+        "after": 25.48,
+        "geometryIdentical": true
+      },
+      "panel-1-inactive": {
+        "state": "inactive",
+        "before": 9.29,
+        "after": 10.62,
+        "geometryIdentical": true
+      },
+      "org-2-active-hover": {
+        "state": "active",
+        "before": 86.64,
+        "after": 95.58,
+        "geometryIdentical": true
+      },
+      "org-3-retreated-other-hovered": {
+        "state": "retreated",
+        "before": 15.47,
+        "after": 15.51,
+        "geometryIdentical": true
+      },
+      "org-4-active-keyboard": {
+        "state": "inactive",
+        "before": 30.91,
+        "after": 43.63,
+        "geometryIdentical": true
+      },
+      "panel-2-active-hover": {
+        "state": "inactive",
+        "before": 9.29,
+        "after": 16.84,
+        "geometryIdentical": true
+      },
+      "panel-4-active-keyboard": {
+        "state": "inactive",
+        "before": 9.29,
+        "after": 16.84,
+        "geometryIdentical": true
+      },
+      "panel-3-retreated-boundary-open": {
+        "state": "retreated",
+        "before": 9.4,
+        "after": 9.41,
+        "geometryIdentical": true
+      }
+    },
+    "levelStates": {
+      "org-5-retreated-background": {
+        "attr": "retreated"
+      },
+      "org-6-active-observed": {
+        "attr": "active"
+      }
+    }
+  },
+  "motion": {
+    "flagOff": "no new infinite animation on the organization or the panel: organization inactive atmosphereGlow 11 s, moonOrbit 160 s, orbitFloatPhase2 25 s; active adds the existing atmosphereGlow 3 s, ringPulse 2.4 s, hologramFloat 6 s; panel none",
+    "stateChanges": "finite box-shadow transitions .9 s (the body's own light transition curve)",
+    "breathingPrototype": "only with NEXT_PUBLIC_SYNTX_RESONANCE_BREATH=1 (data-sx-resonance-breath on the field root): the ACTIVE seam breathes on atmosphereGlow 24 s (organization [data-sx-halo], panel ::after); flag wiring verified (set → true, unset → false)",
+    "reduced": "nothing animates, with or without the prototype attribute"
+  },
+  "performance": {
+    "note": "headless Chromium without GPU (software raster): low absolute frame rates for both trees; identical states, alternating runs",
+    "rows": [
+      {
+        "tag": "after-1",
+        "state": "field idle",
+        "fps": 5.1,
+        "taskSecPerSec": 0.024,
+        "styleSecPerSec": 0.004,
+        "layoutSecPerSec": 0.002
+      },
+      {
+        "tag": "after-1",
+        "state": "first organization hovered",
+        "fps": 4.5,
+        "taskSecPerSec": 0.022,
+        "styleSecPerSec": 0.004,
+        "layoutSecPerSec": 0.002
+      },
+      {
+        "tag": "after-1",
+        "state": "boundary open",
+        "fps": 2.2,
+        "taskSecPerSec": 0.027,
+        "styleSecPerSec": 0.003,
+        "layoutSecPerSec": 0.001
+      },
+      {
+        "tag": "before-1",
+        "state": "field idle",
+        "fps": 3.4,
+        "taskSecPerSec": 0.03,
+        "styleSecPerSec": 0.004,
+        "layoutSecPerSec": 0.003
+      },
+      {
+        "tag": "before-1",
+        "state": "first organization hovered",
+        "fps": 4.6,
+        "taskSecPerSec": 0.022,
+        "styleSecPerSec": 0.004,
+        "layoutSecPerSec": 0.002
+      },
+      {
+        "tag": "before-1",
+        "state": "boundary open",
+        "fps": 2.5,
+        "taskSecPerSec": 0.023,
+        "styleSecPerSec": 0.003,
+        "layoutSecPerSec": 0.001
+      },
+      {
+        "tag": "before-2",
+        "state": "field idle",
+        "fps": 4,
+        "taskSecPerSec": 0.024,
+        "styleSecPerSec": 0.003,
+        "layoutSecPerSec": 0.002
+      },
+      {
+        "tag": "before-2",
+        "state": "first organization hovered",
+        "fps": 4.1,
+        "taskSecPerSec": 0.024,
+        "styleSecPerSec": 0.004,
+        "layoutSecPerSec": 0.003
+      },
+      {
+        "tag": "before-2",
+        "state": "boundary open",
+        "fps": 2.1,
+        "taskSecPerSec": 0.021,
+        "styleSecPerSec": 0.003,
+        "layoutSecPerSec": 0.001
+      },
+      {
+        "tag": "after-2",
+        "state": "field idle",
+        "fps": 3.7,
+        "taskSecPerSec": 0.027,
+        "styleSecPerSec": 0.003,
+        "layoutSecPerSec": 0.003
+      },
+      {
+        "tag": "after-2",
+        "state": "first organization hovered",
+        "fps": 4.6,
+        "taskSecPerSec": 0.021,
+        "styleSecPerSec": 0.004,
+        "layoutSecPerSec": 0.002
+      },
+      {
+        "tag": "after-2",
+        "state": "boundary open",
+        "fps": 2,
+        "taskSecPerSec": 0.035,
+        "styleSecPerSec": 0.003,
+        "layoutSecPerSec": 0.001
+      }
+    ]
+  },
+  "interaction": "first organization: the pointer owns its centre; click and Enter observe it (ORGANIZATION org_nordlicht); Escape returns to FIELD; no new focusable element",
+  "regression": "tsc 0; boundary behaviour proof 44 / 44; field SSR, static, governance, presentation, view model, SIL language contract: 6 files / 54 tests"
+}

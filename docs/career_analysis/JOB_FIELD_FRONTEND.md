@@ -955,6 +955,32 @@ Proof (local only): `evidence/job-pool/semiotic-transfer/local-boundary-halo/` �
 21.1–29.6 after, 19.8 constant in REDUCED; boundary, layers, every text leaf, text, contract and veil identical to fd3462d (EN, 1600 × 1000
 and 1280 × 720, LIVE and REDUCED); no measurable frame cost; behaviour proof 44 / 44; 6 files / 48 tests; tsc 0.
 
+#### 13.2.19 Resonance halo grammar — phase 1 prototype (owner "SFE::SYNTX RESONANCE HALO", 2026-10-13)
+
+On 6c88d9b. Stable structure, living resonance — prototyped on exactly one organization body and one panel; the boundary unchanged.
+
+- **Carriers.** The first organization of the pool (index 0) and the orientation surface (top left; always visible; the current field
+  state). No other organization or panel carries it.
+- **Clipping and stacking (lesson of §13.2.18).** The organization body clips nothing (its atmosphere at −30 px is visible); the seam is a
+  child of the floating body (`[data-sx-halo]`, outer box-shadow only, `inset: −1.5px` = the rim), so it follows the body's float. The
+  orientation surface does not clip either (only its light pass sits in a clipped inner span); its seam is its own `::after` (outer
+  box-shadow only, inside its z 46 stacking context, above the veil).
+- **State grammar from existing state only.** Organization: ACTIVE = `highlighted` (hovered at JOB POOL or observed) or keyboard focus
+  (`:focus-visible`); RETREATED = another organization hovered (`dimmed`) or behind the observed level (`isCosmosBackground`); else
+  INACTIVE (`data-sx-resonance`). Panel: ACTIVE = `:hover` or keyboard focus inside; RETREATED = boundary open (unless hovered / focused);
+  else INACTIVE. Seam strength: INACTIVE barely there, ACTIVE clear, RETREATED withdrawn; both below the boundary's halo.
+- **Motion.** None new by default: state changes are finite box-shadow transitions (.9 s, the body's own light curve), REDUCED instant.
+  Breathing of the ACTIVE seam exists only as a prototype behind the lab flag `NEXT_PUBLIC_SYNTX_RESONANCE_BREATH=1`
+  (`data-sx-resonance-breath` on the root): `atmosphereGlow` 24 s on the seam; off by default; R15b approval by GELB required.
+- Unchanged: geometry (rim radius, panel rectangle), inner light, text, layout, ids, contract attributes, click / Enter / Escape, the
+  boundary and its halo, every other organization and panel.
+
+Proof (local only): `evidence/job-pool/semiotic-transfer/resonance-prototype/local-proof.json` — ring brightness right outside the
+contour, identical steps before / after (organization: inactive 23.3 → 25.5, hover 86.6 → 95.6, keyboard 30.9 → 43.6, retreated 15.5 →
+15.5; panel: inactive 9.3 → 10.6, hover / keyboard 9.3 → 16.8, retreated 9.4 → 9.4); observed → active, background → retreated; no new
+infinite animation with the flag off, only `atmosphereGlow` 24 s on the ACTIVE seam with it, nothing in REDUCED; frame cost unchanged in
+identical states (headless, no GPU); boundary behaviour proof 44 / 44; 6 files / 54 tests; tsc 0.
+
 ### 13.3 DOM contract (PINK BR-1 … BR-5; GELB conditions a/b)
 
 **BR-1 field root** `data-testid="syntx-field"`: `data-field-grammar="SYNTX_FIELD_V1"`, `data-observation-kind` FIELD|ORGANIZATION|ROLE|REQUIREMENT
@@ -1117,3 +1143,4 @@ observation point. Readable labels wrap at word boundaries (`wrapLines`), never 
 | 2026-10-13 | Boundary cyan presence + orientation sentence (owner mandate, on 3fb340d; visual + one copy line, isolated lab) | §13.2.16: resting cyan shimmer behind the layers (`atmosphereGlow` 28 s, opacity only), orientation sentence EN / DE under BOUNDARY in the space the kicker gave up. Evidence: `evidence/job-pool/semiotic-transfer/local-boundary-orientation/` | tsc 0; boundary, layers and text leaves identical (kicker −9 px by design); text identical except the sentence; contract identical; behaviour proof 44 / 44; 6 files / 48 tests (no full sweep by owner rule) |
 | 2026-10-13 | Boundary visible cyan glow + corrected orientation line (owner mandate, on a06fe3a; visual + copy, isolated lab) | §13.2.17: shimmer, aura and membrane in cyan with higher amplitude, one shared 32 s breath; owner wording EN / DE. Evidence: `evidence/job-pool/semiotic-transfer/local-boundary-glow/` | tsc 0; geometry identical; text identical except the corrected word; contract identical; swing 0.55 → 2.0 / 255; every text ≥ 8.6 at the brightest breath; behaviour proof 44 / 44; 6 files / 48 tests (no full sweep by owner rule) |
 | 2026-10-13 | Boundary external resonance halo (owner mandate, on fd3462d; visual only, isolated lab) | §13.2.18: overflow clipping of the old aura diagnosed; the halo on the body's own box-shadow, breathing via `sxBoundaryHalo` 28 s (new motion kind, R15b approval by GELB required); REDUCED still. Evidence: `evidence/job-pool/semiotic-transfer/local-boundary-halo/` | tsc 0; body geometry, text and contract identical; ring outside the frame 13.8–14.3 → 21.1–29.6 over the breath; video of one breath at 1x; behaviour proof 44 / 44; 6 files / 48 tests (no full sweep by owner rule) |
+| 2026-10-13 | Resonance halo grammar, phase 1 prototype (owner mandate, on 6c88d9b; visual only, isolated lab) | §13.2.19: external cyan seam on the first organization and the orientation surface, strength from existing state (inactive / active / retreated), finite transitions; breathing only behind a lab flag (R15b approval required). Evidence: `evidence/job-pool/semiotic-transfer/resonance-prototype/` | tsc 0; geometry identical; states measured before / after; no new infinite motion by default; frame cost unchanged; boundary proof 44 / 44; 6 files / 54 tests (no full sweep by owner rule) |

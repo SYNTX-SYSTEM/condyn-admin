@@ -299,6 +299,12 @@ export { wrapLines };
  * never starts, every sign in its place. The ruling that binds the names is GELB's (R15 / R15a, proposal R15b).
  */
 export const SYNTX_AMBIENT_MOTION = true;
+/** Resonance halo grammar, phase 1 prototype (owner mandate "SFE::SYNTX RESONANCE HALO"): the first organization body and the
+ * orientation surface carry an external cyan seam whose presence follows their real UI state — inactive, active (hovered, observed or
+ * keyboard-focused) and retreated (another body holds the focus, the body lies behind the observed level, or the boundary is open).
+ * State changes are finite transitions (.9 s, the body's own light transition). Breathing of the ACTIVE seam is a separate prototype that
+ * needs GELB's approval (R15b): off unless the lab sets NEXT_PUBLIC_SYNTX_RESONANCE_BREATH=1. */
+export const SYNTX_RESONANCE_BREATH_PROTOTYPE = process.env.NEXT_PUBLIC_SYNTX_RESONANCE_BREATH === "1";
 /** Infinite animations of the Job Field in LIVE mode (closed list; the planetarium's and the field's own; everything else is finite). */
 export const SYNTX_AMBIENT_NAMES = Object.freeze(["orbitFloatPhase2", "moonOrbit", "ringPulse", "atmosphereGlow", "hologramFloat", "coreBreathe", "corePulseCommunicate", "plasmaRotateCw", "plasmaRotateCcw", "plasmaFlarePulse", "waveExpand", "particleIn", "rotateClockwise", "focusTransitionPulse", "sxSuspend"]);
 
@@ -378,6 +384,18 @@ ${SYNTX_FOCUS_PULSE_KEYFRAMES}
 [data-sx-boundary-statement]::before { content: ""; position: absolute; left: 0; top: -6px; width: 22px; height: 1px; background: rgba(92, 200, 255, 0.4); }
 @keyframes sxBoundaryOpen { from { opacity: 0; transform: scale(0.97); } to { opacity: 1; transform: scale(1); } }
 @keyframes sxBoundaryHalo { 0%, 100% { box-shadow: ${boundaryShadow("low")}; } 50% { box-shadow: ${boundaryShadow("high")}; } }
+/* Resonance halo grammar (prototype): an external cyan seam right outside the contour, its presence set by the carrier's state. The
+ * organization's seam rides inside the floating body ([data-sx-halo], outer box-shadow only); the orientation surface's seam is its
+ * ::after (outer box-shadow only, behind nothing it covers). Weaker than the boundary's halo; nothing inside the contour changes. */
+[data-sx-halo] { position: absolute; inset: -1.5px; border-radius: 50%; pointer-events: none; box-shadow: 0 0 4px 0 rgba(56, 229, 255, 0.22), 0 0 12px 1px rgba(56, 229, 255, 0.08); transition: box-shadow .9s cubic-bezier(0.16, 1, 0.3, 1), opacity .9s cubic-bezier(0.16, 1, 0.3, 1); }
+[data-sx-resonance="active"] [data-sx-halo], [data-sx-resonance]:focus-visible [data-sx-halo] { box-shadow: 0 0 6px 1px rgba(56, 229, 255, 0.46), 0 0 18px 3px rgba(56, 229, 255, 0.17); }
+[data-sx-resonance="retreated"] [data-sx-halo] { box-shadow: 0 0 4px 0 rgba(56, 229, 255, 0.07), 0 0 10px 0 rgba(56, 229, 255, 0.025); }
+[data-sx-orient]::after { content: ""; position: absolute; inset: -1px; border-radius: inherit; pointer-events: none; z-index: -1; box-shadow: 0 0 5px 0 rgba(56, 229, 255, 0.15), 0 0 16px 1px rgba(56, 229, 255, 0.055); transition: box-shadow .9s cubic-bezier(0.16, 1, 0.3, 1), opacity .9s cubic-bezier(0.16, 1, 0.3, 1); }
+[data-sx-orient]:hover::after, [data-sx-orient]:has(:focus-visible)::after { box-shadow: 0 0 7px 1px rgba(56, 229, 255, 0.3), 0 0 22px 3px rgba(56, 229, 255, 0.11); }
+[data-sx-orient][data-sx-resonance="retreated"]:not(:hover):not(:has(:focus-visible))::after { box-shadow: 0 0 4px 0 rgba(56, 229, 255, 0.05), 0 0 12px 0 rgba(56, 229, 255, 0.02); }
+/* Breathing prototype (R15b approval required; off by default): only the ACTIVE seam breathes, on the existing name atmosphereGlow
+ * (opacity .5 ↔ .9) at 24 s; none in REDUCED. */
+[data-sx-resonance-breath] [data-sx-resonance="active"] [data-sx-halo], [data-sx-resonance-breath] [data-sx-resonance]:focus-visible [data-sx-halo], [data-sx-resonance-breath] [data-sx-orient]:hover::after, [data-sx-resonance-breath] [data-sx-orient]:has(:focus-visible)::after { animation: atmosphereGlow 24s ease-in-out infinite; }
 /* Orientation surface (top left): field actions as chips; hover and focus light; one finite light pass on every context change. */
 @keyframes sxOrientPass { from { transform: translateX(-120%); opacity: 0; } 20% { opacity: 1; } to { transform: translateX(260%); opacity: 0; } }
 [data-sx-orient] [data-sx-orient-action] { transition: border-color .3s ease, background-color .3s ease, color .3s ease, box-shadow .3s ease; }
@@ -701,6 +719,7 @@ function OrganizationBody({ organization, index, roles, observation, depth, isAn
         data-role-count={organization.roleIds.length}
         data-body-scale={organization.bodyScale}
         data-sx-depth={isBackground ? "far" : undefined}
+        data-sx-resonance={index === 0 ? (highlighted ? "active" : isBackground || (!anchored && hovered !== null) ? "retreated" : "inactive") : undefined}
         {...signAttributes(organization.sign)}
         role="button"
         tabIndex={depth <= 1 ? 0 : -1}
@@ -758,6 +777,8 @@ function OrganizationBody({ organization, index, roles, observation, depth, isAn
               its upper edge and the shade of its lower edge, and the inner light that rises when the body resonates (hover, focus). */}
           <span aria-hidden="true" style={{ position: "absolute", inset: "-52px", borderRadius: "50%", pointerEvents: "none", background: "radial-gradient(circle closest-side, transparent 64%, rgba(40, 112, 204, 0.06) 78%, rgba(40, 112, 204, 0.02) 90%, transparent 100%)" }} />
           <span data-sx-aura aria-hidden="true" style={{ position: "absolute", inset: "-30px", borderRadius: "50%", pointerEvents: "none", background: `radial-gradient(circle, transparent 55%, ${azure(0.12)} 62%, rgba(36, 100, 188, 0.05) 71%, transparent 79%)`, animation: "atmosphereGlow 11s ease-in-out infinite", animationDelay: `${-1.7 * index}s` }} />
+          {/* Resonance halo prototype (first organization only): the external seam, outside the rim; nothing inside changes. */}
+          {index === 0 && <span data-sx-halo aria-hidden="true" />}
           {/* The light membrane: a fine ring just inside the rim, lit from the upper left and falling off around the body (still). */}
           <span aria-hidden="true" style={{ position: "absolute", inset: "4px", borderRadius: "50%", pointerEvents: "none", background: "conic-gradient(from 225deg, rgba(200, 242, 255, 0.62), rgba(92, 200, 255, 0.16) 24%, rgba(92, 200, 255, 0.05) 48%, rgba(46, 120, 214, 0.18) 72%, rgba(200, 242, 255, 0.62))", WebkitMaskImage: "radial-gradient(circle closest-side, transparent calc(100% - 1.6px), #000 calc(100% - 1px), #000 100%, transparent 100%)", maskImage: "radial-gradient(circle closest-side, transparent calc(100% - 1.6px), #000 calc(100% - 1px), #000 100%, transparent 100%)", opacity: highlighted ? 0.95 : 0.7, transition: "opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1)" }} />
           <span aria-hidden="true" style={{ position: "absolute", inset: "2px", borderRadius: "50%", pointerEvents: "none", boxShadow: "inset 3px 4px 7px -3px rgba(190, 238, 255, 0.34), inset -3px -5px 9px -4px rgba(24, 84, 170, 0.4)" }} />
@@ -1515,6 +1536,7 @@ export function SyntxField({ workflow, analysisSource, observation: requested, o
       data-intake-visible={intakeVisible ? "true" : "false"}
       data-boundary-visible={boundaryOpen ? "true" : "false"}
       data-sx-ambient={SYNTX_AMBIENT_MOTION ? "on" : "off"}
+      data-sx-resonance-breath={SYNTX_RESONANCE_BREATH_PROTOTYPE ? "prototype" : undefined}
       tabIndex={-1}
       onKeyDown={onKeyDown}
       style={{ position: "absolute", inset: 0, zIndex: 45, backgroundColor: "rgba(3, 5, 8, 0.9)", backgroundImage: JOB_FIELD_ATMOSPHERE, backdropFilter: "blur(8px)", fontFamily: MONO, color: INK, outline: "none", animation: mode === "LIVE" ? "sxEnter 620ms ease-out both" : undefined }}
@@ -1537,7 +1559,7 @@ export function SyntxField({ workflow, analysisSource, observation: requested, o
       {/* Orientation surface: (A) the field and its relation to the Capability Field, (B) the observation path (each step a return),
           (C) the read state, (D) the keys, (E) the edge actions. The one header that is always visible (§12.2): a calm, lit glass at
           the edge; its only motion is one light pass on each context change (finite, none in REDUCED). */}
-      <div data-sx-surface="header" data-sx-orient style={{ position: "absolute", left: "28px", top: "84px", display: "flex", flexDirection: "column", zIndex: 46, width: "min(340px, 28vw)", boxSizing: "border-box", padding: "12px 14px 12px 16px", borderRadius: "14px", border: `1px solid ${azure(0.2)}`, background: `radial-gradient(120% 90% at 0% 0%, rgba(84, 232, 236, 0.1), transparent 55%), linear-gradient(160deg, rgba(12, 31, 47, 0.7), rgba(5, 14, 24, 0.62))`, boxShadow: `0 0 0 1px rgba(1, 5, 10, 0.45), 0 0 34px rgba(64, 190, 230, 0.1), 0 0 70px rgba(64, 190, 230, 0.04), 0 14px 32px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(210, 248, 255, 0.13), inset 0 0 0 1px rgba(170, 235, 255, 0.035)`, backdropFilter: "blur(8px)" }}>
+      <div data-sx-surface="header" data-sx-orient data-sx-resonance={boundaryOpen ? "retreated" : "inactive"} style={{ position: "absolute", left: "28px", top: "84px", display: "flex", flexDirection: "column", zIndex: 46, width: "min(340px, 28vw)", boxSizing: "border-box", padding: "12px 14px 12px 16px", borderRadius: "14px", border: `1px solid ${azure(0.2)}`, background: `radial-gradient(120% 90% at 0% 0%, rgba(84, 232, 236, 0.1), transparent 55%), linear-gradient(160deg, rgba(12, 31, 47, 0.7), rgba(5, 14, 24, 0.62))`, boxShadow: `0 0 0 1px rgba(1, 5, 10, 0.45), 0 0 34px rgba(64, 190, 230, 0.1), 0 0 70px rgba(64, 190, 230, 0.04), 0 14px 32px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(210, 248, 255, 0.13), inset 0 0 0 1px rgba(170, 235, 255, 0.035)`, backdropFilter: "blur(8px)" }}>
         <span aria-hidden="true" style={{ position: "absolute", right: "-1px", top: "22px", width: 0, height: 0, pointerEvents: "none" }}>
           <span style={{ position: "absolute", left: 0, top: "-0.5px", width: "38px", height: "1px", background: `linear-gradient(90deg, ${azure(0.5)}, transparent)` }} />
           <span style={{ position: "absolute", left: "-2.5px", top: "-2.5px", width: "5px", height: "5px", borderRadius: "50%", background: "#bff4ff", boxShadow: `0 0 7px ${azure(0.85)}, 0 0 14px ${azure(0.35)}` }} />
