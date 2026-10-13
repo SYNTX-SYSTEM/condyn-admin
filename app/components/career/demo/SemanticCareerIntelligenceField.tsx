@@ -21,6 +21,7 @@ import { OrbitalDeepFocusView } from "./OrbitalDeepFocusView";
 import { InferenceTelemetryHUD } from "./InferenceTelemetryHUD";
 import { HrDecisionLoopDock } from "./HrDecisionLoopDock";
 import { SyntxField } from "./SyntxField";
+import { SyntxFieldSelector } from "./SyntxFieldSelector";
 import { SyntxEnergyRay, SyntxPlanetariumBackdrop } from "./manifestation/SyntxPlanetarium";
 import { FocusTransitionStageShell } from "./manifestation/SyntxFocusShell";
 import { observationFromParams, type SyntxObservation } from "../../../../lib/career/job-pool/syntx-field-view-model";
@@ -282,7 +283,10 @@ export function SemanticCareerIntelligenceField({
     replaceUrlParam("jobRoleId", next.kind === "ROLE" || next.kind === "REQUIREMENT" ? next.roleId : null);
     replaceUrlParam("jobRequirementId", next.kind === "REQUIREMENT" ? next.requirementId : null);
   };
+  /** Field changes since mount: each one is crossed by one calm veil (the shell's transition; none on the first paint). */
+  const [fieldSwitches, setFieldSwitches] = useState(0);
   const switchFieldFocus = (next: "CAPABILITY" | "FIELD") => {
+    if (next !== fieldFocus) setFieldSwitches(count => count + 1);
     setFieldFocus(next);
     const selectedUpload = jobPoolWorkflow.selectedJobPoolUploadId ?? jobPoolUploadId ?? null;
     replaceUrlParam("focus", next === "CAPABILITY" ? (selectedUpload ? "CAPABILITY" : null) : next);
@@ -828,6 +832,9 @@ export function SemanticCareerIntelligenceField({
       <style>{`
         @keyframes fieldFocusSwitchBreath { 0%, 100% { box-shadow: 0 0 12px rgba(56, 229, 255, 0.18); } 50% { box-shadow: 0 0 22px rgba(56, 229, 255, 0.45); } }
         @media (prefers-reduced-motion: reduce) { [data-testid="field-focus-strip"] button { animation: none !important; } }
+        /* Exactly one field: with the Job Field selected the Capability Field is hidden entirely (kept mounted — no state lost);
+           the application shell (selector, top controls, guide, HR dock, codex, onboarding) stays. */
+        [data-testid="semantic-career-intelligence-field"][data-field-focus="FIELD"] > :not([data-sx-shell]):not([data-sx-field="job"]):not([data-testid="guided-onboarding-overlay"]):not([data-testid="system-codex-modal-backdrop"]):not(style) { visibility: hidden !important; }
         @keyframes rotateClockwise {
           0% { transform: rotate(0deg); }
           100% { transform: rotate(360deg); }
@@ -1376,6 +1383,7 @@ export function SemanticCareerIntelligenceField({
 
       {/* Persistent Top-Right How This Works / Codex Button */}
       <div
+        data-sx-shell="controls"
         style={{
           position: "fixed",
           top: "24px",
@@ -1424,17 +1432,19 @@ export function SemanticCareerIntelligenceField({
       </div>
 
       {/* Right Collapsible Semantic Guide Drawer */}
-      <div style={{ zIndex: 10 }}>
+      <div data-sx-shell="guide" style={{ zIndex: 10 }}>
         <SemanticGuideDrawer locale={locale} />
       </div>
 
       {/* Right HR Decision Loop Dock: rendered only for an explicit exact DCTXREV; it owns no planetarium geometry. */}
       {careerDecisionContextRevisionId && (
+        <div data-sx-shell="hr-dock" style={{ display: "contents" }}>
         <HrDecisionLoopDock
           careerDecisionContextRevisionId={careerDecisionContextRevisionId}
           decisionContextRevisionId={decisionContextRevisionId ?? null}
           locale={locale}
         />
+        </div>
       )}
 
       {/* FIELD focus: the SYNTX semiontic field — the selected Job Pool as the relational field; the capability planetarium recedes underneath (still rendered, not interactive). */}
@@ -1450,27 +1460,16 @@ export function SemanticCareerIntelligenceField({
         />
       )}
 
-      {/* Field-state strip (top-left): the two states of the same system, named constantly; the active one is lit. Clicking the active field state returns to CAPABILITY. */}
-      <div data-testid="field-focus-strip" data-field-focus={fieldFocus} style={{ position: "fixed", left: "24px", top: "84px", zIndex: 60, display: "flex", gap: "6px", alignItems: "center" }}>
-        {([
-          { id: "field-focus-capability-btn", focus: "CAPABILITY" as const, labelText: t.jobField.capabilityField, next: "CAPABILITY" as const },
-          { id: "job-pool-panel-toggle", focus: "FIELD" as const, labelText: t.syntx.toggle, next: fieldFocus === "FIELD" ? ("CAPABILITY" as const) : ("FIELD" as const) }
-        ]).map(state => {
-          const active = fieldFocus === state.focus;
-          return (
-            <button
-              key={state.id}
-              data-testid={state.id}
-              data-field-focus-active={active ? "true" : "false"}
-              aria-pressed={active}
-              onClick={() => switchFieldFocus(state.next)}
-              style={{ backgroundColor: active ? "rgba(56, 229, 255, 0.18)" : "rgba(10, 14, 20, 0.85)", border: `1px solid ${active ? SIL_TOKENS.colors.cyanActive : "rgba(56, 229, 255, 0.45)"}`, borderRadius: "8px", padding: "8px 14px", color: active ? SIL_TOKENS.colors.textPrimary : SIL_TOKENS.colors.cyanActive, fontFamily: SIL_TOKENS.typography.mono, fontSize: "11px", cursor: "pointer", boxShadow: active ? `0 0 16px ${SIL_TOKENS.colors.cyanGlow}` : undefined, transition: "background-color .3s ease, color .3s ease, box-shadow .3s ease" }}
-            >
-              {state.labelText}
-            </button>
-          );
-        })}
-      </div>
+      {/* SYNTX field selector (application shell): the two fields of one system, exactly one active, centred in the upper area. */}
+      <SyntxFieldSelector
+        focus={fieldFocus}
+        groupLabel={t.syntx.selector.group}
+        capabilityLabel={t.syntx.selector.capability}
+        jobLabel={t.syntx.toggle}
+        onSelect={switchFieldFocus}
+      />
+      {/* One calm veil per field change (.42 s, void → clear); pointer-transparent; REDUCED: none. */}
+      {fieldSwitches > 0 && <div key={fieldSwitches} data-sx-field-veil data-sx-shell="veil" aria-hidden="true" style={{ position: "absolute", inset: 0, zIndex: 50, pointerEvents: "none", backgroundColor: SIL_TOKENS.colors.void, opacity: 0, animation: "syntxFieldVeil 0.42s cubic-bezier(0.16, 1, 0.3, 1)" }} />}
 
       <SystemCodexModal
         isOpen={isCodexOpen}

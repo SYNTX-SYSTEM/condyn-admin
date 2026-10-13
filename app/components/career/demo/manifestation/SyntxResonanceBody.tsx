@@ -15,6 +15,8 @@ import { SIL_TOKENS } from "../SILTokens";
 export interface SyntxResonanceBodyHud {
   tetherTestId: string;
   tetherTarget: { x: number; y: number };
+  /** Where the tether leaves the body (240-unit tether box); the body's centre by default. */
+  tetherFrom?: { x: number; y: number };
   previewTestId: string;
   className: string;
   style: React.CSSProperties;
@@ -364,8 +366,8 @@ export function SyntxResonanceBody({
               }}
             >
               <line
-                x1="120"
-                y1="120"
+                x1={hud.tetherFrom?.x ?? "120"}
+                y1={hud.tetherFrom?.y ?? "120"}
                 x2={hud.tetherTarget.x}
                 y2={hud.tetherTarget.y}
                 stroke={SIL_TOKENS.colors.cyanActive}

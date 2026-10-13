@@ -124,6 +124,16 @@ const JOB_NODE_MATERIAL: React.CSSProperties = {
   boxShadow: `0 0 22px rgba(46, 132, 226, 0.16), 0 8px 20px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(180, 232, 255, 0.12), inset 0 0 18px ${azure(0.04)}`
 };
 const JOB_SATELLITE_MATERIAL: React.CSSProperties = { ...SYNTX_SATELLITE_MATERIAL, border: `1px solid ${azure(0.3)}`, background: "linear-gradient(172deg, rgba(6, 17, 30, 0.95), rgba(3, 10, 19, 0.95))", boxShadow: `0 0 15px rgba(46, 132, 226, 0.1), inset 0 1px 0 rgba(180, 232, 255, 0.08)` };
+/** The rim point of a 168-unit body towards its HUD tether target (the tether box is 240 units, centred on the body). */
+const tetherFromRim = (target: { x: number; y: number }): { x: number; y: number } => {
+  const dx = target.x - 120, dy = target.y - 120, length = Math.hypot(dx, dy) || 1;
+  return { x: Math.round((120 + (dx / length) * 86) * 100) / 100, y: Math.round((120 + (dy / length) * 86) * 100) / 100 };
+};
+/** The body's signature clears the reading area: its geometry is kept at the rim (outer ring, the outer arcs of the two lenses) and
+ * fades out towards the centre, where the identity text sits — no line runs through the text. */
+const SIGNATURE_CLEARING = "radial-gradient(circle closest-side, transparent 0 47%, rgba(0, 0, 0, 0.3) 54%, #000 61%)";
+/** A soft reading plate behind one text line (fades to nothing at its edges): the remaining rim geometry passes behind it. */
+const readingPlate = (highlighted: boolean): React.CSSProperties => ({ padding: "1px 9px", marginLeft: "-9px", marginRight: "-9px", background: `radial-gradient(closest-side, ${highlighted ? "rgba(6, 28, 42, 0.9)" : "rgba(5, 12, 23, 0.92)"}, ${highlighted ? "rgba(6, 28, 42, 0.55)" : "rgba(5, 12, 23, 0.6)"} 72%, transparent)` });
 /** A dark reading halo for text over the body's signature geometry. */
 const READING_HALO = "0 0 3px rgba(3, 8, 16, 0.95), 0 0 8px rgba(3, 8, 16, 0.85)";
 const JOB_TETHER = azure(0.18);
@@ -464,8 +474,8 @@ function PlanetariumLayer({ field, mode, t, locale, size, onObserve }: LayerProp
  * azure rim at rest; highlighted, the planetarium's cyan resonance. The light reaction is the body's own transition (colour, rim, glow). */
 const organizationBodyMaterial = (highlighted: boolean): React.CSSProperties => highlighted
   ? {
-      backgroundColor: "rgba(56, 229, 255, 0.14)",
-      backgroundImage: "radial-gradient(circle at 34% 24%, rgba(214, 248, 255, 0.2), transparent 40%), radial-gradient(circle at 50% 56%, rgba(56, 229, 255, 0.1), rgba(4, 18, 30, 0.55) 74%)",
+      backgroundColor: "rgba(7, 30, 44, 0.96)",
+      backgroundImage: "radial-gradient(circle at 34% 24%, rgba(214, 248, 255, 0.2), transparent 40%), radial-gradient(circle at 50% 56%, rgba(56, 229, 255, 0.16), rgba(56, 229, 255, 0.06) 74%)",
       border: `1.5px solid ${CYAN}`,
       boxShadow: `0 0 48px ${SIL_TOKENS.colors.cyanGlowStrong}, 0 0 22px rgba(56, 229, 255, 0.72), inset 0 1px 0 rgba(214, 248, 255, 0.28), inset 0 0 26px ${SIL_TOKENS.colors.cyanGlow}, inset 0 -18px 28px rgba(1, 6, 14, 0.42)`,
       transition: "opacity 0.35s ease, box-shadow 0.9s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.9s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.9s cubic-bezier(0.16, 1, 0.3, 1)"
@@ -529,12 +539,14 @@ function OrganizationBody({ organization, index, roles, observation, depth, isAn
           className=""
           animationDelay={`${-4 * (index % 6)}s`}
           style={organizationBodyMaterial(highlighted)}
-          signature={<span style={{ opacity: highlighted ? 0.82 : 0.5, transition: "opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1)" }}>{renderSemioticSignature("03", highlighted)}</span>}
+          signature={<span aria-hidden="true" style={{ position: "absolute", inset: 0, borderRadius: "50%", pointerEvents: "none", zIndex: 0, WebkitMaskImage: SIGNATURE_CLEARING, maskImage: SIGNATURE_CLEARING, opacity: highlighted ? 0.85 : 0.6, transition: "opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1)" }}>{renderSemioticSignature("03", highlighted)}</span>}
           moonCount={isAnchor ? 0 : roles.length}
           renderMoon={(moon, style) => <RoleMoon role={roles[moon]} style={style} />}
           hud={isHovered ? {
             tetherTestId: `syntx-tether-${organization.id}`,
             tetherTarget: presentation.tetherTarget,
+            // The tether leaves the body at its rim towards the HUD, so it never runs through the identity text.
+            tetherFrom: tetherFromRim(presentation.tetherTarget),
             previewTestId: `syntx-hud-${organization.id}`,
             className: `hologram-hud--large hologram-float quietUniverseDust hud-preview--${presentation.placement}`,
             style: { ...hudPlacement(presentation.placement) },
@@ -562,11 +574,11 @@ function OrganizationBody({ organization, index, roles, observation, depth, isAn
           <span aria-hidden="true" style={{ position: "absolute", inset: "4px", borderRadius: "50%", pointerEvents: "none", background: "conic-gradient(from 225deg, rgba(200, 242, 255, 0.62), rgba(92, 200, 255, 0.16) 24%, rgba(92, 200, 255, 0.05) 48%, rgba(46, 120, 214, 0.18) 72%, rgba(200, 242, 255, 0.62))", WebkitMaskImage: "radial-gradient(circle closest-side, transparent calc(100% - 1.6px), #000 calc(100% - 1px), #000 100%, transparent 100%)", maskImage: "radial-gradient(circle closest-side, transparent calc(100% - 1.6px), #000 calc(100% - 1px), #000 100%, transparent 100%)", opacity: highlighted ? 0.95 : 0.7, transition: "opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1)" }} />
           <span aria-hidden="true" style={{ position: "absolute", inset: "2px", borderRadius: "50%", pointerEvents: "none", boxShadow: "inset 3px 4px 7px -3px rgba(190, 238, 255, 0.34), inset -3px -5px 9px -4px rgba(24, 84, 170, 0.4)" }} />
           <span aria-hidden="true" style={{ position: "absolute", inset: 0, borderRadius: "50%", pointerEvents: "none", background: "radial-gradient(circle at 50% 50%, rgba(56, 229, 255, 0.16), transparent 66%)", opacity: highlighted ? 1 : 0, transition: "opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1)" }} />
-          <span style={{ fontSize: "11px", color: highlighted ? CYAN : azure(0.72), fontWeight: 700, letterSpacing: "1px", position: "relative", zIndex: 1, transition: "color 0.6s ease" }}>{String(index + 1).padStart(2, "0")}</span>
-          <span style={{ fontSize: "13px", color: INK, fontWeight: 700, marginTop: "4px", lineHeight: 1.2, position: "relative", zIndex: 1, textTransform: "uppercase", letterSpacing: "0.6px", textShadow: `${READING_HALO}, 0 0 14px ${highlighted ? "rgba(56, 229, 255, 0.5)" : "rgba(92, 200, 255, 0.26)"}` }}>⬡ {organization.name}</span>
-          {subtitle.length > 0 && <span style={{ fontSize: "10px", color: "rgba(184, 210, 228, 0.84)", marginTop: "4px", lineHeight: 1.2, position: "relative", zIndex: 1, textShadow: READING_HALO }}>{subtitle}</span>}
-          <span style={{ fontSize: "9px", color: highlighted ? "rgba(142, 236, 255, 0.82)" : azure(0.66), marginTop: "3px", position: "relative", zIndex: 1, letterSpacing: "0.8px", textShadow: READING_HALO, transition: "color 0.6s ease" }}>{t.manifest.organization}</span>
-          <span style={{ marginTop: "8px", fontSize: "10px", color: highlighted ? CYAN : INK, backgroundColor: highlighted ? "rgba(56, 229, 255, 0.15)" : "rgba(8, 22, 38, 0.82)", padding: "2px 8px", borderRadius: "8px", border: `1px solid ${highlighted ? "rgba(56, 229, 255, 0.4)" : azure(0.24)}`, boxShadow: highlighted ? undefined : `inset 0 1px 0 ${azure(0.1)}`, position: "relative", zIndex: 1 }}>{organization.roleIds.length} {t.roles}</span>
+          <span style={{ fontSize: "10px", color: highlighted ? CYAN : azure(0.78), fontWeight: 700, letterSpacing: "2px", position: "relative", zIndex: 1, textShadow: READING_HALO, transition: "color 0.6s ease" }}>{String(index + 1).padStart(2, "0")}</span>
+          <span style={{ ...readingPlate(highlighted), fontSize: "13px", color: INK, fontWeight: 700, marginTop: "4px", lineHeight: 1.2, position: "relative", zIndex: 1, textTransform: "uppercase", letterSpacing: "0.6px", textShadow: `${READING_HALO}, 0 0 14px ${highlighted ? "rgba(56, 229, 255, 0.5)" : "rgba(92, 200, 255, 0.26)"}` }}>⬡ {organization.name}</span>
+          {subtitle.length > 0 && <span style={{ ...readingPlate(highlighted), fontSize: "10px", fontWeight: 500, color: "rgba(206, 226, 238, 0.92)", marginTop: "5px", lineHeight: 1.25, letterSpacing: "0.2px", position: "relative", zIndex: 1, textShadow: READING_HALO }}>{subtitle}</span>}
+          <span style={{ ...readingPlate(highlighted), fontSize: "7.5px", fontWeight: 700, color: highlighted ? "rgba(150, 238, 255, 0.9)" : azure(0.8), marginTop: "4px", position: "relative", zIndex: 1, letterSpacing: "2.2px", textShadow: READING_HALO, transition: "color 0.6s ease" }}>{t.manifest.organization}</span>
+          <span style={{ marginTop: "7px", fontSize: "9.5px", fontWeight: 600, letterSpacing: "1.2px", color: highlighted ? CYAN : INK, backgroundColor: highlighted ? "rgba(56, 229, 255, 0.15)" : "rgba(8, 22, 38, 0.9)", padding: "2px 9px", borderRadius: "8px", border: `1px solid ${highlighted ? "rgba(56, 229, 255, 0.4)" : azure(0.24)}`, boxShadow: highlighted ? undefined : `inset 0 1px 0 ${azure(0.1)}`, position: "relative", zIndex: 1 }}>{organization.roleIds.length} {t.roles}</span>
         </SyntxResonanceBody>
       </div>
     </FocusTransitionStageShell>
@@ -593,12 +605,17 @@ function hudPlacement(placement: ReturnType<typeof resolveSilFocusedManifestatio
  * ORGANIZATION · the organization cosmos (Capability Field L1)
  * ================================================================================================================ */
 
+/** Vertical clearance of the organization cosmos: the orbit (the same layout, fitted to a box this much smaller above and below) keeps
+ * every role card clear of the level's edges, also when a card's text runs longer than the layout's node estimate (up to four title
+ * lines, a wrapped count line). The centre and the orbit's form are unchanged. */
+const ROLE_CARD_CLEARANCE = 30;
+
 function OrganizationCosmosLayer({ field, mode, t, size, onObserve, organization }: LayerProps & { organization: SyntxOrganization }) {
   const runtimeMs = useOrbitalMotionElapsedMs();
   const elapsedMs = mode === "LIVE" ? runtimeMs : 0;
   const observation = field.observation;
   const roles = useMemo(() => field.roles.filter(role => role.organizationId === organization.id), [field.roles, organization.id]);
-  const { layout, compact } = useMemo(() => syntxCosmosLayout(roles.map(role => ({ id: role.id, title: role.title })), size.width, size.height), [roles, size.width, size.height]);
+  const { layout, compact } = useMemo(() => syntxCosmosLayout(roles.map(role => ({ id: role.id, title: role.title })), size.width, size.height - 2 * ROLE_CARD_CLEARANCE), [roles, size.width, size.height]);
   const byId = useMemo(() => new Map(roles.map(role => [role.id, role])), [roles]);
   const recededLevel = field.depth >= 2;
   const index = field.organizations.indexOf(organization);
@@ -607,7 +624,7 @@ function OrganizationCosmosLayer({ field, mode, t, size, onObserve, organization
     <SyntxCosmosShell
       testId="syntx-cosmos-organization"
       attributes={{ "data-organization-id": organization.id, "data-layout": compact ? "compact" : "full" }}
-      style={{ ...levelBox, overflow: "visible" }}
+      style={{ ...levelBox, top: `${LEVEL_INSET.top + ROLE_CARD_CLEARANCE}px`, bottom: `${LEVEL_INSET.bottom + ROLE_CARD_CLEARANCE}px`, overflow: "visible" }}
       styleText=""
       layout={layout}
       elapsedMs={elapsedMs}
@@ -634,8 +651,8 @@ function OrganizationCosmosLayer({ field, mode, t, size, onObserve, organization
             style={{ position: "absolute", left: 0, top: 0, width: `${node.width}px`, minHeight: `${node.height}px`, transform: "translate(-50%, -50%)", ...JOB_NODE_MATERIAL, ...(compact ? { padding: "7px 10px" } : {}), color: INK, cursor: "pointer", fontFamily: MONO, textAlign: "left", overflowWrap: "anywhere", hyphens: "auto", opacity: anchor ? 0.42 : 1 }}
           >
             <span style={{ display: "block", color: CYAN, fontSize: "8px", fontWeight: 700, letterSpacing: "0.8px" }}>{t.manifest.role}{role.seniority !== null ? ` // ${role.seniority.toUpperCase()}` : ""}</span>
-            <span style={{ display: "-webkit-box", marginTop: "5px", fontSize: compact ? "10px" : "11px", fontWeight: 700, lineHeight: 1.32, WebkitLineClamp: compact ? 2 : 3, WebkitBoxOrient: "vertical", overflow: "hidden" }}>{role.title}</span>
-            <span style={{ display: "block", marginTop: "7px", color: "rgba(206, 232, 241, 0.72)", fontSize: "8px", lineHeight: 1.45 }}>{role.requirementCount} {t.requirements} // {role.matching === null ? t.manifest.matchingNotRead : t.manifest.matchingRead}</span>
+            <span style={{ display: "-webkit-box", marginTop: "5px", fontSize: compact ? "10px" : "11px", fontWeight: 700, lineHeight: 1.32, WebkitLineClamp: compact ? 2 : 4, WebkitBoxOrient: "vertical", overflow: "hidden" }}>{role.title}</span>
+            <span style={{ display: "block", marginTop: "6px", color: "rgba(206, 232, 241, 0.76)", fontSize: "7.5px", letterSpacing: "0.2px", lineHeight: 1.45 }}>{role.requirementCount} {t.requirements} // {role.matching === null ? t.manifest.matchingNotRead : t.manifest.matchingRead}</span>
           </button>
         );
       }}
@@ -1273,6 +1290,7 @@ export function SyntxField({ workflow, analysisSource, observation: requested, o
     <section
       ref={rootRef}
       data-testid="syntx-field"
+      data-sx-field="job"
       data-field-grammar={SYNTX_FIELD_GRAMMAR}
       data-observation-kind={observation.kind}
       data-observation-id={observationId}

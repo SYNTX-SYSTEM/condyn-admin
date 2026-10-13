@@ -470,6 +470,8 @@ export const SIL_COPY = {
     syntx: {
       title: "JOB FIELD",
       toggle: "⬡ JOB FIELD",
+      /** The field selector of the application shell: two equal fields of one system. */
+      selector: { group: "SYNTX FIELD", capability: "◈ CAPABILITY FIELD" },
       exit: "← CAPABILITY FIELD",
       observation: { FIELD: "FIELD", ORGANIZATION: "ORGANIZATION", ROLE: "ROLE", REQUIREMENT: "REQUIREMENT" },
       returnLabel: "RETURN",
@@ -1062,6 +1064,7 @@ export const SIL_COPY = {
     syntx: {
       title: "JOB-FELD",
       toggle: "⬡ JOB-FELD",
+      selector: { group: "SYNTX-FELD", capability: "◈ CAPABILITY-FELD" },
       exit: "← CAPABILITY-FELD",
       observation: { FIELD: "FELD", ORGANIZATION: "ORGANISATION", ROLE: "ROLLE", REQUIREMENT: "ANFORDERUNG" },
       returnLabel: "ZURÜCK",

@@ -663,6 +663,44 @@ wraps to two lines (e.g. "Rheinwerk Systems AG", "Industrial Edge & Automation �
 `evidence/job-pool/semiotic-transfer/final-pass/role-label-observation.jpg`. A correction would change the body's internal layout,
 which this pass excludes.
 
+#### 13.2.6 Field selector and final readability (owner "SFE — GREEN · FIELD SELECTOR & FINAL READABILITY", GO 2026-10-13)
+
+On f96217f. No matching, data, evidence, governance or field-architecture change; the Capability Field's manifestation unchanged.
+
+- **SYNTX field selector (application shell).** `SyntxFieldSelector.tsx` replaces the two small buttons top-left: one membrane
+  centred in the upper application area (fixed, top 70 px) with two equal options, CAPABILITY FIELD (`syntx.selector.capability`)
+  and JOB FIELD (`syntx.toggle`), each lit in its own field's tone (Capability cyan, Job Field azure) with a resonance lamp; a fine
+  link between them. Exactly one field is active; selecting the active one changes nothing (the old strip toggled back to
+  CAPABILITY). Keyboard: Tab, Enter / Space, ← / → and Home / End switch fields. Entering the Job Field by keyboard moves focus into
+  the field (F-SX-1, unchanged); Tab reaches the selector again from inside the field. Each field change is crossed by one calm veil
+  (`syntxFieldVeil` .42 s, void → clear, pointer-transparent; none on first paint); REDUCED: no veil animation, no selector transition.
+  Contract kept: `field-focus-strip` (`data-field-focus`) holds exactly the two buttons `field-focus-capability-btn` and
+  `job-pool-panel-toggle` with `data-field-focus-active` and `aria-pressed`; the field's own `syntx-exit-btn` stays.
+- **Exclusive fields.** With JOB FIELD selected, every direct child of the Capability shell that is not marked `data-sx-shell`
+  (selector, top controls, guide drawer, HR dock, veil), not the Job Field root (`data-sx-field="job"`) and not the codex /
+  onboarding overlays is `visibility: hidden` — kept mounted, so no Capability state (staged sources, analysis job, zoom) is lost;
+  hidden elements leave the tab order and the pointer. With CAPABILITY selected the Job Field is not mounted. Analysis id, pool
+  upload id and deep links (`focus=FIELD&jobOrganizationId=…&jobRoleId=…&jobRequirementId=…`) are honoured unchanged; the existing
+  rule that a return to CAPABILITY resets the Job Field observation to FIELD (B-POOL-INITIAL-FOCUS) stays.
+- **Organization body typography.** The signature geometry clears the reading area (radial mask: kept at the rim, gone where the
+  text sits); soft reading plates behind name, sector / region and the ORGANIZATION line; sector / region 10 px at higher contrast,
+  ORGANIZATION as a spaced 7.5 px label, the role-count pill 9.5 px with tracking; the hovered body's interior is opaque (the
+  active energy ray no longer shows through it) and its HUD tether leaves at the rim towards the HUD (`SyntxResonanceBody`
+  `hud.tetherFrom`, optional; Capability default unchanged). Body size and field geometry unchanged.
+- **Organization cosmos role labels (O-JF-LABEL, resolved).** The orbit is the same `syntxCosmosLayout`, fitted to the level box
+  less `ROLE_CARD_CLEARANCE` (30 px) above and below (centre and orbit form unchanged); role titles show up to four lines; the
+  count line is set at 7.5 px so it wraps less. Measured over the whole orbit (ellipse extreme ± the tallest card): 2 roles and
+  14 roles, at 1600 × 1000 and 1280 × 720, every card stays ≥ 46 px above the footer statement and inside the level box
+  (before: ≈ 18 px at 1600 × 1000).
+
+Proof: `evidence/job-pool/semiotic-transfer/field-selector/` (`selector-proof.json`: 25 checks, all passing; sheets for both active states,
+before / after of the selector, the body typography and the role labels). Capability renders: 366 / 374 byte-identical; the 8
+renders of the Capability shell differ only by the selector and the shell markers (identical after removing them).
+
+**Observation O-JF-PANEL (documented only):** at 1280 px width the organization cosmos' orbit is wide enough that rotating role
+cards pass over the field's left info panel (pool / organization line, key hints) for part of their turn; at 1600 px they do not.
+Not changed in this pass (the orbit's width is the layout's).
+
 ### 13.3 DOM contract (PINK BR-1 … BR-5; GELB conditions a/b)
 
 **BR-1 field root** `data-testid="syntx-field"`: `data-field-grammar="SYNTX_FIELD_V1"`, `data-observation-kind` FIELD|ORGANIZATION|ROLE|REQUIREMENT
@@ -812,3 +850,4 @@ observation point. Readable labels wrap at word boundaries (`wrapLines`), never 
 | 2026-10-12 | Evidence aperture refinement (owner "Die Evidenz-Apertur … veredeln"; visual / semiotic only, on ca11794; GREEN only, isolated lab) | the inspection aperture as a calm hologram surface: rounded HUD with a fine mint / cyan frame and atmospheric interior, a glow layer that breathes (`sxApertureBreathe` 7 s, opacity only — the surface holds still), and semantic layers: head (requirement or role), relation line (stroke sample + relation · scored / unscored), source line (glyph, title, location chip), the quote as its own reading space, micro-metric chips (contribution, confidence, weight; resonance and rank in the pending aperture), explanation, and a separated boundary zone with the authority statement as chips (text unchanged). Ids, states, texts, data, keyboard and click logic unchanged. Before / after: `evidence/job-pool/semiotic-transfer/aperture/` | job-pool batch 18 files / 114; workflow e2e 10/10; PINK walk with the proposed rebinding 3/3 |
 | 2026-10-13 | Semiotic finishing pass (owner "SFE — GREEN · SEMIOTIC FINISHING PASS", on 00e9103; visual only, GREEN only, isolated lab) | §13.2.4: Job Field resonance tone (azure atmosphere and resting structure; semantic colours unchanged), organization bodies as lit resonance spheres with a slow atmosphere halo and a calm light reaction, the source carrier as a document membrane with a vector glyph, the aperture with more depth and a slower two-tone glow; O-JF-LABEL documented. Shared components: optional tone props only (Capability renders 374 / 374 byte-identical). Before / after: `evidence/job-pool/semiotic-transfer/finishing/` | tsc 0; Capability renders 374 / 374 byte-identical; unit / SSR / governance / sealed SIL / Capability batch 32 files / 192; workflow e2e 10/10; PINK walk with the proposed rebinding 3/3 (Q-01 … Q-11, Q-06 and carried states PASS; report under finishing/pink-walk-proposal) |
 | 2026-10-13 | Final visual finishing pass (owner "FINAL VISUAL FINISHING PASS — JOB FIELD", on d16db44; visual only, GREEN only, isolated lab) | §13.2.5: organization bodies with a still light membrane, corona, calmed signature and reading halos; the source carrier as a document sheet (folded corner, ruled ground, outline glow); the aperture with field ground, quotation marks in the relation colour, layer hairline and a lifted governance zone; resting cards and satellites in the azure register; O-JF-LABEL extended. Before / after: `evidence/job-pool/semiotic-transfer/final-pass/` | tsc 0; Capability renders 374 / 374 byte-identical (sha256 unchanged); unit / SSR / governance / sealed SIL / Capability batch 32 files / 192; workflow e2e 10/10; PINK walk with the proposed rebinding 3/3 (report under final-pass/pink-walk-proposal) |
+| 2026-10-13 | Field selector & final readability (owner "SFE — GREEN · FIELD SELECTOR & FINAL READABILITY", on f96217f; GREEN only, isolated lab) | §13.2.6: SYNTX field selector in the application shell (two equal fields, exactly one active, exclusive visibility, calm veil, keyboard ←/→), organization body typography (signature clears the reading area, reading plates, opaque hovered interior, rim tether), organization cosmos role-label clearance (O-JF-LABEL resolved); O-JF-PANEL documented. Evidence: `evidence/job-pool/semiotic-transfer/field-selector/` | tsc 0; Capability renders 366 / 374 byte-identical, the 8 shell renders identical after removing the selector and shell markers; unit / SSR / governance / sealed SIL / Capability batch 32 files / 192; workflow e2e 10/10; PINK walk with the proposed rebinding 3/3; selector proof 25 / 25 (exclusivity, ids, deep link, keyboard, reduced motion, role-card clearance at 1600 × 1000 and 1280 × 720) |

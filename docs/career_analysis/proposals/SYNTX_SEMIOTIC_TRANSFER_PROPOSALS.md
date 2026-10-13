@@ -103,6 +103,21 @@ at 1.12, the core at 1 at FIELD); the invariance test over FIELD / ORGANIZATION 
 `x, y, radius`, camera) still holds and now covers the planetarium orbits and the moon orbit. Optional: add `field.depth` to that
 geometry.
 
+## P-6 · R10b — the field selector in the application shell (GELB; owner mandate 2026-10-13)
+
+The owner ordered the two small field buttons replaced by a SYNTX field selector with exclusive fields. The selector and the
+exclusivity rule live in the Capability shell (`SemanticCareerIntelligenceField`), which R10 otherwise keeps unchanged. Proof:
+of the 374 Capability renders, 366 are byte-identical; the 8 shell renders differ only by the selector subtree, the
+`data-sx-shell` markers and the one exclusivity rule (identical after removing them). The Capability manifestation (planetarium,
+cosmos, deep focus, HUDs, core) is untouched. The selector keeps the strip contract (`field-focus-strip`, two buttons,
+`field-focus-capability-btn`, `job-pool-panel-toggle`, `data-field-focus-active`, `aria-pressed`); behaviour change: selecting the
+active field no longer toggles back to CAPABILITY. New finite shell motion: `syntxFieldVeil` (.42 s, outside the field root, none
+in REDUCED) — proposed for the R15b list as a shell transition.
+
+**Proposed wording:** "R10b — The application shell carries the SYNTX field selector (two equal fields, exactly one visible).
+Changes to the shell are admitted when every Capability manifestation render stays byte-identical and the shell renders differ only
+by the selector and its shell markers."
+
 ## Owner decisions
 
 None beyond the visual approval. After it, GELB records P-1 and P-2, and PINK applies P-3 / P-4 and validates. The move of
