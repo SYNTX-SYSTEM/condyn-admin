@@ -175,6 +175,46 @@ const ghost: React.CSSProperties = { ...action("muted"), fontSize: "8px", letter
 /** An edge lens: the hologram HUD surface of the planetarium (opaque universe body, cyan frame), placed at the field's edge. */
 const lens: React.CSSProperties = { ...SYNTX_HUD_SURFACE, position: undefined, width: undefined, zIndex: undefined };
 const input: React.CSSProperties = { width: "100%", boxSizing: "border-box", background: "transparent", border: "none", borderBottom: "1px solid rgba(99, 120, 138, 0.4)", color: INK, fontFamily: MONO, fontSize: "10px", padding: "5px 0", outline: "none" };
+
+/* Job Field panels (pools · intake · boundary): semiotic resonance surfaces attached to the field, not form boxes. A deep glass body
+ * with a top light, a fine azure edge, four registration ticks, a breathing aura (atmosphereGlow) and a light current travelling the
+ * upper edge (sxPanelCurrent) — both LIVE only; each panel holds one node with a hairline towards the field (data-sx-panel-node).
+ * Typography: a kicker with its marker and rule, quiet meta lines, readable statements, semantic chips. Visual only. */
+const PANEL_TICKS = ["6px 6px", "calc(100% - 6px) 6px", "6px calc(100% - 6px)", "calc(100% - 6px) calc(100% - 6px)"].flatMap(position => [
+  `linear-gradient(${azure(0.5)}, ${azure(0.5)}) ${position} / 9px 1px no-repeat`,
+  `linear-gradient(${azure(0.5)}, ${azure(0.5)}) ${position} / 1px 9px no-repeat`
+]);
+const panel: React.CSSProperties = {
+  position: "absolute",
+  boxSizing: "border-box",
+  padding: "18px 20px 20px",
+  borderRadius: "14px",
+  border: `1px solid ${azure(0.3)}`,
+  background: [...PANEL_TICKS, "radial-gradient(120% 64% at 50% -12%, rgba(84, 232, 236, 0.1), transparent 58%)", "radial-gradient(90% 60% at 100% 110%, rgba(40, 110, 190, 0.08), transparent 60%)", "linear-gradient(170deg, rgba(10, 27, 40, 0.97), rgba(4, 12, 20, 0.97) 56%, rgba(2, 7, 13, 0.98))"].join(", "),
+  boxShadow: `0 20px 46px rgba(0, 0, 0, 0.55), 0 0 0 1px rgba(1, 5, 10, 0.7), 0 0 36px rgba(64, 190, 230, 0.09), inset 0 1px 0 rgba(200, 248, 255, 0.15), inset 0 0 30px ${azure(0.05)}`,
+  backdropFilter: "blur(10px)",
+  isolation: "isolate",
+  color: INK
+};
+const panelKicker = (tone: string = azure(0.95)): React.CSSProperties => ({ display: "flex", alignItems: "center", gap: "10px", fontFamily: MONO, fontSize: "9.5px", fontWeight: 600, letterSpacing: "2.2px", textTransform: "uppercase", color: "rgba(196, 232, 250, 0.92)", margin: 0, "--sx-kicker": tone } as React.CSSProperties);
+const panelMeta: React.CSSProperties = { fontFamily: MONO, fontSize: "9.5px", letterSpacing: "0.5px", lineHeight: 1.65, color: "rgba(160, 186, 204, 0.82)", wordBreak: "break-word" };
+const panelField: React.CSSProperties = { fontFamily: MONO, fontSize: "8.5px", fontWeight: 600, letterSpacing: "1.5px", textTransform: "uppercase", lineHeight: 1.5, color: "rgba(150, 182, 202, 0.78)", display: "flex", flexDirection: "column", gap: "7px" };
+const panelStatement = (rule: string): React.CSSProperties => ({ fontFamily: SANS, fontSize: "12px", lineHeight: 1.66, color: "rgba(226, 238, 246, 0.86)", margin: 0, padding: "2px 0 2px 12px", borderLeft: `1.5px solid ${rule}` });
+const chip = (rgb: string): React.CSSProperties => ({ display: "inline-flex", alignItems: "center", fontFamily: MONO, fontSize: "8.5px", fontWeight: 600, letterSpacing: "1.2px", textTransform: "uppercase", lineHeight: 1.35, color: `rgb(${rgb})`, padding: "4px 9px", borderRadius: "6px", border: `1px solid rgba(${rgb}, 0.42)`, background: `linear-gradient(180deg, rgba(${rgb}, 0.12), rgba(${rgb}, 0.05))`, boxShadow: `0 0 12px rgba(${rgb}, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.05)`, whiteSpace: "normal" });
+const AMBER_RGB = "245, 166, 35";
+const GREEN_RGB = "63, 185, 80";
+const CYAN_RGB = "56, 229, 255";
+const panelInput: React.CSSProperties = { width: "100%", boxSizing: "border-box", background: "rgba(2, 9, 16, 0.72)", border: `1px solid ${azure(0.22)}`, borderRadius: "7px", color: INK, fontFamily: MONO, fontSize: "11px", letterSpacing: "0.4px", textTransform: "none", padding: "8px 10px", outline: "none", boxShadow: "inset 0 1px 6px rgba(0, 0, 0, 0.45)", transition: "border-color .3s ease, box-shadow .3s ease" };
+const panelAction = (enabled: boolean): React.CSSProperties => ({ ...action("cyan", enabled), fontSize: "9.5px", letterSpacing: "1.8px", padding: "8px 14px", borderRadius: "8px", border: `1px solid ${enabled ? "rgba(56, 229, 255, 0.55)" : "rgba(99, 120, 138, 0.3)"}`, background: enabled ? "linear-gradient(180deg, rgba(56, 229, 255, 0.16), rgba(56, 229, 255, 0.05))" : "rgba(99, 120, 138, 0.05)", boxShadow: enabled ? "0 0 16px rgba(56, 229, 255, 0.14), inset 0 1px 0 rgba(220, 250, 255, 0.16)" : "none" });
+/** The panel's node: the point where it attaches to the field, with a hairline fading towards the field. Decoration only. */
+function PanelNode({ side, top }: { side: "left" | "right"; top: string }) {
+  return (
+    <span data-sx-panel-node={side} aria-hidden="true" style={{ position: "absolute", top, [side]: "-1px", width: 0, height: 0, pointerEvents: "none" }}>
+      <span style={{ position: "absolute", top: "-0.5px", [side === "left" ? "right" : "left"]: "0px", width: "46px", height: "1px", background: `linear-gradient(${side === "left" ? "270deg" : "90deg"}, ${azure(0.55)}, transparent)` }} />
+      <span data-sx-panel-lamp style={{ position: "absolute", top: "-3px", left: "-3px", width: "6px", height: "6px", borderRadius: "50%", background: "#bff4ff", boxShadow: `0 0 8px ${azure(0.9)}, 0 0 16px ${azure(0.45)}` }} />
+    </span>
+  );
+}
 const percent = (value: number): string => `${Math.round(value * 1000) / 10}%`;
 const visuallyHidden: React.CSSProperties = { position: "absolute", width: "1px", height: "1px", margin: "-1px", padding: 0, overflow: "hidden", clip: "rect(0 0 0 0)", whiteSpace: "nowrap", border: 0 };
 /** HUD typography of the planetarium (OrbitalResonanceBubble): title row, primary metric, section label, item list, hint. */
@@ -231,8 +271,25 @@ ${SYNTX_FOCUS_PULSE_KEYFRAMES}
 [data-testid="syntx-field"] g[tabindex]:focus-visible > :not([data-sx-hit]) { filter: drop-shadow(0 0 4px rgba(56, 229, 255, 0.9)); }
 [data-testid="syntx-field"] [data-sign-id] { transition: opacity .45s ease, filter .62s ease; }
 [data-testid="syntx-field"] [data-sx-surface] { scrollbar-width: thin; scrollbar-color: rgba(56, 229, 255, 0.18) transparent; }
+/* Panels: the light current on the upper edge, the breathing aura, kicker marker and rule, node lamp; list, input and action states. */
+@keyframes sxPanelCurrent { 0% { background-position: -40% 0; } 55%, 100% { background-position: 140% 0; } }
+[data-sx-panel]::before { content: ""; position: absolute; left: 14px; right: 14px; top: -1px; height: 1px; pointer-events: none; background: linear-gradient(90deg, transparent, rgba(190, 248, 255, 0.85), transparent) no-repeat; background-size: 34% 1px; opacity: .8; animation: sxPanelCurrent 11s cubic-bezier(.45, 0, .25, 1) infinite; }
+[data-sx-panel]::after { content: ""; position: absolute; inset: -1px; border-radius: inherit; pointer-events: none; z-index: -1; box-shadow: 0 0 28px rgba(92, 200, 255, 0.16), 0 0 2px rgba(150, 230, 255, 0.35); animation: atmosphereGlow 12s ease-in-out infinite; }
+[data-sx-panel="boundary"]::after { box-shadow: 0 0 30px rgba(245, 166, 35, 0.07), 0 0 26px rgba(92, 200, 255, 0.12), 0 0 2px rgba(150, 230, 255, 0.3); }
+[data-sx-panel-node] [data-sx-panel-lamp] { animation: atmosphereGlow 7s ease-in-out infinite; }
+[data-sx-kicker]::before { content: ""; width: 6px; height: 6px; transform: rotate(45deg); flex-shrink: 0; border: 1px solid var(--sx-kicker); box-shadow: 0 0 8px var(--sx-kicker); }
+[data-sx-kicker]::after { content: ""; flex: 1; height: 1px; min-width: 0; background: linear-gradient(90deg, rgba(92, 200, 255, 0.4), transparent); }
+[data-sx-panel] [data-sx-section] + [data-sx-section] { padding-top: 12px; border-top: 1px solid transparent; border-image: linear-gradient(90deg, rgba(92, 200, 255, 0.24), rgba(92, 200, 255, 0.04)) 1; }
+[data-sx-panel="pools"] li { transition: background-color .35s ease, border-color .35s ease, box-shadow .35s ease; }
+[data-sx-panel="pools"] li:hover { background-color: rgba(92, 200, 255, 0.05); }
+[data-sx-panel="pools"] li:focus-within { border-color: rgba(56, 229, 255, 0.45); box-shadow: 0 0 16px rgba(56, 229, 255, 0.12); }
+[data-sx-panel="pools"] button[aria-pressed="false"]:hover { border-color: rgba(56, 229, 255, 0.75); background: rgba(56, 229, 255, 0.1); }
+[data-sx-panel="intake"] input:not([type="file"]):focus { border-color: rgba(56, 229, 255, 0.6); box-shadow: inset 0 1px 6px rgba(0, 0, 0, 0.45), 0 0 14px rgba(56, 229, 255, 0.14); }
+[data-sx-panel="intake"] input[type="file"]::file-selector-button { margin-right: 12px; padding: 6px 12px; border-radius: 6px; border: 1px solid rgba(56, 229, 255, 0.5); background: linear-gradient(180deg, rgba(56, 229, 255, 0.14), rgba(56, 229, 255, 0.04)); color: #c9f6ff; font-family: inherit; font-size: 9px; font-weight: 600; letter-spacing: 1.4px; text-transform: uppercase; cursor: pointer; }
+[data-sx-panel="intake"] input[type="file"]::file-selector-button:hover { border-color: rgba(56, 229, 255, 0.8); background: rgba(56, 229, 255, 0.16); }
 @media (prefers-reduced-motion: reduce) {
   [data-testid="syntx-field"], [data-testid="syntx-field"] * { animation: none !important; transition: none !important; }
+  [data-testid="syntx-field"] *::before, [data-testid="syntx-field"] *::after { animation: none !important; transition: none !important; }
 }
 `;
 
@@ -1391,8 +1448,9 @@ export function SyntxField({ workflow, analysisSource, observation: requested, o
       </div>
 
       {/* Edge aperture: the persisted uploads (explicit selection only); the contextual action while nothing is at the field. */}
-      <div data-testid="job-pool-list" data-pool-count={listed.length} data-list-state={workflow.pools.state} hidden={!poolsVisible} data-sx-reveal={poolsVisible ? "true" : undefined} data-sx-surface="pools" style={{ ...lens, display: poolsVisible ? "flex" : "none", flexDirection: "column", gap: "8px", position: "absolute", left: "28px", top: "300px", width: "min(300px, 26vw)", maxHeight: "calc(100vh - 420px)", overflowY: "auto", zIndex: 46 }}>
-        <span style={label}>{tp.pools}</span>
+      <div data-testid="job-pool-list" data-pool-count={listed.length} data-list-state={workflow.pools.state} hidden={!poolsVisible} data-sx-reveal={poolsVisible ? "true" : undefined} data-sx-surface="pools" data-sx-panel="pools" style={{ ...panel, display: poolsVisible ? "flex" : "none", flexDirection: "column", gap: "12px", left: "28px", top: "300px", width: "min(316px, 27vw)", maxHeight: "calc(100vh - 420px)", overflowY: "auto", zIndex: 46 }}>
+        <PanelNode side="right" top="26px" />
+        <span data-sx-kicker style={panelKicker()}>{tp.pools}</span>
         {(workflow.pools.state === "IDLE" || workflow.pools.state === "LOADING") && <span data-testid="job-pool-list-loading" style={{ ...micro, color: AMBER }}>{tp.poolsLoading}</span>}
         {workflow.pools.state === "EMPTY" && <span data-testid="job-pool-list-empty" style={micro}>{tp.poolsEmpty}</span>}
         {workflow.pools.state === "NOT_PROVISIONED" && <span data-testid="job-pool-list-not-provisioned" style={{ ...micro, color: AMBER }}>{tp.notProvisioned}</span>}
@@ -1402,12 +1460,13 @@ export function SyntxField({ workflow, analysisSource, observation: requested, o
           {listed.map((pool, index) => {
             const selected = pool.jobPoolUploadId === workflow.selectedJobPoolUploadId;
             return (
-              <li key={pool.jobPoolUploadId} data-testid={`job-pool-item-${pool.jobPoolUploadId}`} data-selected={selected ? "true" : "false"} data-pool-status={pool.poolStatus} data-delivered-index={index + 1} style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", gap: "10px", paddingBottom: "6px", borderBottom: "1px solid rgba(99, 120, 138, 0.2)" }}>
-                <span style={stack(2)}>
-                  <span style={{ fontFamily: SANS, fontSize: "12.5px", fontWeight: 500, color: INK }}>{pool.poolName}</span>
-                  <span style={{ ...micro, color: pool.poolStatus === "ACTIVE" ? MUTED : AMBER }}>v{pool.poolVersion} · {pool.poolStatus} · {pool.organizationCount} org · {pool.roleCount} roles · {pool.requirementCount} req</span>
+              <li key={pool.jobPoolUploadId} data-testid={`job-pool-item-${pool.jobPoolUploadId}`} data-selected={selected ? "true" : "false"} data-pool-status={pool.poolStatus} data-delivered-index={index + 1} style={{ position: "relative", display: "flex", justifyContent: "space-between", alignItems: "center", gap: "12px", padding: "10px 12px 10px 14px", borderRadius: "9px", border: `1px solid ${selected ? "rgba(56, 229, 255, 0.34)" : "rgba(92, 200, 255, 0.08)"}`, background: selected ? "linear-gradient(100deg, rgba(56, 229, 255, 0.11), rgba(56, 229, 255, 0.02) 70%)" : "rgba(6, 16, 26, 0.45)", boxShadow: selected ? "0 0 18px rgba(56, 229, 255, 0.1), inset 0 1px 0 rgba(200, 248, 255, 0.08)" : "none" }}>
+                <span aria-hidden="true" style={{ position: "absolute", left: 0, top: "10px", bottom: "10px", width: "2px", borderRadius: "2px", background: selected ? CYAN : "transparent", boxShadow: selected ? `0 0 8px ${CYAN}` : "none" }} />
+                <span style={{ ...stack(4), minWidth: 0 }}>
+                  <span style={{ fontFamily: SANS, fontSize: "13px", fontWeight: selected ? 600 : 500, lineHeight: 1.35, color: selected ? "#f2fbff" : "rgba(226, 238, 246, 0.9)" }}>{pool.poolName}</span>
+                  <span style={{ ...panelMeta, fontSize: "9px", color: pool.poolStatus === "ACTIVE" ? "rgba(150, 178, 198, 0.78)" : AMBER }}>v{pool.poolVersion} · {pool.poolStatus} · {pool.organizationCount} org · {pool.roleCount} roles · {pool.requirementCount} req</span>
                 </span>
-                <button data-testid={`job-pool-select-${pool.jobPoolUploadId}`} disabled={selected} aria-pressed={selected} onClick={() => { onSelectPool(pool.jobPoolUploadId); setPoolsOpen(false); }} style={action("cyan", !selected)}>{selected ? tp.selected : tp.select}</button>
+                <button data-testid={`job-pool-select-${pool.jobPoolUploadId}`} disabled={selected} aria-pressed={selected} onClick={() => { onSelectPool(pool.jobPoolUploadId); setPoolsOpen(false); }} style={{ ...action("cyan", true), flexShrink: 0, display: "inline-flex", alignItems: "center", gap: "6px", fontSize: "8.5px", letterSpacing: "1.4px", padding: "5px 10px", borderRadius: "6px", cursor: selected ? "default" : "pointer", color: selected ? "#dffaff" : CYAN, border: `1px solid ${selected ? "rgba(56, 229, 255, 0.6)" : "rgba(56, 229, 255, 0.32)"}`, background: selected ? "rgba(56, 229, 255, 0.16)" : "transparent", boxShadow: selected ? "0 0 12px rgba(56, 229, 255, 0.2)" : "none", textShadow: selected ? `0 0 8px ${SIL_TOKENS.colors.cyanGlow}` : "none", transition: "border-color .3s ease, background .3s ease" }}>{selected && <span aria-hidden="true" style={{ width: "5px", height: "5px", borderRadius: "50%", background: CYAN, boxShadow: `0 0 6px ${CYAN}` }} />}{selected ? tp.selected : tp.select}</button>
               </li>
             );
           })}
@@ -1415,16 +1474,19 @@ export function SyntxField({ workflow, analysisSource, observation: requested, o
       </div>
 
       {/* Edge aperture: intake (the one client write), opened only on explicit action. */}
-      <section data-testid="job-pool-upload" hidden={!intakeVisible} data-sx-reveal={intakeVisible ? "true" : undefined} style={{ ...lens, display: intakeVisible ? "flex" : "none", flexDirection: "column", gap: "8px", position: "absolute", right: "28px", top: "136px", width: "min(300px, 26vw)", zIndex: 46 }}>
-        <span style={label}>{tp.intake} · {tp.upload}</span>
-        <label style={{ ...micro, ...stack(2) }}>{tp.uploader}
-          <input data-testid="job-pool-actor-input" value={actorId} onChange={event => setActorId(event.target.value)} style={input} />
+      <section data-testid="job-pool-upload" hidden={!intakeVisible} data-sx-reveal={intakeVisible ? "true" : undefined} data-sx-panel="intake" style={{ ...panel, display: intakeVisible ? "flex" : "none", flexDirection: "column", gap: "12px", right: "28px", top: "136px", width: "min(316px, 27vw)", zIndex: 46 }}>
+        <PanelNode side="left" top="26px" />
+        <span data-sx-kicker style={panelKicker()}>{tp.intake} · {tp.upload}</span>
+        <label style={panelField}>{tp.uploader}
+          <input data-testid="job-pool-actor-input" value={actorId} onChange={event => setActorId(event.target.value)} style={panelInput} />
         </label>
-        <label style={{ ...micro, ...stack(2) }}>{tp.chooseFile}
-          <input data-testid="job-pool-file-input" type="file" accept="application/json,.json" onChange={event => { void onFile(event); }} style={{ ...input, fontSize: "9px", color: MUTED }} />
+        <label style={panelField}>{tp.chooseFile}
+          <span style={{ display: "block", padding: "8px 10px", borderRadius: "9px", border: `1px dashed ${azure(0.3)}`, background: `radial-gradient(120% 90% at 50% 0%, ${azure(0.06)}, transparent 70%), rgba(2, 9, 16, 0.5)` }}>
+            <input data-testid="job-pool-file-input" type="file" accept="application/json,.json" onChange={event => { void onFile(event); }} style={{ ...panelInput, border: "none", background: "transparent", boxShadow: "none", padding: 0, fontSize: "9.5px", color: "rgba(160, 186, 204, 0.82)" }} />
+          </span>
         </label>
-        <span data-testid="job-pool-file-name" style={micro}>{fileName ?? tp.noFile}</span>
-        <button data-testid="job-pool-upload-btn" disabled={!canUpload} onClick={() => { if (fileText !== null) void workflow.submitUpload(fileText, actorId); }} style={{ ...action("cyan", canUpload), alignSelf: "flex-start" }}>
+        <span data-testid="job-pool-file-name" style={{ ...panelMeta, display: "flex", alignItems: "center", gap: "8px", color: fileName ? INK : "rgba(160, 186, 204, 0.82)" }}><span aria-hidden="true" style={{ width: "6px", height: "6px", borderRadius: "50%", flexShrink: 0, border: `1px solid ${fileName ? MINT : NEUTRAL}`, background: fileName ? MINT : "transparent", boxShadow: fileName ? `0 0 6px ${MINT}` : "none" }} />{fileName ?? tp.noFile}</span>
+        <button data-testid="job-pool-upload-btn" disabled={!canUpload} onClick={() => { if (fileText !== null) void workflow.submitUpload(fileText, actorId); }} style={{ ...panelAction(canUpload), alignSelf: "flex-start" }}>
           {workflow.upload.state === "SUBMITTING" ? tp.submitting : `${tp.submit} →`}
         </button>
         {(workflow.upload.state === "CREATED" || workflow.upload.state === "IDENTICAL_EXISTS") && (
@@ -1448,22 +1510,33 @@ export function SyntxField({ workflow, analysisSource, observation: requested, o
 
       {/* Edge aperture: the authority boundary of what was read (labels, canonical mapping state, sweep state), opened on demand. */}
       {field !== null && field.boundary !== null && matching !== null && view !== null && (
-        <section data-testid="job-pool-matches" data-matches-state={workflow.matches.state} data-ranking={describeRanking(matching.roleMatches)} hidden={!boundaryOpen} data-sx-reveal={boundaryOpen ? "true" : undefined} data-sx-surface="boundary" style={{ ...lens, display: boundaryOpen ? "flex" : "none", flexDirection: "column", gap: "8px", position: "absolute", right: "28px", bottom: "calc(var(--condyn-page-header-height, 60px) + 52px)", width: "min(340px, 28vw)", maxHeight: "50vh", overflowY: "auto", zIndex: 46 }}>
-          <span style={label}>{t.boundary}</span>
-          <div data-testid="job-pool-presentation-labels" data-policy-version={field.boundary.policyVersion} data-authority-state={field.boundary.authorityState} style={row(10)}>
-            {field.boundary.labels.map(item => <span key={item} data-testid={`job-pool-label-${item}`} style={{ ...word(AMBER), whiteSpace: "normal" }}>{tp.labels[item]}</span>)}
+        <section data-testid="job-pool-matches" data-matches-state={workflow.matches.state} data-ranking={describeRanking(matching.roleMatches)} hidden={!boundaryOpen} data-sx-reveal={boundaryOpen ? "true" : undefined} data-sx-surface="boundary" data-sx-panel="boundary" style={{ ...panel, borderTopColor: "rgba(245, 166, 35, 0.4)", display: boundaryOpen ? "flex" : "none", flexDirection: "column", gap: "12px", right: "28px", bottom: "calc(var(--condyn-page-header-height, 60px) + 52px)", width: "min(372px, 29vw)", maxHeight: intakeVisible ? "calc(100vh - 540px)" : "calc(100vh - 300px)", overflowY: "auto", zIndex: 46 }}>
+          <PanelNode side="left" top="26px" />
+          <span data-sx-kicker style={panelKicker(`rgba(${AMBER_RGB}, 0.9)`)}>{t.boundary}</span>
+          {/* 1 · the presentation: what this field is and is not (the authority boundary, grouped as chips) and how it is ordered. */}
+          <div data-sx-section="presentation" style={stack(9)}>
+            <div data-testid="job-pool-presentation-labels" data-policy-version={field.boundary.policyVersion} data-authority-state={field.boundary.authorityState} style={row(6)}>
+              {field.boundary.labels.map(item => <span key={item} data-testid={`job-pool-label-${item}`} style={chip(AMBER_RGB)}>{tp.labels[item]}</span>)}
+            </div>
+            <span data-testid="job-pool-ranking" data-ranking={describeRanking(matching.roleMatches)} style={panelMeta}>{tp.ranking[describeRanking(matching.roleMatches)]}</span>
           </div>
-          <span data-testid="job-pool-ranking" data-ranking={describeRanking(matching.roleMatches)} style={micro}>{tp.ranking[describeRanking(matching.roleMatches)]}</span>
-          <div data-testid="job-pool-canonical-mapping" data-mapping-state={view.canonicalMapping.mappingState} data-proposal-state={view.canonicalMapping.proposalState} data-authority-state={view.canonicalMapping.authorityState} style={row(10)}>
-            <span style={word(SIL_TOKENS.colors.evolutionGreen)}>{view.canonicalMapping.mappingState}</span><span style={word(AMBER)}>{view.canonicalMapping.proposalState}</span><span style={word(AMBER)}>authority {view.canonicalMapping.authorityState}</span>
+          {/* 2 · canonical mapping: its states as chips, then the statement that bounds it. */}
+          <div data-sx-section="mapping" style={stack(10)}>
+            <div data-testid="job-pool-canonical-mapping" data-mapping-state={view.canonicalMapping.mappingState} data-proposal-state={view.canonicalMapping.proposalState} data-authority-state={view.canonicalMapping.authorityState} style={row(6)}>
+              <span style={chip(GREEN_RGB)}>{view.canonicalMapping.mappingState}</span><span style={chip(AMBER_RGB)}>{view.canonicalMapping.proposalState}</span><span style={chip(AMBER_RGB)}>authority {view.canonicalMapping.authorityState}</span>
+            </div>
+            <span style={panelStatement(`rgba(${AMBER_RGB}, 0.45)`)}>{tp.canonicalMappingBoundary}</span>
           </div>
-          <span style={{ ...prose, fontSize: "11px" }}>{tp.canonicalMappingBoundary}</span>
-          <div data-testid="job-pool-capability-sweep" data-sweep-state={field.boundary.capabilitySweep.state} data-proposal-count={field.boundary.capabilitySweep.proposalCount} data-scored="false" style={stack(3)}>
-            <span style={{ ...micro, color: field.boundary.capabilitySweep.state === "AVAILABLE" ? MUTED : AMBER }}>{tp.sweepStates[field.boundary.capabilitySweep.state]} · {tp.sweepProposals} {field.boundary.capabilitySweep.proposalCount} · <span style={word(AMBER)}>{tp.unscored}</span></span>
-            <span style={{ ...prose, fontSize: "11px" }}>{tp.sweepBoundary}</span>
+          {/* 3 · the capability sweep: its state line, then what sweep coverage is and is not. */}
+          <div data-sx-section="sweep" data-testid="job-pool-capability-sweep" data-sweep-state={field.boundary.capabilitySweep.state} data-proposal-count={field.boundary.capabilitySweep.proposalCount} data-scored="false" style={stack(10)}>
+            <span style={{ ...panelMeta, color: field.boundary.capabilitySweep.state === "AVAILABLE" ? "rgba(160, 186, 204, 0.82)" : `rgb(${AMBER_RGB})` }}>{tp.sweepStates[field.boundary.capabilitySweep.state]} · {tp.sweepProposals} {field.boundary.capabilitySweep.proposalCount} · <span style={{ ...chip(AMBER_RGB), padding: "1px 6px", fontSize: "8px", verticalAlign: "1px" }}>{tp.unscored}</span></span>
+            <span style={panelStatement(azure(0.4))}>{tp.sweepBoundary}</span>
           </div>
-          <span style={micro}>{tp.candidateCapabilities} {field.boundary.candidateCapabilityCount} · {tp.weakThreshold} {field.boundary.weakEvidenceThreshold}</span>
-          <span style={{ ...prose, fontSize: "11px" }}>{tp.missingBoundary}</span>
+          {/* 4 · gaps: the read's parameters, then what missing requirements are. */}
+          <div data-sx-section="gaps" style={stack(10)}>
+            <span style={panelMeta}>{tp.candidateCapabilities} {field.boundary.candidateCapabilityCount} · {tp.weakThreshold} {field.boundary.weakEvidenceThreshold}</span>
+            <span style={panelStatement("rgba(230, 241, 248, 0.28)")}>{tp.missingBoundary}</span>
+          </div>
         </section>
       )}
 

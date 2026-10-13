@@ -51,10 +51,13 @@ export function SyntxFieldSelector({ focus, groupLabel, capabilityLabel, jobLabe
       data-sx-shell="selector"
       role="group"
       aria-label={groupLabel}
-      style={{ position: "fixed", left: "50%", top: "70px", transform: "translateX(-50%)", zIndex: 60, display: "flex", alignItems: "center", padding: "4px", borderRadius: "999px", border: "1px solid rgba(120, 214, 255, 0.22)", background: "linear-gradient(180deg, rgba(8, 20, 33, 0.88), rgba(3, 8, 15, 0.92))", boxShadow: "0 0 0 1px rgba(3, 8, 16, 0.6), 0 10px 28px rgba(0, 0, 0, 0.55), 0 0 26px rgba(56, 229, 255, 0.08), inset 0 1px 0 rgba(200, 245, 255, 0.1)", backdropFilter: "blur(10px)", fontFamily: SIL_TOKENS.typography.mono }}
+      style={{ position: "fixed", left: "50%", top: "70px", transform: "translateX(-50%)", zIndex: 60, display: "flex", alignItems: "center", padding: "5px", borderRadius: "999px", border: "1px solid rgba(120, 214, 255, 0.3)", background: "radial-gradient(80% 140% at 50% 0%, rgba(84, 232, 236, 0.08), transparent 70%), linear-gradient(180deg, rgba(8, 21, 34, 0.92), rgba(3, 8, 15, 0.95))", boxShadow: "0 0 0 1px rgba(3, 8, 16, 0.6), 0 12px 32px rgba(0, 0, 0, 0.6), 0 0 34px rgba(56, 229, 255, 0.13), inset 0 1px 0 rgba(200, 245, 255, 0.14), inset 0 0 18px rgba(92, 200, 255, 0.05)", backdropFilter: "blur(10px)", fontFamily: SIL_TOKENS.typography.mono }}
     >
       <style>{SYNTX_FIELD_SELECTOR_CSS}</style>
-      <span aria-hidden="true" style={{ position: "absolute", left: "28px", right: "28px", top: 0, height: "1px", background: "linear-gradient(90deg, transparent, rgba(150, 236, 255, 0.5), transparent)", pointerEvents: "none" }} />
+      {/* The membrane: an outer resonance ring, the upper light edge and a lower counter-light (static). */}
+      <span aria-hidden="true" style={{ position: "absolute", inset: "-5px", borderRadius: "999px", border: "1px solid rgba(120, 214, 255, 0.09)", boxShadow: "0 0 22px rgba(56, 229, 255, 0.06)", pointerEvents: "none" }} />
+      <span aria-hidden="true" style={{ position: "absolute", left: "28px", right: "28px", top: 0, height: "1px", background: "linear-gradient(90deg, transparent, rgba(170, 240, 255, 0.7), transparent)", pointerEvents: "none" }} />
+      <span aria-hidden="true" style={{ position: "absolute", left: "34%", right: "34%", bottom: 0, height: "1px", background: "linear-gradient(90deg, transparent, rgba(92, 200, 255, 0.35), transparent)", pointerEvents: "none" }} />
       {options.map((option, index) => {
         const active = focus === option.focus;
         const tone = TONE[option.focus];
@@ -62,7 +65,7 @@ export function SyntxFieldSelector({ focus, groupLabel, capabilityLabel, jobLabe
           <React.Fragment key={option.id}>
             {index > 0 && (
               <span aria-hidden="true" style={{ position: "relative", display: "flex", alignItems: "center", width: "26px", justifyContent: "center", flexShrink: 0 }}>
-                <span style={{ width: "26px", height: "1px", background: "linear-gradient(90deg, rgba(56, 229, 255, 0.35), rgba(92, 200, 255, 0.35))" }} />
+                <span style={{ width: "26px", height: "1px", background: focus === "CAPABILITY" ? "linear-gradient(90deg, rgba(56, 229, 255, 0.85), rgba(92, 200, 255, 0.18))" : "linear-gradient(90deg, rgba(56, 229, 255, 0.18), rgba(92, 200, 255, 0.85))", transition: "background 0.45s ease" }} />
                 <span style={{ position: "absolute", width: "3px", height: "3px", borderRadius: "50%", background: "rgba(170, 232, 255, 0.8)", boxShadow: "0 0 6px rgba(120, 220, 255, 0.8)" }} />
               </span>
             )}
@@ -74,10 +77,11 @@ export function SyntxFieldSelector({ focus, groupLabel, capabilityLabel, jobLabe
               aria-pressed={active}
               onClick={() => select(option.focus)}
               onKeyDown={onKeyDown}
-              style={{ "--sx-tone": tone, position: "relative", display: "inline-flex", alignItems: "center", gap: "9px", padding: "9px 18px 9px 14px", borderRadius: "999px", border: `1px solid ${active ? `rgba(${tone}, 0.72)` : "transparent"}`, background: active ? `radial-gradient(120% 170% at 50% 0%, rgba(${tone}, 0.26), rgba(${tone}, 0.08) 62%, rgba(${tone}, 0.03))` : "transparent", boxShadow: active ? `0 0 18px rgba(${tone}, 0.24), inset 0 1px 0 rgba(220, 250, 255, 0.24), inset 0 0 14px rgba(${tone}, 0.12)` : "none", color: active ? "#effcff" : "rgba(168, 204, 222, 0.7)", textShadow: active ? `0 0 10px rgba(${tone}, 0.5)` : "none", fontFamily: SIL_TOKENS.typography.mono, fontSize: "10.5px", fontWeight: 700, letterSpacing: "2px", textTransform: "uppercase", whiteSpace: "nowrap", cursor: active ? "default" : "pointer", transition: "background 0.45s ease, color 0.45s ease, box-shadow 0.45s ease, border-color 0.45s ease, text-shadow 0.45s ease" } as React.CSSProperties}
+              style={{ "--sx-tone": tone, position: "relative", display: "inline-flex", alignItems: "center", gap: "9px", padding: "10px 20px 10px 15px", borderRadius: "999px", border: `1px solid ${active ? `rgba(${tone}, 0.8)` : "transparent"}`, background: active ? `radial-gradient(120% 170% at 50% 0%, rgba(${tone}, 0.32), rgba(${tone}, 0.1) 62%, rgba(${tone}, 0.04))` : "transparent", boxShadow: active ? `0 0 22px rgba(${tone}, 0.3), 0 0 46px rgba(${tone}, 0.1), inset 0 1px 0 rgba(220, 250, 255, 0.28), inset 0 0 16px rgba(${tone}, 0.14)` : "none", color: active ? "#f2fdff" : "rgba(150, 188, 208, 0.62)", textShadow: active ? `0 0 12px rgba(${tone}, 0.6)` : "none", fontFamily: SIL_TOKENS.typography.mono, fontSize: "11px", fontWeight: 700, letterSpacing: "2.2px", textTransform: "uppercase", whiteSpace: "nowrap", cursor: active ? "default" : "pointer", transition: "background 0.45s ease, color 0.45s ease, box-shadow 0.45s ease, border-color 0.45s ease, text-shadow 0.45s ease" } as React.CSSProperties}
             >
-              <span data-sx-lamp aria-hidden="true" style={{ width: "7px", height: "7px", boxSizing: "border-box", borderRadius: "50%", flexShrink: 0, border: `1px solid rgba(${tone}, ${active ? 1 : 0.45})`, background: active ? `rgb(${tone})` : "transparent", boxShadow: active ? `0 0 8px rgba(${tone}, 0.95), 0 0 2px #ffffff` : "none", transition: "background 0.45s ease, box-shadow 0.45s ease, border-color 0.45s ease" }} />
+              <span data-sx-lamp aria-hidden="true" style={{ width: "7px", height: "7px", boxSizing: "border-box", borderRadius: "50%", flexShrink: 0, border: `1px solid rgba(${tone}, ${active ? 1 : 0.38})`, background: active ? `rgb(${tone})` : "transparent", boxShadow: active ? `0 0 8px rgba(${tone}, 0.95), 0 0 2px #ffffff` : "none", transition: "background 0.45s ease, box-shadow 0.45s ease, border-color 0.45s ease" }} />
               {option.label}
+              <span aria-hidden="true" style={{ position: "absolute", left: "22%", right: "22%", bottom: "3px", height: "1px", borderRadius: "1px", background: `linear-gradient(90deg, transparent, rgba(${tone}, 0.9), transparent)`, opacity: active ? 1 : 0, transition: "opacity 0.45s ease" }} />
             </button>
           </React.Fragment>
         );

@@ -47,6 +47,7 @@ closed list (LIVE only; REDUCED total — no CSS animation, no SMIL photon, the 
 | role cosmos rotation (rAF, 160 s, all orbits together) | requirements, source documents and their traces (recomputed every frame; `data-orbital-motion-*` on each source body) | continuous, shared clock |
 | `sxSuspend` (48 s dash drift) | the one suspended boundary | infinite (as R15) |
 | `sxApertureBreathe` (9 s, opacity of the glow layer only) | the open inspection aperture (the surface itself holds still) | infinite |
+| `sxPanelCurrent` (11 s, a light segment along the upper edge), `atmosphereGlow` (12 s aura, 7 s node lamp) | the Job Field panels (pools, intake, boundary) while open; outside every sign | infinite (panel pass 2026-10-13) |
 | `sxEnter`, `sxRise`, `sxUnfold`, `sxTraceDraw`, `sxSuspendEnter`, `sxNucleusSettle`, `sxSatelliteSettle` | level entry, requirement unfold, trace rise, deep-focus settle | finite |
 
 No longer emitted: `sxOrbit`, `sxBreathe`, `sxMoonOrbit`, `sxAtmosphere`, `sxRingPulse`, `sxSettle`, `sxRecenter`,

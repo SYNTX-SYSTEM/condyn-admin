@@ -734,6 +734,36 @@ against a047f53 (366 / 374 byte-identical, 374 / 374 after removing the selector
 If Decision Loop Labs is to be the brand of the whole application (Capability context, codex, onboarding), that is one further
 shell change (the Capability header renders would change; R10b).
 
+#### 13.2.8 The four panels (owner "FOUR PANELS. CLEARER SIGNAL.", GO 2026-10-13)
+
+On 00299f5. Visual only: texts, ids, data attributes, states, navigation, keyboard and click logic unchanged (proved by a text and
+contract read of all four panels before and after: identical).
+
+- **Panel material (pools, intake, boundary).** The three Job Field panels no longer use the Capability HUD surface (its drifting star
+  dots and colour blots ran through the text); they share a Job Field resonance surface: deep glass with a top light, a fine azure
+  edge, four registration ticks, a breathing aura (`atmosphereGlow`, 12 s) and a light current travelling the upper edge
+  (`sxPanelCurrent`, 11 s), both LIVE only. Each panel holds one node on the side facing the field, with a hairline into the field
+  and a breathing lamp (`atmosphereGlow`, 7 s). Kickers carry a diamond marker and a rule; more inner space (18 / 20 px) and air.
+- **Pools (left).** Each upload is a row card: name 13 px, meta line in quieter mono; the selected pool with a cyan wash, a lit
+  left edge and a lit SELECTED chip with a lamp; SELECT as an outlined chip; hover and keyboard focus visible on the row.
+- **Field selector (top centre).** A brighter membrane with an outer resonance ring and a lower counter-light, 11 px labels, a
+  clearer inactive / active contrast (active: deeper tint, stronger glow, a light line under the label), and the link between the
+  options lit towards the active field. Static; logic unchanged.
+- **Intake (top right).** Labels as quiet field labels, the actor id as a recessed input well with a focus glow, the file input in
+  a dashed drop well with a styled file button, the file state with a lamp (neutral / mint when a file is chosen), UPLOAD as an
+  action chip (enabled / disabled visible).
+- **Boundary (bottom right).** Four sections separated by hairlines: (1) the presentation labels as amber chips with the ranking
+  line, (2) the canonical mapping states as chips (green / amber) above their statement, (3) the sweep state line (UNSCORED as a
+  chip) above its statement, (4) the read's parameters above the gaps statement. Statements in 12 px sans with a coloured rule
+  (amber for authority, azure for sweep, neutral for gaps); an amber light on the upper edge. Width 372 px (was 340); its height
+  yields to the intake when both are open (no overlap) and reads without scrolling alone at 1600 × 1000.
+- **Reduced motion.** The field's REDUCED rule now also stops pseudo-element animations.
+
+Proof: `evidence/job-pool/semiotic-transfer/panels/` (`panel-proof.json`: 24 checks at 1600 × 1000 and 1280 × 720, LIVE and REDUCED —
+panel motion names, nothing in REDUCED, no overlap, boundary without scrolling, decorative nodes, keyboard selection;
+`panel-text-identity.json`: text and contract identical for all four panels). New motion name `sxPanelCurrent` (outside every sign;
+panels are closed in PINK's ambient read): proposed for R15b as a panel motion.
+
 ### 13.3 DOM contract (PINK BR-1 … BR-5; GELB conditions a/b)
 
 **BR-1 field root** `data-testid="syntx-field"`: `data-field-grammar="SYNTX_FIELD_V1"`, `data-observation-kind` FIELD|ORGANIZATION|ROLE|REQUIREMENT
@@ -885,3 +915,4 @@ observation point. Readable labels wrap at word boundaries (`wrapLines`), never 
 | 2026-10-13 | Final visual finishing pass (owner "FINAL VISUAL FINISHING PASS — JOB FIELD", on d16db44; visual only, GREEN only, isolated lab) | §13.2.5: organization bodies with a still light membrane, corona, calmed signature and reading halos; the source carrier as a document sheet (folded corner, ruled ground, outline glow); the aperture with field ground, quotation marks in the relation colour, layer hairline and a lifted governance zone; resting cards and satellites in the azure register; O-JF-LABEL extended. Before / after: `evidence/job-pool/semiotic-transfer/final-pass/` | tsc 0; Capability renders 374 / 374 byte-identical (sha256 unchanged); unit / SSR / governance / sealed SIL / Capability batch 32 files / 192; workflow e2e 10/10; PINK walk with the proposed rebinding 3/3 (report under final-pass/pink-walk-proposal) |
 | 2026-10-13 | Field selector & final readability (owner "SFE — GREEN · FIELD SELECTOR & FINAL READABILITY", on f96217f; GREEN only, isolated lab) | §13.2.6: SYNTX field selector in the application shell (two equal fields, exactly one active, exclusive visibility, calm veil, keyboard ←/→), organization body typography (signature clears the reading area, reading plates, opaque hovered interior, rim tether), organization cosmos role-label clearance (O-JF-LABEL resolved); O-JF-PANEL documented. Evidence: `evidence/job-pool/semiotic-transfer/field-selector/` | tsc 0; Capability renders 366 / 374 byte-identical, the 8 shell renders identical after removing the selector and shell markers; unit / SSR / governance / sealed SIL / Capability batch 32 files / 192; workflow e2e 10/10; PINK walk with the proposed rebinding 3/3; selector proof 25 / 25 (exclusivity, ids, deep link, keyboard, reduced motion, role-card clearance at 1600 × 1000 and 1280 × 720) |
 | 2026-10-13 | Decision Loop Labs brand core (owner "ONE FIELD GRAMMAR. NEW BRAND CORE.", on a047f53; visual only, GREEN only, isolated lab) | §13.2.7: the DLL mark as field light in the pool core's lens, the Job Field header as Decision Loop Labs (Capability header unchanged), a static brand grid and registration frame, slight teal calibration; O-DLL-SCOPE open. Evidence: `evidence/job-pool/semiotic-transfer/brand-core/` | tsc 0; Capability renders 366 / 374 byte-identical, 374 / 374 after removing the selector and shell markers (unchanged against a047f53); unit / SSR / governance / sealed SIL / Capability batch 32 files / 193 (one new SSR test for the brand surface); workflow e2e 10/10; PINK walk with the proposed rebinding 3/3 (report under brand-core/pink-walk-proposal; the walk caught a first header test id under the retired `job-field…` prefix, renamed to `shell-brand-dll`); brand proof 20 / 20; selector proof 25 / 25 |
+| 2026-10-13 | Four panels (owner "FOUR PANELS. CLEARER SIGNAL.", on 00299f5; visual only, GREEN only, isolated lab) | §13.2.8: Job Field panel material for pools, intake and boundary (glass, edge current, breathing aura, field node), boundary in four sections with chips and ruled statements, pools as row cards with a lit selection, intake wells and action chip, selector membrane and contrast. Evidence: `evidence/job-pool/semiotic-transfer/panels/` | tsc 0; Capability renders 366 / 374 byte-identical, 374 / 374 shell-normalized; batch 32 files / 193; panel text and contract identical before / after; panel proof 24 / 24; workflow e2e and PINK walk run on the following polish pass (same tree plus the polish) |
