@@ -1,0 +1,77 @@
+[test-db] admin role condyn_test_runner (least privilege)
+[test-db] created condyn_test_d89c8332129dfbc5
+
+ RUN  v3.2.7 /home/codi/Entwicklung/condyn-admin-e2e
+
+[database-isolation] verified disposable test database condyn_test_d89c8332129dfbc5
+ ❯ test/job-pool-validation/syntx-walk.e2e.test.ts (3 tests | 3 failed) 144175ms
+   × PINK Q-12: SYNTX field walk FIELD → ORGANIZATION → ROLE → REQUIREMENT → EVIDENCE → RETURN against PINK's fixtures > Q-01 … Q-05, Q-07 … Q-11: walks the path with the pool selected and the analysis present, every sign equal to the bodies, reversible and GET-only 9522ms
+     → expected null to be 'button' // Object.is equality
+   × PINK Q-12: SYNTX field walk FIELD → ORGANIZATION → ROLE → REQUIREMENT → EVIDENCE → RETURN against PINK's fixtures > Q-06: reduced motion keeps every sign and its meaning; LIVE names only the allowed motions 9105ms
+     → expected undefined to be 'transform' // Object.is equality
+   × PINK Q-12: SYNTX field walk FIELD → ORGANIZATION → ROLE → REQUIREMENT → EVIDENCE → RETURN against PINK's fixtures > carried field states and stale ids (E-08, E-09, H-05, D-02, D-04, D-08, D-10): NO_ANALYSIS, NO_POOL with the intake, DRAFT pool as containment without a matching, NOT_FOUND, stale observation ids, legacy focus aliases 92774ms
+     → expected 'div#syntx-organization-org_pink_alpha…' to be 'g#syntx-organization-org_pink_alpha[o…' // Object.is equality
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/job-pool-validation/syntx-walk.e2e.test.ts > PINK Q-12: SYNTX field walk FIELD → ORGANIZATION → ROLE → REQUIREMENT → EVIDENCE → RETURN against PINK's fixtures > Q-01 … Q-05, Q-07 … Q-11: walks the path with the pool selected and the analysis present, every sign equal to the bodies, reversible and GET-only
+AssertionError: expected null to be 'button' // Object.is equality
+
+- Expected: 
+"button"
+
++ Received: 
+null
+
+ ❯ test/job-pool-validation/syntx-walk.e2e.test.ts:384:50
+    382|       expect(await carrier.getAttribute("data-requirement-count")).toB…
+    383|       expect(await carrier.getAttribute("data-matching-read")).toBe("t…
+    384|       expect(await carrier.getAttribute("role")).toBe("button");
+       |                                                  ^
+    385|       expect(await carrier.getAttribute("tabindex")).toBe("0");
+    386|       expect(squash(await carrier.textContent())).toContain(squash(rol…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯
+
+ FAIL  test/job-pool-validation/syntx-walk.e2e.test.ts > PINK Q-12: SYNTX field walk FIELD → ORGANIZATION → ROLE → REQUIREMENT → EVIDENCE → RETURN against PINK's fixtures > Q-06: reduced motion keeps every sign and its meaning; LIVE names only the allowed motions
+AssertionError: expected undefined to be 'transform' // Object.is equality
+
+- Expected: 
+"transform"
+
++ Received: 
+undefined
+
+ ❯ test/job-pool-validation/syntx-walk.e2e.test.ts:902:41
+    900|     expect(computed.root).toBe("sxEnter");
+    901|     expect(computed.pendingDash).toBe("sxSuspend");
+    902|     expect(computed.camera?.transition).toBe("transform");
+       |                                         ^
+    903|     expect(computed.camera?.duration).toBe("0.78s");
+    904|     // Sign transitions: opacity (recede / restore); since the living …
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/3]⎯
+
+ FAIL  test/job-pool-validation/syntx-walk.e2e.test.ts > PINK Q-12: SYNTX field walk FIELD → ORGANIZATION → ROLE → REQUIREMENT → EVIDENCE → RETURN against PINK's fixtures > carried field states and stale ids (E-08, E-09, H-05, D-02, D-04, D-08, D-10): NO_ANALYSIS, NO_POOL with the intake, DRAFT pool as containment without a matching, NOT_FOUND, stale observation ids, legacy focus aliases
+AssertionError: expected 'div#syntx-organization-org_pink_alpha…' to be 'g#syntx-organization-org_pink_alpha[o…' // Object.is equality
+
+Expected: "g#syntx-organization-org_pink_alpha[org:org_pink_alpha]"
+Received: "div#syntx-organization-org_pink_alpha[org:org_pink_alpha]"
+
+ ❯ test/job-pool-validation/syntx-walk.e2e.test.ts:1099:30
+    1097|     await entry.waitForTimeout(300);
+    1098|     const afterObservation = await activeOf(entry);
+    1099|     expect(afterObservation).toBe("g#syntx-organization-org_pink_alpha…
+       |                              ^
+    1100|     expect(await entry.getByTestId("job-pool-upload").isVisible()).toB…
+    1101|     expect(await entry.getByTestId("job-pool-actor-input").evaluate((e…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/3]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  3 failed (3)
+   Start at  17:50:17
+   Duration  151.51s (transform 4.33s, setup 23ms, collect 6.59s, tests 144.18s, environment 0ms, prepare 142ms)
+
+[test-db] dropped condyn_test_d89c8332129dfbc5

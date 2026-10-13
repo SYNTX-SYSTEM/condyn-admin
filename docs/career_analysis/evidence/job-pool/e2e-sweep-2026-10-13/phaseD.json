@@ -1,0 +1,164 @@
+[
+  {
+    "pool": "DLL_JOBPOOL_ENGINEERING",
+    "roles": 9,
+    "orgs": 3,
+    "viewport": "1600x1000",
+    "matchesApiMs": [
+      153,
+      64,
+      63
+    ],
+    "toAvailableMs": 4281,
+    "fieldDomNodes": 313,
+    "fps": 5,
+    "orgOverlaps": [],
+    "orgOutsideViewport": [],
+    "largestOrg": {
+      "id": "org_kestrel",
+      "n": 3
+    },
+    "roleCards": 3,
+    "roleCardOverlaps": 0,
+    "roleCardsOutsideViewport": 0,
+    "roleCardsUnderOrientation": 0,
+    "errors": 0
+  },
+  {
+    "pool": "DLL_JOBPOOL_ENGINEERING",
+    "roles": 9,
+    "orgs": 3,
+    "viewport": "1280x720",
+    "matchesApiMs": [
+      153,
+      64,
+      63
+    ],
+    "toAvailableMs": 3976,
+    "fieldDomNodes": 313,
+    "fps": 7.2,
+    "orgOverlaps": [],
+    "orgOutsideViewport": [
+      "org_aurelion",
+      "org_brightwater"
+    ],
+    "largestOrg": {
+      "id": "org_kestrel",
+      "n": 3
+    },
+    "roleCards": 3,
+    "roleCardOverlaps": 0,
+    "roleCardsOutsideViewport": 1,
+    "roleCardsUnderOrientation": 0,
+    "errors": 0
+  },
+  {
+    "pool": "DLL_JOBPOOL_AI_DATA",
+    "roles": 16,
+    "orgs": 5,
+    "viewport": "1600x1000",
+    "matchesApiMs": [
+      124,
+      50,
+      64
+    ],
+    "toAvailableMs": 5445,
+    "fieldDomNodes": 407,
+    "fps": 3.4,
+    "orgOverlaps": [],
+    "orgOutsideViewport": [],
+    "largestOrg": {
+      "id": "org_lumen",
+      "n": 4
+    },
+    "roleCards": 4,
+    "roleCardOverlaps": 0,
+    "roleCardsOutsideViewport": 0,
+    "roleCardsUnderOrientation": 0,
+    "errors": 0
+  },
+  {
+    "pool": "DLL_JOBPOOL_AI_DATA",
+    "roles": 16,
+    "orgs": 5,
+    "viewport": "1280x720",
+    "matchesApiMs": [
+      124,
+      50,
+      64
+    ],
+    "toAvailableMs": 4401,
+    "fieldDomNodes": 407,
+    "fps": 7,
+    "orgOverlaps": [],
+    "orgOutsideViewport": [
+      "org_veritas",
+      "org_orbisure"
+    ],
+    "largestOrg": {
+      "id": "org_lumen",
+      "n": 4
+    },
+    "roleCards": 4,
+    "roleCardOverlaps": 0,
+    "roleCardsOutsideViewport": 1,
+    "roleCardsUnderOrientation": 0,
+    "errors": 0
+  },
+  {
+    "pool": "DLL_JOBPOOL_ENTERPRISE_SCALE",
+    "roles": 48,
+    "orgs": 16,
+    "viewport": "1600x1000",
+    "matchesApiMs": [
+      225,
+      115,
+      123
+    ],
+    "toAvailableMs": 7719,
+    "fieldDomNodes": 898,
+    "fps": 3.4,
+    "orgOverlaps": [],
+    "orgOutsideViewport": [],
+    "largestOrg": {
+      "id": "org_rheinmark",
+      "n": 3
+    },
+    "roleCards": 3,
+    "roleCardOverlaps": 0,
+    "roleCardsOutsideViewport": 0,
+    "roleCardsUnderOrientation": 0,
+    "errors": 0
+  },
+  {
+    "pool": "DLL_JOBPOOL_ENTERPRISE_SCALE",
+    "roles": 48,
+    "orgs": 16,
+    "viewport": "1280x720",
+    "matchesApiMs": [
+      225,
+      115,
+      123
+    ],
+    "toAvailableMs": 4928,
+    "fieldDomNodes": 898,
+    "fps": 5.6,
+    "orgOverlaps": [],
+    "orgOutsideViewport": [
+      "org_sentinelridge",
+      "org_ironquay",
+      "org_ledgerline",
+      "org_paxford",
+      "org_medivane"
+    ],
+    "largestOrg": {
+      "id": "org_rheinmark",
+      "n": 3
+    },
+    "roleCards": 3,
+    "roleCardOverlaps": 0,
+    "roleCardsOutsideViewport": 1,
+    "roleCardsUnderOrientation": 0,
+    "errors": 0
+  }
+]

@@ -1,0 +1,117 @@
+[
+  {
+    "tag": "DLL_JOBPOOL_ENGINEERING×ENG",
+    "matched": 3,
+    "weak": 4,
+    "missing": 72,
+    "candidateCapabilityCount": 4,
+    "sweepProposals": 10,
+    "sweepOnlyCoverage": 5,
+    "missingButLiteralInCv": 9,
+    "ofThoseSweepCovered": 3,
+    "examples": [
+      "PostgreSQL",
+      "Event-Driven Architecture",
+      "Automated Testing",
+      "Web Accessibility",
+      "SQL",
+      "Kubernetes",
+      "CI/CD Pipelines"
+    ]
+  },
+  {
+    "tag": "DLL_JOBPOOL_ENGINEERING×AI",
+    "matched": 0,
+    "weak": 0,
+    "missing": 79,
+    "candidateCapabilityCount": 3,
+    "sweepProposals": 11,
+    "sweepOnlyCoverage": 0,
+    "missingButLiteralInCv": 5,
+    "ofThoseSweepCovered": 0,
+    "examples": [
+      "SQL",
+      "Kubernetes",
+      "Terraform",
+      "Event-Driven Architecture"
+    ]
+  },
+  {
+    "tag": "DLL_JOBPOOL_AI_DATA×ENG",
+    "matched": 0,
+    "weak": 13,
+    "missing": 117,
+    "candidateCapabilityCount": 4,
+    "sweepProposals": 10,
+    "sweepOnlyCoverage": 4,
+    "missingButLiteralInCv": 4,
+    "ofThoseSweepCovered": 3,
+    "examples": [
+      "Kubernetes",
+      "SQL",
+      "Stream Processing",
+      "Apache Kafka"
+    ]
+  },
+  {
+    "tag": "DLL_JOBPOOL_AI_DATA×AI",
+    "matched": 1,
+    "weak": 0,
+    "missing": 129,
+    "candidateCapabilityCount": 3,
+    "sweepProposals": 11,
+    "sweepOnlyCoverage": 11,
+    "missingButLiteralInCv": 38,
+    "ofThoseSweepCovered": 11,
+    "examples": [
+      "Model Registry and Lineage",
+      "Model Monitoring",
+      "Kubernetes",
+      "Python",
+      "Time Series Forecasting",
+      "Infrastructure as Code",
+      "PyTorch",
+      "Production ML Monitoring",
+      "Retrieval-Augmented Generation",
+      "Hybrid Search",
+      "Neo4j",
+      "Entity Resolution"
+    ]
+  },
+  {
+    "tag": "DLL_JOBPOOL_ENTERPRISE_SCALE×ENG",
+    "matched": 3,
+    "weak": 12,
+    "missing": 275,
+    "candidateCapabilityCount": 4,
+    "sweepProposals": 10,
+    "sweepOnlyCoverage": 10,
+    "missingButLiteralInCv": 12,
+    "ofThoseSweepCovered": 10,
+    "examples": [
+      "Test Automation",
+      "PostgreSQL",
+      "SQL",
+      "Linux Administration",
+      "Linux Systems Engineering"
+    ]
+  },
+  {
+    "tag": "DLL_JOBPOOL_ENTERPRISE_SCALE×AI",
+    "matched": 0,
+    "weak": 0,
+    "missing": 290,
+    "candidateCapabilityCount": 3,
+    "sweepProposals": 11,
+    "sweepOnlyCoverage": 2,
+    "missingButLiteralInCv": 21,
+    "ofThoseSweepCovered": 2,
+    "examples": [
+      "Traffic Forecasting",
+      "SQL",
+      "Python",
+      "Machine Learning",
+      "PyTorch"
+    ]
+  }
+]

@@ -1,0 +1,266 @@
+[test-db] admin role condyn_test_runner (least privilege)
+[test-db] created condyn_test_dce2484b3f1446e8
+
+ RUN  v3.2.7 /home/codi/Entwicklung/condyn-admin-e2e
+
+[database-isolation] verified disposable test database condyn_test_dce2484b3f1446e8
+ ❯ test/job-pool-validation/http-canonical-inverse.postgres.test.ts (13 tests | 11 failed) 11269ms
+   × Job Pool connection: HTTP contract, canonical mapping and inverse walk (JP-H / JP-C / JP-I) > JP-H: POST creates the upload once (201) and reports an identical upload as 200 with the same id, also for reordered keys 5019ms
+     → Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+   × Job Pool connection: HTTP contract, canonical mapping and inverse walk (JP-H / JP-C / JP-I) > JP-H: the canonical mapping carries the three layer labels and one revision per pool item 2ms
+     → Cannot read properties of undefined (reading 'canonicalMapping')
+   × Job Pool connection: HTTP contract, canonical mapping and inverse walk (JP-H / JP-C / JP-I) > JP-C: one DOCUMENT source revision per upload (C1/C2): jobpool:// locator, rendering version, hashes over the stored canonical bytes and the rendered text 1ms
+     → Cannot read properties of undefined (reading 'canonicalMapping')
+   × Job Pool connection: HTTP contract, canonical mapping and inverse walk (JP-H / JP-C / JP-I) > JP-C: organizations, bindings and role profiles form the canonical chain with PROPOSAL_ONLY / authority NONE 1ms
+     → Cannot read properties of undefined (reading 'canonicalMapping')
+   × Job Pool connection: HTTP contract, canonical mapping and inverse walk (JP-H / JP-C / JP-I) > JP-C: every requirement revision follows the C3 level table, the C7 necessity rule and the default requirement type; the batch run is persisted 1ms
+     → Cannot read properties of undefined (reading 'canonicalMapping')
+   × Job Pool connection: HTTP contract, canonical mapping and inverse walk (JP-H / JP-C / JP-I) > JP-C: CAPABILITY requirements with validated level and necessity are MATCHING_ELIGIBLE_PROPOSAL_ONLY 1ms
+     → Cannot read properties of undefined (reading 'canonicalMapping')
+   × Job Pool connection: HTTP contract, canonical mapping and inverse walk (JP-H / JP-C / JP-I) > JP-I: byte replay of every requirement revision returns the persisted revision; the stored canonical bytes reproduce the upload id 1ms
+     → Cannot read properties of undefined (reading 'canonicalMapping')
+   × Job Pool connection: HTTP contract, canonical mapping and inverse walk (JP-H / JP-C / JP-I) > JP-H: GET list and GET by id expose the upload; unknown ids are 404 103ms
+     → expected false to be true // Object.is equality
+   × Job Pool connection: HTTP contract, canonical mapping and inverse walk (JP-H / JP-C / JP-I) > JP-H + JP-I: presentation matching follows CP-I1..I4 and Step 23, states its basis, quotes the analysis evidence verbatim and persists nothing 232ms
+     → Cannot read properties of undefined (reading 'jobPoolUploadId')
+   ✓ Job Pool connection: HTTP contract, canonical mapping and inverse walk (JP-H / JP-C / JP-I) > JP-H: the presentation layer owns no table 10ms
+   × Job Pool connection: HTTP contract, canonical mapping and inverse walk (JP-H / JP-C / JP-I) > JP-H: matches refuse unknown analyses and pools (404) and inactive pools (409) 1ms
+     → Cannot read properties of undefined (reading 'jobPoolUploadId')
+   ✓ Job Pool connection: HTTP contract, canonical mapping and inverse walk (JP-H / JP-C / JP-I) > JP-H: upload errors carry the documented codes (400 / 413 / 422 with issues) 60ms
+   × Job Pool connection: HTTP contract, canonical mapping and inverse walk (JP-H / JP-C / JP-I) > JP-H: an unmarked database in the disposable name pattern receives no DDL and the upload answers 503 5797ms
+     → Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ ✓ test/career/job-pool/job-pool.postgres.test.ts (7 tests) 7886ms
+   ✓ JSON Job Pool on PostgreSQL (JP-C, JP-I, JP-H) > registers its tables through the gate and maps the sample pool onto canonical target revisions (201)  3556ms
+   ✓ JSON Job Pool on PostgreSQL (JP-C, JP-I, JP-H) > persists every canonical revision as PROPOSAL_ONLY with authority NONE and replays each requirement byte- and semantically  384ms
+   ✓ JSON Job Pool on PostgreSQL (JP-C, JP-I, JP-H) > is idempotent: an equivalent re-upload answers 200 with the same id and adds no row, and a re-run of the mapping is byte-identical  691ms
+   ✓ JSON Job Pool on PostgreSQL (JP-C, JP-I, JP-H) > answers the documented error statuses  2814ms
+ ✓ test/career/job-pool/local-composition-gate.test.ts (2 tests) 1285ms
+   ✓ Job Pool persistence registration gate > registers unified and job pool schemas once, on the verified URL's dedicated client, and ends it  996ms
+ ✓ test/career/job-pool/syntx-field-ssr.test.tsx (8 tests) 1234ms
+stdout | test/job-pool-validation/pdf-path.postgres.test.ts > JP-PDF: PDF → capability sweep (stub) → JSON Job Pool → matching, on PostgreSQL without Gemini
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42701',
+  message: 'column "current_operation" of relation "career_analysis_jobs" already exists, skipping',
+  file: 'tablecmds.c',
+  line: '7085',
+  routine: 'check_for_column_name_collision'
+}
+
+stdout | test/job-pool-validation/pdf-path.postgres.test.ts > JP-PDF: PDF → capability sweep (stub) → JSON Job Pool → matching, on PostgreSQL without Gemini
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42701',
+  message: 'column "candidate_source_bundle_id" of relation "career_capability_proposal_projection_references" already exists, skipping',
+  file: 'tablecmds.c',
+  line: '7085',
+  routine: 'check_for_column_name_collision'
+}
+
+ ✓ test/job-pool-validation/pdf-path.postgres.test.ts (2 tests) 2005ms
+   ✓ JP-PDF: PDF → capability sweep (stub) → JSON Job Pool → matching, on PostgreSQL without Gemini > drives a hand-written PDF through the analyze route, the loader, a persisted bundle, a retry and the analyses route  489ms
+   ✓ JP-PDF: PDF → capability sweep (stub) → JSON Job Pool → matching, on PostgreSQL without Gemini > drives GELB's synthetic two-page CV PDF the same way and matches the resulting analysis against PINK's pool  1163ms
+ ✓ test/career/job-pool/syntx-field-governance.test.ts (10 tests) 429ms
+ ✓ test/career-f12-pulse-alignment.test.tsx (10 tests) 370ms
+ ✓ test/career/hr-decision-loop/dock-ssr.test.tsx (4 tests) 276ms
+ ✓ test/career/job-pool/syntx-field-view-model.test.ts (15 tests) 192ms
+stdout | test/job-pool-validation/legacy-matchers-identity-name.test.ts > D-JP-1: the live analyses route serves demo matching for a canonical analysis
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42701',
+  message: 'column "current_operation" of relation "career_analysis_jobs" already exists, skipping',
+  file: 'tablecmds.c',
+  line: '7085',
+  routine: 'check_for_column_name_collision'
+}
+
+stdout | test/job-pool-validation/legacy-matchers-identity-name.test.ts > D-JP-1: the live analyses route serves demo matching for a canonical analysis
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42701',
+  message: 'column "candidate_source_bundle_id" of relation "career_capability_proposal_projection_references" already exists, skipping',
+  file: 'tablecmds.c',
+  line: '7085',
+  routine: 'check_for_column_name_collision'
+}
+
+ ✓ test/job-pool-validation/legacy-matchers-identity-name.test.ts (4 tests) 312ms
+ ✓ test/career-sil-empty-orbit-visual-attention.test.tsx (7 tests) 175ms
+ ✓ test/career-sil-global-language-wiring.test.tsx (9 tests) 260ms
+ ✓ test/career/job-pool/client-reads.test.ts (4 tests) 100ms
+ ✓ test/career/job-pool/provider.test.ts (5 tests) 90ms
+ ✓ test/career/job-pool/presentation-matching.test.ts (11 tests) 178ms
+ ✓ test/career-final-orbit-hardening.test.tsx (4 tests) 290ms
+ ✓ test/career-demo-ui.test.tsx (4 tests) 137ms
+ ✓ test/career-generalized-orbit-focus.test.tsx (4 tests) 125ms
+ ✓ test/career/job-pool/semantic-governance.test.ts (4 tests) 67ms
+ ✓ test/career/job-pool/upload.test.ts (5 tests) 66ms
+ ✓ test/career-capability-cosmos-view.test.tsx (3 tests) 77ms
+ ✓ test/career-ui-metrics-wiring.test.tsx (2 tests) 95ms
+ ✓ test/career-orbital-motion-runtime.test.tsx (7 tests) 97ms
+ ✓ test/career-proposal-sil-projection.test.ts (4 tests) 39ms
+ ✓ test/career-sil-ghost-manifestation.test.tsx (7 tests) 73ms
+ ✓ test/job-pool-validation/job-field-static.test.ts (5 tests) 34ms
+ ✓ test/career/job-pool/frontend-presentation.test.ts (9 tests) 28ms
+ ✓ test/career-sil-focused-manifestation-bounding.test.tsx (4 tests) 70ms
+ ✓ test/career-hover-hud-compositing.test.tsx (1 test) 41ms
+ ✓ test/career-ui-source-presentation-wiring.test.tsx (1 test) 34ms
+ ✓ test/career/job-pool/job-field-presentation.test.ts (4 tests) 12ms
+ ✓ test/job-pool-validation/layer-separation.test.ts (4 tests) 21ms
+ ✓ test/career-sil-language-contract.test.ts (12 tests) 15ms
+ ✓ test/job-pool-validation/sweep-coverage.test.ts (3 tests) 17ms
+ ✓ test/career-sil-focused-empty-orbit.test.ts (7 tests) 10ms
+ ✓ test/career-sil-empty-orbit-attention.test.ts (7 tests) 11ms
+ ✓ test/career-sil-hud-cluster-resolution.test.ts (7 tests) 10ms
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 11 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/job-pool-validation/http-canonical-inverse.postgres.test.ts > Job Pool connection: HTTP contract, canonical mapping and inverse walk (JP-H / JP-C / JP-I) > JP-H: POST creates the upload once (201) and reports an identical upload as 200 with the same id, also for reordered keys
+Error: Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ ❯ test/job-pool-validation/http-canonical-inverse.postgres.test.ts:73:3
+     71|   afterAll(async () => { await sql?.end({ timeout: 5 }); });
+     72| 
+     73|   it("JP-H: POST creates the upload once (201) and reports an identica…
+       |   ^
+     74|     const first = await post(uploadedBytes);
+     75|     expect(first.status).toBe(201);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/11]⎯
+
+ FAIL  test/job-pool-validation/http-canonical-inverse.postgres.test.ts > Job Pool connection: HTTP contract, canonical mapping and inverse walk (JP-H / JP-C / JP-I) > JP-H: the canonical mapping carries the three layer labels and one revision per pool item
+TypeError: Cannot read properties of undefined (reading 'canonicalMapping')
+ ❯ test/job-pool-validation/http-canonical-inverse.postgres.test.ts:98:26
+     96| 
+     97|   it("JP-H: the canonical mapping carries the three layer labels and o…
+     98|     const mapping = view.canonicalMapping;
+       |                          ^
+     99|     expect(mapping).toMatchObject({ mappingState: "MAPPED", proposalSt…
+    100|     expect(mapping.organizations.map((o: any) => o.poolOrganizationId)…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/11]⎯
+
+ FAIL  test/job-pool-validation/http-canonical-inverse.postgres.test.ts > Job Pool connection: HTTP contract, canonical mapping and inverse walk (JP-H / JP-C / JP-I) > JP-C: one DOCUMENT source revision per upload (C1/C2): jobpool:// locator, rendering version, hashes over the stored canonical bytes and the rendered text
+TypeError: Cannot read properties of undefined (reading 'canonicalMapping')
+ ❯ test/job-pool-validation/http-canonical-inverse.postgres.test.ts:113:36
+    111| 
+    112|   it("JP-C: one DOCUMENT source revision per upload (C1/C2): jobpool:/…
+    113|     const sourceIds = new Set(view.canonicalMapping.roles.map((r: any)…
+       |                                    ^
+    114|     expect(sourceIds.size).toBe(1);
+    115|     const source = await repositories.source.getRevisionById([...sourc…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/11]⎯
+
+ FAIL  test/job-pool-validation/http-canonical-inverse.postgres.test.ts > Job Pool connection: HTTP contract, canonical mapping and inverse walk (JP-H / JP-C / JP-I) > JP-C: organizations, bindings and role profiles form the canonical chain with PROPOSAL_ONLY / authority NONE
+TypeError: Cannot read properties of undefined (reading 'canonicalMapping')
+ ❯ test/job-pool-validation/http-canonical-inverse.postgres.test.ts:132:37
+    130| 
+    131|   it("JP-C: organizations, bindings and role profiles form the canonic…
+    132|     for (const organization of view.canonicalMapping.organizations) {
+       |                                     ^
+    133|       const revision = await repositories.organization.getRevisionById…
+    134|       expect(revision).not.toBeNull();
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/11]⎯
+
+ FAIL  test/job-pool-validation/http-canonical-inverse.postgres.test.ts > Job Pool connection: HTTP contract, canonical mapping and inverse walk (JP-H / JP-C / JP-I) > JP-C: every requirement revision follows the C3 level table, the C7 necessity rule and the default requirement type; the batch run is persisted
+TypeError: Cannot read properties of undefined (reading 'canonicalMapping')
+ ❯ test/job-pool-validation/http-canonical-inverse.postgres.test.ts:152:67
+    150| 
+    151|   it("JP-C: every requirement revision follows the C3 level table, the…
+    152|     const source = await repositories.source.getRevisionById(view.cano…
+       |                                                                   ^
+    153|     const lines = new Set(source!.normalizedContent.split("\n"));
+    154|     const expectations: Record<string, { type: string; level: unknown;…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/11]⎯
+
+ FAIL  test/job-pool-validation/http-canonical-inverse.postgres.test.ts > Job Pool connection: HTTP contract, canonical mapping and inverse walk (JP-H / JP-C / JP-I) > JP-C: CAPABILITY requirements with validated level and necessity are MATCHING_ELIGIBLE_PROPOSAL_ONLY
+TypeError: Cannot read properties of undefined (reading 'canonicalMapping')
+ ❯ test/job-pool-validation/http-canonical-inverse.postgres.test.ts:201:24
+    199| 
+    200|   it("JP-C: CAPABILITY requirements with validated level and necessity…
+    201|     const alpha = view.canonicalMapping.roles.find((r: any) => r.poolR…
+       |                        ^
+    202|     expect(alpha.requirements.find((req: any) => req.poolRequirementId…
+    203|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/11]⎯
+
+ FAIL  test/job-pool-validation/http-canonical-inverse.postgres.test.ts > Job Pool connection: HTTP contract, canonical mapping and inverse walk (JP-H / JP-C / JP-I) > JP-I: byte replay of every requirement revision returns the persisted revision; the stored canonical bytes reproduce the upload id
+TypeError: Cannot read properties of undefined (reading 'canonicalMapping')
+ ❯ test/job-pool-validation/http-canonical-inverse.postgres.test.ts:206:29
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/11]⎯
+
+ FAIL  test/job-pool-validation/http-canonical-inverse.postgres.test.ts > Job Pool connection: HTTP contract, canonical mapping and inverse walk (JP-H / JP-C / JP-I) > JP-H: GET list and GET by id expose the upload; unknown ids are 404
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ test/job-pool-validation/http-canonical-inverse.postgres.test.ts:219:94
+    217|     expect(list.status).toBe(200);
+    218|     const body = await list.json();
+    219|     expect(body.jobPools.some((item: any) => item.jobPoolUploadId === …
+       |                                                                                              ^
+    220|     expect(body.jobPools.every((item: any) => !("canonicalMapping" in …
+    221|     const item = await getItem(view.jobPoolUploadId);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/11]⎯
+
+ FAIL  test/job-pool-validation/http-canonical-inverse.postgres.test.ts > Job Pool connection: HTTP contract, canonical mapping and inverse walk (JP-H / JP-C / JP-I) > JP-H + JP-I: presentation matching follows CP-I1..I4 and Step 23, states its basis, quotes the analysis evidence verbatim and persists nothing
+TypeError: Cannot read properties of undefined (reading 'jobPoolUploadId')
+ ❯ test/job-pool-validation/http-canonical-inverse.postgres.test.ts:229:44
+    227|   it("JP-H + JP-I: presentation matching follows CP-I1..I4 and Step 23…
+    228|     const before = await rowCensus(sql);
+    229|     const response = await getMatches(view.jobPoolUploadId, `?analysis…
+       |                                            ^
+    230|     expect(response.status).toBe(200);
+    231|     const presentation = await response.json();
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/11]⎯
+
+ FAIL  test/job-pool-validation/http-canonical-inverse.postgres.test.ts > Job Pool connection: HTTP contract, canonical mapping and inverse walk (JP-H / JP-C / JP-I) > JP-H: matches refuse unknown analyses and pools (404) and inactive pools (409)
+TypeError: Cannot read properties of undefined (reading 'jobPoolUploadId')
+ ❯ test/job-pool-validation/http-canonical-inverse.postgres.test.ts:307:35
+    305| 
+    306|   it("JP-H: matches refuse unknown analyses and pools (404) and inacti…
+    307|     expect((await getMatches(view.jobPoolUploadId, "?analysisId=ANL_DO…
+       |                                   ^
+    308|     expect((await getMatches("JPOOL_DOES_NOT_EXIST", `?analysisId=${an…
+    309|     const noAnalysis = await getMatches(view.jobPoolUploadId, "");
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[10/11]⎯
+
+ FAIL  test/job-pool-validation/http-canonical-inverse.postgres.test.ts > Job Pool connection: HTTP contract, canonical mapping and inverse walk (JP-H / JP-C / JP-I) > JP-H: an unmarked database in the disposable name pattern receives no DDL and the upload answers 503
+Error: Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ ❯ test/job-pool-validation/http-canonical-inverse.postgres.test.ts:349:3
+    347|   });
+    348| 
+    349|   it("JP-H: an unmarked database in the disposable name pattern receiv…
+       |   ^
+    350|     const adminUrl = process.env.TEST_DATABASE_ADMIN_URL;
+    351|     if (!adminUrl) throw new Error("TEST_DATABASE_ADMIN_URL is require…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[11/11]⎯
+
+
+ Test Files  1 failed | 36 passed (37)
+      Tests  11 failed | 208 passed (219)
+   Start at  18:01:05
+   Duration  69.16s (transform 7.88s, setup 599ms, collect 23.33s, tests 27.43s, environment 18ms, prepare 6.54s)
+
+[test-db] dropped condyn_test_dce2484b3f1446e8
