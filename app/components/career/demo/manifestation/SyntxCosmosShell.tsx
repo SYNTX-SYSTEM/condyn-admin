@@ -64,13 +64,17 @@ export interface SyntxCosmosShellProps {
   tether?: { stroke: string; dash: string } | null;
   renderNode: (node: CapabilityCosmosLayoutNode, ring: CapabilityCosmosRing) => React.ReactNode;
   center: React.ReactNode;
+  /** The orbit ellipses' stroke; the planetarium's faint cyan by default. */
+  orbitStroke?: string;
+  /** The star field; SYNTX_COSMOS_STARS by default. */
+  stars?: React.CSSProperties;
 }
 
 export function syntxCosmosPoint(layout: CapabilityCosmosLayout, node: CapabilityCosmosLayoutNode, ring: CapabilityCosmosRing, elapsedMs: number) {
   return getOrbitalSatellitePosition({ cx: layout.centerX, cy: layout.centerY, rx: ring.radiusX, ry: ring.radiusY, initialPhase: node.angle, angularVelocity: (Math.PI * 2) / ring.periodSeconds, elapsedMs });
 }
 
-export function SyntxCosmosShell({ containerRef, testId, attributes, onClick, style, styleText, layout, elapsedMs, ringAttribute, afterOrbits, svgExtra, tether = { stroke: "rgba(56, 229, 255, 0.18)", dash: "2 7" }, renderNode, center }: SyntxCosmosShellProps) {
+export function SyntxCosmosShell({ containerRef, testId, attributes, onClick, style, styleText, layout, elapsedMs, ringAttribute, afterOrbits, svgExtra, tether = { stroke: "rgba(56, 229, 255, 0.18)", dash: "2 7" }, renderNode, center, orbitStroke = "rgba(56, 229, 255, 0.18)", stars = SYNTX_COSMOS_STARS }: SyntxCosmosShellProps) {
   const ringByIndex = React.useMemo(
     () => new Map(layout.rings.map((ring) => [ring.index, ring])),
     [layout.rings]
@@ -88,7 +92,7 @@ export function SyntxCosmosShell({ containerRef, testId, attributes, onClick, st
 
       <div
         aria-hidden="true"
-        style={SYNTX_COSMOS_STARS}
+        style={stars}
       />
 
       <svg
@@ -105,7 +109,7 @@ export function SyntxCosmosShell({ containerRef, testId, attributes, onClick, st
             rx={ring.radiusX}
             ry={ring.radiusY}
             fill="none"
-            stroke="rgba(56, 229, 255, 0.18)"
+            stroke={orbitStroke}
             strokeWidth="1"
             strokeDasharray="4 9"
           />

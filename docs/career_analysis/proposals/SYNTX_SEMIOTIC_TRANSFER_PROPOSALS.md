@@ -19,8 +19,9 @@ files, but only to move code into shared components:
 - proof: 374 server renders of every touched Capability component captured before the move and compared after each step,
   byte for byte: 374 / 374 identical, sha256 `7d0e5c9147a9252a34cc2ac1818a212f6a0dda8bc950634ecdbf30e97bdc18b2` before and after;
   the sealed SIL language suites and every Capability test green unchanged (batch 40 files / 230 tests);
-- the optional props added for the Job Field (`keyframes`, `pulseKeyframes`, `renderMoon`, `moonCount`, `gradientId`, slots)
-  default to the Capability Field's behaviour.
+- the optional props added for the Job Field (`keyframes`, `pulseKeyframes`, `renderMoon`, `moonCount`, `gradientId`, slots; since the
+  finishing pass the tone props `tone`, `orbitStroke`, `stars`, `spokeStroke`) default to the Capability Field's behaviour (render
+  identity re-proven after the finishing pass: 374 / 374).
 
 **Proposed wording (binding §4):** "R10a — The Capability Field and the Job Field share the SYNTX manifestation
 components. Moving Capability code into these components is admitted when its server rendering stays byte-identical
@@ -36,6 +37,7 @@ closed list (LIVE only; REDUCED total — no CSS animation, no SMIL photon, the 
 | `orbitFloatPhase2` (25 s) | every organization body | infinite (Capability L0) |
 | `moonOrbit` (160 s) | the role moons of an organization body (not on the focus anchor) | infinite |
 | `atmosphereGlow` (3 s), `ringPulse` (2.4 s, second 1.2 s behind) | a highlighted organization body: hovered at JOB POOL, the focus anchor below it | infinite |
+| `atmosphereGlow` (11 s, phased per body) | the atmosphere halo of every organization body (finishing pass) | infinite |
 | `hologramFloat` (6 s) | the hover HUD of an organization body (not the inspection aperture, which holds still) | infinite |
 | `focusTransitionPulse` (1.6 s) | the hovered body at JOB POOL, the focus anchor at ORGANIZATION | infinite |
 | `coreBreathe`, `plasmaRotateCw`, `plasmaRotateCcw`, `plasmaFlarePulse`, `waveExpand`, `particleIn`, `corePulseCommunicate` (hover) | the pool core | infinite |
@@ -44,7 +46,7 @@ closed list (LIVE only; REDUCED total — no CSS animation, no SMIL photon, the 
 | cosmos satellites (rAF, periods 130 s + 35 s per orbit) | the roles of the observed organization | continuous, shared clock |
 | role cosmos rotation (rAF, 160 s, all orbits together) | requirements, source documents and their traces (recomputed every frame; `data-orbital-motion-*` on each source body) | continuous, shared clock |
 | `sxSuspend` (48 s dash drift) | the one suspended boundary | infinite (as R15) |
-| `sxApertureBreathe` (7 s, opacity of the glow layer only) | the open inspection aperture (the surface itself holds still) | infinite |
+| `sxApertureBreathe` (9 s, opacity of the glow layer only) | the open inspection aperture (the surface itself holds still) | infinite |
 | `sxEnter`, `sxRise`, `sxUnfold`, `sxTraceDraw`, `sxSuspendEnter`, `sxNucleusSettle`, `sxSatelliteSettle` | level entry, requirement unfold, trace rise, deep-focus settle | finite |
 
 No longer emitted: `sxOrbit`, `sxBreathe`, `sxMoonOrbit`, `sxAtmosphere`, `sxRingPulse`, `sxSettle`, `sxRecenter`,

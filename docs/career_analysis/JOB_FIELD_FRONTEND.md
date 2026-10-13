@@ -604,6 +604,37 @@ their own rows and their own apertures even on one document; sweep coverage is n
 missing support neutral; score only in the pending aperture; no red attention ring (no HR state has the meaning
 EMPTY_PROJECTION_ATTENTION). Proposals for GELB/PINK (R10a, R15b, walk rebinding): `docs/career_analysis/proposals/SYNTX_SEMIOTIC_TRANSFER_PROPOSALS.md`.
 
+#### 13.2.4 Semiotic finishing pass (owner "SFE — GREEN · SEMIOTIC FINISHING PASS", GO 2026-10-13; visual refinement only)
+
+No architecture, layout, component, function, data, matching, score, relation, governance, id, state, navigation, keyboard or
+click change. The shared manifestation components gained optional tone props only (`SyntxPlanetariumBackdrop.tone`,
+`SyntxCosmosShell.orbitStroke` / `stars`, `SyntxDeepFocusShell.spokeStroke`); their defaults are the Capability Field's literals, so
+the Capability rendering stays byte-identical (374 / 374 renders, sha256 `7d0e5c91…bdc18b2` unchanged).
+
+- **Job Field resonance tone.** The same SYNTX family in the field's own register: the atmosphere (field root, cosmos and deep-focus
+  backdrops, star field, planetarium glow) and the resting structure (orbit paths, resonance ring, tethers, resting rays and beads,
+  containment, deep-focus spokes) lean from the Capability cyan (189°) towards azure (`rgba(92, 200, 255, a)`, 201°). Unchanged in
+  meaning and colour: active resonance and focus (cyan), evidence and sources (mint), the authority boundary and weak reasons
+  (amber), missing support and pending (neutral), the support glyphs, trace strokes and photons.
+- **Organization resonance body.** A lit sphere over the planetarium body (upper light, lower shade, azure rim at rest, the cyan
+  resonance when highlighted), a rim-light crescent, an atmosphere halo beyond the rim that breathes slowly (`atmosphereGlow`
+  11 s, phased per body) and an inner light that rises over .9 s when the body resonates (hover, focus anchor). Geometry, moons,
+  HUD and the planetarium's highlighted atmosphere unchanged.
+- **Source document carrier.** The glyph ◈ is drawn as a vector (document diamond with its core) in the carrier body, the card,
+  the evidence-surface group header and the aperture's source line; the carrier body carries a mint membrane; the card is a
+  document membrane — mint hairline, lit upper edge, the document's spine — with the title in the sans reading face (12 px) over a
+  mint kicker and a ruled evidence count. Width, position, texts and the dashed body of a sweep-only source unchanged.
+- **Evidence aperture.** More depth (layered shadow, inner vignette, a second glass 5 px inside the frame, lit upper edge), the
+  glow breathes slower and two-toned (`sxApertureBreathe` 9 s, opacity only; the surface and its text hold still), hairline rules
+  between head and body, the quote's reading space recessed, metric chips with tabular figures and higher contrast, the boundary zone
+  set off by an inner shade. Hierarchy unchanged: REQUIREMENT → RELATION → SOURCE → EVIDENCE → METRICS → AUTHORITY BOUNDARY. REDUCED: no
+  animation, no transition (unchanged root rule).
+
+**Observation O-JF-LABEL (documented only, not changed):** in the organization cosmos a role card on the lower part of the orbit
+ellipse can sit close to the level's lower inset (at 1600 × 1000 the "Senior Full-Stack Engineer" card ends ≈ 40 px above the footer
+statement). Evidence: `evidence/job-pool/semiotic-transfer/finishing/organization-cosmos-role-labels-observation.jpg`. A correction
+would touch `syntxCosmosLayout` (layout), which this pass excludes.
+
 ### 13.3 DOM contract (PINK BR-1 … BR-5; GELB conditions a/b)
 
 **BR-1 field root** `data-testid="syntx-field"`: `data-field-grammar="SYNTX_FIELD_V1"`, `data-observation-kind` FIELD|ORGANIZATION|ROLE|REQUIREMENT
@@ -751,3 +782,4 @@ observation point. Readable labels wrap at word boundaries (`wrapLines`), never 
 | 2026-10-12 | Concrete visual correction (owner mandate "GREEN — CONCRETE VISUAL CORRECTION", on 7bda76a; GREEN only, same populated reference session) | nucleus ×1.5 with the L2 nucleus materials and one resonance region; ecology radii ×1.3 (categories, order, camera scales unchanged; nucleus kept in the REQUIREMENT framing); evidence straight beneath the nucleus and satellites fanned from the top (the regression the e2e caught on the first attempt — a short trace buried in a converging bundle, 0 owned pointer points — is gone: 7 / 11 / 14 / 14); traces as screen-constant filaments with a faint halo, photons and beads in screen pixels, emphasis on the selected anchor. View-model expectation "a single trace stays straight" replaced by the clearance it stands for. Comparison: `capability-vs-jobfield.webm` (21 s, L2 deep focus left, Job Field REQUIREMENT → EVIDENCE right, one session) | view model 14/14 · SSR 7/7 · governance 10/10 + 4/4 · e2e 10/10 · PINK walk: all scenarios green except the Q-06 ROLE-name assertion (`sxMoonOrbit`, R15; expected) · tsc 0 · sealed files byte-identical |
 | 2026-10-12 | Semiotic transfer (owner "GRÜN — SYNTX SEMIOTIC TRANSFER", GO for variant A; on 5898def = 9e86d44 + plan 1.9.0; GREEN only, isolated lab) | §13.2.3: seven domain-neutral manifestation components extracted from the Capability Field (374/374 renders byte-identical); the Job Field rebuilt on them as planetarium → organization cosmos → role cosmos → requirement deep focus → evidence HUD; organizations first (roles as moons); scored/unscored separated per row and curve; scale check with 16 organizations / 53 roles / 191 requirements. Findings fixed on the way: keyframe text inside the stage (now at the field root), zero-size sign wrappers (now real extents), colliding test-id prefixes (renamed), floating aperture (now still), global button ripple (suppressed in the field) | tsc 0; unit/SSR/governance/sealed SIL/Capability batch 40 files / 230; workflow e2e 10/10; PINK walk unchanged 0/3 (expected: Q-01 role buttons, Q-06 camera, focus tag); PINK walk with the proposed rebinding 3/3 |
 | 2026-10-12 | Evidence aperture refinement (owner "Die Evidenz-Apertur … veredeln"; visual / semiotic only, on ca11794; GREEN only, isolated lab) | the inspection aperture as a calm hologram surface: rounded HUD with a fine mint / cyan frame and atmospheric interior, a glow layer that breathes (`sxApertureBreathe` 7 s, opacity only — the surface holds still), and semantic layers: head (requirement or role), relation line (stroke sample + relation · scored / unscored), source line (glyph, title, location chip), the quote as its own reading space, micro-metric chips (contribution, confidence, weight; resonance and rank in the pending aperture), explanation, and a separated boundary zone with the authority statement as chips (text unchanged). Ids, states, texts, data, keyboard and click logic unchanged. Before / after: `evidence/job-pool/semiotic-transfer/aperture/` | job-pool batch 18 files / 114; workflow e2e 10/10; PINK walk with the proposed rebinding 3/3 |
+| 2026-10-13 | Semiotic finishing pass (owner "SFE — GREEN · SEMIOTIC FINISHING PASS", on 00e9103; visual only, GREEN only, isolated lab) | §13.2.4: Job Field resonance tone (azure atmosphere and resting structure; semantic colours unchanged), organization bodies as lit resonance spheres with a slow atmosphere halo and a calm light reaction, the source carrier as a document membrane with a vector glyph, the aperture with more depth and a slower two-tone glow; O-JF-LABEL documented. Shared components: optional tone props only (Capability renders 374 / 374 byte-identical). Before / after: `evidence/job-pool/semiotic-transfer/finishing/` | tsc 0; Capability renders 374 / 374 byte-identical; unit / SSR / governance / sealed SIL / Capability batch 32 files / 192; workflow e2e 10/10; PINK walk with the proposed rebinding 3/3 (Q-01 … Q-11, Q-06 and carried states PASS; report under finishing/pink-walk-proposal) |

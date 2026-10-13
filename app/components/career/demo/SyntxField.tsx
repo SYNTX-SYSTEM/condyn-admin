@@ -8,8 +8,8 @@ import { SYNTX_RESONANCE_BODY_KEYFRAMES, SyntxResonanceBody } from "./manifestat
 import { SYNTX_CORE_KEYFRAMES, SyntxCoreOrganism } from "./manifestation/SyntxCoreOrganism";
 import { SyntxEnergyRay, SyntxPlanetariumBackdrop } from "./manifestation/SyntxPlanetarium";
 import { FocusTransitionStageShell, SYNTX_FOCUS, SYNTX_FOCUS_PULSE_KEYFRAMES } from "./manifestation/SyntxFocusShell";
-import { SYNTX_COSMOS_BACKDROP, SYNTX_COSMOS_CENTER_MATERIAL, SYNTX_COSMOS_NODE_MATERIAL, SYNTX_COSMOS_STARS, SyntxCosmosShell } from "./manifestation/SyntxCosmosShell";
-import { SYNTX_DEEP_FOCUS_BACKDROP, SYNTX_EVIDENCE_LINK, SYNTX_EVIDENCE_SURFACE_MATERIAL, SYNTX_NUCLEUS_MATERIAL, SYNTX_SATELLITE_MATERIAL, SyntxDeepFocusShell } from "./manifestation/SyntxDeepFocusShell";
+import { SYNTX_COSMOS_CENTER_MATERIAL, SYNTX_COSMOS_NODE_MATERIAL, SYNTX_COSMOS_STARS, SyntxCosmosShell } from "./manifestation/SyntxCosmosShell";
+import { SYNTX_EVIDENCE_LINK, SYNTX_EVIDENCE_SURFACE_MATERIAL, SYNTX_NUCLEUS_MATERIAL, SYNTX_SATELLITE_MATERIAL, SyntxDeepFocusShell } from "./manifestation/SyntxDeepFocusShell";
 import { SYNTX_HUD_SURFACE } from "./manifestation/SyntxHudSurface";
 import { SIL_COPY, type SilLocale } from "../../../../lib/career/view-model/sil-language";
 import { resolveSilFocusedManifestationPresentation } from "../../../../lib/career/view-model/focused-orbit-placement";
@@ -105,6 +105,18 @@ const MUTED = SIL_TOKENS.colors.textMuted;
 const NEUTRAL = "rgba(230, 241, 248, 0.42)";
 const MINT = "#7effcc";
 
+/* Job Field resonance tone: the SYNTX family in the field's own register. The atmosphere and the resting structure (orbits, tethers,
+ * resting rays, containment) lean from the Capability Field's cyan (189°) towards azure (201°). Active resonance stays CYAN, evidence
+ * MINT, the authority boundary AMBER, missing support NEUTRAL: no state, evidence category or boundary changes its colour. */
+const azure = (alpha: number): string => `rgba(92, 200, 255, ${alpha})`;
+const JOB_PLANETARIUM_TONE = { glow: "#4fb8ff", orbit: azure(0.13), ring: azure(0.17), node: azure(0.42), dust: azure(0.28) };
+const JOB_FIELD_ATMOSPHERE = "radial-gradient(ellipse 72% 62% at 50% 54%, rgba(22, 62, 118, 0.14), transparent 72%), radial-gradient(ellipse 50% 40% at 88% 8%, rgba(92, 200, 255, 0.045), transparent 70%), radial-gradient(ellipse 46% 36% at 8% 96%, rgba(40, 92, 170, 0.06), transparent 70%)";
+const JOB_COSMOS_BACKDROP = "radial-gradient(ellipse at 50% 48%, rgba(16, 46, 82, 0.24) 0%, rgba(4, 9, 20, 0.74) 50%, rgba(1, 3, 9, 0.96) 100%)";
+const JOB_COSMOS_STARS: React.CSSProperties = { ...SYNTX_COSMOS_STARS, backgroundImage: "radial-gradient(circle at 16% 22%, rgba(92, 200, 255, 0.3) 0 1px, transparent 1.5px), radial-gradient(circle at 76% 31%, rgba(126, 255, 204, 0.16) 0 1px, transparent 1.5px), radial-gradient(ellipse at 70% 76%, rgba(26, 70, 132, 0.14), transparent 52%)" };
+const JOB_DEEP_FOCUS_BACKDROP = "radial-gradient(circle at 50% 42%, rgba(18, 62, 98, 0.24), transparent 26%), radial-gradient(ellipse at 50% 54%, rgba(3, 11, 24, 0.64), rgba(1, 3, 9, 0.97) 76%)";
+const JOB_ORBIT = azure(0.2);
+const JOB_TETHER = azure(0.18);
+
 const micro: React.CSSProperties = { fontFamily: MONO, fontSize: "9px", color: MUTED, letterSpacing: "0.3px", lineHeight: 1.55, wordBreak: "break-word" };
 const label: React.CSSProperties = { fontFamily: MONO, fontSize: "9px", fontWeight: 600, letterSpacing: "1.8px", textTransform: "uppercase", color: MUTED, margin: 0 };
 const prose: React.CSSProperties = { fontFamily: SANS, fontSize: "12.5px", lineHeight: 1.65, color: INK_SOFT, margin: 0 };
@@ -143,7 +155,7 @@ ${SYNTX_CORE_KEYFRAMES}
 ${SYNTX_FOCUS_PULSE_KEYFRAMES}
 @keyframes rotateClockwise { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 @keyframes sxEnter { from { opacity: 0; } to { opacity: 1; } }
-@keyframes sxApertureBreathe { 0%, 100% { opacity: .55; } 50% { opacity: 1; } }
+@keyframes sxApertureBreathe { 0%, 100% { opacity: .5; } 50% { opacity: 1; } }
 @keyframes sxRise { from { opacity: 0; } to { opacity: 1; } }
 @keyframes sxSuspend { to { stroke-dashoffset: -120; } }
 @keyframes sxUnfold { from { opacity: 0; transform: scale(.62); } to { opacity: 1; transform: scale(1); } }
@@ -374,7 +386,7 @@ function PlanetariumLayer({ field, mode, t, locale, size, onObserve }: LayerProp
       {/* The pool: the total field — its orbits, its rays and its core organism (its emblem names the pool and the organizations it contains). */}
       <div data-testid="syntx-pool" {...signAttributes(field.pool.sign)} aria-label={`${tm.pool} · ${field.pool.poolName}`} style={{ position: "absolute", inset: 0, pointerEvents: "none" }}>
       <svg data-testid="syntx-orbits" width={box} height={box} style={{ position: "absolute", top: 0, left: 0, pointerEvents: "none", zIndex: 1, opacity: anchored ? 0.18 : 1, filter: anchored ? "blur(2px)" : undefined, transition: "opacity 0.72s cubic-bezier(0.16, 1, 0.3, 1), filter 0.72s cubic-bezier(0.16, 1, 0.3, 1)" }}>
-        <SyntxPlanetariumBackdrop center={center} radius={radius} gradientId="syntxFieldGlow" glowOpacity={focusedId ? "0.32" : "0.22"} />
+        <SyntxPlanetariumBackdrop center={center} radius={radius} gradientId="syntxFieldGlow" glowOpacity={focusedId ? "0.32" : "0.22"} tone={JOB_PLANETARIUM_TONE} />
         {field.organizations.map((organization, index) => {
           const active = focusedId === organization.id;
           return (
@@ -385,14 +397,14 @@ function PlanetariumLayer({ field, mode, t, locale, size, onObserve }: LayerProp
               y1={center}
               x2={organization.x}
               y2={organization.y}
-              stroke={active ? CYAN : "rgba(56, 229, 255, 0.28)"}
+              stroke={active ? CYAN : azure(0.3)}
               strokeWidth={active ? "2.5" : "1.2"}
               dash={active ? undefined : "3 3"}
               photons={mode === "LIVE" ? {
                 out: { r: active ? "3" : "1.8", fill: active ? "#ffffff" : CYAN, opacity: active ? 1 : 0.65, dur: active ? "1.6s" : PHOTON_OUT[index % 6] },
                 in: { r: active ? "3" : "1.8", fill: active ? "#38e5ff" : "#8eefff", opacity: active ? 0.95 : 0.6, dur: active ? "2.1s" : PHOTON_IN[index % 6] }
               } : null}
-              bead={{ r: active ? "4" : "2", fill: active ? CYAN : "rgba(56, 229, 255, 0.6)" }}
+              bead={{ r: active ? "4" : "2", fill: active ? CYAN : azure(0.62) }}
             />
           );
         })}
@@ -437,6 +449,24 @@ function PlanetariumLayer({ field, mode, t, locale, size, onObserve }: LayerProp
   );
 }
 
+/** The organization's resonance body (Job Field material over the planetarium's sphere): a lit sphere — upper light, lower shade — with an
+ * azure rim at rest; highlighted, the planetarium's cyan resonance. The light reaction is the body's own transition (colour, rim, glow). */
+const organizationBodyMaterial = (highlighted: boolean): React.CSSProperties => highlighted
+  ? {
+      backgroundColor: "rgba(56, 229, 255, 0.14)",
+      backgroundImage: "radial-gradient(circle at 34% 24%, rgba(214, 248, 255, 0.2), transparent 40%), radial-gradient(circle at 50% 56%, rgba(56, 229, 255, 0.1), rgba(4, 18, 30, 0.55) 74%)",
+      border: `1.5px solid ${CYAN}`,
+      boxShadow: `0 0 48px ${SIL_TOKENS.colors.cyanGlowStrong}, 0 0 22px rgba(56, 229, 255, 0.72), inset 0 1px 0 rgba(214, 248, 255, 0.28), inset 0 0 26px ${SIL_TOKENS.colors.cyanGlow}, inset 0 -18px 28px rgba(1, 6, 14, 0.42)`,
+      transition: "opacity 0.35s ease, box-shadow 0.9s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.9s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.9s cubic-bezier(0.16, 1, 0.3, 1)"
+    }
+  : {
+      backgroundColor: "rgba(6, 13, 24, 0.9)",
+      backgroundImage: "radial-gradient(circle at 34% 24%, rgba(160, 222, 255, 0.12), transparent 42%), radial-gradient(circle at 50% 56%, rgba(16, 38, 66, 0.55), rgba(3, 7, 15, 0.6) 76%)",
+      border: `1.5px solid ${azure(0.42)}`,
+      boxShadow: `0 0 28px rgba(36, 112, 196, 0.18), 0 0 0 1px rgba(3, 8, 16, 0.55), inset 0 1px 0 rgba(176, 230, 255, 0.12), inset 0 0 16px ${azure(0.1)}, inset 0 -18px 28px rgba(1, 4, 10, 0.55)`,
+      transition: "opacity 0.35s ease, box-shadow 0.9s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.9s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.9s cubic-bezier(0.16, 1, 0.3, 1)"
+    };
+
 function OrganizationBody({ organization, index, roles, observation, depth, isAnchor, hovered, t, hudCopy, onHover, onObserve }: { organization: SyntxOrganization; index: number; roles: SyntxRole[]; observation: SyntxObservation; depth: number; isAnchor: boolean; hovered: string | null; mode: SyntxMotionMode; t: SyntxCopy; hudCopy: (typeof SIL_COPY)[SilLocale]["hud"]; onHover(id: string | null): void; onObserve(next: SyntxObservation): void }) {
   const { center } = SYNTX_LAYOUT;
   const anchored = depth >= 1;
@@ -475,7 +505,7 @@ function OrganizationBody({ organization, index, roles, observation, depth, isAn
       >
         {/* Containment of the organization: the orbit its roles (moons) keep — organization ⊃ role made visible (binding §2.1). */}
         <svg data-sx-containment aria-hidden="true" width={244} height={244} style={{ position: "absolute", left: "-38px", top: "-38px", pointerEvents: "none", overflow: "visible" }}>
-          <circle cx={122} cy={122} r={PLANETARIUM_BODY.containment} fill="none" stroke="rgba(56, 229, 255, 0.07)" strokeWidth={1} strokeDasharray="2 9" />
+          <circle cx={122} cy={122} r={PLANETARIUM_BODY.containment} fill="none" stroke={azure(0.09)} strokeWidth={1} strokeDasharray="2 9" />
         </svg>
         <SyntxResonanceBody
           keyframes={false}
@@ -487,6 +517,7 @@ function OrganizationBody({ organization, index, roles, observation, depth, isAn
           dimmed={!anchored && hovered !== null && !isHovered}
           className=""
           animationDelay={`${-4 * (index % 6)}s`}
+          style={organizationBodyMaterial(highlighted)}
           signature={renderSemioticSignature("03", highlighted)}
           moonCount={isAnchor ? 0 : roles.length}
           renderMoon={(moon, style) => <RoleMoon role={roles[moon]} style={style} />}
@@ -512,8 +543,13 @@ function OrganizationBody({ organization, index, roles, observation, depth, isAn
             )
           } : null}
         >
-          <span style={{ fontSize: "11px", color: highlighted ? CYAN : MUTED, fontWeight: 700, letterSpacing: "1px", position: "relative", zIndex: 1 }}>{String(index + 1).padStart(2, "0")}</span>
-          <span style={{ fontSize: "13px", color: INK, fontWeight: 700, marginTop: "4px", lineHeight: 1.2, position: "relative", zIndex: 1, textTransform: "uppercase", letterSpacing: "0.6px" }}>⬡ {organization.name}</span>
+          {/* The body's atmosphere: a halo beyond its rim that breathes slowly (the planetarium's atmosphereGlow, 11 s), the rim light of
+              its upper edge and the shade of its lower edge, and the inner light that rises when the body resonates (hover, focus). */}
+          <span data-sx-aura aria-hidden="true" style={{ position: "absolute", inset: "-30px", borderRadius: "50%", pointerEvents: "none", background: `radial-gradient(circle, transparent 55%, ${azure(0.11)} 62%, rgba(36, 100, 188, 0.05) 71%, transparent 79%)`, animation: "atmosphereGlow 11s ease-in-out infinite", animationDelay: `${-1.7 * index}s` }} />
+          <span aria-hidden="true" style={{ position: "absolute", inset: "2px", borderRadius: "50%", pointerEvents: "none", boxShadow: "inset 3px 4px 7px -3px rgba(190, 238, 255, 0.34), inset -3px -5px 9px -4px rgba(24, 84, 170, 0.4)" }} />
+          <span aria-hidden="true" style={{ position: "absolute", inset: 0, borderRadius: "50%", pointerEvents: "none", background: "radial-gradient(circle at 50% 50%, rgba(56, 229, 255, 0.16), transparent 66%)", opacity: highlighted ? 1 : 0, transition: "opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1)" }} />
+          <span style={{ fontSize: "11px", color: highlighted ? CYAN : azure(0.72), fontWeight: 700, letterSpacing: "1px", position: "relative", zIndex: 1, transition: "color 0.6s ease" }}>{String(index + 1).padStart(2, "0")}</span>
+          <span style={{ fontSize: "13px", color: INK, fontWeight: 700, marginTop: "4px", lineHeight: 1.2, position: "relative", zIndex: 1, textTransform: "uppercase", letterSpacing: "0.6px", textShadow: `0 0 12px ${highlighted ? "rgba(56, 229, 255, 0.45)" : "rgba(92, 200, 255, 0.22)"}` }}>⬡ {organization.name}</span>
           {subtitle.length > 0 && <span style={{ fontSize: "10px", color: MUTED, marginTop: "4px", lineHeight: 1.2, position: "relative", zIndex: 1 }}>{subtitle}</span>}
           <span style={{ fontSize: "9px", color: MUTED, marginTop: "3px", position: "relative", zIndex: 1, letterSpacing: "0.8px" }}>{t.manifest.organization}</span>
           <span style={{ marginTop: "8px", fontSize: "10px", color: highlighted ? CYAN : INK, backgroundColor: highlighted ? "rgba(56, 229, 255, 0.15)" : "rgba(255,255,255,0.05)", padding: "2px 8px", borderRadius: "8px", border: `1px solid ${highlighted ? "rgba(56, 229, 255, 0.4)" : "transparent"}`, position: "relative", zIndex: 1 }}>{organization.roleIds.length} {t.roles}</span>
@@ -553,7 +589,7 @@ function OrganizationCosmosLayer({ field, mode, t, size, onObserve, organization
   const recededLevel = field.depth >= 2;
   const index = field.organizations.indexOf(organization);
   return (
-    <div data-sx-level="organization" data-sx-depth={recededLevel ? "far" : "near"} style={{ position: "absolute", inset: 0, zIndex: 22, overflow: "hidden", background: SYNTX_COSMOS_BACKDROP, opacity: recededLevel ? 0.3 : 1, filter: recededLevel ? SYNTX_FOCUS.recededFilter : undefined, pointerEvents: recededLevel ? "none" : "auto", transition: "opacity 0.62s ease, filter 0.62s ease" }}>
+    <div data-sx-level="organization" data-sx-depth={recededLevel ? "far" : "near"} style={{ position: "absolute", inset: 0, zIndex: 22, overflow: "hidden", background: JOB_COSMOS_BACKDROP, opacity: recededLevel ? 0.3 : 1, filter: recededLevel ? SYNTX_FOCUS.recededFilter : undefined, pointerEvents: recededLevel ? "none" : "auto", transition: "opacity 0.62s ease, filter 0.62s ease" }}>
     <SyntxCosmosShell
       testId="syntx-cosmos-organization"
       attributes={{ "data-organization-id": organization.id, "data-layout": compact ? "compact" : "full" }}
@@ -562,6 +598,9 @@ function OrganizationCosmosLayer({ field, mode, t, size, onObserve, organization
       layout={layout}
       elapsedMs={elapsedMs}
       ringAttribute="data-syntx-cosmos-ring"
+      orbitStroke={JOB_ORBIT}
+      stars={JOB_COSMOS_STARS}
+      tether={{ stroke: JOB_TETHER, dash: "2 7" }}
       renderNode={node => {
         const role = byId.get(node.id)!;
         // The observed role is now the centre of its own cosmos: here it remains as the receding anchor (no sign, no pointer).
@@ -631,15 +670,15 @@ function RoleCosmosLayer({ field, mode, t, size, onObserve, role }: LayerProps &
   const select = () => onObserve(observeRole(observation, role.organizationId, role.id));
   const pending = field.pendingBoundary;
   return (
-    <div data-testid="syntx-ecology" data-role-id={role.id} data-sx-level="role" data-sx-depth={deep ? "far" : "near"} data-card-mode={cardMode} data-rotation={rotation.toFixed(6)} style={{ position: "absolute", inset: 0, zIndex: 24, overflow: "hidden", background: SYNTX_COSMOS_BACKDROP, opacity: deep ? 0.34 : 1, filter: deep ? SYNTX_FOCUS.recededFilter : undefined, pointerEvents: deep ? "none" : "auto", transition: "opacity 0.62s ease, filter 0.62s ease" }}>
-      <div aria-hidden="true" style={SYNTX_COSMOS_STARS} />
+    <div data-testid="syntx-ecology" data-role-id={role.id} data-sx-level="role" data-sx-depth={deep ? "far" : "near"} data-card-mode={cardMode} data-rotation={rotation.toFixed(6)} style={{ position: "absolute", inset: 0, zIndex: 24, overflow: "hidden", background: JOB_COSMOS_BACKDROP, opacity: deep ? 0.34 : 1, filter: deep ? SYNTX_FOCUS.recededFilter : undefined, pointerEvents: deep ? "none" : "auto", transition: "opacity 0.62s ease, filter 0.62s ease" }}>
+      <div aria-hidden="true" style={JOB_COSMOS_STARS} />
       <div style={levelBox}>
       <svg width={frame.width} height={frame.height} style={{ position: "absolute", left: 0, top: 0, overflow: "visible", pointerEvents: "none" }}>
         {/* Orbits of the cosmos: one per support category present (circles — distance is the category, R14), the source orbit in mint. */}
-        {categories.map(support => <circle key={support} data-sx-orbit={support} cx={centre.x} cy={centre.y} r={SUPPORT_DISTANCE[support] * frame.scale} fill="none" stroke="rgba(56, 229, 255, 0.18)" strokeWidth={1} strokeDasharray="4 9" />)}
+        {categories.map(support => <circle key={support} data-sx-orbit={support} cx={centre.x} cy={centre.y} r={SUPPORT_DISTANCE[support] * frame.scale} fill="none" stroke={JOB_ORBIT} strokeWidth={1} strokeDasharray="4 9" />)}
         {field.sources.length > 0 && <circle data-sx-orbit="SOURCE" cx={centre.x} cy={centre.y} r={SOURCE_RING_RADIUS * frame.scale} fill="none" stroke="rgba(126, 255, 204, 0.16)" strokeWidth={1} strokeDasharray="4 9" />}
         {/* Tethers of the cosmos from the centre to every satellite (2 7); to the documents the mint evidence link (3 6). */}
-        {field.requirements.map(requirement => { const point = points.get(requirement.id)!; return <line key={`tether-${requirement.id}`} x1={centre.x} y1={centre.y} x2={point.x} y2={point.y} stroke="rgba(56, 229, 255, 0.18)" strokeWidth={1} strokeDasharray="2 7" />; })}
+        {field.requirements.map(requirement => { const point = points.get(requirement.id)!; return <line key={`tether-${requirement.id}`} x1={centre.x} y1={centre.y} x2={point.x} y2={point.y} stroke={JOB_TETHER} strokeWidth={1} strokeDasharray="2 7" />; })}
         {field.sources.map((source, index) => <line key={`link-${source.docId}`} x1={centre.x} y1={centre.y} x2={sourcePoints[index].x} y2={sourcePoints[index].y} stroke="rgba(126, 255, 204, 0.3)" strokeWidth={1} strokeDasharray="3 6" />)}
         {pending !== null && !deep && (
           <g
@@ -752,7 +791,16 @@ function RoleCosmosLayer({ field, mode, t, size, onObserve, role }: LayerProps &
   );
 }
 
-/** A source document as the planetarium's source satellite (OrbitalCosmosView): the body on the orbit, the card beside it. */
+/** The source glyph ◈ drawn as a vector (a document diamond holding its core), so it reads the same at every size and in every font. */
+const sourceGlyph = (size: number, color: string = MINT): React.ReactNode => (
+  <svg aria-hidden="true" width={size} height={size} viewBox="0 0 16 16" style={{ display: "block", overflow: "visible", flexShrink: 0 }}>
+    <path d="M 8 1.4 L 14.6 8 L 8 14.6 L 1.4 8 Z" fill="rgba(126, 255, 204, 0.06)" stroke={color} strokeWidth={1.1} strokeLinejoin="round" />
+    <path d="M 8 5.1 L 10.9 8 L 8 10.9 L 5.1 8 Z" fill={color} />
+  </svg>
+);
+
+/** A source document as the planetarium's source satellite (OrbitalCosmosView): the body on the orbit, the carrier beside it — a document
+ * membrane (mint hairline, lit upper edge, the document's spine), not a satellite card. */
 function SourceSatellite({ source, point, centre, rotation, t, inSurface = false }: { source: SyntxSource; point: Point; centre: Point; rotation: number; t: SyntxCopy; inSurface?: boolean }) {
   const card = cardBeside(centre, point, 80, 30, 18);
   const sweepOnly = source.sign.relation === "covers_unscored";
@@ -761,12 +809,15 @@ function SourceSatellite({ source, point, centre, rotation, t, inSurface = false
   return (
     <div data-testid={`syntx-source-${source.docId}`} data-source-title-state={source.titleState} data-trace-count={source.traceCount} {...signAttributes(source.sign)} aria-label={`${t.source} · ${source.title ?? t.sourceUnresolved}`} style={{ position: "absolute", left: `${box.left}px`, top: `${box.top}px`, width: `${box.right - box.left}px`, height: `${box.bottom - box.top}px`, opacity: recedeOpacity(source.sign, 0.2), pointerEvents: "none" }}>
       <div data-sx-carrier-body data-orbital-motion-driver={inSurface ? undefined : "shared-rAF"} data-orbital-motion-phase={rotation.toFixed(6)} data-orbital-motion-x={point.x.toFixed(3)} data-orbital-motion-y={point.y.toFixed(3)} style={{ position: "absolute", left: 0, top: 0, transform: `translate3d(${point.x - box.left}px, ${point.y - box.top}px, 0)` }}>
-        <span aria-hidden="true" style={{ position: "absolute", left: "-14px", top: "-14px", width: "28px", height: "28px", boxSizing: "border-box", borderRadius: "50%", border: `1px ${sweepOnly ? "dashed" : "solid"} rgba(126, 255, 204, ${sweepOnly ? 0.55 : 0.85})`, background: "rgba(3, 14, 20, 0.96)", boxShadow: "0 0 14px rgba(126, 255, 204, 0.18)", color: MINT, fontSize: "11px", display: "flex", alignItems: "center", justifyContent: "center" }}>◈</span>
+        <span aria-hidden="true" style={{ position: "absolute", left: "-22px", top: "-22px", width: "44px", height: "44px", borderRadius: "50%", background: "radial-gradient(circle, rgba(126, 255, 204, 0.16), rgba(126, 255, 204, 0.04) 52%, transparent 70%)", pointerEvents: "none" }} />
+        <span aria-hidden="true" style={{ position: "absolute", left: "-14px", top: "-14px", width: "28px", height: "28px", boxSizing: "border-box", borderRadius: "50%", border: `1px ${sweepOnly ? "dashed" : "solid"} rgba(126, 255, 204, ${sweepOnly ? 0.55 : 0.85})`, background: "radial-gradient(circle at 38% 30%, rgba(126, 255, 204, 0.14), rgba(3, 14, 20, 0.96) 62%)", boxShadow: "0 0 16px rgba(126, 255, 204, 0.22), inset 0 1px 0 rgba(200, 255, 236, 0.18)", display: "flex", alignItems: "center", justifyContent: "center" }}>{sourceGlyph(13)}</span>
       </div>
-      <span style={{ position: "absolute", left: 0, top: 0, transform: `translate3d(${card.x - box.left}px, ${card.y - box.top}px, 0) translate(-50%, -50%)`, width: "160px", boxSizing: "border-box", ...SYNTX_COSMOS_NODE_MATERIAL, border: "1px solid rgba(126, 255, 204, 0.42)", padding: "8px 11px", fontFamily: MONO, color: INK, textAlign: "left" }}>
-        <span style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "8px", color: CYAN, fontSize: "7.5px", fontWeight: 800, letterSpacing: "1px", lineHeight: 1 }}><span>{t.source} // {t.manifest.document}</span><span aria-hidden="true" style={{ fontSize: "10px" }}>◈</span></span>
-        <span style={{ display: "-webkit-box", marginTop: "7px", fontSize: "10.5px", fontWeight: 800, lineHeight: 1.25, WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden", overflowWrap: "anywhere", color: source.title !== null ? INK : MUTED }}>{source.title ?? (source.titleState === "NOT_READ" ? t.sourceNotRead : t.sourceUnresolved)}</span>
-        <span style={{ display: "block", marginTop: "6px", color: "rgba(126, 255, 204, 0.62)", fontSize: "7px", fontWeight: 700, letterSpacing: "0.8px", lineHeight: 1 }}>{source.traceCount} {t.manifest.evidenceCount}</span>
+      <span style={{ position: "absolute", left: 0, top: 0, transform: `translate3d(${card.x - box.left}px, ${card.y - box.top}px, 0) translate(-50%, -50%)`, width: "160px", boxSizing: "border-box", borderRadius: "12px", border: "1px solid rgba(126, 255, 204, 0.4)", background: "radial-gradient(130% 90% at 0% 0%, rgba(126, 255, 204, 0.11), transparent 56%), linear-gradient(168deg, rgba(8, 27, 36, 0.97), rgba(3, 11, 19, 0.98))", boxShadow: "0 0 0 1px rgba(126, 255, 204, 0.05), 0 0 22px rgba(126, 255, 204, 0.12), 0 10px 26px rgba(0, 0, 0, 0.55), inset 0 0 18px rgba(126, 255, 204, 0.045)", padding: "9px 12px 9px 14px", fontFamily: MONO, color: INK, textAlign: "left", overflow: "hidden" }}>
+        <span aria-hidden="true" style={{ position: "absolute", left: "12px", right: "12px", top: 0, height: "1px", background: "linear-gradient(90deg, transparent, rgba(170, 255, 224, 0.6), rgba(126, 255, 204, 0.12) 80%, transparent)" }} />
+        <span aria-hidden="true" style={{ position: "absolute", left: 0, top: "11px", bottom: "11px", width: "2px", borderRadius: "0 2px 2px 0", background: "linear-gradient(180deg, rgba(126, 255, 204, 0.9), rgba(126, 255, 204, 0.25))", boxShadow: "0 0 8px rgba(126, 255, 204, 0.45)" }} />
+        <span style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "8px", color: "rgba(126, 255, 204, 0.82)", fontSize: "7.5px", fontWeight: 800, letterSpacing: "1.3px", lineHeight: 1 }}><span>{t.source} // {t.manifest.document}</span>{sourceGlyph(10)}</span>
+        <span style={{ display: "-webkit-box", marginTop: "7px", fontFamily: SANS, fontSize: "12px", fontWeight: 650, letterSpacing: "0.1px", lineHeight: 1.25, WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden", overflowWrap: "anywhere", color: source.title !== null ? "#effcff" : MUTED, textShadow: source.title !== null ? "0 0 10px rgba(126, 255, 204, 0.16)" : undefined }}>{source.title ?? (source.titleState === "NOT_READ" ? t.sourceNotRead : t.sourceUnresolved)}</span>
+        <span style={{ display: "flex", alignItems: "center", gap: "6px", marginTop: "7px", color: "rgba(126, 255, 204, 0.72)", fontSize: "7.5px", fontWeight: 700, letterSpacing: "1px", lineHeight: 1 }}><span aria-hidden="true" style={{ width: "10px", height: "1px", background: "rgba(126, 255, 204, 0.55)" }} />{source.traceCount} {t.manifest.evidenceCount}</span>
       </span>
     </div>
   );
@@ -790,9 +841,10 @@ function RequirementFocusLayer({ field, mode, t, onObserve, requirement, focus, 
   const sourcesByDoc = new Map(field.sources.map(source => [source.docId, source]));
   const focusBottom = layout.focus.y + layout.focus.height / 2;
   return (
-    <div data-sx-level="requirement" style={{ position: "absolute", inset: 0, zIndex: 26, overflow: "hidden", background: SYNTX_DEEP_FOCUS_BACKDROP }}>
+    <div data-sx-level="requirement" style={{ position: "absolute", inset: 0, zIndex: 26, overflow: "hidden", background: JOB_DEEP_FOCUS_BACKDROP }}>
     <SyntxDeepFocusShell
       testId="syntx-deep-focus"
+      spokeStroke={azure(0.13)}
       attributes={{ "data-requirement-id": requirement.id, "data-reduced-motion-contract": "static deterministic hierarchy" }}
       style={{ ...levelBox, overflow: "visible" }}
       styleText=""
@@ -878,7 +930,7 @@ function RequirementFocusLayer({ field, mode, t, onObserve, requirement, focus, 
             if (source === undefined) return null;
             return (
               <div key={group.docId} data-testid={`syntx-source-${source.docId}`} data-source-title-state={source.titleState} data-trace-count={source.traceCount} {...signAttributes(source.sign)} aria-label={`${t.source} · ${source.title ?? t.sourceUnresolved}`} style={{ position: "absolute", left: "15px", right: "15px", top: `${group.top}px`, height: `${EVIDENCE_ROW.group}px`, display: "flex", alignItems: "center", gap: "8px", fontSize: "9px", borderTop: "1px solid rgba(126, 255, 204, 0.14)" }}>
-                <span data-sx-carrier-body aria-hidden="true" style={{ color: MINT }}>◈</span>
+                <span data-sx-carrier-body aria-hidden="true" style={{ color: MINT, display: "inline-flex" }}>{sourceGlyph(11)}</span>
                 <strong style={{ color: "rgba(225, 245, 247, 0.94)", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{source.title ?? (source.titleState === "NOT_READ" ? t.sourceNotRead : t.sourceUnresolved)}</strong>
                 <span style={{ color: "rgba(126, 255, 204, 0.72)", whiteSpace: "nowrap" }}>// {t.manifest.document}</span>
               </div>
@@ -990,18 +1042,20 @@ const APERTURE_SURFACE: React.CSSProperties = {
   width: `${APERTURE_WIDTH}px`,
   boxSizing: "border-box",
   borderRadius: "14px",
-  border: "1px solid rgba(126, 255, 204, 0.5)",
-  background: "radial-gradient(120% 80% at 0% 0%, rgba(126, 255, 204, 0.1), transparent 55%), radial-gradient(90% 70% at 100% 0%, rgba(56, 229, 255, 0.1), transparent 60%), radial-gradient(80% 60% at 50% 115%, rgba(107, 142, 255, 0.08), transparent 70%), linear-gradient(160deg, #0a1d29 0%, #061420 45%, #030a12 100%)",
-  boxShadow: "0 18px 48px rgba(0, 0, 0, 0.85), 0 0 0 1px rgba(56, 229, 255, 0.1), 0 0 28px rgba(56, 229, 255, 0.18), inset 0 0 40px rgba(56, 229, 255, 0.05)",
+  border: "1px solid rgba(126, 255, 204, 0.46)",
+  background: "radial-gradient(120% 70% at 0% 0%, rgba(126, 255, 204, 0.11), transparent 52%), radial-gradient(90% 60% at 100% 0%, rgba(56, 229, 255, 0.1), transparent 58%), radial-gradient(90% 55% at 50% 112%, rgba(72, 130, 255, 0.09), transparent 70%), linear-gradient(168deg, #0b1f2c 0%, #071622 38%, #040d17 72%, #02070e 100%)",
+  boxShadow: "0 24px 60px rgba(0, 0, 0, 0.82), 0 6px 18px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(56, 229, 255, 0.08), 0 0 30px rgba(56, 229, 255, 0.14), inset 0 1px 0 rgba(200, 255, 236, 0.16), inset 0 0 48px rgba(56, 229, 255, 0.045), inset 0 -40px 60px rgba(0, 3, 8, 0.35)",
   color: INK,
   fontFamily: MONO,
   textAlign: "left",
   WebkitFontSmoothing: "antialiased",
   isolation: "isolate"
 };
-const apertureKicker: React.CSSProperties = { fontFamily: MONO, fontSize: "8.5px", fontWeight: 700, letterSpacing: "2px", textTransform: "uppercase", color: "rgba(126, 255, 204, 0.72)" };
-const apertureLabel: React.CSSProperties = { fontFamily: MONO, fontSize: "8.5px", fontWeight: 700, letterSpacing: "1.2px", textTransform: "uppercase", color: "rgba(206, 232, 241, 0.55)" };
-const apertureChip = (tone: string, dashed = false): React.CSSProperties => ({ display: "inline-flex", alignItems: "baseline", gap: "6px", padding: "4px 9px", borderRadius: "999px", border: `1px ${dashed ? "dashed" : "solid"} ${tone}`, background: "rgba(3, 14, 22, 0.7)", fontFamily: MONO, fontSize: "10.5px", color: INK, whiteSpace: "nowrap" });
+const apertureKicker: React.CSSProperties = { fontFamily: MONO, fontSize: "8.5px", fontWeight: 700, letterSpacing: "2px", textTransform: "uppercase", color: "rgba(126, 255, 204, 0.82)" };
+const apertureLabel: React.CSSProperties = { fontFamily: MONO, fontSize: "8.5px", fontWeight: 700, letterSpacing: "1.2px", textTransform: "uppercase", color: "rgba(206, 232, 241, 0.6)" };
+const apertureChip = (tone: string, dashed = false): React.CSSProperties => ({ display: "inline-flex", alignItems: "baseline", gap: "6px", padding: "4px 10px", borderRadius: "999px", border: `1px ${dashed ? "dashed" : "solid"} ${tone}`, background: "linear-gradient(180deg, rgba(10, 30, 44, 0.85), rgba(3, 12, 20, 0.85))", boxShadow: "inset 0 1px 0 rgba(200, 245, 255, 0.07)", fontFamily: MONO, fontSize: "10.5px", color: "#f1fbfe", fontVariantNumeric: "tabular-nums", whiteSpace: "nowrap" });
+/** A hairline between the aperture's layers: light in the middle, fading to both edges. */
+const apertureRule = (tone: string): React.CSSProperties => ({ height: "1px", margin: "0 20px", background: `linear-gradient(90deg, transparent, ${tone}, transparent)` });
 /** The relation of the inspected sign as its own line: the stroke it is drawn with, the relation, scored or unscored. */
 function ApertureRelation({ kind, label: text, tone }: { kind: SyntxTrace["kind"] | "missing_support" | "pending_evaluation"; label: string; tone: string }) {
   const stroke = kind === "supports" || kind === "weakly_supports" || kind === "covers_unscored" ? TRACE_STROKE[kind] : null;
@@ -1044,28 +1098,32 @@ function Aperture({ aperture, field, t, anchor, onClose }: { aperture: SyntxAper
         style={{ ...APERTURE_SURFACE, left: `${left}px`, top: `${anchor.y}px`, transform: "translateY(-50%)", maxHeight: "74%", overflowY: "auto", zIndex: 40 }}
       >
         {/* The surface breathes: its glow alone rises and falls (no movement — the reading surface holds still). */}
-        <span data-sx-aperture-glow aria-hidden="true" style={{ position: "absolute", inset: 0, borderRadius: "14px", pointerEvents: "none", boxShadow: "0 0 34px rgba(126, 255, 204, 0.16), inset 0 0 0 1px rgba(126, 255, 204, 0.18)", animation: "sxApertureBreathe 7s ease-in-out infinite", zIndex: -1 }} />
+        <span data-sx-aperture-glow aria-hidden="true" style={{ position: "absolute", inset: 0, borderRadius: "14px", pointerEvents: "none", boxShadow: "0 0 38px rgba(126, 255, 204, 0.15), 0 0 90px rgba(56, 229, 255, 0.07), inset 0 0 0 1px rgba(126, 255, 204, 0.16), inset 0 0 30px rgba(126, 255, 204, 0.05)", animation: "sxApertureBreathe 9s ease-in-out infinite", zIndex: -1 }} />
+        {/* Depth: a second glass a few pixels inside the frame and the lit upper edge (both still). */}
+        <span aria-hidden="true" style={{ position: "absolute", inset: "5px", borderRadius: "10px", pointerEvents: "none", border: "1px solid rgba(126, 255, 204, 0.06)", zIndex: -1 }} />
+        <span aria-hidden="true" style={{ position: "absolute", left: "24px", right: "24px", top: 0, height: "1px", pointerEvents: "none", background: "linear-gradient(90deg, transparent, rgba(170, 255, 226, 0.7) 30%, rgba(120, 236, 255, 0.55) 70%, transparent)" }} />
 
         {/* Head: what is inspected — the requirement (or the role) it belongs to. */}
-        <header style={{ padding: "15px 20px 13px", borderBottom: "1px solid rgba(126, 255, 204, 0.16)", background: "linear-gradient(180deg, rgba(126, 255, 204, 0.06), transparent)", borderRadius: "14px 14px 0 0" }}>
+        <header style={{ padding: "16px 20px 14px", background: "linear-gradient(180deg, rgba(126, 255, 204, 0.07), rgba(126, 255, 204, 0.01))", borderRadius: "14px 14px 0 0" }}>
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: "12px" }}>
             <span style={apertureKicker}>{content.kind === "pending" ? t.manifest.role : t.manifest.requirement}{content.kind === "trace" ? ` · ${t.manifest.evidence}` : ""}</span>
             <button data-testid="syntx-aperture-close" onClick={onClose} style={{ ...action("muted"), fontSize: "8.5px", padding: "2px 0" }}>{t.close}</button>
           </div>
-          <div style={{ marginTop: "8px", fontFamily: MONO, fontSize: "15px", fontWeight: 800, letterSpacing: "0.6px", lineHeight: 1.3, textTransform: "uppercase", color: "#e9fbff", textShadow: `0 0 14px ${SIL_TOKENS.colors.cyanGlowStrong}` }}>{aperture.requirement !== null ? aperture.requirement.name : observedRole?.title ?? ""}</div>
+          <div style={{ marginTop: "8px", fontFamily: MONO, fontSize: "15px", fontWeight: 800, letterSpacing: "0.6px", lineHeight: 1.3, textTransform: "uppercase", color: "#effcff", textShadow: "0 0 18px rgba(56, 229, 255, 0.34), 0 0 2px rgba(210, 248, 255, 0.35)" }}>{aperture.requirement !== null ? aperture.requirement.name : observedRole?.title ?? ""}</div>
         </header>
+        <div aria-hidden="true" style={apertureRule("rgba(126, 255, 204, 0.3)")} />
 
-        <div style={{ padding: "14px 20px 16px", ...stack(13) }}>
+        <div style={{ padding: "15px 20px 17px", ...stack(13) }}>
           {content.kind === "trace" && (
             <>
               <ApertureRelation kind={content.trace.kind} label={`${t.relation[content.trace.kind]} · ${unscored ? t.manifest.unscored : t.manifest.scored}`} tone={relationTone} />
               <span data-testid="syntx-aperture-source" data-source-title-state={content.trace.sourceTitleState} style={{ display: "flex", alignItems: "center", flexWrap: "wrap", gap: "8px" }}>
-                <span aria-hidden="true" style={{ width: "22px", height: "22px", borderRadius: "50%", border: `1px ${unscored ? "dashed" : "solid"} rgba(126, 255, 204, 0.75)`, display: "inline-flex", alignItems: "center", justifyContent: "center", color: MINT, fontSize: "10px", boxShadow: "0 0 10px rgba(126, 255, 204, 0.2)", flexShrink: 0 }}>◈</span>
+                <span aria-hidden="true" style={{ width: "22px", height: "22px", boxSizing: "border-box", borderRadius: "50%", border: `1px ${unscored ? "dashed" : "solid"} rgba(126, 255, 204, 0.75)`, display: "inline-flex", alignItems: "center", justifyContent: "center", background: "radial-gradient(circle at 38% 30%, rgba(126, 255, 204, 0.16), rgba(3, 14, 20, 0.9) 64%)", boxShadow: "0 0 12px rgba(126, 255, 204, 0.24)", flexShrink: 0 }}>{sourceGlyph(11)}</span>
                 <span style={apertureLabel}>{t.source}:</span>
                 <span style={{ fontFamily: SANS, fontSize: "13px", fontWeight: 600, color: INK }}>{content.trace.sourceTitle ?? (content.trace.sourceTitleState === "NOT_READ" ? t.sourceNotRead : t.sourceUnresolved)}</span>
                 {content.trace.location !== null && <span style={{ ...apertureChip("rgba(126, 255, 204, 0.35)"), fontSize: "9.5px" }}><span style={apertureLabel}>{t.location}</span>{content.trace.location}</span>}
               </span>
-              <p data-testid="syntx-aperture-quote" style={{ margin: 0, padding: "13px 16px", borderRadius: "10px", borderLeft: `2px ${unscored ? "dashed" : "solid"} ${unscored ? "rgba(142, 239, 255, 0.7)" : "rgba(126, 255, 204, 0.85)"}`, background: "linear-gradient(90deg, rgba(126, 255, 204, 0.07), rgba(126, 255, 204, 0.015))", fontFamily: SANS, fontSize: "15px", lineHeight: 1.6, color: "#f1fbfd", letterSpacing: "0.1px" }}>“{content.trace.quote}”</p>
+              <p data-testid="syntx-aperture-quote" style={{ margin: 0, padding: "13px 16px", borderRadius: "10px", borderLeft: `2px ${unscored ? "dashed" : "solid"} ${unscored ? "rgba(142, 239, 255, 0.7)" : "rgba(126, 255, 204, 0.85)"}`, background: "linear-gradient(90deg, rgba(126, 255, 204, 0.08), rgba(126, 255, 204, 0.02) 70%, rgba(56, 229, 255, 0.02))", boxShadow: "inset 0 0 0 1px rgba(126, 255, 204, 0.07), inset 0 10px 22px rgba(0, 4, 10, 0.28), -1px 0 10px rgba(126, 255, 204, 0.12)", fontFamily: SANS, fontSize: "15px", lineHeight: 1.6, color: "#f3fcfe", letterSpacing: "0.1px" }}>“{content.trace.quote}”</p>
               <span style={{ ...micro, fontSize: "10px", color: "rgba(206, 232, 241, 0.7)" }}><span style={apertureLabel}>{t.capabilityReference}:</span> <span style={{ color: INK }}>{content.trace.capabilityName}</span>{content.trace.matchedConstituent !== null ? ` · ${t.constituent} ${content.trace.matchedConstituent}` : ""} · {t.basis} <span style={{ color: INK }}>{content.trace.basis}</span></span>
               {content.trace.contribution !== null && content.trace.confidence !== null && (
                 <span data-testid="syntx-aperture-contribution" style={{ display: "flex", flexWrap: "wrap", gap: "7px" }}>
@@ -1098,12 +1156,12 @@ function Aperture({ aperture, field, t, anchor, onClose }: { aperture: SyntxAper
         </div>
 
         {/* Boundary zone: the authority statement, separated from the evidence it qualifies. */}
-        <footer style={{ padding: "12px 20px 14px", borderTop: "1px dashed rgba(255, 179, 56, 0.32)", background: "linear-gradient(180deg, rgba(255, 179, 56, 0.05), rgba(255, 179, 56, 0.015))", borderRadius: "0 0 14px 14px" }}>
+        <footer style={{ padding: "13px 20px 15px", borderTop: "1px dashed rgba(255, 179, 56, 0.34)", background: "linear-gradient(180deg, rgba(255, 179, 56, 0.06), rgba(255, 179, 56, 0.012))", boxShadow: "inset 0 10px 18px -12px rgba(0, 0, 0, 0.6)", borderRadius: "0 0 14px 14px" }}>
           <span data-testid="syntx-aperture-authority" style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: "5px 6px", fontFamily: MONO, fontSize: "10px", lineHeight: 1.4, color: AMBER }}>
             {authorityParts.map((part, index) => (
               <React.Fragment key={part}>
                 {index > 0 && <span style={visuallyHidden}> · </span>}
-                <span style={{ padding: "2px 8px", borderRadius: "6px", border: "1px solid rgba(255, 179, 56, 0.28)", background: "rgba(255, 179, 56, 0.06)" }}>{part}</span>
+                <span style={{ padding: "2px 8px", borderRadius: "6px", border: "1px solid rgba(255, 179, 56, 0.3)", background: "linear-gradient(180deg, rgba(255, 179, 56, 0.08), rgba(255, 179, 56, 0.035))" }}>{part}</span>
               </React.Fragment>
             ))}
           </span>
@@ -1214,7 +1272,7 @@ export function SyntxField({ workflow, analysisSource, observation: requested, o
       data-sx-ambient={SYNTX_AMBIENT_MOTION ? "on" : "off"}
       tabIndex={-1}
       onKeyDown={onKeyDown}
-      style={{ position: "absolute", inset: 0, zIndex: 45, backgroundColor: "rgba(3, 5, 8, 0.9)", backdropFilter: "blur(8px)", fontFamily: MONO, color: INK, outline: "none", animation: mode === "LIVE" ? "sxEnter 620ms ease-out both" : undefined }}
+      style={{ position: "absolute", inset: 0, zIndex: 45, backgroundColor: "rgba(3, 5, 8, 0.9)", backgroundImage: JOB_FIELD_ATMOSPHERE, backdropFilter: "blur(8px)", fontFamily: MONO, color: INK, outline: "none", animation: mode === "LIVE" ? "sxEnter 620ms ease-out both" : undefined }}
     >
       <style>{SYNTX_CSS}</style>
 

@@ -47,9 +47,11 @@ export interface SyntxDeepFocusShellProps {
   /** Inside the spoke SVG, after the spokes (the evidence link, relations). */
   svgExtra?: React.ReactNode;
   children: React.ReactNode;
+  /** The spokes' stroke; the planetarium's faint cyan by default. */
+  spokeStroke?: string;
 }
 
-export function SyntxDeepFocusShell({ containerRef, testId, attributes, onClick, style, styleText, layout, svgExtra, children }: SyntxDeepFocusShellProps) {
+export function SyntxDeepFocusShell({ containerRef, testId, attributes, onClick, style, styleText, layout, svgExtra, children, spokeStroke = "rgba(56, 229, 255, 0.12)" }: SyntxDeepFocusShellProps) {
   return (
     <div
       ref={containerRef}
@@ -61,7 +63,7 @@ export function SyntxDeepFocusShell({ containerRef, testId, attributes, onClick,
       <style>{styleText}</style>
       <svg aria-hidden="true" width={layout.width} height={layout.height} style={{ position: "absolute", inset: 0, pointerEvents: "none" }}>
         {layout.satellites.map((satellite) => (
-          <line key={satellite.id} x1={layout.focus.x} y1={layout.focus.y} x2={satellite.x} y2={satellite.y} stroke="rgba(56, 229, 255, 0.12)" strokeWidth="1" strokeDasharray="3 10" />
+          <line key={satellite.id} x1={layout.focus.x} y1={layout.focus.y} x2={satellite.x} y2={satellite.y} stroke={spokeStroke} strokeWidth="1" strokeDasharray="3 10" />
         ))}
         {svgExtra}
       </svg>

@@ -11,12 +11,30 @@ import { SIL_TOKENS } from "../SILTokens";
  * energy nodes and four dust particles; and one energy ray per body — dashed at rest, solid when active — with its photon
  * streams (SMIL animateMotion out and back) and the midpoint bead. Which bodies the rays reach is the caller's.
  */
-export function SyntxPlanetariumBackdrop({ center, radius, gradientId = "fieldGlow", glowOpacity }: { center: number; radius: number; gradientId?: string; glowOpacity: string }) {
+/** The tone of the planetarium's backdrop: the glow, the orbit paths, the resonance ring, the energy nodes and the dust. */
+export interface SyntxPlanetariumTone {
+  glow: string;
+  orbit: string;
+  ring: string;
+  node: string;
+  dust: string;
+}
+
+/** The Capability Field's tone (the default). */
+export const SYNTX_PLANETARIUM_TONE: SyntxPlanetariumTone = Object.freeze({
+  glow: "#38e5ff",
+  orbit: "rgba(56, 229, 255, 0.12)",
+  ring: "rgba(56, 229, 255, 0.16)",
+  node: "rgba(56, 229, 255, 0.38)",
+  dust: "rgba(56, 229, 255, 0.25)"
+});
+
+export function SyntxPlanetariumBackdrop({ center, radius, gradientId = "fieldGlow", glowOpacity, tone = SYNTX_PLANETARIUM_TONE }: { center: number; radius: number; gradientId?: string; glowOpacity: string; tone?: SyntxPlanetariumTone }) {
   return (
     <>
     <defs>
       <radialGradient id={gradientId} cx="50%" cy="50%" r="50%">
-        <stop offset="0%" stopColor="#38e5ff" stopOpacity={glowOpacity} />
+        <stop offset="0%" stopColor={tone.glow} stopOpacity={glowOpacity} />
         <stop offset="100%" stopColor="#030508" stopOpacity="0" />
       </radialGradient>
     </defs>
@@ -37,7 +55,7 @@ export function SyntxPlanetariumBackdrop({ center, radius, gradientId = "fieldGl
         cy={center}
         r={r}
         fill="none"
-        stroke="rgba(56, 229, 255, 0.12)"
+        stroke={tone.orbit}
         strokeWidth="1"
         strokeDasharray={i === 1 ? "4 4" : undefined}
       />
@@ -50,7 +68,7 @@ export function SyntxPlanetariumBackdrop({ center, radius, gradientId = "fieldGl
         cy={center}
         r={radius - 40}
         fill="none"
-        stroke="rgba(56, 229, 255, 0.16)"
+        stroke={tone.ring}
         strokeWidth="1"
         strokeDasharray="12 18"
         style={{ animation: "rotateClockwise 120s linear infinite", transformOrigin: `${center}px ${center}px` }}
@@ -70,7 +88,7 @@ export function SyntxPlanetariumBackdrop({ center, radius, gradientId = "fieldGl
             cx={ax}
             cy={ay}
             r="1.5"
-            fill="rgba(56, 229, 255, 0.38)"
+            fill={tone.node}
           />
         );
       })}
@@ -89,7 +107,7 @@ export function SyntxPlanetariumBackdrop({ center, radius, gradientId = "fieldGl
             cx={dx}
             cy={dy}
             r="1"
-            fill="rgba(56, 229, 255, 0.25)"
+            fill={tone.dust}
           />
         );
       })}
