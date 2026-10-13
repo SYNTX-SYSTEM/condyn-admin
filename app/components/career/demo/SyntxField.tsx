@@ -115,6 +115,17 @@ const JOB_COSMOS_BACKDROP = "radial-gradient(ellipse at 50% 48%, rgba(16, 46, 82
 const JOB_COSMOS_STARS: React.CSSProperties = { ...SYNTX_COSMOS_STARS, backgroundImage: "radial-gradient(circle at 16% 22%, rgba(92, 200, 255, 0.3) 0 1px, transparent 1.5px), radial-gradient(circle at 76% 31%, rgba(126, 255, 204, 0.16) 0 1px, transparent 1.5px), radial-gradient(ellipse at 70% 76%, rgba(26, 70, 132, 0.14), transparent 52%)" };
 const JOB_DEEP_FOCUS_BACKDROP = "radial-gradient(circle at 50% 42%, rgba(18, 62, 98, 0.24), transparent 26%), radial-gradient(ellipse at 50% 54%, rgba(3, 11, 24, 0.64), rgba(1, 3, 9, 0.97) 76%)";
 const JOB_ORBIT = azure(0.2);
+/** Resting cards of the cosmos (roles, requirements) and the deep-focus satellites: the cosmos materials in the field's azure register.
+ * The focused centres (cosmos centre, nucleus) keep the cyan of active resonance. */
+const JOB_NODE_MATERIAL: React.CSSProperties = {
+  ...SYNTX_COSMOS_NODE_MATERIAL,
+  border: `1px solid ${azure(0.46)}`,
+  background: "radial-gradient(circle at 18% 0%, rgba(120, 212, 255, 0.15), transparent 46%), linear-gradient(172deg, rgba(8, 21, 36, 0.97), rgba(4, 11, 21, 0.97))",
+  boxShadow: `0 0 22px rgba(46, 132, 226, 0.16), 0 8px 20px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(180, 232, 255, 0.12), inset 0 0 18px ${azure(0.04)}`
+};
+const JOB_SATELLITE_MATERIAL: React.CSSProperties = { ...SYNTX_SATELLITE_MATERIAL, border: `1px solid ${azure(0.3)}`, background: "linear-gradient(172deg, rgba(6, 17, 30, 0.95), rgba(3, 10, 19, 0.95))", boxShadow: `0 0 15px rgba(46, 132, 226, 0.1), inset 0 1px 0 rgba(180, 232, 255, 0.08)` };
+/** A dark reading halo for text over the body's signature geometry. */
+const READING_HALO = "0 0 3px rgba(3, 8, 16, 0.95), 0 0 8px rgba(3, 8, 16, 0.85)";
 const JOB_TETHER = azure(0.18);
 
 const micro: React.CSSProperties = { fontFamily: MONO, fontSize: "9px", color: MUTED, letterSpacing: "0.3px", lineHeight: 1.55, wordBreak: "break-word" };
@@ -460,10 +471,10 @@ const organizationBodyMaterial = (highlighted: boolean): React.CSSProperties => 
       transition: "opacity 0.35s ease, box-shadow 0.9s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.9s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.9s cubic-bezier(0.16, 1, 0.3, 1)"
     }
   : {
-      backgroundColor: "rgba(6, 13, 24, 0.9)",
-      backgroundImage: "radial-gradient(circle at 34% 24%, rgba(160, 222, 255, 0.12), transparent 42%), radial-gradient(circle at 50% 56%, rgba(16, 38, 66, 0.55), rgba(3, 7, 15, 0.6) 76%)",
-      border: `1.5px solid ${azure(0.42)}`,
-      boxShadow: `0 0 28px rgba(36, 112, 196, 0.18), 0 0 0 1px rgba(3, 8, 16, 0.55), inset 0 1px 0 rgba(176, 230, 255, 0.12), inset 0 0 16px ${azure(0.1)}, inset 0 -18px 28px rgba(1, 4, 10, 0.55)`,
+      backgroundColor: "rgba(5, 12, 23, 0.92)",
+      backgroundImage: "radial-gradient(circle at 33% 22%, rgba(168, 226, 255, 0.13), transparent 40%), radial-gradient(circle at 70% 82%, rgba(40, 104, 196, 0.12), transparent 46%), radial-gradient(circle at 50% 54%, rgba(14, 36, 64, 0.6), rgba(2, 6, 14, 0.7) 78%)",
+      border: `1.5px solid ${azure(0.4)}`,
+      boxShadow: `0 0 34px rgba(36, 112, 196, 0.2), 0 0 0 1px rgba(3, 8, 16, 0.55), inset 0 1px 0 rgba(180, 232, 255, 0.14), inset 0 0 18px ${azure(0.1)}, inset 0 -22px 30px rgba(1, 4, 10, 0.6)`,
       transition: "opacity 0.35s ease, box-shadow 0.9s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.9s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.9s cubic-bezier(0.16, 1, 0.3, 1)"
     };
 
@@ -518,7 +529,7 @@ function OrganizationBody({ organization, index, roles, observation, depth, isAn
           className=""
           animationDelay={`${-4 * (index % 6)}s`}
           style={organizationBodyMaterial(highlighted)}
-          signature={renderSemioticSignature("03", highlighted)}
+          signature={<span style={{ opacity: highlighted ? 0.82 : 0.5, transition: "opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1)" }}>{renderSemioticSignature("03", highlighted)}</span>}
           moonCount={isAnchor ? 0 : roles.length}
           renderMoon={(moon, style) => <RoleMoon role={roles[moon]} style={style} />}
           hud={isHovered ? {
@@ -545,14 +556,17 @@ function OrganizationBody({ organization, index, roles, observation, depth, isAn
         >
           {/* The body's atmosphere: a halo beyond its rim that breathes slowly (the planetarium's atmosphereGlow, 11 s), the rim light of
               its upper edge and the shade of its lower edge, and the inner light that rises when the body resonates (hover, focus). */}
-          <span data-sx-aura aria-hidden="true" style={{ position: "absolute", inset: "-30px", borderRadius: "50%", pointerEvents: "none", background: `radial-gradient(circle, transparent 55%, ${azure(0.11)} 62%, rgba(36, 100, 188, 0.05) 71%, transparent 79%)`, animation: "atmosphereGlow 11s ease-in-out infinite", animationDelay: `${-1.7 * index}s` }} />
+          <span aria-hidden="true" style={{ position: "absolute", inset: "-52px", borderRadius: "50%", pointerEvents: "none", background: "radial-gradient(circle closest-side, transparent 64%, rgba(40, 112, 204, 0.06) 78%, rgba(40, 112, 204, 0.02) 90%, transparent 100%)" }} />
+          <span data-sx-aura aria-hidden="true" style={{ position: "absolute", inset: "-30px", borderRadius: "50%", pointerEvents: "none", background: `radial-gradient(circle, transparent 55%, ${azure(0.12)} 62%, rgba(36, 100, 188, 0.05) 71%, transparent 79%)`, animation: "atmosphereGlow 11s ease-in-out infinite", animationDelay: `${-1.7 * index}s` }} />
+          {/* The light membrane: a fine ring just inside the rim, lit from the upper left and falling off around the body (still). */}
+          <span aria-hidden="true" style={{ position: "absolute", inset: "4px", borderRadius: "50%", pointerEvents: "none", background: "conic-gradient(from 225deg, rgba(200, 242, 255, 0.62), rgba(92, 200, 255, 0.16) 24%, rgba(92, 200, 255, 0.05) 48%, rgba(46, 120, 214, 0.18) 72%, rgba(200, 242, 255, 0.62))", WebkitMaskImage: "radial-gradient(circle closest-side, transparent calc(100% - 1.6px), #000 calc(100% - 1px), #000 100%, transparent 100%)", maskImage: "radial-gradient(circle closest-side, transparent calc(100% - 1.6px), #000 calc(100% - 1px), #000 100%, transparent 100%)", opacity: highlighted ? 0.95 : 0.7, transition: "opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1)" }} />
           <span aria-hidden="true" style={{ position: "absolute", inset: "2px", borderRadius: "50%", pointerEvents: "none", boxShadow: "inset 3px 4px 7px -3px rgba(190, 238, 255, 0.34), inset -3px -5px 9px -4px rgba(24, 84, 170, 0.4)" }} />
           <span aria-hidden="true" style={{ position: "absolute", inset: 0, borderRadius: "50%", pointerEvents: "none", background: "radial-gradient(circle at 50% 50%, rgba(56, 229, 255, 0.16), transparent 66%)", opacity: highlighted ? 1 : 0, transition: "opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1)" }} />
           <span style={{ fontSize: "11px", color: highlighted ? CYAN : azure(0.72), fontWeight: 700, letterSpacing: "1px", position: "relative", zIndex: 1, transition: "color 0.6s ease" }}>{String(index + 1).padStart(2, "0")}</span>
-          <span style={{ fontSize: "13px", color: INK, fontWeight: 700, marginTop: "4px", lineHeight: 1.2, position: "relative", zIndex: 1, textTransform: "uppercase", letterSpacing: "0.6px", textShadow: `0 0 12px ${highlighted ? "rgba(56, 229, 255, 0.45)" : "rgba(92, 200, 255, 0.22)"}` }}>⬡ {organization.name}</span>
-          {subtitle.length > 0 && <span style={{ fontSize: "10px", color: MUTED, marginTop: "4px", lineHeight: 1.2, position: "relative", zIndex: 1 }}>{subtitle}</span>}
-          <span style={{ fontSize: "9px", color: MUTED, marginTop: "3px", position: "relative", zIndex: 1, letterSpacing: "0.8px" }}>{t.manifest.organization}</span>
-          <span style={{ marginTop: "8px", fontSize: "10px", color: highlighted ? CYAN : INK, backgroundColor: highlighted ? "rgba(56, 229, 255, 0.15)" : "rgba(255,255,255,0.05)", padding: "2px 8px", borderRadius: "8px", border: `1px solid ${highlighted ? "rgba(56, 229, 255, 0.4)" : "transparent"}`, position: "relative", zIndex: 1 }}>{organization.roleIds.length} {t.roles}</span>
+          <span style={{ fontSize: "13px", color: INK, fontWeight: 700, marginTop: "4px", lineHeight: 1.2, position: "relative", zIndex: 1, textTransform: "uppercase", letterSpacing: "0.6px", textShadow: `${READING_HALO}, 0 0 14px ${highlighted ? "rgba(56, 229, 255, 0.5)" : "rgba(92, 200, 255, 0.26)"}` }}>⬡ {organization.name}</span>
+          {subtitle.length > 0 && <span style={{ fontSize: "10px", color: "rgba(184, 210, 228, 0.84)", marginTop: "4px", lineHeight: 1.2, position: "relative", zIndex: 1, textShadow: READING_HALO }}>{subtitle}</span>}
+          <span style={{ fontSize: "9px", color: highlighted ? "rgba(142, 236, 255, 0.82)" : azure(0.66), marginTop: "3px", position: "relative", zIndex: 1, letterSpacing: "0.8px", textShadow: READING_HALO, transition: "color 0.6s ease" }}>{t.manifest.organization}</span>
+          <span style={{ marginTop: "8px", fontSize: "10px", color: highlighted ? CYAN : INK, backgroundColor: highlighted ? "rgba(56, 229, 255, 0.15)" : "rgba(8, 22, 38, 0.82)", padding: "2px 8px", borderRadius: "8px", border: `1px solid ${highlighted ? "rgba(56, 229, 255, 0.4)" : azure(0.24)}`, boxShadow: highlighted ? undefined : `inset 0 1px 0 ${azure(0.1)}`, position: "relative", zIndex: 1 }}>{organization.roleIds.length} {t.roles}</span>
         </SyntxResonanceBody>
       </div>
     </FocusTransitionStageShell>
@@ -617,7 +631,7 @@ function OrganizationCosmosLayer({ field, mode, t, size, onObserve, organization
             aria-label={`${role.title} · ${role.organizationName}`}
             aria-pressed={anchor ? undefined : role.sign.state === "role_selected"}
             onClick={stop(select)}
-            style={{ position: "absolute", left: 0, top: 0, width: `${node.width}px`, minHeight: `${node.height}px`, transform: "translate(-50%, -50%)", ...SYNTX_COSMOS_NODE_MATERIAL, ...(compact ? { padding: "7px 10px" } : {}), color: INK, cursor: "pointer", fontFamily: MONO, textAlign: "left", overflowWrap: "anywhere", hyphens: "auto", opacity: anchor ? 0.42 : 1 }}
+            style={{ position: "absolute", left: 0, top: 0, width: `${node.width}px`, minHeight: `${node.height}px`, transform: "translate(-50%, -50%)", ...JOB_NODE_MATERIAL, ...(compact ? { padding: "7px 10px" } : {}), color: INK, cursor: "pointer", fontFamily: MONO, textAlign: "left", overflowWrap: "anywhere", hyphens: "auto", opacity: anchor ? 0.42 : 1 }}
           >
             <span style={{ display: "block", color: CYAN, fontSize: "8px", fontWeight: 700, letterSpacing: "0.8px" }}>{t.manifest.role}{role.seniority !== null ? ` // ${role.seniority.toUpperCase()}` : ""}</span>
             <span style={{ display: "-webkit-box", marginTop: "5px", fontSize: compact ? "10px" : "11px", fontWeight: 700, lineHeight: 1.32, WebkitLineClamp: compact ? 2 : 3, WebkitBoxOrient: "vertical", overflow: "hidden" }}>{role.title}</span>
@@ -740,7 +754,7 @@ function RoleCosmosLayer({ field, mode, t, size, onObserve, role }: LayerProps &
                 <circle cx={14} cy={14} r={shape.r + 5} fill="none" stroke="rgba(56, 229, 255, 0.22)" strokeWidth={0.8} strokeDasharray="2 3" />
               </svg>
               {cardMode !== "glyph" ? (
-                <span style={{ position: "absolute", left: `${card.x - half.w - left}px`, top: `${card.y - half.h - top}px`, width: `${half.w * 2}px`, minHeight: `${half.h * 2}px`, boxSizing: "border-box", ...SYNTX_COSMOS_NODE_MATERIAL, borderRadius: "14px", padding: cardMode === "full" ? "7px 10px" : "5px 8px", fontFamily: MONO, textAlign: "left", color: INK, pointerEvents: "none" }}>
+                <span style={{ position: "absolute", left: `${card.x - half.w - left}px`, top: `${card.y - half.h - top}px`, width: `${half.w * 2}px`, minHeight: `${half.h * 2}px`, boxSizing: "border-box", ...JOB_NODE_MATERIAL, borderRadius: "14px", padding: cardMode === "full" ? "7px 10px" : "5px 8px", fontFamily: MONO, textAlign: "left", color: INK, pointerEvents: "none" }}>
                   <span style={{ display: "block", color: requirement.support === "OPEN" ? NEUTRAL : CYAN, fontSize: "7.5px", fontWeight: 700, letterSpacing: "0.8px" }}>{t.manifest.requirement}</span>
                   <span style={{ display: "-webkit-box", marginTop: "3px", fontSize: cardMode === "full" ? "10.5px" : "9.5px", fontWeight: 700, lineHeight: 1.28, WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden", overflowWrap: "anywhere" }}>{requirement.name}</span>
                 </span>
@@ -810,14 +824,24 @@ function SourceSatellite({ source, point, centre, rotation, t, inSurface = false
     <div data-testid={`syntx-source-${source.docId}`} data-source-title-state={source.titleState} data-trace-count={source.traceCount} {...signAttributes(source.sign)} aria-label={`${t.source} · ${source.title ?? t.sourceUnresolved}`} style={{ position: "absolute", left: `${box.left}px`, top: `${box.top}px`, width: `${box.right - box.left}px`, height: `${box.bottom - box.top}px`, opacity: recedeOpacity(source.sign, 0.2), pointerEvents: "none" }}>
       <div data-sx-carrier-body data-orbital-motion-driver={inSurface ? undefined : "shared-rAF"} data-orbital-motion-phase={rotation.toFixed(6)} data-orbital-motion-x={point.x.toFixed(3)} data-orbital-motion-y={point.y.toFixed(3)} style={{ position: "absolute", left: 0, top: 0, transform: `translate3d(${point.x - box.left}px, ${point.y - box.top}px, 0)` }}>
         <span aria-hidden="true" style={{ position: "absolute", left: "-22px", top: "-22px", width: "44px", height: "44px", borderRadius: "50%", background: "radial-gradient(circle, rgba(126, 255, 204, 0.16), rgba(126, 255, 204, 0.04) 52%, transparent 70%)", pointerEvents: "none" }} />
+        <span aria-hidden="true" style={{ position: "absolute", left: "-19px", top: "-19px", width: "38px", height: "38px", boxSizing: "border-box", borderRadius: "50%", border: "1px solid rgba(126, 255, 204, 0.14)", pointerEvents: "none" }} />
         <span aria-hidden="true" style={{ position: "absolute", left: "-14px", top: "-14px", width: "28px", height: "28px", boxSizing: "border-box", borderRadius: "50%", border: `1px ${sweepOnly ? "dashed" : "solid"} rgba(126, 255, 204, ${sweepOnly ? 0.55 : 0.85})`, background: "radial-gradient(circle at 38% 30%, rgba(126, 255, 204, 0.14), rgba(3, 14, 20, 0.96) 62%)", boxShadow: "0 0 16px rgba(126, 255, 204, 0.22), inset 0 1px 0 rgba(200, 255, 236, 0.18)", display: "flex", alignItems: "center", justifyContent: "center" }}>{sourceGlyph(13)}</span>
       </div>
-      <span style={{ position: "absolute", left: 0, top: 0, transform: `translate3d(${card.x - box.left}px, ${card.y - box.top}px, 0) translate(-50%, -50%)`, width: "160px", boxSizing: "border-box", borderRadius: "12px", border: "1px solid rgba(126, 255, 204, 0.4)", background: "radial-gradient(130% 90% at 0% 0%, rgba(126, 255, 204, 0.11), transparent 56%), linear-gradient(168deg, rgba(8, 27, 36, 0.97), rgba(3, 11, 19, 0.98))", boxShadow: "0 0 0 1px rgba(126, 255, 204, 0.05), 0 0 22px rgba(126, 255, 204, 0.12), 0 10px 26px rgba(0, 0, 0, 0.55), inset 0 0 18px rgba(126, 255, 204, 0.045)", padding: "9px 12px 9px 14px", fontFamily: MONO, color: INK, textAlign: "left", overflow: "hidden" }}>
-        <span aria-hidden="true" style={{ position: "absolute", left: "12px", right: "12px", top: 0, height: "1px", background: "linear-gradient(90deg, transparent, rgba(170, 255, 224, 0.6), rgba(126, 255, 204, 0.12) 80%, transparent)" }} />
-        <span aria-hidden="true" style={{ position: "absolute", left: 0, top: "11px", bottom: "11px", width: "2px", borderRadius: "0 2px 2px 0", background: "linear-gradient(180deg, rgba(126, 255, 204, 0.9), rgba(126, 255, 204, 0.25))", boxShadow: "0 0 8px rgba(126, 255, 204, 0.45)" }} />
-        <span style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "8px", color: "rgba(126, 255, 204, 0.82)", fontSize: "7.5px", fontWeight: 800, letterSpacing: "1.3px", lineHeight: 1 }}><span>{t.source} // {t.manifest.document}</span>{sourceGlyph(10)}</span>
-        <span style={{ display: "-webkit-box", marginTop: "7px", fontFamily: SANS, fontSize: "12px", fontWeight: 650, letterSpacing: "0.1px", lineHeight: 1.25, WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden", overflowWrap: "anywhere", color: source.title !== null ? "#effcff" : MUTED, textShadow: source.title !== null ? "0 0 10px rgba(126, 255, 204, 0.16)" : undefined }}>{source.title ?? (source.titleState === "NOT_READ" ? t.sourceNotRead : t.sourceUnresolved)}</span>
-        <span style={{ display: "flex", alignItems: "center", gap: "6px", marginTop: "7px", color: "rgba(126, 255, 204, 0.72)", fontSize: "7.5px", fontWeight: 700, letterSpacing: "1px", lineHeight: 1 }}><span aria-hidden="true" style={{ width: "10px", height: "1px", background: "rgba(126, 255, 204, 0.55)" }} />{source.traceCount} {t.manifest.evidenceCount}</span>
+      {/* The document carrier: its glow follows the document's own outline (drop-shadow over the clipped sheet), the sheet has a folded
+          corner, a lit fold, a ruled ground and a second glass inside its edge — a document, not a card. */}
+      <span style={{ position: "absolute", left: 0, top: 0, transform: `translate3d(${card.x - box.left}px, ${card.y - box.top}px, 0) translate(-50%, -50%)`, width: "160px", filter: "drop-shadow(0 0 9px rgba(126, 255, 204, 0.2)) drop-shadow(0 8px 14px rgba(0, 0, 0, 0.55))" }}>
+        <span style={{ position: "relative", display: "block", boxSizing: "border-box", borderRadius: "11px", border: "1px solid rgba(126, 255, 204, 0.42)", background: "radial-gradient(130% 90% at 0% 0%, rgba(126, 255, 204, 0.12), transparent 56%), repeating-linear-gradient(180deg, transparent 0 11px, rgba(126, 255, 204, 0.028) 11px 12px), linear-gradient(168deg, rgba(8, 28, 37, 0.98), rgba(3, 11, 19, 0.99))", boxShadow: "inset 0 0 18px rgba(126, 255, 204, 0.05)", clipPath: "polygon(0 0, calc(100% - 15px) 0, 100% 15px, 100% 100%, 0 100%)", padding: "10px 14px 10px 15px", fontFamily: MONO, color: INK, textAlign: "left", overflow: "hidden" }}>
+          <span aria-hidden="true" style={{ position: "absolute", inset: "3px", borderRadius: "8px", border: "1px solid rgba(126, 255, 204, 0.07)", pointerEvents: "none" }} />
+          <span aria-hidden="true" style={{ position: "absolute", left: "12px", right: "28px", top: 0, height: "1px", background: "linear-gradient(90deg, transparent, rgba(176, 255, 228, 0.65), rgba(126, 255, 204, 0.14) 85%, transparent)" }} />
+          <span aria-hidden="true" style={{ position: "absolute", left: 0, top: "11px", bottom: "11px", width: "2px", borderRadius: "0 2px 2px 0", background: "linear-gradient(180deg, rgba(126, 255, 204, 0.92), rgba(126, 255, 204, 0.22))", boxShadow: "0 0 8px rgba(126, 255, 204, 0.5)" }} />
+          <svg aria-hidden="true" width={16} height={16} style={{ position: "absolute", right: "-1px", top: "-1px", overflow: "visible" }}>
+            <path d="M 0.5 0.5 L 0.5 15.5 L 15.5 15.5 Z" fill="rgba(126, 255, 204, 0.16)" stroke="rgba(126, 255, 204, 0.32)" strokeWidth={0.8} strokeLinejoin="round" />
+            <path d="M 0.5 0.5 L 15.5 15.5" stroke="rgba(190, 255, 232, 0.85)" strokeWidth={1} />
+          </svg>
+          <span style={{ display: "flex", alignItems: "center", gap: "7px", color: "rgba(126, 255, 204, 0.86)", fontSize: "7.5px", fontWeight: 800, letterSpacing: "1.15px", lineHeight: 1, paddingRight: "8px", whiteSpace: "nowrap" }}>{sourceGlyph(10)}<span>{t.source} // {t.manifest.document}</span></span>
+          <span style={{ display: "-webkit-box", marginTop: "8px", fontFamily: SANS, fontSize: "12.5px", fontWeight: 650, letterSpacing: "0.1px", lineHeight: 1.25, WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden", overflowWrap: "anywhere", color: source.title !== null ? "#f2fdff" : MUTED, textShadow: source.title !== null ? "0 0 12px rgba(126, 255, 204, 0.18)" : undefined }}>{source.title ?? (source.titleState === "NOT_READ" ? t.sourceNotRead : t.sourceUnresolved)}</span>
+          <span style={{ display: "flex", alignItems: "center", gap: "6px", marginTop: "8px", color: "rgba(126, 255, 204, 0.74)", fontSize: "7.5px", fontWeight: 700, letterSpacing: "1.1px", lineHeight: 1 }}><span aria-hidden="true" style={{ width: "12px", height: "1px", background: "linear-gradient(90deg, rgba(126, 255, 204, 0.8), rgba(126, 255, 204, 0.2))" }} />{source.traceCount} {t.manifest.evidenceCount}</span>
+        </span>
       </span>
     </div>
   );
@@ -883,7 +907,7 @@ function RequirementFocusLayer({ field, mode, t, onObserve, requirement, focus, 
               aria-label={`${sibling.name} · ${t.support[sibling.support]}`}
               aria-pressed={false}
               onClick={stop(observe)}
-              style={{ position: "absolute", left: `${(satellite.width * satellite.scale) / 2 + 6}px`, top: `${(satellite.height * satellite.scale) / 2 + 6}px`, width: `${satellite.width}px`, minHeight: `${satellite.height}px`, transform: "translate(-50%, -50%) scale(var(--satellite-scale))", "--satellite-scale": satellite.scale, "--satellite-opacity": satellite.opacity, opacity: satellite.opacity, animation: "sxSatelliteSettle 0.72s cubic-bezier(0.16, 1, 0.3, 1) both", ...SYNTX_SATELLITE_MATERIAL, fontFamily: MONO, fontSize: "9px", fontWeight: 700, textAlign: "left", cursor: "pointer", overflowWrap: "anywhere", hyphens: "auto", display: "flex", gap: "8px", alignItems: "flex-start" } as React.CSSProperties}
+              style={{ position: "absolute", left: `${(satellite.width * satellite.scale) / 2 + 6}px`, top: `${(satellite.height * satellite.scale) / 2 + 6}px`, width: `${satellite.width}px`, minHeight: `${satellite.height}px`, transform: "translate(-50%, -50%) scale(var(--satellite-scale))", "--satellite-scale": satellite.scale, "--satellite-opacity": satellite.opacity, opacity: satellite.opacity, animation: "sxSatelliteSettle 0.72s cubic-bezier(0.16, 1, 0.3, 1) both", ...JOB_SATELLITE_MATERIAL, fontFamily: MONO, fontSize: "9px", fontWeight: 700, textAlign: "left", cursor: "pointer", overflowWrap: "anywhere", hyphens: "auto", display: "flex", gap: "8px", alignItems: "flex-start" } as React.CSSProperties}
             >
               <svg aria-hidden="true" width={16} height={16} style={{ flexShrink: 0, overflow: "visible" }}><circle cx={8} cy={8} r={siblingShape.r * 0.8} fill={siblingShape.fill} stroke={siblingShape.stroke} strokeWidth={siblingShape.strokeWidth} strokeDasharray={siblingShape.dash} /></svg>
               <span>{sibling.name}</span>
@@ -1102,6 +1126,8 @@ function Aperture({ aperture, field, t, anchor, onClose }: { aperture: SyntxAper
         {/* Depth: a second glass a few pixels inside the frame and the lit upper edge (both still). */}
         <span aria-hidden="true" style={{ position: "absolute", inset: "5px", borderRadius: "10px", pointerEvents: "none", border: "1px solid rgba(126, 255, 204, 0.06)", zIndex: -1 }} />
         <span aria-hidden="true" style={{ position: "absolute", left: "24px", right: "24px", top: 0, height: "1px", pointerEvents: "none", background: "linear-gradient(90deg, transparent, rgba(170, 255, 226, 0.7) 30%, rgba(120, 236, 255, 0.55) 70%, transparent)" }} />
+        {/* The field inside the lens: a faint star ground (still), as in the cosmos the aperture belongs to. */}
+        <span aria-hidden="true" style={{ ...JOB_COSMOS_STARS, opacity: 0.22, borderRadius: "14px", zIndex: -1 }} />
 
         {/* Head: what is inspected — the requirement (or the role) it belongs to. */}
         <header style={{ padding: "16px 20px 14px", background: "linear-gradient(180deg, rgba(126, 255, 204, 0.07), rgba(126, 255, 204, 0.01))", borderRadius: "14px 14px 0 0" }}>
@@ -1109,7 +1135,7 @@ function Aperture({ aperture, field, t, anchor, onClose }: { aperture: SyntxAper
             <span style={apertureKicker}>{content.kind === "pending" ? t.manifest.role : t.manifest.requirement}{content.kind === "trace" ? ` · ${t.manifest.evidence}` : ""}</span>
             <button data-testid="syntx-aperture-close" onClick={onClose} style={{ ...action("muted"), fontSize: "8.5px", padding: "2px 0" }}>{t.close}</button>
           </div>
-          <div style={{ marginTop: "8px", fontFamily: MONO, fontSize: "15px", fontWeight: 800, letterSpacing: "0.6px", lineHeight: 1.3, textTransform: "uppercase", color: "#effcff", textShadow: "0 0 18px rgba(56, 229, 255, 0.34), 0 0 2px rgba(210, 248, 255, 0.35)" }}>{aperture.requirement !== null ? aperture.requirement.name : observedRole?.title ?? ""}</div>
+          <div style={{ marginTop: "9px", fontFamily: MONO, fontSize: "16px", fontWeight: 800, letterSpacing: "0.7px", lineHeight: 1.3, textTransform: "uppercase", color: "#effcff", textShadow: "0 0 18px rgba(56, 229, 255, 0.34), 0 0 2px rgba(210, 248, 255, 0.35)" }}>{aperture.requirement !== null ? aperture.requirement.name : observedRole?.title ?? ""}</div>
         </header>
         <div aria-hidden="true" style={apertureRule("rgba(126, 255, 204, 0.3)")} />
 
@@ -1123,8 +1149,9 @@ function Aperture({ aperture, field, t, anchor, onClose }: { aperture: SyntxAper
                 <span style={{ fontFamily: SANS, fontSize: "13px", fontWeight: 600, color: INK }}>{content.trace.sourceTitle ?? (content.trace.sourceTitleState === "NOT_READ" ? t.sourceNotRead : t.sourceUnresolved)}</span>
                 {content.trace.location !== null && <span style={{ ...apertureChip("rgba(126, 255, 204, 0.35)"), fontSize: "9.5px" }}><span style={apertureLabel}>{t.location}</span>{content.trace.location}</span>}
               </span>
-              <p data-testid="syntx-aperture-quote" style={{ margin: 0, padding: "13px 16px", borderRadius: "10px", borderLeft: `2px ${unscored ? "dashed" : "solid"} ${unscored ? "rgba(142, 239, 255, 0.7)" : "rgba(126, 255, 204, 0.85)"}`, background: "linear-gradient(90deg, rgba(126, 255, 204, 0.08), rgba(126, 255, 204, 0.02) 70%, rgba(56, 229, 255, 0.02))", boxShadow: "inset 0 0 0 1px rgba(126, 255, 204, 0.07), inset 0 10px 22px rgba(0, 4, 10, 0.28), -1px 0 10px rgba(126, 255, 204, 0.12)", fontFamily: SANS, fontSize: "15px", lineHeight: 1.6, color: "#f3fcfe", letterSpacing: "0.1px" }}>“{content.trace.quote}”</p>
-              <span style={{ ...micro, fontSize: "10px", color: "rgba(206, 232, 241, 0.7)" }}><span style={apertureLabel}>{t.capabilityReference}:</span> <span style={{ color: INK }}>{content.trace.capabilityName}</span>{content.trace.matchedConstituent !== null ? ` · ${t.constituent} ${content.trace.matchedConstituent}` : ""} · {t.basis} <span style={{ color: INK }}>{content.trace.basis}</span></span>
+              <p data-testid="syntx-aperture-quote" style={{ margin: 0, padding: "13px 16px", borderRadius: "10px", borderLeft: `2px ${unscored ? "dashed" : "solid"} ${unscored ? "rgba(142, 239, 255, 0.7)" : "rgba(126, 255, 204, 0.85)"}`, background: "linear-gradient(90deg, rgba(126, 255, 204, 0.08), rgba(126, 255, 204, 0.02) 70%, rgba(56, 229, 255, 0.02))", boxShadow: "inset 0 0 0 1px rgba(126, 255, 204, 0.07), inset 0 10px 22px rgba(0, 4, 10, 0.28), -1px 0 10px rgba(126, 255, 204, 0.12)", fontFamily: SANS, fontSize: "15px", lineHeight: 1.62, color: "#f3fcfe", letterSpacing: "0.1px" }}><span style={{ color: unscored ? "rgba(142, 239, 255, 0.85)" : "rgba(126, 255, 204, 0.85)", textShadow: "0 0 10px rgba(126, 255, 204, 0.35)" }}>“</span>{content.trace.quote}<span style={{ color: unscored ? "rgba(142, 239, 255, 0.85)" : "rgba(126, 255, 204, 0.85)", textShadow: "0 0 10px rgba(126, 255, 204, 0.35)" }}>”</span></p>
+              <span aria-hidden="true" style={{ ...apertureRule("rgba(56, 229, 255, 0.22)"), margin: "1px 0" }} />
+              <span style={{ ...micro, fontSize: "10px", color: "rgba(206, 232, 241, 0.72)" }}><span style={apertureLabel}>{t.capabilityReference}:</span> <span style={{ color: INK }}>{content.trace.capabilityName}</span>{content.trace.matchedConstituent !== null ? ` · ${t.constituent} ${content.trace.matchedConstituent}` : ""} · {t.basis} <span style={{ color: INK }}>{content.trace.basis}</span></span>
               {content.trace.contribution !== null && content.trace.confidence !== null && (
                 <span data-testid="syntx-aperture-contribution" style={{ display: "flex", flexWrap: "wrap", gap: "7px" }}>
                   <span style={apertureChip("rgba(56, 229, 255, 0.35)")}><span style={apertureLabel}>{t.contribution}</span> {content.trace.contribution}</span>
@@ -1156,12 +1183,13 @@ function Aperture({ aperture, field, t, anchor, onClose }: { aperture: SyntxAper
         </div>
 
         {/* Boundary zone: the authority statement, separated from the evidence it qualifies. */}
-        <footer style={{ padding: "13px 20px 15px", borderTop: "1px dashed rgba(255, 179, 56, 0.34)", background: "linear-gradient(180deg, rgba(255, 179, 56, 0.06), rgba(255, 179, 56, 0.012))", boxShadow: "inset 0 10px 18px -12px rgba(0, 0, 0, 0.6)", borderRadius: "0 0 14px 14px" }}>
+        <footer style={{ position: "relative", padding: "14px 20px 16px", borderTop: "1px dashed rgba(255, 179, 56, 0.36)", background: "radial-gradient(90% 120% at 0% 0%, rgba(255, 179, 56, 0.08), transparent 60%), linear-gradient(180deg, rgba(255, 179, 56, 0.05), rgba(255, 179, 56, 0.01))", boxShadow: "inset 0 10px 18px -12px rgba(0, 0, 0, 0.6)", borderRadius: "0 0 14px 14px" }}>
+          <span aria-hidden="true" style={{ position: "absolute", left: "20px", right: "20px", top: "-1px", height: "1px", background: "linear-gradient(90deg, transparent, rgba(255, 196, 96, 0.5), transparent)", boxShadow: "0 0 8px rgba(255, 179, 56, 0.35)" }} />
           <span data-testid="syntx-aperture-authority" style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: "5px 6px", fontFamily: MONO, fontSize: "10px", lineHeight: 1.4, color: AMBER }}>
             {authorityParts.map((part, index) => (
               <React.Fragment key={part}>
                 {index > 0 && <span style={visuallyHidden}> · </span>}
-                <span style={{ padding: "2px 8px", borderRadius: "6px", border: "1px solid rgba(255, 179, 56, 0.3)", background: "linear-gradient(180deg, rgba(255, 179, 56, 0.08), rgba(255, 179, 56, 0.035))" }}>{part}</span>
+                <span style={{ padding: "3px 9px", borderRadius: "6px", border: "1px solid rgba(255, 179, 56, 0.32)", background: "linear-gradient(180deg, rgba(255, 179, 56, 0.1), rgba(255, 179, 56, 0.035))", boxShadow: "inset 0 1px 0 rgba(255, 214, 150, 0.1)", letterSpacing: "0.3px" }}>{part}</span>
               </React.Fragment>
             ))}
           </span>
