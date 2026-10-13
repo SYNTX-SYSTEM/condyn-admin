@@ -1,0 +1,214 @@
+{
+  "before": "a4488a3",
+  "codeMarker": {
+    "headingsBefore": 0,
+    "headingsAfter": 4
+  },
+  "boundaryGovernanceTextIdenticalWithoutHeadings": true,
+  "newHeadings": [
+    "01PRESENTATION \u00b7 AUTHORITY BOUNDARY",
+    "02CANONICAL MAPPING (LAYER C)",
+    "03CAPABILITY SWEEP COVERAGE (UNSCORED)",
+    "04MISSING REQUIREMENTS"
+  ],
+  "contractIdentical": {
+    "intake": true,
+    "boundary": true,
+    "controls": true,
+    "guideToggle": true
+  },
+  "capabilityContextControlsUnchanged": true,
+  "jobFieldControls": {
+    "before": {
+      "how": {
+        "top": 24,
+        "bottom": 56,
+        "left": 1248,
+        "right": 1383,
+        "height": 32
+      },
+      "codex": {
+        "top": 24,
+        "bottom": 56,
+        "left": 1393,
+        "right": 1576,
+        "height": 32
+      },
+      "guide": {
+        "top": 84,
+        "bottom": 118,
+        "left": 1436,
+        "right": 1576,
+        "height": 34
+      }
+    },
+    "after": {
+      "how": {
+        "top": 13,
+        "bottom": 47,
+        "left": 1053,
+        "right": 1211,
+        "height": 34
+      },
+      "codex": {
+        "top": 13,
+        "bottom": 47,
+        "left": 1211,
+        "right": 1414,
+        "height": 34
+      },
+      "guide": {
+        "top": 13,
+        "bottom": 47,
+        "left": 1414,
+        "right": 1576,
+        "height": 34
+      }
+    }
+  },
+  "localChecks": "29/29",
+  "checks": [
+    {
+      "name": "1600x1000 no-preference: the three meta actions sit in one row",
+      "ok": true,
+      "detail": "{\"how\":{\"top\":13,\"bottom\":47,\"left\":1053,\"right\":1211,\"height\":34},\"codex\":{\"top\":13,\"bottom\":47,\"left\":1211,\"right\":1414,\"height\":34},\"guide\":{\"top\":13,\"bottom\":47,\"left\":1414,\"right\":1576,\"height\":34}}"
+    },
+    {
+      "name": "1600x1000 no-preference: the dock stays in the header band, clear of the brand",
+      "ok": true,
+      "detail": "{\"brand\":{\"right\":703,\"bottom\":61},\"dockLeft\":1053,\"dockBottom\":47}"
+    },
+    {
+      "name": "1600x1000 no-preference: intake clear below the dock (\u2265 40 px)",
+      "ok": true,
+      "detail": "164 px"
+    },
+    {
+      "name": "1600x1000 no-preference: intake and boundary do not overlap",
+      "ok": true,
+      "detail": "intake 488, boundary 509"
+    },
+    {
+      "name": "1600x1000 no-preference: only the panels' quiet motion runs",
+      "ok": true,
+      "detail": "[\"sxPanelCurrent\",\"atmosphereGlow\",\"sxRise\"]"
+    },
+    {
+      "name": "1600x1000 no-preference: intake accepts the actor id; upload stays disabled without a file",
+      "ok": true
+    },
+    {
+      "name": "1600x1000 no-preference: HOW THIS WORKS opens the onboarding",
+      "ok": true
+    },
+    {
+      "name": "1600x1000 no-preference: SYSTEM CODEX opens the codex",
+      "ok": true
+    },
+    {
+      "name": "1600x1000 no-preference: Enter on HOW THIS WORKS opens the onboarding (keyboard)",
+      "ok": true
+    },
+    {
+      "name": "1600x1000 no-preference: SEMANTIC GUIDE opens the guide drawer",
+      "ok": true
+    },
+    {
+      "name": "1600x1000 no-preference: no page errors",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1600x1000 reduce: the three meta actions sit in one row",
+      "ok": true,
+      "detail": "{\"how\":{\"top\":13,\"bottom\":47,\"left\":1053,\"right\":1211,\"height\":34},\"codex\":{\"top\":13,\"bottom\":47,\"left\":1211,\"right\":1414,\"height\":34},\"guide\":{\"top\":13,\"bottom\":47,\"left\":1414,\"right\":1576,\"height\":34}}"
+    },
+    {
+      "name": "1600x1000 reduce: the dock stays in the header band, clear of the brand",
+      "ok": true,
+      "detail": "{\"brand\":{\"right\":703,\"bottom\":61},\"dockLeft\":1053,\"dockBottom\":47}"
+    },
+    {
+      "name": "1600x1000 reduce: intake clear below the dock (\u2265 40 px)",
+      "ok": true,
+      "detail": "164 px"
+    },
+    {
+      "name": "1600x1000 reduce: intake and boundary do not overlap",
+      "ok": true,
+      "detail": "intake 488, boundary 509"
+    },
+    {
+      "name": "1600x1000 reduce: nothing animates in the three zones",
+      "ok": true,
+      "detail": "[]"
+    },
+    {
+      "name": "1600x1000 reduce: no page errors",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1280x720 no-preference: the three meta actions sit in one row",
+      "ok": true,
+      "detail": "{\"how\":{\"top\":13,\"bottom\":47,\"left\":733,\"right\":891,\"height\":34},\"codex\":{\"top\":13,\"bottom\":47,\"left\":891,\"right\":1094,\"height\":34},\"guide\":{\"top\":13,\"bottom\":47,\"left\":1094,\"right\":1256,\"height\":34}}"
+    },
+    {
+      "name": "1280x720 no-preference: the dock stays in the header band, clear of the brand",
+      "ok": true,
+      "detail": "{\"brand\":{\"right\":703,\"bottom\":61},\"dockLeft\":733,\"dockBottom\":47}"
+    },
+    {
+      "name": "1280x720 no-preference: intake clear below the dock (\u2265 40 px)",
+      "ok": true,
+      "detail": "164 px"
+    },
+    {
+      "name": "1280x720 no-preference: intake and boundary do not overlap",
+      "ok": true,
+      "detail": "intake 488, boundary 749"
+    },
+    {
+      "name": "1280x720 no-preference: only the panels' quiet motion runs",
+      "ok": true,
+      "detail": "[\"sxPanelCurrent\",\"atmosphereGlow\",\"sxRise\"]"
+    },
+    {
+      "name": "1280x720 no-preference: no page errors",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1280x720 reduce: the three meta actions sit in one row",
+      "ok": true,
+      "detail": "{\"how\":{\"top\":13,\"bottom\":47,\"left\":733,\"right\":891,\"height\":34},\"codex\":{\"top\":13,\"bottom\":47,\"left\":891,\"right\":1094,\"height\":34},\"guide\":{\"top\":13,\"bottom\":47,\"left\":1094,\"right\":1256,\"height\":34}}"
+    },
+    {
+      "name": "1280x720 reduce: the dock stays in the header band, clear of the brand",
+      "ok": true,
+      "detail": "{\"brand\":{\"right\":703,\"bottom\":61},\"dockLeft\":733,\"dockBottom\":47}"
+    },
+    {
+      "name": "1280x720 reduce: intake clear below the dock (\u2265 40 px)",
+      "ok": true,
+      "detail": "164 px"
+    },
+    {
+      "name": "1280x720 reduce: intake and boundary do not overlap",
+      "ok": true,
+      "detail": "intake 488, boundary 749"
+    },
+    {
+      "name": "1280x720 reduce: nothing animates in the three zones",
+      "ok": true,
+      "detail": "[]"
+    },
+    {
+      "name": "1280x720 reduce: no page errors",
+      "ok": true,
+      "detail": ""
+    }
+  ],
+  "panelProof": "24/24",
+  "tests": "tsc 0; SIL language contract + global wiring + Job Pool SSR: 14 files / 105"
+}

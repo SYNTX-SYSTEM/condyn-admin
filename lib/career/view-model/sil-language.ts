@@ -376,6 +376,7 @@ export const SIL_COPY = {
       relation: "CAPABILITY-REQUIREMENT RELATION",
       organizations: "ORGANIZATION AGGREGATES (PRESENTATION)",
       missingBoundary: "Missing requirements are the delivered presentation gaps of this pool. They are not recommendations, not a decision and not an input to the HR Decision Loop.",
+      boundaryPresentation: "PRESENTATION · AUTHORITY BOUNDARY",
       sweep: "CAPABILITY SWEEP COVERAGE (UNSCORED)",
       sweepStates: {
         AVAILABLE: "SWEEP PROPOSALS READ",
@@ -970,6 +971,7 @@ export const SIL_COPY = {
       relation: "CAPABILITY-REQUIREMENT-RELATION",
       organizations: "ORGANISATIONS-AGGREGATE (PRÄSENTATION)",
       missingBoundary: "Fehlende Anforderungen sind die gelieferten Präsentationslücken dieses Pools. Sie sind keine Empfehlungen, keine Entscheidung und kein Input für die HR-Entscheidungsschleife.",
+      boundaryPresentation: "PRÄSENTATION · AUTORITÄTSGRENZE",
       sweep: "CAPABILITY-SWEEP-ABDECKUNG (UNBEWERTET)",
       sweepStates: {
         AVAILABLE: "SWEEP-VORSCHLÄGE GELESEN",

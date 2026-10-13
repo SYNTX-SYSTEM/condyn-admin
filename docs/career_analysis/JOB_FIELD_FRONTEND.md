@@ -836,6 +836,25 @@ Proof (local only): `evidence/job-pool/semiotic-transfer/local-glow-boundary/loc
 and of the orientation surface (with tab order, FIELD / ORGANIZATION / REQUIREMENT) identical to 801b778 (code marker verified);
 orientation proof 48 / 48; panel proof 24 / 24 (motion names, nothing in REDUCED, no overlap, keyboard selection).
 
+#### 13.2.13 Local pass: meta dock, intake and boundary (owner "Medium-small field. Local recursion.", GO 2026-10-13)
+
+On a4488a3. Local field: the shell's meta actions in the Job Field context, the intake panel, the boundary panel.
+
+- **Meta dock.** HOW THIS WORKS, SYSTEM CODEX and SEMANTIC GUIDE form one long segmented bar in the header band (top 13 px, right
+  24 px), a secondary system layer clear of the intake. Done only with the Job Field's own stylesheet (it exists while the Job Field
+  is mounted): the shell's markup is unchanged and the Capability context keeps its controls exactly where they were (measured).
+- **Intake.** 14 px more air above (top 150 px), brighter field labels; the boundary yields when both are open (no overlap).
+- **Boundary.** Each of the four layers carries a heading with its ordinal: PRESENTATION · AUTHORITY BOUNDARY (new copy, EN / DE),
+  CANONICAL MAPPING (LAYER C), CAPABILITY SWEEP COVERAGE (UNSCORED), MISSING REQUIREMENTS (existing terms). Statements that bound —
+  NOT A CANONICAL EVALUATION, NOT A DECISION, authority NONE — are dashed chips (a limit), affirmative states stay solid. Alone it
+  reads without scrolling up to 770 px of height. The governance statements are word for word unchanged.
+
+Proof (local only): `evidence/job-pool/semiotic-transfer/local-meta-intake-boundary/local-proof.json` — the boundary's governance
+text identical to a4488a3 without the new headings; contract of the three zones identical; Capability-context control positions
+identical; 29 checks at 1600 × 1000 and 1280 × 720, LIVE and REDUCED (dock in one row in the header band, clear of the brand; intake
+≥ 40 px below the dock; no intake / boundary overlap; onboarding, codex and guide open by click, onboarding by Enter; intake flow;
+motion); panel proof 24 / 24; SIL language contract, global wiring and Job Pool SSR 14 files / 105.
+
 ### 13.3 DOM contract (PINK BR-1 … BR-5; GELB conditions a/b)
 
 **BR-1 field root** `data-testid="syntx-field"`: `data-field-grammar="SYNTX_FIELD_V1"`, `data-observation-kind` FIELD|ORGANIZATION|ROLE|REQUIREMENT
@@ -992,3 +1011,4 @@ observation point. Readable labels wrap at word boundaries (`wrapLines`), never 
 | 2026-10-13 | Local pass: pools panel and role cards (owner "Small field. Local recursion.", on b156364; visual only, isolated lab) | §13.2.10: pools spine with nodes, grid rows, aligned action chips; role cards with staggered level line, weighted count, edge field anchor. Evidence: `evidence/job-pool/semiotic-transfer/local-pools-roles/` | tsc 0; local proof 11 / 11; text and contract identity of both zones; role-card clearance 4 / 4; panel proof 24 / 24; Job Pool SSR 13 / 89 (no full sweep by owner rule) |
 | 2026-10-13 | Local pass: orientation surface (owner "Small field. Local recursion.", on aa33ddf; visual only, isolated lab) | §13.2.11: the top-left orientation surface as a lit glass with five layers, path rail, state chip, key caps, action chips; one finite context light. Evidence: `evidence/job-pool/semiotic-transfer/local-orientation/` | tsc 0; local proof 48 / 48; text, contract and tab order identical; field SSR 8 / 8 (no full sweep by owner rule) |
 | 2026-10-13 | Local pass: quiet panel glow and boundary layers (owner "Small field. Local recursion.", on 801b778; visual only, isolated lab) | §13.2.12: slower, softer panel aura and edge current, finer membrane; orientation aura and static field node; boundary in four layered groups with semantic rails. Evidence: `evidence/job-pool/semiotic-transfer/local-glow-boundary/` | tsc 0; text, contract and tab order identical; orientation proof 48 / 48; panel proof 24 / 24 (no full sweep by owner rule) |
+| 2026-10-13 | Local pass: meta dock, intake, boundary (owner "Medium-small field. Local recursion.", on a4488a3; visual only, isolated lab) | §13.2.13: one segmented meta bar in the header band (Job Field context only), intake lower, boundary headings and dashed limit chips. Evidence: `evidence/job-pool/semiotic-transfer/local-meta-intake-boundary/` | tsc 0; local proof 29 / 29; governance text and contracts identical; Capability controls unchanged; panel proof 24 / 24; language contract + Job Pool SSR 14 / 105 (no full sweep by owner rule) |
