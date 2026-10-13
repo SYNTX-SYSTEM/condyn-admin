@@ -1,0 +1,770 @@
+{
+ "after-zero-1600x1000": {
+  "state": "NO_POOL",
+  "poolCount": "0",
+  "giant": [
+   600,
+   361,
+   1000,
+   761
+  ],
+  "body": [
+   600,
+   361,
+   1000,
+   761
+  ],
+  "giantCount": 1,
+  "poolBody": 0,
+  "header": null,
+  "selector": [
+   563,
+   70,
+   1037,
+   118
+  ],
+  "orient": [
+   28,
+   145,
+   368,
+   306
+  ],
+  "poolList": [
+   28,
+   361,
+   344,
+   452
+  ],
+  "footer": null,
+  "fieldRect": [
+   0,
+   61,
+   1600,
+   1061
+  ],
+  "leaves": [
+   {
+    "text": "JOB FIELD // UNBOUND",
+    "rect": [
+     716,
+     494,
+     884,
+     508
+    ],
+    "font": "\"JetBrains Mono\" 10px/14px w700 ls 2.4px",
+    "color": "rgb(255, 128, 136)",
+    "sw": 168,
+    "cw": 168
+   },
+   {
+    "text": "NO JOB POOL SELECTED",
+    "rect": [
+     685,
+     530,
+     915,
+     551
+    ],
+    "font": "\"JetBrains Mono\" 17px/21.25px w800 ls 1.3px",
+    "color": "rgb(239, 251, 255)",
+    "sw": 230,
+    "cw": 230
+   },
+   {
+    "text": "This field awaits an explicitly selected job pool.",
+    "rect": [
+     648,
+     561,
+     952,
+     602
+    ],
+    "font": "system-ui 13px/20.15px w400 ls normal",
+    "color": "rgba(222, 238, 246, 0.92)",
+    "sw": 304,
+    "cw": 304
+   },
+   {
+    "text": "Upload via INTAKE ·",
+    "rect": [
+     672,
+     614,
+     807,
+     627
+    ],
+    "font": "\"JetBrains Mono\" 10px/14px w600 ls 1.1px",
+    "color": "rgba(140, 232, 252, 0.95)",
+    "sw": 0,
+    "cw": 0
+   },
+   {
+    "text": "Select via POOLS",
+    "rect": [
+     814,
+     614,
+     928,
+     627
+    ],
+    "font": "\"JetBrains Mono\" 10px/14px w600 ls 1.1px",
+    "color": "rgba(140, 232, 252, 0.95)",
+    "sw": 0,
+    "cw": 0
+   }
+  ],
+  "running": "atmosphereGlow,atmosphereGlow,coreBreathe,gradientBreath,orbitFloatPhase2,orbitFloatPhase2,orbitFloatPhase2,orbitFloatPhase2,orbitFloatPhase2,orbitFloatPhase2,particleIn,particleIn,plasmaFlarePulse,plasmaRotateCcw,plasmaRotateCw,rotateClockwise,sxPanelCurrent,waveExpand,waveExpand",
+  "giantAnims": "",
+  "errors": [],
+  "nonGet": []
+ },
+ "after-persisted-1600x1000": {
+  "state": "NO_POOL",
+  "poolCount": "3",
+  "giant": [
+   600,
+   361,
+   1000,
+   761
+  ],
+  "body": [
+   600,
+   361,
+   1000,
+   761
+  ],
+  "giantCount": 1,
+  "poolBody": 0,
+  "header": null,
+  "selector": [
+   563,
+   70,
+   1037,
+   118
+  ],
+  "orient": [
+   28,
+   145,
+   368,
+   306
+  ],
+  "poolList": [
+   28,
+   361,
+   344,
+   637
+  ],
+  "footer": null,
+  "fieldRect": [
+   0,
+   61,
+   1600,
+   1061
+  ],
+  "leaves": [
+   {
+    "text": "JOB FIELD // UNBOUND",
+    "rect": [
+     716,
+     494,
+     884,
+     508
+    ],
+    "font": "\"JetBrains Mono\" 10px/14px w700 ls 2.4px",
+    "color": "rgb(255, 128, 136)",
+    "sw": 168,
+    "cw": 168
+   },
+   {
+    "text": "NO JOB POOL SELECTED",
+    "rect": [
+     685,
+     530,
+     915,
+     551
+    ],
+    "font": "\"JetBrains Mono\" 17px/21.25px w800 ls 1.3px",
+    "color": "rgb(239, 251, 255)",
+    "sw": 230,
+    "cw": 230
+   },
+   {
+    "text": "This field awaits an explicitly selected job pool.",
+    "rect": [
+     648,
+     561,
+     952,
+     602
+    ],
+    "font": "system-ui 13px/20.15px w400 ls normal",
+    "color": "rgba(222, 238, 246, 0.92)",
+    "sw": 304,
+    "cw": 304
+   },
+   {
+    "text": "Upload via INTAKE ·",
+    "rect": [
+     672,
+     614,
+     807,
+     627
+    ],
+    "font": "\"JetBrains Mono\" 10px/14px w600 ls 1.1px",
+    "color": "rgba(140, 232, 252, 0.95)",
+    "sw": 0,
+    "cw": 0
+   },
+   {
+    "text": "Select via POOLS",
+    "rect": [
+     814,
+     614,
+     928,
+     627
+    ],
+    "font": "\"JetBrains Mono\" 10px/14px w600 ls 1.1px",
+    "color": "rgba(140, 232, 252, 0.95)",
+    "sw": 0,
+    "cw": 0
+   }
+  ],
+  "running": "atmosphereGlow,atmosphereGlow,coreBreathe,gradientBreath,orbitFloatPhase2,orbitFloatPhase2,orbitFloatPhase2,orbitFloatPhase2,orbitFloatPhase2,orbitFloatPhase2,particleIn,particleIn,plasmaFlarePulse,plasmaRotateCcw,plasmaRotateCw,rotateClockwise,sxPanelCurrent,waveExpand,waveExpand",
+  "giantAnims": "",
+  "errors": [],
+  "nonGet": []
+ },
+ "after-selected-1600x1000": {
+  "state": "AVAILABLE",
+  "poolCount": "3",
+  "giant": null,
+  "body": null,
+  "giantCount": 0,
+  "poolBody": 1,
+  "header": null,
+  "selector": [
+   563,
+   70,
+   1037,
+   118
+  ],
+  "orient": [
+   28,
+   145,
+   368,
+   312
+  ],
+  "poolList": [
+   0,
+   0,
+   0,
+   0
+  ],
+  "footer": null,
+  "fieldRect": [
+   0,
+   61,
+   1600,
+   1061
+  ],
+  "leaves": [],
+  "running": "atmosphereGlow,atmosphereGlow,atmosphereGlow,coreBreathe,coreBreathe,gradientBreath,moonOrbit,moonOrbit,moonOrbit,moonOrbit,moonOrbit,moonOrbit,orbitFloatPhase2,orbitFloatPhase2,orbitFloatPhase2,orbitFloatPhase2,orbitFloatPhase2,orbitFloatPhase2,orbitFloatPhase2,orbitFloatPhase2,orbitFloatPhase2,particleIn,particleIn,particleIn,particleIn,plasmaFlarePulse,plasmaFlarePulse,plasmaRotateCcw,plasmaRotateCcw,plasmaRotateCw,plasmaRotateCw,rotateClockwise,rotateClockwise,waveExpand,waveExpand,waveExpand,waveExpand",
+  "giantAnims": "",
+  "errors": [],
+  "nonGet": []
+ },
+ "after-zero-1280x720": {
+  "state": "NO_POOL",
+  "poolCount": "0",
+  "giant": [
+   484,
+   385,
+   796,
+   697
+  ],
+  "body": [
+   484,
+   385,
+   796,
+   697
+  ],
+  "giantCount": 1,
+  "poolBody": 0,
+  "header": null,
+  "selector": [
+   403,
+   70,
+   877,
+   118
+  ],
+  "orient": [
+   28,
+   145,
+   368,
+   306
+  ],
+  "poolList": [
+   28,
+   361,
+   344,
+   452
+  ],
+  "footer": null,
+  "fieldRect": [
+   0,
+   61,
+   1280,
+   1021
+  ],
+  "leaves": [
+   {
+    "text": "JOB FIELD // UNBOUND",
+    "rect": [
+     556,
+     467,
+     724,
+     481
+    ],
+    "font": "\"JetBrains Mono\" 10px/14px w700 ls 2.4px",
+    "color": "rgb(255, 128, 136)",
+    "sw": 168,
+    "cw": 168
+   },
+   {
+    "text": "NO JOB POOL SELECTED",
+    "rect": [
+     525,
+     503,
+     755,
+     524
+    ],
+    "font": "\"JetBrains Mono\" 17px/21.25px w800 ls 1.3px",
+    "color": "rgb(239, 251, 255)",
+    "sw": 230,
+    "cw": 230
+   },
+   {
+    "text": "This field awaits an explicitly selected job pool.",
+    "rect": [
+     521,
+     534,
+     759,
+     575
+    ],
+    "font": "system-ui 13px/20.15px w400 ls normal",
+    "color": "rgba(222, 238, 246, 0.92)",
+    "sw": 237,
+    "cw": 237
+   },
+   {
+    "text": "Upload via INTAKE ·",
+    "rect": [
+     573,
+     587,
+     707,
+     600
+    ],
+    "font": "\"JetBrains Mono\" 10px/14px w600 ls 1.1px",
+    "color": "rgba(140, 232, 252, 0.95)",
+    "sw": 0,
+    "cw": 0
+   },
+   {
+    "text": "Select via POOLS",
+    "rect": [
+     583,
+     601,
+     697,
+     614
+    ],
+    "font": "\"JetBrains Mono\" 10px/14px w600 ls 1.1px",
+    "color": "rgba(140, 232, 252, 0.95)",
+    "sw": 0,
+    "cw": 0
+   }
+  ],
+  "running": "atmosphereGlow,atmosphereGlow,coreBreathe,gradientBreath,orbitFloatPhase2,orbitFloatPhase2,orbitFloatPhase2,orbitFloatPhase2,orbitFloatPhase2,orbitFloatPhase2,particleIn,particleIn,plasmaFlarePulse,plasmaRotateCcw,plasmaRotateCw,rotateClockwise,sxPanelCurrent,waveExpand,waveExpand",
+  "giantAnims": "",
+  "errors": [],
+  "nonGet": []
+ },
+ "after-persisted-1280x720": {
+  "state": "NO_POOL",
+  "poolCount": "3",
+  "giant": [
+   484,
+   385,
+   796,
+   697
+  ],
+  "body": [
+   484,
+   385,
+   796,
+   697
+  ],
+  "giantCount": 1,
+  "poolBody": 0,
+  "header": null,
+  "selector": [
+   403,
+   70,
+   877,
+   118
+  ],
+  "orient": [
+   28,
+   145,
+   368,
+   306
+  ],
+  "poolList": [
+   28,
+   361,
+   344,
+   637
+  ],
+  "footer": null,
+  "fieldRect": [
+   0,
+   61,
+   1280,
+   1021
+  ],
+  "leaves": [
+   {
+    "text": "JOB FIELD // UNBOUND",
+    "rect": [
+     556,
+     467,
+     724,
+     481
+    ],
+    "font": "\"JetBrains Mono\" 10px/14px w700 ls 2.4px",
+    "color": "rgb(255, 128, 136)",
+    "sw": 168,
+    "cw": 168
+   },
+   {
+    "text": "NO JOB POOL SELECTED",
+    "rect": [
+     525,
+     503,
+     755,
+     524
+    ],
+    "font": "\"JetBrains Mono\" 17px/21.25px w800 ls 1.3px",
+    "color": "rgb(239, 251, 255)",
+    "sw": 230,
+    "cw": 230
+   },
+   {
+    "text": "This field awaits an explicitly selected job pool.",
+    "rect": [
+     521,
+     534,
+     759,
+     575
+    ],
+    "font": "system-ui 13px/20.15px w400 ls normal",
+    "color": "rgba(222, 238, 246, 0.92)",
+    "sw": 237,
+    "cw": 237
+   },
+   {
+    "text": "Upload via INTAKE ·",
+    "rect": [
+     573,
+     587,
+     707,
+     600
+    ],
+    "font": "\"JetBrains Mono\" 10px/14px w600 ls 1.1px",
+    "color": "rgba(140, 232, 252, 0.95)",
+    "sw": 0,
+    "cw": 0
+   },
+   {
+    "text": "Select via POOLS",
+    "rect": [
+     583,
+     601,
+     697,
+     614
+    ],
+    "font": "\"JetBrains Mono\" 10px/14px w600 ls 1.1px",
+    "color": "rgba(140, 232, 252, 0.95)",
+    "sw": 0,
+    "cw": 0
+   }
+  ],
+  "running": "atmosphereGlow,atmosphereGlow,coreBreathe,gradientBreath,orbitFloatPhase2,orbitFloatPhase2,orbitFloatPhase2,orbitFloatPhase2,orbitFloatPhase2,orbitFloatPhase2,particleIn,particleIn,plasmaFlarePulse,plasmaRotateCcw,plasmaRotateCw,rotateClockwise,sxPanelCurrent,waveExpand,waveExpand",
+  "giantAnims": "",
+  "errors": [],
+  "nonGet": []
+ },
+ "after-selected-1280x720": {
+  "state": "AVAILABLE",
+  "poolCount": "3",
+  "giant": null,
+  "body": null,
+  "giantCount": 0,
+  "poolBody": 1,
+  "header": null,
+  "selector": [
+   403,
+   70,
+   877,
+   118
+  ],
+  "orient": [
+   28,
+   145,
+   368,
+   312
+  ],
+  "poolList": [
+   0,
+   0,
+   0,
+   0
+  ],
+  "footer": null,
+  "fieldRect": [
+   0,
+   61,
+   1280,
+   1021
+  ],
+  "leaves": [],
+  "running": "atmosphereGlow,atmosphereGlow,atmosphereGlow,coreBreathe,coreBreathe,gradientBreath,moonOrbit,moonOrbit,moonOrbit,moonOrbit,moonOrbit,moonOrbit,orbitFloatPhase2,orbitFloatPhase2,orbitFloatPhase2,orbitFloatPhase2,orbitFloatPhase2,orbitFloatPhase2,orbitFloatPhase2,orbitFloatPhase2,orbitFloatPhase2,particleIn,particleIn,particleIn,particleIn,plasmaFlarePulse,plasmaFlarePulse,plasmaRotateCcw,plasmaRotateCcw,plasmaRotateCw,plasmaRotateCw,rotateClockwise,rotateClockwise,waveExpand,waveExpand,waveExpand,waveExpand",
+  "giantAnims": "",
+  "errors": [],
+  "nonGet": []
+ },
+ "after-persisted-1600x1000-reduced": {
+  "state": "NO_POOL",
+  "poolCount": "3",
+  "giant": [
+   600,
+   361,
+   1000,
+   761
+  ],
+  "body": [
+   600,
+   361,
+   1000,
+   761
+  ],
+  "giantCount": 1,
+  "poolBody": 0,
+  "header": null,
+  "selector": [
+   563,
+   70,
+   1037,
+   118
+  ],
+  "orient": [
+   28,
+   145,
+   368,
+   306
+  ],
+  "poolList": [
+   28,
+   361,
+   344,
+   637
+  ],
+  "footer": null,
+  "fieldRect": [
+   0,
+   61,
+   1600,
+   1061
+  ],
+  "leaves": [
+   {
+    "text": "JOB FIELD // UNBOUND",
+    "rect": [
+     716,
+     494,
+     884,
+     508
+    ],
+    "font": "\"JetBrains Mono\" 10px/14px w700 ls 2.4px",
+    "color": "rgb(255, 128, 136)",
+    "sw": 168,
+    "cw": 168
+   },
+   {
+    "text": "NO JOB POOL SELECTED",
+    "rect": [
+     685,
+     530,
+     915,
+     551
+    ],
+    "font": "\"JetBrains Mono\" 17px/21.25px w800 ls 1.3px",
+    "color": "rgb(239, 251, 255)",
+    "sw": 230,
+    "cw": 230
+   },
+   {
+    "text": "This field awaits an explicitly selected job pool.",
+    "rect": [
+     648,
+     561,
+     952,
+     602
+    ],
+    "font": "system-ui 13px/20.15px w400 ls normal",
+    "color": "rgba(222, 238, 246, 0.92)",
+    "sw": 304,
+    "cw": 304
+   },
+   {
+    "text": "Upload via INTAKE ·",
+    "rect": [
+     672,
+     614,
+     807,
+     627
+    ],
+    "font": "\"JetBrains Mono\" 10px/14px w600 ls 1.1px",
+    "color": "rgba(140, 232, 252, 0.95)",
+    "sw": 0,
+    "cw": 0
+   },
+   {
+    "text": "Select via POOLS",
+    "rect": [
+     814,
+     614,
+     928,
+     627
+    ],
+    "font": "\"JetBrains Mono\" 10px/14px w600 ls 1.1px",
+    "color": "rgba(140, 232, 252, 0.95)",
+    "sw": 0,
+    "cw": 0
+   }
+  ],
+  "running": "coreBreathe,gradientBreath,orbitFloatPhase2,orbitFloatPhase2,orbitFloatPhase2,orbitFloatPhase2,orbitFloatPhase2,orbitFloatPhase2,particleIn,particleIn,plasmaFlarePulse,plasmaRotateCcw,plasmaRotateCw,rotateClockwise,waveExpand,waveExpand",
+  "giantAnims": "",
+  "errors": [],
+  "nonGet": []
+ },
+ "after-persisted-1600x1000-de": {
+  "state": "NO_POOL",
+  "poolCount": "3",
+  "giant": [
+   600,
+   361,
+   1000,
+   761
+  ],
+  "body": [
+   600,
+   361,
+   1000,
+   761
+  ],
+  "giantCount": 1,
+  "poolBody": 0,
+  "header": null,
+  "selector": [
+   563,
+   70,
+   1037,
+   118
+  ],
+  "orient": [
+   28,
+   145,
+   368,
+   318
+  ],
+  "poolList": [
+   28,
+   361,
+   344,
+   637
+  ],
+  "footer": null,
+  "fieldRect": [
+   0,
+   61,
+   1600,
+   1061
+  ],
+  "leaves": [
+   {
+    "text": "JOB-FELD // UNGEBUNDEN",
+    "rect": [
+     708,
+     487,
+     892,
+     501
+    ],
+    "font": "\"JetBrains Mono\" 10px/14px w700 ls 2.4px",
+    "color": "rgb(255, 128, 136)",
+    "sw": 185,
+    "cw": 185
+   },
+   {
+    "text": "KEIN JOB-POOL GEWÄHLT",
+    "rect": [
+     679,
+     523,
+     921,
+     544
+    ],
+    "font": "\"JetBrains Mono\" 17px/21.25px w800 ls 1.3px",
+    "color": "rgb(239, 251, 255)",
+    "sw": 242,
+    "cw": 242
+   },
+   {
+    "text": "Dieses Feld wartet auf einen ausdrücklich gewählten Job-Pool.",
+    "rect": [
+     648,
+     554,
+     952,
+     595
+    ],
+    "font": "system-ui 13px/20.15px w400 ls normal",
+    "color": "rgba(222, 238, 246, 0.92)",
+    "sw": 304,
+    "cw": 304
+   },
+   {
+    "text": "Hochladen über AUFNAHME ·",
+    "rect": [
+     711,
+     607,
+     889,
+     620
+    ],
+    "font": "\"JetBrains Mono\" 10px/14px w600 ls 1.1px",
+    "color": "rgba(140, 232, 252, 0.95)",
+    "sw": 0,
+    "cw": 0
+   },
+   {
+    "text": "Wählen über POOLS",
+    "rect": [
+     740,
+     621,
+     860,
+     634
+    ],
+    "font": "\"JetBrains Mono\" 10px/14px w600 ls 1.1px",
+    "color": "rgba(140, 232, 252, 0.95)",
+    "sw": 0,
+    "cw": 0
+   }
+  ],
+  "running": "atmosphereGlow,atmosphereGlow,coreBreathe,gradientBreath,orbitFloatPhase2,orbitFloatPhase2,orbitFloatPhase2,orbitFloatPhase2,orbitFloatPhase2,orbitFloatPhase2,particleIn,particleIn,plasmaFlarePulse,plasmaRotateCcw,plasmaRotateCw,rotateClockwise,sxPanelCurrent,waveExpand,waveExpand",
+  "giantAnims": "",
+  "errors": [],
+  "nonGet": []
+ }
+}

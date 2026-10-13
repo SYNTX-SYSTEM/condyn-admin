@@ -1012,6 +1012,33 @@ explanation 1.65 → 13.41, orbit mark 1.4–1.8 → 5.3–11.7; planetarium red
 only (132 → 151 px); animation names identical; DE wraps cleanly; at 1280 × 720 the field selector covers the copy's heading before and
 after (F-4); 20 files / 102 tests.
 
+#### 13.2.21 NO_POOL as the red absence giant (owner "SFE::JOB FIELD RED ABSENCE GIANT", 2026-10-13)
+
+On bb5e8e3. The central NO_POOL text of the Job Field became one red semiotic body on the field's centre (`NoPoolGiant`, same
+`syntx-no-pool` element, same anchor): an unbound semantic centre, not an error screen, not a card.
+
+- **Meaning, unchanged.** Exactly "no explicit job pool selection" — with zero uploads and with persisted, unselected uploads alike;
+  not a failure, a failed upload, a missing capability, a failed match or a judgement. It leaves with the selection (the existing
+  `NO_POOL` → `AVAILABLE` transition); the job cosmos then holds the centre alone. No new state, logic, interaction or focus stop.
+- **Body.** Dark, transparent interior; ruby seam (1.5 px) with a soft aura beyond the contour; outer dashed semiotic ring, a tick
+  annulus, three inner rings (one dashed in the field's azure), four cyan joints on the seam and two short cyan ticks. Diameter
+  `clamp(300px, 2 × (100vh − header − 504px), 400px)`: 400 px when there is room, smaller while the field is taller than the viewport
+  (F-4), so the body stays on screen (312 px at 1280 × 720).
+- **Typography inside the body.** Status in the shared red field type (`SIL_RED_FIELD_TYPE.status`, §13.2.20): `JOB FIELD // UNBOUND`;
+  title 17 px / 800 cyan-white `NO JOB POOL SELECTED`; explanation 13 px `This field awaits an explicitly selected job pool.`;
+  orientation 10 px / 600 cyan `Upload via INTAKE · Select via POOLS` (breaks only at the separator; balanced wrapping). DE: `JOB-FELD //
+  UNGEBUNDEN`, `KEIN JOB-POOL GEWÄHLT`, `Dieses Feld wartet auf einen ausdrücklich gewählten Job-Pool.`, `Hochladen über AUFNAHME · Wählen
+  über POOLS` (the DE button labels). The copy replaces `syntx.noPool` (now four parts).
+- **Motion.** None: the body is static; only the existing finite reveal (`sxRise`) on mount, none in REDUCED. Nothing for R15b.
+- Unchanged: upload, selection, mapping, matching, ids, APIs, data; the orientation surface, pool list, intake, boundary,
+  organisations, roles and every other panel; the Capability Field.
+
+Proof (local only, review lab): `evidence/job-pool/semiotic-transfer/no-pool-giant/local-proof.json` — contrast inside the body:
+status 7.9, title 17.9, explanation 13.5, orientation 12.4 (1600 × 1000; the same at 1280 × 720); no collision with header, field
+selector, orientation surface, pool list or governance footer at either size; one giant at NO_POOL with 0 and with 3 persisted
+uploads, none after the selection (click from NO_POOL: cosmos present, `jobPoolUploadId` in the URL, no non-GET request, LIVE and
+REDUCED); no animation on the giant; 19 files / 129 tests (one DE copy assertion updated to the new title).
+
 ### 13.3 DOM contract (PINK BR-1 … BR-5; GELB conditions a/b)
 
 **BR-1 field root** `data-testid="syntx-field"`: `data-field-grammar="SYNTX_FIELD_V1"`, `data-observation-kind` FIELD|ORGANIZATION|ROLE|REQUIREMENT
@@ -1176,3 +1203,4 @@ observation point. Readable labels wrap at word boundaries (`wrapLines`), never 
 | 2026-10-13 | Boundary external resonance halo (owner mandate, on fd3462d; visual only, isolated lab) | §13.2.18: overflow clipping of the old aura diagnosed; the halo on the body's own box-shadow, breathing via `sxBoundaryHalo` 28 s (new motion kind, R15b approval by GELB required); REDUCED still. Evidence: `evidence/job-pool/semiotic-transfer/local-boundary-halo/` | tsc 0; body geometry, text and contract identical; ring outside the frame 13.8–14.3 → 21.1–29.6 over the breath; video of one breath at 1x; behaviour proof 44 / 44; 6 files / 48 tests (no full sweep by owner rule) |
 | 2026-10-13 | Resonance halo grammar, phase 1 prototype (owner mandate, on 6c88d9b; visual only, isolated lab) | §13.2.19: external cyan seam on the first organization and the orientation surface, strength from existing state (inactive / active / retreated), finite transitions; breathing only behind a lab flag (R15b approval required). Evidence: `evidence/job-pool/semiotic-transfer/resonance-prototype/` | tsc 0; geometry identical; states measured before / after; no new infinite motion by default; frame cost unchanged; boundary proof 44 / 44; 6 files / 54 tests (no full sweep by owner rule) |
 | 2026-10-13 | Capability Field: one typography for every red field state (owner "SFE::GLOBAL RED FIELD TYPOGRAPHY REFINEMENT", on 337033e; visual only, isolated lab) | §13.2.20: `SIL_RED_FIELD_TYPE` for the focused empty-projection copy and the labels of red bodies; the copy no longer recedes with the 0.42 focus anchor (`copyAboveAnchorOpacity`, Capability only); R10c proposal P-7. Evidence: `evidence/job-pool/semiotic-transfer/red-field-typography/` | tsc 0; 20 files / 102 tests; focus shell byte-identical without the flag (32 / 32); non-red bodies identical; geometry and animation names identical; copy contrast 1.65–3.62 → 8.5–19.4 |
+| 2026-10-13 | Job Field NO_POOL as the red absence giant (owner "SFE::JOB FIELD RED ABSENCE GIANT", on bb5e8e3; visual + copy, isolated lab) | §13.2.21: one static red semiotic body on the field centre with the NO_POOL information inside (EN / DE); same element, state and transition; no motion. Evidence: `evidence/job-pool/semiotic-transfer/no-pool-giant/` | tsc 0; 19 files / 129 tests; no collision at 1600 × 1000 and 1280 × 720; giant at NO_POOL (0 and 3 uploads), absent after selection; contrast 7.9–17.9 |

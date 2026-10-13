@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useMemo, useRef, useState } from "react";
-import { SIL_TOKENS } from "./SILTokens";
+import { SIL_RED_FIELD_TYPE, SIL_TOKENS } from "./SILTokens";
 import { useOrbitalMotionElapsedMs } from "./OrbitalSatelliteMotion";
 import { renderSemioticSignature } from "./OrbitalResonanceBubble";
 import { SYNTX_RESONANCE_BODY_KEYFRAMES, SyntxResonanceBody } from "./manifestation/SyntxResonanceBody";
@@ -1436,6 +1436,49 @@ function Aperture({ aperture, field, t, anchor, onClose }: { aperture: SyntxAper
   );
 }
 
+/** NO_POOL giant: the diameter follows the visible height while the field is taller than the viewport (F-4), so the body never
+ * leaves the screen; 400 px when there is room, never below 300 px. */
+const NO_POOL_GIANT_SIZE = "clamp(300px, calc(2 * (100vh - var(--condyn-page-header-height, 60px) - 504px)), 400px)";
+const RUBY = (alpha: number): string => `rgba(255, 64, 86, ${alpha})`;
+
+/**
+ * The red absence giant (owner "SFE::JOB FIELD RED ABSENCE GIANT", 2026-10-13): NO_POOL at the field drawn as one red semiotic
+ * body on the field's centre — an unbound semantic centre, not an error. It means only "no explicit job pool selection" (a persisted
+ * upload may exist); it leaves with the selection, when the job cosmos takes the centre. Static: rings, ticks and the outer ruby seam
+ * do not move (no new motion; the existing finite reveal only).
+ */
+function NoPoolGiant({ copy }: { copy: { status: string; title: string; reason: string; orientation: string } }) {
+  const ring = (inset: string, border: string): React.CSSProperties => ({ position: "absolute", inset, borderRadius: "50%", border, pointerEvents: "none" });
+  const node = (left: string, top: string): React.CSSProperties => ({ position: "absolute", left, top, width: "5px", height: "5px", marginLeft: "-2.5px", marginTop: "-2.5px", borderRadius: "50%", background: "#bff4ff", boxShadow: `0 0 6px ${CYAN}, 0 0 12px ${azure(0.5)}`, pointerEvents: "none" });
+  return (
+    <div data-testid="syntx-no-pool" data-sx-reveal="true" data-sx-no-pool-giant style={{ position: "absolute", left: "50%", top: "50%", transform: "translate(-50%, -50%)", width: NO_POOL_GIANT_SIZE, height: NO_POOL_GIANT_SIZE, zIndex: 3, display: "flex", alignItems: "center", justifyContent: "center" }}>
+      {/* The body: a dark, transparent interior inside a ruby seam with a soft aura beyond the contour. */}
+      <div data-sx-giant-body aria-hidden="true" style={{ position: "absolute", inset: 0, borderRadius: "50%", border: `1.5px solid ${RUBY(0.72)}`, background: `radial-gradient(circle at 50% 46%, rgba(46, 8, 16, 0.5) 0%, rgba(14, 5, 10, 0.78) 58%, rgba(5, 5, 9, 0.9) 100%)`, boxShadow: `0 0 0 1px ${RUBY(0.1)}, 0 0 18px ${RUBY(0.34)}, 0 0 48px rgba(214, 24, 56, 0.2), inset 0 0 30px ${RUBY(0.16)}, inset 0 0 90px rgba(120, 8, 24, 0.28)`, pointerEvents: "none" }} />
+      {/* Structure: the outer semiotic ring, a tick annulus, three inner rings (one in the field's cyan). */}
+      <div aria-hidden="true" style={ring("-14px", `1px dashed ${RUBY(0.34)}`)} />
+      <div aria-hidden="true" style={{ position: "absolute", inset: "-7px", borderRadius: "50%", background: `repeating-conic-gradient(from 0deg, ${RUBY(0.42)} 0deg 0.7deg, transparent 0.7deg 7.5deg)`, WebkitMaskImage: "radial-gradient(closest-side, transparent calc(100% - 5px), #000 calc(100% - 4px), #000 calc(100% - 1px), transparent 100%)", maskImage: "radial-gradient(closest-side, transparent calc(100% - 5px), #000 calc(100% - 4px), #000 calc(100% - 1px), transparent 100%)", pointerEvents: "none" }} />
+      <div aria-hidden="true" style={ring("9%", `1px solid ${RUBY(0.24)}`)} />
+      <div aria-hidden="true" style={ring("17%", `1px dashed ${azure(0.2)}`)} />
+      <div aria-hidden="true" style={ring("27%", `1px solid ${RUBY(0.1)}`)} />
+      {/* Cyan joints on the seam (the link to the DLL field grammar) and two short technical ticks on the inner ring. */}
+      <span aria-hidden="true" style={node("50%", "0%")} />
+      <span aria-hidden="true" style={node("100%", "50%")} />
+      <span aria-hidden="true" style={node("50%", "100%")} />
+      <span aria-hidden="true" style={node("0%", "50%")} />
+      <span aria-hidden="true" style={{ position: "absolute", left: "9%", top: "50%", width: "16px", height: "1px", background: `linear-gradient(90deg, ${azure(0.55)}, transparent)`, pointerEvents: "none" }} />
+      <span aria-hidden="true" style={{ position: "absolute", right: "9%", top: "50%", width: "16px", height: "1px", background: `linear-gradient(270deg, ${azure(0.55)}, transparent)`, pointerEvents: "none" }} />
+      {/* The information, inside the body: state in red, the hierarchy in cyan-white. */}
+      <div style={{ position: "relative", width: "76%", display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center", fontFamily: MONO, textWrap: "balance" }}>
+        <span style={SIL_RED_FIELD_TYPE.status}>{copy.status}</span>
+        <span aria-hidden="true" style={{ marginTop: "9px", width: "84px", height: "1px", background: `linear-gradient(90deg, transparent, ${CYAN}, ${RUBY(0.9)}, transparent)` }} />
+        <strong style={{ marginTop: "12px", fontSize: "17px", lineHeight: 1.25, fontWeight: 800, letterSpacing: "1.3px", color: "#effbff", textShadow: `0 0 14px ${azure(0.32)}` }}>{copy.title}</strong>
+        <span style={{ ...prose, marginTop: "10px", fontSize: "13px", lineHeight: 1.55, color: "rgba(222, 238, 246, 0.92)" }}>{copy.reason}</span>
+        <span style={{ marginTop: "12px", fontSize: "10px", lineHeight: "14px", fontWeight: 600, letterSpacing: "1.1px", color: "rgba(140, 232, 252, 0.95)" }}>{copy.orientation.split(" · ").map((part, index, parts) => <React.Fragment key={index}>{index > 0 && " "}<span style={{ whiteSpace: "nowrap" }}>{index < parts.length - 1 ? `${part} ·` : part}</span></React.Fragment>)}</span>
+      </div>
+    </div>
+  );
+}
+
 export function SyntxField({ workflow, analysisSource, observation: requested, onObserve, onSelectPool, onExit, locale = SIL_COPY.defaultLocale }: SyntxFieldProps) {
   const t = SIL_COPY[locale].syntx;
   const tp: PoolCopy = SIL_COPY[locale].jobPool;
@@ -1552,7 +1595,7 @@ export function SyntxField({ workflow, analysisSource, observation: requested, o
       <div ref={stageRef} data-testid="syntx-stage" style={{ position: "absolute", inset: 0, overflow: "hidden" }}>
         {field !== null && <FieldStage field={field} mode={mode} t={t} locale={locale} size={size} onObserve={onObserve} />}
         {resolution.stale !== null && <span data-testid="syntx-stale" data-stale-kind={resolution.stale.kind} data-stale-id={resolution.stale.id} data-sx-reveal="true" style={{ ...lens, ...prose, color: AMBER, position: "absolute", left: "50%", top: "calc(50% + 150px)", transform: "translateX(-50%)", width: "min(320px, 40%)", textAlign: "center", zIndex: 41 }}>{t.stale[resolution.stale.kind]}</span>}
-        {state === "NO_POOL" && <span data-testid="syntx-no-pool" data-sx-reveal="true" style={{ ...prose, position: "absolute", left: "50%", top: "50%", transform: "translate(-50%, -50%)", width: "min(360px, 60%)", textAlign: "center", zIndex: 3 }}>{t.noPool}</span>}
+        {state === "NO_POOL" && <NoPoolGiant copy={t.noPool} />}
         {state === "NO_ANALYSIS" && field !== null && <span data-testid="syntx-no-analysis" style={{ ...micro, color: AMBER, position: "absolute", left: "50%", bottom: "calc(var(--condyn-page-header-height, 60px) + 44px)", transform: "translateX(-50%)", width: "min(520px, 80%)", textAlign: "center", zIndex: 41 }}>{tp.analysisNone}</span>}
       </div>
 

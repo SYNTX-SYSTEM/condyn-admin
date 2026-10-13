@@ -173,7 +173,7 @@ describe("SYNTX field (server-rendered)", () => {
   it("follows the global SIL locale and threads focus and observation from the dashboard, accepting the legacy JOB/POOL focus names", () => {
     const de = renderToString(<SemanticCareerIntelligenceField data={EMPTY_CAREER_INTELLIGENCE_DATA} fieldFocus="FIELD" initialLocale="de" />);
     expect(de).toContain("JOB-FELD");
-    expect(de).toContain("KEIN JOB-POOL-UPLOAD IM FELD");
+    expect(de).toContain("KEIN JOB-POOL GEWÄHLT");
     const dash = renderToString(<CareerIntelligenceDashboard data={EMPTY_CAREER_INTELLIGENCE_DATA} fieldFocus="FIELD" jobPoolUploadId="JPOOL_WITH_MATCHES" analysisId="ANL_TEST" jobOrganizationId="ORG_1" jobRoleId="ROLE_B" />);
     expect(dash).toContain('data-field-focus="FIELD"');
     expect(dash).toContain('data-observation-kind="ROLE"');

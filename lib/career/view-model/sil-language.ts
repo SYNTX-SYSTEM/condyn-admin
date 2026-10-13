@@ -479,7 +479,13 @@ export const SIL_COPY = {
       keys: "Esc returns · Enter selects · Tab moves between carriers",
       pools: "POOLS",
       poolsHide: "HIDE POOLS",
-      noPool: "NO JOB POOL UPLOAD AT THE FIELD: select one persisted upload (explicit selection only)",
+      /** NO_POOL at the field: no explicit selection (a persisted upload may exist); not an error, a failed upload or a judgement. */
+      noPool: {
+        status: "JOB FIELD // UNBOUND",
+        title: "NO JOB POOL SELECTED",
+        reason: "This field awaits an explicitly selected job pool.",
+        orientation: "Upload via INTAKE · Select via POOLS"
+      },
       support: {
         SUPPORTED: "SUPPORTED (SCORED EVIDENCE)",
         WEAK: "WEAK SUPPORT (SCORED, THIN)",
@@ -1074,7 +1080,12 @@ export const SIL_COPY = {
       keys: "Esc kehrt zurück · Enter wählt · Tab wechselt zwischen Trägern",
       pools: "POOLS",
       poolsHide: "POOLS VERBERGEN",
-      noPool: "KEIN JOB-POOL-UPLOAD IM FELD: einen persistierten Upload wählen (nur explizite Auswahl)",
+      noPool: {
+        status: "JOB-FELD // UNGEBUNDEN",
+        title: "KEIN JOB-POOL GEWÄHLT",
+        reason: "Dieses Feld wartet auf einen ausdrücklich gewählten Job-Pool.",
+        orientation: "Hochladen über AUFNAHME · Wählen über POOLS"
+      },
       support: {
         SUPPORTED: "GESTÜTZT (BEWERTETE EVIDENZ)",
         WEAK: "SCHWACHE STÜTZUNG (BEWERTET, DÜNN)",
