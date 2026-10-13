@@ -234,7 +234,7 @@ const panelStatement = (rule: string): React.CSSProperties => ({ fontFamily: SAN
  * the padding-box glass), brightest at the upper rim; inside the glass a still diagonal sheen. All static: the body's only motion
  * stays the panel aura and the edge current. */
 const BOUNDARY_BODY: React.CSSProperties = {
-  padding: "22px 24px 24px",
+  padding: "13px 24px 24px",
   borderRadius: "22px",
   border: "1px solid transparent",
   background: [...PANEL_TICKS.map(tick => tick.replace(/6px/g, "9px")).map(tick => `${tick.replace(/ no-repeat$/, "")} padding-box no-repeat`), "linear-gradient(112deg, transparent 18%, rgba(176, 236, 255, 0.032) 34%, transparent 46%, transparent 62%, rgba(176, 236, 255, 0.022) 74%, transparent 84%) padding-box", "radial-gradient(90% 55% at 50% -8%, rgba(92, 200, 255, 0.14), transparent 62%) padding-box", "radial-gradient(70% 50% at 50% 110%, rgba(84, 232, 236, 0.07), transparent 60%) padding-box", "linear-gradient(172deg, rgba(10, 26, 40, 0.96), rgba(4, 11, 20, 0.97) 55%, rgba(2, 7, 13, 0.98)) padding-box", `linear-gradient(180deg, rgba(186, 242, 255, 0.62), ${azure(0.3)} 18%, ${azure(0.16)} 52%, ${azure(0.26)} 86%, rgba(150, 230, 255, 0.4)) border-box`].join(", "),
@@ -330,7 +330,11 @@ ${SYNTX_FOCUS_PULSE_KEYFRAMES}
 @keyframes sxPanelCurrent { 0% { background-position: -40% 0; } 55%, 100% { background-position: 140% 0; } }
 [data-sx-panel]::before { content: ""; position: absolute; left: 14px; right: 14px; top: -1px; height: 1px; pointer-events: none; background: linear-gradient(90deg, transparent, rgba(190, 248, 255, 0.85), transparent) no-repeat; background-size: 30% 1px; opacity: .55; animation: sxPanelCurrent 18s cubic-bezier(.45, 0, .25, 1) infinite; }
 [data-sx-panel]::after { content: ""; position: absolute; inset: -1px; border-radius: inherit; pointer-events: none; z-index: -1; box-shadow: 0 0 40px rgba(92, 200, 255, 0.13), 0 0 14px rgba(92, 200, 255, 0.08), 0 0 2px rgba(150, 230, 255, 0.3); animation: atmosphereGlow 16s ease-in-out infinite; }
-[data-sx-panel="boundary"]::after { box-shadow: 0 0 56px rgba(92, 200, 255, 0.13), 0 0 18px rgba(92, 200, 255, 0.08), 0 0 1.5px rgba(176, 240, 255, 0.42), inset 0 0 28px rgba(92, 200, 255, 0.045); }
+[data-sx-panel="boundary"]::after { box-shadow: 0 0 56px rgba(92, 200, 255, 0.13), 0 0 18px rgba(92, 200, 255, 0.08), 0 0 1.5px rgba(176, 240, 255, 0.42), inset 0 0 32px rgba(56, 229, 255, 0.05); }
+/* The boundary's field presence: a resting cyan shimmer in the glass behind the four layers (seen through their glass), breathing on
+ * the panel aura's own name at 28 s — opacity only, barely perceptible; none in REDUCED. */
+[data-sx-boundary-layers]::before { content: ""; position: absolute; inset: -16px -14px -14px; z-index: -1; pointer-events: none; border-radius: 18px; background: radial-gradient(58% 64% at 26% 22%, rgba(56, 229, 255, 0.075), transparent 72%), radial-gradient(52% 60% at 78% 82%, rgba(92, 200, 255, 0.06), transparent 72%), radial-gradient(40% 40% at 52% 50%, rgba(84, 232, 236, 0.03), transparent 70%); animation: atmosphereGlow 28s ease-in-out infinite; }
+[data-sx-boundary-orientation]::before { content: ""; display: inline-block; width: 10px; height: 1px; margin-right: 8px; vertical-align: 3px; background: rgba(56, 229, 255, 0.55); box-shadow: 0 0 6px rgba(56, 229, 255, 0.6); }
 [data-sx-panel-node] [data-sx-panel-lamp] { animation: atmosphereGlow 10s ease-in-out infinite; }
 [data-sx-kicker]::before { content: ""; width: 6px; height: 6px; transform: rotate(45deg); flex-shrink: 0; border: 1px solid var(--sx-kicker); box-shadow: 0 0 8px var(--sx-kicker); }
 [data-sx-kicker]::after { content: ""; flex: 1; height: 1px; min-width: 0; background: linear-gradient(90deg, rgba(92, 200, 255, 0.4), transparent); }
@@ -1624,8 +1628,11 @@ export function SyntxField({ workflow, analysisSource, observation: requested, o
       {field !== null && field.boundary !== null && <div data-sx-boundary-veil aria-hidden="true" style={{ position: "absolute", inset: 0, zIndex: 44, pointerEvents: "none", opacity: boundaryOpen ? 1 : 0, background: "radial-gradient(ellipse 70% 65% at 50% 50%, rgba(2, 9, 16, 0.4), rgba(1, 4, 9, 0.66) 100%)", backdropFilter: boundaryOpen ? "blur(1.5px) saturate(0.8)" : "none", transition: "opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1)" }} />}
       {field !== null && field.boundary !== null && matching !== null && view !== null && (
         <section data-testid="job-pool-matches" data-matches-state={workflow.matches.state} data-ranking={describeRanking(matching.roleMatches)} hidden={!boundaryOpen} data-sx-reveal={boundaryOpen ? "true" : undefined} data-sx-surface="boundary" data-sx-panel="boundary" style={{ ...panel, ...BOUNDARY_BODY, display: boundaryOpen ? "flex" : "none", flexDirection: "column", gap: "16px", left: 0, right: 0, margin: "0 auto", top: "96px", width: "max(340px, min(760px, calc(100vw - 768px)))", maxHeight: "calc(100vh - 208px)", overflowY: "auto", zIndex: 46, animation: mode === "LIVE" && boundaryOpen ? "sxBoundaryOpen 0.6s cubic-bezier(0.16, 1, 0.3, 1) both" : undefined }}>
-          <span data-sx-kicker style={{ ...panelKicker(`rgba(${AMBER_RGB}, 0.85)`), fontSize: "11px", letterSpacing: "3.2px", color: "#e4f4fb", paddingBottom: "2px" }}>{t.boundary}</span>
-          <div data-sx-boundary-layers style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: "12px" }}>
+          <span data-sx-kicker style={{ ...panelKicker(`rgba(${AMBER_RGB}, 0.85)`), fontSize: "11px", letterSpacing: "3.2px", color: "#e4f4fb" }}>{t.boundary}</span>
+          {/* The orientation sentence: what this body is. It sits in the space the kicker gave up (padding 22 → 13), so the body and
+              its layers keep their exact boxes. */}
+          <span data-sx-boundary-orientation style={{ fontFamily: SANS, fontSize: "10.5px", lineHeight: "13px", letterSpacing: "0.2px", color: "rgba(200, 226, 240, 0.86)", margin: "-12px 0 -6px 0" }}>{t.boundaryOrientation}</span>
+          <div data-sx-boundary-layers style={{ position: "relative", display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: "12px" }}>
             {/* 1 · the presentation: what this field is and is not (its authority boundary) and how it is ordered. */}
             <div data-sx-section="presentation" style={boundaryLayer(azure(0.85))}>
               <span data-sx-boundary-heading style={boundaryHeading(azure(0.8))}><span aria-hidden="true">01</span>{tp.boundaryPresentation}</span>

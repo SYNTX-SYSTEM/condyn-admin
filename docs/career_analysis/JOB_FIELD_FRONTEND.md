@@ -897,6 +897,27 @@ LIVE and REDUCED: boundary box, the four layer boxes and every text leaf box ide
 animations and the veil's computed style identical; contrast of every text leaf against the glass under it (WCAG ratio) minimum
 4.07 → 5.85, technical lines 6.5 → 9.6–9.9, statements 12.5 → 13.4–13.8; boundary behaviour proof 44 / 44; field SSR + static 13 / 13.
 
+#### 13.2.16 Boundary: cyan field presence and orientation sentence (owner mandate, 2026-10-13)
+
+On 3fb340d. Local field: the boundary body (zone 1) and its micro light and type layer (zone 2).
+
+- **Cyan shimmer.** A resting cyan shimmer in the glass behind the four layers (`[data-sx-boundary-layers]::before`, z −1 inside the
+  body, seen through the layers' glass), breathing on the existing panel name `atmosphereGlow` at 28 s (opacity .5 ↔ .9 only); the aura's
+  inner light is now cyan. Measured swing between the two ends: mean 0.55 / 255 per channel, max 4 / 255 — field presence, no visible
+  pulse. None in REDUCED.
+- **Orientation sentence.** Directly under BOUNDARY (`data-sx-boundary-orientation`, `syntx.boundaryOrientation`): EN "Marks the
+  governance, authority and evaluation limits of this field state.", DE "Markiert Governance-, Autoritäts- und Bewertungsgrenzen dieses
+  Feldzustands." — small sans with a short cyan lead rule, aligned with the kicker's text. It takes the space the kicker gave up (body
+  padding-top 22 → 13 px, the kicker 9 px higher), so the body and its layers keep their exact boxes; one line at 1280 and 1600 px in
+  EN and DE (the DE line was shortened by its article to fit 1280).
+- No other text, id, attribute, state or behaviour changed; the veil unchanged.
+
+Proof (local only): `evidence/job-pool/semiotic-transfer/local-boundary-orientation/local-proof.json` — EN at 1600 × 1000 and 1280 × 720,
+LIVE and REDUCED: boundary box, scroll, the four layer boxes and every text leaf except the kicker (moved up 9 px as designed) identical
+to 3fb340d; text identical except the added sentence; contract identical; DE boxes and layer tops identical before / after; contrast
+with the shimmer frozen at its brightest: minimum 5.85 → 5.81, the sentence 8.7; behaviour proof 44 / 44; tsc 0; field SSR, static,
+SIL language contract, language wiring, field governance and presentation tests 48 / 48.
+
 ### 13.3 DOM contract (PINK BR-1 … BR-5; GELB conditions a/b)
 
 **BR-1 field root** `data-testid="syntx-field"`: `data-field-grammar="SYNTX_FIELD_V1"`, `data-observation-kind` FIELD|ORGANIZATION|ROLE|REQUIREMENT
@@ -1056,3 +1077,4 @@ observation point. Readable labels wrap at word boundaries (`wrapLines`), never 
 | 2026-10-13 | Local pass: meta dock, intake, boundary (owner "Medium-small field. Local recursion.", on a4488a3; visual only, isolated lab) | §13.2.13: one segmented meta bar in the header band (Job Field context only), intake lower, boundary headings and dashed limit chips. Evidence: `evidence/job-pool/semiotic-transfer/local-meta-intake-boundary/` | tsc 0; local proof 29 / 29; governance text and contracts identical; Capability controls unchanged; panel proof 24 / 24; language contract + Job Pool SSR 14 / 105 (no full sweep by owner rule) |
 | 2026-10-13 | Local pass: boundary as a focus state (owner "Small-to-medium field. Local recursion.", on 2f7d0ee; visual only, isolated lab) | §13.2.14: receding field behind a pointer-transparent veil, the boundary as a centred governance body with a layer grid and amber as accent only. Evidence: `evidence/job-pool/semiotic-transfer/local-boundary-focus/` | tsc 0; local proof 44 / 44; boundary text and contract identical; field SSR 8 / 8 (no full sweep by owner rule) |
 | 2026-10-13 | Boundary micro-finish (owner "SFE::BOUNDARY MICRO-FINISH", on f136859; visual only, isolated lab) | §13.2.15: static light membrane, sheen and layer rims; shared azure layer grammar, amber only on limits and status dots; heading, meta and statement typography. Evidence: `evidence/job-pool/semiotic-transfer/local-boundary-microfinish/` | tsc 0; geometry of boundary, layers and every text leaf identical; text and contract identical; animations unchanged; min contrast 4.07 → 5.85; behaviour proof 44 / 44; field SSR + static 13 / 13 (no full sweep by owner rule) |
+| 2026-10-13 | Boundary cyan presence + orientation sentence (owner mandate, on 3fb340d; visual + one copy line, isolated lab) | §13.2.16: resting cyan shimmer behind the layers (`atmosphereGlow` 28 s, opacity only), orientation sentence EN / DE under BOUNDARY in the space the kicker gave up. Evidence: `evidence/job-pool/semiotic-transfer/local-boundary-orientation/` | tsc 0; boundary, layers and text leaves identical (kicker −9 px by design); text identical except the sentence; contract identical; behaviour proof 44 / 44; 6 files / 48 tests (no full sweep by owner rule) |
