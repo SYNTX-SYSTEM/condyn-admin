@@ -408,6 +408,18 @@ ${SYNTX_FOCUS_PULSE_KEYFRAMES}
 [data-sx-panel="intake"] input:not([type="file"]):focus { border-color: rgba(56, 229, 255, 0.6); box-shadow: inset 0 1px 6px rgba(0, 0, 0, 0.45), 0 0 14px rgba(56, 229, 255, 0.14); }
 [data-sx-panel="intake"] input[type="file"]::file-selector-button { margin-right: 12px; padding: 6px 12px; border-radius: 6px; border: 1px solid rgba(56, 229, 255, 0.5); background: linear-gradient(180deg, rgba(56, 229, 255, 0.14), rgba(56, 229, 255, 0.04)); color: #c9f6ff; font-family: inherit; font-size: 9px; font-weight: 600; letter-spacing: 1.4px; text-transform: uppercase; cursor: pointer; }
 [data-sx-panel="intake"] input[type="file"]::file-selector-button:hover { border-color: rgba(56, 229, 255, 0.8); background: rgba(56, 229, 255, 0.16); }
+/* NO_POOL giant breath (owner mandate 2026-10-13; new motion kind, R15b approval by GELB required): one slow, heavy field breath of
+ * 10 s — a longer swell (0 → 46 %), a short hold, a softer release; opacity and transform only. Aura and seam swell, the outer
+ * membrane widens a few pixels, the red inner rings follow minimally and a little later. The information, the cyan ring and the
+ * cyan joints stay still. LIVE only; REDUCED keeps the static base (none). */
+@keyframes sxGiantBreath { 0%, 100% { opacity: 0.3; transform: scale(1); animation-timing-function: cubic-bezier(0.45, 0, 0.35, 1); } 46% { opacity: 1; transform: scale(1.05); } 58% { opacity: 0.94; transform: scale(1.046); animation-timing-function: cubic-bezier(0.5, 0, 0.6, 1); } }
+@keyframes sxGiantSeam { 0%, 100% { opacity: 0.18; animation-timing-function: cubic-bezier(0.45, 0, 0.35, 1); } 46% { opacity: 1; } 58% { opacity: 0.9; animation-timing-function: cubic-bezier(0.5, 0, 0.6, 1); } }
+@keyframes sxGiantMembrane { 0%, 100% { transform: scale(1); animation-timing-function: cubic-bezier(0.45, 0, 0.35, 1); } 46% { transform: scale(1.024); } 58% { transform: scale(1.022); animation-timing-function: cubic-bezier(0.5, 0, 0.6, 1); } }
+@keyframes sxGiantRing { 0%, 100% { opacity: 0.72; transform: scale(1); animation-timing-function: cubic-bezier(0.45, 0, 0.35, 1); } 46% { opacity: 1; transform: scale(1.012); } 58% { opacity: 0.96; transform: scale(1.011); animation-timing-function: cubic-bezier(0.5, 0, 0.6, 1); } }
+[data-testid="syntx-field"][data-motion-mode="LIVE"] [data-sx-giant-aura] { animation: sxGiantBreath 10s infinite; }
+[data-testid="syntx-field"][data-motion-mode="LIVE"] [data-sx-giant-seam] { animation: sxGiantSeam 10s infinite; }
+[data-testid="syntx-field"][data-motion-mode="LIVE"] [data-sx-giant-membrane] { animation: sxGiantMembrane 10s infinite; }
+[data-testid="syntx-field"][data-motion-mode="LIVE"] [data-sx-giant-ring] { animation: sxGiantRing 10s 0.35s infinite backwards; }
 @media (prefers-reduced-motion: reduce) {
   [data-testid="syntx-field"], [data-testid="syntx-field"] * { animation: none !important; transition: none !important; }
   [data-testid="syntx-field"] *::before, [data-testid="syntx-field"] *::after { animation: none !important; transition: none !important; }
@@ -1444,22 +1456,26 @@ const RUBY = (alpha: number): string => `rgba(255, 64, 86, ${alpha})`;
 /**
  * The red absence giant (owner "SFE::JOB FIELD RED ABSENCE GIANT", 2026-10-13): NO_POOL at the field drawn as one red semiotic
  * body on the field's centre — an unbound semantic centre, not an error. It means only "no explicit job pool selection" (a persisted
- * upload may exist); it leaves with the selection, when the job cosmos takes the centre. Static: rings, ticks and the outer ruby seam
- * do not move (no new motion; the existing finite reveal only).
+ * upload may exist); it leaves with the selection, when the job cosmos takes the centre. It breathes (sxGiant*, 10 s, LIVE only):
+ * aura, seam, outer membrane and red rings; the information, the cyan ring and the cyan joints never move.
  */
 function NoPoolGiant({ copy }: { copy: { status: string; title: string; reason: string; orientation: string } }) {
   const ring = (inset: string, border: string): React.CSSProperties => ({ position: "absolute", inset, borderRadius: "50%", border, pointerEvents: "none" });
   const node = (left: string, top: string): React.CSSProperties => ({ position: "absolute", left, top, width: "5px", height: "5px", marginLeft: "-2.5px", marginTop: "-2.5px", borderRadius: "50%", background: "#bff4ff", boxShadow: `0 0 6px ${CYAN}, 0 0 12px ${azure(0.5)}`, pointerEvents: "none" });
   return (
     <div data-testid="syntx-no-pool" data-sx-reveal="true" data-sx-no-pool-giant style={{ position: "absolute", left: "50%", top: "50%", transform: "translate(-50%, -50%)", width: NO_POOL_GIANT_SIZE, height: NO_POOL_GIANT_SIZE, zIndex: 3, display: "flex", alignItems: "center", justifyContent: "center" }}>
+      {/* The breathing aura beyond the contour (static at its base in REDUCED). */}
+      <div data-sx-giant-aura aria-hidden="true" style={{ position: "absolute", inset: 0, borderRadius: "50%", boxShadow: `0 0 30px 6px ${RUBY(0.42)}, 0 0 82px 18px rgba(214, 24, 56, 0.24)`, opacity: 0.62, pointerEvents: "none" }} />
       {/* The body: a dark, transparent interior inside a ruby seam with a soft aura beyond the contour. */}
       <div data-sx-giant-body aria-hidden="true" style={{ position: "absolute", inset: 0, borderRadius: "50%", border: `1.5px solid ${RUBY(0.72)}`, background: `radial-gradient(circle at 50% 46%, rgba(46, 8, 16, 0.5) 0%, rgba(14, 5, 10, 0.78) 58%, rgba(5, 5, 9, 0.9) 100%)`, boxShadow: `0 0 0 1px ${RUBY(0.1)}, 0 0 18px ${RUBY(0.34)}, 0 0 48px rgba(214, 24, 56, 0.2), inset 0 0 30px ${RUBY(0.16)}, inset 0 0 90px rgba(120, 8, 24, 0.28)`, pointerEvents: "none" }} />
       {/* Structure: the outer semiotic ring, a tick annulus, three inner rings (one in the field's cyan). */}
-      <div aria-hidden="true" style={ring("-14px", `1px dashed ${RUBY(0.34)}`)} />
-      <div aria-hidden="true" style={{ position: "absolute", inset: "-7px", borderRadius: "50%", background: `repeating-conic-gradient(from 0deg, ${RUBY(0.42)} 0deg 0.7deg, transparent 0.7deg 7.5deg)`, WebkitMaskImage: "radial-gradient(closest-side, transparent calc(100% - 5px), #000 calc(100% - 4px), #000 calc(100% - 1px), transparent 100%)", maskImage: "radial-gradient(closest-side, transparent calc(100% - 5px), #000 calc(100% - 4px), #000 calc(100% - 1px), transparent 100%)", pointerEvents: "none" }} />
-      <div aria-hidden="true" style={ring("9%", `1px solid ${RUBY(0.24)}`)} />
+      {/* The seam's light: swells and fades over the ruby contour. */}
+      <div data-sx-giant-seam aria-hidden="true" style={{ position: "absolute", inset: "-1px", borderRadius: "50%", border: `2px solid ${RUBY(0.85)}`, boxShadow: `0 0 12px ${RUBY(0.7)}, inset 0 0 14px ${RUBY(0.32)}`, opacity: 0.5, pointerEvents: "none" }} />
+      <div data-sx-giant-membrane aria-hidden="true" style={ring("-14px", `1px dashed ${RUBY(0.34)}`)} />
+      <div data-sx-giant-membrane aria-hidden="true" style={{ position: "absolute", inset: "-7px", borderRadius: "50%", background: `repeating-conic-gradient(from 0deg, ${RUBY(0.42)} 0deg 0.7deg, transparent 0.7deg 7.5deg)`, WebkitMaskImage: "radial-gradient(closest-side, transparent calc(100% - 5px), #000 calc(100% - 4px), #000 calc(100% - 1px), transparent 100%)", maskImage: "radial-gradient(closest-side, transparent calc(100% - 5px), #000 calc(100% - 4px), #000 calc(100% - 1px), transparent 100%)", pointerEvents: "none" }} />
+      <div data-sx-giant-ring aria-hidden="true" style={ring("9%", `1px solid ${RUBY(0.24)}`)} />
       <div aria-hidden="true" style={ring("17%", `1px dashed ${azure(0.2)}`)} />
-      <div aria-hidden="true" style={ring("27%", `1px solid ${RUBY(0.1)}`)} />
+      <div data-sx-giant-ring aria-hidden="true" style={ring("27%", `1px solid ${RUBY(0.1)}`)} />
       {/* Cyan joints on the seam (the link to the DLL field grammar) and two short technical ticks on the inner ring. */}
       <span aria-hidden="true" style={node("50%", "0%")} />
       <span aria-hidden="true" style={node("100%", "50%")} />

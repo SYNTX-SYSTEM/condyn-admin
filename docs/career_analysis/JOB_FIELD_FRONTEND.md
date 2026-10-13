@@ -1039,6 +1039,25 @@ selector, orientation surface, pool list or governance footer at either size; on
 uploads, none after the selection (click from NO_POOL: cosmos present, `jobPoolUploadId` in the URL, no non-GET request, LIVE and
 REDUCED); no animation on the giant; 19 files / 129 tests (one DE copy assertion updated to the new title).
 
+#### 13.2.22 The red absence giant breathes (owner "KEEP THE GIANT. MAKE IT BREATHE.", 2026-10-13)
+
+On 44cd561. Same giant, same form, position, copy and grammar; one slow field breath added (presence without binding).
+
+- **Breath.** 10 s per cycle, organic: a longer swell (0 → 46 %), a short hold (→ 58 %), a softer release; eased, no hard peak, no
+  flash, no scanner. Four layers, opacity and transform only: the red aura beyond the contour (`[data-sx-giant-aura]`, opacity .3 ↔ 1,
+  scale 1 ↔ 1.05), the light of the ruby seam (`[data-sx-giant-seam]`, opacity .18 ↔ 1), the outer membrane — dashed ring and tick
+  annulus — widening a few pixels (`[data-sx-giant-membrane]`, scale 1 ↔ 1.024, ≈ 5 px each side), the red inner rings following
+  minimally and .35 s later (`[data-sx-giant-ring]`, scale 1 ↔ 1.012).
+- **Still.** The information (status, title, explanation, orientation), the cyan ring, the cyan joints and ticks, the body's interior.
+- **Motion kinds.** `sxGiantBreath`, `sxGiantSeam`, `sxGiantMembrane`, `sxGiantRing` — new infinite motion, LIVE only
+  (`data-motion-mode="LIVE"`); REDUCED: none, a strong static base (aura .62, seam .5). R15b approval by GELB required.
+
+Proof (local only, review lab): `evidence/job-pool/semiotic-transfer/no-pool-giant-breath/` — real-time browser video of 2.4 cycles
+(`giant-breath-24s-1x.mp4`); wall-clock samples: aura opacity .30 ↔ 1.00 with lows at 5.6 s / 15.2 s and highs at 9.6 s / 19.8 s
+(10 s period); red light in the ring 18–64 px beyond the contour 9.5 → 32.4 (rest → peak, ×3.4), on the seam 87 → 126; the text block
+identical in every sample; REDUCED: no giant animation, static base; at the peak no collision at 1280 × 720 (membrane 466–814 /
+367–715); 19 files / 129 tests.
+
 ### 13.3 DOM contract (PINK BR-1 … BR-5; GELB conditions a/b)
 
 **BR-1 field root** `data-testid="syntx-field"`: `data-field-grammar="SYNTX_FIELD_V1"`, `data-observation-kind` FIELD|ORGANIZATION|ROLE|REQUIREMENT
@@ -1204,3 +1223,4 @@ observation point. Readable labels wrap at word boundaries (`wrapLines`), never 
 | 2026-10-13 | Resonance halo grammar, phase 1 prototype (owner mandate, on 6c88d9b; visual only, isolated lab) | §13.2.19: external cyan seam on the first organization and the orientation surface, strength from existing state (inactive / active / retreated), finite transitions; breathing only behind a lab flag (R15b approval required). Evidence: `evidence/job-pool/semiotic-transfer/resonance-prototype/` | tsc 0; geometry identical; states measured before / after; no new infinite motion by default; frame cost unchanged; boundary proof 44 / 44; 6 files / 54 tests (no full sweep by owner rule) |
 | 2026-10-13 | Capability Field: one typography for every red field state (owner "SFE::GLOBAL RED FIELD TYPOGRAPHY REFINEMENT", on 337033e; visual only, isolated lab) | §13.2.20: `SIL_RED_FIELD_TYPE` for the focused empty-projection copy and the labels of red bodies; the copy no longer recedes with the 0.42 focus anchor (`copyAboveAnchorOpacity`, Capability only); R10c proposal P-7. Evidence: `evidence/job-pool/semiotic-transfer/red-field-typography/` | tsc 0; 20 files / 102 tests; focus shell byte-identical without the flag (32 / 32); non-red bodies identical; geometry and animation names identical; copy contrast 1.65–3.62 → 8.5–19.4 |
 | 2026-10-13 | Job Field NO_POOL as the red absence giant (owner "SFE::JOB FIELD RED ABSENCE GIANT", on bb5e8e3; visual + copy, isolated lab) | §13.2.21: one static red semiotic body on the field centre with the NO_POOL information inside (EN / DE); same element, state and transition; no motion. Evidence: `evidence/job-pool/semiotic-transfer/no-pool-giant/` | tsc 0; 19 files / 129 tests; no collision at 1600 × 1000 and 1280 × 720; giant at NO_POOL (0 and 3 uploads), absent after selection; contrast 7.9–17.9 |
+| 2026-10-13 | The red absence giant breathes (owner mandate, on 44cd561; motion only, isolated lab) | §13.2.22: one slow 10 s field breath — aura, seam light, outer membrane and red rings (opacity / transform); text, cyan ring and joints still; LIVE only, REDUCED static; new motion kinds `sxGiant*` (R15b approval required). Evidence: `evidence/job-pool/semiotic-transfer/no-pool-giant-breath/` | tsc 0; 19 files / 129 tests; video 2.4 cycles; aura light ×3.4 rest → peak; text block identical in every sample; no collision at the peak |
