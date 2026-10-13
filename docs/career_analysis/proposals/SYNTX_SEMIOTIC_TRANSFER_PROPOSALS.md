@@ -118,6 +118,11 @@ in REDUCED) — proposed for the R15b list as a shell transition.
 Changes to the shell are admitted when every Capability manifestation render stays byte-identical and the shell renders differ only
 by the selector and its shell markers."
 
+Addition (owner mandate "NEW BRAND CORE", 2026-10-13): the application header follows the active field — in the Job Field context
+it names Decision Loop Labs with the brand mark; the Capability context's header is unchanged (byte- and pixel-identical). The
+header lives in `CareerIntelligenceDashboard`, outside the Capability render baseline; `SemanticCareerIntelligenceField` gained one
+optional callback (`onFieldFocusChange`) and renders unchanged. No new motion (the brand layers are static; nothing to add to R15b).
+
 ## Owner decisions
 
 None beyond the visual approval. After it, GELB records P-1 and P-2, and PINK applies P-3 / P-4 and validates. The move of

@@ -16,6 +16,7 @@ import { resolveSilFocusedManifestationPresentation } from "../../../../lib/care
 import { describeRanking, describeSelection, type JobPoolAnalysisSource } from "../../../../lib/career/job-pool/frontend-presentation";
 import { useJobPoolWorkflow } from "../../../../lib/career/ui/useJobPool";
 import { useAnalysisSources } from "../../../../lib/career/ui/useJobPoolSources";
+import { DecisionLoopLabsCoreEmblem, DLL_TEAL } from "./DecisionLoopLabsMark";
 import {
   deriveSyntxField,
   inspectSign,
@@ -109,12 +110,37 @@ const MINT = "#7effcc";
  * resting rays, containment) lean from the Capability Field's cyan (189°) towards azure (201°). Active resonance stays CYAN, evidence
  * MINT, the authority boundary AMBER, missing support NEUTRAL: no state, evidence category or boundary changes its colour. */
 const azure = (alpha: number): string => `rgba(92, 200, 255, ${alpha})`;
-const JOB_PLANETARIUM_TONE = { glow: "#4fb8ff", orbit: azure(0.13), ring: azure(0.17), node: azure(0.42), dust: azure(0.28) };
-const JOB_FIELD_ATMOSPHERE = "radial-gradient(ellipse 72% 62% at 50% 54%, rgba(22, 62, 118, 0.14), transparent 72%), radial-gradient(ellipse 50% 40% at 88% 8%, rgba(92, 200, 255, 0.045), transparent 70%), radial-gradient(ellipse 46% 36% at 8% 96%, rgba(40, 92, 170, 0.06), transparent 70%)";
-const JOB_COSMOS_BACKDROP = "radial-gradient(ellipse at 50% 48%, rgba(16, 46, 82, 0.24) 0%, rgba(4, 9, 20, 0.74) 50%, rgba(1, 3, 9, 0.96) 100%)";
+const JOB_PLANETARIUM_TONE = { glow: "#4cc4f0", orbit: azure(0.13), ring: azure(0.17), node: azure(0.42), dust: azure(0.28) };
+const JOB_FIELD_ATMOSPHERE = "radial-gradient(circle at 50% 55%, rgba(56, 212, 222, 0.07), transparent 30%), radial-gradient(ellipse 72% 62% at 50% 54%, rgba(18, 66, 112, 0.14), transparent 72%), radial-gradient(ellipse 50% 40% at 88% 8%, rgba(92, 200, 255, 0.045), transparent 70%), radial-gradient(ellipse 46% 36% at 8% 96%, rgba(40, 92, 170, 0.06), transparent 70%)";
+const JOB_COSMOS_BACKDROP = "radial-gradient(ellipse at 50% 48%, rgba(14, 52, 80, 0.24) 0%, rgba(4, 9, 20, 0.74) 50%, rgba(1, 3, 9, 0.96) 100%)";
 const JOB_COSMOS_STARS: React.CSSProperties = { ...SYNTX_COSMOS_STARS, backgroundImage: "radial-gradient(circle at 16% 22%, rgba(92, 200, 255, 0.3) 0 1px, transparent 1.5px), radial-gradient(circle at 76% 31%, rgba(126, 255, 204, 0.16) 0 1px, transparent 1.5px), radial-gradient(ellipse at 70% 76%, rgba(26, 70, 132, 0.14), transparent 52%)" };
-const JOB_DEEP_FOCUS_BACKDROP = "radial-gradient(circle at 50% 42%, rgba(18, 62, 98, 0.24), transparent 26%), radial-gradient(ellipse at 50% 54%, rgba(3, 11, 24, 0.64), rgba(1, 3, 9, 0.97) 76%)";
+const JOB_DEEP_FOCUS_BACKDROP = "radial-gradient(circle at 50% 42%, rgba(16, 68, 96, 0.24), transparent 26%), radial-gradient(ellipse at 50% 54%, rgba(3, 11, 24, 0.64), rgba(1, 3, 9, 0.97) 76%)";
 const JOB_ORBIT = azure(0.2);
+/* Decision Loop Labs brand field (the logo's instrument ground): a fine technical grid that clears around the core and fades at the
+ * edges, and four registration brackets framing every level. Static, behind or beside every sign; colour from the brand's teal. */
+const JOB_FIELD_BRAND_GRID: React.CSSProperties = {
+  position: "absolute",
+  inset: 0,
+  pointerEvents: "none",
+  backgroundImage: `repeating-linear-gradient(0deg, ${DLL_TEAL(0.03)} 0 1px, transparent 1px 56px), repeating-linear-gradient(90deg, ${DLL_TEAL(0.03)} 0 1px, transparent 1px 56px)`,
+  maskImage: "radial-gradient(ellipse 78% 74% at 50% 55%, transparent 14%, #000 42%, rgba(0, 0, 0, 0.55) 72%, transparent 100%)",
+  WebkitMaskImage: "radial-gradient(ellipse 78% 74% at 50% 55%, transparent 14%, #000 42%, rgba(0, 0, 0, 0.55) 72%, transparent 100%)"
+};
+const BRAND_BRACKET = 18;
+function BrandFrame() {
+  const arm = `1px solid ${DLL_TEAL(0.3)}`;
+  const corners: Array<[string, React.CSSProperties]> = [
+    ["tl", { left: "12px", top: "12px", borderLeft: arm, borderTop: arm }],
+    ["tr", { right: "12px", top: "12px", borderRight: arm, borderTop: arm }],
+    ["bl", { left: "12px", bottom: "calc(var(--condyn-page-header-height, 60px) + 12px)", borderLeft: arm, borderBottom: arm }],
+    ["br", { right: "12px", bottom: "calc(var(--condyn-page-header-height, 60px) + 12px)", borderRight: arm, borderBottom: arm }]
+  ];
+  return (
+    <div data-sx-brand-frame="dll" aria-hidden="true" style={{ position: "absolute", inset: 0, pointerEvents: "none", zIndex: 46 }}>
+      {corners.map(([key, style]) => <span key={key} style={{ position: "absolute", width: `${BRAND_BRACKET}px`, height: `${BRAND_BRACKET}px`, ...style }} />)}
+    </div>
+  );
+}
 /** Resting cards of the cosmos (roles, requirements) and the deep-focus satellites: the cosmos materials in the field's azure register.
  * The focused centres (cosmos centre, nucleus) keep the cyan of active resonance. */
 const JOB_NODE_MATERIAL: React.CSSProperties = {
@@ -435,9 +461,11 @@ function PlanetariumLayer({ field, mode, t, locale, size, onObserve }: LayerProp
         data-sx-pool-core
         style={{ position: "absolute", left: "50%", top: "50%", zIndex: 10, pointerEvents: "none", opacity: anchored ? 0.12 : hoveredHere ? 0.35 : 1, transform: `translate(-50%, -50%) scale(${anchored ? 0.62 : hoveredHere ? 0.85 : 1})`, filter: anchored ? "blur(3px) grayscale(92%)" : hoveredHere ? "grayscale(80%)" : undefined, transition: "all 0.5s ease" }}
       >
+        {/* The brand membrane: the logo's teal light gathered under the organism (static; the organism's own breath carries it). */}
+        <span data-sx-brand-membrane="dll" aria-hidden="true" style={{ position: "absolute", left: "50%", top: "50%", width: "340px", height: "340px", transform: "translate(-50%, -50%)", borderRadius: "50%", zIndex: -1, pointerEvents: "none", background: `radial-gradient(circle, ${DLL_TEAL(0.12)} 0%, ${DLL_TEAL(0.05)} 38%, transparent 66%)` }} />
         <SyntxCoreOrganism keyframes={false} testId="syntx-pool-core" highlighted={hoveredHere !== null} communicating={hoveredHere !== null} outerRingLit={false}>
           <div style={{ textAlign: "center", zIndex: 2, display: "flex", flexDirection: "column", alignItems: "center", maxWidth: "176px" }}>
-            <div style={{ width: "92px", height: "92px", borderRadius: "50%", border: `2px solid ${CYAN}`, boxShadow: `0 0 20px ${CYAN}`, marginBottom: "8px", backgroundColor: "#000", display: "flex", alignItems: "center", justifyContent: "center", color: CYAN, fontSize: "40px", lineHeight: 1 }} aria-hidden="true">⬡</div>
+            <DecisionLoopLabsCoreEmblem idPrefix="sx-pool-dll" />
             <div style={{ fontSize: "10px", color: CYAN, letterSpacing: "2px", fontWeight: 700, textTransform: "uppercase" }}>{tm.pool}</div>
             <div style={{ marginTop: "3px", fontSize: "9.5px", color: INK, letterSpacing: "0.6px", fontWeight: 700, textTransform: "uppercase", lineHeight: 1.25 }}>{wrapLines(field.pool.poolName, 18, 2).join(" ")}</div>
             <div style={{ marginTop: "6px", fontSize: "10px", color: INK, padding: "3px 10px", borderRadius: "12px", backgroundColor: "rgba(56, 229, 255, 0.12)", border: `1px solid ${CYAN}`, letterSpacing: "0.5px" }}>⬡ {field.organizations.length} {t.organizations}</div>
@@ -1321,6 +1349,8 @@ export function SyntxField({ workflow, analysisSource, observation: requested, o
       style={{ position: "absolute", inset: 0, zIndex: 45, backgroundColor: "rgba(3, 5, 8, 0.9)", backgroundImage: JOB_FIELD_ATMOSPHERE, backdropFilter: "blur(8px)", fontFamily: MONO, color: INK, outline: "none", animation: mode === "LIVE" ? "sxEnter 620ms ease-out both" : undefined }}
     >
       <style>{SYNTX_CSS}</style>
+      <div data-sx-brand-field="dll" aria-hidden="true" style={JOB_FIELD_BRAND_GRID} />
+      <BrandFrame />
 
       {/* BR-4: the screen-reader summary of the observation point, generated from the same view model as the signs. */}
       <p data-testid="syntx-summary" data-summary-for={observationId} aria-live="polite" style={visuallyHidden}>{summary ?? ""}</p>

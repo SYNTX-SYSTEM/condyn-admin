@@ -701,6 +701,39 @@ renders of the Capability shell differ only by the selector and the shell marker
 cards pass over the field's left info panel (pool / organization line, key hints) for part of their turn; at 1600 px they do not.
 Not changed in this pass (the orbit's width is the layout's).
 
+#### 13.2.7 Decision Loop Labs brand core (owner "ONE FIELD GRAMMAR. NEW BRAND CORE.", GO 2026-10-13)
+
+On a047f53. Visual only: no function, data, matching, governance, state, id, navigation, click or keyboard change; no new motion.
+Reference: the owner's Decision Loop Labs logo (spelling of the brand name taken from it: "DECISION LOOP LABS" / Decision Loop Labs).
+
+- **Brand mark (`DecisionLoopLabsMark.tsx`).** The DLL sign of the logo (the loop and the two L, each a segmented double light
+  track) traced once into one vector path and rendered as field light: a soft glow copy, the crisp sign with a cool vertical light
+  gradient (white → the logo's teal), a faint scan-line layer clipped to the sign (holographic, static) and a two-step teal
+  drop-shadow. No raster image, no sticker: the sign is drawn in the field's own light. `aria-hidden`, purely visual.
+- **Core integration.** The pool core's emblem (the 92 px black disc with ⬡) is now the brand lens
+  (`DecisionLoopLabsCoreEmblem`, 100 px): dark glass with the teal light membrane, a fine registration ring with four precision
+  ticks (the logo's instrument frame) and the mark at its centre. The shared core organism (breath, plasma rings, flare, waves,
+  rings) is unchanged and carries the lens; under it a static teal brand membrane gathers the light. JOB POOL, the pool name and
+  the organization count stay as they were.
+- **Brand surface (header).** In the Job Field context the application header reads **DECISION LOOP LABS / SYNTX — SEMANTIC CAREER
+  INTELLIGENCE FIELD** with the vector mark (header height unchanged, 61 px). The header follows the active field live
+  (`SemanticCareerIntelligenceField.onFieldFocusChange`, optional; the dashboard holds the active field). The Capability context
+  keeps its header byte- and pixel-identical (CONDYN / SYNTX …). Not renamed: data (the sample pool's name "CONDYN Sample Tech
+  Job Pool" is uploaded data), ids, providers, the codex and onboarding texts (shared content of both fields).
+- **Background.** A fine technical grid (56 px, teal 3 %) that clears around the core and fades to the edges, four registration
+  brackets framing every level (teal 30 %), and a slight teal calibration of the atmosphere, the planetarium glow and the cosmos /
+  deep-focus centres. All static, pointer-transparent and behind or beside every sign; semantic colours (cyan active, mint
+  evidence, amber authority, neutral missing) unchanged.
+
+Proof: `evidence/job-pool/semiotic-transfer/brand-core/` (`brand-proof.json`: 20 checks in LIVE and REDUCED — header names the brand
+in the Job Field and returns to the unchanged CONDYN header in the Capability context on a live switch, header height, emblem in
+the core, no animation and no pointer on the brand layers, ids kept in the URL, no page errors). Capability renders unchanged
+against a047f53 (366 / 374 byte-identical, 374 / 374 after removing the selector and shell markers).
+
+**Open owner decision O-DLL-SCOPE:** the mandate scoped the brand to the Job Field context, so the header switches with the field.
+If Decision Loop Labs is to be the brand of the whole application (Capability context, codex, onboarding), that is one further
+shell change (the Capability header renders would change; R10b).
+
 ### 13.3 DOM contract (PINK BR-1 … BR-5; GELB conditions a/b)
 
 **BR-1 field root** `data-testid="syntx-field"`: `data-field-grammar="SYNTX_FIELD_V1"`, `data-observation-kind` FIELD|ORGANIZATION|ROLE|REQUIREMENT
@@ -851,3 +884,4 @@ observation point. Readable labels wrap at word boundaries (`wrapLines`), never 
 | 2026-10-13 | Semiotic finishing pass (owner "SFE — GREEN · SEMIOTIC FINISHING PASS", on 00e9103; visual only, GREEN only, isolated lab) | §13.2.4: Job Field resonance tone (azure atmosphere and resting structure; semantic colours unchanged), organization bodies as lit resonance spheres with a slow atmosphere halo and a calm light reaction, the source carrier as a document membrane with a vector glyph, the aperture with more depth and a slower two-tone glow; O-JF-LABEL documented. Shared components: optional tone props only (Capability renders 374 / 374 byte-identical). Before / after: `evidence/job-pool/semiotic-transfer/finishing/` | tsc 0; Capability renders 374 / 374 byte-identical; unit / SSR / governance / sealed SIL / Capability batch 32 files / 192; workflow e2e 10/10; PINK walk with the proposed rebinding 3/3 (Q-01 … Q-11, Q-06 and carried states PASS; report under finishing/pink-walk-proposal) |
 | 2026-10-13 | Final visual finishing pass (owner "FINAL VISUAL FINISHING PASS — JOB FIELD", on d16db44; visual only, GREEN only, isolated lab) | §13.2.5: organization bodies with a still light membrane, corona, calmed signature and reading halos; the source carrier as a document sheet (folded corner, ruled ground, outline glow); the aperture with field ground, quotation marks in the relation colour, layer hairline and a lifted governance zone; resting cards and satellites in the azure register; O-JF-LABEL extended. Before / after: `evidence/job-pool/semiotic-transfer/final-pass/` | tsc 0; Capability renders 374 / 374 byte-identical (sha256 unchanged); unit / SSR / governance / sealed SIL / Capability batch 32 files / 192; workflow e2e 10/10; PINK walk with the proposed rebinding 3/3 (report under final-pass/pink-walk-proposal) |
 | 2026-10-13 | Field selector & final readability (owner "SFE — GREEN · FIELD SELECTOR & FINAL READABILITY", on f96217f; GREEN only, isolated lab) | §13.2.6: SYNTX field selector in the application shell (two equal fields, exactly one active, exclusive visibility, calm veil, keyboard ←/→), organization body typography (signature clears the reading area, reading plates, opaque hovered interior, rim tether), organization cosmos role-label clearance (O-JF-LABEL resolved); O-JF-PANEL documented. Evidence: `evidence/job-pool/semiotic-transfer/field-selector/` | tsc 0; Capability renders 366 / 374 byte-identical, the 8 shell renders identical after removing the selector and shell markers; unit / SSR / governance / sealed SIL / Capability batch 32 files / 192; workflow e2e 10/10; PINK walk with the proposed rebinding 3/3; selector proof 25 / 25 (exclusivity, ids, deep link, keyboard, reduced motion, role-card clearance at 1600 × 1000 and 1280 × 720) |
+| 2026-10-13 | Decision Loop Labs brand core (owner "ONE FIELD GRAMMAR. NEW BRAND CORE.", on a047f53; visual only, GREEN only, isolated lab) | §13.2.7: the DLL mark as field light in the pool core's lens, the Job Field header as Decision Loop Labs (Capability header unchanged), a static brand grid and registration frame, slight teal calibration; O-DLL-SCOPE open. Evidence: `evidence/job-pool/semiotic-transfer/brand-core/` | tsc 0; Capability renders 366 / 374 byte-identical, 374 / 374 after removing the selector and shell markers (unchanged against a047f53); unit / SSR / governance / sealed SIL / Capability batch 32 files / 193 (one new SSR test for the brand surface); workflow e2e 10/10; PINK walk with the proposed rebinding 3/3 (report under brand-core/pink-walk-proposal; the walk caught a first header test id under the retired `job-field…` prefix, renamed to `shell-brand-dll`); brand proof 20 / 20; selector proof 25 / 25 |

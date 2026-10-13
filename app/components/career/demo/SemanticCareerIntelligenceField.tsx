@@ -60,6 +60,8 @@ export interface SemanticCareerIntelligenceFieldProps {
   jobOrganizationId?: string;
   jobRoleId?: string;
   jobRequirementId?: string;
+  /** The application shell's brand surface follows the active field (Decision Loop Labs in the Job Field context). */
+  onFieldFocusChange?: (focus: "CAPABILITY" | "FIELD") => void;
   initialAnalysisState?: {
     isAnalyzing?: boolean;
     analysisStep?: string | null;
@@ -224,6 +226,7 @@ export function SemanticCareerIntelligenceField({
   jobOrganizationId: initialJobOrganizationId,
   jobRoleId: initialJobRoleId,
   jobRequirementId: initialJobRequirementId,
+  onFieldFocusChange,
   initialAnalysisState,
   initialLocale = SIL_COPY.defaultLocale,
   initialFocus
@@ -288,6 +291,7 @@ export function SemanticCareerIntelligenceField({
   const switchFieldFocus = (next: "CAPABILITY" | "FIELD") => {
     if (next !== fieldFocus) setFieldSwitches(count => count + 1);
     setFieldFocus(next);
+    onFieldFocusChange?.(next);
     const selectedUpload = jobPoolWorkflow.selectedJobPoolUploadId ?? jobPoolUploadId ?? null;
     replaceUrlParam("focus", next === "CAPABILITY" ? (selectedUpload ? "CAPABILITY" : null) : next);
     if (next === "CAPABILITY") { setObservation(FIELD_LEVEL); writeObservation(FIELD_LEVEL); }

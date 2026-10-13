@@ -1,0 +1,103 @@
+{
+  "base": "http://127.0.0.1:43527",
+  "passed": 20,
+  "total": 20,
+  "checks": [
+    {
+      "name": "no-preference: Job Field header names Decision Loop Labs",
+      "ok": true,
+      "detail": "DECISION LOOP LABS / SYNTX — SEMANTIC CAREER INTELLIGENCE FIELD"
+    },
+    {
+      "name": "no-preference: header height unchanged (61 px)",
+      "ok": true,
+      "detail": 61
+    },
+    {
+      "name": "no-preference: pool core carries the DLL emblem (aria-hidden)",
+      "ok": true,
+      "detail": "{\"emblem\":true,\"mark\":true,\"hidden\":\"true\"}"
+    },
+    {
+      "name": "no-preference: brand layers carry no animation",
+      "ok": true,
+      "detail": "11 elements"
+    },
+    {
+      "name": "no-preference: brand field, frame and membrane take no pointer",
+      "ok": true
+    },
+    {
+      "name": "no-preference: Capability context keeps the CONDYN header",
+      "ok": true,
+      "detail": "CONDYN / SYNTX — SEMANTIC CAREER INTELLIGENCE FIELD"
+    },
+    {
+      "name": "no-preference: no Job Field brand layer in the Capability context",
+      "ok": true
+    },
+    {
+      "name": "no-preference: back in the Job Field the header names Decision Loop Labs",
+      "ok": true,
+      "detail": "DECISION LOOP LABS / SYNTX — SEMANTIC CAREER INTELLIGENCE FIELD"
+    },
+    {
+      "name": "no-preference: URL keeps focus, analysis and pool ids",
+      "ok": true,
+      "detail": "?focus=FIELD&analysisId=ANL_JOB_POOL_E2E_0001&jobPoolUploadId=JPOOL_30F7145E21F34BEF0FCE510DFC75837B"
+    },
+    {
+      "name": "no-preference: no page errors",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "reduce: Job Field header names Decision Loop Labs",
+      "ok": true,
+      "detail": "DECISION LOOP LABS / SYNTX — SEMANTIC CAREER INTELLIGENCE FIELD"
+    },
+    {
+      "name": "reduce: header height unchanged (61 px)",
+      "ok": true,
+      "detail": 61
+    },
+    {
+      "name": "reduce: pool core carries the DLL emblem (aria-hidden)",
+      "ok": true,
+      "detail": "{\"emblem\":true,\"mark\":true,\"hidden\":\"true\"}"
+    },
+    {
+      "name": "reduce: brand layers carry no animation",
+      "ok": true,
+      "detail": "11 elements"
+    },
+    {
+      "name": "reduce: brand field, frame and membrane take no pointer",
+      "ok": true
+    },
+    {
+      "name": "reduce: Capability context keeps the CONDYN header",
+      "ok": true,
+      "detail": "CONDYN / SYNTX — SEMANTIC CAREER INTELLIGENCE FIELD"
+    },
+    {
+      "name": "reduce: no Job Field brand layer in the Capability context",
+      "ok": true
+    },
+    {
+      "name": "reduce: back in the Job Field the header names Decision Loop Labs",
+      "ok": true,
+      "detail": "DECISION LOOP LABS / SYNTX — SEMANTIC CAREER INTELLIGENCE FIELD"
+    },
+    {
+      "name": "reduce: URL keeps focus, analysis and pool ids",
+      "ok": true,
+      "detail": "?focus=FIELD&analysisId=ANL_JOB_POOL_E2E_0001&jobPoolUploadId=JPOOL_30F7145E21F34BEF0FCE510DFC75837B"
+    },
+    {
+      "name": "reduce: no page errors",
+      "ok": true,
+      "detail": ""
+    }
+  ]
+}

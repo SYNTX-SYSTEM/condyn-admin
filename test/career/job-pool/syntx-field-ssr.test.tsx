@@ -81,6 +81,9 @@ describe("SYNTX field (server-rendered)", () => {
     expect(html).toMatch(new RegExp(`data-testid="syntx-field"[^>]*data-field-grammar="SYNTX_FIELD_V1"[^>]*data-observation-kind="FIELD"[^>]*data-observation-id="${UPLOAD_ID}"[^>]*data-aperture-open="false"[^>]*data-motion-mode="LIVE"[^>]*data-field-state="AVAILABLE"`));
     expect(html).toContain('data-matching-delivered="true"');
     expect(html).toContain('data-sign-count="4"');
+    // The pool core carries the Decision Loop Labs emblem; the brand field and frame are decoration only (aria-hidden).
+    expect(html).toMatch(/data-testid="syntx-pool-core"[\s\S]*data-sx-brand-core="dll"[^>]*aria-hidden="true"/);
+    expect(html).toMatch(/data-sx-brand-field="dll" aria-hidden="true"/);
     expect(html).toMatch(/data-testid="syntx-pool"[^>]*data-sign-id="field:JPOOL_0123456789abcdef"[^>]*data-sign-source="canonical_entity"[^>]*data-sign-relation="contains"[^>]*data-sign-state="field"[^>]*data-sign-manifestation="region"/);
     expect(html).toMatch(/data-testid="syntx-organization-ORG_1"[^>]*data-role-count="2"[^>]*data-sign-id="org:ORG_1"[^>]*data-sign-relation="contains"[^>]*data-sign-state="field"[^>]*data-sign-manifestation="region"[^>]*data-sign-interaction="select"[^>]*data-sign-transition="recenter"[^>]*data-proof-upload-id="JPOOL_0123456789abcdef"[^>]*data-proof-organization-id="ORG_1"[^>]*data-proof-target-id="TOENT_1"/);
     expect(html).toMatch(/data-testid="syntx-role-ROLE_A"[^>]*data-requirement-count="2"[^>]*data-matching-read="true"[^>]*data-sign-id="role:ROLE_A"[^>]*data-sign-relation="contains"[^>]*data-sign-manifestation="carrier"[^>]*data-proof-upload-id="JPOOL_0123456789abcdef"[^>]*data-proof-organization-id="ORG_1"[^>]*data-proof-role-id="ROLE_A"[^>]*data-proof-target-id="TROB_A"/);
@@ -176,5 +179,17 @@ describe("SYNTX field (server-rendered)", () => {
     expect(dash).toContain('data-observation-kind="ROLE"');
     expect(dash).toContain('data-observation-id="ROLE_B"');
     expect(dash).toContain(`data-job-pool-upload="JPOOL_WITH_MATCHES"`);
+  });
+
+  it("brands the Job Field context as Decision Loop Labs (header and pool core); the Capability context keeps its header", () => {
+    const job = renderToString(<CareerIntelligenceDashboard data={EMPTY_CAREER_INTELLIGENCE_DATA} fieldFocus="FIELD" jobPoolUploadId="JPOOL_WITH_MATCHES" analysisId="ANL_TEST" />);
+    expect(job).toMatch(/data-testid="shell-brand-dll"[^>]*data-sx-brand="dll"/);
+    expect(job).toContain("DECISION LOOP LABS");
+    expect(job).toContain("/ SYNTX — SEMANTIC CAREER INTELLIGENCE FIELD");
+    expect(job).not.toContain("CONDYN / SYNTX — SEMANTIC CAREER INTELLIGENCE FIELD");
+    const capability = renderToString(<CareerIntelligenceDashboard data={EMPTY_CAREER_INTELLIGENCE_DATA} />);
+    expect(capability).toContain("CONDYN / SYNTX — SEMANTIC CAREER INTELLIGENCE FIELD");
+    expect(capability).not.toContain("shell-brand-dll");
+    expect(capability).not.toContain("data-sx-brand-mark");
   });
 });
