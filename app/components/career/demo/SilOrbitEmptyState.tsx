@@ -1,5 +1,5 @@
 import React from "react";
-import { SIL_TOKENS } from "./SILTokens";
+import { SIL_RED_FIELD_TYPE, SIL_TOKENS } from "./SILTokens";
 import type { SilOrbitEmptyStatePresentation } from "../../../../lib/career/view-model/orbit-empty-state";
 import { getOrbitAccentColor } from "./OrbitalResonanceBubble";
 
@@ -42,15 +42,7 @@ export function SilOrbitEmptyStateCopy({
         color: SIL_TOKENS.colors.textPrimary
       }}
     >
-      <div
-        style={{
-          fontSize: "8px",
-          fontWeight: 800,
-          letterSpacing: "2.2px",
-          color: "rgba(255, 91, 101, 0.96)",
-          textShadow: "0 0 9px rgba(255, 56, 68, 0.72)"
-        }}
-      >
+      <div style={SIL_RED_FIELD_TYPE.status}>
         {state.label}
       </div>
 
@@ -72,15 +64,11 @@ export function SilOrbitEmptyStateCopy({
       <div
         style={{
           marginTop: "13px",
-          maxWidth: "300px",
-          fontSize: "15px",
-          lineHeight: 1.18,
-          fontWeight: 900,
-          letterSpacing: "1px",
-          color: SIL_TOKENS.colors.textPrimary,
+          maxWidth: "330px",
+          ...SIL_RED_FIELD_TYPE.heading,
           textShadow: `
-            0 0 12px ${accent}66,
-            0 0 18px rgba(255, 56, 68, 0.24)
+            0 0 12px ${accent}4d,
+            0 0 18px rgba(255, 56, 68, 0.2)
           `
         }}
       >
@@ -90,10 +78,8 @@ export function SilOrbitEmptyStateCopy({
       <div
         style={{
           marginTop: "14px",
-          maxWidth: "300px",
-          fontSize: "10px",
-          lineHeight: 1.55,
-          color: SIL_TOKENS.colors.textMuted
+          maxWidth: "330px",
+          ...SIL_RED_FIELD_TYPE.body
         }}
       >
         {state.reason}
@@ -102,10 +88,8 @@ export function SilOrbitEmptyStateCopy({
       <div
         style={{
           marginTop: "14px",
-          fontSize: "7px",
-          letterSpacing: "1.5px",
-          color: accent,
-          opacity: 0.58
+          ...SIL_RED_FIELD_TYPE.mark,
+          color: accent
         }}
       >
         ORBIT {stageId} // STRUCTURAL ABSENCE

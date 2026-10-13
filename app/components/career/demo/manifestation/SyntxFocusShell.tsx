@@ -42,6 +42,11 @@ export interface FocusTransitionStageShellProps {
   children: React.ReactNode;
   /** Emit the pulse keyframes with the shell (default); a field that declares them once at its root passes false. */
   pulseKeyframes?: boolean;
+  /**
+   * The anchor's 0.42 recedes the body, its underlay and its pulse only; the empty-projection copy stays at full opacity
+   * (Capability Field, red field typography 2026-10-13). Off by default: the shell then renders exactly as before.
+   */
+  copyAboveAnchorOpacity?: boolean;
 }
 
 const FOCUSED_STAGE_BUBBLE_OUTER_RADIUS = (168 + 16 * 2 + 1.5 * 2) / 2;
@@ -61,8 +66,87 @@ export function FocusTransitionStageShell({
   emptyVisualUnderlay,
   emptyCopyForeground,
   children,
-  pulseKeyframes = true
+  pulseKeyframes = true,
+  copyAboveAnchorOpacity = false
 }: FocusTransitionStageShellProps) {
+  const underlay = emptyVisualUnderlay && (
+    <div
+      data-testid={`empty-visual-underlay-${stageId}`}
+      style={{
+        position: "absolute",
+        left: "50%",
+        top: "50%",
+        width: 0,
+        height: 0,
+        zIndex: 0,
+        pointerEvents: "none"
+      }}
+    >
+      {emptyVisualUnderlay}
+    </div>
+  );
+  const bubble = (
+    <div
+      data-testid={`focused-stage-bubble-${stageId}`}
+      style={{ position: "relative", zIndex: 1 }}
+    >
+      {children}
+    </div>
+  );
+  const copy = emptyCopyForeground && (
+    <div
+      data-testid={`empty-copy-foreground-${stageId}`}
+      style={{
+        position: "absolute",
+        left: "50%",
+        top: `calc(50% - ${FOCUSED_STAGE_BUBBLE_OUTER_RADIUS + FOCUSED_EMPTY_COPY_GAP}px)`,
+        width: "390px",
+        transform: "translateX(-50%) translateY(-100%)",
+        zIndex: 3,
+        pointerEvents: "none"
+      }}
+    >
+      {emptyCopyForeground}
+    </div>
+  );
+  const pulse = showFocusPulse && (
+    <>
+      {pulseKeyframes && <style>{SYNTX_FOCUS_PULSE_KEYFRAMES}</style>}
+      <div
+        data-testid={`focus-transition-pulse-${stageId}`}
+        aria-hidden="true"
+        style={{
+          position: "absolute",
+          inset: 0,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          pointerEvents: "none",
+          zIndex: 0,
+          // The previous field-SVG pulse inherited its focused 0.18
+          // opacity; retain that intensity after relocating it.
+          opacity: isCosmosAnchor ? 0.4285714286 : 1
+        }}
+      >
+        <svg width="620" height="620" viewBox="0 0 620 620">
+          <circle
+            cx="310"
+            cy="310"
+            r="310"
+            fill="none"
+            stroke={SIL_TOKENS.colors.cyanActive}
+            strokeWidth="1.8"
+            style={{
+              animation: "focusTransitionPulse 1.6s ease-out infinite",
+              transformBox: "fill-box",
+              transformOrigin: "center"
+            }}
+          />
+        </svg>
+      </div>
+    </>
+  );
+  const anchorOpacity = isCosmosAnchor ? SYNTX_FOCUS.anchorOpacity : 1;
   return (
     <div
       data-testid={`focus-transition-stage-shell-${stageId}`}
@@ -72,7 +156,7 @@ export function FocusTransitionStageShell({
         left: `calc(50% + ${x}px - 84px)`,
         top: `calc(50% + ${y}px - 84px)`,
         pointerEvents: isCosmosBackground ? "none" : "auto",
-        opacity: isCosmosBackground ? SYNTX_FOCUS.recededOpacity : isCosmosAnchor ? SYNTX_FOCUS.anchorOpacity : 1,
+        opacity: isCosmosBackground ? SYNTX_FOCUS.recededOpacity : copyAboveAnchorOpacity ? 1 : anchorOpacity,
         filter: isCosmosBackground ? SYNTX_FOCUS.recededFilter : undefined,
         transform: isCosmosAnchor
           ? `translate(${-x}px, ${-y}px)`
@@ -92,82 +176,24 @@ export function FocusTransitionStageShell({
           transition: SYNTX_FOCUS.scaleTransition
         }}
       >
-        {emptyVisualUnderlay && (
-          <div
-            data-testid={`empty-visual-underlay-${stageId}`}
-            style={{
-              position: "absolute",
-              left: "50%",
-              top: "50%",
-              width: 0,
-              height: 0,
-              zIndex: 0,
-              pointerEvents: "none"
-            }}
-          >
-            {emptyVisualUnderlay}
-          </div>
-        )}
-
-        <div
-          data-testid={`focused-stage-bubble-${stageId}`}
-          style={{ position: "relative", zIndex: 1 }}
-        >
-          {children}
-        </div>
-
-        {emptyCopyForeground && (
-          <div
-            data-testid={`empty-copy-foreground-${stageId}`}
-            style={{
-              position: "absolute",
-              left: "50%",
-              top: `calc(50% - ${FOCUSED_STAGE_BUBBLE_OUTER_RADIUS + FOCUSED_EMPTY_COPY_GAP}px)`,
-              width: "390px",
-              transform: "translateX(-50%) translateY(-100%)",
-              zIndex: 3,
-              pointerEvents: "none"
-            }}
-          >
-            {emptyCopyForeground}
-          </div>
-        )}
-
-        {showFocusPulse && (
+        {copyAboveAnchorOpacity ? (
           <>
-            {pulseKeyframes && <style>{SYNTX_FOCUS_PULSE_KEYFRAMES}</style>}
             <div
-              data-testid={`focus-transition-pulse-${stageId}`}
-              aria-hidden="true"
-              style={{
-                position: "absolute",
-                inset: 0,
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                pointerEvents: "none",
-                zIndex: 0,
-                // The previous field-SVG pulse inherited its focused 0.18
-                // opacity; retain that intensity after relocating it.
-                opacity: isCosmosAnchor ? 0.4285714286 : 1
-              }}
+              data-testid={`focus-anchor-recede-${stageId}`}
+              style={{ position: "relative", opacity: anchorOpacity, transition: "opacity 0.62s ease" }}
             >
-              <svg width="620" height="620" viewBox="0 0 620 620">
-                <circle
-                  cx="310"
-                  cy="310"
-                  r="310"
-                  fill="none"
-                  stroke={SIL_TOKENS.colors.cyanActive}
-                  strokeWidth="1.8"
-                  style={{
-                    animation: "focusTransitionPulse 1.6s ease-out infinite",
-                    transformBox: "fill-box",
-                    transformOrigin: "center"
-                  }}
-                />
-              </svg>
+              {underlay}
+              {bubble}
+              {pulse}
             </div>
+            {copy}
+          </>
+        ) : (
+          <>
+            {underlay}
+            {bubble}
+            {copy}
+            {pulse}
           </>
         )}
       </div>

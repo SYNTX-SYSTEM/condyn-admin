@@ -981,6 +981,37 @@ contour, identical steps before / after (organization: inactive 23.3 → 25.5, h
 infinite animation with the flag off, only `atmosphereGlow` 24 s on the ACTIVE seam with it, nothing in REDUCED; frame cost unchanged in
 identical states (headless, no GPU); boundary behaviour proof 44 / 44; 6 files / 54 tests; tsc 0.
 
+#### 13.2.20 Capability Field: one typography for every red field state (owner "SFE::GLOBAL RED FIELD TYPOGRAPHY REFINEMENT", 2026-10-13)
+
+On 337033e. Every orbit that the Capability Field marks red (`EMPTY_PROJECTION_ATTENTION`: a SUCCEEDED analysis whose projection for
+that stage is empty — any of 01 … 06; TENSION FIELD and EVOLUTION PATHS in the owner's runs) now reads with one typography from one
+source, `SIL_RED_FIELD_TYPE` (`SILTokens.ts`). Information perception only; the red semantics, the bodies and the motion are unchanged.
+
+- **Cause of the washed-out text.** The focused copy (`EMPTY FIELD // EXPLAINED`, heading, explanation, orbit mark) sat inside the focus
+  anchor, which recedes as a whole to 0.42 (`SYNTX_FOCUS.anchorOpacity`): even white 15 px text reached only 3.6:1, the explanation
+  1.65:1. No type value can outweigh an ancestor's opacity.
+- **Shared fix, Capability only.** `FocusTransitionStageShell` takes `copyAboveAnchorOpacity`: the anchor's 0.42 then recedes the body,
+  its underlay and its pulse inside one wrapper (`focus-anchor-recede-<id>`, same group opacity, same 0.62 s fade), and the copy stays
+  at full opacity. The Capability Field passes it; without it the shell renders byte-identical to before (32 / 32 prop combinations),
+  so the Job Field is untouched.
+- **One typography.** Status line 10 px / 700 / 2.4 px tracking, a lighter red (`rgba(255, 128, 136)`, same hue, glow kept and softened);
+  heading 16 px / 800 / 1.2 px, `#f4fafd`, existing accent glow softened; explanation 12 px / 1.6 leading, `rgba(214, 230, 240, .92)`
+  (was 10 px muted); orbit mark 9 px / 600 / 1.6 px in the orbit accent at .92 (was 7 px at .58); copy width 330 px (was 300).
+  A red body's identity labels (stage number, caption, `PRE-CANONICAL DISCOVERY`) take lighter tones and a little weight, same
+  sizes and tracking (no reflow); non-red bodies keep their typography exactly.
+- **Unchanged:** orbit geometry, positions and motion; the red halos, shells and membranes (colour and physics); the copy text
+  (EN / DE) and its meaning (an explained empty projection, not an error, not a missing capability); the focus status bar (it recedes
+  to 0.12 during orbit focus by design); data, matching, governance; the Job Field. No new animation.
+- **Limit (not changed).** The focused body's own labels stay inside the 0.42 anchor by design (the body recedes beneath the next
+  level): they improve only from 1.4–1.5 to 2.3–2.6:1. Lifting them would change the anchor's composition — owner decision.
+
+Proof (local only, review lab with mock worker; 03 / 04 / 06 red through a LAB-ONLY browser rewrite of the analysis response):
+`evidence/job-pool/semiotic-transfer/red-field-typography/local-proof.json` — focused copy: status 1.87 → 8.5, heading 3.62 → 19.4,
+explanation 1.65 → 13.41, orbit mark 1.4–1.8 → 5.3–11.7; planetarium red bodies: stage 4.27 → 12.4, caption 4.25 → 11.2, state 4.27 →
+9.5; non-red bodies identical; orbit rects identical within the float phase, text boxes identical (no reflow), the copy grows upward
+only (132 → 151 px); animation names identical; DE wraps cleanly; at 1280 × 720 the field selector covers the copy's heading before and
+after (F-4); 20 files / 102 tests.
+
 ### 13.3 DOM contract (PINK BR-1 … BR-5; GELB conditions a/b)
 
 **BR-1 field root** `data-testid="syntx-field"`: `data-field-grammar="SYNTX_FIELD_V1"`, `data-observation-kind` FIELD|ORGANIZATION|ROLE|REQUIREMENT
@@ -1144,3 +1175,4 @@ observation point. Readable labels wrap at word boundaries (`wrapLines`), never 
 | 2026-10-13 | Boundary visible cyan glow + corrected orientation line (owner mandate, on a06fe3a; visual + copy, isolated lab) | §13.2.17: shimmer, aura and membrane in cyan with higher amplitude, one shared 32 s breath; owner wording EN / DE. Evidence: `evidence/job-pool/semiotic-transfer/local-boundary-glow/` | tsc 0; geometry identical; text identical except the corrected word; contract identical; swing 0.55 → 2.0 / 255; every text ≥ 8.6 at the brightest breath; behaviour proof 44 / 44; 6 files / 48 tests (no full sweep by owner rule) |
 | 2026-10-13 | Boundary external resonance halo (owner mandate, on fd3462d; visual only, isolated lab) | §13.2.18: overflow clipping of the old aura diagnosed; the halo on the body's own box-shadow, breathing via `sxBoundaryHalo` 28 s (new motion kind, R15b approval by GELB required); REDUCED still. Evidence: `evidence/job-pool/semiotic-transfer/local-boundary-halo/` | tsc 0; body geometry, text and contract identical; ring outside the frame 13.8–14.3 → 21.1–29.6 over the breath; video of one breath at 1x; behaviour proof 44 / 44; 6 files / 48 tests (no full sweep by owner rule) |
 | 2026-10-13 | Resonance halo grammar, phase 1 prototype (owner mandate, on 6c88d9b; visual only, isolated lab) | §13.2.19: external cyan seam on the first organization and the orientation surface, strength from existing state (inactive / active / retreated), finite transitions; breathing only behind a lab flag (R15b approval required). Evidence: `evidence/job-pool/semiotic-transfer/resonance-prototype/` | tsc 0; geometry identical; states measured before / after; no new infinite motion by default; frame cost unchanged; boundary proof 44 / 44; 6 files / 54 tests (no full sweep by owner rule) |
+| 2026-10-13 | Capability Field: one typography for every red field state (owner "SFE::GLOBAL RED FIELD TYPOGRAPHY REFINEMENT", on 337033e; visual only, isolated lab) | §13.2.20: `SIL_RED_FIELD_TYPE` for the focused empty-projection copy and the labels of red bodies; the copy no longer recedes with the 0.42 focus anchor (`copyAboveAnchorOpacity`, Capability only); R10c proposal P-7. Evidence: `evidence/job-pool/semiotic-transfer/red-field-typography/` | tsc 0; 20 files / 102 tests; focus shell byte-identical without the flag (32 / 32); non-red bodies identical; geometry and animation names identical; copy contrast 1.65–3.62 → 8.5–19.4 |

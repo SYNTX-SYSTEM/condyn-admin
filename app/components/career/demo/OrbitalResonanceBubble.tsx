@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { SIL_TOKENS } from "./SILTokens";
+import { SIL_RED_FIELD_TYPE, SIL_TOKENS } from "./SILTokens";
 import { SyntxResonanceBody } from "./manifestation/SyntxResonanceBody";
 import { syntxHudPlacementStyle } from "./manifestation/SyntxHudSurface";
 import { SilSourcePresentation } from "../../../../lib/career/view-model/source-presentation";
@@ -525,7 +525,8 @@ export function OrbitalResonanceBubble({
             fontWeight: 700,
             letterSpacing: "1px",
             position: "relative",
-            zIndex: 1
+            zIndex: 1,
+            ...(isEmptyProjectionAttention && !isHighlighted ? SIL_RED_FIELD_TYPE.bodyStage : null)
           }}
         >
           {stageId}
@@ -550,14 +551,15 @@ export function OrbitalResonanceBubble({
             marginTop: "4px",
             lineHeight: 1.2,
             position: "relative",
-            zIndex: 1
+            zIndex: 1,
+            ...(isEmptyProjectionAttention ? SIL_RED_FIELD_TYPE.bodyCaption : null)
           }}
         >
           {subtitle}
         </span>
         <span
           data-testid={`canonical-sil-region-state-${stageId}`}
-          style={{ fontSize: "9px", color: canonicalState === "PRE_CANONICAL" ? SIL_TOKENS.colors.textMuted : SIL_TOKENS.colors.cyanActive, marginTop: "3px", position: "relative", zIndex: 1 }}
+          style={{ fontSize: "9px", color: canonicalState === "PRE_CANONICAL" ? SIL_TOKENS.colors.textMuted : SIL_TOKENS.colors.cyanActive, marginTop: "3px", position: "relative", zIndex: 1, ...(isEmptyProjectionAttention && canonicalState === "PRE_CANONICAL" ? SIL_RED_FIELD_TYPE.bodyState : null) }}
         >
           {canonicalState === "PRE_CANONICAL" ? "PRE-CANONICAL DISCOVERY" : `CANONICAL ${canonicalState}`}
         </span>

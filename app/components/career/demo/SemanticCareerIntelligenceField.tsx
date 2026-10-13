@@ -1001,6 +1001,7 @@ export function SemanticCareerIntelligenceField({
                     isCosmosAnchor={isCosmosAnchor}
                     isCosmosBackground={isCosmosBackground}
                     showFocusPulse={focusedStageId === st.stageId}
+                    copyAboveAnchorOpacity
                     emptyVisualUnderlay={
                       isCosmosAnchor &&
                       jobState === "SUCCEEDED" &&

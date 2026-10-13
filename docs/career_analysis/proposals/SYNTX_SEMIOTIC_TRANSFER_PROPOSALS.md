@@ -128,6 +128,19 @@ it names Decision Loop Labs with the brand mark; the Capability context's header
 header lives in `CareerIntelligenceDashboard`, outside the Capability render baseline; `SemanticCareerIntelligenceField` gained one
 optional callback (`onFieldFocusChange`) and renders unchanged. No new motion (the brand layers are static; nothing to add to R15b).
 
+## P-7 · R10c — red field typography in the Capability Field (GELB; owner mandate 2026-10-13)
+
+The owner ordered every red `EMPTY_PROJECTION_ATTENTION` state of the Capability Field to read clearly with one typography. This
+touches Capability presentation that R10 keeps unchanged: `SilOrbitEmptyStateCopy` (copy typography), `OrbitalResonanceBubble` (the
+identity labels of a red body only), `SILTokens` (`SIL_RED_FIELD_TYPE`), the shared `FocusTransitionStageShell`
+(`copyAboveAnchorOpacity`, off by default, byte-identical without it) and one prop in `SemanticCareerIntelligenceField`. Copy text,
+orbit geometry, red body colours and motion are unchanged; no new animation (nothing to add to R15b). Proof: JOB_FIELD_FRONTEND.md
+§13.2.20.
+
+**Proposed wording:** "R10c — The red empty-projection states of the Capability Field share one typography (`SIL_RED_FIELD_TYPE`)
+and their explanatory copy is not receded with the focus anchor. Admitted when copy text, orbit geometry, red body colours and motion
+stay unchanged and non-red renders stay identical."
+
 ## Owner decisions
 
 None beyond the visual approval. After it, GELB records P-1 and P-2, and PINK applies P-3 / P-4 and validates. The move of
