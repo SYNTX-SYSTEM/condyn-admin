@@ -235,6 +235,8 @@ const GREEN_RGB = "63, 185, 80";
 const CYAN_RGB = "56, 229, 255";
 const panelInput: React.CSSProperties = { width: "100%", boxSizing: "border-box", background: "rgba(2, 9, 16, 0.72)", border: `1px solid ${azure(0.22)}`, borderRadius: "7px", color: INK, fontFamily: MONO, fontSize: "11px", letterSpacing: "0.4px", textTransform: "none", padding: "8px 10px", outline: "none", boxShadow: "inset 0 1px 6px rgba(0, 0, 0, 0.45)", transition: "border-color .3s ease, box-shadow .3s ease" };
 const panelAction = (enabled: boolean): React.CSSProperties => ({ ...action("cyan", enabled), fontSize: "9.5px", letterSpacing: "1.8px", padding: "8px 14px", borderRadius: "8px", border: `1px solid ${enabled ? "rgba(56, 229, 255, 0.55)" : "rgba(99, 120, 138, 0.3)"}`, background: enabled ? "linear-gradient(180deg, rgba(56, 229, 255, 0.16), rgba(56, 229, 255, 0.05))" : "rgba(99, 120, 138, 0.05)", boxShadow: enabled ? "0 0 16px rgba(56, 229, 255, 0.14), inset 0 1px 0 rgba(220, 250, 255, 0.16)" : "none" });
+/** An edge action of the orientation surface: a quiet chip; lit while its panel is open. */
+const orientAction = (open: boolean): React.CSSProperties => ({ ...ghost, fontSize: "8.5px", letterSpacing: "1.3px", padding: "4px 10px", borderRadius: "999px", border: `1px solid ${open ? "rgba(56, 229, 255, 0.55)" : azure(0.24)}`, background: open ? "rgba(56, 229, 255, 0.1)" : "rgba(4, 14, 24, 0.5)", color: open ? "#dffaff" : "rgba(170, 212, 232, 0.86)", boxShadow: open ? "0 0 12px rgba(56, 229, 255, 0.16)" : "none" });
 /** The panel's node: the point where it attaches to the field, with a hairline fading towards the field. Decoration only. */
 function PanelNode({ side, top }: { side: "left" | "right"; top: string }) {
   return (
@@ -319,6 +321,12 @@ ${SYNTX_FOCUS_PULSE_KEYFRAMES}
 [data-sx-panel="pools"] li[data-selected="false"]:hover::before { border-color: rgba(150, 230, 255, 0.9); box-shadow: 0 0 6px rgba(92, 200, 255, 0.6); }
 [data-sx-panel="pools"] li:focus-within { border-color: rgba(56, 229, 255, 0.4); box-shadow: 0 0 16px rgba(56, 229, 255, 0.1); }
 [data-sx-panel="pools"] button[aria-pressed="false"]:hover { border-color: rgba(56, 229, 255, 0.7); background: rgba(56, 229, 255, 0.1); color: #e8fbff; }
+/* Orientation surface (top left): field actions as chips; hover and focus light; one finite light pass on every context change. */
+@keyframes sxOrientPass { from { transform: translateX(-120%); opacity: 0; } 20% { opacity: 1; } to { transform: translateX(260%); opacity: 0; } }
+[data-sx-orient] [data-sx-orient-action] { transition: border-color .3s ease, background-color .3s ease, color .3s ease, box-shadow .3s ease; }
+[data-sx-orient] [data-sx-orient-action]:hover { border-color: rgba(56, 229, 255, 0.6); color: #e8fbff; background-color: rgba(56, 229, 255, 0.08); }
+[data-sx-orient] [data-sx-orient-action][aria-expanded="true"]:hover { background-color: rgba(56, 229, 255, 0.16); }
+[data-sx-orient] [data-sx-orient-step]:not(:disabled):hover { color: #e6f4fa; }
 /* Role cards: a calm light reaction on approach (border and glow only; the card holds its place on the orbit). */
 [data-sx-role-card] { transition: border-color .4s ease, box-shadow .4s ease; }
 [data-sx-role-card]:hover { border-color: rgba(120, 224, 255, 0.7) !important; box-shadow: 0 0 0 1px rgba(1, 5, 10, 0.6), 0 0 28px rgba(56, 200, 240, 0.24), 0 0 64px rgba(56, 160, 230, 0.08), 0 10px 22px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(200, 245, 255, 0.2), inset 0 0 22px rgba(92, 200, 255, 0.07) !important; }
@@ -1469,30 +1477,40 @@ export function SyntxField({ workflow, analysisSource, observation: requested, o
         {state === "NO_ANALYSIS" && field !== null && <span data-testid="syntx-no-analysis" style={{ ...micro, color: AMBER, position: "absolute", left: "50%", bottom: "calc(var(--condyn-page-header-height, 60px) + 44px)", transform: "translateX(-50%)", width: "min(520px, 80%)", textAlign: "center", zIndex: 41 }}>{tp.analysisNone}</span>}
       </div>
 
-      {/* Orientation line: title, exit, the observation path (each step a return), the read state. Never a panel. */}
-      <div data-sx-surface="header" style={{ position: "absolute", left: "28px", top: "136px", ...stack(6), zIndex: 46, maxWidth: "min(340px, 28vw)" }}>
-        <div style={{ display: "flex", alignItems: "baseline", gap: "14px", flexWrap: "wrap" }}>
-          <h3 style={{ ...label, color: CYAN, fontSize: "10px", letterSpacing: "2.4px", textShadow: `0 0 14px ${SIL_TOKENS.colors.cyanGlowStrong}` }}>{t.title}</h3>
-          <button data-testid="syntx-exit-btn" onClick={onExit} style={action("muted")}>{t.exit}</button>
+      {/* Orientation surface: (A) the field and its relation to the Capability Field, (B) the observation path (each step a return),
+          (C) the read state, (D) the keys, (E) the edge actions. The one header that is always visible (§12.2): a calm, lit glass at
+          the edge; its only motion is one light pass on each context change (finite, none in REDUCED). */}
+      <div data-sx-surface="header" data-sx-orient style={{ position: "absolute", left: "28px", top: "84px", display: "flex", flexDirection: "column", zIndex: 46, width: "min(340px, 28vw)", boxSizing: "border-box", padding: "12px 14px 12px 16px", borderRadius: "14px", border: `1px solid ${azure(0.2)}`, background: `radial-gradient(120% 90% at 0% 0%, rgba(84, 232, 236, 0.1), transparent 55%), linear-gradient(160deg, rgba(12, 31, 47, 0.7), rgba(5, 14, 24, 0.62))`, boxShadow: `0 0 0 1px rgba(1, 5, 10, 0.45), 0 0 30px rgba(64, 190, 230, 0.08), 0 14px 32px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(210, 248, 255, 0.12)`, backdropFilter: "blur(8px)", overflow: "hidden" }}>
+        <span aria-hidden="true" style={{ position: "absolute", left: 0, top: "14px", bottom: "14px", width: "2px", borderRadius: "2px", background: `linear-gradient(180deg, ${CYAN}, ${azure(0.35)} 60%, transparent)`, boxShadow: `0 0 8px ${azure(0.5)}`, pointerEvents: "none" }} />
+        <span aria-hidden="true" style={{ position: "absolute", left: 0, right: 0, top: 0, height: "100%", overflow: "hidden", borderRadius: "inherit", pointerEvents: "none" }}>
+          <span key={`${observation.kind}:${observationId}`} data-sx-orient-pass style={{ position: "absolute", top: 0, bottom: 0, left: 0, width: "45%", background: "linear-gradient(90deg, transparent, rgba(170, 240, 255, 0.09), transparent)", animation: mode === "LIVE" ? "sxOrientPass 1.6s cubic-bezier(0.16, 1, 0.3, 1) both" : undefined }} />
+        </span>
+        {/* A · where: the field, and the way back to the Capability Field. */}
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "10px", flexWrap: "wrap" }}>
+          <h3 style={{ ...label, display: "inline-flex", alignItems: "center", gap: "8px", color: CYAN, fontSize: "10.5px", letterSpacing: "2.6px", textShadow: `0 0 14px ${SIL_TOKENS.colors.cyanGlowStrong}` }}><span aria-hidden="true" style={{ width: "6px", height: "6px", borderRadius: "50%", background: CYAN, boxShadow: `0 0 8px ${CYAN}, 0 0 16px ${azure(0.5)}` }} />{t.title}</h3>
+          <button data-testid="syntx-exit-btn" data-sx-orient-action onClick={onExit} style={{ ...action("muted"), fontSize: "8px", letterSpacing: "1.3px", padding: "3px 9px", borderRadius: "999px", border: `1px solid ${azure(0.22)}`, color: "rgba(168, 206, 226, 0.82)" }}>{t.exit}</button>
         </div>
-        <nav data-testid="syntx-path" aria-label={t.observation[observation.kind]} style={{ ...row(6), rowGap: "2px" }}>
+        {/* B · the active context: the observation path on its rail. */}
+        <nav data-testid="syntx-path" aria-label={t.observation[observation.kind]} style={{ ...row(6), rowGap: "3px", marginTop: "10px", paddingLeft: "10px", borderLeft: `1px solid ${azure(0.3)}` }}>
           {path.map((step, index) => (
             <React.Fragment key={step.kind}>
-              {index > 0 && <span aria-hidden="true" style={{ ...micro, opacity: 0.5 }}>›</span>}
-              <button data-testid={`syntx-path-${step.kind}`} data-current={index === path.length - 1 ? "true" : "false"} disabled={index === path.length - 1} onClick={() => onObserve(step.target)} style={{ ...ghost, fontSize: "8.5px", color: index === path.length - 1 ? INK : MUTED, cursor: index === path.length - 1 ? "default" : "pointer", textTransform: "none", letterSpacing: "0.4px", padding: "2px 0", maxWidth: "160px", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{step.name}</button>
+              {index > 0 && <span aria-hidden="true" style={{ fontFamily: SANS, fontSize: "10px", color: "rgba(140, 180, 204, 0.5)" }}>›</span>}
+              <button data-testid={`syntx-path-${step.kind}`} data-sx-orient-step data-current={index === path.length - 1 ? "true" : "false"} disabled={index === path.length - 1} onClick={() => onObserve(step.target)} style={{ ...ghost, fontFamily: SANS, fontSize: index === path.length - 1 ? "11.5px" : "10px", fontWeight: index === path.length - 1 ? 600 : 400, color: index === path.length - 1 ? "#f2fbff" : "rgba(170, 198, 216, 0.78)", cursor: index === path.length - 1 ? "default" : "pointer", textTransform: "none", letterSpacing: "0.1px", lineHeight: 1.45, padding: "1px 0", maxWidth: "100%", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", transition: "color .3s ease" }}>{step.name}</button>
             </React.Fragment>
           ))}
-          {observation.kind !== "FIELD" && <button data-testid="syntx-return-btn" onClick={() => onObserve(returnFrom(observation))} style={{ ...action("cyan"), fontSize: "8.5px" }}>← {t.returnLabel}</button>}
+          {observation.kind !== "FIELD" && <button data-testid="syntx-return-btn" data-sx-orient-action onClick={() => onObserve(returnFrom(observation))} style={{ ...action("cyan"), fontSize: "8px", letterSpacing: "1.3px", padding: "2px 8px", borderRadius: "999px", border: "1px solid rgba(56, 229, 255, 0.4)", background: "rgba(56, 229, 255, 0.06)" }}>← {t.returnLabel}</button>}
         </nav>
-        <span data-testid="syntx-state" data-state={state} style={{ ...micro, display: "inline-flex", alignItems: "center", gap: "8px", color: state === "AVAILABLE" ? MUTED : AMBER }}>
-          <span aria-hidden="true" style={{ width: "6px", height: "6px", borderRadius: "50%", backgroundColor: state === "AVAILABLE" ? CYAN : AMBER, flexShrink: 0 }} />
+        {/* C · the read state, D · the keys. */}
+        <span data-testid="syntx-state" data-state={state} style={{ ...micro, alignSelf: "flex-start", display: "inline-flex", alignItems: "center", gap: "8px", marginTop: "10px", padding: "3px 10px 3px 8px", borderRadius: "999px", fontSize: "8.5px", letterSpacing: "1.3px", color: state === "AVAILABLE" ? "rgba(196, 236, 248, 0.92)" : AMBER, border: `1px solid ${state === "AVAILABLE" ? "rgba(56, 229, 255, 0.28)" : "rgba(245, 166, 35, 0.4)"}`, background: state === "AVAILABLE" ? "rgba(56, 229, 255, 0.06)" : "rgba(245, 166, 35, 0.07)" }}>
+          <span aria-hidden="true" style={{ width: "6px", height: "6px", borderRadius: "50%", backgroundColor: state === "AVAILABLE" ? CYAN : AMBER, boxShadow: `0 0 6px ${state === "AVAILABLE" ? CYAN : AMBER}`, flexShrink: 0 }} />
           {state === "AVAILABLE" ? t.matching : state === "NO_POOL" ? tp.selectionNone : state === "NO_ANALYSIS" ? tp.analysisNone : state === "LOADING" ? tp.matchesLoading : state === "NOT_FOUND" ? tp.matchesNotFound : state === "INACTIVE_POOL" ? tp.matchesInactive : state === "NOT_PROVISIONED" ? tp.notProvisioned : tp.matchesFailed}
         </span>
-        <span style={{ ...micro, opacity: 0.7 }}>{t.keys}</span>
-        <div style={row(14)}>
-          <button data-testid="syntx-pools-toggle" aria-expanded={poolsVisible} onClick={() => setPoolsOpen(value => !value)} style={{ ...ghost, fontSize: "9px" }}>{poolsVisible ? t.poolsHide : `⬡ ${t.pools}${listed.length > 0 ? ` · ${listed.length}` : ""}`}</button>
-          <button data-testid="job-pool-intake-toggle" aria-expanded={intakeVisible} onClick={() => setIntakeOpen(value => !value)} style={{ ...ghost, fontSize: "9px" }}>{intakeVisible ? tp.intakeHide : tp.intakeOpen}</button>
-          {field !== null && field.boundary !== null && <button data-testid="syntx-boundary-toggle" aria-expanded={boundaryOpen} onClick={() => setBoundaryOpen(value => !value)} style={{ ...ghost, fontSize: "9px" }}>{boundaryOpen ? t.boundaryHide : t.boundary}</button>}
+        <span style={{ ...micro, marginTop: "8px", fontSize: "7.5px", letterSpacing: "0.1px", color: "rgba(150, 180, 198, 0.78)" }}>{t.keys.split(" · ").map((part, index) => { const gap = part.indexOf(" "); const key = gap < 0 ? part : part.slice(0, gap); return <React.Fragment key={index}>{index > 0 && <span style={{ color: "rgba(120, 160, 184, 0.45)" }}> · </span>}<kbd style={{ fontFamily: MONO, fontSize: "7px", padding: "0 4px", borderRadius: "4px", border: "1px solid rgba(150, 205, 230, 0.28)", background: "rgba(255, 255, 255, 0.04)", boxShadow: "inset 0 -1px 0 rgba(0, 0, 0, 0.45)", color: "rgba(224, 240, 248, 0.92)" }}>{key}</kbd>{gap < 0 ? "" : part.slice(gap)}</React.Fragment>; })}</span>
+        {/* E · the edge actions (panels open / closed). */}
+        <div style={{ ...row(6), marginTop: "10px", paddingTop: "10px", borderTop: "1px solid transparent", borderImage: `linear-gradient(90deg, ${azure(0.24)}, ${azure(0.03)}) 1` }}>
+          <button data-testid="syntx-pools-toggle" data-sx-orient-action aria-expanded={poolsVisible} onClick={() => setPoolsOpen(value => !value)} style={orientAction(poolsVisible)}>{poolsVisible ? t.poolsHide : `⬡ ${t.pools}${listed.length > 0 ? ` · ${listed.length}` : ""}`}</button>
+          <button data-testid="job-pool-intake-toggle" data-sx-orient-action aria-expanded={intakeVisible} onClick={() => setIntakeOpen(value => !value)} style={orientAction(intakeVisible)}>{intakeVisible ? tp.intakeHide : tp.intakeOpen}</button>
+          {field !== null && field.boundary !== null && <button data-testid="syntx-boundary-toggle" data-sx-orient-action aria-expanded={boundaryOpen} onClick={() => setBoundaryOpen(value => !value)} style={orientAction(boundaryOpen)}>{boundaryOpen ? t.boundaryHide : t.boundary}</button>}
         </div>
       </div>
 

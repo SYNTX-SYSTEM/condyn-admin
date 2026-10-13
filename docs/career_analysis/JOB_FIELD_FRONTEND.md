@@ -807,6 +807,21 @@ Proof (local only): `evidence/job-pool/semiotic-transfer/local-pools-roles/` —
 nothing in REDUCED); the directly touched existing proofs: role-card clearance 4 / 4, panel proof 24 / 24 (keyboard selection),
 Job Pool SSR 13 files / 89. No full sweep (owner rule for this pass).
 
+#### 13.2.11 Local pass: the orientation surface (owner "Small field. Local recursion.", GO 2026-10-13)
+
+On aa33ddf. Local field: the orientation surface top left (`data-sx-surface="header"`) only. It stays the one header that is always
+visible (§12.2), now a calm lit glass at the edge (top 84 px, 340 px wide) with five layers: (A) JOB FIELD with its lamp and the
+way back to the Capability Field as a pill, (B) the observation path on a rail — the current level large and bright, the earlier
+steps smaller, no longer cut off — with RETURN as a pill, (C) the read state as a chip, (D) the keys as key caps, (E) the edge
+actions as chips, lit while their panel is open. Its only motion is one light pass on each context change (`sxOrientPass`, finite
+1.6 s, none in REDUCED): a continuous breath was not added, because R15 binds infinite motion at the FIELD level to field signs and
+this surface is always visible. Texts, ids, attributes, tab order, click and keyboard behaviour unchanged; no other surface touched.
+
+Proof (local only): `evidence/job-pool/semiotic-transfer/local-orientation/orientation-proof.json` — 48 checks at 1600 × 1000 and
+1280 × 720, LIVE and REDUCED (only the finite light, ending by itself and not replayed by panel actions; nothing in REDUCED; no
+overlap with the open pools panel at FIELD, ORGANIZATION and REQUIREMENT; path step, RETURN, exit and Enter on an action behave),
+text, contract and tab order identical to aa33ddf (code marker verified for both reads); field SSR test 8 / 8.
+
 ### 13.3 DOM contract (PINK BR-1 … BR-5; GELB conditions a/b)
 
 **BR-1 field root** `data-testid="syntx-field"`: `data-field-grammar="SYNTX_FIELD_V1"`, `data-observation-kind` FIELD|ORGANIZATION|ROLE|REQUIREMENT
@@ -961,3 +976,4 @@ observation point. Readable labels wrap at word boundaries (`wrapLines`), never 
 | 2026-10-13 | Four panels (owner "FOUR PANELS. CLEARER SIGNAL.", on 00299f5; visual only, GREEN only, isolated lab) | §13.2.8: Job Field panel material for pools, intake and boundary (glass, edge current, breathing aura, field node), boundary in four sections with chips and ruled statements, pools as row cards with a lit selection, intake wells and action chip, selector membrane and contrast. Evidence: `evidence/job-pool/semiotic-transfer/panels/` | tsc 0; Capability renders 366 / 374 byte-identical, 374 / 374 shell-normalized; batch 32 files / 193; panel text and contract identical before / after; panel proof 24 / 24; workflow e2e and PINK walk run on the following polish pass (same tree plus the polish) |
 | 2026-10-13 | Visual polish pass (owner "FEINSTUFE / VISUAL POLISH PASS", on d79d4f8; visual only, GREEN only, isolated lab) | §13.2.9: selector balance, loop link and field-change light; role cards as semantic carriers; opaque cosmos centre (ghost text gone) and body micro-typography; edge vignette. Evidence: `evidence/job-pool/semiotic-transfer/polish/` | tsc 0; Capability renders 366 / 374 byte-identical, 374 / 374 shell-normalized; batch 32 files / 193; workflow e2e 10/10; PINK walk with the proposed rebinding 3/3 (covers d79d4f8 too; teardown could not terminate a transient superuser backend, the run's own disposable DB was then dropped with the verifying helper); selector proof 25 / 25; brand proof 20 / 20; panel proof 24 / 24; text and contract identity |
 | 2026-10-13 | Local pass: pools panel and role cards (owner "Small field. Local recursion.", on b156364; visual only, isolated lab) | §13.2.10: pools spine with nodes, grid rows, aligned action chips; role cards with staggered level line, weighted count, edge field anchor. Evidence: `evidence/job-pool/semiotic-transfer/local-pools-roles/` | tsc 0; local proof 11 / 11; text and contract identity of both zones; role-card clearance 4 / 4; panel proof 24 / 24; Job Pool SSR 13 / 89 (no full sweep by owner rule) |
+| 2026-10-13 | Local pass: orientation surface (owner "Small field. Local recursion.", on aa33ddf; visual only, isolated lab) | §13.2.11: the top-left orientation surface as a lit glass with five layers, path rail, state chip, key caps, action chips; one finite context light. Evidence: `evidence/job-pool/semiotic-transfer/local-orientation/` | tsc 0; local proof 48 / 48; text, contract and tab order identical; field SSR 8 / 8 (no full sweep by owner rule) |
