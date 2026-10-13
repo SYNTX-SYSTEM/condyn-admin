@@ -1,0 +1,213 @@
+{
+  "before": "2f7d0ee (= b2206d3 for SyntxField)",
+  "codeMarker": {
+    "veilBefore": 0,
+    "veilAfter": 1
+  },
+  "boundaryTextIdentical": true,
+  "boundaryContractIdentical": true,
+  "localChecks": "44/44",
+  "checks": [
+    {
+      "name": "1600x1000 no-preference: click opens the boundary (aria-expanded, visible)",
+      "ok": true
+    },
+    {
+      "name": "1600x1000 no-preference: the field recedes behind the veil; the veil is decoration and pointer-transparent",
+      "ok": true,
+      "detail": "{\"opacity\":\"1\",\"pointer\":\"none\",\"hidden\":\"true\",\"z\":\"44\"}"
+    },
+    {
+      "name": "1600x1000 no-preference: no collision with orientation, pools, intake, selector, footer statement",
+      "ok": true,
+      "detail": "boundary {\"left\":420,\"right\":1180,\"top\":157,\"bottom\":636.0625} "
+    },
+    {
+      "name": "1600x1000 no-preference: the boundary stays inside the viewport",
+      "ok": true
+    },
+    {
+      "name": "1600x1000 no-preference: only the quiet panel motion keeps running (no new infinite motion)",
+      "ok": true,
+      "detail": "[{\"name\":\"sxPanelCurrent\",\"infinite\":true},{\"name\":\"atmosphereGlow\",\"infinite\":true}]"
+    },
+    {
+      "name": "1600x1000 no-preference: the pointer passes the veil (an organization outside the boundary owns its centre)",
+      "ok": true,
+      "detail": "{\"id\":\"syntx-organization-org_rheinwerk\",\"owned\":true,\"x\":1081.7803344726562,\"y\":723.6900024414062}"
+    },
+    {
+      "name": "1600x1000 no-preference: Escape closes the boundary",
+      "ok": true
+    },
+    {
+      "name": "1600x1000 no-preference: the veil withdraws",
+      "ok": true
+    },
+    {
+      "name": "1600x1000 no-preference: Enter on BOUNDARY opens it",
+      "ok": true
+    },
+    {
+      "name": "1600x1000 no-preference: a second click closes it",
+      "ok": true
+    },
+    {
+      "name": "1600x1000 no-preference: no page errors",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1600x1000 reduce: click opens the boundary (aria-expanded, visible)",
+      "ok": true
+    },
+    {
+      "name": "1600x1000 reduce: the field recedes behind the veil; the veil is decoration and pointer-transparent",
+      "ok": true,
+      "detail": "{\"opacity\":\"1\",\"pointer\":\"none\",\"hidden\":\"true\",\"z\":\"44\"}"
+    },
+    {
+      "name": "1600x1000 reduce: no collision with orientation, pools, intake, selector, footer statement",
+      "ok": true,
+      "detail": "boundary {\"left\":420,\"right\":1180,\"top\":157,\"bottom\":636.0625} "
+    },
+    {
+      "name": "1600x1000 reduce: the boundary stays inside the viewport",
+      "ok": true
+    },
+    {
+      "name": "1600x1000 reduce: nothing animates on the boundary or the veil",
+      "ok": true,
+      "detail": "[]"
+    },
+    {
+      "name": "1600x1000 reduce: the pointer passes the veil (an organization outside the boundary owns its centre)",
+      "ok": true,
+      "detail": "{\"id\":\"syntx-organization-org_rheinwerk\",\"owned\":true,\"x\":1081.7803344726562,\"y\":723.6900024414062}"
+    },
+    {
+      "name": "1600x1000 reduce: Escape closes the boundary",
+      "ok": true
+    },
+    {
+      "name": "1600x1000 reduce: the veil withdraws",
+      "ok": true
+    },
+    {
+      "name": "1600x1000 reduce: Enter on BOUNDARY opens it",
+      "ok": true
+    },
+    {
+      "name": "1600x1000 reduce: a second click closes it",
+      "ok": true
+    },
+    {
+      "name": "1600x1000 reduce: no page errors",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1280x720 no-preference: click opens the boundary (aria-expanded, visible)",
+      "ok": true
+    },
+    {
+      "name": "1280x720 no-preference: the field recedes behind the veil; the veil is decoration and pointer-transparent",
+      "ok": true,
+      "detail": "{\"opacity\":\"1\",\"pointer\":\"none\",\"hidden\":\"true\",\"z\":\"44\"}"
+    },
+    {
+      "name": "1280x720 no-preference: no collision with orientation, pools, intake, selector, footer statement",
+      "ok": true,
+      "detail": "boundary {\"left\":384,\"right\":896,\"top\":157,\"bottom\":669} "
+    },
+    {
+      "name": "1280x720 no-preference: the boundary stays inside the viewport",
+      "ok": true
+    },
+    {
+      "name": "1280x720 no-preference: only the quiet panel motion keeps running (no new infinite motion)",
+      "ok": true,
+      "detail": "[{\"name\":\"sxPanelCurrent\",\"infinite\":true},{\"name\":\"atmosphereGlow\",\"infinite\":true}]"
+    },
+    {
+      "name": "1280x720 no-preference: the pointer passes the veil (an organization outside the boundary owns its centre)",
+      "ok": true,
+      "detail": "{\"id\":\"syntx-organization-org_rheinwerk\",\"owned\":true,\"x\":908.6343688964844,\"y\":696.1000061035156}"
+    },
+    {
+      "name": "1280x720 no-preference: Escape closes the boundary",
+      "ok": true
+    },
+    {
+      "name": "1280x720 no-preference: the veil withdraws",
+      "ok": true
+    },
+    {
+      "name": "1280x720 no-preference: Enter on BOUNDARY opens it",
+      "ok": true
+    },
+    {
+      "name": "1280x720 no-preference: a second click closes it",
+      "ok": true
+    },
+    {
+      "name": "1280x720 no-preference: no page errors",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1280x720 reduce: click opens the boundary (aria-expanded, visible)",
+      "ok": true
+    },
+    {
+      "name": "1280x720 reduce: the field recedes behind the veil; the veil is decoration and pointer-transparent",
+      "ok": true,
+      "detail": "{\"opacity\":\"1\",\"pointer\":\"none\",\"hidden\":\"true\",\"z\":\"44\"}"
+    },
+    {
+      "name": "1280x720 reduce: no collision with orientation, pools, intake, selector, footer statement",
+      "ok": true,
+      "detail": "boundary {\"left\":384,\"right\":896,\"top\":157,\"bottom\":669} "
+    },
+    {
+      "name": "1280x720 reduce: the boundary stays inside the viewport",
+      "ok": true
+    },
+    {
+      "name": "1280x720 reduce: nothing animates on the boundary or the veil",
+      "ok": true,
+      "detail": "[]"
+    },
+    {
+      "name": "1280x720 reduce: the pointer passes the veil (an organization outside the boundary owns its centre)",
+      "ok": true,
+      "detail": "{\"id\":\"syntx-organization-org_rheinwerk\",\"owned\":true,\"x\":908.6343688964844,\"y\":696.1000061035156}"
+    },
+    {
+      "name": "1280x720 reduce: Escape closes the boundary",
+      "ok": true
+    },
+    {
+      "name": "1280x720 reduce: the veil withdraws",
+      "ok": true
+    },
+    {
+      "name": "1280x720 reduce: Enter on BOUNDARY opens it",
+      "ok": true
+    },
+    {
+      "name": "1280x720 reduce: a second click closes it",
+      "ok": true
+    },
+    {
+      "name": "1280x720 reduce: no page errors",
+      "ok": true,
+      "detail": ""
+    }
+  ],
+  "oldCodeFailures": [
+    "1280x720 no-preference: the boundary stays inside the viewport",
+    "1280x720 reduce: the boundary stays inside the viewport"
+  ],
+  "ssr": "test/career/job-pool/syntx-field-ssr.test.tsx green"
+}

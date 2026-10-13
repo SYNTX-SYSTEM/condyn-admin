@@ -48,6 +48,7 @@ closed list (LIVE only; REDUCED total — no CSS animation, no SMIL photon, the 
 | `sxSuspend` (48 s dash drift) | the one suspended boundary | infinite (as R15) |
 | `sxApertureBreathe` (9 s, opacity of the glow layer only) | the open inspection aperture (the surface itself holds still) | infinite |
 | `sxPanelCurrent` (18 s, a light segment along the upper edge), `atmosphereGlow` (16 s aura, 10 s node lamp, 7 s selected pool node) | the Job Field panels (pools, intake, boundary) while open; outside every sign | infinite (panel pass 2026-10-13) |
+| `sxBoundaryOpen` (.6 s), the boundary veil's opacity transition (.8 s) | the boundary opening at the centre; the veil above the stage while it is open (outside every sign) | finite (2026-10-13) |
 | `sxEnter`, `sxRise`, `sxUnfold`, `sxTraceDraw`, `sxSuspendEnter`, `sxNucleusSettle`, `sxSatelliteSettle` | level entry, requirement unfold, trace rise, deep-focus settle | finite |
 
 No longer emitted: `sxOrbit`, `sxBreathe`, `sxMoonOrbit`, `sxAtmosphere`, `sxRingPulse`, `sxSettle`, `sxRecenter`,

@@ -855,6 +855,25 @@ identical; 29 checks at 1600 × 1000 and 1280 × 720, LIVE and REDUCED (dock in 
 ≥ 40 px below the dock; no intake / boundary overlap; onboarding, codex and guide open by click, onboarding by Enter; intake flow;
 motion); panel proof 24 / 24; SIL language contract, global wiring and Job Pool SSR 14 files / 105.
 
+#### 13.2.14 Local pass: the boundary as a focus state (owner "Small-to-medium field. Local recursion.", GO 2026-10-13)
+
+On 2f7d0ee. Local field: the boundary panel and the field's reaction while it is open; pools, intake, cosmos levels and upload untouched.
+
+- **Focus state.** While BOUNDARY is open, a quiet veil (`data-sx-boundary-veil`, z 44: above every sign of the stage, below the edge
+  surfaces at z 46, `pointer-events: none`, `aria-hidden`) dims and slightly blurs the field; it fades in and out over .8 s. The field
+  stays fully usable through it (pointer ownership of the organization bodies unchanged).
+- **Governance body.** The boundary opens at the centre (top 96 px, width `max(340px, min(760px, 100vw − 768px))`, so it never meets the
+  orientation surface, pools or intake) as a deep-glass body with a cool field light, a fine membrane and a calm aura; it settles in once
+  (`sxBoundaryOpen`, .6 s, none in REDUCED). The four layers sit in a two-column grid (one column on narrow screens), each a glass unit
+  with an accent line and an ordinal ring. Amber is now an accent only: dots and the dashed border of the limits (NOT …, authority NONE,
+  UNSCORED); chip text is light ink. At 1280 × 720 it now stays inside the viewport (it reached below the visible area before).
+- Texts, ids, attributes and the open / close behaviour (click, Enter, Escape) unchanged.
+
+Proof (local only): `evidence/job-pool/semiotic-transfer/local-boundary-focus/local-proof.json` — boundary text and contract identical to the
+previous tip (code marker verified); 44 checks at 1600 × 1000 and 1280 × 720, LIVE and REDUCED (open by click and Enter, close by click
+and Escape, veil present / withdrawn and pointer-transparent, no collision with orientation, pools, intake, selector and footer
+statement, inside the viewport, no new infinite motion, nothing in REDUCED); field SSR test 8 / 8.
+
 ### 13.3 DOM contract (PINK BR-1 … BR-5; GELB conditions a/b)
 
 **BR-1 field root** `data-testid="syntx-field"`: `data-field-grammar="SYNTX_FIELD_V1"`, `data-observation-kind` FIELD|ORGANIZATION|ROLE|REQUIREMENT
@@ -1012,3 +1031,4 @@ observation point. Readable labels wrap at word boundaries (`wrapLines`), never 
 | 2026-10-13 | Local pass: orientation surface (owner "Small field. Local recursion.", on aa33ddf; visual only, isolated lab) | §13.2.11: the top-left orientation surface as a lit glass with five layers, path rail, state chip, key caps, action chips; one finite context light. Evidence: `evidence/job-pool/semiotic-transfer/local-orientation/` | tsc 0; local proof 48 / 48; text, contract and tab order identical; field SSR 8 / 8 (no full sweep by owner rule) |
 | 2026-10-13 | Local pass: quiet panel glow and boundary layers (owner "Small field. Local recursion.", on 801b778; visual only, isolated lab) | §13.2.12: slower, softer panel aura and edge current, finer membrane; orientation aura and static field node; boundary in four layered groups with semantic rails. Evidence: `evidence/job-pool/semiotic-transfer/local-glow-boundary/` | tsc 0; text, contract and tab order identical; orientation proof 48 / 48; panel proof 24 / 24 (no full sweep by owner rule) |
 | 2026-10-13 | Local pass: meta dock, intake, boundary (owner "Medium-small field. Local recursion.", on a4488a3; visual only, isolated lab) | §13.2.13: one segmented meta bar in the header band (Job Field context only), intake lower, boundary headings and dashed limit chips. Evidence: `evidence/job-pool/semiotic-transfer/local-meta-intake-boundary/` | tsc 0; local proof 29 / 29; governance text and contracts identical; Capability controls unchanged; panel proof 24 / 24; language contract + Job Pool SSR 14 / 105 (no full sweep by owner rule) |
+| 2026-10-13 | Local pass: boundary as a focus state (owner "Small-to-medium field. Local recursion.", on 2f7d0ee; visual only, isolated lab) | §13.2.14: receding field behind a pointer-transparent veil, the boundary as a centred governance body with a layer grid and amber as accent only. Evidence: `evidence/job-pool/semiotic-transfer/local-boundary-focus/` | tsc 0; local proof 44 / 44; boundary text and contract identical; field SSR 8 / 8 (no full sweep by owner rule) |

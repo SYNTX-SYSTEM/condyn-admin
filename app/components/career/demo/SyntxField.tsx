@@ -229,8 +229,22 @@ const panelKicker = (tone: string = azure(0.95)): React.CSSProperties => ({ disp
 const panelMeta: React.CSSProperties = { fontFamily: MONO, fontSize: "9.5px", letterSpacing: "0.5px", lineHeight: 1.65, color: "rgba(160, 186, 204, 0.82)", wordBreak: "break-word" };
 const panelField: React.CSSProperties = { fontFamily: MONO, fontSize: "8.5px", fontWeight: 600, letterSpacing: "1.5px", textTransform: "uppercase", lineHeight: 1.55, color: "rgba(168, 200, 218, 0.86)", display: "flex", flexDirection: "column", gap: "7px" };
 const panelStatement = (rule: string): React.CSSProperties => ({ fontFamily: SANS, fontSize: "12px", lineHeight: 1.66, color: "rgba(226, 238, 246, 0.86)", margin: 0, padding: "2px 0 2px 12px", borderLeft: `1.5px solid ${rule}` });
+/** The boundary as a governance body: deep glass with a cool field light, a fine membrane and a calm outer aura (no amber glow;
+ * amber stays a meaning accent on the limits). */
+const BOUNDARY_BODY: React.CSSProperties = {
+  padding: "22px 24px 24px",
+  borderRadius: "22px",
+  border: `1px solid ${azure(0.28)}`,
+  background: [...PANEL_TICKS.map(tick => tick.replace(/6px/g, "9px")), "radial-gradient(90% 55% at 50% -8%, rgba(92, 200, 255, 0.13), transparent 62%)", "radial-gradient(70% 50% at 50% 110%, rgba(84, 232, 236, 0.06), transparent 60%)", "linear-gradient(172deg, rgba(10, 26, 40, 0.96), rgba(4, 11, 20, 0.97) 55%, rgba(2, 7, 13, 0.98))"].join(", "),
+  boxShadow: `0 30px 80px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(1, 5, 10, 0.7), 0 0 0 6px rgba(92, 200, 255, 0.035), 0 0 70px rgba(56, 190, 240, 0.14), inset 0 1px 0 rgba(210, 248, 255, 0.16), inset 0 0 0 1px rgba(170, 235, 255, 0.04), inset 0 0 40px ${azure(0.06)}`
+};
+/** One layer of the boundary: a quiet glass unit with its accent line (the layer's meaning colour) at the top. */
+const boundaryLayer = (accent: string): React.CSSProperties => ({ ...stack(10), position: "relative", padding: "18px 16px 16px", borderRadius: "14px", border: "1px solid rgba(120, 200, 240, 0.12)", borderImage: "none", background: "linear-gradient(165deg, rgba(16, 38, 56, 0.5), rgba(4, 12, 20, 0.45))", boxShadow: "inset 0 1px 0 rgba(200, 248, 255, 0.07), 0 10px 24px rgba(0, 0, 0, 0.22)", "--sx-layer": accent } as React.CSSProperties);
+/** A boundary chip: light ink on dark glass; the meaning sits in its dot (and, for a limit, in the dashed amber border). */
+const boundaryChip = (rgb: string): React.CSSProperties => ({ display: "inline-flex", alignItems: "center", gap: "6px", fontFamily: MONO, fontSize: "8.5px", fontWeight: 600, letterSpacing: "1.2px", textTransform: "uppercase", lineHeight: 1.35, color: "rgba(228, 239, 246, 0.92)", padding: "4px 9px", borderRadius: "999px", border: `1px solid rgba(${rgb}, 0.32)`, background: "rgba(255, 255, 255, 0.03)", whiteSpace: "normal" });
+const chipDot = (rgb: string): React.CSSProperties => ({ display: "inline-block", width: "5px", height: "5px", borderRadius: "50%", flexShrink: 0, background: `rgb(${rgb})`, boxShadow: `0 0 6px rgba(${rgb}, 0.8)` });
 /** The heading of a boundary layer: its ordinal in the layer's colour, then the layer's name (quiet mono, tracked). */
-const boundaryHeading = (tone: string): React.CSSProperties => ({ display: "flex", alignItems: "baseline", gap: "8px", fontFamily: MONO, fontSize: "8px", fontWeight: 600, letterSpacing: "1.8px", textTransform: "uppercase", color: "rgba(200, 226, 240, 0.8)", "--sx-heading": tone } as React.CSSProperties);
+const boundaryHeading = (tone: string): React.CSSProperties => ({ display: "flex", alignItems: "center", gap: "10px", fontFamily: MONO, fontSize: "8.5px", fontWeight: 600, letterSpacing: "2px", textTransform: "uppercase", color: "rgba(214, 232, 244, 0.88)", "--sx-heading": tone } as React.CSSProperties);
 /** A statement inside a boundary layer (the layer carries the rail): calm sans, a little larger, generous leading. */
 const boundaryStatement = (): React.CSSProperties => ({ fontFamily: SANS, fontSize: "12.5px", lineHeight: 1.62, color: "rgba(228, 239, 246, 0.88)", margin: 0 });
 const chip = (rgb: string): React.CSSProperties => ({ display: "inline-flex", alignItems: "center", fontFamily: MONO, fontSize: "8.5px", fontWeight: 600, letterSpacing: "1.2px", textTransform: "uppercase", lineHeight: 1.35, color: `rgb(${rgb})`, padding: "4px 9px", borderRadius: "6px", border: `1px solid rgba(${rgb}, 0.42)`, background: `linear-gradient(180deg, rgba(${rgb}, 0.12), rgba(${rgb}, 0.05))`, boxShadow: `0 0 12px rgba(${rgb}, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.05)`, whiteSpace: "normal" });
@@ -310,7 +324,7 @@ ${SYNTX_FOCUS_PULSE_KEYFRAMES}
 @keyframes sxPanelCurrent { 0% { background-position: -40% 0; } 55%, 100% { background-position: 140% 0; } }
 [data-sx-panel]::before { content: ""; position: absolute; left: 14px; right: 14px; top: -1px; height: 1px; pointer-events: none; background: linear-gradient(90deg, transparent, rgba(190, 248, 255, 0.85), transparent) no-repeat; background-size: 30% 1px; opacity: .55; animation: sxPanelCurrent 18s cubic-bezier(.45, 0, .25, 1) infinite; }
 [data-sx-panel]::after { content: ""; position: absolute; inset: -1px; border-radius: inherit; pointer-events: none; z-index: -1; box-shadow: 0 0 40px rgba(92, 200, 255, 0.13), 0 0 14px rgba(92, 200, 255, 0.08), 0 0 2px rgba(150, 230, 255, 0.3); animation: atmosphereGlow 16s ease-in-out infinite; }
-[data-sx-panel="boundary"]::after { box-shadow: 0 0 44px rgba(245, 166, 35, 0.06), 0 0 36px rgba(92, 200, 255, 0.11), 0 0 2px rgba(150, 230, 255, 0.28); }
+[data-sx-panel="boundary"]::after { box-shadow: 0 0 50px rgba(92, 200, 255, 0.12), 0 0 2px rgba(150, 230, 255, 0.28); }
 [data-sx-panel-node] [data-sx-panel-lamp] { animation: atmosphereGlow 10s ease-in-out infinite; }
 [data-sx-kicker]::before { content: ""; width: 6px; height: 6px; transform: rotate(45deg); flex-shrink: 0; border: 1px solid var(--sx-kicker); box-shadow: 0 0 8px var(--sx-kicker); }
 [data-sx-kicker]::after { content: ""; flex: 1; height: 1px; min-width: 0; background: linear-gradient(90deg, rgba(92, 200, 255, 0.4), transparent); }
@@ -336,7 +350,9 @@ ${SYNTX_FOCUS_PULSE_KEYFRAMES}
 [data-sx-shell="controls"] > button:focus-visible, [data-testid="semantic-guide-drawer-toggle"]:focus-visible { outline: 1px solid rgba(56, 229, 255, 0.8); outline-offset: 2px; }
 /* Boundary: statements that bound (NOT …, authority NONE) as dashed chips — a limit, not a state; affirmative states stay solid. */
 [data-sx-boundary-limit] { border-style: dashed !important; }
-[data-sx-boundary-heading] > span:first-child { color: var(--sx-heading); font-size: 8.5px; letter-spacing: 0.6px; text-shadow: 0 0 8px var(--sx-heading); opacity: .9; }
+[data-sx-boundary-heading] > span:first-child { display: inline-flex; align-items: center; justify-content: center; width: 20px; height: 20px; flex-shrink: 0; box-sizing: border-box; border-radius: 50%; border: 1px solid var(--sx-heading); color: var(--sx-heading); font-size: 8px; letter-spacing: 0; box-shadow: 0 0 10px -2px var(--sx-heading), inset 0 0 6px -2px var(--sx-heading); }
+[data-sx-boundary-layers] > [data-sx-section]::before { content: ""; position: absolute; left: 16px; top: -1px; width: 34px; height: 2px; border-radius: 2px; background: var(--sx-layer); box-shadow: 0 0 10px var(--sx-layer); }
+@keyframes sxBoundaryOpen { from { opacity: 0; transform: scale(0.97); } to { opacity: 1; transform: scale(1); } }
 /* Orientation surface (top left): field actions as chips; hover and focus light; one finite light pass on every context change. */
 @keyframes sxOrientPass { from { transform: translateX(-120%); opacity: 0; } 20% { opacity: 1; } to { transform: translateX(260%); opacity: 0; } }
 [data-sx-orient] [data-sx-orient-action] { transition: border-color .3s ease, background-color .3s ease, color .3s ease, box-shadow .3s ease; }
@@ -1594,38 +1610,41 @@ export function SyntxField({ workflow, analysisSource, observation: requested, o
         {workflow.upload.state === "FAILED" && <span data-testid="job-pool-upload-failed" style={{ ...micro, color: AMBER }}>{tp.uploadFailed}{workflow.upload.code ? ` · ${workflow.upload.code}` : ""}</span>}
       </section>
 
-      {/* Edge aperture: the authority boundary of what was read (labels, canonical mapping state, sweep state), opened on demand. */}
+      {/* The boundary as its own field level: while it is open the field recedes behind a quiet veil (above every sign, below the
+          edge surfaces, transparent to the pointer), and the boundary opens at the centre as a governance body. */}
+      {field !== null && field.boundary !== null && <div data-sx-boundary-veil aria-hidden="true" style={{ position: "absolute", inset: 0, zIndex: 44, pointerEvents: "none", opacity: boundaryOpen ? 1 : 0, background: "radial-gradient(ellipse 70% 65% at 50% 50%, rgba(2, 9, 16, 0.4), rgba(1, 4, 9, 0.66) 100%)", backdropFilter: boundaryOpen ? "blur(1.5px) saturate(0.8)" : "none", transition: "opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1)" }} />}
       {field !== null && field.boundary !== null && matching !== null && view !== null && (
-        <section data-testid="job-pool-matches" data-matches-state={workflow.matches.state} data-ranking={describeRanking(matching.roleMatches)} hidden={!boundaryOpen} data-sx-reveal={boundaryOpen ? "true" : undefined} data-sx-surface="boundary" data-sx-panel="boundary" style={{ ...panel, borderTopColor: "rgba(245, 166, 35, 0.4)", display: boundaryOpen ? "flex" : "none", flexDirection: "column", gap: "10px", right: "28px", bottom: "calc(var(--condyn-page-header-height, 60px) + 52px)", width: "min(372px, 29vw)", maxHeight: intakeVisible ? "calc(100vh - 560px)" : "calc(100vh - 230px)", overflowY: "auto", zIndex: 46 }}>
-          <PanelNode side="left" top="26px" />
-          <span data-sx-kicker style={panelKicker(`rgba(${AMBER_RGB}, 0.9)`)}>{t.boundary}</span>
-          {/* 1 · the presentation: what this field is and is not (the authority boundary, grouped as chips) and how it is ordered. */}
-          <div data-sx-section="presentation" style={{ ...stack(9), padding: "12px 12px 12px 14px", borderRadius: "10px", border: "1px solid rgba(92, 200, 255, 0.08)", borderImage: "none", background: "linear-gradient(170deg, rgba(255, 255, 255, 0.022), rgba(255, 255, 255, 0.006))", boxShadow: `inset 2px 0 0 rgba(245, 166, 35, 0.55), inset 0 1px 0 rgba(200, 248, 255, 0.04)` }}>
-            <span data-sx-boundary-heading style={boundaryHeading(`rgb(${AMBER_RGB})`)}><span aria-hidden="true">01</span>{tp.boundaryPresentation}</span>
-            <div data-testid="job-pool-presentation-labels" data-policy-version={field.boundary.policyVersion} data-authority-state={field.boundary.authorityState} style={row(6)}>
-              {field.boundary.labels.map(item => <span key={item} data-testid={`job-pool-label-${item}`} data-sx-boundary-limit={item.startsWith("NOT_") ? "true" : undefined} style={chip(AMBER_RGB)}>{tp.labels[item]}</span>)}
+        <section data-testid="job-pool-matches" data-matches-state={workflow.matches.state} data-ranking={describeRanking(matching.roleMatches)} hidden={!boundaryOpen} data-sx-reveal={boundaryOpen ? "true" : undefined} data-sx-surface="boundary" data-sx-panel="boundary" style={{ ...panel, ...BOUNDARY_BODY, display: boundaryOpen ? "flex" : "none", flexDirection: "column", gap: "16px", left: 0, right: 0, margin: "0 auto", top: "96px", width: "max(340px, min(760px, calc(100vw - 768px)))", maxHeight: "calc(100vh - 208px)", overflowY: "auto", zIndex: 46, animation: mode === "LIVE" && boundaryOpen ? "sxBoundaryOpen 0.6s cubic-bezier(0.16, 1, 0.3, 1) both" : undefined }}>
+          <span data-sx-kicker style={{ ...panelKicker(`rgba(${AMBER_RGB}, 0.85)`), fontSize: "11px", letterSpacing: "3.2px", color: "#e4f4fb", paddingBottom: "2px" }}>{t.boundary}</span>
+          <div data-sx-boundary-layers style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: "12px" }}>
+            {/* 1 · the presentation: what this field is and is not (its authority boundary) and how it is ordered. */}
+            <div data-sx-section="presentation" style={boundaryLayer(`rgba(${AMBER_RGB}, 0.8)`)}>
+              <span data-sx-boundary-heading style={boundaryHeading(`rgb(${AMBER_RGB})`)}><span aria-hidden="true">01</span>{tp.boundaryPresentation}</span>
+              <div data-testid="job-pool-presentation-labels" data-policy-version={field.boundary.policyVersion} data-authority-state={field.boundary.authorityState} style={row(6)}>
+                {field.boundary.labels.map(item => <span key={item} data-testid={`job-pool-label-${item}`} data-sx-boundary-limit={item.startsWith("NOT_") ? "true" : undefined} style={boundaryChip(item.startsWith("NOT_") ? AMBER_RGB : CYAN_RGB)}><span aria-hidden="true" style={chipDot(item.startsWith("NOT_") ? AMBER_RGB : CYAN_RGB)} />{tp.labels[item]}</span>)}
+              </div>
+              <span data-testid="job-pool-ranking" data-ranking={describeRanking(matching.roleMatches)} style={panelMeta}>{tp.ranking[describeRanking(matching.roleMatches)]}</span>
             </div>
-            <span data-testid="job-pool-ranking" data-ranking={describeRanking(matching.roleMatches)} style={panelMeta}>{tp.ranking[describeRanking(matching.roleMatches)]}</span>
-          </div>
-          {/* 2 · canonical mapping: its states as chips, then the statement that bounds it. */}
-          <div data-sx-section="mapping" style={{ ...stack(9), padding: "12px 12px 12px 14px", borderRadius: "10px", border: "1px solid rgba(92, 200, 255, 0.08)", borderImage: "none", background: "linear-gradient(170deg, rgba(255, 255, 255, 0.022), rgba(255, 255, 255, 0.006))", boxShadow: `inset 2px 0 0 rgba(245, 166, 35, 0.4), inset 0 1px 0 rgba(200, 248, 255, 0.04)` }}>
-            <span data-sx-boundary-heading style={boundaryHeading(`rgba(${AMBER_RGB}, 0.85)`)}><span aria-hidden="true">02</span>{tp.canonicalMapping}</span>
-            <div data-testid="job-pool-canonical-mapping" data-mapping-state={view.canonicalMapping.mappingState} data-proposal-state={view.canonicalMapping.proposalState} data-authority-state={view.canonicalMapping.authorityState} style={row(6)}>
-              <span style={chip(GREEN_RGB)}>{view.canonicalMapping.mappingState}</span><span style={chip(AMBER_RGB)}>{view.canonicalMapping.proposalState}</span><span data-sx-boundary-limit="true" style={chip(AMBER_RGB)}>authority {view.canonicalMapping.authorityState}</span>
+            {/* 2 · canonical mapping: its states, then the statement that bounds it. */}
+            <div data-sx-section="mapping" style={boundaryLayer(`rgba(${AMBER_RGB}, 0.6)`)}>
+              <span data-sx-boundary-heading style={boundaryHeading(`rgba(${AMBER_RGB}, 0.85)`)}><span aria-hidden="true">02</span>{tp.canonicalMapping}</span>
+              <div data-testid="job-pool-canonical-mapping" data-mapping-state={view.canonicalMapping.mappingState} data-proposal-state={view.canonicalMapping.proposalState} data-authority-state={view.canonicalMapping.authorityState} style={row(6)}>
+                <span style={boundaryChip(GREEN_RGB)}><span aria-hidden="true" style={chipDot(GREEN_RGB)} />{view.canonicalMapping.mappingState}</span><span style={boundaryChip(AMBER_RGB)}><span aria-hidden="true" style={chipDot(AMBER_RGB)} />{view.canonicalMapping.proposalState}</span><span data-sx-boundary-limit="true" style={boundaryChip(AMBER_RGB)}><span aria-hidden="true" style={chipDot(AMBER_RGB)} />authority {view.canonicalMapping.authorityState}</span>
+              </div>
+              <span style={boundaryStatement()}>{tp.canonicalMappingBoundary}</span>
             </div>
-            <span style={boundaryStatement()}>{tp.canonicalMappingBoundary}</span>
-          </div>
-          {/* 3 · the capability sweep: its state line, then what sweep coverage is and is not. */}
-          <div data-sx-section="sweep" data-testid="job-pool-capability-sweep" data-sweep-state={field.boundary.capabilitySweep.state} data-proposal-count={field.boundary.capabilitySweep.proposalCount} data-scored="false" style={{ ...stack(9), padding: "12px 12px 12px 14px", borderRadius: "10px", border: "1px solid rgba(92, 200, 255, 0.08)", borderImage: "none", background: "linear-gradient(170deg, rgba(255, 255, 255, 0.022), rgba(255, 255, 255, 0.006))", boxShadow: `inset 2px 0 0 ${azure(0.5)}, inset 0 1px 0 rgba(200, 248, 255, 0.04)` }}>
-            <span data-sx-boundary-heading style={boundaryHeading(azure(0.95))}><span aria-hidden="true">03</span>{tp.sweep}</span>
-            <span style={{ ...panelMeta, color: field.boundary.capabilitySweep.state === "AVAILABLE" ? "rgba(160, 186, 204, 0.82)" : `rgb(${AMBER_RGB})` }}>{tp.sweepStates[field.boundary.capabilitySweep.state]} · {tp.sweepProposals} {field.boundary.capabilitySweep.proposalCount} · <span style={{ ...chip(AMBER_RGB), padding: "1px 6px", fontSize: "8px", verticalAlign: "1px" }}>{tp.unscored}</span></span>
-            <span style={boundaryStatement()}>{tp.sweepBoundary}</span>
-          </div>
-          {/* 4 · gaps: the read's parameters, then what missing requirements are. */}
-          <div data-sx-section="gaps" style={{ ...stack(9), padding: "12px 12px 12px 14px", borderRadius: "10px", border: "1px solid rgba(92, 200, 255, 0.08)", borderImage: "none", background: "linear-gradient(170deg, rgba(255, 255, 255, 0.022), rgba(255, 255, 255, 0.006))", boxShadow: `inset 2px 0 0 rgba(230, 241, 248, 0.3), inset 0 1px 0 rgba(200, 248, 255, 0.04)` }}>
-            <span data-sx-boundary-heading style={boundaryHeading("rgba(230, 241, 248, 0.75)")}><span aria-hidden="true">04</span>{tp.missing}</span>
-            <span style={panelMeta}>{tp.candidateCapabilities} {field.boundary.candidateCapabilityCount} · {tp.weakThreshold} {field.boundary.weakEvidenceThreshold}</span>
-            <span style={boundaryStatement()}>{tp.missingBoundary}</span>
+            {/* 3 · the capability sweep: its state line, then what sweep coverage is and is not. */}
+            <div data-sx-section="sweep" data-testid="job-pool-capability-sweep" data-sweep-state={field.boundary.capabilitySweep.state} data-proposal-count={field.boundary.capabilitySweep.proposalCount} data-scored="false" style={boundaryLayer(azure(0.85))}>
+              <span data-sx-boundary-heading style={boundaryHeading(azure(0.95))}><span aria-hidden="true">03</span>{tp.sweep}</span>
+              <span style={{ ...panelMeta, color: "rgba(196, 218, 232, 0.86)" }}><span aria-hidden="true" style={{ ...chipDot(field.boundary.capabilitySweep.state === "AVAILABLE" ? CYAN_RGB : AMBER_RGB), marginRight: "7px", verticalAlign: "1px" }} />{tp.sweepStates[field.boundary.capabilitySweep.state]} · {tp.sweepProposals} {field.boundary.capabilitySweep.proposalCount} · <span data-sx-boundary-limit="true" style={{ ...boundaryChip(AMBER_RGB), padding: "1px 7px", fontSize: "8px", verticalAlign: "1px" }}>{tp.unscored}</span></span>
+              <span style={boundaryStatement()}>{tp.sweepBoundary}</span>
+            </div>
+            {/* 4 · gaps: the read's parameters, then what missing requirements are. */}
+            <div data-sx-section="gaps" style={boundaryLayer("rgba(230, 241, 248, 0.55)")}>
+              <span data-sx-boundary-heading style={boundaryHeading("rgba(230, 241, 248, 0.8)")}><span aria-hidden="true">04</span>{tp.missing}</span>
+              <span style={panelMeta}>{tp.candidateCapabilities} {field.boundary.candidateCapabilityCount} · {tp.weakThreshold} {field.boundary.weakEvidenceThreshold}</span>
+              <span style={boundaryStatement()}>{tp.missingBoundary}</span>
+            </div>
           </div>
         </section>
       )}
