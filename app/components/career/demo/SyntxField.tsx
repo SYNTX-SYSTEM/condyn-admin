@@ -229,6 +229,17 @@ const panelKicker = (tone: string = azure(0.95)): React.CSSProperties => ({ disp
 const panelMeta: React.CSSProperties = { fontFamily: MONO, fontSize: "9.5px", letterSpacing: "0.5px", lineHeight: 1.65, color: "rgba(160, 186, 204, 0.82)", wordBreak: "break-word" };
 const panelField: React.CSSProperties = { fontFamily: MONO, fontSize: "8.5px", fontWeight: 600, letterSpacing: "1.5px", textTransform: "uppercase", lineHeight: 1.55, color: "rgba(168, 200, 218, 0.86)", display: "flex", flexDirection: "column", gap: "7px" };
 const panelStatement = (rule: string): React.CSSProperties => ({ fontFamily: SANS, fontSize: "12px", lineHeight: 1.66, color: "rgba(226, 238, 246, 0.86)", margin: 0, padding: "2px 0 2px 12px", borderLeft: `1.5px solid ${rule}` });
+/** The boundary's external resonance halo: a diffuse cyan seam that begins right at the frame and radiates a few pixels into the
+ * dark — three soft layers on the body's own box-shadow (the body scrolls, so a child or pseudo aura would be clipped by its overflow;
+ * its own shadow is not, and it follows the rounded corners). The halo breathes between "low" and "high" (sxBoundaryHalo, 28 s, LIVE
+ * only): brighter and a little wider, then back. REDUCED and the server render keep the calm "mid" aura, still. The rest of the stack
+ * (depth, outline, field glow, inner light) is identical in every state, so only the halo moves. */
+const BOUNDARY_HALO = {
+  low: "0 0 6px 0 rgba(56, 229, 255, 0.2), 0 0 18px 2px rgba(56, 229, 255, 0.09), 0 0 38px 4px rgba(56, 229, 255, 0.045)",
+  mid: "0 0 8px 1px rgba(56, 229, 255, 0.32), 0 0 22px 3px rgba(56, 229, 255, 0.14), 0 0 46px 7px rgba(56, 229, 255, 0.07)",
+  high: "0 0 10px 1px rgba(56, 229, 255, 0.46), 0 0 28px 5px rgba(56, 229, 255, 0.2), 0 0 58px 11px rgba(56, 229, 255, 0.1)"
+} as const;
+const boundaryShadow = (state: keyof typeof BOUNDARY_HALO): string => `${BOUNDARY_HALO[state]}, 0 30px 80px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(1, 5, 10, 0.7), 0 0 0 6px rgba(92, 200, 255, 0.035), 0 0 70px rgba(56, 190, 240, 0.14), 0 0 140px rgba(56, 190, 240, 0.06), inset 0 1px 0 rgba(210, 248, 255, 0.18), inset 0 0 0 1px rgba(170, 235, 255, 0.04), inset 0 0 48px ${azure(0.07)}`;
 /** The boundary as a governance body: deep glass with a cool field light, a fine membrane and a calm outer aura (no amber glow;
  * amber stays a meaning accent on the limits). The membrane is a light gradient carried in the 1px border (a border-box layer under
  * the padding-box glass), brightest at the upper rim; inside the glass a still diagonal sheen. All static: the body's only motion
@@ -238,7 +249,7 @@ const BOUNDARY_BODY: React.CSSProperties = {
   borderRadius: "22px",
   border: "1px solid transparent",
   background: [...PANEL_TICKS.map(tick => tick.replace(/6px/g, "9px")).map(tick => `${tick.replace(/ no-repeat$/, "")} padding-box no-repeat`), "linear-gradient(112deg, transparent 18%, rgba(176, 236, 255, 0.032) 34%, transparent 46%, transparent 62%, rgba(176, 236, 255, 0.022) 74%, transparent 84%) padding-box", "radial-gradient(90% 55% at 50% -8%, rgba(92, 200, 255, 0.14), transparent 62%) padding-box", "radial-gradient(70% 50% at 50% 110%, rgba(84, 232, 236, 0.07), transparent 60%) padding-box", "linear-gradient(172deg, rgba(10, 26, 40, 0.96), rgba(4, 11, 20, 0.97) 55%, rgba(2, 7, 13, 0.98)) padding-box", "linear-gradient(180deg, rgba(160, 246, 255, 0.72), rgba(56, 229, 255, 0.36) 18%, rgba(56, 229, 255, 0.2) 52%, rgba(56, 229, 255, 0.3) 86%, rgba(130, 236, 255, 0.5)) border-box"].join(", "),
-  boxShadow: `0 30px 80px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(1, 5, 10, 0.7), 0 0 0 6px rgba(92, 200, 255, 0.035), 0 0 70px rgba(56, 190, 240, 0.14), 0 0 140px rgba(56, 190, 240, 0.06), inset 0 1px 0 rgba(210, 248, 255, 0.18), inset 0 0 0 1px rgba(170, 235, 255, 0.04), inset 0 0 48px ${azure(0.07)}`
+  boxShadow: boundaryShadow("mid")
 };
 /** One layer of the boundary: a quiet glass unit in the shared field light — an azure accent line and light rim at the top, a
  * membrane border brightest above, a faint inner shimmer from the upper corner. Every layer the same light grammar; meaning colours
@@ -366,6 +377,7 @@ ${SYNTX_FOCUS_PULSE_KEYFRAMES}
 [data-sx-boundary-layers] > [data-sx-section]::after { content: ""; position: absolute; left: 56px; right: 18px; top: -1px; height: 1px; pointer-events: none; background: linear-gradient(90deg, rgba(196, 246, 255, 0.34), rgba(196, 246, 255, 0.1) 46%, transparent); }
 [data-sx-boundary-statement]::before { content: ""; position: absolute; left: 0; top: -6px; width: 22px; height: 1px; background: rgba(92, 200, 255, 0.4); }
 @keyframes sxBoundaryOpen { from { opacity: 0; transform: scale(0.97); } to { opacity: 1; transform: scale(1); } }
+@keyframes sxBoundaryHalo { 0%, 100% { box-shadow: ${boundaryShadow("low")}; } 50% { box-shadow: ${boundaryShadow("high")}; } }
 /* Orientation surface (top left): field actions as chips; hover and focus light; one finite light pass on every context change. */
 @keyframes sxOrientPass { from { transform: translateX(-120%); opacity: 0; } 20% { opacity: 1; } to { transform: translateX(260%); opacity: 0; } }
 [data-sx-orient] [data-sx-orient-action] { transition: border-color .3s ease, background-color .3s ease, color .3s ease, box-shadow .3s ease; }
@@ -1627,7 +1639,7 @@ export function SyntxField({ workflow, analysisSource, observation: requested, o
           edge surfaces, transparent to the pointer), and the boundary opens at the centre as a governance body. */}
       {field !== null && field.boundary !== null && <div data-sx-boundary-veil aria-hidden="true" style={{ position: "absolute", inset: 0, zIndex: 44, pointerEvents: "none", opacity: boundaryOpen ? 1 : 0, background: "radial-gradient(ellipse 70% 65% at 50% 50%, rgba(2, 9, 16, 0.4), rgba(1, 4, 9, 0.66) 100%)", backdropFilter: boundaryOpen ? "blur(1.5px) saturate(0.8)" : "none", transition: "opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1)" }} />}
       {field !== null && field.boundary !== null && matching !== null && view !== null && (
-        <section data-testid="job-pool-matches" data-matches-state={workflow.matches.state} data-ranking={describeRanking(matching.roleMatches)} hidden={!boundaryOpen} data-sx-reveal={boundaryOpen ? "true" : undefined} data-sx-surface="boundary" data-sx-panel="boundary" style={{ ...panel, ...BOUNDARY_BODY, display: boundaryOpen ? "flex" : "none", flexDirection: "column", gap: "16px", left: 0, right: 0, margin: "0 auto", top: "96px", width: "max(340px, min(760px, calc(100vw - 768px)))", maxHeight: "calc(100vh - 208px)", overflowY: "auto", zIndex: 46, animation: mode === "LIVE" && boundaryOpen ? "sxBoundaryOpen 0.6s cubic-bezier(0.16, 1, 0.3, 1) both" : undefined }}>
+        <section data-testid="job-pool-matches" data-matches-state={workflow.matches.state} data-ranking={describeRanking(matching.roleMatches)} hidden={!boundaryOpen} data-sx-reveal={boundaryOpen ? "true" : undefined} data-sx-surface="boundary" data-sx-panel="boundary" style={{ ...panel, ...BOUNDARY_BODY, display: boundaryOpen ? "flex" : "none", flexDirection: "column", gap: "16px", left: 0, right: 0, margin: "0 auto", top: "96px", width: "max(340px, min(760px, calc(100vw - 768px)))", maxHeight: "calc(100vh - 208px)", overflowY: "auto", zIndex: 46, animation: mode === "LIVE" && boundaryOpen ? "sxBoundaryOpen 0.6s cubic-bezier(0.16, 1, 0.3, 1) both, sxBoundaryHalo 28s ease-in-out -7s infinite" : undefined }}>
           <span data-sx-kicker style={{ ...panelKicker(`rgba(${AMBER_RGB}, 0.85)`), fontSize: "11px", letterSpacing: "3.2px", color: "#e4f4fb" }}>{t.boundary}</span>
           {/* The orientation sentence: what this body is. It sits in the space the kicker gave up (padding 22 → 13), so the body and
               its layers keep their exact boxes. */}

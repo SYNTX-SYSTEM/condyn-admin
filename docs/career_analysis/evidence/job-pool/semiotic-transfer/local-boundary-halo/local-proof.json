@@ -1,0 +1,550 @@
+{
+  "base": "fd3462db510eca2599b19b5c3e39cafb784ee0b8",
+  "diagnosis": {
+    "finding": "the boundary body scrolls (overflow auto), which clips every child and pseudo-element at its padding box: the breathing ::after aura never reached outside the frame",
+    "ringOutsideFrame0to48px": {
+      "removingTheBreathingAfterAura": {
+        "meanChannelDelta": 0.01,
+        "max": 21,
+        "note": "max is one anti-aliased edge pixel"
+      },
+      "removingTheBodysOwnBoxShadow": {
+        "meanChannelDelta": 4.08,
+        "max": 58
+      }
+    },
+    "backdropFilter": "blur(10px) on the body: does not clip its own shadow",
+    "zIndex": "body 46 above the veil 44: the halo is painted above the dimmed field"
+  },
+  "halo": {
+    "where": "the body's own box-shadow (not clipped by its overflow; follows the 22 px radius)",
+    "keyframes": "sxBoundaryHalo 28 s ease-in-out infinite, low <-> high: seam alpha 0.2 -> 0.46, blur 6 -> 10 px, spread 0/2/4 -> 1/5/11 px; the rest of the shadow stack identical in every state",
+    "reducedMotion": "static mid aura (alpha 0.32), no breath",
+    "wallClock": {
+      "peakAtSecondsAfterOpen": "8.7-9.7",
+      "lowAtSecondsAfterOpen": "22.3-23.4",
+      "cycle": "28 s",
+      "samples": [
+        {
+          "t": 1.4,
+          "alpha": 0.33,
+          "blur": 8,
+          "spread": 0.5
+        },
+        {
+          "t": 2.5,
+          "alpha": 0.33,
+          "blur": 8,
+          "spread": 0.5
+        },
+        {
+          "t": 3.5,
+          "alpha": 0.373,
+          "blur": 8.68007,
+          "spread": 0.670019
+        },
+        {
+          "t": 4.5,
+          "alpha": 0.4,
+          "blur": 9.11884,
+          "spread": 0.77971
+        },
+        {
+          "t": 5.6,
+          "alpha": 0.427,
+          "blur": 9.48837,
+          "spread": 0.872092
+        },
+        {
+          "t": 6.6,
+          "alpha": 0.443,
+          "blur": 9.75523,
+          "spread": 0.938808
+        },
+        {
+          "t": 7.7,
+          "alpha": 0.455,
+          "blur": 9.92109,
+          "spread": 0.980273
+        },
+        {
+          "t": 8.7,
+          "alpha": 0.46,
+          "blur": 9.99426,
+          "spread": 0.998564
+        },
+        {
+          "t": 9.7,
+          "alpha": 0.46,
+          "blur": 9.98423,
+          "spread": 0.996057
+        },
+        {
+          "t": 10.8,
+          "alpha": 0.45,
+          "blur": 9.87558,
+          "spread": 0.968896
+        },
+        {
+          "t": 11.9,
+          "alpha": 0.44,
+          "blur": 9.67344,
+          "spread": 0.918359
+        },
+        {
+          "t": 12.9,
+          "alpha": 0.42,
+          "blur": 9.37774,
+          "spread": 0.844436
+        },
+        {
+          "t": 14,
+          "alpha": 0.392,
+          "blur": 8.98512,
+          "spread": 0.746281
+        },
+        {
+          "t": 15,
+          "alpha": 0.36,
+          "blur": 8.51012,
+          "spread": 0.627531
+        },
+        {
+          "t": 16.1,
+          "alpha": 0.33,
+          "blur": 8.00845,
+          "spread": 0.502111
+        },
+        {
+          "t": 17.1,
+          "alpha": 0.298,
+          "blur": 7.50608,
+          "spread": 0.37652
+        },
+        {
+          "t": 18.1,
+          "alpha": 0.267,
+          "blur": 7.04299,
+          "spread": 0.260748
+        },
+        {
+          "t": 19.1,
+          "alpha": 0.243,
+          "blur": 6.6505,
+          "spread": 0.162625
+        },
+        {
+          "t": 20.3,
+          "alpha": 0.224,
+          "blur": 6.33484,
+          "spread": 0.0837112
+        },
+        {
+          "t": 21.3,
+          "alpha": 0.208,
+          "blur": 6.12946,
+          "spread": 0.0323648
+        },
+        {
+          "t": 22.3,
+          "alpha": 0.2,
+          "blur": 6.02327,
+          "spread": 0.0058165
+        },
+        {
+          "t": 23.4,
+          "alpha": 0.2,
+          "blur": 6.00476,
+          "spread": 0.00118904
+        },
+        {
+          "t": 24.5,
+          "alpha": 0.204,
+          "blur": 6.0788,
+          "spread": 0.019699
+        },
+        {
+          "t": 25.5,
+          "alpha": 0.216,
+          "blur": 6.24457,
+          "spread": 0.0611424
+        },
+        {
+          "t": 26.6,
+          "alpha": 0.235,
+          "blur": 6.51638,
+          "spread": 0.129094
+        },
+        {
+          "t": 27.6,
+          "alpha": 0.255,
+          "blur": 6.87431,
+          "spread": 0.218577
+        },
+        {
+          "t": 28.6,
+          "alpha": 0.286,
+          "blur": 7.31191,
+          "spread": 0.327976
+        },
+        {
+          "t": 29.7,
+          "alpha": 0.318,
+          "blur": 7.81103,
+          "spread": 0.452756
+        },
+        {
+          "t": 30.8,
+          "alpha": 0.353,
+          "blur": 8.33407,
+          "spread": 0.583517
+        },
+        {
+          "t": 31.8,
+          "alpha": 0.384,
+          "blur": 8.82114,
+          "spread": 0.705285
+        }
+      ]
+    },
+    "ringOutsideFrame0to48pxMeanBrightness": {
+      "before": {
+        "min": 13.78,
+        "max": 14.28,
+        "note": "constant; the small swing is the field behind"
+      },
+      "afterLive": {
+        "min": 21.06,
+        "max": 29.57
+      },
+      "afterReduced": {
+        "min": 19.83,
+        "max": 19.83
+      }
+    },
+    "frameRateHeadlessSoftware": {
+      "note": "no GPU in this lab; the halo has no measurable cost",
+      "openHaloBreathing": [
+        1.6,
+        1.8
+      ],
+      "openHaloStill": [
+        1.7,
+        1.6
+      ]
+    }
+  },
+  "views": {
+    "1600x1000-no-preference": {
+      "boundary": [
+        420,
+        157,
+        760,
+        479.1
+      ],
+      "boundaryIdentical": true,
+      "scrollIdentical": true,
+      "layersIdentical": true,
+      "everyTextLeafIdentical": true,
+      "textIdentical": true,
+      "contractIdentical": true,
+      "veilIdentical": true,
+      "runningAnimations": {
+        "before": [
+          "atmosphereGlow:inf:32000",
+          "atmosphereGlow:inf:32000",
+          "sxPanelCurrent:inf:18000"
+        ],
+        "after": [
+          "atmosphereGlow:inf:32000",
+          "atmosphereGlow:inf:32000",
+          "sxBoundaryHalo:inf:28000",
+          "sxPanelCurrent:inf:18000"
+        ]
+      },
+      "pageErrors": 0
+    },
+    "1280x720-no-preference": {
+      "boundary": [
+        384,
+        157,
+        512,
+        512
+      ],
+      "boundaryIdentical": true,
+      "scrollIdentical": true,
+      "layersIdentical": true,
+      "everyTextLeafIdentical": true,
+      "textIdentical": true,
+      "contractIdentical": true,
+      "veilIdentical": true,
+      "runningAnimations": {
+        "before": [
+          "atmosphereGlow:inf:32000",
+          "atmosphereGlow:inf:32000",
+          "sxPanelCurrent:inf:18000"
+        ],
+        "after": [
+          "atmosphereGlow:inf:32000",
+          "atmosphereGlow:inf:32000",
+          "sxBoundaryHalo:inf:28000",
+          "sxPanelCurrent:inf:18000"
+        ]
+      },
+      "pageErrors": 0
+    },
+    "1600x1000-reduce": {
+      "boundary": [
+        420,
+        157,
+        760,
+        479.1
+      ],
+      "boundaryIdentical": true,
+      "scrollIdentical": true,
+      "layersIdentical": true,
+      "everyTextLeafIdentical": true,
+      "textIdentical": true,
+      "contractIdentical": true,
+      "veilIdentical": true,
+      "runningAnimations": {
+        "before": [],
+        "after": []
+      },
+      "pageErrors": 0
+    },
+    "1600x1000-no-preference-2x": {
+      "boundary": [
+        420,
+        157,
+        760,
+        479.2
+      ],
+      "boundaryIdentical": true,
+      "scrollIdentical": true,
+      "layersIdentical": true,
+      "everyTextLeafIdentical": true,
+      "textIdentical": true,
+      "contractIdentical": true,
+      "veilIdentical": true,
+      "runningAnimations": {
+        "before": [
+          "atmosphereGlow:inf:32000",
+          "atmosphereGlow:inf:32000",
+          "sxPanelCurrent:inf:18000"
+        ],
+        "after": [
+          "atmosphereGlow:inf:32000",
+          "atmosphereGlow:inf:32000",
+          "sxBoundaryHalo:inf:28000",
+          "sxPanelCurrent:inf:18000"
+        ]
+      },
+      "pageErrors": 0
+    }
+  },
+  "tests": "tsc 0; 6 files / 48 tests (field SSR, static, SIL language contract, language wiring, field governance, presentation)",
+  "behaviourProof": {
+    "note": "bfocus-proof: the allowed infinite names on the boundary now include sxBoundaryHalo (R15b proposal)",
+    "passed": 44,
+    "total": 44,
+    "checks": [
+      {
+        "name": "1600x1000 no-preference: click opens the boundary (aria-expanded, visible)",
+        "ok": true
+      },
+      {
+        "name": "1600x1000 no-preference: the field recedes behind the veil; the veil is decoration and pointer-transparent",
+        "ok": true,
+        "detail": "{\"opacity\":\"1\",\"pointer\":\"none\",\"hidden\":\"true\",\"z\":\"44\"}"
+      },
+      {
+        "name": "1600x1000 no-preference: no collision with orientation, pools, intake, selector, footer statement",
+        "ok": true,
+        "detail": "boundary {\"left\":420,\"right\":1180,\"top\":157,\"bottom\":636.0625} "
+      },
+      {
+        "name": "1600x1000 no-preference: the boundary stays inside the viewport",
+        "ok": true
+      },
+      {
+        "name": "1600x1000 no-preference: only the quiet panel motion keeps running (no new infinite motion)",
+        "ok": true,
+        "detail": "[{\"name\":\"sxBoundaryHalo\",\"infinite\":true},{\"name\":\"sxPanelCurrent\",\"infinite\":true},{\"name\":\"atmosphereGlow\",\"infinite\":true},{\"name\":\"atmosphereGlow\",\"infinite\":true}]"
+      },
+      {
+        "name": "1600x1000 no-preference: the pointer passes the veil (an organization outside the boundary owns its centre)",
+        "ok": true,
+        "detail": "{\"id\":\"syntx-organization-org_rheinwerk\",\"owned\":true,\"x\":1081.7803344726562,\"y\":723.6900024414062}"
+      },
+      {
+        "name": "1600x1000 no-preference: Escape closes the boundary",
+        "ok": true
+      },
+      {
+        "name": "1600x1000 no-preference: the veil withdraws",
+        "ok": true
+      },
+      {
+        "name": "1600x1000 no-preference: Enter on BOUNDARY opens it",
+        "ok": true
+      },
+      {
+        "name": "1600x1000 no-preference: a second click closes it",
+        "ok": true
+      },
+      {
+        "name": "1600x1000 no-preference: no page errors",
+        "ok": true,
+        "detail": ""
+      },
+      {
+        "name": "1600x1000 reduce: click opens the boundary (aria-expanded, visible)",
+        "ok": true
+      },
+      {
+        "name": "1600x1000 reduce: the field recedes behind the veil; the veil is decoration and pointer-transparent",
+        "ok": true,
+        "detail": "{\"opacity\":\"1\",\"pointer\":\"none\",\"hidden\":\"true\",\"z\":\"44\"}"
+      },
+      {
+        "name": "1600x1000 reduce: no collision with orientation, pools, intake, selector, footer statement",
+        "ok": true,
+        "detail": "boundary {\"left\":420,\"right\":1180,\"top\":157,\"bottom\":636.0625} "
+      },
+      {
+        "name": "1600x1000 reduce: the boundary stays inside the viewport",
+        "ok": true
+      },
+      {
+        "name": "1600x1000 reduce: nothing animates on the boundary or the veil",
+        "ok": true,
+        "detail": "[]"
+      },
+      {
+        "name": "1600x1000 reduce: the pointer passes the veil (an organization outside the boundary owns its centre)",
+        "ok": true,
+        "detail": "{\"id\":\"syntx-organization-org_rheinwerk\",\"owned\":true,\"x\":1081.7803344726562,\"y\":723.6900024414062}"
+      },
+      {
+        "name": "1600x1000 reduce: Escape closes the boundary",
+        "ok": true
+      },
+      {
+        "name": "1600x1000 reduce: the veil withdraws",
+        "ok": true
+      },
+      {
+        "name": "1600x1000 reduce: Enter on BOUNDARY opens it",
+        "ok": true
+      },
+      {
+        "name": "1600x1000 reduce: a second click closes it",
+        "ok": true
+      },
+      {
+        "name": "1600x1000 reduce: no page errors",
+        "ok": true,
+        "detail": ""
+      },
+      {
+        "name": "1280x720 no-preference: click opens the boundary (aria-expanded, visible)",
+        "ok": true
+      },
+      {
+        "name": "1280x720 no-preference: the field recedes behind the veil; the veil is decoration and pointer-transparent",
+        "ok": true,
+        "detail": "{\"opacity\":\"1\",\"pointer\":\"none\",\"hidden\":\"true\",\"z\":\"44\"}"
+      },
+      {
+        "name": "1280x720 no-preference: no collision with orientation, pools, intake, selector, footer statement",
+        "ok": true,
+        "detail": "boundary {\"left\":384,\"right\":896,\"top\":157,\"bottom\":669} "
+      },
+      {
+        "name": "1280x720 no-preference: the boundary stays inside the viewport",
+        "ok": true
+      },
+      {
+        "name": "1280x720 no-preference: only the quiet panel motion keeps running (no new infinite motion)",
+        "ok": true,
+        "detail": "[{\"name\":\"sxBoundaryHalo\",\"infinite\":true},{\"name\":\"sxPanelCurrent\",\"infinite\":true},{\"name\":\"atmosphereGlow\",\"infinite\":true},{\"name\":\"atmosphereGlow\",\"infinite\":true}]"
+      },
+      {
+        "name": "1280x720 no-preference: the pointer passes the veil (an organization outside the boundary owns its centre)",
+        "ok": true,
+        "detail": "{\"id\":\"syntx-organization-org_rheinwerk\",\"owned\":true,\"x\":908.6343688964844,\"y\":696.1000061035156}"
+      },
+      {
+        "name": "1280x720 no-preference: Escape closes the boundary",
+        "ok": true
+      },
+      {
+        "name": "1280x720 no-preference: the veil withdraws",
+        "ok": true
+      },
+      {
+        "name": "1280x720 no-preference: Enter on BOUNDARY opens it",
+        "ok": true
+      },
+      {
+        "name": "1280x720 no-preference: a second click closes it",
+        "ok": true
+      },
+      {
+        "name": "1280x720 no-preference: no page errors",
+        "ok": true,
+        "detail": ""
+      },
+      {
+        "name": "1280x720 reduce: click opens the boundary (aria-expanded, visible)",
+        "ok": true
+      },
+      {
+        "name": "1280x720 reduce: the field recedes behind the veil; the veil is decoration and pointer-transparent",
+        "ok": true,
+        "detail": "{\"opacity\":\"1\",\"pointer\":\"none\",\"hidden\":\"true\",\"z\":\"44\"}"
+      },
+      {
+        "name": "1280x720 reduce: no collision with orientation, pools, intake, selector, footer statement",
+        "ok": true,
+        "detail": "boundary {\"left\":384,\"right\":896,\"top\":157,\"bottom\":669} "
+      },
+      {
+        "name": "1280x720 reduce: the boundary stays inside the viewport",
+        "ok": true
+      },
+      {
+        "name": "1280x720 reduce: nothing animates on the boundary or the veil",
+        "ok": true,
+        "detail": "[]"
+      },
+      {
+        "name": "1280x720 reduce: the pointer passes the veil (an organization outside the boundary owns its centre)",
+        "ok": true,
+        "detail": "{\"id\":\"syntx-organization-org_rheinwerk\",\"owned\":true,\"x\":908.6343688964844,\"y\":696.1000061035156}"
+      },
+      {
+        "name": "1280x720 reduce: Escape closes the boundary",
+        "ok": true
+      },
+      {
+        "name": "1280x720 reduce: the veil withdraws",
+        "ok": true
+      },
+      {
+        "name": "1280x720 reduce: Enter on BOUNDARY opens it",
+        "ok": true
+      },
+      {
+        "name": "1280x720 reduce: a second click closes it",
+        "ok": true
+      },
+      {
+        "name": "1280x720 reduce: no page errors",
+        "ok": true,
+        "detail": ""
+      }
+    ]
+  }
+}

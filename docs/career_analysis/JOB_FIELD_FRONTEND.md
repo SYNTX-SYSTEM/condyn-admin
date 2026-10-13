@@ -934,6 +934,27 @@ leaf box identical to a06fe3a (EN, 1600 × 1000 and 1280 × 720, LIVE and REDUCE
 except the corrected word; contract identical; contrast at the brightest breath: every text ≥ 8.6, minimum (decorative ordinal)
 5.81 → 5.54; behaviour proof 44 / 44; 6 files / 48 tests; tsc 0.
 
+#### 13.2.18 Boundary: external resonance halo (owner "SFE::BOUNDARY EXTERNAL RESONANCE HALO", 2026-10-13)
+
+On fd3462d. Stable body, breathing edge.
+
+- **Diagnosis.** The boundary body scrolls (`overflow: auto`), which clips every child and pseudo-element at its padding box: the
+  breathing `::after` aura never reached outside the frame (removing it changes the 0–48 px ring outside the frame by 0.01 / 255 on
+  average). Only the body's own box-shadow is drawn outside (4.08 / 255). The backdrop filter does not clip it; the body (z 46) sits
+  above the veil (z 44).
+- **Halo.** Three soft cyan layers at the head of the body's own box-shadow (`BOUNDARY_HALO`, `boundaryShadow()`): a seam that begins
+  at the frame and radiates a few pixels into the dark, following the 22 px corners. `sxBoundaryHalo` (28 s, ease-in-out, LIVE only)
+  breathes it between low and high: brighter and a little wider (spread +1 / +3 / +7 px), then back; the rest of the shadow stack is
+  identical in every state, so the body itself does not change. REDUCED and the server render keep the calm mid aura, still.
+- Unchanged: size, position, frame, layers, inner light, texts, ids, attributes, behaviour, veil.
+- **Motion contract.** `sxBoundaryHalo` is a new motion kind (it animates box-shadow, not opacity): R15b approval by GELB required
+  (proposal in `proposals/SYNTX_SEMIOTIC_TRANSFER_PROPOSALS.md`).
+
+Proof (local only): `evidence/job-pool/semiotic-transfer/local-boundary-halo/` — one full breath recorded in the browser at 1x
+(`halo-breath-28s-1x.mp4`; wall clock: peak ≈ 9 s, low ≈ 23 s after opening); ring outside the frame 13.8–14.3 before (constant),
+21.1–29.6 after, 19.8 constant in REDUCED; boundary, layers, every text leaf, text, contract and veil identical to fd3462d (EN, 1600 × 1000
+and 1280 × 720, LIVE and REDUCED); no measurable frame cost; behaviour proof 44 / 44; 6 files / 48 tests; tsc 0.
+
 ### 13.3 DOM contract (PINK BR-1 … BR-5; GELB conditions a/b)
 
 **BR-1 field root** `data-testid="syntx-field"`: `data-field-grammar="SYNTX_FIELD_V1"`, `data-observation-kind` FIELD|ORGANIZATION|ROLE|REQUIREMENT
@@ -1095,3 +1116,4 @@ observation point. Readable labels wrap at word boundaries (`wrapLines`), never 
 | 2026-10-13 | Boundary micro-finish (owner "SFE::BOUNDARY MICRO-FINISH", on f136859; visual only, isolated lab) | §13.2.15: static light membrane, sheen and layer rims; shared azure layer grammar, amber only on limits and status dots; heading, meta and statement typography. Evidence: `evidence/job-pool/semiotic-transfer/local-boundary-microfinish/` | tsc 0; geometry of boundary, layers and every text leaf identical; text and contract identical; animations unchanged; min contrast 4.07 → 5.85; behaviour proof 44 / 44; field SSR + static 13 / 13 (no full sweep by owner rule) |
 | 2026-10-13 | Boundary cyan presence + orientation sentence (owner mandate, on 3fb340d; visual + one copy line, isolated lab) | §13.2.16: resting cyan shimmer behind the layers (`atmosphereGlow` 28 s, opacity only), orientation sentence EN / DE under BOUNDARY in the space the kicker gave up. Evidence: `evidence/job-pool/semiotic-transfer/local-boundary-orientation/` | tsc 0; boundary, layers and text leaves identical (kicker −9 px by design); text identical except the sentence; contract identical; behaviour proof 44 / 44; 6 files / 48 tests (no full sweep by owner rule) |
 | 2026-10-13 | Boundary visible cyan glow + corrected orientation line (owner mandate, on a06fe3a; visual + copy, isolated lab) | §13.2.17: shimmer, aura and membrane in cyan with higher amplitude, one shared 32 s breath; owner wording EN / DE. Evidence: `evidence/job-pool/semiotic-transfer/local-boundary-glow/` | tsc 0; geometry identical; text identical except the corrected word; contract identical; swing 0.55 → 2.0 / 255; every text ≥ 8.6 at the brightest breath; behaviour proof 44 / 44; 6 files / 48 tests (no full sweep by owner rule) |
+| 2026-10-13 | Boundary external resonance halo (owner mandate, on fd3462d; visual only, isolated lab) | §13.2.18: overflow clipping of the old aura diagnosed; the halo on the body's own box-shadow, breathing via `sxBoundaryHalo` 28 s (new motion kind, R15b approval by GELB required); REDUCED still. Evidence: `evidence/job-pool/semiotic-transfer/local-boundary-halo/` | tsc 0; body geometry, text and contract identical; ring outside the frame 13.8–14.3 → 21.1–29.6 over the breath; video of one breath at 1x; behaviour proof 44 / 44; 6 files / 48 tests (no full sweep by owner rule) |
