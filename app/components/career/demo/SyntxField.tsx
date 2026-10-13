@@ -230,23 +230,29 @@ const panelMeta: React.CSSProperties = { fontFamily: MONO, fontSize: "9.5px", le
 const panelField: React.CSSProperties = { fontFamily: MONO, fontSize: "8.5px", fontWeight: 600, letterSpacing: "1.5px", textTransform: "uppercase", lineHeight: 1.55, color: "rgba(168, 200, 218, 0.86)", display: "flex", flexDirection: "column", gap: "7px" };
 const panelStatement = (rule: string): React.CSSProperties => ({ fontFamily: SANS, fontSize: "12px", lineHeight: 1.66, color: "rgba(226, 238, 246, 0.86)", margin: 0, padding: "2px 0 2px 12px", borderLeft: `1.5px solid ${rule}` });
 /** The boundary as a governance body: deep glass with a cool field light, a fine membrane and a calm outer aura (no amber glow;
- * amber stays a meaning accent on the limits). */
+ * amber stays a meaning accent on the limits). The membrane is a light gradient carried in the 1px border (a border-box layer under
+ * the padding-box glass), brightest at the upper rim; inside the glass a still diagonal sheen. All static: the body's only motion
+ * stays the panel aura and the edge current. */
 const BOUNDARY_BODY: React.CSSProperties = {
   padding: "22px 24px 24px",
   borderRadius: "22px",
-  border: `1px solid ${azure(0.28)}`,
-  background: [...PANEL_TICKS.map(tick => tick.replace(/6px/g, "9px")), "radial-gradient(90% 55% at 50% -8%, rgba(92, 200, 255, 0.13), transparent 62%)", "radial-gradient(70% 50% at 50% 110%, rgba(84, 232, 236, 0.06), transparent 60%)", "linear-gradient(172deg, rgba(10, 26, 40, 0.96), rgba(4, 11, 20, 0.97) 55%, rgba(2, 7, 13, 0.98))"].join(", "),
-  boxShadow: `0 30px 80px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(1, 5, 10, 0.7), 0 0 0 6px rgba(92, 200, 255, 0.035), 0 0 70px rgba(56, 190, 240, 0.14), inset 0 1px 0 rgba(210, 248, 255, 0.16), inset 0 0 0 1px rgba(170, 235, 255, 0.04), inset 0 0 40px ${azure(0.06)}`
+  border: "1px solid transparent",
+  background: [...PANEL_TICKS.map(tick => tick.replace(/6px/g, "9px")).map(tick => `${tick.replace(/ no-repeat$/, "")} padding-box no-repeat`), "linear-gradient(112deg, transparent 18%, rgba(176, 236, 255, 0.032) 34%, transparent 46%, transparent 62%, rgba(176, 236, 255, 0.022) 74%, transparent 84%) padding-box", "radial-gradient(90% 55% at 50% -8%, rgba(92, 200, 255, 0.14), transparent 62%) padding-box", "radial-gradient(70% 50% at 50% 110%, rgba(84, 232, 236, 0.07), transparent 60%) padding-box", "linear-gradient(172deg, rgba(10, 26, 40, 0.96), rgba(4, 11, 20, 0.97) 55%, rgba(2, 7, 13, 0.98)) padding-box", `linear-gradient(180deg, rgba(186, 242, 255, 0.62), ${azure(0.3)} 18%, ${azure(0.16)} 52%, ${azure(0.26)} 86%, rgba(150, 230, 255, 0.4)) border-box`].join(", "),
+  boxShadow: `0 30px 80px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(1, 5, 10, 0.7), 0 0 0 6px rgba(92, 200, 255, 0.035), 0 0 70px rgba(56, 190, 240, 0.14), 0 0 140px rgba(56, 190, 240, 0.06), inset 0 1px 0 rgba(210, 248, 255, 0.18), inset 0 0 0 1px rgba(170, 235, 255, 0.04), inset 0 0 48px ${azure(0.07)}`
 };
-/** One layer of the boundary: a quiet glass unit with its accent line (the layer's meaning colour) at the top. */
-const boundaryLayer = (accent: string): React.CSSProperties => ({ ...stack(10), position: "relative", padding: "18px 16px 16px", borderRadius: "14px", border: "1px solid rgba(120, 200, 240, 0.12)", borderImage: "none", background: "linear-gradient(165deg, rgba(16, 38, 56, 0.5), rgba(4, 12, 20, 0.45))", boxShadow: "inset 0 1px 0 rgba(200, 248, 255, 0.07), 0 10px 24px rgba(0, 0, 0, 0.22)", "--sx-layer": accent } as React.CSSProperties);
+/** One layer of the boundary: a quiet glass unit in the shared field light — an azure accent line and light rim at the top, a
+ * membrane border brightest above, a faint inner shimmer from the upper corner. Every layer the same light grammar; meaning colours
+ * stay on the chips. Static. */
+const boundaryLayer = (accent: string): React.CSSProperties => ({ ...stack(10), position: "relative", padding: "18px 16px 16px", borderRadius: "14px", border: "1px solid transparent", borderImage: "none", background: ["radial-gradient(70% 55% at 0% 0%, rgba(92, 200, 255, 0.075), transparent 62%) padding-box", "linear-gradient(118deg, transparent 40%, rgba(176, 236, 255, 0.024) 52%, transparent 64%) padding-box", "linear-gradient(165deg, rgba(16, 38, 56, 0.52), rgba(4, 12, 20, 0.46)) padding-box", "linear-gradient(180deg, rgba(150, 228, 255, 0.3), rgba(120, 200, 240, 0.09) 34%, rgba(120, 200, 240, 0.12)) border-box"].join(", "), boxShadow: "inset 0 1px 0 rgba(210, 250, 255, 0.1), inset 0 0 22px rgba(92, 200, 255, 0.035), 0 10px 24px rgba(0, 0, 0, 0.22), 0 0 20px rgba(56, 190, 240, 0.045)", "--sx-layer": accent } as React.CSSProperties);
 /** A boundary chip: light ink on dark glass; the meaning sits in its dot (and, for a limit, in the dashed amber border). */
-const boundaryChip = (rgb: string): React.CSSProperties => ({ display: "inline-flex", alignItems: "center", gap: "6px", fontFamily: MONO, fontSize: "8.5px", fontWeight: 600, letterSpacing: "1.2px", textTransform: "uppercase", lineHeight: 1.35, color: "rgba(228, 239, 246, 0.92)", padding: "4px 9px", borderRadius: "999px", border: `1px solid rgba(${rgb}, 0.32)`, background: "rgba(255, 255, 255, 0.03)", whiteSpace: "normal" });
+const boundaryChip = (rgb: string): React.CSSProperties => ({ display: "inline-flex", alignItems: "center", gap: "6px", fontFamily: MONO, fontSize: "8.5px", fontWeight: 600, letterSpacing: "1.2px", textTransform: "uppercase", lineHeight: 1.35, color: "rgba(238, 246, 251, 0.96)", padding: "4px 9px", borderRadius: "999px", border: `1px solid rgba(${rgb}, 0.36)`, background: "linear-gradient(180deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.02))", boxShadow: "inset 0 1px 0 rgba(255, 255, 255, 0.05)", fontVariantNumeric: "tabular-nums", whiteSpace: "normal" });
 const chipDot = (rgb: string): React.CSSProperties => ({ display: "inline-block", width: "5px", height: "5px", borderRadius: "50%", flexShrink: 0, background: `rgb(${rgb})`, boxShadow: `0 0 6px rgba(${rgb}, 0.8)` });
-/** The heading of a boundary layer: its ordinal in the layer's colour, then the layer's name (quiet mono, tracked). */
-const boundaryHeading = (tone: string): React.CSSProperties => ({ display: "flex", alignItems: "center", gap: "10px", fontFamily: MONO, fontSize: "8.5px", fontWeight: 600, letterSpacing: "2px", textTransform: "uppercase", color: "rgba(214, 232, 244, 0.88)", "--sx-heading": tone } as React.CSSProperties);
-/** A statement inside a boundary layer (the layer carries the rail): calm sans, a little larger, generous leading. */
-const boundaryStatement = (): React.CSSProperties => ({ fontFamily: SANS, fontSize: "12.5px", lineHeight: 1.62, color: "rgba(228, 239, 246, 0.88)", margin: 0 });
+/** The heading of a boundary layer: its ordinal ring in the field light, then the layer's name (mono, tracked, lit) and a rule. */
+const boundaryHeading = (tone: string): React.CSSProperties => ({ display: "flex", alignItems: "center", gap: "10px", fontFamily: MONO, fontSize: "9px", fontWeight: 600, letterSpacing: "1.8px", textTransform: "uppercase", color: "#e6f7fd", textShadow: "0 0 12px rgba(92, 200, 255, 0.3)", "--sx-heading": tone } as React.CSSProperties);
+/** A technical line inside a boundary layer (ranking, sweep state, read parameters): quiet mono, tabular figures, clear contrast. */
+const boundaryMeta: React.CSSProperties = { fontFamily: MONO, fontSize: "9.5px", letterSpacing: "0.5px", lineHeight: 1.65, color: "rgba(190, 214, 230, 0.94)", fontVariantNumeric: "tabular-nums", wordBreak: "break-word" };
+/** A statement inside a boundary layer (the explanation; a short rule above it parts it from the states): calm sans, generous leading. */
+const boundaryStatement = (): React.CSSProperties => ({ position: "relative", fontFamily: SANS, fontSize: "12.5px", lineHeight: 1.62, color: "rgba(234, 243, 249, 0.95)", margin: 0 });
 const chip = (rgb: string): React.CSSProperties => ({ display: "inline-flex", alignItems: "center", fontFamily: MONO, fontSize: "8.5px", fontWeight: 600, letterSpacing: "1.2px", textTransform: "uppercase", lineHeight: 1.35, color: `rgb(${rgb})`, padding: "4px 9px", borderRadius: "6px", border: `1px solid rgba(${rgb}, 0.42)`, background: `linear-gradient(180deg, rgba(${rgb}, 0.12), rgba(${rgb}, 0.05))`, boxShadow: `0 0 12px rgba(${rgb}, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.05)`, whiteSpace: "normal" });
 const AMBER_RGB = "245, 166, 35";
 const GREEN_RGB = "63, 185, 80";
@@ -324,7 +330,7 @@ ${SYNTX_FOCUS_PULSE_KEYFRAMES}
 @keyframes sxPanelCurrent { 0% { background-position: -40% 0; } 55%, 100% { background-position: 140% 0; } }
 [data-sx-panel]::before { content: ""; position: absolute; left: 14px; right: 14px; top: -1px; height: 1px; pointer-events: none; background: linear-gradient(90deg, transparent, rgba(190, 248, 255, 0.85), transparent) no-repeat; background-size: 30% 1px; opacity: .55; animation: sxPanelCurrent 18s cubic-bezier(.45, 0, .25, 1) infinite; }
 [data-sx-panel]::after { content: ""; position: absolute; inset: -1px; border-radius: inherit; pointer-events: none; z-index: -1; box-shadow: 0 0 40px rgba(92, 200, 255, 0.13), 0 0 14px rgba(92, 200, 255, 0.08), 0 0 2px rgba(150, 230, 255, 0.3); animation: atmosphereGlow 16s ease-in-out infinite; }
-[data-sx-panel="boundary"]::after { box-shadow: 0 0 50px rgba(92, 200, 255, 0.12), 0 0 2px rgba(150, 230, 255, 0.28); }
+[data-sx-panel="boundary"]::after { box-shadow: 0 0 56px rgba(92, 200, 255, 0.13), 0 0 18px rgba(92, 200, 255, 0.08), 0 0 1.5px rgba(176, 240, 255, 0.42), inset 0 0 28px rgba(92, 200, 255, 0.045); }
 [data-sx-panel-node] [data-sx-panel-lamp] { animation: atmosphereGlow 10s ease-in-out infinite; }
 [data-sx-kicker]::before { content: ""; width: 6px; height: 6px; transform: rotate(45deg); flex-shrink: 0; border: 1px solid var(--sx-kicker); box-shadow: 0 0 8px var(--sx-kicker); }
 [data-sx-kicker]::after { content: ""; flex: 1; height: 1px; min-width: 0; background: linear-gradient(90deg, rgba(92, 200, 255, 0.4), transparent); }
@@ -349,9 +355,12 @@ ${SYNTX_FOCUS_PULSE_KEYFRAMES}
 [data-sx-shell="controls"] > button:hover, [data-testid="semantic-guide-drawer-toggle"]:hover { color: #ecfbff !important; background: linear-gradient(180deg, rgba(20, 52, 72, 0.94), rgba(8, 22, 36, 0.95)) !important; }
 [data-sx-shell="controls"] > button:focus-visible, [data-testid="semantic-guide-drawer-toggle"]:focus-visible { outline: 1px solid rgba(56, 229, 255, 0.8); outline-offset: 2px; }
 /* Boundary: statements that bound (NOT …, authority NONE) as dashed chips — a limit, not a state; affirmative states stay solid. */
-[data-sx-boundary-limit] { border-style: dashed !important; }
-[data-sx-boundary-heading] > span:first-child { display: inline-flex; align-items: center; justify-content: center; width: 20px; height: 20px; flex-shrink: 0; box-sizing: border-box; border-radius: 50%; border: 1px solid var(--sx-heading); color: var(--sx-heading); font-size: 8px; letter-spacing: 0; box-shadow: 0 0 10px -2px var(--sx-heading), inset 0 0 6px -2px var(--sx-heading); }
+[data-sx-boundary-limit] { border-style: dashed !important; box-shadow: 0 0 10px rgba(245, 166, 35, 0.07), inset 0 1px 0 rgba(255, 255, 255, 0.04) !important; }
+[data-sx-boundary-heading] > span:first-child { display: inline-flex; align-items: center; justify-content: center; width: 20px; height: 20px; flex-shrink: 0; box-sizing: border-box; border-radius: 50%; border: 1px solid var(--sx-heading); color: #d4f2ff; font-size: 8px; letter-spacing: 0; text-shadow: none; background: radial-gradient(circle at 50% 35%, rgba(92, 200, 255, 0.16), transparent 70%); box-shadow: 0 0 10px -2px var(--sx-heading), inset 0 0 6px -2px var(--sx-heading); }
+[data-sx-boundary-heading]::after { content: ""; flex: 1; min-width: 0; height: 1px; background: linear-gradient(90deg, rgba(92, 200, 255, 0.3), rgba(92, 200, 255, 0.06) 70%, transparent); }
 [data-sx-boundary-layers] > [data-sx-section]::before { content: ""; position: absolute; left: 16px; top: -1px; width: 34px; height: 2px; border-radius: 2px; background: var(--sx-layer); box-shadow: 0 0 10px var(--sx-layer); }
+[data-sx-boundary-layers] > [data-sx-section]::after { content: ""; position: absolute; left: 56px; right: 18px; top: -1px; height: 1px; pointer-events: none; background: linear-gradient(90deg, rgba(196, 246, 255, 0.34), rgba(196, 246, 255, 0.1) 46%, transparent); }
+[data-sx-boundary-statement]::before { content: ""; position: absolute; left: 0; top: -6px; width: 22px; height: 1px; background: rgba(92, 200, 255, 0.4); }
 @keyframes sxBoundaryOpen { from { opacity: 0; transform: scale(0.97); } to { opacity: 1; transform: scale(1); } }
 /* Orientation surface (top left): field actions as chips; hover and focus light; one finite light pass on every context change. */
 @keyframes sxOrientPass { from { transform: translateX(-120%); opacity: 0; } 20% { opacity: 1; } to { transform: translateX(260%); opacity: 0; } }
@@ -1618,32 +1627,32 @@ export function SyntxField({ workflow, analysisSource, observation: requested, o
           <span data-sx-kicker style={{ ...panelKicker(`rgba(${AMBER_RGB}, 0.85)`), fontSize: "11px", letterSpacing: "3.2px", color: "#e4f4fb", paddingBottom: "2px" }}>{t.boundary}</span>
           <div data-sx-boundary-layers style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: "12px" }}>
             {/* 1 · the presentation: what this field is and is not (its authority boundary) and how it is ordered. */}
-            <div data-sx-section="presentation" style={boundaryLayer(`rgba(${AMBER_RGB}, 0.8)`)}>
-              <span data-sx-boundary-heading style={boundaryHeading(`rgb(${AMBER_RGB})`)}><span aria-hidden="true">01</span>{tp.boundaryPresentation}</span>
+            <div data-sx-section="presentation" style={boundaryLayer(azure(0.85))}>
+              <span data-sx-boundary-heading style={boundaryHeading(azure(0.8))}><span aria-hidden="true">01</span>{tp.boundaryPresentation}</span>
               <div data-testid="job-pool-presentation-labels" data-policy-version={field.boundary.policyVersion} data-authority-state={field.boundary.authorityState} style={row(6)}>
                 {field.boundary.labels.map(item => <span key={item} data-testid={`job-pool-label-${item}`} data-sx-boundary-limit={item.startsWith("NOT_") ? "true" : undefined} style={boundaryChip(item.startsWith("NOT_") ? AMBER_RGB : CYAN_RGB)}><span aria-hidden="true" style={chipDot(item.startsWith("NOT_") ? AMBER_RGB : CYAN_RGB)} />{tp.labels[item]}</span>)}
               </div>
-              <span data-testid="job-pool-ranking" data-ranking={describeRanking(matching.roleMatches)} style={panelMeta}>{tp.ranking[describeRanking(matching.roleMatches)]}</span>
+              <span data-testid="job-pool-ranking" data-ranking={describeRanking(matching.roleMatches)} style={boundaryMeta}>{tp.ranking[describeRanking(matching.roleMatches)]}</span>
             </div>
             {/* 2 · canonical mapping: its states, then the statement that bounds it. */}
-            <div data-sx-section="mapping" style={boundaryLayer(`rgba(${AMBER_RGB}, 0.6)`)}>
-              <span data-sx-boundary-heading style={boundaryHeading(`rgba(${AMBER_RGB}, 0.85)`)}><span aria-hidden="true">02</span>{tp.canonicalMapping}</span>
+            <div data-sx-section="mapping" style={boundaryLayer(azure(0.85))}>
+              <span data-sx-boundary-heading style={boundaryHeading(azure(0.8))}><span aria-hidden="true">02</span>{tp.canonicalMapping}</span>
               <div data-testid="job-pool-canonical-mapping" data-mapping-state={view.canonicalMapping.mappingState} data-proposal-state={view.canonicalMapping.proposalState} data-authority-state={view.canonicalMapping.authorityState} style={row(6)}>
                 <span style={boundaryChip(GREEN_RGB)}><span aria-hidden="true" style={chipDot(GREEN_RGB)} />{view.canonicalMapping.mappingState}</span><span style={boundaryChip(AMBER_RGB)}><span aria-hidden="true" style={chipDot(AMBER_RGB)} />{view.canonicalMapping.proposalState}</span><span data-sx-boundary-limit="true" style={boundaryChip(AMBER_RGB)}><span aria-hidden="true" style={chipDot(AMBER_RGB)} />authority {view.canonicalMapping.authorityState}</span>
               </div>
-              <span style={boundaryStatement()}>{tp.canonicalMappingBoundary}</span>
+              <span data-sx-boundary-statement style={boundaryStatement()}>{tp.canonicalMappingBoundary}</span>
             </div>
             {/* 3 · the capability sweep: its state line, then what sweep coverage is and is not. */}
             <div data-sx-section="sweep" data-testid="job-pool-capability-sweep" data-sweep-state={field.boundary.capabilitySweep.state} data-proposal-count={field.boundary.capabilitySweep.proposalCount} data-scored="false" style={boundaryLayer(azure(0.85))}>
-              <span data-sx-boundary-heading style={boundaryHeading(azure(0.95))}><span aria-hidden="true">03</span>{tp.sweep}</span>
-              <span style={{ ...panelMeta, color: "rgba(196, 218, 232, 0.86)" }}><span aria-hidden="true" style={{ ...chipDot(field.boundary.capabilitySweep.state === "AVAILABLE" ? CYAN_RGB : AMBER_RGB), marginRight: "7px", verticalAlign: "1px" }} />{tp.sweepStates[field.boundary.capabilitySweep.state]} · {tp.sweepProposals} {field.boundary.capabilitySweep.proposalCount} · <span data-sx-boundary-limit="true" style={{ ...boundaryChip(AMBER_RGB), padding: "1px 7px", fontSize: "8px", verticalAlign: "1px" }}>{tp.unscored}</span></span>
-              <span style={boundaryStatement()}>{tp.sweepBoundary}</span>
+              <span data-sx-boundary-heading style={boundaryHeading(azure(0.8))}><span aria-hidden="true">03</span>{tp.sweep}</span>
+              <span style={boundaryMeta}><span aria-hidden="true" style={{ ...chipDot(field.boundary.capabilitySweep.state === "AVAILABLE" ? CYAN_RGB : AMBER_RGB), marginRight: "7px", verticalAlign: "1px" }} />{tp.sweepStates[field.boundary.capabilitySweep.state]} · {tp.sweepProposals} {field.boundary.capabilitySweep.proposalCount} · <span data-sx-boundary-limit="true" style={{ ...boundaryChip(AMBER_RGB), padding: "1px 7px", fontSize: "8px", verticalAlign: "1px" }}>{tp.unscored}</span></span>
+              <span data-sx-boundary-statement style={boundaryStatement()}>{tp.sweepBoundary}</span>
             </div>
             {/* 4 · gaps: the read's parameters, then what missing requirements are. */}
-            <div data-sx-section="gaps" style={boundaryLayer("rgba(230, 241, 248, 0.55)")}>
-              <span data-sx-boundary-heading style={boundaryHeading("rgba(230, 241, 248, 0.8)")}><span aria-hidden="true">04</span>{tp.missing}</span>
-              <span style={panelMeta}>{tp.candidateCapabilities} {field.boundary.candidateCapabilityCount} · {tp.weakThreshold} {field.boundary.weakEvidenceThreshold}</span>
-              <span style={boundaryStatement()}>{tp.missingBoundary}</span>
+            <div data-sx-section="gaps" style={boundaryLayer(azure(0.85))}>
+              <span data-sx-boundary-heading style={boundaryHeading(azure(0.8))}><span aria-hidden="true">04</span>{tp.missing}</span>
+              <span style={boundaryMeta}>{tp.candidateCapabilities} {field.boundary.candidateCapabilityCount} · {tp.weakThreshold} {field.boundary.weakEvidenceThreshold}</span>
+              <span data-sx-boundary-statement style={boundaryStatement()}>{tp.missingBoundary}</span>
             </div>
           </div>
         </section>

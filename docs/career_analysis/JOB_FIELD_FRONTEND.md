@@ -874,6 +874,29 @@ previous tip (code marker verified); 44 checks at 1600 × 1000 and 1280 × 720, 
 and Escape, veil present / withdrawn and pointer-transparent, no collision with orientation, pools, intake, selector and footer
 statement, inside the viewport, no new infinite motion, nothing in REDUCED); field SSR test 8 / 8.
 
+#### 13.2.15 Boundary micro-finish (owner "SFE::BOUNDARY MICRO-FINISH", 2026-10-13)
+
+On f136859, after the owner's visual approval of the focus state. Local field: the boundary body and its four layers only; position,
+size, structure, the layer grid, the veil, texts and behaviour unchanged.
+
+- **Resonance glow (static).** The body's 1px border carries a light membrane (a border-box gradient under the padding-box glass,
+  brightest at the upper rim); a still diagonal sheen lies inside the glass; a wider, faint outer atmosphere. The breathing panel aura
+  (`[data-sx-panel="boundary"]::after`, the existing `atmosphereGlow` 16 s) now also carries a faint inner light. No new motion name, no
+  new animated element: the boundary's running animations are the same two as before (`atmosphereGlow`, `sxPanelCurrent`), none in REDUCED.
+- **Typography.** Layer headings 9 px / 1.8 px tracking, lit ink with a faint azure glow, followed by a hairline rule; ordinals in light
+  ink inside an azure ring; technical lines (ranking, sweep state, read parameters) in a dedicated `boundaryMeta` with higher contrast and
+  tabular figures; statements brighter and parted from the states by a short rule (`data-sx-boundary-statement`, absolutely placed in the
+  existing gap). Sizes and tracking chosen so that no line wraps differently: every text leaf keeps its exact box.
+- **Semiotic shimmer.** The four layers share one light grammar: an azure accent line and a light rim at the top edge, a membrane border
+  brightest above, a faint inner shimmer from the upper corner. The layer accents of 01 / 02 (amber) and 04 (white) became azure; amber
+  remains only on the existing limits (dashed chips NOT …, authority NONE, UNSCORED, now with a faint amber halo) and the status dots.
+  Status colours (green MAPPED, amber PROPOSAL_ONLY, cyan / amber sweep state) unchanged.
+
+Proof (local only): `evidence/job-pool/semiotic-transfer/local-boundary-microfinish/local-proof.json` — at 1600 × 1000 and 1280 × 720,
+LIVE and REDUCED: boundary box, the four layer boxes and every text leaf box identical to f136859; text and contract identical; running
+animations and the veil's computed style identical; contrast of every text leaf against the glass under it (WCAG ratio) minimum
+4.07 → 5.85, technical lines 6.5 → 9.6–9.9, statements 12.5 → 13.4–13.8; boundary behaviour proof 44 / 44; field SSR + static 13 / 13.
+
 ### 13.3 DOM contract (PINK BR-1 … BR-5; GELB conditions a/b)
 
 **BR-1 field root** `data-testid="syntx-field"`: `data-field-grammar="SYNTX_FIELD_V1"`, `data-observation-kind` FIELD|ORGANIZATION|ROLE|REQUIREMENT
@@ -1032,3 +1055,4 @@ observation point. Readable labels wrap at word boundaries (`wrapLines`), never 
 | 2026-10-13 | Local pass: quiet panel glow and boundary layers (owner "Small field. Local recursion.", on 801b778; visual only, isolated lab) | §13.2.12: slower, softer panel aura and edge current, finer membrane; orientation aura and static field node; boundary in four layered groups with semantic rails. Evidence: `evidence/job-pool/semiotic-transfer/local-glow-boundary/` | tsc 0; text, contract and tab order identical; orientation proof 48 / 48; panel proof 24 / 24 (no full sweep by owner rule) |
 | 2026-10-13 | Local pass: meta dock, intake, boundary (owner "Medium-small field. Local recursion.", on a4488a3; visual only, isolated lab) | §13.2.13: one segmented meta bar in the header band (Job Field context only), intake lower, boundary headings and dashed limit chips. Evidence: `evidence/job-pool/semiotic-transfer/local-meta-intake-boundary/` | tsc 0; local proof 29 / 29; governance text and contracts identical; Capability controls unchanged; panel proof 24 / 24; language contract + Job Pool SSR 14 / 105 (no full sweep by owner rule) |
 | 2026-10-13 | Local pass: boundary as a focus state (owner "Small-to-medium field. Local recursion.", on 2f7d0ee; visual only, isolated lab) | §13.2.14: receding field behind a pointer-transparent veil, the boundary as a centred governance body with a layer grid and amber as accent only. Evidence: `evidence/job-pool/semiotic-transfer/local-boundary-focus/` | tsc 0; local proof 44 / 44; boundary text and contract identical; field SSR 8 / 8 (no full sweep by owner rule) |
+| 2026-10-13 | Boundary micro-finish (owner "SFE::BOUNDARY MICRO-FINISH", on f136859; visual only, isolated lab) | §13.2.15: static light membrane, sheen and layer rims; shared azure layer grammar, amber only on limits and status dots; heading, meta and statement typography. Evidence: `evidence/job-pool/semiotic-transfer/local-boundary-microfinish/` | tsc 0; geometry of boundary, layers and every text leaf identical; text and contract identical; animations unchanged; min contrast 4.07 → 5.85; behaviour proof 44 / 44; field SSR + static 13 / 13 (no full sweep by owner rule) |
