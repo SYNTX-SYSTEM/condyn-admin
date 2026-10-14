@@ -205,7 +205,11 @@ Das Backend erfüllt die Regel seit 2e61a2b. `parseJobScopeSelection` prüft nur
 | Live- und Diagnosetests (`career-gemini-live`, `-live-probe`, `-probe`, `-request-boundary`, `-schema-bisection`, `-embedding-live`, `career-forensic-pdf`, `gemini-token-limit-matrix`, `schema-bisection`) | Gemini ohne Scope, sobald die Freigabe-Variable gesetzt ist | `resolveStoredTestJobScope()` vor dem ersten Gemini-Zugriff: Der Testpool wird in der Wegwerf-DB gespeichert und über denselben Resolver wie Route und Worker geprüft |
 | Unit-Tests mit Mock-Provider | Pipeline ohne Scope | rufen die Pipeline mit einem aufgelösten Scope des Testpools auf (`resolveTestJobScope`) |
 
-Nicht betroffen: Lese-Routen und SIL-Dienste rufen weder die Pipeline noch Gemini auf. `GeminiEmbeddingProvider` wird in keinem Produktpfad verwendet. `check.ts` gibt nur das Schema aus.
+Nicht betroffen: Lese-Routen und SIL-Dienste rufen weder die Pipeline noch Gemini auf. `GeminiEmbeddingProvider` wird in keinem Produktpfad verwendet. `check.ts` gibt nur das Schema aus. Auf PINKs Hinweis (§3.29, a933084) außerdem geprüft:
+- `debug.js` und `debug2.js` rufen die Pipeline mit einem Mock-Provider und ohne Scope auf. Sie laden heute nicht, weil `esbuild-register` fehlt. Würden sie laden, lehnte die Pipeline-Grenze sie trotzdem ab, denn ohne ausgestellten Scope kommt `ERR_JOB_SCOPE_REQUIRED`.
+- `test-full.mjs` erzeugt nur einen Gemini-Client und sendet nichts.
+
+Keines der drei Skripte erreicht Gemini, deshalb haben sie kein eigenes Skript-Gate.
 
 ### 11.3 Kein Bypass
 
