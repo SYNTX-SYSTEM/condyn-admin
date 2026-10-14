@@ -37,6 +37,23 @@ describe("CONDYN Career Analysis Protocol v1.0 - Step 7.1: Client Live Analysis 
     expect(html).toMatch(/disabled(=""|)?/);
   });
 
+  it("blocks the start without a VALID selected job and names the absence (SFE job-scope invariant)", () => {
+    const html = renderToString(<LiveCareerAnalysisPage />);
+
+    expect(html).toMatch(/data-testid="analyze-job-scope" data-job-scope-state="NONE"/);
+    expect(html).toContain("Kein Job gewählt");
+    expect(html).toContain('data-testid="analyze-job-scope-required"');
+    expect(html).toContain("Bitte wählen Sie einen Job aus.");
+    expect(html).toMatch(/data-testid="start-analysis-button" disabled=""/);
+  });
+
+  it("sends the job scope with every analysis request and only after a VALID check", () => {
+    const content = fs.readFileSync(path.join(__dirname, "../app/career/analyze/page.tsx"), "utf-8");
+    expect(content).toContain('if (jobScopeValidation.state !== "VALID") return;');
+    expect(content).toContain("JSON.stringify({ documents: docsToSubmit, jobScope: { jobPoolUploadId: scope.jobPoolUploadId, poolRoleId: scope.poolRoleId } })");
+    expect(content.match(/fetch\(/g)).toHaveLength(1);
+  });
+
   it("should strictly enforce Dumb Consumer principle: zero imports or calls to Zod, Validator, Repository, or LLM SDKs in Client Page", () => {
     const filePath = path.join(__dirname, "../app/career/analyze/page.tsx");
     if (!fs.existsSync(filePath)) {

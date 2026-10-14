@@ -99,6 +99,8 @@ export interface SyntxFieldProps {
   jobScope?: JobScope | null;
   /** Selects the observed role of the selected pool as the job scope (explicit, never inferred). */
   onSelectJobScope?(poolRoleId: string): void;
+  /** Owner G-05: removes the selected job (explicit action at the selected role); ANALYZE is blocked afterwards. */
+  onClearJobScope?(): void;
   /** Capability gate (Job Pool first): false while no VALID job is selected; the way back to the Capability Field is then closed. */
   capabilityAvailable?: boolean;
   capabilityGatedHint?: string;
@@ -1503,7 +1505,7 @@ function NoPoolGiant({ copy }: { copy: { status: string; title: string; reason: 
   );
 }
 
-export function SyntxField({ workflow, analysisSource, observation: requested, onObserve, onSelectPool, onExit, locale = SIL_COPY.defaultLocale, jobScope = null, onSelectJobScope, capabilityAvailable = true, capabilityGatedHint }: SyntxFieldProps) {
+export function SyntxField({ workflow, analysisSource, observation: requested, onObserve, onSelectPool, onExit, locale = SIL_COPY.defaultLocale, jobScope = null, onSelectJobScope, onClearJobScope, capabilityAvailable = true, capabilityGatedHint }: SyntxFieldProps) {
   const t = SIL_COPY[locale].syntx;
   const tp: PoolCopy = SIL_COPY[locale].jobPool;
   const mode = useMotionMode();
@@ -1659,7 +1661,11 @@ export function SyntxField({ workflow, analysisSource, observation: requested, o
         {field !== null && onSelectJobScope !== undefined && (observation.kind === "ROLE" || observation.kind === "REQUIREMENT") && observation.roleId !== null && (() => {
           const scopeHere = jobScope !== null && jobScope.jobPoolUploadId === field.pool.jobPoolUploadId && jobScope.poolRoleId === observation.roleId;
           const roleId = observation.roleId;
-          return <button data-testid="syntx-job-scope-select" data-sx-orient-action data-job-scope-selected={scopeHere ? "true" : "false"} aria-pressed={scopeHere} disabled={scopeHere} onClick={() => onSelectJobScope(roleId)} style={{ ...orientAction(scopeHere), alignSelf: "flex-start", marginTop: "10px", fontSize: "9px", letterSpacing: "1.5px", padding: "5px 12px", color: scopeHere ? "#e9fbff" : CYAN, border: `1px solid ${scopeHere ? "rgba(56, 229, 255, 0.7)" : "rgba(56, 229, 255, 0.45)"}`, background: scopeHere ? "rgba(56, 229, 255, 0.16)" : "rgba(56, 229, 255, 0.06)", cursor: scopeHere ? "default" : "pointer" }}>{scopeHere ? t.jobScope.selected : t.jobScope.select}</button>;
+          const removable = scopeHere && onClearJobScope !== undefined;
+          const select = <button data-testid="syntx-job-scope-select" data-sx-orient-action data-job-scope-selected={scopeHere ? "true" : "false"} aria-pressed={scopeHere} disabled={scopeHere} onClick={() => onSelectJobScope(roleId)} style={{ ...orientAction(scopeHere), alignSelf: "flex-start", marginTop: removable ? 0 : "10px", fontSize: "9px", letterSpacing: "1.5px", padding: "5px 12px", color: scopeHere ? "#e9fbff" : CYAN, border: `1px solid ${scopeHere ? "rgba(56, 229, 255, 0.7)" : "rgba(56, 229, 255, 0.45)"}`, background: scopeHere ? "rgba(56, 229, 255, 0.16)" : "rgba(56, 229, 255, 0.06)", cursor: scopeHere ? "default" : "pointer" }}>{scopeHere ? t.jobScope.selected : t.jobScope.select}</button>;
+          if (!removable) return select;
+          // G-05: the selected job is removed only here, by this explicit action (beside the selection it reverses).
+          return <div style={{ ...row(6), alignSelf: "flex-start", marginTop: "10px" }}>{select}<button data-testid="syntx-job-scope-clear" data-sx-orient-action title={t.jobScope.clearHint} onClick={onClearJobScope} style={{ ...orientAction(false), fontSize: "9px", letterSpacing: "1.5px", padding: "5px 12px" }}>{t.jobScope.clear}</button></div>;
         })()}
         <span style={{ ...micro, marginTop: "8px", fontSize: "7.5px", letterSpacing: "0.1px", color: "rgba(150, 180, 198, 0.78)" }}>{t.keys.split(" · ").map((part, index) => { const gap = part.indexOf(" "); const key = gap < 0 ? part : part.slice(0, gap); return <React.Fragment key={index}>{index > 0 && <span style={{ color: "rgba(120, 160, 184, 0.45)" }}> · </span>}<kbd style={{ fontFamily: MONO, fontSize: "7px", padding: "0 4px", borderRadius: "4px", border: "1px solid rgba(150, 205, 230, 0.28)", background: "rgba(255, 255, 255, 0.04)", boxShadow: "inset 0 -1px 0 rgba(0, 0, 0, 0.45)", color: "rgba(224, 240, 248, 0.92)" }}>{key}</kbd>{gap < 0 ? "" : part.slice(gap)}</React.Fragment>; })}</span>
         {/* E · the edge actions (panels open / closed). */}

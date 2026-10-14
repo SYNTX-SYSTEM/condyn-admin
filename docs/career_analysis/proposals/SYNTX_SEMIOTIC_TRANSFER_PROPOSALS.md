@@ -161,6 +161,10 @@ Capability Field only with a VALID job scope (selector option and Job Field exit
 manifestation component changed; no new motion. Proof: JOB_FIELD_FRONTEND.md §13.2.24. **Proposed addition to R10d:** "The Job Field is
 the ground state; the Capability Field is entered only with a VALID job scope."
 
+Addition (owner decision 2026-10-14, G-05): the selected job can be removed by an explicit action at the selected role; afterwards no
+job scope is selected and ANALYZE is blocked (staged sources and analyses kept). Proof: JOB_FIELD_FRONTEND.md §13.2.25. **Proposed
+addition to R10d:** "A selected job is removed only by an explicit user action; without a job the Capability Field is closed again."
+
 ## Owner decisions
 
 None beyond the visual approval. After it, GELB records P-1 and P-2, and PINK applies P-3 / P-4 and validates. The move of

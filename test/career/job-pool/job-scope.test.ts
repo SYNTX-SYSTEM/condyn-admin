@@ -36,10 +36,26 @@ describe("job scope (SFE invariant, GELB contract)", () => {
       { jobPoolUploadId: ID.toLowerCase(), poolRoleId: "role_a" },
       { jobPoolUploadId: "JPOOL_0123456789abcdef", poolRoleId: "role_a" },
       { jobPoolUploadId: ID, poolRoleId: "" },
-      { jobPoolUploadId: ID, poolRoleId: " role_a" },
       { jobPoolUploadId: ID, poolRoleId: 7 },
       { jobId: "JOB_1", poolRoleId: "role_a" }
     ]) expect(parseJobScope(value)).toBeNull();
+  });
+
+  it("takes the role id exactly as stored: any non-empty string, never trimmed or restricted (owner G-10, variant A)", () => {
+    for (const poolRoleId of [" role pink padded ", " role_a", "role_a ", "   ", "\t", "role with inner spaces", "rôle/ä:1", "x"]) {
+      expect(parseJobScope({ jobPoolUploadId: ID, poolRoleId })).toEqual({ jobPoolUploadId: ID, poolRoleId });
+      expect(jobScopeFromParams(ID, poolRoleId)).toEqual({ jobPoolUploadId: ID, poolRoleId });
+    }
+    expect(parseJobScope({ jobPoolUploadId: ID, poolRoleId: "" })).toBeNull();
+  });
+
+  it("validates a padded role id against the stored pool by exact equality, never by a trimmed one", () => {
+    const padded = " ROLE_A ";
+    const roles = view.canonicalMapping!.roles;
+    const stored = upload({ canonicalMapping: { ...view.canonicalMapping!, roles: [...roles, { ...roles[0], poolRoleId: padded, title: "Padded Role" }] } });
+    expect(validateJobScope({ jobPoolUploadId: ID, poolRoleId: padded }, stored)).toMatchObject({ state: "VALID", roleTitle: "Padded Role" });
+    expect(validateJobScope({ jobPoolUploadId: ID, poolRoleId: " ROLE_A" }, stored)).toMatchObject({ state: "INVALID", reason: "ROLE_NOT_IN_POOL" });
+    expect(validateJobScope({ jobPoolUploadId: ID, poolRoleId: padded }, upload())).toMatchObject({ state: "INVALID", reason: "ROLE_NOT_IN_POOL" });
   });
 
   it("restores only from both exact URL parameters", () => {

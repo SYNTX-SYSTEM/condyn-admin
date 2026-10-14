@@ -1,11 +1,13 @@
 'use client';
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { Sidebar } from "../../components/career/Sidebar";
 import { Inspector } from "../../components/career/Inspector";
 import { ReactFlowCareerGraph } from "../../components/career/ReactFlowCareerGraph";
 import { ReactFlowNode, ReactFlowEdge, ReactFlowGraph } from "../../../lib/career/adapters/react-flow";
+import { JOB_SCOPE_REQUIRED_MESSAGE, JOB_SCOPE_URL_PARAMS, jobScopeFromParams, type JobScope } from "../../../lib/career/job-pool/job-scope";
+import { useJobScopeValidation } from "../../../lib/career/ui/useJobScope";
 import "../../career-test/career-demo.css";
 
 interface StagedDocument {
@@ -40,6 +42,18 @@ export default function LiveCareerAnalysisPage() {
   const [selectedNode, setSelectedNode] = useState<ReactFlowNode | null>(null);
   const [selectedEdge, setSelectedEdge] = useState<ReactFlowEdge | null>(null);
 
+  // SFE job-scope invariant: this path, too, starts an analysis only with a VALID selected job. The scope is the one selected in the
+  // Job Field, carried by the exact URL parameters (jobScopePoolUploadId / jobScopeRoleId); without it the start stays blocked.
+  const [jobScope, setJobScope] = useState<JobScope | null>(null);
+  useEffect(() => {
+    try {
+      const params = new URLSearchParams(window.location.search);
+      setJobScope(jobScopeFromParams(params.get(JOB_SCOPE_URL_PARAMS.jobPoolUploadId), params.get(JOB_SCOPE_URL_PARAMS.poolRoleId)));
+    } catch { /* no URL, no scope: the start stays blocked */ }
+  }, []);
+  const jobScopeValidation = useJobScopeValidation(jobScope);
+  const jobScopeValid = jobScopeValidation.state === "VALID";
+
   const handleAddDocument = () => {
     if (!docContent.trim()) return;
     setStagedDocs([...stagedDocs, { title: docTitle || `Document ${stagedDocs.length + 1}`, content: docContent }]);
@@ -58,6 +72,8 @@ export default function LiveCareerAnalysisPage() {
     }
 
     if (docsToSubmit.length === 0) return;
+    if (jobScopeValidation.state !== "VALID") return;
+    const scope = jobScopeValidation.scope;
 
     setLoading(true);
     setError(null);
@@ -68,7 +84,7 @@ export default function LiveCareerAnalysisPage() {
       const res = await fetch("/api/career/analyze", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ documents: docsToSubmit })
+        body: JSON.stringify({ documents: docsToSubmit, jobScope: { jobPoolUploadId: scope.jobPoolUploadId, poolRoleId: scope.poolRoleId } })
       });
 
       const data: AnalysisResponse = await res.json();
@@ -91,6 +107,7 @@ export default function LiveCareerAnalysisPage() {
   };
 
   const hasInput = docContent.trim().length > 0 || stagedDocs.length > 0;
+  const canStart = hasInput && !loading && jobScopeValid;
 
   return (
     <div className="demo-page-container">
@@ -313,24 +330,32 @@ export default function LiveCareerAnalysisPage() {
               </div>
             )}
 
+            <div data-testid="analyze-job-scope" data-job-scope-state={jobScopeValidation.state} style={{ marginBottom: "12px", fontSize: "13px", color: jobScopeValid ? "#c9d1d9" : "#ffc46b" }}>
+              <strong>Job:</strong>{" "}
+              {jobScopeValidation.state === "VALID"
+                ? [jobScopeValidation.roleTitle, jobScopeValidation.organizationName, jobScopeValidation.poolName].filter(part => part !== null && part.length > 0).join(" · ")
+                : jobScopeValidation.state === "CHECKING" ? "Job wird geprüft …" : jobScopeValidation.state === "INVALID" ? "Job ungültig" : "Kein Job gewählt"}
+              {!jobScopeValid && <div data-testid="analyze-job-scope-required" role="status" style={{ marginTop: "4px", fontWeight: 700 }}>{JOB_SCOPE_REQUIRED_MESSAGE}</div>}
+            </div>
+
             <button
               type="button"
               data-testid="start-analysis-button"
               onClick={handleStartAnalysis}
-              disabled={!hasInput || loading}
+              disabled={!canStart}
               style={{
                 width: "100%",
-                background: hasInput && !loading ? "#238636" : "#21262d",
-                color: hasInput && !loading ? "#ffffff" : "#484f58",
+                background: canStart ? "#238636" : "#21262d",
+                color: canStart ? "#ffffff" : "#484f58",
                 border: "1px solid",
-                borderColor: hasInput && !loading ? "#2ea043" : "#30363d",
+                borderColor: canStart ? "#2ea043" : "#30363d",
                 padding: "14px",
                 borderRadius: "8px",
                 fontSize: "15px",
                 fontWeight: 700,
-                cursor: hasInput && !loading ? "pointer" : "not-allowed",
+                cursor: canStart ? "pointer" : "not-allowed",
                 transition: "all 0.2s ease",
-                boxShadow: hasInput && !loading ? "0 4px 12px rgba(35, 134, 54, 0.3)" : "none"
+                boxShadow: canStart ? "0 4px 12px rgba(35, 134, 54, 0.3)" : "none"
               }}
             >
               Analyse starten &bull; E2E Pipeline Ausführen

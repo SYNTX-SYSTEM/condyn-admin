@@ -256,7 +256,7 @@ describe("SFE job-scope invariant — the controller sends nothing without a val
     ["missing", { documents: [{ type: "text", content: "x" }] }],
     ["null", { documents: [], jobScope: null }],
     ["lower-case upload id", { documents: [], jobScope: { jobPoolUploadId: "jpool_30f7145e21f34bef0fce510dfc75837b", poolRoleId: "r" } }],
-    ["blank role", { documents: [], jobScope: { jobPoolUploadId: SCOPE.jobPoolUploadId, poolRoleId: "  " } }],
+    ["empty role", { documents: [], jobScope: { jobPoolUploadId: SCOPE.jobPoolUploadId, poolRoleId: "" } }],
     ["extra key", { documents: [], jobScope: { ...SCOPE, organizationId: "org" } }],
     ["the analysis job id instead", { documents: [], jobId: "JOB_123" }]
   ])("refuses a payload whose jobScope is %s: no request, state untouched", async (_label, payload) => {
@@ -265,6 +265,14 @@ describe("SFE job-scope invariant — the controller sends nothing without a val
     expect(result).toBe(JOB_SCOPE_REQUIRED_CODE);
     expect(mockFetch).not.toHaveBeenCalled();
     expect(controller.getState()).toBe(before);
+  });
+
+  it("sends a padded role id exactly as stored, untrimmed (owner G-10, variant A)", async () => {
+    mockFetch.mockReturnValue(new Promise(() => {}));
+    const padded = { jobPoolUploadId: SCOPE.jobPoolUploadId, poolRoleId: " role pink padded " };
+    controller.submitAnalysis({ documents: [{ type: "text", content: "x" }], jobScope: padded });
+    expect(mockFetch).toHaveBeenCalledTimes(1);
+    expect(JSON.parse(mockFetch.mock.calls[0][1].body).jobScope).toEqual(padded);
   });
 
   it("sends exactly the two jobScope keys next to the documents", async () => {

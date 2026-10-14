@@ -1082,7 +1082,7 @@ execution job). Backend and worker enforcement are GELB's (`feature/job-scoped-c
 - **Validation (mirror of the server rule).** `useJobScopeValidation` reads the exact upload once per scope: VALID only when the
   upload exists, is ACTIVE, has the canonical mapping (`MAPPED`) and the role is part of it; else INVALID with a reason
   (UPLOAD_NOT_FOUND · POOL_NOT_ACTIVE · NOT_MAPPED · ROLE_NOT_IN_POOL · READ_FAILED). Formal check: `JPOOL_` + 32 upper-case hex,
-  non-blank role id, exactly two keys.
+  non-empty role id taken verbatim (§13.2.25, owner G-10), exactly two keys.
 - **ANALYZE blocked.** Unless VALID (also while CHECKING), `start-intake-analysis-btn` is disabled and
   `analyze-job-scope-required` shows the owner's sentence verbatim in every locale: „Bitte wählen Sie einen Job aus.“; RETRY in the
   failure banner is blocked the same way (`retry-job-scope-required`). `handleAnalyze` refuses without a VALID scope, and
@@ -1132,8 +1132,7 @@ On cb3d33f. Only this change; design, dialogs, Gemini and Capability Core untouc
 - **Kept.** The selected job across both fields and every depth (unchanged from §13.2.23); the selector contract (two buttons,
   `data-field-focus-active`, `aria-pressed`); the exclusivity rule; every manifestation component (no file of the planetarium, cosmos,
   deep focus or manifestation shells changed).
-- **Not in scope (open, owner).** There is no control that removes a selected job (PINK G-05); with the gate, a removal would also
-  close the Capability Field again.
+- **Not in scope (then open, owner).** There was no control that removes a selected job (PINK G-05); decided and added in §13.2.25.
 
 Proof (review lab :41803, mock worker, no Gemini): `evidence/job-pool/capability-gate/` — browser walk 22/22 (`walk-results.txt`):
 opening in the Job Field with the DLL header, gate AWAITING_JOB, Capability option and exit disabled, the Capability manifestation
@@ -1145,6 +1144,37 @@ diff (isolated worktree, own disposable database): opening and SSR in the field 
 selector disabled → SELECT AS JOB → Capability → reload keeps Capability with the VALID job). `syntx-walk.e2e.test.ts` fails 0/3
 identically on the unchanged cb3d33f (pre-existing drift since ca11794, confirmed by PINK); its Q-11 is adapted to the gate but not
 reached (`e2e-results.txt`).
+
+#### 13.2.25 Owner decision: the role id verbatim (G-10 A), removing the job (G-05), every analysis path (2026-10-14)
+
+On c146f05. Frontend only (GRÜN); the backend boundaries are GELB's, PINK's suites unchanged (diffs go to PINK).
+
+- **G-10, variant A.** `parseJobScope` takes `poolRoleId` exactly as stored in the job pool: the one formal rule of the server and the
+  pool schema, a non-empty string. No trim, no edge-whitespace or character restriction; existence and validity are decided against
+  the stored pool (server; mirrored by `validateJobScope` with exact equality). A role such as `" role pink padded "` is selected,
+  written to the URL, restored after a reload and sent untrimmed. Before, it showed NO JOB SELECTED and SELECT AS JOB did nothing.
+- **G-05, removal.** At the selected role (the place where it was selected), `syntx-job-scope-clear` („× JOB ENTFERNEN“ /
+  „× REMOVE JOB“, the existing orientation-action look) stands beside „✓ GEWÄHLTER JOB“; the shell indicator leads there from either
+  field. The explicit click removes the scope and both URL parameters; afterwards no job scope is selected, the indicator shows NO
+  JOB SELECTED, ANALYZE (and RETRY) are blocked with „Bitte wählen Sie einen Job aus.“, the Capability gate closes and the Job Field
+  stays the field (`focus=FIELD`). Staged sources (the dock stays mounted) and existing analyses (`analysisId`, matching) are
+  untouched; nothing is sent. Selecting a job again re-opens the gate with the same staged sources.
+- **Every analysis path.** The frontend paths that start an analysis are the SourceDock ANALYZE / RETRY (through
+  `CareerJobController`, which refuses a payload without a formally valid scope and never re-submits) and the legacy page
+  `/career/analyze`, which posted `{documents}` without a scope. That page now reads the scope from the exact URL parameters
+  (`jobScopePoolUploadId` / `jobScopeRoleId`), validates it like the field (`useJobScopeValidation`), names the job or its absence
+  (`analyze-job-scope`, `data-job-scope-state`), keeps the start disabled with the owner's sentence unless VALID, and sends
+  `jobScope` with the documents. Development scripts and the worker are backend paths (GELB).
+
+Proof (review lab :41803, mock worker, no Gemini; every POST /api/career/analyze intercepted and aborted, none executed):
+`evidence/job-pool/job-scope-removal/` — browser walk 25/25 (`walk-results.txt`): a pool with the role `" role pink padded "`
+uploaded through the real upload route; selected → VALID, gate OPEN, URL verbatim, reload restores it, ANALYZE sends it untrimmed;
+removal at the role → NONE, URL without scope, gate AWAITING_JOB, Capability disabled, ANALYZE blocked with the sentence, source and
+analysis kept, no request, reload stays without job; re-selection → Capability with the same source, ANALYZE admitted; legacy page
+blocked without job and with an unknown role, admitted with the padded role and sending the exact scope; no page errors. Regression:
+`capability-gate` walk 22/22; `job-pool-workflow.e2e.test.ts` 10/10 on this commit (isolated temporary worktree, own disposable
+database; `e2e-results.txt`); the `job-scope` walk of cb3d33f assumes an ungated opening in Capability and no longer applies since
+§13.2.24.
 
 ### 13.3 DOM contract (PINK BR-1 … BR-5; GELB conditions a/b)
 
@@ -1314,3 +1344,4 @@ observation point. Readable labels wrap at word boundaries (`wrapLines`), never 
 | 2026-10-13 | The red absence giant breathes (owner mandate, on 44cd561; motion only, isolated lab) | §13.2.22: one slow 10 s field breath — aura, seam light, outer membrane and red rings (opacity / transform); text, cyan ring and joints still; LIVE only, REDUCED static; new motion kinds `sxGiant*` (R15b approval required). Evidence: `evidence/job-pool/semiotic-transfer/no-pool-giant-breath/` | tsc 0; 19 files / 129 tests; video 2.4 cycles; aura light ×3.4 rest → peak; text block identical in every sample; no collision at the peak |
 | 2026-10-14 | Job scope (owner "GRÜN — SFE GO", on 799f523) | §13.2.23: one selected job (`jobScope`, URL `jobScopePoolUploadId` / `jobScopeRoleId`) for both fields and every depth; `job-scope-indicator` at the shell; `syntx-job-scope-select` at ROLE/REQUIREMENT; ANALYZE and RETRY blocked with „Bitte wählen Sie einen Job aus.“ unless VALID; request `{ documents, jobScope }` (GELB contract); findings 1 (code kept, `httpStatus` apart) and 2 (banner compares the numeric status) fixed. Evidence: `evidence/job-pool/job-scope/` | tsc 0; 29 files / 204 tests incl. governance (new: job scope 10, SSR 11; controller 23); browser walk 33/33; render identity 30/30 |
 | 2026-10-14 | Job Pool first / Capability gate (owner, on cb3d33f) | §13.2.24: the application opens in the Job Field; `activeFieldFocus` is CAPABILITY only for a requested Capability Field with a VALID job scope; selector option and exit disabled (`data-field-gate`), `data-capability-gate` on the root; job kept across both fields. Evidence: `evidence/job-pool/capability-gate/` | tsc 0; 29 files / 205 tests; browser walk 22/22; job-pool-workflow e2e 10/10 (final diff, isolated worktree); syntx-walk e2e 0/3 identical to the base (pre-existing) |
+| 2026-10-14 | Owner decision G-10 A / G-05 / every analysis path (on c146f05) | §13.2.25: role id verbatim (non-empty string); `syntx-job-scope-clear` removes the selected job (gate closes, ANALYZE blocked, sources and analyses kept); legacy `/career/analyze` gated and sending `jobScope`. Evidence: `evidence/job-pool/job-scope-removal/` | tsc 0; 35 files / 262 tests (job-pool.postgres on a fresh disposable DB); browser walk 25/25; capability-gate walk 22/22; job-pool-workflow e2e 10/10 (isolated worktree, `e2e-results.txt`) |

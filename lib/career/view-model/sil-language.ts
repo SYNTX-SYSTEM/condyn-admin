@@ -488,6 +488,8 @@ export const SIL_COPY = {
         invalid: "JOB NOT VALID",
         select: "◎ SELECT AS JOB",
         selected: "✓ SELECTED JOB",
+        clear: "× REMOVE JOB",
+        clearHint: "Remove the selected job: ANALYZE is blocked until a job is selected again (sources and analyses stay)",
         open: "Open the selected job in the Job Field",
         choose: "Choose a job in the Job Field (open a role, then SELECT AS JOB)"
       },
@@ -1100,6 +1102,8 @@ export const SIL_COPY = {
         invalid: "JOB UNGÜLTIG",
         select: "◎ ALS JOB WÄHLEN",
         selected: "✓ GEWÄHLTER JOB",
+        clear: "× JOB ENTFERNEN",
+        clearHint: "Gewählten Job entfernen: ANALYZE ist gesperrt, bis wieder ein Job gewählt ist (Quellen und Analysen bleiben)",
         open: "Den gewählten Job im Job-Feld öffnen",
         choose: "Einen Job im Job-Feld wählen (Rolle öffnen, dann ALS JOB WÄHLEN)"
       },

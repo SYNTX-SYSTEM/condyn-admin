@@ -324,6 +324,14 @@ export function SemanticCareerIntelligenceField({
     replaceUrlParam(JOB_SCOPE_URL_PARAMS.jobPoolUploadId, next.jobPoolUploadId);
     replaceUrlParam(JOB_SCOPE_URL_PARAMS.poolRoleId, next.poolRoleId);
   };
+  /** Owner G-05: the selected job is removed only by this explicit action. Afterwards no job scope is selected: ANALYZE is blocked and
+   *  the Capability gate closes (the Job Field stays the field). Staged sources and existing analyses are not touched. */
+  const clearJobScope = () => {
+    setJobScope(null);
+    replaceUrlParam(JOB_SCOPE_URL_PARAMS.jobPoolUploadId, null);
+    replaceUrlParam(JOB_SCOPE_URL_PARAMS.poolRoleId, null);
+    switchFieldFocus("FIELD");
+  };
   /** The shell indicator opens the selected job in the Job Field (its pool selected, the role observed), or the field to choose one. */
   const openJobScope = () => {
     switchFieldFocus("FIELD");
@@ -1523,6 +1531,7 @@ export function SemanticCareerIntelligenceField({
           locale={locale}
           jobScope={jobScope}
           onSelectJobScope={selectJobScope}
+          onClearJobScope={clearJobScope}
           capabilityAvailable={capabilityGateOpen}
           capabilityGatedHint={t.syntx.selector.capabilityGated}
         />

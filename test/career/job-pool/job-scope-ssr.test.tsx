@@ -169,4 +169,21 @@ describe("explicit job selection in the Job Field (server-rendered)", () => {
     const other = field({ ...FIELD_OBSERVATION, kind: "ROLE", organizationId: "ORG_1", roleId: "ROLE_B" }, { jobPoolUploadId: UPLOAD_ID, poolRoleId: "ROLE_A" });
     expect(other).toMatch(/data-job-scope-selected="false"/);
   });
+
+  it("offers REMOVE JOB only at the selected role, as an explicit action beside the selection (owner G-05)", () => {
+    const removable = (observation: typeof FIELD_OBSERVATION, jobScope: { jobPoolUploadId: string; poolRoleId: string } | null, locale: "en" | "de" = "en") => renderToString(
+      <SyntxField workflow={withMatches() as never} analysisSource={{ kind: "URL", analysisId: "ANL_TEST" }} observation={observation} onObserve={() => undefined} onSelectPool={() => undefined} onExit={() => undefined} jobScope={jobScope} onSelectJobScope={() => undefined} onClearJobScope={() => undefined} locale={locale} />
+    );
+    const roleA = { ...FIELD_OBSERVATION, kind: "ROLE" as const, organizationId: "ORG_1", roleId: "ROLE_A" };
+    const selected = removable(roleA, { jobPoolUploadId: UPLOAD_ID, poolRoleId: "ROLE_A" });
+    expect(selected).toMatch(/data-testid="syntx-job-scope-clear"[^>]*title="Remove the selected job: ANALYZE is blocked until a job is selected again \(sources and analyses stay\)"/);
+    expect(selected).toContain("× REMOVE JOB");
+    expect(selected.indexOf("syntx-job-scope-select")).toBeLessThan(selected.indexOf("syntx-job-scope-clear"));
+    expect(removable(roleA, { jobPoolUploadId: UPLOAD_ID, poolRoleId: "ROLE_A" }, "de")).toContain("× JOB ENTFERNEN");
+    expect(removable(roleA, null)).not.toContain("syntx-job-scope-clear");
+    expect(removable({ ...roleA, roleId: "ROLE_B" }, { jobPoolUploadId: UPLOAD_ID, poolRoleId: "ROLE_A" })).not.toContain("syntx-job-scope-clear");
+    expect(removable(FIELD_OBSERVATION, { jobPoolUploadId: UPLOAD_ID, poolRoleId: "ROLE_A" })).not.toContain("syntx-job-scope-clear");
+    // Without the handler (no owner of the scope) nothing can be removed.
+    expect(field(roleA, { jobPoolUploadId: UPLOAD_ID, poolRoleId: "ROLE_A" })).not.toContain("syntx-job-scope-clear");
+  });
 });

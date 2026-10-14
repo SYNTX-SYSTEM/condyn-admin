@@ -27,14 +27,16 @@ export function isJobScopeErrorCode(code: string | null | undefined): boolean {
   return code === JOB_SCOPE_REQUIRED_CODE || code === JOB_SCOPE_INVALID_CODE;
 }
 
-/** Formal check only (the server checks existence): an object with exactly the two keys, an upload id and a non-blank role id. */
+/** Formal check only (the server checks existence): an object with exactly the two keys, an upload id and a non-empty role id.
+ *  The role id is taken exactly as stored in the job pool (owner G-10, variant A): the same formal rule as the server and the pool
+ *  schema — a non-empty string — with no normalisation (no trim) and no further character restriction. */
 export function parseJobScope(value: unknown): JobScope | null {
   if (value === null || typeof value !== "object" || Array.isArray(value)) return null;
   const keys = Object.keys(value);
   if (keys.length !== 2 || !keys.includes("jobPoolUploadId") || !keys.includes("poolRoleId")) return null;
   const { jobPoolUploadId, poolRoleId } = value as Record<string, unknown>;
   if (typeof jobPoolUploadId !== "string" || !JOB_POOL_UPLOAD_ID.test(jobPoolUploadId)) return null;
-  if (typeof poolRoleId !== "string" || poolRoleId.trim().length === 0 || poolRoleId !== poolRoleId.trim()) return null;
+  if (typeof poolRoleId !== "string" || poolRoleId.length === 0) return null;
   return { jobPoolUploadId, poolRoleId };
 }
 
