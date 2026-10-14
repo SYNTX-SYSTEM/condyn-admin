@@ -1008,6 +1008,48 @@ job and waits for the open gate before the exit). The edit adds steps and weaken
 proof instrument; PINK takes such adaptations only through its own commit when the walk is rebound (with the pending
 `ca11794` rebinding), and asks GRÜN to propose, not edit, PINK's walks.
 
+### 3.28 Job-scope invariant: GELB's backend gate `841baab` → `2e61a2b` with GRÜN `c146f05` verified together (2026-10-14)
+
+GELB `feature/job-pool-first-boundary` (base `311d6ee`, not integrated): `841baab` adds the route gate (analyze route,
+after the document checks and before `createJob`: missing or malformed `jobScope` → 400 `ERR_JOB_SCOPE_REQUIRED`;
+unknown, non-ACTIVE or unmapped pool, role outside the pool, a role requirement without mapping, or no job pool
+persistence → 422 `ERR_JOB_SCOPE_INVALID`; message "Bitte wählen Sie einen Job aus."; nothing enqueued) and the worker
+gate (`scripts/run-career-worker.ts` wraps the unchanged processor in `requireValidJobScope(createLocalJobScopeResolver(), …)`;
+`JobScopeRequiredError` is a `TERMINAL_ERROR`), plus an idempotency fix (deep compare instead of JSONB-reordered string
+compare). `2e61a2b` relaxes the formal role-id rule to "non-empty string" (the pool schema's rule) after GRÜN reported
+the mismatch; existence is decided by the stored pool.
+
+PINK (probe branch = this branch + `c146f05` + `841baab` [+ `2e61a2b`], deleted, never pushed; frontend files identical to
+`c146f05`, backend files identical to the GELB tip):
+- Worker proof (PINK's own, `evidence/job-scope-gate-c146f05-2e61a2b/job-scope-worker-gate.postgres.test.ts.txt`, kept as
+  evidence until GELB's module is integrated into this branch): 8 jobs written straight into `career_analysis_jobs`, past
+  the route; the real `CareerJobWorker` on the disposable database with a spy for the whole processor. 7 jobs without a
+  valid scope (none, null, malformed, extra key, unknown pool, DRAFT pool, role not in pool) end FAILED after one attempt
+  with the expected code and the owner's sentence, no progress reported, the spy never reached; the valid job reaches
+  it. A static check binds the production script: the processor handed to `CareerJobWorker` is the gated one, the only
+  one built there. Green on `841baab` and on `2e61a2b`.
+- Inverse sweep on `2e61a2b`: every worker process starts from `scripts/run-career-worker.ts` (`worker:career`,
+  `hr-loop:local --with-worker`, GELB's proof script) and is gated; only the developer scripts `test-live-*`,
+  `test-pipeline-live`, `test-multi-source-live` run the pipeline directly without a scope (open owner decision).
+- Gate walk, extended by G-10 (frontend VALID ⇔ backend 202 on the same stored role; a pool with a role id containing
+  inner spaces and one padded with spaces, both admitted by the pool schema): `c146f05` + `841baab` **50/52** (G-06 7/7
+  REJECT as contracted; G-10 diverged: inner-space role VALID in the frontend, 400 in the backend — GRÜN's report, fixed
+  in `2e61a2b`); `c146f05` + `2e61a2b` **51/53** (evidence `evidence/job-scope-gate-c146f05-2e61a2b/`).
+- Regression on `c146f05` + `2e61a2b`: tsc 0; 14 files / 121 green (GELB's job-scope suites, PINK's worker proof, the
+  PDF path, analyze-flow and async orchestration, GRÜN's job-scope / demo-UI / lifecycle tests, the field batch).
+
+Remaining deviations on `c146f05` + `2e61a2b`:
+1. G-05: no UI control removes a selected job — not part of any owner mandate; open owner decision.
+2. G-10: a role id padded with spaces ("  role pink padded  ", admitted by the pool schema): the frontend refuses it
+   (`parseJobScope` requires a trimmed id → indicator NONE, the role cannot be selected), the backend accepts it (202).
+   Safe direction for the invariant (no request without a scope), but a stored, ACTIVE, mapped role is unselectable.
+   One rule is needed on both sides: GRÜN to accept the schema's id as stored, or the pool upload (GELB) to refuse or
+   normalize padded ids.
+
+Boundary B-PINK-WALK-OWNERSHIP (second instance): `841baab` edits PINK's `test/job-pool-validation/pdf-path.postgres.test.ts`
+(uploads a pool and sends `jobScope` so the PDF path passes the new gate; no assertion weakened). Taken by PINK only in
+its own commit when GELB's gate is integrated into this branch.
+
 ## 4. Boundaries and findings for coordination
 
 - F-JP-1 (closed in `b782793`): `JOB_POOL_CONNECTION.md` §4 followed the per-role `JOB_POOL_JSON_ROLE` design;

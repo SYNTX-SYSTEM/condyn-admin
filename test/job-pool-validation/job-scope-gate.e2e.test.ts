@@ -29,7 +29,7 @@ import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import { PostgresCareerAnalysisRepository } from "../../lib/career/repositories/postgres";
 import { createJobPoolPostgresWorld, type JobPoolWorld } from "../career/job-pool/fixtures/job-pool-postgres-world";
 import { buildVerifiedAnalysis } from "./fixtures/analysis";
-import { draftPool, validationPool } from "./fixtures/pool";
+import { clonePool, draftPool, validationPool } from "./fixtures/pool";
 
 function resolvePlaywright(): string | null {
   const explicit = process.env.CONDYN_PLAYWRIGHT_MODULE;
@@ -44,6 +44,8 @@ const ROLE_ID = "role_pink_alpha_architect";
 const OTHER_ROLE_ID = "role_pink_beta_platform";
 const MESSAGE = "Bitte wählen Sie einen Job aus.";
 const UNKNOWN_POOL = `JPOOL_${"0".repeat(32)}`;
+const SPACED_ROLE_ID = "role pink beta platform";
+const PADDED_ROLE_ID = "  role pink padded  ";
 const CLOSURE_GLYPHS = /✓|✔|☑|checkmark/;
 
 let world: JobPoolWorld;
@@ -70,6 +72,8 @@ describe.skipIf(playwrightModule === null)("PINK G: job-scope gate — Job Pool 
   let uploadId = "";
   let draftId = "";
   let requirementId = "";
+  let spacedUploadId = "";
+  let spacedUploadStatus = 0;
   const checks: Check[] = [];
   const pageErrors: string[] = [];
   const analyzePosts: Array<{ body: unknown; status: number | null }> = [];
@@ -182,6 +186,16 @@ describe.skipIf(playwrightModule === null)("PINK G: job-scope gate — Job Pool 
     const post = async (body: unknown) => (await fetch(`${base()}/api/career/job-pools`, { method: "POST", headers: { "content-type": "application/json", "x-condyn-principal-actor-id": "PINK_JOB_SCOPE_GATE" }, body: JSON.stringify(body) })).json();
     uploadId = (await post(validationPool)).jobPoolUploadId;
     draftId = (await post(draftPool())).jobPoolUploadId;
+    // G-10 fixture: the pool schema admits any non-empty id; one role id carries spaces (frontend and backend must agree on it).
+    const spaced = clonePool() as any;
+    spaced.pool.id = "pool_pink_scope_id_probe"; spaced.pool.name = "PINK scope id probe";
+    for (const list of [spaced.organizations, spaced.roles]) for (const item of list) item.pool_id = spaced.pool.id;
+    for (const role of spaced.roles) if (role.id === OTHER_ROLE_ID) role.id = SPACED_ROLE_ID;
+    for (const requirement of spaced.requirements) if (requirement.role_id === OTHER_ROLE_ID) requirement.role_id = SPACED_ROLE_ID;
+    for (const role of spaced.roles) if (role.id === "role_pink_beta_empty") role.id = PADDED_ROLE_ID;
+    const spacedResponse = await fetch(`${base()}/api/career/job-pools`, { method: "POST", headers: { "content-type": "application/json", "x-condyn-principal-actor-id": "PINK_JOB_SCOPE_GATE" }, body: JSON.stringify(spaced) });
+    spacedUploadStatus = spacedResponse.status;
+    spacedUploadId = (await spacedResponse.json().catch(() => ({})))?.jobPoolUploadId ?? "";
     const view = await (await fetch(`${base()}/api/career/job-pools/${uploadId}`)).json();
     requirementId = view.canonicalMapping.roles.find((role: any) => role.poolRoleId === ROLE_ID).requirements[0].poolRequirementId;
     mkdirSync(EVIDENCE_DIR, { recursive: true });
@@ -360,6 +374,20 @@ describe.skipIf(playwrightModule === null)("PINK G: job-scope gate — Job Pool 
     const jobsBeforeValid = await jobCount();
     const valid = await fetch(`${base()}/api/career/analyze`, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ documents, jobScope: { jobPoolUploadId: uploadId, poolRoleId: OTHER_ROLE_ID } }) });
     check("G-06", "direct POST with a valid scope is accepted (202) and enqueued once (no worker: no Gemini call)", valid.status === 202 && (await jobCount()) === jobsBeforeValid + 1, { status: valid.status, enqueued: (await jobCount()) - jobsBeforeValid });
+
+    // ---- G-10 one rule for "valid": the frontend's VALID and the backend's acceptance agree on the same stored role ----------
+    if (spacedUploadId.length > 0) {
+      for (const [label, roleId] of [["role id with inner spaces", SPACED_ROLE_ID], ["role id padded with spaces", PADDED_ROLE_ID]] as const) {
+        const page = await open(`/career/demo?focus=FIELD&analysisId=${ANALYSIS_ID}&jobPoolUploadId=${spacedUploadId}&jobScopePoolUploadId=${spacedUploadId}&jobScopeRoleId=${encodeURIComponent(roleId)}`);
+        const frontState = await scopeState(page);
+        await page.close();
+        const jobsBefore = await jobCount();
+        const response = await fetch(`${base()}/api/career/analyze`, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ documents, jobScope: { jobPoolUploadId: spacedUploadId, poolRoleId: roleId } }) });
+        const backend = { status: response.status, code: (await response.json().catch(() => null))?.issues?.[0]?.code ?? null, enqueued: (await jobCount()) - jobsBefore };
+        const agree = (frontState === "VALID") === (backend.status === 202);
+        check("G-10", `${label} in an ACTIVE, mapped pool: frontend and backend agree on validity`, agree, { roleId, frontend: frontState, backend });
+      }
+    } else check("G-10", "role id with spaces: the pool upload refuses it, so no divergence is reachable", true, `upload status ${spacedUploadStatus}`);
 
     check("G-00", "no page error in any step", pageErrors.length === 0, pageErrors.slice(0, 5));
     const failed = checks.filter((entry) => !entry.ok).map((entry) => `${entry.id} ${entry.name} · ${entry.detail}`);
