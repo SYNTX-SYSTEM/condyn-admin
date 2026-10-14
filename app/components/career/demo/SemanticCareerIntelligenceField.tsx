@@ -26,6 +26,9 @@ import { SyntxEnergyRay, SyntxPlanetariumBackdrop } from "./manifestation/SyntxP
 import { FocusTransitionStageShell } from "./manifestation/SyntxFocusShell";
 import { observationFromParams, type SyntxObservation } from "../../../../lib/career/job-pool/syntx-field-view-model";
 import { useJobPoolWorkflow } from "../../../../lib/career/ui/useJobPool";
+import { useJobScopeValidation } from "../../../../lib/career/ui/useJobScope";
+import { JOB_SCOPE_REQUIRED_MESSAGE, JOB_SCOPE_URL_PARAMS, isJobScopeErrorCode, jobScopeFromParams, type JobScope } from "../../../../lib/career/job-pool/job-scope";
+import type { SyntxJobScopePresentation } from "./SyntxFieldSelector";
 import { describeAnalysisSource } from "../../../../lib/career/job-pool/frontend-presentation";
 import { buildEvidenceGraph } from "../../../../lib/career/evidence/traversal";
 import { computeGraphFocus } from "../../../../lib/career/evidence/highlight";
@@ -60,6 +63,9 @@ export interface SemanticCareerIntelligenceFieldProps {
   jobOrganizationId?: string;
   jobRoleId?: string;
   jobRequirementId?: string;
+  /** Exact selected job scope (URL jobScopePoolUploadId / jobScopeRoleId); never inferred, kept across both fields and every depth. */
+  jobScopePoolUploadId?: string;
+  jobScopeRoleId?: string;
   /** The application shell's brand surface follows the active field (Decision Loop Labs in the Job Field context). */
   onFieldFocusChange?: (focus: "CAPABILITY" | "FIELD") => void;
   initialAnalysisState?: {
@@ -226,6 +232,8 @@ export function SemanticCareerIntelligenceField({
   jobOrganizationId: initialJobOrganizationId,
   jobRoleId: initialJobRoleId,
   jobRequirementId: initialJobRequirementId,
+  jobScopePoolUploadId: initialJobScopePoolUploadId,
+  jobScopeRoleId: initialJobScopeRoleId,
   onFieldFocusChange,
   initialAnalysisState,
   initialLocale = SIL_COPY.defaultLocale,
@@ -253,7 +261,10 @@ export function SemanticCareerIntelligenceField({
     jobState === "SUBMITTING" || jobState === "LOADING_RESULT" || jobState === "FAILED"
       ? null
       : job.state.currentOperation;
-  const analysisError = jobState === "FAILED" ? JSON.stringify({ status: job.state.errorCode || 500, issues: [{ message: job.state.errorSummary || "Job Failed" }] }) : null;
+  /** The backend's failure as delivered: HTTP status only for a rejected request, the code (ERR_…) always shown with its message. */
+  const analysisError = jobState === "FAILED"
+    ? { status: typeof job.state.httpStatus === "number" ? job.state.httpStatus : null, code: job.state.errorCode ?? null, message: job.state.errorSummary || "Job Failed" }
+    : null;
   const analysisSuccess = jobState === "SUCCEEDED";
   const analysisStep = jobState; // fallback mapping
   const focusedOrbitPresentation =
@@ -299,6 +310,35 @@ export function SemanticCareerIntelligenceField({
   /** Selection reorganises the field and is reversible; the observation point is written to the URL (the aperture never is). */
   const observeField = (next: SyntxObservation) => { setObservation(next); writeObservation(next); };
   const selectJobPool = (id: string) => { jobPoolWorkflow.select(id); replaceUrlParam("jobPoolUploadId", id); observeField(FIELD_LEVEL); };
+  /** SFE job-scope invariant: one selected job for both fields; independent of the observation point (return, field change and pool change keep it). */
+  const [jobScope, setJobScope] = useState<JobScope | null>(() => jobScopeFromParams(initialJobScopePoolUploadId, initialJobScopeRoleId));
+  const jobScopeValidation = useJobScopeValidation(jobScope);
+  const selectJobScope = (poolRoleId: string) => {
+    const uploadId = jobPoolWorkflow.selectedJobPoolUploadId;
+    const next = uploadId === null ? null : jobScopeFromParams(uploadId, poolRoleId);
+    if (next === null) return;
+    setJobScope(next);
+    replaceUrlParam(JOB_SCOPE_URL_PARAMS.jobPoolUploadId, next.jobPoolUploadId);
+    replaceUrlParam(JOB_SCOPE_URL_PARAMS.poolRoleId, next.poolRoleId);
+  };
+  /** The shell indicator opens the selected job in the Job Field (its pool selected, the role observed), or the field to choose one. */
+  const openJobScope = () => {
+    switchFieldFocus("FIELD");
+    if (jobScopeValidation.state !== "VALID") return;
+    const scope = jobScopeValidation.scope;
+    if (jobPoolWorkflow.selectedJobPoolUploadId !== scope.jobPoolUploadId) { jobPoolWorkflow.select(scope.jobPoolUploadId); replaceUrlParam("jobPoolUploadId", scope.jobPoolUploadId); }
+    observeField({ kind: "ROLE", organizationId: jobScopeValidation.organizationId, roleId: scope.poolRoleId, requirementId: null, apertureSignId: null });
+  };
+  const jobScopeCopy = t.syntx.jobScope;
+  const jobScopePresentation: SyntxJobScopePresentation = jobScopeValidation.state === "VALID"
+    ? { state: "VALID", label: jobScopeCopy.label, title: jobScopeValidation.roleTitle, detail: [jobScopeValidation.organizationName, jobScopeValidation.poolName].filter((part): part is string => part !== null && part.length > 0).join(" · ") || null, hint: jobScopeCopy.open }
+    : jobScopeValidation.state === "CHECKING"
+      ? { state: "CHECKING", label: jobScopeCopy.label, title: jobScopeCopy.checking, detail: null, hint: jobScopeCopy.choose }
+      : jobScopeValidation.state === "INVALID"
+        ? { state: "INVALID", label: jobScopeCopy.label, title: jobScopeCopy.invalid, detail: jobScopeValidation.scope.poolRoleId, hint: jobScopeCopy.choose }
+        : { state: "NONE", label: jobScopeCopy.label, title: jobScopeCopy.none, detail: null, hint: jobScopeCopy.choose };
+  /** ANALYZE is admitted only with a VALID scope; otherwise the owner's sentence stands at the trigger, verbatim. */
+  const analyzeBlockedMessage = jobScopeValidation.state === "VALID" ? null : JOB_SCOPE_REQUIRED_MESSAGE;
   const [inferenceTelemetry, setInferenceTelemetry] = useState<any>(initialAnalysisState?.inferenceTelemetry ?? null);
   const [lastStagedDocs, setLastStagedDocs] = useState<any[]>([]);
   const [isCodexOpen, setIsCodexOpen] = useState(false);
@@ -389,6 +429,8 @@ export function SemanticCareerIntelligenceField({
   };
 
   const handleAnalyze = async (stagedDocs: any[]) => {
+    // SFE job-scope invariant: no execution without a VALID selected job (the controller re-checks the payload).
+    if (jobScopeValidation.state !== "VALID") return;
     setLastStagedDocs(stagedDocs);
     const documentsPayload = stagedDocs.map((doc) => {
       if (doc.type === "pdf") {
@@ -400,7 +442,7 @@ export function SemanticCareerIntelligenceField({
       return { type: "text", content: doc.content, title: doc.title, docId: doc.id };
     });
 
-    job.submitAnalysis({ documents: documentsPayload });
+    job.submitAnalysis({ documents: documentsPayload, jobScope: { jobPoolUploadId: jobScopeValidation.scope.jobPoolUploadId, poolRoleId: jobScopeValidation.scope.poolRoleId } });
   };
 
   const [selectedGraphNodeId, setSelectedGraphNodeId] = useState<string | null>(null);
@@ -664,7 +706,7 @@ export function SemanticCareerIntelligenceField({
         pointerEvents: isOrbitStageFocus ? "none" : "auto",
         transition: "transform 0.62s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.56s ease, filter 0.56s ease"
       }}>
-        <SourceDock onAnalyze={handleAnalyze} isAnalyzing={isAnalyzing} locale={locale} />
+        <SourceDock onAnalyze={handleAnalyze} isAnalyzing={isAnalyzing} locale={locale} analyzeBlockedMessage={analyzeBlockedMessage} />
       </div>
 
       {/* Telemetry Ingestion Status Banner */}
@@ -726,12 +768,14 @@ export function SemanticCareerIntelligenceField({
       )}
 
       {analysisError && (() => {
-        let errData = { status: 500, issues: [{ message: analysisError }] };
-        try { errData = JSON.parse(analysisError); } catch (e) {}
-        
+        const errData = { status: analysisError.status, issues: [{ code: analysisError.code, message: analysisError.message }] };
+        const scopeFailure = isJobScopeErrorCode(analysisError.code);
+
         return (
         <div
           data-testid="intake-error-banner"
+          data-error-code={analysisError.code ?? ""}
+          data-http-status={analysisError.status ?? ""}
           style={{
             position: "absolute",
             top: "80px",
@@ -751,16 +795,16 @@ export function SemanticCareerIntelligenceField({
             maxWidth: "600px"
           }}
         >
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: "18px" }}>
             <div style={{ fontWeight: 800, fontSize: "14px", letterSpacing: "1px" }}>
-              {errData.status === 422 ? "SEMANTIC BOUNDARY VIOLATION" : errData.status === 503 ? "PROVIDER TRUNCATION" : t.analysis.failed}
+              {scopeFailure ? t.analysis.jobScopeTitle : errData.status === 422 ? "SEMANTIC BOUNDARY VIOLATION" : errData.status === 503 ? "PROVIDER TRUNCATION" : t.analysis.failed}
             </div>
-            <div style={{ fontSize: "10px", color: "rgba(255, 85, 85, 0.7)" }}>HTTP {errData.status}</div>
+            {errData.status !== null && <div style={{ fontSize: "10px", color: "rgba(255, 85, 85, 0.7)" }}>HTTP {errData.status}</div>}
           </div>
           
           <div style={{ fontSize: "11px", color: "#ffbaba", lineHeight: "1.5" }}>
-            {errData.status === 422 && t.analysis.semanticBoundary}
-            {errData.status === 503 && t.analysis.providerTruncation}
+            {!scopeFailure && errData.status === 422 && t.analysis.semanticBoundary}
+            {!scopeFailure && errData.status === 503 && t.analysis.providerTruncation}
           </div>
 
           <div style={{ maxHeight: "150px", overflowY: "auto", borderTop: "1px solid rgba(255, 51, 51, 0.3)", paddingTop: "8px", marginTop: "4px" }}>
@@ -775,19 +819,22 @@ export function SemanticCareerIntelligenceField({
             ))}
           </div>
 
-          <div style={{ display: "flex", justifyContent: "flex-end", marginTop: "8px" }}>
+          <div style={{ display: "flex", justifyContent: "flex-end", alignItems: "center", gap: "12px", marginTop: "8px" }}>
+            {analyzeBlockedMessage !== null && <span data-testid="retry-job-scope-required" role="status" style={{ fontSize: "11px", fontWeight: 700, color: "#ffc46b" }}>{analyzeBlockedMessage}</span>}
             <button
               data-testid="retry-intake-btn"
+              disabled={analyzeBlockedMessage !== null}
               onClick={() => handleAnalyze(lastStagedDocs)}
               style={{
                 padding: "8px 16px",
+                opacity: analyzeBlockedMessage !== null ? 0.4 : 1,
                 backgroundColor: "#ff3333",
                 color: "#0a0e14",
                 border: "none",
                 borderRadius: "4px",
                 fontWeight: 800,
                 fontSize: "11px",
-                cursor: "pointer",
+                cursor: analyzeBlockedMessage !== null ? "not-allowed" : "pointer",
                 letterSpacing: "1px",
                 transition: "background 0.2s"
               }}
@@ -1462,6 +1509,8 @@ export function SemanticCareerIntelligenceField({
           onSelectPool={selectJobPool}
           onExit={() => switchFieldFocus("CAPABILITY")}
           locale={locale}
+          jobScope={jobScope}
+          onSelectJobScope={selectJobScope}
         />
       )}
 
@@ -1472,6 +1521,8 @@ export function SemanticCareerIntelligenceField({
         capabilityLabel={t.syntx.selector.capability}
         jobLabel={t.syntx.toggle}
         onSelect={switchFieldFocus}
+        jobScope={jobScopePresentation}
+        onJobScopeActivate={openJobScope}
       />
       {/* One calm veil per field change (.42 s, void → clear); pointer-transparent; REDUCED: none. */}
       {fieldSwitches > 0 && <div key={fieldSwitches} data-sx-field-veil data-sx-shell="veil" aria-hidden="true" style={{ position: "absolute", inset: 0, zIndex: 50, pointerEvents: "none", backgroundColor: SIL_TOKENS.colors.void, opacity: 0, animation: "syntxFieldVeil 0.42s cubic-bezier(0.16, 1, 0.3, 1)" }} />}

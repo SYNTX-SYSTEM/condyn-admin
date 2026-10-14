@@ -1,5 +1,9 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { CareerJobController } from "../lib/career/ui/career-job-controller";
+import { JOB_SCOPE_INVALID_CODE, JOB_SCOPE_REQUIRED_CODE, JOB_SCOPE_REQUIRED_MESSAGE } from "../lib/career/job-pool/job-scope";
+
+/** SFE job-scope invariant: every submission carries a formally valid job scope (GELB contract). */
+const SCOPE = { jobPoolUploadId: "JPOOL_30F7145E21F34BEF0FCE510DFC75837B", poolRoleId: "role_fullstack" };
 
 describe("CONDYN Career Analysis Protocol v5.0 - PHASE 5: TEST005D FRONTEND JOB LIFECYCLE", () => {
   let mockFetch: ReturnType<typeof vi.fn>;
@@ -22,7 +26,7 @@ describe("CONDYN Career Analysis Protocol v5.0 - PHASE 5: TEST005D FRONTEND JOB 
     mockFetch.mockReturnValueOnce(postPromise);
 
     // A. trigger Analyze
-    controller.submitAnalysis({ docs: ["A"] });
+    controller.submitAnalysis({ docs: ["A"], jobScope: SCOPE });
     
     // Exactly one POST
     expect(mockFetch).toHaveBeenCalledTimes(1);
@@ -56,7 +60,7 @@ describe("CONDYN Career Analysis Protocol v5.0 - PHASE 5: TEST005D FRONTEND JOB 
       .mockResolvedValueOnce({ status: 202, json: async () => ({ jobId: "JOB_123" }) })
       .mockResolvedValueOnce({ status: 200, json: async () => ({ status: "RUNNING" }) });
 
-    await controller.submitAnalysis({ docs: ["A"] });
+    await controller.submitAnalysis({ docs: ["A"], jobScope: SCOPE });
     await Promise.resolve();
     await Promise.resolve();
     await Promise.resolve();
@@ -73,7 +77,7 @@ describe("CONDYN Career Analysis Protocol v5.0 - PHASE 5: TEST005D FRONTEND JOB 
         json: async () => ({ status: "RUNNING", currentOperation: "INFERENCE", attemptCount: 2 })
       });
 
-    await controller.submitAnalysis({ docs: ["A"] });
+    await controller.submitAnalysis({ docs: ["A"], jobScope: SCOPE });
     for (let i = 0; i < 10; i++) await Promise.resolve();
 
     expect((controller.getState() as any).currentOperation).toBe("INFERENCE");
@@ -88,7 +92,7 @@ describe("CONDYN Career Analysis Protocol v5.0 - PHASE 5: TEST005D FRONTEND JOB 
         json: async () => ({ status: "PENDING", currentOperation: null, attemptCount: 0 })
       });
 
-    await controller.submitAnalysis({ docs: ["A"] });
+    await controller.submitAnalysis({ docs: ["A"], jobScope: SCOPE });
     for (let i = 0; i < 10; i++) await Promise.resolve();
 
     expect((controller.getState() as any).state).toBe("PENDING");
@@ -111,7 +115,7 @@ describe("CONDYN Career Analysis Protocol v5.0 - PHASE 5: TEST005D FRONTEND JOB 
       .mockResolvedValueOnce({ status: 200, json: async () => ({ status: "SUCCEEDED", resultAnalysisId: "ANL_456" }) })
       .mockReturnValueOnce(canonicalResult);
 
-    await controller.submitAnalysis({ docs: ["A"] });
+    await controller.submitAnalysis({ docs: ["A"], jobScope: SCOPE });
     for (let i = 0; i < 10; i++) await Promise.resolve();
     expect(controller.getState().state).toBe("RUNNING");
     expect((controller.getState() as any).currentOperation).toBe("PERSISTENCE");
@@ -132,7 +136,7 @@ describe("CONDYN Career Analysis Protocol v5.0 - PHASE 5: TEST005D FRONTEND JOB 
       .mockResolvedValueOnce({ status: 200, json: async () => ({ status: "SUCCEEDED", resultAnalysisId: "ANL_456" }) })
       .mockResolvedValueOnce({ status: 200, json: async () => ({ analysisId: "ANL_456", structured_data: { test: true } }) });
 
-    await controller.submitAnalysis({ docs: ["A"] });
+    await controller.submitAnalysis({ docs: ["A"], jobScope: SCOPE });
     // flush microtasks
     for (let i = 0; i < 10; i++) await Promise.resolve();
 
@@ -151,7 +155,7 @@ describe("CONDYN Career Analysis Protocol v5.0 - PHASE 5: TEST005D FRONTEND JOB 
       .mockResolvedValueOnce({ status: 202, json: async () => ({ jobId: "JOB_123" }) })
       .mockResolvedValueOnce({ status: 200, json: async () => ({ status: "FAILED", errorCode: "ERR_TIMEOUT", errorSummary: "Timeout" }) });
 
-    await controller.submitAnalysis({ docs: ["A"] });
+    await controller.submitAnalysis({ docs: ["A"], jobScope: SCOPE });
     for (let i = 0; i < 10; i++) await Promise.resolve();
 
     expect(controller.getState().state).toBe("FAILED");
@@ -166,9 +170,9 @@ describe("CONDYN Career Analysis Protocol v5.0 - PHASE 5: TEST005D FRONTEND JOB 
   it("M, N. double-click/re-render creates no extra POST", async () => {
     mockFetch.mockReturnValue(new Promise(() => {})); // hanging promise
 
-    controller.submitAnalysis({ docs: ["A"] });
-    controller.submitAnalysis({ docs: ["A"] });
-    controller.submitAnalysis({ docs: ["B"] });
+    controller.submitAnalysis({ docs: ["A"], jobScope: SCOPE });
+    controller.submitAnalysis({ docs: ["A"], jobScope: SCOPE });
+    controller.submitAnalysis({ docs: ["B"], jobScope: SCOPE });
     
     expect(mockFetch).toHaveBeenCalledTimes(1); // M, N. Exactly one post
   });
@@ -176,14 +180,14 @@ describe("CONDYN Career Analysis Protocol v5.0 - PHASE 5: TEST005D FRONTEND JOB 
   it("O, P. Idempotency key preservation and new generation", async () => {
     mockFetch.mockResolvedValue({ status: 500, json: async () => ({ issues: [{}] }) });
     
-    await controller.submitAnalysis({ docs: ["A"] });
+    await controller.submitAnalysis({ docs: ["A"], jobScope: SCOPE });
     for (let i = 0; i < 10; i++) await Promise.resolve();
     
     const key1 = mockFetch.mock.calls[0][1].headers["Idempotency-Key"];
     expect(key1).toBeDefined();
 
     // Submit again on FAILED (which allows new submission, generating new key)
-    await controller.submitAnalysis({ docs: ["B"] });
+    await controller.submitAnalysis({ docs: ["B"], jobScope: SCOPE });
     for (let i = 0; i < 10; i++) await Promise.resolve();
 
     const key2 = mockFetch.mock.calls[1][1].headers["Idempotency-Key"];
@@ -194,7 +198,7 @@ describe("CONDYN Career Analysis Protocol v5.0 - PHASE 5: TEST005D FRONTEND JOB 
     let resolveJobA: any;
     mockFetch.mockReturnValueOnce(new Promise(r => resolveJobA = r)); // POST A
     
-    controller.submitAnalysis({ docs: ["A"] });
+    controller.submitAnalysis({ docs: ["A"], jobScope: SCOPE });
     
     // Simulate navigation/restart creating a new controller for B
     const controllerB = new CareerJobController(mockFetch as any);
@@ -202,7 +206,7 @@ describe("CONDYN Career Analysis Protocol v5.0 - PHASE 5: TEST005D FRONTEND JOB 
     let resolveJobB: any;
     mockFetch.mockReturnValueOnce(new Promise(r => resolveJobB = r)); // POST B
     
-    controllerB.submitAnalysis({ docs: ["B"] });
+    controllerB.submitAnalysis({ docs: ["B"], jobScope: SCOPE });
 
     resolveJobB({ status: 202, json: async () => ({ jobId: "JOB_B" }) });
     for (let i = 0; i < 10; i++) await Promise.resolve();
@@ -224,11 +228,97 @@ describe("CONDYN Career Analysis Protocol v5.0 - PHASE 5: TEST005D FRONTEND JOB 
       .mockResolvedValueOnce({ status: 200, json: async () => ({ status: "SUCCEEDED", resultAnalysisId: "ANL_456" }) })
       .mockResolvedValueOnce({ status: 500, json: async () => ({}) }); // Failure on canonical GET
 
-    await controller.submitAnalysis({ docs: ["A"] });
+    await controller.submitAnalysis({ docs: ["A"], jobScope: SCOPE });
     for (let i = 0; i < 10; i++) await Promise.resolve();
 
     expect(controller.getState().state).toBe("SUCCEEDED");
     expect(controller.getState().resultAnalysisId).toBe("ANL_456");
     expect(controller.getState().canonicalAnalysis).toBeNull(); // Missing but not failed job
+  });
+});
+
+describe("SFE job-scope invariant — the controller sends nothing without a valid jobScope and keeps the backend's code", () => {
+  let mockFetch: ReturnType<typeof vi.fn>;
+  let controller: CareerJobController;
+
+  beforeEach(() => {
+    vi.useFakeTimers();
+    mockFetch = vi.fn();
+    controller = new CareerJobController(mockFetch as any);
+  });
+
+  afterEach(() => {
+    controller.cleanup();
+    vi.restoreAllMocks();
+  });
+
+  it.each([
+    ["missing", { documents: [{ type: "text", content: "x" }] }],
+    ["null", { documents: [], jobScope: null }],
+    ["lower-case upload id", { documents: [], jobScope: { jobPoolUploadId: "jpool_30f7145e21f34bef0fce510dfc75837b", poolRoleId: "r" } }],
+    ["blank role", { documents: [], jobScope: { jobPoolUploadId: SCOPE.jobPoolUploadId, poolRoleId: "  " } }],
+    ["extra key", { documents: [], jobScope: { ...SCOPE, organizationId: "org" } }],
+    ["the analysis job id instead", { documents: [], jobId: "JOB_123" }]
+  ])("refuses a payload whose jobScope is %s: no request, state untouched", async (_label, payload) => {
+    const before = controller.getState();
+    const result = await controller.submitAnalysis(payload);
+    expect(result).toBe(JOB_SCOPE_REQUIRED_CODE);
+    expect(mockFetch).not.toHaveBeenCalled();
+    expect(controller.getState()).toBe(before);
+  });
+
+  it("sends exactly the two jobScope keys next to the documents", async () => {
+    mockFetch.mockReturnValue(new Promise(() => {}));
+    controller.submitAnalysis({ documents: [{ type: "text", content: "x" }], jobScope: { poolRoleId: SCOPE.poolRoleId, jobPoolUploadId: SCOPE.jobPoolUploadId } });
+    expect(mockFetch).toHaveBeenCalledTimes(1);
+    const body = JSON.parse(mockFetch.mock.calls[0][1].body);
+    expect(body).toEqual({ documents: [{ type: "text", content: "x" }], jobScope: SCOPE });
+    expect(Object.keys(body.jobScope).sort()).toEqual(["jobPoolUploadId", "poolRoleId"]);
+  });
+
+  it.each([
+    [400, JOB_SCOPE_REQUIRED_CODE],
+    [422, JOB_SCOPE_INVALID_CODE]
+  ])("keeps the backend code of a %i rejection (finding 1: no HTTP_<status> in its place) and the status apart", async (status, code) => {
+    mockFetch.mockResolvedValueOnce({ status, json: async () => ({ success: false, status: "FAILED", issues: [{ code, message: JOB_SCOPE_REQUIRED_MESSAGE }] }) });
+    await controller.submitAnalysis({ documents: [], jobScope: SCOPE });
+    for (let i = 0; i < 10; i++) await Promise.resolve();
+    expect(controller.getState().state).toBe("FAILED");
+    expect(controller.getState().errorCode).toBe(code);
+    expect(controller.getState().errorSummary).toBe(JOB_SCOPE_REQUIRED_MESSAGE);
+    expect(controller.getState().httpStatus).toBe(status);
+  });
+
+  it("falls back to HTTP_<status> only when the body names no code", async () => {
+    mockFetch.mockResolvedValueOnce({ status: 500, json: async () => { throw new Error("not json"); } });
+    await controller.submitAnalysis({ documents: [], jobScope: SCOPE });
+    for (let i = 0; i < 10; i++) await Promise.resolve();
+    expect(controller.getState().errorCode).toBe("HTTP_500");
+    expect(controller.getState().errorSummary).toBe("Submission failed");
+    expect(controller.getState().httpStatus).toBe(500);
+  });
+
+  it("a worker FAILED for the job scope is terminal: code and owner sentence kept, no HTTP status, no retry", async () => {
+    mockFetch
+      .mockResolvedValueOnce({ status: 202, json: async () => ({ jobId: "JOB_123" }) })
+      .mockResolvedValueOnce({ status: 200, json: async () => ({ status: "FAILED", errorCode: JOB_SCOPE_INVALID_CODE, errorSummary: JOB_SCOPE_REQUIRED_MESSAGE }) });
+    await controller.submitAnalysis({ documents: [], jobScope: SCOPE });
+    for (let i = 0; i < 10; i++) await Promise.resolve();
+    expect(controller.getState()).toMatchObject({ state: "FAILED", errorCode: JOB_SCOPE_INVALID_CODE, errorSummary: JOB_SCOPE_REQUIRED_MESSAGE, httpStatus: null });
+    controller.retryActiveJob();
+    await vi.advanceTimersByTimeAsync(5000);
+    expect(mockFetch).toHaveBeenCalledTimes(2);
+  });
+
+  it("retry still resumes polling after a non-scope worker failure (unchanged behaviour)", async () => {
+    mockFetch
+      .mockResolvedValueOnce({ status: 202, json: async () => ({ jobId: "JOB_123" }) })
+      .mockResolvedValueOnce({ status: 200, json: async () => ({ status: "FAILED", errorCode: "ERR_TIMEOUT", errorSummary: "Timeout" }) })
+      .mockReturnValue(new Promise(() => {}));
+    await controller.submitAnalysis({ documents: [], jobScope: SCOPE });
+    for (let i = 0; i < 10; i++) await Promise.resolve();
+    controller.retryActiveJob();
+    expect(mockFetch).toHaveBeenCalledTimes(3);
+    expect(mockFetch.mock.calls[2][0]).toBe("/api/career/jobs/JOB_123");
   });
 });

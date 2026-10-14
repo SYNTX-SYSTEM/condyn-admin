@@ -1,4 +1,5 @@
 import type { CareerJobRuntimeOperation } from "../orchestration/job";
+import { JOB_SCOPE_REQUIRED_CODE, isJobScopeErrorCode, parseJobScope } from "../job-pool/job-scope";
 
 export type JobLifecycleState = "IDLE" | "SUBMITTING" | "PENDING" | "RUNNING" | "LOADING_RESULT" | "SUCCEEDED" | "FAILED";
 
@@ -9,8 +10,11 @@ export interface JobState {
   canonicalAnalysis: any | null;
   currentOperation: CareerJobRuntimeOperation | null;
   attemptCount: number | null;
+  /** The backend's code (issues[0].code, or the worker's errorCode); `HTTP_<status>` only when the body names none. */
   errorCode: string | null;
   errorSummary: string | null;
+  /** HTTP status of a rejected submission or job read; null for worker failures, network errors and the local scope guard. */
+  httpStatus: number | null;
 }
 
 export class CareerJobController {
@@ -23,6 +27,7 @@ export class CareerJobController {
     attemptCount: null,
     errorCode: null,
     errorSummary: null,
+    httpStatus: null,
   };
   
   private currentIdempotencyKey: string | null = null;
@@ -55,10 +60,16 @@ export class CareerJobController {
     this.notify();
   }
 
-  public async submitAnalysis(payload: any) {
+  /** Resolves to the refusal code when the payload carries no formally valid `jobScope` (nothing is sent). */
+  public async submitAnalysis(payload: any): Promise<typeof JOB_SCOPE_REQUIRED_CODE | void> {
     if (this.state.state === "SUBMITTING" || this.state.state === "PENDING" || this.state.state === "RUNNING") {
       return; // prevent double submit
     }
+
+    // SFE job-scope invariant: no submission (and so no Gemini call) without a formally valid job scope. The refusal
+    // leaves the state untouched (a previous result stays readable); the caller shows JOB_SCOPE_REQUIRED_MESSAGE.
+    const jobScope = parseJobScope(payload?.jobScope);
+    if (jobScope === null) return JOB_SCOPE_REQUIRED_CODE;
 
     this.currentIdempotencyKey = crypto.randomUUID();
     
@@ -70,7 +81,8 @@ export class CareerJobController {
       currentOperation: null,
       attemptCount: null,
       errorCode: null,
-      errorSummary: null
+      errorSummary: null,
+      httpStatus: null
     });
 
     try {
@@ -80,7 +92,7 @@ export class CareerJobController {
           "Content-Type": "application/json",
           "Idempotency-Key": this.currentIdempotencyKey
         },
-        body: JSON.stringify(payload)
+        body: JSON.stringify({ ...payload, jobScope })
       });
 
       if (res.status === 202) {
@@ -91,24 +103,30 @@ export class CareerJobController {
         });
         this.startPolling(data.jobId);
       } else {
-        const err = await res.json();
+        const err = await res.json().catch(() => null);
+        const issue = err !== null && typeof err === "object" && Array.isArray(err.issues) ? err.issues[0] : null;
         this.updateState({
           state: "FAILED",
-          errorCode: "HTTP_" + res.status,
-          errorSummary: err.issues?.[0]?.message || "Submission failed"
+          errorCode: typeof issue?.code === "string" && issue.code.length > 0 ? issue.code : "HTTP_" + res.status,
+          errorSummary: typeof issue?.message === "string" && issue.message.length > 0 ? issue.message : "Submission failed",
+          httpStatus: res.status
         });
       }
     } catch (e: any) {
       this.updateState({
         state: "FAILED",
         errorCode: "NETWORK_ERROR",
-        errorSummary: e.message
+        errorSummary: e.message,
+        httpStatus: null
       });
     }
   }
 
   public retryActiveJob() {
-    if (this.state.activeJobId && this.state.state === "FAILED" && !this.state.errorCode?.startsWith("HTTP_4")) {
+    const httpStatus = this.state.httpStatus;
+    const clientRejection = httpStatus !== null && httpStatus >= 400 && httpStatus < 500;
+    // A missing or invalid job scope is terminal (no retry, no Gemini call); a new submission needs a valid scope.
+    if (this.state.activeJobId && this.state.state === "FAILED" && !clientRejection && !isJobScopeErrorCode(this.state.errorCode)) {
       // Retry polling or result fetch if there was a transport error
       if (this.state.resultAnalysisId) {
         this.fetchCanonicalResult(this.state.resultAnalysisId, this.state.activeJobId);
@@ -158,14 +176,15 @@ export class CareerJobController {
           this.updateState({
             state: "FAILED",
             errorCode: data.errorCode,
-            errorSummary: data.errorSummary
+            errorSummary: data.errorSummary,
+            httpStatus: null
           });
         }
       } else {
         // Stop polling on 4xx/5xx for now, or just retry if 5xx
         if (res.status === 404) {
           this.stopPolling();
-          this.updateState({ state: "FAILED", errorCode: "NOT_FOUND", errorSummary: "Job not found" });
+          this.updateState({ state: "FAILED", errorCode: "NOT_FOUND", errorSummary: "Job not found", httpStatus: 404 });
         }
       }
     } catch (e) {

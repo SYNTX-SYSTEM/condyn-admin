@@ -142,6 +142,20 @@ orbit geometry, red body colours and motion are unchanged; no new animation (not
 and their explanatory copy is not receded with the focus anchor. Admitted when copy text, orbit geometry, red body colours and motion
 stay unchanged and non-red renders stay identical."
 
+## P-8 · R10d — the selected job scope in the application shell (GELB; owner mandate 2026-10-14)
+
+The owner set the SFE invariant "no Gemini call without a valid, selected job scope" and gave GRÜN the frontend half. It touches the
+Capability shell that R10 keeps: `SemanticCareerIntelligenceField` (scope state, URL, validation, ANALYZE gate, banner fix),
+`SourceDock` (blocked trigger with the owner's sentence), `SyntxFieldSelector` (the `job-scope-indicator` beside the strip) and
+`CareerJobController` (scope guard, code and `httpStatus`). The Capability manifestation is unchanged: 30 server renders are
+byte-identical to 799f523 after removing the indicator and its CSS (SourceDock with staged sources: plus two admitted-state
+attributes). No new animation (a hover transition of the indicator, none in REDUCED; nothing to add to R15b). Proof:
+JOB_FIELD_FRONTEND.md §13.2.23.
+
+**Proposed wording:** "R10d — The application shell shows the selected job scope (or its absence) beside the field selector in
+both fields and at every depth; ANALYZE is admitted only with a VALID scope and otherwise shows „Bitte wählen Sie einen Job aus.“.
+Admitted when every Capability manifestation render stays byte-identical apart from the indicator."
+
 ## Owner decisions
 
 None beyond the visual approval. After it, GELB records P-1 and P-2, and PINK applies P-3 / P-4 and validates. The move of

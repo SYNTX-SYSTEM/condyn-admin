@@ -1,3 +1,4 @@
+// @ts-nocheck — evidence script (byte-identity proof of bb5e8e3): it imports a HEAD copy written next to it at run time (`SyntxFocusShell.head.tsx`), which is not part of the repository.
 import React from "react";
 import { renderToStaticMarkup } from "/home/codi/Entwicklung/condyn-admin-job-field/node_modules/react-dom/server";
 import * as Head from "./SyntxFocusShell.head";

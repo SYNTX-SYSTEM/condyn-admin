@@ -70,6 +70,7 @@ export const SIL_COPY = {
       successTitle: "ANALYSIS COMPLETED SUCCESSFULLY",
       successSubtitle: "IDENTITY CORE & ORBITS MANIFESTED",
       failed: "ANALYSIS FAILED",
+      jobScopeTitle: "NO VALID JOB SCOPE",
       retry: "RETRY",
       providerTruncation:
         "The model exceeded the available output boundary or the provider could not complete the request. Structured extraction was stopped.",
@@ -479,6 +480,17 @@ export const SIL_COPY = {
       keys: "Esc returns · Enter selects · Tab moves between carriers",
       pools: "POOLS",
       poolsHide: "HIDE POOLS",
+      /** The selected job scope (SFE invariant): shown at the application shell in both fields; ANALYZE needs a VALID one. */
+      jobScope: {
+        label: "JOB",
+        none: "NO JOB SELECTED",
+        checking: "CHECKING THE JOB …",
+        invalid: "JOB NOT VALID",
+        select: "◎ SELECT AS JOB",
+        selected: "✓ SELECTED JOB",
+        open: "Open the selected job in the Job Field",
+        choose: "Choose a job in the Job Field (open a role, then SELECT AS JOB)"
+      },
       /** NO_POOL at the field: no explicit selection (a persisted upload may exist); not an error, a failed upload or a judgement. */
       noPool: {
         status: "JOB FIELD // UNBOUND",
@@ -672,6 +684,7 @@ export const SIL_COPY = {
       successTitle: "ANALYSE ERFOLGREICH ABGESCHLOSSEN",
       successSubtitle: "IDENTITÄTSKERN & ORBITS MANIFESTIERT",
       failed: "ANALYSE FEHLGESCHLAGEN",
+      jobScopeTitle: "KEIN GÜLTIGER JOB-SCOPE",
       retry: "NEU VERSUCHEN",
       providerTruncation:
         "Das Modell hat die verfügbare Ausgabegrenze überschritten oder der Provider konnte die Anfrage nicht abschließen. Die strukturierte Extraktion wurde beendet.",
@@ -1080,6 +1093,16 @@ export const SIL_COPY = {
       keys: "Esc kehrt zurück · Enter wählt · Tab wechselt zwischen Trägern",
       pools: "POOLS",
       poolsHide: "POOLS VERBERGEN",
+      jobScope: {
+        label: "JOB",
+        none: "KEIN JOB GEWÄHLT",
+        checking: "JOB WIRD GEPRÜFT …",
+        invalid: "JOB UNGÜLTIG",
+        select: "◎ ALS JOB WÄHLEN",
+        selected: "✓ GEWÄHLTER JOB",
+        open: "Den gewählten Job im Job-Feld öffnen",
+        choose: "Einen Job im Job-Feld wählen (Rolle öffnen, dann ALS JOB WÄHLEN)"
+      },
       noPool: {
         status: "JOB-FELD // UNGEBUNDEN",
         title: "KEIN JOB-POOL GEWÄHLT",

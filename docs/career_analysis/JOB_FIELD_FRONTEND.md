@@ -1058,6 +1058,58 @@ Proof (local only, review lab): `evidence/job-pool/semiotic-transfer/no-pool-gia
 identical in every sample; REDUCED: no giant animation, static base; at the peak no collision at 1280 × 720 (membrane 466–814 /
 367–715); 19 files / 129 tests.
 
+#### 13.2.23 Job scope: one selected job for both fields; no ANALYZE without it (owner "GRÜN — SFE GO", 2026-10-14)
+
+On 799f523. Frontend half of the SFE invariant "no Gemini call without a valid, selected job scope"; the API contract is GELB's
+(`POST /api/career/analyze` with `jobScope: { jobPoolUploadId, poolRoleId }`, exactly these two keys; `jobId` stays the analysis
+execution job). Backend and worker enforcement are GELB's (`feature/job-scoped-capability-sweep`).
+
+- **One selection, independent of navigation.** `jobScope` is state of `SemanticCareerIntelligenceField`, separate from the
+  observation point: RETURN, Esc, a field change and a pool change keep it (`switchFieldFocus` still clears only `jobOrganizationId`
+  / `jobRoleId` / `jobRequirementId`). Persisted in the URL as `jobScopePoolUploadId` / `jobScopeRoleId`
+  (`replaceState`, like every other id); a reload restores it. Never inferred: set only by the explicit selection below, read only
+  from both exact parameters (`jobScopeFromParams`, `lib/career/job-pool/job-scope.ts`).
+- **Selecting.** At the ROLE and REQUIREMENT levels the orientation surface carries `syntx-job-scope-select` (`◎ SELECT AS JOB` /
+  `◎ ALS JOB WÄHLEN`); for the role that is the selected job of this pool it reads `✓ SELECTED JOB`, pressed and disabled. Not at
+  the FIELD or ORGANIZATION level (a job is a role).
+- **Always visible.** `job-scope-indicator` (`data-sx-shell="job-scope"`, `data-job-scope-state` NONE · CHECKING · VALID · INVALID)
+  rides on the selector row of the application shell, left of the capsule in the column of the left surfaces (x 28, y 74–114;
+  max. to 18 px before the capsule: 1600 px → 28–444, 1280 px → 28–385, ellipsis beyond). It is part of `SyntxFieldSelector` but
+  outside the strip (the strip keeps exactly two buttons) and survives the exclusivity rule like every shell element; so it is visible
+  in both fields and at every depth (Capability L0–L2, Job Field FIELD … REQUIREMENT). VALID names the role title and, below it,
+  organization · pool; NONE reads `NO JOB SELECTED` / `KEIN JOB GEWÄHLT`. Activating it opens the job in the Job Field (its pool
+  selected, the role observed) or, without one, the field to choose it. Static; a hover transition only (none in REDUCED).
+- **Validation (mirror of the server rule).** `useJobScopeValidation` reads the exact upload once per scope: VALID only when the
+  upload exists, is ACTIVE, has the canonical mapping (`MAPPED`) and the role is part of it; else INVALID with a reason
+  (UPLOAD_NOT_FOUND · POOL_NOT_ACTIVE · NOT_MAPPED · ROLE_NOT_IN_POOL · READ_FAILED). Formal check: `JPOOL_` + 32 upper-case hex,
+  non-blank role id, exactly two keys.
+- **ANALYZE blocked.** Unless VALID (also while CHECKING), `start-intake-analysis-btn` is disabled and
+  `analyze-job-scope-required` shows the owner's sentence verbatim in every locale: „Bitte wählen Sie einen Job aus.“; RETRY in the
+  failure banner is blocked the same way (`retry-job-scope-required`). `handleAnalyze` refuses without a VALID scope, and
+  `CareerJobController.submitAnalysis` refuses a payload without a formally valid `jobScope` before any request (state untouched,
+  resolves to `ERR_JOB_SCOPE_REQUIRED`). The request body is `{ documents, jobScope }`.
+- **Finding 1 fixed (code handling).** A rejected submission keeps the backend's `issues[0].code` as `errorCode`
+  (`HTTP_<status>` only when the body names none) and its HTTP status apart in the new `httpStatus` (null for worker failures,
+  network errors and the local guard). Retry no longer reads the status out of the code; a job-scope failure is terminal (no retry).
+- **Finding 2 fixed (banner).** The banner compared `status === 422` against the code string and so always showed the generic
+  title. It now compares the numeric `httpStatus`: a job-scope code shows `NO VALID JOB SCOPE` / `KEIN GÜLTIGER JOB-SCOPE`, the
+  code (`[ERR_JOB_SCOPE_…]`) and the sentence, with `HTTP 400/422` for a rejected request and no HTTP line for a worker failure; a
+  non-scope 422 is the semantic boundary again. `data-error-code` and `data-http-status` carry both for tests.
+- **R10.** Capability manifestation unchanged: 30 server renders (Capability L0, every orbit at L1 and L2, NO_POOL field, EN/DE,
+  SourceDock) are byte-identical to 799f523 after removing the indicator and its CSS; the SourceDock with staged sources differs
+  only by `aria-disabled="false" data-job-scope-blocked="false"` in the admitted state. Proposal P-8 (R10d).
+
+Proof (local only, review lab :41803, mock worker, no Gemini): `evidence/job-pool/job-scope/` — browser walk 33/33
+(`walk-results.txt`, `scripts/walk.mjs`): no job → indicator NONE in both fields, ANALYZE disabled with the exact sentence, a forced
+click sends no request; selection at the role → VALID, URL carries the scope; kept at REQUIREMENT, after Esc to FIELD, after the
+change to the Capability Field and at an orbit focus (indicator on top); reload restores it; the indicator reopens the role; ANALYZE
+sends exactly `{ documents, jobScope }` with the selected ids and the Job Field reads the job result; simulated 400 / 422 rejections
+and a worker FAILED show code, sentence and the right HTTP line; an unknown role in the URL is INVALID and blocks ANALYZE; no page
+errors; at 1600 × 1000 and 1280 × 720 the indicator overlaps neither the capsule, the header nor the orientation surface.
+Render identity: `render-identity.txt`, `scripts/render.tsx`. PINK's live suite (`live-browser-workflow.e2e.test.ts`, real Gemini)
+now uploads and selects the pool and selects a job before ANALYZE and asserts the request's `jobScope`; not run here (it calls the
+real model).
+
 ### 13.3 DOM contract (PINK BR-1 … BR-5; GELB conditions a/b)
 
 **BR-1 field root** `data-testid="syntx-field"`: `data-field-grammar="SYNTX_FIELD_V1"`, `data-observation-kind` FIELD|ORGANIZATION|ROLE|REQUIREMENT
@@ -1224,3 +1276,4 @@ observation point. Readable labels wrap at word boundaries (`wrapLines`), never 
 | 2026-10-13 | Capability Field: one typography for every red field state (owner "SFE::GLOBAL RED FIELD TYPOGRAPHY REFINEMENT", on 337033e; visual only, isolated lab) | §13.2.20: `SIL_RED_FIELD_TYPE` for the focused empty-projection copy and the labels of red bodies; the copy no longer recedes with the 0.42 focus anchor (`copyAboveAnchorOpacity`, Capability only); R10c proposal P-7. Evidence: `evidence/job-pool/semiotic-transfer/red-field-typography/` | tsc 0; 20 files / 102 tests; focus shell byte-identical without the flag (32 / 32); non-red bodies identical; geometry and animation names identical; copy contrast 1.65–3.62 → 8.5–19.4 |
 | 2026-10-13 | Job Field NO_POOL as the red absence giant (owner "SFE::JOB FIELD RED ABSENCE GIANT", on bb5e8e3; visual + copy, isolated lab) | §13.2.21: one static red semiotic body on the field centre with the NO_POOL information inside (EN / DE); same element, state and transition; no motion. Evidence: `evidence/job-pool/semiotic-transfer/no-pool-giant/` | tsc 0; 19 files / 129 tests; no collision at 1600 × 1000 and 1280 × 720; giant at NO_POOL (0 and 3 uploads), absent after selection; contrast 7.9–17.9 |
 | 2026-10-13 | The red absence giant breathes (owner mandate, on 44cd561; motion only, isolated lab) | §13.2.22: one slow 10 s field breath — aura, seam light, outer membrane and red rings (opacity / transform); text, cyan ring and joints still; LIVE only, REDUCED static; new motion kinds `sxGiant*` (R15b approval required). Evidence: `evidence/job-pool/semiotic-transfer/no-pool-giant-breath/` | tsc 0; 19 files / 129 tests; video 2.4 cycles; aura light ×3.4 rest → peak; text block identical in every sample; no collision at the peak |
+| 2026-10-14 | Job scope (owner "GRÜN — SFE GO", on 799f523) | §13.2.23: one selected job (`jobScope`, URL `jobScopePoolUploadId` / `jobScopeRoleId`) for both fields and every depth; `job-scope-indicator` at the shell; `syntx-job-scope-select` at ROLE/REQUIREMENT; ANALYZE and RETRY blocked with „Bitte wählen Sie einen Job aus.“ unless VALID; request `{ documents, jobScope }` (GELB contract); findings 1 (code kept, `httpStatus` apart) and 2 (banner compares the numeric status) fixed. Evidence: `evidence/job-pool/job-scope/` | tsc 0; 29 files / 204 tests incl. governance (new: job scope 10, SSR 11; controller 23); browser walk 33/33; render identity 30/30 |

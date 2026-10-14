@@ -13,6 +13,10 @@ import { SIL_TOKENS } from "./SILTokens";
  *
  * Contract kept from the field-state strip it replaces: `field-focus-strip` (`data-field-focus`) holding exactly two buttons,
  * `field-focus-capability-btn` and `job-pool-panel-toggle`, each with `data-field-focus-active` and `aria-pressed`.
+ *
+ * Job scope (SFE invariant): the selected job — or its absence — rides on the same shell row, left of the capsule in the
+ * column of the left surfaces (`job-scope-indicator`, `data-sx-shell="job-scope"`), so it stays visible in both fields and
+ * at every depth. It is outside the strip (the strip keeps exactly two buttons). Static; activating it opens the job.
  */
 export type SyntxFieldFocus = "CAPABILITY" | "FIELD";
 
@@ -27,13 +31,56 @@ export const SYNTX_FIELD_SELECTOR_CSS = `
 [data-testid="field-focus-strip"] button[data-field-focus-active="false"]:hover { color: rgba(226, 244, 252, 0.94); border-color: rgba(var(--sx-tone), 0.3); background: rgba(var(--sx-tone), 0.06); }
 [data-testid="field-focus-strip"] button[data-field-focus-active="false"]:hover > [data-sx-lamp] { border-color: rgba(var(--sx-tone), 0.8); }
 [data-testid="field-focus-strip"] button:focus-visible { outline: 1px solid rgba(var(--sx-tone), 0.85); outline-offset: 3px; }
+[data-testid="job-scope-indicator"]:hover { border-color: rgba(var(--sx-tone), 0.55) !important; background: linear-gradient(180deg, rgba(14, 34, 50, 0.95), rgba(5, 12, 22, 0.96)) !important; }
+[data-testid="job-scope-indicator"]:focus-visible { outline: 1px solid rgba(var(--sx-tone), 0.85); outline-offset: 3px; }
+[data-testid="job-scope-indicator"]::before { content: none; display: none; }
+[data-testid="job-scope-indicator"]:active { transform: translateY(-50%) !important; }
 @media (prefers-reduced-motion: reduce) {
-  [data-testid="field-focus-strip"], [data-testid="field-focus-strip"] *, [data-sx-field-veil] { transition: none !important; animation: none !important; }
+  [data-testid="field-focus-strip"], [data-testid="field-focus-strip"] *, [data-sx-field-veil], [data-testid="job-scope-indicator"] { transition: none !important; animation: none !important; }
   [data-sx-field-sweep] { display: none; }
 }
 `;
 
-export function SyntxFieldSelector({ focus, groupLabel, capabilityLabel, jobLabel, onSelect }: { focus: SyntxFieldFocus; groupLabel: string; capabilityLabel: string; jobLabel: string; onSelect(next: SyntxFieldFocus): void }) {
+/** What the shell shows of the selected job scope; only VALID admits ANALYZE. */
+export interface SyntxJobScopePresentation {
+  state: "NONE" | "CHECKING" | "VALID" | "INVALID";
+  label: string;
+  /** The role title when VALID, else the state sentence. */
+  title: string;
+  /** Organization (and pool) of a VALID scope. */
+  detail: string | null;
+  /** Accessible description of the activation (open the job / choose a job). */
+  hint: string;
+}
+
+const SCOPE_TONE: Record<SyntxJobScopePresentation["state"], string> = { VALID: "92, 200, 255", CHECKING: "120, 170, 200", NONE: "255, 190, 92", INVALID: "255, 150, 92" };
+
+function SyntxJobScopeIndicator({ scope, onActivate }: { scope: SyntxJobScopePresentation; onActivate?: () => void }) {
+  const tone = SCOPE_TONE[scope.state];
+  const valid = scope.state === "VALID";
+  return (
+    <button
+      type="button"
+      data-testid="job-scope-indicator"
+      data-sx-shell="job-scope"
+      data-job-scope-state={scope.state}
+      aria-label={`${scope.label}: ${scope.title}${scope.detail ? ` · ${scope.detail}` : ""}. ${scope.hint}`}
+      title={`${scope.title}${scope.detail ? ` · ${scope.detail}` : ""}`}
+      onClick={() => onActivate?.()}
+      style={{ "--sx-tone": tone, position: "fixed", left: "28px", top: "94px", transform: "translateY(-50%)", zIndex: 60, display: "inline-flex", alignItems: "center", gap: "10px", boxSizing: "border-box", height: "40px", maxWidth: "calc(50% - 283px)", padding: "0 16px 0 13px", borderRadius: "999px", border: `1px solid rgba(${tone}, ${valid ? 0.42 : 0.36})`, background: "linear-gradient(180deg, rgba(8, 21, 34, 0.92), rgba(3, 8, 15, 0.95))", boxShadow: `0 0 0 1px rgba(3, 8, 16, 0.6), 0 12px 32px rgba(0, 0, 0, 0.55), 0 0 22px rgba(${tone}, ${valid ? 0.14 : 0.1}), inset 0 1px 0 rgba(200, 245, 255, 0.12)`, backdropFilter: "blur(10px)", color: "#eaf9ff", fontFamily: SIL_TOKENS.typography.mono, cursor: "pointer", textAlign: "left", transition: "border-color 0.3s ease, background 0.3s ease" } as React.CSSProperties}
+    >
+      <span aria-hidden="true" style={{ width: "7px", height: "7px", boxSizing: "border-box", borderRadius: "50%", flexShrink: 0, border: `1px solid rgb(${tone})`, background: valid || scope.state === "NONE" || scope.state === "INVALID" ? `rgb(${tone})` : "transparent", boxShadow: `0 0 8px rgba(${tone}, 0.8)` }} />
+      <span style={{ fontSize: "9.5px", fontWeight: 700, letterSpacing: "2.2px", color: `rgba(${tone}, 0.95)`, flexShrink: 0 }}>{scope.label}</span>
+      <span aria-hidden="true" style={{ width: "1px", height: "16px", background: `rgba(${tone}, 0.3)`, flexShrink: 0 }} />
+      <span style={{ display: "flex", flexDirection: "column", minWidth: 0, lineHeight: 1.2 }}>
+        <span data-testid="job-scope-title" style={{ overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", fontFamily: valid ? SIL_TOKENS.typography.sans : SIL_TOKENS.typography.mono, fontSize: valid ? "12.5px" : "10px", fontWeight: valid ? 600 : 700, letterSpacing: valid ? "0.2px" : "1.6px", color: valid ? "#eef9ff" : `rgba(${tone}, 0.95)` }}>{scope.title}</span>
+        {scope.detail !== null && <span data-testid="job-scope-detail" style={{ overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", fontSize: "8.5px", fontWeight: 600, letterSpacing: "1px", color: "rgba(168, 206, 226, 0.78)", marginTop: "2px" }}>{scope.detail}</span>}
+      </span>
+    </button>
+  );
+}
+
+export function SyntxFieldSelector({ focus, groupLabel, capabilityLabel, jobLabel, onSelect, jobScope, onJobScopeActivate }: { focus: SyntxFieldFocus; groupLabel: string; capabilityLabel: string; jobLabel: string; onSelect(next: SyntxFieldFocus): void; jobScope?: SyntxJobScopePresentation; onJobScopeActivate?(): void }) {
   const buttons = useRef<Record<SyntxFieldFocus, HTMLButtonElement | null>>({ CAPABILITY: null, FIELD: null });
   const options: Array<{ id: string; focus: SyntxFieldFocus; label: string }> = [
     { id: "field-focus-capability-btn", focus: "CAPABILITY", label: capabilityLabel },
@@ -50,6 +97,8 @@ export function SyntxFieldSelector({ focus, groupLabel, capabilityLabel, jobLabe
     buttons.current[next]?.focus();
   };
   return (
+    <>
+    {jobScope !== undefined && <SyntxJobScopeIndicator scope={jobScope} onActivate={onJobScopeActivate} />}
     <div
       data-testid="field-focus-strip"
       data-field-focus={focus}
@@ -99,5 +148,6 @@ export function SyntxFieldSelector({ focus, groupLabel, capabilityLabel, jobLabe
         );
       })}
     </div>
+    </>
   );
 }

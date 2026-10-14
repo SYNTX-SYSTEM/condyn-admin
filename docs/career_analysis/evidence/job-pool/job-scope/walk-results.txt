@@ -1,0 +1,34 @@
+PASS 1a chip NONE in Capability — JOB
+NO JOB SELECTED
+PASS 1b ANALYZE disabled without job
+PASS 1c exact sentence at ANALYZE
+PASS 1d forced click sends no POST — posts=0
+PASS 2a chip NONE in Job Field
+PASS 2a' no select action at ORGANIZATION
+PASS 2b select action at ROLE
+PASS 2c chip VALID names role — JOB | Senior Full-Stack Engineer | Nordlicht Software GmbH · CONDYN Sample Tech Job Pool
+PASS 2d select action marked
+PASS 2e URL carries scope — ?focus=FIELD&jobPoolUploadId=JPOOL_30F7145E21F34BEF0FCE510DFC75837B&jobOrganizationId=org_nordlicht&jobRoleId=role_fullstack&jobScopePoolUploadId=JPOOL_30F7145E21F34BEF0FCE510DFC75837B&jobScopeRoleId=role_fullstack
+PASS 3a REQUIREMENT: chip VALID + visible
+PASS 3b back at FIELD: chip VALID
+PASS 3c Capability: chip VALID
+PASS 3d field change keeps scope in URL, clears observation — ?focus=CAPABILITY&jobPoolUploadId=JPOOL_30F7145E21F34BEF0FCE510DFC75837B&jobScopePoolUploadId=JPOOL_30F7145E21F34BEF0FCE510DFC75837B&jobScopeRoleId=role_fullstack
+PASS 3e ANALYZE admitted
+PASS 3f Capability orbit focus: chip visible on top
+PASS 4a reload restores VALID scope
+PASS 4b chip opens the job's role
+PASS 5a POST body jobScope exact — {"jobPoolUploadId":"JPOOL_30F7145E21F34BEF0FCE510DFC75837B","poolRoleId":"role_fullstack"}
+PASS 5b POST keys — documents,jobScope
+PASS 5c analysis succeeded (mock worker)
+PASS 5d Job Field reads JOB_RESULT
+PASS 6 400 banner: title/code/sentence/HTTP — NO VALID JOB SCOPE | HTTP 400 | • | [ERR_JOB_SCOPE_REQUIRED] | Bitte wählen Sie einen Job aus. | RETRY
+PASS 6 422 banner: title/code/sentence/HTTP — NO VALID JOB SCOPE | HTTP 422 | • | [ERR_JOB_SCOPE_INVALID] | Bitte wählen Sie einen Job aus. | RETRY
+PASS 6c worker FAILED: code, sentence, no HTTP — NO VALID JOB SCOPE | • | [ERR_JOB_SCOPE_INVALID] | Bitte wählen Sie einen Job aus. | RETRY
+PASS 7 invalid scope blocks ANALYZE
+PASS pageerrors
+PASS 8 cap@1600: no overlap (strip/orient/header) — {"chip":[28,74,444,114],"strip":[563,70,1037,118],"orient":null,"header":[0,0,1600,61],"anim":0}
+PASS 8 field@1600: no overlap (strip/orient/header) — {"chip":[28,74,444,114],"strip":[563,70,1037,118],"orient":[28,145,368,312],"header":[0,0,1600,61],"anim":0}
+PASS 8 role@1600: no overlap (strip/orient/header) — {"chip":[28,74,444,114],"strip":[563,70,1037,118],"orient":[28,145,368,385],"header":[0,0,1600,61],"anim":0}
+PASS 8 cap@1280: no overlap (strip/orient/header) — {"chip":[28,74,385,114],"strip":[403,70,877,118],"orient":null,"header":[0,0,1280,61],"anim":0}
+PASS 8 field@1280: no overlap (strip/orient/header) — {"chip":[28,74,385,114],"strip":[403,70,877,118],"orient":[28,145,368,312],"header":[0,0,1280,61],"anim":0}
+PASS 8 role@1280: no overlap (strip/orient/header) — {"chip":[28,74,385,114],"strip":[403,70,877,118],"orient":[28,145,368,385],"header":[0,0,1280,61],"anim":0}
