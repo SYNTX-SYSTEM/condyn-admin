@@ -2,6 +2,8 @@ import { NextResponse } from "next/server";
 import { db } from "../../../../lib/career/db/client";
 import { JobRepository } from "../../../../lib/career/orchestration/job-repository";
 import { createJob } from "../../../../lib/career/orchestration/job";
+import { JOB_SCOPE_REQUIRED_MESSAGE, JobScopeRequiredError, parseJobScopeSelection } from "../../../../lib/career/job-scope";
+import { createLocalJobScopeResolver } from "../../../../lib/career/job-scope/local-resolver";
 
 export const maxDuration = 10; // Fast HTTP acceptance
 export const dynamic = "force-dynamic";
@@ -54,6 +56,21 @@ export async function POST(req: Request) {
            return NextResponse.json({ success: false, status: "FAILED", issues: [{ code: "ERR_NO_DOCUMENTS", message: "Document content cannot be empty." }] }, { status: 400 });
         }
       }
+    }
+
+    // SFE invariant JOB POOL FIRST: no valid pool + selected job → no capability analysis.
+    // Missing or malformed: 400 ERR_JOB_SCOPE_REQUIRED; unknown, inactive or unmapped pool, or a role outside it:
+    // 422 ERR_JOB_SCOPE_INVALID. Nothing is enqueued, so no worker and no Gemini call can follow.
+    try {
+      await createLocalJobScopeResolver().resolve(parseJobScopeSelection(body.jobScope));
+    } catch (scopeErr) {
+      if (scopeErr instanceof JobScopeRequiredError) {
+        return NextResponse.json(
+          { success: false, status: "FAILED", issues: [{ code: scopeErr.code, message: JOB_SCOPE_REQUIRED_MESSAGE }] },
+          { status: scopeErr.code === "ERR_JOB_SCOPE_REQUIRED" ? 400 : 422 }
+        );
+      }
+      throw scopeErr;
     }
 
     // Input Snapshot Contract: Durable input

@@ -28,6 +28,8 @@ import {
 import { InMemoryPromptRepository } from "../lib/career/prompts/repository";
 import { ActivePromptResolver } from "../lib/career/prompts/resolver";
 import type { VerifiedCareerAnalysis } from "../lib/career/types";
+import { requireValidJobScope } from "../lib/career/job-scope";
+import { createLocalJobScopeResolver } from "../lib/career/job-scope/local-resolver";
 
 async function main() {
   if (!process.env.GEMINI_API_KEY) {
@@ -92,7 +94,8 @@ async function main() {
     createProposalRuntime: createCapabilityProposalRuntime
   });
 
-  const processJob = createCareerAnalysisJobProcessor({
+  // SFE invariant JOB POOL FIRST: every claimed job is validated against the stored Job Pool before any work.
+  const processJob = requireValidJobScope(createLocalJobScopeResolver(), createCareerAnalysisJobProcessor({
     canonicalAnalysisRepository: {
       load: (analysisId) => canonicalAnalysisRepository.load(analysisId),
       save: (analysis) =>
@@ -121,7 +124,7 @@ async function main() {
         analysis
       };
     }
-  });
+  }));
 
   const worker = new CareerJobWorker(
     workerId,
