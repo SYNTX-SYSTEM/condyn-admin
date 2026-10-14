@@ -980,6 +980,34 @@ of the invariant.
 Open: GELB's backend and worker gate (G-06 and the worker check), GRÜN's "JOB POOL FIRST / CAPABILITY GATE" commit
 (groups 1 and 2), the removal path (group 3). The same walk reruns unchanged on each new tip.
 
+### 3.27 Job-scope invariant: GRÜN `c146f05` (Job Pool first / Capability gate) verified (2026-10-14)
+
+GRÜN's `c146f05` (parent `cb3d33f`, owner "JOB POOL FIRST / CAPABILITY GATE"): the application opens in the Job Field;
+the active field is CAPABILITY only when CAPABILITY is requested and the job scope is VALID, on every way in (selector,
+←/Home, `syntx-exit-btn`, `focus=CAPABILITY` in the URL); root `data-capability-gate="OPEN|AWAITING_JOB"`,
+`data-field-gate` plus `disabled` / `aria-disabled` on the two buttons; the request is kept and honoured once the scope
+turns VALID. Backend unchanged (GELB's gate still not committed).
+
+PINK (probe branch = this branch + `c146f05`, deleted, never pushed): the job-scope gate walk extended by three checks
+(URL `focus=CAPABILITY` without a job stays on the Job Field; ←/Home and `syntx-exit-btn` do not open it; with a VALID
+scope the URL request opens the Capability field) — **43/51** (evidence `evidence/job-scope-gate-c146f05/`). Closed
+against §3.26: G-01 (opens on the Job Pool screen) and all 9 Capability-OFF cases plus the three other ways (gate
+`AWAITING_JOB`, exit disabled, focus stays FIELD); ON with a valid job, the scoped request (exactly `{ jobPoolUploadId,
+poolRoleId }`, 202), the indicator at every depth and in the Capability field, 1280 × 720, no closure glyph, no page
+error. Remaining deviations: (a) G-05, no UI control removes a selected job — not part of any owner mandate (GRÜN), open
+owner decision; with the gate, a removal would close Capability again; (b) G-06, the backend accepts all 7 direct calls
+without a valid scope (202, enqueued) — GELB's gate, not committed.
+
+Regression: tsc 0; 8 files / 87 green (GRÜN's job-scope, demo-UI and lifecycle tests, the field batch). Preservation:
+SSR probe `cb3d33f` → `c146f05` over the same 26 cases — every difference is the gate (`render-identity-cb3d33f-vs-c146f05.txt`,
+token-level resolution included); the Capability field with a VALID scope is proven in the browser walk. SYNTX walk:
+still 0/3 from `ca11794` (GRÜN reports the same on `cb3d33f` and `c146f05`).
+
+Boundary B-PINK-WALK-OWNERSHIP: `c146f05` edits PINK's `test/job-pool-validation/syntx-walk.e2e.test.ts` (Q-11 selects a
+job and waits for the open gate before the exit). The edit adds steps and weakens no assertion, but the walk is PINK's
+proof instrument; PINK takes such adaptations only through its own commit when the walk is rebound (with the pending
+`ca11794` rebinding), and asks GRÜN to propose, not edit, PINK's walks.
+
 ## 4. Boundaries and findings for coordination
 
 - F-JP-1 (closed in `b782793`): `JOB_POOL_CONNECTION.md` §4 followed the per-role `JOB_POOL_JSON_ROLE` design;

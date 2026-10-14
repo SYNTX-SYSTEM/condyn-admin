@@ -123,6 +123,17 @@ describe.skipIf(playwrightModule === null)("PINK G: job-scope gate — Job Pool 
     const focusAfter = await focusOf(page);
     return { reachable: !disabled && focusAfter === "CAPABILITY", disabled, focusAfter };
   }
+  /** The other ways into the Capability field (URL focus=CAPABILITY, ←/Home, syntx-exit-btn) and the root gate attribute. */
+  async function otherWays(page: any): Promise<{ gate: string | null; exitDisabled: boolean | null; focusAfterKeys: string | null; focusAfterExit: string | null }> {
+    const gate = await page.getByTestId("semantic-career-intelligence-field").getAttribute("data-capability-gate").catch(() => null);
+    await page.getByTestId("syntx-field").focus().catch(() => {});
+    for (const key of ["ArrowLeft", "Home"]) { await page.keyboard.press(key); await delay(500); }
+    const focusAfterKeys = await focusOf(page);
+    const exit = page.getByTestId("syntx-exit-btn");
+    const exitDisabled = (await exit.count()) === 0 ? null : await exit.evaluate((element: HTMLButtonElement) => element.disabled || element.getAttribute("aria-disabled") === "true");
+    if (exitDisabled === false) { await exit.click({ timeout: 5_000 }).catch(() => {}); await delay(700); }
+    return { gate, exitDisabled, focusAfterKeys, focusAfterExit: await focusOf(page) };
+  }
   /** Stages one text source in the SourceDock (only possible where the dock is reachable) and reads the ANALYZE trigger. */
   async function analyzeTrigger(page: any): Promise<{ staged: boolean; present: boolean; disabled: boolean; blockedAttr: string | null; message: string | null; postsOnForcedClick: number }> {
     const add = page.getByTestId("add-text-source-btn");
@@ -221,8 +232,15 @@ describe.skipIf(playwrightModule === null)("PINK G: job-scope gate — Job Pool 
     await unknownPool.close();
 
     // ---- G-03 pool loaded, no job selected → Capability OFF -------------------------------------------------------------
+    const askCapability = await open(`/career/demo?focus=CAPABILITY&analysisId=${ANALYSIS_ID}&jobPoolUploadId=${uploadId}`);
+    await delay(1_500);
+    const askedFocus = await focusOf(askCapability);
+    check("G-03", "URL focus=CAPABILITY without a job: the shell stays on the Job Field", askedFocus === "FIELD", `focus ${askedFocus}`);
+    await askCapability.close();
     const poolOnly = await open(`/career/demo?focus=FIELD&analysisId=${ANALYSIS_ID}&jobPoolUploadId=${uploadId}`);
     await poolOnly.locator('[data-testid="syntx-field"][data-field-state="AVAILABLE"]').waitFor({ timeout: 120_000 });
+    const ways = await otherWays(poolOnly);
+    check("G-03", "pool without a job: ←/Home and syntx-exit-btn do not open the Capability field", ways.focusAfterKeys === "FIELD" && ways.focusAfterExit === "FIELD", ways);
     check("G-03", "pool loaded without a job: indicator NONE", (await scopeState(poolOnly)) === "NONE", await scopeState(poolOnly));
     const poolOnlyCap = await capabilityReachable(poolOnly);
     check("G-03", "pool loaded without a job: Capability field locked", !poolOnlyCap.reachable, poolOnlyCap);
@@ -268,6 +286,10 @@ describe.skipIf(playwrightModule === null)("PINK G: job-scope gate — Job Pool 
     }
     const allDepths = Object.entries(depthVisibility).every(([expected, entry]: [string, any]) => entry.kind === expected && entry.present && entry.inViewport && entry.owned && entry.state === "VALID");
     check("G-08", "VALID scope visible and uncovered at REQUIREMENT, ROLE, ORGANIZATION and FIELD (1600 px)", allDepths, depthVisibility);
+    const scopedAsk = await open(`/career/demo?focus=CAPABILITY&analysisId=${ANALYSIS_ID}&jobPoolUploadId=${uploadId}&jobScopePoolUploadId=${uploadId}&jobScopeRoleId=${ROLE_ID}`);
+    await scopedAsk.locator('[data-testid="field-focus-strip"][data-field-focus="CAPABILITY"]').waitFor({ timeout: 30_000 }).catch(() => {});
+    check("G-04", "URL focus=CAPABILITY with a valid job: the Capability field opens once the scope is VALID", (await focusOf(scopedAsk)) === "CAPABILITY", `focus ${await focusOf(scopedAsk)}`);
+    await scopedAsk.close();
     const validCap = await capabilityReachable(select);
     check("G-04", "valid pool + valid job: Capability field reachable", validCap.reachable, validCap);
     const capVisible = await indicatorVisible(select);
