@@ -10,6 +10,9 @@
  *   G-06 direct analysis call without a valid selection → backend REJECT, nothing enqueued
  *   G-08 the selected scope (or its absence) is visible in both fields, at every depth, at 1600 and 1280 px
  *   G-09 semiotic grammar: no closure glyph introduced by the scope selection
+ *   G-10 one rule for "valid": the frontend's VALID and the backend's acceptance agree on the same stored role id
+ *        (owner decision 2026-10-14, variant A: the role id is taken exactly as stored, only "" is refused)
+ *   G-11 every execution path: the legacy page /career/analyze starts an analysis only with a VALID scope
  *
  * "Capability ON/OFF" is read on two surfaces and reported separately, because the mandate names both: (a) the
  * ANALYZE trigger (the invariant's gate: present, enabled, no request without scope) and (b) the Capability field
@@ -221,7 +224,7 @@ describe.skipIf(playwrightModule === null)("PINK G: job-scope gate — Job Pool 
     }
   }, 60_000);
 
-  it("walks G-01 … G-09 and lists every deviation", async () => {
+  it("walks G-01 … G-11 and lists every deviation", async () => {
     // ---- G-01 application open → Job Pool screen ------------------------------------------------------------------------
     const start = await open("/career/demo");
     const startFocus = await focusOf(start);
@@ -320,9 +323,61 @@ describe.skipIf(playwrightModule === null)("PINK G: job-scope gate — Job Pool 
     check("G-04", "ANALYZE sends exactly one request carrying exactly { jobPoolUploadId, poolRoleId } of the selection", sent.length === 1 && sentScope !== null && Object.keys(sentScope).sort().join() === "jobPoolUploadId,poolRoleId" && sentScope.jobPoolUploadId === uploadId && sentScope.poolRoleId === ROLE_ID, { requests: sent.length, jobScope: sentScope });
     check("G-04", "the scoped request is accepted (202) and enqueued once (no worker runs: no Gemini call)", sent[0]?.status === 202 && (await jobCount()) === jobsBeforeUi + 1, { status: sent[0]?.status ?? null, enqueued: (await jobCount()) - jobsBeforeUi });
     await select.screenshot({ path: resolve(EVIDENCE_DIR, "G-04-capability-on.png") });
-    const removable = await select.locator('[data-testid*="job-scope"][data-testid*="clear"], [data-testid*="job-scope"][data-testid*="remove"], [data-testid*="job-scope"][data-testid*="deselect"]').count();
-    check("G-05", "an explicit way to remove the job selection exists in the UI", removable > 0, `${removable} control(s)`);
+    // Owner decision 2026-10-14 (G-05): the removal is an explicit action at the selected role in the Job Field; the shell
+    // indicator leads there from the Capability field (locating step proposed by GRÜN as a diff, adopted here by PINK).
+    await select.getByTestId("job-scope-indicator").click().catch(() => {});
+    await select.locator('[data-testid="syntx-field"][data-observation-kind="ROLE"]').waitFor({ timeout: 20_000 }).catch(() => undefined);
+    const removeControls = select.locator('[data-testid*="job-scope"][data-testid*="clear"], [data-testid*="job-scope"][data-testid*="remove"], [data-testid*="job-scope"][data-testid*="deselect"]');
+    const removable = await removeControls.count();
+    check("G-05", "an explicit way to remove the job selection exists in the UI (reached from the Capability field via the indicator)", removable > 0, `${removable} control(s)`);
+    if (removable > 0) {
+      const postsBeforeClear = analyzePosts.length;
+      await removeControls.first().click();
+      await select.locator('[data-testid="job-scope-indicator"][data-job-scope-state="NONE"]').waitFor({ timeout: 20_000 }).catch(() => {});
+      const clearedState = await scopeState(select);
+      const clearedVisible = await indicatorVisible(select);
+      const clearedParams = new URL(select.url()).searchParams;
+      check("G-05", "after the removal the indicator shows NONE, visible and uncovered", clearedState === "NONE" && clearedVisible.present && clearedVisible.inViewport && clearedVisible.owned, { state: clearedState, ...clearedVisible });
+      check("G-05", "after the removal the scope parameters are gone from the URL, the analysis stays", !clearedParams.has("jobScopePoolUploadId") && !clearedParams.has("jobScopeRoleId") && clearedParams.get("analysisId") === ANALYSIS_ID, Object.fromEntries(clearedParams));
+      const clearedGate = await select.getByTestId("semantic-career-intelligence-field").getAttribute("data-capability-gate").catch(() => null);
+      check("G-05", "after the removal the shell is on the Job Field and the Capability gate is closed", (await focusOf(select)) === "FIELD" && clearedGate === "AWAITING_JOB", { focus: await focusOf(select), gate: clearedGate });
+      check("G-05", "the removal itself sends no analysis request", analyzePosts.length === postsBeforeClear, `${analyzePosts.length - postsBeforeClear} request(s)`);
+      await select.screenshot({ path: resolve(EVIDENCE_DIR, "G-05-removed.png") });
+      const clearedCap = await capabilityReachable(select);
+      check("G-05", "after the removal: Capability field locked", !clearedCap.reachable, clearedCap);
+      const clearedWays = await otherWays(select);
+      check("G-05", "after the removal: ←/Home and syntx-exit-btn do not open the Capability field", clearedWays.focusAfterKeys === "FIELD" && clearedWays.focusAfterExit === "FIELD", clearedWays);
+      // Here the analysis sent under G-04 is still in flight (enqueued, no worker): the dock shows its running state, so
+      // the sentence is not expected here; it is checked below on a removal without an analysis in flight.
+      const clearedTrigger = await analyzeTrigger(select);
+      check("G-05", "after the removal with an analysis in flight: ANALYZE not executable, no request", offState(clearedTrigger), clearedTrigger);
+      await select.reload({ waitUntil: "domcontentloaded" });
+      await select.getByTestId("field-focus-strip").waitFor({ timeout: 120_000 });
+      check("G-05", "after the removal and a reload the job stays removed (indicator NONE)", (await scopeState(select)) === "NONE", await scopeState(select));
+    }
     await select.close();
+    // The removal with staged sources and no analysis in flight: the sources stay, ANALYZE is blocked with the owner's sentence.
+    const staged = await open(`/career/demo?focus=FIELD&analysisId=${ANALYSIS_ID}&jobPoolUploadId=${uploadId}&jobOrganizationId=org_pink_alpha&jobRoleId=${ROLE_ID}&jobScopePoolUploadId=${uploadId}&jobScopeRoleId=${ROLE_ID}`);
+    await staged.locator('[data-testid="job-scope-indicator"][data-job-scope-state="VALID"]').waitFor({ timeout: 30_000 }).catch(() => {});
+    const stagedCap = await capabilityReachable(staged);
+    const stagedBefore = stagedCap.reachable ? await analyzeTrigger(staged) : null;
+    check("G-05", "removal without an analysis in flight: a source is staged and ANALYZE is enabled before the removal", stagedBefore !== null && stagedBefore.staged && stagedBefore.present && !stagedBefore.disabled, { capability: stagedCap, trigger: stagedBefore });
+    await staged.getByTestId("job-scope-indicator").click().catch(() => {});
+    await staged.locator('[data-testid="syntx-field"][data-observation-kind="ROLE"]').waitFor({ timeout: 20_000 }).catch(() => undefined);
+    const postsBeforeStagedClear = analyzePosts.length;
+    await staged.getByTestId("syntx-job-scope-clear").click({ timeout: 10_000 }).catch(() => {});
+    await staged.locator('[data-testid="job-scope-indicator"][data-job-scope-state="NONE"]').waitFor({ timeout: 20_000 }).catch(() => {});
+    const stagedTrigger = staged.getByTestId("start-intake-analysis-btn");
+    const stagedAfter = {
+      state: await scopeState(staged),
+      sourceStillStaged: (await stagedTrigger.count()) > 0,
+      disabled: (await stagedTrigger.count()) > 0 ? await stagedTrigger.evaluate((element: HTMLButtonElement) => element.disabled) : null,
+      message: (await staged.getByTestId("analyze-job-scope-required").count()) > 0 ? ((await staged.getByTestId("analyze-job-scope-required").textContent()) ?? "").trim() : null
+    };
+    if ((await stagedTrigger.count()) > 0) { await stagedTrigger.evaluate((element: HTMLButtonElement) => element.click()); await delay(800); }
+    check("G-05", "removal without an analysis in flight: indicator NONE, the staged source stays, ANALYZE disabled with the owner's sentence verbatim, no request", stagedAfter.state === "NONE" && stagedAfter.sourceStillStaged && stagedAfter.disabled === true && stagedAfter.message === MESSAGE && analyzePosts.length === postsBeforeStagedClear, { ...stagedAfter, requests: analyzePosts.length - postsBeforeStagedClear });
+    await staged.screenshot({ path: resolve(EVIDENCE_DIR, "G-05-removed-staged.png") });
+    await staged.close();
 
     // ---- G-05 selection removed or invalid → Capability OFF ---------------------------------------------------------------
     const invalidCases: Array<[string, string]> = [
@@ -386,8 +441,75 @@ describe.skipIf(playwrightModule === null)("PINK G: job-scope gate — Job Pool 
         const backend = { status: response.status, code: (await response.json().catch(() => null))?.issues?.[0]?.code ?? null, enqueued: (await jobCount()) - jobsBefore };
         const agree = (frontState === "VALID") === (backend.status === 202);
         check("G-10", `${label} in an ACTIVE, mapped pool: frontend and backend agree on validity`, agree, { roleId, frontend: frontState, backend });
+        // The same id chosen by the explicit action at its role: selected verbatim, kept over a reload, sent verbatim.
+        const rolePage = await open(`/career/demo?focus=FIELD&analysisId=${ANALYSIS_ID}&jobPoolUploadId=${spacedUploadId}&jobRoleId=${encodeURIComponent(roleId)}`);
+        await rolePage.locator('[data-testid="syntx-field"][data-observation-kind="ROLE"]').waitFor({ timeout: 60_000 }).catch(() => {});
+        const roleSelect = rolePage.getByTestId("syntx-job-scope-select");
+        if ((await roleSelect.count()) === 1) await roleSelect.click();
+        await rolePage.locator('[data-testid="job-scope-indicator"]:is([data-job-scope-state="VALID"], [data-job-scope-state="INVALID"])').waitFor({ timeout: 20_000 }).catch(() => {});
+        const pickedState = await scopeState(rolePage);
+        const pickedRole = new URL(rolePage.url()).searchParams.get("jobScopeRoleId");
+        check("G-10", `${label}: the explicit selection at the role sets the stored id verbatim (indicator VALID, URL exact)`, pickedState === "VALID" && pickedRole === roleId, { state: pickedState, urlRoleId: pickedRole });
+        await rolePage.reload({ waitUntil: "domcontentloaded" });
+        await rolePage.getByTestId("field-focus-strip").waitFor({ timeout: 120_000 });
+        const reloadedState = await scopeState(rolePage);
+        check("G-10", `${label}: the selection is restored after a reload`, reloadedState === "VALID" && new URL(rolePage.url()).searchParams.get("jobScopeRoleId") === roleId, { state: reloadedState });
+        const roleCap = await capabilityReachable(rolePage);
+        const roleTrigger = roleCap.reachable ? await analyzeTrigger(rolePage) : null;
+        const postsBefore = analyzePosts.length;
+        const jobsBeforeRole = await jobCount();
+        if (roleTrigger !== null && roleTrigger.present && !roleTrigger.disabled) await rolePage.getByTestId("start-intake-analysis-btn").click();
+        for (let attempt = 0; attempt < 240 && (analyzePosts.length === postsBefore || analyzePosts[postsBefore].status === null); attempt += 1) await delay(250);
+        const roleSent = analyzePosts.slice(postsBefore);
+        const roleScope = (roleSent[0]?.body as any)?.jobScope ?? null;
+        check("G-10", `${label}: ANALYZE sends the stored id verbatim and the backend accepts it (202, enqueued once)`, roleSent.length === 1 && roleScope?.jobPoolUploadId === spacedUploadId && roleScope?.poolRoleId === roleId && roleSent[0]?.status === 202 && (await jobCount()) === jobsBeforeRole + 1, { capability: roleCap, requests: roleSent.length, jobScope: roleScope, status: roleSent[0]?.status ?? null, enqueued: (await jobCount()) - jobsBeforeRole });
+        await rolePage.close();
       }
     } else check("G-10", "role id with spaces: the pool upload refuses it, so no divergence is reachable", true, `upload status ${spacedUploadStatus}`);
+
+    // ---- G-11 every execution path: the legacy page /career/analyze ----------------------------------------------------
+    const legacy = async (label: string, query: string, expected: "NONE" | "INVALID" | "VALID", expectedRole: string) => {
+      const page = await browser.newPage({ viewport: { width: 1600, height: 1000 } });
+      page.on("pageerror", (error: unknown) => pageErrors.push(`legacy ${label}: ${String(error)}`));
+      page.on("request", (request: any) => {
+        if (request.method() === "POST" && request.url().endsWith("/api/career/analyze")) {
+          const entry = { body: (() => { try { return JSON.parse(request.postData() ?? "null"); } catch { return request.postData(); } })(), status: null as number | null };
+          analyzePosts.push(entry);
+          request.response().then((response: any) => { entry.status = response?.status() ?? null; }).catch(() => {});
+        }
+      });
+      await page.goto(`${base()}/career/analyze${query}`, { waitUntil: "domcontentloaded", timeout: 120_000 });
+      const shown = page.getByTestId("analyze-job-scope");
+      await shown.waitFor({ timeout: 120_000 }).catch(() => {});
+      // The page renders NONE first and reads the URL scope in an effect: wait for the settled state the case names.
+      if (expected === "NONE") await delay(2_000);
+      else await page.locator('[data-testid="analyze-job-scope"]:is([data-job-scope-state="VALID"], [data-job-scope-state="INVALID"])').waitFor({ timeout: 30_000 }).catch(() => {});
+      const state = (await shown.count()) > 0 ? await shown.getAttribute("data-job-scope-state") : null;
+      await page.getByTestId("doc-content-textarea").fill("PINK job-scope gate probe (legacy page): Software architect with eight years of platform design.").catch(() => {});
+      await delay(300);
+      const start = page.getByTestId("start-analysis-button");
+      const disabled = (await start.count()) === 0 ? true : await start.evaluate((element: HTMLButtonElement) => element.disabled);
+      const requiredNode = page.getByTestId("analyze-job-scope-required");
+      const message = (await requiredNode.count()) > 0 ? ((await requiredNode.textContent()) ?? "").trim() : null;
+      const before = analyzePosts.length;
+      const jobsBeforeLegacy = await jobCount();
+      if (expected === "VALID") { if (!disabled) await start.click(); } else await start.evaluate((element: HTMLButtonElement) => element.click()).catch(() => {});
+      for (let attempt = 0; attempt < (expected === "VALID" ? 240 : 4) && (analyzePosts.length === before || analyzePosts[before].status === null); attempt += 1) await delay(250);
+      const sent = analyzePosts.slice(before);
+      await page.screenshot({ path: resolve(EVIDENCE_DIR, `G-11-legacy-${expected}.png`) });
+      await page.close();
+      if (expected === "VALID") {
+        const scope = (sent[0]?.body as any)?.jobScope ?? null;
+        check("G-11", `legacy page, ${label}: scope shown VALID, start enabled, no blocking sentence`, state === "VALID" && !disabled && message === null, { state, disabled, message });
+        check("G-11", `legacy page, ${label}: one request with exactly the URL scope, accepted (202) and enqueued once`, sent.length === 1 && scope !== null && Object.keys(scope).sort().join() === "jobPoolUploadId,poolRoleId" && scope.jobPoolUploadId === uploadId && scope.poolRoleId === expectedRole && sent[0]?.status === 202 && (await jobCount()) === jobsBeforeLegacy + 1, { requests: sent.length, jobScope: scope, status: sent[0]?.status ?? null });
+      } else {
+        check("G-11", `legacy page, ${label}: scope shown ${expected}, start disabled, the owner's sentence verbatim, no request on a forced click`, state === expected && disabled && message === MESSAGE && sent.length === 0 && (await jobCount()) === jobsBeforeLegacy, { state, disabled, message, requests: sent.length });
+      }
+    };
+    await legacy("no scope in the URL", "", "NONE", "");
+    await legacy("role not in the pool", `?jobScopePoolUploadId=${uploadId}&jobScopeRoleId=role_pink_does_not_exist`, "INVALID", "");
+    await legacy("pool not ACTIVE (DRAFT)", `?jobScopePoolUploadId=${draftId}&jobScopeRoleId=${ROLE_ID}`, "INVALID", "");
+    await legacy("valid scope in the URL", `?jobScopePoolUploadId=${uploadId}&jobScopeRoleId=${ROLE_ID}`, "VALID", ROLE_ID);
 
     check("G-00", "no page error in any step", pageErrors.length === 0, pageErrors.slice(0, 5));
     const failed = checks.filter((entry) => !entry.ok).map((entry) => `${entry.id} ${entry.name} · ${entry.detail}`);

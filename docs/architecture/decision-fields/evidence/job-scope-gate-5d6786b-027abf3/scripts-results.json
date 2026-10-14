@@ -1,0 +1,738 @@
+[
+  {
+    "file": "bisection.ts",
+    "label": "DRAFT pool",
+    "exit": 3,
+    "refusal": "ERR_JOB_SCOPE_INVALID: Bitte wählen Sie einen Job aus. (job pool JPOOL_555A5AC7BC90DCF7E9CAE19EBC4056E7 is DRAFT, not ACTIVE.)",
+    "net": [],
+    "tail": ""
+  },
+  {
+    "file": "bisection.ts",
+    "label": "no selection",
+    "exit": 3,
+    "refusal": "ERR_JOB_SCOPE_REQUIRED: Bitte wählen Sie einen Job aus. (jobScope.jobPoolUploadId must be a JPOOL_ identifier.)",
+    "net": [],
+    "tail": ""
+  },
+  {
+    "file": "bisection.ts",
+    "label": "role not in the pool",
+    "exit": 3,
+    "refusal": "ERR_JOB_SCOPE_INVALID: Bitte wählen Sie einen Job aus. (role role_pink_does_not_exist is not part of JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7.)",
+    "net": [],
+    "tail": ""
+  },
+  {
+    "file": "bisection.ts",
+    "label": "unknown pool",
+    "exit": 3,
+    "refusal": "ERR_JOB_SCOPE_INVALID: Bitte wählen Sie einen Job aus. (unknown job pool upload JPOOL_00000000000000000000000000000000.)",
+    "net": [],
+    "tail": ""
+  },
+  {
+    "file": "debug.js",
+    "label": "DRAFT pool",
+    "exit": 1,
+    "refusal": null,
+    "net": [],
+    "tail": "    at Object.<anonymous> (/home/codi/Entwicklung/condyn-admin-hr-validation/debug.js:1:43) |  | Node.js v20.19.0"
+  },
+  {
+    "file": "debug.js",
+    "label": "no selection",
+    "exit": 1,
+    "refusal": null,
+    "net": [],
+    "tail": "    at Object.<anonymous> (/home/codi/Entwicklung/condyn-admin-hr-validation/debug.js:1:43) |  | Node.js v20.19.0"
+  },
+  {
+    "file": "debug.js",
+    "label": "role not in the pool",
+    "exit": 1,
+    "refusal": null,
+    "net": [],
+    "tail": "    at Object.<anonymous> (/home/codi/Entwicklung/condyn-admin-hr-validation/debug.js:1:43) |  | Node.js v20.19.0"
+  },
+  {
+    "file": "debug.js",
+    "label": "unknown pool",
+    "exit": 1,
+    "refusal": null,
+    "net": [],
+    "tail": "    at Object.<anonymous> (/home/codi/Entwicklung/condyn-admin-hr-validation/debug.js:1:43) |  | Node.js v20.19.0"
+  },
+  {
+    "file": "debug.ts",
+    "label": "DRAFT pool",
+    "exit": 3,
+    "refusal": "ERR_JOB_SCOPE_INVALID: Bitte wählen Sie einen Job aus. (job pool JPOOL_555A5AC7BC90DCF7E9CAE19EBC4056E7 is DRAFT, not ACTIVE.)",
+    "net": [],
+    "tail": ""
+  },
+  {
+    "file": "debug.ts",
+    "label": "no selection",
+    "exit": 3,
+    "refusal": "ERR_JOB_SCOPE_REQUIRED: Bitte wählen Sie einen Job aus. (jobScope.jobPoolUploadId must be a JPOOL_ identifier.)",
+    "net": [],
+    "tail": ""
+  },
+  {
+    "file": "debug.ts",
+    "label": "role not in the pool",
+    "exit": 3,
+    "refusal": "ERR_JOB_SCOPE_INVALID: Bitte wählen Sie einen Job aus. (role role_pink_does_not_exist is not part of JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7.)",
+    "net": [],
+    "tail": ""
+  },
+  {
+    "file": "debug.ts",
+    "label": "unknown pool",
+    "exit": 3,
+    "refusal": "ERR_JOB_SCOPE_INVALID: Bitte wählen Sie einen Job aus. (unknown job pool upload JPOOL_00000000000000000000000000000000.)",
+    "net": [],
+    "tail": ""
+  },
+  {
+    "file": "debug2.js",
+    "label": "DRAFT pool",
+    "exit": 0,
+    "refusal": null,
+    "net": [],
+    "tail": ""
+  },
+  {
+    "file": "debug2.js",
+    "label": "no selection",
+    "exit": 0,
+    "refusal": null,
+    "net": [],
+    "tail": ""
+  },
+  {
+    "file": "debug2.js",
+    "label": "role not in the pool",
+    "exit": 0,
+    "refusal": null,
+    "net": [],
+    "tail": ""
+  },
+  {
+    "file": "debug2.js",
+    "label": "unknown pool",
+    "exit": 0,
+    "refusal": null,
+    "net": [],
+    "tail": ""
+  },
+  {
+    "file": "forensics-step2.ts",
+    "label": "DRAFT pool",
+    "exit": 3,
+    "refusal": "ERR_JOB_SCOPE_INVALID: Bitte wählen Sie einen Job aus. (job pool JPOOL_555A5AC7BC90DCF7E9CAE19EBC4056E7 is DRAFT, not ACTIVE.)",
+    "net": [],
+    "tail": ""
+  },
+  {
+    "file": "forensics-step2.ts",
+    "label": "no selection",
+    "exit": 3,
+    "refusal": "ERR_JOB_SCOPE_REQUIRED: Bitte wählen Sie einen Job aus. (jobScope.jobPoolUploadId must be a JPOOL_ identifier.)",
+    "net": [],
+    "tail": ""
+  },
+  {
+    "file": "forensics-step2.ts",
+    "label": "role not in the pool",
+    "exit": 3,
+    "refusal": "ERR_JOB_SCOPE_INVALID: Bitte wählen Sie einen Job aus. (role role_pink_does_not_exist is not part of JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7.)",
+    "net": [],
+    "tail": ""
+  },
+  {
+    "file": "forensics-step2.ts",
+    "label": "unknown pool",
+    "exit": 3,
+    "refusal": "ERR_JOB_SCOPE_INVALID: Bitte wählen Sie einen Job aus. (unknown job pool upload JPOOL_00000000000000000000000000000000.)",
+    "net": [],
+    "tail": ""
+  },
+  {
+    "file": "schema-bisection-mjs.ts",
+    "label": "DRAFT pool",
+    "exit": 3,
+    "refusal": "ERR_JOB_SCOPE_INVALID: Bitte wählen Sie einen Job aus. (job pool JPOOL_555A5AC7BC90DCF7E9CAE19EBC4056E7 is DRAFT, not ACTIVE.)",
+    "net": [],
+    "tail": ""
+  },
+  {
+    "file": "schema-bisection-mjs.ts",
+    "label": "no selection",
+    "exit": 3,
+    "refusal": "ERR_JOB_SCOPE_REQUIRED: Bitte wählen Sie einen Job aus. (jobScope.jobPoolUploadId must be a JPOOL_ identifier.)",
+    "net": [],
+    "tail": ""
+  },
+  {
+    "file": "schema-bisection-mjs.ts",
+    "label": "role not in the pool",
+    "exit": 3,
+    "refusal": "ERR_JOB_SCOPE_INVALID: Bitte wählen Sie einen Job aus. (role role_pink_does_not_exist is not part of JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7.)",
+    "net": [],
+    "tail": ""
+  },
+  {
+    "file": "schema-bisection-mjs.ts",
+    "label": "unknown pool",
+    "exit": 3,
+    "refusal": "ERR_JOB_SCOPE_INVALID: Bitte wählen Sie einen Job aus. (unknown job pool upload JPOOL_00000000000000000000000000000000.)",
+    "net": [],
+    "tail": ""
+  },
+  {
+    "file": "schema-bisection.ts",
+    "label": "DRAFT pool",
+    "exit": 3,
+    "refusal": "ERR_JOB_SCOPE_INVALID: Bitte wählen Sie einen Job aus. (job pool JPOOL_555A5AC7BC90DCF7E9CAE19EBC4056E7 is DRAFT, not ACTIVE.)",
+    "net": [],
+    "tail": ""
+  },
+  {
+    "file": "schema-bisection.ts",
+    "label": "no selection",
+    "exit": 3,
+    "refusal": "ERR_JOB_SCOPE_REQUIRED: Bitte wählen Sie einen Job aus. (jobScope.jobPoolUploadId must be a JPOOL_ identifier.)",
+    "net": [],
+    "tail": ""
+  },
+  {
+    "file": "schema-bisection.ts",
+    "label": "role not in the pool",
+    "exit": 3,
+    "refusal": "ERR_JOB_SCOPE_INVALID: Bitte wählen Sie einen Job aus. (role role_pink_does_not_exist is not part of JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7.)",
+    "net": [],
+    "tail": ""
+  },
+  {
+    "file": "schema-bisection.ts",
+    "label": "unknown pool",
+    "exit": 3,
+    "refusal": "ERR_JOB_SCOPE_INVALID: Bitte wählen Sie einen Job aus. (unknown job pool upload JPOOL_00000000000000000000000000000000.)",
+    "net": [],
+    "tail": ""
+  },
+  {
+    "file": "scripts/list-models.ts",
+    "label": "DRAFT pool",
+    "exit": 3,
+    "refusal": "ERR_JOB_SCOPE_INVALID: Bitte wählen Sie einen Job aus. (job pool JPOOL_555A5AC7BC90DCF7E9CAE19EBC4056E7 is DRAFT, not ACTIVE.)",
+    "net": [],
+    "tail": ""
+  },
+  {
+    "file": "scripts/list-models.ts",
+    "label": "no selection",
+    "exit": 3,
+    "refusal": "ERR_JOB_SCOPE_REQUIRED: Bitte wählen Sie einen Job aus. (jobScope.jobPoolUploadId must be a JPOOL_ identifier.)",
+    "net": [],
+    "tail": ""
+  },
+  {
+    "file": "scripts/list-models.ts",
+    "label": "role not in the pool",
+    "exit": 3,
+    "refusal": "ERR_JOB_SCOPE_INVALID: Bitte wählen Sie einen Job aus. (role role_pink_does_not_exist is not part of JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7.)",
+    "net": [],
+    "tail": ""
+  },
+  {
+    "file": "scripts/list-models.ts",
+    "label": "unknown pool",
+    "exit": 3,
+    "refusal": "ERR_JOB_SCOPE_INVALID: Bitte wählen Sie einen Job aus. (unknown job pool upload JPOOL_00000000000000000000000000000000.)",
+    "net": [],
+    "tail": ""
+  },
+  {
+    "file": "scripts/probe-gemini.ts",
+    "label": "DRAFT pool",
+    "exit": 3,
+    "refusal": "ERR_JOB_SCOPE_INVALID: Bitte wählen Sie einen Job aus. (job pool JPOOL_555A5AC7BC90DCF7E9CAE19EBC4056E7 is DRAFT, not ACTIVE.)",
+    "net": [],
+    "tail": ""
+  },
+  {
+    "file": "scripts/probe-gemini.ts",
+    "label": "no selection",
+    "exit": 3,
+    "refusal": "ERR_JOB_SCOPE_REQUIRED: Bitte wählen Sie einen Job aus. (jobScope.jobPoolUploadId must be a JPOOL_ identifier.)",
+    "net": [],
+    "tail": ""
+  },
+  {
+    "file": "scripts/probe-gemini.ts",
+    "label": "role not in the pool",
+    "exit": 3,
+    "refusal": "ERR_JOB_SCOPE_INVALID: Bitte wählen Sie einen Job aus. (role role_pink_does_not_exist is not part of JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7.)",
+    "net": [],
+    "tail": ""
+  },
+  {
+    "file": "scripts/probe-gemini.ts",
+    "label": "unknown pool",
+    "exit": 3,
+    "refusal": "ERR_JOB_SCOPE_INVALID: Bitte wählen Sie einen Job aus. (unknown job pool upload JPOOL_00000000000000000000000000000000.)",
+    "net": [],
+    "tail": ""
+  },
+  {
+    "file": "scripts/test-live-action-chain.ts",
+    "label": "DRAFT pool",
+    "exit": 3,
+    "refusal": "ERR_JOB_SCOPE_INVALID: Bitte wählen Sie einen Job aus. (job pool JPOOL_555A5AC7BC90DCF7E9CAE19EBC4056E7 is DRAFT, not ACTIVE.)",
+    "net": [],
+    "tail": ""
+  },
+  {
+    "file": "scripts/test-live-action-chain.ts",
+    "label": "no selection",
+    "exit": 3,
+    "refusal": "ERR_JOB_SCOPE_REQUIRED: Bitte wählen Sie einen Job aus. (jobScope.jobPoolUploadId must be a JPOOL_ identifier.)",
+    "net": [],
+    "tail": ""
+  },
+  {
+    "file": "scripts/test-live-action-chain.ts",
+    "label": "role not in the pool",
+    "exit": 3,
+    "refusal": "ERR_JOB_SCOPE_INVALID: Bitte wählen Sie einen Job aus. (role role_pink_does_not_exist is not part of JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7.)",
+    "net": [],
+    "tail": ""
+  },
+  {
+    "file": "scripts/test-live-action-chain.ts",
+    "label": "unknown pool",
+    "exit": 3,
+    "refusal": "ERR_JOB_SCOPE_INVALID: Bitte wählen Sie einen Job aus. (unknown job pool upload JPOOL_00000000000000000000000000000000.)",
+    "net": [],
+    "tail": ""
+  },
+  {
+    "file": "scripts/test-live-decision-chain.ts",
+    "label": "DRAFT pool",
+    "exit": 3,
+    "refusal": "ERR_JOB_SCOPE_INVALID: Bitte wählen Sie einen Job aus. (job pool JPOOL_555A5AC7BC90DCF7E9CAE19EBC4056E7 is DRAFT, not ACTIVE.)",
+    "net": [],
+    "tail": ""
+  },
+  {
+    "file": "scripts/test-live-decision-chain.ts",
+    "label": "no selection",
+    "exit": 3,
+    "refusal": "ERR_JOB_SCOPE_REQUIRED: Bitte wählen Sie einen Job aus. (jobScope.jobPoolUploadId must be a JPOOL_ identifier.)",
+    "net": [],
+    "tail": ""
+  },
+  {
+    "file": "scripts/test-live-decision-chain.ts",
+    "label": "role not in the pool",
+    "exit": 3,
+    "refusal": "ERR_JOB_SCOPE_INVALID: Bitte wählen Sie einen Job aus. (role role_pink_does_not_exist is not part of JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7.)",
+    "net": [],
+    "tail": ""
+  },
+  {
+    "file": "scripts/test-live-decision-chain.ts",
+    "label": "unknown pool",
+    "exit": 3,
+    "refusal": "ERR_JOB_SCOPE_INVALID: Bitte wählen Sie einen Job aus. (unknown job pool upload JPOOL_00000000000000000000000000000000.)",
+    "net": [],
+    "tail": ""
+  },
+  {
+    "file": "scripts/test-live-feedback-chain.ts",
+    "label": "DRAFT pool",
+    "exit": 3,
+    "refusal": "ERR_JOB_SCOPE_INVALID: Bitte wählen Sie einen Job aus. (job pool JPOOL_555A5AC7BC90DCF7E9CAE19EBC4056E7 is DRAFT, not ACTIVE.)",
+    "net": [],
+    "tail": ""
+  },
+  {
+    "file": "scripts/test-live-feedback-chain.ts",
+    "label": "no selection",
+    "exit": 3,
+    "refusal": "ERR_JOB_SCOPE_REQUIRED: Bitte wählen Sie einen Job aus. (jobScope.jobPoolUploadId must be a JPOOL_ identifier.)",
+    "net": [],
+    "tail": ""
+  },
+  {
+    "file": "scripts/test-live-feedback-chain.ts",
+    "label": "role not in the pool",
+    "exit": 3,
+    "refusal": "ERR_JOB_SCOPE_INVALID: Bitte wählen Sie einen Job aus. (role role_pink_does_not_exist is not part of JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7.)",
+    "net": [],
+    "tail": ""
+  },
+  {
+    "file": "scripts/test-live-feedback-chain.ts",
+    "label": "unknown pool",
+    "exit": 3,
+    "refusal": "ERR_JOB_SCOPE_INVALID: Bitte wählen Sie einen Job aus. (unknown job pool upload JPOOL_00000000000000000000000000000000.)",
+    "net": [],
+    "tail": ""
+  },
+  {
+    "file": "scripts/test-live-learning-chain.ts",
+    "label": "DRAFT pool",
+    "exit": 3,
+    "refusal": "ERR_JOB_SCOPE_INVALID: Bitte wählen Sie einen Job aus. (job pool JPOOL_555A5AC7BC90DCF7E9CAE19EBC4056E7 is DRAFT, not ACTIVE.)",
+    "net": [],
+    "tail": ""
+  },
+  {
+    "file": "scripts/test-live-learning-chain.ts",
+    "label": "no selection",
+    "exit": 3,
+    "refusal": "ERR_JOB_SCOPE_REQUIRED: Bitte wählen Sie einen Job aus. (jobScope.jobPoolUploadId must be a JPOOL_ identifier.)",
+    "net": [],
+    "tail": ""
+  },
+  {
+    "file": "scripts/test-live-learning-chain.ts",
+    "label": "role not in the pool",
+    "exit": 3,
+    "refusal": "ERR_JOB_SCOPE_INVALID: Bitte wählen Sie einen Job aus. (role role_pink_does_not_exist is not part of JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7.)",
+    "net": [],
+    "tail": ""
+  },
+  {
+    "file": "scripts/test-live-learning-chain.ts",
+    "label": "unknown pool",
+    "exit": 3,
+    "refusal": "ERR_JOB_SCOPE_INVALID: Bitte wählen Sie einen Job aus. (unknown job pool upload JPOOL_00000000000000000000000000000000.)",
+    "net": [],
+    "tail": ""
+  },
+  {
+    "file": "scripts/test-live-outcome-chain.ts",
+    "label": "DRAFT pool",
+    "exit": 3,
+    "refusal": "ERR_JOB_SCOPE_INVALID: Bitte wählen Sie einen Job aus. (job pool JPOOL_555A5AC7BC90DCF7E9CAE19EBC4056E7 is DRAFT, not ACTIVE.)",
+    "net": [],
+    "tail": ""
+  },
+  {
+    "file": "scripts/test-live-outcome-chain.ts",
+    "label": "no selection",
+    "exit": 3,
+    "refusal": "ERR_JOB_SCOPE_REQUIRED: Bitte wählen Sie einen Job aus. (jobScope.jobPoolUploadId must be a JPOOL_ identifier.)",
+    "net": [],
+    "tail": ""
+  },
+  {
+    "file": "scripts/test-live-outcome-chain.ts",
+    "label": "role not in the pool",
+    "exit": 3,
+    "refusal": "ERR_JOB_SCOPE_INVALID: Bitte wählen Sie einen Job aus. (role role_pink_does_not_exist is not part of JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7.)",
+    "net": [],
+    "tail": ""
+  },
+  {
+    "file": "scripts/test-live-outcome-chain.ts",
+    "label": "unknown pool",
+    "exit": 3,
+    "refusal": "ERR_JOB_SCOPE_INVALID: Bitte wählen Sie einen Job aus. (unknown job pool upload JPOOL_00000000000000000000000000000000.)",
+    "net": [],
+    "tail": ""
+  },
+  {
+    "file": "scripts/test-live-recommendation-proof.ts",
+    "label": "DRAFT pool",
+    "exit": 3,
+    "refusal": "ERR_JOB_SCOPE_INVALID: Bitte wählen Sie einen Job aus. (job pool JPOOL_555A5AC7BC90DCF7E9CAE19EBC4056E7 is DRAFT, not ACTIVE.)",
+    "net": [],
+    "tail": ""
+  },
+  {
+    "file": "scripts/test-live-recommendation-proof.ts",
+    "label": "no selection",
+    "exit": 3,
+    "refusal": "ERR_JOB_SCOPE_REQUIRED: Bitte wählen Sie einen Job aus. (jobScope.jobPoolUploadId must be a JPOOL_ identifier.)",
+    "net": [],
+    "tail": ""
+  },
+  {
+    "file": "scripts/test-live-recommendation-proof.ts",
+    "label": "role not in the pool",
+    "exit": 3,
+    "refusal": "ERR_JOB_SCOPE_INVALID: Bitte wählen Sie einen Job aus. (role role_pink_does_not_exist is not part of JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7.)",
+    "net": [],
+    "tail": ""
+  },
+  {
+    "file": "scripts/test-live-recommendation-proof.ts",
+    "label": "unknown pool",
+    "exit": 3,
+    "refusal": "ERR_JOB_SCOPE_INVALID: Bitte wählen Sie einen Job aus. (unknown job pool upload JPOOL_00000000000000000000000000000000.)",
+    "net": [],
+    "tail": ""
+  },
+  {
+    "file": "scripts/test-multi-source-live.ts",
+    "label": "DRAFT pool",
+    "exit": 3,
+    "refusal": "ERR_JOB_SCOPE_INVALID: Bitte wählen Sie einen Job aus. (job pool JPOOL_555A5AC7BC90DCF7E9CAE19EBC4056E7 is DRAFT, not ACTIVE.)",
+    "net": [],
+    "tail": ""
+  },
+  {
+    "file": "scripts/test-multi-source-live.ts",
+    "label": "no selection",
+    "exit": 3,
+    "refusal": "ERR_JOB_SCOPE_REQUIRED: Bitte wählen Sie einen Job aus. (jobScope.jobPoolUploadId must be a JPOOL_ identifier.)",
+    "net": [],
+    "tail": ""
+  },
+  {
+    "file": "scripts/test-multi-source-live.ts",
+    "label": "role not in the pool",
+    "exit": 3,
+    "refusal": "ERR_JOB_SCOPE_INVALID: Bitte wählen Sie einen Job aus. (role role_pink_does_not_exist is not part of JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7.)",
+    "net": [],
+    "tail": ""
+  },
+  {
+    "file": "scripts/test-multi-source-live.ts",
+    "label": "unknown pool",
+    "exit": 3,
+    "refusal": "ERR_JOB_SCOPE_INVALID: Bitte wählen Sie einen Job aus. (unknown job pool upload JPOOL_00000000000000000000000000000000.)",
+    "net": [],
+    "tail": ""
+  },
+  {
+    "file": "scripts/test-pipeline-live.ts",
+    "label": "DRAFT pool",
+    "exit": 3,
+    "refusal": "ERR_JOB_SCOPE_INVALID: Bitte wählen Sie einen Job aus. (job pool JPOOL_555A5AC7BC90DCF7E9CAE19EBC4056E7 is DRAFT, not ACTIVE.)",
+    "net": [],
+    "tail": ""
+  },
+  {
+    "file": "scripts/test-pipeline-live.ts",
+    "label": "no selection",
+    "exit": 3,
+    "refusal": "ERR_JOB_SCOPE_REQUIRED: Bitte wählen Sie einen Job aus. (jobScope.jobPoolUploadId must be a JPOOL_ identifier.)",
+    "net": [],
+    "tail": ""
+  },
+  {
+    "file": "scripts/test-pipeline-live.ts",
+    "label": "role not in the pool",
+    "exit": 3,
+    "refusal": "ERR_JOB_SCOPE_INVALID: Bitte wählen Sie einen Job aus. (role role_pink_does_not_exist is not part of JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7.)",
+    "net": [],
+    "tail": ""
+  },
+  {
+    "file": "scripts/test-pipeline-live.ts",
+    "label": "unknown pool",
+    "exit": 3,
+    "refusal": "ERR_JOB_SCOPE_INVALID: Bitte wählen Sie einen Job aus. (unknown job pool upload JPOOL_00000000000000000000000000000000.)",
+    "net": [],
+    "tail": ""
+  },
+  {
+    "file": "test-full.mjs",
+    "label": "DRAFT pool",
+    "exit": 0,
+    "refusal": null,
+    "net": [],
+    "tail": ""
+  },
+  {
+    "file": "test-full.mjs",
+    "label": "no selection",
+    "exit": 0,
+    "refusal": null,
+    "net": [],
+    "tail": ""
+  },
+  {
+    "file": "test-full.mjs",
+    "label": "role not in the pool",
+    "exit": 0,
+    "refusal": null,
+    "net": [],
+    "tail": ""
+  },
+  {
+    "file": "test-full.mjs",
+    "label": "unknown pool",
+    "exit": 0,
+    "refusal": null,
+    "net": [],
+    "tail": ""
+  },
+  {
+    "file": "test-github.ts",
+    "label": "DRAFT pool",
+    "exit": 3,
+    "refusal": "ERR_JOB_SCOPE_INVALID: Bitte wählen Sie einen Job aus. (job pool JPOOL_555A5AC7BC90DCF7E9CAE19EBC4056E7 is DRAFT, not ACTIVE.)",
+    "net": [],
+    "tail": ""
+  },
+  {
+    "file": "test-github.ts",
+    "label": "no selection",
+    "exit": 3,
+    "refusal": "ERR_JOB_SCOPE_REQUIRED: Bitte wählen Sie einen Job aus. (jobScope.jobPoolUploadId must be a JPOOL_ identifier.)",
+    "net": [],
+    "tail": ""
+  },
+  {
+    "file": "test-github.ts",
+    "label": "role not in the pool",
+    "exit": 3,
+    "refusal": "ERR_JOB_SCOPE_INVALID: Bitte wählen Sie einen Job aus. (role role_pink_does_not_exist is not part of JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7.)",
+    "net": [],
+    "tail": ""
+  },
+  {
+    "file": "test-github.ts",
+    "label": "unknown pool",
+    "exit": 3,
+    "refusal": "ERR_JOB_SCOPE_INVALID: Bitte wählen Sie einen Job aus. (unknown job pool upload JPOOL_00000000000000000000000000000000.)",
+    "net": [],
+    "tail": ""
+  },
+  {
+    "file": "test-pdf.ts",
+    "label": "DRAFT pool",
+    "exit": 3,
+    "refusal": "ERR_JOB_SCOPE_INVALID: Bitte wählen Sie einen Job aus. (job pool JPOOL_555A5AC7BC90DCF7E9CAE19EBC4056E7 is DRAFT, not ACTIVE.)",
+    "net": [],
+    "tail": ""
+  },
+  {
+    "file": "test-pdf.ts",
+    "label": "no selection",
+    "exit": 3,
+    "refusal": "ERR_JOB_SCOPE_REQUIRED: Bitte wählen Sie einen Job aus. (jobScope.jobPoolUploadId must be a JPOOL_ identifier.)",
+    "net": [],
+    "tail": ""
+  },
+  {
+    "file": "test-pdf.ts",
+    "label": "role not in the pool",
+    "exit": 3,
+    "refusal": "ERR_JOB_SCOPE_INVALID: Bitte wählen Sie einen Job aus. (role role_pink_does_not_exist is not part of JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7.)",
+    "net": [],
+    "tail": ""
+  },
+  {
+    "file": "test-pdf.ts",
+    "label": "unknown pool",
+    "exit": 3,
+    "refusal": "ERR_JOB_SCOPE_INVALID: Bitte wählen Sie einen Job aus. (unknown job pool upload JPOOL_00000000000000000000000000000000.)",
+    "net": [],
+    "tail": ""
+  },
+  {
+    "file": "test-schema.ts",
+    "label": "DRAFT pool",
+    "exit": 3,
+    "refusal": "ERR_JOB_SCOPE_INVALID: Bitte wählen Sie einen Job aus. (job pool JPOOL_555A5AC7BC90DCF7E9CAE19EBC4056E7 is DRAFT, not ACTIVE.)",
+    "net": [],
+    "tail": ""
+  },
+  {
+    "file": "test-schema.ts",
+    "label": "no selection",
+    "exit": 3,
+    "refusal": "ERR_JOB_SCOPE_REQUIRED: Bitte wählen Sie einen Job aus. (jobScope.jobPoolUploadId must be a JPOOL_ identifier.)",
+    "net": [],
+    "tail": ""
+  },
+  {
+    "file": "test-schema.ts",
+    "label": "role not in the pool",
+    "exit": 3,
+    "refusal": "ERR_JOB_SCOPE_INVALID: Bitte wählen Sie einen Job aus. (role role_pink_does_not_exist is not part of JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7.)",
+    "net": [],
+    "tail": ""
+  },
+  {
+    "file": "test-schema.ts",
+    "label": "unknown pool",
+    "exit": 3,
+    "refusal": "ERR_JOB_SCOPE_INVALID: Bitte wählen Sie einen Job aus. (unknown job pool upload JPOOL_00000000000000000000000000000000.)",
+    "net": [],
+    "tail": ""
+  },
+  {
+    "file": "trace-pdf-5.ts",
+    "label": "DRAFT pool",
+    "exit": 3,
+    "refusal": "ERR_JOB_SCOPE_INVALID: Bitte wählen Sie einen Job aus. (job pool JPOOL_555A5AC7BC90DCF7E9CAE19EBC4056E7 is DRAFT, not ACTIVE.)",
+    "net": [],
+    "tail": ""
+  },
+  {
+    "file": "trace-pdf-5.ts",
+    "label": "no selection",
+    "exit": 3,
+    "refusal": "ERR_JOB_SCOPE_REQUIRED: Bitte wählen Sie einen Job aus. (jobScope.jobPoolUploadId must be a JPOOL_ identifier.)",
+    "net": [],
+    "tail": ""
+  },
+  {
+    "file": "trace-pdf-5.ts",
+    "label": "role not in the pool",
+    "exit": 3,
+    "refusal": "ERR_JOB_SCOPE_INVALID: Bitte wählen Sie einen Job aus. (role role_pink_does_not_exist is not part of JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7.)",
+    "net": [],
+    "tail": ""
+  },
+  {
+    "file": "trace-pdf-5.ts",
+    "label": "unknown pool",
+    "exit": 3,
+    "refusal": "ERR_JOB_SCOPE_INVALID: Bitte wählen Sie einen Job aus. (unknown job pool upload JPOOL_00000000000000000000000000000000.)",
+    "net": [],
+    "tail": ""
+  },
+  {
+    "file": "trace-pdf.ts",
+    "label": "DRAFT pool",
+    "exit": 3,
+    "refusal": "ERR_JOB_SCOPE_INVALID: Bitte wählen Sie einen Job aus. (job pool JPOOL_555A5AC7BC90DCF7E9CAE19EBC4056E7 is DRAFT, not ACTIVE.)",
+    "net": [],
+    "tail": ""
+  },
+  {
+    "file": "trace-pdf.ts",
+    "label": "no selection",
+    "exit": 3,
+    "refusal": "ERR_JOB_SCOPE_REQUIRED: Bitte wählen Sie einen Job aus. (jobScope.jobPoolUploadId must be a JPOOL_ identifier.)",
+    "net": [],
+    "tail": ""
+  },
+  {
+    "file": "trace-pdf.ts",
+    "label": "role not in the pool",
+    "exit": 3,
+    "refusal": "ERR_JOB_SCOPE_INVALID: Bitte wählen Sie einen Job aus. (role role_pink_does_not_exist is not part of JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7.)",
+    "net": [],
+    "tail": ""
+  },
+  {
+    "file": "trace-pdf.ts",
+    "label": "unknown pool",
+    "exit": 3,
+    "refusal": "ERR_JOB_SCOPE_INVALID: Bitte wählen Sie einen Job aus. (unknown job pool upload JPOOL_00000000000000000000000000000000.)",
+    "net": [],
+    "tail": ""
+  }
+]

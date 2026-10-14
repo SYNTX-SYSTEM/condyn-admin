@@ -1053,6 +1053,65 @@ Boundary B-PINK-WALK-OWNERSHIP (second instance): `841baab` edits PINK's `test/j
 (uploads a pool and sends `jobScope` so the PDF path passes the new gate; no assertion weakened). Taken by PINK only in
 its own commit when GELB's gate is integrated into this branch.
 
+### 3.29 Job-scope invariant: GRÜN `5d6786b` + GELB `027abf3` (owner decision G-10 variant A, G-05, every execution path) verified together (2026-10-14)
+
+Owner decision as relayed by GRÜN and GELB (not seen by PINK first-hand): G-10 variant A (the role id is taken exactly as
+stored; only "" is refused), G-05 (an explicit removal of the selected job), and the invariant on every execution path.
+GRÜN `frontend/job-field` `5d6786b` (on `c146f05`): `parseJobScope` accepts any non-empty role id verbatim; "× JOB ENTFERNEN"
+(`syntx-job-scope-clear`) beside "✓ GEWÄHLTER JOB" at the selected role, reached from both fields through the shell
+indicator; the legacy page `/career/analyze` reads `jobScopePoolUploadId` / `jobScopeRoleId`, validates them, shows
+`analyze-job-scope` and sends `jobScope` only when VALID. GELB `feature/job-pool-first-boundary` `027abf3` (on `2e61a2b`,
+no `app/` change): `executeCareerAnalysisPipeline` / `…BatchPipeline` require a scope issued by
+`resolveJobScopeFromStoredPool` (WeakSet, deeply frozen); the worker opens the validated scope per claim
+(`AsyncLocalStorage`), the discovery / convergence providers and the legacy analysis ask for it; 20 developer scripts
+require `CONDYN_JOB_POOL_UPLOAD_ID` + `CONDYN_POOL_ROLE_ID`, validated read-only against a verified disposable database,
+otherwise exit 3 with the owner's sentence. GELB's later tip `1b4f237` adds only proof JSONs and doc §11.6; every file outside
+`docs/` is identical to `027abf3` (checked by PINK), so the results below hold for `1b4f237`.
+
+PINK (probe branch = this branch + `5d6786b` + `2e61a2b`, then + `027abf3`; deleted, never pushed; evidence
+`evidence/job-scope-gate-5d6786b-027abf3/`):
+- Gate walk extended (PINK's file; GRÜN's locating step for G-05 sent as a diff and adopted here): G-05 now exercises the
+  removal — with an analysis in flight and with a staged source and none in flight (indicator NONE, scope parameters gone,
+  analysis kept, focus FIELD, `data-capability-gate=AWAITING_JOB`, every way into Capability closed, ANALYZE disabled with
+  the owner's sentence verbatim, source still staged, no request, removal kept over a reload); G-10 now selects the inner-
+  space and the padded role id by the explicit action, checks the exact URL, the reload and the exact request (202);
+  new G-11 walks the legacy page (no scope / role not in pool / DRAFT pool → disabled, sentence, no request on a forced
+  click; valid scope → exactly that scope sent, 202, enqueued once). **`5d6786b` + `027abf3`: 74/74.** A first run on
+  `5d6786b` + `2e61a2b` gave 67/72; the 5 deviations were PINK walk defects (the legacy page renders NONE before its
+  effect reads the URL; the in-flight analysis hides the dock's sentence by design), corrected before the final run.
+- Pipeline proof (PINK, `job-scope-pipeline-gate.test.ts.txt`, 19): no options, no `jobScope`, null, the bare selection,
+  an object literal with the issued fields, a spread copy, `structuredClone`, a JSON copy → `ERR_JOB_SCOPE_REQUIRED` in
+  the single and the batch pipeline with the spy provider never asked; the issued scope reaches it once; the issued scope
+  is deeply frozen; a padded variant of a stored id is never issued (no normalisation on the backend either).
+- Worker proof (PINK, extended, 3): the 8 jobs past the route as in §3.28; inside the gate the active scope is the job's
+  own selection, outside a claimed job `requireActiveJobScope` refuses with the owner's sentence; a job whose pool is
+  archived during attempt 1 is claimed again and ends attempt 2 terminally with `ERR_JOB_SCOPE_INVALID` before the
+  processor (re-validation on every claim). The static binding now also requires both Gemini providers of the worker to
+  ask for the active scope before `execute`, and the legacy analysis to pass `jobScope: requireActiveJobScope()`.
+- Script proof (PINK, `job-scope-scripts.postgres.test.ts.txt`, PINK's own network sentinel `pink-net-sentinel.cjs.txt`,
+  positive control: the Gemini SDK call is recorded and refused): 23 scripts found by PINK's own sweep (GELB's 20 plus
+  `debug.js`, `debug2.js`, `test-full.mjs`), each as its own process, worktree without `.env.local`, dummy key; cases no
+  selection, unknown pool, DRAFT pool, role not in pool → 92 runs, **0 network attempts**; all 20 gated scripts exit 3
+  with "ERR_JOB_SCOPE_*: Bitte wählen Sie einen Job aus.". No valid selection was given to any script (no Gemini).
+- Preservation: SSR render probe (26 cases) of the probe tree byte-identical to `c146f05` (`027abf3` touches no `app/`).
+- Regression under the sentinel: tsc 0 (with GELB's diff to `pdf-path.postgres.test.ts` applied on the probe only; with it
+  the PDF path is green 2/2 — without it, it fails exactly at the pipeline gate, as GELB reports);
+  38 files: 30 green / 202 tests, 8 live files skipped (no key); 0 network attempts.
+
+Observations for the owner (no deviation from the mandate):
+1. O-G05-INFLIGHT: removing the job does not cancel an analysis already submitted under it; that job keeps its stored
+   scope, and the worker re-validates it at claim. While it runs, the dock shows the running state instead of the sentence
+   (ANALYZE stays disabled).
+2. O-SCRIPTS-UNGATED: `debug.js`, `debug2.js` (pipeline with a mock provider; neither loads — `esbuild-register` is not
+   installed; the pipeline gate would refuse them anyway) and `test-full.mjs` (constructs an SDK client, sends nothing)
+   carry no script gate; none can reach Gemini today. `debug2.js` writes `output2.txt` into the working directory.
+3. Embeddings (`lib/career/embeddings/gemini.ts`) are still imported by no route, script or worker.
+4. :3017 (`5898def`) and the demo on :41831 (`337033e`) run without this gate (GELB's note); unchanged without the owner.
+
+Boundary B-PINK-WALK-OWNERSHIP: GELB's diff to `pdf-path.postgres.test.ts` (`jobScope: resolveTestJobScope()`) and the
+§3.28 edit are taken by PINK when GELB's gate is integrated into this branch; until then the three new proofs stay evidence.
+The SYNTX walk on `frontend/job-field` remains 0/3 from `ca11794` (rebinding pending, owner), not from this work.
+
 ## 4. Boundaries and findings for coordination
 
 - F-JP-1 (closed in `b782793`): `JOB_POOL_CONNECTION.md` §4 followed the per-role `JOB_POOL_JSON_ROLE` design;

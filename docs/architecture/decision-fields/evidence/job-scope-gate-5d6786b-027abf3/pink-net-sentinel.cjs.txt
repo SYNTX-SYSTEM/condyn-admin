@@ -1,0 +1,38 @@
+// PINK network sentinel (independent of GELB's): every outbound connection that is not loopback or a unix socket is
+// recorded in PINK_NET_LOG and refused before a byte leaves the process. Loopback stays open (disposable Postgres).
+const fs = require("node:fs");
+const net = require("node:net");
+const tls = require("node:tls");
+const dns = require("node:dns");
+const LOG = process.env.PINK_NET_LOG;
+const loop = (host) => host === undefined || host === null || host === "" || host === "localhost" || host === "::1" || /^127\./.test(String(host));
+const record = (kind, target) => { if (LOG) fs.appendFileSync(LOG, `${process.pid} ${kind} ${target}\n`); };
+const refuse = (kind, target) => { record(kind, target); const error = new Error(`PINK_NET_SENTINEL: outbound ${kind} to ${target} refused`); error.code = "PINK_NET_REFUSED"; throw error; };
+const originalConnect = net.Socket.prototype.connect;
+net.Socket.prototype.connect = function (...args) {
+  const first = args[0];
+  let host, port, path;
+  if (first && typeof first === "object" && !Array.isArray(first)) { host = first.host; port = first.port; path = first.path; }
+  else if (typeof first === "string" && isNaN(Number(first))) path = first; else { port = first; host = typeof args[1] === "string" ? args[1] : undefined; }
+  if (path === undefined && !loop(host)) refuse("connect", `${host}:${port}`);
+  return originalConnect.apply(this, args);
+};
+const originalTls = tls.connect;
+tls.connect = function (...args) {
+  const first = args[0]; const host = first && typeof first === "object" ? (first.host ?? first.servername) : args[1];
+  if (!loop(host)) refuse("tls", String(host));
+  return originalTls.apply(this, args);
+};
+for (const name of ["lookup", "resolve", "resolve4", "resolve6"]) {
+  const original = dns[name];
+  dns[name] = function (host, ...rest) { if (!loop(host)) refuse(`dns.${name}`, String(host)); return original.call(this, host, ...rest); };
+  if (dns.promises && dns.promises[name]) { const p = dns.promises[name]; dns.promises[name] = function (host, ...rest) { if (!loop(host)) refuse(`dns.promises.${name}`, String(host)); return p.call(this, host, ...rest); }; }
+}
+if (typeof globalThis.fetch === "function") {
+  const originalFetch = globalThis.fetch;
+  globalThis.fetch = function (input, init) {
+    const url = new URL(typeof input === "string" ? input : input instanceof URL ? input.href : input.url);
+    if (!loop(url.hostname)) { record("fetch", url.href); return Promise.reject(Object.assign(new Error(`PINK_NET_SENTINEL: fetch ${url.origin} refused`), { code: "PINK_NET_REFUSED" })); }
+    return originalFetch.call(this, input, init);
+  };
+}
