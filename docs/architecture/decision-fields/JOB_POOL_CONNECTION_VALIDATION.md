@@ -1042,9 +1042,12 @@ Remaining deviations on `c146f05` + `2e61a2b`:
 1. G-05: no UI control removes a selected job — not part of any owner mandate; open owner decision.
 2. G-10: a role id padded with spaces ("  role pink padded  ", admitted by the pool schema): the frontend refuses it
    (`parseJobScope` requires a trimmed id → indicator NONE, the role cannot be selected), the backend accepts it (202).
-   Safe direction for the invariant (no request without a scope), but a stored, ACTIVE, mapped role is unselectable.
-   One rule is needed on both sides: GRÜN to accept the schema's id as stored, or the pool upload (GELB) to refuse or
-   normalize padded ids.
+   Safe direction for the invariant (no request without a scope), but a stored, ACTIVE, mapped role is unselectable,
+   and silently so: the action "◎ SELECT AS JOB" does nothing, because `selectJobScope` returns without feedback when
+   `jobScopeFromParams` cannot parse the id (GRÜN's precision, confirmed in the `c146f05` code; not walked). One rule is
+   needed on both sides: GRÜN to accept the schema's id as stored ("variant A", proposed by GRÜN), or the pool upload
+   (GELB) to refuse or normalize padded ids. Both parties have put the choice to the owner and change nothing without
+   the owner's release. GELB acknowledged the edit of PINK's `pdf-path.postgres.test.ts` as a boundary violation.
 
 Boundary B-PINK-WALK-OWNERSHIP (second instance): `841baab` edits PINK's `test/job-pool-validation/pdf-path.postgres.test.ts`
 (uploads a pool and sends `jobScope` so the PDF path passes the new gate; no assertion weakened). Taken by PINK only in
