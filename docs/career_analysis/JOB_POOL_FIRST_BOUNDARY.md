@@ -239,3 +239,14 @@ Nicht betroffen: Lese-Routen und SIL-Dienste rufen weder die Pipeline noch Gemin
 ### 11.5 PINK
 
 `test/job-pool-validation/pdf-path.postgres.test.ts` ruft die Pipeline direkt auf und braucht jetzt `jobScope`. Die Datei gehört PINK. Die Änderung geht als Diff an PINK und ist nicht Teil dieses Commits. Bis PINK sie übernimmt, schlägt diese Datei auf diesem Branch beim Typecheck und beim Aufruf fehl.
+
+### 11.6 Gesamtsuite auf 027abf3
+
+Ohne e2e, auf einer Wegwerf-DB: 2408 bestanden, 32 fehlgeschlagen, 8 übersprungen. Übersprungen sind die Live- und Diagnosetests ohne Freigabe-Variable. Zum Vergleich 2e61a2b: 2400 bestanden, 30 fehlgeschlagen.
+
+Die 32 Fehlschläge:
+- **27, identisch zum Ausgangsstand:** lifecycle-concurrency-idempotency, lifecycle-postgres-persistence, lifecycle-recovery und policy-activation-atomicity.
+- **3 in outcome-valence-feedback-context-revision-postgres:** reihenfolgeabhängig und schon vorher bekannt; einzeln 8/8 grün.
+- **2 in PINKs `pdf-path.postgres.test.ts`:** Sie scheitern genau an der neuen Grenze (`TERMINAL_ERROR: Bitte wählen Sie einen Job aus.`). Das bleibt so, bis PINK den Diff übernimmt (§11.5).
+
+`career-worker-config-validation` ist reihenfolgeabhängig. Einzeln scheitert die Datei auf 2e61a2b und auf 027abf3 gleich (Tabelle fehlt); in diesem Lauf war sie grün.
