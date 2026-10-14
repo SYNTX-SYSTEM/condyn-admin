@@ -201,10 +201,12 @@ describe("Job Pool workflow over HTTP against the production routes", () => {
     expect(result.state).toBe("INACTIVE_POOL");
   }, 60_000);
 
-  it("server-renders the field-state strip on the capability field and the SYNTX field for an exact upload, never a dock without an exact DCTXREV", async () => {
+  it("server-renders the field-state strip and opens on the SYNTX field (Job Pool first, Capability gated without a job), also for an exact upload, never a dock without an exact DCTXREV", async () => {
     const html = await (await fetch(`${base()}/career/demo?analysisId=${world.analysisId}`)).text();
     expect(html).toContain('data-testid="job-pool-panel-toggle"');
-    expect(html).not.toContain('data-testid="syntx-field"');
+    expect(html).toMatch(/data-testid="syntx-field"[^>]*data-field-grammar="SYNTX_FIELD_V1"/);
+    expect(html).toContain('data-field-focus="FIELD"');
+    expect(html).toContain('data-capability-gate="AWAITING_JOB"');
     expect(html).not.toContain("hr-decision-loop-dock");
     const open = await (await fetch(`${base()}/career/demo?analysisId=${world.analysisId}&jobPoolUploadId=${uploadedId}`)).text();
     expect(open).toMatch(/data-testid="syntx-field"[^>]*data-field-grammar="SYNTX_FIELD_V1"/);
@@ -301,12 +303,14 @@ describe.skipIf(playwrightModule === null)("SYNTX field in a real browser: FIELD
     pageErrors = [];
     const page = await openPage(`/career/demo?analysisId=${world.analysisId}`);
     expect(await page.locator('[data-testid^="hr-decision-loop"]').count()).toBe(0);
-    expect(await page.getByTestId("semantic-career-intelligence-field").getAttribute("data-field-focus")).toBe("CAPABILITY");
+    // Job Pool first (owner "JOB POOL FIRST / CAPABILITY GATE", 2026-10-14): the application opens in the field; the Capability Field is
+    // gated until a job is selected; selecting the active field changes nothing (the ground state is not written to the URL).
+    expect(await page.getByTestId("semantic-career-intelligence-field").getAttribute("data-field-focus")).toBe("FIELD");
+    expect(await page.getByTestId("semantic-career-intelligence-field").getAttribute("data-capability-gate")).toBe("AWAITING_JOB");
     expect(await page.getByTestId("field-focus-job-btn").count()).toBe(0);
     await page.getByTestId("job-pool-panel-toggle").click();
-    // Entering the field is a change of field state: the planetarium recedes, the field opens, the URL names the focus.
     await page.locator('[data-testid="semantic-career-intelligence-field"][data-field-focus="FIELD"]').waitFor({ timeout: 30_000 });
-    expect(params(page).get("focus")).toBe("FIELD");
+    expect(params(page).get("focus")).toBeNull();
     await field(page).waitFor({ timeout: 30_000 });
     expect(await field(page).getAttribute("data-field-grammar")).toBe("SYNTX_FIELD_V1");
     expect(await field(page).getAttribute("data-observation-kind")).toBe("FIELD");
@@ -603,6 +607,21 @@ describe.skipIf(playwrightModule === null)("SYNTX field in a real browser: FIELD
     // The matching read is unchanged by the walk (no selection mutates stored analysis).
     const after = await fetchJobPoolMatches(newId, world.analysisId, serverFetch);
     expect(after).toEqual(delivered);
+    // Capability gate (owner "JOB POOL FIRST / CAPABILITY GATE", 2026-10-14): without a selected job the way to the Capability Field is
+    // closed (exit and selector disabled); selecting the role as the job opens it, and the job is kept across the field change.
+    expect(await page.getByTestId("syntx-exit-btn").isDisabled()).toBe(true);
+    expect(await page.getByTestId("field-focus-capability-btn").isDisabled()).toBe(true);
+    await page.getByTestId(`syntx-organization-${organizationId}`).focus();
+    await page.keyboard.press("Enter");
+    await page.locator('[data-testid="syntx-field"][data-observation-kind="ORGANIZATION"]').waitFor({ timeout: 10_000 });
+    await page.getByTestId(`syntx-role-${T.roleId}`).focus();
+    await page.keyboard.press("Enter");
+    await page.locator(`[data-testid="syntx-field"][data-observation-kind="ROLE"][data-observation-id="${T.roleId}"]`).waitFor({ timeout: 10_000 });
+    await page.getByTestId("syntx-job-scope-select").click();
+    await page.locator('[data-testid="semantic-career-intelligence-field"][data-capability-gate="OPEN"]').waitFor({ timeout: 30_000 });
+    expect(params(page).get("jobScopeRoleId")).toBe(T.roleId);
+    await page.getByTestId("syntx-path-FIELD").click();
+    await page.locator('[data-testid="syntx-field"][data-observation-kind="FIELD"]').waitFor({ timeout: 10_000 });
     // Exit to the ground state through the field; the explicit exit survives a reload (B-POOL-INITIAL-FOCUS).
     await page.getByTestId("syntx-exit-btn").click();
     await page.locator('[data-testid="semantic-career-intelligence-field"][data-field-focus="CAPABILITY"]').waitFor({ timeout: 30_000 });
@@ -611,6 +630,7 @@ describe.skipIf(playwrightModule === null)("SYNTX field in a real browser: FIELD
     await page.reload({ waitUntil: "domcontentloaded" });
     await page.locator('[data-testid="semantic-career-intelligence-field"][data-field-focus="CAPABILITY"]').waitFor({ timeout: 60_000 });
     expect(await field(page).count()).toBe(0);
+    expect(await page.getByTestId("job-scope-indicator").getAttribute("data-job-scope-state")).toBe("VALID");
     expect(pageErrors).toEqual([]);
     await page.close();
   }, 400_000);

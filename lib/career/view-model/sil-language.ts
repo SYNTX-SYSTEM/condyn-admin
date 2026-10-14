@@ -473,7 +473,7 @@ export const SIL_COPY = {
       title: "JOB FIELD",
       toggle: "⬡ JOB FIELD",
       /** The field selector of the application shell: two equal fields of one system. */
-      selector: { group: "SYNTX FIELD", capability: "◈ CAPABILITY FIELD" },
+      selector: { group: "SYNTX FIELD", capability: "◈ CAPABILITY FIELD", capabilityGated: "Select a job in the Job Field first (open a role, then SELECT AS JOB)" },
       exit: "← CAPABILITY FIELD",
       observation: { FIELD: "FIELD", ORGANIZATION: "ORGANIZATION", ROLE: "ROLE", REQUIREMENT: "REQUIREMENT" },
       returnLabel: "RETURN",
@@ -1086,7 +1086,7 @@ export const SIL_COPY = {
     syntx: {
       title: "JOB-FELD",
       toggle: "⬡ JOB-FELD",
-      selector: { group: "SYNTX-FELD", capability: "◈ CAPABILITY-FELD" },
+      selector: { group: "SYNTX-FELD", capability: "◈ CAPABILITY-FELD", capabilityGated: "Zuerst im Job-Feld einen Job wählen (Rolle öffnen, dann ALS JOB WÄHLEN)" },
       exit: "← CAPABILITY-FELD",
       observation: { FIELD: "FELD", ORGANIZATION: "ORGANISATION", ROLE: "ROLLE", REQUIREMENT: "ANFORDERUNG" },
       returnLabel: "ZURÜCK",

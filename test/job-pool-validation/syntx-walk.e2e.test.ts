@@ -859,6 +859,21 @@ describe.skipIf(playwrightModule === null)("PINK Q-12: SYNTX field walk FIELD â†
     pass("Q-10", undefined, "sign enums, identity, proof resolution and TRQREV database resolution bound at every observation point (Q-0x-signs.json)");
 
     // ---- Q-11 Capability Field and the carried contracts (R10, R11; E-07, H-02, D-10, B-POOL-INITIAL-FOCUS) ----
+    // Capability gate (owner "JOB POOL FIRST / CAPABILITY GATE", 2026-10-14): closed without a selected job; one role is selected as
+    // the job (the walk's sign sets above are complete), then the way to the Capability Field opens.
+    expect(await page.getByTestId("syntx-exit-btn").isDisabled()).toBe(true);
+    expect(await page.getByTestId("field-focus-capability-btn").isDisabled()).toBe(true);
+    const gateRole = view.canonicalMapping.roles[0];
+    await page.getByTestId(`syntx-organization-${gateRole.poolOrganizationId}`).focus();
+    await page.keyboard.press("Enter");
+    await page.locator('[data-testid="syntx-field"][data-observation-kind="ORGANIZATION"]').waitFor({ timeout: 10_000 });
+    await page.getByTestId(`syntx-role-${gateRole.poolRoleId}`).focus();
+    await page.keyboard.press("Enter");
+    await page.locator(`[data-testid="syntx-field"][data-observation-kind="ROLE"][data-observation-id="${gateRole.poolRoleId}"]`).waitFor({ timeout: 10_000 });
+    await page.getByTestId("syntx-job-scope-select").click();
+    await page.locator('[data-testid="semantic-career-intelligence-field"][data-capability-gate="OPEN"]').waitFor({ timeout: 30_000 });
+    await page.getByTestId("syntx-path-FIELD").click();
+    await page.locator('[data-testid="syntx-field"][data-observation-kind="FIELD"]').waitFor({ timeout: 10_000 });
     await page.getByTestId("syntx-exit-btn").click();
     await page.locator('[data-testid="semantic-career-intelligence-field"][data-field-focus="CAPABILITY"]').waitFor({ timeout: 30_000 });
     expect(await root.count()).toBe(0);

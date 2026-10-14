@@ -28,8 +28,8 @@ export const SYNTX_FIELD_SELECTOR_CSS = `
 @keyframes syntxFieldSweepLeft { from { transform: translateX(160%); opacity: 0; } 25% { opacity: 1; } to { transform: translateX(-60%); opacity: 0; } }
 [data-testid="field-focus-strip"] button::before { content: none; display: none; }
 [data-testid="field-focus-strip"] button:active { transform: none; }
-[data-testid="field-focus-strip"] button[data-field-focus-active="false"]:hover { color: rgba(226, 244, 252, 0.94); border-color: rgba(var(--sx-tone), 0.3); background: rgba(var(--sx-tone), 0.06); }
-[data-testid="field-focus-strip"] button[data-field-focus-active="false"]:hover > [data-sx-lamp] { border-color: rgba(var(--sx-tone), 0.8); }
+[data-testid="field-focus-strip"] button[data-field-focus-active="false"]:not(:disabled):hover { color: rgba(226, 244, 252, 0.94); border-color: rgba(var(--sx-tone), 0.3); background: rgba(var(--sx-tone), 0.06); }
+[data-testid="field-focus-strip"] button[data-field-focus-active="false"]:not(:disabled):hover > [data-sx-lamp] { border-color: rgba(var(--sx-tone), 0.8); }
 [data-testid="field-focus-strip"] button:focus-visible { outline: 1px solid rgba(var(--sx-tone), 0.85); outline-offset: 3px; }
 [data-testid="job-scope-indicator"]:hover { border-color: rgba(var(--sx-tone), 0.55) !important; background: linear-gradient(180deg, rgba(14, 34, 50, 0.95), rgba(5, 12, 22, 0.96)) !important; }
 [data-testid="job-scope-indicator"]:focus-visible { outline: 1px solid rgba(var(--sx-tone), 0.85); outline-offset: 3px; }
@@ -80,7 +80,7 @@ function SyntxJobScopeIndicator({ scope, onActivate }: { scope: SyntxJobScopePre
   );
 }
 
-export function SyntxFieldSelector({ focus, groupLabel, capabilityLabel, jobLabel, onSelect, jobScope, onJobScopeActivate }: { focus: SyntxFieldFocus; groupLabel: string; capabilityLabel: string; jobLabel: string; onSelect(next: SyntxFieldFocus): void; jobScope?: SyntxJobScopePresentation; onJobScopeActivate?(): void }) {
+export function SyntxFieldSelector({ focus, groupLabel, capabilityLabel, jobLabel, onSelect, jobScope, onJobScopeActivate, capabilityGated = false, capabilityGatedHint }: { focus: SyntxFieldFocus; groupLabel: string; capabilityLabel: string; jobLabel: string; onSelect(next: SyntxFieldFocus): void; jobScope?: SyntxJobScopePresentation; onJobScopeActivate?(): void; /** Capability gate closed (no VALID job scope): the Capability option cannot be selected. */ capabilityGated?: boolean; capabilityGatedHint?: string }) {
   const buttons = useRef<Record<SyntxFieldFocus, HTMLButtonElement | null>>({ CAPABILITY: null, FIELD: null });
   const options: Array<{ id: string; focus: SyntxFieldFocus; label: string }> = [
     { id: "field-focus-capability-btn", focus: "CAPABILITY", label: capabilityLabel },
@@ -88,7 +88,7 @@ export function SyntxFieldSelector({ focus, groupLabel, capabilityLabel, jobLabe
   ];
   /** The sweep belongs to a field change, never to the first paint. */
   const switched = useRef(false);
-  const select = (next: SyntxFieldFocus) => { if (next !== focus) { switched.current = true; onSelect(next); } };
+  const select = (next: SyntxFieldFocus) => { if (next === "CAPABILITY" && capabilityGated) return; if (next !== focus) { switched.current = true; onSelect(next); } };
   const onKeyDown = (event: React.KeyboardEvent) => {
     const next: SyntxFieldFocus | null = event.key === "ArrowLeft" || event.key === "Home" ? "CAPABILITY" : event.key === "ArrowRight" || event.key === "End" ? "FIELD" : null;
     if (next === null) return;
@@ -119,6 +119,7 @@ export function SyntxFieldSelector({ focus, groupLabel, capabilityLabel, jobLabe
       {options.map((option, index) => {
         const active = focus === option.focus;
         const tone = TONE[option.focus];
+        const gated = option.focus === "CAPABILITY" && capabilityGated;
         return (
           <React.Fragment key={option.id}>
             {index > 0 && (
@@ -135,10 +136,14 @@ export function SyntxFieldSelector({ focus, groupLabel, capabilityLabel, jobLabe
               ref={element => { buttons.current[option.focus] = element; }}
               data-testid={option.id}
               data-field-focus-active={active ? "true" : "false"}
+              data-field-gate={option.focus === "CAPABILITY" ? (capabilityGated ? "AWAITING_JOB" : "OPEN") : undefined}
               aria-pressed={active}
+              disabled={gated || undefined}
+              aria-disabled={gated || undefined}
+              title={gated ? capabilityGatedHint : undefined}
               onClick={() => select(option.focus)}
               onKeyDown={onKeyDown}
-              style={{ "--sx-tone": tone, position: "relative", display: "inline-flex", alignItems: "center", gap: "9px", padding: "10px 20px 10px 15px", width: "214px", justifyContent: "center", borderRadius: "999px", border: `1px solid ${active ? `rgba(${tone}, 0.8)` : "transparent"}`, background: active ? `radial-gradient(120% 170% at 50% 0%, rgba(${tone}, 0.32), rgba(${tone}, 0.1) 62%, rgba(${tone}, 0.04))` : "transparent", boxShadow: active ? `0 0 22px rgba(${tone}, 0.3), 0 0 46px rgba(${tone}, 0.1), inset 0 1px 0 rgba(220, 250, 255, 0.28), inset 0 0 16px rgba(${tone}, 0.14)` : "none", color: active ? "#f2fdff" : "rgba(160, 196, 214, 0.66)", textShadow: active ? `0 0 12px rgba(${tone}, 0.6)` : "none", fontFamily: SIL_TOKENS.typography.mono, fontSize: "11px", fontWeight: 700, letterSpacing: "2.2px", textTransform: "uppercase", whiteSpace: "nowrap", cursor: active ? "default" : "pointer", transition: "background 0.45s ease, color 0.45s ease, box-shadow 0.45s ease, border-color 0.45s ease, text-shadow 0.45s ease" } as React.CSSProperties}
+              style={{ "--sx-tone": tone, position: "relative", display: "inline-flex", alignItems: "center", gap: "9px", padding: "10px 20px 10px 15px", width: "214px", justifyContent: "center", borderRadius: "999px", border: `1px solid ${active ? `rgba(${tone}, 0.8)` : "transparent"}`, background: active ? `radial-gradient(120% 170% at 50% 0%, rgba(${tone}, 0.32), rgba(${tone}, 0.1) 62%, rgba(${tone}, 0.04))` : "transparent", boxShadow: active ? `0 0 22px rgba(${tone}, 0.3), 0 0 46px rgba(${tone}, 0.1), inset 0 1px 0 rgba(220, 250, 255, 0.28), inset 0 0 16px rgba(${tone}, 0.14)` : "none", color: active ? "#f2fdff" : "rgba(160, 196, 214, 0.66)", textShadow: active ? `0 0 12px rgba(${tone}, 0.6)` : "none", fontFamily: SIL_TOKENS.typography.mono, fontSize: "11px", fontWeight: 700, letterSpacing: "2.2px", textTransform: "uppercase", whiteSpace: "nowrap", cursor: active ? "default" : gated ? "not-allowed" : "pointer", opacity: gated ? 0.42 : 1, transition: "background 0.45s ease, color 0.45s ease, box-shadow 0.45s ease, border-color 0.45s ease, text-shadow 0.45s ease, opacity 0.45s ease" } as React.CSSProperties}
             >
               <span data-sx-lamp aria-hidden="true" style={{ width: "7px", height: "7px", boxSizing: "border-box", borderRadius: "50%", flexShrink: 0, border: `1px solid rgba(${tone}, ${active ? 1 : 0.38})`, background: active ? `rgb(${tone})` : "transparent", boxShadow: active ? `0 0 8px rgba(${tone}, 0.95), 0 0 2px #ffffff` : "none", transition: "background 0.45s ease, box-shadow 0.45s ease, border-color 0.45s ease" }} />
               {option.label}

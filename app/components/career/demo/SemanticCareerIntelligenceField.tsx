@@ -280,7 +280,9 @@ export function SemanticCareerIntelligenceField({
   // Job Connection: one workflow read shared by the control panel and the Job Field focus (presentation only).
   const jobPoolAnalysisSource = describeAnalysisSource(jobState === "SUCCEEDED" ? job.state.resultAnalysisId : null, analysisId ?? null);
   const jobPoolWorkflow = useJobPoolWorkflow({ analysisId: jobPoolAnalysisSource.kind === "NONE" ? null : jobPoolAnalysisSource.analysisId, initialJobPoolUploadId: jobPoolUploadId ?? null });
-  const [fieldFocus, setFieldFocus] = useState<"CAPABILITY" | "FIELD">(initialFieldFocus ?? (jobPoolUploadId && jobPoolUploadId.length > 0 ? "FIELD" : "CAPABILITY"));
+  /** The requested field. Job Pool first (owner "JOB POOL FIRST / CAPABILITY GATE"): the Job Field is the ground state; CAPABILITY is
+   *  only requested here — it becomes the active field only while the job scope is VALID (`activeFieldFocus`, below). */
+  const [fieldFocus, setFieldFocus] = useState<"CAPABILITY" | "FIELD">(initialFieldFocus ?? "FIELD");
   const [observation, setObservation] = useState<SyntxObservation>(() => observationFromParams(initialJobOrganizationId, initialJobRoleId, initialJobRequirementId));
   const replaceUrlParam = (name: string, value: string | null) => {
     if (typeof window === "undefined" || typeof window.history?.replaceState !== "function") return;
@@ -290,7 +292,7 @@ export function SemanticCareerIntelligenceField({
       window.history.replaceState(window.history.state, "", url.toString());
     } catch { /* navigation state is a convenience, never a requirement */ }
   };
-  /** The ground state is written explicitly (focus=CAPABILITY) whenever an exact upload is in the URL: otherwise a reload would reopen the Pool Field after an explicit exit (B-POOL-INITIAL-FOCUS). */
+  /** The field is always written explicitly (focus=FIELD / focus=CAPABILITY), so a reload reopens the field that was chosen (B-POOL-INITIAL-FOCUS). */
   const FIELD_LEVEL: SyntxObservation = { kind: "FIELD", organizationId: null, roleId: null, requirementId: null, apertureSignId: null };
   const writeObservation = (next: SyntxObservation) => {
     replaceUrlParam("jobOrganizationId", next.kind === "FIELD" ? null : next.organizationId);
@@ -300,11 +302,12 @@ export function SemanticCareerIntelligenceField({
   /** Field changes since mount: each one is crossed by one calm veil (the shell's transition; none on the first paint). */
   const [fieldSwitches, setFieldSwitches] = useState(0);
   const switchFieldFocus = (next: "CAPABILITY" | "FIELD") => {
-    if (next !== fieldFocus) setFieldSwitches(count => count + 1);
+    // Capability gate: without a VALID job scope the Capability Field cannot be entered (every path: selector, keys, exit, return).
+    if (next === "CAPABILITY" && jobScopeValidation.state !== "VALID") return;
+    if (next !== activeFieldFocus) setFieldSwitches(count => count + 1);
     setFieldFocus(next);
     onFieldFocusChange?.(next);
-    const selectedUpload = jobPoolWorkflow.selectedJobPoolUploadId ?? jobPoolUploadId ?? null;
-    replaceUrlParam("focus", next === "CAPABILITY" ? (selectedUpload ? "CAPABILITY" : null) : next);
+    replaceUrlParam("focus", next);
     if (next === "CAPABILITY") { setObservation(FIELD_LEVEL); writeObservation(FIELD_LEVEL); }
   };
   /** Selection reorganises the field and is reversible; the observation point is written to the URL (the aperture never is). */
@@ -339,6 +342,14 @@ export function SemanticCareerIntelligenceField({
         : { state: "NONE", label: jobScopeCopy.label, title: jobScopeCopy.none, detail: null, hint: jobScopeCopy.choose };
   /** ANALYZE is admitted only with a VALID scope; otherwise the owner's sentence stands at the trigger, verbatim. */
   const analyzeBlockedMessage = jobScopeValidation.state === "VALID" ? null : JOB_SCOPE_REQUIRED_MESSAGE;
+  /** Capability gate: open only for a VALID job scope (a loaded, ACTIVE, mapped pool and one of its roles). Closed — no job, still
+   *  checking, or not valid — the Job Field is the active field whatever was requested; the request is kept, so the field returns
+   *  to Capability as soon as the job is valid again. */
+  const capabilityGateOpen = jobScopeValidation.state === "VALID";
+  const activeFieldFocus: "CAPABILITY" | "FIELD" = fieldFocus === "CAPABILITY" && capabilityGateOpen ? "CAPABILITY" : "FIELD";
+  /** The shell's brand follows the active field: directly on a switch (above), and here when the gate itself moves the field (a job
+   *  becoming VALID after a reload with focus=CAPABILITY, or the selected job turning invalid). */
+  useEffect(() => { onFieldFocusChange?.(activeFieldFocus); }, [activeFieldFocus]);
   const [inferenceTelemetry, setInferenceTelemetry] = useState<any>(initialAnalysisState?.inferenceTelemetry ?? null);
   const [lastStagedDocs, setLastStagedDocs] = useState<any[]>([]);
   const [isCodexOpen, setIsCodexOpen] = useState(false);
@@ -598,7 +609,8 @@ export function SemanticCareerIntelligenceField({
       data-sil-mode={canonicalSilPresentation?.mode ?? "PRE_CANONICAL_DISCOVERY"}
       data-hr-decision-loop-context={careerDecisionContextRevisionId ?? ""}
       data-job-pool-upload={jobPoolUploadId ?? ""}
-      data-field-focus={fieldFocus}
+      data-field-focus={activeFieldFocus}
+      data-capability-gate={capabilityGateOpen ? "OPEN" : "AWAITING_JOB"}
       data-camera-scale={cameraScale}
       onClick={() => {
         if (graphFocus) {
@@ -1500,7 +1512,7 @@ export function SemanticCareerIntelligenceField({
       )}
 
       {/* FIELD focus: the SYNTX semiontic field — the selected Job Pool as the relational field; the capability planetarium recedes underneath (still rendered, not interactive). */}
-      {fieldFocus === "FIELD" && (
+      {activeFieldFocus === "FIELD" && (
         <SyntxField
           workflow={jobPoolWorkflow}
           analysisSource={jobPoolAnalysisSource}
@@ -1511,12 +1523,16 @@ export function SemanticCareerIntelligenceField({
           locale={locale}
           jobScope={jobScope}
           onSelectJobScope={selectJobScope}
+          capabilityAvailable={capabilityGateOpen}
+          capabilityGatedHint={t.syntx.selector.capabilityGated}
         />
       )}
 
       {/* SYNTX field selector (application shell): the two fields of one system, exactly one active, centred in the upper area. */}
       <SyntxFieldSelector
-        focus={fieldFocus}
+        focus={activeFieldFocus}
+        capabilityGated={!capabilityGateOpen}
+        capabilityGatedHint={t.syntx.selector.capabilityGated}
         groupLabel={t.syntx.selector.group}
         capabilityLabel={t.syntx.selector.capability}
         jobLabel={t.syntx.toggle}

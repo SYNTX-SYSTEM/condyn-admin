@@ -1,0 +1,22 @@
+PASS 1a opens in the Job Field
+PASS 1b gate AWAITING_JOB
+PASS 1c header = Job Field brand (DLL)
+PASS 1d Capability option disabled + hint
+PASS 1e exit to Capability disabled
+PASS 1f Capability manifestation hidden (not interactive)
+PASS 1g forced click on Capability changes nothing
+PASS 1h ArrowLeft / Home on the selector changes nothing
+PASS 1h' Home changes nothing
+PASS 1i Escape at FIELD stays in the Job Field
+PASS 2a focus=CAPABILITY without a job → Job Field
+PASS 2b focus=CAPABILITY with an invalid job → Job Field, gated
+PASS 3a pool loaded, no job yet: still gated
+PASS 3b role observed (navigation) is not a selection: still gated
+PASS 3c job selected → gate OPEN, Capability option enabled, still in the Job Field
+PASS 3d Capability entered; header = CONDYN; job kept — brand immediately CONDYN, after 600 ms CONDYN, scope VALID
+PASS 3e URL: focus=CAPABILITY + job scope — ?jobPoolUploadId=JPOOL_30F7145E21F34BEF0FCE510DFC75837B&jobScopePoolUploadId=JPOOL_30F7145E21F34BEF0FCE510DFC75837B&jobScopeRoleId=role_fullstack&focus=CAPABILITY
+PASS 3f back to the Job Field: job kept, gate OPEN, header DLL
+PASS 3g exit button reaches Capability with a job
+PASS 4 reload: Capability restored with the valid job
+PASS pageerrors
+PASS 5 1280×720 opening: Job Field, gated

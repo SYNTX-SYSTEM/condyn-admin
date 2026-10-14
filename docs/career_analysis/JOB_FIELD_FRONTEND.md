@@ -1110,6 +1110,42 @@ Render identity: `render-identity.txt`, `scripts/render.tsx`. PINK's live suite 
 now uploads and selects the pool and selects a job before ANALYZE and asserts the request's `jobScope`; not run here (it calls the
 real model).
 
+#### 13.2.24 Job Pool first; the Capability Field gated by the selected job (owner "SFE — JOB POOL FIRST / CAPABILITY GATE", 2026-10-14)
+
+On cb3d33f. Only this change; design, dialogs, Gemini and Capability Core untouched.
+
+- **Reconstruction (forward sweep).** The field was decided in three places: the field's `fieldFocus` default (CAPABILITY unless an
+  upload id was in the URL), the dashboard's brand default (the same rule) and `page.tsx` (`focus` from the URL). The Capability Field
+  was reached by four paths: the selector (click), its keys (← / Home), the Job Field's `syntx-exit-btn`, and a URL `focus=CAPABILITY`.
+  The selected job (`jobScope`, §13.2.23) was already independent of the field and the observation point.
+- **Inverse sweep.** The Capability Field depends on: a VALID job scope ← a role that is part of the canonical mapping ← an ACTIVE,
+  mapped upload ← an explicitly selected pool. Navigation to a role is not a selection; a pool alone is not a job.
+- **Change.** One derived value: `activeFieldFocus` is CAPABILITY only when CAPABILITY is requested **and** the job scope is VALID
+  (`capabilityGateOpen`); otherwise the Job Field. The default request is the Job Field (Job Pool first). All four paths go through
+  `switchFieldFocus`, which refuses CAPABILITY while the gate is closed; the selector's Capability option and `syntx-exit-btn` are
+  disabled (`disabled`, `aria-disabled`, `title` hint, the existing inactive look at .42) with `data-field-gate="AWAITING_JOB"`
+  (`OPEN` when admitted); the field root carries `data-capability-gate`. A requested Capability Field is kept while the gate is
+  closed (still checking after a reload, or the job turned invalid) and is entered as soon as the job is VALID. The URL always names
+  the chosen field (`focus=FIELD` / `focus=CAPABILITY`). The brand follows the active field directly on a switch and, for a
+  gate-driven change, through one effect. The Capability Field stays mounted underneath (hidden by the existing exclusivity rule), so
+  staged sources are never lost.
+- **Kept.** The selected job across both fields and every depth (unchanged from §13.2.23); the selector contract (two buttons,
+  `data-field-focus-active`, `aria-pressed`); the exclusivity rule; every manifestation component (no file of the planetarium, cosmos,
+  deep focus or manifestation shells changed).
+- **Not in scope (open, owner).** There is no control that removes a selected job (PINK G-05); with the gate, a removal would also
+  close the Capability Field again.
+
+Proof (review lab :41803, mock worker, no Gemini): `evidence/job-pool/capability-gate/` — browser walk 22/22 (`walk-results.txt`):
+opening in the Job Field with the DLL header, gate AWAITING_JOB, Capability option and exit disabled, the Capability manifestation
+hidden; forced click, ←, Home and Escape change nothing; `focus=CAPABILITY` without a job or with an invalid one stays in the Job
+Field; a loaded pool and an observed role do not open the gate, SELECT AS JOB does (still in the Job Field); Capability entered with
+the CONDYN header in the same frame, the job kept; back and forth with the job kept; a reload with `focus=CAPABILITY` returns to
+Capability once the job is checked; 1280 × 720 opening gated; no page errors. `job-pool-workflow.e2e.test.ts` 10/10 on the exact final
+diff (isolated worktree, own disposable database): opening and SSR in the field with the gate, the gate in a real browser (exit and
+selector disabled → SELECT AS JOB → Capability → reload keeps Capability with the VALID job). `syntx-walk.e2e.test.ts` fails 0/3
+identically on the unchanged cb3d33f (pre-existing drift since ca11794, confirmed by PINK); its Q-11 is adapted to the gate but not
+reached (`e2e-results.txt`).
+
 ### 13.3 DOM contract (PINK BR-1 … BR-5; GELB conditions a/b)
 
 **BR-1 field root** `data-testid="syntx-field"`: `data-field-grammar="SYNTX_FIELD_V1"`, `data-observation-kind` FIELD|ORGANIZATION|ROLE|REQUIREMENT
@@ -1277,3 +1313,4 @@ observation point. Readable labels wrap at word boundaries (`wrapLines`), never 
 | 2026-10-13 | Job Field NO_POOL as the red absence giant (owner "SFE::JOB FIELD RED ABSENCE GIANT", on bb5e8e3; visual + copy, isolated lab) | §13.2.21: one static red semiotic body on the field centre with the NO_POOL information inside (EN / DE); same element, state and transition; no motion. Evidence: `evidence/job-pool/semiotic-transfer/no-pool-giant/` | tsc 0; 19 files / 129 tests; no collision at 1600 × 1000 and 1280 × 720; giant at NO_POOL (0 and 3 uploads), absent after selection; contrast 7.9–17.9 |
 | 2026-10-13 | The red absence giant breathes (owner mandate, on 44cd561; motion only, isolated lab) | §13.2.22: one slow 10 s field breath — aura, seam light, outer membrane and red rings (opacity / transform); text, cyan ring and joints still; LIVE only, REDUCED static; new motion kinds `sxGiant*` (R15b approval required). Evidence: `evidence/job-pool/semiotic-transfer/no-pool-giant-breath/` | tsc 0; 19 files / 129 tests; video 2.4 cycles; aura light ×3.4 rest → peak; text block identical in every sample; no collision at the peak |
 | 2026-10-14 | Job scope (owner "GRÜN — SFE GO", on 799f523) | §13.2.23: one selected job (`jobScope`, URL `jobScopePoolUploadId` / `jobScopeRoleId`) for both fields and every depth; `job-scope-indicator` at the shell; `syntx-job-scope-select` at ROLE/REQUIREMENT; ANALYZE and RETRY blocked with „Bitte wählen Sie einen Job aus.“ unless VALID; request `{ documents, jobScope }` (GELB contract); findings 1 (code kept, `httpStatus` apart) and 2 (banner compares the numeric status) fixed. Evidence: `evidence/job-pool/job-scope/` | tsc 0; 29 files / 204 tests incl. governance (new: job scope 10, SSR 11; controller 23); browser walk 33/33; render identity 30/30 |
+| 2026-10-14 | Job Pool first / Capability gate (owner, on cb3d33f) | §13.2.24: the application opens in the Job Field; `activeFieldFocus` is CAPABILITY only for a requested Capability Field with a VALID job scope; selector option and exit disabled (`data-field-gate`), `data-capability-gate` on the root; job kept across both fields. Evidence: `evidence/job-pool/capability-gate/` | tsc 0; 29 files / 205 tests; browser walk 22/22; job-pool-workflow e2e 10/10 (final diff, isolated worktree); syntx-walk e2e 0/3 identical to the base (pre-existing) |
