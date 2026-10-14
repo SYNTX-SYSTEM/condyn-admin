@@ -94,8 +94,31 @@ function scopeLinesOf(pool: CompanyPoolData, organization: PoolOrganization, rol
   return lines;
 }
 
+/**
+ * Scopes issued by resolveJobScopeFromStoredPool. Pipeline entries accept only these (assertIssuedJobScope), so an
+ * object literal, a copy or a test double cannot stand in for a validated job: there is no flag or shortcut that
+ * skips the validation, for tests, retries or scripts alike.
+ */
+const issuedScopes = new WeakSet<object>();
+
+const deepFreeze = <T>(value: T): T => {
+  if (value && typeof value === "object" && !Object.isFrozen(value)) {
+    Object.freeze(value);
+    for (const item of Object.values(value as Record<string, unknown>)) deepFreeze(item);
+  }
+  return value;
+};
+
+/** Refuses (ERR_JOB_SCOPE_REQUIRED) anything that is not a scope issued by the validation of a stored pool. */
+export function assertIssuedJobScope(value: unknown): asserts value is ResolvedJobScope {
+  if (!value || typeof value !== "object" || !issuedScopes.has(value)) {
+    throw required("A capability analysis runs only with a validated job scope (valid pool + selected job).");
+  }
+}
+
 /** Pure resolution from one stored pool upload and its persisted canonical mapping. */
-export function resolveJobScopeFromStoredPool(stored: StoredJobPool, selection: JobScopeSelection): ResolvedJobScope {
+export function resolveJobScopeFromStoredPool(stored: StoredJobPool, requested: JobScopeSelection): ResolvedJobScope {
+  const selection = parseJobScopeSelection(requested);
   if (stored.jobPoolUploadId !== selection.jobPoolUploadId) throw invalid("stored pool does not match the selection.");
   if (stored.poolStatus !== "ACTIVE") throw invalid(`job pool ${selection.jobPoolUploadId} is ${stored.poolStatus}, not ACTIVE.`);
   const role = stored.pool.roles.find(item => item.id === selection.poolRoleId);
@@ -111,7 +134,8 @@ export function resolveJobScopeFromStoredPool(stored: StoredJobPool, selection: 
   });
   const { requirements: _mappedRequirements, ...roleMapping } = mapped;
   const scopeLines = scopeLinesOf(stored.pool, organization, role, poolRequirements);
-  return {
+  // A structured copy, frozen, so the issued scope cannot change after validation or alias the stored pool.
+  const scope: ResolvedJobScope = deepFreeze(structuredClone({
     selection,
     poolId: stored.pool.pool.id,
     poolVersion: stored.pool.pool.version,
@@ -122,7 +146,9 @@ export function resolveJobScopeFromStoredPool(stored: StoredJobPool, selection: 
     requirements,
     scopeLines,
     scopeSha256: createHash("sha256").update(stableJson({ selection, poolCanonicalSha256: stored.canonicalSha256, scopeLines }), "utf8").digest("hex")
-  };
+  }));
+  issuedScopes.add(scope);
+  return scope;
 }
 
 export interface JobScopeResolver {

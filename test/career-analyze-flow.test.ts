@@ -2,7 +2,7 @@ import { describe, it, expect, beforeEach, vi } from "vitest";
 import { POST } from "../app/api/career/analyze/route";
 import * as providers from "../lib/career/providers";
 import { MockInferenceProvider } from "../lib/career/adapter";
-import { TEST_JOB_SCOPE, uploadEngineeringJobScope } from "./support/job-scope";
+import { TEST_JOB_SCOPE, uploadEngineeringJobScope, resolveTestJobScope } from "./support/job-scope";
 
 describe("CONDYN Career Analysis Protocol v1.0 - Step 7.2: Server Boundary API Route", () => {
   beforeEach(async () => {
@@ -82,7 +82,7 @@ describe("CONDYN Career Analysis Protocol v1.0 - Step 7.2: Server Boundary API R
     
     const { normalizedDocs } = await prepareDocuments(claim!.inputRef.sourceData.documents);
     const provider = providers.getCareerInferenceProvider();
-    const validationResult = await executeCareerAnalysisPipeline(normalizedDocs, provider);
+    const validationResult = await executeCareerAnalysisPipeline(normalizedDocs, provider, { jobScope: resolveTestJobScope() });
     const verifiedAnalysis = validationResult.data as any;
     const resultAnalysisId = verifiedAnalysis.structured_data.analysis.metadata.analysis_id;
     

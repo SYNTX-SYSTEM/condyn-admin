@@ -45,6 +45,16 @@ export const TEST_STORED_POOL: StoredJobPool = {
 
 export const resolveTestJobScope = (selection: JobScopeSelection = TEST_JOB_SCOPE): ResolvedJobScope => resolveJobScopeFromStoredPool(TEST_STORED_POOL, selection);
 
+/**
+ * Scope of live tests and Gemini diagnostics: the engineering pool stored in the disposable test database and
+ * validated by the same resolver as the analyze route and the worker. Without it they never reach Gemini.
+ */
+export async function resolveStoredTestJobScope(selection: JobScopeSelection = TEST_JOB_SCOPE): Promise<ResolvedJobScope> {
+  await uploadEngineeringJobScope();
+  const { createLocalJobScopeResolver } = await import("../../lib/career/job-scope/local-resolver");
+  return createLocalJobScopeResolver().resolve(selection);
+}
+
 /** Uploads the engineering pool into the verified disposable test database through the production Job Pool application. */
 export async function uploadEngineeringJobScope(): Promise<JobScopeSelection> {
   const { db } = await import("../../lib/career/db/client");

@@ -168,7 +168,7 @@ Zuvor gefunden und behoben: Mein eigener Postgres-Test hatte PINKs `validationPo
 2. **Befunde von GRÜN** (Frontend, 799f523):
    - `CareerJobController` macht aus jeder Nicht-202-Antwort `HTTP_<status>` und verliert dabei den `code`;
    - das Fehlerbanner vergleicht `status === 422` mit einem String.
-3. **Entwicklerskripte:** `scripts/test-live-*.ts`, `test-pipeline-live.ts`, `test-multi-source-live.ts`, `probe-gemini.ts` und `list-models.ts` rufen Gemini direkt auf, ohne Analyseauftrag. Sie sind kein Produktweg. Ob sie ebenfalls eine Jobauswahl verlangen sollen, entscheidet der Owner.
+3. **Entwicklerskripte:** `scripts/test-live-*.ts`, `test-pipeline-live.ts`, `test-multi-source-live.ts`, `probe-gemini.ts` und `list-models.ts` rufen Gemini direkt auf, ohne Analyseauftrag. Sie sind kein Produktweg. Vom Owner am 2026-10-14 entschieden: Sie verlangen eine gültige Jobauswahl (§11).
 4. **Meldungssprache:** Die Meldung ist auch in der englischen Oberfläche deutsch. Ob es eine EN-Variante gibt, entscheidet der Owner; der `code` erlaubt eine Übersetzung.
 5. **:3017** läuft unverändert auf 5898def und hat diese Grenze nicht.
 6. **Geparkte Arbeit:** Der Job-Scoped Sweep mit gespeichertem Sweep-Prompt, gescoptem Discovery-Kernel, Gemini-Gate und Traces liegt lokal auf `feature/job-scoped-capability-sweep` (026e6bd, da95ab7). Er ist nicht gepusht und nicht Teil dieses Branches.
@@ -179,3 +179,63 @@ Zuvor gefunden und behoben: Mein eigener Postgres-Test hatte PINKs `validationPo
 - Formal gilt jetzt dieselbe Regel wie im Pool-Schema, also ein nicht-leerer String.
 - Ob die Rolle existiert, entscheidet allein der gespeicherte Pool. Fehlt sie, folgt 422 `ERR_JOB_SCOPE_INVALID`.
 - Tests: Rollen-IDs mit Leerzeichen, Umlaut, Rand-Leerzeichen und Sonderzeichen sind formal gültig und werden nur über den Pool entschieden. Der zweite Testpool hat die Rolle „Senior Engineer – rolle_ä“; die Route nimmt sie mit 202 an.
+
+## 11. Owner-Entscheidung 2026-10-14: G-10, G-05 und alle Ausführungspfade
+
+Owner-Vorgaben:
+- **G-10, Variante A:** Die Rollen-ID wird exakt wie im gespeicherten Pool übernommen. Frontend und Backend verwenden dieselbe formale Regel: ein nicht-leerer String, ohne Normalisierung und ohne zusätzliche Zeichenbeschränkung. Existenz und Gültigkeit prüft der Server gegen den gespeicherten Pool.
+- **G-05:** Die gewählte Rolle darf durch eine ausdrückliche Nutzeraktion entfernt werden. Danach ist kein Job-Scope gewählt und ANALYZE ist gesperrt. Das ist reines Frontend (GRÜN); das Backend hält keine serverseitige Auswahl.
+- **Alle Ausführungspfade:** Die Job-Scope-Pflicht gilt für jeden Ausführungspfad der Career-Analysis-Pipeline, auch für direkte Aufrufe durch Entwicklungsskripte. Test- oder Retry-Code darf sie nicht umgehen.
+
+### 11.1 G-10 im Backend
+
+Das Backend erfüllt die Regel seit 2e61a2b. `parseJobScopeSelection` prüft nur `typeof === "string"` und `length > 0`. Es trimmt nicht und normalisiert nicht. „  role pink padded  “ und „ “ sind formal gültig; ob die Rolle existiert, entscheidet der Pool (422). Die Tests decken beide Formen ab. Auch Skripte übernehmen die Rollen-ID unverändert aus der Umgebung.
+
+### 11.2 Sweep: Wo konnte die Pipeline ohne Job-Scope laufen?
+
+| Pfad | Vorher | Jetzt |
+|---|---|---|
+| `POST /api/career/analyze` | Prüfung vor `createJob` (841baab) | unverändert |
+| Worker, erster Versuch | `requireValidJobScope` vor dem Processor | unverändert, zusätzlich öffnet die Grenze den geprüften Scope für genau diesen Auftrag (`runWithJobScope`, AsyncLocalStorage) |
+| Worker, Retry und abgelaufener Lease | jeder Claim läuft durch die Grenze | wie bisher, jetzt durch Test belegt: Zwischen zwei Versuchen wird der Pool archiviert, der zweite Versuch endet terminal mit `ERR_JOB_SCOPE_INVALID`, und der Processor wird nur einmal erreicht |
+| Capability-Sweep im Worker (Discovery, Convergence → Gemini) | nur durch die Worker-Grenze geschützt | die Provider der Worker-Komposition verlangen bei jedem `execute` den offenen, geprüften Scope (`requireActiveJobScope`) |
+| `executeCareerAnalysisPipeline`, `executeCareerAnalysisBatchPipeline` (Legacy-Analyse → Gemini) | ohne Prüfung aufrufbar | `options.jobScope` ist Pflicht; `assertIssuedJobScope` läuft als erste Anweisung, vor Dokument-, Prompt- und Provider-Arbeit |
+| Entwicklungsskripte (`scripts/test-live-*.ts`, `test-pipeline-live.ts`, `test-multi-source-live.ts`, `probe-gemini.ts`, `list-models.ts`) | Gemini ohne Scope | `resolveScriptJobScope` vor `main`; ohne gültige Auswahl Exit 3 mit Code und Meldung |
+| Skripte im Repo-Wurzelverzeichnis (`debug.ts`, `test-pdf.ts`, `test-github.ts`, `trace-pdf.ts`, `trace-pdf-5.ts`, `forensics-step2.ts`, `bisection.ts`, `schema-bisection.ts`, `schema-bisection-mjs.ts`, `test-schema.ts`) | Gemini oder Pipeline ohne Scope | wie die Entwicklungsskripte |
+| Live- und Diagnosetests (`career-gemini-live`, `-live-probe`, `-probe`, `-request-boundary`, `-schema-bisection`, `-embedding-live`, `career-forensic-pdf`, `gemini-token-limit-matrix`, `schema-bisection`) | Gemini ohne Scope, sobald die Freigabe-Variable gesetzt ist | `resolveStoredTestJobScope()` vor dem ersten Gemini-Zugriff: Der Testpool wird in der Wegwerf-DB gespeichert und über denselben Resolver wie Route und Worker geprüft |
+| Unit-Tests mit Mock-Provider | Pipeline ohne Scope | rufen die Pipeline mit einem aufgelösten Scope des Testpools auf (`resolveTestJobScope`) |
+
+Nicht betroffen: Lese-Routen und SIL-Dienste rufen weder die Pipeline noch Gemini auf. `GeminiEmbeddingProvider` wird in keinem Produktpfad verwendet. `check.ts` gibt nur das Schema aus.
+
+### 11.3 Kein Bypass
+
+- **Nur ausgestellte Scopes.** `resolveJobScopeFromStoredPool` ist die einzige Stelle, die einen Scope ausstellt. Ein Scope gilt nur, wenn er in einem modulinternen `WeakSet` steht, und er ist tief eingefroren. Diese Formen werden als `ERR_JOB_SCOPE_REQUIRED` abgelehnt:
+  - ein Objektliteral;
+  - eine Spread-Kopie;
+  - `structuredClone` oder eine JSON-Kopie;
+  - die reine Auswahl `{ jobPoolUploadId, poolRoleId }`.
+- **Keine Schalter.** Es gibt kein Flag, keine Umgebungsvariable und keinen Test-Modus, der die Prüfung abschaltet.
+- **Skripte lesen nur.** `resolveScriptJobScope` liest den Pool über eine eigene **read-only**-Verbindung aus einer **verifizierten Wegwerf-DB**. Ein fehlendes `DATABASE_URL`, die geteilte Datenbank `condyn` oder eine DB ohne Jobpool-Persistenz führen zur Ablehnung, und es wird nichts geschrieben.
+- **Unverändert:** Gemini-Provider, Prompts, Kernels, Modellwahl, der Processor und die versiegelten Suites.
+- **Scope bleibt Validierung.** Der Scope wird weder an Prompt noch Provider weitergegeben; ein Test prüft, dass der Provider-Aufruf weder Scope-Hash noch Rollen-ID enthält.
+
+### 11.4 Tests und Proofs
+
+- `test/career/job-scope/job-scope.test.ts`, 14 Tests (davon 7 neu):
+  - Pipeline und Batch-Pipeline lehnen sieben Fälschungsformen ab, ohne Provider- oder Fortschrittsaufruf;
+  - ein ausgestellter Scope öffnet die Pipeline und wird nicht weitergegeben;
+  - Einfrieren, Kontext außerhalb eines Auftrags, gleichzeitige Aufträge sehen jeweils ihren eigenen Scope;
+  - Skript-Scope ohne Auswahl, ohne Wegwerf-DB und gegen `condyn` ohne Verbindung.
+- `test/career/job-scope/job-scope.postgres.test.ts`, 10 Tests (davon 2 neu):
+  - zusätzlich Retry-Neuvalidierung;
+  - Skript-Scope gegen den gespeicherten Pool: gültig; ungültig bei Rand-Leerzeichen-Rolle, fremder Rolle, DRAFT und unbekanntem Upload.
+- `scripts/proofs/job-scope-all-paths.ts` → `docs/proofs/job-pool-first-boundary/2026-10-14-all-paths-no-gemini.json`:
+  - alle 20 Skripte als eigene Prozesse, jeweils ohne Auswahl und mit DRAFT-Pool, sowie eine Rolle außerhalb des Pools;
+  - alle Prozesse laufen unter einem Netzwerk-Sentinel mit Dummy-Key; der Sentinel ist positiv kontrolliert, und es gab keinen einzigen Netzwerkversuch;
+  - `debug.ts` (Mock-Provider) läuft mit gültiger Auswahl durch.
+  - Kein Live-Gemini-Aufruf.
+- `scripts/proofs/job-pool-first-boundary.ts --skip-valid` mit dem echten Worker-Prozess unter demselben Sentinel → `2026-10-14-all-paths-worker-no-gemini.json`.
+
+### 11.5 PINK
+
+`test/job-pool-validation/pdf-path.postgres.test.ts` ruft die Pipeline direkt auf und braucht jetzt `jobScope`. Die Datei gehört PINK. Die Änderung geht als Diff an PINK und ist nicht Teil dieses Commits. Bis PINK sie übernimmt, schlägt diese Datei auf diesem Branch beim Typecheck und beim Aufruf fehl.

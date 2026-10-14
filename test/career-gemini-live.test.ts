@@ -1,6 +1,7 @@
 import { describe, it, expect } from "vitest";
 import { GeminiProvider } from "../lib/career/providers/gemini";
 import { executeCareerAnalysisPipeline } from "../lib/career/pipeline";
+import { resolveStoredTestJobScope } from "./support/job-scope";
 
 const canRunLive =
   process.env.RUN_LIVE_LLM_TESTS === "true" &&
@@ -12,6 +13,8 @@ describe.skipIf(!canRunLive)(
     it(
       "should execute the real Career pipeline through Gemini, preserve runtime-owned DOCUMENT identity, and validate as VERIFIED",
       async () => {
+        // SFE JOB POOL FIRST: no Gemini call without a valid pool + selected job, in tests too.
+        const jobScope = await resolveStoredTestJobScope();
         const sampleDocs = [
           {
             docId: "DOC_001",
@@ -30,6 +33,7 @@ describe.skipIf(!canRunLive)(
           sampleDocs,
           provider,
           {
+            jobScope,
             onRuntimeOperation(operation) {
               console.log("RUNTIME_OPERATION=" + operation);
             }

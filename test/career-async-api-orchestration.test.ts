@@ -7,7 +7,7 @@ import { sql } from "drizzle-orm";
 // Next.js request mocking
 import { POST } from "../app/api/career/analyze/route";
 import { GET } from "../app/api/career/jobs/[jobId]/route";
-import { TEST_JOB_SCOPE, uploadEngineeringJobScope } from "./support/job-scope";
+import { TEST_JOB_SCOPE, uploadEngineeringJobScope, resolveTestJobScope } from "./support/job-scope";
 
 describe("CONDYN Career Analysis Protocol v5.0 - PHASE 5: ASYNC API ORCHESTRATION (TEST005C)", () => {
   let repo: JobRepository;
@@ -275,7 +275,7 @@ describe("CONDYN Career Analysis Protocol v5.0 - PHASE 5: ASYNC API ORCHESTRATIO
 
     const inputData = postJson.inputRef?.sourceData || { documents: [{ docId: "DOC_001", type: "text", content: "I am a test engineer.", metadata: {} }] };
     const { normalizedDocs } = await prepareDocuments(inputData.documents);
-    const validationResult = await executeCareerAnalysisPipeline(normalizedDocs, new MockInferenceProvider());
+    const validationResult = await executeCareerAnalysisPipeline(normalizedDocs, new MockInferenceProvider(), { jobScope: resolveTestJobScope() });
     
     expect(validationResult.success).toBe(true);
     const verifiedAnalysis = validationResult.data as any;

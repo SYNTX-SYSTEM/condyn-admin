@@ -4,9 +4,12 @@ import { buildCareerAnalysisPrompt } from "../lib/career/adapter";
 import { GeminiProvider } from "../lib/career/providers/gemini";
 import * as fs from "fs";
 import * as crypto from "crypto";
+import { resolveStoredTestJobScope } from "./support/job-scope";
 
 describe.skipIf(!process.env.RUN_GEMINI_DIAGNOSTICS)("BUG010M Forensic PDF Replay", () => {
   it("should answer the forensic questions", async () => {
+    // SFE JOB POOL FIRST: no Gemini call without a valid pool + selected job, in tests too.
+    await resolveStoredTestJobScope();
     console.log("Loading PDF...");
     const pdfPath = "/home/codi/Dokumente/SYNTX/SYNTX_WIKI/SYNTX_Dossier_Kap6_FINAL.pdf";
     const buffer = fs.readFileSync(pdfPath);

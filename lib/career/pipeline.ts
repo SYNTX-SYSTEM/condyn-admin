@@ -20,6 +20,7 @@ import { ActivePromptResolver } from "./prompts/resolver";
 
 import { SourceMetadata } from "./loaders/source";
 import { CareerJobRuntimeOperation } from "./orchestration/job";
+import { assertIssuedJobScope, type ResolvedJobScope } from "./job-scope/scope";
 
 export interface DocumentLoaderInput {
   docId?: string;
@@ -29,6 +30,12 @@ export interface DocumentLoaderInput {
 }
 
 export interface PipelineExecutionOptions {
+  /**
+   * SFE invariant JOB POOL FIRST: the validated job scope (valid pool + selected job) of this analysis. Required on
+   * every execution path (worker, scripts, tests); checked before any document, prompt or provider work. Validation
+   * only: the scope is not passed to the prompt or to the provider.
+   */
+  jobScope: ResolvedJobScope;
   promptResolver?: ActivePromptResolver;
   explicitKeyBase64?: string;
   explicitAnalysisId?: string;
@@ -71,8 +78,9 @@ export function loadDocuments(inputs: DocumentLoaderInput[]): DocumentInput[] {
 export async function executeCareerAnalysisPipeline(
   inputs: DocumentLoaderInput[],
   provider: InferenceProvider,
-  options?: PipelineExecutionOptions
+  options: PipelineExecutionOptions
 ): Promise<ValidationResult<CanonicalCareerAnalysis>> {
+  assertIssuedJobScope(options?.jobScope);
   const startTime = Date.now();
   const docs = loadDocuments(inputs);
   const promptBundle = await buildCareerAnalysisPromptWithResolver(
@@ -108,9 +116,10 @@ export async function executeCareerAnalysisPipeline(
 export async function executeCareerAnalysisBatchPipeline(
   batch: BatchDocumentInput[],
   provider: InferenceProvider,
-  onProgress?: (progress: BatchProgress) => void,
-  options?: PipelineExecutionOptions
+  onProgress: ((progress: BatchProgress) => void) | undefined,
+  options: PipelineExecutionOptions
 ): Promise<ValidationResult<CanonicalCareerAnalysis>> {
+  assertIssuedJobScope(options?.jobScope);
   const startTime = Date.now();
   const docs = await loadDocumentBatch(batch, onProgress);
   const promptBundle = await buildCareerAnalysisPromptWithResolver(

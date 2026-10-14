@@ -4,6 +4,7 @@ import { getGeminiCareerResponseJsonSchema } from "../lib/career/schema-projecto
 import { buildCareerAnalysisPrompt } from "../lib/career/adapter";
 import * as fs from "fs";
 import * as path from "path";
+import { resolveStoredTestJobScope } from "./support/job-scope";
 
 try {
   const envFile = fs.readFileSync(path.join(process.cwd(), ".env.local"), "utf8");
@@ -21,6 +22,9 @@ describe("BUG 010: Gemini Schema Acceptance (LIVE PROBE)", () => {
       console.log("Skipping live probe (RUN_GEMINI_LIVE_PROBE not set)");
       return;
     }
+
+    // SFE JOB POOL FIRST: no Gemini call without a valid pool + selected job, in tests too.
+    await resolveStoredTestJobScope();
 
     const primaryModel = process.env.GEMINI_MODEL || "gemini-3.5-flash";
     const apiKey = process.env.GEMINI_API_KEY;

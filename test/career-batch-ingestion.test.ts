@@ -14,6 +14,7 @@ import { loadDocumentBatch, BatchDocumentInput, BatchProgress } from "../lib/car
 import { executeCareerAnalysisBatchPipeline } from "../lib/career/pipeline";
 import { buildCareerAnalysisPrompt, MockInferenceProvider } from "../lib/career/adapter";
 import * as pdfLoader from "../lib/career/loaders/pdf";
+import { resolveTestJobScope } from "./support/job-scope";
 
 describe("CONDYN Career Analysis Protocol v1.0 - Step 12: Batch Document Ingestion", () => {
   it("should process multiple text documents into DocumentInput[] with stable sequential IDs and generate a unified prompt", async () => {
@@ -103,7 +104,7 @@ describe("CONDYN Career Analysis Protocol v1.0 - Step 12: Batch Document Ingesti
       { type: "text", title: "Skills", content: "Kubernetes, Node.js, Drizzle" }
     ];
 
-    const result = await executeCareerAnalysisBatchPipeline(batch, provider);
+    const result = await executeCareerAnalysisBatchPipeline(batch, provider, undefined, { jobScope: resolveTestJobScope() });
     expect(result.success).toBe(true);
     expect(result.data).toBeDefined();
     expect(result.data!.structured_data.analysis.metadata.validation_state).toBe("VERIFIED");

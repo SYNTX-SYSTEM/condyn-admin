@@ -7,7 +7,9 @@ import { JobRepository } from "../../../lib/career/orchestration/job-repository"
 import { createJob, type JobRecord } from "../../../lib/career/orchestration/job";
 import { CareerJobWorker } from "../../../lib/career/orchestration/worker";
 import { createJobPoolApplication } from "../../../lib/career/job-pool/application";
-import { JOB_SCOPE_REQUIRED_MESSAGE, requireValidJobScope } from "../../../lib/career/job-scope";
+import { JOB_SCOPE_REQUIRED_MESSAGE, JobScopeRequiredError, requireActiveJobScope, requireValidJobScope } from "../../../lib/career/job-scope";
+import { resolveScriptJobScope } from "../../../lib/career/job-scope/script-scope";
+import { executeCareerAnalysisPipeline } from "../../../lib/career/pipeline";
 import { createLocalJobScopeResolver } from "../../../lib/career/job-scope/local-resolver";
 import { ENGINEERING_POOL_RAW, OTHER_POOL, TEST_JOB_SCOPE, TEST_JOB_SCOPE_B, uploadEngineeringJobScope } from "../../support/job-scope";
 
@@ -30,7 +32,6 @@ describe("JOB POOL FIRST — analyze route and Career worker (PostgreSQL, no Gem
     const draft = JSON.parse(ENGINEERING_POOL_RAW);
     draft.pool.status = "DRAFT";
     draftPoolUploadId = (await application.upload(JSON.stringify(draft), "job-pool-first-test")).view.jobPoolUploadId;
-    // A second ACTIVE pool, to select a role that exists only there.
     // A second ACTIVE pool (owned by these tests, not shared with other suites), to select a role that exists only there.
     const other = await application.upload(JSON.stringify(OTHER_POOL), "job-pool-first-test");
     otherPool = { jobPoolUploadId: other.view.jobPoolUploadId, poolRoleId: OTHER_POOL.roles[0].id };
@@ -120,5 +121,55 @@ describe("JOB POOL FIRST — analyze route and Career worker (PostgreSQL, no Gem
   it("worker: a job with a valid pool + selected job reaches the processor", async () => {
     const result = await workerIteration({ documents, jobScope: TEST_JOB_SCOPE });
     expect([result.job.errorCode, result.processorReached]).toEqual(["PROCESSOR_REACHED", 1]);
+  });
+
+  it("worker retry: every attempt is validated again against the pool as stored then; a retry never inherits the earlier validation", async () => {
+    const repository = new JobRepository(db);
+    const enqueued = createJob("CAREER_ANALYSIS", { sourceType: "BATCH", sourceData: { documents, jobScope: otherPool } });
+    await repository.enqueueJob(enqueued);
+    const reached: string[] = [];
+    // First attempt: the processor runs inside the validated scope and fails retryably (as a Gemini outage would).
+    const processor = async () => {
+      reached.push(requireActiveJobScope().selection.poolRoleId);
+      throw Object.assign(new Error("transient"), { code: "TRANSIENT" });
+    };
+    const iterate = async () => {
+      const worker = new CareerJobWorker("job-pool-first-retry", repository, requireValidJobScope(createLocalJobScopeResolver(), processor), 10_000, 30_000);
+      const internals = worker as unknown as { isRunning: boolean; loop(): Promise<void> };
+      internals.isRunning = true;
+      await internals.loop();
+      worker.stop();
+      return (await repository.getJob(enqueued.jobId))!;
+    };
+    const afterFirst = await iterate();
+    expect([afterFirst.status, afterFirst.errorCode, afterFirst.attemptCount, reached]).toEqual(["PENDING", "TRANSIENT", 1, [otherPool.poolRoleId]]);
+    // The pool is archived between the attempts (disposable test database, pool owned by this suite).
+    await db.execute(sql`UPDATE career_job_pool_uploads SET pool_status = 'ARCHIVED' WHERE job_pool_upload_id = ${otherPool.jobPoolUploadId}`);
+    try {
+      const afterRetry = await iterate();
+      expect([afterRetry.status, afterRetry.errorCode, afterRetry.errorSummary, afterRetry.attemptCount, reached.length]).toEqual(["FAILED", "ERR_JOB_SCOPE_INVALID", JOB_SCOPE_REQUIRED_MESSAGE, 2, 1]);
+    } finally {
+      await db.execute(sql`UPDATE career_job_pool_uploads SET pool_status = 'ACTIVE' WHERE job_pool_upload_id = ${otherPool.jobPoolUploadId}`);
+    }
+  });
+
+  it("development scripts: the selection is validated against the stored pool, read-only, exactly as the route does it", async () => {
+    const env = (poolRoleId: string, jobPoolUploadId = TEST_JOB_SCOPE.jobPoolUploadId) => ({ DATABASE_URL: process.env.DATABASE_URL, CONDYN_JOB_POOL_UPLOAD_ID: jobPoolUploadId, CONDYN_POOL_ROLE_ID: poolRoleId });
+    const scope = await resolveScriptJobScope(env(TEST_JOB_SCOPE.poolRoleId));
+    expect(scope.selection).toEqual(TEST_JOB_SCOPE);
+    // The issued scope opens the pipeline (spy provider, no Gemini).
+    let calls = 0;
+    await executeCareerAnalysisPipeline([{ docId: "DOC_001", content: "x" }], { execute: async () => { calls++; return "{}"; } } as never, { jobScope: scope }).catch(() => undefined);
+    expect(calls).toBe(1);
+    for (const [selection, code] of [
+      [env("  role pink padded  "), "ERR_JOB_SCOPE_INVALID"],
+      [env(otherPool.poolRoleId), "ERR_JOB_SCOPE_INVALID"],
+      [env(TEST_JOB_SCOPE.poolRoleId, draftPoolUploadId), "ERR_JOB_SCOPE_INVALID"],
+      [env(TEST_JOB_SCOPE.poolRoleId, `JPOOL_${"0".repeat(32)}`), "ERR_JOB_SCOPE_INVALID"]
+    ] as const) {
+      const error = await resolveScriptJobScope(selection).then(() => null, (refusal: unknown) => refusal);
+      expect(error, JSON.stringify(selection.CONDYN_POOL_ROLE_ID)).toBeInstanceOf(JobScopeRequiredError);
+      expect((error as JobScopeRequiredError).code).toBe(code);
+    }
   });
 });

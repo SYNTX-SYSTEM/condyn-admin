@@ -1,8 +1,12 @@
 import { describe, expect, it, vi } from "vitest";
 import { createJob } from "../../../lib/career/orchestration/job";
 import {
-  JOB_SCOPE_REQUIRED_MESSAGE, JobScopeRequiredError, createJobScopeResolver, parseJobScopeSelection, requireValidJobScope, resolveJobScopeFromStoredPool
+  JOB_SCOPE_REQUIRED_MESSAGE, JobScopeRequiredError, assertIssuedJobScope, createJobScopeResolver, parseJobScopeSelection, requireActiveJobScope, requireValidJobScope,
+  resolveJobScopeFromStoredPool, runWithJobScope, type ResolvedJobScope
 } from "../../../lib/career/job-scope";
+import { resolveScriptJobScope } from "../../../lib/career/job-scope/script-scope";
+import { executeCareerAnalysisBatchPipeline, executeCareerAnalysisPipeline } from "../../../lib/career/pipeline";
+import type { InferenceProvider } from "../../../lib/career/adapter";
 import { TEST_JOB_SCOPE, TEST_JOB_SCOPE_B, TEST_STORED_POOL, resolveTestJobScope } from "../../support/job-scope";
 
 const expectScopeError = (error: unknown, code: string) => {
@@ -24,7 +28,8 @@ describe("JOB POOL FIRST — job selection", () => {
   });
 
   it("accepts every non-empty role id form the pool schema allows; existence is decided by the stored pool", async () => {
-    for (const poolRoleId of ["Senior Engineer", "rolle_ä", " padded ", "a/b#c"]) {
+    // G-10 (owner, Variante A): the role id is taken exactly as stored; the only form rule is a non-empty string, no normalization.
+    for (const poolRoleId of ["Senior Engineer", "rolle_ä", " padded ", "  role pink padded  ", " ", "a/b#c"]) {
       expect(parseJobScopeSelection({ jobPoolUploadId: TEST_JOB_SCOPE.jobPoolUploadId, poolRoleId })).toEqual({ jobPoolUploadId: TEST_JOB_SCOPE.jobPoolUploadId, poolRoleId });
       expectScopeError(await failure(() => resolveTestJobScope({ ...TEST_JOB_SCOPE, poolRoleId })), "ERR_JOB_SCOPE_INVALID");
     }
@@ -84,5 +89,84 @@ describe("JOB POOL FIRST — worker boundary", () => {
     const claimed = job({ documents: [{ type: "text", content: "x" }], jobScope: TEST_JOB_SCOPE_B });
     await expect(requireValidJobScope(resolver, processJob)(claimed, report)).resolves.toEqual({ resultAnalysisId: "ANL_OK" });
     expect(processJob).toHaveBeenCalledWith(claimed, report);
+  });
+});
+
+describe("JOB POOL FIRST — every execution path of the Career-Analysis pipeline (owner 2026-10-14: no bypass by scripts, tests or retries)", () => {
+  const documents = [{ docId: "DOC_001", title: "CV", content: "Implemented the React dashboard used by 300 dispatchers." }];
+  const spyProvider = () => {
+    const execute = vi.fn(async () => "{}");
+    return { provider: { execute } as unknown as InferenceProvider, execute };
+  };
+  const issued = resolveTestJobScope(TEST_JOB_SCOPE);
+  const forgeries: Array<[string, unknown]> = [
+    ["no options", undefined], ["no jobScope", {}], ["jobScope undefined", { jobScope: undefined }], ["selection only", { jobScope: TEST_JOB_SCOPE }],
+    ["spread copy of a resolved scope", { jobScope: { ...issued } }], ["structured clone", { jobScope: structuredClone(issued) }],
+    ["JSON copy", { jobScope: JSON.parse(JSON.stringify(issued)) }]
+  ];
+
+  it("the analysis pipeline refuses before any document, prompt or provider work without an issued job scope", async () => {
+    for (const [label, options] of forgeries) {
+      const { provider, execute } = spyProvider();
+      const onRuntimeOperation = vi.fn();
+      const forged = options === undefined ? undefined : { ...(options as object), onRuntimeOperation };
+      const error = await failure(() => executeCareerAnalysisPipeline(documents, provider, forged as never));
+      expectScopeError(error, "ERR_JOB_SCOPE_REQUIRED");
+      expect(execute, label).not.toHaveBeenCalled();
+      expect(onRuntimeOperation, label).not.toHaveBeenCalled();
+    }
+  });
+
+  it("the batch pipeline refuses the same way", async () => {
+    for (const [label, options] of forgeries) {
+      const { provider, execute } = spyProvider();
+      expectScopeError(await failure(() => executeCareerAnalysisBatchPipeline([{ type: "text", content: "x" }] as never, provider, undefined, options as never)), "ERR_JOB_SCOPE_REQUIRED");
+      expect(execute, label).not.toHaveBeenCalled();
+    }
+  });
+
+  it("the pipeline runs with an issued scope; the scope is not passed to the provider", async () => {
+    const { provider, execute } = spyProvider();
+    // The spy answers "{}", so the later output validation fails; only the scope gate and the provider call matter here.
+    await executeCareerAnalysisPipeline(documents, provider, { jobScope: issued }).catch(() => undefined);
+    expect(execute).toHaveBeenCalledTimes(1);
+    expect(JSON.stringify(execute.mock.calls[0])).not.toContain(issued.scopeSha256);
+    expect(JSON.stringify(execute.mock.calls[0])).not.toContain(TEST_JOB_SCOPE.poolRoleId);
+  });
+
+  it("an issued scope is frozen and cannot be re-issued by copying", () => {
+    expect(Object.isFrozen(issued) && Object.isFrozen(issued.selection) && Object.isFrozen(issued.role) && Object.isFrozen(issued.requirements[0].mapping)).toBe(true);
+    expect(() => { (issued.selection as { poolRoleId: string }).poolRoleId = "role_other"; }).toThrow(TypeError);
+    expect(() => assertIssuedJobScope(issued)).not.toThrow();
+    for (const [, options] of forgeries) expect(() => assertIssuedJobScope((options as { jobScope?: unknown } | undefined)?.jobScope)).toThrow(JobScopeRequiredError);
+  });
+
+  it("outside a validated job no step can obtain a scope; a forged scope cannot be opened", async () => {
+    expectScopeError(await failure(() => requireActiveJobScope()), "ERR_JOB_SCOPE_REQUIRED");
+    expectScopeError(await failure(() => runWithJobScope({ ...issued } as ResolvedJobScope, async () => "ran")), "ERR_JOB_SCOPE_REQUIRED");
+  });
+
+  it("the worker boundary opens the validated scope for exactly the claimed job, also for concurrent jobs", async () => {
+    const resolver = { resolve: async (selection: typeof TEST_JOB_SCOPE) => resolveJobScopeFromStoredPool(TEST_STORED_POOL, selection) };
+    const seen: Record<string, string> = {};
+    const guarded = requireValidJobScope(resolver, async (job) => {
+      await new Promise(done => setTimeout(done, 5));
+      seen[job.jobId] = requireActiveJobScope().selection.poolRoleId;
+      return { resultAnalysisId: job.jobId };
+    });
+    const a = createJob("CAREER_ANALYSIS", { sourceType: "BATCH", sourceData: { documents: [], jobScope: TEST_JOB_SCOPE } });
+    const b = createJob("CAREER_ANALYSIS", { sourceType: "BATCH", sourceData: { documents: [], jobScope: TEST_JOB_SCOPE_B } });
+    await Promise.all([guarded(a, async () => undefined), guarded(b, async () => undefined)]);
+    expect(seen).toEqual({ [a.jobId]: TEST_JOB_SCOPE.poolRoleId, [b.jobId]: TEST_JOB_SCOPE_B.poolRoleId });
+    expectScopeError(await failure(() => requireActiveJobScope()), "ERR_JOB_SCOPE_REQUIRED");
+  });
+
+  it("a development script refuses without a selection, without a disposable database and on the shared database (no connection, no Gemini)", async () => {
+    const selection = { CONDYN_JOB_POOL_UPLOAD_ID: TEST_JOB_SCOPE.jobPoolUploadId, CONDYN_POOL_ROLE_ID: TEST_JOB_SCOPE.poolRoleId };
+    expectScopeError(await failure(() => resolveScriptJobScope({})), "ERR_JOB_SCOPE_REQUIRED");
+    expectScopeError(await failure(() => resolveScriptJobScope({ CONDYN_POOL_ROLE_ID: TEST_JOB_SCOPE.poolRoleId })), "ERR_JOB_SCOPE_REQUIRED");
+    expectScopeError(await failure(() => resolveScriptJobScope({ CONDYN_JOB_POOL_UPLOAD_ID: TEST_JOB_SCOPE.jobPoolUploadId, CONDYN_POOL_ROLE_ID: "" })), "ERR_JOB_SCOPE_REQUIRED");
+    expectScopeError(await failure(() => resolveScriptJobScope(selection)), "ERR_JOB_SCOPE_INVALID");
+    expectScopeError(await failure(() => resolveScriptJobScope({ ...selection, DATABASE_URL: "postgres://nobody:nothing@127.0.0.1:1/condyn" })), "ERR_JOB_SCOPE_INVALID");
   });
 });

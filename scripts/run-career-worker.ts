@@ -28,7 +28,7 @@ import {
 import { InMemoryPromptRepository } from "../lib/career/prompts/repository";
 import { ActivePromptResolver } from "../lib/career/prompts/resolver";
 import type { VerifiedCareerAnalysis } from "../lib/career/types";
-import { requireValidJobScope } from "../lib/career/job-scope";
+import { requireActiveJobScope, requireValidJobScope } from "../lib/career/job-scope";
 import { createLocalJobScopeResolver } from "../lib/career/job-scope/local-resolver";
 
 async function main() {
@@ -85,10 +85,15 @@ async function main() {
         promptSlug,
         encryptionKeyBase64
       ),
-    createDiscoveryProvider: (model) =>
-      new GeminiCapabilityDiscoveryProvider({ model }),
-    createConvergenceProvider: (model) =>
-      new GeminiCapabilityConvergenceProvider({ model }),
+    // JOB POOL FIRST: the capability sweep reaches Gemini only inside the validated scope of the claimed job.
+    createDiscoveryProvider: (model) => {
+      const provider = new GeminiCapabilityDiscoveryProvider({ model });
+      return { providerName: provider.providerName, model: provider.model, execute: (request) => { requireActiveJobScope(); return provider.execute(request); } };
+    },
+    createConvergenceProvider: (model) => {
+      const provider = new GeminiCapabilityConvergenceProvider({ model });
+      return { providerName: provider.providerName, model: provider.model, execute: (request) => { requireActiveJobScope(); return provider.execute(request); } };
+    },
     runDiscovery: runCapabilityDiscovery,
     runConvergence: runCapabilityConvergence,
     createProposalRuntime: createCapabilityProposalRuntime
@@ -107,6 +112,7 @@ async function main() {
     projectionReferenceRepository,
     async executeLegacyCareerAnalysis(documents, reportOperation, explicitAnalysisId) {
       const validationResult = await executeCareerAnalysisPipeline(documents, provider, {
+        jobScope: requireActiveJobScope(),
         explicitAnalysisId,
         onRuntimeOperation: reportOperation
       });

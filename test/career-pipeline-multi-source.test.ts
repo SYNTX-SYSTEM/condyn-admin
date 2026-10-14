@@ -2,6 +2,7 @@ import { describe, it, expect } from "vitest";
 import { executeCareerAnalysisPipeline } from "../lib/career/pipeline";
 import { MockInferenceProvider, buildCareerAnalysisPrompt, type DocumentInput } from "../lib/career/adapter";
 import { createSourceMetadata } from "../lib/career/loaders/source";
+import { resolveTestJobScope } from "./support/job-scope";
 
 describe("CONDYN Career Analysis Protocol v1.0 — TEST001E: PDF + GITHUB Y-Node Pipeline", () => {
   it("should securely merge multi-source documents, preserve unique IDs, and trace evidence correctly", async () => {
@@ -103,7 +104,7 @@ describe("CONDYN Career Analysis Protocol v1.0 — TEST001E: PDF + GITHUB Y-Node
     const provider = new MockInferenceProvider(JSON.stringify(inferenceMockPayload));
 
     // 4. Act: Execute the fully integrated Pipeline with Multi-Source inputs
-    const result = await executeCareerAnalysisPipeline(multiSourceDocs, provider);
+    const result = await executeCareerAnalysisPipeline(multiSourceDocs, provider, { jobScope: resolveTestJobScope() });
 
     if (!result.success) {
       console.error(result.issues);

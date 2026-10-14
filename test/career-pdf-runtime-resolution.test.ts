@@ -1,5 +1,6 @@
 import { describe, it, expect } from "vitest";
 import { MockInferenceProvider } from "../lib/career/adapter";
+import { resolveTestJobScope } from "./support/job-scope";
 
 // Helper to create a minimal valid ASCII PDF buffer in memory
 function createMinimalPdfBuffer(text: string): Buffer {
@@ -47,7 +48,7 @@ describe("CONDYN Career Analysis Protocol v1.0 - BUG 009: Next.js Runtime PDF Wo
     const { normalizedDocs } = await prepareDocuments(documents);
     const mockProvider = new MockInferenceProvider();
     
-    const validationResult = await executeCareerAnalysisPipeline(normalizedDocs, mockProvider);
+    const validationResult = await executeCareerAnalysisPipeline(normalizedDocs, mockProvider, { jobScope: resolveTestJobScope() });
     
     expect(validationResult.success).toBe(true);
     const analysis = validationResult.data as any;
