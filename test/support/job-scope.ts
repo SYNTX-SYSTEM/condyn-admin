@@ -57,10 +57,13 @@ export async function uploadEngineeringJobScope(): Promise<JobScopeSelection> {
   return TEST_JOB_SCOPE;
 }
 
-/** A second, minimal ACTIVE pool owned by the JOB POOL FIRST tests; its single role exists only here. */
+/**
+ * A second, minimal ACTIVE pool owned by the JOB POOL FIRST tests; its single role exists only here. Its role id has a
+ * space and a non-ASCII letter: the pool schema allows any non-empty id, so the job selection must accept it too.
+ */
 export const OTHER_POOL = {
   pool: { id: "pool_job_pool_first_other_v1", name: "JOB POOL FIRST other pool", description: "Second pool for foreign-role checks.", version: 1, status: "ACTIVE", created_at: "2026-10-14T00:00:00.000Z" },
   organizations: [{ id: "org_jpf_other", pool_id: "pool_job_pool_first_other_v1", org_id: "jpf_other", name: "Other Org", country_iso: "DE", region: "Berlin", industry: "Software", scale: "SME", description: "Fictitious organization." }],
-  roles: [{ id: "role_jpf_other_only", pool_id: "pool_job_pool_first_other_v1", organization_id: "org_jpf_other", title: "Other Role", seniority: "Senior", domain_focus: "Software", description: "A role that exists only in the other pool." }],
-  requirements: [{ id: "req_jpf_other_01", role_id: "role_jpf_other_only", capability_name: "TypeScript", domain: "Software Engineering", weight: 0.5, required_level: "L3 - Proficient" }]
+  roles: [{ id: "Senior Engineer – rolle_ä", pool_id: "pool_job_pool_first_other_v1", organization_id: "org_jpf_other", title: "Other Role", seniority: "Senior", domain_focus: "Software", description: "A role that exists only in the other pool." }],
+  requirements: [{ id: "req_jpf_other_01", role_id: "Senior Engineer – rolle_ä", capability_name: "TypeScript", domain: "Software Engineering", weight: 0.5, required_level: "L3 - Proficient" }]
 };

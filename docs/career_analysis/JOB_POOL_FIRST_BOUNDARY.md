@@ -20,7 +20,7 @@ Eine gültige Auswahl ist `jobScope: { jobPoolUploadId, poolRoleId }` mit genau 
 
 | Prüfung | Abgelehnt mit |
 |---|---|
-| `jobScope` fehlt, ist kein Objekt, hat andere Schlüssel, `jobPoolUploadId` ist nicht `JPOOL_<32 Hex>` oder `poolRoleId` ist leer oder formal falsch | 400 `ERR_JOB_SCOPE_REQUIRED` |
+| `jobScope` fehlt, ist kein Objekt, hat andere Schlüssel, `jobPoolUploadId` ist nicht `JPOOL_<32 Hex>` oder `poolRoleId` ist kein nicht-leerer String (dieselbe Form wie das Pool-Schema; jede im Pool hochladbare Rollen-ID ist formal gültig) | 400 `ERR_JOB_SCOPE_REQUIRED` |
 | Upload unbekannt | 422 `ERR_JOB_SCOPE_INVALID` |
 | Pool nicht `ACTIVE` (DRAFT, ARCHIVED) | 422 `ERR_JOB_SCOPE_INVALID` |
 | kein kanonisches Mapping zum Upload | 422 `ERR_JOB_SCOPE_INVALID` |
@@ -82,7 +82,7 @@ Die Entwicklerskripte rufen Gemini direkt auf, ohne Analyseauftrag. Sie liegen a
 | Datei | Inhalt |
 |---|---|
 | `lib/career/job-scope/errors.ts` | `JobScopeRequiredError`: code `ERR_JOB_SCOPE_REQUIRED` oder `ERR_JOB_SCOPE_INVALID`, Meldung wörtlich, `name = TERMINAL_ERROR`, damit der Worker nicht wiederholt |
-| `lib/career/job-scope/scope.ts` | `parseJobScopeSelection` (Form, genau zwei Schlüssel); `resolveJobScopeFromStoredPool` (ACTIVE, Rolle im Pool, Mapping für Rolle und jedes Requirement); `createJobScopeResolver` (liest Upload und Mapping) |
+| `lib/career/job-scope/scope.ts` | `parseJobScopeSelection` (Form, genau zwei Schlüssel; Rollen-ID wie im Pool-Schema: nicht-leerer String); `resolveJobScopeFromStoredPool` (ACTIVE, Rolle im Pool, Mapping für Rolle und jedes Requirement); `createJobScopeResolver` (liest Upload und Mapping) |
 | `lib/career/job-scope/local-resolver.ts` | derselbe Zugang zur Jobpool-Persistenz wie die Jobpool-Routen (`ensureJobPoolPersistenceRegistration`, B-ENTRY); ohne Persistenz gibt es keinen gültigen Job |
 | `lib/career/job-scope/worker-boundary.ts` | `requireValidJobScope(resolver, processJob)`: prüft jeden abgeholten Auftrag, **bevor** der unveränderte Processor läuft |
 | `app/api/career/analyze/route.ts:61–75` | Prüfung nach der bestehenden Dokumentprüfung und vor `createJob`; Ablehnung mit 400 oder 422, nichts wird eingereiht |
@@ -172,3 +172,10 @@ Zuvor gefunden und behoben: Mein eigener Postgres-Test hatte PINKs `validationPo
 4. **Meldungssprache:** Die Meldung ist auch in der englischen Oberfläche deutsch. Ob es eine EN-Variante gibt, entscheidet der Owner; der `code` erlaubt eine Übersetzung.
 5. **:3017** läuft unverändert auf 5898def und hat diese Grenze nicht.
 6. **Geparkte Arbeit:** Der Job-Scoped Sweep mit gespeichertem Sweep-Prompt, gescoptem Discovery-Kernel, Gemini-Gate und Traces liegt lokal auf `feature/job-scoped-capability-sweep` (026e6bd, da95ab7). Er ist nicht gepusht und nicht Teil dieses Branches.
+
+## 10. Nachtrag 2026-10-14: Rollen-ID-Form (Befund GRÜN)
+
+841baab prüfte `poolRoleId` gegen `/^[A-Za-z0-9_.:-]{1,128}$/`. Das ist strenger als das Pool-Schema (`role id = z.string().min(1)`). Ein hochladbarer, aktiver Pool mit einer Rollen-ID wie „Senior Engineer“ oder „rolle_ä“ wäre gespeichert worden, seine Auswahl aber mit 400 abgelehnt. Behoben:
+- Formal gilt jetzt dieselbe Regel wie im Pool-Schema, also ein nicht-leerer String.
+- Ob die Rolle existiert, entscheidet allein der gespeicherte Pool. Fehlt sie, folgt 422 `ERR_JOB_SCOPE_INVALID`.
+- Tests: Rollen-IDs mit Leerzeichen, Umlaut, Rand-Leerzeichen und Sonderzeichen sind formal gültig und werden nur über den Pool entschieden. Der zweite Testpool hat die Rolle „Senior Engineer – rolle_ä“; die Route nimmt sie mit 202 an.

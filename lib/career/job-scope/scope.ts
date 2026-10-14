@@ -23,7 +23,6 @@ const required = (detail: string) => new JobScopeRequiredError("ERR_JOB_SCOPE_RE
 const invalid = (detail: string) => new JobScopeRequiredError("ERR_JOB_SCOPE_INVALID", detail);
 
 const JOB_POOL_UPLOAD_ID = /^JPOOL_[0-9A-F]{32}$/;
-const POOL_ROLE_ID = /^[A-Za-z0-9_.:-]{1,128}$/;
 
 /** Exact-key validation of the client selection; absent or malformed selections are ERR_JOB_SCOPE_REQUIRED. */
 export function parseJobScopeSelection(value: unknown): JobScopeSelection {
@@ -33,7 +32,8 @@ export function parseJobScopeSelection(value: unknown): JobScopeSelection {
   if (keys.length !== 2 || keys[0] !== "jobPoolUploadId" || keys[1] !== "poolRoleId") throw required("jobScope must contain exactly jobPoolUploadId and poolRoleId.");
   const { jobPoolUploadId, poolRoleId } = record;
   if (typeof jobPoolUploadId !== "string" || !JOB_POOL_UPLOAD_ID.test(jobPoolUploadId)) throw required("jobScope.jobPoolUploadId must be a JPOOL_ identifier.");
-  if (typeof poolRoleId !== "string" || !POOL_ROLE_ID.test(poolRoleId)) throw required("jobScope.poolRoleId must be a pool role identifier.");
+  // Same form as the pool schema (role id = non-empty string); whether the role exists is decided by the stored pool (422).
+  if (typeof poolRoleId !== "string" || poolRoleId.length === 0) throw required("jobScope.poolRoleId must be a non-empty pool role id.");
   return { jobPoolUploadId, poolRoleId };
 }
 

@@ -23,6 +23,13 @@ describe("JOB POOL FIRST — job selection", () => {
     expect(parseJobScopeSelection({ ...TEST_JOB_SCOPE })).toEqual(TEST_JOB_SCOPE);
   });
 
+  it("accepts every non-empty role id form the pool schema allows; existence is decided by the stored pool", async () => {
+    for (const poolRoleId of ["Senior Engineer", "rolle_ä", " padded ", "a/b#c"]) {
+      expect(parseJobScopeSelection({ jobPoolUploadId: TEST_JOB_SCOPE.jobPoolUploadId, poolRoleId })).toEqual({ jobPoolUploadId: TEST_JOB_SCOPE.jobPoolUploadId, poolRoleId });
+      expectScopeError(await failure(() => resolveTestJobScope({ ...TEST_JOB_SCOPE, poolRoleId })), "ERR_JOB_SCOPE_INVALID");
+    }
+  });
+
   it("accepts a role of a stored, ACTIVE, mapped pool and resolves its requirements and mapping", () => {
     const a = resolveTestJobScope(TEST_JOB_SCOPE);
     const b = resolveTestJobScope(TEST_JOB_SCOPE_B);
