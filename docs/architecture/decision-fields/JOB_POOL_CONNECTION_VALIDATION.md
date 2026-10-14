@@ -921,6 +921,65 @@ pointer point in both frames, attribution DOC_001 ↔ `trace:req_001:supports:DO
 7/7 in 8 Tabs, Enter / Escape chain with focus-follow, REDUCED total, bodies identical; 831 without traces is the recorded
 data skip. Plan 1.9.1 binds the owner environment `5898def` (header only, application unchanged).
 
+### 3.26 Job-scope invariant: independent verification of GRÜN `cb3d33f`; GELB's backend gate not yet committed (2026-10-14)
+
+Owner mandate "SFE — INDEPENDENT VERIFICATION" of the SFE invariant "no Gemini call without a valid, selected job
+scope" with the expected behaviour: application open → Job Pool screen; no valid pool → Capability OFF; pool without
+job → OFF; valid pool + valid job → ON; selection removed or invalid → OFF; direct analysis call without a valid
+selection → backend REJECT; existing functions and the semiontic GUI design preserved. PINK implements nothing.
+
+State of the parties at the time of the run: GRÜN `frontend/job-field` @ `cb3d33f` (confirmed by GRÜN as the final
+invariant tip; a separate commit "JOB POOL FIRST / CAPABILITY GATE" with a changed start focus is announced). GELB:
+backend gate not committed; contract announced (POST /api/career/analyze requires `jobScope { jobPoolUploadId,
+poolRoleId }`; 400 `ERR_JOB_SCOPE_REQUIRED` / 422 `ERR_JOB_SCOPE_INVALID`, the owner's sentence, nothing enqueued; the
+worker re-checks before any processing and ends an unscoped job terminally). `cb3d33f` changes no backend file.
+
+Method (PINK's own code; probe branch `validation/job-scope-probe` = this branch + `cb3d33f`, never pushed, deleted):
+new walk `test/job-pool-validation/job-scope-gate.e2e.test.ts` (`JOB_SCOPE_TIP=<hash>`): real `next dev --webpack` on a
+disposable database, PINK's pool fixtures (ACTIVE + DRAFT), **no worker** (an accepted request is only enqueued, no
+Gemini call possible, `GEMINI_API_KEY` empty in the server env); 48 checks recorded in one run, failing once at the
+end. "Capability ON/OFF" is read on both surfaces the mandate can mean: the ANALYZE trigger (the invariant's gate) and
+the Capability field itself (`field-focus-capability-btn`). Two walk-timing defects of PINK's first runs were fixed
+(indicator read before React's re-render; first-compile latency of the analyze route) — not field defects.
+
+Results on `cb3d33f` (evidence `evidence/job-scope-gate-cb3d33f/`): **31/48**, 17 deviations in four groups:
+1. G-01: the application opens on the Capability field, not on the Job Pool screen (shell focus CAPABILITY).
+2. G-02 / G-03 / G-05: the Capability field stays reachable without a valid job in all 9 OFF cases (no pool, unknown
+   pool, pool without job, scope removed, role not in pool, DRAFT pool, unknown pool, malformed scope). The ANALYZE
+   gate holds in every one of them: trigger disabled, `data-job-scope-blocked="true"`, the owner's sentence verbatim,
+   0 requests on a forced DOM click.
+3. G-05: no UI control removes a selected job (removal only by leaving the URL parameters).
+4. G-06: a direct `POST /api/career/analyze` without a valid scope is accepted — 7/7 cases answer 202 and enqueue a
+   job (no scope, null, malformed, extra key, unknown pool, DRAFT pool, role not in pool). Expected 400 / 422, nothing
+   enqueued. Owner of the fix: GELB (announced, not committed).
+Held on `cb3d33f`: explicit selection at ROLE (`syntx-job-scope-select`), indicator VALID with role, organization and
+pool, exact scope in the URL; ANALYZE then enabled and sends exactly one request with exactly `{ jobPoolUploadId,
+poolRoleId }` (202, one job enqueued); the indicator shows NONE / INVALID / VALID visibly and uncovered at FIELD,
+ORGANIZATION, ROLE, REQUIREMENT and in the Capability field (1600 px) and in the Job Field at 1280 × 720; no closure
+glyph in the field after the selection (G-09); no page error.
+
+Inverse sweep (Gemini call sites back to a gate, `cb3d33f`): the served application reaches Gemini only through the
+worker (`GeminiProvider`, `GeminiCapabilityDiscoveryProvider`, `GeminiCapabilityConvergenceProvider`, constructed in
+`scripts/run-career-worker.ts`); none of them, the job processor, the worker or the analyze route reads a scope — the
+invariant rests on the frontend alone until GELB's gate exists. Embeddings (`lib/career/search`) are wired to no route;
+the developer scripts `probe-gemini`, `test-live-*`, `test-pipeline-live`, `test-multi-source-live` call Gemini
+directly without a scope (owner decision whether "keine Ausnahmen" covers them).
+
+Regression and preservation: tsc 0; GRÜN's job-scope tests plus the field batch 7 files / 82 green (PINK's run).
+Server renders of 26 cases (Capability field L0 and stages in both locales, Job Field with pool at FIELD,
+ORGANIZATION, ROLE, REQUIREMENT, NO_POOL, SourceDock) in the parent `799f523` and in `cb3d33f` with the same PINK
+probe: 1 identical, every other difference is the indicator, the select action or the ANALYZE gate — **0 unclassified
+differences** (`render-identity-799f523-vs-cb3d33f.txt`). The SYNTX walk (plan 1.9.1) reads 0/3 on `cb3d33f`
+(evidence `evidence/syntx-walk-cb3d33f/`: role carrier without `role="button"`, camera transition absent, the
+organization sign an HTML `div` instead of the SVG `g`); these assertions were changed by GRÜN's `ca11794` (2026-10-12,
+"semiotic transfer, variant A", owner GO; GRÜN recorded "PINK walk unchanged 0/3 … rebinding proposed, no integration
+before the owner's visual approval"), not by `cb3d33f` (diff and render identity). The accepted plan-1.9.1 contract is
+therefore not preserved on `frontend/job-field` since `ca11794`; that is a pending owner/PINK rebinding, independent
+of the invariant.
+
+Open: GELB's backend and worker gate (G-06 and the worker check), GRÜN's "JOB POOL FIRST / CAPABILITY GATE" commit
+(groups 1 and 2), the removal path (group 3). The same walk reruns unchanged on each new tip.
+
 ## 4. Boundaries and findings for coordination
 
 - F-JP-1 (closed in `b782793`): `JOB_POOL_CONNECTION.md` §4 followed the per-role `JOB_POOL_JSON_ROLE` design;
