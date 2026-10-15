@@ -1239,6 +1239,115 @@ a slow one delays the analysis by its duration (measured: 400 ms archive → ≥
 Closed: O-SNAPSHOT-SCOPE (§3.30). Not part of this acceptance: GELB's archive diff (table `career_gemini_provider_exchanges`), not read
 or run by PINK. Open owner items unchanged (§3.31).
 
+### 3.33 Gemini exchange archive: GELB `dfb4b63` with GRÜN `aa17a3b` (2026-10-15)
+
+Owner GO 2026-10-15 „EXCHANGE ARCHIVE“ (table and migration only in the isolated engineering/test context) and the owner order
+„PINK validiert unabhängig Speicherung, Fehlerpfade, Isolation, Zugriff und Löschung“, as relayed by GELB (not seen by PINK
+first-hand). GELB `feature/job-pool-first-boundary` `dfb4b63` (fast-forward on `258fde2`):
+- Provider: a refused response travels in `CapabilityProviderResponseError` with the text as received; codes unchanged.
+- Discovery: archives every received response (RUN_, request identity, scope text/hash). The outcome is COMPLETED only after
+  `saveRun`, otherwise FAILED with the leading `ERR_` code or `ERR_UNCLASSIFIED`. It waits at most `EXCHANGE_ARCHIVE_WAIT_MS` = 1 s.
+- Worker: `runWithExchangeAttempt({ jobId, leaseVersion })` per claimed job when the archive is on.
+- Table `career_gemini_provider_exchanges`: opt-in `CONDYN_GEMINI_EXCHANGE_ARCHIVE=1`, DDL only after
+  `verifyDisposableTestDatabase`. A partial unique index allows one COMPLETED per RUN_. `expires_at` per row; expired rows are
+  DELETEd on every write and read; `delete(exchangeId)`.
+- Inspector: the analysis view shows only the matching COMPLETED exchange (else 409). The new job view
+  `GET /api/career/jobs/[jobId]/gemini-exchanges` lists all exchanges of the job, behind the same read boundary.
+
+PINK (probe branch = this branch + `aa17a3b` + `dfb4b63`, deleted, never pushed; evidence `evidence/job-scope-gate-aa17a3b-dfb4b63/`;
+PINK's proofs kept as `.txt`). No live Gemini: in-process runs use the real Gemini provider behind a fake client; the real worker
+run uses PINK's own HTTP stand-in on 127.0.0.1 via `GOOGLE_GEMINI_BASE_URL` with a dummy key, under PINK's net sentinel (every
+non-loopback connection refused; 0 recorded).
+
+**Capture and failure paths** (`exchange-archive-capture.test.ts.txt`, 5; every case run with and without the archive: thrown
+error and persisted run identical):
+- Refusal matrix of 12. Archived once each, with the text exactly as received (CRLF, tabs, emoji, combining, U+2028):
+  - valid → COMPLETED;
+  - MAX_TOKENS with valid text, SAFETY without text (text `null`), empty text, non-string text, invalid JSON, extra schema
+    key → FAILED `ERR_CAPABILITY_DISCOVERY_STRUCTURED_OUTPUT_INVALID`;
+  - kernel version mismatch and coverage mismatch → FAILED with their runtime codes;
+  - circular `usageMetadata` → COMPLETED;
+  - throwing text accessor or rejecting client (nothing received) → no exchange.
+- Persistence failure after a valid response: `ERR_PINK_SAVE_REFUSED: …` → FAILED `ERR_PINK_SAVE_REFUSED`; free text and a
+  lower-case code → `ERR_UNCLASSIFIED`; the error is rethrown unchanged.
+- Retry FAILED (lease 1) → COMPLETED (lease 2) on the same RUN_: the job view lists both in order, and the analysis view shows the
+  COMPLETED text. 409 for each of the five request-identity fields, two COMPLETED exchanges, a foreign RUN_, another scope, a
+  FAILED outcome and a removed scope; NOT_RETAINED when nothing COMPLETED exists.
+- Isolation: concurrent attempts of two jobs keep their attribution; an exchange outside an attempt belongs to no job; an unknown
+  job is 404; a store handing a foreign attempt to a job view is 409.
+- Bounded wait: a hanging archive costs 950–2000 ms on success and on failure; a 1.6 s write lands afterwards.
+
+**PostgreSQL** (`exchange-archive.postgres.test.ts.txt`, 6):
+- DDL gate by policy: `condyn`, `CONDYN`, `postgres`, `template0`, `template1`, two malformed `condyn_test_` names, `my_database`, a
+  remote host and an empty URL → `NO_DDL_ON_NON_DISPOSABLE_DATABASE` with 0 connections to PINK's counting listener (positive
+  control: a disposable-pattern name connects once).
+- Real databases: an existing database whose disposable marker PINK removed gets no table; a marked one only with the flag
+  exactly `1` (`true` → no archive).
+- Byte fidelity: CRLF/tabs/astral/combining/RTL, a 200 kB text, a BOM-first text (FAILED) and a cut MAX_TOKENS text (FAILED) come
+  back exactly, with a matching `textSha256`.
+- Partial unique index: a raw second COMPLETED insert fails with 23505 and a COMPLETED row with an error code with 23514; a
+  second COMPLETED retain is ignored (the first text stays); FAILED rows are kept per lease.
+- Retention: retained 1 ms before `expires_at`, gone at `expires_at` with the row actually DELETEd; `delete(exchangeId)`
+  removes exactly one row (second call false). Window from the environment: 30 → 30 days, 31 → 7, 1 → 1.
+- The received text appears in no table except the archive.
+
+**Both routes on a real Next server** (`exchange-archive-access.e2e.test.ts.txt`, 3 server lives, `exchange-access.json`):
+- Inspector off: both routes give the same JSON 404 with and without the token.
+- Inspector on, archive off: closed cases give the same 404 on both routes. Open: NOT_RETAINED, and the job view shows
+  `NOT_AVAILABLE` with an empty list.
+- Inspector and archive on:
+  - The analysis view shows the exact COMPLETED text (lease 2, `parserResultMatchesText`).
+  - The job view lists FAILED (lease 1, exact refused text), then COMPLETED. It contains neither the other job's exchange nor a
+    document body, and a second read is identical.
+  - Unknown job → 404 `ERR_RESULT_INSPECTION_NOT_FOUND`; POST is not served.
+- 0 Gemini attempts; the only outbound attempts are `next dev`'s own version checks, refused.
+
+**Real worker run** (`exchange-archive-worker.e2e.test.ts.txt`, `exchange-worker.json`, `exchange-worker-archive-off.json`;
+`scripts/run-career-worker.ts` as its own process, four jobs):
+- Job A: FAILED, lease 1, `MAX_TOKENS`, exact text; then COMPLETED, lease 2, exact text. Lease 3 reuses the run: no exchange.
+- Job B: COMPLETED, lease 1.
+- Job C: the stand-in answered HTTP 500 three times; no response was received, so no exchange.
+- Job D (role not in the pool): `ERR_JOB_SCOPE_INVALID` after one attempt; the stand-in never saw it.
+- No exchange without its job. The same world with the archive off gives the same job outcomes and the same stand-in traffic,
+  with 0 rows. This closes the gap GELB named (attribution so far only in unit and PostgreSQL tests).
+
+**Unchanged:**
+- Cross-version `258fde2` ↔ `dfb4b63` (§3.32 probes unchanged, temporary worktree, removed): scoped and unscoped runs, snapshot
+  keys, snapshots, the full unscoped chain and the Gemini requests are byte-identical, as is the unscoped identity probe.
+- Gate walk 74/74.
+- Regression under the sentinel: 56 files (the §3.32 batch, GELB's `exchange-archive.postgres` and `exchange-failures`, PINK's
+  new proofs; seals P8/P7), 48 green + 8 live skipped, 360 tests, 0 network attempts.
+- The §3.32 real-server inspector proof is green on `dfb4b63`.
+- Scripts: 92 runs, 80/80 exit 3 with the sentence.
+- SSR: 26 cases byte-identical to `5d6786b`. tsc 0.
+
+**Corrections to PINK's own earlier proofs** (no change to their earlier results):
+- The §3.29 worker-gate composition check expected `new CareerJobWorker(workerId, jobRepo, processJob`. It now also admits
+  `processAttempt` and asserts that it is the gated `processJob`, wrapped only in `runWithExchangeAttempt`. The real worker run
+  confirms the gate dynamically (job D).
+- The §3.32 database scan searched every table for scope values. It flags the Job Pool's own tables (the pool upload and the
+  role profiles derived from it hold those descriptions by design) whenever another suite uploads the engineering pool into the
+  same database, so it depended on test order. Corrected:
+  - the raw marker must appear in no table except the archive;
+  - scope values must appear in none of the seven Discovery, analysis and inspector tables.
+- The §3.32 unit proof `result-inspector-boundary` uses the 9e54662 store API (`get(runId)`, `delete(runId)`, records without
+  outcome and request), which `dfb4b63` replaced. On `dfb4b63` 3 of its 10 cases fail for that reason; it is retired, and its
+  properties are re-proven on the new API above.
+
+**Observation O-EXCHANGE-NUL (low):** the analysis outcome is unchanged in both cases below.
+- A received text containing U+0000 leaves no row. PostgreSQL TEXT holds no NUL; the INSERT fails inside the observation-only
+  retain and is swallowed. Such a response is missing from the job view without a trace, contrary to „jede empfangene Antwort“.
+- A lone surrogate is stored as U+FFFD, and `textSha256` (computed over the UTF-8 encoding, which already replaces it) still
+  matches.
+
+Closed:
+- O-ARCHIVE-AWAIT: bounded at 1 s, measured.
+- O-INSPECTOR-404-SHAPE: `access.ts` and the contract now say that the 404 is distinguishable but carries no data; the form is
+  unchanged.
+
+Harness note (no finding): a listener that closes every connection at once made postgres-js reconnect about 41,000 times in
+60 s. PINK's listener now holds connections silently, so `connect_timeout` applies.
+
 ## 4. Boundaries and findings for coordination
 
 - F-JP-1 (closed in `b782793`): `JOB_POOL_CONNECTION.md` §4 followed the per-role `JOB_POOL_JSON_ROLE` design;
