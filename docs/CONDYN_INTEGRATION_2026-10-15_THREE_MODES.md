@@ -71,7 +71,7 @@ Lauf auf Wegwerf-Datenbanken, Playwright über `CONDYN_PLAYWRIGHT_MODULE`, ohne 
 
 Den Befund zu `syntx-walk.e2e` habe ich gegengeprüft: GRÜNs geprüfter Stand `8718e3a` allein scheitert identisch. Es ist also keine Regression der Integration. Der Rundgang stammt aus der Zeit vor der Job-Scope-Sperre und öffnet das Feld über `analysisId` und Pool, ohne gewählten Job. Die Sperre (`cb3d33f`/`c146f05`) lässt das Feld dann bewusst nicht AVAILABLE werden. Die Suite gehört PINK; PINK passt sie an. Geschlossen ist der Punkt erst, wenn PINK das bestätigt.
 
-## 4. Separates Delta: serverseitige Ablehnung an `/matches` (noch nicht umgesetzt)
+## 4. Separates Delta: serverseitige Ablehnung an `/matches`
 
 Owner-Vorgabe: Der alte pool-weite Vergleich bleibt vorerst rollenübergreifend. Seine Schnittstelle (`GET /api/career/job-pools/{upload}/matches?analysisId=`) soll ausdrücklich gespeicherte PERSON-Analysen und nicht auflösbare Grenzen künftig serverseitig ablehnen. Vor der Umsetzung ist der Einfluss auf Bestandsaufrufe festzustellen.
 
@@ -100,7 +100,17 @@ Owner-Vorgabe: Der alte pool-weite Vergleich bleibt vorerst rollenübergreifend.
 | PINK-Skripte für nur lesende Rundgänge (`support/syntx-readonly-walk.mjs`, `lens-readonly-proof.mjs`, `pending-label-readonly-check.mjs`) | Analysen einer bestehenden Umgebung | brechen, sobald eine Umgebung mit vor dem Gate erzeugten Analysen den neuen Code fährt |
 | Bestandsdaten | alle Analysen, die vor dem Job-Scope-Gate (`cb3d33f`/`841baab`, 2026-10-14) erzeugt wurden: ohne Erklärung, also NOT_DECLARED; direkt gespeicherte Analysen: NOT_RECORDED | werden an `/matches` abgelehnt. Das betrifft die Daten von :3017 (`5898def`) und :41831 (`337033e`), falls diese Umgebungen je auf den neuen Stand gehoben werden. Beide laufen heute unverändert auf altem Code. |
 
-**Bewertung:** Für den produktiven Aufrufer, GRÜNs Frontend, ist die Sperre folgenlos. Betroffen sind Test-Fixtures ohne Auftrag und Bestandsdaten aus der Zeit vor dem Gate. Die Umsetzung erfolgt getrennt, auf der Spitze dieser Integration: Fixtures in GELB-Dateien passe ich selbst an, PINK erhält Diffs, PINK prüft. Erst danach folgt der Merge in die Integration.
+**Bewertung:** Für den produktiven Aufrufer, GRÜNs Frontend, ist die Sperre folgenlos. Betroffen sind Test-Fixtures ohne Auftrag und Bestandsdaten aus der Zeit vor dem Gate.
+
+**Umsetzung, getrennt:** auf `feature/matches-boundary-guard` über der Integrationsspitze `0fb7b05`. Sie ist nicht in die Integration gemergt; erst kommt PINKs Prüfung. Beschreibung in `THREE_INVESTIGATION_MODES.md` §6.
+
+**Gemessene Wirkung:**
+- `job-pool.postgres` (GELB): Ohne Fixture-Anpassung wurden genau die drei Matches-Tests rot. Die Fixture hat jetzt einen persistierten Auftrag, dazu kommt ein neuer Test für PERSON, ohne Auftrag, vor dem Gate und andere Rolle. Ergebnis 8/8.
+- GRÜN `job-pool-workflow.e2e`: unverändert grün.
+- PINK `http-canonical-inverse.postgres`: 2 rot ohne Fixture.
+- PINK `pdf-path.postgres`: Der DANGLING_REFERENCE-Fall ist rot; der Auftrag bleibt RUNNING, und es gibt keine Referenz, also NOT_RECORDED.
+- Mit dem Diff an PINK sind PINKs Suiten 31/31 grün.
+- Echter Next-Server: 20/20, darunter PERSON 409, ohne Auftrag 409, Lauf-Scope ≠ erklärter Job 409, unbekannt 404, PERSON_X_JOB 200. 0 Netzwerkversuche.
 
 **Offene Frage (Human Authority):** Soll `/matches` auch eine PERSON_X_JOB-Analyse ablehnen, wenn der angefragte Pool nicht der untersuchte ist? Das Frontend tut das bereits; serverseitig ist es nicht Teil der Vorgabe.
 

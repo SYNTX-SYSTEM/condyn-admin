@@ -35,6 +35,21 @@ beforeAll(async () => {
 
 afterAll(async () => { if (sql) await sql.end({ timeout: 5 }); });
 
+/**
+ * Persists an analysis row and its SUCCEEDED job with the given declaration (processor id rule JOB_ ↔ ANL_), so the
+ * matches route can read the analysis's persisted investigation boundary (owner GO 2026-10-15). Without `sourceData`
+ * the analysis is stored without any job.
+ */
+async function recordAnalysis(analysisId: string, sourceData?: Record<string, unknown>) {
+  const { initDbSchema } = await import("../../../lib/career/db/client");
+  await initDbSchema();
+  await sql`INSERT INTO career_analyses (analysis_id, created_at, validation_state, payload) VALUES (${analysisId}, ${new Date().toISOString()}, 'VERIFIED', ${JSON.stringify({ fixture: analysisId })}::jsonb) ON CONFLICT DO NOTHING`;
+  if (!sourceData) return;
+  const inputRef = { sourceType: "BATCH", sourceData: { documents: [], ...sourceData } };
+  await sql`INSERT INTO career_analysis_jobs (job_id, job_type, status, input_ref, attempt_count, result_analysis_id, created_at, lease_version)
+    VALUES (${analysisId.replace("ANL_", "JOB_")}, 'CAREER_ANALYSIS', 'SUCCEEDED', ${JSON.stringify(inputRef)}::jsonb, 1, ${analysisId}, ${new Date().toISOString()}, 1) ON CONFLICT DO NOTHING`;
+}
+
 describe("JSON Job Pool on PostgreSQL (JP-C, JP-I, JP-H)", () => {
   let view: JobPoolUploadView;
 
@@ -111,6 +126,7 @@ describe("JSON Job Pool on PostgreSQL (JP-C, JP-I, JP-H)", () => {
   it("serves list, read and presentation matches; the match evidence is verbatim analysis evidence (JP-H, JP-I)", async () => {
     // Same read path as the analyses route: the repository factory (in-memory under NODE_ENV=test, PostgreSQL otherwise).
     await getCareerAnalysisRepository().save(verifiedAnalysis(FIXTURE_ANALYSIS_ID, fixtureCapabilities()) as never);
+    await recordAnalysis(FIXTURE_ANALYSIS_ID, { investigation: { mode: "PERSON_X_JOB" }, jobScope: { jobPoolUploadId: view.jobPoolUploadId, poolRoleId: "role_fullstack" } });
     const list = await (await handleListJobPoolsRequest(factory)).json();
     expect(list.jobPools.map((item: { jobPoolUploadId: string }) => item.jobPoolUploadId)).toContain(view.jobPoolUploadId);
     expect((await handleReadJobPoolRequest(view.jobPoolUploadId, factory)).status).toBe(200);
@@ -156,5 +172,25 @@ describe("JSON Job Pool on PostgreSQL (JP-C, JP-I, JP-H)", () => {
     expect(created.status).toBe(201);
     const draftView: JobPoolUploadView = await created.json();
     expect(await statusOf(handleJobPoolMatchesRequest(draftView.jobPoolUploadId, new Request(`http://local/x?analysisId=${FIXTURE_ANALYSIS_ID}`), factory))).toEqual([409, "ERR_INACTIVE_COMPANY_POOL"]);
+  }, 120_000);
+
+  it("refuses a stored PERSON analysis and an unresolvable boundary; PERSON_X_JOB stays pool-wide and role-unbound (owner GO 2026-10-15)", async () => {
+    const issueOf = async (analysisId: string) => {
+      const response = await handleJobPoolMatchesRequest(view.jobPoolUploadId, new Request(`http://local/x?analysisId=${analysisId}`), factory);
+      const body = await response.json();
+      return [response.status, body.error?.code, body.error?.issues?.[0]?.message ?? null];
+    };
+    // In the in-memory analysis repository as well, so a refusal can only come from the boundary.
+    for (const id of ["ANL_JOBPOOL_PERSON_0001", "ANL_JOBPOOL_DIRECT_0001", "ANL_JOBPOOL_PREGATE_0001", "ANL_JOBPOOL_OTHER_ROLE_0001"]) await getCareerAnalysisRepository().save(verifiedAnalysis(id, fixtureCapabilities()) as never);
+    await recordAnalysis("ANL_JOBPOOL_PERSON_0001", { investigation: { mode: "PERSON" } });
+    await recordAnalysis("ANL_JOBPOOL_DIRECT_0001");
+    await recordAnalysis("ANL_JOBPOOL_PREGATE_0001", {});
+    // Another role of the same pool: the legacy comparison stays role-unbound for compatibility.
+    await recordAnalysis("ANL_JOBPOOL_OTHER_ROLE_0001", { jobScope: { jobPoolUploadId: view.jobPoolUploadId, poolRoleId: view.canonicalMapping.roles[1].poolRoleId } });
+    expect(await issueOf("ANL_JOBPOOL_PERSON_0001")).toEqual([409, "ERR_JOB_POOL_MATCHES_PERSON_ANALYSIS", null]);
+    expect(await issueOf("ANL_JOBPOOL_DIRECT_0001")).toEqual([409, "ERR_JOB_POOL_MATCHES_BOUNDARY_UNRESOLVED", "NOT_RECORDED"]);
+    expect(await issueOf("ANL_JOBPOOL_PREGATE_0001")).toEqual([409, "ERR_JOB_POOL_MATCHES_BOUNDARY_UNRESOLVED", "NOT_DECLARED"]);
+    expect((await issueOf("ANL_JOBPOOL_OTHER_ROLE_0001"))[0]).toBe(200);
+    expect((await issueOf(FIXTURE_ANALYSIS_ID))[0]).toBe(200);
   }, 120_000);
 });

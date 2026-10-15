@@ -7,6 +7,10 @@ import { registerUnifiedPersistenceSchema } from "../../persistence/unified-sche
 import { createRegistrationClient } from "../../persistence/registration-client";
 import { createJobPoolApplication, type JobPoolApplication } from "./application";
 import { JobPoolError } from "./errors";
+import { createPostgresAnalysisInvestigationSources, readPersistedAnalysisInvestigation } from "../investigation/persisted";
+import { createJobScopeResolver } from "../job-scope/scope";
+import { JobRepository } from "../orchestration/job-repository";
+import { PostgresJobPoolRepository } from "./repository";
 import { registerJobPoolPersistenceSchema } from "./persistence-schema";
 
 /**
@@ -43,6 +47,14 @@ export async function createLocalJobPoolApplication(): Promise<JobPoolApplicatio
     capabilitySweep: createCapabilityProposalProjectionReader({
       references: new PostgresCapabilityProposalProjectionReferenceRepository(db),
       capabilityRepository: new PostgresCapabilityCoreRepository(db)
-    })
+    }),
+    // The same persisted boundary the URL boundary route reads (lib/career/investigation/persisted.ts).
+    investigationBoundary: { read: analysisId => readPersistedAnalysisInvestigation({
+      ...createPostgresAnalysisInvestigationSources(db),
+      references: new PostgresCapabilityProposalProjectionReferenceRepository(db),
+      runs: new PostgresCapabilityCoreRepository(db),
+      jobs: new JobRepository(db),
+      scopes: createJobScopeResolver(new PostgresJobPoolRepository(drizzle(db.$client)))
+    }, analysisId) }
   });
 }

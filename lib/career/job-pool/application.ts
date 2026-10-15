@@ -1,4 +1,5 @@
 import type { PostgresJsDatabase } from "drizzle-orm/postgres-js";
+import { AnalysisInvestigationError, type PersistedAnalysisInvestigation } from "../investigation/persisted";
 import type { CompanyPoolData } from "../matching/pool";
 import type { CareerAnalysisRepository } from "../repository";
 import { mapJobPoolToCanonicalTargets } from "./canonical-mapping";
@@ -36,6 +37,12 @@ export interface JobPoolApplicationDependencies {
   analyses: Pick<CareerAnalysisRepository, "load">;
   /** The F11 capability proposal projection of the analysis job (same reader as the analyses route). */
   capabilitySweep?: { read(analysisId: string): Promise<{ capabilities: Array<{ id: string; name: string; evidence: Array<{ sourceDocumentId: string; exactQuote: string }> }> } | null> };
+  /**
+   * The persisted investigation boundary of the analysis (owner GO 2026-10-15): the legacy pool-wide comparison stays
+   * role-unbound for compatibility, but refuses a stored PERSON analysis and an unresolvable boundary. The production
+   * composition (local-composition.ts) always supplies it.
+   */
+  investigationBoundary?: { read(analysisId: string): Promise<PersistedAnalysisInvestigation> };
   now?: () => string;
 }
 
@@ -98,6 +105,7 @@ export function createJobPoolApplication(deps: JobPoolApplicationDependencies) {
     async matches(jobPoolUploadId: string, analysisId: string | null): Promise<JobPoolMatchPresentation> {
       if (!analysisId) throw new JobPoolError("ERR_ANALYSIS_ID_REQUIRED", 400, "The query parameter analysisId is required.");
       const view = await this.get(jobPoolUploadId);
+      if (deps.investigationBoundary) await assertComparableBoundary(deps.investigationBoundary, analysisId);
       const analysis = await analyses.load(analysisId);
       if (analysis === null) throw new JobPoolError("ERR_ANALYSIS_NOT_FOUND", 404, `Unknown analysis ${analysisId}.`);
       let capabilitySweep: CapabilitySweepInput = { state: "NOT_PRODUCED" };
@@ -125,3 +133,16 @@ export function createJobPoolApplication(deps: JobPoolApplicationDependencies) {
 }
 
 export type JobPoolApplication = ReturnType<typeof createJobPoolApplication>;
+
+/** Never compared: a stored PERSON analysis, or an analysis whose boundary cannot be resolved exactly. */
+async function assertComparableBoundary(boundary: NonNullable<JobPoolApplicationDependencies["investigationBoundary"]>, analysisId: string): Promise<void> {
+  let investigation: PersistedAnalysisInvestigation;
+  try { investigation = await boundary.read(analysisId); } catch (error) {
+    if (!(error instanceof AnalysisInvestigationError)) throw error;
+    if (error.status === 404) throw new JobPoolError("ERR_ANALYSIS_NOT_FOUND", 404, `Unknown analysis ${analysisId}.`);
+    throw new JobPoolError("ERR_JOB_POOL_MATCHES_BOUNDARY_UNRESOLVED", 409, `The investigation boundary of ${analysisId} cannot be resolved (${error.reason}); no job comparison.`, [{ path: "analysisId", message: error.reason ?? "UNRESOLVED" }]);
+  }
+  if (investigation.mode === "PERSON") {
+    throw new JobPoolError("ERR_JOB_POOL_MATCHES_PERSON_ANALYSIS", 409, `${analysisId} is a PERSON analysis, investigated independently of any job; no job comparison.`);
+  }
+}
