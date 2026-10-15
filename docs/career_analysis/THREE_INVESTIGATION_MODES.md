@@ -91,7 +91,31 @@ Kernel, Prompts, Ausgabeschemata, Phase-4, Evidence-Validator, Projektion, Match
 | `0b23045` | JOB ONLY, Stufe 1 |
 | dieser Commit | Inspector-Client und Doku |
 
-## 8. Offene Relationen
+## 8. Nachweise (ohne Gemini, 0 Netzwerkversuche)
+
+Die Belege liegen unter `docs/proofs/job-pool-first-boundary/2026-10-15-three-modes-*.json`.
+
+**Echter Next-Server auf einer Wegwerf-Datenbank: 11/11**
+- Analyze:
+  - PERSON 202;
+  - PERSON_X_JOB 202;
+  - ohne Grenze 400 mit dem Job-Scope-Satz;
+  - PERSON plus Scope 400;
+  - JOB 400.
+- JOB-Struktur 200, ohne Personendaten.
+- B2:
+  - 200, `scored: false`, NOT_EVALUATED, die Legacy-Markierung fehlt;
+  - eine andere Rolle 409 SCOPE_MISMATCH;
+  - eine PERSON-Analyse 409 NOT_SCOPED.
+- Der Inspector zeigt PERSON ohne Scope und PERSON_X_JOB mit Scope.
+
+**Unverändert grün**
+- Alle Skriptpfade (`three-modes-all-paths`): Skripte bleiben an einen Job gebunden.
+- Der echte Worker (`three-modes-worker`).
+
+**Volle Suite** (mit PINKs ausstehendem pdf-path-Diff): 2481 grün, 28 rot. Davon sind 27 die bekannten Rotfälle der Baseline. Der übrige ist ein Timeout unter Last in der T13H-Persistenzsuite; einzeln läuft sie 8/8 grün.
+
+## 9. Offene Relationen
 
 - **Frontend (GRÜN, eigenes Mandat):** Moduswahl, B2-Anzeige, JOB-Strukturansicht, GEMINI-OUTPUT-Panel.
 - **JOB ONLY, Stufe 2** (Gemini) und modellbasierte Strukturprobleme.
