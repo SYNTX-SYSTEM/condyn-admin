@@ -1,0 +1,109 @@
+{
+  "own PERSON_X_JOB analysis, own pool": {
+    "boundary": "PERSON_X_JOB",
+    "fieldState": "AVAILABLE",
+    "hint": null,
+    "hintPool": null,
+    "matches": [
+      "/api/career/job-pools/JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7/matches?analysisId=ANL_PINK_THREE_MODES"
+    ],
+    "sources": 0
+  },
+  "jobScope-only declaration (earlier contract), own pool": {
+    "boundary": "PERSON_X_JOB",
+    "fieldState": "AVAILABLE",
+    "hint": null,
+    "hintPool": null,
+    "matches": [
+      "/api/career/job-pools/JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7/matches?analysisId=ANL_PINK_TM_URL_LEGACY"
+    ],
+    "sources": 0
+  },
+  "PERSON analysis from the URL": {
+    "boundary": "PERSON",
+    "fieldState": "NO_ANALYSIS",
+    "hint": "PERSON",
+    "hintPool": "",
+    "matches": [],
+    "sources": 0
+  },
+  "analysis row without a job (NOT_RECORDED)": {
+    "boundary": "UNRESOLVED",
+    "fieldState": "NO_ANALYSIS",
+    "hint": "UNRESOLVED",
+    "hintPool": "",
+    "matches": [],
+    "sources": 0
+  },
+  "unknown analysis (404)": {
+    "boundary": "UNRESOLVED",
+    "fieldState": "NO_ANALYSIS",
+    "hint": "UNRESOLVED",
+    "hintPool": "",
+    "matches": [],
+    "sources": 0
+  },
+  "own analysis viewed in another pool": {
+    "boundary": "OTHER_POOL",
+    "fieldState": "NO_ANALYSIS",
+    "hint": "OTHER_POOL",
+    "hintPool": "JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7",
+    "matches": [],
+    "sources": 0
+  },
+  "OTHER_POOL click": {
+    "url": "http://127.0.0.1:33623/career/demo?focus=FIELD&analysisId=ANL_PINK_THREE_MODES&jobPoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7",
+    "fieldState": "AVAILABLE",
+    "matches": [
+      "/api/career/job-pools/JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7/matches?analysisId=ANL_PINK_THREE_MODES"
+    ],
+    "boundary": "PERSON_X_JOB"
+  },
+  "own analysis in PERSON mode": {
+    "boundary": "PERSON_X_JOB",
+    "fieldState": "NO_ANALYSIS",
+    "hint": null,
+    "hintPool": null,
+    "matches": [],
+    "sources": 0
+  },
+  "own analysis in JOB mode": {
+    "boundary": "PERSON_X_JOB",
+    "fieldState": "NO_ANALYSIS",
+    "hint": null,
+    "hintPool": null,
+    "matches": [],
+    "sources": 0
+  },
+  "pending": {
+    "during": {
+      "boundary": "RESOLVING",
+      "matches": 0,
+      "sources": 0
+    },
+    "afterRelease": {
+      "boundary": "PERSON_X_JOB",
+      "matches": 1
+    }
+  },
+  "forged: server error 500": {
+    "boundary": "UNRESOLVED",
+    "matches": [],
+    "sources": 0
+  },
+  "forged: 200 about another analysis": {
+    "boundary": "UNRESOLVED",
+    "matches": [],
+    "sources": 0
+  },
+  "forged: 200 with an extra key": {
+    "boundary": "UNRESOLVED",
+    "matches": [],
+    "sources": 0
+  },
+  "forged: 409 with an unknown reason": {
+    "boundary": "UNRESOLVED",
+    "matches": [],
+    "sources": 0
+  }
+}

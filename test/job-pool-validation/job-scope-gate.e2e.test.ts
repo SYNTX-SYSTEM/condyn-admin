@@ -32,6 +32,8 @@ import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import { PostgresCareerAnalysisRepository } from "../../lib/career/repositories/postgres";
 import { createJobPoolPostgresWorld, type JobPoolWorld } from "../career/job-pool/fixtures/job-pool-postgres-world";
 import { buildVerifiedAnalysis } from "./fixtures/analysis";
+import { JobRepository } from "../../lib/career/orchestration/job-repository";
+import { createJob } from "../../lib/career/orchestration/job";
 import { clonePool, draftPool, validationPool } from "./fixtures/pool";
 
 function resolvePlaywright(): string | null {
@@ -190,6 +192,10 @@ describe.skipIf(playwrightModule === null)("PINK G: job-scope gate — Job Pool 
     }
     const post = async (body: unknown) => (await fetch(`${base()}/api/career/job-pools`, { method: "POST", headers: { "content-type": "application/json", "x-condyn-principal-actor-id": "PINK_JOB_SCOPE_GATE" }, body: JSON.stringify(body) })).json();
     uploadId = (await post(validationPool)).jobPoolUploadId;
+    // URL BOUNDARY CLOSURE (owner, 2026-10-15; GELB 26df225, GRÜN da59568): the analysis's boundary resolves only from its persisted job
+    // (processor rule JOB_ ↔ ANL_, SUCCEEDED, result_analysis_id, declared PERSON_X_JOB for the validation pool's ROLE_ID); an analysis
+    // row without a job is UNRESOLVED and compares nothing. Created before every before/after count (jobCount stays relative).
+    await new JobRepository(drizzle(world.sql)).enqueueJob({ ...createJob("CAREER_ANALYSIS", { sourceType: "BATCH", sourceData: { documents: [{ type: "text", content: "PINK job-scope gate fixture" }], investigation: { mode: "PERSON_X_JOB" }, jobScope: { jobPoolUploadId: uploadId, poolRoleId: ROLE_ID } } } as never), jobId: ANALYSIS_ID.replace("ANL_", "JOB_"), status: "SUCCEEDED", attemptCount: 1, resultAnalysisId: ANALYSIS_ID, completedAt: new Date().toISOString() });
     draftId = (await post(draftPool())).jobPoolUploadId;
     // G-10 fixture: the pool schema admits any non-empty id; one role id carries spaces (frontend and backend must agree on it).
     const spaced = clonePool() as any;

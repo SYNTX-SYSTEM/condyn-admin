@@ -1,0 +1,407 @@
+{
+  "pxjClean": {
+    "expect": "RESOLVED:PERSON_X_JOB:RUN",
+    "status": 200,
+    "cacheControl": "no-store",
+    "body": {
+      "success": true,
+      "investigation": {
+        "investigationVersion": "ANALYSIS_INVESTIGATION_V1",
+        "analysisId": "ANL_1792053607797_333",
+        "jobId": "JOB_1792053607797_333",
+        "mode": "PERSON_X_JOB",
+        "jobScopeSelection": {
+          "jobPoolUploadId": "JPOOL_B94850C439974E27496FE3B1A9A076B5",
+          "poolRoleId": "role_kestrel_frontend_architect"
+        },
+        "basis": "JOB_DECLARATION_AND_DISCOVERY_RUN",
+        "discoveryRunId": "RUN_8DC742D152F0C923EC7ABEFF",
+        "investigationScopeHash": "e31b869c7ad12d2611e334984c4f1bcca01d780d73141c50d067b505771a1d97"
+      }
+    }
+  },
+  "pxjLegacyDeclaration": {
+    "expect": "RESOLVED:PERSON_X_JOB:RUN",
+    "status": 200,
+    "cacheControl": "no-store",
+    "body": {
+      "success": true,
+      "investigation": {
+        "investigationVersion": "ANALYSIS_INVESTIGATION_V1",
+        "analysisId": "ANL_1792053607450_692",
+        "jobId": "JOB_1792053607450_692",
+        "mode": "PERSON_X_JOB",
+        "jobScopeSelection": {
+          "jobPoolUploadId": "JPOOL_B94850C439974E27496FE3B1A9A076B5",
+          "poolRoleId": "role_kestrel_frontend_architect"
+        },
+        "basis": "JOB_DECLARATION_AND_DISCOVERY_RUN",
+        "discoveryRunId": "RUN_1B691783623296D85AF8B870",
+        "investigationScopeHash": "e31b869c7ad12d2611e334984c4f1bcca01d780d73141c50d067b505771a1d97"
+      }
+    }
+  },
+  "person": {
+    "expect": "RESOLVED:PERSON:RUN",
+    "status": 200,
+    "cacheControl": "no-store",
+    "body": {
+      "success": true,
+      "investigation": {
+        "investigationVersion": "ANALYSIS_INVESTIGATION_V1",
+        "analysisId": "ANL_1792053607478_8",
+        "jobId": "JOB_1792053607478_8",
+        "mode": "PERSON",
+        "jobScopeSelection": null,
+        "basis": "JOB_DECLARATION_AND_DISCOVERY_RUN",
+        "discoveryRunId": "RUN_E492671F8CF8D344BD25F2AA",
+        "investigationScopeHash": null
+      }
+    }
+  },
+  "snapshotPxj": {
+    "expect": "RESOLVED:PERSON_X_JOB:DECLARATION",
+    "status": 200,
+    "cacheControl": "no-store",
+    "body": {
+      "success": true,
+      "investigation": {
+        "investigationVersion": "ANALYSIS_INVESTIGATION_V1",
+        "analysisId": "ANL_1792053607823_626",
+        "jobId": "JOB_1792053607823_626",
+        "mode": "PERSON_X_JOB",
+        "jobScopeSelection": {
+          "jobPoolUploadId": "JPOOL_B94850C439974E27496FE3B1A9A076B5",
+          "poolRoleId": "role_kestrel_frontend_architect"
+        },
+        "basis": "JOB_DECLARATION",
+        "discoveryRunId": null,
+        "investigationScopeHash": null
+      }
+    }
+  },
+  "snapshotPerson": {
+    "expect": "RESOLVED:PERSON:DECLARATION",
+    "status": 200,
+    "cacheControl": "no-store",
+    "body": {
+      "success": true,
+      "investigation": {
+        "investigationVersion": "ANALYSIS_INVESTIGATION_V1",
+        "analysisId": "ANL_1792053607831_63",
+        "jobId": "JOB_1792053607831_63",
+        "mode": "PERSON",
+        "jobScopeSelection": null,
+        "basis": "JOB_DECLARATION",
+        "discoveryRunId": null,
+        "investigationScopeHash": null
+      }
+    }
+  },
+  "unknown": {
+    "expect": "404",
+    "status": 404,
+    "cacheControl": "no-store",
+    "body": {
+      "success": false,
+      "issues": [
+        {
+          "code": "ERR_ANALYSIS_INVESTIGATION_NOT_FOUND"
+        }
+      ]
+    }
+  },
+  "emptyLike": {
+    "expect": "404",
+    "status": 404,
+    "cacheControl": "no-store",
+    "body": {
+      "success": false,
+      "issues": [
+        {
+          "code": "ERR_ANALYSIS_INVESTIGATION_NOT_FOUND"
+        }
+      ]
+    }
+  },
+  "direct": {
+    "expect": "409:NOT_RECORDED",
+    "status": 409,
+    "cacheControl": "no-store",
+    "body": {
+      "success": false,
+      "issues": [
+        {
+          "code": "ERR_ANALYSIS_INVESTIGATION_UNRESOLVED",
+          "reason": "NOT_RECORDED"
+        }
+      ]
+    }
+  },
+  "failedOnly": {
+    "expect": "409:NOT_RECORDED",
+    "status": 409,
+    "cacheControl": "no-store",
+    "body": {
+      "success": false,
+      "issues": [
+        {
+          "code": "ERR_ANALYSIS_INVESTIGATION_UNRESOLVED",
+          "reason": "NOT_RECORDED"
+        }
+      ]
+    }
+  },
+  "undeclared": {
+    "expect": "409:NOT_DECLARED",
+    "status": 409,
+    "cacheControl": "no-store",
+    "body": {
+      "success": false,
+      "issues": [
+        {
+          "code": "ERR_ANALYSIS_INVESTIGATION_UNRESOLVED",
+          "reason": "NOT_DECLARED"
+        }
+      ]
+    }
+  },
+  "contradictory": {
+    "expect": "409:DECLARATION_INVALID",
+    "status": 409,
+    "cacheControl": "no-store",
+    "body": {
+      "success": false,
+      "issues": [
+        {
+          "code": "ERR_ANALYSIS_INVESTIGATION_UNRESOLVED",
+          "reason": "DECLARATION_INVALID"
+        }
+      ]
+    }
+  },
+  "jobMode": {
+    "expect": "409:DECLARATION_INVALID",
+    "status": 409,
+    "cacheControl": "no-store",
+    "body": {
+      "success": false,
+      "issues": [
+        {
+          "code": "ERR_ANALYSIS_INVESTIGATION_UNRESOLVED",
+          "reason": "DECLARATION_INVALID"
+        }
+      ]
+    }
+  },
+  "twoJobs": {
+    "expect": "409:AMBIGUOUS",
+    "status": 409,
+    "cacheControl": "no-store",
+    "body": {
+      "success": false,
+      "issues": [
+        {
+          "code": "ERR_ANALYSIS_INVESTIGATION_UNRESOLVED",
+          "reason": "AMBIGUOUS"
+        }
+      ]
+    }
+  },
+  "pxjSecondClaim": {
+    "expect": "409:AMBIGUOUS",
+    "status": 409,
+    "cacheControl": "no-store",
+    "body": {
+      "success": false,
+      "issues": [
+        {
+          "code": "ERR_ANALYSIS_INVESTIGATION_UNRESOLVED",
+          "reason": "AMBIGUOUS"
+        }
+      ]
+    }
+  },
+  "crossed": {
+    "expect": "409:LINEAGE_INVALID",
+    "status": 409,
+    "cacheControl": "no-store",
+    "body": {
+      "success": false,
+      "issues": [
+        {
+          "code": "ERR_ANALYSIS_INVESTIGATION_UNRESOLVED",
+          "reason": "LINEAGE_INVALID"
+        }
+      ]
+    }
+  },
+  "foreignReference": {
+    "expect": "409:LINEAGE_INVALID",
+    "status": 409,
+    "cacheControl": "no-store",
+    "body": {
+      "success": false,
+      "issues": [
+        {
+          "code": "ERR_ANALYSIS_INVESTIGATION_UNRESOLVED",
+          "reason": "LINEAGE_INVALID"
+        }
+      ]
+    }
+  },
+  "badBundle": {
+    "expect": "409:LINEAGE_INVALID",
+    "status": 409,
+    "cacheControl": "no-store",
+    "body": {
+      "success": false,
+      "issues": [
+        {
+          "code": "ERR_ANALYSIS_INVESTIGATION_UNRESOLVED",
+          "reason": "LINEAGE_INVALID"
+        }
+      ]
+    }
+  },
+  "badConvergence": {
+    "expect": "409:LINEAGE_INVALID",
+    "status": 409,
+    "cacheControl": "no-store",
+    "body": {
+      "success": false,
+      "issues": [
+        {
+          "code": "ERR_ANALYSIS_INVESTIGATION_UNRESOLVED",
+          "reason": "LINEAGE_INVALID"
+        }
+      ]
+    }
+  },
+  "otherResult": {
+    "expect": "409:LINEAGE_INVALID",
+    "status": 409,
+    "cacheControl": "no-store",
+    "body": {
+      "success": false,
+      "issues": [
+        {
+          "code": "ERR_ANALYSIS_INVESTIGATION_UNRESOLVED",
+          "reason": "LINEAGE_INVALID"
+        }
+      ]
+    }
+  },
+  "personScopedRun": {
+    "expect": "409:RUN_CONTRADICTS_DECLARATION",
+    "status": 409,
+    "cacheControl": "no-store",
+    "body": {
+      "success": false,
+      "issues": [
+        {
+          "code": "ERR_ANALYSIS_INVESTIGATION_UNRESOLVED",
+          "reason": "RUN_CONTRADICTS_DECLARATION"
+        }
+      ]
+    }
+  },
+  "pxjUnscopedRun": {
+    "expect": "409:RUN_CONTRADICTS_DECLARATION",
+    "status": 409,
+    "cacheControl": "no-store",
+    "body": {
+      "success": false,
+      "issues": [
+        {
+          "code": "ERR_ANALYSIS_INVESTIGATION_UNRESOLVED",
+          "reason": "RUN_CONTRADICTS_DECLARATION"
+        }
+      ]
+    }
+  },
+  "roleDrift": {
+    "expect": "409:RUN_CONTRADICTS_DECLARATION",
+    "status": 409,
+    "cacheControl": "no-store",
+    "body": {
+      "success": false,
+      "issues": [
+        {
+          "code": "ERR_ANALYSIS_INVESTIGATION_UNRESOLVED",
+          "reason": "RUN_CONTRADICTS_DECLARATION"
+        }
+      ]
+    }
+  },
+  "scopeUnavailableRole": {
+    "expect": "409:SCOPE_UNAVAILABLE",
+    "status": 409,
+    "cacheControl": "no-store",
+    "body": {
+      "success": false,
+      "issues": [
+        {
+          "code": "ERR_ANALYSIS_INVESTIGATION_UNRESOLVED",
+          "reason": "SCOPE_UNAVAILABLE"
+        }
+      ]
+    }
+  },
+  "scopeUnavailablePool": {
+    "expect": "409:SCOPE_UNAVAILABLE",
+    "status": 409,
+    "cacheControl": "no-store",
+    "body": {
+      "success": false,
+      "issues": [
+        {
+          "code": "ERR_ANALYSIS_INVESTIGATION_UNRESOLVED",
+          "reason": "SCOPE_UNAVAILABLE"
+        }
+      ]
+    }
+  },
+  "refFailed": {
+    "expect": "EDGE",
+    "status": 200,
+    "cacheControl": "no-store",
+    "body": {
+      "success": true,
+      "investigation": {
+        "investigationVersion": "ANALYSIS_INVESTIGATION_V1",
+        "analysisId": "ANL_1792053607871_177",
+        "jobId": "JOB_1792053607871_177",
+        "mode": "PERSON_X_JOB",
+        "jobScopeSelection": {
+          "jobPoolUploadId": "JPOOL_B94850C439974E27496FE3B1A9A076B5",
+          "poolRoleId": "role_kestrel_frontend_architect"
+        },
+        "basis": "JOB_DECLARATION_AND_DISCOVERY_RUN",
+        "discoveryRunId": "RUN_C15392E94B697906F5431463",
+        "investigationScopeHash": "e31b869c7ad12d2611e334984c4f1bcca01d780d73141c50d067b505771a1d97"
+      }
+    }
+  },
+  "snapshotMissingRole": {
+    "expect": "EDGE",
+    "status": 200,
+    "cacheControl": "no-store",
+    "body": {
+      "success": true,
+      "investigation": {
+        "investigationVersion": "ANALYSIS_INVESTIGATION_V1",
+        "analysisId": "ANL_1792053607665_237",
+        "jobId": "JOB_1792053607665_237",
+        "mode": "PERSON_X_JOB",
+        "jobScopeSelection": {
+          "jobPoolUploadId": "JPOOL_B94850C439974E27496FE3B1A9A076B5",
+          "poolRoleId": "role_pink_not_in_pool"
+        },
+        "basis": "JOB_DECLARATION",
+        "discoveryRunId": null,
+        "investigationScopeHash": null
+      }
+    }
+  }
+}

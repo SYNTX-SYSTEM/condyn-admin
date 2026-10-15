@@ -1677,6 +1677,60 @@ suites when GRÜN's frontend arrives: a SUCCEEDED job with `result_analysis_id` 
 - Open: O-URL-SCOPE-IDENTITY and O-URL-REF-STATUS (informational), and O-B2-OPEN-READ. The new route is open-read like the other career routes, but carries identities only.
 - Not authorised: merge, integration, deployment, live Gemini.
 
+### 3.39 URL BOUNDARY CLOSURE in the frontend, and the scope-identity hardening: GRÜN `da59568`/`8718e3a`, GELB `d54c718` (2026-10-15)
+
+GRÜN asked PINK for an independent check of the frontend side of the URL BOUNDARY CLOSURE. GELB asked PINK to include its hardening
+of O-URL-SCOPE-IDENTITY (§3.38). The owner mandate was relayed by both and is **not seen first-hand**.
+
+**What changes:**
+- **Hardening.** `d54c718` proves a scoped Discovery run like B2: `sha256(render(resolve(declared selection)).text)` must equal the run's scope hash, otherwise RUN_CONTRADICTS_DECLARATION. A selection that can no longer be resolved gives the new reason SCOPE_UNAVAILABLE. Without pool persistence the route answers 503.
+- **Frontend.** `da59568` applies one rule to every analysis on view, whether it came from the URL or from a job. In PERSON × JOB the earlier comparison is read and shown only when `legacyJobComparisonPermitted` holds, and `/matches` is never read for another pool. The new attribute `syntx-field[data-analysis-boundary]` takes the values RESOLVING / PERSON / UNRESOLVED / OTHER_POOL / PERSON_X_JOB. For OTHER_POOL there is an explicit „open the analysis's pool“ action.
+- **`8718e3a`.** It merges `d54c718`/`4e72260`; its code is identical to PINK's probe. It differs only in docs and two lines of `job-pool-workflow.e2e`: the DRAFT step waits for the field to rest.
+
+**Base.**
+- `7507454` was rebuilt independently as `bd9eb72` + `ef189d3`: identical tree, no conflicts.
+- Probe: `f993655` + `da59568` + `d54c718`/`4e72260`. Evidence is in `evidence/job-scope-gate-8718e3a/`, which also holds the da59568 reports from before the hardening.
+
+**PINK fixtures.** GRÜN's diff for `job-scope-gate.e2e` is reviewed and **adopted in this commit** (PINK's file). It adds a
+SUCCEEDED job `JOB_PINK_JOB_SCOPE_GATE` with `result_analysis_id`, declared PERSON_X_JOB for the validation pool's role. It is created
+before every before/after count, so the counts stay relative, and it changes nothing for tips without the route. The
+`three-modes.e2e` walk gets the same pattern.
+
+| Proof | Result |
+|---|---|
+| Gate walk with the adopted fixture | **74/74** on `da59568`, and again on the hardened stack |
+| `three-modes.e2e`, extended by **T-10 URL boundary** | **91/91** on `da59568`, and again on the hardened stack. The 15 T-10 checks are listed below |
+| `url-boundary.postgres`, extended for `d54c718` | **6/6**. Every unresolved reason is reached, now 7 including SCOPE_UNAVAILABLE (declared role not in the pool, declared pool unknown). The §3.38 role-drift case is now **409 RUN_CONTRADICTS_DECLARATION** |
+| Negative control for the hardening | without the hash comparison the role-drift case fails UB-2 (detected) |
+| `url-boundary.e2e`, real Next server | 1/1: byte-identical to in-process, no-store, 405 for other methods, 0 Gemini attempts |
+| Regression under the sentinel | 72 files (64 green + 8 live skipped), 522 tests, **0 network attempts**; scripts identical to `bd9eb72`; `tsc` 0 |
+| GRÜN `job-pool-workflow.e2e` | `da59568` version 9/10: its DRAFT step clicked during the pool-change animation, the step `8718e3a` stabilises. `8718e3a` version: 10/10 twice |
+
+**T-10 URL boundary in the browser.** Each case was measured with every `/matches` and `/sources` request of the page:
+- **Compared, exactly with the analysis's own pool:** PERSON_X_JOB, with the explicit declaration and with the earlier jobScope-only declaration.
+- **No comparison, no `/matches`, no `/sources`:**
+  - a PERSON analysis from the URL (PERSON);
+  - an analysis row without a job, and an unknown analysis (UNRESOLVED);
+  - the own analysis viewed in another pool (OTHER_POOL). The hint names the own pool, and the URL stays on the viewed pool;
+  - the own analysis in PERSON mode and in JOB mode.
+- **Explicit click.** It opens the own pool, and only then is the analysis compared.
+- **Pending read.** While the boundary read is held, the state is RESOLVING with 0 `/matches` and 0 `/sources`. After release it is PERSON_X_JOB and compared.
+- **Failed or forged reads** — a 500, a 200 about another analysis, a 200 with an extra key, a 409 with an unknown reason — all give UNRESOLVED with no `/matches` and no `/sources`.
+
+**Observations:**
+- **O-URL-SCOPE-IDENTITY: closed** by `d54c718`, as measured above.
+- **O-URL-REF-STATUS** is unchanged. GELB keeps it and documents it in THREE_INVESTIGATION_MODES.md §10.
+- **New edge (informational).**
+  - What happens: a PERSON_X_JOB analysis resolved from the job declaration alone (no projection reference) whose declaration names a role the pool does not have resolves as PERSON_X_JOB, because the declaration path reads no pool. It is measured as `snapshotMissingRole`.
+  - Reachability: not through the analyze route, which refuses such a selection, nor through the worker, which re-resolves on every claim. Only inconsistent persisted data reaches it.
+  - Consequence: the frontend permission is pool-wide either way.
+- **Hygiene during the run.** GRÜN's `job-pool-workflow.e2e` writes its screenshots into GRÜN's tracked evidence. PINK's probe runs overwrote them locally; they were restored before switching back, and nothing was committed.
+
+**Status.**
+- No deviation. O-URL-ANALYSIS-UNBOUND is closed end to end: backend `26df225`/`d54c718`, frontend `da59568`/`8718e3a`.
+- O-B2-OPEN-READ is unchanged.
+- Merge, integration, deployment and live Gemini are still not authorised.
+
 ## 4. Boundaries and findings for coordination
 
 - F-JP-1 (closed in `b782793`): `JOB_POOL_CONNECTION.md` §4 followed the per-role `JOB_POOL_JSON_ROLE` design;
