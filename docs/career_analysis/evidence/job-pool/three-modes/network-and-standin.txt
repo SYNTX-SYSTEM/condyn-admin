@@ -1,0 +1,7 @@
+Gemini stand-in on 127.0.0.1 (no live Gemini): requests by kind / INVESTIGATION_SCOPE block / status
+  CONVERGENCE  scope=False status=200  ×6
+  DISCOVERY    scope=False status=200  ×3
+  DISCOVERY    scope=True  status=200  ×3
+  LEGACY       scope=False status=200  ×6
+Network sentinel (worker and Next server): 1 refused non-loopback attempt(s), Gemini hosts: 0
+  fetch https://registry.npmjs.org/-/package/next/dist-tags

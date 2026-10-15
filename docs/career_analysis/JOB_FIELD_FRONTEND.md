@@ -1186,6 +1186,101 @@ sentence). Codes, response form and behaviour unchanged. Earlier
 sections and evidence keep the sentence they were recorded with. Proof: tsc 0; 17 files / 147 tests; the job-scope-removal walk
 25/25 with the new sentence checked verbatim (`evidence/job-pool/job-scope-removal/walk-results-2026-10-15-sentence.txt`).
 
+#### 13.2.27 Three investigation modes, B2 coverage and GEMINI OUTPUT (owner GO "DEMO FRONTEND", 2026-10-15)
+
+On aa17a3b merged with GELB `feature/job-pool-first-boundary` at ad15d7b (branch `frontend/three-modes`; the merge brings GELB's
+backend contracts, unchanged). Owner ruling B-INVARIANT-PERSON (PINK §3.35): „Keine Analyse ohne explizit ausgestellte
+Untersuchungsgrenze“; scope-free Gemini only in an explicitly chosen PERSON mode. Contracts used as delivered:
+`THREE_INVESTIGATION_MODES.md`, `SELECTED_ROLE_COVERAGE.md`, `GEMINI_RESULT_INSPECTOR.md` §6 and the browser client
+`lib/career/result-inspector/client.ts`. No new pipeline, no new archive, no parallel GUI: everything lives in the existing shell,
+dock and Job Field.
+
+**The boundary at the shell.** `SyntxInvestigationSelector` (`investigation-mode-selector`, `data-sx-shell="investigation"`) sits on the
+shell row right of the field selector, mirroring the job scope on the left: PERSON · PERSON × JOB · JOB as one radio group (←/→,
+Home/End, Enter/Space; static, no motion). The mode is a selection, never an inference: URL `investigationMode` (exact values only),
+written only when chosen. Without a choice the ground state is PERSON_X_JOB, so every earlier link means what it meant (JOB POOL
+FIRST unchanged). A mode change never removes the selected job (G-05) and touches no source and no analysis.
+
+| Mode | Capability gate (`data-capability-gate`) | ANALYZE sends | Job Field |
+|---|---|---|---|
+| PERSON | `OPEN` without any job | `{ documents, investigation: { mode: "PERSON" } }`, never a `jobScope` | pools readable; no analysis compared (`data-analysis-source="NONE"`); state line „PERSON · KEIN JOBVERGLEICH“ |
+| PERSON × JOB | `OPEN` only for a VALID job, else `AWAITING_JOB` (unchanged) | `{ documents, investigation: { mode: "PERSON_X_JOB" }, jobScope }` (exactly the two keys) | the existing presentation matching, plus **B2** at the selected job |
+| JOB | `JOB_MODE` (closed even with a VALID job: no person) | nothing (JOB is no document analysis) | the selected job's **structure**; no analysis, no Gemini |
+
+- **Job indicator in PERSON.** It says „KEIN JOB-SCOPE · PERSON“ (`data-job-scope-used="false"`). A selected job stays selected and is named as unused.
+- **Dock.** The dock names the boundary at the trigger (`analyze-investigation`).
+- **Success banner.** It names the boundary the analysis ran under (`intake-success-investigation`).
+- **Controller.** `checkAnalysisPayload` (`lib/career/job-pool/investigation-mode.ts`) mirrors GELB's `parseDeclaredInvestigation`. Refused locally, nothing sent:
+  - a contradiction, an unknown mode or JOB → `ERR_INVESTIGATION_INVALID` / `ERR_INVESTIGATION_MODE_NOT_ANALYZABLE`;
+  - PERSON × JOB without a scope → `ERR_JOB_SCOPE_REQUIRED`.
+- **Backend refusals.** They are shown as delivered. A worker failure with these codes is terminal, with no retry. The banner title is „KEINE EINDEUTIGE UNTERSUCHUNGSGRENZE“, and the sentence is the backend's verbatim.
+- **Legacy page.** `/career/analyze` stays PERSON × JOB (§13.2.25).
+
+**B2 · role-bound coverage (PERSON × JOB).** At the selected job's role (ROLE / REQUIREMENT, the selection VALID) the edge action
+`syntx-investigation-toggle` (`data-investigation-body="COVERAGE"`) opens `syntx-coverage` at the centre, in the boundary's grammar
+(veil, glass body, four layers).
+- **Read.** GELB's route is read only while the body is open (`useSelectedRoleCoverage`, `lib/career/ui/useRoleInvestigation.ts`):
+  - GET with `no-store`, carrying exactly the selection (untrimmed);
+  - decoded strictly;
+  - shown only if `comparisonBelongsToSelection` holds. Any change discards the data, aborts the read and drops a late answer.
+- **Layers:**
+  - 01 the binding (analysis, runs, pool, role, scope hash);
+  - 02 the role's requirements in pool order: COVERED with the proposal, match basis and verbatim quotes, `TOKEN_CONTAINMENT` as „SCHWACH · HEURISTIK“; NOT COVERED with „kein Urteil“;
+  - 03 every proposal, also those covering nothing;
+  - 04 the fixed authority (scored false, NOT_EVALUATED, authority NONE) and the counts („Zählungen, kein Score“).
+- **States.** Each state has its own sentence: NOT_SCOPED (PERSON analysis), SCOPE_MISMATCH („Analyse gehört zu einem anderen Job“), SCOPE_DRIFT, SCOPE_UNAVAILABLE, LINEAGE_INVALID, NOT_FOUND, NOT_PROVISIONED, FAILED, and no analysis.
+
+**JOB · structure.** In JOB, the same toggle (`data-investigation-body="STRUCTURE"`) opens `syntx-job-structure` with `JOB_STRUCTURE_V1` of the selected job:
+- 01 role and organization, with the responsibility „NICHT DEKLARIERT“;
+- 02 the requirements in pool order, each with necessity, level, eligibility, weight, the type default and the pool-source lines;
+- 03 structural findings „als Tatsachen der Deklaration“;
+- 04 the authority (interpretation NONE, PROPOSAL_ONLY, scored false).
+
+There is no person and no Gemini.
+
+**GEMINI OUTPUT.** `syntx-gemini-output-toggle` sits beside BOUNDARY, only in engineering builds (`NEXT_PUBLIC_CONDYN_RESULT_INSPECTOR_UI=1`). It opens `syntx-gemini-output`, a read-only inspector of the analysis on view, which is the job result or the URL's analysis, in any mode.
+- **Token.**
+  - The operator enters the token per panel (`type="password"`, `autocomplete="off"`). It lives in the body's memory only and is sent per read as the header.
+  - It never goes into a URL, storage, a cookie or an attribute. Closing unmounts the body and discards token and results.
+- **Reads.** GET only, with no retry.
+- **Views:**
+  - INVESTIGATION SCOPE: the mode, the selection, and the scope text RETAINED / NOT_RETAINED / UNSCOPED, named as never evidence;
+  - ORIGINAL RESPONSE: the text exactly as received, in a `pre` with CRLF, tabs and the trailing newline kept, plus its checks (sha256, parser = text) and envelope; NOT_RETAINED is shown literally and never with a processed result in its place;
+  - PARSER · VERIFICATION · CONVERGENCE: shown apart;
+  - PROJECTION;
+  - EXCHANGES OF THE JOB: every archived exchange, also FAILED ones.
+- **Reused run.** A run older than its job is marked „LAUF WIEDERVERWENDET“: the job made no Gemini call of its own.
+- **Other states.** CLOSED (wrong token or inspector off), NOT_FOUND, LINEAGE_INVALID, FAILED. In JOB: „Kein Gemini-Aufruf in diesem Modus.“
+
+**Unchanged.** The following stay as they were:
+- the requirement cards and the sealed cosmos grammar;
+- the existing matches decoder;
+- the job-scope sentence, still defined once in the frontend and once in the backend;
+- the Capability manifestation;
+- every earlier DOM contract.
+
+**Proof** (no live Gemini, 3017 and 41831 untouched).
+- **Static checks and tests:**
+  - tsc: only the known PINK `pdf-path.postgres.test.ts` error from the pending diff, the same on ad15d7b;
+  - new tests 3 files / 74 (boundary mirror agrees with the server's parser on 13 payloads; strict decoders; reads; SSR);
+  - regression 58 files / 442.
+- **Browser runs:**
+  - PINK's gate walk from `validation/hr-decision-loop-pink` against this tree: 74/74;
+  - job-pool-workflow e2e 10/10;
+  - PINK's syntx-walk 0/3, identical to the base (the known ca11794 rebinding).
+- **Three-mode lab walk: 38/38 at 1600 × 1000 and 1280 × 720.** The lab is a disposable DB with the real Next server and the real worker `scripts/run-career-worker.ts`, unchanged:
+  - Gemini replaced by GRÜN's loopback stand-in;
+  - a network sentinel refused 1 non-loopback attempt (the npm version check of `next dev`), Gemini hosts 0.
+- **API flow and layout:**
+  - PERSON 202 → B2 409 NOT_SCOPED, inspector UNSCOPED / RETAINED;
+  - PERSON × JOB 202 → B2 2 covered / 1 not covered, inspector scope RETAINED;
+  - JOB structure 10 requirements / 8 findings;
+  - shell row without overlap at 1280 / 1440 / 1600 / 1920 in both fields.
+
+Evidence: `evidence/job-pool/three-modes/`.
+
+**Lab gotcha.** A long-running `next dev` lab that hot-reloads many edits keeps its database pools: 84 of 100 PostgreSQL connections, which starved parallel e2e runs (NOT_PROVISIONED, timeouts). Restart the lab after edits.
+
 ### 13.3 DOM contract (PINK BR-1 … BR-5; GELB conditions a/b)
 
 **BR-1 field root** `data-testid="syntx-field"`: `data-field-grammar="SYNTX_FIELD_V1"`, `data-observation-kind` FIELD|ORGANIZATION|ROLE|REQUIREMENT
@@ -1356,3 +1451,4 @@ observation point. Readable labels wrap at word boundaries (`wrapLines`), never 
 | 2026-10-14 | Job Pool first / Capability gate (owner, on cb3d33f) | §13.2.24: the application opens in the Job Field; `activeFieldFocus` is CAPABILITY only for a requested Capability Field with a VALID job scope; selector option and exit disabled (`data-field-gate`), `data-capability-gate` on the root; job kept across both fields. Evidence: `evidence/job-pool/capability-gate/` | tsc 0; 29 files / 205 tests; browser walk 22/22; job-pool-workflow e2e 10/10 (final diff, isolated worktree); syntx-walk e2e 0/3 identical to the base (pre-existing) |
 | 2026-10-14 | Owner decision G-10 A / G-05 / every analysis path (on c146f05) | §13.2.25: role id verbatim (non-empty string); `syntx-job-scope-clear` removes the selected job (gate closes, ANALYZE blocked, sources and analyses kept); legacy `/career/analyze` gated and sending `jobScope`. Evidence: `evidence/job-pool/job-scope-removal/` | tsc 0; 35 files / 262 tests (job-pool.postgres on a fresh disposable DB); browser walk 25/25; capability-gate walk 22/22; job-pool-workflow e2e 10/10 (isolated worktree, `e2e-results.txt`) |
 | 2026-10-15 | Binding sentence (owner GO, on 5d6786b) | §13.2.26: `JOB_SCOPE_REQUIRED_MESSAGE` = „Bitte wähle einen Job aus einem Pool aus.“, identical to the backend contract (GELB e643e96) | tsc 0; 17 files / 147 tests; walk 25/25 |
+| 2026-10-15 | Three investigation modes, B2, GEMINI OUTPUT (owner GO "DEMO FRONTEND", on aa17a3b + GELB ad15d7b) | §13.2.27: shell control PERSON · PERSON × JOB · JOB (URL `investigationMode`, ground state PERSON_X_JOB); gate per mode (`JOB_MODE`); ANALYZE declares the boundary; Job Field compares only in PERSON × JOB; B2 body at the selected job; JOB structure body; GEMINI OUTPUT inspector beside BOUNDARY (engineering builds, token in memory only). Evidence: `evidence/job-pool/three-modes/` | tsc: only PINK's pending pdf-path error; new 3 files / 74; regression 58 files / 442; PINK gate walk 74/74; workflow e2e 10/10; lab walk 38/38 at 1600 and 1280 (real worker, loopback stand-in, 0 Gemini hosts) |

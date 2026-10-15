@@ -1,5 +1,6 @@
 import type { CareerJobRuntimeOperation } from "../orchestration/job";
-import { JOB_SCOPE_REQUIRED_CODE, isJobScopeErrorCode, parseJobScope } from "../job-pool/job-scope";
+import { isJobScopeErrorCode } from "../job-pool/job-scope";
+import { checkAnalysisPayload, isInvestigationErrorCode, type InvestigationRefusalCode } from "../job-pool/investigation-mode";
 
 export type JobLifecycleState = "IDLE" | "SUBMITTING" | "PENDING" | "RUNNING" | "LOADING_RESULT" | "SUCCEEDED" | "FAILED";
 
@@ -15,6 +16,13 @@ export interface JobState {
   errorSummary: string | null;
   /** HTTP status of a rejected submission or job read; null for worker failures, network errors and the local scope guard. */
   httpStatus: number | null;
+}
+
+/** The payload's own keys (documents, …) without any declaration of its own: only the checked declaration is sent. */
+function withoutDeclaration(payload: unknown): Record<string, unknown> {
+  if (payload === null || typeof payload !== "object" || Array.isArray(payload)) return {};
+  const { investigation: _investigation, jobScope: _jobScope, ...rest } = payload as Record<string, unknown>;
+  return rest;
 }
 
 export class CareerJobController {
@@ -60,16 +68,18 @@ export class CareerJobController {
     this.notify();
   }
 
-  /** Resolves to the refusal code when the payload carries no formally valid `jobScope` (nothing is sent). */
-  public async submitAnalysis(payload: any): Promise<typeof JOB_SCOPE_REQUIRED_CODE | void> {
+  /** Resolves to the refusal code when the payload declares no valid investigation boundary (nothing is sent). */
+  public async submitAnalysis(payload: any): Promise<InvestigationRefusalCode | void> {
     if (this.state.state === "SUBMITTING" || this.state.state === "PENDING" || this.state.state === "RUNNING") {
       return; // prevent double submit
     }
 
-    // SFE job-scope invariant: no submission (and so no Gemini call) without a formally valid job scope. The refusal
-    // leaves the state untouched (a previous result stays readable); the caller shows JOB_SCOPE_REQUIRED_MESSAGE.
-    const jobScope = parseJobScope(payload?.jobScope);
-    if (jobScope === null) return JOB_SCOPE_REQUIRED_CODE;
+    // SFE invariant (owner 2026-10-15, B-INVARIANT-PERSON): no submission (and so no Gemini call) without an explicit
+    // investigation boundary — a declared PERSON investigation without any job scope, or PERSON_X_JOB with a formally
+    // valid job scope. The refusal leaves the state untouched (a previous result stays readable); the caller shows the
+    // matching sentence. What is sent is exactly the checked declaration (never a job scope beside PERSON).
+    const checked = checkAnalysisPayload(payload);
+    if (!checked.ok) return checked.code;
 
     this.currentIdempotencyKey = crypto.randomUUID();
     
@@ -92,7 +102,7 @@ export class CareerJobController {
           "Content-Type": "application/json",
           "Idempotency-Key": this.currentIdempotencyKey
         },
-        body: JSON.stringify({ ...payload, jobScope })
+        body: JSON.stringify({ ...withoutDeclaration(payload), ...checked.declaration })
       });
 
       if (res.status === 202) {
@@ -125,8 +135,8 @@ export class CareerJobController {
   public retryActiveJob() {
     const httpStatus = this.state.httpStatus;
     const clientRejection = httpStatus !== null && httpStatus >= 400 && httpStatus < 500;
-    // A missing or invalid job scope is terminal (no retry, no Gemini call); a new submission needs a valid scope.
-    if (this.state.activeJobId && this.state.state === "FAILED" && !clientRejection && !isJobScopeErrorCode(this.state.errorCode)) {
+    // A missing or invalid job scope or investigation boundary is terminal (no retry, no Gemini call); a new submission needs a valid one.
+    if (this.state.activeJobId && this.state.state === "FAILED" && !clientRejection && !isJobScopeErrorCode(this.state.errorCode) && !isInvestigationErrorCode(this.state.errorCode)) {
       // Retry polling or result fetch if there was a transport error
       if (this.state.resultAnalysisId) {
         this.fetchCanonicalResult(this.state.resultAnalysisId, this.state.activeJobId);

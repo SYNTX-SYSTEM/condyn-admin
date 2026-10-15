@@ -21,10 +21,12 @@ interface CareerIntelligenceDemoSearchParams {
   /** Exact selected job scope (SFE invariant: no analysis without it); never inferred, independent of the observation point. */
   jobScopePoolUploadId?: string;
   jobScopeRoleId?: string;
+  /** Explicitly chosen investigation mode (PERSON | PERSON_X_JOB | JOB); never inferred. */
+  investigationMode?: string;
 }
 
 export default async function CareerIntelligenceDemoPage({ searchParams }: { searchParams: Promise<CareerIntelligenceDemoSearchParams> }) {
-  const { canonicalSilAssociationId, careerDecisionContextRevisionId, decisionContextRevisionId, analysisId, jobPoolUploadId, focus, jobOrganizationId, jobRoleId, jobRequirementId, jobScopePoolUploadId, jobScopeRoleId } = await searchParams;
+  const { canonicalSilAssociationId, careerDecisionContextRevisionId, decisionContextRevisionId, analysisId, jobPoolUploadId, focus, jobOrganizationId, jobRoleId, jobRequirementId, jobScopePoolUploadId, jobScopeRoleId, investigationMode } = await searchParams;
   return (
     <CareerIntelligenceDashboard
       data={EMPTY_CAREER_INTELLIGENCE_DATA}
@@ -39,6 +41,7 @@ export default async function CareerIntelligenceDemoPage({ searchParams }: { sea
       jobRequirementId={jobRequirementId}
       jobScopePoolUploadId={jobScopePoolUploadId}
       jobScopeRoleId={jobScopeRoleId}
+      investigationMode={investigationMode}
     />
   );
 }

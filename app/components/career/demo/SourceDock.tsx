@@ -20,6 +20,8 @@ export interface SourceDockProps {
   locale?: SilLocale;
   /** SFE job-scope invariant: while set, ANALYZE cannot start and this text is shown at the trigger, verbatim. */
   analyzeBlockedMessage?: string | null;
+  /** The chosen investigation boundary, named at the trigger (three modes, owner GO 2026-10-15). */
+  investigation?: { mode: string; label: string; hint: string } | null;
 }
 
 /**
@@ -31,7 +33,8 @@ export function SourceDock({
   isAnalyzing = false,
   initialStagedDocs = [],
   locale = SIL_COPY.defaultLocale,
-  analyzeBlockedMessage = null
+  analyzeBlockedMessage = null,
+  investigation = null
 }: SourceDockProps) {
   const t = SIL_COPY[locale].sourceDock;
   const [stagedDocs, setStagedDocs] = useState<StagedDocumentItem[]>(initialStagedDocs);
@@ -413,6 +416,12 @@ export function SourceDock({
         )}
       </div>
 
+      {/* The investigation boundary this ANALYZE would be declared with. */}
+      {stagedDocs.length > 0 && investigation !== null && (
+        <p data-testid="analyze-investigation" data-investigation-mode={investigation.mode} title={investigation.hint} style={{ margin: "0 0 -6px", fontSize: "9.5px", fontWeight: 700, letterSpacing: "1.3px", lineHeight: 1.45, color: "rgba(196, 236, 248, 0.86)" }}>
+          {investigation.label}
+        </p>
+      )}
       {/* Trigger Analysis Button (blocked without a valid job scope: the owner's sentence stands at the trigger) */}
       {stagedDocs.length > 0 && analyzeBlockedMessage !== null && !isAnalyzing && (
         <p data-testid="analyze-job-scope-required" role="status" style={{ margin: "0 0 -6px", fontSize: "11px", fontWeight: 700, letterSpacing: "0.4px", lineHeight: 1.45, color: "#ffc46b", textShadow: "0 0 10px rgba(255, 176, 64, 0.35)" }}>

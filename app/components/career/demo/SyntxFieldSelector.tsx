@@ -51,19 +51,23 @@ export interface SyntxJobScopePresentation {
   detail: string | null;
   /** Accessible description of the activation (open the job / choose a job). */
   hint: string;
+  /** False when the chosen investigation mode uses no job scope (PERSON): the indicator says so and recedes. */
+  used?: boolean;
 }
 
 const SCOPE_TONE: Record<SyntxJobScopePresentation["state"], string> = { VALID: "92, 200, 255", CHECKING: "120, 170, 200", NONE: "255, 190, 92", INVALID: "255, 150, 92" };
 
 function SyntxJobScopeIndicator({ scope, onActivate }: { scope: SyntxJobScopePresentation; onActivate?: () => void }) {
-  const tone = SCOPE_TONE[scope.state];
-  const valid = scope.state === "VALID";
+  const unused = scope.used === false;
+  const tone = unused ? "150, 190, 210" : SCOPE_TONE[scope.state];
+  const valid = scope.state === "VALID" && !unused;
   return (
     <button
       type="button"
       data-testid="job-scope-indicator"
       data-sx-shell="job-scope"
       data-job-scope-state={scope.state}
+      data-job-scope-used={scope.used === false ? "false" : "true"}
       aria-label={`${scope.label}: ${scope.title}${scope.detail ? ` · ${scope.detail}` : ""}. ${scope.hint}`}
       title={`${scope.title}${scope.detail ? ` · ${scope.detail}` : ""}`}
       onClick={() => onActivate?.()}

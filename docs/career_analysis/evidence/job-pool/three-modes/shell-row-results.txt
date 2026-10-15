@@ -1,0 +1,8 @@
+1280x720 CAPABILITY: selector 885–1109 overlaps=0 inViewport=true
+1280x720 FIELD: selector 885–1109 overlaps=0 inViewport=true
+1440x900 CAPABILITY: selector 965–1189 overlaps=0 inViewport=true
+1440x900 FIELD: selector 965–1189 overlaps=0 inViewport=true
+1600x1000 CAPABILITY: selector 1045–1269 overlaps=0 inViewport=true
+1600x1000 FIELD: selector 1045–1269 overlaps=0 inViewport=true
+1920x1080 CAPABILITY: selector 1205–1429 overlaps=0 inViewport=true
+1920x1080 FIELD: selector 1205–1429 overlaps=0 inViewport=true

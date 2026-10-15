@@ -22,6 +22,7 @@ import { InferenceTelemetryHUD } from "./InferenceTelemetryHUD";
 import { HrDecisionLoopDock } from "./HrDecisionLoopDock";
 import { SyntxField } from "./SyntxField";
 import { SyntxFieldSelector } from "./SyntxFieldSelector";
+import { SyntxInvestigationSelector } from "./SyntxInvestigationSelector";
 import { SyntxEnergyRay, SyntxPlanetariumBackdrop } from "./manifestation/SyntxPlanetarium";
 import { FocusTransitionStageShell } from "./manifestation/SyntxFocusShell";
 import { observationFromParams, type SyntxObservation } from "../../../../lib/career/job-pool/syntx-field-view-model";
@@ -29,6 +30,7 @@ import { useJobPoolWorkflow } from "../../../../lib/career/ui/useJobPool";
 import { useJobScopeValidation } from "../../../../lib/career/ui/useJobScope";
 import { JOB_SCOPE_REQUIRED_MESSAGE, JOB_SCOPE_URL_PARAMS, isJobScopeErrorCode, jobScopeFromParams, type JobScope } from "../../../../lib/career/job-pool/job-scope";
 import type { SyntxJobScopePresentation } from "./SyntxFieldSelector";
+import { DEFAULT_INVESTIGATION_MODE, INVESTIGATION_URL_PARAM, declareAnalysis, investigationModeFromParam, isInvestigationErrorCode, type InvestigationMode } from "../../../../lib/career/job-pool/investigation-mode";
 import { describeAnalysisSource } from "../../../../lib/career/job-pool/frontend-presentation";
 import { buildEvidenceGraph } from "../../../../lib/career/evidence/traversal";
 import { computeGraphFocus } from "../../../../lib/career/evidence/highlight";
@@ -66,6 +68,9 @@ export interface SemanticCareerIntelligenceFieldProps {
   /** Exact selected job scope (URL jobScopePoolUploadId / jobScopeRoleId); never inferred, kept across both fields and every depth. */
   jobScopePoolUploadId?: string;
   jobScopeRoleId?: string;
+  /** Explicitly chosen investigation mode (URL investigationMode = PERSON | PERSON_X_JOB | JOB); never inferred. Without a choice the
+   *  ground state is PERSON_X_JOB (JOB POOL FIRST), so every earlier link keeps its meaning. */
+  investigationMode?: string;
   /** The application shell's brand surface follows the active field (Decision Loop Labs in the Job Field context). */
   onFieldFocusChange?: (focus: "CAPABILITY" | "FIELD") => void;
   initialAnalysisState?: {
@@ -234,6 +239,7 @@ export function SemanticCareerIntelligenceField({
   jobRequirementId: initialJobRequirementId,
   jobScopePoolUploadId: initialJobScopePoolUploadId,
   jobScopeRoleId: initialJobScopeRoleId,
+  investigationMode: initialInvestigationMode,
   onFieldFocusChange,
   initialAnalysisState,
   initialLocale = SIL_COPY.defaultLocale,
@@ -277,8 +283,25 @@ export function SemanticCareerIntelligenceField({
         )
       : null;
 
+  /** The investigation boundary (owner GO "DEMO FRONTEND", 2026-10-15): one explicit mode for both fields, written to the URL only
+   *  when chosen. A mode change never removes the selected job (G-05) and never touches sources or analyses. */
+  const [investigationMode, setInvestigationMode] = useState<InvestigationMode>(() => investigationModeFromParam(initialInvestigationMode) ?? DEFAULT_INVESTIGATION_MODE);
+  const selectInvestigationMode = (next: InvestigationMode) => {
+    setInvestigationMode(next);
+    replaceUrlParam(INVESTIGATION_URL_PARAM, next);
+  };
+  const investigationCopy = t.syntx.investigation;
+  /** The boundary each analysis of this session was submitted under (the job result's own mode; an analysis from the URL has none known). */
+  const [submittedBoundary, setSubmittedBoundary] = useState<{ mode: "PERSON" | "PERSON_X_JOB"; scope: JobScope | null } | null>(null);
+
   // Job Connection: one workflow read shared by the control panel and the Job Field focus (presentation only).
-  const jobPoolAnalysisSource = describeAnalysisSource(jobState === "SUCCEEDED" ? job.state.resultAnalysisId : null, analysisId ?? null);
+  /** The analysis on view (the job result, else the URL's), independent of the mode: the GEMINI OUTPUT inspector reads it. */
+  const viewedAnalysisSource = describeAnalysisSource(jobState === "SUCCEEDED" ? job.state.resultAnalysisId : null, analysisId ?? null);
+  const viewedAnalysisMode: "PERSON" | "PERSON_X_JOB" | null = viewedAnalysisSource.kind === "JOB_RESULT" ? submittedBoundary?.mode ?? null : null;
+  /** The Job Field compares an analysis with the pool only in PERSON × JOB, and never a PERSON analysis (PERSON: no job comparison;
+   *  JOB reads no analysis). Outside it the field shows the pools without any analysis. */
+  const jobComparisonAllowed = investigationMode === "PERSON_X_JOB" && viewedAnalysisMode !== "PERSON";
+  const jobPoolAnalysisSource = jobComparisonAllowed ? viewedAnalysisSource : describeAnalysisSource(null, null);
   const jobPoolWorkflow = useJobPoolWorkflow({ analysisId: jobPoolAnalysisSource.kind === "NONE" ? null : jobPoolAnalysisSource.analysisId, initialJobPoolUploadId: jobPoolUploadId ?? null });
   /** The requested field. Job Pool first (owner "JOB POOL FIRST / CAPABILITY GATE"): the Job Field is the ground state; CAPABILITY is
    *  only requested here — it becomes the active field only while the job scope is VALID (`activeFieldFocus`, below). */
@@ -302,8 +325,9 @@ export function SemanticCareerIntelligenceField({
   /** Field changes since mount: each one is crossed by one calm veil (the shell's transition; none on the first paint). */
   const [fieldSwitches, setFieldSwitches] = useState(0);
   const switchFieldFocus = (next: "CAPABILITY" | "FIELD") => {
-    // Capability gate: without a VALID job scope the Capability Field cannot be entered (every path: selector, keys, exit, return).
-    if (next === "CAPABILITY" && jobScopeValidation.state !== "VALID") return;
+    // Capability gate: closed — no VALID job in PERSON × JOB, or the mode JOB — the Capability Field cannot be entered (every path:
+    // selector, keys, exit, return).
+    if (next === "CAPABILITY" && !capabilityGateOpen) return;
     if (next !== activeFieldFocus) setFieldSwitches(count => count + 1);
     setFieldFocus(next);
     onFieldFocusChange?.(next);
@@ -341,19 +365,25 @@ export function SemanticCareerIntelligenceField({
     observeField({ kind: "ROLE", organizationId: jobScopeValidation.organizationId, roleId: scope.poolRoleId, requirementId: null, apertureSignId: null });
   };
   const jobScopeCopy = t.syntx.jobScope;
-  const jobScopePresentation: SyntxJobScopePresentation = jobScopeValidation.state === "VALID"
+  const validJobPresentation: SyntxJobScopePresentation | null = jobScopeValidation.state === "VALID" ? { state: "VALID", label: jobScopeCopy.label, title: jobScopeValidation.roleTitle, detail: [jobScopeValidation.organizationName, jobScopeValidation.poolName].filter((part): part is string => part !== null && part.length > 0).join(" · ") || null, hint: jobScopeCopy.open } : null;
+  /** PERSON uses no job scope: the shell says so (the selected job stays selected, unused, and is named as such). */
+  const jobScopePresentation: SyntxJobScopePresentation = investigationMode === "PERSON"
+    ? { state: jobScopeValidation.state, used: false, label: jobScopeCopy.label, title: investigationCopy.personScope, detail: validJobPresentation === null ? null : `${investigationCopy.personScopeKept}${validJobPresentation.title}`, hint: jobScopeCopy.open }
+    : jobScopeValidation.state === "VALID"
     ? { state: "VALID", label: jobScopeCopy.label, title: jobScopeValidation.roleTitle, detail: [jobScopeValidation.organizationName, jobScopeValidation.poolName].filter((part): part is string => part !== null && part.length > 0).join(" · ") || null, hint: jobScopeCopy.open }
     : jobScopeValidation.state === "CHECKING"
       ? { state: "CHECKING", label: jobScopeCopy.label, title: jobScopeCopy.checking, detail: null, hint: jobScopeCopy.choose }
       : jobScopeValidation.state === "INVALID"
         ? { state: "INVALID", label: jobScopeCopy.label, title: jobScopeCopy.invalid, detail: jobScopeValidation.scope.poolRoleId, hint: jobScopeCopy.choose }
         : { state: "NONE", label: jobScopeCopy.label, title: jobScopeCopy.none, detail: null, hint: jobScopeCopy.choose };
-  /** ANALYZE is admitted only with a VALID scope; otherwise the owner's sentence stands at the trigger, verbatim. */
-  const analyzeBlockedMessage = jobScopeValidation.state === "VALID" ? null : JOB_SCOPE_REQUIRED_MESSAGE;
-  /** Capability gate: open only for a VALID job scope (a loaded, ACTIVE, mapped pool and one of its roles). Closed — no job, still
-   *  checking, or not valid — the Job Field is the active field whatever was requested; the request is kept, so the field returns
-   *  to Capability as soon as the job is valid again. */
-  const capabilityGateOpen = jobScopeValidation.state === "VALID";
+  /** ANALYZE per mode: PERSON needs no job; PERSON × JOB only with a VALID scope (otherwise the owner's sentence stands at the
+   *  trigger, verbatim); JOB is no document analysis. */
+  const analyzeBlockedMessage = investigationMode === "PERSON" ? null : investigationMode === "JOB" ? investigationCopy.jobNotAnalyzable : jobScopeValidation.state === "VALID" ? null : JOB_SCOPE_REQUIRED_MESSAGE;
+  /** Capability gate: PERSON always open (the person needs no job); PERSON × JOB open only for a VALID job scope (a loaded, ACTIVE,
+   *  mapped pool and one of its roles); JOB closed (no person). Closed, the Job Field is the active field whatever was requested;
+   *  the request is kept, so the field returns to Capability as soon as the gate opens again. */
+  const capabilityGateOpen = investigationMode === "PERSON" || (investigationMode === "PERSON_X_JOB" && jobScopeValidation.state === "VALID");
+  const capabilityGatedHint = investigationMode === "JOB" ? investigationCopy.capabilityGatedJob : t.syntx.selector.capabilityGated;
   const activeFieldFocus: "CAPABILITY" | "FIELD" = fieldFocus === "CAPABILITY" && capabilityGateOpen ? "CAPABILITY" : "FIELD";
   /** The shell's brand follows the active field: directly on a switch (above), and here when the gate itself moves the field (a job
    *  becoming VALID after a reload with focus=CAPABILITY, or the selected job turning invalid). */
@@ -448,8 +478,10 @@ export function SemanticCareerIntelligenceField({
   };
 
   const handleAnalyze = async (stagedDocs: any[]) => {
-    // SFE job-scope invariant: no execution without a VALID selected job (the controller re-checks the payload).
-    if (jobScopeValidation.state !== "VALID") return;
+    // SFE invariant: no execution without an explicit investigation boundary — PERSON, or PERSON × JOB with a VALID selected job; JOB
+    // is no document analysis (the controller re-checks the payload).
+    const declared = declareAnalysis(investigationMode, jobScopeValidation);
+    if (!declared.ok) return;
     setLastStagedDocs(stagedDocs);
     const documentsPayload = stagedDocs.map((doc) => {
       if (doc.type === "pdf") {
@@ -461,7 +493,8 @@ export function SemanticCareerIntelligenceField({
       return { type: "text", content: doc.content, title: doc.title, docId: doc.id };
     });
 
-    job.submitAnalysis({ documents: documentsPayload, jobScope: { jobPoolUploadId: jobScopeValidation.scope.jobPoolUploadId, poolRoleId: jobScopeValidation.scope.poolRoleId } });
+    setSubmittedBoundary({ mode: declared.mode, scope: "jobScope" in declared.declaration ? declared.declaration.jobScope : null });
+    job.submitAnalysis({ documents: documentsPayload, ...declared.declaration });
   };
 
   const [selectedGraphNodeId, setSelectedGraphNodeId] = useState<string | null>(null);
@@ -618,7 +651,8 @@ export function SemanticCareerIntelligenceField({
       data-hr-decision-loop-context={careerDecisionContextRevisionId ?? ""}
       data-job-pool-upload={jobPoolUploadId ?? ""}
       data-field-focus={activeFieldFocus}
-      data-capability-gate={capabilityGateOpen ? "OPEN" : "AWAITING_JOB"}
+      data-capability-gate={capabilityGateOpen ? "OPEN" : investigationMode === "JOB" ? "JOB_MODE" : "AWAITING_JOB"}
+      data-investigation-mode={investigationMode}
       data-camera-scale={cameraScale}
       onClick={() => {
         if (graphFocus) {
@@ -726,7 +760,7 @@ export function SemanticCareerIntelligenceField({
         pointerEvents: isOrbitStageFocus ? "none" : "auto",
         transition: "transform 0.62s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.56s ease, filter 0.56s ease"
       }}>
-        <SourceDock onAnalyze={handleAnalyze} isAnalyzing={isAnalyzing} locale={locale} analyzeBlockedMessage={analyzeBlockedMessage} />
+        <SourceDock onAnalyze={handleAnalyze} isAnalyzing={isAnalyzing} locale={locale} analyzeBlockedMessage={analyzeBlockedMessage} investigation={{ mode: investigationMode, label: `${investigationCopy.group} · ${investigationCopy.modes[investigationMode]}`, hint: investigationCopy.hints[investigationMode] }} />
       </div>
 
       {/* Telemetry Ingestion Status Banner */}
@@ -784,12 +818,14 @@ export function SemanticCareerIntelligenceField({
           <div style={{ fontSize: "10px", color: SIL_TOKENS.colors.textPrimary }}>
             {t.analysis.successSubtitle}
           </div>
+          {viewedAnalysisMode !== null && <div data-testid="intake-success-investigation" data-investigation-mode={viewedAnalysisMode} style={{ fontSize: "9.5px", letterSpacing: "1.2px", color: "rgba(196, 236, 248, 0.86)" }}>{investigationCopy.result[viewedAnalysisMode]}{viewedAnalysisMode === "PERSON_X_JOB" && submittedBoundary?.scope ? ` · ${submittedBoundary.scope.poolRoleId}` : ""}</div>}
         </div>
       )}
 
       {analysisError && (() => {
         const errData = { status: analysisError.status, issues: [{ code: analysisError.code, message: analysisError.message }] };
         const scopeFailure = isJobScopeErrorCode(analysisError.code);
+        const boundaryFailure = isInvestigationErrorCode(analysisError.code);
 
         return (
         <div
@@ -817,14 +853,14 @@ export function SemanticCareerIntelligenceField({
         >
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: "18px" }}>
             <div style={{ fontWeight: 800, fontSize: "14px", letterSpacing: "1px" }}>
-              {scopeFailure ? t.analysis.jobScopeTitle : errData.status === 422 ? "SEMANTIC BOUNDARY VIOLATION" : errData.status === 503 ? "PROVIDER TRUNCATION" : t.analysis.failed}
+              {scopeFailure ? t.analysis.jobScopeTitle : boundaryFailure ? t.analysis.investigationTitle : errData.status === 422 ? "SEMANTIC BOUNDARY VIOLATION" : errData.status === 503 ? "PROVIDER TRUNCATION" : t.analysis.failed}
             </div>
             {errData.status !== null && <div style={{ fontSize: "10px", color: "rgba(255, 85, 85, 0.7)" }}>HTTP {errData.status}</div>}
           </div>
           
           <div style={{ fontSize: "11px", color: "#ffbaba", lineHeight: "1.5" }}>
-            {!scopeFailure && errData.status === 422 && t.analysis.semanticBoundary}
-            {!scopeFailure && errData.status === 503 && t.analysis.providerTruncation}
+            {!scopeFailure && !boundaryFailure && errData.status === 422 && t.analysis.semanticBoundary}
+            {!scopeFailure && !boundaryFailure && errData.status === 503 && t.analysis.providerTruncation}
           </div>
 
           <div style={{ maxHeight: "150px", overflowY: "auto", borderTop: "1px solid rgba(255, 51, 51, 0.3)", paddingTop: "8px", marginTop: "4px" }}>
@@ -1533,7 +1569,8 @@ export function SemanticCareerIntelligenceField({
           onSelectJobScope={selectJobScope}
           onClearJobScope={clearJobScope}
           capabilityAvailable={capabilityGateOpen}
-          capabilityGatedHint={t.syntx.selector.capabilityGated}
+          capabilityGatedHint={capabilityGatedHint}
+          investigation={{ mode: investigationMode, analysisId: viewedAnalysisSource.kind === "NONE" ? null : viewedAnalysisSource.analysisId, analysisMode: viewedAnalysisMode, jobId: viewedAnalysisSource.kind === "JOB_RESULT" ? job.state.activeJobId : null, scopeValid: jobScopeValidation.state === "VALID" }}
         />
       )}
 
@@ -1541,7 +1578,7 @@ export function SemanticCareerIntelligenceField({
       <SyntxFieldSelector
         focus={activeFieldFocus}
         capabilityGated={!capabilityGateOpen}
-        capabilityGatedHint={t.syntx.selector.capabilityGated}
+        capabilityGatedHint={capabilityGatedHint}
         groupLabel={t.syntx.selector.group}
         capabilityLabel={t.syntx.selector.capability}
         jobLabel={t.syntx.toggle}
@@ -1549,6 +1586,8 @@ export function SemanticCareerIntelligenceField({
         jobScope={jobScopePresentation}
         onJobScopeActivate={openJobScope}
       />
+      {/* The investigation boundary on the same shell row, right of the field selector (mirroring the job scope on the left). */}
+      <SyntxInvestigationSelector mode={investigationMode} copy={investigationCopy} onSelect={selectInvestigationMode} />
       {/* One calm veil per field change (.42 s, void → clear); pointer-transparent; REDUCED: none. */}
       {fieldSwitches > 0 && <div key={fieldSwitches} data-sx-field-veil data-sx-shell="veil" aria-hidden="true" style={{ position: "absolute", inset: 0, zIndex: 50, pointerEvents: "none", backgroundColor: SIL_TOKENS.colors.void, opacity: 0, animation: "syntxFieldVeil 0.42s cubic-bezier(0.16, 1, 0.3, 1)" }} />}
 

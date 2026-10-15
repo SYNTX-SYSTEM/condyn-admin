@@ -1,6 +1,7 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { CareerJobController } from "../lib/career/ui/career-job-controller";
 import { JOB_SCOPE_INVALID_CODE, JOB_SCOPE_REQUIRED_CODE, JOB_SCOPE_REQUIRED_MESSAGE } from "../lib/career/job-pool/job-scope";
+import { INVESTIGATION_INVALID_CODE, INVESTIGATION_INVALID_MESSAGE, INVESTIGATION_MODE_NOT_ANALYZABLE_CODE } from "../lib/career/job-pool/investigation-mode";
 
 /** SFE job-scope invariant: every submission carries a formally valid job scope (GELB contract). */
 const SCOPE = { jobPoolUploadId: "JPOOL_30F7145E21F34BEF0FCE510DFC75837B", poolRoleId: "role_fullstack" };
@@ -275,12 +276,12 @@ describe("SFE job-scope invariant — the controller sends nothing without a val
     expect(JSON.parse(mockFetch.mock.calls[0][1].body).jobScope).toEqual(padded);
   });
 
-  it("sends exactly the two jobScope keys next to the documents", async () => {
+  it("sends exactly the two jobScope keys next to the documents, with the explicit PERSON_X_JOB declaration (three modes)", async () => {
     mockFetch.mockReturnValue(new Promise(() => {}));
     controller.submitAnalysis({ documents: [{ type: "text", content: "x" }], jobScope: { poolRoleId: SCOPE.poolRoleId, jobPoolUploadId: SCOPE.jobPoolUploadId } });
     expect(mockFetch).toHaveBeenCalledTimes(1);
     const body = JSON.parse(mockFetch.mock.calls[0][1].body);
-    expect(body).toEqual({ documents: [{ type: "text", content: "x" }], jobScope: SCOPE });
+    expect(body).toEqual({ documents: [{ type: "text", content: "x" }], investigation: { mode: "PERSON_X_JOB" }, jobScope: SCOPE });
     expect(Object.keys(body.jobScope).sort()).toEqual(["jobPoolUploadId", "poolRoleId"]);
   });
 
@@ -328,5 +329,70 @@ describe("SFE job-scope invariant — the controller sends nothing without a val
     controller.retryActiveJob();
     expect(mockFetch).toHaveBeenCalledTimes(3);
     expect(mockFetch.mock.calls[2][0]).toBe("/api/career/jobs/JOB_123");
+  });
+});
+
+describe("SFE three investigation modes — the controller sends exactly the declared boundary (owner GO 2026-10-15, B-INVARIANT-PERSON)", () => {
+  let mockFetch: ReturnType<typeof vi.fn>;
+  let controller: CareerJobController;
+
+  beforeEach(() => {
+    vi.useFakeTimers();
+    mockFetch = vi.fn();
+    controller = new CareerJobController(mockFetch as any);
+  });
+
+  afterEach(() => {
+    controller.cleanup();
+    vi.restoreAllMocks();
+  });
+
+  it("PERSON: sends { investigation: { mode: PERSON } } next to the documents and never a job scope", async () => {
+    mockFetch.mockReturnValue(new Promise(() => {}));
+    controller.submitAnalysis({ documents: [{ type: "text", content: "x" }], investigation: { mode: "PERSON" } });
+    expect(mockFetch).toHaveBeenCalledTimes(1);
+    const body = JSON.parse(mockFetch.mock.calls[0][1].body);
+    expect(body).toEqual({ documents: [{ type: "text", content: "x" }], investigation: { mode: "PERSON" } });
+    expect("jobScope" in body).toBe(false);
+  });
+
+  it("PERSON_X_JOB declared explicitly: the declaration and exactly the two scope keys", async () => {
+    mockFetch.mockReturnValue(new Promise(() => {}));
+    controller.submitAnalysis({ documents: [], investigation: { mode: "PERSON_X_JOB" }, jobScope: SCOPE });
+    expect(JSON.parse(mockFetch.mock.calls[0][1].body)).toEqual({ documents: [], investigation: { mode: "PERSON_X_JOB" }, jobScope: SCOPE });
+  });
+
+  it.each([
+    ["PERSON with a job scope (contradiction)", { documents: [], investigation: { mode: "PERSON" }, jobScope: SCOPE }, INVESTIGATION_INVALID_CODE],
+    ["PERSON with jobScope null", { documents: [], investigation: { mode: "PERSON" }, jobScope: null }, INVESTIGATION_INVALID_CODE],
+    ["an unknown mode", { documents: [], investigation: { mode: "TEAM" } }, INVESTIGATION_INVALID_CODE],
+    ["a declaration with an extra key", { documents: [], investigation: { mode: "PERSON", scope: "x" } }, INVESTIGATION_INVALID_CODE],
+    ["investigation null", { documents: [], investigation: null }, INVESTIGATION_INVALID_CODE],
+    ["JOB (not a document analysis)", { documents: [], investigation: { mode: "JOB" } }, INVESTIGATION_MODE_NOT_ANALYZABLE_CODE],
+    ["PERSON_X_JOB without a job scope", { documents: [], investigation: { mode: "PERSON_X_JOB" } }, JOB_SCOPE_REQUIRED_CODE]
+  ])("refuses %s locally: no request, state untouched", async (_label, payload, code) => {
+    const before = controller.getState();
+    expect(await controller.submitAnalysis(payload)).toBe(code);
+    expect(mockFetch).not.toHaveBeenCalled();
+    expect(controller.getState()).toBe(before);
+  });
+
+  it("keeps the backend's investigation code and sentence of a 400 rejection; a worker FAILED for it is terminal (no retry)", async () => {
+    mockFetch.mockResolvedValueOnce({ status: 400, json: async () => ({ success: false, status: "FAILED", issues: [{ code: INVESTIGATION_INVALID_CODE, message: INVESTIGATION_INVALID_MESSAGE }] }) });
+    await controller.submitAnalysis({ documents: [], investigation: { mode: "PERSON" } });
+    for (let i = 0; i < 10; i++) await Promise.resolve();
+    expect(controller.getState()).toMatchObject({ state: "FAILED", errorCode: INVESTIGATION_INVALID_CODE, errorSummary: INVESTIGATION_INVALID_MESSAGE, httpStatus: 400 });
+
+    const workerFetch = vi.fn()
+      .mockResolvedValueOnce({ status: 202, json: async () => ({ jobId: "JOB_9" }) })
+      .mockResolvedValueOnce({ status: 200, json: async () => ({ status: "FAILED", errorCode: INVESTIGATION_INVALID_CODE, errorSummary: INVESTIGATION_INVALID_MESSAGE }) });
+    const worker = new CareerJobController(workerFetch as any);
+    await worker.submitAnalysis({ documents: [], investigation: { mode: "PERSON" } });
+    for (let i = 0; i < 10; i++) await Promise.resolve();
+    worker.retryActiveJob();
+    await vi.advanceTimersByTimeAsync(5000);
+    expect(worker.getState()).toMatchObject({ state: "FAILED", errorCode: INVESTIGATION_INVALID_CODE });
+    expect(workerFetch).toHaveBeenCalledTimes(2);
+    worker.cleanup();
   });
 });

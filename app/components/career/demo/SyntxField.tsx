@@ -16,7 +16,12 @@ import { resolveSilFocusedManifestationPresentation } from "../../../../lib/care
 import { describeRanking, describeSelection, type JobPoolAnalysisSource } from "../../../../lib/career/job-pool/frontend-presentation";
 import { useJobPoolWorkflow } from "../../../../lib/career/ui/useJobPool";
 import { useAnalysisSources } from "../../../../lib/career/ui/useJobPoolSources";
-import type { JobScope } from "../../../../lib/career/job-pool/job-scope";
+import { JOB_SCOPE_REQUIRED_MESSAGE, type JobScope } from "../../../../lib/career/job-pool/job-scope";
+import type { InvestigationMode } from "../../../../lib/career/job-pool/investigation-mode";
+import { useJobStructure, useSelectedRoleCoverage, type JobStructureState, type SelectedRoleCoverageState } from "../../../../lib/career/ui/useRoleInvestigation";
+import { readGeminiExchangeInspection, readGeminiResultInspection, type InspectorReadState } from "../../../../lib/career/result-inspector/client";
+import type { GeminiExchangeInspection, GeminiResultInspection } from "../../../../lib/career/result-inspector/reader";
+import type { JobStructure } from "../../../../lib/career/job-pool/job-structure";
 import { DecisionLoopLabsCoreEmblem, DLL_TEAL } from "./DecisionLoopLabsMark";
 import {
   deriveSyntxField,
@@ -104,6 +109,10 @@ export interface SyntxFieldProps {
   /** Capability gate (Job Pool first): false while no VALID job is selected; the way back to the Capability Field is then closed. */
   capabilityAvailable?: boolean;
   capabilityGatedHint?: string;
+  /** The investigation boundary and the analysis on view (three modes); absent = PERSON × JOB without a known analysis mode. */
+  investigation?: SyntxInvestigationContext;
+  /** GEMINI OUTPUT beside BOUNDARY (engineering builds only; defaults to NEXT_PUBLIC_CONDYN_RESULT_INSPECTOR_UI). */
+  geminiOutputEnabled?: boolean;
 }
 
 const CYAN = SIL_TOKENS.colors.cyanActive;
@@ -1505,7 +1514,332 @@ function NoPoolGiant({ copy }: { copy: { status: string; title: string; reason: 
   );
 }
 
-export function SyntxField({ workflow, analysisSource, observation: requested, onObserve, onSelectPool, onExit, locale = SIL_COPY.defaultLocale, jobScope = null, onSelectJobScope, onClearJobScope, capabilityAvailable = true, capabilityGatedHint }: SyntxFieldProps) {
+/* ------------------------------------------------------------------------------------------------------------------------------
+ * Investigation bodies (owner GO "DEMO FRONTEND", 2026-10-15): B2 coverage (PERSON × JOB), the job structure (JOB) and the GEMINI
+ * OUTPUT inspector. Each opens at the centre as a governance body in the boundary's grammar (same glass, layers, chips and veil),
+ * one at a time, and reads only: nothing starts an analysis, nothing is stored.
+ * ------------------------------------------------------------------------------------------------------------------------------ */
+
+/** GEMINI OUTPUT appears only in engineering builds (GELB GEMINI_RESULT_INSPECTOR.md §6): NEXT_PUBLIC_CONDYN_RESULT_INSPECTOR_UI=1. */
+export const SYNTX_GEMINI_OUTPUT_ENABLED = process.env.NEXT_PUBLIC_CONDYN_RESULT_INSPECTOR_UI === "1";
+
+/** What the Job Field knows of the investigation boundary and the analysis on view (from the shell). */
+export interface SyntxInvestigationContext {
+  mode: InvestigationMode;
+  /** The analysis on view (job result or URL), independent of the mode; the inspector and B2 read it. */
+  analysisId: string | null;
+  /** The boundary the analysis was submitted under in this session; null when unknown (an analysis from the URL). */
+  analysisMode: "PERSON" | "PERSON_X_JOB" | null;
+  /** The execution job of the analysis on view, when this session submitted it. */
+  jobId: string | null;
+  /** The selected job scope is VALID (validated against its stored pool). */
+  scopeValid: boolean;
+}
+
+const BODY_WIDTH = "max(340px, min(760px, calc(100vw - 768px)))";
+const bodyStyle = (open: boolean, mode: SyntxMotionMode): React.CSSProperties => ({ ...panel, ...BOUNDARY_BODY, display: open ? "flex" : "none", flexDirection: "column", gap: "16px", left: 0, right: 0, margin: "0 auto", top: "96px", width: BODY_WIDTH, maxHeight: "calc(100vh - 208px)", overflowY: "auto", zIndex: 46, animation: mode === "LIVE" && open ? "sxBoundaryOpen 0.6s cubic-bezier(0.16, 1, 0.3, 1) both, sxBoundaryHalo 28s ease-in-out -7s infinite" : undefined });
+const bodyKicker: React.CSSProperties = { ...panelKicker(`rgba(${AMBER_RGB}, 0.85)`), fontSize: "11px", letterSpacing: "3.2px", color: "#e4f4fb" };
+const bodyOrientation: React.CSSProperties = { fontFamily: SANS, fontSize: "10px", lineHeight: "13px", letterSpacing: "0.2px", color: "rgba(204, 230, 242, 0.9)", margin: "-12px 0 -6px 0" };
+const layers: React.CSSProperties = { position: "relative", display: "grid", gridTemplateColumns: "minmax(0, 1fr)", gap: "12px" };
+const quoteLine: React.CSSProperties = { fontFamily: SANS, fontSize: "11.5px", lineHeight: 1.55, color: "rgba(214, 252, 236, 0.92)", margin: 0, paddingLeft: "10px", borderLeft: "1.5px solid rgba(126, 255, 204, 0.45)", wordBreak: "break-word" };
+const sourceLine: React.CSSProperties = { fontFamily: MONO, fontSize: "9.5px", lineHeight: 1.55, color: "rgba(200, 226, 240, 0.9)", margin: 0, paddingLeft: "10px", borderLeft: `1.5px solid ${azure(0.4)}`, whiteSpace: "pre-wrap", wordBreak: "break-word" };
+const rawText: React.CSSProperties = { margin: 0, maxHeight: "46vh", overflow: "auto", padding: "12px 14px", borderRadius: "10px", border: `1px solid ${azure(0.24)}`, background: "rgba(1, 6, 12, 0.82)", boxShadow: "inset 0 1px 8px rgba(0, 0, 0, 0.5)", fontFamily: MONO, fontSize: "10.5px", lineHeight: 1.55, color: "#e8f6fc", whiteSpace: "pre-wrap", wordBreak: "break-all", tabSize: 2 };
+const stateLine = (rgb: string): React.CSSProperties => ({ ...boundaryStatement(), display: "flex", alignItems: "flex-start", gap: "9px", color: `rgba(${rgb === AMBER_RGB ? "255, 214, 150" : "226, 240, 248"}, 0.95)` });
+
+function BodyHeading({ index, children }: { index: string; children: React.ReactNode }) {
+  return <span data-sx-boundary-heading style={boundaryHeading(azure(0.8))}><span aria-hidden="true">{index}</span>{children}</span>;
+}
+function LimitChip({ rgb, limit = false, children, testId }: { rgb: string; limit?: boolean; children: React.ReactNode; testId?: string }) {
+  return <span data-testid={testId} data-sx-boundary-limit={limit ? "true" : undefined} style={boundaryChip(rgb)}><span aria-hidden="true" style={chipDot(rgb)} />{children}</span>;
+}
+function StateStatement({ testId, state, rgb, children }: { testId: string; state: string; rgb: string; children: React.ReactNode }) {
+  return <p data-testid={testId} data-state={state} role="status" style={stateLine(rgb)}><span aria-hidden="true" style={{ ...chipDot(rgb), marginTop: "7px" }} />{children}</p>;
+}
+
+/** B2 · SELECTED_ROLE_COVERAGE_V1 of exactly the selected role. Shown only while its binding equals the current selection. */
+export function CoverageBody({ open, mode, t, read, hasAnalysis }: { open: boolean; mode: SyntxMotionMode; t: SyntxCopy; read: SelectedRoleCoverageState; hasAnalysis: boolean }) {
+  const c = t.coverage;
+  const state = hasAnalysis ? read.state : "NO_ANALYSIS";
+  const coverage = state === "AVAILABLE" && read.state === "AVAILABLE" ? read.coverage : null;
+  return (
+    <section data-testid="syntx-coverage" data-coverage-state={state} data-scored="false" data-relation-state="NOT_EVALUATED" data-covered={coverage?.counts.covered ?? ""} data-not-covered={coverage?.counts.notCovered ?? ""} data-binding-analysis={coverage?.binding.analysisId ?? ""} data-binding-role={coverage?.binding.poolRoleId ?? ""} hidden={!open} data-sx-reveal={open ? "true" : undefined} data-sx-surface="investigation" data-sx-panel="boundary" style={bodyStyle(open, mode)}>
+      <span data-sx-kicker style={bodyKicker}>{c.title}</span>
+      <span data-sx-boundary-orientation style={bodyOrientation}>{c.orientation}</span>
+      {coverage === null && <StateStatement testId="syntx-coverage-state" state={state} rgb={state === "LOADING" ? CYAN_RGB : AMBER_RGB}>{state === "FAILED" && read.state === "FAILED" && read.code ? `${c.states.FAILED} · ${read.code}` : c.states[state as keyof typeof c.states]}</StateStatement>}
+      {coverage !== null && (
+        <div data-sx-boundary-layers style={layers}>
+          {/* 01 · the binding: the role, the analysis and the runs this comparison belongs to. */}
+          <div data-sx-section="binding" style={boundaryLayer(azure(0.85))}>
+            <BodyHeading index="01">{c.binding}</BodyHeading>
+            <span style={{ ...boundaryStatement(), fontWeight: 600 }}>{coverage.role.title} <span style={{ fontWeight: 400, color: "rgba(190, 214, 230, 0.86)" }}>· {coverage.role.organizationName}</span></span>
+            <span style={boundaryMeta}>{coverage.binding.analysisId} · {coverage.binding.discoveryRunId} · {coverage.binding.convergenceRunId}</span>
+            <span style={boundaryMeta}>{coverage.binding.jobPoolUploadId} · v{coverage.binding.poolVersion} · {coverage.binding.poolRoleId} · scope {coverage.binding.investigationScopeHash.slice(0, 16)}…</span>
+          </div>
+          {/* 02 · the requirements of the role in pool order: covered by a proposal (verbatim evidence) or not covered (no judgement). */}
+          <div data-sx-section="requirements" style={boundaryLayer(azure(0.85))}>
+            <BodyHeading index="02">{c.requirements}</BodyHeading>
+            <ul style={{ margin: 0, padding: 0, listStyle: "none", ...stack(10) }}>
+              {coverage.requirements.map(requirement => {
+                const proposal = requirement.coverage.state === "COVERED" ? requirement.coverage.proposal : null;
+                const weak = proposal?.matchBasis === "TOKEN_CONTAINMENT";
+                return (
+                  <li key={requirement.poolRequirementId} data-testid={`syntx-coverage-req-${requirement.poolRequirementId}`} data-coverage={requirement.coverage.state} data-match-basis={proposal?.matchBasis ?? ""} data-proposal-id={proposal?.capabilityProposalId ?? ""} style={{ ...stack(5), paddingBottom: "10px", borderBottom: `1px solid ${azure(0.1)}` }}>
+                    <div style={{ ...row(8), justifyContent: "space-between" }}>
+                      <span style={{ fontFamily: SANS, fontSize: "12.5px", fontWeight: 600, color: "#eef9ff" }}>{requirement.capabilityName}</span>
+                      {proposal !== null
+                        ? <LimitChip rgb={weak ? AMBER_RGB : CYAN_RGB} limit={weak}>{weak ? c.weak : c.covered}</LimitChip>
+                        : <LimitChip rgb="230, 241, 248">{c.notCovered}</LimitChip>}
+                    </div>
+                    <span style={boundaryMeta}>{requirement.necessityState} · {requirement.requiredLevel || "—"} · {t.weight} {requirement.weight} · {requirement.requirementType} · {requirement.matchingEligibility}</span>
+                    {proposal !== null && <span style={boundaryMeta}>{c.by} <strong style={{ color: "#e6f7fd" }}>{proposal.name}</strong> · {c.basis[proposal.matchBasis]}{proposal.matchedConstituent ? ` · ${proposal.matchedConstituent}` : ""} · {proposal.evidenceState} · authority {proposal.authorityState}</span>}
+                    {proposal !== null && proposal.evidence.map((quote, index) => <p key={`${quote.docId}:${index}`} data-sx-evidence-quote style={quoteLine}><span style={{ fontFamily: MONO, fontSize: "8.5px", color: "rgba(126, 255, 204, 0.8)", marginRight: "6px" }}>{quote.docId}</span>“{quote.quote}”</p>)}
+                    {proposal === null && <span style={{ ...boundaryMeta, color: "rgba(214, 226, 236, 0.78)" }}>{c.notCoveredStatement}</span>}
+                  </li>
+                );
+              })}
+            </ul>
+            <span style={boundaryMeta}>{c.evidence}</span>
+          </div>
+          {/* 03 · every proposal of the analysis, also those that cover nothing here. */}
+          <div data-sx-section="proposals" data-testid="syntx-coverage-proposals" data-proposal-count={coverage.proposals.length} style={boundaryLayer(azure(0.85))}>
+            <BodyHeading index="03">{c.proposals}</BodyHeading>
+            <ul style={{ margin: 0, padding: 0, listStyle: "none", ...stack(5) }}>
+              {coverage.proposals.map(proposal => <li key={proposal.id} data-proposal-id={proposal.id} style={boundaryMeta}><strong style={{ color: "#e6f7fd" }}>{proposal.name}</strong> · {proposal.scope} · {proposal.coversPoolRequirementIds.length === 0 ? c.coversNothing : `${c.covers} ${proposal.coversPoolRequirementIds.join(", ")}`}</li>)}
+            </ul>
+          </div>
+          {/* 04 · the authority: fixed, and the counts that are not a score. */}
+          <div data-sx-section="authority" data-testid="syntx-coverage-authority" data-authority-state={coverage.authority.authorityState} style={boundaryLayer(azure(0.85))}>
+            <BodyHeading index="04">{c.authority}</BodyHeading>
+            <div style={row(6)}>
+              <LimitChip rgb={AMBER_RGB} limit>scored false</LimitChip>
+              <LimitChip rgb={AMBER_RGB} limit>{coverage.authority.capabilityRequirementRelationState}</LimitChip>
+              <LimitChip rgb={AMBER_RGB} limit>authority {coverage.authority.authorityState}</LimitChip>
+              <LimitChip rgb={CYAN_RGB}>{coverage.authority.comparisonBasis}</LimitChip>
+            </div>
+            <span data-testid="syntx-coverage-counts" style={boundaryMeta}>{coverage.counts.requirements} {c.counts.requirements} · {coverage.counts.covered} {c.counts.covered} · {coverage.counts.notCovered} {c.counts.notCovered} · {coverage.counts.proposals} {c.counts.proposals} · {coverage.authority.reason}</span>
+            <span data-sx-boundary-statement style={boundaryStatement()}>{c.countsStatement}</span>
+          </div>
+        </div>
+      )}
+    </section>
+  );
+}
+
+const necessityLabel = (state: JobStructure["requirements"][number]["necessityState"]): string => state.kind === "CONDITIONAL" ? `CONDITIONAL · ${state.conditionStatement}` : state.kind;
+const levelLabel = (state: JobStructure["requirements"][number]["requiredLevelState"]): string => state.kind === "CAPABILITY_LEVEL" ? state.level : state.kind === "EXPERIENCE_DURATION" ? state.minimumDuration : state.kind === "LANGUAGE_PROFICIENCY" ? state.proficiency : state.kind === "CREDENTIAL_REQUIREMENT" ? state.credential : state.kind;
+
+/** JOB · JOB_STRUCTURE_V1 of exactly the selected job: the declaration, its states and its findings; no person, no Gemini. */
+export function StructureBody({ open, mode, t, read }: { open: boolean; mode: SyntxMotionMode; t: SyntxCopy; read: JobStructureState }) {
+  const c = t.structure;
+  const structure = read.state === "AVAILABLE" ? read.structure : null;
+  const findingsFor = (id: string) => structure?.findings.filter(finding => finding.subject.kind === "REQUIREMENT" && finding.subject.id === id) ?? [];
+  return (
+    <section data-testid="syntx-job-structure" data-structure-state={read.state} data-investigation-mode="JOB" data-scored="false" data-finding-count={structure?.counts.findings ?? ""} data-binding-role={structure?.binding.poolRoleId ?? ""} hidden={!open} data-sx-reveal={open ? "true" : undefined} data-sx-surface="investigation" data-sx-panel="boundary" style={bodyStyle(open, mode)}>
+      <span data-sx-kicker style={bodyKicker}>{c.title}</span>
+      <span data-sx-boundary-orientation style={bodyOrientation}>{c.orientation}</span>
+      {structure === null && <StateStatement testId="syntx-job-structure-state" state={read.state} rgb={read.state === "LOADING" ? CYAN_RGB : AMBER_RGB}>{read.state === "FAILED" && read.code ? `${c.states.FAILED} · ${read.code}` : read.state === "IDLE" ? JOB_SCOPE_REQUIRED_MESSAGE : c.states[read.state as keyof typeof c.states]}</StateStatement>}
+      {structure !== null && (
+        <div data-sx-boundary-layers style={layers}>
+          {/* 01 · the role as declared, with its organization and the responsibility the deterministic reading cannot declare. */}
+          <div data-sx-section="role" style={boundaryLayer(azure(0.85))}>
+            <BodyHeading index="01">{c.role}</BodyHeading>
+            <span style={{ ...boundaryStatement(), fontWeight: 600 }}>{structure.role.title} <span style={{ fontWeight: 400, color: "rgba(190, 214, 230, 0.86)" }}>· {structure.organization.name}</span></span>
+            <span style={boundaryMeta}>{structure.role.seniority || "—"} · {structure.role.domainFocus || "—"} · {structure.organization.industry} · {structure.organization.region} {structure.organization.countryIso}</span>
+            {structure.role.description.length > 0 && <p style={{ ...prose, fontSize: "12px" }}>{structure.role.description}</p>}
+            <div style={row(6)}>
+              {structure.role.profile.responsibilityScope.state === "DECLARED"
+                ? <LimitChip rgb={CYAN_RGB}>{c.responsibility} · {c.declared}</LimitChip>
+                : <LimitChip testId="syntx-job-structure-responsibility" rgb={AMBER_RGB} limit>{c.responsibility} · {c.notDeclared}</LimitChip>}
+              <LimitChip rgb={AMBER_RGB} limit>{structure.role.profile.proposalState}</LimitChip>
+            </div>
+            <span style={boundaryMeta}>{structure.binding.jobPoolUploadId} · v{structure.binding.poolVersion} · {structure.binding.targetRoleProfileRevisionId}</span>
+          </div>
+          {/* 02 · the requirements in pool order: necessity, level, eligibility and the pool source lines that declare them. */}
+          <div data-sx-section="requirements" style={boundaryLayer(azure(0.85))}>
+            <BodyHeading index="02">{c.requirements}</BodyHeading>
+            <ul style={{ margin: 0, padding: 0, listStyle: "none", ...stack(10) }}>
+              {structure.requirements.map(requirement => (
+                <li key={requirement.poolRequirementId} data-testid={`syntx-structure-req-${requirement.poolRequirementId}`} data-necessity={requirement.necessityState.kind} data-level-state={requirement.requiredLevelState.kind} data-eligibility={requirement.matchingEligibility} data-finding-count={findingsFor(requirement.poolRequirementId).length} style={{ ...stack(5), paddingBottom: "10px", borderBottom: `1px solid ${azure(0.1)}` }}>
+                  <span style={{ fontFamily: SANS, fontSize: "12.5px", fontWeight: 600, color: "#eef9ff" }}>{requirement.capabilityName}</span>
+                  <span style={boundaryMeta}>{necessityLabel(requirement.necessityState)} · {t.level} {levelLabel(requirement.requiredLevelState)} · {t.weight} {requirement.weight} · {requirement.requirementTypeDeclared ? requirement.requirementType : `${requirement.requirementType} (${c.typeDefault})`} · {requirement.matchingEligibility}</span>
+                  {requirement.evidence.map((line, index) => <p key={index} data-sx-pool-source style={sourceLine}>{line}</p>)}
+                  {findingsFor(requirement.poolRequirementId).length > 0 && <div style={row(5)}>{findingsFor(requirement.poolRequirementId).map(finding => <LimitChip key={finding.code} rgb={AMBER_RGB} limit>{c.findingCodes[finding.code]}</LimitChip>)}</div>}
+                </li>
+              ))}
+            </ul>
+            <span style={boundaryMeta}>{c.source}</span>
+          </div>
+          {/* 03 · structural findings: facts of the declaration, never an assessment. */}
+          <div data-sx-section="findings" data-testid="syntx-job-structure-findings" data-finding-count={structure.findings.length} style={boundaryLayer(azure(0.85))}>
+            <BodyHeading index="03">{c.findings}</BodyHeading>
+            {structure.findings.length === 0 && <span style={boundaryMeta}>{c.noFindings}</span>}
+            <ul style={{ margin: 0, padding: 0, listStyle: "none", ...stack(6) }}>
+              {structure.findings.map((finding, index) => (
+                <li key={`${finding.code}:${finding.subject.id}:${index}`} data-testid={`syntx-structure-finding-${finding.code}`} data-subject={`${finding.subject.kind}:${finding.subject.id}`} style={stack(3)}>
+                  <span style={boundaryMeta}><strong style={{ color: "#ffd696" }}>{c.findingCodes[finding.code]}</strong> · {finding.subject.kind} {finding.subject.id} · {finding.field}{finding.relatedRequirementIds.length > 0 ? ` · ${finding.relatedRequirementIds.join(", ")}` : ""}</span>
+                  {finding.evidence.map((line, lineIndex) => <p key={lineIndex} style={sourceLine}>{line}</p>)}
+                </li>
+              ))}
+            </ul>
+            <span data-sx-boundary-statement style={boundaryStatement()}>{c.findingsStatement}</span>
+          </div>
+          {/* 04 · the authority: declared fields and their canonical validation only. */}
+          <div data-sx-section="authority" data-testid="syntx-job-structure-authority" data-authority-state={structure.authority.authorityState} style={boundaryLayer(azure(0.85))}>
+            <BodyHeading index="04">{c.authority}</BodyHeading>
+            <div style={row(6)}>
+              <LimitChip rgb={AMBER_RGB} limit>interpretation {structure.authority.interpretation}</LimitChip>
+              <LimitChip rgb={AMBER_RGB} limit>{structure.authority.proposalState}</LimitChip>
+              <LimitChip rgb={AMBER_RGB} limit>authority {structure.authority.authorityState}</LimitChip>
+              <LimitChip rgb={AMBER_RGB} limit>scored false</LimitChip>
+            </div>
+            <span style={boundaryMeta}>{structure.authority.basis} · {structure.counts.requirements} {t.requirements.toLowerCase()} · {structure.counts.findings}</span>
+            <span data-sx-boundary-statement style={boundaryStatement()}>{c.authorityStatement}</span>
+          </div>
+        </div>
+      )}
+    </section>
+  );
+}
+
+type GeminiView = "SCOPE" | "ORIGINAL" | "PROCESSING" | "PROJECTION" | "EXCHANGES";
+const GEMINI_VIEWS: GeminiView[] = ["SCOPE", "ORIGINAL", "PROCESSING", "PROJECTION", "EXCHANGES"];
+const json = (value: unknown): string => { try { return JSON.stringify(value, null, 2) ?? "null"; } catch { return "—"; } };
+type InspectorFetch = Parameters<typeof readGeminiResultInspection>[0];
+const inspectorFetch: InspectorFetch = (input, init) => fetch(input, init);
+
+/**
+ * GEMINI OUTPUT · the Result Inspector (GELB lib/career/result-inspector/client.ts). The operator's token lives in this body's
+ * memory only (never a URL, storage, cookie or attribute) and goes out per read as the header; closing the body unmounts it and
+ * discards the token and every result. GET only, no retry. The original response is shown exactly as received, or NOT_RETAINED
+ * literally — never a processed artifact in its place.
+ */
+export function GeminiOutputBody({ mode, t, investigation, fetcher = inspectorFetch }: { mode: SyntxMotionMode; t: SyntxCopy; investigation: SyntxInvestigationContext; fetcher?: InspectorFetch }) {
+  const g = t.gemini;
+  const [token, setToken] = useState("");
+  const [inspection, setInspection] = useState<InspectorReadState<GeminiResultInspection> | { state: "LOADING" } | null>(null);
+  const [exchanges, setExchanges] = useState<InspectorReadState<GeminiExchangeInspection> | { state: "LOADING" } | null>(null);
+  const [view, setView] = useState<GeminiView>("ORIGINAL");
+  const reads = useRef<AbortController[]>([]);
+  useEffect(() => () => { reads.current.forEach(controller => controller.abort()); reads.current = []; }, []);
+  const analysisId = investigation.analysisId;
+  // A change of the analysis on view discards what was read for the earlier one.
+  useEffect(() => { setInspection(null); setExchanges(null); }, [analysisId]);
+  const begin = () => { const controller = new AbortController(); reads.current.push(controller); return controller; };
+  const readInspection = () => {
+    if (analysisId === null || token.length === 0) return;
+    const controller = begin();
+    setInspection({ state: "LOADING" }); setExchanges(null);
+    void readGeminiResultInspection(fetcher, analysisId, token, controller.signal).then(next => { if (!controller.signal.aborted) setInspection(next); });
+  };
+  const exchangeJobId = inspection?.state === "AVAILABLE" ? inspection.value.jobId : investigation.jobId;
+  const readExchanges = () => {
+    if (exchangeJobId === null || token.length === 0) return;
+    const controller = begin();
+    setExchanges({ state: "LOADING" });
+    void readGeminiExchangeInspection(fetcher, exchangeJobId, token, controller.signal).then(next => { if (!controller.signal.aborted) setExchanges(next); });
+  };
+  const result = inspection?.state === "AVAILABLE" ? inspection.value : null;
+  const original = result?.originalGeminiResponse ?? null;
+  /** A run older than its job was reused: this job made no Gemini call of its own (GEMINI_RESULT_INSPECTOR.md §2). */
+  const reused = result !== null && result.investigationInput.jobCreatedAt !== null && Date.parse(result.investigationInput.discoveryRunCreatedAt) < Date.parse(result.investigationInput.jobCreatedAt);
+  const unavailable = investigation.mode === "JOB" ? "NO_GEMINI" : analysisId === null ? "NO_ANALYSIS" : null;
+  return (
+    <section data-testid="syntx-gemini-output" data-inspection-state={unavailable ?? inspection?.state ?? "IDLE"} data-run-reused={reused ? "true" : "false"} data-investigation-mode={investigation.mode} data-analysis-id={analysisId ?? ""} data-view={view} data-sx-reveal="true" data-sx-surface="gemini" data-sx-panel="boundary" style={bodyStyle(true, mode)}>
+      <span data-sx-kicker style={bodyKicker}>{g.title}</span>
+      <span data-sx-boundary-orientation style={bodyOrientation}>{g.orientation}</span>
+      {unavailable !== null && <StateStatement testId="syntx-gemini-unavailable" state={unavailable} rgb={AMBER_RGB}>{unavailable === "NO_GEMINI" ? g.noGemini : g.noAnalysis}</StateStatement>}
+      {unavailable === null && (
+        <>
+          <div data-sx-section="access" style={{ ...boundaryLayer(azure(0.85)), gap: "8px" }}>
+            <span style={boundaryMeta}>{g.analysis} {analysisId}{exchangeJobId !== null ? ` · ${g.job} ${exchangeJobId}` : ""}</span>
+            <form onSubmit={event => { event.preventDefault(); readInspection(); }} style={{ ...row(8), flexWrap: "nowrap" }}>
+              <label style={{ ...panelField, flex: 1, minWidth: 0 }}>{g.token}
+                <input data-testid="syntx-gemini-token" type="password" autoComplete="off" spellCheck={false} value={token} onChange={event => setToken(event.target.value)} style={panelInput} />
+              </label>
+              <button data-testid="syntx-gemini-read" type="submit" disabled={token.length === 0 || inspection?.state === "LOADING"} style={{ ...panelAction(token.length > 0), alignSelf: "flex-end" }}>{inspection?.state === "LOADING" ? g.reading : g.read}</button>
+            </form>
+            <span style={{ ...boundaryMeta, fontSize: "8.5px", color: "rgba(170, 196, 214, 0.8)" }}>{g.tokenHint}</span>
+          </div>
+          {inspection !== null && inspection.state !== "AVAILABLE" && inspection.state !== "LOADING" && <StateStatement testId="syntx-gemini-state" state={inspection.state} rgb={AMBER_RGB}>{g.states[inspection.state]}</StateStatement>}
+          {result !== null && (
+            <>
+              <div role="tablist" aria-label={g.title} style={row(6)}>
+                {GEMINI_VIEWS.map(item => <button key={item} type="button" role="tab" data-testid={`syntx-gemini-view-${item}`} aria-selected={view === item} onClick={() => setView(item)} style={orientAction(view === item)}>{g.views[item]}</button>)}
+              </div>
+              {view === "SCOPE" && (
+                <div data-sx-section="scope" data-testid="syntx-gemini-scope" data-scope-state={result.investigationInput.investigationScope.state} style={boundaryLayer(azure(0.85))}>
+                  <BodyHeading index="01">{g.views.SCOPE}</BodyHeading>
+                  <div style={row(6)}><LimitChip rgb={CYAN_RGB}>{g.mode} {result.investigationInput.investigationMode}</LimitChip>{result.investigationInput.jobScopeSelection !== null && <LimitChip rgb={CYAN_RGB}>{result.investigationInput.jobScopeSelection.poolRoleId}</LimitChip>}</div>
+                  <span style={boundaryMeta}>{result.investigationInput.discoveryRunId} · {result.investigationInput.inference.provider} · {result.investigationInput.inference.model} · {result.investigationInput.schemaVersion} · kernel {result.investigationInput.kernel.kernelVersion}</span>
+                  {result.investigationInput.investigationScope.state === "RETAINED" && <><span style={boundaryMeta}>{g.scopeText} · {result.investigationInput.investigationScope.textMatchesScopeHash ? "sha256 ✓" : "sha256 ✗"}</span><pre data-testid="syntx-gemini-scope-text" style={rawText}>{result.investigationInput.investigationScope.text}</pre></>}
+                  {result.investigationInput.investigationScope.state === "NOT_RETAINED" && <span style={boundaryMeta}>{g.scopeNotRetained} · {result.investigationInput.investigationScope.scopeHash}</span>}
+                  {result.investigationInput.investigationScope.state === "UNSCOPED" && <span style={boundaryMeta}>{g.unscoped}</span>}
+                </div>
+              )}
+              {view === "ORIGINAL" && original !== null && (
+                <div data-sx-section="original" data-testid="syntx-gemini-original" data-original-state={original.state} style={boundaryLayer(azure(0.85))}>
+                  <BodyHeading index="02">{g.views.ORIGINAL}</BodyHeading>
+                  {reused && <><LimitChip testId="syntx-gemini-reused" rgb={AMBER_RGB} limit>{g.reused}</LimitChip><span style={{ ...boundaryMeta, color: "#ffd696" }}>{g.reusedStatement}</span></>}
+                  {original.state === "RETAINED" ? (
+                    <>
+                      <div style={row(6)}>
+                        <LimitChip rgb={original.textMatchesSha256 ? GREEN_RGB : AMBER_RGB} limit={!original.textMatchesSha256}>sha256 {original.textMatchesSha256 ? "✓" : "✗"}</LimitChip>
+                        <LimitChip rgb={original.parserResultMatchesText ? GREEN_RGB : AMBER_RGB} limit={!original.parserResultMatchesText}>parser = text {original.parserResultMatchesText ? "✓" : "✗"}</LimitChip>
+                        {original.finishReason !== null && <LimitChip rgb={CYAN_RGB}>{original.finishReason}</LimitChip>}
+                      </div>
+                      <span style={boundaryMeta}>{g.verbatim} · {original.modelVersion ?? "—"} · {original.responseId ?? "—"} · {original.receivedAt} · {original.exchangeId}{original.attempt !== null ? ` · ${g.attemptOf} ${original.attempt.jobId} (lease ${original.attempt.leaseVersion ?? "—"})` : ""} · retained {original.retainedAt} → {original.expiresAt}</span>
+                      <pre data-testid="syntx-gemini-original-text" style={rawText}>{original.text ?? ""}</pre>
+                    </>
+                  ) : (
+                    <>
+                      <LimitChip testId="syntx-gemini-not-retained" rgb={AMBER_RGB} limit>{g.notRetained}</LimitChip>
+                      <span data-sx-boundary-statement style={boundaryStatement()}>{g.notRetainedStatement}</span>
+                    </>
+                  )}
+                </div>
+              )}
+              {view === "PROCESSING" && (
+                <div data-sx-section="processing" data-testid="syntx-gemini-processing" style={boundaryLayer(azure(0.85))}>
+                  <BodyHeading index="03">{g.views.PROCESSING}</BodyHeading>
+                  <span style={boundaryMeta}>{g.parser} · rawOutputHash {result.parserResult.rawOutputHash ?? "—"}</span>
+                  <pre style={rawText}>{json(result.parserResult.kernelOutput)}</pre>
+                  <span style={boundaryMeta}>{g.verification} · {result.evidenceVerification.candidates.length}</span>
+                  <pre style={rawText}>{json(result.evidenceVerification.candidates)}</pre>
+                  <span style={boundaryMeta}>{g.convergence} · {result.convergence.convergenceRunId} · {result.convergence.createdAt}</span>
+                  <pre style={rawText}>{json(result.convergence.payload)}</pre>
+                </div>
+              )}
+              {view === "PROJECTION" && (
+                <div data-sx-section="projection" data-testid="syntx-gemini-projection" style={boundaryLayer(azure(0.85))}>
+                  <BodyHeading index="04">{g.views.PROJECTION}</BodyHeading>
+                  <span style={boundaryMeta}>{g.projection}</span>
+                  <pre style={rawText}>{result.projection === null ? g.noProjection : json(result.projection)}</pre>
+                </div>
+              )}
+              {view === "EXCHANGES" && (
+                <div data-sx-section="exchanges" data-testid="syntx-gemini-exchanges" data-exchanges-state={exchanges?.state ?? "IDLE"} style={boundaryLayer(azure(0.85))}>
+                  <BodyHeading index="05">{g.views.EXCHANGES}</BodyHeading>
+                  <button data-testid="syntx-gemini-read-exchanges" type="button" disabled={exchanges?.state === "LOADING"} onClick={readExchanges} style={{ ...panelAction(true), alignSelf: "flex-start" }}>{exchanges?.state === "LOADING" ? g.reading : g.readExchanges}</button>
+                  {exchanges !== null && exchanges.state !== "AVAILABLE" && exchanges.state !== "LOADING" && <span style={{ ...boundaryMeta, color: "#ffd696" }}>{g.states[exchanges.state]}</span>}
+                  {exchanges?.state === "AVAILABLE" && exchanges.value.exchanges.length === 0 && <span data-testid="syntx-gemini-exchanges-empty" style={boundaryMeta}>{g.exchangesEmpty}{reused ? ` ${g.reusedStatement}` : ""}</span>}
+                  {exchanges?.state === "AVAILABLE" && exchanges.value.exchanges.map(exchange => (
+                    <div key={exchange.exchangeId} data-testid={`syntx-gemini-exchange-${exchange.exchangeId}`} data-outcome={exchange.outcome} data-error-code={exchange.errorCode ?? ""} style={stack(5)}>
+                      <div style={row(6)}><LimitChip rgb={exchange.outcome === "COMPLETED" ? GREEN_RGB : AMBER_RGB} limit={exchange.outcome !== "COMPLETED"}>{exchange.outcome}</LimitChip>{exchange.errorCode !== null && <LimitChip rgb={AMBER_RGB} limit>{exchange.errorCode}</LimitChip>}</div>
+                      <span style={boundaryMeta}>{exchange.runId} · lease {exchange.attempt?.leaseVersion ?? "—"} · {exchange.response.finishReason ?? "—"} · {exchange.retainedAt} → {exchange.expiresAt}</span>
+                      <pre style={rawText}>{exchange.response.text ?? g.notRetained}</pre>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </>
+          )}
+        </>
+      )}
+    </section>
+  );
+}
+
+export function SyntxField({ workflow, analysisSource, observation: requested, onObserve, onSelectPool, onExit, locale = SIL_COPY.defaultLocale, jobScope = null, onSelectJobScope, onClearJobScope, capabilityAvailable = true, capabilityGatedHint, investigation: investigationContext, geminiOutputEnabled = SYNTX_GEMINI_OUTPUT_ENABLED }: SyntxFieldProps) {
   const t = SIL_COPY[locale].syntx;
   const tp: PoolCopy = SIL_COPY[locale].jobPool;
   const mode = useMotionMode();
@@ -1526,6 +1860,12 @@ export function SyntxField({ workflow, analysisSource, observation: requested, o
   const [poolsOpen, setPoolsOpen] = useState(false);
   const [intakeOpen, setIntakeOpen] = useState(false);
   const [boundaryOpen, setBoundaryOpen] = useState(false);
+  /** The investigation bodies (B2 / job structure) and GEMINI OUTPUT open at the centre like the boundary: one body at a time. */
+  const [investigationOpen, setInvestigationOpen] = useState(false);
+  const [geminiOpen, setGeminiOpen] = useState(false);
+  const toggleBoundary = () => { setInvestigationOpen(false); setGeminiOpen(false); setBoundaryOpen(value => !value); };
+  const toggleInvestigation = () => { setBoundaryOpen(false); setGeminiOpen(false); setInvestigationOpen(value => !value); };
+  const toggleGemini = () => { setBoundaryOpen(false); setInvestigationOpen(false); setGeminiOpen(value => !value); };
   const [actorId, setActorId] = useState("JOB_POOL_UPLOADER_LOCAL");
   const [fileName, setFileName] = useState<string | null>(null);
   const [fileText, setFileText] = useState<string | null>(null);
@@ -1536,6 +1876,15 @@ export function SyntxField({ workflow, analysisSource, observation: requested, o
   const observationId = observation.kind === "FIELD" ? (field?.pool.jobPoolUploadId ?? workflow.selectedJobPoolUploadId ?? "") : observation.kind === "ORGANIZATION" ? observation.organizationId ?? "" : observation.kind === "ROLE" ? observation.roleId ?? "" : observation.requirementId ?? "";
   const observedSignId = observation.kind === "ORGANIZATION" ? `org:${observation.organizationId}` : observation.kind === "ROLE" ? `role:${observation.roleId}` : observation.kind === "REQUIREMENT" ? `req:${observation.requirementId}` : null;
   const apertureOpen = field?.aperture !== null && field?.aperture !== undefined;
+  const investigation: SyntxInvestigationContext = investigationContext ?? { mode: "PERSON_X_JOB", analysisId: analysisSource.kind === "NONE" ? null : analysisSource.analysisId, analysisMode: null, jobId: null, scopeValid: jobScope !== null };
+  /** Role-bound: the bodies of PERSON × JOB (B2) and JOB (structure) belong to exactly the selected job, observed at its role. */
+  const atSelectedJob = field !== null && jobScope !== null && investigation.scopeValid && jobScope.jobPoolUploadId === field.pool.jobPoolUploadId && (observation.kind === "ROLE" || observation.kind === "REQUIREMENT") && observation.roleId === jobScope.poolRoleId;
+  const investigationBody: "COVERAGE" | "STRUCTURE" | null = !atSelectedJob ? null : investigation.mode === "PERSON_X_JOB" ? "COVERAGE" : investigation.mode === "JOB" ? "STRUCTURE" : null;
+  const investigationVisible = investigationOpen && investigationBody !== null;
+  // Read only while the body is open: closing discards, reopening reads again.
+  const coverageRead = useSelectedRoleCoverage(investigationVisible && investigationBody === "COVERAGE" ? investigation.analysisId : null, investigationVisible && investigationBody === "COVERAGE" ? jobScope : null);
+  const structureRead = useJobStructure(investigationVisible && investigationBody === "STRUCTURE" ? jobScope : null);
+  const anyBodyOpen = boundaryOpen || investigationVisible || geminiOpen;
 
   /** F-SX-1 (PINK, R8): when a return or an aperture close unmounts the focused sign, focus moves to the sign of the new observation point, else to the field root, so Escape keeps working at every level. */
   useEffect(() => {
@@ -1559,6 +1908,8 @@ export function SyntxField({ workflow, analysisSource, observation: requested, o
     if (event.key !== "Escape") return;
     event.preventDefault();
     if (intakeOpen) { setIntakeOpen(false); return; }
+    if (geminiOpen) { setGeminiOpen(false); return; }
+    if (investigationVisible) { setInvestigationOpen(false); return; }
     if (boundaryOpen) { setBoundaryOpen(false); return; }
     if (poolsOpen && selection.kind !== "NONE") { setPoolsOpen(false); return; }
     if (observation.kind !== "FIELD") onObserve(returnFrom(observation));
@@ -1604,6 +1955,10 @@ export function SyntxField({ workflow, analysisSource, observation: requested, o
       data-pools-visible={poolsVisible ? "true" : "false"}
       data-intake-visible={intakeVisible ? "true" : "false"}
       data-boundary-visible={boundaryOpen ? "true" : "false"}
+      data-investigation-mode={investigation.mode}
+      data-investigation-body={investigationBody ?? ""}
+      data-investigation-visible={investigationVisible ? "true" : "false"}
+      data-gemini-output-visible={geminiOpen ? "true" : "false"}
       data-sx-ambient={SYNTX_AMBIENT_MOTION ? "on" : "off"}
       data-sx-resonance-breath={SYNTX_RESONANCE_BREATH_PROTOTYPE ? "prototype" : undefined}
       tabIndex={-1}
@@ -1622,13 +1977,14 @@ export function SyntxField({ workflow, analysisSource, observation: requested, o
         {field !== null && <FieldStage field={field} mode={mode} t={t} locale={locale} size={size} onObserve={onObserve} />}
         {resolution.stale !== null && <span data-testid="syntx-stale" data-stale-kind={resolution.stale.kind} data-stale-id={resolution.stale.id} data-sx-reveal="true" style={{ ...lens, ...prose, color: AMBER, position: "absolute", left: "50%", top: "calc(50% + 150px)", transform: "translateX(-50%)", width: "min(320px, 40%)", textAlign: "center", zIndex: 41 }}>{t.stale[resolution.stale.kind]}</span>}
         {state === "NO_POOL" && <NoPoolGiant copy={t.noPool} />}
-        {state === "NO_ANALYSIS" && field !== null && <span data-testid="syntx-no-analysis" style={{ ...micro, color: AMBER, position: "absolute", left: "50%", bottom: "calc(var(--condyn-page-header-height, 60px) + 44px)", transform: "translateX(-50%)", width: "min(520px, 80%)", textAlign: "center", zIndex: 41 }}>{tp.analysisNone}</span>}
+        {investigation.mode !== "PERSON_X_JOB" && field !== null && <span data-testid="syntx-investigation-statement" data-investigation-mode={investigation.mode} style={{ ...micro, color: "rgba(196, 236, 248, 0.86)", position: "absolute", left: "50%", bottom: "calc(var(--condyn-page-header-height, 60px) + 44px)", transform: "translateX(-50%)", width: "min(560px, 80%)", textAlign: "center", zIndex: 41 }}>{t.investigation.field[investigation.mode]}</span>}
+        {investigation.mode === "PERSON_X_JOB" && state === "NO_ANALYSIS" && field !== null && <span data-testid="syntx-no-analysis" style={{ ...micro, color: AMBER, position: "absolute", left: "50%", bottom: "calc(var(--condyn-page-header-height, 60px) + 44px)", transform: "translateX(-50%)", width: "min(520px, 80%)", textAlign: "center", zIndex: 41 }}>{tp.analysisNone}</span>}
       </div>
 
       {/* Orientation surface: (A) the field and its relation to the Capability Field, (B) the observation path (each step a return),
           (C) the read state, (D) the keys, (E) the edge actions. The one header that is always visible (§12.2): a calm, lit glass at
           the edge; its only motion is one light pass on each context change (finite, none in REDUCED). */}
-      <div data-sx-surface="header" data-sx-orient data-sx-resonance={boundaryOpen ? "retreated" : "inactive"} style={{ position: "absolute", left: "28px", top: "84px", display: "flex", flexDirection: "column", zIndex: 46, width: "min(340px, 28vw)", boxSizing: "border-box", padding: "12px 14px 12px 16px", borderRadius: "14px", border: `1px solid ${azure(0.2)}`, background: `radial-gradient(120% 90% at 0% 0%, rgba(84, 232, 236, 0.1), transparent 55%), linear-gradient(160deg, rgba(12, 31, 47, 0.7), rgba(5, 14, 24, 0.62))`, boxShadow: `0 0 0 1px rgba(1, 5, 10, 0.45), 0 0 34px rgba(64, 190, 230, 0.1), 0 0 70px rgba(64, 190, 230, 0.04), 0 14px 32px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(210, 248, 255, 0.13), inset 0 0 0 1px rgba(170, 235, 255, 0.035)`, backdropFilter: "blur(8px)" }}>
+      <div data-sx-surface="header" data-sx-orient data-sx-resonance={anyBodyOpen ? "retreated" : "inactive"} style={{ position: "absolute", left: "28px", top: "84px", display: "flex", flexDirection: "column", zIndex: 46, width: "min(340px, 28vw)", boxSizing: "border-box", padding: "12px 14px 12px 16px", borderRadius: "14px", border: `1px solid ${azure(0.2)}`, background: `radial-gradient(120% 90% at 0% 0%, rgba(84, 232, 236, 0.1), transparent 55%), linear-gradient(160deg, rgba(12, 31, 47, 0.7), rgba(5, 14, 24, 0.62))`, boxShadow: `0 0 0 1px rgba(1, 5, 10, 0.45), 0 0 34px rgba(64, 190, 230, 0.1), 0 0 70px rgba(64, 190, 230, 0.04), 0 14px 32px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(210, 248, 255, 0.13), inset 0 0 0 1px rgba(170, 235, 255, 0.035)`, backdropFilter: "blur(8px)" }}>
         <span aria-hidden="true" style={{ position: "absolute", right: "-1px", top: "22px", width: 0, height: 0, pointerEvents: "none" }}>
           <span style={{ position: "absolute", left: 0, top: "-0.5px", width: "38px", height: "1px", background: `linear-gradient(90deg, ${azure(0.5)}, transparent)` }} />
           <span style={{ position: "absolute", left: "-2.5px", top: "-2.5px", width: "5px", height: "5px", borderRadius: "50%", background: "#bff4ff", boxShadow: `0 0 7px ${azure(0.85)}, 0 0 14px ${azure(0.35)}` }} />
@@ -1655,7 +2011,7 @@ export function SyntxField({ workflow, analysisSource, observation: requested, o
         {/* C · the read state, D · the keys. */}
         <span data-testid="syntx-state" data-state={state} style={{ ...micro, alignSelf: "flex-start", display: "inline-flex", alignItems: "center", gap: "8px", marginTop: "10px", padding: "3px 10px 3px 8px", borderRadius: "999px", fontSize: "8.5px", letterSpacing: "1.3px", color: state === "AVAILABLE" ? "rgba(196, 236, 248, 0.92)" : AMBER, border: `1px solid ${state === "AVAILABLE" ? "rgba(56, 229, 255, 0.28)" : "rgba(245, 166, 35, 0.4)"}`, background: state === "AVAILABLE" ? "rgba(56, 229, 255, 0.06)" : "rgba(245, 166, 35, 0.07)" }}>
           <span aria-hidden="true" style={{ width: "6px", height: "6px", borderRadius: "50%", backgroundColor: state === "AVAILABLE" ? CYAN : AMBER, boxShadow: `0 0 6px ${state === "AVAILABLE" ? CYAN : AMBER}`, flexShrink: 0 }} />
-          {state === "AVAILABLE" ? t.matching : state === "NO_POOL" ? tp.selectionNone : state === "NO_ANALYSIS" ? tp.analysisNone : state === "LOADING" ? tp.matchesLoading : state === "NOT_FOUND" ? tp.matchesNotFound : state === "INACTIVE_POOL" ? tp.matchesInactive : state === "NOT_PROVISIONED" ? tp.notProvisioned : tp.matchesFailed}
+          {investigation.mode !== "PERSON_X_JOB" && state !== "NO_POOL" ? t.investigation.state[investigation.mode] : state === "AVAILABLE" ? t.matching : state === "NO_POOL" ? tp.selectionNone : state === "NO_ANALYSIS" ? tp.analysisNone : state === "LOADING" ? tp.matchesLoading : state === "NOT_FOUND" ? tp.matchesNotFound : state === "INACTIVE_POOL" ? tp.matchesInactive : state === "NOT_PROVISIONED" ? tp.notProvisioned : tp.matchesFailed}
         </span>
         {/* C' · the job scope: the observed role becomes the selected job only by this explicit action (SFE invariant). */}
         {field !== null && onSelectJobScope !== undefined && (observation.kind === "ROLE" || observation.kind === "REQUIREMENT") && observation.roleId !== null && (() => {
@@ -1672,7 +2028,9 @@ export function SyntxField({ workflow, analysisSource, observation: requested, o
         <div style={{ ...row(6), marginTop: "10px", paddingTop: "10px", borderTop: "1px solid transparent", borderImage: `linear-gradient(90deg, ${azure(0.24)}, ${azure(0.03)}) 1` }}>
           <button data-testid="syntx-pools-toggle" data-sx-orient-action aria-expanded={poolsVisible} onClick={() => setPoolsOpen(value => !value)} style={orientAction(poolsVisible)}>{poolsVisible ? t.poolsHide : `⬡ ${t.pools}${listed.length > 0 ? ` · ${listed.length}` : ""}`}</button>
           <button data-testid="job-pool-intake-toggle" data-sx-orient-action aria-expanded={intakeVisible} onClick={() => setIntakeOpen(value => !value)} style={orientAction(intakeVisible)}>{intakeVisible ? tp.intakeHide : tp.intakeOpen}</button>
-          {field !== null && field.boundary !== null && <button data-testid="syntx-boundary-toggle" data-sx-orient-action aria-expanded={boundaryOpen} onClick={() => setBoundaryOpen(value => !value)} style={orientAction(boundaryOpen)}>{boundaryOpen ? t.boundaryHide : t.boundary}</button>}
+          {field !== null && field.boundary !== null && <button data-testid="syntx-boundary-toggle" data-sx-orient-action aria-expanded={boundaryOpen} onClick={toggleBoundary} style={orientAction(boundaryOpen)}>{boundaryOpen ? t.boundaryHide : t.boundary}</button>}
+          {investigationBody !== null && <button data-testid="syntx-investigation-toggle" data-sx-orient-action data-investigation-body={investigationBody} aria-expanded={investigationVisible} onClick={toggleInvestigation} style={orientAction(investigationVisible)}>{investigationBody === "COVERAGE" ? (investigationVisible ? t.coverage.hide : t.coverage.toggle) : (investigationVisible ? t.structure.hide : t.structure.toggle)}</button>}
+          {geminiOutputEnabled && <button data-testid="syntx-gemini-output-toggle" data-sx-orient-action aria-expanded={geminiOpen} onClick={toggleGemini} style={orientAction(geminiOpen)}>{geminiOpen ? t.gemini.hide : t.gemini.toggle}</button>}
         </div>
       </div>
 
@@ -1777,6 +2135,12 @@ export function SyntxField({ workflow, analysisSource, observation: requested, o
           </div>
         </section>
       )}
+
+      {/* The investigation bodies and GEMINI OUTPUT: the same field level as the boundary (veil below the edge surfaces, body at the centre). */}
+      {(investigationVisible || geminiOpen) && <div data-sx-boundary-veil aria-hidden="true" style={{ position: "absolute", inset: 0, zIndex: 44, pointerEvents: "none", opacity: 1, background: "radial-gradient(ellipse 70% 65% at 50% 50%, rgba(2, 9, 16, 0.4), rgba(1, 4, 9, 0.66) 100%)", backdropFilter: "blur(1.5px) saturate(0.8)" }} />}
+      {investigationVisible && investigationBody === "COVERAGE" && <CoverageBody open mode={mode} t={t} read={coverageRead} hasAnalysis={investigation.analysisId !== null} />}
+      {investigationVisible && investigationBody === "STRUCTURE" && <StructureBody open mode={mode} t={t} read={structureRead} />}
+      {geminiOutputEnabled && geminiOpen && <GeminiOutputBody mode={mode} t={t} investigation={investigation} />}
 
       {/* Field-edge semantic line: the laws of the field, always visible, never in the way. */}
       <span data-testid="job-pool-non-claims" style={{ position: "absolute", left: "50%", bottom: "calc(var(--condyn-page-header-height, 60px) + 22px)", transform: "translateX(-50%)", maxWidth: "min(960px, 84vw)", textAlign: "center", ...micro, fontSize: "8.5px", letterSpacing: "1.4px", color: "rgba(230, 241, 248, 0.55)", zIndex: 46 }}>{t.nonClaims}</span>
