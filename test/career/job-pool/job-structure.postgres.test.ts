@@ -15,6 +15,7 @@ describe("JOB ONLY job structure route (PostgreSQL, no Gemini)", () => {
   let defective: { jobPoolUploadId: string; poolRoleId: string; source: string };
   let draftUploadId = "";
 
+  // Three pool uploads through the real application: over 10 s under machine load (GRÜN measured 11.7 s at load ~6).
   beforeAll(async () => {
     await initDbSchema();
     await uploadEngineeringJobScope();
@@ -37,7 +38,7 @@ describe("JOB ONLY job structure route (PostgreSQL, no Gemini)", () => {
     draft.pool.version += 101;
     draft.pool.status = "DRAFT";
     draftUploadId = (await application.upload(JSON.stringify(draft), "job-structure-test")).view.jobPoolUploadId;
-  });
+  }, 60_000);
 
   it("200 no-store: organization, role, the role's requirements with canonical validation, evidence from the pool source only", async () => {
     const response = await get(TEST_JOB_SCOPE.jobPoolUploadId, TEST_JOB_SCOPE.poolRoleId);
