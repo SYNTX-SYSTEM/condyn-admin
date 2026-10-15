@@ -1625,6 +1625,58 @@ PINK re-ran on the probe `b6c6200` + `bd9eb72` (evidence in `evidence/job-scope-
 - O-B2-OPEN-READ is unchanged.
 - Merge, integration, deployment and live Gemini are still not authorised.
 
+### 3.38 URL boundary: persisted investigation boundary of an analysis — GELB `26df225` / `ef189d3` (2026-10-15)
+
+GELB asked PINK for an independent check of the URL boundary. The owner mandate „SFE — GELB / GRÜN | URL BOUNDARY CLOSURE“ was relayed
+by GELB and is **not seen first-hand**. It answers O-URL-ANALYSIS-UNBOUND (§3.36).
+
+**What it is.** The route `GET /api/career/analyses/{id}/investigation` (`ANALYSIS_INVESTIGATION_V1`) resolves an analysis to its
+investigation boundary from persisted relations only:
+- the analysis row;
+- the SUCCEEDED job(s) whose result it is, together with the job of its projection reference (exactly one job is required);
+- the processor rule `JOB_`→`ANL_`;
+- the job's own declaration, read with `parseDeclaredInvestigation`;
+- where a reference exists: the B2 lineage, and the rule „run scoped ⇔ PERSON_X_JOB“.
+
+Everything else is 409 UNRESOLVED with a reason, and an unknown analysis is 404. The client rule
+`legacyJobComparisonPermitted` admits the earlier comparison only for a RESOLVED PERSON_X_JOB analysis compared with exactly its
+own pool. The matches, analyze and B2 routes are unchanged.
+
+**Probe.** `7ca3cfb` + GRÜN `bd9eb72` + GELB `ef189d3`, merged without conflict. Evidence is in
+`evidence/job-scope-gate-bd9eb72-ef189d3/`.
+
+| Proof | Result |
+|---|---|
+| `url-boundary.postgres` (PINK fixture of §3.34 declares the job's boundary and the Discovery scope independently; 23 analyses) | **6/6** |
+| UB-1/UB-2 cases | 5 RESOLVED as specified (PERSON_X_JOB with and without the explicit declaration, PERSON, both from the declaration alone); unknown and blank 404; NOT_RECORDED (no job; only FAILED/RUNNING/PENDING jobs); NOT_DECLARED; DECLARATION_INVALID (PERSON + scope, JOB); AMBIGUOUS (two SUCCEEDED jobs; a second job claiming an analysis); LINEAGE_INVALID (job id against the processor rule, foreign reference, source bundle hash, foreign Convergence run, job result naming another analysis); RUN_CONTRADICTS_DECLARATION (PERSON with a scoped run, PERSON_X_JOB with an unscoped run) |
+| UB-1 values | The selection is exactly the declared one. `discoveryRunId` is the reference's. `investigationScopeHash` = sha256 of the rendered scope text (the Discovery runtime's hash) |
+| UB-3 | Every answer is no-store. Exact key sets. No document content, legacy payload, capability name or quote in any body |
+| UB-4 | Every `career_*` / `capability_*` table is byte-identical before and after all reads |
+| UB-5 | `legacyJobComparisonPermitted` over the real answers × {own pool, other pool, other analysis}: true only for RESOLVED PERSON_X_JOB in its own pool. FAILED, NOT_FOUND, UNRESOLVED, pending and null all give false; an answer about another analysis is FAILED; 10 single-field corruptions are refused by the decoder |
+| Negative controls (probe only, restored) | client ignoring the pool → UB-5 fails; no run/declaration check → UB-2 fails; no AMBIGUOUS check → UB-2 fails |
+| `url-boundary.e2e`, real Next server | Answers at the real path are byte-identical to in-process, all no-store (200/200/409/409/404, `../` 404). POST/PUT/PATCH/DELETE give 405. 0 Gemini attempts (only the `next dev` npm check was refused) |
+| Regression under the sentinel | 72 files (64 green + 8 live skipped), 514 tests, **0 network attempts**; scripts identical to `bd9eb72`; `tsc` 0; gate walk 74/74 |
+
+**Observations:**
+- **O-URL-SCOPE-IDENTITY (defence in depth).**
+  - What happens: RUN_CONTRADICTS_DECLARATION checks that a run scope is *present*, not that it is the declared one. A PERSON_X_JOB job declaring role A whose referenced Discovery ran under role B of the same pool resolves as PERSON_X_JOB with selection A (measured).
+  - Reachability: only with inconsistent persisted data. The executor derives the run scope from the declaration, and reuse is keyed by the scope hash.
+  - Consequence: the frontend permission is pool-wide, so the earlier comparison would be shown, as it would for role A. B2 detects this case as drift.
+  - Possible hardening, GELB's to weigh: compare the run hash with the declared selection rendered from the stored pool, as B2 does.
+- **O-URL-REF-STATUS (informational).**
+  - What happens: a job found only through the projection reference is not required to be SUCCEEDED. A FAILED job with a reference resolves (measured).
+  - Reachability: possible in the real flow. The processor saves the analysis and the reference before the worker sets SUCCEEDED (`worker.ts:74`); a failed status update, such as a lost lease, followed by a terminal failure leaves this state.
+  - Assessment: the boundary returned is still the declared one under which the analysis was produced, so this is not a boundary deviation.
+
+**Consequence for PINK fixtures (GELB's note).** `ANL_PINK_JOB_SCOPE_GATE` (gate walk) and `ANL_PINK_THREE_MODES` have no job. They
+will be UNRESOLVED (NOT_RECORDED) once GRÜN uses the route, so their earlier comparison will no longer be shown. PINK adapts its
+suites when GRÜN's frontend arrives: a SUCCEEDED job with `result_analysis_id` and the declared boundary.
+
+**Status.**
+- No deviation for GELB `26df225`/`ef189d3`. O-URL-ANALYSIS-UNBOUND is closed on the backend side; the frontend side follows from GRÜN.
+- Open: O-URL-SCOPE-IDENTITY and O-URL-REF-STATUS (informational), and O-B2-OPEN-READ. The new route is open-read like the other career routes, but carries identities only.
+- Not authorised: merge, integration, deployment, live Gemini.
+
 ## 4. Boundaries and findings for coordination
 
 - F-JP-1 (closed in `b782793`): `JOB_POOL_CONNECTION.md` §4 followed the per-role `JOB_POOL_JSON_ROLE` design;

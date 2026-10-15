@@ -1,0 +1,56 @@
+{
+  "tip": "bd9eb72-ef189d3",
+  "recordedAt": "2026-10-15T08:01:34.547Z",
+  "http": {
+    "pxj": {
+      "status": 200,
+      "cacheControl": "no-store",
+      "identicalToInProcess": true,
+      "body": "{\"success\":true,\"investigation\":{\"investigationVersion\":\"ANALYSIS_INVESTIGATION_V1\",\"analysisId\":\"ANL_1792051281176_224\",\"jobId\":\"JOB_1792051281176_224\",\"mode\":\"PERSON_X_JOB\",\"jobScopeSelection\":{\"jobPoolUploadId\":\"JPOOL_B94850C439974E27496FE3B1A9A076B5\",\"poolRoleId\":\"role_kestrel_frontend_architect"
+    },
+    "person": {
+      "status": 200,
+      "cacheControl": "no-store",
+      "identicalToInProcess": true,
+      "body": "{\"success\":true,\"investigation\":{\"investigationVersion\":\"ANALYSIS_INVESTIGATION_V1\",\"analysisId\":\"ANL_1792051281206_959\",\"jobId\":\"JOB_1792051281206_959\",\"mode\":\"PERSON\",\"jobScopeSelection\":null,\"basis\":\"JOB_DECLARATION_AND_DISCOVERY_RUN\",\"discoveryRunId\":\"RUN_B0147DAC2B245BD581D7FBDD\",\"investigation"
+    },
+    "undeclared": {
+      "status": 409,
+      "cacheControl": "no-store",
+      "identicalToInProcess": true,
+      "body": "{\"success\":false,\"issues\":[{\"code\":\"ERR_ANALYSIS_INVESTIGATION_UNRESOLVED\",\"reason\":\"NOT_DECLARED\"}]}"
+    },
+    "direct": {
+      "status": 409,
+      "cacheControl": "no-store",
+      "identicalToInProcess": true,
+      "body": "{\"success\":false,\"issues\":[{\"code\":\"ERR_ANALYSIS_INVESTIGATION_UNRESOLVED\",\"reason\":\"NOT_RECORDED\"}]}"
+    },
+    "unknown": {
+      "status": 404,
+      "cacheControl": "no-store",
+      "identicalToInProcess": true,
+      "body": "{\"success\":false,\"issues\":[{\"code\":\"ERR_ANALYSIS_INVESTIGATION_NOT_FOUND\"}]}"
+    },
+    "encoded": {
+      "status": 404,
+      "cacheControl": "no-store",
+      "identicalToInProcess": true,
+      "body": "{\"success\":false,\"issues\":[{\"code\":\"ERR_ANALYSIS_INVESTIGATION_NOT_FOUND\"}]}"
+    }
+  },
+  "methods": {
+    "POST": 405,
+    "PUT": 405,
+    "PATCH": 405,
+    "DELETE": 405
+  },
+  "networkAttempts": {
+    "total": 1,
+    "gemini": 0,
+    "entries": [
+      "fetch https://registry.npmjs.org/-/package/next/dist-tags"
+    ],
+    "sentinel": true
+  }
+}

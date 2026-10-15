@@ -1,0 +1,12 @@
+== client ignores the pool
+   × PINK: URL boundary — persisted investigation boundary of an analysis (GELB 26df225) > UB-5 the frontend permission over the real answers × pools 32ms
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+      Tests  1 failed | 5 passed (6)
+== no run/declaration check
+   × PINK: URL boundary — persisted investigation boundary of an analysis (GELB 26df225) > UB-1/UB-2 every case resolves or is refused exactly as specified 20ms
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+      Tests  1 failed | 5 passed (6)
+== no AMBIGUOUS check
+   × PINK: URL boundary — persisted investigation boundary of an analysis (GELB 26df225) > UB-1/UB-2 every case resolves or is refused exactly as specified 33ms
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+      Tests  1 failed | 5 passed (6)
