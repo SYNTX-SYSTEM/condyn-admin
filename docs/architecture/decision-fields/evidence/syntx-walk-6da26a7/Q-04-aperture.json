@@ -1,0 +1,22 @@
+{
+  "matched": {
+    "apertureFor": "trace:req_pink_alpha_1:supports:DOC_001:0",
+    "quote": "Architected distributed IIoT Edge Computing system for resilient operation",
+    "sourceTitleState": "RESOLVED",
+    "location": "Section 2",
+    "text": "REQUIREMENT · EVIDENCECLOSEDistributed Systems Architecturesupports · SCOREDSOURCE:doc1.mdlocationSection 2“Architected distributed IIoT Edge Computing system for resilient operation”CAPABILITY REFERENCE: Distributed Systems Architecture · basis EXACTcontribution 0.95confidence 0.95weight 1Scored evidence supports this requirement within the delivered presentation matching; it is not a certification.presentation · authority NONE · not a canonical evaluation · not a decision · not an HR recommendation"
+  },
+  "weak": {
+    "quote": "Supported an edge computing pilot for two months",
+    "reason": "analysis confidence 0.45 is below 0.70",
+    "text": "REQUIREMENT · EVIDENCECLOSEEdge Computingweakly supports · SCOREDSOURCE:doc1.mdlocationSection 2“Supported an edge computing pilot for two months”CAPABILITY REFERENCE: Edge Computing · basis EXACTcontribution 0.135confidence 0.45weight 0.6Evidence exists but contributes limited matching support.analysis confidence 0.45 is below 0.70presentation · authority NONE · not a canonical evaluation · not a decision · not an HR recommendation"
+  },
+  "missing": {
+    "text": "REQUIREMENTCLOSEIndustrial IoT Protocol Designno delivered supportNo delivered support is available for this requirement in the current analysis. · weight 0.4 · level presentation · authority NONE · not a canonical evaluation · not a decision · not an HR recommendation",
+    "hint": null
+  },
+  "pending": {
+    "text": "ROLECLOSEDistributed Systems Architectpending canonical evaluationAuthoritative evaluation has not occurred for this relation.TRPREV_D38DB0D9058849FFA30DB9FC2DAE91BE · 3 TRQREVPOOL RESONANCE (PRESENTATION) 54.3% delivered rank #2presentation · authority NONE · not a canonical evaluation · not a decision · not an HR recommendation",
+    "resonanceScore": 0.5425
+  }
+}

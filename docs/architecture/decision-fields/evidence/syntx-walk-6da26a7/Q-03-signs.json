@@ -1,0 +1,226 @@
+[
+  {
+    "testId": "syntx-pool",
+    "id": "field:JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7",
+    "source": "canonical_entity",
+    "relation": "contains",
+    "state": "receded",
+    "manifestation": "region",
+    "interaction": "return",
+    "transition": "restore",
+    "proof": {
+      "upload-id": "JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7"
+    }
+  },
+  {
+    "testId": "syntx-organization-org_pink_alpha",
+    "id": "org:org_pink_alpha",
+    "source": "canonical_entity",
+    "relation": "contains",
+    "state": "field",
+    "manifestation": "region",
+    "interaction": "select",
+    "transition": "recenter",
+    "proof": {
+      "upload-id": "JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7",
+      "organization-id": "org_pink_alpha",
+      "target-id": "TORGENT_CA0690821AD71539C8EDBAB4E05617E3"
+    }
+  },
+  {
+    "testId": "syntx-organization-org_pink_beta",
+    "id": "org:org_pink_beta",
+    "source": "canonical_entity",
+    "relation": "contains",
+    "state": "receded",
+    "manifestation": "region",
+    "interaction": "select",
+    "transition": "recede",
+    "proof": {
+      "upload-id": "JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7",
+      "organization-id": "org_pink_beta",
+      "target-id": "TORGENT_4B1899750C717127B7B31A685AAC7230"
+    }
+  },
+  {
+    "testId": "syntx-role-role_pink_beta_platform",
+    "id": "role:role_pink_beta_platform",
+    "source": "canonical_entity",
+    "relation": "contains",
+    "state": "receded",
+    "manifestation": "carrier",
+    "interaction": "none",
+    "transition": "recede",
+    "proof": {
+      "upload-id": "JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7",
+      "organization-id": "org_pink_beta",
+      "role-id": "role_pink_beta_platform",
+      "target-id": "TROBREV_9C05D44693C17740A25FFC198AF05EA4"
+    }
+  },
+  {
+    "testId": "syntx-role-role_pink_beta_empty",
+    "id": "role:role_pink_beta_empty",
+    "source": "canonical_entity",
+    "relation": "contains",
+    "state": "receded",
+    "manifestation": "carrier",
+    "interaction": "none",
+    "transition": "recede",
+    "proof": {
+      "upload-id": "JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7",
+      "organization-id": "org_pink_beta",
+      "role-id": "role_pink_beta_empty",
+      "target-id": "TROBREV_0A80D92922CB79785E157F993F72703C"
+    }
+  },
+  {
+    "testId": "syntx-pending-role_pink_alpha_architect",
+    "id": "pending:role_pink_alpha_architect",
+    "source": "evaluation_state",
+    "relation": "pending_evaluation",
+    "state": "field",
+    "manifestation": "suspended_boundary",
+    "interaction": "inspect",
+    "transition": "boundary_suspend",
+    "proof": {
+      "upload-id": "JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7",
+      "role-id": "role_pink_alpha_architect",
+      "target-id": "TRPREV_D38DB0D9058849FFA30DB9FC2DAE91BE",
+      "trqrev-id": "TRQREV_29D80C3F89E61E2A3BB10754638AC45F TRQREV_DCF8ECD04E910CF8758BBC70C9C36D38 TRQREV_DAE2665961105126306A09A302E25930",
+      "analysis-id": "ANL_PINK_SYNTX_WALK"
+    }
+  },
+  {
+    "testId": "syntx-trace-trace:req_pink_alpha_1:supports:DOC_001:0",
+    "id": "trace:req_pink_alpha_1:supports:DOC_001:0",
+    "source": "evidence",
+    "relation": "supports",
+    "state": "field",
+    "manifestation": "trace_stable",
+    "interaction": "inspect",
+    "transition": "trace_rise",
+    "proof": {
+      "upload-id": "JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7",
+      "role-id": "role_pink_alpha_architect",
+      "requirement-id": "req_pink_alpha_1",
+      "analysis-id": "ANL_PINK_SYNTX_WALK",
+      "capability-id": "CAP_PINK_EXACT",
+      "doc-id": "DOC_001"
+    }
+  },
+  {
+    "testId": "syntx-trace-trace:req_pink_alpha_2:weakly_supports:DOC_001:0",
+    "id": "trace:req_pink_alpha_2:weakly_supports:DOC_001:0",
+    "source": "evidence",
+    "relation": "weakly_supports",
+    "state": "field",
+    "manifestation": "trace_thin",
+    "interaction": "inspect",
+    "transition": "trace_rise",
+    "proof": {
+      "upload-id": "JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7",
+      "role-id": "role_pink_alpha_architect",
+      "requirement-id": "req_pink_alpha_2",
+      "analysis-id": "ANL_PINK_SYNTX_WALK",
+      "capability-id": "CAP_PINK_WEAK",
+      "doc-id": "DOC_001"
+    }
+  },
+  {
+    "testId": "syntx-source-DOC_001",
+    "id": "source:DOC_001",
+    "source": "evidence",
+    "relation": "supports",
+    "state": "field",
+    "manifestation": "carrier",
+    "interaction": "none",
+    "transition": "trace_rise",
+    "proof": {
+      "upload-id": "JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7",
+      "role-id": "role_pink_alpha_architect",
+      "analysis-id": "ANL_PINK_SYNTX_WALK",
+      "doc-id": "DOC_001"
+    }
+  },
+  {
+    "testId": null,
+    "id": "req:req_pink_alpha_1",
+    "source": "canonical_entity",
+    "relation": "requires",
+    "state": "field",
+    "manifestation": "anchor",
+    "interaction": "select",
+    "transition": "unfold",
+    "proof": {
+      "upload-id": "JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7",
+      "role-id": "role_pink_alpha_architect",
+      "requirement-id": "req_pink_alpha_1",
+      "trqrev-id": "TRQREV_29D80C3F89E61E2A3BB10754638AC45F"
+    }
+  },
+  {
+    "testId": null,
+    "id": "req:req_pink_alpha_2",
+    "source": "canonical_entity",
+    "relation": "requires",
+    "state": "field",
+    "manifestation": "anchor",
+    "interaction": "select",
+    "transition": "unfold",
+    "proof": {
+      "upload-id": "JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7",
+      "role-id": "role_pink_alpha_architect",
+      "requirement-id": "req_pink_alpha_2",
+      "trqrev-id": "TRQREV_DCF8ECD04E910CF8758BBC70C9C36D38"
+    }
+  },
+  {
+    "testId": null,
+    "id": "req:req_pink_alpha_3",
+    "source": "canonical_entity",
+    "relation": "requires",
+    "state": "field",
+    "manifestation": "anchor",
+    "interaction": "select",
+    "transition": "unfold",
+    "proof": {
+      "upload-id": "JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7",
+      "role-id": "role_pink_alpha_architect",
+      "requirement-id": "req_pink_alpha_3",
+      "trqrev-id": "TRQREV_DAE2665961105126306A09A302E25930"
+    }
+  },
+  {
+    "testId": "syntx-open-req_pink_alpha_3",
+    "id": "open:req_pink_alpha_3",
+    "source": "matching_contribution",
+    "relation": "missing_support",
+    "state": "field",
+    "manifestation": "open_boundary",
+    "interaction": "inspect",
+    "transition": "trace_rise",
+    "proof": {
+      "upload-id": "JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7",
+      "role-id": "role_pink_alpha_architect",
+      "requirement-id": "req_pink_alpha_3",
+      "analysis-id": "ANL_PINK_SYNTX_WALK"
+    }
+  },
+  {
+    "testId": "syntx-role-role_pink_alpha_architect",
+    "id": "role:role_pink_alpha_architect",
+    "source": "canonical_entity",
+    "relation": "contains",
+    "state": "role_selected",
+    "manifestation": "carrier",
+    "interaction": "return",
+    "transition": "unfold",
+    "proof": {
+      "upload-id": "JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7",
+      "organization-id": "org_pink_alpha",
+      "role-id": "role_pink_alpha_architect",
+      "target-id": "TROBREV_5C16B8DE6BFE493B85F62E2D60FD9F47"
+    }
+  }
+]
