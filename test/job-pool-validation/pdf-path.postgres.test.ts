@@ -31,6 +31,7 @@ import type { VerifiedCareerAnalysis } from "../../lib/career/types";
 import { requireTestDatabaseUrl } from "../../lib/database-isolation/policy";
 import { resolveTestJobScope } from "../support/job-scope";
 import { validationPool } from "./fixtures/pool";
+import { TEST_JOB_SCOPE, uploadEngineeringJobScope } from "../support/job-scope";
 
 /** Minimal single-page PDF written by hand, so the proof does not depend on any committed binary. */
 function minimalPdf(text: string): Buffer {
@@ -85,9 +86,10 @@ async function runPdfJob(pdf: Buffer, title: string, expectedText: string, linea
   } as CareerAnalysisJobProcessorDependencies;
   const processor = createCareerAnalysisJobProcessor(dependencies);
 
+  await uploadEngineeringJobScope();
   const response = await analyze(new Request("http://local/api/career/analyze", {
     method: "POST", headers: { "content-type": "application/json" },
-    body: JSON.stringify({ documents: [{ type: "pdf", title, content: pdf.toString("base64") }] })
+    body: JSON.stringify({ documents: [{ type: "pdf", title, content: pdf.toString("base64") }], jobScope: TEST_JOB_SCOPE })
   }));
   expect(response.status).toBe(202);
   const { jobId } = await response.json();

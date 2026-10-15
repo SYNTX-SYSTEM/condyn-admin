@@ -1895,6 +1895,10 @@ The GET-only support walk `support/syntx-readonly-walk.mjs` (P-4) is not rebound
 
 Evidence is in `evidence/syntx-walk-6da26a7/`: the Q-12 report, signs, audits, ecology frames, the run log and the manifest; screenshots were not committed.
 
+**Follow-up after GELB's third step `a3c3759`.** GELB merged `916e884`; `syntx-walk.e2e` there is byte-identical to `916e884`.
+- `pdf-path.postgres` is taken from the integration byte for byte. That is GRÜN's earlier `841baab` edit (the pool upload and `jobScope` in the ANALYZE body), validated green in every integration run of §3.41–§3.42. PINK branch and integration now agree on that file.
+- Still pending: GRÜN's `live-browser-workflow.e2e` edit (`cb3d33f`). As agreed, it is adopted before the next owner-ordered live run, because it cannot be run without live Gemini.
+
 **Status.**
 - The SYNTX walk is green on the integration.
 - Open for GELB/owner: recording R15b (and R10a–R10d).
