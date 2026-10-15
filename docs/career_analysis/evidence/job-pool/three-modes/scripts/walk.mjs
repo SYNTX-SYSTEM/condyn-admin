@@ -2,13 +2,18 @@
 // disposable DB, the REAL worker scripts/run-career-worker.ts with GRÜN's loopback Gemini stand-in, network sentinel; no live Gemini).
 // ANALYZE requests are recorded and executed by the lab worker. argv: <out dir> <lab state.json> [width height]
 import { readFileSync } from "node:fs";
-import { chromium } from "/home/codi/Entwicklung/nquiry/node_modules/playwright/index.mjs";
+import { createRequire } from "node:module";
+import { resolve as resolvePath } from "node:path";
+import { pathToFileURL } from "node:url";
+// Run from the repository root. Playwright: CONDYN_PLAYWRIGHT_MODULE, else resolved from the repository.
+const playwright = await import(pathToFileURL(process.env.CONDYN_PLAYWRIGHT_MODULE || createRequire(resolvePath(process.cwd(), "package.json")).resolve("playwright")).href);
+const { chromium } = playwright.chromium ? playwright : playwright.default;
 const [OUT, STATE, W = "1600", H = "1000"] = process.argv.slice(2);
 const st = JSON.parse(readFileSync(STATE, "utf8"));
 const BASE = st.base, VP = st.validationUploadId, EP = st.engineeringUploadId;
 const ROLE = "role_pink_alpha_architect", ORG = "org_pink_alpha", OTHER_ROLE = "role_pink_beta_platform", OTHER_ORG = "org_pink_beta";
 // The synthetic gold CV plus a per-walk marker: a new source bundle, so Discovery is not reused and this walk's jobs make their own (stand-in) call.
-const CV = `${readFileSync("/home/codi/Entwicklung/condyn-admin-job-field/test/gold/case_001_minimal_valid/input/doc1.md", "utf8")}\n- Walk marker ${Date.now()}.\n`;
+const CV = `${readFileSync(resolvePath(process.cwd(), "test/gold/case_001_minimal_valid/input/doc1.md"), "utf8")}\n- Walk marker ${Date.now()}.\n`;
 const results = []; const ok = (name, cond, extra = "") => results.push(`${cond ? "PASS" : "FAIL"} ${name}${extra ? " — " + extra : ""}`);
 const browser = await chromium.launch();
 const ctx = await browser.newContext({ viewport: { width: Number(W), height: Number(H) } });

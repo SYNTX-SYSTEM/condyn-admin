@@ -1,5 +1,10 @@
 import { readFileSync } from "node:fs";
-import { chromium } from "/home/codi/Entwicklung/nquiry/node_modules/playwright/index.mjs";
+import { createRequire } from "node:module";
+import { resolve as resolvePath } from "node:path";
+import { pathToFileURL } from "node:url";
+// Run from the repository root. Playwright: CONDYN_PLAYWRIGHT_MODULE, else resolved from the repository.
+const playwright = await import(pathToFileURL(process.env.CONDYN_PLAYWRIGHT_MODULE || createRequire(resolvePath(process.cwd(), "package.json")).resolve("playwright")).href);
+const { chromium } = playwright.chromium ? playwright : playwright.default;
 const [STATE, OUT] = process.argv.slice(2);
 const st = JSON.parse(readFileSync(STATE, "utf8"));
 const browser = await chromium.launch();

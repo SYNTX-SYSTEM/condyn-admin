@@ -13,4 +13,8 @@ untouched. The source is the synthetic gold CV `test/gold/case_001_minimal_valid
 | `network-and-standin.txt` | stand-in requests by kind and scope block; refused non-loopback attempts (0 Gemini hosts) |
 | `00`–`08-*.png` | ground state, PERSON analysis, GEMINI OUTPUT original response, B2 coverage, scope text, scope mismatch, JOB structure, PERSON with the job kept |
 
+All scripts run from the repository root (paths relative to `process.cwd()`; the lab's sentinel is the one beside `modes-lab.ts`);
+Playwright comes from `CONDYN_PLAYWRIGHT_MODULE`, else from the repository. Lab: `LAB_PORT=… LAB_STATE_FILE=… LAB_DIR=… tsx
+docs/career_analysis/evidence/job-pool/three-modes/scripts/modes-lab.ts` with an isolated test-database role in the environment.
+
 The lab token lives only in the lab's 0600 state file; it is in none of these files (the screenshots show the password field masked).

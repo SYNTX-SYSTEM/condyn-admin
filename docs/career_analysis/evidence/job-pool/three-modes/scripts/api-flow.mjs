@@ -1,7 +1,9 @@
 import { readFileSync } from "node:fs";
+import { resolve } from "node:path";
+// Run from the repository root.
 const [STATE] = process.argv.slice(2);
 const st = JSON.parse(readFileSync(STATE, "utf8"));
-const cv = readFileSync("/home/codi/Entwicklung/condyn-admin-job-field/test/gold/case_001_minimal_valid/input/doc1.md", "utf8");
+const cv = readFileSync(resolve(process.cwd(), "test/gold/case_001_minimal_valid/input/doc1.md"), "utf8");
 const docs = [{ type: "text", title: "elena-rostova.md", content: cv, docId: "doc_cv" }];
 const post = async body => { const r = await fetch(`${st.base}/api/career/analyze`, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(body) }); return { status: r.status, body: await r.json() }; };
 const wait = async jobId => { for (let i = 0; i < 120; i++) { const j = await (await fetch(`${st.base}/api/career/jobs/${jobId}`)).json(); if (j.status === "SUCCEEDED" || j.status === "FAILED") return j; await new Promise(r => setTimeout(r, 1000)); } return null; };

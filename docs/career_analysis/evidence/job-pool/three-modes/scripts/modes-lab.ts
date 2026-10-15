@@ -6,17 +6,18 @@ import { spawn, type ChildProcess } from "node:child_process";
 import { randomBytes } from "node:crypto";
 import { readFileSync, writeFileSync, appendFileSync, unlinkSync } from "node:fs";
 import { resolve } from "node:path";
-import { createDisposableTestDatabase, dropDisposableTestDatabase } from "/home/codi/Entwicklung/condyn-admin-job-field/lib/database-isolation/verification";
-import { requireTestDatabaseAdminUrl } from "/home/codi/Entwicklung/condyn-admin-job-field/scripts/test-db/admin-url";
 import { startGeminiStandIn } from "./gemini-standin";
 
-const W = "/home/codi/Entwicklung/condyn-admin-job-field";
+// Run from the repository root; the sentinel is the one beside this script.
+const W = process.cwd();
 const STATE = process.env.LAB_STATE_FILE!;
 const DIR = process.env.LAB_DIR!;
 const PORT = Number(process.env.LAB_PORT ?? "41803");
-const SENTINEL = resolve(DIR, "../net-sentinel.cjs").replace("/logs/../", "/");
+const SENTINEL = resolve(__dirname, "net-sentinel.cjs");
 const delay = (ms: number) => new Promise(r => setTimeout(r, ms));
 (async () => {
+  const { createDisposableTestDatabase, dropDisposableTestDatabase } = await import(`${W}/lib/database-isolation/verification`);
+  const { requireTestDatabaseAdminUrl } = await import(`${W}/scripts/test-db/admin-url`);
   const outer = await createDisposableTestDatabase(requireTestDatabaseAdminUrl());
   process.env.DATABASE_URL = outer.url;
   const { createJobPoolPostgresWorld } = await import(`${W}/test/career/job-pool/fixtures/job-pool-postgres-world`);

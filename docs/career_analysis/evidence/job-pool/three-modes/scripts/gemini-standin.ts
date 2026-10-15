@@ -5,7 +5,8 @@
 import { createServer, type Server } from "node:http";
 import { readFileSync } from "node:fs";
 
-const W = "/home/codi/Entwicklung/condyn-admin-job-field";
+// Run from the repository root.
+const W = process.cwd();
 const PHRASES: Array<{ name: string; quote: string; domain: string | null }> = [
   { name: "Distributed Systems Architecture", quote: "Architected distributed IIoT Edge Computing systems with 99.999% uptime guarantees.", domain: "Engineering" },
   { name: "Edge Computing", quote: "high-throughput edge automation", domain: "Engineering" },
