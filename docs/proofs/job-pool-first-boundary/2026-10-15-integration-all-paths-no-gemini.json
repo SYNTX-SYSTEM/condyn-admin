@@ -1,8 +1,8 @@
 {
   "rule": "Job-scope requirement on every execution path of the Career-Analysis pipeline, including development scripts; no bypass (owner 2026-10-14)",
   "label": "2026-10-15-integration-all-paths-no-gemini",
-  "gitSha": null,
-  "database": "disposable test database condyn_test_c970e3022300bf6b (dropped after the run)",
+  "gitSha": "73a470163525023727b6c2d0ff0ad91de9be7a1c",
+  "database": "disposable test database condyn_test_7575708245459202 (dropped after the run)",
   "gemini": "no live call: dummy GEMINI_API_KEY, every child under the network sentinel",
   "pools": {
     "engineering": {

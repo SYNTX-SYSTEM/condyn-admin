@@ -15,8 +15,10 @@ Integrationszweig ist `integration/job-field-governance`, Basis `311d6ee`. `main
 |---|---|---|
 | `82d2f47` | GRÜN `frontend/three-modes` `8718e3a` | GELB `feature/job-pool-first-boundary` bis `4e72260` und GRÜNs Job-Field- und Drei-Modi-Frontend `ca11794`…`8718e3a` |
 | `fd11389` | PINK `validation/hr-decision-loop-pink` `c5b323f` | PINKs Prüfprotokolle §3.17–§3.40, Abnahmeplan 1.9.1, die Fixture der Job-Scope-Sperre mit persistiertem Auftrag sowie die pdf-path-Änderung `d4f61c1` |
+| `20c977b` | GELB `feature/matches-boundary-guard` `eacfc97` | das getrennte Delta aus §4: `/matches` lehnt gespeicherte PERSON-Analysen und nicht auflösbare Grenzen serverseitig ab. Gemergt erst nach PINKs Prüfung ohne Abweichung (§3.42) |
+| `73a4701` | PINK `validation/hr-decision-loop-pink` `122aa6c` | PINKs Prüfprotokolle §3.41 (Integration `0fb7b05`) und §3.42 (Delta `eacfc97`) sowie die übernommenen Fixture-Änderungen für `http-canonical-inverse` und `pdf-path`. Der pdf-path-Schritt erwartet 409 und gilt nur zusammen mit `eacfc97`; deshalb wurde `eacfc97` zuerst gemergt |
 
-Beide Merges liefen konfliktfrei. Der Baum von `82d2f47` ist identisch mit einem vorab gemachten Probe-Merge. Die Abhängigkeiten (`package.json` und Lockfile) sind unverändert.
+Alle vier Merges liefen konfliktfrei. Der Baum von `82d2f47` ist identisch mit einem vorab gemachten Probe-Merge; PINK hat `82d2f47` und `fd11389` baumgleich nachgebaut (§3.41). Die Abhängigkeiten (`package.json` und Lockfile) sind unverändert.
 
 **Fachlicher Inhalt** (Prüfungen von PINK, §3.30–§3.39):
 - **Job-Scope und Identität:**
@@ -40,6 +42,8 @@ Dokumentation: `docs/career_analysis/THREE_INVESTIGATION_MODES.md`, `SELECTED_RO
 
 ## 2. Prüfungen auf dem Integrationsstand (GELB)
 
+### 2.1 Erster Schritt, `0fb7b05`
+
 Alle Läufe fanden auf Wegwerf-Datenbanken unter der Testrolle statt, ohne Gemini. Gemini-Variablen waren entweder ungesetzt oder Platzhalter.
 
 | Prüfung | Ergebnis |
@@ -53,7 +57,25 @@ Alle Läufe fanden auf Wegwerf-Datenbanken unter der Testrolle statt, ohne Gemin
 | Alle Skriptpfade | bestanden, 0 Netzwerkversuche (`…-integration-all-paths-no-gemini.json`) |
 | E2E-Suiten | 32 grün, 3 rot (PINK `syntx-walk.e2e`, schon vor der Integration rot), 1 übersprungen (Live); siehe §3 |
 | Lint (pro Datei gegen `311d6ee`) | keine neuen Fehler in GELB-Dateien. Neu sind 55 Fehler in GRÜN- und PINK-Dateien: überwiegend `no-explicit-any` in Tests, dazu einige `react-hooks`-Regeln in `SyntxField.tsx`, `SyntxFieldSelector.tsx`, `useRoleInvestigation.ts`, `useJobScope.ts` und `analyze/page.tsx`. Sie blockieren nicht und sind den Eigentümern gemeldet. |
-| Leak-Check des Merge-Bereichs | keine lokalen Pfade, keine Schlüssel. Die einzigen URL-Treffer sind synthetische Test-URLs in PINK-Belegen (`pink:pink@127.0.0.1`, `.invalid`). |
+| Leak-Check des Merge-Bereichs | keine Schlüssel. Die einzigen URL-Treffer sind synthetische Test-URLs in PINK-Belegen (`pink:pink@127.0.0.1`, `.invalid`). **Korrektur nach PINK §3.41:** Die ursprüngliche Angabe „keine lokalen Pfade“ war falsch. Im Bereich `311d6ee..0fb7b05` fügen 30 Zeilen in 25 Dateien einen lokalen Pfad `/home/<user>/…` hinzu, alle in GRÜNs `docs/career_analysis/evidence/job-pool/` (Logs und Skripte der Ordner `e2e-sweep-2026-10-13`, `semiotic-transfer`, `capability-gate`, `job-scope`, `job-scope-removal`). Keine davon liegt in GELB- oder PINK-Dateien. Die Dateien sind bereits auf gepushten Zweigen; Bereinigung und History sind Owner-Entscheidung (§5). |
+
+Die beiden Nachweis-JSONs unter `docs/proofs/job-pool-first-boundary/2026-10-15-integration-*.json` hatten in `0fb7b05` `gitSha: null` (PINK §3.41). Sie sind auf `73a4701` neu erzeugt und tragen jetzt diesen Commit (§2.2).
+
+### 2.2 Zweiter Schritt, `73a4701` (Sperre `eacfc97` und PINK `122aa6c`)
+
+Gleiche Bedingungen: Wegwerf-Datenbanken unter der Testrolle, ohne Gemini, Gemini-Variablen ungesetzt oder Platzhalter. Der Code-Baum von `73a4701` ist identisch mit der Spitze dieses Zweigs; danach kamen nur Dokumente und die neu erzeugten Nachweise.
+
+| Prüfung | Ergebnis |
+|---|---|
+| Volle Suite (ohne E2E) | 2629 grün, 27 rot, 8 übersprungen. Die 27 Rotfälle sind namensgleich mit der Baseline (4 Lifecycle-/Policy-Dateien), diesmal ohne Timeout unter Last |
+| `tsc --noEmit` | 0 Fehler (auch der pdf-path-Schritt mit 409, der `eacfc97` voraussetzt) |
+| Echter Worker, Job-Scope-Grenze | bestanden, `gitSha` `73a4701` (`…-integration-worker-no-gemini.json`) |
+| Alle Skriptpfade | bestanden, 0 Netzwerkversuche, `gitSha` `73a4701` (`…-integration-all-paths-no-gemini.json`) |
+| Echter Next-Server, drei Modi | 11/11, 0 Netzwerkversuche |
+| Echter Next-Server, URL-Boundary mit `/matches`-Sperre | 20/20, 0 Netzwerkversuche: PERSON_X_JOB 200 (auch Vertrag vor B2), PERSON 409, ohne Auftrag 409 `NOT_RECORDED`, Lauf-Scope ≠ erklärter Job 409, unbekannt 404 |
+| E2E-Suiten | 32 grün, 4 übersprungen: `job-pool-workflow` 10/10, `job-scope-gate` grün, `hr-decision-loop-frontend` 7/7, `fail-closed` 13/13, `local-decision-context-http` grün; `live-browser-workflow` übersprungen (Live-Gemini). PINK `syntx-walk.e2e` bricht jetzt schon im Aufbau ab: `/matches` lehnt `ANL_PINK_SYNTX_WALK` mit 409 ab (direkt gespeichert, NOT_RECORDED), die 3 Schritte werden übersprungen. Das ist die vorhergesagte Folge aus §4; PINK bindet den Rundgang neu. Überschriebene Belege sind auf den eingecheckten Stand zurückgesetzt |
+| Lint der durch die Sperre geänderten Dateien (`application.ts`, `local-composition.ts`, `job-pool.postgres.test.ts`) | 0 Befunde |
+| Leak-Check `0fb7b05..73a4701` | 0 neue Zeilen mit lokalen Pfaden, Datenbank-URLs oder Schlüsseln |
 
 ## 3. E2E-Suiten
 
@@ -69,7 +91,7 @@ Lauf auf Wegwerf-Datenbanken, Playwright über `CONDYN_PLAYWRIGHT_MODULE`, ohne 
 | PINK `live-browser-workflow.e2e` | übersprungen (braucht Live-Gemini, kein GO) |
 | PINK `syntx-walk.e2e` (Q-12) | **3 rot**: Das SYNTX-Feld erreicht nie `data-field-state="AVAILABLE"` |
 
-Den Befund zu `syntx-walk.e2e` habe ich gegengeprüft: GRÜNs geprüfter Stand `8718e3a` allein scheitert identisch. Es ist also keine Regression der Integration. Der Rundgang stammt aus der Zeit vor der Job-Scope-Sperre und öffnet das Feld über `analysisId` und Pool, ohne gewählten Job. Die Sperre (`cb3d33f`/`c146f05`) lässt das Feld dann bewusst nicht AVAILABLE werden. Die Suite gehört PINK; PINK passt sie an. Geschlossen ist der Punkt erst, wenn PINK das bestätigt.
+Stand `0fb7b05`. Den Befund zu `syntx-walk.e2e` habe ich gegengeprüft: GRÜNs geprüfter Stand `8718e3a` allein scheitert identisch. Es ist also keine Regression der Integration. Der Rundgang stammt aus der Zeit vor der Job-Scope-Sperre und öffnet das Feld über `analysisId` und Pool, ohne gewählten Job. Die Sperre (`cb3d33f`/`c146f05`) lässt das Feld dann bewusst nicht AVAILABLE werden. Die Suite gehört PINK; PINK passt sie an. Geschlossen ist der Punkt erst, wenn PINK das bestätigt.
 
 ## 4. Separates Delta: serverseitige Ablehnung an `/matches`
 
@@ -102,7 +124,7 @@ Owner-Vorgabe: Der alte pool-weite Vergleich bleibt vorerst rollenübergreifend.
 
 **Bewertung:** Für den produktiven Aufrufer, GRÜNs Frontend, ist die Sperre folgenlos. Betroffen sind Test-Fixtures ohne Auftrag und Bestandsdaten aus der Zeit vor dem Gate.
 
-**Umsetzung, getrennt:** auf `feature/matches-boundary-guard` über der Integrationsspitze `0fb7b05`. Sie ist nicht in die Integration gemergt; erst kommt PINKs Prüfung. Beschreibung in `THREE_INVESTIGATION_MODES.md` §6.
+**Umsetzung, getrennt:** auf `feature/matches-boundary-guard` (`eacfc97`) über der Integrationsspitze `0fb7b05`. Beschreibung in `THREE_INVESTIGATION_MODES.md` §6. PINK hat das Delta unabhängig geprüft (§3.42), ohne Abweichung; danach ist es als `20c977b` in die Integration gemergt.
 
 **Gemessene Wirkung:**
 - `job-pool.postgres` (GELB): Ohne Fixture-Anpassung wurden genau die drei Matches-Tests rot. Die Fixture hat jetzt einen persistierten Auftrag, dazu kommt ein neuer Test für PERSON, ohne Auftrag, vor dem Gate und andere Rolle. Ergebnis 8/8.
@@ -111,6 +133,13 @@ Owner-Vorgabe: Der alte pool-weite Vergleich bleibt vorerst rollenübergreifend.
 - PINK `pdf-path.postgres`: Der DANGLING_REFERENCE-Fall ist rot; der Auftrag bleibt RUNNING, und es gibt keine Referenz, also NOT_RECORDED.
 - Mit dem Diff an PINK sind PINKs Suiten 31/31 grün.
 - Echter Next-Server: 20/20, darunter PERSON 409, ohne Auftrag 409, Lauf-Scope ≠ erklärter Job 409, unbekannt 404, PERSON_X_JOB 200. 0 Netzwerkversuche.
+
+**PINKs unabhängige Prüfung (§3.42):**
+- neuer Nachweis `matches-boundary.postgres`: 26 Fälle × 2 Pools = 52/52 genau so, wie die URL-Boundary-Route die Grenze auflöst; alle 7 Gründe und PERSON erreicht; PERSON_X_JOB byte-gleich zur Komposition ohne Grenze, auch bei anderer Rolle; Reihenfolge Pool-404 → Grenze → Pool-Status; nur Identitäten, rein lesend;
+- Negativkontrolle auf `0fb7b05`: 38 der 52 Fälle weichen ab;
+- `matches-boundary.e2e` auf echtem Server identisch zum In-Process-Aufruf, 0 Gemini-Zugriffe;
+- die Folgenabschätzung ist bestätigt; PINK hat die Fixture-Diffs übernommen (`122aa6c`);
+- volle Suite auf `eacfc97`: 27 Rotfälle, identisch zur Basis.
 
 **Offene Frage (Human Authority):** Soll `/matches` auch eine PERSON_X_JOB-Analyse ablehnen, wenn der angefragte Pool nicht der untersuchte ist? Das Frontend tut das bereits; serverseitig ist es nicht Teil der Vorgabe.
 
@@ -127,12 +156,13 @@ Owner-Vorgabe: Der alte pool-weite Vergleich bleibt vorerst rollenübergreifend.
   - JOB ONLY Stufe 2 mit Gemini;
   - bestätigtes Mapping, das an HIA-1 und HIA-2 hängt.
 - **Repository-Hygiene:**
-  - geerbte lokale Pfade in älteren Dateien und Prüfordnern;
+  - geerbte lokale Pfade in älteren Dateien und Prüfordnern; dazu die 30 Zeilen aus GRÜNs Evidence-Ordnern im Integrationsbereich (§2.1);
   - die Wurzeldateien `debug.js` und `debug2.js`.
+- **PINK-Suite:** `syntx-walk.e2e` speichert `ANL_PINK_SYNTX_WALK` direkt ohne Auftrag (NOT_RECORDED); PINK bindet den Rundgang an die Invarianten neu.
 - **Zur Information (PINK):**
   - O-URL-REF-STATUS;
   - Analysen ohne Discovery-Lauf werden ohne Lesen des Pools aufgelöst; das entsteht nur mit inkonsistenten Daten.
 
 ## 6. Ablauf
 
-SFE::INTEGRATE → VERIFY → **PINK** → DEMO REVIEW. Als Nächstes prüft PINK diesen Integrationsstand unabhängig.
+SFE::INTEGRATE → VERIFY → PINK → **DEMO REVIEW**. PINK hat Integration und Delta ohne Abweichung im Code bestätigt (§3.41, §3.42). Als Nächstes folgt das DEMO REVIEW durch den Owner.

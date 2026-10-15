@@ -1,8 +1,8 @@
 {
   "invariant": "JOB POOL FIRST — no valid pool + selected job → no capability analysis",
   "label": "2026-10-15-integration-worker-no-gemini",
-  "gitSha": null,
-  "database": "disposable test database condyn_test_7eea0c52d7e907d0 (dropped after the run)",
+  "gitSha": "73a470163525023727b6c2d0ff0ad91de9be7a1c",
+  "database": "disposable test database condyn_test_0faf7fb3fd5c5bb5 (dropped after the run)",
   "model": "proof-no-model",
   "pools": {
     "engineering": {
@@ -20,15 +20,15 @@
   },
   "worker": "scripts/run-career-worker.ts (real process)",
   "workerLog": [
-    "Career worker PID: 3243009",
+    "Career worker PID: 3412291",
     "Career worker started: job-pool-first-proof-worker",
     "Worker started. Polling for jobs...",
-    "[Worker job-pool-first-proof-worker] CLAIMED JOB_1792060319855_426 lease=1",
-    "[Worker job-pool-first-proof-worker] FAILED JOB_1792060319855_426 lease=1 terminal=true ERR_JOB_SCOPE_REQUIRED: Bitte wähle einen Job aus einem Pool aus.",
-    "[Worker job-pool-first-proof-worker] CLAIMED JOB_1792060319860_729 lease=1",
-    "[Worker job-pool-first-proof-worker] FAILED JOB_1792060319860_729 lease=1 terminal=true ERR_JOB_SCOPE_INVALID: Bitte wähle einen Job aus einem Pool aus.",
-    "[Worker job-pool-first-proof-worker] CLAIMED JOB_1792060319865_718 lease=1",
-    "[Worker job-pool-first-proof-worker] FAILED JOB_1792060319865_718 lease=1 terminal=true ERR_JOB_SCOPE_INVALID: Bitte wähle einen Job aus einem Pool aus."
+    "[Worker job-pool-first-proof-worker] CLAIMED JOB_1792068191391_945 lease=1",
+    "[Worker job-pool-first-proof-worker] FAILED JOB_1792068191391_945 lease=1 terminal=true ERR_JOB_SCOPE_REQUIRED: Bitte wähle einen Job aus einem Pool aus.",
+    "[Worker job-pool-first-proof-worker] CLAIMED JOB_1792068191394_153 lease=1",
+    "[Worker job-pool-first-proof-worker] FAILED JOB_1792068191394_153 lease=1 terminal=true ERR_JOB_SCOPE_INVALID: Bitte wähle einen Job aus einem Pool aus.",
+    "[Worker job-pool-first-proof-worker] CLAIMED JOB_1792068191396_475 lease=1",
+    "[Worker job-pool-first-proof-worker] FAILED JOB_1792068191396_475 lease=1 terminal=true ERR_JOB_SCOPE_INVALID: Bitte wähle einen Job aus einem Pool aus."
   ],
   "checks": [
     {
