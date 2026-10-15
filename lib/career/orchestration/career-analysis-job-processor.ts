@@ -2,7 +2,7 @@ import type { DocumentInput } from "../adapter";
 import type { CareerJobRuntimeOperation, JobRecord } from "./job";
 import type { CapabilityProposalProjectionReferenceRepository } from "../capability-core/projection";
 import { createCandidateSourceBundle, type CandidateSourceBundleRepository, toCapabilitySourceDocuments } from "../capability-core";
-import type { ResolvedJobScope } from "../job-scope/scope";
+import type { AnalysisBoundary } from "../investigation/boundary";
 
 export type ReportCareerJobRuntimeOperation = (
   operation: CareerJobRuntimeOperation
@@ -18,8 +18,8 @@ export interface CareerAnalysisJobProcessorDependencies {
     execute(
       documents: DocumentInput[],
       reportOperation: ReportCareerJobRuntimeOperation,
-      /** Forwarded as received; the executor refuses anything but an issued job scope before Discovery. */
-      jobScope: ResolvedJobScope | undefined
+      /** Forwarded as received; the executor refuses anything but an issued boundary (job scope or PERSON) before Discovery. */
+      jobScope: AnalysisBoundary | undefined
     ): Promise<unknown>;
   };
   projectionReferenceRepository?: CapabilityProposalProjectionReferenceRepository;
@@ -67,7 +67,7 @@ export function createCareerAnalysisJobProcessor(
   reportOperation: ReportCareerJobRuntimeOperation,
   // Optional in the type only so the sealed F11 processor suite (P8) keeps its two-argument calls; the worker
   // boundary always passes the scope it issued for this attempt, and the executor refuses a missing one.
-  jobScope?: ResolvedJobScope
+  jobScope?: AnalysisBoundary
 ) => Promise<{ resultAnalysisId: string }> {
   return async (job, reportOperation, jobScope) => {
     const resultAnalysisId = deterministicAnalysisId(job.jobId);

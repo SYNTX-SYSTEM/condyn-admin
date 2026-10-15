@@ -80,7 +80,7 @@ export async function produceAnalysis(world: InspectorWorld, provider: Capabilit
   const run = (discovery as { run: CapabilityDiscoveryRun }).run;
   if (!run) throw new Error(`fixture expects a Discovery run, got ${discovery.kind}`);
   const convergence = await runCapabilityConvergence((await world.capabilityRepository.getRunById(run.runId))!, convergenceConfig, { kernelResolver: { resolve: async () => convergenceKernel }, provider: convergenceProvider, repository: world.capabilityRepository });
-  const job = createJob("CAREER_ANALYSIS", { sourceType: "BATCH", sourceData: { documents: [{ type: "pdf", name: "cv.synthetic.pdf", content: PDF_MARKER }], ...(scope ? { jobScope: scope.selection } : {}) } });
+  const job = createJob("CAREER_ANALYSIS", { sourceType: "BATCH", sourceData: { documents: [{ type: "pdf", name: "cv.synthetic.pdf", content: PDF_MARKER }], ...(scope ? { jobScope: scope.selection } : { investigation: { mode: "PERSON" } }) } });
   await world.saveJob(job);
   const analysisId = job.jobId.replace("JOB_", "ANL_");
   const candidateSourceBundleId = `CSB_${job.jobId}`;

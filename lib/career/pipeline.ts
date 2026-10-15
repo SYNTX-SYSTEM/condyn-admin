@@ -20,7 +20,8 @@ import { ActivePromptResolver } from "./prompts/resolver";
 
 import { SourceMetadata } from "./loaders/source";
 import { CareerJobRuntimeOperation } from "./orchestration/job";
-import { assertIssuedJobScope, type ResolvedJobScope } from "./job-scope/scope";
+import type { ResolvedJobScope } from "./job-scope/scope";
+import { InvestigationBoundaryError, assertIssuedAnalysisBoundary, type PersonInvestigation } from "./investigation/boundary";
 
 export interface DocumentLoaderInput {
   docId?: string;
@@ -29,17 +30,26 @@ export interface DocumentLoaderInput {
   metadata?: SourceMetadata;
 }
 
-export interface PipelineExecutionOptions {
-  /**
-   * SFE invariant JOB POOL FIRST: the validated job scope (valid pool + selected job) of this analysis. Required on
-   * every execution path (worker, scripts, tests); checked before any document, prompt or provider work. Validation
-   * only: the scope is not passed to the prompt or to the provider.
-   */
-  jobScope: ResolvedJobScope;
+interface PipelineExecutionOptionsBase {
   promptResolver?: ActivePromptResolver;
   explicitKeyBase64?: string;
   explicitAnalysisId?: string;
   onRuntimeOperation?: (operation: CareerJobRuntimeOperation) => void | Promise<void>;
+}
+
+/**
+ * SFE: every execution path (worker, scripts, tests) names its issued investigation boundary, checked before any
+ * document, prompt or provider work: the validated job scope (PERSON_X_JOB, unchanged) or an issued PERSON
+ * investigation. Validation only: neither is passed to the prompt or to the provider.
+ */
+export type PipelineExecutionOptions = PipelineExecutionOptionsBase & (
+  | { jobScope: ResolvedJobScope; investigation?: undefined }
+  | { investigation: PersonInvestigation; jobScope?: undefined }
+);
+
+function assertPipelineBoundary(options: PipelineExecutionOptions | undefined): void {
+  if (options?.jobScope !== undefined && options?.investigation !== undefined) throw new InvestigationBoundaryError("ERR_INVESTIGATION_INVALID", "a pipeline run names one boundary, not two.");
+  assertIssuedAnalysisBoundary(options?.investigation ?? options?.jobScope);
 }
 
 /**
@@ -80,7 +90,7 @@ export async function executeCareerAnalysisPipeline(
   provider: InferenceProvider,
   options: PipelineExecutionOptions
 ): Promise<ValidationResult<CanonicalCareerAnalysis>> {
-  assertIssuedJobScope(options?.jobScope);
+  assertPipelineBoundary(options);
   const startTime = Date.now();
   const docs = loadDocuments(inputs);
   const promptBundle = await buildCareerAnalysisPromptWithResolver(
@@ -119,7 +129,7 @@ export async function executeCareerAnalysisBatchPipeline(
   onProgress: ((progress: BatchProgress) => void) | undefined,
   options: PipelineExecutionOptions
 ): Promise<ValidationResult<CanonicalCareerAnalysis>> {
-  assertIssuedJobScope(options?.jobScope);
+  assertPipelineBoundary(options);
   const startTime = Date.now();
   const docs = await loadDocumentBatch(batch, onProgress);
   const promptBundle = await buildCareerAnalysisPromptWithResolver(

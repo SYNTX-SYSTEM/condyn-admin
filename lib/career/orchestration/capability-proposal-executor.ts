@@ -21,7 +21,7 @@ import type {
 import type { PromptRepository } from "../prompts/repository";
 import type { ActivePromptResolver } from "../prompts/resolver";
 import type { ReportCareerJobRuntimeOperation } from "./career-analysis-job-processor";
-import { assertIssuedJobScope, type ResolvedJobScope } from "../job-scope/scope";
+import { assertIssuedAnalysisBoundary, isIssuedPersonInvestigation, type AnalysisBoundary } from "../investigation/boundary";
 import { renderInvestigationScope } from "../job-scope/investigation-scope";
 
 // Prompt slugs select managed kernels; these explicit versions are the runtime
@@ -73,7 +73,7 @@ export interface CareerCapabilityProposalExecutorDependencies {
       repository: CapabilityCoreRepository;
       provider: CapabilityDiscoveryProvider;
       kernelResolver: CapabilityKernelResolver;
-      investigationScope: CapabilityInvestigationScope;
+      investigationScope?: CapabilityInvestigationScope;
       providerExchangeArchive?: CapabilityProviderExchangeArchive;
     }
   ) => Promise<CapabilityDiscoveryRuntimeResult>;
@@ -115,7 +115,7 @@ export interface CareerCapabilityProposalExecutor {
   execute(
     documents: DocumentInput[],
     reportOperation: ReportCareerJobRuntimeOperation,
-    jobScope: ResolvedJobScope | undefined
+    boundary: AnalysisBoundary | undefined
   ): Promise<CapabilityProposalRuntimeResult>;
 }
 
@@ -201,11 +201,12 @@ export async function createCareerCapabilityProposalExecutor(
   const convergenceProvider = dependencies.createConvergenceProvider(model);
 
   return {
-    async execute(documents, reportOperation, jobScope) {
-      // SFE: Discovery runs only inside an issued job scope; the scope sets the investigation space, the
-      // documents remain the only evidence. Convergence needs no scope: its identity binds the scoped RUN_ id.
-      assertIssuedJobScope(jobScope);
-      const investigationScope = renderInvestigationScope(jobScope);
+    async execute(documents, reportOperation, boundary) {
+      // SFE: Discovery runs only inside an issued investigation boundary. PERSON_X_JOB: the job scope sets the
+      // investigation space; PERSON: no scope at all (the unscoped Discovery identities stay as before e643e96). The
+      // documents remain the only evidence. Convergence needs no scope: its identity binds the RUN_ id.
+      assertIssuedAnalysisBoundary(boundary);
+      const investigationScope = isIssuedPersonInvestigation(boundary) ? undefined : renderInvestigationScope(boundary);
       const runtime = dependencies.createProposalRuntime({
         repository: dependencies.capabilityRepository,
         discovery: {
@@ -218,7 +219,7 @@ export async function createCareerCapabilityProposalExecutor(
               repository: runtimeDependencies.repository,
               kernelResolver: runtimeDependencies.kernelResolver,
               provider: telemetryDiscoveryProvider(discoveryProvider, reportOperation),
-              investigationScope,
+              ...(investigationScope ? { investigationScope } : {}),
               ...(dependencies.providerExchangeArchive ? { providerExchangeArchive: dependencies.providerExchangeArchive } : {})
             })
         },

@@ -28,10 +28,15 @@ import {
 import { InMemoryPromptRepository } from "../lib/career/prompts/repository";
 import { ActivePromptResolver } from "../lib/career/prompts/resolver";
 import type { VerifiedCareerAnalysis } from "../lib/career/types";
-import { requireActiveJobScope, requireValidJobScope } from "../lib/career/job-scope";
+import { requireValidJobScope } from "../lib/career/job-scope";
+import { isIssuedPersonInvestigation, requireActiveAnalysisBoundary } from "../lib/career/investigation";
 import { createLocalJobScopeResolver } from "../lib/career/job-scope/local-resolver";
 import { providerExchangeArchiveFromEnvironment } from "../lib/career/result-inspector/postgres-exchange-store";
 import { runWithExchangeAttempt } from "../lib/career/result-inspector/attempt";
+
+/** The legacy pipeline names the same issued boundary as the capability sweep. */
+const pipelineBoundary = (boundary: ReturnType<typeof requireActiveAnalysisBoundary>) =>
+  isIssuedPersonInvestigation(boundary) ? { investigation: boundary } : { jobScope: boundary };
 
 async function main() {
   if (!process.env.GEMINI_API_KEY) {
@@ -90,21 +95,23 @@ async function main() {
         promptSlug,
         encryptionKeyBase64
       ),
-    // JOB POOL FIRST: the capability sweep reaches Gemini only inside the validated scope of the claimed job.
+    // No analysis without an explicit investigation boundary: the capability sweep reaches Gemini only inside the
+    // issued boundary of the claimed job (its validated job scope, or an issued PERSON investigation).
     createDiscoveryProvider: (model) => {
       const provider = new GeminiCapabilityDiscoveryProvider({ model });
-      return { providerName: provider.providerName, model: provider.model, execute: (request) => { requireActiveJobScope(); return provider.execute(request); } };
+      return { providerName: provider.providerName, model: provider.model, execute: (request) => { requireActiveAnalysisBoundary(); return provider.execute(request); } };
     },
     createConvergenceProvider: (model) => {
       const provider = new GeminiCapabilityConvergenceProvider({ model });
-      return { providerName: provider.providerName, model: provider.model, execute: (request) => { requireActiveJobScope(); return provider.execute(request); } };
+      return { providerName: provider.providerName, model: provider.model, execute: (request) => { requireActiveAnalysisBoundary(); return provider.execute(request); } };
     },
     runDiscovery: runCapabilityDiscovery,
     runConvergence: runCapabilityConvergence,
     createProposalRuntime: createCapabilityProposalRuntime
   });
 
-  // SFE invariant JOB POOL FIRST: every claimed job is validated against the stored Job Pool before any work.
+  // SFE: every claimed job is validated before any work — its declared investigation boundary, and for PERSON_X_JOB
+  // its job scope against the stored Job Pool (JOB POOL FIRST).
   const processJob = requireValidJobScope(createLocalJobScopeResolver(), createCareerAnalysisJobProcessor({
     canonicalAnalysisRepository: {
       load: (analysisId) => canonicalAnalysisRepository.load(analysisId),
@@ -117,7 +124,7 @@ async function main() {
     projectionReferenceRepository,
     async executeLegacyCareerAnalysis(documents, reportOperation, explicitAnalysisId) {
       const validationResult = await executeCareerAnalysisPipeline(documents, provider, {
-        jobScope: requireActiveJobScope(),
+        ...pipelineBoundary(requireActiveAnalysisBoundary()),
         explicitAnalysisId,
         onRuntimeOperation: reportOperation
       });

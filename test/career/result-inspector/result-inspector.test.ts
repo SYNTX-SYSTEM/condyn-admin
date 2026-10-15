@@ -58,6 +58,7 @@ describe("Gemini Result Inspector", () => {
     const inspection: GeminiResultInspection = await inspector.read(produced.analysisId);
 
     expect(inspection.investigationInput.jobScopeSelection).toEqual(scopeA.selection);
+    expect(inspection.investigationInput.investigationMode).toBe("PERSON_X_JOB");
     expect(inspection.investigationInput.investigationScope).toEqual({ state: "RETAINED", scopeHash: sha256Utf8(renderInvestigationScope(scopeA).text), text: renderInvestigationScope(scopeA).text, textMatchesScopeHash: true, expiresAt: "2026-10-22T10:00:00.000Z" });
     expect(inspection.investigationInput.discoveryRunId).toBe(produced.run.runId);
     expect(inspection.investigationInput.kernel).toEqual({ kernelVersion: "discovery-v1", templateId: "T", versionId: "V", checksum: "C" });

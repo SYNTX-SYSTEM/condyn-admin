@@ -2,7 +2,8 @@ import { NextResponse } from "next/server";
 import { db } from "../../../../lib/career/db/client";
 import { JobRepository } from "../../../../lib/career/orchestration/job-repository";
 import { createJob } from "../../../../lib/career/orchestration/job";
-import { JOB_SCOPE_REQUIRED_MESSAGE, JobScopeRequiredError, parseJobScopeSelection } from "../../../../lib/career/job-scope";
+import { JOB_SCOPE_REQUIRED_MESSAGE, JobScopeRequiredError } from "../../../../lib/career/job-scope";
+import { INVESTIGATION_INVALID_MESSAGE, InvestigationBoundaryError, parseDeclaredInvestigation } from "../../../../lib/career/investigation";
 import { createLocalJobScopeResolver } from "../../../../lib/career/job-scope/local-resolver";
 
 export const maxDuration = 10; // Fast HTTP acceptance
@@ -58,16 +59,25 @@ export async function POST(req: Request) {
       }
     }
 
-    // SFE invariant JOB POOL FIRST: no valid pool + selected job → no capability analysis.
-    // Missing or malformed: 400 ERR_JOB_SCOPE_REQUIRED; unknown, inactive or unmapped pool, or a role outside it:
-    // 422 ERR_JOB_SCOPE_INVALID. Nothing is enqueued, so no worker and no Gemini call can follow.
+    // SFE: no analysis without an explicit investigation boundary (owner GO 2026-10-15). investigation { mode: "PERSON" }
+    // analyzes the person without any job scope; without a declaration (or PERSON_X_JOB) JOB POOL FIRST applies
+    // unchanged: missing or malformed scope 400 ERR_JOB_SCOPE_REQUIRED; unknown, inactive or unmapped pool, or a role
+    // outside it 422 ERR_JOB_SCOPE_INVALID. An invalid or contradictory declaration, or JOB (not a document analysis):
+    // 400 ERR_INVESTIGATION_INVALID / ERR_INVESTIGATION_MODE_NOT_ANALYZABLE. Nothing is enqueued on any refusal.
     try {
-      await createLocalJobScopeResolver().resolve(parseJobScopeSelection(body.jobScope));
+      const declared = parseDeclaredInvestigation(body);
+      if (declared.mode === "PERSON_X_JOB") await createLocalJobScopeResolver().resolve(declared.selection);
     } catch (scopeErr) {
       if (scopeErr instanceof JobScopeRequiredError) {
         return NextResponse.json(
           { success: false, status: "FAILED", issues: [{ code: scopeErr.code, message: JOB_SCOPE_REQUIRED_MESSAGE }] },
           { status: scopeErr.code === "ERR_JOB_SCOPE_REQUIRED" ? 400 : 422 }
+        );
+      }
+      if (scopeErr instanceof InvestigationBoundaryError) {
+        return NextResponse.json(
+          { success: false, status: "FAILED", issues: [{ code: scopeErr.code, message: INVESTIGATION_INVALID_MESSAGE }] },
+          { status: 400 }
         );
       }
       throw scopeErr;

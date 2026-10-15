@@ -34,6 +34,8 @@ export interface GeminiResultInspection {
   analysisId: string;
   jobId: string;
   investigationInput: {
+    /** The investigation boundary the job declared (three modes); UNDECLARED for jobs that name neither. */
+    investigationMode: "PERSON" | "PERSON_X_JOB" | "UNDECLARED";
     jobScopeSelection: { jobPoolUploadId: string; poolRoleId: string } | null;
     investigationScope: { state: "RETAINED"; scopeHash: string; text: string; textMatchesScopeHash: boolean; expiresAt: string } | { state: "NOT_RETAINED"; scopeHash: string } | { state: "UNSCOPED" };
     discoveryRunId: string;
@@ -66,6 +68,13 @@ export interface GeminiResultInspectorDependencies {
 
 const lineage = (): never => { throw new ResultInspectionError("ERR_RESULT_INSPECTION_LINEAGE_INVALID", 409); };
 const str = (value: unknown): string | null => typeof value === "string" ? value : null;
+
+function investigationModeOf(job: JobRecord | null): "PERSON" | "PERSON_X_JOB" | "UNDECLARED" {
+  const data = job?.inputRef?.sourceData as { investigation?: { mode?: unknown }; jobScope?: unknown } | undefined;
+  if (data?.investigation?.mode === "PERSON") return "PERSON";
+  if (data?.investigation?.mode === "PERSON_X_JOB" || (data?.investigation === undefined && data?.jobScope !== undefined)) return "PERSON_X_JOB";
+  return "UNDECLARED";
+}
 
 /** Only the two selection keys of the job input; the documents (candidate PDFs) never leave through the inspector. */
 function jobScopeSelectionOf(job: JobRecord | null): { jobPoolUploadId: string; poolRoleId: string } | null {
@@ -116,6 +125,7 @@ export function createGeminiResultInspector(dependencies: GeminiResultInspectorD
         analysisId,
         jobId: reference.jobId,
         investigationInput: {
+          investigationMode: investigationModeOf(job),
           jobScopeSelection: jobScopeSelectionOf(job),
           investigationScope: !scope
             ? { state: "UNSCOPED" }
