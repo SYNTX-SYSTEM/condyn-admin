@@ -43,7 +43,7 @@ describe("CONDYN Career Analysis Protocol v1.0 - Step 7.1: Client Live Analysis 
     expect(html).toMatch(/data-testid="analyze-job-scope" data-job-scope-state="NONE"/);
     expect(html).toContain("Kein Job gewählt");
     expect(html).toContain('data-testid="analyze-job-scope-required"');
-    expect(html).toContain("Bitte wählen Sie einen Job aus.");
+    expect(html).toContain("Bitte wähle einen Job aus einem Pool aus.");
     expect(html).toMatch(/data-testid="start-analysis-button" disabled=""/);
   });
 

@@ -95,7 +95,7 @@ describe("ANALYZE without a valid job scope (server-rendered)", () => {
     for (const locale of ["en", "de"] as const) {
       const html = renderToString(<SourceDock initialStagedDocs={STAGED} locale={locale} onAnalyze={() => undefined} analyzeBlockedMessage={JOB_SCOPE_REQUIRED_MESSAGE} />);
       expect(html).toContain('data-testid="analyze-job-scope-required"');
-      expect(html).toContain("Bitte wählen Sie einen Job aus.");
+      expect(html).toContain("Bitte wähle einen Job aus einem Pool aus.");
       expect(html).toMatch(/<button[^>]*disabled=""[^>]*data-job-scope-blocked="true"[^>]*data-testid="start-intake-analysis-btn"/);
     }
   });
@@ -121,7 +121,7 @@ describe("backend failure codes in the intake banner (finding 2)", () => {
     expect(html).toContain(`data-http-status="${status}"`);
     expect(html).toContain("NO VALID JOB SCOPE");
     expect(html).toContain(`[<!-- -->${code}<!-- -->]`);
-    expect(html).toContain("Bitte wählen Sie einen Job aus.");
+    expect(html).toContain("Bitte wähle einen Job aus einem Pool aus.");
     expect(html).toContain(`HTTP <!-- -->${status}`);
     expect(html).not.toContain("SEMANTIC BOUNDARY VIOLATION");
   });

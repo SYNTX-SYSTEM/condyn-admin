@@ -153,7 +153,7 @@ attributes). No new animation (a hover transition of the indicator, none in REDU
 JOB_FIELD_FRONTEND.md §13.2.23.
 
 **Proposed wording:** "R10d — The application shell shows the selected job scope (or its absence) beside the field selector in
-both fields and at every depth; ANALYZE is admitted only with a VALID scope and otherwise shows „Bitte wählen Sie einen Job aus.“.
+both fields and at every depth; ANALYZE is admitted only with a VALID scope and otherwise shows „Bitte wähle einen Job aus einem Pool aus.“.
 Admitted when every Capability manifestation render stays byte-identical apart from the indicator."
 
 Addition (owner "SFE — JOB POOL FIRST / CAPABILITY GATE", 2026-10-14): the application opens in the Job Field, and the shell admits the

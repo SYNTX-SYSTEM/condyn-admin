@@ -14,8 +14,9 @@ export interface JobScope {
   poolRoleId: string;
 }
 
-/** The owner's wording, verbatim in every locale (owner: „Zeige exakt“). Codes, not this text, carry the meaning. */
-export const JOB_SCOPE_REQUIRED_MESSAGE = "Bitte wählen Sie einen Job aus.";
+/** The owner's binding wording, verbatim in every locale and identical to the backend error contract (owner GO 2026-10-15; GELB
+ *  lib/career/job-scope/errors.ts). Codes, not this text, carry the meaning. */
+export const JOB_SCOPE_REQUIRED_MESSAGE = "Bitte wähle einen Job aus einem Pool aus.";
 export const JOB_SCOPE_REQUIRED_CODE = "ERR_JOB_SCOPE_REQUIRED";
 export const JOB_SCOPE_INVALID_CODE = "ERR_JOB_SCOPE_INVALID";
 

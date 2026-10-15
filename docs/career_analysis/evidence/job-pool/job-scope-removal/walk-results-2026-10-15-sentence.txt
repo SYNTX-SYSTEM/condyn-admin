@@ -1,0 +1,26 @@
+PASS 0 padded pool uploaded through the real upload route — JPOOL_97DE18F567AD93E9B8ECC7BFC8BEE3D5
+PASS G10-1 padded role observed, no job yet: gated
+PASS G10-2 SELECT AS JOB on the padded role → VALID, gate OPEN
+PASS G10-3 URL carries the role id verbatim (untrimmed) — " role pink padded "
+PASS G10-4 indicator names the role
+PASS G10-5 reload restores the padded scope exactly
+PASS G10-6 one source staged, ANALYZE admitted
+PASS G10-7 the request carries exactly { jobPoolUploadId, poolRoleId: ' role pink padded ' } — {"jobPoolUploadId":"JPOOL_97DE18F567AD93E9B8ECC7BFC8BEE3D5","poolRoleId":" role pink padded "}
+PASS G10-8 staged source still there after the (aborted) request
+PASS G05-1 indicator opens the selected role in the Job Field; REMOVE JOB offered
+PASS G05-2 no job scope selected afterwards — ?analysisId=ANL_JOB_POOL_E2E_0001&focus=FIELD&jobPoolUploadId=JPOOL_97DE18F567AD93E9B8ECC7BFC8BEE3D5&jobOrganizationId=org_pink_alpha&jobRoleId=+role+pink+padded+
+PASS G05-3 Capability gate closed; the Job Field stays the field
+PASS G05-4 ANALYZE blocked with the owner's sentence
+PASS G05-5 staged source kept — 1
+PASS G05-6 existing analysis kept (analysisId in the URL, matching state unchanged) — AVAILABLE
+PASS G05-7 SELECT AS JOB offered again; REMOVE gone
+PASS G05-8 removal sent no request
+PASS G05-9a re-selected → Capability: same source staged, ANALYZE admitted
+PASS G05-9 reload after removal: still no job, still gated
+PASS L-1 no job: state NONE, owner sentence, start disabled even with input
+PASS L-2 unknown role: INVALID, start disabled
+PASS L-3 padded role: VALID, named, start enabled
+PASS L-4 the request carries the exact job scope — {"jobPoolUploadId":"JPOOL_97DE18F567AD93E9B8ECC7BFC8BEE3D5","poolRoleId":" role pink padded "}
+PASS analyze requests seen (all intercepted, none executed) — 2
+PASS pageerrors
+25/25 PASS

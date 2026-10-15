@@ -78,7 +78,7 @@ await page.getByTestId("syntx-job-scope-clear").click();
 await page.locator('[data-testid="job-scope-indicator"][data-job-scope-state="NONE"]').waitFor({ timeout: 10000 });
 ok("G05-2 no job scope selected afterwards", await scopeState() === "NONE" && !params().has("jobScopeRoleId") && !params().has("jobScopePoolUploadId"), new URL(page.url()).search);
 ok("G05-3 Capability gate closed; the Job Field stays the field", await gate() === "AWAITING_JOB" && await cap.isDisabled() && await focus() === "FIELD" && params().get("focus") === "FIELD");
-ok("G05-4 ANALYZE blocked with the owner's sentence", (await attr("start-intake-analysis-btn", "data-job-scope-blocked")) === "true" && await page.getByTestId("start-intake-analysis-btn").isDisabled() && (await page.getByTestId("analyze-job-scope-required").textContent()) === "Bitte wählen Sie einen Job aus.");
+ok("G05-4 ANALYZE blocked with the owner's sentence", (await attr("start-intake-analysis-btn", "data-job-scope-blocked")) === "true" && await page.getByTestId("start-intake-analysis-btn").isDisabled() && (await page.getByTestId("analyze-job-scope-required").textContent()) === "Bitte wähle einen Job aus einem Pool aus.");
 const keptAfterRemoval = await stagedCount();
 ok("G05-5 staged source kept", keptAfterRemoval === 1, String(keptAfterRemoval));
 ok("G05-6 existing analysis kept (analysisId in the URL, matching state unchanged)", params().get("analysisId") === state.analysisId && await attr("syntx-state", "data-state") === matchesBefore, `${matchesBefore}`);
@@ -101,7 +101,7 @@ ok("G05-9 reload after removal: still no job, still gated", await scopeState() =
 // Legacy page /career/analyze · the same rule.
 await page.goto(`${BASE}/career/analyze`, { waitUntil: "networkidle" }); await page.waitForTimeout(800);
 await page.getByTestId("doc-content-textarea").fill("Synthetic lab text.");
-ok("L-1 no job: state NONE, owner sentence, start disabled even with input", (await attr("analyze-job-scope", "data-job-scope-state")) === "NONE" && (await page.getByTestId("analyze-job-scope-required").textContent()) === "Bitte wählen Sie einen Job aus." && await page.getByTestId("start-analysis-button").isDisabled());
+ok("L-1 no job: state NONE, owner sentence, start disabled even with input", (await attr("analyze-job-scope", "data-job-scope-state")) === "NONE" && (await page.getByTestId("analyze-job-scope-required").textContent()) === "Bitte wähle einen Job aus einem Pool aus." && await page.getByTestId("start-analysis-button").isDisabled());
 await page.screenshot({ path: `${OUT}/04-legacy-page-blocked-1600.png` });
 await page.goto(`${BASE}/career/analyze?jobScopePoolUploadId=${UP}&jobScopeRoleId=role_does_not_exist`, { waitUntil: "networkidle" });
 await page.locator('[data-testid="analyze-job-scope"][data-job-scope-state="INVALID"]').waitFor({ timeout: 15000 });

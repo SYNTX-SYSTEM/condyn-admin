@@ -1084,7 +1084,7 @@ execution job). Backend and worker enforcement are GELB's (`feature/job-scoped-c
   (UPLOAD_NOT_FOUND · POOL_NOT_ACTIVE · NOT_MAPPED · ROLE_NOT_IN_POOL · READ_FAILED). Formal check: `JPOOL_` + 32 upper-case hex,
   non-empty role id taken verbatim (§13.2.25, owner G-10), exactly two keys.
 - **ANALYZE blocked.** Unless VALID (also while CHECKING), `start-intake-analysis-btn` is disabled and
-  `analyze-job-scope-required` shows the owner's sentence verbatim in every locale: „Bitte wählen Sie einen Job aus.“; RETRY in the
+  `analyze-job-scope-required` shows the owner's sentence verbatim in every locale: „Bitte wähle einen Job aus einem Pool aus.“; RETRY in the
   failure banner is blocked the same way (`retry-job-scope-required`). `handleAnalyze` refuses without a VALID scope, and
   `CareerJobController.submitAnalysis` refuses a payload without a formally valid `jobScope` before any request (state untouched,
   resolves to `ERR_JOB_SCOPE_REQUIRED`). The request body is `{ documents, jobScope }`.
@@ -1156,7 +1156,7 @@ On c146f05. Frontend only (GRÜN); the backend boundaries are GELB's, PINK's sui
 - **G-05, removal.** At the selected role (the place where it was selected), `syntx-job-scope-clear` („× JOB ENTFERNEN“ /
   „× REMOVE JOB“, the existing orientation-action look) stands beside „✓ GEWÄHLTER JOB“; the shell indicator leads there from either
   field. The explicit click removes the scope and both URL parameters; afterwards no job scope is selected, the indicator shows NO
-  JOB SELECTED, ANALYZE (and RETRY) are blocked with „Bitte wählen Sie einen Job aus.“, the Capability gate closes and the Job Field
+  JOB SELECTED, ANALYZE (and RETRY) are blocked with „Bitte wähle einen Job aus einem Pool aus.“, the Capability gate closes and the Job Field
   stays the field (`focus=FIELD`). Staged sources (the dock stays mounted) and existing analyses (`analysisId`, matching) are
   untouched; nothing is sent. Selecting a job again re-opens the gate with the same staged sources.
 - **Every analysis path.** The frontend paths that start an analysis are the SourceDock ANALYZE / RETRY (through
@@ -1175,6 +1175,16 @@ blocked without job and with an unknown role, admitted with the padded role and 
 `capability-gate` walk 22/22; `job-pool-workflow.e2e.test.ts` 10/10 on this commit (isolated temporary worktree, own disposable
 database; `e2e-results.txt`); the `job-scope` walk of cb3d33f assumes an ungated opening in Capability and no longer applies since
 §13.2.24.
+
+#### 13.2.26 The binding sentence: „Bitte wähle einen Job aus einem Pool aus.“ (owner GO 2026-10-15)
+
+On 5d6786b. The owner's GO (relayed by GELB, „Backend Error Contract → GRÜN“) makes „Bitte wähle einen Job aus einem Pool aus.“ the binding message of the job-scope
+boundary, identical in the backend error contract (GELB e643e96, `lib/career/job-scope/errors.ts`) and the frontend. Only
+`JOB_SCOPE_REQUIRED_MESSAGE` changes (it replaces „Bitte wählen Sie einen Job aus.“); every place that shows the sentence reads that constant: the ANALYZE and
+RETRY blocks and the legacy `/career/analyze` page; the error banner shows the backend's message as delivered (now the same
+sentence). Codes, response form and behaviour unchanged. Earlier
+sections and evidence keep the sentence they were recorded with. Proof: tsc 0; 17 files / 147 tests; the job-scope-removal walk
+25/25 with the new sentence checked verbatim (`evidence/job-pool/job-scope-removal/walk-results-2026-10-15-sentence.txt`).
 
 ### 13.3 DOM contract (PINK BR-1 … BR-5; GELB conditions a/b)
 
@@ -1345,3 +1355,4 @@ observation point. Readable labels wrap at word boundaries (`wrapLines`), never 
 | 2026-10-14 | Job scope (owner "GRÜN — SFE GO", on 799f523) | §13.2.23: one selected job (`jobScope`, URL `jobScopePoolUploadId` / `jobScopeRoleId`) for both fields and every depth; `job-scope-indicator` at the shell; `syntx-job-scope-select` at ROLE/REQUIREMENT; ANALYZE and RETRY blocked with „Bitte wählen Sie einen Job aus.“ unless VALID; request `{ documents, jobScope }` (GELB contract); findings 1 (code kept, `httpStatus` apart) and 2 (banner compares the numeric status) fixed. Evidence: `evidence/job-pool/job-scope/` | tsc 0; 29 files / 204 tests incl. governance (new: job scope 10, SSR 11; controller 23); browser walk 33/33; render identity 30/30 |
 | 2026-10-14 | Job Pool first / Capability gate (owner, on cb3d33f) | §13.2.24: the application opens in the Job Field; `activeFieldFocus` is CAPABILITY only for a requested Capability Field with a VALID job scope; selector option and exit disabled (`data-field-gate`), `data-capability-gate` on the root; job kept across both fields. Evidence: `evidence/job-pool/capability-gate/` | tsc 0; 29 files / 205 tests; browser walk 22/22; job-pool-workflow e2e 10/10 (final diff, isolated worktree); syntx-walk e2e 0/3 identical to the base (pre-existing) |
 | 2026-10-14 | Owner decision G-10 A / G-05 / every analysis path (on c146f05) | §13.2.25: role id verbatim (non-empty string); `syntx-job-scope-clear` removes the selected job (gate closes, ANALYZE blocked, sources and analyses kept); legacy `/career/analyze` gated and sending `jobScope`. Evidence: `evidence/job-pool/job-scope-removal/` | tsc 0; 35 files / 262 tests (job-pool.postgres on a fresh disposable DB); browser walk 25/25; capability-gate walk 22/22; job-pool-workflow e2e 10/10 (isolated worktree, `e2e-results.txt`) |
+| 2026-10-15 | Binding sentence (owner GO, on 5d6786b) | §13.2.26: `JOB_SCOPE_REQUIRED_MESSAGE` = „Bitte wähle einen Job aus einem Pool aus.“, identical to the backend contract (GELB e643e96) | tsc 0; 17 files / 147 tests; walk 25/25 |

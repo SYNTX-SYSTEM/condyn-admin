@@ -17,7 +17,7 @@ const upload = (patch: Partial<JobPoolUploadView> = {}): JobPoolUploadView => ({
 
 describe("job scope (SFE invariant, GELB contract)", () => {
   it("keeps the owner's sentence and the two contract codes verbatim", () => {
-    expect(JOB_SCOPE_REQUIRED_MESSAGE).toBe("Bitte wählen Sie einen Job aus.");
+    expect(JOB_SCOPE_REQUIRED_MESSAGE).toBe("Bitte wähle einen Job aus einem Pool aus.");
     expect(JOB_SCOPE_REQUIRED_CODE).toBe("ERR_JOB_SCOPE_REQUIRED");
     expect(JOB_SCOPE_INVALID_CODE).toBe("ERR_JOB_SCOPE_INVALID");
     expect(isJobScopeErrorCode("ERR_JOB_SCOPE_REQUIRED")).toBe(true);
