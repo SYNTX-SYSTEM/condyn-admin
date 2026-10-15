@@ -1,0 +1,74 @@
+/**
+ * PINK independent proof of the pipeline half of the owner's SFE job-scope invariant (GELB 027abf3: the Career-Analysis
+ * pipeline runs only with a job scope issued by the validation of a stored pool). Every stand-in for an issued scope —
+ * missing, the bare selection, an object literal, a spread copy, structuredClone, a JSON copy — is refused with
+ * ERR_JOB_SCOPE_REQUIRED before the provider is asked anything; the issued scope reaches the provider exactly once and
+ * cannot be changed after issue. The provider is a spy: no network, no Gemini.
+ */
+import { describe, expect, it } from "vitest";
+import { executeCareerAnalysisBatchPipeline, executeCareerAnalysisPipeline } from "../../lib/career/pipeline";
+import { JobScopeRequiredError, resolveJobScopeFromStoredPool } from "../../lib/career/job-scope";
+import { TEST_JOB_SCOPE, TEST_STORED_POOL, resolveTestJobScope } from "../support/job-scope";
+
+const documents = [{ docId: "DOC_001", title: "PINK", content: "PINK pipeline gate probe: Software architect with eight years of platform design." }];
+
+function spy() {
+  const calls: unknown[] = [];
+  return { calls, provider: { execute: async (prompt: unknown) => { calls.push(prompt); throw Object.assign(new Error("PINK spy provider reached"), { code: "PINK_PROVIDER_REACHED" }); } } };
+}
+
+async function outcome(run: () => Promise<unknown>): Promise<string> {
+  try { const result: any = await run(); return result?.success === false ? `RESULT_FAILED:${result.issues?.[0]?.code ?? ""}` : "RESULT"; }
+  catch (error: any) { return error instanceof JobScopeRequiredError ? error.code : error?.code ?? error?.message ?? String(error); }
+}
+
+describe("PINK: job-scope gate in the Career-Analysis pipeline (spy provider, no network)", () => {
+  const issued = resolveTestJobScope();
+  const standIns: Array<[string, unknown]> = [
+    ["no options", undefined],
+    ["no jobScope", {}],
+    ["jobScope null", null],
+    ["the bare selection", { ...TEST_JOB_SCOPE }],
+    ["an object literal with the issued fields", Object.fromEntries(Object.entries(issued))],
+    ["a spread copy", { ...issued }],
+    ["structuredClone", structuredClone(issued)],
+    ["a JSON copy", JSON.parse(JSON.stringify(issued))]
+  ];
+
+  for (const [label, scope] of standIns) {
+    it(`single pipeline, ${label}: ERR_JOB_SCOPE_REQUIRED before the provider`, async () => {
+      const { calls, provider } = spy();
+      const options = label === "no options" ? undefined : label === "no jobScope" ? {} : { jobScope: scope };
+      expect(await outcome(() => executeCareerAnalysisPipeline(documents, provider as any, options as any))).toBe("ERR_JOB_SCOPE_REQUIRED");
+      expect(calls).toHaveLength(0);
+    });
+    it(`batch pipeline, ${label}: ERR_JOB_SCOPE_REQUIRED before the provider`, async () => {
+      const { calls, provider } = spy();
+      const options = label === "no options" ? undefined : label === "no jobScope" ? {} : { jobScope: scope };
+      expect(await outcome(() => executeCareerAnalysisBatchPipeline([{ type: "text", title: "PINK", content: documents[0].content }] as any, provider as any, undefined, options as any))).toBe("ERR_JOB_SCOPE_REQUIRED");
+      expect(calls).toHaveLength(0);
+    });
+  }
+
+  it("an issued scope reaches the provider exactly once (single and batch)", async () => {
+    const single = spy();
+    await outcome(() => executeCareerAnalysisPipeline(documents, single.provider as any, { jobScope: issued }));
+    expect(single.calls).toHaveLength(1);
+    const batch = spy();
+    await outcome(() => executeCareerAnalysisBatchPipeline([{ type: "text", title: "PINK", content: documents[0].content }] as any, batch.provider as any, undefined, { jobScope: resolveJobScopeFromStoredPool(TEST_STORED_POOL, TEST_JOB_SCOPE) }));
+    expect(batch.calls).toHaveLength(1);
+  });
+
+  it("an issued scope cannot be changed after issue (deeply frozen)", () => {
+    const scope = resolveTestJobScope() as any;
+    expect(Object.isFrozen(scope)).toBe(true);
+    expect(Object.isFrozen(scope.selection)).toBe(true);
+    expect(() => { "use strict"; scope.selection.poolRoleId = "role_pink_swapped"; }).toThrow(TypeError);
+    expect(scope.selection.poolRoleId).toBe(TEST_JOB_SCOPE.poolRoleId);
+  });
+
+  it("an invalid selection is never issued (role not in the pool, padded variant of a stored id)", () => {
+    expect(() => resolveJobScopeFromStoredPool(TEST_STORED_POOL, { ...TEST_JOB_SCOPE, poolRoleId: "role_pink_does_not_exist" })).toThrow(JobScopeRequiredError);
+    expect(() => resolveJobScopeFromStoredPool(TEST_STORED_POOL, { ...TEST_JOB_SCOPE, poolRoleId: ` ${TEST_JOB_SCOPE.poolRoleId} ` })).toThrow(JobScopeRequiredError);
+  });
+});

@@ -1,0 +1,173 @@
+/**
+ * PINK independent proof of the worker half of the owner's SFE job-scope invariant ("no Gemini call without a valid,
+ * selected job scope"; GELB's contract: the worker re-checks every claimed job before any processing and ends a job
+ * without a valid scope terminally with ERR_JOB_SCOPE_REQUIRED / ERR_JOB_SCOPE_INVALID and the owner's sentence).
+ *
+ * Jobs are written straight into career_analysis_jobs, past the analyze route — as a job enqueued before the route gate
+ * existed, or by any other writer, would be. The real CareerJobWorker claims them through the real JobRepository on the
+ * verified disposable database; the processor behind the gate is a spy that stands for the whole Career processor
+ * (source preparation, capability sweep, every Gemini call). Reaching the spy fails the job with PINK_INNER_REACHED, so
+ * the database row alone tells whether the gate let the job through. No provider exists in this test.
+ *
+ * A static check binds the production worker script: the processor handed to CareerJobWorker is the gated one.
+ */
+import { readFileSync } from "node:fs";
+import { resolve } from "node:path";
+import { sql } from "drizzle-orm";
+import { drizzle } from "drizzle-orm/postgres-js";
+import { afterAll, beforeAll, describe, expect, it } from "vitest";
+import { db, initDbSchema } from "../../lib/career/db/client";
+import { createJobPoolApplication } from "../../lib/career/job-pool/application";
+import { ensureJobPoolPersistenceRegistration } from "../../lib/career/job-pool/local-composition";
+import { JOB_SCOPE_REQUIRED_MESSAGE, assertIssuedJobScope, requireActiveJobScope, requireValidJobScope } from "../../lib/career/job-scope";
+import { createLocalJobScopeResolver } from "../../lib/career/job-scope/local-resolver";
+import { createJob, type JobRecord } from "../../lib/career/orchestration/job";
+import { JobRepository } from "../../lib/career/orchestration/job-repository";
+import { CareerJobWorker } from "../../lib/career/orchestration/worker";
+import { clonePool, draftPool, validationPool } from "./fixtures/pool";
+
+const ROLE_ID = "role_pink_alpha_architect";
+const UNKNOWN_POOL = `JPOOL_${"0".repeat(32)}`;
+const documents = [{ type: "text", content: "PINK worker gate probe: Software architect with eight years of platform design." }];
+const delay = (ms: number) => new Promise<void>((done) => setTimeout(done, ms));
+
+let uploadId = "";
+let draftId = "";
+let retryPoolId = "";
+
+describe("PINK: job-scope gate in the Career worker (PostgreSQL, real CareerJobWorker, no provider)", () => {
+  beforeAll(async () => {
+    await initDbSchema();
+    if (await ensureJobPoolPersistenceRegistration() !== "REGISTERED") throw new Error("job pool persistence not registered on the disposable database");
+    const application = createJobPoolApplication({ database: drizzle(db.$client), analyses: { load: async () => null } });
+    uploadId = (await application.upload(JSON.stringify(validationPool), "PINK_WORKER_GATE")).view.jobPoolUploadId;
+    draftId = (await application.upload(JSON.stringify(draftPool()), "PINK_WORKER_GATE")).view.jobPoolUploadId;
+    // A pool of this suite's own that is archived between two attempts of one job (retry re-validation).
+    const retryPool = clonePool() as any;
+    retryPool.pool.id = "pool_pink_retry_probe"; retryPool.pool.name = "PINK retry probe";
+    for (const list of [retryPool.organizations, retryPool.roles]) for (const item of list) item.pool_id = retryPool.pool.id;
+    retryPoolId = (await application.upload(JSON.stringify(retryPool), "PINK_WORKER_GATE")).view.jobPoolUploadId;
+    await db.execute(sql`DELETE FROM career_analysis_jobs`);
+  }, 120_000);
+  afterAll(async () => { await db.execute(sql`DELETE FROM career_analysis_jobs`); });
+
+  it("the production worker script hands CareerJobWorker the gated processor", () => {
+    const source = readFileSync(resolve(process.cwd(), "scripts/run-career-worker.ts"), "utf8");
+    expect(source).toMatch(/const processJob = requireValidJobScope\(createLocalJobScopeResolver\(\), createCareerAnalysisJobProcessor\(/);
+    expect(source).toMatch(/new CareerJobWorker\(\s*workerId,\s*jobRepo,\s*processJob\b/);
+    // No other processor or worker is constructed in that script.
+    expect(source.match(/createCareerAnalysisJobProcessor\(/g)?.length).toBe(1);
+    expect(source.match(/new CareerJobWorker\(/g)?.length).toBe(1);
+    // Every Gemini provider of the worker asks for the active scope before it executes (GELB 027abf3).
+    expect(source).toMatch(/createDiscoveryProvider: \(model\) => \{\s*const provider = new GeminiCapabilityDiscoveryProvider\(\{ model \}\);\s*return \{[^}]*execute: \(request\) => \{ requireActiveJobScope\(\); return provider\.execute\(request\); \} \};/);
+    expect(source).toMatch(/createConvergenceProvider: \(model\) => \{\s*const provider = new GeminiCapabilityConvergenceProvider\(\{ model \}\);\s*return \{[^}]*execute: \(request\) => \{ requireActiveJobScope\(\); return provider\.execute\(request\); \} \};/);
+    expect(source).toMatch(/executeCareerAnalysisPipeline\(documents, provider, \{\s*jobScope: requireActiveJobScope\(\),/);
+    expect(source.match(/new GeminiCapability(Discovery|Convergence)Provider\(/g)?.length).toBe(2);
+    expect(source.match(/executeCareerAnalysis(Batch)?Pipeline\(/g)?.length).toBe(1);
+  });
+
+  it("every enqueued job without a valid scope ends terminally before the processor, with no progress reported; a valid one reaches it", async () => {
+    const repo = new JobRepository(db as any);
+    const cases: Array<{ label: string; jobScope: unknown; expected: string }> = [
+      { label: "no jobScope", jobScope: undefined, expected: "ERR_JOB_SCOPE_REQUIRED" },
+      { label: "jobScope null", jobScope: null, expected: "ERR_JOB_SCOPE_REQUIRED" },
+      { label: "malformed upload id", jobScope: { jobPoolUploadId: "not-a-pool", poolRoleId: ROLE_ID }, expected: "ERR_JOB_SCOPE_REQUIRED" },
+      { label: "extra key", jobScope: { jobPoolUploadId: "", poolRoleId: ROLE_ID, analysisId: "ANL_X" }, expected: "ERR_JOB_SCOPE_REQUIRED" },
+      { label: "unknown pool", jobScope: { jobPoolUploadId: UNKNOWN_POOL, poolRoleId: ROLE_ID }, expected: "ERR_JOB_SCOPE_INVALID" },
+      { label: "DRAFT pool", jobScope: { jobPoolUploadId: "<draft>", poolRoleId: ROLE_ID }, expected: "ERR_JOB_SCOPE_INVALID" },
+      { label: "role not in the pool", jobScope: { jobPoolUploadId: "<upload>", poolRoleId: "role_pink_does_not_exist" }, expected: "ERR_JOB_SCOPE_INVALID" },
+      { label: "valid scope", jobScope: { jobPoolUploadId: "<upload>", poolRoleId: ROLE_ID }, expected: "PINK_INNER_REACHED" }
+    ];
+    const jobs: Array<{ label: string; expected: string; job: JobRecord }> = [];
+    for (const [index, entry] of cases.entries()) {
+      const scope = entry.jobScope && typeof entry.jobScope === "object"
+        ? Object.fromEntries(Object.entries(entry.jobScope as Record<string, unknown>).map(([key, value]) => [key, value === "<upload>" ? uploadId : value === "<draft>" ? draftId : value === "" ? uploadId : value]))
+        : entry.jobScope;
+      const sourceData = scope === undefined ? { documents } : { documents, jobScope: scope };
+      const job = createJob("CAREER_ANALYSIS", { sourceType: "BATCH", sourceData } as any, `PINK_WORKER_GATE_${index}`);
+      await repo.enqueueJob(job);
+      jobs.push({ label: entry.label, expected: entry.expected, job });
+    }
+
+    const reached: string[] = [];
+    const progress: string[] = [];
+    const activeSelections: unknown[] = [];
+    const handedScopes: unknown[] = [];
+    const inner = async (job: JobRecord, report: (operation: any) => Promise<void>, handed?: unknown) => {
+      reached.push(job.jobId);
+      // GELB e643e96: the gate hands the scope it issued for this attempt to the processor (third argument), which forwards it
+      // to capabilityProposalExecutor.execute; it must be an issued scope of exactly this job.
+      try { assertIssuedJobScope(handed); handedScopes.push({ ...(handed as any).selection }); } catch { handedScopes.push("NOT_ISSUED"); }
+      // Inside the gate the validated scope of exactly this job is active (what the Gemini providers ask for).
+      activeSelections.push({ ...requireActiveJobScope().selection });
+      await report("SOURCE_PREPARATION");
+      const error = new Error("the processor behind the gate was reached") as Error & { code: string };
+      error.name = "TERMINAL_ERROR";
+      error.code = "PINK_INNER_REACHED";
+      throw error;
+    };
+    const gated = requireValidJobScope(createLocalJobScopeResolver(), inner as any);
+    const observed = async (job: JobRecord, report: (operation: any) => Promise<void>) => gated(job, async (operation) => { progress.push(`${job.jobId}:${operation}`); await report(operation); });
+    const worker = new CareerJobWorker("PINK_WORKER_GATE", repo, observed as any, 50, 30_000);
+    worker.start();
+    for (let attempt = 0; attempt < 400; attempt += 1) {
+      const open = await db.execute(sql`SELECT count(*)::int AS n FROM career_analysis_jobs WHERE status IN ('PENDING', 'RUNNING')`) as unknown as Array<{ n: number }>;
+      if (Number(open[0].n) === 0) break;
+      await delay(100);
+    }
+    worker.stop();
+
+    const rows = new Map<string, JobRecord | null>();
+    for (const entry of jobs) rows.set(entry.job.jobId, await repo.getJob(entry.job.jobId));
+    const table = jobs.map((entry) => { const row = rows.get(entry.job.jobId); return { label: entry.label, status: row?.status, errorCode: row?.errorCode, errorSummary: row?.errorSummary, attemptCount: row?.attemptCount, currentOperation: row?.currentOperation, reached: reached.includes(entry.job.jobId) }; });
+    for (const [index, entry] of jobs.entries()) {
+      const row = table[index];
+      expect(row.status, `${entry.label}: terminal`).toBe("FAILED");
+      expect(row.errorCode, `${entry.label}: code`).toBe(entry.expected);
+      expect(row.attemptCount, `${entry.label}: one attempt, never retried`).toBe(1);
+      if (entry.expected === "PINK_INNER_REACHED") {
+        expect(row.reached, `${entry.label}: the processor is reached`).toBe(true);
+      } else {
+        expect(row.reached, `${entry.label}: the processor is never reached`).toBe(false);
+        expect(row.errorSummary, `${entry.label}: the owner's sentence`).toBe(JOB_SCOPE_REQUIRED_MESSAGE);
+        expect(row.currentOperation, `${entry.label}: no progress reported`).toBeNull();
+        expect(progress.filter((item) => item.startsWith(`${entry.job.jobId}:`)), `${entry.label}: no operation reported`).toEqual([]);
+      }
+    }
+    expect(reached.length, "exactly the valid job reaches the processor").toBe(1);
+    expect(activeSelections, "the active scope inside the gate is the job's own").toEqual([{ jobPoolUploadId: uploadId, poolRoleId: ROLE_ID }]);
+    expect(handedScopes, "the processor receives the issued scope of this job as its third argument").toEqual([{ jobPoolUploadId: uploadId, poolRoleId: ROLE_ID }]);
+    expect(JOB_SCOPE_REQUIRED_MESSAGE, "the owner's sentence (owner GO 2026-10-15)").toBe("Bitte wähle einen Job aus einem Pool aus.");
+    let outside: any = null;
+    try { requireActiveJobScope(); } catch (error) { outside = error; }
+    expect({ code: outside?.code, message: outside?.message }, "outside a claimed job no scope is active").toEqual({ code: "ERR_JOB_SCOPE_REQUIRED", message: JOB_SCOPE_REQUIRED_MESSAGE });
+  }, 120_000);
+
+  it("a retried job is validated again on every claim: its pool archived after attempt 1 ends attempt 2 terminally before the processor", async () => {
+    await db.execute(sql`DELETE FROM career_analysis_jobs`);
+    const repo = new JobRepository(db as any);
+    const job = createJob("CAREER_ANALYSIS", { sourceType: "BATCH", sourceData: { documents, jobScope: { jobPoolUploadId: retryPoolId, poolRoleId: ROLE_ID } } } as any, "PINK_WORKER_GATE_RETRY");
+    await repo.enqueueJob(job);
+    let attempts = 0;
+    const inner = async () => {
+      attempts += 1;
+      // The pool is archived while attempt 1 runs (disposable database, pool owned by this suite); attempt 1 then fails retryably.
+      await db.execute(sql`UPDATE career_job_pool_uploads SET pool_status = 'ARCHIVED' WHERE job_pool_upload_id = ${retryPoolId}`);
+      throw Object.assign(new Error("PINK retryable failure after archiving the pool"), { code: "PINK_RETRYABLE" });
+    };
+    const worker = new CareerJobWorker("PINK_WORKER_GATE_RETRY", repo, requireValidJobScope(createLocalJobScopeResolver(), inner as any), 50, 30_000);
+    worker.start();
+    for (let attempt = 0; attempt < 400; attempt += 1) {
+      const open = await db.execute(sql`SELECT count(*)::int AS n FROM career_analysis_jobs WHERE status IN ('PENDING', 'RUNNING')`) as unknown as Array<{ n: number }>;
+      if (Number(open[0].n) === 0) break;
+      await delay(100);
+    }
+    worker.stop();
+    const row = await repo.getJob(job.jobId);
+    expect(attempts, "the processor ran only in attempt 1").toBe(1);
+    expect(row?.status).toBe("FAILED");
+    expect(row?.attemptCount, "attempt 2 was claimed and refused").toBe(2);
+    expect(row?.errorCode).toBe("ERR_JOB_SCOPE_INVALID");
+    expect(row?.errorSummary).toBe(JOB_SCOPE_REQUIRED_MESSAGE);
+  }, 120_000);
+});

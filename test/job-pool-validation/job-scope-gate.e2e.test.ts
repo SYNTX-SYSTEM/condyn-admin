@@ -45,7 +45,9 @@ const EVIDENCE_DIR = resolve(process.cwd(), `docs/architecture/decision-fields/e
 const ANALYSIS_ID = "ANL_PINK_JOB_SCOPE_GATE";
 const ROLE_ID = "role_pink_alpha_architect";
 const OTHER_ROLE_ID = "role_pink_beta_platform";
-const MESSAGE = "Bitte wählen Sie einen Job aus.";
+// The owner's sentence (owner GO 2026-10-15, GELB e643e96; before: "Bitte wählen Sie einen Job aus."). One sentence for the
+// backend (G-06) and the interface (G-02/03/05/11): a surface still showing the earlier sentence is a deviation.
+const MESSAGE = "Bitte wähle einen Job aus einem Pool aus.";
 const UNKNOWN_POOL = `JPOOL_${"0".repeat(32)}`;
 const SPACED_ROLE_ID = "role pink beta platform";
 const PADDED_ROLE_ID = "  role pink padded  ";

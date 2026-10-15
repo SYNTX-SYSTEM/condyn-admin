@@ -1,0 +1,140 @@
+/**
+ * PINK independent proof of GELB e643e96 (owner GO 2026-10-15): the issued job scope sets the investigation space of
+ * Capability Discovery and is never evidence. Spy providers only: no network, no Gemini. Angles PINK adds to GELB's suite:
+ * every single scope line is absent from the source corpus and from Convergence and the legacy analysis; no scope line
+ * quoted under any document id verifies, while a sentence that is also in the source does (the source alone decides);
+ * identities separate pools, roles and verbatim role ids and are deterministic across re-issue; every stand-in for an
+ * issued scope (JSON copy, frozen literal, bare selection, a scope of another pool shape) is refused before the provider.
+ */
+import { describe, expect, it } from "vitest";
+import {
+  InMemoryCapabilityCoreRepository, buildCapabilityDiscoveryPrompt, createCapabilityProposalRuntime, createSourceDocument,
+  runCapabilityConvergence, runCapabilityDiscovery, type CapabilityDiscoveryProvider, type CapabilityDiscoveryProviderRequest, type CapabilityDiscoveryRun
+} from "../../lib/career/capability-core";
+import { createCareerCapabilityProposalExecutor } from "../../lib/career/orchestration/capability-proposal-executor";
+import { executeCareerAnalysisPipeline } from "../../lib/career/pipeline";
+import { JOB_SCOPE_REQUIRED_MESSAGE, renderInvestigationScope, resolveJobScopeFromStoredPool, type ResolvedJobScope } from "../../lib/career/job-scope";
+import { TEST_JOB_SCOPE, TEST_JOB_SCOPE_B, TEST_STORED_POOL, resolveTestJobScope } from "../support/job-scope";
+
+const SHARED = "Designed the requirement intake for the platform team.";
+const SOURCE = `Led the migration of the dispatch platform to event-driven services. ${SHARED}`;
+const cv = createSourceDocument({ docId: "CV", title: "cv.synthetic.pdf", rawContent: SOURCE });
+const kernel = { kernelVersion: "discovery-v1", templateId: "T", versionId: "V", checksum: "C", plainTextContent: "PINK_DISCOVERY_KERNEL" };
+const convergenceKernel = { kernelVersion: "convergence-v1", templateId: "T", versionId: "V", checksum: "CC", plainTextContent: "PINK_CONVERGENCE_KERNEL" };
+const config = { kernelVersion: "discovery-v1", schemaVersion: "discovery-schema-v1" };
+const convergenceConfig = { kernelVersion: "convergence-v1", schemaVersion: "convergence-schema-v1", algorithmVersion: "algorithm-v1" };
+const audit = (count: number) => ({ source_documents_examined: 1, capability_count: count, atomic_capability_count: count, composite_capability_count: 0, attribution_pass_completed: true, target_state_ownership_pass_completed: true, atomic_extraction_pass_completed: true, method_capability_pass_completed: true, composite_reconstruction_pass_completed: true, global_convergence_pass_completed: true, inventory_reconciliation_pass_completed: true, final_reconciliation_produced_new_capabilities: false, unresolved_target_operations: 0, segments_classified_as_external_source_content: 0, segments_classified_as_target_subject_operation: 0, segments_classified_as_target_subject_designed_target_state: 0, segments_classified_as_target_organization_capability: 0, segments_excluded_due_to_attribution_ambiguity: 0 });
+const capability = (name: string, sourceDocument: string, quote: string) => ({ canonical_name: name, capability_scope: "ATOMIC" as const, structural_definition: name, primary_domain: null, demonstrated_capability_level: null, model_confidence: 0.9, evidence_mode: "EXPLICIT" as const, evidence: [{ source_document: sourceDocument, location: "body", exact_quote: quote }] });
+
+function spyProvider(capabilities: () => ReturnType<typeof capability>[]) {
+  const requests: CapabilityDiscoveryProviderRequest[] = [];
+  const provider: CapabilityDiscoveryProvider = { providerName: "pink-spy", model: "m", execute: async (request) => { requests.push(request); const list = capabilities(); return { kernelOutput: { kernel_version: "discovery-v1", capabilities: list, coverage_audit: audit(list.length) } }; } };
+  return { provider, requests };
+}
+const discover = (provider: CapabilityDiscoveryProvider, repository: InMemoryCapabilityCoreRepository, scope?: ResolvedJobScope) =>
+  runCapabilityDiscovery([cv], config, { kernelResolver: { resolve: async () => kernel }, provider, repository, ...(scope ? { investigationScope: renderInvestigationScope(scope) } : {}), now: () => "2026-10-15T00:00:00.000Z" });
+
+/** Every content line of the scope (role, description, requirements …) without its "KEY: " prefix, plus the full lines. */
+function scopeFragments(scope: ResolvedJobScope): string[] {
+  const text = renderInvestigationScope(scope).text;
+  const fragments = new Set<string>();
+  for (const line of text.split("\n")) { fragments.add(line); const at = line.indexOf(": "); if (at > 0 && line.length - at > 12) fragments.add(line.slice(at + 2)); }
+  return [...fragments].filter((fragment) => fragment.trim().length >= 12);
+}
+
+/** A second stored pool: same content, other upload id (and so other canonical identity in the scope). */
+function otherUpload(): typeof TEST_STORED_POOL {
+  const other = structuredClone(TEST_STORED_POOL) as any;
+  other.jobPoolUploadId = `JPOOL_${"A".repeat(32)}`;
+  return other;
+}
+
+describe("PINK: job scope in Capability Discovery (GELB e643e96, spy providers)", () => {
+  const scopeA = resolveTestJobScope();
+  const scopeB = resolveTestJobScope(TEST_JOB_SCOPE_B);
+  const fragments = scopeFragments(scopeA);
+
+  it("the full rendered scope is in the system prompt; no scope fragment is in the source corpus; the corpus is byte-identical", () => {
+    expect(fragments.length).toBeGreaterThan(5);
+    const unscoped = buildCapabilityDiscoveryPrompt([cv], kernel);
+    const scoped = buildCapabilityDiscoveryPrompt([cv], kernel, renderInvestigationScope(scopeA));
+    expect(scoped.userPrompt).toBe(unscoped.userPrompt);
+    expect(scoped.systemPrompt).toContain(renderInvestigationScope(scopeA).text);
+    expect(scoped.systemPrompt.indexOf("<INVESTIGATION_SCOPE>")).toBeGreaterThan(scoped.systemPrompt.indexOf("Investigation scope contract:"));
+    for (const fragment of fragments) expect(scoped.userPrompt.includes(fragment), `in the corpus: ${fragment}`).toBe(false);
+  });
+
+  it("no scope fragment quoted under any document id verifies; a sentence that is in the source verifies (the source decides)", async () => {
+    const ids = ["CV", "INVESTIGATION_SCOPE", "SCOPE", scopeA.selection.jobPoolUploadId, scopeA.poolId];
+    const { provider } = spyProvider(() => [
+      ...fragments.flatMap((fragment, index) => ids.map((id) => capability(`scope ${index} @ ${id}`, id, fragment))),
+      capability("source sentence", "CV", SHARED)
+    ]);
+    const result = await discover(provider, new InMemoryCapabilityCoreRepository(), scopeA);
+    const candidates = ((result as { run: CapabilityDiscoveryRun }).run.payload as { candidates: Array<{ proposedCanonicalName: string; evidenceClaims: Array<{ verification: { status: string } }> }> }).candidates;
+    const verified = candidates.filter((item) => item.evidenceClaims.some((claim) => claim.verification.status === "VERIFIED")).map((item) => item.proposedCanonicalName);
+    expect(verified).toEqual(["source sentence"]);
+    expect(candidates.length).toBe(fragments.length * ids.length + 1);
+  });
+
+  it("identity: other role, other pool upload → other RUN_ and CONV_; the same scope re-issued → reused, provider asked once", async () => {
+    const repository = new InMemoryCapabilityCoreRepository();
+    const { provider, requests } = spyProvider(() => [capability("Event-driven migration", "CV", "Led the migration of the dispatch platform to event-driven services.")]);
+    const scopeOtherPool = resolveJobScopeFromStoredPool(otherUpload(), { ...TEST_JOB_SCOPE, jobPoolUploadId: `JPOOL_${"A".repeat(32)}` });
+    const a = await discover(provider, repository, scopeA);
+    const b = await discover(provider, repository, scopeB);
+    const c = await discover(provider, repository, scopeOtherPool);
+    const again = await discover(provider, repository, resolveTestJobScope());
+    expect([a.kind, b.kind, c.kind, again.kind]).toEqual(["DISCOVERY_COMPLETED", "DISCOVERY_COMPLETED", "DISCOVERY_COMPLETED", "DISCOVERY_RUN_REUSED"]);
+    expect(requests).toHaveLength(3);
+    const runs = [a, b, c].map((item) => (item as { run: CapabilityDiscoveryRun }).run);
+    expect(new Set(runs.map((run) => run.runId)).size).toBe(3);
+    expect((again as { run: CapabilityDiscoveryRun }).run.runId).toBe(runs[0].runId);
+    const convergenceProvider = { providerName: "pink-spy", model: "m", execute: async (request: { userPrompt: string }) => {
+      const ids = (JSON.parse(request.userPrompt.slice(request.userPrompt.indexOf("["))) as Array<{ candidate_id: string }>).map((item) => item.candidate_id);
+      return { convergenceOutput: { convergence_version: "convergence-v1", groups: [{ group_key: "g", member_candidate_ids: ids, canonical_name: "Event-driven migration", capability_scope: "ATOMIC" as const, structural_definition: "d", primary_domain: null }], relations: [], reconciliation_audit: { input_candidate_count: ids.length, grouped_candidate_count: ids.length, group_count: 1, same_capability_merge_count: ids.length - 1, unresolved_relation_count: 0, reconciliation_pass_completed: true } } };
+    } };
+    const convergenceRequests: string[] = [];
+    const recording = { ...convergenceProvider, execute: async (request: { userPrompt: string; systemPrompt?: string }) => { convergenceRequests.push(JSON.stringify(request)); return convergenceProvider.execute(request); } };
+    const conv = [] as string[];
+    for (const run of runs) conv.push((await runCapabilityConvergence((await repository.getRunById(run.runId))!, convergenceConfig, { kernelResolver: { resolve: async () => convergenceKernel }, provider: recording, repository })).run.convergenceRunId);
+    expect(new Set(conv).size).toBe(3);
+    for (const fragment of fragments) expect(convergenceRequests.some((request) => request.includes(fragment)), `in Convergence: ${fragment}`).toBe(false);
+  });
+
+  it("a blank scope is refused before the provider", async () => {
+    const { provider, requests } = spyProvider(() => []);
+    await expect(runCapabilityDiscovery([cv], config, { kernelResolver: { resolve: async () => kernel }, provider, repository: new InMemoryCapabilityCoreRepository(), investigationScope: { text: " \n " } })).rejects.toThrow("ERR_CAPABILITY_DISCOVERY_SCOPE_INVALID");
+    expect(requests).toHaveLength(0);
+  });
+
+  it("the executor refuses every stand-in for an issued scope before the provider, with the owner's sentence", async () => {
+    const { provider, requests } = spyProvider(() => []);
+    const executor = await createCareerCapabilityProposalExecutor({
+      environment: { GEMINI_MODEL: "m", PROMPT_ENCRYPTION_KEY: "unused" }, defaultGeminiModel: "m",
+      promptRepository: {} as never, capabilityRepository: new InMemoryCapabilityCoreRepository(),
+      bootstrapCapabilityProposalKernels: async () => undefined, createActivePromptResolver: () => ({}) as never,
+      createDiscoveryKernelResolver: () => ({ resolve: async () => kernel }), createConvergenceKernelResolver: () => ({ resolve: async () => convergenceKernel }),
+      createDiscoveryProvider: () => provider,
+      createConvergenceProvider: () => ({ providerName: "pink-spy", model: "m", execute: async () => { throw new Error("PINK_STOP"); } }),
+      runDiscovery: runCapabilityDiscovery, runConvergence: runCapabilityConvergence, createProposalRuntime: createCapabilityProposalRuntime
+    });
+    const documents = [{ docId: "CV", title: "cv.synthetic.pdf", content: SOURCE }];
+    const standIns: unknown[] = [JSON.parse(JSON.stringify(scopeA)), Object.freeze({ ...scopeA }), { ...TEST_JOB_SCOPE }, { selection: scopeA.selection }, renderInvestigationScope(scopeA)];
+    for (const standIn of standIns) await expect(executor.execute(documents, async () => undefined, standIn as never)).rejects.toThrow(JOB_SCOPE_REQUIRED_MESSAGE);
+    expect(requests).toHaveLength(0);
+  });
+
+  it("the legacy analysis prompt does not carry the scope: scope A and scope B give byte-identical provider requests", async () => {
+    const seen: string[] = [];
+    const provider = { execute: async (prompt: unknown) => { seen.push(JSON.stringify(prompt)); throw new Error("PINK_STOP"); } };
+    const errors: string[] = [];
+    for (const scope of [scopeA, scopeB]) await executeCareerAnalysisPipeline([{ docId: "DOC_001", title: "cv", content: SOURCE }], provider as any, { jobScope: scope }).catch((error) => { errors.push(String(error?.message ?? error)); });
+    expect(errors.every((message) => message === "PINK_STOP"), errors.join(" | ")).toBe(true);
+    expect(seen).toHaveLength(2);
+    expect(seen[0]).toBe(seen[1]);
+    for (const fragment of fragments) expect(seen[0].includes(fragment), `in the legacy prompt: ${fragment}`).toBe(false);
+  });
+
+  it("the owner's sentence (owner GO 2026-10-15)", () => { expect(JOB_SCOPE_REQUIRED_MESSAGE).toBe("Bitte wähle einen Job aus einem Pool aus."); });
+});

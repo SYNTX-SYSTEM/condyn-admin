@@ -1112,6 +1112,45 @@ Boundary B-PINK-WALK-OWNERSHIP: GELB's diff to `pdf-path.postgres.test.ts` (`job
 §3.28 edit are taken by PINK when GELB's gate is integrated into this branch; until then the three new proofs stay evidence.
 The SYNTX walk on `frontend/job-field` remains 0/3 from `ca11794` (rebinding pending, owner), not from this work.
 
+### 3.30 Job-scope invariant: GELB `e643e96` (job scope in Capability Discovery, new sentence) with GRÜN `5d6786b` verified together (2026-10-15)
+
+Owner GO 2026-10-15 as relayed by GELB (not seen by PINK first-hand). GELB `feature/job-pool-first-boundary` `e643e96` (on
+`38d6eec` = `027abf3` + docs): the worker boundary hands its issued scope to the processor, which forwards it to
+`capabilityProposalExecutor.execute(docs, report, jobScope)`; the executor refuses anything but an issued scope
+(`assertIssuedJobScope`), renders it (`renderInvestigationScope`) and passes it to Discovery, where it extends only the
+system prompt (`INVESTIGATION_SCOPE_CONTRACT` + `<INVESTIGATION_SCOPE>`). The Discovery RUN_ identity includes the scope
+hash only when a scope is set; Convergence re-derives it from the persisted run; a scoped Discovery never short-circuits on a
+scope-free verified snapshot. No DDL, provider, kernel or output-schema change. New sentence: „Bitte wähle einen Job aus einem
+Pool aus.“ (`JOB_SCOPE_REQUIRED_MESSAGE`).
+
+PINK (probe branch = this branch + `5d6786b` + `e643e96`, deleted, never pushed; evidence `evidence/job-scope-gate-5d6786b-e643e96/`):
+- Discovery proof (PINK, `job-scope-discovery.test.ts.txt`, 7, spy providers): every fragment of the rendered scope (each line
+  and each line's content) is absent from the source corpus, which is byte-identical to the unscoped one, and from every
+  Convergence request and the legacy analysis prompt (scope A and B give byte-identical legacy requests); the full scope is in
+  the system prompt after the contract. Every scope fragment quoted under five document ids (`CV`, `INVESTIGATION_SCOPE`,
+  `SCOPE`, the upload id, the pool id) is rejected; a sentence that is also in the source verifies (the source alone decides).
+  Other role, other pool upload → other RUN_ and CONV_; the same scope re-issued → `DISCOVERY_RUN_REUSED`, provider asked once
+  per distinct scope. A blank scope is refused before the provider; the executor refuses a JSON copy, a frozen spread, the bare
+  selection, `{ selection }` and the rendered text with the owner's sentence before the provider.
+- Cross-version identity (PINK probe run unchanged in `027abf3` and `e643e96`, temporary worktrees, removed): the unscoped
+  Discovery prompt, RUN_ id, the whole Discovery run, the provider request and the CONV_ id are byte-identical (4771 bytes,
+  `RUN_4EFD7F363E2757D06C015691`, `CONV_8228CC7136F4C56966EAEA6F`).
+- Worker proof (extended): the processor receives, as third argument, the issued scope of exactly its job.
+- Script proof re-run with the new sentence: 92 runs, 0 network attempts, all 80 runs of the 20 gated scripts exit 3 with it.
+- Gate walk (sentence constant moved to the owner's new sentence for backend and interface — GELB's diff, taken in PINK's own
+  edit): **`5d6786b` + `e643e96`: 70/74.** The backend (G-06) carries the new sentence on all 7 refusals. The 4 deviations are one:
+  GRÜN's interface still shows „Bitte wählen Sie einen Job aus.“ (G-05 staged removal, G-11 NONE / INVALID / DRAFT); GRÜN has not
+  moved `lib/career/job-pool/job-scope.ts` yet. Gating itself holds in all four (disabled, no request).
+- Regression under the sentinel (46 files, incl. GELB's discovery suite, the wiring, retry-bundle, projection and stage-A suites and
+  the seals): 36 green + 8 live skipped; the seals `g2-g3-vertical-proof` (P8) and `hr-decision-loop-p7` failed only on the Next dev
+  lock while PINK's walk ran in the same worktree and are green alone (63 + 7). tsc 0. 0 network attempts.
+
+Observation O-SNAPSHOT-SCOPE (no runtime path today): the Phase-4 snapshot key (`computeSnapshotKey`) carries no scope identity.
+The bound publisher exists but nothing in `lib/`, `app/` or `scripts/` calls `publish`; should Phase-4 publication of scoped runs
+be wired later, two scopes over the same sources would share one snapshot key. Recorded for GELB / the owner.
+
+Open: GRÜN to move the interface sentence (then the walk is re-run); GELB's `pdf-path` diff still waits for integration.
+
 ## 4. Boundaries and findings for coordination
 
 - F-JP-1 (closed in `b782793`): `JOB_POOL_CONNECTION.md` §4 followed the per-role `JOB_POOL_JSON_ROLE` design;
