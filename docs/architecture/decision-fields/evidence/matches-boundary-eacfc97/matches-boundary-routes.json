@@ -1,0 +1,56 @@
+{
+  "tip": "eacfc97",
+  "recordedAt": "2026-10-15T11:59:35.433Z",
+  "http": {
+    "pxj": {
+      "status": 200,
+      "code": null,
+      "reason": null,
+      "identicalToInProcess": true
+    },
+    "otherRole": {
+      "status": 200,
+      "code": null,
+      "reason": null,
+      "identicalToInProcess": true
+    },
+    "person": {
+      "status": 409,
+      "code": "ERR_JOB_POOL_MATCHES_PERSON_ANALYSIS",
+      "reason": null,
+      "identicalToInProcess": true
+    },
+    "undeclared": {
+      "status": 409,
+      "code": "ERR_JOB_POOL_MATCHES_BOUNDARY_UNRESOLVED",
+      "reason": "NOT_DECLARED",
+      "identicalToInProcess": true
+    },
+    "roleDrift": {
+      "status": 409,
+      "code": "ERR_JOB_POOL_MATCHES_BOUNDARY_UNRESOLVED",
+      "reason": "RUN_CONTRADICTS_DECLARATION",
+      "identicalToInProcess": true
+    },
+    "direct": {
+      "status": 409,
+      "code": "ERR_JOB_POOL_MATCHES_BOUNDARY_UNRESOLVED",
+      "reason": "NOT_RECORDED",
+      "identicalToInProcess": true
+    },
+    "unknown": {
+      "status": 404,
+      "code": "ERR_ANALYSIS_NOT_FOUND",
+      "reason": null,
+      "identicalToInProcess": true
+    }
+  },
+  "networkAttempts": {
+    "total": 1,
+    "gemini": 0,
+    "entries": [
+      "fetch https://registry.npmjs.org/-/package/next/dist-tags"
+    ],
+    "sentinel": true
+  }
+}

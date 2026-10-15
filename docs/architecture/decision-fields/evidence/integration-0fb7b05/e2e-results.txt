@@ -1,0 +1,13 @@
+Integration 0fb7b05, real Next dev servers on disposable databases, GEMINI_API_KEY unset; the PINK network sentinel runs in the server process of three-modes and url-boundary (gate walk and workflow without sentinel, no worker, so no provider path)
+job-scope-gate.e2e (JOB_SCOPE_TIP=0fb7b05)        exit 0  74/74 checks ok
+three-modes.e2e plain                            exit 0  91/91 checks ok   network: 1 attempt, blocked (Next dev version check to registry.npmjs.org), 0 Gemini
+three-modes.e2e inspector                        exit 0  97/97 checks ok   network: 1 attempt, blocked (the same version check), 0 Gemini
+url-boundary.e2e                                 exit 0  1/1   network: 1 attempt, blocked (the same version check), 0 Gemini
+GRÜN job-pool-workflow.e2e                       exit 0  10/10
+PINK syntx-walk.e2e (Q-12)                       exit 1  0/3: each test times out at its first wait for data-field-state="AVAILABLE" (lines 333, 909, 1042)
+  cause (code): the walk persists ANL_PINK_SYNTX_WALK directly through PostgresCareerAnalysisRepository (line 284) without a job;
+  its persisted investigation boundary is UNRESOLVED NOT_RECORDED, so the URL boundary (da59568/8718e3a) never compares it and the
+  field never becomes AVAILABLE — the intended rule, not an application defect. The walk was already 0/3 on frontend/job-field since
+  ca11794 (PINK §3.26). The version-two step (line 1042) compares the analysis in another pool version, which the URL boundary
+  forbids by design (OTHER_POOL). Rebinding the walk to the invariants is PINK's task.
+Tracked evidence overwritten by the runs (syntx-walk-9e86d44/Q-00-*.json, GRÜN's docs/career_analysis/evidence/job-pool/) was restored with git checkout.

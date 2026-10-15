@@ -1,0 +1,229 @@
+/**
+ * PINK proof of GELB eacfc97 (owner GO 2026-10-15, separate /matches delta): the legacy pool-wide comparison
+ * GET /api/career/job-pools/{upload}/matches?analysisId= refuses a stored PERSON analysis and an unresolvable investigation
+ * boundary on the server; PERSON_X_JOB stays pool-wide and role-unbound. On PostgreSQL (disposable database, no worker, no
+ * provider). Analyses are seeded by PINK's own fixture (fixtures/mode-analysis.ts), the same 26 cases as url-boundary.postgres.
+ *
+ *   MB-1  differential: for every case × {own pool, another ACTIVE pool} the real matches route answers exactly what the
+ *         persisted boundary (the real URL boundary route) dictates — PERSON → 409 ERR_JOB_POOL_MATCHES_PERSON_ANALYSIS,
+ *         unresolved(reason) → 409 ERR_JOB_POOL_MATCHES_BOUNDARY_UNRESOLVED with the same reason, 404 → 404
+ *         ERR_ANALYSIS_NOT_FOUND, RESOLVED PERSON_X_JOB → byte-identical to the comparison without the boundary
+ *         (the pre-delta composition). Every analysis is also in the analysis repository, so a refusal can only come from the
+ *         boundary.
+ *   MB-2  order: unknown pool first (404 pool), then the boundary, then the pool status (DRAFT); missing analysisId 400
+ *   MB-3  refusals carry identities only: no document content, legacy payload, capability name or quote
+ *   MB-4  read only: every career / capability table byte-identical before and after all matches reads
+ *   MB-5  pool equality is not checked by the server (owner question): measured, not asserted as a deviation
+ */
+import { writeFileSync } from "node:fs";
+import { sql } from "drizzle-orm";
+import { drizzle } from "drizzle-orm/postgres-js";
+import { afterAll, beforeAll, describe, expect, it } from "vitest";
+import { GET as investigationRoute } from "../../app/api/career/analyses/[analysisId]/investigation/route";
+import { GET as matchesRoute } from "../../app/api/career/job-pools/[jobPoolUploadId]/matches/route";
+import { POST as uploadRoute } from "../../app/api/career/job-pools/route";
+import { db, initDbSchema } from "../../lib/career/db/client";
+import { careerAnalyses } from "../../lib/career/db/schema";
+import { createCapabilityProposalProjectionReader, PostgresCapabilityCoreRepository, PostgresCapabilityProposalProjectionReferenceRepository } from "../../lib/career/capability-core";
+import { createJobPoolApplication } from "../../lib/career/job-pool/application";
+import { handleJobPoolMatchesRequest } from "../../lib/career/job-pool/http";
+import { ensureJobPoolPersistenceRegistration } from "../../lib/career/job-pool/local-composition";
+import { createJob } from "../../lib/career/orchestration/job";
+import { JobRepository } from "../../lib/career/orchestration/job-repository";
+import { getCareerAnalysisRepository } from "../../lib/career/repositories";
+import { TEST_JOB_SCOPE, TEST_JOB_SCOPE_B, resolveStoredTestJobScope, uploadEngineeringJobScope } from "../support/job-scope";
+import { fixtureCapabilities, verifiedAnalysis } from "../career/job-pool/fixtures";
+import { clonePool } from "./fixtures/pool";
+import { LEGACY_MARKER, PDF_CONTENT, SOURCE, created, seed } from "./fixtures/mode-analysis";
+
+const OUT = process.env.PINK_MATCHES_BOUNDARY_OUT ?? "";
+const OTHER_POOL_ID = `JPOOL_${"A".repeat(32)}`;
+const FORBIDDEN = [SOURCE.slice(0, 40), PDF_CONTENT, LEGACY_MARKER, "Frontend Architecture", "Dispatch platform migration", "Led the migration"];
+const jobs = new JobRepository(db);
+const text = async (response: Response) => ({ status: response.status, text: await response.text() });
+const investigation = async (analysisId: string) => text(await investigationRoute(new Request(`http://local/api/career/analyses/${encodeURIComponent(analysisId)}/investigation`), { params: Promise.resolve({ analysisId }) }));
+const matchesUrl = (pool: string, analysisId: string | null) => `http://local/api/career/job-pools/${pool}/matches${analysisId === null ? "" : `?analysisId=${encodeURIComponent(analysisId)}`}`;
+const matches = async (pool: string, analysisId: string | null) => text(await matchesRoute(new Request(matchesUrl(pool, analysisId)), { params: Promise.resolve({ jobPoolUploadId: pool }) }));
+/** The pre-delta composition: local-composition.ts without the investigation boundary. */
+const withoutBoundary = async () => {
+  if (await ensureJobPoolPersistenceRegistration() !== "REGISTERED") throw new Error("PINK_NOT_REGISTERED");
+  return createJobPoolApplication({
+    database: drizzle(db.$client),
+    analyses: getCareerAnalysisRepository(),
+    capabilitySweep: createCapabilityProposalProjectionReader({ references: new PostgresCapabilityProposalProjectionReferenceRepository(db), capabilityRepository: new PostgresCapabilityCoreRepository(db) })
+  });
+};
+const legacyMatches = async (pool: string, analysisId: string) => text(await handleJobPoolMatchesRequest(pool, new Request(matchesUrl(pool, analysisId)), withoutBoundary));
+async function snapshotTables(): Promise<string> {
+  const tables = (await db.execute(sql`select table_name from information_schema.tables where table_schema = 'public' and (table_name like 'career_%' or table_name like 'capability_%' or table_name like 'job_pool%') order by table_name`)) as unknown as Array<{ table_name: string }>;
+  const parts: string[] = [];
+  for (const { table_name } of tables) {
+    const rows = (await db.execute(sql.raw(`select md5(coalesce(string_agg(t::text, '|' order by t::text), '')) as h, count(*)::int as n from "${table_name}" t`))) as unknown as Array<{ h: string; n: number }>;
+    parts.push(`${table_name}:${rows[0].n}:${rows[0].h}`);
+  }
+  return parts.join("\n");
+}
+async function plainJob(sourceData: Record<string, unknown>, status: string, analysisId: string | null) {
+  const job = createJob("CAREER_ANALYSIS", { sourceType: "BATCH", sourceData: { documents: [{ type: "text", content: `${SOURCE} plain` }], ...sourceData } } as never);
+  await jobs.enqueueJob(job); created.push(job.jobId);
+  await db.execute(sql`UPDATE career_analysis_jobs SET status = ${status}, result_analysis_id = ${analysisId} WHERE job_id = ${job.jobId}`);
+  return job.jobId;
+}
+const insertAnalysis = (analysisId: string) => db.insert(careerAnalyses).values({ analysisId, createdAt: "2026-10-15T10:00:00.000Z", validationState: "VERIFIED", payload: { legacy: LEGACY_MARKER } } as never);
+const errorOf = (answer: { text: string }) => { try { return JSON.parse(answer.text).error ?? null; } catch { return null; } };
+
+describe("PINK: /matches refuses PERSON and unresolvable boundaries (GELB eacfc97)", () => {
+  const cases: Record<string, string> = {};
+  const rows: Array<Record<string, unknown>> = [];
+  let ownPool = ""; let otherActivePool = ""; let draftId = "";
+  let before = "";
+
+  beforeAll(async () => {
+    await initDbSchema(); await uploadEngineeringJobScope();
+    ownPool = TEST_JOB_SCOPE.jobPoolUploadId;
+    const upload = async (body: unknown) => {
+      const response = await uploadRoute(new Request("http://local/api/career/job-pools", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(body) }));
+      const view = await response.json();
+      if (![200, 201].includes(response.status) || !/^JPOOL_[0-9A-F]{32}$/.test(view.jobPoolUploadId ?? "")) throw new Error(`PINK_POOL_UPLOAD_FAILED ${response.status} ${JSON.stringify(view).slice(0, 300)}`);
+      return view.jobPoolUploadId as string;
+    };
+    // PINK's own pools for this proof (own pool id, every item re-pointed): the validation pool belongs to http-canonical-inverse,
+    // which expects its first upload to be 201 and exactly one ACTIVE upload of its pool id in a shared database.
+    const ownPoolOf = (status: string) => {
+      const pool = clonePool(); const from = pool.pool.id; const to = "pool_pink_matches_boundary_v1";
+      pool.pool.id = to; pool.pool.status = status;
+      for (const item of [...pool.organizations, ...pool.roles, ...pool.requirements]) if (item.pool_id === from) item.pool_id = to;
+      return pool;
+    };
+    otherActivePool = await upload(ownPoolOf("ACTIVE")); draftId = await upload(ownPoolOf("DRAFT"));
+    const scopeA = await resolveStoredTestJobScope(); const scopeB = await resolveStoredTestJobScope(TEST_JOB_SCOPE_B);
+    const stamp = Date.now();
+    const pxj = await seed(`mb-pxj-${stamp}`, { investigation: { mode: "PERSON_X_JOB" }, jobScope: TEST_JOB_SCOPE }, scopeA);
+    const pxjLegacy = await seed(`mb-pxj-legacy-${stamp}`, { jobScope: TEST_JOB_SCOPE }, scopeA);
+    const person = await seed(`mb-person-${stamp}`, { investigation: { mode: "PERSON" } }, null);
+    const personScopedRun = await seed(`mb-person-scoped-${stamp}`, { investigation: { mode: "PERSON" } }, scopeA);
+    const pxjUnscopedRun = await seed(`mb-pxj-unscoped-${stamp}`, { investigation: { mode: "PERSON_X_JOB" }, jobScope: TEST_JOB_SCOPE }, null);
+    const roleDrift = await seed(`mb-role-drift-${stamp}`, { investigation: { mode: "PERSON_X_JOB" }, jobScope: TEST_JOB_SCOPE }, scopeB);
+    const otherRole = await seed(`mb-other-role-${stamp}`, { investigation: { mode: "PERSON_X_JOB" }, jobScope: TEST_JOB_SCOPE_B }, scopeB);
+    const undeclared = await seed(`mb-undeclared-${stamp}`, {}, null);
+    const contradictory = await seed(`mb-contradictory-${stamp}`, { investigation: { mode: "PERSON" }, jobScope: TEST_JOB_SCOPE }, null);
+    const unavailableRole = await seed(`mb-unavail-role-${stamp}`, { investigation: { mode: "PERSON_X_JOB" }, jobScope: { ...TEST_JOB_SCOPE, poolRoleId: "role_pink_not_in_pool" } }, scopeA);
+    const unavailablePool = await seed(`mb-unavail-pool-${stamp}`, { investigation: { mode: "PERSON_X_JOB" }, jobScope: { jobPoolUploadId: OTHER_POOL_ID, poolRoleId: TEST_JOB_SCOPE.poolRoleId } }, scopeA);
+    const jobMode = await seed(`mb-jobmode-${stamp}`, { investigation: { mode: "JOB" } }, null);
+    const badBundle = await seed(`mb-bad-bundle-${stamp}`, { investigation: { mode: "PERSON_X_JOB" }, jobScope: TEST_JOB_SCOPE }, scopeA);
+    await db.execute(sql`UPDATE career_capability_proposal_projection_references SET source_bundle_hash = ${"0".repeat(64)} WHERE analysis_id = ${badBundle.analysisId}`);
+    const badConvergence = await seed(`mb-bad-conv-${stamp}`, { investigation: { mode: "PERSON_X_JOB" }, jobScope: TEST_JOB_SCOPE }, scopeA);
+    const otherConvergence = (await db.execute(sql`SELECT convergence_run_id FROM career_capability_proposal_projection_references WHERE analysis_id = ${pxj.analysisId}`)) as unknown as Array<{ convergence_run_id: string }>;
+    await db.execute(sql`UPDATE career_capability_proposal_projection_references SET convergence_run_id = ${otherConvergence[0].convergence_run_id} WHERE analysis_id = ${badConvergence.analysisId}`);
+    const otherResult = await seed(`mb-other-result-${stamp}`, { investigation: { mode: "PERSON_X_JOB" }, jobScope: TEST_JOB_SCOPE }, scopeA);
+    await db.execute(sql`UPDATE career_analysis_jobs SET result_analysis_id = ${pxj.analysisId} WHERE job_id = ${otherResult.jobId}`);
+    const pxjClean = await seed(`mb-pxj-clean-${stamp}`, { investigation: { mode: "PERSON_X_JOB" }, jobScope: TEST_JOB_SCOPE }, scopeA);
+    const foreignId = `ANL_PINK_MB_FOREIGN_${stamp}`; await insertAnalysis(foreignId);
+    const refSource = (await db.execute(sql`SELECT * FROM career_capability_proposal_projection_references WHERE analysis_id = ${pxjClean.analysisId}`)) as unknown as Array<Record<string, string>>;
+    const foreignJob = await plainJob({ investigation: { mode: "PERSON_X_JOB" }, jobScope: TEST_JOB_SCOPE }, "SUCCEEDED", null);
+    await new PostgresCapabilityProposalProjectionReferenceRepository(db).save({ analysisId: foreignId, jobId: foreignJob, discoveryRunId: refSource[0].discovery_run_id, convergenceRunId: refSource[0].convergence_run_id, candidateSourceBundleId: refSource[0].candidate_source_bundle_id, sourceBundleHash: refSource[0].source_bundle_hash, createdAt: refSource[0].created_at } as never);
+    const direct = `ANL_PINK_MB_DIRECT_${stamp}`; await insertAnalysis(direct);
+    const declarationOnly = async (sourceData: Record<string, unknown>) => { const jobId = await plainJob(sourceData, "SUCCEEDED", null); const id = jobId.replace("JOB_", "ANL_"); await insertAnalysis(id); await db.execute(sql`UPDATE career_analysis_jobs SET result_analysis_id = ${id} WHERE job_id = ${jobId}`); return id; };
+    const snapPxj = await declarationOnly({ investigation: { mode: "PERSON_X_JOB" }, jobScope: TEST_JOB_SCOPE });
+    const snapPerson = await declarationOnly({ investigation: { mode: "PERSON" } });
+    const snapMissingRole = await declarationOnly({ investigation: { mode: "PERSON_X_JOB" }, jobScope: { ...TEST_JOB_SCOPE, poolRoleId: "role_pink_not_in_pool" } });
+    const twoJobs = await declarationOnly({ investigation: { mode: "PERSON_X_JOB" }, jobScope: TEST_JOB_SCOPE });
+    await plainJob({ investigation: { mode: "PERSON_X_JOB" }, jobScope: TEST_JOB_SCOPE }, "SUCCEEDED", twoJobs);
+    const crossed = `ANL_PINK_MB_CROSSED_${stamp}`; await insertAnalysis(crossed);
+    await plainJob({ investigation: { mode: "PERSON_X_JOB" }, jobScope: TEST_JOB_SCOPE }, "SUCCEEDED", crossed);
+    const failedOnly = `ANL_PINK_MB_FAILED_ONLY_${stamp}`; await insertAnalysis(failedOnly);
+    for (const status of ["FAILED", "RUNNING", "PENDING"]) await plainJob({ investigation: { mode: "PERSON_X_JOB" }, jobScope: TEST_JOB_SCOPE }, status, failedOnly);
+    const refFailed = await seed(`mb-ref-failed-${stamp}`, { investigation: { mode: "PERSON_X_JOB" }, jobScope: TEST_JOB_SCOPE }, scopeA);
+    await db.execute(sql`UPDATE career_analysis_jobs SET status = 'FAILED' WHERE job_id = ${refFailed.jobId}`);
+
+    Object.assign(cases, {
+      pxjClean: pxjClean.analysisId, pxjLegacyDeclaration: pxjLegacy.analysisId, otherRoleSamePool: otherRole.analysisId, person: person.analysisId,
+      snapshotPxj: snapPxj, snapshotPerson: snapPerson, unknown: `ANL_PINK_MB_UNKNOWN_${stamp}`, direct, failedOnly,
+      undeclared: undeclared.analysisId, contradictory: contradictory.analysisId, jobMode: jobMode.analysisId, twoJobs, pxjSecondClaim: pxj.analysisId,
+      crossed, foreignReference: foreignId, badBundle: badBundle.analysisId, badConvergence: badConvergence.analysisId, otherResult: otherResult.analysisId,
+      personScopedRun: personScopedRun.analysisId, pxjUnscopedRun: pxjUnscopedRun.analysisId, roleDrift: roleDrift.analysisId,
+      scopeUnavailableRole: unavailableRole.analysisId, scopeUnavailablePool: unavailablePool.analysisId, refFailed: refFailed.analysisId, snapshotMissingRole: snapMissingRole
+    });
+    // Every known analysis is also in the analysis repository (in-memory under NODE_ENV=test): a refusal can only come from the boundary.
+    for (const [label, analysisId] of Object.entries(cases)) if (label !== "unknown") await getCareerAnalysisRepository().save(verifiedAnalysis(analysisId, fixtureCapabilities()) as never);
+    before = await snapshotTables();
+  }, 300_000);
+
+  afterAll(async () => {
+    for (const jobId of created) await db.execute(sql`DELETE FROM career_analysis_jobs WHERE job_id = ${jobId}`);
+    if (OUT) writeFileSync(OUT, `${JSON.stringify(rows, null, 2)}\n`);
+  });
+
+  it("MB-1 every case × pool answers exactly as its persisted boundary dictates; PERSON_X_JOB byte-identical to the comparison without the boundary", async () => {
+    const deviations: Array<Record<string, unknown>> = [];
+    const seen = new Set<string>();
+    for (const [label, analysisId] of Object.entries(cases)) {
+      const boundary = await investigation(analysisId);
+      const body = boundary.status === 200 || boundary.status === 409 || boundary.status === 404 ? JSON.parse(boundary.text) : null;
+      const verdict = boundary.status === 200 ? `RESOLVED:${body.investigation.mode}` : boundary.status === 409 ? `UNRESOLVED:${body.issues[0].reason}` : String(boundary.status);
+      for (const [poolLabel, pool] of [["ownPool", ownPool], ["otherActivePool", otherActivePool]] as const) {
+        const answer = await matches(pool, analysisId);
+        const legacy = label === "unknown" ? null : await legacyMatches(pool, analysisId);
+        const error = errorOf(answer);
+        let expected: string; let ok: boolean;
+        if (verdict === "RESOLVED:PERSON") { expected = "409 ERR_JOB_POOL_MATCHES_PERSON_ANALYSIS"; ok = answer.status === 409 && error?.code === "ERR_JOB_POOL_MATCHES_PERSON_ANALYSIS"; }
+        else if (verdict.startsWith("UNRESOLVED:")) { const reason = verdict.slice(11); expected = `409 ERR_JOB_POOL_MATCHES_BOUNDARY_UNRESOLVED ${reason}`; ok = answer.status === 409 && error?.code === "ERR_JOB_POOL_MATCHES_BOUNDARY_UNRESOLVED" && error?.issues?.length === 1 && error.issues[0].path === "analysisId" && error.issues[0].message === reason; }
+        else if (verdict === "404") { expected = "404 ERR_ANALYSIS_NOT_FOUND"; ok = answer.status === 404 && error?.code === "ERR_ANALYSIS_NOT_FOUND"; }
+        else if (verdict === "RESOLVED:PERSON_X_JOB") { expected = "200 byte-identical to the comparison without the boundary"; ok = answer.status === 200 && legacy !== null && legacy.status === 200 && answer.text === legacy.text; }
+        else { expected = "?"; ok = false; }
+        seen.add(answer.status === 200 ? "200" : `${answer.status} ${error?.code}${error?.issues?.[0]?.message ? ` ${error.issues[0].message}` : ""}`);
+        const row = { label, poolLabel, boundary: verdict, matches: answer.status === 200 ? "200" : `${answer.status} ${error?.code}${error?.issues?.[0]?.message ? ` ${error.issues[0].message}` : ""}`, legacy: legacy === null ? null : legacy.status, expected, ok };
+        rows.push(row); if (!ok) deviations.push(row);
+      }
+    }
+    console.log(`PINK_MATCHES_BOUNDARY ${rows.map((row) => `${row.label}/${row.poolLabel}=${row.matches}`).join(" ")}`);
+    expect(deviations).toEqual([]);
+    // Every refusal kind is reached, and the legacy comparison would have answered 200 for every known analysis in its own pool.
+    expect([...seen].some((entry) => entry.startsWith("409 ERR_JOB_POOL_MATCHES_PERSON_ANALYSIS"))).toBe(true);
+    for (const reason of ["AMBIGUOUS", "DECLARATION_INVALID", "LINEAGE_INVALID", "NOT_DECLARED", "NOT_RECORDED", "RUN_CONTRADICTS_DECLARATION", "SCOPE_UNAVAILABLE"]) expect({ reason, reached: seen.has(`409 ERR_JOB_POOL_MATCHES_BOUNDARY_UNRESOLVED ${reason}`) }).toEqual({ reason, reached: true });
+    expect(rows.filter((row) => row.label !== "unknown" && row.poolLabel === "ownPool" && row.legacy !== 200)).toEqual([]);
+    // Role-unbound: another role of the same pool is compared.
+    expect(rows.find((row) => row.label === "otherRoleSamePool" && row.poolLabel === "ownPool")?.matches).toBe("200");
+  }, 300_000);
+
+  it("MB-2 order: unknown pool, then the boundary, then the pool status; analysisId required", async () => {
+    const order: Record<string, string> = {};
+    const at = async (key: string, pool: string, analysisId: string | null) => { const answer = await matches(pool, analysisId); const error = errorOf(answer); order[key] = answer.status === 200 ? "200" : `${answer.status} ${error?.code}`; };
+    await at("unknownPool×person", OTHER_POOL_ID, cases.person);
+    await at("unknownPool×pxj", OTHER_POOL_ID, cases.pxjClean);
+    await at("draft×person", draftId, cases.person);
+    await at("draft×direct", draftId, cases.direct);
+    await at("draft×pxj", draftId, cases.pxjClean);
+    await at("draft×unknownAnalysis", draftId, cases.unknown);
+    await at("noAnalysisId", ownPool, null);
+    await at("emptyAnalysisId", ownPool, "");
+    console.log(`PINK_MATCHES_ORDER ${JSON.stringify(order)}`);
+    rows.push({ order });
+    expect(order).toEqual({
+      "unknownPool×person": "404 ERR_JOB_POOL_NOT_FOUND", "unknownPool×pxj": "404 ERR_JOB_POOL_NOT_FOUND",
+      "draft×person": "409 ERR_JOB_POOL_MATCHES_PERSON_ANALYSIS", "draft×direct": "409 ERR_JOB_POOL_MATCHES_BOUNDARY_UNRESOLVED",
+      "draft×pxj": "409 ERR_INACTIVE_COMPANY_POOL", "draft×unknownAnalysis": "404 ERR_ANALYSIS_NOT_FOUND",
+      noAnalysisId: "400 ERR_ANALYSIS_ID_REQUIRED", emptyAnalysisId: "400 ERR_ANALYSIS_ID_REQUIRED"
+    });
+  }, 120_000);
+
+  it("MB-3 refusals carry identities only", async () => {
+    for (const [label, analysisId] of Object.entries(cases)) {
+      const answer = await matches(ownPool, analysisId);
+      if (answer.status === 200) continue;
+      expect({ label, leaks: FORBIDDEN.filter((needle) => answer.text.includes(needle)) }).toEqual({ label, leaks: [] });
+      expect({ label, keys: Object.keys(JSON.parse(answer.text)).sort().join() }).toEqual({ label, keys: "error" });
+    }
+  }, 120_000);
+
+  it("MB-4 the matches reads change nothing in any career / capability / job pool table", async () => {
+    for (const analysisId of Object.values(cases)) { await matches(ownPool, analysisId); await matches(otherActivePool, analysisId); }
+    expect(await snapshotTables()).toBe(before);
+  }, 120_000);
+
+  it("MB-5 pool equality is not checked by the server (owner question, measured)", () => {
+    const pxjOther = rows.find((row) => row.label === "pxjClean" && row.poolLabel === "otherActivePool");
+    console.log(`PINK_MATCHES_POOL_EQUALITY pxjClean/otherActivePool=${pxjOther?.matches}`);
+    expect(pxjOther?.matches).toBe("200");
+  });
+});

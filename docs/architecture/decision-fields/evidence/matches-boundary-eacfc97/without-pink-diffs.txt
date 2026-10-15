@@ -1,0 +1,10 @@
+PINK batch (72 files of da59568/d54c718) on eacfc97 WITHOUT the PINK diffs:
+ Test Files  1 failed | 63 passed | 8 skipped (72)
+      Tests  1 failed | 513 passed | 8 skipped (522)
+ FAIL  test/job-pool-validation/pdf-path.postgres.test.ts > JP-PDF: PDF → capability sweep (stub) → JSON Job Pool → matching, on PostgreSQL without Gemini > drives GELB's synthetic two-page CV PDF the same way and 
+
+http-canonical-inverse.postgres alone on eacfc97 WITHOUT the PINK diff:
+   × Job Pool connection: HTTP contract, canonical mapping and inverse walk (JP-H / JP-C / JP-I) > JP-H + JP-I: presentation matching follows CP-I1..I4 and Step 23, states its basis, quotes the analysis evidence verbati
+   × Job Pool connection: HTTP contract, canonical mapping and inverse walk (JP-H / JP-C / JP-I) > JP-H: matches refuse unknown analyses and pools (404) and inactive pools (409) 182ms
+      Tests  2 failed | 11 passed (13)
+  (404 instead of 200 and 409: the boundary reads PostgreSQL, the analysis was only in the in-memory repository)

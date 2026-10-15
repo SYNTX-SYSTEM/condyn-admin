@@ -1,0 +1,32 @@
+{
+  "wrong": {
+    "state": "CLOSED",
+    "requests": [
+      {
+        "method": "GET",
+        "path": "/api/career/analyses/ANL_PINK_THREE_MODES/gemini-result",
+        "query": "",
+        "headerIsToken": true
+      }
+    ],
+    "replay": {
+      "status": 404,
+      "body": "{\"success\":false,\"issues\":[{\"code\":\"ERR_NOT_FOUND\"}]}"
+    }
+  },
+  "right": {
+    "state": "NOT_FOUND",
+    "requests": [
+      {
+        "method": "GET",
+        "path": "/api/career/analyses/ANL_PINK_THREE_MODES/gemini-result",
+        "query": "",
+        "headerIsToken": true
+      }
+    ],
+    "replay": {
+      "status": 404,
+      "body": "{\"success\":false,\"issues\":[{\"code\":\"ERR_RESULT_INSPECTION_NOT_FOUND\"}]}"
+    }
+  }
+}
