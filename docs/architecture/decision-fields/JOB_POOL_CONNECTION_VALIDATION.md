@@ -1731,6 +1731,38 @@ before every before/after count, so the counts stay relative, and it changes not
 - O-B2-OPEN-READ is unchanged.
 - Merge, integration, deployment and live Gemini are still not authorised.
 
+### 3.40 pdf-path proof with the resolved test job scope, for the integration: PINK `d4f61c1` with GRÜN `8718e3a` (2026-10-15)
+
+**Request.** GELB asked PINK to adopt its two-line diff in `test/job-pool-validation/pdf-path.postgres.test.ts`, so that the integration compiles. GELB stated that the owner gave it an integration GO for `integration/job-field-governance`. PINK knows that GO only from GELB, not first-hand.
+
+**Change** (`d4f61c1`, test file only, no application change):
+- import `resolveTestJobScope` from `test/support/job-scope`;
+- pass `jobScope: resolveTestJobScope()` to `executeCareerAnalysisPipeline` in the stubbed legacy step.
+
+It closes the `tsc` line (80,79) that every PINK probe had so far patched by `sed`. The helper lives on the peer branch, so the file compiles only against the merged tree. On the PINK branch alone, `tsc` therefore reports two known errors until the integration, both in this file: the missing module `../support/job-scope`, and `jobScope` unknown in `PipelineExecutionOptions`.
+
+**Probe** (PINK branch merged with `8718e3a`, the proof copies of the evidence directories in place, no `sed`):
+- The merge combines the change with GRÜN's earlier edit of the same file (the pool upload and `jobScope` in the ANALYZE body), without a conflict.
+
+**Results:**
+
+| Check | Result |
+| --- | --- |
+| `tsc --noEmit` | 0 errors |
+| `pdf-path.postgres` | 2/2 |
+| ESLint on the file | the same 10 findings as `8705cc7` (5 `no-explicit-any`, 5 unused); none from the change |
+| Regression under the sentinel | 72 files (64 green + 8 live skipped), 522 tests (514 green), **0 network attempts** |
+| Scripts | 92 runs, 80 refused with exit 3, identical to `da59568`/`d54c718` |
+| Gate walk | 74/74 |
+
+Evidence: `evidence/job-scope-gate-d4f61c1-8718e3a/` (G-report, batch results, scripts results, `tsc`, the adopted diff, manifest).
+
+**Status.**
+- No deviation.
+- O-B2-OPEN-READ is unchanged.
+- PINK validates the integration state only when GELB reports it.
+- Main, deployment and live Gemini stay untouched.
+
 ## 4. Boundaries and findings for coordination
 
 - F-JP-1 (closed in `b782793`): `JOB_POOL_CONNECTION.md` §4 followed the per-role `JOB_POOL_JSON_ROLE` design;
