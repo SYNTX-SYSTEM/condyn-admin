@@ -16,9 +16,10 @@ Integrationszweig ist `integration/job-field-governance`, Basis `311d6ee`. `main
 | `82d2f47` | GRÜN `frontend/three-modes` `8718e3a` | GELB `feature/job-pool-first-boundary` bis `4e72260` und GRÜNs Job-Field- und Drei-Modi-Frontend `ca11794`…`8718e3a` |
 | `fd11389` | PINK `validation/hr-decision-loop-pink` `c5b323f` | PINKs Prüfprotokolle §3.17–§3.40, Abnahmeplan 1.9.1, die Fixture der Job-Scope-Sperre mit persistiertem Auftrag sowie die pdf-path-Änderung `d4f61c1` |
 | `20c977b` | GELB `feature/matches-boundary-guard` `eacfc97` | das getrennte Delta aus §4: `/matches` lehnt gespeicherte PERSON-Analysen und nicht auflösbare Grenzen serverseitig ab. Gemergt erst nach PINKs Prüfung ohne Abweichung (§3.42) |
+| `a3c3759` | PINK `validation/hr-decision-loop-pink` `916e884` | PINK §3.43: `syntx-walk.e2e` an die Invarianten neu gebunden (siehe §2.3); nur diese Testdatei und Belege |
 | `73a4701` | PINK `validation/hr-decision-loop-pink` `122aa6c` | PINKs Prüfprotokolle §3.41 (Integration `0fb7b05`) und §3.42 (Delta `eacfc97`) sowie die übernommenen Fixture-Änderungen für `http-canonical-inverse` und `pdf-path`. Der pdf-path-Schritt erwartet 409 und gilt nur zusammen mit `eacfc97`; deshalb wurde `eacfc97` zuerst gemergt |
 
-Alle vier Merges liefen konfliktfrei. Der Baum von `82d2f47` ist identisch mit einem vorab gemachten Probe-Merge; PINK hat `82d2f47` und `fd11389` baumgleich nachgebaut (§3.41). Die Abhängigkeiten (`package.json` und Lockfile) sind unverändert.
+Alle fünf Merges liefen konfliktfrei. Der Baum von `82d2f47` ist identisch mit einem vorab gemachten Probe-Merge; PINK hat `82d2f47` und `fd11389` baumgleich nachgebaut (§3.41). Die Abhängigkeiten (`package.json` und Lockfile) sind unverändert.
 
 **Fachlicher Inhalt** (Prüfungen von PINK, §3.30–§3.39):
 - **Job-Scope und Identität:**
@@ -76,6 +77,15 @@ Gleiche Bedingungen: Wegwerf-Datenbanken unter der Testrolle, ohne Gemini, Gemin
 | E2E-Suiten | 32 grün, 4 übersprungen: `job-pool-workflow` 10/10, `job-scope-gate` grün, `hr-decision-loop-frontend` 7/7, `fail-closed` 13/13, `local-decision-context-http` grün; `live-browser-workflow` übersprungen (Live-Gemini). PINK `syntx-walk.e2e` bricht jetzt schon im Aufbau ab: `/matches` lehnt `ANL_PINK_SYNTX_WALK` mit 409 ab (direkt gespeichert, NOT_RECORDED), die 3 Schritte werden übersprungen. Das ist die vorhergesagte Folge aus §4; PINK bindet den Rundgang neu. Überschriebene Belege sind auf den eingecheckten Stand zurückgesetzt |
 | Lint der durch die Sperre geänderten Dateien (`application.ts`, `local-composition.ts`, `job-pool.postgres.test.ts`) | 0 Befunde |
 | Leak-Check `0fb7b05..73a4701` | 0 neue Zeilen mit lokalen Pfaden, Datenbank-URLs oder Schlüsseln |
+
+### 2.3 Dritter Schritt, `a3c3759` (PINK `916e884`)
+
+PINK hat `20c977b` und `73a4701` baumgleich nachgebaut und die `gitSha` bestätigt; die Befunde aus §3.41 sind damit geschlossen (§3.43). Danach hat PINK den SYNTX-Rundgang neu gebunden:
+- `ANL_PINK_SYNTX_WALK` bekommt einen gespeicherten SUCCEEDED-Auftrag mit PERSON_X_JOB im Validierungs-Pool, dieselbe Fixture wie in der Sperr-Prüfung;
+- GRÜNs Vorschlag P-3 und die Q-11-Änderung aus `c146f05` sind übernommen;
+- Q-06 ist an die geschlossene R15b-Vorschlagsliste gebunden. Das Urteil lautet **BOUNDARY-MATCH R15b-PENDING**, nicht PASS, solange R15b nicht festgehalten ist (§5).
+
+Die Testdatei ist byte-gleich mit PINKs `916e884`; `tsc` 0. Nachgeprüft in einem eigenen Worktree auf `a3c3759`, damit die Demo aus §6 weiterläuft: `syntx-walk.e2e` 3/3, `job-scope-gate.e2e` 1/1, `job-pool-workflow.e2e` 10/10. Überschriebene Belege sind dort zurückgesetzt.
 
 ## 3. E2E-Suiten
 
@@ -158,7 +168,9 @@ Owner-Vorgabe: Der alte pool-weite Vergleich bleibt vorerst rollenübergreifend.
 - **Repository-Hygiene:**
   - geerbte lokale Pfade in älteren Dateien und Prüfordnern; dazu die 30 Zeilen aus GRÜNs Evidence-Ordnern im Integrationsbereich (§2.1);
   - die Wurzeldateien `debug.js` und `debug2.js`.
-- **PINK-Suite:** `syntx-walk.e2e` speichert `ANL_PINK_SYNTX_WALK` direkt ohne Auftrag (NOT_RECORDED); PINK bindet den Rundgang an die Invarianten neu.
+- **SYNTX-Governance (wartet auf die Sichtabnahme im DEMO REVIEW):** Laut `proposals/SYNTX_SEMIOTIC_TRANSFER_PROPOSALS.md` gilt nichts davon vor der Sichtabnahme durch den Owner; erst danach hält GELB R10a–R10d und R15b fest. Dazu gehören die Bewegungsarten, die eine GELB-Freigabe brauchen (`sxBoundaryHalo`, der standardmäßig abgeschaltete Prototyp `atmosphereGlow`). Bis dahin bleibt Q-06 bei BOUNDARY-MATCH R15b-PENDING.
+- **PINK-Skript** `support/syntx-readonly-walk.mjs` (P-4) ist nicht neu gebunden; es braucht eine Umgebung mit gespeicherten Aufträgen.
+- **Für GRÜN (O-SX-INACTIVE-NAMING):** Der Feldzustand INACTIVE_POOL entsteht nur aus einer 409 von `/matches`. Unter der URL-Grenze ist er mit konsistenten Daten nicht mehr erreichbar; das Feld zeigt dann OTHER_POOL.
 - **Zur Information (PINK):**
   - O-URL-REF-STATUS;
   - Analysen ohne Discovery-Lauf werden ohne Lesen des Pools aufgelöst; das entsteht nur mit inkonsistenten Daten.
