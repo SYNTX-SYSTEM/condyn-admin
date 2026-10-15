@@ -163,6 +163,32 @@ Owner-Vorgabe: Der alte pool-weite Vergleich bleibt vorerst rollenübergreifend.
   - O-URL-REF-STATUS;
   - Analysen ohne Discovery-Lauf werden ohne Lesen des Pools aufgelöst; das entsteht nur mit inkonsistenten Daten.
 
-## 6. Ablauf
+## 6. Demo für das DEMO REVIEW
 
-SFE::INTEGRATE → VERIFY → PINK → **DEMO REVIEW**. PINK hat Integration und Delta ohne Abweichung im Code bestätigt (§3.41, §3.42). Als Nächstes folgt das DEMO REVIEW durch den Owner.
+Lokale Umgebung auf `127.0.0.1:41851` mit dem Integrationsbaum `6da26a7`. Sie läuft nicht öffentlich und nicht als Deployment.
+- **Datenbank:** eine frische Wegwerf-Datenbank unter der Testrolle.
+- **Server und Worker:** der echte Next-Server und der unveränderte Worker `scripts/run-career-worker.ts`.
+- **Gemini:** eine lokale Attrappe auf Loopback (`GOOGLE_GEMINI_BASE_URL`), aufgebaut aus GRÜNs Drei-Modi-Lab. Der Worker hat nur einen Platzhalter-Schlüssel, der echte Schlüssel kommt nicht in die Umgebung.
+- **Netzwerkwächter:** Beide Prozesse laufen hinter einem Wächter, der jede Verbindung außerhalb von Loopback ablehnt. Abgelehnt wurde genau ein Versuch, die Versionsabfrage von `next dev` an die npm-Registry; kein Gemini-Zugriff.
+- **Daten:**
+  - zwei Pools über die echte Upload-Route: den DLL-Engineering-Pool und PINKs Validierungs-Pool;
+  - zwei Analysen über die echte Analyze-Route mit dem synthetischen Gold-Lebenslauf, beide SUCCEEDED: eine PERSON_X_JOB-Analyse für „Senior Full-Stack Engineer – Shipment Tracking“ und eine PERSON-Analyse.
+- **Attrappe:** Sie bekam die Discovery-Anfrage mit `INVESTIGATION_SCOPE`-Block nur für PERSON_X_JOB.
+- **Ausgeschlossen:** :3017, :41831 und fremde Datenbanken bleiben unberührt.
+
+**Stichprobe vor der Übergabe** (Routen und Browser):
+
+| Fall | Erwartung | Ergebnis |
+|---|---|---|
+| URL-Grenze PERSON_X_JOB / PERSON | RESOLVED mit dem jeweiligen Modus | ja |
+| `/matches`: PERSON_X_JOB / PERSON / unbekannt | 200 / 409 / 404 | ja |
+| PERSON_X_JOB-Analyse im eigenen Pool | Vergleich wird geladen | ja |
+| PERSON-Analyse per URL mit Pool und Job | kein `/matches`-Aufruf, Hinweis „PERSON analysis: no job comparison“ | ja |
+| PERSON_X_JOB-Analyse mit anderem Pool | kein `/matches`-Aufruf, Hinweis „No comparison across job scopes“, Pool nur per Klick | ja |
+| Modus JOB | liest keine Analyse | ja |
+| Modus PERSON | Feld im Modus PERSON | ja |
+| Seitenfehler im Browser | keine | ja |
+
+## 7. Ablauf
+
+SFE::INTEGRATE → VERIFY → PINK → **DEMO REVIEW**. PINK hat Integration und Delta ohne Abweichung im Code bestätigt (§3.41, §3.42). Die Demo nach §6 steht für das DEMO REVIEW durch den Owner bereit; sie läuft, bis der Owner das Herunterfahren freigibt.
