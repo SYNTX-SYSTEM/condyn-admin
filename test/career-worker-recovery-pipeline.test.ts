@@ -8,6 +8,7 @@ import { eq } from "drizzle-orm";
 import { prepareDocuments } from "../lib/career/orchestration/document-loader";
 import { executeCareerAnalysisPipeline } from "../lib/career/pipeline";
 import { MockInferenceProvider } from "../lib/career/adapter";
+import { resolveTestJobScope } from "./support/job-scope";
 
 describe("Worker Recovery Pipeline Invariant", () => {
   const jobRepo = new JobRepository(db);
@@ -34,7 +35,7 @@ describe("Worker Recovery Pipeline Invariant", () => {
     }
 
     const { normalizedDocs } = await prepareDocuments(job.inputRef.sourceData.documents);
-    const validationResult = await executeCareerAnalysisPipeline(normalizedDocs, provider, { explicitAnalysisId: deterministicAnalysisId });
+    const validationResult = await executeCareerAnalysisPipeline(normalizedDocs, provider, { jobScope: resolveTestJobScope(), explicitAnalysisId: deterministicAnalysisId });
     
     if (!validationResult.success) {
       throw new Error(validationResult.issues?.map((issue) => issue.message).join(", ") || "Validation failed");

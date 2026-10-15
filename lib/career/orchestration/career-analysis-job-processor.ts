@@ -2,6 +2,7 @@ import type { DocumentInput } from "../adapter";
 import type { CareerJobRuntimeOperation, JobRecord } from "./job";
 import type { CapabilityProposalProjectionReferenceRepository } from "../capability-core/projection";
 import { createCandidateSourceBundle, type CandidateSourceBundleRepository, toCapabilitySourceDocuments } from "../capability-core";
+import type { AnalysisBoundary } from "../investigation/boundary";
 
 export type ReportCareerJobRuntimeOperation = (
   operation: CareerJobRuntimeOperation
@@ -16,7 +17,9 @@ export interface CareerAnalysisJobProcessorDependencies {
   capabilityProposalExecutor: {
     execute(
       documents: DocumentInput[],
-      reportOperation: ReportCareerJobRuntimeOperation
+      reportOperation: ReportCareerJobRuntimeOperation,
+      /** Forwarded as received; the executor refuses anything but an issued boundary (job scope or PERSON) before Discovery. */
+      jobScope: AnalysisBoundary | undefined
     ): Promise<unknown>;
   };
   projectionReferenceRepository?: CapabilityProposalProjectionReferenceRepository;
@@ -61,9 +64,12 @@ export function createCareerAnalysisJobProcessor(
   dependencies: CareerAnalysisJobProcessorDependencies
 ): (
   job: JobRecord,
-  reportOperation: ReportCareerJobRuntimeOperation
+  reportOperation: ReportCareerJobRuntimeOperation,
+  // Optional in the type only so the sealed F11 processor suite (P8) keeps its two-argument calls; the worker
+  // boundary always passes the scope it issued for this attempt, and the executor refuses a missing one.
+  jobScope?: AnalysisBoundary
 ) => Promise<{ resultAnalysisId: string }> {
-  return async (job, reportOperation) => {
+  return async (job, reportOperation, jobScope) => {
     const resultAnalysisId = deterministicAnalysisId(job.jobId);
 
     await reportOperation("RECOVERY_CHECK");
@@ -95,7 +101,7 @@ export function createCareerAnalysisJobProcessor(
     // The sidecar remains a prerequisite even for recovery: returning the
     // existing canonical analysis before this point would mask missing or failed
     // Discovery/Convergence proposal state.
-    const proposal = await dependencies.capabilityProposalExecutor.execute(normalizedDocs, reportOperation) as {
+    const proposal = await dependencies.capabilityProposalExecutor.execute(normalizedDocs, reportOperation, jobScope) as {
       kind?: unknown;
       discoveryRun?: { runId?: unknown; sourceBundleHash?: unknown };
       convergenceRun?: { convergenceRunId?: unknown; completedAt?: unknown };

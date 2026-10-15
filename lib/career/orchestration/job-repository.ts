@@ -1,3 +1,4 @@
+import { isDeepStrictEqual } from "node:util";
 import { PostgresJsDatabase } from "drizzle-orm/postgres-js";
 import { eq, lt, or, and, sql } from "drizzle-orm";
 import { careerAnalysisJobs, careerAnalyses } from "../db/schema";
@@ -44,9 +45,10 @@ export class JobRepository {
             const existingInput = existing.inputRef as any;
             const currentInput = job.inputRef as any;
             
-            // Deep compare JSON for idempotency payload checking
-            if (existingInput.sourceType === currentInput.sourceType && 
-                JSON.stringify(existingInput.sourceData) === JSON.stringify(currentInput.sourceData)) {
+            // Deep compare for idempotency payload checking. JSONB reorders object keys (shorter keys first), so a
+            // serialized comparison reports a false conflict as soon as the payload has more than one key.
+            if (existingInput.sourceType === currentInput.sourceType &&
+                isDeepStrictEqual(existingInput.sourceData, currentInput.sourceData)) {
               return existing; // Idempotent success returns existing job
             }
           }

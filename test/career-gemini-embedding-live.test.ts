@@ -1,5 +1,6 @@
 import { describe, it, expect } from "vitest";
 import { GeminiEmbeddingProvider } from "../lib/career/embeddings/gemini";
+import { resolveStoredTestJobScope } from "./support/job-scope";
 
 const shouldRunLive =
   process.env.RUN_LIVE_EMBEDDING_TESTS === "true" &&
@@ -9,6 +10,8 @@ describe.skipIf(!shouldRunLive)(
   "CONDYN Career Analysis Protocol v1.0 — Step 21b: Live Gemini Embedding Provider (`test/career-gemini-embedding-live.test.ts`)",
   () => {
     it("should generate real 768-dimensional embedding from Google Gemini API", async () => {
+      // SFE JOB POOL FIRST: no Gemini call without a valid pool + selected job, in tests too.
+      await resolveStoredTestJobScope();
       const provider = new GeminiEmbeddingProvider();
       const vec = await provider.generateEmbedding("Cloud Native Distributed Architecture");
 

@@ -1,0 +1,144 @@
+{
+  "invariant": "JOB POOL FIRST — no valid pool + selected job → no capability analysis",
+  "label": "2026-10-15-exchange-archive-worker-on-no-gemini",
+  "gitSha": null,
+  "database": "disposable test database condyn_test_7eedc82562ee872c (dropped after the run)",
+  "model": "proof-no-model",
+  "pools": {
+    "engineering": {
+      "jobPoolUploadId": "JPOOL_B94850C439974E27496FE3B1A9A076B5",
+      "status": "ACTIVE"
+    },
+    "engineeringDraft": {
+      "jobPoolUploadId": "JPOOL_D2303DEC1AECE99C5E1B68762BBB1B65",
+      "status": "DRAFT"
+    },
+    "validation": {
+      "jobPoolUploadId": "JPOOL_04312C4D3E9EA1BDC3D80D9CA635883B",
+      "status": "ACTIVE"
+    }
+  },
+  "worker": "scripts/run-career-worker.ts (real process)",
+  "workerLog": [
+    "Career worker PID: 2906331",
+    "Career worker started: job-pool-first-proof-worker",
+    "Worker started. Polling for jobs...",
+    "[Worker job-pool-first-proof-worker] CLAIMED JOB_1792036006900_857 lease=1",
+    "[Worker job-pool-first-proof-worker] FAILED JOB_1792036006900_857 lease=1 terminal=true ERR_JOB_SCOPE_REQUIRED: Bitte wähle einen Job aus einem Pool aus.",
+    "[Worker job-pool-first-proof-worker] CLAIMED JOB_1792036006907_336 lease=1",
+    "[Worker job-pool-first-proof-worker] FAILED JOB_1792036006907_336 lease=1 terminal=true ERR_JOB_SCOPE_INVALID: Bitte wähle einen Job aus einem Pool aus.",
+    "[Worker job-pool-first-proof-worker] CLAIMED JOB_1792036006911_782 lease=1",
+    "[Worker job-pool-first-proof-worker] FAILED JOB_1792036006911_782 lease=1 terminal=true ERR_JOB_SCOPE_INVALID: Bitte wähle einen Job aus einem Pool aus."
+  ],
+  "checks": [
+    {
+      "id": "R1_NO_SELECTION",
+      "pass": true,
+      "observed": {
+        "status": 400,
+        "issue": {
+          "code": "ERR_JOB_SCOPE_REQUIRED",
+          "message": "Bitte wähle einen Job aus einem Pool aus."
+        },
+        "enqueued": 0
+      }
+    },
+    {
+      "id": "R2_MALFORMED_SELECTION",
+      "pass": true,
+      "observed": {
+        "status": 400,
+        "issue": {
+          "code": "ERR_JOB_SCOPE_REQUIRED",
+          "message": "Bitte wähle einen Job aus einem Pool aus."
+        },
+        "enqueued": 0
+      }
+    },
+    {
+      "id": "R3_UNKNOWN_POOL",
+      "pass": true,
+      "observed": {
+        "status": 422,
+        "issue": {
+          "code": "ERR_JOB_SCOPE_INVALID",
+          "message": "Bitte wähle einen Job aus einem Pool aus."
+        },
+        "enqueued": 0
+      }
+    },
+    {
+      "id": "R4_INACTIVE_POOL",
+      "pass": true,
+      "observed": {
+        "status": 422,
+        "issue": {
+          "code": "ERR_JOB_SCOPE_INVALID",
+          "message": "Bitte wähle einen Job aus einem Pool aus."
+        },
+        "enqueued": 0
+      }
+    },
+    {
+      "id": "R5_ROLE_OUTSIDE_POOL",
+      "pass": true,
+      "observed": {
+        "status": 422,
+        "issue": {
+          "code": "ERR_JOB_SCOPE_INVALID",
+          "message": "Bitte wähle einen Job aus einem Pool aus."
+        },
+        "enqueued": 0
+      }
+    },
+    {
+      "id": "W1_NO_SELECTION",
+      "pass": true,
+      "observed": {
+        "status": "FAILED",
+        "errorCode": "ERR_JOB_SCOPE_REQUIRED",
+        "errorSummary": "Bitte wähle einen Job aus einem Pool aus.",
+        "attemptCount": 1,
+        "currentOperation": null,
+        "processingTraces": {
+          "sourceBundle": 0,
+          "projectionReference": 0,
+          "analysis": 0
+        }
+      }
+    },
+    {
+      "id": "W2_INACTIVE_POOL",
+      "pass": true,
+      "observed": {
+        "status": "FAILED",
+        "errorCode": "ERR_JOB_SCOPE_INVALID",
+        "errorSummary": "Bitte wähle einen Job aus einem Pool aus.",
+        "attemptCount": 1,
+        "currentOperation": null,
+        "processingTraces": {
+          "sourceBundle": 0,
+          "projectionReference": 0,
+          "analysis": 0
+        }
+      }
+    },
+    {
+      "id": "W3_ROLE_OUTSIDE_POOL",
+      "pass": true,
+      "observed": {
+        "status": "FAILED",
+        "errorCode": "ERR_JOB_SCOPE_INVALID",
+        "errorSummary": "Bitte wähle einen Job aus einem Pool aus.",
+        "attemptCount": 1,
+        "currentOperation": null,
+        "processingTraces": {
+          "sourceBundle": 0,
+          "projectionReference": 0,
+          "analysis": 0
+        }
+      }
+    }
+  ],
+  "passed": true
+}

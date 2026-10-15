@@ -3,6 +3,7 @@ import { GoogleGenAI } from "@google/genai";
 import { getGeminiCareerResponseJsonSchema } from "../lib/career/schema-projector";
 import * as fs from "fs";
 import * as path from "path";
+import { resolveStoredTestJobScope } from "./support/job-scope";
 
 // Attempt to load .env.local strictly for this diagnostic
 try {
@@ -99,6 +100,8 @@ describe.runIf(runBisection)("Gemini Schema Deterministic Bisection", () => {
   }
 
   it("Execute Bisection Sequence", async () => {
+    // SFE JOB POOL FIRST: no Gemini call without a valid pool + selected job, in tests too.
+    await resolveStoredTestJobScope();
     expect(apiKey).toBeDefined();
     const ai = new GoogleGenAI({ apiKey: apiKey! });
     const fullSchema = getGeminiCareerResponseJsonSchema();

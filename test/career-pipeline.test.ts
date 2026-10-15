@@ -3,6 +3,7 @@ import path from "path";
 import { describe, it, expect, vi } from "vitest";
 import { loadDocuments, executeCareerAnalysisPipeline } from "../lib/career/pipeline";
 import { MockInferenceProvider } from "../lib/career/adapter";
+import { resolveTestJobScope } from "./support/job-scope";
 
 describe("CONDYN Career Analysis Protocol v1.0 - Step 4.4: Document Loader (`loadDocuments`)", () => {
   it("should sequentially assign DOC_001, DOC_002 when no docId is provided", () => {
@@ -38,7 +39,7 @@ describe("CONDYN Career Analysis Protocol v1.0 - Step 4.4: E2E Pipeline Orchestr
     const provider = new MockInferenceProvider(goldJsonRaw);
     const result = await executeCareerAnalysisPipeline([
       { title: "Lebenslauf Max Mustermann", content: "Erfahrener Systemarchitekt" }
-    ], provider);
+    ], provider, { jobScope: resolveTestJobScope() });
 
     expect(result.success).toBe(true);
     expect(result.data).toBeDefined();
@@ -57,6 +58,7 @@ describe("CONDYN Career Analysis Protocol v1.0 - Step 4.4: E2E Pipeline Orchestr
       [{ title: "Telemetry source", content: "Career analysis source" }],
       provider,
       {
+        jobScope: resolveTestJobScope(),
         onRuntimeOperation: (operation: string) => operations.push(operation)
       } as any
     );
@@ -69,7 +71,7 @@ describe("CONDYN Career Analysis Protocol v1.0 - Step 4.4: E2E Pipeline Orchestr
     const provider = new MockInferenceProvider("```json\n{ invalid: json ...\n```");
     const result = await executeCareerAnalysisPipeline([
       { content: "Some content" }
-    ], provider);
+    ], provider, { jobScope: resolveTestJobScope() });
 
     expect(result.success).toBe(false);
     expect(result.issues.some(i => i.code === "ERR_JSON_SYNTAX_INVALID")).toBe(true);
@@ -83,7 +85,7 @@ describe("CONDYN Career Analysis Protocol v1.0 - Step 4.4: E2E Pipeline Orchestr
     await expect(
       executeCareerAnalysisPipeline([
         { docId: "DOC_001", content: "Some content" }
-      ], provider)
+      ], provider, { jobScope: resolveTestJobScope() })
     ).rejects.toThrow(/ERR_CANONICAL_ASSEMBLY_DOCUMENT_REFERENCE_MISSING/);
   });
 
@@ -109,7 +111,7 @@ describe("CONDYN Career Analysis Protocol v1.0 - Step 4.4: E2E Pipeline Orchestr
     
     const result = await executeCareerAnalysisPipeline([
       { docId: "DOC_001", title: "Real PDF", content: "Test Capability" }
-    ], provider);
+    ], provider, { jobScope: resolveTestJobScope() });
 
     expect(result.success).toBe(true);
     

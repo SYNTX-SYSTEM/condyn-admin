@@ -1,6 +1,7 @@
 import { GoogleGenAI } from "@google/genai";
 import * as fs from "fs";
 import * as path from "path";
+import { exitOnJobScopeRefusal, resolveScriptJobScope } from "../lib/career/job-scope/script-scope";
 
 // Simple loader for .env.local in script execution
 function loadEnvLocal() {
@@ -69,4 +70,5 @@ async function listModels() {
   }
 }
 
-listModels();
+// SFE JOB POOL FIRST: no Career-Analysis and no Gemini call without a valid pool + selected job (CONDYN_JOB_POOL_UPLOAD_ID, CONDYN_POOL_ROLE_ID).
+resolveScriptJobScope().catch(exitOnJobScopeRefusal).then(() => listModels());

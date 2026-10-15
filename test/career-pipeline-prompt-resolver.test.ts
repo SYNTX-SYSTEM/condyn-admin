@@ -4,6 +4,7 @@ import { MockInferenceProvider } from "../lib/career/adapter";
 import { InMemoryPromptRepository } from "../lib/career/prompts/repository";
 import { ActivePromptResolver } from "../lib/career/prompts/resolver";
 import { seedPromptSystem } from "../lib/career/prompts/system";
+import { resolveTestJobScope } from "./support/job-scope";
 
 describe("CONDYN Career Analysis Protocol v1.0 — Step 18b: Pipeline Active Prompt Resolver Integration", () => {
   const TEST_KEY = Buffer.alloc(32, 0x42).toString("base64");
@@ -25,7 +26,7 @@ describe("CONDYN Career Analysis Protocol v1.0 — Step 18b: Pipeline Active Pro
     const result = await executeCareerAnalysisPipeline(
       [{ title: "Test Resume", content: "Senior Cloud Architect with 10 years experience." }],
       provider,
-      { promptResolver: resolver }
+      { jobScope: resolveTestJobScope(), promptResolver: resolver }
     );
 
     expect(result.success).toBe(true);
@@ -51,7 +52,8 @@ describe("CONDYN Career Analysis Protocol v1.0 — Step 18b: Pipeline Active Pro
 
     const result = await executeCareerAnalysisPipeline(
       [{ title: "Test Resume", content: "Senior Cloud Architect with 10 years experience." }],
-      provider
+      provider,
+      { jobScope: resolveTestJobScope() }
     );
 
     expect(result.success).toBe(true);
@@ -77,7 +79,7 @@ describe("CONDYN Career Analysis Protocol v1.0 — Step 18b: Pipeline Active Pro
       executeCareerAnalysisPipeline(
         [{ title: "Test Resume", content: "Senior Cloud Architect" }],
         provider,
-        { promptResolver: resolver }
+        { jobScope: resolveTestJobScope(), promptResolver: resolver }
       )
     ).rejects.toThrow(/ERR_NO_ACTIVE_PROMPT_VERSION/);
   });

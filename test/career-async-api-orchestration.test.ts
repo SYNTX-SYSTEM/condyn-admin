@@ -7,6 +7,7 @@ import { sql } from "drizzle-orm";
 // Next.js request mocking
 import { POST } from "../app/api/career/analyze/route";
 import { GET } from "../app/api/career/jobs/[jobId]/route";
+import { TEST_JOB_SCOPE, uploadEngineeringJobScope, resolveTestJobScope } from "./support/job-scope";
 
 describe("CONDYN Career Analysis Protocol v5.0 - PHASE 5: ASYNC API ORCHESTRATION (TEST005C)", () => {
   let repo: JobRepository;
@@ -14,6 +15,8 @@ describe("CONDYN Career Analysis Protocol v5.0 - PHASE 5: ASYNC API ORCHESTRATIO
 
   beforeAll(async () => {
     await initDbSchema();
+    // SFE invariant JOB POOL FIRST: every analysis request names a valid pool and a role of it.
+    await uploadEngineeringJobScope();
   });
 
   beforeEach(async () => {
@@ -36,7 +39,8 @@ describe("CONDYN Career Analysis Protocol v5.0 - PHASE 5: ASYNC API ORCHESTRATIO
   const sampleBody = {
     documents: [
       { type: "text", content: "I am an engineer." }
-    ]
+    ],
+    jobScope: TEST_JOB_SCOPE
   };
 
   const jobRouteContext = (jobId: string) => ({
@@ -107,7 +111,7 @@ describe("CONDYN Career Analysis Protocol v5.0 - PHASE 5: ASYNC API ORCHESTRATIO
     const req1 = createMockRequest(sampleBody, { "idempotency-key": "idem-api-456" });
     await POST(req1);
 
-    const req2 = createMockRequest({ documents: [{ type: "text", content: "diff" }] }, { "idempotency-key": "idem-api-456" });
+    const req2 = createMockRequest({ documents: [{ type: "text", content: "diff" }], jobScope: TEST_JOB_SCOPE }, { "idempotency-key": "idem-api-456" });
     const res2 = await POST(req2);
     
     expect(res2.status).toBe(409);
@@ -249,7 +253,7 @@ describe("CONDYN Career Analysis Protocol v5.0 - PHASE 5: ASYNC API ORCHESTRATIO
 
   it("M. REAL END-TO-END API PROOF (Test 13)", async () => {
     // 1. CLIENT POST
-    const req = createMockRequest({ documents: [{ type: "text", content: "I am a test engineer." }] });
+    const req = createMockRequest({ documents: [{ type: "text", content: "I am a test engineer." }], jobScope: TEST_JOB_SCOPE });
     const postRes = await POST(req);
     expect(postRes.status).toBe(202);
     const postJson = await postRes.json();
@@ -271,7 +275,7 @@ describe("CONDYN Career Analysis Protocol v5.0 - PHASE 5: ASYNC API ORCHESTRATIO
 
     const inputData = postJson.inputRef?.sourceData || { documents: [{ docId: "DOC_001", type: "text", content: "I am a test engineer.", metadata: {} }] };
     const { normalizedDocs } = await prepareDocuments(inputData.documents);
-    const validationResult = await executeCareerAnalysisPipeline(normalizedDocs, new MockInferenceProvider());
+    const validationResult = await executeCareerAnalysisPipeline(normalizedDocs, new MockInferenceProvider(), { jobScope: resolveTestJobScope() });
     
     expect(validationResult.success).toBe(true);
     const verifiedAnalysis = validationResult.data as any;

@@ -12,6 +12,7 @@ import {
   SearchQueryEntitySchema,
   ConsistencyClusterSchema
 } from "../lib/career/schema";
+import { resolveStoredTestJobScope } from "./support/job-scope";
 
 try {
   const envFile = fs.readFileSync(path.join(process.cwd(), ".env.local"), "utf8");
@@ -25,6 +26,8 @@ try {
 
 describe.skipIf(!process.env.RUN_GEMINI_DIAGNOSTICS)("BUG010J: Schema Bisection", () => {
   it("should run phase 1 and 2", async () => {
+    // SFE JOB POOL FIRST: no Gemini call without a valid pool + selected job, in tests too.
+    await resolveStoredTestJobScope();
     const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
     const fullSchema = getGeminiCareerResponseJsonSchema();
 

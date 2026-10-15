@@ -5,12 +5,14 @@ import { buildRoleRecommendation } from "../lib/career/matching/derivation";
 import { createDecision } from "../lib/career/decisions/decision";
 import { createCommitment, createActionEvent } from "../lib/career/decisions/action";
 import { createOutcome } from "../lib/career/decisions/outcome";
+import { exitOnJobScopeRefusal, resolveScriptJobScope } from "../lib/career/job-scope/script-scope";
+import type { ResolvedJobScope } from "../lib/career/job-scope/scope";
 
 /**
  * Live execution script for TEST003C Acceptance Gate
  * Runs the full outcome chain proof against real parsed data.
  */
-async function main() {
+async function main(jobScope: ResolvedJobScope) {
   console.log("==================================================");
   console.log("TEST003C LIVE OUTCOME CHAIN VERIFICATION");
   console.log("==================================================");
@@ -26,7 +28,7 @@ Worked at TechCorp (a US based SOFTWARE company) for 5 years leading a team of 4
     content: markdownSample,
     mime_type: "text/markdown",
     uri: "file://senior-swe.md"
-  }], new GeminiProvider());
+  }], new GeminiProvider(), { jobScope });
 
   if (!canonical.success || !canonical.data) {
     console.error("Pipeline failed to return valid data:");
@@ -174,4 +176,5 @@ Worked at TechCorp (a US based SOFTWARE company) for 5 years leading a team of 4
   }
 }
 
-main().catch(console.error);
+// SFE JOB POOL FIRST: no Career-Analysis and no Gemini call without a valid pool + selected job (CONDYN_JOB_POOL_UPLOAD_ID, CONDYN_POOL_ROLE_ID).
+resolveScriptJobScope().catch(exitOnJobScopeRefusal).then(main).catch(console.error);

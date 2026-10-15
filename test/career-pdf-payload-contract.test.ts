@@ -10,6 +10,7 @@ import { describe, it, expect, vi } from "vitest";
 import { POST } from "../app/api/career/analyze/route";
 import * as providers from "../lib/career/providers";
 import { MockInferenceProvider } from "../lib/career/adapter";
+import { resolveTestJobScope } from "./support/job-scope";
 
 // Helper to create a minimal valid ASCII PDF buffer in memory
 function createMinimalPdfBuffer(text: string): Buffer {
@@ -71,7 +72,7 @@ describe("BUG 007: PDF Payload Contract Mismatch", () => {
     
     // 5. Execute pipeline
     const { executeCareerAnalysisPipeline } = await import("../lib/career/pipeline");
-    const validationResult = await executeCareerAnalysisPipeline(normalizedDocs, mockProvider);
+    const validationResult = await executeCareerAnalysisPipeline(normalizedDocs, mockProvider, { jobScope: resolveTestJobScope() });
 
     expect(validationResult.success).toBe(true);
     

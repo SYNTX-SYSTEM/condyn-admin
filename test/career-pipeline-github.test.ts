@@ -2,6 +2,7 @@ import { describe, it, expect } from "vitest";
 import { executeCareerAnalysisPipeline } from "../lib/career/pipeline";
 import { MockInferenceProvider, buildCareerAnalysisPrompt, type DocumentInput } from "../lib/career/adapter";
 import { createSourceMetadata } from "../lib/career/loaders/source";
+import { resolveTestJobScope } from "./support/job-scope";
 
 describe("CONDYN / SYNTX — GITHUB PIPELINE E2E TEST (`test/career-pipeline-github.test.ts`)", () => {
   it("should process GitHub documents deterministically, enforce boundaries, and construct valid evidence chains", async () => {
@@ -43,7 +44,7 @@ describe("CONDYN / SYNTX — GITHUB PIPELINE E2E TEST (`test/career-pipeline-git
         .replace(/Anduril/g, "GithubOrg");
     };
 
-    const validationResult = await executeCareerAnalysisPipeline(githubDocs, provider);
+    const validationResult = await executeCareerAnalysisPipeline(githubDocs, provider, { jobScope: resolveTestJobScope() });
 
     // 4. Assert pipeline success
     expect(validationResult.success).toBe(true);

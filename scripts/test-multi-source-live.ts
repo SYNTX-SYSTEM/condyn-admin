@@ -5,6 +5,8 @@ import { getCareerInferenceProvider } from "../lib/career/providers";
 import { buildCapabilityProofChain } from "../lib/career/evidence/proof-chain";
 import * as fs from "fs";
 import * as path from "path";
+import { exitOnJobScopeRefusal, resolveScriptJobScope } from "../lib/career/job-scope/script-scope";
+import type { ResolvedJobScope } from "../lib/career/job-scope/scope";
 
 try {
   const envFile = fs.readFileSync(path.join(process.cwd(), ".env.local"), "utf8");
@@ -16,7 +18,7 @@ try {
   });
 } catch (e) {}
 
-async function run() {
+async function run(jobScope: ResolvedJobScope) {
   console.log("Starting Live Proof Inspection (TEST002A)...");
 
   // Load PDF
@@ -57,7 +59,7 @@ async function run() {
   }));
 
   console.log(`Executing pipeline with ${documents.length} runtime documents...`);
-  const result = await executeCareerAnalysisPipeline(documents, provider);
+  const result = await executeCareerAnalysisPipeline(documents, provider, { jobScope });
 
   if (!result.success) {
     console.error("PIPELINE FAILED:", JSON.stringify(result.issues, null, 2));
@@ -108,4 +110,5 @@ async function run() {
   }
 }
 
-run().catch(console.error);
+// SFE JOB POOL FIRST: no Career-Analysis and no Gemini call without a valid pool + selected job (CONDYN_JOB_POOL_UPLOAD_ID, CONDYN_POOL_ROLE_ID).
+resolveScriptJobScope().catch(exitOnJobScopeRefusal).then(run).catch(console.error);
