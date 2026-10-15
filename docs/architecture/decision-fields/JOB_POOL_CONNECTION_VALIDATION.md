@@ -1574,7 +1574,7 @@ and never pushed.
   - Consequence: the next ←/Home is then the Job Field's own navigation, not a mode choice.
   - Unaffected: the gate holds; JOB still leaves the Capability field.
   - Measured: `End:PERSON→JOB focus=syntx-field`, `ArrowRight:PERSON_X_JOB→JOB focus=syntx-field`. Every other step keeps focus on the chosen radio.
-  - Mechanism: not located. There is no `focus()` or `autoFocus` toward the field in `app/` or `lib/`.
+  - Mechanism: PINK's search did not find it. The cause is the F-SX-1 effect in `SyntxField.tsx`, whose optional call `focus?.(…)` that search missed. GRÜN identified it; see §3.37.
   - Owner: GRÜN.
 - **O-URL-ANALYSIS-UNBOUND (informational).**
   - What happens: an analysis opened from the URL (`analysisId`) has no known investigation mode in the frontend. In PERSON × JOB the Job Field compares it with the pool, as before `df2e84e` (T-05: source URL).
@@ -1600,6 +1600,30 @@ real-worker paths were proven on `ad15d7b` in §3.34.
 - What changed: the path is now written repo-relative.
 - Verification: the changed files' lines in each `manifest.sha256` were renewed, and all seven manifests verify.
 - Unchanged: no measured value. The earlier commits still contain the path; rewriting history is the owner's decision.
+
+### 3.37 O-MODE-KEYBOARD-FOCUS closed: GRÜN `bd9eb72` (2026-10-15)
+
+GRÜN found the cause, and PINK confirms it from the diff. The F-SX-1 effect in `SyntxField.tsx` pulls the focus to the field root
+when the Job Field mounts and the focused element lies outside it. Its call is `(target as HTMLElement).focus?.(…)`, which PINK's
+search for `focus(` did not match.
+
+**The fix (`bd9eb72`)** is one new condition in that effect: it leaves alone a focus that lies inside the mode control
+(`[data-sx-shell="investigation"]`). Every other F-SX-1 path is unchanged. `00deaf0` only makes GRÜN's evidence scripts
+repo-relative; PINK found no `/home` path in GRÜN's three-modes evidence.
+
+PINK re-ran on the probe `b6c6200` + `bd9eb72` (evidence in `evidence/job-scope-gate-bd9eb72/`):
+- **Gate walk 74/74.** This includes G-03, where ←/Home on the Job Field must not open the Capability field, so the F-SX-1 keys are unchanged.
+- **`three-modes.e2e` (plain build) 76/76.** After every key, including End PERSON→JOB and → PERSON_X_JOB→JOB when the field moves to FIELD, the focus stays on the chosen radio.
+- **Regression:** 69 files, 61 green + 8 live skipped, 488 tests, 0 network attempts.
+- **Scripts:** identical to `df2e84e`.
+- **`tsc`:** 0.
+- **Network:** 0 Gemini hosts.
+
+**Status.**
+- O-MODE-KEYBOARD-FOCUS is closed.
+- O-URL-ANALYSIS-UNBOUND is with the owner, together with GELB's proposal: show the earlier comparison of a URL analysis only after B2 answers 200 and `comparisonBelongsToSelection` holds for the current selection, with no backend change. It is unchanged.
+- O-B2-OPEN-READ is unchanged.
+- Merge, integration, deployment and live Gemini are still not authorised.
 
 ## 4. Boundaries and findings for coordination
 
