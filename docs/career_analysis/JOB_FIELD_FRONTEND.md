@@ -1279,6 +1279,11 @@ There is no person and no Gemini.
 
 Evidence: `evidence/job-pool/three-modes/`.
 
+**PINK §3.36 (2ac7993).** No deviation from §3.35. Observation O-MODE-KEYBOARD-FOCUS fixed:
+- **Cause:** a keyboard choice of JOB from the Capability Field closes the gate, and the Job Field mounts. Its F-SX-1 effect then moved the focus from the chosen option to the field root, so ← / Home steered the field, not the boundary.
+- **Fix:** the effect leaves a focus that sits in the investigation selector (`[data-sx-shell="investigation"]`) where it is. Every other F-SX-1 path is unchanged.
+- **Proof:** walk MK-4 and MK-5 added (End PERSON→JOB, → PERSON × JOB→JOB): 40/40 (`walk-results-1600-focus.txt`); regression 58 files / 442.
+
 **Lab gotcha.** A long-running `next dev` lab that hot-reloads many edits keeps its database pools: 84 of 100 PostgreSQL connections, which starved parallel e2e runs (NOT_PROVISIONED, timeouts). Restart the lab after edits.
 
 ### 13.3 DOM contract (PINK BR-1 … BR-5; GELB conditions a/b)
@@ -1452,3 +1457,4 @@ observation point. Readable labels wrap at word boundaries (`wrapLines`), never 
 | 2026-10-14 | Owner decision G-10 A / G-05 / every analysis path (on c146f05) | §13.2.25: role id verbatim (non-empty string); `syntx-job-scope-clear` removes the selected job (gate closes, ANALYZE blocked, sources and analyses kept); legacy `/career/analyze` gated and sending `jobScope`. Evidence: `evidence/job-pool/job-scope-removal/` | tsc 0; 35 files / 262 tests (job-pool.postgres on a fresh disposable DB); browser walk 25/25; capability-gate walk 22/22; job-pool-workflow e2e 10/10 (isolated worktree, `e2e-results.txt`) |
 | 2026-10-15 | Binding sentence (owner GO, on 5d6786b) | §13.2.26: `JOB_SCOPE_REQUIRED_MESSAGE` = „Bitte wähle einen Job aus einem Pool aus.“, identical to the backend contract (GELB e643e96) | tsc 0; 17 files / 147 tests; walk 25/25 |
 | 2026-10-15 | Three investigation modes, B2, GEMINI OUTPUT (owner GO "DEMO FRONTEND", on aa17a3b + GELB ad15d7b) | §13.2.27: shell control PERSON · PERSON × JOB · JOB (URL `investigationMode`, ground state PERSON_X_JOB); gate per mode (`JOB_MODE`); ANALYZE declares the boundary; Job Field compares only in PERSON × JOB; B2 body at the selected job; JOB structure body; GEMINI OUTPUT inspector beside BOUNDARY (engineering builds, token in memory only). Evidence: `evidence/job-pool/three-modes/` | tsc: only PINK's pending pdf-path error; new 3 files / 74; regression 58 files / 442; PINK gate walk 74/74; workflow e2e 10/10; lab walk 38/38 at 1600 and 1280 (real worker, loopback stand-in, 0 Gemini hosts) |
+| 2026-10-15 | PINK §3.36 observation O-MODE-KEYBOARD-FOCUS (on 00deaf0) | §13.2.27: the Job Field's F-SX-1 focus effect leaves a focus in the investigation selector alone | tsc unchanged; regression 58 files / 442; walk 40/40 incl. MK-4/MK-5 |

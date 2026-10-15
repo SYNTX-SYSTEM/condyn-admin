@@ -1892,6 +1892,9 @@ export function SyntxField({ workflow, analysisSource, observation: requested, o
     if (root === null || typeof document === "undefined") return;
     const active = document.activeElement;
     if (active !== null && active !== root && active !== document.body && root.contains(active)) return;
+    // The investigation boundary is chosen at the shell: a keyboard choice that brings the Job Field in (JOB closes the Capability
+    // Field) keeps the focus on the chosen option, so ←/Home keep steering the boundary (PINK O-MODE-KEYBOARD-FOCUS, §3.36).
+    if (active instanceof Element && active.closest('[data-sx-shell="investigation"]') !== null) return;
     const target = (observedSignId === null ? null : root.querySelector<HTMLElement | SVGElement>(`[data-sign-id="${observedSignId}"]`)) ?? root;
     (target as HTMLElement).focus?.({ preventScroll: true });
   }, [observation.kind, observation.organizationId, observation.roleId, observation.requirementId, apertureOpen, observedSignId]);
