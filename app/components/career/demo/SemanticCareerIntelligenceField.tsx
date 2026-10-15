@@ -28,6 +28,8 @@ import { FocusTransitionStageShell } from "./manifestation/SyntxFocusShell";
 import { observationFromParams, type SyntxObservation } from "../../../../lib/career/job-pool/syntx-field-view-model";
 import { useJobPoolWorkflow } from "../../../../lib/career/ui/useJobPool";
 import { useJobScopeValidation } from "../../../../lib/career/ui/useJobScope";
+import { useAnalysisBoundary } from "../../../../lib/career/ui/useRoleInvestigation";
+import { legacyJobComparisonPermitted } from "../../../../lib/career/investigation/client";
 import { JOB_SCOPE_REQUIRED_MESSAGE, JOB_SCOPE_URL_PARAMS, isJobScopeErrorCode, jobScopeFromParams, type JobScope } from "../../../../lib/career/job-pool/job-scope";
 import type { SyntxJobScopePresentation } from "./SyntxFieldSelector";
 import { DEFAULT_INVESTIGATION_MODE, INVESTIGATION_URL_PARAM, declareAnalysis, investigationModeFromParam, isInvestigationErrorCode, type InvestigationMode } from "../../../../lib/career/job-pool/investigation-mode";
@@ -291,18 +293,30 @@ export function SemanticCareerIntelligenceField({
     replaceUrlParam(INVESTIGATION_URL_PARAM, next);
   };
   const investigationCopy = t.syntx.investigation;
-  /** The boundary each analysis of this session was submitted under (the job result's own mode; an analysis from the URL has none known). */
-  const [submittedBoundary, setSubmittedBoundary] = useState<{ mode: "PERSON" | "PERSON_X_JOB"; scope: JobScope | null } | null>(null);
 
   // Job Connection: one workflow read shared by the control panel and the Job Field focus (presentation only).
   /** The analysis on view (the job result, else the URL's), independent of the mode: the GEMINI OUTPUT inspector reads it. */
   const viewedAnalysisSource = describeAnalysisSource(jobState === "SUCCEEDED" ? job.state.resultAnalysisId : null, analysisId ?? null);
-  const viewedAnalysisMode: "PERSON" | "PERSON_X_JOB" | null = viewedAnalysisSource.kind === "JOB_RESULT" ? submittedBoundary?.mode ?? null : null;
-  /** The Job Field compares an analysis with the pool only in PERSON × JOB, and never a PERSON analysis (PERSON: no job comparison;
-   *  JOB reads no analysis). Outside it the field shows the pools without any analysis. */
-  const jobComparisonAllowed = investigationMode === "PERSON_X_JOB" && viewedAnalysisMode !== "PERSON";
+  /** SFE job-scope invariant: one selected job for both fields; independent of the observation point (return, field change and pool change keep it). */
+  const [jobScope, setJobScope] = useState<JobScope | null>(() => jobScopeFromParams(initialJobScopePoolUploadId, initialJobScopeRoleId));
+  const jobScopeValidation = useJobScopeValidation(jobScope);
+  /** URL BOUNDARY CLOSURE (owner, 2026-10-15): analysisId → the boundary its job was persisted with → the projection. One rule for
+   *  every analysis on view (job result or URL); never guessed from the interface state. */
+  const analysisBoundary = useAnalysisBoundary(viewedAnalysisSource.kind === "NONE" ? null : viewedAnalysisSource.analysisId);
+  const viewedAnalysisMode: "PERSON" | "PERSON_X_JOB" | null = analysisBoundary.state === "RESOLVED" ? analysisBoundary.value.mode : null;
+  /** The pool the analysis was investigated in (its persisted PERSON_X_JOB scope's upload); never the interface's. */
+  const analysisPool: string | null = analysisBoundary.state === "RESOLVED" && analysisBoundary.value.mode === "PERSON_X_JOB" ? analysisBoundary.value.jobScopeSelection?.jobPoolUploadId ?? null : null;
+  /** The Job Field compares an analysis with a pool only in PERSON × JOB, only for an analysis whose persisted boundary is
+   *  PERSON_X_JOB, and only with the very pool it was investigated in (GELB legacyJobComparisonPermitted: no comparison across job
+   *  scopes, also not with another version of the pool). The role is not a condition (the legacy comparison is pool-wide; the
+   *  role-exact one is B2). A PERSON analysis, a boundary still being read, one the server cannot name, or another pool compare
+   *  nothing (no misleading matching); the pool is never switched silently. JOB reads no analysis. */
+  const comparisonCandidate = investigationMode === "PERSON_X_JOB" && analysisPool !== null;
+  const jobPoolWorkflow = useJobPoolWorkflow({ analysisId: comparisonCandidate && viewedAnalysisSource.kind !== "NONE" ? viewedAnalysisSource.analysisId : null, analysisJobPoolUploadId: analysisPool, initialJobPoolUploadId: jobPoolUploadId ?? null });
+  const jobComparisonAllowed = investigationMode === "PERSON_X_JOB" && viewedAnalysisSource.kind !== "NONE" && jobPoolWorkflow.selectedJobPoolUploadId !== null
+    && legacyJobComparisonPermitted(analysisBoundary.state === "RESOLVED" ? analysisBoundary : null, { analysisId: viewedAnalysisSource.analysisId, jobPoolUploadId: jobPoolWorkflow.selectedJobPoolUploadId });
+  const comparisonWithheld: "RESOLVING" | "PERSON" | "UNRESOLVED" | "OTHER_POOL" | null = investigationMode !== "PERSON_X_JOB" || viewedAnalysisSource.kind === "NONE" || jobComparisonAllowed ? null : analysisBoundary.state === "RESOLVING" || analysisBoundary.state === "IDLE" ? "RESOLVING" : viewedAnalysisMode === "PERSON" ? "PERSON" : analysisPool !== null ? (jobPoolWorkflow.selectedJobPoolUploadId === null ? null : "OTHER_POOL") : "UNRESOLVED";
   const jobPoolAnalysisSource = jobComparisonAllowed ? viewedAnalysisSource : describeAnalysisSource(null, null);
-  const jobPoolWorkflow = useJobPoolWorkflow({ analysisId: jobPoolAnalysisSource.kind === "NONE" ? null : jobPoolAnalysisSource.analysisId, initialJobPoolUploadId: jobPoolUploadId ?? null });
   /** The requested field. Job Pool first (owner "JOB POOL FIRST / CAPABILITY GATE"): the Job Field is the ground state; CAPABILITY is
    *  only requested here — it becomes the active field only while the job scope is VALID (`activeFieldFocus`, below). */
   const [fieldFocus, setFieldFocus] = useState<"CAPABILITY" | "FIELD">(initialFieldFocus ?? "FIELD");
@@ -337,9 +351,6 @@ export function SemanticCareerIntelligenceField({
   /** Selection reorganises the field and is reversible; the observation point is written to the URL (the aperture never is). */
   const observeField = (next: SyntxObservation) => { setObservation(next); writeObservation(next); };
   const selectJobPool = (id: string) => { jobPoolWorkflow.select(id); replaceUrlParam("jobPoolUploadId", id); observeField(FIELD_LEVEL); };
-  /** SFE job-scope invariant: one selected job for both fields; independent of the observation point (return, field change and pool change keep it). */
-  const [jobScope, setJobScope] = useState<JobScope | null>(() => jobScopeFromParams(initialJobScopePoolUploadId, initialJobScopeRoleId));
-  const jobScopeValidation = useJobScopeValidation(jobScope);
   const selectJobScope = (poolRoleId: string) => {
     const uploadId = jobPoolWorkflow.selectedJobPoolUploadId;
     const next = uploadId === null ? null : jobScopeFromParams(uploadId, poolRoleId);
@@ -493,7 +504,6 @@ export function SemanticCareerIntelligenceField({
       return { type: "text", content: doc.content, title: doc.title, docId: doc.id };
     });
 
-    setSubmittedBoundary({ mode: declared.mode, scope: "jobScope" in declared.declaration ? declared.declaration.jobScope : null });
     job.submitAnalysis({ documents: documentsPayload, ...declared.declaration });
   };
 
@@ -818,7 +828,7 @@ export function SemanticCareerIntelligenceField({
           <div style={{ fontSize: "10px", color: SIL_TOKENS.colors.textPrimary }}>
             {t.analysis.successSubtitle}
           </div>
-          {viewedAnalysisMode !== null && <div data-testid="intake-success-investigation" data-investigation-mode={viewedAnalysisMode} style={{ fontSize: "9.5px", letterSpacing: "1.2px", color: "rgba(196, 236, 248, 0.86)" }}>{investigationCopy.result[viewedAnalysisMode]}{viewedAnalysisMode === "PERSON_X_JOB" && submittedBoundary?.scope ? ` · ${submittedBoundary.scope.poolRoleId}` : ""}</div>}
+          {viewedAnalysisMode !== null && <div data-testid="intake-success-investigation" data-investigation-mode={viewedAnalysisMode} style={{ fontSize: "9.5px", letterSpacing: "1.2px", color: "rgba(196, 236, 248, 0.86)" }}>{investigationCopy.result[viewedAnalysisMode]}{analysisBoundary.state === "RESOLVED" && analysisBoundary.value.jobScopeSelection !== null ? ` · ${analysisBoundary.value.jobScopeSelection.poolRoleId}` : ""}</div>}
         </div>
       )}
 
@@ -1558,7 +1568,7 @@ export function SemanticCareerIntelligenceField({
       {/* FIELD focus: the SYNTX semiontic field — the selected Job Pool as the relational field; the capability planetarium recedes underneath (still rendered, not interactive). */}
       {activeFieldFocus === "FIELD" && (
         <SyntxField
-          workflow={jobPoolWorkflow}
+          workflow={jobComparisonAllowed ? jobPoolWorkflow : { ...jobPoolWorkflow, matches: { state: "IDLE" } }}
           analysisSource={jobPoolAnalysisSource}
           observation={observation}
           onObserve={observeField}
@@ -1570,7 +1580,7 @@ export function SemanticCareerIntelligenceField({
           onClearJobScope={clearJobScope}
           capabilityAvailable={capabilityGateOpen}
           capabilityGatedHint={capabilityGatedHint}
-          investigation={{ mode: investigationMode, analysisId: viewedAnalysisSource.kind === "NONE" ? null : viewedAnalysisSource.analysisId, analysisMode: viewedAnalysisMode, jobId: viewedAnalysisSource.kind === "JOB_RESULT" ? job.state.activeJobId : null, scopeValid: jobScopeValidation.state === "VALID" }}
+          investigation={{ mode: investigationMode, analysisId: viewedAnalysisSource.kind === "NONE" ? null : viewedAnalysisSource.analysisId, analysisMode: viewedAnalysisMode, comparisonWithheld, analysisPool, onOpenAnalysisPool: analysisPool === null ? undefined : () => selectJobPool(analysisPool), jobId: viewedAnalysisSource.kind === "JOB_RESULT" ? job.state.activeJobId : null, scopeValid: jobScopeValidation.state === "VALID" }}
         />
       )}
 

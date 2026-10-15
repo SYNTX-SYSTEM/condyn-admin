@@ -1528,8 +1528,13 @@ export interface SyntxInvestigationContext {
   mode: InvestigationMode;
   /** The analysis on view (job result or URL), independent of the mode; the inspector and B2 read it. */
   analysisId: string | null;
-  /** The boundary the analysis was submitted under in this session; null when unknown (an analysis from the URL). */
+  /** The persisted boundary of the analysis on view (read from the server); null while unknown or unresolvable. */
   analysisMode: "PERSON" | "PERSON_X_JOB" | null;
+  /** In PERSON × JOB: why the analysis on view is not compared — its boundary is still being read, it is PERSON, or it cannot be named. */
+  comparisonWithheld?: "RESOLVING" | "PERSON" | "UNRESOLVED" | "OTHER_POOL" | null;
+  /** The pool the analysis was investigated in; offered for an explicit selection when another pool is on view (never switched silently). */
+  analysisPool?: string | null;
+  onOpenAnalysisPool?(): void;
   /** The execution job of the analysis on view, when this session submitted it. */
   jobId: string | null;
   /** The selected job scope is VALID (validated against its stored pool). */
@@ -1877,6 +1882,7 @@ export function SyntxField({ workflow, analysisSource, observation: requested, o
   const observedSignId = observation.kind === "ORGANIZATION" ? `org:${observation.organizationId}` : observation.kind === "ROLE" ? `role:${observation.roleId}` : observation.kind === "REQUIREMENT" ? `req:${observation.requirementId}` : null;
   const apertureOpen = field?.aperture !== null && field?.aperture !== undefined;
   const investigation: SyntxInvestigationContext = investigationContext ?? { mode: "PERSON_X_JOB", analysisId: analysisSource.kind === "NONE" ? null : analysisSource.analysisId, analysisMode: null, jobId: null, scopeValid: jobScope !== null };
+  const withheld = investigation.mode === "PERSON_X_JOB" ? investigation.comparisonWithheld ?? null : null;
   /** Role-bound: the bodies of PERSON × JOB (B2) and JOB (structure) belong to exactly the selected job, observed at its role. */
   const atSelectedJob = field !== null && jobScope !== null && investigation.scopeValid && jobScope.jobPoolUploadId === field.pool.jobPoolUploadId && (observation.kind === "ROLE" || observation.kind === "REQUIREMENT") && observation.roleId === jobScope.poolRoleId;
   const investigationBody: "COVERAGE" | "STRUCTURE" | null = !atSelectedJob ? null : investigation.mode === "PERSON_X_JOB" ? "COVERAGE" : investigation.mode === "JOB" ? "STRUCTURE" : null;
@@ -1959,6 +1965,7 @@ export function SyntxField({ workflow, analysisSource, observation: requested, o
       data-intake-visible={intakeVisible ? "true" : "false"}
       data-boundary-visible={boundaryOpen ? "true" : "false"}
       data-investigation-mode={investigation.mode}
+      data-analysis-boundary={withheld ?? (investigation.analysisMode ?? "")}
       data-investigation-body={investigationBody ?? ""}
       data-investigation-visible={investigationVisible ? "true" : "false"}
       data-gemini-output-visible={geminiOpen ? "true" : "false"}
@@ -1981,7 +1988,13 @@ export function SyntxField({ workflow, analysisSource, observation: requested, o
         {resolution.stale !== null && <span data-testid="syntx-stale" data-stale-kind={resolution.stale.kind} data-stale-id={resolution.stale.id} data-sx-reveal="true" style={{ ...lens, ...prose, color: AMBER, position: "absolute", left: "50%", top: "calc(50% + 150px)", transform: "translateX(-50%)", width: "min(320px, 40%)", textAlign: "center", zIndex: 41 }}>{t.stale[resolution.stale.kind]}</span>}
         {state === "NO_POOL" && <NoPoolGiant copy={t.noPool} />}
         {investigation.mode !== "PERSON_X_JOB" && field !== null && <span data-testid="syntx-investigation-statement" data-investigation-mode={investigation.mode} style={{ ...micro, color: "rgba(196, 236, 248, 0.86)", position: "absolute", left: "50%", bottom: "calc(var(--condyn-page-header-height, 60px) + 44px)", transform: "translateX(-50%)", width: "min(560px, 80%)", textAlign: "center", zIndex: 41 }}>{t.investigation.field[investigation.mode]}</span>}
-        {investigation.mode === "PERSON_X_JOB" && state === "NO_ANALYSIS" && field !== null && <span data-testid="syntx-no-analysis" style={{ ...micro, color: AMBER, position: "absolute", left: "50%", bottom: "calc(var(--condyn-page-header-height, 60px) + 44px)", transform: "translateX(-50%)", width: "min(520px, 80%)", textAlign: "center", zIndex: 41 }}>{tp.analysisNone}</span>}
+        {withheld !== null && field !== null && (
+          <span data-testid="syntx-analysis-boundary" data-boundary-state={withheld} data-analysis-pool={investigation.analysisPool ?? ""} style={{ ...micro, color: AMBER, position: "absolute", left: "50%", bottom: "calc(var(--condyn-page-header-height, 60px) + 64px)", transform: "translateX(-50%)", width: "min(560px, 80%)", textAlign: "center", zIndex: 46, display: "flex", flexDirection: "column", alignItems: "center", gap: "8px" }}>
+            <span>{t.investigation.withheld[withheld]}{withheld === "OTHER_POOL" && investigation.analysisPool ? ` ${listed.find(pool => pool.jobPoolUploadId === investigation.analysisPool)?.poolName ?? investigation.analysisPool}` : ""}</span>
+            {withheld === "OTHER_POOL" && investigation.onOpenAnalysisPool && <button data-testid="syntx-analysis-pool-open" data-sx-orient-action onClick={investigation.onOpenAnalysisPool} style={{ ...orientAction(false), fontSize: "8.5px", letterSpacing: "1.3px", padding: "4px 12px" }}>{t.investigation.openAnalysisPool}</button>}
+          </span>
+        )}
+        {investigation.mode === "PERSON_X_JOB" && withheld === null && state === "NO_ANALYSIS" && field !== null && <span data-testid="syntx-no-analysis" style={{ ...micro, color: AMBER, position: "absolute", left: "50%", bottom: "calc(var(--condyn-page-header-height, 60px) + 44px)", transform: "translateX(-50%)", width: "min(520px, 80%)", textAlign: "center", zIndex: 41 }}>{tp.analysisNone}</span>}
       </div>
 
       {/* Orientation surface: (A) the field and its relation to the Capability Field, (B) the observation path (each step a return),
@@ -2014,7 +2027,7 @@ export function SyntxField({ workflow, analysisSource, observation: requested, o
         {/* C · the read state, D · the keys. */}
         <span data-testid="syntx-state" data-state={state} style={{ ...micro, alignSelf: "flex-start", display: "inline-flex", alignItems: "center", gap: "8px", marginTop: "10px", padding: "3px 10px 3px 8px", borderRadius: "999px", fontSize: "8.5px", letterSpacing: "1.3px", color: state === "AVAILABLE" ? "rgba(196, 236, 248, 0.92)" : AMBER, border: `1px solid ${state === "AVAILABLE" ? "rgba(56, 229, 255, 0.28)" : "rgba(245, 166, 35, 0.4)"}`, background: state === "AVAILABLE" ? "rgba(56, 229, 255, 0.06)" : "rgba(245, 166, 35, 0.07)" }}>
           <span aria-hidden="true" style={{ width: "6px", height: "6px", borderRadius: "50%", backgroundColor: state === "AVAILABLE" ? CYAN : AMBER, boxShadow: `0 0 6px ${state === "AVAILABLE" ? CYAN : AMBER}`, flexShrink: 0 }} />
-          {investigation.mode !== "PERSON_X_JOB" && state !== "NO_POOL" ? t.investigation.state[investigation.mode] : state === "AVAILABLE" ? t.matching : state === "NO_POOL" ? tp.selectionNone : state === "NO_ANALYSIS" ? tp.analysisNone : state === "LOADING" ? tp.matchesLoading : state === "NOT_FOUND" ? tp.matchesNotFound : state === "INACTIVE_POOL" ? tp.matchesInactive : state === "NOT_PROVISIONED" ? tp.notProvisioned : tp.matchesFailed}
+          {investigation.mode !== "PERSON_X_JOB" && state !== "NO_POOL" ? t.investigation.state[investigation.mode] : withheld !== null && state !== "NO_POOL" ? t.investigation.withheld[withheld] : state === "AVAILABLE" ? t.matching : state === "NO_POOL" ? tp.selectionNone : state === "NO_ANALYSIS" ? tp.analysisNone : state === "LOADING" ? tp.matchesLoading : state === "NOT_FOUND" ? tp.matchesNotFound : state === "INACTIVE_POOL" ? tp.matchesInactive : state === "NOT_PROVISIONED" ? tp.notProvisioned : tp.matchesFailed}
         </span>
         {/* C' · the job scope: the observed role becomes the selected job only by this explicit action (SFE invariant). */}
         {field !== null && onSelectJobScope !== undefined && (observation.kind === "ROLE" || observation.kind === "REQUIREMENT") && observation.roleId !== null && (() => {

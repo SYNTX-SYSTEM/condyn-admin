@@ -1286,6 +1286,44 @@ Evidence: `evidence/job-pool/three-modes/`.
 
 **Lab gotcha.** A long-running `next dev` lab that hot-reloads many edits keeps its database pools: 84 of 100 PostgreSQL connections, which starved parallel e2e runs (NOT_PROVISIONED, timeouts). Restart the lab after edits.
 
+#### 13.2.28 URL boundary closure: analysisId → persisted boundary → projection (owner "SFE — GELB / GRÜN | URL BOUNDARY CLOSURE", 2026-10-15)
+
+PINK O-URL-ANALYSIS-UNBOUND (§3.36): an analysis opened from the URL had no known mode, so in PERSON × JOB the Job Field compared it as
+before. The relation is now closed on GELB's contract `ANALYSIS_INVESTIGATION_V1`
+(`GET /api/career/analyses/{analysisId}/investigation`, client `lib/career/investigation/client.ts`, GELB 26df225 / ef189d3, merged as 7507454).
+The boundary is resolved only from persisted relations (the analysis's job, its declaration and its Discovery run) and never
+guessed from the interface.
+
+**One rule for every analysis on view** (job result and URL alike; `useAnalysisBoundary`, the analysis id is the only key):
+
+| Persisted boundary | Job Field in PERSON × JOB | `data-analysis-boundary` |
+|---|---|---|
+| being read | no comparison, „… WIRD GELESEN · NOCH KEIN VERGLEICH“ | `RESOLVING` |
+| PERSON | no comparison, „Diese Analyse ist eine PERSON-Analyse: kein Jobvergleich.“ | `PERSON` |
+| UNRESOLVED (no job recorded, nothing declared, contradiction, ambiguity), unknown, failed | no comparison, „Untersuchungsgrenze dieser Analyse nicht auflösbar: kein Jobvergleich.“ | `UNRESOLVED` |
+| PERSON_X_JOB, another pool on view (also another version of the pool) | no comparison across job scopes, the analysis's pool named, `syntx-analysis-pool-open` opens it explicitly (never a silent switch) | `OTHER_POOL` |
+| PERSON_X_JOB, its own pool on view | the comparison as before (existing links unchanged) | `PERSON_X_JOB` |
+
+- **Where the comparison is withheld.**
+  - `useJobPoolWorkflow` reads `/matches` only for the analysis's own pool (`analysisJobPoolUploadId`).
+  - The field never shows matches outside the permitted comparison.
+- **What decides it.** Only the analysis and the pool decide. The role is not a condition: the legacy comparison is pool-wide, and the role-exact one is B2. GELB puts a role-exact variant to the owner as an option.
+- **Banner.** The success banner names the resolved boundary, not the submitted one.
+- **Fixtures.** The e2e world now persists the analysis's job `JOB_JOB_POOL_E2E_0001`: SUCCEEDED, `result_analysis_id` = the analysis, declared PERSON_X_JOB for the sample pool's `role_fullstack`. An analysis row without a job stays UNRESOLVED (`NOT_RECORDED`).
+- **Workflow e2e.** The test selects the new pool version and shows OTHER_POOL there, then walks the analysis's own pool after the explicit action.
+
+**Proof** (no live Gemini, 3017 and 41831 untouched):
+- **Tests:** tsc unchanged; SSR / unit 9 files / 128 incl. RESOLVING, PERSON, UNRESOLVED, NOT_FOUND, FAILED, OTHER_POOL and own pool.
+- **Workflow e2e:** 10/10 with the persisted job.
+- **Lab walk:** 46/46 at 1600 × 1000 and 1280 × 720. MU-1 … MU-6 cover:
+  - a PERSON analysis from the URL;
+  - a PERSON × JOB analysis in its own pool;
+  - the same analysis in another pool, then the explicit open;
+  - an unknown analysis;
+  - an analysis row without a job, which resolves to 409 `NOT_RECORDED`.
+- **Network:** 0 Gemini hosts. Evidence `evidence/job-pool/three-modes/` (09, 10 and the walk results).
+
+
 ### 13.3 DOM contract (PINK BR-1 … BR-5; GELB conditions a/b)
 
 **BR-1 field root** `data-testid="syntx-field"`: `data-field-grammar="SYNTX_FIELD_V1"`, `data-observation-kind` FIELD|ORGANIZATION|ROLE|REQUIREMENT
@@ -1458,3 +1496,4 @@ observation point. Readable labels wrap at word boundaries (`wrapLines`), never 
 | 2026-10-15 | Binding sentence (owner GO, on 5d6786b) | §13.2.26: `JOB_SCOPE_REQUIRED_MESSAGE` = „Bitte wähle einen Job aus einem Pool aus.“, identical to the backend contract (GELB e643e96) | tsc 0; 17 files / 147 tests; walk 25/25 |
 | 2026-10-15 | Three investigation modes, B2, GEMINI OUTPUT (owner GO "DEMO FRONTEND", on aa17a3b + GELB ad15d7b) | §13.2.27: shell control PERSON · PERSON × JOB · JOB (URL `investigationMode`, ground state PERSON_X_JOB); gate per mode (`JOB_MODE`); ANALYZE declares the boundary; Job Field compares only in PERSON × JOB; B2 body at the selected job; JOB structure body; GEMINI OUTPUT inspector beside BOUNDARY (engineering builds, token in memory only). Evidence: `evidence/job-pool/three-modes/` | tsc: only PINK's pending pdf-path error; new 3 files / 74; regression 58 files / 442; PINK gate walk 74/74; workflow e2e 10/10; lab walk 38/38 at 1600 and 1280 (real worker, loopback stand-in, 0 Gemini hosts) |
 | 2026-10-15 | PINK §3.36 observation O-MODE-KEYBOARD-FOCUS (on 00deaf0) | §13.2.27: the Job Field's F-SX-1 focus effect leaves a focus in the investigation selector alone | tsc unchanged; regression 58 files / 442; walk 40/40 incl. MK-4/MK-5 |
+| 2026-10-15 | URL boundary closure (owner "SFE — GELB / GRÜN | URL BOUNDARY CLOSURE", on bd9eb72 + GELB 26df225 / ef189d3) | §13.2.28: the Job Field compares an analysis only when its persisted boundary is PERSON_X_JOB and its own pool is on view (`legacyJobComparisonPermitted`); RESOLVING / PERSON / UNRESOLVED / OTHER_POOL named, the pool opened only explicitly; e2e world persists the analysis's job | tsc unchanged; 9 files / 128; workflow e2e 10/10; lab walk 46/46 at 1600 and 1280; 0 Gemini hosts |

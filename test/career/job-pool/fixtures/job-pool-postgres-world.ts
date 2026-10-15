@@ -11,6 +11,9 @@
 import { drizzle } from "drizzle-orm/postgres-js";
 import type { Sql } from "postgres";
 import { PostgresCareerAnalysisRepository } from "../../../../lib/career/repositories/postgres";
+import { JobRepository } from "../../../../lib/career/orchestration/job-repository";
+import { createJob } from "../../../../lib/career/orchestration/job";
+import { parseJobPoolUpload } from "../../../../lib/career/job-pool/upload";
 import { registerUnifiedPersistenceSchema } from "../../../../lib/persistence/unified-schema-registration";
 import { dropDisposableTestDatabase } from "../../../../lib/database-isolation/verification";
 import type { VerifiedCareerAnalysis } from "../../../../lib/career/types";
@@ -19,6 +22,9 @@ import { fixtureCapabilities, samplePoolText, verifiedAnalysis } from "../fixtur
 
 export const JOB_POOL_E2E_ANALYSIS_ID = "ANL_JOB_POOL_E2E_0001";
 export const JOB_POOL_E2E_UPLOADER = "JOB_POOL_E2E_UPLOADER";
+/** The analysis's persisted job (URL BOUNDARY CLOSURE, 2026-10-15): the processor's rule JOB_ ↔ ANL_, SUCCEEDED with this result, declared
+ *  PERSON_X_JOB for the sample pool's role_fullstack — so the analysis's boundary resolves from persisted relations, never from the UI. */
+export const JOB_POOL_E2E_JOB_ID = "JOB_JOB_POOL_E2E_0001";
 /** The seeded capability the proofs follow end to end: EXACT match of req_001 (TypeScript) in role_fullstack. */
 export const JOB_POOL_E2E_TARGET = Object.freeze({
   roleId: "role_fullstack",
@@ -60,6 +66,11 @@ export function buildSeededAnalysis(): VerifiedCareerAnalysis {
   return analysis;
 }
 
+/** The job scope the seeded analysis was declared with: the sample pool's upload (id derived from its canonical content) and role_fullstack. */
+export function samplePoolJobScope(text = samplePoolText()): { jobPoolUploadId: string; poolRoleId: string } {
+  return { jobPoolUploadId: parseJobPoolUpload(text).jobPoolUploadId, poolRoleId: JOB_POOL_E2E_TARGET.roleId };
+}
+
 export interface JobPoolWorld {
   databaseName: string;
   databaseUrl: string;
@@ -81,6 +92,7 @@ export async function createJobPoolPostgresWorld(): Promise<JobPoolWorld> {
     await registerUnifiedPersistenceSchema(sql);
     const { text, pool } = readSamplePool();
     await new PostgresCareerAnalysisRepository(drizzle(sql)).save(buildSeededAnalysis());
+    await new JobRepository(drizzle(sql)).enqueueJob({ ...createJob("CAREER_ANALYSIS", { sourceType: "BATCH", sourceData: { documents: [{ type: "text", title: JOB_POOL_E2E_SOURCE.title, content: JOB_POOL_E2E_TARGET.quote }], investigation: { mode: "PERSON_X_JOB" }, jobScope: samplePoolJobScope(text) } } as never), jobId: JOB_POOL_E2E_JOB_ID, status: "SUCCEEDED", attemptCount: 1, resultAnalysisId: JOB_POOL_E2E_ANALYSIS_ID, completedAt: new Date().toISOString() });
     return { databaseName, databaseUrl, sql, analysisId: JOB_POOL_E2E_ANALYSIS_ID, samplePoolText: text, samplePool: pool, destroy };
   } catch (error) {
     await destroy().catch(() => undefined);

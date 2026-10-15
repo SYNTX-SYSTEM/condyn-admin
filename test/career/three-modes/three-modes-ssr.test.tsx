@@ -9,7 +9,8 @@ import { coverage, structure } from "./fixtures";
 const control = vi.hoisted(() => ({
   job: { state: "IDLE", activeJobId: null, resultAnalysisId: null, canonicalAnalysis: null, currentOperation: null, attemptCount: null, errorCode: null, errorSummary: null, httpStatus: null } as Record<string, unknown>,
   scope: { state: "NONE" } as JobScopeValidation,
-  workflowAnalysis: [] as Array<string | null>
+  workflowAnalysis: [] as Array<string | null>,
+  boundary: { state: "RESOLVING" } as Record<string, unknown>
 }));
 vi.mock("../../../lib/career/ui/useCareerAnalysisJob", () => ({ useCareerAnalysisJob: () => ({ state: control.job, submitAnalysis: async () => undefined }) }));
 vi.mock("../../../lib/career/ui/useJobScope", () => ({ useJobScopeValidation: () => control.scope }));
@@ -20,6 +21,7 @@ vi.mock("../../../lib/career/ui/useJobPool", async (importOriginal) => {
   return { ...original, useJobPoolWorkflow: (options: { analysisId: string | null; initialJobPoolUploadId?: string | null }) => { control.workflowAnalysis.push(options.analysisId); return options.initialJobPoolUploadId === "JPOOL_WITH_MATCHES" && options.analysisId !== null ? withMatches() : options.initialJobPoolUploadId === "JPOOL_WITH_MATCHES" ? { ...withMatches(), matches: { state: "IDLE" } } : idle(options.initialJobPoolUploadId ?? null); } };
 });
 vi.mock("../../../lib/career/ui/useJobPoolSources", () => ({ useAnalysisSources: () => ({ state: "IDLE" }) }));
+vi.mock("../../../lib/career/ui/useRoleInvestigation", async (importOriginal) => ({ ...(await importOriginal<typeof import("../../../lib/career/ui/useRoleInvestigation")>()), useAnalysisBoundary: (analysisId: string | null) => analysisId === null ? { state: "IDLE" } : control.boundary }));
 
 import { SemanticCareerIntelligenceField } from "../../../app/components/career/demo/SemanticCareerIntelligenceField";
 import { SyntxInvestigationSelector } from "../../../app/components/career/demo/SyntxInvestigationSelector";
@@ -37,6 +39,7 @@ beforeEach(() => {
   control.job = { state: "IDLE", activeJobId: null, resultAnalysisId: null, canonicalAnalysis: null, currentOperation: null, attemptCount: null, errorCode: null, errorSummary: null, httpStatus: null };
   control.scope = { state: "NONE" };
   control.workflowAnalysis = [];
+  control.boundary = { state: "RESOLVED", value: { investigationVersion: "ANALYSIS_INVESTIGATION_V1", analysisId: "ANL_TEST", jobId: "JOB_TEST", mode: "PERSON_X_JOB", jobScopeSelection: { jobPoolUploadId: UPLOAD_ID, poolRoleId: "ROLE_A" }, basis: "JOB_DECLARATION", discoveryRunId: null, investigationScopeHash: null } };
 });
 
 describe("the investigation boundary at the shell", () => {
@@ -80,6 +83,38 @@ describe("the investigation boundary at the shell", () => {
     expect(tag(html, "semantic-career-intelligence-field")).toContain('data-capability-gate="JOB_MODE"');
     expect(tag(html, "semantic-career-intelligence-field")).toContain('data-field-focus="FIELD"');
     expect(tag(html, "field-focus-capability-btn")).toContain(`title="${en.investigation.capabilityGatedJob}"`);
+  });
+
+  it.each([
+    ["RESOLVING", { state: "RESOLVING" }, "RESOLVING", SIL_COPY.en.syntx.investigation.withheld.RESOLVING],
+    ["a PERSON analysis", { state: "RESOLVED", value: { investigationVersion: "ANALYSIS_INVESTIGATION_V1", analysisId: "ANL_TEST", jobId: "JOB_TEST", mode: "PERSON", jobScopeSelection: null, basis: "JOB_DECLARATION", discoveryRunId: null, investigationScopeHash: null } }, "PERSON", SIL_COPY.en.syntx.investigation.withheld.PERSON],
+    ["UNRESOLVED (no job recorded)", { state: "UNRESOLVED", reason: "NOT_RECORDED" }, "UNRESOLVED", SIL_COPY.en.syntx.investigation.withheld.UNRESOLVED],
+    ["NOT_FOUND", { state: "NOT_FOUND" }, "UNRESOLVED", SIL_COPY.en.syntx.investigation.withheld.UNRESOLVED],
+    ["FAILED", { state: "FAILED" }, "UNRESOLVED", SIL_COPY.en.syntx.investigation.withheld.UNRESOLVED]
+  ])("URL BOUNDARY CLOSURE — an analysis from the URL whose boundary is %s is not compared in PERSON × JOB, and says why", (_label, boundary, state, sentence) => {
+    control.boundary = boundary;
+    const html = field({ fieldFocus: "FIELD", jobPoolUploadId: "JPOOL_WITH_MATCHES", analysisId: "ANL_TEST" });
+    expect(control.workflowAnalysis.at(-1)).toBeNull();
+    expect(tag(html, "syntx-field")).toContain(`data-analysis-boundary="${state}"`);
+    expect(tag(html, "syntx-analysis-boundary")).toContain(`data-boundary-state="${state}"`);
+    expect(html).toContain(sentence);
+    expect(html).not.toContain('data-testid="syntx-no-analysis"');
+  });
+
+  it("URL BOUNDARY CLOSURE — a PERSON × JOB analysis on view in another pool (or pool version) is not compared; its own pool is offered explicitly", () => {
+    control.boundary = { state: "RESOLVED", value: { investigationVersion: "ANALYSIS_INVESTIGATION_V1", analysisId: "ANL_TEST", jobId: "JOB_TEST", mode: "PERSON_X_JOB", jobScopeSelection: { jobPoolUploadId: "JPOOL_B94850C439974E27496FE3B1A9A076B5", poolRoleId: "ROLE_A" }, basis: "JOB_DECLARATION", discoveryRunId: null, investigationScopeHash: null } };
+    const html = field({ fieldFocus: "FIELD", jobPoolUploadId: "JPOOL_WITH_MATCHES", analysisId: "ANL_TEST" });
+    expect(tag(html, "syntx-analysis-boundary")).toContain('data-boundary-state="OTHER_POOL"');
+    expect(tag(html, "syntx-analysis-boundary")).toContain('data-analysis-pool="JPOOL_B94850C439974E27496FE3B1A9A076B5"');
+    expect(html).toContain('data-testid="syntx-analysis-pool-open"');
+    expect(tag(html, "syntx-field")).toContain('data-matching-delivered="false"');
+  });
+
+  it("URL BOUNDARY CLOSURE — a resolved PERSON × JOB analysis keeps its comparison (existing links unchanged)", () => {
+    const html = field({ fieldFocus: "FIELD", jobPoolUploadId: "JPOOL_WITH_MATCHES", analysisId: "ANL_TEST" });
+    expect(control.workflowAnalysis.at(-1)).toBe("ANL_TEST");
+    expect(tag(html, "syntx-field")).toContain('data-analysis-boundary="PERSON_X_JOB"');
+    expect(html).not.toContain('data-testid="syntx-analysis-boundary"');
   });
 
   it("an unknown mode in the URL is no choice (ground state)", () => {

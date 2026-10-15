@@ -139,12 +139,15 @@ export async function fetchJobPoolMatches(jobPoolUploadId: string, analysisId: s
 export interface UseJobPoolWorkflowOptions {
   /** Exact analysis the matches are read for; null means no match read at all. */
   analysisId: string | null;
+  /** The only pool the analysis may be compared with (its persisted job scope's upload, URL BOUNDARY CLOSURE); matches are read for no
+   *  other pool. Absent: no restriction (earlier callers). */
+  analysisJobPoolUploadId?: string | null;
   /** Exact upload selected by the product workflow (URL); never inferred. */
   initialJobPoolUploadId?: string | null;
   fetcher?: Fetcher;
 }
 
-export function useJobPoolWorkflow({ analysisId, initialJobPoolUploadId = null, fetcher = defaultFetcher }: UseJobPoolWorkflowOptions) {
+export function useJobPoolWorkflow({ analysisId, analysisJobPoolUploadId, initialJobPoolUploadId = null, fetcher = defaultFetcher }: UseJobPoolWorkflowOptions) {
   const [pools, setPools] = useState<JobPoolListState>({ state: "IDLE" });
   const [upload, setUpload] = useState<JobPoolUploadState>({ state: "IDLE" });
   const [selectedJobPoolUploadId, setSelectedJobPoolUploadId] = useState<string | null>(initialJobPoolUploadId && initialJobPoolUploadId.length > 0 ? initialJobPoolUploadId : null);
@@ -176,14 +179,14 @@ export function useJobPoolWorkflow({ analysisId, initialJobPoolUploadId = null, 
   }, [selectedJobPoolUploadId, fetcher]);
 
   const reloadMatches = useCallback(async () => {
-    if (selectedJobPoolUploadId === null || analysisId === null) { setMatches({ state: "IDLE" }); return; }
+    if (selectedJobPoolUploadId === null || analysisId === null || (analysisJobPoolUploadId !== undefined && analysisJobPoolUploadId !== selectedJobPoolUploadId)) { setMatches({ state: "IDLE" }); return; }
     const current = matchGeneration.current + 1;
     matchGeneration.current = current;
     setMatches({ state: "LOADING", jobPoolUploadId: selectedJobPoolUploadId, analysisId });
     let next: JobPoolMatchState;
     try { next = await fetchJobPoolMatches(selectedJobPoolUploadId, analysisId, fetcher); } catch { next = { state: "FAILED", jobPoolUploadId: selectedJobPoolUploadId, analysisId, code: null }; }
     if (matchGeneration.current === current) setMatches(next);
-  }, [selectedJobPoolUploadId, analysisId, fetcher]);
+  }, [selectedJobPoolUploadId, analysisId, analysisJobPoolUploadId, fetcher]);
 
   useEffect(() => { void reloadMatches(); }, [reloadMatches]);
 

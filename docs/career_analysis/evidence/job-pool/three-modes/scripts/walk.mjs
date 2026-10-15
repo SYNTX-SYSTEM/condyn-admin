@@ -156,6 +156,30 @@ await page.locator('[data-testid="syntx-coverage"][data-coverage-state="AVAILABL
 ok("MS-3 the same analysis from the URL with its own job: B2 AVAILABLE again", await attr("syntx-coverage", "data-binding-analysis") === pxjAnalysis);
 await page.keyboard.press("Escape");
 
+// M-U · URL BOUNDARY CLOSURE (owner, 2026-10-15): analysisId → the persisted boundary → the projection; never guessed from the UI.
+const fieldAt = (analysisId, pool, extra = "") => `${BASE}/career/demo?analysisId=${analysisId}&focus=FIELD&jobPoolUploadId=${pool}${extra}`;
+await page.goto(fieldAt(personAnalysis, VP), { waitUntil: "networkidle" });
+await page.locator('[data-testid="syntx-field"][data-analysis-boundary="PERSON"]').waitFor({ timeout: 20000 });
+ok("MU-1 a PERSON analysis from the URL in PERSON × JOB: no comparison (matches IDLE, source NONE), named", await attr("syntx-field", "data-matches-state") === "IDLE" && await attr("syntx-field", "data-analysis-source") === "NONE" && await attr("syntx-analysis-boundary", "data-boundary-state") === "PERSON");
+await shot("09-url-person-analysis");
+await page.goto(fieldAt(pxjAnalysis, VP), { waitUntil: "networkidle" });
+await page.locator('[data-testid="syntx-field"][data-analysis-boundary="PERSON_X_JOB"][data-matching-delivered="true"]').waitFor({ timeout: 20000 });
+ok("MU-2 a PERSON × JOB analysis from the URL in its own pool: the comparison as before (existing links unchanged)", await page.getByTestId("syntx-analysis-boundary").count() === 0);
+await page.goto(fieldAt(pxjAnalysis, EP), { waitUntil: "networkidle" });
+await page.locator('[data-testid="syntx-analysis-boundary"][data-boundary-state="OTHER_POOL"]').waitFor({ timeout: 20000 });
+ok("MU-3 the same analysis in another pool: no comparison across job scopes (matches IDLE), its pool named and offered explicitly", await attr("syntx-field", "data-matches-state") === "IDLE" && await attr("syntx-analysis-boundary", "data-analysis-pool") === VP && params().get("jobPoolUploadId") === EP);
+await shot("10-url-other-pool");
+await page.getByTestId("syntx-analysis-pool-open").click();
+await page.locator('[data-testid="syntx-field"][data-matching-delivered="true"]').waitFor({ timeout: 20000 });
+ok("MU-4 the explicit action opens the analysis's pool; the comparison appears there", params().get("jobPoolUploadId") === VP);
+await page.goto(fieldAt("ANL_DOES_NOT_EXIST_0001", VP), { waitUntil: "networkidle" });
+await page.locator('[data-testid="syntx-analysis-boundary"][data-boundary-state="UNRESOLVED"]').waitFor({ timeout: 20000 });
+ok("MU-5 an analysis the server cannot resolve: no comparison, \"cannot be resolved\"", await attr("syntx-field", "data-matches-state") === "IDLE");
+const legacyBoundary = await (await fetch(`${BASE}/api/career/analyses/${st.unrecordedAnalysisId}/investigation`)).json();
+await page.goto(fieldAt(st.unrecordedAnalysisId, VP), { waitUntil: "networkidle" });
+await page.locator('[data-testid="syntx-analysis-boundary"][data-boundary-state="UNRESOLVED"]').waitFor({ timeout: 20000 });
+ok("MU-6 an analysis without a recorded job (stored as earlier analyses were): 409 UNRESOLVED NOT_RECORDED, no comparison", legacyBoundary?.issues?.[0]?.code === "ERR_ANALYSIS_INVESTIGATION_UNRESOLVED" && legacyBoundary?.issues?.[0]?.reason === "NOT_RECORDED" && await attr("syntx-field", "data-matches-state") === "IDLE", JSON.stringify(legacyBoundary?.issues?.[0] ?? null));
+
 // M-J · JOB: the job itself — no analysis, no Gemini; the structure of the selected job.
 const JOB_ROLE = "role_kestrel_frontend_architect";
 await page.goto(`${BASE}/career/demo?focus=FIELD&jobPoolUploadId=${EP}&jobOrganizationId=org_kestrel&jobRoleId=${JOB_ROLE}&jobScopePoolUploadId=${EP}&jobScopeRoleId=${JOB_ROLE}&investigationMode=JOB`, { waitUntil: "networkidle" });

@@ -512,7 +512,15 @@ export const SIL_COPY = {
           PERSON: "PERSON investigates the person without a job scope: the pools stay readable, no analysis is compared with a job.",
           JOB: "JOB investigates the selected job itself: open it and read its structure (no person, no Gemini)."
         },
-        result: { PERSON: "PERSON · WITHOUT A JOB SCOPE", PERSON_X_JOB: "PERSON × JOB" }
+        result: { PERSON: "PERSON · WITHOUT A JOB SCOPE", PERSON_X_JOB: "PERSON × JOB" },
+        /** Why an analysis on view is not compared in PERSON × JOB (URL BOUNDARY CLOSURE): read from its persisted boundary, never guessed. */
+        withheld: {
+          RESOLVING: "READING THE ANALYSIS BOUNDARY · NO COMPARISON YET",
+          PERSON: "This analysis is a PERSON analysis: no job comparison.",
+          UNRESOLVED: "The investigation boundary of this analysis cannot be resolved: no job comparison.",
+          OTHER_POOL: "No comparison across job scopes: this analysis was investigated in the pool"
+        },
+        openAnalysisPool: "⬡ OPEN THE ANALYSIS'S POOL"
       },
       /** B2 · the selected role's coverage by this analysis's capability proposals (SELECTED_ROLE_COVERAGE_V1). */
       coverage: {
@@ -1260,7 +1268,14 @@ export const SIL_COPY = {
           PERSON: "PERSON untersucht die Person ohne Job-Scope: die Pools bleiben lesbar, keine Analyse wird mit einem Job verglichen.",
           JOB: "JOB untersucht den gewählten Job selbst: öffne ihn und lies seine Struktur (keine Person, kein Gemini)."
         },
-        result: { PERSON: "PERSON · OHNE JOB-SCOPE", PERSON_X_JOB: "PERSON × JOB" }
+        result: { PERSON: "PERSON · OHNE JOB-SCOPE", PERSON_X_JOB: "PERSON × JOB" },
+        withheld: {
+          RESOLVING: "UNTERSUCHUNGSGRENZE DER ANALYSE WIRD GELESEN · NOCH KEIN VERGLEICH",
+          PERSON: "Diese Analyse ist eine PERSON-Analyse: kein Jobvergleich.",
+          UNRESOLVED: "Untersuchungsgrenze dieser Analyse nicht auflösbar: kein Jobvergleich.",
+          OTHER_POOL: "Kein Vergleich über Job-Scopes hinweg: diese Analyse wurde untersucht im Pool"
+        },
+        openAnalysisPool: "⬡ POOL DER ANALYSE ÖFFNEN"
       },
       coverage: {
         toggle: "◎ B2-ABDECKUNG",

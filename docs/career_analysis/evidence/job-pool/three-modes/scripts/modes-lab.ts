@@ -48,7 +48,14 @@ const delay = (ms: number) => new Promise(r => setTimeout(r, ms));
   const workerLog = resolve(DIR, "worker.log");
   worker.stdout?.on("data", chunk => appendFileSync(workerLog, String(chunk)));
   worker.stderr?.on("data", chunk => appendFileSync(workerLog, String(chunk)));
-  const state = { port: PORT, base, database: world.databaseName, pid: process.pid, serverPid: server.pid, workerPid: worker.pid, standInPort: standIn.port, token, legacyAnalysisId: world.analysisId, sampleUploadId: world.sampleUploadId ?? null, validationUploadId: id(validation), engineeringUploadId: id(engineering) };
+  // URL BOUNDARY CLOSURE: one analysis row without any job (as earlier analyses were stored) — its boundary cannot be resolved.
+  const { buildSeededAnalysis } = await import(`${W}/test/career/job-pool/fixtures/job-pool-postgres-world`);
+  const { PostgresCareerAnalysisRepository } = await import(`${W}/lib/career/repositories/postgres`);
+  const { drizzle } = await import("drizzle-orm/postgres-js");
+  const unrecorded = buildSeededAnalysis();
+  unrecorded.structured_data.analysis.metadata.analysis_id = "ANL_GRUEN_LAB_NO_JOB";
+  await new PostgresCareerAnalysisRepository(drizzle(world.sql)).save(unrecorded);
+  const state = { unrecordedAnalysisId: "ANL_GRUEN_LAB_NO_JOB", port: PORT, base, database: world.databaseName, pid: process.pid, serverPid: server.pid, workerPid: worker.pid, standInPort: standIn.port, token, legacyAnalysisId: world.analysisId, sampleUploadId: world.sampleUploadId ?? null, validationUploadId: id(validation), engineeringUploadId: id(engineering) };
   writeFileSync(STATE, JSON.stringify(state, null, 2), { mode: 0o600 });
   console.log(`LAB READY ${base} validation=${state.validationUploadId} engineering=${state.engineeringUploadId} worker=${worker.pid}`);
 })().catch(error => { console.error(error); process.exit(1); });

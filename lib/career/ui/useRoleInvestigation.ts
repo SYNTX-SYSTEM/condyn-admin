@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { comparisonBelongsToSelection } from "../result-inspector/client";
+import { readAnalysisInvestigation, type AnalysisInvestigationReadState } from "../investigation/client";
 import type { SelectedRoleCoverage } from "../job-pool/selected-role-coverage";
 import type { JobStructure, JobStructureFindingCode } from "../job-pool/job-structure";
 import type { JobScope } from "../job-pool/job-scope";
@@ -212,4 +213,18 @@ export function useSelectedRoleCoverage(analysisId: string | null, scope: JobSco
 export function useJobStructure(scope: JobScope | null, fetcher?: Fetcher): JobStructureState {
   const key = scope === null ? null : JSON.stringify([scope.jobPoolUploadId, scope.poolRoleId]);
   return useKeyedRead<JobStructureState>(key, signal => readJobStructure(scope!, fetcher, signal), { state: "LOADING" }, { state: "IDLE" });
+}
+
+/* ---------------------------------------------------------------- analysis boundary (URL BOUNDARY CLOSURE) */
+
+/**
+ * The persisted investigation boundary of the analysis on view (owner "URL BOUNDARY CLOSURE", 2026-10-15), read with GELB's client
+ * (`lib/career/investigation/client.ts`, ANALYSIS_INVESTIGATION_V1): analysisId → the boundary its job was declared and run under.
+ * Never guessed from the interface; RESOLVING (a read pending) compares nothing, exactly like UNRESOLVED, NOT_FOUND and FAILED.
+ */
+export type AnalysisBoundaryState = { state: "IDLE" } | { state: "RESOLVING" } | AnalysisInvestigationReadState;
+
+/** The boundary of exactly the analysis on view; a change of analysis discards it and reads again. */
+export function useAnalysisBoundary(analysisId: string | null, fetcher: Fetcher = defaultFetcher): AnalysisBoundaryState {
+  return useKeyedRead<AnalysisBoundaryState>(analysisId, signal => readAnalysisInvestigation(fetcher, analysisId!, signal), { state: "RESOLVING" }, { state: "IDLE" });
 }

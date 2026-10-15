@@ -19,7 +19,7 @@ import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import { decodeJobPoolMatchPresentation, decodeJobPoolUploadView, describeRanking } from "../../../../lib/career/job-pool/frontend-presentation";
 import { fetchJobPoolMatches, listJobPools, readJobPoolUpload, uploadJobPool } from "../../../../lib/career/ui/useJobPool";
 import { decodeAnalysisSources } from "../../../../lib/career/job-pool/analysis-sources";
-import { createJobPoolPostgresWorld, JOB_POOL_E2E_SOURCE, JOB_POOL_E2E_TARGET as T, JOB_POOL_E2E_UPLOADER, type JobPoolWorld } from "../fixtures/job-pool-postgres-world";
+import { createJobPoolPostgresWorld, JOB_POOL_E2E_SOURCE, JOB_POOL_E2E_TARGET as T, JOB_POOL_E2E_UPLOADER, samplePoolJobScope, type JobPoolWorld } from "../fixtures/job-pool-postgres-world";
 
 const EVIDENCE_DIR = resolve(process.cwd(), "docs/career_analysis/evidence/job-pool");
 
@@ -211,7 +211,9 @@ describe("Job Pool workflow over HTTP against the production routes", () => {
     const open = await (await fetch(`${base()}/career/demo?analysisId=${world.analysisId}&jobPoolUploadId=${uploadedId}`)).text();
     expect(open).toMatch(/data-testid="syntx-field"[^>]*data-field-grammar="SYNTX_FIELD_V1"/);
     expect(open).toContain(`data-job-pool-upload="${uploadedId}"`);
-    expect(open).toContain('data-analysis-source="URL"');
+    // URL BOUNDARY CLOSURE: on the server render the analysis's persisted boundary is not read yet, so nothing is compared (RESOLVING).
+    expect(open).toContain('data-analysis-source="NONE"');
+    expect(open).toContain('data-analysis-boundary="RESOLVING"');
     expect(open).toContain('data-field-focus="FIELD"');
   }, 60_000);
 });
@@ -349,13 +351,26 @@ describe.skipIf(playwrightModule === null)("SYNTX field in a real browser: FIELD
     await page.getByTestId("job-pool-intake-toggle").click();
     await page.getByTestId("job-pool-upload").waitFor({ state: "hidden", timeout: 10_000 });
 
-    // FIELD: explicit selection; the pool becomes the total field — organizations as named regions, roles inside them, no score anywhere.
+    // URL BOUNDARY CLOSURE (owner, 2026-10-15): the analysis was investigated as PERSON × JOB in the sample pool (its persisted job);
+    // the new version is another upload, so selecting it shows the pool without any comparison and names why — never a silent switch.
+    expect(samplePoolJobScope().jobPoolUploadId).toBe(uploadedId);
     await page.getByTestId(`job-pool-select-${newId}`).click();
-    await page.locator('[data-testid="syntx-field"][data-field-state="AVAILABLE"][data-matching-delivered="true"]').waitFor({ timeout: 60_000 });
+    await page.locator('[data-testid="syntx-analysis-boundary"][data-boundary-state="OTHER_POOL"]').waitFor({ timeout: 60_000 });
     expect(params(page).get("jobPoolUploadId")).toBe(newId);
+    expect(await field(page).getAttribute("data-matches-state")).toBe("IDLE");
+    expect(await field(page).getAttribute("data-matching-delivered")).toBe("false");
+    expect(await page.getByTestId("syntx-analysis-boundary").getAttribute("data-analysis-pool")).toBe(uploadedId);
+    // FIELD: the explicit way back to the analysis's own pool; the pool becomes the total field — organizations as named regions, roles
+    // inside them, no score anywhere.
+    await page.getByTestId("syntx-analysis-pool-open").click();
+    await page.locator('[data-testid="syntx-field"][data-field-state="AVAILABLE"][data-matching-delivered="true"]').waitFor({ timeout: 60_000 });
+    const walkPool = uploadedId;
+    expect(params(page).get("jobPoolUploadId")).toBe(walkPool);
     expect(params(page).get("analysisId")).toBe(world.analysisId);
+    expect(await page.getByTestId("syntx-analysis-boundary").count()).toBe(0);
+    expect(await field(page).getAttribute("data-analysis-boundary")).toBe("PERSON_X_JOB");
     expect(await field(page).getAttribute("data-observation-kind")).toBe("FIELD");
-    expect(await field(page).getAttribute("data-observation-id")).toBe(newId);
+    expect(await field(page).getAttribute("data-observation-id")).toBe(walkPool);
     expect(await field(page).getAttribute("data-pools-visible")).toBe("false");
     expect(await field(page).getAttribute("data-organization-count")).toBe(String(world.samplePool.organizations.length));
     expect(await field(page).getAttribute("data-role-count")).toBe(String(world.samplePool.roles.length));
@@ -432,7 +447,7 @@ describe.skipIf(playwrightModule === null)("SYNTX field in a real browser: FIELD
     await page.screenshot({ path: resolve(EVIDENCE_DIR, "23-syntx-organization-recentered.png") });
 
     // ROLE: the role becomes the centre of its constraint ecology; requirements are anchors by support, evidence is trace substrate, one suspended boundary.
-    const delivered = await fetchJobPoolMatches(newId, world.analysisId, serverFetch);
+    const delivered = await fetchJobPoolMatches(walkPool, world.analysisId, serverFetch);
     expect(delivered.state).toBe("AVAILABLE");
     if (delivered.state !== "AVAILABLE") return;
     const roleMatch = delivered.matches.roleMatches.find(role => role.poolRoleId === T.roleId)!;
@@ -605,7 +620,7 @@ describe.skipIf(playwrightModule === null)("SYNTX field in a real browser: FIELD
     await page.locator('[data-testid="syntx-field"][data-observation-kind="FIELD"]').waitFor({ timeout: 10_000 });
     expect(await focusInside(), "focus after ORGANIZATION → FIELD").toMatchObject({ inside: true });
     // The matching read is unchanged by the walk (no selection mutates stored analysis).
-    const after = await fetchJobPoolMatches(newId, world.analysisId, serverFetch);
+    const after = await fetchJobPoolMatches(walkPool, world.analysisId, serverFetch);
     expect(after).toEqual(delivered);
     // Capability gate (owner "JOB POOL FIRST / CAPABILITY GATE", 2026-10-14): without a selected job the way to the Capability Field is
     // closed (exit and selector disabled); selecting the role as the job opens it, and the job is kept across the field change.
@@ -635,7 +650,7 @@ describe.skipIf(playwrightModule === null)("SYNTX field in a real browser: FIELD
     await page.close();
   }, 400_000);
 
-  it("reopens the exact selection from the URL and shows a DRAFT pool as inactive instead of matching it; its structure stays a containment field without a matching read", async () => {
+  it("reopens the exact selection from the URL and shows a DRAFT pool without matching it (another upload than the analysis's pool); its structure stays a containment field without a matching read", async () => {
     pageErrors = [];
     const page = await openPage(`/career/demo?analysisId=${world.analysisId}&jobPoolUploadId=${uploadedId}`);
     await page.locator('[data-testid="syntx-field"][data-field-state="AVAILABLE"]').waitFor({ timeout: 60_000 });
@@ -643,8 +658,12 @@ describe.skipIf(playwrightModule === null)("SYNTX field in a real browser: FIELD
     expect(await field(page).getAttribute("data-selected-pool")).toBe(uploadedId);
     await page.getByTestId("syntx-pools-toggle").click();
     await page.getByTestId(`job-pool-select-${draftUploadId}`).click();
-    await page.locator('[data-testid="syntx-field"][data-matches-state="INACTIVE_POOL"]').waitFor({ timeout: 60_000 });
-    expect(await page.getByTestId("syntx-state").textContent()).toContain("POOL IS NOT ACTIVE");
+    // URL BOUNDARY CLOSURE: the DRAFT copy is another upload than the pool the analysis was investigated in — no comparison across job
+    // scopes is even read (matches IDLE); the field names why and offers the analysis's own pool explicitly.
+    await page.locator('[data-testid="syntx-analysis-boundary"][data-boundary-state="OTHER_POOL"]').waitFor({ timeout: 60_000 });
+    expect(await field(page).getAttribute("data-matches-state")).toBe("IDLE");
+    expect(await page.getByTestId("syntx-state").textContent()).toContain("No comparison across job scopes");
+    expect(await page.getByTestId("syntx-analysis-boundary").getAttribute("data-analysis-pool")).toBe(uploadedId);
     expect(await page.getByTestId(`job-pool-item-${draftUploadId}`).getAttribute("data-pool-status")).toBe("DRAFT");
     expect(params(page).get("jobPoolUploadId")).toBe(draftUploadId);
     expect(await field(page).getAttribute("data-matching-delivered")).toBe("false");

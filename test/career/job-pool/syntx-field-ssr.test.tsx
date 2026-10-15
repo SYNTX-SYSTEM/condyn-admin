@@ -20,6 +20,8 @@ vi.mock("../../../lib/career/ui/useJobPool", async (importOriginal) => {
   };
 });
 vi.mock("../../../lib/career/ui/useJobPoolSources", () => ({ useAnalysisSources: () => ({ state: "IDLE" }) }));
+// URL BOUNDARY CLOSURE: the analyses rendered here are PERSON × JOB analyses (their persisted boundary, read from the server in the app).
+vi.mock("../../../lib/career/ui/useRoleInvestigation", async (importOriginal) => ({ ...(await importOriginal<typeof import("../../../lib/career/ui/useRoleInvestigation")>()), useAnalysisBoundary: (analysisId: string | null) => analysisId === null ? { state: "IDLE" } : { state: "RESOLVED", value: { investigationVersion: "ANALYSIS_INVESTIGATION_V1", analysisId: analysisId, jobId: "JOB_TEST", mode: "PERSON_X_JOB", jobScopeSelection: { jobPoolUploadId: UPLOAD_ID, poolRoleId: "ROLE_A" }, basis: "JOB_DECLARATION", discoveryRunId: null, investigationScopeHash: null } } }));
 /** Job Pool first / Capability gate: the scope validation is steered here (SSR runs no effects, so it can never read VALID itself). */
 const gate = vi.hoisted(() => ({ scope: { state: "NONE" } as Record<string, unknown> }));
 const VALID_SCOPE = { state: "VALID", scope: { jobPoolUploadId: "JPOOL_B94850C439974E27496FE3B1A9A076B5", poolRoleId: "ROLE_A" }, roleTitle: "Platform Engineer", organizationId: "ORG_1", organizationName: "Acme", poolName: "Sample Pool" };
