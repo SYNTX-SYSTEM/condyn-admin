@@ -7,9 +7,9 @@ import type { CapabilityCoreRepository } from "../repository";
 import { assertCapabilityCoverageAudit } from "./coverage-validator";
 import { buildCapabilityDiscoveryPrompt } from "./prompt-builder";
 import { buildCapabilityDiscoveryRunId, stableJsonStringify } from "./run";
-import type { CapabilityDiscoveryConfiguration, CapabilityDiscoveryProvider, CapabilityDiscoveryRuntimeResult, CapabilityInvestigationScope, CapabilityKernelResolver } from "./types";
+import type { CapabilityDiscoveryConfiguration, CapabilityDiscoveryProvider, CapabilityDiscoveryRuntimeResult, CapabilityInvestigationScope, CapabilityKernelResolver, CapabilityProviderExchangeArchive } from "./types";
 
-export interface CapabilityDiscoveryRuntimeDependencies { kernelResolver: CapabilityKernelResolver; provider: CapabilityDiscoveryProvider; repository: CapabilityCoreRepository; investigationScope?: CapabilityInvestigationScope; now?: () => string; }
+export interface CapabilityDiscoveryRuntimeDependencies { kernelResolver: CapabilityKernelResolver; provider: CapabilityDiscoveryProvider; repository: CapabilityCoreRepository; investigationScope?: CapabilityInvestigationScope; providerExchangeArchive?: CapabilityProviderExchangeArchive; now?: () => string; }
 export async function runCapabilityDiscovery(documents: SourceDocument[], config: CapabilityDiscoveryConfiguration, deps: CapabilityDiscoveryRuntimeDependencies): Promise<CapabilityDiscoveryRuntimeResult> {
   if (!documents.length) throw new Error("ERR_CAPABILITY_DISCOVERY_NO_SOURCES");
   if (new Set(documents.map(({ docId }) => docId)).size !== documents.length) throw new Error("ERR_CAPABILITY_DISCOVERY_DUPLICATE_DOC_ID");
@@ -33,5 +33,12 @@ export async function runCapabilityDiscovery(documents: SourceDocument[], config
   const candidates = output.capabilities.map((candidate) => verifyCandidateEvidence(createCapabilityCandidate(runId, candidate), documents));
   const timestamp = (deps.now ?? (() => new Date().toISOString()))();
   const run: CapabilityDiscoveryRun = { runId, sourceBundleHash, kernelVersion: config.kernelVersion, prompt: { templateId: kernel.templateId, versionId: kernel.versionId, checksum: kernel.checksum }, inference: { provider: deps.provider.providerName, model: deps.provider.model }, schemaVersion: config.schemaVersion, status: "COMPLETED", rawOutputHash: sha256Utf8(stableJsonStringify(output)), ...(investigationScopeHash === undefined ? {} : { investigationScope: { scopeHash: investigationScopeHash } }), payload: { kernelOutput: output, candidates, coverageValidation: { status: "PASSED" } }, createdAt: timestamp, completedAt: timestamp };
-  await deps.repository.saveRun(run); return { kind: "DISCOVERY_COMPLETED", run };
+  await deps.repository.saveRun(run);
+  // Result Inspector: the received exchange goes to its own bounded archive, never into the immutable run. It is
+  // observation only: a failed retention neither fails nor changes the analysis; the inspector then says NOT_RETAINED.
+  if (deps.providerExchangeArchive && providerResult.providerResponse) {
+    const investigationScope = investigationScopeHash === undefined || deps.investigationScope === undefined ? null : { scopeHash: investigationScopeHash, text: deps.investigationScope.text };
+    try { await deps.providerExchangeArchive.retain({ runId, investigationScope, response: providerResult.providerResponse }); } catch { /* observation only */ }
+  }
+  return { kind: "DISCOVERY_COMPLETED", run };
 }

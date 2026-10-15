@@ -10,7 +10,8 @@ import type {
   CapabilityInvestigationScope,
   CapabilityKernelResolver,
   CapabilityDiscoveryProvider,
-  CapabilityDiscoveryRuntimeResult
+  CapabilityDiscoveryRuntimeResult,
+  CapabilityProviderExchangeArchive
 } from "../capability-core/discovery";
 import type {
   CapabilityProposalRuntime,
@@ -41,6 +42,8 @@ export interface CareerCapabilityProposalExecutorDependencies {
   defaultGeminiModel: string;
   promptRepository: PromptRepository;
   capabilityRepository: CapabilityCoreRepository;
+  /** Result Inspector: bounded archive of the received Discovery exchange. Absent: nothing is retained. */
+  providerExchangeArchive?: CapabilityProviderExchangeArchive;
   bootstrapCapabilityProposalKernels(input: {
     promptRepository: PromptRepository;
     encryptionKeyBase64: string;
@@ -71,6 +74,7 @@ export interface CareerCapabilityProposalExecutorDependencies {
       provider: CapabilityDiscoveryProvider;
       kernelResolver: CapabilityKernelResolver;
       investigationScope: CapabilityInvestigationScope;
+      providerExchangeArchive?: CapabilityProviderExchangeArchive;
     }
   ) => Promise<CapabilityDiscoveryRuntimeResult>;
   runConvergence: (
@@ -214,7 +218,8 @@ export async function createCareerCapabilityProposalExecutor(
               repository: runtimeDependencies.repository,
               kernelResolver: runtimeDependencies.kernelResolver,
               provider: telemetryDiscoveryProvider(discoveryProvider, reportOperation),
-              investigationScope
+              investigationScope,
+              ...(dependencies.providerExchangeArchive ? { providerExchangeArchive: dependencies.providerExchangeArchive } : {})
             })
         },
         convergence: {
