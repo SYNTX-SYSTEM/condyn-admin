@@ -55,13 +55,13 @@ export function geminiTextWithBrokenAudit(label: string): string {
 export const geminiProvider = (client: ReturnType<typeof fakeGeminiClient>) =>
   new GeminiCapabilityDiscoveryProvider({ model: "gemini-fake", client, now: () => "2026-10-15T10:00:00.000Z" });
 
-const convergenceProvider = {
+const convergenceProviderNamed = (groupName: string) => ({
   providerName: "fake", model: "m",
   execute: async (request: { userPrompt: string }) => {
     const ids = (JSON.parse(request.userPrompt.slice(request.userPrompt.indexOf("["))) as Array<{ candidate_id: string }>).map(item => item.candidate_id);
-    return { convergenceOutput: { convergence_version: "convergence-v1", groups: [{ group_key: "g", member_candidate_ids: ids, canonical_name: "Event-driven migration", capability_scope: "ATOMIC" as const, structural_definition: "d", primary_domain: null }], relations: [], reconciliation_audit: { input_candidate_count: ids.length, grouped_candidate_count: ids.length, group_count: 1, same_capability_merge_count: ids.length - 1, unresolved_relation_count: 0, reconciliation_pass_completed: true } } };
+    return { convergenceOutput: { convergence_version: "convergence-v1", groups: [{ group_key: "g", member_candidate_ids: ids, canonical_name: groupName, capability_scope: "ATOMIC" as const, structural_definition: "d", primary_domain: null }], relations: [], reconciliation_audit: { input_candidate_count: ids.length, grouped_candidate_count: ids.length, group_count: 1, same_capability_merge_count: ids.length - 1, unresolved_relation_count: 0, reconciliation_pass_completed: true } } };
   }
-};
+});
 
 export interface InspectorWorld {
   capabilityRepository: CapabilityCoreRepository;
@@ -75,11 +75,11 @@ export interface InspectorWorld {
 }
 
 /** One analysis the way the worker produces it: Discovery → Convergence → source bundle → projection reference. */
-export async function produceAnalysis(world: InspectorWorld, provider: CapabilityDiscoveryProvider, scope: ResolvedJobScope | null, suffix: string, source = cv) {
+export async function produceAnalysis(world: InspectorWorld, provider: CapabilityDiscoveryProvider, scope: ResolvedJobScope | null, suffix: string, source = cv, groupName = "Event-driven migration") {
   const discovery = await runCapabilityDiscovery([source], config, { kernelResolver: { resolve: async () => discoveryKernel }, provider, repository: world.capabilityRepository, ...(scope ? { investigationScope: renderInvestigationScope(scope) } : {}), ...(world.exchanges ? { providerExchangeArchive: world.exchanges } : {}) });
   const run = (discovery as { run: CapabilityDiscoveryRun }).run;
   if (!run) throw new Error(`fixture expects a Discovery run, got ${discovery.kind}`);
-  const convergence = await runCapabilityConvergence((await world.capabilityRepository.getRunById(run.runId))!, convergenceConfig, { kernelResolver: { resolve: async () => convergenceKernel }, provider: convergenceProvider, repository: world.capabilityRepository });
+  const convergence = await runCapabilityConvergence((await world.capabilityRepository.getRunById(run.runId))!, convergenceConfig, { kernelResolver: { resolve: async () => convergenceKernel }, provider: convergenceProviderNamed(groupName), repository: world.capabilityRepository });
   const job = createJob("CAREER_ANALYSIS", { sourceType: "BATCH", sourceData: { documents: [{ type: "pdf", name: "cv.synthetic.pdf", content: PDF_MARKER }], ...(scope ? { jobScope: scope.selection } : { investigation: { mode: "PERSON" } }) } });
   await world.saveJob(job);
   const analysisId = job.jobId.replace("JOB_", "ANL_");
