@@ -77,11 +77,48 @@ Siehe `GEMINI_RESULT_INSPECTOR.md`. Für GRÜN vorbereitet:
 
 Im Modus JOB gibt es keinen Gemini-Austausch.
 
-## 6. Unverändert
+## 6. Persistierte Grenze einer Analyse (URL BOUNDARY CLOSURE)
+
+Owner-Auftrag vom 2026-10-15: Eine über die URL geöffnete Analyse trägt keinen eigenen Modus. Das Frontend darf ihn nie aus seinem UI-Zustand ableiten, und eine PERSON-Analyse zeigt keinen Jobvergleich. Die Relation lautet **analysisId → persistierte Untersuchungsgrenze → Frontend-Projektion**.
+
+`GET /api/career/analyses/{analysisId}/investigation` (`lib/career/investigation/persisted.ts`) liefert `ANALYSIS_INVESTIGATION_V1`. Die Antwort ist `no-store`, braucht kein Token und enthält nur Identitäten und den Modus: keine Dokumentinhalte, keine Capabilities, keinen Vergleich, keinen Gemini-Aufruf.
+
+**Auflösung, nur aus persistierten Relationen**
+1. Die Analysezeile muss existieren, sonst 404 `ERR_ANALYSIS_INVESTIGATION_NOT_FOUND`.
+2. Der Auftrag ergibt sich aus `reference.jobId` der Projektionsreferenz und allen SUCCEEDED-Aufträgen mit `result_analysis_id = analysisId`. Es muss genau einer sein.
+3. Geprüft wird `jobId` mit `JOB_` statt `ANL_` gegen `analysisId`, nach der Regel des Job-Prozessors.
+4. Den Modus liest `parseDeclaredInvestigation(job.inputRef.sourceData)`, derselbe Parser, der den Auftrag angenommen hat und den der Worker bei jedem Abholen erneut anwendet. Ein Auftrag nach altem Vertrag mit `jobScope` ergibt PERSON_X_JOB, Links auf solche Analysen bleiben also gültig.
+5. Mit Projektionsreferenz gilt dieselbe Abstammungsprüfung wie bei B2. Zusätzlich trägt der Discovery-Lauf genau dann einen Scope, wenn der Modus PERSON_X_JOB ist; `basis` ist dann `JOB_DECLARATION_AND_DISCOVERY_RUN`. Ohne Referenz (Wiederverwendung eines Snapshots) lautet `basis` `JOB_DECLARATION`.
+
+**Nicht auflösbar: 409 `ERR_ANALYSIS_INVESTIGATION_UNRESOLVED`** mit `reason`:
+
+| `reason` | Bedeutung |
+|---|---|
+| `NOT_RECORDED` | kein Auftrag; direkt gespeicherte oder historische Analysen, E2E- und Prüf-Fixtures |
+| `NOT_DECLARED` | Auftrag aus der Zeit vor dem Job-Scope-Gate ohne Scope und ohne Erklärung; PERSON wird nie unterstellt |
+| `DECLARATION_INVALID` | ungültige oder widersprüchliche Erklärung |
+| `AMBIGUOUS` | mehrere Aufträge |
+| `LINEAGE_INVALID` | Abstammung gebrochen |
+| `RUN_CONTRADICTS_DECLARATION` | Erklärung und Discovery-Lauf widersprechen sich, etwa ein PERSON_X_JOB-Auftrag vor `e643e96`, dessen Discovery ohne Scope lief |
+
+**Frontend-Projektion** (`lib/career/investigation/client.ts`; GRÜN bindet ihn im eigenen Mandat ein)
+- `readAnalysisInvestigation` liefert RESOLVED, UNRESOLVED, NOT_FOUND oder FAILED. Der Decoder ist streng, und eine Antwort zu einer anderen analysisId gilt als FAILED.
+- `legacyJobComparisonPermitted(read, { analysisId, jobPoolUploadId })` ist nur wahr, wenn alle drei Bedingungen gelten:
+  - die Grenze ist aufgelöst;
+  - der Modus ist PERSON_X_JOB;
+  - der verglichene Pool ist genau der Pool, in dem die Analyse untersucht wurde.
+- Der Legacy-Vergleich ist pool-weit und bleibt technisch unverändert (B2). Sein Operand ist der Pool. Ein anderer Pool, auch eine andere Pool-Version, wäre ein Vergleich über Job-Scopes hinweg.
+- Den rollengenauen Vergleich liefert B2.
+- Solange die Grenze noch gelesen wird, sowie bei PERSON, UNRESOLVED, NOT_FOUND und FAILED gibt es kein Matching.
+- Fixtures ohne Auftrag brauchen einen persistierten SUCCEEDED-Auftrag mit deklarierter Grenze.
+
+Die Matches-Route und die Analyse-Route bleiben unverändert. Ein serverseitiger Schutz an `/matches` wäre eine eigene Owner-Entscheidung.
+
+## 7. Unverändert
 
 Kernel, Prompts, Ausgabeschemata, Phase-4, Evidence-Validator, Projektion, Matches-Route, Demo-Matching, Frontend-Decoder und GRÜN-Dateien bleiben unverändert, ebenso die Siegeltests P7 und P8. Skripte bleiben an einen Job gebunden.
 
-## 7. Umsetzung
+## 8. Umsetzung
 
 | Commit | Inhalt |
 |---|---|
@@ -89,9 +126,11 @@ Kernel, Prompts, Ausgabeschemata, Phase-4, Evidence-Validator, Projektion, Match
 | `2e5e852` | Untersuchungsgrenze, PERSON ONLY |
 | `ea01bfc` | B2 |
 | `0b23045` | JOB ONLY, Stufe 1 |
-| dieser Commit | Inspector-Client und Doku |
+| `6a30220` | Inspector-Client und Doku |
+| `ad15d7b` | Nachweise |
+| dieser Commit | persistierte Grenze einer Analyse (§6) |
 
-## 8. Nachweise (ohne Gemini, 0 Netzwerkversuche)
+## 9. Nachweise (ohne Gemini, 0 Netzwerkversuche)
 
 Die Belege liegen unter `docs/proofs/job-pool-first-boundary/2026-10-15-three-modes-*.json`.
 
@@ -115,10 +154,12 @@ Die Belege liegen unter `docs/proofs/job-pool-first-boundary/2026-10-15-three-mo
 
 **Volle Suite** (mit PINKs ausstehendem pdf-path-Diff): 2481 grün, 28 rot. Davon sind 27 die bekannten Rotfälle der Baseline. Der übrige ist ein Timeout unter Last in der T13H-Persistenzsuite; einzeln läuft sie 8/8 grün.
 
-## 9. Offene Relationen
+## 10. Offene Relationen
 
 - **Frontend (GRÜN, eigenes Mandat):** Moduswahl, B2-Anzeige, JOB-Strukturansicht, GEMINI-OUTPUT-Panel.
 - **JOB ONLY, Stufe 2** (Gemini) und modellbasierte Strukturprobleme.
 - **Bestätigtes Mapping:** Phase-4 und T6B brauchen HIA-1 und HIA-2.
 - **Legacy und Demo-Matching:** Der pool-weite Legacy-Vergleich und das Demo-Matching bleiben technisch unverändert. Sie werden nicht als rollenbezogenes Ergebnis ausgegeben.
 - **Zugriff:** Die Career-Routen haben weiterhin keine Anmeldung.
+- **Analysen ohne Auftrag** bleiben UNRESOLVED und zeigen keinen Jobvergleich (§6).
+- **Rollengleichheit für den Legacy-Vergleich:** strengere Option, Owner-Entscheidung.
