@@ -1,0 +1,482 @@
+[
+  {
+    "label": "pxjClean",
+    "poolLabel": "ownPool",
+    "boundary": "RESOLVED:PERSON_X_JOB",
+    "matches": "200",
+    "legacy": 200,
+    "expected": "200 byte-identical to the comparison without the boundary",
+    "ok": true
+  },
+  {
+    "label": "pxjClean",
+    "poolLabel": "otherActivePool",
+    "boundary": "RESOLVED:PERSON_X_JOB",
+    "matches": "200",
+    "legacy": 200,
+    "expected": "200 byte-identical to the comparison without the boundary",
+    "ok": true
+  },
+  {
+    "label": "pxjLegacyDeclaration",
+    "poolLabel": "ownPool",
+    "boundary": "RESOLVED:PERSON_X_JOB",
+    "matches": "200",
+    "legacy": 200,
+    "expected": "200 byte-identical to the comparison without the boundary",
+    "ok": true
+  },
+  {
+    "label": "pxjLegacyDeclaration",
+    "poolLabel": "otherActivePool",
+    "boundary": "RESOLVED:PERSON_X_JOB",
+    "matches": "200",
+    "legacy": 200,
+    "expected": "200 byte-identical to the comparison without the boundary",
+    "ok": true
+  },
+  {
+    "label": "otherRoleSamePool",
+    "poolLabel": "ownPool",
+    "boundary": "RESOLVED:PERSON_X_JOB",
+    "matches": "200",
+    "legacy": 200,
+    "expected": "200 byte-identical to the comparison without the boundary",
+    "ok": true
+  },
+  {
+    "label": "otherRoleSamePool",
+    "poolLabel": "otherActivePool",
+    "boundary": "RESOLVED:PERSON_X_JOB",
+    "matches": "200",
+    "legacy": 200,
+    "expected": "200 byte-identical to the comparison without the boundary",
+    "ok": true
+  },
+  {
+    "label": "person",
+    "poolLabel": "ownPool",
+    "boundary": "RESOLVED:PERSON",
+    "matches": "409 ERR_JOB_POOL_MATCHES_PERSON_ANALYSIS",
+    "legacy": 200,
+    "expected": "409 ERR_JOB_POOL_MATCHES_PERSON_ANALYSIS",
+    "ok": true
+  },
+  {
+    "label": "person",
+    "poolLabel": "otherActivePool",
+    "boundary": "RESOLVED:PERSON",
+    "matches": "409 ERR_JOB_POOL_MATCHES_PERSON_ANALYSIS",
+    "legacy": 200,
+    "expected": "409 ERR_JOB_POOL_MATCHES_PERSON_ANALYSIS",
+    "ok": true
+  },
+  {
+    "label": "snapshotPxj",
+    "poolLabel": "ownPool",
+    "boundary": "RESOLVED:PERSON_X_JOB",
+    "matches": "200",
+    "legacy": 200,
+    "expected": "200 byte-identical to the comparison without the boundary",
+    "ok": true
+  },
+  {
+    "label": "snapshotPxj",
+    "poolLabel": "otherActivePool",
+    "boundary": "RESOLVED:PERSON_X_JOB",
+    "matches": "200",
+    "legacy": 200,
+    "expected": "200 byte-identical to the comparison without the boundary",
+    "ok": true
+  },
+  {
+    "label": "snapshotPerson",
+    "poolLabel": "ownPool",
+    "boundary": "RESOLVED:PERSON",
+    "matches": "409 ERR_JOB_POOL_MATCHES_PERSON_ANALYSIS",
+    "legacy": 200,
+    "expected": "409 ERR_JOB_POOL_MATCHES_PERSON_ANALYSIS",
+    "ok": true
+  },
+  {
+    "label": "snapshotPerson",
+    "poolLabel": "otherActivePool",
+    "boundary": "RESOLVED:PERSON",
+    "matches": "409 ERR_JOB_POOL_MATCHES_PERSON_ANALYSIS",
+    "legacy": 200,
+    "expected": "409 ERR_JOB_POOL_MATCHES_PERSON_ANALYSIS",
+    "ok": true
+  },
+  {
+    "label": "unknown",
+    "poolLabel": "ownPool",
+    "boundary": "404",
+    "matches": "404 ERR_ANALYSIS_NOT_FOUND",
+    "legacy": null,
+    "expected": "404 ERR_ANALYSIS_NOT_FOUND",
+    "ok": true
+  },
+  {
+    "label": "unknown",
+    "poolLabel": "otherActivePool",
+    "boundary": "404",
+    "matches": "404 ERR_ANALYSIS_NOT_FOUND",
+    "legacy": null,
+    "expected": "404 ERR_ANALYSIS_NOT_FOUND",
+    "ok": true
+  },
+  {
+    "label": "direct",
+    "poolLabel": "ownPool",
+    "boundary": "UNRESOLVED:NOT_RECORDED",
+    "matches": "409 ERR_JOB_POOL_MATCHES_BOUNDARY_UNRESOLVED NOT_RECORDED",
+    "legacy": 200,
+    "expected": "409 ERR_JOB_POOL_MATCHES_BOUNDARY_UNRESOLVED NOT_RECORDED",
+    "ok": true
+  },
+  {
+    "label": "direct",
+    "poolLabel": "otherActivePool",
+    "boundary": "UNRESOLVED:NOT_RECORDED",
+    "matches": "409 ERR_JOB_POOL_MATCHES_BOUNDARY_UNRESOLVED NOT_RECORDED",
+    "legacy": 200,
+    "expected": "409 ERR_JOB_POOL_MATCHES_BOUNDARY_UNRESOLVED NOT_RECORDED",
+    "ok": true
+  },
+  {
+    "label": "failedOnly",
+    "poolLabel": "ownPool",
+    "boundary": "UNRESOLVED:NOT_RECORDED",
+    "matches": "409 ERR_JOB_POOL_MATCHES_BOUNDARY_UNRESOLVED NOT_RECORDED",
+    "legacy": 200,
+    "expected": "409 ERR_JOB_POOL_MATCHES_BOUNDARY_UNRESOLVED NOT_RECORDED",
+    "ok": true
+  },
+  {
+    "label": "failedOnly",
+    "poolLabel": "otherActivePool",
+    "boundary": "UNRESOLVED:NOT_RECORDED",
+    "matches": "409 ERR_JOB_POOL_MATCHES_BOUNDARY_UNRESOLVED NOT_RECORDED",
+    "legacy": 200,
+    "expected": "409 ERR_JOB_POOL_MATCHES_BOUNDARY_UNRESOLVED NOT_RECORDED",
+    "ok": true
+  },
+  {
+    "label": "undeclared",
+    "poolLabel": "ownPool",
+    "boundary": "UNRESOLVED:NOT_DECLARED",
+    "matches": "409 ERR_JOB_POOL_MATCHES_BOUNDARY_UNRESOLVED NOT_DECLARED",
+    "legacy": 200,
+    "expected": "409 ERR_JOB_POOL_MATCHES_BOUNDARY_UNRESOLVED NOT_DECLARED",
+    "ok": true
+  },
+  {
+    "label": "undeclared",
+    "poolLabel": "otherActivePool",
+    "boundary": "UNRESOLVED:NOT_DECLARED",
+    "matches": "409 ERR_JOB_POOL_MATCHES_BOUNDARY_UNRESOLVED NOT_DECLARED",
+    "legacy": 200,
+    "expected": "409 ERR_JOB_POOL_MATCHES_BOUNDARY_UNRESOLVED NOT_DECLARED",
+    "ok": true
+  },
+  {
+    "label": "contradictory",
+    "poolLabel": "ownPool",
+    "boundary": "UNRESOLVED:DECLARATION_INVALID",
+    "matches": "409 ERR_JOB_POOL_MATCHES_BOUNDARY_UNRESOLVED DECLARATION_INVALID",
+    "legacy": 200,
+    "expected": "409 ERR_JOB_POOL_MATCHES_BOUNDARY_UNRESOLVED DECLARATION_INVALID",
+    "ok": true
+  },
+  {
+    "label": "contradictory",
+    "poolLabel": "otherActivePool",
+    "boundary": "UNRESOLVED:DECLARATION_INVALID",
+    "matches": "409 ERR_JOB_POOL_MATCHES_BOUNDARY_UNRESOLVED DECLARATION_INVALID",
+    "legacy": 200,
+    "expected": "409 ERR_JOB_POOL_MATCHES_BOUNDARY_UNRESOLVED DECLARATION_INVALID",
+    "ok": true
+  },
+  {
+    "label": "jobMode",
+    "poolLabel": "ownPool",
+    "boundary": "UNRESOLVED:DECLARATION_INVALID",
+    "matches": "409 ERR_JOB_POOL_MATCHES_BOUNDARY_UNRESOLVED DECLARATION_INVALID",
+    "legacy": 200,
+    "expected": "409 ERR_JOB_POOL_MATCHES_BOUNDARY_UNRESOLVED DECLARATION_INVALID",
+    "ok": true
+  },
+  {
+    "label": "jobMode",
+    "poolLabel": "otherActivePool",
+    "boundary": "UNRESOLVED:DECLARATION_INVALID",
+    "matches": "409 ERR_JOB_POOL_MATCHES_BOUNDARY_UNRESOLVED DECLARATION_INVALID",
+    "legacy": 200,
+    "expected": "409 ERR_JOB_POOL_MATCHES_BOUNDARY_UNRESOLVED DECLARATION_INVALID",
+    "ok": true
+  },
+  {
+    "label": "twoJobs",
+    "poolLabel": "ownPool",
+    "boundary": "UNRESOLVED:AMBIGUOUS",
+    "matches": "409 ERR_JOB_POOL_MATCHES_BOUNDARY_UNRESOLVED AMBIGUOUS",
+    "legacy": 200,
+    "expected": "409 ERR_JOB_POOL_MATCHES_BOUNDARY_UNRESOLVED AMBIGUOUS",
+    "ok": true
+  },
+  {
+    "label": "twoJobs",
+    "poolLabel": "otherActivePool",
+    "boundary": "UNRESOLVED:AMBIGUOUS",
+    "matches": "409 ERR_JOB_POOL_MATCHES_BOUNDARY_UNRESOLVED AMBIGUOUS",
+    "legacy": 200,
+    "expected": "409 ERR_JOB_POOL_MATCHES_BOUNDARY_UNRESOLVED AMBIGUOUS",
+    "ok": true
+  },
+  {
+    "label": "pxjSecondClaim",
+    "poolLabel": "ownPool",
+    "boundary": "UNRESOLVED:AMBIGUOUS",
+    "matches": "409 ERR_JOB_POOL_MATCHES_BOUNDARY_UNRESOLVED AMBIGUOUS",
+    "legacy": 200,
+    "expected": "409 ERR_JOB_POOL_MATCHES_BOUNDARY_UNRESOLVED AMBIGUOUS",
+    "ok": true
+  },
+  {
+    "label": "pxjSecondClaim",
+    "poolLabel": "otherActivePool",
+    "boundary": "UNRESOLVED:AMBIGUOUS",
+    "matches": "409 ERR_JOB_POOL_MATCHES_BOUNDARY_UNRESOLVED AMBIGUOUS",
+    "legacy": 200,
+    "expected": "409 ERR_JOB_POOL_MATCHES_BOUNDARY_UNRESOLVED AMBIGUOUS",
+    "ok": true
+  },
+  {
+    "label": "crossed",
+    "poolLabel": "ownPool",
+    "boundary": "UNRESOLVED:LINEAGE_INVALID",
+    "matches": "409 ERR_JOB_POOL_MATCHES_BOUNDARY_UNRESOLVED LINEAGE_INVALID",
+    "legacy": 200,
+    "expected": "409 ERR_JOB_POOL_MATCHES_BOUNDARY_UNRESOLVED LINEAGE_INVALID",
+    "ok": true
+  },
+  {
+    "label": "crossed",
+    "poolLabel": "otherActivePool",
+    "boundary": "UNRESOLVED:LINEAGE_INVALID",
+    "matches": "409 ERR_JOB_POOL_MATCHES_BOUNDARY_UNRESOLVED LINEAGE_INVALID",
+    "legacy": 200,
+    "expected": "409 ERR_JOB_POOL_MATCHES_BOUNDARY_UNRESOLVED LINEAGE_INVALID",
+    "ok": true
+  },
+  {
+    "label": "foreignReference",
+    "poolLabel": "ownPool",
+    "boundary": "UNRESOLVED:LINEAGE_INVALID",
+    "matches": "409 ERR_JOB_POOL_MATCHES_BOUNDARY_UNRESOLVED LINEAGE_INVALID",
+    "legacy": 200,
+    "expected": "409 ERR_JOB_POOL_MATCHES_BOUNDARY_UNRESOLVED LINEAGE_INVALID",
+    "ok": true
+  },
+  {
+    "label": "foreignReference",
+    "poolLabel": "otherActivePool",
+    "boundary": "UNRESOLVED:LINEAGE_INVALID",
+    "matches": "409 ERR_JOB_POOL_MATCHES_BOUNDARY_UNRESOLVED LINEAGE_INVALID",
+    "legacy": 200,
+    "expected": "409 ERR_JOB_POOL_MATCHES_BOUNDARY_UNRESOLVED LINEAGE_INVALID",
+    "ok": true
+  },
+  {
+    "label": "badBundle",
+    "poolLabel": "ownPool",
+    "boundary": "UNRESOLVED:LINEAGE_INVALID",
+    "matches": "409 ERR_JOB_POOL_MATCHES_BOUNDARY_UNRESOLVED LINEAGE_INVALID",
+    "legacy": 200,
+    "expected": "409 ERR_JOB_POOL_MATCHES_BOUNDARY_UNRESOLVED LINEAGE_INVALID",
+    "ok": true
+  },
+  {
+    "label": "badBundle",
+    "poolLabel": "otherActivePool",
+    "boundary": "UNRESOLVED:LINEAGE_INVALID",
+    "matches": "409 ERR_JOB_POOL_MATCHES_BOUNDARY_UNRESOLVED LINEAGE_INVALID",
+    "legacy": 200,
+    "expected": "409 ERR_JOB_POOL_MATCHES_BOUNDARY_UNRESOLVED LINEAGE_INVALID",
+    "ok": true
+  },
+  {
+    "label": "badConvergence",
+    "poolLabel": "ownPool",
+    "boundary": "UNRESOLVED:LINEAGE_INVALID",
+    "matches": "409 ERR_JOB_POOL_MATCHES_BOUNDARY_UNRESOLVED LINEAGE_INVALID",
+    "legacy": 200,
+    "expected": "409 ERR_JOB_POOL_MATCHES_BOUNDARY_UNRESOLVED LINEAGE_INVALID",
+    "ok": true
+  },
+  {
+    "label": "badConvergence",
+    "poolLabel": "otherActivePool",
+    "boundary": "UNRESOLVED:LINEAGE_INVALID",
+    "matches": "409 ERR_JOB_POOL_MATCHES_BOUNDARY_UNRESOLVED LINEAGE_INVALID",
+    "legacy": 200,
+    "expected": "409 ERR_JOB_POOL_MATCHES_BOUNDARY_UNRESOLVED LINEAGE_INVALID",
+    "ok": true
+  },
+  {
+    "label": "otherResult",
+    "poolLabel": "ownPool",
+    "boundary": "UNRESOLVED:LINEAGE_INVALID",
+    "matches": "409 ERR_JOB_POOL_MATCHES_BOUNDARY_UNRESOLVED LINEAGE_INVALID",
+    "legacy": 200,
+    "expected": "409 ERR_JOB_POOL_MATCHES_BOUNDARY_UNRESOLVED LINEAGE_INVALID",
+    "ok": true
+  },
+  {
+    "label": "otherResult",
+    "poolLabel": "otherActivePool",
+    "boundary": "UNRESOLVED:LINEAGE_INVALID",
+    "matches": "409 ERR_JOB_POOL_MATCHES_BOUNDARY_UNRESOLVED LINEAGE_INVALID",
+    "legacy": 200,
+    "expected": "409 ERR_JOB_POOL_MATCHES_BOUNDARY_UNRESOLVED LINEAGE_INVALID",
+    "ok": true
+  },
+  {
+    "label": "personScopedRun",
+    "poolLabel": "ownPool",
+    "boundary": "UNRESOLVED:RUN_CONTRADICTS_DECLARATION",
+    "matches": "409 ERR_JOB_POOL_MATCHES_BOUNDARY_UNRESOLVED RUN_CONTRADICTS_DECLARATION",
+    "legacy": 200,
+    "expected": "409 ERR_JOB_POOL_MATCHES_BOUNDARY_UNRESOLVED RUN_CONTRADICTS_DECLARATION",
+    "ok": true
+  },
+  {
+    "label": "personScopedRun",
+    "poolLabel": "otherActivePool",
+    "boundary": "UNRESOLVED:RUN_CONTRADICTS_DECLARATION",
+    "matches": "409 ERR_JOB_POOL_MATCHES_BOUNDARY_UNRESOLVED RUN_CONTRADICTS_DECLARATION",
+    "legacy": 200,
+    "expected": "409 ERR_JOB_POOL_MATCHES_BOUNDARY_UNRESOLVED RUN_CONTRADICTS_DECLARATION",
+    "ok": true
+  },
+  {
+    "label": "pxjUnscopedRun",
+    "poolLabel": "ownPool",
+    "boundary": "UNRESOLVED:RUN_CONTRADICTS_DECLARATION",
+    "matches": "409 ERR_JOB_POOL_MATCHES_BOUNDARY_UNRESOLVED RUN_CONTRADICTS_DECLARATION",
+    "legacy": 200,
+    "expected": "409 ERR_JOB_POOL_MATCHES_BOUNDARY_UNRESOLVED RUN_CONTRADICTS_DECLARATION",
+    "ok": true
+  },
+  {
+    "label": "pxjUnscopedRun",
+    "poolLabel": "otherActivePool",
+    "boundary": "UNRESOLVED:RUN_CONTRADICTS_DECLARATION",
+    "matches": "409 ERR_JOB_POOL_MATCHES_BOUNDARY_UNRESOLVED RUN_CONTRADICTS_DECLARATION",
+    "legacy": 200,
+    "expected": "409 ERR_JOB_POOL_MATCHES_BOUNDARY_UNRESOLVED RUN_CONTRADICTS_DECLARATION",
+    "ok": true
+  },
+  {
+    "label": "roleDrift",
+    "poolLabel": "ownPool",
+    "boundary": "UNRESOLVED:RUN_CONTRADICTS_DECLARATION",
+    "matches": "409 ERR_JOB_POOL_MATCHES_BOUNDARY_UNRESOLVED RUN_CONTRADICTS_DECLARATION",
+    "legacy": 200,
+    "expected": "409 ERR_JOB_POOL_MATCHES_BOUNDARY_UNRESOLVED RUN_CONTRADICTS_DECLARATION",
+    "ok": true
+  },
+  {
+    "label": "roleDrift",
+    "poolLabel": "otherActivePool",
+    "boundary": "UNRESOLVED:RUN_CONTRADICTS_DECLARATION",
+    "matches": "409 ERR_JOB_POOL_MATCHES_BOUNDARY_UNRESOLVED RUN_CONTRADICTS_DECLARATION",
+    "legacy": 200,
+    "expected": "409 ERR_JOB_POOL_MATCHES_BOUNDARY_UNRESOLVED RUN_CONTRADICTS_DECLARATION",
+    "ok": true
+  },
+  {
+    "label": "scopeUnavailableRole",
+    "poolLabel": "ownPool",
+    "boundary": "UNRESOLVED:SCOPE_UNAVAILABLE",
+    "matches": "409 ERR_JOB_POOL_MATCHES_BOUNDARY_UNRESOLVED SCOPE_UNAVAILABLE",
+    "legacy": 200,
+    "expected": "409 ERR_JOB_POOL_MATCHES_BOUNDARY_UNRESOLVED SCOPE_UNAVAILABLE",
+    "ok": true
+  },
+  {
+    "label": "scopeUnavailableRole",
+    "poolLabel": "otherActivePool",
+    "boundary": "UNRESOLVED:SCOPE_UNAVAILABLE",
+    "matches": "409 ERR_JOB_POOL_MATCHES_BOUNDARY_UNRESOLVED SCOPE_UNAVAILABLE",
+    "legacy": 200,
+    "expected": "409 ERR_JOB_POOL_MATCHES_BOUNDARY_UNRESOLVED SCOPE_UNAVAILABLE",
+    "ok": true
+  },
+  {
+    "label": "scopeUnavailablePool",
+    "poolLabel": "ownPool",
+    "boundary": "UNRESOLVED:SCOPE_UNAVAILABLE",
+    "matches": "409 ERR_JOB_POOL_MATCHES_BOUNDARY_UNRESOLVED SCOPE_UNAVAILABLE",
+    "legacy": 200,
+    "expected": "409 ERR_JOB_POOL_MATCHES_BOUNDARY_UNRESOLVED SCOPE_UNAVAILABLE",
+    "ok": true
+  },
+  {
+    "label": "scopeUnavailablePool",
+    "poolLabel": "otherActivePool",
+    "boundary": "UNRESOLVED:SCOPE_UNAVAILABLE",
+    "matches": "409 ERR_JOB_POOL_MATCHES_BOUNDARY_UNRESOLVED SCOPE_UNAVAILABLE",
+    "legacy": 200,
+    "expected": "409 ERR_JOB_POOL_MATCHES_BOUNDARY_UNRESOLVED SCOPE_UNAVAILABLE",
+    "ok": true
+  },
+  {
+    "label": "refFailed",
+    "poolLabel": "ownPool",
+    "boundary": "RESOLVED:PERSON_X_JOB",
+    "matches": "200",
+    "legacy": 200,
+    "expected": "200 byte-identical to the comparison without the boundary",
+    "ok": true
+  },
+  {
+    "label": "refFailed",
+    "poolLabel": "otherActivePool",
+    "boundary": "RESOLVED:PERSON_X_JOB",
+    "matches": "200",
+    "legacy": 200,
+    "expected": "200 byte-identical to the comparison without the boundary",
+    "ok": true
+  },
+  {
+    "label": "snapshotMissingRole",
+    "poolLabel": "ownPool",
+    "boundary": "RESOLVED:PERSON_X_JOB",
+    "matches": "200",
+    "legacy": 200,
+    "expected": "200 byte-identical to the comparison without the boundary",
+    "ok": true
+  },
+  {
+    "label": "snapshotMissingRole",
+    "poolLabel": "otherActivePool",
+    "boundary": "RESOLVED:PERSON_X_JOB",
+    "matches": "200",
+    "legacy": 200,
+    "expected": "200 byte-identical to the comparison without the boundary",
+    "ok": true
+  },
+  {
+    "order": {
+      "unknownPool×person": "404 ERR_JOB_POOL_NOT_FOUND",
+      "unknownPool×pxj": "404 ERR_JOB_POOL_NOT_FOUND",
+      "draft×person": "409 ERR_JOB_POOL_MATCHES_PERSON_ANALYSIS",
+      "draft×direct": "409 ERR_JOB_POOL_MATCHES_BOUNDARY_UNRESOLVED",
+      "draft×pxj": "409 ERR_INACTIVE_COMPANY_POOL",
+      "draft×unknownAnalysis": "404 ERR_ANALYSIS_NOT_FOUND",
+      "noAnalysisId": "400 ERR_ANALYSIS_ID_REQUIRED",
+      "emptyAnalysisId": "400 ERR_ANALYSIS_ID_REQUIRED"
+    }
+  }
+]

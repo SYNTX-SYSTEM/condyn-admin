@@ -1,0 +1,33 @@
+Leak check over the integration range 311d6ee..0fb7b05 (git diff, added lines only)
+added lines containing a local /home/ path: 30
+files (last commit touching the file) — all under GRÜN's docs/career_analysis/evidence/job-pool/, none in PINK files:
+  1 docs/career_analysis/evidence/job-pool/capability-gate/scripts/gate-walk.mjs (c146f05)
+  1 docs/career_analysis/evidence/job-pool/e2e-sweep-2026-10-13/logs/suite-http-alone.log (337033e)
+  1 docs/career_analysis/evidence/job-pool/e2e-sweep-2026-10-13/logs/suite-live.log (337033e)
+  1 docs/career_analysis/evidence/job-pool/e2e-sweep-2026-10-13/logs/suite-unit.log (337033e)
+  1 docs/career_analysis/evidence/job-pool/e2e-sweep-2026-10-13/logs/suite-walk-p3.log (337033e)
+  1 docs/career_analysis/evidence/job-pool/e2e-sweep-2026-10-13/logs/suite-walk.log (337033e)
+  1 docs/career_analysis/evidence/job-pool/e2e-sweep-2026-10-13/logs/suite-workflow.log (337033e)
+  1 docs/career_analysis/evidence/job-pool/e2e-sweep-2026-10-13/scripts/common.mjs (337033e)
+  1 docs/career_analysis/evidence/job-pool/e2e-sweep-2026-10-13/scripts/mkneg.py (337033e)
+  2 docs/career_analysis/evidence/job-pool/e2e-sweep-2026-10-13/scripts/phaseA.mjs (337033e)
+  1 docs/career_analysis/evidence/job-pool/e2e-sweep-2026-10-13/scripts/phaseB.mjs (337033e)
+  1 docs/career_analysis/evidence/job-pool/e2e-sweep-2026-10-13/scripts/phaseC.mjs (337033e)
+  1 docs/career_analysis/evidence/job-pool/e2e-sweep-2026-10-13/scripts/phaseD.mjs (337033e)
+  1 docs/career_analysis/evidence/job-pool/e2e-sweep-2026-10-13/scripts/scale.py (337033e)
+  1 docs/career_analysis/evidence/job-pool/job-scope-removal/scripts/walk.mjs (aa17a3b)
+  1 docs/career_analysis/evidence/job-pool/job-scope/scripts/walk.mjs (cb3d33f)
+  1 docs/career_analysis/evidence/job-pool/semiotic-transfer/no-pool-giant-breath/scripts/peak1280.mjs (415f348)
+  2 docs/career_analysis/evidence/job-pool/semiotic-transfer/no-pool-giant-breath/scripts/proof.mjs (415f348)
+  2 docs/career_analysis/evidence/job-pool/semiotic-transfer/no-pool-giant/scripts/contrast.mjs (44cd561)
+  1 docs/career_analysis/evidence/job-pool/semiotic-transfer/no-pool-giant/scripts/footer.mjs (44cd561)
+  1 docs/career_analysis/evidence/job-pool/semiotic-transfer/no-pool-giant/scripts/shots.mjs (44cd561)
+  1 docs/career_analysis/evidence/job-pool/semiotic-transfer/no-pool-giant/scripts/transition.mjs (44cd561)
+  2 docs/career_analysis/evidence/job-pool/semiotic-transfer/red-field-typography/scripts/ident.tsx (cb3d33f)
+  2 docs/career_analysis/evidence/job-pool/semiotic-transfer/red-field-typography/scripts/measure.mjs (bb5e8e3)
+  1 docs/career_analysis/evidence/job-pool/semiotic-transfer/red-field-typography/scripts/variants.mjs (bb5e8e3)
+path prefixes (user directory redacted):
+     13 /home/<user>/Entwicklung/condyn-admin-e2e
+      5 /home/<user>/Entwicklung/condyn-admin-job-field
+     12 /home/<user>/Entwicklung/nquiry
+key-like strings: none (only synthetic test URLs pink:pink@…invalid and nobody:nothing@127.0.0.1:1)

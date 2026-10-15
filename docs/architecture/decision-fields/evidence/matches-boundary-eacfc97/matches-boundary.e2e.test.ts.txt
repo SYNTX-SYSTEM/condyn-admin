@@ -1,0 +1,104 @@
+/**
+ * PINK proof of GELB eacfc97 on a real Next server (next dev, disposable database, no worker, GEMINI_API_KEY empty, PINK's net
+ * sentinel in the server process): GET /api/career/job-pools/{upload}/matches?analysisId= at its real path refuses a stored
+ * PERSON analysis and unresolvable boundaries, keeps PERSON_X_JOB pool-wide (also another role of the same pool), and answers
+ * byte-identically to the in-process route. Every analysis row carries a valid VERIFIED payload, so a refusal can only come
+ * from the boundary. Writes `matches-boundary-routes.json` to the evidence directory.
+ */
+import { spawn, type ChildProcess } from "node:child_process";
+import { once } from "node:events";
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { createServer } from "node:net";
+import { resolve } from "node:path";
+import { sql } from "drizzle-orm";
+import { afterAll, beforeAll, describe, expect, it } from "vitest";
+import { GET } from "../../app/api/career/job-pools/[jobPoolUploadId]/matches/route";
+import { db, initDbSchema } from "../../lib/career/db/client";
+import { careerAnalyses } from "../../lib/career/db/schema";
+import { getCareerAnalysisRepository } from "../../lib/career/repositories";
+import { TEST_JOB_SCOPE, TEST_JOB_SCOPE_B, resolveStoredTestJobScope, uploadEngineeringJobScope } from "../support/job-scope";
+import { fixtureCapabilities, verifiedAnalysis } from "../career/job-pool/fixtures";
+import { created, seed } from "./fixtures/mode-analysis";
+
+const TIP = process.env.JOB_SCOPE_TIP ?? "local";
+const EVIDENCE_DIR = resolve(process.cwd(), `docs/architecture/decision-fields/evidence/job-scope-gate-${TIP}`);
+const SENTINEL = process.env.PINK_NET_SENTINEL;
+const NET_LOG = process.env.PINK_INSPECTOR_NET_LOG ?? "";
+const delay = (ms: number) => new Promise<void>((done) => setTimeout(done, ms));
+async function availablePort(): Promise<number> {
+  const listener = createServer();
+  await new Promise<void>((ok) => listener.listen(0, "127.0.0.1", () => ok()));
+  const port = (listener.address() as { port: number }).port;
+  await new Promise<void>((ok) => listener.close(() => ok()));
+  return port;
+}
+
+describe("PINK: /matches boundary guard on a real Next server (GELB eacfc97)", () => {
+  let server: ChildProcess | undefined; let base = ""; let output = "";
+  const ids: Record<string, string> = {};
+  const report: Record<string, unknown> = {};
+  const pool = TEST_JOB_SCOPE.jobPoolUploadId;
+  beforeAll(async () => {
+    await initDbSchema(); await uploadEngineeringJobScope();
+    const stamp = Date.now();
+    ids.pxj = (await seed(`mbe-pxj-${stamp}`, { investigation: { mode: "PERSON_X_JOB" }, jobScope: TEST_JOB_SCOPE }, await resolveStoredTestJobScope())).analysisId;
+    ids.otherRole = (await seed(`mbe-other-role-${stamp}`, { investigation: { mode: "PERSON_X_JOB" }, jobScope: TEST_JOB_SCOPE_B }, await resolveStoredTestJobScope(TEST_JOB_SCOPE_B))).analysisId;
+    ids.person = (await seed(`mbe-person-${stamp}`, { investigation: { mode: "PERSON" } }, null)).analysisId;
+    ids.undeclared = (await seed(`mbe-undeclared-${stamp}`, {}, null)).analysisId;
+    ids.roleDrift = (await seed(`mbe-role-drift-${stamp}`, { investigation: { mode: "PERSON_X_JOB" }, jobScope: TEST_JOB_SCOPE }, await resolveStoredTestJobScope(TEST_JOB_SCOPE_B))).analysisId;
+    ids.direct = `ANL_PINK_MBE_DIRECT_${stamp}`;
+    await db.insert(careerAnalyses).values({ analysisId: ids.direct, createdAt: "2026-10-15T10:00:00.000Z", validationState: "VERIFIED", payload: {} } as never);
+    // A valid VERIFIED payload on every row (real server: PostgreSQL repository) and in the in-memory repository (in-process under NODE_ENV=test).
+    for (const analysisId of Object.values(ids)) {
+      const analysis = verifiedAnalysis(analysisId, fixtureCapabilities());
+      await db.execute(sql`UPDATE career_analyses SET payload = ${JSON.stringify(analysis)}::jsonb WHERE analysis_id = ${analysisId}`);
+      await getCareerAnalysisRepository().save(analysis as never);
+    }
+    ids.unknown = `ANL_PINK_MBE_UNKNOWN_${stamp}`;
+    const port = await availablePort();
+    server = spawn(process.execPath, [resolve(process.cwd(), "node_modules/next/dist/bin/next"), "dev", "--webpack", "-p", String(port), "-H", "127.0.0.1"], {
+      cwd: process.cwd(), stdio: ["ignore", "pipe", "pipe"],
+      env: { ...process.env, NEXT_TELEMETRY_DISABLED: "1", GEMINI_API_KEY: "", ...(SENTINEL && NET_LOG ? { NODE_OPTIONS: `--require ${SENTINEL}`, PINK_NET_LOG: NET_LOG } : {}) }
+    });
+    server.stdout?.on("data", (chunk) => { output += String(chunk); }); server.stderr?.on("data", (chunk) => { output += String(chunk); });
+    base = `http://127.0.0.1:${port}`;
+    for (let attempt = 0; attempt < 240; attempt += 1) {
+      try { const response = await fetch(`${base}/api/career/job-pools`); if (response.status === 200) { await response.text(); break; } } catch { /* not ready */ }
+      await delay(500);
+      if (attempt === 239) throw new Error(`server not ready:\n${output.slice(-3000)}`);
+    }
+  }, 300_000);
+  afterAll(async () => {
+    if (server && server.exitCode === null && server.signalCode === null) { server.kill("SIGTERM"); await Promise.race([once(server, "exit"), delay(10_000)]); if (server.exitCode === null && server.signalCode === null) { server.kill("SIGKILL"); await once(server, "exit"); } }
+    for (const jobId of created) await db.execute(sql`DELETE FROM career_analysis_jobs WHERE job_id = ${jobId}`);
+    const net = NET_LOG && existsSync(NET_LOG) ? readFileSync(NET_LOG, "utf8").trim().split("\n").filter(Boolean) : [];
+    report.networkAttempts = { total: net.length, gemini: net.filter((line) => /generativelanguage|aiplatform|googleapis|gemini/i.test(line)).length, entries: net.slice(0, 10).map((line) => line.split(" ").slice(1).join(" ")), sentinel: Boolean(SENTINEL && NET_LOG) };
+    mkdirSync(EVIDENCE_DIR, { recursive: true });
+    writeFileSync(resolve(EVIDENCE_DIR, "matches-boundary-routes.json"), `${JSON.stringify({ tip: TIP, recordedAt: new Date().toISOString(), ...report }, null, 2)}\n`);
+  });
+
+  it("refuses PERSON and unresolvable boundaries at the real path, PERSON_X_JOB pool-wide, identical to in-process; 0 Gemini attempts", async () => {
+    const http: Record<string, { status: number; code: string | null; reason: string | null; identicalToInProcess: boolean }> = {};
+    for (const [label, analysisId] of Object.entries(ids)) {
+      const response = await fetch(`${base}/api/career/job-pools/${pool}/matches?analysisId=${encodeURIComponent(analysisId)}`);
+      const text = await response.text();
+      const local = await GET(new Request(`http://local/api/career/job-pools/${pool}/matches?analysisId=${encodeURIComponent(analysisId)}`), { params: Promise.resolve({ jobPoolUploadId: pool }) });
+      const localText = await local.text();
+      const body = JSON.parse(text);
+      http[label] = { status: response.status, code: body.error?.code ?? null, reason: body.error?.issues?.[0]?.message ?? null, identicalToInProcess: response.status === local.status && text === localText };
+    }
+    report.http = http;
+    console.log(`PINK_MATCHES_REAL ${JSON.stringify(http)}`);
+    for (const [label, entry] of Object.entries(http)) expect({ label, identical: entry.identicalToInProcess }).toEqual({ label, identical: true });
+    expect(Object.fromEntries(Object.entries(http).map(([label, entry]) => [label, [entry.status, entry.code, entry.reason]]))).toEqual({
+      pxj: [200, null, null], otherRole: [200, null, null],
+      person: [409, "ERR_JOB_POOL_MATCHES_PERSON_ANALYSIS", null],
+      undeclared: [409, "ERR_JOB_POOL_MATCHES_BOUNDARY_UNRESOLVED", "NOT_DECLARED"],
+      roleDrift: [409, "ERR_JOB_POOL_MATCHES_BOUNDARY_UNRESOLVED", "RUN_CONTRADICTS_DECLARATION"],
+      direct: [409, "ERR_JOB_POOL_MATCHES_BOUNDARY_UNRESOLVED", "NOT_RECORDED"],
+      unknown: [404, "ERR_ANALYSIS_NOT_FOUND", null]
+    });
+    const net = NET_LOG && existsSync(NET_LOG) ? readFileSync(NET_LOG, "utf8") : "";
+    expect(/generativelanguage|aiplatform|googleapis|gemini/i.test(net)).toBe(false);
+  }, 300_000);
+});

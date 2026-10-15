@@ -191,16 +191,12 @@ describe("JP-PDF: PDF → capability sweep (stub) → JSON Job Pool → matching
     expect(presentation.capabilitySweep).toEqual({ state: "NOT_PRODUCED", proposalCount: 0, scored: false });
 
     // Same PDF, second job whose executor claims a proposal lineage without RUN_/CONV_ rows: the schema refuses the
-    // reference, the sweep stays NOT_PRODUCED (never a fabricated AVAILABLE), and the analysis matching of the second
-    // job is byte-identical to the first (deterministic path from the same PDF bytes).
+    // reference and the job does not reach SUCCEEDED, so the analysis has no recorded investigation boundary. Since GELB
+    // eacfc97 (owner GO 2026-10-15) the legacy matches route refuses it (409, NOT_RECORDED): it is never compared, so no
+    // sweep state can be fabricated for it.
     const dangling = await runPdfJob(readFileSync(samplePdfPath), "cv.synthetic.pdf", "Alex Example", "DANGLING_REFERENCE");
     expect(dangling.analysisId).not.toBe(analysisId);
-    const secondPresentation = await matchesFor(jobPoolUploadId, dangling.analysisId);
-    expect(secondPresentation.capabilitySweep).toEqual({ state: "NOT_PRODUCED", proposalCount: 0, scored: false });
-    expect(scoredView(secondPresentation)).toBe(scoredView(presentation));
-    for (const role of secondPresentation.roleMatches) {
-      expect(role.sweepOnlyCoverageCount).toBe(0);
-      for (const item of [...role.matched, ...role.weakEvidence, ...role.missing]) expect(item.sweepProposal).toBeNull();
-    }
+    const refused = await getMatches(new Request(`http://local/api/career/job-pools/${jobPoolUploadId}/matches?analysisId=${dangling.analysisId}`), { params: Promise.resolve({ jobPoolUploadId }) });
+    expect([refused.status, (await refused.json()).error]).toMatchObject([409, { code: "ERR_JOB_POOL_MATCHES_BOUNDARY_UNRESOLVED", issues: [{ path: "analysisId", message: "NOT_RECORDED" }] }]);
   });
 });

@@ -1,0 +1,4 @@
+matches-boundary.postgres (final version) run on integration 0fb7b05, i.e. without the eacfc97 boundary guard:
+MB-1: 38 of 52 case×pool rows deviate (every PERSON and unresolved case answers 200 there); MB-2 order deviates:
+  {"unknownPool\u00d7person": "404 ERR_JOB_POOL_NOT_FOUND", "unknownPool\u00d7pxj": "404 ERR_JOB_POOL_NOT_FOUND", "draft\u00d7person": "409 ERR_INACTIVE_COMPANY_POOL", "draft\u00d7direct": "409 ERR_INACTIVE_COMPANY_POOL", "draft\u00d7pxj": "409 ERR_INACTIVE_COMPANY_POOL", "draft\u00d7unknownAnalysis": "404 ERR_ANALYSIS_NOT_FOUND", "noAnalysisId": "400 ERR_ANALYSIS_ID_REQUIRED", "emptyAnalysisId": "400 ERR_ANALYSIS_ID_REQUIRED"}
+MB-3, MB-4, MB-5 pass on both trees (they hold with and without the guard). Detected: the guard is what MB-1/MB-2 measure.

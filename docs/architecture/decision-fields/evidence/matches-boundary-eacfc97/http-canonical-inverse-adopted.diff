@@ -1,0 +1,18 @@
+diff --git a/test/job-pool-validation/http-canonical-inverse.postgres.test.ts b/test/job-pool-validation/http-canonical-inverse.postgres.test.ts
+index 31439e7..64eb9b4 100644
+--- a/test/job-pool-validation/http-canonical-inverse.postgres.test.ts
++++ b/test/job-pool-validation/http-canonical-inverse.postgres.test.ts
+@@ -225,6 +225,13 @@ describe.skipIf(routes === null)("Job Pool connection: HTTP contract, canonical
+   });
+ 
+   it("JP-H + JP-I: presentation matching follows CP-I1..I4 and Step 23, states its basis, quotes the analysis evidence verbatim and persists nothing", async () => {
++    const { initDbSchema } = await import("../../lib/career/db/client");
++    await initDbSchema();
++    const now = new Date().toISOString();
++    const inputRef = { sourceType: "BATCH", sourceData: { documents: [], investigation: { mode: "PERSON_X_JOB" }, jobScope: { jobPoolUploadId: view.jobPoolUploadId, poolRoleId: validationPool.roles[0].id } } };
++    await sql`INSERT INTO career_analyses (analysis_id, created_at, validation_state, payload) VALUES (${analysisId}, ${now}, 'VERIFIED', ${JSON.stringify({ fixture: analysisId })}::jsonb) ON CONFLICT DO NOTHING`;
++    await sql`INSERT INTO career_analysis_jobs (job_id, job_type, status, input_ref, attempt_count, result_analysis_id, created_at, lease_version)
++      VALUES (${analysisId.replace("ANL_", "JOB_")}, 'CAREER_ANALYSIS', 'SUCCEEDED', ${JSON.stringify(inputRef)}::jsonb, 1, ${analysisId}, ${now}, 1) ON CONFLICT DO NOTHING`;
+     const before = await rowCensus(sql);
+     const response = await getMatches(view.jobPoolUploadId, `?analysisId=${analysisId}`);
+     expect(response.status).toBe(200);

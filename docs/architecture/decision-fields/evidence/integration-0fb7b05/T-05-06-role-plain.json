@@ -1,0 +1,122 @@
+{
+  "PERSON": {
+    "source": "NONE",
+    "statementMode": "PERSON",
+    "toggleBody": null,
+    "glyph": null,
+    "readsBeforeOpen": {
+      "b2": 0,
+      "structure": 0
+    }
+  },
+  "PERSON_X_JOB": {
+    "source": "URL",
+    "statementMode": null,
+    "toggleBody": "COVERAGE",
+    "glyph": null,
+    "readsBeforeOpen": {
+      "b2": 0,
+      "structure": 0
+    },
+    "open": {
+      "state": "NOT_FOUND",
+      "reads": [
+        "/api/career/analyses/ANL_PINK_THREE_MODES/job-comparison?jobPoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7&poolRoleId=role_pink_alpha_architect"
+      ]
+    },
+    "realB2": "NOT_FOUND"
+  },
+  "JOB": {
+    "source": "NONE",
+    "statementMode": "JOB",
+    "toggleBody": "STRUCTURE",
+    "glyph": null,
+    "readsBeforeOpen": {
+      "b2": 2,
+      "structure": 0
+    },
+    "open": {
+      "state": "AVAILABLE",
+      "reads": [
+        "/api/career/job-pools/JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7/roles/role_pink_alpha_architect/structure"
+      ]
+    },
+    "structure": {
+      "rows": [
+        "req_pink_alpha_1",
+        "req_pink_alpha_2",
+        "req_pink_alpha_3"
+      ],
+      "findings": [
+        "syntx-structure-finding-ROLE_RESPONSIBILITY_NOT_DECLARED",
+        "syntx-structure-finding-REQUIREMENT_LEVEL_UNRESOLVED",
+        "syntx-structure-finding-REQUIREMENT_MATCHING_ELIGIBILITY_UNKNOWN",
+        "syntx-structure-finding-REQUIREMENT_TYPE_UNDECLARED",
+        "syntx-structure-finding-REQUIREMENT_NECESSITY_UNDECLARED",
+        "syntx-structure-finding-REQUIREMENT_LEVEL_UNRESOLVED",
+        "syntx-structure-finding-REQUIREMENT_MATCHING_ELIGIBILITY_UNKNOWN",
+        "syntx-structure-finding-REQUIREMENT_TYPE_UNDECLARED"
+      ],
+      "bindingRole": "role_pink_alpha_architect",
+      "scored": "false"
+    }
+  },
+  "b2Guard": {
+    "binding = analysis + selection": {
+      "state": "AVAILABLE",
+      "coverageRows": 2,
+      "quoteShown": true,
+      "covered": "1",
+      "relation": "NOT_EVALUATED",
+      "text": "B2 · SELECTED ROLE COVERAGEUnconfirmed name coverage of the selected role by the capability proposals of this analysis: counts, never a score.01BINDINGDistribut"
+    },
+    "binding names another role": {
+      "state": "FAILED",
+      "coverageRows": 0,
+      "quoteShown": false,
+      "covered": "",
+      "relation": "NOT_EVALUATED",
+      "text": "B2 · SELECTED ROLE COVERAGEUnconfirmed name coverage of the selected role by the capability proposals of this analysis: counts, never a score.B2 coverage could "
+    },
+    "binding names another analysis": {
+      "state": "FAILED",
+      "coverageRows": 0,
+      "quoteShown": false,
+      "covered": "",
+      "relation": "NOT_EVALUATED",
+      "text": "B2 · SELECTED ROLE COVERAGEUnconfirmed name coverage of the selected role by the capability proposals of this analysis: counts, never a score.B2 coverage could "
+    },
+    "authority altered (scored true)": {
+      "state": "FAILED",
+      "coverageRows": 0,
+      "quoteShown": false,
+      "covered": "",
+      "relation": "NOT_EVALUATED",
+      "text": "B2 · SELECTED ROLE COVERAGEUnconfirmed name coverage of the selected role by the capability proposals of this analysis: counts, never a score.B2 coverage could "
+    },
+    "409 SCOPE_MISMATCH": {
+      "state": "SCOPE_MISMATCH",
+      "coverageRows": 0,
+      "quoteShown": false,
+      "covered": "",
+      "relation": "NOT_EVALUATED",
+      "text": "B2 · SELECTED ROLE COVERAGEUnconfirmed name coverage of the selected role by the capability proposals of this analysis: counts, never a score.Analysis belongs t"
+    },
+    "409 NOT_SCOPED": {
+      "state": "NOT_SCOPED",
+      "coverageRows": 0,
+      "quoteShown": false,
+      "covered": "",
+      "relation": "NOT_EVALUATED",
+      "text": "B2 · SELECTED ROLE COVERAGEUnconfirmed name coverage of the selected role by the capability proposals of this analysis: counts, never a score.This analysis is a"
+    },
+    "409 SCOPE_DRIFT": {
+      "state": "SCOPE_DRIFT",
+      "coverageRows": 0,
+      "quoteShown": false,
+      "covered": "",
+      "relation": "NOT_EVALUATED",
+      "text": "B2 · SELECTED ROLE COVERAGEUnconfirmed name coverage of the selected role by the capability proposals of this analysis: counts, never a score.The selected job h"
+    }
+  }
+}

@@ -1,0 +1,557 @@
+{
+  "tip": "eacfc97",
+  "run": "plain",
+  "recordedAt": "2026-10-15T12:11:07.369Z",
+  "passed": 91,
+  "total": 91,
+  "deviations": [],
+  "checks": [
+    {
+      "id": "T-01",
+      "name": "no parameter: mode PERSON_X_JOB on the root and the control, gate AWAITING_JOB without a job",
+      "ok": true,
+      "detail": "{\"mode\":\"PERSON_X_JOB\",\"gate\":\"AWAITING_JOB\",\"selector\":\"PERSON_X_JOB\",\"checked\":[\"investigation-mode-PERSON_X_JOB\"],\"scope\":\"NONE\",\"scopeUsed\":\"true\",\"scopeText\":\"JOBNO JOB SELECTED\",\"focus\":\"FIELD\"}"
+    },
+    {
+      "id": "T-01",
+      "name": "no parameter: the URL stays without investigationMode (nothing written without a choice)",
+      "ok": true,
+      "detail": "http://127.0.0.1:36489/career/demo?focus=FIELD&jobPoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7"
+    },
+    {
+      "id": "T-01",
+      "name": "any other value (case, spaces, ×, list, unknown, empty, repeated parameter) is no choice: PERSON_X_JOB, gate AWAITING_JOB",
+      "ok": true,
+      "detail": "{\"\\\"person\\\"\":{\"mode\":\"PERSON_X_JOB\",\"gate\":\"AWAITING_JOB\"},\"\\\"PERSON \\\"\":{\"mode\":\"PERSON_X_JOB\",\"gate\":\"AWAITING_JOB\"},\"\\\" JOB\\\"\":{\"mode\":\"PERSON_X_JOB\",\"gate\":\"AWAITING_JOB\"},\"\\\"PERSON×JOB\\\"\":{\"mode\":\"PERSON_X_JOB\",\"gate\":\"AWAITING_JOB\"},\"\\\"PERSON_X_JOB,JOB\\\"\":{\"mode\":\"PERSON_X_JOB\",\"gate\":\"AWAITING_JOB\"},\"\\\"TEAM\\\"\":{\"mode\":\"PERSON_X_JOB\",\"gate\":\"AWAITING_JOB\"},\"\\\"\\\"\":{\"mode\":\"PERSON_X_JOB\",\"gate\":\"AWAITING_JOB\"},\"repeated\":{\"mode\":\"PERSON_X_JOB\",\"gate\":\"AWAITING_JOB\"}}"
+    },
+    {
+      "id": "T-02",
+      "name": "PERSON × job NONE: gate OPEN, Capability field reachable",
+      "ok": true,
+      "detail": "{\"gate\":\"OPEN\",\"scope\":\"NONE\",\"reach\":{\"reachable\":true,\"disabled\":false,\"focusAfter\":\"CAPABILITY\"}}"
+    },
+    {
+      "id": "T-02",
+      "name": "PERSON × job NONE: URL focus=CAPABILITY ends on CAPABILITY",
+      "ok": true,
+      "detail": "focus CAPABILITY"
+    },
+    {
+      "id": "T-02",
+      "name": "PERSON × job VALID: gate OPEN, Capability field reachable",
+      "ok": true,
+      "detail": "{\"gate\":\"OPEN\",\"scope\":\"VALID\",\"reach\":{\"reachable\":true,\"disabled\":false,\"focusAfter\":\"CAPABILITY\"}}"
+    },
+    {
+      "id": "T-02",
+      "name": "PERSON × job VALID: URL focus=CAPABILITY ends on CAPABILITY",
+      "ok": true,
+      "detail": "focus CAPABILITY"
+    },
+    {
+      "id": "T-02",
+      "name": "PERSON × job INVALID: gate OPEN, Capability field reachable",
+      "ok": true,
+      "detail": "{\"gate\":\"OPEN\",\"scope\":\"INVALID\",\"reach\":{\"reachable\":true,\"disabled\":false,\"focusAfter\":\"CAPABILITY\"}}"
+    },
+    {
+      "id": "T-02",
+      "name": "PERSON × job INVALID: URL focus=CAPABILITY ends on CAPABILITY",
+      "ok": true,
+      "detail": "focus CAPABILITY"
+    },
+    {
+      "id": "T-02",
+      "name": "PERSON_X_JOB × job NONE: gate AWAITING_JOB, Capability field locked",
+      "ok": true,
+      "detail": "{\"gate\":\"AWAITING_JOB\",\"scope\":\"NONE\",\"reach\":{\"reachable\":false,\"disabled\":true,\"focusAfter\":\"FIELD\"}}"
+    },
+    {
+      "id": "T-02",
+      "name": "PERSON_X_JOB × job NONE: URL focus=CAPABILITY ends on FIELD",
+      "ok": true,
+      "detail": "focus FIELD"
+    },
+    {
+      "id": "T-02",
+      "name": "PERSON_X_JOB × job VALID: gate OPEN, Capability field reachable",
+      "ok": true,
+      "detail": "{\"gate\":\"OPEN\",\"scope\":\"VALID\",\"reach\":{\"reachable\":true,\"disabled\":false,\"focusAfter\":\"CAPABILITY\"}}"
+    },
+    {
+      "id": "T-02",
+      "name": "PERSON_X_JOB × job VALID: URL focus=CAPABILITY ends on CAPABILITY",
+      "ok": true,
+      "detail": "focus CAPABILITY"
+    },
+    {
+      "id": "T-02",
+      "name": "PERSON_X_JOB × job INVALID: gate AWAITING_JOB, Capability field locked",
+      "ok": true,
+      "detail": "{\"gate\":\"AWAITING_JOB\",\"scope\":\"INVALID\",\"reach\":{\"reachable\":false,\"disabled\":true,\"focusAfter\":\"FIELD\"}}"
+    },
+    {
+      "id": "T-02",
+      "name": "PERSON_X_JOB × job INVALID: URL focus=CAPABILITY ends on FIELD",
+      "ok": true,
+      "detail": "focus FIELD"
+    },
+    {
+      "id": "T-02",
+      "name": "JOB × job NONE: gate JOB_MODE, Capability field locked",
+      "ok": true,
+      "detail": "{\"gate\":\"JOB_MODE\",\"scope\":\"NONE\",\"reach\":{\"reachable\":false,\"disabled\":true,\"focusAfter\":\"FIELD\"}}"
+    },
+    {
+      "id": "T-02",
+      "name": "JOB × job NONE: URL focus=CAPABILITY ends on FIELD",
+      "ok": true,
+      "detail": "focus FIELD"
+    },
+    {
+      "id": "T-02",
+      "name": "JOB × job VALID: gate JOB_MODE, Capability field locked",
+      "ok": true,
+      "detail": "{\"gate\":\"JOB_MODE\",\"scope\":\"VALID\",\"reach\":{\"reachable\":false,\"disabled\":true,\"focusAfter\":\"FIELD\"}}"
+    },
+    {
+      "id": "T-02",
+      "name": "JOB × job VALID: URL focus=CAPABILITY ends on FIELD",
+      "ok": true,
+      "detail": "focus FIELD"
+    },
+    {
+      "id": "T-02",
+      "name": "JOB × job INVALID: gate JOB_MODE, Capability field locked",
+      "ok": true,
+      "detail": "{\"gate\":\"JOB_MODE\",\"scope\":\"INVALID\",\"reach\":{\"reachable\":false,\"disabled\":true,\"focusAfter\":\"FIELD\"}}"
+    },
+    {
+      "id": "T-02",
+      "name": "JOB × job INVALID: URL focus=CAPABILITY ends on FIELD",
+      "ok": true,
+      "detail": "focus FIELD"
+    },
+    {
+      "id": "T-03",
+      "name": "PERSON without a job: exactly one POST with keys {documents,investigation} and investigation {mode:PERSON}",
+      "ok": true,
+      "detail": "{\"posts\":1,\"keys\":[\"documents\",\"investigation\"],\"investigation\":{\"mode\":\"PERSON\"}}"
+    },
+    {
+      "id": "T-03",
+      "name": "PERSON without a job: the trigger names the mode (analyze-investigation) and carries no blocking sentence",
+      "ok": true,
+      "detail": "{\"staged\":true,\"present\":true,\"disabled\":false,\"labelMode\":\"PERSON\",\"message\":null}"
+    },
+    {
+      "id": "T-03",
+      "name": "PERSON without a job: accepted and enqueued once, the stored job declares PERSON without any job scope",
+      "ok": true,
+      "detail": "{\"enqueued\":1,\"stored\":{\"investigation\":{\"mode\":\"PERSON\"},\"jobScope\":\"(absent)\"}}"
+    },
+    {
+      "id": "T-03",
+      "name": "PERSON with a VALID job selected: exactly one POST with keys {documents,investigation} and investigation {mode:PERSON}",
+      "ok": true,
+      "detail": "{\"posts\":1,\"keys\":[\"documents\",\"investigation\"],\"investigation\":{\"mode\":\"PERSON\"}}"
+    },
+    {
+      "id": "T-03",
+      "name": "PERSON with a VALID job selected: the trigger names the mode (analyze-investigation) and carries no blocking sentence",
+      "ok": true,
+      "detail": "{\"staged\":true,\"present\":true,\"disabled\":false,\"labelMode\":\"PERSON\",\"message\":null}"
+    },
+    {
+      "id": "T-03",
+      "name": "PERSON with a VALID job selected: accepted and enqueued once, the stored job declares PERSON without any job scope",
+      "ok": true,
+      "detail": "{\"enqueued\":1,\"stored\":{\"investigation\":{\"mode\":\"PERSON\"},\"jobScope\":\"(absent)\"}}"
+    },
+    {
+      "id": "T-03",
+      "name": "PERSON × JOB with a VALID job: exactly one POST with keys {documents,investigation,jobScope} and investigation {mode:PERSON_X_JOB}",
+      "ok": true,
+      "detail": "{\"posts\":1,\"keys\":[\"documents\",\"investigation\",\"jobScope\"],\"investigation\":{\"mode\":\"PERSON_X_JOB\"}}"
+    },
+    {
+      "id": "T-03",
+      "name": "PERSON × JOB with a VALID job: jobScope is exactly the selection",
+      "ok": true,
+      "detail": "{\"jobPoolUploadId\":\"JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7\",\"poolRoleId\":\"role_pink_alpha_architect\"}"
+    },
+    {
+      "id": "T-03",
+      "name": "PERSON × JOB with a VALID job: the trigger names the mode (analyze-investigation) and carries no blocking sentence",
+      "ok": true,
+      "detail": "{\"staged\":true,\"present\":true,\"disabled\":false,\"labelMode\":\"PERSON_X_JOB\",\"message\":null}"
+    },
+    {
+      "id": "T-03",
+      "name": "PERSON × JOB with a VALID job: accepted and enqueued once, the stored job declares PERSON_X_JOB with the selection",
+      "ok": true,
+      "detail": "{\"enqueued\":1,\"stored\":{\"investigation\":{\"mode\":\"PERSON_X_JOB\"},\"jobScope\":{\"poolRoleId\":\"role_pink_alpha_architect\",\"jobPoolUploadId\":\"JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7\"}}}"
+    },
+    {
+      "id": "T-03",
+      "name": "PERSON × JOB without a job: ANALYZE not executable, no request, nothing enqueued",
+      "ok": true,
+      "detail": "{\"trigger\":{\"staged\":false,\"present\":false,\"disabled\":true,\"labelMode\":null,\"message\":null},\"posts\":0}"
+    },
+    {
+      "id": "T-03",
+      "name": "PERSON × JOB without a job: the owner's sentence stands at the trigger when shown",
+      "ok": true,
+      "detail": "null"
+    },
+    {
+      "id": "T-03",
+      "name": "JOB with a VALID job: ANALYZE not executable, no request, nothing enqueued",
+      "ok": true,
+      "detail": "{\"trigger\":{\"staged\":false,\"present\":false,\"disabled\":true,\"labelMode\":null,\"message\":null},\"posts\":0}"
+    },
+    {
+      "id": "T-04",
+      "name": "click PERSON: mode in URL, the selected job stays in the URL and VALID, indicator data-job-scope-used=false and names PERSON, gate OPEN, Capability kept",
+      "ok": true,
+      "detail": "{\"mode\":\"PERSON\",\"gate\":\"OPEN\",\"selector\":\"PERSON\",\"checked\":[\"investigation-mode-PERSON\"],\"scope\":\"VALID\",\"scopeUsed\":\"false\",\"scopeText\":\"JOBNO JOB SCOPE · PERSONselected job not used: Distributed Systems Architect\",\"focus\":\"CAPABILITY\",\"url\":{\"focus\":\"CAPABILITY\",\"analysisId\":\"ANL_PINK_THREE_MODES\",\"jobPoolUploadId\":\"JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7\",\"jobScopePoolUploadId\":\"JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7\",\"jobScopeRoleId\":\"role_pink_alpha_architect\",\"investigationMode\":\"PERSON\"}}"
+    },
+    {
+      "id": "T-04",
+      "name": "click JOB: gate JOB_MODE, the shell leaves the Capability field, job kept",
+      "ok": true,
+      "detail": "{\"mode\":\"JOB\",\"gate\":\"JOB_MODE\",\"selector\":\"JOB\",\"checked\":[\"investigation-mode-JOB\"],\"scope\":\"VALID\",\"scopeUsed\":\"true\",\"scopeText\":\"JOBDistributed Systems ArchitectAlpha Industrial Systems · PINK validation pool\",\"focus\":\"FIELD\",\"url\":{\"focus\":\"CAPABILITY\",\"analysisId\":\"ANL_PINK_THREE_MODES\",\"jobPoolUploadId\":\"JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7\",\"jobScopePoolUploadId\":\"JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7\",\"jobScopeRoleId\":\"role_pink_alpha_architect\",\"investigationMode\":\"JOB\"}}"
+    },
+    {
+      "id": "T-04",
+      "name": "JOB: the Capability field cannot be entered by its button",
+      "ok": true,
+      "detail": "{\"reachable\":false,\"disabled\":true,\"focusAfter\":\"FIELD\"}"
+    },
+    {
+      "id": "T-04",
+      "name": "click PERSON × JOB: gate OPEN with the VALID job, the requested Capability field returns, indicator used again",
+      "ok": true,
+      "detail": "{\"mode\":\"PERSON_X_JOB\",\"gate\":\"OPEN\",\"selector\":\"PERSON_X_JOB\",\"checked\":[\"investigation-mode-PERSON_X_JOB\"],\"scope\":\"VALID\",\"scopeUsed\":\"true\",\"scopeText\":\"JOBDistributed Systems ArchitectAlpha Industrial Systems · PINK validation pool\",\"focus\":\"CAPABILITY\",\"url\":\"http://127.0.0.1:36489/career/demo?focus=CAPABILITY&analysisId=ANL_PINK_THREE_MODES&jobPoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7&jobScopePoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7&jobScopeRoleId=role_pink_alpha_architect&investigationMode=PERSON_X_JOB\"}"
+    },
+    {
+      "id": "T-04",
+      "name": "keyboard on the control: ← PERSON × JOB→PERSON, End →JOB, Home →PERSON, → →PERSON × JOB, → →JOB",
+      "ok": true,
+      "detail": "[{\"key\":\"ArrowLeft\",\"from\":\"PERSON_X_JOB\",\"to\":\"PERSON\",\"focusAfter\":\"investigation-mode-PERSON\",\"fieldFocus\":\"CAPABILITY\"},{\"key\":\"End\",\"from\":\"PERSON\",\"to\":\"JOB\",\"focusAfter\":\"investigation-mode-JOB\",\"fieldFocus\":\"FIELD\"},{\"key\":\"Home\",\"from\":\"JOB\",\"to\":\"PERSON\",\"focusAfter\":\"investigation-mode-PERSON\",\"fieldFocus\":\"CAPABILITY\"},{\"key\":\"ArrowRight\",\"from\":\"PERSON\",\"to\":\"PERSON_X_JOB\",\"focusAfter\":\"investigation-mode-PERSON_X_JOB\",\"fieldFocus\":\"CAPABILITY\"},{\"key\":\"ArrowRight\",\"from\":\"PERSON_X_JOB\",\"to\":\"JOB\",\"focusAfter\":\"investigation-mode-JOB\",\"fieldFocus\":\"FIELD\"}]"
+    },
+    {
+      "id": "T-04",
+      "name": "keyboard focus stays on the chosen radio after each key (also when the mode change moves the field)",
+      "ok": true,
+      "detail": "[\"ArrowLeft:PERSON_X_JOB→PERSON focus=investigation-mode-PERSON field=CAPABILITY\",\"End:PERSON→JOB focus=investigation-mode-JOB field=FIELD\",\"Home:JOB→PERSON focus=investigation-mode-PERSON field=CAPABILITY\",\"ArrowRight:PERSON→PERSON_X_JOB focus=investigation-mode-PERSON_X_JOB field=CAPABILITY\",\"ArrowRight:PERSON_X_JOB→JOB focus=investigation-mode-JOB field=FIELD\"]"
+    },
+    {
+      "id": "T-05",
+      "name": "PERSON: Job Field analysis source NONE",
+      "ok": true,
+      "detail": "NONE"
+    },
+    {
+      "id": "T-05",
+      "name": "PERSON: mode statement present and naming the mode",
+      "ok": true,
+      "detail": "PERSON"
+    },
+    {
+      "id": "T-08",
+      "name": "PERSON: no closure glyph in the Job Field at the selected role",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "id": "T-06",
+      "name": "PERSON: investigation toggle at the selected role = none",
+      "ok": true,
+      "detail": "null"
+    },
+    {
+      "id": "T-05",
+      "name": "PERSON_X_JOB: Job Field analysis source is the URL analysis",
+      "ok": true,
+      "detail": "URL"
+    },
+    {
+      "id": "T-05",
+      "name": "PERSON_X_JOB: mode statement absent",
+      "ok": true,
+      "detail": "null"
+    },
+    {
+      "id": "T-08",
+      "name": "PERSON_X_JOB: no closure glyph in the Job Field at the selected role",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "id": "T-06",
+      "name": "PERSON_X_JOB: investigation toggle at the selected role = COVERAGE",
+      "ok": true,
+      "detail": "COVERAGE"
+    },
+    {
+      "id": "T-06",
+      "name": "PERSON_X_JOB: nothing is read while the body is closed",
+      "ok": true,
+      "detail": "{\"closedReads\":0}"
+    },
+    {
+      "id": "T-06",
+      "name": "PERSON_X_JOB: opening reads exactly once, GET, for exactly the selection",
+      "ok": true,
+      "detail": "{\"state\":\"NOT_FOUND\",\"reads\":[\"/api/career/analyses/ANL_PINK_THREE_MODES/job-comparison?jobPoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7&poolRoleId=role_pink_alpha_architect\"]}"
+    },
+    {
+      "id": "T-06",
+      "name": "PERSON × JOB: the real B2 route's answer for an analysis without proposals is named, not shown as coverage",
+      "ok": true,
+      "detail": "NOT_FOUND"
+    },
+    {
+      "id": "T-06",
+      "name": "PERSON_X_JOB: closing removes the body; reopening reads again (no cached data)",
+      "ok": true,
+      "detail": "{\"bodyGone\":true,\"readsAfterReopen\":1}"
+    },
+    {
+      "id": "T-05",
+      "name": "JOB: Job Field analysis source NONE",
+      "ok": true,
+      "detail": "NONE"
+    },
+    {
+      "id": "T-05",
+      "name": "JOB: mode statement present and naming the mode",
+      "ok": true,
+      "detail": "JOB"
+    },
+    {
+      "id": "T-08",
+      "name": "JOB: no closure glyph in the Job Field at the selected role",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "id": "T-06",
+      "name": "JOB: investigation toggle at the selected role = STRUCTURE",
+      "ok": true,
+      "detail": "STRUCTURE"
+    },
+    {
+      "id": "T-06",
+      "name": "JOB: nothing is read while the body is closed",
+      "ok": true,
+      "detail": "{\"closedReads\":0}"
+    },
+    {
+      "id": "T-06",
+      "name": "JOB: opening reads exactly once, GET, for exactly the selection",
+      "ok": true,
+      "detail": "{\"state\":\"AVAILABLE\",\"reads\":[\"/api/career/job-pools/JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7/roles/role_pink_alpha_architect/structure\"]}"
+    },
+    {
+      "id": "T-06",
+      "name": "JOB: the real structure route answers AVAILABLE; the body lists exactly the role's requirements, bound to the role, unscored",
+      "ok": true,
+      "detail": "{\"rows\":[\"req_pink_alpha_1\",\"req_pink_alpha_2\",\"req_pink_alpha_3\"],\"findings\":[\"syntx-structure-finding-ROLE_RESPONSIBILITY_NOT_DECLARED\",\"syntx-structure-finding-REQUIREMENT_LEVEL_UNRESOLVED\",\"syntx-structure-finding-REQUIREMENT_MATCHING_ELIGIBILITY_UNKNOWN\",\"syntx-structure-finding-REQUIREMENT_TYPE_UNDECLARED\",\"syntx-structure-finding-REQUIREMENT_NECESSITY_UNDECLARED\",\"syntx-structure-finding-REQUIREMENT_LEVEL_UNRESOLVED\",\"syntx-structure-finding-REQUIREMENT_MATCHING_ELIGIBILITY_UNKNOWN\",\"syntx-structure-finding-REQUIREMENT_TYPE_UNDECLARED\"],\"bindingRole\":\"role_pink_alpha_architect\",\"scored\":\"false\"}"
+    },
+    {
+      "id": "T-06",
+      "name": "JOB: closing removes the body; reopening reads again (no cached data)",
+      "ok": true,
+      "detail": "{\"bodyGone\":true,\"readsAfterReopen\":1}"
+    },
+    {
+      "id": "T-06",
+      "name": "B2 display guard · binding = analysis + selection: state AVAILABLE, coverage shown (2 rows, unscored, NOT_EVALUATED)",
+      "ok": true,
+      "detail": "{\"state\":\"AVAILABLE\",\"coverageRows\":2,\"quoteShown\":true,\"covered\":\"1\",\"relation\":\"NOT_EVALUATED\",\"text\":\"B2 · SELECTED ROLE COVERAGEUnconfirmed name coverage of the selected role by the capability proposals of this analysis: counts, never a score.01BINDINGDistribut\"}"
+    },
+    {
+      "id": "T-06",
+      "name": "B2 display guard · binding names another role: state FAILED, coverage not shown",
+      "ok": true,
+      "detail": "{\"state\":\"FAILED\",\"coverageRows\":0,\"quoteShown\":false,\"covered\":\"\",\"relation\":\"NOT_EVALUATED\",\"text\":\"B2 · SELECTED ROLE COVERAGEUnconfirmed name coverage of the selected role by the capability proposals of this analysis: counts, never a score.B2 coverage could \"}"
+    },
+    {
+      "id": "T-06",
+      "name": "B2 display guard · binding names another analysis: state FAILED, coverage not shown",
+      "ok": true,
+      "detail": "{\"state\":\"FAILED\",\"coverageRows\":0,\"quoteShown\":false,\"covered\":\"\",\"relation\":\"NOT_EVALUATED\",\"text\":\"B2 · SELECTED ROLE COVERAGEUnconfirmed name coverage of the selected role by the capability proposals of this analysis: counts, never a score.B2 coverage could \"}"
+    },
+    {
+      "id": "T-06",
+      "name": "B2 display guard · authority altered (scored true): state FAILED, coverage not shown",
+      "ok": true,
+      "detail": "{\"state\":\"FAILED\",\"coverageRows\":0,\"quoteShown\":false,\"covered\":\"\",\"relation\":\"NOT_EVALUATED\",\"text\":\"B2 · SELECTED ROLE COVERAGEUnconfirmed name coverage of the selected role by the capability proposals of this analysis: counts, never a score.B2 coverage could \"}"
+    },
+    {
+      "id": "T-06",
+      "name": "B2 display guard · 409 SCOPE_MISMATCH: state SCOPE_MISMATCH, coverage not shown",
+      "ok": true,
+      "detail": "{\"state\":\"SCOPE_MISMATCH\",\"coverageRows\":0,\"quoteShown\":false,\"covered\":\"\",\"relation\":\"NOT_EVALUATED\",\"text\":\"B2 · SELECTED ROLE COVERAGEUnconfirmed name coverage of the selected role by the capability proposals of this analysis: counts, never a score.Analysis belongs t\"}"
+    },
+    {
+      "id": "T-06",
+      "name": "B2 SCOPE_MISMATCH is named „Analysis belongs to another job.“ (default locale en)",
+      "ok": true,
+      "detail": "B2 · SELECTED ROLE COVERAGEUnconfirmed name coverage of the selected role by the capability proposals of this analysis: counts, never a score.Analysis belongs to another job."
+    },
+    {
+      "id": "T-06",
+      "name": "B2 display guard · 409 NOT_SCOPED: state NOT_SCOPED, coverage not shown",
+      "ok": true,
+      "detail": "{\"state\":\"NOT_SCOPED\",\"coverageRows\":0,\"quoteShown\":false,\"covered\":\"\",\"relation\":\"NOT_EVALUATED\",\"text\":\"B2 · SELECTED ROLE COVERAGEUnconfirmed name coverage of the selected role by the capability proposals of this analysis: counts, never a score.This analysis is a\"}"
+    },
+    {
+      "id": "T-06",
+      "name": "B2 display guard · 409 SCOPE_DRIFT: state SCOPE_DRIFT, coverage not shown",
+      "ok": true,
+      "detail": "{\"state\":\"SCOPE_DRIFT\",\"coverageRows\":0,\"quoteShown\":false,\"covered\":\"\",\"relation\":\"NOT_EVALUATED\",\"text\":\"B2 · SELECTED ROLE COVERAGEUnconfirmed name coverage of the selected role by the capability proposals of this analysis: counts, never a score.The selected job h\"}"
+    },
+    {
+      "id": "T-07",
+      "name": "without NEXT_PUBLIC_CONDYN_RESULT_INSPECTOR_UI=1 there is no GEMINI OUTPUT toggle in any mode, and no inspector request",
+      "ok": true,
+      "detail": "{\"counts\":{\"PERSON\":0,\"PERSON_X_JOB\":0,\"JOB\":0},\"inspectorRequests\":0}"
+    },
+    {
+      "id": "T-08",
+      "name": "1600 px · FIELD: the mode control is inside the viewport, uncovered, and overlaps neither the job indicator nor the field selector",
+      "ok": true,
+      "detail": "{\"selector\":{\"left\":1045,\"top\":78,\"right\":1269.125,\"bottom\":110},\"indicator\":{\"left\":28,\"top\":74,\"right\":407.421875,\"bottom\":114},\"strip\":{\"left\":563,\"top\":70,\"right\":1037,\"bottom\":118},\"viewport\":{\"width\":1600,\"height\":1000},\"owned\":true,\"focus\":\"FIELD\"}"
+    },
+    {
+      "id": "T-08",
+      "name": "1600 px · CAPABILITY: the mode control is inside the viewport, uncovered, and overlaps neither the job indicator nor the field selector",
+      "ok": true,
+      "detail": "{\"selector\":{\"left\":1045,\"top\":78,\"right\":1269.125,\"bottom\":110},\"indicator\":{\"left\":28,\"top\":74,\"right\":407.421875,\"bottom\":114},\"strip\":{\"left\":563,\"top\":70,\"right\":1037,\"bottom\":118},\"viewport\":{\"width\":1600,\"height\":1000},\"owned\":true,\"focus\":\"CAPABILITY\"}"
+    },
+    {
+      "id": "T-08",
+      "name": "1280 px · FIELD: the mode control is inside the viewport, uncovered, and overlaps neither the job indicator nor the field selector",
+      "ok": true,
+      "detail": "{\"selector\":{\"left\":885,\"top\":78,\"right\":1109.125,\"bottom\":110},\"indicator\":{\"left\":28,\"top\":74,\"right\":385,\"bottom\":114},\"strip\":{\"left\":403,\"top\":70,\"right\":877,\"bottom\":118},\"viewport\":{\"width\":1280,\"height\":800},\"owned\":true,\"focus\":\"FIELD\"}"
+    },
+    {
+      "id": "T-08",
+      "name": "1280 px · CAPABILITY: the mode control is inside the viewport, uncovered, and overlaps neither the job indicator nor the field selector",
+      "ok": true,
+      "detail": "{\"selector\":{\"left\":885,\"top\":78,\"right\":1109.125,\"bottom\":110},\"indicator\":{\"left\":28,\"top\":74,\"right\":385,\"bottom\":114},\"strip\":{\"left\":403,\"top\":70,\"right\":877,\"bottom\":118},\"viewport\":{\"width\":1280,\"height\":800},\"owned\":true,\"focus\":\"CAPABILITY\"}"
+    },
+    {
+      "id": "T-10",
+      "name": "own PERSON_X_JOB analysis, own pool: boundary PERSON_X_JOB, compared with exactly its pool",
+      "ok": true,
+      "detail": "{\"boundary\":\"PERSON_X_JOB\",\"fieldState\":\"AVAILABLE\",\"hint\":null,\"hintPool\":null,\"matches\":[\"/api/career/job-pools/JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7/matches?analysisId=ANL_PINK_THREE_MODES\"],\"sources\":0}"
+    },
+    {
+      "id": "T-10",
+      "name": "jobScope-only declaration (earlier contract), own pool: boundary PERSON_X_JOB, compared with exactly its pool",
+      "ok": true,
+      "detail": "{\"boundary\":\"PERSON_X_JOB\",\"fieldState\":\"AVAILABLE\",\"hint\":null,\"hintPool\":null,\"matches\":[\"/api/career/job-pools/JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7/matches?analysisId=ANL_PINK_TM_URL_LEGACY\"],\"sources\":0}"
+    },
+    {
+      "id": "T-10",
+      "name": "PERSON analysis from the URL: boundary PERSON, no /matches, no /sources, no comparison",
+      "ok": true,
+      "detail": "{\"boundary\":\"PERSON\",\"fieldState\":\"NO_ANALYSIS\",\"hint\":\"PERSON\",\"hintPool\":\"\",\"matches\":[],\"sources\":0}"
+    },
+    {
+      "id": "T-10",
+      "name": "analysis row without a job (NOT_RECORDED): boundary UNRESOLVED, no /matches, no /sources, no comparison",
+      "ok": true,
+      "detail": "{\"boundary\":\"UNRESOLVED\",\"fieldState\":\"NO_ANALYSIS\",\"hint\":\"UNRESOLVED\",\"hintPool\":\"\",\"matches\":[],\"sources\":0}"
+    },
+    {
+      "id": "T-10",
+      "name": "unknown analysis (404): boundary UNRESOLVED, no /matches, no /sources, no comparison",
+      "ok": true,
+      "detail": "{\"boundary\":\"UNRESOLVED\",\"fieldState\":\"NO_ANALYSIS\",\"hint\":\"UNRESOLVED\",\"hintPool\":\"\",\"matches\":[],\"sources\":0}"
+    },
+    {
+      "id": "T-10",
+      "name": "own analysis viewed in another pool: boundary OTHER_POOL, no /matches, no /sources, no comparison",
+      "ok": true,
+      "detail": "{\"boundary\":\"OTHER_POOL\",\"fieldState\":\"NO_ANALYSIS\",\"hint\":\"OTHER_POOL\",\"hintPool\":\"JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7\",\"matches\":[],\"sources\":0}"
+    },
+    {
+      "id": "T-10",
+      "name": "OTHER_POOL names the analysis's own pool and does not switch to it by itself",
+      "ok": true,
+      "detail": "{\"hintPool\":\"JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7\",\"url\":\"http://127.0.0.1:36489/career/demo?focus=FIELD&analysisId=ANL_PINK_THREE_MODES&jobPoolUploadId=JPOOL_5F834A1B53F934B782E68E27B9853198\"}"
+    },
+    {
+      "id": "T-10",
+      "name": "the explicit click opens the analysis's own pool and only then compares it",
+      "ok": true,
+      "detail": "{\"url\":\"http://127.0.0.1:36489/career/demo?focus=FIELD&analysisId=ANL_PINK_THREE_MODES&jobPoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7\",\"fieldState\":\"AVAILABLE\",\"matches\":[\"/api/career/job-pools/JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7/matches?analysisId=ANL_PINK_THREE_MODES\"],\"boundary\":\"PERSON_X_JOB\"}"
+    },
+    {
+      "id": "T-10",
+      "name": "own analysis in PERSON mode: boundary (not PERSON × JOB), no /matches, no /sources, no comparison",
+      "ok": true,
+      "detail": "{\"boundary\":\"PERSON_X_JOB\",\"fieldState\":\"NO_ANALYSIS\",\"hint\":null,\"hintPool\":null,\"matches\":[],\"sources\":0}"
+    },
+    {
+      "id": "T-10",
+      "name": "own analysis in JOB mode: boundary (not PERSON × JOB), no /matches, no /sources, no comparison",
+      "ok": true,
+      "detail": "{\"boundary\":\"PERSON_X_JOB\",\"fieldState\":\"NO_ANALYSIS\",\"hint\":null,\"hintPool\":null,\"matches\":[],\"sources\":0}"
+    },
+    {
+      "id": "T-10",
+      "name": "while the boundary read is pending: RESOLVING, no /matches, no /sources; after it resolves: PERSON_X_JOB and compared",
+      "ok": true,
+      "detail": "{\"during\":{\"boundary\":\"RESOLVING\",\"matches\":0,\"sources\":0},\"afterRelease\":{\"boundary\":\"PERSON_X_JOB\",\"matches\":1}}"
+    },
+    {
+      "id": "T-10",
+      "name": "boundary read server error 500: UNRESOLVED, no /matches, no /sources",
+      "ok": true,
+      "detail": "{\"boundary\":\"UNRESOLVED\",\"matches\":[],\"sources\":0}"
+    },
+    {
+      "id": "T-10",
+      "name": "boundary read 200 about another analysis: UNRESOLVED, no /matches, no /sources",
+      "ok": true,
+      "detail": "{\"boundary\":\"UNRESOLVED\",\"matches\":[],\"sources\":0}"
+    },
+    {
+      "id": "T-10",
+      "name": "boundary read 200 with an extra key: UNRESOLVED, no /matches, no /sources",
+      "ok": true,
+      "detail": "{\"boundary\":\"UNRESOLVED\",\"matches\":[],\"sources\":0}"
+    },
+    {
+      "id": "T-10",
+      "name": "boundary read 409 with an unknown reason: UNRESOLVED, no /matches, no /sources",
+      "ok": true,
+      "detail": "{\"boundary\":\"UNRESOLVED\",\"matches\":[],\"sources\":0}"
+    },
+    {
+      "id": "T-09",
+      "name": "the browser sent no request outside the server",
+      "ok": true,
+      "detail": "[]"
+    },
+    {
+      "id": "T-09",
+      "name": "server: 0 Gemini attempts (PINK sentinel in the server process); other refused attempts listed",
+      "ok": true,
+      "detail": "{\"total\":1,\"gemini\":0,\"entries\":[\"fetch https://registry.npmjs.org/-/package/next/dist-tags\"]}"
+    },
+    {
+      "id": "T-09",
+      "name": "no page error in the walk",
+      "ok": true,
+      "detail": "[]"
+    }
+  ],
+  "pageErrors": []
+}

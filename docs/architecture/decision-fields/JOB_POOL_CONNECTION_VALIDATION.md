@@ -1763,6 +1763,101 @@ Evidence: `evidence/job-scope-gate-d4f61c1-8718e3a/` (G-report, batch results, s
 - PINK validates the integration state only when GELB reports it.
 - Main, deployment and live Gemini stay untouched.
 
+### 3.41 Integration `integration/job-field-governance` `0fb7b05`: three investigation modes with the PINK tip (2026-10-15)
+
+**Request.** GELB asked PINK to validate the integration state independently. GELB stated an owner "INTEGRATION GO" for the three-modes state; PINK knows that GO only from GELB.
+
+**Merges.**
+- `82d2f47` merges GRÜN `8718e3a` into `311d6ee`. `fd11389` merges PINK `c5b323f`. `0fb7b05` adds GELB's integration document and two proof JSON files only.
+- PINK rebuilt both merges independently. The trees are identical (`927ed73…`, `f8ac6fa…`).
+- `311d6ee` is already an ancestor of `8718e3a`. The integrated code is therefore exactly the tree PINK probed in §3.40.
+- `package.json` and the lockfile are unchanged.
+
+**Results:**
+
+| Check | Result |
+| --- | --- |
+| Full suite without e2e, base `311d6ee` | 2389 passed, 27 failed, 8 skipped |
+| Full suite without e2e, `0fb7b05` | 2617 passed, 38 failed, 8 skipped, **0 network attempts** |
+| Comparison | The 27 failures outside outcome-valence are identical to the base, in four lifecycle/policy files. The 11 outcome-valence failures are all "Test timed out in 5000ms" under load; that code is unchanged in the range. The three files alone fail twice by timeout and pass 19/19 with a 30 s timeout. Two base tests are absent because GRÜN renamed them (owner mandates `ca11794`/`c146f05`). |
+| PINK batch with the proof copies | 72 files (64 green + 8 live skipped), 522 tests, 0 network attempts; scripts identical to `da59568`/`d54c718` |
+| Gate walk | 74/74 |
+| `three-modes.e2e` | plain 91/91, inspector 97/97 |
+| `url-boundary.e2e` (real server) | 1/1 |
+| GRÜN `job-pool-workflow.e2e` | 10/10 |
+
+The only network attempt in the server runs was the Next dev version check to registry.npmjs.org, blocked by the sentinel; there were 0 Gemini attempts.
+
+**`syntx-walk.e2e` 0/3.** The cause is in the walk, not in the application:
+- The walk persists `ANL_PINK_SYNTX_WALK` directly, without a job (line 284). Its boundary is therefore UNRESOLVED NOT_RECORDED, so the URL boundary never compares it and the field never becomes AVAILABLE (waits at lines 333, 909, 1042).
+- The walk was already 0/3 on `frontend/job-field` since `ca11794` (§3.26).
+- Its version-two step compares the analysis in another pool version. The URL boundary forbids that by design (OTHER_POOL).
+- Rebinding the walk to the invariants is PINK's task. It is due after the `/matches` delta (§3.42), which additionally needs a persisted job.
+
+**Findings on GELB's integration document:**
+- **Leak check.** The document reports no local paths in the merge range. Measured: 30 added lines in 25 files contain a local `/home/<user>/…` path. All are in GRÜN's `docs/career_analysis/evidence/job-pool/` (from `337033e`, `c146f05`, `cb3d33f`, `aa17a3b`, `44cd561`, `415f348`, `bb5e8e3`); none is in PINK files. They are already on pushed branches; cleaning them up or rewriting history is an owner decision.
+- **Provenance.** Both `docs/proofs/job-pool-first-boundary/2026-10-15-integration-*.json` files record `gitSha: null`. Their checks pass (8/8 and 45/45), but neither names the commit it ran against.
+- **Load timeouts.** GELB's count of 28 failures and PINK's 38 differ only by outcome-valence load timeouts.
+
+Evidence is in `evidence/integration-0fb7b05/`: reports, comparisons, the leak check and the manifest. Screenshots were not committed; the reports carry every check.
+
+**Status.**
+- No deviation in the integrated code.
+- Open: the `syntx-walk` rebinding (PINK), the local paths in GRÜN's evidence (owner), and O-B2-OPEN-READ (unchanged).
+- Deployment, a public release and live Gemini are not authorised. `main`, :3017 and :41831 were not touched.
+
+### 3.42 Separate `/matches` delta: GELB `eacfc97` on `feature/matches-boundary-guard` (2026-10-15)
+
+**Request and rule.** GELB relayed the owner's wording: the legacy pool-wide comparison stays role-unbound for compatibility. Its interface refuses a stored PERSON analysis and an unresolvable boundary on the server.
+- In `lib/career/job-pool/application.ts`, the persisted boundary is read after the pool exists and before the analysis is loaded:
+  - PERSON → 409 `ERR_JOB_POOL_MATCHES_PERSON_ANALYSIS`;
+  - unresolved → 409 `ERR_JOB_POOL_MATCHES_BOUNDARY_UNRESOLVED`, with the reason in `issues[0]`;
+  - unknown → 404.
+- The production composition (`local-composition.ts`) supplies the boundary.
+- PINK knows the owner wording only from GELB.
+
+**PINK proofs:**
+- **`matches-boundary.postgres`** (new): the same 26 seeded analyses as `url-boundary.postgres`, each also in the analysis repository, so a refusal can only come from the boundary.
+  - **MB-1:** 52/52 case × pool rows answer exactly as the real URL boundary route dictates. Every reason and the PERSON refusal are reached. PERSON_X_JOB (6 cases × 2 pools) is byte-identical to the composition without the boundary, including another role of the same pool.
+  - **MB-2, order:** an unknown pool gives 404 first; then the boundary is checked (DRAFT × PERSON → 409 PERSON); then the pool status (DRAFT × PERSON_X_JOB → 409 inactive); a missing or empty analysisId gives 400.
+  - **MB-3:** refusals carry identities only.
+  - **MB-4:** read only.
+  - **MB-5:** pool equality is not checked; PERSON_X_JOB in another ACTIVE pool answers 200. This is measured, not asserted (open owner question).
+- **Negative control:** on `0fb7b05` (without the guard), 38 of 52 rows deviate, all answering 200, and MB-2 deviates. Detected.
+- **`matches-boundary.e2e`** (new, real Next server): byte-identical to in-process for PERSON_X_JOB, another role, PERSON, NOT_DECLARED, RUN_CONTRADICTS_DECLARATION, NOT_RECORDED and unknown. 0 Gemini attempts.
+
+**Impact on existing callers, measured:**
+- Without the PINK diffs, `pdf-path.postgres` fails (409 instead of 200 for the dangling-lineage analysis).
+- Without the PINK diffs, `http-canonical-inverse.postgres` fails 2 tests (404 instead of 200 and 409, because the boundary reads PostgreSQL).
+- GELB's impact assessment is confirmed.
+
+**Adopted PINK diffs** (test files only):
+- **`http-canonical-inverse`:** an analysis row and a SUCCEEDED PERSON_X_JOB job for `ANL_PINK_JOB_POOL_VALIDATION`.
+- **`pdf-path`:** the dangling-lineage analysis has no recorded boundary and is now refused with 409 NOT_RECORDED. It is never compared, so no sweep state can be fabricated; the byte equality for this case is replaced by the refusal.
+
+The `pdf-path` change holds only with `eacfc97`. On `0fb7b05` alone, that step answers 200.
+
+**Results on `eacfc97` with the diffs:**
+
+| Check | Result |
+| --- | --- |
+| PINK batch plus `matches-boundary.postgres` | 73 files (65 green + 8 skipped), 527 tests, 0 network attempts |
+| `tsc` | 0 |
+| Gate walk | 74/74 |
+| `three-modes.e2e` plain | 91/91 |
+| `url-boundary.e2e` | 1/1 |
+| GRÜN workflow e2e | 10/10 |
+| Full suite without e2e | 2705 passed, 27 failed (exactly the base failures, no timeouts), 0 network attempts |
+
+**Correction during the run.** The first version of `matches-boundary.postgres` uploaded PINK's validation pool. In the shared database of the full suite this made `http-canonical-inverse` see 200 instead of 201 and a second ACTIVE upload of its pool id. The proof now uses its own pool id; the three files run together 20/20.
+
+Evidence is in `evidence/matches-boundary-eacfc97/`: answers, real-server routes, reports, both adopted diffs, the negative control, the proof copies and the manifest.
+
+**Status.**
+- No deviation. The delta is ready for the integration together with PINK's diffs.
+- Open owner question: should the server also refuse PERSON_X_JOB in another pool?
+- The read-only support scripts receive 409 on environments with analyses from before the gate. :3017 and :41831 do not run this code.
+
 ## 4. Boundaries and findings for coordination
 
 - F-JP-1 (closed in `b782793`): `JOB_POOL_CONNECTION.md` §4 followed the per-role `JOB_POOL_JSON_ROLE` design;

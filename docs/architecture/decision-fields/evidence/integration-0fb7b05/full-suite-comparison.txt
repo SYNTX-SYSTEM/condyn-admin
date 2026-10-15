@@ -1,0 +1,15 @@
+Full suite without e2e, isolated disposable databases, GEMINI_API_KEY unset, PINK network sentinel in every process
+base 311d6ee: 2389 passed, 27 failed, 8 skipped
+integration 0fb7b05: 2617 passed, 38 failed, 8 skipped
+failed outside outcome-valence: base 27, integration 27, identical sets: True
+failed files (both):
+   test/career-lifecycle-concurrency-idempotency.test.ts 6
+   test/career-lifecycle-postgres-persistence.test.ts 6
+   test/career-lifecycle-recovery.test.ts 5
+   test/career-policy-activation-atomicity.test.ts 10
+outcome-valence failures in the integration run: 11, all 'Test timed out in 5000ms' under load (load average about 6 on 8 cores);
+  code under lib/career/relation*, test/career/relation* unchanged between 311d6ee and 0fb7b05;
+  the three files alone: twice red by timeout (4 and 6 of 19), with --testTimeout=30000: 19/19 green
+base-green tests not green in the integration (outside outcome-valence): 2, both renamed by GRÜN with the owner mandates:
+   test/career/job-pool/syntx-field-ssr.test.tsx | SYNTX field (server-rendered) keeps the capability field as the default focus; the strip names two field state -> None
+   test/career/job-pool/syntx-field-view-model.test.ts | SYNTX field view model (read-only adapter over the delivered Job Pool truth) FIELD: containment only — organiz -> None

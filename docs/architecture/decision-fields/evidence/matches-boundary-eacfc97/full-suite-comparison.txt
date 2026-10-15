@@ -1,0 +1,5 @@
+Full suite without e2e on feature/matches-boundary-guard eacfc97 with the PINK diffs and PINK proof copies in place; isolated disposable databases, GEMINI_API_KEY unset, PINK network sentinel
+eacfc97: 2705 passed, 27 failed, 8 skipped; base 311d6ee: 2389 passed, 27 failed
+failed outside outcome-valence: 27, identical to the base failures: True
+outcome-valence failures: 0; messages: []
+base-green tests not green here (outside outcome-valence): 2 (the two GRÜN renames)

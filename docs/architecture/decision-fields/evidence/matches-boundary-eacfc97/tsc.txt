@@ -1,0 +1,2 @@
+npx tsc --noEmit -p . on eacfc97 with the PINK diffs and proof copies in place
+exit 0, 0 error lines
