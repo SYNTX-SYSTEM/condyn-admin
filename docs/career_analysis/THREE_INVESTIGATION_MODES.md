@@ -131,7 +131,8 @@ Kernel, Prompts, Ausgabeschemata, Phase-4, Evidence-Validator, Projektion, Match
 | `ad15d7b` | Nachweise |
 | `26df225` | persistierte Grenze einer Analyse (§6) |
 | `ef189d3` | Nachweis zu §6 |
-| dieser Commit | Scope-Identität des Laufs (PINK §3.38) |
+| `d54c718` | Scope-Identität des Laufs (PINK §3.38) |
+| dieser Commit | Nachweis zu `d54c718` |
 
 ## 9. Nachweise (ohne Gemini, 0 Netzwerkversuche)
 
@@ -151,12 +152,13 @@ Die Belege liegen unter `docs/proofs/job-pool-first-boundary/2026-10-15-three-mo
   - eine PERSON-Analyse 409 NOT_SCOPED.
 - Der Inspector zeigt PERSON ohne Scope und PERSON_X_JOB mit Scope.
 
-**Persistierte Grenze (§6), echter Next-Server auf einer Wegwerf-Datenbank: 14/14** (`2026-10-15-url-boundary-routes.json`, 0 Netzwerkversuche)
+**Persistierte Grenze (§6), echter Next-Server auf einer Wegwerf-Datenbank: 15/15** (Stand `d54c718`) (`2026-10-15-url-boundary-routes.json`, 0 Netzwerkversuche)
 - **Antworten der Route:**
   - PERSON_X_JOB 200 mit deklarierter Auswahl und Scope-Hash;
   - PERSON 200 ohne Auswahl;
   - Auftrag nach altem Vertrag 200 PERSON_X_JOB;
   - Analyse ohne Auftrag 409 NOT_RECORDED;
+  - erklärte Rolle B, Lauf mit Rolle A: 409 RUN_CONTRADICTS_DECLARATION;
   - unbekannte Analyse 404.
 - **Inhalt:** keine Dokumentinhalte, kein Legacy-Payload.
 - **Client gegen den Server:** Die Sperre lässt den Vergleich nur für PERSON_X_JOB im eigenen Pool zu. Kein Vergleich bei PERSON, einem anderen Pool oder einer ungeklärten Grenze.
