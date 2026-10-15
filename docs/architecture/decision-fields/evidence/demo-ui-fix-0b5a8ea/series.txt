@@ -1,0 +1,13 @@
+Probe d2c641b = integration bbd643f + GRÜN frontend/demo-ui-fix 0b5a8ea (d9c7fea + 0b5a8ea); no file overlap with bbd643f; disposable databases, GEMINI_API_KEY unset
+tsc (with PINK proof copies)                     0 errors (one implicit any in PINK's own new proof fixed before the count)
+demo-ui-fix.e2e (PINK, new)                      62/62 at 1600×1000 and 1280×720; 0 non-GET; 0 Gemini (network: only the Next dev version check, blocked)
+negative control on bbd643f                      U-1/U-3: Escape on the bare document does nothing; U-2: the pools list intercepts the click on HIDE GEMINI OUTPUT; U-4: no signal, no motion, 8.5 px type (7 deviations)
+job-scope-gate.e2e                               74/74
+three-modes.e2e plain                            91/91 (first run: all 91 checks collected, then a harness timeout under parallel load; rerun alone: 1/1, 91/91)
+three-modes.e2e inspector                        97/97
+url-boundary.e2e                                 1/1
+syntx-walk.e2e                                   3/3 (Q-06 BOUNDARY-MATCH R15b-PENDING, unchanged)
+GRÜN job-pool-workflow.e2e                       10/10 (its screenshots in GRÜN's tracked evidence restored afterwards)
+full suite without e2e (rerun after the PINK isolation fix)   2705 passed, 31 failed: the 27 base failures (identical set) + 4 "Test timed out in 5000ms" (two in the outcome-valence PostgreSQL adapter, one each in decision-core reconstruct and authority) under machine load; the same files alone with --testTimeout=30000: 32/32; their code unchanged between bbd643f and the probe; 0 network attempts
+first full suite (before the PINK isolation fix)  41 failed: the 27 + 10 in http-canonical-inverse (order-dependent, see below) + 4 load timeouts
+PINK suite isolation (F-PINK-ORDER): http-canonical-inverse required to be the first to upload the validation pool (201, exactly one ACTIVE upload of its pool id) in the shared database; pdf-path (in the integration) and the job-scope proof copies upload the same pool. With file order pinned (--no-file-parallelism --sequence.shuffle.files): pdf-path first → 10 failed; http-canonical first → 15/15. Fix (PINK, test only): http-canonical-inverse uploads its own pool id (every item re-pointed, item ids unchanged) and its own DRAFT variant → 15/15 in both orders.

@@ -1,0 +1,7 @@
+demo-ui-fix.e2e (first version, U-1 … U-5) on integration bbd643f WITHOUT GRÜN d9c7fea / 0b5a8ea:
+DEV  U-1 1600: Escape on the bare document closes it · focus before body, after body (GEMINI OUTPUT stays open)
+DEV  U-3 1600: Escape on the bare document returns one level · observation stays ORGANIZATION
+stopped in U-2 1600: the click on syntx-gemini-output-toggle at the ROLE times out —
+  - <div data-pool-count="2" data-sx-panel="pools" data-sx-reveal="true" data-sx-surface="pools" data-testid="job-pool-list" data-list-state="AVAILABLE">…</div> intercepts pointer events
+  (the pools list covers HIDE GEMINI OUTPUT: the defect GRÜN fixed)
+8/10 checks ok before the stop; the NO ANALYSIS part was run separately (negative-control-bbd643f-U34.txt)
