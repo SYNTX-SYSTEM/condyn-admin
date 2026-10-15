@@ -9,3 +9,6 @@ Final (33 checks, after the bottom statement refinement):
   final-1280: 33/33
   final-1600: 33/33
 One earlier 1600 run (before these) ended with a Node error whose text was not kept; the immediate rerun and every run since passed.
+Final after the modal-layer guard (36 checks):
+  final-1600: 36/36
+  final-1280: 36/36

@@ -8,7 +8,7 @@ GRÜN, branch `frontend/demo-ui-fix` on the integration tree 5434c01. Design and
 | `01-role-gemini-pools-open-{1600,1280}.png` | after: the list opens below the orientation surface; HIDE GEMINI OUTPUT, POOLS and INTAKE free |
 | `02-no-analysis-signal-{1600,1280}.png` | the NO ANALYSIS state line as a signal (surface) and the field's own statement (bottom, still) |
 | `03-no-analysis-surface-{1600,1280}.png` | the orientation surface alone |
-| `walk-results-1600.txt`, `walk-results-1280.txt` | browser walk 33/33 per size: U-1 … U-6 (closing, focus, field and Capability Field afterwards, pool and mode kept), S-1 … S-10 (copy, type, contrast, motion, box stability, keyframes, reduced motion, infinite-motion inventory, signal scope, bottom statement), X-1 |
+| `walk-results-1600.txt`, `walk-results-1280.txt` | browser walk 36/36 per size: U-1 … U-6 (closing, focus, a modal layer above the field, field and Capability Field afterwards, pool and mode kept), S-1 … S-10 (copy, type, contrast, motion, box stability, keyframes, reduced motion, infinite-motion inventory, signal scope, bottom statement), X-1 |
 | `walk-stability.txt` | repeated runs |
 | `scripts/ui-fix-walk.mjs` | the walk (`node …/ui-fix-walk.mjs <out> <lab state.json> [w h]`) |
 

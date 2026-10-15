@@ -80,6 +80,16 @@ await page.keyboard.press("Escape"); await settle(page);
 ok("U-4b Escape on the document closes GEMINI OUTPUT first", await gemini(page) === "false" && await field(page, "data-observation-kind") === "ORGANIZATION");
 await page.evaluate(() => document.activeElement?.blur()); await page.keyboard.press("Escape"); await settle(page);
 ok("U-4c the next Escape returns one level", await field(page, "data-observation-kind") === "FIELD");
+// U-4d/e · a modal layer above the field (System Codex, onboarding): an Escape on the document leaves the field as it is.
+await page.getByTestId("syntx-gemini-output-toggle").click();
+for (const [label, openId, layerId, closeId] of [["System Codex", "open-system-codex-btn", "system-codex-modal", "system-codex-close"], ["onboarding", "how-this-works-btn", "guided-onboarding-overlay", "onboarding-close-btn"]]) {
+  await page.getByTestId(openId).click(); await page.getByTestId(layerId).waitFor({ timeout: 5000 });
+  await page.evaluate(() => document.activeElement?.blur()); await page.keyboard.press("Escape"); await settle(page);
+  ok(`U-4${label === "System Codex" ? "d" : "e"} ${label} open: Escape on the document leaves GEMINI OUTPUT and the observation as they are`, await gemini(page) === "true" && await field(page, "data-observation-kind") === "FIELD");
+  await page.getByTestId(closeId).click(); await page.getByTestId(layerId).waitFor({ state: "detached", timeout: 5000 });
+}
+await page.evaluate(() => document.activeElement?.blur()); await page.keyboard.press("Escape"); await settle(page);
+ok("U-4f with the layers closed, Escape on the document closes GEMINI OUTPUT again", await gemini(page) === "false");
 await page.context().close();
 
 // U-5 · with an analysis: Escape from the token input closes GEMINI OUTPUT, the focus stays in the field, the next Escape works.

@@ -14,6 +14,9 @@ PASS U-3f the field answers the pointer again afterwards
 PASS U-4a precondition: the focus is on the document
 PASS U-4b Escape on the document closes GEMINI OUTPUT first
 PASS U-4c the next Escape returns one level
+PASS U-4d System Codex open: Escape on the document leaves GEMINI OUTPUT and the observation as they are
+PASS U-4e onboarding open: Escape on the document leaves GEMINI OUTPUT and the observation as they are
+PASS U-4f with the layers closed, Escape on the document closes GEMINI OUTPUT again
 PASS U-5a GEMINI OUTPUT of an analysis: the token form, nothing read
 PASS U-5b Escape in the token input closes it; the focus moves to the field root — syntx-field
 PASS U-5c reopened and closed again by Escape
@@ -31,4 +34,4 @@ PASS S-7 reduced motion: no animation, the static signal stays visible — {"mod
 PASS S-9 infinite motions: NO ANALYSIS adds exactly sxSignalAura and sxSignalCore to the same field without the signal — with signal: atmosphereGlow, coreBreathe, moonOrbit, orbitFloatPhase2, particleIn, plasmaFlarePulse, plasmaRotateCcw, plasmaRotateCw, rotateClockwise, sxSignalAura, sxSignalCore, waveExpand | without: atmosphereGlow, coreBreathe, moonOrbit, orbitFloatPhase2, particleIn, plasmaFlarePulse, plasmaRotateCcw, plasmaRotateCw, rotateClockwise, waveExpand
 PASS S-8 the signal belongs to NO ANALYSIS only: PERSON's state line stays as it was
 PASS X-1 no page errors
-33/33
+36/36

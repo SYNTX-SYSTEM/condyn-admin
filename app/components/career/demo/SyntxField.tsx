@@ -494,6 +494,9 @@ function MessageVoices({ copy }: { copy: string }) {
   );
 }
 
+/** Modal layers of the shell that sit above the Job Field while they are mounted (each renders only while open). */
+const MODAL_LAYERS = '[data-testid="guided-onboarding-overlay"], [data-testid="system-codex-modal-backdrop"], [aria-modal="true"]';
+
 /** The bottom edge of an element in its offset parent; 0 until measured (server render, no ResizeObserver). */
 function useOffsetBottom(ref: React.RefObject<HTMLElement | null>): number {
   const [bottom, setBottom] = useState(0);
@@ -1972,7 +1975,8 @@ export function SyntxField({ workflow, analysisSource, observation: requested, o
     escapeOneLevel();
   };
   /** DEMO UI FIX (2026-10-15): a focus lost to the document (a control that closed with its surface) leaves Escape nowhere to go;
-   *  while the field is open, an Escape on the bare document is the field's. Focus anywhere else keeps its own Escape. */
+   *  while the field is open, an Escape on the bare document is the field's. Focus anywhere else keeps its own Escape, and a modal
+   *  layer above the field (onboarding, System Codex, any aria-modal dialog) keeps the field still (GELB review of d9c7fea). */
   const escapeRef = useRef(escapeOneLevel);
   useEffect(() => { escapeRef.current = escapeOneLevel; });
   useEffect(() => {
@@ -1980,6 +1984,7 @@ export function SyntxField({ workflow, analysisSource, observation: requested, o
       if (event.key !== "Escape" || event.defaultPrevented) return;
       const active = document.activeElement;
       if (active !== null && active !== document.body && active !== document.documentElement) return;
+      if (document.querySelector(MODAL_LAYERS) !== null) return;
       event.preventDefault();
       rootRef.current?.focus({ preventScroll: true });
       escapeRef.current();
