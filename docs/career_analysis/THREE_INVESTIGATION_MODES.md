@@ -113,7 +113,18 @@ Owner-Auftrag vom 2026-10-15: Eine über die URL geöffnete Analyse trägt keine
 - Solange die Grenze noch gelesen wird, sowie bei PERSON, UNRESOLVED, NOT_FOUND und FAILED gibt es kein Matching.
 - Fixtures ohne Auftrag brauchen einen persistierten SUCCEEDED-Auftrag mit deklarierter Grenze.
 
-Die Matches-Route und die Analyse-Route bleiben unverändert. Ein serverseitiger Schutz an `/matches` wäre eine eigene Owner-Entscheidung.
+Die Analyse-Route bleibt unverändert.
+
+**Serverseitige Sperre an `/matches`** (Owner-GO 2026-10-15, getrenntes Delta, Zweig `feature/matches-boundary-guard`): Der alte pool-weite Vergleich bleibt aus Kompatibilitätsgründen rollenübergreifend. Seine Schnittstelle `GET /api/career/job-pools/{upload}/matches?analysisId=` liest vor dem Laden der Analyse dieselbe persistierte Grenze (`investigationBoundary` in `lib/career/job-pool/application.ts`, gesetzt von `local-composition.ts`).
+
+| Grenze der Analyse | Antwort |
+|---|---|
+| PERSON_X_JOB | wie bisher: der pool-weite Vergleich, auch für eine andere Rolle desselben Pools |
+| PERSON | 409 `ERR_JOB_POOL_MATCHES_PERSON_ANALYSIS` |
+| nicht auflösbar | 409 `ERR_JOB_POOL_MATCHES_BOUNDARY_UNRESOLVED`, `issues[0].message` nennt den Grund (§6) |
+| unbekannt | 404 `ERR_ANALYSIS_NOT_FOUND`, wie bisher |
+
+Die Sperre prüft die Grenze vor dem Pool-Zustand. Für einen DRAFT-Pool gilt deshalb zuerst die Ablehnung wegen der Grenze, danach wie bisher 409 `ERR_INACTIVE_COMPANY_POOL`. Ob der angefragte Pool der untersuchte ist, prüft nur das Frontend; serverseitig ist das eine offene Owner-Frage.
 
 ## 7. Unverändert
 
