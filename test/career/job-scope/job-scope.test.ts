@@ -83,12 +83,16 @@ describe("JOB POOL FIRST — worker boundary", () => {
     expect(report).not.toHaveBeenCalled();
   });
 
-  it("hands a job with a valid selection to the unchanged processor", async () => {
+  it("hands a job with a valid selection and its issued scope to the processor", async () => {
     const processJob = vi.fn(async () => ({ resultAnalysisId: "ANL_OK" }));
     const report = vi.fn(async () => undefined);
     const claimed = job({ documents: [{ type: "text", content: "x" }], jobScope: TEST_JOB_SCOPE_B });
     await expect(requireValidJobScope(resolver, processJob)(claimed, report)).resolves.toEqual({ resultAnalysisId: "ANL_OK" });
-    expect(processJob).toHaveBeenCalledWith(claimed, report);
+    expect(processJob).toHaveBeenCalledTimes(1);
+    const [handedJob, handedReport, handedScope] = processJob.mock.calls[0] as unknown as [unknown, unknown, unknown];
+    expect([handedJob, handedReport]).toEqual([claimed, report]);
+    expect(() => assertIssuedJobScope(handedScope)).not.toThrow();
+    expect((handedScope as { selection: unknown }).selection).toEqual(TEST_JOB_SCOPE_B);
   });
 });
 

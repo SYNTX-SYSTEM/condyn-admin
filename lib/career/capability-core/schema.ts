@@ -186,6 +186,8 @@ export interface CapabilityDiscoveryRun {
   schemaVersion: string;
   status: string;
   rawOutputHash?: string;
+  /** Present only for a scoped run; absent (not undefined) otherwise, so unscoped runs keep their exact shape. */
+  investigationScope?: { scopeHash: string };
   payload: unknown;
   createdAt: string;
   completedAt?: string;

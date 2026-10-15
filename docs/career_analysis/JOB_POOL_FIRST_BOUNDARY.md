@@ -14,7 +14,7 @@ Rahmen des Owner-Auftrags:
 - keine neue Engine;
 - nur die erforderliche Validierung.
 
-Die Meldung stammt aus der Owner-Vorgabe zur Scope-Grenze: **„Bitte wählen Sie einen Job aus.“**
+Die Meldung stammt aus der Owner-Vorgabe zur Scope-Grenze: **„Bitte wähle einen Job aus einem Pool aus.“** (seit dem Owner-GO vom 2026-10-15; vorher „Bitte wählen Sie einen Job aus.“, so steht es noch in den älteren Proof-Dateien).
 
 Eine gültige Auswahl ist `jobScope: { jobPoolUploadId, poolRoleId }` mit genau diesen zwei Schlüsseln. Der Server prüft gegen die gespeicherten Daten:
 
@@ -28,7 +28,7 @@ Eine gültige Auswahl ist `jobScope: { jobPoolUploadId, poolRoleId }` mit genau 
 | Rolle oder eines ihrer Requirements ohne Mapping | 422 `ERR_JOB_SCOPE_INVALID` |
 | Jobpool-Persistenz auf dieser DB nicht eingerichtet (Grenze B-ENTRY) | 422 `ERR_JOB_SCOPE_INVALID` |
 
-Antwortform: `{ success: false, status: "FAILED", issues: [{ code, message: "Bitte wählen Sie einen Job aus." }] }`.
+Antwortform: `{ success: false, status: "FAILED", issues: [{ code, message: "Bitte wähle einen Job aus einem Pool aus." }] }`.
 
 ## 2. Rekonstruktion: Jobpool- und Capability-API-Relationen (Ist, 311d6ee)
 
@@ -134,7 +134,7 @@ Aufbau:
 
 | Check | Beobachtet |
 |---|---|
-| R1 keine Auswahl | 400 `ERR_JOB_SCOPE_REQUIRED`, „Bitte wählen Sie einen Job aus.“, 0 eingereiht |
+| R1 keine Auswahl | 400 `ERR_JOB_SCOPE_REQUIRED`, „Bitte wähle einen Job aus einem Pool aus.“, 0 eingereiht |
 | R2 Auswahl formal falsch | 400 `ERR_JOB_SCOPE_REQUIRED`, 0 eingereiht |
 | R3 unbekannter Pool | 422 `ERR_JOB_SCOPE_INVALID`, 0 eingereiht |
 | R4 Pool DRAFT | 422 `ERR_JOB_SCOPE_INVALID`, 0 eingereiht |
@@ -254,3 +254,23 @@ Die 32 Fehlschläge:
 - **2 in PINKs `pdf-path.postgres.test.ts`:** Sie scheitern genau an der neuen Grenze (`TERMINAL_ERROR: Bitte wählen Sie einen Job aus.`). Das bleibt so, bis PINK den Diff übernimmt (§11.5).
 
 `career-worker-config-validation` ist reihenfolgeabhängig. Einzeln scheitert die Datei auf 2e61a2b und auf 027abf3 gleich (Tabelle fehlt); in diesem Lauf war sie grün.
+
+## 12. Owner-GO 2026-10-15: Job-Scope in der Capability Discovery
+
+Der geprüfte `ResolvedJobScope` geht jetzt den bestehenden Weg bis zum Gemini-Request. Es gibt keine neue Pipeline, keinen neuen Provider, keine Änderung am Discovery-Kernel oder am Ausgabeschema und keine DDL.
+
+| Stelle | Änderung |
+|---|---|
+| `job-scope/worker-boundary.ts` | übergibt den pro Versuch geprüften Scope an den Processor |
+| `orchestration/career-analysis-job-processor.ts` | reicht ihn an `capabilityProposalExecutor.execute(docs, report, jobScope)` weiter (im Typ optional, damit die versiegelte F11-Suite unverändert bleibt) |
+| `orchestration/capability-proposal-executor.ts` | `assertIssuedJobScope` (nur ausgestellte Scopes, Kopien werden abgelehnt), danach `renderInvestigationScope` und Übergabe als `investigationScope` an Discovery |
+| `job-scope/investigation-scope.ts` (neu) | Text des Scopes: Pool-, Versions- und Auswahl-Identität, Role-Mapping, die Zeilen des gespeicherten Pools zu Organisation, Rolle und Requirements, je Requirement das Mapping |
+| `capability-core/discovery/prompt-builder.ts` | `INVESTIGATION_SCOPE_CONTRACT` und `<INVESTIGATION_SCOPE>` nur im Systemprompt; der Quellkorpus (Userprompt) bleibt byte-gleich |
+| `capability-core/discovery/run.ts`, `runtime.ts` | `investigationScopeHash` ist Teil der RUN-Kennung, wenn ein Scope gesetzt ist; Läufe ohne Scope behalten ihre Kennung; ein Lauf mit Scope nutzt keinen Snapshot ohne Scope als Abkürzung; der Lauf speichert `investigationScope: { scopeHash }` |
+| `capability-core/convergence/runtime.ts` | berechnet die Discovery-Kennung mit dem gespeicherten Scope-Hash neu; die CONV-Kennung hängt an der Discovery-Kennung |
+
+Invarianten (Owner, 2026-10-15): Der Job bestimmt Untersuchungsraum und Schwerpunkt der Vertiefung (INV-02); der Scope ist keine Evidence, die unveränderte Belegprüfung vergleicht nur mit den Quelldokumenten (INV-03); jede belegte Capability darf gemeldet werden, auch außerhalb der Rolle (INV-04).
+
+Die Meldung der Scope-Grenze lautet seit diesem GO **„Bitte wähle einen Job aus einem Pool aus.“** (`JOB_SCOPE_REQUIRED_MESSAGE`).
+
+Prüfung ohne Gemini (Wegwerf-DB): `test/career/job-scope/discovery-scope.test.ts` (7 Tests, Kette `execute(...)` → Provider-Request), betroffene Suites 48 Dateien / 425 Tests grün, P8-Siegel grün; Proofs `docs/proofs/job-pool-first-boundary/2026-10-15-scope-discovery-message-no-gemini.json` (45/45, 0 Netzwerkzugriffe) und `…-worker-no-gemini.json` (8/8, 0 Netzwerkzugriffe). PINKs `pdf-path.postgres.test.ts` braucht weiter den übergebenen Diff (`jobScope: resolveTestJobScope()`); PINKs `job-scope-gate.e2e.test.ts` prüft noch den alten Meldungstext.

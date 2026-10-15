@@ -2,7 +2,7 @@
  * SFE invariant JOB POOL FIRST: no valid pool + selected job → no capability analysis.
  * Every refusal carries the owner's message; the code tells a missing selection from an invalid one.
  */
-export const JOB_SCOPE_REQUIRED_MESSAGE = "Bitte wählen Sie einen Job aus.";
+export const JOB_SCOPE_REQUIRED_MESSAGE = "Bitte wähle einen Job aus einem Pool aus.";
 
 export type JobScopeErrorCode = "ERR_JOB_SCOPE_REQUIRED" | "ERR_JOB_SCOPE_INVALID";
 

@@ -21,7 +21,7 @@ const ROOT = resolve(__dirname, "../..");
 const args = process.argv.slice(2);
 const label = args.includes("--label") ? args[args.indexOf("--label") + 1] : `proof-${new Date().toISOString().replace(/[:.]/g, "-")}`;
 const skipValid = args.includes("--skip-valid");
-const MESSAGE = "Bitte wählen Sie einen Job aus.";
+const MESSAGE = "Bitte wähle einen Job aus einem Pool aus.";
 
 async function main() {
   const { verifyDisposableTestDatabase } = await import("../../lib/database-isolation/verification");

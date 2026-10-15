@@ -1,4 +1,5 @@
 import { describe, expect, it, vi } from "vitest";
+import { resolveTestJobScope } from "./support/job-scope";
 import type { DocumentInput } from "../lib/career/adapter";
 import { createSourceDocument, type SourceDocument } from "../lib/career/capability-core";
 import {
@@ -53,7 +54,7 @@ type CareerAnalysisJobProcessorFactory = (dependencies: {
 
 type CapabilityProvider = { execute(request: unknown): Promise<unknown> };
 type CapabilityProposalExecutor = {
-  execute(documents: DocumentInput[], reportOperation: ReportOperation): Promise<ProposalState>;
+  execute(documents: DocumentInput[], reportOperation: ReportOperation, jobScope: unknown): Promise<ProposalState>;
 };
 type CapabilityProposalExecutorFactory = (dependencies: {
   environment: { GEMINI_MODEL?: string; PROMPT_ENCRYPTION_KEY?: string };
@@ -358,7 +359,7 @@ describe("F10B Career worker Capability Proposal wiring", () => {
 
     await executor.execute(normalizedDocs, async (operation) => {
       events.push(operation);
-    });
+    }, resolveTestJobScope());
 
     expect(bootstrapCapabilityProposalKernels).toHaveBeenCalledWith({
       promptRepository,
@@ -454,7 +455,7 @@ describe("F10B Career worker Capability Proposal wiring", () => {
 
     await executor.execute(normalizedDocs, async (operation) => {
       events.push(operation);
-    });
+    }, resolveTestJobScope());
 
     expect(createDiscoveryProvider).toHaveBeenCalledWith("gemini-fallback-first");
     expect(createConvergenceProvider).toHaveBeenCalledWith("gemini-fallback-first");
@@ -508,7 +509,7 @@ describe("F10B Career worker Capability Proposal wiring", () => {
 
     const result = await executor.execute(normalizedDocs, async (operation) => {
       events.push(operation);
-    });
+    }, resolveTestJobScope());
 
     expect(result).toMatchObject({ kind: "VERIFIED_SNAPSHOT_REUSED" });
     expect(discoveryProvider.execute).not.toHaveBeenCalled();

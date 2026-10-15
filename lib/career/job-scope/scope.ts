@@ -10,8 +10,8 @@ import {
 /**
  * Job selection of one capability analysis (SFE invariant JOB POOL FIRST: no valid pool + selected job → no
  * capability analysis). A selection is valid only when it names a stored, ACTIVE Job Pool upload with a persisted
- * canonical mapping and a role of that pool whose requirements are all mapped. Validation only: the resolved scope
- * is not passed to Gemini or to any prompt.
+ * canonical mapping and a role of that pool whose requirements are all mapped. The issued scope sets the
+ * investigation space of Capability Discovery (renderInvestigationScope, system prompt only); it is never evidence.
  */
 export interface JobScopeSelection {
   jobPoolUploadId: string;

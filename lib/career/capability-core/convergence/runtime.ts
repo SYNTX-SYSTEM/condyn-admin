@@ -17,7 +17,7 @@ function discoveryCandidates(run: CapabilityDiscoveryRun): CapabilityCandidate[]
   if (!Array.isArray(payload.candidates) || !payload.coverageValidation || typeof payload.coverageValidation !== "object" || (payload.coverageValidation as { status?: unknown }).status !== "PASSED") throw new Error("ERR_CAPABILITY_CONVERGENCE_DISCOVERY_RUN_INVALID");
   let kernelOutput; try { kernelOutput = CapabilityKernelOutputSchema.parse(payload.kernelOutput); } catch { throw new Error("ERR_CAPABILITY_CONVERGENCE_DISCOVERY_RUN_INVALID"); }
   if (kernelOutput.kernel_version !== run.kernelVersion || !run.rawOutputHash || sha256Utf8(stableJsonStringify(kernelOutput)) !== run.rawOutputHash) throw new Error("ERR_CAPABILITY_CONVERGENCE_DISCOVERY_RUN_INVALID");
-  const expectedRunId = buildCapabilityDiscoveryRunId({ sourceBundleHash: run.sourceBundleHash, kernelVersion: run.kernelVersion, promptChecksum: run.prompt?.checksum, provider: run.inference?.provider, model: run.inference?.model, schemaVersion: run.schemaVersion });
+  const expectedRunId = buildCapabilityDiscoveryRunId({ sourceBundleHash: run.sourceBundleHash, kernelVersion: run.kernelVersion, promptChecksum: run.prompt?.checksum, provider: run.inference?.provider, model: run.inference?.model, schemaVersion: run.schemaVersion, ...(run.investigationScope === undefined ? {} : { investigationScopeHash: run.investigationScope.scopeHash }) });
   if (expectedRunId !== run.runId) throw new Error("ERR_CAPABILITY_CONVERGENCE_DISCOVERY_RUN_INVALID");
   const candidateIds = new Set<string>();
   const verificationStatuses = new Set<EvidenceVerificationStatus>(["UNVERIFIED", "VERIFIED", "REJECTED_UNKNOWN_SOURCE", "REJECTED_EMPTY_QUOTE", "REJECTED_QUOTE_NOT_FOUND", "REJECTED_LOCATION_MISMATCH"]);

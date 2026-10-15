@@ -7,6 +7,7 @@ import type {
 } from "../capability-core/convergence";
 import type {
   CapabilityDiscoveryConfiguration,
+  CapabilityInvestigationScope,
   CapabilityKernelResolver,
   CapabilityDiscoveryProvider,
   CapabilityDiscoveryRuntimeResult
@@ -19,6 +20,8 @@ import type {
 import type { PromptRepository } from "../prompts/repository";
 import type { ActivePromptResolver } from "../prompts/resolver";
 import type { ReportCareerJobRuntimeOperation } from "./career-analysis-job-processor";
+import { assertIssuedJobScope, type ResolvedJobScope } from "../job-scope/scope";
+import { renderInvestigationScope } from "../job-scope/investigation-scope";
 
 // Prompt slugs select managed kernels; these explicit versions are the runtime
 // identities that Discovery and Convergence validate against provider output.
@@ -67,6 +70,7 @@ export interface CareerCapabilityProposalExecutorDependencies {
       repository: CapabilityCoreRepository;
       provider: CapabilityDiscoveryProvider;
       kernelResolver: CapabilityKernelResolver;
+      investigationScope: CapabilityInvestigationScope;
     }
   ) => Promise<CapabilityDiscoveryRuntimeResult>;
   runConvergence: (
@@ -106,7 +110,8 @@ export interface CareerCapabilityProposalExecutorDependencies {
 export interface CareerCapabilityProposalExecutor {
   execute(
     documents: DocumentInput[],
-    reportOperation: ReportCareerJobRuntimeOperation
+    reportOperation: ReportCareerJobRuntimeOperation,
+    jobScope: ResolvedJobScope | undefined
   ): Promise<CapabilityProposalRuntimeResult>;
 }
 
@@ -192,7 +197,11 @@ export async function createCareerCapabilityProposalExecutor(
   const convergenceProvider = dependencies.createConvergenceProvider(model);
 
   return {
-    async execute(documents, reportOperation) {
+    async execute(documents, reportOperation, jobScope) {
+      // SFE: Discovery runs only inside an issued job scope; the scope sets the investigation space, the
+      // documents remain the only evidence. Convergence needs no scope: its identity binds the scoped RUN_ id.
+      assertIssuedJobScope(jobScope);
+      const investigationScope = renderInvestigationScope(jobScope);
       const runtime = dependencies.createProposalRuntime({
         repository: dependencies.capabilityRepository,
         discovery: {
@@ -204,7 +213,8 @@ export async function createCareerCapabilityProposalExecutor(
             dependencies.runDiscovery(sourceDocuments, discoveryConfiguration, {
               repository: runtimeDependencies.repository,
               kernelResolver: runtimeDependencies.kernelResolver,
-              provider: telemetryDiscoveryProvider(discoveryProvider, reportOperation)
+              provider: telemetryDiscoveryProvider(discoveryProvider, reportOperation),
+              investigationScope
             })
         },
         convergence: {

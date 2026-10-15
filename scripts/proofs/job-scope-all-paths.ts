@@ -21,7 +21,7 @@ import { drizzle } from "drizzle-orm/postgres-js";
 const ROOT = resolve(__dirname, "../..");
 const args = process.argv.slice(2);
 const label = args.includes("--label") ? args[args.indexOf("--label") + 1] : `all-paths-${new Date().toISOString().replace(/[:.]/g, "-")}`;
-const MESSAGE = "Bitte wählen Sie einen Job aus.";
+const MESSAGE = "Bitte wähle einen Job aus einem Pool aus.";
 const SENTINEL = resolve(ROOT, "scripts/proofs/support/network-sentinel.cjs");
 
 /** Development scripts that call the Career-Analysis pipeline or Gemini (tracked in the repository). */
