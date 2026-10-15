@@ -1905,6 +1905,76 @@ Evidence is in `evidence/syntx-walk-6da26a7/`: the Q-12 report, signs, audits, e
 - O-B2-OPEN-READ is unchanged.
 - The open owner question on `/matches` pool equality is unchanged.
 
+### 3.44 Demo UI fix: GRÜN `frontend/demo-ui-fix` `d9c7fea` + `0b5a8ea`; PINK suite isolation (2026-10-15)
+
+**Request.** GRÜN asked PINK to validate the owner order "SFE — GRÜN | DEMO UI FIX + SEMIONTIC REFINEMENT"; PINK knows the order only from GRÜN.
+- **Requirement 1:** GEMINI OUTPUT closes at any time, by HIDE and by Escape, also without an analysis; afterwards the field works, and the pool and the mode are kept.
+- **Requirement 2:** the NO ANALYSIS message is larger and legible, with a calm nerve signal: no blinking, no layout movement, stable text, reduced motion respected.
+
+**Scope.**
+- `0b5a8ea` adds one guard: the document Escape stays silent while a modal layer is mounted (GELB's review).
+- The base is `5434c01`. There is no file overlap with integration `bbd643f`.
+- Probe `d2c641b` = `bbd643f` + `0b5a8ea`.
+
+**New PINK proof `demo-ui-fix.e2e`:** real Next server, engineering build, 1600×1000 and 1280×720, disposable database. Result **62/62**, with 0 non-GET requests and 0 Gemini attempts.
+
+- **U-1 GEMINI OUTPUT without an analysis.** It closes by HIDE (which owns the pointer), by Escape on its control, and by Escape on the bare document. The field then observes again (organization); the pool and the mode are unchanged.
+- **U-2 at a ROLE with the pools list open.**
+  - HIDE owns the pointer; the list opens below the orientation glass (list top 409 px ≥ glass bottom 393 px).
+  - SELECT of another pool moves the focus to the field root and keeps `investigationMode`.
+  - Escape then closes GEMINI OUTPUT.
+- **U-3 Escape scope.**
+  - A focus on the strip outside the field keeps its own Escape.
+  - The bare document's Escape returns one level.
+  - In the Capability Field the Job Field is unmounted, so the URL does not change.
+  - With the onboarding overlay open and focus on the bare document, the field stays still (`0b5a8ea`).
+- **U-4 NO ANALYSIS.**
+  - The state line is the signal (`data-sx-signal="awaiting-analysis"`), and its text is the copy unchanged. The field statement carries the same copy.
+  - Type size is 10 / 11.5 px instead of 8.5 px.
+  - Motion is only `sxSignalCore` on the indicator and `sxSignalAura` on the aura: opacity and transform only, 4.8 s, opacity never below .38 (no blinking).
+  - Over 60 frames in 6 s, the boxes of the chip, the statement and the text are identical, and the text opacity is constant.
+  - The field statement has no motion. REDUCED is static; AVAILABLE has no signal.
+  - Every infinite motion at NO_ANALYSIS is in the closed R15b list, or is one of the two **proposed** names.
+- **Negative controls on `bbd643f`** (without the fix):
+  - Escape on the bare document does nothing.
+  - At the ROLE the pools list intercepts the click on HIDE GEMINI OUTPUT, and the run stops there.
+  - The NO ANALYSIS part shows 7 deviations: no signal, no motion, 8.5 px type.
+  - Detected.
+
+**Regression on `d2c641b`:**
+
+| Check | Result |
+| --- | --- |
+| `tsc` | 0 |
+| Gate walk | 74/74 |
+| `three-modes.e2e` | plain 91/91 (the first run collected all 91 checks and then hit a harness timeout under parallel load; alone: 1/1), inspector 97/97 |
+| `url-boundary.e2e` | 1/1 |
+| `syntx-walk.e2e` | 3/3, Q-06 still BOUNDARY-MATCH R15b-PENDING |
+| GRÜN workflow e2e | 10/10 |
+| Full suite without e2e | the 27 base failures (identical set) plus 4 load timeouts. The same files alone with a 30 s timeout: 32/32; their code is unchanged. 0 network attempts |
+
+**F-PINK-ORDER (PINK's own suite; corrects the attribution in §3.42).**
+- `http-canonical-inverse.postgres` assumed it is the first to upload the validation pool into the shared database: 201, and exactly one ACTIVE upload of its pool id.
+- `pdf-path` (in the integration) and the job-scope proof copies upload the same pool.
+- With the file order pinned: `pdf-path` first gives 10 failures; `http-canonical-inverse` first gives 15/15.
+- The §3.42 correction removed only one of these uploaders. The others remain, so the outcome depended on scheduling.
+- **Fix (test only):** `http-canonical-inverse` uploads its own pool id (every item re-pointed, item ids unchanged) and its own DRAFT variant. Result: 15/15 in both orders, and 13/13 on the PINK branch alone.
+
+**Observations (informational, for GRÜN):**
+- **O-UI-OVERLAY-FOCUS.**
+  - With the onboarding overlay open, the focus-follow effect (F-SX-1) already sits on the observed organization beneath the overlay at page load.
+  - An Escape meant for the overlay therefore moves the field back one level, while the overlay stays.
+  - This existed before the fix; the field's own handler acts, not the new document fallback.
+- **O-SX-AMBIENT-LIST.** `SYNTX_AMBIENT_NAMES` is called a closed list but is enforced nowhere. It lacks seven infinite names of the CSS: `sxGiant*` ×4 and `sxPanelCurrent` (already before), plus the new `sxSignalCore` / `sxSignalAura`.
+
+**Status.**
+- No deviation in `d9c7fea` / `0b5a8ea`. Both owner requirements are measured and met.
+- `sxSignalCore` / `sxSignalAura` are listed as proposed. They become binding with R15b after the owner's visual acceptance.
+- Left open by GRÜN, not measured here:
+  - the Capability Field inspector card at 1280×720;
+  - `syntx-investigation-statement` at +44 px.
+- Evidence is in `evidence/demo-ui-fix-0b5a8ea/`.
+
 ## 4. Boundaries and findings for coordination
 
 - F-JP-1 (closed in `b782793`): `JOB_POOL_CONNECTION.md` §4 followed the per-role `JOB_POOL_JSON_ROLE` design;

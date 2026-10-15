@@ -1,0 +1,274 @@
+/**
+ * PINK proof of GRÜN d9c7fea + 0b5a8ea (owner "SFE — GRÜN | DEMO UI FIX + SEMIONTIC REFINEMENT", relayed by GRÜN) on a real Next server
+ * (next dev, disposable database, no worker, GEMINI_API_KEY empty, engineering build NEXT_PUBLIC_CONDYN_RESULT_INSPECTOR_UI=1, PINK's
+ * net sentinel in the server process). Checks are collected (one failure at the end) and written to `U-report.json` / `U-report.txt`.
+ *
+ *   U-1 GEMINI OUTPUT without an analysis closes by HIDE, by Escape on its own control and by Escape on the bare document; afterwards
+ *       the field still observes; pool and mode unchanged (1600×1000 and 1280×720)
+ *   U-2 at a ROLE with the pools list open: HIDE GEMINI OUTPUT owns the pointer (the list opens below the orientation glass); SELECT
+ *       of another pool moves focus to the field root, keeps the investigation mode, and Escape still closes GEMINI OUTPUT
+ *   U-3 Escape scope: a focus outside the field keeps its own Escape; the bare document's Escape is the field's only while the Job Field
+ *       is mounted (Capability Field: URL unchanged); with the onboarding overlay open (measured)
+ *   U-4 NO ANALYSIS: the signal on the state line only in PERSON × JOB without an analysis; text = the copy; larger type; motion only
+ *       sxSignalCore / sxSignalAura on the two decorative layers, opacity / transform only, 4.8 s, never below opacity .3; no layout
+ *       or text movement over 6 s; the field statement calm; REDUCED static; AVAILABLE without the signal
+ */
+import { spawn, type ChildProcess } from "node:child_process";
+import { once } from "node:events";
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { createRequire } from "node:module";
+import { createServer } from "node:net";
+import { resolve } from "node:path";
+import { drizzle } from "drizzle-orm/postgres-js";
+import { afterAll, beforeAll, describe, expect, it } from "vitest";
+import { createJob } from "../../lib/career/orchestration/job";
+import { JobRepository } from "../../lib/career/orchestration/job-repository";
+import { PostgresCareerAnalysisRepository } from "../../lib/career/repositories/postgres";
+import { createJobPoolPostgresWorld, type JobPoolWorld } from "../career/job-pool/fixtures/job-pool-postgres-world";
+import { buildVerifiedAnalysis } from "./fixtures/analysis";
+import { clonePool, validationPool } from "./fixtures/pool";
+
+function resolvePlaywright(): string | null {
+  const explicit = process.env.CONDYN_PLAYWRIGHT_MODULE;
+  if (explicit !== undefined && explicit.length > 0) return explicit;
+  try { return createRequire(resolve(process.cwd(), "package.json")).resolve("playwright"); } catch { return null; }
+}
+const playwrightModule = resolvePlaywright();
+const TIP = process.env.UI_FIX_TIP ?? "local";
+const EVIDENCE_DIR = resolve(process.cwd(), `docs/architecture/decision-fields/evidence/demo-ui-fix-${TIP}`);
+const SENTINEL = process.env.PINK_NET_SENTINEL;
+const NET_LOG = process.env.PINK_UI_FIX_NET_LOG ?? "";
+const ANALYSIS_ID = "ANL_PINK_UI_FIX";
+const ROLE_ID = "role_pink_alpha_architect";
+const ORG_ID = "org_pink_alpha";
+const COPY_EN = "NO ANALYSIS: run the capability sweep (identity core) or open the page with an exact analysisId";
+const R15B = ["orbitFloatPhase2", "moonOrbit", "ringPulse", "atmosphereGlow", "hologramFloat", "coreBreathe", "corePulseCommunicate", "plasmaRotateCw", "plasmaRotateCcw", "plasmaFlarePulse", "waveExpand", "particleIn", "rotateClockwise", "focusTransitionPulse", "sxApertureBreathe", "sxPanelCurrent", "sxBoundaryHalo", "sxGiantBreath", "sxGiantSeam", "sxGiantMembrane", "sxGiantRing", "sxSuspend"];
+const PROPOSED = ["sxSignalCore", "sxSignalAura"];
+const VIEWPORTS = [{ width: 1600, height: 1000 }, { width: 1280, height: 720 }];
+
+let world: JobPoolWorld;
+let server: ChildProcess | undefined;
+let port = 0;
+let serverOutput = "";
+const base = () => `http://127.0.0.1:${port}`;
+const delay = (ms: number) => new Promise<void>((done) => setTimeout(done, ms));
+async function availablePort(): Promise<number> {
+  const listener = createServer();
+  await new Promise<void>((ok) => listener.listen(0, "127.0.0.1", () => ok()));
+  const port = (listener.address() as { port: number }).port;
+  await new Promise<void>((ok) => listener.close(() => ok()));
+  return port;
+}
+
+describe.skipIf(playwrightModule === null)("PINK: demo UI fix — GEMINI OUTPUT always closable, NO ANALYSIS as a calm signal (GRÜN d9c7fea)", () => {
+  let browser: any;
+  let uploadId = ""; let secondUploadId = "";
+  const checks: Array<{ id: string; name: string; ok: boolean; detail?: unknown }> = [];
+  const pageErrors: string[] = [];
+  const nonGet: string[] = [];
+  const check = (id: string, name: string, ok: boolean, detail?: unknown) => { checks.push({ id, name, ok, ...(detail === undefined ? {} : { detail }) }); };
+  const path = (query: Record<string, string>) => `/career/demo?${new URLSearchParams(query).toString()}`;
+  async function open(query: Record<string, string>, viewport = VIEWPORTS[0], options: { reducedMotion?: "reduce"; keepOverlay?: boolean } = {}) {
+    const page = await browser.newPage({ viewport, ...(options.reducedMotion ? { reducedMotion: options.reducedMotion } : {}) });
+    page.on("pageerror", (error: unknown) => pageErrors.push(String(error)));
+    page.on("request", (request: any) => { if (request.method() !== "GET") nonGet.push(`${request.method()} ${request.url()}`); });
+    await page.goto(`${base()}${path(query)}`, { waitUntil: "domcontentloaded", timeout: 120_000 });
+    await page.getByTestId("field-focus-strip").waitFor({ timeout: 120_000 });
+    const overlay = page.getByTestId("guided-onboarding-overlay");
+    if (!options.keepOverlay) { try { await overlay.waitFor({ timeout: 8_000 }); await page.getByTestId("onboarding-close-btn").click(); await overlay.waitFor({ state: "detached", timeout: 30_000 }); } catch { /* no overlay */ } }
+    return page;
+  }
+  const kind = (page: any) => page.getByTestId("syntx-field").getAttribute("data-observation-kind");
+  const params = (page: any) => new URL(page.url()).searchParams;
+  const active = (page: any) => page.evaluate(() => { const a = document.activeElement; return a === null ? "null" : `${a.tagName.toLowerCase()}${a.getAttribute("data-testid") ? `#${a.getAttribute("data-testid")}` : ""}`; });
+  const owned = (page: any, testId: string) => page.getByTestId(testId).evaluate((element: Element) => { const box = element.getBoundingClientRect(); const hit = element.ownerDocument.elementFromPoint(box.left + box.width / 2, box.top + box.height / 2); return { owned: hit !== null && element.contains(hit), hit: hit === null ? null : `${hit.tagName.toLowerCase()}#${hit.getAttribute("data-testid") ?? ""}` }; });
+  const geminiOpen = async (page: any) => (await page.getByTestId("syntx-gemini-output").count()) > 0;
+  const waitGemini = async (page: any, open: boolean) => { for (let i = 0; i < 40; i += 1) { if ((await geminiOpen(page)) === open) return true; await delay(100); } return false; };
+  const blur = (page: any) => page.evaluate(() => { (document.activeElement as HTMLElement | null)?.blur?.(); });
+
+  beforeAll(async () => {
+    world = await createJobPoolPostgresWorld();
+    await new PostgresCareerAnalysisRepository(drizzle(world.sql)).save(buildVerifiedAnalysis(ANALYSIS_ID));
+    port = await availablePort();
+    server = spawn(process.execPath, [resolve(process.cwd(), "node_modules/next/dist/bin/next"), "dev", "--webpack", "-p", String(port), "-H", "127.0.0.1"], {
+      cwd: process.cwd(),
+      env: { ...process.env, DATABASE_URL: world.databaseUrl, NEXT_TELEMETRY_DISABLED: "1", GEMINI_API_KEY: "", NEXT_PUBLIC_CONDYN_RESULT_INSPECTOR_UI: "1", CONDYN_RESULT_INSPECTOR: "", CONDYN_RESULT_INSPECTOR_TOKEN: "", ...(SENTINEL && NET_LOG ? { NODE_OPTIONS: `--require ${SENTINEL}`, PINK_NET_LOG: NET_LOG } : {}) },
+      stdio: ["ignore", "pipe", "pipe"]
+    });
+    server.stdout?.on("data", (chunk) => { serverOutput += String(chunk); });
+    server.stderr?.on("data", (chunk) => { serverOutput += String(chunk); });
+    for (let attempt = 0; attempt < 200; attempt += 1) {
+      try { const response = await fetch(`${base()}/api/career/job-pools`); if (response.status === 200) { await response.json(); break; } } catch { /* not ready */ }
+      await delay(500);
+      if (attempt === 199) throw new Error(`server not ready:\n${serverOutput}`);
+    }
+    const post = async (body: unknown) => (await (await fetch(`${base()}/api/career/job-pools`, { method: "POST", headers: { "content-type": "application/json", "x-condyn-principal-actor-id": "PINK_UI_FIX" }, body: JSON.stringify(body) })).json()).jobPoolUploadId as string;
+    uploadId = await post(validationPool);
+    const second = clonePool() as any;
+    second.pool.id = "pool_pink_ui_fix_second"; second.pool.name = "PINK UI fix second pool";
+    for (const list of [second.organizations, second.roles]) for (const item of list) item.pool_id = second.pool.id;
+    secondUploadId = await post(second);
+    await new JobRepository(drizzle(world.sql)).enqueueJob({ ...createJob("CAREER_ANALYSIS", { sourceType: "BATCH", sourceData: { documents: [{ type: "text", content: "PINK UI fix fixture" }], investigation: { mode: "PERSON_X_JOB" }, jobScope: { jobPoolUploadId: uploadId, poolRoleId: ROLE_ID } } } as never), jobId: ANALYSIS_ID.replace("ANL_", "JOB_"), status: "SUCCEEDED", attemptCount: 1, resultAnalysisId: ANALYSIS_ID, completedAt: new Date().toISOString() });
+    mkdirSync(EVIDENCE_DIR, { recursive: true });
+    const playwright = await import(playwrightModule as string);
+    browser = await playwright.chromium.launch({ headless: true });
+  }, 300_000);
+
+  afterAll(async () => {
+    if (browser) await browser.close();
+    if (server && server.exitCode === null && server.signalCode === null) {
+      server.kill("SIGTERM");
+      await Promise.race([once(server, "exit"), delay(10_000)]);
+      if (server.exitCode === null && server.signalCode === null) { server.kill("SIGKILL"); await once(server, "exit"); }
+    }
+    if (world) await world.destroy();
+    const net = NET_LOG && existsSync(NET_LOG) ? readFileSync(NET_LOG, "utf8").trim().split("\n").filter(Boolean) : [];
+    const failed = checks.filter((entry) => !entry.ok);
+    writeFileSync(resolve(EVIDENCE_DIR, "U-report.json"), `${JSON.stringify({ tip: TIP, recordedAt: new Date().toISOString(), passed: checks.length - failed.length, total: checks.length, deviations: failed, checks, pageErrors, nonGet, network: { total: net.length, gemini: net.filter((line) => /generativelanguage|aiplatform|googleapis|gemini/i.test(line)).length, entries: net.map((line) => line.split(" ").slice(1).join(" ")) } }, null, 2)}\n`);
+    writeFileSync(resolve(EVIDENCE_DIR, "U-report.txt"), `${checks.map((entry) => `${entry.ok ? "ok  " : "DEV "} ${entry.id} ${entry.name}${entry.detail === undefined ? "" : ` · ${JSON.stringify(entry.detail)}`}`).join("\n")}\n\n${checks.length - failed.length}/${checks.length} checks ok\n`);
+  }, 60_000);
+
+  it("U-1 … U-4", async () => {
+    for (const viewport of VIEWPORTS) {
+      const v = `${viewport.width}`;
+      // ---- U-1 GEMINI OUTPUT without an analysis ----
+      const page = await open({ focus: "FIELD", jobPoolUploadId: uploadId }, viewport);
+      await page.locator('[data-testid="syntx-field"][data-field-state="NO_ANALYSIS"]').waitFor({ timeout: 120_000 });
+      const toggle = page.getByTestId("syntx-gemini-output-toggle");
+      check("U-1", `${v}: GEMINI OUTPUT control present (engineering build)`, (await toggle.count()) === 1);
+      await toggle.click();
+      check("U-1", `${v}: opens without an analysis`, await waitGemini(page, true), await page.getByTestId("syntx-gemini-output").getAttribute("data-inspection-state").catch(() => null));
+      const hideOwned = await owned(page, "syntx-gemini-output-toggle");
+      check("U-1", `${v}: HIDE GEMINI OUTPUT owns the pointer`, hideOwned.owned, hideOwned);
+      await toggle.click();
+      check("U-1", `${v}: HIDE closes it`, await waitGemini(page, false));
+      await toggle.click(); await waitGemini(page, true);
+      const focusBeforeEscape = await active(page);
+      await page.keyboard.press("Escape");
+      check("U-1", `${v}: Escape with the focus on its control closes it`, await waitGemini(page, false), focusBeforeEscape);
+      await toggle.click(); await waitGemini(page, true); await blur(page);
+      const bare = await active(page);
+      await page.keyboard.press("Escape");
+      check("U-1", `${v}: Escape on the bare document closes it`, bare === "body" && await waitGemini(page, false), { focusBefore: bare, focusAfter: await active(page) });
+      const region = page.getByTestId(`syntx-organization-${ORG_ID}`);
+      const box = await region.boundingBox();
+      await page.mouse.click(box.x + box.width / 2, box.y + box.height - 8);
+      await page.locator(`[data-testid="syntx-field"][data-observation-kind="ORGANIZATION"]`).waitFor({ timeout: 15_000 }).catch(() => undefined);
+      check("U-1", `${v}: afterwards the field observes (organization)`, (await kind(page)) === "ORGANIZATION", await kind(page));
+      check("U-1", `${v}: pool and mode unchanged`, params(page).get("jobPoolUploadId") === uploadId && !params(page).has("investigationMode"), page.url());
+      // ---- U-3 Escape scope at ORGANIZATION ----
+      await page.getByTestId("job-pool-panel-toggle").focus();
+      const outsideInField = await page.getByTestId("job-pool-panel-toggle").evaluate((element: Element) => element.closest('[data-testid="syntx-field"]') !== null);
+      await page.keyboard.press("Escape"); await delay(400);
+      check("U-3", `${v}: a focus outside the field (strip) keeps its Escape — the observation stays`, !outsideInField && (await kind(page)) === "ORGANIZATION", { outsideInField, kind: await kind(page) });
+      await blur(page); await page.keyboard.press("Escape");
+      await page.locator(`[data-testid="syntx-field"][data-observation-kind="FIELD"]`).waitFor({ timeout: 10_000 }).catch(() => undefined);
+      check("U-3", `${v}: Escape on the bare document returns one level`, (await kind(page)) === "FIELD", await kind(page));
+      await page.close();
+
+      // ---- U-2 at a ROLE with the pools list open ----
+      const role = await open({ focus: "FIELD", analysisId: ANALYSIS_ID, jobPoolUploadId: uploadId, jobOrganizationId: ORG_ID, jobRoleId: ROLE_ID, investigationMode: "PERSON_X_JOB" }, viewport);
+      await role.locator('[data-testid="syntx-field"][data-field-state="AVAILABLE"][data-observation-kind="ROLE"]').waitFor({ timeout: 120_000 });
+      await role.getByTestId("syntx-pools-toggle").click();
+      await role.getByTestId("job-pool-list").waitFor({ state: "visible", timeout: 10_000 });
+      await role.getByTestId("syntx-gemini-output-toggle").click(); await waitGemini(role, true);
+      const geometry = await role.evaluate(() => { const list = document.querySelector('[data-testid="job-pool-list"]')!.getBoundingClientRect(); const glass = document.querySelector("[data-sx-orient]")!.getBoundingClientRect(); return { listTop: list.top, glassBottom: glass.bottom }; });
+      const roleHide = await owned(role, "syntx-gemini-output-toggle");
+      check("U-2", `${v}: at a ROLE with the pools open, HIDE GEMINI OUTPUT owns the pointer`, roleHide.owned, roleHide);
+      check("U-2", `${v}: the pools list opens below the orientation glass`, geometry.listTop >= geometry.glassBottom, geometry);
+      await role.getByTestId("syntx-gemini-output-toggle").click();
+      check("U-2", `${v}: HIDE closes it at the ROLE`, await waitGemini(role, false));
+      await role.getByTestId("syntx-gemini-output-toggle").click(); await waitGemini(role, true);
+      if (!(await role.getByTestId("job-pool-list").isVisible())) await role.getByTestId("syntx-pools-toggle").click();
+      await role.getByTestId(`job-pool-select-${secondUploadId}`).click();
+      await delay(600);
+      const afterSelect = await active(role);
+      check("U-2", `${v}: SELECT moves focus to the field root`, afterSelect === "section#syntx-field", afterSelect);
+      check("U-2", `${v}: the new pool is selected, the investigation mode kept`, params(role).get("jobPoolUploadId") === secondUploadId && params(role).get("investigationMode") === "PERSON_X_JOB", role.url());
+      if (!(await geminiOpen(role))) { await role.getByTestId("syntx-gemini-output-toggle").click(); await waitGemini(role, true); await role.getByTestId("syntx-gemini-output-toggle").focus(); }
+      await role.keyboard.press("Escape");
+      check("U-2", `${v}: after the pool change Escape closes GEMINI OUTPUT`, await waitGemini(role, false), await active(role));
+      await role.close();
+    }
+
+    // ---- U-3 the bare document's Escape belongs to the field only while the Job Field is mounted ----
+    const capability = await open({ focus: "CAPABILITY", analysisId: ANALYSIS_ID, jobPoolUploadId: uploadId, jobOrganizationId: ORG_ID, jobScopePoolUploadId: uploadId, jobScopeRoleId: ROLE_ID });
+    await capability.locator('[data-testid="semantic-career-intelligence-field"][data-field-focus="CAPABILITY"]').waitFor({ timeout: 120_000 }).catch(() => undefined);
+    const capFocus = await capability.getByTestId("semantic-career-intelligence-field").getAttribute("data-field-focus");
+    const before = capability.url(); await blur(capability); await capability.keyboard.press("Escape"); await delay(600);
+    check("U-3", "Capability Field (Job Field unmounted): Escape on the bare document changes nothing", capFocus === "CAPABILITY" && (await capability.getByTestId("syntx-field").count()) === 0 && capability.url() === before, { capFocus, before, after: capability.url() });
+    await capability.close();
+    const overlay = await open({ focus: "FIELD", analysisId: ANALYSIS_ID, jobPoolUploadId: uploadId, jobOrganizationId: ORG_ID }, VIEWPORTS[0], { keepOverlay: true });
+    const overlayShown = await overlay.getByTestId("guided-onboarding-overlay").waitFor({ timeout: 30_000 }).then(() => true, () => false);
+    await overlay.locator('[data-testid="syntx-field"][data-observation-kind="ORGANIZATION"]').waitFor({ timeout: 120_000 }).catch(() => undefined);
+    const overlayFocus = await active(overlay);
+    await blur(overlay); await overlay.keyboard.press("Escape"); await delay(600);
+    check("U-3", "onboarding overlay open, focus on the bare document: Escape leaves the field still (0b5a8ea)", overlayShown && (await kind(overlay)) === "ORGANIZATION" && (await overlay.getByTestId("guided-onboarding-overlay").count()) > 0, { overlayShown, kind: await kind(overlay) });
+    // Measured, not asserted: the focus-follow effect (F-SX-1) may place focus on the observed sign beneath the overlay; the field's own
+    // Escape handler then acts (unchanged by d9c7fea / 0b5a8ea). Observation O-UI-OVERLAY-FOCUS.
+    await overlay.getByTestId(`syntx-organization-${ORG_ID}`).focus();
+    const inFieldFocus = await active(overlay);
+    await overlay.keyboard.press("Escape"); await delay(600);
+    check("U-3", "onboarding overlay open, focus on a sign beneath it (measured): Escape", true, { initialFocus: overlayFocus, focus: inFieldFocus, kindAfter: await kind(overlay), overlayStill: (await overlay.getByTestId("guided-onboarding-overlay").count()) > 0 });
+    await overlay.close();
+
+    // ---- U-4 NO ANALYSIS signal ----
+    for (const viewport of VIEWPORTS) {
+      const v = `${viewport.width}`;
+      const page = await open({ focus: "FIELD", jobPoolUploadId: uploadId }, viewport);
+      await page.locator('[data-testid="syntx-field"][data-field-state="NO_ANALYSIS"]').waitFor({ timeout: 120_000 });
+      await delay(1500);
+      const chip = page.getByTestId("syntx-state");
+      check("U-4", `${v}: the state line is the signal`, (await chip.getAttribute("data-sx-signal")) === "awaiting-analysis");
+      check("U-4", `${v}: its text is the copy unchanged`, (await chip.textContent()) === COPY_EN, await chip.textContent());
+      check("U-4", `${v}: the field statement carries the same copy`, (await page.getByTestId("syntx-no-analysis").textContent()) === COPY_EN, await page.getByTestId("syntx-no-analysis").textContent());
+      const motion = await chip.evaluate((element: Element) => element.getAnimations({ subtree: true }).map((animation: any) => {
+        const target = animation.effect?.target as Element;
+        const frames = animation.effect.getKeyframes() as Array<Record<string, unknown>>;
+        const properties = [...new Set(frames.flatMap((frame) => Object.keys(frame)))].filter((key) => !["offset", "computedOffset", "easing", "composite"].includes(key)).sort();
+        const opacities = frames.map((frame) => Number(frame.opacity)).filter((value) => Number.isFinite(value));
+        return { name: animation.animationName, target: target.hasAttribute("data-sx-signal-core") ? "core" : target.hasAttribute("data-sx-signal-aura") ? "aura" : target.tagName, duration: animation.effect.getTiming().duration, iterations: animation.effect.getTiming().iterations, properties, minOpacity: opacities.length > 0 ? Math.min(...opacities) : null };
+      }));
+      check("U-4", `${v}: motion only sxSignalCore on the indicator and sxSignalAura on the aura`, JSON.stringify(motion.map((m: any) => `${m.name}@${m.target}`).sort()) === JSON.stringify(["sxSignalAura@aura", "sxSignalCore@core"]), motion);
+      check("U-4", `${v}: opacity and transform only, 4.8 s, infinite`, motion.every((m: any) => m.properties.every((p: string) => p === "opacity" || p === "transform") && m.duration === 4800 && m.iterations === Infinity), motion);
+      check("U-4", `${v}: no blinking (opacity never below .3)`, motion.every((m: any) => m.minOpacity === null || m.minOpacity >= 0.3), motion.map((m: any) => m.minOpacity));
+      const samples: string[] = []; const opacities = new Set<string>();
+      for (let i = 0; i < 60; i += 1) {
+        const frame = await page.evaluate(() => {
+          const chip = document.querySelector('[data-testid="syntx-state"]')!; const statement = document.querySelector('[data-testid="syntx-no-analysis"]')!;
+          const texts = Array.from(chip.querySelectorAll("span")).filter((span) => span.children.length === 0 && (span.textContent ?? "").trim().length > 2);
+          const r = (e: Element) => { const b = e.getBoundingClientRect(); return [b.x, b.y, b.width, b.height].map((n) => n.toFixed(2)).join(","); };
+          return { boxes: [r(chip), r(statement), ...texts.map(r)].join("|"), opacity: [getComputedStyle(chip).opacity, getComputedStyle(statement).opacity, ...texts.map((t) => getComputedStyle(t).opacity)].join(","), sizes: texts.map((t) => getComputedStyle(t).fontSize).join(",") };
+        });
+        samples.push(frame.boxes); opacities.add(frame.opacity);
+        if (i === 0) check("U-4", `${v}: larger type than the 8.5 px state line`, frame.sizes.split(",").every((size: string) => Number.parseFloat(size) >= 10), frame.sizes);
+        await delay(100);
+      }
+      check("U-4", `${v}: no layout or text movement over 6 s (chip, statement, text boxes identical in 60 frames)`, new Set(samples).size === 1, { distinct: new Set(samples).size });
+      check("U-4", `${v}: the text never blinks (computed opacity constant)`, opacities.size === 1, [...opacities]);
+      const statementMotion = await page.getByTestId("syntx-no-analysis").evaluate((element: Element) => element.getAnimations({ subtree: true }).filter((animation: any) => animation.playState === "running").length);
+      check("U-4", `${v}: the field statement is calm`, statementMotion === 0, statementMotion);
+      const fieldNames = await page.getByTestId("syntx-field").evaluate((root: Element) => [...new Set(root.getAnimations({ subtree: true }).filter((animation: any) => animation.playState === "running" && animation.effect?.getTiming?.().iterations === Infinity).map((animation: any) => String(animation.animationName)))].sort());
+      check("U-4", `${v}: every infinite motion at NO_ANALYSIS is in the closed R15b list or proposed (sxSignalCore, sxSignalAura)`, fieldNames.every((name: string) => R15B.includes(name) || PROPOSED.includes(name)), fieldNames);
+      await page.screenshot({ path: resolve(EVIDENCE_DIR, `U-4-no-analysis-${v}.png`) });
+      await page.close();
+    }
+    const calm = await open({ focus: "FIELD", jobPoolUploadId: uploadId }, VIEWPORTS[0], { reducedMotion: "reduce" });
+    await calm.locator('[data-testid="syntx-field"][data-field-state="NO_ANALYSIS"][data-motion-mode="REDUCED"]').waitFor({ timeout: 120_000 });
+    await delay(800);
+    const calmRunning = await calm.getByTestId("syntx-state").evaluate((element: Element) => element.getAnimations({ subtree: true }).filter((animation: any) => animation.playState === "running").length);
+    check("U-4", "REDUCED: the signal is static (no running animation)", (await calm.getByTestId("syntx-state").getAttribute("data-sx-signal")) === "awaiting-analysis" && calmRunning === 0, calmRunning);
+    await calm.close();
+    const available = await open({ focus: "FIELD", analysisId: ANALYSIS_ID, jobPoolUploadId: uploadId });
+    await available.locator('[data-testid="syntx-field"][data-field-state="AVAILABLE"]').waitFor({ timeout: 120_000 });
+    await delay(800);
+    const availableSignal = await available.evaluate(() => ({ attribute: document.querySelector('[data-testid="syntx-state"]')?.getAttribute("data-sx-signal") ?? null, names: [...new Set(document.getAnimations().map((animation: any) => String(animation.animationName)))].filter((name) => name.startsWith("sxSignal")) }));
+    check("U-4", "AVAILABLE: no signal and no sxSignal motion", availableSignal.attribute === null && availableSignal.names.length === 0, availableSignal);
+    await available.close();
+    check("U-5", "read-only pages: no non-GET request", nonGet.length === 0, nonGet);
+    check("U-5", "no page error", pageErrors.length === 0, pageErrors);
+    const net = NET_LOG && existsSync(NET_LOG) ? readFileSync(NET_LOG, "utf8") : "";
+    check("U-5", "0 Gemini attempts in the server", !/generativelanguage|aiplatform|googleapis|gemini/i.test(net));
+    expect(checks.filter((entry) => !entry.ok)).toEqual([]);
+  }, 600_000);
+});

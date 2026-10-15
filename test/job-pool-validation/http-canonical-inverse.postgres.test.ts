@@ -22,7 +22,7 @@ import { DISPOSABLE_TEST_DATABASE_PATTERN, requireTestDatabaseUrl } from "../../
 import { newDisposableTestDatabaseName } from "../../lib/database-isolation/verification";
 import { careerChainRepositories } from "../decision-integration/fixtures/postgres-career-chain";
 import { buildVerifiedAnalysis, validationCapabilities } from "./fixtures/analysis";
-import { canonicalJson, draftPool, poolWithDuplicateRoleId, poolWithInvalidWeight, poolWithRequirementToUnknownRole, poolWithRoleToUnknownOrganization, reorderKeysDeep, validationPool } from "./fixtures/pool";
+import { canonicalJson, poolWithDuplicateRoleId, poolWithInvalidWeight, poolWithRequirementToUnknownRole, poolWithRoleToUnknownOrganization, reorderKeysDeep, validationPool } from "./fixtures/pool";
 
 type RouteModule = { POST?: (request: Request) => Promise<Response>; GET?: (request: Request, context: { params: Promise<Record<string, string>> }) => Promise<Response> };
 
@@ -57,7 +57,11 @@ async function rowCensus(sql: postgres.Sql): Promise<Record<string, number>> {
 }
 
 describe.skipIf(routes === null)("Job Pool connection: HTTP contract, canonical mapping and inverse walk (JP-H / JP-C / JP-I)", () => {
-  const uploadedBytes = JSON.stringify(validationPool, null, 2);
+  // Own pool id (every item re-pointed; item ids unchanged): other proofs upload the validation pool and its DRAFT variant into the same
+  // disposable database (pdf-path, the job-scope proofs), and this file's 201 / exactly-one-ACTIVE checks must not depend on file order.
+  const hciPool = (() => { const pool = JSON.parse(JSON.stringify(validationPool)); const from = pool.pool.id; pool.pool.id = "pool_pink_http_canonical_v1"; for (const item of [...pool.organizations, ...pool.roles, ...pool.requirements]) if (item.pool_id === from) item.pool_id = pool.pool.id; return pool as typeof validationPool; })();
+  const hciDraft = () => { const pool = JSON.parse(JSON.stringify(hciPool)); pool.pool.status = "DRAFT"; return pool; };
+  const uploadedBytes = JSON.stringify(hciPool, null, 2);
   let sql: postgres.Sql;
   let view: any;
   const repositories = careerChainRepositories(drizzle(db.$client));
@@ -75,7 +79,7 @@ describe.skipIf(routes === null)("Job Pool connection: HTTP contract, canonical 
     expect(first.status).toBe(201);
     view = await first.json();
     expect(view.jobPoolUploadId).toMatch(/^JPOOL_/);
-    expect(view.poolId).toBe(validationPool.pool.id);
+    expect(view.poolId).toBe(hciPool.pool.id);
     expect(view.poolStatus).toBe("ACTIVE");
     expect([view.organizationCount, view.roleCount, view.requirementCount]).toEqual([2, 3, 6]);
     expect(view.rawSha256).toBe(sha256(uploadedBytes));
@@ -89,7 +93,7 @@ describe.skipIf(routes === null)("Job Pool connection: HTTP contract, canonical 
     expect(again.status).toBe(200);
     expect((await again.json()).jobPoolUploadId).toBe(view.jobPoolUploadId);
 
-    const reordered = await post(JSON.stringify(reorderKeysDeep(validationPool)));
+    const reordered = await post(JSON.stringify(reorderKeysDeep(hciPool)));
     expect(reordered.status).toBe(200);
     expect((await reordered.json()).jobPoolUploadId).toBe(view.jobPoolUploadId);
   });
@@ -316,7 +320,7 @@ describe.skipIf(routes === null)("Job Pool connection: HTTP contract, canonical 
     const noAnalysis = await getMatches(view.jobPoolUploadId, "");
     expect(noAnalysis.status).toBe(400);
     expect((await noAnalysis.json()).error.code).toBe("ERR_ANALYSIS_ID_REQUIRED");
-    const draft = await post(JSON.stringify(draftPool()));
+    const draft = await post(JSON.stringify(hciDraft()));
     expect(draft.status).toBe(201);
     const draftId = (await draft.json()).jobPoolUploadId;
     const inactive = await getMatches(draftId, `?analysisId=${analysisId}`);
@@ -350,7 +354,7 @@ describe.skipIf(routes === null)("Job Pool connection: HTTP contract, canonical 
     const list = await routes!.collection.GET!(new Request("http://local/api/career/job-pools"), { params: Promise.resolve({}) });
     const summaries = (await list.json()).jobPools;
     // The rejected uploads left no record; the ACTIVE pool exists once (the DRAFT variant is a separate upload).
-    expect(summaries.filter((item: any) => item.poolId === validationPool.pool.id && item.poolStatus === "ACTIVE").length).toBe(1);
+    expect(summaries.filter((item: any) => item.poolId === hciPool.pool.id && item.poolStatus === "ACTIVE").length).toBe(1);
   });
 
   it("JP-H: an unmarked database in the disposable name pattern receives no DDL and the upload answers 503", async () => {

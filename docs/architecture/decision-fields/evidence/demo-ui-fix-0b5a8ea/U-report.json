@@ -1,0 +1,554 @@
+{
+  "tip": "0b5a8ea",
+  "recordedAt": "2026-10-15T14:31:35.192Z",
+  "passed": 62,
+  "total": 62,
+  "deviations": [],
+  "checks": [
+    {
+      "id": "U-1",
+      "name": "1600: GEMINI OUTPUT control present (engineering build)",
+      "ok": true
+    },
+    {
+      "id": "U-1",
+      "name": "1600: opens without an analysis",
+      "ok": true,
+      "detail": "NO_ANALYSIS"
+    },
+    {
+      "id": "U-1",
+      "name": "1600: HIDE GEMINI OUTPUT owns the pointer",
+      "ok": true,
+      "detail": {
+        "owned": true,
+        "hit": "button#syntx-gemini-output-toggle"
+      }
+    },
+    {
+      "id": "U-1",
+      "name": "1600: HIDE closes it",
+      "ok": true
+    },
+    {
+      "id": "U-1",
+      "name": "1600: Escape with the focus on its control closes it",
+      "ok": true,
+      "detail": "button#syntx-gemini-output-toggle"
+    },
+    {
+      "id": "U-1",
+      "name": "1600: Escape on the bare document closes it",
+      "ok": true,
+      "detail": {
+        "focusBefore": "body",
+        "focusAfter": "section#syntx-field"
+      }
+    },
+    {
+      "id": "U-1",
+      "name": "1600: afterwards the field observes (organization)",
+      "ok": true,
+      "detail": "ORGANIZATION"
+    },
+    {
+      "id": "U-1",
+      "name": "1600: pool and mode unchanged",
+      "ok": true,
+      "detail": "http://127.0.0.1:42403/career/demo?focus=FIELD&jobPoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7&jobOrganizationId=org_pink_alpha"
+    },
+    {
+      "id": "U-3",
+      "name": "1600: a focus outside the field (strip) keeps its Escape — the observation stays",
+      "ok": true,
+      "detail": {
+        "outsideInField": false,
+        "kind": "ORGANIZATION"
+      }
+    },
+    {
+      "id": "U-3",
+      "name": "1600: Escape on the bare document returns one level",
+      "ok": true,
+      "detail": "FIELD"
+    },
+    {
+      "id": "U-2",
+      "name": "1600: at a ROLE with the pools open, HIDE GEMINI OUTPUT owns the pointer",
+      "ok": true,
+      "detail": {
+        "owned": true,
+        "hit": "button#syntx-gemini-output-toggle"
+      }
+    },
+    {
+      "id": "U-2",
+      "name": "1600: the pools list opens below the orientation glass",
+      "ok": true,
+      "detail": {
+        "listTop": 409,
+        "glassBottom": 393.1875
+      }
+    },
+    {
+      "id": "U-2",
+      "name": "1600: HIDE closes it at the ROLE",
+      "ok": true
+    },
+    {
+      "id": "U-2",
+      "name": "1600: SELECT moves focus to the field root",
+      "ok": true,
+      "detail": "section#syntx-field"
+    },
+    {
+      "id": "U-2",
+      "name": "1600: the new pool is selected, the investigation mode kept",
+      "ok": true,
+      "detail": "http://127.0.0.1:42403/career/demo?focus=FIELD&analysisId=ANL_PINK_UI_FIX&jobPoolUploadId=JPOOL_0B5B226D77F03C0AD4237A3C43B143DA&investigationMode=PERSON_X_JOB"
+    },
+    {
+      "id": "U-2",
+      "name": "1600: after the pool change Escape closes GEMINI OUTPUT",
+      "ok": true,
+      "detail": "section#syntx-field"
+    },
+    {
+      "id": "U-1",
+      "name": "1280: GEMINI OUTPUT control present (engineering build)",
+      "ok": true
+    },
+    {
+      "id": "U-1",
+      "name": "1280: opens without an analysis",
+      "ok": true,
+      "detail": "NO_ANALYSIS"
+    },
+    {
+      "id": "U-1",
+      "name": "1280: HIDE GEMINI OUTPUT owns the pointer",
+      "ok": true,
+      "detail": {
+        "owned": true,
+        "hit": "button#syntx-gemini-output-toggle"
+      }
+    },
+    {
+      "id": "U-1",
+      "name": "1280: HIDE closes it",
+      "ok": true
+    },
+    {
+      "id": "U-1",
+      "name": "1280: Escape with the focus on its control closes it",
+      "ok": true,
+      "detail": "button#syntx-gemini-output-toggle"
+    },
+    {
+      "id": "U-1",
+      "name": "1280: Escape on the bare document closes it",
+      "ok": true,
+      "detail": {
+        "focusBefore": "body",
+        "focusAfter": "section#syntx-field"
+      }
+    },
+    {
+      "id": "U-1",
+      "name": "1280: afterwards the field observes (organization)",
+      "ok": true,
+      "detail": "ORGANIZATION"
+    },
+    {
+      "id": "U-1",
+      "name": "1280: pool and mode unchanged",
+      "ok": true,
+      "detail": "http://127.0.0.1:42403/career/demo?focus=FIELD&jobPoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7&jobOrganizationId=org_pink_alpha"
+    },
+    {
+      "id": "U-3",
+      "name": "1280: a focus outside the field (strip) keeps its Escape — the observation stays",
+      "ok": true,
+      "detail": {
+        "outsideInField": false,
+        "kind": "ORGANIZATION"
+      }
+    },
+    {
+      "id": "U-3",
+      "name": "1280: Escape on the bare document returns one level",
+      "ok": true,
+      "detail": "FIELD"
+    },
+    {
+      "id": "U-2",
+      "name": "1280: at a ROLE with the pools open, HIDE GEMINI OUTPUT owns the pointer",
+      "ok": true,
+      "detail": {
+        "owned": true,
+        "hit": "button#syntx-gemini-output-toggle"
+      }
+    },
+    {
+      "id": "U-2",
+      "name": "1280: the pools list opens below the orientation glass",
+      "ok": true,
+      "detail": {
+        "listTop": 409,
+        "glassBottom": 393.1875
+      }
+    },
+    {
+      "id": "U-2",
+      "name": "1280: HIDE closes it at the ROLE",
+      "ok": true
+    },
+    {
+      "id": "U-2",
+      "name": "1280: SELECT moves focus to the field root",
+      "ok": true,
+      "detail": "section#syntx-field"
+    },
+    {
+      "id": "U-2",
+      "name": "1280: the new pool is selected, the investigation mode kept",
+      "ok": true,
+      "detail": "http://127.0.0.1:42403/career/demo?focus=FIELD&analysisId=ANL_PINK_UI_FIX&jobPoolUploadId=JPOOL_0B5B226D77F03C0AD4237A3C43B143DA&investigationMode=PERSON_X_JOB"
+    },
+    {
+      "id": "U-2",
+      "name": "1280: after the pool change Escape closes GEMINI OUTPUT",
+      "ok": true,
+      "detail": "section#syntx-field"
+    },
+    {
+      "id": "U-3",
+      "name": "Capability Field (Job Field unmounted): Escape on the bare document changes nothing",
+      "ok": true,
+      "detail": {
+        "capFocus": "CAPABILITY",
+        "before": "http://127.0.0.1:42403/career/demo?focus=CAPABILITY&analysisId=ANL_PINK_UI_FIX&jobPoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7&jobOrganizationId=org_pink_alpha&jobScopePoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7&jobScopeRoleId=role_pink_alpha_architect",
+        "after": "http://127.0.0.1:42403/career/demo?focus=CAPABILITY&analysisId=ANL_PINK_UI_FIX&jobPoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7&jobOrganizationId=org_pink_alpha&jobScopePoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7&jobScopeRoleId=role_pink_alpha_architect"
+      }
+    },
+    {
+      "id": "U-3",
+      "name": "onboarding overlay open, focus on the bare document: Escape leaves the field still (0b5a8ea)",
+      "ok": true,
+      "detail": {
+        "overlayShown": true,
+        "kind": "ORGANIZATION"
+      }
+    },
+    {
+      "id": "U-3",
+      "name": "onboarding overlay open, focus on a sign beneath it (measured): Escape",
+      "ok": true,
+      "detail": {
+        "initialFocus": "div#syntx-organization-org_pink_alpha",
+        "focus": "div#syntx-organization-org_pink_alpha",
+        "kindAfter": "FIELD",
+        "overlayStill": true
+      }
+    },
+    {
+      "id": "U-4",
+      "name": "1600: the state line is the signal",
+      "ok": true
+    },
+    {
+      "id": "U-4",
+      "name": "1600: its text is the copy unchanged",
+      "ok": true,
+      "detail": "NO ANALYSIS: run the capability sweep (identity core) or open the page with an exact analysisId"
+    },
+    {
+      "id": "U-4",
+      "name": "1600: the field statement carries the same copy",
+      "ok": true,
+      "detail": "NO ANALYSIS: run the capability sweep (identity core) or open the page with an exact analysisId"
+    },
+    {
+      "id": "U-4",
+      "name": "1600: motion only sxSignalCore on the indicator and sxSignalAura on the aura",
+      "ok": true,
+      "detail": [
+        {
+          "name": "sxSignalAura",
+          "target": "aura",
+          "duration": 4800,
+          "iterations": null,
+          "properties": [
+            "opacity"
+          ],
+          "minOpacity": 0.38
+        },
+        {
+          "name": "sxSignalCore",
+          "target": "core",
+          "duration": 4800,
+          "iterations": null,
+          "properties": [
+            "opacity",
+            "transform"
+          ],
+          "minOpacity": 0.6
+        }
+      ]
+    },
+    {
+      "id": "U-4",
+      "name": "1600: opacity and transform only, 4.8 s, infinite",
+      "ok": true,
+      "detail": [
+        {
+          "name": "sxSignalAura",
+          "target": "aura",
+          "duration": 4800,
+          "iterations": null,
+          "properties": [
+            "opacity"
+          ],
+          "minOpacity": 0.38
+        },
+        {
+          "name": "sxSignalCore",
+          "target": "core",
+          "duration": 4800,
+          "iterations": null,
+          "properties": [
+            "opacity",
+            "transform"
+          ],
+          "minOpacity": 0.6
+        }
+      ]
+    },
+    {
+      "id": "U-4",
+      "name": "1600: no blinking (opacity never below .3)",
+      "ok": true,
+      "detail": [
+        0.38,
+        0.6
+      ]
+    },
+    {
+      "id": "U-4",
+      "name": "1600: larger type than the 8.5 px state line",
+      "ok": true,
+      "detail": "10px,11.5px"
+    },
+    {
+      "id": "U-4",
+      "name": "1600: no layout or text movement over 6 s (chip, statement, text boxes identical in 60 frames)",
+      "ok": true,
+      "detail": {
+        "distinct": 1
+      }
+    },
+    {
+      "id": "U-4",
+      "name": "1600: the text never blinks (computed opacity constant)",
+      "ok": true,
+      "detail": [
+        "1,1,1,1"
+      ]
+    },
+    {
+      "id": "U-4",
+      "name": "1600: the field statement is calm",
+      "ok": true,
+      "detail": 0
+    },
+    {
+      "id": "U-4",
+      "name": "1600: every infinite motion at NO_ANALYSIS is in the closed R15b list or proposed (sxSignalCore, sxSignalAura)",
+      "ok": true,
+      "detail": [
+        "atmosphereGlow",
+        "coreBreathe",
+        "moonOrbit",
+        "orbitFloatPhase2",
+        "particleIn",
+        "plasmaFlarePulse",
+        "plasmaRotateCcw",
+        "plasmaRotateCw",
+        "rotateClockwise",
+        "sxSignalAura",
+        "sxSignalCore",
+        "waveExpand"
+      ]
+    },
+    {
+      "id": "U-4",
+      "name": "1280: the state line is the signal",
+      "ok": true
+    },
+    {
+      "id": "U-4",
+      "name": "1280: its text is the copy unchanged",
+      "ok": true,
+      "detail": "NO ANALYSIS: run the capability sweep (identity core) or open the page with an exact analysisId"
+    },
+    {
+      "id": "U-4",
+      "name": "1280: the field statement carries the same copy",
+      "ok": true,
+      "detail": "NO ANALYSIS: run the capability sweep (identity core) or open the page with an exact analysisId"
+    },
+    {
+      "id": "U-4",
+      "name": "1280: motion only sxSignalCore on the indicator and sxSignalAura on the aura",
+      "ok": true,
+      "detail": [
+        {
+          "name": "sxSignalAura",
+          "target": "aura",
+          "duration": 4800,
+          "iterations": null,
+          "properties": [
+            "opacity"
+          ],
+          "minOpacity": 0.38
+        },
+        {
+          "name": "sxSignalCore",
+          "target": "core",
+          "duration": 4800,
+          "iterations": null,
+          "properties": [
+            "opacity",
+            "transform"
+          ],
+          "minOpacity": 0.6
+        }
+      ]
+    },
+    {
+      "id": "U-4",
+      "name": "1280: opacity and transform only, 4.8 s, infinite",
+      "ok": true,
+      "detail": [
+        {
+          "name": "sxSignalAura",
+          "target": "aura",
+          "duration": 4800,
+          "iterations": null,
+          "properties": [
+            "opacity"
+          ],
+          "minOpacity": 0.38
+        },
+        {
+          "name": "sxSignalCore",
+          "target": "core",
+          "duration": 4800,
+          "iterations": null,
+          "properties": [
+            "opacity",
+            "transform"
+          ],
+          "minOpacity": 0.6
+        }
+      ]
+    },
+    {
+      "id": "U-4",
+      "name": "1280: no blinking (opacity never below .3)",
+      "ok": true,
+      "detail": [
+        0.38,
+        0.6
+      ]
+    },
+    {
+      "id": "U-4",
+      "name": "1280: larger type than the 8.5 px state line",
+      "ok": true,
+      "detail": "10px,11.5px"
+    },
+    {
+      "id": "U-4",
+      "name": "1280: no layout or text movement over 6 s (chip, statement, text boxes identical in 60 frames)",
+      "ok": true,
+      "detail": {
+        "distinct": 1
+      }
+    },
+    {
+      "id": "U-4",
+      "name": "1280: the text never blinks (computed opacity constant)",
+      "ok": true,
+      "detail": [
+        "1,1,1,1"
+      ]
+    },
+    {
+      "id": "U-4",
+      "name": "1280: the field statement is calm",
+      "ok": true,
+      "detail": 0
+    },
+    {
+      "id": "U-4",
+      "name": "1280: every infinite motion at NO_ANALYSIS is in the closed R15b list or proposed (sxSignalCore, sxSignalAura)",
+      "ok": true,
+      "detail": [
+        "atmosphereGlow",
+        "coreBreathe",
+        "moonOrbit",
+        "orbitFloatPhase2",
+        "particleIn",
+        "plasmaFlarePulse",
+        "plasmaRotateCcw",
+        "plasmaRotateCw",
+        "rotateClockwise",
+        "sxSignalAura",
+        "sxSignalCore",
+        "waveExpand"
+      ]
+    },
+    {
+      "id": "U-4",
+      "name": "REDUCED: the signal is static (no running animation)",
+      "ok": true,
+      "detail": 0
+    },
+    {
+      "id": "U-4",
+      "name": "AVAILABLE: no signal and no sxSignal motion",
+      "ok": true,
+      "detail": {
+        "attribute": null,
+        "names": []
+      }
+    },
+    {
+      "id": "U-5",
+      "name": "read-only pages: no non-GET request",
+      "ok": true,
+      "detail": []
+    },
+    {
+      "id": "U-5",
+      "name": "no page error",
+      "ok": true,
+      "detail": []
+    },
+    {
+      "id": "U-5",
+      "name": "0 Gemini attempts in the server",
+      "ok": true
+    }
+  ],
+  "pageErrors": [],
+  "nonGet": [],
+  "network": {
+    "total": 1,
+    "gemini": 0,
+    "entries": [
+      "fetch https://registry.npmjs.org/-/package/next/dist-tags"
+    ]
+  }
+}
