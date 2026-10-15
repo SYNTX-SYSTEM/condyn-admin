@@ -16,10 +16,12 @@ Integrationszweig ist `integration/job-field-governance`, Basis `311d6ee`. `main
 | `82d2f47` | GRÜN `frontend/three-modes` `8718e3a` | GELB `feature/job-pool-first-boundary` bis `4e72260` und GRÜNs Job-Field- und Drei-Modi-Frontend `ca11794`…`8718e3a` |
 | `fd11389` | PINK `validation/hr-decision-loop-pink` `c5b323f` | PINKs Prüfprotokolle §3.17–§3.40, Abnahmeplan 1.9.1, die Fixture der Job-Scope-Sperre mit persistiertem Auftrag sowie die pdf-path-Änderung `d4f61c1` |
 | `20c977b` | GELB `feature/matches-boundary-guard` `eacfc97` | das getrennte Delta aus §4: `/matches` lehnt gespeicherte PERSON-Analysen und nicht auflösbare Grenzen serverseitig ab. Gemergt erst nach PINKs Prüfung ohne Abweichung (§3.42) |
+| `18b7c2a` | GELB | `job-structure.postgres`: der `beforeAll` mit drei echten Pool-Uploads bekommt 60 s statt der 10-s-Voreinstellung (unter Last 11,7 s, von GRÜN gemessen) |
+| `d3e76ce` | PINK `validation/hr-decision-loop-pink` `5f5c636` | F-PINK-ORDER (§3.44): `http-canonical-inverse` nutzt eine eigene Pool-ID. Vorher hing die volle Suite von der Dateireihenfolge mit `pdf-path` ab, bis zu 10 Rotfälle. Dazu `pdf-path` byte-gleich zur Integration (`ad7bc55`) und PINKs Prüfung von GRÜNs `frontend/demo-ui-fix` (nicht integriert, §5) |
 | `a3c3759` | PINK `validation/hr-decision-loop-pink` `916e884` | PINK §3.43: `syntx-walk.e2e` an die Invarianten neu gebunden (siehe §2.3); nur diese Testdatei und Belege |
 | `73a4701` | PINK `validation/hr-decision-loop-pink` `122aa6c` | PINKs Prüfprotokolle §3.41 (Integration `0fb7b05`) und §3.42 (Delta `eacfc97`) sowie die übernommenen Fixture-Änderungen für `http-canonical-inverse` und `pdf-path`. Der pdf-path-Schritt erwartet 409 und gilt nur zusammen mit `eacfc97`; deshalb wurde `eacfc97` zuerst gemergt |
 
-Alle fünf Merges liefen konfliktfrei. Der Baum von `82d2f47` ist identisch mit einem vorab gemachten Probe-Merge; PINK hat `82d2f47` und `fd11389` baumgleich nachgebaut (§3.41). Die Abhängigkeiten (`package.json` und Lockfile) sind unverändert.
+Alle Merges liefen konfliktfrei. Der Baum von `82d2f47` ist identisch mit einem vorab gemachten Probe-Merge; PINK hat `82d2f47` und `fd11389` baumgleich nachgebaut (§3.41). Die Abhängigkeiten (`package.json` und Lockfile) sind unverändert.
 
 **Fachlicher Inhalt** (Prüfungen von PINK, §3.30–§3.39):
 - **Job-Scope und Identität:**
@@ -86,6 +88,14 @@ PINK hat `20c977b` und `73a4701` baumgleich nachgebaut und die `gitSha` bestäti
 - Q-06 ist an die geschlossene R15b-Vorschlagsliste gebunden. Das Urteil lautet **BOUNDARY-MATCH R15b-PENDING**, nicht PASS, solange R15b nicht festgehalten ist (§5).
 
 Die Testdatei ist byte-gleich mit PINKs `916e884`; `tsc` 0. Nachgeprüft in einem eigenen Worktree auf `a3c3759`, damit die Demo aus §6 weiterläuft: `syntx-walk.e2e` 3/3, `job-scope-gate.e2e` 1/1, `job-pool-workflow.e2e` 10/10. Überschriebene Belege sind dort zurückgesetzt.
+
+### 2.4 Vierter Schritt, `d3e76ce`
+
+- Die beiden PINK-Testdateien sind byte-gleich mit `5f5c636`. Zusammen laufen sie 15/15; PINK hat beide Reihenfolgen fest geprüft.
+- **Volle Suite:** 27 Basis-Rotfälle. Dazu kamen zwei Fehlerquellen, die nichts mit dem Code zu tun haben:
+  - **Dev-Sperre:** `g2-g3-vertical-proof` und `hr-decision-loop-p7` starten einen eigenen `next dev` im Worktree und treffen auf die Sperre der laufenden Demo (§6). Im separaten Worktree auf `d3e76ce` sind beide grün (2 Dateien, 77 Tests zusammen mit Outcome-Valence).
+  - **Last:** eine Zeitüberschreitung in `career-outcome-valence-feedback-context-revision-postgres`. Sie hängt von der Last ab: einzeln einmal 8/8, einmal 7/8. Der Code dort ist seit der Basis unverändert; PINK hat dasselbe auch auf der Basis gemessen (§3.41).
+- Solange die Demo läuft, müssen volle Suite und E2E in einem anderen Worktree laufen.
 
 ## 3. E2E-Suiten
 
@@ -169,6 +179,16 @@ Owner-Vorgabe: Der alte pool-weite Vergleich bleibt vorerst rollenübergreifend.
   - geerbte lokale Pfade in älteren Dateien und Prüfordnern; dazu die 30 Zeilen aus GRÜNs Evidence-Ordnern im Integrationsbereich (§2.1);
   - die Wurzeldateien `debug.js` und `debug2.js`.
 - **SYNTX-Governance (wartet auf die Sichtabnahme im DEMO REVIEW):** Laut `proposals/SYNTX_SEMIOTIC_TRANSFER_PROPOSALS.md` gilt nichts davon vor der Sichtabnahme durch den Owner; erst danach hält GELB R10a–R10d und R15b fest. Dazu gehören die Bewegungsarten, die eine GELB-Freigabe brauchen (`sxBoundaryHalo`, der standardmäßig abgeschaltete Prototyp `atmosphereGlow`). Bis dahin bleibt Q-06 bei BOUNDARY-MATCH R15b-PENDING.
+- **GRÜN `frontend/demo-ui-fix`** (`d9c7fea`, `0b5a8ea`; Owner-Auftrag an GRÜN „DEMO UI FIX + SEMIONTIC REFINEMENT“, STOP vor Integration). Inhalt:
+  - Das Signal NO ANALYSIS (`sxSignalCore`/`sxSignalAura`, 4,8 s, nur opacity/transform, nur LIVE);
+  - die Esc-Führung, die einem Dialog über dem Feld den Vortritt lässt;
+  - die Lage der Poolliste.
+
+  Stand der Prüfung:
+  - GELB: technisch R15b-konform; Probe-Merge auf `18b7c2a` mit `tsc` 0 und 206/206.
+  - PINK: ohne Abweichung (§3.44, `demo-ui-fix.e2e` 62/62).
+
+  Integriert wird er erst auf ein Wort des Owners an GELB.
 - **PINK-Skript** `support/syntx-readonly-walk.mjs` (P-4) ist nicht neu gebunden; es braucht eine Umgebung mit gespeicherten Aufträgen.
 - **Für GRÜN (O-SX-INACTIVE-NAMING):** Der Feldzustand INACTIVE_POOL entsteht nur aus einer 409 von `/matches`. Unter der URL-Grenze ist er mit konsistenten Daten nicht mehr erreichbar; das Feld zeigt dann OTHER_POOL.
 - **Zur Information (PINK):**
