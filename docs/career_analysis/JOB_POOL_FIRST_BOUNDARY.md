@@ -274,3 +274,14 @@ Invarianten (Owner, 2026-10-15): Der Job bestimmt Untersuchungsraum und Schwerpu
 Die Meldung der Scope-Grenze lautet seit diesem GO **„Bitte wähle einen Job aus einem Pool aus.“** (`JOB_SCOPE_REQUIRED_MESSAGE`).
 
 Prüfung ohne Gemini (Wegwerf-DB): `test/career/job-scope/discovery-scope.test.ts` (7 Tests, Kette `execute(...)` → Provider-Request), betroffene Suites 48 Dateien / 425 Tests grün, P8-Siegel grün; Proofs `docs/proofs/job-pool-first-boundary/2026-10-15-scope-discovery-message-no-gemini.json` (45/45, 0 Netzwerkzugriffe) und `…-worker-no-gemini.json` (8/8, 0 Netzwerkzugriffe). PINKs `pdf-path.postgres.test.ts` braucht weiter den übergebenen Diff (`jobScope: resolveTestJobScope()`); PINKs `job-scope-gate.e2e.test.ts` prüft noch den alten Meldungstext.
+
+## 13. Owner-GO 2026-10-15: drei Untersuchungsmodi
+
+Die Invariante ist verallgemeinert: **Keine Analyse ohne explizite Untersuchungsgrenze.**
+
+- JOB POOL FIRST gilt unverändert für PERSON_X_JOB und für jeden Request ohne Erklärung.
+- Ein explizit erklärtes `investigation: { mode: "PERSON" }` analysiert die Person ohne Job-Scope, mit ausgestellter Grenze, wie ein Job-Scope ausgestellt wird.
+- JOB ist keine Dokumentanalyse.
+
+Details: `THREE_INVESTIGATION_MODES.md`.
+

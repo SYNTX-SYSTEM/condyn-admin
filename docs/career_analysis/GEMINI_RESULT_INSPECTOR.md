@@ -20,7 +20,7 @@ Stand: 2026-10-15. Grundlage sind die Owner-Aufträge „SELECTED JOB SCOPE → 
 
 | Abschnitt | Inhalt |
 |---|---|
-| `investigationInput` | Job-Auswahl (`jobPoolUploadId`, `poolRoleId`); Scope: `RETAINED` (Text, Hash, `textMatchesScopeHash`, `expiresAt`), `NOT_RETAINED` (nur Hash) oder `UNSCOPED`; Discovery-Run-ID; Kernel (Version, Template, Version-ID, Checksumme); Provider und Modell; Schema-Version; Dokument-Identitäten aus dem Source Bundle (IDs, Titel und Hashes, kein Inhalt); Zeitpunkte von Lauf und Auftrag. Ein früherer Lauf als der Auftrag bedeutet: wiederverwendet, kein neuer Gemini-Aufruf. |
+| `investigationInput` | Untersuchungsmodus (`investigationMode`: `PERSON`, `PERSON_X_JOB`, `UNDECLARED`); Job-Auswahl (`jobPoolUploadId`, `poolRoleId`); Scope: `RETAINED` (Text, Hash, `textMatchesScopeHash`, `expiresAt`), `NOT_RETAINED` (nur Hash) oder `UNSCOPED`; Discovery-Run-ID; Kernel (Version, Template, Version-ID, Checksumme); Provider und Modell; Schema-Version; Dokument-Identitäten aus dem Source Bundle (IDs, Titel und Hashes, kein Inhalt); Zeitpunkte von Lauf und Auftrag. Ein früherer Lauf als der Auftrag bedeutet: wiederverwendet, kein neuer Gemini-Aufruf. |
 | `originalGeminiResponse` | `RETAINED` mit dem unveränderten Text, den Envelope-Feldern, `retainedAt`, `expiresAt` und den Prüfungen `textMatchesSha256` und `parserResultMatchesText`; sonst `NOT_RETAINED` (nie gespeichert, abgelaufen oder gelöscht). Dann wird nie ein verarbeitetes Ergebnis an dieser Stelle gezeigt. |
 | `parserResult` | das gespeicherte `kernelOutput` (nach JSON-Parse und Schemaprüfung) und `rawOutputHash` (Hash des geparsten Objekts, nicht des Texts) |
 | `evidenceVerification` | die gespeicherten Kandidaten mit dem Prüfstatus je Claim (`VERIFIED`, `REJECTED_*`) |
@@ -47,7 +47,7 @@ Inspector-Grenze:
 
 - Er antwortet nur mit `CONDYN_RESULT_INSPECTOR=1` **und** `CONDYN_RESULT_INSPECTOR_TOKEN` (mindestens 32 Zeichen) im Server-Environment **und** demselben Token im Header `x-condyn-result-inspector-token`. Der Vergleich ist zeitkonstant.
 - Jeder andere Fall antwortet mit demselben JSON-404 `ERR_NOT_FOUND` ohne Daten. Von einer Route, die Next.js nicht kennt (HTML-404), ist das unterscheidbar (PINK O-INSPECTOR-404-SHAPE); über Analysen oder Konfiguration verrät es nichts. Abschalten heißt: Variable entfernen. Die Pipeline ändert sich dadurch nicht.
-- Das Token gehört nicht in den Browser. Eine Oberfläche ruft die Route serverseitig auf oder nutzt `createGeminiResultInspector` in einer Server-Komponente hinter derselben Freischaltung.
+- Das Token wird nie dauerhaft im Browser gehalten und nie von einem Server-Proxy angehängt; ein solcher Proxy würde die Grenze für jeden öffnen, der den Port erreicht. Eine Oberfläche bekommt es vom Operator pro Sitzung eingegeben, hält es nur im Speicher und schickt es pro Anfrage als Header (§6).
 - Der Inspector liefert keine Kandidatendokumente (PDF-Inhalte des Auftrags), keine Keys und keine Verbindungsdaten.
 
 Nachweis an einem echten Next-Server auf einer Wegwerf-Datenbank, ohne Gemini (`docs/proofs/job-pool-first-boundary/2026-10-15-result-inspector-access.json`, 9e54662, 7/7):
@@ -79,3 +79,30 @@ Im Laufzeitcode (lib, app, scripts) gibt es keinen einzigen Löschpfad und keine
 - **Fehlschläge vor Discovery:** Abbrüche ohne empfangene Antwort (Netzwerk, fehlender Key) werden nicht erfasst. Es gibt nichts Empfangenes, das gespeichert werden könnte.
 - **Convergence-Rohantwort und Legacy-Analyse:** Sie werden nicht aufbewahrt. Der Inspector zeigt das gespeicherte Convergence-Ergebnis; der zweite Gemini-Aufruf je ANALYZE (`providers/gemini.ts`) ist nicht abgedeckt.
 - **Personenbezug außerhalb des Archivs:** `kernelOutput` und die Kandidaten im Lauf enthalten wörtliche Zitate aus Lebensläufen, die Source Bundles den Text der PDFs. Für diese Daten gibt es weiterhin keinen Löschweg. Das betrifft die bestehende Pipeline, nicht den Inspector.
+
+## 6. GEMINI OUTPUT Panel (Vorbereitung für GRÜN, eigenes Mandat)
+
+**Client:** `lib/career/result-inspector/client.ts`
+- Browsertauglich, nur `import type`.
+- Funktionen: `readGeminiResultInspection(fetch, analysisId, token, signal)` und `readGeminiExchangeInspection(fetch, jobId, token, signal)`.
+- Zustände: `AVAILABLE`, `CLOSED` (Inspector aus oder falsches Token), `NOT_FOUND`, `LINEAGE_INVALID`, `FAILED`.
+- Die Decoder lehnen jede Antwort ab, die nicht die erwartete Version und die erwarteten Zustände trägt. Insbesondere steht nie ein verarbeitetes Ergebnis an der Stelle der Originalantwort.
+- Für B2 prüft `comparisonBelongsToSelection`, ob ein Vergleich zur aktuellen Analyse und Auswahl gehört.
+
+**Platzierung:** ein zweiter Schalter in der Aktionszeile neben `syntx-boundary-toggle` (BOUNDARY). Er öffnet ein Panel mit vier getrennten Ansichten:
+
+| Ansicht | Felder | Hinweis |
+|---|---|---|
+| Untersuchungs-Scope | `investigationMode`, Scope-Zustand und -Text | |
+| Originalantwort | `originalGeminiResponse` | `NOT_RETAINED` wörtlich anzeigen |
+| Parser, Verifikation, Convergence | `parserResult`, `evidenceVerification`, `convergence` | |
+| Projektion | `projection` | |
+
+Fehlgeschlagene Versuche eines Auftrags liefert die Auftrags-Sicht.
+
+**Regeln**
+- Nur GET-Anfragen; kein Retry, der eine Analyse anstößt.
+- Nichts speichern: kein localStorage, kein IndexedDB, keine URL-Parameter mit Inhalt. Beim Schließen wird alles verworfen.
+- Der Schalter erscheint nur in Engineering-Builds.
+- Für die Demo braucht es einen Next-Server auf einer Wegwerf-Datenbank mit `CONDYN_RESULT_INSPECTOR=1`, Token und `CONDYN_GEMINI_EXCHANGE_ARCHIVE=1`. Ein Lauf mit echtem Gemini braucht ein eigenes GO.
+- Im Modus JOB gibt es keinen Gemini-Austausch; das Panel zeigt dort „kein Gemini-Aufruf in diesem Modus“.
