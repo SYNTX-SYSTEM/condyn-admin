@@ -1,0 +1,36 @@
+// PINK cross-version probe (temporary, not committed): the Discovery request and the persisted run produced through the REAL
+// executor, for an issued job scope and — where the version has it — an issued PERSON investigation. Run unchanged in 027abf3,
+// dfb4b63 and ad15d7b; timestamps stripped; compared byte for byte outside.
+import { writeFileSync } from "node:fs";
+import { it } from "vitest";
+import * as core from "../../lib/career/capability-core";
+import { createCareerCapabilityProposalExecutor } from "../../lib/career/orchestration/capability-proposal-executor";
+import { resolveTestJobScope } from "../support/job-scope";
+
+const kernel = { kernelVersion: "discovery-v1", templateId: "T", versionId: "V", checksum: "C", plainTextContent: "PINK_DISCOVERY_KERNEL" };
+const audit = { source_documents_examined: 1, capability_count: 1, atomic_capability_count: 1, composite_capability_count: 0, attribution_pass_completed: true, target_state_ownership_pass_completed: true, atomic_extraction_pass_completed: true, method_capability_pass_completed: true, composite_reconstruction_pass_completed: true, global_convergence_pass_completed: true, inventory_reconciliation_pass_completed: true, final_reconciliation_produced_new_capabilities: false, unresolved_target_operations: 0, segments_classified_as_external_source_content: 0, segments_classified_as_target_subject_operation: 0, segments_classified_as_target_subject_designed_target_state: 0, segments_classified_as_target_organization_capability: 0, segments_excluded_due_to_attribution_ambiguity: 0 };
+const SOURCE = "Led the migration of the dispatch platform to event-driven services.";
+
+async function capture(boundary: unknown) {
+  const requests: unknown[] = [];
+  const repository = new core.InMemoryCapabilityCoreRepository();
+  const provider = { providerName: "pink-spy", model: "m", execute: async (request: unknown) => { requests.push(request); return { kernelOutput: { kernel_version: "discovery-v1", capabilities: [{ canonical_name: "Migration", capability_scope: "ATOMIC", structural_definition: "d", primary_domain: null, demonstrated_capability_level: null, model_confidence: 0.9, evidence_mode: "EXPLICIT", evidence: [{ source_document: "DOC_001", location: "body", exact_quote: SOURCE }] }], coverage_audit: audit } }; } };
+  const saved: unknown[] = [];
+  const save = repository.saveRun.bind(repository);
+  repository.saveRun = async (run: any) => { saved.push({ ...run, createdAt: "", completedAt: "" }); return save(run); };
+  const executor = await createCareerCapabilityProposalExecutor({
+    environment: { GEMINI_MODEL: "m", PROMPT_ENCRYPTION_KEY: "unused" }, defaultGeminiModel: "m", promptRepository: {} as never, capabilityRepository: repository,
+    bootstrapCapabilityProposalKernels: async () => undefined, createActivePromptResolver: () => ({}) as never,
+    createDiscoveryKernelResolver: () => ({ resolve: async () => kernel }), createConvergenceKernelResolver: () => ({ resolve: async () => ({ ...kernel, kernelVersion: "convergence-v1", checksum: "CC" }) }),
+    createDiscoveryProvider: () => provider as never, createConvergenceProvider: () => ({ providerName: "pink-spy", model: "m", execute: async () => { throw new Error("PINK_STOP"); } }),
+    runDiscovery: core.runCapabilityDiscovery, runConvergence: core.runCapabilityConvergence, createProposalRuntime: core.createCapabilityProposalRuntime
+  } as never);
+  const error = await executor.execute([{ docId: "DOC_001", title: "cv.synthetic.pdf", content: SOURCE }] as never, async () => undefined, boundary as never).then(() => null, (e: Error) => e.message);
+  return { error, requests, runs: saved };
+}
+
+it("writes the mode identity probe", async () => {
+  const investigation = await import("../../lib/career/investigation/boundary").catch(() => null) as null | { issuePersonInvestigation(d: { mode: "PERSON" }): unknown };
+  const out = { scoped: await capture(resolveTestJobScope()), person: investigation ? await capture(investigation.issuePersonInvestigation({ mode: "PERSON" })) : null };
+  writeFileSync(process.env.PINK_IDENTITY_OUT as string, JSON.stringify(out, null, 1));
+});

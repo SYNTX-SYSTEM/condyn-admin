@@ -1,0 +1,98 @@
+/**
+ * PINK independent proof of the script half of the owner's SFE job-scope invariant ("keine Ausnahmen": GELB 027abf3 binds
+ * every development script that can reach Gemini or the Career-Analysis pipeline to CONDYN_JOB_POOL_UPLOAD_ID +
+ * CONDYN_POOL_ROLE_ID, validated against a stored pool). Every script found by PINK's own sweep (SDK users and pipeline
+ * callers outside app/ lib/ test/) runs as its own process, cwd = this worktree (no .env.local here), GEMINI_API_KEY a
+ * dummy, under PINK's network sentinel (scratch `pink-net-sentinel.cjs`, PINK_NET_SENTINEL): every non-loopback
+ * connection is recorded and refused before a byte leaves. A positive control proves the sentinel catches the Gemini SDK.
+ * Cases: no selection, unknown pool, DRAFT pool, role not in the pool. No valid selection is ever given to a script.
+ */
+import { spawn } from "node:child_process";
+import { existsSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { resolve } from "node:path";
+import { drizzle } from "drizzle-orm/postgres-js";
+import { beforeAll, describe, expect, it } from "vitest";
+import { db, initDbSchema } from "../../lib/career/db/client";
+import { createJobPoolApplication } from "../../lib/career/job-pool/application";
+import { ensureJobPoolPersistenceRegistration } from "../../lib/career/job-pool/local-composition";
+import { draftPool, validationPool } from "./fixtures/pool";
+
+const SENTINEL = process.env.PINK_NET_SENTINEL as string;
+const OUT = process.env.PINK_SCRIPTS_OUT as string;
+const ROOT = process.cwd();
+const TSX = resolve(ROOT, "node_modules/.bin/tsx");
+const ROLE_ID = "role_pink_alpha_architect";
+const MESSAGE = "Bitte wählen Sie einen Job aus.";
+const SCRIPTS = [
+  "scripts/list-models.ts", "scripts/probe-gemini.ts", "scripts/test-live-action-chain.ts", "scripts/test-live-decision-chain.ts",
+  "scripts/test-live-feedback-chain.ts", "scripts/test-live-learning-chain.ts", "scripts/test-live-outcome-chain.ts",
+  "scripts/test-live-recommendation-proof.ts", "scripts/test-multi-source-live.ts", "scripts/test-pipeline-live.ts",
+  "bisection.ts", "debug.ts", "forensics-step2.ts", "schema-bisection-mjs.ts", "schema-bisection.ts", "test-github.ts", "test-pdf.ts",
+  "test-schema.ts", "trace-pdf-5.ts", "trace-pdf.ts",
+  // Found by PINK's sweep, not gated by 027abf3: two call the pipeline with a mock provider, one only constructs an SDK client.
+  "debug.js", "debug2.js", "test-full.mjs"
+];
+
+function run(file: string, extraEnv: Record<string, string | undefined>, netLog: string): Promise<{ code: number | null; output: string; net: string[] }> {
+  rmSync(netLog, { force: true });
+  const env: Record<string, string> = {};
+  for (const [key, value] of Object.entries(process.env)) if (value !== undefined && !key.startsWith("CONDYN_JOB_POOL") && key !== "CONDYN_POOL_ROLE_ID" && !key.startsWith("GOOGLE_")) env[key] = value;
+  Object.assign(env, { GEMINI_API_KEY: "pink-dummy-not-a-key", PINK_NET_LOG: netLog, NODE_OPTIONS: `--require ${SENTINEL}` });
+  for (const [key, value] of Object.entries(extraEnv)) { if (value === undefined) delete env[key]; else env[key] = value; }
+  const [command, args] = file.endsWith(".ts") ? [TSX, [file]] : [process.execPath, [file]];
+  return new Promise((done) => {
+    const child = spawn(command, args, { cwd: ROOT, env, stdio: ["ignore", "pipe", "pipe"] });
+    let output = "";
+    child.stdout.on("data", (chunk) => { output += String(chunk); });
+    child.stderr.on("data", (chunk) => { output += String(chunk); });
+    const timer = setTimeout(() => child.kill("SIGKILL"), 90_000);
+    child.on("exit", (code) => { clearTimeout(timer); done({ code, output, net: existsSync(netLog) ? readFileSync(netLog, "utf8").trim().split("\n").filter(Boolean) : [] }); });
+  });
+}
+
+let uploadId = "";
+let draftId = "";
+
+describe("PINK: job-scope gate on every development script (own process, network sentinel, no Gemini)", () => {
+  beforeAll(async () => {
+    expect(existsSync(ROOT + "/.env.local"), "no .env.local in the worktree under test").toBe(false);
+    await initDbSchema();
+    if (await ensureJobPoolPersistenceRegistration() !== "REGISTERED") throw new Error("job pool persistence not registered");
+    const application = createJobPoolApplication({ database: drizzle(db.$client), analyses: { load: async () => null } });
+    uploadId = (await application.upload(JSON.stringify(validationPool), "PINK_SCRIPT_GATE")).view.jobPoolUploadId;
+    draftId = (await application.upload(JSON.stringify(draftPool()), "PINK_SCRIPT_GATE")).view.jobPoolUploadId;
+  }, 120_000);
+
+  it("positive control: the sentinel records and refuses a Gemini SDK call", async () => {
+    const result = await run(process.env.PINK_NET_CONTROL as string, {}, `${OUT}.control.log`);
+    expect(result.net.some((line) => line.includes("generativelanguage.googleapis.com"))).toBe(true);
+    expect(result.output).not.toMatch(/went out/);
+  }, 120_000);
+
+  it("no script reaches the network without a valid selection; every gated script refuses with exit 3 and the owner's sentence", async () => {
+    const cases: Array<[string, Record<string, string | undefined>]> = [
+      ["no selection", {}],
+      ["unknown pool", { CONDYN_JOB_POOL_UPLOAD_ID: `JPOOL_${"0".repeat(32)}`, CONDYN_POOL_ROLE_ID: ROLE_ID }],
+      ["DRAFT pool", { CONDYN_JOB_POOL_UPLOAD_ID: draftId, CONDYN_POOL_ROLE_ID: ROLE_ID }],
+      ["role not in the pool", { CONDYN_JOB_POOL_UPLOAD_ID: uploadId, CONDYN_POOL_ROLE_ID: "role_pink_does_not_exist" }]
+    ];
+    const rows: Array<Record<string, unknown>> = [];
+    const jobs: Array<() => Promise<void>> = [];
+    for (const file of SCRIPTS) for (const [label, env] of cases) jobs.push(async () => {
+      const result = await run(file, env, `${OUT}.${file.replace(/[^a-z0-9]+/gi, "_")}.${label.replace(/\s+/g, "_")}.log`);
+      const refusal = result.output.split("\n").find((line) => /ERR_JOB_SCOPE_(REQUIRED|INVALID)/.test(line)) ?? null;
+      rows.push({ file, label, exit: result.code, refusal: refusal?.slice(0, 220) ?? null, net: result.net, tail: refusal === null ? result.output.trim().split("\n").slice(-3).join(" | ").slice(0, 300) : "" });
+    });
+    for (let index = 0; index < jobs.length; index += 4) await Promise.all(jobs.slice(index, index + 4).map((job) => job()));
+    rows.sort((a, b) => String(a.file).localeCompare(String(b.file)) || String(a.label).localeCompare(String(b.label)));
+    writeFileSync(`${OUT}.json`, `${JSON.stringify(rows, null, 2)}\n`);
+    const ungated = new Set(["debug.js", "debug2.js", "test-full.mjs"]);
+    for (const row of rows) {
+      expect(row.net, `${row.file} · ${row.label}: no network attempt`).toEqual([]);
+      if (!ungated.has(String(row.file))) {
+        expect(row.exit, `${row.file} · ${row.label}: exit 3`).toBe(3);
+        expect(String(row.refusal), `${row.file} · ${row.label}: the owner's sentence`).toContain(MESSAGE);
+      }
+    }
+  }, 900_000);
+});

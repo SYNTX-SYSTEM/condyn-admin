@@ -1,0 +1,56 @@
+PINK SSR preservation probe: same 26 cases in cb3d33f (parent) and c146f05; every difference classified
+cap-01-z1-de: renders the Job Field (identical to field-nopool-de on c146f05: False)
+cap-01-z1-en: renders the Job Field (identical to field-nopool-en on c146f05: False)
+cap-01-z2-de: renders the Job Field (identical to field-nopool-de on c146f05: False)
+cap-01-z2-en: renders the Job Field (identical to field-nopool-en on c146f05: False)
+cap-03-z1-de: renders the Job Field (identical to field-nopool-de on c146f05: False)
+cap-03-z1-en: renders the Job Field (identical to field-nopool-en on c146f05: False)
+cap-03-z2-de: renders the Job Field (identical to field-nopool-de on c146f05: False)
+cap-03-z2-en: renders the Job Field (identical to field-nopool-en on c146f05: False)
+cap-06-z1-de: renders the Job Field (identical to field-nopool-de on c146f05: False)
+cap-06-z1-en: renders the Job Field (identical to field-nopool-en on c146f05: False)
+cap-06-z2-de: renders the Job Field (identical to field-nopool-de on c146f05: False)
+cap-06-z2-en: renders the Job Field (identical to field-nopool-en on c146f05: False)
+cap-L0-de: renders the Job Field (identical to field-nopool-de on c146f05: True)
+cap-L0-en: renders the Job Field (identical to field-nopool-en on c146f05: True)
+dock-empty: identical
+dock-staged: identical
+field-FIELD-de: {'capability gate attributes / hint': 3, 'UNCLASSIFIED': 2}
+field-FIELD-en: {'capability gate attributes / hint': 3, 'UNCLASSIFIED': 2}
+field-ORG-de: {'capability gate attributes / hint': 3, 'UNCLASSIFIED': 2}
+field-ORG-en: {'capability gate attributes / hint': 3, 'UNCLASSIFIED': 2}
+field-REQ-de: {'capability gate attributes / hint': 3, 'UNCLASSIFIED': 2}
+field-REQ-en: {'capability gate attributes / hint': 3, 'UNCLASSIFIED': 2}
+field-ROLE-de: {'capability gate attributes / hint': 3, 'UNCLASSIFIED': 2}
+field-ROLE-en: {'capability gate attributes / hint': 3, 'UNCLASSIFIED': 2}
+field-nopool-de: {'capability gate attributes / hint': 3, 'UNCLASSIFIED': 2}
+field-nopool-en: {'capability gate attributes / hint': 3, 'UNCLASSIFIED': 2}
+
+unclassified differences: 32
+--- cap-01-z1-de cap render differs from the Job Field ground render
+  cb3d33f: 
+  c146f05: 
+--- field-FIELD-de replace
+  cb3d33f: 
+@keyframes syntxFieldVeil { from { opacity: .9; } to { opacity: 0; } }
+@keyframes syntxFieldSweepRight { from { transform: translateX(-60%); opacity: 0; } 25% { opacity: 1; } to { transform: translateX(160%); opacity: 0; } }
+@keyframes syntxFieldSweepLeft { f
+  c146f05: 
+@keyframes syntxFieldVeil { from { opacity: .9; } to { opacity: 0; } }
+@keyframes syntxFieldSweepRight { from { transform: translateX(-60%); opacity: 0; } 25% { opacity: 1; } to { transform: translateX(160%); opacity: 0; } }
+@keyframes syntxFieldSweepLeft { f
+--- field-FIELD-de replace
+  cb3d33f: <button type="button" data-testid="job-pool-panel-toggle" data-field-focus-active="true" aria-pressed="true" style="--sx-tone:92, 200, 255;position:relative;display:inline-flex;align-items:center;gap:9px;padding:10px 20px 10px 15px;width:214px;justify-content:
+  c146f05: <button type="button" data-testid="job-pool-panel-toggle" data-field-focus-active="true" aria-pressed="true" style="--sx-tone:92, 200, 255;position:relative;display:inline-flex;align-items:center;gap:9px;padding:10px 20px 10px 15px;width:214px;justify-content:
+
+Token-level resolution of the 32 hunks the coarse classifier left open (PINK, same renders):
+- Job Field cases (FIELD, ORGANIZATION, ROLE, REQUIREMENT, NO_POOL; en/de): every remaining difference is the gate itself —
+  data-capability-gate="AWAITING_JOB" on the root; data-field-gate="AWAITING_JOB" + disabled + aria-disabled + the hint title on
+  syntx-exit-btn and field-focus-capability-btn; cursor:not-allowed and opacity:0.42 on both; the selector CSS hover rules
+  narrowed to :not(:disabled). Nothing else in the Job Field changed.
+- Capability cases: without a VALID scope (SSR starts CHECKING) every Capability request renders the Job Field. cap-L0 equals
+  the NO_POOL ground render; the staged cases differ from it only in the kept Capability request (data-zoom-level,
+  data-focused-stage-id and the stage selector's aria-current), i.e. the request survives the gate as GRÜN describes.
+- SourceDock: identical.
+Result: 0 differences outside the capability gate. The Capability field itself with a VALID scope is proven in the browser walk
+(G-04, G-08), not in SSR.

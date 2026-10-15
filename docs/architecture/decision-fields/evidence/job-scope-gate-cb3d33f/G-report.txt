@@ -1,0 +1,50 @@
+DEV  G-01 application opens on the Job Pool screen (shell focus FIELD) · focus CAPABILITY
+ok   G-01 no job is selected at open (indicator NONE) · indicator NONE
+DEV  G-02 no valid pool: Capability field locked · {"reachable":true,"disabled":false,"focusAfter":"CAPABILITY"}
+ok   G-02 no valid pool: ANALYZE not executable, no request leaves the page · {"staged":true,"present":true,"disabled":true,"blockedAttr":"true","message":"Bitte wählen Sie einen Job aus.","postsOnForcedClick":0}
+ok   G-02 no valid pool: the owner's sentence stands at the trigger when it is shown · Bitte wählen Sie einen Job aus.
+DEV  G-02 unknown pool in the URL: Capability field locked · {"reachable":true,"disabled":false,"focusAfter":"CAPABILITY"}
+ok   G-02 unknown pool in the URL: ANALYZE not executable · {"staged":true,"present":true,"disabled":true,"blockedAttr":"true","message":"Bitte wählen Sie einen Job aus.","postsOnForcedClick":0}
+ok   G-03 pool loaded without a job: indicator NONE · NONE
+DEV  G-03 pool loaded without a job: Capability field locked · {"reachable":true,"disabled":false,"focusAfter":"CAPABILITY"}
+ok   G-03 pool loaded without a job: ANALYZE not executable, no request · {"staged":true,"present":true,"disabled":true,"blockedAttr":"true","message":"Bitte wählen Sie einen Job aus.","postsOnForcedClick":0}
+ok   G-03 pool loaded without a job: the owner's sentence verbatim at the trigger when shown · Bitte wählen Sie einen Job aus.
+ok   G-04 ROLE: an explicit job selection action exists · 1
+ok   G-04 after the explicit selection the indicator is VALID and names the role · {"state":"VALID","text":"JOBDistributed Systems ArchitectAlpha Industrial Systems · PINK validation pool"}
+ok   G-04 the selection is the exact scope in the URL (pool + role) · {"focus":"FIELD","analysisId":"ANL_PINK_JOB_SCOPE_GATE","jobPoolUploadId":"JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7","jobRoleId":"role_pink_alpha_architect","jobScopePoolUploadId":"JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7","jobScopeRoleId":"role_pink_alpha_architect"}
+ok   G-09 no closure glyph (✓ ✔ ☑) in the Job Field after the job selection (R1 / B-SYNTX-CLOSURE)
+ok   G-08 VALID scope visible and uncovered at REQUIREMENT, ROLE, ORGANIZATION and FIELD (1600 px) · {"FIELD":{"kind":"FIELD","state":"VALID","present":true,"inViewport":true,"owned":true,"text":"JOBDistributed Systems ArchitectAlpha Industrial Systems · PINK validation pool","opacity":"1","visibility":"visible"},"ORGANIZATION":{"kind":"ORGANIZATION","state":"VALID","present":true,"inViewport":true,"owned":true,"text":"JOBDistributed Systems ArchitectAlpha Industrial Systems · PINK validation pool","opacity":"1","visibility":"visible"},"ROLE":{"kind":"ROLE","state":"VALID","present":true,"inViewport":true,"owned":true,"text":"JOBDistributed Systems ArchitectAlpha Industrial Systems · PINK validation pool","opacity":"1","visibility":"visible"},"REQUIREMENT":{"kind":"REQUIREMENT","state":"VALID","present":true,"inViewport":true,"owned":true,"text":"JOBDistributed Systems ArchitectAlpha Industrial Systems · PINK validation pool","opacity":"1","visibility":"visible"}}
+ok   G-04 valid pool + valid job: Capability field reachable · {"reachable":true,"disabled":false,"focusAfter":"CAPABILITY"}
+ok   G-08 VALID scope visible and uncovered in the Capability field (1600 px) · {"present":true,"inViewport":true,"owned":true,"text":"JOBDistributed Systems ArchitectAlpha Industrial Systems · PINK validation pool","opacity":"1","visibility":"visible"}
+ok   G-04 valid pool + valid job: ANALYZE present and enabled, no blocking sentence · {"staged":true,"present":true,"disabled":false,"blockedAttr":"false","message":null,"postsOnForcedClick":0}
+ok   G-04 ANALYZE sends exactly one request carrying exactly { jobPoolUploadId, poolRoleId } of the selection · {"requests":1,"jobScope":{"jobPoolUploadId":"JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7","poolRoleId":"role_pink_alpha_architect"}}
+ok   G-04 the scoped request is accepted (202) and enqueued once (no worker runs: no Gemini call) · {"status":202,"enqueued":1}
+DEV  G-05 an explicit way to remove the job selection exists in the UI · 0 control(s)
+ok   G-05 removed (scope parameters absent): indicator shows the absence or invalidity · {"state":"NONE","present":true,"inViewport":true,"owned":true,"text":"JOBNO JOB SELECTED","opacity":"1","visibility":"visible"}
+DEV  G-05 removed (scope parameters absent): Capability field locked · {"reachable":true,"disabled":false,"focusAfter":"CAPABILITY"}
+ok   G-05 removed (scope parameters absent): ANALYZE not executable, no request · {"staged":true,"present":true,"disabled":true,"blockedAttr":"true","message":"Bitte wählen Sie einen Job aus.","postsOnForcedClick":0}
+ok   G-05 role not in the pool: indicator shows the absence or invalidity · {"state":"INVALID","present":true,"inViewport":true,"owned":true,"text":"JOBJOB NOT VALIDrole_pink_does_not_exist","opacity":"1","visibility":"visible"}
+DEV  G-05 role not in the pool: Capability field locked · {"reachable":true,"disabled":false,"focusAfter":"CAPABILITY"}
+ok   G-05 role not in the pool: ANALYZE not executable, no request · {"staged":true,"present":true,"disabled":true,"blockedAttr":"true","message":"Bitte wählen Sie einen Job aus.","postsOnForcedClick":0}
+ok   G-05 pool not ACTIVE (DRAFT): indicator shows the absence or invalidity · {"state":"INVALID","present":true,"inViewport":true,"owned":true,"text":"JOBJOB NOT VALIDrole_pink_alpha_architect","opacity":"1","visibility":"visible"}
+DEV  G-05 pool not ACTIVE (DRAFT): Capability field locked · {"reachable":true,"disabled":false,"focusAfter":"CAPABILITY"}
+ok   G-05 pool not ACTIVE (DRAFT): ANALYZE not executable, no request · {"staged":true,"present":true,"disabled":true,"blockedAttr":"true","message":"Bitte wählen Sie einen Job aus.","postsOnForcedClick":0}
+ok   G-05 pool unknown: indicator shows the absence or invalidity · {"state":"INVALID","present":true,"inViewport":true,"owned":true,"text":"JOBJOB NOT VALIDrole_pink_alpha_architect","opacity":"1","visibility":"visible"}
+DEV  G-05 pool unknown: Capability field locked · {"reachable":true,"disabled":false,"focusAfter":"CAPABILITY"}
+ok   G-05 pool unknown: ANALYZE not executable, no request · {"staged":true,"present":true,"disabled":true,"blockedAttr":"true","message":"Bitte wählen Sie einen Job aus.","postsOnForcedClick":0}
+ok   G-05 scope malformed: indicator shows the absence or invalidity · {"state":"NONE","present":true,"inViewport":true,"owned":true,"text":"JOBNO JOB SELECTED","opacity":"1","visibility":"visible"}
+DEV  G-05 scope malformed: Capability field locked · {"reachable":true,"disabled":false,"focusAfter":"CAPABILITY"}
+ok   G-05 scope malformed: ANALYZE not executable, no request · {"staged":true,"present":true,"disabled":true,"blockedAttr":"true","message":"Bitte wählen Sie einen Job aus.","postsOnForcedClick":0}
+ok   G-08 NONE scope visible and uncovered in the Job Field at 1280 × 720 · {"state":"NONE","present":true,"inViewport":true,"owned":true,"text":"JOBNO JOB SELECTED","opacity":"1","visibility":"visible"}
+ok   G-08 VALID scope visible and uncovered in the Job Field at 1280 × 720 · {"state":"VALID","present":true,"inViewport":true,"owned":true,"text":"JOBDistributed Systems ArchitectAlpha Industrial Systems · PINK validation pool","opacity":"1","visibility":"visible"}
+DEV  G-06 direct POST, no jobScope: 400 ERR_JOB_SCOPE_REQUIRED, the owner's sentence, nothing enqueued · {"status":202,"code":null,"message":null,"jobId":"JOB_1791942391827_341","enqueued":1}
+DEV  G-06 direct POST, jobScope null: 400 ERR_JOB_SCOPE_REQUIRED, the owner's sentence, nothing enqueued · {"status":202,"code":null,"message":null,"jobId":"JOB_1791942391867_802","enqueued":1}
+DEV  G-06 direct POST, jobScope malformed: 400 ERR_JOB_SCOPE_REQUIRED, the owner's sentence, nothing enqueued · {"status":202,"code":null,"message":null,"jobId":"JOB_1791942391884_819","enqueued":1}
+DEV  G-06 direct POST, jobScope with an extra key: 400 ERR_JOB_SCOPE_REQUIRED, the owner's sentence, nothing enqueued · {"status":202,"code":null,"message":null,"jobId":"JOB_1791942391902_614","enqueued":1}
+DEV  G-06 direct POST, pool unknown: 422 ERR_JOB_SCOPE_INVALID, the owner's sentence, nothing enqueued · {"status":202,"code":null,"message":null,"jobId":"JOB_1791942391932_725","enqueued":1}
+DEV  G-06 direct POST, pool not ACTIVE: 422 ERR_JOB_SCOPE_INVALID, the owner's sentence, nothing enqueued · {"status":202,"code":null,"message":null,"jobId":"JOB_1791942391951_104","enqueued":1}
+DEV  G-06 direct POST, role not in the pool: 422 ERR_JOB_SCOPE_INVALID, the owner's sentence, nothing enqueued · {"status":202,"code":null,"message":null,"jobId":"JOB_1791942391968_999","enqueued":1}
+ok   G-06 direct POST with a valid scope is accepted (202) and enqueued once (no worker: no Gemini call) · {"status":202,"enqueued":1}
+ok   G-00 no page error in any step · []
+
+31/48 checks ok

@@ -1,0 +1,529 @@
+/**
+ * PINK independent browser walk of GRÜN df2e84e (three investigation modes, owner ruling B-INVARIANT-PERSON, PINK §3.35) on a
+ * real Next server (next dev, disposable database, no worker, GEMINI_API_KEY empty, PINK's net sentinel in the server process
+ * when PINK_INSPECTOR_NET_LOG is set). No request can reach Gemini: an accepted analysis is only enqueued.
+ *
+ *   T-01 ground state and URL: no parameter → PERSON_X_JOB; only the three exact values choose a mode
+ *   T-02 gate per mode × job state (NONE / VALID / INVALID): root attribute, Capability field reachable, URL focus=CAPABILITY
+ *   T-03 ANALYZE per mode: the exact request body, the stored job's declaration, nothing at all in JOB / PERSON × JOB without job
+ *   T-04 the shell control: click and keyboard change the mode, write it to the URL, never remove the selected job (G-05),
+ *        the job indicator says "unused" in PERSON; JOB leaves the Capability field
+ *   T-05 the Job Field: no analysis comparison outside PERSON × JOB; the statement names the mode
+ *   T-06 B2 (PERSON × JOB) and JOB structure: only at the selected job, read only while open, display guard on the binding,
+ *        409 states named; JOB structure from the real route
+ *   T-07 GEMINI OUTPUT: absent without NEXT_PUBLIC_CONDYN_RESULT_INSPECTOR_UI=1; with it, the token goes only into the header,
+ *        never into URL / storage / cookies, and is gone after closing; JOB: no Gemini
+ *   T-08 layout and grammar at 1600 / 1280: the control is visible, uncovered, overlaps neither the job indicator nor the field
+ *        selector; no closure glyph in any mode
+ *   T-09 network: the browser talks only to the server; the server makes no Gemini attempt
+ *
+ * PINK_THREE_MODES_RUN names the run ("plain" | "inspector"); with "inspector" the server gets the inspector switches.
+ */
+import { spawn, type ChildProcess } from "node:child_process";
+import { createHash, randomBytes } from "node:crypto";
+import { once } from "node:events";
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { createRequire } from "node:module";
+import { createServer } from "node:net";
+import { resolve } from "node:path";
+import { drizzle } from "drizzle-orm/postgres-js";
+import { afterAll, beforeAll, describe, expect, it } from "vitest";
+import { PostgresCareerAnalysisRepository } from "../../lib/career/repositories/postgres";
+import { createJobPoolPostgresWorld, type JobPoolWorld } from "../career/job-pool/fixtures/job-pool-postgres-world";
+import { buildVerifiedAnalysis } from "./fixtures/analysis";
+import { validationPool } from "./fixtures/pool";
+
+function resolvePlaywright(): string | null {
+  const explicit = process.env.CONDYN_PLAYWRIGHT_MODULE;
+  if (explicit !== undefined && explicit.length > 0) return explicit;
+  try { return createRequire(resolve(process.cwd(), "package.json")).resolve("playwright"); } catch { return null; }
+}
+const playwrightModule = resolvePlaywright();
+const TIP = process.env.JOB_SCOPE_TIP ?? "local";
+const RUN = process.env.PINK_THREE_MODES_RUN === "inspector" ? "inspector" : "plain";
+const EVIDENCE_DIR = resolve(process.cwd(), `docs/architecture/decision-fields/evidence/job-scope-gate-${TIP}`);
+const SENTINEL = process.env.PINK_NET_SENTINEL;
+const NET_LOG = process.env.PINK_INSPECTOR_NET_LOG ?? "";
+const ANALYSIS_ID = "ANL_PINK_THREE_MODES";
+const ROLE_ID = "role_pink_alpha_architect";
+const ORG_ID = "org_pink_alpha";
+const MISSING_ROLE = "role_pink_does_not_exist";
+const OWNER_SENTENCE = "Bitte wähle einen Job aus einem Pool aus.";
+const CLOSURE_GLYPHS = /✓|✔|☑|checkmark/;
+const TOKEN = `PINK${randomBytes(24).toString("hex")}`;
+const WRONG_TOKEN = `PINKWRONG${randomBytes(20).toString("hex")}`;
+
+let world: JobPoolWorld;
+let server: ChildProcess | undefined;
+let port = 0;
+let serverOutput = "";
+const base = () => `http://127.0.0.1:${port}`;
+const delay = (ms: number) => new Promise<void>((done) => setTimeout(done, ms));
+const sha256 = (buffer: Buffer | string) => createHash("sha256").update(buffer).digest("hex");
+
+async function availablePort(): Promise<number> {
+  const listener = createServer();
+  await new Promise<void>((ok) => listener.listen(0, "127.0.0.1", () => ok()));
+  const address = listener.address() as { port: number };
+  await new Promise<void>((ok) => listener.close(() => ok()));
+  return address.port;
+}
+
+interface Check { id: string; name: string; ok: boolean; detail: string }
+
+describe.skipIf(playwrightModule === null)(`PINK T: three investigation modes in the browser (df2e84e) — run ${RUN}`, () => {
+  let browser: any;
+  let uploadId = "";
+  let roleRequirements: string[] = [];
+  const checks: Check[] = [];
+  const pageErrors: string[] = [];
+  const requests: Array<{ method: string; url: string; headers: Record<string, string>; body: string | null }> = [];
+  const check = (id: string, name: string, ok: boolean, detail: unknown = "") => { checks.push({ id, name, ok: !!ok, detail: typeof detail === "string" ? detail : JSON.stringify(detail) }); };
+  const jobRows = async () => (await world.sql`select job_id, input_ref from career_analysis_jobs order by created_at`) as Array<{ job_id: string; input_ref: any }>;
+  const requestsTo = (pattern: RegExp, from = 0) => requests.slice(from).filter((entry) => pattern.test(new URL(entry.url).pathname));
+
+  async function open(path: string, viewport = { width: 1600, height: 1000 }) {
+    const page = await browser.newPage({ viewport });
+    page.on("pageerror", (error: unknown) => pageErrors.push(`${path}: ${String(error)}`));
+    page.on("request", (request: any) => requests.push({ method: request.method(), url: request.url(), headers: request.headers(), body: request.postData() ?? null }));
+    await page.goto(`${base()}${path}`, { waitUntil: "domcontentloaded", timeout: 120_000 });
+    await page.getByTestId("field-focus-strip").waitFor({ timeout: 120_000 });
+    const overlay = page.getByTestId("guided-onboarding-overlay");
+    try { await overlay.waitFor({ timeout: 15_000 }); await page.getByTestId("onboarding-close-btn").click(); await overlay.waitFor({ state: "detached", timeout: 30_000 }); } catch { /* no overlay */ }
+    return page;
+  }
+  const root = (page: any) => page.getByTestId("semantic-career-intelligence-field");
+  const focusOf = async (page: any) => page.getByTestId("field-focus-strip").getAttribute("data-field-focus");
+  async function settledScope(page: any): Promise<string | null> {
+    const indicator = page.getByTestId("job-scope-indicator");
+    for (let attempt = 0; attempt < 80; attempt += 1) {
+      if ((await indicator.count()) > 0) { const state = await indicator.getAttribute("data-job-scope-state"); if (state !== "CHECKING") return state; }
+      await delay(250);
+    }
+    return null;
+  }
+  async function shell(page: any) {
+    const scope = await settledScope(page);
+    return {
+      mode: await root(page).getAttribute("data-investigation-mode"),
+      gate: await root(page).getAttribute("data-capability-gate"),
+      selector: await page.getByTestId("investigation-mode-selector").getAttribute("data-investigation-mode").catch(() => null),
+      checked: await page.locator('[data-testid^="investigation-mode-"][aria-checked="true"]').evaluateAll((nodes: Element[]) => nodes.map((node) => node.getAttribute("data-testid"))),
+      scope,
+      scopeUsed: await page.getByTestId("job-scope-indicator").getAttribute("data-job-scope-used").catch(() => null),
+      scopeText: ((await page.getByTestId("job-scope-indicator").textContent().catch(() => "")) ?? "").replace(/\s+/g, " ").trim(),
+      focus: await focusOf(page)
+    };
+  }
+  async function capabilityReachable(page: any) {
+    const button = page.getByTestId("field-focus-capability-btn");
+    if ((await button.count()) === 0) return { reachable: false, disabled: true, focusAfter: await focusOf(page) };
+    const disabled = await button.evaluate((element: HTMLButtonElement) => element.disabled || element.getAttribute("aria-disabled") === "true");
+    if (!disabled) { await button.click({ timeout: 5_000 }).catch(() => {}); await delay(700); }
+    const focusAfter = await focusOf(page);
+    return { reachable: !disabled && focusAfter === "CAPABILITY", disabled, focusAfter };
+  }
+  /** Stages one text source and reads the trigger; a disabled trigger is clicked through the DOM anyway. */
+  async function trigger(page: any) {
+    const add = page.getByTestId("add-text-source-btn");
+    let staged = false;
+    await add.waitFor({ state: "visible", timeout: 10_000 }).catch(() => {});
+    if ((await add.count()) > 0 && await add.isVisible().catch(() => false)) {
+      try {
+        await add.click({ timeout: 5_000 });
+        await page.getByTestId("source-text-input").fill("PINK three-modes probe: platform architect, eight years of distributed systems.");
+        await page.getByTestId("submit-source-btn").click({ timeout: 5_000 });
+        staged = true;
+      } catch { staged = false; }
+    }
+    const button = page.getByTestId("start-intake-analysis-btn");
+    const present = (await button.count()) > 0;
+    const label = page.getByTestId("analyze-investigation");
+    const labelMode = (await label.count()) > 0 ? await label.getAttribute("data-investigation-mode") : null;
+    const blocked = page.getByTestId("analyze-job-scope-required");
+    const message = (await blocked.count()) > 0 ? ((await blocked.textContent()) ?? "").trim() : null;
+    if (!present) return { staged, present, disabled: true, labelMode, message };
+    return { staged, present, disabled: await button.evaluate((element: HTMLButtonElement) => element.disabled), labelMode, message };
+  }
+  async function analyzePostsAfter(page: any, from: number, click: boolean) {
+    if (click) {
+      const button = page.getByTestId("start-intake-analysis-btn");
+      if ((await button.count()) > 0) await button.evaluate((element: HTMLButtonElement) => element.click());
+    }
+    for (let attempt = 0; attempt < 240; attempt += 1) { if (requestsTo(/\/api\/career\/analyze$/, from).length > 0) break; await delay(250); if (!click && attempt > 8) break; }
+    await delay(1_200);
+    return requestsTo(/\/api\/career\/analyze$/, from).filter((entry) => entry.method === "POST");
+  }
+  const path = (query: Record<string, string>) => `/career/demo?${new URLSearchParams(query).toString()}`;
+  const scopeParams = (role = ROLE_ID) => ({ jobScopePoolUploadId: uploadId, jobScopeRoleId: role });
+  const roleQuery = (mode: string, extra: Record<string, string> = {}) => ({ focus: "FIELD", analysisId: ANALYSIS_ID, jobPoolUploadId: uploadId, jobOrganizationId: ORG_ID, jobRoleId: ROLE_ID, ...scopeParams(), investigationMode: mode, ...extra });
+
+  beforeAll(async () => {
+    world = await createJobPoolPostgresWorld();
+    await new PostgresCareerAnalysisRepository(drizzle(world.sql)).save(buildVerifiedAnalysis(ANALYSIS_ID));
+    port = await availablePort();
+    const inspectorEnv = RUN === "inspector" ? { NEXT_PUBLIC_CONDYN_RESULT_INSPECTOR_UI: "1", CONDYN_RESULT_INSPECTOR: "1", CONDYN_RESULT_INSPECTOR_TOKEN: TOKEN } : { NEXT_PUBLIC_CONDYN_RESULT_INSPECTOR_UI: "", CONDYN_RESULT_INSPECTOR: "", CONDYN_RESULT_INSPECTOR_TOKEN: "" };
+    server = spawn(process.execPath, [resolve(process.cwd(), "node_modules/next/dist/bin/next"), "dev", "--webpack", "-p", String(port), "-H", "127.0.0.1"], {
+      cwd: process.cwd(),
+      env: { ...process.env, DATABASE_URL: world.databaseUrl, NEXT_TELEMETRY_DISABLED: "1", GEMINI_API_KEY: "", ...inspectorEnv, ...(SENTINEL && NET_LOG ? { NODE_OPTIONS: `--require ${SENTINEL}`, PINK_NET_LOG: NET_LOG } : {}) },
+      stdio: ["ignore", "pipe", "pipe"]
+    });
+    server.stdout?.on("data", (chunk) => { serverOutput += String(chunk); });
+    server.stderr?.on("data", (chunk) => { serverOutput += String(chunk); });
+    for (let attempt = 0; attempt < 200; attempt += 1) {
+      try { const response = await fetch(`${base()}/api/career/job-pools`); if (response.status === 200) { await response.json(); break; } } catch { /* not ready */ }
+      await delay(500);
+      if (attempt === 199) throw new Error(`server not ready:\n${serverOutput}`);
+    }
+    const posted = await (await fetch(`${base()}/api/career/job-pools`, { method: "POST", headers: { "content-type": "application/json", "x-condyn-principal-actor-id": "PINK_THREE_MODES" }, body: JSON.stringify(validationPool) })).json();
+    uploadId = posted.jobPoolUploadId;
+    const view = await (await fetch(`${base()}/api/career/job-pools/${uploadId}`)).json();
+    roleRequirements = view.canonicalMapping.roles.find((role: any) => role.poolRoleId === ROLE_ID).requirements.map((requirement: any) => requirement.poolRequirementId);
+    mkdirSync(EVIDENCE_DIR, { recursive: true });
+    const playwright = await import(playwrightModule as string);
+    browser = await playwright.chromium.launch({ headless: true });
+  }, 300_000);
+
+  afterAll(async () => {
+    if (browser) await browser.close();
+    if (server && server.exitCode === null && server.signalCode === null) {
+      server.kill("SIGTERM");
+      await Promise.race([once(server, "exit"), delay(10_000)]);
+      if (server.exitCode === null && server.signalCode === null) { server.kill("SIGKILL"); await once(server, "exit"); }
+    }
+    if (world) await world.destroy();
+    if (checks.length > 0) {
+      const failed = checks.filter((entry) => !entry.ok);
+      const scrub = (text: string) => text.split(TOKEN).join("<TOKEN>").split(WRONG_TOKEN).join("<WRONG_TOKEN>");
+      writeFileSync(resolve(EVIDENCE_DIR, `T-report-${RUN}.json`), scrub(`${JSON.stringify({ tip: TIP, run: RUN, recordedAt: new Date().toISOString(), passed: checks.length - failed.length, total: checks.length, deviations: failed, checks, pageErrors }, null, 2)}\n`));
+      writeFileSync(resolve(EVIDENCE_DIR, `T-report-${RUN}.txt`), scrub(`${checks.map((entry) => `${entry.ok ? "ok  " : "DEV "} ${entry.id} ${entry.name}${entry.detail ? ` · ${entry.detail}` : ""}`).join("\n")}\n\n${checks.length - failed.length}/${checks.length} checks ok\n`));
+    }
+  }, 60_000);
+
+  it("walks T-01 … T-09 and lists every deviation", async () => {
+    // ---- T-01 ground state and URL ----------------------------------------------------------------------------------------
+    const plain = await open(path({ focus: "FIELD", jobPoolUploadId: uploadId }));
+    const plainShell = await shell(plain);
+    check("T-01", "no parameter: mode PERSON_X_JOB on the root and the control, gate AWAITING_JOB without a job", plainShell.mode === "PERSON_X_JOB" && plainShell.selector === "PERSON_X_JOB" && plainShell.checked.join() === "investigation-mode-PERSON_X_JOB" && plainShell.gate === "AWAITING_JOB", plainShell);
+    check("T-01", "no parameter: the URL stays without investigationMode (nothing written without a choice)", !new URL(plain.url()).searchParams.has("investigationMode"), plain.url());
+    await plain.close();
+    const invalidValues = ["person", "PERSON ", " JOB", "PERSON×JOB", "PERSON_X_JOB,JOB", "TEAM", ""];
+    const invalidResults: Record<string, unknown> = {};
+    for (const value of invalidValues) {
+      const page = await open(`${path({ focus: "FIELD", jobPoolUploadId: uploadId })}&investigationMode=${encodeURIComponent(value)}`);
+      const state = await shell(page);
+      invalidResults[JSON.stringify(value)] = { mode: state.mode, gate: state.gate };
+      await page.close();
+    }
+    const repeated = await open(`${path({ focus: "FIELD", jobPoolUploadId: uploadId })}&investigationMode=PERSON&investigationMode=JOB`);
+    const repeatedShell = await shell(repeated);
+    invalidResults.repeated = { mode: repeatedShell.mode, gate: repeatedShell.gate };
+    await repeated.close();
+    check("T-01", "any other value (case, spaces, ×, list, unknown, empty, repeated parameter) is no choice: PERSON_X_JOB, gate AWAITING_JOB", Object.values(invalidResults).every((entry: any) => entry.mode === "PERSON_X_JOB" && entry.gate === "AWAITING_JOB"), invalidResults);
+
+    // ---- T-02 gate per mode × job state -----------------------------------------------------------------------------------
+    const expectedGate: Record<string, Record<string, string>> = {
+      PERSON: { NONE: "OPEN", VALID: "OPEN", INVALID: "OPEN" },
+      PERSON_X_JOB: { NONE: "AWAITING_JOB", VALID: "OPEN", INVALID: "AWAITING_JOB" },
+      JOB: { NONE: "JOB_MODE", VALID: "JOB_MODE", INVALID: "JOB_MODE" }
+    };
+    const matrix: Record<string, unknown> = {};
+    for (const mode of ["PERSON", "PERSON_X_JOB", "JOB"]) for (const jobState of ["NONE", "VALID", "INVALID"]) {
+      const query: Record<string, string> = { focus: "FIELD", analysisId: ANALYSIS_ID, jobPoolUploadId: uploadId, investigationMode: mode, ...(jobState === "VALID" ? scopeParams() : jobState === "INVALID" ? scopeParams(MISSING_ROLE) : {}) };
+      const page = await open(path(query));
+      const state = await shell(page);
+      const reach = await capabilityReachable(page);
+      const expectReach = expectedGate[mode][jobState] === "OPEN";
+      matrix[`${mode}/${jobState}`] = { ...state, reach };
+      check("T-02", `${mode} × job ${jobState}: gate ${expectedGate[mode][jobState]}, Capability field ${expectReach ? "reachable" : "locked"}`, state.mode === mode && state.scope === jobState && state.gate === expectedGate[mode][jobState] && reach.reachable === expectReach, { gate: state.gate, scope: state.scope, reach });
+      await page.close();
+      const ask = await open(path({ ...query, focus: "CAPABILITY" }));
+      await delay(1_500);
+      await settledScope(ask);
+      await delay(500);
+      const askedFocus = await focusOf(ask);
+      check("T-02", `${mode} × job ${jobState}: URL focus=CAPABILITY ends on ${expectReach ? "CAPABILITY" : "FIELD"}`, askedFocus === (expectReach ? "CAPABILITY" : "FIELD"), `focus ${askedFocus}`);
+      await ask.close();
+    }
+    writeFileSync(resolve(EVIDENCE_DIR, `T-02-matrix-${RUN}.json`), `${JSON.stringify(matrix, null, 2)}\n`);
+
+    // ---- T-03 ANALYZE per mode ----------------------------------------------------------------------------------------------
+    const analyzeCases: Array<{ label: string; mode: string; job: "NONE" | "VALID"; expect: "PERSON" | "PERSON_X_JOB" | "NONE" }> = [
+      { label: "PERSON without a job", mode: "PERSON", job: "NONE", expect: "PERSON" },
+      { label: "PERSON with a VALID job selected", mode: "PERSON", job: "VALID", expect: "PERSON" },
+      { label: "PERSON × JOB with a VALID job", mode: "PERSON_X_JOB", job: "VALID", expect: "PERSON_X_JOB" },
+      { label: "PERSON × JOB without a job", mode: "PERSON_X_JOB", job: "NONE", expect: "NONE" },
+      { label: "JOB with a VALID job", mode: "JOB", job: "VALID", expect: "NONE" }
+    ];
+    const analyzeEvidence: unknown[] = [];
+    for (const entry of analyzeCases) {
+      const query: Record<string, string> = { focus: "FIELD", jobPoolUploadId: uploadId, investigationMode: entry.mode, ...(entry.job === "VALID" ? scopeParams() : {}) };
+      const page = await open(path(query));
+      await settledScope(page);
+      const reach = await capabilityReachable(page);
+      const read = await trigger(page);
+      const rowsBefore = (await jobRows()).length;
+      const from = requests.length;
+      const posts = await analyzePostsAfter(page, from, true);
+      // The first request compiles the route in next dev: wait for the enqueued row, not for a fixed time.
+      if (posts.length > 0) for (let attempt = 0; attempt < 240 && (await jobRows()).length === rowsBefore; attempt += 1) await delay(250);
+      const rows = await jobRows();
+      const body = posts[0]?.body ? JSON.parse(posts[0].body) : null;
+      const stored = rows.length > rowsBefore ? rows[rows.length - 1].input_ref : null;
+      analyzeEvidence.push({ ...entry, reach, trigger: read, posts: posts.length, body: body === null ? null : { ...body, documents: `[${body.documents?.length}]` }, stored: stored === null ? null : { investigation: stored.sourceData?.investigation ?? stored.investigation ?? null, jobScope: stored.sourceData?.jobScope ?? stored.jobScope ?? null } });
+      if (entry.expect === "NONE") {
+        check("T-03", `${entry.label}: ANALYZE not executable, no request, nothing enqueued`, (!read.present || read.disabled) && posts.length === 0 && rows.length === rowsBefore, { trigger: read, posts: posts.length });
+        if (entry.mode === "PERSON_X_JOB") check("T-03", `${entry.label}: the owner's sentence stands at the trigger when shown`, !read.present || read.message === OWNER_SENTENCE, read.message);
+        continue;
+      }
+      const keys = body === null ? [] : Object.keys(body).sort();
+      const expectedKeys = entry.expect === "PERSON" ? "documents,investigation" : "documents,investigation,jobScope";
+      check("T-03", `${entry.label}: exactly one POST with keys {${expectedKeys}} and investigation {mode:${entry.expect}}`, posts.length === 1 && keys.join() === expectedKeys && JSON.stringify(body.investigation) === JSON.stringify({ mode: entry.expect }), { posts: posts.length, keys, investigation: body?.investigation });
+      if (entry.expect === "PERSON_X_JOB") check("T-03", `${entry.label}: jobScope is exactly the selection`, JSON.stringify(body?.jobScope) === JSON.stringify({ jobPoolUploadId: uploadId, poolRoleId: ROLE_ID }), body?.jobScope);
+      check("T-03", `${entry.label}: the trigger names the mode (analyze-investigation) and carries no blocking sentence`, read.labelMode === entry.mode && read.message === null, read);
+      check("T-03", `${entry.label}: accepted and enqueued once, the stored job declares ${entry.expect}${entry.expect === "PERSON" ? " without any job scope" : " with the selection"}`, rows.length === rowsBefore + 1 && JSON.stringify(stored?.sourceData?.investigation) === JSON.stringify({ mode: entry.expect }) && (entry.expect === "PERSON" ? stored?.sourceData?.jobScope === undefined : stored?.sourceData?.jobScope?.poolRoleId === ROLE_ID), { enqueued: rows.length - rowsBefore, stored: stored?.sourceData ? { investigation: stored.sourceData.investigation, jobScope: stored.sourceData.jobScope ?? "(absent)" } : stored });
+      if (entry.label === "PERSON with a VALID job selected") await page.screenshot({ path: resolve(EVIDENCE_DIR, `T-03-person-with-job-${RUN}.png`) });
+      await page.close();
+    }
+    writeFileSync(resolve(EVIDENCE_DIR, `T-03-analyze-${RUN}.json`), `${JSON.stringify(analyzeEvidence, null, 2)}\n`);
+
+    // ---- T-04 the shell control ----------------------------------------------------------------------------------------------
+    const control = await open(path({ focus: "FIELD", analysisId: ANALYSIS_ID, jobPoolUploadId: uploadId, ...scopeParams() }));
+    await settledScope(control);
+    const steps: Record<string, unknown> = {};
+    await capabilityReachable(control);
+    steps.start = await shell(control);
+    await control.getByTestId("investigation-mode-PERSON").click(); await delay(800);
+    const afterPerson = await shell(control); const personUrl = new URL(control.url()).searchParams;
+    steps.PERSON = { ...afterPerson, url: Object.fromEntries(personUrl) };
+    check("T-04", "click PERSON: mode in URL, the selected job stays in the URL and VALID, indicator data-job-scope-used=false and names PERSON, gate OPEN, Capability kept", personUrl.get("investigationMode") === "PERSON" && personUrl.get("jobScopePoolUploadId") === uploadId && personUrl.get("jobScopeRoleId") === ROLE_ID && afterPerson.scope === "VALID" && afterPerson.scopeUsed === "false" && /PERSON/.test(afterPerson.scopeText) && afterPerson.gate === "OPEN" && afterPerson.focus === "CAPABILITY", steps.PERSON);
+    await control.getByTestId("investigation-mode-JOB").click(); await delay(900);
+    const afterJob = await shell(control); const jobUrl = new URL(control.url()).searchParams;
+    steps.JOB = { ...afterJob, url: Object.fromEntries(jobUrl) };
+    check("T-04", "click JOB: gate JOB_MODE, the shell leaves the Capability field, job kept", jobUrl.get("investigationMode") === "JOB" && afterJob.gate === "JOB_MODE" && afterJob.focus === "FIELD" && jobUrl.get("jobScopeRoleId") === ROLE_ID && afterJob.scope === "VALID" && afterJob.scopeUsed === "true", steps.JOB);
+    const lockedInJob = await capabilityReachable(control);
+    check("T-04", "JOB: the Capability field cannot be entered by its button", !lockedInJob.reachable, lockedInJob);
+    await control.getByTestId("investigation-mode-PERSON_X_JOB").click(); await delay(900);
+    const afterPxj = await shell(control);
+    steps.PERSON_X_JOB = { ...afterPxj, url: control.url() };
+    check("T-04", "click PERSON × JOB: gate OPEN with the VALID job, the requested Capability field returns, indicator used again", afterPxj.gate === "OPEN" && afterPxj.scopeUsed === "true" && afterPxj.focus === "CAPABILITY" && new URL(control.url()).searchParams.get("investigationMode") === "PERSON_X_JOB", steps.PERSON_X_JOB);
+    // Key semantics: each key is pressed on the focused active radio (re-focused before each key); focus retention is read
+    // separately right after each key (a mode change can move the field, and with it the focus).
+    const activeAfter = () => control.evaluate(() => { const element = document.activeElement as HTMLElement | null; return element === null ? null : element.getAttribute("data-testid") ?? element.tagName; });
+    const keySteps: Array<{ key: string; from: string | null; to: string | null; focusAfter: string | null; fieldFocus: string | null }> = [];
+    for (const key of ["ArrowLeft", "End", "Home", "ArrowRight", "ArrowRight"]) {
+      const from = (await shell(control)).mode;
+      await control.getByTestId(`investigation-mode-${from}`).focus();
+      await control.keyboard.press(key);
+      await delay(150);
+      const focusAfter = await activeAfter();
+      await delay(700);
+      const after = await shell(control);
+      keySteps.push({ key, from, to: after.mode, focusAfter, fieldFocus: after.focus });
+    }
+    steps.keys = keySteps;
+    const expectedKeys = [["PERSON_X_JOB", "PERSON"], ["PERSON", "JOB"], ["JOB", "PERSON"], ["PERSON", "PERSON_X_JOB"], ["PERSON_X_JOB", "JOB"]];
+    check("T-04", "keyboard on the control: ← PERSON × JOB→PERSON, End →JOB, Home →PERSON, → →PERSON × JOB, → →JOB", keySteps.every((step, index) => step.from === expectedKeys[index][0] && step.to === expectedKeys[index][1]), keySteps);
+    check("T-04", "keyboard focus stays on the chosen radio after each key (also when the mode change moves the field)", keySteps.every((step) => step.focusAfter === `investigation-mode-${step.to}`), keySteps.map((step) => `${step.key}:${step.from}→${step.to} focus=${step.focusAfter} field=${step.fieldFocus}`));
+    writeFileSync(resolve(EVIDENCE_DIR, `T-04-control-${RUN}.json`), `${JSON.stringify(steps, null, 2)}\n`);
+    await control.close();
+
+    // ---- T-05 / T-06 the Job Field at the selected role -------------------------------------------------------------------------
+    const roleEvidence: Record<string, unknown> = {};
+    for (const mode of ["PERSON", "PERSON_X_JOB", "JOB"]) {
+      const page = await open(path(roleQuery(mode)));
+      await page.locator('[data-testid="syntx-field"][data-observation-kind="ROLE"]').waitFor({ timeout: 120_000 }).catch(() => {});
+      await settledScope(page);
+      await delay(1_000);
+      const field = page.getByTestId("syntx-field");
+      const source = await field.getAttribute("data-analysis-source");
+      const statement = page.getByTestId("syntx-investigation-statement");
+      const statementMode = (await statement.count()) > 0 ? await statement.getAttribute("data-investigation-mode") : null;
+      const toggle = page.getByTestId("syntx-investigation-toggle");
+      const toggleBody = (await toggle.count()) > 0 ? await toggle.getAttribute("data-investigation-body") : null;
+      const stageText = ((await page.getByTestId("syntx-stage").textContent().catch(() => "")) ?? "").replace(/\s+/g, " ");
+      const glyph = stageText.match(CLOSURE_GLYPHS);
+      const b2Before = requestsTo(/\/job-comparison$/).length, structureBefore = requestsTo(/\/structure$/).length;
+      const entry: Record<string, unknown> = { source, statementMode, toggleBody, glyph: glyph?.[0] ?? null, readsBeforeOpen: { b2: b2Before, structure: structureBefore } };
+      check("T-05", `${mode}: Job Field analysis source ${mode === "PERSON_X_JOB" ? "is the URL analysis" : "NONE"}`, mode === "PERSON_X_JOB" ? source !== "NONE" : source === "NONE", source);
+      check("T-05", `${mode}: mode statement ${mode === "PERSON_X_JOB" ? "absent" : "present and naming the mode"}`, mode === "PERSON_X_JOB" ? statementMode === null : statementMode === mode, statementMode);
+      check("T-08", `${mode}: no closure glyph in the Job Field at the selected role`, glyph === null, glyph?.[0] ?? "");
+      const expectedBody = mode === "PERSON_X_JOB" ? "COVERAGE" : mode === "JOB" ? "STRUCTURE" : null;
+      check("T-06", `${mode}: investigation toggle at the selected role = ${expectedBody ?? "none"}`, toggleBody === expectedBody, toggleBody);
+      if (expectedBody !== null) {
+        const pattern = expectedBody === "COVERAGE" ? /\/job-comparison$/ : /\/structure$/;
+        const closedReads = requestsTo(pattern).length;
+        await delay(1_500);
+        check("T-06", `${mode}: nothing is read while the body is closed`, requestsTo(pattern).length === closedReads && (expectedBody === "COVERAGE" ? b2Before : structureBefore) === closedReads, { closedReads });
+        const fromOpen = requests.length;
+        await toggle.click();
+        const bodyId = expectedBody === "COVERAGE" ? "syntx-coverage" : "syntx-job-structure";
+        const stateAttr = expectedBody === "COVERAGE" ? "data-coverage-state" : "data-structure-state";
+        let state: string | null = null;
+        for (let attempt = 0; attempt < 120; attempt += 1) { state = await page.getByTestId(bodyId).getAttribute(stateAttr).catch(() => null); if (state !== null && state !== "LOADING") break; await delay(250); }
+        const reads = requestsTo(pattern, fromOpen);
+        entry.open = { state, reads: reads.map((item) => item.url.replace(base(), "")) };
+        const expectedPath = expectedBody === "COVERAGE" ? `/api/career/analyses/${ANALYSIS_ID}/job-comparison?jobPoolUploadId=${uploadId}&poolRoleId=${ROLE_ID}` : `/api/career/job-pools/${uploadId}/roles/${ROLE_ID}/structure`;
+        check("T-06", `${mode}: opening reads exactly once, GET, for exactly the selection`, reads.length === 1 && reads[0].method === "GET" && reads[0].url.replace(base(), "") === expectedPath, entry.open);
+        if (expectedBody === "STRUCTURE") {
+          const rows = await page.locator('[data-testid^="syntx-structure-req-"]').evaluateAll((nodes: Element[]) => nodes.map((node) => node.getAttribute("data-testid")!.replace("syntx-structure-req-", "")));
+          const findings = await page.locator('[data-testid^="syntx-structure-finding-"]').evaluateAll((nodes: Element[]) => nodes.map((node) => node.getAttribute("data-testid")));
+          entry.structure = { rows, findings, bindingRole: await page.getByTestId("syntx-job-structure").getAttribute("data-binding-role"), scored: await page.getByTestId("syntx-job-structure").getAttribute("data-scored") };
+          check("T-06", "JOB: the real structure route answers AVAILABLE; the body lists exactly the role's requirements, bound to the role, unscored", state === "AVAILABLE" && JSON.stringify([...rows].sort()) === JSON.stringify([...roleRequirements].sort()) && (entry.structure as any).bindingRole === ROLE_ID && (entry.structure as any).scored === "false", entry.structure);
+          await page.screenshot({ path: resolve(EVIDENCE_DIR, `T-06-job-structure-${RUN}.png`) });
+        } else {
+          entry.realB2 = state;
+          check("T-06", "PERSON × JOB: the real B2 route's answer for an analysis without proposals is named, not shown as coverage", state !== null && state !== "AVAILABLE" && state !== "LOADING", state);
+        }
+        await toggle.click(); await delay(500);
+        const afterClose = requestsTo(pattern).length;
+        const bodyGone = (await page.getByTestId(bodyId).count()) === 0;
+        await toggle.click();
+        for (let attempt = 0; attempt < 120 && requestsTo(pattern).length === afterClose; attempt += 1) await delay(250);
+        check("T-06", `${mode}: closing removes the body; reopening reads again (no cached data)`, bodyGone && requestsTo(pattern).length === afterClose + 1, { bodyGone, readsAfterReopen: requestsTo(pattern).length - afterClose });
+        await toggle.click(); await delay(300);
+      }
+      roleEvidence[mode] = entry;
+      await page.screenshot({ path: resolve(EVIDENCE_DIR, `T-05-role-${mode}-${RUN}.png`) });
+      await page.close();
+    }
+    // B2 display guard against routed answers (the browser's view of the route; the route itself was proven in §3.34).
+    const coverageBody = (analysisId: string, poolRoleId: string) => ({ success: true, comparison: {
+      comparisonVersion: "SELECTED_ROLE_COVERAGE_V1",
+      binding: { analysisId, jobId: "JOB_PINK", jobPoolUploadId: uploadId, poolRoleId, investigationScopeHash: "h", discoveryRunId: "RUN_PINK", convergenceRunId: "CONV_PINK", poolCanonicalSha256: "s", poolVersion: 1, targetRoleProfileRevisionId: "TRP" },
+      role: { poolRoleId, title: "Distributed Systems Architect", poolOrganizationId: ORG_ID, organizationName: "Alpha" },
+      authority: { comparisonBasis: "CAPABILITY_PROPOSAL_NAME_COVERAGE", operand: "CAPABILITY_PROPOSAL_PROJECTION", scored: false, authorityState: "NONE", capabilityRequirementRelationState: "NOT_EVALUATED", reason: "VERIFIED_CAPABILITY_SNAPSHOT_ABSENT" },
+      requirements: [
+        { poolRequirementId: roleRequirements[0], capabilityName: "PINK_COVERED_CAPABILITY", aliases: [], domain: "Engineering", requiredLevel: "", weight: 1, necessityState: "REQUIRED", requirementType: "CAPABILITY", matchingEligibility: "MATCHING_ELIGIBLE_PROPOSAL_ONLY", targetRequirementRevisionId: "TRQ1", coverage: { state: "COVERED", proposal: { capabilityProposalId: "CAPP_PINK", name: "PINK_COVERED_CAPABILITY", matchBasis: "EXACT", matchedConstituent: null, evidence: [{ docId: "DOC_001", quote: "PINK_QUOTE" }], evidenceState: "SOURCE_MATCH_VERIFIED", authorityState: "NONE", scored: false } } },
+        { poolRequirementId: roleRequirements[1], capabilityName: "PINK_OPEN_CAPABILITY", aliases: [], domain: "Engineering", requiredLevel: "", weight: 0.5, necessityState: "UNKNOWN", requirementType: "CAPABILITY", matchingEligibility: "MATCHING_ELIGIBILITY_UNKNOWN", targetRequirementRevisionId: "TRQ2", coverage: { state: "NOT_COVERED", proposal: null } }
+      ],
+      proposals: [{ id: "CAPP_PINK", name: "PINK_COVERED_CAPABILITY", scope: "ATOMIC", coversPoolRequirementIds: [roleRequirements[0]] }],
+      counts: { requirements: 2, covered: 1, notCovered: 1, proposals: 1 }
+    } });
+    const routed: Array<{ label: string; status: number; body: unknown; expect: string; shows: boolean }> = [
+      { label: "binding = analysis + selection", status: 200, body: coverageBody(ANALYSIS_ID, ROLE_ID), expect: "AVAILABLE", shows: true },
+      { label: "binding names another role", status: 200, body: coverageBody(ANALYSIS_ID, "role_pink_beta_platform"), expect: "FAILED", shows: false },
+      { label: "binding names another analysis", status: 200, body: coverageBody("ANL_PINK_OTHER", ROLE_ID), expect: "FAILED", shows: false },
+      { label: "authority altered (scored true)", status: 200, body: (() => { const body = coverageBody(ANALYSIS_ID, ROLE_ID) as any; body.comparison.authority.scored = true; return body; })(), expect: "FAILED", shows: false },
+      { label: "409 SCOPE_MISMATCH", status: 409, body: { success: false, issues: [{ code: "ERR_JOB_COMPARISON_SCOPE_MISMATCH", message: "x" }] }, expect: "SCOPE_MISMATCH", shows: false },
+      { label: "409 NOT_SCOPED", status: 409, body: { success: false, issues: [{ code: "ERR_JOB_COMPARISON_NOT_SCOPED", message: "x" }] }, expect: "NOT_SCOPED", shows: false },
+      { label: "409 SCOPE_DRIFT", status: 409, body: { success: false, issues: [{ code: "ERR_JOB_COMPARISON_SCOPE_DRIFT", message: "x" }] }, expect: "SCOPE_DRIFT", shows: false }
+    ];
+    const guard: Record<string, unknown> = {};
+    for (const entry of routed) {
+      const page = await open(path(roleQuery("PERSON_X_JOB")));
+      await page.route("**/job-comparison?*", (route: any) => route.fulfill({ status: entry.status, contentType: "application/json", body: JSON.stringify(entry.body) }));
+      await page.locator('[data-testid="syntx-investigation-toggle"]').waitFor({ timeout: 60_000 }).catch(() => {});
+      await page.getByTestId("syntx-investigation-toggle").click().catch(() => {});
+      let state: string | null = null;
+      for (let attempt = 0; attempt < 80; attempt += 1) { state = await page.getByTestId("syntx-coverage").getAttribute("data-coverage-state").catch(() => null); if (state !== null && state !== "LOADING") break; await delay(250); }
+      const coverageRows = await page.locator('[data-testid^="syntx-coverage-req-"]').count();
+      const text = ((await page.getByTestId("syntx-coverage").textContent().catch(() => "")) ?? "").replace(/\s+/g, " ");
+      guard[entry.label] = { state, coverageRows, quoteShown: text.includes("PINK_QUOTE"), covered: await page.getByTestId("syntx-coverage").getAttribute("data-covered").catch(() => null), relation: await page.getByTestId("syntx-coverage").getAttribute("data-relation-state").catch(() => null), text: text.slice(0, 160) };
+      const g = guard[entry.label] as any;
+      check("T-06", `B2 display guard · ${entry.label}: state ${entry.expect}, coverage ${entry.shows ? "shown (2 rows, unscored, NOT_EVALUATED)" : "not shown"}`, state === entry.expect && (entry.shows ? coverageRows === 2 && g.covered === "1" && g.relation === "NOT_EVALUATED" && g.quoteShown : coverageRows === 0 && !g.quoteShown), g);
+      // The page has no locale parameter: the default locale (en) names it; the de copy is checked in the record from sil-language.
+      if (entry.expect === "SCOPE_MISMATCH") check("T-06", "B2 SCOPE_MISMATCH is named „Analysis belongs to another job.“ (default locale en)", text.includes("Analysis belongs to another job."), text.slice(0, 200));
+      if (entry.expect === "AVAILABLE") await page.screenshot({ path: resolve(EVIDENCE_DIR, `T-06-b2-routed-${RUN}.png`) });
+      await page.close();
+    }
+    roleEvidence.b2Guard = guard;
+    writeFileSync(resolve(EVIDENCE_DIR, `T-05-06-role-${RUN}.json`), `${JSON.stringify(roleEvidence, null, 2)}\n`);
+
+    // ---- T-07 GEMINI OUTPUT ---------------------------------------------------------------------------------------------------
+    const inspectorPattern = /\/(gemini-result|gemini-exchanges)$/;
+    if (RUN === "plain") {
+      const counts: Record<string, number> = {};
+      for (const mode of ["PERSON", "PERSON_X_JOB", "JOB"]) {
+        const page = await open(path(roleQuery(mode)));
+        await page.locator('[data-testid="syntx-field"][data-observation-kind="ROLE"]').waitFor({ timeout: 60_000 }).catch(() => {});
+        await delay(800);
+        counts[mode] = await page.getByTestId("syntx-gemini-output-toggle").count();
+        await page.close();
+      }
+      check("T-07", "without NEXT_PUBLIC_CONDYN_RESULT_INSPECTOR_UI=1 there is no GEMINI OUTPUT toggle in any mode, and no inspector request", Object.values(counts).every((count) => count === 0) && requestsTo(inspectorPattern).length === 0, { counts, inspectorRequests: requestsTo(inspectorPattern).length });
+    } else {
+      const page = await open(path(roleQuery("PERSON_X_JOB")));
+      await page.locator('[data-testid="syntx-gemini-output-toggle"]').waitFor({ timeout: 60_000 }).catch(() => {});
+      const toggle = page.getByTestId("syntx-gemini-output-toggle");
+      check("T-07", "with the build switch the GEMINI OUTPUT toggle is present", (await toggle.count()) === 1, await toggle.count());
+      await toggle.click(); await delay(500);
+      const body = page.getByTestId("syntx-gemini-output");
+      const idle = await body.getAttribute("data-inspection-state");
+      const tokenInput = page.getByTestId("syntx-gemini-token");
+      const inputType = await tokenInput.getAttribute("type");
+      const autocomplete = await tokenInput.getAttribute("autocomplete");
+      check("T-07", "opened: IDLE, nothing read before a token is given, the token field is a password field without autocomplete", idle === "IDLE" && requestsTo(inspectorPattern).length === 0 && inputType === "password" && autocomplete === "off", { idle, inputType, autocomplete });
+      const reads: Record<string, unknown> = {};
+      for (const [label, token] of [["wrong", WRONG_TOKEN], ["right", TOKEN]] as const) {
+        await tokenInput.fill(token);
+        const from = requests.length;
+        await page.getByTestId("syntx-gemini-read").click();
+        let state: string | null = null;
+        for (let attempt = 0; attempt < 120; attempt += 1) { state = await body.getAttribute("data-inspection-state"); if (state !== null && state !== "LOADING" && requestsTo(inspectorPattern, from).length > 0) break; await delay(250); }
+        await delay(500);
+        const sent = requestsTo(inspectorPattern, from);
+        const response = sent.length > 0 ? await fetch(sent[0].url, { headers: { "x-condyn-result-inspector-token": token } }).then(async (r) => ({ status: r.status, body: await r.text() })) : null;
+        reads[label] = { state: await body.getAttribute("data-inspection-state"), requests: sent.map((item) => ({ method: item.method, path: new URL(item.url).pathname, query: new URL(item.url).search, headerIsToken: item.headers["x-condyn-result-inspector-token"] === token })), replay: response === null ? null : { status: response.status, body: response.body.slice(0, 200) } };
+        const entry = reads[label] as any;
+        check("T-07", `${label} token: exactly one GET to the analysis's gemini-result, token only in the header, never in the URL`, sent.length === 1 && sent[0].method === "GET" && new URL(sent[0].url).pathname === `/api/career/analyses/${ANALYSIS_ID}/gemini-result` && !sent[0].url.includes(token) && sent[0].headers["x-condyn-result-inspector-token"] === token, entry);
+      }
+      const leaks = await page.evaluate((secrets: string[]) => {
+        const hay = [location.href, document.cookie, JSON.stringify({ ...localStorage }), JSON.stringify({ ...sessionStorage }), document.title].join("\n");
+        return secrets.filter((secret) => hay.includes(secret)).length;
+      }, [TOKEN, WRONG_TOKEN]);
+      const cookies = await page.context().cookies();
+      const cookieLeak = cookies.some((cookie: any) => cookie.value.includes(TOKEN) || cookie.value.includes(WRONG_TOKEN));
+      check("T-07", "the token is in neither URL, cookies, localStorage, sessionStorage nor the title", leaks === 0 && !cookieLeak, { leaks, cookieLeak, cookies: cookies.length });
+      await toggle.click(); await delay(500);
+      const goneAfterClose = (await page.getByTestId("syntx-gemini-token").count()) === 0;
+      await toggle.click(); await delay(500);
+      const valueAfterReopen = await page.getByTestId("syntx-gemini-token").inputValue().catch(() => null);
+      const stateAfterReopen = await page.getByTestId("syntx-gemini-output").getAttribute("data-inspection-state").catch(() => null);
+      check("T-07", "closing discards the token and the result: the field is gone, reopened it is empty and IDLE", goneAfterClose && valueAfterReopen === "" && stateAfterReopen === "IDLE", { goneAfterClose, valueAfterReopen, stateAfterReopen });
+      await page.screenshot({ path: resolve(EVIDENCE_DIR, `T-07-gemini-output-${RUN}.png`) });
+      await page.close();
+      const jobPage = await open(path(roleQuery("JOB")));
+      await jobPage.locator('[data-testid="syntx-gemini-output-toggle"]').waitFor({ timeout: 60_000 }).catch(() => {});
+      const before = requestsTo(inspectorPattern).length;
+      await jobPage.getByTestId("syntx-gemini-output-toggle").click().catch(() => {});
+      await delay(800);
+      const jobState = await jobPage.getByTestId("syntx-gemini-output").getAttribute("data-inspection-state").catch(() => null);
+      const jobText = ((await jobPage.getByTestId("syntx-gemini-output").textContent().catch(() => "")) ?? "");
+      check("T-07", "JOB: GEMINI OUTPUT states NO_GEMINI („No Gemini call in this mode.“), no token field, no inspector request", jobState === "NO_GEMINI" && jobText.includes("No Gemini call in this mode.") && (await jobPage.getByTestId("syntx-gemini-token").count()) === 0 && requestsTo(inspectorPattern).length === before, { jobState });
+      await jobPage.close();
+      writeFileSync(resolve(EVIDENCE_DIR, `T-07-inspector-${RUN}.json`), `${JSON.stringify(reads, null, 2).split(TOKEN).join("<TOKEN>").split(WRONG_TOKEN).join("<WRONG_TOKEN>")}\n`);
+    }
+
+    // ---- T-08 layout at 1600 / 1280 ---------------------------------------------------------------------------------------------
+    const layout: Record<string, unknown> = {};
+    for (const width of [1600, 1280]) for (const focus of ["FIELD", "CAPABILITY"]) {
+      const page = await open(path({ focus, analysisId: ANALYSIS_ID, jobPoolUploadId: uploadId, ...scopeParams(), investigationMode: "PERSON_X_JOB" }), { width, height: width === 1600 ? 1000 : 800 });
+      await settledScope(page); await delay(1_200);
+      const geometry = await page.evaluate(() => {
+        const box = (selector: string) => { const element = document.querySelector(selector) as HTMLElement | null; if (element === null) return null; const r = element.getBoundingClientRect(); return { left: r.left, top: r.top, right: r.right, bottom: r.bottom }; };
+        const selector = document.querySelector('[data-testid="investigation-mode-selector"]') as HTMLElement | null;
+        const owned = selector === null ? false : (() => { const r = selector.getBoundingClientRect(); const hit = document.elementFromPoint(r.left + r.width / 2, r.top + r.height / 2); return hit !== null && selector.contains(hit); })();
+        return { selector: box('[data-testid="investigation-mode-selector"]'), indicator: box('[data-testid="job-scope-indicator"]'), strip: box('[data-testid="field-focus-strip"]'), viewport: { width: innerWidth, height: innerHeight }, owned };
+      });
+      const overlap = (a: any, b: any) => a !== null && b !== null && a.left < b.right && b.left < a.right && a.top < b.bottom && b.top < a.bottom;
+      const inside = geometry.selector !== null && geometry.selector.left >= 0 && geometry.selector.right <= geometry.viewport.width && geometry.selector.top >= 0;
+      layout[`${width}-${focus}`] = { ...geometry, focus: await focusOf(page) };
+      check("T-08", `${width} px · ${focus}: the mode control is inside the viewport, uncovered, and overlaps neither the job indicator nor the field selector`, inside && geometry.owned && !overlap(geometry.selector, geometry.indicator) && !overlap(geometry.selector, geometry.strip), layout[`${width}-${focus}`]);
+      await page.screenshot({ path: resolve(EVIDENCE_DIR, `T-08-${width}-${focus}-${RUN}.png`) });
+      await page.close();
+    }
+
+    // ---- T-09 network --------------------------------------------------------------------------------------------------------------
+    const foreign = requests.filter((entry) => !entry.url.startsWith(base()) && !entry.url.startsWith("data:") && !entry.url.startsWith("blob:"));
+    check("T-09", "the browser sent no request outside the server", foreign.length === 0, foreign.slice(0, 5).map((entry) => entry.url));
+    const net = NET_LOG && existsSync(NET_LOG) ? readFileSync(NET_LOG, "utf8").trim().split("\n").filter(Boolean) : [];
+    const gemini = net.filter((line) => /generativelanguage|aiplatform|googleapis|gemini/i.test(line));
+    check("T-09", `server: 0 Gemini attempts (${SENTINEL && NET_LOG ? "PINK sentinel in the server process" : "no sentinel"}); other refused attempts listed`, gemini.length === 0 && Boolean(SENTINEL && NET_LOG), { total: net.length, gemini: gemini.length, entries: net.slice(0, 5).map((line) => line.split(" ").slice(1).join(" ")) });
+    check("T-09", "no page error in the walk", pageErrors.length === 0, pageErrors.slice(0, 5));
+
+    const failed = checks.filter((entry) => !entry.ok);
+    console.log(`PINK_THREE_MODES run=${RUN} ${checks.length - failed.length}/${checks.length}`);
+    expect(failed.map((entry) => `${entry.id} ${entry.name} · ${entry.detail}`.slice(0, 600))).toEqual([]);
+  }, 1_500_000);
+});

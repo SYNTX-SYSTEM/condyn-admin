@@ -1,0 +1,47 @@
+// PINK preservation probe (temporary, not committed): server renders of the Capability field, the Job Field at every
+// depth and the SourceDock, written as JSON to PINK_RENDER_OUT; run unchanged in two trees and diffed outside.
+import React from "react";
+import { writeFileSync } from "node:fs";
+import { describe, it, vi } from "vitest";
+import { renderToStaticMarkup } from "react-dom/server";
+import { matches, summary, UPLOAD_ID, view } from "./fixtures/match-bodies";
+
+vi.mock("../../../lib/career/ui/useCareerAnalysisJob", () => ({
+  useCareerAnalysisJob: () => ({ state: { state: "IDLE", resultAnalysisId: null, canonicalAnalysis: null, currentOperation: null, attemptCount: null, errorCode: null, errorSummary: null, httpStatus: null }, submitAnalysis: () => undefined })
+}));
+const idle = (selected: string | null) => ({ pools: { state: "IDLE" }, upload: { state: "IDLE" }, selectedJobPoolUploadId: selected, view: { state: "IDLE" }, matches: { state: "IDLE" }, submitUpload: async () => undefined, select: () => undefined, clear: () => undefined, refresh: () => undefined });
+vi.mock("../../../lib/career/ui/useJobPool", async (importOriginal) => {
+  const original = await importOriginal<typeof import("../../../lib/career/ui/useJobPool")>();
+  return {
+    ...original,
+    useJobPoolWorkflow: (options: { initialJobPoolUploadId?: string | null }) => options.initialJobPoolUploadId === "JPOOL_WITH_MATCHES"
+      ? { ...idle(UPLOAD_ID), pools: { state: "AVAILABLE", jobPools: [summary] }, view: { state: "AVAILABLE", jobPoolUploadId: UPLOAD_ID, upload: view }, matches: { state: "AVAILABLE", jobPoolUploadId: UPLOAD_ID, analysisId: "ANL_TEST", matches } }
+      : idle(options.initialJobPoolUploadId ?? null)
+  };
+});
+vi.mock("../../../lib/career/ui/useJobPoolSources", () => ({ useAnalysisSources: () => ({ state: "IDLE" }) }));
+
+import { SemanticCareerIntelligenceField } from "../../../app/components/career/demo/SemanticCareerIntelligenceField";
+import { SourceDock } from "../../../app/components/career/demo/SourceDock";
+import { EMPTY_CAREER_INTELLIGENCE_DATA } from "../../../app/career/demo/demo-data";
+
+describe("PINK render identity probe", () => {
+  it("renders", () => {
+    const d = EMPTY_CAREER_INTELLIGENCE_DATA;
+    const role = (view as any).canonicalMapping.roles[0];
+    const out: Record<string, string> = {};
+    const render = (name: string, props: Record<string, unknown>) => { out[name] = renderToStaticMarkup(React.createElement(SemanticCareerIntelligenceField as any, { data: d, analysisId: "ANL_TEST", ...props })); };
+    for (const locale of ["en", "de"]) {
+      render(`cap-L0-${locale}`, { initialLocale: locale });
+      for (const stage of ["01", "03", "06"]) for (const zoom of [1, 2]) render(`cap-${stage}-z${zoom}-${locale}`, { initialLocale: locale, initialFocus: { stageId: stage, zoomLevel: zoom } });
+      render(`field-nopool-${locale}`, { initialLocale: locale, fieldFocus: "FIELD" });
+      render(`field-FIELD-${locale}`, { initialLocale: locale, fieldFocus: "FIELD", jobPoolUploadId: "JPOOL_WITH_MATCHES" });
+      render(`field-ORG-${locale}`, { initialLocale: locale, fieldFocus: "FIELD", jobPoolUploadId: "JPOOL_WITH_MATCHES", jobOrganizationId: role.poolOrganizationId });
+      render(`field-ROLE-${locale}`, { initialLocale: locale, fieldFocus: "FIELD", jobPoolUploadId: "JPOOL_WITH_MATCHES", jobOrganizationId: role.poolOrganizationId, jobRoleId: role.poolRoleId });
+      render(`field-REQ-${locale}`, { initialLocale: locale, fieldFocus: "FIELD", jobPoolUploadId: "JPOOL_WITH_MATCHES", jobOrganizationId: role.poolOrganizationId, jobRoleId: role.poolRoleId, jobRequirementId: role.requirements[0].poolRequirementId });
+    }
+    out["dock-empty"] = renderToStaticMarkup(React.createElement(SourceDock, {}));
+    out["dock-staged"] = renderToStaticMarkup(React.createElement(SourceDock, { initialStagedDocs: [{ id: "d", title: "a.pdf", type: "pdf", content: "x" }], onAnalyze: () => {} } as any));
+    writeFileSync(process.env.PINK_RENDER_OUT as string, JSON.stringify(out));
+  });
+});

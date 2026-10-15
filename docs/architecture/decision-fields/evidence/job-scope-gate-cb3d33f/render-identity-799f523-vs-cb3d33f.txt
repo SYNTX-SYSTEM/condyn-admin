@@ -1,0 +1,31 @@
+PINK SSR preservation probe: renderToStaticMarkup of the same 26 cases in 799f523 (parent) and cb3d33f; every difference classified
+sha256 799f523 renders: bc3c03f0d288e2ef140b9ea26735596fba1d41bc71d90cfdf35ebe184354e0d7
+sha256 cb3d33f renders: 1a349e22ad130c2d6dc89378c4a0cf4c6270220de7578e5c2edf570d577e11f6
+cap-01-z1-de: {'job-scope indicator (element + CSS)': 2}
+cap-01-z1-en: {'job-scope indicator (element + CSS)': 2}
+cap-01-z2-de: {'job-scope indicator (element + CSS)': 2}
+cap-01-z2-en: {'job-scope indicator (element + CSS)': 2}
+cap-03-z1-de: {'job-scope indicator (element + CSS)': 2}
+cap-03-z1-en: {'job-scope indicator (element + CSS)': 2}
+cap-03-z2-de: {'job-scope indicator (element + CSS)': 2}
+cap-03-z2-en: {'job-scope indicator (element + CSS)': 2}
+cap-06-z1-de: {'job-scope indicator (element + CSS)': 2}
+cap-06-z1-en: {'job-scope indicator (element + CSS)': 2}
+cap-06-z2-de: {'job-scope indicator (element + CSS)': 2}
+cap-06-z2-en: {'job-scope indicator (element + CSS)': 2}
+cap-L0-de: {'job-scope indicator (element + CSS)': 2}
+cap-L0-en: {'job-scope indicator (element + CSS)': 2}
+dock-empty: identical
+dock-staged: {'ANALYZE gate': 1}
+field-FIELD-de: {'job-scope indicator (element + CSS)': 2}
+field-FIELD-en: {'job-scope indicator (element + CSS)': 2}
+field-ORG-de: {'job-scope indicator (element + CSS)': 2}
+field-ORG-en: {'job-scope indicator (element + CSS)': 2}
+field-REQ-de: {'job-scope select action': 1, 'job-scope indicator (element + CSS)': 2}
+field-REQ-en: {'job-scope select action': 1, 'job-scope indicator (element + CSS)': 2}
+field-ROLE-de: {'job-scope select action': 1, 'job-scope indicator (element + CSS)': 2}
+field-ROLE-en: {'job-scope select action': 1, 'job-scope indicator (element + CSS)': 2}
+field-nopool-de: {'job-scope indicator (element + CSS)': 2}
+field-nopool-en: {'job-scope indicator (element + CSS)': 2}
+
+unclassified differences: 0

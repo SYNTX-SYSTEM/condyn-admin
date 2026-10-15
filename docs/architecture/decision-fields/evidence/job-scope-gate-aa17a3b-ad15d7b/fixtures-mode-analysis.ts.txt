@@ -1,0 +1,40 @@
+import { sql } from "drizzle-orm";
+import { db } from "../../../lib/career/db/client";
+import { careerAnalyses } from "../../../lib/career/db/schema";
+import {
+  PostgresCandidateSourceBundleRepository, PostgresCapabilityCoreRepository, PostgresCapabilityProposalProjectionReferenceRepository,
+  computeSourceBundleHash, createSourceDocument, runCapabilityConvergence, runCapabilityDiscovery, type CapabilityDiscoveryRun
+} from "../../../lib/career/capability-core";
+import { JobRepository } from "../../../lib/career/orchestration/job-repository";
+import { createJob } from "../../../lib/career/orchestration/job";
+import { renderInvestigationScope, type ResolvedJobScope } from "../../../lib/career/job-scope";
+
+/** PINK seed for the investigation-mode proofs (disposable database): one analysis as the worker leaves it. */
+export const SOURCE = "Led the migration of the dispatch platform to event-driven services. Designed the requirement intake.";
+export const PDF_CONTENT = "PINK_PDF_BODY_aW52ZXN0aWdhdGlvbg";
+export const LEGACY_MARKER = "PINK_LEGACY_ONLY_MARKER_7f3a";
+const audit = { source_documents_examined: 1, capability_count: 2, atomic_capability_count: 2, composite_capability_count: 0, attribution_pass_completed: true, target_state_ownership_pass_completed: true, atomic_extraction_pass_completed: true, method_capability_pass_completed: true, composite_reconstruction_pass_completed: true, global_convergence_pass_completed: true, inventory_reconciliation_pass_completed: true, final_reconciliation_produced_new_capabilities: false, unresolved_target_operations: 0, segments_classified_as_external_source_content: 0, segments_classified_as_target_subject_operation: 0, segments_classified_as_target_subject_designed_target_state: 0, segments_classified_as_target_organization_capability: 0, segments_excluded_due_to_attribution_ambiguity: 0 };
+const capability = (name: string) => ({ canonical_name: name, capability_scope: "ATOMIC" as const, structural_definition: name, primary_domain: null, demonstrated_capability_level: null, model_confidence: 0.9, evidence_mode: "EXPLICIT" as const, evidence: [{ source_document: "CV", location: "body", exact_quote: "Led the migration of the dispatch platform to event-driven services." }] });
+export const created: string[] = [];
+const jobs = new JobRepository(db);
+
+/** One analysis as the worker leaves it; the job declares `sourceData`, Discovery runs under `discoveryScope` (may differ: drift). */
+export async function seed(label: string, sourceData: Record<string, unknown>, discoveryScope: ResolvedJobScope | null) {
+  const repository = new PostgresCapabilityCoreRepository(db);
+  const cv = createSourceDocument({ docId: "CV", title: `${label}.pdf`, rawContent: `${SOURCE} ${label}` });
+  const discovered = await runCapabilityDiscovery([cv], { kernelVersion: "discovery-v1", schemaVersion: "discovery-schema-v1" }, { kernelResolver: { resolve: async () => ({ kernelVersion: "discovery-v1", templateId: "T", versionId: "V", checksum: "C", plainTextContent: "PINK_KERNEL" }) }, provider: { providerName: "pink-spy", model: "m", execute: async () => ({ kernelOutput: { kernel_version: "discovery-v1", capabilities: [capability("Frontend Architecture"), capability("Dispatch platform migration")], coverage_audit: audit } }) }, repository, ...(discoveryScope ? { investigationScope: renderInvestigationScope(discoveryScope) } : {}) });
+  const run = (discovered as { run: CapabilityDiscoveryRun }).run;
+  const convergence = await runCapabilityConvergence((await repository.getRunById(run.runId))!, { kernelVersion: "convergence-v1", schemaVersion: "convergence-schema-v1", algorithmVersion: "algorithm-v1" }, { kernelResolver: { resolve: async () => ({ kernelVersion: "convergence-v1", templateId: "T", versionId: "V", checksum: "CC", plainTextContent: "PINK_CONVERGENCE" }) }, provider: { providerName: "pink-spy", model: "m", execute: async (request: { userPrompt: string }) => {
+    const items = JSON.parse(request.userPrompt.slice(request.userPrompt.indexOf("["))) as Array<{ candidate_id: string; canonical_name?: string; proposed_canonical_name?: string }>;
+    const groups = items.map((item, index) => ({ group_key: `g${index}`, member_candidate_ids: [item.candidate_id], canonical_name: index === 0 ? "Frontend Architecture" : "Dispatch platform migration", capability_scope: "ATOMIC" as const, structural_definition: "d", primary_domain: null }));
+    return { convergenceOutput: { convergence_version: "convergence-v1", groups, relations: [], reconciliation_audit: { input_candidate_count: items.length, grouped_candidate_count: items.length, group_count: groups.length, same_capability_merge_count: 0, unresolved_relation_count: 0, reconciliation_pass_completed: true } } };
+  } }, repository });
+  const job = createJob("CAREER_ANALYSIS", { sourceType: "BATCH", sourceData: { documents: [{ type: "pdf", name: `${label}.pdf`, content: PDF_CONTENT }], ...sourceData } } as never);
+  await jobs.enqueueJob(job); created.push(job.jobId);
+  await db.execute(sql`UPDATE career_analysis_jobs SET status = 'SUCCEEDED' WHERE job_id = ${job.jobId}`);
+  const analysisId = job.jobId.replace("JOB_", "ANL_");
+  await new PostgresCandidateSourceBundleRepository(db).persistCandidateSourceBundle({ candidateSourceBundleId: `CSB_${job.jobId}`, sourceBundleHash: computeSourceBundleHash([cv]), documents: [cv], schemaVersion: "CANDIDATE_SOURCE_BUNDLE_V1", createdAt: "2026-10-15T10:00:00.000Z" } as never);
+  await db.insert(careerAnalyses).values({ analysisId, createdAt: convergence.run.completedAt, validationState: "VERIFIED", payload: { legacy: LEGACY_MARKER } } as never);
+  await new PostgresCapabilityProposalProjectionReferenceRepository(db).save({ analysisId, jobId: job.jobId, discoveryRunId: run.runId, convergenceRunId: convergence.run.convergenceRunId, candidateSourceBundleId: `CSB_${job.jobId}`, sourceBundleHash: run.sourceBundleHash, createdAt: convergence.run.completedAt });
+  return { analysisId, jobId: job.jobId, run };
+}

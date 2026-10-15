@@ -1,0 +1,88 @@
+/**
+ * PINK proof of GELB 2e5e852 / ea01bfc / 0b23045 on a real Next server (next dev, disposable database, no worker, GEMINI_API_KEY
+ * empty, PINK's net sentinel in the server process when PINK_INSPECTOR_NET_LOG is set): the three new or changed routes are served
+ * at their real paths and answer as on PostgreSQL. Writes `mode-routes.json` to the evidence directory.
+ */
+import { spawn, type ChildProcess } from "node:child_process";
+import { once } from "node:events";
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { createServer } from "node:net";
+import { resolve } from "node:path";
+import { sql } from "drizzle-orm";
+import { afterAll, beforeAll, describe, expect, it } from "vitest";
+import { db, initDbSchema } from "../../lib/career/db/client";
+import { JOB_SCOPE_REQUIRED_MESSAGE } from "../../lib/career/job-scope";
+import { INVESTIGATION_INVALID_MESSAGE } from "../../lib/career/investigation";
+import { TEST_JOB_SCOPE, TEST_JOB_SCOPE_B, resolveStoredTestJobScope, uploadEngineeringJobScope } from "../support/job-scope";
+import { LEGACY_MARKER, PDF_CONTENT, created, seed } from "./fixtures/mode-analysis";
+
+const TIP = process.env.JOB_SCOPE_TIP ?? "local";
+const EVIDENCE_DIR = resolve(process.cwd(), `docs/architecture/decision-fields/evidence/job-scope-gate-${TIP}`);
+const SENTINEL = process.env.PINK_NET_SENTINEL;
+const NET_LOG = process.env.PINK_INSPECTOR_NET_LOG ?? "";
+const delay = (ms: number) => new Promise<void>((done) => setTimeout(done, ms));
+
+async function availablePort(): Promise<number> {
+  const listener = createServer();
+  await new Promise<void>((ok) => listener.listen(0, "127.0.0.1", () => ok()));
+  const port = (listener.address() as { port: number }).port;
+  await new Promise<void>((ok) => listener.close(() => ok()));
+  return port;
+}
+
+describe("PINK: investigation-mode routes on a real Next server (GELB 2e5e852 / ea01bfc / 0b23045)", () => {
+  let server: ChildProcess | undefined; let base = ""; let output = "";
+  let scoped = { analysisId: "", jobId: "" }; let person = { analysisId: "", jobId: "" };
+  const report: Record<string, unknown> = {};
+  beforeAll(async () => {
+    await initDbSchema(); await uploadEngineeringJobScope();
+    scoped = await seed("e2e-scoped", { jobScope: TEST_JOB_SCOPE }, await resolveStoredTestJobScope());
+    person = await seed("e2e-person", { investigation: { mode: "PERSON" } }, null);
+    const port = await availablePort();
+    server = spawn(process.execPath, [resolve(process.cwd(), "node_modules/next/dist/bin/next"), "dev", "--webpack", "-p", String(port), "-H", "127.0.0.1"], {
+      cwd: process.cwd(), stdio: ["ignore", "pipe", "pipe"],
+      env: { ...process.env, NEXT_TELEMETRY_DISABLED: "1", GEMINI_API_KEY: "", ...(SENTINEL && NET_LOG ? { NODE_OPTIONS: `--require ${SENTINEL}`, PINK_NET_LOG: NET_LOG } : {}) }
+    });
+    server.stdout?.on("data", (chunk) => { output += String(chunk); }); server.stderr?.on("data", (chunk) => { output += String(chunk); });
+    base = `http://127.0.0.1:${port}`;
+    for (let attempt = 0; attempt < 240; attempt += 1) {
+      try { const response = await fetch(`${base}/api/career/job-pools`); if (response.status === 200) { await response.text(); break; } } catch { /* not ready */ }
+      await delay(500);
+      if (attempt === 239) throw new Error(`server not ready:\n${output.slice(-3000)}`);
+    }
+  }, 300_000);
+  afterAll(async () => {
+    if (server && server.exitCode === null && server.signalCode === null) { server.kill("SIGTERM"); await Promise.race([once(server, "exit"), delay(10_000)]); if (server.exitCode === null && server.signalCode === null) { server.kill("SIGKILL"); await once(server, "exit"); } }
+    for (const jobId of created) await db.execute(sql`DELETE FROM career_analysis_jobs WHERE job_id = ${jobId}`);
+    const net = NET_LOG && existsSync(NET_LOG) ? readFileSync(NET_LOG, "utf8").trim().split("\n").filter(Boolean) : [];
+    report.networkAttempts = { total: net.length, gemini: net.filter((line) => /generativelanguage|aiplatform|googleapis/.test(line)).length, entries: net.slice(0, 20), sentinel: Boolean(SENTINEL && NET_LOG) };
+    mkdirSync(EVIDENCE_DIR, { recursive: true });
+    writeFileSync(resolve(EVIDENCE_DIR, "mode-routes.json"), `${JSON.stringify({ tip: TIP, recordedAt: new Date().toISOString(), ...report }, null, 2)}\n`);
+  });
+
+  it("analyze, job comparison and job structure answer at their real paths as on PostgreSQL", async () => {
+    const post = async (body: unknown) => { const response = await fetch(`${base}/api/career/analyze`, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(body) }); const json = await response.json() as { jobId?: string; issues?: Array<{ code: string; message: string }> }; if (json.jobId) created.push(json.jobId); return `${response.status} ${json.issues?.[0]?.code ?? "accepted"}${json.issues?.[0]?.message ? ` | ${json.issues[0].message}` : ""}`; };
+    const documents = [{ type: "text", content: "Led the migration of the dispatch platform." }];
+    const analyze = {
+      person: await post({ documents, investigation: { mode: "PERSON" } }), personPlusScope: await post({ documents, investigation: { mode: "PERSON" }, jobScope: TEST_JOB_SCOPE }),
+      job: await post({ documents, investigation: { mode: "JOB" } }), undeclared: await post({ documents }), undeclaredScoped: await post({ documents, jobScope: TEST_JOB_SCOPE })
+    };
+    const get = async (path: string) => { const response = await fetch(`${base}${path}`); const text = await response.text(); return { status: response.status, cacheControl: response.headers.get("cache-control"), text }; };
+    const q = (selection: { jobPoolUploadId: string; poolRoleId: string }) => `?${new URLSearchParams(selection)}`;
+    const comparison = {
+      own: await get(`/api/career/analyses/${scoped.analysisId}/job-comparison${q(TEST_JOB_SCOPE)}`), otherRole: await get(`/api/career/analyses/${scoped.analysisId}/job-comparison${q(TEST_JOB_SCOPE_B)}`),
+      person: await get(`/api/career/analyses/${person.analysisId}/job-comparison${q(TEST_JOB_SCOPE)}`)
+    };
+    const structurePath = `/api/career/job-pools/${TEST_JOB_SCOPE.jobPoolUploadId}/roles/${encodeURIComponent(TEST_JOB_SCOPE.poolRoleId)}/structure`;
+    const structure = { first: await get(structurePath), second: await get(structurePath), unknownRole: await get(`/api/career/job-pools/${TEST_JOB_SCOPE.jobPoolUploadId}/roles/role_pink_unknown/structure`) };
+    const code = (text: string) => JSON.parse(text).issues?.[0]?.code;
+    report.analyze = analyze;
+    report.comparison = { own: { status: comparison.own.status, cacheControl: comparison.own.cacheControl, requirements: JSON.parse(comparison.own.text).comparison?.counts }, otherRole: code(comparison.otherRole.text), person: code(comparison.person.text) };
+    report.structure = { status: structure.first.status, identicalOnSecondRead: structure.first.text === structure.second.text, findings: JSON.parse(structure.first.text).structure?.counts, unknownRole: `${structure.unknownRole.status} ${code(structure.unknownRole.text)}` };
+    expect(analyze).toEqual({ person: "202 accepted", personPlusScope: `400 ERR_INVESTIGATION_INVALID | ${INVESTIGATION_INVALID_MESSAGE}`, job: `400 ERR_INVESTIGATION_MODE_NOT_ANALYZABLE | ${INVESTIGATION_INVALID_MESSAGE}`, undeclared: `400 ERR_JOB_SCOPE_REQUIRED | ${JOB_SCOPE_REQUIRED_MESSAGE}`, undeclaredScoped: "202 accepted" });
+    expect([comparison.own.status, comparison.own.cacheControl, code(comparison.otherRole.text), code(comparison.person.text)]).toEqual([200, "no-store", "ERR_JOB_COMPARISON_SCOPE_MISMATCH", "ERR_JOB_COMPARISON_NOT_SCOPED"]);
+    expect([comparison.own.text.includes(LEGACY_MARKER), comparison.own.text.includes(PDF_CONTENT)]).toEqual([false, false]);
+    expect([structure.first.status, structure.first.text === structure.second.text, structure.unknownRole.status]).toEqual([200, true, 409]);
+    expect(structure.first.text.includes(scoped.analysisId) || structure.first.text.includes(PDF_CONTENT)).toBe(false);
+  }, 300_000);
+});

@@ -1,0 +1,52 @@
+ ✓ test/job-pool-validation/job-scope-scripts.postgres.test.ts (2 tests) 69313ms
+   ✓ PINK: job-scope gate on every development script (own process, network sentinel, no Gemini) > positive control: the sentinel records and refuses a Gemini SDK call  363ms
+   ✓ PINK: job-scope gate on every development script (own process, network sentinel, no Gemini) > no script reaches the network without a valid selection; every gated script refuses with exit 3 and the owner's sentence  66500ms
+ ✓ test/career/job-scope/job-scope.postgres.test.ts (10 tests) 7516ms
+   ✓ JOB POOL FIRST — analyze route and Career worker (PostgreSQL, no Gemini) > development scripts: the selection is validated against the stored pool, read-only, exactly as the route does it  345ms
+ ✓ test/job-pool-validation/job-scope-worker-gate.postgres.test.ts (3 tests) 1417ms
+   ✓ PINK: job-scope gate in the Career worker (PostgreSQL, real CareerJobWorker, no provider) > every enqueued job without a valid scope ends terminally before the processor, with no progress reported; a valid one reaches it  581ms
+ ✓ test/career-async-api-orchestration.test.ts (12 tests) 2013ms
+   ✓ CONDYN Career Analysis Protocol v5.0 - PHASE 5: ASYNC API ORCHESTRATION (TEST005C) > M. REAL END-TO-END API PROOF (Test 13)  1549ms
+ ✓ test/career-analyze-flow.test.ts (3 tests) 1745ms
+   ✓ CONDYN Career Analysis Protocol v1.0 - Step 7.2: Server Boundary API Route > should execute pipeline via MockInferenceProvider, verify schema, save to demo persistence, and return pre-computed reactFlowGraph  1642ms
+ ✓ test/career-pdf-runtime-resolution.test.ts (1 test) 1283ms
+   ✓ CONDYN Career Analysis Protocol v1.0 - BUG 009: Next.js Runtime PDF Worker Resolution (CATEGORY A) > should successfully parse PDF in Node.js runtime without pdf.worker.mjs resolution errors  1281ms
+ ✓ test/career-analyze-multisource.test.ts (7 tests) 1646ms
+   ✓ CONDYN Career Analysis Protocol v1.0 — Step 19d: Multi-Source API Route (`test/career-analyze-multisource.test.ts`) > should accept website source item and invoke loadWebsiteDocument server-side (CATEGORY A)  1486ms
+ ✓ test/career-pdf-payload-contract.test.ts (1 test) 1483ms
+   ✓ BUG 007: PDF Payload Contract Mismatch > RED: should normalize UI PDF content into the batch loader PDF payload and reach inference (CATEGORY A)  1481ms
+ ✓ test/career-provider-switch.test.ts (5 tests) 1380ms
+   ✓ CONDYN Career Analysis Protocol v1.0 - Step 9.4: Server-Side Provider Switch > should return structured error response with ERR_PROVIDER_FAILURE when GEMINI_API_KEY is missing during live provider execution  1370ms
+ ✓ test/job-pool-validation/pdf-path.postgres.test.ts (2 tests) 1144ms
+   ✓ JP-PDF: PDF → capability sweep (stub) → JSON Job Pool → matching, on PostgreSQL without Gemini > drives a hand-written PDF through the analyze route, the loader, a persisted bundle, a retry and the analyses route  402ms
+   ✓ JP-PDF: PDF → capability sweep (stub) → JSON Job Pool → matching, on PostgreSQL without Gemini > drives GELB's synthetic two-page CV PDF the same way and matches the resulting analysis against PINK's pool  576ms
+ ✓ test/career/job-pool/job-scope-ssr.test.tsx (12 tests) 968ms
+ ✓ test/career/job-pool/syntx-field-ssr.test.tsx (9 tests) 964ms
+ ✓ test/career/job-pool/syntx-field-governance.test.ts (10 tests) 382ms
+ ✓ test/career-worker-recovery-pipeline.test.ts (1 test) 127ms
+ ✓ test/career/job-pool/syntx-field-view-model.test.ts (15 tests) 117ms
+ ✓ test/career-analyze-recommendations.test.ts (4 tests) 156ms
+ ✓ test/career-demo-ui.test.tsx (4 tests) 106ms
+ ✓ test/career/job-scope/job-scope.test.ts (14 tests) 70ms
+ ✓ test/career-pipeline-prompt-resolver.test.ts (3 tests) 40ms
+ ✓ test/career-pipeline.test.ts (8 tests) 49ms
+ ✓ test/career-frontend-job-lifecycle.test.tsx (24 tests) 38ms
+ ✓ test/career-analyze-page.test.tsx (5 tests) 26ms
+ ✓ test/career-batch-ingestion.test.ts (7 tests) 27ms
+ ✓ test/job-pool-validation/job-scope-pipeline-gate.test.ts (19 tests) 28ms
+ ✓ test/career-pipeline-multi-source.test.ts (1 test) 21ms
+ ✓ test/career-pipeline-full-multisource.test.ts (1 test) 23ms
+ ✓ test/job-pool-validation/job-field-static.test.ts (5 tests) 21ms
+ ✓ test/career-pipeline-github.test.ts (1 test) 17ms
+ ✓ test/career/job-pool/job-scope.test.ts (12 tests) 13ms
+ ✓ test/career-gemini-live-probe.test.ts (1 test) 8ms
+ ↓ test/career-forensic-pdf.test.ts (1 test | 1 skipped)
+ ↓ test/career-gemini-embedding-live.test.ts (1 test | 1 skipped)
+ ↓ test/career-gemini-live.test.ts (1 test | 1 skipped)
+ ↓ test/career-gemini-probe.test.ts (1 test | 1 skipped)
+ ↓ test/career-gemini-request-boundary.test.ts (1 test | 1 skipped)
+ ↓ test/career-gemini-schema-bisection.test.ts (1 test | 1 skipped)
+ ↓ test/gemini-token-limit-matrix.test.ts (1 test | 1 skipped)
+ ↓ test/schema-bisection.test.ts (1 test | 1 skipped)
+ Test Files  30 passed | 8 skipped (38)
+      Tests  202 passed | 8 skipped (210)

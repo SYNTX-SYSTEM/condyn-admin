@@ -1,0 +1,8 @@
+role:role_fullstack
+pending:role_fullstack
+trace:req_001:supports:DOC_001:0
+trace:req_001:covers_unscored:DOC_001:0
+trace:req_003:weakly_supports:DOC_001:0
+trace:req_003:covers_unscored:DOC_001:0
+trace:req_004:covers_unscored:DOC_001:0
+trace:req_005:covers_unscored:DOC_001:0

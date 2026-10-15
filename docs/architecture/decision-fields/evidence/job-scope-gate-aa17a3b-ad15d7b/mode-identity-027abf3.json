@@ -1,0 +1,108 @@
+{
+ "scoped": {
+  "error": "PINK_STOP",
+  "requests": [
+   {
+    "systemPrompt": "PINK_DISCOVERY_KERNEL\n\nOutput identity contract:\n\"kernel_version\" MUST equal exactly \"discovery-v1\".\nDo not substitute the prompt slug, schema version, model version, semantic version shorthand, or any other value.",
+    "userPrompt": "CONDYN CAPABILITY DISCOVERY SOURCE CORPUS\nSOURCE_DOCUMENT_COUNT: 1\n\n<SOURCE_DOCUMENT>\nDOC_ID: DOC_001\nTITLE: cv.synthetic.pdf\nMIME_TYPE: \nLed the migration of the dispatch platform to event-driven services.\n</SOURCE_DOCUMENT>"
+   }
+  ],
+  "runs": [
+   {
+    "runId": "RUN_9CE64AAF8CAA85A7790523A7",
+    "sourceBundleHash": "b9a4273451ac0d1e41e3ab778de2c3c39d94b78c07135b71de2956991ad7aa07",
+    "kernelVersion": "discovery-v1",
+    "prompt": {
+     "templateId": "T",
+     "versionId": "V",
+     "checksum": "C"
+    },
+    "inference": {
+     "provider": "pink-spy",
+     "model": "m"
+    },
+    "schemaVersion": "discovery-schema-v1",
+    "status": "COMPLETED",
+    "rawOutputHash": "81bc52ab29ee02182d4dee9000b82c4825729167cd5579b25f8821f512defcd4",
+    "payload": {
+     "kernelOutput": {
+      "kernel_version": "discovery-v1",
+      "capabilities": [
+       {
+        "canonical_name": "Migration",
+        "capability_scope": "ATOMIC",
+        "structural_definition": "d",
+        "primary_domain": null,
+        "demonstrated_capability_level": null,
+        "model_confidence": 0.9,
+        "evidence_mode": "EXPLICIT",
+        "evidence": [
+         {
+          "source_document": "DOC_001",
+          "location": "body",
+          "exact_quote": "Led the migration of the dispatch platform to event-driven services."
+         }
+        ]
+       }
+      ],
+      "coverage_audit": {
+       "source_documents_examined": 1,
+       "capability_count": 1,
+       "atomic_capability_count": 1,
+       "composite_capability_count": 0,
+       "attribution_pass_completed": true,
+       "target_state_ownership_pass_completed": true,
+       "atomic_extraction_pass_completed": true,
+       "method_capability_pass_completed": true,
+       "composite_reconstruction_pass_completed": true,
+       "global_convergence_pass_completed": true,
+       "inventory_reconciliation_pass_completed": true,
+       "final_reconciliation_produced_new_capabilities": false,
+       "unresolved_target_operations": 0,
+       "segments_classified_as_external_source_content": 0,
+       "segments_classified_as_target_subject_operation": 0,
+       "segments_classified_as_target_subject_designed_target_state": 0,
+       "segments_classified_as_target_organization_capability": 0,
+       "segments_excluded_due_to_attribution_ambiguity": 0
+      }
+     },
+     "candidates": [
+      {
+       "candidateId": "CAND_83B4E4FC3192B22904964FA1",
+       "runId": "RUN_9CE64AAF8CAA85A7790523A7",
+       "proposedCanonicalName": "Migration",
+       "proposedScope": "ATOMIC",
+       "structuralDefinition": "d",
+       "proposedPrimaryDomain": null,
+       "proposedDemonstratedLevel": null,
+       "modelConfidence": 0.9,
+       "evidenceMode": "EXPLICIT",
+       "evidenceClaims": [
+        {
+         "evidenceId": "EVD_D500B0A10F70B446CF43767A",
+         "sourceDocumentRef": "DOC_001",
+         "declaredLocation": "body",
+         "exactQuote": "Led the migration of the dispatch platform to event-driven services.",
+         "verification": {
+          "status": "VERIFIED",
+          "matchedDocId": "DOC_001",
+          "matchedNormalizedQuote": "Led the migration of the dispatch platform to event-driven services.",
+          "sourceSpanStart": 0,
+          "sourceSpanEnd": 68
+         }
+        }
+       ],
+       "status": "EVIDENCE_PASSED"
+      }
+     ],
+     "coverageValidation": {
+      "status": "PASSED"
+     }
+    },
+    "createdAt": "",
+    "completedAt": ""
+   }
+  ]
+ },
+ "person": null
+}

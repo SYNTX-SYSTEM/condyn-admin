@@ -1,0 +1,19 @@
+ ✓ test/career/job-scope/job-scope.postgres.test.ts (8 tests) 4196ms
+ ✓ test/job-pool-validation/job-scope-worker-gate.postgres.test.ts (2 tests) 1074ms
+   ✓ PINK: job-scope gate in the Career worker (PostgreSQL, real CareerJobWorker, no provider) > every enqueued job without a valid scope ends terminally before the processor, with no progress reported; a valid one reaches it  532ms
+ ✓ test/career-async-api-orchestration.test.ts (12 tests) 1113ms
+   ✓ CONDYN Career Analysis Protocol v5.0 - PHASE 5: ASYNC API ORCHESTRATION (TEST005C) > M. REAL END-TO-END API PROOF (Test 13)  821ms
+ ✓ test/career-analyze-flow.test.ts (3 tests) 984ms
+   ✓ CONDYN Career Analysis Protocol v1.0 - Step 7.2: Server Boundary API Route > should execute pipeline via MockInferenceProvider, verify schema, save to demo persistence, and return pre-computed reactFlowGraph  945ms
+ ✓ test/job-pool-validation/pdf-path.postgres.test.ts (2 tests) 453ms
+ ✓ test/career/job-pool/syntx-field-ssr.test.tsx (9 tests) 513ms
+ ✓ test/career/job-pool/job-scope-ssr.test.tsx (11 tests) 487ms
+ ✓ test/career/job-pool/syntx-field-governance.test.ts (10 tests) 184ms
+ ✓ test/career/job-pool/syntx-field-view-model.test.ts (15 tests) 80ms
+ ✓ test/career-demo-ui.test.tsx (4 tests) 67ms
+ ✓ test/career/job-scope/job-scope.test.ts (7 tests) 27ms
+ ✓ test/career-frontend-job-lifecycle.test.tsx (23 tests) 22ms
+ ✓ test/job-pool-validation/job-field-static.test.ts (5 tests) 16ms
+ ✓ test/career/job-pool/job-scope.test.ts (10 tests) 6ms
+ Test Files  14 passed (14)
+      Tests  121 passed (121)

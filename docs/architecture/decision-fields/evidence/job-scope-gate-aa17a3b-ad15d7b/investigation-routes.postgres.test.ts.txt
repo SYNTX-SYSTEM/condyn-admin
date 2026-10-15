@@ -1,0 +1,178 @@
+/**
+ * PINK independent proof of GELB 2e5e852 / ea01bfc / 0b23045 on PostgreSQL (disposable database; routes called as Next calls
+ * them; a real CareerJobWorker for the worker matrix). No provider anywhere: no request can reach Gemini.
+ * - Analyze route: declaration matrix with status, code, sentence, enqueued count and the stored job input.
+ * - Worker: jobs inserted past the route; every declaration decided on claim, contradictions terminal before the processor.
+ * - B2 job comparison: exact binding, scope switch, drift, PERSON, no legacy and no document content in the answer.
+ * - JOB structure: deterministic, only the job's own pool source as evidence, nothing of any person, refusals.
+ */
+import { drizzle } from "drizzle-orm/postgres-js";
+import { sql } from "drizzle-orm";
+import { afterAll, beforeAll, describe, expect, it } from "vitest";
+import { db, initDbSchema } from "../../lib/career/db/client";
+import { careerAnalyses } from "../../lib/career/db/schema";
+import {
+  PostgresCandidateSourceBundleRepository, PostgresCapabilityCoreRepository, PostgresCapabilityProposalProjectionReferenceRepository,
+  computeSourceBundleHash, createSourceDocument, runCapabilityConvergence, runCapabilityDiscovery, type CapabilityDiscoveryRun
+} from "../../lib/career/capability-core";
+import { JobRepository } from "../../lib/career/orchestration/job-repository";
+import { CareerJobWorker } from "../../lib/career/orchestration/worker";
+import { createJob } from "../../lib/career/orchestration/job";
+import { JOB_SCOPE_REQUIRED_MESSAGE, renderInvestigationScope, requireValidJobScope } from "../../lib/career/job-scope";
+import { createLocalJobScopeResolver } from "../../lib/career/job-scope/local-resolver";
+import { INVESTIGATION_INVALID_MESSAGE, isIssuedPersonInvestigation } from "../../lib/career/investigation";
+import { createJobPoolApplication } from "../../lib/career/job-pool/application";
+import { POST as analyze } from "../../app/api/career/analyze/route";
+import { GET as compare } from "../../app/api/career/analyses/[analysisId]/job-comparison/route";
+import { GET as structure } from "../../app/api/career/job-pools/[jobPoolUploadId]/roles/[poolRoleId]/structure/route";
+import { ENGINEERING_POOL_RAW, TEST_JOB_SCOPE, TEST_JOB_SCOPE_B, resolveStoredTestJobScope, uploadEngineeringJobScope } from "../support/job-scope";
+import { renderPoolSourceContent } from "../../lib/career/job-pool/source-content";
+import { draftPool } from "./fixtures/pool";
+
+import { LEGACY_MARKER, PDF_CONTENT, SOURCE, created, seed } from "./fixtures/mode-analysis";
+const jobs = new JobRepository(db);
+const comparison = async (analysisId: string, query: Record<string, string>) => {
+  const response = await compare(new Request(`http://local/api/career/analyses/${analysisId}/job-comparison?${new URLSearchParams(query)}`), { params: Promise.resolve({ analysisId }) });
+  return { status: response.status, body: await response.text() };
+};
+const structureOf = async (jobPoolUploadId: string, poolRoleId: string) => {
+  const response = await structure(new Request(`http://local/api/career/job-pools/x/roles/y/structure`), { params: Promise.resolve({ jobPoolUploadId, poolRoleId }) });
+  return { status: response.status, body: await response.text() };
+};
+const code = (body: string) => JSON.parse(body).issues?.[0]?.code;
+
+describe("PINK: investigation modes on PostgreSQL (GELB 2e5e852 / ea01bfc / 0b23045)", () => {
+  beforeAll(async () => { await initDbSchema(); await uploadEngineeringJobScope(); }, 120_000);
+  afterAll(async () => { for (const jobId of created) await db.execute(sql`DELETE FROM career_analysis_jobs WHERE job_id = ${jobId}`); });
+
+  it("analyze route: status, code, sentence, enqueued count and stored input for every declaration", async () => {
+    const documents = [{ type: "text", content: SOURCE }];
+    const count = async () => Number((((await db.execute(sql`SELECT count(*)::int AS n FROM career_analysis_jobs`)) as unknown) as Array<{ n: number }>)[0].n);
+    const cases: Record<string, Record<string, unknown>> = {
+      undeclaredScoped: { documents, jobScope: TEST_JOB_SCOPE }, undeclaredNone: { documents }, person: { documents, investigation: { mode: "PERSON" } },
+      personPlusScope: { documents, investigation: { mode: "PERSON" }, jobScope: TEST_JOB_SCOPE }, explicitScoped: { documents, investigation: { mode: "PERSON_X_JOB" }, jobScope: TEST_JOB_SCOPE },
+      explicitNoScope: { documents, investigation: { mode: "PERSON_X_JOB" } }, job: { documents, investigation: { mode: "JOB" } }, unknownMode: { documents, investigation: { mode: "TEAM" } },
+      personWrongRole: { documents, investigation: { mode: "PERSON" }, jobScope: { ...TEST_JOB_SCOPE, poolRoleId: "role_x" } }, undeclaredWrongRole: { documents, jobScope: { ...TEST_JOB_SCOPE, poolRoleId: "role_x" } },
+      personNoDocuments: { investigation: { mode: "PERSON" } }
+    };
+    const result: Record<string, unknown> = {};
+    for (const [name, body] of Object.entries(cases)) {
+      const before = await count();
+      const response = await analyze(new Request("http://local/api/career/analyze", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(body) }));
+      const json = await response.json() as { jobId?: string; issues?: Array<{ code: string; message: string }> };
+      const enqueued = (await count()) - before;
+      let stored: unknown = null;
+      if (json.jobId) { created.push(json.jobId); const job = await jobs.getJob(json.jobId); const data = (job?.inputRef as { sourceData: Record<string, unknown> }).sourceData; stored = { investigation: data.investigation ?? null, jobScope: data.jobScope ?? null }; }
+      result[name] = { status: response.status, code: json.issues?.[0]?.code ?? null, message: json.issues?.[0]?.message ?? null, enqueued, stored };
+    }
+    const refused = (status: number, c: string, message: string) => ({ status, code: c, message, enqueued: 0, stored: null });
+    expect(result).toEqual({
+      undeclaredScoped: { status: 202, code: null, message: null, enqueued: 1, stored: { investigation: null, jobScope: TEST_JOB_SCOPE } },
+      undeclaredNone: refused(400, "ERR_JOB_SCOPE_REQUIRED", JOB_SCOPE_REQUIRED_MESSAGE),
+      person: { status: 202, code: null, message: null, enqueued: 1, stored: { investigation: { mode: "PERSON" }, jobScope: null } },
+      personPlusScope: refused(400, "ERR_INVESTIGATION_INVALID", INVESTIGATION_INVALID_MESSAGE),
+      explicitScoped: { status: 202, code: null, message: null, enqueued: 1, stored: { investigation: { mode: "PERSON_X_JOB" }, jobScope: TEST_JOB_SCOPE } },
+      explicitNoScope: refused(400, "ERR_JOB_SCOPE_REQUIRED", JOB_SCOPE_REQUIRED_MESSAGE),
+      job: refused(400, "ERR_INVESTIGATION_MODE_NOT_ANALYZABLE", INVESTIGATION_INVALID_MESSAGE),
+      unknownMode: refused(400, "ERR_INVESTIGATION_INVALID", INVESTIGATION_INVALID_MESSAGE),
+      personWrongRole: refused(400, "ERR_INVESTIGATION_INVALID", INVESTIGATION_INVALID_MESSAGE),
+      undeclaredWrongRole: refused(422, "ERR_JOB_SCOPE_INVALID", JOB_SCOPE_REQUIRED_MESSAGE),
+      personNoDocuments: refused(400, "ERR_NO_DOCUMENTS", "No documents provided for analysis.")
+    });
+    for (const jobId of created) await db.execute(sql`DELETE FROM career_analysis_jobs WHERE job_id = ${jobId}`);
+    created.length = 0;
+  });
+
+  it("real CareerJobWorker: every declaration decided on claim; contradictions terminal after one attempt before the processor", async () => {
+    const reached: Record<string, string> = {};
+    // The spy processor records the boundary it received and ends the job terminally with its own code (no analysis is stored).
+    const gated = requireValidJobScope(createLocalJobScopeResolver(), async (job, _report, boundary) => { reached[job.jobId] = isIssuedPersonInvestigation(boundary) ? "PERSON" : "PERSON_X_JOB"; throw Object.assign(new Error("PINK processor reached"), { name: "TERMINAL_ERROR", code: "PINK_PROCESSOR_REACHED" }); });
+    const declarations: Record<string, Record<string, unknown>> = {
+      person: { investigation: { mode: "PERSON" } }, undeclaredScoped: { jobScope: TEST_JOB_SCOPE }, explicitScoped: { investigation: { mode: "PERSON_X_JOB" }, jobScope: TEST_JOB_SCOPE },
+      personPlusScope: { investigation: { mode: "PERSON" }, jobScope: TEST_JOB_SCOPE }, job: { investigation: { mode: "JOB" } }, undeclaredNone: {}, explicitNoScope: { investigation: { mode: "PERSON_X_JOB" } },
+      lowerCase: { investigation: { mode: "person" } }, wrongRole: { jobScope: { ...TEST_JOB_SCOPE, poolRoleId: "role_x" } }
+    };
+    const ids: Record<string, string> = {};
+    for (const [name, data] of Object.entries(declarations)) { const job = createJob("CAREER_ANALYSIS", { sourceType: "BATCH", sourceData: { documents: [{ type: "text", content: SOURCE }], ...data } } as never); await jobs.enqueueJob(job); ids[name] = job.jobId; created.push(job.jobId); }
+    const worker = new CareerJobWorker("PINK_MODE_WORKER", jobs, gated as never, 50, 30_000);
+    worker.start();
+    try {
+      for (let attempt = 0; attempt < 400; attempt += 1) {
+        const rows = (await db.execute(sql`SELECT status FROM career_analysis_jobs WHERE job_id IN (${sql.join(Object.values(ids).map((id) => sql`${id}`), sql`, `)})`)) as unknown as Array<{ status: string }>;
+        if (rows.every((row) => row.status === "FAILED")) break;
+        await new Promise((done) => setTimeout(done, 50));
+      }
+    } finally { worker.stop?.(); }
+    const result: Record<string, string> = {};
+    for (const [name, jobId] of Object.entries(ids)) {
+      const row = ((await db.execute(sql`SELECT status, attempt_count, error_code FROM career_analysis_jobs WHERE job_id = ${jobId}`)) as unknown as Array<{ status: string; attempt_count: number; error_code: string | null }>)[0];
+      result[name] = `${row.status}/${row.attempt_count}/${row.error_code ?? "-"}/${reached[jobId] ?? "not reached"}`;
+    }
+    expect(result).toEqual({
+      person: "FAILED/1/PINK_PROCESSOR_REACHED/PERSON", undeclaredScoped: "FAILED/1/PINK_PROCESSOR_REACHED/PERSON_X_JOB", explicitScoped: "FAILED/1/PINK_PROCESSOR_REACHED/PERSON_X_JOB",
+      personPlusScope: "FAILED/1/ERR_INVESTIGATION_INVALID/not reached", job: "FAILED/1/ERR_INVESTIGATION_MODE_NOT_ANALYZABLE/not reached",
+      undeclaredNone: "FAILED/1/ERR_JOB_SCOPE_REQUIRED/not reached", explicitNoScope: "FAILED/1/ERR_JOB_SCOPE_REQUIRED/not reached",
+      lowerCase: "FAILED/1/ERR_INVESTIGATION_INVALID/not reached", wrongRole: "FAILED/1/ERR_JOB_SCOPE_INVALID/not reached"
+    });
+  }, 60_000);
+
+  it("B2: exact binding only; scope switch, drift and PERSON refused; the answer holds no legacy content and no document body", async () => {
+    const scopeA = await resolveStoredTestJobScope();
+    const scopeB = await resolveStoredTestJobScope(TEST_JOB_SCOPE_B);
+    const scoped = await seed("b2-scoped", { jobScope: TEST_JOB_SCOPE }, scopeA);
+    const person = await seed("b2-person", { investigation: { mode: "PERSON" } }, null);
+    const drift = await seed("b2-drift", { jobScope: TEST_JOB_SCOPE }, scopeB);
+    const A = { jobPoolUploadId: TEST_JOB_SCOPE.jobPoolUploadId, poolRoleId: TEST_JOB_SCOPE.poolRoleId };
+    const ok = await comparison(scoped.analysisId, A);
+    const outcomes = {
+      roleB: code((await comparison(scoped.analysisId, { ...A, poolRoleId: TEST_JOB_SCOPE_B.poolRoleId })).body),
+      otherUpload: code((await comparison(scoped.analysisId, { ...A, jobPoolUploadId: `JPOOL_${"0".repeat(32)}` })).body),
+      paddedRole: code((await comparison(scoped.analysisId, { ...A, poolRoleId: ` ${A.poolRoleId} ` })).body),
+      missingRole: code((await comparison(scoped.analysisId, { jobPoolUploadId: A.jobPoolUploadId })).body),
+      person: code((await comparison(person.analysisId, A)).body),
+      drift: code((await comparison(drift.analysisId, A)).body),
+      unknown: code((await comparison("ANL_PINK_UNKNOWN", A)).body)
+    };
+    expect(outcomes).toEqual({ roleB: "ERR_JOB_COMPARISON_SCOPE_MISMATCH", otherUpload: "ERR_JOB_COMPARISON_SCOPE_MISMATCH", paddedRole: "ERR_JOB_COMPARISON_SCOPE_MISMATCH", missingRole: "ERR_JOB_COMPARISON_SELECTION_REQUIRED", person: "ERR_JOB_COMPARISON_NOT_SCOPED", drift: "ERR_JOB_COMPARISON_SCOPE_DRIFT", unknown: "ERR_JOB_COMPARISON_ANALYSIS_NOT_FOUND" });
+    expect(ok.status).toBe(200);
+    const body = JSON.parse(ok.body).comparison;
+    const pool = JSON.parse(ENGINEERING_POOL_RAW) as { requirements: Array<{ id: string; role_id: string }> };
+    expect(body.requirements.map((item: { poolRequirementId: string }) => item.poolRequirementId).sort()).toEqual(pool.requirements.filter((item) => item.role_id === A.poolRoleId).map((item) => item.id).sort());
+    expect(body.binding).toMatchObject({ analysisId: scoped.analysisId, jobPoolUploadId: A.jobPoolUploadId, poolRoleId: A.poolRoleId, discoveryRunId: scoped.run.runId, investigationScopeHash: scoped.run.investigationScope!.scopeHash });
+    expect(body.authority).toEqual({ comparisonBasis: "CAPABILITY_PROPOSAL_NAME_COVERAGE", operand: "CAPABILITY_PROPOSAL_PROJECTION", scored: false, authorityState: "NONE", capabilityRequirementRelationState: "NOT_EVALUATED", reason: "VERIFIED_CAPABILITY_SNAPSHOT_ABSENT" });
+    expect(body.proposals.map((item: { name: string }) => item.name).sort()).toEqual(["Dispatch platform migration", "Frontend Architecture"]);
+    expect(body.counts.covered).toBeGreaterThan(0);
+    expect(ok.body.includes(LEGACY_MARKER)).toBe(false);
+    expect(ok.body.includes(PDF_CONTENT)).toBe(false);
+    for (const other of pool.requirements.filter((item) => item.role_id !== A.poolRoleId)) expect(ok.body.includes(`"${other.id}"`), other.id).toBe(false);
+    // Deterministic: a second read is byte-identical.
+    expect((await comparison(scoped.analysisId, A)).body).toBe(ok.body);
+  });
+
+  it("JOB structure: deterministic, evidence only from the job's own pool source, nothing of any person; refusals for unknown role, unknown upload and DRAFT", async () => {
+    const personData = await seed("job-structure-person-data", { jobScope: TEST_JOB_SCOPE }, await resolveStoredTestJobScope());
+    const first = await structureOf(TEST_JOB_SCOPE.jobPoolUploadId, TEST_JOB_SCOPE.poolRoleId);
+    const second = await structureOf(TEST_JOB_SCOPE.jobPoolUploadId, TEST_JOB_SCOPE.poolRoleId);
+    expect(first.status).toBe(200);
+    expect(second.body).toBe(first.body);
+    const value = JSON.parse(first.body).structure;
+    expect([value.structureVersion, value.investigationMode, value.authority.scored]).toEqual(["JOB_STRUCTURE_V1", "JOB", false]);
+    const evidence: string[] = [...value.requirements.flatMap((item: { evidence: string[] }) => item.evidence), ...value.findings.flatMap((item: { evidence: string[] }) => item.evidence)];
+    expect(evidence.length).toBeGreaterThan(0);
+    // Evidence lines are whole lines of the pool's canonical source document (JOB_POOL_SOURCE_RENDERING_V1), and only of the
+    // selected role's requirements.
+    const sourceLines = new Set(renderPoolSourceContent(JSON.parse(ENGINEERING_POOL_RAW)).split("\n"));
+    expect(evidence.filter((line) => !sourceLines.has(line))).toEqual([]);
+    const roleRequirementIds = (JSON.parse(ENGINEERING_POOL_RAW) as { requirements: Array<{ id: string; role_id: string }> }).requirements.filter((item) => item.role_id === TEST_JOB_SCOPE.poolRoleId).map((item) => item.id);
+    expect(evidence.filter((line) => !roleRequirementIds.some((id) => line.startsWith(`REQUIREMENT ${id} `) || line.startsWith(`REQUIREMENT ${id}:`)))).toEqual([]);
+    // Nothing of the person analysed for this very job: no document body, CV text, legacy content, proposal name or identity.
+    for (const personal of [PDF_CONTENT, LEGACY_MARKER, "Led the migration of the dispatch platform", "Dispatch platform migration", personData.analysisId, personData.jobId, personData.run.runId, "\"ANL_", "\"RUN_", "\"CONV_", "\"CSB_"]) expect(first.body.includes(personal), personal).toBe(false);
+    const draft = await createJobPoolApplication({ database: drizzle(db.$client), analyses: { load: async () => null } }).upload(JSON.stringify(draftPool()), "pink-draft");
+    const refusals = {
+      unknownRole: await structureOf(TEST_JOB_SCOPE.jobPoolUploadId, "role_pink_unknown"), unknownUpload: await structureOf(`JPOOL_${"0".repeat(32)}`, TEST_JOB_SCOPE.poolRoleId),
+      draft: await structureOf(draft.view.jobPoolUploadId, (draftPool() as unknown as { roles: Array<{ id: string }> }).roles[0].id), empty: await structureOf("", "")
+    };
+    expect(Object.fromEntries(Object.entries(refusals).map(([name, entry]) => [name, `${entry.status} ${code(entry.body)}`]))).toEqual({ unknownRole: "409 ERR_JOB_STRUCTURE_UNAVAILABLE", unknownUpload: "409 ERR_JOB_STRUCTURE_UNAVAILABLE", draft: "409 ERR_JOB_STRUCTURE_UNAVAILABLE", empty: "400 ERR_JOB_STRUCTURE_SELECTION_REQUIRED" });
+    console.log(`PINK_JOB_STRUCTURE_FINDINGS ${JSON.stringify(value.findings.map((item: { code: string; subject: { id: string } }) => `${item.code}@${item.subject.id}`))}`);
+  });
+});

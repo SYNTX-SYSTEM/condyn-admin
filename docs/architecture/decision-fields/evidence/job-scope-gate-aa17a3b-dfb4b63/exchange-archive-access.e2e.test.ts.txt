@@ -1,0 +1,171 @@
+/**
+ * PINK independent access proof of GELB dfb4b63 on a real Next server (next dev, disposable database, no worker, GEMINI_API_KEY
+ * empty, PINK's net sentinel in the server process when PINK_INSPECTOR_NET_LOG is set). Both inspector routes, three server lives:
+ * inspector off; inspector on with the archive off; inspector and archive on. Writes `exchange-access.json` to the evidence dir.
+ */
+import { spawn, type ChildProcess } from "node:child_process";
+import { once } from "node:events";
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { createServer } from "node:net";
+import { resolve } from "node:path";
+import { sql } from "drizzle-orm";
+import { afterAll, beforeAll, describe, expect, it } from "vitest";
+import { db, initDbSchema } from "../../lib/career/db/client";
+import { careerAnalyses } from "../../lib/career/db/schema";
+import {
+  GeminiCapabilityDiscoveryProvider, PostgresCandidateSourceBundleRepository, PostgresCapabilityCoreRepository, PostgresCapabilityProposalProjectionReferenceRepository,
+  computeSourceBundleHash, createSourceDocument, runCapabilityConvergence, runCapabilityDiscovery, type CapabilityDiscoveryRun
+} from "../../lib/career/capability-core";
+import { JobRepository } from "../../lib/career/orchestration/job-repository";
+import { createJob } from "../../lib/career/orchestration/job";
+import { renderInvestigationScope } from "../../lib/career/job-scope";
+import { runWithExchangeAttempt } from "../../lib/career/result-inspector";
+import { PostgresProviderExchangeStore, ensureProviderExchangeArchive } from "../../lib/career/result-inspector/postgres-exchange-store";
+import { resolveTestJobScope } from "../support/job-scope";
+
+const TIP = process.env.JOB_SCOPE_TIP ?? "local";
+const EVIDENCE_DIR = resolve(process.cwd(), `docs/architecture/decision-fields/evidence/job-scope-gate-${TIP}`);
+const TOKEN = "pink-exchange-inspector-token-0123456789abcdef";
+const HEADER = "x-condyn-result-inspector-token";
+const SENTINEL = process.env.PINK_NET_SENTINEL;
+const NET_LOG = process.env.PINK_INSPECTOR_NET_LOG ?? "";
+const PDF_CONTENT = "PINK_PDF_BODY_ZXhjaGFuZ2UtZTJl";
+const QUOTE = "Led the migration of the dispatch platform to event-driven services.";
+const cv = createSourceDocument({ docId: "CV", title: "cv.synthetic.pdf", rawContent: QUOTE });
+const audit = { source_documents_examined: 1, capability_count: 1, atomic_capability_count: 1, composite_capability_count: 0, attribution_pass_completed: true, target_state_ownership_pass_completed: true, atomic_extraction_pass_completed: true, method_capability_pass_completed: true, composite_reconstruction_pass_completed: true, global_convergence_pass_completed: true, inventory_reconciliation_pass_completed: true, final_reconciliation_produced_new_capabilities: false, unresolved_target_operations: 0, segments_classified_as_external_source_content: 0, segments_classified_as_target_subject_operation: 0, segments_classified_as_target_subject_designed_target_state: 0, segments_classified_as_target_organization_capability: 0, segments_excluded_due_to_attribution_ambiguity: 0 };
+const VALID = `\r\n\t${JSON.stringify({ kernel_version: "discovery-v1", capabilities: [{ canonical_name: "PINK e2e 🚀 Ünïcödé é", capability_scope: "ATOMIC", structural_definition: "d", primary_domain: null, demonstrated_capability_level: null, model_confidence: 0.9, evidence_mode: "EXPLICIT", evidence: [{ source_document: "CV", location: "body", exact_quote: QUOTE }] }], coverage_audit: audit }, null, "\t").replaceAll("\n", "\r\n")}\r\n`;
+const BROKEN = "{\"kernel_version\":\r\n 🚀 PINK refused";
+const delay = (ms: number) => new Promise<void>((done) => setTimeout(done, ms));
+
+async function availablePort(): Promise<number> {
+  const listener = createServer();
+  await new Promise<void>((ok, fail) => { listener.once("error", fail); listener.listen(0, "127.0.0.1", () => ok()); });
+  const address = listener.address() as { port: number };
+  await new Promise<void>((ok) => listener.close(() => ok()));
+  return address.port;
+}
+async function withServer<T>(env: Record<string, string>, body: (base: string) => Promise<T>): Promise<T> {
+  const port = await availablePort();
+  let output = "";
+  const server: ChildProcess = spawn(process.execPath, [resolve(process.cwd(), "node_modules/next/dist/bin/next"), "dev", "--webpack", "-p", String(port), "-H", "127.0.0.1"], {
+    cwd: process.cwd(), stdio: ["ignore", "pipe", "pipe"],
+    env: { ...process.env, NEXT_TELEMETRY_DISABLED: "1", GEMINI_API_KEY: "", CONDYN_RESULT_INSPECTOR: "", CONDYN_RESULT_INSPECTOR_TOKEN: "", CONDYN_GEMINI_EXCHANGE_ARCHIVE: "", ...(SENTINEL && NET_LOG ? { NODE_OPTIONS: `--require ${SENTINEL}`, PINK_NET_LOG: NET_LOG } : {}), ...env }
+  });
+  server.stdout?.on("data", (chunk) => { output += String(chunk); });
+  server.stderr?.on("data", (chunk) => { output += String(chunk); });
+  const base = `http://127.0.0.1:${port}`;
+  try {
+    for (let attempt = 0; attempt < 240; attempt += 1) {
+      try { const response = await fetch(`${base}/api/career/job-pools`); if (response.status === 200) { await response.text(); break; } } catch { /* not ready */ }
+      await delay(500);
+      if (attempt === 239) throw new Error(`server not ready:\n${output.slice(-4000)}`);
+    }
+    return await body(base);
+  } finally {
+    if (server.exitCode === null && server.signalCode === null) {
+      server.kill("SIGTERM");
+      await Promise.race([once(server, "exit"), delay(10_000)]);
+      if (server.exitCode === null && server.signalCode === null) { server.kill("SIGKILL"); await once(server, "exit"); }
+    }
+  }
+}
+const shape = async (response: Response) => ({ status: response.status, contentType: response.headers.get("content-type"), cacheControl: response.headers.get("cache-control"), body: await response.text() });
+const NOT_FOUND = { status: 404, contentType: "application/json", cacheControl: "no-store", body: JSON.stringify({ success: false, issues: [{ code: "ERR_NOT_FOUND" }] }) };
+
+describe("PINK: Gemini exchange archive — both inspector routes on a real Next server (GELB dfb4b63)", () => {
+  const scope = resolveTestJobScope();
+  let analysisId = ""; let jobId = ""; let otherJobId = ""; let runId = "";
+  let geminiRequests = 0;
+  const report: Record<string, unknown> = {};
+
+  beforeAll(async () => {
+    await initDbSchema();
+    expect(await ensureProviderExchangeArchive()).toBe("REGISTERED");
+    const store = new PostgresProviderExchangeStore({ retentionMs: 86_400_000 });
+    const repository = new PostgresCapabilityCoreRepository(db);
+    const jobs = new JobRepository(db);
+    const job = createJob("CAREER_ANALYSIS", { sourceType: "BATCH", sourceData: { documents: [{ type: "pdf", name: "cv.synthetic.pdf", content: PDF_CONTENT }], jobScope: scope.selection } } as never);
+    const other = createJob("CAREER_ANALYSIS", { sourceType: "BATCH", sourceData: { documents: [{ type: "pdf", name: "other.pdf", content: PDF_CONTENT }], jobScope: scope.selection } } as never);
+    await jobs.enqueueJob(job); await jobs.enqueueJob(other);
+    jobId = job.jobId; otherJobId = other.jobId;
+    // The other job has its own source: with the same source and scope Discovery would (correctly) reuse the run, no exchange.
+    const otherCv = createSourceDocument({ docId: "CV", title: "other.synthetic.pdf", rawContent: `${QUOTE} Other job.` });
+    const discover = (text: string, source = cv) => runCapabilityDiscovery([source], { kernelVersion: "discovery-v1", schemaVersion: "discovery-schema-v1" }, { kernelResolver: { resolve: async () => ({ kernelVersion: "discovery-v1", templateId: "T", versionId: "V", checksum: "C", plainTextContent: "PINK_KERNEL" }) }, provider: new GeminiCapabilityDiscoveryProvider({ model: "pink-fake", client: { models: { async generateContent() { geminiRequests++; return { text, candidates: [{ finishReason: "STOP" }], modelVersion: "pink-fake", responseId: "r", usageMetadata: {} }; } } } }), repository, investigationScope: renderInvestigationScope(scope), providerExchangeArchive: store });
+    await runWithExchangeAttempt({ jobId, leaseVersion: 1 }, () => discover(BROKEN)).catch(() => undefined);
+    const run = (await runWithExchangeAttempt({ jobId, leaseVersion: 2 }, () => discover(VALID)) as { run: CapabilityDiscoveryRun }).run;
+    await runWithExchangeAttempt({ jobId: otherJobId, leaseVersion: 1 }, () => discover("{other job", otherCv)).catch(() => undefined);
+    runId = run.runId;
+    const convergence = await runCapabilityConvergence((await repository.getRunById(run.runId))!, { kernelVersion: "convergence-v1", schemaVersion: "convergence-schema-v1", algorithmVersion: "algorithm-v1" }, { kernelResolver: { resolve: async () => ({ kernelVersion: "convergence-v1", templateId: "T", versionId: "V", checksum: "CC", plainTextContent: "PINK_CONVERGENCE" }) }, provider: { providerName: "pink-spy", model: "m", execute: async (request: { userPrompt: string }) => {
+      const ids = (JSON.parse(request.userPrompt.slice(request.userPrompt.indexOf("["))) as Array<{ candidate_id: string }>).map((item) => item.candidate_id);
+      return { convergenceOutput: { convergence_version: "convergence-v1", groups: [{ group_key: "g", member_candidate_ids: ids, canonical_name: "Migration", capability_scope: "ATOMIC" as const, structural_definition: "d", primary_domain: null }], relations: [], reconciliation_audit: { input_candidate_count: ids.length, grouped_candidate_count: ids.length, group_count: 1, same_capability_merge_count: ids.length - 1, unresolved_relation_count: 0, reconciliation_pass_completed: true } } };
+    } }, repository });
+    analysisId = jobId.replace("JOB_", "ANL_");
+    await new PostgresCandidateSourceBundleRepository(db).persistCandidateSourceBundle({ candidateSourceBundleId: `CSB_${jobId}`, sourceBundleHash: computeSourceBundleHash([cv]), documents: [cv], schemaVersion: "CANDIDATE_SOURCE_BUNDLE_V1", createdAt: "2026-10-15T10:00:00.000Z" } as never);
+    await db.insert(careerAnalyses).values({ analysisId, createdAt: convergence.run.completedAt, validationState: "VERIFIED", payload: {} } as never);
+    await new PostgresCapabilityProposalProjectionReferenceRepository(db).save({ analysisId, jobId, discoveryRunId: run.runId, convergenceRunId: convergence.run.convergenceRunId, candidateSourceBundleId: `CSB_${jobId}`, sourceBundleHash: run.sourceBundleHash, createdAt: convergence.run.completedAt });
+    geminiRequests = 0;
+  }, 120_000);
+
+  afterAll(async () => {
+    await db.execute(sql`DELETE FROM career_analysis_jobs WHERE job_id IN (${jobId}, ${otherJobId})`);
+    const net = NET_LOG && existsSync(NET_LOG) ? readFileSync(NET_LOG, "utf8").trim().split("\n").filter(Boolean) : [];
+    report.networkAttempts = { total: net.length, gemini: net.filter((line) => /generativelanguage|aiplatform|googleapis/.test(line)).length, entries: net.slice(0, 20), sentinel: Boolean(SENTINEL && NET_LOG) };
+    mkdirSync(EVIDENCE_DIR, { recursive: true });
+    writeFileSync(resolve(EVIDENCE_DIR, "exchange-access.json"), `${JSON.stringify({ tip: TIP, recordedAt: new Date().toISOString(), analysisId, jobId, otherJobId, discoveryRunId: runId, ...report }, null, 2)}\n`);
+  });
+
+  const urls = (base: string) => ({ analysis: `${base}/api/career/analyses/${analysisId}/gemini-result`, job: `${base}/api/career/jobs/${jobId}/gemini-exchanges` });
+
+  it("inspector off: both routes answer the same 404 with and without the token", async () => {
+    await withServer({ CONDYN_GEMINI_EXCHANGE_ARCHIVE: "1" }, async (base) => {
+      const off: Record<string, unknown> = {};
+      for (const [route, url] of Object.entries(urls(base))) for (const header of [undefined, TOKEN]) off[`${route}/${header ? "token" : "none"}`] = await shape(await fetch(url, { headers: header ? { [HEADER]: header } : {} }));
+      report.inspectorOff = off;
+      for (const entry of Object.values(off)) expect(entry).toEqual(NOT_FOUND);
+    });
+  }, 300_000);
+
+  it("inspector on, archive off: closed cases the same 404 on both routes; open: NOT_RETAINED and an empty job view marked NOT_AVAILABLE", async () => {
+    await withServer({ CONDYN_RESULT_INSPECTOR: "1", CONDYN_RESULT_INSPECTOR_TOKEN: TOKEN }, async (base) => {
+      const closed: Record<string, unknown> = {};
+      for (const [route, url] of Object.entries(urls(base))) for (const header of [undefined, "wrong", TOKEN.slice(0, -1)]) closed[`${route}/${header ?? "none"}`] = await shape(await fetch(url, { headers: header ? { [HEADER]: header } : {} }));
+      const analysis = JSON.parse((await shape(await fetch(urls(base).analysis, { headers: { [HEADER]: TOKEN } }))).body);
+      const job = JSON.parse((await shape(await fetch(urls(base).job, { headers: { [HEADER]: TOKEN } }))).body);
+      report.archiveOff = { closed, analysis: analysis.inspection?.originalGeminiResponse, job: { archive: job.archive, exchanges: job.inspection?.exchanges?.length } };
+      for (const entry of Object.values(closed)) expect(entry).toEqual(NOT_FOUND);
+      expect(analysis.inspection.originalGeminiResponse).toEqual({ state: "NOT_RETAINED" });
+      expect([job.archive, job.inspection.exchanges]).toEqual(["NOT_AVAILABLE", []]);
+    });
+  }, 300_000);
+
+  it("inspector and archive on: the analysis view shows the exact COMPLETED text; the job view lists FAILED then COMPLETED, nothing of the other job; read-only", async () => {
+    await withServer({ CONDYN_RESULT_INSPECTOR: "1", CONDYN_RESULT_INSPECTOR_TOKEN: TOKEN, CONDYN_GEMINI_EXCHANGE_ARCHIVE: "1" }, async (base) => {
+      const closedJob = await shape(await fetch(urls(base).job, { headers: { [HEADER]: "wrong" } }));
+      const analysisRaw = await shape(await fetch(urls(base).analysis, { headers: { [HEADER]: TOKEN } }));
+      const jobRaw = await shape(await fetch(urls(base).job, { headers: { [HEADER]: TOKEN } }));
+      const again = await shape(await fetch(urls(base).job, { headers: { [HEADER]: TOKEN } }));
+      const otherRaw = await shape(await fetch(`${base}/api/career/jobs/${otherJobId}/gemini-exchanges`, { headers: { [HEADER]: TOKEN } }));
+      const unknown = await shape(await fetch(`${base}/api/career/jobs/JOB_PINK_UNKNOWN/gemini-exchanges`, { headers: { [HEADER]: TOKEN } }));
+      const post = await fetch(urls(base).job, { method: "POST", headers: { [HEADER]: TOKEN } });
+      const response = JSON.parse(analysisRaw.body).inspection.originalGeminiResponse;
+      const job = JSON.parse(jobRaw.body);
+      const other = JSON.parse(otherRaw.body);
+      report.archiveOn = {
+        closedJob, analysis: { status: analysisRaw.status, cacheControl: analysisRaw.cacheControl, state: response.state, textExact: response.text === VALID, leaseVersion: response.attempt?.leaseVersion, parserResultMatchesText: response.parserResultMatchesText },
+        job: { status: jobRaw.status, archive: job.archive, exchanges: job.inspection.exchanges.map((item: any) => ({ outcome: item.outcome, errorCode: item.errorCode, leaseVersion: item.attempt?.leaseVersion, textExact: item.response.text === (item.outcome === "COMPLETED" ? VALID : BROKEN), textMatchesSha256: item.textMatchesSha256, scopeTextMatchesScopeHash: item.scopeTextMatchesScopeHash })) },
+        secondReadIdentical: again.body === jobRaw.body, otherJob: other.inspection.exchanges.map((item: any) => item.response.text), unknown: { status: unknown.status, body: unknown.body }, postStatus: post.status
+      };
+      expect(closedJob).toEqual(NOT_FOUND);
+      expect([analysisRaw.status, analysisRaw.cacheControl, response.state, response.text, response.attempt?.leaseVersion, response.parserResultMatchesText]).toEqual([200, "no-store", "RETAINED", VALID, 2, true]);
+      expect(job.archive).toBe("AVAILABLE");
+      expect(job.inspection.exchanges.map((item: any) => [item.outcome, item.errorCode, item.attempt?.leaseVersion, item.response.text])).toEqual([["FAILED", "ERR_CAPABILITY_DISCOVERY_STRUCTURED_OUTPUT_INVALID", 1, BROKEN], ["COMPLETED", null, 2, VALID]]);
+      expect(jobRaw.body.includes(PDF_CONTENT)).toBe(false);
+      expect(jobRaw.body.includes("{other job")).toBe(false);
+      expect(other.inspection.exchanges.map((item: any) => item.response.text)).toEqual(["{other job"]);
+      expect(again.body).toBe(jobRaw.body);
+      expect([unknown.status, JSON.parse(unknown.body).issues[0].code]).toEqual([404, "ERR_RESULT_INSPECTION_NOT_FOUND"]);
+      expect(post.status).not.toBe(200);
+    });
+    expect(geminiRequests).toBe(0);
+  }, 300_000);
+});

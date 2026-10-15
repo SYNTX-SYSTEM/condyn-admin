@@ -29,6 +29,7 @@ import { getCareerAnalysisRepository } from "../../lib/career/repositories";
 import { PostgresCareerAnalysisRepository } from "../../lib/career/repositories/postgres";
 import type { VerifiedCareerAnalysis } from "../../lib/career/types";
 import { requireTestDatabaseUrl } from "../../lib/database-isolation/policy";
+import { resolveTestJobScope } from "../support/job-scope";
 import { validationPool } from "./fixtures/pool";
 import { TEST_JOB_SCOPE, uploadEngineeringJobScope } from "../support/job-scope";
 
@@ -77,7 +78,7 @@ async function runPdfJob(pdf: Buffer, title: string, expectedText: string, linea
     candidateSourceBundles: bundles,
     projectionReferenceRepository: new PostgresCapabilityProposalProjectionReferenceRepository(db),
     async executeLegacyCareerAnalysis(documents, reportOperation, explicitAnalysisId) {
-      const result = await executeCareerAnalysisPipeline(documents, provider, { explicitAnalysisId, onRuntimeOperation: reportOperation });
+      const result = await executeCareerAnalysisPipeline(documents, provider, { explicitAnalysisId, jobScope: resolveTestJobScope(), onRuntimeOperation: reportOperation });
       if (!result.success || !result.data) throw new Error(result.issues.map((issue) => issue.message).join(", "));
       const analysis = result.data as unknown as VerifiedCareerAnalysis;
       return { resultAnalysisId: analysis.structured_data.analysis.metadata.analysis_id, analysis };

@@ -1,0 +1,184 @@
+{
+  "frameA": {
+    "switch": "on",
+    "mode": "LIVE",
+    "infinite": {
+      "sxSuspend": [
+        "suspended_boundary"
+      ],
+      "sxMoonOrbit": [
+        "carrier:field",
+        "carrier:field",
+        "carrier:field",
+        "carrier:field",
+        "carrier:field",
+        "carrier:field"
+      ]
+    },
+    "carriers": [
+      {
+        "docId": "DOC_001",
+        "state": "field",
+        "driver": "shared-rAF",
+        "x": 551.021,
+        "y": 347.686
+      }
+    ],
+    "traces": [
+      {
+        "id": "trace:req_001:supports:DOC_001:0",
+        "quadratic": true,
+        "coupled": true,
+        "photons": 2
+      },
+      {
+        "id": "trace:req_001:covers_unscored:DOC_001:0",
+        "quadratic": true,
+        "coupled": true,
+        "photons": 2
+      },
+      {
+        "id": "trace:req_003:weakly_supports:DOC_001:0",
+        "quadratic": true,
+        "coupled": true,
+        "photons": 2
+      },
+      {
+        "id": "trace:req_003:covers_unscored:DOC_001:0",
+        "quadratic": true,
+        "coupled": true,
+        "photons": 2
+      },
+      {
+        "id": "trace:req_004:covers_unscored:DOC_001:0",
+        "quadratic": true,
+        "coupled": true,
+        "photons": 2
+      },
+      {
+        "id": "trace:req_005:covers_unscored:DOC_001:0",
+        "quadratic": true,
+        "coupled": true,
+        "photons": 2
+      }
+    ],
+    "photons": 12
+  },
+  "ownedA": [
+    {
+      "id": "syntx-trace-trace:req_001:supports:DOC_001:0",
+      "owned": true
+    },
+    {
+      "id": "syntx-trace-trace:req_001:covers_unscored:DOC_001:0",
+      "owned": true
+    },
+    {
+      "id": "syntx-trace-trace:req_003:weakly_supports:DOC_001:0",
+      "owned": true
+    },
+    {
+      "id": "syntx-trace-trace:req_003:covers_unscored:DOC_001:0",
+      "owned": true
+    },
+    {
+      "id": "syntx-trace-trace:req_004:covers_unscored:DOC_001:0",
+      "owned": true
+    },
+    {
+      "id": "syntx-trace-trace:req_005:covers_unscored:DOC_001:0",
+      "owned": true
+    }
+  ],
+  "frameB": {
+    "switch": "on",
+    "mode": "LIVE",
+    "infinite": {
+      "sxSuspend": [
+        "suspended_boundary"
+      ],
+      "sxMoonOrbit": [
+        "carrier:field",
+        "carrier:field",
+        "carrier:field",
+        "carrier:field",
+        "carrier:field",
+        "carrier:field"
+      ]
+    },
+    "carriers": [
+      {
+        "docId": "DOC_001",
+        "state": "field",
+        "driver": "shared-rAF",
+        "x": 548.052,
+        "y": 346.703
+      }
+    ],
+    "traces": [
+      {
+        "id": "trace:req_001:supports:DOC_001:0",
+        "quadratic": true,
+        "coupled": true,
+        "photons": 2
+      },
+      {
+        "id": "trace:req_001:covers_unscored:DOC_001:0",
+        "quadratic": true,
+        "coupled": true,
+        "photons": 2
+      },
+      {
+        "id": "trace:req_003:weakly_supports:DOC_001:0",
+        "quadratic": true,
+        "coupled": true,
+        "photons": 2
+      },
+      {
+        "id": "trace:req_003:covers_unscored:DOC_001:0",
+        "quadratic": true,
+        "coupled": true,
+        "photons": 2
+      },
+      {
+        "id": "trace:req_004:covers_unscored:DOC_001:0",
+        "quadratic": true,
+        "coupled": true,
+        "photons": 2
+      },
+      {
+        "id": "trace:req_005:covers_unscored:DOC_001:0",
+        "quadratic": true,
+        "coupled": true,
+        "photons": 2
+      }
+    ],
+    "photons": 12
+  },
+  "ownedB": [
+    {
+      "id": "syntx-trace-trace:req_001:supports:DOC_001:0",
+      "owned": true
+    },
+    {
+      "id": "syntx-trace-trace:req_001:covers_unscored:DOC_001:0",
+      "owned": true
+    },
+    {
+      "id": "syntx-trace-trace:req_003:weakly_supports:DOC_001:0",
+      "owned": true
+    },
+    {
+      "id": "syntx-trace-trace:req_003:covers_unscored:DOC_001:0",
+      "owned": true
+    },
+    {
+      "id": "syntx-trace-trace:req_004:covers_unscored:DOC_001:0",
+      "owned": true
+    },
+    {
+      "id": "syntx-trace-trace:req_005:covers_unscored:DOC_001:0",
+      "owned": true
+    }
+  ]
+}

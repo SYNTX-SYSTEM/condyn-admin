@@ -901,6 +901,868 @@ returns to ROLE, then the full Escape chain with focus-follow to FIELD, (5) GET 
 / B-SYNTX-ECOLOGY; Q-06 / J-12 rebound). GELB moves `:3017` to `9e86d44` on this green (owner-authorized in the mandate);
 PINK's GET-only walk there follows.
 
+### 3.25 Owner environment `:3017` moved to `5898def`; GET-only acceptance 149/149 (2026-10-12)
+
+On PINK's green for plan 1.9.0, GELB moved `:3017` under the owner's authorization in the mandate "CONDYN / SYNTX — FINAL
+INTEGRATION & PRODUCT TEST": worktree `condyn-admin-job-pool` fast-forwarded `010f082` → `5898def` (= `9e86d44` + plan 1.9.0
+`507136c`; `app`, `lib`, `scripts` identical to `9e86d44`, tree identical to PINK's `507136c`, both verified by PINK),
+restart `up --with-worker` without `--fresh`, reusing the preserved database `condyn_test_e46502b73c9f316f`; read-only
+snapshot before and after identical ("OWNER DB IDENTICAL": 123 tables / 280 rows, countsHash `3644dcdf00006a7f`,
+contentHash `a5050f17b5264235`); worker polling with Gemini; routes warmed with GETs only (a non-existent job id → 404,
+`/api/career/analyze` → 405), because on the clone the first compile of the jobs route in `next dev` had reloaded the page
+once mid-analysis; GELB's clone `:3027` stopped and `condyn_test_cb8e292df603ddc3` dropped.
+
+PINK (GET-only, nothing started, stopped, uploaded or written against `:3017`): the served FIELD page carries the R15a
+tokens (`sxSettle`, `sxMoonOrbit`, `sxAtmosphere`, `sxRingPulse`; absent from `010f082`); read-only walk on
+`BASE=http://127.0.0.1:3017`, analyses `612` / `831`: **149/149, 0 non-GET** (evidence
+`evidence/syntx-readonly-3017-5898def/`) — the same result as on the clone (§3.24): R15a at ROLE and at REQUIREMENT with the
+aperture open, the carrier moved between the frames (551.021,347.686 → 548.052,346.703) and all six traces of 612 own a
+pointer point in both frames, attribution DOC_001 ↔ `trace:req_001:supports:DOC_001:0` with the source title by join, Tab
+7/7 in 8 Tabs, Enter / Escape chain with focus-follow, REDUCED total, bodies identical; 831 without traces is the recorded
+data skip. Plan 1.9.1 binds the owner environment `5898def` (header only, application unchanged).
+
+### 3.26 Job-scope invariant: independent verification of GRÜN `cb3d33f`; GELB's backend gate not yet committed (2026-10-14)
+
+Owner mandate "SFE — INDEPENDENT VERIFICATION" of the SFE invariant "no Gemini call without a valid, selected job
+scope" with the expected behaviour: application open → Job Pool screen; no valid pool → Capability OFF; pool without
+job → OFF; valid pool + valid job → ON; selection removed or invalid → OFF; direct analysis call without a valid
+selection → backend REJECT; existing functions and the semiontic GUI design preserved. PINK implements nothing.
+
+State of the parties at the time of the run: GRÜN `frontend/job-field` @ `cb3d33f` (confirmed by GRÜN as the final
+invariant tip; a separate commit "JOB POOL FIRST / CAPABILITY GATE" with a changed start focus is announced). GELB:
+backend gate not committed; contract announced (POST /api/career/analyze requires `jobScope { jobPoolUploadId,
+poolRoleId }`; 400 `ERR_JOB_SCOPE_REQUIRED` / 422 `ERR_JOB_SCOPE_INVALID`, the owner's sentence, nothing enqueued; the
+worker re-checks before any processing and ends an unscoped job terminally). `cb3d33f` changes no backend file.
+
+Method (PINK's own code; probe branch `validation/job-scope-probe` = this branch + `cb3d33f`, never pushed, deleted):
+new walk `test/job-pool-validation/job-scope-gate.e2e.test.ts` (`JOB_SCOPE_TIP=<hash>`): real `next dev --webpack` on a
+disposable database, PINK's pool fixtures (ACTIVE + DRAFT), **no worker** (an accepted request is only enqueued, no
+Gemini call possible, `GEMINI_API_KEY` empty in the server env); 48 checks recorded in one run, failing once at the
+end. "Capability ON/OFF" is read on both surfaces the mandate can mean: the ANALYZE trigger (the invariant's gate) and
+the Capability field itself (`field-focus-capability-btn`). Two walk-timing defects of PINK's first runs were fixed
+(indicator read before React's re-render; first-compile latency of the analyze route) — not field defects.
+
+Results on `cb3d33f` (evidence `evidence/job-scope-gate-cb3d33f/`): **31/48**, 17 deviations in four groups:
+1. G-01: the application opens on the Capability field, not on the Job Pool screen (shell focus CAPABILITY).
+2. G-02 / G-03 / G-05: the Capability field stays reachable without a valid job in all 9 OFF cases (no pool, unknown
+   pool, pool without job, scope removed, role not in pool, DRAFT pool, unknown pool, malformed scope). The ANALYZE
+   gate holds in every one of them: trigger disabled, `data-job-scope-blocked="true"`, the owner's sentence verbatim,
+   0 requests on a forced DOM click.
+3. G-05: no UI control removes a selected job (removal only by leaving the URL parameters).
+4. G-06: a direct `POST /api/career/analyze` without a valid scope is accepted — 7/7 cases answer 202 and enqueue a
+   job (no scope, null, malformed, extra key, unknown pool, DRAFT pool, role not in pool). Expected 400 / 422, nothing
+   enqueued. Owner of the fix: GELB (announced, not committed).
+Held on `cb3d33f`: explicit selection at ROLE (`syntx-job-scope-select`), indicator VALID with role, organization and
+pool, exact scope in the URL; ANALYZE then enabled and sends exactly one request with exactly `{ jobPoolUploadId,
+poolRoleId }` (202, one job enqueued); the indicator shows NONE / INVALID / VALID visibly and uncovered at FIELD,
+ORGANIZATION, ROLE, REQUIREMENT and in the Capability field (1600 px) and in the Job Field at 1280 × 720; no closure
+glyph in the field after the selection (G-09); no page error.
+
+Inverse sweep (Gemini call sites back to a gate, `cb3d33f`): the served application reaches Gemini only through the
+worker (`GeminiProvider`, `GeminiCapabilityDiscoveryProvider`, `GeminiCapabilityConvergenceProvider`, constructed in
+`scripts/run-career-worker.ts`); none of them, the job processor, the worker or the analyze route reads a scope — the
+invariant rests on the frontend alone until GELB's gate exists. Embeddings (`lib/career/search`) are wired to no route;
+the developer scripts `probe-gemini`, `test-live-*`, `test-pipeline-live`, `test-multi-source-live` call Gemini
+directly without a scope (owner decision whether "keine Ausnahmen" covers them).
+
+Regression and preservation: tsc 0; GRÜN's job-scope tests plus the field batch 7 files / 82 green (PINK's run).
+Server renders of 26 cases (Capability field L0 and stages in both locales, Job Field with pool at FIELD,
+ORGANIZATION, ROLE, REQUIREMENT, NO_POOL, SourceDock) in the parent `799f523` and in `cb3d33f` with the same PINK
+probe: 1 identical, every other difference is the indicator, the select action or the ANALYZE gate — **0 unclassified
+differences** (`render-identity-799f523-vs-cb3d33f.txt`). The SYNTX walk (plan 1.9.1) reads 0/3 on `cb3d33f`
+(evidence `evidence/syntx-walk-cb3d33f/`: role carrier without `role="button"`, camera transition absent, the
+organization sign an HTML `div` instead of the SVG `g`); these assertions were changed by GRÜN's `ca11794` (2026-10-12,
+"semiotic transfer, variant A", owner GO; GRÜN recorded "PINK walk unchanged 0/3 … rebinding proposed, no integration
+before the owner's visual approval"), not by `cb3d33f` (diff and render identity). The accepted plan-1.9.1 contract is
+therefore not preserved on `frontend/job-field` since `ca11794`; that is a pending owner/PINK rebinding, independent
+of the invariant.
+
+Open: GELB's backend and worker gate (G-06 and the worker check), GRÜN's "JOB POOL FIRST / CAPABILITY GATE" commit
+(groups 1 and 2), the removal path (group 3). The same walk reruns unchanged on each new tip.
+
+### 3.27 Job-scope invariant: GRÜN `c146f05` (Job Pool first / Capability gate) verified (2026-10-14)
+
+GRÜN's `c146f05` (parent `cb3d33f`, owner "JOB POOL FIRST / CAPABILITY GATE"): the application opens in the Job Field;
+the active field is CAPABILITY only when CAPABILITY is requested and the job scope is VALID, on every way in (selector,
+←/Home, `syntx-exit-btn`, `focus=CAPABILITY` in the URL); root `data-capability-gate="OPEN|AWAITING_JOB"`,
+`data-field-gate` plus `disabled` / `aria-disabled` on the two buttons; the request is kept and honoured once the scope
+turns VALID. Backend unchanged (GELB's gate still not committed).
+
+PINK (probe branch = this branch + `c146f05`, deleted, never pushed): the job-scope gate walk extended by three checks
+(URL `focus=CAPABILITY` without a job stays on the Job Field; ←/Home and `syntx-exit-btn` do not open it; with a VALID
+scope the URL request opens the Capability field) — **43/51** (evidence `evidence/job-scope-gate-c146f05/`). Closed
+against §3.26: G-01 (opens on the Job Pool screen) and all 9 Capability-OFF cases plus the three other ways (gate
+`AWAITING_JOB`, exit disabled, focus stays FIELD); ON with a valid job, the scoped request (exactly `{ jobPoolUploadId,
+poolRoleId }`, 202), the indicator at every depth and in the Capability field, 1280 × 720, no closure glyph, no page
+error. Remaining deviations: (a) G-05, no UI control removes a selected job — not part of any owner mandate (GRÜN), open
+owner decision; with the gate, a removal would close Capability again; (b) G-06, the backend accepts all 7 direct calls
+without a valid scope (202, enqueued) — GELB's gate, not committed.
+
+Regression: tsc 0; 8 files / 87 green (GRÜN's job-scope, demo-UI and lifecycle tests, the field batch). Preservation:
+SSR probe `cb3d33f` → `c146f05` over the same 26 cases — every difference is the gate (`render-identity-cb3d33f-vs-c146f05.txt`,
+token-level resolution included); the Capability field with a VALID scope is proven in the browser walk. SYNTX walk:
+still 0/3 from `ca11794` (GRÜN reports the same on `cb3d33f` and `c146f05`).
+
+Boundary B-PINK-WALK-OWNERSHIP: `c146f05` edits PINK's `test/job-pool-validation/syntx-walk.e2e.test.ts` (Q-11 selects a
+job and waits for the open gate before the exit). The edit adds steps and weakens no assertion, but the walk is PINK's
+proof instrument; PINK takes such adaptations only through its own commit when the walk is rebound (with the pending
+`ca11794` rebinding), and asks GRÜN to propose, not edit, PINK's walks.
+
+### 3.28 Job-scope invariant: GELB's backend gate `841baab` → `2e61a2b` with GRÜN `c146f05` verified together (2026-10-14)
+
+GELB `feature/job-pool-first-boundary` (base `311d6ee`, not integrated): `841baab` adds the route gate (analyze route,
+after the document checks and before `createJob`: missing or malformed `jobScope` → 400 `ERR_JOB_SCOPE_REQUIRED`;
+unknown, non-ACTIVE or unmapped pool, role outside the pool, a role requirement without mapping, or no job pool
+persistence → 422 `ERR_JOB_SCOPE_INVALID`; message "Bitte wählen Sie einen Job aus."; nothing enqueued) and the worker
+gate (`scripts/run-career-worker.ts` wraps the unchanged processor in `requireValidJobScope(createLocalJobScopeResolver(), …)`;
+`JobScopeRequiredError` is a `TERMINAL_ERROR`), plus an idempotency fix (deep compare instead of JSONB-reordered string
+compare). `2e61a2b` relaxes the formal role-id rule to "non-empty string" (the pool schema's rule) after GRÜN reported
+the mismatch; existence is decided by the stored pool.
+
+PINK (probe branch = this branch + `c146f05` + `841baab` [+ `2e61a2b`], deleted, never pushed; frontend files identical to
+`c146f05`, backend files identical to the GELB tip):
+- Worker proof (PINK's own, `evidence/job-scope-gate-c146f05-2e61a2b/job-scope-worker-gate.postgres.test.ts.txt`, kept as
+  evidence until GELB's module is integrated into this branch): 8 jobs written straight into `career_analysis_jobs`, past
+  the route; the real `CareerJobWorker` on the disposable database with a spy for the whole processor. 7 jobs without a
+  valid scope (none, null, malformed, extra key, unknown pool, DRAFT pool, role not in pool) end FAILED after one attempt
+  with the expected code and the owner's sentence, no progress reported, the spy never reached; the valid job reaches
+  it. A static check binds the production script: the processor handed to `CareerJobWorker` is the gated one, the only
+  one built there. Green on `841baab` and on `2e61a2b`.
+- Inverse sweep on `2e61a2b`: every worker process starts from `scripts/run-career-worker.ts` (`worker:career`,
+  `hr-loop:local --with-worker`, GELB's proof script) and is gated; only the developer scripts `test-live-*`,
+  `test-pipeline-live`, `test-multi-source-live` run the pipeline directly without a scope (open owner decision).
+- Gate walk, extended by G-10 (frontend VALID ⇔ backend 202 on the same stored role; a pool with a role id containing
+  inner spaces and one padded with spaces, both admitted by the pool schema): `c146f05` + `841baab` **50/52** (G-06 7/7
+  REJECT as contracted; G-10 diverged: inner-space role VALID in the frontend, 400 in the backend — GRÜN's report, fixed
+  in `2e61a2b`); `c146f05` + `2e61a2b` **51/53** (evidence `evidence/job-scope-gate-c146f05-2e61a2b/`).
+- Regression on `c146f05` + `2e61a2b`: tsc 0; 14 files / 121 green (GELB's job-scope suites, PINK's worker proof, the
+  PDF path, analyze-flow and async orchestration, GRÜN's job-scope / demo-UI / lifecycle tests, the field batch).
+
+Remaining deviations on `c146f05` + `2e61a2b`:
+1. G-05: no UI control removes a selected job — not part of any owner mandate; open owner decision.
+2. G-10: a role id padded with spaces ("  role pink padded  ", admitted by the pool schema): the frontend refuses it
+   (`parseJobScope` requires a trimmed id → indicator NONE, the role cannot be selected), the backend accepts it (202).
+   Safe direction for the invariant (no request without a scope), but a stored, ACTIVE, mapped role is unselectable,
+   and silently so: the action "◎ SELECT AS JOB" does nothing, because `selectJobScope` returns without feedback when
+   `jobScopeFromParams` cannot parse the id (GRÜN's precision, confirmed in the `c146f05` code; not walked). One rule is
+   needed on both sides: GRÜN to accept the schema's id as stored ("variant A", proposed by GRÜN), or the pool upload
+   (GELB) to refuse or normalize padded ids. Both parties have put the choice to the owner and change nothing without
+   the owner's release. GELB acknowledged the edit of PINK's `pdf-path.postgres.test.ts` as a boundary violation.
+
+Boundary B-PINK-WALK-OWNERSHIP (second instance): `841baab` edits PINK's `test/job-pool-validation/pdf-path.postgres.test.ts`
+(uploads a pool and sends `jobScope` so the PDF path passes the new gate; no assertion weakened). Taken by PINK only in
+its own commit when GELB's gate is integrated into this branch.
+
+### 3.29 Job-scope invariant: GRÜN `5d6786b` + GELB `027abf3` (owner decision G-10 variant A, G-05, every execution path) verified together (2026-10-14)
+
+Owner decision as relayed by GRÜN and GELB (not seen by PINK first-hand): G-10 variant A (the role id is taken exactly as
+stored; only "" is refused), G-05 (an explicit removal of the selected job), and the invariant on every execution path.
+GRÜN `frontend/job-field` `5d6786b` (on `c146f05`): `parseJobScope` accepts any non-empty role id verbatim; "× JOB ENTFERNEN"
+(`syntx-job-scope-clear`) beside "✓ GEWÄHLTER JOB" at the selected role, reached from both fields through the shell
+indicator; the legacy page `/career/analyze` reads `jobScopePoolUploadId` / `jobScopeRoleId`, validates them, shows
+`analyze-job-scope` and sends `jobScope` only when VALID. GELB `feature/job-pool-first-boundary` `027abf3` (on `2e61a2b`,
+no `app/` change): `executeCareerAnalysisPipeline` / `…BatchPipeline` require a scope issued by
+`resolveJobScopeFromStoredPool` (WeakSet, deeply frozen); the worker opens the validated scope per claim
+(`AsyncLocalStorage`), the discovery / convergence providers and the legacy analysis ask for it; 20 developer scripts
+require `CONDYN_JOB_POOL_UPLOAD_ID` + `CONDYN_POOL_ROLE_ID`, validated read-only against a verified disposable database,
+otherwise exit 3 with the owner's sentence. GELB's later tip `1b4f237` adds only proof JSONs and doc §11.6; every file outside
+`docs/` is identical to `027abf3` (checked by PINK), so the results below hold for `1b4f237`.
+
+PINK (probe branch = this branch + `5d6786b` + `2e61a2b`, then + `027abf3`; deleted, never pushed; evidence
+`evidence/job-scope-gate-5d6786b-027abf3/`):
+- Gate walk extended (PINK's file; GRÜN's locating step for G-05 sent as a diff and adopted here): G-05 now exercises the
+  removal — with an analysis in flight and with a staged source and none in flight (indicator NONE, scope parameters gone,
+  analysis kept, focus FIELD, `data-capability-gate=AWAITING_JOB`, every way into Capability closed, ANALYZE disabled with
+  the owner's sentence verbatim, source still staged, no request, removal kept over a reload); G-10 now selects the inner-
+  space and the padded role id by the explicit action, checks the exact URL, the reload and the exact request (202);
+  new G-11 walks the legacy page (no scope / role not in pool / DRAFT pool → disabled, sentence, no request on a forced
+  click; valid scope → exactly that scope sent, 202, enqueued once). **`5d6786b` + `027abf3`: 74/74.** A first run on
+  `5d6786b` + `2e61a2b` gave 67/72; the 5 deviations were PINK walk defects (the legacy page renders NONE before its
+  effect reads the URL; the in-flight analysis hides the dock's sentence by design), corrected before the final run.
+- Pipeline proof (PINK, `job-scope-pipeline-gate.test.ts.txt`, 19): no options, no `jobScope`, null, the bare selection,
+  an object literal with the issued fields, a spread copy, `structuredClone`, a JSON copy → `ERR_JOB_SCOPE_REQUIRED` in
+  the single and the batch pipeline with the spy provider never asked; the issued scope reaches it once; the issued scope
+  is deeply frozen; a padded variant of a stored id is never issued (no normalisation on the backend either).
+- Worker proof (PINK, extended, 3): the 8 jobs past the route as in §3.28; inside the gate the active scope is the job's
+  own selection, outside a claimed job `requireActiveJobScope` refuses with the owner's sentence; a job whose pool is
+  archived during attempt 1 is claimed again and ends attempt 2 terminally with `ERR_JOB_SCOPE_INVALID` before the
+  processor (re-validation on every claim). The static binding now also requires both Gemini providers of the worker to
+  ask for the active scope before `execute`, and the legacy analysis to pass `jobScope: requireActiveJobScope()`.
+- Script proof (PINK, `job-scope-scripts.postgres.test.ts.txt`, PINK's own network sentinel `pink-net-sentinel.cjs.txt`,
+  positive control: the Gemini SDK call is recorded and refused): 23 scripts found by PINK's own sweep (GELB's 20 plus
+  `debug.js`, `debug2.js`, `test-full.mjs`), each as its own process, worktree without `.env.local`, dummy key; cases no
+  selection, unknown pool, DRAFT pool, role not in pool → 92 runs, **0 network attempts**; all 20 gated scripts exit 3
+  with "ERR_JOB_SCOPE_*: Bitte wählen Sie einen Job aus.". No valid selection was given to any script (no Gemini).
+- Preservation: SSR render probe (26 cases) of the probe tree byte-identical to `c146f05` (`027abf3` touches no `app/`).
+- Regression under the sentinel: tsc 0 (with GELB's diff to `pdf-path.postgres.test.ts` applied on the probe only; with it
+  the PDF path is green 2/2 — without it, it fails exactly at the pipeline gate, as GELB reports);
+  38 files: 30 green / 202 tests, 8 live files skipped (no key); 0 network attempts.
+
+Observations for the owner (no deviation from the mandate):
+1. O-G05-INFLIGHT: removing the job does not cancel an analysis already submitted under it; that job keeps its stored
+   scope, and the worker re-validates it at claim. While it runs, the dock shows the running state instead of the sentence
+   (ANALYZE stays disabled).
+2. O-SCRIPTS-UNGATED: `debug.js`, `debug2.js` (pipeline with a mock provider; neither loads — `esbuild-register` is not
+   installed; the pipeline gate would refuse them anyway) and `test-full.mjs` (constructs an SDK client, sends nothing)
+   carry no script gate; none can reach Gemini today. `debug2.js` writes `output2.txt` into the working directory.
+3. Embeddings (`lib/career/embeddings/gemini.ts`) are still imported by no route, script or worker.
+4. :3017 (`5898def`) and the demo on :41831 (`337033e`) run without this gate (GELB's note); unchanged without the owner.
+
+Boundary B-PINK-WALK-OWNERSHIP: GELB's diff to `pdf-path.postgres.test.ts` (`jobScope: resolveTestJobScope()`) and the
+§3.28 edit are taken by PINK when GELB's gate is integrated into this branch; until then the three new proofs stay evidence.
+The SYNTX walk on `frontend/job-field` remains 0/3 from `ca11794` (rebinding pending, owner), not from this work.
+
+### 3.30 Job-scope invariant: GELB `e643e96` (job scope in Capability Discovery, new sentence) with GRÜN `5d6786b` verified together (2026-10-15)
+
+Owner GO 2026-10-15 as relayed by GELB (not seen by PINK first-hand). GELB `feature/job-pool-first-boundary` `e643e96` (on
+`38d6eec` = `027abf3` + docs): the worker boundary hands its issued scope to the processor, which forwards it to
+`capabilityProposalExecutor.execute(docs, report, jobScope)`; the executor refuses anything but an issued scope
+(`assertIssuedJobScope`), renders it (`renderInvestigationScope`) and passes it to Discovery, where it extends only the
+system prompt (`INVESTIGATION_SCOPE_CONTRACT` + `<INVESTIGATION_SCOPE>`). The Discovery RUN_ identity includes the scope
+hash only when a scope is set; Convergence re-derives it from the persisted run; a scoped Discovery never short-circuits on a
+scope-free verified snapshot. No DDL, provider, kernel or output-schema change. New sentence: „Bitte wähle einen Job aus einem
+Pool aus.“ (`JOB_SCOPE_REQUIRED_MESSAGE`).
+
+PINK (probe branch = this branch + `5d6786b` + `e643e96`, deleted, never pushed; evidence `evidence/job-scope-gate-5d6786b-e643e96/`):
+- Discovery proof (PINK, `job-scope-discovery.test.ts.txt`, 7, spy providers): every fragment of the rendered scope (each line
+  and each line's content) is absent from the source corpus, which is byte-identical to the unscoped one, and from every
+  Convergence request and the legacy analysis prompt (scope A and B give byte-identical legacy requests); the full scope is in
+  the system prompt after the contract. Every scope fragment quoted under five document ids (`CV`, `INVESTIGATION_SCOPE`,
+  `SCOPE`, the upload id, the pool id) is rejected; a sentence that is also in the source verifies (the source alone decides).
+  Other role, other pool upload → other RUN_ and CONV_; the same scope re-issued → `DISCOVERY_RUN_REUSED`, provider asked once
+  per distinct scope. A blank scope is refused before the provider; the executor refuses a JSON copy, a frozen spread, the bare
+  selection, `{ selection }` and the rendered text with the owner's sentence before the provider.
+- Cross-version identity (PINK probe run unchanged in `027abf3` and `e643e96`, temporary worktrees, removed): the unscoped
+  Discovery prompt, RUN_ id, the whole Discovery run, the provider request and the CONV_ id are byte-identical (4771 bytes,
+  `RUN_4EFD7F363E2757D06C015691`, `CONV_8228CC7136F4C56966EAEA6F`).
+- Worker proof (extended): the processor receives, as third argument, the issued scope of exactly its job.
+- Script proof re-run with the new sentence: 92 runs, 0 network attempts, all 80 runs of the 20 gated scripts exit 3 with it.
+- Gate walk (sentence constant moved to the owner's new sentence for backend and interface — GELB's diff, taken in PINK's own
+  edit): **`5d6786b` + `e643e96`: 70/74.** The backend (G-06) carries the new sentence on all 7 refusals. The 4 deviations are one:
+  GRÜN's interface still shows „Bitte wählen Sie einen Job aus.“ (G-05 staged removal, G-11 NONE / INVALID / DRAFT); GRÜN has not
+  moved `lib/career/job-pool/job-scope.ts` yet. Gating itself holds in all four (disabled, no request).
+- Regression under the sentinel (46 files, incl. GELB's discovery suite, the wiring, retry-bundle, projection and stage-A suites and
+  the seals): 36 green + 8 live skipped; the seals `g2-g3-vertical-proof` (P8) and `hr-decision-loop-p7` failed only on the Next dev
+  lock while PINK's walk ran in the same worktree and are green alone (63 + 7). tsc 0. 0 network attempts.
+
+Observation O-SNAPSHOT-SCOPE (no runtime path today): the Phase-4 snapshot key (`computeSnapshotKey`) carries no scope identity.
+The bound publisher exists but nothing in `lib/`, `app/` or `scripts/` calls `publish`; should Phase-4 publication of scoped runs
+be wired later, two scopes over the same sources would share one snapshot key. Recorded for GELB / the owner.
+
+Open: GRÜN to move the interface sentence (then the walk is re-run); GELB's `pdf-path` diff still waits for integration.
+
+### 3.31 Job-scope invariant: GRÜN `aa17a3b` (interface sentence moved) with GELB `e643e96` verified together (2026-10-15)
+
+Owner GO 2026-10-15 as relayed by GELB and GRÜN (not seen by PINK first-hand). GRÜN `frontend/job-field` `aa17a3b` (on
+`5d6786b`): outside docs and GRÜN's own tests, the only change is `JOB_SCOPE_REQUIRED_MESSAGE` in
+`lib/career/job-pool/job-scope.ts`, now „Bitte wähle einen Job aus einem Pool aus.“, identical to GELB's
+`lib/career/job-scope/errors.ts`. Codes, behaviour and DOM unchanged.
+
+PINK (probe branch = this branch + `aa17a3b` + `e643e96`, deleted, never pushed; evidence `evidence/job-scope-gate-aa17a3b-e643e96/`;
+the proofs are the unchanged `.txt` files of §3.30, copied in on the probe only, with GELB's `pdf-path` diff on the probe only):
+- Gate walk (`JOB_SCOPE_TIP=aa17a3b-e643e96`, one sentence constant for backend and interface): **74/74, no deviation.** The four
+  §3.30 deviations (G-05 staged removal, G-11 NONE / INVALID / DRAFT) now show the owner's sentence verbatim; the backend (G-06)
+  carries it on all 7 refusals; gating unchanged (disabled, no request, 202 only with a valid scope).
+- Inverse sweep: the earlier sentence „Bitte wählen Sie einen Job aus.“ occurs nowhere in `lib/`, `app/` or `scripts/`; the new
+  sentence is defined exactly twice (interface `lib/career/job-pool/job-scope.ts`, backend `lib/career/job-scope/errors.ts`) and
+  pinned in GELB's two proofs; every display (ANALYZE and RETRY block, `/career/analyze`, the analyze route) reads a constant.
+- Preservation: SSR render probe (26 cases) byte-identical to `5d6786b` (`render-identity-5d6786b-vs-aa17a3b-e643e96.txt`; the
+  sentence is rendered only client-side, once a source is staged).
+- Regression under PINK's net sentinel, `GEMINI_API_KEY` unset (46 files, incl. PINK's discovery, pipeline, worker and script proofs,
+  GELB's scope suites and the seals P8 / P7, no own dev server running): 38 green + 8 live skipped, 308 tests; 0 network attempts
+  (positive control caught). Script proof: 92 runs, 80/80 runs of the 20 gated scripts exit 3 with the sentence, result list identical
+  to §3.30. tsc 0.
+
+Open (unchanged, owner items): removal does not cancel an analysis in flight; `debug.js` / `debug2.js` / `test-full.mjs` ungated
+(non-functional); :3017 and :41831 run without the gate; O-SNAPSHOT-SCOPE; ca11794 SYNTX rebinding. GELB's `pdf-path` diff and
+the `.txt` proofs become real test files when GELB's gate is integrated into this branch.
+
+### 3.32 Closed relations: GELB `933ea4c` (scope identity in the confirmed capability state), `9e54662` (Gemini Result Inspector), `258fde2` (docs) with GRÜN `aa17a3b` (2026-10-15)
+
+Owner order „PINK: Alle geschlossenen Relationen unabhängig validieren“ and the owner GO for both relations, as relayed by GELB
+(not seen by PINK first-hand). GELB `feature/job-pool-first-boundary`: `933ea4c` appends `investigationScope.scopeHash` to
+`computeSnapshotKey` (generic and `PHASE4_VERIFIED`) for snapshots of a scoped chain, adds the optional
+`VerifiedCapabilitySnapshot.investigationScope`, lets the Phase-4 publisher copy it from the authenticated Discovery run, and lets the
+verification authenticator accept a scoped run (exactly `{ scopeHash }`, RUN_ re-derived with the scope; before, every scoped chain
+failed Phase-4 integrity). `9e54662`: the Gemini Discovery provider returns the received text with its envelope; Discovery hands the
+exchange to an optional `providerExchangeArchive` after `saveRun`; bounded retention (`retention.ts`); reader
+`GEMINI_RESULT_INSPECTION_V1`; route `GET /api/career/analyses/[analysisId]/gemini-result`, 404 unless `CONDYN_RESULT_INSPECTOR=1`,
+a token ≥ 32 characters and the same token in `x-condyn-result-inspector-token`. No archive is wired (its table awaits owner approval).
+`258fde2`: docs only (access proof, lifecycle).
+
+PINK (probe branch = this branch + `aa17a3b` + `258fde2`, deleted, never pushed; evidence `evidence/job-scope-gate-aa17a3b-258fde2/`;
+PINK's new proofs kept as `.txt` because they import GELB modules):
+- Scope in the confirmed state (PINK `job-scope-snapshot.test.ts.txt`, 6; Discovery and Convergence are the real runtimes with issued
+  scopes, only the Verification run is assembled since lib/ has no producer for it): A, B and unscoped over identical sources publish
+  three Phase-4 states with three keys, each carrying its own scope; re-publishing A is idempotent and leaves B untouched. Eight
+  tamperings of the run's scope binding (stripped, swapped to B, upper-case, truncated, extra key, added to an unscoped run, null, bare
+  string) are refused with `ERR_CAPABILITY_VERIFICATION_RUN_INTEGRITY_INVALID`; changing or removing a published snapshot's scope breaks
+  its identity. Reuse matrix: only unscoped state → unscoped Discovery is reused (positive control `VERIFIED_SNAPSHOT_REUSED/0`); A,
+  A+B → unscoped, unscoped → A, A → A and A → B all ask the provider; a Phase-4 state of A is reached neither by B nor by an unscoped
+  Discovery.
+- Negative control: the same proof run unchanged on `e643e96` fails 4 of 6 (scoped Phase-4 integrity; two scopes collide with
+  `ERR_IMMUTABLE_SNAPSHOT_CONFLICT`), so it detects the closed defect. The tampering case passes there too (every scoped chain was
+  refused); on `258fde2` it discriminates because the untampered chains publish.
+- Cross-version (PINK probe run unchanged in `e643e96` and `258fde2`, temporary worktrees, removed): unscoped generic and Phase-4 keys,
+  the unscoped generic snapshot, the whole unscoped chain incl. its Phase-4 snapshot, the scoped Discovery run and both Gemini provider
+  requests are byte-identical; the only difference is the scoped Phase-4 outcome (`e643e96`: integrity error; `258fde2`: published with
+  `investigationScope`). The §3.30 unscoped identity probe is byte-identical as well.
+- Inspector, unit (PINK `result-inspector-boundary.test.ts.txt`, 10, real Gemini provider behind a fake client): the received text is
+  marked with JSON unicode escapes, which survive only in the raw text. Of 210 flag/token/header combinations exactly the two with flag
+  `1`, token ≥ 32 and the exact token are ALLOWED. Discovery saves the run first, then hands over the exchange (raw text verbatim, scope
+  text and hash; `null` scope when unscoped); the persisted run has exactly the e643e96 keys and holds neither the raw marker nor any
+  scope fragment. A throwing or rejecting archive leaves the run byte-identical to one without archive. Through the real executor (with
+  the telemetry wrapper) the archive receives the text; without the dependency nothing is retained. NOT_RETAINED: response
+  `{ state: "NOT_RETAINED" }`, scope only its hash, no scope fragment although the scope is resolvable from the job, no document body.
+  RETAINED shows exactly text and scope; after deletion, and at `expiresAt` to the millisecond, the same read says NOT_RETAINED. First
+  write wins. 409 for a foreign RUN_ id, a foreign scope, no scope on a scoped run and a scope on an unscoped run; 404 for an unknown
+  analysis. Retention: only whole days 1…30 are taken (15 inputs).
+- Inspector on PostgreSQL (PINK `result-inspector.postgres.test.ts.txt`, 3, route called as Next calls it): ten closed cases give one
+  byte-identical 404 (status, `no-store`, body); open: 200, NOT_RETAINED, a second read is byte-identical, 0 provider requests. A scan of
+  every row of every table finds neither the raw marker nor a scope value (positive control: the parsed marker is found).
+- Inspector on a real Next server (PINK `result-inspector-access.e2e.test.ts.txt`, 2, `inspector-access.json`; two server lives, PINK's
+  sentinel in the server process): switched off → 404 with and without the token; switched on → the same 404 without a header, with a
+  wrong, prefix or upper-case token and with the token in the query; with the token 200 `no-store`, NOT_RETAINED, the run's RUN_ id,
+  no raw text, scope text or document body, identical on a second read; unknown analysis 404 `ERR_RESULT_INSPECTION_NOT_FOUND`; POST 405.
+  Server network: 0 Gemini attempts; two refused `registry.npmjs.org` version checks by `next dev` itself.
+- Regression on the probe: gate walk 74/74 (`aa17a3b-258fde2`); 53 files under the sentinel (§3.31 batch + GELB's snapshot-scope and
+  result-inspector suites + PINK's three proofs, seals P8/P7 included): 45 green + 8 live skipped, 345 tests, 0 network attempts; script
+  proof 92 runs, 80/80 exit 3 with the sentence, identical to §3.31; SSR 26 cases byte-identical to `5d6786b`; tsc 0.
+
+Observation O-INSPECTOR-404-SHAPE (low; no data exposed): every closed case answers the route's JSON 404 (`ERR_NOT_FOUND`), while a
+missing route answers Next's HTML 404. Contrary to `access.ts` and `GEMINI_RESULT_INSPECTOR.md` §3 („als gäbe es die Route nicht“), the
+closed inspector is distinguishable from a route that does not exist. The cases among themselves are indistinguishable.
+
+Observation O-ARCHIVE-AWAIT (no runtime path today): Discovery awaits `providerExchangeArchive.retain`; a throwing archive is contained,
+a slow one delays the analysis by its duration (measured: 400 ms archive → ≥ 380 ms later completion). Relevant once an archive is wired.
+
+Closed: O-SNAPSHOT-SCOPE (§3.30). Not part of this acceptance: GELB's archive diff (table `career_gemini_provider_exchanges`), not read
+or run by PINK. Open owner items unchanged (§3.31).
+
+### 3.33 Gemini exchange archive: GELB `dfb4b63` with GRÜN `aa17a3b` (2026-10-15)
+
+Owner GO 2026-10-15 „EXCHANGE ARCHIVE“ (table and migration only in the isolated engineering/test context) and the owner order
+„PINK validiert unabhängig Speicherung, Fehlerpfade, Isolation, Zugriff und Löschung“, as relayed by GELB (not seen by PINK
+first-hand). GELB `feature/job-pool-first-boundary` `dfb4b63` (fast-forward on `258fde2`):
+- Provider: a refused response travels in `CapabilityProviderResponseError` with the text as received; codes unchanged.
+- Discovery: archives every received response (RUN_, request identity, scope text/hash). The outcome is COMPLETED only after
+  `saveRun`, otherwise FAILED with the leading `ERR_` code or `ERR_UNCLASSIFIED`. It waits at most `EXCHANGE_ARCHIVE_WAIT_MS` = 1 s.
+- Worker: `runWithExchangeAttempt({ jobId, leaseVersion })` per claimed job when the archive is on.
+- Table `career_gemini_provider_exchanges`: opt-in `CONDYN_GEMINI_EXCHANGE_ARCHIVE=1`, DDL only after
+  `verifyDisposableTestDatabase`. A partial unique index allows one COMPLETED per RUN_. `expires_at` per row; expired rows are
+  DELETEd on every write and read; `delete(exchangeId)`.
+- Inspector: the analysis view shows only the matching COMPLETED exchange (else 409). The new job view
+  `GET /api/career/jobs/[jobId]/gemini-exchanges` lists all exchanges of the job, behind the same read boundary.
+
+PINK (probe branch = this branch + `aa17a3b` + `dfb4b63`, deleted, never pushed; evidence `evidence/job-scope-gate-aa17a3b-dfb4b63/`;
+PINK's proofs kept as `.txt`). No live Gemini: in-process runs use the real Gemini provider behind a fake client; the real worker
+run uses PINK's own HTTP stand-in on 127.0.0.1 via `GOOGLE_GEMINI_BASE_URL` with a dummy key, under PINK's net sentinel (every
+non-loopback connection refused; 0 recorded).
+
+**Capture and failure paths** (`exchange-archive-capture.test.ts.txt`, 5; every case run with and without the archive: thrown
+error and persisted run identical):
+- Refusal matrix of 12. Archived once each, with the text exactly as received (CRLF, tabs, emoji, combining, U+2028):
+  - valid → COMPLETED;
+  - MAX_TOKENS with valid text, SAFETY without text (text `null`), empty text, non-string text, invalid JSON, extra schema
+    key → FAILED `ERR_CAPABILITY_DISCOVERY_STRUCTURED_OUTPUT_INVALID`;
+  - kernel version mismatch and coverage mismatch → FAILED with their runtime codes;
+  - circular `usageMetadata` → COMPLETED;
+  - throwing text accessor or rejecting client (nothing received) → no exchange.
+- Persistence failure after a valid response: `ERR_PINK_SAVE_REFUSED: …` → FAILED `ERR_PINK_SAVE_REFUSED`; free text and a
+  lower-case code → `ERR_UNCLASSIFIED`; the error is rethrown unchanged.
+- Retry FAILED (lease 1) → COMPLETED (lease 2) on the same RUN_: the job view lists both in order, and the analysis view shows the
+  COMPLETED text. 409 for each of the five request-identity fields, two COMPLETED exchanges, a foreign RUN_, another scope, a
+  FAILED outcome and a removed scope; NOT_RETAINED when nothing COMPLETED exists.
+- Isolation: concurrent attempts of two jobs keep their attribution; an exchange outside an attempt belongs to no job; an unknown
+  job is 404; a store handing a foreign attempt to a job view is 409.
+- Bounded wait: a hanging archive costs 950–2000 ms on success and on failure; a 1.6 s write lands afterwards.
+
+**PostgreSQL** (`exchange-archive.postgres.test.ts.txt`, 6):
+- DDL gate by policy: `condyn`, `CONDYN`, `postgres`, `template0`, `template1`, two malformed `condyn_test_` names, `my_database`, a
+  remote host and an empty URL → `NO_DDL_ON_NON_DISPOSABLE_DATABASE` with 0 connections to PINK's counting listener (positive
+  control: a disposable-pattern name connects once).
+- Real databases: an existing database whose disposable marker PINK removed gets no table; a marked one only with the flag
+  exactly `1` (`true` → no archive).
+- Byte fidelity: CRLF/tabs/astral/combining/RTL, a 200 kB text, a BOM-first text (FAILED) and a cut MAX_TOKENS text (FAILED) come
+  back exactly, with a matching `textSha256`.
+- Partial unique index: a raw second COMPLETED insert fails with 23505 and a COMPLETED row with an error code with 23514; a
+  second COMPLETED retain is ignored (the first text stays); FAILED rows are kept per lease.
+- Retention: retained 1 ms before `expires_at`, gone at `expires_at` with the row actually DELETEd; `delete(exchangeId)`
+  removes exactly one row (second call false). Window from the environment: 30 → 30 days, 31 → 7, 1 → 1.
+- The received text appears in no table except the archive.
+
+**Both routes on a real Next server** (`exchange-archive-access.e2e.test.ts.txt`, 3 server lives, `exchange-access.json`):
+- Inspector off: both routes give the same JSON 404 with and without the token.
+- Inspector on, archive off: closed cases give the same 404 on both routes. Open: NOT_RETAINED, and the job view shows
+  `NOT_AVAILABLE` with an empty list.
+- Inspector and archive on:
+  - The analysis view shows the exact COMPLETED text (lease 2, `parserResultMatchesText`).
+  - The job view lists FAILED (lease 1, exact refused text), then COMPLETED. It contains neither the other job's exchange nor a
+    document body, and a second read is identical.
+  - Unknown job → 404 `ERR_RESULT_INSPECTION_NOT_FOUND`; POST is not served.
+- 0 Gemini attempts; the only outbound attempts are `next dev`'s own version checks, refused.
+
+**Real worker run** (`exchange-archive-worker.e2e.test.ts.txt`, `exchange-worker.json`, `exchange-worker-archive-off.json`;
+`scripts/run-career-worker.ts` as its own process, four jobs):
+- Job A: FAILED, lease 1, `MAX_TOKENS`, exact text; then COMPLETED, lease 2, exact text. Lease 3 reuses the run: no exchange.
+- Job B: COMPLETED, lease 1.
+- Job C: the stand-in answered HTTP 500 three times; no response was received, so no exchange.
+- Job D (role not in the pool): `ERR_JOB_SCOPE_INVALID` after one attempt; the stand-in never saw it.
+- No exchange without its job. The same world with the archive off gives the same job outcomes and the same stand-in traffic,
+  with 0 rows. This closes the gap GELB named (attribution so far only in unit and PostgreSQL tests).
+
+**Unchanged:**
+- Cross-version `258fde2` ↔ `dfb4b63` (§3.32 probes unchanged, temporary worktree, removed): scoped and unscoped runs, snapshot
+  keys, snapshots, the full unscoped chain and the Gemini requests are byte-identical, as is the unscoped identity probe.
+- Gate walk 74/74.
+- Regression under the sentinel: 56 files (the §3.32 batch, GELB's `exchange-archive.postgres` and `exchange-failures`, PINK's
+  new proofs; seals P8/P7), 48 green + 8 live skipped, 360 tests, 0 network attempts.
+- The §3.32 real-server inspector proof is green on `dfb4b63`.
+- Scripts: 92 runs, 80/80 exit 3 with the sentence.
+- SSR: 26 cases byte-identical to `5d6786b`. tsc 0.
+
+**Corrections to PINK's own earlier proofs** (no change to their earlier results):
+- The §3.29 worker-gate composition check expected `new CareerJobWorker(workerId, jobRepo, processJob`. It now also admits
+  `processAttempt` and asserts that it is the gated `processJob`, wrapped only in `runWithExchangeAttempt`. The real worker run
+  confirms the gate dynamically (job D).
+- The §3.32 database scan searched every table for scope values. It flags the Job Pool's own tables (the pool upload and the
+  role profiles derived from it hold those descriptions by design) whenever another suite uploads the engineering pool into the
+  same database, so it depended on test order. Corrected:
+  - the raw marker must appear in no table except the archive;
+  - scope values must appear in none of the seven Discovery, analysis and inspector tables.
+- The §3.32 unit proof `result-inspector-boundary` uses the 9e54662 store API (`get(runId)`, `delete(runId)`, records without
+  outcome and request), which `dfb4b63` replaced. On `dfb4b63` 3 of its 10 cases fail for that reason; it is retired, and its
+  properties are re-proven on the new API above.
+
+**Observation O-EXCHANGE-NUL (low):** the analysis outcome is unchanged in both cases below.
+- A received text containing U+0000 leaves no row. PostgreSQL TEXT holds no NUL; the INSERT fails inside the observation-only
+  retain and is swallowed. Such a response is missing from the job view without a trace, contrary to „jede empfangene Antwort“.
+- A lone surrogate is stored as U+FFFD, and `textSha256` (computed over the UTF-8 encoding, which already replaces it) still
+  matches.
+
+Closed:
+- O-ARCHIVE-AWAIT: bounded at 1 s, measured.
+- O-INSPECTOR-404-SHAPE: `access.ts` and the contract now say that the 404 is distinguishable but carries no data; the form is
+  unchanged.
+
+Harness note (no finding): a listener that closes every connection at once made postgres-js reconnect about 41,000 times in
+60 s. PINK's listener now holds connections silently, so `connect_timeout` applies.
+
+### 3.34 Three investigation modes, B2 job comparison, JOB structure, lossless archive: GELB `e98a40c..ad15d7b` with GRÜN `aa17a3b` (2026-10-15)
+
+**Invariant boundary B-INVARIANT-PERSON (owner decision needed).** The owner told PINK directly on 2026-10-14: „Kein Gemini-Call
+ohne gültigen Job-Scope. Keine Ausnahmen.“ GELB relays an owner GO of 2026-10-15 that replaces it with „Keine Analyse ohne explizite
+Untersuchungsgrenze. Ein Job-Scope ist nur erforderlich, wenn der gewählte Modus ihn verlangt.“ PINK has not seen that GO first-hand.
+The PERSON mode below sends Discovery, Convergence and the legacy analysis to Gemini without any job scope. That is a deviation under
+the 2026-10-14 invariant and conforms under the relayed one. PINK validates against both and leaves the decision to the owner.
+
+GELB `feature/job-pool-first-boundary`, fast-forward on `dfb4b63`:
+- `e98a40c`: archive texts are stored as their JSON string literal (`JSON_STRING_V1`), the envelope as JSON text; unmarked rows are
+  read as plain text. Answers PINK's O-EXCHANGE-NUL.
+- `2e5e852`: the optional `investigation { mode }` (PERSON · PERSON_X_JOB · JOB):
+  - PERSON is issued only by the worker boundary (WeakSet, frozen) and makes Discovery run unscoped.
+  - The provider guards require `requireActiveAnalysisBoundary()`.
+  - The legacy pipeline takes `{ jobScope }` or `{ investigation }`, never both.
+  - New sentence: „Bitte wähle eine eindeutige Untersuchungsgrenze.“
+- `ea01bfc`: B2 `GET /api/career/analyses/{id}/job-comparison` (`SELECTED_ROLE_COVERAGE_V1`).
+- `0b23045`: JOB `GET /api/career/job-pools/{upload}/roles/{role}/structure` (`JOB_STRUCTURE_V1`).
+- `6a30220`: browser client and docs. `ad15d7b`: GELB's proofs.
+
+PINK (probe branch = this branch + `aa17a3b` + `ad15d7b`, deleted, never pushed; evidence `evidence/job-scope-gate-aa17a3b-ad15d7b/`;
+proofs kept as `.txt`; no live Gemini, the real worker runs against PINK's loopback stand-in as in §3.33):
+
+**Declaration matrix** (`investigation-modes.test.ts.txt`, 4; 22 bodies):
+- Only an explicit `{ mode: "PERSON" }` without any `jobScope` key is PERSON. `jobScope: null` next to PERSON is a contradiction.
+- Undeclared bodies keep the earlier contract exactly. `PERSON_X_JOB` without a scope → `ERR_JOB_SCOPE_REQUIRED`.
+- JOB → `ERR_INVESTIGATION_MODE_NOT_ANALYZABLE`.
+- Lower case, a trailing blank, an extra key, `{}`, `null`, a string, an array, a mode array and a `__proto__` key are all
+  `ERR_INVESTIGATION_INVALID`. Every refusal is `TERMINAL_ERROR`.
+
+**Forged PERSON boundaries** (same file):
+- A literal, a frozen literal, a JSON copy, a `structuredClone`, a spread, a derived object, `undefined` and `null` are refused by
+  the executor with the job-scope sentence, before the provider.
+- The legacy pipeline refuses a literal, a copy, both boundaries at once, none, and a job-scope literal before the provider. The
+  issued PERSON boundary does reach it (positive control).
+- `runWithPersonInvestigation` refuses a literal.
+
+**Worker boundary** (same file): PERSON opens only the person boundary, and inside it `requireActiveJobScope()` still refuses, so
+job-scope consumers stay closed. Undeclared and explicit PERSON_X_JOB open the job scope. Outside any attempt nothing is active.
+
+**Cross-version through the real executor** (`mode-identity-probe.test.ts.txt`, unchanged in temporary worktrees of `027abf3`,
+`dfb4b63` and `ad15d7b`, removed):
+- PERSON at `ad15d7b`: the Discovery request and the persisted run are byte-identical to the scoped run at `027abf3`, where the scope
+  was validated but not yet sent (`RUN_9CE64AAF8CAA85A7790523A7`); no `<INVESTIGATION_SCOPE>`.
+- PERSON_X_JOB at `ad15d7b`: request and run byte-identical to `dfb4b63` (`RUN_E416BB5E5C90EFC1609BEE19`).
+- The §3.30 unscoped identity probe and the §3.32 snapshot probe are byte-identical as well.
+
+**Analyze route on PostgreSQL** (`investigation-routes.postgres.test.ts.txt`, 4; 11 bodies):
+- 202 for undeclared+scope, PERSON and explicit PERSON_X_JOB+scope. The stored job input carries exactly the declaration: PERSON
+  without `jobScope`.
+- Refusals enqueue nothing: 400 `ERR_INVESTIGATION_INVALID` (PERSON+scope, PERSON+wrong role, unknown mode), 400
+  `ERR_INVESTIGATION_MODE_NOT_ANALYZABLE` (JOB), 400 `ERR_JOB_SCOPE_REQUIRED`, 422 `ERR_JOB_SCOPE_INVALID`.
+- A PERSON contradiction is refused before any pool lookup.
+
+**Worker on PostgreSQL** (same file, real `CareerJobWorker` with the gated spy processor; 9 jobs inserted past the route):
+- PERSON, undeclared and explicit PERSON_X_JOB reach the processor with the right boundary.
+- PERSON+scope, JOB, undeclared without scope, PERSON_X_JOB without scope, lower case and a wrong role end after one attempt,
+  before the processor.
+
+**B2** (same file, three seeded analyses):
+- The own selection → 200. Requirements are exactly the 10 of the selected role, and no id of another role appears anywhere.
+- Authority block as specified (`scored: false`, `NOT_EVALUATED`). Proposals come only from the projection.
+- Neither the legacy analysis payload's marker nor the document body appears. A second read is byte-identical.
+- 409 `SCOPE_MISMATCH` for another role, another upload and the padded role id; 400 `SELECTION_REQUIRED`.
+- 409 `NOT_SCOPED` for a PERSON analysis.
+- 409 `SCOPE_DRIFT` when the job declares A but its Discovery ran under B's scope; 404 for an unknown analysis.
+
+**JOB structure** (same file):
+- Byte-identical on a second read. Every evidence line is a whole line of the pool's canonical source document
+  (`renderPoolSourceContent`, JOB_POOL_SOURCE_RENDERING_V1) and belongs to the selected role.
+- None of the person analysed for this job appears: document body, CV text, legacy content, proposal name, analysis, job, RUN_,
+  CONV_ and CSB_ identities.
+- 409 for an unknown role, an unknown upload and a DRAFT pool; 400 for an empty selection.
+- Findings consistent with the pool data: non-CAPABILITY types ineligible; „Demonstrated with senior engineers“ unresolved; the role
+  declares no responsibility.
+
+**Lossless archive** (`exchange-archive.postgres.test.ts.txt`, expectations moved to `e98a40c`):
+- Seven texts come back exactly through the store, each with a matching `textSha256` and the exact scope text: CRLF/unicode, 200 kB,
+  BOM-first, MAX_TOKENS, U+0000, a lone surrogate, and a bare U+0000.
+- The column holds `JSON.stringify(text)` and no raw NUL. A plain pre-`e98a40c` row stays readable.
+- The received layout appears in no table but the archive. **O-EXCHANGE-NUL closed.**
+
+**Client** (`inspector-client.test.ts.txt`, 2):
+- 12 response cases map to the right states; the strict decoders refuse a NOT_RETAINED with an extra key, a RETAINED without text,
+  an unknown mode and a wrong version.
+- The token travels only in the header (GET, `no-store`, path-encoded id).
+- The job view refuses foreign attempts and a COMPLETED with an error code. The B2 guard holds only for the exact analysis, upload
+  and role while unscored.
+
+**Real worker** (`exchange-archive-worker.e2e.test.ts.txt`, archive on and off; Discovery recognised by its response schema):
+- P (PERSON): one Discovery request without the scope block, archived COMPLETED at lease 1 with `investigationScope` null.
+- Q (PERSON + scope) and J (JOB): end after one attempt; the stand-in never saw them.
+- A–D unchanged from §3.33. Archive off: identical traffic and outcomes, 0 rows. 0 outbound attempts.
+
+**Real Next server** (`investigation-routes.e2e.test.ts.txt`): analyze (5 declarations), B2 (own selection, other role, PERSON) and
+JOB structure (deterministic, unknown role) answer at their real paths as on PostgreSQL. The §3.32 and §3.33 server proofs are green
+on `ad15d7b`. Gemini attempts 0; only `next dev` version checks, refused.
+
+**Regression:**
+- Gate walk 74/74.
+- 65 files under the sentinel: the §3.33 batch, GELB's six new suites and PINK's three new proofs. 57 green + 8 live skipped,
+  400 tests, 0 network attempts.
+- Scripts: 92 runs, 80/80 exit 3 with the job-scope sentence, identical to §3.31 — scripts stay bound to a job.
+- SSR 26 cases identical to `5d6786b`. tsc 0.
+
+Correction to PINK's own proof: the §3.29 worker-gate static check expected `requireActiveJobScope()` in the provider guards. It now
+accepts the guard the source uses, and for `requireActiveAnalysisBoundary()` asserts the legacy call `...pipelineBoundary(…)`. It thus
+records the PERSON relaxation; it still recognises the `dfb4b63` form.
+
+Observation O-B2-OPEN-READ (low, existing class): B2 and the JOB structure have no read boundary of their own, unlike the inspector.
+B2 returns verbatim, source-verified CV quotes as coverage evidence. This is the same exposure as the existing open Career routes
+(`/api/career/analyses/*`, `/matches`); per GELB's reconstruction `/api/career/*` is not reachable through the domain.
+
+### 3.35 Human authority: owner confirms B-INVARIANT-PERSON; validation of `e98a40c..ad15d7b` closed (2026-10-15)
+
+The owner answered PINK directly („SFE — PINK | OWNER AUTHORITY CONFIRMATION“, 2026-10-15). Verbatim core:
+
+> Ich bestätige ausdrücklich **B-INVARIANT-PERSON**.
+> Die Owner-Entscheidung vom 15.10.2026 ersetzt die frühere Job-Scope-Pflicht:
+> **Keine Analyse ohne explizit ausgestellte Untersuchungsgrenze.**
+> - PERSON: unabhängig vom Job-Scope.
+> - PERSON × JOB: zwingend mit gültigem, ausgewähltem Job-Scope.
+> - JOB: unabhängig von Personendaten.
+>
+> Damit ist die scopefreie Gemini-Analyse ausschließlich im ausdrücklich gewählten PERSON-Modus autorisiert.
+> Die unabhängige technische Validierung wird angenommen. […] `O-B2-OPEN-READ` bleibt als Sicherheitsbeobachtung erhalten; keine
+> öffentliche Freigabe.
+
+Consequences for this record:
+- **Invariant.** The governing invariant is now „Keine Analyse ohne explizit ausgestellte Untersuchungsgrenze“. It replaces the
+  2026-10-14 invariant „Kein Gemini-Call ohne gültigen Job-Scope. Keine Ausnahmen.“
+  - From §3.26 to §3.33 a scope-free Gemini call was a deviation. Those sections stay valid as written for their tips.
+  - From `2e5e852` on, a scope-free call is authorised only for an explicitly declared and issued PERSON boundary.
+  - PERSON_X_JOB keeps the full JOB POOL FIRST gate.
+  - JOB reads no person data.
+- **B-INVARIANT-PERSON: closed by owner decision.** The §3.34 measurements now count as conformance proof:
+  - PERSON is exactly the explicit declaration and is issued only by the worker boundary;
+  - stand-ins are refused before any provider;
+  - PERSON + job scope and JOB are refused before Gemini;
+  - PERSON_X_JOB is byte-identical to `dfb4b63`.
+- **Validation of `e98a40c..ad15d7b`** (with GRÜN `aa17a3b`) is accepted by the owner and closed for this PINK field. Its open items
+  are only the ones the owner keeps: O-B2-OPEN-READ, plus the owner items listed in §3.31.
+- **O-B2-OPEN-READ stays open as a security observation.** B2 and the JOB structure have no read boundary of their own, and B2 returns
+  verbatim CV quotes. There is no public release; nothing here authorises exposing these routes.
+- **Not authorised** by this decision, and unchanged: merge, integration, deployment, live Gemini.
+
+### 3.36 Three investigation modes in the frontend: GRÜN `df2e84e` on GELB `ad15d7b` (2026-10-15)
+
+GRÜN asked PINK for an independent validation of `df2e84e` on `frontend/three-modes`. The owner GO „DEMO FRONTEND“ was relayed by
+GRÜN and is **not seen first-hand**. The governing rule is the owner's own ruling in §3.35 („Keine Analyse ohne explizit ausgestellte
+Untersuchungsgrenze“). Evidence is in `evidence/job-scope-gate-df2e84e/`, with `manifest.sha256`. The new PINK proofs import modules
+that exist only on GRÜN's branch, so they are stored as `.txt` there.
+
+**Base.** `f44a4b1` was rebuilt independently as a merge of `aa17a3b` and `ad15d7b`. Its tree is identical
+(`37a973a…`) and it has no conflicts. `df2e84e` changes:
+- frontend components;
+- `lib/career/job-pool/investigation-mode.ts` (new, client side);
+- `lib/career/ui/career-job-controller.ts`;
+- `lib/career/ui/useRoleInvestigation.ts` (new);
+- copy;
+- tests under `test/career/three-modes/`, plus one changed expectation in `test/career-frontend-job-lifecycle.test.tsx`.
+
+It does not change any route, worker, executor or `test/job-pool-validation/` file.
+
+**Probe.** `8a503d4` + `df2e84e`, with earlier PINK proofs copied in and GELB's pdf-path diff applied. The probe branch was deleted
+and never pushed.
+
+| Proof | Result |
+|---|---|
+| Gate walk (`job-scope-gate.e2e`, unchanged) | **74/74** |
+| `three-modes-boundary` (new): frontend mirror `checkAnalysisPayload` and the body the real `CareerJobController` sends, against GELB's `parseDeclaredInvestigation`, on 6000 seeded payloads | M-1 **0 disagreements** (147 PERSON, 737 PERSON_X_JOB, 2871 INVALID, 660 NOT_ANALYZABLE, 1585 JOB_SCOPE_REQUIRED); M-2 884 sent, every body read by the server with the same mode and selection, no `jobScope` beside PERSON, other keys unchanged; M-3 5116 refused with nothing sent and the state untouched; M-4 mode × validation table; M-5 only the three exact URL values |
+| Negative controls (mutations of the mirror, probe only, restored) | PERSON accepting a scope: 311 disagreements; extra declaration keys: 67 disagreements. Both are detected. `withoutDeclaration` still keeps the scope out of a PERSON body |
+| `three-modes.e2e` (new), real Next server, disposable DB, no worker, sentinel | plain build **75/76**, inspector build **81/82**. The one deviation is O-MODE-KEYBOARD-FOCUS (below) |
+| Server e2e of §3.32–§3.34 (investigation routes, Result Inspector access, exchange access) | 3 files, 6/6 |
+| Regression under PINK's net sentinel | 69 files: 61 green + 8 live skipped, 488 tests, **0 network attempts**; scripts 92 runs, 80 exit 3, identical to `ad15d7b` |
+| SSR preservation (26 renders) | 26/26 byte-identical to `aa17a3b+ad15d7b` once the additions are removed. The additions are the mode control, `data-investigation-mode`, `data-investigation-body/visible`, `data-gemini-output-visible` and `data-job-scope-used="true"`; nothing else changed |
+| `tsc --noEmit` | 0 errors with the pdf-path diff |
+| Gemini hosts | 0 in every server life. The only refused outbound attempt is the `next dev` version check at registry.npmjs.org |
+
+**Browser walk, measured** (`T-report-plain.txt`, `T-report-inspector.txt`):
+
+- **T-01 Ground state.**
+  - Without a parameter the mode is PERSON_X_JOB and nothing is written to the URL.
+  - These values are no choice: `person`, `PERSON␠`, `␠JOB`, `PERSON×JOB`, `PERSON_X_JOB,JOB`, `TEAM`, an empty value and a repeated parameter. Each gives PERSON_X_JOB and AWAITING_JOB.
+- **T-02 Gate, mode × job** (NONE / VALID / INVALID). Measured on the root attribute, the Capability button and URL `focus=CAPABILITY`:
+  - PERSON: OPEN in all three job states;
+  - PERSON × JOB: OPEN only with a VALID job, otherwise AWAITING_JOB;
+  - JOB: JOB_MODE in all three, and the Capability field is never reachable.
+- **T-03 ANALYZE, five cases:**
+  - PERSON, with or without a VALID job: one POST `{documents, investigation:{mode:"PERSON"}}`. The stored job declares PERSON with no `jobScope` key.
+  - PERSON × JOB: one POST with exactly the selection, stored as declared.
+  - PERSON × JOB without a job, and JOB: nothing is executable, no request is sent, nothing is enqueued. PERSON × JOB shows the owner's sentence verbatim.
+- **T-04 Shell control:**
+  - A click writes the mode to the URL.
+  - The selected job stays in the URL and stays VALID (G-05).
+  - In PERSON the indicator shows `data-job-scope-used="false"` and names PERSON.
+  - JOB leaves the Capability field. Going back to PERSON × JOB returns to the requested Capability field.
+  - Keys ←, End, Home and → choose the expected modes.
+- **T-05 Job Field.** The analysis source is NONE in PERSON and JOB, and the statement names the mode. In PERSON × JOB the URL analysis is compared.
+- **T-06 B2 and JOB structure:**
+  - The toggle exists only at the selected job's role: COVERAGE in PERSON × JOB, STRUCTURE in JOB, none in PERSON.
+  - Nothing is read while the body is closed. Opening reads exactly one GET for exactly the selection. Closing removes the body, and reopening reads again.
+  - The real structure route answers AVAILABLE with exactly the role's three requirements, bound to the role and unscored.
+  - The real B2 for an analysis without proposals is NOT_FOUND and is named as such.
+  - Display guard, with routed answers:
+    - the exact binding shows 2 rows, `data-relation-state=NOT_EVALUATED`;
+    - another role, another analysis, or an altered authority give FAILED, with no row and no quote;
+    - SCOPE_MISMATCH, NOT_SCOPED and SCOPE_DRIFT are each named.
+- **T-07 GEMINI OUTPUT:**
+  - Without `NEXT_PUBLIC_CONDYN_RESULT_INSPECTOR_UI=1` there is no toggle in any mode and no inspector request.
+  - With it:
+    - the toggle opens IDLE and reads nothing before a token is given; the token field is a password field with autocomplete off;
+    - a wrong token and the right token each send exactly one GET, with the token only in the header (server: `ERR_NOT_FOUND`, then `ERR_RESULT_INSPECTION_NOT_FOUND` for the fixture);
+    - the token is never in the URL, cookies, localStorage, sessionStorage or the title;
+    - closing removes the field, and reopening shows it empty and IDLE;
+    - in JOB it shows NO_GEMINI („No Gemini call in this mode.“) with no token field and no request.
+  - No token appears in the evidence (scanned).
+- **T-08 Layout.** At 1600 and 1280 px, in both fields, the control is inside the viewport and uncovered. It overlaps neither the job indicator nor the field selector. No closure glyph appears in any mode.
+- **T-09 Network and errors.** The browser made no request outside the server, and there was no page error.
+
+**Observations:**
+- **O-MODE-KEYBOARD-FOCUS (accessibility, not a boundary deviation).**
+  - What happens: when a keyboard choice on the mode control moves the shell from the Capability field to the Job Field (End or → to JOB), focus leaves the control and lands on `syntx-field`.
+  - Consequence: the next ←/Home is then the Job Field's own navigation, not a mode choice.
+  - Unaffected: the gate holds; JOB still leaves the Capability field.
+  - Measured: `End:PERSON→JOB focus=syntx-field`, `ArrowRight:PERSON_X_JOB→JOB focus=syntx-field`. Every other step keeps focus on the chosen radio.
+  - Mechanism: PINK's search did not find it. The cause is the F-SX-1 effect in `SyntxField.tsx`, whose optional call `focus?.(…)` that search missed. GRÜN identified it; see §3.37.
+  - Owner: GRÜN.
+- **O-URL-ANALYSIS-UNBOUND (informational).**
+  - What happens: an analysis opened from the URL (`analysisId`) has no known investigation mode in the frontend. In PERSON × JOB the Job Field compares it with the pool, as before `df2e84e` (T-05: source URL).
+  - B2 is guarded server-side by the binding (NOT_SCOPED / SCOPE_MISMATCH).
+  - The earlier pool comparison surface has no such binding check. It is deterministic and makes no Gemini call.
+  - For the owner and GELB: should a URL analysis be compared only when its declared boundary is PERSON_X_JOB with the selected job?
+
+**GRÜN's own figures** (new 3 files / 74 tests, regression 58 / 442, gate walk 74/74, workflow e2e 10/10, lab walk 38/38) are
+consistent with PINK's. PINK did not re-run GRÜN's lab walk with the real worker: `df2e84e` changes no worker or server path, and the
+real-worker paths were proven on `ad15d7b` in §3.34.
+
+**Status.**
+- No deviation from the owner's ruling of §3.35 at the frontend:
+  - PERSON never carries a job scope;
+  - PERSON × JOB only with the VALID selection;
+  - JOB never analyses and never calls Gemini.
+- One accessibility observation (GRÜN) and one informational question (owner/GELB).
+- O-B2-OPEN-READ is unchanged: the B2 body shows CV quotes, the route has no read boundary, and there is no public release.
+- Not authorised, and unchanged: merge, integration, deployment, live Gemini.
+
+**Hygiene follow-up to §3.31–§3.36 (GELB's report, 2026-10-15).**
+- What was wrong: the evidence files `scripts-results*.json` in seven `job-scope-gate-*` directories, and two `positive-control.mjs.txt`, contained the local absolute worktree path. It sits in Node stack traces of the old root file `debug.js`, which is the known ungated owner item.
+- What changed: the path is now written repo-relative.
+- Verification: the changed files' lines in each `manifest.sha256` were renewed, and all seven manifests verify.
+- Unchanged: no measured value. The earlier commits still contain the path; rewriting history is the owner's decision.
+
+### 3.37 O-MODE-KEYBOARD-FOCUS closed: GRÜN `bd9eb72` (2026-10-15)
+
+GRÜN found the cause, and PINK confirms it from the diff. The F-SX-1 effect in `SyntxField.tsx` pulls the focus to the field root
+when the Job Field mounts and the focused element lies outside it. Its call is `(target as HTMLElement).focus?.(…)`, which PINK's
+search for `focus(` did not match.
+
+**The fix (`bd9eb72`)** is one new condition in that effect: it leaves alone a focus that lies inside the mode control
+(`[data-sx-shell="investigation"]`). Every other F-SX-1 path is unchanged. `00deaf0` only makes GRÜN's evidence scripts
+repo-relative; PINK found no `/home` path in GRÜN's three-modes evidence.
+
+PINK re-ran on the probe `b6c6200` + `bd9eb72` (evidence in `evidence/job-scope-gate-bd9eb72/`):
+- **Gate walk 74/74.** This includes G-03, where ←/Home on the Job Field must not open the Capability field, so the F-SX-1 keys are unchanged.
+- **`three-modes.e2e` (plain build) 76/76.** After every key, including End PERSON→JOB and → PERSON_X_JOB→JOB when the field moves to FIELD, the focus stays on the chosen radio.
+- **Regression:** 69 files, 61 green + 8 live skipped, 488 tests, 0 network attempts.
+- **Scripts:** identical to `df2e84e`.
+- **`tsc`:** 0.
+- **Network:** 0 Gemini hosts.
+
+**Status.**
+- O-MODE-KEYBOARD-FOCUS is closed.
+- O-URL-ANALYSIS-UNBOUND is with the owner, together with GELB's proposal: show the earlier comparison of a URL analysis only after B2 answers 200 and `comparisonBelongsToSelection` holds for the current selection, with no backend change. It is unchanged.
+- O-B2-OPEN-READ is unchanged.
+- Merge, integration, deployment and live Gemini are still not authorised.
+
+### 3.38 URL boundary: persisted investigation boundary of an analysis — GELB `26df225` / `ef189d3` (2026-10-15)
+
+GELB asked PINK for an independent check of the URL boundary. The owner mandate „SFE — GELB / GRÜN | URL BOUNDARY CLOSURE“ was relayed
+by GELB and is **not seen first-hand**. It answers O-URL-ANALYSIS-UNBOUND (§3.36).
+
+**What it is.** The route `GET /api/career/analyses/{id}/investigation` (`ANALYSIS_INVESTIGATION_V1`) resolves an analysis to its
+investigation boundary from persisted relations only:
+- the analysis row;
+- the SUCCEEDED job(s) whose result it is, together with the job of its projection reference (exactly one job is required);
+- the processor rule `JOB_`→`ANL_`;
+- the job's own declaration, read with `parseDeclaredInvestigation`;
+- where a reference exists: the B2 lineage, and the rule „run scoped ⇔ PERSON_X_JOB“.
+
+Everything else is 409 UNRESOLVED with a reason, and an unknown analysis is 404. The client rule
+`legacyJobComparisonPermitted` admits the earlier comparison only for a RESOLVED PERSON_X_JOB analysis compared with exactly its
+own pool. The matches, analyze and B2 routes are unchanged.
+
+**Probe.** `7ca3cfb` + GRÜN `bd9eb72` + GELB `ef189d3`, merged without conflict. Evidence is in
+`evidence/job-scope-gate-bd9eb72-ef189d3/`.
+
+| Proof | Result |
+|---|---|
+| `url-boundary.postgres` (PINK fixture of §3.34 declares the job's boundary and the Discovery scope independently; 23 analyses) | **6/6** |
+| UB-1/UB-2 cases | 5 RESOLVED as specified (PERSON_X_JOB with and without the explicit declaration, PERSON, both from the declaration alone); unknown and blank 404; NOT_RECORDED (no job; only FAILED/RUNNING/PENDING jobs); NOT_DECLARED; DECLARATION_INVALID (PERSON + scope, JOB); AMBIGUOUS (two SUCCEEDED jobs; a second job claiming an analysis); LINEAGE_INVALID (job id against the processor rule, foreign reference, source bundle hash, foreign Convergence run, job result naming another analysis); RUN_CONTRADICTS_DECLARATION (PERSON with a scoped run, PERSON_X_JOB with an unscoped run) |
+| UB-1 values | The selection is exactly the declared one. `discoveryRunId` is the reference's. `investigationScopeHash` = sha256 of the rendered scope text (the Discovery runtime's hash) |
+| UB-3 | Every answer is no-store. Exact key sets. No document content, legacy payload, capability name or quote in any body |
+| UB-4 | Every `career_*` / `capability_*` table is byte-identical before and after all reads |
+| UB-5 | `legacyJobComparisonPermitted` over the real answers × {own pool, other pool, other analysis}: true only for RESOLVED PERSON_X_JOB in its own pool. FAILED, NOT_FOUND, UNRESOLVED, pending and null all give false; an answer about another analysis is FAILED; 10 single-field corruptions are refused by the decoder |
+| Negative controls (probe only, restored) | client ignoring the pool → UB-5 fails; no run/declaration check → UB-2 fails; no AMBIGUOUS check → UB-2 fails |
+| `url-boundary.e2e`, real Next server | Answers at the real path are byte-identical to in-process, all no-store (200/200/409/409/404, `../` 404). POST/PUT/PATCH/DELETE give 405. 0 Gemini attempts (only the `next dev` npm check was refused) |
+| Regression under the sentinel | 72 files (64 green + 8 live skipped), 514 tests, **0 network attempts**; scripts identical to `bd9eb72`; `tsc` 0; gate walk 74/74 |
+
+**Observations:**
+- **O-URL-SCOPE-IDENTITY (defence in depth).**
+  - What happens: RUN_CONTRADICTS_DECLARATION checks that a run scope is *present*, not that it is the declared one. A PERSON_X_JOB job declaring role A whose referenced Discovery ran under role B of the same pool resolves as PERSON_X_JOB with selection A (measured).
+  - Reachability: only with inconsistent persisted data. The executor derives the run scope from the declaration, and reuse is keyed by the scope hash.
+  - Consequence: the frontend permission is pool-wide, so the earlier comparison would be shown, as it would for role A. B2 detects this case as drift.
+  - Possible hardening, GELB's to weigh: compare the run hash with the declared selection rendered from the stored pool, as B2 does.
+- **O-URL-REF-STATUS (informational).**
+  - What happens: a job found only through the projection reference is not required to be SUCCEEDED. A FAILED job with a reference resolves (measured).
+  - Reachability: possible in the real flow. The processor saves the analysis and the reference before the worker sets SUCCEEDED (`worker.ts:74`); a failed status update, such as a lost lease, followed by a terminal failure leaves this state.
+  - Assessment: the boundary returned is still the declared one under which the analysis was produced, so this is not a boundary deviation.
+
+**Consequence for PINK fixtures (GELB's note).** `ANL_PINK_JOB_SCOPE_GATE` (gate walk) and `ANL_PINK_THREE_MODES` have no job. They
+will be UNRESOLVED (NOT_RECORDED) once GRÜN uses the route, so their earlier comparison will no longer be shown. PINK adapts its
+suites when GRÜN's frontend arrives: a SUCCEEDED job with `result_analysis_id` and the declared boundary.
+
+**Status.**
+- No deviation for GELB `26df225`/`ef189d3`. O-URL-ANALYSIS-UNBOUND is closed on the backend side; the frontend side follows from GRÜN.
+- Open: O-URL-SCOPE-IDENTITY and O-URL-REF-STATUS (informational), and O-B2-OPEN-READ. The new route is open-read like the other career routes, but carries identities only.
+- Not authorised: merge, integration, deployment, live Gemini.
+
+### 3.39 URL BOUNDARY CLOSURE in the frontend, and the scope-identity hardening: GRÜN `da59568`/`8718e3a`, GELB `d54c718` (2026-10-15)
+
+GRÜN asked PINK for an independent check of the frontend side of the URL BOUNDARY CLOSURE. GELB asked PINK to include its hardening
+of O-URL-SCOPE-IDENTITY (§3.38). The owner mandate was relayed by both and is **not seen first-hand**.
+
+**What changes:**
+- **Hardening.** `d54c718` proves a scoped Discovery run like B2: `sha256(render(resolve(declared selection)).text)` must equal the run's scope hash, otherwise RUN_CONTRADICTS_DECLARATION. A selection that can no longer be resolved gives the new reason SCOPE_UNAVAILABLE. Without pool persistence the route answers 503.
+- **Frontend.** `da59568` applies one rule to every analysis on view, whether it came from the URL or from a job. In PERSON × JOB the earlier comparison is read and shown only when `legacyJobComparisonPermitted` holds, and `/matches` is never read for another pool. The new attribute `syntx-field[data-analysis-boundary]` takes the values RESOLVING / PERSON / UNRESOLVED / OTHER_POOL / PERSON_X_JOB. For OTHER_POOL there is an explicit „open the analysis's pool“ action.
+- **`8718e3a`.** It merges `d54c718`/`4e72260`; its code is identical to PINK's probe. It differs only in docs and two lines of `job-pool-workflow.e2e`: the DRAFT step waits for the field to rest.
+
+**Base.**
+- `7507454` was rebuilt independently as `bd9eb72` + `ef189d3`: identical tree, no conflicts.
+- Probe: `f993655` + `da59568` + `d54c718`/`4e72260`. Evidence is in `evidence/job-scope-gate-8718e3a/`, which also holds the da59568 reports from before the hardening.
+
+**PINK fixtures.** GRÜN's diff for `job-scope-gate.e2e` is reviewed and **adopted in this commit** (PINK's file). It adds a
+SUCCEEDED job `JOB_PINK_JOB_SCOPE_GATE` with `result_analysis_id`, declared PERSON_X_JOB for the validation pool's role. It is created
+before every before/after count, so the counts stay relative, and it changes nothing for tips without the route. The
+`three-modes.e2e` walk gets the same pattern.
+
+| Proof | Result |
+|---|---|
+| Gate walk with the adopted fixture | **74/74** on `da59568`, and again on the hardened stack |
+| `three-modes.e2e`, extended by **T-10 URL boundary** | **91/91** on `da59568`, and again on the hardened stack. The 15 T-10 checks are listed below |
+| `url-boundary.postgres`, extended for `d54c718` | **6/6**. Every unresolved reason is reached, now 7 including SCOPE_UNAVAILABLE (declared role not in the pool, declared pool unknown). The §3.38 role-drift case is now **409 RUN_CONTRADICTS_DECLARATION** |
+| Negative control for the hardening | without the hash comparison the role-drift case fails UB-2 (detected) |
+| `url-boundary.e2e`, real Next server | 1/1: byte-identical to in-process, no-store, 405 for other methods, 0 Gemini attempts |
+| Regression under the sentinel | 72 files (64 green + 8 live skipped), 522 tests, **0 network attempts**; scripts identical to `bd9eb72`; `tsc` 0 |
+| GRÜN `job-pool-workflow.e2e` | `da59568` version 9/10: its DRAFT step clicked during the pool-change animation, the step `8718e3a` stabilises. `8718e3a` version: 10/10 twice |
+
+**T-10 URL boundary in the browser.** Each case was measured with every `/matches` and `/sources` request of the page:
+- **Compared, exactly with the analysis's own pool:** PERSON_X_JOB, with the explicit declaration and with the earlier jobScope-only declaration.
+- **No comparison, no `/matches`, no `/sources`:**
+  - a PERSON analysis from the URL (PERSON);
+  - an analysis row without a job, and an unknown analysis (UNRESOLVED);
+  - the own analysis viewed in another pool (OTHER_POOL). The hint names the own pool, and the URL stays on the viewed pool;
+  - the own analysis in PERSON mode and in JOB mode.
+- **Explicit click.** It opens the own pool, and only then is the analysis compared.
+- **Pending read.** While the boundary read is held, the state is RESOLVING with 0 `/matches` and 0 `/sources`. After release it is PERSON_X_JOB and compared.
+- **Failed or forged reads** — a 500, a 200 about another analysis, a 200 with an extra key, a 409 with an unknown reason — all give UNRESOLVED with no `/matches` and no `/sources`.
+
+**Observations:**
+- **O-URL-SCOPE-IDENTITY: closed** by `d54c718`, as measured above.
+- **O-URL-REF-STATUS** is unchanged. GELB keeps it and documents it in THREE_INVESTIGATION_MODES.md §10.
+- **New edge (informational).**
+  - What happens: a PERSON_X_JOB analysis resolved from the job declaration alone (no projection reference) whose declaration names a role the pool does not have resolves as PERSON_X_JOB, because the declaration path reads no pool. It is measured as `snapshotMissingRole`.
+  - Reachability: not through the analyze route, which refuses such a selection, nor through the worker, which re-resolves on every claim. Only inconsistent persisted data reaches it.
+  - Consequence: the frontend permission is pool-wide either way.
+- **Hygiene during the run.** GRÜN's `job-pool-workflow.e2e` writes its screenshots into GRÜN's tracked evidence. PINK's probe runs overwrote them locally; they were restored before switching back, and nothing was committed.
+
+**Status.**
+- No deviation. O-URL-ANALYSIS-UNBOUND is closed end to end: backend `26df225`/`d54c718`, frontend `da59568`/`8718e3a`.
+- O-B2-OPEN-READ is unchanged.
+- Merge, integration, deployment and live Gemini are still not authorised.
+
+### 3.40 pdf-path proof with the resolved test job scope, for the integration: PINK `d4f61c1` with GRÜN `8718e3a` (2026-10-15)
+
+**Request.** GELB asked PINK to adopt its two-line diff in `test/job-pool-validation/pdf-path.postgres.test.ts`, so that the integration compiles. GELB stated that the owner gave it an integration GO for `integration/job-field-governance`. PINK knows that GO only from GELB, not first-hand.
+
+**Change** (`d4f61c1`, test file only, no application change):
+- import `resolveTestJobScope` from `test/support/job-scope`;
+- pass `jobScope: resolveTestJobScope()` to `executeCareerAnalysisPipeline` in the stubbed legacy step.
+
+It closes the `tsc` line (80,79) that every PINK probe had so far patched by `sed`. The helper lives on the peer branch, so the file compiles only against the merged tree. On the PINK branch alone, `tsc` therefore reports two known errors until the integration, both in this file: the missing module `../support/job-scope`, and `jobScope` unknown in `PipelineExecutionOptions`.
+
+**Probe** (PINK branch merged with `8718e3a`, the proof copies of the evidence directories in place, no `sed`):
+- The merge combines the change with GRÜN's earlier edit of the same file (the pool upload and `jobScope` in the ANALYZE body), without a conflict.
+
+**Results:**
+
+| Check | Result |
+| --- | --- |
+| `tsc --noEmit` | 0 errors |
+| `pdf-path.postgres` | 2/2 |
+| ESLint on the file | the same 10 findings as `8705cc7` (5 `no-explicit-any`, 5 unused); none from the change |
+| Regression under the sentinel | 72 files (64 green + 8 live skipped), 522 tests (514 green), **0 network attempts** |
+| Scripts | 92 runs, 80 refused with exit 3, identical to `da59568`/`d54c718` |
+| Gate walk | 74/74 |
+
+Evidence: `evidence/job-scope-gate-d4f61c1-8718e3a/` (G-report, batch results, scripts results, `tsc`, the adopted diff, manifest).
+
+**Status.**
+- No deviation.
+- O-B2-OPEN-READ is unchanged.
+- PINK validates the integration state only when GELB reports it.
+- Main, deployment and live Gemini stay untouched.
+
 ## 4. Boundaries and findings for coordination
 
 - F-JP-1 (closed in `b782793`): `JOB_POOL_CONNECTION.md` §4 followed the per-role `JOB_POOL_JSON_ROLE` design;

@@ -1,0 +1,191 @@
+/**
+ * PINK independent proof of GELB dfb4b63 (owner GO 2026-10-15 "EXCHANGE ARCHIVE"): capture and failure paths, in memory, no
+ * network (the real Gemini Discovery provider behind a fake client). Every case runs twice, with and without the archive, and the
+ * thrown error and the persisted run must be the same both times: the archive observes, it never changes the analysis.
+ */
+import { describe, expect, it } from "vitest";
+import {
+  EXCHANGE_ARCHIVE_WAIT_MS, GeminiCapabilityDiscoveryProvider, InMemoryCandidateSourceBundleRepository, InMemoryCapabilityCoreRepository,
+  InMemoryCapabilityProposalProjectionReferenceRepository, computeSourceBundleHash, createCapabilityProposalProjectionReader, createSourceDocument,
+  runCapabilityConvergence, runCapabilityDiscovery, sha256Utf8, type CapabilityDiscoveryRun, type CapabilityProviderExchangeRecord
+} from "../../lib/career/capability-core";
+import { createJob, type JobRecord } from "../../lib/career/orchestration/job";
+import { renderInvestigationScope } from "../../lib/career/job-scope";
+import {
+  InMemoryProviderExchangeStore, createGeminiExchangeInspector, createGeminiResultInspector, runWithExchangeAttempt, type RetainedProviderExchange
+} from "../../lib/career/result-inspector";
+import { resolveTestJobScope } from "../support/job-scope";
+
+const QUOTE = "Led the migration of the dispatch platform to event-driven services.";
+const cv = createSourceDocument({ docId: "CV", title: "cv.synthetic.pdf", rawContent: QUOTE });
+const kernel = { kernelVersion: "discovery-v1", templateId: "T", versionId: "V", checksum: "C", plainTextContent: "PINK_DISCOVERY_KERNEL" };
+const config = { kernelVersion: "discovery-v1", schemaVersion: "discovery-schema-v1" };
+const scope = resolveTestJobScope();
+const NOW = "2026-10-15T00:00:00.000Z";
+const audit = (examined = 1) => ({ source_documents_examined: examined, capability_count: 1, atomic_capability_count: 1, composite_capability_count: 0, attribution_pass_completed: true, target_state_ownership_pass_completed: true, atomic_extraction_pass_completed: true, method_capability_pass_completed: true, composite_reconstruction_pass_completed: true, global_convergence_pass_completed: true, inventory_reconciliation_pass_completed: true, final_reconciliation_produced_new_capabilities: false, unresolved_target_operations: 0, segments_classified_as_external_source_content: 0, segments_classified_as_target_subject_operation: 0, segments_classified_as_target_subject_designed_target_state: 0, segments_classified_as_target_organization_capability: 0, segments_excluded_due_to_attribution_ambiguity: 0 });
+const output = (overrides: Record<string, unknown> = {}) => ({ kernel_version: "discovery-v1", capabilities: [{ canonical_name: "Migration 🚀 Ünïcödé ﷽ é", capability_scope: "ATOMIC", structural_definition: "d line", primary_domain: null, demonstrated_capability_level: null, model_confidence: 0.9, evidence_mode: "EXPLICIT", evidence: [{ source_document: "CV", location: "body", exact_quote: QUOTE }] }], coverage_audit: audit(), ...overrides });
+/** Valid JSON with CRLF, tabs and trailing whitespace between tokens: never what any serializer would produce. */
+const crlf = (value: unknown) => `\r\n\t${JSON.stringify(value, null, "\t").replaceAll("\n", "\r\n")}\r\n  \t`;
+type Reply = { text?: unknown; finishReason?: string; usageMetadata?: unknown; reject?: boolean; throwingText?: boolean };
+function client(reply: Reply) {
+  let requests = 0;
+  return { get requests() { return requests; }, models: { async generateContent() {
+    requests++;
+    if (reply.reject) throw new Error("socket hang up");
+    const base = { candidates: [{ finishReason: reply.finishReason ?? "STOP" }], modelVersion: "pink-fake-001", responseId: "pink-r", usageMetadata: reply.usageMetadata ?? { promptTokenCount: 1 } };
+    return reply.throwingText ? { ...base, get text() { throw new Error("accessor"); } } : { ...base, text: reply.text };
+  } } };
+}
+
+async function discover(reply: Reply, archive: InMemoryProviderExchangeStore | undefined, repository = new InMemoryCapabilityCoreRepository()) {
+  const fake = client(reply);
+  const outcome = await runCapabilityDiscovery([cv], config, { kernelResolver: { resolve: async () => kernel }, provider: new GeminiCapabilityDiscoveryProvider({ model: "pink-fake", client: fake, now: () => NOW }), repository, investigationScope: renderInvestigationScope(scope), now: () => NOW, ...(archive ? { providerExchangeArchive: archive } : {}) })
+    .then((result) => ({ ok: true as const, kind: result.kind, runId: (result as { run?: CapabilityDiscoveryRun }).run?.runId ?? null }), (error: Error) => ({ ok: false as const, error: `${error.name}|${error.message}` }));
+  return { outcome, repository, requests: fake.requests };
+}
+const allExchanges = async (store: InMemoryProviderExchangeStore) => (store as unknown as { exchanges: Map<string, RetainedProviderExchange> }).exchanges;
+
+describe("PINK: Gemini exchange archive — capture and failure paths (GELB dfb4b63, no network)", () => {
+  it("refusal matrix: each received response is archived once with its stable code and the text exactly as received; outcome identical without archive", async () => {
+    const circular: Record<string, unknown> = { a: 1 }; circular.self = circular;
+    const cases: Array<[string, Reply, { outcome: string; code: string | null; text: string | null } | null]> = [
+      ["valid, CRLF/tabs/unicode", { text: crlf(output()) }, { outcome: "COMPLETED", code: null, text: crlf(output()) }],
+      ["finishReason MAX_TOKENS with valid text", { text: crlf(output()), finishReason: "MAX_TOKENS" }, { outcome: "FAILED", code: "ERR_CAPABILITY_DISCOVERY_STRUCTURED_OUTPUT_INVALID", text: crlf(output()) }],
+      ["finishReason SAFETY, no text", { finishReason: "SAFETY" }, { outcome: "FAILED", code: "ERR_CAPABILITY_DISCOVERY_STRUCTURED_OUTPUT_INVALID", text: null }],
+      ["empty text", { text: "" }, { outcome: "FAILED", code: "ERR_CAPABILITY_DISCOVERY_STRUCTURED_OUTPUT_INVALID", text: "" }],
+      ["non-string text", { text: 42 }, { outcome: "FAILED", code: "ERR_CAPABILITY_DISCOVERY_STRUCTURED_OUTPUT_INVALID", text: null }],
+      ["invalid JSON", { text: "{\"kernel_version\": \"discovery-v1\",\r\n 🚀" }, { outcome: "FAILED", code: "ERR_CAPABILITY_DISCOVERY_STRUCTURED_OUTPUT_INVALID", text: "{\"kernel_version\": \"discovery-v1\",\r\n 🚀" }],
+      ["schema failure (extra key)", { text: JSON.stringify(output({ pink_extra: true })) }, { outcome: "FAILED", code: "ERR_CAPABILITY_DISCOVERY_STRUCTURED_OUTPUT_INVALID", text: JSON.stringify(output({ pink_extra: true })) }],
+      ["kernel version mismatch (runtime refusal)", { text: JSON.stringify(output({ kernel_version: "discovery-v0" })) }, { outcome: "FAILED", code: "ERR_CAPABILITY_KERNEL_VERSION_MISMATCH", text: JSON.stringify(output({ kernel_version: "discovery-v0" })) }],
+      ["coverage audit mismatch (runtime refusal)", { text: JSON.stringify(output({ coverage_audit: audit(2) })) }, { outcome: "FAILED", code: "*", text: JSON.stringify(output({ coverage_audit: audit(2) })) }],
+      ["circular usageMetadata", { text: JSON.stringify(output()), usageMetadata: circular }, { outcome: "COMPLETED", code: null, text: JSON.stringify(output()) }],
+      ["text accessor throws (provider failure, nothing received)", { throwingText: true }, null],
+      ["client rejects (provider failure, nothing received)", { reject: true }, null]
+    ];
+    const report: Record<string, unknown> = {};
+    for (const [name, reply, expected] of cases) {
+      const store = new InMemoryProviderExchangeStore({ retentionMs: 86_400_000 });
+      const withArchive = await discover(reply, store);
+      const without = await discover(reply, undefined);
+      expect(withArchive.outcome, name).toEqual(without.outcome);
+      expect(JSON.stringify(await withArchive.repository.getRunById((withArchive.outcome as { runId?: string }).runId ?? "")), name).toBe(JSON.stringify(await without.repository.getRunById((without.outcome as { runId?: string }).runId ?? "")));
+      const exchanges = [...(await allExchanges(store)).values()];
+      report[name] = { outcome: withArchive.outcome, exchanges: exchanges.map((item) => ({ outcome: item.outcome, errorCode: item.errorCode, textIsExact: expected ? item.response.text === expected.text : null })) };
+      if (expected === null) { expect(exchanges, name).toHaveLength(0); continue; }
+      expect(exchanges, name).toHaveLength(1);
+      const [exchange] = exchanges;
+      expect(exchange.outcome, name).toBe(expected.outcome);
+      if (expected.code === "*") expect(exchange.errorCode, name).toMatch(/^ERR_[A-Z0-9_]+$/); else expect(exchange.errorCode, name).toBe(expected.code);
+      expect(exchange.response.text, name).toBe(expected.text);
+      expect(exchange.response.textSha256, name).toBe(expected.text === null ? null : sha256Utf8(expected.text));
+      expect(exchange.investigationScope, name).toEqual({ scopeHash: sha256Utf8(renderInvestigationScope(scope).text), text: renderInvestigationScope(scope).text });
+      expect(exchange.request, name).toMatchObject({ sourceBundleHash: computeSourceBundleHash([cv]), promptChecksum: "C", provider: "gemini", model: "pink-fake", schemaVersion: "discovery-schema-v1" });
+      expect(exchange.runId, name).toMatch(/^RUN_/);
+      // The run never holds the raw text or the scope text.
+      const run = await withArchive.repository.getRunById(exchange.runId);
+      if (run) { const stored = JSON.stringify(run); expect(stored.includes("\r\n")).toBe(false); expect(stored.includes(renderInvestigationScope(scope).text)).toBe(false); }
+    }
+    expect(Object.keys(report)).toHaveLength(cases.length);
+  });
+
+  it("persistence failures after a valid response: FAILED with the leading ERR_ code, or ERR_UNCLASSIFIED for free text; the error is rethrown unchanged", async () => {
+    const codes: Record<string, unknown> = {};
+    for (const [label, message] of [["coded", "ERR_PINK_SAVE_REFUSED: detail with CV words"], ["free text", "database exploded near 'Led the migration'"], ["lower-case code", "err_pink: x"]] as const) {
+      const store = new InMemoryProviderExchangeStore({ retentionMs: 86_400_000 });
+      const repository = new InMemoryCapabilityCoreRepository();
+      repository.saveRun = async () => { throw new Error(message); };
+      const result = await discover({ text: JSON.stringify(output()) }, store, repository);
+      const [exchange] = [...(await allExchanges(store)).values()];
+      codes[label] = { thrown: result.outcome, outcome: exchange.outcome, errorCode: exchange.errorCode };
+      expect(result.outcome).toEqual({ ok: false, error: `Error|${message}` });
+    }
+    expect(codes).toEqual({
+      coded: { thrown: { ok: false, error: "Error|ERR_PINK_SAVE_REFUSED: detail with CV words" }, outcome: "FAILED", errorCode: "ERR_PINK_SAVE_REFUSED" },
+      "free text": { thrown: { ok: false, error: "Error|database exploded near 'Led the migration'" }, outcome: "FAILED", errorCode: "ERR_UNCLASSIFIED" },
+      "lower-case code": { thrown: { ok: false, error: "Error|err_pink: x" }, outcome: "FAILED", errorCode: "ERR_UNCLASSIFIED" }
+    });
+  });
+
+  it("retry FAILED → COMPLETED on the same RUN_: both kept per attempt, the job view lists both in order, the analysis view shows only the COMPLETED one", async () => {
+    let now = Date.parse("2026-10-15T10:00:00.000Z");
+    const store = new InMemoryProviderExchangeStore({ retentionMs: 86_400_000, now: () => new Date(now) });
+    const repository = new InMemoryCapabilityCoreRepository();
+    const job = createJob("CAREER_ANALYSIS", { sourceType: "BATCH", sourceData: { documents: [{ type: "text", content: QUOTE }], jobScope: scope.selection } } as never);
+    const first = await runWithExchangeAttempt({ jobId: job.jobId, leaseVersion: 1 }, () => discover({ text: "{broken" }, store, repository));
+    now += 1000;
+    const second = await runWithExchangeAttempt({ jobId: job.jobId, leaseVersion: 2 }, () => discover({ text: crlf(output()) }, store, repository));
+    expect([first.outcome.ok, second.outcome.ok]).toEqual([false, true]);
+    const jobs = new Map<string, JobRecord>([[job.jobId, job]]);
+    const view = await createGeminiExchangeInspector({ jobs: { getJob: async (id) => jobs.get(id) ?? null }, exchanges: store }).read(job.jobId);
+    expect(view.exchanges.map((item) => [item.outcome, item.attempt?.leaseVersion, item.runId === (second.outcome as { runId: string }).runId])).toEqual([["FAILED", 1, true], ["COMPLETED", 2, true]]);
+    expect(view.exchanges.every((item) => item.textMatchesSha256 === true && item.scopeTextMatchesScopeHash === true)).toBe(true);
+    // Analysis view over the same store.
+    const references = new InMemoryCapabilityProposalProjectionReferenceRepository();
+    const sourceBundles = new InMemoryCandidateSourceBundleRepository();
+    const runId = (second.outcome as { runId: string }).runId;
+    const convergence = await runCapabilityConvergence((await repository.getRunById(runId))!, { kernelVersion: "convergence-v1", schemaVersion: "convergence-schema-v1", algorithmVersion: "algorithm-v1" }, { kernelResolver: { resolve: async () => ({ ...kernel, kernelVersion: "convergence-v1", checksum: "CC" }) }, provider: { providerName: "pink-spy", model: "m", execute: async (request: { userPrompt: string }) => {
+      const ids = (JSON.parse(request.userPrompt.slice(request.userPrompt.indexOf("["))) as Array<{ candidate_id: string }>).map((item) => item.candidate_id);
+      return { convergenceOutput: { convergence_version: "convergence-v1", groups: [{ group_key: "g", member_candidate_ids: ids, canonical_name: "Migration", capability_scope: "ATOMIC" as const, structural_definition: "d", primary_domain: null }], relations: [], reconciliation_audit: { input_candidate_count: ids.length, grouped_candidate_count: ids.length, group_count: 1, same_capability_merge_count: ids.length - 1, unresolved_relation_count: 0, reconciliation_pass_completed: true } } };
+    } }, repository });
+    const analysisId = job.jobId.replace("JOB_", "ANL_");
+    await references.save({ analysisId, jobId: job.jobId, discoveryRunId: runId, convergenceRunId: convergence.run.convergenceRunId, sourceBundleHash: computeSourceBundleHash([cv]), createdAt: convergence.run.completedAt } as never);
+    const inspector = (exchanges: { completedForRun(runId: string): Promise<RetainedProviderExchange[]> } | undefined) => createGeminiResultInspector({ references, capabilityRepository: repository, sourceBundles, jobs: { getJob: async (id) => jobs.get(id) ?? null }, projection: createCapabilityProposalProjectionReader({ references, capabilityRepository: repository }), ...(exchanges ? { exchanges } : {}) });
+    const shown = (await inspector(store).read(analysisId)).originalGeminiResponse as Record<string, unknown>;
+    expect([shown.state, shown.text, (shown.attempt as { leaseVersion: number }).leaseVersion, shown.parserResultMatchesText]).toEqual(["RETAINED", crlf(output()), 2, true]);
+    // Request-identity mismatches and a second COMPLETED exchange are lineage errors; only FAILED → NOT_RETAINED.
+    const completed = (await store.completedForRun(runId))[0];
+    const mismatches: Record<string, string> = {};
+    for (const [field, value] of [["sourceBundleHash", "x"], ["promptChecksum", "x"], ["provider", "x"], ["model", "x"], ["schemaVersion", "x"]] as const) {
+      const forged = { ...completed, request: { ...completed.request, [field]: value } };
+      mismatches[field] = await inspector({ completedForRun: async () => [forged] }).read(analysisId).then(() => "READ", (error: { status: number }) => String(error.status));
+    }
+    mismatches.twoCompleted = await inspector({ completedForRun: async () => [completed, { ...completed, exchangeId: "EXC_OTHER" }] }).read(analysisId).then(() => "READ", (error: { status: number }) => String(error.status));
+    mismatches.foreignRun = await inspector({ completedForRun: async () => [{ ...completed, runId: "RUN_PINK_FOREIGN" }] }).read(analysisId).then(() => "READ", (error: { status: number }) => String(error.status));
+    mismatches.scopeOfB = await inspector({ completedForRun: async () => [{ ...completed, investigationScope: { scopeHash: sha256Utf8("other scope"), text: "other scope" } }] }).read(analysisId).then(() => "READ", (error: { status: number }) => String(error.status));
+    mismatches.failedOutcome = await inspector({ completedForRun: async () => [{ ...completed, outcome: "FAILED" as const, errorCode: "ERR_X" }] }).read(analysisId).then(() => "READ", (error: { status: number }) => String(error.status));
+    mismatches.scopeRemoved = await inspector({ completedForRun: async () => [{ ...completed, investigationScope: null }] }).read(analysisId).then(() => "READ", (error: { status: number }) => String(error.status));
+    expect(mismatches).toEqual({ sourceBundleHash: "409", promptChecksum: "409", provider: "409", model: "409", schemaVersion: "409", twoCompleted: "409", foreignRun: "409", scopeOfB: "409", failedOutcome: "409", scopeRemoved: "409" });
+    expect((await inspector({ completedForRun: async () => [] }).read(analysisId)).originalGeminiResponse).toEqual({ state: "NOT_RETAINED" });
+  });
+
+  it("isolation: each job sees only its own attempts; an exchange outside any attempt belongs to no job; an unknown job is 404", async () => {
+    const store = new InMemoryProviderExchangeStore({ retentionMs: 86_400_000 });
+    const jobA = createJob("CAREER_ANALYSIS", { sourceType: "BATCH", sourceData: { documents: [], jobScope: scope.selection } } as never);
+    const jobB = createJob("CAREER_ANALYSIS", { sourceType: "BATCH", sourceData: { documents: [], jobScope: scope.selection } } as never);
+    await runWithExchangeAttempt({ jobId: jobA.jobId, leaseVersion: 1 }, () => discover({ text: "{a" }, store));
+    await runWithExchangeAttempt({ jobId: jobB.jobId, leaseVersion: 1 }, () => discover({ text: "{b" }, store));
+    await discover({ text: "{none" }, store);
+    // Concurrent attempts keep their own attribution (AsyncLocalStorage, not a global).
+    await Promise.all([runWithExchangeAttempt({ jobId: jobA.jobId, leaseVersion: 2 }, () => discover({ text: "{a2" }, store)), runWithExchangeAttempt({ jobId: jobB.jobId, leaseVersion: 2 }, () => discover({ text: "{b2" }, store))]);
+    const jobs = new Map<string, JobRecord>([[jobA.jobId, jobA], [jobB.jobId, jobB]]);
+    const inspector = createGeminiExchangeInspector({ jobs: { getJob: async (id) => jobs.get(id) ?? null }, exchanges: store });
+    expect((await inspector.read(jobA.jobId)).exchanges.map((item) => item.response.text).sort()).toEqual(["{a", "{a2"]);
+    expect((await inspector.read(jobB.jobId)).exchanges.map((item) => item.response.text).sort()).toEqual(["{b", "{b2"]);
+    expect([...(await allExchanges(store)).values()].filter((item) => item.attempt === null).map((item) => item.response.text)).toEqual(["{none"]);
+    await expect(inspector.read("JOB_PINK_UNKNOWN")).rejects.toMatchObject({ status: 404 });
+    // A store that hands a foreign attempt to a job view is a lineage error.
+    const foreign = createGeminiExchangeInspector({ jobs: { getJob: async (id) => jobs.get(id) ?? null }, exchanges: { forJob: async () => (await store.forJob(jobB.jobId)) } });
+    await expect(foreign.read(jobA.jobId)).rejects.toMatchObject({ status: 409 });
+  });
+
+  it("bounded wait: a hanging archive costs at most EXCHANGE_ARCHIVE_WAIT_MS on success and on failure; a slow write still lands", async () => {
+    expect(EXCHANGE_ARCHIVE_WAIT_MS).toBe(1000);
+    const hanging = { retain: () => new Promise<void>(() => undefined) };
+    for (const reply of [{ text: JSON.stringify(output()) }, { text: "{broken" }]) {
+      const started = Date.now();
+      const result = await runCapabilityDiscovery([cv], config, { kernelResolver: { resolve: async () => kernel }, provider: new GeminiCapabilityDiscoveryProvider({ model: "pink-fake", client: client(reply) }), repository: new InMemoryCapabilityCoreRepository(), providerExchangeArchive: hanging as never }).then(() => "COMPLETED", (error: Error) => error.message);
+      const took = Date.now() - started;
+      expect(took).toBeGreaterThanOrEqual(950);
+      expect(took).toBeLessThan(2000);
+      expect(result).toBe(reply.text === "{broken" ? "ERR_CAPABILITY_DISCOVERY_STRUCTURED_OUTPUT_INVALID" : "COMPLETED");
+    }
+    const landed: CapabilityProviderExchangeRecord[] = [];
+    const slow = { retain: (record: CapabilityProviderExchangeRecord) => new Promise<void>((done) => setTimeout(() => { landed.push(record); done(); }, 1600)) };
+    const started = Date.now();
+    await runCapabilityDiscovery([cv], config, { kernelResolver: { resolve: async () => kernel }, provider: new GeminiCapabilityDiscoveryProvider({ model: "pink-fake", client: client({ text: crlf(output()) }) }), repository: new InMemoryCapabilityCoreRepository(), providerExchangeArchive: slow });
+    expect(Date.now() - started).toBeLessThan(1500);
+    expect(landed).toHaveLength(0);
+    await new Promise((done) => setTimeout(done, 800));
+    expect(landed.map((record) => record.response.text)).toEqual([crlf(output())]);
+  });
+});

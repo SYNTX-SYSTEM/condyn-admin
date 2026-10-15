@@ -1,0 +1,107 @@
+/**
+ * PINK independent proof of GELB 9e54662 on PostgreSQL (disposable database): the inspector route, called as Next calls it,
+ * refuses every closed case with one byte-identical 404 (no oracle between "switched off", "misconfigured" and "wrong token"),
+ * answers the open case read-only with NOT_RETAINED, and no table of the database holds the received Gemini text or the scope
+ * text after a real scoped Discovery → Convergence. No network (fake Gemini client; run under PINK's net sentinel).
+ */
+import { afterAll, beforeAll, describe, expect, it } from "vitest";
+import { sql } from "drizzle-orm";
+import { db, initDbSchema } from "../../lib/career/db/client";
+import type { CapabilityDiscoveryRun } from "../../lib/career/capability-core";
+import { renderInvestigationScope } from "../../lib/career/job-scope";
+import { RESULT_INSPECTOR_HEADER } from "../../lib/career/result-inspector";
+import { GET } from "../../app/api/career/analyses/[analysisId]/gemini-result/route";
+import { resolveTestJobScope } from "../support/job-scope";
+import { rawGeminiText, seedScopedAnalysis } from "./fixtures/inspector-analysis";
+
+const PDF_CONTENT = "PINK_PDF_BODY_cGctcHJvYmUtb25seQ";
+const RAW_PROBE = "u0050";
+const TOKEN = "pink-pg-inspector-token-0123456789abcdef";
+const RAW = rawGeminiText("pg");
+const call = async (analysisId: string, env: { flag?: string; token?: string }, header?: string) => {
+  for (const [key, value] of [["CONDYN_RESULT_INSPECTOR", env.flag], ["CONDYN_RESULT_INSPECTOR_TOKEN", env.token]] as const) { if (value === undefined) delete process.env[key]; else process.env[key] = value; }
+  const response = await GET(new Request(`http://local/api/career/analyses/${analysisId}/gemini-result`, { headers: header === undefined ? {} : { [RESULT_INSPECTOR_HEADER]: header } }), { params: Promise.resolve({ analysisId }) });
+  return { status: response.status, cacheControl: response.headers.get("cache-control"), body: await response.text() };
+};
+
+/** The values of the rendered scope lines that are long enough to be specific (descriptions, hints, organisation lines). */
+const longScopeValues = () => renderInvestigationScope(resolveTestJobScope()).text.split("\n").map((line) => line.slice(line.indexOf(": ") + 2)).filter((value) => value.length > 40);
+
+describe("PINK: Gemini Result Inspector on PostgreSQL (GELB 9e54662, no Gemini)", () => {
+  const scope = resolveTestJobScope();
+  let analysisId = "";
+  let jobId = "";
+  let run: CapabilityDiscoveryRun;
+  let requests = 0;
+
+  beforeAll(async () => {
+    await initDbSchema();
+    const seeded = await seedScopedAnalysis(scope, PDF_CONTENT, RAW, () => { requests++; });
+    ({ analysisId, jobId, run } = seeded);
+    requests = 0;
+  });
+  // A PENDING fixture job must not stay in the queue for later suites.
+  afterAll(async () => {
+    delete process.env.CONDYN_RESULT_INSPECTOR; delete process.env.CONDYN_RESULT_INSPECTOR_TOKEN;
+    await db.execute(sql`DELETE FROM career_analysis_jobs WHERE job_id = ${jobId}`);
+  });
+
+  it("every closed case answers one byte-identical 404 (status, no-store, body) for an existing analysis", async () => {
+    const closed = [
+      await call(analysisId, {}, TOKEN),
+      await call(analysisId, { flag: "0", token: TOKEN }, TOKEN),
+      await call(analysisId, { flag: "true", token: TOKEN }, TOKEN),
+      await call(analysisId, { flag: "1" }, TOKEN),
+      await call(analysisId, { flag: "1", token: TOKEN.slice(0, 31) }, TOKEN.slice(0, 31)),
+      await call(analysisId, { flag: "1", token: TOKEN }),
+      await call(analysisId, { flag: "1", token: TOKEN }, ""),
+      await call(analysisId, { flag: "1", token: TOKEN }, TOKEN.toUpperCase()),
+      await call(analysisId, { flag: "1", token: TOKEN }, `${TOKEN}x`),
+      await call(analysisId, { flag: "1", token: TOKEN }, TOKEN.slice(0, -1))
+    ];
+    expect(new Set(closed.map((entry) => JSON.stringify(entry))).size).toBe(1);
+    expect(closed[0]).toEqual({ status: 404, cacheControl: "no-store", body: JSON.stringify({ success: false, issues: [{ code: "ERR_NOT_FOUND" }] }) });
+    expect(requests).toBe(0);
+  });
+
+  it("open: unknown analysis 404 with its own code; the existing one 200, no-store, NOT_RETAINED, no raw text, scope text or document body", async () => {
+    const unknown = await call("ANL_PINK_DOES_NOT_EXIST", { flag: "1", token: TOKEN }, TOKEN);
+    expect([unknown.status, JSON.parse(unknown.body).issues[0].code]).toEqual([404, "ERR_RESULT_INSPECTION_NOT_FOUND"]);
+    const open = await call(analysisId, { flag: "1", token: TOKEN }, TOKEN);
+    expect([open.status, open.cacheControl]).toEqual([200, "no-store"]);
+    const inspection = JSON.parse(open.body).inspection;
+    expect(inspection.originalGeminiResponse).toEqual({ state: "NOT_RETAINED" });
+    expect(inspection.investigationInput.investigationScope).toEqual({ state: "NOT_RETAINED", scopeHash: run.investigationScope!.scopeHash });
+    expect(inspection.investigationInput.discoveryRunId).toBe(run.runId);
+    expect(open.body.includes(RAW_PROBE)).toBe(false);
+    expect(open.body.includes(PDF_CONTENT)).toBe(false);
+    const long = longScopeValues();
+    expect(long.length).toBeGreaterThan(5);
+    for (const value of long) expect(open.body.includes(value), value).toBe(false);
+    // The read changed nothing: a second read is byte-identical.
+    expect((await call(analysisId, { flag: "1", token: TOKEN }, TOKEN)).body).toBe(open.body);
+    expect(requests).toBe(0);
+  });
+
+  it("no table of the database holds the received text (raw marker) or any long scope line", async () => {
+    const tables = (await db.execute(sql`SELECT table_name FROM information_schema.tables WHERE table_schema = 'public' AND table_type = 'BASE TABLE' ORDER BY 1`)) as unknown as Array<{ table_name: string }>;
+    expect(tables.length).toBeGreaterThan(10);
+    const long = longScopeValues();
+    const hits: string[] = [];
+    const parsedHits: string[] = [];
+    let rows = 0;
+    for (const { table_name } of tables) {
+      const dump = (await db.execute(sql.raw(`SELECT t::text AS row FROM "${table_name}" t`))) as unknown as Array<{ row: string }>;
+      rows += dump.length;
+      for (const { row } of dump) {
+        if (row.includes(RAW_PROBE)) hits.push(`${table_name}: raw marker`);
+        if (row.includes("PINK migration ")) parsedHits.push(table_name);
+        for (const line of long) if (row.includes(line)) hits.push(`${table_name}: ${line.slice(0, 40)}`);
+      }
+    }
+    expect(rows).toBeGreaterThan(3);
+    expect(hits).toEqual([]);
+    // Positive control: the scan reaches the run — the parsed form of the marker ("PINK migration …") is stored somewhere.
+    expect(parsedHits.length).toBeGreaterThan(0);
+  });
+});

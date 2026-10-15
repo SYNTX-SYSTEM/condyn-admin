@@ -1,0 +1,24 @@
+// PINK cross-version probe (temporary, not committed): the unscoped Discovery/Convergence path, written as JSON to
+// PINK_IDENTITY_OUT; run unchanged in 027abf3 and e643e96 and compared byte for byte outside.
+import { writeFileSync } from "node:fs";
+import { it } from "vitest";
+import { InMemoryCapabilityCoreRepository, buildCapabilityDiscoveryPrompt, buildCapabilityDiscoveryRunId, createSourceDocument, runCapabilityConvergence, runCapabilityDiscovery } from "../../lib/career/capability-core";
+const SOURCE = "Led the migration of the dispatch platform to event-driven services.";
+const docs = [createSourceDocument({ docId: "CV", title: "cv.synthetic.pdf", rawContent: SOURCE }), createSourceDocument({ docId: "PROFILE", title: "profile.md", rawContent: "Designed the requirement intake for the platform team." })];
+const kernel = { kernelVersion: "discovery-v1", templateId: "T", versionId: "V", checksum: "C", plainTextContent: "PINK_DISCOVERY_KERNEL" };
+const convergenceKernel = { kernelVersion: "convergence-v1", templateId: "T", versionId: "V", checksum: "CC", plainTextContent: "PINK_CONVERGENCE_KERNEL" };
+const audit = (count: number) => ({ source_documents_examined: 2, capability_count: count, atomic_capability_count: count, composite_capability_count: 0, attribution_pass_completed: true, target_state_ownership_pass_completed: true, atomic_extraction_pass_completed: true, method_capability_pass_completed: true, composite_reconstruction_pass_completed: true, global_convergence_pass_completed: true, inventory_reconciliation_pass_completed: true, final_reconciliation_produced_new_capabilities: false, unresolved_target_operations: 0, segments_classified_as_external_source_content: 0, segments_classified_as_target_subject_operation: 0, segments_classified_as_target_subject_designed_target_state: 0, segments_classified_as_target_organization_capability: 0, segments_excluded_due_to_attribution_ambiguity: 0 });
+it("unscoped identity", async () => {
+  const out: Record<string, unknown> = {};
+  out.prompt = buildCapabilityDiscoveryPrompt(docs, kernel);
+  out.runIds = [buildCapabilityDiscoveryRunId({ sourceBundleHash: "s", kernelVersion: "k", promptChecksum: "p", provider: "gemini", model: "gemini-3.1-pro-preview", schemaVersion: "1" })];
+  const repository = new InMemoryCapabilityCoreRepository();
+  const requests: unknown[] = [];
+  const provider = { providerName: "pink-spy", model: "m", execute: async (request: unknown) => { requests.push(request); const capabilities = [{ canonical_name: "Event-driven migration", capability_scope: "ATOMIC", structural_definition: "d", primary_domain: null, demonstrated_capability_level: null, model_confidence: 0.9, evidence_mode: "EXPLICIT", evidence: [{ source_document: "CV", location: "body", exact_quote: SOURCE }] }]; return { kernelOutput: { kernel_version: "discovery-v1", capabilities, coverage_audit: audit(1) } }; } };
+  const discovery: any = await runCapabilityDiscovery(docs, { kernelVersion: "discovery-v1", schemaVersion: "discovery-schema-v1" }, { kernelResolver: { resolve: async () => kernel }, provider: provider as any, repository, now: () => "2026-10-15T00:00:00.000Z" });
+  out.discovery = discovery; out.requests = requests;
+  const convergenceProvider = { providerName: "pink-spy", model: "m", execute: async (request: { userPrompt: string }) => { const ids = (JSON.parse(request.userPrompt.slice(request.userPrompt.indexOf("["))) as Array<{ candidate_id: string }>).map((item) => item.candidate_id); return { convergenceOutput: { convergence_version: "convergence-v1", groups: [{ group_key: "g", member_candidate_ids: ids, canonical_name: "Event-driven migration", capability_scope: "ATOMIC", structural_definition: "d", primary_domain: null }], relations: [], reconciliation_audit: { input_candidate_count: ids.length, grouped_candidate_count: ids.length, group_count: 1, same_capability_merge_count: ids.length - 1, unresolved_relation_count: 0, reconciliation_pass_completed: true } } }; } };
+  const convergence: any = await runCapabilityConvergence((await repository.getRunById(discovery.run.runId))!, { kernelVersion: "convergence-v1", schemaVersion: "convergence-schema-v1", algorithmVersion: "algorithm-v1" }, { kernelResolver: { resolve: async () => convergenceKernel }, provider: convergenceProvider as any, repository, now: () => "2026-10-15T00:00:00.000Z" } as any);
+  out.convergence = { kind: convergence.kind, convergenceRunId: convergence.run.convergenceRunId, discoveryRunId: convergence.run.discoveryRunId };
+  writeFileSync(process.env.PINK_IDENTITY_OUT as string, JSON.stringify(out, null, 1));
+});

@@ -1,0 +1,531 @@
+{
+  "tip": "df2e84e",
+  "recordedAt": "2026-10-15T06:52:59.040Z",
+  "passed": 74,
+  "total": 74,
+  "deviations": [],
+  "checks": [
+    {
+      "id": "G-01",
+      "name": "application opens on the Job Pool screen (shell focus FIELD)",
+      "ok": true,
+      "detail": "focus FIELD"
+    },
+    {
+      "id": "G-01",
+      "name": "no job is selected at open (indicator NONE)",
+      "ok": true,
+      "detail": "indicator NONE"
+    },
+    {
+      "id": "G-02",
+      "name": "no valid pool: Capability field locked",
+      "ok": true,
+      "detail": "{\"reachable\":false,\"disabled\":true,\"focusAfter\":\"FIELD\"}"
+    },
+    {
+      "id": "G-02",
+      "name": "no valid pool: ANALYZE not executable, no request leaves the page",
+      "ok": true,
+      "detail": "{\"staged\":false,\"present\":false,\"disabled\":true,\"blockedAttr\":null,\"message\":null,\"postsOnForcedClick\":0}"
+    },
+    {
+      "id": "G-02",
+      "name": "no valid pool: the owner's sentence stands at the trigger when it is shown",
+      "ok": true,
+      "detail": "null"
+    },
+    {
+      "id": "G-02",
+      "name": "unknown pool in the URL: Capability field locked",
+      "ok": true,
+      "detail": "{\"reachable\":false,\"disabled\":true,\"focusAfter\":\"FIELD\"}"
+    },
+    {
+      "id": "G-02",
+      "name": "unknown pool in the URL: ANALYZE not executable",
+      "ok": true,
+      "detail": "{\"staged\":false,\"present\":false,\"disabled\":true,\"blockedAttr\":null,\"message\":null,\"postsOnForcedClick\":0}"
+    },
+    {
+      "id": "G-03",
+      "name": "URL focus=CAPABILITY without a job: the shell stays on the Job Field",
+      "ok": true,
+      "detail": "focus FIELD"
+    },
+    {
+      "id": "G-03",
+      "name": "pool without a job: ←/Home and syntx-exit-btn do not open the Capability field",
+      "ok": true,
+      "detail": "{\"gate\":\"AWAITING_JOB\",\"exitDisabled\":true,\"focusAfterKeys\":\"FIELD\",\"focusAfterExit\":\"FIELD\"}"
+    },
+    {
+      "id": "G-03",
+      "name": "pool loaded without a job: indicator NONE",
+      "ok": true,
+      "detail": "NONE"
+    },
+    {
+      "id": "G-03",
+      "name": "pool loaded without a job: Capability field locked",
+      "ok": true,
+      "detail": "{\"reachable\":false,\"disabled\":true,\"focusAfter\":\"FIELD\"}"
+    },
+    {
+      "id": "G-03",
+      "name": "pool loaded without a job: ANALYZE not executable, no request",
+      "ok": true,
+      "detail": "{\"staged\":false,\"present\":false,\"disabled\":true,\"blockedAttr\":null,\"message\":null,\"postsOnForcedClick\":0}"
+    },
+    {
+      "id": "G-03",
+      "name": "pool loaded without a job: the owner's sentence verbatim at the trigger when shown",
+      "ok": true,
+      "detail": "null"
+    },
+    {
+      "id": "G-04",
+      "name": "ROLE: an explicit job selection action exists",
+      "ok": true,
+      "detail": "1"
+    },
+    {
+      "id": "G-04",
+      "name": "after the explicit selection the indicator is VALID and names the role",
+      "ok": true,
+      "detail": "{\"state\":\"VALID\",\"text\":\"JOBDistributed Systems ArchitectAlpha Industrial Systems · PINK validation pool\"}"
+    },
+    {
+      "id": "G-04",
+      "name": "the selection is the exact scope in the URL (pool + role)",
+      "ok": true,
+      "detail": "{\"focus\":\"FIELD\",\"analysisId\":\"ANL_PINK_JOB_SCOPE_GATE\",\"jobPoolUploadId\":\"JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7\",\"jobRoleId\":\"role_pink_alpha_architect\",\"jobScopePoolUploadId\":\"JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7\",\"jobScopeRoleId\":\"role_pink_alpha_architect\"}"
+    },
+    {
+      "id": "G-09",
+      "name": "no closure glyph (✓ ✔ ☑) in the Job Field after the job selection (R1 / B-SYNTX-CLOSURE)",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "id": "G-08",
+      "name": "VALID scope visible and uncovered at REQUIREMENT, ROLE, ORGANIZATION and FIELD (1600 px)",
+      "ok": true,
+      "detail": "{\"FIELD\":{\"kind\":\"FIELD\",\"state\":\"VALID\",\"present\":true,\"inViewport\":true,\"owned\":true,\"text\":\"JOBDistributed Systems ArchitectAlpha Industrial Systems · PINK validation pool\",\"opacity\":\"1\",\"visibility\":\"visible\"},\"ORGANIZATION\":{\"kind\":\"ORGANIZATION\",\"state\":\"VALID\",\"present\":true,\"inViewport\":true,\"owned\":true,\"text\":\"JOBDistributed Systems ArchitectAlpha Industrial Systems · PINK validation pool\",\"opacity\":\"1\",\"visibility\":\"visible\"},\"ROLE\":{\"kind\":\"ROLE\",\"state\":\"VALID\",\"present\":true,\"inViewport\":true,\"owned\":true,\"text\":\"JOBDistributed Systems ArchitectAlpha Industrial Systems · PINK validation pool\",\"opacity\":\"1\",\"visibility\":\"visible\"},\"REQUIREMENT\":{\"kind\":\"REQUIREMENT\",\"state\":\"VALID\",\"present\":true,\"inViewport\":true,\"owned\":true,\"text\":\"JOBDistributed Systems ArchitectAlpha Industrial Systems · PINK validation pool\",\"opacity\":\"1\",\"visibility\":\"visible\"}}"
+    },
+    {
+      "id": "G-04",
+      "name": "URL focus=CAPABILITY with a valid job: the Capability field opens once the scope is VALID",
+      "ok": true,
+      "detail": "focus CAPABILITY"
+    },
+    {
+      "id": "G-04",
+      "name": "valid pool + valid job: Capability field reachable",
+      "ok": true,
+      "detail": "{\"reachable\":true,\"disabled\":false,\"focusAfter\":\"CAPABILITY\"}"
+    },
+    {
+      "id": "G-08",
+      "name": "VALID scope visible and uncovered in the Capability field (1600 px)",
+      "ok": true,
+      "detail": "{\"present\":true,\"inViewport\":true,\"owned\":true,\"text\":\"JOBDistributed Systems ArchitectAlpha Industrial Systems · PINK validation pool\",\"opacity\":\"1\",\"visibility\":\"visible\"}"
+    },
+    {
+      "id": "G-04",
+      "name": "valid pool + valid job: ANALYZE present and enabled, no blocking sentence",
+      "ok": true,
+      "detail": "{\"staged\":true,\"present\":true,\"disabled\":false,\"blockedAttr\":\"false\",\"message\":null,\"postsOnForcedClick\":0}"
+    },
+    {
+      "id": "G-04",
+      "name": "ANALYZE sends exactly one request carrying exactly { jobPoolUploadId, poolRoleId } of the selection",
+      "ok": true,
+      "detail": "{\"requests\":1,\"jobScope\":{\"jobPoolUploadId\":\"JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7\",\"poolRoleId\":\"role_pink_alpha_architect\"}}"
+    },
+    {
+      "id": "G-04",
+      "name": "the scoped request is accepted (202) and enqueued once (no worker runs: no Gemini call)",
+      "ok": true,
+      "detail": "{\"status\":202,\"enqueued\":1}"
+    },
+    {
+      "id": "G-05",
+      "name": "an explicit way to remove the job selection exists in the UI (reached from the Capability field via the indicator)",
+      "ok": true,
+      "detail": "1 control(s)"
+    },
+    {
+      "id": "G-05",
+      "name": "after the removal the indicator shows NONE, visible and uncovered",
+      "ok": true,
+      "detail": "{\"state\":\"NONE\",\"present\":true,\"inViewport\":true,\"owned\":true,\"text\":\"JOBNO JOB SELECTED\",\"opacity\":\"1\",\"visibility\":\"visible\"}"
+    },
+    {
+      "id": "G-05",
+      "name": "after the removal the scope parameters are gone from the URL, the analysis stays",
+      "ok": true,
+      "detail": "{\"focus\":\"FIELD\",\"analysisId\":\"ANL_PINK_JOB_SCOPE_GATE\",\"jobPoolUploadId\":\"JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7\",\"jobOrganizationId\":\"org_pink_alpha\",\"jobRoleId\":\"role_pink_alpha_architect\"}"
+    },
+    {
+      "id": "G-05",
+      "name": "after the removal the shell is on the Job Field and the Capability gate is closed",
+      "ok": true,
+      "detail": "{\"focus\":\"FIELD\",\"gate\":\"AWAITING_JOB\"}"
+    },
+    {
+      "id": "G-05",
+      "name": "the removal itself sends no analysis request",
+      "ok": true,
+      "detail": "0 request(s)"
+    },
+    {
+      "id": "G-05",
+      "name": "after the removal: Capability field locked",
+      "ok": true,
+      "detail": "{\"reachable\":false,\"disabled\":true,\"focusAfter\":\"FIELD\"}"
+    },
+    {
+      "id": "G-05",
+      "name": "after the removal: ←/Home and syntx-exit-btn do not open the Capability field",
+      "ok": true,
+      "detail": "{\"gate\":\"AWAITING_JOB\",\"exitDisabled\":true,\"focusAfterKeys\":\"FIELD\",\"focusAfterExit\":\"FIELD\"}"
+    },
+    {
+      "id": "G-05",
+      "name": "after the removal with an analysis in flight: ANALYZE not executable, no request",
+      "ok": true,
+      "detail": "{\"staged\":false,\"present\":true,\"disabled\":true,\"blockedAttr\":\"true\",\"message\":null,\"postsOnForcedClick\":0}"
+    },
+    {
+      "id": "G-05",
+      "name": "after the removal and a reload the job stays removed (indicator NONE)",
+      "ok": true,
+      "detail": "NONE"
+    },
+    {
+      "id": "G-05",
+      "name": "removal without an analysis in flight: a source is staged and ANALYZE is enabled before the removal",
+      "ok": true,
+      "detail": "{\"capability\":{\"reachable\":true,\"disabled\":false,\"focusAfter\":\"CAPABILITY\"},\"trigger\":{\"staged\":true,\"present\":true,\"disabled\":false,\"blockedAttr\":\"false\",\"message\":null,\"postsOnForcedClick\":0}}"
+    },
+    {
+      "id": "G-05",
+      "name": "removal without an analysis in flight: indicator NONE, the staged source stays, ANALYZE disabled with the owner's sentence verbatim, no request",
+      "ok": true,
+      "detail": "{\"state\":\"NONE\",\"sourceStillStaged\":true,\"disabled\":true,\"message\":\"Bitte wähle einen Job aus einem Pool aus.\",\"requests\":0}"
+    },
+    {
+      "id": "G-05",
+      "name": "removed (scope parameters absent): indicator shows the absence or invalidity",
+      "ok": true,
+      "detail": "{\"state\":\"NONE\",\"present\":true,\"inViewport\":true,\"owned\":true,\"text\":\"JOBNO JOB SELECTED\",\"opacity\":\"1\",\"visibility\":\"visible\"}"
+    },
+    {
+      "id": "G-05",
+      "name": "removed (scope parameters absent): Capability field locked",
+      "ok": true,
+      "detail": "{\"reachable\":false,\"disabled\":true,\"focusAfter\":\"FIELD\"}"
+    },
+    {
+      "id": "G-05",
+      "name": "removed (scope parameters absent): ANALYZE not executable, no request",
+      "ok": true,
+      "detail": "{\"staged\":false,\"present\":false,\"disabled\":true,\"blockedAttr\":null,\"message\":null,\"postsOnForcedClick\":0}"
+    },
+    {
+      "id": "G-05",
+      "name": "role not in the pool: indicator shows the absence or invalidity",
+      "ok": true,
+      "detail": "{\"state\":\"INVALID\",\"present\":true,\"inViewport\":true,\"owned\":true,\"text\":\"JOBJOB NOT VALIDrole_pink_does_not_exist\",\"opacity\":\"1\",\"visibility\":\"visible\"}"
+    },
+    {
+      "id": "G-05",
+      "name": "role not in the pool: Capability field locked",
+      "ok": true,
+      "detail": "{\"reachable\":false,\"disabled\":true,\"focusAfter\":\"FIELD\"}"
+    },
+    {
+      "id": "G-05",
+      "name": "role not in the pool: ANALYZE not executable, no request",
+      "ok": true,
+      "detail": "{\"staged\":false,\"present\":false,\"disabled\":true,\"blockedAttr\":null,\"message\":null,\"postsOnForcedClick\":0}"
+    },
+    {
+      "id": "G-05",
+      "name": "pool not ACTIVE (DRAFT): indicator shows the absence or invalidity",
+      "ok": true,
+      "detail": "{\"state\":\"INVALID\",\"present\":true,\"inViewport\":true,\"owned\":true,\"text\":\"JOBJOB NOT VALIDrole_pink_alpha_architect\",\"opacity\":\"1\",\"visibility\":\"visible\"}"
+    },
+    {
+      "id": "G-05",
+      "name": "pool not ACTIVE (DRAFT): Capability field locked",
+      "ok": true,
+      "detail": "{\"reachable\":false,\"disabled\":true,\"focusAfter\":\"FIELD\"}"
+    },
+    {
+      "id": "G-05",
+      "name": "pool not ACTIVE (DRAFT): ANALYZE not executable, no request",
+      "ok": true,
+      "detail": "{\"staged\":false,\"present\":false,\"disabled\":true,\"blockedAttr\":null,\"message\":null,\"postsOnForcedClick\":0}"
+    },
+    {
+      "id": "G-05",
+      "name": "pool unknown: indicator shows the absence or invalidity",
+      "ok": true,
+      "detail": "{\"state\":\"INVALID\",\"present\":true,\"inViewport\":true,\"owned\":true,\"text\":\"JOBJOB NOT VALIDrole_pink_alpha_architect\",\"opacity\":\"1\",\"visibility\":\"visible\"}"
+    },
+    {
+      "id": "G-05",
+      "name": "pool unknown: Capability field locked",
+      "ok": true,
+      "detail": "{\"reachable\":false,\"disabled\":true,\"focusAfter\":\"FIELD\"}"
+    },
+    {
+      "id": "G-05",
+      "name": "pool unknown: ANALYZE not executable, no request",
+      "ok": true,
+      "detail": "{\"staged\":false,\"present\":false,\"disabled\":true,\"blockedAttr\":null,\"message\":null,\"postsOnForcedClick\":0}"
+    },
+    {
+      "id": "G-05",
+      "name": "scope malformed: indicator shows the absence or invalidity",
+      "ok": true,
+      "detail": "{\"state\":\"NONE\",\"present\":true,\"inViewport\":true,\"owned\":true,\"text\":\"JOBNO JOB SELECTED\",\"opacity\":\"1\",\"visibility\":\"visible\"}"
+    },
+    {
+      "id": "G-05",
+      "name": "scope malformed: Capability field locked",
+      "ok": true,
+      "detail": "{\"reachable\":false,\"disabled\":true,\"focusAfter\":\"FIELD\"}"
+    },
+    {
+      "id": "G-05",
+      "name": "scope malformed: ANALYZE not executable, no request",
+      "ok": true,
+      "detail": "{\"staged\":false,\"present\":false,\"disabled\":true,\"blockedAttr\":null,\"message\":null,\"postsOnForcedClick\":0}"
+    },
+    {
+      "id": "G-08",
+      "name": "NONE scope visible and uncovered in the Job Field at 1280 × 720",
+      "ok": true,
+      "detail": "{\"state\":\"NONE\",\"present\":true,\"inViewport\":true,\"owned\":true,\"text\":\"JOBNO JOB SELECTED\",\"opacity\":\"1\",\"visibility\":\"visible\"}"
+    },
+    {
+      "id": "G-08",
+      "name": "VALID scope visible and uncovered in the Job Field at 1280 × 720",
+      "ok": true,
+      "detail": "{\"state\":\"VALID\",\"present\":true,\"inViewport\":true,\"owned\":true,\"text\":\"JOBDistributed Systems ArchitectAlpha Industrial Systems · PINK validation pool\",\"opacity\":\"1\",\"visibility\":\"visible\"}"
+    },
+    {
+      "id": "G-06",
+      "name": "direct POST, no jobScope: 400 ERR_JOB_SCOPE_REQUIRED, the owner's sentence, nothing enqueued",
+      "ok": true,
+      "detail": "{\"status\":400,\"code\":\"ERR_JOB_SCOPE_REQUIRED\",\"message\":\"Bitte wähle einen Job aus einem Pool aus.\",\"jobId\":null,\"enqueued\":0}"
+    },
+    {
+      "id": "G-06",
+      "name": "direct POST, jobScope null: 400 ERR_JOB_SCOPE_REQUIRED, the owner's sentence, nothing enqueued",
+      "ok": true,
+      "detail": "{\"status\":400,\"code\":\"ERR_JOB_SCOPE_REQUIRED\",\"message\":\"Bitte wähle einen Job aus einem Pool aus.\",\"jobId\":null,\"enqueued\":0}"
+    },
+    {
+      "id": "G-06",
+      "name": "direct POST, jobScope malformed: 400 ERR_JOB_SCOPE_REQUIRED, the owner's sentence, nothing enqueued",
+      "ok": true,
+      "detail": "{\"status\":400,\"code\":\"ERR_JOB_SCOPE_REQUIRED\",\"message\":\"Bitte wähle einen Job aus einem Pool aus.\",\"jobId\":null,\"enqueued\":0}"
+    },
+    {
+      "id": "G-06",
+      "name": "direct POST, jobScope with an extra key: 400 ERR_JOB_SCOPE_REQUIRED, the owner's sentence, nothing enqueued",
+      "ok": true,
+      "detail": "{\"status\":400,\"code\":\"ERR_JOB_SCOPE_REQUIRED\",\"message\":\"Bitte wähle einen Job aus einem Pool aus.\",\"jobId\":null,\"enqueued\":0}"
+    },
+    {
+      "id": "G-06",
+      "name": "direct POST, pool unknown: 422 ERR_JOB_SCOPE_INVALID, the owner's sentence, nothing enqueued",
+      "ok": true,
+      "detail": "{\"status\":422,\"code\":\"ERR_JOB_SCOPE_INVALID\",\"message\":\"Bitte wähle einen Job aus einem Pool aus.\",\"jobId\":null,\"enqueued\":0}"
+    },
+    {
+      "id": "G-06",
+      "name": "direct POST, pool not ACTIVE: 422 ERR_JOB_SCOPE_INVALID, the owner's sentence, nothing enqueued",
+      "ok": true,
+      "detail": "{\"status\":422,\"code\":\"ERR_JOB_SCOPE_INVALID\",\"message\":\"Bitte wähle einen Job aus einem Pool aus.\",\"jobId\":null,\"enqueued\":0}"
+    },
+    {
+      "id": "G-06",
+      "name": "direct POST, role not in the pool: 422 ERR_JOB_SCOPE_INVALID, the owner's sentence, nothing enqueued",
+      "ok": true,
+      "detail": "{\"status\":422,\"code\":\"ERR_JOB_SCOPE_INVALID\",\"message\":\"Bitte wähle einen Job aus einem Pool aus.\",\"jobId\":null,\"enqueued\":0}"
+    },
+    {
+      "id": "G-06",
+      "name": "direct POST with a valid scope is accepted (202) and enqueued once (no worker: no Gemini call)",
+      "ok": true,
+      "detail": "{\"status\":202,\"enqueued\":1}"
+    },
+    {
+      "id": "G-10",
+      "name": "role id with inner spaces in an ACTIVE, mapped pool: frontend and backend agree on validity",
+      "ok": true,
+      "detail": "{\"roleId\":\"role pink beta platform\",\"frontend\":\"VALID\",\"backend\":{\"status\":202,\"code\":null,\"enqueued\":1}}"
+    },
+    {
+      "id": "G-10",
+      "name": "role id with inner spaces: the explicit selection at the role sets the stored id verbatim (indicator VALID, URL exact)",
+      "ok": true,
+      "detail": "{\"state\":\"VALID\",\"urlRoleId\":\"role pink beta platform\"}"
+    },
+    {
+      "id": "G-10",
+      "name": "role id with inner spaces: the selection is restored after a reload",
+      "ok": true,
+      "detail": "{\"state\":\"VALID\"}"
+    },
+    {
+      "id": "G-10",
+      "name": "role id with inner spaces: ANALYZE sends the stored id verbatim and the backend accepts it (202, enqueued once)",
+      "ok": true,
+      "detail": "{\"capability\":{\"reachable\":true,\"disabled\":false,\"focusAfter\":\"CAPABILITY\"},\"requests\":1,\"jobScope\":{\"jobPoolUploadId\":\"JPOOL_A8B008DDFFC84B85277CD98DFFBB0A80\",\"poolRoleId\":\"role pink beta platform\"},\"status\":202,\"enqueued\":1}"
+    },
+    {
+      "id": "G-10",
+      "name": "role id padded with spaces in an ACTIVE, mapped pool: frontend and backend agree on validity",
+      "ok": true,
+      "detail": "{\"roleId\":\"  role pink padded  \",\"frontend\":\"VALID\",\"backend\":{\"status\":202,\"code\":null,\"enqueued\":1}}"
+    },
+    {
+      "id": "G-10",
+      "name": "role id padded with spaces: the explicit selection at the role sets the stored id verbatim (indicator VALID, URL exact)",
+      "ok": true,
+      "detail": "{\"state\":\"VALID\",\"urlRoleId\":\"  role pink padded  \"}"
+    },
+    {
+      "id": "G-10",
+      "name": "role id padded with spaces: the selection is restored after a reload",
+      "ok": true,
+      "detail": "{\"state\":\"VALID\"}"
+    },
+    {
+      "id": "G-10",
+      "name": "role id padded with spaces: ANALYZE sends the stored id verbatim and the backend accepts it (202, enqueued once)",
+      "ok": true,
+      "detail": "{\"capability\":{\"reachable\":true,\"disabled\":false,\"focusAfter\":\"CAPABILITY\"},\"requests\":1,\"jobScope\":{\"jobPoolUploadId\":\"JPOOL_A8B008DDFFC84B85277CD98DFFBB0A80\",\"poolRoleId\":\"  role pink padded  \"},\"status\":202,\"enqueued\":1}"
+    },
+    {
+      "id": "G-11",
+      "name": "legacy page, no scope in the URL: scope shown NONE, start disabled, the owner's sentence verbatim, no request on a forced click",
+      "ok": true,
+      "detail": "{\"state\":\"NONE\",\"disabled\":true,\"message\":\"Bitte wähle einen Job aus einem Pool aus.\",\"requests\":0}"
+    },
+    {
+      "id": "G-11",
+      "name": "legacy page, role not in the pool: scope shown INVALID, start disabled, the owner's sentence verbatim, no request on a forced click",
+      "ok": true,
+      "detail": "{\"state\":\"INVALID\",\"disabled\":true,\"message\":\"Bitte wähle einen Job aus einem Pool aus.\",\"requests\":0}"
+    },
+    {
+      "id": "G-11",
+      "name": "legacy page, pool not ACTIVE (DRAFT): scope shown INVALID, start disabled, the owner's sentence verbatim, no request on a forced click",
+      "ok": true,
+      "detail": "{\"state\":\"INVALID\",\"disabled\":true,\"message\":\"Bitte wähle einen Job aus einem Pool aus.\",\"requests\":0}"
+    },
+    {
+      "id": "G-11",
+      "name": "legacy page, valid scope in the URL: scope shown VALID, start enabled, no blocking sentence",
+      "ok": true,
+      "detail": "{\"state\":\"VALID\",\"disabled\":false,\"message\":null}"
+    },
+    {
+      "id": "G-11",
+      "name": "legacy page, valid scope in the URL: one request with exactly the URL scope, accepted (202) and enqueued once",
+      "ok": true,
+      "detail": "{\"requests\":1,\"jobScope\":{\"jobPoolUploadId\":\"JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7\",\"poolRoleId\":\"role_pink_alpha_architect\"},\"status\":202}"
+    },
+    {
+      "id": "G-00",
+      "name": "no page error in any step",
+      "ok": true,
+      "detail": "[]"
+    }
+  ],
+  "analyzePosts": [
+    {
+      "body": {
+        "documents": [
+          {
+            "type": "text",
+            "content": "PINK job-scope gate probe: Software architect with eight years of platform design.",
+            "title": "Manual Text Input",
+            "docId": "doc_text_1792047049706"
+          }
+        ],
+        "investigation": {
+          "mode": "PERSON_X_JOB"
+        },
+        "jobScope": {
+          "jobPoolUploadId": "JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7",
+          "poolRoleId": "role_pink_alpha_architect"
+        }
+      },
+      "status": 202
+    },
+    {
+      "body": {
+        "documents": [
+          {
+            "type": "text",
+            "content": "PINK job-scope gate probe: Software architect with eight years of platform design.",
+            "title": "Manual Text Input",
+            "docId": "doc_text_1792047153088"
+          }
+        ],
+        "investigation": {
+          "mode": "PERSON_X_JOB"
+        },
+        "jobScope": {
+          "jobPoolUploadId": "JPOOL_A8B008DDFFC84B85277CD98DFFBB0A80",
+          "poolRoleId": "role pink beta platform"
+        }
+      },
+      "status": 202
+    },
+    {
+      "body": {
+        "documents": [
+          {
+            "type": "text",
+            "content": "PINK job-scope gate probe: Software architect with eight years of platform design.",
+            "title": "Manual Text Input",
+            "docId": "doc_text_1792047163625"
+          }
+        ],
+        "investigation": {
+          "mode": "PERSON_X_JOB"
+        },
+        "jobScope": {
+          "jobPoolUploadId": "JPOOL_A8B008DDFFC84B85277CD98DFFBB0A80",
+          "poolRoleId": "  role pink padded  "
+        }
+      },
+      "status": 202
+    },
+    {
+      "body": {
+        "documents": [
+          {
+            "title": "Cloud Architect CV",
+            "content": "PINK job-scope gate probe (legacy page): Software architect with eight years of platform design."
+          }
+        ],
+        "jobScope": {
+          "jobPoolUploadId": "JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7",
+          "poolRoleId": "role_pink_alpha_architect"
+        }
+      },
+      "status": 202
+    }
+  ],
+  "pageErrors": []
+}

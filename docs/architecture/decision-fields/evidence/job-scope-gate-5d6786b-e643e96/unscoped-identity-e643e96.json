@@ -1,0 +1,117 @@
+{
+ "prompt": {
+  "systemPrompt": "PINK_DISCOVERY_KERNEL\n\nOutput identity contract:\n\"kernel_version\" MUST equal exactly \"discovery-v1\".\nDo not substitute the prompt slug, schema version, model version, semantic version shorthand, or any other value.",
+  "userPrompt": "CONDYN CAPABILITY DISCOVERY SOURCE CORPUS\nSOURCE_DOCUMENT_COUNT: 2\n\n<SOURCE_DOCUMENT>\nDOC_ID: CV\nTITLE: cv.synthetic.pdf\nMIME_TYPE: \nLed the migration of the dispatch platform to event-driven services.\n</SOURCE_DOCUMENT>\n\n<SOURCE_DOCUMENT>\nDOC_ID: PROFILE\nTITLE: profile.md\nMIME_TYPE: \nDesigned the requirement intake for the platform team.\n</SOURCE_DOCUMENT>"
+ },
+ "runIds": [
+  "RUN_90948F265B78A22F46BF6ED7"
+ ],
+ "discovery": {
+  "kind": "DISCOVERY_COMPLETED",
+  "run": {
+   "runId": "RUN_4EFD7F363E2757D06C015691",
+   "sourceBundleHash": "3cb9f633b440f79338e25d48f67905afdc4a876012a62065bb4ff78d7f915188",
+   "kernelVersion": "discovery-v1",
+   "prompt": {
+    "templateId": "T",
+    "versionId": "V",
+    "checksum": "C"
+   },
+   "inference": {
+    "provider": "pink-spy",
+    "model": "m"
+   },
+   "schemaVersion": "discovery-schema-v1",
+   "status": "COMPLETED",
+   "rawOutputHash": "74aed6f75d447fd195d927e44a92ee038eb75509414db8651e347ad6aa451abb",
+   "payload": {
+    "kernelOutput": {
+     "kernel_version": "discovery-v1",
+     "capabilities": [
+      {
+       "canonical_name": "Event-driven migration",
+       "capability_scope": "ATOMIC",
+       "structural_definition": "d",
+       "primary_domain": null,
+       "demonstrated_capability_level": null,
+       "model_confidence": 0.9,
+       "evidence_mode": "EXPLICIT",
+       "evidence": [
+        {
+         "source_document": "CV",
+         "location": "body",
+         "exact_quote": "Led the migration of the dispatch platform to event-driven services."
+        }
+       ]
+      }
+     ],
+     "coverage_audit": {
+      "source_documents_examined": 2,
+      "capability_count": 1,
+      "atomic_capability_count": 1,
+      "composite_capability_count": 0,
+      "attribution_pass_completed": true,
+      "target_state_ownership_pass_completed": true,
+      "atomic_extraction_pass_completed": true,
+      "method_capability_pass_completed": true,
+      "composite_reconstruction_pass_completed": true,
+      "global_convergence_pass_completed": true,
+      "inventory_reconciliation_pass_completed": true,
+      "final_reconciliation_produced_new_capabilities": false,
+      "unresolved_target_operations": 0,
+      "segments_classified_as_external_source_content": 0,
+      "segments_classified_as_target_subject_operation": 0,
+      "segments_classified_as_target_subject_designed_target_state": 0,
+      "segments_classified_as_target_organization_capability": 0,
+      "segments_excluded_due_to_attribution_ambiguity": 0
+     }
+    },
+    "candidates": [
+     {
+      "candidateId": "CAND_B834A55B9E573AFDC6BFF41C",
+      "runId": "RUN_4EFD7F363E2757D06C015691",
+      "proposedCanonicalName": "Event-driven migration",
+      "proposedScope": "ATOMIC",
+      "structuralDefinition": "d",
+      "proposedPrimaryDomain": null,
+      "proposedDemonstratedLevel": null,
+      "modelConfidence": 0.9,
+      "evidenceMode": "EXPLICIT",
+      "evidenceClaims": [
+       {
+        "evidenceId": "EVD_DB347C77B69E0F81E49E943A",
+        "sourceDocumentRef": "CV",
+        "declaredLocation": "body",
+        "exactQuote": "Led the migration of the dispatch platform to event-driven services.",
+        "verification": {
+         "status": "VERIFIED",
+         "matchedDocId": "CV",
+         "matchedNormalizedQuote": "Led the migration of the dispatch platform to event-driven services.",
+         "sourceSpanStart": 0,
+         "sourceSpanEnd": 68
+        }
+       }
+      ],
+      "status": "EVIDENCE_PASSED"
+     }
+    ],
+    "coverageValidation": {
+     "status": "PASSED"
+    }
+   },
+   "createdAt": "2026-10-15T00:00:00.000Z",
+   "completedAt": "2026-10-15T00:00:00.000Z"
+  }
+ },
+ "requests": [
+  {
+   "systemPrompt": "PINK_DISCOVERY_KERNEL\n\nOutput identity contract:\n\"kernel_version\" MUST equal exactly \"discovery-v1\".\nDo not substitute the prompt slug, schema version, model version, semantic version shorthand, or any other value.",
+   "userPrompt": "CONDYN CAPABILITY DISCOVERY SOURCE CORPUS\nSOURCE_DOCUMENT_COUNT: 2\n\n<SOURCE_DOCUMENT>\nDOC_ID: CV\nTITLE: cv.synthetic.pdf\nMIME_TYPE: \nLed the migration of the dispatch platform to event-driven services.\n</SOURCE_DOCUMENT>\n\n<SOURCE_DOCUMENT>\nDOC_ID: PROFILE\nTITLE: profile.md\nMIME_TYPE: \nDesigned the requirement intake for the platform team.\n</SOURCE_DOCUMENT>"
+  }
+ ],
+ "convergence": {
+  "kind": "CONVERGENCE_COMPLETED",
+  "convergenceRunId": "CONV_8228CC7136F4C56966EAEA6F",
+  "discoveryRunId": "RUN_4EFD7F363E2757D06C015691"
+ }
+}

@@ -1,0 +1,17 @@
+# PINK job-scope-snapshot proof run unchanged on e643e96 (negative control: the proof must detect the defect GELB closed in 933ea4c)
+   ✓ PINK: scope identity in the confirmed capability state (GELB 933ea4c, real Discovery/Convergence runtimes) > the real scoped Discovery run carries exactly { scopeHash } of the issued scope; the unscoped run carries no such key 12ms
+   × PINK: scope identity in the confirmed capability state (GELB 933ea4c, real Discovery/Convergence runtimes) > one Phase-4 state per scope over identical sources: A, B and unscoped publish three snapshots with three keys; each carries its own scope 15ms
+     → ERR_CAPABILITY_VERIFICATION_RUN_INTEGRITY_INVALID
+   ✓ PINK: scope identity in the confirmed capability state (GELB 933ea4c, real Discovery/Convergence runtimes) > every tampering of the run's scope binding is refused by the Phase-4 authenticator 7ms
+   × PINK: scope identity in the confirmed capability state (GELB 933ea4c, real Discovery/Convergence runtimes) > a published scoped snapshot cannot be re-bound: changing or removing its scope breaks its identity 3ms
+     → ERR_CAPABILITY_VERIFICATION_RUN_INTEGRITY_INVALID
+   × PINK: scope identity in the confirmed capability state (GELB 933ea4c, real Discovery/Convergence runtimes) > reuse matrix: confirmed state is reused only by an unscoped Discovery from unscoped state (positive control), never across scopes 3ms
+     → ERR_IMMUTABLE_SNAPSHOT_CONFLICT: SNAP_C73C4352200195D61228F22F
+   × PINK: scope identity in the confirmed capability state (GELB 933ea4c, real Discovery/Convergence runtimes) > a Phase-4 state of scope A is never reached by an unscoped or scope-B Discovery over the same sources 3ms
+     → ERR_CAPABILITY_VERIFICATION_RUN_INTEGRITY_INVALID
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 4 ⎯⎯⎯⎯⎯⎯⎯
+      Tests  4 failed | 2 passed (6)
+
+# same proof on 258fde2
+ ✓ test/job-pool-validation/job-scope-snapshot.test.ts (6 tests) 53ms
+      Tests  6 passed (6)

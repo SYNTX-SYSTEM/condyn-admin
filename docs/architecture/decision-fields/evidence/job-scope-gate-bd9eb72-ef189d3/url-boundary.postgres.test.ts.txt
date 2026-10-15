@@ -1,0 +1,230 @@
+/**
+ * PINK proof of GELB 26df225 (URL BOUNDARY CLOSURE, O-URL-ANALYSIS-UNBOUND): analysisId → persisted investigation boundary →
+ * frontend permission, on PostgreSQL (disposable database, no worker, no provider). Analyses are seeded by PINK's own fixture
+ * (fixtures/mode-analysis.ts, §3.34), which can declare one boundary on the job and run Discovery under another.
+ *
+ *   UB-1  resolution: PERSON_X_JOB and PERSON with a Discovery run; PERSON_X_JOB from the job declaration alone (no reference)
+ *   UB-2  every unresolved reason is reachable and named: NOT_RECORDED, NOT_DECLARED, DECLARATION_INVALID, AMBIGUOUS,
+ *         LINEAGE_INVALID (five breaks), RUN_CONTRADICTS_DECLARATION (both directions); unknown analysis 404
+ *   UB-3  identities only: exact key set; no document content, legacy payload, capability name or quote in any body
+ *   UB-4  read only: every career table byte-identical before and after all reads
+ *   UB-5  frontend permission: legacyJobComparisonPermitted over the real route's answers × pools, and the strict decoder
+ *   UB-6  edges recorded as measured (not asserted as deviations): a run scoped to another role of the same pool under a
+ *         PERSON_X_JOB declaration; a projection-referenced job that is not SUCCEEDED; jobs that are not SUCCEEDED
+ */
+import { createHash } from "node:crypto";
+import { writeFileSync } from "node:fs";
+import { sql } from "drizzle-orm";
+import { afterAll, beforeAll, describe, expect, it } from "vitest";
+import { GET } from "../../app/api/career/analyses/[analysisId]/investigation/route";
+import { db, initDbSchema } from "../../lib/career/db/client";
+import { careerAnalyses } from "../../lib/career/db/schema";
+import { PostgresCapabilityProposalProjectionReferenceRepository } from "../../lib/career/capability-core";
+import { createJob } from "../../lib/career/orchestration/job";
+import { JobRepository } from "../../lib/career/orchestration/job-repository";
+import { decodeAnalysisInvestigation, legacyJobComparisonPermitted, readAnalysisInvestigation, type AnalysisInvestigationReadState } from "../../lib/career/investigation/client";
+import { renderInvestigationScope } from "../../lib/career/job-scope";
+import { TEST_JOB_SCOPE, TEST_JOB_SCOPE_B, resolveStoredTestJobScope, uploadEngineeringJobScope } from "../support/job-scope";
+import { LEGACY_MARKER, PDF_CONTENT, SOURCE, created, seed } from "./fixtures/mode-analysis";
+
+const OUT = process.env.PINK_URL_BOUNDARY_OUT ?? "";
+const KEYS = "analysisId,basis,discoveryRunId,investigationScopeHash,investigationVersion,jobId,jobScopeSelection,mode";
+const OTHER_POOL = `JPOOL_${"A".repeat(32)}`;
+const FORBIDDEN = [SOURCE.slice(0, 40), PDF_CONTENT, LEGACY_MARKER, "Frontend Architecture", "Dispatch platform migration", "Led the migration"];
+const jobs = new JobRepository(db);
+const get = async (analysisId: string) => {
+  const response = await GET(new Request(`http://local/api/career/analyses/${encodeURIComponent(analysisId)}/investigation`), { params: Promise.resolve({ analysisId }) });
+  return { status: response.status, cacheControl: response.headers.get("cache-control"), text: await response.text() };
+};
+const fetchViaRoute = (async (input: string) => { const analysisId = decodeURIComponent(input.split("/")[4]); const answer = await get(analysisId); return { status: answer.status, json: async () => JSON.parse(answer.text) }; }) as never;
+async function snapshotTables(): Promise<string> {
+  const tables = (await db.execute(sql`select table_name from information_schema.tables where table_schema = 'public' and (table_name like 'career_%' or table_name like 'capability_%') order by table_name`)) as unknown as Array<{ table_name: string }>;
+  const parts: string[] = [];
+  for (const { table_name } of tables) {
+    const rows = (await db.execute(sql.raw(`select md5(coalesce(string_agg(t::text, '|' order by t::text), '')) as h, count(*)::int as n from "${table_name}" t`))) as unknown as Array<{ h: string; n: number }>;
+    parts.push(`${table_name}:${rows[0].n}:${rows[0].h}`);
+  }
+  return parts.join("\n");
+}
+async function plainJob(sourceData: Record<string, unknown>, status: string, analysisId: string | null) {
+  const job = createJob("CAREER_ANALYSIS", { sourceType: "BATCH", sourceData: { documents: [{ type: "text", content: `${SOURCE} plain` }], ...sourceData } } as never);
+  await jobs.enqueueJob(job); created.push(job.jobId);
+  await db.execute(sql`UPDATE career_analysis_jobs SET status = ${status}, result_analysis_id = ${analysisId} WHERE job_id = ${job.jobId}`);
+  return job.jobId;
+}
+const insertAnalysis = (analysisId: string) => db.insert(careerAnalyses).values({ analysisId, createdAt: "2026-10-15T10:00:00.000Z", validationState: "VERIFIED", payload: { legacy: LEGACY_MARKER } } as never);
+
+describe("PINK: URL boundary — persisted investigation boundary of an analysis (GELB 26df225)", () => {
+  const cases: Record<string, { analysisId: string; expect: string }> = {};
+  const answers: Record<string, { status: number; cacheControl: string | null; body: any }> = {};
+  const extraAnalyses: string[] = [];
+  let before = "";
+
+  beforeAll(async () => {
+    await initDbSchema(); await uploadEngineeringJobScope();
+    const scopeA = await resolveStoredTestJobScope(); const scopeB = await resolveStoredTestJobScope(TEST_JOB_SCOPE_B);
+    const stamp = Date.now();
+    const pxj = await seed(`ub-pxj-${stamp}`, { investigation: { mode: "PERSON_X_JOB" }, jobScope: TEST_JOB_SCOPE }, scopeA);
+    const pxjLegacy = await seed(`ub-pxj-legacy-${stamp}`, { jobScope: TEST_JOB_SCOPE }, scopeA);
+    const person = await seed(`ub-person-${stamp}`, { investigation: { mode: "PERSON" } }, null);
+    const personScopedRun = await seed(`ub-person-scoped-${stamp}`, { investigation: { mode: "PERSON" } }, scopeA);
+    const pxjUnscopedRun = await seed(`ub-pxj-unscoped-${stamp}`, { investigation: { mode: "PERSON_X_JOB" }, jobScope: TEST_JOB_SCOPE }, null);
+    const roleDrift = await seed(`ub-role-drift-${stamp}`, { investigation: { mode: "PERSON_X_JOB" }, jobScope: TEST_JOB_SCOPE }, scopeB);
+    const undeclared = await seed(`ub-undeclared-${stamp}`, {}, null);
+    const contradictory = await seed(`ub-contradictory-${stamp}`, { investigation: { mode: "PERSON" }, jobScope: TEST_JOB_SCOPE }, null);
+    const jobMode = await seed(`ub-jobmode-${stamp}`, { investigation: { mode: "JOB" } }, null);
+    // Lineage breaks on otherwise valid PERSON_X_JOB seeds.
+    const badBundle = await seed(`ub-bad-bundle-${stamp}`, { investigation: { mode: "PERSON_X_JOB" }, jobScope: TEST_JOB_SCOPE }, scopeA);
+    await db.execute(sql`UPDATE career_capability_proposal_projection_references SET source_bundle_hash = ${"0".repeat(64)} WHERE analysis_id = ${badBundle.analysisId}`);
+    const badConvergence = await seed(`ub-bad-conv-${stamp}`, { investigation: { mode: "PERSON_X_JOB" }, jobScope: TEST_JOB_SCOPE }, scopeA);
+    const otherConvergence = (await db.execute(sql`SELECT convergence_run_id FROM career_capability_proposal_projection_references WHERE analysis_id = ${pxj.analysisId}`)) as unknown as Array<{ convergence_run_id: string }>;
+    await db.execute(sql`UPDATE career_capability_proposal_projection_references SET convergence_run_id = ${otherConvergence[0].convergence_run_id} WHERE analysis_id = ${badConvergence.analysisId}`);
+    const otherResult = await seed(`ub-other-result-${stamp}`, { investigation: { mode: "PERSON_X_JOB" }, jobScope: TEST_JOB_SCOPE }, scopeA);
+    await db.execute(sql`UPDATE career_analysis_jobs SET result_analysis_id = ${pxj.analysisId} WHERE job_id = ${otherResult.jobId}`);
+    // otherResult now also claims pxj via result_analysis_id: pxj itself becomes AMBIGUOUS? Measured below as "pxj after a second claim"; keep a clean PxJ seed for UB-1.
+    const pxjClean = await seed(`ub-pxj-clean-${stamp}`, { investigation: { mode: "PERSON_X_JOB" }, jobScope: TEST_JOB_SCOPE }, scopeA);
+    // Analysis id that does not follow the processor rule for its job: a reference saved under a foreign analysis id.
+    const foreignId = `ANL_PINK_FOREIGN_${stamp}`; await insertAnalysis(foreignId); extraAnalyses.push(foreignId);
+    const refSource = (await db.execute(sql`SELECT * FROM career_capability_proposal_projection_references WHERE analysis_id = ${pxjClean.analysisId}`)) as unknown as Array<Record<string, string>>;
+    // projection references are unique per job: the foreign reference gets its own job, whose id does not map to foreignId.
+    const foreignJob = await plainJob({ investigation: { mode: "PERSON_X_JOB" }, jobScope: TEST_JOB_SCOPE }, "SUCCEEDED", null);
+    await new PostgresCapabilityProposalProjectionReferenceRepository(db).save({ analysisId: foreignId, jobId: foreignJob, discoveryRunId: refSource[0].discovery_run_id, convergenceRunId: refSource[0].convergence_run_id, candidateSourceBundleId: refSource[0].candidate_source_bundle_id, sourceBundleHash: refSource[0].source_bundle_hash, createdAt: refSource[0].created_at } as never);
+    // Analyses without a projection reference.
+    const direct = `ANL_PINK_DIRECT_${stamp}`; await insertAnalysis(direct); extraAnalyses.push(direct);
+    const snapPxjJob = await plainJob({ investigation: { mode: "PERSON_X_JOB" }, jobScope: TEST_JOB_SCOPE }, "SUCCEEDED", null);
+    const snapPxj = snapPxjJob.replace("JOB_", "ANL_"); await insertAnalysis(snapPxj); extraAnalyses.push(snapPxj);
+    await db.execute(sql`UPDATE career_analysis_jobs SET result_analysis_id = ${snapPxj} WHERE job_id = ${snapPxjJob}`);
+    const snapPersonJob = await plainJob({ investigation: { mode: "PERSON" } }, "SUCCEEDED", null);
+    const snapPerson = snapPersonJob.replace("JOB_", "ANL_"); await insertAnalysis(snapPerson); extraAnalyses.push(snapPerson);
+    await db.execute(sql`UPDATE career_analysis_jobs SET result_analysis_id = ${snapPerson} WHERE job_id = ${snapPersonJob}`);
+    const twoJobsA = await plainJob({ investigation: { mode: "PERSON_X_JOB" }, jobScope: TEST_JOB_SCOPE }, "SUCCEEDED", null);
+    const twoJobs = twoJobsA.replace("JOB_", "ANL_"); await insertAnalysis(twoJobs); extraAnalyses.push(twoJobs);
+    await db.execute(sql`UPDATE career_analysis_jobs SET result_analysis_id = ${twoJobs} WHERE job_id = ${twoJobsA}`);
+    await plainJob({ investigation: { mode: "PERSON_X_JOB" }, jobScope: TEST_JOB_SCOPE }, "SUCCEEDED", twoJobs);
+    // A job that does not map to the analysis by the processor rule, recorded as its SUCCEEDED result.
+    const crossed = `ANL_PINK_CROSSED_${stamp}`; await insertAnalysis(crossed); extraAnalyses.push(crossed);
+    await plainJob({ investigation: { mode: "PERSON_X_JOB" }, jobScope: TEST_JOB_SCOPE }, "SUCCEEDED", crossed);
+    // Jobs that are not SUCCEEDED but name the analysis as result (no reference).
+    const failedOnly = `ANL_PINK_FAILED_ONLY_${stamp}`; await insertAnalysis(failedOnly); extraAnalyses.push(failedOnly);
+    for (const status of ["FAILED", "RUNNING", "PENDING"]) await plainJob({ investigation: { mode: "PERSON_X_JOB" }, jobScope: TEST_JOB_SCOPE }, status, failedOnly);
+    // A projection-referenced job that is not SUCCEEDED.
+    const refFailed = await seed(`ub-ref-failed-${stamp}`, { investigation: { mode: "PERSON_X_JOB" }, jobScope: TEST_JOB_SCOPE }, scopeA);
+    await db.execute(sql`UPDATE career_analysis_jobs SET status = 'FAILED' WHERE job_id = ${refFailed.jobId}`);
+
+    Object.assign(cases, {
+      pxjClean: { analysisId: pxjClean.analysisId, expect: "RESOLVED:PERSON_X_JOB:RUN" },
+      pxjLegacyDeclaration: { analysisId: pxjLegacy.analysisId, expect: "RESOLVED:PERSON_X_JOB:RUN" },
+      person: { analysisId: person.analysisId, expect: "RESOLVED:PERSON:RUN" },
+      snapshotPxj: { analysisId: snapPxj, expect: "RESOLVED:PERSON_X_JOB:DECLARATION" },
+      snapshotPerson: { analysisId: snapPerson, expect: "RESOLVED:PERSON:DECLARATION" },
+      unknown: { analysisId: `ANL_PINK_UNKNOWN_${stamp}`, expect: "404" },
+      emptyLike: { analysisId: " ", expect: "404" },
+      direct: { analysisId: direct, expect: "409:NOT_RECORDED" },
+      failedOnly: { analysisId: failedOnly, expect: "409:NOT_RECORDED" },
+      undeclared: { analysisId: undeclared.analysisId, expect: "409:NOT_DECLARED" },
+      contradictory: { analysisId: contradictory.analysisId, expect: "409:DECLARATION_INVALID" },
+      jobMode: { analysisId: jobMode.analysisId, expect: "409:DECLARATION_INVALID" },
+      twoJobs: { analysisId: twoJobs, expect: "409:AMBIGUOUS" },
+      pxjSecondClaim: { analysisId: pxj.analysisId, expect: "409:AMBIGUOUS" },
+      crossed: { analysisId: crossed, expect: "409:LINEAGE_INVALID" },
+      foreignReference: { analysisId: foreignId, expect: "409:LINEAGE_INVALID" },
+      badBundle: { analysisId: badBundle.analysisId, expect: "409:LINEAGE_INVALID" },
+      badConvergence: { analysisId: badConvergence.analysisId, expect: "409:LINEAGE_INVALID" },
+      otherResult: { analysisId: otherResult.analysisId, expect: "409:LINEAGE_INVALID" },
+      personScopedRun: { analysisId: personScopedRun.analysisId, expect: "409:RUN_CONTRADICTS_DECLARATION" },
+      pxjUnscopedRun: { analysisId: pxjUnscopedRun.analysisId, expect: "409:RUN_CONTRADICTS_DECLARATION" },
+      // UB-6 edges: measured, recorded.
+      roleDrift: { analysisId: roleDrift.analysisId, expect: "EDGE" },
+      refFailed: { analysisId: refFailed.analysisId, expect: "EDGE" }
+    });
+    before = await snapshotTables();
+    for (const [label, entry] of Object.entries(cases)) { const answer = await get(entry.analysisId); answers[label] = { status: answer.status, cacheControl: answer.cacheControl, body: JSON.parse(answer.text) }; }
+  }, 240_000);
+
+  afterAll(async () => {
+    for (const jobId of created) await db.execute(sql`DELETE FROM career_analysis_jobs WHERE job_id = ${jobId}`);
+    if (OUT) writeFileSync(OUT, `${JSON.stringify(Object.fromEntries(Object.entries(answers).map(([label, answer]) => [label, { expect: cases[label].expect, status: answer.status, cacheControl: answer.cacheControl, body: answer.body }])), null, 2)}\n`);
+  });
+
+  const outcome = (label: string) => {
+    const { status, body } = answers[label];
+    if (status === 200) return `RESOLVED:${body.investigation.mode}:${body.investigation.basis === "JOB_DECLARATION_AND_DISCOVERY_RUN" ? "RUN" : "DECLARATION"}`;
+    if (status === 409) return `409:${body.issues[0].reason}`;
+    return String(status);
+  };
+
+  it("UB-1/UB-2 every case resolves or is refused exactly as specified", () => {
+    const table = Object.entries(cases).filter(([, entry]) => entry.expect !== "EDGE").map(([label, entry]) => ({ label, expected: entry.expect, measured: outcome(label) }));
+    console.log(`PINK_URL_BOUNDARY ${table.map((row) => `${row.label}=${row.measured}`).join(" ")}`);
+    expect(table.filter((row) => row.expected !== row.measured)).toEqual([]);
+    const reasons = new Set(table.filter((row) => row.measured.startsWith("409:")).map((row) => row.measured.slice(4)));
+    expect([...reasons].sort()).toEqual(["AMBIGUOUS", "DECLARATION_INVALID", "LINEAGE_INVALID", "NOT_DECLARED", "NOT_RECORDED", "RUN_CONTRADICTS_DECLARATION"]);
+  });
+
+  it("UB-1 resolved bodies carry exactly the declared selection and the run's scope hash", async () => {
+    const pxj = answers.pxjClean.body.investigation;
+    const run = (await db.execute(sql`SELECT r.discovery_run_id FROM career_capability_proposal_projection_references r WHERE r.analysis_id = ${cases.pxjClean.analysisId}`)) as unknown as Array<{ discovery_run_id: string }>;
+    expect(pxj.jobScopeSelection).toEqual(TEST_JOB_SCOPE);
+    expect(pxj.discoveryRunId).toBe(run[0].discovery_run_id);
+    // The run's scope hash is the Discovery runtime's: sha256 of the rendered scope text.
+    expect(pxj.investigationScopeHash).toBe(createHash("sha256").update(renderInvestigationScope(await resolveStoredTestJobScope()).text, "utf8").digest("hex"));
+    expect(pxj.jobId.replace("JOB_", "ANL_")).toBe(cases.pxjClean.analysisId);
+    expect(answers.person.body.investigation).toMatchObject({ mode: "PERSON", jobScopeSelection: null, investigationScopeHash: null });
+    expect(answers.snapshotPxj.body.investigation).toMatchObject({ mode: "PERSON_X_JOB", jobScopeSelection: TEST_JOB_SCOPE, basis: "JOB_DECLARATION", discoveryRunId: null, investigationScopeHash: null });
+  });
+
+  it("UB-3 identities only, no-store, on every answer", () => {
+    for (const [label, answer] of Object.entries(answers)) {
+      const text = JSON.stringify(answer.body);
+      expect({ label, leaks: FORBIDDEN.filter((needle) => text.includes(needle)) }).toEqual({ label, leaks: [] });
+      expect({ label, cacheControl: answer.cacheControl }).toEqual({ label, cacheControl: "no-store" });
+      if (answer.status === 200) expect(Object.keys(answer.body.investigation).sort().join()).toBe(KEYS);
+      else expect(Object.keys(answer.body.issues[0]).sort().join()).toBe(answer.status === 409 ? "code,reason" : "code");
+    }
+  });
+
+  it("UB-4 the reads change nothing in any career / capability table", async () => {
+    for (const entry of Object.values(cases)) await get(entry.analysisId);
+    expect(await snapshotTables()).toBe(before);
+  });
+
+  it("UB-5 the frontend permission over the real answers × pools", async () => {
+    const rows: string[] = [];
+    for (const [label, entry] of Object.entries(cases)) {
+      const read = await readAnalysisInvestigation(fetchViaRoute, entry.analysisId);
+      for (const [poolLabel, pool] of [["samePool", TEST_JOB_SCOPE.jobPoolUploadId], ["otherPool", OTHER_POOL]] as const) {
+        const permitted = legacyJobComparisonPermitted(read, { analysisId: entry.analysisId, jobPoolUploadId: pool });
+        const expected = read.state === "RESOLVED" && read.value.mode === "PERSON_X_JOB" && poolLabel === "samePool";
+        rows.push(`${label}/${poolLabel}=${read.state}${read.state === "UNRESOLVED" ? `:${read.reason}` : ""}→${permitted}`);
+        expect({ label, poolLabel, permitted }).toEqual({ label, poolLabel, permitted: expected });
+      }
+      // Asked for another analysis: never permitted.
+      expect(legacyJobComparisonPermitted(read, { analysisId: `${entry.analysisId}_OTHER`, jobPoolUploadId: TEST_JOB_SCOPE.jobPoolUploadId })).toBe(false);
+    }
+    console.log(`PINK_URL_PERMIT ${rows.join(" ")}`);
+    for (const state of [null, undefined, { state: "FAILED" }, { state: "NOT_FOUND" }, { state: "UNRESOLVED", reason: null }] as Array<AnalysisInvestigationReadState | null | undefined>) {
+      expect(legacyJobComparisonPermitted(state, { analysisId: cases.pxjClean.analysisId, jobPoolUploadId: TEST_JOB_SCOPE.jobPoolUploadId })).toBe(false);
+    }
+    expect(legacyJobComparisonPermitted((await readAnalysisInvestigation(fetchViaRoute, cases.pxjClean.analysisId)), null)).toBe(false);
+    // An answer about another analysis is FAILED.
+    const swapped = (async () => ({ status: 200, json: async () => answers.pxjClean.body })) as never;
+    expect(await readAnalysisInvestigation(swapped, cases.person.analysisId)).toEqual({ state: "FAILED" });
+    // Strict decoder: every single-field corruption of a resolved body is refused.
+    const good = answers.pxjClean.body.investigation;
+    const corruptions: Array<[string, unknown]> = [
+      ["extra key", { ...good, extra: 1 }], ["mode JOB", { ...good, mode: "JOB" }], ["PERSON with selection", { ...good, mode: "PERSON" }],
+      ["selection extra key", { ...good, jobScopeSelection: { ...good.jobScopeSelection, x: 1 } }], ["selection null", { ...good, jobScopeSelection: null }],
+      ["empty analysisId", { ...good, analysisId: "" }], ["version", { ...good, investigationVersion: "V2" }], ["basis unknown", { ...good, basis: "X" }],
+      ["hash missing with run", { ...good, investigationScopeHash: null }], ["declaration basis with run id", { ...good, basis: "JOB_DECLARATION" }]
+    ];
+    for (const [label, value] of corruptions) expect({ label, decoded: decodeAnalysisInvestigation(value) }).toEqual({ label, decoded: null });
+    expect(decodeAnalysisInvestigation(good)).not.toBeNull();
+  });
+
+  it("UB-6 edges, measured", () => {
+    const roleDrift = answers.roleDrift; const refFailed = answers.refFailed;
+    console.log(`PINK_URL_EDGES roleDrift=${outcome("roleDrift")} selection=${JSON.stringify(roleDrift.body.investigation?.jobScopeSelection ?? null)} refFailed=${outcome("refFailed")}`);
+    expect(outcome("roleDrift")).toMatch(/^(RESOLVED|409)/);
+    expect(outcome("refFailed")).toMatch(/^(RESOLVED|409)/);
+  });
+});

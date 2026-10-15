@@ -1,0 +1,2 @@
+npx tsc --noEmit -p . on validation/hr-decision-loop-pink d4f61c1 merged with frontend/three-modes 8718e3a (proof copies in place)
+exit 0, 0 error lines

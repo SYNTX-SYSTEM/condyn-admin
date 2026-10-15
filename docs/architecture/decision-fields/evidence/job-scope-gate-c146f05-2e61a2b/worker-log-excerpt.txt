@@ -1,0 +1,28 @@
+[Worker job-pool-first-worker] FAILED JOB_1791943656473_278 lease=1 terminal=true ERR_JOB_SCOPE_REQUIRED: Bitte wählen Sie einen Job aus.
+[Worker job-pool-first-worker] FAILED JOB_1791943656486_674 lease=1 terminal=true ERR_JOB_SCOPE_INVALID: Bitte wählen Sie einen Job aus.
+[Worker job-pool-first-worker] FAILED JOB_1791943656495_217 lease=1 terminal=true ERR_JOB_SCOPE_INVALID: Bitte wählen Sie einen Job aus.
+[Worker job-pool-first-worker] FAILED JOB_1791943656508_939 lease=1 terminal=true PROCESSOR_REACHED: PROCESSOR_REACHED
+[Worker PINK_WORKER_GATE] FAILED JOB_1791943657813_231 lease=1 terminal=true ERR_JOB_SCOPE_REQUIRED: Bitte wählen Sie einen Job aus.
+[Worker PINK_WORKER_GATE] FAILED JOB_1791943657817_842 lease=1 terminal=true ERR_JOB_SCOPE_REQUIRED: Bitte wählen Sie einen Job aus.
+[Worker PINK_WORKER_GATE] FAILED JOB_1791943657819_657 lease=1 terminal=true ERR_JOB_SCOPE_REQUIRED: Bitte wählen Sie einen Job aus.
+[Worker PINK_WORKER_GATE] FAILED JOB_1791943657822_127 lease=1 terminal=true ERR_JOB_SCOPE_REQUIRED: Bitte wählen Sie einen Job aus.
+[Worker PINK_WORKER_GATE] FAILED JOB_1791943657823_519 lease=1 terminal=true ERR_JOB_SCOPE_INVALID: Bitte wählen Sie einen Job aus.
+[Worker PINK_WORKER_GATE] FAILED JOB_1791943657825_394 lease=1 terminal=true ERR_JOB_SCOPE_INVALID: Bitte wählen Sie einen Job aus.
+[Worker PINK_WORKER_GATE] FAILED JOB_1791943657827_784 lease=1 terminal=true ERR_JOB_SCOPE_INVALID: Bitte wählen Sie einen Job aus.
+[Worker PINK_WORKER_GATE] FAILED JOB_1791943657829_699 lease=1 terminal=true PINK_INNER_REACHED: the processor behind the gate was reached
+[Worker PINK_WORKER_GATE] CLAIMED JOB_1791943657813_231 lease=1
+[Worker PINK_WORKER_GATE] FAILED JOB_1791943657813_231 lease=1 terminal=true ERR_JOB_SCOPE_REQUIRED: Bitte wählen Sie einen Job aus.
+[Worker PINK_WORKER_GATE] CLAIMED JOB_1791943657817_842 lease=1
+[Worker PINK_WORKER_GATE] FAILED JOB_1791943657817_842 lease=1 terminal=true ERR_JOB_SCOPE_REQUIRED: Bitte wählen Sie einen Job aus.
+[Worker PINK_WORKER_GATE] CLAIMED JOB_1791943657819_657 lease=1
+[Worker PINK_WORKER_GATE] FAILED JOB_1791943657819_657 lease=1 terminal=true ERR_JOB_SCOPE_REQUIRED: Bitte wählen Sie einen Job aus.
+[Worker PINK_WORKER_GATE] CLAIMED JOB_1791943657822_127 lease=1
+[Worker PINK_WORKER_GATE] FAILED JOB_1791943657822_127 lease=1 terminal=true ERR_JOB_SCOPE_REQUIRED: Bitte wählen Sie einen Job aus.
+[Worker PINK_WORKER_GATE] CLAIMED JOB_1791943657823_519 lease=1
+[Worker PINK_WORKER_GATE] FAILED JOB_1791943657823_519 lease=1 terminal=true ERR_JOB_SCOPE_INVALID: Bitte wählen Sie einen Job aus.
+[Worker PINK_WORKER_GATE] CLAIMED JOB_1791943657825_394 lease=1
+[Worker PINK_WORKER_GATE] FAILED JOB_1791943657825_394 lease=1 terminal=true ERR_JOB_SCOPE_INVALID: Bitte wählen Sie einen Job aus.
+[Worker PINK_WORKER_GATE] CLAIMED JOB_1791943657827_784 lease=1
+[Worker PINK_WORKER_GATE] FAILED JOB_1791943657827_784 lease=1 terminal=true ERR_JOB_SCOPE_INVALID: Bitte wählen Sie einen Job aus.
+[Worker PINK_WORKER_GATE] CLAIMED JOB_1791943657829_699 lease=1
+[Worker PINK_WORKER_GATE] FAILED JOB_1791943657829_699 lease=1 terminal=true PINK_INNER_REACHED: the processor behind the gate was reached

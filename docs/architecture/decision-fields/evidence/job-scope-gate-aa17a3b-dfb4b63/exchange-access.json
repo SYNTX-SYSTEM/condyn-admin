@@ -1,0 +1,138 @@
+{
+  "tip": "aa17a3b-dfb4b63",
+  "recordedAt": "2026-10-15T03:59:25.572Z",
+  "analysisId": "ANL_1792036732317_55",
+  "jobId": "JOB_1792036732317_55",
+  "otherJobId": "JOB_1792036732317_689",
+  "discoveryRunId": "RUN_97FB9708AAF57EC93ABFA02D",
+  "inspectorOff": {
+    "analysis/none": {
+      "status": 404,
+      "contentType": "application/json",
+      "cacheControl": "no-store",
+      "body": "{\"success\":false,\"issues\":[{\"code\":\"ERR_NOT_FOUND\"}]}"
+    },
+    "analysis/token": {
+      "status": 404,
+      "contentType": "application/json",
+      "cacheControl": "no-store",
+      "body": "{\"success\":false,\"issues\":[{\"code\":\"ERR_NOT_FOUND\"}]}"
+    },
+    "job/none": {
+      "status": 404,
+      "contentType": "application/json",
+      "cacheControl": "no-store",
+      "body": "{\"success\":false,\"issues\":[{\"code\":\"ERR_NOT_FOUND\"}]}"
+    },
+    "job/token": {
+      "status": 404,
+      "contentType": "application/json",
+      "cacheControl": "no-store",
+      "body": "{\"success\":false,\"issues\":[{\"code\":\"ERR_NOT_FOUND\"}]}"
+    }
+  },
+  "archiveOff": {
+    "closed": {
+      "analysis/none": {
+        "status": 404,
+        "contentType": "application/json",
+        "cacheControl": "no-store",
+        "body": "{\"success\":false,\"issues\":[{\"code\":\"ERR_NOT_FOUND\"}]}"
+      },
+      "analysis/wrong": {
+        "status": 404,
+        "contentType": "application/json",
+        "cacheControl": "no-store",
+        "body": "{\"success\":false,\"issues\":[{\"code\":\"ERR_NOT_FOUND\"}]}"
+      },
+      "analysis/pink-exchange-inspector-token-0123456789abcde": {
+        "status": 404,
+        "contentType": "application/json",
+        "cacheControl": "no-store",
+        "body": "{\"success\":false,\"issues\":[{\"code\":\"ERR_NOT_FOUND\"}]}"
+      },
+      "job/none": {
+        "status": 404,
+        "contentType": "application/json",
+        "cacheControl": "no-store",
+        "body": "{\"success\":false,\"issues\":[{\"code\":\"ERR_NOT_FOUND\"}]}"
+      },
+      "job/wrong": {
+        "status": 404,
+        "contentType": "application/json",
+        "cacheControl": "no-store",
+        "body": "{\"success\":false,\"issues\":[{\"code\":\"ERR_NOT_FOUND\"}]}"
+      },
+      "job/pink-exchange-inspector-token-0123456789abcde": {
+        "status": 404,
+        "contentType": "application/json",
+        "cacheControl": "no-store",
+        "body": "{\"success\":false,\"issues\":[{\"code\":\"ERR_NOT_FOUND\"}]}"
+      }
+    },
+    "analysis": {
+      "state": "NOT_RETAINED"
+    },
+    "job": {
+      "archive": "NOT_AVAILABLE",
+      "exchanges": 0
+    }
+  },
+  "archiveOn": {
+    "closedJob": {
+      "status": 404,
+      "contentType": "application/json",
+      "cacheControl": "no-store",
+      "body": "{\"success\":false,\"issues\":[{\"code\":\"ERR_NOT_FOUND\"}]}"
+    },
+    "analysis": {
+      "status": 200,
+      "cacheControl": "no-store",
+      "state": "RETAINED",
+      "textExact": true,
+      "leaseVersion": 2,
+      "parserResultMatchesText": true
+    },
+    "job": {
+      "status": 200,
+      "archive": "AVAILABLE",
+      "exchanges": [
+        {
+          "outcome": "FAILED",
+          "errorCode": "ERR_CAPABILITY_DISCOVERY_STRUCTURED_OUTPUT_INVALID",
+          "leaseVersion": 1,
+          "textExact": true,
+          "textMatchesSha256": true,
+          "scopeTextMatchesScopeHash": true
+        },
+        {
+          "outcome": "COMPLETED",
+          "errorCode": null,
+          "leaseVersion": 2,
+          "textExact": true,
+          "textMatchesSha256": true,
+          "scopeTextMatchesScopeHash": true
+        }
+      ]
+    },
+    "secondReadIdentical": true,
+    "otherJob": [
+      "{other job"
+    ],
+    "unknown": {
+      "status": 404,
+      "body": "{\"success\":false,\"issues\":[{\"code\":\"ERR_RESULT_INSPECTION_NOT_FOUND\"}]}"
+    },
+    "postStatus": 405
+  },
+  "networkAttempts": {
+    "total": 3,
+    "gemini": 0,
+    "entries": [
+      "2912812 fetch https://registry.npmjs.org/-/package/next/dist-tags",
+      "2912975 fetch https://registry.npmjs.org/-/package/next/dist-tags",
+      "2913118 fetch https://registry.npmjs.org/-/package/next/dist-tags"
+    ],
+    "sentinel": true
+  }
+}

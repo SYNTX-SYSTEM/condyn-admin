@@ -1,0 +1,89 @@
+/**
+ * PINK proof of GELB 26df225 on a real Next server (next dev, disposable database, no worker, GEMINI_API_KEY empty, PINK's net
+ * sentinel in the server process): GET /api/career/analyses/{id}/investigation answers at its real path exactly as in-process,
+ * no-store, and refuses every other method. Writes `url-boundary-routes.json` to the evidence directory.
+ */
+import { spawn, type ChildProcess } from "node:child_process";
+import { once } from "node:events";
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { createServer } from "node:net";
+import { resolve } from "node:path";
+import { sql } from "drizzle-orm";
+import { afterAll, beforeAll, describe, expect, it } from "vitest";
+import { GET } from "../../app/api/career/analyses/[analysisId]/investigation/route";
+import { db, initDbSchema } from "../../lib/career/db/client";
+import { careerAnalyses } from "../../lib/career/db/schema";
+import { TEST_JOB_SCOPE, resolveStoredTestJobScope, uploadEngineeringJobScope } from "../support/job-scope";
+import { LEGACY_MARKER, created, seed } from "./fixtures/mode-analysis";
+
+const TIP = process.env.JOB_SCOPE_TIP ?? "local";
+const EVIDENCE_DIR = resolve(process.cwd(), `docs/architecture/decision-fields/evidence/job-scope-gate-${TIP}`);
+const SENTINEL = process.env.PINK_NET_SENTINEL;
+const NET_LOG = process.env.PINK_INSPECTOR_NET_LOG ?? "";
+const delay = (ms: number) => new Promise<void>((done) => setTimeout(done, ms));
+async function availablePort(): Promise<number> {
+  const listener = createServer();
+  await new Promise<void>((ok) => listener.listen(0, "127.0.0.1", () => ok()));
+  const port = (listener.address() as { port: number }).port;
+  await new Promise<void>((ok) => listener.close(() => ok()));
+  return port;
+}
+
+describe("PINK: URL boundary route on a real Next server (GELB 26df225)", () => {
+  let server: ChildProcess | undefined; let base = ""; let output = "";
+  const ids: Record<string, string> = {};
+  const report: Record<string, unknown> = {};
+  beforeAll(async () => {
+    await initDbSchema(); await uploadEngineeringJobScope();
+    const stamp = Date.now();
+    ids.pxj = (await seed(`ube-pxj-${stamp}`, { investigation: { mode: "PERSON_X_JOB" }, jobScope: TEST_JOB_SCOPE }, await resolveStoredTestJobScope())).analysisId;
+    ids.person = (await seed(`ube-person-${stamp}`, { investigation: { mode: "PERSON" } }, null)).analysisId;
+    ids.undeclared = (await seed(`ube-undeclared-${stamp}`, {}, null)).analysisId;
+    ids.direct = `ANL_PINK_E2E_DIRECT_${stamp}`;
+    await db.insert(careerAnalyses).values({ analysisId: ids.direct, createdAt: "2026-10-15T10:00:00.000Z", validationState: "VERIFIED", payload: { legacy: LEGACY_MARKER } } as never);
+    ids.unknown = `ANL_PINK_E2E_UNKNOWN_${stamp}`;
+    ids.encoded = "ANL_PINK/../job-pools";
+    const port = await availablePort();
+    server = spawn(process.execPath, [resolve(process.cwd(), "node_modules/next/dist/bin/next"), "dev", "--webpack", "-p", String(port), "-H", "127.0.0.1"], {
+      cwd: process.cwd(), stdio: ["ignore", "pipe", "pipe"],
+      env: { ...process.env, NEXT_TELEMETRY_DISABLED: "1", GEMINI_API_KEY: "", ...(SENTINEL && NET_LOG ? { NODE_OPTIONS: `--require ${SENTINEL}`, PINK_NET_LOG: NET_LOG } : {}) }
+    });
+    server.stdout?.on("data", (chunk) => { output += String(chunk); }); server.stderr?.on("data", (chunk) => { output += String(chunk); });
+    base = `http://127.0.0.1:${port}`;
+    for (let attempt = 0; attempt < 240; attempt += 1) {
+      try { const response = await fetch(`${base}/api/career/job-pools`); if (response.status === 200) { await response.text(); break; } } catch { /* not ready */ }
+      await delay(500);
+      if (attempt === 239) throw new Error(`server not ready:\n${output.slice(-3000)}`);
+    }
+  }, 300_000);
+  afterAll(async () => {
+    if (server && server.exitCode === null && server.signalCode === null) { server.kill("SIGTERM"); await Promise.race([once(server, "exit"), delay(10_000)]); if (server.exitCode === null && server.signalCode === null) { server.kill("SIGKILL"); await once(server, "exit"); } }
+    for (const jobId of created) await db.execute(sql`DELETE FROM career_analysis_jobs WHERE job_id = ${jobId}`);
+    const net = NET_LOG && existsSync(NET_LOG) ? readFileSync(NET_LOG, "utf8").trim().split("\n").filter(Boolean) : [];
+    report.networkAttempts = { total: net.length, gemini: net.filter((line) => /generativelanguage|aiplatform|googleapis|gemini/i.test(line)).length, entries: net.slice(0, 10).map((line) => line.split(" ").slice(1).join(" ")), sentinel: Boolean(SENTINEL && NET_LOG) };
+    mkdirSync(EVIDENCE_DIR, { recursive: true });
+    writeFileSync(resolve(EVIDENCE_DIR, "url-boundary-routes.json"), `${JSON.stringify({ tip: TIP, recordedAt: new Date().toISOString(), ...report }, null, 2)}\n`);
+  });
+
+  it("answers at the real path as in-process, no-store; other methods refused; 0 Gemini attempts", async () => {
+    const http: Record<string, unknown> = {};
+    for (const [label, analysisId] of Object.entries(ids)) {
+      const response = await fetch(`${base}/api/career/analyses/${encodeURIComponent(analysisId)}/investigation`);
+      const text = await response.text();
+      const local = await GET(new Request(`http://local/x`), { params: Promise.resolve({ analysisId }) });
+      const localText = await local.text();
+      http[label] = { status: response.status, cacheControl: response.headers.get("cache-control"), identicalToInProcess: response.status === local.status && text === localText, body: text.slice(0, 300) };
+    }
+    const methods: Record<string, number> = {};
+    for (const method of ["POST", "PUT", "PATCH", "DELETE"]) methods[method] = (await fetch(`${base}/api/career/analyses/${ids.pxj}/investigation`, { method })).status;
+    report.http = http; report.methods = methods;
+    for (const label of ["pxj", "person", "undeclared", "direct", "unknown", "encoded"]) {
+      const entry = http[label] as { status: number; cacheControl: string | null; identicalToInProcess: boolean };
+      expect({ label, identical: entry.identicalToInProcess, cacheControl: entry.cacheControl }).toEqual({ label, identical: true, cacheControl: "no-store" });
+    }
+    expect([(http.pxj as any).status, (http.person as any).status, (http.undeclared as any).status, (http.direct as any).status, (http.unknown as any).status]).toEqual([200, 200, 409, 409, 404]);
+    expect(Object.values(methods).every((status) => status === 405)).toBe(true);
+    const net = NET_LOG && existsSync(NET_LOG) ? readFileSync(NET_LOG, "utf8") : "";
+    expect(/generativelanguage|aiplatform|googleapis|gemini/i.test(net)).toBe(false);
+  }, 300_000);
+});
