@@ -46,7 +46,30 @@ Inspector-Grenze:
 - Das Token gehört nicht in den Browser. Eine Oberfläche ruft die Route serverseitig auf oder nutzt `createGeminiResultInspector` in einer Server-Komponente hinter derselben Freischaltung.
 - Der Inspector liefert keine Kandidatendokumente (PDF-Inhalte des Auftrags), keine Keys und keine Verbindungsdaten.
 
-## 4. Offene Grenzen
+Nachweis an einem echten Next-Server auf einer Wegwerf-Datenbank, ohne Gemini (`docs/proofs/job-pool-first-boundary/2026-10-15-result-inspector-access.json`, 9e54662, 7/7):
+
+| Fall | Status |
+|---|---|
+| bestehende Analyse-Route ohne Anmeldung (gespeicherte / unbekannte Analyse) | vom Handler beantwortet (500 wegen der leeren Test-Payload / 404), kein 401 oder 403 |
+| Inspector ausgeschaltet, Header mit Token | 404 `ERR_NOT_FOUND` |
+| eingeschaltet, ohne Header / mit falschem Token | 404 |
+| eingeschaltet, richtiges Token | 200, `no-store`, Originalantwort `NOT_RETAINED`, weder PDF-Inhalt noch Antworttext noch Token im Body |
+| eingeschaltet, unbekannte Analyse | 404 |
+
+## 4. Bestehender Lifecycle (rekonstruiert 2026-10-15)
+
+| Artefakt | Ablage | Ablauf oder Löschung |
+|---|---|---|
+| Discovery-, Convergence- und Verification-Läufe | `career_capability_runs` | keine; unveränderlich, `saveRun` lehnt jede abweichende Fassung ab |
+| bestätigte Capability-Stände | `career_capability_snapshots` | keine; unveränderlich |
+| Source Bundles (Text der PDFs) | `candidate_source_bundles` | keine |
+| Aufträge samt Eingabe (PDF-Inhalt in `inputRef`) | `career_analysis_jobs` | keine; abgelaufen sind nur Worker-Leases (`lease_expires_at`) |
+| Analysen | `career_analyses` | keine; nur die Projektionsreferenz fiele per `ON DELETE CASCADE` mit, gelöscht wird aber nirgends |
+| Job Pools | `career_job_pool_uploads` | Status `DRAFT`/`ACTIVE`/`ARCHIVED`, keine Löschung |
+
+Im Laufzeitcode (lib, app, scripts) gibt es keinen einzigen Löschpfad und keine Aufbewahrungsfrist. Die einzige Frist mit Löschung ist die des Austausch-Archivs (`retention.ts`). Ohne Owner-GO für dessen Tabelle wird keine Rohantwort gespeichert.
+
+## 5. Offene Grenzen
 
 - **Dauerhaftes Archiv:** braucht die Tabelle `career_gemini_provider_exchanges` (Owner-Freigabe der DDL). Der Diff liegt vor: Tabelle, Postgres-Archiv mit Ablauf und Löschung, Verdrahtung in Worker und Route.
 - **Fehlgeschlagene Antworten:** Scheitert JSON-Parse, Schema- oder Coverage-Prüfung, gibt es keinen Lauf und keinen Austausch. Das Archiv könnte sie aufnehmen, weil es nicht an den Lauf gebunden ist. Das ist eine Owner-Entscheidung.
