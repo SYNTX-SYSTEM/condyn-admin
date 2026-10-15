@@ -668,6 +668,8 @@ describe.skipIf(playwrightModule === null)("SYNTX field in a real browser: FIELD
     expect(params(page).get("jobPoolUploadId")).toBe(draftUploadId);
     expect(await field(page).getAttribute("data-matching-delivered")).toBe("false");
     const draftOrganization = page.getByTestId(`syntx-organization-${world.samplePool.roles.find(role => role.id === T.roleId)!.organization_id}`);
+    // The statement appears at once (no matches read); let the field's change of pool come to rest before the organization is clicked.
+    await settled(page);
     await draftOrganization.click({ position: await bottomOf(draftOrganization) });
     await page.locator('[data-testid="syntx-field"][data-observation-kind="ORGANIZATION"]').waitFor({ timeout: 10_000 });
     await settled(page);

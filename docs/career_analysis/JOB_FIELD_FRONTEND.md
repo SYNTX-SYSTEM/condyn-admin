@@ -1323,6 +1323,17 @@ guessed from the interface.
   - an analysis row without a job, which resolves to 409 `NOT_RECORDED`.
 - **Network:** 0 Gemini hosts. Evidence `evidence/job-pool/three-modes/` (09, 10 and the walk results).
 
+**GELB hardening d54c718 / 4e72260 (PINK O-URL-SCOPE-IDENTITY, §3.38), merged as e83a9e4.** Additive only:
+- PERSON_X_JOB with a Discovery run holds only when the run's scope hash belongs to the declared selection; otherwise 409 `RUN_CONTRADICTS_DECLARATION`.
+- A declared selection that the stored pool no longer resolves gives `SCOPE_UNAVAILABLE`.
+- A 503 on this path is FAILED.
+
+All of these fall into UNRESOLVED / FAILED: no comparison, no frontend change. Proof:
+- 10 files / 163;
+- walk 46/46 (`walk-results-1600-hardening.txt`);
+- workflow e2e 10/10 three times in a row, after the DRAFT step waits for the field to come to rest before its click (the OTHER_POOL statement appears without a matches round trip, so the click had fallen into the field's change of pool: 2 of 3 runs red before).
+
+
 
 ### 13.3 DOM contract (PINK BR-1 … BR-5; GELB conditions a/b)
 
@@ -1497,3 +1508,4 @@ observation point. Readable labels wrap at word boundaries (`wrapLines`), never 
 | 2026-10-15 | Three investigation modes, B2, GEMINI OUTPUT (owner GO "DEMO FRONTEND", on aa17a3b + GELB ad15d7b) | §13.2.27: shell control PERSON · PERSON × JOB · JOB (URL `investigationMode`, ground state PERSON_X_JOB); gate per mode (`JOB_MODE`); ANALYZE declares the boundary; Job Field compares only in PERSON × JOB; B2 body at the selected job; JOB structure body; GEMINI OUTPUT inspector beside BOUNDARY (engineering builds, token in memory only). Evidence: `evidence/job-pool/three-modes/` | tsc: only PINK's pending pdf-path error; new 3 files / 74; regression 58 files / 442; PINK gate walk 74/74; workflow e2e 10/10; lab walk 38/38 at 1600 and 1280 (real worker, loopback stand-in, 0 Gemini hosts) |
 | 2026-10-15 | PINK §3.36 observation O-MODE-KEYBOARD-FOCUS (on 00deaf0) | §13.2.27: the Job Field's F-SX-1 focus effect leaves a focus in the investigation selector alone | tsc unchanged; regression 58 files / 442; walk 40/40 incl. MK-4/MK-5 |
 | 2026-10-15 | URL boundary closure (owner "SFE — GELB / GRÜN | URL BOUNDARY CLOSURE", on bd9eb72 + GELB 26df225 / ef189d3) | §13.2.28: the Job Field compares an analysis only when its persisted boundary is PERSON_X_JOB and its own pool is on view (`legacyJobComparisonPermitted`); RESOLVING / PERSON / UNRESOLVED / OTHER_POOL named, the pool opened only explicitly; e2e world persists the analysis's job | tsc unchanged; 9 files / 128; workflow e2e 10/10; lab walk 46/46 at 1600 and 1280; 0 Gemini hosts |
+| 2026-10-15 | GELB hardening d54c718 / 4e72260 merged (e83a9e4) | §13.2.28: run scope identity and SCOPE_UNAVAILABLE fall into UNRESOLVED; DRAFT e2e step waits for rest | 10 files / 163; walk 46/46; workflow e2e 10/10 ×3 |

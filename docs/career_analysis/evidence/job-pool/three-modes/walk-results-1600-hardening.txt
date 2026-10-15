@@ -1,0 +1,48 @@
+PASS M0-1 no choice in the URL: PERSON × JOB is the ground state, shown on the shell row
+PASS M0-2 no job: Capability gated exactly as before (AWAITING_JOB)
+PASS M0-3 shell row: mode selector, field selector, job indicator (and guide) do not overlap; selector inside the viewport — {"sel":{"l":1045,"r":1269.125,"t":78,"b":110},"guide":{"l":1414,"r":1576,"t":13,"b":47}}
+PASS MP-1 PERSON chosen explicitly: URL investigationMode=PERSON, aria-checked
+PASS MP-2 Capability open without any job; the job indicator says NO JOB SCOPE · PERSON
+PASS MP-3 dock names the boundary at the trigger; ANALYZE admitted
+PASS MP-4 one request: { documents, investigation: { mode: PERSON } } and no jobScope key
+PASS MP-5 success banner names PERSON · WITHOUT A JOB SCOPE
+PASS MP-6 the Capability Field shows the analysis (orbits counted) — ["1 items","4 items","1 items","1 items","0 items","1 items"]
+PASS MP-7 Job Field in PERSON: no analysis compared (analysis source NONE), state line PERSON · NO JOB COMPARISON, statement shown
+PASS MP-8 GEMINI OUTPUT opens beside BOUNDARY: token form, nothing read yet
+PASS MP-9 wrong token: CLOSED (the route answers like an unknown route)
+PASS MP-10 ORIGINAL RESPONSE: RETAINED, byte-identical to the archived text (CRLF, tabs, trailing newline kept) — 3481 chars
+PASS MP-11 SCOPE view: mode PERSON, UNSCOPED
+PASS MP-12 PROCESSING view: parser result, verification (incl. the rejected invented claim) and convergence apart
+PASS MP-13 EXCHANGES of the job: its own COMPLETED exchange (new source, run not reused) — reused=false completed=1
+PASS MP-14 closing discards: reopened with an empty token and nothing read
+PASS MP-15 Escape closes GEMINI OUTPUT
+PASS MP-16 the token never reached the URL or storage
+PASS MX-1 back to PERSON × JOB without a job: gate closed again, ANALYZE blocked with the owner's sentence
+PASS MX-2 one request: { documents, investigation: { mode: PERSON_X_JOB }, jobScope: exactly the selection }
+PASS MX-3 at the selected role: the Job Field compares this analysis (source JOB_RESULT), B2 offered
+PASS MX-4 B2: 2 covered, 1 not covered, scored false, NOT_EVALUATED, bound to this analysis and role
+PASS MX-5 requirements in pool order with their coverage and verbatim evidence — ["COVERED/EXACT","COVERED/EXACT","NOT_COVERED/"]
+PASS MX-6 every proposal listed (also those covering nothing)
+PASS MX-7 Escape closes the B2 body
+PASS MX-8 GEMINI OUTPUT for PERSON × JOB: the scope text RETAINED and named as never evidence
+PASS MS-1 another job selected for the PERSON × JOB analysis: 409 → "Analysis belongs to another job", no data shown
+PASS MS-2 a PERSON analysis under the selected job: NOT_SCOPED, "no job comparison"
+PASS MS-3 the same analysis from the URL with its own job: B2 AVAILABLE again
+PASS MU-1 a PERSON analysis from the URL in PERSON × JOB: no comparison (matches IDLE, source NONE), named
+PASS MU-2 a PERSON × JOB analysis from the URL in its own pool: the comparison as before (existing links unchanged)
+PASS MU-3 the same analysis in another pool: no comparison across job scopes (matches IDLE), its pool named and offered explicitly
+PASS MU-4 the explicit action opens the analysis's pool; the comparison appears there
+PASS MU-5 an analysis the server cannot resolve: no comparison, "cannot be resolved"
+PASS MU-6 an analysis without a recorded job (stored as earlier analyses were): 409 UNRESOLVED NOT_RECORDED, no comparison — {"code":"ERR_ANALYSIS_INVESTIGATION_UNRESOLVED","reason":"NOT_RECORDED"}
+PASS MJ-1 JOB restored from the URL; Capability closed (JOB_MODE) although the job is VALID
+PASS MJ-2 the Job Field reads no analysis; state line JOB · STRUCTURE …
+PASS MJ-3 JOB_STRUCTURE_V1: 10 requirements in pool order with pool-source lines, 8 findings, responsibility NOT DECLARED — rows=10
+PASS MJ-4 GEMINI OUTPUT in JOB: "No Gemini call in this mode", no token form
+PASS MK-1 keyboard: ←/Home move the choice; the focused option follows; URL written
+PASS MK-2 in PERSON the selected job stays selected (G-05: a mode change removes nothing)
+PASS MK-3 reload restores PERSON from the URL
+PASS MK-4 End PERSON→JOB (Capability → Job Field): focus stays on JOB; Home then steers the boundary back to PERSON — investigation-mode-JOB / investigation-mode-PERSON
+PASS MK-5 → PERSON × JOB→JOB with a VALID job: focus stays on JOB; ← steers back to PERSON × JOB — investigation-mode-JOB
+PASS M-net no page errors
+46/46 PASS
+inspector requests ["GET true","GET true","GET true","GET true"]
