@@ -1,0 +1,2 @@
+LIVE: {"root":"sxEnter","shell":{"animation":"none","transition":"transform, opacity, filter","duration":"0.78s, 0.62s, 0.62s"},"pendingDash":"sxSuspend","sign":{"animation":"none","transition":"opacity, filter","duration":"0.45s, 0.62s"},"names":["sxEnter","rotateClockwise","coreBreathe","plasmaRotateCw","plasmaRotateCcw","plasmaFlarePulse","waveExpand","particleIn","orbitFloatPhase2","atmosphereGlow","ringPulse","moonOrbit","sxSuspend","sxOrientPass"]}
+REDUCED: {"running":0,"root":"none","shell":"0s","pendingDash":"none"}

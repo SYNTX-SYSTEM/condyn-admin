@@ -1858,6 +1858,49 @@ Evidence is in `evidence/matches-boundary-eacfc97/`: answers, real-server routes
 - Open owner question: should the server also refuse PERSON_X_JOB in another pool?
 - The read-only support scripts receive 409 on environments with analyses from before the gate. :3017 and :41831 do not run this code.
 
+### 3.43 Second integration step `6da26a7` and the SYNTX walk rebound to the invariants (2026-10-15)
+
+**Integration.** GELB merged `eacfc97` (`20c977b`) and then PINK `122aa6c` (`73a4701`); `6da26a7` adds documents only.
+- PINK rebuilt both merges; the trees are identical (`ef13ffd…`, `b4f0093…`). The code is the state PINK validated in §3.42.
+- **§3.41 findings closed.** GELB corrected the leak statement (30 lines / 25 files in GRÜN's evidence confirmed; cleanup is the owner's decision). Both proof JSON files now record `gitSha` `73a4701…`, with 8/8 and 45/45 checks passing.
+
+**`syntx-walk.e2e` (Q-12), rebound** (test file only). The rebinding follows rules in force and documented frontend changes, never merely the observed rendering:
+
+| Step | Rule | Change |
+| --- | --- | --- |
+| Fixture | URL boundary and `/matches` guard | `ANL_PINK_SYNTX_WALK` gets its persisted SUCCEEDED job, declared PERSON_X_JOB for `ROLE_ID` of the validation pool; this is the same fixture as the gate walk |
+| Q-01 … Q-11 | Owner GOs of the semiotic transfer and the later passes (`JOB_FIELD_FRONTEND.md` §13.2.3 ff.) | GRÜN's proposal patch `syntx-walk.semiotic-transfer.patch` (P-3) is applied unchanged: roles at FIELD as moons (no button, `tabindex -1`, proofs unchanged); `data-depth` 0–3 with the anchor at 1.12 instead of zoom; clicks by pointer after an `elementFromPoint` ownership check; the focus shell instead of the camera; organization bodies as `div` |
+| Q-11 | GRÜN `c146f05` (Job Pool first) | GRÜN's edit, disclosed on 2026-10-14, adopted |
+| Q-06 motion | R15b is a **proposal**, not recorded by GELB | The walk binds the closed list of P-2 as of the integration, plus `sxOrientPass` (F-5 of the 2026-10-13 sweep). Any further motion fails. The verdict is **BOUNDARY-MATCH R15b-PENDING**, not PASS |
+| Version two and the DRAFT pool | URL boundary (`da59568`) | The analysis is PERSON_X_JOB in the first upload, so in the new version and in the DRAFT upload it is OTHER_POOL: containment without a matching read, NO_ANALYSIS, the hint naming the own pool, no `/matches` request. B-JP-CONTINUITY (new canonical entities per version) is unchanged |
+| Keyboard entry | `c146f05` + field selector (P-6) | `focus=CAPABILITY` without a job opens the Job Field. Enter on its active strip button keeps the focus there, which is what B-SYNTX-FOCUS demands |
+
+**Result on `6da26a7`:**
+- 3/3, twice, with 0 non-GET requests on the read-only pages.
+- Verdicts:
+  - every scenario PASS except Q-06 (BOUNDARY-MATCH R15b-PENDING) and Q-04-sweep (BOUNDARY-MATCH B-JP-GEMINI, unchanged);
+  - Q-05: the bodies are identical after the walk;
+  - Q-07, Q-10: every sign and proof resolve against the bodies.
+- **Before** the rebinding the walk was 0/3, on both `0fb7b05` and `6da26a7`. With the fixture alone it was still 0/3, failing at the DOM contract.
+- After the last run only one unreachable dead line (`else if (false)`) was removed from the file.
+
+**Observation O-SX-INACTIVE-NAMING** (for GRÜN, informational):
+- The field state INACTIVE_POOL ("POOL IS NOT ACTIVE") comes only from a 409 of the matches read.
+- Under the URL boundary the matches read happens only in the analysis's own pool, which is ACTIVE. With consistent data, the field therefore never names a DRAFT pool as inactive; it shows OTHER_POOL.
+- The server still refuses DRAFT × PERSON_X_JOB (MB-2).
+
+The walk holds only with the integration. On the PINK branch alone it needs the integrated application.
+
+The GET-only support walk `support/syntx-readonly-walk.mjs` (P-4) is not rebound. It needs an owner-shaped environment with persisted jobs, and :3017 / :41831 do not run this code.
+
+Evidence is in `evidence/syntx-walk-6da26a7/`: the Q-12 report, signs, audits, ecology frames, the run log and the manifest; screenshots were not committed.
+
+**Status.**
+- The SYNTX walk is green on the integration.
+- Open for GELB/owner: recording R15b (and R10a–R10d).
+- O-B2-OPEN-READ is unchanged.
+- The open owner question on `/matches` pool equality is unchanged.
+
 ## 4. Boundaries and findings for coordination
 
 - F-JP-1 (closed in `b782793`): `JOB_POOL_CONNECTION.md` §4 followed the per-role `JOB_POOL_JSON_ROLE` design;

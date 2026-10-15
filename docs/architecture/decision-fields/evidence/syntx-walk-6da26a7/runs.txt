@@ -1,0 +1,8 @@
+PINK syntx-walk.e2e (Q-12) on integration 6da26a7 (= 73a4701 + docs), real next dev on a disposable database, GEMINI_API_KEY unset, SYNTX_WALK_TIP=6da26a7
+before the rebinding, on 0fb7b05 and on 6da26a7: 0/3 — each test waits for data-field-state="AVAILABLE" (ANL_PINK_SYNTX_WALK stored without a job: boundary NOT_RECORDED); on 6da26a7 the beforeAll already stops (matches 409 NOT_RECORDED)
+step 1, the persisted SUCCEEDED PERSON_X_JOB job for ANL_PINK_SYNTX_WALK only: 0/3 — role carriers at FIELD not buttons (391/392), the role click (471), camera transition and R15a motion names (924–982), the version-two step (1049)
+step 2, GRÜN's proposal patch syntx-walk.semiotic-transfer.patch (P-3) applied unchanged, R15b list completed from P-2 as of the integration plus sxOrientPass (F-5), Q-06 recorded BOUNDARY-MATCH R15b-PENDING: Q-01…Q-11 and Q-06 green; carried states fail at the version-two step
+step 3, the version-two step and the DRAFT pool bound to the URL boundary (OTHER_POOL, NO_ANALYSIS, hint to the own pool, no matches read): carried states fail at the keyboard entry (focus stays on the strip button)
+step 4, keyboard entry bound to Job Pool first (c146f05) + field selector (P-6): the strip button keeps focus, the field is the Job Field
+final: 3/3, twice (run 1 and run 2), 0 non-GET requests in every read-only page; verdicts in Q-12-report.json (Q-06 BOUNDARY-MATCH R15b-PENDING, Q-04-sweep BOUNDARY-MATCH B-JP-GEMINI, all others PASS)
+not rebound: test/job-pool-validation/support/syntx-readonly-walk.mjs (P-4, GET-only walk for an owner environment; needs owner-shaped analyses with persisted jobs)

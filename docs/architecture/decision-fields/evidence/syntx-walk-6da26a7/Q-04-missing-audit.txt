@@ -1,0 +1,78 @@
+Q-04-missing
+visible text:
+Requirement Industrial IoT Protocol Design of role Distributed Systems Architect: without delivered support; 0 evidence traces from 0 sources. An inspection aperture is open.
+
+JOB POOL
+PINK VALIDATION POOL
+⬡ 2 ORGANIZATIONS
+01
+⬡ ALPHA INDUSTRIAL SYSTEMS
+Industrial automation · Bavaria
+ORGANIZATION
+1 ROLES
+02
+⬡ BETA CLOUD GMBH
+Cloud software · Berlin
+ORGANIZATION
+2 ROLES
+Platform Engineer
+Role Without Requirements
+ROLE // SENIOR
+Distributed Systems Architect
+3 REQUIREMENTS // MATCHING READ
+01 ALPHA INDUSTRIAL SYSTEMS
+ORGANIZATION COSMOS // 1 ROLES
+SOURCE // DOCUMENT
+doc1.md
+2 EVIDENCE
+REQUIREMENT
+Distributed Systems Architecture
+REQUIREMENT
+Edge Computing
+REQUIREMENT
+Industrial IoT Protocol Design
+ROLE // 3 REQUIREMENTS
+DISTRIBUTED SYSTEMS ARCHITECT
+RETURN TO THE ORGANIZATION COSMOS
+Distributed Systems Architecture
+Edge Computing
+REQUIREMENT NUCLEUS // NO DELIVERED SUPPORT (OPEN)
+Industrial IoT Protocol Design
+PENDING CANONICAL EVALUATION
+RETURN TO THE ROLE COSMOS
+EVIDENCE // 0 EVIDENCE RELATIONS
+NO DELIVERED SUPPORT (OPEN)
+REQUIREMENT
+CLOSE
+INDUSTRIAL IOT PROTOCOL DESIGN
+NO DELIVERED SUPPORT
+
+No delivered support is available for this requirement in the current analysis.
+
+· weight 0.4 · level
+presentation
+·
+authority NONE
+·
+not a canonical evaluation
+·
+not a decision
+·
+not an HR recommendation
+JOB FIELD
+← CAPABILITY FIELD
+PINK validation pool
+›
+Alpha Industrial Systems
+›
+Distributed Systems Architect
+›
+Industrial IoT Protocol Design
+← RETURN
+PRESENTATION MATCHING
+◎ SELECT AS JOB
+Esc returns · Enter selects · Tab moves between carriers
+⬡ POOLS · 2
++ INTAKE
+BOUNDARY
+PRESENTED != EVALUATED · UPLOADED != SELECTED · RANKED != RECOMMENDED · MISSING != GAP DECISION · COVERED != SCORED · PENDING != MISSING CAPABILITY · POOL ROLE != INFERRED ROLE

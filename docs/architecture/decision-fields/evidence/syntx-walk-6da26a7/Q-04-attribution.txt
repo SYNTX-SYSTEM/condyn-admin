@@ -1,0 +1,3 @@
+aperture for trace:req_pink_alpha_1:supports:DOC_001:0
+inspectable carriers [{"docId":"DOC_001","state":"inspectable","driver":null,"x":0,"y":0}]
+infinite {"rotateClockwise":["region"],"coreBreathe":["region"],"plasmaRotateCw":["region"],"plasmaRotateCcw":["region"],"plasmaFlarePulse":["region"],"waveExpand":["region","region"],"particleIn":["region","region"],"orbitFloatPhase2":["region","region"],"atmosphereGlow":["region","region","region"],"ringPulse":["region","region"],"moonOrbit":["carrier","carrier"],"sxSuspend":["suspended_boundary"],"sxApertureBreathe":["temporary_aperture"]}
