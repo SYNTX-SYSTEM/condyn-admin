@@ -1595,6 +1595,12 @@ real-worker paths were proven on `ad15d7b` in §3.34.
 - O-B2-OPEN-READ is unchanged: the B2 body shows CV quotes, the route has no read boundary, and there is no public release.
 - Not authorised, and unchanged: merge, integration, deployment, live Gemini.
 
+**Hygiene follow-up to §3.31–§3.36 (GELB's report, 2026-10-15).**
+- What was wrong: the evidence files `scripts-results*.json` in seven `job-scope-gate-*` directories, and two `positive-control.mjs.txt`, contained the local absolute worktree path. It sits in Node stack traces of the old root file `debug.js`, which is the known ungated owner item.
+- What changed: the path is now written repo-relative.
+- Verification: the changed files' lines in each `manifest.sha256` were renewed, and all seven manifests verify.
+- Unchanged: no measured value. The earlier commits still contain the path; rewriting history is the owner's decision.
+
 ## 4. Boundaries and findings for coordination
 
 - F-JP-1 (closed in `b782793`): `JOB_POOL_CONNECTION.md` §4 followed the per-role `JOB_POOL_JSON_ROLE` design;

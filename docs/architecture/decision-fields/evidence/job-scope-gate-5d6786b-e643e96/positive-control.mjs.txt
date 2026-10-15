@@ -1,5 +1,5 @@
 import { createRequire } from "node:module";
-const require = createRequire("/home/codi/Entwicklung/condyn-admin-hr-validation/package.json");
+const require = createRequire("package.json");
 const { GoogleGenAI } = await import(require.resolve("@google/genai"));
 const ai = new GoogleGenAI({ apiKey: "pink-dummy-not-a-key" });
 try { await ai.models.generateContent({ model: "gemini-2.0-flash", contents: "x" }); console.log("CONTROL: request went out (sentinel FAILED)"); }

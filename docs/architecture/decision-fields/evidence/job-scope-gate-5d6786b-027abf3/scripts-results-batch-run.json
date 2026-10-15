@@ -37,7 +37,7 @@
     "exit": 1,
     "refusal": null,
     "net": [],
-    "tail": "    at Object.<anonymous> (/home/codi/Entwicklung/condyn-admin-hr-validation/debug.js:1:43) |  | Node.js v20.19.0"
+    "tail": "    at Object.<anonymous> (debug.js:1:43) |  | Node.js v20.19.0"
   },
   {
     "file": "debug.js",
@@ -45,7 +45,7 @@
     "exit": 1,
     "refusal": null,
     "net": [],
-    "tail": "    at Object.<anonymous> (/home/codi/Entwicklung/condyn-admin-hr-validation/debug.js:1:43) |  | Node.js v20.19.0"
+    "tail": "    at Object.<anonymous> (debug.js:1:43) |  | Node.js v20.19.0"
   },
   {
     "file": "debug.js",
@@ -53,7 +53,7 @@
     "exit": 1,
     "refusal": null,
     "net": [],
-    "tail": "    at Object.<anonymous> (/home/codi/Entwicklung/condyn-admin-hr-validation/debug.js:1:43) |  | Node.js v20.19.0"
+    "tail": "    at Object.<anonymous> (debug.js:1:43) |  | Node.js v20.19.0"
   },
   {
     "file": "debug.js",
@@ -61,7 +61,7 @@
     "exit": 1,
     "refusal": null,
     "net": [],
-    "tail": "    at Object.<anonymous> (/home/codi/Entwicklung/condyn-admin-hr-validation/debug.js:1:43) |  | Node.js v20.19.0"
+    "tail": "    at Object.<anonymous> (debug.js:1:43) |  | Node.js v20.19.0"
   },
   {
     "file": "debug.ts",
