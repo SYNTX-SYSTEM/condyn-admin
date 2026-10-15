@@ -1151,6 +1151,32 @@ be wired later, two scopes over the same sources would share one snapshot key. R
 
 Open: GRÜN to move the interface sentence (then the walk is re-run); GELB's `pdf-path` diff still waits for integration.
 
+### 3.31 Job-scope invariant: GRÜN `aa17a3b` (interface sentence moved) with GELB `e643e96` verified together (2026-10-15)
+
+Owner GO 2026-10-15 as relayed by GELB and GRÜN (not seen by PINK first-hand). GRÜN `frontend/job-field` `aa17a3b` (on
+`5d6786b`): outside docs and GRÜN's own tests, the only change is `JOB_SCOPE_REQUIRED_MESSAGE` in
+`lib/career/job-pool/job-scope.ts`, now „Bitte wähle einen Job aus einem Pool aus.“, identical to GELB's
+`lib/career/job-scope/errors.ts`. Codes, behaviour and DOM unchanged.
+
+PINK (probe branch = this branch + `aa17a3b` + `e643e96`, deleted, never pushed; evidence `evidence/job-scope-gate-aa17a3b-e643e96/`;
+the proofs are the unchanged `.txt` files of §3.30, copied in on the probe only, with GELB's `pdf-path` diff on the probe only):
+- Gate walk (`JOB_SCOPE_TIP=aa17a3b-e643e96`, one sentence constant for backend and interface): **74/74, no deviation.** The four
+  §3.30 deviations (G-05 staged removal, G-11 NONE / INVALID / DRAFT) now show the owner's sentence verbatim; the backend (G-06)
+  carries it on all 7 refusals; gating unchanged (disabled, no request, 202 only with a valid scope).
+- Inverse sweep: the earlier sentence „Bitte wählen Sie einen Job aus.“ occurs nowhere in `lib/`, `app/` or `scripts/`; the new
+  sentence is defined exactly twice (interface `lib/career/job-pool/job-scope.ts`, backend `lib/career/job-scope/errors.ts`) and
+  pinned in GELB's two proofs; every display (ANALYZE and RETRY block, `/career/analyze`, the analyze route) reads a constant.
+- Preservation: SSR render probe (26 cases) byte-identical to `5d6786b` (`render-identity-5d6786b-vs-aa17a3b-e643e96.txt`; the
+  sentence is rendered only client-side, once a source is staged).
+- Regression under PINK's net sentinel, `GEMINI_API_KEY` unset (46 files, incl. PINK's discovery, pipeline, worker and script proofs,
+  GELB's scope suites and the seals P8 / P7, no own dev server running): 38 green + 8 live skipped, 308 tests; 0 network attempts
+  (positive control caught). Script proof: 92 runs, 80/80 runs of the 20 gated scripts exit 3 with the sentence, result list identical
+  to §3.30. tsc 0.
+
+Open (unchanged, owner items): removal does not cancel an analysis in flight; `debug.js` / `debug2.js` / `test-full.mjs` ungated
+(non-functional); :3017 and :41831 run without the gate; O-SNAPSHOT-SCOPE; ca11794 SYNTX rebinding. GELB's `pdf-path` diff and
+the `.txt` proofs become real test files when GELB's gate is integrated into this branch.
+
 ## 4. Boundaries and findings for coordination
 
 - F-JP-1 (closed in `b782793`): `JOB_POOL_CONNECTION.md` §4 followed the per-role `JOB_POOL_JSON_ROLE` design;
