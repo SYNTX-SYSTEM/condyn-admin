@@ -1,0 +1,47 @@
+{
+  "tip": "df2e84e",
+  "recordedAt": "2026-10-15T07:19:20.564Z",
+  "analyze": {
+    "person": "202 accepted",
+    "personPlusScope": "400 ERR_INVESTIGATION_INVALID | Bitte wähle eine eindeutige Untersuchungsgrenze.",
+    "job": "400 ERR_INVESTIGATION_MODE_NOT_ANALYZABLE | Bitte wähle eine eindeutige Untersuchungsgrenze.",
+    "undeclared": "400 ERR_JOB_SCOPE_REQUIRED | Bitte wähle einen Job aus einem Pool aus.",
+    "undeclaredScoped": "202 accepted"
+  },
+  "comparison": {
+    "own": {
+      "status": 200,
+      "cacheControl": "no-store",
+      "requirements": {
+        "requirements": 10,
+        "covered": 1,
+        "notCovered": 9,
+        "proposals": 2
+      }
+    },
+    "otherRole": "ERR_JOB_COMPARISON_SCOPE_MISMATCH",
+    "person": "ERR_JOB_COMPARISON_NOT_SCOPED"
+  },
+  "structure": {
+    "status": 200,
+    "identicalOnSecondRead": true,
+    "findings": {
+      "requirements": 10,
+      "findings": 8
+    },
+    "unknownRole": "409 ERR_JOB_STRUCTURE_UNAVAILABLE"
+  },
+  "networkAttempts": {
+    "total": 6,
+    "gemini": 0,
+    "entries": [
+      "3077670 fetch https://registry.npmjs.org/-/package/next/dist-tags",
+      "3077865 fetch https://registry.npmjs.org/-/package/next/dist-tags",
+      "3078023 fetch https://registry.npmjs.org/-/package/next/dist-tags",
+      "3078210 fetch https://registry.npmjs.org/-/package/next/dist-tags",
+      "3078331 fetch https://registry.npmjs.org/-/package/next/dist-tags",
+      "3078482 fetch https://registry.npmjs.org/-/package/next/dist-tags"
+    ],
+    "sentinel": true
+  }
+}

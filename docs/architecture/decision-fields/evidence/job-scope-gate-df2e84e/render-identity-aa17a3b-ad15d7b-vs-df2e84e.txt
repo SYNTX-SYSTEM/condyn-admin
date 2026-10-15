@@ -1,0 +1,28 @@
+identical after removing the additions cap-L0-en
+identical after removing the additions cap-01-z1-en
+identical after removing the additions cap-01-z2-en
+identical after removing the additions cap-03-z1-en
+identical after removing the additions cap-03-z2-en
+identical after removing the additions cap-06-z1-en
+identical after removing the additions cap-06-z2-en
+identical after removing the additions field-nopool-en
+identical after removing the additions field-FIELD-en
+identical after removing the additions field-ORG-en
+identical after removing the additions field-ROLE-en
+identical after removing the additions field-REQ-en
+identical after removing the additions cap-L0-de
+identical after removing the additions cap-01-z1-de
+identical after removing the additions cap-01-z2-de
+identical after removing the additions cap-03-z1-de
+identical after removing the additions cap-03-z2-de
+identical after removing the additions cap-06-z1-de
+identical after removing the additions cap-06-z2-de
+identical after removing the additions field-nopool-de
+identical after removing the additions field-FIELD-de
+identical after removing the additions field-ORG-de
+identical after removing the additions field-ROLE-de
+identical after removing the additions field-REQ-de
+identical after removing the additions dock-empty
+identical after removing the additions dock-staged
+
+26/26 renders: aa17a3b+ad15d7b == df2e84e minus (investigation-mode-selector, data-investigation-mode, data-investigation-body/visible, data-gemini-output-visible, data-job-scope-used="true")

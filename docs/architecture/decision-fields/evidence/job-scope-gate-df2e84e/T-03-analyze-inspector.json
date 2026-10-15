@@ -1,0 +1,144 @@
+[
+  {
+    "label": "PERSON without a job",
+    "mode": "PERSON",
+    "job": "NONE",
+    "expect": "PERSON",
+    "reach": {
+      "reachable": true,
+      "disabled": false,
+      "focusAfter": "CAPABILITY"
+    },
+    "trigger": {
+      "staged": true,
+      "present": true,
+      "disabled": false,
+      "labelMode": "PERSON",
+      "message": null
+    },
+    "posts": 1,
+    "body": {
+      "documents": "[1]",
+      "investigation": {
+        "mode": "PERSON"
+      }
+    },
+    "stored": {
+      "investigation": {
+        "mode": "PERSON"
+      },
+      "jobScope": null
+    }
+  },
+  {
+    "label": "PERSON with a VALID job selected",
+    "mode": "PERSON",
+    "job": "VALID",
+    "expect": "PERSON",
+    "reach": {
+      "reachable": true,
+      "disabled": false,
+      "focusAfter": "CAPABILITY"
+    },
+    "trigger": {
+      "staged": true,
+      "present": true,
+      "disabled": false,
+      "labelMode": "PERSON",
+      "message": null
+    },
+    "posts": 1,
+    "body": {
+      "documents": "[1]",
+      "investigation": {
+        "mode": "PERSON"
+      }
+    },
+    "stored": {
+      "investigation": {
+        "mode": "PERSON"
+      },
+      "jobScope": null
+    }
+  },
+  {
+    "label": "PERSON × JOB with a VALID job",
+    "mode": "PERSON_X_JOB",
+    "job": "VALID",
+    "expect": "PERSON_X_JOB",
+    "reach": {
+      "reachable": true,
+      "disabled": false,
+      "focusAfter": "CAPABILITY"
+    },
+    "trigger": {
+      "staged": true,
+      "present": true,
+      "disabled": false,
+      "labelMode": "PERSON_X_JOB",
+      "message": null
+    },
+    "posts": 1,
+    "body": {
+      "documents": "[1]",
+      "investigation": {
+        "mode": "PERSON_X_JOB"
+      },
+      "jobScope": {
+        "jobPoolUploadId": "JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7",
+        "poolRoleId": "role_pink_alpha_architect"
+      }
+    },
+    "stored": {
+      "investigation": {
+        "mode": "PERSON_X_JOB"
+      },
+      "jobScope": {
+        "poolRoleId": "role_pink_alpha_architect",
+        "jobPoolUploadId": "JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7"
+      }
+    }
+  },
+  {
+    "label": "PERSON × JOB without a job",
+    "mode": "PERSON_X_JOB",
+    "job": "NONE",
+    "expect": "NONE",
+    "reach": {
+      "reachable": false,
+      "disabled": true,
+      "focusAfter": "FIELD"
+    },
+    "trigger": {
+      "staged": false,
+      "present": false,
+      "disabled": true,
+      "labelMode": null,
+      "message": null
+    },
+    "posts": 0,
+    "body": null,
+    "stored": null
+  },
+  {
+    "label": "JOB with a VALID job",
+    "mode": "JOB",
+    "job": "VALID",
+    "expect": "NONE",
+    "reach": {
+      "reachable": false,
+      "disabled": true,
+      "focusAfter": "FIELD"
+    },
+    "trigger": {
+      "staged": false,
+      "present": false,
+      "disabled": true,
+      "labelMode": null,
+      "message": null
+    },
+    "posts": 0,
+    "body": null,
+    "stored": null
+  }
+]

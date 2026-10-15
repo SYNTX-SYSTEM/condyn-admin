@@ -1,0 +1,155 @@
+{
+  "PERSON/NONE": {
+    "mode": "PERSON",
+    "gate": "OPEN",
+    "selector": "PERSON",
+    "checked": [
+      "investigation-mode-PERSON"
+    ],
+    "scope": "NONE",
+    "scopeUsed": "false",
+    "scopeText": "JOBNO JOB SCOPE · PERSON",
+    "focus": "FIELD",
+    "reach": {
+      "reachable": true,
+      "disabled": false,
+      "focusAfter": "CAPABILITY"
+    }
+  },
+  "PERSON/VALID": {
+    "mode": "PERSON",
+    "gate": "OPEN",
+    "selector": "PERSON",
+    "checked": [
+      "investigation-mode-PERSON"
+    ],
+    "scope": "VALID",
+    "scopeUsed": "false",
+    "scopeText": "JOBNO JOB SCOPE · PERSONselected job not used: Distributed Systems Architect",
+    "focus": "FIELD",
+    "reach": {
+      "reachable": true,
+      "disabled": false,
+      "focusAfter": "CAPABILITY"
+    }
+  },
+  "PERSON/INVALID": {
+    "mode": "PERSON",
+    "gate": "OPEN",
+    "selector": "PERSON",
+    "checked": [
+      "investigation-mode-PERSON"
+    ],
+    "scope": "INVALID",
+    "scopeUsed": "false",
+    "scopeText": "JOBNO JOB SCOPE · PERSON",
+    "focus": "FIELD",
+    "reach": {
+      "reachable": true,
+      "disabled": false,
+      "focusAfter": "CAPABILITY"
+    }
+  },
+  "PERSON_X_JOB/NONE": {
+    "mode": "PERSON_X_JOB",
+    "gate": "AWAITING_JOB",
+    "selector": "PERSON_X_JOB",
+    "checked": [
+      "investigation-mode-PERSON_X_JOB"
+    ],
+    "scope": "NONE",
+    "scopeUsed": "true",
+    "scopeText": "JOBNO JOB SELECTED",
+    "focus": "FIELD",
+    "reach": {
+      "reachable": false,
+      "disabled": true,
+      "focusAfter": "FIELD"
+    }
+  },
+  "PERSON_X_JOB/VALID": {
+    "mode": "PERSON_X_JOB",
+    "gate": "OPEN",
+    "selector": "PERSON_X_JOB",
+    "checked": [
+      "investigation-mode-PERSON_X_JOB"
+    ],
+    "scope": "VALID",
+    "scopeUsed": "true",
+    "scopeText": "JOBDistributed Systems ArchitectAlpha Industrial Systems · PINK validation pool",
+    "focus": "FIELD",
+    "reach": {
+      "reachable": true,
+      "disabled": false,
+      "focusAfter": "CAPABILITY"
+    }
+  },
+  "PERSON_X_JOB/INVALID": {
+    "mode": "PERSON_X_JOB",
+    "gate": "AWAITING_JOB",
+    "selector": "PERSON_X_JOB",
+    "checked": [
+      "investigation-mode-PERSON_X_JOB"
+    ],
+    "scope": "INVALID",
+    "scopeUsed": "true",
+    "scopeText": "JOBJOB NOT VALIDrole_pink_does_not_exist",
+    "focus": "FIELD",
+    "reach": {
+      "reachable": false,
+      "disabled": true,
+      "focusAfter": "FIELD"
+    }
+  },
+  "JOB/NONE": {
+    "mode": "JOB",
+    "gate": "JOB_MODE",
+    "selector": "JOB",
+    "checked": [
+      "investigation-mode-JOB"
+    ],
+    "scope": "NONE",
+    "scopeUsed": "true",
+    "scopeText": "JOBNO JOB SELECTED",
+    "focus": "FIELD",
+    "reach": {
+      "reachable": false,
+      "disabled": true,
+      "focusAfter": "FIELD"
+    }
+  },
+  "JOB/VALID": {
+    "mode": "JOB",
+    "gate": "JOB_MODE",
+    "selector": "JOB",
+    "checked": [
+      "investigation-mode-JOB"
+    ],
+    "scope": "VALID",
+    "scopeUsed": "true",
+    "scopeText": "JOBDistributed Systems ArchitectAlpha Industrial Systems · PINK validation pool",
+    "focus": "FIELD",
+    "reach": {
+      "reachable": false,
+      "disabled": true,
+      "focusAfter": "FIELD"
+    }
+  },
+  "JOB/INVALID": {
+    "mode": "JOB",
+    "gate": "JOB_MODE",
+    "selector": "JOB",
+    "checked": [
+      "investigation-mode-JOB"
+    ],
+    "scope": "INVALID",
+    "scopeUsed": "true",
+    "scopeText": "JOBJOB NOT VALIDrole_pink_does_not_exist",
+    "focus": "FIELD",
+    "reach": {
+      "reachable": false,
+      "disabled": true,
+      "focusAfter": "FIELD"
+    }
+  }
+}

@@ -1,0 +1,4 @@
+Negative controls of three-modes-boundary.test.ts (mutations applied to lib/career/job-pool/investigation-mode.ts in the probe only, restored; lib byte-identical to df2e84e afterwards):
+  person-with-scope (PERSON accepts a formally valid job scope): M-1 disagreements=311 → FAIL (detected). M-2 problems=0: withoutDeclaration strips the scope, the body stays PERSON-only.
+  person-null-scope (extra keys in the investigation declaration accepted): M-1 disagreements=67 → FAIL (detected).
+Unmutated: M-1 6000 payloads, ok:PERSON=147 ok:PERSON_X_JOB=737 refused INVALID=2871 NOT_ANALYZABLE=660 JOB_SCOPE_REQUIRED=1585, disagreements=0; M-2 sent=884 refused=5116 problems=0.

@@ -1,0 +1,94 @@
+{
+  "tip": "df2e84e",
+  "recordedAt": "2026-10-15T07:19:03.567Z",
+  "analysisId": "ANL_1792048724187_701",
+  "discoveryRunId": "RUN_97FB9708AAF57EC93ABFA02D",
+  "switchedOff": {
+    "withToken": {
+      "status": 404,
+      "contentType": "application/json",
+      "cacheControl": "no-store",
+      "body": "{\"success\":false,\"issues\":[{\"code\":\"ERR_NOT_FOUND\"}]}"
+    },
+    "withoutToken": {
+      "status": 404,
+      "contentType": "application/json",
+      "cacheControl": "no-store",
+      "body": "{\"success\":false,\"issues\":[{\"code\":\"ERR_NOT_FOUND\"}]}"
+    },
+    "missingRoute": {
+      "status": 404,
+      "contentType": "text/html; charset=utf-8",
+      "bodyStartsWith": "<!DOCTYPE html><html lang=\"en\"><head><me"
+    }
+  },
+  "switchedOn": {
+    "closed": {
+      "noHeader": {
+        "status": 404,
+        "contentType": "application/json",
+        "cacheControl": "no-store",
+        "body": "{\"success\":false,\"issues\":[{\"code\":\"ERR_NOT_FOUND\"}]}"
+      },
+      "wrong": {
+        "status": 404,
+        "contentType": "application/json",
+        "cacheControl": "no-store",
+        "body": "{\"success\":false,\"issues\":[{\"code\":\"ERR_NOT_FOUND\"}]}"
+      },
+      "prefix": {
+        "status": 404,
+        "contentType": "application/json",
+        "cacheControl": "no-store",
+        "body": "{\"success\":false,\"issues\":[{\"code\":\"ERR_NOT_FOUND\"}]}"
+      },
+      "upper": {
+        "status": 404,
+        "contentType": "application/json",
+        "cacheControl": "no-store",
+        "body": "{\"success\":false,\"issues\":[{\"code\":\"ERR_NOT_FOUND\"}]}"
+      },
+      "queryInsteadOfHeader": {
+        "status": 404,
+        "contentType": "application/json",
+        "cacheControl": "no-store",
+        "body": "{\"success\":false,\"issues\":[{\"code\":\"ERR_NOT_FOUND\"}]}"
+      }
+    },
+    "open": {
+      "status": 200,
+      "cacheControl": "no-store",
+      "originalGeminiResponse": {
+        "state": "NOT_RETAINED"
+      },
+      "investigationScope": {
+        "state": "NOT_RETAINED",
+        "scopeHash": "953f47782c28a8e578818217eb12b785b0d397685051ea7849ac6ec80895dd30"
+      },
+      "discoveryRunId": "RUN_97FB9708AAF57EC93ABFA02D",
+      "jobScopeSelection": {
+        "jobPoolUploadId": "JPOOL_B94850C439974E27496FE3B1A9A076B5",
+        "poolRoleId": "role_kestrel_frontend_architect"
+      },
+      "bytes": 5020
+    },
+    "secondReadIdentical": true,
+    "unknown": {
+      "status": 404,
+      "body": "{\"success\":false,\"issues\":[{\"code\":\"ERR_RESULT_INSPECTION_NOT_FOUND\"}]}"
+    },
+    "postStatus": 405
+  },
+  "networkAttempts": {
+    "total": 5,
+    "gemini": 0,
+    "entries": [
+      "3077670 fetch https://registry.npmjs.org/-/package/next/dist-tags",
+      "3077865 fetch https://registry.npmjs.org/-/package/next/dist-tags",
+      "3078023 fetch https://registry.npmjs.org/-/package/next/dist-tags",
+      "3078210 fetch https://registry.npmjs.org/-/package/next/dist-tags",
+      "3078331 fetch https://registry.npmjs.org/-/package/next/dist-tags"
+    ],
+    "sentinel": true
+  }
+}

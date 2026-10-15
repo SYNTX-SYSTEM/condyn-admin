@@ -1,0 +1,148 @@
+test/career-analyze-flow.test.ts
+test/career-analyze-multisource.test.ts
+test/career-analyze-page.test.tsx
+test/career-analyze-recommendations.test.ts
+test/career-async-api-orchestration.test.ts
+test/career-batch-ingestion.test.ts
+test/career/capability-core/projection/projection-contract.test.ts
+test/career-demo-ui.test.tsx
+test/career-forensic-pdf.test.ts
+test/career-frontend-job-lifecycle.test.tsx
+test/career-gemini-embedding-live.test.ts
+test/career-gemini-live-probe.test.ts
+test/career-gemini-live.test.ts
+test/career-gemini-probe.test.ts
+test/career-gemini-request-boundary.test.ts
+test/career-gemini-schema-bisection.test.ts
+test/career/job-pool/job-scope-ssr.test.tsx
+test/career/job-pool/job-scope.test.ts
+test/career/job-pool/syntx-field-governance.test.ts
+test/career/job-pool/syntx-field-ssr.test.tsx
+test/career/job-pool/syntx-field-view-model.test.ts
+test/career/job-scope/discovery-scope.test.ts
+test/career/job-scope/job-scope.postgres.test.ts
+test/career/job-scope/job-scope.test.ts
+test/career-pdf-payload-contract.test.ts
+test/career-pdf-runtime-resolution.test.ts
+test/career-pipeline-full-multisource.test.ts
+test/career-pipeline-github.test.ts
+test/career-pipeline-multi-source.test.ts
+test/career-pipeline-prompt-resolver.test.ts
+test/career-pipeline.test.ts
+test/career-provider-switch.test.ts
+test/career/runtime/canonical-sil-execution/stage-a-source-identity.test.ts
+test/career-worker-capability-proposal-wiring.test.ts
+test/career-worker-recovery-pipeline.test.ts
+test/career-worker-retry-source-bundle.test.ts
+test/decision-integration/g2-g3-vertical-proof.test.ts
+test/decision-integration/hr-decision-loop-p7.test.ts
+test/gemini-token-limit-matrix.test.ts
+test/job-pool-validation/job-field-static.test.ts
+test/job-pool-validation/job-scope-discovery.test.ts
+test/job-pool-validation/job-scope-pipeline-gate.test.ts
+test/job-pool-validation/job-scope-scripts.postgres.test.ts
+test/job-pool-validation/job-scope-worker-gate.postgres.test.ts
+test/job-pool-validation/pdf-path.postgres.test.ts
+test/schema-bisection.test.ts
+test/career/job-scope/snapshot-scope.test.ts
+test/career/job-scope/snapshot-scope.postgres.test.ts
+test/career/result-inspector/result-inspector.test.ts
+test/career/result-inspector/result-inspector.postgres.test.ts
+test/job-pool-validation/job-scope-snapshot.test.ts
+test/job-pool-validation/result-inspector.postgres.test.ts
+test/career/result-inspector/exchange-archive.postgres.test.ts
+test/career/result-inspector/exchange-failures.test.ts
+test/job-pool-validation/exchange-archive-capture.test.ts
+test/job-pool-validation/exchange-archive.postgres.test.ts
+test/career/investigation/investigation-boundary.test.ts
+test/career/investigation/investigation.postgres.test.ts
+test/career/job-pool/job-comparison.postgres.test.ts
+test/career/job-pool/job-structure.postgres.test.ts
+test/career/job-pool/selected-role-coverage.test.ts
+test/career/result-inspector/client.test.ts
+test/job-pool-validation/investigation-modes.test.ts
+test/job-pool-validation/investigation-routes.postgres.test.ts
+test/job-pool-validation/inspector-client.test.ts
+test/career/three-modes/investigation-mode.test.ts
+test/career/three-modes/role-investigation.test.ts
+test/career/three-modes/three-modes-ssr.test.tsx
+test/job-pool-validation/three-modes-boundary.test.ts
+
+# probe = validation/hr-decision-loop-pink 8a503d4 + GRÜN df2e84e (= aa17a3b + GELB ad15d7b + three-modes frontend); under PINK's net sentinel, GEMINI_API_KEY unset; earlier PINK proofs copied in from the evidence directories of §3.29-§3.34; GELB's pdf-path diff applied (probe only).
+ ✓ test/job-pool-validation/job-scope-scripts.postgres.test.ts (2 tests) 40864ms
+ ✓ test/decision-integration/hr-decision-loop-p7.test.ts (7 tests) 9925ms
+ ✓ test/job-pool-validation/exchange-archive.postgres.test.ts (6 tests) 10950ms
+ ✓ test/decision-integration/g2-g3-vertical-proof.test.ts (63 tests) 7433ms
+ ✓ test/career/job-pool/job-structure.postgres.test.ts (3 tests) 3982ms
+ ✓ test/job-pool-validation/exchange-archive-capture.test.ts (5 tests) 3897ms
+ ✓ test/career/job-scope/job-scope.postgres.test.ts (10 tests) 1964ms
+ ✓ test/career/result-inspector/exchange-failures.test.ts (10 tests) 2056ms
+ ✓ test/career-async-api-orchestration.test.ts (12 tests) 1123ms
+ ✓ test/career-analyze-flow.test.ts (3 tests) 1028ms
+ ✓ test/job-pool-validation/investigation-routes.postgres.test.ts (4 tests) 1008ms
+ ✓ test/job-pool-validation/job-scope-worker-gate.postgres.test.ts (3 tests) 1016ms
+ ✓ test/career/job-pool/job-scope-ssr.test.tsx (12 tests) 445ms
+ ✓ test/job-pool-validation/pdf-path.postgres.test.ts (2 tests) 396ms
+ ✓ test/career/job-pool/syntx-field-ssr.test.tsx (9 tests) 456ms
+ ✓ test/career/result-inspector/exchange-archive.postgres.test.ts (5 tests) 323ms
+ ✓ test/career/job-pool/job-comparison.postgres.test.ts (2 tests) 281ms
+ ✓ test/job-pool-validation/result-inspector.postgres.test.ts (3 tests) 236ms
+ ✓ test/career/investigation/investigation.postgres.test.ts (5 tests) 264ms
+ ✓ test/career/three-modes/three-modes-ssr.test.tsx (20 tests) 235ms
+ ✓ test/career/job-pool/syntx-field-governance.test.ts (10 tests) 223ms
+ ✓ test/career/result-inspector/result-inspector.postgres.test.ts (2 tests) 132ms
+ ✓ test/career/job-scope/snapshot-scope.postgres.test.ts (1 test) 121ms
+ ✓ test/career/job-pool/syntx-field-view-model.test.ts (15 tests) 81ms
+ ✓ test/job-pool-validation/job-scope-discovery.test.ts (7 tests) 100ms
+ ✓ test/career/result-inspector/result-inspector.test.ts (10 tests) 66ms
+ ✓ test/job-pool-validation/job-scope-snapshot.test.ts (6 tests) 50ms
+ ✓ test/career/job-scope/job-scope.test.ts (14 tests) 46ms
+ ✓ test/career/investigation/investigation-boundary.test.ts (9 tests) 44ms
+ ✓ test/career/job-scope/snapshot-scope.test.ts (5 tests) 34ms
+ ✓ test/career/result-inspector/client.test.ts (4 tests) 35ms
+ ✓ test/career/job-scope/discovery-scope.test.ts (7 tests) 23ms
+ ✓ test/job-pool-validation/three-modes-boundary.test.ts (4 tests) 145ms
+ ✓ test/career-pdf-runtime-resolution.test.ts (1 test) 790ms
+ ✓ test/career-analyze-multisource.test.ts (7 tests) 945ms
+ ✓ test/career-pdf-payload-contract.test.ts (1 test) 894ms
+ ✓ test/career-provider-switch.test.ts (5 tests) 719ms
+ ✓ test/career-demo-ui.test.tsx (4 tests) 78ms
+ ✓ test/career-analyze-recommendations.test.ts (4 tests) 73ms
+ ✓ test/career-worker-recovery-pipeline.test.ts (1 test) 76ms
+ ✓ test/career/job-pool/selected-role-coverage.test.ts (6 tests) 38ms
+ ✓ test/career-worker-capability-proposal-wiring.test.ts (13 tests) 33ms
+ ✓ test/career-pipeline.test.ts (8 tests) 28ms
+ ✓ test/career-pipeline-prompt-resolver.test.ts (3 tests) 25ms
+ ✓ test/career-frontend-job-lifecycle.test.tsx (34 tests) 28ms
+ ✓ test/job-pool-validation/investigation-modes.test.ts (4 tests) 15ms
+ ✓ test/career-analyze-page.test.tsx (5 tests) 22ms
+ ✓ test/job-pool-validation/job-scope-pipeline-gate.test.ts (19 tests) 14ms
+ ✓ test/job-pool-validation/job-field-static.test.ts (5 tests) 14ms
+ ✓ test/career-batch-ingestion.test.ts (7 tests) 16ms
+ ✓ test/career-pipeline-full-multisource.test.ts (1 test) 31ms
+ ✓ test/career-pipeline-multi-source.test.ts (1 test) 16ms
+ ✓ test/career/capability-core/projection/projection-contract.test.ts (6 tests) 14ms
+ ✓ test/career/three-modes/role-investigation.test.ts (37 tests) 15ms
+ ✓ test/career-pipeline-github.test.ts (1 test) 13ms
+ ✓ test/job-pool-validation/inspector-client.test.ts (2 tests) 10ms
+ ✓ test/career/runtime/canonical-sil-execution/stage-a-source-identity.test.ts (1 test) 7ms
+ ✓ test/career-worker-retry-source-bundle.test.ts (2 tests) 10ms
+ ✓ test/career/three-modes/investigation-mode.test.ts (17 tests) 9ms
+ ✓ test/career/job-pool/job-scope.test.ts (12 tests) 9ms
+ ✓ test/career-gemini-live-probe.test.ts (1 test) 3ms
+ ↓ test/career-forensic-pdf.test.ts (1 test | 1 skipped)
+ ↓ test/career-gemini-embedding-live.test.ts (1 test | 1 skipped)
+ ↓ test/career-gemini-live.test.ts (1 test | 1 skipped)
+ ↓ test/career-gemini-probe.test.ts (1 test | 1 skipped)
+ ↓ test/career-gemini-request-boundary.test.ts (1 test | 1 skipped)
+ ↓ test/career-gemini-schema-bisection.test.ts (1 test | 1 skipped)
+ ↓ test/gemini-token-limit-matrix.test.ts (1 test | 1 skipped)
+ ↓ test/schema-bisection.test.ts (1 test | 1 skipped)
+ Test Files  61 passed | 8 skipped (69)
+      Tests  488 passed | 8 skipped (496)
+network attempts: 0
+tsc --noEmit: exit 0, 0 lines
+
+# server e2e (investigation-routes, result-inspector-access, exchange-archive-access):
+ Test Files  3 passed (3)
+      Tests  6 passed (6)

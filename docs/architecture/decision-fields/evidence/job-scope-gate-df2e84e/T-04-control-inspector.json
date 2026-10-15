@@ -1,0 +1,104 @@
+{
+  "start": {
+    "mode": "PERSON_X_JOB",
+    "gate": "OPEN",
+    "selector": "PERSON_X_JOB",
+    "checked": [
+      "investigation-mode-PERSON_X_JOB"
+    ],
+    "scope": "VALID",
+    "scopeUsed": "true",
+    "scopeText": "JOBDistributed Systems ArchitectAlpha Industrial Systems · PINK validation pool",
+    "focus": "CAPABILITY"
+  },
+  "PERSON": {
+    "mode": "PERSON",
+    "gate": "OPEN",
+    "selector": "PERSON",
+    "checked": [
+      "investigation-mode-PERSON"
+    ],
+    "scope": "VALID",
+    "scopeUsed": "false",
+    "scopeText": "JOBNO JOB SCOPE · PERSONselected job not used: Distributed Systems Architect",
+    "focus": "CAPABILITY",
+    "url": {
+      "focus": "CAPABILITY",
+      "analysisId": "ANL_PINK_THREE_MODES",
+      "jobPoolUploadId": "JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7",
+      "jobScopePoolUploadId": "JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7",
+      "jobScopeRoleId": "role_pink_alpha_architect",
+      "investigationMode": "PERSON"
+    }
+  },
+  "JOB": {
+    "mode": "JOB",
+    "gate": "JOB_MODE",
+    "selector": "JOB",
+    "checked": [
+      "investigation-mode-JOB"
+    ],
+    "scope": "VALID",
+    "scopeUsed": "true",
+    "scopeText": "JOBDistributed Systems ArchitectAlpha Industrial Systems · PINK validation pool",
+    "focus": "FIELD",
+    "url": {
+      "focus": "CAPABILITY",
+      "analysisId": "ANL_PINK_THREE_MODES",
+      "jobPoolUploadId": "JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7",
+      "jobScopePoolUploadId": "JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7",
+      "jobScopeRoleId": "role_pink_alpha_architect",
+      "investigationMode": "JOB"
+    }
+  },
+  "PERSON_X_JOB": {
+    "mode": "PERSON_X_JOB",
+    "gate": "OPEN",
+    "selector": "PERSON_X_JOB",
+    "checked": [
+      "investigation-mode-PERSON_X_JOB"
+    ],
+    "scope": "VALID",
+    "scopeUsed": "true",
+    "scopeText": "JOBDistributed Systems ArchitectAlpha Industrial Systems · PINK validation pool",
+    "focus": "CAPABILITY",
+    "url": "http://127.0.0.1:41467/career/demo?focus=CAPABILITY&analysisId=ANL_PINK_THREE_MODES&jobPoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7&jobScopePoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7&jobScopeRoleId=role_pink_alpha_architect&investigationMode=PERSON_X_JOB"
+  },
+  "keys": [
+    {
+      "key": "ArrowLeft",
+      "from": "PERSON_X_JOB",
+      "to": "PERSON",
+      "focusAfter": "investigation-mode-PERSON",
+      "fieldFocus": "CAPABILITY"
+    },
+    {
+      "key": "End",
+      "from": "PERSON",
+      "to": "JOB",
+      "focusAfter": "syntx-field",
+      "fieldFocus": "FIELD"
+    },
+    {
+      "key": "Home",
+      "from": "JOB",
+      "to": "PERSON",
+      "focusAfter": "investigation-mode-PERSON",
+      "fieldFocus": "CAPABILITY"
+    },
+    {
+      "key": "ArrowRight",
+      "from": "PERSON",
+      "to": "PERSON_X_JOB",
+      "focusAfter": "investigation-mode-PERSON_X_JOB",
+      "fieldFocus": "CAPABILITY"
+    },
+    {
+      "key": "ArrowRight",
+      "from": "PERSON_X_JOB",
+      "to": "JOB",
+      "focusAfter": "syntx-field",
+      "fieldFocus": "FIELD"
+    }
+  ]
+}

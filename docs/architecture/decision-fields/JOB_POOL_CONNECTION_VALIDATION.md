@@ -1494,6 +1494,107 @@ Consequences for this record:
   verbatim CV quotes. There is no public release; nothing here authorises exposing these routes.
 - **Not authorised** by this decision, and unchanged: merge, integration, deployment, live Gemini.
 
+### 3.36 Three investigation modes in the frontend: GRÜN `df2e84e` on GELB `ad15d7b` (2026-10-15)
+
+GRÜN asked PINK for an independent validation of `df2e84e` on `frontend/three-modes`. The owner GO „DEMO FRONTEND“ was relayed by
+GRÜN and is **not seen first-hand**. The governing rule is the owner's own ruling in §3.35 („Keine Analyse ohne explizit ausgestellte
+Untersuchungsgrenze“). Evidence is in `evidence/job-scope-gate-df2e84e/`, with `manifest.sha256`. The new PINK proofs import modules
+that exist only on GRÜN's branch, so they are stored as `.txt` there.
+
+**Base.** `f44a4b1` was rebuilt independently as a merge of `aa17a3b` and `ad15d7b`. Its tree is identical
+(`37a973a…`) and it has no conflicts. `df2e84e` changes:
+- frontend components;
+- `lib/career/job-pool/investigation-mode.ts` (new, client side);
+- `lib/career/ui/career-job-controller.ts`;
+- `lib/career/ui/useRoleInvestigation.ts` (new);
+- copy;
+- tests under `test/career/three-modes/`, plus one changed expectation in `test/career-frontend-job-lifecycle.test.tsx`.
+
+It does not change any route, worker, executor or `test/job-pool-validation/` file.
+
+**Probe.** `8a503d4` + `df2e84e`, with earlier PINK proofs copied in and GELB's pdf-path diff applied. The probe branch was deleted
+and never pushed.
+
+| Proof | Result |
+|---|---|
+| Gate walk (`job-scope-gate.e2e`, unchanged) | **74/74** |
+| `three-modes-boundary` (new): frontend mirror `checkAnalysisPayload` and the body the real `CareerJobController` sends, against GELB's `parseDeclaredInvestigation`, on 6000 seeded payloads | M-1 **0 disagreements** (147 PERSON, 737 PERSON_X_JOB, 2871 INVALID, 660 NOT_ANALYZABLE, 1585 JOB_SCOPE_REQUIRED); M-2 884 sent, every body read by the server with the same mode and selection, no `jobScope` beside PERSON, other keys unchanged; M-3 5116 refused with nothing sent and the state untouched; M-4 mode × validation table; M-5 only the three exact URL values |
+| Negative controls (mutations of the mirror, probe only, restored) | PERSON accepting a scope: 311 disagreements; extra declaration keys: 67 disagreements. Both are detected. `withoutDeclaration` still keeps the scope out of a PERSON body |
+| `three-modes.e2e` (new), real Next server, disposable DB, no worker, sentinel | plain build **75/76**, inspector build **81/82**. The one deviation is O-MODE-KEYBOARD-FOCUS (below) |
+| Server e2e of §3.32–§3.34 (investigation routes, Result Inspector access, exchange access) | 3 files, 6/6 |
+| Regression under PINK's net sentinel | 69 files: 61 green + 8 live skipped, 488 tests, **0 network attempts**; scripts 92 runs, 80 exit 3, identical to `ad15d7b` |
+| SSR preservation (26 renders) | 26/26 byte-identical to `aa17a3b+ad15d7b` once the additions are removed. The additions are the mode control, `data-investigation-mode`, `data-investigation-body/visible`, `data-gemini-output-visible` and `data-job-scope-used="true"`; nothing else changed |
+| `tsc --noEmit` | 0 errors with the pdf-path diff |
+| Gemini hosts | 0 in every server life. The only refused outbound attempt is the `next dev` version check at registry.npmjs.org |
+
+**Browser walk, measured** (`T-report-plain.txt`, `T-report-inspector.txt`):
+
+- **T-01 Ground state.**
+  - Without a parameter the mode is PERSON_X_JOB and nothing is written to the URL.
+  - These values are no choice: `person`, `PERSON␠`, `␠JOB`, `PERSON×JOB`, `PERSON_X_JOB,JOB`, `TEAM`, an empty value and a repeated parameter. Each gives PERSON_X_JOB and AWAITING_JOB.
+- **T-02 Gate, mode × job** (NONE / VALID / INVALID). Measured on the root attribute, the Capability button and URL `focus=CAPABILITY`:
+  - PERSON: OPEN in all three job states;
+  - PERSON × JOB: OPEN only with a VALID job, otherwise AWAITING_JOB;
+  - JOB: JOB_MODE in all three, and the Capability field is never reachable.
+- **T-03 ANALYZE, five cases:**
+  - PERSON, with or without a VALID job: one POST `{documents, investigation:{mode:"PERSON"}}`. The stored job declares PERSON with no `jobScope` key.
+  - PERSON × JOB: one POST with exactly the selection, stored as declared.
+  - PERSON × JOB without a job, and JOB: nothing is executable, no request is sent, nothing is enqueued. PERSON × JOB shows the owner's sentence verbatim.
+- **T-04 Shell control:**
+  - A click writes the mode to the URL.
+  - The selected job stays in the URL and stays VALID (G-05).
+  - In PERSON the indicator shows `data-job-scope-used="false"` and names PERSON.
+  - JOB leaves the Capability field. Going back to PERSON × JOB returns to the requested Capability field.
+  - Keys ←, End, Home and → choose the expected modes.
+- **T-05 Job Field.** The analysis source is NONE in PERSON and JOB, and the statement names the mode. In PERSON × JOB the URL analysis is compared.
+- **T-06 B2 and JOB structure:**
+  - The toggle exists only at the selected job's role: COVERAGE in PERSON × JOB, STRUCTURE in JOB, none in PERSON.
+  - Nothing is read while the body is closed. Opening reads exactly one GET for exactly the selection. Closing removes the body, and reopening reads again.
+  - The real structure route answers AVAILABLE with exactly the role's three requirements, bound to the role and unscored.
+  - The real B2 for an analysis without proposals is NOT_FOUND and is named as such.
+  - Display guard, with routed answers:
+    - the exact binding shows 2 rows, `data-relation-state=NOT_EVALUATED`;
+    - another role, another analysis, or an altered authority give FAILED, with no row and no quote;
+    - SCOPE_MISMATCH, NOT_SCOPED and SCOPE_DRIFT are each named.
+- **T-07 GEMINI OUTPUT:**
+  - Without `NEXT_PUBLIC_CONDYN_RESULT_INSPECTOR_UI=1` there is no toggle in any mode and no inspector request.
+  - With it:
+    - the toggle opens IDLE and reads nothing before a token is given; the token field is a password field with autocomplete off;
+    - a wrong token and the right token each send exactly one GET, with the token only in the header (server: `ERR_NOT_FOUND`, then `ERR_RESULT_INSPECTION_NOT_FOUND` for the fixture);
+    - the token is never in the URL, cookies, localStorage, sessionStorage or the title;
+    - closing removes the field, and reopening shows it empty and IDLE;
+    - in JOB it shows NO_GEMINI („No Gemini call in this mode.“) with no token field and no request.
+  - No token appears in the evidence (scanned).
+- **T-08 Layout.** At 1600 and 1280 px, in both fields, the control is inside the viewport and uncovered. It overlaps neither the job indicator nor the field selector. No closure glyph appears in any mode.
+- **T-09 Network and errors.** The browser made no request outside the server, and there was no page error.
+
+**Observations:**
+- **O-MODE-KEYBOARD-FOCUS (accessibility, not a boundary deviation).**
+  - What happens: when a keyboard choice on the mode control moves the shell from the Capability field to the Job Field (End or → to JOB), focus leaves the control and lands on `syntx-field`.
+  - Consequence: the next ←/Home is then the Job Field's own navigation, not a mode choice.
+  - Unaffected: the gate holds; JOB still leaves the Capability field.
+  - Measured: `End:PERSON→JOB focus=syntx-field`, `ArrowRight:PERSON_X_JOB→JOB focus=syntx-field`. Every other step keeps focus on the chosen radio.
+  - Mechanism: not located. There is no `focus()` or `autoFocus` toward the field in `app/` or `lib/`.
+  - Owner: GRÜN.
+- **O-URL-ANALYSIS-UNBOUND (informational).**
+  - What happens: an analysis opened from the URL (`analysisId`) has no known investigation mode in the frontend. In PERSON × JOB the Job Field compares it with the pool, as before `df2e84e` (T-05: source URL).
+  - B2 is guarded server-side by the binding (NOT_SCOPED / SCOPE_MISMATCH).
+  - The earlier pool comparison surface has no such binding check. It is deterministic and makes no Gemini call.
+  - For the owner and GELB: should a URL analysis be compared only when its declared boundary is PERSON_X_JOB with the selected job?
+
+**GRÜN's own figures** (new 3 files / 74 tests, regression 58 / 442, gate walk 74/74, workflow e2e 10/10, lab walk 38/38) are
+consistent with PINK's. PINK did not re-run GRÜN's lab walk with the real worker: `df2e84e` changes no worker or server path, and the
+real-worker paths were proven on `ad15d7b` in §3.34.
+
+**Status.**
+- No deviation from the owner's ruling of §3.35 at the frontend:
+  - PERSON never carries a job scope;
+  - PERSON × JOB only with the VALID selection;
+  - JOB never analyses and never calls Gemini.
+- One accessibility observation (GRÜN) and one informational question (owner/GELB).
+- O-B2-OPEN-READ is unchanged: the B2 body shows CV quotes, the route has no read boundary, and there is no public release.
+- Not authorised, and unchanged: merge, integration, deployment, live Gemini.
+
 ## 4. Boundaries and findings for coordination
 
 - F-JP-1 (closed in `b782793`): `JOB_POOL_CONNECTION.md` §4 followed the per-role `JOB_POOL_JSON_ROLE` design;
