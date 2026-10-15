@@ -9,8 +9,11 @@ import { exchangeRetentionMs, newExchangeId, type ProviderExchangeStore, type Pr
 /**
  * Bounded PostgreSQL archive of received Discovery exchanges, successful and failed (Result Inspector, owner GO
  * 2026-10-15 "EXCHANGE ARCHIVE"). Its own table, so the immutable capability runs never hold raw responses. Every row
- * carries expires_at; expired rows are deleted on every write and read and are never returned. Texts are TEXT columns,
- * stored exactly as received. At most one COMPLETED row per RUN_ id (partial unique index).
+ * carries expires_at; expired rows are deleted on every write and read and are never returned. Texts are stored
+ * losslessly: as the JSON string literal of the received text (TEXT_ENCODING), because PostgreSQL TEXT refuses U+0000
+ * and replaces lone surrogates (PINK O-EXCHANGE-NUL); the envelope travels as JSON text inside response_meta for the
+ * same reason. Rows written before the encoding (no marker) are read as plain text. At most one COMPLETED row per
+ * RUN_ id (partial unique index).
  *
  * Opt-in: CONDYN_GEMINI_EXCHANGE_ARCHIVE=1. The DDL runs only after the database URL is positively verified as a
  * disposable test database (same gate as the job pool, B-ENTRY); on any other database no table is created and the
@@ -68,21 +71,30 @@ export async function providerExchangeArchiveFromEnvironment(environment: Record
   return await ensureProviderExchangeArchive(environment.DATABASE_URL) === "REGISTERED" ? new PostgresProviderExchangeStore({ retentionMs: exchangeRetentionMs(environment) }) : null;
 }
 
+/** Lossless text encoding of the archive rows: JSON.stringify of the string (escapes U+0000 and lone surrogates). */
+export const TEXT_ENCODING = "JSON_STRING_V1";
+type EncodedMeta = { textEncoding: typeof TEXT_ENCODING; envelopeJson: string };
+const encodeText = (text: string | null) => text === null ? null : JSON.stringify(text);
+const decodeText = (value: string | null, encoded: boolean) => value === null ? null : encoded ? JSON.parse(value) as string : value;
+
 type Row = {
   exchange_id: string; run_id: string; outcome: "COMPLETED" | "FAILED"; error_code: string | null; job_id: string | null; lease_version: number | null;
   request: CapabilityProviderRequestIdentity; scope_hash: string | null; scope_text: string | null; response_text: string | null;
-  response_meta: Omit<CapabilityProviderResponseRecord, "text">; retained_at: string; expires_at: string;
+  response_meta: Omit<CapabilityProviderResponseRecord, "text"> | EncodedMeta; retained_at: string; expires_at: string;
 };
 const ISO = (column: string) => sql.raw(`to_char(${column} AT TIME ZONE 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS.MS"Z"')`);
 const COLUMNS = sql`exchange_id, run_id, outcome, error_code, job_id, lease_version, request, scope_hash, scope_text, response_text, response_meta, ${ISO("retained_at")} AS retained_at, ${ISO("expires_at")} AS expires_at`;
 
 function exchangeOf(row: Row): RetainedProviderExchange {
+  const encoded = (row.response_meta as Partial<EncodedMeta>).textEncoding === TEXT_ENCODING;
+  const meta = encoded ? JSON.parse((row.response_meta as EncodedMeta).envelopeJson) as Omit<CapabilityProviderResponseRecord, "text"> : row.response_meta as Omit<CapabilityProviderResponseRecord, "text">;
+  const scopeText = decodeText(row.scope_text, encoded);
   return {
     exchangeId: row.exchange_id, runId: row.run_id, outcome: row.outcome, errorCode: row.error_code,
     attempt: row.job_id === null ? null : { jobId: row.job_id, leaseVersion: row.lease_version },
     request: row.request,
-    investigationScope: row.scope_hash === null || row.scope_text === null ? null : { scopeHash: row.scope_hash, text: row.scope_text },
-    response: { ...row.response_meta, text: row.response_text },
+    investigationScope: row.scope_hash === null || scopeText === null ? null : { scopeHash: row.scope_hash, text: scopeText },
+    response: { ...meta, text: decodeText(row.response_text, encoded) },
     retainedAt: row.retained_at, expiresAt: row.expires_at
   };
 }
@@ -99,10 +111,11 @@ export class PostgresProviderExchangeStore implements ProviderExchangeStore {
     const retainedAt = this.now();
     const attempt = currentExchangeAttempt();
     const { text, ...meta } = record.response;
+    const encodedMeta: EncodedMeta = { textEncoding: TEXT_ENCODING, envelopeJson: JSON.stringify(meta) };
     // One COMPLETED exchange per RUN_ id: a second one (never expected) is ignored, never replaces the first.
     await this.database.execute(sql`INSERT INTO career_gemini_provider_exchanges (exchange_id, run_id, outcome, error_code, job_id, lease_version, request, scope_hash, scope_text, response_text, response_meta, retained_at, expires_at)
       VALUES (${newExchangeId()}, ${record.runId}, ${record.outcome}, ${record.errorCode}, ${attempt?.jobId ?? null}, ${attempt?.leaseVersion ?? null}, ${JSON.stringify(record.request)}::jsonb,
-        ${record.investigationScope?.scopeHash ?? null}, ${record.investigationScope?.text ?? null}, ${text}, ${JSON.stringify(meta)}::jsonb,
+        ${record.investigationScope?.scopeHash ?? null}, ${encodeText(record.investigationScope?.text ?? null)}, ${encodeText(text)}, ${JSON.stringify(encodedMeta)}::jsonb,
         ${retainedAt.toISOString()}, ${new Date(retainedAt.getTime() + this.retentionMs).toISOString()})
       ON CONFLICT DO NOTHING`);
   }

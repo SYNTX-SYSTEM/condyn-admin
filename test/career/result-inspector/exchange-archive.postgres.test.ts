@@ -118,6 +118,24 @@ describe("Gemini exchange archive (PostgreSQL, no Gemini)", () => {
     expect((await jobRoute("JOB_unknown", TOKEN)).status).toBe(404);
   });
 
+  it("keeps U+0000, lone surrogates and line separators losslessly (PINK O-EXCHANGE-NUL); rows without the marker stay readable", async () => {
+    const job = { jobId: `JOB_${Date.now()}_nul` };
+    const scope = resolveTestJobScope();
+    const awkward = `{"capabilities": "a\u0000b"} \u0000 tail \ud800 lone \udfff \u2028 sep \r\n`;
+    const client = fakeGeminiClient([{ text: awkward }]);
+    const sourceDocument = source(`nul-${Date.now()}`);
+    await expect(runWithExchangeAttempt({ jobId: job.jobId, leaseVersion: 1 }, () => runCapabilityDiscovery([sourceDocument], { kernelVersion: "discovery-v1", schemaVersion: "discovery-schema-v1" }, { kernelResolver: { resolve: async () => ({ kernelVersion: "discovery-v1", templateId: "T", versionId: "V", checksum: "C", plainTextContent: "FAKE_DISCOVERY_KERNEL" }) }, provider: geminiProvider(client), repository: world.capabilityRepository, investigationScope: renderInvestigationScope(scope), providerExchangeArchive: exchanges }))).rejects.toThrow("ERR_CAPABILITY_DISCOVERY_STRUCTURED_OUTPUT_INVALID");
+    const [failed] = await exchanges.forJob(job.jobId);
+    expect(failed.response.text).toBe(awkward);
+    expect(failed.response.text!.includes("\u0000")).toBe(true);
+    expect(failed.investigationScope?.text).toBe(renderInvestigationScope(scope).text);
+    // A row written before the encoding (plain TEXT, no marker in response_meta) is read as it was stored.
+    await db.execute(sql`INSERT INTO career_gemini_provider_exchanges (exchange_id, run_id, outcome, error_code, job_id, lease_version, request, scope_hash, scope_text, response_text, response_meta, retained_at, expires_at)
+      VALUES ('EXC_LEGACYPLAINROW0000000', 'RUN_LEGACYPLAINROW00000000', 'FAILED', 'ERR_X', ${job.jobId}, 0, '{}'::jsonb, NULL, NULL, 'plain "text"', '{"finishReason":"STOP","textSha256":null,"modelVersion":null,"responseId":null,"usageMetadata":null,"receivedAt":"2026-10-15T00:00:00.000Z"}'::jsonb, now(), now() + interval '1 day')`);
+    const legacy = (await exchanges.forJob(job.jobId)).find(item => item.exchangeId === "EXC_LEGACYPLAINROW0000000");
+    expect(legacy?.response).toMatchObject({ text: "plain \"text\"", finishReason: "STOP" });
+  });
+
   it("expires after the window and deletes the rows; deletion by id is immediate; the processed phases stay", async () => {
     const produced = await produceAnalysis(world, geminiProvider(fakeGeminiClient([geminiText(`exp-${Date.now()}`)])), resolveTestJobScope(TEST_JOB_SCOPE_B), "exp", source(`exp-${Date.now()}`));
     // The window is stored with the row: retained_at + 7 days (configurable up to 30).
