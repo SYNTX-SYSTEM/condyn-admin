@@ -18,7 +18,8 @@ export async function runCapabilityDiscovery(documents: SourceDocument[], config
   if (deps.investigationScope !== undefined && !deps.investigationScope.text.trim()) throw new Error("ERR_CAPABILITY_DISCOVERY_SCOPE_INVALID");
   const investigationScopeHash = deps.investigationScope === undefined ? undefined : sha256Utf8(deps.investigationScope.text);
   const identity = { sourceBundleHash, kernelVersion: config.kernelVersion, promptChecksum: kernel.checksum, provider: deps.provider.providerName, model: deps.provider.model, schemaVersion: config.schemaVersion, ...(investigationScopeHash === undefined ? {} : { investigationScopeHash }) };
-  // A verified snapshot carries no scope identity; a scoped Discovery therefore never short-circuits on one.
+  // Only an unscoped Discovery short-circuits on a verified snapshot, and only under the scope-free key: a scoped
+  // snapshot's key carries its scope hash (snapshot.ts), so confirmed state never crosses job scopes.
   if (investigationScopeHash === undefined) {
     const snapshot = await deps.repository.getSnapshotByKey(computeSnapshotKey({ sourceBundleHash, kernelVersion: config.kernelVersion, prompt: { checksum: kernel.checksum }, inference: { provider: deps.provider.providerName, model: deps.provider.model }, schemaVersion: config.schemaVersion }));
     if (snapshot?.status === "VERIFIED") return { kind: "VERIFIED_SNAPSHOT_REUSED", snapshot };

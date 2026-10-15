@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import {
   InMemoryCapabilityCoreRepository, buildCapabilityDiscoveryPrompt, buildCapabilityDiscoveryRunId, createCapabilityProposalRuntime, createSourceDocument,
-  runCapabilityConvergence, runCapabilityDiscovery, type CapabilityDiscoveryProvider, type CapabilityDiscoveryProviderRequest, type CapabilityDiscoveryRun
+  runCapabilityConvergence, runCapabilityDiscovery, sha256Utf8, type CapabilityDiscoveryProvider, type CapabilityDiscoveryProviderRequest, type CapabilityDiscoveryRun
 } from "../../../lib/career/capability-core";
 import { createCareerCapabilityProposalExecutor } from "../../../lib/career/orchestration/capability-proposal-executor";
 import { JOB_SCOPE_REQUIRED_MESSAGE, renderInvestigationScope } from "../../../lib/career/job-scope";
@@ -59,7 +59,9 @@ describe("job scope in Capability Discovery", () => {
 
   it("keeps unscoped RUN_ identities and binds scoped ones to the scope", () => {
     const identity = { sourceBundleHash: "s", kernelVersion: "k", promptChecksum: "p", provider: "gemini", model: "m", schemaVersion: "1" };
-    expect(buildCapabilityDiscoveryRunId(identity)).toBe("RUN_" + buildCapabilityDiscoveryRunId(identity).slice(4));
+    // Pinned: the pre-scope formula (027abf3) and its literal value; a scope-free RUN_ id must never move.
+    expect(buildCapabilityDiscoveryRunId(identity)).toBe(`RUN_${sha256Utf8(JSON.stringify(["s", "k", "p", "gemini", "m", "1"])).slice(0, 24).toUpperCase()}`);
+    expect(buildCapabilityDiscoveryRunId(identity)).toBe("RUN_0CF145EDC8F097CA8F88D8FF");
     expect(buildCapabilityDiscoveryRunId({ ...identity, investigationScopeHash: "a" })).not.toBe(buildCapabilityDiscoveryRunId(identity));
     expect(buildCapabilityDiscoveryRunId({ ...identity, investigationScopeHash: "a" })).not.toBe(buildCapabilityDiscoveryRunId({ ...identity, investigationScopeHash: "b" }));
   });
