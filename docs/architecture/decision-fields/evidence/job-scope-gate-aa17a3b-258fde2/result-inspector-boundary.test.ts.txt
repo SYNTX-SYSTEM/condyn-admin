@@ -1,0 +1,249 @@
+/**
+ * PINK independent proof of GELB 9e54662 (owner relations "Gemini Original Response → Discovery Run → Persistenz → Inspector"
+ * and "Inspector Artifacts → Retention / Deletion"). No network: the real Gemini Discovery provider behind a fake client.
+ * Angles PINK adds: the received text is marked with JSON unicode escapes, which survive only in the raw text and never in any
+ * parsed or re-serialised artifact, so "the run holds no raw data" is checked by a marker that cannot occur otherwise; the full
+ * read-boundary matrix (flag × token × header) and byte-identical refusals; the archive reached through the real executor
+ * (telemetry wrapper); NOT_RETAINED with no trace of the scope text although the scope is resolvable from the job; lineage
+ * refusals in both directions; retention parsing and the expiry boundary to the millisecond.
+ */
+import { describe, expect, it } from "vitest";
+import {
+  GeminiCapabilityDiscoveryProvider, InMemoryCandidateSourceBundleRepository, InMemoryCapabilityCoreRepository,
+  InMemoryCapabilityProposalProjectionReferenceRepository, createCapabilityProposalProjectionReader, createCapabilityProposalRuntime,
+  computeSourceBundleHash, createSourceDocument, runCapabilityConvergence, runCapabilityDiscovery, sha256Utf8,
+  type CapabilityDiscoveryRun, type CapabilityProviderExchangeRecord
+} from "../../lib/career/capability-core";
+import { createCareerCapabilityProposalExecutor } from "../../lib/career/orchestration/capability-proposal-executor";
+import { createJob, type JobRecord } from "../../lib/career/orchestration/job";
+import { renderInvestigationScope, type ResolvedJobScope } from "../../lib/career/job-scope";
+import {
+  InMemoryProviderExchangeStore, RESULT_INSPECTOR_HEADER, createGeminiResultInspector, exchangeRetentionMs, resultInspectorAccess
+} from "../../lib/career/result-inspector";
+import { TEST_JOB_SCOPE_B, resolveTestJobScope } from "../support/job-scope";
+
+const QUOTE = "Led the migration of the dispatch platform to event-driven services.";
+const cv = createSourceDocument({ docId: "CV", title: "cv.synthetic.pdf", rawContent: QUOTE });
+const PDF_CONTENT = "PINK_PDF_BODY_cHJvYmUtb25seQ";
+const kernel = { kernelVersion: "discovery-v1", templateId: "T", versionId: "V", checksum: "C", plainTextContent: "PINK_DISCOVERY_KERNEL" };
+const convergenceKernel = { kernelVersion: "convergence-v1", templateId: "T", versionId: "V", checksum: "CC", plainTextContent: "PINK_CONVERGENCE_KERNEL" };
+const config = { kernelVersion: "discovery-v1", schemaVersion: "discovery-schema-v1" };
+const DAY = 24 * 60 * 60 * 1000;
+const audit = (count: number) => ({ source_documents_examined: 1, capability_count: count, atomic_capability_count: count, composite_capability_count: 0, attribution_pass_completed: true, target_state_ownership_pass_completed: true, atomic_extraction_pass_completed: true, method_capability_pass_completed: true, composite_reconstruction_pass_completed: true, global_convergence_pass_completed: true, inventory_reconciliation_pass_completed: true, final_reconciliation_produced_new_capabilities: false, unresolved_target_operations: 0, segments_classified_as_external_source_content: 0, segments_classified_as_target_subject_operation: 0, segments_classified_as_target_subject_designed_target_state: 0, segments_classified_as_target_organization_capability: 0, segments_excluded_due_to_attribution_ambiguity: 0 });
+
+/** Raw marker: "PINK" parses to "PINK"; the escape sequence itself exists only in the received text. */
+export const RAW_MARKER = "\\u0050\\u0049\\u004e\\u004b";
+const RAW_PROBE = "u0050";
+function rawText(label: string): string {
+  const body = `{"kernel_version":"discovery-v1","capabilities":[{"canonical_name":"${RAW_MARKER} migration ${label}","capability_scope":"ATOMIC","structural_definition":"d","primary_domain":null,"demonstrated_capability_level":null,"model_confidence":0.9,"evidence_mode":"EXPLICIT","evidence":[{"source_document":"CV","location":"body","exact_quote":"${QUOTE}"}]}],"coverage_audit":${JSON.stringify(audit(1))}}`;
+  return `\n  ${body}\n\n`;
+}
+function fakeClient(texts: string[]) {
+  const requests: string[] = [];
+  return { requests, models: { async generateContent(request: unknown) { requests.push(JSON.stringify(request)); return { text: texts[requests.length - 1], candidates: [{ finishReason: "STOP" }], modelVersion: "pink-fake-001", responseId: `pink-${requests.length}`, usageMetadata: { promptTokenCount: 3 } }; } } };
+}
+const gemini = (client: ReturnType<typeof fakeClient>) => new GeminiCapabilityDiscoveryProvider({ model: "pink-fake", client, now: () => "2026-10-15T10:00:00.000Z" });
+const convergenceProvider = { providerName: "pink-spy", model: "m", execute: async (request: { userPrompt: string }) => {
+  const ids = (JSON.parse(request.userPrompt.slice(request.userPrompt.indexOf("["))) as Array<{ candidate_id: string }>).map((item) => item.candidate_id);
+  return { convergenceOutput: { convergence_version: "convergence-v1", groups: [{ group_key: "g", member_candidate_ids: ids, canonical_name: "Event-driven migration", capability_scope: "ATOMIC" as const, structural_definition: "d", primary_domain: null }], relations: [], reconciliation_audit: { input_candidate_count: ids.length, grouped_candidate_count: ids.length, group_count: 1, same_capability_merge_count: ids.length - 1, unresolved_relation_count: 0, reconciliation_pass_completed: true } } };
+} };
+
+function scopeFragments(scope: ResolvedJobScope): string[] {
+  const out = new Set<string>();
+  for (const line of renderInvestigationScope(scope).text.split("\n")) { out.add(line); const at = line.indexOf(": "); if (at > 0) out.add(line.slice(at + 2)); }
+  const ids = [scope.selection.jobPoolUploadId, scope.selection.poolRoleId, scope.poolId];
+  // The selection ids (quoted or bare) are shown legitimately as jobScopeSelection; every other scope fragment must not be.
+  return [...out].filter((fragment) => fragment.trim().length >= 12 && !ids.some((id) => fragment.replace(/"/g, "").trim() === id));
+}
+
+function world(archive?: { get(runId: string): Promise<any> } & Partial<{ retain(record: CapabilityProviderExchangeRecord): Promise<void> }>) {
+  const jobs = new Map<string, JobRecord>();
+  const capabilityRepository = new InMemoryCapabilityCoreRepository();
+  const references = new InMemoryCapabilityProposalProjectionReferenceRepository();
+  const sourceBundles = new InMemoryCandidateSourceBundleRepository();
+  const inspector = createGeminiResultInspector({ references, capabilityRepository, sourceBundles, jobs: { getJob: async (jobId) => jobs.get(jobId) ?? null }, projection: createCapabilityProposalProjectionReader({ references, capabilityRepository }), ...(archive ? { exchanges: archive } : {}) });
+  async function analyse(scope: ResolvedJobScope | null, text: string) {
+    const client = fakeClient([text]);
+    const discovered = await runCapabilityDiscovery([cv], config, { kernelResolver: { resolve: async () => kernel }, provider: gemini(client), repository: capabilityRepository, ...(scope ? { investigationScope: renderInvestigationScope(scope) } : {}), ...(archive?.retain ? { providerExchangeArchive: archive as never } : {}) });
+    const run = (discovered as { run: CapabilityDiscoveryRun }).run;
+    const convergence = await runCapabilityConvergence((await capabilityRepository.getRunById(run.runId))!, { kernelVersion: "convergence-v1", schemaVersion: "convergence-schema-v1", algorithmVersion: "algorithm-v1" }, { kernelResolver: { resolve: async () => convergenceKernel }, provider: convergenceProvider, repository: capabilityRepository });
+    const job = createJob("CAREER_ANALYSIS", { sourceType: "BATCH", sourceData: { documents: [{ type: "pdf", name: "cv.synthetic.pdf", content: PDF_CONTENT }], ...(scope ? { jobScope: scope.selection } : {}) } } as never);
+    jobs.set(job.jobId, structuredClone(job));
+    const analysisId = job.jobId.replace("JOB_", "ANL_");
+    await sourceBundles.persistCandidateSourceBundle({ candidateSourceBundleId: `CSB_${job.jobId}`, sourceBundleHash: computeSourceBundleHash([cv]), documents: [cv], schemaVersion: "CANDIDATE_SOURCE_BUNDLE_V1", createdAt: "2026-10-15T10:00:00.000Z" } as never);
+    await references.save({ analysisId, jobId: job.jobId, discoveryRunId: run.runId, convergenceRunId: convergence.run.convergenceRunId, candidateSourceBundleId: `CSB_${job.jobId}`, sourceBundleHash: run.sourceBundleHash, createdAt: convergence.run.completedAt });
+    return { analysisId, run, client };
+  }
+  return { inspector, analyse, capabilityRepository };
+}
+
+const scopeA = resolveTestJobScope();
+const scopeB = resolveTestJobScope(TEST_JOB_SCOPE_B);
+const TOKEN = "pink-inspector-token-0123456789abcdef";
+
+describe("PINK: Gemini Result Inspector boundary (GELB 9e54662, no network)", () => {
+  it("read boundary: of 6 × 5 × 7 flag/token/header combinations only flag \"1\" + token ≥ 32 + the exact token in the header is ALLOWED", () => {
+    const flags = [undefined, "0", "true", "1 ", "1"];
+    const tokens = [undefined, "", TOKEN.slice(0, 31), TOKEN, `${TOKEN}X`];
+    const headers = (token: string | undefined) => [undefined, "", "wrong", (token ?? "").toUpperCase(), `${token ?? ""}x`, (token ?? "").slice(0, -1), token];
+    const allowed: string[] = [];
+    let total = 0;
+    for (const flag of [...flags, "01"]) for (const token of tokens) for (const header of headers(token)) {
+      total++;
+      const request = new Request("http://local/x", { headers: header === undefined ? {} : { [RESULT_INSPECTOR_HEADER]: header } });
+      const access = resultInspectorAccess(request, { CONDYN_RESULT_INSPECTOR: flag, CONDYN_RESULT_INSPECTOR_TOKEN: token });
+      if (access === "ALLOWED") allowed.push(`${flag}|${token}|${header}`);
+    }
+    expect(total).toBe(6 * 5 * 7);
+    expect(allowed).toEqual([`1|${TOKEN}|${TOKEN}`, `1|${TOKEN}X|${TOKEN}X`]);
+  });
+
+  it("the Gemini provider returns the received text byte for byte; the parsed output carries no trace of the raw text", async () => {
+    const text = rawText("a");
+    const client = fakeClient([text]);
+    const result = await gemini(client).execute({ systemPrompt: "S", userPrompt: "U" });
+    expect(result.providerResponse?.text).toBe(text);
+    expect(result.providerResponse?.textSha256).toBe(sha256Utf8(text));
+    expect(result.providerResponse?.text.includes(RAW_PROBE)).toBe(true);
+    expect(JSON.stringify(result.kernelOutput).includes(RAW_PROBE)).toBe(false);
+    expect(result.kernelOutput.capabilities[0].canonical_name.startsWith("PINK migration")).toBe(true);
+  });
+
+  it("Discovery: the run is saved first, then the exchange is handed over; the run holds neither the raw text nor the scope text", async () => {
+    const order: string[] = [];
+    const retained: CapabilityProviderExchangeRecord[] = [];
+    const repository = new InMemoryCapabilityCoreRepository();
+    const saveRun = repository.saveRun.bind(repository);
+    repository.saveRun = async (run) => { order.push(`saveRun:${run.runId}`); return saveRun(run); };
+    const archive = { retain: async (record: CapabilityProviderExchangeRecord) => { order.push(`retain:${record.runId}`); retained.push(structuredClone(record)); } };
+    const text = rawText("order");
+    const scoped = await runCapabilityDiscovery([cv], config, { kernelResolver: { resolve: async () => kernel }, provider: gemini(fakeClient([text])), repository, investigationScope: renderInvestigationScope(scopeA), providerExchangeArchive: archive });
+    const run = (scoped as { run: CapabilityDiscoveryRun }).run;
+    expect(order).toEqual([`saveRun:${run.runId}`, `retain:${run.runId}`]);
+    expect(retained[0].response.text).toBe(text);
+    expect(retained[0].investigationScope).toEqual({ scopeHash: sha256Utf8(renderInvestigationScope(scopeA).text), text: renderInvestigationScope(scopeA).text });
+    const stored = JSON.stringify(await repository.getRunById(run.runId));
+    expect(stored.includes(RAW_PROBE)).toBe(false);
+    for (const fragment of scopeFragments(scopeA)) expect(stored.includes(fragment), `scope fragment in the run: ${fragment}`).toBe(false);
+    expect(Object.keys(JSON.parse(stored)).sort()).toEqual(["completedAt", "createdAt", "inference", "investigationScope", "kernelVersion", "payload", "prompt", "rawOutputHash", "runId", "schemaVersion", "sourceBundleHash", "status"]);
+    expect(Object.keys(JSON.parse(stored).payload).sort()).toEqual(["candidates", "coverageValidation", "kernelOutput"]);
+    // Unscoped: the exchange carries investigationScope null.
+    const unscoped = await runCapabilityDiscovery([cv], config, { kernelResolver: { resolve: async () => kernel }, provider: gemini(fakeClient([rawText("plain")])), repository, providerExchangeArchive: archive });
+    expect(retained.at(-1)!.runId).toBe((unscoped as { run: CapabilityDiscoveryRun }).run.runId);
+    expect(retained.at(-1)!.investigationScope).toBeNull();
+  });
+
+  it("a throwing or rejecting archive leaves the analysis identical to one without archive; a slow archive delays it (it is awaited)", async () => {
+    const runs: string[] = [];
+    for (const archive of [undefined, { retain: () => { throw new Error("sync"); } }, { retain: async () => { throw new Error("async"); } }]) {
+      const repository = new InMemoryCapabilityCoreRepository();
+      const result = await runCapabilityDiscovery([cv], config, { kernelResolver: { resolve: async () => kernel }, provider: gemini(fakeClient([rawText("fail")])), repository, investigationScope: renderInvestigationScope(scopeA), now: () => "2026-10-15T00:00:00.000Z", ...(archive ? { providerExchangeArchive: archive as never } : {}) });
+      expect(result.kind).toBe("DISCOVERY_COMPLETED");
+      runs.push(JSON.stringify(await repository.getRunById((result as { run: CapabilityDiscoveryRun }).run.runId)));
+    }
+    expect(new Set(runs).size).toBe(1);
+    const started = Date.now();
+    await runCapabilityDiscovery([cv], config, { kernelResolver: { resolve: async () => kernel }, provider: gemini(fakeClient([rawText("slow")])), repository: new InMemoryCapabilityCoreRepository(), providerExchangeArchive: { retain: () => new Promise((resolve) => setTimeout(resolve, 400)) } });
+    expect(Date.now() - started).toBeGreaterThanOrEqual(380);
+  });
+
+  it("through the real executor (telemetry wrapper) the archive receives the received text; without the dependency nothing is retained", async () => {
+    const make = async (archive?: { retain(record: CapabilityProviderExchangeRecord): Promise<void> }) => {
+      const client = fakeClient([rawText("executor")]);
+      const executor = await createCareerCapabilityProposalExecutor({
+        environment: { GEMINI_MODEL: "pink-fake", PROMPT_ENCRYPTION_KEY: "unused" }, defaultGeminiModel: "pink-fake",
+        promptRepository: {} as never, capabilityRepository: new InMemoryCapabilityCoreRepository(),
+        ...(archive ? { providerExchangeArchive: archive } : {}),
+        bootstrapCapabilityProposalKernels: async () => undefined, createActivePromptResolver: () => ({}) as never,
+        createDiscoveryKernelResolver: () => ({ resolve: async () => kernel }), createConvergenceKernelResolver: () => ({ resolve: async () => convergenceKernel }),
+        createDiscoveryProvider: () => gemini(client),
+        createConvergenceProvider: () => ({ providerName: "pink-spy", model: "m", execute: async () => { throw new Error("PINK_STOP"); } }),
+        runDiscovery: runCapabilityDiscovery, runConvergence: runCapabilityConvergence, createProposalRuntime: createCapabilityProposalRuntime
+      });
+      await executor.execute([{ docId: "CV", title: "cv.synthetic.pdf", content: QUOTE }] as never, async () => undefined, scopeA as never).catch(() => undefined);
+      return client;
+    };
+    const retained: CapabilityProviderExchangeRecord[] = [];
+    const client = await make({ retain: async (record) => { retained.push(record); } });
+    expect(client.requests).toHaveLength(1);
+    expect(retained).toHaveLength(1);
+    expect(retained[0].response.text).toBe(rawText("executor"));
+    expect(retained[0].investigationScope?.text).toBe(renderInvestigationScope(scopeA).text);
+    const bare = await make();
+    expect(bare.requests).toHaveLength(1);
+  });
+
+  it("NOT_RETAINED (current wiring, no archive): no response, no scope text although the scope is resolvable from the job; no document body", async () => {
+    const { inspector, analyse } = world();
+    const { analysisId, run } = await analyse(scopeA, rawText("nr"));
+    const inspection = await inspector.read(analysisId);
+    expect(inspection.originalGeminiResponse).toEqual({ state: "NOT_RETAINED" });
+    expect(inspection.investigationInput.investigationScope).toEqual({ state: "NOT_RETAINED", scopeHash: run.investigationScope!.scopeHash });
+    expect(inspection.investigationInput.jobScopeSelection).toEqual(scopeA.selection);
+    const body = JSON.stringify(inspection);
+    expect(body.includes(RAW_PROBE)).toBe(false);
+    expect(body.includes(PDF_CONTENT)).toBe(false);
+    for (const fragment of scopeFragments(scopeA)) expect(body.includes(fragment), `scope fragment shown: ${fragment}`).toBe(false);
+    expect(inspection.parserResult.rawOutputHash).toBe(run.rawOutputHash);
+    const plain = await analyse(null, rawText("nr-plain"));
+    expect((await inspector.read(plain.analysisId)).investigationInput.investigationScope).toEqual({ state: "UNSCOPED" });
+  });
+
+  it("RETAINED shows exactly the received text and scope; after deletion or expiry the same read says NOT_RETAINED, never a stand-in", async () => {
+    let now = Date.parse("2026-10-15T10:00:00.000Z");
+    const store = new InMemoryProviderExchangeStore({ retentionMs: 7 * DAY, now: () => new Date(now) });
+    const { inspector, analyse } = world(store);
+    const first = await analyse(scopeA, rawText("kept"));
+    const second = await analyse(scopeB, rawText("kept-b"));
+    const kept = await inspector.read(first.analysisId);
+    expect(kept.originalGeminiResponse).toMatchObject({ state: "RETAINED", text: rawText("kept"), textMatchesSha256: true, parserResultMatchesText: true });
+    expect(kept.investigationInput.investigationScope).toMatchObject({ state: "RETAINED", text: renderInvestigationScope(scopeA).text, textMatchesScopeHash: true });
+    expect((await inspector.read(second.analysisId)).originalGeminiResponse).toMatchObject({ text: rawText("kept-b") });
+    expect(await store.delete(first.run.runId)).toBe(true);
+    const deleted = await inspector.read(first.analysisId);
+    expect([deleted.originalGeminiResponse, deleted.investigationInput.investigationScope]).toEqual([{ state: "NOT_RETAINED" }, { state: "NOT_RETAINED", scopeHash: first.run.investigationScope!.scopeHash }]);
+    // Expiry boundary: one millisecond before expiresAt still retained, at expiresAt gone (and purged).
+    const expiresAt = Date.parse((await store.get(second.run.runId))!.expiresAt);
+    now = expiresAt - 1;
+    expect((await inspector.read(second.analysisId)).originalGeminiResponse.state).toBe("RETAINED");
+    now = expiresAt;
+    expect((await inspector.read(second.analysisId)).originalGeminiResponse).toEqual({ state: "NOT_RETAINED" });
+    expect(await store.get(second.run.runId)).toBeNull();
+  });
+
+  it("first write wins per RUN_ id; a reused run keeps its first exchange", async () => {
+    const store = new InMemoryProviderExchangeStore({ retentionMs: DAY });
+    const record = (text: string): CapabilityProviderExchangeRecord => ({ runId: "RUN_PINK", investigationScope: null, response: { text, textSha256: sha256Utf8(text), finishReason: "STOP", modelVersion: null, responseId: null, usageMetadata: null, receivedAt: "t" } });
+    await store.retain(record("first")); await store.retain(record("second"));
+    expect((await store.get("RUN_PINK"))!.response.text).toBe("first");
+  });
+
+  it("lineage: an exchange of another RUN_ id or another scope binding is refused (409) in every direction", async () => {
+    const outcomes: Record<string, string> = {};
+    const cases: Array<[string, ResolvedJobScope | null, (run: CapabilityDiscoveryRun) => Partial<CapabilityProviderExchangeRecord>]> = [
+      ["foreign RUN_ id", scopeA, () => ({ runId: "RUN_FOREIGN" })],
+      ["scope B hash on a scope A run", scopeA, () => ({ investigationScope: { scopeHash: sha256Utf8(renderInvestigationScope(scopeB).text), text: renderInvestigationScope(scopeB).text } })],
+      ["no scope on a scoped run", scopeA, () => ({ investigationScope: null })],
+      ["a scope on an unscoped run", null, () => ({ investigationScope: { scopeHash: sha256Utf8("x"), text: "x" } })]
+    ];
+    for (const [name, scope, change] of cases) {
+      let override: Partial<CapabilityProviderExchangeRecord> = {};
+      let base: CapabilityDiscoveryRun | null = null;
+      const archive = { get: async (runId: string) => ({ runId, investigationScope: base?.investigationScope ? { scopeHash: base.investigationScope.scopeHash, text: "t" } : null, response: { text: "{}", textSha256: sha256Utf8("{}"), finishReason: null, modelVersion: null, responseId: null, usageMetadata: null, receivedAt: "t" }, retainedAt: "t", expiresAt: "t", ...override }) };
+      const { inspector, analyse } = world(archive);
+      const produced = await analyse(scope, rawText(name.replace(/\W/g, "")));
+      base = produced.run; override = change(produced.run);
+      outcomes[name] = await inspector.read(produced.analysisId).then(() => "READ", (error: { code?: string; status?: number }) => `${error.status} ${error.code}`);
+    }
+    expect(outcomes).toEqual(Object.fromEntries(cases.map(([name]) => [name, "409 ERR_RESULT_INSPECTION_LINEAGE_INVALID"])));
+    const { inspector } = world();
+    await expect(inspector.read("ANL_PINK_UNKNOWN")).rejects.toMatchObject({ status: 404, code: "ERR_RESULT_INSPECTION_NOT_FOUND" });
+  });
+
+  it("retention window: only whole days 1…30 are taken, everything else falls back to 7", () => {
+    const days = (raw: string | undefined) => exchangeRetentionMs({ CONDYN_GEMINI_EXCHANGE_RETENTION_DAYS: raw }) / DAY;
+    expect(Object.fromEntries([undefined, "", "0", "-1", "1", "7", "30", "31", "365", "07", " 7", "7 ", "7.5", "1e1", "abc"].map((raw) => [String(raw), days(raw)]))).toEqual({
+      undefined: 7, "": 7, "0": 7, "-1": 7, "1": 1, "7": 7, "30": 30, "31": 7, "365": 7, "07": 7, " 7": 7, "7 ": 7, "7.5": 7, "1e1": 7, abc: 7
+    });
+  });
+});

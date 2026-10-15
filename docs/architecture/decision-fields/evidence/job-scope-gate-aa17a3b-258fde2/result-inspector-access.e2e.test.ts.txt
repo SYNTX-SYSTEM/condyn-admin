@@ -1,0 +1,131 @@
+/**
+ * PINK independent access proof of GELB 9e54662 on a real Next server (next dev, disposable database, no worker, GEMINI_API_KEY
+ * empty, PINK's net sentinel in the server process). Two server lives: inspector switched off, then switched on with a token.
+ * A closed inspector and a missing route both answer 404, so only the open case on a real server shows the route is served at
+ * all; the closed cases must all answer the same 404. Writes `inspector-access.json` to the evidence directory.
+ */
+import { spawn, type ChildProcess } from "node:child_process";
+import { once } from "node:events";
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { createServer } from "node:net";
+import { resolve } from "node:path";
+import { sql } from "drizzle-orm";
+import { afterAll, beforeAll, describe, expect, it } from "vitest";
+import { db, initDbSchema } from "../../lib/career/db/client";
+import { renderInvestigationScope } from "../../lib/career/job-scope";
+import { resolveTestJobScope } from "../support/job-scope";
+import { rawGeminiText, seedScopedAnalysis } from "./fixtures/inspector-analysis";
+
+const TIP = process.env.JOB_SCOPE_TIP ?? "local";
+const EVIDENCE_DIR = resolve(process.cwd(), `docs/architecture/decision-fields/evidence/job-scope-gate-${TIP}`);
+const TOKEN = "pink-e2e-inspector-token-0123456789abcdef";
+const PDF_CONTENT = "PINK_PDF_BODY_ZTJlLXByb2JlLW9ubHk";
+const HEADER = "x-condyn-result-inspector-token";
+const SENTINEL = process.env.PINK_NET_SENTINEL;
+// The server-side net log goes where the caller says (PINK runs it in its scratchpad), never into the worktree.
+const NET_LOG = process.env.PINK_INSPECTOR_NET_LOG ?? "";
+const delay = (ms: number) => new Promise<void>((done) => setTimeout(done, ms));
+
+async function availablePort(): Promise<number> {
+  const listener = createServer();
+  await new Promise<void>((ok, fail) => { listener.once("error", fail); listener.listen(0, "127.0.0.1", () => ok()); });
+  const address = listener.address();
+  if (address === null || typeof address === "string") throw new Error("no port");
+  await new Promise<void>((ok, fail) => listener.close((error) => (error ? fail(error) : ok())));
+  return address.port;
+}
+
+async function withServer<T>(env: Record<string, string>, body: (base: string) => Promise<T>): Promise<T> {
+  const port = await availablePort();
+  let output = "";
+  const server: ChildProcess = spawn(process.execPath, [resolve(process.cwd(), "node_modules/next/dist/bin/next"), "dev", "--webpack", "-p", String(port), "-H", "127.0.0.1"], {
+    cwd: process.cwd(), stdio: ["ignore", "pipe", "pipe"],
+    env: { ...process.env, NEXT_TELEMETRY_DISABLED: "1", GEMINI_API_KEY: "", CONDYN_RESULT_INSPECTOR: "", CONDYN_RESULT_INSPECTOR_TOKEN: "", ...(SENTINEL && NET_LOG ? { NODE_OPTIONS: `--require ${SENTINEL}`, PINK_NET_LOG: NET_LOG } : {}), ...env }
+  });
+  server.stdout?.on("data", (chunk) => { output += String(chunk); });
+  server.stderr?.on("data", (chunk) => { output += String(chunk); });
+  const base = `http://127.0.0.1:${port}`;
+  try {
+    for (let attempt = 0; attempt < 240; attempt += 1) {
+      try { const response = await fetch(`${base}/api/career/job-pools`); if (response.status === 200) { await response.text(); break; } } catch { /* not ready */ }
+      await delay(500);
+      if (attempt === 239) throw new Error(`server not ready:\n${output.slice(-4000)}`);
+    }
+    return await body(base);
+  } finally {
+    if (server.exitCode === null && server.signalCode === null) {
+      server.kill("SIGTERM");
+      await Promise.race([once(server, "exit"), delay(10_000)]);
+      if (server.exitCode === null && server.signalCode === null) { server.kill("SIGKILL"); await once(server, "exit"); }
+    }
+  }
+}
+
+const shape = async (response: Response) => ({ status: response.status, contentType: response.headers.get("content-type"), cacheControl: response.headers.get("cache-control"), body: await response.text() });
+
+describe("PINK: Result Inspector access on a real Next server (GELB 9e54662)", () => {
+  const scope = resolveTestJobScope();
+  let analysisId = "";
+  let jobId = "";
+  let runId = "";
+  let geminiRequests = 0;
+  const report: Record<string, unknown> = {};
+
+  beforeAll(async () => {
+    await initDbSchema();
+    const seeded = await seedScopedAnalysis(scope, PDF_CONTENT, rawGeminiText("e2e"), () => { geminiRequests++; });
+    ({ analysisId, jobId } = seeded); runId = seeded.run.runId;
+    geminiRequests = 0;
+  }, 120_000);
+
+  afterAll(async () => {
+    await db.execute(sql`DELETE FROM career_analysis_jobs WHERE job_id = ${jobId}`);
+    const net = NET_LOG && existsSync(NET_LOG) ? readFileSync(NET_LOG, "utf8").trim().split("\n").filter(Boolean) : [];
+    report.networkAttempts = { total: net.length, gemini: net.filter((line) => /generativelanguage|aiplatform|googleapis/.test(line)).length, entries: net.slice(0, 20), sentinel: Boolean(SENTINEL && NET_LOG) };
+    mkdirSync(EVIDENCE_DIR, { recursive: true });
+    writeFileSync(resolve(EVIDENCE_DIR, "inspector-access.json"), `${JSON.stringify({ tip: TIP, recordedAt: new Date().toISOString(), analysisId, discoveryRunId: runId, ...report }, null, 2)}\n`);
+  });
+
+  it("switched off: 404 with and without the token; a missing sibling route answers Next's own 404", async () => {
+    await withServer({}, async (base) => {
+      const url = `${base}/api/career/analyses/${analysisId}/gemini-result`;
+      const off = { withToken: await shape(await fetch(url, { headers: { [HEADER]: TOKEN } })), withoutToken: await shape(await fetch(url)) };
+      const missing = await shape(await fetch(`${base}/api/career/analyses/${analysisId}/gemini-resultx`));
+      report.switchedOff = { ...off, missingRoute: { status: missing.status, contentType: missing.contentType, bodyStartsWith: missing.body.slice(0, 40) } };
+      for (const entry of Object.values(off)) expect(entry).toEqual({ status: 404, contentType: "application/json", cacheControl: "no-store", body: JSON.stringify({ success: false, issues: [{ code: "ERR_NOT_FOUND" }] }) });
+      expect(missing.status).toBe(404);
+    });
+  }, 300_000);
+
+  it("switched on: closed without / with a wrong token (same 404 as switched off); open with the token: 200 NOT_RETAINED, read-only; POST not served", async () => {
+    await withServer({ CONDYN_RESULT_INSPECTOR: "1", CONDYN_RESULT_INSPECTOR_TOKEN: TOKEN }, async (base) => {
+      const url = `${base}/api/career/analyses/${analysisId}/gemini-result`;
+      const closed = {
+        noHeader: await shape(await fetch(url)),
+        wrong: await shape(await fetch(url, { headers: { [HEADER]: "wrong" } })),
+        prefix: await shape(await fetch(url, { headers: { [HEADER]: TOKEN.slice(0, -1) } })),
+        upper: await shape(await fetch(url, { headers: { [HEADER]: TOKEN.toUpperCase() } })),
+        queryInsteadOfHeader: await shape(await fetch(`${url}?${HEADER}=${TOKEN}`))
+      };
+      const open = await shape(await fetch(url, { headers: { [HEADER]: TOKEN } }));
+      const again = await shape(await fetch(url, { headers: { [HEADER]: TOKEN } }));
+      const unknown = await shape(await fetch(`${base}/api/career/analyses/ANL_PINK_UNKNOWN/gemini-result`, { headers: { [HEADER]: TOKEN } }));
+      const post = await fetch(url, { method: "POST", headers: { [HEADER]: TOKEN, "content-type": "application/json" }, body: "{}" });
+      const inspection = JSON.parse(open.body).inspection;
+      report.switchedOn = { closed, open: { status: open.status, cacheControl: open.cacheControl, originalGeminiResponse: inspection.originalGeminiResponse, investigationScope: inspection.investigationInput.investigationScope, discoveryRunId: inspection.investigationInput.discoveryRunId, jobScopeSelection: inspection.investigationInput.jobScopeSelection, bytes: open.body.length }, secondReadIdentical: again.body === open.body, unknown: { status: unknown.status, body: unknown.body }, postStatus: post.status };
+      const notFound = { status: 404, contentType: "application/json", cacheControl: "no-store", body: JSON.stringify({ success: false, issues: [{ code: "ERR_NOT_FOUND" }] }) };
+      for (const entry of Object.values(closed)) expect(entry).toEqual(notFound);
+      expect([open.status, open.cacheControl]).toEqual([200, "no-store"]);
+      expect(inspection.originalGeminiResponse).toEqual({ state: "NOT_RETAINED" });
+      expect(inspection.investigationInput.investigationScope.state).toBe("NOT_RETAINED");
+      expect(inspection.investigationInput.discoveryRunId).toBe(runId);
+      expect(open.body.includes("u0050")).toBe(false);
+      expect(open.body.includes(PDF_CONTENT)).toBe(false);
+      for (const value of renderInvestigationScope(scope).text.split("\n").map((line) => line.slice(line.indexOf(": ") + 2)).filter((value) => value.length > 40)) expect(open.body.includes(value)).toBe(false);
+      expect(again.body).toBe(open.body);
+      expect([unknown.status, JSON.parse(unknown.body).issues[0].code]).toEqual([404, "ERR_RESULT_INSPECTION_NOT_FOUND"]);
+      expect(post.status).not.toBe(200);
+    });
+    expect(geminiRequests).toBe(0);
+  }, 300_000);
+});

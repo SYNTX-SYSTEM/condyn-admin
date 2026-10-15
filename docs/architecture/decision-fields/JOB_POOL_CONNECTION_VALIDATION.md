@@ -1177,6 +1177,68 @@ Open (unchanged, owner items): removal does not cancel an analysis in flight; `d
 (non-functional); :3017 and :41831 run without the gate; O-SNAPSHOT-SCOPE; ca11794 SYNTX rebinding. GELB's `pdf-path` diff and
 the `.txt` proofs become real test files when GELB's gate is integrated into this branch.
 
+### 3.32 Closed relations: GELB `933ea4c` (scope identity in the confirmed capability state), `9e54662` (Gemini Result Inspector), `258fde2` (docs) with GRÜN `aa17a3b` (2026-10-15)
+
+Owner order „PINK: Alle geschlossenen Relationen unabhängig validieren“ and the owner GO for both relations, as relayed by GELB
+(not seen by PINK first-hand). GELB `feature/job-pool-first-boundary`: `933ea4c` appends `investigationScope.scopeHash` to
+`computeSnapshotKey` (generic and `PHASE4_VERIFIED`) for snapshots of a scoped chain, adds the optional
+`VerifiedCapabilitySnapshot.investigationScope`, lets the Phase-4 publisher copy it from the authenticated Discovery run, and lets the
+verification authenticator accept a scoped run (exactly `{ scopeHash }`, RUN_ re-derived with the scope; before, every scoped chain
+failed Phase-4 integrity). `9e54662`: the Gemini Discovery provider returns the received text with its envelope; Discovery hands the
+exchange to an optional `providerExchangeArchive` after `saveRun`; bounded retention (`retention.ts`); reader
+`GEMINI_RESULT_INSPECTION_V1`; route `GET /api/career/analyses/[analysisId]/gemini-result`, 404 unless `CONDYN_RESULT_INSPECTOR=1`,
+a token ≥ 32 characters and the same token in `x-condyn-result-inspector-token`. No archive is wired (its table awaits owner approval).
+`258fde2`: docs only (access proof, lifecycle).
+
+PINK (probe branch = this branch + `aa17a3b` + `258fde2`, deleted, never pushed; evidence `evidence/job-scope-gate-aa17a3b-258fde2/`;
+PINK's new proofs kept as `.txt` because they import GELB modules):
+- Scope in the confirmed state (PINK `job-scope-snapshot.test.ts.txt`, 6; Discovery and Convergence are the real runtimes with issued
+  scopes, only the Verification run is assembled since lib/ has no producer for it): A, B and unscoped over identical sources publish
+  three Phase-4 states with three keys, each carrying its own scope; re-publishing A is idempotent and leaves B untouched. Eight
+  tamperings of the run's scope binding (stripped, swapped to B, upper-case, truncated, extra key, added to an unscoped run, null, bare
+  string) are refused with `ERR_CAPABILITY_VERIFICATION_RUN_INTEGRITY_INVALID`; changing or removing a published snapshot's scope breaks
+  its identity. Reuse matrix: only unscoped state → unscoped Discovery is reused (positive control `VERIFIED_SNAPSHOT_REUSED/0`); A,
+  A+B → unscoped, unscoped → A, A → A and A → B all ask the provider; a Phase-4 state of A is reached neither by B nor by an unscoped
+  Discovery.
+- Negative control: the same proof run unchanged on `e643e96` fails 4 of 6 (scoped Phase-4 integrity; two scopes collide with
+  `ERR_IMMUTABLE_SNAPSHOT_CONFLICT`), so it detects the closed defect. The tampering case passes there too (every scoped chain was
+  refused); on `258fde2` it discriminates because the untampered chains publish.
+- Cross-version (PINK probe run unchanged in `e643e96` and `258fde2`, temporary worktrees, removed): unscoped generic and Phase-4 keys,
+  the unscoped generic snapshot, the whole unscoped chain incl. its Phase-4 snapshot, the scoped Discovery run and both Gemini provider
+  requests are byte-identical; the only difference is the scoped Phase-4 outcome (`e643e96`: integrity error; `258fde2`: published with
+  `investigationScope`). The §3.30 unscoped identity probe is byte-identical as well.
+- Inspector, unit (PINK `result-inspector-boundary.test.ts.txt`, 10, real Gemini provider behind a fake client): the received text is
+  marked with JSON unicode escapes, which survive only in the raw text. Of 210 flag/token/header combinations exactly the two with flag
+  `1`, token ≥ 32 and the exact token are ALLOWED. Discovery saves the run first, then hands over the exchange (raw text verbatim, scope
+  text and hash; `null` scope when unscoped); the persisted run has exactly the e643e96 keys and holds neither the raw marker nor any
+  scope fragment. A throwing or rejecting archive leaves the run byte-identical to one without archive. Through the real executor (with
+  the telemetry wrapper) the archive receives the text; without the dependency nothing is retained. NOT_RETAINED: response
+  `{ state: "NOT_RETAINED" }`, scope only its hash, no scope fragment although the scope is resolvable from the job, no document body.
+  RETAINED shows exactly text and scope; after deletion, and at `expiresAt` to the millisecond, the same read says NOT_RETAINED. First
+  write wins. 409 for a foreign RUN_ id, a foreign scope, no scope on a scoped run and a scope on an unscoped run; 404 for an unknown
+  analysis. Retention: only whole days 1…30 are taken (15 inputs).
+- Inspector on PostgreSQL (PINK `result-inspector.postgres.test.ts.txt`, 3, route called as Next calls it): ten closed cases give one
+  byte-identical 404 (status, `no-store`, body); open: 200, NOT_RETAINED, a second read is byte-identical, 0 provider requests. A scan of
+  every row of every table finds neither the raw marker nor a scope value (positive control: the parsed marker is found).
+- Inspector on a real Next server (PINK `result-inspector-access.e2e.test.ts.txt`, 2, `inspector-access.json`; two server lives, PINK's
+  sentinel in the server process): switched off → 404 with and without the token; switched on → the same 404 without a header, with a
+  wrong, prefix or upper-case token and with the token in the query; with the token 200 `no-store`, NOT_RETAINED, the run's RUN_ id,
+  no raw text, scope text or document body, identical on a second read; unknown analysis 404 `ERR_RESULT_INSPECTION_NOT_FOUND`; POST 405.
+  Server network: 0 Gemini attempts; two refused `registry.npmjs.org` version checks by `next dev` itself.
+- Regression on the probe: gate walk 74/74 (`aa17a3b-258fde2`); 53 files under the sentinel (§3.31 batch + GELB's snapshot-scope and
+  result-inspector suites + PINK's three proofs, seals P8/P7 included): 45 green + 8 live skipped, 345 tests, 0 network attempts; script
+  proof 92 runs, 80/80 exit 3 with the sentence, identical to §3.31; SSR 26 cases byte-identical to `5d6786b`; tsc 0.
+
+Observation O-INSPECTOR-404-SHAPE (low; no data exposed): every closed case answers the route's JSON 404 (`ERR_NOT_FOUND`), while a
+missing route answers Next's HTML 404. Contrary to `access.ts` and `GEMINI_RESULT_INSPECTOR.md` §3 („als gäbe es die Route nicht“), the
+closed inspector is distinguishable from a route that does not exist. The cases among themselves are indistinguishable.
+
+Observation O-ARCHIVE-AWAIT (no runtime path today): Discovery awaits `providerExchangeArchive.retain`; a throwing archive is contained,
+a slow one delays the analysis by its duration (measured: 400 ms archive → ≥ 380 ms later completion). Relevant once an archive is wired.
+
+Closed: O-SNAPSHOT-SCOPE (§3.30). Not part of this acceptance: GELB's archive diff (table `career_gemini_provider_exchanges`), not read
+or run by PINK. Open owner items unchanged (§3.31).
+
 ## 4. Boundaries and findings for coordination
 
 - F-JP-1 (closed in `b782793`): `JOB_POOL_CONNECTION.md` §4 followed the per-role `JOB_POOL_JSON_ROLE` design;

@@ -1,0 +1,52 @@
+// PINK cross-version probe (temporary, not committed): run unchanged in e643e96 and 258fde2, compared byte for byte outside.
+// Unscoped snapshot keys/ids and a full unscoped Phase-4 publication must be identical; scoped and unscoped Discovery runs and the
+// Gemini request must be identical (the inspector adds nothing to the run or the request); only the scoped Phase-4 outcome may differ.
+import { writeFileSync } from "node:fs";
+import { it } from "vitest";
+import * as core from "../../lib/career/capability-core";
+import * as verification from "../../lib/career/capability-core/verification";
+import { renderInvestigationScope } from "../../lib/career/job-scope";
+import { resolveTestJobScope } from "../support/job-scope";
+
+const QUOTE = "Led the migration of the dispatch platform to event-driven services.";
+const cv = core.createSourceDocument({ docId: "CV", title: "cv.synthetic.pdf", rawContent: QUOTE });
+const NOW = "2026-10-15T00:00:00.000Z";
+const kernel = { kernelVersion: "discovery-v1", templateId: "T", versionId: "V", checksum: "C", plainTextContent: "PINK_DISCOVERY_KERNEL" };
+const convergenceKernel = { kernelVersion: "convergence-v1", templateId: "T", versionId: "V", checksum: "CC", plainTextContent: "PINK_CONVERGENCE_KERNEL" };
+const audit = { source_documents_examined: 1, capability_count: 1, atomic_capability_count: 1, composite_capability_count: 0, attribution_pass_completed: true, target_state_ownership_pass_completed: true, atomic_extraction_pass_completed: true, method_capability_pass_completed: true, composite_reconstruction_pass_completed: true, global_convergence_pass_completed: true, inventory_reconciliation_pass_completed: true, final_reconciliation_produced_new_capabilities: false, unresolved_target_operations: 0, segments_classified_as_external_source_content: 0, segments_classified_as_target_subject_operation: 0, segments_classified_as_target_subject_designed_target_state: 0, segments_classified_as_target_organization_capability: 0, segments_excluded_due_to_attribution_ambiguity: 0 };
+const TEXT = JSON.stringify({ kernel_version: "discovery-v1", capabilities: [{ canonical_name: "Event-driven migration", capability_scope: "ATOMIC", structural_definition: "d", primary_domain: null, demonstrated_capability_level: null, model_confidence: 0.9, evidence_mode: "EXPLICIT", evidence: [{ source_document: "CV", location: "body", exact_quote: QUOTE }] }], coverage_audit: audit });
+const convergenceProvider = { providerName: "pink-spy", model: "m", execute: async (request: { userPrompt: string }) => {
+  const ids = (JSON.parse(request.userPrompt.slice(request.userPrompt.indexOf("["))) as Array<{ candidate_id: string }>).map((item) => item.candidate_id);
+  return { convergenceOutput: { convergence_version: "convergence-v1", groups: [{ group_key: "g", member_candidate_ids: ids, canonical_name: "Event-driven migration", capability_scope: "ATOMIC" as const, structural_definition: "d", primary_domain: null }], relations: [], reconciliation_audit: { input_candidate_count: ids.length, grouped_candidate_count: ids.length, group_count: 1, same_capability_merge_count: ids.length - 1, unresolved_relation_count: 0, reconciliation_pass_completed: true } } };
+} };
+
+async function chain(scoped: boolean) {
+  const repository = new core.InMemoryCapabilityCoreRepository();
+  const requests: string[] = [];
+  const client = { models: { async generateContent(request: unknown) { requests.push(JSON.stringify(request)); return { text: TEXT, candidates: [{ finishReason: "STOP" }], modelVersion: "pink-fake", responseId: "r", usageMetadata: {} }; } } };
+  const provider = new core.GeminiCapabilityDiscoveryProvider({ model: "pink-fake", client } as never);
+  const discovered = await core.runCapabilityDiscovery([cv], { kernelVersion: "discovery-v1", schemaVersion: "discovery-schema-v1" }, { kernelResolver: { resolve: async () => kernel }, provider, repository, now: () => NOW, ...(scoped ? { investigationScope: renderInvestigationScope(resolveTestJobScope()) } : {}) } as never);
+  const discoveryRun = (discovered as { run: core.CapabilityDiscoveryRun }).run;
+  const convergence = await core.runCapabilityConvergence((await repository.getRunById(discoveryRun.runId))!, { kernelVersion: "convergence-v1", schemaVersion: "convergence-schema-v1", algorithmVersion: "algorithm-v1" }, { kernelResolver: { resolve: async () => convergenceKernel }, provider: convergenceProvider, repository, now: () => NOW } as never);
+  const convergenceRun = convergence.run as any;
+  const payload: any = { semanticDefinitionOutcomes: convergenceRun.payload.canonicalDrafts.map((draft: any) => ({ provisionalCapabilityId: draft.provisionalCapabilityId, status: "PASSED" })), demonstratedLevelOutcomes: convergenceRun.payload.canonicalDrafts.map((draft: any) => ({ provisionalCapabilityId: draft.provisionalCapabilityId, status: "UNVERIFIED", demonstratedCapabilityLevel: null })), relationDispositions: [], publicationEligibility: "ELIGIBLE" };
+  const run: any = { runKind: "CAPABILITY_VERIFICATION", verificationRunId: "", convergenceRunId: convergenceRun.convergenceRunId, convergenceRawOutputHash: convergenceRun.rawOutputHash, sourceEvidenceRepresentationHash: verification.computeSourceEvidenceRepresentationHash([cv]), sourceBundleHash: discoveryRun.sourceBundleHash, kernelVersion: "verification-v1", promptChecksum: "verification-prompt", inference: { provider: "pink-spy", model: "verification-model" }, schemaVersion: "verification-schema", algorithmVersion: "verification-algorithm", snapshotSchemaVersion: "snapshot-schema", rawOutputHash: verification.computeCapabilityVerificationRawOutputHash(payload), status: "COMPLETED", payload, createdAt: NOW, completedAt: NOW };
+  run.verificationRunId = verification.buildCapabilityVerificationRunId({ convergenceRunId: run.convergenceRunId, convergenceRawOutputHash: run.convergenceRawOutputHash, sourceEvidenceRepresentationHash: run.sourceEvidenceRepresentationHash, kernelVersion: run.kernelVersion, promptChecksum: run.promptChecksum, provider: run.inference.provider, model: run.inference.model, schemaVersion: run.schemaVersion, algorithmVersion: run.algorithmVersion, snapshotSchemaVersion: run.snapshotSchemaVersion });
+  await repository.saveVerificationRun(run);
+  const input = { sourceDocuments: [cv], discoveryRun: (await repository.getRunById(discoveryRun.runId))!, convergenceRun, verificationRun: run };
+  const phase4 = await repository.createVerifiedCapabilitySnapshotPublisher().publish(input as never).then((snapshot) => ({ snapshot, key: core.computeSnapshotKey(snapshot) }), (error: Error) => ({ error: error.message }));
+  return { providerRequests: requests, discoveryRun: input.discoveryRun, convergenceRun, verificationRunId: run.verificationRunId, phase4 };
+}
+
+it("writes the identity probe", async () => {
+  const base = { sourceBundleHash: core.computeSourceBundleHash([cv]), kernelVersion: "discovery-v1", prompt: { checksum: "C" }, inference: { provider: "pink-spy", model: "m" }, schemaVersion: "discovery-schema-v1" };
+  const generic = core.createVerifiedCapabilitySnapshot({ ...base, candidateCount: 0, rejectedCandidateCount: 0, createdAt: NOW, status: "VERIFIED" } as never, [], []);
+  const out = {
+    unscopedGenericKey: core.computeSnapshotKey(base as never),
+    unscopedPhase4Key: core.computeSnapshotKey({ ...base, publication: { mode: "PHASE4_VERIFIED", verificationRunId: "VFY_PINK", verificationRawOutputHash: "h" } } as never),
+    unscopedGenericSnapshot: generic,
+    unscoped: await chain(false),
+    scoped: await chain(true)
+  };
+  writeFileSync(process.env.PINK_IDENTITY_OUT as string, JSON.stringify(out, null, 1));
+});

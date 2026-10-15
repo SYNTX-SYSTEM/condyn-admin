@@ -1,0 +1,171 @@
+/**
+ * PINK independent proof of GELB 933ea4c (owner relation "Scope Identity → Confirmed Capability State", PINK O-SNAPSHOT-SCOPE).
+ * Unlike GELB's fully hand-built fixture, Discovery and Convergence here are the real runtimes (spy providers, issued scopes from
+ * the job-scope module); only the Verification run is assembled, because no producer for it exists in lib/. No network.
+ * Angles: one Phase-4 state per scope over identical sources; every tampering of the scope binding (run or snapshot) refused;
+ * reuse matrix of Discovery against confirmed state, with a positive control so the matrix cannot pass vacuously.
+ */
+import { describe, expect, it } from "vitest";
+import {
+  InMemoryCapabilityCoreRepository, computeSnapshotKey, computeSourceBundleHash, createSourceDocument, createVerifiedCapabilitySnapshot,
+  runCapabilityConvergence, runCapabilityDiscovery, sha256Utf8, assertVerifiedCapabilitySnapshot,
+  type CapabilityDiscoveryProvider, type CapabilityDiscoveryRun, type VerifiedCapabilitySnapshot
+} from "../../lib/career/capability-core";
+import * as verification from "../../lib/career/capability-core/verification";
+import type { CapabilityVerificationIntegrityInput, CapabilityVerificationRun } from "../../lib/career/capability-core/verification";
+import type { CapabilityConvergenceRun } from "../../lib/career/capability-core/convergence";
+import { renderInvestigationScope, type ResolvedJobScope } from "../../lib/career/job-scope";
+import { TEST_JOB_SCOPE_B, resolveTestJobScope } from "../support/job-scope";
+
+const QUOTE = "Led the migration of the dispatch platform to event-driven services.";
+const cv = createSourceDocument({ docId: "CV", title: "cv.synthetic.pdf", rawContent: QUOTE });
+const kernel = { kernelVersion: "discovery-v1", templateId: "T", versionId: "V", checksum: "C", plainTextContent: "PINK_DISCOVERY_KERNEL" };
+const convergenceKernel = { kernelVersion: "convergence-v1", templateId: "T", versionId: "V", checksum: "CC", plainTextContent: "PINK_CONVERGENCE_KERNEL" };
+const config = { kernelVersion: "discovery-v1", schemaVersion: "discovery-schema-v1" };
+const convergenceConfig = { kernelVersion: "convergence-v1", schemaVersion: "convergence-schema-v1", algorithmVersion: "algorithm-v1" };
+const NOW = "2026-10-15T00:00:00.000Z";
+const audit = (count: number) => ({ source_documents_examined: 1, capability_count: count, atomic_capability_count: count, composite_capability_count: 0, attribution_pass_completed: true, target_state_ownership_pass_completed: true, atomic_extraction_pass_completed: true, method_capability_pass_completed: true, composite_reconstruction_pass_completed: true, global_convergence_pass_completed: true, inventory_reconciliation_pass_completed: true, final_reconciliation_produced_new_capabilities: false, unresolved_target_operations: 0, segments_classified_as_external_source_content: 0, segments_classified_as_target_subject_operation: 0, segments_classified_as_target_subject_designed_target_state: 0, segments_classified_as_target_organization_capability: 0, segments_excluded_due_to_attribution_ambiguity: 0 });
+
+function spyProvider() {
+  let calls = 0;
+  const provider: CapabilityDiscoveryProvider = { providerName: "pink-spy", model: "m", execute: async () => { calls++; return { kernelOutput: { kernel_version: "discovery-v1", capabilities: [{ canonical_name: "Event-driven migration", capability_scope: "ATOMIC", structural_definition: "d", primary_domain: null, demonstrated_capability_level: null, model_confidence: 0.9, evidence_mode: "EXPLICIT", evidence: [{ source_document: "CV", location: "body", exact_quote: QUOTE }] }], coverage_audit: audit(1) } }; } };
+  return { provider, calls: () => calls };
+}
+const convergenceProvider = { providerName: "pink-spy", model: "m", execute: async (request: { userPrompt: string }) => {
+  const ids = (JSON.parse(request.userPrompt.slice(request.userPrompt.indexOf("["))) as Array<{ candidate_id: string }>).map((item) => item.candidate_id);
+  return { convergenceOutput: { convergence_version: "convergence-v1", groups: [{ group_key: "g", member_candidate_ids: ids, canonical_name: "Event-driven migration", capability_scope: "ATOMIC" as const, structural_definition: "d", primary_domain: null }], relations: [], reconciliation_audit: { input_candidate_count: ids.length, grouped_candidate_count: ids.length, group_count: 1, same_capability_merge_count: ids.length - 1, unresolved_relation_count: 0, reconciliation_pass_completed: true } } };
+} };
+
+const discover = (repository: InMemoryCapabilityCoreRepository, provider: CapabilityDiscoveryProvider, scope?: ResolvedJobScope) =>
+  runCapabilityDiscovery([cv], config, { kernelResolver: { resolve: async () => kernel }, provider, repository, ...(scope ? { investigationScope: renderInvestigationScope(scope) } : {}), now: () => NOW });
+
+/** Real Discovery + Convergence; the Verification run assembled from the persisted Convergence run (all drafts PASSED, ELIGIBLE). */
+async function realChain(repository: InMemoryCapabilityCoreRepository, scope?: ResolvedJobScope): Promise<CapabilityVerificationIntegrityInput> {
+  const { provider } = spyProvider();
+  const discovered = await discover(repository, provider, scope);
+  const discoveryRun = (discovered as { run: CapabilityDiscoveryRun }).run;
+  const convergence = await runCapabilityConvergence((await repository.getRunById(discoveryRun.runId))!, convergenceConfig, { kernelResolver: { resolve: async () => convergenceKernel }, provider: convergenceProvider, repository, now: () => NOW } as never);
+  const convergenceRun = convergence.run as CapabilityConvergenceRun;
+  const payload: CapabilityVerificationRun["payload"] = { semanticDefinitionOutcomes: convergenceRun.payload.canonicalDrafts.map((draft) => ({ provisionalCapabilityId: draft.provisionalCapabilityId, status: "PASSED" as const })), demonstratedLevelOutcomes: convergenceRun.payload.canonicalDrafts.map((draft) => ({ provisionalCapabilityId: draft.provisionalCapabilityId, status: "UNVERIFIED" as const, demonstratedCapabilityLevel: null })), relationDispositions: [], publicationEligibility: "ELIGIBLE" };
+  const run: CapabilityVerificationRun = { runKind: "CAPABILITY_VERIFICATION", verificationRunId: "", convergenceRunId: convergenceRun.convergenceRunId, convergenceRawOutputHash: convergenceRun.rawOutputHash, sourceEvidenceRepresentationHash: verification.computeSourceEvidenceRepresentationHash([cv]), sourceBundleHash: discoveryRun.sourceBundleHash, kernelVersion: "verification-v1", promptChecksum: "verification-prompt", inference: { provider: "pink-spy", model: "verification-model" }, schemaVersion: "verification-schema", algorithmVersion: "verification-algorithm", snapshotSchemaVersion: "snapshot-schema", rawOutputHash: verification.computeCapabilityVerificationRawOutputHash(payload), status: "COMPLETED", payload, createdAt: NOW, completedAt: NOW };
+  run.verificationRunId = verification.buildCapabilityVerificationRunId({ convergenceRunId: run.convergenceRunId, convergenceRawOutputHash: run.convergenceRawOutputHash, sourceEvidenceRepresentationHash: run.sourceEvidenceRepresentationHash, kernelVersion: run.kernelVersion, promptChecksum: run.promptChecksum, provider: run.inference.provider, model: run.inference.model, schemaVersion: run.schemaVersion, algorithmVersion: run.algorithmVersion, snapshotSchemaVersion: run.snapshotSchemaVersion });
+  await repository.saveVerificationRun(run);
+  return { sourceDocuments: [cv], discoveryRun: (await repository.getRunById(discoveryRun.runId))!, convergenceRun, verificationRun: run };
+}
+
+const scopeA = resolveTestJobScope();
+const scopeB = resolveTestJobScope(TEST_JOB_SCOPE_B);
+const hashOf = (scope: ResolvedJobScope) => sha256Utf8(renderInvestigationScope(scope).text);
+const INTEGRITY = "ERR_CAPABILITY_VERIFICATION_RUN_INTEGRITY_INVALID";
+
+describe("PINK: scope identity in the confirmed capability state (GELB 933ea4c, real Discovery/Convergence runtimes)", () => {
+  it("the real scoped Discovery run carries exactly { scopeHash } of the issued scope; the unscoped run carries no such key", async () => {
+    const repository = new InMemoryCapabilityCoreRepository();
+    const scoped = await realChain(repository, scopeA);
+    const unscoped = await realChain(repository);
+    expect(scoped.discoveryRun.investigationScope).toEqual({ scopeHash: hashOf(scopeA) });
+    expect(Object.keys(scoped.discoveryRun.investigationScope!)).toEqual(["scopeHash"]);
+    expect("investigationScope" in unscoped.discoveryRun).toBe(false);
+  });
+
+  it("one Phase-4 state per scope over identical sources: A, B and unscoped publish three snapshots with three keys; each carries its own scope", async () => {
+    const repository = new InMemoryCapabilityCoreRepository();
+    const chains = [await realChain(repository, scopeA), await realChain(repository, scopeB), await realChain(repository)];
+    expect(new Set(chains.map((chain) => chain.discoveryRun.sourceBundleHash)).size).toBe(1);
+    const publisher = repository.createVerifiedCapabilitySnapshotPublisher();
+    const [a, b, none] = [await publisher.publish(chains[0]), await publisher.publish(chains[1]), await publisher.publish(chains[2])];
+    expect(new Set([a.snapshotId, b.snapshotId, none.snapshotId]).size).toBe(3);
+    expect(new Set([a, b, none].map((snapshot) => computeSnapshotKey(snapshot))).size).toBe(3);
+    expect(a.investigationScope).toEqual({ scopeHash: hashOf(scopeA) });
+    expect(b.investigationScope).toEqual({ scopeHash: hashOf(scopeB) });
+    expect("investigationScope" in none).toBe(false);
+    for (const snapshot of [a, b, none]) expect(await repository.getSnapshotByKey(computeSnapshotKey(snapshot))).toEqual(snapshot);
+    // The scope-free key of the same sources/kernel/model returns no scoped state.
+    const scopeFree = computeSnapshotKey({ ...a, investigationScope: undefined });
+    expect([computeSnapshotKey(a), computeSnapshotKey(b)]).not.toContain(scopeFree);
+    // Re-publishing scope A is idempotent and leaves B and the unscoped state untouched.
+    expect(await publisher.publish(chains[0])).toEqual(a);
+    expect(await repository.getSnapshotByKey(computeSnapshotKey(b))).toEqual(b);
+  });
+
+  it("every tampering of the run's scope binding is refused by the Phase-4 authenticator", async () => {
+    const repository = new InMemoryCapabilityCoreRepository();
+    const a = await realChain(repository, scopeA);
+    const plain = await realChain(repository);
+    const tamper = (base: CapabilityVerificationIntegrityInput, change: (run: Record<string, unknown>) => void) => {
+      const discoveryRun = structuredClone(base.discoveryRun) as unknown as Record<string, unknown>;
+      change(discoveryRun);
+      return { ...base, discoveryRun: discoveryRun as unknown as CapabilityDiscoveryRun };
+    };
+    const cases: Array<[string, CapabilityVerificationIntegrityInput]> = [
+      ["scope stripped, scoped RUN_ id kept", tamper(a, (run) => { delete run.investigationScope; })],
+      ["scope hash swapped to scope B", tamper(a, (run) => { run.investigationScope = { scopeHash: hashOf(scopeB) }; })],
+      ["scope hash upper-case", tamper(a, (run) => { run.investigationScope = { scopeHash: hashOf(scopeA).toUpperCase() }; })],
+      ["scope hash truncated", tamper(a, (run) => { run.investigationScope = { scopeHash: hashOf(scopeA).slice(1) }; })],
+      ["extra key next to scopeHash", tamper(a, (run) => { run.investigationScope = { scopeHash: hashOf(scopeA), text: "x" }; })],
+      ["scope added to an unscoped run", tamper(plain, (run) => { run.investigationScope = { scopeHash: hashOf(scopeA) }; })],
+      ["scope null on a scoped run", tamper(a, (run) => { run.investigationScope = null; })],
+      ["scope as bare string", tamper(a, (run) => { run.investigationScope = hashOf(scopeA); })]
+    ];
+    const outcomes: Record<string, string> = {};
+    for (const [name, chain] of cases) {
+      const fresh = new InMemoryCapabilityCoreRepository();
+      outcomes[name] = await fresh.createVerifiedCapabilitySnapshotPublisher().publish(chain).then(() => "PUBLISHED", (error: Error) => error.message);
+    }
+    expect(outcomes).toEqual(Object.fromEntries(cases.map(([name]) => [name, INTEGRITY])));
+  });
+
+  it("a published scoped snapshot cannot be re-bound: changing or removing its scope breaks its identity", async () => {
+    const repository = new InMemoryCapabilityCoreRepository();
+    const a = await repository.createVerifiedCapabilitySnapshotPublisher().publish(await realChain(repository, scopeA));
+    const rebound = { ...structuredClone(a), investigationScope: { scopeHash: hashOf(scopeB) } } as VerifiedCapabilitySnapshot;
+    const removed = structuredClone(a) as VerifiedCapabilitySnapshot; delete removed.investigationScope;
+    expect(() => assertVerifiedCapabilitySnapshot(rebound)).toThrow();
+    expect(() => assertVerifiedCapabilitySnapshot(removed)).toThrow();
+    // Generic (Phase-1) snapshots: the same holds.
+    const base = { sourceBundleHash: computeSourceBundleHash([cv]), kernelVersion: "discovery-v1", prompt: { checksum: "C" }, inference: { provider: "pink-spy", model: "m" }, schemaVersion: "discovery-schema-v1", candidateCount: 0, rejectedCandidateCount: 0, createdAt: NOW, status: "VERIFIED" as const };
+    const generic = createVerifiedCapabilitySnapshot({ ...base, investigationScope: { scopeHash: hashOf(scopeA) } }, [], []);
+    expect(() => assertVerifiedCapabilitySnapshot({ ...generic, investigationScope: { scopeHash: hashOf(scopeB) } })).toThrow();
+    const stripped = { ...generic }; delete stripped.investigationScope;
+    expect(() => assertVerifiedCapabilitySnapshot(stripped)).toThrow();
+  });
+
+  it("reuse matrix: confirmed state is reused only by an unscoped Discovery from unscoped state (positive control), never across scopes", async () => {
+    const base = { sourceBundleHash: computeSourceBundleHash([cv]), kernelVersion: "discovery-v1", prompt: { checksum: "C" }, inference: { provider: "pink-spy", model: "m" }, schemaVersion: "discovery-schema-v1", candidateCount: 0, rejectedCandidateCount: 0, createdAt: NOW, status: "VERIFIED" as const };
+    const outcome = async (stored: Array<{ scopeHash?: string }>, scope?: ResolvedJobScope) => {
+      const repository = new InMemoryCapabilityCoreRepository();
+      for (const entry of stored) await repository.saveSnapshot(createVerifiedCapabilitySnapshot({ ...base, ...(entry.scopeHash ? { investigationScope: { scopeHash: entry.scopeHash } } : {}) }, [], []));
+      const spy = spyProvider();
+      const result = await discover(repository, spy.provider, scope);
+      return `${result.kind}/${spy.calls()}`;
+    };
+    const matrix = {
+      "unscoped state → unscoped Discovery (positive control)": await outcome([{}]),
+      "scope A state → unscoped Discovery": await outcome([{ scopeHash: hashOf(scopeA) }]),
+      "scope A + B state → unscoped Discovery": await outcome([{ scopeHash: hashOf(scopeA) }, { scopeHash: hashOf(scopeB) }]),
+      "unscoped state → scope A Discovery": await outcome([{}], scopeA),
+      "scope A state → scope A Discovery": await outcome([{ scopeHash: hashOf(scopeA) }], scopeA),
+      "scope A state → scope B Discovery": await outcome([{ scopeHash: hashOf(scopeA) }], scopeB)
+    };
+    expect(matrix).toEqual({
+      "unscoped state → unscoped Discovery (positive control)": "VERIFIED_SNAPSHOT_REUSED/0",
+      "scope A state → unscoped Discovery": "DISCOVERY_COMPLETED/1",
+      "scope A + B state → unscoped Discovery": "DISCOVERY_COMPLETED/1",
+      "unscoped state → scope A Discovery": "DISCOVERY_COMPLETED/1",
+      "scope A state → scope A Discovery": "DISCOVERY_COMPLETED/1",
+      "scope A state → scope B Discovery": "DISCOVERY_COMPLETED/1"
+    });
+  });
+
+  it("a Phase-4 state of scope A is never reached by an unscoped or scope-B Discovery over the same sources", async () => {
+    const repository = new InMemoryCapabilityCoreRepository();
+    await repository.createVerifiedCapabilitySnapshotPublisher().publish(await realChain(repository, scopeA));
+    // Discovery runs of A already exist: B and unscoped must still ask the provider (no run reuse across scopes either).
+    const spyB = spyProvider(); const resultB = await discover(repository, spyB.provider, scopeB);
+    expect([resultB.kind, spyB.calls()]).toEqual(["DISCOVERY_COMPLETED", 1]);
+    const spyNone = spyProvider(); const resultNone = await discover(repository, spyNone.provider);
+    expect([resultNone.kind, spyNone.calls()]).toEqual(["DISCOVERY_COMPLETED", 1]);
+    const spyA = spyProvider(); const resultA = await discover(repository, spyA.provider, scopeA);
+    expect([resultA.kind, spyA.calls()]).toEqual(["DISCOVERY_RUN_REUSED", 0]);
+  });
+});

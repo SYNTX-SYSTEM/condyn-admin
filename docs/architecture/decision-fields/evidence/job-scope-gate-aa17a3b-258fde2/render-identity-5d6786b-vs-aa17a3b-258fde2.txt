@@ -1,0 +1,28 @@
+identical 17b7cdaefe3e7073 cap-L0-en
+identical 895fe8edbaf92f27 cap-01-z1-en
+identical fec5b518d2e96517 cap-01-z2-en
+identical 487c7467298a15d7 cap-03-z1-en
+identical 15f4d6244600c636 cap-03-z2-en
+identical b55f835513ed4bc9 cap-06-z1-en
+identical 5c561634f429265a cap-06-z2-en
+identical 17b7cdaefe3e7073 field-nopool-en
+identical 441cd2c2886e23fd field-FIELD-en
+identical 98a83e19d76eda53 field-ORG-en
+identical d72e06c4ac40de4c field-ROLE-en
+identical 1b639eed065e6f62 field-REQ-en
+identical 8d12af1077a22dac cap-L0-de
+identical 05cafa4a8f912948 cap-01-z1-de
+identical af9e74d851c7a40f cap-01-z2-de
+identical 24100f06c4742ee1 cap-03-z1-de
+identical 6b76ff30b2da51f9 cap-03-z2-de
+identical 15c65a000e23add5 cap-06-z1-de
+identical b9b4dd869e496729 cap-06-z2-de
+identical 8d12af1077a22dac field-nopool-de
+identical edf77d293d8cdda1 field-FIELD-de
+identical 42290b3ff26b6b48 field-ORG-de
+identical 7df06c8d22ff6f03 field-ROLE-de
+identical 693cdfe2c1f10a72 field-REQ-de
+identical b29b5bae9cef5685 dock-empty
+identical 1f46877a6792368f dock-staged
+
+26/26 server renders byte-identical (5d6786b vs aa17a3b+258fde2)

@@ -1,0 +1,481 @@
+{
+ "unscopedGenericKey": "c73c4352200195d61228f22f06c8b80d880d8d6a55da7c8db322f4eb27ce05f2",
+ "unscopedPhase4Key": "4b8d272f98215906a4c0cc99a094ac48e0b4c6c001b5ce602dbec3c05ea4c483",
+ "unscopedGenericSnapshot": {
+  "sourceBundleHash": "9508740264f376c620fc2273884e0e5a9d2f69b70c320b794c668b6faaf27054",
+  "kernelVersion": "discovery-v1",
+  "prompt": {
+   "checksum": "C"
+  },
+  "inference": {
+   "provider": "pink-spy",
+   "model": "m"
+  },
+  "schemaVersion": "discovery-schema-v1",
+  "candidateCount": 0,
+  "rejectedCandidateCount": 0,
+  "createdAt": "2026-10-15T00:00:00.000Z",
+  "status": "VERIFIED",
+  "snapshotId": "SNAP_C73C4352200195D61228F22F",
+  "capabilityIds": [],
+  "evidenceIds": [],
+  "relationIds": [],
+  "capabilities": [],
+  "evidence": [],
+  "relations": [],
+  "validationSummary": {
+   "candidateCount": 0,
+   "rejectedCandidateCount": 0,
+   "verifiedCapabilityCount": 0,
+   "verifiedEvidenceCount": 0,
+   "rejectedEvidenceCount": 0,
+   "unresolvedRelationCount": 0
+  }
+ },
+ "unscoped": {
+  "providerRequests": [
+   "{\"model\":\"pink-fake\",\"contents\":\"PINK_DISCOVERY_KERNEL\\n\\nOutput identity contract:\\n\\\"kernel_version\\\" MUST equal exactly \\\"discovery-v1\\\".\\nDo not substitute the prompt slug, schema version, model version, semantic version shorthand, or any other value.\\n\\nCONDYN CAPABILITY DISCOVERY SOURCE CORPUS\\nSOURCE_DOCUMENT_COUNT: 1\\n\\n<SOURCE_DOCUMENT>\\nDOC_ID: CV\\nTITLE: cv.synthetic.pdf\\nMIME_TYPE: \\nLed the migration of the dispatch platform to event-driven services.\\n</SOURCE_DOCUMENT>\",\"config\":{\"responseMimeType\":\"application/json\",\"temperature\":0.1,\"maxOutputTokens\":32768,\"responseJsonSchema\":{\"type\":\"object\",\"properties\":{\"kernel_version\":{\"type\":\"string\"},\"capabilities\":{\"type\":\"array\",\"items\":{\"type\":\"object\",\"properties\":{\"canonical_name\":{\"type\":\"string\"},\"capability_scope\":{\"type\":\"string\",\"enum\":[\"ATOMIC\",\"COMPOSITE\"]},\"structural_definition\":{\"type\":\"string\"},\"primary_domain\":{\"anyOf\":[{\"type\":\"string\"},{\"type\":\"null\"}]},\"demonstrated_capability_level\":{\"anyOf\":[{\"type\":\"string\",\"enum\":[\"L1\",\"L2\",\"L3\",\"L4\",\"L5\",\"L6\"]},{\"type\":\"null\"}]},\"model_confidence\":{\"type\":\"number\",\"minimum\":0,\"maximum\":1},\"evidence_mode\":{\"type\":\"string\",\"enum\":[\"EXPLICIT\",\"STRUCTURALLY_DEMONSTRATED\"]},\"evidence\":{\"type\":\"array\",\"items\":{\"type\":\"object\",\"properties\":{\"source_document\":{\"type\":\"string\"},\"location\":{\"type\":\"string\"},\"exact_quote\":{\"type\":\"string\"}},\"required\":[\"source_document\",\"location\",\"exact_quote\"],\"additionalProperties\":false},\"minItems\":1}},\"required\":[\"canonical_name\",\"capability_scope\",\"structural_definition\",\"primary_domain\",\"demonstrated_capability_level\",\"model_confidence\",\"evidence_mode\",\"evidence\"],\"additionalProperties\":false}},\"coverage_audit\":{\"type\":\"object\",\"properties\":{\"source_documents_examined\":{\"type\":\"integer\",\"minimum\":0},\"capability_count\":{\"type\":\"integer\",\"minimum\":0},\"atomic_capability_count\":{\"type\":\"integer\",\"minimum\":0},\"composite_capability_count\":{\"type\":\"integer\",\"minimum\":0},\"attribution_pass_completed\":{\"type\":\"boolean\"},\"target_state_ownership_pass_completed\":{\"type\":\"boolean\"},\"atomic_extraction_pass_completed\":{\"type\":\"boolean\"},\"method_capability_pass_completed\":{\"type\":\"boolean\"},\"composite_reconstruction_pass_completed\":{\"type\":\"boolean\"},\"global_convergence_pass_completed\":{\"type\":\"boolean\"},\"inventory_reconciliation_pass_completed\":{\"type\":\"boolean\"},\"final_reconciliation_produced_new_capabilities\":{\"type\":\"boolean\"},\"unresolved_target_operations\":{\"type\":\"integer\",\"minimum\":0},\"segments_classified_as_external_source_content\":{\"type\":\"integer\",\"minimum\":0},\"segments_classified_as_target_subject_operation\":{\"type\":\"integer\",\"minimum\":0},\"segments_classified_as_target_subject_designed_target_state\":{\"type\":\"integer\",\"minimum\":0},\"segments_classified_as_target_organization_capability\":{\"type\":\"integer\",\"minimum\":0},\"segments_excluded_due_to_attribution_ambiguity\":{\"type\":\"integer\",\"minimum\":0}},\"required\":[\"source_documents_examined\",\"capability_count\",\"atomic_capability_count\",\"composite_capability_count\",\"attribution_pass_completed\",\"target_state_ownership_pass_completed\",\"atomic_extraction_pass_completed\",\"method_capability_pass_completed\",\"composite_reconstruction_pass_completed\",\"global_convergence_pass_completed\",\"inventory_reconciliation_pass_completed\",\"final_reconciliation_produced_new_capabilities\",\"unresolved_target_operations\",\"segments_classified_as_external_source_content\",\"segments_classified_as_target_subject_operation\",\"segments_classified_as_target_subject_designed_target_state\",\"segments_classified_as_target_organization_capability\",\"segments_excluded_due_to_attribution_ambiguity\"],\"additionalProperties\":false}},\"required\":[\"kernel_version\",\"capabilities\",\"coverage_audit\"],\"additionalProperties\":false,\"$defs\":{\"CapabilityKernelOutput\":{\"type\":\"object\",\"properties\":{\"kernel_version\":{\"type\":\"string\"},\"capabilities\":{\"type\":\"array\",\"items\":{\"type\":\"object\",\"properties\":{\"canonical_name\":{\"type\":\"string\"},\"capability_scope\":{\"type\":\"string\",\"enum\":[\"ATOMIC\",\"COMPOSITE\"]},\"structural_definition\":{\"type\":\"string\"},\"primary_domain\":{\"anyOf\":[{\"type\":\"string\"},{\"type\":\"null\"}]},\"demonstrated_capability_level\":{\"anyOf\":[{\"type\":\"string\",\"enum\":[\"L1\",\"L2\",\"L3\",\"L4\",\"L5\",\"L6\"]},{\"type\":\"null\"}]},\"model_confidence\":{\"type\":\"number\",\"minimum\":0,\"maximum\":1},\"evidence_mode\":{\"type\":\"string\",\"enum\":[\"EXPLICIT\",\"STRUCTURALLY_DEMONSTRATED\"]},\"evidence\":{\"type\":\"array\",\"items\":{\"type\":\"object\",\"properties\":{\"source_document\":{\"type\":\"string\"},\"location\":{\"type\":\"string\"},\"exact_quote\":{\"type\":\"string\"}},\"required\":[\"source_document\",\"location\",\"exact_quote\"],\"additionalProperties\":false},\"minItems\":1}},\"required\":[\"canonical_name\",\"capability_scope\",\"structural_definition\",\"primary_domain\",\"demonstrated_capability_level\",\"model_confidence\",\"evidence_mode\",\"evidence\"],\"additionalProperties\":false}},\"coverage_audit\":{\"type\":\"object\",\"properties\":{\"source_documents_examined\":{\"type\":\"integer\",\"minimum\":0},\"capability_count\":{\"type\":\"integer\",\"minimum\":0},\"atomic_capability_count\":{\"type\":\"integer\",\"minimum\":0},\"composite_capability_count\":{\"type\":\"integer\",\"minimum\":0},\"attribution_pass_completed\":{\"type\":\"boolean\"},\"target_state_ownership_pass_completed\":{\"type\":\"boolean\"},\"atomic_extraction_pass_completed\":{\"type\":\"boolean\"},\"method_capability_pass_completed\":{\"type\":\"boolean\"},\"composite_reconstruction_pass_completed\":{\"type\":\"boolean\"},\"global_convergence_pass_completed\":{\"type\":\"boolean\"},\"inventory_reconciliation_pass_completed\":{\"type\":\"boolean\"},\"final_reconciliation_produced_new_capabilities\":{\"type\":\"boolean\"},\"unresolved_target_operations\":{\"type\":\"integer\",\"minimum\":0},\"segments_classified_as_external_source_content\":{\"type\":\"integer\",\"minimum\":0},\"segments_classified_as_target_subject_operation\":{\"type\":\"integer\",\"minimum\":0},\"segments_classified_as_target_subject_designed_target_state\":{\"type\":\"integer\",\"minimum\":0},\"segments_classified_as_target_organization_capability\":{\"type\":\"integer\",\"minimum\":0},\"segments_excluded_due_to_attribution_ambiguity\":{\"type\":\"integer\",\"minimum\":0}},\"required\":[\"source_documents_examined\",\"capability_count\",\"atomic_capability_count\",\"composite_capability_count\",\"attribution_pass_completed\",\"target_state_ownership_pass_completed\",\"atomic_extraction_pass_completed\",\"method_capability_pass_completed\",\"composite_reconstruction_pass_completed\",\"global_convergence_pass_completed\",\"inventory_reconciliation_pass_completed\",\"final_reconciliation_produced_new_capabilities\",\"unresolved_target_operations\",\"segments_classified_as_external_source_content\",\"segments_classified_as_target_subject_operation\",\"segments_classified_as_target_subject_designed_target_state\",\"segments_classified_as_target_organization_capability\",\"segments_excluded_due_to_attribution_ambiguity\"],\"additionalProperties\":false}},\"required\":[\"kernel_version\",\"capabilities\",\"coverage_audit\"],\"additionalProperties\":false}}}}}"
+  ],
+  "discoveryRun": {
+   "runId": "RUN_FAD5876F657A870F9AEC8683",
+   "sourceBundleHash": "9508740264f376c620fc2273884e0e5a9d2f69b70c320b794c668b6faaf27054",
+   "kernelVersion": "discovery-v1",
+   "prompt": {
+    "templateId": "T",
+    "versionId": "V",
+    "checksum": "C"
+   },
+   "inference": {
+    "provider": "gemini",
+    "model": "pink-fake"
+   },
+   "schemaVersion": "discovery-schema-v1",
+   "status": "COMPLETED",
+   "rawOutputHash": "07845b212cf634da707721e08f92bfedebe7b309f4622e9c4e03f4d67b437670",
+   "payload": {
+    "kernelOutput": {
+     "kernel_version": "discovery-v1",
+     "capabilities": [
+      {
+       "canonical_name": "Event-driven migration",
+       "capability_scope": "ATOMIC",
+       "structural_definition": "d",
+       "primary_domain": null,
+       "demonstrated_capability_level": null,
+       "model_confidence": 0.9,
+       "evidence_mode": "EXPLICIT",
+       "evidence": [
+        {
+         "source_document": "CV",
+         "location": "body",
+         "exact_quote": "Led the migration of the dispatch platform to event-driven services."
+        }
+       ]
+      }
+     ],
+     "coverage_audit": {
+      "source_documents_examined": 1,
+      "capability_count": 1,
+      "atomic_capability_count": 1,
+      "composite_capability_count": 0,
+      "attribution_pass_completed": true,
+      "target_state_ownership_pass_completed": true,
+      "atomic_extraction_pass_completed": true,
+      "method_capability_pass_completed": true,
+      "composite_reconstruction_pass_completed": true,
+      "global_convergence_pass_completed": true,
+      "inventory_reconciliation_pass_completed": true,
+      "final_reconciliation_produced_new_capabilities": false,
+      "unresolved_target_operations": 0,
+      "segments_classified_as_external_source_content": 0,
+      "segments_classified_as_target_subject_operation": 0,
+      "segments_classified_as_target_subject_designed_target_state": 0,
+      "segments_classified_as_target_organization_capability": 0,
+      "segments_excluded_due_to_attribution_ambiguity": 0
+     }
+    },
+    "candidates": [
+     {
+      "candidateId": "CAND_64497834C87895D1CB463F0B",
+      "runId": "RUN_FAD5876F657A870F9AEC8683",
+      "proposedCanonicalName": "Event-driven migration",
+      "proposedScope": "ATOMIC",
+      "structuralDefinition": "d",
+      "proposedPrimaryDomain": null,
+      "proposedDemonstratedLevel": null,
+      "modelConfidence": 0.9,
+      "evidenceMode": "EXPLICIT",
+      "evidenceClaims": [
+       {
+        "evidenceId": "EVD_DB347C77B69E0F81E49E943A",
+        "sourceDocumentRef": "CV",
+        "declaredLocation": "body",
+        "exactQuote": "Led the migration of the dispatch platform to event-driven services.",
+        "verification": {
+         "status": "VERIFIED",
+         "matchedDocId": "CV",
+         "matchedNormalizedQuote": "Led the migration of the dispatch platform to event-driven services.",
+         "sourceSpanStart": 0,
+         "sourceSpanEnd": 68
+        }
+       }
+      ],
+      "status": "EVIDENCE_PASSED"
+     }
+    ],
+    "coverageValidation": {
+     "status": "PASSED"
+    }
+   },
+   "createdAt": "2026-10-15T00:00:00.000Z",
+   "completedAt": "2026-10-15T00:00:00.000Z"
+  },
+  "convergenceRun": {
+   "runKind": "CAPABILITY_CONVERGENCE",
+   "convergenceRunId": "CONV_6923CE6A3F6AE7A148E7BD21",
+   "discoveryRunId": "RUN_FAD5876F657A870F9AEC8683",
+   "discoveryRawOutputHash": "07845b212cf634da707721e08f92bfedebe7b309f4622e9c4e03f4d67b437670",
+   "sourceBundleHash": "9508740264f376c620fc2273884e0e5a9d2f69b70c320b794c668b6faaf27054",
+   "kernelVersion": "convergence-v1",
+   "prompt": {
+    "templateId": "T",
+    "versionId": "V",
+    "checksum": "CC"
+   },
+   "inference": {
+    "provider": "pink-spy",
+    "model": "m"
+   },
+   "schemaVersion": "convergence-schema-v1",
+   "algorithmVersion": "algorithm-v1",
+   "status": "COMPLETED",
+   "rawOutputHash": "9d8ece0523808abbe1dae3f07247373df131b19edf0640e904ff3288f06ffd29",
+   "payload": {
+    "convergenceOutput": {
+     "convergence_version": "convergence-v1",
+     "groups": [
+      {
+       "group_key": "g",
+       "member_candidate_ids": [
+        "CAND_64497834C87895D1CB463F0B"
+       ],
+       "canonical_name": "Event-driven migration",
+       "capability_scope": "ATOMIC",
+       "structural_definition": "d",
+       "primary_domain": null
+      }
+     ],
+     "relations": [],
+     "reconciliation_audit": {
+      "input_candidate_count": 1,
+      "grouped_candidate_count": 1,
+      "group_count": 1,
+      "same_capability_merge_count": 0,
+      "unresolved_relation_count": 0,
+      "reconciliation_pass_completed": true
+     }
+    },
+    "canonicalDrafts": [
+     {
+      "provisionalCapabilityId": "PCAP_CA0C0579DA7499805D6DCF79",
+      "canonicalName": "Event-driven migration",
+      "scope": "ATOMIC",
+      "structuralDefinition": "d",
+      "primaryDomain": null,
+      "evidenceIds": [
+       "EVD_DB347C77B69E0F81E49E943A"
+      ],
+      "provenance": {
+       "sourceCandidateIds": [
+        "CAND_64497834C87895D1CB463F0B"
+       ],
+       "sourceDocumentIds": [
+        "CV"
+       ]
+      },
+      "semanticDefinitionStatus": "NOT_RUN"
+     }
+    ],
+    "proposedRelations": [],
+    "eligibleCandidateIds": [
+     "CAND_64497834C87895D1CB463F0B"
+    ],
+    "excludedCandidateIds": [],
+    "reconciliation": {
+     "status": "PASSED"
+    }
+   },
+   "createdAt": "2026-10-15T00:00:00.000Z",
+   "completedAt": "2026-10-15T00:00:00.000Z"
+  },
+  "verificationRunId": "VFY_1CCFE849FA5ECC1257FE1581",
+  "phase4": {
+   "snapshot": {
+    "sourceBundleHash": "9508740264f376c620fc2273884e0e5a9d2f69b70c320b794c668b6faaf27054",
+    "kernelVersion": "verification-v1",
+    "prompt": {
+     "checksum": "verification-prompt"
+    },
+    "inference": {
+     "provider": "pink-spy",
+     "model": "verification-model"
+    },
+    "schemaVersion": "snapshot-schema",
+    "candidateCount": 1,
+    "rejectedCandidateCount": 0,
+    "createdAt": "2026-10-15T00:00:00.000Z",
+    "status": "VERIFIED",
+    "snapshotId": "SNAP_1EC348636D9CC649EA2E2F6F",
+    "capabilityIds": [
+     "CAP_CA0C0579DA7499805D6DCF79"
+    ],
+    "evidenceIds": [
+     "EVD_DB347C77B69E0F81E49E943A"
+    ],
+    "relationIds": [],
+    "capabilities": [
+     {
+      "capabilityId": "CAP_CA0C0579DA7499805D6DCF79",
+      "canonicalName": "Event-driven migration",
+      "scope": "ATOMIC",
+      "structuralDefinition": "d",
+      "primaryDomain": null,
+      "demonstratedCapabilityLevel": null,
+      "levelVerificationStatus": "UNVERIFIED",
+      "evidenceIds": [
+       "EVD_DB347C77B69E0F81E49E943A"
+      ],
+      "relationIds": [],
+      "provenance": {
+       "sourceCandidateIds": [
+        "CAND_64497834C87895D1CB463F0B"
+       ],
+       "sourceDocumentIds": [
+        "CV"
+       ]
+      },
+      "validation": {
+       "evidenceStatus": "PASSED",
+       "semanticDefinitionStatus": "PASSED",
+       "convergenceStatus": "VERIFIED"
+      }
+     }
+    ],
+    "evidence": [
+     {
+      "evidenceId": "EVD_DB347C77B69E0F81E49E943A",
+      "sourceDocumentRef": "CV",
+      "declaredLocation": "body",
+      "exactQuote": "Led the migration of the dispatch platform to event-driven services.",
+      "verification": {
+       "status": "VERIFIED",
+       "matchedDocId": "CV",
+       "matchedNormalizedQuote": "Led the migration of the dispatch platform to event-driven services.",
+       "sourceSpanStart": 0,
+       "sourceSpanEnd": 68
+      }
+     }
+    ],
+    "relations": [],
+    "validationSummary": {
+     "candidateCount": 1,
+     "rejectedCandidateCount": 0,
+     "verifiedCapabilityCount": 1,
+     "verifiedEvidenceCount": 1,
+     "rejectedEvidenceCount": 0,
+     "unresolvedRelationCount": 0
+    },
+    "publication": {
+     "mode": "PHASE4_VERIFIED",
+     "verificationRunId": "VFY_1CCFE849FA5ECC1257FE1581",
+     "verificationRawOutputHash": "7d37034ef8652ccdf916af83465eb76329e3a8b4c913c30277636c717c5f9802"
+    }
+   },
+   "key": "1ec348636d9cc649ea2e2f6fba8a2ac3606f3414eacb844e54bc1574520ed358"
+  }
+ },
+ "scoped": {
+  "providerRequests": [
+   "{\"model\":\"pink-fake\",\"contents\":\"PINK_DISCOVERY_KERNEL\\n\\nOutput identity contract:\\n\\\"kernel_version\\\" MUST equal exactly \\\"discovery-v1\\\".\\nDo not substitute the prompt slug, schema version, model version, semantic version shorthand, or any other value.\\n\\nInvestigation scope contract:\\nThe INVESTIGATION_SCOPE below names the selected job: its role, description, requirements and their mapping. It determines the investigation space and the focus of deepening of this Discovery. Capabilities outside the selected role are still reported when the source corpus supports them verbatim.\\nThe INVESTIGATION_SCOPE is not a SOURCE_DOCUMENT and is not evidence. Every evidence claim must quote a SOURCE_DOCUMENT of the source corpus verbatim and reference its DOC_ID.\\nNever quote or cite the INVESTIGATION_SCOPE. Never report a capability because the job requires it; a capability without verbatim source support is not reported.\\n<INVESTIGATION_SCOPE>\\nJOB_POOL_UPLOAD_ID: \\\"JPOOL_B94850C439974E27496FE3B1A9A076B5\\\"\\nPOOL: \\\"pool_dll_engineering_v1\\\" VERSION 1 CANONICAL_SHA256 b94850c439974e27496fe3b1a9a076b5bb7b828cd5dbcc9e87532e3aa040eb58\\nSELECTED_ROLE_ID: \\\"role_kestrel_frontend_architect\\\"\\nROLE MAPPING: TARGET_ROLE_PROFILE_REVISION_ID \\\"TRP_1EDB758AFCC644A66751A817\\\" TARGET_ROLE_ENTITY_ID \\\"TRE_1EDB758AFCC644A66751A817\\\"\\nORGANIZATION org_kestrel: Kestrel Logistics Software GmbH | INDUSTRY: Logistics SaaS | COUNTRY: DE | REGION: Hamburg | SCALE: Scaleup (400+)\\nORGANIZATION org_kestrel DESCRIPTION: Builds a multi-tenant orchestration platform for mid-sized freight forwarders: route planning, dock scheduling, live shipment tracking and carrier settlement. Roughly 60 engineers in six product teams; TypeScript front to back, event-driven services on Kubernetes, customers in twelve European countries.\\nROLE role_kestrel_frontend_architect: Frontend Architect\\nROLE role_kestrel_frontend_architect ORGANIZATION: org_kestrel\\nROLE role_kestrel_frontend_architect SENIORITY: Staff / L5\\nROLE role_kestrel_frontend_architect DOMAIN FOCUS: Frontend Architecture\\nROLE role_kestrel_frontend_architect DESCRIPTION: Six product teams contribute to one dispatcher application that has grown to 400k lines of TypeScript. As Frontend Architect you define how it evolves: module boundaries and a micro-frontend or modular-monolith strategy, the shared design system, performance budgets for low-end warehouse terminals, and accessibility conformance for public-sector customers. You write architecture decision records, review the hardest pull requests, build proofs of concept before teams commit, and coach senior engineers. You do not manage people but you are accountable for the technical health of the front end and for a migration plan away from a legacy Angular module that still handles carrier settlement.\\nREQUIREMENT req_kestrel_frontend_architect_01: Frontend Architecture\\nREQUIREMENT req_kestrel_frontend_architect_01 DOMAIN: Software Architecture\\nREQUIREMENT req_kestrel_frontend_architect_01 REQUIRED LEVEL: L5 - Expert\\nREQUIREMENT req_kestrel_frontend_architect_01 NECESSITY: REQUIRED\\nREQUIREMENT req_kestrel_frontend_architect_01 TYPE: CAPABILITY\\nREQUIREMENT req_kestrel_frontend_architect_01 WEIGHT: 0.95\\nREQUIREMENT req_kestrel_frontend_architect_01 ALIASES: Front-End Architecture; Web Architecture\\nREQUIREMENT req_kestrel_frontend_architect_01 EVIDENCE HINT: Architecture ownership of a large single-page application: module boundaries, build tooling, migration strategy; ADRs or design docs.\\nREQUIREMENT req_kestrel_frontend_architect_02: TypeScript\\nREQUIREMENT req_kestrel_frontend_architect_02 DOMAIN: Software Engineering\\nREQUIREMENT req_kestrel_frontend_architect_02 REQUIRED LEVEL: L5 - Expert\\nREQUIREMENT req_kestrel_frontend_architect_02 NECESSITY: REQUIRED\\nREQUIREMENT req_kestrel_frontend_architect_02 TYPE: TOOL_TECHNOLOGY\\nREQUIREMENT req_kestrel_frontend_architect_02 WEIGHT: 0.85\\nREQUIREMENT req_kestrel_frontend_architect_02 ALIASES: TS\\nREQUIREMENT req_kestrel_frontend_architect_02 EVIDENCE HINT: Deep TypeScript: generics, strict mode across a large codebase, typed APIs between teams.\\nREQUIREMENT req_kestrel_frontend_architect_03: React\\nREQUIREMENT req_kestrel_frontend_architect_03 DOMAIN: Frontend\\nREQUIREMENT req_kestrel_frontend_architect_03 REQUIRED LEVEL: L5 - Expert\\nREQUIREMENT req_kestrel_frontend_architect_03 NECESSITY: REQUIRED\\nREQUIREMENT req_kestrel_frontend_architect_03 TYPE: TOOL_TECHNOLOGY\\nREQUIREMENT req_kestrel_frontend_architect_03 WEIGHT: 0.8\\nREQUIREMENT req_kestrel_frontend_architect_03 ALIASES: React.js\\nREQUIREMENT req_kestrel_frontend_architect_03 EVIDENCE HINT: Expert React including rendering performance, concurrent features and state architecture.\\nREQUIREMENT req_kestrel_frontend_architect_04: Design Systems\\nREQUIREMENT req_kestrel_frontend_architect_04 DOMAIN: Frontend\\nREQUIREMENT req_kestrel_frontend_architect_04 REQUIRED LEVEL: L4 - Advanced\\nREQUIREMENT req_kestrel_frontend_architect_04 NECESSITY: REQUIRED\\nREQUIREMENT req_kestrel_frontend_architect_04 TYPE: CAPABILITY\\nREQUIREMENT req_kestrel_frontend_architect_04 WEIGHT: 0.7\\nREQUIREMENT req_kestrel_frontend_architect_04 ALIASES: Component Library; UI Kit\\nREQUIREMENT req_kestrel_frontend_architect_04 EVIDENCE HINT: Built or led a shared component library used by several teams, with tokens, documentation and versioning.\\nREQUIREMENT req_kestrel_frontend_architect_05: Web Performance Optimization\\nREQUIREMENT req_kestrel_frontend_architect_05 DOMAIN: Frontend\\nREQUIREMENT req_kestrel_frontend_architect_05 REQUIRED LEVEL: L4 - Advanced\\nREQUIREMENT req_kestrel_frontend_architect_05 NECESSITY: PREFERRED\\nREQUIREMENT req_kestrel_frontend_architect_05 TYPE: CAPABILITY\\nREQUIREMENT req_kestrel_frontend_architect_05 WEIGHT: 0.6\\nREQUIREMENT req_kestrel_frontend_architect_05 ALIASES: Core Web Vitals; Frontend Performance\\nREQUIREMENT req_kestrel_frontend_architect_05 EVIDENCE HINT: Measured and improved load and runtime performance (bundle splitting, profiling, Web Vitals budgets).\\nREQUIREMENT req_kestrel_frontend_architect_06: Web Accessibility\\nREQUIREMENT req_kestrel_frontend_architect_06 DOMAIN: Frontend\\nREQUIREMENT req_kestrel_frontend_architect_06 REQUIRED LEVEL: L3 - Proficient\\nREQUIREMENT req_kestrel_frontend_architect_06 NECESSITY: PREFERRED\\nREQUIREMENT req_kestrel_frontend_architect_06 TYPE: KNOWLEDGE\\nREQUIREMENT req_kestrel_frontend_architect_06 WEIGHT: 0.5\\nREQUIREMENT req_kestrel_frontend_architect_06 ALIASES: WCAG; a11y\\nREQUIREMENT req_kestrel_frontend_architect_06 EVIDENCE HINT: WCAG 2.1 AA conformance work, audits or accessible component patterns.\\nREQUIREMENT req_kestrel_frontend_architect_07: Micro-Frontends\\nREQUIREMENT req_kestrel_frontend_architect_07 DOMAIN: Software Architecture\\nREQUIREMENT req_kestrel_frontend_architect_07 REQUIRED LEVEL: L3 - Proficient\\nREQUIREMENT req_kestrel_frontend_architect_07 NECESSITY: OPTIONAL\\nREQUIREMENT req_kestrel_frontend_architect_07 TYPE: CAPABILITY\\nREQUIREMENT req_kestrel_frontend_architect_07 WEIGHT: 0.35\\nREQUIREMENT req_kestrel_frontend_architect_07 ALIASES: Module Federation\\nREQUIREMENT req_kestrel_frontend_architect_07 EVIDENCE HINT: Module federation, independently deployable front-end modules or a documented decision against them.\\nREQUIREMENT req_kestrel_frontend_architect_08: Angular\\nREQUIREMENT req_kestrel_frontend_architect_08 DOMAIN: Frontend\\nREQUIREMENT req_kestrel_frontend_architect_08 REQUIRED LEVEL: L2 - Working\\nREQUIREMENT req_kestrel_frontend_architect_08 NECESSITY: OPTIONAL\\nREQUIREMENT req_kestrel_frontend_architect_08 TYPE: TOOL_TECHNOLOGY\\nREQUIREMENT req_kestrel_frontend_architect_08 WEIGHT: 0.25\\nREQUIREMENT req_kestrel_frontend_architect_08 ALIASES: AngularJS\\nREQUIREMENT req_kestrel_frontend_architect_08 EVIDENCE HINT: Enough Angular to plan and execute an incremental migration out of a legacy module.\\nREQUIREMENT req_kestrel_frontend_architect_09: Technical Mentoring\\nREQUIREMENT req_kestrel_frontend_architect_09 DOMAIN: Leadership\\nREQUIREMENT req_kestrel_frontend_architect_09 REQUIRED LEVEL: Demonstrated with senior engineers\\nREQUIREMENT req_kestrel_frontend_architect_09 NECESSITY: REQUIRED\\nREQUIREMENT req_kestrel_frontend_architect_09 TYPE: BEHAVIORAL_EXPECTATION\\nREQUIREMENT req_kestrel_frontend_architect_09 WEIGHT: 0.55\\nREQUIREMENT req_kestrel_frontend_architect_09 ALIASES: Mentoring; Coaching\\nREQUIREMENT req_kestrel_frontend_architect_09 EVIDENCE HINT: Mentoring, pairing or review culture you shaped; talks, internal guilds or coaching records.\\nREQUIREMENT req_kestrel_frontend_architect_10: Frontend Engineering\\nREQUIREMENT req_kestrel_frontend_architect_10 DOMAIN: Software Engineering\\nREQUIREMENT req_kestrel_frontend_architect_10 REQUIRED LEVEL: 8+ years\\nREQUIREMENT req_kestrel_frontend_architect_10 NECESSITY: REQUIRED\\nREQUIREMENT req_kestrel_frontend_architect_10 TYPE: EXPERIENCE\\nREQUIREMENT req_kestrel_frontend_architect_10 WEIGHT: 0.6\\nREQUIREMENT req_kestrel_frontend_architect_10 ALIASES:\\nREQUIREMENT req_kestrel_frontend_architect_10 EVIDENCE HINT: Eight or more years of professional front-end work including at least one architecture-level role.\\nREQUIREMENT req_kestrel_frontend_architect_01 MAPPING: TARGET_REQUIREMENT_REVISION_ID \\\"TQR_CE20684A26445FB264A7CB14\\\" NECESSITY_STATE UNKNOWN MATCHING_ELIGIBILITY MATCHING_ELIGIBLE_PROPOSAL_ONLY\\nREQUIREMENT req_kestrel_frontend_architect_02 MAPPING: TARGET_REQUIREMENT_REVISION_ID \\\"TQR_E9AA06F70D7A88BA46560C38\\\" NECESSITY_STATE UNKNOWN MATCHING_ELIGIBILITY MATCHING_ELIGIBLE_PROPOSAL_ONLY\\nREQUIREMENT req_kestrel_frontend_architect_03 MAPPING: TARGET_REQUIREMENT_REVISION_ID \\\"TQR_3113DE20D58660F9566ADFA4\\\" NECESSITY_STATE UNKNOWN MATCHING_ELIGIBILITY MATCHING_ELIGIBLE_PROPOSAL_ONLY\\nREQUIREMENT req_kestrel_frontend_architect_04 MAPPING: TARGET_REQUIREMENT_REVISION_ID \\\"TQR_2FEEF406B30F0ADCEB8E172B\\\" NECESSITY_STATE UNKNOWN MATCHING_ELIGIBILITY MATCHING_ELIGIBLE_PROPOSAL_ONLY\\nREQUIREMENT req_kestrel_frontend_architect_05 MAPPING: TARGET_REQUIREMENT_REVISION_ID \\\"TQR_3F270826792566076F0172DC\\\" NECESSITY_STATE UNKNOWN MATCHING_ELIGIBILITY MATCHING_ELIGIBLE_PROPOSAL_ONLY\\nREQUIREMENT req_kestrel_frontend_architect_06 MAPPING: TARGET_REQUIREMENT_REVISION_ID \\\"TQR_A30402DB5A45D9E9E18DE59B\\\" NECESSITY_STATE UNKNOWN MATCHING_ELIGIBILITY MATCHING_ELIGIBLE_PROPOSAL_ONLY\\nREQUIREMENT req_kestrel_frontend_architect_07 MAPPING: TARGET_REQUIREMENT_REVISION_ID \\\"TQR_6638DF24E100CF55FC70DA33\\\" NECESSITY_STATE UNKNOWN MATCHING_ELIGIBILITY MATCHING_ELIGIBLE_PROPOSAL_ONLY\\nREQUIREMENT req_kestrel_frontend_architect_08 MAPPING: TARGET_REQUIREMENT_REVISION_ID \\\"TQR_DC957E5C9F2FE66FF42F5866\\\" NECESSITY_STATE UNKNOWN MATCHING_ELIGIBILITY MATCHING_ELIGIBLE_PROPOSAL_ONLY\\nREQUIREMENT req_kestrel_frontend_architect_09 MAPPING: TARGET_REQUIREMENT_REVISION_ID \\\"TQR_AC870A5734C6E2974A7242D9\\\" NECESSITY_STATE UNKNOWN MATCHING_ELIGIBILITY MATCHING_ELIGIBLE_PROPOSAL_ONLY\\nREQUIREMENT req_kestrel_frontend_architect_10 MAPPING: TARGET_REQUIREMENT_REVISION_ID \\\"TQR_D5F971D3F327EF46DD8039F9\\\" NECESSITY_STATE UNKNOWN MATCHING_ELIGIBILITY MATCHING_ELIGIBLE_PROPOSAL_ONLY\\n</INVESTIGATION_SCOPE>\\n\\nCONDYN CAPABILITY DISCOVERY SOURCE CORPUS\\nSOURCE_DOCUMENT_COUNT: 1\\n\\n<SOURCE_DOCUMENT>\\nDOC_ID: CV\\nTITLE: cv.synthetic.pdf\\nMIME_TYPE: \\nLed the migration of the dispatch platform to event-driven services.\\n</SOURCE_DOCUMENT>\",\"config\":{\"responseMimeType\":\"application/json\",\"temperature\":0.1,\"maxOutputTokens\":32768,\"responseJsonSchema\":{\"type\":\"object\",\"properties\":{\"kernel_version\":{\"type\":\"string\"},\"capabilities\":{\"type\":\"array\",\"items\":{\"type\":\"object\",\"properties\":{\"canonical_name\":{\"type\":\"string\"},\"capability_scope\":{\"type\":\"string\",\"enum\":[\"ATOMIC\",\"COMPOSITE\"]},\"structural_definition\":{\"type\":\"string\"},\"primary_domain\":{\"anyOf\":[{\"type\":\"string\"},{\"type\":\"null\"}]},\"demonstrated_capability_level\":{\"anyOf\":[{\"type\":\"string\",\"enum\":[\"L1\",\"L2\",\"L3\",\"L4\",\"L5\",\"L6\"]},{\"type\":\"null\"}]},\"model_confidence\":{\"type\":\"number\",\"minimum\":0,\"maximum\":1},\"evidence_mode\":{\"type\":\"string\",\"enum\":[\"EXPLICIT\",\"STRUCTURALLY_DEMONSTRATED\"]},\"evidence\":{\"type\":\"array\",\"items\":{\"type\":\"object\",\"properties\":{\"source_document\":{\"type\":\"string\"},\"location\":{\"type\":\"string\"},\"exact_quote\":{\"type\":\"string\"}},\"required\":[\"source_document\",\"location\",\"exact_quote\"],\"additionalProperties\":false},\"minItems\":1}},\"required\":[\"canonical_name\",\"capability_scope\",\"structural_definition\",\"primary_domain\",\"demonstrated_capability_level\",\"model_confidence\",\"evidence_mode\",\"evidence\"],\"additionalProperties\":false}},\"coverage_audit\":{\"type\":\"object\",\"properties\":{\"source_documents_examined\":{\"type\":\"integer\",\"minimum\":0},\"capability_count\":{\"type\":\"integer\",\"minimum\":0},\"atomic_capability_count\":{\"type\":\"integer\",\"minimum\":0},\"composite_capability_count\":{\"type\":\"integer\",\"minimum\":0},\"attribution_pass_completed\":{\"type\":\"boolean\"},\"target_state_ownership_pass_completed\":{\"type\":\"boolean\"},\"atomic_extraction_pass_completed\":{\"type\":\"boolean\"},\"method_capability_pass_completed\":{\"type\":\"boolean\"},\"composite_reconstruction_pass_completed\":{\"type\":\"boolean\"},\"global_convergence_pass_completed\":{\"type\":\"boolean\"},\"inventory_reconciliation_pass_completed\":{\"type\":\"boolean\"},\"final_reconciliation_produced_new_capabilities\":{\"type\":\"boolean\"},\"unresolved_target_operations\":{\"type\":\"integer\",\"minimum\":0},\"segments_classified_as_external_source_content\":{\"type\":\"integer\",\"minimum\":0},\"segments_classified_as_target_subject_operation\":{\"type\":\"integer\",\"minimum\":0},\"segments_classified_as_target_subject_designed_target_state\":{\"type\":\"integer\",\"minimum\":0},\"segments_classified_as_target_organization_capability\":{\"type\":\"integer\",\"minimum\":0},\"segments_excluded_due_to_attribution_ambiguity\":{\"type\":\"integer\",\"minimum\":0}},\"required\":[\"source_documents_examined\",\"capability_count\",\"atomic_capability_count\",\"composite_capability_count\",\"attribution_pass_completed\",\"target_state_ownership_pass_completed\",\"atomic_extraction_pass_completed\",\"method_capability_pass_completed\",\"composite_reconstruction_pass_completed\",\"global_convergence_pass_completed\",\"inventory_reconciliation_pass_completed\",\"final_reconciliation_produced_new_capabilities\",\"unresolved_target_operations\",\"segments_classified_as_external_source_content\",\"segments_classified_as_target_subject_operation\",\"segments_classified_as_target_subject_designed_target_state\",\"segments_classified_as_target_organization_capability\",\"segments_excluded_due_to_attribution_ambiguity\"],\"additionalProperties\":false}},\"required\":[\"kernel_version\",\"capabilities\",\"coverage_audit\"],\"additionalProperties\":false,\"$defs\":{\"CapabilityKernelOutput\":{\"type\":\"object\",\"properties\":{\"kernel_version\":{\"type\":\"string\"},\"capabilities\":{\"type\":\"array\",\"items\":{\"type\":\"object\",\"properties\":{\"canonical_name\":{\"type\":\"string\"},\"capability_scope\":{\"type\":\"string\",\"enum\":[\"ATOMIC\",\"COMPOSITE\"]},\"structural_definition\":{\"type\":\"string\"},\"primary_domain\":{\"anyOf\":[{\"type\":\"string\"},{\"type\":\"null\"}]},\"demonstrated_capability_level\":{\"anyOf\":[{\"type\":\"string\",\"enum\":[\"L1\",\"L2\",\"L3\",\"L4\",\"L5\",\"L6\"]},{\"type\":\"null\"}]},\"model_confidence\":{\"type\":\"number\",\"minimum\":0,\"maximum\":1},\"evidence_mode\":{\"type\":\"string\",\"enum\":[\"EXPLICIT\",\"STRUCTURALLY_DEMONSTRATED\"]},\"evidence\":{\"type\":\"array\",\"items\":{\"type\":\"object\",\"properties\":{\"source_document\":{\"type\":\"string\"},\"location\":{\"type\":\"string\"},\"exact_quote\":{\"type\":\"string\"}},\"required\":[\"source_document\",\"location\",\"exact_quote\"],\"additionalProperties\":false},\"minItems\":1}},\"required\":[\"canonical_name\",\"capability_scope\",\"structural_definition\",\"primary_domain\",\"demonstrated_capability_level\",\"model_confidence\",\"evidence_mode\",\"evidence\"],\"additionalProperties\":false}},\"coverage_audit\":{\"type\":\"object\",\"properties\":{\"source_documents_examined\":{\"type\":\"integer\",\"minimum\":0},\"capability_count\":{\"type\":\"integer\",\"minimum\":0},\"atomic_capability_count\":{\"type\":\"integer\",\"minimum\":0},\"composite_capability_count\":{\"type\":\"integer\",\"minimum\":0},\"attribution_pass_completed\":{\"type\":\"boolean\"},\"target_state_ownership_pass_completed\":{\"type\":\"boolean\"},\"atomic_extraction_pass_completed\":{\"type\":\"boolean\"},\"method_capability_pass_completed\":{\"type\":\"boolean\"},\"composite_reconstruction_pass_completed\":{\"type\":\"boolean\"},\"global_convergence_pass_completed\":{\"type\":\"boolean\"},\"inventory_reconciliation_pass_completed\":{\"type\":\"boolean\"},\"final_reconciliation_produced_new_capabilities\":{\"type\":\"boolean\"},\"unresolved_target_operations\":{\"type\":\"integer\",\"minimum\":0},\"segments_classified_as_external_source_content\":{\"type\":\"integer\",\"minimum\":0},\"segments_classified_as_target_subject_operation\":{\"type\":\"integer\",\"minimum\":0},\"segments_classified_as_target_subject_designed_target_state\":{\"type\":\"integer\",\"minimum\":0},\"segments_classified_as_target_organization_capability\":{\"type\":\"integer\",\"minimum\":0},\"segments_excluded_due_to_attribution_ambiguity\":{\"type\":\"integer\",\"minimum\":0}},\"required\":[\"source_documents_examined\",\"capability_count\",\"atomic_capability_count\",\"composite_capability_count\",\"attribution_pass_completed\",\"target_state_ownership_pass_completed\",\"atomic_extraction_pass_completed\",\"method_capability_pass_completed\",\"composite_reconstruction_pass_completed\",\"global_convergence_pass_completed\",\"inventory_reconciliation_pass_completed\",\"final_reconciliation_produced_new_capabilities\",\"unresolved_target_operations\",\"segments_classified_as_external_source_content\",\"segments_classified_as_target_subject_operation\",\"segments_classified_as_target_subject_designed_target_state\",\"segments_classified_as_target_organization_capability\",\"segments_excluded_due_to_attribution_ambiguity\"],\"additionalProperties\":false}},\"required\":[\"kernel_version\",\"capabilities\",\"coverage_audit\"],\"additionalProperties\":false}}}}}"
+  ],
+  "discoveryRun": {
+   "runId": "RUN_97FB9708AAF57EC93ABFA02D",
+   "sourceBundleHash": "9508740264f376c620fc2273884e0e5a9d2f69b70c320b794c668b6faaf27054",
+   "kernelVersion": "discovery-v1",
+   "prompt": {
+    "templateId": "T",
+    "versionId": "V",
+    "checksum": "C"
+   },
+   "inference": {
+    "provider": "gemini",
+    "model": "pink-fake"
+   },
+   "schemaVersion": "discovery-schema-v1",
+   "status": "COMPLETED",
+   "rawOutputHash": "07845b212cf634da707721e08f92bfedebe7b309f4622e9c4e03f4d67b437670",
+   "investigationScope": {
+    "scopeHash": "953f47782c28a8e578818217eb12b785b0d397685051ea7849ac6ec80895dd30"
+   },
+   "payload": {
+    "kernelOutput": {
+     "kernel_version": "discovery-v1",
+     "capabilities": [
+      {
+       "canonical_name": "Event-driven migration",
+       "capability_scope": "ATOMIC",
+       "structural_definition": "d",
+       "primary_domain": null,
+       "demonstrated_capability_level": null,
+       "model_confidence": 0.9,
+       "evidence_mode": "EXPLICIT",
+       "evidence": [
+        {
+         "source_document": "CV",
+         "location": "body",
+         "exact_quote": "Led the migration of the dispatch platform to event-driven services."
+        }
+       ]
+      }
+     ],
+     "coverage_audit": {
+      "source_documents_examined": 1,
+      "capability_count": 1,
+      "atomic_capability_count": 1,
+      "composite_capability_count": 0,
+      "attribution_pass_completed": true,
+      "target_state_ownership_pass_completed": true,
+      "atomic_extraction_pass_completed": true,
+      "method_capability_pass_completed": true,
+      "composite_reconstruction_pass_completed": true,
+      "global_convergence_pass_completed": true,
+      "inventory_reconciliation_pass_completed": true,
+      "final_reconciliation_produced_new_capabilities": false,
+      "unresolved_target_operations": 0,
+      "segments_classified_as_external_source_content": 0,
+      "segments_classified_as_target_subject_operation": 0,
+      "segments_classified_as_target_subject_designed_target_state": 0,
+      "segments_classified_as_target_organization_capability": 0,
+      "segments_excluded_due_to_attribution_ambiguity": 0
+     }
+    },
+    "candidates": [
+     {
+      "candidateId": "CAND_F5C6A19F43C6BDB8C588633A",
+      "runId": "RUN_97FB9708AAF57EC93ABFA02D",
+      "proposedCanonicalName": "Event-driven migration",
+      "proposedScope": "ATOMIC",
+      "structuralDefinition": "d",
+      "proposedPrimaryDomain": null,
+      "proposedDemonstratedLevel": null,
+      "modelConfidence": 0.9,
+      "evidenceMode": "EXPLICIT",
+      "evidenceClaims": [
+       {
+        "evidenceId": "EVD_DB347C77B69E0F81E49E943A",
+        "sourceDocumentRef": "CV",
+        "declaredLocation": "body",
+        "exactQuote": "Led the migration of the dispatch platform to event-driven services.",
+        "verification": {
+         "status": "VERIFIED",
+         "matchedDocId": "CV",
+         "matchedNormalizedQuote": "Led the migration of the dispatch platform to event-driven services.",
+         "sourceSpanStart": 0,
+         "sourceSpanEnd": 68
+        }
+       }
+      ],
+      "status": "EVIDENCE_PASSED"
+     }
+    ],
+    "coverageValidation": {
+     "status": "PASSED"
+    }
+   },
+   "createdAt": "2026-10-15T00:00:00.000Z",
+   "completedAt": "2026-10-15T00:00:00.000Z"
+  },
+  "convergenceRun": {
+   "runKind": "CAPABILITY_CONVERGENCE",
+   "convergenceRunId": "CONV_92EDA289CC02EAE915F72186",
+   "discoveryRunId": "RUN_97FB9708AAF57EC93ABFA02D",
+   "discoveryRawOutputHash": "07845b212cf634da707721e08f92bfedebe7b309f4622e9c4e03f4d67b437670",
+   "sourceBundleHash": "9508740264f376c620fc2273884e0e5a9d2f69b70c320b794c668b6faaf27054",
+   "kernelVersion": "convergence-v1",
+   "prompt": {
+    "templateId": "T",
+    "versionId": "V",
+    "checksum": "CC"
+   },
+   "inference": {
+    "provider": "pink-spy",
+    "model": "m"
+   },
+   "schemaVersion": "convergence-schema-v1",
+   "algorithmVersion": "algorithm-v1",
+   "status": "COMPLETED",
+   "rawOutputHash": "973a342a8ada1c82b9f5c665ef6951995880f7afc494c1203db6797b8423a5fd",
+   "payload": {
+    "convergenceOutput": {
+     "convergence_version": "convergence-v1",
+     "groups": [
+      {
+       "group_key": "g",
+       "member_candidate_ids": [
+        "CAND_F5C6A19F43C6BDB8C588633A"
+       ],
+       "canonical_name": "Event-driven migration",
+       "capability_scope": "ATOMIC",
+       "structural_definition": "d",
+       "primary_domain": null
+      }
+     ],
+     "relations": [],
+     "reconciliation_audit": {
+      "input_candidate_count": 1,
+      "grouped_candidate_count": 1,
+      "group_count": 1,
+      "same_capability_merge_count": 0,
+      "unresolved_relation_count": 0,
+      "reconciliation_pass_completed": true
+     }
+    },
+    "canonicalDrafts": [
+     {
+      "provisionalCapabilityId": "PCAP_CA0C0579DA7499805D6DCF79",
+      "canonicalName": "Event-driven migration",
+      "scope": "ATOMIC",
+      "structuralDefinition": "d",
+      "primaryDomain": null,
+      "evidenceIds": [
+       "EVD_DB347C77B69E0F81E49E943A"
+      ],
+      "provenance": {
+       "sourceCandidateIds": [
+        "CAND_F5C6A19F43C6BDB8C588633A"
+       ],
+       "sourceDocumentIds": [
+        "CV"
+       ]
+      },
+      "semanticDefinitionStatus": "NOT_RUN"
+     }
+    ],
+    "proposedRelations": [],
+    "eligibleCandidateIds": [
+     "CAND_F5C6A19F43C6BDB8C588633A"
+    ],
+    "excludedCandidateIds": [],
+    "reconciliation": {
+     "status": "PASSED"
+    }
+   },
+   "createdAt": "2026-10-15T00:00:00.000Z",
+   "completedAt": "2026-10-15T00:00:00.000Z"
+  },
+  "verificationRunId": "VFY_30E870C2DCBCA47EA9AF38B6",
+  "phase4": {
+   "error": "ERR_CAPABILITY_VERIFICATION_RUN_INTEGRITY_INVALID"
+  }
+ }
+}
