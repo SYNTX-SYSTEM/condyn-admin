@@ -1348,6 +1348,119 @@ Closed:
 Harness note (no finding): a listener that closes every connection at once made postgres-js reconnect about 41,000 times in
 60 s. PINK's listener now holds connections silently, so `connect_timeout` applies.
 
+### 3.34 Three investigation modes, B2 job comparison, JOB structure, lossless archive: GELB `e98a40c..ad15d7b` with GRÜN `aa17a3b` (2026-10-15)
+
+**Invariant boundary B-INVARIANT-PERSON (owner decision needed).** The owner told PINK directly on 2026-10-14: „Kein Gemini-Call
+ohne gültigen Job-Scope. Keine Ausnahmen.“ GELB relays an owner GO of 2026-10-15 that replaces it with „Keine Analyse ohne explizite
+Untersuchungsgrenze. Ein Job-Scope ist nur erforderlich, wenn der gewählte Modus ihn verlangt.“ PINK has not seen that GO first-hand.
+The PERSON mode below sends Discovery, Convergence and the legacy analysis to Gemini without any job scope. That is a deviation under
+the 2026-10-14 invariant and conforms under the relayed one. PINK validates against both and leaves the decision to the owner.
+
+GELB `feature/job-pool-first-boundary`, fast-forward on `dfb4b63`:
+- `e98a40c`: archive texts are stored as their JSON string literal (`JSON_STRING_V1`), the envelope as JSON text; unmarked rows are
+  read as plain text. Answers PINK's O-EXCHANGE-NUL.
+- `2e5e852`: the optional `investigation { mode }` (PERSON · PERSON_X_JOB · JOB):
+  - PERSON is issued only by the worker boundary (WeakSet, frozen) and makes Discovery run unscoped.
+  - The provider guards require `requireActiveAnalysisBoundary()`.
+  - The legacy pipeline takes `{ jobScope }` or `{ investigation }`, never both.
+  - New sentence: „Bitte wähle eine eindeutige Untersuchungsgrenze.“
+- `ea01bfc`: B2 `GET /api/career/analyses/{id}/job-comparison` (`SELECTED_ROLE_COVERAGE_V1`).
+- `0b23045`: JOB `GET /api/career/job-pools/{upload}/roles/{role}/structure` (`JOB_STRUCTURE_V1`).
+- `6a30220`: browser client and docs. `ad15d7b`: GELB's proofs.
+
+PINK (probe branch = this branch + `aa17a3b` + `ad15d7b`, deleted, never pushed; evidence `evidence/job-scope-gate-aa17a3b-ad15d7b/`;
+proofs kept as `.txt`; no live Gemini, the real worker runs against PINK's loopback stand-in as in §3.33):
+
+**Declaration matrix** (`investigation-modes.test.ts.txt`, 4; 22 bodies):
+- Only an explicit `{ mode: "PERSON" }` without any `jobScope` key is PERSON. `jobScope: null` next to PERSON is a contradiction.
+- Undeclared bodies keep the earlier contract exactly. `PERSON_X_JOB` without a scope → `ERR_JOB_SCOPE_REQUIRED`.
+- JOB → `ERR_INVESTIGATION_MODE_NOT_ANALYZABLE`.
+- Lower case, a trailing blank, an extra key, `{}`, `null`, a string, an array, a mode array and a `__proto__` key are all
+  `ERR_INVESTIGATION_INVALID`. Every refusal is `TERMINAL_ERROR`.
+
+**Forged PERSON boundaries** (same file):
+- A literal, a frozen literal, a JSON copy, a `structuredClone`, a spread, a derived object, `undefined` and `null` are refused by
+  the executor with the job-scope sentence, before the provider.
+- The legacy pipeline refuses a literal, a copy, both boundaries at once, none, and a job-scope literal before the provider. The
+  issued PERSON boundary does reach it (positive control).
+- `runWithPersonInvestigation` refuses a literal.
+
+**Worker boundary** (same file): PERSON opens only the person boundary, and inside it `requireActiveJobScope()` still refuses, so
+job-scope consumers stay closed. Undeclared and explicit PERSON_X_JOB open the job scope. Outside any attempt nothing is active.
+
+**Cross-version through the real executor** (`mode-identity-probe.test.ts.txt`, unchanged in temporary worktrees of `027abf3`,
+`dfb4b63` and `ad15d7b`, removed):
+- PERSON at `ad15d7b`: the Discovery request and the persisted run are byte-identical to the scoped run at `027abf3`, where the scope
+  was validated but not yet sent (`RUN_9CE64AAF8CAA85A7790523A7`); no `<INVESTIGATION_SCOPE>`.
+- PERSON_X_JOB at `ad15d7b`: request and run byte-identical to `dfb4b63` (`RUN_E416BB5E5C90EFC1609BEE19`).
+- The §3.30 unscoped identity probe and the §3.32 snapshot probe are byte-identical as well.
+
+**Analyze route on PostgreSQL** (`investigation-routes.postgres.test.ts.txt`, 4; 11 bodies):
+- 202 for undeclared+scope, PERSON and explicit PERSON_X_JOB+scope. The stored job input carries exactly the declaration: PERSON
+  without `jobScope`.
+- Refusals enqueue nothing: 400 `ERR_INVESTIGATION_INVALID` (PERSON+scope, PERSON+wrong role, unknown mode), 400
+  `ERR_INVESTIGATION_MODE_NOT_ANALYZABLE` (JOB), 400 `ERR_JOB_SCOPE_REQUIRED`, 422 `ERR_JOB_SCOPE_INVALID`.
+- A PERSON contradiction is refused before any pool lookup.
+
+**Worker on PostgreSQL** (same file, real `CareerJobWorker` with the gated spy processor; 9 jobs inserted past the route):
+- PERSON, undeclared and explicit PERSON_X_JOB reach the processor with the right boundary.
+- PERSON+scope, JOB, undeclared without scope, PERSON_X_JOB without scope, lower case and a wrong role end after one attempt,
+  before the processor.
+
+**B2** (same file, three seeded analyses):
+- The own selection → 200. Requirements are exactly the 10 of the selected role, and no id of another role appears anywhere.
+- Authority block as specified (`scored: false`, `NOT_EVALUATED`). Proposals come only from the projection.
+- Neither the legacy analysis payload's marker nor the document body appears. A second read is byte-identical.
+- 409 `SCOPE_MISMATCH` for another role, another upload and the padded role id; 400 `SELECTION_REQUIRED`.
+- 409 `NOT_SCOPED` for a PERSON analysis.
+- 409 `SCOPE_DRIFT` when the job declares A but its Discovery ran under B's scope; 404 for an unknown analysis.
+
+**JOB structure** (same file):
+- Byte-identical on a second read. Every evidence line is a whole line of the pool's canonical source document
+  (`renderPoolSourceContent`, JOB_POOL_SOURCE_RENDERING_V1) and belongs to the selected role.
+- None of the person analysed for this job appears: document body, CV text, legacy content, proposal name, analysis, job, RUN_,
+  CONV_ and CSB_ identities.
+- 409 for an unknown role, an unknown upload and a DRAFT pool; 400 for an empty selection.
+- Findings consistent with the pool data: non-CAPABILITY types ineligible; „Demonstrated with senior engineers“ unresolved; the role
+  declares no responsibility.
+
+**Lossless archive** (`exchange-archive.postgres.test.ts.txt`, expectations moved to `e98a40c`):
+- Seven texts come back exactly through the store, each with a matching `textSha256` and the exact scope text: CRLF/unicode, 200 kB,
+  BOM-first, MAX_TOKENS, U+0000, a lone surrogate, and a bare U+0000.
+- The column holds `JSON.stringify(text)` and no raw NUL. A plain pre-`e98a40c` row stays readable.
+- The received layout appears in no table but the archive. **O-EXCHANGE-NUL closed.**
+
+**Client** (`inspector-client.test.ts.txt`, 2):
+- 12 response cases map to the right states; the strict decoders refuse a NOT_RETAINED with an extra key, a RETAINED without text,
+  an unknown mode and a wrong version.
+- The token travels only in the header (GET, `no-store`, path-encoded id).
+- The job view refuses foreign attempts and a COMPLETED with an error code. The B2 guard holds only for the exact analysis, upload
+  and role while unscored.
+
+**Real worker** (`exchange-archive-worker.e2e.test.ts.txt`, archive on and off; Discovery recognised by its response schema):
+- P (PERSON): one Discovery request without the scope block, archived COMPLETED at lease 1 with `investigationScope` null.
+- Q (PERSON + scope) and J (JOB): end after one attempt; the stand-in never saw them.
+- A–D unchanged from §3.33. Archive off: identical traffic and outcomes, 0 rows. 0 outbound attempts.
+
+**Real Next server** (`investigation-routes.e2e.test.ts.txt`): analyze (5 declarations), B2 (own selection, other role, PERSON) and
+JOB structure (deterministic, unknown role) answer at their real paths as on PostgreSQL. The §3.32 and §3.33 server proofs are green
+on `ad15d7b`. Gemini attempts 0; only `next dev` version checks, refused.
+
+**Regression:**
+- Gate walk 74/74.
+- 65 files under the sentinel: the §3.33 batch, GELB's six new suites and PINK's three new proofs. 57 green + 8 live skipped,
+  400 tests, 0 network attempts.
+- Scripts: 92 runs, 80/80 exit 3 with the job-scope sentence, identical to §3.31 — scripts stay bound to a job.
+- SSR 26 cases identical to `5d6786b`. tsc 0.
+
+Correction to PINK's own proof: the §3.29 worker-gate static check expected `requireActiveJobScope()` in the provider guards. It now
+accepts the guard the source uses, and for `requireActiveAnalysisBoundary()` asserts the legacy call `...pipelineBoundary(…)`. It thus
+records the PERSON relaxation; it still recognises the `dfb4b63` form.
+
+Observation O-B2-OPEN-READ (low, existing class): B2 and the JOB structure have no read boundary of their own, unlike the inspector.
+B2 returns verbatim, source-verified CV quotes as coverage evidence. This is the same exposure as the existing open Career routes
+(`/api/career/analyses/*`, `/matches`); per GELB's reconstruction `/api/career/*` is not reachable through the domain.
+
 ## 4. Boundaries and findings for coordination
 
 - F-JP-1 (closed in `b782793`): `JOB_POOL_CONNECTION.md` §4 followed the per-role `JOB_POOL_JSON_ROLE` design;

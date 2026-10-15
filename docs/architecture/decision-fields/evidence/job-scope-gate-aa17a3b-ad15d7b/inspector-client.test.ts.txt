@@ -1,0 +1,54 @@
+/**
+ * PINK independent proof of GELB 6a30220 (browser client of the inspector routes): states from status and code, strict decoders
+ * (a processed artifact can never stand in for a missing original response), the token only in the header (never in the URL),
+ * GET only with no-store, and the B2 display guard. No network: a fake fetch records every call.
+ */
+import { describe, expect, it } from "vitest";
+import { comparisonBelongsToSelection, readGeminiExchangeInspection, readGeminiResultInspection } from "../../lib/career/result-inspector/client";
+
+const TOKEN = "pink-client-token-0123456789abcdef0123";
+const inspection = (original: Record<string, unknown>) => ({ inspectionVersion: "GEMINI_RESULT_INSPECTION_V1", analysisId: "ANL_X", jobId: "JOB_X", investigationInput: { investigationMode: "PERSON", discoveryRunId: "RUN_X", investigationScope: { state: "UNSCOPED" } }, originalGeminiResponse: original, parserResult: {}, evidenceVerification: { candidates: [] }, convergence: {} });
+function fake(status: number, body: unknown, throws = false) {
+  const calls: Array<{ url: string; init: Record<string, unknown> }> = [];
+  const fetchImpl = async (url: string, init: Record<string, unknown>) => { calls.push({ url, init }); if (throws) throw new Error("offline"); return { status, json: async () => { if (body === "NOT_JSON") throw new SyntaxError("x"); return body; } }; };
+  return { calls, fetchImpl: fetchImpl as never };
+}
+
+describe("PINK: inspector browser client (GELB 6a30220)", () => {
+  it("maps status and code to states; decodes strictly; the token travels only in the header, GET and no-store", async () => {
+    const cases: Record<string, [number, unknown, boolean?]> = {
+      available: [200, { success: true, inspection: inspection({ state: "NOT_RETAINED" }) }],
+      notRetainedWithExtraKey: [200, { success: true, inspection: inspection({ state: "NOT_RETAINED", text: "parsed stand-in" }) }],
+      retainedWithoutText: [200, { success: true, inspection: inspection({ state: "RETAINED", exchangeId: "EXC", expiresAt: "t" }) }],
+      unknownMode: [200, { success: true, inspection: { ...inspection({ state: "NOT_RETAINED" }), investigationInput: { investigationMode: "JOB", discoveryRunId: "RUN_X", investigationScope: { state: "UNSCOPED" } } } }],
+      wrongVersion: [200, { success: true, inspection: { ...inspection({ state: "NOT_RETAINED" }), inspectionVersion: "V2" } }],
+      closed: [404, { success: false, issues: [{ code: "ERR_NOT_FOUND" }] }], closedHtml: [404, "NOT_JSON"], notFound: [404, { success: false, issues: [{ code: "ERR_RESULT_INSPECTION_NOT_FOUND" }] }],
+      lineage: [409, { success: false, issues: [{ code: "ERR_RESULT_INSPECTION_LINEAGE_INVALID" }] }], server: [500, { success: false }], offline: [0, null, true], successFalse: [200, { success: false, inspection: inspection({ state: "NOT_RETAINED" }) }]
+    };
+    const states: Record<string, string> = {};
+    for (const [name, [status, body, throws]] of Object.entries(cases)) {
+      const { calls, fetchImpl } = fake(status, body, throws);
+      states[name] = (await readGeminiResultInspection(fetchImpl, "ANL_X/../y", TOKEN)).state;
+      expect(calls).toHaveLength(1);
+      expect(calls[0].url).toBe("/api/career/analyses/ANL_X%2F..%2Fy/gemini-result");
+      expect(calls[0].url.includes(TOKEN)).toBe(false);
+      expect(calls[0].init).toMatchObject({ method: "GET", cache: "no-store", headers: { "x-condyn-result-inspector-token": TOKEN } });
+    }
+    expect(states).toEqual({ available: "AVAILABLE", notRetainedWithExtraKey: "FAILED", retainedWithoutText: "FAILED", unknownMode: "FAILED", wrongVersion: "FAILED", closed: "CLOSED", closedHtml: "CLOSED", notFound: "NOT_FOUND", lineage: "LINEAGE_INVALID", server: "FAILED", offline: "FAILED", successFalse: "FAILED" });
+    // Job view: an exchange attributed to another job, or a COMPLETED one carrying an error code, is never shown.
+    const exchange = (extra: Record<string, unknown>) => ({ outcome: "FAILED", errorCode: "ERR_X", exchangeId: "EXC", runId: "RUN", response: { text: null }, attempt: { jobId: "JOB_X" }, ...extra });
+    const job = async (exchanges: unknown[]) => (await readGeminiExchangeInspection(fake(200, { success: true, inspection: { inspectionVersion: "GEMINI_EXCHANGE_INSPECTION_V1", jobId: "JOB_X", exchanges } }).fetchImpl, "JOB_X", TOKEN)).state;
+    expect([await job([exchange({})]), await job([exchange({ attempt: { jobId: "JOB_Y" } })]), await job([exchange({ outcome: "COMPLETED" })]), await job([exchange({ attempt: null })]), await job([])]).toEqual(["AVAILABLE", "FAILED", "FAILED", "FAILED", "AVAILABLE"]);
+  });
+
+  it("B2 display guard: shown only for exactly the current analysis, upload and role, and only while unscored", () => {
+    const current = { analysisId: "ANL_X", jobPoolUploadId: "JPOOL_X", poolRoleId: "role_x" };
+    const comparison = (binding: Record<string, unknown>, authority: Record<string, unknown> = { scored: false, capabilityRequirementRelationState: "NOT_EVALUATED" }) => ({ binding: { ...current, ...binding }, authority });
+    expect({
+      same: comparisonBelongsToSelection(comparison({}), current), otherAnalysis: comparisonBelongsToSelection(comparison({ analysisId: "ANL_Y" }), current),
+      otherUpload: comparisonBelongsToSelection(comparison({ jobPoolUploadId: "JPOOL_Y" }), current), otherRole: comparisonBelongsToSelection(comparison({ poolRoleId: "role_y" }), current),
+      paddedRole: comparisonBelongsToSelection(comparison({ poolRoleId: " role_x" }), current), scored: comparisonBelongsToSelection(comparison({}, { scored: true, capabilityRequirementRelationState: "NOT_EVALUATED" }), current),
+      evaluated: comparisonBelongsToSelection(comparison({}, { scored: false, capabilityRequirementRelationState: "EVALUATED" }), current), missing: comparisonBelongsToSelection(null, current)
+    }).toEqual({ same: true, otherAnalysis: false, otherUpload: false, otherRole: false, paddedRole: false, scored: false, evaluated: false, missing: false });
+  });
+});

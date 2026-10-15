@@ -1,0 +1,140 @@
+/**
+ * PINK proof of GELB dfb4b63 in a REAL worker run (scripts/run-career-worker.ts as its own process, disposable database, archive
+ * on). Gemini is replaced by PINK's own HTTP stand-in on 127.0.0.1 (GOOGLE_GEMINI_BASE_URL, dummy key); PINK's net sentinel in the
+ * worker refuses every non-loopback connection, so no request can reach Google. Closes the gap GELB named: attribution of
+ * exchanges to job and lease in a real worker, incl. a retry FAILED → COMPLETED, a provider failure without a received response,
+ * and a job refused by the job-scope gate. Writes `exchange-worker.json` to the evidence directory.
+ */
+import { spawn, type ChildProcess } from "node:child_process";
+import { randomBytes } from "node:crypto";
+import { once } from "node:events";
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { createServer, type IncomingMessage, type Server } from "node:http";
+import { resolve } from "node:path";
+import { sql } from "drizzle-orm";
+import { afterAll, beforeAll, describe, expect, it } from "vitest";
+import { db, initDbSchema } from "../../lib/career/db/client";
+import { JobRepository } from "../../lib/career/orchestration/job-repository";
+import { createJob } from "../../lib/career/orchestration/job";
+import { PostgresProviderExchangeStore, ensureProviderExchangeArchive } from "../../lib/career/result-inspector/postgres-exchange-store";
+import { TEST_JOB_SCOPE, uploadEngineeringJobScope } from "../support/job-scope";
+
+const TIP = process.env.JOB_SCOPE_TIP ?? "local";
+const EVIDENCE_DIR = resolve(process.cwd(), `docs/architecture/decision-fields/evidence/job-scope-gate-${TIP}`);
+const SENTINEL = process.env.PINK_NET_SENTINEL;
+const NET_LOG = process.env.PINK_INSPECTOR_NET_LOG ?? "";
+// PINK_WORKER_ARCHIVE=0 runs the identical world with the archive switched off (control: same job outcomes, same stand-in traffic).
+const ARCHIVE_ON = (process.env.PINK_WORKER_ARCHIVE ?? "1") === "1";
+const EXPECTED_STATUS = { A: "FAILED/3/EXECUTION_FAILED", B: "FAILED/3/EXECUTION_FAILED", C: "FAILED/3/EXECUTION_FAILED", D: "FAILED/1/ERR_JOB_SCOPE_INVALID", P: "FAILED/3/EXECUTION_FAILED", Q: "FAILED/1/ERR_INVESTIGATION_INVALID", J: "FAILED/1/ERR_INVESTIGATION_MODE_NOT_ANALYZABLE" };
+const delay = (ms: number) => new Promise<void>((done) => setTimeout(done, ms));
+const audit = { source_documents_examined: 1, capability_count: 1, atomic_capability_count: 1, composite_capability_count: 0, attribution_pass_completed: true, target_state_ownership_pass_completed: true, atomic_extraction_pass_completed: true, method_capability_pass_completed: true, composite_reconstruction_pass_completed: true, global_convergence_pass_completed: true, inventory_reconciliation_pass_completed: true, final_reconciliation_produced_new_capabilities: false, unresolved_target_operations: 0, segments_classified_as_external_source_content: 0, segments_classified_as_target_subject_operation: 0, segments_classified_as_target_subject_designed_target_state: 0, segments_classified_as_target_organization_capability: 0, segments_excluded_due_to_attribution_ambiguity: 0 };
+const valid = (job: string) => `\r\n\t${JSON.stringify({ kernel_version: "discovery-v1", capabilities: [{ canonical_name: `PINK worker ${job} 🚀 é`, capability_scope: "ATOMIC", structural_definition: "d", primary_domain: null, demonstrated_capability_level: null, model_confidence: 0.9, evidence_mode: "EXPLICIT", evidence: [{ source_document: "DOC_001", location: "body", exact_quote: "Led the migration" }] }], coverage_audit: audit }, null, "\t").replaceAll("\n", "\r\n")}\r\n`;
+const BROKEN_A = "{\"kernel_version\": \"discovery-v1\",\r\n \"capabilities\": [ 🚀 PINK cut";
+// P: investigation PERSON without a job scope (GELB 2e5e852); Q: PERSON plus a job scope (contradiction, inserted past the route);
+// J: investigation JOB (not a document analysis).
+const JOBS = ["A", "B", "C", "D", "P", "Q", "J"] as const;
+type Letter = typeof JOBS[number];
+
+describe("PINK: Gemini exchange archive in a real worker run (GELB dfb4b63, loopback Gemini stand-in)", () => {
+  let gemini: Server; let worker: ChildProcess | undefined; let workerLog = "";
+  const received: Array<{ job: Letter | "?"; kind: "DISCOVERY" | "OTHER"; n: number; status: number; scopeBlock: boolean }> = [];
+  const counts = new Map<string, number>();
+  const ids: Record<Letter, string> = { A: "", B: "", C: "", D: "", P: "", Q: "", J: "" };
+  const report: Record<string, unknown> = {};
+
+  beforeAll(async () => {
+    await initDbSchema();
+    await uploadEngineeringJobScope();
+    expect(await ensureProviderExchangeArchive()).toBe("REGISTERED");
+    gemini = createServer(async (request: IncomingMessage, response) => {
+      let body = ""; for await (const chunk of request) body += String(chunk);
+      const job = (JOBS.find((letter) => body.includes(`PINK_WORKER_JOB_${letter}`)) ?? "?") as Letter | "?";
+      // Discovery is recognised by its response schema (PERSON requests carry no scope block).
+      const kind = body.includes('"coverage_audit"') && !body.includes('"reconciliation_audit"') ? "DISCOVERY" : "OTHER";
+      const scopeBlock = body.includes("<INVESTIGATION_SCOPE>");
+      const key = `${job}/${kind}`; const n = (counts.get(key) ?? 0) + 1; counts.set(key, n);
+      const reply = (status: number, payload: unknown) => { received.push({ job, kind, n, status, scopeBlock }); response.writeHead(status, { "content-type": "application/json" }); response.end(JSON.stringify(payload)); };
+      const ok = (text: string, finishReason = "STOP") => reply(200, { candidates: [{ content: { role: "model", parts: [{ text }] }, finishReason }], modelVersion: "pink-standin-001", responseId: `pink-${job}-${n}`, usageMetadata: { promptTokenCount: 7, candidatesTokenCount: 9 } });
+      if (kind === "OTHER") return reply(400, { error: { code: 400, message: "PINK stand-in answers Discovery only", status: "INVALID_ARGUMENT" } });
+      if (job === "A") return n === 1 ? ok(BROKEN_A, "MAX_TOKENS") : ok(valid("A"));
+      if (job === "B" || job === "P") return ok(valid(job));
+      return reply(500, { error: { code: 500, message: "PINK stand-in failure", status: "INTERNAL" } });
+    });
+    await new Promise<void>((ok) => gemini.listen(0, "127.0.0.1", () => ok()));
+    const port = (gemini.address() as { port: number }).port;
+    const jobs = new JobRepository(db);
+    for (const letter of JOBS) {
+      const jobScope = letter === "D" ? { ...TEST_JOB_SCOPE, poolRoleId: "role_pink_does_not_exist" } : TEST_JOB_SCOPE;
+      const declaration = letter === "P" ? { investigation: { mode: "PERSON" } } : letter === "Q" ? { investigation: { mode: "PERSON" }, jobScope } : letter === "J" ? { investigation: { mode: "JOB" } } : { jobScope };
+      const job = createJob("CAREER_ANALYSIS", { sourceType: "BATCH", sourceData: { documents: [{ type: "text", content: `Led the migration of the dispatch platform. PINK_WORKER_JOB_${letter}` }], ...declaration } } as never);
+      await jobs.enqueueJob(job); ids[letter] = job.jobId;
+    }
+    worker = spawn(process.execPath, [resolve(process.cwd(), "node_modules/tsx/dist/cli.mjs"), resolve(process.cwd(), "scripts/run-career-worker.ts")], {
+      cwd: process.cwd(), stdio: ["ignore", "pipe", "pipe"],
+      env: { ...process.env, GEMINI_API_KEY: "pink-dummy-not-a-key", GEMINI_MODEL: "pink-standin-model", GOOGLE_GEMINI_BASE_URL: `http://127.0.0.1:${port}`, PROMPT_ENCRYPTION_KEY: randomBytes(32).toString("base64"), CONDYN_GEMINI_EXCHANGE_ARCHIVE: ARCHIVE_ON ? "1" : "", CAREER_WORKER_ID: "pink-exchange-worker", ...(SENTINEL && NET_LOG ? { NODE_OPTIONS: `--require ${SENTINEL}`, PINK_NET_LOG: NET_LOG } : {}) }
+    });
+    worker.stdout?.on("data", (chunk) => { workerLog += String(chunk); });
+    worker.stderr?.on("data", (chunk) => { workerLog += String(chunk); });
+    for (let attempt = 0; attempt < 240; attempt += 1) {
+      const rows = (await db.execute(sql`SELECT status FROM career_analysis_jobs WHERE job_id IN (${sql.join(JOBS.map((letter) => sql`${ids[letter]}`), sql`, `)})`)) as unknown as Array<{ status: string }>;
+      if (rows.length === JOBS.length && rows.every((row) => row.status === "FAILED" || row.status === "SUCCEEDED")) break;
+      if (worker.exitCode !== null) throw new Error(`worker exited:\n${workerLog.slice(-3000)}`);
+      await delay(500);
+      if (attempt === 239) throw new Error(`jobs not terminal:\n${workerLog.slice(-3000)}`);
+    }
+  }, 180_000);
+
+  afterAll(async () => {
+    if (worker && worker.exitCode === null && worker.signalCode === null) {
+      worker.kill("SIGTERM");
+      await Promise.race([once(worker, "exit"), delay(10_000)]);
+      if (worker.exitCode === null && worker.signalCode === null) { worker.kill("SIGKILL"); await once(worker, "exit"); }
+    }
+    await new Promise<void>((ok) => gemini.close(() => ok()));
+    await db.execute(sql`DELETE FROM career_analysis_jobs WHERE job_id IN (${sql.join(JOBS.map((letter) => sql`${ids[letter]}`), sql`, `)})`);
+    const net = NET_LOG && existsSync(NET_LOG) ? readFileSync(NET_LOG, "utf8").trim().split("\n").filter(Boolean) : [];
+    report.networkAttempts = { total: net.length, gemini: net.filter((line) => /generativelanguage|aiplatform|googleapis/.test(line)).length, entries: net.slice(0, 20), sentinel: Boolean(SENTINEL && NET_LOG) };
+    report.standInRequests = received;
+    report.workerLog = workerLog.split("\n").filter((line) => /CLAIMED|FAILED|SUCCEEDED|started/.test(line)).map((line) => line.replace(/: .{160,}$/, ": …"));
+    mkdirSync(EVIDENCE_DIR, { recursive: true });
+    writeFileSync(resolve(EVIDENCE_DIR, ARCHIVE_ON ? "exchange-worker.json" : "exchange-worker-archive-off.json"), `${JSON.stringify({ tip: TIP, archive: ARCHIVE_ON, recordedAt: new Date().toISOString(), jobs: ids, ...report }, null, 2)}\n`);
+  });
+
+  it("each job's exchanges carry exactly its job id and the lease they ran under; texts exact; nothing for C (no response) and D (gate)", async () => {
+    const store = new PostgresProviderExchangeStore();
+    const view: Record<string, unknown> = {};
+    for (const letter of JOBS) view[letter] = (await store.forJob(ids[letter])).map((item) => ({ outcome: item.outcome, errorCode: item.errorCode, jobId: item.attempt?.jobId === ids[letter] ? "own" : item.attempt?.jobId, lease: item.attempt?.leaseVersion, text: item.response.text, finishReason: item.response.finishReason, responseId: item.response.responseId, scope: item.investigationScope === null ? null : item.investigationScope.text.includes("SELECTED_ROLE_ID: \"role_kestrel_frontend_architect\"") }));
+    const statuses = Object.fromEntries((((await db.execute(sql`SELECT job_id, status, attempt_count, error_code FROM career_analysis_jobs WHERE job_id IN (${sql.join(JOBS.map((letter) => sql`${ids[letter]}`), sql`, `)})`)) as unknown) as Array<{ job_id: string; status: string; attempt_count: number; error_code: string }>).map((row) => [JOBS.find((letter) => ids[letter] === row.job_id), `${row.status}/${row.attempt_count}/${row.error_code}`]));
+    const orphans = Number((((await db.execute(sql`SELECT count(*)::int AS n FROM career_gemini_provider_exchanges WHERE job_id IS NULL OR job_id NOT IN (${sql.join(JOBS.map((letter) => sql`${ids[letter]}`), sql`, `)})`)) as unknown) as Array<{ n: number }>)[0].n);
+    report.exchanges = view; report.jobStatus = statuses; report.orphanExchanges = orphans;
+    if (!ARCHIVE_ON) {
+      // Archive off: no row at all, and the run is otherwise the same as with the archive on.
+      expect(Number((((await db.execute(sql`SELECT count(*)::int AS n FROM career_gemini_provider_exchanges`)) as unknown) as Array<{ n: number }>)[0].n)).toBe(0);
+      expect([counts.get("A/DISCOVERY"), counts.get("B/DISCOVERY"), counts.get("C/DISCOVERY"), counts.get("D/DISCOVERY") ?? 0, counts.get("P/DISCOVERY"), counts.get("Q/DISCOVERY") ?? 0, counts.get("J/DISCOVERY") ?? 0]).toEqual([2, 1, 3, 0, 1, 0, 0]);
+      expect(statuses).toEqual(EXPECTED_STATUS);
+      return;
+    }
+    expect(statuses).toEqual(EXPECTED_STATUS);
+    expect(view.A).toEqual([
+      { outcome: "FAILED", errorCode: "ERR_CAPABILITY_DISCOVERY_STRUCTURED_OUTPUT_INVALID", jobId: "own", lease: 1, text: BROKEN_A, finishReason: "MAX_TOKENS", responseId: "pink-A-1", scope: true },
+      { outcome: "COMPLETED", errorCode: null, jobId: "own", lease: 2, text: valid("A"), finishReason: "STOP", responseId: "pink-A-2", scope: true }
+    ]);
+    expect(view.B).toEqual([{ outcome: "COMPLETED", errorCode: null, jobId: "own", lease: 1, text: valid("B"), finishReason: "STOP", responseId: "pink-B-1", scope: true }]);
+    expect(view.P).toEqual([{ outcome: "COMPLETED", errorCode: null, jobId: "own", lease: 1, text: valid("P"), finishReason: "STOP", responseId: "pink-P-1", scope: null }]);
+    expect([view.Q, view.J]).toEqual([[], []]);
+    // The stand-in saw the scope block in every Discovery request of A, B and C, and in none of P.
+    expect(received.filter((item) => item.kind === "DISCOVERY").map((item) => `${item.job}:${item.scopeBlock}`).sort()).toEqual(["A:true", "A:true", "B:true", "C:true", "C:true", "C:true", "P:false"]);
+    expect(view.C).toEqual([]);
+    expect(view.D).toEqual([]);
+    expect(orphans).toBe(0);
+    // The stand-in saw: A twice in Discovery (then the run is reused), B once, C at least once per attempt, D never.
+    expect(counts.get("A/DISCOVERY")).toBe(2);
+    expect(counts.get("B/DISCOVERY")).toBe(1);
+    expect(counts.get("C/DISCOVERY") ?? 0).toBeGreaterThanOrEqual(3);
+    expect(counts.get("D/DISCOVERY") ?? 0).toBe(0);
+    expect(counts.get("D/OTHER") ?? 0).toBe(0);
+    expect([counts.get("P/DISCOVERY"), counts.get("Q/DISCOVERY") ?? 0, counts.get("J/DISCOVERY") ?? 0, counts.get("Q/OTHER") ?? 0, counts.get("J/OTHER") ?? 0]).toEqual([1, 0, 0, 0, 0]);
+    expect(statuses.D).toMatch(/^FAILED\/1\/ERR_JOB_SCOPE_INVALID$/);
+    expect(workerLog).toMatch(/CLAIMED .* lease=2/);
+  });
+});

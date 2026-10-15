@@ -1,0 +1,149 @@
+/**
+ * PINK independent proof of GELB 2e5e852 (three investigation modes, owner GO 2026-10-15 as relayed by GELB; it relaxes the
+ * owner invariant of 2026-10-14 „Kein Gemini-Call ohne gültigen Job-Scope“ for an explicitly declared PERSON investigation).
+ * In memory, no network. Angles: the full declaration matrix; every stand-in for an issued PERSON boundary refused before any
+ * provider (executor, legacy pipeline, context); the PERSON path through the real executor is the unscoped Discovery with no trace
+ * of any job; the worker boundary's decisions and the active-boundary guards, incl. that job-scope consumers stay closed in PERSON.
+ */
+import { describe, expect, it } from "vitest";
+import {
+  InMemoryCapabilityCoreRepository, createCapabilityProposalRuntime, createSourceDocument, runCapabilityConvergence, runCapabilityDiscovery,
+  type CapabilityDiscoveryProvider, type CapabilityDiscoveryProviderRequest, type CapabilityDiscoveryRun
+} from "../../lib/career/capability-core";
+import { createCareerCapabilityProposalExecutor } from "../../lib/career/orchestration/capability-proposal-executor";
+import { executeCareerAnalysisPipeline } from "../../lib/career/pipeline";
+import { JOB_SCOPE_REQUIRED_MESSAGE, renderInvestigationScope, requireActiveJobScope, requireValidJobScope } from "../../lib/career/job-scope";
+import {
+  INVESTIGATION_INVALID_MESSAGE, InvestigationBoundaryError, isIssuedPersonInvestigation, issuePersonInvestigation, parseDeclaredInvestigation,
+  requireActiveAnalysisBoundary, runWithPersonInvestigation
+} from "../../lib/career/investigation";
+import { TEST_JOB_SCOPE, resolveTestJobScope } from "../support/job-scope";
+
+const SOURCE = "Led the migration of the dispatch platform to event-driven services.";
+const kernel = { kernelVersion: "discovery-v1", templateId: "T", versionId: "V", checksum: "C", plainTextContent: "PINK_DISCOVERY_KERNEL" };
+const convergenceKernel = { kernelVersion: "convergence-v1", templateId: "T", versionId: "V", checksum: "CC", plainTextContent: "PINK_CONVERGENCE_KERNEL" };
+const audit = { source_documents_examined: 1, capability_count: 0, atomic_capability_count: 0, composite_capability_count: 0, attribution_pass_completed: true, target_state_ownership_pass_completed: true, atomic_extraction_pass_completed: true, method_capability_pass_completed: true, composite_reconstruction_pass_completed: true, global_convergence_pass_completed: true, inventory_reconciliation_pass_completed: true, final_reconciliation_produced_new_capabilities: false, unresolved_target_operations: 0, segments_classified_as_external_source_content: 0, segments_classified_as_target_subject_operation: 0, segments_classified_as_target_subject_designed_target_state: 0, segments_classified_as_target_organization_capability: 0, segments_excluded_due_to_attribution_ambiguity: 0 };
+const scope = resolveTestJobScope();
+const outcome = (run: () => unknown) => { try { const value = run() as { mode: string; selection?: unknown }; return value.mode === "PERSON" ? "PERSON" : `PERSON_X_JOB ${JSON.stringify(value.selection)}`; } catch (error) { const e = error as { code?: string; name?: string; message: string }; return `${e.name === "TERMINAL_ERROR" ? "TERMINAL " : ""}${e.code ?? e.message} | ${e.message}`; } };
+
+function spy() {
+  const requests: CapabilityDiscoveryProviderRequest[] = [];
+  const provider: CapabilityDiscoveryProvider = { providerName: "pink-spy", model: "m", execute: async (request) => { requests.push(request); return { kernelOutput: { kernel_version: "discovery-v1", capabilities: [], coverage_audit: audit } }; } };
+  return { provider, requests };
+}
+async function executor(provider: CapabilityDiscoveryProvider, repository = new InMemoryCapabilityCoreRepository()) {
+  return createCareerCapabilityProposalExecutor({
+    environment: { GEMINI_MODEL: "m", PROMPT_ENCRYPTION_KEY: "unused" }, defaultGeminiModel: "m", promptRepository: {} as never, capabilityRepository: repository,
+    bootstrapCapabilityProposalKernels: async () => undefined, createActivePromptResolver: () => ({}) as never,
+    createDiscoveryKernelResolver: () => ({ resolve: async () => kernel }), createConvergenceKernelResolver: () => ({ resolve: async () => convergenceKernel }),
+    createDiscoveryProvider: () => provider, createConvergenceProvider: () => ({ providerName: "pink-spy", model: "m", execute: async () => { throw new Error("PINK_STOP"); } }),
+    runDiscovery: runCapabilityDiscovery, runConvergence: runCapabilityConvergence, createProposalRuntime: createCapabilityProposalRuntime
+  });
+}
+const documents = [{ docId: "DOC_001", title: "cv.synthetic.pdf", content: SOURCE }];
+
+describe("PINK: three investigation modes (GELB 2e5e852, no network)", () => {
+  it("declaration matrix: only an explicit PERSON without any job scope is PERSON; the undeclared contract is unchanged", () => {
+    const sel = { ...TEST_JOB_SCOPE };
+    const cases: Record<string, unknown> = {
+      "nothing": {}, "scope only": { jobScope: sel }, "scope null": { jobScope: null }, "PERSON": { investigation: { mode: "PERSON" } },
+      "PERSON + scope": { investigation: { mode: "PERSON" }, jobScope: sel }, "PERSON + scope null": { investigation: { mode: "PERSON" }, jobScope: null },
+      "PERSON_X_JOB + scope": { investigation: { mode: "PERSON_X_JOB" }, jobScope: sel }, "PERSON_X_JOB without scope": { investigation: { mode: "PERSON_X_JOB" } },
+      "JOB": { investigation: { mode: "JOB" } }, "JOB + scope": { investigation: { mode: "JOB" }, jobScope: sel },
+      "lower-case person": { investigation: { mode: "person" } }, "PERSON with a blank": { investigation: { mode: "PERSON " } }, "PERSON + extra key": { investigation: { mode: "PERSON", note: "x" } },
+      "empty investigation": { investigation: {} }, "investigation null": { investigation: null }, "investigation string": { investigation: "PERSON" }, "investigation array": { investigation: ["PERSON"] },
+      "mode array": { investigation: { mode: ["PERSON"] } }, "__proto__ key": JSON.parse('{"investigation":{"mode":"PERSON","__proto__":{"x":1}}}'),
+      "sourceData null": null, "sourceData array": [], "sourceData string": "PERSON"
+    };
+    const result = Object.fromEntries(Object.entries(cases).map(([name, body]) => [name, outcome(() => parseDeclaredInvestigation(body))]));
+    const REQ = `TERMINAL ERR_JOB_SCOPE_REQUIRED | ${JOB_SCOPE_REQUIRED_MESSAGE}`;
+    const INV = `TERMINAL ERR_INVESTIGATION_INVALID | ${INVESTIGATION_INVALID_MESSAGE}`;
+    const SCOPED = `PERSON_X_JOB ${JSON.stringify(sel)}`;
+    expect(result).toEqual({
+      "nothing": REQ, "scope only": SCOPED, "scope null": REQ, "PERSON": "PERSON", "PERSON + scope": INV, "PERSON + scope null": INV,
+      "PERSON_X_JOB + scope": SCOPED, "PERSON_X_JOB without scope": REQ, "JOB": `TERMINAL ERR_INVESTIGATION_MODE_NOT_ANALYZABLE | ${INVESTIGATION_INVALID_MESSAGE}`,
+      "JOB + scope": `TERMINAL ERR_INVESTIGATION_MODE_NOT_ANALYZABLE | ${INVESTIGATION_INVALID_MESSAGE}`, "lower-case person": INV, "PERSON with a blank": INV, "PERSON + extra key": INV,
+      "empty investigation": INV, "investigation null": INV, "investigation string": INV, "investigation array": INV, "mode array": INV, "__proto__ key": INV,
+      "sourceData null": REQ, "sourceData array": REQ, "sourceData string": REQ
+    });
+  });
+
+  it("no stand-in for an issued PERSON boundary passes: executor, legacy pipeline and context refuse literals, copies and derived objects before any provider", async () => {
+    const issued = issuePersonInvestigation({ mode: "PERSON" });
+    expect([isIssuedPersonInvestigation(issued), Object.isFrozen(issued)]).toEqual([true, true]);
+    const standIns: Record<string, unknown> = {
+      literal: { mode: "PERSON" }, frozenLiteral: Object.freeze({ mode: "PERSON" }), jsonCopy: JSON.parse(JSON.stringify(issued)), structuredClone: structuredClone(issued),
+      spread: { ...issued }, derived: Object.create(issued), undefined: undefined, null: null
+    };
+    const { provider, requests } = spy();
+    const run = await executor(provider);
+    const refusals: Record<string, string> = {};
+    for (const [name, standIn] of Object.entries(standIns)) refusals[name] = await run.execute(documents as never, async () => undefined, standIn as never).then(() => "RAN", (error: Error) => error.message);
+    expect(Object.values(refusals).every((message) => message === JOB_SCOPE_REQUIRED_MESSAGE), JSON.stringify(refusals)).toBe(true);
+    expect(requests).toHaveLength(0);
+    // Legacy pipeline: a stand-in, both boundaries at once, or none — refused before the provider.
+    const seen: string[] = [];
+    const legacy = { execute: async (prompt: unknown) => { seen.push(JSON.stringify(prompt)); throw new Error("PINK_STOP"); } };
+    const pipeline: Record<string, string> = {};
+    for (const [name, options] of Object.entries({ literal: { investigation: { mode: "PERSON" } }, copy: { investigation: { ...issued } }, both: { investigation: issued, jobScope: scope }, none: {}, jobScopeLiteral: { jobScope: { ...scope } } })) {
+      pipeline[name] = await executeCareerAnalysisPipeline([{ docId: "DOC_001", title: "cv", content: SOURCE }], legacy as never, options as never).then(() => "RAN", (error: Error & { code?: string }) => error.code ?? error.message);
+    }
+    expect(pipeline).toEqual({ literal: "ERR_JOB_SCOPE_REQUIRED", copy: "ERR_JOB_SCOPE_REQUIRED", both: "ERR_INVESTIGATION_INVALID", none: "ERR_JOB_SCOPE_REQUIRED", jobScopeLiteral: "ERR_JOB_SCOPE_REQUIRED" });
+    expect(seen).toHaveLength(0);
+    // The issued PERSON boundary does reach the legacy provider (positive control); its request carries no job.
+    await executeCareerAnalysisPipeline([{ docId: "DOC_001", title: "cv", content: SOURCE }], legacy as never, { investigation: issued }).catch(() => undefined);
+    expect(seen).toHaveLength(1);
+    expect(() => runWithPersonInvestigation({ mode: "PERSON" } as never, async () => undefined)).toThrow("ERR_INVESTIGATION_NOT_ISSUED");
+  });
+
+  it("PERSON through the real executor is the unscoped Discovery: no trace of any job, system prompt equal to a direct unscoped run, same corpus as PERSON_X_JOB (RUN_ bytes: cross-version probe)", async () => {
+    const person = issuePersonInvestigation({ mode: "PERSON" });
+    const viaExecutor = spy();
+    const repository = new InMemoryCapabilityCoreRepository();
+    await (await executor(viaExecutor.provider, repository)).execute(documents as never, async () => undefined, person).catch(() => undefined);
+    expect(viaExecutor.requests).toHaveLength(1);
+    // Direct unscoped Discovery over the same documents as the executor normalises them.
+    const direct = spy();
+    const cv = createSourceDocument({ docId: "DOC_001", title: "cv.synthetic.pdf", rawContent: SOURCE });
+    const directResult = await runCapabilityDiscovery([cv], { kernelVersion: "discovery-v1", schemaVersion: "capability-discovery-output-v1" } as never, { kernelResolver: { resolve: async () => kernel }, provider: direct.provider, repository: new InMemoryCapabilityCoreRepository() }).catch((error: Error) => error.message);
+    const request = JSON.stringify(viaExecutor.requests[0]);
+    expect(request.includes("<INVESTIGATION_SCOPE>")).toBe(false);
+    expect(request.includes("Investigation scope contract")).toBe(false);
+    for (const line of renderInvestigationScope(scope).text.split("\n").map((entry) => entry.slice(entry.indexOf(": ") + 2)).filter((value) => value.length > 20)) expect(request.includes(line), line).toBe(false);
+    // The unscoped prompt does not depend on the executor: the system prompt equals the direct one; the user prompt carries the same source.
+    expect(viaExecutor.requests[0].systemPrompt).toBe(direct.requests[0]?.systemPrompt);
+    expect(typeof directResult === "string" ? directResult : directResult.kind).toBe("DISCOVERY_COMPLETED");
+    // PERSON_X_JOB through the same executor carries the scope (control).
+    const scoped = spy();
+    await (await executor(scoped.provider)).execute(documents as never, async () => undefined, scope).catch(() => undefined);
+    expect(JSON.stringify(scoped.requests[0]).includes("<INVESTIGATION_SCOPE>")).toBe(true);
+    expect(scoped.requests[0].userPrompt).toBe(viaExecutor.requests[0].userPrompt);
+  });
+
+  it("worker boundary: PERSON opens only the person boundary (job-scope consumers stay closed); contradictions are terminal before the processor; undeclared stays JOB POOL FIRST", async () => {
+    const seen: Array<{ mode: string; active: string; jobScope: string }> = [];
+    const resolver = { resolve: async (selection: unknown) => { if ((selection as { poolRoleId?: string }).poolRoleId !== TEST_JOB_SCOPE.poolRoleId) throw new Error("PINK_RESOLVER_REFUSED"); return scope; } };
+    const gated = requireValidJobScope(resolver as never, async (_job, _report, boundary) => {
+      seen.push({ mode: isIssuedPersonInvestigation(boundary) ? "PERSON" : "PERSON_X_JOB", active: isIssuedPersonInvestigation(requireActiveAnalysisBoundary()) ? "PERSON" : "JOB_SCOPE", jobScope: (() => { try { requireActiveJobScope(); return "OPEN"; } catch (error) { return (error as { code: string }).code; } })() });
+      return { resultAnalysisId: "ANL_PINK" };
+    });
+    const job = (sourceData: unknown) => ({ jobId: "JOB_PINK", inputRef: { sourceType: "BATCH", sourceData } }) as never;
+    const results: Record<string, string> = {};
+    for (const [name, data] of Object.entries({
+      person: { documents: [], investigation: { mode: "PERSON" } }, scoped: { documents: [], jobScope: TEST_JOB_SCOPE }, explicitScoped: { documents: [], investigation: { mode: "PERSON_X_JOB" }, jobScope: TEST_JOB_SCOPE },
+      personPlusScope: { documents: [], investigation: { mode: "PERSON" }, jobScope: TEST_JOB_SCOPE }, job: { documents: [], investigation: { mode: "JOB" } }, nothing: { documents: [] },
+      wrongRole: { documents: [], jobScope: { ...TEST_JOB_SCOPE, poolRoleId: "role_x" } }
+    })) {
+      const before = seen.length;
+      results[name] = await gated(job(data), async () => undefined).then(() => `PROCESSED ${JSON.stringify(seen[before])}`, (error: Error & { code?: string }) => `${error.name === "TERMINAL_ERROR" ? "TERMINAL " : ""}${error.code ?? error.message}`);
+    }
+    expect(results).toEqual({
+      person: 'PROCESSED {"mode":"PERSON","active":"PERSON","jobScope":"ERR_JOB_SCOPE_REQUIRED"}',
+      scoped: 'PROCESSED {"mode":"PERSON_X_JOB","active":"JOB_SCOPE","jobScope":"OPEN"}',
+      explicitScoped: 'PROCESSED {"mode":"PERSON_X_JOB","active":"JOB_SCOPE","jobScope":"OPEN"}',
+      personPlusScope: "TERMINAL ERR_INVESTIGATION_INVALID", job: "TERMINAL ERR_INVESTIGATION_MODE_NOT_ANALYZABLE", nothing: "TERMINAL ERR_JOB_SCOPE_REQUIRED", wrongRole: "PINK_RESOLVER_REFUSED"
+    });
+    expect(() => requireActiveAnalysisBoundary()).toThrow(JOB_SCOPE_REQUIRED_MESSAGE);
+    expect(new InvestigationBoundaryError("ERR_INVESTIGATION_INVALID").name).toBe("TERMINAL_ERROR");
+  });
+});

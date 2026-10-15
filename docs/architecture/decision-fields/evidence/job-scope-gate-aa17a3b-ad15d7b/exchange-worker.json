@@ -1,0 +1,223 @@
+{
+  "tip": "aa17a3b-ad15d7b",
+  "archive": true,
+  "recordedAt": "2026-10-15T05:23:42.192Z",
+  "jobs": {
+    "A": "JOB_1792041791002_92",
+    "B": "JOB_1792041791005_710",
+    "C": "JOB_1792041791007_893",
+    "D": "JOB_1792041791008_327",
+    "P": "JOB_1792041791010_529",
+    "Q": "JOB_1792041791012_68",
+    "J": "JOB_1792041791014_527"
+  },
+  "exchanges": {
+    "A": [
+      {
+        "outcome": "FAILED",
+        "errorCode": "ERR_CAPABILITY_DISCOVERY_STRUCTURED_OUTPUT_INVALID",
+        "jobId": "own",
+        "lease": 1,
+        "text": "{\"kernel_version\": \"discovery-v1\",\r\n \"capabilities\": [ 🚀 PINK cut",
+        "finishReason": "MAX_TOKENS",
+        "responseId": "pink-A-1",
+        "scope": true
+      },
+      {
+        "outcome": "COMPLETED",
+        "errorCode": null,
+        "jobId": "own",
+        "lease": 2,
+        "text": "\r\n\t{\r\n\t\"kernel_version\": \"discovery-v1\",\r\n\t\"capabilities\": [\r\n\t\t{\r\n\t\t\t\"canonical_name\": \"PINK worker A 🚀 é\",\r\n\t\t\t\"capability_scope\": \"ATOMIC\",\r\n\t\t\t\"structural_definition\": \"d\",\r\n\t\t\t\"primary_domain\": null,\r\n\t\t\t\"demonstrated_capability_level\": null,\r\n\t\t\t\"model_confidence\": 0.9,\r\n\t\t\t\"evidence_mode\": \"EXPLICIT\",\r\n\t\t\t\"evidence\": [\r\n\t\t\t\t{\r\n\t\t\t\t\t\"source_document\": \"DOC_001\",\r\n\t\t\t\t\t\"location\": \"body\",\r\n\t\t\t\t\t\"exact_quote\": \"Led the migration\"\r\n\t\t\t\t}\r\n\t\t\t]\r\n\t\t}\r\n\t],\r\n\t\"coverage_audit\": {\r\n\t\t\"source_documents_examined\": 1,\r\n\t\t\"capability_count\": 1,\r\n\t\t\"atomic_capability_count\": 1,\r\n\t\t\"composite_capability_count\": 0,\r\n\t\t\"attribution_pass_completed\": true,\r\n\t\t\"target_state_ownership_pass_completed\": true,\r\n\t\t\"atomic_extraction_pass_completed\": true,\r\n\t\t\"method_capability_pass_completed\": true,\r\n\t\t\"composite_reconstruction_pass_completed\": true,\r\n\t\t\"global_convergence_pass_completed\": true,\r\n\t\t\"inventory_reconciliation_pass_completed\": true,\r\n\t\t\"final_reconciliation_produced_new_capabilities\": false,\r\n\t\t\"unresolved_target_operations\": 0,\r\n\t\t\"segments_classified_as_external_source_content\": 0,\r\n\t\t\"segments_classified_as_target_subject_operation\": 0,\r\n\t\t\"segments_classified_as_target_subject_designed_target_state\": 0,\r\n\t\t\"segments_classified_as_target_organization_capability\": 0,\r\n\t\t\"segments_excluded_due_to_attribution_ambiguity\": 0\r\n\t}\r\n}\r\n",
+        "finishReason": "STOP",
+        "responseId": "pink-A-2",
+        "scope": true
+      }
+    ],
+    "B": [
+      {
+        "outcome": "COMPLETED",
+        "errorCode": null,
+        "jobId": "own",
+        "lease": 1,
+        "text": "\r\n\t{\r\n\t\"kernel_version\": \"discovery-v1\",\r\n\t\"capabilities\": [\r\n\t\t{\r\n\t\t\t\"canonical_name\": \"PINK worker B 🚀 é\",\r\n\t\t\t\"capability_scope\": \"ATOMIC\",\r\n\t\t\t\"structural_definition\": \"d\",\r\n\t\t\t\"primary_domain\": null,\r\n\t\t\t\"demonstrated_capability_level\": null,\r\n\t\t\t\"model_confidence\": 0.9,\r\n\t\t\t\"evidence_mode\": \"EXPLICIT\",\r\n\t\t\t\"evidence\": [\r\n\t\t\t\t{\r\n\t\t\t\t\t\"source_document\": \"DOC_001\",\r\n\t\t\t\t\t\"location\": \"body\",\r\n\t\t\t\t\t\"exact_quote\": \"Led the migration\"\r\n\t\t\t\t}\r\n\t\t\t]\r\n\t\t}\r\n\t],\r\n\t\"coverage_audit\": {\r\n\t\t\"source_documents_examined\": 1,\r\n\t\t\"capability_count\": 1,\r\n\t\t\"atomic_capability_count\": 1,\r\n\t\t\"composite_capability_count\": 0,\r\n\t\t\"attribution_pass_completed\": true,\r\n\t\t\"target_state_ownership_pass_completed\": true,\r\n\t\t\"atomic_extraction_pass_completed\": true,\r\n\t\t\"method_capability_pass_completed\": true,\r\n\t\t\"composite_reconstruction_pass_completed\": true,\r\n\t\t\"global_convergence_pass_completed\": true,\r\n\t\t\"inventory_reconciliation_pass_completed\": true,\r\n\t\t\"final_reconciliation_produced_new_capabilities\": false,\r\n\t\t\"unresolved_target_operations\": 0,\r\n\t\t\"segments_classified_as_external_source_content\": 0,\r\n\t\t\"segments_classified_as_target_subject_operation\": 0,\r\n\t\t\"segments_classified_as_target_subject_designed_target_state\": 0,\r\n\t\t\"segments_classified_as_target_organization_capability\": 0,\r\n\t\t\"segments_excluded_due_to_attribution_ambiguity\": 0\r\n\t}\r\n}\r\n",
+        "finishReason": "STOP",
+        "responseId": "pink-B-1",
+        "scope": true
+      }
+    ],
+    "C": [],
+    "D": [],
+    "P": [
+      {
+        "outcome": "COMPLETED",
+        "errorCode": null,
+        "jobId": "own",
+        "lease": 1,
+        "text": "\r\n\t{\r\n\t\"kernel_version\": \"discovery-v1\",\r\n\t\"capabilities\": [\r\n\t\t{\r\n\t\t\t\"canonical_name\": \"PINK worker P 🚀 é\",\r\n\t\t\t\"capability_scope\": \"ATOMIC\",\r\n\t\t\t\"structural_definition\": \"d\",\r\n\t\t\t\"primary_domain\": null,\r\n\t\t\t\"demonstrated_capability_level\": null,\r\n\t\t\t\"model_confidence\": 0.9,\r\n\t\t\t\"evidence_mode\": \"EXPLICIT\",\r\n\t\t\t\"evidence\": [\r\n\t\t\t\t{\r\n\t\t\t\t\t\"source_document\": \"DOC_001\",\r\n\t\t\t\t\t\"location\": \"body\",\r\n\t\t\t\t\t\"exact_quote\": \"Led the migration\"\r\n\t\t\t\t}\r\n\t\t\t]\r\n\t\t}\r\n\t],\r\n\t\"coverage_audit\": {\r\n\t\t\"source_documents_examined\": 1,\r\n\t\t\"capability_count\": 1,\r\n\t\t\"atomic_capability_count\": 1,\r\n\t\t\"composite_capability_count\": 0,\r\n\t\t\"attribution_pass_completed\": true,\r\n\t\t\"target_state_ownership_pass_completed\": true,\r\n\t\t\"atomic_extraction_pass_completed\": true,\r\n\t\t\"method_capability_pass_completed\": true,\r\n\t\t\"composite_reconstruction_pass_completed\": true,\r\n\t\t\"global_convergence_pass_completed\": true,\r\n\t\t\"inventory_reconciliation_pass_completed\": true,\r\n\t\t\"final_reconciliation_produced_new_capabilities\": false,\r\n\t\t\"unresolved_target_operations\": 0,\r\n\t\t\"segments_classified_as_external_source_content\": 0,\r\n\t\t\"segments_classified_as_target_subject_operation\": 0,\r\n\t\t\"segments_classified_as_target_subject_designed_target_state\": 0,\r\n\t\t\"segments_classified_as_target_organization_capability\": 0,\r\n\t\t\"segments_excluded_due_to_attribution_ambiguity\": 0\r\n\t}\r\n}\r\n",
+        "finishReason": "STOP",
+        "responseId": "pink-P-1",
+        "scope": null
+      }
+    ],
+    "Q": [],
+    "J": []
+  },
+  "jobStatus": {
+    "Q": "FAILED/1/ERR_INVESTIGATION_INVALID",
+    "J": "FAILED/1/ERR_INVESTIGATION_MODE_NOT_ANALYZABLE",
+    "C": "FAILED/3/EXECUTION_FAILED",
+    "A": "FAILED/3/EXECUTION_FAILED",
+    "B": "FAILED/3/EXECUTION_FAILED",
+    "D": "FAILED/1/ERR_JOB_SCOPE_INVALID",
+    "P": "FAILED/3/EXECUTION_FAILED"
+  },
+  "orphanExchanges": 0,
+  "networkAttempts": {
+    "total": 0,
+    "gemini": 0,
+    "entries": [],
+    "sentinel": true
+  },
+  "standInRequests": [
+    {
+      "job": "A",
+      "kind": "DISCOVERY",
+      "n": 1,
+      "status": 200,
+      "scopeBlock": true
+    },
+    {
+      "job": "A",
+      "kind": "DISCOVERY",
+      "n": 2,
+      "status": 200,
+      "scopeBlock": true
+    },
+    {
+      "job": "?",
+      "kind": "OTHER",
+      "n": 1,
+      "status": 400,
+      "scopeBlock": false
+    },
+    {
+      "job": "?",
+      "kind": "OTHER",
+      "n": 2,
+      "status": 400,
+      "scopeBlock": false
+    },
+    {
+      "job": "B",
+      "kind": "DISCOVERY",
+      "n": 1,
+      "status": 200,
+      "scopeBlock": true
+    },
+    {
+      "job": "?",
+      "kind": "OTHER",
+      "n": 3,
+      "status": 400,
+      "scopeBlock": false
+    },
+    {
+      "job": "?",
+      "kind": "OTHER",
+      "n": 4,
+      "status": 400,
+      "scopeBlock": false
+    },
+    {
+      "job": "?",
+      "kind": "OTHER",
+      "n": 5,
+      "status": 400,
+      "scopeBlock": false
+    },
+    {
+      "job": "C",
+      "kind": "DISCOVERY",
+      "n": 1,
+      "status": 500,
+      "scopeBlock": true
+    },
+    {
+      "job": "C",
+      "kind": "DISCOVERY",
+      "n": 2,
+      "status": 500,
+      "scopeBlock": true
+    },
+    {
+      "job": "C",
+      "kind": "DISCOVERY",
+      "n": 3,
+      "status": 500,
+      "scopeBlock": true
+    },
+    {
+      "job": "P",
+      "kind": "DISCOVERY",
+      "n": 1,
+      "status": 200,
+      "scopeBlock": false
+    },
+    {
+      "job": "?",
+      "kind": "OTHER",
+      "n": 6,
+      "status": 400,
+      "scopeBlock": false
+    },
+    {
+      "job": "?",
+      "kind": "OTHER",
+      "n": 7,
+      "status": 400,
+      "scopeBlock": false
+    },
+    {
+      "job": "?",
+      "kind": "OTHER",
+      "n": 8,
+      "status": 400,
+      "scopeBlock": false
+    }
+  ],
+  "workerLog": [
+    "Career worker started: pink-exchange-worker",
+    "Worker started. Polling for jobs...",
+    "[Worker pink-exchange-worker] CLAIMED JOB_1792041791002_92 lease=1",
+    "[Worker pink-exchange-worker] FAILED JOB_1792041791002_92 lease=1 terminal=false EXECUTION_FAILED: ERR_CAPABILITY_DISCOVERY_STRUCTURED_OUTPUT_INVALID",
+    "[Worker pink-exchange-worker] CLAIMED JOB_1792041791002_92 lease=2",
+    "[Worker pink-exchange-worker] FAILED JOB_1792041791002_92 lease=2 terminal=false EXECUTION_FAILED: ERR_CAPABILITY_CONVERGENCE_PROVIDER_FAILURE",
+    "[Worker pink-exchange-worker] CLAIMED JOB_1792041791002_92 lease=3",
+    "[Worker pink-exchange-worker] FAILED JOB_1792041791002_92 lease=3 terminal=false EXECUTION_FAILED: ERR_CAPABILITY_CONVERGENCE_PROVIDER_FAILURE",
+    "[Worker pink-exchange-worker] CLAIMED JOB_1792041791005_710 lease=1",
+    "[Worker pink-exchange-worker] FAILED JOB_1792041791005_710 lease=1 terminal=false EXECUTION_FAILED: ERR_CAPABILITY_CONVERGENCE_PROVIDER_FAILURE",
+    "[Worker pink-exchange-worker] CLAIMED JOB_1792041791005_710 lease=2",
+    "[Worker pink-exchange-worker] FAILED JOB_1792041791005_710 lease=2 terminal=false EXECUTION_FAILED: ERR_CAPABILITY_CONVERGENCE_PROVIDER_FAILURE",
+    "[Worker pink-exchange-worker] CLAIMED JOB_1792041791005_710 lease=3",
+    "[Worker pink-exchange-worker] FAILED JOB_1792041791005_710 lease=3 terminal=false EXECUTION_FAILED: ERR_CAPABILITY_CONVERGENCE_PROVIDER_FAILURE",
+    "[Worker pink-exchange-worker] CLAIMED JOB_1792041791007_893 lease=1",
+    "[Worker pink-exchange-worker] FAILED JOB_1792041791007_893 lease=1 terminal=false EXECUTION_FAILED: ERR_CAPABILITY_DISCOVERY_PROVIDER_FAILURE",
+    "[Worker pink-exchange-worker] CLAIMED JOB_1792041791007_893 lease=2",
+    "[Worker pink-exchange-worker] FAILED JOB_1792041791007_893 lease=2 terminal=false EXECUTION_FAILED: ERR_CAPABILITY_DISCOVERY_PROVIDER_FAILURE",
+    "[Worker pink-exchange-worker] CLAIMED JOB_1792041791007_893 lease=3",
+    "[Worker pink-exchange-worker] FAILED JOB_1792041791007_893 lease=3 terminal=false EXECUTION_FAILED: ERR_CAPABILITY_DISCOVERY_PROVIDER_FAILURE",
+    "[Worker pink-exchange-worker] CLAIMED JOB_1792041791008_327 lease=1",
+    "[Worker pink-exchange-worker] FAILED JOB_1792041791008_327 lease=1 terminal=true ERR_JOB_SCOPE_INVALID: Bitte wähle einen Job aus einem Pool aus.",
+    "[Worker pink-exchange-worker] CLAIMED JOB_1792041791010_529 lease=1",
+    "[Worker pink-exchange-worker] FAILED JOB_1792041791010_529 lease=1 terminal=false EXECUTION_FAILED: ERR_CAPABILITY_CONVERGENCE_PROVIDER_FAILURE",
+    "[Worker pink-exchange-worker] CLAIMED JOB_1792041791010_529 lease=2",
+    "[Worker pink-exchange-worker] FAILED JOB_1792041791010_529 lease=2 terminal=false EXECUTION_FAILED: ERR_CAPABILITY_CONVERGENCE_PROVIDER_FAILURE",
+    "[Worker pink-exchange-worker] CLAIMED JOB_1792041791010_529 lease=3",
+    "[Worker pink-exchange-worker] FAILED JOB_1792041791010_529 lease=3 terminal=false EXECUTION_FAILED: ERR_CAPABILITY_CONVERGENCE_PROVIDER_FAILURE",
+    "[Worker pink-exchange-worker] CLAIMED JOB_1792041791012_68 lease=1",
+    "[Worker pink-exchange-worker] FAILED JOB_1792041791012_68 lease=1 terminal=true ERR_INVESTIGATION_INVALID: Bitte wähle eine eindeutige Untersuchungsgrenze.",
+    "[Worker pink-exchange-worker] CLAIMED JOB_1792041791014_527 lease=1",
+    "[Worker pink-exchange-worker] FAILED JOB_1792041791014_527 lease=1 terminal=true ERR_INVESTIGATION_MODE_NOT_ANALYZABLE: Bitte wähle eine eindeutige Untersuchungsgrenze."
+  ]
+}

@@ -1,0 +1,187 @@
+/**
+ * PINK independent proof of GELB dfb4b63 on PostgreSQL (disposable databases only): the DDL gate (no table, and for protected or
+ * malformed names not even a connection, counted by PINK's own TCP listener), byte fidelity of the stored text, the partial unique
+ * index, retention with real DELETE, deletion by id, and that no other table ever holds the received text. No network.
+ */
+import { createServer, type Server } from "node:net";
+import postgres from "postgres";
+import { sql } from "drizzle-orm";
+import { afterAll, beforeAll, describe, expect, it } from "vitest";
+import { db, initDbSchema } from "../../lib/career/db/client";
+import { GeminiCapabilityDiscoveryProvider, InMemoryCapabilityCoreRepository, PostgresCapabilityCoreRepository, createSourceDocument, runCapabilityDiscovery, sha256Utf8 } from "../../lib/career/capability-core";
+import { renderInvestigationScope } from "../../lib/career/job-scope";
+import { PostgresProviderExchangeStore, ensureProviderExchangeArchive, providerExchangeArchiveFromEnvironment } from "../../lib/career/result-inspector/postgres-exchange-store";
+import { runWithExchangeAttempt } from "../../lib/career/result-inspector";
+import { createDisposableTestDatabaseNamed, dropDisposableTestDatabase, newDisposableTestDatabaseName } from "../../lib/database-isolation/verification";
+import { disposableTestDatabaseMarker, maintenanceUrlFor } from "../../lib/database-isolation/policy";
+import { resolveTestJobScope } from "../support/job-scope";
+
+const QUOTE = "Led the migration of the dispatch platform to event-driven services.";
+const kernel = { kernelVersion: "discovery-v1", templateId: "T", versionId: "V", checksum: "C", plainTextContent: "PINK_DISCOVERY_KERNEL" };
+const scope = resolveTestJobScope();
+const DAY = 86_400_000;
+const audit = { source_documents_examined: 1, capability_count: 1, atomic_capability_count: 1, composite_capability_count: 0, attribution_pass_completed: true, target_state_ownership_pass_completed: true, atomic_extraction_pass_completed: true, method_capability_pass_completed: true, composite_reconstruction_pass_completed: true, global_convergence_pass_completed: true, inventory_reconciliation_pass_completed: true, final_reconciliation_produced_new_capabilities: false, unresolved_target_operations: 0, segments_classified_as_external_source_content: 0, segments_classified_as_target_subject_operation: 0, segments_classified_as_target_subject_designed_target_state: 0, segments_classified_as_target_organization_capability: 0, segments_excluded_due_to_attribution_ambiguity: 0 };
+const MARK = "PINKPGMARK";
+const RAW_FORMS = ["\r\n\t", String.raw`\r\n\t`, String.raw`\\r\\n\\t`];
+const valid = (label: string, padding = "") => `\r\n\t${JSON.stringify({ kernel_version: "discovery-v1", capabilities: [{ canonical_name: `${MARK} ${label} 🚀 Ünïcödé ﷽ é שלום`, capability_scope: "ATOMIC", structural_definition: `d${padding}`, primary_domain: null, demonstrated_capability_level: null, model_confidence: 0.9, evidence_mode: "EXPLICIT", evidence: [{ source_document: "CV", location: "body", exact_quote: QUOTE }] }], coverage_audit: audit }, null, "\t").replaceAll("\n", "\r\n")}\r\n \t`;
+const tableExists = async (url: string) => { const client = postgres(url, { max: 1, onnotice: () => undefined }); try { return (await client`SELECT to_regclass('public.career_gemini_provider_exchanges') IS NOT NULL AS present`)[0].present as boolean; } finally { await client.end({ timeout: 5 }); } };
+const count = async (where = sql`TRUE`) => Number(((await db.execute(sql`SELECT count(*)::int AS n FROM career_gemini_provider_exchanges WHERE ${where}`)) as unknown as Array<{ n: number }>)[0].n);
+
+async function discoverInto(store: PostgresProviderExchangeStore, docText: string, reply: { text?: unknown; finishReason?: string }) {
+  const cv = createSourceDocument({ docId: "CV", title: "cv.synthetic.pdf", rawContent: docText });
+  const client = { models: { async generateContent() { return { text: reply.text, candidates: [{ finishReason: reply.finishReason ?? "STOP" }], modelVersion: "pink-fake", responseId: "r", usageMetadata: { promptTokenCount: 1 } }; } } };
+  return runCapabilityDiscovery([cv], { kernelVersion: "discovery-v1", schemaVersion: "discovery-schema-v1" }, { kernelResolver: { resolve: async () => kernel }, provider: new GeminiCapabilityDiscoveryProvider({ model: "pink-fake", client }), repository: new PostgresCapabilityCoreRepository(db), investigationScope: renderInvestigationScope(scope), providerExchangeArchive: store })
+    .then((result) => ({ ok: true, runId: (result as { run: { runId: string } }).run.runId }), (error: Error) => ({ ok: false, error: error.message }));
+}
+
+describe("PINK: Gemini exchange archive on PostgreSQL (GELB dfb4b63)", () => {
+  // PINK's listener counts connections and holds them silently (a closing listener makes postgres-js reconnect in a loop).
+  let listener: Server; let port = 0; let connections = 0; const sockets: import("node:net").Socket[] = [];
+  beforeAll(async () => {
+    await initDbSchema();
+    expect(await ensureProviderExchangeArchive()).toBe("REGISTERED");
+    listener = createServer((socket) => { connections++; sockets.push(socket); socket.on("error", () => undefined); });
+    await new Promise<void>((ok) => listener.listen(0, "127.0.0.1", () => ok()));
+    port = (listener.address() as { port: number }).port;
+  });
+  afterAll(async () => { for (const socket of sockets) socket.destroy(); await new Promise<void>((ok) => listener.close(() => ok())); await db.execute(sql`DELETE FROM career_gemini_provider_exchanges`); });
+
+  it("DDL gate by policy: protected, malformed and remote URLs are refused before any connection (PINK's listener counts 0); a disposable-pattern name does connect (positive control)", async () => {
+    const refused: Record<string, string> = {};
+    const timings: Record<string, number> = {};
+    for (const name of ["condyn", "CONDYN", "postgres", "template0", "template1", "condyn_test_xyz", "condyn_test_0123456789abcdeff", "my_database"]) {
+      const started = Date.now();
+      refused[name] = await ensureProviderExchangeArchive(`postgresql://pink:pink@127.0.0.1:${port}/${name}`).catch((error: Error) => `THREW ${error.message.split(":")[0]}`);
+      timings[name] = Date.now() - started;
+    }
+    refused["remote host"] = await ensureProviderExchangeArchive("postgresql://pink:pink@db.pink-remote.invalid:5432/condyn_test_0123456789abcdef").catch((error: Error) => `THREW ${error.message.split(":")[0]}`);
+    refused["no url"] = await ensureProviderExchangeArchive("").catch((error: Error) => `THREW ${error.message.split(":")[0]}`);
+    expect(Object.values(refused).every((value) => value === "NO_DDL_ON_NON_DISPOSABLE_DATABASE"), JSON.stringify(refused)).toBe(true);
+    expect(connections).toBe(0);
+    const started = Date.now();
+    expect(await ensureProviderExchangeArchive(`postgresql://pink:pink@127.0.0.1:${port}/condyn_test_00000000000000aa`)).toBe("NO_DDL_ON_NON_DISPOSABLE_DATABASE");
+    timings["disposable pattern (connects)"] = Date.now() - started;
+    console.log(`PINK_DDL_GATE ${JSON.stringify({ refused, timings, connections })}`);
+    expect(connections).toBeGreaterThan(0);
+    // The flag alone never registers anything: switched off is null without a lookup.
+    expect(await providerExchangeArchiveFromEnvironment({ DATABASE_URL: `postgresql://pink:pink@127.0.0.1:${port}/condyn_test_00000000000000ab` })).toBeNull();
+    expect(await providerExchangeArchiveFromEnvironment({ CONDYN_GEMINI_EXCHANGE_ARCHIVE: "true", DATABASE_URL: process.env.DATABASE_URL })).toBeNull();
+  }, 60_000);
+
+  it("DDL gate on real databases: an existing but unmarked database gets no table; a marked one only with the flag", async () => {
+    const basis = process.env.DATABASE_URL as string;
+    const unmarked = await createDisposableTestDatabaseNamed(basis, newDisposableTestDatabaseName());
+    const marked = await createDisposableTestDatabaseNamed(basis, newDisposableTestDatabaseName());
+    const admin = postgres(maintenanceUrlFor(basis), { max: 1, onnotice: () => undefined });
+    try {
+      await admin.unsafe(`COMMENT ON DATABASE "${unmarked.databaseName}" IS NULL`);
+      expect(await ensureProviderExchangeArchive(unmarked.url)).toBe("NO_DDL_ON_NON_DISPOSABLE_DATABASE");
+      expect(await tableExists(unmarked.url)).toBe(false);
+      expect(await providerExchangeArchiveFromEnvironment({ DATABASE_URL: marked.url })).toBeNull();
+      expect(await tableExists(marked.url)).toBe(false);
+      expect(await providerExchangeArchiveFromEnvironment({ CONDYN_GEMINI_EXCHANGE_ARCHIVE: "1", DATABASE_URL: marked.url })).not.toBeNull();
+      expect(await tableExists(marked.url)).toBe(true);
+    } finally {
+      await admin.unsafe(`COMMENT ON DATABASE "${unmarked.databaseName}" IS '${disposableTestDatabaseMarker(unmarked.databaseName)}'`);
+      await admin.end({ timeout: 5 });
+      await dropDisposableTestDatabase(unmarked.url);
+      await dropDisposableTestDatabase(marked.url);
+    }
+  });
+
+  it("byte fidelity (GELB e98a40c): every text, incl. U+0000 and a lone surrogate, comes back exactly through the store; the column holds its JSON literal and no raw NUL", async () => {
+    const store = new PostgresProviderExchangeStore({ retentionMs: DAY });
+    const cases: Array<[string, { text?: unknown; finishReason?: string }]> = [
+      ["valid CRLF/unicode", { text: valid("one") }],
+      ["valid 200 kB", { text: valid("big", "x".repeat(200_000)) }],
+      ["refused, BOM first", { text: `\uFEFF${valid("bom")}` }],
+      ["refused, MAX_TOKENS", { text: valid("cut").slice(0, 300), finishReason: "MAX_TOKENS" }],
+      ["refused, NUL", { text: `{"${MARK}":\u0000}` }],
+      ["refused, lone surrogate", { text: `{"${MARK}":"\uD83D"` }],
+      ["refused, NUL inside the scope-free envelope", { text: `\u0000` }]
+    ];
+    const found: Record<string, unknown> = {};
+    for (const [index, [name, reply]] of cases.entries()) {
+      const jobId = `JOB_PINK_BYTES_${index}`;
+      const result = await runWithExchangeAttempt({ jobId, leaseVersion: 1 }, () => discoverInto(store, `${QUOTE} bytes ${index}`, reply));
+      const [exchange] = await store.forJob(jobId);
+      const raw = ((await db.execute(sql`SELECT response_text, scope_text FROM career_gemini_provider_exchanges WHERE job_id = ${jobId}`)) as unknown as Array<{ response_text: string; scope_text: string }>)[0];
+      found[name] = {
+        result: result.ok ? "COMPLETED" : (result as { error: string }).error, outcome: exchange?.outcome ?? null,
+        exact: exchange?.response.text === reply.text, shaMatches: exchange?.response.textSha256 === sha256Utf8(reply.text as string),
+        columnIsLiteral: raw?.response_text === JSON.stringify(reply.text), noRawNul: !raw?.response_text.includes(String.fromCharCode(0)),
+        scopeExact: exchange?.investigationScope?.text === renderInvestigationScope(scope).text
+      };
+    }
+    const ok = (result: string, outcome: string) => ({ result, outcome, exact: true, shaMatches: true, columnIsLiteral: true, noRawNul: true, scopeExact: true });
+    const refused = ok("ERR_CAPABILITY_DISCOVERY_STRUCTURED_OUTPUT_INVALID", "FAILED");
+    expect(found).toEqual({
+      "valid CRLF/unicode": ok("COMPLETED", "COMPLETED"), "valid 200 kB": ok("COMPLETED", "COMPLETED"), "refused, BOM first": refused, "refused, MAX_TOKENS": refused,
+      "refused, NUL": refused, "refused, lone surrogate": refused, "refused, NUL inside the scope-free envelope": refused
+    });
+    // A row written before e98a40c (plain text, no encoding marker) stays readable as plain text.
+    await db.execute(sql`INSERT INTO career_gemini_provider_exchanges (exchange_id, run_id, outcome, error_code, job_id, lease_version, request, scope_hash, scope_text, response_text, response_meta, retained_at, expires_at)
+      VALUES ('EXC_PINK_PLAIN', 'RUN_PINK_PLAIN', 'FAILED', 'ERR_X', 'JOB_PINK_PLAIN', 1, '{}'::jsonb, NULL, NULL, ${"plain \r\n text"}, ${JSON.stringify({ textSha256: null, finishReason: null, modelVersion: null, responseId: null, usageMetadata: null, receivedAt: "t" })}::jsonb, now(), now() + interval '1 day')`);
+    expect((await store.forJob("JOB_PINK_PLAIN")).map((item) => item.response.text)).toEqual(["plain \r\n text"]);
+  });
+
+  it("one COMPLETED per RUN_: a second raw insert violates the partial unique index, a second retain is ignored; FAILED rows are kept per attempt", async () => {
+    const store = new PostgresProviderExchangeStore({ retentionMs: DAY });
+    const first = await runWithExchangeAttempt({ jobId: "JOB_PINK_UNIQ", leaseVersion: 1 }, () => discoverInto(store, `${QUOTE} uniq`, { text: "{x" }));
+    const second = await runWithExchangeAttempt({ jobId: "JOB_PINK_UNIQ", leaseVersion: 2 }, () => discoverInto(store, `${QUOTE} uniq`, { text: "{y" }));
+    const third = await runWithExchangeAttempt({ jobId: "JOB_PINK_UNIQ", leaseVersion: 3 }, () => discoverInto(store, `${QUOTE} uniq`, { text: valid("uniq") }));
+    expect([first.ok, second.ok, third.ok]).toEqual([false, false, true]);
+    const runId = (third as { runId: string }).runId;
+    expect(await count(sql`run_id = ${runId}`)).toBe(3);
+    const [completed] = await store.completedForRun(runId);
+    await store.retain({ runId, outcome: "COMPLETED", errorCode: null, request: completed.request, investigationScope: completed.investigationScope, response: { ...completed.response, text: "SECOND" } });
+    expect(await count(sql`run_id = ${runId} AND outcome = 'COMPLETED'`)).toBe(1);
+    expect((await store.completedForRun(runId))[0].response.text).toBe(valid("uniq"));
+    const raw = await db.execute(sql`INSERT INTO career_gemini_provider_exchanges (exchange_id, run_id, outcome, error_code, request, response_meta, retained_at, expires_at) VALUES ('EXC_PINK_RAW', ${runId}, 'COMPLETED', NULL, '{}'::jsonb, '{}'::jsonb, now(), now() + interval '1 day')`).then(() => "INSERTED", (error: { code?: string; cause?: { code?: string } }) => error.code ?? error.cause?.code ?? "ERROR");
+    expect(raw).toBe("23505");
+    const checks = await db.execute(sql`INSERT INTO career_gemini_provider_exchanges (exchange_id, run_id, outcome, error_code, request, response_meta, retained_at, expires_at) VALUES ('EXC_PINK_RAW2', ${runId}, 'FAILED', NULL, '{}'::jsonb, '{}'::jsonb, now(), now() + interval '1 day')`).then(() => "INSERTED", (error: { code?: string; cause?: { code?: string } }) => error.code ?? error.cause?.code ?? "ERROR");
+    expect(checks).toBe("23514");
+    expect((await store.forJob("JOB_PINK_UNIQ")).map((item) => [item.outcome, item.attempt?.leaseVersion])).toEqual([["FAILED", 1], ["FAILED", 2], ["COMPLETED", 3]]);
+    expect(await store.forJob("JOB_PINK_OTHER")).toEqual([]);
+  });
+
+  it("retention: retained one millisecond before expiry, gone at expiry with the row DELETEd; delete by id removes exactly one row; the window comes from the environment", async () => {
+    let now = Date.parse("2026-10-15T10:00:00.000Z");
+    const store = new PostgresProviderExchangeStore({ retentionMs: DAY, now: () => new Date(now) });
+    const kept = await discoverInto(store, `${QUOTE} retention`, { text: valid("retention") });
+    const failed = await runWithExchangeAttempt({ jobId: "JOB_PINK_RET", leaseVersion: 1 }, () => discoverInto(store, `${QUOTE} retention-2`, { text: "{gone" }));
+    expect([kept.ok, failed.ok]).toEqual([true, false]);
+    const runId = (kept as { runId: string }).runId;
+    const [row] = await store.completedForRun(runId);
+    expect(Date.parse(row.expiresAt) - Date.parse(row.retainedAt)).toBe(DAY);
+    now = Date.parse(row.expiresAt) - 1;
+    expect(await store.completedForRun(runId)).toHaveLength(1);
+    const failedRow = (await store.forJob("JOB_PINK_RET"))[0];
+    expect(await store.delete(failedRow.exchangeId)).toBe(true);
+    expect(await store.delete(failedRow.exchangeId)).toBe(false);
+    expect(await count(sql`exchange_id = ${failedRow.exchangeId}`)).toBe(0);
+    now = Date.parse(row.expiresAt);
+    expect(await store.completedForRun(runId)).toEqual([]);
+    expect(await count(sql`exchange_id = ${row.exchangeId}`)).toBe(0);
+    const windows: Record<string, number> = {};
+    for (const days of ["30", "31", "1"]) {
+      const environmentStore = await providerExchangeArchiveFromEnvironment({ CONDYN_GEMINI_EXCHANGE_ARCHIVE: "1", DATABASE_URL: process.env.DATABASE_URL, CONDYN_GEMINI_EXCHANGE_RETENTION_DAYS: days });
+      const result = await discoverInto(environmentStore!, `${QUOTE} window ${days}`, { text: valid(`window-${days}`) });
+      const [entry] = await environmentStore!.completedForRun((result as { runId: string }).runId);
+      windows[days] = (Date.parse(entry.expiresAt) - Date.parse(entry.retainedAt)) / DAY;
+    }
+    expect(windows).toEqual({ "30": 30, "31": 7, "1": 1 });
+  });
+
+  it("no other table holds the received text: the marker is only in career_gemini_provider_exchanges (positive control: it is there)", async () => {
+    const tables = (await db.execute(sql`SELECT table_name FROM information_schema.tables WHERE table_schema = 'public' AND table_type = 'BASE TABLE' ORDER BY 1`)) as unknown as Array<{ table_name: string }>;
+    const hits: Record<string, number> = {};
+    for (const { table_name } of tables) {
+      const rows = (await db.execute(sql.raw(`SELECT t::text AS row FROM "${table_name}" t`))) as unknown as Array<{ row: string }>;
+      // The CRLF+tab layout exists only in received texts: raw, as JSON literal (e98a40c) or doubled in the row text output.
+      const n = rows.filter(({ row }) => RAW_FORMS.some((form) => row.includes(form))).length;
+      if (n) hits[table_name] = n;
+    }
+    expect(Object.keys(hits)).toEqual(["career_gemini_provider_exchanges"]);
+  });
+});
