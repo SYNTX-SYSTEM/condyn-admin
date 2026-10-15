@@ -64,7 +64,8 @@ describe("Gemini Result Inspector", () => {
     expect(inspection.investigationInput.sourceDocuments?.map(item => item.docId)).toEqual(["CV"]);
 
     // Original response: the received text itself, bound to this run; not the stored parse result.
-    expect(inspection.originalGeminiResponse).toMatchObject({ state: "RETAINED", text, responseId: "resp-1", textMatchesSha256: true, parserResultMatchesText: true, retainedAt: "2026-10-15T10:00:00.000Z", expiresAt: "2026-10-22T10:00:00.000Z" });
+    expect(inspection.originalGeminiResponse).toMatchObject({ state: "RETAINED", text, responseId: "resp-1", textMatchesSha256: true, parserResultMatchesText: true, retainedAt: "2026-10-15T10:00:00.000Z", expiresAt: "2026-10-22T10:00:00.000Z", attempt: null });
+    expect(inspection.originalGeminiResponse).toMatchObject({ request: { sourceBundleHash: produced.run.sourceBundleHash, promptChecksum: "C", provider: "gemini", model: "gemini-fake", schemaVersion: "discovery-schema-v1" } });
     // Original and processed result stay apart: the immutable run holds neither the received text nor the scope text.
     expect(Object.keys(produced.run.payload as object).sort()).toEqual(["candidates", "coverageValidation", "kernelOutput"]);
     expect(produced.run.investigationScope).toEqual({ scopeHash: sha256Utf8(renderInvestigationScope(scopeA).text) });
@@ -127,11 +128,13 @@ describe("Gemini Result Inspector", () => {
     clock.now += 1;
     const expired = await inspector.read(a.analysisId);
     expect([expired.originalGeminiResponse, expired.investigationInput.investigationScope.state]).toEqual([{ state: "NOT_RETAINED" }, "NOT_RETAINED"]);
-    expect(await exchanges!.get(a.run.runId)).toBeNull();
+    expect(await exchanges!.completedForRun(a.run.runId)).toEqual([]);
     // The processed phases are untouched by expiry.
     expect(expired.parserResult.kernelOutput).toEqual(JSON.parse(geminiText("A")));
     const b = await produceAnalysis(state, geminiProvider(fakeGeminiClient([geminiText("B")])), scopeB, "B");
-    expect(await exchanges!.delete(b.run.runId)).toBe(true);
+    const [retainedB] = await exchanges!.completedForRun(b.run.runId);
+    expect(await exchanges!.delete(retainedB.exchangeId)).toBe(true);
+    expect(await exchanges!.delete(retainedB.exchangeId)).toBe(false);
     expect((await inspector.read(b.analysisId)).originalGeminiResponse).toEqual({ state: "NOT_RETAINED" });
     expect(exchangeRetentionMs({})).toBe(DEFAULT_EXCHANGE_RETENTION_DAYS * DAY_MS);
     expect(exchangeRetentionMs({ CONDYN_GEMINI_EXCHANGE_RETENTION_DAYS: "30" })).toBe(30 * DAY_MS);
@@ -156,10 +159,13 @@ describe("Gemini Result Inspector", () => {
     const discovery = await runCapabilityDiscovery([cv], { kernelVersion: "discovery-v1", schemaVersion: "discovery-schema-v1" }, { kernelResolver: { resolve: async () => ({ kernelVersion: "discovery-v1", templateId: "T", versionId: "V", checksum: "C", plainTextContent: "FAKE_DISCOVERY_KERNEL" }) }, provider: geminiProvider(client), repository: state.capabilityRepository, investigationScope: renderInvestigationScope(scopeA), providerExchangeArchive: exchanges });
     expect([discovery.kind, client.requests.length]).toEqual(["DISCOVERY_RUN_REUSED", 1]);
     expect((await inspector.read(first.analysisId)).originalGeminiResponse).toMatchObject({ state: "RETAINED", responseId: "resp-1" });
-    // An exchange under this RUN_ id but with another scope hash is a lineage error, never shown.
-    await exchanges!.delete(first.run.runId);
-    await exchanges!.retain({ runId: first.run.runId, investigationScope: { scopeHash: sha256Utf8("other"), text: "other" }, response: (await geminiProvider(fakeGeminiClient([geminiText("X")])).execute({ systemPrompt: "S", userPrompt: "U" })).providerResponse! });
-    await expect(inspector.read(first.analysisId)).rejects.toMatchObject({ code: "ERR_RESULT_INSPECTION_LINEAGE_INVALID", status: 409 });
+    // An exchange under this RUN_ id with another scope hash or another request identity is a lineage error, never shown.
+    const [original] = await exchanges!.completedForRun(first.run.runId);
+    for (const forged of [{ ...original, investigationScope: { scopeHash: sha256Utf8("other"), text: "other" } }, { ...original, request: { ...original.request, model: "other-model" } }, { ...original, request: { ...original.request, promptChecksum: "other" } }]) {
+      for (const item of await exchanges!.completedForRun(first.run.runId)) await exchanges!.delete(item.exchangeId);
+      await exchanges!.retain(forged);
+      await expect(inspector.read(first.analysisId)).rejects.toMatchObject({ code: "ERR_RESULT_INSPECTION_LINEAGE_INVALID", status: 409 });
+    }
   });
 
   it("follows only the stored lineage: unknown analysis 404, broken reference 409", async () => {

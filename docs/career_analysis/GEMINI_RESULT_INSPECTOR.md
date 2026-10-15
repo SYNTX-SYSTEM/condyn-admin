@@ -7,12 +7,12 @@ Stand: 2026-10-15. Grundlage sind die Owner-Aufträge „SELECTED JOB SCOPE → 
 | Relation | Stelle | Was gilt |
 |---|---|---|
 | Gemini Response → Discovery | `capability-core/discovery/gemini-provider.ts` | Der Provider gibt neben dem geprüften `kernelOutput` den empfangenen Text unverändert zurück (`providerResponse.text`), dazu SHA-256, `finishReason`, `modelVersion`, `responseId`, `usageMetadata` und die Empfangszeit. Request und Antwortschema bleiben gleich. |
-| Discovery → Austausch-Archiv | `capability-core/discovery/runtime.ts` (`providerExchangeArchive`) | Nach dem Speichern des Laufs übergibt Discovery den Austausch (RUN-Kennung, Scope-Text mit Hash, Antwort) an ein eigenes Archiv. Der unveränderliche Lauf enthält weder den Antworttext noch den Scope-Text; er bleibt so, wie ihn e643e96 schreibt. Ein Fehler im Archiv lässt die Analyse unverändert, der Inspector meldet dann `NOT_RETAINED`. |
-| Austausch-Archiv → Aufbewahrung | `result-inspector/retention.ts` | Jeder Austausch bekommt beim Speichern ein Ablaufdatum (`CONDYN_GEMINI_EXCHANGE_RETENTION_DAYS`, ganze Tage, Standard 7, höchstens 30). Nach Ablauf wird nichts mehr ausgegeben. Abgelaufene Einträge werden bei jedem Schreiben und Lesen gelöscht. `delete(runId)` löscht sofort. Pro RUN-Kennung gilt der erste Eintrag. |
+| Discovery → Austausch-Archiv | `capability-core/discovery/runtime.ts` (`providerExchangeArchive`) | Jede empfangene Antwort geht an ein eigenes Archiv, angenommen oder abgelehnt. Gespeichert werden die RUN-Kennung, unter der sie entstand, und die Request-Identität (SHA-256 von System- und User-Prompt, Source-Bundle-Hash, Kernel-Checksumme, Provider, Modell, Schema). Dazu kommen Scope-Text mit Hash, die Antwort und das Ergebnis: `COMPLETED` erst nachdem der Lauf aus genau dieser Antwort gespeichert ist, sonst `FAILED` mit stabilem Fehlercode (`ERR_…`, nie Freitext). Abgelehnte Antworten trägt `CapabilityProviderResponseError` aus dem Provider. Fehlercodes und Verhalten bleiben gleich; ohne empfangene Antwort (Netzwerkfehler) entsteht kein Eintrag. Der unveränderliche Lauf bleibt exakt wie in e643e96. Ein Fehler im Archiv lässt die Analyse unverändert; auf ein langsames Archiv wartet Discovery höchstens `EXCHANGE_ARCHIVE_WAIT_MS` (1 s, PINK O-ARCHIVE-AWAIT), der Schreibvorgang läuft danach allein zu Ende. |
+| Austausch-Archiv → Aufbewahrung | `result-inspector/retention.ts`, `result-inspector/postgres-exchange-store.ts` | Jeder Eintrag bekommt beim Speichern ein Ablaufdatum (`CONDYN_GEMINI_EXCHANGE_RETENTION_DAYS`, ganze Tage, Standard 7, höchstens 30). Nach Ablauf wird nichts mehr ausgegeben. Abgelaufene Zeilen werden bei jedem Schreiben und Lesen gelöscht (`DELETE`). `delete(exchangeId)` löscht sofort. Pro RUN-Kennung gibt es höchstens einen `COMPLETED`-Eintrag (partieller Unique-Index). |
 | Discovery Run → Read Boundary | `result-inspector/access.ts` | Die Leseroute ist standardmäßig geschlossen (siehe 3). |
-| Read Boundary → Inspector | `result-inspector/reader.ts`, `GET /api/career/analyses/[analysisId]/gemini-result` | Der Inspector folgt genau der gespeicherten Projektionsreferenz (Analyse → RUN_/CONV_). Der Austausch muss dieselbe RUN-Kennung und denselben Scope-Hash tragen, sonst 409. Er sucht keinen Ersatzlauf und rekonstruiert nichts. |
+| Read Boundary → Inspector | `result-inspector/reader.ts`, `GET /api/career/analyses/[analysisId]/gemini-result`, `GET /api/career/jobs/[jobId]/gemini-exchanges` | Die Analyse-Sicht folgt der gespeicherten Projektionsreferenz (Analyse → RUN_/CONV_). Sie zeigt nur den einen `COMPLETED`-Austausch dieser RUN-Kennung, und nur wenn dessen Scope-Hash und Request-Identität zum Lauf passen, sonst 409. Die Auftrags-Sicht zeigt alle Austausche, die beim Speichern diesem Auftrag zugeordnet wurden (Auftrag und Lease im Worker-Kontext `runWithExchangeAttempt`), auch fehlgeschlagene. Beide suchen keinen Ersatz und rekonstruieren nichts. |
 
-**Stand der Verdrahtung:** Im Worker und in der Route ist noch kein Archiv angeschlossen. Ein dauerhaftes Archiv braucht eine eigene Tabelle. Diese DDL ist nicht freigegeben, der Schließungs-Diff liegt dem Owner vor. Bis zur Freigabe zeigt der Inspector die verarbeiteten Phasen; Originalantwort und Scope-Text sind `NOT_RETAINED`.
+**Stand der Verdrahtung:** Owner-GO 2026-10-15 „EXCHANGE ARCHIVE“ für Tabelle und Migration nur im isolierten Engineering- und Testkontext. Das Archiv ist opt-in (`CONDYN_GEMINI_EXCHANGE_ARCHIVE=1`). Die Tabelle `career_gemini_provider_exchanges` entsteht nur, wenn die Datenbank als markierte Wegwerf-Datenbank verifiziert ist (dieselbe Prüfung wie beim Job Pool, B-ENTRY). Auf jeder anderen Datenbank gibt es keine DDL und kein Archiv; der Inspector meldet dort `NOT_RETAINED`.
 
 ## 2. Antwort (`GEMINI_RESULT_INSPECTION_V1`)
 
@@ -26,6 +26,10 @@ Stand: 2026-10-15. Grundlage sind die Owner-Aufträge „SELECTED JOB SCOPE → 
 | `evidenceVerification` | die gespeicherten Kandidaten mit dem Prüfstatus je Claim (`VERIFIED`, `REJECTED_*`) |
 | `convergence` | der gespeicherte Convergence-Lauf (Gruppen, Entwürfe, Relationen, ausgeschlossene Kandidaten) |
 | `projection` | das bestehende Lesemodell der Capability-Vorschläge, so wie es auch das Capability Field erhält |
+
+`originalGeminiResponse` trägt im Zustand `RETAINED` zusätzlich `exchangeId`, `attempt` (Auftrag und Lease oder `null`) und `request` (Request-Identität).
+
+**Auftrags-Sicht** `GET /api/career/jobs/[jobId]/gemini-exchanges` (`GEMINI_EXCHANGE_INSPECTION_V1`): `{ success: true, archive: "AVAILABLE" | "NOT_AVAILABLE", inspection: { jobId, exchanges } }`. Jeder Austausch enthält `exchangeId`, `runId`, `outcome` (`COMPLETED`/`FAILED`), `errorCode`, `attempt`, `request`, `investigationScope`, `response` (Text unverändert oder `null`, Envelope), `retainedAt`, `expiresAt`, `textMatchesSha256` und `scopeTextMatchesScopeHash`. Für einen unbekannten Auftrag gibt es 404. Dieselbe Zugriffsgrenze, `no-store`.
 
 Fehler: 404 `ERR_NOT_FOUND` (geschlossen oder falsches Token), 404 `ERR_RESULT_INSPECTION_NOT_FOUND` (keine Sweep-Referenz zur Analyse), 409 `ERR_RESULT_INSPECTION_LINEAGE_INVALID`, 500 `ERR_RESULT_INSPECTION_FAILED` (ohne Fehlertext).
 
@@ -42,7 +46,7 @@ Rekonstruiert am 2026-10-15:
 Inspector-Grenze:
 
 - Er antwortet nur mit `CONDYN_RESULT_INSPECTOR=1` **und** `CONDYN_RESULT_INSPECTOR_TOKEN` (mindestens 32 Zeichen) im Server-Environment **und** demselben Token im Header `x-condyn-result-inspector-token`. Der Vergleich ist zeitkonstant.
-- Jeder andere Fall antwortet mit 404, als gäbe es die Route nicht. Abschalten heißt: Variable entfernen. Die Pipeline ändert sich dadurch nicht.
+- Jeder andere Fall antwortet mit demselben JSON-404 `ERR_NOT_FOUND` ohne Daten. Von einer Route, die Next.js nicht kennt (HTML-404), ist das unterscheidbar (PINK O-INSPECTOR-404-SHAPE); über Analysen oder Konfiguration verrät es nichts. Abschalten heißt: Variable entfernen. Die Pipeline ändert sich dadurch nicht.
 - Das Token gehört nicht in den Browser. Eine Oberfläche ruft die Route serverseitig auf oder nutzt `createGeminiResultInspector` in einer Server-Komponente hinter derselben Freischaltung.
 - Der Inspector liefert keine Kandidatendokumente (PDF-Inhalte des Auftrags), keine Keys und keine Verbindungsdaten.
 
@@ -71,7 +75,7 @@ Im Laufzeitcode (lib, app, scripts) gibt es keinen einzigen Löschpfad und keine
 
 ## 5. Offene Grenzen
 
-- **Dauerhaftes Archiv:** braucht die Tabelle `career_gemini_provider_exchanges` (Owner-Freigabe der DDL). Der Diff liegt vor: Tabelle, Postgres-Archiv mit Ablauf und Löschung, Verdrahtung in Worker und Route.
-- **Fehlgeschlagene Antworten:** Scheitert JSON-Parse, Schema- oder Coverage-Prüfung, gibt es keinen Lauf und keinen Austausch. Das Archiv könnte sie aufnehmen, weil es nicht an den Lauf gebunden ist. Das ist eine Owner-Entscheidung.
+- **Produktive Datenbank:** keine Tabelle, kein Archiv (nicht freigegeben).
+- **Fehlschläge vor Discovery:** Abbrüche ohne empfangene Antwort (Netzwerk, fehlender Key) werden nicht erfasst. Es gibt nichts Empfangenes, das gespeichert werden könnte.
 - **Convergence-Rohantwort und Legacy-Analyse:** Sie werden nicht aufbewahrt. Der Inspector zeigt das gespeicherte Convergence-Ergebnis; der zweite Gemini-Aufruf je ANALYZE (`providers/gemini.ts`) ist nicht abgedeckt.
 - **Personenbezug außerhalb des Archivs:** `kernelOutput` und die Kandidaten im Lauf enthalten wörtliche Zitate aus Lebensläufen, die Source Bundles den Text der PDFs. Für diese Daten gibt es weiterhin keinen Löschweg. Das betrifft die bestehende Pipeline, nicht den Inspector.

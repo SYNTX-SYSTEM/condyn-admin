@@ -5,7 +5,8 @@ import {
 } from "../capability-core";
 import type { CapabilityConvergenceRun } from "../capability-core/convergence";
 import type { JobRecord } from "../orchestration/job";
-import type { ProviderExchangeStore } from "./retention";
+import type { ExchangeAttempt } from "./attempt";
+import type { ProviderExchangeStore, RetainedProviderExchange } from "./retention";
 
 /**
  * Gemini Result Inspector (SFE 2026-10-15): the persisted artifacts of exactly one analysis, phase by phase.
@@ -16,8 +17,9 @@ import type { ProviderExchangeStore } from "./retention";
  * stored candidate list, Convergence is the stored Convergence run and the projection is the existing read model.
  * Without a retained exchange (no archive, expired, deleted, or older than retention) the section says NOT_RETAINED
  * and never shows a processed artifact in its place. The lineage is the immutable projection reference
- * (analysis → RUN_/CONV_ pair) and the exchange must carry the same RUN_ id and scope hash; nothing is repaired or
- * searched for another run.
+ * (analysis → RUN_/CONV_ pair); the exchange shown is the single COMPLETED exchange of that RUN_ id and must carry the
+ * run's scope hash and request identity (sources, kernel checksum, provider, model, schema); nothing is repaired or
+ * searched for another run. Failed exchanges never reach an analysis; createGeminiExchangeInspector shows them per job.
  */
 export const GEMINI_RESULT_INSPECTION_VERSION = "GEMINI_RESULT_INSPECTION_V1" as const;
 
@@ -44,7 +46,7 @@ export interface GeminiResultInspection {
     sourceDocuments: Array<{ docId: string; title: string; mimeType: string | null; rawContentHash: string; normalizedTextHash: string }> | null;
   };
   originalGeminiResponse:
-    | ({ state: "RETAINED"; textMatchesSha256: boolean; parserResultMatchesText: boolean; retainedAt: string; expiresAt: string } & CapabilityProviderResponseRecord)
+    | ({ state: "RETAINED"; exchangeId: string; attempt: ExchangeAttempt | null; request: RetainedProviderExchange["request"]; textMatchesSha256: boolean; parserResultMatchesText: boolean; retainedAt: string; expiresAt: string } & CapabilityProviderResponseRecord)
     | { state: "NOT_RETAINED" };
   parserResult: { kernelOutput: unknown; rawOutputHash: string | null };
   evidenceVerification: { candidates: unknown[] };
@@ -59,7 +61,7 @@ export interface GeminiResultInspectorDependencies {
   jobs: { getJob(jobId: string): Promise<JobRecord | null> };
   projection: { read(analysisId: string): Promise<CapabilityProposalProjection | null> };
   /** The bounded exchange archive; absent means no exchange is retained anywhere (every response NOT_RETAINED). */
-  exchanges?: Pick<ProviderExchangeStore, "get">;
+  exchanges?: Pick<ProviderExchangeStore, "completedForRun">;
 }
 
 const lineage = (): never => { throw new ResultInspectionError("ERR_RESULT_INSPECTION_LINEAGE_INVALID", 409); };
@@ -71,6 +73,14 @@ function jobScopeSelectionOf(job: JobRecord | null): { jobPoolUploadId: string; 
   return typeof scope?.jobPoolUploadId === "string" && typeof scope.poolRoleId === "string"
     ? { jobPoolUploadId: scope.jobPoolUploadId, poolRoleId: scope.poolRoleId }
     : null;
+}
+
+/** The exchange the run was persisted from: same RUN_ id, outcome, scope hash and request identity as the run itself. */
+function exchangeBelongsToRun(exchange: RetainedProviderExchange, run: CapabilityDiscoveryRun): boolean {
+  return exchange.runId === run.runId && exchange.outcome === "COMPLETED"
+    && (exchange.investigationScope?.scopeHash ?? null) === (run.investigationScope?.scopeHash ?? null)
+    && exchange.request.sourceBundleHash === run.sourceBundleHash && exchange.request.promptChecksum === run.prompt.checksum
+    && exchange.request.provider === run.inference.provider && exchange.request.model === run.inference.model && exchange.request.schemaVersion === run.schemaVersion;
 }
 
 function parsedEquals(text: string, kernelOutput: unknown): boolean {
@@ -95,8 +105,10 @@ export function createGeminiResultInspector(dependencies: GeminiResultInspectorD
       const bundle = reference.candidateSourceBundleId ? await dependencies.sourceBundles.getCandidateSourceBundleById(reference.candidateSourceBundleId) : null;
       if (bundle && bundle.sourceBundleHash !== discovery.sourceBundleHash) lineage();
       const scope = discovery.investigationScope;
-      const exchange = dependencies.exchanges ? await dependencies.exchanges.get(discovery.runId) : null;
-      if (exchange && (exchange.runId !== discovery.runId || (exchange.investigationScope?.scopeHash ?? null) !== (scope?.scopeHash ?? null))) lineage();
+      const completed = dependencies.exchanges ? await dependencies.exchanges.completedForRun(discovery.runId) : [];
+      if (completed.length > 1) lineage();
+      const exchange = completed[0] ?? null;
+      if (exchange && !exchangeBelongsToRun(exchange, discovery)) lineage();
       const response = exchange?.response;
 
       return {
@@ -122,12 +134,44 @@ export function createGeminiResultInspector(dependencies: GeminiResultInspectorD
             : null
         },
         originalGeminiResponse: exchange && response && typeof response.text === "string"
-          ? { state: "RETAINED", ...response, textMatchesSha256: sha256Utf8(response.text) === response.textSha256, parserResultMatchesText: parsedEquals(response.text, payload.kernelOutput), retainedAt: exchange.retainedAt, expiresAt: exchange.expiresAt }
+          ? { state: "RETAINED", exchangeId: exchange.exchangeId, attempt: exchange.attempt, request: exchange.request, ...response, textMatchesSha256: sha256Utf8(response.text) === response.textSha256, parserResultMatchesText: parsedEquals(response.text, payload.kernelOutput), retainedAt: exchange.retainedAt, expiresAt: exchange.expiresAt }
           : { state: "NOT_RETAINED" },
         parserResult: { kernelOutput: payload.kernelOutput ?? null, rawOutputHash: discovery.rawOutputHash ?? null },
         evidenceVerification: { candidates: payload.candidates },
         convergence: { convergenceRunId: convergence.convergenceRunId, createdAt: convergence.createdAt, payload: convergence.payload },
         projection: await dependencies.projection.read(analysisId).catch(lineage)
+      };
+    }
+  };
+}
+
+/**
+ * Every archived Discovery exchange of one job, successful and failed, in the order received (Result Inspector).
+ * Attribution is the job attempt recorded when the exchange was retained; nothing is inferred from timing or content.
+ * A failed exchange is the refused response itself with its stable error code; it never becomes an analysis artifact.
+ */
+export const GEMINI_EXCHANGE_INSPECTION_VERSION = "GEMINI_EXCHANGE_INSPECTION_V1" as const;
+
+export interface GeminiExchangeInspection {
+  inspectionVersion: typeof GEMINI_EXCHANGE_INSPECTION_VERSION;
+  jobId: string;
+  exchanges: Array<RetainedProviderExchange & { textMatchesSha256: boolean | null; scopeTextMatchesScopeHash: boolean | null }>;
+}
+
+export function createGeminiExchangeInspector(dependencies: { jobs: { getJob(jobId: string): Promise<JobRecord | null> }; exchanges?: Pick<ProviderExchangeStore, "forJob"> }): { read(jobId: string): Promise<GeminiExchangeInspection> } {
+  return {
+    async read(jobId) {
+      if (await dependencies.jobs.getJob(jobId) === null) throw new ResultInspectionError("ERR_RESULT_INSPECTION_NOT_FOUND", 404);
+      const exchanges = dependencies.exchanges ? await dependencies.exchanges.forJob(jobId) : [];
+      if (exchanges.some(exchange => exchange.attempt?.jobId !== jobId)) lineage();
+      return {
+        inspectionVersion: GEMINI_EXCHANGE_INSPECTION_VERSION,
+        jobId,
+        exchanges: exchanges.map(exchange => ({
+          ...exchange,
+          textMatchesSha256: exchange.response.text === null ? null : sha256Utf8(exchange.response.text) === exchange.response.textSha256,
+          scopeTextMatchesScopeHash: exchange.investigationScope === null ? null : sha256Utf8(exchange.investigationScope.text) === exchange.investigationScope.scopeHash
+        }))
       };
     }
   };

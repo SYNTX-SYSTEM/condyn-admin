@@ -4,8 +4,9 @@ import { createHash, timingSafeEqual } from "node:crypto";
  * Read boundary of the Gemini Result Inspector. The Career API has no authorization layer of its own, so the
  * inspector carries its own, closed by default: it answers only when CONDYN_RESULT_INSPECTOR=1 AND the request
  * presents CONDYN_RESULT_INSPECTOR_TOKEN (at least 32 characters) in the x-condyn-result-inspector-token header.
- * Every other case — switched off, misconfigured, missing or wrong token — looks like a route that does not exist
- * (404), so switching it off needs no code change and leaves the analysis pipeline untouched.
+ * Every other case — switched off, misconfigured, missing or wrong token — gets the same 404 ERR_NOT_FOUND without
+ * any data. It is distinguishable from a route Next.js does not know (HTML 404, PINK O-INSPECTOR-404-SHAPE) but tells
+ * nothing about analyses or configuration. Switching it off needs no code change and leaves the pipeline untouched.
  */
 export const RESULT_INSPECTOR_FLAG = "CONDYN_RESULT_INSPECTOR";
 export const RESULT_INSPECTOR_TOKEN = "CONDYN_RESULT_INSPECTOR_TOKEN";

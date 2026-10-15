@@ -1,4 +1,6 @@
+import { randomUUID } from "node:crypto";
 import type { CapabilityProviderExchangeArchive, CapabilityProviderExchangeRecord } from "../capability-core";
+import { currentExchangeAttempt, type ExchangeAttempt } from "./attempt";
 
 /**
  * Retention of Result Inspector artifacts (SFE 2026-10-15). The received Gemini text quotes the candidate's CV, so it
@@ -17,18 +19,24 @@ export function exchangeRetentionMs(environment: Record<string, string | undefin
   return days * DAY_MS;
 }
 
-export interface RetainedProviderExchange extends CapabilityProviderExchangeRecord { retainedAt: string; expiresAt: string; }
+/** One archived exchange: the record plus its own id, the job attempt it ran in and its retention window. */
+export interface RetainedProviderExchange extends CapabilityProviderExchangeRecord { exchangeId: string; attempt: ExchangeAttempt | null; retainedAt: string; expiresAt: string; }
 
-/** Write side for Discovery (retain), read and deletion side for the inspector and for an erasure request. */
+/**
+ * Write side for Discovery (retain), read side for the inspector, deletion side for expiry and erasure. Exactly one
+ * COMPLETED exchange per RUN_ id (the response the run was persisted from); FAILED exchanges are kept per attempt.
+ */
 export interface ProviderExchangeStore extends CapabilityProviderExchangeArchive {
-  get(runId: string): Promise<RetainedProviderExchange | null>;
-  delete(runId: string): Promise<boolean>;
+  completedForRun(runId: string): Promise<RetainedProviderExchange[]>;
+  forJob(jobId: string): Promise<RetainedProviderExchange[]>;
+  delete(exchangeId: string): Promise<boolean>;
   purgeExpired(): Promise<number>;
 }
 
 export interface ProviderExchangeStoreOptions { retentionMs?: number; now?: () => Date; }
 
-/** First write wins: a RUN_ id has exactly one provider exchange, a later write never replaces it. */
+export const newExchangeId = () => `EXC_${randomUUID().replaceAll("-", "").slice(0, 24).toUpperCase()}`;
+
 export class InMemoryProviderExchangeStore implements ProviderExchangeStore {
   private readonly exchanges = new Map<string, RetainedProviderExchange>();
   private readonly retentionMs: number;
@@ -39,20 +47,24 @@ export class InMemoryProviderExchangeStore implements ProviderExchangeStore {
   }
   async retain(record: CapabilityProviderExchangeRecord): Promise<void> {
     await this.purgeExpired();
-    if (this.exchanges.has(record.runId)) return;
+    if (record.outcome === "COMPLETED" && [...this.exchanges.values()].some(item => item.runId === record.runId && item.outcome === "COMPLETED")) return;
     const retainedAt = this.now();
-    this.exchanges.set(record.runId, structuredClone({ ...record, retainedAt: retainedAt.toISOString(), expiresAt: new Date(retainedAt.getTime() + this.retentionMs).toISOString() }));
+    const exchange: RetainedProviderExchange = { ...structuredClone(record), exchangeId: newExchangeId(), attempt: currentExchangeAttempt(), retainedAt: retainedAt.toISOString(), expiresAt: new Date(retainedAt.getTime() + this.retentionMs).toISOString() };
+    this.exchanges.set(exchange.exchangeId, exchange);
   }
-  async get(runId: string): Promise<RetainedProviderExchange | null> {
+  async completedForRun(runId: string): Promise<RetainedProviderExchange[]> {
     await this.purgeExpired();
-    const exchange = this.exchanges.get(runId);
-    return exchange ? structuredClone(exchange) : null;
+    return [...this.exchanges.values()].filter(item => item.runId === runId && item.outcome === "COMPLETED").map(item => structuredClone(item));
   }
-  async delete(runId: string): Promise<boolean> { return this.exchanges.delete(runId); }
+  async forJob(jobId: string): Promise<RetainedProviderExchange[]> {
+    await this.purgeExpired();
+    return [...this.exchanges.values()].filter(item => item.attempt?.jobId === jobId).sort((a, b) => a.retainedAt.localeCompare(b.retainedAt)).map(item => structuredClone(item));
+  }
+  async delete(exchangeId: string): Promise<boolean> { return this.exchanges.delete(exchangeId); }
   async purgeExpired(): Promise<number> {
     const now = this.now().getTime();
     let purged = 0;
-    for (const [runId, exchange] of this.exchanges) if (Date.parse(exchange.expiresAt) <= now) { this.exchanges.delete(runId); purged++; }
+    for (const [exchangeId, exchange] of this.exchanges) if (Date.parse(exchange.expiresAt) <= now) { this.exchanges.delete(exchangeId); purged++; }
     return purged;
   }
 }

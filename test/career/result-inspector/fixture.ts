@@ -27,7 +27,10 @@ export function geminiText(label: string): string {
   return `${JSON.stringify({ coverage_audit: audit(capabilities.length), capabilities, kernel_version: "discovery-v1" }, null, 3)}\n`;
 }
 
-export function fakeGeminiClient(texts: string[]) {
+/** A response as Gemini would deliver it: plain text with STOP, or an explicit text/finishReason (refusal cases). */
+export type FakeGeminiResponse = string | { text?: unknown; finishReason?: string };
+
+export function fakeGeminiClient(responses: FakeGeminiResponse[]) {
   const requests: unknown[] = [];
   return {
     requests,
@@ -35,10 +38,18 @@ export function fakeGeminiClient(texts: string[]) {
       async generateContent(request: unknown) {
         requests.push(request);
         const index = requests.length - 1;
-        return { text: texts[index], candidates: [{ finishReason: "STOP" }], modelVersion: "gemini-fake-001", responseId: `resp-${index + 1}`, usageMetadata: { promptTokenCount: 11, candidatesTokenCount: 22 } };
+        const spec = typeof responses[index] === "string" ? { text: responses[index], finishReason: "STOP" } : responses[index] as { text?: unknown; finishReason?: string };
+        return { text: spec.text, candidates: [{ finishReason: spec.finishReason ?? "STOP" }], modelVersion: "gemini-fake-001", responseId: `resp-${index + 1}`, usageMetadata: { promptTokenCount: 11, candidatesTokenCount: 22 } };
       }
     }
   };
+}
+
+/** Kernel output of geminiText with a coverage audit that does not match the sources (runtime-level refusal). */
+export function geminiTextWithBrokenAudit(label: string): string {
+  const parsed = JSON.parse(geminiText(label)) as { coverage_audit: { source_documents_examined: number } };
+  parsed.coverage_audit.source_documents_examined = 99;
+  return JSON.stringify(parsed);
 }
 
 export const geminiProvider = (client: ReturnType<typeof fakeGeminiClient>) =>
@@ -64,8 +75,8 @@ export interface InspectorWorld {
 }
 
 /** One analysis the way the worker produces it: Discovery → Convergence → source bundle → projection reference. */
-export async function produceAnalysis(world: InspectorWorld, provider: CapabilityDiscoveryProvider, scope: ResolvedJobScope | null, suffix: string) {
-  const discovery = await runCapabilityDiscovery([cv], config, { kernelResolver: { resolve: async () => discoveryKernel }, provider, repository: world.capabilityRepository, ...(scope ? { investigationScope: renderInvestigationScope(scope) } : {}), ...(world.exchanges ? { providerExchangeArchive: world.exchanges } : {}) });
+export async function produceAnalysis(world: InspectorWorld, provider: CapabilityDiscoveryProvider, scope: ResolvedJobScope | null, suffix: string, source = cv) {
+  const discovery = await runCapabilityDiscovery([source], config, { kernelResolver: { resolve: async () => discoveryKernel }, provider, repository: world.capabilityRepository, ...(scope ? { investigationScope: renderInvestigationScope(scope) } : {}), ...(world.exchanges ? { providerExchangeArchive: world.exchanges } : {}) });
   const run = (discovery as { run: CapabilityDiscoveryRun }).run;
   if (!run) throw new Error(`fixture expects a Discovery run, got ${discovery.kind}`);
   const convergence = await runCapabilityConvergence((await world.capabilityRepository.getRunById(run.runId))!, convergenceConfig, { kernelResolver: { resolve: async () => convergenceKernel }, provider: convergenceProvider, repository: world.capabilityRepository });
@@ -73,7 +84,7 @@ export async function produceAnalysis(world: InspectorWorld, provider: Capabilit
   await world.saveJob(job);
   const analysisId = job.jobId.replace("JOB_", "ANL_");
   const candidateSourceBundleId = `CSB_${job.jobId}`;
-  await world.sourceBundles.persistCandidateSourceBundle({ candidateSourceBundleId, sourceBundleHash: computeSourceBundleHash([cv]), documents: [cv], schemaVersion: "CANDIDATE_SOURCE_BUNDLE_V1", createdAt: "2026-10-15T10:00:00.000Z" });
+  await world.sourceBundles.persistCandidateSourceBundle({ candidateSourceBundleId, sourceBundleHash: computeSourceBundleHash([source]), documents: [source], schemaVersion: "CANDIDATE_SOURCE_BUNDLE_V1", createdAt: "2026-10-15T10:00:00.000Z" });
   await world.saveAnalysis?.(analysisId, convergence.run.completedAt);
   await world.references.save({ analysisId, jobId: job.jobId, discoveryRunId: run.runId, convergenceRunId: convergence.run.convergenceRunId, candidateSourceBundleId, sourceBundleHash: run.sourceBundleHash, createdAt: convergence.run.completedAt });
   return { analysisId, job, run, convergenceRun: convergence.run, suffix };

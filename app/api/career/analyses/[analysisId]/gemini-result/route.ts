@@ -6,6 +6,7 @@ import {
 } from "../../../../../../lib/career/capability-core";
 import { JobRepository } from "../../../../../../lib/career/orchestration/job-repository";
 import { ResultInspectionError, createGeminiResultInspector, resultInspectorAccess } from "../../../../../../lib/career/result-inspector";
+import { providerExchangeArchiveFromEnvironment } from "../../../../../../lib/career/result-inspector/postgres-exchange-store";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -23,14 +24,15 @@ export async function GET(request: Request, { params }: { params: Promise<{ anal
   const capabilityRepository = new PostgresCapabilityCoreRepository(db);
   const references = new PostgresCapabilityProposalProjectionReferenceRepository(db);
   try {
+    const exchanges = await providerExchangeArchiveFromEnvironment();
     const inspection = await createGeminiResultInspector({
       references,
       capabilityRepository,
       sourceBundles: new PostgresCandidateSourceBundleRepository(db),
       jobs: new JobRepository(db),
-      projection: createCapabilityProposalProjectionReader({ references, capabilityRepository })
-      // No exchange archive is wired: the received Gemini exchange needs its own bounded store (retention.ts), whose
-      // table awaits owner approval. Until then originalGeminiResponse and the scope text are NOT_RETAINED.
+      projection: createCapabilityProposalProjectionReader({ references, capabilityRepository }),
+      // Bounded exchange archive (opt-in, disposable databases only); without it every exchange is NOT_RETAINED.
+      ...(exchanges ? { exchanges } : {})
     }).read(analysisId);
     return NextResponse.json({ success: true, inspection }, { headers: NO_STORE });
   } catch (error) {

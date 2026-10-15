@@ -30,6 +30,8 @@ import { ActivePromptResolver } from "../lib/career/prompts/resolver";
 import type { VerifiedCareerAnalysis } from "../lib/career/types";
 import { requireActiveJobScope, requireValidJobScope } from "../lib/career/job-scope";
 import { createLocalJobScopeResolver } from "../lib/career/job-scope/local-resolver";
+import { providerExchangeArchiveFromEnvironment } from "../lib/career/result-inspector/postgres-exchange-store";
+import { runWithExchangeAttempt } from "../lib/career/result-inspector/attempt";
 
 async function main() {
   if (!process.env.GEMINI_API_KEY) {
@@ -50,6 +52,8 @@ async function main() {
   // Managed proposal kernels are a startup prerequisite. Their encryption key
   // is validated before a worker exists, so invalid configuration cannot claim
   // a job and then fail after polling begins.
+  // Result Inspector: bounded archive of the received Discovery exchange (opt-in, disposable databases only).
+  const providerExchangeArchive = await providerExchangeArchiveFromEnvironment();
   const capabilityProposalExecutor = await createCareerCapabilityProposalExecutor({
     environment: {
       GEMINI_MODEL: process.env.GEMINI_MODEL,
@@ -58,6 +62,7 @@ async function main() {
     defaultGeminiModel: DEFAULT_GEMINI_MODEL_CASCADE[0],
     promptRepository,
     capabilityRepository,
+    ...(providerExchangeArchive ? { providerExchangeArchive } : {}),
     bootstrapCapabilityProposalKernels,
     createActivePromptResolver: (repository, encryptionKeyBase64) =>
       new ActivePromptResolver(repository, encryptionKeyBase64),
@@ -132,10 +137,14 @@ async function main() {
     }
   }));
 
+  // Result Inspector: with the archive on, every exchange of an attempt is attributed to that job and lease.
+  const processAttempt: typeof processJob = providerExchangeArchive
+    ? (job, reportOperation) => runWithExchangeAttempt({ jobId: job.jobId, leaseVersion: job.leaseVersion ?? null }, () => processJob(job, reportOperation))
+    : processJob;
   const worker = new CareerJobWorker(
     workerId,
     jobRepo,
-    processJob,
+    processAttempt,
     2000, // claim interval
     30000 // lease duration
   );
