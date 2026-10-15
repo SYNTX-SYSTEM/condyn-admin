@@ -1461,6 +1461,39 @@ Observation O-B2-OPEN-READ (low, existing class): B2 and the JOB structure have 
 B2 returns verbatim, source-verified CV quotes as coverage evidence. This is the same exposure as the existing open Career routes
 (`/api/career/analyses/*`, `/matches`); per GELB's reconstruction `/api/career/*` is not reachable through the domain.
 
+### 3.35 Human authority: owner confirms B-INVARIANT-PERSON; validation of `e98a40c..ad15d7b` closed (2026-10-15)
+
+The owner answered PINK directly („SFE — PINK | OWNER AUTHORITY CONFIRMATION“, 2026-10-15). Verbatim core:
+
+> Ich bestätige ausdrücklich **B-INVARIANT-PERSON**.
+> Die Owner-Entscheidung vom 15.10.2026 ersetzt die frühere Job-Scope-Pflicht:
+> **Keine Analyse ohne explizit ausgestellte Untersuchungsgrenze.**
+> - PERSON: unabhängig vom Job-Scope.
+> - PERSON × JOB: zwingend mit gültigem, ausgewähltem Job-Scope.
+> - JOB: unabhängig von Personendaten.
+>
+> Damit ist die scopefreie Gemini-Analyse ausschließlich im ausdrücklich gewählten PERSON-Modus autorisiert.
+> Die unabhängige technische Validierung wird angenommen. […] `O-B2-OPEN-READ` bleibt als Sicherheitsbeobachtung erhalten; keine
+> öffentliche Freigabe.
+
+Consequences for this record:
+- **Invariant.** The governing invariant is now „Keine Analyse ohne explizit ausgestellte Untersuchungsgrenze“. It replaces the
+  2026-10-14 invariant „Kein Gemini-Call ohne gültigen Job-Scope. Keine Ausnahmen.“
+  - From §3.26 to §3.33 a scope-free Gemini call was a deviation. Those sections stay valid as written for their tips.
+  - From `2e5e852` on, a scope-free call is authorised only for an explicitly declared and issued PERSON boundary.
+  - PERSON_X_JOB keeps the full JOB POOL FIRST gate.
+  - JOB reads no person data.
+- **B-INVARIANT-PERSON: closed by owner decision.** The §3.34 measurements now count as conformance proof:
+  - PERSON is exactly the explicit declaration and is issued only by the worker boundary;
+  - stand-ins are refused before any provider;
+  - PERSON + job scope and JOB are refused before Gemini;
+  - PERSON_X_JOB is byte-identical to `dfb4b63`.
+- **Validation of `e98a40c..ad15d7b`** (with GRÜN `aa17a3b`) is accepted by the owner and closed for this PINK field. Its open items
+  are only the ones the owner keeps: O-B2-OPEN-READ, plus the owner items listed in §3.31.
+- **O-B2-OPEN-READ stays open as a security observation.** B2 and the JOB structure have no read boundary of their own, and B2 returns
+  verbatim CV quotes. There is no public release; nothing here authorises exposing these routes.
+- **Not authorised** by this decision, and unchanged: merge, integration, deployment, live Gemini.
+
 ## 4. Boundaries and findings for coordination
 
 - F-JP-1 (closed in `b782793`): `JOB_POOL_CONNECTION.md` §4 followed the per-role `JOB_POOL_JSON_ROLE` design;
