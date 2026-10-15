@@ -1,0 +1,34 @@
+PASS U-1a GEMINI OUTPUT opens without an analysis (NO_ANALYSIS)
+PASS U-1b HIDE GEMINI OUTPUT closes it
+PASS U-1c Escape closes it
+PASS U-2a after choosing a pool the focus is on the field root, not the document — syntx-field
+PASS U-2b HIDE GEMINI OUTPUT is reachable at every point
+PASS U-2c Escape closes GEMINI OUTPUT after the pool choice
+PASS U-2d pool and mode kept (PERSON × JOB, URL unchanged)
+PASS U-3a field interaction after closing: organization and role observed by pointer
+PASS U-3b the pool list opens below the orientation surface — {"surfaceBottom":450,"listTop":466}
+PASS U-3c HIDE GEMINI OUTPUT, POOLS and INTAKE reachable with the list open
+PASS U-3d HIDE GEMINI OUTPUT closes it with the list open
+PASS U-3e another pool chosen with GEMINI OUTPUT open: Escape closes it, the other pool stays
+PASS U-3f the field answers the pointer again afterwards
+PASS U-4a precondition: the focus is on the document
+PASS U-4b Escape on the document closes GEMINI OUTPUT first
+PASS U-4c the next Escape returns one level
+PASS U-5a GEMINI OUTPUT of an analysis: the token form, nothing read
+PASS U-5b Escape in the token input closes it; the focus moves to the field root — syntx-field
+PASS U-5c reopened and closed again by Escape
+PASS U-6a back in the Capability Field; mode PERSON kept
+PASS U-6b the Capability Field takes a click (the source form opens)
+PASS U-6c back in the Job Field: the chosen pool is kept
+PASS S-1 one message: the text is the status copy, unchanged — NO ANALYSIS: run the capability sweep (identity core) or open the page with an exact analysisId
+PASS S-2 hierarchy: the status word 10px mono, the instruction 11.5px sans (was 8.5px mono throughout) — {"head":["10px","\"JetBrains Mono\""],"body":["11.5px","system-ui"],"color":"rgba(255, 232, 200, 0.95)"}
+PASS S-3 contrast of the instruction over the chip (upper bound of its glow), WCAG AA ≥ 4.5 — 14.7:1
+PASS S-4 LIVE: indicator and aura pulse at 4.8 s (aura 0.24 s later); no text layer moves — {"core":["sxSignalCore","4.8s"],"aura":["sxSignalAura","4.8s","0.24s"],"text":[]}
+PASS S-5 no layout motion: chip and text boxes identical over a full cycle (12 samples, 5 s) — 45,216.7,308,76.3,83,228.7,255,51.3
+PASS S-6 the keyframes animate opacity and transform only — animation-timing-function,opacity,transform
+PASS S-10 the field's own NO ANALYSIS statement: the same copy and voices, still, clear of the non-claims line — {"gap":16,"animated":0,"size":"11.5px"}
+PASS S-7 reduced motion: no animation, the static signal stays visible — {"mode":"REDUCED","core":"none","aura":"none","auraOpacity":"0.5"}
+PASS S-9 infinite motions: NO ANALYSIS adds exactly sxSignalAura and sxSignalCore to the same field without the signal — with signal: atmosphereGlow, coreBreathe, moonOrbit, orbitFloatPhase2, particleIn, plasmaFlarePulse, plasmaRotateCcw, plasmaRotateCw, rotateClockwise, sxSignalAura, sxSignalCore, waveExpand | without: atmosphereGlow, coreBreathe, moonOrbit, orbitFloatPhase2, particleIn, plasmaFlarePulse, plasmaRotateCcw, plasmaRotateCw, rotateClockwise, waveExpand
+PASS S-8 the signal belongs to NO ANALYSIS only: PERSON's state line stays as it was
+PASS X-1 no page errors
+33/33

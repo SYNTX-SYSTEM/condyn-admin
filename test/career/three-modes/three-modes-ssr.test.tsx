@@ -25,7 +25,7 @@ vi.mock("../../../lib/career/ui/useRoleInvestigation", async (importOriginal) =>
 
 import { SemanticCareerIntelligenceField } from "../../../app/components/career/demo/SemanticCareerIntelligenceField";
 import { SyntxInvestigationSelector } from "../../../app/components/career/demo/SyntxInvestigationSelector";
-import { CoverageBody, GeminiOutputBody, StructureBody, SyntxField } from "../../../app/components/career/demo/SyntxField";
+import { CoverageBody, GeminiOutputBody, StructureBody, SYNTX_CSS, SyntxField } from "../../../app/components/career/demo/SyntxField";
 import { SourceDock } from "../../../app/components/career/demo/SourceDock";
 import { EMPTY_CAREER_INTELLIGENCE_DATA } from "../../../app/career/demo/demo-data";
 import { SIL_COPY } from "../../../lib/career/view-model/sil-language";
@@ -191,5 +191,66 @@ describe("the investigation bodies (server-rendered)", () => {
     const props = { workflow: withMatches() as never, analysisSource: { kind: "URL", analysisId: "ANL_TEST" } as const, observation: { kind: "FIELD", organizationId: null, roleId: null, requirementId: null, apertureSignId: null } as const, onObserve: () => undefined, onSelectPool: () => undefined, onExit: () => undefined };
     expect(renderToString(<SyntxField {...props} geminiOutputEnabled />)).toContain('data-testid="syntx-gemini-output-toggle"');
     expect(renderToString(<SyntxField {...props} geminiOutputEnabled={false} />)).not.toContain('data-testid="syntx-gemini-output-toggle"');
+  });
+});
+
+/** DEMO UI FIX + SEMIONTIC REFINEMENT (owner, 2026-10-15): the NO ANALYSIS state line as a signal; the edge layout. */
+describe("Job Field: NO ANALYSIS signal and edge layout", () => {
+  const t = SIL_COPY.en.syntx;
+  const at = { kind: "FIELD", organizationId: null, roleId: null, requirementId: null, apertureSignId: null } as const;
+  const props = { observation: at, onObserve: () => undefined, onSelectPool: () => undefined, onExit: () => undefined };
+  const noAnalysis = { ...withMatches(), matches: { state: "IDLE" } } as never;
+  /** The whole element of a test id (its nested spans balanced), as server-rendered. */
+  const element = (html: string, testId: string): string => {
+    const start = html.lastIndexOf("<", html.indexOf(`data-testid="${testId}"`));
+    const name = /^<(\w+)/.exec(html.slice(start))![1];
+    let depth = 0;
+    for (const match of html.slice(start).matchAll(new RegExp(`<(/?)${name}\\b[^>]*>`, "g"))) {
+      depth += match[1] === "/" ? -1 : match[0].endsWith("/>") ? 0 : 1;
+      if (depth === 0) return html.slice(start, start + match.index! + match[0].length);
+    }
+    return "";
+  };
+  const text = (fragment: string): string => fragment.replace(/<[^>]+>/g, "").replace(/&#x27;/g, "'").replace(/&amp;/g, "&");
+
+  it("PERSON × JOB with a pool and no analysis: the state line is the signal, one message, unchanged copy", () => {
+    const chip = element(renderToString(<SyntxField {...props} workflow={noAnalysis} analysisSource={{ kind: "NONE" }} />), "syntx-state");
+    expect(chip).toContain('data-state="NO_ANALYSIS"');
+    expect(chip).toContain('data-sx-signal="awaiting-analysis"');
+    expect(text(chip)).toBe(SIL_COPY.en.jobPool.analysisNone);
+    expect(chip).toMatch(/data-sx-signal-aura="true" aria-hidden="true"/);
+    expect(chip).toMatch(/aria-hidden="true"[^>]*><span data-sx-signal-core="true"/);
+    expect(chip).toContain("font-size:11.5px");
+    // The field's own statement of the same state: the same voices, legible, still (no signal of its own).
+    const statement = element(renderToString(<SyntxField {...props} workflow={noAnalysis} analysisSource={{ kind: "NONE" }} />), "syntx-no-analysis");
+    expect(text(statement)).toBe(SIL_COPY.en.jobPool.analysisNone);
+    expect(statement).toContain("font-size:11.5px");
+    expect(statement).not.toContain("data-sx-signal");
+    expect(text(element(renderToString(<SyntxField {...props} workflow={noAnalysis} analysisSource={{ kind: "NONE" }} locale="de" />), "syntx-state"))).toBe(SIL_COPY.de.jobPool.analysisNone);
+  });
+
+  it("the signal is NO ANALYSIS's only: PERSON, a withheld comparison and an available comparison keep the state line as it was", () => {
+    const person = renderToString(<SyntxField {...props} workflow={noAnalysis} analysisSource={{ kind: "NONE" }} investigation={{ mode: "PERSON", analysisId: null, analysisMode: null, jobId: null, scopeValid: false }} />);
+    const withheld = renderToString(<SyntxField {...props} workflow={noAnalysis} analysisSource={{ kind: "NONE" }} investigation={{ mode: "PERSON_X_JOB", analysisId: "ANL_TEST", analysisMode: null, jobId: null, scopeValid: true, comparisonWithheld: "PERSON" }} />);
+    const available = renderToString(<SyntxField {...props} workflow={withMatches() as never} analysisSource={{ kind: "URL", analysisId: "ANL_TEST" }} />);
+    for (const html of [person, withheld, available]) expect(tag(html, "syntx-state")).not.toContain("data-sx-signal");
+    expect(text(element(withheld, "syntx-state"))).toBe(t.investigation.withheld.PERSON);
+  });
+
+  it("the motion: opacity and transform only, LIVE only, 4.8 s; reduced motion stops every animation of the field", () => {
+    const frames = [...SYNTX_CSS.matchAll(/@keyframes (sxSignal\w+) \{(.*)\}\n/g)];
+    expect(frames.map(frame => frame[1])).toEqual(["sxSignalCore", "sxSignalAura"]);
+    for (const [, , body] of frames) for (const property of body.matchAll(/([a-z-]+):/g)) expect(["opacity", "transform", "animation-timing-function"]).toContain(property[1]);
+    const rules = SYNTX_CSS.split("\n").filter(line => /animation: sxSignal/.test(line));
+    expect(rules).toHaveLength(2);
+    for (const rule of rules) expect(rule).toMatch(/^\[data-testid="syntx-field"\]\[data-motion-mode="LIVE"\] \[data-sx-signal="awaiting-analysis"\] \[data-sx-signal-(core|aura)\] \{ animation: sxSignal\w+ 4\.8s/);
+    expect(SYNTX_CSS).toMatch(/@media \(prefers-reduced-motion: reduce\) \{\s*\[data-testid="syntx-field"\], \[data-testid="syntx-field"\] \* \{ animation: none !important;/);
+  });
+
+  it("edge layout before measuring: the pool list keeps its place; the orientation surface lies above the bodies", () => {
+    const html = renderToString(<SyntxField {...props} workflow={noAnalysis} analysisSource={{ kind: "NONE" }} geminiOutputEnabled />);
+    expect(tag(html, "job-pool-list")).toContain("top:300px");
+    expect(tag(html, "job-pool-list")).toContain("max-height:max(160px, calc(100vh - 420px))");
+    expect(html).toMatch(/data-sx-surface="header"[^>]*z-index:47/);
   });
 });
