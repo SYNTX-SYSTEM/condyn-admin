@@ -1,8 +1,9 @@
 import { and, eq } from "drizzle-orm";
-import type { CapabilityCoreRepository, CapabilityProposalProjectionReferenceRepository } from "../capability-core";
+import { sha256Utf8, type CapabilityCoreRepository, type CapabilityProposalProjectionReferenceRepository } from "../capability-core";
 import { careerAnalyses, careerAnalysisJobs } from "../db/schema";
 import { JobScopeRequiredError } from "../job-scope/errors";
-import type { JobScopeSelection } from "../job-scope/scope";
+import { renderInvestigationScope } from "../job-scope/investigation-scope";
+import type { JobScopeResolver, JobScopeSelection } from "../job-scope/scope";
 import type { JobRecord } from "../orchestration/job";
 import { InvestigationBoundaryError, parseDeclaredInvestigation } from "./boundary";
 
@@ -23,8 +24,13 @@ export type AnalysisInvestigationUnresolvedReason =
   /** More than one job claims the analysis. */
   | "AMBIGUOUS"
   | "LINEAGE_INVALID"
-  /** The declaration and the Discovery run disagree (e.g. a PERSON_X_JOB job whose Discovery ran without a scope). */
-  | "RUN_CONTRADICTS_DECLARATION";
+  /**
+   * The declaration and the Discovery run disagree: a PERSON_X_JOB job whose Discovery ran without a scope (e.g. before
+   * e643e96), a PERSON job whose run carries one, or a run whose scope hash is not the declared selection's scope.
+   */
+  | "RUN_CONTRADICTS_DECLARATION"
+  /** The declared selection can no longer be resolved from the stored pool, so the run's scope cannot be proven. */
+  | "SCOPE_UNAVAILABLE";
 
 export class AnalysisInvestigationError extends Error {
   constructor(
@@ -53,6 +59,8 @@ export interface AnalysisInvestigationDependencies {
   references: Pick<CapabilityProposalProjectionReferenceRepository, "getByAnalysisId">;
   runs: Pick<CapabilityCoreRepository, "getRunById" | "getConvergenceRunById">;
   jobs: { getJob(jobId: string): Promise<JobRecord | null> };
+  /** Resolves the declared selection from the stored pool; read only when a scoped Discovery run must be proven. */
+  scopes: JobScopeResolver;
 }
 
 const unresolved = (reason: AnalysisInvestigationUnresolvedReason): never => { throw new AnalysisInvestigationError("ERR_ANALYSIS_INVESTIGATION_UNRESOLVED", 409, reason); };
@@ -87,6 +95,16 @@ export async function readPersistedAnalysisInvestigation(deps: AnalysisInvestiga
     || convergence.discoveryRunId !== run.runId || run.sourceBundleHash !== reference.sourceBundleHash) return unresolved("LINEAGE_INVALID");
   // A PERSON run never carries a scope; a PERSON_X_JOB run carries exactly one (2e5e852, e643e96).
   if ((declared.mode === "PERSON_X_JOB") !== (run.investigationScope !== undefined)) return unresolved("RUN_CONTRADICTS_DECLARATION");
+  if (declared.mode === "PERSON_X_JOB") {
+    // The run must have seen exactly the declared job, proven like B2: the declared selection rendered from the stored
+    // pool hashes to the run's scope hash (PINK O-URL-SCOPE-IDENTITY, §3.38).
+    let scopeText: string;
+    try { scopeText = renderInvestigationScope(await deps.scopes.resolve(declared.selection)).text; } catch (error) {
+      if (error instanceof JobScopeRequiredError) return unresolved("SCOPE_UNAVAILABLE");
+      throw error;
+    }
+    if (sha256Utf8(scopeText) !== run.investigationScope!.scopeHash) return unresolved("RUN_CONTRADICTS_DECLARATION");
+  }
   return {
     investigationVersion: "ANALYSIS_INVESTIGATION_V1", analysisId, jobId: job.jobId, mode: declared.mode, jobScopeSelection,
     basis: "JOB_DECLARATION_AND_DISCOVERY_RUN", discoveryRunId: run.runId, investigationScopeHash: run.investigationScope?.scopeHash ?? null

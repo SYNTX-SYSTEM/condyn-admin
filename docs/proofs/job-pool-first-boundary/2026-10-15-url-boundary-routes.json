@@ -1,6 +1,6 @@
 {
   "proof": "url-boundary-closure-routes",
-  "commit": "26df225",
+  "commit": "d54c718",
   "network": "loopback only, no Gemini",
   "passed": true,
   "checks": [
@@ -36,6 +36,14 @@
       "observed": {
         "status": 409,
         "body": "{\"success\":false,\"issues\":[{\"code\":\"ERR_ANALYSIS_INVESTIGATION_UNRESOLVED\",\"reason\":\"NOT_RECORDED\"}]}"
+      }
+    },
+    {
+      "case": "run scope ≠ declared job (role B declared, role A seen) → 409 RUN_CONTRADICTS_DECLARATION",
+      "ok": true,
+      "observed": {
+        "status": 409,
+        "body": "{\"success\":false,\"issues\":[{\"code\":\"ERR_ANALYSIS_INVESTIGATION_UNRESOLVED\",\"reason\":\"RUN_CONTRADICTS_DECLARATION\"}]}"
       }
     },
     {

@@ -10,6 +10,7 @@ import { fakeGeminiClient, geminiProvider, geminiText, produceAnalysis, type Ins
 function world() {
   const jobs = new Map<string, JobRecord>();
   const analyses = new Set<string>();
+  const scopeReads: string[] = [];
   const inspector: InspectorWorld = {
     capabilityRepository: new InMemoryCapabilityCoreRepository(), references: new InMemoryCapabilityProposalProjectionReferenceRepository(), sourceBundles: new InMemoryCandidateSourceBundleRepository(),
     saveJob: async job => { jobs.set(job.jobId, structuredClone(job)); }, saveAnalysis: async analysisId => { analyses.add(analysisId); }
@@ -17,7 +18,8 @@ function world() {
   const deps: AnalysisInvestigationDependencies = {
     analysisExists: async id => analyses.has(id),
     succeededJobIdsForAnalysis: async id => [...jobs.values()].filter(job => job.status === "SUCCEEDED" && job.resultAnalysisId === id).map(job => job.jobId),
-    references: inspector.references, runs: inspector.capabilityRepository, jobs: { getJob: async id => jobs.get(id) ?? null }
+    references: inspector.references, runs: inspector.capabilityRepository, jobs: { getJob: async id => jobs.get(id) ?? null },
+    scopes: { resolve: async selection => { scopeReads.push(selection.poolRoleId); return resolveTestJobScope(selection); } }
   };
   /** A job the way the worker leaves it: SUCCEEDED with the processor's analysis id, and no projection reference. */
   const succeededJob = (sourceData: Record<string, unknown>) => {
@@ -27,7 +29,7 @@ function world() {
     analyses.add(analysisId);
     return analysisId;
   };
-  return { jobs, analyses, inspector, deps, succeededJob };
+  return { jobs, analyses, inspector, deps, succeededJob, scopeReads };
 }
 const produce = (w: ReturnType<typeof world>, scoped: boolean, suffix: string) =>
   produceAnalysis(w.inspector, geminiProvider(fakeGeminiClient([geminiText(suffix)])), scoped ? resolveTestJobScope() : null, suffix);
@@ -50,6 +52,8 @@ describe("persisted investigation boundary of an analysis", () => {
       basis: "JOB_DECLARATION_AND_DISCOVERY_RUN", discoveryRunId: scoped.run.runId, investigationScopeHash: scoped.run.investigationScope!.scopeHash
     });
     expect(decodeAnalysisInvestigation(JSON.parse(JSON.stringify(read)))).toEqual(read);
+    // Only the scoped run needed the stored pool.
+    expect(w.scopeReads).toEqual([TEST_JOB_SCOPE.poolRoleId]);
   });
 
   it("a job without projection reference (reused snapshot) resolves from its declaration alone; the earlier contract stays PERSON_X_JOB", async () => {
@@ -97,6 +101,19 @@ describe("persisted investigation boundary of an analysis", () => {
     w.jobs.set(scopedJob.jobId, { ...scopedJob, inputRef: { ...scopedJob.inputRef, sourceData: { documents: [], investigation: { mode: "PERSON" } } } });
     expect(await reasonOf(readPersistedAnalysisInvestigation(w.deps, scoped.analysisId))).toBe("409:RUN_CONTRADICTS_DECLARATION");
   });
+
+  it("a scoped run must have seen exactly the declared job (PINK O-URL-SCOPE-IDENTITY); an unresolvable selection is SCOPE_UNAVAILABLE", async () => {
+    const w = world();
+    const scoped = await produce(w, true, "s");
+    const job = w.jobs.get(scoped.job.jobId)!;
+    // The job declares role B of the same pool, the Discovery run saw role A.
+    w.jobs.set(job.jobId, { ...job, inputRef: { ...job.inputRef, sourceData: { documents: [], investigation: { mode: "PERSON_X_JOB" }, jobScope: TEST_JOB_SCOPE_B } } });
+    expect(await reasonOf(readPersistedAnalysisInvestigation(w.deps, scoped.analysisId))).toBe("409:RUN_CONTRADICTS_DECLARATION");
+    w.jobs.set(job.jobId, { ...job, inputRef: { ...job.inputRef, sourceData: { documents: [], jobScope: { ...TEST_JOB_SCOPE, poolRoleId: "role_removed_from_pool" } } } });
+    expect(await reasonOf(readPersistedAnalysisInvestigation(w.deps, scoped.analysisId))).toBe("409:SCOPE_UNAVAILABLE");
+    w.jobs.set(job.jobId, job);
+    expect(await readPersistedAnalysisInvestigation(w.deps, scoped.analysisId)).toMatchObject({ mode: "PERSON_X_JOB", jobScopeSelection: TEST_JOB_SCOPE });
+  });
 });
 
 describe("browser client and the legacy comparison guard", () => {
@@ -125,6 +142,8 @@ describe("browser client and the legacy comparison guard", () => {
     expect(await readAnalysisInvestigation(respond(404, { success: false, issues: [{ code: "ERR_ANALYSIS_INVESTIGATION_NOT_FOUND" }] }), "A")).toEqual({ state: "NOT_FOUND" });
     expect(await readAnalysisInvestigation(respond(409, { success: false, issues: [{ code: "ERR_ANALYSIS_INVESTIGATION_UNRESOLVED", reason: "NOT_RECORDED" }] }), "A")).toEqual({ state: "UNRESOLVED", reason: "NOT_RECORDED" });
     expect(await readAnalysisInvestigation(respond(409, { success: false, issues: [{ code: "ERR_ANALYSIS_INVESTIGATION_UNRESOLVED", reason: "MADE_UP" }] }), "A")).toEqual({ state: "UNRESOLVED", reason: null });
+    expect(await readAnalysisInvestigation(respond(409, { success: false, issues: [{ code: "ERR_ANALYSIS_INVESTIGATION_UNRESOLVED", reason: "SCOPE_UNAVAILABLE" }] }), "A")).toEqual({ state: "UNRESOLVED", reason: "SCOPE_UNAVAILABLE" });
+    expect(await readAnalysisInvestigation(respond(503, { success: false, issues: [{ code: "ERR_JOB_POOL_PERSISTENCE_NOT_PROVISIONED" }] }), "A")).toEqual({ state: "FAILED" });
     expect(await readAnalysisInvestigation(respond(404, { success: false, issues: [{ code: "ERR_NOT_FOUND" }] }), "A")).toEqual({ state: "FAILED" });
     expect(await readAnalysisInvestigation(async () => { throw new Error("offline"); }, "A")).toEqual({ state: "FAILED" });
   });

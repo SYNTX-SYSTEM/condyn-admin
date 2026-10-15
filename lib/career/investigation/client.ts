@@ -17,7 +17,7 @@ type Fetch = (input: string, init: { method: "GET"; cache: "no-store"; signal?: 
 const isRecord = (value: unknown): value is Record<string, unknown> => !!value && typeof value === "object" && !Array.isArray(value);
 const nonEmpty = (value: unknown): value is string => typeof value === "string" && value.length > 0;
 const KEYS = ["analysisId", "basis", "discoveryRunId", "investigationScopeHash", "investigationVersion", "jobId", "jobScopeSelection", "mode"];
-const REASONS: readonly string[] = ["NOT_RECORDED", "NOT_DECLARED", "DECLARATION_INVALID", "AMBIGUOUS", "LINEAGE_INVALID", "RUN_CONTRADICTS_DECLARATION"];
+const REASONS: readonly string[] = ["NOT_RECORDED", "NOT_DECLARED", "DECLARATION_INVALID", "AMBIGUOUS", "LINEAGE_INVALID", "RUN_CONTRADICTS_DECLARATION", "SCOPE_UNAVAILABLE"];
 
 export function decodeAnalysisInvestigation(value: unknown): PersistedAnalysisInvestigation | null {
   if (!isRecord(value) || Object.keys(value).sort().join() !== KEYS.join() || value.investigationVersion !== "ANALYSIS_INVESTIGATION_V1") return null;

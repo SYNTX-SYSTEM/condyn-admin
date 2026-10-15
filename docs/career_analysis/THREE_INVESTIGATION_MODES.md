@@ -88,7 +88,7 @@ Owner-Auftrag vom 2026-10-15: Eine über die URL geöffnete Analyse trägt keine
 2. Der Auftrag ergibt sich aus `reference.jobId` der Projektionsreferenz und allen SUCCEEDED-Aufträgen mit `result_analysis_id = analysisId`. Es muss genau einer sein.
 3. Geprüft wird `jobId` mit `JOB_` statt `ANL_` gegen `analysisId`, nach der Regel des Job-Prozessors.
 4. Den Modus liest `parseDeclaredInvestigation(job.inputRef.sourceData)`, derselbe Parser, der den Auftrag angenommen hat und den der Worker bei jedem Abholen erneut anwendet. Ein Auftrag nach altem Vertrag mit `jobScope` ergibt PERSON_X_JOB, Links auf solche Analysen bleiben also gültig.
-5. Mit Projektionsreferenz gilt dieselbe Abstammungsprüfung wie bei B2. Zusätzlich trägt der Discovery-Lauf genau dann einen Scope, wenn der Modus PERSON_X_JOB ist; `basis` ist dann `JOB_DECLARATION_AND_DISCOVERY_RUN`. Ohne Referenz (Wiederverwendung eines Snapshots) lautet `basis` `JOB_DECLARATION`.
+5. Mit Projektionsreferenz gilt dieselbe Abstammungsprüfung wie bei B2. Der Discovery-Lauf trägt genau dann einen Scope, wenn der Modus PERSON_X_JOB ist. Bei PERSON_X_JOB muss es außerdem genau der erklärte Job sein: Die erklärte Auswahl, aus dem gespeicherten Pool gerendert, hasht wie bei B2 auf den Scope-Hash des Laufs (PINK O-URL-SCOPE-IDENTITY, §3.38). `basis` ist dann `JOB_DECLARATION_AND_DISCOVERY_RUN`. Nur dieser Fall liest den Pool; ist dessen Persistenz nicht eingerichtet, antwortet die Route mit 503. Ohne Referenz (Wiederverwendung eines Snapshots) lautet `basis` `JOB_DECLARATION`.
 
 **Nicht auflösbar: 409 `ERR_ANALYSIS_INVESTIGATION_UNRESOLVED`** mit `reason`:
 
@@ -99,7 +99,8 @@ Owner-Auftrag vom 2026-10-15: Eine über die URL geöffnete Analyse trägt keine
 | `DECLARATION_INVALID` | ungültige oder widersprüchliche Erklärung |
 | `AMBIGUOUS` | mehrere Aufträge |
 | `LINEAGE_INVALID` | Abstammung gebrochen |
-| `RUN_CONTRADICTS_DECLARATION` | Erklärung und Discovery-Lauf widersprechen sich, etwa ein PERSON_X_JOB-Auftrag vor `e643e96`, dessen Discovery ohne Scope lief |
+| `RUN_CONTRADICTS_DECLARATION` | Erklärung und Discovery-Lauf widersprechen sich: ein PERSON_X_JOB-Auftrag vor `e643e96`, dessen Discovery ohne Scope lief; ein PERSON-Lauf mit Scope; ein Lauf, dessen Scope-Hash nicht zur erklärten Auswahl gehört |
+| `SCOPE_UNAVAILABLE` | Die erklärte Auswahl ist aus dem gespeicherten Pool nicht mehr auflösbar; der Scope des Laufs ist damit nicht beweisbar |
 
 **Frontend-Projektion** (`lib/career/investigation/client.ts`; GRÜN bindet ihn im eigenen Mandat ein)
 - `readAnalysisInvestigation` liefert RESOLVED, UNRESOLVED, NOT_FOUND oder FAILED. Der Decoder ist streng, und eine Antwort zu einer anderen analysisId gilt als FAILED.
@@ -129,7 +130,9 @@ Kernel, Prompts, Ausgabeschemata, Phase-4, Evidence-Validator, Projektion, Match
 | `6a30220` | Inspector-Client und Doku |
 | `ad15d7b` | Nachweise |
 | `26df225` | persistierte Grenze einer Analyse (§6) |
-| dieser Commit | Nachweis zu §6 |
+| `ef189d3` | Nachweis zu §6 |
+| `d54c718` | Scope-Identität des Laufs (PINK §3.38) |
+| dieser Commit | Nachweis zu `d54c718` |
 
 ## 9. Nachweise (ohne Gemini, 0 Netzwerkversuche)
 
@@ -149,12 +152,13 @@ Die Belege liegen unter `docs/proofs/job-pool-first-boundary/2026-10-15-three-mo
   - eine PERSON-Analyse 409 NOT_SCOPED.
 - Der Inspector zeigt PERSON ohne Scope und PERSON_X_JOB mit Scope.
 
-**Persistierte Grenze (§6), echter Next-Server auf einer Wegwerf-Datenbank: 14/14** (`2026-10-15-url-boundary-routes.json`, 0 Netzwerkversuche)
+**Persistierte Grenze (§6), echter Next-Server auf einer Wegwerf-Datenbank: 15/15** (Stand `d54c718`) (`2026-10-15-url-boundary-routes.json`, 0 Netzwerkversuche)
 - **Antworten der Route:**
   - PERSON_X_JOB 200 mit deklarierter Auswahl und Scope-Hash;
   - PERSON 200 ohne Auswahl;
   - Auftrag nach altem Vertrag 200 PERSON_X_JOB;
   - Analyse ohne Auftrag 409 NOT_RECORDED;
+  - erklärte Rolle B, Lauf mit Rolle A: 409 RUN_CONTRADICTS_DECLARATION;
   - unbekannte Analyse 404.
 - **Inhalt:** keine Dokumentinhalte, kein Legacy-Payload.
 - **Client gegen den Server:** Die Sperre lässt den Vergleich nur für PERSON_X_JOB im eigenen Pool zu. Kein Vergleich bei PERSON, einem anderen Pool oder einer ungeklärten Grenze.
@@ -174,4 +178,5 @@ Die Belege liegen unter `docs/proofs/job-pool-first-boundary/2026-10-15-three-mo
 - **Legacy und Demo-Matching:** Der pool-weite Legacy-Vergleich und das Demo-Matching bleiben technisch unverändert. Sie werden nicht als rollenbezogenes Ergebnis ausgegeben.
 - **Zugriff:** Die Career-Routen haben weiterhin keine Anmeldung.
 - **Analysen ohne Auftrag** bleiben UNRESOLVED und zeigen keinen Jobvergleich (§6).
+- **Auftragsstatus:** Ein Auftrag, der nur über die Projektionsreferenz gefunden wird, muss nicht SUCCEEDED sein (PINK O-URL-REF-STATUS). Die gemeldete Grenze ist trotzdem die erklärte und bewiesene, wie bei B2.
 - **Rollengleichheit für den Legacy-Vergleich:** strengere Option, Owner-Entscheidung.
