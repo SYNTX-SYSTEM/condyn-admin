@@ -8,12 +8,16 @@ export interface SnapshotConfiguration {
   inference: VerifiedCapabilitySnapshot["inference"];
   schemaVersion: string;
   publication?: VerifiedCapabilitySnapshot["publication"];
+  investigationScope?: VerifiedCapabilitySnapshot["investigationScope"];
 }
 
 export function computeSnapshotKey(snapshot: SnapshotConfiguration): string {
+  // SFE: confirmed capabilities are never shared across job scopes. A scoped snapshot appends its scope hash;
+  // unscoped keys stay byte-identical.
+  const scope = snapshot.investigationScope === undefined ? [] : [snapshot.investigationScope.scopeHash];
   // Phase 4 truth is authorized by one immutable verification artifact, not mutable graph content.
-  if (snapshot.publication?.mode === "PHASE4_VERIFIED") return sha256Utf8(JSON.stringify(["CAPABILITY_VERIFIED_SNAPSHOT_V1", snapshot.publication.verificationRunId, snapshot.publication.verificationRawOutputHash]));
-  return sha256Utf8(JSON.stringify([snapshot.sourceBundleHash, snapshot.kernelVersion, snapshot.prompt.checksum, snapshot.inference.provider, snapshot.inference.model, snapshot.schemaVersion]));
+  if (snapshot.publication?.mode === "PHASE4_VERIFIED") return sha256Utf8(JSON.stringify(["CAPABILITY_VERIFIED_SNAPSHOT_V1", snapshot.publication.verificationRunId, snapshot.publication.verificationRawOutputHash, ...scope]));
+  return sha256Utf8(JSON.stringify([snapshot.sourceBundleHash, snapshot.kernelVersion, snapshot.prompt.checksum, snapshot.inference.provider, snapshot.inference.model, snapshot.schemaVersion, ...scope]));
 }
 
 export function buildSnapshotId(snapshot: SnapshotConfiguration): string {
@@ -27,7 +31,7 @@ export function assertVerifiedCapabilityEvidence(capability: VerifiedCapability,
 }
 
 /** Generic Phase-1 constructor input deliberately excludes Phase-4 publication binding. */
-export type VerifiedSnapshotInput = Pick<VerifiedCapabilitySnapshot, "sourceBundleHash" | "kernelVersion" | "prompt" | "inference" | "schemaVersion" | "createdAt" | "status"> & Pick<VerifiedCapabilitySnapshot["validationSummary"], "candidateCount" | "rejectedCandidateCount">;
+export type VerifiedSnapshotInput = Pick<VerifiedCapabilitySnapshot, "sourceBundleHash" | "kernelVersion" | "prompt" | "inference" | "schemaVersion" | "investigationScope" | "createdAt" | "status"> & Pick<VerifiedCapabilitySnapshot["validationSummary"], "candidateCount" | "rejectedCandidateCount">;
 
 export function assertVerifiedCapabilitySnapshot(snapshot: VerifiedCapabilitySnapshot): void {
   const expectedSnapshotId = buildSnapshotId(snapshot);
@@ -69,7 +73,7 @@ export function createVerifiedCapabilitySnapshot(input: VerifiedSnapshotInput, c
   const capabilityIds = capabilities.map(({ capabilityId }) => capabilityId);
   const evidenceIds = evidence.map(({ evidenceId }) => evidenceId);
   const relationIds = relations.map(({ relationId }) => relationId);
-  const snapshotConfig = { sourceBundleHash: input.sourceBundleHash, kernelVersion: input.kernelVersion, prompt: input.prompt, inference: input.inference, schemaVersion: input.schemaVersion };
+  const snapshotConfig = { sourceBundleHash: input.sourceBundleHash, kernelVersion: input.kernelVersion, prompt: input.prompt, inference: input.inference, schemaVersion: input.schemaVersion, investigationScope: input.investigationScope };
   const snapshot: VerifiedCapabilitySnapshot = { ...input, snapshotId: buildSnapshotId(snapshotConfig), capabilityIds, evidenceIds, relationIds, capabilities, evidence, relations, validationSummary: { candidateCount: input.candidateCount, rejectedCandidateCount: input.rejectedCandidateCount, verifiedCapabilityCount: capabilities.length, verifiedEvidenceCount: evidence.filter(({ verification }) => verification.status === "VERIFIED").length, rejectedEvidenceCount: evidence.filter(({ verification }) => verification.status !== "VERIFIED").length, unresolvedRelationCount: relations.filter(({ relationType }) => relationType === "UNRESOLVED").length } };
   assertVerifiedCapabilitySnapshot(snapshot);
   return snapshot;

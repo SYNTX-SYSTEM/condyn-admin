@@ -1,0 +1,63 @@
+{
+  "proof": "three-investigation-modes-routes",
+  "commit": "6a30220",
+  "network": "loopback only, no Gemini",
+  "passed": true,
+  "checks": [
+    {
+      "case": "analyze PERSON without job scope",
+      "status": 202,
+      "ok": true
+    },
+    {
+      "case": "analyze PERSON_X_JOB with job scope",
+      "status": 202,
+      "ok": true
+    },
+    {
+      "case": "analyze without boundary (earlier contract)",
+      "status": 400,
+      "ok": true
+    },
+    {
+      "case": "analyze PERSON plus job scope",
+      "status": 400,
+      "ok": true
+    },
+    {
+      "case": "analyze JOB",
+      "status": 400,
+      "ok": true
+    },
+    {
+      "case": "JOB structure of the selected role",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "case": "B2 comparison of the PERSON_X_JOB analysis",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "case": "B2 with another role (scope change)",
+      "status": 409,
+      "ok": true
+    },
+    {
+      "case": "B2 for a PERSON analysis",
+      "status": 409,
+      "ok": true
+    },
+    {
+      "case": "inspector shows PERSON, unscoped",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "case": "inspector shows PERSON_X_JOB, scoped",
+      "status": 200,
+      "ok": true
+    }
+  ]
+}

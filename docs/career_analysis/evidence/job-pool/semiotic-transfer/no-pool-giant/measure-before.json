@@ -1,0 +1,458 @@
+{
+ "before-zero-1600x1000": {
+  "state": "NO_POOL",
+  "poolCount": "0",
+  "giant": [
+   620,
+   540,
+   980,
+   582
+  ],
+  "body": [
+   620,
+   540,
+   980,
+   582
+  ],
+  "giantCount": 1,
+  "poolBody": 0,
+  "header": null,
+  "selector": [
+   563,
+   70,
+   1037,
+   118
+  ],
+  "orient": [
+   28,
+   145,
+   368,
+   306
+  ],
+  "poolList": [
+   28,
+   361,
+   344,
+   452
+  ],
+  "footer": null,
+  "fieldRect": [
+   0,
+   61,
+   1600,
+   1061
+  ],
+  "leaves": [
+   {
+    "text": "NO JOB POOL UPLOAD AT THE FIELD: select one persisted upload (explicit",
+    "rect": [
+     620,
+     540,
+     980,
+     582
+    ],
+    "font": "system-ui 12.5px/20.625px w400 ls normal",
+    "color": "rgba(230, 241, 248, 0.78)",
+    "sw": 360,
+    "cw": 360
+   }
+  ],
+  "running": "atmosphereGlow,atmosphereGlow,coreBreathe,gradientBreath,orbitFloatPhase2,orbitFloatPhase2,orbitFloatPhase2,orbitFloatPhase2,orbitFloatPhase2,orbitFloatPhase2,particleIn,particleIn,plasmaFlarePulse,plasmaRotateCcw,plasmaRotateCw,rotateClockwise,sxPanelCurrent,waveExpand,waveExpand",
+  "giantAnims": "",
+  "errors": [],
+  "nonGet": []
+ },
+ "before-persisted-1600x1000": {
+  "state": "NO_POOL",
+  "poolCount": "3",
+  "giant": [
+   620,
+   540,
+   980,
+   582
+  ],
+  "body": [
+   620,
+   540,
+   980,
+   582
+  ],
+  "giantCount": 1,
+  "poolBody": 0,
+  "header": null,
+  "selector": [
+   563,
+   70,
+   1037,
+   118
+  ],
+  "orient": [
+   28,
+   145,
+   368,
+   306
+  ],
+  "poolList": [
+   28,
+   361,
+   344,
+   637
+  ],
+  "footer": null,
+  "fieldRect": [
+   0,
+   61,
+   1600,
+   1061
+  ],
+  "leaves": [
+   {
+    "text": "NO JOB POOL UPLOAD AT THE FIELD: select one persisted upload (explicit",
+    "rect": [
+     620,
+     540,
+     980,
+     582
+    ],
+    "font": "system-ui 12.5px/20.625px w400 ls normal",
+    "color": "rgba(230, 241, 248, 0.78)",
+    "sw": 360,
+    "cw": 360
+   }
+  ],
+  "running": "atmosphereGlow,atmosphereGlow,coreBreathe,gradientBreath,orbitFloatPhase2,orbitFloatPhase2,orbitFloatPhase2,orbitFloatPhase2,orbitFloatPhase2,orbitFloatPhase2,particleIn,particleIn,plasmaFlarePulse,plasmaRotateCcw,plasmaRotateCw,rotateClockwise,sxPanelCurrent,waveExpand,waveExpand",
+  "giantAnims": "",
+  "errors": [],
+  "nonGet": []
+ },
+ "before-selected-1600x1000": {
+  "state": "AVAILABLE",
+  "poolCount": "3",
+  "giant": null,
+  "body": null,
+  "giantCount": 0,
+  "poolBody": 1,
+  "header": null,
+  "selector": [
+   563,
+   70,
+   1037,
+   118
+  ],
+  "orient": [
+   28,
+   145,
+   368,
+   312
+  ],
+  "poolList": [
+   0,
+   0,
+   0,
+   0
+  ],
+  "footer": null,
+  "fieldRect": [
+   0,
+   61,
+   1600,
+   1061
+  ],
+  "leaves": [],
+  "running": "atmosphereGlow,atmosphereGlow,atmosphereGlow,coreBreathe,coreBreathe,gradientBreath,moonOrbit,moonOrbit,moonOrbit,moonOrbit,moonOrbit,moonOrbit,orbitFloatPhase2,orbitFloatPhase2,orbitFloatPhase2,orbitFloatPhase2,orbitFloatPhase2,orbitFloatPhase2,orbitFloatPhase2,orbitFloatPhase2,orbitFloatPhase2,particleIn,particleIn,particleIn,particleIn,plasmaFlarePulse,plasmaFlarePulse,plasmaRotateCcw,plasmaRotateCcw,plasmaRotateCw,plasmaRotateCw,rotateClockwise,rotateClockwise,waveExpand,waveExpand,waveExpand,waveExpand",
+  "giantAnims": "",
+  "errors": [],
+  "nonGet": []
+ },
+ "before-zero-1280x720": {
+  "state": "NO_POOL",
+  "poolCount": "0",
+  "giant": [
+   460,
+   520,
+   820,
+   562
+  ],
+  "body": [
+   460,
+   520,
+   820,
+   562
+  ],
+  "giantCount": 1,
+  "poolBody": 0,
+  "header": null,
+  "selector": [
+   403,
+   70,
+   877,
+   118
+  ],
+  "orient": [
+   28,
+   145,
+   368,
+   306
+  ],
+  "poolList": [
+   28,
+   361,
+   344,
+   452
+  ],
+  "footer": null,
+  "fieldRect": [
+   0,
+   61,
+   1280,
+   1021
+  ],
+  "leaves": [
+   {
+    "text": "NO JOB POOL UPLOAD AT THE FIELD: select one persisted upload (explicit",
+    "rect": [
+     460,
+     520,
+     820,
+     562
+    ],
+    "font": "system-ui 12.5px/20.625px w400 ls normal",
+    "color": "rgba(230, 241, 248, 0.78)",
+    "sw": 360,
+    "cw": 360
+   }
+  ],
+  "running": "atmosphereGlow,atmosphereGlow,coreBreathe,gradientBreath,orbitFloatPhase2,orbitFloatPhase2,orbitFloatPhase2,orbitFloatPhase2,orbitFloatPhase2,orbitFloatPhase2,particleIn,particleIn,plasmaFlarePulse,plasmaRotateCcw,plasmaRotateCw,rotateClockwise,sxPanelCurrent,waveExpand,waveExpand",
+  "giantAnims": "",
+  "errors": [],
+  "nonGet": []
+ },
+ "before-persisted-1280x720": {
+  "state": "NO_POOL",
+  "poolCount": "3",
+  "giant": [
+   460,
+   520,
+   820,
+   562
+  ],
+  "body": [
+   460,
+   520,
+   820,
+   562
+  ],
+  "giantCount": 1,
+  "poolBody": 0,
+  "header": null,
+  "selector": [
+   403,
+   70,
+   877,
+   118
+  ],
+  "orient": [
+   28,
+   145,
+   368,
+   306
+  ],
+  "poolList": [
+   28,
+   361,
+   344,
+   637
+  ],
+  "footer": null,
+  "fieldRect": [
+   0,
+   61,
+   1280,
+   1021
+  ],
+  "leaves": [
+   {
+    "text": "NO JOB POOL UPLOAD AT THE FIELD: select one persisted upload (explicit",
+    "rect": [
+     460,
+     520,
+     820,
+     562
+    ],
+    "font": "system-ui 12.5px/20.625px w400 ls normal",
+    "color": "rgba(230, 241, 248, 0.78)",
+    "sw": 360,
+    "cw": 360
+   }
+  ],
+  "running": "atmosphereGlow,atmosphereGlow,coreBreathe,gradientBreath,orbitFloatPhase2,orbitFloatPhase2,orbitFloatPhase2,orbitFloatPhase2,orbitFloatPhase2,orbitFloatPhase2,particleIn,particleIn,plasmaFlarePulse,plasmaRotateCcw,plasmaRotateCw,rotateClockwise,sxPanelCurrent,waveExpand,waveExpand",
+  "giantAnims": "",
+  "errors": [],
+  "nonGet": []
+ },
+ "before-selected-1280x720": {
+  "state": "AVAILABLE",
+  "poolCount": "3",
+  "giant": null,
+  "body": null,
+  "giantCount": 0,
+  "poolBody": 1,
+  "header": null,
+  "selector": [
+   403,
+   70,
+   877,
+   118
+  ],
+  "orient": [
+   28,
+   145,
+   368,
+   312
+  ],
+  "poolList": [
+   0,
+   0,
+   0,
+   0
+  ],
+  "footer": null,
+  "fieldRect": [
+   0,
+   61,
+   1280,
+   1021
+  ],
+  "leaves": [],
+  "running": "atmosphereGlow,atmosphereGlow,atmosphereGlow,coreBreathe,coreBreathe,gradientBreath,moonOrbit,moonOrbit,moonOrbit,moonOrbit,moonOrbit,moonOrbit,orbitFloatPhase2,orbitFloatPhase2,orbitFloatPhase2,orbitFloatPhase2,orbitFloatPhase2,orbitFloatPhase2,orbitFloatPhase2,orbitFloatPhase2,orbitFloatPhase2,particleIn,particleIn,particleIn,particleIn,plasmaFlarePulse,plasmaFlarePulse,plasmaRotateCcw,plasmaRotateCcw,plasmaRotateCw,plasmaRotateCw,rotateClockwise,rotateClockwise,waveExpand,waveExpand,waveExpand,waveExpand",
+  "giantAnims": "",
+  "errors": [],
+  "nonGet": []
+ },
+ "before-persisted-1600x1000-reduced": {
+  "state": "NO_POOL",
+  "poolCount": "3",
+  "giant": [
+   620,
+   540,
+   980,
+   582
+  ],
+  "body": [
+   620,
+   540,
+   980,
+   582
+  ],
+  "giantCount": 1,
+  "poolBody": 0,
+  "header": null,
+  "selector": [
+   563,
+   70,
+   1037,
+   118
+  ],
+  "orient": [
+   28,
+   145,
+   368,
+   306
+  ],
+  "poolList": [
+   28,
+   361,
+   344,
+   637
+  ],
+  "footer": null,
+  "fieldRect": [
+   0,
+   61,
+   1600,
+   1061
+  ],
+  "leaves": [
+   {
+    "text": "NO JOB POOL UPLOAD AT THE FIELD: select one persisted upload (explicit",
+    "rect": [
+     620,
+     540,
+     980,
+     582
+    ],
+    "font": "system-ui 12.5px/20.625px w400 ls normal",
+    "color": "rgba(230, 241, 248, 0.78)",
+    "sw": 360,
+    "cw": 360
+   }
+  ],
+  "running": "coreBreathe,gradientBreath,orbitFloatPhase2,orbitFloatPhase2,orbitFloatPhase2,orbitFloatPhase2,orbitFloatPhase2,orbitFloatPhase2,particleIn,particleIn,plasmaFlarePulse,plasmaRotateCcw,plasmaRotateCw,rotateClockwise,waveExpand,waveExpand",
+  "giantAnims": "",
+  "errors": [],
+  "nonGet": []
+ },
+ "before-persisted-1600x1000-de": {
+  "state": "NO_POOL",
+  "poolCount": "3",
+  "giant": [
+   620,
+   540,
+   980,
+   582
+  ],
+  "body": [
+   620,
+   540,
+   980,
+   582
+  ],
+  "giantCount": 1,
+  "poolBody": 0,
+  "header": null,
+  "selector": [
+   563,
+   70,
+   1037,
+   118
+  ],
+  "orient": [
+   28,
+   145,
+   368,
+   318
+  ],
+  "poolList": [
+   28,
+   361,
+   344,
+   637
+  ],
+  "footer": null,
+  "fieldRect": [
+   0,
+   61,
+   1600,
+   1061
+  ],
+  "leaves": [
+   {
+    "text": "KEIN JOB-POOL-UPLOAD IM FELD: einen persistierten Upload wählen (nur e",
+    "rect": [
+     620,
+     540,
+     980,
+     582
+    ],
+    "font": "system-ui 12.5px/20.625px w400 ls normal",
+    "color": "rgba(230, 241, 248, 0.78)",
+    "sw": 360,
+    "cw": 360
+   }
+  ],
+  "running": "atmosphereGlow,atmosphereGlow,coreBreathe,gradientBreath,orbitFloatPhase2,orbitFloatPhase2,orbitFloatPhase2,orbitFloatPhase2,orbitFloatPhase2,orbitFloatPhase2,particleIn,particleIn,plasmaFlarePulse,plasmaRotateCcw,plasmaRotateCw,rotateClockwise,sxPanelCurrent,waveExpand,waveExpand",
+  "giantAnims": "",
+  "errors": [],
+  "nonGet": []
+ }
+}

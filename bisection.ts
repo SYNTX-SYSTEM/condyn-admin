@@ -5,6 +5,7 @@ import { buildCareerAnalysisPrompt } from "./lib/career/adapter";
 import { GoogleGenAI } from "@google/genai";
 import { getGeminiCareerResponseJsonSchema } from "./lib/career/schema-projector";
 import dotenv from "dotenv";
+import { exitOnJobScopeRefusal, resolveScriptJobScope } from "./lib/career/job-scope/script-scope";
 
 try {
   const envFile = fs.readFileSync(path.join(process.cwd(), ".env.local"), "utf8");
@@ -57,4 +58,5 @@ async function run() {
   console.log("Status for synthetic A via builder:", statusA);
 }
 
-run().catch(console.error);
+// SFE JOB POOL FIRST: no Career-Analysis and no Gemini call without a valid pool + selected job (CONDYN_JOB_POOL_UPLOAD_ID, CONDYN_POOL_ROLE_ID).
+resolveScriptJobScope().catch(exitOnJobScopeRefusal).then(() => run()).catch(console.error);

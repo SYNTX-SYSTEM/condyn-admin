@@ -1,0 +1,281 @@
+{
+  "before": "aa33ddf",
+  "passed": 48,
+  "total": 48,
+  "checks": [
+    {
+      "name": "1600x1000 no-preference FIELD: only the finite context light, never infinite",
+      "ok": true,
+      "detail": "[{\"name\":\"sxOrientPass\",\"infinite\":false}]"
+    },
+    {
+      "name": "1600x1000 no-preference FIELD: the context light ends by itself (\u2264 2.5 s after the level settles)",
+      "ok": true,
+      "detail": "36 ms"
+    },
+    {
+      "name": "1600x1000 no-preference FIELD: opening a panel does not replay the light",
+      "ok": true
+    },
+    {
+      "name": "1600x1000 no-preference FIELD: no overlap with the open pools panel",
+      "ok": true,
+      "detail": "gap 49 px"
+    },
+    {
+      "name": "1600x1000 no-preference ORGANIZATION: only the finite context light, never infinite",
+      "ok": true,
+      "detail": "[{\"name\":\"sxOrientPass\",\"infinite\":false}]"
+    },
+    {
+      "name": "1600x1000 no-preference ORGANIZATION: the context light ends by itself (\u2264 2.5 s after the level settles)",
+      "ok": true,
+      "detail": "27 ms"
+    },
+    {
+      "name": "1600x1000 no-preference ORGANIZATION: opening a panel does not replay the light",
+      "ok": true
+    },
+    {
+      "name": "1600x1000 no-preference ORGANIZATION: no overlap with the open pools panel",
+      "ok": true,
+      "detail": "gap 30 px"
+    },
+    {
+      "name": "1600x1000 no-preference REQUIREMENT: only the finite context light, never infinite",
+      "ok": true,
+      "detail": "[{\"name\":\"sxOrientPass\",\"infinite\":false}]"
+    },
+    {
+      "name": "1600x1000 no-preference REQUIREMENT: the context light ends by itself (\u2264 2.5 s after the level settles)",
+      "ok": true,
+      "detail": "12 ms"
+    },
+    {
+      "name": "1600x1000 no-preference REQUIREMENT: opening a panel does not replay the light",
+      "ok": true
+    },
+    {
+      "name": "1600x1000 no-preference REQUIREMENT: no overlap with the open pools panel",
+      "ok": true,
+      "detail": "gap 10 px"
+    },
+    {
+      "name": "1600x1000 no-preference: path step FIELD returns to the field",
+      "ok": true
+    },
+    {
+      "name": "1600x1000 no-preference: RETURN goes one level up",
+      "ok": true
+    },
+    {
+      "name": "1600x1000 no-preference: Enter on the intake action opens the intake (aria-expanded)",
+      "ok": true
+    },
+    {
+      "name": "1600x1000 no-preference: exit leaves for the Capability Field",
+      "ok": true
+    },
+    {
+      "name": "1600x1000 no-preference: no page errors",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1600x1000 reduce FIELD: nothing animates on the surface",
+      "ok": true,
+      "detail": "[]"
+    },
+    {
+      "name": "1600x1000 reduce FIELD: no overlap with the open pools panel",
+      "ok": true,
+      "detail": "gap 49 px"
+    },
+    {
+      "name": "1600x1000 reduce ORGANIZATION: nothing animates on the surface",
+      "ok": true,
+      "detail": "[]"
+    },
+    {
+      "name": "1600x1000 reduce ORGANIZATION: no overlap with the open pools panel",
+      "ok": true,
+      "detail": "gap 30 px"
+    },
+    {
+      "name": "1600x1000 reduce REQUIREMENT: nothing animates on the surface",
+      "ok": true,
+      "detail": "[]"
+    },
+    {
+      "name": "1600x1000 reduce REQUIREMENT: no overlap with the open pools panel",
+      "ok": true,
+      "detail": "gap 10 px"
+    },
+    {
+      "name": "1600x1000 reduce: path step FIELD returns to the field",
+      "ok": true
+    },
+    {
+      "name": "1600x1000 reduce: RETURN goes one level up",
+      "ok": true
+    },
+    {
+      "name": "1600x1000 reduce: Enter on the intake action opens the intake (aria-expanded)",
+      "ok": true
+    },
+    {
+      "name": "1600x1000 reduce: exit leaves for the Capability Field",
+      "ok": true
+    },
+    {
+      "name": "1600x1000 reduce: no page errors",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1280x720 no-preference FIELD: only the finite context light, never infinite",
+      "ok": true,
+      "detail": "[{\"name\":\"sxOrientPass\",\"infinite\":false}]"
+    },
+    {
+      "name": "1280x720 no-preference FIELD: the context light ends by itself (\u2264 2.5 s after the level settles)",
+      "ok": true,
+      "detail": "63 ms"
+    },
+    {
+      "name": "1280x720 no-preference FIELD: opening a panel does not replay the light",
+      "ok": true
+    },
+    {
+      "name": "1280x720 no-preference FIELD: no overlap with the open pools panel",
+      "ok": true,
+      "detail": "gap 49 px"
+    },
+    {
+      "name": "1280x720 no-preference ORGANIZATION: only the finite context light, never infinite",
+      "ok": true,
+      "detail": "[{\"name\":\"sxOrientPass\",\"infinite\":false}]"
+    },
+    {
+      "name": "1280x720 no-preference ORGANIZATION: the context light ends by itself (\u2264 2.5 s after the level settles)",
+      "ok": true,
+      "detail": "10 ms"
+    },
+    {
+      "name": "1280x720 no-preference ORGANIZATION: opening a panel does not replay the light",
+      "ok": true
+    },
+    {
+      "name": "1280x720 no-preference ORGANIZATION: no overlap with the open pools panel",
+      "ok": true,
+      "detail": "gap 30 px"
+    },
+    {
+      "name": "1280x720 no-preference REQUIREMENT: only the finite context light, never infinite",
+      "ok": true,
+      "detail": "[{\"name\":\"sxOrientPass\",\"infinite\":false}]"
+    },
+    {
+      "name": "1280x720 no-preference REQUIREMENT: the context light ends by itself (\u2264 2.5 s after the level settles)",
+      "ok": true,
+      "detail": "12 ms"
+    },
+    {
+      "name": "1280x720 no-preference REQUIREMENT: opening a panel does not replay the light",
+      "ok": true
+    },
+    {
+      "name": "1280x720 no-preference REQUIREMENT: no overlap with the open pools panel",
+      "ok": true,
+      "detail": "gap 10 px"
+    },
+    {
+      "name": "1280x720 no-preference: no page errors",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1280x720 reduce FIELD: nothing animates on the surface",
+      "ok": true,
+      "detail": "[]"
+    },
+    {
+      "name": "1280x720 reduce FIELD: no overlap with the open pools panel",
+      "ok": true,
+      "detail": "gap 49 px"
+    },
+    {
+      "name": "1280x720 reduce ORGANIZATION: nothing animates on the surface",
+      "ok": true,
+      "detail": "[]"
+    },
+    {
+      "name": "1280x720 reduce ORGANIZATION: no overlap with the open pools panel",
+      "ok": true,
+      "detail": "gap 30 px"
+    },
+    {
+      "name": "1280x720 reduce REQUIREMENT: nothing animates on the surface",
+      "ok": true,
+      "detail": "[]"
+    },
+    {
+      "name": "1280x720 reduce REQUIREMENT: no overlap with the open pools panel",
+      "ok": true,
+      "detail": "gap 10 px"
+    },
+    {
+      "name": "1280x720 reduce: no page errors",
+      "ok": true,
+      "detail": ""
+    }
+  ],
+  "identity": {
+    "FIELD": {
+      "codeMarkerBefore": false,
+      "codeMarkerAfter": true,
+      "textIdentical": true,
+      "contractIdentical": true,
+      "tabOrderIdentical": true,
+      "tabOrder": [
+        "syntx-exit-btn",
+        "syntx-pools-toggle",
+        "job-pool-intake-toggle",
+        "syntx-boundary-toggle"
+      ]
+    },
+    "ORGANIZATION": {
+      "codeMarkerBefore": false,
+      "codeMarkerAfter": true,
+      "textIdentical": true,
+      "contractIdentical": true,
+      "tabOrderIdentical": true,
+      "tabOrder": [
+        "syntx-exit-btn",
+        "syntx-path-FIELD",
+        "syntx-return-btn",
+        "syntx-pools-toggle",
+        "job-pool-intake-toggle",
+        "syntx-boundary-toggle"
+      ]
+    },
+    "REQUIREMENT": {
+      "codeMarkerBefore": false,
+      "codeMarkerAfter": true,
+      "textIdentical": true,
+      "contractIdentical": true,
+      "tabOrderIdentical": true,
+      "tabOrder": [
+        "syntx-exit-btn",
+        "syntx-path-FIELD",
+        "syntx-path-ORGANIZATION",
+        "syntx-path-ROLE",
+        "syntx-return-btn",
+        "syntx-pools-toggle",
+        "job-pool-intake-toggle",
+        "syntx-boundary-toggle"
+      ]
+    }
+  },
+  "ssr": "test/career/job-pool/syntx-field-ssr.test.tsx green"
+}

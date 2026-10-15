@@ -564,6 +564,777 @@ trace; pending = dashed circle around the ecology; unread = plain thin ring. No 
 transform .78 s), recede/trace rise (opacity .45 s), aperture open (opacity rise, fill-mode backwards, B-LENS-FILL), boundary suspend
 (slow dash drift, never a pulse). `prefers-reduced-motion` zeroes every animation and transition; no meaning depends on motion.
 
+#### 13.2.3 Semiotic transfer — one manifestation grammar for both fields (owner mandate "GRÜN — SYNTX SEMIOTIC TRANSFER", GO 2026-10-12, variant A)
+
+The Job Field no longer re-draws the Capability Field's grammar inside one zooming SVG. Both fields now render from one set of
+domain-neutral SYNTX manifestation components, extracted from the Capability Field without changing its rendering
+(`app/components/career/demo/manifestation/`):
+
+| Component | Extracted from | What it is |
+|---|---|---|
+| `SyntxResonanceBody` | `OrbitalResonanceBubble` | the 168 px floating body, atmosphere and ring pulses, attention shell, semiotic ring, signature slot, moons (`renderMoon`), tether + HUD slot |
+| `SyntxHudSurface` | `OrbitalResonanceBubble` (`getTooltipStyle`) | the opaque hologram HUD surface and its placement table |
+| `SyntxCoreOrganism` | `IdentityCoreDropZone` | the breathing core with plasma rings, flare, waves, outer rings, particles; emblem slot |
+| `SyntxPlanetariumBackdrop`, `SyntxEnergyRay` | `SemanticCareerIntelligenceField` | field glow, concentric orbits, 120 s ring, ambient nodes, dust; energy ray with SMIL photon streams and bead |
+| `FocusTransitionStageShell`, `SYNTX_FOCUS` | `SemanticCareerIntelligenceField` (re-exported there) | the focus transformation: anchor to the centre at 1.12 / .42, everything else recedes blur(3px) grayscale(86%) .72 / .12 |
+| `SyntxCosmosShell` (+ node and centre materials) | `CapabilityCosmosView`, `OrbitalCosmosView` | L1 cosmos: backdrop, stars, dashed orbit ellipses, per-frame tethers, satellites on the shared rAF clock |
+| `SyntxDeepFocusShell` (+ nucleus, satellite, evidence-surface materials, evidence link) | `CapabilityDeepFocusView`, `OrbitalDeepFocusView` | L2 deep focus: backdrop, spokes, the slots for nucleus, receded siblings and evidence surface |
+
+The Capability components are now thin callers of these components. Proof of "unchanged": 374 server renders of every touched
+Capability component (all six stages × seven variants × seven angles, both cores, both cosmos and deep-focus views at three clock
+times, the focus shell in five states, the whole field in four job states with and without data), captured before the
+extraction and compared byte for byte after every step: 374 / 374 identical (sha256 `7d0e5c91…bdc18b2` before and after). The
+sealed SIL language suites and every Capability test pass unchanged. The optional switches added for the Job Field (`keyframes`,
+`pulseKeyframes`) default to the Capability Field's behaviour.
+
+**Levels.** JOB POOL = L0 planetarium: the pool is the core, organizations are resonance bodies on the orbit (several orbits and a
+common smaller scale when the pool is large: count and order only), each role is a moon of its organization (`data-manifestation-form="moon"`,
+interaction `none`, `tabindex -1` — organizations first). ORGANIZATION = the body moves to the centre (focus transformation), the
+planetarium recedes, the roles orbit as cosmos satellites (the shared L1 packing; compact cards, then a compact uniform packing for
+very large organizations — never fewer satellites). ROLE = the organization cosmos recedes; the role is the centre of its own cosmos:
+requirements on circular orbits by support category (R14: distance is the category, equal within it), source documents on theirs
+(the stage-01 source-satellite grammar), evidence traces between them (quadratic, recomputed every frame from both positions), the
+suspended boundary around; the whole constellation turns once per 160 s. REQUIREMENT = L2 deep focus: the requirement as nucleus,
+its siblings receded, the evidence surface beneath with one row per evidence relation grouped by document; every relation is its own
+curve from the nucleus to its row. EVIDENCE = the aperture as the hologram HUD on its tether (a reading surface: it holds still).
+
+**Semantics carried over unchanged.** View model signs, proofs, observation, summaries (GELB governance 10/10 unchanged); support
+category = orbit and glyph; scored and unscored relations keep their stroke in every state (inspectable brightens, never solidifies),
+their own rows and their own apertures even on one document; sweep coverage is never scored; one suspended boundary, no closure;
+missing support neutral; score only in the pending aperture; no red attention ring (no HR state has the meaning
+EMPTY_PROJECTION_ATTENTION). Proposals for GELB/PINK (R10a, R15b, walk rebinding): `docs/career_analysis/proposals/SYNTX_SEMIOTIC_TRANSFER_PROPOSALS.md`.
+
+#### 13.2.4 Semiotic finishing pass (owner "SFE — GREEN · SEMIOTIC FINISHING PASS", GO 2026-10-13; visual refinement only)
+
+No architecture, layout, component, function, data, matching, score, relation, governance, id, state, navigation, keyboard or
+click change. The shared manifestation components gained optional tone props only (`SyntxPlanetariumBackdrop.tone`,
+`SyntxCosmosShell.orbitStroke` / `stars`, `SyntxDeepFocusShell.spokeStroke`); their defaults are the Capability Field's literals, so
+the Capability rendering stays byte-identical (374 / 374 renders, sha256 `7d0e5c91…bdc18b2` unchanged).
+
+- **Job Field resonance tone.** The same SYNTX family in the field's own register: the atmosphere (field root, cosmos and deep-focus
+  backdrops, star field, planetarium glow) and the resting structure (orbit paths, resonance ring, tethers, resting rays and beads,
+  containment, deep-focus spokes) lean from the Capability cyan (189°) towards azure (`rgba(92, 200, 255, a)`, 201°). Unchanged in
+  meaning and colour: active resonance and focus (cyan), evidence and sources (mint), the authority boundary and weak reasons
+  (amber), missing support and pending (neutral), the support glyphs, trace strokes and photons.
+- **Organization resonance body.** A lit sphere over the planetarium body (upper light, lower shade, azure rim at rest, the cyan
+  resonance when highlighted), a rim-light crescent, an atmosphere halo beyond the rim that breathes slowly (`atmosphereGlow`
+  11 s, phased per body) and an inner light that rises over .9 s when the body resonates (hover, focus anchor). Geometry, moons,
+  HUD and the planetarium's highlighted atmosphere unchanged.
+- **Source document carrier.** The glyph ◈ is drawn as a vector (document diamond with its core) in the carrier body, the card,
+  the evidence-surface group header and the aperture's source line; the carrier body carries a mint membrane; the card is a
+  document membrane — mint hairline, lit upper edge, the document's spine — with the title in the sans reading face (12 px) over a
+  mint kicker and a ruled evidence count. Width, position, texts and the dashed body of a sweep-only source unchanged.
+- **Evidence aperture.** More depth (layered shadow, inner vignette, a second glass 5 px inside the frame, lit upper edge), the
+  glow breathes slower and two-toned (`sxApertureBreathe` 9 s, opacity only; the surface and its text hold still), hairline rules
+  between head and body, the quote's reading space recessed, metric chips with tabular figures and higher contrast, the boundary zone
+  set off by an inner shade. Hierarchy unchanged: REQUIREMENT → RELATION → SOURCE → EVIDENCE → METRICS → AUTHORITY BOUNDARY. REDUCED: no
+  animation, no transition (unchanged root rule).
+
+**Observation O-JF-LABEL (documented only, not changed):** in the organization cosmos a role card on the lower part of the orbit
+ellipse can sit close to the level's lower inset (at 1600 × 1000 the "Senior Full-Stack Engineer" card ends ≈ 40 px above the footer
+statement). Evidence: `evidence/job-pool/semiotic-transfer/finishing/organization-cosmos-role-labels-observation.jpg`. A correction
+would touch `syntxCosmosLayout` (layout), which this pass excludes.
+
+#### 13.2.5 Final visual finishing pass (owner "FINAL VISUAL FINISHING PASS — JOB FIELD", GO 2026-10-13; visual refinement only)
+
+On d16db44, inside the same boundary as §13.2.4 (no architecture, layout, component, function, data, logic, id, state, navigation,
+keyboard, click, governance or proof change). No shared component touched in this pass; Capability renders 374 / 374 byte-identical.
+
+- **Organization resonance body.** A still light membrane — a fine ring just inside the rim, lit from the upper left and falling off
+  around the body (conic light, masked to 1.6 px) — and a wide, very faint corona beyond the breathing halo; a deeper sphere (second,
+  lower azure light); the planetarium signature calmed to .5 at rest (.82 resonating) so that name, sector / region and the
+  ORGANIZATION line read cleanly; a dark reading halo under the identity text, sector / region at higher contrast, the role-count
+  pill framed in azure at rest.
+- **Source document carrier.** A document sheet, not a card: a folded corner with a lit fold edge, a faintly ruled ground, a second
+  glass inside the edge, the mint spine and lit upper edge; its glow follows the sheet's own outline (drop-shadow over the clipped
+  sheet). The vector glyph leads the SOURCE // DOCUMENT kicker (one line); the title in the sans reading face at 12.5 px; a mint
+  membrane ring around the carrier body. Width, position, texts and the dashed body of a sweep-only source unchanged.
+- **Evidence aperture.** The field inside the lens (the cosmos star ground, still, .22), a larger head name, the quote's quotation
+  marks in the relation's colour (text content unchanged), a hairline between the evidence and its reference / metrics, and a
+  governance boundary zone with an amber light edge over its dashed border, a warm corner light and lifted chips. Hierarchy unchanged;
+  no text movement; the only motion is the existing still-surface glow breath; REDUCED unchanged (no animation, no transition).
+- **Job Field colour identity.** Resting cosmos cards (organization-cosmos roles, role-cosmos requirements) and deep-focus satellites
+  take the azure register (`JOB_NODE_MATERIAL`, `JOB_SATELLITE_MATERIAL`); the focused centres (cosmos centre, nucleus) keep the cyan of
+  active resonance. Kicker colours that carry meaning (cyan / neutral for OPEN), mint evidence, amber authority unchanged.
+
+**O-JF-LABEL extended (documented only, not changed):** besides the organization-cosmos role card near the lower inset (§13.2.4),
+the role-count pill inside an organization body sits close to the body's lower rim, closest where the name or the sector / region
+wraps to two lines (e.g. "Rheinwerk Systems AG", "Industrial Edge & Automation · Cologne"). Evidence:
+`evidence/job-pool/semiotic-transfer/final-pass/role-label-observation.jpg`. A correction would change the body's internal layout,
+which this pass excludes.
+
+#### 13.2.6 Field selector and final readability (owner "SFE — GREEN · FIELD SELECTOR & FINAL READABILITY", GO 2026-10-13)
+
+On f96217f. No matching, data, evidence, governance or field-architecture change; the Capability Field's manifestation unchanged.
+
+- **SYNTX field selector (application shell).** `SyntxFieldSelector.tsx` replaces the two small buttons top-left: one membrane
+  centred in the upper application area (fixed, top 70 px) with two equal options, CAPABILITY FIELD (`syntx.selector.capability`)
+  and JOB FIELD (`syntx.toggle`), each lit in its own field's tone (Capability cyan, Job Field azure) with a resonance lamp; a fine
+  link between them. Exactly one field is active; selecting the active one changes nothing (the old strip toggled back to
+  CAPABILITY). Keyboard: Tab, Enter / Space, ← / → and Home / End switch fields. Entering the Job Field by keyboard moves focus into
+  the field (F-SX-1, unchanged); Tab reaches the selector again from inside the field. Each field change is crossed by one calm veil
+  (`syntxFieldVeil` .42 s, void → clear, pointer-transparent; none on first paint); REDUCED: no veil animation, no selector transition.
+  Contract kept: `field-focus-strip` (`data-field-focus`) holds exactly the two buttons `field-focus-capability-btn` and
+  `job-pool-panel-toggle` with `data-field-focus-active` and `aria-pressed`; the field's own `syntx-exit-btn` stays.
+- **Exclusive fields.** With JOB FIELD selected, every direct child of the Capability shell that is not marked `data-sx-shell`
+  (selector, top controls, guide drawer, HR dock, veil), not the Job Field root (`data-sx-field="job"`) and not the codex /
+  onboarding overlays is `visibility: hidden` — kept mounted, so no Capability state (staged sources, analysis job, zoom) is lost;
+  hidden elements leave the tab order and the pointer. With CAPABILITY selected the Job Field is not mounted. Analysis id, pool
+  upload id and deep links (`focus=FIELD&jobOrganizationId=…&jobRoleId=…&jobRequirementId=…`) are honoured unchanged; the existing
+  rule that a return to CAPABILITY resets the Job Field observation to FIELD (B-POOL-INITIAL-FOCUS) stays.
+- **Organization body typography.** The signature geometry clears the reading area (radial mask: kept at the rim, gone where the
+  text sits); soft reading plates behind name, sector / region and the ORGANIZATION line; sector / region 10 px at higher contrast,
+  ORGANIZATION as a spaced 7.5 px label, the role-count pill 9.5 px with tracking; the hovered body's interior is opaque (the
+  active energy ray no longer shows through it) and its HUD tether leaves at the rim towards the HUD (`SyntxResonanceBody`
+  `hud.tetherFrom`, optional; Capability default unchanged). Body size and field geometry unchanged.
+- **Organization cosmos role labels (O-JF-LABEL, resolved).** The orbit is the same `syntxCosmosLayout`, fitted to the level box
+  less `ROLE_CARD_CLEARANCE` (30 px) above and below (centre and orbit form unchanged); role titles show up to four lines; the
+  count line is set at 7.5 px so it wraps less. Measured over the whole orbit (ellipse extreme ± the tallest card): 2 roles and
+  14 roles, at 1600 × 1000 and 1280 × 720, every card stays ≥ 46 px above the footer statement and inside the level box
+  (before: ≈ 18 px at 1600 × 1000).
+
+Proof: `evidence/job-pool/semiotic-transfer/field-selector/` (`selector-proof.json`: 25 checks, all passing; sheets for both active states,
+before / after of the selector, the body typography and the role labels). Capability renders: 366 / 374 byte-identical; the 8
+renders of the Capability shell differ only by the selector and the shell markers (identical after removing them).
+
+**Observation O-JF-PANEL (documented only):** at 1280 px width the organization cosmos' orbit is wide enough that rotating role
+cards pass over the field's left info panel (pool / organization line, key hints) for part of their turn; at 1600 px they do not.
+Not changed in this pass (the orbit's width is the layout's).
+
+#### 13.2.7 Decision Loop Labs brand core (owner "ONE FIELD GRAMMAR. NEW BRAND CORE.", GO 2026-10-13)
+
+On a047f53. Visual only: no function, data, matching, governance, state, id, navigation, click or keyboard change; no new motion.
+Reference: the owner's Decision Loop Labs logo (spelling of the brand name taken from it: "DECISION LOOP LABS" / Decision Loop Labs).
+
+- **Brand mark (`DecisionLoopLabsMark.tsx`).** The DLL sign of the logo (the loop and the two L, each a segmented double light
+  track) traced once into one vector path and rendered as field light: a soft glow copy, the crisp sign with a cool vertical light
+  gradient (white → the logo's teal), a faint scan-line layer clipped to the sign (holographic, static) and a two-step teal
+  drop-shadow. No raster image, no sticker: the sign is drawn in the field's own light. `aria-hidden`, purely visual.
+- **Core integration.** The pool core's emblem (the 92 px black disc with ⬡) is now the brand lens
+  (`DecisionLoopLabsCoreEmblem`, 100 px): dark glass with the teal light membrane, a fine registration ring with four precision
+  ticks (the logo's instrument frame) and the mark at its centre. The shared core organism (breath, plasma rings, flare, waves,
+  rings) is unchanged and carries the lens; under it a static teal brand membrane gathers the light. JOB POOL, the pool name and
+  the organization count stay as they were.
+- **Brand surface (header).** In the Job Field context the application header reads **DECISION LOOP LABS / SYNTX — SEMANTIC CAREER
+  INTELLIGENCE FIELD** with the vector mark (header height unchanged, 61 px). The header follows the active field live
+  (`SemanticCareerIntelligenceField.onFieldFocusChange`, optional; the dashboard holds the active field). The Capability context
+  keeps its header byte- and pixel-identical (CONDYN / SYNTX …). Not renamed: data (the sample pool's name "CONDYN Sample Tech
+  Job Pool" is uploaded data), ids, providers, the codex and onboarding texts (shared content of both fields).
+- **Background.** A fine technical grid (56 px, teal 3 %) that clears around the core and fades to the edges, four registration
+  brackets framing every level (teal 30 %), and a slight teal calibration of the atmosphere, the planetarium glow and the cosmos /
+  deep-focus centres. All static, pointer-transparent and behind or beside every sign; semantic colours (cyan active, mint
+  evidence, amber authority, neutral missing) unchanged.
+
+Proof: `evidence/job-pool/semiotic-transfer/brand-core/` (`brand-proof.json`: 20 checks in LIVE and REDUCED — header names the brand
+in the Job Field and returns to the unchanged CONDYN header in the Capability context on a live switch, header height, emblem in
+the core, no animation and no pointer on the brand layers, ids kept in the URL, no page errors). Capability renders unchanged
+against a047f53 (366 / 374 byte-identical, 374 / 374 after removing the selector and shell markers).
+
+**Open owner decision O-DLL-SCOPE:** the mandate scoped the brand to the Job Field context, so the header switches with the field.
+If Decision Loop Labs is to be the brand of the whole application (Capability context, codex, onboarding), that is one further
+shell change (the Capability header renders would change; R10b).
+
+#### 13.2.8 The four panels (owner "FOUR PANELS. CLEARER SIGNAL.", GO 2026-10-13)
+
+On 00299f5. Visual only: texts, ids, data attributes, states, navigation, keyboard and click logic unchanged (proved by a text and
+contract read of all four panels before and after: identical).
+
+- **Panel material (pools, intake, boundary).** The three Job Field panels no longer use the Capability HUD surface (its drifting star
+  dots and colour blots ran through the text); they share a Job Field resonance surface: deep glass with a top light, a fine azure
+  edge, four registration ticks, a breathing aura (`atmosphereGlow`, 12 s) and a light current travelling the upper edge
+  (`sxPanelCurrent`, 11 s), both LIVE only. Each panel holds one node on the side facing the field, with a hairline into the field
+  and a breathing lamp (`atmosphereGlow`, 7 s). Kickers carry a diamond marker and a rule; more inner space (18 / 20 px) and air.
+- **Pools (left).** Each upload is a row card: name 13 px, meta line in quieter mono; the selected pool with a cyan wash, a lit
+  left edge and a lit SELECTED chip with a lamp; SELECT as an outlined chip; hover and keyboard focus visible on the row.
+- **Field selector (top centre).** A brighter membrane with an outer resonance ring and a lower counter-light, 11 px labels, a
+  clearer inactive / active contrast (active: deeper tint, stronger glow, a light line under the label), and the link between the
+  options lit towards the active field. Static; logic unchanged.
+- **Intake (top right).** Labels as quiet field labels, the actor id as a recessed input well with a focus glow, the file input in
+  a dashed drop well with a styled file button, the file state with a lamp (neutral / mint when a file is chosen), UPLOAD as an
+  action chip (enabled / disabled visible).
+- **Boundary (bottom right).** Four sections separated by hairlines: (1) the presentation labels as amber chips with the ranking
+  line, (2) the canonical mapping states as chips (green / amber) above their statement, (3) the sweep state line (UNSCORED as a
+  chip) above its statement, (4) the read's parameters above the gaps statement. Statements in 12 px sans with a coloured rule
+  (amber for authority, azure for sweep, neutral for gaps); an amber light on the upper edge. Width 372 px (was 340); its height
+  yields to the intake when both are open (no overlap) and reads without scrolling alone at 1600 × 1000.
+- **Reduced motion.** The field's REDUCED rule now also stops pseudo-element animations.
+
+Proof: `evidence/job-pool/semiotic-transfer/panels/` (`panel-proof.json`: 24 checks at 1600 × 1000 and 1280 × 720, LIVE and REDUCED —
+panel motion names, nothing in REDUCED, no overlap, boundary without scrolling, decorative nodes, keyboard selection;
+`panel-text-identity.json`: text and contract identical for all four panels). New motion name `sxPanelCurrent` (outside every sign;
+panels are closed in PINK's ambient read): proposed for R15b as a panel motion.
+
+#### 13.2.9 Visual polish pass (owner "FEINSTUFE / VISUAL POLISH PASS", GO 2026-10-13)
+
+On d79d4f8. Visual only, in four steps; texts, ids, data attributes, states, orbit geometry, navigation, keyboard and click logic
+unchanged (text and contract of selector, organization bodies, cosmos centre and role cards identical before / after; the only new
+nodes are decorative, `aria-hidden`, without text).
+
+1. **Field selector.** Both options the same width (214 px: balance between the fields); a calmer membrane with a finer light seam
+   and a deeper aura; the link between the options is now a small double loop — the two fields joined — whose half towards the
+   active field is lit; a field change sends one light through the capsule towards the field now active (`syntxFieldSweepLeft /
+   Right`, finite .9 s, never on first paint, none in REDUCED). Logic, exclusivity and states unchanged.
+2. **Role cards (organization cosmos).** Their own Job Field material: deeper glass, top light edge, two registration ticks, a layered
+   static field glow; the level line with a lamp at 8.5 px, the title in the sans at 11.5 px / 600, the metric line under a hairline
+   at 7.5 px. The card height stays within the clearance contract: tallest card 98 px (was 94), every card ≥ 41 px above the footer
+   statement over the whole orbit at 1600 × 1000 and 1280 × 720 (2 and 14 roles).
+3. **Centre / organization body.** The organization cosmos' centre has an opaque deep core: the receded organization body behind it
+   no longer shows through the name (the ghost text is gone); name, a short light rule and the cosmos line as three layers, an inner
+   ring and a finer membrane. The planetarium organization bodies: slightly more line and letter air for name, context line and the
+   ORGANIZATION label, a calmer role-count pill (size and geometry unchanged).
+4. **Whole field.** A quiet edge vignette in the atmosphere for depth (no brightening); the panels' nodes and the role cards share the
+   panel material's light language.
+
+Proof: `evidence/job-pool/semiotic-transfer/polish/` (before / after sheets for selector, role cards, centre and body, overview and the
+large pool; `polish-text-identity.json`; `selector-proof.json` 25 / 25; `brand-proof.json` 20 / 20; `panel-proof.json` 24 / 24;
+`selector-sweep-check.json`; PINK walk report).
+
+#### 13.2.10 Local pass: pools panel and role cards (owner "Small field. Local recursion.", GO 2026-10-13)
+
+On b156364. Local field: the pools panel (`job-pool-list`) and the role-card satellites of the organization cosmos; nothing else
+touched. Visual only; texts, ids, data attributes, states, interaction and orbit geometry unchanged.
+
+- **Pools.** One conduction line (the panel's spine) carries every upload as a node; the selected upload is the lit, breathing node
+  (`atmosphereGlow`, LIVE only) and the one lit row; other rows are unframed and react on hover. Each row on a grid: name, action
+  chip (one aligned column, 84 px), the meta line across the full width on one line.
+- **Role cards.** A precise 14 px radius and an inner hairline; the level line staggered (ROLE in cyan, the seniority softer), the
+  requirement count weighted in the metric line; a field anchor — a lamp with a short conduction stub on the card edge where the
+  tether from the centre arrives (recomputed with the orbit, placed in percent so it is always on the edge); a calm light reaction
+  on hover. Card height unchanged (tallest 88 / 98 px).
+
+Proof (local only): `evidence/job-pool/semiotic-transfer/local-pools-roles/` — text and contract of both zones identical to b156364;
+11 local checks (pointer ownership at every card centre, anchor on the edge and decorative, meta on one line, pools motion names,
+nothing in REDUCED); the directly touched existing proofs: role-card clearance 4 / 4, panel proof 24 / 24 (keyboard selection),
+Job Pool SSR 13 files / 89. No full sweep (owner rule for this pass).
+
+#### 13.2.11 Local pass: the orientation surface (owner "Small field. Local recursion.", GO 2026-10-13)
+
+On aa33ddf. Local field: the orientation surface top left (`data-sx-surface="header"`) only. It stays the one header that is always
+visible (§12.2), now a calm lit glass at the edge (top 84 px, 340 px wide) with five layers: (A) JOB FIELD with its lamp and the
+way back to the Capability Field as a pill, (B) the observation path on a rail — the current level large and bright, the earlier
+steps smaller, no longer cut off — with RETURN as a pill, (C) the read state as a chip, (D) the keys as key caps, (E) the edge
+actions as chips, lit while their panel is open. Its only motion is one light pass on each context change (`sxOrientPass`, finite
+1.6 s, none in REDUCED): a continuous breath was not added, because R15 binds infinite motion at the FIELD level to field signs and
+this surface is always visible. Texts, ids, attributes, tab order, click and keyboard behaviour unchanged; no other surface touched.
+
+Proof (local only): `evidence/job-pool/semiotic-transfer/local-orientation/orientation-proof.json` — 48 checks at 1600 × 1000 and
+1280 × 720, LIVE and REDUCED (only the finite light, ending by itself and not replayed by panel actions; nothing in REDUCED; no
+overlap with the open pools panel at FIELD, ORGANIZATION and REQUIREMENT; path step, RETURN, exit and Enter on an action behave),
+text, contract and tab order identical to aa33ddf (code marker verified for both reads); field SSR test 8 / 8.
+
+#### 13.2.12 Local pass: quiet panel glow and the boundary layers (owner "Small field. Local recursion.", GO 2026-10-13)
+
+On 801b778. Local field: the three panels (pools, intake, boundary) and the orientation surface. The panels' life is slower and
+quieter: the aura breathes over 16 s (was 12 s) with a wider, softer glow, the edge current runs every 18 s (was 11 s) at lower
+light, the node lamp breathes over 10 s (was 7 s); a finer membrane (inner hairline, lit left edge). The orientation surface gains a
+static aura and membrane and a static field node with a hairline into the field — no infinite motion there (R15: it is always
+visible). The boundary groups its statements in four layers (presentation, canonical mapping, sweep, gaps), each a quiet glass
+with its semantic rail (amber for authority, azure for the sweep, neutral for gaps); the statements inside are set at 12.5 px
+without a second rule. Texts, ids, attributes, tab order, click and keyboard behaviour unchanged.
+
+Proof (local only): `evidence/job-pool/semiotic-transfer/local-glow-boundary/local-proof.json` — text and contract of all four panels
+and of the orientation surface (with tab order, FIELD / ORGANIZATION / REQUIREMENT) identical to 801b778 (code marker verified);
+orientation proof 48 / 48; panel proof 24 / 24 (motion names, nothing in REDUCED, no overlap, keyboard selection).
+
+#### 13.2.13 Local pass: meta dock, intake and boundary (owner "Medium-small field. Local recursion.", GO 2026-10-13)
+
+On a4488a3. Local field: the shell's meta actions in the Job Field context, the intake panel, the boundary panel.
+
+- **Meta dock.** HOW THIS WORKS, SYSTEM CODEX and SEMANTIC GUIDE form one long segmented bar in the header band (top 13 px, right
+  24 px), a secondary system layer clear of the intake. Done only with the Job Field's own stylesheet (it exists while the Job Field
+  is mounted): the shell's markup is unchanged and the Capability context keeps its controls exactly where they were (measured).
+- **Intake.** 14 px more air above (top 150 px), brighter field labels; the boundary yields when both are open (no overlap).
+- **Boundary.** Each of the four layers carries a heading with its ordinal: PRESENTATION · AUTHORITY BOUNDARY (new copy, EN / DE),
+  CANONICAL MAPPING (LAYER C), CAPABILITY SWEEP COVERAGE (UNSCORED), MISSING REQUIREMENTS (existing terms). Statements that bound —
+  NOT A CANONICAL EVALUATION, NOT A DECISION, authority NONE — are dashed chips (a limit), affirmative states stay solid. Alone it
+  reads without scrolling up to 770 px of height. The governance statements are word for word unchanged.
+
+Proof (local only): `evidence/job-pool/semiotic-transfer/local-meta-intake-boundary/local-proof.json` — the boundary's governance
+text identical to a4488a3 without the new headings; contract of the three zones identical; Capability-context control positions
+identical; 29 checks at 1600 × 1000 and 1280 × 720, LIVE and REDUCED (dock in one row in the header band, clear of the brand; intake
+≥ 40 px below the dock; no intake / boundary overlap; onboarding, codex and guide open by click, onboarding by Enter; intake flow;
+motion); panel proof 24 / 24; SIL language contract, global wiring and Job Pool SSR 14 files / 105.
+
+#### 13.2.14 Local pass: the boundary as a focus state (owner "Small-to-medium field. Local recursion.", GO 2026-10-13)
+
+On 2f7d0ee. Local field: the boundary panel and the field's reaction while it is open; pools, intake, cosmos levels and upload untouched.
+
+- **Focus state.** While BOUNDARY is open, a quiet veil (`data-sx-boundary-veil`, z 44: above every sign of the stage, below the edge
+  surfaces at z 46, `pointer-events: none`, `aria-hidden`) dims and slightly blurs the field; it fades in and out over .8 s. The field
+  stays fully usable through it (pointer ownership of the organization bodies unchanged).
+- **Governance body.** The boundary opens at the centre (top 96 px, width `max(340px, min(760px, 100vw − 768px))`, so it never meets the
+  orientation surface, pools or intake) as a deep-glass body with a cool field light, a fine membrane and a calm aura; it settles in once
+  (`sxBoundaryOpen`, .6 s, none in REDUCED). The four layers sit in a two-column grid (one column on narrow screens), each a glass unit
+  with an accent line and an ordinal ring. Amber is now an accent only: dots and the dashed border of the limits (NOT …, authority NONE,
+  UNSCORED); chip text is light ink. At 1280 × 720 it now stays inside the viewport (it reached below the visible area before).
+- Texts, ids, attributes and the open / close behaviour (click, Enter, Escape) unchanged.
+
+Proof (local only): `evidence/job-pool/semiotic-transfer/local-boundary-focus/local-proof.json` — boundary text and contract identical to the
+previous tip (code marker verified); 44 checks at 1600 × 1000 and 1280 × 720, LIVE and REDUCED (open by click and Enter, close by click
+and Escape, veil present / withdrawn and pointer-transparent, no collision with orientation, pools, intake, selector and footer
+statement, inside the viewport, no new infinite motion, nothing in REDUCED); field SSR test 8 / 8.
+
+#### 13.2.15 Boundary micro-finish (owner "SFE::BOUNDARY MICRO-FINISH", 2026-10-13)
+
+On f136859, after the owner's visual approval of the focus state. Local field: the boundary body and its four layers only; position,
+size, structure, the layer grid, the veil, texts and behaviour unchanged.
+
+- **Resonance glow (static).** The body's 1px border carries a light membrane (a border-box gradient under the padding-box glass,
+  brightest at the upper rim); a still diagonal sheen lies inside the glass; a wider, faint outer atmosphere. The breathing panel aura
+  (`[data-sx-panel="boundary"]::after`, the existing `atmosphereGlow` 16 s) now also carries a faint inner light. No new motion name, no
+  new animated element: the boundary's running animations are the same two as before (`atmosphereGlow`, `sxPanelCurrent`), none in REDUCED.
+- **Typography.** Layer headings 9 px / 1.8 px tracking, lit ink with a faint azure glow, followed by a hairline rule; ordinals in light
+  ink inside an azure ring; technical lines (ranking, sweep state, read parameters) in a dedicated `boundaryMeta` with higher contrast and
+  tabular figures; statements brighter and parted from the states by a short rule (`data-sx-boundary-statement`, absolutely placed in the
+  existing gap). Sizes and tracking chosen so that no line wraps differently: every text leaf keeps its exact box.
+- **Semiotic shimmer.** The four layers share one light grammar: an azure accent line and a light rim at the top edge, a membrane border
+  brightest above, a faint inner shimmer from the upper corner. The layer accents of 01 / 02 (amber) and 04 (white) became azure; amber
+  remains only on the existing limits (dashed chips NOT …, authority NONE, UNSCORED, now with a faint amber halo) and the status dots.
+  Status colours (green MAPPED, amber PROPOSAL_ONLY, cyan / amber sweep state) unchanged.
+
+Proof (local only): `evidence/job-pool/semiotic-transfer/local-boundary-microfinish/local-proof.json` — at 1600 × 1000 and 1280 × 720,
+LIVE and REDUCED: boundary box, the four layer boxes and every text leaf box identical to f136859; text and contract identical; running
+animations and the veil's computed style identical; contrast of every text leaf against the glass under it (WCAG ratio) minimum
+4.07 → 5.85, technical lines 6.5 → 9.6–9.9, statements 12.5 → 13.4–13.8; boundary behaviour proof 44 / 44; field SSR + static 13 / 13.
+
+#### 13.2.16 Boundary: cyan field presence and orientation sentence (owner mandate, 2026-10-13)
+
+On 3fb340d. Local field: the boundary body (zone 1) and its micro light and type layer (zone 2).
+
+- **Cyan shimmer.** A resting cyan shimmer in the glass behind the four layers (`[data-sx-boundary-layers]::before`, z −1 inside the
+  body, seen through the layers' glass), breathing on the existing panel name `atmosphereGlow` at 28 s (opacity .5 ↔ .9 only); the aura's
+  inner light is now cyan. Measured swing between the two ends: mean 0.55 / 255 per channel, max 4 / 255 — field presence, no visible
+  pulse. None in REDUCED.
+- **Orientation sentence.** Directly under BOUNDARY (`data-sx-boundary-orientation`, `syntx.boundaryOrientation`): EN "Marks the
+  governance, authority and evaluation limits of this field state.", DE "Markiert Governance-, Autoritäts- und Bewertungsgrenzen dieses
+  Feldzustands." — small sans with a short cyan lead rule, aligned with the kicker's text. It takes the space the kicker gave up (body
+  padding-top 22 → 13 px, the kicker 9 px higher), so the body and its layers keep their exact boxes; one line at 1280 and 1600 px in
+  EN and DE (the DE line was shortened by its article to fit 1280).
+- No other text, id, attribute, state or behaviour changed; the veil unchanged.
+
+Proof (local only): `evidence/job-pool/semiotic-transfer/local-boundary-orientation/local-proof.json` — EN at 1600 × 1000 and 1280 × 720,
+LIVE and REDUCED: boundary box, scroll, the four layer boxes and every text leaf except the kicker (moved up 9 px as designed) identical
+to 3fb340d; text identical except the added sentence; contract identical; DE boxes and layer tops identical before / after; contrast
+with the shimmer frozen at its brightest: minimum 5.85 → 5.81, the sentence 8.7; behaviour proof 44 / 44; tsc 0; field SSR, static,
+SIL language contract, language wiring, field governance and presentation tests 48 / 48.
+
+#### 13.2.17 Boundary: visible cyan glow, corrected orientation line (owner mandate, 2026-10-13)
+
+On a06fe3a. Local field: the boundary body's light and the orientation line.
+
+- **Glow.** The existing light logic, raised in visibility only: the cyan shimmer behind the layers (alphas about 2.5×), the body's aura
+  now cyan with a clearer inner field light, the border membrane cyan. Shimmer and aura breathe together on `atmosphereGlow` at 32 s
+  (slower than before: 28 s / 16 s), opacity only. Swing over the boundary between the breath's ends: mean 2.0 / 255 per channel, max
+  12 (before 0.55 / 4) — visible, below any conscious rhythm. None in REDUCED; no new motion kind.
+- **Orientation line.** EN "Marks the governance, authority and evaluation boundaries of this field state.", DE "Markiert die
+  Governance-, Autoritäts- und Bewertungsgrenzen dieses Feldzustands." (owner wording); 10 px so that both stay one line at 1280 px.
+
+Proof (local only): `evidence/job-pool/semiotic-transfer/local-boundary-glow/local-proof.json` — boundary, scroll, layer and every text
+leaf box identical to a06fe3a (EN, 1600 × 1000 and 1280 × 720, LIVE and REDUCED; DE boxes and layer tops identical); text identical
+except the corrected word; contract identical; contrast at the brightest breath: every text ≥ 8.6, minimum (decorative ordinal)
+5.81 → 5.54; behaviour proof 44 / 44; 6 files / 48 tests; tsc 0.
+
+#### 13.2.18 Boundary: external resonance halo (owner "SFE::BOUNDARY EXTERNAL RESONANCE HALO", 2026-10-13)
+
+On fd3462d. Stable body, breathing edge.
+
+- **Diagnosis.** The boundary body scrolls (`overflow: auto`), which clips every child and pseudo-element at its padding box: the
+  breathing `::after` aura never reached outside the frame (removing it changes the 0–48 px ring outside the frame by 0.01 / 255 on
+  average). Only the body's own box-shadow is drawn outside (4.08 / 255). The backdrop filter does not clip it; the body (z 46) sits
+  above the veil (z 44).
+- **Halo.** Three soft cyan layers at the head of the body's own box-shadow (`BOUNDARY_HALO`, `boundaryShadow()`): a seam that begins
+  at the frame and radiates a few pixels into the dark, following the 22 px corners. `sxBoundaryHalo` (28 s, ease-in-out, LIVE only)
+  breathes it between low and high: brighter and a little wider (spread +1 / +3 / +7 px), then back; the rest of the shadow stack is
+  identical in every state, so the body itself does not change. REDUCED and the server render keep the calm mid aura, still.
+- Unchanged: size, position, frame, layers, inner light, texts, ids, attributes, behaviour, veil.
+- **Motion contract.** `sxBoundaryHalo` is a new motion kind (it animates box-shadow, not opacity): R15b approval by GELB required
+  (proposal in `proposals/SYNTX_SEMIOTIC_TRANSFER_PROPOSALS.md`).
+
+Proof (local only): `evidence/job-pool/semiotic-transfer/local-boundary-halo/` — one full breath recorded in the browser at 1x
+(`halo-breath-28s-1x.mp4`; wall clock: peak ≈ 9 s, low ≈ 23 s after opening); ring outside the frame 13.8–14.3 before (constant),
+21.1–29.6 after, 19.8 constant in REDUCED; boundary, layers, every text leaf, text, contract and veil identical to fd3462d (EN, 1600 × 1000
+and 1280 × 720, LIVE and REDUCED); no measurable frame cost; behaviour proof 44 / 44; 6 files / 48 tests; tsc 0.
+
+#### 13.2.19 Resonance halo grammar — phase 1 prototype (owner "SFE::SYNTX RESONANCE HALO", 2026-10-13)
+
+On 6c88d9b. Stable structure, living resonance — prototyped on exactly one organization body and one panel; the boundary unchanged.
+
+- **Carriers.** The first organization of the pool (index 0) and the orientation surface (top left; always visible; the current field
+  state). No other organization or panel carries it.
+- **Clipping and stacking (lesson of §13.2.18).** The organization body clips nothing (its atmosphere at −30 px is visible); the seam is a
+  child of the floating body (`[data-sx-halo]`, outer box-shadow only, `inset: −1.5px` = the rim), so it follows the body's float. The
+  orientation surface does not clip either (only its light pass sits in a clipped inner span); its seam is its own `::after` (outer
+  box-shadow only, inside its z 46 stacking context, above the veil).
+- **State grammar from existing state only.** Organization: ACTIVE = `highlighted` (hovered at JOB POOL or observed) or keyboard focus
+  (`:focus-visible`); RETREATED = another organization hovered (`dimmed`) or behind the observed level (`isCosmosBackground`); else
+  INACTIVE (`data-sx-resonance`). Panel: ACTIVE = `:hover` or keyboard focus inside; RETREATED = boundary open (unless hovered / focused);
+  else INACTIVE. Seam strength: INACTIVE barely there, ACTIVE clear, RETREATED withdrawn; both below the boundary's halo.
+- **Motion.** None new by default: state changes are finite box-shadow transitions (.9 s, the body's own light curve), REDUCED instant.
+  Breathing of the ACTIVE seam exists only as a prototype behind the lab flag `NEXT_PUBLIC_SYNTX_RESONANCE_BREATH=1`
+  (`data-sx-resonance-breath` on the root): `atmosphereGlow` 24 s on the seam; off by default; R15b approval by GELB required.
+- Unchanged: geometry (rim radius, panel rectangle), inner light, text, layout, ids, contract attributes, click / Enter / Escape, the
+  boundary and its halo, every other organization and panel.
+
+Proof (local only): `evidence/job-pool/semiotic-transfer/resonance-prototype/local-proof.json` — ring brightness right outside the
+contour, identical steps before / after (organization: inactive 23.3 → 25.5, hover 86.6 → 95.6, keyboard 30.9 → 43.6, retreated 15.5 →
+15.5; panel: inactive 9.3 → 10.6, hover / keyboard 9.3 → 16.8, retreated 9.4 → 9.4); observed → active, background → retreated; no new
+infinite animation with the flag off, only `atmosphereGlow` 24 s on the ACTIVE seam with it, nothing in REDUCED; frame cost unchanged in
+identical states (headless, no GPU); boundary behaviour proof 44 / 44; 6 files / 54 tests; tsc 0.
+
+#### 13.2.20 Capability Field: one typography for every red field state (owner "SFE::GLOBAL RED FIELD TYPOGRAPHY REFINEMENT", 2026-10-13)
+
+On 337033e. Every orbit that the Capability Field marks red (`EMPTY_PROJECTION_ATTENTION`: a SUCCEEDED analysis whose projection for
+that stage is empty — any of 01 … 06; TENSION FIELD and EVOLUTION PATHS in the owner's runs) now reads with one typography from one
+source, `SIL_RED_FIELD_TYPE` (`SILTokens.ts`). Information perception only; the red semantics, the bodies and the motion are unchanged.
+
+- **Cause of the washed-out text.** The focused copy (`EMPTY FIELD // EXPLAINED`, heading, explanation, orbit mark) sat inside the focus
+  anchor, which recedes as a whole to 0.42 (`SYNTX_FOCUS.anchorOpacity`): even white 15 px text reached only 3.6:1, the explanation
+  1.65:1. No type value can outweigh an ancestor's opacity.
+- **Shared fix, Capability only.** `FocusTransitionStageShell` takes `copyAboveAnchorOpacity`: the anchor's 0.42 then recedes the body,
+  its underlay and its pulse inside one wrapper (`focus-anchor-recede-<id>`, same group opacity, same 0.62 s fade), and the copy stays
+  at full opacity. The Capability Field passes it; without it the shell renders byte-identical to before (32 / 32 prop combinations),
+  so the Job Field is untouched.
+- **One typography.** Status line 10 px / 700 / 2.4 px tracking, a lighter red (`rgba(255, 128, 136)`, same hue, glow kept and softened);
+  heading 16 px / 800 / 1.2 px, `#f4fafd`, existing accent glow softened; explanation 12 px / 1.6 leading, `rgba(214, 230, 240, .92)`
+  (was 10 px muted); orbit mark 9 px / 600 / 1.6 px in the orbit accent at .92 (was 7 px at .58); copy width 330 px (was 300).
+  A red body's identity labels (stage number, caption, `PRE-CANONICAL DISCOVERY`) take lighter tones and a little weight, same
+  sizes and tracking (no reflow); non-red bodies keep their typography exactly.
+- **Unchanged:** orbit geometry, positions and motion; the red halos, shells and membranes (colour and physics); the copy text
+  (EN / DE) and its meaning (an explained empty projection, not an error, not a missing capability); the focus status bar (it recedes
+  to 0.12 during orbit focus by design); data, matching, governance; the Job Field. No new animation.
+- **Limit (not changed).** The focused body's own labels stay inside the 0.42 anchor by design (the body recedes beneath the next
+  level): they improve only from 1.4–1.5 to 2.3–2.6:1. Lifting them would change the anchor's composition — owner decision.
+
+Proof (local only, review lab with mock worker; 03 / 04 / 06 red through a LAB-ONLY browser rewrite of the analysis response):
+`evidence/job-pool/semiotic-transfer/red-field-typography/local-proof.json` — focused copy: status 1.87 → 8.5, heading 3.62 → 19.4,
+explanation 1.65 → 13.41, orbit mark 1.4–1.8 → 5.3–11.7; planetarium red bodies: stage 4.27 → 12.4, caption 4.25 → 11.2, state 4.27 →
+9.5; non-red bodies identical; orbit rects identical within the float phase, text boxes identical (no reflow), the copy grows upward
+only (132 → 151 px); animation names identical; DE wraps cleanly; at 1280 × 720 the field selector covers the copy's heading before and
+after (F-4); 20 files / 102 tests.
+
+#### 13.2.21 NO_POOL as the red absence giant (owner "SFE::JOB FIELD RED ABSENCE GIANT", 2026-10-13)
+
+On bb5e8e3. The central NO_POOL text of the Job Field became one red semiotic body on the field's centre (`NoPoolGiant`, same
+`syntx-no-pool` element, same anchor): an unbound semantic centre, not an error screen, not a card.
+
+- **Meaning, unchanged.** Exactly "no explicit job pool selection" — with zero uploads and with persisted, unselected uploads alike;
+  not a failure, a failed upload, a missing capability, a failed match or a judgement. It leaves with the selection (the existing
+  `NO_POOL` → `AVAILABLE` transition); the job cosmos then holds the centre alone. No new state, logic, interaction or focus stop.
+- **Body.** Dark, transparent interior; ruby seam (1.5 px) with a soft aura beyond the contour; outer dashed semiotic ring, a tick
+  annulus, three inner rings (one dashed in the field's azure), four cyan joints on the seam and two short cyan ticks. Diameter
+  `clamp(300px, 2 × (100vh − header − 504px), 400px)`: 400 px when there is room, smaller while the field is taller than the viewport
+  (F-4), so the body stays on screen (312 px at 1280 × 720).
+- **Typography inside the body.** Status in the shared red field type (`SIL_RED_FIELD_TYPE.status`, §13.2.20): `JOB FIELD // UNBOUND`;
+  title 17 px / 800 cyan-white `NO JOB POOL SELECTED`; explanation 13 px `This field awaits an explicitly selected job pool.`;
+  orientation 10 px / 600 cyan `Upload via INTAKE · Select via POOLS` (breaks only at the separator; balanced wrapping). DE: `JOB-FELD //
+  UNGEBUNDEN`, `KEIN JOB-POOL GEWÄHLT`, `Dieses Feld wartet auf einen ausdrücklich gewählten Job-Pool.`, `Hochladen über AUFNAHME · Wählen
+  über POOLS` (the DE button labels). The copy replaces `syntx.noPool` (now four parts).
+- **Motion.** None: the body is static; only the existing finite reveal (`sxRise`) on mount, none in REDUCED. Nothing for R15b.
+- Unchanged: upload, selection, mapping, matching, ids, APIs, data; the orientation surface, pool list, intake, boundary,
+  organisations, roles and every other panel; the Capability Field.
+
+Proof (local only, review lab): `evidence/job-pool/semiotic-transfer/no-pool-giant/local-proof.json` — contrast inside the body:
+status 7.9, title 17.9, explanation 13.5, orientation 12.4 (1600 × 1000; the same at 1280 × 720); no collision with header, field
+selector, orientation surface, pool list or governance footer at either size; one giant at NO_POOL with 0 and with 3 persisted
+uploads, none after the selection (click from NO_POOL: cosmos present, `jobPoolUploadId` in the URL, no non-GET request, LIVE and
+REDUCED); no animation on the giant; 19 files / 129 tests (one DE copy assertion updated to the new title).
+
+#### 13.2.22 The red absence giant breathes (owner "KEEP THE GIANT. MAKE IT BREATHE.", 2026-10-13)
+
+On 44cd561. Same giant, same form, position, copy and grammar; one slow field breath added (presence without binding).
+
+- **Breath.** 10 s per cycle, organic: a longer swell (0 → 46 %), a short hold (→ 58 %), a softer release; eased, no hard peak, no
+  flash, no scanner. Four layers, opacity and transform only: the red aura beyond the contour (`[data-sx-giant-aura]`, opacity .3 ↔ 1,
+  scale 1 ↔ 1.05), the light of the ruby seam (`[data-sx-giant-seam]`, opacity .18 ↔ 1), the outer membrane — dashed ring and tick
+  annulus — widening a few pixels (`[data-sx-giant-membrane]`, scale 1 ↔ 1.024, ≈ 5 px each side), the red inner rings following
+  minimally and .35 s later (`[data-sx-giant-ring]`, scale 1 ↔ 1.012).
+- **Still.** The information (status, title, explanation, orientation), the cyan ring, the cyan joints and ticks, the body's interior.
+- **Motion kinds.** `sxGiantBreath`, `sxGiantSeam`, `sxGiantMembrane`, `sxGiantRing` — new infinite motion, LIVE only
+  (`data-motion-mode="LIVE"`); REDUCED: none, a strong static base (aura .62, seam .5). R15b approval by GELB required.
+
+Proof (local only, review lab): `evidence/job-pool/semiotic-transfer/no-pool-giant-breath/` — real-time browser video of 2.4 cycles
+(`giant-breath-24s-1x.mp4`); wall-clock samples: aura opacity .30 ↔ 1.00 with lows at 5.6 s / 15.2 s and highs at 9.6 s / 19.8 s
+(10 s period); red light in the ring 18–64 px beyond the contour 9.5 → 32.4 (rest → peak, ×3.4), on the seam 87 → 126; the text block
+identical in every sample; REDUCED: no giant animation, static base; at the peak no collision at 1280 × 720 (membrane 466–814 /
+367–715); 19 files / 129 tests.
+
+#### 13.2.23 Job scope: one selected job for both fields; no ANALYZE without it (owner "GRÜN — SFE GO", 2026-10-14)
+
+On 799f523. Frontend half of the SFE invariant "no Gemini call without a valid, selected job scope"; the API contract is GELB's
+(`POST /api/career/analyze` with `jobScope: { jobPoolUploadId, poolRoleId }`, exactly these two keys; `jobId` stays the analysis
+execution job). Backend and worker enforcement are GELB's (`feature/job-scoped-capability-sweep`).
+
+- **One selection, independent of navigation.** `jobScope` is state of `SemanticCareerIntelligenceField`, separate from the
+  observation point: RETURN, Esc, a field change and a pool change keep it (`switchFieldFocus` still clears only `jobOrganizationId`
+  / `jobRoleId` / `jobRequirementId`). Persisted in the URL as `jobScopePoolUploadId` / `jobScopeRoleId`
+  (`replaceState`, like every other id); a reload restores it. Never inferred: set only by the explicit selection below, read only
+  from both exact parameters (`jobScopeFromParams`, `lib/career/job-pool/job-scope.ts`).
+- **Selecting.** At the ROLE and REQUIREMENT levels the orientation surface carries `syntx-job-scope-select` (`◎ SELECT AS JOB` /
+  `◎ ALS JOB WÄHLEN`); for the role that is the selected job of this pool it reads `✓ SELECTED JOB`, pressed and disabled. Not at
+  the FIELD or ORGANIZATION level (a job is a role).
+- **Always visible.** `job-scope-indicator` (`data-sx-shell="job-scope"`, `data-job-scope-state` NONE · CHECKING · VALID · INVALID)
+  rides on the selector row of the application shell, left of the capsule in the column of the left surfaces (x 28, y 74–114;
+  max. to 18 px before the capsule: 1600 px → 28–444, 1280 px → 28–385, ellipsis beyond). It is part of `SyntxFieldSelector` but
+  outside the strip (the strip keeps exactly two buttons) and survives the exclusivity rule like every shell element; so it is visible
+  in both fields and at every depth (Capability L0–L2, Job Field FIELD … REQUIREMENT). VALID names the role title and, below it,
+  organization · pool; NONE reads `NO JOB SELECTED` / `KEIN JOB GEWÄHLT`. Activating it opens the job in the Job Field (its pool
+  selected, the role observed) or, without one, the field to choose it. Static; a hover transition only (none in REDUCED).
+- **Validation (mirror of the server rule).** `useJobScopeValidation` reads the exact upload once per scope: VALID only when the
+  upload exists, is ACTIVE, has the canonical mapping (`MAPPED`) and the role is part of it; else INVALID with a reason
+  (UPLOAD_NOT_FOUND · POOL_NOT_ACTIVE · NOT_MAPPED · ROLE_NOT_IN_POOL · READ_FAILED). Formal check: `JPOOL_` + 32 upper-case hex,
+  non-empty role id taken verbatim (§13.2.25, owner G-10), exactly two keys.
+- **ANALYZE blocked.** Unless VALID (also while CHECKING), `start-intake-analysis-btn` is disabled and
+  `analyze-job-scope-required` shows the owner's sentence verbatim in every locale: „Bitte wähle einen Job aus einem Pool aus.“; RETRY in the
+  failure banner is blocked the same way (`retry-job-scope-required`). `handleAnalyze` refuses without a VALID scope, and
+  `CareerJobController.submitAnalysis` refuses a payload without a formally valid `jobScope` before any request (state untouched,
+  resolves to `ERR_JOB_SCOPE_REQUIRED`). The request body is `{ documents, jobScope }`.
+- **Finding 1 fixed (code handling).** A rejected submission keeps the backend's `issues[0].code` as `errorCode`
+  (`HTTP_<status>` only when the body names none) and its HTTP status apart in the new `httpStatus` (null for worker failures,
+  network errors and the local guard). Retry no longer reads the status out of the code; a job-scope failure is terminal (no retry).
+- **Finding 2 fixed (banner).** The banner compared `status === 422` against the code string and so always showed the generic
+  title. It now compares the numeric `httpStatus`: a job-scope code shows `NO VALID JOB SCOPE` / `KEIN GÜLTIGER JOB-SCOPE`, the
+  code (`[ERR_JOB_SCOPE_…]`) and the sentence, with `HTTP 400/422` for a rejected request and no HTTP line for a worker failure; a
+  non-scope 422 is the semantic boundary again. `data-error-code` and `data-http-status` carry both for tests.
+- **R10.** Capability manifestation unchanged: 30 server renders (Capability L0, every orbit at L1 and L2, NO_POOL field, EN/DE,
+  SourceDock) are byte-identical to 799f523 after removing the indicator and its CSS; the SourceDock with staged sources differs
+  only by `aria-disabled="false" data-job-scope-blocked="false"` in the admitted state. Proposal P-8 (R10d).
+
+Proof (local only, review lab :41803, mock worker, no Gemini): `evidence/job-pool/job-scope/` — browser walk 33/33
+(`walk-results.txt`, `scripts/walk.mjs`): no job → indicator NONE in both fields, ANALYZE disabled with the exact sentence, a forced
+click sends no request; selection at the role → VALID, URL carries the scope; kept at REQUIREMENT, after Esc to FIELD, after the
+change to the Capability Field and at an orbit focus (indicator on top); reload restores it; the indicator reopens the role; ANALYZE
+sends exactly `{ documents, jobScope }` with the selected ids and the Job Field reads the job result; simulated 400 / 422 rejections
+and a worker FAILED show code, sentence and the right HTTP line; an unknown role in the URL is INVALID and blocks ANALYZE; no page
+errors; at 1600 × 1000 and 1280 × 720 the indicator overlaps neither the capsule, the header nor the orientation surface.
+Render identity: `render-identity.txt`, `scripts/render.tsx`. PINK's live suite (`live-browser-workflow.e2e.test.ts`, real Gemini)
+now uploads and selects the pool and selects a job before ANALYZE and asserts the request's `jobScope`; not run here (it calls the
+real model).
+
+#### 13.2.24 Job Pool first; the Capability Field gated by the selected job (owner "SFE — JOB POOL FIRST / CAPABILITY GATE", 2026-10-14)
+
+On cb3d33f. Only this change; design, dialogs, Gemini and Capability Core untouched.
+
+- **Reconstruction (forward sweep).** The field was decided in three places: the field's `fieldFocus` default (CAPABILITY unless an
+  upload id was in the URL), the dashboard's brand default (the same rule) and `page.tsx` (`focus` from the URL). The Capability Field
+  was reached by four paths: the selector (click), its keys (← / Home), the Job Field's `syntx-exit-btn`, and a URL `focus=CAPABILITY`.
+  The selected job (`jobScope`, §13.2.23) was already independent of the field and the observation point.
+- **Inverse sweep.** The Capability Field depends on: a VALID job scope ← a role that is part of the canonical mapping ← an ACTIVE,
+  mapped upload ← an explicitly selected pool. Navigation to a role is not a selection; a pool alone is not a job.
+- **Change.** One derived value: `activeFieldFocus` is CAPABILITY only when CAPABILITY is requested **and** the job scope is VALID
+  (`capabilityGateOpen`); otherwise the Job Field. The default request is the Job Field (Job Pool first). All four paths go through
+  `switchFieldFocus`, which refuses CAPABILITY while the gate is closed; the selector's Capability option and `syntx-exit-btn` are
+  disabled (`disabled`, `aria-disabled`, `title` hint, the existing inactive look at .42) with `data-field-gate="AWAITING_JOB"`
+  (`OPEN` when admitted); the field root carries `data-capability-gate`. A requested Capability Field is kept while the gate is
+  closed (still checking after a reload, or the job turned invalid) and is entered as soon as the job is VALID. The URL always names
+  the chosen field (`focus=FIELD` / `focus=CAPABILITY`). The brand follows the active field directly on a switch and, for a
+  gate-driven change, through one effect. The Capability Field stays mounted underneath (hidden by the existing exclusivity rule), so
+  staged sources are never lost.
+- **Kept.** The selected job across both fields and every depth (unchanged from §13.2.23); the selector contract (two buttons,
+  `data-field-focus-active`, `aria-pressed`); the exclusivity rule; every manifestation component (no file of the planetarium, cosmos,
+  deep focus or manifestation shells changed).
+- **Not in scope (then open, owner).** There was no control that removes a selected job (PINK G-05); decided and added in §13.2.25.
+
+Proof (review lab :41803, mock worker, no Gemini): `evidence/job-pool/capability-gate/` — browser walk 22/22 (`walk-results.txt`):
+opening in the Job Field with the DLL header, gate AWAITING_JOB, Capability option and exit disabled, the Capability manifestation
+hidden; forced click, ←, Home and Escape change nothing; `focus=CAPABILITY` without a job or with an invalid one stays in the Job
+Field; a loaded pool and an observed role do not open the gate, SELECT AS JOB does (still in the Job Field); Capability entered with
+the CONDYN header in the same frame, the job kept; back and forth with the job kept; a reload with `focus=CAPABILITY` returns to
+Capability once the job is checked; 1280 × 720 opening gated; no page errors. `job-pool-workflow.e2e.test.ts` 10/10 on the exact final
+diff (isolated worktree, own disposable database): opening and SSR in the field with the gate, the gate in a real browser (exit and
+selector disabled → SELECT AS JOB → Capability → reload keeps Capability with the VALID job). `syntx-walk.e2e.test.ts` fails 0/3
+identically on the unchanged cb3d33f (pre-existing drift since ca11794, confirmed by PINK); its Q-11 is adapted to the gate but not
+reached (`e2e-results.txt`).
+
+#### 13.2.25 Owner decision: the role id verbatim (G-10 A), removing the job (G-05), every analysis path (2026-10-14)
+
+On c146f05. Frontend only (GRÜN); the backend boundaries are GELB's, PINK's suites unchanged (diffs go to PINK).
+
+- **G-10, variant A.** `parseJobScope` takes `poolRoleId` exactly as stored in the job pool: the one formal rule of the server and the
+  pool schema, a non-empty string. No trim, no edge-whitespace or character restriction; existence and validity are decided against
+  the stored pool (server; mirrored by `validateJobScope` with exact equality). A role such as `" role pink padded "` is selected,
+  written to the URL, restored after a reload and sent untrimmed. Before, it showed NO JOB SELECTED and SELECT AS JOB did nothing.
+- **G-05, removal.** At the selected role (the place where it was selected), `syntx-job-scope-clear` („× JOB ENTFERNEN“ /
+  „× REMOVE JOB“, the existing orientation-action look) stands beside „✓ GEWÄHLTER JOB“; the shell indicator leads there from either
+  field. The explicit click removes the scope and both URL parameters; afterwards no job scope is selected, the indicator shows NO
+  JOB SELECTED, ANALYZE (and RETRY) are blocked with „Bitte wähle einen Job aus einem Pool aus.“, the Capability gate closes and the Job Field
+  stays the field (`focus=FIELD`). Staged sources (the dock stays mounted) and existing analyses (`analysisId`, matching) are
+  untouched; nothing is sent. Selecting a job again re-opens the gate with the same staged sources.
+- **Every analysis path.** The frontend paths that start an analysis are the SourceDock ANALYZE / RETRY (through
+  `CareerJobController`, which refuses a payload without a formally valid scope and never re-submits) and the legacy page
+  `/career/analyze`, which posted `{documents}` without a scope. That page now reads the scope from the exact URL parameters
+  (`jobScopePoolUploadId` / `jobScopeRoleId`), validates it like the field (`useJobScopeValidation`), names the job or its absence
+  (`analyze-job-scope`, `data-job-scope-state`), keeps the start disabled with the owner's sentence unless VALID, and sends
+  `jobScope` with the documents. Development scripts and the worker are backend paths (GELB).
+
+Proof (review lab :41803, mock worker, no Gemini; every POST /api/career/analyze intercepted and aborted, none executed):
+`evidence/job-pool/job-scope-removal/` — browser walk 25/25 (`walk-results.txt`): a pool with the role `" role pink padded "`
+uploaded through the real upload route; selected → VALID, gate OPEN, URL verbatim, reload restores it, ANALYZE sends it untrimmed;
+removal at the role → NONE, URL without scope, gate AWAITING_JOB, Capability disabled, ANALYZE blocked with the sentence, source and
+analysis kept, no request, reload stays without job; re-selection → Capability with the same source, ANALYZE admitted; legacy page
+blocked without job and with an unknown role, admitted with the padded role and sending the exact scope; no page errors. Regression:
+`capability-gate` walk 22/22; `job-pool-workflow.e2e.test.ts` 10/10 on this commit (isolated temporary worktree, own disposable
+database; `e2e-results.txt`); the `job-scope` walk of cb3d33f assumes an ungated opening in Capability and no longer applies since
+§13.2.24.
+
+#### 13.2.26 The binding sentence: „Bitte wähle einen Job aus einem Pool aus.“ (owner GO 2026-10-15)
+
+On 5d6786b. The owner's GO (relayed by GELB, „Backend Error Contract → GRÜN“) makes „Bitte wähle einen Job aus einem Pool aus.“ the binding message of the job-scope
+boundary, identical in the backend error contract (GELB e643e96, `lib/career/job-scope/errors.ts`) and the frontend. Only
+`JOB_SCOPE_REQUIRED_MESSAGE` changes (it replaces „Bitte wählen Sie einen Job aus.“); every place that shows the sentence reads that constant: the ANALYZE and
+RETRY blocks and the legacy `/career/analyze` page; the error banner shows the backend's message as delivered (now the same
+sentence). Codes, response form and behaviour unchanged. Earlier
+sections and evidence keep the sentence they were recorded with. Proof: tsc 0; 17 files / 147 tests; the job-scope-removal walk
+25/25 with the new sentence checked verbatim (`evidence/job-pool/job-scope-removal/walk-results-2026-10-15-sentence.txt`).
+
+#### 13.2.27 Three investigation modes, B2 coverage and GEMINI OUTPUT (owner GO "DEMO FRONTEND", 2026-10-15)
+
+On aa17a3b merged with GELB `feature/job-pool-first-boundary` at ad15d7b (branch `frontend/three-modes`; the merge brings GELB's
+backend contracts, unchanged). Owner ruling B-INVARIANT-PERSON (PINK §3.35): „Keine Analyse ohne explizit ausgestellte
+Untersuchungsgrenze“; scope-free Gemini only in an explicitly chosen PERSON mode. Contracts used as delivered:
+`THREE_INVESTIGATION_MODES.md`, `SELECTED_ROLE_COVERAGE.md`, `GEMINI_RESULT_INSPECTOR.md` §6 and the browser client
+`lib/career/result-inspector/client.ts`. No new pipeline, no new archive, no parallel GUI: everything lives in the existing shell,
+dock and Job Field.
+
+**The boundary at the shell.** `SyntxInvestigationSelector` (`investigation-mode-selector`, `data-sx-shell="investigation"`) sits on the
+shell row right of the field selector, mirroring the job scope on the left: PERSON · PERSON × JOB · JOB as one radio group (←/→,
+Home/End, Enter/Space; static, no motion). The mode is a selection, never an inference: URL `investigationMode` (exact values only),
+written only when chosen. Without a choice the ground state is PERSON_X_JOB, so every earlier link means what it meant (JOB POOL
+FIRST unchanged). A mode change never removes the selected job (G-05) and touches no source and no analysis.
+
+| Mode | Capability gate (`data-capability-gate`) | ANALYZE sends | Job Field |
+|---|---|---|---|
+| PERSON | `OPEN` without any job | `{ documents, investigation: { mode: "PERSON" } }`, never a `jobScope` | pools readable; no analysis compared (`data-analysis-source="NONE"`); state line „PERSON · KEIN JOBVERGLEICH“ |
+| PERSON × JOB | `OPEN` only for a VALID job, else `AWAITING_JOB` (unchanged) | `{ documents, investigation: { mode: "PERSON_X_JOB" }, jobScope }` (exactly the two keys) | the existing presentation matching, plus **B2** at the selected job |
+| JOB | `JOB_MODE` (closed even with a VALID job: no person) | nothing (JOB is no document analysis) | the selected job's **structure**; no analysis, no Gemini |
+
+- **Job indicator in PERSON.** It says „KEIN JOB-SCOPE · PERSON“ (`data-job-scope-used="false"`). A selected job stays selected and is named as unused.
+- **Dock.** The dock names the boundary at the trigger (`analyze-investigation`).
+- **Success banner.** It names the boundary the analysis ran under (`intake-success-investigation`).
+- **Controller.** `checkAnalysisPayload` (`lib/career/job-pool/investigation-mode.ts`) mirrors GELB's `parseDeclaredInvestigation`. Refused locally, nothing sent:
+  - a contradiction, an unknown mode or JOB → `ERR_INVESTIGATION_INVALID` / `ERR_INVESTIGATION_MODE_NOT_ANALYZABLE`;
+  - PERSON × JOB without a scope → `ERR_JOB_SCOPE_REQUIRED`.
+- **Backend refusals.** They are shown as delivered. A worker failure with these codes is terminal, with no retry. The banner title is „KEINE EINDEUTIGE UNTERSUCHUNGSGRENZE“, and the sentence is the backend's verbatim.
+- **Legacy page.** `/career/analyze` stays PERSON × JOB (§13.2.25).
+
+**B2 · role-bound coverage (PERSON × JOB).** At the selected job's role (ROLE / REQUIREMENT, the selection VALID) the edge action
+`syntx-investigation-toggle` (`data-investigation-body="COVERAGE"`) opens `syntx-coverage` at the centre, in the boundary's grammar
+(veil, glass body, four layers).
+- **Read.** GELB's route is read only while the body is open (`useSelectedRoleCoverage`, `lib/career/ui/useRoleInvestigation.ts`):
+  - GET with `no-store`, carrying exactly the selection (untrimmed);
+  - decoded strictly;
+  - shown only if `comparisonBelongsToSelection` holds. Any change discards the data, aborts the read and drops a late answer.
+- **Layers:**
+  - 01 the binding (analysis, runs, pool, role, scope hash);
+  - 02 the role's requirements in pool order: COVERED with the proposal, match basis and verbatim quotes, `TOKEN_CONTAINMENT` as „SCHWACH · HEURISTIK“; NOT COVERED with „kein Urteil“;
+  - 03 every proposal, also those covering nothing;
+  - 04 the fixed authority (scored false, NOT_EVALUATED, authority NONE) and the counts („Zählungen, kein Score“).
+- **States.** Each state has its own sentence: NOT_SCOPED (PERSON analysis), SCOPE_MISMATCH („Analyse gehört zu einem anderen Job“), SCOPE_DRIFT, SCOPE_UNAVAILABLE, LINEAGE_INVALID, NOT_FOUND, NOT_PROVISIONED, FAILED, and no analysis.
+
+**JOB · structure.** In JOB, the same toggle (`data-investigation-body="STRUCTURE"`) opens `syntx-job-structure` with `JOB_STRUCTURE_V1` of the selected job:
+- 01 role and organization, with the responsibility „NICHT DEKLARIERT“;
+- 02 the requirements in pool order, each with necessity, level, eligibility, weight, the type default and the pool-source lines;
+- 03 structural findings „als Tatsachen der Deklaration“;
+- 04 the authority (interpretation NONE, PROPOSAL_ONLY, scored false).
+
+There is no person and no Gemini.
+
+**GEMINI OUTPUT.** `syntx-gemini-output-toggle` sits beside BOUNDARY, only in engineering builds (`NEXT_PUBLIC_CONDYN_RESULT_INSPECTOR_UI=1`). It opens `syntx-gemini-output`, a read-only inspector of the analysis on view, which is the job result or the URL's analysis, in any mode.
+- **Token.**
+  - The operator enters the token per panel (`type="password"`, `autocomplete="off"`). It lives in the body's memory only and is sent per read as the header.
+  - It never goes into a URL, storage, a cookie or an attribute. Closing unmounts the body and discards token and results.
+- **Reads.** GET only, with no retry.
+- **Views:**
+  - INVESTIGATION SCOPE: the mode, the selection, and the scope text RETAINED / NOT_RETAINED / UNSCOPED, named as never evidence;
+  - ORIGINAL RESPONSE: the text exactly as received, in a `pre` with CRLF, tabs and the trailing newline kept, plus its checks (sha256, parser = text) and envelope; NOT_RETAINED is shown literally and never with a processed result in its place;
+  - PARSER · VERIFICATION · CONVERGENCE: shown apart;
+  - PROJECTION;
+  - EXCHANGES OF THE JOB: every archived exchange, also FAILED ones.
+- **Reused run.** A run older than its job is marked „LAUF WIEDERVERWENDET“: the job made no Gemini call of its own.
+- **Other states.** CLOSED (wrong token or inspector off), NOT_FOUND, LINEAGE_INVALID, FAILED. In JOB: „Kein Gemini-Aufruf in diesem Modus.“
+
+**Unchanged.** The following stay as they were:
+- the requirement cards and the sealed cosmos grammar;
+- the existing matches decoder;
+- the job-scope sentence, still defined once in the frontend and once in the backend;
+- the Capability manifestation;
+- every earlier DOM contract.
+
+**Proof** (no live Gemini, 3017 and 41831 untouched).
+- **Static checks and tests:**
+  - tsc: only the known PINK `pdf-path.postgres.test.ts` error from the pending diff, the same on ad15d7b;
+  - new tests 3 files / 74 (boundary mirror agrees with the server's parser on 13 payloads; strict decoders; reads; SSR);
+  - regression 58 files / 442.
+- **Browser runs:**
+  - PINK's gate walk from `validation/hr-decision-loop-pink` against this tree: 74/74;
+  - job-pool-workflow e2e 10/10;
+  - PINK's syntx-walk 0/3, identical to the base (the known ca11794 rebinding).
+- **Three-mode lab walk: 38/38 at 1600 × 1000 and 1280 × 720.** The lab is a disposable DB with the real Next server and the real worker `scripts/run-career-worker.ts`, unchanged:
+  - Gemini replaced by GRÜN's loopback stand-in;
+  - a network sentinel refused 1 non-loopback attempt (the npm version check of `next dev`), Gemini hosts 0.
+- **API flow and layout:**
+  - PERSON 202 → B2 409 NOT_SCOPED, inspector UNSCOPED / RETAINED;
+  - PERSON × JOB 202 → B2 2 covered / 1 not covered, inspector scope RETAINED;
+  - JOB structure 10 requirements / 8 findings;
+  - shell row without overlap at 1280 / 1440 / 1600 / 1920 in both fields.
+
+Evidence: `evidence/job-pool/three-modes/`.
+
+**PINK §3.36 (2ac7993).** No deviation from §3.35. Observation O-MODE-KEYBOARD-FOCUS fixed:
+- **Cause:** a keyboard choice of JOB from the Capability Field closes the gate, and the Job Field mounts. Its F-SX-1 effect then moved the focus from the chosen option to the field root, so ← / Home steered the field, not the boundary.
+- **Fix:** the effect leaves a focus that sits in the investigation selector (`[data-sx-shell="investigation"]`) where it is. Every other F-SX-1 path is unchanged.
+- **Proof:** walk MK-4 and MK-5 added (End PERSON→JOB, → PERSON × JOB→JOB): 40/40 (`walk-results-1600-focus.txt`); regression 58 files / 442.
+
+**Lab gotcha.** A long-running `next dev` lab that hot-reloads many edits keeps its database pools: 84 of 100 PostgreSQL connections, which starved parallel e2e runs (NOT_PROVISIONED, timeouts). Restart the lab after edits.
+
+#### 13.2.28 URL boundary closure: analysisId → persisted boundary → projection (owner "SFE — GELB / GRÜN | URL BOUNDARY CLOSURE", 2026-10-15)
+
+PINK O-URL-ANALYSIS-UNBOUND (§3.36): an analysis opened from the URL had no known mode, so in PERSON × JOB the Job Field compared it as
+before. The relation is now closed on GELB's contract `ANALYSIS_INVESTIGATION_V1`
+(`GET /api/career/analyses/{analysisId}/investigation`, client `lib/career/investigation/client.ts`, GELB 26df225 / ef189d3, merged as 7507454).
+The boundary is resolved only from persisted relations (the analysis's job, its declaration and its Discovery run) and never
+guessed from the interface.
+
+**One rule for every analysis on view** (job result and URL alike; `useAnalysisBoundary`, the analysis id is the only key):
+
+| Persisted boundary | Job Field in PERSON × JOB | `data-analysis-boundary` |
+|---|---|---|
+| being read | no comparison, „… WIRD GELESEN · NOCH KEIN VERGLEICH“ | `RESOLVING` |
+| PERSON | no comparison, „Diese Analyse ist eine PERSON-Analyse: kein Jobvergleich.“ | `PERSON` |
+| UNRESOLVED (no job recorded, nothing declared, contradiction, ambiguity), unknown, failed | no comparison, „Untersuchungsgrenze dieser Analyse nicht auflösbar: kein Jobvergleich.“ | `UNRESOLVED` |
+| PERSON_X_JOB, another pool on view (also another version of the pool) | no comparison across job scopes, the analysis's pool named, `syntx-analysis-pool-open` opens it explicitly (never a silent switch) | `OTHER_POOL` |
+| PERSON_X_JOB, its own pool on view | the comparison as before (existing links unchanged) | `PERSON_X_JOB` |
+
+- **Where the comparison is withheld.**
+  - `useJobPoolWorkflow` reads `/matches` only for the analysis's own pool (`analysisJobPoolUploadId`).
+  - The field never shows matches outside the permitted comparison.
+- **What decides it.** Only the analysis and the pool decide. The role is not a condition: the legacy comparison is pool-wide, and the role-exact one is B2. GELB puts a role-exact variant to the owner as an option.
+- **Banner.** The success banner names the resolved boundary, not the submitted one.
+- **Fixtures.** The e2e world now persists the analysis's job `JOB_JOB_POOL_E2E_0001`: SUCCEEDED, `result_analysis_id` = the analysis, declared PERSON_X_JOB for the sample pool's `role_fullstack`. An analysis row without a job stays UNRESOLVED (`NOT_RECORDED`).
+- **Workflow e2e.** The test selects the new pool version and shows OTHER_POOL there, then walks the analysis's own pool after the explicit action.
+
+**Proof** (no live Gemini, 3017 and 41831 untouched):
+- **Tests:** tsc unchanged; SSR / unit 9 files / 128 incl. RESOLVING, PERSON, UNRESOLVED, NOT_FOUND, FAILED, OTHER_POOL and own pool.
+- **Workflow e2e:** 10/10 with the persisted job.
+- **Lab walk:** 46/46 at 1600 × 1000 and 1280 × 720. MU-1 … MU-6 cover:
+  - a PERSON analysis from the URL;
+  - a PERSON × JOB analysis in its own pool;
+  - the same analysis in another pool, then the explicit open;
+  - an unknown analysis;
+  - an analysis row without a job, which resolves to 409 `NOT_RECORDED`.
+- **Network:** 0 Gemini hosts. Evidence `evidence/job-pool/three-modes/` (09, 10 and the walk results).
+
+**GELB hardening d54c718 / 4e72260 (PINK O-URL-SCOPE-IDENTITY, §3.38), merged as e83a9e4.** Additive only:
+- PERSON_X_JOB with a Discovery run holds only when the run's scope hash belongs to the declared selection; otherwise 409 `RUN_CONTRADICTS_DECLARATION`.
+- A declared selection that the stored pool no longer resolves gives `SCOPE_UNAVAILABLE`.
+- A 503 on this path is FAILED.
+
+All of these fall into UNRESOLVED / FAILED: no comparison, no frontend change. Proof:
+- 10 files / 163;
+- walk 46/46 (`walk-results-1600-hardening.txt`);
+- workflow e2e 10/10 three times in a row, after the DRAFT step waits for the field to come to rest before its click (the OTHER_POOL statement appears without a matches round trip, so the click had fallen into the field's change of pool: 2 of 3 runs red before).
+
+
+
 ### 13.3 DOM contract (PINK BR-1 … BR-5; GELB conditions a/b)
 
 **BR-1 field root** `data-testid="syntx-field"`: `data-field-grammar="SYNTX_FIELD_V1"`, `data-observation-kind` FIELD|ORGANIZATION|ROLE|REQUIREMENT
@@ -633,6 +1404,12 @@ authority-label, open-nearest, evidence-quote), `job-pool-panel`, `job-pool-orbi
 `syntx-aperture` (+ `-quote`, `-source`, `-contribution`, `-sweep-status`, `-open-text`, `-pending-text`, `-resonance`, `-authority`, `-close`),
 `syntx-stale` (`data-stale-kind`, `data-stale-id`), `syntx-no-pool`, `syntx-no-analysis`, `syntx-exit-btn`, `syntx-path`, `syntx-path-<LEVEL>`
 (`data-current`), `syntx-return-btn`, `syntx-state` (`data-state`), `syntx-pools-toggle`, `syntx-boundary-toggle`.
+**Added by the semiotic transfer (2026-10-12)**: `syntx-canvas` `data-depth` (0 planetarium … 3 deep focus; `data-camera-scale` is now
+the planetarium focus anchor's scale, 1 or 1.12), `syntx-orbits`, `syntx-pool-core`, `syntx-ray-<org>`, `syntx-body-<org>`,
+`syntx-body-surface-<org>`, `syntx-hud-<org>`, `syntx-tether-<org>`, `focus-transition-stage-shell-syntx-<org>` (+ `focus-stage-visual-…`,
+`focused-stage-bubble-…`, `focus-transition-pulse-…`), `syntx-cosmos-organization`, `syntx-cosmos-centre`, `syntx-deep-focus`,
+`syntx-evidence-surface`, `data-manifestation-form` (`moon` / `satellite` / `centre`), `data-sx-level`, `data-sx-evidence-row`,
+`data-trace-kind`, `data-rotation`, `data-card-mode`. Retired: `data-sx-camera`.
 
 ### 13.4 Accessibility and keyboard (spec §13.4, R8, R9)
 
@@ -703,3 +1480,32 @@ observation point. Readable labels wrap at word boundaries (`wrapLines`), never 
 | 2026-10-12 | Semiontic field reconstruction — composition (owner mandate "SFE — GREEN · SEMIONTIC FIELD RECONSTRUCTION", on 0327d8d; GREEN only, isolated lab) | Phase 01 with a populated reference: the lab now runs the application's own intake (text source → `/api/career/analyze` → job → worker with PINK's deterministic MockInferenceProvider answering the gold case extended to five capabilities) so the Capability Field fills in-session (L0 counts 1/5/1/1/0/1, HUD with DOC pill and top items, L1 cosmos with five orbiting cluster cards on tethers, L2 deep focus: nucleus, four satellites on spokes, the EVIDENCE surface beneath the nucleus on the mint link) and the Job Field of the same session reads the same analysis. Identified: the existing application never places a source as a distant node tied to entities by lines; evidence is attached beneath the focused entity. Phase 02: the ecology takes that composition — anchors as satellites of the role core on faint spokes (arc outside a 90° evidence sector at the bottom), source carriers inside the ecology beneath the core (ring 104, inside the boundary 158) on the mint link, traces as short energy rays from the evidence body to its anchors. Evidence: `capability-vs-jobfield.webm` (comparable complexity, one session), `populated-session.webm`, `reference-*.png` | view model 14/14 · SSR 7/7 · governance 10/10 + 4/4 · e2e 10/10 · PINK walk: all scenarios green except the Q-06 ROLE-name assertion (`sxFloat` / `sxMoonOrbit`, R15; expected) · tsc 0 · sealed files byte-identical |
 | 2026-10-12 | Final deep-focus delta (owner mandate "SFE — GREEN · FINAL DEEP-FOCUS DELTA", on dac4bf0; GREEN only, isolated lab, same populated reference session) | the Capability Field's deep-focus transformation is reused for the whole ecology (recede blur(3px) grayscale(86%) / scale .72, focus 1.12, .78 s; anchors settle as deep-focus satellites .62 → 1, .72 s); the carrier float is replaced by the cosmos's `OrbitalSatelliteMotion` (shared rAF clock, ellipse 14 × 9, 60 s per turn) and its link and traces are recomputed from that position every frame (probe over 6 s: carrier x/y and trace end coincide to 0.1 field units in every sample). Side-by-side 16 s from one populated session: `capability-vs-jobfield.webm` | view model 14/14 · SSR 7/7 · governance 10/10 + 4/4 · e2e 10/10 · PINK walk: all scenarios green except the Q-06 ROLE-name assertion (`sxMoonOrbit`, R15; expected) · tsc 0 · sealed files byte-identical |
 | 2026-10-12 | Concrete visual correction (owner mandate "GREEN — CONCRETE VISUAL CORRECTION", on 7bda76a; GREEN only, same populated reference session) | nucleus ×1.5 with the L2 nucleus materials and one resonance region; ecology radii ×1.3 (categories, order, camera scales unchanged; nucleus kept in the REQUIREMENT framing); evidence straight beneath the nucleus and satellites fanned from the top (the regression the e2e caught on the first attempt — a short trace buried in a converging bundle, 0 owned pointer points — is gone: 7 / 11 / 14 / 14); traces as screen-constant filaments with a faint halo, photons and beads in screen pixels, emphasis on the selected anchor. View-model expectation "a single trace stays straight" replaced by the clearance it stands for. Comparison: `capability-vs-jobfield.webm` (21 s, L2 deep focus left, Job Field REQUIREMENT → EVIDENCE right, one session) | view model 14/14 · SSR 7/7 · governance 10/10 + 4/4 · e2e 10/10 · PINK walk: all scenarios green except the Q-06 ROLE-name assertion (`sxMoonOrbit`, R15; expected) · tsc 0 · sealed files byte-identical |
+| 2026-10-12 | Semiotic transfer (owner "GRÜN — SYNTX SEMIOTIC TRANSFER", GO for variant A; on 5898def = 9e86d44 + plan 1.9.0; GREEN only, isolated lab) | §13.2.3: seven domain-neutral manifestation components extracted from the Capability Field (374/374 renders byte-identical); the Job Field rebuilt on them as planetarium → organization cosmos → role cosmos → requirement deep focus → evidence HUD; organizations first (roles as moons); scored/unscored separated per row and curve; scale check with 16 organizations / 53 roles / 191 requirements. Findings fixed on the way: keyframe text inside the stage (now at the field root), zero-size sign wrappers (now real extents), colliding test-id prefixes (renamed), floating aperture (now still), global button ripple (suppressed in the field) | tsc 0; unit/SSR/governance/sealed SIL/Capability batch 40 files / 230; workflow e2e 10/10; PINK walk unchanged 0/3 (expected: Q-01 role buttons, Q-06 camera, focus tag); PINK walk with the proposed rebinding 3/3 |
+| 2026-10-12 | Evidence aperture refinement (owner "Die Evidenz-Apertur … veredeln"; visual / semiotic only, on ca11794; GREEN only, isolated lab) | the inspection aperture as a calm hologram surface: rounded HUD with a fine mint / cyan frame and atmospheric interior, a glow layer that breathes (`sxApertureBreathe` 7 s, opacity only — the surface holds still), and semantic layers: head (requirement or role), relation line (stroke sample + relation · scored / unscored), source line (glyph, title, location chip), the quote as its own reading space, micro-metric chips (contribution, confidence, weight; resonance and rank in the pending aperture), explanation, and a separated boundary zone with the authority statement as chips (text unchanged). Ids, states, texts, data, keyboard and click logic unchanged. Before / after: `evidence/job-pool/semiotic-transfer/aperture/` | job-pool batch 18 files / 114; workflow e2e 10/10; PINK walk with the proposed rebinding 3/3 |
+| 2026-10-13 | Semiotic finishing pass (owner "SFE — GREEN · SEMIOTIC FINISHING PASS", on 00e9103; visual only, GREEN only, isolated lab) | §13.2.4: Job Field resonance tone (azure atmosphere and resting structure; semantic colours unchanged), organization bodies as lit resonance spheres with a slow atmosphere halo and a calm light reaction, the source carrier as a document membrane with a vector glyph, the aperture with more depth and a slower two-tone glow; O-JF-LABEL documented. Shared components: optional tone props only (Capability renders 374 / 374 byte-identical). Before / after: `evidence/job-pool/semiotic-transfer/finishing/` | tsc 0; Capability renders 374 / 374 byte-identical; unit / SSR / governance / sealed SIL / Capability batch 32 files / 192; workflow e2e 10/10; PINK walk with the proposed rebinding 3/3 (Q-01 … Q-11, Q-06 and carried states PASS; report under finishing/pink-walk-proposal) |
+| 2026-10-13 | Final visual finishing pass (owner "FINAL VISUAL FINISHING PASS — JOB FIELD", on d16db44; visual only, GREEN only, isolated lab) | §13.2.5: organization bodies with a still light membrane, corona, calmed signature and reading halos; the source carrier as a document sheet (folded corner, ruled ground, outline glow); the aperture with field ground, quotation marks in the relation colour, layer hairline and a lifted governance zone; resting cards and satellites in the azure register; O-JF-LABEL extended. Before / after: `evidence/job-pool/semiotic-transfer/final-pass/` | tsc 0; Capability renders 374 / 374 byte-identical (sha256 unchanged); unit / SSR / governance / sealed SIL / Capability batch 32 files / 192; workflow e2e 10/10; PINK walk with the proposed rebinding 3/3 (report under final-pass/pink-walk-proposal) |
+| 2026-10-13 | Field selector & final readability (owner "SFE — GREEN · FIELD SELECTOR & FINAL READABILITY", on f96217f; GREEN only, isolated lab) | §13.2.6: SYNTX field selector in the application shell (two equal fields, exactly one active, exclusive visibility, calm veil, keyboard ←/→), organization body typography (signature clears the reading area, reading plates, opaque hovered interior, rim tether), organization cosmos role-label clearance (O-JF-LABEL resolved); O-JF-PANEL documented. Evidence: `evidence/job-pool/semiotic-transfer/field-selector/` | tsc 0; Capability renders 366 / 374 byte-identical, the 8 shell renders identical after removing the selector and shell markers; unit / SSR / governance / sealed SIL / Capability batch 32 files / 192; workflow e2e 10/10; PINK walk with the proposed rebinding 3/3; selector proof 25 / 25 (exclusivity, ids, deep link, keyboard, reduced motion, role-card clearance at 1600 × 1000 and 1280 × 720) |
+| 2026-10-13 | Decision Loop Labs brand core (owner "ONE FIELD GRAMMAR. NEW BRAND CORE.", on a047f53; visual only, GREEN only, isolated lab) | §13.2.7: the DLL mark as field light in the pool core's lens, the Job Field header as Decision Loop Labs (Capability header unchanged), a static brand grid and registration frame, slight teal calibration; O-DLL-SCOPE open. Evidence: `evidence/job-pool/semiotic-transfer/brand-core/` | tsc 0; Capability renders 366 / 374 byte-identical, 374 / 374 after removing the selector and shell markers (unchanged against a047f53); unit / SSR / governance / sealed SIL / Capability batch 32 files / 193 (one new SSR test for the brand surface); workflow e2e 10/10; PINK walk with the proposed rebinding 3/3 (report under brand-core/pink-walk-proposal; the walk caught a first header test id under the retired `job-field…` prefix, renamed to `shell-brand-dll`); brand proof 20 / 20; selector proof 25 / 25 |
+| 2026-10-13 | Four panels (owner "FOUR PANELS. CLEARER SIGNAL.", on 00299f5; visual only, GREEN only, isolated lab) | §13.2.8: Job Field panel material for pools, intake and boundary (glass, edge current, breathing aura, field node), boundary in four sections with chips and ruled statements, pools as row cards with a lit selection, intake wells and action chip, selector membrane and contrast. Evidence: `evidence/job-pool/semiotic-transfer/panels/` | tsc 0; Capability renders 366 / 374 byte-identical, 374 / 374 shell-normalized; batch 32 files / 193; panel text and contract identical before / after; panel proof 24 / 24; workflow e2e and PINK walk run on the following polish pass (same tree plus the polish) |
+| 2026-10-13 | Visual polish pass (owner "FEINSTUFE / VISUAL POLISH PASS", on d79d4f8; visual only, GREEN only, isolated lab) | §13.2.9: selector balance, loop link and field-change light; role cards as semantic carriers; opaque cosmos centre (ghost text gone) and body micro-typography; edge vignette. Evidence: `evidence/job-pool/semiotic-transfer/polish/` | tsc 0; Capability renders 366 / 374 byte-identical, 374 / 374 shell-normalized; batch 32 files / 193; workflow e2e 10/10; PINK walk with the proposed rebinding 3/3 (covers d79d4f8 too; teardown could not terminate a transient superuser backend, the run's own disposable DB was then dropped with the verifying helper); selector proof 25 / 25; brand proof 20 / 20; panel proof 24 / 24; text and contract identity |
+| 2026-10-13 | Local pass: pools panel and role cards (owner "Small field. Local recursion.", on b156364; visual only, isolated lab) | §13.2.10: pools spine with nodes, grid rows, aligned action chips; role cards with staggered level line, weighted count, edge field anchor. Evidence: `evidence/job-pool/semiotic-transfer/local-pools-roles/` | tsc 0; local proof 11 / 11; text and contract identity of both zones; role-card clearance 4 / 4; panel proof 24 / 24; Job Pool SSR 13 / 89 (no full sweep by owner rule) |
+| 2026-10-13 | Local pass: orientation surface (owner "Small field. Local recursion.", on aa33ddf; visual only, isolated lab) | §13.2.11: the top-left orientation surface as a lit glass with five layers, path rail, state chip, key caps, action chips; one finite context light. Evidence: `evidence/job-pool/semiotic-transfer/local-orientation/` | tsc 0; local proof 48 / 48; text, contract and tab order identical; field SSR 8 / 8 (no full sweep by owner rule) |
+| 2026-10-13 | Local pass: quiet panel glow and boundary layers (owner "Small field. Local recursion.", on 801b778; visual only, isolated lab) | §13.2.12: slower, softer panel aura and edge current, finer membrane; orientation aura and static field node; boundary in four layered groups with semantic rails. Evidence: `evidence/job-pool/semiotic-transfer/local-glow-boundary/` | tsc 0; text, contract and tab order identical; orientation proof 48 / 48; panel proof 24 / 24 (no full sweep by owner rule) |
+| 2026-10-13 | Local pass: meta dock, intake, boundary (owner "Medium-small field. Local recursion.", on a4488a3; visual only, isolated lab) | §13.2.13: one segmented meta bar in the header band (Job Field context only), intake lower, boundary headings and dashed limit chips. Evidence: `evidence/job-pool/semiotic-transfer/local-meta-intake-boundary/` | tsc 0; local proof 29 / 29; governance text and contracts identical; Capability controls unchanged; panel proof 24 / 24; language contract + Job Pool SSR 14 / 105 (no full sweep by owner rule) |
+| 2026-10-13 | Local pass: boundary as a focus state (owner "Small-to-medium field. Local recursion.", on 2f7d0ee; visual only, isolated lab) | §13.2.14: receding field behind a pointer-transparent veil, the boundary as a centred governance body with a layer grid and amber as accent only. Evidence: `evidence/job-pool/semiotic-transfer/local-boundary-focus/` | tsc 0; local proof 44 / 44; boundary text and contract identical; field SSR 8 / 8 (no full sweep by owner rule) |
+| 2026-10-13 | Boundary micro-finish (owner "SFE::BOUNDARY MICRO-FINISH", on f136859; visual only, isolated lab) | §13.2.15: static light membrane, sheen and layer rims; shared azure layer grammar, amber only on limits and status dots; heading, meta and statement typography. Evidence: `evidence/job-pool/semiotic-transfer/local-boundary-microfinish/` | tsc 0; geometry of boundary, layers and every text leaf identical; text and contract identical; animations unchanged; min contrast 4.07 → 5.85; behaviour proof 44 / 44; field SSR + static 13 / 13 (no full sweep by owner rule) |
+| 2026-10-13 | Boundary cyan presence + orientation sentence (owner mandate, on 3fb340d; visual + one copy line, isolated lab) | §13.2.16: resting cyan shimmer behind the layers (`atmosphereGlow` 28 s, opacity only), orientation sentence EN / DE under BOUNDARY in the space the kicker gave up. Evidence: `evidence/job-pool/semiotic-transfer/local-boundary-orientation/` | tsc 0; boundary, layers and text leaves identical (kicker −9 px by design); text identical except the sentence; contract identical; behaviour proof 44 / 44; 6 files / 48 tests (no full sweep by owner rule) |
+| 2026-10-13 | Boundary visible cyan glow + corrected orientation line (owner mandate, on a06fe3a; visual + copy, isolated lab) | §13.2.17: shimmer, aura and membrane in cyan with higher amplitude, one shared 32 s breath; owner wording EN / DE. Evidence: `evidence/job-pool/semiotic-transfer/local-boundary-glow/` | tsc 0; geometry identical; text identical except the corrected word; contract identical; swing 0.55 → 2.0 / 255; every text ≥ 8.6 at the brightest breath; behaviour proof 44 / 44; 6 files / 48 tests (no full sweep by owner rule) |
+| 2026-10-13 | Boundary external resonance halo (owner mandate, on fd3462d; visual only, isolated lab) | §13.2.18: overflow clipping of the old aura diagnosed; the halo on the body's own box-shadow, breathing via `sxBoundaryHalo` 28 s (new motion kind, R15b approval by GELB required); REDUCED still. Evidence: `evidence/job-pool/semiotic-transfer/local-boundary-halo/` | tsc 0; body geometry, text and contract identical; ring outside the frame 13.8–14.3 → 21.1–29.6 over the breath; video of one breath at 1x; behaviour proof 44 / 44; 6 files / 48 tests (no full sweep by owner rule) |
+| 2026-10-13 | Resonance halo grammar, phase 1 prototype (owner mandate, on 6c88d9b; visual only, isolated lab) | §13.2.19: external cyan seam on the first organization and the orientation surface, strength from existing state (inactive / active / retreated), finite transitions; breathing only behind a lab flag (R15b approval required). Evidence: `evidence/job-pool/semiotic-transfer/resonance-prototype/` | tsc 0; geometry identical; states measured before / after; no new infinite motion by default; frame cost unchanged; boundary proof 44 / 44; 6 files / 54 tests (no full sweep by owner rule) |
+| 2026-10-13 | Capability Field: one typography for every red field state (owner "SFE::GLOBAL RED FIELD TYPOGRAPHY REFINEMENT", on 337033e; visual only, isolated lab) | §13.2.20: `SIL_RED_FIELD_TYPE` for the focused empty-projection copy and the labels of red bodies; the copy no longer recedes with the 0.42 focus anchor (`copyAboveAnchorOpacity`, Capability only); R10c proposal P-7. Evidence: `evidence/job-pool/semiotic-transfer/red-field-typography/` | tsc 0; 20 files / 102 tests; focus shell byte-identical without the flag (32 / 32); non-red bodies identical; geometry and animation names identical; copy contrast 1.65–3.62 → 8.5–19.4 |
+| 2026-10-13 | Job Field NO_POOL as the red absence giant (owner "SFE::JOB FIELD RED ABSENCE GIANT", on bb5e8e3; visual + copy, isolated lab) | §13.2.21: one static red semiotic body on the field centre with the NO_POOL information inside (EN / DE); same element, state and transition; no motion. Evidence: `evidence/job-pool/semiotic-transfer/no-pool-giant/` | tsc 0; 19 files / 129 tests; no collision at 1600 × 1000 and 1280 × 720; giant at NO_POOL (0 and 3 uploads), absent after selection; contrast 7.9–17.9 |
+| 2026-10-13 | The red absence giant breathes (owner mandate, on 44cd561; motion only, isolated lab) | §13.2.22: one slow 10 s field breath — aura, seam light, outer membrane and red rings (opacity / transform); text, cyan ring and joints still; LIVE only, REDUCED static; new motion kinds `sxGiant*` (R15b approval required). Evidence: `evidence/job-pool/semiotic-transfer/no-pool-giant-breath/` | tsc 0; 19 files / 129 tests; video 2.4 cycles; aura light ×3.4 rest → peak; text block identical in every sample; no collision at the peak |
+| 2026-10-14 | Job scope (owner "GRÜN — SFE GO", on 799f523) | §13.2.23: one selected job (`jobScope`, URL `jobScopePoolUploadId` / `jobScopeRoleId`) for both fields and every depth; `job-scope-indicator` at the shell; `syntx-job-scope-select` at ROLE/REQUIREMENT; ANALYZE and RETRY blocked with „Bitte wählen Sie einen Job aus.“ unless VALID; request `{ documents, jobScope }` (GELB contract); findings 1 (code kept, `httpStatus` apart) and 2 (banner compares the numeric status) fixed. Evidence: `evidence/job-pool/job-scope/` | tsc 0; 29 files / 204 tests incl. governance (new: job scope 10, SSR 11; controller 23); browser walk 33/33; render identity 30/30 |
+| 2026-10-14 | Job Pool first / Capability gate (owner, on cb3d33f) | §13.2.24: the application opens in the Job Field; `activeFieldFocus` is CAPABILITY only for a requested Capability Field with a VALID job scope; selector option and exit disabled (`data-field-gate`), `data-capability-gate` on the root; job kept across both fields. Evidence: `evidence/job-pool/capability-gate/` | tsc 0; 29 files / 205 tests; browser walk 22/22; job-pool-workflow e2e 10/10 (final diff, isolated worktree); syntx-walk e2e 0/3 identical to the base (pre-existing) |
+| 2026-10-14 | Owner decision G-10 A / G-05 / every analysis path (on c146f05) | §13.2.25: role id verbatim (non-empty string); `syntx-job-scope-clear` removes the selected job (gate closes, ANALYZE blocked, sources and analyses kept); legacy `/career/analyze` gated and sending `jobScope`. Evidence: `evidence/job-pool/job-scope-removal/` | tsc 0; 35 files / 262 tests (job-pool.postgres on a fresh disposable DB); browser walk 25/25; capability-gate walk 22/22; job-pool-workflow e2e 10/10 (isolated worktree, `e2e-results.txt`) |
+| 2026-10-15 | Binding sentence (owner GO, on 5d6786b) | §13.2.26: `JOB_SCOPE_REQUIRED_MESSAGE` = „Bitte wähle einen Job aus einem Pool aus.“, identical to the backend contract (GELB e643e96) | tsc 0; 17 files / 147 tests; walk 25/25 |
+| 2026-10-15 | Three investigation modes, B2, GEMINI OUTPUT (owner GO "DEMO FRONTEND", on aa17a3b + GELB ad15d7b) | §13.2.27: shell control PERSON · PERSON × JOB · JOB (URL `investigationMode`, ground state PERSON_X_JOB); gate per mode (`JOB_MODE`); ANALYZE declares the boundary; Job Field compares only in PERSON × JOB; B2 body at the selected job; JOB structure body; GEMINI OUTPUT inspector beside BOUNDARY (engineering builds, token in memory only). Evidence: `evidence/job-pool/three-modes/` | tsc: only PINK's pending pdf-path error; new 3 files / 74; regression 58 files / 442; PINK gate walk 74/74; workflow e2e 10/10; lab walk 38/38 at 1600 and 1280 (real worker, loopback stand-in, 0 Gemini hosts) |
+| 2026-10-15 | PINK §3.36 observation O-MODE-KEYBOARD-FOCUS (on 00deaf0) | §13.2.27: the Job Field's F-SX-1 focus effect leaves a focus in the investigation selector alone | tsc unchanged; regression 58 files / 442; walk 40/40 incl. MK-4/MK-5 |
+| 2026-10-15 | URL boundary closure (owner "SFE — GELB / GRÜN | URL BOUNDARY CLOSURE", on bd9eb72 + GELB 26df225 / ef189d3) | §13.2.28: the Job Field compares an analysis only when its persisted boundary is PERSON_X_JOB and its own pool is on view (`legacyJobComparisonPermitted`); RESOLVING / PERSON / UNRESOLVED / OTHER_POOL named, the pool opened only explicitly; e2e world persists the analysis's job | tsc unchanged; 9 files / 128; workflow e2e 10/10; lab walk 46/46 at 1600 and 1280; 0 Gemini hosts |
+| 2026-10-15 | GELB hardening d54c718 / 4e72260 merged (e83a9e4) | §13.2.28: run scope identity and SCOPE_UNAVAILABLE fall into UNRESOLVED; DRAFT e2e step waits for rest | 10 files / 163; walk 46/46; workflow e2e 10/10 ×3 |

@@ -1,0 +1,179 @@
+{
+  "checks": [
+    {
+      "name": "CAPABILITY active: Job Field not mounted",
+      "ok": true,
+      "detail": "{\"focus\":\"CAPABILITY\",\"jobMounted\":false,\"capShells\":6,\"capVisible\":6,\"dockVisible\":true,\"centreOwner\":\"capability\",\"buttons\":2,\"active\":[\"field-focus-capability-btn\"],\"selector\":{\"x\":563,\"y\":70,\"w\":474,\"h\":48,\"centreOffset\":0}}"
+    },
+    {
+      "name": "CAPABILITY active: all six Capability stages visible",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "CAPABILITY active: exactly one active option",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "selector centred in the upper area",
+      "ok": true,
+      "detail": "{\"x\":563,\"y\":70,\"w\":474,\"h\":48,\"centreOffset\":0}"
+    },
+    {
+      "name": "JOB FIELD active: Job Field mounted",
+      "ok": true,
+      "detail": "{\"focus\":\"FIELD\",\"jobMounted\":true,\"capShells\":6,\"capVisible\":0,\"dockVisible\":false,\"centreOwner\":\"job\",\"buttons\":2,\"active\":[\"job-pool-panel-toggle\"],\"selector\":{\"x\":563,\"y\":70,\"w\":474,\"h\":48,\"centreOffset\":0}}"
+    },
+    {
+      "name": "JOB FIELD active: Capability stages hidden (mounted, not visible)",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "JOB FIELD active: Capability source dock hidden",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "JOB FIELD active: centre of the stage owned by the Job Field",
+      "ok": true,
+      "detail": "job"
+    },
+    {
+      "name": "JOB FIELD active: exactly one active option",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "ids kept across the switch (analysisId, jobPoolUploadId)",
+      "ok": true,
+      "detail": "{\"analysisId\":\"ANL_JOB_POOL_E2E_0001\",\"jobPoolUploadId\":\"JPOOL_30F7145E21F34BEF0FCE510DFC75837B\",\"focus\":\"FIELD\"}"
+    },
+    {
+      "name": "selecting the active field changes nothing",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "back to CAPABILITY: Job Field gone, Capability visible",
+      "ok": true,
+      "detail": "{\"focus\":\"CAPABILITY\",\"jobMounted\":false,\"capShells\":6,\"capVisible\":6,\"dockVisible\":true,\"centreOwner\":\"IMG\",\"buttons\":2,\"active\":[\"field-focus-capability-btn\"],\"selector\":{\"x\":563,\"y\":70,\"w\":474,\"h\":48,\"centreOffset\":0}}"
+    },
+    {
+      "name": "staged analysis kept (sources dock and stages intact)",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "keyboard → selects JOB FIELD; focus enters the field (F-SX-1)",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "Tab from inside the Job Field reaches the selector",
+      "ok": true,
+      "detail": "{\"id\":\"field-focus-capability-btn\",\"presses\":8}"
+    },
+    {
+      "name": "keyboard ← selects CAPABILITY FIELD and keeps focus on its option",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "Tab moves to the JOB FIELD option",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "Enter selects JOB FIELD",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "deep link to a requirement opens the Job Field at REQUIREMENT, Capability hidden",
+      "ok": true,
+      "detail": "{\"analysisId\":\"ANL_JOB_POOL_E2E_0001\",\"jobPoolUploadId\":\"JPOOL_30F7145E21F34BEF0FCE510DFC75837B\",\"focus\":\"FIELD\",\"jobOrganizationId\":\"org_nordlicht\",\"jobRoleId\":\"role_fullstack\",\"jobRequirementId\":\"req_001\"}"
+    },
+    {
+      "name": "REDUCED: no veil animation, no selector transition, no field animation",
+      "ok": true,
+      "detail": "{\"veil\":[\"none\"],\"selector\":\"0s\",\"running\":0}"
+    },
+    {
+      "name": "organization cosmos sample · Nordlicht (2 roles) 1600x1000: every card position over the orbit inside the level (≥ 8 px) and ≥ 40 px above the footer statement",
+      "ok": true,
+      "detail": "{\"cards\":2,\"tallest\":88,\"lowest\":907,\"highest\":223,\"levelTop\":165,\"levelBottom\":965,\"statementTop\":953}"
+    },
+    {
+      "name": "organization cosmos sample · Nordlicht (2 roles) 1280x720: every card position over the orbit inside the level (≥ 8 px) and ≥ 40 px above the footer statement",
+      "ok": true,
+      "detail": "{\"cards\":2,\"tallest\":88,\"lowest\":867,\"highest\":223,\"levelTop\":165,\"levelBottom\":925,\"statementTop\":913}"
+    },
+    {
+      "name": "organization cosmos large · most roles 1600x1000: every card position over the orbit inside the level (≥ 8 px) and ≥ 40 px above the footer statement",
+      "ok": true,
+      "detail": "{\"cards\":14,\"tallest\":98,\"lowest\":912,\"highest\":218,\"levelTop\":165,\"levelBottom\":965,\"statementTop\":953}"
+    },
+    {
+      "name": "organization cosmos large · most roles 1280x720: every card position over the orbit inside the level (≥ 8 px) and ≥ 40 px above the footer statement",
+      "ok": true,
+      "detail": "{\"cards\":14,\"tallest\":98,\"lowest\":872,\"highest\":218,\"levelTop\":165,\"levelBottom\":925,\"statementTop\":913}"
+    },
+    {
+      "name": "no page errors",
+      "ok": true,
+      "detail": "[]"
+    }
+  ],
+  "cosmos": [
+    {
+      "label": "sample · Nordlicht (2 roles)",
+      "orgId": "org_nordlicht",
+      "viewport": "1600x1000",
+      "cards": 2,
+      "tallest": 88,
+      "lowest": 907,
+      "highest": 223,
+      "levelTop": 165,
+      "levelBottom": 965,
+      "statementTop": 953
+    },
+    {
+      "label": "sample · Nordlicht (2 roles)",
+      "orgId": "org_nordlicht",
+      "viewport": "1280x720",
+      "cards": 2,
+      "tallest": 88,
+      "lowest": 867,
+      "highest": 223,
+      "levelTop": 165,
+      "levelBottom": 925,
+      "statementTop": 913
+    },
+    {
+      "label": "large · most roles",
+      "orgId": "org_large_1",
+      "viewport": "1600x1000",
+      "cards": 14,
+      "tallest": 98,
+      "lowest": 912,
+      "highest": 218,
+      "levelTop": 165,
+      "levelBottom": 965,
+      "statementTop": 953
+    },
+    {
+      "label": "large · most roles",
+      "orgId": "org_large_1",
+      "viewport": "1280x720",
+      "cards": 14,
+      "tallest": 98,
+      "lowest": 872,
+      "highest": 218,
+      "levelTop": 165,
+      "levelBottom": 925,
+      "statementTop": 913
+    }
+  ]
+}

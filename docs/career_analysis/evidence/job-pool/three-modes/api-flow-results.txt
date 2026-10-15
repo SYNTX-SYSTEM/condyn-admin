@@ -1,0 +1,10 @@
+PERSON 202 JOB_1792051623774_841
+PXJ 202 JOB_1792051623827_358
+PERSON SUCCEEDED ANL_1792051623774_841 undefined 
+PERSON B2 409 ERR_JOB_COMPARISON_NOT_SCOPED 
+PERSON INSPECTOR 200 PERSON UNSCOPED RETAINED true true 5
+PXJ SUCCEEDED ANL_1792051623827_358 undefined 
+PXJ B2 200 {"requirements":3,"covered":2,"notCovered":1,"proposals":4} Distributed Systems Architecture:COVERED/EXACT, Edge Computing:COVERED/EXACT, Industrial IoT Protocol Design:NOT_COVERED
+PXJ INSPECTOR 200 PERSON_X_JOB RETAINED RETAINED true true 5
+inspector without token 404
+STRUCTURE 200 Frontend Architect {"requirements":10,"findings":8} undefined

@@ -1,0 +1,27 @@
+{
+  "before": "d79d4f8",
+  "after": "polish pass",
+  "note": "contract compared without the new decorative aria-hidden nodes (no text, no role, no test id)",
+  "signs": {
+    "selector": {
+      "textIdentical": true,
+      "contractIdentical": true,
+      "count": 1
+    },
+    "organizations": {
+      "textIdentical": true,
+      "contractIdentical": true,
+      "count": 3
+    },
+    "centre": {
+      "textIdentical": true,
+      "contractIdentical": true,
+      "count": 1
+    },
+    "roleCards": {
+      "textIdentical": true,
+      "contractIdentical": true,
+      "count": 2
+    }
+  }
+}

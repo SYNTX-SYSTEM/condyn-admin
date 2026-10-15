@@ -1,9 +1,12 @@
 import { describe, it, expect } from "vitest";
 import { GoogleGenAI } from "@google/genai";
 import { getGeminiCareerResponseJsonSchema } from "../lib/career/schema-projector";
+import { resolveStoredTestJobScope } from "./support/job-scope";
 
 describe.skipIf(!process.env.RUN_GEMINI_DIAGNOSTICS)("BUG010M: Live Token Limit Matrix", () => {
   it("should test gemini-3.5-flash with various maxOutputTokens", async () => {
+    // SFE JOB POOL FIRST: no Gemini call without a valid pool + selected job, in tests too.
+    await resolveStoredTestJobScope();
     const limits = [8192, 16384, 32768, 65536];
     const results = [];
     

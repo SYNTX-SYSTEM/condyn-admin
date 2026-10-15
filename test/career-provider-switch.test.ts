@@ -5,6 +5,7 @@ import { GeminiProvider } from "../lib/career/providers/gemini";
 import { OpenAIProvider } from "../lib/career/providers/openai";
 import { AnthropicProvider } from "../lib/career/providers/anthropic";
 import { POST } from "../app/api/career/analyze/route";
+import { resolveTestJobScope } from "./support/job-scope";
 
 describe("CONDYN Career Analysis Protocol v1.0 - Step 9.4: Server-Side Provider Switch", () => {
   const originalEnv = { ...process.env };
@@ -64,7 +65,7 @@ describe("CONDYN Career Analysis Protocol v1.0 - Step 9.4: Server-Side Provider 
     const { normalizedDocs } = await prepareDocuments(sampleBody.documents);
     
     try {
-      await executeCareerAnalysisPipeline(normalizedDocs, getCareerInferenceProvider());
+      await executeCareerAnalysisPipeline(normalizedDocs, getCareerInferenceProvider(), { jobScope: resolveTestJobScope() });
       expect.fail("Should have thrown ERR_PROVIDER_FAILURE");
     } catch (err: any) {
       expect(err.message).toContain("ERR_PROVIDER_FAILURE");

@@ -1,0 +1,19 @@
+{
+  "analyses": {
+    "ENG": {
+      "analysisId": "ANL_1791904911180_388",
+      "seconds": 126,
+      "entityKinds": {}
+    },
+    "AI": {
+      "analysisId": "ANL_1791905099818_748",
+      "seconds": 117,
+      "entityKinds": {}
+    }
+  },
+  "uploads": {
+    "DLL_JOBPOOL_ENGINEERING": "JPOOL_B94850C439974E27496FE3B1A9A076B5",
+    "DLL_JOBPOOL_AI_DATA": "JPOOL_0DCDB34AE9F8FF8A3D335BA26C9F16C2",
+    "DLL_JOBPOOL_ENTERPRISE_SCALE": "JPOOL_D39ADA99F34A60B982ADE5F929276294"
+  }
+}

@@ -111,23 +111,12 @@ describe.skipIf(playwrightModule === null || !liveKeyPresent)("PINK JP-LIVE: PDF
     await page.getByTestId("onboarding-close-btn").click();
     await page.getByTestId("guided-onboarding-overlay").waitFor({ state: "detached", timeout: 30_000 });
 
-    // PDF into the source dock, then the real intake analysis through the production worker.
-    await page.getByTestId("add-pdf-source-btn").click();
-    await page.getByTestId("source-dock-file-input").setInputFiles(PDF);
-    await page.locator('[data-testid="start-intake-analysis-btn"]:not([disabled])').waitFor({ timeout: 30_000 });
-    const sweepStartedAt = Date.now();
-    await page.getByTestId("start-intake-analysis-btn").click();
-    await page.getByTestId("intake-success-banner").waitFor({ timeout: 480_000 });
-    const sweepSeconds = Math.round((Date.now() - sweepStartedAt) / 1000);
-    await page.screenshot({ path: resolve(EVIDENCE_DIR, "pink-02-live-sweep-completed.png") });
-
-    // The SYNTX field (434ef49): the strip toggle opens the one field; the analysis of this session is its source.
+    // SFE job-scope invariant (GRÜN, 2026-10-14): ANALYZE needs a selected job. So the pool is uploaded and selected in the
+    // SYNTX field first, one role is selected as the job, and only then the PDF is analysed (with exactly that jobScope).
+    await page.locator('[data-testid="job-scope-indicator"][data-job-scope-state="NONE"]').waitFor({ timeout: 30_000 });
     await page.getByTestId("job-pool-panel-toggle").click();
     const field = page.getByTestId("syntx-field");
     await field.waitFor({ timeout: 30_000 });
-    await page.locator('[data-testid="syntx-field"][data-analysis-source="JOB_RESULT"]').waitFor({ timeout: 30_000 });
-    const analysisId = (await field.getAttribute("data-analysis-id")) ?? "";
-    expect(analysisId).toMatch(/^ANL_/);
 
     // Intake is an edge aperture opened on explicit action; the upload is persisted, listed and not selected; selection is explicit.
     await page.getByTestId("job-pool-intake-toggle").click();
@@ -143,6 +132,43 @@ describe.skipIf(playwrightModule === null || !liveKeyPresent)("PINK JP-LIVE: PDF
     const uploadId = (await result.getAttribute("data-upload-id")) ?? "";
     expect(await field.getAttribute("data-field-state")).toBe("NO_POOL");
     await page.getByTestId(`job-pool-select-${uploadId}`).click();
+    await page.locator('[data-testid="syntx-field"][data-field-state="NO_ANALYSIS"]').waitFor({ timeout: 90_000 });
+    await page.getByTestId("job-pool-intake-toggle").click();
+
+    // The job: one role of the selected pool, selected explicitly at its role level; the shell names it in both fields.
+    // Role moons at the field level are not interactive: organization first, then its (orbiting) role card, clicked at its centre.
+    const scopedRoleId = String(validationPool.roles[0].id);
+    const scopedOrganizationId = String(validationPool.roles[0].organization_id);
+    const centreClick = async (testId: string) => { const box = await page.getByTestId(testId).boundingBox(); await page.mouse.click(box.x + box.width / 2, box.y + box.height / 2); };
+    await centreClick(`syntx-organization-${scopedOrganizationId}`);
+    await page.locator(`[data-testid="syntx-field"][data-observation-kind="ORGANIZATION"][data-observation-id="${scopedOrganizationId}"]`).waitFor({ timeout: 15_000 });
+    await page.waitForTimeout(1_200);
+    await centreClick(`syntx-role-${scopedRoleId}`);
+    await page.locator(`[data-testid="syntx-field"][data-observation-kind="ROLE"][data-observation-id="${scopedRoleId}"]`).waitFor({ timeout: 15_000 });
+    await page.getByTestId("syntx-job-scope-select").click();
+    await page.locator('[data-testid="job-scope-indicator"][data-job-scope-state="VALID"]').waitFor({ timeout: 30_000 });
+    await page.getByTestId("syntx-exit-btn").click();
+    await page.locator('[data-testid="semantic-career-intelligence-field"][data-field-focus="CAPABILITY"]').waitFor({ timeout: 15_000 });
+    expect(await page.getByTestId("job-scope-indicator").getAttribute("data-job-scope-state")).toBe("VALID");
+
+    // PDF into the source dock, then the real intake analysis through the production worker, scoped to that job.
+    await page.getByTestId("add-pdf-source-btn").click();
+    await page.getByTestId("source-dock-file-input").setInputFiles(PDF);
+    await page.locator('[data-testid="start-intake-analysis-btn"]:not([disabled])').waitFor({ timeout: 30_000 });
+    const sweepStartedAt = Date.now();
+    const analyzeRequest = page.waitForRequest((request: any) => request.method() === "POST" && request.url().endsWith("/api/career/analyze"));
+    await page.getByTestId("start-intake-analysis-btn").click();
+    expect(JSON.parse((await analyzeRequest).postData() ?? "{}").jobScope).toEqual({ jobPoolUploadId: uploadId, poolRoleId: scopedRoleId });
+    await page.getByTestId("intake-success-banner").waitFor({ timeout: 480_000 });
+    const sweepSeconds = Math.round((Date.now() - sweepStartedAt) / 1000);
+    await page.screenshot({ path: resolve(EVIDENCE_DIR, "pink-02-live-sweep-completed.png") });
+
+    // The SYNTX field (434ef49): the strip toggle opens the one field; the analysis of this session is its source.
+    await page.getByTestId("job-pool-panel-toggle").click();
+    await field.waitFor({ timeout: 30_000 });
+    await page.locator('[data-testid="syntx-field"][data-analysis-source="JOB_RESULT"]').waitFor({ timeout: 30_000 });
+    const analysisId = (await field.getAttribute("data-analysis-id")) ?? "";
+    expect(analysisId).toMatch(/^ANL_/);
     await page.locator('[data-testid="syntx-field"][data-field-state="AVAILABLE"][data-sources-state="AVAILABLE"]').waitFor({ timeout: 90_000 });
 
     // Oracle: the same server's bodies and the database behind it.

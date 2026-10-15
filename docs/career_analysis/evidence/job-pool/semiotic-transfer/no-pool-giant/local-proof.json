@@ -1,0 +1,13 @@
+{
+ "note": "Review lab :41803 (mock worker, disposable DB). 'zero' = LAB-ONLY browser answer of GET /api/career/job-pools with an empty list (nothing written); 'persisted' = the lab's three persisted, unselected uploads; 'selected' = explicit selection by URL.",
+ "contrastInsideBody": {"status JOB FIELD // UNBOUND": [7.93, 8.06], "title NO JOB POOL SELECTED": [17.9, 18.04], "reason": [13.53, 13.53], "orientation": [12.44, 12.58], "columns": "1600x1000, 1280x720"},
+ "geometry": {
+  "1600x1000": {"giantWithOuterRing": [586, 347, 1014, 775], "fieldSelector": [563, 70, 1037, 118], "orientationSurface": [28, 145, 368, 306], "poolList": [28, 361, 344, 637], "governanceFooter": [400, 953, 1200, 979], "collisions": "none"},
+  "1280x720": {"giantWithOuterRing": [470, 371, 810, 711], "fieldSelector": [403, 70, 877, 118], "orientationSurface": [28, 145, 368, 306], "poolList": [28, 361, 344, 637], "governanceFooter": "y 913-939, below the viewport before and after (F-4)", "collisions": "none; diameter 312 px from the visible height so the body stays on screen"},
+  "anchor": "the field centre (50% / 50%), as the replaced text"
+ },
+ "states": {"NO_POOL zero uploads": "giant 1, pool body 0", "NO_POOL persisted not selected (3)": "giant 1, pool body 0, list unchanged", "selected": "giant 0, pool body 1 (normal cosmos)", "select click from NO_POOL": "giant removed, cosmos present, jobPoolUploadId in URL, no non-GET request, LIVE and REDUCED"},
+ "motion": "no animation on the giant (getAnimations empty after the existing finite reveal); no new keyframes; REDUCED identical",
+ "contract": "data-testid syntx-no-pool kept (one element), data-field-state NO_POOL unchanged; no new interaction, no focusable element",
+ "tests": "19 files / 129 tests (non-e2e tests touching SyntxField, SIL copy, Capability shell) green after updating the one DE copy assertion; tsc clean for touched files"
+}

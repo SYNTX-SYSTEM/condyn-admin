@@ -1,0 +1,46 @@
+{
+  "proof": "result-inspector-access",
+  "commit": "9e54662",
+  "network": "loopback only, no Gemini",
+  "passed": true,
+  "checks": [
+    {
+      "case": "existing analysis read route, stored analysis, no credential",
+      "status": 500,
+      "ok": true,
+      "note": "answered by the handler without any credential (reachability as is, not changed; 500 = synthetic empty analysis payload of this proof)"
+    },
+    {
+      "case": "existing analysis read route, unknown id, no credential",
+      "status": 404,
+      "ok": true,
+      "note": "no authorization layer in the app"
+    },
+    {
+      "case": "inspector switched off, correct-looking header",
+      "status": 404,
+      "ok": true
+    },
+    {
+      "case": "switched on, no header",
+      "status": 404,
+      "ok": true
+    },
+    {
+      "case": "switched on, wrong token",
+      "status": 404,
+      "ok": true
+    },
+    {
+      "case": "switched on, correct token",
+      "status": 200,
+      "ok": true,
+      "note": "no-store; original response NOT_RETAINED (no archive wired); no PDF content, no response text, no token in the body"
+    },
+    {
+      "case": "switched on, unknown analysis",
+      "status": 404,
+      "ok": true
+    }
+  ]
+}

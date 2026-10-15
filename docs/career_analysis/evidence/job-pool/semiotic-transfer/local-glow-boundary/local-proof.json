@@ -1,0 +1,387 @@
+{
+  "before": "801b778",
+  "codeMarker": "boundary layers (radius 10 px): false before, true after",
+  "panels": {
+    "pools": {
+      "textIdentical": true,
+      "contractIdentical": true
+    },
+    "intake": {
+      "textIdentical": true,
+      "contractIdentical": true
+    },
+    "boundary": {
+      "textIdentical": true,
+      "contractIdentical": true
+    },
+    "selector": {
+      "textIdentical": true,
+      "contractIdentical": true
+    }
+  },
+  "orientation": {
+    "FIELD": {
+      "textIdentical": true,
+      "contractIdentical": true,
+      "tabOrderIdentical": true
+    },
+    "ORGANIZATION": {
+      "textIdentical": true,
+      "contractIdentical": true,
+      "tabOrderIdentical": true
+    },
+    "REQUIREMENT": {
+      "textIdentical": true,
+      "contractIdentical": true,
+      "tabOrderIdentical": true
+    }
+  },
+  "orientationProof": "48/48",
+  "panelProof": "24/24",
+  "orientationChecks": [
+    {
+      "name": "1600x1000 no-preference FIELD: only the finite context light, never infinite",
+      "ok": true,
+      "detail": "[{\"name\":\"sxOrientPass\",\"infinite\":false}]"
+    },
+    {
+      "name": "1600x1000 no-preference FIELD: the context light ends by itself (\u2264 2.5 s after the level settles)",
+      "ok": true,
+      "detail": "39 ms"
+    },
+    {
+      "name": "1600x1000 no-preference FIELD: opening a panel does not replay the light",
+      "ok": true
+    },
+    {
+      "name": "1600x1000 no-preference FIELD: no overlap with the open pools panel",
+      "ok": true,
+      "detail": "gap 49 px"
+    },
+    {
+      "name": "1600x1000 no-preference ORGANIZATION: only the finite context light, never infinite",
+      "ok": true,
+      "detail": "[{\"name\":\"sxOrientPass\",\"infinite\":false}]"
+    },
+    {
+      "name": "1600x1000 no-preference ORGANIZATION: the context light ends by itself (\u2264 2.5 s after the level settles)",
+      "ok": true,
+      "detail": "13 ms"
+    },
+    {
+      "name": "1600x1000 no-preference ORGANIZATION: opening a panel does not replay the light",
+      "ok": true
+    },
+    {
+      "name": "1600x1000 no-preference ORGANIZATION: no overlap with the open pools panel",
+      "ok": true,
+      "detail": "gap 30 px"
+    },
+    {
+      "name": "1600x1000 no-preference REQUIREMENT: only the finite context light, never infinite",
+      "ok": true,
+      "detail": "[{\"name\":\"sxOrientPass\",\"infinite\":false}]"
+    },
+    {
+      "name": "1600x1000 no-preference REQUIREMENT: the context light ends by itself (\u2264 2.5 s after the level settles)",
+      "ok": true,
+      "detail": "35 ms"
+    },
+    {
+      "name": "1600x1000 no-preference REQUIREMENT: opening a panel does not replay the light",
+      "ok": true
+    },
+    {
+      "name": "1600x1000 no-preference REQUIREMENT: no overlap with the open pools panel",
+      "ok": true,
+      "detail": "gap 10 px"
+    },
+    {
+      "name": "1600x1000 no-preference: path step FIELD returns to the field",
+      "ok": true
+    },
+    {
+      "name": "1600x1000 no-preference: RETURN goes one level up",
+      "ok": true
+    },
+    {
+      "name": "1600x1000 no-preference: Enter on the intake action opens the intake (aria-expanded)",
+      "ok": true
+    },
+    {
+      "name": "1600x1000 no-preference: exit leaves for the Capability Field",
+      "ok": true
+    },
+    {
+      "name": "1600x1000 no-preference: no page errors",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1600x1000 reduce FIELD: nothing animates on the surface",
+      "ok": true,
+      "detail": "[]"
+    },
+    {
+      "name": "1600x1000 reduce FIELD: no overlap with the open pools panel",
+      "ok": true,
+      "detail": "gap 49 px"
+    },
+    {
+      "name": "1600x1000 reduce ORGANIZATION: nothing animates on the surface",
+      "ok": true,
+      "detail": "[]"
+    },
+    {
+      "name": "1600x1000 reduce ORGANIZATION: no overlap with the open pools panel",
+      "ok": true,
+      "detail": "gap 30 px"
+    },
+    {
+      "name": "1600x1000 reduce REQUIREMENT: nothing animates on the surface",
+      "ok": true,
+      "detail": "[]"
+    },
+    {
+      "name": "1600x1000 reduce REQUIREMENT: no overlap with the open pools panel",
+      "ok": true,
+      "detail": "gap 10 px"
+    },
+    {
+      "name": "1600x1000 reduce: path step FIELD returns to the field",
+      "ok": true
+    },
+    {
+      "name": "1600x1000 reduce: RETURN goes one level up",
+      "ok": true
+    },
+    {
+      "name": "1600x1000 reduce: Enter on the intake action opens the intake (aria-expanded)",
+      "ok": true
+    },
+    {
+      "name": "1600x1000 reduce: exit leaves for the Capability Field",
+      "ok": true
+    },
+    {
+      "name": "1600x1000 reduce: no page errors",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1280x720 no-preference FIELD: only the finite context light, never infinite",
+      "ok": true,
+      "detail": "[{\"name\":\"sxOrientPass\",\"infinite\":false}]"
+    },
+    {
+      "name": "1280x720 no-preference FIELD: the context light ends by itself (\u2264 2.5 s after the level settles)",
+      "ok": true,
+      "detail": "12 ms"
+    },
+    {
+      "name": "1280x720 no-preference FIELD: opening a panel does not replay the light",
+      "ok": true
+    },
+    {
+      "name": "1280x720 no-preference FIELD: no overlap with the open pools panel",
+      "ok": true,
+      "detail": "gap 49 px"
+    },
+    {
+      "name": "1280x720 no-preference ORGANIZATION: only the finite context light, never infinite",
+      "ok": true,
+      "detail": "[{\"name\":\"sxOrientPass\",\"infinite\":false}]"
+    },
+    {
+      "name": "1280x720 no-preference ORGANIZATION: the context light ends by itself (\u2264 2.5 s after the level settles)",
+      "ok": true,
+      "detail": "26 ms"
+    },
+    {
+      "name": "1280x720 no-preference ORGANIZATION: opening a panel does not replay the light",
+      "ok": true
+    },
+    {
+      "name": "1280x720 no-preference ORGANIZATION: no overlap with the open pools panel",
+      "ok": true,
+      "detail": "gap 30 px"
+    },
+    {
+      "name": "1280x720 no-preference REQUIREMENT: only the finite context light, never infinite",
+      "ok": true,
+      "detail": "[{\"name\":\"sxOrientPass\",\"infinite\":false}]"
+    },
+    {
+      "name": "1280x720 no-preference REQUIREMENT: the context light ends by itself (\u2264 2.5 s after the level settles)",
+      "ok": true,
+      "detail": "10 ms"
+    },
+    {
+      "name": "1280x720 no-preference REQUIREMENT: opening a panel does not replay the light",
+      "ok": true
+    },
+    {
+      "name": "1280x720 no-preference REQUIREMENT: no overlap with the open pools panel",
+      "ok": true,
+      "detail": "gap 10 px"
+    },
+    {
+      "name": "1280x720 no-preference: no page errors",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1280x720 reduce FIELD: nothing animates on the surface",
+      "ok": true,
+      "detail": "[]"
+    },
+    {
+      "name": "1280x720 reduce FIELD: no overlap with the open pools panel",
+      "ok": true,
+      "detail": "gap 49 px"
+    },
+    {
+      "name": "1280x720 reduce ORGANIZATION: nothing animates on the surface",
+      "ok": true,
+      "detail": "[]"
+    },
+    {
+      "name": "1280x720 reduce ORGANIZATION: no overlap with the open pools panel",
+      "ok": true,
+      "detail": "gap 30 px"
+    },
+    {
+      "name": "1280x720 reduce REQUIREMENT: nothing animates on the surface",
+      "ok": true,
+      "detail": "[]"
+    },
+    {
+      "name": "1280x720 reduce REQUIREMENT: no overlap with the open pools panel",
+      "ok": true,
+      "detail": "gap 10 px"
+    },
+    {
+      "name": "1280x720 reduce: no page errors",
+      "ok": true,
+      "detail": ""
+    }
+  ],
+  "panelChecks": [
+    {
+      "name": "1600x1000 no-preference: panel motion only sxPanelCurrent / atmosphereGlow",
+      "ok": true,
+      "detail": "{\"pools\":[\"atmosphereGlow\",\"sxPanelCurrent\"],\"intake\":[\"atmosphereGlow\",\"sxPanelCurrent\"],\"boundary\":[\"atmosphereGlow\",\"sxPanelCurrent\"]}"
+    },
+    {
+      "name": "1600x1000 no-preference: intake and boundary do not overlap",
+      "ok": true,
+      "detail": "intake bottom 473, boundary top 489"
+    },
+    {
+      "name": "1600x1000 no-preference: panel nodes are decoration (aria-hidden, no pointer)",
+      "ok": true
+    },
+    {
+      "name": "1600x1000 no-preference: the boundary alone reads without scrolling",
+      "ok": true,
+      "detail": "{\"top\":283.734375,\"bottom\":949,\"left\":1200,\"right\":1572,\"scroll\":false}"
+    },
+    {
+      "name": "1600x1000 no-preference: Enter on a focused SELECT selects that pool (URL)",
+      "ok": true,
+      "detail": "JPOOL_A5D87C9905D8E8AA9CAEB47AFBDA9AB1"
+    },
+    {
+      "name": "1600x1000 no-preference: no page errors",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1600x1000 reduce: no animation on the panels (pseudo-elements included)",
+      "ok": true,
+      "detail": "{}"
+    },
+    {
+      "name": "1600x1000 reduce: intake and boundary do not overlap",
+      "ok": true,
+      "detail": "intake bottom 473, boundary top 489"
+    },
+    {
+      "name": "1600x1000 reduce: panel nodes are decoration (aria-hidden, no pointer)",
+      "ok": true
+    },
+    {
+      "name": "1600x1000 reduce: the boundary alone reads without scrolling",
+      "ok": true,
+      "detail": "{\"top\":283.734375,\"bottom\":949,\"left\":1200,\"right\":1572,\"scroll\":false}"
+    },
+    {
+      "name": "1600x1000 reduce: Enter on a focused SELECT selects that pool (URL)",
+      "ok": true,
+      "detail": "JPOOL_A5D87C9905D8E8AA9CAEB47AFBDA9AB1"
+    },
+    {
+      "name": "1600x1000 reduce: no page errors",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1280x720 no-preference: panel motion only sxPanelCurrent / atmosphereGlow",
+      "ok": true,
+      "detail": "{\"pools\":[\"atmosphereGlow\",\"sxPanelCurrent\"],\"intake\":[\"atmosphereGlow\",\"sxPanelCurrent\"],\"boundary\":[\"atmosphereGlow\",\"sxPanelCurrent\"]}"
+    },
+    {
+      "name": "1280x720 no-preference: intake and boundary do not overlap",
+      "ok": true,
+      "detail": "intake bottom 473, boundary top 729"
+    },
+    {
+      "name": "1280x720 no-preference: panel nodes are decoration (aria-hidden, no pointer)",
+      "ok": true
+    },
+    {
+      "name": "1280x720 no-preference: the boundary alone stays inside the field",
+      "ok": true,
+      "detail": "{\"top\":489,\"bottom\":909,\"left\":880.8125,\"right\":1252,\"scroll\":true}"
+    },
+    {
+      "name": "1280x720 no-preference: Enter on a focused SELECT selects that pool (URL)",
+      "ok": true,
+      "detail": "JPOOL_A5D87C9905D8E8AA9CAEB47AFBDA9AB1"
+    },
+    {
+      "name": "1280x720 no-preference: no page errors",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1280x720 reduce: no animation on the panels (pseudo-elements included)",
+      "ok": true,
+      "detail": "{}"
+    },
+    {
+      "name": "1280x720 reduce: intake and boundary do not overlap",
+      "ok": true,
+      "detail": "intake bottom 473, boundary top 729"
+    },
+    {
+      "name": "1280x720 reduce: panel nodes are decoration (aria-hidden, no pointer)",
+      "ok": true
+    },
+    {
+      "name": "1280x720 reduce: the boundary alone stays inside the field",
+      "ok": true,
+      "detail": "{\"top\":489,\"bottom\":909,\"left\":880.8125,\"right\":1252,\"scroll\":true}"
+    },
+    {
+      "name": "1280x720 reduce: Enter on a focused SELECT selects that pool (URL)",
+      "ok": true,
+      "detail": "JPOOL_A5D87C9905D8E8AA9CAEB47AFBDA9AB1"
+    },
+    {
+      "name": "1280x720 reduce: no page errors",
+      "ok": true,
+      "detail": ""
+    }
+  ]
+}

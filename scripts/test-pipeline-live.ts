@@ -2,8 +2,10 @@ import { executeCareerAnalysisPipeline } from "../lib/career/pipeline";
 import { getCareerInferenceProvider } from "../lib/career/providers";
 import fs from "fs";
 import path from "path";
+import { exitOnJobScopeRefusal, resolveScriptJobScope } from "../lib/career/job-scope/script-scope";
+import type { ResolvedJobScope } from "../lib/career/job-scope/scope";
 
-async function main() {
+async function main(jobScope: ResolvedJobScope) {
   console.log("=== CONDYN LIVE PIPELINE VERIFICATION TEST ===");
 
   // Read .env.local if present
@@ -41,7 +43,7 @@ async function main() {
 
   console.log("\nExecuting pipeline...");
   const start = Date.now();
-  const result = await executeCareerAnalysisPipeline(sampleDocs, provider);
+  const result = await executeCareerAnalysisPipeline(sampleDocs, provider, { jobScope });
   const duration = Date.now() - start;
 
   console.log(`\nPipeline completed in ${duration}ms`);
@@ -62,6 +64,7 @@ async function main() {
   }
 }
 
-main().catch(err => {
+// SFE JOB POOL FIRST: no Career-Analysis and no Gemini call without a valid pool + selected job (CONDYN_JOB_POOL_UPLOAD_ID, CONDYN_POOL_ROLE_ID).
+resolveScriptJobScope().catch(exitOnJobScopeRefusal).then(main).catch(err => {
   console.error("Fatal Test Execution Error:", err);
 });

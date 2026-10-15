@@ -1,0 +1,26 @@
+{
+  "before": "00299f5",
+  "after": "panel pass",
+  "panels": {
+    "pools": {
+      "textIdentical": true,
+      "contractIdentical": true,
+      "text": "PERSISTED JOB POOL UPLOADSCONDYN Sample Tech Job Poolv1 \u00b7 ACTIVE \u00b7 3 org \u00b7 6 roles \u00b7 28 reqSELECTEDGR\u00dcN scale poolv1 \u00b7 ACTIVE \u00b7 16 org \u00b7 53 roles \u00b7 191 reqSELECTPINK validation poolv1 \u00b7 ACTIVE \u00b7 2 org \u00b7 3 roles \u00b7 6 reqSELECT"
+    },
+    "selector": {
+      "textIdentical": true,
+      "contractIdentical": true,
+      "text": "\u25c8 CAPABILITY FIELD\u2b21 JOB FIELD"
+    },
+    "intake": {
+      "textIdentical": true,
+      "contractIdentical": true,
+      "text": "INTAKE \u00b7 UPLOAD JOB POOL (JSON)UPLOADER ACTOR ID (SELF-DECLARED, NOT AUTHENTICATED)CHOOSE JSON FILENO FILE CHOSENUPLOAD \u2192"
+    },
+    "boundary": {
+      "textIdentical": true,
+      "contractIdentical": true,
+      "text": "BOUNDARYDETERMINISTIC PRESENTATIONNOT A CANONICAL EVALUATIONNOT A DECISIONRANKED BY resonanceScore AS DELIVEREDMAPPEDPROPOSAL_ONLYauthority NONETarget revisions are PROPOSAL_ONLY with authority NONE. The Capability-Requirement Relation is NOT EVALUATED: no PHASE4_VERIFIED capability snapshot exists (HIA-1).NO SWEEP PROPOSALS RECORDED FOR THIS ANALYSIS \u00b7 PROPOSALS 0 \u00b7 UNSCOREDCoverage by a Gemini Capability Sweep proposal is shown with its source-verified quote. It is unscored proposal coverage: not a score, it changes no resonanceScore, not a canonical evaluation, not a decision.CANDIDATE CAPABILITIES 6 \u00b7 WEAK-EVIDENCE THRESHOLD 0.7Missing requirements are the delivered presentation gaps of this pool. They are not recommendations, not a decision and not an input to the HR Decision Loop."
+    }
+  }
+}

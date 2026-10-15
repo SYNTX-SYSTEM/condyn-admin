@@ -1,0 +1,65 @@
+[
+  {
+    "set": "x1 (fixture)",
+    "orgs": 16,
+    "roles": 48,
+    "requirements": 290,
+    "uploadStatus": null,
+    "uploadMs": null,
+    "matchesMs": [
+      5615,
+      241,
+      141
+    ],
+    "toAvailableMs": 22098,
+    "bodies": 16,
+    "overlaps": 0,
+    "outsideViewport": 0,
+    "minBodyRadiusPx": 51,
+    "fieldDomNodes": 898,
+    "fps": 4.2,
+    "pageErrors": 0
+  },
+  {
+    "set": "x2",
+    "orgs": 32,
+    "roles": 96,
+    "requirements": 580,
+    "uploadStatus": 201,
+    "uploadMs": 40965,
+    "matchesMs": [
+      382,
+      191,
+      230
+    ],
+    "toAvailableMs": 12242,
+    "bodies": 32,
+    "overlaps": 0,
+    "outsideViewport": 0,
+    "minBodyRadiusPx": 41,
+    "fieldDomNodes": 1623,
+    "fps": 2.8,
+    "pageErrors": 0
+  },
+  {
+    "set": "x4",
+    "orgs": 64,
+    "roles": 192,
+    "requirements": 1160,
+    "uploadStatus": 201,
+    "uploadMs": 106779,
+    "matchesMs": [
+      466,
+      269,
+      297
+    ],
+    "toAvailableMs": 10488,
+    "bodies": 64,
+    "overlaps": 32,
+    "outsideViewport": 0,
+    "minBodyRadiusPx": 25,
+    "fieldDomNodes": 3068,
+    "fps": 3,
+    "pageErrors": 0
+  }
+]

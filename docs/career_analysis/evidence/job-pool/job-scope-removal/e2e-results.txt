@@ -1,0 +1,13 @@
+job-pool-workflow.e2e.test.ts on 663ba87 (isolated temporary worktree, own disposable database, next dev --webpack, Playwright Chromium), 2026-10-14
+ ✓ test/career/job-pool/e2e/job-pool-workflow.e2e.test.ts (10 tests) 106774ms
+   ✓ Job Pool workflow over HTTP against the production routes > lists no upload on a fresh verified database, persists the sample pool once, and reports an identical re-upload as existing  3956ms
+   ✓ Job Pool workflow over HTTP against the production routes > reads the presentation matching for the exact analysis and the exact upload, ranked as delivered, with evidence quotes and the canonical NOT_EVALUATED state  2247ms
+   ✓ Job Pool workflow over HTTP against the production routes > serves the analysis sources the SYNTX aperture may join: the seeded document title, the capability evidence location, no projection  1684ms
+   ✓ Job Pool workflow over HTTP against the production routes > persists a DRAFT copy of the pool and refuses matching for it with 409, so an inactive pool is visible as inactive  1189ms
+   ✓ Job Pool workflow over HTTP against the production routes > server-renders the field-state strip and opens on the SYNTX field (Job Pool first, Capability gated without a job), also for an exact upload, never a dock without an exact DCTXREV  5096ms
+   ✓ SYNTX field in a real browser: FIELD → ORGANIZATION → ROLE → REQUIREMENT → EVIDENCE → RETURN > enters the field, uploads a second pool version through the edge intake, lists it without selecting it, selects it explicitly, and walks FIELD → ORGANIZATION → ROLE → REQUIREMENT → EVIDENCE → RETURN  35347ms
+   ✓ SYNTX field in a real browser: FIELD → ORGANIZATION → ROLE → REQUIREMENT → EVIDENCE → RETURN > reopens the exact selection from the URL and shows a DRAFT pool as inactive instead of matching it; its structure stays a containment field without a matching read  11383ms
+   ✓ SYNTX field in a real browser: FIELD → ORGANIZATION → ROLE → REQUIREMENT → EVIDENCE → RETURN > reopens the field at an exact requirement from the URL, accepts the legacy JOB focus name, names a stale role id, and preserves meaning under reduced motion  26554ms
+   ✓ SYNTX field in a real browser: FIELD → ORGANIZATION → ROLE → REQUIREMENT → EVIDENCE → RETURN > names a stale selection that is not among the persisted uploads and leaves the field without a dock  4996ms
+ Test Files  1 passed (1)
+      Tests  10 passed (10)

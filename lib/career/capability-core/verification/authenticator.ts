@@ -51,7 +51,10 @@ function authenticateSources(documents: SourceDocument[]): { sourceBundleHash: s
 }
 
 function authenticateDiscovery(run: CapabilityDiscoveryRun, sourceDocuments: SourceDocument[], sourceBundleHash: string): CapabilityCandidate[] {
-  if (!hasOnlyKeys(run, ["runId", "sourceBundleHash", "kernelVersion", "prompt", "inference", "schemaVersion", "status", "rawOutputHash", "payload", "createdAt", "completedAt"])
+  // A scoped run carries its scope identity (SFE job scope); it binds the RUN_ id and, through it, every later artifact.
+  const scoped = Object.prototype.hasOwnProperty.call(run, "investigationScope");
+  if (scoped && (!hasOnlyKeys(run.investigationScope, ["scopeHash"]) || !/^[0-9a-f]{64}$/.test(String(run.investigationScope?.scopeHash)))) integrityError();
+  if (!hasOnlyKeys(run, ["runId", "sourceBundleHash", "kernelVersion", "prompt", "inference", "schemaVersion", "status", "rawOutputHash", ...(scoped ? ["investigationScope"] : []), "payload", "createdAt", "completedAt"])
     || run.status !== "COMPLETED" || run.sourceBundleHash !== sourceBundleHash
     || !isNonEmptyString(run.sourceBundleHash) || !isNonEmptyString(run.kernelVersion)
     || !isNonEmptyString(run.schemaVersion) || !isNonEmptyString(run.createdAt) || !isNonEmptyString(run.completedAt)
@@ -63,7 +66,7 @@ function authenticateDiscovery(run: CapabilityDiscoveryRun, sourceDocuments: Sou
   try { kernelOutput = CapabilityKernelOutputSchema.parse(payload.kernelOutput); } catch { return integrityError(); }
   assertCapabilityCoverageAudit(kernelOutput, sourceDocuments.length);
   if (kernelOutput.kernel_version !== run.kernelVersion || typeof run.rawOutputHash !== "string" || sha256Utf8(stableJsonStringify(kernelOutput)) !== run.rawOutputHash) integrityError();
-  const expectedRunId = buildCapabilityDiscoveryRunId({ sourceBundleHash, kernelVersion: run.kernelVersion, promptChecksum: run.prompt?.checksum, provider: run.inference?.provider, model: run.inference?.model, schemaVersion: run.schemaVersion });
+  const expectedRunId = buildCapabilityDiscoveryRunId({ sourceBundleHash, kernelVersion: run.kernelVersion, promptChecksum: run.prompt?.checksum, provider: run.inference?.provider, model: run.inference?.model, schemaVersion: run.schemaVersion, ...(scoped ? { investigationScopeHash: run.investigationScope!.scopeHash } : {}) });
   if (expectedRunId !== run.runId) integrityError();
   const candidates = kernelOutput.capabilities.map((capability) => verifyCandidateEvidence(createCapabilityCandidate(run.runId, capability), sourceDocuments));
   if (!isDeepStrictEqual(payload.candidates, candidates)) integrityError();

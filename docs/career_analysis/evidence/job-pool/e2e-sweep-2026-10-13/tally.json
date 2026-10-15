@@ -1,0 +1,1218 @@
+[
+ {
+  "at": "2026-10-13T15:23:39.162Z",
+  "step": 1,
+  "id": "A1.ENG PDF upload + real Gemini analysis completes (intake-success-banner)",
+  "pass": "PASS",
+  "kind": "REAL",
+  "detail": "cv.synthetic.pdf in 126s"
+ },
+ {
+  "at": "2026-10-13T15:23:39.178Z",
+  "step": 2,
+  "id": "A2.ENG Capability Field shows the analysis (orbital bubbles with items)",
+  "pass": "PASS",
+  "kind": "REAL",
+  "detail": "[\"01: 01 ◈ IDENTITY CORE Unaltered identity core PRE-CANONICAL DISCOVERY 1 items\",\"02: 02 ⬡ CAPABILITY FIELD Semantic capability core PRE-CANONICAL DISCOVERY 10 items\",\"03: 03 ◎ RESONANCE ORBITS Inferred organisations (analysis) · not pool resonance PRE\",\"04: 04 ⎔ ROLE MANIFESTATION Concrete role manifestations PRE-CANONICAL DISCOVERY 2 i\",\"05: 05 ⟁ TENSION FIELD Capability-gap projection PRE-CANONICAL DISCOVERY 0 items\",\"06: 06 ∿ EVOLUTION PATHS Evolution pathways PRE-CANONICAL DISCOVERY 0 items\"]"
+ },
+ {
+  "at": "2026-10-13T15:23:39.556Z",
+  "step": 2,
+  "id": "A2.ENG Job Field takes the session's analysis as source",
+  "pass": "PASS",
+  "kind": "REAL",
+  "detail": "ANL_1791904911180_388"
+ },
+ {
+  "at": "2026-10-13T15:23:39.727Z",
+  "step": 2,
+  "id": "A2.ENG analysis persisted (GET /api/career/analyses/{id})",
+  "pass": "PASS",
+  "kind": "REAL",
+  "detail": "{\"status\":200,\"entityKinds\":{},\"bytes\":25941}"
+ },
+ {
+  "at": "2026-10-13T15:23:48.186Z",
+  "step": 3,
+  "id": "A3.DLL_JOBPOOL_ENGINEERING intake upload (new)",
+  "pass": "PASS",
+  "kind": "REAL",
+  "detail": "{\"outcome\":\"CREATED\",\"uploadId\":\"JPOOL_B94850C439974E27496FE3B1A9A076B5\",\"expected\":\"JPOOL_B94850C439974E27496FE3B1A9A076B5\",\"ms\":7900,\"text\":\"UPLOAD PERSISTED (NEW) JPOOL_B94850C439974E27496FE3B1A9A076B5 DLL Engineering & Architecture Pool v1 · ACTIVE UPLOADED != SELECTED · select it in the list below\"}"
+ },
+ {
+  "at": "2026-10-13T15:23:53.101Z",
+  "step": 3,
+  "id": "A3.DLL_JOBPOOL_ENGINEERING persisted pool readable, canonical mapping",
+  "pass": "PASS",
+  "kind": "REAL",
+  "detail": "{\"status\":200,\"mappingState\":\"MAPPED\"}"
+ },
+ {
+  "at": "2026-10-13T15:24:01.383Z",
+  "step": 3,
+  "id": "A3.DLL_JOBPOOL_AI_DATA intake upload (new)",
+  "pass": "PASS",
+  "kind": "REAL",
+  "detail": "{\"outcome\":\"CREATED\",\"uploadId\":\"JPOOL_0DCDB34AE9F8FF8A3D335BA26C9F16C2\",\"expected\":\"JPOOL_0DCDB34AE9F8FF8A3D335BA26C9F16C2\",\"ms\":7391,\"text\":\"UPLOAD PERSISTED (NEW) JPOOL_0DCDB34AE9F8FF8A3D335BA26C9F16C2 DLL AI, Data & Semantic Systems Pool v1 · ACTIVE UPLOADED != SELECTED · select it in the list belo\"}"
+ },
+ {
+  "at": "2026-10-13T15:27:00.798Z",
+  "step": 3,
+  "id": "A3.DLL_JOBPOOL_AI_DATA persisted pool readable, canonical mapping",
+  "pass": "PASS",
+  "kind": "REAL",
+  "detail": "{\"status\":200,\"mappingState\":\"MAPPED\"}"
+ },
+ {
+  "at": "2026-10-13T15:24:19.144Z",
+  "step": 3,
+  "id": "A3.DLL_JOBPOOL_ENTERPRISE_SCALE intake upload (new)",
+  "pass": "PASS",
+  "kind": "REAL",
+  "detail": "{\"outcome\":\"CREATED\",\"uploadId\":\"JPOOL_D39ADA99F34A60B982ADE5F929276294\",\"expected\":\"JPOOL_D39ADA99F34A60B982ADE5F929276294\",\"ms\":16756,\"text\":\"UPLOAD PERSISTED (NEW) JPOOL_D39ADA99F34A60B982ADE5F929276294 DLL Enterprise Scale Pool v1 · ACTIVE UPLOADED != SELECTED · select it in the list below\"}"
+ },
+ {
+  "at": "2026-10-13T15:24:19.258Z",
+  "step": 3,
+  "id": "A3.DLL_JOBPOOL_ENTERPRISE_SCALE persisted pool readable, canonical mapping",
+  "pass": "PASS",
+  "kind": "REAL",
+  "detail": "{\"status\":200,\"mappingState\":\"MAPPED\"}"
+ },
+ {
+  "at": "2026-10-13T15:24:22.229Z",
+  "step": 3,
+  "id": "A3.ENG uploaded != selected (field stays without pool until SELECT)",
+  "pass": "PASS",
+  "kind": "REAL",
+  "detail": "NO_POOL"
+ },
+ {
+  "at": "2026-10-13T15:24:22.230Z",
+  "step": 9,
+  "id": "A.ENG page errors during the real flow",
+  "pass": "PASS",
+  "kind": "REAL",
+  "detail": ""
+ },
+ {
+  "at": "2026-10-13T15:24:48.768Z",
+  "step": 2,
+  "id": "A2.ENG Capability Field after refresh (?analysisId) shows the persisted analysis",
+  "pass": "FAIL",
+  "kind": "REAL",
+  "detail": "[\"01: 01 ◈ IDENTITY CORE Unaltered identity core PRE-CANONICAL DISCOVERY 0 items\",\"02: 02 ⬡ CAPABILITY FIELD Semantic capability core PRE-CANONICAL DISCOVERY 0 items\",\"03: 03 ◎ RESONANCE ORBITS Inferred organisations (analysis) · not pool resonance PRE\",\"04: 04 ⎔ ROLE MANIFESTATION Concrete role manifestations PRE-CANONICAL DISCOVERY 0 i\",\"05: 05 ⟁ TENSION FIELD Capability-gap projection PRE-CANONICAL DISCOVERY 0 items\",\"06: 06 ∿ EVOLUTION PATHS Evolution pathways PRE-CANONICAL DISCOVERY 0 items\"]"
+ },
+ {
+  "at": "2026-10-13T15:26:54.938Z",
+  "step": 1,
+  "id": "A1.AI PDF upload + real Gemini analysis completes (intake-success-banner)",
+  "pass": "PASS",
+  "kind": "REAL",
+  "detail": "cv-ai-data.synthetic.pdf in 117s"
+ },
+ {
+  "at": "2026-10-13T15:26:54.945Z",
+  "step": 2,
+  "id": "A2.AI Capability Field shows the analysis (orbital bubbles with items)",
+  "pass": "PASS",
+  "kind": "REAL",
+  "detail": "[\"01: 01 ◈ IDENTITY CORE Unaltered identity core PRE-CANONICAL DISCOVERY 1 items\",\"02: 02 ⬡ CAPABILITY FIELD Semantic capability core PRE-CANONICAL DISCOVERY 11 items\",\"03: 03 ◎ RESONANCE ORBITS Inferred organisations (analysis) · not pool resonance PRE\",\"04: 04 ⎔ ROLE MANIFESTATION Concrete role manifestations PRE-CANONICAL DISCOVERY 2 i\",\"05: 05 ⟁ TENSION FIELD Capability-gap projection PRE-CANONICAL DISCOVERY 0 items\",\"06: 06 ∿ EVOLUTION PATHS Evolution pathways PRE-CANONICAL DISCOVERY 0 items\"]"
+ },
+ {
+  "at": "2026-10-13T15:26:55.395Z",
+  "step": 2,
+  "id": "A2.AI Job Field takes the session's analysis as source",
+  "pass": "PASS",
+  "kind": "REAL",
+  "detail": "ANL_1791905099818_748"
+ },
+ {
+  "at": "2026-10-13T15:26:55.499Z",
+  "step": 2,
+  "id": "A2.AI analysis persisted (GET /api/career/analyses/{id})",
+  "pass": "PASS",
+  "kind": "REAL",
+  "detail": "{\"status\":200,\"entityKinds\":{},\"bytes\":26500}"
+ },
+ {
+  "at": "2026-10-13T15:27:47.015Z",
+  "step": 3,
+  "id": "A3.DLL_JOBPOOL_AI_DATA intake upload (duplicate) — corrected oracle: outcome IDENTICAL_EXISTS is the specified duplicate outcome",
+  "pass": "PASS",
+  "kind": "REAL",
+  "detail": "supersedes the row above (test oracle expected IDENTICAL; UI shows IDENTICAL UPLOAD ALREADY PERSISTED, same upload id)"
+ },
+ {
+  "at": "2026-10-13T15:27:03.275Z",
+  "step": 3,
+  "id": "A3.AI uploaded != selected (field stays without pool until SELECT)",
+  "pass": "PASS",
+  "kind": "REAL",
+  "detail": "NO_POOL"
+ },
+ {
+  "at": "2026-10-13T15:27:03.276Z",
+  "step": 9,
+  "id": "A.AI page errors during the real flow",
+  "pass": "PASS",
+  "kind": "REAL",
+  "detail": ""
+ },
+ {
+  "at": "2026-10-13T15:27:28.752Z",
+  "step": 2,
+  "id": "A2.AI Capability Field after refresh (?analysisId) shows the persisted analysis",
+  "pass": "FAIL",
+  "kind": "REAL",
+  "detail": "[\"01: 01 ◈ IDENTITY CORE Unaltered identity core PRE-CANONICAL DISCOVERY 0 items\",\"02: 02 ⬡ CAPABILITY FIELD Semantic capability core PRE-CANONICAL DISCOVERY 0 items\",\"03: 03 ◎ RESONANCE ORBITS Inferred organisations (analysis) · not pool resonance PRE\",\"04: 04 ⎔ ROLE MANIFESTATION Concrete role manifestations PRE-CANONICAL DISCOVERY 0 i\",\"05: 05 ⟁ TENSION FIELD Capability-gap projection PRE-CANONICAL DISCOVERY 0 items\",\"06: 06 ∿ EVOLUTION PATHS Evolution pathways PRE-CANONICAL DISCOVERY 0 items\"]"
+ },
+ {
+  "at": "2026-10-13T15:29:02.415Z",
+  "step": 4,
+  "id": "B4.DLL_JOBPOOL_ENGINEERING counts file = API (orgs/roles/requirements)",
+  "pass": "PASS",
+  "kind": "DERIVED",
+  "detail": "3/9/79 vs 3/9/79"
+ },
+ {
+  "at": "2026-10-13T15:29:02.418Z",
+  "step": 4,
+  "id": "B4.DLL_JOBPOOL_ENGINEERING ids and relations file = API (role→org, requirement→role)",
+  "pass": "PASS",
+  "kind": "DERIVED",
+  "detail": ""
+ },
+ {
+  "at": "2026-10-13T15:29:02.666Z",
+  "step": 5,
+  "id": "B5.DLL_JOBPOOL_ENGINEERING×ENG every role partitions exactly into matched / weak / missing",
+  "pass": "PASS",
+  "kind": "DERIVED",
+  "detail": "{\"roles\":9,\"bad\":[]}"
+ },
+ {
+  "at": "2026-10-13T15:29:02.666Z",
+  "step": 4,
+  "id": "B4.DLL_JOBPOOL_ENGINEERING×ENG role→organization in matches = file",
+  "pass": "PASS",
+  "kind": "DERIVED",
+  "detail": "[]"
+ },
+ {
+  "at": "2026-10-13T15:29:02.668Z",
+  "step": 5,
+  "id": "B5.DLL_JOBPOOL_ENGINEERING×ENG every evidence quote is verbatim in the analysed PDF (inverse to the document)",
+  "pass": "PASS",
+  "kind": "DERIVED",
+  "detail": "{\"quotes\":19,\"notVerbatim\":[]}"
+ },
+ {
+  "at": "2026-10-13T15:29:02.669Z",
+  "step": 5,
+  "id": "B5.DLL_JOBPOOL_ENGINEERING×ENG weak evidence is below threshold or token containment, with reason",
+  "pass": "PASS",
+  "kind": "DERIVED",
+  "detail": "{\"weak\":4,\"bad\":0}"
+ },
+ {
+  "at": "2026-10-13T15:29:02.669Z",
+  "step": 5,
+  "id": "B5.DLL_JOBPOOL_ENGINEERING×ENG resonanceScore in [0,1], roles ordered as delivered (descending)",
+  "pass": "PASS",
+  "kind": "DERIVED",
+  "detail": "[0.2718,0.1898,0.1688,0.0528,0,0]"
+ },
+ {
+  "at": "2026-10-13T15:29:02.670Z",
+  "step": 5,
+  "id": "B5.DLL_JOBPOOL_ENGINEERING×ENG missing requirements carry no score or contribution (neutral)",
+  "pass": "PASS",
+  "kind": "DERIVED",
+  "detail": "0"
+ },
+ {
+  "at": "2026-10-13T15:29:02.671Z",
+  "step": 7,
+  "id": "B7.DLL_JOBPOOL_ENGINEERING×ENG governance: authority NONE, no canonical evaluation, no decision, sweep never scored",
+  "pass": "PASS",
+  "kind": "DERIVED",
+  "detail": "{\"sweepState\":\"AVAILABLE\",\"proposals\":10}"
+ },
+ {
+  "at": "2026-10-13T15:29:02.863Z",
+  "step": 7,
+  "id": "B7.DLL_JOBPOOL_ENGINEERING×ENG sweep proposal count = analysis projection capabilities",
+  "pass": "PASS",
+  "kind": "DERIVED",
+  "detail": "10 vs 10"
+ },
+ {
+  "at": "2026-10-13T15:29:02.876Z",
+  "step": 5,
+  "id": "B5.DLL_JOBPOOL_ENGINEERING×ENG plausibility: missing requirements whose name/alias appears literally in the CV",
+  "pass": "FINDING",
+  "kind": "DERIVED",
+  "detail": "{\"matched\":3,\"weak\":4,\"missing\":72,\"candidateCapabilityCount\":4,\"sweepProposals\":10,\"sweepOnlyCoverage\":5,\"missingButLiteralInCv\":9,\"ofThoseSweepCovered\":3,\"examples\":[\"PostgreSQL\",\"Event-Driven Architecture\",\"Automated Testing\",\"Web Accessibility\",\"SQL\",\"Kubernetes\",\"CI/CD Pipelines\"]}"
+ },
+ {
+  "at": "2026-10-13T15:29:03.009Z",
+  "step": 5,
+  "id": "B5.DLL_JOBPOOL_ENGINEERING×AI every role partitions exactly into matched / weak / missing",
+  "pass": "PASS",
+  "kind": "DERIVED",
+  "detail": "{\"roles\":9,\"bad\":[]}"
+ },
+ {
+  "at": "2026-10-13T15:29:03.010Z",
+  "step": 4,
+  "id": "B4.DLL_JOBPOOL_ENGINEERING×AI role→organization in matches = file",
+  "pass": "PASS",
+  "kind": "DERIVED",
+  "detail": "[]"
+ },
+ {
+  "at": "2026-10-13T15:29:03.010Z",
+  "step": 5,
+  "id": "B5.DLL_JOBPOOL_ENGINEERING×AI every evidence quote is verbatim in the analysed PDF (inverse to the document)",
+  "pass": "PASS",
+  "kind": "DERIVED",
+  "detail": "{\"quotes\":0,\"notVerbatim\":[]}"
+ },
+ {
+  "at": "2026-10-13T15:29:03.011Z",
+  "step": 5,
+  "id": "B5.DLL_JOBPOOL_ENGINEERING×AI weak evidence is below threshold or token containment, with reason",
+  "pass": "PASS",
+  "kind": "DERIVED",
+  "detail": "{\"weak\":0,\"bad\":0}"
+ },
+ {
+  "at": "2026-10-13T15:29:03.011Z",
+  "step": 5,
+  "id": "B5.DLL_JOBPOOL_ENGINEERING×AI resonanceScore in [0,1], roles ordered as delivered (descending)",
+  "pass": "PASS",
+  "kind": "DERIVED",
+  "detail": "[0,0,0,0,0,0]"
+ },
+ {
+  "at": "2026-10-13T15:29:03.011Z",
+  "step": 5,
+  "id": "B5.DLL_JOBPOOL_ENGINEERING×AI missing requirements carry no score or contribution (neutral)",
+  "pass": "PASS",
+  "kind": "DERIVED",
+  "detail": "0"
+ },
+ {
+  "at": "2026-10-13T15:29:03.012Z",
+  "step": 7,
+  "id": "B7.DLL_JOBPOOL_ENGINEERING×AI governance: authority NONE, no canonical evaluation, no decision, sweep never scored",
+  "pass": "PASS",
+  "kind": "DERIVED",
+  "detail": "{\"sweepState\":\"AVAILABLE\",\"proposals\":11}"
+ },
+ {
+  "at": "2026-10-13T15:29:03.063Z",
+  "step": 7,
+  "id": "B7.DLL_JOBPOOL_ENGINEERING×AI sweep proposal count = analysis projection capabilities",
+  "pass": "PASS",
+  "kind": "DERIVED",
+  "detail": "11 vs 11"
+ },
+ {
+  "at": "2026-10-13T15:29:03.067Z",
+  "step": 5,
+  "id": "B5.DLL_JOBPOOL_ENGINEERING×AI plausibility: missing requirements whose name/alias appears literally in the CV",
+  "pass": "FINDING",
+  "kind": "DERIVED",
+  "detail": "{\"matched\":0,\"weak\":0,\"missing\":79,\"candidateCapabilityCount\":3,\"sweepProposals\":11,\"sweepOnlyCoverage\":0,\"missingButLiteralInCv\":5,\"ofThoseSweepCovered\":0,\"examples\":[\"SQL\",\"Kubernetes\",\"Terraform\",\"Event-Driven Architecture\"]}"
+ },
+ {
+  "at": "2026-10-13T15:29:03.130Z",
+  "step": 4,
+  "id": "B4.DLL_JOBPOOL_AI_DATA counts file = API (orgs/roles/requirements)",
+  "pass": "PASS",
+  "kind": "DERIVED",
+  "detail": "5/16/130 vs 5/16/130"
+ },
+ {
+  "at": "2026-10-13T15:29:03.131Z",
+  "step": 4,
+  "id": "B4.DLL_JOBPOOL_AI_DATA ids and relations file = API (role→org, requirement→role)",
+  "pass": "PASS",
+  "kind": "DERIVED",
+  "detail": ""
+ },
+ {
+  "at": "2026-10-13T15:29:03.247Z",
+  "step": 5,
+  "id": "B5.DLL_JOBPOOL_AI_DATA×ENG every role partitions exactly into matched / weak / missing",
+  "pass": "PASS",
+  "kind": "DERIVED",
+  "detail": "{\"roles\":16,\"bad\":[]}"
+ },
+ {
+  "at": "2026-10-13T15:29:03.247Z",
+  "step": 4,
+  "id": "B4.DLL_JOBPOOL_AI_DATA×ENG role→organization in matches = file",
+  "pass": "PASS",
+  "kind": "DERIVED",
+  "detail": "[]"
+ },
+ {
+  "at": "2026-10-13T15:29:03.248Z",
+  "step": 5,
+  "id": "B5.DLL_JOBPOOL_AI_DATA×ENG every evidence quote is verbatim in the analysed PDF (inverse to the document)",
+  "pass": "PASS",
+  "kind": "DERIVED",
+  "detail": "{\"quotes\":30,\"notVerbatim\":[]}"
+ },
+ {
+  "at": "2026-10-13T15:29:03.248Z",
+  "step": 5,
+  "id": "B5.DLL_JOBPOOL_AI_DATA×ENG weak evidence is below threshold or token containment, with reason",
+  "pass": "PASS",
+  "kind": "DERIVED",
+  "detail": "{\"weak\":13,\"bad\":0}"
+ },
+ {
+  "at": "2026-10-13T15:29:03.249Z",
+  "step": 5,
+  "id": "B5.DLL_JOBPOOL_AI_DATA×ENG resonanceScore in [0,1], roles ordered as delivered (descending)",
+  "pass": "PASS",
+  "kind": "DERIVED",
+  "detail": "[0.0615,0.06,0.0568,0.0562,0.0556,0.0534]"
+ },
+ {
+  "at": "2026-10-13T15:29:03.249Z",
+  "step": 5,
+  "id": "B5.DLL_JOBPOOL_AI_DATA×ENG missing requirements carry no score or contribution (neutral)",
+  "pass": "PASS",
+  "kind": "DERIVED",
+  "detail": "0"
+ },
+ {
+  "at": "2026-10-13T15:29:03.250Z",
+  "step": 7,
+  "id": "B7.DLL_JOBPOOL_AI_DATA×ENG governance: authority NONE, no canonical evaluation, no decision, sweep never scored",
+  "pass": "PASS",
+  "kind": "DERIVED",
+  "detail": "{\"sweepState\":\"AVAILABLE\",\"proposals\":10}"
+ },
+ {
+  "at": "2026-10-13T15:29:03.292Z",
+  "step": 7,
+  "id": "B7.DLL_JOBPOOL_AI_DATA×ENG sweep proposal count = analysis projection capabilities",
+  "pass": "PASS",
+  "kind": "DERIVED",
+  "detail": "10 vs 10"
+ },
+ {
+  "at": "2026-10-13T15:29:03.317Z",
+  "step": 5,
+  "id": "B5.DLL_JOBPOOL_AI_DATA×ENG plausibility: missing requirements whose name/alias appears literally in the CV",
+  "pass": "FINDING",
+  "kind": "DERIVED",
+  "detail": "{\"matched\":0,\"weak\":13,\"missing\":117,\"candidateCapabilityCount\":4,\"sweepProposals\":10,\"sweepOnlyCoverage\":4,\"missingButLiteralInCv\":4,\"ofThoseSweepCovered\":3,\"examples\":[\"Kubernetes\",\"SQL\",\"Stream Processing\",\"Apache Kafka\"]}"
+ },
+ {
+  "at": "2026-10-13T15:29:03.430Z",
+  "step": 5,
+  "id": "B5.DLL_JOBPOOL_AI_DATA×AI every role partitions exactly into matched / weak / missing",
+  "pass": "PASS",
+  "kind": "DERIVED",
+  "detail": "{\"roles\":16,\"bad\":[]}"
+ },
+ {
+  "at": "2026-10-13T15:29:03.431Z",
+  "step": 4,
+  "id": "B4.DLL_JOBPOOL_AI_DATA×AI role→organization in matches = file",
+  "pass": "PASS",
+  "kind": "DERIVED",
+  "detail": "[]"
+ },
+ {
+  "at": "2026-10-13T15:29:03.431Z",
+  "step": 5,
+  "id": "B5.DLL_JOBPOOL_AI_DATA×AI every evidence quote is verbatim in the analysed PDF (inverse to the document)",
+  "pass": "PASS",
+  "kind": "DERIVED",
+  "detail": "{\"quotes\":12,\"notVerbatim\":[]}"
+ },
+ {
+  "at": "2026-10-13T15:29:03.431Z",
+  "step": 5,
+  "id": "B5.DLL_JOBPOOL_AI_DATA×AI weak evidence is below threshold or token containment, with reason",
+  "pass": "PASS",
+  "kind": "DERIVED",
+  "detail": "{\"weak\":0,\"bad\":0}"
+ },
+ {
+  "at": "2026-10-13T15:29:03.431Z",
+  "step": 5,
+  "id": "B5.DLL_JOBPOOL_AI_DATA×AI resonanceScore in [0,1], roles ordered as delivered (descending)",
+  "pass": "PASS",
+  "kind": "DERIVED",
+  "detail": "[0.1839,0,0,0,0,0]"
+ },
+ {
+  "at": "2026-10-13T15:29:03.432Z",
+  "step": 5,
+  "id": "B5.DLL_JOBPOOL_AI_DATA×AI missing requirements carry no score or contribution (neutral)",
+  "pass": "PASS",
+  "kind": "DERIVED",
+  "detail": "0"
+ },
+ {
+  "at": "2026-10-13T15:29:03.433Z",
+  "step": 7,
+  "id": "B7.DLL_JOBPOOL_AI_DATA×AI governance: authority NONE, no canonical evaluation, no decision, sweep never scored",
+  "pass": "PASS",
+  "kind": "DERIVED",
+  "detail": "{\"sweepState\":\"AVAILABLE\",\"proposals\":11}"
+ },
+ {
+  "at": "2026-10-13T15:29:03.629Z",
+  "step": 7,
+  "id": "B7.DLL_JOBPOOL_AI_DATA×AI sweep proposal count = analysis projection capabilities",
+  "pass": "PASS",
+  "kind": "DERIVED",
+  "detail": "11 vs 11"
+ },
+ {
+  "at": "2026-10-13T15:29:03.655Z",
+  "step": 5,
+  "id": "B5.DLL_JOBPOOL_AI_DATA×AI plausibility: missing requirements whose name/alias appears literally in the CV",
+  "pass": "FINDING",
+  "kind": "DERIVED",
+  "detail": "{\"matched\":1,\"weak\":0,\"missing\":129,\"candidateCapabilityCount\":3,\"sweepProposals\":11,\"sweepOnlyCoverage\":11,\"missingButLiteralInCv\":38,\"ofThoseSweepCovered\":11,\"examples\":[\"Model Registry and Lineage\",\"Model Monitoring\",\"Kubernetes\",\"Python\",\"Time Series Forecasting\",\"Infrastructure as Code\",\"PyTorch\",\"Production ML Monitoring\",\"Retrieval-Augmented Generation\",\"Hybrid Search\"]}"
+ },
+ {
+  "at": "2026-10-13T15:29:04.073Z",
+  "step": 4,
+  "id": "B4.DLL_JOBPOOL_ENTERPRISE_SCALE counts file = API (orgs/roles/requirements)",
+  "pass": "PASS",
+  "kind": "DERIVED",
+  "detail": "16/48/290 vs 16/48/290"
+ },
+ {
+  "at": "2026-10-13T15:29:04.075Z",
+  "step": 4,
+  "id": "B4.DLL_JOBPOOL_ENTERPRISE_SCALE ids and relations file = API (role→org, requirement→role)",
+  "pass": "PASS",
+  "kind": "DERIVED",
+  "detail": ""
+ },
+ {
+  "at": "2026-10-13T15:29:04.317Z",
+  "step": 5,
+  "id": "B5.DLL_JOBPOOL_ENTERPRISE_SCALE×ENG every role partitions exactly into matched / weak / missing",
+  "pass": "PASS",
+  "kind": "DERIVED",
+  "detail": "{\"roles\":48,\"bad\":[]}"
+ },
+ {
+  "at": "2026-10-13T15:29:04.321Z",
+  "step": 4,
+  "id": "B4.DLL_JOBPOOL_ENTERPRISE_SCALE×ENG role→organization in matches = file",
+  "pass": "PASS",
+  "kind": "DERIVED",
+  "detail": "[]"
+ },
+ {
+  "at": "2026-10-13T15:29:04.323Z",
+  "step": 5,
+  "id": "B5.DLL_JOBPOOL_ENTERPRISE_SCALE×ENG every evidence quote is verbatim in the analysed PDF (inverse to the document)",
+  "pass": "PASS",
+  "kind": "DERIVED",
+  "detail": "{\"quotes\":40,\"notVerbatim\":[]}"
+ },
+ {
+  "at": "2026-10-13T15:29:04.323Z",
+  "step": 5,
+  "id": "B5.DLL_JOBPOOL_ENTERPRISE_SCALE×ENG weak evidence is below threshold or token containment, with reason",
+  "pass": "PASS",
+  "kind": "DERIVED",
+  "detail": "{\"weak\":12,\"bad\":0}"
+ },
+ {
+  "at": "2026-10-13T15:29:04.323Z",
+  "step": 5,
+  "id": "B5.DLL_JOBPOOL_ENTERPRISE_SCALE×ENG resonanceScore in [0,1], roles ordered as delivered (descending)",
+  "pass": "PASS",
+  "kind": "DERIVED",
+  "detail": "[0.2894,0.1315,0.1118,0.1048,0.095,0.0792]"
+ },
+ {
+  "at": "2026-10-13T15:29:04.324Z",
+  "step": 5,
+  "id": "B5.DLL_JOBPOOL_ENTERPRISE_SCALE×ENG missing requirements carry no score or contribution (neutral)",
+  "pass": "PASS",
+  "kind": "DERIVED",
+  "detail": "0"
+ },
+ {
+  "at": "2026-10-13T15:29:04.327Z",
+  "step": 7,
+  "id": "B7.DLL_JOBPOOL_ENTERPRISE_SCALE×ENG governance: authority NONE, no canonical evaluation, no decision, sweep never scored",
+  "pass": "PASS",
+  "kind": "DERIVED",
+  "detail": "{\"sweepState\":\"AVAILABLE\",\"proposals\":10}"
+ },
+ {
+  "at": "2026-10-13T15:29:04.386Z",
+  "step": 7,
+  "id": "B7.DLL_JOBPOOL_ENTERPRISE_SCALE×ENG sweep proposal count = analysis projection capabilities",
+  "pass": "PASS",
+  "kind": "DERIVED",
+  "detail": "10 vs 10"
+ },
+ {
+  "at": "2026-10-13T15:29:04.450Z",
+  "step": 5,
+  "id": "B5.DLL_JOBPOOL_ENTERPRISE_SCALE×ENG plausibility: missing requirements whose name/alias appears literally in the CV",
+  "pass": "FINDING",
+  "kind": "DERIVED",
+  "detail": "{\"matched\":3,\"weak\":12,\"missing\":275,\"candidateCapabilityCount\":4,\"sweepProposals\":10,\"sweepOnlyCoverage\":10,\"missingButLiteralInCv\":12,\"ofThoseSweepCovered\":10,\"examples\":[\"Test Automation\",\"PostgreSQL\",\"SQL\",\"Linux Administration\",\"Linux Systems Engineering\"]}"
+ },
+ {
+  "at": "2026-10-13T15:29:04.600Z",
+  "step": 5,
+  "id": "B5.DLL_JOBPOOL_ENTERPRISE_SCALE×AI every role partitions exactly into matched / weak / missing",
+  "pass": "PASS",
+  "kind": "DERIVED",
+  "detail": "{\"roles\":48,\"bad\":[]}"
+ },
+ {
+  "at": "2026-10-13T15:29:04.601Z",
+  "step": 4,
+  "id": "B4.DLL_JOBPOOL_ENTERPRISE_SCALE×AI role→organization in matches = file",
+  "pass": "PASS",
+  "kind": "DERIVED",
+  "detail": "[]"
+ },
+ {
+  "at": "2026-10-13T15:29:04.601Z",
+  "step": 5,
+  "id": "B5.DLL_JOBPOOL_ENTERPRISE_SCALE×AI every evidence quote is verbatim in the analysed PDF (inverse to the document)",
+  "pass": "PASS",
+  "kind": "DERIVED",
+  "detail": "{\"quotes\":2,\"notVerbatim\":[]}"
+ },
+ {
+  "at": "2026-10-13T15:29:04.602Z",
+  "step": 5,
+  "id": "B5.DLL_JOBPOOL_ENTERPRISE_SCALE×AI weak evidence is below threshold or token containment, with reason",
+  "pass": "PASS",
+  "kind": "DERIVED",
+  "detail": "{\"weak\":0,\"bad\":0}"
+ },
+ {
+  "at": "2026-10-13T15:29:04.602Z",
+  "step": 5,
+  "id": "B5.DLL_JOBPOOL_ENTERPRISE_SCALE×AI resonanceScore in [0,1], roles ordered as delivered (descending)",
+  "pass": "PASS",
+  "kind": "DERIVED",
+  "detail": "[0,0,0,0,0,0]"
+ },
+ {
+  "at": "2026-10-13T15:29:04.602Z",
+  "step": 5,
+  "id": "B5.DLL_JOBPOOL_ENTERPRISE_SCALE×AI missing requirements carry no score or contribution (neutral)",
+  "pass": "PASS",
+  "kind": "DERIVED",
+  "detail": "0"
+ },
+ {
+  "at": "2026-10-13T15:29:04.604Z",
+  "step": 7,
+  "id": "B7.DLL_JOBPOOL_ENTERPRISE_SCALE×AI governance: authority NONE, no canonical evaluation, no decision, sweep never scored",
+  "pass": "PASS",
+  "kind": "DERIVED",
+  "detail": "{\"sweepState\":\"AVAILABLE\",\"proposals\":11}"
+ },
+ {
+  "at": "2026-10-13T15:29:04.649Z",
+  "step": 7,
+  "id": "B7.DLL_JOBPOOL_ENTERPRISE_SCALE×AI sweep proposal count = analysis projection capabilities",
+  "pass": "PASS",
+  "kind": "DERIVED",
+  "detail": "11 vs 11"
+ },
+ {
+  "at": "2026-10-13T15:29:04.664Z",
+  "step": 5,
+  "id": "B5.DLL_JOBPOOL_ENTERPRISE_SCALE×AI plausibility: missing requirements whose name/alias appears literally in the CV",
+  "pass": "FINDING",
+  "kind": "DERIVED",
+  "detail": "{\"matched\":0,\"weak\":0,\"missing\":290,\"candidateCapabilityCount\":3,\"sweepProposals\":11,\"sweepOnlyCoverage\":2,\"missingButLiteralInCv\":21,\"ofThoseSweepCovered\":2,\"examples\":[\"Traffic Forecasting\",\"SQL\",\"Python\",\"Machine Learning\",\"PyTorch\"]}"
+ },
+ {
+  "at": "2026-10-13T15:30:40.962Z",
+  "step": 3,
+  "id": "C3.DLL_JOBPOOL_ENGINEERING×ENG explicit SELECT in the pools panel opens the pool; URL carries the upload",
+  "pass": "PASS",
+  "kind": "REAL",
+  "detail": "{\"before\":\"NO_POOL\",\"url\":\"/career/demo?focus=FIELD&analysisId=ANL_1791904911180_388&jobPoolUploadId=JPOOL_B94850C439974E27496FE3B1A9A076B5\"}"
+ },
+ {
+  "at": "2026-10-13T15:34:39.912Z",
+  "step": 4,
+  "id": "C4.DLL_JOBPOOL_ENGINEERING×ENG field counts — corrected oracle: data-requirement-count counts the observed level's requirement signs (0 at FIELD by contract, PINK walk l.348); organization and role counts equal the file",
+  "pass": "PASS",
+  "kind": "REAL",
+  "detail": "supersedes the FAIL row above (test oracle error, not a product defect)"
+ },
+ {
+  "at": "2026-10-13T15:30:41.213Z",
+  "step": 4,
+  "id": "C4.DLL_JOBPOOL_ENGINEERING×ENG every organization body exists with its role count",
+  "pass": "PASS",
+  "kind": "REAL",
+  "detail": "{\"dom\":{\"org_kestrel\":3,\"org_aurelion\":3,\"org_brightwater\":3}}"
+ },
+ {
+  "at": "2026-10-13T15:31:37.499Z",
+  "step": 5,
+  "id": "C5.DLL_JOBPOOL_ENGINEERING×ENG every role: requirement signs and support (SUPPORTED/WEAK/SWEEP_ONLY/OPEN) = matches body",
+  "pass": "PASS",
+  "kind": "REAL",
+  "detail": "{\"roles\":9,\"bad\":[]}"
+ },
+ {
+  "at": "2026-10-13T15:31:50.178Z",
+  "step": 5,
+  "id": "C5.DLL_JOBPOOL_ENGINEERING×ENG evidence aperture shows the served quote verbatim and its authority boundary",
+  "pass": "PASS",
+  "kind": "REAL",
+  "detail": "{\"req\":\"req_kestrel_fullstack_01\",\"quote\":\"Built the customer billing platform in TypeScript and Node.js with Express; migrated 40 se\",\"authority\":\"presentation · authority NONE · not a canonical evaluation · not a decision · not an HR re\"}"
+ },
+ {
+  "at": "2026-10-13T15:31:50.570Z",
+  "step": 6,
+  "id": "C6.DLL_JOBPOOL_ENGINEERING×ENG Escape closes the aperture first (level kept)",
+  "pass": "PASS",
+  "kind": "REAL",
+  "detail": ""
+ },
+ {
+  "at": "2026-10-13T15:31:56.033Z",
+  "step": 9,
+  "id": "C9.DLL_JOBPOOL_ENGINEERING×ENG refresh restores the requirement level from the URL",
+  "pass": "PASS",
+  "kind": "REAL",
+  "detail": ""
+ },
+ {
+  "at": "2026-10-13T15:31:57.288Z",
+  "step": 6,
+  "id": "C6.DLL_JOBPOOL_ENGINEERING×ENG Escape walks back REQUIREMENT → ROLE → ORGANIZATION → FIELD; URL cleared",
+  "pass": "PASS",
+  "kind": "REAL",
+  "detail": "{\"chain\":[\"ROLE\",\"ORGANIZATION\",\"FIELD\"],\"url\":\"/career/demo?focus=FIELD&analysisId=ANL_1791904911180_388&jobPoolUploadId=JPOOL_B94850C439974E27496FE3B1A9A076B5\"}"
+ },
+ {
+  "at": "2026-10-13T15:32:04.448Z",
+  "step": 6,
+  "id": "C6.DLL_JOBPOOL_ENGINEERING×ENG pointer path FIELD → ORGANIZATION → ROLE → REQUIREMENT (moving signs, ownership-checked clicks)",
+  "pass": "PASS",
+  "kind": "REAL",
+  "detail": "{\"clicks\":[true,true,true],\"kinds\":[\"ORGANIZATION\",\"ROLE\",\"REQUIREMENT\"]}"
+ },
+ {
+  "at": "2026-10-13T15:32:06.614Z",
+  "step": 6,
+  "id": "C6.DLL_JOBPOOL_ENGINEERING×ENG RETURN goes one level up; the FIELD path step returns to the field",
+  "pass": "PASS",
+  "kind": "REAL",
+  "detail": "{\"afterReturn\":\"ROLE\",\"afterPath\":\"FIELD\"}"
+ },
+ {
+  "at": "2026-10-13T15:32:06.781Z",
+  "step": 9,
+  "id": "C9.DLL_JOBPOOL_ENGINEERING×ENG keyboard: Tab reaches an organization, Enter observes it",
+  "pass": "PASS",
+  "kind": "REAL",
+  "detail": "{\"reached\":\"syntx-organization-org_kestrel\"}"
+ },
+ {
+  "at": "2026-10-13T15:32:06.781Z",
+  "step": 9,
+  "id": "C.DLL_JOBPOOL_ENGINEERING×ENG page errors",
+  "pass": "PASS",
+  "kind": "REAL",
+  "detail": ""
+ },
+ {
+  "at": "2026-10-13T15:32:13.155Z",
+  "step": 3,
+  "id": "C3.DLL_JOBPOOL_AI_DATA×AI explicit SELECT in the pools panel opens the pool; URL carries the upload",
+  "pass": "PASS",
+  "kind": "REAL",
+  "detail": "{\"before\":\"NO_POOL\",\"url\":\"/career/demo?focus=FIELD&analysisId=ANL_1791905099818_748&jobPoolUploadId=JPOOL_0DCDB34AE9F8FF8A3D335BA26C9F16C2\"}"
+ },
+ {
+  "at": "2026-10-13T15:34:39.912Z",
+  "step": 4,
+  "id": "C4.DLL_JOBPOOL_AI_DATA×AI field counts — corrected oracle: data-requirement-count counts the observed level's requirement signs (0 at FIELD by contract, PINK walk l.348); organization and role counts equal the file",
+  "pass": "PASS",
+  "kind": "REAL",
+  "detail": "supersedes the FAIL row above (test oracle error, not a product defect)"
+ },
+ {
+  "at": "2026-10-13T15:32:14.256Z",
+  "step": 4,
+  "id": "C4.DLL_JOBPOOL_AI_DATA×AI every organization body exists with its role count",
+  "pass": "PASS",
+  "kind": "REAL",
+  "detail": "{\"dom\":{\"org_lumen\":4,\"org_northbeam\":4,\"org_veritas\":2,\"org_orbisure\":3,\"org_helix\":3}}"
+ },
+ {
+  "at": "2026-10-13T15:33:37.057Z",
+  "step": 5,
+  "id": "C5.DLL_JOBPOOL_AI_DATA×AI every role: requirement signs and support (SUPPORTED/WEAK/SWEEP_ONLY/OPEN) = matches body",
+  "pass": "PASS",
+  "kind": "REAL",
+  "detail": "{\"roles\":16,\"bad\":[]}"
+ },
+ {
+  "at": "2026-10-13T15:33:47.219Z",
+  "step": 5,
+  "id": "C5.DLL_JOBPOOL_AI_DATA×AI evidence aperture shows the served quote verbatim and its authority boundary",
+  "pass": "PASS",
+  "kind": "REAL",
+  "detail": "{\"req\":\"req_northbeam_mlops_01\",\"quote\":\"Ran ML pipelines on Kubernetes with Argo Workflows and provisioned the infrastructure with\",\"authority\":\"presentation · authority NONE · not a canonical evaluation · not a decision · not an HR re\"}"
+ },
+ {
+  "at": "2026-10-13T15:33:47.617Z",
+  "step": 6,
+  "id": "C6.DLL_JOBPOOL_AI_DATA×AI Escape closes the aperture first (level kept)",
+  "pass": "PASS",
+  "kind": "REAL",
+  "detail": ""
+ },
+ {
+  "at": "2026-10-13T15:33:52.188Z",
+  "step": 9,
+  "id": "C9.DLL_JOBPOOL_AI_DATA×AI refresh restores the requirement level from the URL",
+  "pass": "PASS",
+  "kind": "REAL",
+  "detail": ""
+ },
+ {
+  "at": "2026-10-13T15:33:54.708Z",
+  "step": 6,
+  "id": "C6.DLL_JOBPOOL_AI_DATA×AI Escape walks back REQUIREMENT → ROLE → ORGANIZATION → FIELD; URL cleared",
+  "pass": "PASS",
+  "kind": "REAL",
+  "detail": "{\"chain\":[\"ROLE\",\"ORGANIZATION\",\"FIELD\"],\"url\":\"/career/demo?focus=FIELD&analysisId=ANL_1791905099818_748&jobPoolUploadId=JPOOL_0DCDB34AE9F8FF8A3D335BA26C9F16C2\"}"
+ },
+ {
+  "at": "2026-10-13T15:34:01.722Z",
+  "step": 6,
+  "id": "C6.DLL_JOBPOOL_AI_DATA×AI pointer path FIELD → ORGANIZATION → ROLE → REQUIREMENT (moving signs, ownership-checked clicks)",
+  "pass": "PASS",
+  "kind": "REAL",
+  "detail": "{\"clicks\":[true,true,true],\"kinds\":[\"ORGANIZATION\",\"ROLE\",\"REQUIREMENT\"]}"
+ },
+ {
+  "at": "2026-10-13T15:34:04.320Z",
+  "step": 6,
+  "id": "C6.DLL_JOBPOOL_AI_DATA×AI RETURN goes one level up; the FIELD path step returns to the field",
+  "pass": "PASS",
+  "kind": "REAL",
+  "detail": "{\"afterReturn\":\"ROLE\",\"afterPath\":\"FIELD\"}"
+ },
+ {
+  "at": "2026-10-13T15:34:04.460Z",
+  "step": 9,
+  "id": "C9.DLL_JOBPOOL_AI_DATA×AI keyboard: Tab reaches an organization, Enter observes it",
+  "pass": "PASS",
+  "kind": "REAL",
+  "detail": "{\"reached\":\"syntx-organization-org_lumen\"}"
+ },
+ {
+  "at": "2026-10-13T15:34:04.461Z",
+  "step": 9,
+  "id": "C.DLL_JOBPOOL_AI_DATA×AI page errors",
+  "pass": "PASS",
+  "kind": "REAL",
+  "detail": ""
+ },
+ {
+  "at": "2026-10-13T15:38:31.799Z",
+  "step": 7,
+  "id": "C7 boundary folded until asked for",
+  "pass": "PASS",
+  "kind": "REAL",
+  "detail": ""
+ },
+ {
+  "at": "2026-10-13T15:38:34.422Z",
+  "step": 7,
+  "id": "C7 boundary = matches body (authority, policy, sweep, candidates, threshold, mapping, labels)",
+  "pass": "PASS",
+  "kind": "REAL",
+  "detail": "{\"labels\":[\"DETERMINISTIC_PRESENTATION\",\"NOT_A_CANONICAL_EVALUATION\",\"NOT_A_DECISION\"],\"mapping\":{\"m\":\"MAPPED\",\"p\":\"PROPOSAL_ONLY\",\"a\":\"NONE\"},\"sweep\":{\"sxSection\":\"sweep\",\"testid\":\"job-pool-capability-sweep\",\"sweepState\":\"AVAILABLE\",\"proposalCount\":\"10\",\"scored\":\"false\"},\"candidates\":4}"
+ },
+ {
+  "at": "2026-10-13T15:38:34.925Z",
+  "step": 7,
+  "id": "C7 Escape closes the boundary before any level change",
+  "pass": "PASS",
+  "kind": "REAL",
+  "detail": ""
+ },
+ {
+  "at": "2026-10-13T15:38:35.981Z",
+  "step": 9,
+  "id": "C9 wheel over the field changes nothing (level, URL)",
+  "pass": "PASS",
+  "kind": "REAL",
+  "detail": "/career/demo?focus=FIELD&analysisId=ANL_1791904911180_388&jobPoolUploadId=JPOOL_B94850C439974E27496FE3B1A9A076B5"
+ },
+ {
+  "at": "2026-10-13T15:38:38.460Z",
+  "step": 9,
+  "id": "C9 boundary scrolls its own content at 1280 x 720 (wheel)",
+  "pass": "PASS",
+  "kind": "REAL",
+  "detail": "{\"before\":[0,738,510],\"after\":228}"
+ },
+ {
+  "at": "2026-10-13T15:38:47.334Z",
+  "step": 8,
+  "id": "C8 Capability → Job → Capability keeps the staged sources",
+  "pass": "PASS",
+  "kind": "REAL",
+  "detail": "{\"before\":1,\"after\":1}"
+ },
+ {
+  "at": "2026-10-13T15:38:47.335Z",
+  "step": 8,
+  "id": "C8 the URL follows the field (focus=FIELD / focus=CAPABILITY, upload kept)",
+  "pass": "PASS",
+  "kind": "REAL",
+  "detail": "{\"urlJob\":\"/career/demo?analysisId=ANL_1791904911180_388&jobPoolUploadId=JPOOL_B94850C439974E27496FE3B1A9A076B5&focus=FIELD\",\"urlCap\":\"/career/demo?analysisId=ANL_1791904911180_388&jobPoolUploadId=JPOOL_B94850C439974E27496FE3B1A9A076B5&focus=CAPABILITY\"}"
+ },
+ {
+  "at": "2026-10-13T15:38:47.870Z",
+  "step": 8,
+  "id": "C8 back in the Job Field the selected pool and analysis are kept",
+  "pass": "PASS",
+  "kind": "REAL",
+  "detail": ""
+ },
+ {
+  "at": "2026-10-13T15:39:11.301Z",
+  "step": 9,
+  "id": "C9 refresh in the Job Field reopens the Job Field (focus from URL)",
+  "pass": "PASS",
+  "kind": "REAL",
+  "detail": "/career/demo?analysisId=ANL_1791904911180_388&jobPoolUploadId=JPOOL_B94850C439974E27496FE3B1A9A076B5&focus=FIELD"
+ },
+ {
+  "at": "2026-10-13T15:39:11.301Z",
+  "step": 9,
+  "id": "C9 page errors (switching)",
+  "pass": "PASS",
+  "kind": "REAL",
+  "detail": ""
+ },
+ {
+  "at": "2026-10-13T15:39:17.973Z",
+  "step": 9,
+  "id": "C9 unknown upload id → NOT_FOUND state, readable",
+  "pass": "PASS",
+  "kind": "REAL",
+  "detail": "{\"field\":\"NOT_FOUND\",\"view\":\"NOT_FOUND\",\"matches\":\"NOT_FOUND\",\"text\":\"JOB FIELD ← CAPABILITY FIELD POOL OR ANALYSIS NOT FOUND Esc returns · Enter selects · Tab moves between carriers ⬡ POOLS · 3 + INTAKE PRESENTED != EVALUATED · U\"}"
+ },
+ {
+  "at": "2026-10-13T15:39:42.213Z",
+  "step": 9,
+  "id": "C9 pool without analysis → NO_ANALYSIS",
+  "pass": "PASS",
+  "kind": "REAL",
+  "detail": "{\"field\":\"NO_ANALYSIS\",\"view\":\"AVAILABLE\",\"matches\":\"IDLE\",\"text\":\"Job pool DLL Engineering & Architecture Pool, version 1, ACTIVE: 3 organizations containing 9 roles. No presentation matching was read. JOB POOL DLL ENGINEERING\"}"
+ },
+ {
+  "at": "2026-10-13T15:40:06.477Z",
+  "step": 9,
+  "id": "C9 unknown analysis id → explicit non-AVAILABLE state (no fabricated matching)",
+  "pass": "PASS",
+  "kind": "REAL",
+  "detail": "{\"field\":\"NOT_FOUND\",\"view\":\"AVAILABLE\",\"matches\":\"NOT_FOUND\",\"text\":\"Job pool DLL Engineering & Architecture Pool, version 1, ACTIVE: 3 organizations containing 9 roles. No presentation matching was read. JOB POOL DLL ENGINEERING\"}"
+ },
+ {
+  "at": "2026-10-13T15:40:31.579Z",
+  "step": 9,
+  "id": "C9 deep link to an unknown organization/role → falls back to a valid level",
+  "pass": "PASS",
+  "kind": "REAL",
+  "detail": "{\"kind\":\"FIELD\",\"field\":\"AVAILABLE\"}"
+ },
+ {
+  "at": "2026-10-13T15:40:31.669Z",
+  "step": 9,
+  "id": "C9 API: unknown upload → 404 with code",
+  "pass": "PASS",
+  "kind": "REAL",
+  "detail": "{\"status\":404,\"code\":{\"code\":\"ERR_JOB_POOL_NOT_FOUND\",\"message\":\"ERR_JOB_POOL_NOT_FOUND: Unknown job pool upload JPOOL_00000000000000000000000000000000.\"}}"
+ },
+ {
+  "at": "2026-10-13T15:40:31.705Z",
+  "step": 9,
+  "id": "C9 API: unknown analysis → 4xx with code",
+  "pass": "PASS",
+  "kind": "REAL",
+  "detail": "{\"status\":404,\"code\":{\"code\":\"ERR_ANALYSIS_NOT_FOUND\",\"message\":\"ERR_ANALYSIS_NOT_FOUND: Unknown analysis ANL_DOES_NOT_EXIST.\"}}"
+ },
+ {
+  "at": "2026-10-13T15:40:52.808Z",
+  "step": 9,
+  "id": "C9 intake UI rejects neg-weight.json with a readable reason",
+  "pass": "PASS",
+  "kind": "REAL",
+  "detail": "{\"status\":\"422\",\"code\":\"ERR_JOB_POOL_SCHEMA_INVALID\",\"issues\":[\"requirements.0.weight: weight must be in range [0.0, 1.0]\"]}"
+ },
+ {
+  "at": "2026-10-13T15:40:53.284Z",
+  "step": 9,
+  "id": "C9 intake UI rejects neg-ref.json with a readable reason",
+  "pass": "PASS",
+  "kind": "REAL",
+  "detail": "{\"status\":\"422\",\"code\":\"ERR_JOB_POOL_REFERENCE_INVALID\",\"issues\":[\"roles.0.organization_id: unknown organization org_does_not_exist\"]}"
+ },
+ {
+  "at": "2026-10-13T15:40:54.298Z",
+  "step": 9,
+  "id": "C9 intake UI rejects neg-big.json with a readable reason",
+  "pass": "PASS",
+  "kind": "REAL",
+  "detail": "{\"status\":\"413\",\"code\":\"ERR_JOB_POOL_TOO_LARGE\",\"issues\":[]}"
+ },
+ {
+  "at": "2026-10-13T15:40:55.013Z",
+  "step": 9,
+  "id": "C9 intake UI rejects neg-syntax.json with a readable reason",
+  "pass": "PASS",
+  "kind": "REAL",
+  "detail": "{\"status\":\"400\",\"code\":\"ERR_JOB_POOL_JSON_INVALID\",\"issues\":[]}"
+ },
+ {
+  "at": "2026-10-13T15:40:56.762Z",
+  "step": 9,
+  "id": "C9 page errors (error states)",
+  "pass": "PASS",
+  "kind": "REAL",
+  "detail": ""
+ },
+ {
+  "at": "2026-10-13T15:42:06.359Z",
+  "step": 9,
+  "id": "C9 reduced motion: REDUCED mode, no running animation at FIELD / ORGANIZATION / ROLE / REQUIREMENT",
+  "pass": "PASS",
+  "kind": "REAL",
+  "detail": "{\"FIELD\":{\"mode\":\"REDUCED\",\"running\":0},\"ORGANIZATION\":{\"mode\":\"REDUCED\",\"running\":0},\"ROLE\":{\"mode\":\"REDUCED\",\"running\":0},\"REQUIREMENT\":{\"mode\":\"REDUCED\",\"running\":0}}"
+ },
+ {
+  "at": "2026-10-13T15:42:06.954Z",
+  "step": 9,
+  "id": "C9 reduced motion: navigation still works (Escape REQUIREMENT → ROLE)",
+  "pass": "PASS",
+  "kind": "REAL",
+  "detail": ""
+ },
+ {
+  "at": "2026-10-13T15:42:59.040Z",
+  "step": 10,
+  "id": "D10.DLL_JOBPOOL_ENGINEERING 1600x1000 organization bodies: no overlap, inside the viewport",
+  "pass": "PASS",
+  "kind": "REAL",
+  "detail": "{\"overlaps\":[],\"outside\":[]}"
+ },
+ {
+  "at": "2026-10-13T15:42:59.041Z",
+  "step": 10,
+  "id": "D10.DLL_JOBPOOL_ENGINEERING 1600x1000 largest organization (3 roles): role cards neither overlap nor leave the viewport nor cover the orientation surface",
+  "pass": "PASS",
+  "kind": "REAL",
+  "detail": "{\"cards\":3,\"cardOverlap\":0,\"cardOut\":0,\"underOrientation\":0}"
+ },
+ {
+  "at": "2026-10-13T15:42:59.042Z",
+  "step": 10,
+  "id": "D10.DLL_JOBPOOL_ENGINEERING 1600x1000 load and frame metrics (headless, no GPU)",
+  "pass": "INFO",
+  "kind": "REAL",
+  "detail": "{\"matchesApiMs\":[153,64,63],\"toAvailableMs\":4281,\"fieldDomNodes\":313,\"fps\":5}"
+ },
+ {
+  "at": "2026-10-13T15:43:18.068Z",
+  "step": 10,
+  "id": "D10.DLL_JOBPOOL_ENGINEERING 1280x720 organization bodies: no overlap, inside the viewport",
+  "pass": "FAIL",
+  "kind": "REAL",
+  "detail": "{\"overlaps\":[],\"outside\":[\"org_aurelion\",\"org_brightwater\"]}"
+ },
+ {
+  "at": "2026-10-13T15:43:18.069Z",
+  "step": 10,
+  "id": "D10.DLL_JOBPOOL_ENGINEERING 1280x720 largest organization (3 roles): role cards neither overlap nor leave the viewport nor cover the orientation surface",
+  "pass": "FAIL",
+  "kind": "REAL",
+  "detail": "{\"cards\":3,\"cardOverlap\":0,\"cardOut\":1,\"underOrientation\":0}"
+ },
+ {
+  "at": "2026-10-13T15:43:18.069Z",
+  "step": 10,
+  "id": "D10.DLL_JOBPOOL_ENGINEERING 1280x720 load and frame metrics (headless, no GPU)",
+  "pass": "INFO",
+  "kind": "REAL",
+  "detail": "{\"matchesApiMs\":[153,64,63],\"toAvailableMs\":3976,\"fieldDomNodes\":313,\"fps\":7.2}"
+ },
+ {
+  "at": "2026-10-13T15:43:44.662Z",
+  "step": 10,
+  "id": "D10.DLL_JOBPOOL_AI_DATA 1600x1000 organization bodies: no overlap, inside the viewport",
+  "pass": "PASS",
+  "kind": "REAL",
+  "detail": "{\"overlaps\":[],\"outside\":[]}"
+ },
+ {
+  "at": "2026-10-13T15:43:44.666Z",
+  "step": 10,
+  "id": "D10.DLL_JOBPOOL_AI_DATA 1600x1000 largest organization (4 roles): role cards neither overlap nor leave the viewport nor cover the orientation surface",
+  "pass": "PASS",
+  "kind": "REAL",
+  "detail": "{\"cards\":4,\"cardOverlap\":0,\"cardOut\":0,\"underOrientation\":0}"
+ },
+ {
+  "at": "2026-10-13T15:43:44.666Z",
+  "step": 10,
+  "id": "D10.DLL_JOBPOOL_AI_DATA 1600x1000 load and frame metrics (headless, no GPU)",
+  "pass": "INFO",
+  "kind": "REAL",
+  "detail": "{\"matchesApiMs\":[124,50,64],\"toAvailableMs\":5445,\"fieldDomNodes\":407,\"fps\":3.4}"
+ },
+ {
+  "at": "2026-10-13T15:44:05.813Z",
+  "step": 10,
+  "id": "D10.DLL_JOBPOOL_AI_DATA 1280x720 organization bodies: no overlap, inside the viewport",
+  "pass": "FAIL",
+  "kind": "REAL",
+  "detail": "{\"overlaps\":[],\"outside\":[\"org_veritas\",\"org_orbisure\"]}"
+ },
+ {
+  "at": "2026-10-13T15:44:05.814Z",
+  "step": 10,
+  "id": "D10.DLL_JOBPOOL_AI_DATA 1280x720 largest organization (4 roles): role cards neither overlap nor leave the viewport nor cover the orientation surface",
+  "pass": "FAIL",
+  "kind": "REAL",
+  "detail": "{\"cards\":4,\"cardOverlap\":0,\"cardOut\":1,\"underOrientation\":0}"
+ },
+ {
+  "at": "2026-10-13T15:44:05.814Z",
+  "step": 10,
+  "id": "D10.DLL_JOBPOOL_AI_DATA 1280x720 load and frame metrics (headless, no GPU)",
+  "pass": "INFO",
+  "kind": "REAL",
+  "detail": "{\"matchesApiMs\":[124,50,64],\"toAvailableMs\":4401,\"fieldDomNodes\":407,\"fps\":7}"
+ },
+ {
+  "at": "2026-10-13T15:44:33.086Z",
+  "step": 10,
+  "id": "D10.DLL_JOBPOOL_ENTERPRISE_SCALE 1600x1000 organization bodies: no overlap, inside the viewport",
+  "pass": "PASS",
+  "kind": "REAL",
+  "detail": "{\"overlaps\":[],\"outside\":[]}"
+ },
+ {
+  "at": "2026-10-13T15:44:33.086Z",
+  "step": 10,
+  "id": "D10.DLL_JOBPOOL_ENTERPRISE_SCALE 1600x1000 largest organization (3 roles): role cards neither overlap nor leave the viewport nor cover the orientation surface",
+  "pass": "PASS",
+  "kind": "REAL",
+  "detail": "{\"cards\":3,\"cardOverlap\":0,\"cardOut\":0,\"underOrientation\":0}"
+ },
+ {
+  "at": "2026-10-13T15:44:33.086Z",
+  "step": 10,
+  "id": "D10.DLL_JOBPOOL_ENTERPRISE_SCALE 1600x1000 load and frame metrics (headless, no GPU)",
+  "pass": "INFO",
+  "kind": "REAL",
+  "detail": "{\"matchesApiMs\":[225,115,123],\"toAvailableMs\":7719,\"fieldDomNodes\":898,\"fps\":3.4}"
+ },
+ {
+  "at": "2026-10-13T15:44:56.402Z",
+  "step": 10,
+  "id": "D10.DLL_JOBPOOL_ENTERPRISE_SCALE 1280x720 organization bodies: no overlap, inside the viewport",
+  "pass": "FAIL",
+  "kind": "REAL",
+  "detail": "{\"overlaps\":[],\"outside\":[\"org_sentinelridge\",\"org_ironquay\",\"org_ledgerline\",\"org_paxford\",\"org_medivane\"]}"
+ },
+ {
+  "at": "2026-10-13T15:44:56.402Z",
+  "step": 10,
+  "id": "D10.DLL_JOBPOOL_ENTERPRISE_SCALE 1280x720 largest organization (3 roles): role cards neither overlap nor leave the viewport nor cover the orientation surface",
+  "pass": "FAIL",
+  "kind": "REAL",
+  "detail": "{\"cards\":3,\"cardOverlap\":0,\"cardOut\":1,\"underOrientation\":0}"
+ },
+ {
+  "at": "2026-10-13T15:44:56.403Z",
+  "step": 10,
+  "id": "D10.DLL_JOBPOOL_ENTERPRISE_SCALE 1280x720 load and frame metrics (headless, no GPU)",
+  "pass": "INFO",
+  "kind": "REAL",
+  "detail": "{\"matchesApiMs\":[225,115,123],\"toAvailableMs\":4928,\"fieldDomNodes\":898,\"fps\":5.6}"
+ },
+ {
+  "at": "2026-10-13T16:04:37.262Z",
+  "step": 10,
+  "id": "D10 growth x1 (fixture): 16 orgs / 48 roles — upload, matching and field render",
+  "pass": "INFO",
+  "kind": "REAL",
+  "detail": "{\"set\":\"x1 (fixture)\",\"orgs\":16,\"roles\":48,\"requirements\":290,\"uploadStatus\":null,\"uploadMs\":null,\"matchesMs\":[5615,241,141],\"toAvailableMs\":22098,\"bodies\":16,\"overlaps\":0,\"outsideViewport\":0,\"minBodyRadiusPx\":51,\"fieldDomNodes\":898,\"fps\":4.2,\"pageErrors\":0}"
+ },
+ {
+  "at": "2026-10-13T16:04:37.263Z",
+  "step": 10,
+  "id": "D10 growth x1 (fixture): organization bodies do not overlap and stay inside 1600 x 1000",
+  "pass": "PASS",
+  "kind": "REAL",
+  "detail": "{\"overlaps\":0,\"outside\":0,\"minBodyRadiusPx\":51}"
+ },
+ {
+  "at": "2026-10-13T16:05:41.901Z",
+  "step": 10,
+  "id": "D10 growth x2: 32 orgs / 96 roles — upload, matching and field render",
+  "pass": "PASS",
+  "kind": "FIXTURE",
+  "detail": "{\"set\":\"x2\",\"orgs\":32,\"roles\":96,\"requirements\":580,\"uploadStatus\":201,\"uploadMs\":40965,\"matchesMs\":[382,191,230],\"toAvailableMs\":12242,\"bodies\":32,\"overlaps\":0,\"outsideViewport\":0,\"minBodyRadiusPx\":41,\"fieldDomNodes\":1623,\"fps\":2.8,\"pageErrors\":0}"
+ },
+ {
+  "at": "2026-10-13T16:05:41.901Z",
+  "step": 10,
+  "id": "D10 growth x2: organization bodies do not overlap and stay inside 1600 x 1000",
+  "pass": "PASS",
+  "kind": "FIXTURE",
+  "detail": "{\"overlaps\":0,\"outside\":0,\"minBodyRadiusPx\":41}"
+ },
+ {
+  "at": "2026-10-13T16:07:51.019Z",
+  "step": 10,
+  "id": "D10 growth x4: 64 orgs / 192 roles — upload, matching and field render",
+  "pass": "PASS",
+  "kind": "FIXTURE",
+  "detail": "{\"set\":\"x4\",\"orgs\":64,\"roles\":192,\"requirements\":1160,\"uploadStatus\":201,\"uploadMs\":106779,\"matchesMs\":[466,269,297],\"toAvailableMs\":10488,\"bodies\":64,\"overlaps\":32,\"outsideViewport\":0,\"minBodyRadiusPx\":25,\"fieldDomNodes\":3068,\"fps\":3,\"pageErrors\":0}"
+ },
+ {
+  "at": "2026-10-13T16:07:51.020Z",
+  "step": 10,
+  "id": "D10 growth x4: organization bodies do not overlap and stay inside 1600 x 1000",
+  "pass": "FAIL",
+  "kind": "FIXTURE",
+  "detail": "{\"overlaps\":32,\"outside\":0,\"minBodyRadiusPx\":25}"
+ }
+]

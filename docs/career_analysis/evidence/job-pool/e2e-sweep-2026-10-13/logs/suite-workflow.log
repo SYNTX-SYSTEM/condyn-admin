@@ -1,0 +1,23 @@
+[test-db] admin role condyn_test_runner (least privilege)
+[test-db] created condyn_test_e53e9b26bcfc3525
+
+ RUN  v3.2.7 /home/codi/Entwicklung/condyn-admin-e2e
+
+[database-isolation] verified disposable test database condyn_test_e53e9b26bcfc3525
+ ✓ test/career/job-pool/e2e/job-pool-workflow.e2e.test.ts (10 tests) 155155ms
+   ✓ Job Pool workflow over HTTP against the production routes > lists no upload on a fresh verified database, persists the sample pool once, and reports an identical re-upload as existing  8366ms
+   ✓ Job Pool workflow over HTTP against the production routes > reads the presentation matching for the exact analysis and the exact upload, ranked as delivered, with evidence quotes and the canonical NOT_EVALUATED state  5482ms
+   ✓ Job Pool workflow over HTTP against the production routes > serves the analysis sources the SYNTX aperture may join: the seeded document title, the capability evidence location, no projection  5085ms
+   ✓ Job Pool workflow over HTTP against the production routes > persists a DRAFT copy of the pool and refuses matching for it with 409, so an inactive pool is visible as inactive  1809ms
+   ✓ Job Pool workflow over HTTP against the production routes > server-renders the field-state strip on the capability field and the SYNTX field for an exact upload, never a dock without an exact DCTXREV  4046ms
+   ✓ SYNTX field in a real browser: FIELD → ORGANIZATION → ROLE → REQUIREMENT → EVIDENCE → RETURN > enters the field, uploads a second pool version through the edge intake, lists it without selecting it, selects it explicitly, and walks FIELD → ORGANIZATION → ROLE → REQUIREMENT → EVIDENCE → RETURN  50060ms
+   ✓ SYNTX field in a real browser: FIELD → ORGANIZATION → ROLE → REQUIREMENT → EVIDENCE → RETURN > reopens the exact selection from the URL and shows a DRAFT pool as inactive instead of matching it; its structure stays a containment field without a matching read  17366ms
+   ✓ SYNTX field in a real browser: FIELD → ORGANIZATION → ROLE → REQUIREMENT → EVIDENCE → RETURN > reopens the field at an exact requirement from the URL, accepts the legacy JOB focus name, names a stale role id, and preserves meaning under reduced motion  36414ms
+   ✓ SYNTX field in a real browser: FIELD → ORGANIZATION → ROLE → REQUIREMENT → EVIDENCE → RETURN > names a stale selection that is not among the persisted uploads and leaves the field without a dock  6872ms
+
+ Test Files  1 passed (1)
+      Tests  10 passed (10)
+   Start at  17:47:27
+   Duration  161.38s (transform 3.42s, setup 28ms, collect 5.05s, tests 155.16s, environment 1ms, prepare 186ms)
+
+[test-db] dropped condyn_test_e53e9b26bcfc3525

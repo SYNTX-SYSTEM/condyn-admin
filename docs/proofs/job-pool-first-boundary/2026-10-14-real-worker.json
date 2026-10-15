@@ -1,0 +1,162 @@
+{
+  "invariant": "JOB POOL FIRST — no valid pool + selected job → no capability analysis",
+  "label": "2026-10-14-real-worker",
+  "gitSha": "311d6ee + feature/job-pool-first-boundary working tree (committed as the next commit)",
+  "database": "disposable test database condyn_test_2fa50b9178829c54 (dropped after the run)",
+  "model": "gemini-3.1-pro-preview",
+  "pools": {
+    "engineering": {
+      "jobPoolUploadId": "JPOOL_B94850C439974E27496FE3B1A9A076B5",
+      "status": "ACTIVE"
+    },
+    "engineeringDraft": {
+      "jobPoolUploadId": "JPOOL_D2303DEC1AECE99C5E1B68762BBB1B65",
+      "status": "DRAFT"
+    },
+    "validation": {
+      "jobPoolUploadId": "JPOOL_CB66EE5B455CD3ABCD32B92806A32917",
+      "status": "ACTIVE"
+    }
+  },
+  "worker": "scripts/run-career-worker.ts (real process)",
+  "workerLog": [
+    "Career worker PID: 2218222",
+    "Career worker started: job-pool-first-proof-worker",
+    "Worker started. Polling for jobs...",
+    "[Worker job-pool-first-proof-worker] CLAIMED JOB_1791943083060_75 lease=1",
+    "[Worker job-pool-first-proof-worker] FAILED JOB_1791943083060_75 lease=1 terminal=true ERR_JOB_SCOPE_REQUIRED: Bitte wählen Sie einen Job aus.",
+    "[Worker job-pool-first-proof-worker] CLAIMED JOB_1791943083062_185 lease=1",
+    "[Worker job-pool-first-proof-worker] FAILED JOB_1791943083062_185 lease=1 terminal=true ERR_JOB_SCOPE_INVALID: Bitte wählen Sie einen Job aus.",
+    "[Worker job-pool-first-proof-worker] CLAIMED JOB_1791943083064_929 lease=1",
+    "[Worker job-pool-first-proof-worker] FAILED JOB_1791943083064_929 lease=1 terminal=true ERR_JOB_SCOPE_INVALID: Bitte wählen Sie einen Job aus.",
+    "[Worker job-pool-first-proof-worker] CLAIMED JOB_1791943083072_283 lease=1"
+  ],
+  "checks": [
+    {
+      "id": "R1_NO_SELECTION",
+      "pass": true,
+      "observed": {
+        "status": 400,
+        "issue": {
+          "code": "ERR_JOB_SCOPE_REQUIRED",
+          "message": "Bitte wählen Sie einen Job aus."
+        },
+        "enqueued": 0
+      }
+    },
+    {
+      "id": "R2_MALFORMED_SELECTION",
+      "pass": true,
+      "observed": {
+        "status": 400,
+        "issue": {
+          "code": "ERR_JOB_SCOPE_REQUIRED",
+          "message": "Bitte wählen Sie einen Job aus."
+        },
+        "enqueued": 0
+      }
+    },
+    {
+      "id": "R3_UNKNOWN_POOL",
+      "pass": true,
+      "observed": {
+        "status": 422,
+        "issue": {
+          "code": "ERR_JOB_SCOPE_INVALID",
+          "message": "Bitte wählen Sie einen Job aus."
+        },
+        "enqueued": 0
+      }
+    },
+    {
+      "id": "R4_INACTIVE_POOL",
+      "pass": true,
+      "observed": {
+        "status": 422,
+        "issue": {
+          "code": "ERR_JOB_SCOPE_INVALID",
+          "message": "Bitte wählen Sie einen Job aus."
+        },
+        "enqueued": 0
+      }
+    },
+    {
+      "id": "R5_ROLE_OUTSIDE_POOL",
+      "pass": true,
+      "observed": {
+        "status": 422,
+        "issue": {
+          "code": "ERR_JOB_SCOPE_INVALID",
+          "message": "Bitte wählen Sie einen Job aus."
+        },
+        "enqueued": 0
+      }
+    },
+    {
+      "id": "R6_VALID_SELECTION_ACCEPTED",
+      "pass": true,
+      "observed": {
+        "status": 202
+      }
+    },
+    {
+      "id": "W1_NO_SELECTION",
+      "pass": true,
+      "observed": {
+        "status": "FAILED",
+        "errorCode": "ERR_JOB_SCOPE_REQUIRED",
+        "errorSummary": "Bitte wählen Sie einen Job aus.",
+        "attemptCount": 1,
+        "currentOperation": null,
+        "processingTraces": {
+          "sourceBundle": 0,
+          "projectionReference": 0,
+          "analysis": 0
+        }
+      }
+    },
+    {
+      "id": "W2_INACTIVE_POOL",
+      "pass": true,
+      "observed": {
+        "status": "FAILED",
+        "errorCode": "ERR_JOB_SCOPE_INVALID",
+        "errorSummary": "Bitte wählen Sie einen Job aus.",
+        "attemptCount": 1,
+        "currentOperation": null,
+        "processingTraces": {
+          "sourceBundle": 0,
+          "projectionReference": 0,
+          "analysis": 0
+        }
+      }
+    },
+    {
+      "id": "W3_ROLE_OUTSIDE_POOL",
+      "pass": true,
+      "observed": {
+        "status": "FAILED",
+        "errorCode": "ERR_JOB_SCOPE_INVALID",
+        "errorSummary": "Bitte wählen Sie einen Job aus.",
+        "attemptCount": 1,
+        "currentOperation": null,
+        "processingTraces": {
+          "sourceBundle": 0,
+          "projectionReference": 0,
+          "analysis": 0
+        }
+      }
+    },
+    {
+      "id": "V1_VALID_SELECTION_ANALYZED",
+      "pass": true,
+      "observed": {
+        "status": "SUCCEEDED",
+        "errorCode": null,
+        "capabilitySweepReference": 1,
+        "analysis": 1
+      }
+    }
+  ],
+  "passed": true
+}

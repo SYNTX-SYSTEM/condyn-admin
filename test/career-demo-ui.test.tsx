@@ -58,7 +58,10 @@ describe("CONDYN / SYNTX — Step 22c: Semantic Career Intelligence Field (SIL v
 
   it("should render CareerIntelligenceDashboard directly showing the Continuous Semantic Field", () => {
     const html = renderToString(<CareerIntelligenceDashboard data={EMPTY_CAREER_INTELLIGENCE_DATA} />);
-    expect(html).toContain("CONDYN / SYNTX — SEMANTIC CAREER INTELLIGENCE FIELD");
+    // Job Pool first (owner "JOB POOL FIRST / CAPABILITY GATE", 2026-10-14): the application opens in the Job Field context.
+    expect(html).toContain("DECISION LOOP LABS");
+    expect(html).toContain("/ SYNTX — SEMANTIC CAREER INTELLIGENCE FIELD");
+    expect(html).toContain('data-testid="semantic-career-intelligence-field"');
   });
 });
 

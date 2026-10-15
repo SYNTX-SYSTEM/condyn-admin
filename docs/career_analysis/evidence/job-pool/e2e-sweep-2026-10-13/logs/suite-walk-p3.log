@@ -1,0 +1,28 @@
+[test-db] admin role condyn_test_runner (least privilege)
+[test-db] created condyn_test_f4936a7845814c3d
+
+ RUN  v3.2.7 /home/codi/Entwicklung/condyn-admin-e2e
+
+[database-isolation] verified disposable test database condyn_test_f4936a7845814c3d
+ ❯ test/job-pool-validation/syntx-walk.e2e.test.ts (3 tests | 1 failed) 235010ms
+   ✓ PINK Q-12: SYNTX field walk FIELD → ORGANIZATION → ROLE → REQUIREMENT → EVIDENCE → RETURN against PINK's fixtures > Q-01 … Q-05, Q-07 … Q-11: walks the path with the pool selected and the analysis present, every sign equal to the bodies, reversible and GET-only  106757ms
+   × PINK Q-12: SYNTX field walk FIELD → ORGANIZATION → ROLE → REQUIREMENT → EVIDENCE → RETURN against PINK's fixtures > Q-06: reduced motion keeps every sign and its meaning; LIVE names only the allowed motions 7250ms
+     → allowed motion at ROLE sxOrientPass: expected [ 'sxEnter', 'sxRise', …(25) ] to include 'sxOrientPass'
+   ✓ PINK Q-12: SYNTX field walk FIELD → ORGANIZATION → ROLE → REQUIREMENT → EVIDENCE → RETURN against PINK's fixtures > carried field states and stale ids (E-08, E-09, H-05, D-02, D-04, D-08, D-10): NO_ANALYSIS, NO_POOL with the intake, DRAFT pool as containment without a matching, NOT_FOUND, stale observation ids, legacy focus aliases  90991ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/job-pool-validation/syntx-walk.e2e.test.ts > PINK Q-12: SYNTX field walk FIELD → ORGANIZATION → ROLE → REQUIREMENT → EVIDENCE → RETURN against PINK's fixtures > Q-06: reduced motion keeps every sign and its meaning; LIVE names only the allowed motions
+AssertionError: allowed motion at ROLE sxOrientPass: expected [ 'sxEnter', 'sxRise', …(25) ] to include 'sxOrientPass'
+ ❯ test/job-pool-validation/syntx-walk.e2e.test.ts:931:282
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 2 passed (3)
+   Start at  17:53:01
+   Duration  243.36s (transform 4.96s, setup 28ms, collect 7.27s, tests 235.01s, environment 0ms, prepare 189ms)
+
+[test-db] dropped condyn_test_f4936a7845814c3d

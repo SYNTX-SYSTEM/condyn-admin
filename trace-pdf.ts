@@ -2,6 +2,7 @@ import { loadPdfDocument } from "./lib/career/loaders/pdf";
 import { buildCareerAnalysisPrompt } from "./lib/career/adapter";
 import { GeminiProvider } from "./lib/career/providers/gemini";
 import * as fs from "fs";
+import { exitOnJobScopeRefusal, resolveScriptJobScope } from "./lib/career/job-scope/script-scope";
 
 async function runTrace() {
   console.log("Loading PDF...");
@@ -31,4 +32,5 @@ async function runTrace() {
   }
 }
 
-runTrace().catch(console.error);
+// SFE JOB POOL FIRST: no Career-Analysis and no Gemini call without a valid pool + selected job (CONDYN_JOB_POOL_UPLOAD_ID, CONDYN_POOL_ROLE_ID).
+resolveScriptJobScope().catch(exitOnJobScopeRefusal).then(() => runTrace()).catch(console.error);

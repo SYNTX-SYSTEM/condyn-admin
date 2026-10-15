@@ -1,0 +1,2055 @@
+{
+  "pool": {
+    "id": "pool_dll_ai_data_v1",
+    "name": "DLL AI, Data & Semantic Systems Pool",
+    "description": "Decision Loop Labs test pool: AI architecture, LLM and agent engineering, semantic modelling, data architecture, MLOps, AI governance and applied research at five fictitious organizations.",
+    "version": 1,
+    "status": "ACTIVE",
+    "created_at": "2026-10-13T00:00:00.000Z"
+  },
+  "organizations": [
+    {
+      "id": "org_lumen",
+      "pool_id": "pool_dll_ai_data_v1",
+      "org_id": "lumen",
+      "name": "Lumen Semantic Labs GmbH",
+      "country_iso": "DE",
+      "region": "Munich",
+      "industry": "Enterprise Knowledge Software",
+      "scale": "Scaleup (250+)",
+      "description": "Builds a knowledge platform for engineering-heavy manufacturers: it ingests specifications, test reports and service tickets, links them in a domain knowledge graph and answers engineers' questions with cited, retrieval-grounded LLM responses. Customers run it in their own cloud tenants."
+    },
+    {
+      "id": "org_northbeam",
+      "pool_id": "pool_dll_ai_data_v1",
+      "org_id": "northbeam",
+      "name": "Northbeam Analytics AB",
+      "country_iso": "SE",
+      "region": "Stockholm",
+      "industry": "Data Platforms for Energy & Retail",
+      "scale": "Scaleup (600+)",
+      "description": "Operates a managed data and forecasting platform for utilities and grocery retailers: smart-meter and point-of-sale streams, a lakehouse, and demand forecasts that feed grid balancing and store replenishment."
+    },
+    {
+      "id": "org_veritas",
+      "pool_id": "pool_dll_ai_data_v1",
+      "org_id": "veritas",
+      "name": "Veritas Clinical AI SAS",
+      "country_iso": "FR",
+      "region": "Lyon",
+      "industry": "Clinical Decision Support",
+      "scale": "Startup (120+)",
+      "description": "Develops CE-marked clinical NLP software that extracts structured findings from radiology and pathology reports for hospital registries and trials. Every model release passes a documented clinical validation."
+    },
+    {
+      "id": "org_orbisure",
+      "pool_id": "pool_dll_ai_data_v1",
+      "org_id": "orbisure",
+      "name": "Orbisure Insurance Group",
+      "country_iso": "AT",
+      "region": "Vienna",
+      "industry": "Insurance",
+      "scale": "Enterprise (8k+)",
+      "description": "Composite insurer in Central and Eastern Europe automating claims intake and underwriting support with machine learning and LLM agents, under the EU AI Act, Solvency II and national supervisory expectations."
+    },
+    {
+      "id": "org_helix",
+      "pool_id": "pool_dll_ai_data_v1",
+      "org_id": "helix",
+      "name": "Helix Robotics Research Ltd",
+      "country_iso": "GB",
+      "region": "Cambridge",
+      "industry": "Robotics R&D",
+      "scale": "Startup (80+)",
+      "description": "Research company building learning-based manipulation for warehouse robots: vision-language models for task understanding, imitation and reinforcement learning, and sim-to-real transfer, with a small production team taking results to pilot sites."
+    }
+  ],
+  "roles": [
+    {
+      "id": "role_lumen_ai_systems_architect",
+      "pool_id": "pool_dll_ai_data_v1",
+      "organization_id": "org_lumen",
+      "title": "AI Systems Architect",
+      "seniority": "Principal / L6",
+      "domain_focus": "AI Architecture",
+      "description": "You own the end-to-end architecture of Lumen's answering system: document ingestion and chunking, the hybrid retrieval layer (BM25, dense vectors and graph traversal), model routing between hosted and customer-deployed LLMs, citation verification, and the evaluation harness that decides whether a change ships. You make the trade-offs explicit — latency versus grounding quality, cost per answer, tenant isolation, what runs on-premise — and record them as architecture decisions. You work with the knowledge-graph, retrieval and platform teams, review their designs, and present the architecture to customers' security and IT architecture boards. This is an architecture role with hands-on prototyping, not a research position."
+    },
+    {
+      "id": "role_lumen_knowledge_graph",
+      "pool_id": "pool_dll_ai_data_v1",
+      "organization_id": "org_lumen",
+      "title": "Knowledge Graph Engineer",
+      "seniority": "Senior / L4",
+      "domain_focus": "Knowledge Graphs",
+      "description": "The knowledge graph links parts, requirements, test results and failure reports across a customer's documents. You build and run it: modelling entity and relation types with domain experts, implementing extraction and entity-resolution pipelines that populate the graph from documents and PLM exports, writing graph queries the answering system uses for multi-hop questions, and keeping the graph consistent when sources change. The graph runs on Neo4j today with an RDF export for customers who integrate it with their own ontologies. Engineering rigour matters: provenance on every edge, incremental updates, measurable precision of extracted relations."
+    },
+    {
+      "id": "role_lumen_semantic_systems",
+      "pool_id": "pool_dll_ai_data_v1",
+      "organization_id": "org_lumen",
+      "title": "Semantic Systems Engineer – Ontology & Vocabulary",
+      "seniority": "Mid / L3",
+      "domain_focus": "Semantic Modelling",
+      "description": "Customers describe the same thing in many ways: a 'bearing failure', 'Lagerschaden' and part number 4711-B. You design the semantic layer that makes them comparable: ontologies and controlled vocabularies per customer domain, alignment between customer taxonomies and Lumen's core model, and the rules that let the knowledge graph and the retrieval layer use them. You work closely with customer domain experts in workshops, keep vocabularies versioned and testable, and measure how alignment changes answer quality. This is a modelling role first: precision in definitions and the patience to reconcile experts' mental models count more than writing large amounts of code."
+    },
+    {
+      "id": "role_lumen_llm_engineer",
+      "pool_id": "pool_dll_ai_data_v1",
+      "organization_id": "org_lumen",
+      "title": "LLM Engineer – Retrieval & Answering",
+      "seniority": "Senior / L4",
+      "domain_focus": "LLM Engineering",
+      "description": "You implement the parts of the answering pipeline that turn retrieved context into reliable, cited answers: prompt and context construction, structured outputs, citation alignment, refusal behaviour when evidence is missing, and fine-tuning of small rerankers and answer models for customer deployments. You run experiments against the evaluation harness, ship changes behind flags, and debug failure cases reported by customers down to the retrieved chunks. The role is implementation-heavy: you own production code paths and their performance, not the overall architecture."
+    },
+    {
+      "id": "role_northbeam_data_architect",
+      "pool_id": "pool_dll_ai_data_v1",
+      "organization_id": "org_northbeam",
+      "title": "Data Architect – Lakehouse",
+      "seniority": "Lead / L5",
+      "domain_focus": "Data Architecture",
+      "description": "Northbeam's lakehouse ingests 4 billion meter readings and 300 million retail transactions a day. As Data Architect you define how data is modelled, stored and governed: the medallion layers on Delta Lake, domain-oriented data products with clear ownership, contracts between producing and consuming teams, retention and partitioning strategy, and the semantic layer that analysts and forecasting models share. You decide when streaming is worth its cost, set standards for data quality checks, and guide the migration of a legacy warehouse. You work across data engineering, ML and customer analytics teams and with the DPO on personal data in smart-meter streams."
+    },
+    {
+      "id": "role_northbeam_streaming_data_engineer",
+      "pool_id": "pool_dll_ai_data_v1",
+      "organization_id": "org_northbeam",
+      "title": "Data Engineer – Streaming Ingestion",
+      "seniority": "Mid / L3",
+      "domain_focus": "Data Engineering",
+      "description": "Smart meters report every 15 minutes, and late or duplicate readings are normal. You build and operate the ingestion pipelines that turn these streams into clean, deduplicated, time-aligned tables: Kafka topics, Flink jobs with event-time windows and watermarks, schema evolution with a registry, and backfills when a utility sends corrected data. You own pipeline SLAs, alerting and the runbooks, and you work with the data architect on table design. Practical streaming experience and careful handling of time are the core of this role."
+    },
+    {
+      "id": "role_northbeam_mlops",
+      "pool_id": "pool_dll_ai_data_v1",
+      "organization_id": "org_northbeam",
+      "title": "MLOps Engineer",
+      "seniority": "Senior / L4",
+      "domain_focus": "ML Platform",
+      "description": "Northbeam trains around 2,000 forecasting models a night, one per grid area and store cluster. You build the platform that makes this routine: orchestrated training pipelines, a model registry with lineage to data snapshots, automated validation gates before promotion, batch and online serving, and monitoring for data drift and forecast degradation. You work with data scientists to turn notebooks into reproducible pipelines and with the platform team on Kubernetes and GPU capacity. You care about boring, repeatable releases of models."
+    },
+    {
+      "id": "role_northbeam_ml_forecasting",
+      "pool_id": "pool_dll_ai_data_v1",
+      "organization_id": "org_northbeam",
+      "title": "Machine Learning Engineer – Demand Forecasting",
+      "seniority": "Senior / L4",
+      "domain_focus": "Applied Machine Learning",
+      "description": "You improve the forecasts that decide how much bread a store bakes and how much reserve power a grid operator buys. You design features from weather, calendars, promotions and meter history; build and compare gradient-boosting and deep-learning forecasters; quantify uncertainty with probabilistic forecasts; and work with customers' planners to understand which errors are expensive. You implement models in production code with the MLOps team and own their evaluation, including backtests that reflect how forecasts are actually used."
+    },
+    {
+      "id": "role_veritas_clinical_nlp",
+      "pool_id": "pool_dll_ai_data_v1",
+      "organization_id": "org_veritas",
+      "title": "Clinical NLP Engineer",
+      "seniority": "Mid / L3",
+      "domain_focus": "Clinical NLP",
+      "description": "Radiology and pathology reports are dense, abbreviated and written in French, German and English. You build the models that extract findings, measurements and negations from them into structured registry fields: annotation guidelines with clinicians, transformer-based extraction models, rule components where they are more reliable, and error analysis against annotated test sets. Your code becomes part of a CE-marked product, so you document data provenance and model changes for the quality system. Clinical background is not required; care with language and evaluation is."
+    },
+    {
+      "id": "role_veritas_ai_validation",
+      "pool_id": "pool_dll_ai_data_v1",
+      "organization_id": "org_veritas",
+      "title": "AI Quality & Clinical Validation Engineer",
+      "seniority": "Senior / L4",
+      "domain_focus": "Model Validation",
+      "description": "Before a model version reaches a hospital it must be shown to be safe and effective for its intended use. You design and run that evidence: validation protocols with clinical partners, stratified test sets by site, scanner vendor and language, statistical analysis of performance and subgroup gaps, and the validation reports that go into the technical documentation. You also run post-market performance monitoring and decide, with the clinical lead, when drift requires action. You are the person who says 'not yet' with data."
+    },
+    {
+      "id": "role_orbisure_ai_governance",
+      "pool_id": "pool_dll_ai_data_v1",
+      "organization_id": "org_orbisure",
+      "title": "AI Governance Specialist",
+      "seniority": "Senior / L4",
+      "domain_focus": "AI Governance",
+      "description": "Orbisure runs more than 40 models in pricing, claims and fraud, plus new LLM agents in claims intake. You build and run the governance that keeps them lawful and controllable: the AI inventory and risk classification under the EU AI Act, model risk management standards with the second line, documentation and transparency requirements, human-oversight design for automated decisions, and the review board where new use cases are approved. You translate regulation into concrete controls teams can implement, and you check that they did. Technical literacy is needed to challenge model owners; you are not expected to build models yourself."
+    },
+    {
+      "id": "role_orbisure_agentic_ai",
+      "pool_id": "pool_dll_ai_data_v1",
+      "organization_id": "org_orbisure",
+      "title": "Agentic AI Engineer – Claims Intake",
+      "seniority": "Senior / L4",
+      "domain_focus": "Agentic Systems",
+      "description": "A claim arrives as an email with photos, a police report and a policy number. You build the agent system that reads it, asks the customer for missing information, checks coverage against policy data through tools, and prepares a case for a human handler — never deciding the claim on its own. You design tool interfaces and their permissions, plan-and-execute loops with explicit stop conditions, audit trails for every step, and evaluation scenarios that include adversarial and incomplete claims. You work with the AI governance specialist on oversight and with claims handlers on where automation actually helps."
+    },
+    {
+      "id": "role_orbisure_underwriting_data_scientist",
+      "pool_id": "pool_dll_ai_data_v1",
+      "organization_id": "org_orbisure",
+      "title": "Data Scientist – Underwriting Risk Models",
+      "seniority": "Mid / L3",
+      "domain_focus": "Actuarial Data Science",
+      "description": "Commercial property underwriting at Orbisure relies on risk scores that combine building data, hazard maps and loss history. You develop and maintain these models: generalised linear models and gradient boosting with monotonic constraints, explanations underwriters can use, and the model documentation the model risk function reviews. You partner with actuaries on loss data and with underwriters on what an interpretable score must show. Interpretability and documentation are as important here as predictive power."
+    },
+    {
+      "id": "role_helix_applied_research",
+      "pool_id": "pool_dll_ai_data_v1",
+      "organization_id": "org_helix",
+      "title": "Applied AI Research Engineer – Vision-Language Manipulation",
+      "seniority": "Senior / L4",
+      "domain_focus": "Applied Research",
+      "description": "Helix's robots must understand instructions like 'move the damaged boxes to the returns cart'. You research and engineer the models that ground such instructions in what the robot sees: vision-language models adapted to warehouse scenes, policies conditioned on language, and data collection strategies that make them robust. You read and reproduce papers, run large training jobs, design ablations that answer real questions, and hand working results to the production team. Publications are welcome but the measure of success is a robot that completes more tasks."
+    },
+    {
+      "id": "role_helix_sim_to_real",
+      "pool_id": "pool_dll_ai_data_v1",
+      "organization_id": "org_helix",
+      "title": "Machine Learning Engineer – Simulation & Sim-to-Real",
+      "seniority": "Mid / L3",
+      "domain_focus": "Robot Learning Infrastructure",
+      "description": "Most of Helix's training data comes from simulation. You build the simulation and data pipeline that makes it useful: physically plausible warehouse scenes in Isaac Sim or MuJoCo, domain randomisation, synthetic data generation at scale, and the evaluation that compares simulated and real-world success rates. You work at the boundary between research and engineering, turning researchers' experiment code into reliable infrastructure and finding out why a policy that works in simulation fails on the pilot site."
+    },
+    {
+      "id": "role_helix_perception_engineer",
+      "pool_id": "pool_dll_ai_data_v1",
+      "organization_id": "org_helix",
+      "title": "Perception Engineer – Production Robots",
+      "seniority": "Senior / L4",
+      "domain_focus": "Computer Vision Engineering",
+      "description": "At pilot sites the robots must find, segment and pick thousands of different parcels under changing light. You own the production perception stack: detection and segmentation models optimised for edge GPUs, calibration of multi-camera rigs, latency budgets, and the monitoring that flags when a site's conditions drift. You integrate research models into a deterministic, testable pipeline and keep it running at 99.5 % pick readiness. Strong C++ and Python, and experience shipping vision to real hardware, are the core."
+    }
+  ],
+  "requirements": [
+    {
+      "id": "req_lumen_ai_systems_architect_01",
+      "role_id": "role_lumen_ai_systems_architect",
+      "capability_name": "AI System Architecture",
+      "domain": "AI Architecture",
+      "weight": 1.0,
+      "required_level": "L6 - Authority",
+      "necessity": "REQUIRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Owned the architecture of a production AI system end to end; design documents, ADRs or talks that show the trade-offs.",
+      "aliases": [
+        "ML System Design",
+        "LLM Application Architecture"
+      ]
+    },
+    {
+      "id": "req_lumen_ai_systems_architect_02",
+      "role_id": "role_lumen_ai_systems_architect",
+      "capability_name": "Retrieval-Augmented Generation",
+      "domain": "AI Engineering",
+      "weight": 0.85,
+      "required_level": "L5 - Expert",
+      "necessity": "REQUIRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Designed a RAG system in production, including retrieval strategy, grounding and citation handling.",
+      "aliases": [
+        "RAG",
+        "Grounded Generation"
+      ]
+    },
+    {
+      "id": "req_lumen_ai_systems_architect_03",
+      "role_id": "role_lumen_ai_systems_architect",
+      "capability_name": "LLM Evaluation",
+      "domain": "AI Engineering",
+      "weight": 0.75,
+      "required_level": "L4 - Advanced",
+      "necessity": "REQUIRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Built evaluation suites (offline metrics, human review, regression gates) that decided releases.",
+      "aliases": [
+        "Model Evaluation",
+        "Eval Harness"
+      ]
+    },
+    {
+      "id": "req_lumen_ai_systems_architect_04",
+      "role_id": "role_lumen_ai_systems_architect",
+      "capability_name": "Hybrid Search",
+      "domain": "Information Retrieval",
+      "weight": 0.6,
+      "required_level": "L4 - Advanced",
+      "necessity": "PREFERRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Combined lexical and dense retrieval with measured relevance improvements.",
+      "aliases": [
+        "BM25",
+        "Vector Search",
+        "Dense Retrieval"
+      ]
+    },
+    {
+      "id": "req_lumen_ai_systems_architect_05",
+      "role_id": "role_lumen_ai_systems_architect",
+      "capability_name": "Multi-Tenant SaaS Architecture",
+      "domain": "Software Architecture",
+      "weight": 0.55,
+      "required_level": "L4 - Advanced",
+      "necessity": "REQUIRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Designed tenant isolation for data and models in a SaaS or customer-hosted product.",
+      "aliases": [
+        "Tenant Isolation"
+      ]
+    },
+    {
+      "id": "req_lumen_ai_systems_architect_06",
+      "role_id": "role_lumen_ai_systems_architect",
+      "capability_name": "Cloud Cost Engineering",
+      "domain": "Cloud",
+      "weight": 0.4,
+      "required_level": "L3 - Proficient",
+      "necessity": "PREFERRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Measured and reduced inference or infrastructure cost per request.",
+      "aliases": [
+        "FinOps",
+        "Inference Cost Optimization"
+      ]
+    },
+    {
+      "id": "req_lumen_ai_systems_architect_07",
+      "role_id": "role_lumen_ai_systems_architect",
+      "capability_name": "Python",
+      "domain": "Software Engineering",
+      "weight": 0.5,
+      "required_level": "L4 - Advanced",
+      "necessity": "REQUIRED",
+      "requirement_type": "TOOL_TECHNOLOGY",
+      "evidence_hint": "Hands-on Python prototypes and production code in the AI stack."
+    },
+    {
+      "id": "req_lumen_ai_systems_architect_08",
+      "role_id": "role_lumen_ai_systems_architect",
+      "capability_name": "Architecture Communication",
+      "domain": "Leadership",
+      "weight": 0.45,
+      "required_level": "Presenting to customer architecture boards",
+      "necessity": "REQUIRED",
+      "requirement_type": "BEHAVIORAL_EXPECTATION",
+      "evidence_hint": "Architecture presentations to external security or IT boards; written decision records."
+    },
+    {
+      "id": "req_lumen_ai_systems_architect_09",
+      "role_id": "role_lumen_ai_systems_architect",
+      "capability_name": "Software and ML Systems",
+      "domain": "Software Architecture",
+      "weight": 0.6,
+      "required_level": "10+ years, 3+ with LLM or ML systems",
+      "necessity": "REQUIRED",
+      "requirement_type": "EXPERIENCE",
+      "evidence_hint": "A decade of building software systems, with recent years on ML or LLM products."
+    },
+    {
+      "id": "req_lumen_knowledge_graph_01",
+      "role_id": "role_lumen_knowledge_graph",
+      "capability_name": "Knowledge Graph Engineering",
+      "domain": "Semantic Systems",
+      "weight": 0.95,
+      "required_level": "L4 - Advanced",
+      "necessity": "REQUIRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Built and operated a knowledge graph in production, including its schema and update pipelines.",
+      "aliases": [
+        "Knowledge Graphs",
+        "Graph Data Modeling"
+      ]
+    },
+    {
+      "id": "req_lumen_knowledge_graph_02",
+      "role_id": "role_lumen_knowledge_graph",
+      "capability_name": "Neo4j",
+      "domain": "Data",
+      "weight": 0.75,
+      "required_level": "L4 - Advanced",
+      "necessity": "REQUIRED",
+      "requirement_type": "TOOL_TECHNOLOGY",
+      "evidence_hint": "Cypher queries and graph modelling on Neo4j or a comparable property-graph database.",
+      "aliases": [
+        "Cypher",
+        "Graph Databases"
+      ]
+    },
+    {
+      "id": "req_lumen_knowledge_graph_03",
+      "role_id": "role_lumen_knowledge_graph",
+      "capability_name": "Entity Resolution",
+      "domain": "Data Quality",
+      "weight": 0.7,
+      "required_level": "L4 - Advanced",
+      "necessity": "REQUIRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Entity matching with measured precision/recall, blocking strategies and manual review loops.",
+      "aliases": [
+        "Record Linkage",
+        "Entity Matching"
+      ]
+    },
+    {
+      "id": "req_lumen_knowledge_graph_04",
+      "role_id": "role_lumen_knowledge_graph",
+      "capability_name": "Information Extraction",
+      "domain": "NLP",
+      "weight": 0.65,
+      "required_level": "L3 - Proficient",
+      "necessity": "REQUIRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Extracted entities or relations from documents with ML or LLM-based methods; evaluation results.",
+      "aliases": [
+        "Relation Extraction",
+        "Named Entity Recognition"
+      ]
+    },
+    {
+      "id": "req_lumen_knowledge_graph_05",
+      "role_id": "role_lumen_knowledge_graph",
+      "capability_name": "RDF and SPARQL",
+      "domain": "Semantic Web",
+      "weight": 0.45,
+      "required_level": "L3 - Proficient",
+      "necessity": "PREFERRED",
+      "requirement_type": "KNOWLEDGE",
+      "evidence_hint": "Worked with RDF data, SPARQL queries or triple stores.",
+      "aliases": [
+        "RDF",
+        "SPARQL",
+        "Linked Data"
+      ]
+    },
+    {
+      "id": "req_lumen_knowledge_graph_06",
+      "role_id": "role_lumen_knowledge_graph",
+      "capability_name": "Data Provenance",
+      "domain": "Data Governance",
+      "weight": 0.4,
+      "required_level": "L3 - Proficient",
+      "necessity": "PREFERRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Tracked source provenance for derived facts; source-to-fact traceability.",
+      "aliases": [
+        "Lineage"
+      ]
+    },
+    {
+      "id": "req_lumen_knowledge_graph_07",
+      "role_id": "role_lumen_knowledge_graph",
+      "capability_name": "Python",
+      "domain": "Software Engineering",
+      "weight": 0.55,
+      "required_level": "L4 - Advanced",
+      "necessity": "REQUIRED",
+      "requirement_type": "TOOL_TECHNOLOGY",
+      "evidence_hint": "Production Python for pipelines and services."
+    },
+    {
+      "id": "req_lumen_knowledge_graph_08",
+      "role_id": "role_lumen_knowledge_graph",
+      "capability_name": "Manufacturing Engineering Data",
+      "domain": "Domain",
+      "weight": 0.25,
+      "required_level": "PLM, requirements or test data",
+      "necessity": "OPTIONAL",
+      "requirement_type": "DOMAIN_CONTEXT",
+      "evidence_hint": "Exposure to PLM systems, engineering change data or test reports.",
+      "aliases": [
+        "PLM",
+        "Product Lifecycle Management"
+      ]
+    },
+    {
+      "id": "req_lumen_semantic_systems_01",
+      "role_id": "role_lumen_semantic_systems",
+      "capability_name": "Ontology Engineering",
+      "domain": "Semantic Modelling",
+      "weight": 0.95,
+      "required_level": "L4 - Advanced",
+      "necessity": "REQUIRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Designed ontologies or domain models with explicit definitions, constraints and versioning.",
+      "aliases": [
+        "Ontology Design",
+        "OWL"
+      ]
+    },
+    {
+      "id": "req_lumen_semantic_systems_02",
+      "role_id": "role_lumen_semantic_systems",
+      "capability_name": "Taxonomy and Controlled Vocabulary Design",
+      "domain": "Semantic Modelling",
+      "weight": 0.8,
+      "required_level": "L4 - Advanced",
+      "necessity": "REQUIRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Built or curated taxonomies/thesauri (e.g. SKOS) used in a production system.",
+      "aliases": [
+        "SKOS",
+        "Thesaurus Management"
+      ]
+    },
+    {
+      "id": "req_lumen_semantic_systems_03",
+      "role_id": "role_lumen_semantic_systems",
+      "capability_name": "Schema Alignment",
+      "domain": "Semantic Modelling",
+      "weight": 0.7,
+      "required_level": "L3 - Proficient",
+      "necessity": "REQUIRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Mapped between heterogeneous schemas or taxonomies with documented mapping rules.",
+      "aliases": [
+        "Ontology Matching",
+        "Mapping"
+      ]
+    },
+    {
+      "id": "req_lumen_semantic_systems_04",
+      "role_id": "role_lumen_semantic_systems",
+      "capability_name": "Domain Expert Facilitation",
+      "domain": "Collaboration",
+      "weight": 0.55,
+      "required_level": "Workshops with subject-matter experts",
+      "necessity": "REQUIRED",
+      "requirement_type": "BEHAVIORAL_EXPECTATION",
+      "evidence_hint": "Ran modelling workshops with domain experts and turned results into models.",
+      "aliases": [
+        "Knowledge Elicitation"
+      ]
+    },
+    {
+      "id": "req_lumen_semantic_systems_05",
+      "role_id": "role_lumen_semantic_systems",
+      "capability_name": "SHACL",
+      "domain": "Semantic Web",
+      "weight": 0.4,
+      "required_level": "L2 - Working",
+      "necessity": "PREFERRED",
+      "requirement_type": "TOOL_TECHNOLOGY",
+      "evidence_hint": "Validation of RDF data with SHACL shapes.",
+      "aliases": [
+        "Shape Constraints"
+      ]
+    },
+    {
+      "id": "req_lumen_semantic_systems_06",
+      "role_id": "role_lumen_semantic_systems",
+      "capability_name": "Multilingual Terminology",
+      "domain": "Linguistics",
+      "weight": 0.45,
+      "required_level": "L3 - Proficient",
+      "necessity": "PREFERRED",
+      "requirement_type": "KNOWLEDGE",
+      "evidence_hint": "Managed terminology across languages (e.g. German/English) with synonyms and variants.",
+      "aliases": [
+        "Terminology Management"
+      ]
+    },
+    {
+      "id": "req_lumen_semantic_systems_07",
+      "role_id": "role_lumen_semantic_systems",
+      "capability_name": "Python",
+      "domain": "Software Engineering",
+      "weight": 0.3,
+      "required_level": "L2 - Working",
+      "necessity": "OPTIONAL",
+      "requirement_type": "TOOL_TECHNOLOGY",
+      "evidence_hint": "Scripting for vocabulary tooling and tests."
+    },
+    {
+      "id": "req_lumen_semantic_systems_08",
+      "role_id": "role_lumen_semantic_systems",
+      "capability_name": "German",
+      "domain": "Communication",
+      "weight": 0.4,
+      "required_level": "C1",
+      "necessity": "REQUIRED",
+      "requirement_type": "LANGUAGE",
+      "evidence_hint": "Workshops with German-speaking engineering experts."
+    },
+    {
+      "id": "req_lumen_llm_engineer_01",
+      "role_id": "role_lumen_llm_engineer",
+      "capability_name": "LLM Application Development",
+      "domain": "AI Engineering",
+      "weight": 0.9,
+      "required_level": "L4 - Advanced",
+      "necessity": "REQUIRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Shipped LLM-backed features to production with measurable quality, not only prototypes.",
+      "aliases": [
+        "LLM Engineering",
+        "Prompt Engineering"
+      ]
+    },
+    {
+      "id": "req_lumen_llm_engineer_02",
+      "role_id": "role_lumen_llm_engineer",
+      "capability_name": "Retrieval-Augmented Generation",
+      "domain": "AI Engineering",
+      "weight": 0.85,
+      "required_level": "L4 - Advanced",
+      "necessity": "REQUIRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Implemented retrieval and context assembly for generated answers; citation or grounding checks.",
+      "aliases": [
+        "RAG"
+      ]
+    },
+    {
+      "id": "req_lumen_llm_engineer_03",
+      "role_id": "role_lumen_llm_engineer",
+      "capability_name": "Model Fine-Tuning",
+      "domain": "Machine Learning",
+      "weight": 0.55,
+      "required_level": "L3 - Proficient",
+      "necessity": "PREFERRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Fine-tuned rerankers or language models (LoRA/PEFT) with an evaluation that justified it.",
+      "aliases": [
+        "LoRA",
+        "PEFT",
+        "Supervised Fine-Tuning"
+      ]
+    },
+    {
+      "id": "req_lumen_llm_engineer_04",
+      "role_id": "role_lumen_llm_engineer",
+      "capability_name": "Structured Output Generation",
+      "domain": "AI Engineering",
+      "weight": 0.5,
+      "required_level": "L3 - Proficient",
+      "necessity": "REQUIRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Constrained or schema-validated LLM outputs in production.",
+      "aliases": [
+        "Function Calling",
+        "JSON Schema Output"
+      ]
+    },
+    {
+      "id": "req_lumen_llm_engineer_05",
+      "role_id": "role_lumen_llm_engineer",
+      "capability_name": "PyTorch",
+      "domain": "Machine Learning",
+      "weight": 0.45,
+      "required_level": "L3 - Proficient",
+      "necessity": "PREFERRED",
+      "requirement_type": "TOOL_TECHNOLOGY",
+      "evidence_hint": "Training or inference code in PyTorch.",
+      "aliases": [
+        "Torch"
+      ]
+    },
+    {
+      "id": "req_lumen_llm_engineer_06",
+      "role_id": "role_lumen_llm_engineer",
+      "capability_name": "Python",
+      "domain": "Software Engineering",
+      "weight": 0.6,
+      "required_level": "L4 - Advanced",
+      "necessity": "REQUIRED",
+      "requirement_type": "TOOL_TECHNOLOGY",
+      "evidence_hint": "Production Python services with tests and typing."
+    },
+    {
+      "id": "req_lumen_llm_engineer_07",
+      "role_id": "role_lumen_llm_engineer",
+      "capability_name": "Experiment Tracking",
+      "domain": "MLOps",
+      "weight": 0.3,
+      "required_level": "L2 - Working",
+      "necessity": "OPTIONAL",
+      "requirement_type": "TOOL_TECHNOLOGY",
+      "evidence_hint": "Tracked experiments and compared runs in MLflow, W&B or similar.",
+      "aliases": [
+        "MLflow",
+        "Weights & Biases"
+      ]
+    },
+    {
+      "id": "req_lumen_llm_engineer_08",
+      "role_id": "role_lumen_llm_engineer",
+      "capability_name": "Hallucination Mitigation",
+      "domain": "AI Safety",
+      "weight": 0.6,
+      "required_level": "L3 - Proficient",
+      "necessity": "REQUIRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Concrete techniques that reduced unsupported answers, with before/after evaluation.",
+      "aliases": [
+        "Groundedness",
+        "Answer Verification"
+      ]
+    },
+    {
+      "id": "req_northbeam_data_architect_01",
+      "role_id": "role_northbeam_data_architect",
+      "capability_name": "Data Architecture",
+      "domain": "Data Architecture",
+      "weight": 0.95,
+      "required_level": "L5 - Expert",
+      "necessity": "REQUIRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Designed the data architecture of a large platform: layers, ownership, storage and access patterns.",
+      "aliases": [
+        "Enterprise Data Architecture",
+        "Lakehouse Architecture"
+      ]
+    },
+    {
+      "id": "req_northbeam_data_architect_02",
+      "role_id": "role_northbeam_data_architect",
+      "capability_name": "Dimensional and Domain Data Modeling",
+      "domain": "Data Modeling",
+      "weight": 0.8,
+      "required_level": "L5 - Expert",
+      "necessity": "REQUIRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Data models you designed (dimensional, data vault or domain-oriented) and how they were adopted.",
+      "aliases": [
+        "Data Modeling",
+        "Kimball",
+        "Data Vault"
+      ]
+    },
+    {
+      "id": "req_northbeam_data_architect_03",
+      "role_id": "role_northbeam_data_architect",
+      "capability_name": "Delta Lake",
+      "domain": "Data Platforms",
+      "weight": 0.55,
+      "required_level": "L4 - Advanced",
+      "necessity": "PREFERRED",
+      "requirement_type": "TOOL_TECHNOLOGY",
+      "evidence_hint": "Production tables on Delta Lake, Iceberg or Hudi including partitioning and compaction.",
+      "aliases": [
+        "Databricks",
+        "Apache Iceberg"
+      ]
+    },
+    {
+      "id": "req_northbeam_data_architect_04",
+      "role_id": "role_northbeam_data_architect",
+      "capability_name": "Data Contracts",
+      "domain": "Data Governance",
+      "weight": 0.5,
+      "required_level": "L3 - Proficient",
+      "necessity": "PREFERRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Introduced data contracts or data-product ownership between teams.",
+      "aliases": [
+        "Data Products",
+        "Data Mesh"
+      ]
+    },
+    {
+      "id": "req_northbeam_data_architect_05",
+      "role_id": "role_northbeam_data_architect",
+      "capability_name": "Data Governance",
+      "domain": "Data Governance",
+      "weight": 0.6,
+      "required_level": "L4 - Advanced",
+      "necessity": "REQUIRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Data quality rules, catalogues or governance processes you set up.",
+      "aliases": [
+        "Data Quality Management",
+        "Metadata Management"
+      ]
+    },
+    {
+      "id": "req_northbeam_data_architect_06",
+      "role_id": "role_northbeam_data_architect",
+      "capability_name": "GDPR for Data Platforms",
+      "domain": "Compliance",
+      "weight": 0.45,
+      "required_level": "L3 - Proficient",
+      "necessity": "REQUIRED",
+      "requirement_type": "KNOWLEDGE",
+      "evidence_hint": "Implemented retention, pseudonymisation or access controls for personal data.",
+      "aliases": [
+        "GDPR",
+        "Data Protection"
+      ]
+    },
+    {
+      "id": "req_northbeam_data_architect_07",
+      "role_id": "role_northbeam_data_architect",
+      "capability_name": "Apache Spark",
+      "domain": "Data Engineering",
+      "weight": 0.45,
+      "required_level": "L3 - Proficient",
+      "necessity": "PREFERRED",
+      "requirement_type": "TOOL_TECHNOLOGY",
+      "evidence_hint": "Enough Spark to review pipeline designs and performance.",
+      "aliases": [
+        "PySpark",
+        "Spark SQL"
+      ]
+    },
+    {
+      "id": "req_northbeam_data_architect_08",
+      "role_id": "role_northbeam_data_architect",
+      "capability_name": "Data Platform Architecture",
+      "domain": "Data Architecture",
+      "weight": 0.55,
+      "required_level": "8+ years in data, 3+ as architect",
+      "necessity": "REQUIRED",
+      "requirement_type": "EXPERIENCE",
+      "evidence_hint": "Long data engineering/warehousing background with architect responsibility."
+    },
+    {
+      "id": "req_northbeam_streaming_data_engineer_01",
+      "role_id": "role_northbeam_streaming_data_engineer",
+      "capability_name": "Stream Processing",
+      "domain": "Data Engineering",
+      "weight": 0.9,
+      "required_level": "L4 - Advanced",
+      "necessity": "REQUIRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Production streaming jobs with event-time semantics, windows and late data handling.",
+      "aliases": [
+        "Real-Time Data Processing",
+        "Event-Time Processing"
+      ]
+    },
+    {
+      "id": "req_northbeam_streaming_data_engineer_02",
+      "role_id": "role_northbeam_streaming_data_engineer",
+      "capability_name": "Apache Kafka",
+      "domain": "Data Engineering",
+      "weight": 0.8,
+      "required_level": "L4 - Advanced",
+      "necessity": "REQUIRED",
+      "requirement_type": "TOOL_TECHNOLOGY",
+      "evidence_hint": "Operated Kafka topics, consumer groups and retention for production pipelines.",
+      "aliases": [
+        "Kafka"
+      ]
+    },
+    {
+      "id": "req_northbeam_streaming_data_engineer_03",
+      "role_id": "role_northbeam_streaming_data_engineer",
+      "capability_name": "Apache Flink",
+      "domain": "Data Engineering",
+      "weight": 0.6,
+      "required_level": "L3 - Proficient",
+      "necessity": "PREFERRED",
+      "requirement_type": "TOOL_TECHNOLOGY",
+      "evidence_hint": "Flink (or Spark Structured Streaming / Kafka Streams) jobs in production.",
+      "aliases": [
+        "Flink"
+      ]
+    },
+    {
+      "id": "req_northbeam_streaming_data_engineer_04",
+      "role_id": "role_northbeam_streaming_data_engineer",
+      "capability_name": "Schema Evolution",
+      "domain": "Data Engineering",
+      "weight": 0.5,
+      "required_level": "L3 - Proficient",
+      "necessity": "REQUIRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Managed schema changes with a registry and compatibility rules.",
+      "aliases": [
+        "Schema Registry",
+        "Avro",
+        "Protobuf"
+      ]
+    },
+    {
+      "id": "req_northbeam_streaming_data_engineer_05",
+      "role_id": "role_northbeam_streaming_data_engineer",
+      "capability_name": "Data Quality Engineering",
+      "domain": "Data Quality",
+      "weight": 0.55,
+      "required_level": "L3 - Proficient",
+      "necessity": "REQUIRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Automated data quality checks with alerting on pipelines.",
+      "aliases": [
+        "Data Validation",
+        "Great Expectations"
+      ]
+    },
+    {
+      "id": "req_northbeam_streaming_data_engineer_06",
+      "role_id": "role_northbeam_streaming_data_engineer",
+      "capability_name": "Python",
+      "domain": "Software Engineering",
+      "weight": 0.45,
+      "required_level": "L3 - Proficient",
+      "necessity": "REQUIRED",
+      "requirement_type": "TOOL_TECHNOLOGY",
+      "evidence_hint": "Python for pipeline code and tooling."
+    },
+    {
+      "id": "req_northbeam_streaming_data_engineer_07",
+      "role_id": "role_northbeam_streaming_data_engineer",
+      "capability_name": "Java",
+      "domain": "Software Engineering",
+      "weight": 0.3,
+      "required_level": "L2 - Working",
+      "necessity": "OPTIONAL",
+      "requirement_type": "TOOL_TECHNOLOGY",
+      "evidence_hint": "JVM language for Flink jobs.",
+      "aliases": [
+        "Scala"
+      ]
+    },
+    {
+      "id": "req_northbeam_streaming_data_engineer_08",
+      "role_id": "role_northbeam_streaming_data_engineer",
+      "capability_name": "Energy Metering Data",
+      "domain": "Domain",
+      "weight": 0.25,
+      "required_level": "Smart-meter or IoT telemetry",
+      "necessity": "OPTIONAL",
+      "requirement_type": "DOMAIN_CONTEXT",
+      "evidence_hint": "Worked with meter, sensor or telemetry data.",
+      "aliases": [
+        "Smart Metering",
+        "IoT Telemetry"
+      ]
+    },
+    {
+      "id": "req_northbeam_mlops_01",
+      "role_id": "role_northbeam_mlops",
+      "capability_name": "MLOps",
+      "domain": "MLOps",
+      "weight": 0.95,
+      "required_level": "L4 - Advanced",
+      "necessity": "REQUIRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Built pipelines that train, validate, register and deploy models automatically in production.",
+      "aliases": [
+        "ML Engineering Operations",
+        "Machine Learning Operations"
+      ]
+    },
+    {
+      "id": "req_northbeam_mlops_02",
+      "role_id": "role_northbeam_mlops",
+      "capability_name": "ML Pipeline Orchestration",
+      "domain": "MLOps",
+      "weight": 0.7,
+      "required_level": "L4 - Advanced",
+      "necessity": "REQUIRED",
+      "requirement_type": "TOOL_TECHNOLOGY",
+      "evidence_hint": "Orchestrated training/scoring pipelines with Airflow, Dagster, Kubeflow or similar.",
+      "aliases": [
+        "Kubeflow",
+        "Airflow",
+        "Dagster"
+      ]
+    },
+    {
+      "id": "req_northbeam_mlops_03",
+      "role_id": "role_northbeam_mlops",
+      "capability_name": "Model Registry and Lineage",
+      "domain": "MLOps",
+      "weight": 0.6,
+      "required_level": "L3 - Proficient",
+      "necessity": "REQUIRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Model registry with lineage to code and data versions.",
+      "aliases": [
+        "MLflow",
+        "Model Versioning"
+      ]
+    },
+    {
+      "id": "req_northbeam_mlops_04",
+      "role_id": "role_northbeam_mlops",
+      "capability_name": "Model Monitoring",
+      "domain": "MLOps",
+      "weight": 0.65,
+      "required_level": "L4 - Advanced",
+      "necessity": "REQUIRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Monitoring of drift and model quality with alerts that triggered retraining or rollback.",
+      "aliases": [
+        "Drift Detection",
+        "Model Observability"
+      ]
+    },
+    {
+      "id": "req_northbeam_mlops_05",
+      "role_id": "role_northbeam_mlops",
+      "capability_name": "Kubernetes",
+      "domain": "Cloud",
+      "weight": 0.5,
+      "required_level": "L3 - Proficient",
+      "necessity": "REQUIRED",
+      "requirement_type": "TOOL_TECHNOLOGY",
+      "evidence_hint": "Running ML workloads on Kubernetes.",
+      "aliases": [
+        "K8s"
+      ]
+    },
+    {
+      "id": "req_northbeam_mlops_06",
+      "role_id": "role_northbeam_mlops",
+      "capability_name": "Python",
+      "domain": "Software Engineering",
+      "weight": 0.55,
+      "required_level": "L4 - Advanced",
+      "necessity": "REQUIRED",
+      "requirement_type": "TOOL_TECHNOLOGY",
+      "evidence_hint": "Production-quality Python, packaging and testing."
+    },
+    {
+      "id": "req_northbeam_mlops_07",
+      "role_id": "role_northbeam_mlops",
+      "capability_name": "Time Series Forecasting",
+      "domain": "Machine Learning",
+      "weight": 0.3,
+      "required_level": "L2 - Working",
+      "necessity": "OPTIONAL",
+      "requirement_type": "KNOWLEDGE",
+      "evidence_hint": "Exposure to forecasting models and their evaluation.",
+      "aliases": [
+        "Forecasting"
+      ]
+    },
+    {
+      "id": "req_northbeam_mlops_08",
+      "role_id": "role_northbeam_mlops",
+      "capability_name": "Infrastructure as Code",
+      "domain": "Cloud",
+      "weight": 0.4,
+      "required_level": "L3 - Proficient",
+      "necessity": "PREFERRED",
+      "requirement_type": "TOOL_TECHNOLOGY",
+      "evidence_hint": "Provisioned ML infrastructure with Terraform or similar.",
+      "aliases": [
+        "Terraform"
+      ]
+    },
+    {
+      "id": "req_northbeam_ml_forecasting_01",
+      "role_id": "role_northbeam_ml_forecasting",
+      "capability_name": "Time Series Forecasting",
+      "domain": "Machine Learning",
+      "weight": 0.95,
+      "required_level": "L5 - Expert",
+      "necessity": "REQUIRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Built forecasting models used in production decisions; backtests and error analysis.",
+      "aliases": [
+        "Demand Forecasting",
+        "Forecasting"
+      ]
+    },
+    {
+      "id": "req_northbeam_ml_forecasting_02",
+      "role_id": "role_northbeam_ml_forecasting",
+      "capability_name": "Probabilistic Forecasting",
+      "domain": "Machine Learning",
+      "weight": 0.6,
+      "required_level": "L4 - Advanced",
+      "necessity": "PREFERRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Quantile or distributional forecasts and their calibration.",
+      "aliases": [
+        "Quantile Regression",
+        "Prediction Intervals"
+      ]
+    },
+    {
+      "id": "req_northbeam_ml_forecasting_03",
+      "role_id": "role_northbeam_ml_forecasting",
+      "capability_name": "Gradient Boosting",
+      "domain": "Machine Learning",
+      "weight": 0.7,
+      "required_level": "L4 - Advanced",
+      "necessity": "REQUIRED",
+      "requirement_type": "TOOL_TECHNOLOGY",
+      "evidence_hint": "LightGBM/XGBoost models with feature engineering at scale.",
+      "aliases": [
+        "LightGBM",
+        "XGBoost"
+      ]
+    },
+    {
+      "id": "req_northbeam_ml_forecasting_04",
+      "role_id": "role_northbeam_ml_forecasting",
+      "capability_name": "Feature Engineering",
+      "domain": "Machine Learning",
+      "weight": 0.65,
+      "required_level": "L4 - Advanced",
+      "necessity": "REQUIRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Features from calendars, weather or promotions with measured impact."
+    },
+    {
+      "id": "req_northbeam_ml_forecasting_05",
+      "role_id": "role_northbeam_ml_forecasting",
+      "capability_name": "Deep Learning for Time Series",
+      "domain": "Machine Learning",
+      "weight": 0.35,
+      "required_level": "L3 - Proficient",
+      "necessity": "OPTIONAL",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Neural forecasting architectures compared against baselines.",
+      "aliases": [
+        "Temporal Fusion Transformer",
+        "N-BEATS"
+      ]
+    },
+    {
+      "id": "req_northbeam_ml_forecasting_06",
+      "role_id": "role_northbeam_ml_forecasting",
+      "capability_name": "Statistics",
+      "domain": "Mathematics",
+      "weight": 0.5,
+      "required_level": "L4 - Advanced",
+      "necessity": "REQUIRED",
+      "requirement_type": "KNOWLEDGE",
+      "evidence_hint": "Solid statistical grounding: evaluation, significance, error metrics.",
+      "aliases": [
+        "Statistical Modeling"
+      ]
+    },
+    {
+      "id": "req_northbeam_ml_forecasting_07",
+      "role_id": "role_northbeam_ml_forecasting",
+      "capability_name": "Python",
+      "domain": "Software Engineering",
+      "weight": 0.5,
+      "required_level": "L4 - Advanced",
+      "necessity": "REQUIRED",
+      "requirement_type": "TOOL_TECHNOLOGY",
+      "evidence_hint": "Python data and modelling stack in production code.",
+      "aliases": [
+        "pandas",
+        "NumPy"
+      ]
+    },
+    {
+      "id": "req_northbeam_ml_forecasting_08",
+      "role_id": "role_northbeam_ml_forecasting",
+      "capability_name": "Retail or Energy Domain",
+      "domain": "Domain",
+      "weight": 0.25,
+      "required_level": "Demand planning or grid operations",
+      "necessity": "OPTIONAL",
+      "requirement_type": "DOMAIN_CONTEXT",
+      "evidence_hint": "Work with retail replenishment, energy balancing or similar planning domains.",
+      "aliases": [
+        "Replenishment",
+        "Energy Trading"
+      ]
+    },
+    {
+      "id": "req_veritas_clinical_nlp_01",
+      "role_id": "role_veritas_clinical_nlp",
+      "capability_name": "Clinical Natural Language Processing",
+      "domain": "NLP",
+      "weight": 0.9,
+      "required_level": "L3 - Proficient",
+      "necessity": "REQUIRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "NLP on clinical or biomedical text; negation, abbreviation and section handling.",
+      "aliases": [
+        "Clinical NLP",
+        "Medical NLP"
+      ]
+    },
+    {
+      "id": "req_veritas_clinical_nlp_02",
+      "role_id": "role_veritas_clinical_nlp",
+      "capability_name": "Transformer Models",
+      "domain": "Machine Learning",
+      "weight": 0.75,
+      "required_level": "L3 - Proficient",
+      "necessity": "REQUIRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Fine-tuned transformer encoders for extraction or classification.",
+      "aliases": [
+        "BERT",
+        "Hugging Face Transformers"
+      ]
+    },
+    {
+      "id": "req_veritas_clinical_nlp_03",
+      "role_id": "role_veritas_clinical_nlp",
+      "capability_name": "Annotation Guideline Design",
+      "domain": "Data",
+      "weight": 0.55,
+      "required_level": "L3 - Proficient",
+      "necessity": "REQUIRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Wrote annotation guidelines and measured inter-annotator agreement.",
+      "aliases": [
+        "Data Annotation",
+        "Inter-Annotator Agreement"
+      ]
+    },
+    {
+      "id": "req_veritas_clinical_nlp_04",
+      "role_id": "role_veritas_clinical_nlp",
+      "capability_name": "Information Extraction",
+      "domain": "NLP",
+      "weight": 0.7,
+      "required_level": "L3 - Proficient",
+      "necessity": "REQUIRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Extraction models with entity-level evaluation.",
+      "aliases": [
+        "Named Entity Recognition",
+        "Relation Extraction"
+      ]
+    },
+    {
+      "id": "req_veritas_clinical_nlp_05",
+      "role_id": "role_veritas_clinical_nlp",
+      "capability_name": "Python",
+      "domain": "Software Engineering",
+      "weight": 0.5,
+      "required_level": "L3 - Proficient",
+      "necessity": "REQUIRED",
+      "requirement_type": "TOOL_TECHNOLOGY",
+      "evidence_hint": "Python for model training and data processing."
+    },
+    {
+      "id": "req_veritas_clinical_nlp_06",
+      "role_id": "role_veritas_clinical_nlp",
+      "capability_name": "Medical Terminologies",
+      "domain": "Healthcare",
+      "weight": 0.4,
+      "required_level": "L2 - Working",
+      "necessity": "PREFERRED",
+      "requirement_type": "KNOWLEDGE",
+      "evidence_hint": "Mapped findings to SNOMED CT, ICD-10 or RadLex.",
+      "aliases": [
+        "SNOMED CT",
+        "ICD-10",
+        "RadLex"
+      ]
+    },
+    {
+      "id": "req_veritas_clinical_nlp_07",
+      "role_id": "role_veritas_clinical_nlp",
+      "capability_name": "French",
+      "domain": "Communication",
+      "weight": 0.45,
+      "required_level": "B2",
+      "necessity": "REQUIRED",
+      "requirement_type": "LANGUAGE",
+      "evidence_hint": "Reading French reports and working with French clinicians."
+    },
+    {
+      "id": "req_veritas_clinical_nlp_08",
+      "role_id": "role_veritas_clinical_nlp",
+      "capability_name": "Regulated Software Documentation",
+      "domain": "Quality",
+      "weight": 0.3,
+      "required_level": "ISO 13485 / IEC 62304 environment",
+      "necessity": "OPTIONAL",
+      "requirement_type": "DOMAIN_CONTEXT",
+      "evidence_hint": "Contributed to documentation in a medical device quality system.",
+      "aliases": [
+        "Medical Device Software"
+      ]
+    },
+    {
+      "id": "req_veritas_ai_validation_01",
+      "role_id": "role_veritas_ai_validation",
+      "capability_name": "Model Validation",
+      "domain": "Machine Learning",
+      "weight": 0.95,
+      "required_level": "L4 - Advanced",
+      "necessity": "REQUIRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Designed and executed validation studies for ML models with pre-specified acceptance criteria.",
+      "aliases": [
+        "ML Validation",
+        "Clinical Validation"
+      ]
+    },
+    {
+      "id": "req_veritas_ai_validation_02",
+      "role_id": "role_veritas_ai_validation",
+      "capability_name": "Biostatistics",
+      "domain": "Statistics",
+      "weight": 0.8,
+      "required_level": "L4 - Advanced",
+      "necessity": "REQUIRED",
+      "requirement_type": "KNOWLEDGE",
+      "evidence_hint": "Statistical analysis of diagnostic performance (sensitivity, specificity, CIs, subgroup analysis).",
+      "aliases": [
+        "Statistical Analysis",
+        "Confidence Intervals"
+      ]
+    },
+    {
+      "id": "req_veritas_ai_validation_03",
+      "role_id": "role_veritas_ai_validation",
+      "capability_name": "Bias and Subgroup Analysis",
+      "domain": "AI Ethics",
+      "weight": 0.6,
+      "required_level": "L3 - Proficient",
+      "necessity": "REQUIRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Analysed performance gaps across sites, devices or populations and reported them.",
+      "aliases": [
+        "Fairness Evaluation"
+      ]
+    },
+    {
+      "id": "req_veritas_ai_validation_04",
+      "role_id": "role_veritas_ai_validation",
+      "capability_name": "Medical Device Software Regulation",
+      "domain": "Regulatory",
+      "weight": 0.55,
+      "required_level": "L3 - Proficient",
+      "necessity": "REQUIRED",
+      "requirement_type": "KNOWLEDGE",
+      "evidence_hint": "Worked under MDR/IVDR with ISO 13485 and IEC 62304 processes.",
+      "aliases": [
+        "EU MDR",
+        "ISO 13485",
+        "IEC 62304"
+      ]
+    },
+    {
+      "id": "req_veritas_ai_validation_05",
+      "role_id": "role_veritas_ai_validation",
+      "capability_name": "Post-Market Surveillance",
+      "domain": "Regulatory",
+      "weight": 0.4,
+      "required_level": "L2 - Working",
+      "necessity": "PREFERRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Post-market monitoring of a deployed model or device.",
+      "aliases": [
+        "Performance Monitoring"
+      ]
+    },
+    {
+      "id": "req_veritas_ai_validation_06",
+      "role_id": "role_veritas_ai_validation",
+      "capability_name": "Python",
+      "domain": "Software Engineering",
+      "weight": 0.4,
+      "required_level": "L3 - Proficient",
+      "necessity": "REQUIRED",
+      "requirement_type": "TOOL_TECHNOLOGY",
+      "evidence_hint": "Analysis code in Python or R, reproducible.",
+      "aliases": [
+        "R"
+      ]
+    },
+    {
+      "id": "req_veritas_ai_validation_07",
+      "role_id": "role_veritas_ai_validation",
+      "capability_name": "Technical Writing",
+      "domain": "Communication",
+      "weight": 0.45,
+      "required_level": "Regulatory-grade reports",
+      "necessity": "REQUIRED",
+      "requirement_type": "BEHAVIORAL_EXPECTATION",
+      "evidence_hint": "Validation reports or protocols you authored.",
+      "aliases": [
+        "Validation Reports"
+      ]
+    },
+    {
+      "id": "req_veritas_ai_validation_08",
+      "role_id": "role_veritas_ai_validation",
+      "capability_name": "Clinical Research Context",
+      "domain": "Domain",
+      "weight": 0.3,
+      "required_level": "Clinical studies or hospital data",
+      "necessity": "OPTIONAL",
+      "requirement_type": "DOMAIN_CONTEXT",
+      "evidence_hint": "Experience in clinical research, CROs or hospital data work.",
+      "aliases": [
+        "Clinical Studies"
+      ]
+    },
+    {
+      "id": "req_orbisure_ai_governance_01",
+      "role_id": "role_orbisure_ai_governance",
+      "capability_name": "AI Governance",
+      "domain": "Governance",
+      "weight": 0.95,
+      "required_level": "L4 - Advanced",
+      "necessity": "REQUIRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Designed or ran an AI governance framework: inventory, risk classification, approval process.",
+      "aliases": [
+        "Responsible AI",
+        "AI Risk Management"
+      ]
+    },
+    {
+      "id": "req_orbisure_ai_governance_02",
+      "role_id": "role_orbisure_ai_governance",
+      "capability_name": "EU AI Act",
+      "domain": "Regulatory",
+      "weight": 0.8,
+      "required_level": "L4 - Advanced",
+      "necessity": "REQUIRED",
+      "requirement_type": "KNOWLEDGE",
+      "evidence_hint": "Applied EU AI Act risk categories and obligations to concrete use cases.",
+      "aliases": [
+        "AI Act"
+      ]
+    },
+    {
+      "id": "req_orbisure_ai_governance_03",
+      "role_id": "role_orbisure_ai_governance",
+      "capability_name": "Model Risk Management",
+      "domain": "Risk",
+      "weight": 0.65,
+      "required_level": "L3 - Proficient",
+      "necessity": "REQUIRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Model risk policies or validation standards in a regulated firm.",
+      "aliases": [
+        "Model Validation Governance",
+        "SR 11-7"
+      ]
+    },
+    {
+      "id": "req_orbisure_ai_governance_04",
+      "role_id": "role_orbisure_ai_governance",
+      "capability_name": "Insurance Regulation",
+      "domain": "Regulatory",
+      "weight": 0.45,
+      "required_level": "L3 - Proficient",
+      "necessity": "PREFERRED",
+      "requirement_type": "KNOWLEDGE",
+      "evidence_hint": "Worked with Solvency II, EIOPA guidance or national insurance supervision.",
+      "aliases": [
+        "Solvency II",
+        "EIOPA Guidelines"
+      ]
+    },
+    {
+      "id": "req_orbisure_ai_governance_05",
+      "role_id": "role_orbisure_ai_governance",
+      "capability_name": "Human Oversight Design",
+      "domain": "Governance",
+      "weight": 0.55,
+      "required_level": "L3 - Proficient",
+      "necessity": "REQUIRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Defined human review or override for automated decisions.",
+      "aliases": [
+        "Human-in-the-Loop"
+      ]
+    },
+    {
+      "id": "req_orbisure_ai_governance_06",
+      "role_id": "role_orbisure_ai_governance",
+      "capability_name": "Data Protection Impact Assessment",
+      "domain": "Compliance",
+      "weight": 0.45,
+      "required_level": "L3 - Proficient",
+      "necessity": "PREFERRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Conducted DPIAs for data-driven or automated systems.",
+      "aliases": [
+        "DPIA",
+        "GDPR"
+      ]
+    },
+    {
+      "id": "req_orbisure_ai_governance_07",
+      "role_id": "role_orbisure_ai_governance",
+      "capability_name": "Machine Learning Literacy",
+      "domain": "Machine Learning",
+      "weight": 0.4,
+      "required_level": "L2 - Working",
+      "necessity": "REQUIRED",
+      "requirement_type": "KNOWLEDGE",
+      "evidence_hint": "Enough ML understanding to challenge evaluation and monitoring claims."
+    },
+    {
+      "id": "req_orbisure_ai_governance_08",
+      "role_id": "role_orbisure_ai_governance",
+      "capability_name": "German",
+      "domain": "Communication",
+      "weight": 0.4,
+      "required_level": "C1",
+      "necessity": "REQUIRED",
+      "requirement_type": "LANGUAGE",
+      "evidence_hint": "Board and supervisory communication in German."
+    },
+    {
+      "id": "req_orbisure_ai_governance_09",
+      "role_id": "role_orbisure_ai_governance",
+      "capability_name": "Governance, Risk or Compliance",
+      "domain": "Governance",
+      "weight": 0.5,
+      "required_level": "5+ years",
+      "necessity": "REQUIRED",
+      "requirement_type": "EXPERIENCE",
+      "evidence_hint": "Five or more years in governance, risk or compliance functions.",
+      "aliases": [
+        "GRC"
+      ]
+    },
+    {
+      "id": "req_orbisure_agentic_ai_01",
+      "role_id": "role_orbisure_agentic_ai",
+      "capability_name": "Agentic AI Systems",
+      "domain": "AI Engineering",
+      "weight": 0.95,
+      "required_level": "L4 - Advanced",
+      "necessity": "REQUIRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Built LLM agents that use tools in production or realistic pilots, with stop conditions and failure handling.",
+      "aliases": [
+        "LLM Agents",
+        "Agent Orchestration"
+      ]
+    },
+    {
+      "id": "req_orbisure_agentic_ai_02",
+      "role_id": "role_orbisure_agentic_ai",
+      "capability_name": "Tool and Function Calling",
+      "domain": "AI Engineering",
+      "weight": 0.75,
+      "required_level": "L4 - Advanced",
+      "necessity": "REQUIRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Designed tool schemas and permission boundaries for model-invoked actions.",
+      "aliases": [
+        "Function Calling",
+        "Tool Use"
+      ]
+    },
+    {
+      "id": "req_orbisure_agentic_ai_03",
+      "role_id": "role_orbisure_agentic_ai",
+      "capability_name": "Agent Evaluation",
+      "domain": "AI Engineering",
+      "weight": 0.65,
+      "required_level": "L3 - Proficient",
+      "necessity": "REQUIRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Scenario-based evaluation of agent behaviour including adversarial cases.",
+      "aliases": [
+        "Scenario Testing",
+        "Red Teaming"
+      ]
+    },
+    {
+      "id": "req_orbisure_agentic_ai_04",
+      "role_id": "role_orbisure_agentic_ai",
+      "capability_name": "Audit Logging",
+      "domain": "Software Engineering",
+      "weight": 0.5,
+      "required_level": "L3 - Proficient",
+      "necessity": "REQUIRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Step-level audit trails for automated workflows.",
+      "aliases": [
+        "Traceability"
+      ]
+    },
+    {
+      "id": "req_orbisure_agentic_ai_05",
+      "role_id": "role_orbisure_agentic_ai",
+      "capability_name": "Document AI",
+      "domain": "AI Engineering",
+      "weight": 0.5,
+      "required_level": "L3 - Proficient",
+      "necessity": "PREFERRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Extraction from emails, PDFs or images (OCR, layout models).",
+      "aliases": [
+        "OCR",
+        "Document Understanding"
+      ]
+    },
+    {
+      "id": "req_orbisure_agentic_ai_06",
+      "role_id": "role_orbisure_agentic_ai",
+      "capability_name": "Python",
+      "domain": "Software Engineering",
+      "weight": 0.55,
+      "required_level": "L4 - Advanced",
+      "necessity": "REQUIRED",
+      "requirement_type": "TOOL_TECHNOLOGY",
+      "evidence_hint": "Production Python services."
+    },
+    {
+      "id": "req_orbisure_agentic_ai_07",
+      "role_id": "role_orbisure_agentic_ai",
+      "capability_name": "Workflow Orchestration",
+      "domain": "Software Engineering",
+      "weight": 0.4,
+      "required_level": "L3 - Proficient",
+      "necessity": "PREFERRED",
+      "requirement_type": "TOOL_TECHNOLOGY",
+      "evidence_hint": "Durable workflows or graph-based agent orchestration (Temporal, LangGraph or similar).",
+      "aliases": [
+        "Temporal",
+        "LangGraph"
+      ]
+    },
+    {
+      "id": "req_orbisure_agentic_ai_08",
+      "role_id": "role_orbisure_agentic_ai",
+      "capability_name": "Insurance Claims Domain",
+      "domain": "Domain",
+      "weight": 0.3,
+      "required_level": "Claims or policy administration",
+      "necessity": "OPTIONAL",
+      "requirement_type": "DOMAIN_CONTEXT",
+      "evidence_hint": "Work in claims, policy administration or insurance operations.",
+      "aliases": [
+        "Claims Management"
+      ]
+    },
+    {
+      "id": "req_orbisure_underwriting_data_scientist_01",
+      "role_id": "role_orbisure_underwriting_data_scientist",
+      "capability_name": "Generalized Linear Models",
+      "domain": "Statistics",
+      "weight": 0.85,
+      "required_level": "L4 - Advanced",
+      "necessity": "REQUIRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "GLMs for frequency/severity or risk scoring in production use.",
+      "aliases": [
+        "GLM",
+        "Actuarial Modeling"
+      ]
+    },
+    {
+      "id": "req_orbisure_underwriting_data_scientist_02",
+      "role_id": "role_orbisure_underwriting_data_scientist",
+      "capability_name": "Interpretable Machine Learning",
+      "domain": "Machine Learning",
+      "weight": 0.7,
+      "required_level": "L3 - Proficient",
+      "necessity": "REQUIRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Explanations for model outputs used by business users; monotonic constraints.",
+      "aliases": [
+        "Explainable AI",
+        "SHAP"
+      ]
+    },
+    {
+      "id": "req_orbisure_underwriting_data_scientist_03",
+      "role_id": "role_orbisure_underwriting_data_scientist",
+      "capability_name": "Gradient Boosting",
+      "domain": "Machine Learning",
+      "weight": 0.5,
+      "required_level": "L3 - Proficient",
+      "necessity": "PREFERRED",
+      "requirement_type": "TOOL_TECHNOLOGY",
+      "evidence_hint": "Boosted tree models with tuned regularisation.",
+      "aliases": [
+        "XGBoost",
+        "LightGBM"
+      ]
+    },
+    {
+      "id": "req_orbisure_underwriting_data_scientist_04",
+      "role_id": "role_orbisure_underwriting_data_scientist",
+      "capability_name": "Geospatial Data Analysis",
+      "domain": "Data",
+      "weight": 0.4,
+      "required_level": "L2 - Working",
+      "necessity": "PREFERRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Worked with hazard maps, geocoding or spatial joins.",
+      "aliases": [
+        "GIS",
+        "Hazard Data"
+      ]
+    },
+    {
+      "id": "req_orbisure_underwriting_data_scientist_05",
+      "role_id": "role_orbisure_underwriting_data_scientist",
+      "capability_name": "Model Documentation",
+      "domain": "Governance",
+      "weight": 0.5,
+      "required_level": "L3 - Proficient",
+      "necessity": "REQUIRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Model documentation reviewed by validation or audit.",
+      "aliases": [
+        "Model Cards"
+      ]
+    },
+    {
+      "id": "req_orbisure_underwriting_data_scientist_06",
+      "role_id": "role_orbisure_underwriting_data_scientist",
+      "capability_name": "Python",
+      "domain": "Software Engineering",
+      "weight": 0.45,
+      "required_level": "L3 - Proficient",
+      "necessity": "REQUIRED",
+      "requirement_type": "TOOL_TECHNOLOGY",
+      "evidence_hint": "Python or R for modelling.",
+      "aliases": [
+        "R"
+      ]
+    },
+    {
+      "id": "req_orbisure_underwriting_data_scientist_07",
+      "role_id": "role_orbisure_underwriting_data_scientist",
+      "capability_name": "SQL",
+      "domain": "Data",
+      "weight": 0.4,
+      "required_level": "L3 - Proficient",
+      "necessity": "REQUIRED",
+      "requirement_type": "TOOL_TECHNOLOGY",
+      "evidence_hint": "SQL on large policy and claims tables."
+    },
+    {
+      "id": "req_orbisure_underwriting_data_scientist_08",
+      "role_id": "role_orbisure_underwriting_data_scientist",
+      "capability_name": "Actuarial Qualification",
+      "domain": "Credential",
+      "weight": 0.2,
+      "required_level": "Actuarial exams in progress or completed",
+      "necessity": "OPTIONAL",
+      "requirement_type": "CREDENTIAL",
+      "evidence_hint": "Actuarial exams (DAV, AVÖ, SOA or equivalent).",
+      "aliases": [
+        "Aktuar DAV",
+        "SOA"
+      ]
+    },
+    {
+      "id": "req_helix_applied_research_01",
+      "role_id": "role_helix_applied_research",
+      "capability_name": "Vision-Language Models",
+      "domain": "Machine Learning Research",
+      "weight": 0.9,
+      "required_level": "L4 - Advanced",
+      "necessity": "REQUIRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Trained or adapted vision-language models; code, papers or reproductions.",
+      "aliases": [
+        "VLM",
+        "Multimodal Models"
+      ]
+    },
+    {
+      "id": "req_helix_applied_research_02",
+      "role_id": "role_helix_applied_research",
+      "capability_name": "Deep Learning Research",
+      "domain": "Machine Learning Research",
+      "weight": 0.8,
+      "required_level": "L4 - Advanced",
+      "necessity": "REQUIRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Research track record: experiments with ablations, publications or open-source reproductions.",
+      "aliases": [
+        "ML Research"
+      ]
+    },
+    {
+      "id": "req_helix_applied_research_03",
+      "role_id": "role_helix_applied_research",
+      "capability_name": "PyTorch",
+      "domain": "Machine Learning",
+      "weight": 0.75,
+      "required_level": "L5 - Expert",
+      "necessity": "REQUIRED",
+      "requirement_type": "TOOL_TECHNOLOGY",
+      "evidence_hint": "Expert PyTorch including custom training loops and multi-GPU training.",
+      "aliases": [
+        "Torch"
+      ]
+    },
+    {
+      "id": "req_helix_applied_research_04",
+      "role_id": "role_helix_applied_research",
+      "capability_name": "Distributed Training",
+      "domain": "Machine Learning",
+      "weight": 0.55,
+      "required_level": "L3 - Proficient",
+      "necessity": "PREFERRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Training across many GPUs with DDP/FSDP or DeepSpeed.",
+      "aliases": [
+        "DDP",
+        "FSDP"
+      ]
+    },
+    {
+      "id": "req_helix_applied_research_05",
+      "role_id": "role_helix_applied_research",
+      "capability_name": "Robot Learning",
+      "domain": "Robotics",
+      "weight": 0.6,
+      "required_level": "L3 - Proficient",
+      "necessity": "PREFERRED",
+      "requirement_type": "KNOWLEDGE",
+      "evidence_hint": "Imitation or reinforcement learning for robots, in simulation or on hardware.",
+      "aliases": [
+        "Imitation Learning",
+        "Policy Learning"
+      ]
+    },
+    {
+      "id": "req_helix_applied_research_06",
+      "role_id": "role_helix_applied_research",
+      "capability_name": "Experimental Design",
+      "domain": "Research Methods",
+      "weight": 0.5,
+      "required_level": "L4 - Advanced",
+      "necessity": "REQUIRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Ablations and controlled comparisons that changed a decision.",
+      "aliases": [
+        "Ablation Studies"
+      ]
+    },
+    {
+      "id": "req_helix_applied_research_07",
+      "role_id": "role_helix_applied_research",
+      "capability_name": "Research Background",
+      "domain": "Research",
+      "weight": 0.45,
+      "required_level": "PhD or 3+ years of applied research",
+      "necessity": "PREFERRED",
+      "requirement_type": "EXPERIENCE",
+      "evidence_hint": "A PhD in ML/robotics or equivalent applied research experience.",
+      "aliases": [
+        "PhD"
+      ]
+    },
+    {
+      "id": "req_helix_applied_research_08",
+      "role_id": "role_helix_applied_research",
+      "capability_name": "Scientific Publications",
+      "domain": "Research",
+      "weight": 0.25,
+      "required_level": "Peer-reviewed publications",
+      "necessity": "OPTIONAL",
+      "requirement_type": "CREDENTIAL",
+      "evidence_hint": "Papers at ML or robotics venues (NeurIPS, CoRL, ICRA, CVPR).",
+      "aliases": [
+        "Publications"
+      ]
+    },
+    {
+      "id": "req_helix_sim_to_real_01",
+      "role_id": "role_helix_sim_to_real",
+      "capability_name": "Robotics Simulation",
+      "domain": "Robotics",
+      "weight": 0.9,
+      "required_level": "L3 - Proficient",
+      "necessity": "REQUIRED",
+      "requirement_type": "TOOL_TECHNOLOGY",
+      "evidence_hint": "Built scenes or environments in Isaac Sim, MuJoCo or PyBullet.",
+      "aliases": [
+        "Isaac Sim",
+        "MuJoCo",
+        "PyBullet"
+      ]
+    },
+    {
+      "id": "req_helix_sim_to_real_02",
+      "role_id": "role_helix_sim_to_real",
+      "capability_name": "Sim-to-Real Transfer",
+      "domain": "Robotics",
+      "weight": 0.75,
+      "required_level": "L3 - Proficient",
+      "necessity": "REQUIRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Domain randomisation or adaptation with real-world evaluation.",
+      "aliases": [
+        "Domain Randomization"
+      ]
+    },
+    {
+      "id": "req_helix_sim_to_real_03",
+      "role_id": "role_helix_sim_to_real",
+      "capability_name": "Synthetic Data Generation",
+      "domain": "Data",
+      "weight": 0.6,
+      "required_level": "L3 - Proficient",
+      "necessity": "REQUIRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Generated labelled synthetic data at scale with quality checks.",
+      "aliases": [
+        "Synthetic Data"
+      ]
+    },
+    {
+      "id": "req_helix_sim_to_real_04",
+      "role_id": "role_helix_sim_to_real",
+      "capability_name": "Python",
+      "domain": "Software Engineering",
+      "weight": 0.55,
+      "required_level": "L4 - Advanced",
+      "necessity": "REQUIRED",
+      "requirement_type": "TOOL_TECHNOLOGY",
+      "evidence_hint": "Production-quality Python for pipelines."
+    },
+    {
+      "id": "req_helix_sim_to_real_05",
+      "role_id": "role_helix_sim_to_real",
+      "capability_name": "Reinforcement Learning",
+      "domain": "Machine Learning",
+      "weight": 0.45,
+      "required_level": "L2 - Working",
+      "necessity": "PREFERRED",
+      "requirement_type": "KNOWLEDGE",
+      "evidence_hint": "Trained RL policies in simulation.",
+      "aliases": [
+        "RL"
+      ]
+    },
+    {
+      "id": "req_helix_sim_to_real_06",
+      "role_id": "role_helix_sim_to_real",
+      "capability_name": "Computer Vision",
+      "domain": "Machine Learning",
+      "weight": 0.45,
+      "required_level": "L3 - Proficient",
+      "necessity": "PREFERRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Vision models or pipelines (detection, segmentation, pose).",
+      "aliases": [
+        "Image Processing"
+      ]
+    },
+    {
+      "id": "req_helix_sim_to_real_07",
+      "role_id": "role_helix_sim_to_real",
+      "capability_name": "ROS 2",
+      "domain": "Robotics",
+      "weight": 0.3,
+      "required_level": "L2 - Working",
+      "necessity": "OPTIONAL",
+      "requirement_type": "TOOL_TECHNOLOGY",
+      "evidence_hint": "Worked with ROS/ROS 2 on real robots.",
+      "aliases": [
+        "ROS"
+      ]
+    },
+    {
+      "id": "req_helix_sim_to_real_08",
+      "role_id": "role_helix_sim_to_real",
+      "capability_name": "GPU Compute Operations",
+      "domain": "Infrastructure",
+      "weight": 0.25,
+      "required_level": "L2 - Working",
+      "necessity": "OPTIONAL",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Ran large jobs on GPU clusters (Slurm or Kubernetes).",
+      "aliases": [
+        "Slurm",
+        "CUDA"
+      ]
+    },
+    {
+      "id": "req_helix_perception_engineer_01",
+      "role_id": "role_helix_perception_engineer",
+      "capability_name": "Computer Vision",
+      "domain": "Machine Learning",
+      "weight": 0.9,
+      "required_level": "L4 - Advanced",
+      "necessity": "REQUIRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Deployed detection or segmentation models on real hardware.",
+      "aliases": [
+        "Object Detection",
+        "Instance Segmentation"
+      ]
+    },
+    {
+      "id": "req_helix_perception_engineer_02",
+      "role_id": "role_helix_perception_engineer",
+      "capability_name": "C++",
+      "domain": "Software Engineering",
+      "weight": 0.75,
+      "required_level": "L4 - Advanced",
+      "necessity": "REQUIRED",
+      "requirement_type": "TOOL_TECHNOLOGY",
+      "evidence_hint": "Production C++ (C++17 or later) in performance-critical code.",
+      "aliases": [
+        "Modern C++"
+      ]
+    },
+    {
+      "id": "req_helix_perception_engineer_03",
+      "role_id": "role_helix_perception_engineer",
+      "capability_name": "Edge Model Optimization",
+      "domain": "Machine Learning",
+      "weight": 0.6,
+      "required_level": "L3 - Proficient",
+      "necessity": "REQUIRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Optimised models for edge GPUs with TensorRT/ONNX and measured latency.",
+      "aliases": [
+        "TensorRT",
+        "ONNX Runtime",
+        "Quantization"
+      ]
+    },
+    {
+      "id": "req_helix_perception_engineer_04",
+      "role_id": "role_helix_perception_engineer",
+      "capability_name": "Camera Calibration",
+      "domain": "Computer Vision",
+      "weight": 0.5,
+      "required_level": "L3 - Proficient",
+      "necessity": "PREFERRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Intrinsic/extrinsic calibration of camera rigs; depth sensing.",
+      "aliases": [
+        "Multi-Camera Calibration",
+        "3D Vision"
+      ]
+    },
+    {
+      "id": "req_helix_perception_engineer_05",
+      "role_id": "role_helix_perception_engineer",
+      "capability_name": "Python",
+      "domain": "Software Engineering",
+      "weight": 0.45,
+      "required_level": "L3 - Proficient",
+      "necessity": "REQUIRED",
+      "requirement_type": "TOOL_TECHNOLOGY",
+      "evidence_hint": "Python for training and tooling."
+    },
+    {
+      "id": "req_helix_perception_engineer_06",
+      "role_id": "role_helix_perception_engineer",
+      "capability_name": "Production ML Monitoring",
+      "domain": "MLOps",
+      "weight": 0.4,
+      "required_level": "L3 - Proficient",
+      "necessity": "PREFERRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Monitoring model performance in the field and acting on drift.",
+      "aliases": [
+        "Model Monitoring"
+      ]
+    },
+    {
+      "id": "req_helix_perception_engineer_07",
+      "role_id": "role_helix_perception_engineer",
+      "capability_name": "Robotics Integration",
+      "domain": "Robotics",
+      "weight": 0.3,
+      "required_level": "L2 - Working",
+      "necessity": "OPTIONAL",
+      "requirement_type": "KNOWLEDGE",
+      "evidence_hint": "Integrated perception with motion planning or robot controllers.",
+      "aliases": [
+        "ROS 2"
+      ]
+    },
+    {
+      "id": "req_helix_perception_engineer_08",
+      "role_id": "role_helix_perception_engineer",
+      "capability_name": "Computer Vision Engineering",
+      "domain": "Software Engineering",
+      "weight": 0.5,
+      "required_level": "5+ years",
+      "necessity": "REQUIRED",
+      "requirement_type": "EXPERIENCE",
+      "evidence_hint": "Five or more years of shipping vision systems."
+    }
+  ]
+}

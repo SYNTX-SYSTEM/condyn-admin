@@ -4,6 +4,7 @@ import * as crypto from "crypto";
 import { loadPdfDocument } from "./lib/career/loaders/pdf";
 import { buildCareerAnalysisPrompt } from "./lib/career/adapter";
 import { GeminiProvider } from "./lib/career/providers/gemini";
+import { exitOnJobScopeRefusal, resolveScriptJobScope } from "./lib/career/job-scope/script-scope";
 try {
   const envFile = fs.readFileSync(path.join(process.cwd(), ".env.local"), "utf8");
   envFile.split("\n").forEach(line => {
@@ -40,4 +41,5 @@ async function run() {
   }
 }
 
-run().catch(console.error);
+// SFE JOB POOL FIRST: no Career-Analysis and no Gemini call without a valid pool + selected job (CONDYN_JOB_POOL_UPLOAD_ID, CONDYN_POOL_ROLE_ID).
+resolveScriptJobScope().catch(exitOnJobScopeRefusal).then(() => run()).catch(console.error);

@@ -1,13 +1,16 @@
 import { describe, expect, it } from "vitest";
 import {
-  CAMERA_SCALE,
   deriveSyntxField,
+  FOCUS_ANCHOR_SCALE,
   FIELD_OBSERVATION,
   inspectSign,
   observationFromParams,
   observeOrganization,
   observeRequirement,
   observeRole,
+  placeOrganizations,
+  PLANETARIUM_BODY,
+  PLANETARIUM_INNER_ORBIT,
   requirementLabel,
   resolveObservation,
   returnFrom,
@@ -26,6 +29,7 @@ import {
 import { decodeAnalysisSources, type AnalysisSources } from "../../../lib/career/job-pool/analysis-sources";
 import { SIL_COPY } from "../../../lib/career/view-model/sil-language";
 import { kubernetesSweepCoverage, matches, UPLOAD_ID, view } from "./fixtures/match-bodies";
+import { EVIDENCE_ROW, syntxRequirementFocus } from "../../../lib/career/job-pool/syntx-manifestation-layout";
 
 const clone = <T>(value: T): T => structuredClone(value);
 const at = (kind: SyntxObservation["kind"], ids: Partial<SyntxObservation> = {}): SyntxObservation => ({ ...FIELD_OBSERVATION, kind, ...ids });
@@ -49,17 +53,20 @@ const SIGN_VALUES = {
 };
 
 describe("SYNTX field view model (read-only adapter over the delivered Job Pool truth)", () => {
-  it("FIELD: containment only — organizations as regions, roles as carriers inside them, no score, no coupling, no delivered-order position", () => {
+  it("FIELD: containment only — organizations as resonance bodies on the planetarium orbit, roles as their moons (no interaction yet), no score, no coupling, no delivered-order position", () => {
     const field = deriveSyntxField(view, matches, null, FIELD_OBSERVATION)!;
     expect(field.grammar).toBe(SYNTX_FIELD_GRAMMAR);
     expect(field.observation).toEqual(FIELD_OBSERVATION);
     expect(field.organizations.map(organization => [organization.id, organization.name, organization.roleIds, organization.targetEntityId])).toEqual([["ORG_1", "Acme", ["ROLE_A", "ROLE_B"], "TOENT_1"]]);
-    // One organization sits at the centre; its two roles share its region (containment, not resonance distance).
-    expect(field.organizations[0]).toMatchObject({ x: 500, y: 500 });
+    // One organization: a resonance body on the planetarium orbit at 12 o'clock, full size; its region is the orbit of its moons.
+    expect(field.organizations[0]).toMatchObject({ x: SYNTX_LAYOUT.center, y: SYNTX_LAYOUT.center - SYNTX_LAYOUT.radius, angle: 270, orbit: SYNTX_LAYOUT.radius, bodyScale: 1, bodyRadius: PLANETARIUM_BODY.size / 2, radius: PLANETARIUM_BODY.containment });
+    // Organizations first: its two roles are its moons — inside its region (containment, not resonance distance), on the moon orbit, not yet selectable.
     for (const role of field.roles) {
       const organization = field.organizations[0];
       expect(Math.hypot(role.x - organization.x, role.y - organization.y)).toBeLessThan(organization.radius);
-      expect(role.sign).toMatchObject({ source: "canonical_entity", relation: "contains", manifestation: "carrier", state: "field", interaction: "select", transition: "recenter" });
+      expect(Math.hypot(role.x - organization.x, role.y - organization.y)).toBeCloseTo(PLANETARIUM_BODY.moonOrbit, 0);
+      expect([role.moonIndex, role.moonCount]).toEqual([field.roles.indexOf(role), 2]);
+      expect(role.sign).toMatchObject({ source: "canonical_entity", relation: "contains", manifestation: "carrier", state: "field", interaction: "none", transition: "recenter" });
       expect(role.sign.proof).toEqual({ uploadId: UPLOAD_ID, organizationId: "ORG_1", roleId: role.id, targetId: role.bindingRevisionId });
     }
     expect(field.roles.map(role => [role.id, role.requirementCount, role.matching?.resonanceScore])).toEqual([["ROLE_A", 2, 0.75], ["ROLE_B", 1, 0.3]]);
@@ -67,20 +74,41 @@ describe("SYNTX field view model (read-only adapter over the delivered Job Pool 
     expect(field.sources).toEqual([]);
     expect(field.pendingBoundary).toBeNull();
     expect(field.aperture).toBeNull();
-    expect(field.camera).toEqual({ x: 500, y: 500, scale: CAMERA_SCALE.FIELD });
+    expect(field.camera).toEqual({ x: SYNTX_LAYOUT.center, y: SYNTX_LAYOUT.center, scale: 1 });
+    expect(field.depth).toBe(0);
     // No sign of the FIELD state carries a score, a coupling or a rank (R4/R14): only containment signs exist.
     expect(new Set(field.signs.map(sign => sign.relation))).toEqual(new Set(["contains"]));
     expect(field.signs.map(sign => sign.id)).toEqual([`field:${UPLOAD_ID}`, "org:ORG_1", "role:ROLE_A", "role:ROLE_B"]);
     expect(field.summary).toEqual({ kind: "FIELD", poolName: "Sample Pool", poolVersion: 1, poolStatus: "ACTIVE", organizationCount: 1, roleCount: 2, matchingDelivered: true });
   });
 
+  it("planetarium: every organization is a body on the orbits at one common scale — never dropped, never overlapping, never on the core; count and order only", () => {
+    for (const count of [1, 2, 6, 10, 11, 17, 24, 40, 64]) {
+      const bodies = placeOrganizations(count);
+      expect(bodies).toHaveLength(count);
+      const scale = bodies[0].bodyScale;
+      expect(bodies.every(body => body.bodyScale === scale)).toBe(true);
+      if (count <= 10) expect(scale).toBe(1);
+      for (const body of bodies) {
+        expect([SYNTX_LAYOUT.radius, PLANETARIUM_INNER_ORBIT]).toContain(body.orbit);
+        expect(Math.hypot(body.x - SYNTX_LAYOUT.center, body.y - SYNTX_LAYOUT.center)).toBeCloseTo(body.orbit, 0);
+      }
+      // Bodies keep apart up to the smallest scale (40 bodies and fewer); beyond it they may touch, never coincide.
+      const minimum = Math.min(...bodies.flatMap((a, i) => bodies.slice(i + 1).map(b => Math.hypot(a.x - b.x, a.y - b.y))), Infinity);
+      if (count > 1) expect(minimum).toBeGreaterThanOrEqual(count <= 40 ? PLANETARIUM_BODY.size * scale : 1);
+      if (bodies.some(body => body.orbit === PLANETARIUM_INNER_ORBIT) && count <= 40) expect(PLANETARIUM_INNER_ORBIT - (PLANETARIUM_BODY.size / 2) * scale).toBeGreaterThanOrEqual(PLANETARIUM_BODY.coreReach);
+    }
+    expect(placeOrganizations(0)).toEqual([]);
+  });
+
   it("ORGANIZATION: the selected region recenters and unfolds, the pool recedes behind it", () => {
     const field = deriveSyntxField(view, matches, null, at("ORGANIZATION", { organizationId: "ORG_1" }))!;
     expect(field.organizations[0].sign).toMatchObject({ state: "organization_selected", interaction: "return", transition: "unfold" });
     expect(field.pool.sign).toMatchObject({ state: "receded", interaction: "return", transition: "restore" });
-    expect(field.roles.every(role => role.sign.state === "field")).toBe(true);
-    expect(field.camera).toMatchObject({ x: field.organizations[0].x, y: field.organizations[0].y });
-    expect(field.camera.scale).toBeGreaterThan(1);
+    // Its roles unfold as the satellites of its cosmos and become selectable; the body is the focus anchor (moves to the centre, 1.12).
+    expect(field.roles.every(role => role.sign.state === "field" && role.sign.interaction === "select")).toBe(true);
+    expect(field.camera).toEqual({ x: field.organizations[0].x, y: field.organizations[0].y, scale: FOCUS_ANCHOR_SCALE });
+    expect(field.depth).toBe(1);
     expect(field.summary).toEqual({ kind: "ORGANIZATION", organizationName: "Acme", roleTitles: ["Platform Engineer", "Data Analyst"] });
   });
 
@@ -89,7 +117,8 @@ describe("SYNTX field view model (read-only adapter over the delivered Job Pool 
     const roleA = field.roles.find(role => role.id === "ROLE_A")!;
     expect(roleA.sign).toMatchObject({ state: "role_selected", interaction: "return", transition: "unfold" });
     expect(field.roles.find(role => role.id === "ROLE_B")!.sign.state).toBe("receded");
-    expect(field.camera).toEqual({ x: roleA.x, y: roleA.y, scale: CAMERA_SCALE.ROLE });
+    expect(field.depth).toBe(2);
+    expect(field.camera).toEqual({ x: field.organizations[0].x, y: field.organizations[0].y, scale: FOCUS_ANCHOR_SCALE });
     expect(field.requirements.map(requirement => [requirement.id, requirement.support, requirement.distance, requirement.evaluationState])).toEqual([
       ["REQ_1", "SUPPORTED", SUPPORT_DISTANCE.SUPPORTED, "NOT_EVALUATED"],
       ["REQ_2", "SWEEP_ONLY", SUPPORT_DISTANCE.SWEEP_ONLY, "NOT_EVALUATED"]
@@ -147,7 +176,7 @@ describe("SYNTX field view model (read-only adapter over the delivered Job Pool 
     expect(field.requirements.find(requirement => requirement.id === "REQ_1")!.traces[0].sign.state).toBe("inspectable");
     expect(field.requirements.find(requirement => requirement.id === "REQ_2")!.sign.state).toBe("receded");
     expect(field.requirements.find(requirement => requirement.id === "REQ_2")!.traces[0].sign.state).toBe("receded");
-    expect(field.camera.scale).toBe(CAMERA_SCALE.REQUIREMENT);
+    expect(field.depth).toBe(3);
     expect(field.aperture).toBeNull();
     expect(field.summary).toEqual({ kind: "REQUIREMENT", requirementName: "TypeScript", roleTitle: "Platform Engineer", support: "SUPPORTED", traceCount: 1, sourceCount: 1, apertureOpen: false });
     const traceId = field.requirements[0].traces[0].sign.id;
@@ -194,19 +223,27 @@ describe("SYNTX field view model (read-only adapter over the delivered Job Pool 
       for (const source of field.sources) expect(Math.hypot(source.x - role.x, source.y - role.y)).toBeCloseTo(SOURCE_RING_RADIUS, 0);
       expect(requirementLabel(req1)).toMatchObject({ lines: ["TypeScript"], anchor: expect.stringMatching(/^(middle|start|end)$/) });
     }
-    // O-SX-4: at REQUIREMENT the camera keeps scale 2.4 and every carrier the observed requirement reaches lies inside the view, title included.
+    // O-SX-4 (deep focus): at REQUIREMENT every relation of the observed requirement has its row in the evidence surface, grouped by its
+    // source document (every reached source present), and the nucleus and the surface lie inside the viewport — on a large and a small screen.
     for (const requirementId of ["REQ_1", "REQ_2"]) {
       const field = deriveSyntxField(view, body, null, { ...REQ_1, requirementId })!;
-      expect(field.camera.scale).toBe(CAMERA_SCALE.REQUIREMENT);
-      const half = SYNTX_LAYOUT.center / field.camera.scale;
       const observed = field.requirements.find(requirement => requirement.id === requirementId)!;
-      expect(Math.abs(observed.x - field.camera.x)).toBeLessThan(half);
-      expect(Math.abs(observed.y - field.camera.y)).toBeLessThan(half);
-      for (const trace of observed.traces) {
-        const source = field.sources[trace.sourceDocIndex];
-        expect(Math.abs(source.x - field.camera.x) + SOURCE_BOX.halfWidth, `${requirementId} ${source.docId} x`).toBeLessThanOrEqual(half);
-        expect(source.y + SOURCE_BOX.below - field.camera.y, `${requirementId} ${source.docId} y`).toBeLessThanOrEqual(half);
-        expect(field.camera.y - (source.y - SOURCE_BOX.above), `${requirementId} ${source.docId} -y`).toBeLessThanOrEqual(half);
+      const groups: Array<{ docId: string; entries: string[] }> = [];
+      for (const trace of observed.traces) { const group = groups.find(item => item.docId === trace.docId); if (group) group.entries.push(trace.sign.id); else groups.push({ docId: trace.docId, entries: [trace.sign.id] }); }
+      for (const [width, height] of [[1600, 1000], [1280, 720]]) {
+        const focus = syntxRequirementFocus(field.requirements.map(item => ({ id: item.id, title: item.name })), requirementId, groups, 0, width, height);
+        expect(focus.rows.map(row => row.id)).toEqual(observed.traces.map(trace => trace.sign.id));
+        expect(focus.groups.map(group => group.docId).sort()).toEqual([...new Set(observed.traces.map(trace => trace.docId))].sort());
+        const { layout, surface } = focus;
+        expect(layout.focus.x - layout.focus.width / 2).toBeGreaterThanOrEqual(0);
+        expect(layout.focus.y - layout.focus.height / 2).toBeGreaterThanOrEqual(0);
+        expect(surface.left).toBeGreaterThanOrEqual(0);
+        expect(surface.left + surface.width).toBeLessThanOrEqual(width);
+        expect(surface.top).toBeGreaterThan(layout.focus.y + layout.focus.height / 2);
+        expect(surface.top + surface.height).toBeLessThanOrEqual(height);
+        // Rows fit the surface, or the surface scrolls (and every relation follows its row).
+        const content = EVIDENCE_ROW.header + focus.groups.length * EVIDENCE_ROW.group + focus.rows.length * EVIDENCE_ROW.entry;
+        expect(content <= surface.height || surface.scroll).toBe(true);
       }
     }
     // A single trace takes exactly one bow, the one that bends it around the nucleus; nothing about the signs changed against the unmodified matching.

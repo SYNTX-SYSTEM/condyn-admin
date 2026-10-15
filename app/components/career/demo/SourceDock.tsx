@@ -18,6 +18,10 @@ export interface SourceDockProps {
   isAnalyzing?: boolean;
   initialStagedDocs?: StagedDocumentItem[];
   locale?: SilLocale;
+  /** SFE job-scope invariant: while set, ANALYZE cannot start and this text is shown at the trigger, verbatim. */
+  analyzeBlockedMessage?: string | null;
+  /** The chosen investigation boundary, named at the trigger (three modes, owner GO 2026-10-15). */
+  investigation?: { mode: string; label: string; hint: string } | null;
 }
 
 /**
@@ -28,7 +32,9 @@ export function SourceDock({
   onAnalyze,
   isAnalyzing = false,
   initialStagedDocs = [],
-  locale = SIL_COPY.defaultLocale
+  locale = SIL_COPY.defaultLocale,
+  analyzeBlockedMessage = null,
+  investigation = null
 }: SourceDockProps) {
   const t = SIL_COPY[locale].sourceDock;
   const [stagedDocs, setStagedDocs] = useState<StagedDocumentItem[]>(initialStagedDocs);
@@ -410,22 +416,35 @@ export function SourceDock({
         )}
       </div>
 
-      {/* Trigger Analysis Button */}
+      {/* The investigation boundary this ANALYZE would be declared with. */}
+      {stagedDocs.length > 0 && investigation !== null && (
+        <p data-testid="analyze-investigation" data-investigation-mode={investigation.mode} title={investigation.hint} style={{ margin: "0 0 -6px", fontSize: "9.5px", fontWeight: 700, letterSpacing: "1.3px", lineHeight: 1.45, color: "rgba(196, 236, 248, 0.86)" }}>
+          {investigation.label}
+        </p>
+      )}
+      {/* Trigger Analysis Button (blocked without a valid job scope: the owner's sentence stands at the trigger) */}
+      {stagedDocs.length > 0 && analyzeBlockedMessage !== null && !isAnalyzing && (
+        <p data-testid="analyze-job-scope-required" role="status" style={{ margin: "0 0 -6px", fontSize: "11px", fontWeight: 700, letterSpacing: "0.4px", lineHeight: 1.45, color: "#ffc46b", textShadow: "0 0 10px rgba(255, 176, 64, 0.35)" }}>
+          {analyzeBlockedMessage}
+        </p>
+      )}
       {stagedDocs.length > 0 && (
         <button
-          disabled={isAnalyzing}
-          onClick={() => onAnalyze && onAnalyze(stagedDocs)}
+          disabled={isAnalyzing || analyzeBlockedMessage !== null}
+          aria-disabled={isAnalyzing || analyzeBlockedMessage !== null}
+          data-job-scope-blocked={analyzeBlockedMessage !== null ? "true" : "false"}
+          onClick={() => analyzeBlockedMessage === null && onAnalyze && onAnalyze(stagedDocs)}
           style={{
             padding: "14px",
-            backgroundColor: isAnalyzing ? "rgba(56, 229, 255, 0.3)" : SIL_TOKENS.colors.cyanActive,
+            backgroundColor: isAnalyzing ? "rgba(56, 229, 255, 0.3)" : analyzeBlockedMessage !== null ? "rgba(56, 229, 255, 0.14)" : SIL_TOKENS.colors.cyanActive,
             border: "none",
             borderRadius: "8px",
-            color: "#0a0e14",
+            color: analyzeBlockedMessage !== null && !isAnalyzing ? "rgba(190, 236, 248, 0.62)" : "#0a0e14",
             fontWeight: 800,
             fontSize: "13px",
             letterSpacing: "1px",
-            cursor: isAnalyzing ? "wait" : "pointer",
-            boxShadow: isAnalyzing ? "none" : "0 0 20px rgba(56, 229, 255, 0.5)",
+            cursor: isAnalyzing ? "wait" : analyzeBlockedMessage !== null ? "not-allowed" : "pointer",
+            boxShadow: isAnalyzing || analyzeBlockedMessage !== null ? "none" : "0 0 20px rgba(56, 229, 255, 0.5)",
             transition: "all 0.2s ease"
           }}
           data-testid="start-intake-analysis-btn"

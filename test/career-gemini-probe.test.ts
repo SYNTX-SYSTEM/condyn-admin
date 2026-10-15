@@ -2,6 +2,7 @@ import { describe, it } from "vitest";
 import { GoogleGenAI } from "@google/genai";
 import * as fs from "fs";
 import * as path from "path";
+import { resolveStoredTestJobScope } from "./support/job-scope";
 
 try {
   const envFile = fs.readFileSync(path.join(process.cwd(), ".env.local"), "utf8");
@@ -15,6 +16,8 @@ try {
 
 describe.skipIf(!process.env.RUN_GEMINI_DIAGNOSTICS)("Probe Gemini API", () => {
   it("Probe A", async () => {
+    // SFE JOB POOL FIRST: no Gemini call without a valid pool + selected job, in tests too.
+    await resolveStoredTestJobScope();
     const apiKey = process.env.GEMINI_API_KEY;
     if (!apiKey) throw new Error("NO API KEY");
 

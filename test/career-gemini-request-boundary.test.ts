@@ -1,11 +1,14 @@
 import { describe, it, expect } from "vitest";
 import { GeminiProvider } from "../lib/career/providers/gemini";
 import { buildCareerAnalysisPrompt } from "../lib/career/adapter";
+import { resolveStoredTestJobScope } from "./support/job-scope";
 
 const runDiagnostic = process.env.RUN_GEMINI_DIAGNOSTICS === "1";
 
 describe.skipIf(!runDiagnostic)("BUG010R: Final Gemini Request Boundary (Live Diagnostic)", () => {
   it("should send the EXACT dynamic doc_id enum to the Gemini API", async () => {
+    // SFE JOB POOL FIRST: no Gemini call without a valid pool + selected job, in tests too.
+    await resolveStoredTestJobScope();
     // 1. Loader-owned runtime document
     const docs = [{ docId: "DOC_001", content: "TEST CONTENT" }];
     

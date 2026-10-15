@@ -1,5 +1,5 @@
 import React from "react";
-import { describe, expect, it, vi } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { renderToString } from "react-dom/server";
 import { matches, summary, UPLOAD_ID, view } from "./fixtures/match-bodies";
 
@@ -20,6 +20,12 @@ vi.mock("../../../lib/career/ui/useJobPool", async (importOriginal) => {
   };
 });
 vi.mock("../../../lib/career/ui/useJobPoolSources", () => ({ useAnalysisSources: () => ({ state: "IDLE" }) }));
+// URL BOUNDARY CLOSURE: the analyses rendered here are PERSON × JOB analyses (their persisted boundary, read from the server in the app).
+vi.mock("../../../lib/career/ui/useRoleInvestigation", async (importOriginal) => ({ ...(await importOriginal<typeof import("../../../lib/career/ui/useRoleInvestigation")>()), useAnalysisBoundary: (analysisId: string | null) => analysisId === null ? { state: "IDLE" } : { state: "RESOLVED", value: { investigationVersion: "ANALYSIS_INVESTIGATION_V1", analysisId: analysisId, jobId: "JOB_TEST", mode: "PERSON_X_JOB", jobScopeSelection: { jobPoolUploadId: UPLOAD_ID, poolRoleId: "ROLE_A" }, basis: "JOB_DECLARATION", discoveryRunId: null, investigationScopeHash: null } } }));
+/** Job Pool first / Capability gate: the scope validation is steered here (SSR runs no effects, so it can never read VALID itself). */
+const gate = vi.hoisted(() => ({ scope: { state: "NONE" } as Record<string, unknown> }));
+const VALID_SCOPE = { state: "VALID", scope: { jobPoolUploadId: "JPOOL_B94850C439974E27496FE3B1A9A076B5", poolRoleId: "ROLE_A" }, roleTitle: "Platform Engineer", organizationId: "ORG_1", organizationName: "Acme", poolName: "Sample Pool" };
+vi.mock("../../../lib/career/ui/useJobScope", () => ({ useJobScopeValidation: () => gate.scope }));
 
 import { SemanticCareerIntelligenceField } from "../../../app/components/career/demo/SemanticCareerIntelligenceField";
 import { CareerIntelligenceDashboard } from "../../../app/components/career/demo/CareerIntelligenceDashboard";
@@ -37,17 +43,44 @@ const textOf = (html: string, startMarker: string, endMarker: string): string =>
 const STAGE = ['<div data-testid="syntx-stage"', '<div data-sx-surface="header"'] as const;
 
 describe("SYNTX field (server-rendered)", () => {
-  it("keeps the capability field as the default focus; the strip names two field states and never the retired JOB switch", () => {
+  beforeEach(() => { gate.scope = { state: "NONE" }; });
+
+  it("opens on the Job Field (Job Pool first); the Capability option is gated without a valid job; the strip names two field states and never the retired JOB switch", () => {
     const html = renderToString(<SemanticCareerIntelligenceField data={EMPTY_CAREER_INTELLIGENCE_DATA} analysisId="ANL_TEST" />);
-    expect(html).toContain('data-field-focus="CAPABILITY"');
-    expect(html).toContain('data-testid="field-focus-capability-btn"');
-    expect(html).toMatch(/data-testid="job-pool-panel-toggle"[^>]*data-field-focus-active="false"/);
+    expect(html).toContain('data-field-focus="FIELD"');
+    expect(html).toContain('data-capability-gate="AWAITING_JOB"');
+    expect(html).toMatch(/data-testid="field-focus-capability-btn"[^>]*data-field-focus-active="false"[^>]*data-field-gate="AWAITING_JOB"[^>]*aria-pressed="false"[^>]*disabled=""[^>]*aria-disabled="true"[^>]*title="Select a job in the Job Field first/);
+    expect(html).toMatch(/data-testid="job-pool-panel-toggle"[^>]*data-field-focus-active="true"/);
     expect(html).toContain("⬡ JOB FIELD");
-    expect(html).not.toContain('data-testid="syntx-field"');
+    expect(html).toContain('data-testid="syntx-field"');
+    expect(html).toMatch(/data-testid="syntx-exit-btn"[^>]*data-field-gate="AWAITING_JOB"[^>]*disabled=""/);
     for (const id of RETIRED) expect(html).not.toContain(`data-testid="${id}`);
+    // The Capability Field stays mounted underneath (hidden by the exclusivity rule), so no staged state can be lost.
     for (const id of chrome) expect(html).toContain(`data-testid="${id}"`);
     for (const stage of stages) expect(html).toContain(`data-testid="focus-transition-stage-shell-${stage}"`);
     expect(html).not.toContain("hr-decision-loop-dock");
+  });
+
+  it("Capability gate: a requested Capability Field stays the Job Field until the job scope is VALID; a valid job alone does not leave the Job Field", () => {
+    for (const state of [{ state: "NONE" }, { state: "CHECKING", scope: VALID_SCOPE.scope }, { state: "INVALID", scope: VALID_SCOPE.scope, reason: "ROLE_NOT_IN_POOL" }]) {
+      gate.scope = state;
+      const html = renderToString(<SemanticCareerIntelligenceField data={EMPTY_CAREER_INTELLIGENCE_DATA} fieldFocus="CAPABILITY" />);
+      expect(html).toContain('data-field-focus="FIELD"');
+      expect(html).toContain('data-capability-gate="AWAITING_JOB"');
+      expect(html).toContain('data-testid="syntx-field"');
+    }
+    gate.scope = VALID_SCOPE;
+    const requested = renderToString(<SemanticCareerIntelligenceField data={EMPTY_CAREER_INTELLIGENCE_DATA} fieldFocus="CAPABILITY" />);
+    expect(requested).toContain('data-field-focus="CAPABILITY"');
+    expect(requested).toContain('data-capability-gate="OPEN"');
+    expect(requested).not.toContain('data-testid="syntx-field"');
+    expect(requested).toMatch(/data-testid="field-focus-capability-btn"[^>]*data-field-focus-active="true"[^>]*data-field-gate="OPEN"/);
+    expect(requested).not.toMatch(/data-testid="field-focus-capability-btn"[^>]*disabled=""/);
+    const ground = renderToString(<SemanticCareerIntelligenceField data={EMPTY_CAREER_INTELLIGENCE_DATA} />);
+    expect(ground).toContain('data-field-focus="FIELD"');
+    expect(ground).toContain('data-capability-gate="OPEN"');
+    expect(ground).toMatch(/data-testid="syntx-exit-btn"[^>]*data-field-gate="OPEN"/);
+    expect(ground).not.toMatch(/data-testid="syntx-exit-btn"[^>]*disabled=""/);
   });
 
   it("opens the field for focus=FIELD: without a selection the pools aperture is the contextual action; an exact upload id alone opens the field too", () => {
@@ -71,6 +104,7 @@ describe("SYNTX field (server-rendered)", () => {
     const byUpload = renderToString(<SemanticCareerIntelligenceField data={EMPTY_CAREER_INTELLIGENCE_DATA} jobPoolUploadId="JPOOL_WITH_MATCHES" analysisId="ANL_TEST" />);
     expect(byUpload).toContain('data-field-focus="FIELD"');
     expect(byUpload).toContain('data-testid="syntx-field"');
+    gate.scope = VALID_SCOPE;
     const explicitGround = renderToString(<SemanticCareerIntelligenceField data={EMPTY_CAREER_INTELLIGENCE_DATA} fieldFocus="CAPABILITY" jobPoolUploadId="JPOOL_WITH_MATCHES" analysisId="ANL_TEST" />);
     expect(explicitGround).toContain('data-field-focus="CAPABILITY"');
     expect(explicitGround).not.toContain('data-testid="syntx-field"');
@@ -81,6 +115,9 @@ describe("SYNTX field (server-rendered)", () => {
     expect(html).toMatch(new RegExp(`data-testid="syntx-field"[^>]*data-field-grammar="SYNTX_FIELD_V1"[^>]*data-observation-kind="FIELD"[^>]*data-observation-id="${UPLOAD_ID}"[^>]*data-aperture-open="false"[^>]*data-motion-mode="LIVE"[^>]*data-field-state="AVAILABLE"`));
     expect(html).toContain('data-matching-delivered="true"');
     expect(html).toContain('data-sign-count="4"');
+    // The pool core carries the Decision Loop Labs emblem; the brand field and frame are decoration only (aria-hidden).
+    expect(html).toMatch(/data-testid="syntx-pool-core"[\s\S]*data-sx-brand-core="dll"[^>]*aria-hidden="true"/);
+    expect(html).toMatch(/data-sx-brand-field="dll" aria-hidden="true"/);
     expect(html).toMatch(/data-testid="syntx-pool"[^>]*data-sign-id="field:JPOOL_0123456789abcdef"[^>]*data-sign-source="canonical_entity"[^>]*data-sign-relation="contains"[^>]*data-sign-state="field"[^>]*data-sign-manifestation="region"/);
     expect(html).toMatch(/data-testid="syntx-organization-ORG_1"[^>]*data-role-count="2"[^>]*data-sign-id="org:ORG_1"[^>]*data-sign-relation="contains"[^>]*data-sign-state="field"[^>]*data-sign-manifestation="region"[^>]*data-sign-interaction="select"[^>]*data-sign-transition="recenter"[^>]*data-proof-upload-id="JPOOL_0123456789abcdef"[^>]*data-proof-organization-id="ORG_1"[^>]*data-proof-target-id="TOENT_1"/);
     expect(html).toMatch(/data-testid="syntx-role-ROLE_A"[^>]*data-requirement-count="2"[^>]*data-matching-read="true"[^>]*data-sign-id="role:ROLE_A"[^>]*data-sign-relation="contains"[^>]*data-sign-manifestation="carrier"[^>]*data-proof-upload-id="JPOOL_0123456789abcdef"[^>]*data-proof-organization-id="ORG_1"[^>]*data-proof-role-id="ROLE_A"[^>]*data-proof-target-id="TROB_A"/);
@@ -151,7 +188,9 @@ describe("SYNTX field (server-rendered)", () => {
     expect(html).toMatch(/data-sign-id="role:ROLE_A"[^>]*data-sign-state="field"/);
     expect(html).toContain('data-aperture-open="false"');
     expect(html).not.toContain('data-testid="syntx-aperture"');
-    expect(html).toMatch(/data-testid="syntx-canvas"[^>]*data-camera-scale="2.4"/);
+    // Deep focus (depth 3): the planetarium's focus anchor stays the observed organization's body at 1.12; nothing zooms.
+    expect(html).toMatch(/data-testid="syntx-canvas"[^>]*data-depth="3"[^>]*data-camera-scale="1.12"/);
+    expect(html).toContain('data-testid="syntx-deep-focus"');
     expect(html).toMatch(/data-summary-for="REQ_1"[^>]*>Requirement TypeScript of role Platform Engineer: supported by scored evidence; 1 evidence trace from 1 source.</);
   });
 
@@ -168,11 +207,24 @@ describe("SYNTX field (server-rendered)", () => {
   it("follows the global SIL locale and threads focus and observation from the dashboard, accepting the legacy JOB/POOL focus names", () => {
     const de = renderToString(<SemanticCareerIntelligenceField data={EMPTY_CAREER_INTELLIGENCE_DATA} fieldFocus="FIELD" initialLocale="de" />);
     expect(de).toContain("JOB-FELD");
-    expect(de).toContain("KEIN JOB-POOL-UPLOAD IM FELD");
+    expect(de).toContain("KEIN JOB-POOL GEWÄHLT");
     const dash = renderToString(<CareerIntelligenceDashboard data={EMPTY_CAREER_INTELLIGENCE_DATA} fieldFocus="FIELD" jobPoolUploadId="JPOOL_WITH_MATCHES" analysisId="ANL_TEST" jobOrganizationId="ORG_1" jobRoleId="ROLE_B" />);
     expect(dash).toContain('data-field-focus="FIELD"');
     expect(dash).toContain('data-observation-kind="ROLE"');
     expect(dash).toContain('data-observation-id="ROLE_B"');
     expect(dash).toContain(`data-job-pool-upload="JPOOL_WITH_MATCHES"`);
+  });
+
+  it("brands the Job Field context as Decision Loop Labs (header and pool core); the application opens in it (Job Pool first)", () => {
+    const job = renderToString(<CareerIntelligenceDashboard data={EMPTY_CAREER_INTELLIGENCE_DATA} fieldFocus="FIELD" jobPoolUploadId="JPOOL_WITH_MATCHES" analysisId="ANL_TEST" />);
+    expect(job).toMatch(/data-testid="shell-brand-dll"[^>]*data-sx-brand="dll"/);
+    expect(job).toContain("DECISION LOOP LABS");
+    expect(job).toContain("/ SYNTX — SEMANTIC CAREER INTELLIGENCE FIELD");
+    expect(job).not.toContain("CONDYN / SYNTX — SEMANTIC CAREER INTELLIGENCE FIELD");
+    // Job Pool first: without any parameter the dashboard opens in the Job Field context. The Capability context's header (unchanged,
+    // CONDYN) follows once the field reports an entered Capability Field (client effect; proven in the browser, not renderable here).
+    const opening = renderToString(<CareerIntelligenceDashboard data={EMPTY_CAREER_INTELLIGENCE_DATA} />);
+    expect(opening).toMatch(/data-testid="shell-brand-dll"[^>]*data-sx-brand="dll"/);
+    expect(opening).not.toContain("CONDYN / SYNTX — SEMANTIC CAREER INTELLIGENCE FIELD");
   });
 });

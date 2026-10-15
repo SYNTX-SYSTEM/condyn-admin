@@ -7,9 +7,11 @@ import type {
 } from "../capability-core/convergence";
 import type {
   CapabilityDiscoveryConfiguration,
+  CapabilityInvestigationScope,
   CapabilityKernelResolver,
   CapabilityDiscoveryProvider,
-  CapabilityDiscoveryRuntimeResult
+  CapabilityDiscoveryRuntimeResult,
+  CapabilityProviderExchangeArchive
 } from "../capability-core/discovery";
 import type {
   CapabilityProposalRuntime,
@@ -19,6 +21,8 @@ import type {
 import type { PromptRepository } from "../prompts/repository";
 import type { ActivePromptResolver } from "../prompts/resolver";
 import type { ReportCareerJobRuntimeOperation } from "./career-analysis-job-processor";
+import { assertIssuedAnalysisBoundary, isIssuedPersonInvestigation, type AnalysisBoundary } from "../investigation/boundary";
+import { renderInvestigationScope } from "../job-scope/investigation-scope";
 
 // Prompt slugs select managed kernels; these explicit versions are the runtime
 // identities that Discovery and Convergence validate against provider output.
@@ -38,6 +42,8 @@ export interface CareerCapabilityProposalExecutorDependencies {
   defaultGeminiModel: string;
   promptRepository: PromptRepository;
   capabilityRepository: CapabilityCoreRepository;
+  /** Result Inspector: bounded archive of the received Discovery exchange. Absent: nothing is retained. */
+  providerExchangeArchive?: CapabilityProviderExchangeArchive;
   bootstrapCapabilityProposalKernels(input: {
     promptRepository: PromptRepository;
     encryptionKeyBase64: string;
@@ -67,6 +73,8 @@ export interface CareerCapabilityProposalExecutorDependencies {
       repository: CapabilityCoreRepository;
       provider: CapabilityDiscoveryProvider;
       kernelResolver: CapabilityKernelResolver;
+      investigationScope?: CapabilityInvestigationScope;
+      providerExchangeArchive?: CapabilityProviderExchangeArchive;
     }
   ) => Promise<CapabilityDiscoveryRuntimeResult>;
   runConvergence: (
@@ -106,7 +114,8 @@ export interface CareerCapabilityProposalExecutorDependencies {
 export interface CareerCapabilityProposalExecutor {
   execute(
     documents: DocumentInput[],
-    reportOperation: ReportCareerJobRuntimeOperation
+    reportOperation: ReportCareerJobRuntimeOperation,
+    boundary: AnalysisBoundary | undefined
   ): Promise<CapabilityProposalRuntimeResult>;
 }
 
@@ -192,7 +201,12 @@ export async function createCareerCapabilityProposalExecutor(
   const convergenceProvider = dependencies.createConvergenceProvider(model);
 
   return {
-    async execute(documents, reportOperation) {
+    async execute(documents, reportOperation, boundary) {
+      // SFE: Discovery runs only inside an issued investigation boundary. PERSON_X_JOB: the job scope sets the
+      // investigation space; PERSON: no scope at all (the unscoped Discovery identities stay as before e643e96). The
+      // documents remain the only evidence. Convergence needs no scope: its identity binds the RUN_ id.
+      assertIssuedAnalysisBoundary(boundary);
+      const investigationScope = isIssuedPersonInvestigation(boundary) ? undefined : renderInvestigationScope(boundary);
       const runtime = dependencies.createProposalRuntime({
         repository: dependencies.capabilityRepository,
         discovery: {
@@ -204,7 +218,9 @@ export async function createCareerCapabilityProposalExecutor(
             dependencies.runDiscovery(sourceDocuments, discoveryConfiguration, {
               repository: runtimeDependencies.repository,
               kernelResolver: runtimeDependencies.kernelResolver,
-              provider: telemetryDiscoveryProvider(discoveryProvider, reportOperation)
+              provider: telemetryDiscoveryProvider(discoveryProvider, reportOperation),
+              ...(investigationScope ? { investigationScope } : {}),
+              ...(dependencies.providerExchangeArchive ? { providerExchangeArchive: dependencies.providerExchangeArchive } : {})
             })
         },
         convergence: {

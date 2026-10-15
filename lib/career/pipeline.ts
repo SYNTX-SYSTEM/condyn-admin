@@ -20,6 +20,8 @@ import { ActivePromptResolver } from "./prompts/resolver";
 
 import { SourceMetadata } from "./loaders/source";
 import { CareerJobRuntimeOperation } from "./orchestration/job";
+import type { ResolvedJobScope } from "./job-scope/scope";
+import { InvestigationBoundaryError, assertIssuedAnalysisBoundary, type PersonInvestigation } from "./investigation/boundary";
 
 export interface DocumentLoaderInput {
   docId?: string;
@@ -28,11 +30,26 @@ export interface DocumentLoaderInput {
   metadata?: SourceMetadata;
 }
 
-export interface PipelineExecutionOptions {
+interface PipelineExecutionOptionsBase {
   promptResolver?: ActivePromptResolver;
   explicitKeyBase64?: string;
   explicitAnalysisId?: string;
   onRuntimeOperation?: (operation: CareerJobRuntimeOperation) => void | Promise<void>;
+}
+
+/**
+ * SFE: every execution path (worker, scripts, tests) names its issued investigation boundary, checked before any
+ * document, prompt or provider work: the validated job scope (PERSON_X_JOB, unchanged) or an issued PERSON
+ * investigation. Validation only: neither is passed to the prompt or to the provider.
+ */
+export type PipelineExecutionOptions = PipelineExecutionOptionsBase & (
+  | { jobScope: ResolvedJobScope; investigation?: undefined }
+  | { investigation: PersonInvestigation; jobScope?: undefined }
+);
+
+function assertPipelineBoundary(options: PipelineExecutionOptions | undefined): void {
+  if (options?.jobScope !== undefined && options?.investigation !== undefined) throw new InvestigationBoundaryError("ERR_INVESTIGATION_INVALID", "a pipeline run names one boundary, not two.");
+  assertIssuedAnalysisBoundary(options?.investigation ?? options?.jobScope);
 }
 
 /**
@@ -71,8 +88,9 @@ export function loadDocuments(inputs: DocumentLoaderInput[]): DocumentInput[] {
 export async function executeCareerAnalysisPipeline(
   inputs: DocumentLoaderInput[],
   provider: InferenceProvider,
-  options?: PipelineExecutionOptions
+  options: PipelineExecutionOptions
 ): Promise<ValidationResult<CanonicalCareerAnalysis>> {
+  assertPipelineBoundary(options);
   const startTime = Date.now();
   const docs = loadDocuments(inputs);
   const promptBundle = await buildCareerAnalysisPromptWithResolver(
@@ -108,9 +126,10 @@ export async function executeCareerAnalysisPipeline(
 export async function executeCareerAnalysisBatchPipeline(
   batch: BatchDocumentInput[],
   provider: InferenceProvider,
-  onProgress?: (progress: BatchProgress) => void,
-  options?: PipelineExecutionOptions
+  onProgress: ((progress: BatchProgress) => void) | undefined,
+  options: PipelineExecutionOptions
 ): Promise<ValidationResult<CanonicalCareerAnalysis>> {
+  assertPipelineBoundary(options);
   const startTime = Date.now();
   const docs = await loadDocumentBatch(batch, onProgress);
   const promptBundle = await buildCareerAnalysisPromptWithResolver(

@@ -1,0 +1,102 @@
+{
+  "proof": "url-boundary-closure-routes",
+  "commit": "d54c718",
+  "network": "loopback only, no Gemini",
+  "passed": true,
+  "checks": [
+    {
+      "case": "PERSON_X_JOB analysis → 200 no-store, declared selection, Discovery scope hash",
+      "ok": true,
+      "observed": {
+        "status": 200,
+        "mode": "PERSON_X_JOB"
+      }
+    },
+    {
+      "case": "response carries no document content and no legacy payload",
+      "ok": true
+    },
+    {
+      "case": "PERSON analysis → 200 PERSON, no selection",
+      "ok": true,
+      "observed": {
+        "status": 200
+      }
+    },
+    {
+      "case": "earlier-contract job (jobScope, no declaration) → PERSON_X_JOB from the job declaration",
+      "ok": true,
+      "observed": {
+        "status": 200
+      }
+    },
+    {
+      "case": "analysis without job → 409 UNRESOLVED NOT_RECORDED",
+      "ok": true,
+      "observed": {
+        "status": 409,
+        "body": "{\"success\":false,\"issues\":[{\"code\":\"ERR_ANALYSIS_INVESTIGATION_UNRESOLVED\",\"reason\":\"NOT_RECORDED\"}]}"
+      }
+    },
+    {
+      "case": "run scope ≠ declared job (role B declared, role A seen) → 409 RUN_CONTRADICTS_DECLARATION",
+      "ok": true,
+      "observed": {
+        "status": 409,
+        "body": "{\"success\":false,\"issues\":[{\"code\":\"ERR_ANALYSIS_INVESTIGATION_UNRESOLVED\",\"reason\":\"RUN_CONTRADICTS_DECLARATION\"}]}"
+      }
+    },
+    {
+      "case": "unknown analysis → 404",
+      "ok": true,
+      "observed": {
+        "status": 404
+      }
+    },
+    {
+      "case": "client: RESOLVED / RESOLVED / UNRESOLVED",
+      "ok": true,
+      "observed": {
+        "scoped": "RESOLVED",
+        "person": "RESOLVED",
+        "direct": "UNRESOLVED"
+      }
+    },
+    {
+      "case": "guard: PERSON_X_JOB against its own pool → comparison permitted",
+      "ok": true
+    },
+    {
+      "case": "guard: PERSON_X_JOB against another pool → no comparison",
+      "ok": true
+    },
+    {
+      "case": "guard: PERSON opened by URL → no comparison",
+      "ok": true
+    },
+    {
+      "case": "guard: unresolved analysis → no comparison",
+      "ok": true
+    },
+    {
+      "case": "B2 unchanged: 200 for the scoped analysis",
+      "ok": true,
+      "observed": {
+        "status": 200
+      }
+    },
+    {
+      "case": "B2 unchanged: PERSON → 409 NOT_SCOPED",
+      "ok": true
+    },
+    {
+      "case": "matches route technically unchanged (answers as before; the guard is the frontend's)",
+      "ok": true,
+      "observed": {
+        "status": 200
+      }
+    }
+  ],
+  "networkAttempts": 0,
+  "serverSentinel": "scripts/proofs/support/network-sentinel.cjs (Next server process)"
+}

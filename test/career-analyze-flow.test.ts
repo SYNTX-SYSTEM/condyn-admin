@@ -2,6 +2,7 @@ import { describe, it, expect, beforeEach, vi } from "vitest";
 import { POST } from "../app/api/career/analyze/route";
 import * as providers from "../lib/career/providers";
 import { MockInferenceProvider } from "../lib/career/adapter";
+import { TEST_JOB_SCOPE, uploadEngineeringJobScope, resolveTestJobScope } from "./support/job-scope";
 
 describe("CONDYN Career Analysis Protocol v1.0 - Step 7.2: Server Boundary API Route", () => {
   beforeEach(async () => {
@@ -46,6 +47,7 @@ describe("CONDYN Career Analysis Protocol v1.0 - Step 7.2: Server Boundary API R
   });
 
   it("should execute pipeline via MockInferenceProvider, verify schema, save to demo persistence, and return pre-computed reactFlowGraph", async () => {
+    await uploadEngineeringJobScope();
     const sampleText = `
     Senior Cloud Systems Architect with 10 years of experience in distributed systems and Kubernetes.
     Led engineering teams at Siemens AG and BMW Group.
@@ -56,7 +58,8 @@ describe("CONDYN Career Analysis Protocol v1.0 - Step 7.2: Server Boundary API R
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        documents: [{ title: "Cloud Architect CV", content: sampleText }]
+        documents: [{ title: "Cloud Architect CV", content: sampleText }],
+        jobScope: TEST_JOB_SCOPE
       })
     });
 
@@ -79,7 +82,7 @@ describe("CONDYN Career Analysis Protocol v1.0 - Step 7.2: Server Boundary API R
     
     const { normalizedDocs } = await prepareDocuments(claim!.inputRef.sourceData.documents);
     const provider = providers.getCareerInferenceProvider();
-    const validationResult = await executeCareerAnalysisPipeline(normalizedDocs, provider);
+    const validationResult = await executeCareerAnalysisPipeline(normalizedDocs, provider, { jobScope: resolveTestJobScope() });
     const verifiedAnalysis = validationResult.data as any;
     const resultAnalysisId = verifiedAnalysis.structured_data.analysis.metadata.analysis_id;
     

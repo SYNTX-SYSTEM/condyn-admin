@@ -1,0 +1,2173 @@
+{
+ "mock": {
+  "red": [
+   "05"
+  ],
+  "geometry": [
+   [
+    "01",
+    715,
+    146,
+    169,
+    169
+   ],
+   [
+    "02",
+    1002,
+    308,
+    170,
+    170
+   ],
+   [
+    "03",
+    1002,
+    639,
+    169,
+    169
+   ],
+   [
+    "04",
+    716,
+    807,
+    168,
+    168
+   ],
+   [
+    "05",
+    430,
+    642,
+    168,
+    168
+   ],
+   [
+    "06",
+    429,
+    314,
+    169,
+    169
+   ]
+  ],
+  "planetarium": [
+   {
+    "scope": "[data-testid=\"orbital-physics-01\"]",
+    "text": "01",
+    "rect": [
+     792.5,
+     177.9,
+     15.3,
+     14.1
+    ],
+    "font": "11px/normal w700 ls 1px",
+    "color": "rgb(99, 120, 138)",
+    "opacity": 1,
+    "shadow": "none",
+    "ratio": 4.27
+   },
+   {
+    "scope": "[data-testid=\"orbital-physics-01\"]",
+    "text": "◈ IDENTITY CORE",
+    "rect": [
+     741.2,
+     196,
+     118,
+     15.7
+    ],
+    "font": "13px/15.6px w700 ls normal",
+    "color": "rgb(230, 241, 248)",
+    "opacity": 1,
+    "shadow": "none",
+    "ratio": 17.05
+   },
+   {
+    "scope": "[data-testid=\"orbital-physics-01\"]",
+    "text": "Unaltered identity core",
+    "rect": [
+     732.6,
+     215.8,
+     135.1,
+     24.2
+    ],
+    "font": "10px/12px w400 ls normal",
+    "color": "rgb(99, 120, 138)",
+    "opacity": 1,
+    "shadow": "none",
+    "ratio": 4.27
+   },
+   {
+    "scope": "[data-testid=\"orbital-physics-01\"]",
+    "text": "PRE-CANONICAL DISCOVERY",
+    "rect": [
+     737.6,
+     243,
+     125.2,
+     12.1
+    ],
+    "font": "9px/normal w400 ls normal",
+    "color": "rgb(99, 120, 138)",
+    "opacity": 1,
+    "shadow": "none",
+    "ratio": 4.25
+   },
+   {
+    "scope": "[data-testid=\"orbital-physics-01\"]",
+    "text": "1 items",
+    "rect": [
+     769.9,
+     263.1,
+     60.5,
+     19.2
+    ],
+    "font": "10px/normal w400 ls normal",
+    "color": "rgb(230, 241, 248)",
+    "opacity": 1,
+    "shadow": "none",
+    "ratio": 15.37
+   },
+   {
+    "scope": "[data-testid=\"orbital-physics-02\"]",
+    "text": "02",
+    "rect": [
+     1079.1,
+     332.8,
+     15.4,
+     14.1
+    ],
+    "font": "11px/normal w700 ls 1px",
+    "color": "rgb(99, 120, 138)",
+    "opacity": 1,
+    "shadow": "none",
+    "ratio": 4.24
+   },
+   {
+    "scope": "[data-testid=\"orbital-physics-02\"]",
+    "text": "⬡ CAPABILITY FIELD",
+    "rect": [
+     1019.1,
+     351,
+     135.3,
+     31.5
+    ],
+    "font": "13px/15.6px w700 ls normal",
+    "color": "rgb(230, 241, 248)",
+    "opacity": 1,
+    "shadow": "none",
+    "ratio": 17.05
+   },
+   {
+    "scope": "[data-testid=\"orbital-physics-02\"]",
+    "text": "Semantic capability core",
+    "rect": [
+     1019.1,
+     386.5,
+     135.3,
+     24.2
+    ],
+    "font": "10px/12px w400 ls normal",
+    "color": "rgb(99, 120, 138)",
+    "opacity": 1,
+    "shadow": "none",
+    "ratio": 4.25
+   },
+   {
+    "scope": "[data-testid=\"orbital-physics-02\"]",
+    "text": "PRE-CANONICAL DISCOVERY",
+    "rect": [
+     1024.1,
+     413.8,
+     125.4,
+     12.1
+    ],
+    "font": "9px/normal w400 ls normal",
+    "color": "rgb(99, 120, 138)",
+    "opacity": 1,
+    "shadow": "none",
+    "ratio": 4.25
+   },
+   {
+    "scope": "[data-testid=\"orbital-physics-02\"]",
+    "text": "5 items",
+    "rect": [
+     1056.5,
+     434,
+     60.6,
+     19.2
+    ],
+    "font": "10px/normal w400 ls normal",
+    "color": "rgb(230, 241, 248)",
+    "opacity": 1,
+    "shadow": "none",
+    "ratio": 15.48
+   },
+   {
+    "scope": "[data-testid=\"orbital-physics-03\"]",
+    "text": "03",
+    "rect": [
+     1078.7,
+     658.3,
+     15.3,
+     14.1
+    ],
+    "font": "11px/normal w700 ls 1px",
+    "color": "rgb(99, 120, 138)",
+    "opacity": 1,
+    "shadow": "none",
+    "ratio": 4.27
+   },
+   {
+    "scope": "[data-testid=\"orbital-physics-03\"]",
+    "text": "◎ RESONANCE ORBITS",
+    "rect": [
+     1019,
+     676.4,
+     134.8,
+     31.4
+    ],
+    "font": "13px/15.6px w700 ls normal",
+    "color": "rgb(230, 241, 248)",
+    "opacity": 1,
+    "shadow": "none",
+    "ratio": 16.97
+   },
+   {
+    "scope": "[data-testid=\"orbital-physics-03\"]",
+    "text": "Inferred organisations (analysis) · not pool res",
+    "rect": [
+     1019,
+     711.8,
+     134.8,
+     36.2
+    ],
+    "font": "10px/12px w400 ls normal",
+    "color": "rgb(99, 120, 138)",
+    "opacity": 1,
+    "shadow": "none",
+    "ratio": 4.25
+   },
+   {
+    "scope": "[data-testid=\"orbital-physics-03\"]",
+    "text": "PRE-CANONICAL DISCOVERY",
+    "rect": [
+     1023.9,
+     751.1,
+     124.9,
+     12.1
+    ],
+    "font": "9px/normal w400 ls normal",
+    "color": "rgb(99, 120, 138)",
+    "opacity": 1,
+    "shadow": "none",
+    "ratio": 4.27
+   },
+   {
+    "scope": "[data-testid=\"orbital-physics-03\"]",
+    "text": "1 items",
+    "rect": [
+     1056.2,
+     771.2,
+     60.3,
+     19.1
+    ],
+    "font": "10px/normal w400 ls normal",
+    "color": "rgb(230, 241, 248)",
+    "opacity": 1,
+    "shadow": "none",
+    "ratio": 15.49
+   },
+   {
+    "scope": "[data-testid=\"orbital-physics-04\"]",
+    "text": "04",
+    "rect": [
+     792.4,
+     831.4,
+     15.2,
+     14
+    ],
+    "font": "11px/normal w700 ls 1px",
+    "color": "rgb(99, 120, 138)",
+    "opacity": 1,
+    "shadow": "none",
+    "ratio": 4.25
+   },
+   {
+    "scope": "[data-testid=\"orbital-physics-04\"]",
+    "text": "⎔ ROLE MANIFESTATION",
+    "rect": [
+     733,
+     849.4,
+     134,
+     31.2
+    ],
+    "font": "13px/15.6px w700 ls normal",
+    "color": "rgb(230, 241, 248)",
+    "opacity": 1,
+    "shadow": "none",
+    "ratio": 17.05
+   },
+   {
+    "scope": "[data-testid=\"orbital-physics-04\"]",
+    "text": "Concrete role manifestations",
+    "rect": [
+     733,
+     884.6,
+     134,
+     24
+    ],
+    "font": "10px/12px w400 ls normal",
+    "color": "rgb(99, 120, 138)",
+    "opacity": 1,
+    "shadow": "none",
+    "ratio": 4.27
+   },
+   {
+    "scope": "[data-testid=\"orbital-physics-04\"]",
+    "text": "PRE-CANONICAL DISCOVERY",
+    "rect": [
+     737.9,
+     911.6,
+     124.2,
+     12
+    ],
+    "font": "9px/normal w400 ls normal",
+    "color": "rgb(99, 120, 138)",
+    "opacity": 1,
+    "shadow": "none",
+    "ratio": 4.27
+   },
+   {
+    "scope": "[data-testid=\"orbital-physics-04\"]",
+    "text": "1 items",
+    "rect": [
+     770,
+     931.6,
+     60,
+     19
+    ],
+    "font": "10px/normal w400 ls normal",
+    "color": "rgb(230, 241, 248)",
+    "opacity": 1,
+    "shadow": "none",
+    "ratio": 15.49
+   },
+   {
+    "scope": "[data-testid=\"orbital-physics-05\"]",
+    "text": "05",
+    "rect": [
+     506.2,
+     674.9,
+     15.2,
+     14
+    ],
+    "font": "11px/normal w700 ls 1px",
+    "color": "rgba(214, 230, 240, 0.9)",
+    "opacity": 1,
+    "shadow": "none",
+    "ratio": 12.42
+   },
+   {
+    "scope": "[data-testid=\"orbital-physics-05\"]",
+    "text": "⟁ TENSION FIELD",
+    "rect": [
+     455.1,
+     692.9,
+     117.4,
+     15.6
+    ],
+    "font": "13px/15.6px w700 ls normal",
+    "color": "rgb(230, 241, 248)",
+    "opacity": 1,
+    "shadow": "none",
+    "ratio": 16.97
+   },
+   {
+    "scope": "[data-testid=\"orbital-physics-05\"]",
+    "text": "Capability-gap projection",
+    "rect": [
+     446.7,
+     712.6,
+     134.3,
+     24
+    ],
+    "font": "10px/12px w500 ls normal",
+    "color": "rgba(200, 220, 232, 0.9)",
+    "opacity": 1,
+    "shadow": "none",
+    "ratio": 11.22
+   },
+   {
+    "scope": "[data-testid=\"orbital-physics-05\"]",
+    "text": "PRE-CANONICAL DISCOVERY",
+    "rect": [
+     451.6,
+     739.6,
+     124.4,
+     12
+    ],
+    "font": "9px/normal w600 ls normal",
+    "color": "rgba(190, 212, 226, 0.86)",
+    "opacity": 1,
+    "shadow": "none",
+    "ratio": 9.55
+   },
+   {
+    "scope": "[data-testid=\"orbital-physics-05\"]",
+    "text": "0 items",
+    "rect": [
+     483.7,
+     759.7,
+     60.1,
+     19
+    ],
+    "font": "10px/normal w400 ls normal",
+    "color": "rgb(230, 241, 248)",
+    "opacity": 1,
+    "shadow": "none",
+    "ratio": 15.48
+   },
+   {
+    "scope": "[data-testid=\"orbital-physics-06\"]",
+    "text": "06",
+    "rect": [
+     505.6,
+     344.1,
+     15.3,
+     14.1
+    ],
+    "font": "11px/normal w700 ls 1px",
+    "color": "rgb(99, 120, 138)",
+    "opacity": 1,
+    "shadow": "none",
+    "ratio": 4.27
+   },
+   {
+    "scope": "[data-testid=\"orbital-physics-06\"]",
+    "text": "∿ EVOLUTION PATHS",
+    "rect": [
+     445.9,
+     362.2,
+     134.7,
+     31.3
+    ],
+    "font": "13px/15.6px w700 ls normal",
+    "color": "rgb(230, 241, 248)",
+    "opacity": 1,
+    "shadow": "none",
+    "ratio": 17.05
+   },
+   {
+    "scope": "[data-testid=\"orbital-physics-06\"]",
+    "text": "Evolution pathways",
+    "rect": [
+     458.9,
+     397.6,
+     108.5,
+     12.1
+    ],
+    "font": "10px/12px w400 ls normal",
+    "color": "rgb(99, 120, 138)",
+    "opacity": 1,
+    "shadow": "none",
+    "ratio": 4.25
+   },
+   {
+    "scope": "[data-testid=\"orbital-physics-06\"]",
+    "text": "PRE-CANONICAL DISCOVERY",
+    "rect": [
+     450.8,
+     412.7,
+     124.8,
+     12.1
+    ],
+    "font": "9px/normal w400 ls normal",
+    "color": "rgb(99, 120, 138)",
+    "opacity": 1,
+    "shadow": "none",
+    "ratio": 4.25
+   },
+   {
+    "scope": "[data-testid=\"orbital-physics-06\"]",
+    "text": "1 items",
+    "rect": [
+     483.1,
+     432.8,
+     60.3,
+     19.1
+    ],
+    "font": "10px/normal w400 ls normal",
+    "color": "rgb(230, 241, 248)",
+    "opacity": 1,
+    "shadow": "none",
+    "ratio": 15.48
+   }
+  ],
+  "focus": {
+   "05": {
+    "geometry": {
+     "membrane": [
+      581,
+      433,
+      439,
+      257
+     ],
+     "manifestation": [
+      582,
+      433,
+      437,
+      255
+     ],
+     "copy": [
+      582,
+      270,
+      437,
+      151
+     ],
+     "body": [
+      705,
+      468,
+      189,
+      189
+     ],
+     "bar": [
+      1160,
+      997,
+      294,
+      13
+     ],
+     "anim": "atmosphereGlow,coreBreathe,corePulseCommunicate,emptyProjectionBreathe,emptyProjectionShellBreathe,focusTransitionPulse,ghostInnerPhase,ghostMembraneBreathe,ghostOuterPressure,ghostSignalTravel,ghostTetherPulse,gradientBreath,moonOrbit,moonOrbit,moonOrbit,moonOrbit,moonOrbit,moonOrbit,moonOrbit,moonOrbit,moonOrbit,orbitFloatPhase2,orbitFloatPhase2,orbitFloatPhase2,orbitFloatPhase2,orbitFloatPhase2,orbitFloatPhase2,particleIn,particleIn,plasmaFlarePulse,plasmaRotateCcw,plasmaRotateCw,ringPulse,ringPulse,rotateClockwise,waveExpand,waveExpand"
+    },
+    "text": [
+     {
+      "scope": "[data-testid=\"sil-orbit-empty-copy-05\"]",
+      "text": "EMPTY FIELD // EXPLAINED",
+      "rect": [
+       687.1,
+       269.9,
+       225.8,
+       15.7
+      ],
+      "font": "10px/14px w700 ls 2.4px",
+      "color": "rgb(255, 128, 136)",
+      "opacity": 1,
+      "shadow": "rgba(255, 56, 68, 0.55) 0px 0px 8px",
+      "ratio": 8.5
+     },
+     {
+      "scope": "[data-testid=\"sil-orbit-empty-copy-05\"]",
+      "text": "NO GAP PROJECTION AVAILABLE",
+      "rect": [
+       636.7,
+       310.3,
+       326.6,
+       22.4
+      ],
+      "font": "16px/20px w800 ls 1.2px",
+      "color": "rgb(244, 250, 253)",
+      "opacity": 1,
+      "shadow": "rgba(255, 124, 92, 0.3) 0px 0px 12px, rgba(255, 56, 68, 0.2) 0px 0px 18px",
+      "ratio": 19.4
+     },
+     {
+      "scope": "[data-testid=\"sil-orbit-empty-copy-05\"]",
+      "text": "This analysis path currently provides no capabil",
+      "rect": [
+       615.2,
+       348.3,
+       369.6,
+       43
+      ],
+      "font": "12px/19.2px w400 ls 0.2px",
+      "color": "rgba(214, 230, 240, 0.92)",
+      "opacity": 1,
+      "shadow": "none",
+      "ratio": 13.41
+     },
+     {
+      "scope": "[data-testid=\"sil-orbit-empty-copy-05\"]",
+      "text": "ORBIT 05 // STRUCTURAL ABSENCE",
+      "rect": [
+       682.4,
+       407,
+       235.3,
+       13.4
+      ],
+      "font": "9px/12px w600 ls 1.6px",
+      "color": "rgb(255, 124, 92)",
+      "opacity": 0.92,
+      "shadow": "none",
+      "ratio": 6.35
+     },
+     {
+      "scope": "[data-testid=\"semantic-focus-empty-projection\"]",
+      "text": "STATE:",
+      "rect": [
+       1159.6,
+       996.5,
+       138,
+       13
+      ],
+      "font": "10px/normal w400 ls normal",
+      "color": "rgb(99, 120, 138)",
+      "opacity": 0.12,
+      "shadow": "none",
+      "ratio": 1.09
+     },
+     {
+      "scope": "[data-testid=\"semantic-focus-empty-projection\"]",
+      "text": "EMPTY PROJECTION",
+      "rect": [
+       1201.6,
+       996.5,
+       96,
+       13
+      ],
+      "font": "10px/normal w700 ls normal",
+      "color": "rgba(255, 91, 101, 0.96)",
+      "opacity": 0.12,
+      "shadow": "none",
+      "ratio": 1.11
+     },
+     {
+      "scope": "[data-testid=\"semantic-focus-empty-projection\"]",
+      "text": "EVIDENCE:",
+      "rect": [
+       1309.6,
+       996.5,
+       144,
+       13
+      ],
+      "font": "10px/normal w400 ls normal",
+      "color": "rgb(99, 120, 138)",
+      "opacity": 0.12,
+      "shadow": "none",
+      "ratio": 1.09
+     },
+     {
+      "scope": "[data-testid=\"semantic-focus-empty-projection\"]",
+      "text": "NONE PROJECTED",
+      "rect": [
+       1369.6,
+       996.5,
+       84,
+       13
+      ],
+      "font": "10px/normal w700 ls normal",
+      "color": "rgb(230, 241, 248)",
+      "opacity": 0.12,
+      "shadow": "none",
+      "ratio": 1.27
+     },
+     {
+      "scope": "[data-testid=\"orbital-physics-05\"]",
+      "text": "05",
+      "rect": [
+       790.8,
+       504.2,
+       17.1,
+       15.7
+      ],
+      "font": "11px/normal w700 ls 1px",
+      "color": "rgb(56, 229, 255)",
+      "opacity": 0.42,
+      "shadow": "none",
+      "ratio": 2.86
+     },
+     {
+      "scope": "[data-testid=\"orbital-physics-05\"]",
+      "text": "⟁ TENSION FIELD",
+      "rect": [
+       733.5,
+       524.4,
+       131.7,
+       17.5
+      ],
+      "font": "13px/15.6px w700 ls normal",
+      "color": "rgb(230, 241, 248)",
+      "opacity": 0.42,
+      "shadow": "none",
+      "ratio": 3.39
+     },
+     {
+      "scope": "[data-testid=\"orbital-physics-05\"]",
+      "text": "Capability-gap projection",
+      "rect": [
+       724.1,
+       546.4,
+       150.5,
+       27
+      ],
+      "font": "10px/12px w500 ls normal",
+      "color": "rgba(200, 220, 232, 0.9)",
+      "opacity": 0.42,
+      "shadow": "none",
+      "ratio": 2.51
+     },
+     {
+      "scope": "[data-testid=\"orbital-physics-05\"]",
+      "text": "PRE-CANONICAL DISCOVERY",
+      "rect": [
+       729.6,
+       576.7,
+       139.5,
+       13.5
+      ],
+      "font": "9px/normal w600 ls normal",
+      "color": "rgba(190, 212, 226, 0.86)",
+      "opacity": 0.42,
+      "shadow": "none",
+      "ratio": 2.42
+     },
+     {
+      "scope": "[data-testid=\"orbital-physics-05\"]",
+      "text": "0 items",
+      "rect": [
+       765.6,
+       599.2,
+       67.4,
+       21.3
+      ],
+      "font": "10px/normal w400 ls normal",
+      "color": "rgb(56, 229, 255)",
+      "opacity": 0.42,
+      "shadow": "none",
+      "ratio": 2.74
+     }
+    ]
+   }
+  },
+  "errors": []
+ },
+ "multi": {
+  "red": [
+   "03",
+   "04",
+   "05",
+   "06"
+  ],
+  "geometry": [
+   [
+    "01",
+    715,
+    148,
+    169,
+    169
+   ],
+   [
+    "02",
+    1001,
+    310,
+    169,
+    169
+   ],
+   [
+    "03",
+    1002,
+    638,
+    170,
+    170
+   ],
+   [
+    "04",
+    716,
+    805,
+    169,
+    169
+   ],
+   [
+    "05",
+    430,
+    642,
+    168,
+    168
+   ],
+   [
+    "06",
+    429,
+    313,
+    168,
+    168
+   ]
+  ],
+  "planetarium": [
+   {
+    "scope": "[data-testid=\"orbital-physics-01\"]",
+    "text": "01",
+    "rect": [
+     791.6,
+     180.2,
+     15.3,
+     14.1
+    ],
+    "font": "11px/normal w700 ls 1px",
+    "color": "rgb(99, 120, 138)",
+    "opacity": 1,
+    "shadow": "none",
+    "ratio": 4.27
+   },
+   {
+    "scope": "[data-testid=\"orbital-physics-01\"]",
+    "text": "◈ IDENTITY CORE",
+    "rect": [
+     740.4,
+     198.3,
+     117.7,
+     15.7
+    ],
+    "font": "13px/15.6px w700 ls normal",
+    "color": "rgb(230, 241, 248)",
+    "opacity": 1,
+    "shadow": "none",
+    "ratio": 17.05
+   },
+   {
+    "scope": "[data-testid=\"orbital-physics-01\"]",
+    "text": "Unaltered identity core",
+    "rect": [
+     731.9,
+     218,
+     134.8,
+     24.1
+    ],
+    "font": "10px/12px w400 ls normal",
+    "color": "rgb(99, 120, 138)",
+    "opacity": 1,
+    "shadow": "none",
+    "ratio": 4.27
+   },
+   {
+    "scope": "[data-testid=\"orbital-physics-01\"]",
+    "text": "PRE-CANONICAL DISCOVERY",
+    "rect": [
+     736.8,
+     245.2,
+     124.9,
+     12.1
+    ],
+    "font": "9px/normal w400 ls normal",
+    "color": "rgb(99, 120, 138)",
+    "opacity": 1,
+    "shadow": "none",
+    "ratio": 4.27
+   },
+   {
+    "scope": "[data-testid=\"orbital-physics-01\"]",
+    "text": "1 items",
+    "rect": [
+     769.1,
+     265.3,
+     60.3,
+     19.1
+    ],
+    "font": "10px/normal w400 ls normal",
+    "color": "rgb(230, 241, 248)",
+    "opacity": 1,
+    "shadow": "none",
+    "ratio": 15.37
+   },
+   {
+    "scope": "[data-testid=\"orbital-physics-02\"]",
+    "text": "02",
+    "rect": [
+     1078.8,
+     333.7,
+     15.3,
+     14.1
+    ],
+    "font": "11px/normal w700 ls 1px",
+    "color": "rgb(99, 120, 138)",
+    "opacity": 1,
+    "shadow": "none",
+    "ratio": 4.11
+   },
+   {
+    "scope": "[data-testid=\"orbital-physics-02\"]",
+    "text": "⬡ CAPABILITY FIELD",
+    "rect": [
+     1018.8,
+     351.9,
+     135.2,
+     31.5
+    ],
+    "font": "13px/15.6px w700 ls normal",
+    "color": "rgb(230, 241, 248)",
+    "opacity": 1,
+    "shadow": "none",
+    "ratio": 17.05
+   },
+   {
+    "scope": "[data-testid=\"orbital-physics-02\"]",
+    "text": "Semantic capability core",
+    "rect": [
+     1018.8,
+     387.4,
+     135.2,
+     24.2
+    ],
+    "font": "10px/12px w400 ls normal",
+    "color": "rgb(99, 120, 138)",
+    "opacity": 1,
+    "shadow": "none",
+    "ratio": 4.25
+   },
+   {
+    "scope": "[data-testid=\"orbital-physics-02\"]",
+    "text": "PRE-CANONICAL DISCOVERY",
+    "rect": [
+     1023.8,
+     414.6,
+     125.3,
+     12.1
+    ],
+    "font": "9px/normal w400 ls normal",
+    "color": "rgb(99, 120, 138)",
+    "opacity": 1,
+    "shadow": "none",
+    "ratio": 4.25
+   },
+   {
+    "scope": "[data-testid=\"orbital-physics-02\"]",
+    "text": "5 items",
+    "rect": [
+     1056.2,
+     434.8,
+     60.5,
+     19.2
+    ],
+    "font": "10px/normal w400 ls normal",
+    "color": "rgb(230, 241, 248)",
+    "opacity": 1,
+    "shadow": "none",
+    "ratio": 15.48
+   },
+   {
+    "scope": "[data-testid=\"orbital-physics-03\"]",
+    "text": "03",
+    "rect": [
+     1079,
+     657,
+     15.3,
+     14.1
+    ],
+    "font": "11px/normal w700 ls 1px",
+    "color": "rgba(214, 230, 240, 0.9)",
+    "opacity": 1,
+    "shadow": "none",
+    "ratio": 12.42
+   },
+   {
+    "scope": "[data-testid=\"orbital-physics-03\"]",
+    "text": "◎ RESONANCE ORBITS",
+    "rect": [
+     1019.1,
+     675.1,
+     135.3,
+     31.5
+    ],
+    "font": "13px/15.6px w700 ls normal",
+    "color": "rgb(230, 241, 248)",
+    "opacity": 1,
+    "shadow": "none",
+    "ratio": 16.97
+   },
+   {
+    "scope": "[data-testid=\"orbital-physics-03\"]",
+    "text": "Inferred organisations (analysis) · not pool res",
+    "rect": [
+     1019.1,
+     710.7,
+     135.3,
+     36.3
+    ],
+    "font": "10px/12px w500 ls normal",
+    "color": "rgba(200, 220, 232, 0.9)",
+    "opacity": 1,
+    "shadow": "none",
+    "ratio": 11.22
+   },
+   {
+    "scope": "[data-testid=\"orbital-physics-03\"]",
+    "text": "PRE-CANONICAL DISCOVERY",
+    "rect": [
+     1024,
+     750,
+     125.4,
+     12.1
+    ],
+    "font": "9px/normal w600 ls normal",
+    "color": "rgba(190, 212, 226, 0.86)",
+    "opacity": 1,
+    "shadow": "none",
+    "ratio": 9.55
+   },
+   {
+    "scope": "[data-testid=\"orbital-physics-03\"]",
+    "text": "0 items",
+    "rect": [
+     1056.4,
+     770.2,
+     60.6,
+     19.2
+    ],
+    "font": "10px/normal w400 ls normal",
+    "color": "rgb(230, 241, 248)",
+    "opacity": 1,
+    "shadow": "none",
+    "ratio": 15.48
+   },
+   {
+    "scope": "[data-testid=\"orbital-physics-04\"]",
+    "text": "04",
+    "rect": [
+     792.7,
+     830.4,
+     15.2,
+     14
+    ],
+    "font": "11px/normal w700 ls 1px",
+    "color": "rgba(214, 230, 240, 0.9)",
+    "opacity": 1,
+    "shadow": "none",
+    "ratio": 12.37
+   },
+   {
+    "scope": "[data-testid=\"orbital-physics-04\"]",
+    "text": "⎔ ROLE MANIFESTATION",
+    "rect": [
+     733.1,
+     848.4,
+     134.4,
+     31.3
+    ],
+    "font": "13px/15.6px w700 ls normal",
+    "color": "rgb(230, 241, 248)",
+    "opacity": 1,
+    "shadow": "none",
+    "ratio": 17.05
+   },
+   {
+    "scope": "[data-testid=\"orbital-physics-04\"]",
+    "text": "Concrete role manifestations",
+    "rect": [
+     733.1,
+     883.7,
+     134.4,
+     24.1
+    ],
+    "font": "10px/12px w500 ls normal",
+    "color": "rgba(200, 220, 232, 0.9)",
+    "opacity": 1,
+    "shadow": "none",
+    "ratio": 11.26
+   },
+   {
+    "scope": "[data-testid=\"orbital-physics-04\"]",
+    "text": "PRE-CANONICAL DISCOVERY",
+    "rect": [
+     738,
+     910.8,
+     124.6,
+     12
+    ],
+    "font": "9px/normal w600 ls normal",
+    "color": "rgba(190, 212, 226, 0.86)",
+    "opacity": 1,
+    "shadow": "none",
+    "ratio": 9.55
+   },
+   {
+    "scope": "[data-testid=\"orbital-physics-04\"]",
+    "text": "0 items",
+    "rect": [
+     770.2,
+     930.8,
+     60.2,
+     19.1
+    ],
+    "font": "10px/normal w400 ls normal",
+    "color": "rgb(230, 241, 248)",
+    "opacity": 1,
+    "shadow": "none",
+    "ratio": 15.49
+   },
+   {
+    "scope": "[data-testid=\"orbital-physics-05\"]",
+    "text": "05",
+    "rect": [
+     506.6,
+     674.2,
+     15.2,
+     14
+    ],
+    "font": "11px/normal w700 ls 1px",
+    "color": "rgba(214, 230, 240, 0.9)",
+    "opacity": 1,
+    "shadow": "none",
+    "ratio": 12.42
+   },
+   {
+    "scope": "[data-testid=\"orbital-physics-05\"]",
+    "text": "⟁ TENSION FIELD",
+    "rect": [
+     455.6,
+     692.2,
+     117.2,
+     15.6
+    ],
+    "font": "13px/15.6px w700 ls normal",
+    "color": "rgb(230, 241, 248)",
+    "opacity": 1,
+    "shadow": "none",
+    "ratio": 16.97
+   },
+   {
+    "scope": "[data-testid=\"orbital-physics-05\"]",
+    "text": "Capability-gap projection",
+    "rect": [
+     447.2,
+     711.8,
+     134,
+     24
+    ],
+    "font": "10px/12px w500 ls normal",
+    "color": "rgba(200, 220, 232, 0.9)",
+    "opacity": 1,
+    "shadow": "none",
+    "ratio": 11.22
+   },
+   {
+    "scope": "[data-testid=\"orbital-physics-05\"]",
+    "text": "PRE-CANONICAL DISCOVERY",
+    "rect": [
+     452.1,
+     738.8,
+     124.2,
+     12
+    ],
+    "font": "9px/normal w600 ls normal",
+    "color": "rgba(190, 212, 226, 0.86)",
+    "opacity": 1,
+    "shadow": "none",
+    "ratio": 9.55
+   },
+   {
+    "scope": "[data-testid=\"orbital-physics-05\"]",
+    "text": "0 items",
+    "rect": [
+     484.2,
+     758.8,
+     60,
+     19
+    ],
+    "font": "10px/normal w400 ls normal",
+    "color": "rgb(230, 241, 248)",
+    "opacity": 1,
+    "shadow": "none",
+    "ratio": 15.48
+   },
+   {
+    "scope": "[data-testid=\"orbital-physics-06\"]",
+    "text": "06",
+    "rect": [
+     505.8,
+     343.7,
+     15.3,
+     14.1
+    ],
+    "font": "11px/normal w700 ls 1px",
+    "color": "rgba(214, 230, 240, 0.9)",
+    "opacity": 1,
+    "shadow": "none",
+    "ratio": 12.42
+   },
+   {
+    "scope": "[data-testid=\"orbital-physics-06\"]",
+    "text": "∿ EVOLUTION PATHS",
+    "rect": [
+     446.2,
+     361.7,
+     134.5,
+     31.3
+    ],
+    "font": "13px/15.6px w700 ls normal",
+    "color": "rgb(230, 241, 248)",
+    "opacity": 1,
+    "shadow": "none",
+    "ratio": 17.05
+   },
+   {
+    "scope": "[data-testid=\"orbital-physics-06\"]",
+    "text": "Evolution pathways",
+    "rect": [
+     459.3,
+     397,
+     108.4,
+     12
+    ],
+    "font": "10px/12px w500 ls normal",
+    "color": "rgba(200, 220, 232, 0.9)",
+    "opacity": 1,
+    "shadow": "none",
+    "ratio": 11.22
+   },
+   {
+    "scope": "[data-testid=\"orbital-physics-06\"]",
+    "text": "PRE-CANONICAL DISCOVERY",
+    "rect": [
+     451.2,
+     412.1,
+     124.7,
+     12
+    ],
+    "font": "9px/normal w600 ls normal",
+    "color": "rgba(190, 212, 226, 0.86)",
+    "opacity": 1,
+    "shadow": "none",
+    "ratio": 9.52
+   },
+   {
+    "scope": "[data-testid=\"orbital-physics-06\"]",
+    "text": "0 items",
+    "rect": [
+     483.4,
+     432.2,
+     60.2,
+     19.1
+    ],
+    "font": "10px/normal w400 ls normal",
+    "color": "rgb(230, 241, 248)",
+    "opacity": 1,
+    "shadow": "none",
+    "ratio": 15.48
+   }
+  ],
+  "focus": {
+   "03": {
+    "geometry": {
+     "membrane": [
+      578,
+      431,
+      443,
+      259
+     ],
+     "manifestation": [
+      582,
+      433,
+      437,
+      255
+     ],
+     "copy": [
+      582,
+      270,
+      437,
+      151
+     ],
+     "body": [
+      706,
+      466,
+      189,
+      189
+     ],
+     "bar": [
+      1160,
+      997,
+      294,
+      13
+     ],
+     "anim": "atmosphereGlow,coreBreathe,corePulseCommunicate,emptyProjectionBreathe,emptyProjectionBreathe,emptyProjectionBreathe,emptyProjectionBreathe,emptyProjectionShellBreathe,emptyProjectionShellBreathe,emptyProjectionShellBreathe,emptyProjectionShellBreathe,focusTransitionPulse,ghostInnerPhase,ghostMembraneBreathe,ghostOuterPressure,ghostSignalTravel,ghostTetherPulse,gradientBreath,moonOrbit,moonOrbit,moonOrbit,moonOrbit,moonOrbit,moonOrbit,orbitFloatPhase2,orbitFloatPhase2,orbitFloatPhase2,orbitFloatPhase2,orbitFloatPhase2,orbitFloatPhase2,particleIn,particleIn,plasmaFlarePulse,plasmaRotateCcw,plasmaRotateCw,ringPulse,ringPulse,rotateClockwise,waveExpand,waveExpand"
+    },
+    "text": [
+     {
+      "scope": "[data-testid=\"sil-orbit-empty-copy-03\"]",
+      "text": "EMPTY FIELD // EXPLAINED",
+      "rect": [
+       687.1,
+       269.9,
+       225.8,
+       15.7
+      ],
+      "font": "10px/14px w700 ls 2.4px",
+      "color": "rgb(255, 128, 136)",
+      "opacity": 1,
+      "shadow": "rgba(255, 56, 68, 0.55) 0px 0px 8px",
+      "ratio": 8.5
+     },
+     {
+      "scope": "[data-testid=\"sil-orbit-empty-copy-03\"]",
+      "text": "NO ORGANISATIONS PROJECTED",
+      "rect": [
+       642.7,
+       310.3,
+       314.5,
+       22.4
+      ],
+      "font": "16px/20px w800 ls 1.2px",
+      "color": "rgb(244, 250, 253)",
+      "opacity": 1,
+      "shadow": "rgba(107, 142, 255, 0.3) 0px 0px 12px, rgba(255, 56, 68, 0.2) 0px 0px 18px",
+      "ratio": 19.4
+     },
+     {
+      "scope": "[data-testid=\"sil-orbit-empty-copy-03\"]",
+      "text": "The validated analysis contains no organisation ",
+      "rect": [
+       615.2,
+       348.3,
+       369.6,
+       43
+      ],
+      "font": "12px/19.2px w400 ls 0.2px",
+      "color": "rgba(214, 230, 240, 0.92)",
+      "opacity": 1,
+      "shadow": "none",
+      "ratio": 13.41
+     },
+     {
+      "scope": "[data-testid=\"sil-orbit-empty-copy-03\"]",
+      "text": "ORBIT 03 // STRUCTURAL ABSENCE",
+      "rect": [
+       682.4,
+       407,
+       235.3,
+       13.4
+      ],
+      "font": "9px/12px w600 ls 1.6px",
+      "color": "rgb(107, 142, 255)",
+      "opacity": 0.92,
+      "shadow": "none",
+      "ratio": 5.29
+     },
+     {
+      "scope": "[data-testid=\"semantic-focus-empty-projection\"]",
+      "text": "STATE:",
+      "rect": [
+       1159.6,
+       996.5,
+       138,
+       13
+      ],
+      "font": "10px/normal w400 ls normal",
+      "color": "rgb(99, 120, 138)",
+      "opacity": 0.12,
+      "shadow": "none",
+      "ratio": 1.09
+     },
+     {
+      "scope": "[data-testid=\"semantic-focus-empty-projection\"]",
+      "text": "EMPTY PROJECTION",
+      "rect": [
+       1201.6,
+       996.5,
+       96,
+       13
+      ],
+      "font": "10px/normal w700 ls normal",
+      "color": "rgba(255, 91, 101, 0.96)",
+      "opacity": 0.12,
+      "shadow": "none",
+      "ratio": 1.11
+     },
+     {
+      "scope": "[data-testid=\"semantic-focus-empty-projection\"]",
+      "text": "EVIDENCE:",
+      "rect": [
+       1309.6,
+       996.5,
+       144,
+       13
+      ],
+      "font": "10px/normal w400 ls normal",
+      "color": "rgb(99, 120, 138)",
+      "opacity": 0.12,
+      "shadow": "none",
+      "ratio": 1.09
+     },
+     {
+      "scope": "[data-testid=\"semantic-focus-empty-projection\"]",
+      "text": "NONE PROJECTED",
+      "rect": [
+       1369.6,
+       996.5,
+       84,
+       13
+      ],
+      "font": "10px/normal w700 ls normal",
+      "color": "rgb(230, 241, 248)",
+      "opacity": 0.12,
+      "shadow": "none",
+      "ratio": 1.27
+     },
+     {
+      "scope": "[data-testid=\"orbital-physics-03\"]",
+      "text": "03",
+      "rect": [
+       791.7,
+       486.7,
+       17.1,
+       15.7
+      ],
+      "font": "11px/normal w700 ls 1px",
+      "color": "rgb(56, 229, 255)",
+      "opacity": 0.42,
+      "shadow": "none",
+      "ratio": 2.84
+     },
+     {
+      "scope": "[data-testid=\"orbital-physics-03\"]",
+      "text": "◎ RESONANCE ORBITS",
+      "rect": [
+       725,
+       506.9,
+       150.4,
+       35
+      ],
+      "font": "13px/15.6px w700 ls normal",
+      "color": "rgb(230, 241, 248)",
+      "opacity": 0.42,
+      "shadow": "none",
+      "ratio": 3.36
+     },
+     {
+      "scope": "[data-testid=\"orbital-physics-03\"]",
+      "text": "Inferred organisations (analysis) · not pool res",
+      "rect": [
+       725,
+       546.4,
+       150.4,
+       40.4
+      ],
+      "font": "10px/12px w500 ls normal",
+      "color": "rgba(200, 220, 232, 0.9)",
+      "opacity": 0.42,
+      "shadow": "none",
+      "ratio": 2.54
+     },
+     {
+      "scope": "[data-testid=\"orbital-physics-03\"]",
+      "text": "PRE-CANONICAL DISCOVERY",
+      "rect": [
+       730.5,
+       590.1,
+       139.4,
+       13.5
+      ],
+      "font": "9px/normal w600 ls normal",
+      "color": "rgba(190, 212, 226, 0.86)",
+      "opacity": 0.42,
+      "shadow": "none",
+      "ratio": 2.42
+     },
+     {
+      "scope": "[data-testid=\"orbital-physics-03\"]",
+      "text": "0 items",
+      "rect": [
+       766.6,
+       612.6,
+       67.3,
+       21.3
+      ],
+      "font": "10px/normal w400 ls normal",
+      "color": "rgb(56, 229, 255)",
+      "opacity": 0.42,
+      "shadow": "none",
+      "ratio": 2.71
+     }
+    ]
+   },
+   "04": {
+    "geometry": {
+     "membrane": [
+      580,
+      433,
+      439,
+      257
+     ],
+     "manifestation": [
+      582,
+      433,
+      437,
+      255
+     ],
+     "copy": [
+      582,
+      270,
+      437,
+      151
+     ],
+     "body": [
+      706,
+      467,
+      188,
+      188
+     ],
+     "bar": [
+      1160,
+      997,
+      294,
+      13
+     ],
+     "anim": "atmosphereGlow,coreBreathe,corePulseCommunicate,emptyProjectionBreathe,emptyProjectionBreathe,emptyProjectionBreathe,emptyProjectionBreathe,emptyProjectionShellBreathe,emptyProjectionShellBreathe,emptyProjectionShellBreathe,emptyProjectionShellBreathe,focusTransitionPulse,ghostInnerPhase,ghostMembraneBreathe,ghostOuterPressure,ghostSignalTravel,ghostTetherPulse,gradientBreath,moonOrbit,moonOrbit,moonOrbit,moonOrbit,moonOrbit,moonOrbit,orbitFloatPhase2,orbitFloatPhase2,orbitFloatPhase2,orbitFloatPhase2,orbitFloatPhase2,orbitFloatPhase2,particleIn,particleIn,plasmaFlarePulse,plasmaRotateCcw,plasmaRotateCw,ringPulse,ringPulse,rotateClockwise,waveExpand,waveExpand"
+    },
+    "text": [
+     {
+      "scope": "[data-testid=\"sil-orbit-empty-copy-04\"]",
+      "text": "EMPTY FIELD // EXPLAINED",
+      "rect": [
+       687.1,
+       269.9,
+       225.8,
+       15.7
+      ],
+      "font": "10px/14px w700 ls 2.4px",
+      "color": "rgb(255, 128, 136)",
+      "opacity": 1,
+      "shadow": "rgba(255, 56, 68, 0.55) 0px 0px 8px",
+      "ratio": 8.5
+     },
+     {
+      "scope": "[data-testid=\"sil-orbit-empty-copy-04\"]",
+      "text": "NO ROLES PROJECTED",
+      "rect": [
+       691.1,
+       310.3,
+       217.7,
+       22.4
+      ],
+      "font": "16px/20px w800 ls 1.2px",
+      "color": "rgb(244, 250, 253)",
+      "opacity": 1,
+      "shadow": "rgba(184, 127, 255, 0.3) 0px 0px 12px, rgba(255, 56, 68, 0.2) 0px 0px 18px",
+      "ratio": 19.4
+     },
+     {
+      "scope": "[data-testid=\"sil-orbit-empty-copy-04\"]",
+      "text": "The validated analysis contains no role entities",
+      "rect": [
+       615.2,
+       348.3,
+       369.6,
+       43
+      ],
+      "font": "12px/19.2px w400 ls 0.2px",
+      "color": "rgba(214, 230, 240, 0.92)",
+      "opacity": 1,
+      "shadow": "none",
+      "ratio": 13.41
+     },
+     {
+      "scope": "[data-testid=\"sil-orbit-empty-copy-04\"]",
+      "text": "ORBIT 04 // STRUCTURAL ABSENCE",
+      "rect": [
+       682.4,
+       407,
+       235.3,
+       13.4
+      ],
+      "font": "9px/12px w600 ls 1.6px",
+      "color": "rgb(184, 127, 255)",
+      "opacity": 0.92,
+      "shadow": "none",
+      "ratio": 5.82
+     },
+     {
+      "scope": "[data-testid=\"semantic-focus-empty-projection\"]",
+      "text": "STATE:",
+      "rect": [
+       1159.6,
+       996.5,
+       138,
+       13
+      ],
+      "font": "10px/normal w400 ls normal",
+      "color": "rgb(99, 120, 138)",
+      "opacity": 0.12,
+      "shadow": "none",
+      "ratio": 1.09
+     },
+     {
+      "scope": "[data-testid=\"semantic-focus-empty-projection\"]",
+      "text": "EMPTY PROJECTION",
+      "rect": [
+       1201.6,
+       996.5,
+       96,
+       13
+      ],
+      "font": "10px/normal w700 ls normal",
+      "color": "rgba(255, 91, 101, 0.96)",
+      "opacity": 0.12,
+      "shadow": "none",
+      "ratio": 1.11
+     },
+     {
+      "scope": "[data-testid=\"semantic-focus-empty-projection\"]",
+      "text": "EVIDENCE:",
+      "rect": [
+       1309.6,
+       996.5,
+       144,
+       13
+      ],
+      "font": "10px/normal w400 ls normal",
+      "color": "rgb(99, 120, 138)",
+      "opacity": 0.12,
+      "shadow": "none",
+      "ratio": 1.09
+     },
+     {
+      "scope": "[data-testid=\"semantic-focus-empty-projection\"]",
+      "text": "NONE PROJECTED",
+      "rect": [
+       1369.6,
+       996.5,
+       84,
+       13
+      ],
+      "font": "10px/normal w700 ls normal",
+      "color": "rgb(230, 241, 248)",
+      "opacity": 0.12,
+      "shadow": "none",
+      "ratio": 1.27
+     },
+     {
+      "scope": "[data-testid=\"orbital-physics-04\"]",
+      "text": "04",
+      "rect": [
+       791.5,
+       494.3,
+       17,
+       15.7
+      ],
+      "font": "11px/normal w700 ls 1px",
+      "color": "rgb(56, 229, 255)",
+      "opacity": 0.42,
+      "shadow": "none",
+      "ratio": 2.88
+     },
+     {
+      "scope": "[data-testid=\"orbital-physics-04\"]",
+      "text": "⎔ ROLE MANIFESTATION",
+      "rect": [
+       725,
+       514.4,
+       150.1,
+       34.9
+      ],
+      "font": "13px/15.6px w700 ls normal",
+      "color": "rgb(230, 241, 248)",
+      "opacity": 0.42,
+      "shadow": "none",
+      "ratio": 3.34
+     },
+     {
+      "scope": "[data-testid=\"orbital-physics-04\"]",
+      "text": "Concrete role manifestations",
+      "rect": [
+       725,
+       553.8,
+       150.1,
+       26.9
+      ],
+      "font": "10px/12px w500 ls normal",
+      "color": "rgba(200, 220, 232, 0.9)",
+      "opacity": 0.42,
+      "shadow": "none",
+      "ratio": 2.49
+     },
+     {
+      "scope": "[data-testid=\"orbital-physics-04\"]",
+      "text": "PRE-CANONICAL DISCOVERY",
+      "rect": [
+       730.4,
+       584.1,
+       139.1,
+       13.4
+      ],
+      "font": "9px/normal w600 ls normal",
+      "color": "rgba(190, 212, 226, 0.86)",
+      "opacity": 0.42,
+      "shadow": "none",
+      "ratio": 2.44
+     },
+     {
+      "scope": "[data-testid=\"orbital-physics-04\"]",
+      "text": "0 items",
+      "rect": [
+       766.4,
+       606.5,
+       67.2,
+       21.3
+      ],
+      "font": "10px/normal w400 ls normal",
+      "color": "rgb(56, 229, 255)",
+      "opacity": 0.42,
+      "shadow": "none",
+      "ratio": 2.71
+     }
+    ]
+   },
+   "05": {
+    "geometry": {
+     "membrane": [
+      582,
+      433,
+      436,
+      255
+     ],
+     "manifestation": [
+      582,
+      433,
+      437,
+      255
+     ],
+     "copy": [
+      582,
+      270,
+      437,
+      151
+     ],
+     "body": [
+      705,
+      468,
+      189,
+      189
+     ],
+     "bar": [
+      1160,
+      997,
+      294,
+      13
+     ],
+     "anim": "atmosphereGlow,coreBreathe,corePulseCommunicate,emptyProjectionBreathe,emptyProjectionBreathe,emptyProjectionBreathe,emptyProjectionBreathe,emptyProjectionShellBreathe,emptyProjectionShellBreathe,emptyProjectionShellBreathe,emptyProjectionShellBreathe,focusTransitionPulse,ghostInnerPhase,ghostMembraneBreathe,ghostOuterPressure,ghostSignalTravel,ghostTetherPulse,gradientBreath,moonOrbit,moonOrbit,moonOrbit,moonOrbit,moonOrbit,moonOrbit,orbitFloatPhase2,orbitFloatPhase2,orbitFloatPhase2,orbitFloatPhase2,orbitFloatPhase2,orbitFloatPhase2,particleIn,particleIn,plasmaFlarePulse,plasmaRotateCcw,plasmaRotateCw,ringPulse,ringPulse,rotateClockwise,waveExpand,waveExpand"
+    },
+    "text": [
+     {
+      "scope": "[data-testid=\"sil-orbit-empty-copy-05\"]",
+      "text": "EMPTY FIELD // EXPLAINED",
+      "rect": [
+       687.1,
+       269.9,
+       225.8,
+       15.7
+      ],
+      "font": "10px/14px w700 ls 2.4px",
+      "color": "rgb(255, 128, 136)",
+      "opacity": 1,
+      "shadow": "rgba(255, 56, 68, 0.55) 0px 0px 8px",
+      "ratio": 8.5
+     },
+     {
+      "scope": "[data-testid=\"sil-orbit-empty-copy-05\"]",
+      "text": "NO GAP PROJECTION AVAILABLE",
+      "rect": [
+       636.7,
+       310.3,
+       326.6,
+       22.4
+      ],
+      "font": "16px/20px w800 ls 1.2px",
+      "color": "rgb(244, 250, 253)",
+      "opacity": 1,
+      "shadow": "rgba(255, 124, 92, 0.3) 0px 0px 12px, rgba(255, 56, 68, 0.2) 0px 0px 18px",
+      "ratio": 19.4
+     },
+     {
+      "scope": "[data-testid=\"sil-orbit-empty-copy-05\"]",
+      "text": "This analysis path currently provides no capabil",
+      "rect": [
+       615.2,
+       348.3,
+       369.6,
+       43
+      ],
+      "font": "12px/19.2px w400 ls 0.2px",
+      "color": "rgba(214, 230, 240, 0.92)",
+      "opacity": 1,
+      "shadow": "none",
+      "ratio": 13.41
+     },
+     {
+      "scope": "[data-testid=\"sil-orbit-empty-copy-05\"]",
+      "text": "ORBIT 05 // STRUCTURAL ABSENCE",
+      "rect": [
+       682.4,
+       407,
+       235.3,
+       13.4
+      ],
+      "font": "9px/12px w600 ls 1.6px",
+      "color": "rgb(255, 124, 92)",
+      "opacity": 0.92,
+      "shadow": "none",
+      "ratio": 6.37
+     },
+     {
+      "scope": "[data-testid=\"semantic-focus-empty-projection\"]",
+      "text": "STATE:",
+      "rect": [
+       1159.6,
+       996.5,
+       138,
+       13
+      ],
+      "font": "10px/normal w400 ls normal",
+      "color": "rgb(99, 120, 138)",
+      "opacity": 0.12,
+      "shadow": "none",
+      "ratio": 1.09
+     },
+     {
+      "scope": "[data-testid=\"semantic-focus-empty-projection\"]",
+      "text": "EMPTY PROJECTION",
+      "rect": [
+       1201.6,
+       996.5,
+       96,
+       13
+      ],
+      "font": "10px/normal w700 ls normal",
+      "color": "rgba(255, 91, 101, 0.96)",
+      "opacity": 0.12,
+      "shadow": "none",
+      "ratio": 1.11
+     },
+     {
+      "scope": "[data-testid=\"semantic-focus-empty-projection\"]",
+      "text": "EVIDENCE:",
+      "rect": [
+       1309.6,
+       996.5,
+       144,
+       13
+      ],
+      "font": "10px/normal w400 ls normal",
+      "color": "rgb(99, 120, 138)",
+      "opacity": 0.12,
+      "shadow": "none",
+      "ratio": 1.09
+     },
+     {
+      "scope": "[data-testid=\"semantic-focus-empty-projection\"]",
+      "text": "NONE PROJECTED",
+      "rect": [
+       1369.6,
+       996.5,
+       84,
+       13
+      ],
+      "font": "10px/normal w700 ls normal",
+      "color": "rgb(230, 241, 248)",
+      "opacity": 0.12,
+      "shadow": "none",
+      "ratio": 1.27
+     },
+     {
+      "scope": "[data-testid=\"orbital-physics-05\"]",
+      "text": "05",
+      "rect": [
+       790.9,
+       504,
+       17.1,
+       15.7
+      ],
+      "font": "11px/normal w700 ls 1px",
+      "color": "rgb(56, 229, 255)",
+      "opacity": 0.42,
+      "shadow": "none",
+      "ratio": 2.86
+     },
+     {
+      "scope": "[data-testid=\"orbital-physics-05\"]",
+      "text": "⟁ TENSION FIELD",
+      "rect": [
+       733.6,
+       524.2,
+       131.6,
+       17.5
+      ],
+      "font": "13px/15.6px w700 ls normal",
+      "color": "rgb(230, 241, 248)",
+      "opacity": 0.42,
+      "shadow": "none",
+      "ratio": 3.37
+     },
+     {
+      "scope": "[data-testid=\"orbital-physics-05\"]",
+      "text": "Capability-gap projection",
+      "rect": [
+       724.2,
+       546.2,
+       150.5,
+       26.9
+      ],
+      "font": "10px/12px w500 ls normal",
+      "color": "rgba(200, 220, 232, 0.9)",
+      "opacity": 0.42,
+      "shadow": "none",
+      "ratio": 2.48
+     },
+     {
+      "scope": "[data-testid=\"orbital-physics-05\"]",
+      "text": "PRE-CANONICAL DISCOVERY",
+      "rect": [
+       729.7,
+       576.5,
+       139.5,
+       13.5
+      ],
+      "font": "9px/normal w600 ls normal",
+      "color": "rgba(190, 212, 226, 0.86)",
+      "opacity": 0.42,
+      "shadow": "none",
+      "ratio": 2.4
+     },
+     {
+      "scope": "[data-testid=\"orbital-physics-05\"]",
+      "text": "0 items",
+      "rect": [
+       765.7,
+       599,
+       67.4,
+       21.3
+      ],
+      "font": "10px/normal w400 ls normal",
+      "color": "rgb(56, 229, 255)",
+      "opacity": 0.42,
+      "shadow": "none",
+      "ratio": 2.73
+     }
+    ]
+   },
+   "06": {
+    "geometry": {
+     "membrane": [
+      579,
+      432,
+      442,
+      258
+     ],
+     "manifestation": [
+      582,
+      433,
+      437,
+      255
+     ],
+     "copy": [
+      582,
+      270,
+      437,
+      151
+     ],
+     "body": [
+      704,
+      469,
+      189,
+      189
+     ],
+     "bar": [
+      1160,
+      997,
+      294,
+      13
+     ],
+     "anim": "atmosphereGlow,coreBreathe,corePulseCommunicate,emptyProjectionBreathe,emptyProjectionBreathe,emptyProjectionBreathe,emptyProjectionBreathe,emptyProjectionShellBreathe,emptyProjectionShellBreathe,emptyProjectionShellBreathe,emptyProjectionShellBreathe,focusTransitionPulse,ghostInnerPhase,ghostMembraneBreathe,ghostOuterPressure,ghostSignalTravel,ghostTetherPulse,gradientBreath,moonOrbit,moonOrbit,moonOrbit,moonOrbit,moonOrbit,moonOrbit,orbitFloatPhase2,orbitFloatPhase2,orbitFloatPhase2,orbitFloatPhase2,orbitFloatPhase2,orbitFloatPhase2,particleIn,particleIn,plasmaFlarePulse,plasmaRotateCcw,plasmaRotateCw,ringPulse,ringPulse,rotateClockwise,waveExpand,waveExpand"
+    },
+    "text": [
+     {
+      "scope": "[data-testid=\"sil-orbit-empty-copy-06\"]",
+      "text": "EMPTY FIELD // EXPLAINED",
+      "rect": [
+       687.1,
+       269.9,
+       225.8,
+       15.7
+      ],
+      "font": "10px/14px w700 ls 2.4px",
+      "color": "rgb(255, 128, 136)",
+      "opacity": 1,
+      "shadow": "rgba(255, 56, 68, 0.55) 0px 0px 8px",
+      "ratio": 8.5
+     },
+     {
+      "scope": "[data-testid=\"sil-orbit-empty-copy-06\"]",
+      "text": "NO EVOLUTION PATHS PROJECTED",
+      "rect": [
+       630.6,
+       310.3,
+       338.7,
+       22.4
+      ],
+      "font": "16px/20px w800 ls 1.2px",
+      "color": "rgb(244, 250, 253)",
+      "opacity": 1,
+      "shadow": "rgba(56, 255, 139, 0.3) 0px 0px 12px, rgba(255, 56, 68, 0.2) 0px 0px 18px",
+      "ratio": 19.4
+     },
+     {
+      "scope": "[data-testid=\"sil-orbit-empty-copy-06\"]",
+      "text": "The validated analysis contains no strategy or e",
+      "rect": [
+       615.2,
+       348.3,
+       369.6,
+       43
+      ],
+      "font": "12px/19.2px w400 ls 0.2px",
+      "color": "rgba(214, 230, 240, 0.92)",
+      "opacity": 1,
+      "shadow": "none",
+      "ratio": 13.41
+     },
+     {
+      "scope": "[data-testid=\"sil-orbit-empty-copy-06\"]",
+      "text": "ORBIT 06 // STRUCTURAL ABSENCE",
+      "rect": [
+       682.4,
+       407,
+       235.3,
+       13.4
+      ],
+      "font": "9px/12px w600 ls 1.6px",
+      "color": "rgb(56, 255, 139)",
+      "opacity": 0.92,
+      "shadow": "none",
+      "ratio": 11.74
+     },
+     {
+      "scope": "[data-testid=\"semantic-focus-empty-projection\"]",
+      "text": "STATE:",
+      "rect": [
+       1159.6,
+       996.5,
+       138,
+       13
+      ],
+      "font": "10px/normal w400 ls normal",
+      "color": "rgb(99, 120, 138)",
+      "opacity": 0.12,
+      "shadow": "none",
+      "ratio": 1.09
+     },
+     {
+      "scope": "[data-testid=\"semantic-focus-empty-projection\"]",
+      "text": "EMPTY PROJECTION",
+      "rect": [
+       1201.6,
+       996.5,
+       96,
+       13
+      ],
+      "font": "10px/normal w700 ls normal",
+      "color": "rgba(255, 91, 101, 0.96)",
+      "opacity": 0.12,
+      "shadow": "none",
+      "ratio": 1.11
+     },
+     {
+      "scope": "[data-testid=\"semantic-focus-empty-projection\"]",
+      "text": "EVIDENCE:",
+      "rect": [
+       1309.6,
+       996.5,
+       144,
+       13
+      ],
+      "font": "10px/normal w400 ls normal",
+      "color": "rgb(99, 120, 138)",
+      "opacity": 0.12,
+      "shadow": "none",
+      "ratio": 1.09
+     },
+     {
+      "scope": "[data-testid=\"semantic-focus-empty-projection\"]",
+      "text": "NONE PROJECTED",
+      "rect": [
+       1369.6,
+       996.5,
+       84,
+       13
+      ],
+      "font": "10px/normal w700 ls normal",
+      "color": "rgb(230, 241, 248)",
+      "opacity": 0.12,
+      "shadow": "none",
+      "ratio": 1.27
+     },
+     {
+      "scope": "[data-testid=\"orbital-physics-06\"]",
+      "text": "06",
+      "rect": [
+       790.4,
+       502.8,
+       17.1,
+       15.8
+      ],
+      "font": "11px/normal w700 ls 1px",
+      "color": "rgb(56, 229, 255)",
+      "opacity": 0.42,
+      "shadow": "none",
+      "ratio": 2.86
+     },
+     {
+      "scope": "[data-testid=\"orbital-physics-06\"]",
+      "text": "∿ EVOLUTION PATHS",
+      "rect": [
+       723.5,
+       523,
+       150.9,
+       35.1
+      ],
+      "font": "13px/15.6px w700 ls normal",
+      "color": "rgb(230, 241, 248)",
+      "opacity": 0.42,
+      "shadow": "none",
+      "ratio": 3.19
+     },
+     {
+      "scope": "[data-testid=\"orbital-physics-06\"]",
+      "text": "Evolution pathways",
+      "rect": [
+       738.1,
+       562.6,
+       121.6,
+       13.5
+      ],
+      "font": "10px/12px w500 ls normal",
+      "color": "rgba(200, 220, 232, 0.9)",
+      "opacity": 0.42,
+      "shadow": "none",
+      "ratio": 2.42
+     },
+     {
+      "scope": "[data-testid=\"orbital-physics-06\"]",
+      "text": "PRE-CANONICAL DISCOVERY",
+      "rect": [
+       729,
+       579.5,
+       139.8,
+       13.5
+      ],
+      "font": "9px/normal w600 ls normal",
+      "color": "rgba(190, 212, 226, 0.86)",
+      "opacity": 0.42,
+      "shadow": "none",
+      "ratio": 2.39
+     },
+     {
+      "scope": "[data-testid=\"orbital-physics-06\"]",
+      "text": "0 items",
+      "rect": [
+       765.2,
+       602,
+       67.5,
+       21.4
+      ],
+      "font": "10px/normal w400 ls normal",
+      "color": "rgb(56, 229, 255)",
+      "opacity": 0.42,
+      "shadow": "none",
+      "ratio": 2.73
+     }
+    ]
+   }
+  },
+  "errors": []
+ }
+}

@@ -2,6 +2,7 @@ import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
 import { POST } from "../app/api/career/analyze/route";
 import * as providers from "../lib/career/providers";
 import { MockInferenceProvider } from "../lib/career/adapter";
+import { resolveTestJobScope } from "./support/job-scope";
 
 describe("CONDYN Career Analysis Protocol v1.0 — Step 19d: Multi-Source API Route (`test/career-analyze-multisource.test.ts`)", () => {
   beforeEach(() => {
@@ -31,7 +32,7 @@ describe("CONDYN Career Analysis Protocol v1.0 — Step 19d: Multi-Source API Ro
       { type: "website", url: "https://condyn.eu/architect", title: "Architect Profile" }
     ]);
 
-    const validationResult = await executeCareerAnalysisPipeline(normalizedDocs, providers.getCareerInferenceProvider());
+    const validationResult = await executeCareerAnalysisPipeline(normalizedDocs, providers.getCareerInferenceProvider(), { jobScope: resolveTestJobScope() });
     expect(validationResult.success).toBe(true);
     
     const analysis = validationResult.data as any;
@@ -63,7 +64,7 @@ describe("CONDYN Career Analysis Protocol v1.0 — Step 19d: Multi-Source API Ro
       { type: "github", url: "https://github.com/condyn/career-engine" }
     ]);
 
-    const validationResult = await executeCareerAnalysisPipeline(normalizedDocs, providers.getCareerInferenceProvider());
+    const validationResult = await executeCareerAnalysisPipeline(normalizedDocs, providers.getCareerInferenceProvider(), { jobScope: resolveTestJobScope() });
     expect(validationResult.success).toBe(true);
     
     const analysis = validationResult.data as any;
@@ -105,7 +106,7 @@ describe("CONDYN Career Analysis Protocol v1.0 — Step 19d: Multi-Source API Ro
     
     expect(normalizedDocs.length).toBeGreaterThan(0);
 
-    const validationResult = await executeCareerAnalysisPipeline(normalizedDocs, providers.getCareerInferenceProvider());
+    const validationResult = await executeCareerAnalysisPipeline(normalizedDocs, providers.getCareerInferenceProvider(), { jobScope: resolveTestJobScope() });
     expect(validationResult.success).toBe(true);
   });
 
@@ -180,7 +181,7 @@ describe("CONDYN Career Analysis Protocol v1.0 — Step 19d: Multi-Source API Ro
     
     // 1. Manually build and persist canonical analysis (simulating successful worker execution)
     const { normalizedDocs } = await prepareDocuments([{ type: "text", title: "CV", content: "Senior Cloud Architect at Siemens." }]);
-    const validationResult = await executeCareerAnalysisPipeline(normalizedDocs, providers.getCareerInferenceProvider());
+    const validationResult = await executeCareerAnalysisPipeline(normalizedDocs, providers.getCareerInferenceProvider(), { jobScope: resolveTestJobScope() });
     const analysis = validationResult.data as any;
     const analysisId = analysis.structured_data.analysis.metadata.analysis_id;
     

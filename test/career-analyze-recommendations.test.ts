@@ -9,6 +9,7 @@ import { matchCareerAnalysisAgainstPool } from "../lib/career/matching/engine";
 import { generateCareerRecommendations } from "../lib/career/recommendations/gaps";
 import { DEMO_COMPANY_POOL } from "../lib/career/matching/demo-pool";
 import { prepareDocuments } from "../lib/career/orchestration/document-loader";
+import { resolveTestJobScope } from "./support/job-scope";
 
 describe("CONDYN Career Analysis Protocol v1.0 — Step 20b: Recommendation API Integration (`test/career-analyze-recommendations.test.ts`)", () => {
   beforeEach(() => {
@@ -21,7 +22,7 @@ describe("CONDYN Career Analysis Protocol v1.0 — Step 20b: Recommendation API 
 
   it("should generate `matching` and `recommendations` from analysis pipeline directly (CATEGORY A)", async () => {
     const { normalizedDocs } = await prepareDocuments([{ type: "text", title: "CV", content: "15 years experience in Distributed Systems and Microservices Architecture." }]);
-    const validationResult = await executeCareerAnalysisPipeline(normalizedDocs, providers.getCareerInferenceProvider());
+    const validationResult = await executeCareerAnalysisPipeline(normalizedDocs, providers.getCareerInferenceProvider(), { jobScope: resolveTestJobScope() });
     
     expect(validationResult.success).toBe(true);
     const analysis = validationResult.data as any;
@@ -40,7 +41,7 @@ describe("CONDYN Career Analysis Protocol v1.0 — Step 20b: Recommendation API 
 
   it("should generate recommendations based on missingCapabilities from role matches (CATEGORY A)", async () => {
     const { normalizedDocs } = await prepareDocuments([{ type: "text", title: "CV", content: "Senior Systems Engineer skilled in C++." }]);
-    const validationResult = await executeCareerAnalysisPipeline(normalizedDocs, providers.getCareerInferenceProvider());
+    const validationResult = await executeCareerAnalysisPipeline(normalizedDocs, providers.getCareerInferenceProvider(), { jobScope: resolveTestJobScope() });
     const analysis = validationResult.data as any;
     
     const matching = matchCareerAnalysisAgainstPool(analysis, DEMO_COMPANY_POOL);
@@ -56,7 +57,7 @@ describe("CONDYN Career Analysis Protocol v1.0 — Step 20b: Recommendation API 
 
   it("should preserve existing response structure compatibility (success, status, analysisId, metadata, reactFlowGraph) via GET (CATEGORY C)", async () => {
     const { normalizedDocs } = await prepareDocuments([{ type: "text", title: "CV", content: "Senior Cloud Architect." }]);
-    const validationResult = await executeCareerAnalysisPipeline(normalizedDocs, providers.getCareerInferenceProvider());
+    const validationResult = await executeCareerAnalysisPipeline(normalizedDocs, providers.getCareerInferenceProvider(), { jobScope: resolveTestJobScope() });
     const analysis = validationResult.data as any;
     const analysisId = analysis.structured_data.analysis.metadata.analysis_id;
     
@@ -78,7 +79,7 @@ describe("CONDYN Career Analysis Protocol v1.0 — Step 20b: Recommendation API 
 
   it("should include `matching` and `recommendations` in GET /api/career/analyses/[analysisId] response (CATEGORY B)", async () => {
     const { normalizedDocs } = await prepareDocuments([{ type: "text", content: "Senior Cloud Solutions Architect." }]);
-    const validationResult = await executeCareerAnalysisPipeline(normalizedDocs, providers.getCareerInferenceProvider());
+    const validationResult = await executeCareerAnalysisPipeline(normalizedDocs, providers.getCareerInferenceProvider(), { jobScope: resolveTestJobScope() });
     const analysis = validationResult.data as any;
     const analysisId = analysis.structured_data.analysis.metadata.analysis_id;
     

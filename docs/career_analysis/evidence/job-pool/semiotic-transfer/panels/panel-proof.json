@@ -1,0 +1,123 @@
+{
+  "base": "http://127.0.0.1:43527",
+  "passed": 24,
+  "total": 24,
+  "checks": [
+    {
+      "name": "1600x1000 no-preference: panel motion only sxPanelCurrent / atmosphereGlow",
+      "ok": true,
+      "detail": "{\"pools\":[\"atmosphereGlow\",\"sxPanelCurrent\"],\"intake\":[\"atmosphereGlow\",\"sxPanelCurrent\"],\"boundary\":[\"atmosphereGlow\",\"sxPanelCurrent\"]}"
+    },
+    {
+      "name": "1600x1000 no-preference: intake and boundary do not overlap",
+      "ok": true,
+      "detail": "intake bottom 473, boundary top 489"
+    },
+    {
+      "name": "1600x1000 no-preference: panel nodes are decoration (aria-hidden, no pointer)",
+      "ok": true
+    },
+    {
+      "name": "1600x1000 no-preference: the boundary alone reads without scrolling",
+      "ok": true,
+      "detail": "{\"top\":350.453125,\"bottom\":949,\"left\":1200,\"right\":1572,\"scroll\":false}"
+    },
+    {
+      "name": "1600x1000 no-preference: Enter on a focused SELECT selects that pool (URL)",
+      "ok": true,
+      "detail": "JPOOL_A5D87C9905D8E8AA9CAEB47AFBDA9AB1"
+    },
+    {
+      "name": "1600x1000 no-preference: no page errors",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1600x1000 reduce: no animation on the panels (pseudo-elements included)",
+      "ok": true,
+      "detail": "{}"
+    },
+    {
+      "name": "1600x1000 reduce: intake and boundary do not overlap",
+      "ok": true,
+      "detail": "intake bottom 473, boundary top 489"
+    },
+    {
+      "name": "1600x1000 reduce: panel nodes are decoration (aria-hidden, no pointer)",
+      "ok": true
+    },
+    {
+      "name": "1600x1000 reduce: the boundary alone reads without scrolling",
+      "ok": true,
+      "detail": "{\"top\":350.453125,\"bottom\":949,\"left\":1200,\"right\":1572,\"scroll\":false}"
+    },
+    {
+      "name": "1600x1000 reduce: Enter on a focused SELECT selects that pool (URL)",
+      "ok": true,
+      "detail": "JPOOL_A5D87C9905D8E8AA9CAEB47AFBDA9AB1"
+    },
+    {
+      "name": "1600x1000 reduce: no page errors",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1280x720 no-preference: panel motion only sxPanelCurrent / atmosphereGlow",
+      "ok": true,
+      "detail": "{\"pools\":[\"atmosphereGlow\",\"sxPanelCurrent\"],\"intake\":[\"atmosphereGlow\",\"sxPanelCurrent\"],\"boundary\":[\"atmosphereGlow\",\"sxPanelCurrent\"]}"
+    },
+    {
+      "name": "1280x720 no-preference: intake and boundary do not overlap",
+      "ok": true,
+      "detail": "intake bottom 473, boundary top 729"
+    },
+    {
+      "name": "1280x720 no-preference: panel nodes are decoration (aria-hidden, no pointer)",
+      "ok": true
+    },
+    {
+      "name": "1280x720 no-preference: the boundary alone stays inside the field",
+      "ok": true,
+      "detail": "{\"top\":489,\"bottom\":909,\"left\":880.8125,\"right\":1252,\"scroll\":true}"
+    },
+    {
+      "name": "1280x720 no-preference: Enter on a focused SELECT selects that pool (URL)",
+      "ok": true,
+      "detail": "JPOOL_A5D87C9905D8E8AA9CAEB47AFBDA9AB1"
+    },
+    {
+      "name": "1280x720 no-preference: no page errors",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1280x720 reduce: no animation on the panels (pseudo-elements included)",
+      "ok": true,
+      "detail": "{}"
+    },
+    {
+      "name": "1280x720 reduce: intake and boundary do not overlap",
+      "ok": true,
+      "detail": "intake bottom 473, boundary top 729"
+    },
+    {
+      "name": "1280x720 reduce: panel nodes are decoration (aria-hidden, no pointer)",
+      "ok": true
+    },
+    {
+      "name": "1280x720 reduce: the boundary alone stays inside the field",
+      "ok": true,
+      "detail": "{\"top\":489,\"bottom\":909,\"left\":880.8125,\"right\":1252,\"scroll\":true}"
+    },
+    {
+      "name": "1280x720 reduce: Enter on a focused SELECT selects that pool (URL)",
+      "ok": true,
+      "detail": "JPOOL_A5D87C9905D8E8AA9CAEB47AFBDA9AB1"
+    },
+    {
+      "name": "1280x720 reduce: no page errors",
+      "ok": true,
+      "detail": ""
+    }
+  ]
+}

@@ -1,0 +1,401 @@
+{
+  "rule": "Job-scope requirement on every execution path of the Career-Analysis pipeline, including development scripts; no bypass (owner 2026-10-14)",
+  "label": "2026-10-15-scope-discovery-message-no-gemini",
+  "gitSha": "38d6eec+scope-diff",
+  "database": "disposable test database condyn_test_562122dea520da9f (dropped after the run)",
+  "gemini": "no live call: dummy GEMINI_API_KEY, every child under the network sentinel",
+  "pools": {
+    "engineering": {
+      "jobPoolUploadId": "JPOOL_B94850C439974E27496FE3B1A9A076B5",
+      "status": "ACTIVE"
+    },
+    "engineeringDraft": {
+      "jobPoolUploadId": "JPOOL_D2303DEC1AECE99C5E1B68762BBB1B65",
+      "status": "DRAFT"
+    }
+  },
+  "scripts": [
+    "scripts/test-pipeline-live.ts",
+    "scripts/test-multi-source-live.ts",
+    "scripts/test-live-action-chain.ts",
+    "scripts/test-live-decision-chain.ts",
+    "scripts/test-live-feedback-chain.ts",
+    "scripts/test-live-learning-chain.ts",
+    "scripts/test-live-outcome-chain.ts",
+    "scripts/test-live-recommendation-proof.ts",
+    "scripts/probe-gemini.ts",
+    "scripts/list-models.ts",
+    "debug.ts",
+    "test-pdf.ts",
+    "test-github.ts",
+    "trace-pdf.ts",
+    "trace-pdf-5.ts",
+    "forensics-step2.ts",
+    "bisection.ts",
+    "schema-bisection.ts",
+    "schema-bisection-mjs.ts",
+    "test-schema.ts"
+  ],
+  "checks": [
+    {
+      "id": "S0_SENTINEL_BLOCKS_AND_RECORDS",
+      "pass": true,
+      "observed": {
+        "exitCode": 7,
+        "recorded": 1
+      }
+    },
+    {
+      "id": "NO_SELECTION scripts/test-pipeline-live.ts",
+      "pass": true,
+      "observed": {
+        "exitCode": 3,
+        "refusal": "ERR_JOB_SCOPE_REQUIRED: Bitte wähle einen Job aus einem Pool aus."
+      }
+    },
+    {
+      "id": "INVALID_SELECTION_DRAFT_POOL scripts/test-pipeline-live.ts",
+      "pass": true,
+      "observed": {
+        "exitCode": 3,
+        "refusal": "ERR_JOB_SCOPE_INVALID: Bitte wähle einen Job aus einem Pool aus."
+      }
+    },
+    {
+      "id": "NO_SELECTION scripts/test-multi-source-live.ts",
+      "pass": true,
+      "observed": {
+        "exitCode": 3,
+        "refusal": "ERR_JOB_SCOPE_REQUIRED: Bitte wähle einen Job aus einem Pool aus."
+      }
+    },
+    {
+      "id": "INVALID_SELECTION_DRAFT_POOL scripts/test-multi-source-live.ts",
+      "pass": true,
+      "observed": {
+        "exitCode": 3,
+        "refusal": "ERR_JOB_SCOPE_INVALID: Bitte wähle einen Job aus einem Pool aus."
+      }
+    },
+    {
+      "id": "NO_SELECTION scripts/test-live-action-chain.ts",
+      "pass": true,
+      "observed": {
+        "exitCode": 3,
+        "refusal": "ERR_JOB_SCOPE_REQUIRED: Bitte wähle einen Job aus einem Pool aus."
+      }
+    },
+    {
+      "id": "INVALID_SELECTION_DRAFT_POOL scripts/test-live-action-chain.ts",
+      "pass": true,
+      "observed": {
+        "exitCode": 3,
+        "refusal": "ERR_JOB_SCOPE_INVALID: Bitte wähle einen Job aus einem Pool aus."
+      }
+    },
+    {
+      "id": "NO_SELECTION scripts/test-live-decision-chain.ts",
+      "pass": true,
+      "observed": {
+        "exitCode": 3,
+        "refusal": "ERR_JOB_SCOPE_REQUIRED: Bitte wähle einen Job aus einem Pool aus."
+      }
+    },
+    {
+      "id": "INVALID_SELECTION_DRAFT_POOL scripts/test-live-decision-chain.ts",
+      "pass": true,
+      "observed": {
+        "exitCode": 3,
+        "refusal": "ERR_JOB_SCOPE_INVALID: Bitte wähle einen Job aus einem Pool aus."
+      }
+    },
+    {
+      "id": "NO_SELECTION scripts/test-live-feedback-chain.ts",
+      "pass": true,
+      "observed": {
+        "exitCode": 3,
+        "refusal": "ERR_JOB_SCOPE_REQUIRED: Bitte wähle einen Job aus einem Pool aus."
+      }
+    },
+    {
+      "id": "INVALID_SELECTION_DRAFT_POOL scripts/test-live-feedback-chain.ts",
+      "pass": true,
+      "observed": {
+        "exitCode": 3,
+        "refusal": "ERR_JOB_SCOPE_INVALID: Bitte wähle einen Job aus einem Pool aus."
+      }
+    },
+    {
+      "id": "NO_SELECTION scripts/test-live-learning-chain.ts",
+      "pass": true,
+      "observed": {
+        "exitCode": 3,
+        "refusal": "ERR_JOB_SCOPE_REQUIRED: Bitte wähle einen Job aus einem Pool aus."
+      }
+    },
+    {
+      "id": "INVALID_SELECTION_DRAFT_POOL scripts/test-live-learning-chain.ts",
+      "pass": true,
+      "observed": {
+        "exitCode": 3,
+        "refusal": "ERR_JOB_SCOPE_INVALID: Bitte wähle einen Job aus einem Pool aus."
+      }
+    },
+    {
+      "id": "NO_SELECTION scripts/test-live-outcome-chain.ts",
+      "pass": true,
+      "observed": {
+        "exitCode": 3,
+        "refusal": "ERR_JOB_SCOPE_REQUIRED: Bitte wähle einen Job aus einem Pool aus."
+      }
+    },
+    {
+      "id": "INVALID_SELECTION_DRAFT_POOL scripts/test-live-outcome-chain.ts",
+      "pass": true,
+      "observed": {
+        "exitCode": 3,
+        "refusal": "ERR_JOB_SCOPE_INVALID: Bitte wähle einen Job aus einem Pool aus."
+      }
+    },
+    {
+      "id": "NO_SELECTION scripts/test-live-recommendation-proof.ts",
+      "pass": true,
+      "observed": {
+        "exitCode": 3,
+        "refusal": "ERR_JOB_SCOPE_REQUIRED: Bitte wähle einen Job aus einem Pool aus."
+      }
+    },
+    {
+      "id": "INVALID_SELECTION_DRAFT_POOL scripts/test-live-recommendation-proof.ts",
+      "pass": true,
+      "observed": {
+        "exitCode": 3,
+        "refusal": "ERR_JOB_SCOPE_INVALID: Bitte wähle einen Job aus einem Pool aus."
+      }
+    },
+    {
+      "id": "NO_SELECTION scripts/probe-gemini.ts",
+      "pass": true,
+      "observed": {
+        "exitCode": 3,
+        "refusal": "ERR_JOB_SCOPE_REQUIRED: Bitte wähle einen Job aus einem Pool aus."
+      }
+    },
+    {
+      "id": "INVALID_SELECTION_DRAFT_POOL scripts/probe-gemini.ts",
+      "pass": true,
+      "observed": {
+        "exitCode": 3,
+        "refusal": "ERR_JOB_SCOPE_INVALID: Bitte wähle einen Job aus einem Pool aus."
+      }
+    },
+    {
+      "id": "NO_SELECTION scripts/list-models.ts",
+      "pass": true,
+      "observed": {
+        "exitCode": 3,
+        "refusal": "ERR_JOB_SCOPE_REQUIRED: Bitte wähle einen Job aus einem Pool aus."
+      }
+    },
+    {
+      "id": "INVALID_SELECTION_DRAFT_POOL scripts/list-models.ts",
+      "pass": true,
+      "observed": {
+        "exitCode": 3,
+        "refusal": "ERR_JOB_SCOPE_INVALID: Bitte wähle einen Job aus einem Pool aus."
+      }
+    },
+    {
+      "id": "NO_SELECTION debug.ts",
+      "pass": true,
+      "observed": {
+        "exitCode": 3,
+        "refusal": "ERR_JOB_SCOPE_REQUIRED: Bitte wähle einen Job aus einem Pool aus."
+      }
+    },
+    {
+      "id": "INVALID_SELECTION_DRAFT_POOL debug.ts",
+      "pass": true,
+      "observed": {
+        "exitCode": 3,
+        "refusal": "ERR_JOB_SCOPE_INVALID: Bitte wähle einen Job aus einem Pool aus."
+      }
+    },
+    {
+      "id": "NO_SELECTION test-pdf.ts",
+      "pass": true,
+      "observed": {
+        "exitCode": 3,
+        "refusal": "ERR_JOB_SCOPE_REQUIRED: Bitte wähle einen Job aus einem Pool aus."
+      }
+    },
+    {
+      "id": "INVALID_SELECTION_DRAFT_POOL test-pdf.ts",
+      "pass": true,
+      "observed": {
+        "exitCode": 3,
+        "refusal": "ERR_JOB_SCOPE_INVALID: Bitte wähle einen Job aus einem Pool aus."
+      }
+    },
+    {
+      "id": "NO_SELECTION test-github.ts",
+      "pass": true,
+      "observed": {
+        "exitCode": 3,
+        "refusal": "ERR_JOB_SCOPE_REQUIRED: Bitte wähle einen Job aus einem Pool aus."
+      }
+    },
+    {
+      "id": "INVALID_SELECTION_DRAFT_POOL test-github.ts",
+      "pass": true,
+      "observed": {
+        "exitCode": 3,
+        "refusal": "ERR_JOB_SCOPE_INVALID: Bitte wähle einen Job aus einem Pool aus."
+      }
+    },
+    {
+      "id": "NO_SELECTION trace-pdf.ts",
+      "pass": true,
+      "observed": {
+        "exitCode": 3,
+        "refusal": "ERR_JOB_SCOPE_REQUIRED: Bitte wähle einen Job aus einem Pool aus."
+      }
+    },
+    {
+      "id": "INVALID_SELECTION_DRAFT_POOL trace-pdf.ts",
+      "pass": true,
+      "observed": {
+        "exitCode": 3,
+        "refusal": "ERR_JOB_SCOPE_INVALID: Bitte wähle einen Job aus einem Pool aus."
+      }
+    },
+    {
+      "id": "NO_SELECTION trace-pdf-5.ts",
+      "pass": true,
+      "observed": {
+        "exitCode": 3,
+        "refusal": "ERR_JOB_SCOPE_REQUIRED: Bitte wähle einen Job aus einem Pool aus."
+      }
+    },
+    {
+      "id": "INVALID_SELECTION_DRAFT_POOL trace-pdf-5.ts",
+      "pass": true,
+      "observed": {
+        "exitCode": 3,
+        "refusal": "ERR_JOB_SCOPE_INVALID: Bitte wähle einen Job aus einem Pool aus."
+      }
+    },
+    {
+      "id": "NO_SELECTION forensics-step2.ts",
+      "pass": true,
+      "observed": {
+        "exitCode": 3,
+        "refusal": "ERR_JOB_SCOPE_REQUIRED: Bitte wähle einen Job aus einem Pool aus."
+      }
+    },
+    {
+      "id": "INVALID_SELECTION_DRAFT_POOL forensics-step2.ts",
+      "pass": true,
+      "observed": {
+        "exitCode": 3,
+        "refusal": "ERR_JOB_SCOPE_INVALID: Bitte wähle einen Job aus einem Pool aus."
+      }
+    },
+    {
+      "id": "NO_SELECTION bisection.ts",
+      "pass": true,
+      "observed": {
+        "exitCode": 3,
+        "refusal": "ERR_JOB_SCOPE_REQUIRED: Bitte wähle einen Job aus einem Pool aus."
+      }
+    },
+    {
+      "id": "INVALID_SELECTION_DRAFT_POOL bisection.ts",
+      "pass": true,
+      "observed": {
+        "exitCode": 3,
+        "refusal": "ERR_JOB_SCOPE_INVALID: Bitte wähle einen Job aus einem Pool aus."
+      }
+    },
+    {
+      "id": "NO_SELECTION schema-bisection.ts",
+      "pass": true,
+      "observed": {
+        "exitCode": 3,
+        "refusal": "ERR_JOB_SCOPE_REQUIRED: Bitte wähle einen Job aus einem Pool aus."
+      }
+    },
+    {
+      "id": "INVALID_SELECTION_DRAFT_POOL schema-bisection.ts",
+      "pass": true,
+      "observed": {
+        "exitCode": 3,
+        "refusal": "ERR_JOB_SCOPE_INVALID: Bitte wähle einen Job aus einem Pool aus."
+      }
+    },
+    {
+      "id": "NO_SELECTION schema-bisection-mjs.ts",
+      "pass": true,
+      "observed": {
+        "exitCode": 3,
+        "refusal": "ERR_JOB_SCOPE_REQUIRED: Bitte wähle einen Job aus einem Pool aus."
+      }
+    },
+    {
+      "id": "INVALID_SELECTION_DRAFT_POOL schema-bisection-mjs.ts",
+      "pass": true,
+      "observed": {
+        "exitCode": 3,
+        "refusal": "ERR_JOB_SCOPE_INVALID: Bitte wähle einen Job aus einem Pool aus."
+      }
+    },
+    {
+      "id": "NO_SELECTION test-schema.ts",
+      "pass": true,
+      "observed": {
+        "exitCode": 3,
+        "refusal": "ERR_JOB_SCOPE_REQUIRED: Bitte wähle einen Job aus einem Pool aus."
+      }
+    },
+    {
+      "id": "INVALID_SELECTION_DRAFT_POOL test-schema.ts",
+      "pass": true,
+      "observed": {
+        "exitCode": 3,
+        "refusal": "ERR_JOB_SCOPE_INVALID: Bitte wähle einen Job aus einem Pool aus."
+      }
+    },
+    {
+      "id": "INVALID_SELECTION_ROLE_NOT_IN_POOL scripts/test-pipeline-live.ts",
+      "pass": true,
+      "observed": {
+        "exitCode": 3,
+        "refusal": "ERR_JOB_SCOPE_INVALID: Bitte wähle einen Job aus einem Pool aus."
+      }
+    },
+    {
+      "id": "N1_NO_NETWORK_ATTEMPT_BY_ANY_REFUSED_SCRIPT",
+      "pass": true,
+      "observed": {
+        "recorded": 0
+      }
+    },
+    {
+      "id": "V1_VALID_SELECTION_OPENS_THE_PIPELINE debug.ts (mock provider)",
+      "pass": true,
+      "observed": {
+        "exitCode": 0,
+        "pipelineResultWritten": true,
+        "refused": false
+      }
+    },
+    {
+      "id": "N2_NO_NETWORK_ATTEMPT_AT_ALL",
+      "pass": true,
+      "observed": {
+        "recorded": 0
+      }
+    }
+  ],
+  "passed": true
+}

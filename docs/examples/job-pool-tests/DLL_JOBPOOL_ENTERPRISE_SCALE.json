@@ -1,0 +1,4622 @@
+{
+  "pool": {
+    "id": "pool_dll_enterprise_scale_v1",
+    "name": "DLL Enterprise Scale Pool",
+    "description": "Decision Loop Labs test pool for scale and heterogeneity: 16 fictitious organizations across industry, enterprise software, automotive, cybersecurity, financial technology, healthcare technology, cloud infrastructure and data & AI, with 48 distinct roles.",
+    "version": 1,
+    "status": "ACTIVE",
+    "created_at": "2026-10-13T00:00:00.000Z"
+  },
+  "organizations": [
+    {
+      "id": "org_rheinmark",
+      "pool_id": "pool_dll_enterprise_scale_v1",
+      "org_id": "rheinmark",
+      "name": "Rheinmark Industrieanlagen AG",
+      "country_iso": "DE",
+      "region": "Duisburg",
+      "industry": "Industrial Automation",
+      "scale": "Enterprise (12k+)",
+      "description": "Builds and automates steel processing and rolling lines worldwide; supplies PLC, SCADA and MES software with each plant and services more than 300 installed lines."
+    },
+    {
+      "id": "org_nordisk",
+      "pool_id": "pool_dll_enterprise_scale_v1",
+      "org_id": "nordisk",
+      "name": "Nordisk Pumps & Fluid Systems A/S",
+      "country_iso": "DK",
+      "region": "Aarhus",
+      "industry": "Industrial Equipment",
+      "scale": "Enterprise (6k+)",
+      "description": "Manufactures pumps and dosing systems for water utilities and buildings; connects them to a cloud service for monitoring, predictive maintenance and energy optimisation."
+    },
+    {
+      "id": "org_quillstone",
+      "pool_id": "pool_dll_enterprise_scale_v1",
+      "org_id": "quillstone",
+      "name": "Quillstone Software Ltd",
+      "country_iso": "IE",
+      "region": "Dublin",
+      "industry": "Enterprise Software (ERP SaaS)",
+      "scale": "Enterprise (4k+)",
+      "description": "Sells a cloud ERP suite to mid-market manufacturers and distributors: finance, inventory, procurement and planning modules on a shared multi-tenant platform."
+    },
+    {
+      "id": "org_tessaro",
+      "pool_id": "pool_dll_enterprise_scale_v1",
+      "org_id": "tessaro",
+      "name": "Tessaro Workflow GmbH",
+      "country_iso": "AT",
+      "region": "Graz",
+      "industry": "Enterprise Software (Low-Code BPM)",
+      "scale": "Scaleup (350+)",
+      "description": "Offers a low-code workflow platform with its own process language; public administrations and insurers model, run and audit business processes with it."
+    },
+    {
+      "id": "org_valcor",
+      "pool_id": "pool_dll_enterprise_scale_v1",
+      "org_id": "valcor",
+      "name": "Valcor Automotive Electronics GmbH",
+      "country_iso": "DE",
+      "region": "Stuttgart",
+      "industry": "Automotive Tier-1 Electronics",
+      "scale": "Enterprise (20k+)",
+      "description": "Develops body and chassis control units and zonal controllers for European OEMs; software developed under ASPICE level 3 and ISO 26262 processes."
+    },
+    {
+      "id": "org_corvane",
+      "pool_id": "pool_dll_enterprise_scale_v1",
+      "org_id": "corvane",
+      "name": "Corvane Mobility s.r.o.",
+      "country_iso": "CZ",
+      "region": "Brno",
+      "industry": "Automotive (EV Charging & Batteries)",
+      "scale": "Scaleup (500+)",
+      "description": "Builds battery packs for light commercial EVs and runs a charging network for fleet depots, including the backend that schedules depot charging against grid tariffs."
+    },
+    {
+      "id": "org_sentinelridge",
+      "pool_id": "pool_dll_enterprise_scale_v1",
+      "org_id": "sentinelridge",
+      "name": "Sentinel Ridge Security Oy",
+      "country_iso": "FI",
+      "region": "Helsinki",
+      "industry": "Cybersecurity (Managed Detection & Response)",
+      "scale": "Scaleup (300+)",
+      "description": "Provides 24/7 managed detection and response for Nordic enterprises and municipalities, running its own SOC, detection content and incident response team."
+    },
+    {
+      "id": "org_ironquay",
+      "pool_id": "pool_dll_enterprise_scale_v1",
+      "org_id": "ironquay",
+      "name": "Ironquay Cryptography Ltd",
+      "country_iso": "GB",
+      "region": "Edinburgh",
+      "industry": "Cybersecurity (Cryptography & PKI)",
+      "scale": "Startup (90+)",
+      "description": "Makes hardware security modules and a managed PKI service for IoT manufacturers, currently adding post-quantum algorithms to its product line."
+    },
+    {
+      "id": "org_ledgerline",
+      "pool_id": "pool_dll_enterprise_scale_v1",
+      "org_id": "ledgerline",
+      "name": "Ledgerline Bank SE",
+      "country_iso": "LT",
+      "region": "Vilnius",
+      "industry": "Financial Technology (Digital Banking)",
+      "scale": "Scaleup (1.1k+)",
+      "description": "Digital bank with an EU banking licence serving SMEs in the Baltics and DACH: accounts, cards, lending and FX, built on an in-house core banking platform."
+    },
+    {
+      "id": "org_paxford",
+      "pool_id": "pool_dll_enterprise_scale_v1",
+      "org_id": "paxford",
+      "name": "Paxford Capital Technologies Ltd",
+      "country_iso": "GB",
+      "region": "London",
+      "industry": "Financial Technology (Trading)",
+      "scale": "Enterprise (2k+)",
+      "description": "Builds electronic trading and risk systems for its own market-making desks and for institutional clients, across equities, FX and rates."
+    },
+    {
+      "id": "org_medivane",
+      "pool_id": "pool_dll_enterprise_scale_v1",
+      "org_id": "medivane",
+      "name": "Medivane Digital Health GmbH",
+      "country_iso": "DE",
+      "region": "Berlin",
+      "industry": "Healthcare Technology (Digital Therapeutics)",
+      "scale": "Startup (150+)",
+      "description": "Develops prescribable digital therapy apps (DiGA) for chronic pain and sleep disorders, with clinical studies, a medical quality system and integrations to German health insurers."
+    },
+    {
+      "id": "org_carelink",
+      "pool_id": "pool_dll_enterprise_scale_v1",
+      "org_id": "carelink",
+      "name": "Carelink Imaging B.V.",
+      "country_iso": "NL",
+      "region": "Eindhoven",
+      "industry": "Healthcare Technology (Medical Imaging Software)",
+      "scale": "Enterprise (2.5k+)",
+      "description": "Supplies imaging workflow and post-processing software to radiology departments: PACS integration, 3D reconstruction and AI-assisted reading tools."
+    },
+    {
+      "id": "org_stratoforge",
+      "pool_id": "pool_dll_enterprise_scale_v1",
+      "org_id": "stratoforge",
+      "name": "Stratoforge Cloud SAS",
+      "country_iso": "FR",
+      "region": "Paris",
+      "industry": "Cloud Infrastructure (Sovereign Cloud)",
+      "scale": "Scaleup (700+)",
+      "description": "Operates a SecNumCloud-qualified public cloud in four French data centres: compute, block and object storage, managed Kubernetes and network services."
+    },
+    {
+      "id": "org_arcvale",
+      "pool_id": "pool_dll_enterprise_scale_v1",
+      "org_id": "arcvale",
+      "name": "Arcvale Edge Networks AB",
+      "country_iso": "SE",
+      "region": "Gothenburg",
+      "industry": "Cloud Infrastructure (CDN & Edge)",
+      "scale": "Scaleup (400+)",
+      "description": "Runs a content delivery and edge compute network with 90 points of presence, serving media streaming and e-commerce customers."
+    },
+    {
+      "id": "org_datalume",
+      "pool_id": "pool_dll_enterprise_scale_v1",
+      "org_id": "datalume",
+      "name": "Datalume Consulting SpA",
+      "country_iso": "IT",
+      "region": "Milan",
+      "industry": "Data & AI Consulting",
+      "scale": "Enterprise (1.5k+)",
+      "description": "Data and AI consultancy delivering analytics platforms, BI and AI products for retailers, banks and manufacturers in Southern Europe."
+    },
+    {
+      "id": "org_synaptiq",
+      "pool_id": "pool_dll_enterprise_scale_v1",
+      "org_id": "synaptiq",
+      "name": "Synaptiq Speech Technologies S.L.",
+      "country_iso": "ES",
+      "region": "Barcelona",
+      "industry": "Data & AI (Speech Technology)",
+      "scale": "Startup (110+)",
+      "description": "Builds speech recognition and voice assistants for contact centres in Spanish, Catalan, Portuguese and English, deployable on customer premises."
+    }
+  ],
+  "roles": [
+    {
+      "id": "role_rheinmark_plc_scada",
+      "pool_id": "pool_dll_enterprise_scale_v1",
+      "organization_id": "org_rheinmark",
+      "title": "Automation Software Engineer – PLC & SCADA",
+      "seniority": "Mid / L3",
+      "domain_focus": "Industrial Control Software",
+      "description": "You program and commission the control software of rolling-line sections: IEC 61131-3 PLC programs on Siemens S7-1500, HMI screens in WinCC, and SCADA integration. Work splits between engineering in Duisburg and commissioning trips to customer plants, where you test with real equipment, tune sequences with process engineers and train operators. You reuse and improve the company's standard function blocks. You join a team of twelve automation engineers organised by line section; a senior engineer reviews your first projects. Success after a year means commissioning a section largely on your own and contributing a reusable block to the standard library."
+    },
+    {
+      "id": "role_rheinmark_mes_data",
+      "pool_id": "pool_dll_enterprise_scale_v1",
+      "organization_id": "org_rheinmark",
+      "title": "Industrial Data Engineer – Historian & MES",
+      "seniority": "Senior / L4",
+      "domain_focus": "Manufacturing Data",
+      "description": "Rolling lines produce millions of sensor values per hour. You connect plant historians and the MES to Rheinmark's analytics platform: OPC UA and historian interfaces, a time-series data model that keeps the relation between coil, pass and measurement, and pipelines into the cloud lake for quality analytics. You work with process engineers who need answers ('why did thickness deviate on coil 4711?') and with IT security on OT/IT boundaries. You sit in the digital services unit (data engineers, a data scientist, two process experts) and own the data model that every quality analysis builds on. We expect solid data engineering experience; manufacturing exposure can be learned on the job."
+    },
+    {
+      "id": "role_rheinmark_ot_architect",
+      "pool_id": "pool_dll_enterprise_scale_v1",
+      "organization_id": "org_rheinmark",
+      "title": "OT Security Architect",
+      "seniority": "Lead / L5",
+      "domain_focus": "Operational Technology Security",
+      "description": "Customers now require secure-by-design automation. You define the security architecture for Rheinmark's delivered plants: zone and conduit models per IEC 62443, secure remote service access, hardening baselines for engineering stations, patch strategies that respect production windows, and the security documentation handed over to customers. You review project designs, support bids and answer customers' security questionnaires. You report to the head of engineering, work with four project security leads and are the escalation point for customer security audits. Several years of OT or ICS security work and the ability to explain controls to plant managers are essential."
+    },
+    {
+      "id": "role_nordisk_embedded_pump",
+      "pool_id": "pool_dll_enterprise_scale_v1",
+      "organization_id": "org_nordisk",
+      "title": "Embedded Software Engineer – Pump Controllers",
+      "seniority": "Mid / L3",
+      "domain_focus": "Embedded Systems",
+      "description": "You develop firmware for the controllers that run Nordisk's variable-speed pumps: motor control loops on ARM Cortex-M, the Modbus and BACnet interfaces building systems use, and the secure bootloader that receives updates from the cloud service. You test on hardware-in-the-loop rigs, measure energy consumption, and work with hydraulic engineers on control behaviour. The controller team has nine engineers across firmware, electronics and test; you pair on reviews and own one interface stack end to end. Two or more years of shipped embedded C are expected, motor control knowledge helps."
+    },
+    {
+      "id": "role_nordisk_iot_architect",
+      "pool_id": "pool_dll_enterprise_scale_v1",
+      "organization_id": "org_nordisk",
+      "title": "IoT Solutions Architect – Connected Pumps",
+      "seniority": "Senior / L5",
+      "domain_focus": "IoT Architecture",
+      "description": "Two million pumps could report data; today 80,000 do. You design how the fleet connects at scale: device identity and provisioning, MQTT connectivity through gateways in buildings and utilities, over-the-air update strategy, and the cloud architecture on Azure IoT that serves monitoring and predictive maintenance. You align product management, firmware teams and cloud teams on one roadmap and cost model. You report to the CTO of the digital business, lead an architecture guild of five engineers and own the cost model of connectivity. Expect to spend real time with utilities' IT departments on security and integration questions."
+    },
+    {
+      "id": "role_nordisk_product_owner",
+      "pool_id": "pool_dll_enterprise_scale_v1",
+      "organization_id": "org_nordisk",
+      "title": "Product Owner – Connected Services",
+      "seniority": "Senior",
+      "domain_focus": "Product Management",
+      "description": "You own the backlog of Nordisk's monitoring app used by facility managers and utility operators. You interview customers, turn service technicians' pain into features (alarm handling, energy reports, remote setpoints), prioritise with a cross-functional team of eight, and measure adoption. You balance hardware realities and release cycles with a cloud product that ships every two weeks. Your team: five engineers, a UX designer and a QA engineer, plus field service colleagues who test early versions with customers. You present the roadmap quarterly to the business unit and are measured on adoption and support tickets avoided."
+    },
+    {
+      "id": "role_quillstone_staff_data_layer",
+      "pool_id": "pool_dll_enterprise_scale_v1",
+      "organization_id": "org_quillstone",
+      "title": "Staff Engineer – Multi-Tenant Data Layer",
+      "seniority": "Staff / L5",
+      "domain_focus": "Data Infrastructure",
+      "description": "Quillstone's 9,000 tenants share sharded PostgreSQL clusters. You lead the evolution of this data layer: tenant placement and rebalancing, online schema migrations across thousands of databases, row-level security, and the performance work that keeps month-end closing fast. You set technical direction for three teams, write the design documents, and personally take on the hardest migrations. You work with the database reliability, platform and finance-module teams and report to the VP Engineering. We expect a long track record with relational databases at scale and the habit of writing down decisions others can review."
+    },
+    {
+      "id": "role_quillstone_pm_finance",
+      "pool_id": "pool_dll_enterprise_scale_v1",
+      "organization_id": "org_quillstone",
+      "title": "Product Manager – Finance Modules",
+      "seniority": "Senior",
+      "domain_focus": "Product Management (Finance)",
+      "description": "You own general ledger, accounts payable and the period-close experience in Quillstone ERP. You work with accountants at customer sites, translate IFRS and local GAAP requirements into product capabilities, prioritise e-invoicing mandates country by country, and coordinate with two engineering teams. You need to understand accounting deeply enough to argue with a CFO. You partner with an engineering manager, a designer and two customer advisory boards in Ireland and Germany. Success is measured by close-cycle time at customers and by on-time delivery of statutory e-invoicing changes."
+    },
+    {
+      "id": "role_quillstone_tech_writer",
+      "pool_id": "pool_dll_enterprise_scale_v1",
+      "organization_id": "org_quillstone",
+      "title": "Technical Writer – Developer Documentation",
+      "seniority": "Mid",
+      "domain_focus": "Documentation",
+      "description": "Partners extend Quillstone ERP through 900 REST endpoints and webhooks. You own the developer documentation: API reference generated from OpenAPI, tutorials for common integrations, changelogs, and the docs-as-code pipeline. You test every example yourself, interview engineers, and measure which pages reduce support tickets. You are part of a three-person developer experience team with a developer advocate and an API platform engineer. We expect a portfolio of published developer documentation and comfort running code examples yourself."
+    },
+    {
+      "id": "role_tessaro_compiler",
+      "pool_id": "pool_dll_enterprise_scale_v1",
+      "organization_id": "org_tessaro",
+      "title": "Compiler Engineer – Workflow Language",
+      "seniority": "Senior / L4",
+      "domain_focus": "Programming Languages",
+      "description": "Tessaro's process language compiles visual workflows into an executable intermediate representation. You work on the compiler: parser and type checker for expressions, static analysis that warns modellers about dead paths and unhandled errors, versioned migrations of running processes, and a language server that powers the editor. TypeScript front end, Kotlin back end. The language team has four engineers and works closely with the editor and runtime teams. A compiler, interpreter or static-analysis project you can talk about in depth matters more than a specific language background."
+    },
+    {
+      "id": "role_tessaro_solutions_engineer",
+      "pool_id": "pool_dll_enterprise_scale_v1",
+      "organization_id": "org_tessaro",
+      "title": "Solutions Engineer – Public Sector",
+      "seniority": "Senior",
+      "domain_focus": "Pre-Sales Engineering",
+      "description": "You show public administrations how Tessaro digitises their procedures: discovery workshops, live modelling of a building-permit process in the room, proof-of-concept integrations with registers and e-ID services, and answers to security and accessibility requirements in tenders. You are the technical voice in the sales team and feed what you learn back to product. You work with three account executives and a public-sector consultant, and you travel within Austria and Germany about two days a week. We expect several years of pre-sales or consulting with technical depth."
+    },
+    {
+      "id": "role_tessaro_qa_automation",
+      "pool_id": "pool_dll_enterprise_scale_v1",
+      "organization_id": "org_tessaro",
+      "title": "QA Automation Engineer",
+      "seniority": "Mid / L3",
+      "domain_focus": "Quality Engineering",
+      "description": "Every Tessaro release must keep thousands of customer processes running. You build the automated regression safety net: end-to-end tests of the modelling editor with Playwright, API contract tests, a library of reference processes executed against each build, and flaky-test triage. You work embedded with two feature teams and own test strategy reviews for new features. You belong to the quality guild (five engineers) but sit with two feature teams day to day. Success means a stable nightly regression suite, fewer escaped defects and test strategy reviews that teams ask for rather than avoid."
+    },
+    {
+      "id": "role_valcor_autosar",
+      "pool_id": "pool_dll_enterprise_scale_v1",
+      "organization_id": "org_valcor",
+      "title": "AUTOSAR Software Engineer – Zonal Controller",
+      "seniority": "Mid / L3",
+      "domain_focus": "Automotive Embedded Software",
+      "description": "You develop application and basic software for Valcor's zonal controller: AUTOSAR Classic SWCs, RTE configuration, CAN FD and automotive Ethernet communication, and integration with OEM toolchains. You implement against OEM requirements in DOORS, write unit and integration tests, and support vehicle testing. MISRA C compliance and ASPICE work products are part of daily work. The zonal controller project has about forty software engineers; you join the communication cluster with six colleagues and a technical lead. Two or more years of automotive embedded development are expected; AUTOSAR configuration can be deepened on the job."
+    },
+    {
+      "id": "role_valcor_functional_safety",
+      "pool_id": "pool_dll_enterprise_scale_v1",
+      "organization_id": "org_valcor",
+      "title": "Functional Safety Engineer – ISO 26262",
+      "seniority": "Senior / L4",
+      "domain_focus": "Functional Safety",
+      "description": "For a brake-by-wire actuator controller you own the functional safety work products: hazard analysis and risk assessment with the OEM, safety goals and ASIL decomposition, technical safety concept, FMEDA with hardware, and the safety case. You review software and hardware designs for safety mechanisms and represent Valcor in confirmation reviews. You work in a safety team of five that supports several projects and you are the safety manager's counterpart for this controller. Expect frequent alignment with OEM safety managers and assessors."
+    },
+    {
+      "id": "role_valcor_diagnostics",
+      "pool_id": "pool_dll_enterprise_scale_v1",
+      "organization_id": "org_valcor",
+      "title": "Vehicle Diagnostics Engineer – UDS & OTA",
+      "seniority": "Mid / L3",
+      "domain_focus": "Diagnostics & Updates",
+      "description": "You make Valcor's control units diagnosable and updatable over the air: UDS services and diagnostic trouble codes, ODX descriptions for OEM testers, flash bootloader behaviour, and the ECU side of OEM OTA campaigns including secure update verification. You debug field issues from workshop logs and support end-of-line test integration. You join the diagnostics and flashing team (seven engineers) that supports all controller projects. You will travel occasionally to OEM test sites and to the end-of-line test station in our Hungarian plant."
+    },
+    {
+      "id": "role_corvane_bms",
+      "pool_id": "pool_dll_enterprise_scale_v1",
+      "organization_id": "org_corvane",
+      "title": "Battery Management Systems Engineer",
+      "seniority": "Senior / L4",
+      "domain_focus": "Battery Systems",
+      "description": "You develop the algorithms of Corvane's battery management system: state-of-charge and state-of-health estimation with Kalman filters, cell balancing, thermal management strategies, and protection logic. You validate on cell cyclers and climate chambers, model cells in MATLAB/Simulink and generate production code, working closely with hardware and safety engineers. The battery systems team has eleven engineers across hardware, firmware, algorithms and test; you lead the estimation algorithms. We expect several years in BMS or comparable control-algorithm work and hands-on lab practice."
+    },
+    {
+      "id": "role_corvane_ocpp_backend",
+      "pool_id": "pool_dll_enterprise_scale_v1",
+      "organization_id": "org_corvane",
+      "title": "Charging Backend Engineer – OCPP",
+      "seniority": "Mid / L3",
+      "domain_focus": "E-Mobility Backend",
+      "description": "Corvane's charge-point management system talks to 6,000 chargers in fleet depots. You build its backend: OCPP 1.6 and 2.0.1 message handling, smart-charging profiles that keep depots under their grid limit, tariff and session data for billing, and robust handling of chargers that go offline mid-session. Python services on Kubernetes with PostgreSQL and Redis. You join a backend team of six engineers and an SRE; you share on-call for the charging network one week in five. Prior e-mobility experience is welcome but strong backend fundamentals matter more."
+    },
+    {
+      "id": "role_corvane_telematics_analyst",
+      "pool_id": "pool_dll_enterprise_scale_v1",
+      "organization_id": "org_corvane",
+      "title": "Data Analyst – Fleet Telematics",
+      "seniority": "Junior / L2",
+      "domain_focus": "Analytics",
+      "description": "Fleet customers want to know which vans can go electric and how their batteries age. You analyse telematics and charging data: duty-cycle analyses, battery degradation trends, depot utilisation reports and dashboards for customer success. You write SQL and Python, present findings to customers, and help define the metrics the product team builds into the app. You work in the customer analytics team with two analysts and a data engineer and present results to fleet managers. This is an entry-level role: we expect solid SQL and curiosity, and offer mentoring by a senior analyst."
+    },
+    {
+      "id": "role_sentinelridge_soc_analyst",
+      "pool_id": "pool_dll_enterprise_scale_v1",
+      "organization_id": "org_sentinelridge",
+      "title": "SOC Analyst – Tier 2",
+      "seniority": "Mid",
+      "domain_focus": "Security Operations",
+      "description": "You investigate the alerts that Tier 1 escalates: endpoint detections, identity anomalies and cloud audit events across 140 customer environments. You correlate data in Microsoft Sentinel and the EDR console, decide whether an alert is an incident, contain hosts when needed, and write clear customer notifications. Shift work in a 24/7 rotation with a follow-the-sun handover. You are one of fourteen Tier 2 analysts working with Tier 1, detection engineering and incident response. Typically two or more years in a SOC or security operations role; we train on our tooling and customer environments."
+    },
+    {
+      "id": "role_sentinelridge_detection_engineer",
+      "pool_id": "pool_dll_enterprise_scale_v1",
+      "organization_id": "org_sentinelridge",
+      "title": "Detection Engineer",
+      "seniority": "Senior / L4",
+      "domain_focus": "Detection Engineering",
+      "description": "You write the detections the SOC runs: behaviour-based analytics mapped to MITRE ATT&CK, detection-as-code with tests and CI, tuning based on false-positive feedback, and coverage reporting per customer. You emulate attacks in a lab to validate detections and share content with the threat intelligence team. You join a detection team of five that works with threat intelligence and the SOC shift leads. Success is measured by coverage, precision of alerts and how quickly new threats get a tested detection."
+    },
+    {
+      "id": "role_sentinelridge_dfir",
+      "pool_id": "pool_dll_enterprise_scale_v1",
+      "organization_id": "org_sentinelridge",
+      "title": "Incident Responder – DFIR",
+      "seniority": "Senior / L4",
+      "domain_focus": "Digital Forensics & Incident Response",
+      "description": "When a customer is breached you lead the technical response: scoping, forensic acquisition of disks, memory and cloud logs, timeline analysis, eradication planning with the customer's IT, and the final report that may be read by insurers and authorities. Ransomware cases are common; calm under pressure and precise documentation are essential. You are part of a seven-person incident response team that also handles retainer customers; on-call is one week in four. We expect several years of hands-on investigations, including ransomware cases."
+    },
+    {
+      "id": "role_ironquay_pq_crypto",
+      "pool_id": "pool_dll_enterprise_scale_v1",
+      "organization_id": "org_ironquay",
+      "title": "Cryptography Engineer – Post-Quantum",
+      "seniority": "Senior / L4",
+      "domain_focus": "Applied Cryptography",
+      "description": "Ironquay is adding ML-KEM and ML-DSA to its HSM firmware and PKI. You implement and integrate these algorithms: constant-time implementations, hybrid key exchange and certificate formats, side-channel testing with the hardware team, and the interoperability tests with customers' stacks. You follow standardisation closely and contribute to it where you can. You work with two cryptographers, the firmware team and the PKI product team, and represent Ironquay in standardisation discussions. A strong record of careful, reviewed cryptographic code is essential."
+    },
+    {
+      "id": "role_ironquay_pki_ops",
+      "pool_id": "pool_dll_enterprise_scale_v1",
+      "organization_id": "org_ironquay",
+      "title": "PKI Operations Engineer",
+      "seniority": "Mid / L3",
+      "domain_focus": "PKI Operations",
+      "description": "You run Ironquay's managed PKI that issues identities to 40 million IoT devices: certificate authority hierarchies in HSMs, key ceremonies, issuance and revocation services, monitoring of OCSP and CRL endpoints, and the audit evidence for WebTrust-style assessments. Strict change control and dual control are part of every operation. You join a four-person PKI operations team with a strict dual-control model and quarterly key ceremonies. Experience operating security-critical infrastructure with formal change control is expected."
+    },
+    {
+      "id": "role_ironquay_firmware_security",
+      "pool_id": "pool_dll_enterprise_scale_v1",
+      "organization_id": "org_ironquay",
+      "title": "Firmware Security Engineer – HSM",
+      "seniority": "Senior / L4",
+      "domain_focus": "Secure Firmware",
+      "description": "You harden the firmware of Ironquay's HSM: secure boot chain, tamper response, memory protection, and the update mechanism. You perform security reviews and fuzzing of the command interface, prepare the evidence for FIPS 140-3 and Common Criteria evaluations, and fix what labs and your own testing find. You work with three firmware engineers and the hardware security lead and coordinate with external evaluation labs. Years of secure embedded development and the ability to document security arguments are expected."
+    },
+    {
+      "id": "role_ledgerline_core_banking",
+      "pool_id": "pool_dll_enterprise_scale_v1",
+      "organization_id": "org_ledgerline",
+      "title": "Core Banking Engineer – Accounts & Payments",
+      "seniority": "Senior / L4",
+      "domain_focus": "Banking Systems",
+      "description": "You build Ledgerline's core banking services: account lifecycle, interest and fee calculation, SEPA Instant and SWIFT payment processing, and end-of-day accounting. Java and Kotlin services on PostgreSQL with event sourcing for balances. You work with operations and finance on edge cases that only appear at month end, and every change passes four-eyes review and regulatory traceability. You join the accounts and payments squad (seven engineers, a product owner and a banking operations expert). We expect several years of backend development, ideally in banking or payments, and care for correctness."
+    },
+    {
+      "id": "role_ledgerline_aml_data_scientist",
+      "pool_id": "pool_dll_enterprise_scale_v1",
+      "organization_id": "org_ledgerline",
+      "title": "AML Data Scientist – Transaction Monitoring",
+      "seniority": "Mid / L3",
+      "domain_focus": "Financial Crime Analytics",
+      "description": "You improve how Ledgerline detects money laundering: scenario tuning for the rule engine, machine-learning models that prioritise alerts, network analysis of counterparties, and below-the-line testing that regulators expect. You work with compliance investigators to understand true positives and document every model for the model risk and AML functions. You work in the financial crime analytics team with two data scientists and a data engineer, embedded with compliance investigators. Explaining model behaviour to compliance officers and auditors is part of the job."
+    },
+    {
+      "id": "role_ledgerline_regulatory_reporting",
+      "pool_id": "pool_dll_enterprise_scale_v1",
+      "organization_id": "org_ledgerline",
+      "title": "Regulatory Reporting Analyst",
+      "seniority": "Mid",
+      "domain_focus": "Regulatory Reporting",
+      "description": "You produce and automate Ledgerline's supervisory reports: COREP and FINREP templates, liquidity reports (LCR, NSFR) and AnaCredit submissions. You trace each figure back to source data, build reconciliations between the ledger and reports, and work with data engineers to replace manual spreadsheets with tested pipelines. Close contact with finance and the regulator's questions are part of the job. You are one of three analysts in the regulatory reporting team within finance, working with data engineering and risk. Prior experience in bank reporting and comfort with data tooling are expected."
+    },
+    {
+      "id": "role_paxford_low_latency",
+      "pool_id": "pool_dll_enterprise_scale_v1",
+      "organization_id": "org_paxford",
+      "title": "Low-Latency C++ Engineer – Market Making",
+      "seniority": "Senior / L4",
+      "domain_focus": "Trading Systems",
+      "description": "You work on the market-making engine where microseconds matter: order book handling, quoting logic, exchange gateways and the hot path between them. You profile with hardware counters, reason about cache behaviour and lock-free structures, and work daily with quantitative traders on strategy behaviour. Production support during market hours is shared in the team. You join a team of eight engineers sitting with the trading desk. We expect several years of performance-critical C++ in trading or comparable latency-sensitive systems."
+    },
+    {
+      "id": "role_paxford_quant_dev",
+      "pool_id": "pool_dll_enterprise_scale_v1",
+      "organization_id": "org_paxford",
+      "title": "Quantitative Developer – Risk",
+      "seniority": "Senior / L4",
+      "domain_focus": "Quantitative Risk",
+      "description": "You build the risk analytics the desks and risk managers rely on: pricing library integration, scenario and VaR engines, sensitivities (Greeks) across portfolios, and the intraday risk service that limits trading. Python and C++, with a strong focus on numerical correctness and reconciliation against independent models. You work in the risk technology team (six developers and two quants) and with risk managers and traders. A quantitative background and production-quality coding are both expected."
+    },
+    {
+      "id": "role_paxford_market_data",
+      "pool_id": "pool_dll_enterprise_scale_v1",
+      "organization_id": "org_paxford",
+      "title": "Market Data Engineer",
+      "seniority": "Mid / L3",
+      "domain_focus": "Market Data Infrastructure",
+      "description": "You run the market data plant: feed handlers for exchanges and vendors, normalisation into an internal format, tick storage for research, and the monitoring that catches stale or crossed prices before traders do. You coordinate exchange changes and vendor releases and keep entitlements correct. You are part of a four-person market data team with a weekly support rota during market hours. Experience with financial data feeds is welcome; strong systems and data skills matter most."
+    },
+    {
+      "id": "role_medivane_ios_medical",
+      "pool_id": "pool_dll_enterprise_scale_v1",
+      "organization_id": "org_medivane",
+      "title": "iOS Engineer – Prescribable Therapy App",
+      "seniority": "Senior / L4",
+      "domain_focus": "Mobile Engineering",
+      "description": "You build Medivane's iOS app that patients use daily for therapy sessions: SwiftUI interfaces with accessibility for older users, offline-first session data, HealthKit integration, and secure sync with the backend. The app is a medical device: you write requirements traceability, unit and UI tests, and work with the quality team on release documentation. You join a mobile team of five (two iOS, two Android, a QA engineer) working with clinicians and the quality manager. Several years of shipped iOS development are expected."
+    },
+    {
+      "id": "role_medivane_clinical_data_manager",
+      "pool_id": "pool_dll_enterprise_scale_v1",
+      "organization_id": "org_medivane",
+      "title": "Clinical Data Manager – Digital Therapy Studies",
+      "seniority": "Mid",
+      "domain_focus": "Clinical Data Management",
+      "description": "Medivane's apps must prove benefit in randomised studies. You manage study data end to end: eCRF design, data management plans, data validation and query handling, integration of app-generated data with study databases, and database lock. You work with biostatisticians, CROs and the medical team under GCP. You work with two biostatisticians, the medical lead and external CROs on two to three studies in parallel. Prior clinical data management experience in studies through database lock is expected."
+    },
+    {
+      "id": "role_medivane_backend_fhir_insurer",
+      "pool_id": "pool_dll_enterprise_scale_v1",
+      "organization_id": "org_medivane",
+      "title": "Backend Engineer – Insurer Integration",
+      "seniority": "Mid / L3",
+      "domain_focus": "Health Data Integration",
+      "description": "Patients activate therapy with a prescription code from their insurer. You build the services behind this: code validation with insurers' systems, billing data exchange, FHIR-based interfaces to the national e-prescription infrastructure, and the strict data minimisation required under GDPR and German social law. TypeScript on Node.js with PostgreSQL. You join the platform team of six engineers and work with the data protection officer on every interface. Experience with external integrations and privacy-sensitive data is expected; health-system knowledge can be learned."
+    },
+    {
+      "id": "role_carelink_dicom_integration",
+      "pool_id": "pool_dll_enterprise_scale_v1",
+      "organization_id": "org_carelink",
+      "title": "DICOM Integration Engineer",
+      "seniority": "Mid / L3",
+      "domain_focus": "Imaging Integration",
+      "description": "You connect Carelink's post-processing software to hospitals' PACS and modalities: DICOM networking (C-STORE, C-FIND, DICOMweb), worklists, structured reports and HL7 orders. You troubleshoot integrations at customer sites with their IT, write conformance statements, and improve the integration test lab. You work in the integration team (eight engineers) and with customer project managers; site visits take about one week a month. Experience in healthcare IT integration is expected."
+    },
+    {
+      "id": "role_carelink_image_processing",
+      "pool_id": "pool_dll_enterprise_scale_v1",
+      "organization_id": "org_carelink",
+      "title": "Image Processing Scientist – 3D Reconstruction",
+      "seniority": "Senior / L4",
+      "domain_focus": "Medical Image Analysis",
+      "description": "You develop algorithms for Carelink's 3D reading tools: segmentation of organs and vessels in CT and MR, registration of prior studies, and quantitative measurements radiologists rely on. You combine classical methods with deep learning, validate against expert annotations and bring algorithms into C++ production code with the engineering team. You work in a research group of seven scientists alongside the reading-tools engineering team and clinical partners. A research background in medical imaging and the ability to ship algorithms into products are expected."
+    },
+    {
+      "id": "role_carelink_regulatory_affairs",
+      "pool_id": "pool_dll_enterprise_scale_v1",
+      "organization_id": "org_carelink",
+      "title": "Regulatory Affairs Specialist – Software as a Medical Device",
+      "seniority": "Senior",
+      "domain_focus": "Regulatory Affairs",
+      "description": "You bring Carelink's AI-assisted reading tools to market: classification under MDR and FDA rules, technical documentation and design dossier, submissions (CE, 510(k)), and the regulatory strategy for algorithm updates. You work with R&D, clinical and quality, and you represent the company in notified-body audits. You are one of four RA specialists and the lead for the AI-assisted reading portfolio, working with R&D, clinical affairs and quality. Several years of medical device RA with software products are expected."
+    },
+    {
+      "id": "role_stratoforge_storage_ceph",
+      "pool_id": "pool_dll_enterprise_scale_v1",
+      "organization_id": "org_stratoforge",
+      "title": "Storage Systems Engineer – Ceph",
+      "seniority": "Senior / L4",
+      "domain_focus": "Distributed Storage",
+      "description": "Stratoforge's block and object storage runs on Ceph across 40 petabytes. You design and operate it: cluster architecture and failure domains, capacity and performance planning, upgrades without customer impact, and automation of disk replacement. You debug latency spikes down to OSDs and networks and contribute fixes upstream when possible. You join a storage team of six engineers with a shared on-call rotation. Several years of operating distributed storage at scale are expected."
+    },
+    {
+      "id": "role_stratoforge_dc_network",
+      "pool_id": "pool_dll_enterprise_scale_v1",
+      "organization_id": "org_stratoforge",
+      "title": "Network Engineer – Data Center Fabric",
+      "seniority": "Senior / L4",
+      "domain_focus": "Data Center Networking",
+      "description": "You run the EVPN-VXLAN fabrics that connect Stratoforge's data centres and tenant networks: design of spine-leaf topologies, BGP policies, network automation with NetBox and Ansible, and DDoS protection with upstream providers. Changes are automated and tested in a lab first. You work in a network team of nine engineers covering four data centres, with a change-advisory process for production. We expect several years of data centre networking with automation experience."
+    },
+    {
+      "id": "role_stratoforge_kernel",
+      "pool_id": "pool_dll_enterprise_scale_v1",
+      "organization_id": "org_stratoforge",
+      "title": "Linux Kernel Engineer – Virtualization",
+      "seniority": "Senior / L5",
+      "domain_focus": "Virtualization",
+      "description": "You work on the hypervisor layer under Stratoforge's compute service: KVM and QEMU tuning, live migration reliability, confidential computing with AMD SEV-SNP, and kernel bugs that only appear at fleet scale. You maintain internal patches, upstream them where possible and support incident investigations with crash dumps and tracing. You join the virtualisation team of five engineers and work with the compute product and security teams. A record of kernel or hypervisor work, ideally upstream, is expected."
+    },
+    {
+      "id": "role_arcvale_edge_wasm",
+      "pool_id": "pool_dll_enterprise_scale_v1",
+      "organization_id": "org_arcvale",
+      "title": "Edge Compute Engineer – WebAssembly Runtime",
+      "seniority": "Senior / L4",
+      "domain_focus": "Edge Computing",
+      "description": "Customers run code at Arcvale's edge: personalisation, A/B routing and image transformations. You build the multi-tenant WebAssembly runtime that makes this safe and fast: isolation, cold-start optimisation, resource metering, and the developer SDK. Rust on Linux, deployed to 90 points of presence. You work in the edge compute team of six engineers with developer relations and the platform SRE team. Strong systems programming and an interest in language runtimes are expected."
+    },
+    {
+      "id": "role_arcvale_proxy_rust",
+      "pool_id": "pool_dll_enterprise_scale_v1",
+      "organization_id": "org_arcvale",
+      "title": "Systems Engineer – Rust Edge Proxy",
+      "seniority": "Mid / L3",
+      "domain_focus": "Network Proxies",
+      "description": "Every request to Arcvale passes through its edge proxy. You develop it: TLS termination, HTTP/3 and QUIC support, cache logic, and the configuration pipeline that pushes customer rules worldwide in seconds. You also take part in the network on-call and investigate traffic anomalies. You join the proxy team of seven engineers; on-call for the global network is one week in six. Experience with network services in a systems language is expected; Rust can be deepened on the job."
+    },
+    {
+      "id": "role_arcvale_capacity_planning",
+      "pool_id": "pool_dll_enterprise_scale_v1",
+      "organization_id": "org_arcvale",
+      "title": "Capacity Planning Engineer",
+      "seniority": "Mid / L3",
+      "domain_focus": "Infrastructure Planning",
+      "description": "Streaming peaks during sports finals can triple traffic within minutes. You forecast capacity per point of presence and transit link, model failure scenarios, decide when to add servers or peering, and turn traffic data into procurement plans finance can approve. Python, SQL and a lot of conversations with network and sales teams. You sit in the infrastructure planning team with two network planners and a finance partner. Experience with forecasting and infrastructure is expected; streaming-media knowledge is a plus."
+    },
+    {
+      "id": "role_datalume_analytics_engineer",
+      "pool_id": "pool_dll_enterprise_scale_v1",
+      "organization_id": "org_datalume",
+      "title": "Analytics Engineer – dbt",
+      "seniority": "Mid / L3",
+      "domain_focus": "Analytics Engineering",
+      "description": "For retail and banking clients you build the modelled data layer between raw sources and dashboards: dbt projects on Snowflake or BigQuery, tested models, documentation and metrics definitions that business teams trust. You work on-site and remotely with client analysts, run workshops on metric definitions and hand over maintainable projects. You work in client teams of three to six consultants led by a delivery manager, about two days a week at client sites in Milan. Two or more years of analytics or data engineering are expected."
+    },
+    {
+      "id": "role_datalume_bi_developer",
+      "pool_id": "pool_dll_enterprise_scale_v1",
+      "organization_id": "org_datalume",
+      "title": "BI Developer – Power BI",
+      "seniority": "Junior / L2",
+      "domain_focus": "Business Intelligence",
+      "description": "You build reports and dashboards for Datalume's clients in Power BI: data models with DAX measures, row-level security, performance tuning of large datasets, and report design that executives can read in a minute. You learn from senior consultants and gradually take ownership of client workstreams. You join the BI practice of fifteen consultants with a senior mentor; first projects are in retail reporting. This is an entry-level role: we expect SQL basics, some Power BI and a sense for clear visual design."
+    },
+    {
+      "id": "role_datalume_ai_product_manager",
+      "pool_id": "pool_dll_enterprise_scale_v1",
+      "organization_id": "org_datalume",
+      "title": "AI Product Manager – Client Solutions",
+      "seniority": "Senior",
+      "domain_focus": "AI Product Management",
+      "description": "You shape AI products Datalume builds for clients — demand forecasting for retailers, document automation for banks — from discovery to adoption: framing the decision a model supports, defining success metrics and acceptable error, planning data acquisition, and steering a team of data scientists and engineers. You also make sure clients understand limits and governance obligations of what they buy. You lead client engagements with a delivery team of four to eight data scientists and engineers and report to the AI practice lead. Several years of product management with ML products are expected."
+    },
+    {
+      "id": "role_synaptiq_asr_engineer",
+      "pool_id": "pool_dll_enterprise_scale_v1",
+      "organization_id": "org_synaptiq",
+      "title": "Speech Recognition Engineer",
+      "seniority": "Senior / L4",
+      "domain_focus": "Speech Technology",
+      "description": "You train and improve Synaptiq's ASR models for contact-centre audio: conformer and transducer architectures, domain adaptation to telephony noise and code-switching between Spanish and Catalan, streaming inference, and word error rate analysis per accent and channel. You own models from data preparation to on-premise deployment. You join the speech team of six researchers and engineers and work with customer deployment engineers. Several years of hands-on ASR or speech model training are expected."
+    },
+    {
+      "id": "role_synaptiq_conversation_designer",
+      "pool_id": "pool_dll_enterprise_scale_v1",
+      "organization_id": "org_synaptiq",
+      "title": "Conversational AI Designer",
+      "seniority": "Mid",
+      "domain_focus": "Conversation Design",
+      "description": "You design how Synaptiq's voice assistants talk to callers of banks and utilities: dialogue flows, prompts and fallbacks, escalation to human agents, and the LLM instructions behind open-ended turns. You test with real call recordings, analyse where callers get stuck and iterate with engineers and the client's service teams. You work in a design team of three with the dialogue engineers and client service managers. A portfolio of live voice or chat dialogues is expected."
+    },
+    {
+      "id": "role_synaptiq_annotation_lead",
+      "pool_id": "pool_dll_enterprise_scale_v1",
+      "organization_id": "org_synaptiq",
+      "title": "Data Annotation Lead – Speech Corpora",
+      "seniority": "Lead",
+      "domain_focus": "Training Data Operations",
+      "description": "You run the team and tooling that produce Synaptiq's training data: transcription guidelines for four languages, a pool of freelance annotators, quality control with double annotation and audits, and the privacy process for recordings that contain personal data. You report corpus quality and throughput and work with the ASR team on what data to collect next. You lead three coordinators and a pool of about sixty freelance annotators and work with the ASR team and the DPO. Experience running annotation or comparable data operations is expected."
+    }
+  ],
+  "requirements": [
+    {
+      "id": "req_rheinmark_plc_scada_01",
+      "role_id": "role_rheinmark_plc_scada",
+      "capability_name": "PLC Programming",
+      "domain": "Industrial Automation",
+      "weight": 0.95,
+      "required_level": "L4 - Advanced",
+      "necessity": "REQUIRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "PLC programs in Structured Text or ladder logic that ran in a plant.",
+      "aliases": [
+        "IEC 61131-3",
+        "Structured Text"
+      ]
+    },
+    {
+      "id": "req_rheinmark_plc_scada_02",
+      "role_id": "role_rheinmark_plc_scada",
+      "capability_name": "Siemens TIA Portal",
+      "domain": "Industrial Automation",
+      "weight": 0.75,
+      "required_level": "L3 - Proficient",
+      "necessity": "REQUIRED",
+      "requirement_type": "TOOL_TECHNOLOGY",
+      "evidence_hint": "Projects in TIA Portal on S7-1200/1500 controllers.",
+      "aliases": [
+        "S7-1500",
+        "STEP 7"
+      ]
+    },
+    {
+      "id": "req_rheinmark_plc_scada_03",
+      "role_id": "role_rheinmark_plc_scada",
+      "capability_name": "SCADA and HMI Development",
+      "domain": "Industrial Automation",
+      "weight": 0.6,
+      "required_level": "L3 - Proficient",
+      "necessity": "REQUIRED",
+      "requirement_type": "TOOL_TECHNOLOGY",
+      "evidence_hint": "HMI or SCADA screens and alarm concepts.",
+      "aliases": [
+        "WinCC",
+        "HMI"
+      ]
+    },
+    {
+      "id": "req_rheinmark_plc_scada_04",
+      "role_id": "role_rheinmark_plc_scada",
+      "capability_name": "Plant Commissioning",
+      "domain": "Industrial Automation",
+      "weight": 0.6,
+      "required_level": "2+ years on site",
+      "necessity": "REQUIRED",
+      "requirement_type": "EXPERIENCE",
+      "evidence_hint": "On-site commissioning of automation systems.",
+      "aliases": [
+        "Commissioning"
+      ]
+    },
+    {
+      "id": "req_rheinmark_plc_scada_05",
+      "role_id": "role_rheinmark_plc_scada",
+      "capability_name": "Industrial Networks",
+      "domain": "Industrial Automation",
+      "weight": 0.4,
+      "required_level": "L2 - Working",
+      "necessity": "PREFERRED",
+      "requirement_type": "KNOWLEDGE",
+      "evidence_hint": "Configured PROFINET or OPC UA communication.",
+      "aliases": [
+        "PROFINET",
+        "OPC UA"
+      ]
+    },
+    {
+      "id": "req_rheinmark_plc_scada_06",
+      "role_id": "role_rheinmark_plc_scada",
+      "capability_name": "Travel Readiness",
+      "domain": "Availability",
+      "weight": 0.3,
+      "required_level": "Up to 30 % travel",
+      "necessity": "REQUIRED",
+      "requirement_type": "RESPONSIBILITY",
+      "evidence_hint": "Willingness to travel to plants in Europe and Asia for commissioning."
+    },
+    {
+      "id": "req_rheinmark_plc_scada_07",
+      "role_id": "role_rheinmark_plc_scada",
+      "capability_name": "German",
+      "domain": "Communication",
+      "weight": 0.3,
+      "required_level": "B2",
+      "necessity": "PREFERRED",
+      "requirement_type": "LANGUAGE",
+      "evidence_hint": "Communication with German engineering teams."
+    },
+    {
+      "id": "req_rheinmark_mes_data_01",
+      "role_id": "role_rheinmark_mes_data",
+      "capability_name": "Industrial Data Integration",
+      "domain": "Manufacturing Data",
+      "weight": 0.9,
+      "required_level": "L4 - Advanced",
+      "necessity": "REQUIRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Connected OT data sources (historians, PLCs, MES) to IT systems.",
+      "aliases": [
+        "OT Data Integration",
+        "OPC UA"
+      ]
+    },
+    {
+      "id": "req_rheinmark_mes_data_02",
+      "role_id": "role_rheinmark_mes_data",
+      "capability_name": "Time Series Data Modeling",
+      "domain": "Data",
+      "weight": 0.75,
+      "required_level": "L4 - Advanced",
+      "necessity": "REQUIRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Time-series models linking measurements to products or batches.",
+      "aliases": [
+        "Time Series Databases"
+      ]
+    },
+    {
+      "id": "req_rheinmark_mes_data_03",
+      "role_id": "role_rheinmark_mes_data",
+      "capability_name": "Manufacturing Execution Systems",
+      "domain": "Manufacturing",
+      "weight": 0.55,
+      "required_level": "L3 - Proficient",
+      "necessity": "PREFERRED",
+      "requirement_type": "KNOWLEDGE",
+      "evidence_hint": "Worked with MES data and ISA-95 concepts.",
+      "aliases": [
+        "MES",
+        "ISA-95"
+      ]
+    },
+    {
+      "id": "req_rheinmark_mes_data_04",
+      "role_id": "role_rheinmark_mes_data",
+      "capability_name": "Python",
+      "domain": "Software Engineering",
+      "weight": 0.5,
+      "required_level": "L3 - Proficient",
+      "necessity": "REQUIRED",
+      "requirement_type": "TOOL_TECHNOLOGY",
+      "evidence_hint": "Python for data pipelines."
+    },
+    {
+      "id": "req_rheinmark_mes_data_05",
+      "role_id": "role_rheinmark_mes_data",
+      "capability_name": "SQL",
+      "domain": "Data",
+      "weight": 0.5,
+      "required_level": "L4 - Advanced",
+      "necessity": "REQUIRED",
+      "requirement_type": "TOOL_TECHNOLOGY",
+      "evidence_hint": "Complex SQL on production data."
+    },
+    {
+      "id": "req_rheinmark_mes_data_06",
+      "role_id": "role_rheinmark_mes_data",
+      "capability_name": "OT/IT Network Segmentation",
+      "domain": "Security",
+      "weight": 0.3,
+      "required_level": "L2 - Working",
+      "necessity": "OPTIONAL",
+      "requirement_type": "KNOWLEDGE",
+      "evidence_hint": "Awareness of IEC 62443 zones and conduits.",
+      "aliases": [
+        "IEC 62443"
+      ]
+    },
+    {
+      "id": "req_rheinmark_ot_architect_01",
+      "role_id": "role_rheinmark_ot_architect",
+      "capability_name": "OT Security Architecture",
+      "domain": "Security",
+      "weight": 0.95,
+      "required_level": "L5 - Expert",
+      "necessity": "REQUIRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Designed security architectures for industrial control systems.",
+      "aliases": [
+        "ICS Security",
+        "Industrial Cybersecurity"
+      ]
+    },
+    {
+      "id": "req_rheinmark_ot_architect_02",
+      "role_id": "role_rheinmark_ot_architect",
+      "capability_name": "IEC 62443",
+      "domain": "Security",
+      "weight": 0.8,
+      "required_level": "L4 - Advanced",
+      "necessity": "REQUIRED",
+      "requirement_type": "KNOWLEDGE",
+      "evidence_hint": "Applied IEC 62443 (zones, conduits, security levels) in projects.",
+      "aliases": [
+        "ISA/IEC 62443"
+      ]
+    },
+    {
+      "id": "req_rheinmark_ot_architect_03",
+      "role_id": "role_rheinmark_ot_architect",
+      "capability_name": "Secure Remote Access",
+      "domain": "Security",
+      "weight": 0.55,
+      "required_level": "L3 - Proficient",
+      "necessity": "REQUIRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Designed vendor remote access for production environments.",
+      "aliases": [
+        "Jump Hosts",
+        "Privileged Access"
+      ]
+    },
+    {
+      "id": "req_rheinmark_ot_architect_04",
+      "role_id": "role_rheinmark_ot_architect",
+      "capability_name": "Industrial Control Systems",
+      "domain": "Industrial Automation",
+      "weight": 0.5,
+      "required_level": "L3 - Proficient",
+      "necessity": "REQUIRED",
+      "requirement_type": "KNOWLEDGE",
+      "evidence_hint": "Practical understanding of PLC/SCADA environments.",
+      "aliases": [
+        "PLC",
+        "SCADA"
+      ]
+    },
+    {
+      "id": "req_rheinmark_ot_architect_05",
+      "role_id": "role_rheinmark_ot_architect",
+      "capability_name": "Security Certification",
+      "domain": "Security",
+      "weight": 0.35,
+      "required_level": "GICSP, ISA/IEC 62443 Expert or comparable",
+      "necessity": "PREFERRED",
+      "requirement_type": "CREDENTIAL",
+      "evidence_hint": "An OT security certification.",
+      "aliases": [
+        "GICSP"
+      ]
+    },
+    {
+      "id": "req_rheinmark_ot_architect_06",
+      "role_id": "role_rheinmark_ot_architect",
+      "capability_name": "Pre-Sales Support",
+      "domain": "Business",
+      "weight": 0.3,
+      "required_level": "Bids and customer questionnaires",
+      "necessity": "OPTIONAL",
+      "requirement_type": "RESPONSIBILITY",
+      "evidence_hint": "Contributed security sections to bids or customer audits."
+    },
+    {
+      "id": "req_nordisk_embedded_pump_01",
+      "role_id": "role_nordisk_embedded_pump",
+      "capability_name": "Embedded C",
+      "domain": "Embedded Systems",
+      "weight": 0.95,
+      "required_level": "L4 - Advanced",
+      "necessity": "REQUIRED",
+      "requirement_type": "TOOL_TECHNOLOGY",
+      "evidence_hint": "Firmware in C on microcontrollers that shipped in products.",
+      "aliases": [
+        "C",
+        "Firmware Development"
+      ]
+    },
+    {
+      "id": "req_nordisk_embedded_pump_02",
+      "role_id": "role_nordisk_embedded_pump",
+      "capability_name": "ARM Cortex-M",
+      "domain": "Embedded Systems",
+      "weight": 0.7,
+      "required_level": "L3 - Proficient",
+      "necessity": "REQUIRED",
+      "requirement_type": "TOOL_TECHNOLOGY",
+      "evidence_hint": "Development on Cortex-M parts, peripherals and interrupts.",
+      "aliases": [
+        "STM32"
+      ]
+    },
+    {
+      "id": "req_nordisk_embedded_pump_03",
+      "role_id": "role_nordisk_embedded_pump",
+      "capability_name": "Real-Time Operating Systems",
+      "domain": "Embedded Systems",
+      "weight": 0.55,
+      "required_level": "L3 - Proficient",
+      "necessity": "PREFERRED",
+      "requirement_type": "TOOL_TECHNOLOGY",
+      "evidence_hint": "Tasks, priorities and timing on an RTOS.",
+      "aliases": [
+        "FreeRTOS",
+        "Zephyr"
+      ]
+    },
+    {
+      "id": "req_nordisk_embedded_pump_04",
+      "role_id": "role_nordisk_embedded_pump",
+      "capability_name": "Motor Control",
+      "domain": "Control Engineering",
+      "weight": 0.45,
+      "required_level": "L2 - Working",
+      "necessity": "PREFERRED",
+      "requirement_type": "KNOWLEDGE",
+      "evidence_hint": "Motor control loops (FOC, PID) in firmware.",
+      "aliases": [
+        "Field-Oriented Control"
+      ]
+    },
+    {
+      "id": "req_nordisk_embedded_pump_05",
+      "role_id": "role_nordisk_embedded_pump",
+      "capability_name": "Fieldbus Protocols",
+      "domain": "Embedded Systems",
+      "weight": 0.5,
+      "required_level": "L3 - Proficient",
+      "necessity": "REQUIRED",
+      "requirement_type": "KNOWLEDGE",
+      "evidence_hint": "Implemented Modbus or BACnet stacks or integrations.",
+      "aliases": [
+        "Modbus",
+        "BACnet"
+      ]
+    },
+    {
+      "id": "req_nordisk_embedded_pump_06",
+      "role_id": "role_nordisk_embedded_pump",
+      "capability_name": "Hardware-in-the-Loop Testing",
+      "domain": "Quality Engineering",
+      "weight": 0.3,
+      "required_level": "L2 - Working",
+      "necessity": "OPTIONAL",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Automated tests on HIL rigs.",
+      "aliases": [
+        "HIL"
+      ]
+    },
+    {
+      "id": "req_nordisk_iot_architect_01",
+      "role_id": "role_nordisk_iot_architect",
+      "capability_name": "IoT Architecture",
+      "domain": "IoT",
+      "weight": 0.95,
+      "required_level": "L5 - Expert",
+      "necessity": "REQUIRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "End-to-end IoT architectures from device to cloud that went live.",
+      "aliases": [
+        "Industrial IoT",
+        "IIoT"
+      ]
+    },
+    {
+      "id": "req_nordisk_iot_architect_02",
+      "role_id": "role_nordisk_iot_architect",
+      "capability_name": "Device Provisioning and Identity",
+      "domain": "IoT",
+      "weight": 0.7,
+      "required_level": "L4 - Advanced",
+      "necessity": "REQUIRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Provisioned device fleets with certificates and lifecycle management.",
+      "aliases": [
+        "X.509 Device Certificates",
+        "Device Identity"
+      ]
+    },
+    {
+      "id": "req_nordisk_iot_architect_03",
+      "role_id": "role_nordisk_iot_architect",
+      "capability_name": "MQTT",
+      "domain": "IoT",
+      "weight": 0.6,
+      "required_level": "L4 - Advanced",
+      "necessity": "REQUIRED",
+      "requirement_type": "TOOL_TECHNOLOGY",
+      "evidence_hint": "Designed MQTT topic structures, QoS and broker scaling."
+    },
+    {
+      "id": "req_nordisk_iot_architect_04",
+      "role_id": "role_nordisk_iot_architect",
+      "capability_name": "Microsoft Azure",
+      "domain": "Cloud",
+      "weight": 0.6,
+      "required_level": "L4 - Advanced",
+      "necessity": "REQUIRED",
+      "requirement_type": "TOOL_TECHNOLOGY",
+      "evidence_hint": "Azure IoT Hub, Event Hubs or similar in production.",
+      "aliases": [
+        "Azure IoT Hub"
+      ]
+    },
+    {
+      "id": "req_nordisk_iot_architect_05",
+      "role_id": "role_nordisk_iot_architect",
+      "capability_name": "Over-the-Air Updates",
+      "domain": "IoT",
+      "weight": 0.5,
+      "required_level": "L3 - Proficient",
+      "necessity": "PREFERRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "OTA update strategy with staged rollout and rollback.",
+      "aliases": [
+        "OTA",
+        "Firmware Update"
+      ]
+    },
+    {
+      "id": "req_nordisk_iot_architect_06",
+      "role_id": "role_nordisk_iot_architect",
+      "capability_name": "Predictive Maintenance",
+      "domain": "Analytics",
+      "weight": 0.3,
+      "required_level": "L2 - Working",
+      "necessity": "OPTIONAL",
+      "requirement_type": "KNOWLEDGE",
+      "evidence_hint": "Condition monitoring or predictive maintenance use cases.",
+      "aliases": [
+        "Condition Monitoring"
+      ]
+    },
+    {
+      "id": "req_nordisk_product_owner_01",
+      "role_id": "role_nordisk_product_owner",
+      "capability_name": "Product Ownership",
+      "domain": "Product Management",
+      "weight": 0.9,
+      "required_level": "L4 - Advanced",
+      "necessity": "REQUIRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Owned a product backlog with measurable outcomes.",
+      "aliases": [
+        "Product Management",
+        "Backlog Management"
+      ]
+    },
+    {
+      "id": "req_nordisk_product_owner_02",
+      "role_id": "role_nordisk_product_owner",
+      "capability_name": "User Research",
+      "domain": "Product Management",
+      "weight": 0.6,
+      "required_level": "L3 - Proficient",
+      "necessity": "REQUIRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Ran interviews or field visits that changed priorities.",
+      "aliases": [
+        "Customer Interviews"
+      ]
+    },
+    {
+      "id": "req_nordisk_product_owner_03",
+      "role_id": "role_nordisk_product_owner",
+      "capability_name": "Product Analytics",
+      "domain": "Product Management",
+      "weight": 0.5,
+      "required_level": "L3 - Proficient",
+      "necessity": "PREFERRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Defined and used product metrics for decisions.",
+      "aliases": [
+        "Adoption Metrics"
+      ]
+    },
+    {
+      "id": "req_nordisk_product_owner_04",
+      "role_id": "role_nordisk_product_owner",
+      "capability_name": "B2B Industrial Products",
+      "domain": "Domain",
+      "weight": 0.45,
+      "required_level": "Building technology or utilities",
+      "necessity": "PREFERRED",
+      "requirement_type": "DOMAIN_CONTEXT",
+      "evidence_hint": "Product work for building technology, utilities or industrial customers.",
+      "aliases": [
+        "Building Automation"
+      ]
+    },
+    {
+      "id": "req_nordisk_product_owner_05",
+      "role_id": "role_nordisk_product_owner",
+      "capability_name": "Agile Product Delivery",
+      "domain": "Delivery",
+      "weight": 0.45,
+      "required_level": "L3 - Proficient",
+      "necessity": "REQUIRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Worked as PO in Scrum or Kanban teams.",
+      "aliases": [
+        "Scrum"
+      ]
+    },
+    {
+      "id": "req_nordisk_product_owner_06",
+      "role_id": "role_nordisk_product_owner",
+      "capability_name": "Product Management",
+      "domain": "Product Management",
+      "weight": 0.5,
+      "required_level": "4+ years",
+      "necessity": "REQUIRED",
+      "requirement_type": "EXPERIENCE",
+      "evidence_hint": "Four or more years in product roles."
+    },
+    {
+      "id": "req_nordisk_product_owner_07",
+      "role_id": "role_nordisk_product_owner",
+      "capability_name": "Danish or English",
+      "domain": "Communication",
+      "weight": 0.3,
+      "required_level": "English C1",
+      "necessity": "REQUIRED",
+      "requirement_type": "LANGUAGE",
+      "evidence_hint": "English working language; Danish is a plus.",
+      "aliases": [
+        "English"
+      ]
+    },
+    {
+      "id": "req_quillstone_staff_data_layer_01",
+      "role_id": "role_quillstone_staff_data_layer",
+      "capability_name": "Database Internals",
+      "domain": "Data Infrastructure",
+      "weight": 0.9,
+      "required_level": "L5 - Expert",
+      "necessity": "REQUIRED",
+      "requirement_type": "KNOWLEDGE",
+      "evidence_hint": "Deep work on query planning, MVCC, vacuum or replication.",
+      "aliases": [
+        "PostgreSQL Internals",
+        "Query Planning"
+      ]
+    },
+    {
+      "id": "req_quillstone_staff_data_layer_02",
+      "role_id": "role_quillstone_staff_data_layer",
+      "capability_name": "Sharding and Multi-Tenancy",
+      "domain": "Data Infrastructure",
+      "weight": 0.85,
+      "required_level": "L5 - Expert",
+      "necessity": "REQUIRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Designed or operated sharded multi-tenant databases.",
+      "aliases": [
+        "Database Sharding",
+        "Tenant Isolation"
+      ]
+    },
+    {
+      "id": "req_quillstone_staff_data_layer_03",
+      "role_id": "role_quillstone_staff_data_layer",
+      "capability_name": "Online Schema Migration",
+      "domain": "Data Infrastructure",
+      "weight": 0.65,
+      "required_level": "L4 - Advanced",
+      "necessity": "REQUIRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Ran zero-downtime migrations at scale.",
+      "aliases": [
+        "Zero-Downtime Migrations"
+      ]
+    },
+    {
+      "id": "req_quillstone_staff_data_layer_04",
+      "role_id": "role_quillstone_staff_data_layer",
+      "capability_name": "Go",
+      "domain": "Software Engineering",
+      "weight": 0.45,
+      "required_level": "L3 - Proficient",
+      "necessity": "PREFERRED",
+      "requirement_type": "TOOL_TECHNOLOGY",
+      "evidence_hint": "Go tooling or services around databases.",
+      "aliases": [
+        "Golang"
+      ]
+    },
+    {
+      "id": "req_quillstone_staff_data_layer_05",
+      "role_id": "role_quillstone_staff_data_layer",
+      "capability_name": "Technical Leadership",
+      "domain": "Leadership",
+      "weight": 0.6,
+      "required_level": "Staff-level influence across teams",
+      "necessity": "REQUIRED",
+      "requirement_type": "BEHAVIORAL_EXPECTATION",
+      "evidence_hint": "Led technical direction across several teams.",
+      "aliases": [
+        "Tech Lead"
+      ]
+    },
+    {
+      "id": "req_quillstone_staff_data_layer_06",
+      "role_id": "role_quillstone_staff_data_layer",
+      "capability_name": "Performance Engineering",
+      "domain": "Software Engineering",
+      "weight": 0.55,
+      "required_level": "L4 - Advanced",
+      "necessity": "REQUIRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Measured and fixed performance bottlenecks under load.",
+      "aliases": [
+        "Load Testing"
+      ]
+    },
+    {
+      "id": "req_quillstone_pm_finance_01",
+      "role_id": "role_quillstone_pm_finance",
+      "capability_name": "Product Management",
+      "domain": "Product Management",
+      "weight": 0.9,
+      "required_level": "L4 - Advanced",
+      "necessity": "REQUIRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Product management for B2B software with roadmap ownership.",
+      "aliases": [
+        "Product Strategy"
+      ]
+    },
+    {
+      "id": "req_quillstone_pm_finance_02",
+      "role_id": "role_quillstone_pm_finance",
+      "capability_name": "Financial Accounting",
+      "domain": "Finance",
+      "weight": 0.8,
+      "required_level": "L4 - Advanced",
+      "necessity": "REQUIRED",
+      "requirement_type": "KNOWLEDGE",
+      "evidence_hint": "Accounting education or practice; ledger and close processes.",
+      "aliases": [
+        "General Ledger",
+        "IFRS"
+      ]
+    },
+    {
+      "id": "req_quillstone_pm_finance_03",
+      "role_id": "role_quillstone_pm_finance",
+      "capability_name": "E-Invoicing Regulations",
+      "domain": "Finance",
+      "weight": 0.5,
+      "required_level": "L3 - Proficient",
+      "necessity": "PREFERRED",
+      "requirement_type": "KNOWLEDGE",
+      "evidence_hint": "Implemented e-invoicing mandates (Peppol, EN 16931, country schemes).",
+      "aliases": [
+        "Peppol",
+        "EN 16931"
+      ]
+    },
+    {
+      "id": "req_quillstone_pm_finance_04",
+      "role_id": "role_quillstone_pm_finance",
+      "capability_name": "ERP Systems",
+      "domain": "Enterprise Software",
+      "weight": 0.55,
+      "required_level": "L3 - Proficient",
+      "necessity": "REQUIRED",
+      "requirement_type": "DOMAIN_CONTEXT",
+      "evidence_hint": "Worked on or with ERP finance modules.",
+      "aliases": [
+        "ERP"
+      ]
+    },
+    {
+      "id": "req_quillstone_pm_finance_05",
+      "role_id": "role_quillstone_pm_finance",
+      "capability_name": "Requirements Engineering",
+      "domain": "Product Management",
+      "weight": 0.45,
+      "required_level": "L3 - Proficient",
+      "necessity": "REQUIRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Specifications engineering teams built from.",
+      "aliases": [
+        "User Stories"
+      ]
+    },
+    {
+      "id": "req_quillstone_pm_finance_06",
+      "role_id": "role_quillstone_pm_finance",
+      "capability_name": "Accounting Qualification",
+      "domain": "Finance",
+      "weight": 0.25,
+      "required_level": "ACCA, CIMA or comparable",
+      "necessity": "OPTIONAL",
+      "requirement_type": "CREDENTIAL",
+      "evidence_hint": "An accounting qualification.",
+      "aliases": [
+        "ACCA",
+        "CIMA"
+      ]
+    },
+    {
+      "id": "req_quillstone_tech_writer_01",
+      "role_id": "role_quillstone_tech_writer",
+      "capability_name": "Technical Writing",
+      "domain": "Documentation",
+      "weight": 0.95,
+      "required_level": "L4 - Advanced",
+      "necessity": "REQUIRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Published developer docs, tutorials or API guides you wrote.",
+      "aliases": [
+        "Developer Documentation"
+      ]
+    },
+    {
+      "id": "req_quillstone_tech_writer_02",
+      "role_id": "role_quillstone_tech_writer",
+      "capability_name": "OpenAPI",
+      "domain": "APIs",
+      "weight": 0.6,
+      "required_level": "L3 - Proficient",
+      "necessity": "REQUIRED",
+      "requirement_type": "TOOL_TECHNOLOGY",
+      "evidence_hint": "Worked with OpenAPI specs and generated references.",
+      "aliases": [
+        "Swagger"
+      ]
+    },
+    {
+      "id": "req_quillstone_tech_writer_03",
+      "role_id": "role_quillstone_tech_writer",
+      "capability_name": "Docs as Code",
+      "domain": "Documentation",
+      "weight": 0.5,
+      "required_level": "L3 - Proficient",
+      "necessity": "REQUIRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Documentation in Git with review and CI.",
+      "aliases": [
+        "Markdown",
+        "Static Site Generators"
+      ]
+    },
+    {
+      "id": "req_quillstone_tech_writer_04",
+      "role_id": "role_quillstone_tech_writer",
+      "capability_name": "REST APIs",
+      "domain": "APIs",
+      "weight": 0.45,
+      "required_level": "L2 - Working",
+      "necessity": "REQUIRED",
+      "requirement_type": "KNOWLEDGE",
+      "evidence_hint": "Enough API knowledge to run and verify examples.",
+      "aliases": [
+        "HTTP APIs"
+      ]
+    },
+    {
+      "id": "req_quillstone_tech_writer_05",
+      "role_id": "role_quillstone_tech_writer",
+      "capability_name": "Information Architecture",
+      "domain": "Documentation",
+      "weight": 0.4,
+      "required_level": "L3 - Proficient",
+      "necessity": "PREFERRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Structured large doc sets; navigation and findability."
+    },
+    {
+      "id": "req_quillstone_tech_writer_06",
+      "role_id": "role_quillstone_tech_writer",
+      "capability_name": "English",
+      "domain": "Communication",
+      "weight": 0.6,
+      "required_level": "C2 / native level",
+      "necessity": "REQUIRED",
+      "requirement_type": "LANGUAGE",
+      "evidence_hint": "Writing samples at native level: published documentation, articles or tutorials in English."
+    },
+    {
+      "id": "req_tessaro_compiler_01",
+      "role_id": "role_tessaro_compiler",
+      "capability_name": "Compiler Construction",
+      "domain": "Programming Languages",
+      "weight": 0.95,
+      "required_level": "L4 - Advanced",
+      "necessity": "REQUIRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Built parsers, type checkers or compilers beyond coursework.",
+      "aliases": [
+        "Parsers",
+        "Type Checking"
+      ]
+    },
+    {
+      "id": "req_tessaro_compiler_02",
+      "role_id": "role_tessaro_compiler",
+      "capability_name": "Static Analysis",
+      "domain": "Programming Languages",
+      "weight": 0.7,
+      "required_level": "L3 - Proficient",
+      "necessity": "REQUIRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Implemented static analyses or linters.",
+      "aliases": [
+        "Data-Flow Analysis"
+      ]
+    },
+    {
+      "id": "req_tessaro_compiler_03",
+      "role_id": "role_tessaro_compiler",
+      "capability_name": "Language Server Protocol",
+      "domain": "Developer Tooling",
+      "weight": 0.5,
+      "required_level": "L3 - Proficient",
+      "necessity": "PREFERRED",
+      "requirement_type": "TOOL_TECHNOLOGY",
+      "evidence_hint": "Language server or editor integration work.",
+      "aliases": [
+        "LSP"
+      ]
+    },
+    {
+      "id": "req_tessaro_compiler_04",
+      "role_id": "role_tessaro_compiler",
+      "capability_name": "Kotlin",
+      "domain": "Software Engineering",
+      "weight": 0.55,
+      "required_level": "L3 - Proficient",
+      "necessity": "REQUIRED",
+      "requirement_type": "TOOL_TECHNOLOGY",
+      "evidence_hint": "Kotlin or another JVM language in production."
+    },
+    {
+      "id": "req_tessaro_compiler_05",
+      "role_id": "role_tessaro_compiler",
+      "capability_name": "TypeScript",
+      "domain": "Software Engineering",
+      "weight": 0.4,
+      "required_level": "L3 - Proficient",
+      "necessity": "PREFERRED",
+      "requirement_type": "TOOL_TECHNOLOGY",
+      "evidence_hint": "TypeScript for editor tooling.",
+      "aliases": [
+        "TS"
+      ]
+    },
+    {
+      "id": "req_tessaro_compiler_06",
+      "role_id": "role_tessaro_compiler",
+      "capability_name": "Business Process Modeling",
+      "domain": "Domain",
+      "weight": 0.3,
+      "required_level": "BPMN or workflow engines",
+      "necessity": "OPTIONAL",
+      "requirement_type": "DOMAIN_CONTEXT",
+      "evidence_hint": "Worked with BPMN or workflow engines.",
+      "aliases": [
+        "BPMN"
+      ]
+    },
+    {
+      "id": "req_tessaro_solutions_engineer_01",
+      "role_id": "role_tessaro_solutions_engineer",
+      "capability_name": "Solutions Engineering",
+      "domain": "Pre-Sales",
+      "weight": 0.9,
+      "required_level": "L4 - Advanced",
+      "necessity": "REQUIRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Technical pre-sales with demos and proofs of concept.",
+      "aliases": [
+        "Pre-Sales Engineering",
+        "Sales Engineering"
+      ]
+    },
+    {
+      "id": "req_tessaro_solutions_engineer_02",
+      "role_id": "role_tessaro_solutions_engineer",
+      "capability_name": "Process Modeling",
+      "domain": "Business Process Management",
+      "weight": 0.7,
+      "required_level": "L4 - Advanced",
+      "necessity": "REQUIRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Modelled business processes with customers.",
+      "aliases": [
+        "BPMN"
+      ]
+    },
+    {
+      "id": "req_tessaro_solutions_engineer_03",
+      "role_id": "role_tessaro_solutions_engineer",
+      "capability_name": "Public Sector Procurement",
+      "domain": "Domain",
+      "weight": 0.5,
+      "required_level": "Tenders in DACH public sector",
+      "necessity": "PREFERRED",
+      "requirement_type": "DOMAIN_CONTEXT",
+      "evidence_hint": "Responded to public tenders or worked in e-government.",
+      "aliases": [
+        "Public Tenders"
+      ]
+    },
+    {
+      "id": "req_tessaro_solutions_engineer_04",
+      "role_id": "role_tessaro_solutions_engineer",
+      "capability_name": "API Integration",
+      "domain": "Software Engineering",
+      "weight": 0.5,
+      "required_level": "L3 - Proficient",
+      "necessity": "REQUIRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Built integrations for demos or customers.",
+      "aliases": [
+        "REST",
+        "Integration"
+      ]
+    },
+    {
+      "id": "req_tessaro_solutions_engineer_05",
+      "role_id": "role_tessaro_solutions_engineer",
+      "capability_name": "Presentation Skills",
+      "domain": "Communication",
+      "weight": 0.5,
+      "required_level": "Workshops with senior officials",
+      "necessity": "REQUIRED",
+      "requirement_type": "BEHAVIORAL_EXPECTATION",
+      "evidence_hint": "Ran workshops and demos for senior stakeholders."
+    },
+    {
+      "id": "req_tessaro_solutions_engineer_06",
+      "role_id": "role_tessaro_solutions_engineer",
+      "capability_name": "German",
+      "domain": "Communication",
+      "weight": 0.6,
+      "required_level": "C2 / native level",
+      "necessity": "REQUIRED",
+      "requirement_type": "LANGUAGE",
+      "evidence_hint": "Customer-facing German at native level."
+    },
+    {
+      "id": "req_tessaro_qa_automation_01",
+      "role_id": "role_tessaro_qa_automation",
+      "capability_name": "Test Automation",
+      "domain": "Quality Engineering",
+      "weight": 0.95,
+      "required_level": "L4 - Advanced",
+      "necessity": "REQUIRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Automation suites you designed and maintained in CI.",
+      "aliases": [
+        "Automated Testing"
+      ]
+    },
+    {
+      "id": "req_tessaro_qa_automation_02",
+      "role_id": "role_tessaro_qa_automation",
+      "capability_name": "Playwright",
+      "domain": "Quality Engineering",
+      "weight": 0.65,
+      "required_level": "L3 - Proficient",
+      "necessity": "REQUIRED",
+      "requirement_type": "TOOL_TECHNOLOGY",
+      "evidence_hint": "Browser end-to-end tests with Playwright, Cypress or Selenium.",
+      "aliases": [
+        "Cypress",
+        "Selenium"
+      ]
+    },
+    {
+      "id": "req_tessaro_qa_automation_03",
+      "role_id": "role_tessaro_qa_automation",
+      "capability_name": "API Testing",
+      "domain": "Quality Engineering",
+      "weight": 0.55,
+      "required_level": "L3 - Proficient",
+      "necessity": "REQUIRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "API or contract tests (REST, Pact).",
+      "aliases": [
+        "Contract Testing"
+      ]
+    },
+    {
+      "id": "req_tessaro_qa_automation_04",
+      "role_id": "role_tessaro_qa_automation",
+      "capability_name": "Test Strategy",
+      "domain": "Quality Engineering",
+      "weight": 0.45,
+      "required_level": "L3 - Proficient",
+      "necessity": "PREFERRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Defined test strategies for features or releases.",
+      "aliases": [
+        "Risk-Based Testing"
+      ]
+    },
+    {
+      "id": "req_tessaro_qa_automation_05",
+      "role_id": "role_tessaro_qa_automation",
+      "capability_name": "TypeScript",
+      "domain": "Software Engineering",
+      "weight": 0.45,
+      "required_level": "L3 - Proficient",
+      "necessity": "REQUIRED",
+      "requirement_type": "TOOL_TECHNOLOGY",
+      "evidence_hint": "Test code in TypeScript you wrote and maintained: page objects, fixtures, typed helpers.",
+      "aliases": [
+        "TS"
+      ]
+    },
+    {
+      "id": "req_tessaro_qa_automation_06",
+      "role_id": "role_tessaro_qa_automation",
+      "capability_name": "ISTQB Certification",
+      "domain": "Quality Engineering",
+      "weight": 0.2,
+      "required_level": "ISTQB Foundation or higher",
+      "necessity": "OPTIONAL",
+      "requirement_type": "CREDENTIAL",
+      "evidence_hint": "ISTQB Foundation Level or a higher ISTQB certification.",
+      "aliases": [
+        "ISTQB"
+      ]
+    },
+    {
+      "id": "req_valcor_autosar_01",
+      "role_id": "role_valcor_autosar",
+      "capability_name": "AUTOSAR Classic",
+      "domain": "Automotive Software",
+      "weight": 0.95,
+      "required_level": "L3 - Proficient",
+      "necessity": "REQUIRED",
+      "requirement_type": "TOOL_TECHNOLOGY",
+      "evidence_hint": "Developed or configured AUTOSAR Classic software components.",
+      "aliases": [
+        "AUTOSAR"
+      ]
+    },
+    {
+      "id": "req_valcor_autosar_02",
+      "role_id": "role_valcor_autosar",
+      "capability_name": "Embedded C",
+      "domain": "Embedded Systems",
+      "weight": 0.75,
+      "required_level": "L4 - Advanced",
+      "necessity": "REQUIRED",
+      "requirement_type": "TOOL_TECHNOLOGY",
+      "evidence_hint": "Automotive C code under MISRA rules.",
+      "aliases": [
+        "C"
+      ]
+    },
+    {
+      "id": "req_valcor_autosar_03",
+      "role_id": "role_valcor_autosar",
+      "capability_name": "Vehicle Networks",
+      "domain": "Automotive Software",
+      "weight": 0.6,
+      "required_level": "L3 - Proficient",
+      "necessity": "REQUIRED",
+      "requirement_type": "KNOWLEDGE",
+      "evidence_hint": "Communication over CAN/CAN FD, LIN or automotive Ethernet.",
+      "aliases": [
+        "CAN FD",
+        "Automotive Ethernet",
+        "LIN"
+      ]
+    },
+    {
+      "id": "req_valcor_autosar_04",
+      "role_id": "role_valcor_autosar",
+      "capability_name": "MISRA C",
+      "domain": "Quality",
+      "weight": 0.5,
+      "required_level": "L3 - Proficient",
+      "necessity": "REQUIRED",
+      "requirement_type": "KNOWLEDGE",
+      "evidence_hint": "MISRA-compliant development with static analysis."
+    },
+    {
+      "id": "req_valcor_autosar_05",
+      "role_id": "role_valcor_autosar",
+      "capability_name": "Automotive SPICE",
+      "domain": "Process",
+      "weight": 0.4,
+      "required_level": "L2 - Working",
+      "necessity": "PREFERRED",
+      "requirement_type": "KNOWLEDGE",
+      "evidence_hint": "Worked in ASPICE-assessed projects.",
+      "aliases": [
+        "ASPICE"
+      ]
+    },
+    {
+      "id": "req_valcor_autosar_06",
+      "role_id": "role_valcor_autosar",
+      "capability_name": "Vector Tools",
+      "domain": "Automotive Software",
+      "weight": 0.3,
+      "required_level": "L2 - Working",
+      "necessity": "OPTIONAL",
+      "requirement_type": "TOOL_TECHNOLOGY",
+      "evidence_hint": "CANoe, DaVinci Configurator or similar tools.",
+      "aliases": [
+        "CANoe",
+        "DaVinci"
+      ]
+    },
+    {
+      "id": "req_valcor_functional_safety_01",
+      "role_id": "role_valcor_functional_safety",
+      "capability_name": "ISO 26262",
+      "domain": "Functional Safety",
+      "weight": 0.95,
+      "required_level": "L4 - Advanced",
+      "necessity": "REQUIRED",
+      "requirement_type": "KNOWLEDGE",
+      "evidence_hint": "Authored ISO 26262 work products (HARA, safety concepts, safety case).",
+      "aliases": [
+        "Functional Safety"
+      ]
+    },
+    {
+      "id": "req_valcor_functional_safety_02",
+      "role_id": "role_valcor_functional_safety",
+      "capability_name": "Safety Analysis Methods",
+      "domain": "Functional Safety",
+      "weight": 0.75,
+      "required_level": "L4 - Advanced",
+      "necessity": "REQUIRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Performed FMEA, FTA or FMEDA.",
+      "aliases": [
+        "FMEA",
+        "FTA",
+        "FMEDA"
+      ]
+    },
+    {
+      "id": "req_valcor_functional_safety_03",
+      "role_id": "role_valcor_functional_safety",
+      "capability_name": "Safety Requirements Engineering",
+      "domain": "Functional Safety",
+      "weight": 0.6,
+      "required_level": "L3 - Proficient",
+      "necessity": "REQUIRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Derived and traced safety requirements with ASIL allocation.",
+      "aliases": [
+        "ASIL Decomposition"
+      ]
+    },
+    {
+      "id": "req_valcor_functional_safety_04",
+      "role_id": "role_valcor_functional_safety",
+      "capability_name": "Automotive Systems",
+      "domain": "Domain",
+      "weight": 0.45,
+      "required_level": "Chassis, brake or steering systems",
+      "necessity": "PREFERRED",
+      "requirement_type": "DOMAIN_CONTEXT",
+      "evidence_hint": "Worked on chassis, brake or steering systems.",
+      "aliases": [
+        "Brake Systems"
+      ]
+    },
+    {
+      "id": "req_valcor_functional_safety_05",
+      "role_id": "role_valcor_functional_safety",
+      "capability_name": "Functional Safety Certification",
+      "domain": "Functional Safety",
+      "weight": 0.35,
+      "required_level": "TÜV Functional Safety Engineer or comparable",
+      "necessity": "PREFERRED",
+      "requirement_type": "CREDENTIAL",
+      "evidence_hint": "A functional safety certification.",
+      "aliases": [
+        "TÜV FS Engineer"
+      ]
+    },
+    {
+      "id": "req_valcor_functional_safety_06",
+      "role_id": "role_valcor_functional_safety",
+      "capability_name": "Functional Safety Practice",
+      "domain": "Functional Safety",
+      "weight": 0.5,
+      "required_level": "4+ years",
+      "necessity": "REQUIRED",
+      "requirement_type": "EXPERIENCE",
+      "evidence_hint": "Four or more years in functional safety roles."
+    },
+    {
+      "id": "req_valcor_diagnostics_01",
+      "role_id": "role_valcor_diagnostics",
+      "capability_name": "Unified Diagnostic Services",
+      "domain": "Automotive Software",
+      "weight": 0.9,
+      "required_level": "L3 - Proficient",
+      "necessity": "REQUIRED",
+      "requirement_type": "KNOWLEDGE",
+      "evidence_hint": "Implemented or tested UDS services and DTC handling.",
+      "aliases": [
+        "UDS",
+        "ISO 14229"
+      ]
+    },
+    {
+      "id": "req_valcor_diagnostics_02",
+      "role_id": "role_valcor_diagnostics",
+      "capability_name": "ODX",
+      "domain": "Automotive Software",
+      "weight": 0.5,
+      "required_level": "L2 - Working",
+      "necessity": "PREFERRED",
+      "requirement_type": "TOOL_TECHNOLOGY",
+      "evidence_hint": "Authored or consumed ODX diagnostic descriptions.",
+      "aliases": [
+        "ODX/PDX"
+      ]
+    },
+    {
+      "id": "req_valcor_diagnostics_03",
+      "role_id": "role_valcor_diagnostics",
+      "capability_name": "Over-the-Air Updates",
+      "domain": "Automotive Software",
+      "weight": 0.65,
+      "required_level": "L3 - Proficient",
+      "necessity": "REQUIRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "ECU-side OTA updates with signature verification.",
+      "aliases": [
+        "OTA",
+        "Software Update Management"
+      ]
+    },
+    {
+      "id": "req_valcor_diagnostics_04",
+      "role_id": "role_valcor_diagnostics",
+      "capability_name": "Embedded C",
+      "domain": "Embedded Systems",
+      "weight": 0.5,
+      "required_level": "L3 - Proficient",
+      "necessity": "REQUIRED",
+      "requirement_type": "TOOL_TECHNOLOGY",
+      "evidence_hint": "Embedded C for diagnostic and bootloader code.",
+      "aliases": [
+        "C"
+      ]
+    },
+    {
+      "id": "req_valcor_diagnostics_05",
+      "role_id": "role_valcor_diagnostics",
+      "capability_name": "UNECE R156",
+      "domain": "Regulatory",
+      "weight": 0.3,
+      "required_level": "L2 - Working",
+      "necessity": "OPTIONAL",
+      "requirement_type": "KNOWLEDGE",
+      "evidence_hint": "Awareness of UNECE R155/R156 obligations.",
+      "aliases": [
+        "Software Update Management System"
+      ]
+    },
+    {
+      "id": "req_valcor_diagnostics_06",
+      "role_id": "role_valcor_diagnostics",
+      "capability_name": "Python",
+      "domain": "Software Engineering",
+      "weight": 0.25,
+      "required_level": "L2 - Working",
+      "necessity": "OPTIONAL",
+      "requirement_type": "TOOL_TECHNOLOGY",
+      "evidence_hint": "Test and log-analysis scripts in Python."
+    },
+    {
+      "id": "req_corvane_bms_01",
+      "role_id": "role_corvane_bms",
+      "capability_name": "Battery Management Systems",
+      "domain": "Battery Engineering",
+      "weight": 0.95,
+      "required_level": "L4 - Advanced",
+      "necessity": "REQUIRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "BMS algorithm or software development for lithium-ion packs.",
+      "aliases": [
+        "BMS"
+      ]
+    },
+    {
+      "id": "req_corvane_bms_02",
+      "role_id": "role_corvane_bms",
+      "capability_name": "State Estimation",
+      "domain": "Control Engineering",
+      "weight": 0.75,
+      "required_level": "L4 - Advanced",
+      "necessity": "REQUIRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "SoC/SoH estimation with Kalman filters or observers.",
+      "aliases": [
+        "Kalman Filter",
+        "SoC Estimation"
+      ]
+    },
+    {
+      "id": "req_corvane_bms_03",
+      "role_id": "role_corvane_bms",
+      "capability_name": "MATLAB/Simulink",
+      "domain": "Control Engineering",
+      "weight": 0.6,
+      "required_level": "L4 - Advanced",
+      "necessity": "REQUIRED",
+      "requirement_type": "TOOL_TECHNOLOGY",
+      "evidence_hint": "Model-based design with code generation.",
+      "aliases": [
+        "Simulink",
+        "Model-Based Design"
+      ]
+    },
+    {
+      "id": "req_corvane_bms_04",
+      "role_id": "role_corvane_bms",
+      "capability_name": "Battery Cell Electrochemistry",
+      "domain": "Battery Engineering",
+      "weight": 0.5,
+      "required_level": "L3 - Proficient",
+      "necessity": "PREFERRED",
+      "requirement_type": "KNOWLEDGE",
+      "evidence_hint": "Understanding of cell ageing and thermal behaviour.",
+      "aliases": [
+        "Lithium-Ion Cells"
+      ]
+    },
+    {
+      "id": "req_corvane_bms_05",
+      "role_id": "role_corvane_bms",
+      "capability_name": "Battery Testing",
+      "domain": "Battery Engineering",
+      "weight": 0.4,
+      "required_level": "L3 - Proficient",
+      "necessity": "PREFERRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Planned and evaluated cell or pack tests.",
+      "aliases": [
+        "Cell Cycling"
+      ]
+    },
+    {
+      "id": "req_corvane_bms_06",
+      "role_id": "role_corvane_bms",
+      "capability_name": "Engineering Degree",
+      "domain": "Education",
+      "weight": 0.35,
+      "required_level": "MSc in Electrical Engineering or comparable",
+      "necessity": "REQUIRED",
+      "requirement_type": "CREDENTIAL",
+      "evidence_hint": "An engineering master's degree.",
+      "aliases": [
+        "MSc Electrical Engineering"
+      ]
+    },
+    {
+      "id": "req_corvane_ocpp_backend_01",
+      "role_id": "role_corvane_ocpp_backend",
+      "capability_name": "OCPP",
+      "domain": "E-Mobility",
+      "weight": 0.9,
+      "required_level": "L3 - Proficient",
+      "necessity": "REQUIRED",
+      "requirement_type": "KNOWLEDGE",
+      "evidence_hint": "Implemented OCPP 1.6/2.0.1 communication.",
+      "aliases": [
+        "Open Charge Point Protocol"
+      ]
+    },
+    {
+      "id": "req_corvane_ocpp_backend_02",
+      "role_id": "role_corvane_ocpp_backend",
+      "capability_name": "Python",
+      "domain": "Software Engineering",
+      "weight": 0.75,
+      "required_level": "L4 - Advanced",
+      "necessity": "REQUIRED",
+      "requirement_type": "TOOL_TECHNOLOGY",
+      "evidence_hint": "Production Python backend services.",
+      "aliases": [
+        "FastAPI"
+      ]
+    },
+    {
+      "id": "req_corvane_ocpp_backend_03",
+      "role_id": "role_corvane_ocpp_backend",
+      "capability_name": "WebSocket Services",
+      "domain": "Software Engineering",
+      "weight": 0.55,
+      "required_level": "L3 - Proficient",
+      "necessity": "REQUIRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Long-lived connection handling at scale.",
+      "aliases": [
+        "WebSockets"
+      ]
+    },
+    {
+      "id": "req_corvane_ocpp_backend_04",
+      "role_id": "role_corvane_ocpp_backend",
+      "capability_name": "Smart Charging",
+      "domain": "E-Mobility",
+      "weight": 0.5,
+      "required_level": "L2 - Working",
+      "necessity": "PREFERRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Charging schedules or load management algorithms.",
+      "aliases": [
+        "Load Management"
+      ]
+    },
+    {
+      "id": "req_corvane_ocpp_backend_05",
+      "role_id": "role_corvane_ocpp_backend",
+      "capability_name": "PostgreSQL",
+      "domain": "Data",
+      "weight": 0.45,
+      "required_level": "L3 - Proficient",
+      "necessity": "REQUIRED",
+      "requirement_type": "TOOL_TECHNOLOGY",
+      "evidence_hint": "Relational data design for sessions and tariffs.",
+      "aliases": [
+        "Postgres"
+      ]
+    },
+    {
+      "id": "req_corvane_ocpp_backend_06",
+      "role_id": "role_corvane_ocpp_backend",
+      "capability_name": "Energy Market Context",
+      "domain": "Domain",
+      "weight": 0.25,
+      "required_level": "Grid tariffs or demand response",
+      "necessity": "OPTIONAL",
+      "requirement_type": "DOMAIN_CONTEXT",
+      "evidence_hint": "Experience with tariffs, demand response or energy markets.",
+      "aliases": [
+        "Demand Response"
+      ]
+    },
+    {
+      "id": "req_corvane_telematics_analyst_01",
+      "role_id": "role_corvane_telematics_analyst",
+      "capability_name": "Data Analysis",
+      "domain": "Analytics",
+      "weight": 0.9,
+      "required_level": "L3 - Proficient",
+      "necessity": "REQUIRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Analyses that informed a decision; notebooks or reports.",
+      "aliases": [
+        "Exploratory Data Analysis"
+      ]
+    },
+    {
+      "id": "req_corvane_telematics_analyst_02",
+      "role_id": "role_corvane_telematics_analyst",
+      "capability_name": "SQL",
+      "domain": "Data",
+      "weight": 0.75,
+      "required_level": "L3 - Proficient",
+      "necessity": "REQUIRED",
+      "requirement_type": "TOOL_TECHNOLOGY",
+      "evidence_hint": "SQL for analysis on large tables."
+    },
+    {
+      "id": "req_corvane_telematics_analyst_03",
+      "role_id": "role_corvane_telematics_analyst",
+      "capability_name": "Python",
+      "domain": "Software Engineering",
+      "weight": 0.55,
+      "required_level": "L2 - Working",
+      "necessity": "REQUIRED",
+      "requirement_type": "TOOL_TECHNOLOGY",
+      "evidence_hint": "pandas-based analyses in notebooks or scripts that produced a report or decision.",
+      "aliases": [
+        "pandas"
+      ]
+    },
+    {
+      "id": "req_corvane_telematics_analyst_04",
+      "role_id": "role_corvane_telematics_analyst",
+      "capability_name": "Dashboarding",
+      "domain": "Analytics",
+      "weight": 0.45,
+      "required_level": "L2 - Working",
+      "necessity": "PREFERRED",
+      "requirement_type": "TOOL_TECHNOLOGY",
+      "evidence_hint": "Built dashboards for business users.",
+      "aliases": [
+        "Tableau",
+        "Power BI",
+        "Metabase"
+      ]
+    },
+    {
+      "id": "req_corvane_telematics_analyst_05",
+      "role_id": "role_corvane_telematics_analyst",
+      "capability_name": "Vehicle Telematics",
+      "domain": "Domain",
+      "weight": 0.3,
+      "required_level": "Fleet or vehicle data",
+      "necessity": "OPTIONAL",
+      "requirement_type": "DOMAIN_CONTEXT",
+      "evidence_hint": "Worked with vehicle or fleet data.",
+      "aliases": [
+        "Fleet Management"
+      ]
+    },
+    {
+      "id": "req_corvane_telematics_analyst_06",
+      "role_id": "role_corvane_telematics_analyst",
+      "capability_name": "Data Storytelling",
+      "domain": "Communication",
+      "weight": 0.35,
+      "required_level": "Presenting to customers",
+      "necessity": "PREFERRED",
+      "requirement_type": "BEHAVIORAL_EXPECTATION",
+      "evidence_hint": "Presented analyses to non-technical audiences."
+    },
+    {
+      "id": "req_sentinelridge_soc_analyst_01",
+      "role_id": "role_sentinelridge_soc_analyst",
+      "capability_name": "Security Monitoring",
+      "domain": "Security Operations",
+      "weight": 0.9,
+      "required_level": "L3 - Proficient",
+      "necessity": "REQUIRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Triage and investigation of security alerts in a SOC.",
+      "aliases": [
+        "Alert Triage",
+        "SOC Operations"
+      ]
+    },
+    {
+      "id": "req_sentinelridge_soc_analyst_02",
+      "role_id": "role_sentinelridge_soc_analyst",
+      "capability_name": "SIEM",
+      "domain": "Security Operations",
+      "weight": 0.7,
+      "required_level": "L3 - Proficient",
+      "necessity": "REQUIRED",
+      "requirement_type": "TOOL_TECHNOLOGY",
+      "evidence_hint": "Queries and investigations in Sentinel (KQL) or Splunk (SPL).",
+      "aliases": [
+        "Microsoft Sentinel",
+        "Splunk"
+      ]
+    },
+    {
+      "id": "req_sentinelridge_soc_analyst_03",
+      "role_id": "role_sentinelridge_soc_analyst",
+      "capability_name": "Endpoint Detection and Response",
+      "domain": "Security Operations",
+      "weight": 0.6,
+      "required_level": "L3 - Proficient",
+      "necessity": "REQUIRED",
+      "requirement_type": "TOOL_TECHNOLOGY",
+      "evidence_hint": "Investigations and containment in an EDR.",
+      "aliases": [
+        "EDR",
+        "Microsoft Defender for Endpoint",
+        "CrowdStrike"
+      ]
+    },
+    {
+      "id": "req_sentinelridge_soc_analyst_04",
+      "role_id": "role_sentinelridge_soc_analyst",
+      "capability_name": "Windows Security Internals",
+      "domain": "Security",
+      "weight": 0.45,
+      "required_level": "L3 - Proficient",
+      "necessity": "PREFERRED",
+      "requirement_type": "KNOWLEDGE",
+      "evidence_hint": "Analysed Windows and AD logs.",
+      "aliases": [
+        "Active Directory",
+        "Windows Event Logs"
+      ]
+    },
+    {
+      "id": "req_sentinelridge_soc_analyst_05",
+      "role_id": "role_sentinelridge_soc_analyst",
+      "capability_name": "Shift Availability",
+      "domain": "Availability",
+      "weight": 0.4,
+      "required_level": "24/7 rotation incl. nights",
+      "necessity": "REQUIRED",
+      "requirement_type": "RESPONSIBILITY",
+      "evidence_hint": "Willingness to work in a shift rotation."
+    },
+    {
+      "id": "req_sentinelridge_soc_analyst_06",
+      "role_id": "role_sentinelridge_soc_analyst",
+      "capability_name": "Security Certification",
+      "domain": "Security",
+      "weight": 0.25,
+      "required_level": "SC-200, GCIH or comparable",
+      "necessity": "OPTIONAL",
+      "requirement_type": "CREDENTIAL",
+      "evidence_hint": "A SOC-relevant certification.",
+      "aliases": [
+        "SC-200",
+        "GCIH"
+      ]
+    },
+    {
+      "id": "req_sentinelridge_detection_engineer_01",
+      "role_id": "role_sentinelridge_detection_engineer",
+      "capability_name": "Detection Engineering",
+      "domain": "Security Operations",
+      "weight": 0.95,
+      "required_level": "L4 - Advanced",
+      "necessity": "REQUIRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Detections you wrote that run in production, with tuning history.",
+      "aliases": [
+        "Detection Content Development"
+      ]
+    },
+    {
+      "id": "req_sentinelridge_detection_engineer_02",
+      "role_id": "role_sentinelridge_detection_engineer",
+      "capability_name": "MITRE ATT&CK",
+      "domain": "Security",
+      "weight": 0.65,
+      "required_level": "L4 - Advanced",
+      "necessity": "REQUIRED",
+      "requirement_type": "KNOWLEDGE",
+      "evidence_hint": "Mapped detections and coverage to ATT&CK.",
+      "aliases": [
+        "ATT&CK"
+      ]
+    },
+    {
+      "id": "req_sentinelridge_detection_engineer_03",
+      "role_id": "role_sentinelridge_detection_engineer",
+      "capability_name": "KQL",
+      "domain": "Security Operations",
+      "weight": 0.6,
+      "required_level": "L4 - Advanced",
+      "necessity": "REQUIRED",
+      "requirement_type": "TOOL_TECHNOLOGY",
+      "evidence_hint": "Advanced KQL or SPL queries.",
+      "aliases": [
+        "Kusto Query Language",
+        "SPL"
+      ]
+    },
+    {
+      "id": "req_sentinelridge_detection_engineer_04",
+      "role_id": "role_sentinelridge_detection_engineer",
+      "capability_name": "Detection as Code",
+      "domain": "Security Operations",
+      "weight": 0.5,
+      "required_level": "L3 - Proficient",
+      "necessity": "PREFERRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Detections in Git with tests (e.g. Sigma).",
+      "aliases": [
+        "Sigma",
+        "CI for Detections"
+      ]
+    },
+    {
+      "id": "req_sentinelridge_detection_engineer_05",
+      "role_id": "role_sentinelridge_detection_engineer",
+      "capability_name": "Adversary Emulation",
+      "domain": "Security",
+      "weight": 0.45,
+      "required_level": "L3 - Proficient",
+      "necessity": "PREFERRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Emulated techniques to validate detections.",
+      "aliases": [
+        "Atomic Red Team",
+        "Purple Teaming"
+      ]
+    },
+    {
+      "id": "req_sentinelridge_detection_engineer_06",
+      "role_id": "role_sentinelridge_detection_engineer",
+      "capability_name": "Python",
+      "domain": "Software Engineering",
+      "weight": 0.4,
+      "required_level": "L3 - Proficient",
+      "necessity": "REQUIRED",
+      "requirement_type": "TOOL_TECHNOLOGY",
+      "evidence_hint": "Automation and enrichment scripts."
+    },
+    {
+      "id": "req_sentinelridge_dfir_01",
+      "role_id": "role_sentinelridge_dfir",
+      "capability_name": "Digital Forensics",
+      "domain": "Incident Response",
+      "weight": 0.95,
+      "required_level": "L4 - Advanced",
+      "necessity": "REQUIRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Forensic investigations of disks, memory or cloud artefacts.",
+      "aliases": [
+        "DFIR",
+        "Forensic Analysis"
+      ]
+    },
+    {
+      "id": "req_sentinelridge_dfir_02",
+      "role_id": "role_sentinelridge_dfir",
+      "capability_name": "Incident Response Leadership",
+      "domain": "Incident Response",
+      "weight": 0.75,
+      "required_level": "L4 - Advanced",
+      "necessity": "REQUIRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Led incident responses including coordination and containment decisions.",
+      "aliases": [
+        "Incident Handling"
+      ]
+    },
+    {
+      "id": "req_sentinelridge_dfir_03",
+      "role_id": "role_sentinelridge_dfir",
+      "capability_name": "Memory Forensics",
+      "domain": "Incident Response",
+      "weight": 0.5,
+      "required_level": "L3 - Proficient",
+      "necessity": "PREFERRED",
+      "requirement_type": "TOOL_TECHNOLOGY",
+      "evidence_hint": "Memory analysis with Volatility or similar.",
+      "aliases": [
+        "Volatility"
+      ]
+    },
+    {
+      "id": "req_sentinelridge_dfir_04",
+      "role_id": "role_sentinelridge_dfir",
+      "capability_name": "Cloud Incident Response",
+      "domain": "Incident Response",
+      "weight": 0.5,
+      "required_level": "L3 - Proficient",
+      "necessity": "PREFERRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Investigations in cloud identity and audit logs.",
+      "aliases": [
+        "Azure AD Logs",
+        "AWS CloudTrail"
+      ]
+    },
+    {
+      "id": "req_sentinelridge_dfir_05",
+      "role_id": "role_sentinelridge_dfir",
+      "capability_name": "Forensic Reporting",
+      "domain": "Communication",
+      "weight": 0.5,
+      "required_level": "Reports for insurers and authorities",
+      "necessity": "REQUIRED",
+      "requirement_type": "BEHAVIORAL_EXPECTATION",
+      "evidence_hint": "Investigation reports suitable for external parties."
+    },
+    {
+      "id": "req_sentinelridge_dfir_06",
+      "role_id": "role_sentinelridge_dfir",
+      "capability_name": "DFIR Certification",
+      "domain": "Security",
+      "weight": 0.25,
+      "required_level": "GCFA, GCFE or comparable",
+      "necessity": "OPTIONAL",
+      "requirement_type": "CREDENTIAL",
+      "evidence_hint": "A forensic certification.",
+      "aliases": [
+        "GCFA",
+        "GCFE"
+      ]
+    },
+    {
+      "id": "req_ironquay_pq_crypto_01",
+      "role_id": "role_ironquay_pq_crypto",
+      "capability_name": "Applied Cryptography",
+      "domain": "Cryptography",
+      "weight": 0.95,
+      "required_level": "L5 - Expert",
+      "necessity": "REQUIRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Implemented cryptographic algorithms or protocols in shipped software.",
+      "aliases": [
+        "Cryptographic Engineering"
+      ]
+    },
+    {
+      "id": "req_ironquay_pq_crypto_02",
+      "role_id": "role_ironquay_pq_crypto",
+      "capability_name": "Post-Quantum Cryptography",
+      "domain": "Cryptography",
+      "weight": 0.75,
+      "required_level": "L3 - Proficient",
+      "necessity": "REQUIRED",
+      "requirement_type": "KNOWLEDGE",
+      "evidence_hint": "Implementation or evaluation work on PQC schemes.",
+      "aliases": [
+        "ML-KEM",
+        "ML-DSA",
+        "Kyber",
+        "Dilithium"
+      ]
+    },
+    {
+      "id": "req_ironquay_pq_crypto_03",
+      "role_id": "role_ironquay_pq_crypto",
+      "capability_name": "Side-Channel Resistance",
+      "domain": "Cryptography",
+      "weight": 0.55,
+      "required_level": "L3 - Proficient",
+      "necessity": "PREFERRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Constant-time code or side-channel evaluation.",
+      "aliases": [
+        "Constant-Time Programming"
+      ]
+    },
+    {
+      "id": "req_ironquay_pq_crypto_04",
+      "role_id": "role_ironquay_pq_crypto",
+      "capability_name": "C",
+      "domain": "Software Engineering",
+      "weight": 0.6,
+      "required_level": "L4 - Advanced",
+      "necessity": "REQUIRED",
+      "requirement_type": "TOOL_TECHNOLOGY",
+      "evidence_hint": "Low-level C or Rust in security-critical code.",
+      "aliases": [
+        "Rust"
+      ]
+    },
+    {
+      "id": "req_ironquay_pq_crypto_05",
+      "role_id": "role_ironquay_pq_crypto",
+      "capability_name": "X.509 and PKI Standards",
+      "domain": "Cryptography",
+      "weight": 0.4,
+      "required_level": "L3 - Proficient",
+      "necessity": "PREFERRED",
+      "requirement_type": "KNOWLEDGE",
+      "evidence_hint": "Certificate formats and PKI standards.",
+      "aliases": [
+        "X.509",
+        "PKIX"
+      ]
+    },
+    {
+      "id": "req_ironquay_pq_crypto_06",
+      "role_id": "role_ironquay_pq_crypto",
+      "capability_name": "Mathematics Background",
+      "domain": "Education",
+      "weight": 0.35,
+      "required_level": "MSc/PhD in mathematics, CS or comparable",
+      "necessity": "PREFERRED",
+      "requirement_type": "CREDENTIAL",
+      "evidence_hint": "Degree with strong mathematical content."
+    },
+    {
+      "id": "req_ironquay_pki_ops_01",
+      "role_id": "role_ironquay_pki_ops",
+      "capability_name": "Public Key Infrastructure",
+      "domain": "Security Operations",
+      "weight": 0.95,
+      "required_level": "L4 - Advanced",
+      "necessity": "REQUIRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Operated CAs: issuance, revocation, key ceremonies.",
+      "aliases": [
+        "PKI",
+        "Certificate Authority Operations"
+      ]
+    },
+    {
+      "id": "req_ironquay_pki_ops_02",
+      "role_id": "role_ironquay_pki_ops",
+      "capability_name": "Hardware Security Modules",
+      "domain": "Security",
+      "weight": 0.65,
+      "required_level": "L3 - Proficient",
+      "necessity": "REQUIRED",
+      "requirement_type": "TOOL_TECHNOLOGY",
+      "evidence_hint": "Worked with HSMs via PKCS#11 or vendor tooling.",
+      "aliases": [
+        "HSM",
+        "PKCS#11"
+      ]
+    },
+    {
+      "id": "req_ironquay_pki_ops_03",
+      "role_id": "role_ironquay_pki_ops",
+      "capability_name": "Linux Administration",
+      "domain": "Infrastructure",
+      "weight": 0.5,
+      "required_level": "L3 - Proficient",
+      "necessity": "REQUIRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Administered hardened Linux systems.",
+      "aliases": [
+        "Linux"
+      ]
+    },
+    {
+      "id": "req_ironquay_pki_ops_04",
+      "role_id": "role_ironquay_pki_ops",
+      "capability_name": "Audit Compliance",
+      "domain": "Compliance",
+      "weight": 0.4,
+      "required_level": "L2 - Working",
+      "necessity": "PREFERRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Provided evidence for security audits.",
+      "aliases": [
+        "WebTrust",
+        "ISO 27001"
+      ]
+    },
+    {
+      "id": "req_ironquay_pki_ops_05",
+      "role_id": "role_ironquay_pki_ops",
+      "capability_name": "Monitoring and Alerting",
+      "domain": "Reliability",
+      "weight": 0.4,
+      "required_level": "L3 - Proficient",
+      "necessity": "REQUIRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Monitoring of critical services and on-call.",
+      "aliases": [
+        "Prometheus"
+      ]
+    },
+    {
+      "id": "req_ironquay_pki_ops_06",
+      "role_id": "role_ironquay_pki_ops",
+      "capability_name": "Security Clearance Eligibility",
+      "domain": "Legal",
+      "weight": 0.3,
+      "required_level": "Eligible for UK BPSS screening",
+      "necessity": "REQUIRED",
+      "requirement_type": "LOCATION",
+      "evidence_hint": "Able to pass pre-employment screening."
+    },
+    {
+      "id": "req_ironquay_firmware_security_01",
+      "role_id": "role_ironquay_firmware_security",
+      "capability_name": "Secure Firmware Development",
+      "domain": "Embedded Security",
+      "weight": 0.95,
+      "required_level": "L4 - Advanced",
+      "necessity": "REQUIRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Secure boot or hardened firmware you built.",
+      "aliases": [
+        "Secure Boot",
+        "Firmware Security"
+      ]
+    },
+    {
+      "id": "req_ironquay_firmware_security_02",
+      "role_id": "role_ironquay_firmware_security",
+      "capability_name": "Embedded C",
+      "domain": "Embedded Systems",
+      "weight": 0.65,
+      "required_level": "L4 - Advanced",
+      "necessity": "REQUIRED",
+      "requirement_type": "TOOL_TECHNOLOGY",
+      "evidence_hint": "Firmware in C on constrained devices.",
+      "aliases": [
+        "C"
+      ]
+    },
+    {
+      "id": "req_ironquay_firmware_security_03",
+      "role_id": "role_ironquay_firmware_security",
+      "capability_name": "Fuzzing",
+      "domain": "Security Testing",
+      "weight": 0.5,
+      "required_level": "L3 - Proficient",
+      "necessity": "PREFERRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Fuzzing campaigns that found real bugs.",
+      "aliases": [
+        "AFL",
+        "libFuzzer"
+      ]
+    },
+    {
+      "id": "req_ironquay_firmware_security_04",
+      "role_id": "role_ironquay_firmware_security",
+      "capability_name": "Security Certification Schemes",
+      "domain": "Compliance",
+      "weight": 0.5,
+      "required_level": "L3 - Proficient",
+      "necessity": "PREFERRED",
+      "requirement_type": "KNOWLEDGE",
+      "evidence_hint": "Contributed to FIPS 140 or Common Criteria evaluations.",
+      "aliases": [
+        "FIPS 140-3",
+        "Common Criteria"
+      ]
+    },
+    {
+      "id": "req_ironquay_firmware_security_05",
+      "role_id": "role_ironquay_firmware_security",
+      "capability_name": "Hardware Security",
+      "domain": "Embedded Security",
+      "weight": 0.5,
+      "required_level": "L3 - Proficient",
+      "necessity": "REQUIRED",
+      "requirement_type": "KNOWLEDGE",
+      "evidence_hint": "Hardware security features (TrustZone, tamper sensors, secure elements).",
+      "aliases": [
+        "Tamper Protection",
+        "TrustZone"
+      ]
+    },
+    {
+      "id": "req_ironquay_firmware_security_06",
+      "role_id": "role_ironquay_firmware_security",
+      "capability_name": "Reverse Engineering",
+      "domain": "Security",
+      "weight": 0.3,
+      "required_level": "L2 - Working",
+      "necessity": "OPTIONAL",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Firmware reverse engineering with Ghidra or IDA.",
+      "aliases": [
+        "Ghidra"
+      ]
+    },
+    {
+      "id": "req_ledgerline_core_banking_01",
+      "role_id": "role_ledgerline_core_banking",
+      "capability_name": "Core Banking Systems",
+      "domain": "Banking",
+      "weight": 0.85,
+      "required_level": "L3 - Proficient",
+      "necessity": "REQUIRED",
+      "requirement_type": "KNOWLEDGE",
+      "evidence_hint": "Built or maintained core banking or account systems.",
+      "aliases": [
+        "Account Management",
+        "Banking Platforms"
+      ]
+    },
+    {
+      "id": "req_ledgerline_core_banking_02",
+      "role_id": "role_ledgerline_core_banking",
+      "capability_name": "Java",
+      "domain": "Software Engineering",
+      "weight": 0.75,
+      "required_level": "L4 - Advanced",
+      "necessity": "REQUIRED",
+      "requirement_type": "TOOL_TECHNOLOGY",
+      "evidence_hint": "Production Java or Kotlin services.",
+      "aliases": [
+        "Kotlin"
+      ]
+    },
+    {
+      "id": "req_ledgerline_core_banking_03",
+      "role_id": "role_ledgerline_core_banking",
+      "capability_name": "Payment Schemes",
+      "domain": "Payments",
+      "weight": 0.65,
+      "required_level": "L3 - Proficient",
+      "necessity": "REQUIRED",
+      "requirement_type": "KNOWLEDGE",
+      "evidence_hint": "Implemented SEPA, SWIFT or ISO 20022 messaging.",
+      "aliases": [
+        "SEPA Instant",
+        "SWIFT",
+        "ISO 20022"
+      ]
+    },
+    {
+      "id": "req_ledgerline_core_banking_04",
+      "role_id": "role_ledgerline_core_banking",
+      "capability_name": "Event Sourcing",
+      "domain": "Software Architecture",
+      "weight": 0.5,
+      "required_level": "L3 - Proficient",
+      "necessity": "PREFERRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Event-sourced or CQRS systems in production.",
+      "aliases": [
+        "CQRS"
+      ]
+    },
+    {
+      "id": "req_ledgerline_core_banking_05",
+      "role_id": "role_ledgerline_core_banking",
+      "capability_name": "Financial Calculation Accuracy",
+      "domain": "Banking",
+      "weight": 0.5,
+      "required_level": "L3 - Proficient",
+      "necessity": "REQUIRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Interest, fee or rounding logic with tests against reference cases.",
+      "aliases": [
+        "Interest Calculation",
+        "Decimal Arithmetic"
+      ]
+    },
+    {
+      "id": "req_ledgerline_core_banking_06",
+      "role_id": "role_ledgerline_core_banking",
+      "capability_name": "Regulated Change Management",
+      "domain": "Compliance",
+      "weight": 0.35,
+      "required_level": "Banking or payments environment",
+      "necessity": "PREFERRED",
+      "requirement_type": "DOMAIN_CONTEXT",
+      "evidence_hint": "Worked under regulated change management in finance.",
+      "aliases": [
+        "Four-Eyes Principle"
+      ]
+    },
+    {
+      "id": "req_ledgerline_aml_data_scientist_01",
+      "role_id": "role_ledgerline_aml_data_scientist",
+      "capability_name": "Anti-Money Laundering Analytics",
+      "domain": "Financial Crime",
+      "weight": 0.9,
+      "required_level": "L3 - Proficient",
+      "necessity": "REQUIRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Analytics or models for AML transaction monitoring.",
+      "aliases": [
+        "AML",
+        "Transaction Monitoring"
+      ]
+    },
+    {
+      "id": "req_ledgerline_aml_data_scientist_02",
+      "role_id": "role_ledgerline_aml_data_scientist",
+      "capability_name": "Machine Learning",
+      "domain": "Machine Learning",
+      "weight": 0.7,
+      "required_level": "L3 - Proficient",
+      "necessity": "REQUIRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Supervised models with imbalanced data and precision/recall trade-offs.",
+      "aliases": [
+        "Classification Models"
+      ]
+    },
+    {
+      "id": "req_ledgerline_aml_data_scientist_03",
+      "role_id": "role_ledgerline_aml_data_scientist",
+      "capability_name": "Graph Analytics",
+      "domain": "Data",
+      "weight": 0.45,
+      "required_level": "L2 - Working",
+      "necessity": "PREFERRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Counterparty or network analysis.",
+      "aliases": [
+        "Network Analysis"
+      ]
+    },
+    {
+      "id": "req_ledgerline_aml_data_scientist_04",
+      "role_id": "role_ledgerline_aml_data_scientist",
+      "capability_name": "SQL",
+      "domain": "Data",
+      "weight": 0.55,
+      "required_level": "L4 - Advanced",
+      "necessity": "REQUIRED",
+      "requirement_type": "TOOL_TECHNOLOGY",
+      "evidence_hint": "Complex SQL on transaction data."
+    },
+    {
+      "id": "req_ledgerline_aml_data_scientist_05",
+      "role_id": "role_ledgerline_aml_data_scientist",
+      "capability_name": "Python",
+      "domain": "Software Engineering",
+      "weight": 0.5,
+      "required_level": "L3 - Proficient",
+      "necessity": "REQUIRED",
+      "requirement_type": "TOOL_TECHNOLOGY",
+      "evidence_hint": "Modelling and analysis in Python."
+    },
+    {
+      "id": "req_ledgerline_aml_data_scientist_06",
+      "role_id": "role_ledgerline_aml_data_scientist",
+      "capability_name": "AML Regulation",
+      "domain": "Regulatory",
+      "weight": 0.4,
+      "required_level": "L2 - Working",
+      "necessity": "PREFERRED",
+      "requirement_type": "KNOWLEDGE",
+      "evidence_hint": "Understanding of EU AML directives or FATF guidance.",
+      "aliases": [
+        "AMLD",
+        "FATF Recommendations"
+      ]
+    },
+    {
+      "id": "req_ledgerline_regulatory_reporting_01",
+      "role_id": "role_ledgerline_regulatory_reporting",
+      "capability_name": "Regulatory Reporting",
+      "domain": "Banking Regulation",
+      "weight": 0.9,
+      "required_level": "L3 - Proficient",
+      "necessity": "REQUIRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Prepared COREP, FINREP or liquidity reports.",
+      "aliases": [
+        "COREP",
+        "FINREP"
+      ]
+    },
+    {
+      "id": "req_ledgerline_regulatory_reporting_02",
+      "role_id": "role_ledgerline_regulatory_reporting",
+      "capability_name": "Banking Regulation",
+      "domain": "Banking Regulation",
+      "weight": 0.65,
+      "required_level": "L3 - Proficient",
+      "necessity": "REQUIRED",
+      "requirement_type": "KNOWLEDGE",
+      "evidence_hint": "Working knowledge of CRR/Basel III reporting requirements.",
+      "aliases": [
+        "CRR",
+        "Basel III"
+      ]
+    },
+    {
+      "id": "req_ledgerline_regulatory_reporting_03",
+      "role_id": "role_ledgerline_regulatory_reporting",
+      "capability_name": "SQL",
+      "domain": "Data",
+      "weight": 0.55,
+      "required_level": "L3 - Proficient",
+      "necessity": "REQUIRED",
+      "requirement_type": "TOOL_TECHNOLOGY",
+      "evidence_hint": "SQL for report data and reconciliations."
+    },
+    {
+      "id": "req_ledgerline_regulatory_reporting_04",
+      "role_id": "role_ledgerline_regulatory_reporting",
+      "capability_name": "Data Reconciliation",
+      "domain": "Finance",
+      "weight": 0.5,
+      "required_level": "L3 - Proficient",
+      "necessity": "REQUIRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Reconciliations between ledgers and reports."
+    },
+    {
+      "id": "req_ledgerline_regulatory_reporting_05",
+      "role_id": "role_ledgerline_regulatory_reporting",
+      "capability_name": "XBRL",
+      "domain": "Banking Regulation",
+      "weight": 0.3,
+      "required_level": "L2 - Working",
+      "necessity": "OPTIONAL",
+      "requirement_type": "TOOL_TECHNOLOGY",
+      "evidence_hint": "XBRL submissions with the EBA taxonomy.",
+      "aliases": [
+        "EBA Taxonomy"
+      ]
+    },
+    {
+      "id": "req_ledgerline_regulatory_reporting_06",
+      "role_id": "role_ledgerline_regulatory_reporting",
+      "capability_name": "Finance or Economics Degree",
+      "domain": "Education",
+      "weight": 0.3,
+      "required_level": "Bachelor or higher",
+      "necessity": "PREFERRED",
+      "requirement_type": "CREDENTIAL",
+      "evidence_hint": "Degree in finance, economics or accounting."
+    },
+    {
+      "id": "req_paxford_low_latency_01",
+      "role_id": "role_paxford_low_latency",
+      "capability_name": "Low-Latency Systems",
+      "domain": "Trading Systems",
+      "weight": 0.95,
+      "required_level": "L5 - Expert",
+      "necessity": "REQUIRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Built latency-critical systems with measured microsecond budgets.",
+      "aliases": [
+        "High-Frequency Trading Systems"
+      ]
+    },
+    {
+      "id": "req_paxford_low_latency_02",
+      "role_id": "role_paxford_low_latency",
+      "capability_name": "Modern C++",
+      "domain": "Software Engineering",
+      "weight": 0.85,
+      "required_level": "L5 - Expert",
+      "necessity": "REQUIRED",
+      "requirement_type": "TOOL_TECHNOLOGY",
+      "evidence_hint": "Expert modern C++ including templates and memory model.",
+      "aliases": [
+        "C++20",
+        "C++17"
+      ]
+    },
+    {
+      "id": "req_paxford_low_latency_03",
+      "role_id": "role_paxford_low_latency",
+      "capability_name": "Lock-Free Programming",
+      "domain": "Software Engineering",
+      "weight": 0.55,
+      "required_level": "L4 - Advanced",
+      "necessity": "PREFERRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Lock-free or wait-free data structures in production.",
+      "aliases": [
+        "Concurrency"
+      ]
+    },
+    {
+      "id": "req_paxford_low_latency_04",
+      "role_id": "role_paxford_low_latency",
+      "capability_name": "Linux Performance Tuning",
+      "domain": "Infrastructure",
+      "weight": 0.55,
+      "required_level": "L4 - Advanced",
+      "necessity": "REQUIRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Profiling and tuning on Linux (perf, CPU pinning, kernel bypass).",
+      "aliases": [
+        "Kernel Bypass",
+        "perf"
+      ]
+    },
+    {
+      "id": "req_paxford_low_latency_05",
+      "role_id": "role_paxford_low_latency",
+      "capability_name": "Market Microstructure",
+      "domain": "Finance",
+      "weight": 0.45,
+      "required_level": "L3 - Proficient",
+      "necessity": "PREFERRED",
+      "requirement_type": "KNOWLEDGE",
+      "evidence_hint": "Understanding of order books, matching and exchange protocols.",
+      "aliases": [
+        "Order Books"
+      ]
+    },
+    {
+      "id": "req_paxford_low_latency_06",
+      "role_id": "role_paxford_low_latency",
+      "capability_name": "FIX Protocol",
+      "domain": "Trading Systems",
+      "weight": 0.3,
+      "required_level": "L2 - Working",
+      "necessity": "OPTIONAL",
+      "requirement_type": "KNOWLEDGE",
+      "evidence_hint": "FIX or native exchange protocols.",
+      "aliases": [
+        "FIX"
+      ]
+    },
+    {
+      "id": "req_paxford_quant_dev_01",
+      "role_id": "role_paxford_quant_dev",
+      "capability_name": "Quantitative Finance",
+      "domain": "Finance",
+      "weight": 0.85,
+      "required_level": "L4 - Advanced",
+      "necessity": "REQUIRED",
+      "requirement_type": "KNOWLEDGE",
+      "evidence_hint": "Implemented pricing or risk models (VaR, Greeks).",
+      "aliases": [
+        "Derivatives Pricing",
+        "Risk Analytics"
+      ]
+    },
+    {
+      "id": "req_paxford_quant_dev_02",
+      "role_id": "role_paxford_quant_dev",
+      "capability_name": "Python",
+      "domain": "Software Engineering",
+      "weight": 0.7,
+      "required_level": "L4 - Advanced",
+      "necessity": "REQUIRED",
+      "requirement_type": "TOOL_TECHNOLOGY",
+      "evidence_hint": "Numerical Python in production.",
+      "aliases": [
+        "NumPy"
+      ]
+    },
+    {
+      "id": "req_paxford_quant_dev_03",
+      "role_id": "role_paxford_quant_dev",
+      "capability_name": "C++",
+      "domain": "Software Engineering",
+      "weight": 0.5,
+      "required_level": "L3 - Proficient",
+      "necessity": "PREFERRED",
+      "requirement_type": "TOOL_TECHNOLOGY",
+      "evidence_hint": "C++ for performance-critical numerics."
+    },
+    {
+      "id": "req_paxford_quant_dev_04",
+      "role_id": "role_paxford_quant_dev",
+      "capability_name": "Numerical Methods",
+      "domain": "Mathematics",
+      "weight": 0.6,
+      "required_level": "L4 - Advanced",
+      "necessity": "REQUIRED",
+      "requirement_type": "KNOWLEDGE",
+      "evidence_hint": "Monte Carlo or PDE methods with validation.",
+      "aliases": [
+        "Monte Carlo",
+        "Finite Differences"
+      ]
+    },
+    {
+      "id": "req_paxford_quant_dev_05",
+      "role_id": "role_paxford_quant_dev",
+      "capability_name": "Risk Engine Architecture",
+      "domain": "Software Architecture",
+      "weight": 0.45,
+      "required_level": "L3 - Proficient",
+      "necessity": "PREFERRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Designed scenario or VaR computation services.",
+      "aliases": [
+        "Scenario Engines"
+      ]
+    },
+    {
+      "id": "req_paxford_quant_dev_06",
+      "role_id": "role_paxford_quant_dev",
+      "capability_name": "Quantitative Degree",
+      "domain": "Education",
+      "weight": 0.4,
+      "required_level": "MSc/PhD in mathematics, physics or financial engineering",
+      "necessity": "REQUIRED",
+      "requirement_type": "CREDENTIAL",
+      "evidence_hint": "Advanced quantitative degree."
+    },
+    {
+      "id": "req_paxford_market_data_01",
+      "role_id": "role_paxford_market_data",
+      "capability_name": "Market Data Systems",
+      "domain": "Trading Systems",
+      "weight": 0.9,
+      "required_level": "L3 - Proficient",
+      "necessity": "REQUIRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Built or operated market data feeds.",
+      "aliases": [
+        "Feed Handlers"
+      ]
+    },
+    {
+      "id": "req_paxford_market_data_02",
+      "role_id": "role_paxford_market_data",
+      "capability_name": "Python",
+      "domain": "Software Engineering",
+      "weight": 0.5,
+      "required_level": "L3 - Proficient",
+      "necessity": "REQUIRED",
+      "requirement_type": "TOOL_TECHNOLOGY",
+      "evidence_hint": "Python tooling and services."
+    },
+    {
+      "id": "req_paxford_market_data_03",
+      "role_id": "role_paxford_market_data",
+      "capability_name": "C++",
+      "domain": "Software Engineering",
+      "weight": 0.5,
+      "required_level": "L3 - Proficient",
+      "necessity": "PREFERRED",
+      "requirement_type": "TOOL_TECHNOLOGY",
+      "evidence_hint": "C++ feed handlers or protocol decoders you wrote or maintained."
+    },
+    {
+      "id": "req_paxford_market_data_04",
+      "role_id": "role_paxford_market_data",
+      "capability_name": "Time Series Storage",
+      "domain": "Data",
+      "weight": 0.55,
+      "required_level": "L3 - Proficient",
+      "necessity": "REQUIRED",
+      "requirement_type": "TOOL_TECHNOLOGY",
+      "evidence_hint": "Tick or time-series databases (kdb+, ClickHouse).",
+      "aliases": [
+        "kdb+",
+        "ClickHouse"
+      ]
+    },
+    {
+      "id": "req_paxford_market_data_05",
+      "role_id": "role_paxford_market_data",
+      "capability_name": "Data Quality Monitoring",
+      "domain": "Data Quality",
+      "weight": 0.5,
+      "required_level": "L3 - Proficient",
+      "necessity": "REQUIRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Detected stale or bad data automatically."
+    },
+    {
+      "id": "req_paxford_market_data_06",
+      "role_id": "role_paxford_market_data",
+      "capability_name": "Multicast Networking",
+      "domain": "Infrastructure",
+      "weight": 0.3,
+      "required_level": "L2 - Working",
+      "necessity": "OPTIONAL",
+      "requirement_type": "KNOWLEDGE",
+      "evidence_hint": "Multicast feeds and network troubleshooting.",
+      "aliases": [
+        "UDP Multicast"
+      ]
+    },
+    {
+      "id": "req_medivane_ios_medical_01",
+      "role_id": "role_medivane_ios_medical",
+      "capability_name": "iOS Development",
+      "domain": "Mobile",
+      "weight": 0.9,
+      "required_level": "L4 - Advanced",
+      "necessity": "REQUIRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Shipped iOS apps to the App Store.",
+      "aliases": [
+        "iOS"
+      ]
+    },
+    {
+      "id": "req_medivane_ios_medical_02",
+      "role_id": "role_medivane_ios_medical",
+      "capability_name": "Swift",
+      "domain": "Mobile",
+      "weight": 0.8,
+      "required_level": "L4 - Advanced",
+      "necessity": "REQUIRED",
+      "requirement_type": "TOOL_TECHNOLOGY",
+      "evidence_hint": "Production Swift and SwiftUI.",
+      "aliases": [
+        "SwiftUI"
+      ]
+    },
+    {
+      "id": "req_medivane_ios_medical_03",
+      "role_id": "role_medivane_ios_medical",
+      "capability_name": "Mobile Accessibility",
+      "domain": "Mobile",
+      "weight": 0.5,
+      "required_level": "L3 - Proficient",
+      "necessity": "REQUIRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Accessible mobile UI (VoiceOver, Dynamic Type).",
+      "aliases": [
+        "VoiceOver",
+        "Dynamic Type"
+      ]
+    },
+    {
+      "id": "req_medivane_ios_medical_04",
+      "role_id": "role_medivane_ios_medical",
+      "capability_name": "Offline-First Data Sync",
+      "domain": "Mobile",
+      "weight": 0.5,
+      "required_level": "L3 - Proficient",
+      "necessity": "PREFERRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Offline storage with conflict-safe sync.",
+      "aliases": [
+        "Core Data"
+      ]
+    },
+    {
+      "id": "req_medivane_ios_medical_05",
+      "role_id": "role_medivane_ios_medical",
+      "capability_name": "HealthKit",
+      "domain": "Mobile",
+      "weight": 0.3,
+      "required_level": "L2 - Working",
+      "necessity": "OPTIONAL",
+      "requirement_type": "TOOL_TECHNOLOGY",
+      "evidence_hint": "HealthKit read/write integration with permission handling in a shipped app."
+    },
+    {
+      "id": "req_medivane_ios_medical_06",
+      "role_id": "role_medivane_ios_medical",
+      "capability_name": "Medical Device Software",
+      "domain": "Regulatory",
+      "weight": 0.4,
+      "required_level": "IEC 62304 environment",
+      "necessity": "PREFERRED",
+      "requirement_type": "DOMAIN_CONTEXT",
+      "evidence_hint": "Development under IEC 62304 or for DiGA.",
+      "aliases": [
+        "IEC 62304",
+        "DiGA"
+      ]
+    },
+    {
+      "id": "req_medivane_clinical_data_manager_01",
+      "role_id": "role_medivane_clinical_data_manager",
+      "capability_name": "Clinical Data Management",
+      "domain": "Clinical Research",
+      "weight": 0.9,
+      "required_level": "L3 - Proficient",
+      "necessity": "REQUIRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Data management for clinical studies through database lock.",
+      "aliases": [
+        "CDM",
+        "eCRF Design"
+      ]
+    },
+    {
+      "id": "req_medivane_clinical_data_manager_02",
+      "role_id": "role_medivane_clinical_data_manager",
+      "capability_name": "Good Clinical Practice",
+      "domain": "Clinical Research",
+      "weight": 0.6,
+      "required_level": "L3 - Proficient",
+      "necessity": "REQUIRED",
+      "requirement_type": "KNOWLEDGE",
+      "evidence_hint": "Work under ICH GCP (E6) with training records and audit or inspection experience.",
+      "aliases": [
+        "GCP",
+        "ICH E6"
+      ]
+    },
+    {
+      "id": "req_medivane_clinical_data_manager_03",
+      "role_id": "role_medivane_clinical_data_manager",
+      "capability_name": "CDISC Standards",
+      "domain": "Clinical Research",
+      "weight": 0.45,
+      "required_level": "L2 - Working",
+      "necessity": "PREFERRED",
+      "requirement_type": "KNOWLEDGE",
+      "evidence_hint": "Applied CDISC SDTM/CDASH.",
+      "aliases": [
+        "SDTM",
+        "CDASH"
+      ]
+    },
+    {
+      "id": "req_medivane_clinical_data_manager_04",
+      "role_id": "role_medivane_clinical_data_manager",
+      "capability_name": "EDC Systems",
+      "domain": "Clinical Research",
+      "weight": 0.5,
+      "required_level": "L3 - Proficient",
+      "necessity": "REQUIRED",
+      "requirement_type": "TOOL_TECHNOLOGY",
+      "evidence_hint": "Built studies in an EDC system.",
+      "aliases": [
+        "Medidata Rave",
+        "REDCap"
+      ]
+    },
+    {
+      "id": "req_medivane_clinical_data_manager_05",
+      "role_id": "role_medivane_clinical_data_manager",
+      "capability_name": "SQL",
+      "domain": "Data",
+      "weight": 0.3,
+      "required_level": "L2 - Working",
+      "necessity": "OPTIONAL",
+      "requirement_type": "TOOL_TECHNOLOGY",
+      "evidence_hint": "SQL queries for edit checks, listings or data reconciliation in study databases."
+    },
+    {
+      "id": "req_medivane_clinical_data_manager_06",
+      "role_id": "role_medivane_clinical_data_manager",
+      "capability_name": "German",
+      "domain": "Communication",
+      "weight": 0.4,
+      "required_level": "C1",
+      "necessity": "REQUIRED",
+      "requirement_type": "LANGUAGE",
+      "evidence_hint": "Communication with German study sites."
+    },
+    {
+      "id": "req_medivane_backend_fhir_insurer_01",
+      "role_id": "role_medivane_backend_fhir_insurer",
+      "capability_name": "Node.js",
+      "domain": "Backend",
+      "weight": 0.75,
+      "required_level": "L3 - Proficient",
+      "necessity": "REQUIRED",
+      "requirement_type": "TOOL_TECHNOLOGY",
+      "evidence_hint": "Node.js backend services in production.",
+      "aliases": [
+        "NodeJS"
+      ]
+    },
+    {
+      "id": "req_medivane_backend_fhir_insurer_02",
+      "role_id": "role_medivane_backend_fhir_insurer",
+      "capability_name": "TypeScript",
+      "domain": "Software Engineering",
+      "weight": 0.6,
+      "required_level": "L3 - Proficient",
+      "necessity": "REQUIRED",
+      "requirement_type": "TOOL_TECHNOLOGY",
+      "evidence_hint": "TypeScript backend code with strict typing and tests in production services.",
+      "aliases": [
+        "TS"
+      ]
+    },
+    {
+      "id": "req_medivane_backend_fhir_insurer_03",
+      "role_id": "role_medivane_backend_fhir_insurer",
+      "capability_name": "HL7 FHIR",
+      "domain": "Healthcare IT",
+      "weight": 0.5,
+      "required_level": "L2 - Working",
+      "necessity": "PREFERRED",
+      "requirement_type": "KNOWLEDGE",
+      "evidence_hint": "FHIR APIs or resources you implemented or consumed (e.g. MedicationRequest, Coverage).",
+      "aliases": [
+        "FHIR"
+      ]
+    },
+    {
+      "id": "req_medivane_backend_fhir_insurer_04",
+      "role_id": "role_medivane_backend_fhir_insurer",
+      "capability_name": "Data Protection Engineering",
+      "domain": "Compliance",
+      "weight": 0.55,
+      "required_level": "L3 - Proficient",
+      "necessity": "REQUIRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Implemented privacy controls (minimisation, pseudonymisation, retention).",
+      "aliases": [
+        "Privacy by Design",
+        "Data Minimization"
+      ]
+    },
+    {
+      "id": "req_medivane_backend_fhir_insurer_05",
+      "role_id": "role_medivane_backend_fhir_insurer",
+      "capability_name": "API Integration",
+      "domain": "Software Engineering",
+      "weight": 0.5,
+      "required_level": "L3 - Proficient",
+      "necessity": "REQUIRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Integrations with external partner systems and their failure modes.",
+      "aliases": [
+        "Third-Party Integration"
+      ]
+    },
+    {
+      "id": "req_medivane_backend_fhir_insurer_06",
+      "role_id": "role_medivane_backend_fhir_insurer",
+      "capability_name": "German Healthcare System",
+      "domain": "Domain",
+      "weight": 0.3,
+      "required_level": "Statutory health insurance processes",
+      "necessity": "OPTIONAL",
+      "requirement_type": "DOMAIN_CONTEXT",
+      "evidence_hint": "Knowledge of GKV processes or the Telematikinfrastruktur.",
+      "aliases": [
+        "GKV",
+        "Telematikinfrastruktur"
+      ]
+    },
+    {
+      "id": "req_carelink_dicom_integration_01",
+      "role_id": "role_carelink_dicom_integration",
+      "capability_name": "DICOM",
+      "domain": "Medical Imaging",
+      "weight": 0.95,
+      "required_level": "L3 - Proficient",
+      "necessity": "REQUIRED",
+      "requirement_type": "KNOWLEDGE",
+      "evidence_hint": "DICOM networking and objects in integrations.",
+      "aliases": [
+        "DICOMweb"
+      ]
+    },
+    {
+      "id": "req_carelink_dicom_integration_02",
+      "role_id": "role_carelink_dicom_integration",
+      "capability_name": "PACS Integration",
+      "domain": "Medical Imaging",
+      "weight": 0.7,
+      "required_level": "L3 - Proficient",
+      "necessity": "REQUIRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Integrated applications with PACS or VNA systems.",
+      "aliases": [
+        "PACS"
+      ]
+    },
+    {
+      "id": "req_carelink_dicom_integration_03",
+      "role_id": "role_carelink_dicom_integration",
+      "capability_name": "HL7 v2",
+      "domain": "Healthcare IT",
+      "weight": 0.45,
+      "required_level": "L2 - Working",
+      "necessity": "PREFERRED",
+      "requirement_type": "KNOWLEDGE",
+      "evidence_hint": "HL7 v2 order (ORM/OMI) and result (ORU) messages you mapped or tested.",
+      "aliases": [
+        "HL7"
+      ]
+    },
+    {
+      "id": "req_carelink_dicom_integration_04",
+      "role_id": "role_carelink_dicom_integration",
+      "capability_name": "Network Troubleshooting",
+      "domain": "Infrastructure",
+      "weight": 0.45,
+      "required_level": "L3 - Proficient",
+      "necessity": "REQUIRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Diagnosed network and protocol issues.",
+      "aliases": [
+        "Wireshark"
+      ]
+    },
+    {
+      "id": "req_carelink_dicom_integration_05",
+      "role_id": "role_carelink_dicom_integration",
+      "capability_name": "C#",
+      "domain": "Software Engineering",
+      "weight": 0.4,
+      "required_level": "L3 - Proficient",
+      "necessity": "PREFERRED",
+      "requirement_type": "TOOL_TECHNOLOGY",
+      "evidence_hint": ".NET integration components.",
+      "aliases": [
+        ".NET"
+      ]
+    },
+    {
+      "id": "req_carelink_dicom_integration_06",
+      "role_id": "role_carelink_dicom_integration",
+      "capability_name": "IHE Profiles",
+      "domain": "Healthcare IT",
+      "weight": 0.3,
+      "required_level": "L2 - Working",
+      "necessity": "OPTIONAL",
+      "requirement_type": "KNOWLEDGE",
+      "evidence_hint": "IHE radiology profiles such as SWF or PIR in an integration project.",
+      "aliases": [
+        "IHE"
+      ]
+    },
+    {
+      "id": "req_carelink_image_processing_01",
+      "role_id": "role_carelink_image_processing",
+      "capability_name": "Medical Image Analysis",
+      "domain": "Medical Imaging",
+      "weight": 0.95,
+      "required_level": "L4 - Advanced",
+      "necessity": "REQUIRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Segmentation or registration of CT/MR images with validation.",
+      "aliases": [
+        "Image Segmentation",
+        "Image Registration"
+      ]
+    },
+    {
+      "id": "req_carelink_image_processing_02",
+      "role_id": "role_carelink_image_processing",
+      "capability_name": "Deep Learning",
+      "domain": "Machine Learning",
+      "weight": 0.65,
+      "required_level": "L3 - Proficient",
+      "necessity": "REQUIRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Deep learning for medical images.",
+      "aliases": [
+        "U-Net",
+        "CNN"
+      ]
+    },
+    {
+      "id": "req_carelink_image_processing_03",
+      "role_id": "role_carelink_image_processing",
+      "capability_name": "C++",
+      "domain": "Software Engineering",
+      "weight": 0.55,
+      "required_level": "L3 - Proficient",
+      "necessity": "REQUIRED",
+      "requirement_type": "TOOL_TECHNOLOGY",
+      "evidence_hint": "C++ with ITK/VTK or similar.",
+      "aliases": [
+        "ITK",
+        "VTK"
+      ]
+    },
+    {
+      "id": "req_carelink_image_processing_04",
+      "role_id": "role_carelink_image_processing",
+      "capability_name": "Python",
+      "domain": "Software Engineering",
+      "weight": 0.4,
+      "required_level": "L3 - Proficient",
+      "necessity": "REQUIRED",
+      "requirement_type": "TOOL_TECHNOLOGY",
+      "evidence_hint": "Python prototypes of imaging algorithms, e.g. with PyTorch, SimpleITK or MONAI.",
+      "aliases": [
+        "PyTorch"
+      ]
+    },
+    {
+      "id": "req_carelink_image_processing_05",
+      "role_id": "role_carelink_image_processing",
+      "capability_name": "Validation Statistics",
+      "domain": "Statistics",
+      "weight": 0.45,
+      "required_level": "L3 - Proficient",
+      "necessity": "PREFERRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Validation metrics against expert ground truth.",
+      "aliases": [
+        "Dice Score",
+        "Bland-Altman"
+      ]
+    },
+    {
+      "id": "req_carelink_image_processing_06",
+      "role_id": "role_carelink_image_processing",
+      "capability_name": "Research Degree",
+      "domain": "Education",
+      "weight": 0.35,
+      "required_level": "PhD in medical imaging or comparable",
+      "necessity": "PREFERRED",
+      "requirement_type": "CREDENTIAL",
+      "evidence_hint": "PhD or equivalent research experience.",
+      "aliases": [
+        "PhD"
+      ]
+    },
+    {
+      "id": "req_carelink_regulatory_affairs_01",
+      "role_id": "role_carelink_regulatory_affairs",
+      "capability_name": "Medical Device Regulatory Affairs",
+      "domain": "Regulatory",
+      "weight": 0.95,
+      "required_level": "L4 - Advanced",
+      "necessity": "REQUIRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Prepared CE technical documentation or FDA submissions.",
+      "aliases": [
+        "Regulatory Submissions"
+      ]
+    },
+    {
+      "id": "req_carelink_regulatory_affairs_02",
+      "role_id": "role_carelink_regulatory_affairs",
+      "capability_name": "EU MDR",
+      "domain": "Regulatory",
+      "weight": 0.75,
+      "required_level": "L4 - Advanced",
+      "necessity": "REQUIRED",
+      "requirement_type": "KNOWLEDGE",
+      "evidence_hint": "Applied MDR classification and documentation requirements.",
+      "aliases": [
+        "MDR 2017/745"
+      ]
+    },
+    {
+      "id": "req_carelink_regulatory_affairs_03",
+      "role_id": "role_carelink_regulatory_affairs",
+      "capability_name": "FDA 510(k)",
+      "domain": "Regulatory",
+      "weight": 0.5,
+      "required_level": "L3 - Proficient",
+      "necessity": "PREFERRED",
+      "requirement_type": "KNOWLEDGE",
+      "evidence_hint": "US submissions for software devices.",
+      "aliases": [
+        "FDA"
+      ]
+    },
+    {
+      "id": "req_carelink_regulatory_affairs_04",
+      "role_id": "role_carelink_regulatory_affairs",
+      "capability_name": "Software as a Medical Device",
+      "domain": "Regulatory",
+      "weight": 0.6,
+      "required_level": "L3 - Proficient",
+      "necessity": "REQUIRED",
+      "requirement_type": "KNOWLEDGE",
+      "evidence_hint": "SaMD lifecycle and IEC 62304.",
+      "aliases": [
+        "SaMD",
+        "IEC 62304"
+      ]
+    },
+    {
+      "id": "req_carelink_regulatory_affairs_05",
+      "role_id": "role_carelink_regulatory_affairs",
+      "capability_name": "AI Regulation for Medical Devices",
+      "domain": "Regulatory",
+      "weight": 0.3,
+      "required_level": "L2 - Working",
+      "necessity": "OPTIONAL",
+      "requirement_type": "KNOWLEDGE",
+      "evidence_hint": "Regulatory strategy for ML model updates.",
+      "aliases": [
+        "Predetermined Change Control Plan"
+      ]
+    },
+    {
+      "id": "req_carelink_regulatory_affairs_06",
+      "role_id": "role_carelink_regulatory_affairs",
+      "capability_name": "Regulatory Affairs Practice",
+      "domain": "Regulatory",
+      "weight": 0.5,
+      "required_level": "5+ years",
+      "necessity": "REQUIRED",
+      "requirement_type": "EXPERIENCE",
+      "evidence_hint": "Five or more years in medical device RA."
+    },
+    {
+      "id": "req_stratoforge_storage_ceph_01",
+      "role_id": "role_stratoforge_storage_ceph",
+      "capability_name": "Ceph",
+      "domain": "Distributed Storage",
+      "weight": 0.95,
+      "required_level": "L4 - Advanced",
+      "necessity": "REQUIRED",
+      "requirement_type": "TOOL_TECHNOLOGY",
+      "evidence_hint": "Operated Ceph clusters in production.",
+      "aliases": [
+        "RADOS",
+        "RBD"
+      ]
+    },
+    {
+      "id": "req_stratoforge_storage_ceph_02",
+      "role_id": "role_stratoforge_storage_ceph",
+      "capability_name": "Distributed Storage Systems",
+      "domain": "Distributed Storage",
+      "weight": 0.75,
+      "required_level": "L4 - Advanced",
+      "necessity": "REQUIRED",
+      "requirement_type": "KNOWLEDGE",
+      "evidence_hint": "Design of replicated or erasure-coded storage.",
+      "aliases": [
+        "Object Storage",
+        "Block Storage"
+      ]
+    },
+    {
+      "id": "req_stratoforge_storage_ceph_03",
+      "role_id": "role_stratoforge_storage_ceph",
+      "capability_name": "Linux Systems Engineering",
+      "domain": "Infrastructure",
+      "weight": 0.6,
+      "required_level": "L4 - Advanced",
+      "necessity": "REQUIRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Deep Linux operations and troubleshooting.",
+      "aliases": [
+        "Linux"
+      ]
+    },
+    {
+      "id": "req_stratoforge_storage_ceph_04",
+      "role_id": "role_stratoforge_storage_ceph",
+      "capability_name": "Automation with Ansible",
+      "domain": "Infrastructure as Code",
+      "weight": 0.45,
+      "required_level": "L3 - Proficient",
+      "necessity": "PREFERRED",
+      "requirement_type": "TOOL_TECHNOLOGY",
+      "evidence_hint": "Fleet automation with Ansible.",
+      "aliases": [
+        "Ansible"
+      ]
+    },
+    {
+      "id": "req_stratoforge_storage_ceph_05",
+      "role_id": "role_stratoforge_storage_ceph",
+      "capability_name": "Capacity Planning",
+      "domain": "Infrastructure",
+      "weight": 0.4,
+      "required_level": "L3 - Proficient",
+      "necessity": "PREFERRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Forecasts that drove hardware purchases."
+    },
+    {
+      "id": "req_stratoforge_storage_ceph_06",
+      "role_id": "role_stratoforge_storage_ceph",
+      "capability_name": "French",
+      "domain": "Communication",
+      "weight": 0.3,
+      "required_level": "B2",
+      "necessity": "PREFERRED",
+      "requirement_type": "LANGUAGE",
+      "evidence_hint": "Working language with operations teams."
+    },
+    {
+      "id": "req_stratoforge_dc_network_01",
+      "role_id": "role_stratoforge_dc_network",
+      "capability_name": "Data Center Networking",
+      "domain": "Networking",
+      "weight": 0.95,
+      "required_level": "L4 - Advanced",
+      "necessity": "REQUIRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Designed or operated data centre fabrics.",
+      "aliases": [
+        "Spine-Leaf"
+      ]
+    },
+    {
+      "id": "req_stratoforge_dc_network_02",
+      "role_id": "role_stratoforge_dc_network",
+      "capability_name": "BGP",
+      "domain": "Networking",
+      "weight": 0.75,
+      "required_level": "L4 - Advanced",
+      "necessity": "REQUIRED",
+      "requirement_type": "KNOWLEDGE",
+      "evidence_hint": "BGP and EVPN in production.",
+      "aliases": [
+        "EVPN"
+      ]
+    },
+    {
+      "id": "req_stratoforge_dc_network_03",
+      "role_id": "role_stratoforge_dc_network",
+      "capability_name": "VXLAN",
+      "domain": "Networking",
+      "weight": 0.55,
+      "required_level": "L3 - Proficient",
+      "necessity": "REQUIRED",
+      "requirement_type": "KNOWLEDGE",
+      "evidence_hint": "VXLAN overlays in production, including troubleshooting of VTEPs and MTU issues."
+    },
+    {
+      "id": "req_stratoforge_dc_network_04",
+      "role_id": "role_stratoforge_dc_network",
+      "capability_name": "Network Automation",
+      "domain": "Networking",
+      "weight": 0.55,
+      "required_level": "L3 - Proficient",
+      "necessity": "REQUIRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Automated network changes with source of truth.",
+      "aliases": [
+        "NetBox",
+        "Ansible"
+      ]
+    },
+    {
+      "id": "req_stratoforge_dc_network_05",
+      "role_id": "role_stratoforge_dc_network",
+      "capability_name": "DDoS Mitigation",
+      "domain": "Security",
+      "weight": 0.35,
+      "required_level": "L2 - Working",
+      "necessity": "PREFERRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "DDoS response with providers or scrubbing."
+    },
+    {
+      "id": "req_stratoforge_dc_network_06",
+      "role_id": "role_stratoforge_dc_network",
+      "capability_name": "Networking Certification",
+      "domain": "Networking",
+      "weight": 0.25,
+      "required_level": "CCNP/JNCIP or comparable",
+      "necessity": "OPTIONAL",
+      "requirement_type": "CREDENTIAL",
+      "evidence_hint": "A professional networking certification.",
+      "aliases": [
+        "CCNP",
+        "JNCIP"
+      ]
+    },
+    {
+      "id": "req_stratoforge_kernel_01",
+      "role_id": "role_stratoforge_kernel",
+      "capability_name": "Linux Kernel Development",
+      "domain": "Systems Programming",
+      "weight": 0.95,
+      "required_level": "L4 - Advanced",
+      "necessity": "REQUIRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Kernel patches, drivers or upstream contributions.",
+      "aliases": [
+        "Kernel Programming"
+      ]
+    },
+    {
+      "id": "req_stratoforge_kernel_02",
+      "role_id": "role_stratoforge_kernel",
+      "capability_name": "KVM and QEMU",
+      "domain": "Virtualization",
+      "weight": 0.8,
+      "required_level": "L4 - Advanced",
+      "necessity": "REQUIRED",
+      "requirement_type": "TOOL_TECHNOLOGY",
+      "evidence_hint": "Work on KVM/QEMU internals or tuning.",
+      "aliases": [
+        "KVM",
+        "QEMU"
+      ]
+    },
+    {
+      "id": "req_stratoforge_kernel_03",
+      "role_id": "role_stratoforge_kernel",
+      "capability_name": "C",
+      "domain": "Systems Programming",
+      "weight": 0.6,
+      "required_level": "L5 - Expert",
+      "necessity": "REQUIRED",
+      "requirement_type": "TOOL_TECHNOLOGY",
+      "evidence_hint": "Systems C at expert level: kernel, hypervisor or low-level runtime code."
+    },
+    {
+      "id": "req_stratoforge_kernel_04",
+      "role_id": "role_stratoforge_kernel",
+      "capability_name": "Confidential Computing",
+      "domain": "Security",
+      "weight": 0.4,
+      "required_level": "L2 - Working",
+      "necessity": "PREFERRED",
+      "requirement_type": "KNOWLEDGE",
+      "evidence_hint": "SEV-SNP or TDX enablement.",
+      "aliases": [
+        "AMD SEV-SNP",
+        "Intel TDX"
+      ]
+    },
+    {
+      "id": "req_stratoforge_kernel_05",
+      "role_id": "role_stratoforge_kernel",
+      "capability_name": "Kernel Debugging",
+      "domain": "Systems Programming",
+      "weight": 0.55,
+      "required_level": "L4 - Advanced",
+      "necessity": "REQUIRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Tracing with eBPF/ftrace and crash dump analysis.",
+      "aliases": [
+        "eBPF",
+        "Crash Dump Analysis"
+      ]
+    },
+    {
+      "id": "req_stratoforge_kernel_06",
+      "role_id": "role_stratoforge_kernel",
+      "capability_name": "Upstream Collaboration",
+      "domain": "Collaboration",
+      "weight": 0.3,
+      "required_level": "Patches reviewed on kernel mailing lists",
+      "necessity": "OPTIONAL",
+      "requirement_type": "BEHAVIORAL_EXPECTATION",
+      "evidence_hint": "Upstream kernel or QEMU contributions.",
+      "aliases": [
+        "Open Source Contribution"
+      ]
+    },
+    {
+      "id": "req_arcvale_edge_wasm_01",
+      "role_id": "role_arcvale_edge_wasm",
+      "capability_name": "WebAssembly",
+      "domain": "Edge Computing",
+      "weight": 0.9,
+      "required_level": "L4 - Advanced",
+      "necessity": "REQUIRED",
+      "requirement_type": "TOOL_TECHNOLOGY",
+      "evidence_hint": "Built or embedded a Wasm runtime or toolchain.",
+      "aliases": [
+        "Wasm",
+        "WASI",
+        "Wasmtime"
+      ]
+    },
+    {
+      "id": "req_arcvale_edge_wasm_02",
+      "role_id": "role_arcvale_edge_wasm",
+      "capability_name": "Rust",
+      "domain": "Systems Programming",
+      "weight": 0.85,
+      "required_level": "L4 - Advanced",
+      "necessity": "REQUIRED",
+      "requirement_type": "TOOL_TECHNOLOGY",
+      "evidence_hint": "Production Rust services or libraries, including async and unsafe code reviews."
+    },
+    {
+      "id": "req_arcvale_edge_wasm_03",
+      "role_id": "role_arcvale_edge_wasm",
+      "capability_name": "Multi-Tenant Isolation",
+      "domain": "Security",
+      "weight": 0.6,
+      "required_level": "L4 - Advanced",
+      "necessity": "REQUIRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Sandboxing untrusted code with resource limits.",
+      "aliases": [
+        "Sandboxing"
+      ]
+    },
+    {
+      "id": "req_arcvale_edge_wasm_04",
+      "role_id": "role_arcvale_edge_wasm",
+      "capability_name": "Performance Engineering",
+      "domain": "Systems Programming",
+      "weight": 0.5,
+      "required_level": "L3 - Proficient",
+      "necessity": "REQUIRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Latency and startup optimisation with measurements.",
+      "aliases": [
+        "Cold Start Optimization"
+      ]
+    },
+    {
+      "id": "req_arcvale_edge_wasm_05",
+      "role_id": "role_arcvale_edge_wasm",
+      "capability_name": "Developer SDK Design",
+      "domain": "Developer Experience",
+      "weight": 0.4,
+      "required_level": "L3 - Proficient",
+      "necessity": "PREFERRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "SDKs or CLIs used by external developers.",
+      "aliases": [
+        "SDK"
+      ]
+    },
+    {
+      "id": "req_arcvale_edge_wasm_06",
+      "role_id": "role_arcvale_edge_wasm",
+      "capability_name": "HTTP Internals",
+      "domain": "Networking",
+      "weight": 0.4,
+      "required_level": "L3 - Proficient",
+      "necessity": "PREFERRED",
+      "requirement_type": "KNOWLEDGE",
+      "evidence_hint": "HTTP/2 or HTTP/3 behaviour and caching semantics.",
+      "aliases": [
+        "HTTP/2",
+        "HTTP/3"
+      ]
+    },
+    {
+      "id": "req_arcvale_proxy_rust_01",
+      "role_id": "role_arcvale_proxy_rust",
+      "capability_name": "Rust",
+      "domain": "Systems Programming",
+      "weight": 0.85,
+      "required_level": "L3 - Proficient",
+      "necessity": "REQUIRED",
+      "requirement_type": "TOOL_TECHNOLOGY",
+      "evidence_hint": "Async Rust (Tokio) in production.",
+      "aliases": [
+        "Tokio"
+      ]
+    },
+    {
+      "id": "req_arcvale_proxy_rust_02",
+      "role_id": "role_arcvale_proxy_rust",
+      "capability_name": "Reverse Proxy Development",
+      "domain": "Networking",
+      "weight": 0.75,
+      "required_level": "L3 - Proficient",
+      "necessity": "REQUIRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Built or extended proxies or load balancers.",
+      "aliases": [
+        "Load Balancing"
+      ]
+    },
+    {
+      "id": "req_arcvale_proxy_rust_03",
+      "role_id": "role_arcvale_proxy_rust",
+      "capability_name": "TLS",
+      "domain": "Security",
+      "weight": 0.55,
+      "required_level": "L3 - Proficient",
+      "necessity": "REQUIRED",
+      "requirement_type": "KNOWLEDGE",
+      "evidence_hint": "TLS termination and certificate handling.",
+      "aliases": [
+        "TLS 1.3"
+      ]
+    },
+    {
+      "id": "req_arcvale_proxy_rust_04",
+      "role_id": "role_arcvale_proxy_rust",
+      "capability_name": "QUIC and HTTP/3",
+      "domain": "Networking",
+      "weight": 0.45,
+      "required_level": "L2 - Working",
+      "necessity": "PREFERRED",
+      "requirement_type": "KNOWLEDGE",
+      "evidence_hint": "QUIC or HTTP/3 implementation work.",
+      "aliases": [
+        "QUIC"
+      ]
+    },
+    {
+      "id": "req_arcvale_proxy_rust_05",
+      "role_id": "role_arcvale_proxy_rust",
+      "capability_name": "HTTP Caching",
+      "domain": "Networking",
+      "weight": 0.4,
+      "required_level": "L3 - Proficient",
+      "necessity": "PREFERRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Cache semantics and invalidation.",
+      "aliases": [
+        "CDN Caching"
+      ]
+    },
+    {
+      "id": "req_arcvale_proxy_rust_06",
+      "role_id": "role_arcvale_proxy_rust",
+      "capability_name": "On-Call Experience",
+      "domain": "Reliability",
+      "weight": 0.3,
+      "required_level": "Production on-call rotation",
+      "necessity": "REQUIRED",
+      "requirement_type": "RESPONSIBILITY",
+      "evidence_hint": "Participated in on-call for a production service.",
+      "aliases": [
+        "Incident Response"
+      ]
+    },
+    {
+      "id": "req_arcvale_capacity_planning_01",
+      "role_id": "role_arcvale_capacity_planning",
+      "capability_name": "Capacity Planning",
+      "domain": "Infrastructure",
+      "weight": 0.9,
+      "required_level": "L4 - Advanced",
+      "necessity": "REQUIRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Capacity forecasts that drove infrastructure decisions.",
+      "aliases": [
+        "Capacity Management"
+      ]
+    },
+    {
+      "id": "req_arcvale_capacity_planning_02",
+      "role_id": "role_arcvale_capacity_planning",
+      "capability_name": "Traffic Forecasting",
+      "domain": "Analytics",
+      "weight": 0.65,
+      "required_level": "L3 - Proficient",
+      "necessity": "REQUIRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Forecasts of traffic or load with error tracking.",
+      "aliases": [
+        "Time Series Forecasting"
+      ]
+    },
+    {
+      "id": "req_arcvale_capacity_planning_03",
+      "role_id": "role_arcvale_capacity_planning",
+      "capability_name": "SQL",
+      "domain": "Data",
+      "weight": 0.45,
+      "required_level": "L3 - Proficient",
+      "necessity": "REQUIRED",
+      "requirement_type": "TOOL_TECHNOLOGY",
+      "evidence_hint": "Analysis of large traffic datasets."
+    },
+    {
+      "id": "req_arcvale_capacity_planning_04",
+      "role_id": "role_arcvale_capacity_planning",
+      "capability_name": "Python",
+      "domain": "Software Engineering",
+      "weight": 0.45,
+      "required_level": "L3 - Proficient",
+      "necessity": "REQUIRED",
+      "requirement_type": "TOOL_TECHNOLOGY",
+      "evidence_hint": "Modelling and automation in Python."
+    },
+    {
+      "id": "req_arcvale_capacity_planning_05",
+      "role_id": "role_arcvale_capacity_planning",
+      "capability_name": "Network Economics",
+      "domain": "Domain",
+      "weight": 0.4,
+      "required_level": "Transit, peering and hardware costs",
+      "necessity": "PREFERRED",
+      "requirement_type": "DOMAIN_CONTEXT",
+      "evidence_hint": "Cost models for networks or data centres.",
+      "aliases": [
+        "Peering"
+      ]
+    },
+    {
+      "id": "req_arcvale_capacity_planning_06",
+      "role_id": "role_arcvale_capacity_planning",
+      "capability_name": "Stakeholder Communication",
+      "domain": "Communication",
+      "weight": 0.35,
+      "required_level": "Plans approved by finance",
+      "necessity": "PREFERRED",
+      "requirement_type": "BEHAVIORAL_EXPECTATION",
+      "evidence_hint": "Presented capacity plans to finance or leadership."
+    },
+    {
+      "id": "req_datalume_analytics_engineer_01",
+      "role_id": "role_datalume_analytics_engineer",
+      "capability_name": "dbt",
+      "domain": "Analytics Engineering",
+      "weight": 0.9,
+      "required_level": "L4 - Advanced",
+      "necessity": "REQUIRED",
+      "requirement_type": "TOOL_TECHNOLOGY",
+      "evidence_hint": "dbt projects with tests and documentation.",
+      "aliases": [
+        "data build tool"
+      ]
+    },
+    {
+      "id": "req_datalume_analytics_engineer_02",
+      "role_id": "role_datalume_analytics_engineer",
+      "capability_name": "SQL",
+      "domain": "Data",
+      "weight": 0.8,
+      "required_level": "L4 - Advanced",
+      "necessity": "REQUIRED",
+      "requirement_type": "TOOL_TECHNOLOGY",
+      "evidence_hint": "Advanced SQL including window functions and performance."
+    },
+    {
+      "id": "req_datalume_analytics_engineer_03",
+      "role_id": "role_datalume_analytics_engineer",
+      "capability_name": "Cloud Data Warehouses",
+      "domain": "Data Platforms",
+      "weight": 0.6,
+      "required_level": "L3 - Proficient",
+      "necessity": "REQUIRED",
+      "requirement_type": "TOOL_TECHNOLOGY",
+      "evidence_hint": "Snowflake or BigQuery in client projects.",
+      "aliases": [
+        "Snowflake",
+        "BigQuery"
+      ]
+    },
+    {
+      "id": "req_datalume_analytics_engineer_04",
+      "role_id": "role_datalume_analytics_engineer",
+      "capability_name": "Metrics Layer Design",
+      "domain": "Analytics Engineering",
+      "weight": 0.45,
+      "required_level": "L3 - Proficient",
+      "necessity": "PREFERRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Defined shared metrics or a semantic layer.",
+      "aliases": [
+        "Semantic Layer"
+      ]
+    },
+    {
+      "id": "req_datalume_analytics_engineer_05",
+      "role_id": "role_datalume_analytics_engineer",
+      "capability_name": "Client Consulting",
+      "domain": "Consulting",
+      "weight": 0.4,
+      "required_level": "Client-facing project work",
+      "necessity": "REQUIRED",
+      "requirement_type": "BEHAVIORAL_EXPECTATION",
+      "evidence_hint": "Worked directly with client stakeholders."
+    },
+    {
+      "id": "req_datalume_analytics_engineer_06",
+      "role_id": "role_datalume_analytics_engineer",
+      "capability_name": "Italian",
+      "domain": "Communication",
+      "weight": 0.35,
+      "required_level": "B2",
+      "necessity": "PREFERRED",
+      "requirement_type": "LANGUAGE",
+      "evidence_hint": "Client communication in Italian."
+    },
+    {
+      "id": "req_datalume_bi_developer_01",
+      "role_id": "role_datalume_bi_developer",
+      "capability_name": "Power BI",
+      "domain": "Business Intelligence",
+      "weight": 0.9,
+      "required_level": "L3 - Proficient",
+      "necessity": "REQUIRED",
+      "requirement_type": "TOOL_TECHNOLOGY",
+      "evidence_hint": "Power BI reports with DAX measures.",
+      "aliases": [
+        "DAX",
+        "Power Query"
+      ]
+    },
+    {
+      "id": "req_datalume_bi_developer_02",
+      "role_id": "role_datalume_bi_developer",
+      "capability_name": "Data Modeling for BI",
+      "domain": "Business Intelligence",
+      "weight": 0.6,
+      "required_level": "L2 - Working",
+      "necessity": "REQUIRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Star-schema models for reporting.",
+      "aliases": [
+        "Star Schema"
+      ]
+    },
+    {
+      "id": "req_datalume_bi_developer_03",
+      "role_id": "role_datalume_bi_developer",
+      "capability_name": "SQL",
+      "domain": "Data",
+      "weight": 0.5,
+      "required_level": "L2 - Working",
+      "necessity": "REQUIRED",
+      "requirement_type": "TOOL_TECHNOLOGY",
+      "evidence_hint": "SQL queries that feed reports: joins, aggregations and views for BI datasets."
+    },
+    {
+      "id": "req_datalume_bi_developer_04",
+      "role_id": "role_datalume_bi_developer",
+      "capability_name": "Data Visualization",
+      "domain": "Business Intelligence",
+      "weight": 0.55,
+      "required_level": "L3 - Proficient",
+      "necessity": "REQUIRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Dashboards with clear visual design.",
+      "aliases": [
+        "Dashboard Design"
+      ]
+    },
+    {
+      "id": "req_datalume_bi_developer_05",
+      "role_id": "role_datalume_bi_developer",
+      "capability_name": "Microsoft Certification",
+      "domain": "Business Intelligence",
+      "weight": 0.2,
+      "required_level": "PL-300 or comparable",
+      "necessity": "OPTIONAL",
+      "requirement_type": "CREDENTIAL",
+      "evidence_hint": "Microsoft PL-300 (Power BI Data Analyst) or a comparable certification.",
+      "aliases": [
+        "PL-300"
+      ]
+    },
+    {
+      "id": "req_datalume_bi_developer_06",
+      "role_id": "role_datalume_bi_developer",
+      "capability_name": "Italian",
+      "domain": "Communication",
+      "weight": 0.35,
+      "required_level": "C1",
+      "necessity": "REQUIRED",
+      "requirement_type": "LANGUAGE",
+      "evidence_hint": "Daily client communication in Italian."
+    },
+    {
+      "id": "req_datalume_ai_product_manager_01",
+      "role_id": "role_datalume_ai_product_manager",
+      "capability_name": "AI Product Management",
+      "domain": "Product Management",
+      "weight": 0.9,
+      "required_level": "L4 - Advanced",
+      "necessity": "REQUIRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Managed ML/AI products from discovery to adoption.",
+      "aliases": [
+        "ML Product Management"
+      ]
+    },
+    {
+      "id": "req_datalume_ai_product_manager_02",
+      "role_id": "role_datalume_ai_product_manager",
+      "capability_name": "Machine Learning Literacy",
+      "domain": "Machine Learning",
+      "weight": 0.6,
+      "required_level": "L3 - Proficient",
+      "necessity": "REQUIRED",
+      "requirement_type": "KNOWLEDGE",
+      "evidence_hint": "Understanding of model evaluation, data needs and failure modes."
+    },
+    {
+      "id": "req_datalume_ai_product_manager_03",
+      "role_id": "role_datalume_ai_product_manager",
+      "capability_name": "Success Metrics Definition",
+      "domain": "Product Management",
+      "weight": 0.5,
+      "required_level": "L3 - Proficient",
+      "necessity": "REQUIRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Defined business and model metrics for AI products.",
+      "aliases": [
+        "KPI Design"
+      ]
+    },
+    {
+      "id": "req_datalume_ai_product_manager_04",
+      "role_id": "role_datalume_ai_product_manager",
+      "capability_name": "Responsible AI Practices",
+      "domain": "Governance",
+      "weight": 0.4,
+      "required_level": "L2 - Working",
+      "necessity": "PREFERRED",
+      "requirement_type": "KNOWLEDGE",
+      "evidence_hint": "Considered fairness, transparency or AI Act obligations in products.",
+      "aliases": [
+        "EU AI Act"
+      ]
+    },
+    {
+      "id": "req_datalume_ai_product_manager_05",
+      "role_id": "role_datalume_ai_product_manager",
+      "capability_name": "Consulting Delivery",
+      "domain": "Consulting",
+      "weight": 0.4,
+      "required_level": "Client projects",
+      "necessity": "PREFERRED",
+      "requirement_type": "DOMAIN_CONTEXT",
+      "evidence_hint": "Delivered projects for external clients."
+    },
+    {
+      "id": "req_datalume_ai_product_manager_06",
+      "role_id": "role_datalume_ai_product_manager",
+      "capability_name": "Product Management",
+      "domain": "Product Management",
+      "weight": 0.45,
+      "required_level": "5+ years",
+      "necessity": "REQUIRED",
+      "requirement_type": "EXPERIENCE",
+      "evidence_hint": "Five or more years in product roles."
+    },
+    {
+      "id": "req_synaptiq_asr_engineer_01",
+      "role_id": "role_synaptiq_asr_engineer",
+      "capability_name": "Automatic Speech Recognition",
+      "domain": "Speech Technology",
+      "weight": 0.95,
+      "required_level": "L4 - Advanced",
+      "necessity": "REQUIRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Trained ASR models with WER evaluation.",
+      "aliases": [
+        "ASR",
+        "Speech-to-Text"
+      ]
+    },
+    {
+      "id": "req_synaptiq_asr_engineer_02",
+      "role_id": "role_synaptiq_asr_engineer",
+      "capability_name": "Deep Learning",
+      "domain": "Machine Learning",
+      "weight": 0.7,
+      "required_level": "L4 - Advanced",
+      "necessity": "REQUIRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Deep learning architectures for sequence modelling.",
+      "aliases": [
+        "Transformers",
+        "Conformer"
+      ]
+    },
+    {
+      "id": "req_synaptiq_asr_engineer_03",
+      "role_id": "role_synaptiq_asr_engineer",
+      "capability_name": "PyTorch",
+      "domain": "Machine Learning",
+      "weight": 0.6,
+      "required_level": "L4 - Advanced",
+      "necessity": "REQUIRED",
+      "requirement_type": "TOOL_TECHNOLOGY",
+      "evidence_hint": "Training pipelines in PyTorch."
+    },
+    {
+      "id": "req_synaptiq_asr_engineer_04",
+      "role_id": "role_synaptiq_asr_engineer",
+      "capability_name": "Streaming Inference",
+      "domain": "Speech Technology",
+      "weight": 0.5,
+      "required_level": "L3 - Proficient",
+      "necessity": "PREFERRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Low-latency streaming recognition.",
+      "aliases": [
+        "Real-Time ASR"
+      ]
+    },
+    {
+      "id": "req_synaptiq_asr_engineer_05",
+      "role_id": "role_synaptiq_asr_engineer",
+      "capability_name": "Audio Signal Processing",
+      "domain": "Speech Technology",
+      "weight": 0.45,
+      "required_level": "L3 - Proficient",
+      "necessity": "PREFERRED",
+      "requirement_type": "KNOWLEDGE",
+      "evidence_hint": "Audio features, noise robustness, telephony audio.",
+      "aliases": [
+        "Feature Extraction"
+      ]
+    },
+    {
+      "id": "req_synaptiq_asr_engineer_06",
+      "role_id": "role_synaptiq_asr_engineer",
+      "capability_name": "Spanish",
+      "domain": "Communication",
+      "weight": 0.3,
+      "required_level": "C1",
+      "necessity": "PREFERRED",
+      "requirement_type": "LANGUAGE",
+      "evidence_hint": "Spanish (Catalan a plus) for error analysis.",
+      "aliases": [
+        "Catalan"
+      ]
+    },
+    {
+      "id": "req_synaptiq_conversation_designer_01",
+      "role_id": "role_synaptiq_conversation_designer",
+      "capability_name": "Conversation Design",
+      "domain": "Conversational AI",
+      "weight": 0.95,
+      "required_level": "L4 - Advanced",
+      "necessity": "REQUIRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Designed voice or chat dialogues that went live.",
+      "aliases": [
+        "Dialogue Design",
+        "Voice UX"
+      ]
+    },
+    {
+      "id": "req_synaptiq_conversation_designer_02",
+      "role_id": "role_synaptiq_conversation_designer",
+      "capability_name": "Prompt Design for LLMs",
+      "domain": "Conversational AI",
+      "weight": 0.6,
+      "required_level": "L3 - Proficient",
+      "necessity": "REQUIRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "LLM prompts with tested behaviour.",
+      "aliases": [
+        "Prompt Engineering"
+      ]
+    },
+    {
+      "id": "req_synaptiq_conversation_designer_03",
+      "role_id": "role_synaptiq_conversation_designer",
+      "capability_name": "Usability Testing",
+      "domain": "User Research",
+      "weight": 0.5,
+      "required_level": "L3 - Proficient",
+      "necessity": "REQUIRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Tested dialogues with users or recordings.",
+      "aliases": [
+        "Call Analysis"
+      ]
+    },
+    {
+      "id": "req_synaptiq_conversation_designer_04",
+      "role_id": "role_synaptiq_conversation_designer",
+      "capability_name": "Contact Centre Operations",
+      "domain": "Domain",
+      "weight": 0.4,
+      "required_level": "Customer service processes",
+      "necessity": "PREFERRED",
+      "requirement_type": "DOMAIN_CONTEXT",
+      "evidence_hint": "Knowledge of contact-centre KPIs and processes.",
+      "aliases": [
+        "Customer Service"
+      ]
+    },
+    {
+      "id": "req_synaptiq_conversation_designer_05",
+      "role_id": "role_synaptiq_conversation_designer",
+      "capability_name": "Linguistics",
+      "domain": "Linguistics",
+      "weight": 0.4,
+      "required_level": "L3 - Proficient",
+      "necessity": "PREFERRED",
+      "requirement_type": "KNOWLEDGE",
+      "evidence_hint": "Background in linguistics or language technology.",
+      "aliases": [
+        "Pragmatics"
+      ]
+    },
+    {
+      "id": "req_synaptiq_conversation_designer_06",
+      "role_id": "role_synaptiq_conversation_designer",
+      "capability_name": "Spanish",
+      "domain": "Communication",
+      "weight": 0.5,
+      "required_level": "C2 / native level",
+      "necessity": "REQUIRED",
+      "requirement_type": "LANGUAGE",
+      "evidence_hint": "Writing dialogues in Spanish at native level."
+    },
+    {
+      "id": "req_synaptiq_annotation_lead_01",
+      "role_id": "role_synaptiq_annotation_lead",
+      "capability_name": "Annotation Operations",
+      "domain": "Data Operations",
+      "weight": 0.9,
+      "required_level": "L4 - Advanced",
+      "necessity": "REQUIRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Ran annotation projects with quality metrics.",
+      "aliases": [
+        "Data Labeling Management"
+      ]
+    },
+    {
+      "id": "req_synaptiq_annotation_lead_02",
+      "role_id": "role_synaptiq_annotation_lead",
+      "capability_name": "Guideline Writing",
+      "domain": "Data Operations",
+      "weight": 0.6,
+      "required_level": "L3 - Proficient",
+      "necessity": "REQUIRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Wrote annotation or transcription guidelines.",
+      "aliases": [
+        "Transcription Guidelines"
+      ]
+    },
+    {
+      "id": "req_synaptiq_annotation_lead_03",
+      "role_id": "role_synaptiq_annotation_lead",
+      "capability_name": "Quality Assurance for Data",
+      "domain": "Data Quality",
+      "weight": 0.55,
+      "required_level": "L3 - Proficient",
+      "necessity": "REQUIRED",
+      "requirement_type": "CAPABILITY",
+      "evidence_hint": "Measured and improved annotation quality.",
+      "aliases": [
+        "Inter-Annotator Agreement"
+      ]
+    },
+    {
+      "id": "req_synaptiq_annotation_lead_04",
+      "role_id": "role_synaptiq_annotation_lead",
+      "capability_name": "Team Leadership",
+      "domain": "Leadership",
+      "weight": 0.5,
+      "required_level": "Led a team or freelancer pool",
+      "necessity": "REQUIRED",
+      "requirement_type": "EXPERIENCE",
+      "evidence_hint": "Led annotators or a comparable team.",
+      "aliases": [
+        "People Management"
+      ]
+    },
+    {
+      "id": "req_synaptiq_annotation_lead_05",
+      "role_id": "role_synaptiq_annotation_lead",
+      "capability_name": "GDPR for Voice Data",
+      "domain": "Compliance",
+      "weight": 0.4,
+      "required_level": "L2 - Working",
+      "necessity": "PREFERRED",
+      "requirement_type": "KNOWLEDGE",
+      "evidence_hint": "Handled personal data in recordings.",
+      "aliases": [
+        "GDPR",
+        "Anonymization"
+      ]
+    },
+    {
+      "id": "req_synaptiq_annotation_lead_06",
+      "role_id": "role_synaptiq_annotation_lead",
+      "capability_name": "Multilingual Skills",
+      "domain": "Communication",
+      "weight": 0.35,
+      "required_level": "Spanish C1, Catalan or Portuguese B2",
+      "necessity": "PREFERRED",
+      "requirement_type": "LANGUAGE",
+      "evidence_hint": "Several of the corpus languages.",
+      "aliases": [
+        "Catalan",
+        "Portuguese"
+      ]
+    }
+  ]
+}
