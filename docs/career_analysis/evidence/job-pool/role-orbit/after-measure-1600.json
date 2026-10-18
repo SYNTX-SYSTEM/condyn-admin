@@ -1,0 +1,247 @@
+{
+ "viewport": "1600×1000",
+ "tag": "after",
+ "rows": [
+  {
+   "org": "org_kestrel",
+   "count": 3,
+   "compactness": [
+    "0.78",
+    "0.78"
+   ],
+   "layout": "full",
+   "orbits": [
+    [
+     516.8,
+     232.4
+    ]
+   ],
+   "cards": 3,
+   "cardSizes": [
+    "195×88",
+    "158×83",
+    "219×88"
+   ],
+   "centreGap": 101,
+   "pairGap": 275,
+   "meanDistance": 386,
+   "turnCentreGap": 95,
+   "turnTopSpace": 228,
+   "turnBottomSpace": 220,
+   "turnSurfacePhases": 9
+  },
+  {
+   "org": "org_pink_alpha",
+   "count": 1,
+   "compactness": [
+    "0.78",
+    "0.78"
+   ],
+   "layout": "full",
+   "orbits": [
+    [
+     531.2,
+     232.4
+    ]
+   ],
+   "cards": 1,
+   "cardSizes": [
+    "182×98"
+   ],
+   "centreGap": 96,
+   "pairGap": null,
+   "meanDistance": 234,
+   "turnCentreGap": 93,
+   "turnTopSpace": 223,
+   "turnBottomSpace": 215,
+   "turnSurfacePhases": 4
+  },
+  {
+   "org": "org_orbit_1",
+   "count": 1,
+   "compactness": [
+    "0.78",
+    "0.78"
+   ],
+   "layout": "full",
+   "orbits": [
+    [
+     516.8,
+     232.4
+    ]
+   ],
+   "cards": 1,
+   "cardSizes": [
+    "219×88"
+   ],
+   "centreGap": 101,
+   "pairGap": null,
+   "meanDistance": 235,
+   "turnCentreGap": 95,
+   "turnTopSpace": 228,
+   "turnBottomSpace": 220,
+   "turnSurfacePhases": 4
+  },
+  {
+   "org": "org_orbit_2",
+   "count": 2,
+   "compactness": [
+    "0.78",
+    "0.78"
+   ],
+   "layout": "full",
+   "orbits": [
+    [
+     516.8,
+     232.4
+    ]
+   ],
+   "cards": 2,
+   "cardSizes": [
+    "219×88",
+    "182×98"
+   ],
+   "centreGap": 96,
+   "pairGap": 371,
+   "meanDistance": 234,
+   "turnCentreGap": 93,
+   "turnTopSpace": 223,
+   "turnBottomSpace": 215,
+   "turnSurfacePhases": 7
+  },
+  {
+   "org": "org_orbit_3",
+   "count": 3,
+   "compactness": [
+    "0.78",
+    "0.78"
+   ],
+   "layout": "full",
+   "orbits": [
+    [
+     516.8,
+     232.4
+    ]
+   ],
+   "cards": 3,
+   "cardSizes": [
+    "219×88",
+    "182×98",
+    "147×83"
+   ],
+   "centreGap": 101,
+   "pairGap": 268,
+   "meanDistance": 386,
+   "turnCentreGap": 93,
+   "turnTopSpace": 223,
+   "turnBottomSpace": 215,
+   "turnSurfacePhases": 9
+  },
+  {
+   "org": "org_orbit_5",
+   "count": 5,
+   "compactness": [
+    "0.78",
+    "0.78"
+   ],
+   "layout": "full",
+   "orbits": [
+    [
+     505.4,
+     232.4
+    ]
+   ],
+   "cards": 5,
+   "cardSizes": [
+    "219×88",
+    "182×97",
+    "147×83",
+    "248×88",
+    "133×83"
+   ],
+   "centreGap": 101,
+   "pairGap": 163,
+   "meanDistance": 382,
+   "turnCentreGap": 93,
+   "turnTopSpace": 223,
+   "turnBottomSpace": 215,
+   "turnSurfacePhases": 13
+  },
+  {
+   "org": "org_orbit_8",
+   "count": 8,
+   "compactness": [
+    "0.78",
+    "0.78"
+   ],
+   "layout": "full",
+   "orbits": [
+    [
+     505.4,
+     232.4
+    ]
+   ],
+   "cards": 8,
+   "cardSizes": [
+    "219×88",
+    "182×98",
+    "147×83",
+    "248×88",
+    "133×83",
+    "153×83",
+    "195×88",
+    "151×83"
+   ],
+   "centreGap": 101,
+   "pairGap": 74,
+   "meanDistance": 381,
+   "turnCentreGap": 93,
+   "turnTopSpace": 223,
+   "turnBottomSpace": 215,
+   "turnSurfacePhases": 20
+  },
+  {
+   "org": "org_orbit_14",
+   "count": 14,
+   "compactness": [
+    "1.00",
+    "1.00"
+   ],
+   "layout": "full",
+   "orbits": [
+    [
+     324,
+     149
+    ],
+    [
+     648,
+     298
+    ]
+   ],
+   "cards": 14,
+   "cardSizes": [
+    "219×88",
+    "182×97",
+    "147×83",
+    "248×88",
+    "133×83",
+    "153×83",
+    "195×88",
+    "151×83",
+    "153×83",
+    "155×83",
+    "164×98",
+    "153×83",
+    "160×88",
+    "180×98"
+   ],
+   "centreGap": 18,
+   "pairGap": 43,
+   "meanDistance": 384,
+   "turnCentreGap": 5,
+   "turnTopSpace": 157,
+   "turnBottomSpace": 149,
+   "turnSurfacePhases": 48
+  }
+ ]
+}

@@ -23,9 +23,17 @@ export const SYNTX_MARGIN = 28;
 /**
  * The organization cosmos: the Capability Field's shared L1 packing of its satellites. For a pool whose organization holds
  * more roles than the viewport can carry as full cards, the cards first shorten their titles (the full title stays the
- * accessible name), then fall back to a compact uniform packing on as many orbits as needed — never fewer satellites.
+ * accessible name), then fall back to a compact uniform packing on as many orbits as needed — never fewer satellites. The orbit
+ * is then drawn closer to the organization as far as its geometry allows (`compactRoleOrbit`).
  */
-export function syntxCosmosLayout(items: ReadonlyArray<{ id: string; title: string }>, width: number, height: number): { layout: CapabilityCosmosLayout; compact: boolean } {
+export function syntxCosmosLayout(items: ReadonlyArray<{ id: string; title: string }>, width: number, height: number): { layout: CapabilityCosmosLayout; compact: boolean; compactness: RoleOrbitCompactness } {
+  const packed = syntxCosmosPacking(items, width, height);
+  const { layout, compactness } = compactRoleOrbit(packed.layout);
+  return { layout, compact: packed.compact, compactness };
+}
+
+/** The packing before the orbit is drawn in (the shared L1 packing, shortened titles, the compact uniform packing). */
+export function syntxCosmosPacking(items: ReadonlyArray<{ id: string; title: string }>, width: number, height: number): { layout: CapabilityCosmosLayout; compact: boolean } {
   try {
     return { layout: buildOrbitalCosmosLayout({ items: [...items], width, height }), compact: false };
   } catch {
@@ -63,6 +71,87 @@ function compactCosmos(items: ReadonlyArray<{ id: string; title: string }>, widt
     offset += take;
   }
   return { width: w, height: h, centerX: w / 2, centerY: h / 2, nodes, rings, staticPositions: false };
+}
+
+/**
+ * The role orbit drawn closer to its organization (owner "SFE — GRÜN | ROLE ORBIT REFINEMENT", 2026-10-18). The shared packing fills
+ * the level box, so its orbit is a wide, flat ellipse; here every orbit and every satellite on it is scaled about the centre, the
+ * cards keep their size, title and order, every ring its period and every satellite its phase. Each axis is drawn in by
+ * ROLE_ORBIT_COMPACTNESS as far as the geometry allows: the horizontal axis (the long one) first, then the vertical one as far as
+ * the centre body leaves room. A pair of factors holds when, in every phase, every card keeps its air to the centre body and to
+ * its neighbours on the same orbit, and to the neighbouring orbits as far as the packing kept them apart (in every phase pair
+ * where it did; at rest, and never closer than the packing, where it did not). Where no pair below 1 holds, and for the static
+ * grid fallback, the packing stays as it is.
+ */
+export const ROLE_ORBIT_COMPACTNESS = 0.78;
+/** The organization centre the cards keep clear of: SYNTX_COSMOS_CENTER_MATERIAL's 174 px disc, its 4 + 1 px outer rings and air. */
+export const ROLE_ORBIT_CENTRE_CLEARANCE = 87 + 5 + 16;
+/** Air between two cards; a card's text may run a line beyond the packing's estimate, so the vertical air is larger. */
+export const ROLE_ORBIT_CARD_GAP = Object.freeze({ x: 12, y: 20 });
+export interface RoleOrbitCompactness { x: number; y: number }
+const PHASES = Array.from({ length: 72 }, (_, index) => (index * Math.PI * 2) / 72);
+const CROSS_PHASES = PHASES.filter((_, index) => index % 3 === 0);
+
+interface OrbitAir { centre: number; orbit: number; across: number; acrossAtRest: number }
+
+/**
+ * The air (px; negative = overlap) the layout leaves at the compactness: to the centre body, between neighbours on one orbit,
+ * between neighbouring orbits (every phase pair) and between any two cards at rest. The satellites of one orbit share its path and
+ * are evenly spaced, so each orbit is measured once with its largest card: the centre over every phase, the next and the one after
+ * in angular order over every phase of the turn they make together.
+ */
+function orbitAir(layout: CapabilityCosmosLayout, k: RoleOrbitCompactness, withMotionAcross: boolean): OrbitAir {
+  const orbits = layout.rings.map(ring => {
+    const nodes = layout.nodes.filter(node => node.ringIndex === ring.index);
+    return { ring, count: nodes.length, width: Math.max(0, ...nodes.map(node => node.width)), height: Math.max(0, ...nodes.map(node => node.height)) };
+  }).filter(orbit => orbit.count > 0);
+  const on = (ring: CapabilityCosmosLayout["rings"][number], angle: number): Point => ({ x: Math.cos(angle) * ring.radiusX * k.x, y: Math.sin(angle) * ring.radiusY * k.y });
+  const between = (p: Point, aw: number, ah: number, q: Point, bw: number, bh: number): number => Math.max(Math.abs(p.x - q.x) - (aw + bw) / 2 - ROLE_ORBIT_CARD_GAP.x, Math.abs(p.y - q.y) - (ah + bh) / 2 - ROLE_ORBIT_CARD_GAP.y);
+  const air: OrbitAir = { centre: Infinity, orbit: Infinity, across: Infinity, acrossAtRest: Infinity };
+  for (const orbit of orbits) {
+    const steps = orbit.count > 3 ? [1, 2] : orbit.count > 1 ? [1] : [];
+    for (const phase of PHASES) {
+      const p = on(orbit.ring, phase);
+      air.centre = Math.min(air.centre, Math.hypot(Math.max(0, Math.abs(p.x) - orbit.width / 2), Math.max(0, Math.abs(p.y) - orbit.height / 2)) - ROLE_ORBIT_CENTRE_CLEARANCE);
+      for (const step of steps) air.orbit = Math.min(air.orbit, between(p, orbit.width, orbit.height, on(orbit.ring, phase + (step * 2 * Math.PI) / orbit.count), orbit.width, orbit.height));
+    }
+  }
+  if (withMotionAcross) {
+    for (let index = 1; index < orbits.length; index += 1) {
+      const inner = orbits[index - 1], outer = orbits[index];
+      for (const a of CROSS_PHASES) for (const b of CROSS_PHASES) air.across = Math.min(air.across, between(on(inner.ring, a), inner.width, inner.height, on(outer.ring, b), outer.width, outer.height));
+    }
+  }
+  const rings = new Map(layout.rings.map(ring => [ring.index, ring]));
+  for (const a of layout.nodes) for (const b of layout.nodes) if (b.ringIndex > a.ringIndex) air.acrossAtRest = Math.min(air.acrossAtRest, between(on(rings.get(a.ringIndex)!, a.angle), a.width, a.height, on(rings.get(b.ringIndex)!, b.angle), b.width, b.height));
+  return air;
+}
+
+export function compactRoleOrbit(layout: CapabilityCosmosLayout, target: number = ROLE_ORBIT_COMPACTNESS): { layout: CapabilityCosmosLayout; compactness: RoleOrbitCompactness } {
+  const unchanged = { layout, compactness: { x: 1, y: 1 } };
+  if (layout.staticPositions || layout.nodes.length === 0) return unchanged;
+  const packed = orbitAir(layout, { x: 1, y: 1 }, true);
+  const inMotion = packed.across >= 0;
+  const holds = (air: OrbitAir): boolean => air.centre >= 0 && air.orbit >= 0 && (inMotion ? air.across >= 0 : air.acrossAtRest >= Math.min(0, packed.acrossAtRest));
+  const first = Math.round(target * 100);
+  for (let sx = first; sx <= 100; sx += 1) {
+    // A horizontal factor that fails with the vertical axis left as packed is not tried with any smaller vertical one.
+    if (sx < 100 && !holds(orbitAir(layout, { x: sx / 100, y: 1 }, inMotion))) continue;
+    for (let sy = first; sy <= 100; sy += 1) {
+      if (sx === 100 && sy === 100) return unchanged;
+      const k = { x: sx / 100, y: sy / 100 };
+      if (!holds(orbitAir(layout, k, inMotion))) continue;
+      return {
+        compactness: k,
+        layout: {
+          ...layout,
+          rings: layout.rings.map(ring => ({ ...ring, radiusX: round(ring.radiusX * k.x), radiusY: round(ring.radiusY * k.y) })),
+          nodes: layout.nodes.map(node => ({ ...node, x: round(layout.centerX + (node.x - layout.centerX) * k.x), y: round(layout.centerY + (node.y - layout.centerY) * k.y) }))
+        }
+      };
+    }
+  }
+  return unchanged;
 }
 
 /** Re-export for the renderer: the Capability Field's L1 packing (planetarium-sized cosmos of one item, etc.). */
