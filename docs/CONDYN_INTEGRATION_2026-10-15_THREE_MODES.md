@@ -18,6 +18,7 @@ Integrationszweig ist `integration/job-field-governance`, Basis `311d6ee`. `main
 | `20c977b` | GELB `feature/matches-boundary-guard` `eacfc97` | das getrennte Delta aus §4: `/matches` lehnt gespeicherte PERSON-Analysen und nicht auflösbare Grenzen serverseitig ab. Gemergt erst nach PINKs Prüfung ohne Abweichung (§3.42) |
 | `18b7c2a` | GELB | `job-structure.postgres`: der `beforeAll` mit drei echten Pool-Uploads bekommt 60 s statt der 10-s-Voreinstellung (unter Last 11,7 s, von GRÜN gemessen) |
 | `d3e76ce` | PINK `validation/hr-decision-loop-pink` `5f5c636` | F-PINK-ORDER (§3.44): `http-canonical-inverse` nutzt eine eigene Pool-ID. Vorher hing die volle Suite von der Dateireihenfolge mit `pdf-path` ab, bis zu 10 Rotfälle. Dazu `pdf-path` byte-gleich zur Integration (`ad7bc55`) und PINKs Prüfung von GRÜNs `frontend/demo-ui-fix` (nicht integriert, §5) |
+| `aab797c` | PINK `validation/hr-decision-loop-pink` `97cc57a` | PINK §3.45: Prüfung von GRÜNs `frontend/role-orbit` `6d386cc` auf der Probe `4b5774c`, nur Protokoll und Beweise als `.txt`, kein Code. Der Rollenorbit selbst ist nicht integriert (§5) |
 | `a3c3759` | PINK `validation/hr-decision-loop-pink` `916e884` | PINK §3.43: `syntx-walk.e2e` an die Invarianten neu gebunden (siehe §2.3); nur diese Testdatei und Belege |
 | `73a4701` | PINK `validation/hr-decision-loop-pink` `122aa6c` | PINKs Prüfprotokolle §3.41 (Integration `0fb7b05`) und §3.42 (Delta `eacfc97`) sowie die übernommenen Fixture-Änderungen für `http-canonical-inverse` und `pdf-path`. Der pdf-path-Schritt erwartet 409 und gilt nur zusammen mit `eacfc97`; deshalb wurde `eacfc97` zuerst gemergt |
 
@@ -204,9 +205,17 @@ Owner-Vorgabe: Der alte pool-weite Vergleich bleibt vorerst rollenübergreifend.
     - Job-Pool, Orbit-Härtung, drei Modi und Investigation: 249 grün, 4 übersprungen.
     - E2E: `syntx-walk` 3/3, `job-scope-gate` 1/1, `job-pool-workflow` 10/10.
     - Volle Suite: die 27 bekannten Rotfälle sowie 11 Zeitüberschreitungen von 5 s in Outcome-Valence- und Decision-Core-Dateien, die das Delta nicht berührt; die Last lag bei etwa 6. Seriell laufen dieselben 7 Dateien auf `7c2971c` ebenfalls rot (15 statt 11).
-  - PINK: angefragt durch GRÜN, ausstehend.
+  - PINK §3.45 (`97cc57a`, Protokoll gemergt als `aab797c`): Abweichung **D-RO-1**.
+    - Der Fehler: `compactRoleOrbit` prüft die Luft zwischen Nachbarn auf einem Orbit (12 px waagerecht, 20 px senkrecht) nur alle 5°. Dazwischen wird sie unterschritten.
+    - PINKs Messung: 209 von 2450 eingezogenen Layouts, schlechtester Wert −7,65 px; mit gerenderten Kartenhöhen −9,83 px. Keine Überlappung, mit GRÜNs realem Titelsatz kein Fall.
+    - Von GELB unabhängig nachgemessen, auf `6d386cc` mit eigenem zufälligem Titelsatz und Prüfung alle 0,25°: 77 von 2247 eingezogenen Layouts mehr als 1 px unter der Luft, schlechtester Wert −5,98 px, keine Überlappung. Dieselbe Klasse wie bei PINK.
+    - GRÜNs eigener Test findet das nicht, weil er nur GRÜNs Titelsatz liest.
+    - Alles andere erfüllt PINK, darunter Negativkontrolle, Navigation, REDUCED, Capability Field und keine neue Bewegung.
+    - Vorbestehend und unverändert: Bei 1280 überlappen im Packing die Karten einer Organisation mit 14 Rollen (O-RO-PACK-14).
 
-  Integriert wird er erst nach PINK und auf ein Wort des Owners an GELB, zusammen mit oder nach `demo-ui-fix`. Die Sichtwirkung beurteilt der Owner.
+  Behoben werden muss D-RO-1 von GRÜN. Ein möglicher Weg ist eine dichtere Prüfung zwischen den Phasen oder ein Sicherheitsabstand, der den Fehler zwischen zwei Prüfphasen abdeckt. Integriert wird erst nach einer Korrektur, einer erneuten Prüfung durch PINK und einem Wort des Owners an GELB.
+
+  Wenn er integriert wird, dann zusammen mit oder nach `demo-ui-fix`. Die Sichtwirkung beurteilt der Owner.
 - **PINK-Skript** `support/syntx-readonly-walk.mjs` (P-4) ist nicht neu gebunden; es braucht eine Umgebung mit gespeicherten Aufträgen.
 - **Für GRÜN (O-SX-INACTIVE-NAMING):** Der Feldzustand INACTIVE_POOL entsteht nur aus einer 409 von `/matches`. Unter der URL-Grenze ist er mit konsistenten Daten nicht mehr erreichbar; das Feld zeigt dann OTHER_POOL.
 - **Zur Information (PINK):**
