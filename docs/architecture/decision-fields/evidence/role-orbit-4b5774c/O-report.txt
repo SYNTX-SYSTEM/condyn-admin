@@ -1,0 +1,167 @@
+ok   O-1 1600 org_ro_1: compactness attributes present with two decimals · ["0.78","0.78","full"]
+ok   O-1 1600 org_ro_1: every role card present by data-testid, its title the accessible name, tabbable · ["syntx-role-role_ro_1_00"]
+ok   O-1 1600 org_ro_1: drawn ellipses = packing radii × the factors (±0.01) · {"factors":[0.78,0.78],"ratio":[["0.7800","0.7800"]]}
+ok   O-2 1600 org_ro_1: rendered card width = packed card width, height never below it · {"widthDiff":"0.00","heightExcessMax":"0.00"}
+ok   O-2 1600 org_ro_1: each card on its drawn ellipse in two LIVE frames 1 s apart (normalised radius 1 ± 0.01) and moving · {"off":["0.0000","0.0000"],"moved":"32.37"}
+ok   O-2 1600 org_ro_1: every tether ends at its card's centre (±1 px) · "0.00"
+ok   O-3 1600 org_ro_1: 16 px to the centre disc's outer rings in every degree (rendered sizes, ±1 px) · "74.14"
+ok   O-3 1600 org_ro_1: 12 px / 20 px between cards of one orbit in every degree (rendered sizes, ±1 px) · {"drawn":"Infinity","packed":"Infinity"}
+ok   O-3 1600 org_ro_1: no two rendered cards of one orbit overlap in any degree · {"drawn":"Infinity","packed":"Infinity"}
+ok   O-1 1600 org_ro_2: compactness attributes present with two decimals · ["0.78","0.78","full"]
+ok   O-1 1600 org_ro_2: every role card present by data-testid, its title the accessible name, tabbable · ["syntx-role-role_ro_2_00","syntx-role-role_ro_2_01"]
+ok   O-1 1600 org_ro_2: drawn ellipses = packing radii × the factors (±0.01) · {"factors":[0.78,0.78],"ratio":[["0.7800","0.7800"]]}
+ok   O-2 1600 org_ro_2: rendered card width = packed card width, height never below it · {"widthDiff":"0.00","heightExcessMax":"9.50"}
+ok   O-2 1600 org_ro_2: each card on its drawn ellipse in two LIVE frames 1 s apart (normalised radius 1 ± 0.01) and moving · {"off":["0.0000","0.0000"],"moved":"23.67"}
+ok   O-2 1600 org_ro_2: every tether ends at its card's centre (±1 px) · "0.00"
+ok   O-3 1600 org_ro_2: 16 px to the centre disc's outer rings in every degree (rendered sizes, ±1 px) · "71.37"
+ok   O-3 1600 org_ro_2: 12 px / 20 px between cards of one orbit in every degree (rendered sizes, ±1 px) · {"drawn":"293.84","packed":"413.49"}
+ok   O-3 1600 org_ro_2: no two rendered cards of one orbit overlap in any degree · {"drawn":"313.84","packed":"433.49"}
+ok   O-1 1600 org_ro_3: compactness attributes present with two decimals · ["0.78","0.78","full"]
+ok   O-1 1600 org_ro_3: every role card present by data-testid, its title the accessible name, tabbable · ["syntx-role-role_ro_3_00","syntx-role-role_ro_3_01","syntx-role-role_ro_3_02"]
+ok   O-1 1600 org_ro_3: drawn ellipses = packing radii × the factors (±0.01) · {"factors":[0.78,0.78],"ratio":[["0.7800","0.7800"]]}
+ok   O-2 1600 org_ro_3: rendered card width = packed card width, height never below it · {"widthDiff":"0.00","heightExcessMax":"11.25"}
+ok   O-2 1600 org_ro_3: each card on its drawn ellipse in two LIVE frames 1 s apart (normalised radius 1 ± 0.01) and moving · {"off":["0.0000","0.0000"],"moved":"26.98"}
+ok   O-2 1600 org_ro_3: every tether ends at its card's centre (±1 px) · "0.00"
+ok   O-3 1600 org_ro_3: 16 px to the centre disc's outer rings in every degree (rendered sizes, ±1 px) · "71.37"
+ok   O-3 1600 org_ro_3: 12 px / 20 px between cards of one orbit in every degree (rendered sizes, ±1 px) · {"drawn":"235.91","packed":"342.98"}
+ok   O-3 1600 org_ro_3: no two rendered cards of one orbit overlap in any degree · {"drawn":"255.91","packed":"358.69"}
+ok   O-1 1600 org_ro_5: compactness attributes present with two decimals · ["0.78","0.78","full"]
+ok   O-1 1600 org_ro_5: every role card present by data-testid, its title the accessible name, tabbable · ["syntx-role-role_ro_5_00","syntx-role-role_ro_5_01","syntx-role-role_ro_5_02","syntx-role-role_ro_5_03","syntx-role-role_ro_5_04"]
+ok   O-1 1600 org_ro_5: drawn ellipses = packing radii × the factors (±0.01) · {"factors":[0.78,0.78],"ratio":[["0.7800","0.7800"]]}
+ok   O-2 1600 org_ro_5: rendered card width = packed card width, height never below it · {"widthDiff":"0.00","heightExcessMax":"11.25"}
+ok   O-2 1600 org_ro_5: each card on its drawn ellipse in two LIVE frames 1 s apart (normalised radius 1 ± 0.01) and moving · {"off":["0.0000","0.0000"],"moved":"30.05"}
+ok   O-2 1600 org_ro_5: every tether ends at its card's centre (±1 px) · "0.00"
+ok   O-3 1600 org_ro_5: 16 px to the centre disc's outer rings in every degree (rendered sizes, ±1 px) · "71.17"
+ok   O-3 1600 org_ro_5: 12 px / 20 px between cards of one orbit in every degree (rendered sizes, ±1 px) · {"drawn":"116.42","packed":"187.53"}
+ok   O-3 1600 org_ro_5: no two rendered cards of one orbit overlap in any degree · {"drawn":"133.78","packed":"204.34"}
+ok   O-1 1600 org_ro_8: compactness attributes present with two decimals · ["0.78","0.78","full"]
+ok   O-1 1600 org_ro_8: every role card present by data-testid, its title the accessible name, tabbable · ["syntx-role-role_ro_8_00","syntx-role-role_ro_8_01","syntx-role-role_ro_8_02","syntx-role-role_ro_8_03","syntx-role-role_ro_8_04","syntx-role-role_ro_8_05","syntx-role-role_ro_8_06","syntx-role-role_ro_8_07"]
+ok   O-1 1600 org_ro_8: drawn ellipses = packing radii × the factors (±0.01) · {"factors":[0.78,0.78],"ratio":[["0.7800","0.7800"]]}
+ok   O-2 1600 org_ro_8: rendered card width = packed card width, height never below it · {"widthDiff":"0.00","heightExcessMax":"11.25"}
+ok   O-2 1600 org_ro_8: each card on its drawn ellipse in two LIVE frames 1 s apart (normalised radius 1 ± 0.01) and moving · {"off":["0.0000","0.0000"],"moved":"30.08"}
+ok   O-2 1600 org_ro_8: every tether ends at its card's centre (±1 px) · "0.00"
+ok   O-3 1600 org_ro_8: 16 px to the centre disc's outer rings in every degree (rendered sizes, ±1 px) · "71.17"
+ok   O-3 1600 org_ro_8: 12 px / 20 px between cards of one orbit in every degree (rendered sizes, ±1 px) · {"drawn":"28.32","packed":"75.22"}
+ok   O-3 1600 org_ro_8: no two rendered cards of one orbit overlap in any degree · {"drawn":"45.56","packed":"92.93"}
+ok   O-1 1600 org_ro_14: compactness attributes present with two decimals · ["1.00","1.00","full"]
+ok   O-1 1600 org_ro_14: every role card present by data-testid, its title the accessible name, tabbable · ["syntx-role-role_ro_14_00","syntx-role-role_ro_14_01","syntx-role-role_ro_14_02","syntx-role-role_ro_14_03","syntx-role-role_ro_14_04","syntx-role-role_ro_14_05","syntx-role-role_ro_14_06","syntx-role-role_ro_14_07","syntx-role-role_ro_14_08","syntx-role-role_ro_14_09","syntx-role-role_ro_14_10","syntx-role-role_ro_14_11","syntx-role-role_ro_14_12","syntx-role-role_ro_14_13"]
+ok   O-1 1600 org_ro_14: drawn ellipses = packing radii × the factors (±0.01) · {"factors":[1,1],"ratio":[["1.0000","1.0000"],["1.0000","1.0000"]]}
+ok   O-2 1600 org_ro_14: rendered card width = packed card width, height never below it · {"widthDiff":"0.00","heightExcessMax":"11.25"}
+ok   O-2 1600 org_ro_14: each card on its drawn ellipse in two LIVE frames 1 s apart (normalised radius 1 ± 0.01) and moving · {"off":["0.0000","0.0000"],"moved":"31.20"}
+ok   O-2 1600 org_ro_14: every tether ends at its card's centre (±1 px) · "0.00"
+ok   O-3 1600 org_ro_14: not drawn in, the orbit is the packing (air identical) · {"centre":-16.29,"same":0.06,"across":-2.02,"overlap":17.98}
+ok   O-1 1600 org_ro_long_6: compactness attributes present with two decimals · ["0.78","0.78","full"]
+ok   O-1 1600 org_ro_long_6: every role card present by data-testid, its title the accessible name, tabbable · ["syntx-role-role_ro_long_6_00","syntx-role-role_ro_long_6_01","syntx-role-role_ro_long_6_02","syntx-role-role_ro_long_6_03","syntx-role-role_ro_long_6_04","syntx-role-role_ro_long_6_05"]
+ok   O-1 1600 org_ro_long_6: drawn ellipses = packing radii × the factors (±0.01) · {"factors":[0.78,0.78],"ratio":[["0.7800","0.7800"]]}
+ok   O-2 1600 org_ro_long_6: rendered card width = packed card width, height never below it · {"widthDiff":"0.00","heightExcessMax":"0.00"}
+ok   O-2 1600 org_ro_long_6: each card on its drawn ellipse in two LIVE frames 1 s apart (normalised radius 1 ± 0.01) and moving · {"off":["0.0000","0.0000"],"moved":"14.03"}
+ok   O-2 1600 org_ro_long_6: every tether ends at its card's centre (±1 px) · "0.00"
+ok   O-3 1600 org_ro_long_6: 16 px to the centre disc's outer rings in every degree (rendered sizes, ±1 px) · "51.20"
+ok   O-3 1600 org_ro_long_6: 12 px / 20 px between cards of one orbit in every degree (rendered sizes, ±1 px) · {"drawn":"33.40","packed":"95.39"}
+ok   O-3 1600 org_ro_long_6: no two rendered cards of one orbit overlap in any degree · {"drawn":"50.59","packed":"112.11"}
+ok   O-1 1600 org_ro_long_8: compactness attributes present with two decimals · ["0.78","0.94","full"]
+ok   O-1 1600 org_ro_long_8: every role card present by data-testid, its title the accessible name, tabbable · ["syntx-role-role_ro_long_8_00","syntx-role-role_ro_long_8_01","syntx-role-role_ro_long_8_02","syntx-role-role_ro_long_8_03","syntx-role-role_ro_long_8_04","syntx-role-role_ro_long_8_05","syntx-role-role_ro_long_8_06","syntx-role-role_ro_long_8_07"]
+ok   O-1 1600 org_ro_long_8: drawn ellipses = packing radii × the factors (±0.01) · {"factors":[0.78,0.94],"ratio":[["0.7800","0.9400"]]}
+ok   O-2 1600 org_ro_long_8: rendered card width = packed card width, height never below it · {"widthDiff":"0.00","heightExcessMax":"0.00"}
+ok   O-2 1600 org_ro_long_8: each card on its drawn ellipse in two LIVE frames 1 s apart (normalised radius 1 ± 0.01) and moving · {"off":["0.0000","0.0000"],"moved":"27.68"}
+ok   O-2 1600 org_ro_long_8: every tether ends at its card's centre (±1 px) · "0.00"
+ok   O-3 1600 org_ro_long_8: 16 px to the centre disc's outer rings in every degree (rendered sizes, ±1 px) · "92.83"
+DEV  O-3 1600 org_ro_long_8: 12 px / 20 px between cards of one orbit in every degree (rendered sizes, ±1 px) · {"drawn":"-5.98","packed":"29.03"}
+ok   O-3 1600 org_ro_long_8: no two rendered cards of one orbit overlap in any degree · {"drawn":"9.64","packed":"46.26"}
+ok   O-1 1600 org_ro_short_12: compactness attributes present with two decimals · ["0.78","0.78","full"]
+ok   O-1 1600 org_ro_short_12: every role card present by data-testid, its title the accessible name, tabbable · ["syntx-role-role_ro_short_12_00","syntx-role-role_ro_short_12_01","syntx-role-role_ro_short_12_02","syntx-role-role_ro_short_12_03","syntx-role-role_ro_short_12_04","syntx-role-role_ro_short_12_05","syntx-role-role_ro_short_12_06","syntx-role-role_ro_short_12_07","syntx-role-role_ro_short_12_08","syntx-role-role_ro_short_12_09","syntx-role-role_ro_short_12_10","syntx-role-role_ro_short_12_11"]
+ok   O-1 1600 org_ro_short_12: drawn ellipses = packing radii × the factors (±0.01) · {"factors":[0.78,0.78],"ratio":[["0.7800","0.7800"]]}
+ok   O-2 1600 org_ro_short_12: rendered card width = packed card width, height never below it · {"widthDiff":"0.00","heightExcessMax":"11.25"}
+ok   O-2 1600 org_ro_short_12: each card on its drawn ellipse in two LIVE frames 1 s apart (normalised radius 1 ± 0.01) and moving · {"off":["0.0000","0.0000"],"moved":"33.71"}
+ok   O-2 1600 org_ro_short_12: every tether ends at its card's centre (±1 px) · "0.00"
+ok   O-3 1600 org_ro_short_12: 16 px to the centre disc's outer rings in every degree (rendered sizes, ±1 px) · "87.16"
+ok   O-3 1600 org_ro_short_12: 12 px / 20 px between cards of one orbit in every degree (rendered sizes, ±1 px) · {"drawn":"3.75","packed":"36.61"}
+ok   O-3 1600 org_ro_short_12: no two rendered cards of one orbit overlap in any degree · {"drawn":"22.65","packed":"55.24"}
+ok   O-4 1600: a role card selects its role (kind ROLE, URL jobRoleId) · {"kind":"ROLE","url":"?focus=FIELD&jobPoolUploadId=JPOOL_0E80C088ADB81C788DC570CECC20F956&jobOrganizationId=org_ro_5&jobRoleId=role_ro_5_02"}
+ok   O-4 1600: Escape returns to the organization · "?focus=FIELD&jobPoolUploadId=JPOOL_0E80C088ADB81C788DC570CECC20F956&jobOrganizationId=org_ro_5"
+ok   O-4 1600: REDUCED: the drawn-in orbit holds still (1.5 s) with the same factors · {"still":"0.000","factors":["0.78","0.78"]}
+ok   O-1 1280 org_ro_1: compactness attributes present with two decimals · ["0.78","0.78","full"]
+ok   O-1 1280 org_ro_1: every role card present by data-testid, its title the accessible name, tabbable · ["syntx-role-role_ro_1_00"]
+ok   O-1 1280 org_ro_1: drawn ellipses = packing radii × the factors (±0.01) · {"factors":[0.78,0.78],"ratio":[["0.7800","0.7800"]]}
+ok   O-2 1280 org_ro_1: rendered card width = packed card width, height never below it · {"widthDiff":"0.00","heightExcessMax":"0.00"}
+ok   O-2 1280 org_ro_1: each card on its drawn ellipse in two LIVE frames 1 s apart (normalised radius 1 ± 0.01) and moving · {"off":["0.0000","0.0000"],"moved":"17.31"}
+ok   O-2 1280 org_ro_1: every tether ends at its card's centre (±1 px) · "0.00"
+ok   O-3 1280 org_ro_1: 16 px to the centre disc's outer rings in every degree (rendered sizes, ±1 px) · "53.43"
+ok   O-3 1280 org_ro_1: 12 px / 20 px between cards of one orbit in every degree (rendered sizes, ±1 px) · {"drawn":"Infinity","packed":"Infinity"}
+ok   O-3 1280 org_ro_1: no two rendered cards of one orbit overlap in any degree · {"drawn":"Infinity","packed":"Infinity"}
+ok   O-1 1280 org_ro_2: compactness attributes present with two decimals · ["0.78","0.78","full"]
+ok   O-1 1280 org_ro_2: every role card present by data-testid, its title the accessible name, tabbable · ["syntx-role-role_ro_2_00","syntx-role-role_ro_2_01"]
+ok   O-1 1280 org_ro_2: drawn ellipses = packing radii × the factors (±0.01) · {"factors":[0.78,0.78],"ratio":[["0.7800","0.7800"]]}
+ok   O-2 1280 org_ro_2: rendered card width = packed card width, height never below it · {"widthDiff":"0.00","heightExcessMax":"9.50"}
+ok   O-2 1280 org_ro_2: each card on its drawn ellipse in two LIVE frames 1 s apart (normalised radius 1 ± 0.01) and moving · {"off":["0.0000","0.0000"],"moved":"22.35"}
+ok   O-2 1280 org_ro_2: every tether ends at its card's centre (±1 px) · "0.00"
+ok   O-3 1280 org_ro_2: 16 px to the centre disc's outer rings in every degree (rendered sizes, ±1 px) · "52.33"
+ok   O-3 1280 org_ro_2: 12 px / 20 px between cards of one orbit in every degree (rendered sizes, ±1 px) · {"drawn":"242.50","packed":"349.49"}
+ok   O-3 1280 org_ro_2: no two rendered cards of one orbit overlap in any degree · {"drawn":"260.26","packed":"368.19"}
+ok   O-1 1280 org_ro_3: compactness attributes present with two decimals · ["0.78","0.78","full"]
+ok   O-1 1280 org_ro_3: every role card present by data-testid, its title the accessible name, tabbable · ["syntx-role-role_ro_3_00","syntx-role-role_ro_3_01","syntx-role-role_ro_3_02"]
+ok   O-1 1280 org_ro_3: drawn ellipses = packing radii × the factors (±0.01) · {"factors":[0.78,0.78],"ratio":[["0.7800","0.7800"]]}
+ok   O-2 1280 org_ro_3: rendered card width = packed card width, height never below it · {"widthDiff":"0.00","heightExcessMax":"11.25"}
+ok   O-2 1280 org_ro_3: each card on its drawn ellipse in two LIVE frames 1 s apart (normalised radius 1 ± 0.01) and moving · {"off":["0.0000","0.0000"],"moved":"16.69"}
+ok   O-2 1280 org_ro_3: every tether ends at its card's centre (±1 px) · "0.00"
+ok   O-3 1280 org_ro_3: 16 px to the centre disc's outer rings in every degree (rendered sizes, ±1 px) · "52.33"
+ok   O-3 1280 org_ro_3: 12 px / 20 px between cards of one orbit in every degree (rendered sizes, ±1 px) · {"drawn":"191.10","packed":"286.44"}
+ok   O-3 1280 org_ro_3: no two rendered cards of one orbit overlap in any degree · {"drawn":"208.06","packed":"301.68"}
+ok   O-1 1280 org_ro_5: compactness attributes present with two decimals · ["0.78","0.78","full"]
+ok   O-1 1280 org_ro_5: every role card present by data-testid, its title the accessible name, tabbable · ["syntx-role-role_ro_5_00","syntx-role-role_ro_5_01","syntx-role-role_ro_5_02","syntx-role-role_ro_5_03","syntx-role-role_ro_5_04"]
+ok   O-1 1280 org_ro_5: drawn ellipses = packing radii × the factors (±0.01) · {"factors":[0.78,0.78],"ratio":[["0.7800","0.7800"]]}
+ok   O-2 1280 org_ro_5: rendered card width = packed card width, height never below it · {"widthDiff":"0.00","heightExcessMax":"11.25"}
+ok   O-2 1280 org_ro_5: each card on its drawn ellipse in two LIVE frames 1 s apart (normalised radius 1 ± 0.01) and moving · {"off":["0.0000","0.0000"],"moved":"13.14"}
+ok   O-2 1280 org_ro_5: every tether ends at its card's centre (±1 px) · "0.00"
+ok   O-3 1280 org_ro_5: 16 px to the centre disc's outer rings in every degree (rendered sizes, ±1 px) · "48.86"
+ok   O-3 1280 org_ro_5: 12 px / 20 px between cards of one orbit in every degree (rendered sizes, ±1 px) · {"drawn":"81.07","packed":"144.78"}
+ok   O-3 1280 org_ro_5: no two rendered cards of one orbit overlap in any degree · {"drawn":"98.92","packed":"161.23"}
+ok   O-1 1280 org_ro_8: compactness attributes present with two decimals · ["0.79","0.95","full"]
+ok   O-1 1280 org_ro_8: every role card present by data-testid, its title the accessible name, tabbable · ["syntx-role-role_ro_8_00","syntx-role-role_ro_8_01","syntx-role-role_ro_8_02","syntx-role-role_ro_8_03","syntx-role-role_ro_8_04","syntx-role-role_ro_8_05","syntx-role-role_ro_8_06","syntx-role-role_ro_8_07"]
+ok   O-1 1280 org_ro_8: drawn ellipses = packing radii × the factors (±0.01) · {"factors":[0.79,0.95],"ratio":[["0.7900","0.9500"]]}
+ok   O-2 1280 org_ro_8: rendered card width = packed card width, height never below it · {"widthDiff":"0.00","heightExcessMax":"11.25"}
+ok   O-2 1280 org_ro_8: each card on its drawn ellipse in two LIVE frames 1 s apart (normalised radius 1 ± 0.01) and moving · {"off":["0.0000","0.0000"],"moved":"16.43"}
+ok   O-2 1280 org_ro_8: every tether ends at its card's centre (±1 px) · "0.00"
+ok   O-3 1280 org_ro_8: 16 px to the centre disc's outer rings in every degree (rendered sizes, ±1 px) · "89.03"
+ok   O-3 1280 org_ro_8: 12 px / 20 px between cards of one orbit in every degree (rendered sizes, ±1 px) · {"drawn":"15.82","packed":"44.12"}
+ok   O-3 1280 org_ro_8: no two rendered cards of one orbit overlap in any degree · {"drawn":"33.08","packed":"61.29"}
+ok   O-1 1280 org_ro_14: compactness attributes present with two decimals · ["1.00","1.00","full"]
+ok   O-1 1280 org_ro_14: every role card present by data-testid, its title the accessible name, tabbable · ["syntx-role-role_ro_14_05","syntx-role-role_ro_14_06","syntx-role-role_ro_14_09","syntx-role-role_ro_14_10","syntx-role-role_ro_14_00","syntx-role-role_ro_14_01","syntx-role-role_ro_14_02","syntx-role-role_ro_14_03","syntx-role-role_ro_14_04","syntx-role-role_ro_14_07","syntx-role-role_ro_14_08","syntx-role-role_ro_14_11","syntx-role-role_ro_14_12","syntx-role-role_ro_14_13"]
+ok   O-1 1280 org_ro_14: drawn ellipses = packing radii × the factors (±0.01) · {"factors":[1,1],"ratio":[["1.0000","1.0000"],["1.0000","1.0000"],["1.0000","1.0000"],["1.0000","1.0000"]]}
+ok   O-2 1280 org_ro_14: rendered card width = packed card width, height never below it · {"widthDiff":"0.00","heightExcessMax":"11.25"}
+ok   O-2 1280 org_ro_14: each card on its drawn ellipse in two LIVE frames 1 s apart (normalised radius 1 ± 0.01) and moving · {"off":["0.0000","0.0000"],"moved":"18.73"}
+ok   O-2 1280 org_ro_14: every tether ends at its card's centre (±1 px) · "0.00"
+ok   O-3 1280 org_ro_14: not drawn in, the orbit is the packing (air identical) · {"centre":-3.04,"same":-78.02,"across":-0.27,"overlap":-62.74}
+ok   O-1 1280 org_ro_long_6: compactness attributes present with two decimals · ["0.78","0.79","full"]
+ok   O-1 1280 org_ro_long_6: every role card present by data-testid, its title the accessible name, tabbable · ["syntx-role-role_ro_long_6_00","syntx-role-role_ro_long_6_01","syntx-role-role_ro_long_6_02","syntx-role-role_ro_long_6_03","syntx-role-role_ro_long_6_04","syntx-role-role_ro_long_6_05"]
+ok   O-1 1280 org_ro_long_6: drawn ellipses = packing radii × the factors (±0.01) · {"factors":[0.78,0.79],"ratio":[["0.7800","0.7900"]]}
+ok   O-2 1280 org_ro_long_6: rendered card width = packed card width, height never below it · {"widthDiff":"0.00","heightExcessMax":"0.00"}
+ok   O-2 1280 org_ro_long_6: each card on its drawn ellipse in two LIVE frames 1 s apart (normalised radius 1 ± 0.01) and moving · {"off":["0.0000","0.0000"],"moved":"16.68"}
+ok   O-2 1280 org_ro_long_6: every tether ends at its card's centre (±1 px) · "0.00"
+ok   O-3 1280 org_ro_long_6: 16 px to the centre disc's outer rings in every degree (rendered sizes, ±1 px) · "20.10"
+ok   O-3 1280 org_ro_long_6: 12 px / 20 px between cards of one orbit in every degree (rendered sizes, ±1 px) · {"drawn":"1.24","packed":"52.22"}
+ok   O-3 1280 org_ro_long_6: no two rendered cards of one orbit overlap in any degree · {"drawn":"18.68","packed":"69.22"}
+ok   O-1 1280 org_ro_long_8: compactness attributes present with two decimals · ["0.99","0.99","full"]
+ok   O-1 1280 org_ro_long_8: every role card present by data-testid, its title the accessible name, tabbable · ["syntx-role-role_ro_long_8_00","syntx-role-role_ro_long_8_01","syntx-role-role_ro_long_8_02","syntx-role-role_ro_long_8_03","syntx-role-role_ro_long_8_04","syntx-role-role_ro_long_8_05","syntx-role-role_ro_long_8_06","syntx-role-role_ro_long_8_07"]
+ok   O-1 1280 org_ro_long_8: drawn ellipses = packing radii × the factors (±0.01) · {"factors":[0.99,0.99],"ratio":[["0.9900","0.9900"]]}
+ok   O-2 1280 org_ro_long_8: rendered card width = packed card width, height never below it · {"widthDiff":"0.00","heightExcessMax":"0.00"}
+ok   O-2 1280 org_ro_long_8: each card on its drawn ellipse in two LIVE frames 1 s apart (normalised radius 1 ± 0.01) and moving · {"off":["0.0000","0.0000"],"moved":"13.86"}
+ok   O-2 1280 org_ro_long_8: every tether ends at its card's centre (±1 px) · "0.00"
+ok   O-3 1280 org_ro_long_8: 16 px to the centre disc's outer rings in every degree (rendered sizes, ±1 px) · "75.42"
+DEV  O-3 1280 org_ro_long_8: 12 px / 20 px between cards of one orbit in every degree (rendered sizes, ±1 px) · {"drawn":"-5.92","packed":"-3.79"}
+ok   O-3 1280 org_ro_long_8: no two rendered cards of one orbit overlap in any degree · {"drawn":"11.61","packed":"12.98"}
+ok   O-1 1280 org_ro_short_12: compactness attributes present with two decimals · ["0.78","0.78","full"]
+ok   O-1 1280 org_ro_short_12: every role card present by data-testid, its title the accessible name, tabbable · ["syntx-role-role_ro_short_12_00","syntx-role-role_ro_short_12_01","syntx-role-role_ro_short_12_02","syntx-role-role_ro_short_12_03","syntx-role-role_ro_short_12_04","syntx-role-role_ro_short_12_05","syntx-role-role_ro_short_12_06","syntx-role-role_ro_short_12_07","syntx-role-role_ro_short_12_08","syntx-role-role_ro_short_12_09","syntx-role-role_ro_short_12_10","syntx-role-role_ro_short_12_11"]
+ok   O-1 1280 org_ro_short_12: drawn ellipses = packing radii × the factors (±0.01) · {"factors":[0.78,0.78],"ratio":[["0.7800","0.7800"]]}
+ok   O-2 1280 org_ro_short_12: rendered card width = packed card width, height never below it · {"widthDiff":"0.00","heightExcessMax":"11.25"}
+ok   O-2 1280 org_ro_short_12: each card on its drawn ellipse in two LIVE frames 1 s apart (normalised radius 1 ± 0.01) and moving · {"off":["0.0000","0.0000"],"moved":"18.54"}
+ok   O-2 1280 org_ro_short_12: every tether ends at its card's centre (±1 px) · "0.00"
+ok   O-3 1280 org_ro_short_12: 16 px to the centre disc's outer rings in every degree (rendered sizes, ±1 px) · "70.22"
+DEV  O-3 1280 org_ro_short_12: 12 px / 20 px between cards of one orbit in every degree (rendered sizes, ±1 px) · {"drawn":"-9.83","packed":"19.48"}
+ok   O-3 1280 org_ro_short_12: no two rendered cards of one orbit overlap in any degree · {"drawn":"8.22","packed":"38.02"}
+ok   O-4 1280: a role card selects its role (kind ROLE, URL jobRoleId) · {"kind":"ROLE","url":"?focus=FIELD&jobPoolUploadId=JPOOL_0E80C088ADB81C788DC570CECC20F956&jobOrganizationId=org_ro_5&jobRoleId=role_ro_5_02"}
+ok   O-4 1280: Escape returns to the organization · "?focus=FIELD&jobPoolUploadId=JPOOL_0E80C088ADB81C788DC570CECC20F956&jobOrganizationId=org_ro_5"
+ok   O-4 1280: REDUCED: the drawn-in orbit holds still (1.5 s) with the same factors · {"still":"0.000","factors":["0.78","0.78"]}
+ok   O-0 no page errors, no non-GET request from the page · {"pageErrors":[],"nonGet":[]}
+
+162/165 checks ok · page errors 0 · non-GET 0 · net 1

@@ -1975,6 +1975,74 @@ Evidence is in `evidence/syntx-walk-6da26a7/`: the Q-12 report, signs, audits, e
   - `syntx-investigation-statement` at +44 px.
 - Evidence is in `evidence/demo-ui-fix-0b5a8ea/`.
 
+### 3.45 Role orbit refinement: GRÜN `frontend/role-orbit` `6d386cc` (2026-10-18)
+
+**Request.** GRÜN asked PINK to validate the owner order "SFE — GRÜN | ROLE ORBIT REFINEMENT"; PINK knows the order only from GRÜN. STOP before integration.
+- The organization cosmos draws its role orbit closer to the organization: `compactRoleOrbit` scales every orbit and satellite of the shared L1 packing about the centre, target 0.78 per axis, horizontal first.
+- A factor pair holds only if, in every phase (5° grid), every card keeps 16 px air beyond the centre body (87 + 5 + 16 = 108 px), neighbours on one orbit 12 px horizontal / 20 px vertical, and neighbouring orbits stay as far apart as in the packing.
+- Unchanged: card size, title, order, phases, periods, tethers, ids, navigation, motion, the shared `buildCapabilityCosmosLayout` (Capability Field).
+- Additive: `data-orbit-compactness-x` / `-y` on `syntx-cosmos-organization`.
+
+**Scope.**
+- One commit on `frontend/demo-ui-fix` `0b5a8ea` (not integrated). Code delta: `lib/career/job-pool/syntx-manifestation-layout.ts`, two lines in `SyntxField.tsx`; `lib/career/view-model/` and the Capability Field views are not in the diff, and `syntxCosmosLayout` has one caller (the organization cosmos).
+- Probe `4b5774c` = integration `7c2971c` + `frontend/role-orbit` (merge without conflict).
+- Negative control `8af6d7c` = `7c2971c` + `0b5a8ea` (without the delta).
+
+Both new proofs need the delta (`syntxCosmosPacking`, the attributes) and are therefore kept as `.txt` copies in the evidence until the integration, like `demo-ui-fix.e2e`.
+
+**New PINK proof `role-orbit-geometry`** (in-process, public layout functions only; constants restated from the mandate, no helper of the implementation reused). 4488 layouts: 3 title sets (GRÜN's real titles, short titles, one long title) × 11 widths × 8 heights × 17 role counts (1 … 14, 16, 20, 24, 53); 2450 of them drawn in. Every card with its own size, every degree, every pair on an orbit, every orbit pair over 2° × 2°.
+
+| Check | Result |
+| --- | --- |
+| O-1 identity: cards, titles, sizes, order, phases, orbits, periods, centre, box, static flag; radii = packing × factors; rest points on the drawn orbit | holds for all 4488 |
+| O-2 bounds: factors in [0.78, 1]; static grid and "no room" exactly as packed | holds |
+| O-3 centre body, every degree | holds; worst −0.95 px below the 16 px (between two 5° checks) |
+| O-4 one orbit, every degree, 12 px / 20 px | **deviation:** 209 drawn-in layouts more than 1 px below the mandated air, worst −7.65 px (8 long titles at 1366 × 960: 4.0 px horizontal / 12.3 px vertical gap); always neighbours (step 1); 0 with the real title set; no overlap |
+| O-5 across orbits (21 drawn-in layouts with more than one orbit) | holds, 0 violations |
+| O-6 target: 1–5 real roles at 1600 × 740, 1280 × 700, 1920 × 820 → 0.78 / 0.78; horizontal first | holds |
+| O-7 the shared L1 packing called directly = `syntxCosmosPacking` for fitting items | holds |
+
+**New PINK proof `role-orbit.e2e`** (real Next server, disposable database, no worker, `GEMINI_API_KEY` empty, net sentinel). PINK's own pool `pool_pink_role_orbit_v1` (organizations of 1, 2, 3, 5, 8, 14 roles with real-length titles; 6 and 8 long titles; 12 short titles), 1600 × 1000 and 1280 × 720. Every measurement is taken from the rendered DOM; the packing is restated in-process (the negative control renders exactly this restatement in all 18 cases).
+
+- **O-1 contract.** Attributes present with two decimals; every role card present by `data-testid`, its title as the accessible name, tabbable; drawn ellipses = packing radii × factors.
+- **O-2 cards.** Rendered width = packing width; rendered height never below the estimate; **excess up to 11.25 px** (real and short titles). Each card on its drawn ellipse in two LIVE frames 1 s apart and moving; every tether ends at its card's centre.
+- **O-3 air** (rendered sizes, rendered disc, every degree). Centre body holds in every drawn-in case. **Deviation, one orbit:** 1600 long ×8 −5.98 px (packed +29.03), 1280 long ×8 −5.92 (packed −3.79; drawn in to 0.99 / 0.99), 1280 short ×12 −9.83 (packed +19.48). No two rendered cards overlap in any degree (smallest gap 8.22 px). Across orbits: no drawn-in case with more than one orbit at these viewports.
+- **O-4 navigation.** A role card selects its role (`jobRoleId`), Escape returns to the organization; REDUCED holds still with the same factors. At 1280 the target card was covered for 24 s before it owned its centre point (O-JF-PANEL; measured, not a deviation).
+- **O-5 O-JF-PANEL** (degrees in which a card crosses the orientation surface, packed → drawn): 1600 one role 34 → 17, five roles 159 → 65, eight roles 249 → 99; 1280 five roles 222 → 152, eight roles 351 → 291; 14 roles unchanged. Reduced, not removed (as GRÜN states).
+- Factors measured as GRÜN reports: 1–5 roles 0.78 / 0.78 at both viewports, 8 roles 0.78 / 0.78 at 1600 and 0.79 / 0.95 at 1280, 14 roles 1.00 / 1.00.
+- **Result 162/165**; the three deviations are those of O-3. 0 page errors, 0 non-GET requests, 0 Gemini attempts (one Next version check against the npm registry from `next dev`, as in every e2e).
+- **Negative control on `8af6d7c`:** attributes absent and ellipses = packing in all 18 cases (36 deviations): detected. Motion: no CSS animation inside the organization cosmos in either run (only hover transitions).
+
+**Cause of the O-3 deviations (two parts).**
+1. **Check grid.** `orbitAir` measures the air between neighbours on one orbit at 72 phases (5°). A card on an orbit of 400–600 px radius moves 35–50 px between two checked phases; the air between neighbours has its minimum between two grid points, so the factor passes at 5° and loses up to 7.65 px at 1°. (Across orbits the check uses 15° × 15°; at 2° × 2° PINK found no violation.)
+2. **Card height.** The 20 px vertical air is computed with the packing's estimated card height. Rendered cards are up to 11.25 px taller (the code comment says the 20 px is meant to cover one extra text line). With rendered sizes the vertical gap between neighbours falls to 10.2 px in 1280 short ×12.
+
+GRÜN's unit test reads every 1° but only with the real title set; PINK found no deviation with that set either.
+
+**Pre-existing observation (packing, not this delta), O-RO-PACK-14.** At 1280 × 720 the organization of 14 real-length roles stays as packed (1.00 / 1.00). Its rendered cards overlap by up to 62.7 px on one orbit and come within 3 px of the 16 px air to the centre body; at 1600 × 1000 they come 16.3 px within the 16 px air, so they touch the disc's outer ring. Identical on `8af6d7c`.
+
+**Regression on `4b5774c`:**
+
+| Check | Result |
+| --- | --- |
+| `tsc` | 0 (including both new proofs) |
+| GRÜN unit tests | `syntx-role-orbit` 5/5, `syntx-field-ssr` 10/10 (SSR 0.78 / 0.79, ellipse 385.71 × 146.94) |
+| Gate walk | 74/74 |
+| `three-modes.e2e` | plain 91/91, inspector 97/97 |
+| `url-boundary.e2e` | 1/1 |
+| `syntx-walk.e2e` | 3/3, Q-06 still BOUNDARY-MATCH R15b-PENDING; no fixed card position or orbit radius in PINK's suites |
+| GRÜN workflow e2e | 10/10 |
+| `demo-ui-fix.e2e` | 62/62 (the runner's exit 1 came from the teardown: a superuser backend on the disposable database; PINK dropped it afterwards through `dropDisposableTestDatabase`) |
+| Full suite without e2e | the 27 base failures (identical set) plus 4 earlier and 17 new 5 s load timeouts in 10 files (outcome-valence, decision-core, g2-g3, worker-config). 0 network attempts. Alone with 30 s: 9/10 files green (93/95). The 10th, `career-worker-config-validation`, fails alone with "relation career_analysis_jobs does not exist" (it relies on another file's schema), identically on `8af6d7c`; the delta is not in its imports |
+
+GELB's own probe (7c2971c + 6d386cc, recorded in GELB's integration document §5 at `37834e6`) found nothing; GELB's checks do not include the per-degree air between neighbours.
+
+**Status.**
+- **Deviation D-RO-1 (for GRÜN):** the mandated air between neighbours on one orbit (12 px / 20 px "in every phase") is not kept between the 5° check phases. The worst case is −7.65 px in the layout, and −9.83 px with rendered card heights. No overlap; with the real title set no case. GRÜN decides the fix, for example a finer or analytic same-orbit check, or rendered heights.
+- Everything else in the mandate is measured and met.
+- Integration: STOP, as GRÜN requested; not PINK's decision.
+- Evidence is in `evidence/role-orbit-4b5774c/` and `evidence/role-orbit-negctl-8af6d7c/`.
+
 ## 4. Boundaries and findings for coordination
 
 - F-JP-1 (closed in `b782793`): `JOB_POOL_CONNECTION.md` §4 followed the per-role `JOB_POOL_JSON_ROLE` design;
