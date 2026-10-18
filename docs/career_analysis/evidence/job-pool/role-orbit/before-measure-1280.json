@@ -23,9 +23,10 @@
     "219×88"
    ],
    "centreGap": 146,
-   "pairGap": 310,
+   "pairGap": 308,
    "meanDistance": 397,
    "turnCentreGap": 138,
+   "turnOrbitAir": 285,
    "turnTopSpace": 162,
    "turnBottomSpace": 154,
    "turnSurfacePhases": 28
@@ -52,6 +53,7 @@
    "pairGap": null,
    "meanDistance": 280,
    "turnCentreGap": 137,
+   "turnOrbitAir": null,
    "turnTopSpace": 157,
    "turnBottomSpace": 149,
    "turnSurfacePhases": 9
@@ -78,6 +80,7 @@
    "pairGap": null,
    "meanDistance": 280,
    "turnCentreGap": 138,
+   "turnOrbitAir": null,
    "turnTopSpace": 162,
    "turnBottomSpace": 154,
    "turnSurfacePhases": 10
@@ -105,6 +108,7 @@
    "pairGap": 461,
    "meanDistance": 280,
    "turnCentreGap": 136,
+   "turnOrbitAir": 349.3,
    "turnTopSpace": 157,
    "turnBottomSpace": 149,
    "turnSurfacePhases": 19
@@ -133,6 +137,7 @@
    "pairGap": 312,
    "meanDistance": 397,
    "turnCentreGap": 136,
+   "turnOrbitAir": 283.1,
    "turnTopSpace": 157,
    "turnBottomSpace": 149,
    "turnSurfacePhases": 28
@@ -154,7 +159,7 @@
    "cards": 5,
    "cardSizes": [
     "219×88",
-    "182×97",
+    "182×98",
     "147×83",
     "248×88",
     "133×83"
@@ -163,6 +168,7 @@
    "pairGap": 213,
    "meanDistance": 390,
    "turnCentreGap": 134,
+   "turnOrbitAir": 144.5,
    "turnTopSpace": 157,
    "turnBottomSpace": 149,
    "turnSurfacePhases": 47
@@ -193,9 +199,10 @@
     "151×83"
    ],
    "centreGap": 146,
-   "pairGap": 105,
+   "pairGap": 103,
    "meanDistance": 390,
    "turnCentreGap": 134,
+   "turnOrbitAir": 43.3,
    "turnTopSpace": 157,
    "turnBottomSpace": 149,
    "turnSurfacePhases": 74
@@ -243,13 +250,86 @@
     "160×88",
     "180×98"
    ],
-   "centreGap": 107,
+   "centreGap": 108,
    "pairGap": -13,
    "meanDistance": 485,
    "turnCentreGap": 18,
+   "turnOrbitAir": -78.1,
    "turnTopSpace": 113,
    "turnBottomSpace": 105,
    "turnSurfacePhases": 110
+  },
+  {
+   "org": "org_orbit_long_8",
+   "count": 8,
+   "compactness": [
+    null,
+    null
+   ],
+   "layout": "full",
+   "orbits": [
+    [
+     484,
+     269
+    ]
+   ],
+   "cards": 8,
+   "cardSizes": [
+    "256×106",
+    "256×106",
+    "256×106",
+    "256×106",
+    "256×106",
+    "256×106",
+    "256×106",
+    "256×106"
+   ],
+   "centreGap": 128,
+   "pairGap": 74,
+   "meanDistance": 384,
+   "turnCentreGap": 116,
+   "turnOrbitAir": 10.4,
+   "turnTopSpace": 162,
+   "turnBottomSpace": 154,
+   "turnSurfacePhases": 80
+  },
+  {
+   "org": "org_orbit_short_12",
+   "count": 12,
+   "compactness": [
+    null,
+    null
+   ],
+   "layout": "full",
+   "orbits": [
+    [
+     544,
+     286
+    ]
+   ],
+   "cards": 12,
+   "cardSizes": [
+    "133×83",
+    "128×83",
+    "136×83",
+    "133×83",
+    "133×83",
+    "128×83",
+    "136×83",
+    "133×83",
+    "133×83",
+    "128×83",
+    "136×83",
+    "133×83"
+   ],
+   "centreGap": 157,
+   "pairGap": 51,
+   "meanDistance": 425,
+   "turnCentreGap": 154,
+   "turnOrbitAir": 17.4,
+   "turnTopSpace": 156,
+   "turnBottomSpace": 148,
+   "turnSurfacePhases": 108
   }
  ]
 }

@@ -88,22 +88,26 @@ export const ROLE_ORBIT_COMPACTNESS = 0.78;
 export const ROLE_ORBIT_CENTRE_CLEARANCE = 87 + 5 + 16;
 /** Air between two cards; a card's text may run a line beyond the packing's estimate, so the vertical air is larger. */
 export const ROLE_ORBIT_CARD_GAP = Object.freeze({ x: 12, y: 20 });
+/** A rendered role card runs up to 11.25 px taller than the packing's estimate (kicker, four title lines, the count line; PINK §3.45
+ * D-RO-1): every air is measured on the estimate plus this allowance, so it holds for the card as drawn. */
+export const ROLE_ORBIT_CARD_HEIGHT_ALLOWANCE = 12;
 export interface RoleOrbitCompactness { x: number; y: number }
-const PHASES = Array.from({ length: 72 }, (_, index) => (index * Math.PI * 2) / 72);
-const CROSS_PHASES = PHASES.filter((_, index) => index % 3 === 0);
+/** Every half degree of the turn (PINK §3.45 D-RO-1: at 5° a card moves 35–50 px between two checks and the least air lies between them). */
+const PHASES = Array.from({ length: 720 }, (_, index) => (index * Math.PI * 2) / 720);
+const CROSS_PHASES = PHASES.filter((_, index) => index % 30 === 0);
 
 interface OrbitAir { centre: number; orbit: number; across: number; acrossAtRest: number }
 
 /**
  * The air (px; negative = overlap) the layout leaves at the compactness: to the centre body, between neighbours on one orbit,
  * between neighbouring orbits (every phase pair) and between any two cards at rest. The satellites of one orbit share its path and
- * are evenly spaced, so each orbit is measured once with its largest card: the centre over every phase, the next and the one after
- * in angular order over every phase of the turn they make together.
+ * are evenly spaced, so each orbit is measured once with its largest card (as drawn: the estimate plus the height allowance): the
+ * centre over every phase, the next and the one after in angular order over every phase of the turn they make together.
  */
 function orbitAir(layout: CapabilityCosmosLayout, k: RoleOrbitCompactness, withMotionAcross: boolean): OrbitAir {
   const orbits = layout.rings.map(ring => {
     const nodes = layout.nodes.filter(node => node.ringIndex === ring.index);
-    return { ring, count: nodes.length, width: Math.max(0, ...nodes.map(node => node.width)), height: Math.max(0, ...nodes.map(node => node.height)) };
+    return { ring, count: nodes.length, width: Math.max(0, ...nodes.map(node => node.width)), height: Math.max(0, ...nodes.map(node => node.height)) + ROLE_ORBIT_CARD_HEIGHT_ALLOWANCE };
   }).filter(orbit => orbit.count > 0);
   const on = (ring: CapabilityCosmosLayout["rings"][number], angle: number): Point => ({ x: Math.cos(angle) * ring.radiusX * k.x, y: Math.sin(angle) * ring.radiusY * k.y });
   const between = (p: Point, aw: number, ah: number, q: Point, bw: number, bh: number): number => Math.max(Math.abs(p.x - q.x) - (aw + bw) / 2 - ROLE_ORBIT_CARD_GAP.x, Math.abs(p.y - q.y) - (ah + bh) / 2 - ROLE_ORBIT_CARD_GAP.y);
@@ -123,7 +127,7 @@ function orbitAir(layout: CapabilityCosmosLayout, k: RoleOrbitCompactness, withM
     }
   }
   const rings = new Map(layout.rings.map(ring => [ring.index, ring]));
-  for (const a of layout.nodes) for (const b of layout.nodes) if (b.ringIndex > a.ringIndex) air.acrossAtRest = Math.min(air.acrossAtRest, between(on(rings.get(a.ringIndex)!, a.angle), a.width, a.height, on(rings.get(b.ringIndex)!, b.angle), b.width, b.height));
+  for (const a of layout.nodes) for (const b of layout.nodes) if (b.ringIndex > a.ringIndex) air.acrossAtRest = Math.min(air.acrossAtRest, between(on(rings.get(a.ringIndex)!, a.angle), a.width, a.height + ROLE_ORBIT_CARD_HEIGHT_ALLOWANCE, on(rings.get(b.ringIndex)!, b.angle), b.width, b.height + ROLE_ORBIT_CARD_HEIGHT_ALLOWANCE));
   return air;
 }
 

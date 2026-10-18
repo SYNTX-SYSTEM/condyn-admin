@@ -1407,24 +1407,33 @@ organization. Minimal delta: the orbit is drawn closer to the centre; nothing el
   rings), neighbours on one orbit keep 12 px horizontal / 20 px vertical air, and neighbouring orbits stay apart in every phase pair
   where the packing kept them apart (at rest, and never closer than the packing, where it did not). Otherwise the next factor up is
   tried; where none below 1 holds (many roles, a crowded orbit) and for the static grid fallback, the packing stays exactly as it was.
+- **D-RO-1 (PINK §3.45, confirmed by GELB) fixed.** 6d386cc checked a turn every 5°, so between two checks (35–50 px of travel at
+  400–600 px radius) neighbours on one orbit fell below their 12 / 20 px air (worst −7.65 px in PINK's sweep, never an overlap), and
+  the air rested on the packing's height estimate, which rendered cards exceed by up to 11.25 px. Now every check runs every half
+  degree, and every card is measured as drawn: estimate + `ROLE_ORBIT_CARD_HEIGHT_ALLOWANCE` (12 px). Typical counts keep 0.78; tighter
+  orbits draw in less (in the lab, 8 roles at 1280 × 720: 0.84 / 1.00 instead of 0.79 / 0.95; 8 long titles 0.79 / 0.99 at 1600,
+  0.98 / 1.00 at 1280; 12 short titles 0.78 / 0.78 and 0.78 / 0.95).
 - **Unchanged.** Card size, title, line clamp, material and order; every satellite's phase, ring and period; the centre, the tethers
   (recomputed from the drawn point), the anchor points, the receded anchor at the role level, `ROLE_CARD_CLEARANCE`, the shared
   `buildCapabilityCosmosLayout` (Capability Field untouched), every id, the navigation and the motion. No new motion.
 - **Contract (additive).** `syntx-cosmos-organization` carries `data-orbit-compactness-x` / `-y` (two decimals).
 - **Measured** (`evidence/job-pool/role-orbit/README.md`): 1 – 5 roles 0.78 / 0.78 at 1600 × 1000 and 1280 × 720 (orbit
   516.8 × 232.4 and 392 × 216.8 px; mean card distance from the centre 495 → 386 and 397 → 310 px for Kestrel); 8 roles 0.78 / 0.78
-  at 1600, 0.79 / 0.95 at 1280; 14 roles unchanged. O-JF-PANEL (§13.2.6) is reduced, not removed: cards pass under the orientation
+  at 1600, 0.84 / 1.00 at 1280 (after D-RO-1); 14 roles unchanged. O-JF-PANEL (§13.2.6) is reduced, not removed: cards pass under the orientation
   surface in about half as many phases at 1600 and about a third fewer at 1280.
 
 **Proof** (no live Gemini, :3017, :41831, :41851 and the owner's review lab :41803 untouched):
-- **Unit tests.** `test/career/job-pool/syntx-role-orbit.test.ts` (5): 22 % on both axes for up to five roles at three level boxes;
-  cards, order, phases, periods, centre unchanged and satellites on their drawn orbit for 9 role counts × 6 boxes; read every 1°, the
-  air to the centre and between neighbours, across orbits never closer than the packing; unchanged where crowded, for the grid and
-  for an empty organization; deterministic. `syntx-field-ssr.test.tsx`: the server-rendered organization cosmos carries 0.78 / 0.79
-  and the drawn-in orbit 385.71 × 146.94 (packed 494.5 × 186).
-- **Lab walk.** 41/41 at 1600 × 1000 and at 1280 × 720 (`evidence/job-pool/role-orbit/`), before / after shots and measurements.
-- **Regression and e2e.** tsc 0; ESLint unchanged in `SyntxField.tsx`, clean in the new files; regression 69 files / 504 green;
-  workflow e2e 10/10 twice.
+- **Unit tests.** `test/career/job-pool/syntx-role-orbit.test.ts` (6): 22 % on both axes for up to five roles at three level boxes;
+  cards, order, phases, periods, centre unchanged and satellites on their drawn orbit for 9 role counts × 6 boxes; read every quarter
+  degree between the layout's own checks with the drawn card height, the air to the centre and between neighbours, across orbits never
+  closer than the packing — for the mixed, a long and a short title set (incl. PINK's 1366 case) and for six seeded random title sets
+  of 4–80 characters; unchanged where crowded, for the grid and for an empty organization; deterministic. `syntx-field-ssr.test.tsx`:
+  the server-rendered organization cosmos carries 0.78 / 0.83 and the drawn-in orbit 385.71 × 154.38 (packed 494.5 × 186).
+- **Lab walk.** 58/58 at 1600 × 1000 and at 1280 × 720 (`evidence/job-pool/role-orbit/`), before / after shots and measurements;
+  after D-RO-1 also the rendered boxes of neighbours on an orbit keep 12 / 20 px every half degree (least 1.1 px beyond that, 12 short
+  titles at 1280).
+- **Regression and e2e.** tsc 0; ESLint unchanged in `SyntxField.tsx`, clean in the new files; regression 69 files / 505 green;
+  workflow e2e 10/10 ×2.
 
 ### 13.3 DOM contract (PINK BR-1 … BR-5; GELB conditions a/b)
 
@@ -1601,4 +1610,4 @@ observation point. Readable labels wrap at word boundaries (`wrapLines`), never 
 | 2026-10-15 | URL boundary closure (owner "SFE — GELB / GRÜN | URL BOUNDARY CLOSURE", on bd9eb72 + GELB 26df225 / ef189d3) | §13.2.28: the Job Field compares an analysis only when its persisted boundary is PERSON_X_JOB and its own pool is on view (`legacyJobComparisonPermitted`); RESOLVING / PERSON / UNRESOLVED / OTHER_POOL named, the pool opened only explicitly; e2e world persists the analysis's job | tsc unchanged; 9 files / 128; workflow e2e 10/10; lab walk 46/46 at 1600 and 1280; 0 Gemini hosts |
 | 2026-10-15 | GELB hardening d54c718 / 4e72260 merged (e83a9e4) | §13.2.28: run scope identity and SCOPE_UNAVAILABLE fall into UNRESOLVED; DRAFT e2e step waits for rest | 10 files / 163; walk 46/46; workflow e2e 10/10 ×3 |
 | 2026-10-15 | DEMO UI FIX + SEMIONTIC REFINEMENT (owner, on integration 5434c01) | §13.2.29: Escape at any time (field root keeps the focus, document fallback), pool list below the orientation surface, surface z-index 47; NO ANALYSIS state line as a legible nerve signal (4.8 s, opacity/transform, LIVE only), the field's own statement legible and clear of the non-claims | tsc 0; regression 68 files / 498 (a second run hit the 10 s `beforeAll` limit of GELB's `job-structure.postgres.test.ts` under load, also on the unchanged 5434c01; 11.7 s with a longer limit, green); workflow e2e 10/10 ×2; lab walk 36/36 at 1280 and 1600 (modal-layer guard after GELB's review); 0 Gemini hosts |
-| 2026-10-18 | Role orbit refinement (owner "SFE — GRÜN | ROLE ORBIT REFINEMENT", on frontend/demo-ui-fix 0b5a8ea) | §13.2.30: the organization cosmos draws its role orbit 22 % closer per axis as far as the geometry allows (`compactRoleOrbit`; cards, phases, periods, navigation unchanged; `data-orbit-compactness-x/-y`) | tsc 0; new 1 file / 5 + SSR 1; regression 69 files / 504; workflow e2e 10/10 ×2; lab walk 41/41 at 1600 and 1280; 0 Gemini hosts |
+| 2026-10-18 | Role orbit refinement (owner "SFE — GRÜN | ROLE ORBIT REFINEMENT", on frontend/demo-ui-fix 0b5a8ea) | §13.2.30: the organization cosmos draws its role orbit 22 % closer per axis as far as the geometry allows (`compactRoleOrbit`; cards, phases, periods, navigation unchanged; `data-orbit-compactness-x/-y`); PINK D-RO-1 fixed (half-degree checks, drawn card height) | tsc 0; new 1 file / 6 + SSR 1; regression 69 files / 505; workflow e2e 10/10 ×2; lab walk 58/58 at 1600 and 1280; 0 Gemini hosts |

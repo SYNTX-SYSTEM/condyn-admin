@@ -16,13 +16,13 @@ const TAG = process.env.TAG || "after";
 const st = JSON.parse(readFileSync(STATE, "utf8"));
 const BASE = st.base;
 // The scale pool (organizations with 1, 2, 3, 5, 8, 14 roles) is uploaded once per lab through the real route.
-const poolFile = `${STATE}.scale-pool`;
+const poolFile = `${STATE}.${st.database}.scale-pool`;
 let SP = existsSync(poolFile) ? readFileSync(poolFile, "utf8").trim() : null;
 if (!SP) {
   const response = await (await fetch(`${BASE}/api/career/job-pools`, { method: "POST", headers: { "content-type": "application/json", "x-condyn-principal-actor-id": "GRUEN_ORBIT_LAB" }, body: JSON.stringify(scalePool(st.database.slice(-8))) })).json();
   SP = response.jobPoolUploadId ?? response.upload?.jobPoolUploadId; writeFileSync(poolFile, SP);
 }
-const CASES = [[st.engineeringUploadId, "org_kestrel", 3], [st.validationUploadId, "org_pink_alpha", 1], ...[1, 2, 3, 5, 8, 14].map(n => [SP, `org_orbit_${n}`, n])];
+const CASES = [[st.engineeringUploadId, "org_kestrel", 3], [st.validationUploadId, "org_pink_alpha", 1], ...[1, 2, 3, 5, 8, 14].map(n => [SP, `org_orbit_${n}`, n]), [SP, "org_orbit_long_8", 8], [SP, "org_orbit_short_12", 12]];
 const results = []; const ok = (name, cond, extra = "") => results.push(`${cond ? "PASS" : "FAIL"} ${name}${extra ? " — " + extra : ""}`);
 const browser = await chromium.launch();
 const errors = [];
@@ -59,10 +59,26 @@ const measure = page => page.evaluate(() => {
   let pair = Infinity; for (let i = 0; i < cards.length; i += 1) for (let j = i + 1; j < cards.length; j += 1) { const a = cards[i], b = cards[j]; pair = Math.min(pair, Math.max(Math.max(a.l, b.l) - Math.min(a.r, b.r), Math.max(a.t, b.t) - Math.min(a.b, b.b))); }
   // Over a whole turn: each card on the orbit nearest to its centre point, with its own size.
   const turn = Array.from({ length: 72 }, (_, i) => (i * Math.PI) / 36);
-  let turnCentre = Infinity, turnSurface = 0, turnTop = Infinity, turnBottom = Infinity;
-  for (const card of cards) {
+  let turnCentre = Infinity, turnSurface = 0, turnTop = Infinity, turnBottom = Infinity, turnOrbitAir = Infinity;
+  const placed = cards.map(card => {
     const px = (card.l + card.r) / 2 - cx, py = (card.t + card.b) / 2 - cy;
     const orbit = orbits.reduce((best, o) => Math.abs(Math.hypot(px / o.rx, py / o.ry) - 1) < Math.abs(Math.hypot(px / best.rx, py / best.ry) - 1) ? o : best, orbits[0]);
+    return { card, orbit, angle: Math.atan2(py / orbit.ry, px / orbit.rx) };
+  });
+  // Neighbours on one orbit turn together: their rendered boxes keep 12 px horizontal or 20 px vertical air every half degree.
+  for (const orbit of orbits) {
+    const on = placed.filter(p => p.orbit === orbit).sort((a, b) => a.angle - b.angle);
+    if (on.length < 2) continue;
+    for (let i = 0; i < on.length; i += 1) for (const step of on.length > 3 ? [1, 2] : [1]) {
+      const a = on[i], b = on[(i + step) % on.length];
+      for (let k = 0; k < 720; k += 1) {
+        const phase = (k * Math.PI) / 360;
+        const ax = Math.cos(a.angle + phase) * orbit.rx, ay = Math.sin(a.angle + phase) * orbit.ry, bx = Math.cos(b.angle + phase) * orbit.rx, by = Math.sin(b.angle + phase) * orbit.ry;
+        turnOrbitAir = Math.min(turnOrbitAir, Math.max(Math.abs(ax - bx) - (a.card.w + b.card.w) / 2 - 12, Math.abs(ay - by) - (a.card.h + b.card.h) / 2 - 20));
+      }
+    }
+  }
+  for (const { card, orbit } of placed) {
     for (const a of turn) {
       const x = orbit.cx + Math.cos(a) * orbit.rx, y = orbit.cy + Math.sin(a) * orbit.ry;
       const box = { l: x - card.w / 2, r: x + card.w / 2, t: y - card.h / 2, b: y + card.h / 2 };
@@ -76,7 +92,7 @@ const measure = page => page.evaluate(() => {
     layout: shell.getAttribute("data-layout"), orbits: orbits.map(o => [Math.round(o.rx * 10) / 10, Math.round(o.ry * 10) / 10]), cards: cards.length,
     cardSizes: cards.map(c => `${Math.round(c.w)}×${Math.round(c.h)}`), centreGap: Math.round(Math.min(...cards.map(dist))), pairGap: cards.length > 1 ? Math.round(pair) : null,
     meanDistance: Math.round(cards.reduce((sum, c) => sum + Math.hypot((c.l + c.r) / 2 - cx, (c.t + c.b) / 2 - cy), 0) / cards.length),
-    turnCentreGap: Math.round(turnCentre), turnTopSpace: Math.round(turnTop), turnBottomSpace: Math.round(turnBottom), turnSurfacePhases: turnSurface
+    turnCentreGap: Math.round(turnCentre), turnOrbitAir: Number.isFinite(turnOrbitAir) ? Math.round(turnOrbitAir * 10) / 10 : null, turnTopSpace: Math.round(turnTop), turnBottomSpace: Math.round(turnBottom), turnSurfacePhases: turnSurface
   };
 });
 
@@ -101,6 +117,7 @@ for (const [pool, org, count] of CASES) {
   }
   ok(`O-2 ${label}: no card covers the centre body or another card (at rest)`, m.centreGap >= 16 && (m.pairGap === null || m.pairGap >= 0), `centre ${m.centreGap} px, pair ${m.pairGap}`);
   ok(`O-3 ${label}: over a whole turn every card keeps ≥ 16 px to the centre disc and stays inside the level`, m.turnCentreGap >= 16 && m.turnTopSpace >= 0 && m.turnBottomSpace >= 0, `centre ${m.turnCentreGap}, top ${m.turnTopSpace}, bottom ${m.turnBottomSpace}`);
+  ok(`O-3b ${label}: over a whole turn neighbours on the orbit keep their air (rendered boxes, 12 px / 20 px, every half degree)`, m.turnOrbitAir === null || m.turnOrbitAir >= 0, String(m.turnOrbitAir));
   // In motion: three frames a second apart, nothing overlaps in any of them.
   const frames = [];
   for (let i = 0; i < 3; i += 1) { frames.push(await measure(page)); await page.waitForTimeout(1000); }
@@ -110,7 +127,7 @@ if (TAG === "after") {
   const few = rows.filter(r => r.count <= 5);
   ok("O-5 organizations with up to five roles: the orbit is drawn 22 % closer on both axes", few.every(r => r.compactness[0] === "0.78" && r.compactness[1] === "0.78"), few.map(r => `${r.count}:${r.compactness.join("/")}`).join(" "));
   ok("O-6 every organization: the orbit is never widened, the compactness is in [0.78, 1]", rows.every(r => r.compactness.every(v => Number(v) >= 0.78 && Number(v) <= 1)), rows.map(r => `${r.count}:${r.compactness.join("/")}`).join(" "));
-  const full = rows.filter(r => r.org.startsWith("org_orbit_") && r.layout === "full" && r.compactness.some(v => v !== "1.00"));
+  const full = rows.filter(r => /^org_orbit_\d+$/.test(r.org) && r.layout === "full" && r.compactness.some(v => v !== "1.00"));
   ok("O-7 card sizes come from the packing, not the compactness (the same box for the same title at every count)", new Set(full.map(r => r.cardSizes[0])).size === 1, full.map(r => r.cardSizes[0]).join(" "));
   if (BEFORE) ok("O-8 every card keeps its size against the base commit (± 1 px of sub-pixel rounding)", rows.every(r => sameSizes(BEFORE.rows.find(b => b.org === r.org)?.cardSizes ?? [], r.cardSizes)));
 

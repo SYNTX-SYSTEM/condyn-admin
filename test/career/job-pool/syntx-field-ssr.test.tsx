@@ -179,9 +179,9 @@ describe("SYNTX field (server-rendered)", () => {
 
   it("ROLE ORBIT REFINEMENT: the organization cosmos draws its role orbit closer to the centre (server viewport: 22 % horizontally, the vertical as far as the centre body allows)", () => {
     const html = renderToString(<SemanticCareerIntelligenceField data={EMPTY_CAREER_INTELLIGENCE_DATA} fieldFocus="FIELD" jobPoolUploadId="JPOOL_WITH_MATCHES" analysisId="ANL_TEST" jobRoleId="ROLE_A" />);
-    expect(html).toMatch(/data-testid="syntx-cosmos-organization"[^>]*data-organization-id="ORG_1"[^>]*data-layout="full"[^>]*data-orbit-compactness-x="0.78"[^>]*data-orbit-compactness-y="0.79"/);
-    // The packed orbit of the server viewport (1200 × 500 less the clearance) is 494.5 × 186; drawn in: 385.71 × 146.94.
-    expect(html).toMatch(/<ellipse cx="600" cy="250" rx="385.71" ry="146.94"/);
+    expect(html).toMatch(/data-testid="syntx-cosmos-organization"[^>]*data-organization-id="ORG_1"[^>]*data-layout="full"[^>]*data-orbit-compactness-x="0.78"[^>]*data-orbit-compactness-y="0.83"/);
+    // The packed orbit of the server viewport (1200 × 500 less the clearance) is 494.5 × 186; drawn in: 385.71 × 154.38.
+    expect(html).toMatch(/<ellipse cx="600" cy="250" rx="385.71" ry="154.38"/);
     expect(html).toMatch(/data-sx-anchor="ROLE_A"/);
     expect(html).toContain('data-testid="syntx-role-ROLE_B"');
   });
