@@ -19,6 +19,7 @@ Integrationszweig ist `integration/job-field-governance`, Basis `311d6ee`. `main
 | `18b7c2a` | GELB | `job-structure.postgres`: der `beforeAll` mit drei echten Pool-Uploads bekommt 60 s statt der 10-s-Voreinstellung (unter Last 11,7 s, von GRÜN gemessen) |
 | `d3e76ce` | PINK `validation/hr-decision-loop-pink` `5f5c636` | F-PINK-ORDER (§3.44): `http-canonical-inverse` nutzt eine eigene Pool-ID. Vorher hing die volle Suite von der Dateireihenfolge mit `pdf-path` ab, bis zu 10 Rotfälle. Dazu `pdf-path` byte-gleich zur Integration (`ad7bc55`) und PINKs Prüfung von GRÜNs `frontend/demo-ui-fix` (nicht integriert, §5) |
 | `aab797c` | PINK `validation/hr-decision-loop-pink` `97cc57a` | PINK §3.45: Prüfung von GRÜNs `frontend/role-orbit` `6d386cc` auf der Probe `4b5774c`, nur Protokoll und Beweise als `.txt`, kein Code. Der Rollenorbit selbst ist nicht integriert (§5) |
+| `55aec63` | PINK `validation/hr-decision-loop-pink` `ffe9954` | PINK §3.46: erneute Prüfung von GRÜNs Korrektur `7a51d89` auf der Probe `c8e99d8`; nur Protokoll und Beweise als `.txt`, kein Code. Der Rollenorbit selbst ist nicht integriert (§5) |
 | `a3c3759` | PINK `validation/hr-decision-loop-pink` `916e884` | PINK §3.43: `syntx-walk.e2e` an die Invarianten neu gebunden (siehe §2.3); nur diese Testdatei und Belege |
 | `73a4701` | PINK `validation/hr-decision-loop-pink` `122aa6c` | PINKs Prüfprotokolle §3.41 (Integration `0fb7b05`) und §3.42 (Delta `eacfc97`) sowie die übernommenen Fixture-Änderungen für `http-canonical-inverse` und `pdf-path`. Der pdf-path-Schritt erwartet 409 und gilt nur zusammen mit `eacfc97`; deshalb wurde `eacfc97` zuerst gemergt |
 
@@ -220,7 +221,15 @@ Owner-Vorgabe: Der alte pool-weite Vergleich bleibt vorerst rollenübergreifend.
   - Von GELB mit derselben Messung wie oben nachgeprüft: 2031 eingezogene Layouts, kein Fall unter der Luft. Der schlechteste Wert ist +5,54 px auf der geschätzten Höhe und +0,06 px mit 11,25 px Mehrhöhe; keine Überlappung.
   - Probe `6f31846` + `7a51d89`: `tsc` 0; Job-Pool, Orbit-Härtung, drei Modi und Investigation 250 grün, 4 übersprungen.
   - Beobachtung O-RO-COST, kein Mangel: Die Berechnung dauert in Node bis etwa 85 ms pro Layout. Am meisten kosten volle Orbits, die am Ende unverändert bleiben (14 und 24 Rollen bei 1600). Sie läuft in `useMemo` bei jeder Größenänderung.
-  - PINK: erneute Prüfung angefragt, ausstehend.
+  - PINK §3.46 (`ffe9954`, Protokoll gemergt als `55aec63`): D-RO-1 behoben, keine neue Abweichung.
+    - Probe `c8e99d8` = `6f31846` + `7a51d89`.
+    - Geometrie 10/10 über 7480 Layouts; Browserlauf 243/243 bei 1600, 1280 und 1366; die Negativkontrolle auf `6d386cc` erkennt den alten Mangel (5/10).
+    - Regression grün: Gate 74/74, drei Modi 91/91 + 97/97, `syntx-walk` 3/3 (Q-06 bleibt R15b-PENDING), Workflow 10/10, `demo-ui-fix` 62/62.
+    - Volle Suite: 27 Basisfälle und 4 Last-Timeouts, mit 30 s Zeitlimit grün.
+    - O-RO-COST bestätigt PINK mit bis 156,5 ms unter Last.
+    - O-RO-CROSS-GRID: Zwischen den Orbits prüft GRÜN weiter im 15°-Raster. PINK findet bei einer Prüfung alle 1° × 1° keine Verletzung.
+
+  Bereit zur Integration, sobald der Owner GELB sein Wort gibt, zusammen mit `demo-ui-fix` (`0b5a8ea`), auf dem der Rollenorbit aufbaut.
 
   Wenn er integriert wird, dann zusammen mit oder nach `demo-ui-fix`. Die Sichtwirkung beurteilt der Owner.
 - **PINK-Skript** `support/syntx-readonly-walk.mjs` (P-4) ist nicht neu gebunden; es braucht eine Umgebung mit gespeicherten Aufträgen.
