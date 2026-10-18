@@ -229,7 +229,26 @@ Owner-Vorgabe: Der alte pool-weite Vergleich bleibt vorerst rollenübergreifend.
     - O-RO-COST bestätigt PINK mit bis 156,5 ms unter Last.
     - O-RO-CROSS-GRID: Zwischen den Orbits prüft GRÜN weiter im 15°-Raster. PINK findet bei einer Prüfung alle 1° × 1° keine Verletzung.
 
-  Bereit zur Integration, sobald der Owner GELB sein Wort gibt, zusammen mit `demo-ui-fix` (`0b5a8ea`), auf dem der Rollenorbit aufbaut.
+  Sichtabnahme von `7a51d89`: vom Owner nicht angenommen, der Orbit ist noch zu groß. GELB weiß das nur über GRÜN. Damit ist `7a51d89` nicht zur Integration bereit.
+
+  Zweite Verfeinerung GRÜN `3be1920` (Owner-Auftrag an GRÜN „ROLE ORBIT — SECOND VISUAL REFINEMENT“, 2026-10-19, STOP vor Integration und erneuter Sichtabnahme):
+  - Es gibt kein festes Ziel 0,78 mehr. Gewählt wird das kleinste Faktorpaar kx·ky, das die Luftregeln hält; der äußere Orbit bleibt mindestens so breit wie hoch.
+  - Die Luft zum Zentrum und zwischen den Karten eines Orbits wird geschlossen gelöst. Jede Karte und jedes Kartenpaar wird mit der eigenen Größe gelesen, eine Lücke zwischen Stützstellen gibt es nicht mehr. Zwischen den Orbits gilt ein 5°-Raster.
+  - Kestrel bei 1600: Der Orbit schrumpft von 516,8 × 232,4 auf 251,8 × 190,7 px.
+  - `ROLE_ORBIT_COMPACTNESS` und der Parameter `target` sind entfernt, ohne weitere Aufrufer; die Attribute `data-orbit-compactness-x/-y` bleiben.
+  - GELB-Review: Beide geschlossenen Bedingungen sind korrekt.
+    - Zentrum: Der Orbit schließt das um die Freihaltung erweiterte Kartenrechteck ein. Es genügt, den Eckbogen zu prüfen, weil die Ellipse konvex ist.
+    - Nachbarn auf einem Orbit: Der Abstand zweier Karten läuft über eine Viertelellipse (Dx·|sin u|, Dy·|cos u|). Sie meidet das Luftrechteck genau dann, wenn dessen Ecke innerhalb liegt.
+    - Die Suche ist monoton in kx; die Abbrüche in der Schleife sind zulässig.
+  - Unabhängige Nachmessung durch GELB, mit eigenen Zufallstiteln, sieben Viewports und 1 bis 14 Rollen; Zentrum und Nachbarn alle 0,25°, zwischen den Orbits 1° × 1°:
+    - Eingezogen werden 565 Layouts; die Luftregeln verletzt keines. Kein äußerer Orbit wird höher als breit.
+    - Schlechteste Luft auf der geschätzten Höhe: Zentrum +4,02 px, Nachbarn +6,09 px. Mit 11,25 px Mehrhöhe: +0,29 px und +0,52 px.
+    - Ein mehrfacher Orbit wird in keinem Fall eingezogen; das gilt auch bis 53 Rollen bei sechs Viewports. Die Regel zwischen den Orbits ist damit derzeit ohne Wirkung.
+    - Höchstens 13,7 ms pro Layout in Node; O-RO-COST ist damit deutlich verringert.
+  - Probe `cdedfef` + `3be1920`: `tsc` 0; Job-Pool, Orbit-Härtung, drei Modi und Investigation 251 grün, 4 übersprungen.
+  - PINK: Prüfung angefragt, ausstehend.
+
+  Integriert wird erst, wenn PINK geprüft hat, der Owner die Sicht erneut abgenommen hat und GELB sein Wort bekommt, zusammen mit `demo-ui-fix` (`0b5a8ea`), auf dem der Rollenorbit aufbaut. Das Sichtlabor des Owners läuft bei GRÜN auf :41805; GELB greift dort nicht ein.
 
   Wenn er integriert wird, dann zusammen mit oder nach `demo-ui-fix`. Die Sichtwirkung beurteilt der Owner.
 - **PINK-Skript** `support/syntx-readonly-walk.mjs` (P-4) ist nicht neu gebunden; es braucht eine Umgebung mit gespeicherten Aufträgen.
