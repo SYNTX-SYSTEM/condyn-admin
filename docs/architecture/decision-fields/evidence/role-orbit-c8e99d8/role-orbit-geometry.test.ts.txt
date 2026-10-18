@@ -1,0 +1,139 @@
+import { describe, expect, it } from "vitest";
+import { syntxCosmosLayout, syntxCosmosPacking } from "../../lib/career/job-pool/syntx-manifestation-layout";
+import { buildOrbitalCosmosLayout } from "../../lib/career/view-model/orbital-cosmos-layout";
+import type { CapabilityCosmosLayout } from "../../lib/career/view-model/capability-cosmos-layout";
+
+/*
+ * PINK independent geometry proof of GRÜN frontend/role-orbit (owner "SFE — GRÜN | ROLE ORBIT REFINEMENT", 2026-10-18); first run on
+ * 6d386cc (§3.45, D-RO-1), re-run on the fix 7a51d89 (§3.46) with a finer, offset grid, the drawn card height and PINK's own
+ * seeded random title sets.
+ * Read only from the public layout functions; no helper of the implementation is reused. The constants are restated from the
+ * mandate (centre body 87 + 5 + 16 px, card air 12 px horizontal / 20 px vertical, target 0.78 per axis), not imported.
+ * Every card is measured with its own size (not the orbit's largest) in two readings: the packing's estimate, and as drawn (the
+ * estimate plus DRAWN_EXCESS, the largest excess PINK measured in the DOM, §3.45). Phases: every 0.25° offset by 0.1° (never on a
+ * grid point of the implementation's 0.5°), every pair on one orbit, every pair of orbits over 1° x 1° offset by 0.3°.
+ */
+const CENTRE = 87 + 5 + 16;
+const GAP = { x: 12, y: 20 };
+const TARGET = 0.78;
+const DRAWN_EXCESS = 11.25;
+const TOLERANCE = 0.5;
+const TITLES = {
+  real: ["Senior Full-Stack Engineer – Shipment Tracking", "Platform Reliability Engineer", "Data Engineer", "Engineering Manager, Payments Infrastructure and Settlement", "QA Lead", "Product Designer", "Machine Learning Engineer (Ranking)", "DevOps Engineer", "Security Analyst", "Frontend Engineer", "Backend Engineer (Go)", "Technical Writer", "Solutions Architect", "Site Reliability Engineer II"],
+  short: ["QA", "UX", "Ops", "Dev", "PM", "SRE", "ML", "BI"],
+  long: ["Principal Engineering Manager for Distributed Payments Infrastructure, Settlement and Reconciliation (EMEA)"],
+  ...Object.fromEntries([20261018, 4711].map(seed => {
+    // PINK's own seeded titles, 3–110 characters from a fixed word list (mulberry32).
+    let t = seed; const rnd = () => { t = (t + 0x6d2b79f5) | 0; let r = Math.imul(t ^ (t >>> 15), 1 | t); r = (r + Math.imul(r ^ (r >>> 7), 61 | r)) ^ r; return ((r ^ (r >>> 14)) >>> 0) / 4294967296; };
+    const words = ["Lead", "Data", "Platform", "Engineer", "of", "Reliability", "UX", "Senior", "Cloud", "Payments", "Infrastructure", "and", "QA", "Machine", "Learning", "Security", "Principal", "Ops", "(EMEA)", "Manager", "–", "Tracking", "II"];
+    return [`random_${seed}`, Array.from({ length: 53 }, () => { let title = ""; const length = 3 + Math.floor(rnd() * 108); while (title.length < length) title += `${title ? " " : ""}${words[Math.floor(rnd() * words.length)]}`; return title.slice(0, length).trim(); })];
+  }))
+} as Record<string, string[]>;
+const roles = (count: number, kind: string) => Array.from({ length: count }, (_, i) => ({ id: `R_${String(i).padStart(2, "0")}`, title: TITLES[kind][i % TITLES[kind].length] }));
+const WIDTHS = [960, 1024, 1180, 1280, 1366, 1440, 1536, 1600, 1728, 1920, 2560];
+const HEIGHTS = [420, 500, 560, 620, 700, 740, 820, 960];
+const COUNTS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 16, 20, 24, 53];
+const deg = (d: number) => (d * Math.PI) / 180;
+const FINE = Array.from({ length: 1440 }, (_, i) => deg(i / 4 + 0.1));
+const CROSS = Array.from({ length: 360 }, (_, i) => deg(i + 0.3));
+type Node = CapabilityCosmosLayout["nodes"][number];
+const ringOf = (l: CapabilityCosmosLayout, n: Node) => l.rings.find(r => r.index === n.ringIndex)!;
+const at = (l: CapabilityCosmosLayout, n: Node, phase: number) => { const r = ringOf(l, n); return { x: Math.cos(n.angle + phase) * r.radiusX, y: Math.sin(n.angle + phase) * r.radiusY }; };
+const air = (p: { x: number; y: number }, a: Node, q: { x: number; y: number }, b: Node, e: number) => Math.max(Math.abs(p.x - q.x) - (a.width + b.width) / 2 - GAP.x, Math.abs(p.y - q.y) - (a.height + b.height + 2 * e) / 2 - GAP.y);
+const touch = (p: { x: number; y: number }, a: Node, q: { x: number; y: number }, b: Node, e: number) => Math.max(Math.abs(p.x - q.x) - (a.width + b.width) / 2, Math.abs(p.y - q.y) - (a.height + b.height + 2 * e) / 2);
+function centreAir(l: CapabilityCosmosLayout, e: number) { let m = Infinity; for (const n of l.nodes) for (const ph of FINE) { const p = at(l, n, ph); m = Math.min(m, Math.hypot(Math.max(0, Math.abs(p.x) - n.width / 2), Math.max(0, Math.abs(p.y) - (n.height + e) / 2)) - CENTRE); } return m; }
+function sameOrbit(l: CapabilityCosmosLayout, e: number) { let m = Infinity, t = Infinity; for (const a of l.nodes) for (const b of l.nodes) if (a.id < b.id && a.ringIndex === b.ringIndex) for (const ph of FINE) { const p = at(l, a, ph), q = at(l, b, ph); m = Math.min(m, air(p, a, q, b, e)); t = Math.min(t, touch(p, a, q, b, e)); } return [m, t]; }
+/** Across two orbits in motion: per distinct card size on each orbit, every phase of one against every phase of the other. */
+function acrossInMotion(l: CapabilityCosmosLayout, ringA: number, ringB: number, e: number) {
+  const sizes = (ring: number) => [...new Map(l.nodes.filter(n => n.ringIndex === ring).map(n => [`${n.width}x${n.height}`, n])).values()];
+  let m = Infinity;
+  for (const a of sizes(ringA)) for (const b of sizes(ringB)) for (const pa of CROSS) for (const pb of CROSS) m = Math.min(m, air(at(l, { ...a, angle: 0 }, pa), a, at(l, { ...b, angle: 0 }, pb), b, e));
+  return m;
+}
+function acrossAtRest(l: CapabilityCosmosLayout, e: number) { let m = Infinity; for (const a of l.nodes) for (const b of l.nodes) if (b.ringIndex > a.ringIndex) m = Math.min(m, air(at(l, a, 0), a, at(l, b, 0), b, e)); return m; }
+const ringIds = (l: CapabilityCosmosLayout) => [...new Set(l.nodes.map(n => n.ringIndex))].sort((a, b) => a - b);
+
+interface Reading { centre: number; orbit: number; touch: number; across: Array<[string, number, number]>; rest: [number, number] }
+interface Row { box: string; count: number; kind: string; kx: number; ky: number; est: Reading; drawnCard: Reading; before: CapabilityCosmosLayout; after: CapabilityCosmosLayout }
+const rows: Row[] = [];
+let slowest = 0;
+const reading = (before: CapabilityCosmosLayout, layout: CapabilityCosmosLayout, e: number): Reading => {
+  const ids = ringIds(before);
+  const across: Array<[string, number, number]> = [];
+  for (let i = 0; i < ids.length; i += 1) for (let j = i + 1; j < ids.length; j += 1) across.push([`${ids[i]}-${ids[j]}`, acrossInMotion(before, ids[i], ids[j], e), acrossInMotion(layout, ids[i], ids[j], e)]);
+  const [orbit, touchAir] = sameOrbit(layout, e);
+  return { centre: centreAir(layout, e), orbit, touch: touchAir, across, rest: [acrossAtRest(before, e), acrossAtRest(layout, e)] };
+};
+const none: Reading = { centre: NaN, orbit: NaN, touch: NaN, across: [], rest: [NaN, NaN] };
+for (const kind of Object.keys(TITLES)) for (const width of WIDTHS) for (const height of HEIGHTS) for (const count of COUNTS) {
+  const items = roles(count, kind);
+  const before = syntxCosmosPacking(items, width, height).layout;
+  const started = performance.now();
+  const { layout, compactness } = syntxCosmosLayout(items, width, height);
+  slowest = Math.max(slowest, performance.now() - started);
+  const isDrawn = !before.staticPositions && (compactness.x !== 1 || compactness.y !== 1);
+  rows.push({ box: `${width}x${height}`, count, kind, kx: compactness.x, ky: compactness.y, est: isDrawn ? reading(before, layout, 0) : none, drawnCard: isDrawn ? reading(before, layout, DRAWN_EXCESS) : none, before, after: layout });
+}
+const drawn = rows.filter(r => r.kx !== 1 || r.ky !== 1);
+
+describe("PINK role orbit geometry (frontend/role-orbit)", () => {
+  it("O-1 identity: cards, titles, sizes, order, phases, orbits, periods, centre, box and static flag unchanged; only radii and rest points move", () => {
+    for (const r of rows) {
+      const pick = (l: CapabilityCosmosLayout) => l.nodes.map(({ id, title, width, height, angle, ringIndex, visualMass }) => ({ id, title, width, height, angle, ringIndex, visualMass }));
+      expect(pick(r.after), r.box).toEqual(pick(r.before));
+      expect(r.after.rings.map(g => [g.index, g.periodSeconds]), r.box).toEqual(r.before.rings.map(g => [g.index, g.periodSeconds]));
+      expect([r.after.width, r.after.height, r.after.centerX, r.after.centerY, r.after.staticPositions]).toEqual([r.before.width, r.before.height, r.before.centerX, r.before.centerY, r.before.staticPositions]);
+      r.after.rings.forEach((g, i) => { expect(Math.abs(g.radiusX - r.before.rings[i].radiusX * r.kx)).toBeLessThanOrEqual(0.01); expect(Math.abs(g.radiusY - r.before.rings[i].radiusY * r.ky)).toBeLessThanOrEqual(0.01); });
+      if (!r.after.staticPositions) for (const n of r.after.nodes) { const p = at(r.after, n, 0); expect(Math.abs(n.x - r.after.centerX - p.x)).toBeLessThanOrEqual(0.02); expect(Math.abs(n.y - r.after.centerY - p.y)).toBeLessThanOrEqual(0.02); }
+    }
+  });
+
+  it("O-2 bounds: each factor in [0.78, 1]; the static grid and an organization the geometry does not allow stay exactly as packed", () => {
+    for (const r of rows) {
+      expect(r.kx).toBeGreaterThanOrEqual(TARGET); expect(r.ky).toBeGreaterThanOrEqual(TARGET); expect(r.kx).toBeLessThanOrEqual(1); expect(r.ky).toBeLessThanOrEqual(1);
+      if (r.before.staticPositions || (r.kx === 1 && r.ky === 1)) expect(r.after).toEqual(r.before);
+    }
+    expect(drawn.length).toBeGreaterThan(100);
+  });
+
+  for (const [label, pick] of [["estimate", (r: Row) => r.est], ["drawn card", (r: Row) => r.drawnCard]] as const) {
+    it(`O-3 centre body (${label}): every drawn-in card keeps its 16 px air to the disc at every 0.25° (±${TOLERANCE} px)`, () => {
+      const worst = drawn.reduce((m, r) => (pick(r).centre < pick(m).centre ? r : m), drawn[0]);
+      console.log(`O-3 ${label}: worst centre air ${pick(worst).centre.toFixed(3)} px at ${worst.count} ${worst.kind} ${worst.box} (${worst.kx}/${worst.ky})`);
+      for (const r of drawn) expect(pick(r).centre, `${r.count} ${r.kind} ${r.box}`).toBeGreaterThanOrEqual(-TOLERANCE);
+    });
+    it(`O-4 one orbit (${label}): every pair of cards on an orbit keeps 12 px / 20 px air at every 0.25° (±${TOLERANCE} px), never touching`, () => {
+      const worst = drawn.reduce((m, r) => (pick(r).orbit < pick(m).orbit ? r : m), drawn[0]);
+      const below = drawn.filter(r => pick(r).orbit < -TOLERANCE);
+      console.log(`O-4 ${label}: worst same-orbit air ${pick(worst).orbit.toFixed(3)} px at ${worst.count} ${worst.kind} ${worst.box} (${worst.kx}/${worst.ky}); below -${TOLERANCE} px: ${below.length} of ${drawn.length}; least gap ${Math.min(...drawn.map(r => pick(r).touch).filter(Number.isFinite)).toFixed(2)} px\n${below.slice(0, 12).map(r => `  ${r.count} ${r.kind} ${r.box} ${r.kx}/${r.ky} ${pick(r).orbit.toFixed(2)}`).join("\n")}`);
+      expect(below.map(r => `${r.count} ${r.kind} ${r.box}`)).toEqual([]);
+      for (const r of drawn) if (Number.isFinite(pick(r).touch)) expect(pick(r).touch).toBeGreaterThanOrEqual(0);
+    });
+    it(`O-5 across orbits (${label}): where the packing kept two orbits apart in motion (1° x 1°), the drawn-in orbits too; otherwise at rest never closer`, () => {
+      const report: string[] = [];
+      for (const r of drawn) {
+        for (const [pair, b, a] of pick(r).across) if (b >= 0 && a < -TOLERANCE) report.push(`${r.count} ${r.kind} ${r.box} rings ${pair}: packed ${b.toFixed(2)} drawn ${a.toFixed(2)}`);
+        if (pick(r).across.some(([, b]) => b < 0) && pick(r).rest[1] < Math.min(0, pick(r).rest[0]) - 0.01) report.push(`${r.count} ${r.kind} ${r.box} at rest ${pick(r).rest[1].toFixed(2)} < ${pick(r).rest[0].toFixed(2)}`);
+      }
+      console.log(`O-5 ${label}: drawn-in layouts with more than one orbit: ${drawn.filter(r => pick(r).across.length > 0).length}; violations: ${report.length}\n${report.slice(0, 20).join("\n")}`);
+      expect(report).toEqual([]);
+    });
+  }
+
+  it("O-6 target: an organization of 1–5 real roles is drawn in to 0.78 / 0.78 at the common level boxes, horizontal first", () => {
+    for (const box of ["1600x740", "1280x700", "1920x820"]) for (const count of [1, 2, 3, 5]) {
+      const r = rows.find(x => x.box === box && x.count === count && x.kind === "real")!;
+      expect([r.kx, r.ky], `${count} at ${box}`).toEqual([0.78, 0.78]);
+    }
+    // horizontal first: no drawn-in layout has a vertical factor below its horizontal one unless the horizontal is at the target.
+    for (const r of drawn) if (r.ky < r.kx) expect(r.kx, `${r.count} ${r.kind} ${r.box}`).toBeGreaterThan(TARGET);
+    const dist = new Map<string, number>(); for (const r of rows) dist.set(`${r.kx}/${r.ky}`, (dist.get(`${r.kx}/${r.ky}`) ?? 0) + 1);
+    console.log(`O-6 slowest syntxCosmosLayout call ${slowest.toFixed(1)} ms`);
+    console.log(`O-6 factor distribution over ${rows.length} layouts: ${[...dist].sort((a, b) => b[1] - a[1]).slice(0, 12).map(([k, v]) => `${k}:${v}`).join(" ")}`);
+  });
+
+  it("O-7 Capability Field untouched: the shared L1 packing called directly is the layout syntxCosmosPacking returns for fitting items", () => {
+    const items = roles(5, "real");
+    expect(buildOrbitalCosmosLayout({ items: [...items], width: 1600, height: 740 })).toEqual(syntxCosmosPacking(items, 1600, 740).layout);
+  });
+});

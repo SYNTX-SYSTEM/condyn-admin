@@ -2043,6 +2043,79 @@ GELB's own probe (7c2971c + 6d386cc, recorded in GELB's integration document §5
 - Integration: STOP, as GRÜN requested; not PINK's decision.
 - Evidence is in `evidence/role-orbit-4b5774c/` and `evidence/role-orbit-negctl-8af6d7c/`.
 
+### 3.46 Role orbit fix: GRÜN `frontend/role-orbit` `7a51d89` (D-RO-1) (2026-10-18)
+
+**Request.** GRÜN asked PINK to validate the fix of D-RO-1 (§3.45) again; STOP before integration.
+- **Cause 1 (check grid):** every check in `orbitAir` now runs every 0.5° (720 phases).
+- **Cause 2 (card height):** every air is measured on the estimate plus `ROLE_ORBIT_CARD_HEIGHT_ALLOWANCE` = 12 px (PINK measured at most +11.25 px).
+- Nothing else changed in the code: one file, `lib/career/job-pool/syntx-manifestation-layout.ts`, plus GRÜN's tests, documentation and evidence (no local paths in the delta).
+
+**Scope.**
+- Probe `c8e99d8` = integration `6f31846` + `frontend/role-orbit` `7a51d89` (merge without conflict).
+- Negative control: the same sharpened proofs on `60e6fec` = `6f31846` + `6d386cc`.
+
+**PINK's proofs, sharpened for the re-run** (copies in `evidence/role-orbit-c8e99d8/`).
+- `role-orbit-geometry`:
+  - Two seeded random title sets of PINK's own (3–110 characters) are added, for 7480 layouts.
+  - Phases are read every 0.25°, offset by 0.1°, so never on one of the implementation's grid points. Across orbits the grid is 1° × 1°, offset by 0.3°.
+  - Every check runs in two readings: on the packing's estimate, and on the drawn card (estimate + 11.25 px).
+  - The tolerance is 0.5 px.
+- `role-orbit.e2e`:
+  - A third viewport, 1366 × 768.
+  - The same 0.25° / 1° × 1° grids, with rendered card sizes and the rendered centre disc.
+  - The tolerance is 0.5 px.
+
+**Result on `c8e99d8`.**
+
+| Check | Result |
+| --- | --- |
+| `role-orbit-geometry` | **10/10**. 3228 layouts drawn in. Estimate: worst air to the centre +4.62 px, between neighbours +3.62 px, least gap 17.76 px. Drawn card: centre +0.38 px, neighbours −0.21 px (within 0.5 px), least gap 14.70 px. Across orbits: 0 violations in the 14 drawn-in layouts with more than one orbit. Target 0.78 / 0.78 for 1–5 real roles kept |
+| `role-orbit.e2e` | **243/243** at 1600 × 1000, 1280 × 720, 1366 × 768. 0 page errors, 0 non-GET, 0 Gemini attempts. In the cases drawn in, the closest neighbours keep the air with 0.76 px (12 short at 1366) and 0.85 px (12 short at 1280) to spare; no overlap |
+| Negative control `60e6fec` (6d386cc) | `role-orbit-geometry` 5/10. Estimate: 505 of 3697 drawn-in layouts below the air between neighbours, worst −7.75 px. Drawn card: 787 below, worst −15.14 px; centre −6.86 px; 7 violations across orbits. Detected |
+
+Factors measured in the DOM (6d386cc → 7a51d89):
+
+| Organization | 1600 × 1000 | 1280 × 720 |
+| --- | --- | --- |
+| 1–5 roles | 0.78 / 0.78, unchanged | 0.78 / 0.78, unchanged |
+| 8 roles | 0.78 / 0.78, unchanged | 0.79 / 0.95 → 0.84 / 1.00 |
+| 8 long titles | 0.78 / 0.94 → 0.84 / 1.00 | 0.99 / 0.99 → 1.00 / 1.00 (now as packed) |
+| 12 short titles | 0.78 / 0.78, unchanged | 0.78 / 0.78 → 0.78 / 0.91 |
+| 14 roles | unchanged 1.00 / 1.00 | unchanged 1.00 / 1.00 |
+
+At 1366 × 768: 1–5 roles 0.78 / 0.78; 8 roles 0.78 / 0.99; 12 short titles 0.78 / 0.87; 8 long titles 1.00 / 1.00.
+
+Other measurements:
+- O-JF-PANEL, measured in quarter degrees: still reduced, e.g. 1600 five roles 640 → 256 of 7200, 1366 five roles 825 → 520.
+- In the organizations left as packed (14 roles; 8 long titles at 1280 / 1366), the air is the packing's. That is the pre-existing O-RO-PACK-14; also at 1366 the 14 roles cross the centre ring (−32.7 px) and the neighbouring orbit.
+- No CSS animation inside the organization cosmos.
+
+**Regression on `c8e99d8`:**
+
+| Check | Result |
+| --- | --- |
+| `tsc` | 0 (including both proofs) |
+| GRÜN unit tests | `syntx-role-orbit` 6/6, `syntx-field-ssr` 10/10 |
+| Gate walk | 74/74 |
+| `three-modes.e2e` | plain 91/91, inspector 97/97 |
+| `url-boundary.e2e` | 1/1 |
+| `syntx-walk.e2e` | 3/3, Q-06 still BOUNDARY-MATCH R15b-PENDING |
+| GRÜN workflow e2e | 10/10 |
+| `demo-ui-fix.e2e` | 62/62 |
+| Full suite without e2e | the 27 base failures (identical set) plus 4 load timeouts in 2 files (alone with 30 s: 16/16). 0 network attempts |
+
+GELB's own re-measurement (random titles, 0.25°; recorded in GELB's integration document §5 at `91d2242`) also finds D-RO-1 fixed.
+
+**Observations (informational, for GRÜN):**
+- **O-RO-CROSS-GRID.** The check across orbits still uses 24 × 24 phases, that is a 15° grid (GRÜN's message says "24 × 24"). PINK finds no violation at 1° × 1° with drawn heights in the 14 multi-orbit drawn-in layouts. The residual risk is not measured.
+- **O-RO-COST** (GELB, confirmed). The slowest `syntxCosmosLayout` call takes 156.5 ms in Node under parallel load (6d386cc: 69.5 ms; GELB about 85 ms). It runs in a `useMemo` on every change of the field size, so a window resize computes it again.
+
+**Status.**
+- D-RO-1 is fixed: both causes measured as removed, in the layout and in the rendered DOM, at three viewports.
+- No new deviation.
+- Integration: STOP, as GRÜN requested. It needs the owner's word to GELB, and demo-ui-fix `0b5a8ea` beneath it needs one too.
+- Evidence is in `evidence/role-orbit-c8e99d8/`.
+
 ## 4. Boundaries and findings for coordination
 
 - F-JP-1 (closed in `b782793`): `JOB_POOL_CONNECTION.md` §4 followed the per-role `JOB_POOL_JSON_ROLE` design;
