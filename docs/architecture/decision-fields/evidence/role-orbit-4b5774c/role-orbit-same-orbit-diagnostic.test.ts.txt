@@ -1,0 +1,40 @@
+import { it } from "vitest";
+import { syntxCosmosLayout, syntxCosmosPacking } from "../../lib/career/job-pool/syntx-manifestation-layout";
+import type { CapabilityCosmosLayout } from "../../lib/career/view-model/capability-cosmos-layout";
+const GAP = { x: 12, y: 20 };
+const TITLES = {
+  real: ["Senior Full-Stack Engineer – Shipment Tracking", "Platform Reliability Engineer", "Data Engineer", "Engineering Manager, Payments Infrastructure and Settlement", "QA Lead", "Product Designer", "Machine Learning Engineer (Ranking)", "DevOps Engineer", "Security Analyst", "Frontend Engineer", "Backend Engineer (Go)", "Technical Writer", "Solutions Architect", "Site Reliability Engineer II"],
+  short: ["QA", "UX", "Ops", "Dev", "PM", "SRE", "ML", "BI"],
+  long: ["Principal Engineering Manager for Distributed Payments Infrastructure, Settlement and Reconciliation (EMEA)"]
+};
+const roles = (count: number, kind: keyof typeof TITLES) => Array.from({ length: count }, (_, i) => ({ id: `R_${String(i).padStart(2, "0")}`, title: TITLES[kind][i % TITLES[kind].length] }));
+const WIDTHS = [960, 1024, 1180, 1280, 1366, 1440, 1536, 1600, 1728, 1920, 2560];
+const HEIGHTS = [420, 500, 560, 620, 700, 740, 820, 960];
+const COUNTS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 16, 20, 24, 53];
+const ONE = Array.from({ length: 360 }, (_, i) => (i * Math.PI) / 180);
+type Node = CapabilityCosmosLayout["nodes"][number];
+const at = (l: CapabilityCosmosLayout, n: Node, ph: number) => { const r = l.rings.find(g => g.index === n.ringIndex)!; return { x: Math.cos(n.angle + ph) * r.radiusX, y: Math.sin(n.angle + ph) * r.radiusY }; };
+function worst(l: CapabilityCosmosLayout) {
+  let m = { air: Infinity, step: 0, n: 0, ph: 0, gx: 0, gy: 0 };
+  for (const ring of l.rings) {
+    const ns = l.nodes.filter(n => n.ringIndex === ring.index);
+    for (let i = 0; i < ns.length; i++) for (let j = i + 1; j < ns.length; j++) for (const ph of ONE) {
+      const p = at(l, ns[i], ph), q = at(l, ns[j], ph);
+      const gx = Math.abs(p.x - q.x) - (ns[i].width + ns[j].width) / 2, gy = Math.abs(p.y - q.y) - (ns[i].height + ns[j].height) / 2;
+      const a = Math.max(gx - GAP.x, gy - GAP.y);
+      if (a < m.air) m = { air: a, step: Math.min(j - i, ns.length - (j - i)), n: ns.length, ph: Math.round((ph * 180) / Math.PI), gx, gy };
+    }
+  }
+  return m;
+}
+it("diag", () => {
+  const out: string[] = [];
+  for (const kind of Object.keys(TITLES) as Array<keyof typeof TITLES>) for (const w of WIDTHS) for (const h of HEIGHTS) for (const c of COUNTS) {
+    const items = roles(c, kind);
+    const { layout, compactness } = syntxCosmosLayout(items, w, h);
+    if (layout.staticPositions || (compactness.x === 1 && compactness.y === 1)) continue;
+    const a = worst(layout);
+    if (a.air < -1) { const b = worst(syntxCosmosPacking(items, w, h).layout); out.push(`${c} ${kind} ${w}x${h} k=${compactness.x}/${compactness.y} drawn air ${a.air.toFixed(2)} (step ${a.step} of ${a.n}, phase ${a.ph}°, gaps x ${a.gx.toFixed(1)} y ${a.gy.toFixed(1)}) | packed worst ${b.air.toFixed(2)} (step ${b.step})`); }
+  }
+  console.log(`violations < -1 px: ${out.length}\n${out.join("\n")}`);
+});

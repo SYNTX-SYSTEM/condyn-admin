@@ -1,0 +1,15 @@
+PINK regression series on probe 4b5774c = integration 7c2971c + frontend/role-orbit 6d386cc (stacked on demo-ui-fix 0b5a8ea), 2026-10-18
+tsc --noEmit                         0 errors (including PINK's two new proofs)
+full suite without e2e               15 files / 48 tests red = the 27 base failures (identical set; the http-canonical-inverse order failures of d2c641b gone with 5f5c636)
+                                     + 4 earlier load timeouts + 17 new 5 s load timeouts in 10 files (outcome-valence, decision-core, g2-g3, worker-config); 0 network attempts
+  timeout files alone, 30 s          9/10 files green (93/95); the 10th, career-worker-config-validation, fails alone with "relation career_analysis_jobs does not exist"
+                                     (it depends on another file's schema) identically on the negative control 8af6d7c; no file of the delta is in its imports
+  GRÜN unit tests                    syntx-role-orbit 5/5, syntx-field-ssr 10/10
+job-scope-gate.e2e                   74/74
+three-modes.e2e                      plain 91/91, inspector 97/97 (one Next version check against the npm registry from next dev)
+url-boundary.e2e                     1/1
+syntx-walk.e2e                       3/3, Q-06 BOUNDARY-MATCH R15b-PENDING
+GRÜN workflow e2e                    10/10
+demo-ui-fix.e2e                      62/62 (runner exit 1 only from the teardown: a superuser backend on the disposable DB; dropped afterwards by PINK through dropDisposableTestDatabase)
+role-orbit.e2e                       162/165 (deviations: O-3 same-orbit air, see O-report.txt); negative control 8af6d7c: 128/171, attributes absent in 18/18 cases (detected)
+role-orbit-geometry                  6/7 (deviation: O-4 same-orbit air, 209 of 2450 drawn-in layouts below -1 px, worst -7.65 px), see geometry.txt
