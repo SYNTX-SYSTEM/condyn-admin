@@ -1,0 +1,12 @@
+PINK regression series on probe c8e99d8 = integration 6f31846 + frontend/role-orbit 7a51d89 (on 6d386cc, on demo-ui-fix 0b5a8ea), 2026-10-18
+tsc --noEmit                         0 errors (including PINK's two proofs)
+full suite without e2e               6 files / 31 tests red = the 27 base failures (identical set) + 4 load timeouts in 2 files; alone with 30 s 16/16; 0 network attempts
+  GRÜN unit tests                    syntx-role-orbit 6/6, syntx-field-ssr 10/10
+job-scope-gate.e2e                   74/74
+three-modes.e2e                      plain 91/91, inspector 97/97 (one Next version check against the npm registry from next dev)
+url-boundary.e2e                     1/1
+syntx-walk.e2e                       3/3, Q-06 BOUNDARY-MATCH R15b-PENDING
+GRÜN workflow e2e                    10/10
+demo-ui-fix.e2e                      62/62
+role-orbit.e2e (sharpened)           243/243 at 1600, 1280, 1366
+role-orbit-geometry (sharpened)      10/10; negative control on 60e6fec (6d386cc) 5/10, detected

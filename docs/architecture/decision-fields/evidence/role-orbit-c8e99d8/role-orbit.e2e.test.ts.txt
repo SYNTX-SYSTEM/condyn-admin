@@ -1,0 +1,260 @@
+/**
+ * PINK proof of GRÜN frontend/role-orbit (owner "SFE — GRÜN | ROLE ORBIT REFINEMENT", relayed by GRÜN; 6d386cc §3.45, fix 7a51d89 §3.46)
+ * on a real Next server
+ * (next dev, disposable database, no worker, GEMINI_API_KEY empty, PINK's net sentinel in the server process). PINK's own pool with
+ * organizations of 1, 2, 3, 5, 8 and 14 roles (real-length titles), 6 and 8 roles with long titles and 12 roles with short titles.
+ * Every measurement is taken from the rendered DOM; the shared layout functions are called in-process only to restate the packing
+ * the page started from. Checks are collected (one failure at the end) and written to `O-report.json` / `O-report.txt`.
+ *
+ *   O-1 contract: data-orbit-compactness-x / -y (two decimals) on syntx-cosmos-organization; every role card present with its
+ *       data-testid, its title as the accessible name, tabbable; the drawn ellipses are the packing's radii times the factors
+ *   O-2 cards: rendered width = the packing's card width, rendered height never below it (excess recorded); each card on its own
+ *       drawn ellipse in two LIVE frames a second apart (it moves along the drawn orbit); every tether ends at its card's centre
+ *   O-3 air, with the rendered card sizes and the rendered centre disc, every 0.25° (offset 0.1°): 16 px to the disc's outer rings, 12 px / 20 px
+ *       between cards of one orbit; across orbits (1° x 1°, offset 0.3°) as far apart as the packing kept them (measured)
+ *   O-4 navigation: a role card selects its role (URL jobRoleId), Escape returns to the organization; REDUCED: no motion
+ *   O-5 O-JF-PANEL (measured): degrees in which a card crosses the orientation surface, packed vs drawn
+ *   Set ROLE_ORBIT_TIP and run on a base without the delta as the negative control (O-1 attributes absent, ellipses = packing).
+ */
+import { spawn, type ChildProcess } from "node:child_process";
+import { once } from "node:events";
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { createRequire } from "node:module";
+import { createServer } from "node:net";
+import { resolve } from "node:path";
+import { afterAll, beforeAll, describe, expect, it } from "vitest";
+import * as layoutLib from "../../lib/career/job-pool/syntx-manifestation-layout";
+import type { CapabilityCosmosLayout } from "../../lib/career/view-model/capability-cosmos-layout";
+import { createJobPoolPostgresWorld, type JobPoolWorld } from "../career/job-pool/fixtures/job-pool-postgres-world";
+
+function resolvePlaywright(): string | null {
+  const explicit = process.env.CONDYN_PLAYWRIGHT_MODULE;
+  if (explicit !== undefined && explicit.length > 0) return explicit;
+  try { return createRequire(resolve(process.cwd(), "package.json")).resolve("playwright"); } catch { return null; }
+}
+const playwrightModule = resolvePlaywright();
+const TIP = process.env.ROLE_ORBIT_TIP ?? "local";
+const EVIDENCE_DIR = resolve(process.cwd(), `docs/architecture/decision-fields/evidence/role-orbit-${TIP}`);
+const SENTINEL = process.env.PINK_NET_SENTINEL;
+const NET_LOG = process.env.PINK_ROLE_ORBIT_NET_LOG ?? "";
+const VIEWPORTS = [{ width: 1600, height: 1000 }, { width: 1280, height: 720 }, { width: 1366, height: 768 }];
+const POOL_ID = "pool_pink_role_orbit_v1";
+const REAL = ["Senior Full-Stack Engineer – Shipment Tracking", "Platform Reliability Engineer", "Data Engineer", "Engineering Manager, Payments Infrastructure and Settlement", "QA Lead", "Product Designer", "Machine Learning Engineer (Ranking)", "DevOps Engineer", "Security Analyst", "Frontend Engineer", "Backend Engineer (Go)", "Technical Writer", "Solutions Architect", "Site Reliability Engineer II"];
+const LONG = "Principal Engineering Manager for Distributed Payments Infrastructure, Settlement and Reconciliation (EMEA)";
+const SHORT = ["QA", "UX", "Ops", "Dev", "PM", "SRE", "ML", "BI"];
+const ORGS: Array<{ id: string; titles: string[] }> = [
+  ...[1, 2, 3, 5, 8, 14].map(n => ({ id: `org_ro_${n}`, titles: REAL.slice(0, n) })),
+  { id: "org_ro_long_6", titles: Array.from({ length: 6 }, () => LONG) },
+  { id: "org_ro_long_8", titles: Array.from({ length: 8 }, () => LONG) },
+  { id: "org_ro_short_12", titles: Array.from({ length: 12 }, (_, i) => SHORT[i % SHORT.length]) }
+];
+const roleId = (org: string, i: number) => `${org.replace("org_", "role_")}_${String(i).padStart(2, "0")}`;
+const pool = {
+  pool: { id: POOL_ID, name: "PINK role orbit pool", description: "Organizations of different sizes for the role orbit proof.", version: 1, status: "ACTIVE", created_at: "2026-10-18T00:00:00.000Z" },
+  organizations: ORGS.map(o => ({ id: o.id, pool_id: POOL_ID, org_id: o.id.toUpperCase(), name: `PINK ${o.titles.length} ${o.id.includes("long") ? "Long" : o.id.includes("short") ? "Short" : "Real"} Orbit`, country_iso: "DE", region: "Berlin", industry: "Test", scale: "TEST", description: "PINK role orbit organization." })),
+  roles: ORGS.flatMap(o => o.titles.map((title, i) => ({ id: roleId(o.id, i), pool_id: POOL_ID, organization_id: o.id, title, seniority: "SENIOR", domain_focus: "Test", description: "PINK role orbit role." }))),
+  requirements: ORGS.flatMap(o => o.titles.map((_, i) => ({ id: `req_${roleId(o.id, i)}`, role_id: roleId(o.id, i), capability_name: "Distributed Systems", domain: "Engineering", weight: 1, required_level: "advanced", necessity: "REQUIRED" })))
+};
+const GAP = { x: 12, y: 20 };
+const RING_OUTSET = 5;
+const CENTRE_AIR = 16;
+const deg = (d: number) => (d * Math.PI) / 180;
+const ONE = Array.from({ length: 1440 }, (_, i) => deg(i / 4 + 0.1));
+const TWO = Array.from({ length: 360 }, (_, i) => deg(i + 0.3));
+
+let world: JobPoolWorld;
+let server: ChildProcess | undefined;
+let port = 0;
+let serverOutput = "";
+const base = () => `http://127.0.0.1:${port}`;
+const delay = (ms: number) => new Promise<void>((done) => setTimeout(done, ms));
+async function availablePort(): Promise<number> {
+  const listener = createServer();
+  await new Promise<void>((ok) => listener.listen(0, "127.0.0.1", () => ok()));
+  const port = (listener.address() as { port: number }).port;
+  await new Promise<void>((ok) => listener.close(() => ok()));
+  return port;
+}
+/** The packing the page starts from (on a base without the delta, syntxCosmosLayout is the packing). */
+function packingOf(items: Array<{ id: string; title: string }>, width: number, height: number): CapabilityCosmosLayout {
+  const lib = layoutLib as unknown as Record<string, (i: typeof items, w: number, h: number) => { layout: CapabilityCosmosLayout }>;
+  return (lib.syntxCosmosPacking ?? lib.syntxCosmosLayout)(items, width, height).layout;
+}
+
+interface Card { id: string; label: string | null; tab: string | null; w: number; h: number; x: number; y: number }
+interface Frame { kx: string | null; ky: string | null; layout: string | null; svgW: number; svgH: number; svgL: number; svgT: number; ellipses: Array<{ rx: number; ry: number }>; cx: number; cy: number; disc: number; cards: Card[]; tethers: Array<{ x: number; y: number }>; surface: { l: number; t: number; r: number; b: number } | null; animations: string[] }
+
+describe.skipIf(playwrightModule === null)("PINK: role orbit drawn closer to the organization (GRÜN 6d386cc)", () => {
+  let browser: any;
+  let uploadId = "";
+  const checks: Array<{ id: string; name: string; ok: boolean; detail?: unknown }> = [];
+  const measured: Record<string, unknown> = {};
+  const pageErrors: string[] = [];
+  const nonGet: string[] = [];
+  const check = (id: string, name: string, ok: boolean, detail?: unknown) => { checks.push({ id, name, ok, ...(detail === undefined ? {} : { detail }) }); };
+
+  async function open(viewport: { width: number; height: number }, reducedMotion?: "reduce") {
+    const page = await browser.newPage({ viewport, ...(reducedMotion ? { reducedMotion } : {}) });
+    page.on("pageerror", (error: unknown) => pageErrors.push(String(error)));
+    page.on("request", (request: any) => { if (request.method() !== "GET") nonGet.push(`${request.method()} ${request.url()}`); });
+    await page.goto(`${base()}/career/demo?focus=FIELD&jobPoolUploadId=${uploadId}`, { waitUntil: "domcontentloaded", timeout: 120_000 });
+    await page.getByTestId("field-focus-strip").waitFor({ timeout: 120_000 });
+    const overlay = page.getByTestId("guided-onboarding-overlay");
+    try { await overlay.waitFor({ timeout: 8_000 }); await page.getByTestId("onboarding-close-btn").click(); await overlay.waitFor({ state: "detached", timeout: 30_000 }); } catch { /* no overlay */ }
+    return page;
+  }
+  async function enter(page: any, org: string) {
+    await page.getByTestId(`syntx-organization-${org}`).waitFor({ timeout: 60_000 });
+    await page.getByTestId(`syntx-organization-${org}`).evaluate((element: HTMLElement) => element.click());
+    await page.locator('[data-testid="syntx-field"][data-observation-kind="ORGANIZATION"]').waitFor({ timeout: 30_000 });
+    await page.locator(`[data-testid="syntx-cosmos-organization"][data-organization-id="${org}"]`).waitFor({ timeout: 30_000 });
+    await delay(1_200);
+  }
+  const frame = (page: any): Promise<Frame> => page.evaluate(() => {
+    const shell = document.querySelector('[data-testid="syntx-cosmos-organization"]') as HTMLElement;
+    const svg = shell.querySelector("svg") as SVGSVGElement; const s = svg.getBoundingClientRect();
+    const centre = (shell.querySelector('[data-testid="syntx-cosmos-centre"]') as HTMLElement).getBoundingClientRect();
+    const cards = [...shell.querySelectorAll("[data-sx-role-card]")].map(el => { const b = el.getBoundingClientRect(); return { id: el.getAttribute("data-testid") ?? el.getAttribute("data-sx-anchor") ?? "", label: el.getAttribute("aria-label"), tab: el.getAttribute("tabindex"), w: b.width, h: b.height, x: b.left + b.width / 2, y: b.top + b.height / 2 }; });
+    const surfaceEl = document.querySelector('[data-sx-surface="header"]'); const sr = surfaceEl?.getBoundingClientRect();
+    return {
+      kx: shell.getAttribute("data-orbit-compactness-x"), ky: shell.getAttribute("data-orbit-compactness-y"), layout: shell.getAttribute("data-layout"),
+      svgW: Number(svg.getAttribute("width")), svgH: Number(svg.getAttribute("height")), svgL: s.left, svgT: s.top,
+      ellipses: [...svg.querySelectorAll("ellipse")].map(e => ({ rx: Number(e.getAttribute("rx")), ry: Number(e.getAttribute("ry")) })),
+      cx: centre.left + centre.width / 2, cy: centre.top + centre.height / 2, disc: centre.width / 2, cards,
+      tethers: [...svg.querySelectorAll("line")].map(l => ({ x: s.left + Number(l.getAttribute("x2")), y: s.top + Number(l.getAttribute("y2")) })),
+      surface: sr ? { l: sr.left, t: sr.top, r: sr.right, b: sr.bottom } : null,
+      animations: [...new Set(shell.getAnimations({ subtree: true }).map(a => (a as CSSAnimation).animationName ?? a.constructor.name))].sort()
+    };
+  });
+
+  beforeAll(async () => {
+    world = await createJobPoolPostgresWorld();
+    port = await availablePort();
+    server = spawn(process.execPath, [resolve(process.cwd(), "node_modules/next/dist/bin/next"), "dev", "--webpack", "-p", String(port), "-H", "127.0.0.1"], {
+      cwd: process.cwd(),
+      env: { ...process.env, DATABASE_URL: world.databaseUrl, NEXT_TELEMETRY_DISABLED: "1", GEMINI_API_KEY: "", ...(SENTINEL && NET_LOG ? { NODE_OPTIONS: `--require ${SENTINEL}`, PINK_NET_LOG: NET_LOG } : {}) },
+      stdio: ["ignore", "pipe", "pipe"]
+    });
+    server.stdout?.on("data", (chunk) => { serverOutput += String(chunk); });
+    server.stderr?.on("data", (chunk) => { serverOutput += String(chunk); });
+    for (let attempt = 0; attempt < 200; attempt += 1) {
+      try { const response = await fetch(`${base()}/api/career/job-pools`); if (response.status === 200) { await response.json(); break; } } catch { /* not ready */ }
+      await delay(500);
+      if (attempt === 199) throw new Error(`server not ready:\n${serverOutput}`);
+    }
+    uploadId = (await (await fetch(`${base()}/api/career/job-pools`, { method: "POST", headers: { "content-type": "application/json", "x-condyn-principal-actor-id": "PINK_ROLE_ORBIT" }, body: JSON.stringify(pool) })).json()).jobPoolUploadId as string;
+    mkdirSync(EVIDENCE_DIR, { recursive: true });
+    const playwright = await import(playwrightModule as string);
+    browser = await playwright.chromium.launch({ headless: true });
+  }, 300_000);
+
+  afterAll(async () => {
+    if (browser) await browser.close();
+    if (server && server.exitCode === null && server.signalCode === null) {
+      server.kill("SIGTERM");
+      await Promise.race([once(server, "exit"), delay(10_000)]);
+      if (server.exitCode === null && server.signalCode === null) { server.kill("SIGKILL"); await once(server, "exit"); }
+    }
+    if (world) await world.destroy();
+    const net = NET_LOG && existsSync(NET_LOG) ? readFileSync(NET_LOG, "utf8").trim().split("\n").filter(Boolean) : [];
+    const failed = checks.filter((entry) => !entry.ok);
+    writeFileSync(resolve(EVIDENCE_DIR, "O-report.json"), `${JSON.stringify({ tip: TIP, recordedAt: new Date().toISOString(), passed: checks.length - failed.length, total: checks.length, deviations: failed, checks, measured, pageErrors, nonGet, net }, null, 2)}\n`);
+    writeFileSync(resolve(EVIDENCE_DIR, "O-report.txt"), `${checks.map((entry) => `${entry.ok ? "ok  " : "DEV "} ${entry.id} ${entry.name}${entry.detail === undefined ? "" : ` · ${JSON.stringify(entry.detail)}`}`).join("\n")}\n\n${checks.length - failed.length}/${checks.length} checks ok · page errors ${pageErrors.length} · non-GET ${nonGet.length} · net ${net.length}\n`);
+  }, 60_000);
+
+  it("O-1 … O-5", async () => {
+    for (const viewport of VIEWPORTS) {
+      const v = `${viewport.width}`;
+      const page = await open(viewport);
+      for (const org of ORGS) {
+        const tag = `${v} ${org.id}`;
+        await enter(page, org.id);
+        const f = await frame(page);
+        const items = org.titles.map((title, i) => ({ id: roleId(org.id, i), title }));
+        const packed = packingOf(items, f.svgW, f.svgH);
+        const kx = f.kx === null ? NaN : Number(f.kx), ky = f.ky === null ? NaN : Number(f.ky);
+        // ---- O-1 contract ----
+        check("O-1", `${tag}: compactness attributes present with two decimals`, /^\d\.\d\d$/.test(f.kx ?? "") && /^\d\.\d\d$/.test(f.ky ?? ""), [f.kx, f.ky, f.layout]);
+        check("O-1", `${tag}: every role card present by data-testid, its title the accessible name, tabbable`, f.cards.length === items.length && items.every(item => f.cards.some(c => c.id === `syntx-role-${item.id}` && (c.label ?? "").startsWith(item.title) && c.tab === "0")), f.cards.map(c => c.id));
+        const ratio = f.ellipses.map((e, i) => [e.rx / packed.rings[i].radiusX, e.ry / packed.rings[i].radiusY]);
+        check("O-1", `${tag}: drawn ellipses = packing radii × the factors (±0.01)`, f.ellipses.length === packed.rings.length && ratio.every(([rx, ry]) => Math.abs(rx - kx) <= 0.006 && Math.abs(ry - ky) <= 0.006), { factors: [kx, ky], ratio: ratio.map(([a, b]) => [a.toFixed(4), b.toFixed(4)]) });
+        // ---- O-2 cards ----
+        const nodeOf = (card: Card) => packed.nodes.find(n => `syntx-role-${n.id}` === card.id)!;
+        const widthDiff = Math.max(...f.cards.map(c => Math.abs(c.w - nodeOf(c).width)));
+        const heightExcess = Math.max(...f.cards.map(c => c.h - nodeOf(c).height));
+        check("O-2", `${tag}: rendered card width = packed card width, height never below it`, widthDiff <= 0.5 && Math.min(...f.cards.map(c => c.h - nodeOf(c).height)) >= -0.5, { widthDiff: widthDiff.toFixed(2), heightExcessMax: heightExcess.toFixed(2) });
+        const ringFor = (card: Card) => f.ellipses[packed.rings.findIndex(r => r.index === nodeOf(card).ringIndex)];
+        const onOrbit = (g: Frame) => Math.max(...g.cards.map(c => { const e = ringFor(c); return Math.abs(Math.hypot((c.x - g.cx) / e.rx, (c.y - g.cy) / e.ry) - 1); }));
+        await delay(1_000);
+        const g = await frame(page);
+        const moved = Math.max(...g.cards.map(c => { const p = f.cards.find(x => x.id === c.id)!; return Math.hypot(c.x - p.x, c.y - p.y); }));
+        check("O-2", `${tag}: each card on its drawn ellipse in two LIVE frames 1 s apart (normalised radius 1 ± 0.01) and moving`, onOrbit(f) <= 0.01 && onOrbit(g) <= 0.01 && moved > 0.05, { off: [onOrbit(f).toFixed(4), onOrbit(g).toFixed(4)], moved: moved.toFixed(2) });
+        const tetherOff = Math.max(...f.cards.map(c => Math.min(...f.tethers.map(t => Math.hypot(t.x - c.x, t.y - c.y)))));
+        check("O-2", `${tag}: every tether ends at its card's centre (±1 px)`, f.tethers.length === f.cards.length && tetherOff <= 1, tetherOff.toFixed(2));
+        // ---- O-3 air with rendered sizes, every degree on the drawn orbits ----
+        const sized = f.cards.map(c => ({ c, n: nodeOf(c) }));
+        const radiiOf = (layout: "drawn" | "packed", ringIndex: number) => { const i = packed.rings.findIndex(r => r.index === ringIndex); return layout === "drawn" ? f.ellipses[i] : { rx: packed.rings[i].radiusX, ry: packed.rings[i].radiusY }; };
+        const pos = (layout: "drawn" | "packed", n: (typeof packed.nodes)[number], ph: number) => { const r = radiiOf(layout, n.ringIndex); return { x: Math.cos(n.angle + ph) * r.rx, y: Math.sin(n.angle + ph) * r.ry }; };
+        const airOf = (p: { x: number; y: number }, a: Card, q: { x: number; y: number }, b: Card) => Math.max(Math.abs(p.x - q.x) - (a.w + b.w) / 2 - GAP.x, Math.abs(p.y - q.y) - (a.h + b.h) / 2 - GAP.y);
+        const touch = (p: { x: number; y: number }, a: Card, q: { x: number; y: number }, b: Card) => Math.max(Math.abs(p.x - q.x) - (a.w + b.w) / 2, Math.abs(p.y - q.y) - (a.h + b.h) / 2);
+        const air = (layout: "drawn" | "packed") => {
+          let centre = Infinity, same = Infinity, across = Infinity, overlap = Infinity;
+          for (const { c, n } of sized) for (const ph of ONE) { const p = pos(layout, n, ph); centre = Math.min(centre, Math.hypot(Math.max(0, Math.abs(p.x) - c.w / 2), Math.max(0, Math.abs(p.y) - c.h / 2)) - f.disc - RING_OUTSET - CENTRE_AIR); }
+          for (const a of sized) for (const b of sized) if (a.c.id < b.c.id && a.n.ringIndex === b.n.ringIndex) for (const ph of ONE) { const p = pos(layout, a.n, ph), q = pos(layout, b.n, ph); same = Math.min(same, airOf(p, a.c, q, b.c)); overlap = Math.min(overlap, touch(p, a.c, q, b.c)); }
+          for (const a of sized) for (const b of sized) if (b.n.ringIndex > a.n.ringIndex) for (const pa of TWO) for (const pb of TWO) across = Math.min(across, airOf(pos(layout, { ...a.n, angle: 0 }, pa), a.c, pos(layout, { ...b.n, angle: 0 }, pb), b.c));
+          return { centre, same, across, overlap };
+        };
+        const drawnAir = air("drawn"), packedAir = air("packed");
+        const round2 = (o: Record<string, number>) => Object.fromEntries(Object.entries(o).map(([k, x]) => [k, Number.isFinite(x) ? Number(x.toFixed(2)) : null]));
+        measured[`${tag} air`] = { factors: [f.kx, f.ky], layout: f.layout, rings: packed.rings.length, discRadius: f.disc, heightExcessMax: Number(heightExcess.toFixed(2)), drawn: round2(drawnAir), packed: round2(packedAir) };
+        if (kx === 1 && ky === 1) {
+          // Not drawn in: the delta leaves the packing as it was; its own air is recorded as a pre-existing observation.
+          check("O-3", `${tag}: not drawn in, the orbit is the packing (air identical)`, JSON.stringify(round2(drawnAir)) === JSON.stringify(round2(packedAir)), round2(packedAir));
+        } else {
+          check("O-3", `${tag}: 16 px to the centre disc's outer rings at every 0.25° (rendered sizes, ±0.5 px)`, drawnAir.centre >= -0.5, drawnAir.centre.toFixed(2));
+          check("O-3", `${tag}: 12 px / 20 px between cards of one orbit at every 0.25° (rendered sizes, ±0.5 px)`, !Number.isFinite(drawnAir.same) || drawnAir.same >= -0.5, { drawn: drawnAir.same.toFixed(2), packed: packedAir.same.toFixed(2) });
+          check("O-3", `${tag}: no two rendered cards of one orbit overlap at any 0.25°`, !Number.isFinite(drawnAir.overlap) || drawnAir.overlap >= 0, { drawn: drawnAir.overlap.toFixed(2), packed: packedAir.overlap.toFixed(2) });
+          if (Number.isFinite(drawnAir.across)) check("O-3", `${tag}: across orbits apart in motion where the packing was (1° x 1°, ±0.5 px)`, packedAir.across < 0 || drawnAir.across >= -0.5, { drawn: drawnAir.across.toFixed(2), packed: packedAir.across.toFixed(2) });
+        }
+        // ---- O-5 O-JF-PANEL (measured, not a pass/fail of the delta) ----
+        if (f.surface) {
+          const crossing = (layout: "drawn" | "packed") => { let count = 0; for (const { c, n } of sized) for (const ph of ONE) { const p = pos(layout, n, ph); const x = f.cx + p.x, y = f.cy + p.y; if (x - c.w / 2 < f.surface!.r && x + c.w / 2 > f.surface!.l && y - c.h / 2 < f.surface!.b && y + c.h / 2 > f.surface!.t) count += 1; } return count; };
+          measured[`${tag} O-JF-PANEL`] = { packed: crossing("packed"), drawn: crossing("drawn"), of: sized.length * 1440 };
+        }
+        measured[`${tag} animations`] = f.animations;
+        // back to the field
+        await page.keyboard.press("Escape");
+        await page.locator('[data-testid="syntx-field"][data-observation-kind="FIELD"]').waitFor({ timeout: 30_000 }).catch(() => undefined);
+        if ((await page.getByTestId("syntx-field").getAttribute("data-observation-kind")) !== "FIELD") { await page.goto(`${base()}/career/demo?focus=FIELD&jobPoolUploadId=${uploadId}`, { waitUntil: "domcontentloaded" }); await page.getByTestId("field-focus-strip").waitFor({ timeout: 120_000 }); }
+      }
+      // ---- O-4 navigation ----
+      await enter(page, "org_ro_5");
+      const target = roleId("org_ro_5", 2);
+      // The card moves; it is clicked at a moment it owns its centre point (not under the orientation surface, O-JF-PANEL).
+      let tries = 0, owner = "";
+      for (; tries < 60; tries += 1) {
+        owner = await page.getByTestId(`syntx-role-${target}`).evaluate((element: HTMLElement) => { const b = element.getBoundingClientRect(); const hit = document.elementFromPoint(b.left + b.width / 2, b.top + b.height / 2); return hit !== null && element.contains(hit) ? "card" : (hit?.closest("[data-sx-surface]")?.getAttribute("data-sx-surface") ?? hit?.tagName.toLowerCase() ?? "none"); });
+        if (owner === "card") break;
+        await delay(500);
+      }
+      measured[`${v} O-4 click`] = { tries, owner };
+      const box = await page.getByTestId(`syntx-role-${target}`).boundingBox();
+      await page.mouse.click(box.x + box.width / 2, box.y + box.height / 2);
+      await page.locator('[data-testid="syntx-field"][data-observation-kind="ROLE"]').waitFor({ timeout: 30_000 }).catch(() => undefined);
+      check("O-4", `${v}: a role card selects its role (kind ROLE, URL jobRoleId)`, (await page.getByTestId("syntx-field").getAttribute("data-observation-kind")) === "ROLE" && new URL(page.url()).searchParams.get("jobRoleId") === target, { kind: await page.getByTestId("syntx-field").getAttribute("data-observation-kind"), url: new URL(page.url()).search });
+      await page.keyboard.press("Escape");
+      await page.locator('[data-testid="syntx-field"][data-observation-kind="ORGANIZATION"]').waitFor({ timeout: 30_000 }).catch(() => undefined);
+      check("O-4", `${v}: Escape returns to the organization`, (await page.getByTestId("syntx-field").getAttribute("data-observation-kind")) === "ORGANIZATION" && new URL(page.url()).searchParams.get("jobRoleId") === null, new URL(page.url()).search);
+      await page.close();
+      const reduced = await open(viewport, "reduce");
+      await enter(reduced, "org_ro_5");
+      const r1 = await frame(reduced); await delay(1_500); const r2 = await frame(reduced);
+      const still = Math.max(...r2.cards.map(c => { const p = r1.cards.find(x => x.id === c.id)!; return Math.hypot(c.x - p.x, c.y - p.y); }));
+      check("O-4", `${v}: REDUCED: the drawn-in orbit holds still (1.5 s) with the same factors`, still <= 0.01 && r1.kx !== null && r1.ky !== null, { still: still.toFixed(3), factors: [r1.kx, r1.ky] });
+      await reduced.close();
+    }
+    check("O-0", "no page errors, no non-GET request from the page", pageErrors.length === 0 && nonGet.length === 0, { pageErrors, nonGet });
+    const failed = checks.filter(entry => !entry.ok);
+    expect(failed, JSON.stringify(failed, null, 1)).toEqual([]);
+  }, 1_800_000);
+});
