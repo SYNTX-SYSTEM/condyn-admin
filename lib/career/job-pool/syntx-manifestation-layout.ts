@@ -74,16 +74,19 @@ function compactCosmos(items: ReadonlyArray<{ id: string; title: string }>, widt
 }
 
 /**
- * The role orbit drawn closer to its organization (owner "SFE — GRÜN | ROLE ORBIT REFINEMENT", 2026-10-18). The shared packing fills
- * the level box, so its orbit is a wide, flat ellipse; here every orbit and every satellite on it is scaled about the centre, the
- * cards keep their size, title and order, every ring its period and every satellite its phase. Each axis is drawn in by
- * ROLE_ORBIT_COMPACTNESS as far as the geometry allows: the horizontal axis (the long one) first, then the vertical one as far as
- * the centre body leaves room. A pair of factors holds when, in every phase, every card keeps its air to the centre body and to
- * its neighbours on the same orbit, and to the neighbouring orbits as far as the packing kept them apart (in every phase pair
- * where it did; at rest, and never closer than the packing, where it did not). Where no pair below 1 holds, and for the static
- * grid fallback, the packing stays as it is.
+ * The role orbit drawn in to the smallest orbit its geometry carries (owner "SFE — GRÜN | ROLE ORBIT — SECOND VISUAL REFINEMENT",
+ * 2026-10-19; the first pass of 2026-10-18 stopped at a 0.78 orientation). The shared packing fills the level box, so its orbit is a
+ * wide, flat ellipse; here every orbit and every satellite on it is scaled about the centre by a horizontal and a vertical factor, the
+ * cards keep their size, title and order, every ring its period and every satellite its phase. A pair of factors holds when, in
+ * every phase, every card keeps its air to the centre body and to every other card of its orbit, and to the neighbouring orbits as
+ * far as the packing kept them apart (in every phase pair where it did; at rest, and never closer than the packing, where it did
+ * not). Every air measured is a factor times a fixed length less a fixed size, so it grows with each factor, and for a horizontal
+ * factor it bounds the vertical one from below directly: the least vertical factor is read off the geometry in one pass. Of the
+ * pairs that hold the smallest drawn orbit wins (the least product of the factors, i.e. the least area of the outer orbit; at a tie
+ * the narrower one), as long as the orbit stays at least as wide as it is tall (the field's lying ellipses). The result therefore
+ * follows from card sizes, role count, motion and the minimum air alone: no fixed percentage. Where the packing itself does not
+ * hold, and for the static grid fallback, the packing stays as it is.
  */
-export const ROLE_ORBIT_COMPACTNESS = 0.78;
 /** The organization centre the cards keep clear of: SYNTX_COSMOS_CENTER_MATERIAL's 174 px disc, its 4 + 1 px outer rings and air. */
 export const ROLE_ORBIT_CENTRE_CLEARANCE = 87 + 5 + 16;
 /** Air between two cards; a card's text may run a line beyond the packing's estimate, so the vertical air is larger. */
@@ -92,70 +95,119 @@ export const ROLE_ORBIT_CARD_GAP = Object.freeze({ x: 12, y: 20 });
  * D-RO-1): every air is measured on the estimate plus this allowance, so it holds for the card as drawn. */
 export const ROLE_ORBIT_CARD_HEIGHT_ALLOWANCE = 12;
 export interface RoleOrbitCompactness { x: number; y: number }
-/** Every half degree of the turn (PINK §3.45 D-RO-1: at 5° a card moves 35–50 px between two checks and the least air lies between them). */
-const PHASES = Array.from({ length: 720 }, (_, index) => (index * Math.PI * 2) / 720);
-const CROSS_PHASES = PHASES.filter((_, index) => index % 30 === 0);
+/** Neighbouring orbits turn at their own periods: every phase pair on a 5° grid (PINK §3.46 O-RO-CROSS-GRID: formerly 15°). */
+const CROSS_PHASES = Array.from({ length: 72 }, (_, index) => (index * Math.PI * 2) / 72);
+/** The corner arc of the widened card, every quarter degree (the bound is smooth there, so the reading is exact to a thousandth of a pixel). */
+const CORNER_ARC = Array.from({ length: 361 }, (_, index) => (index * Math.PI) / 720);
 
-interface OrbitAir { centre: number; orbit: number; across: number; acrossAtRest: number }
+interface OrbitCard { angle: number; width: number; height: number }
+interface Orbit { ring: CapabilityCosmosLayout["rings"][number]; cards: OrbitCard[]; width: number; height: number }
 
-/**
- * The air (px; negative = overlap) the layout leaves at the compactness: to the centre body, between neighbours on one orbit,
- * between neighbouring orbits (every phase pair) and between any two cards at rest. The satellites of one orbit share its path and
- * are evenly spaced, so each orbit is measured once with its largest card (as drawn: the estimate plus the height allowance): the
- * centre over every phase, the next and the one after in angular order over every phase of the turn they make together.
- */
-function orbitAir(layout: CapabilityCosmosLayout, k: RoleOrbitCompactness, withMotionAcross: boolean): OrbitAir {
-  const orbits = layout.rings.map(ring => {
-    const nodes = layout.nodes.filter(node => node.ringIndex === ring.index);
-    return { ring, count: nodes.length, width: Math.max(0, ...nodes.map(node => node.width)), height: Math.max(0, ...nodes.map(node => node.height)) + ROLE_ORBIT_CARD_HEIGHT_ALLOWANCE };
-  }).filter(orbit => orbit.count > 0);
-  const on = (ring: CapabilityCosmosLayout["rings"][number], angle: number): Point => ({ x: Math.cos(angle) * ring.radiusX * k.x, y: Math.sin(angle) * ring.radiusY * k.y });
-  const between = (p: Point, aw: number, ah: number, q: Point, bw: number, bh: number): number => Math.max(Math.abs(p.x - q.x) - (aw + bw) / 2 - ROLE_ORBIT_CARD_GAP.x, Math.abs(p.y - q.y) - (ah + bh) / 2 - ROLE_ORBIT_CARD_GAP.y);
-  const air: OrbitAir = { centre: Infinity, orbit: Infinity, across: Infinity, acrossAtRest: Infinity };
-  for (const orbit of orbits) {
-    const steps = orbit.count > 3 ? [1, 2] : orbit.count > 1 ? [1] : [];
-    for (const phase of PHASES) {
-      const p = on(orbit.ring, phase);
-      air.centre = Math.min(air.centre, Math.hypot(Math.max(0, Math.abs(p.x) - orbit.width / 2), Math.max(0, Math.abs(p.y) - orbit.height / 2)) - ROLE_ORBIT_CENTRE_CLEARANCE);
-      for (const step of steps) air.orbit = Math.min(air.orbit, between(p, orbit.width, orbit.height, on(orbit.ring, phase + (step * 2 * Math.PI) / orbit.count), orbit.width, orbit.height));
-    }
-  }
-  if (withMotionAcross) {
-    for (let index = 1; index < orbits.length; index += 1) {
-      const inner = orbits[index - 1], outer = orbits[index];
-      for (const a of CROSS_PHASES) for (const b of CROSS_PHASES) air.across = Math.min(air.across, between(on(inner.ring, a), inner.width, inner.height, on(outer.ring, b), outer.width, outer.height));
-    }
-  }
-  const rings = new Map(layout.rings.map(ring => [ring.index, ring]));
-  for (const a of layout.nodes) for (const b of layout.nodes) if (b.ringIndex > a.ringIndex) air.acrossAtRest = Math.min(air.acrossAtRest, between(on(rings.get(a.ringIndex)!, a.angle), a.width, a.height + ROLE_ORBIT_CARD_HEIGHT_ALLOWANCE, on(rings.get(b.ringIndex)!, b.angle), b.width, b.height + ROLE_ORBIT_CARD_HEIGHT_ALLOWANCE));
-  return air;
+/** The orbits with their cards as drawn (the estimate plus the height allowance); an orbit's largest card stands for it across orbits. */
+function orbitsOf(layout: CapabilityCosmosLayout): Orbit[] {
+  return layout.rings.map(ring => {
+    const cards = layout.nodes.filter(node => node.ringIndex === ring.index).map(node => ({ angle: node.angle, width: node.width, height: node.height + ROLE_ORBIT_CARD_HEIGHT_ALLOWANCE }));
+    return { ring, cards, width: Math.max(0, ...cards.map(card => card.width)), height: Math.max(0, ...cards.map(card => card.height)) };
+  }).filter(orbit => orbit.cards.length > 0);
 }
 
-export function compactRoleOrbit(layout: CapabilityCosmosLayout, target: number = ROLE_ORBIT_COMPACTNESS): { layout: CapabilityCosmosLayout; compactness: RoleOrbitCompactness } {
-  const unchanged = { layout, compactness: { x: 1, y: 1 } };
-  if (layout.staticPositions || layout.nodes.length === 0) return unchanged;
-  const packed = orbitAir(layout, { x: 1, y: 1 }, true);
-  const inMotion = packed.across >= 0;
-  const holds = (air: OrbitAir): boolean => air.centre >= 0 && air.orbit >= 0 && (inMotion ? air.across >= 0 : air.acrossAtRest >= Math.min(0, packed.acrossAtRest));
-  const first = Math.round(target * 100);
-  for (let sx = first; sx <= 100; sx += 1) {
-    // A horizontal factor that fails with the vertical axis left as packed is not tried with any smaller vertical one.
-    if (sx < 100 && !holds(orbitAir(layout, { x: sx / 100, y: 1 }, inMotion))) continue;
-    for (let sy = first; sy <= 100; sy += 1) {
-      if (sx === 100 && sy === 100) return unchanged;
-      const k = { x: sx / 100, y: sy / 100 };
-      if (!holds(orbitAir(layout, k, inMotion))) continue;
-      return {
-        compactness: k,
-        layout: {
-          ...layout,
-          rings: layout.rings.map(ring => ({ ...ring, radiusX: round(ring.radiusX * k.x), radiusY: round(ring.radiusY * k.y) })),
-          nodes: layout.nodes.map(node => ({ ...node, x: round(layout.centerX + (node.x - layout.centerX) * k.x), y: round(layout.centerY + (node.y - layout.centerY) * k.y) }))
-        }
-      };
+/** The point of an orbit at a phase, unscaled. */
+const onRing = (ring: Orbit["ring"], angle: number): Point => ({ x: Math.cos(angle) * ring.radiusX, y: Math.sin(angle) * ring.radiusY });
+
+/** The packing's own air between neighbouring orbits: in every phase pair (they turn at their own periods) and between any two cards at rest. */
+function packedAcross(layout: CapabilityCosmosLayout, orbits: Orbit[]): { inMotion: number; atRest: number } {
+  const between = (p: Point, aw: number, ah: number, q: Point, bw: number, bh: number): number => Math.max(Math.abs(p.x - q.x) - (aw + bw) / 2 - ROLE_ORBIT_CARD_GAP.x, Math.abs(p.y - q.y) - (ah + bh) / 2 - ROLE_ORBIT_CARD_GAP.y);
+  let inMotion = Infinity, atRest = Infinity;
+  for (let index = 1; index < orbits.length; index += 1) {
+    const inner = orbits[index - 1], outer = orbits[index];
+    for (const a of CROSS_PHASES) for (const b of CROSS_PHASES) inMotion = Math.min(inMotion, between(onRing(inner.ring, a), inner.width, inner.height, onRing(outer.ring, b), outer.width, outer.height));
+  }
+  const rings = new Map(layout.rings.map(ring => [ring.index, ring]));
+  for (const a of layout.nodes) for (const b of layout.nodes) if (b.ringIndex > a.ringIndex) atRest = Math.min(atRest, between(onRing(rings.get(a.ringIndex)!, a.angle), a.width, a.height + ROLE_ORBIT_CARD_HEIGHT_ALLOWANCE, onRing(rings.get(b.ringIndex)!, b.angle), b.width, b.height + ROLE_ORBIT_CARD_HEIGHT_ALLOWANCE));
+  return { inMotion, atRest };
+}
+
+/**
+ * The least vertical factor that keeps every air at the horizontal factor kx (Infinity above 1), solved in closed form where the
+ * motion allows it, so no phase between two readings is left unread (PINK §3.45 D-RO-1):
+ *   centre   a card keeps the centre clear while its centre stays outside the card rectangle widened by the clearance C (a rounded
+ *            rectangle); the orbit (kx·Rx, ky·Ry) does so in every phase exactly when it encloses that shape, i.e. every point
+ *            (w/2 + C·cos θ, h/2 + C·sin θ) of its corner arc: ky ≥ (h/2 + C·sin θ) / (Ry·√(1 − ((w/2 + C·cos θ) / (kx·Rx))²)).
+ *   orbit    two cards of one orbit, Δ apart in phase, stand at (Dx·sin u, Dy·cos u) from each other over the turn, with
+ *            Dx = 2·kx·Rx·|sin(Δ/2)| and Dy = 2·ky·Ry·|sin(Δ/2)|; they keep the air W × H (half sizes plus the gap) in every phase
+ *            exactly when (W/Dx)² + (H/Dy)² ≤ 1: ky ≥ H / (2·Ry·|sin(Δ/2)|·√(1 − (W/Dx)²)).
+ *   across   neighbouring orbits turn at their own periods: every phase pair on the 5° grid where the packing kept them apart in
+ *            motion, at rest (never closer than the packing) where it did not; two cards keep their air when
+ *            max(kx·|ΔX| − W, ky·|ΔY| − H) ≥ floor, so where the horizontal term falls short, ky ≥ (H + floor) / |ΔY|.
+ */
+function leastVertical(layout: CapabilityCosmosLayout, orbits: Orbit[], kx: number, packed: { inMotion: number; atRest: number }): number {
+  let least = 0;
+  const pair = (dx: number, w: number, dy: number, h: number, floor: number): void => {
+    if (kx * dx - w >= floor) return;
+    least = Math.max(least, dy > 0 ? (h + floor) / dy : Infinity);
+  };
+  const C = ROLE_ORBIT_CENTRE_CLEARANCE;
+  for (const orbit of orbits) {
+    const rx = kx * orbit.ring.radiusX, ry = orbit.ring.radiusY;
+    orbit.cards.forEach((card, index) => {
+      for (const theta of CORNER_ARC) {
+        const rest = 1 - ((card.width / 2 + C * Math.cos(theta)) / rx) ** 2;
+        least = Math.max(least, rest > 0 ? (card.height / 2 + C * Math.sin(theta)) / (ry * Math.sqrt(rest)) : Infinity);
+      }
+      for (let other = index + 1; other < orbit.cards.length; other += 1) {
+        const apart = 2 * Math.abs(Math.sin((card.angle - orbit.cards[other].angle) / 2));
+        const rest = 1 - (((card.width + orbit.cards[other].width) / 2 + ROLE_ORBIT_CARD_GAP.x) / (rx * apart)) ** 2;
+        least = Math.max(least, rest > 0 ? ((card.height + orbit.cards[other].height) / 2 + ROLE_ORBIT_CARD_GAP.y) / (ry * apart * Math.sqrt(rest)) : Infinity);
+      }
+    });
+    if (least > 1) return Infinity;
+  }
+  if (packed.inMotion >= 0) {
+    for (let index = 1; index < orbits.length; index += 1) {
+      const inner = orbits[index - 1], outer = orbits[index];
+      for (const a of CROSS_PHASES) for (const b of CROSS_PHASES) { const p = onRing(inner.ring, a), q = onRing(outer.ring, b); pair(Math.abs(p.x - q.x), (inner.width + outer.width) / 2 + ROLE_ORBIT_CARD_GAP.x, Math.abs(p.y - q.y), (inner.height + outer.height) / 2 + ROLE_ORBIT_CARD_GAP.y, 0); }
+    }
+  } else {
+    const rings = new Map(layout.rings.map(ring => [ring.index, ring]));
+    for (const a of layout.nodes) for (const b of layout.nodes) {
+      if (b.ringIndex <= a.ringIndex) continue;
+      const p = onRing(rings.get(a.ringIndex)!, a.angle), q = onRing(rings.get(b.ringIndex)!, b.angle);
+      pair(Math.abs(p.x - q.x), (a.width + b.width) / 2 + ROLE_ORBIT_CARD_GAP.x, Math.abs(p.y - q.y), (a.height + b.height) / 2 + ROLE_ORBIT_CARD_HEIGHT_ALLOWANCE + ROLE_ORBIT_CARD_GAP.y, Math.min(0, packed.atRest));
     }
   }
-  return unchanged;
+  return least > 1 ? Infinity : least;
+}
+
+export function compactRoleOrbit(layout: CapabilityCosmosLayout): { layout: CapabilityCosmosLayout; compactness: RoleOrbitCompactness } {
+  const unchanged = { layout, compactness: { x: 1, y: 1 } };
+  if (layout.staticPositions || layout.nodes.length === 0) return unchanged;
+  const orbits = orbitsOf(layout);
+  const packed = packedAcross(layout, orbits);
+  // Factors in hundredths: the least vertical one for a horizontal one, rounded up (Infinity where none holds).
+  const vertical = (sx: number): number => { const least = leastVertical(layout, orbits, sx / 100, packed); return Number.isFinite(least) ? Math.max(1, Math.ceil(least * 100 - 1e-6)) : Infinity; };
+  const atFull = vertical(100);
+  if (!Number.isFinite(atFull)) return unchanged;
+  // The smallest horizontal factor that holds at all (holding grows with the factor), then every one above it while it can still
+  // give a smaller orbit: the vertical factor never falls below its value at full width.
+  let low = 1, high = 100;
+  while (low < high) { const mid = (low + high) >> 1; if (Number.isFinite(vertical(mid))) high = mid; else low = mid + 1; }
+  const outer = layout.rings.reduce((wide, ring) => (ring.radiusX > wide.radiusX ? ring : wide));
+  let best: RoleOrbitCompactness = { x: 100, y: 100 };
+  for (let sx = low; sx <= 100 && sx * atFull < best.x * best.y; sx += 1) {
+    const sy = vertical(sx);
+    if (outer.radiusY * sy > outer.radiusX * sx) continue;
+    if (sx * sy < best.x * best.y) best = { x: sx, y: sy };
+  }
+  if (best.x === 100 && best.y === 100) return unchanged;
+  const k = { x: best.x / 100, y: best.y / 100 };
+  return {
+    compactness: k,
+    layout: {
+      ...layout,
+      rings: layout.rings.map(ring => ({ ...ring, radiusX: round(ring.radiusX * k.x), radiusY: round(ring.radiusY * k.y) })),
+      nodes: layout.nodes.map(node => ({ ...node, x: round(layout.centerX + (node.x - layout.centerX) * k.x), y: round(layout.centerY + (node.y - layout.centerY) * k.y) }))
+    }
+  };
 }
 
 /** Re-export for the renderer: the Capability Field's L1 packing (planetarium-sized cosmos of one item, etc.). */

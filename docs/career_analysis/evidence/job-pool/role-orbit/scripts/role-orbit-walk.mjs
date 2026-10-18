@@ -1,7 +1,8 @@
-// ROLE ORBIT REFINEMENT (owner "SFE — GRÜN | ROLE ORBIT REFINEMENT", 2026-10-18): browser walk against GRÜN's isolated three-mode lab
-// (../../three-modes/scripts/modes-lab.ts: disposable DB, the real server and worker, loopback Gemini stand-in, network sentinel).
-// The organization cosmos draws its role orbit closer to the centre as far as the geometry allows; the cards keep their size and
-// legibility, nothing overlaps, the navigation is unchanged. With TAG=before (the base commit) it only measures and shoots.
+// ROLE ORBIT REFINEMENT (owner "SFE — GRÜN | ROLE ORBIT REFINEMENT", 2026-10-18; "… — SECOND VISUAL REFINEMENT", 2026-10-19): browser
+// walk against GRÜN's isolated three-mode lab (../../three-modes/scripts/modes-lab.ts: disposable DB, the real server and worker,
+// loopback Gemini stand-in, network sentinel). The organization cosmos draws its role orbit in to the smallest orbit its geometry
+// carries; the cards keep their size and legibility, nothing overlaps, the navigation is unchanged. With TAG=before (the base commit)
+// it only measures and shoots.
 // Run from the repository root. Playwright: CONDYN_PLAYWRIGHT_MODULE, else resolved from the repository.
 // argv: <out dir> <lab state.json> [width height]; env TAG (before | after, default after)
 import { existsSync, readFileSync, writeFileSync } from "node:fs";
@@ -65,12 +66,12 @@ const measure = page => page.evaluate(() => {
     const orbit = orbits.reduce((best, o) => Math.abs(Math.hypot(px / o.rx, py / o.ry) - 1) < Math.abs(Math.hypot(px / best.rx, py / best.ry) - 1) ? o : best, orbits[0]);
     return { card, orbit, angle: Math.atan2(py / orbit.ry, px / orbit.rx) };
   });
-  // Neighbours on one orbit turn together: their rendered boxes keep 12 px horizontal or 20 px vertical air every half degree.
+  // The cards of one orbit turn together: every pair of rendered boxes keeps 12 px horizontal or 20 px vertical air every half degree.
   for (const orbit of orbits) {
     const on = placed.filter(p => p.orbit === orbit).sort((a, b) => a.angle - b.angle);
     if (on.length < 2) continue;
-    for (let i = 0; i < on.length; i += 1) for (const step of on.length > 3 ? [1, 2] : [1]) {
-      const a = on[i], b = on[(i + step) % on.length];
+    for (let i = 0; i < on.length; i += 1) for (let j = i + 1; j < on.length; j += 1) {
+      const a = on[i], b = on[j];
       for (let k = 0; k < 720; k += 1) {
         const phase = (k * Math.PI) / 360;
         const ax = Math.cos(a.angle + phase) * orbit.rx, ay = Math.sin(a.angle + phase) * orbit.ry, bx = Math.cos(b.angle + phase) * orbit.rx, by = Math.sin(b.angle + phase) * orbit.ry;
@@ -125,8 +126,13 @@ for (const [pool, org, count] of CASES) {
 }
 if (TAG === "after") {
   const few = rows.filter(r => r.count <= 5);
-  ok("O-5 organizations with up to five roles: the orbit is drawn 22 % closer on both axes", few.every(r => r.compactness[0] === "0.78" && r.compactness[1] === "0.78"), few.map(r => `${r.count}:${r.compactness.join("/")}`).join(" "));
-  ok("O-6 every organization: the orbit is never widened, the compactness is in [0.78, 1]", rows.every(r => r.compactness.every(v => Number(v) >= 0.78 && Number(v) <= 1)), rows.map(r => `${r.count}:${r.compactness.join("/")}`).join(" "));
+  ok("O-5 organizations with up to five roles: the long axis is drawn in further than the first pass's 0.78", few.every(r => Number(r.compactness[0]) < 0.78 && Number(r.compactness[1]) <= 1), few.map(r => `${r.count}:${r.compactness.join("/")}`).join(" "));
+  ok("O-6 every organization: the orbit is never widened (compactness in (0, 1]) and lies at least as wide as tall", rows.every(r => r.compactness.every(v => Number(v) > 0 && Number(v) <= 1) && r.orbits.every(([rx, ry]) => rx >= ry - 0.1)), rows.map(r => `${r.count}:${r.compactness.join("/")} ${r.orbits.map(o => o.join("×")).join(",")}`).join(" "));
+  // Drawn in to its limit: over the turn the least rendered air to the centre (beyond the 108 px clearance, i.e. 21 px past the
+  // 87 px disc) or between two cards is within one factor step and the height allowance (a drawn card is up to 12 px lower than the
+  // card the layout reads).
+  const drawnIn = rows.filter(r => r.compactness.some(v => v !== "1.00"));
+  ok("O-9 every drawn-in orbit is at its limit: the least air over a turn is under 20 px", drawnIn.every(r => Math.min(r.turnCentreGap - 21, r.turnOrbitAir ?? Infinity) < 20), drawnIn.map(r => `${r.org}:${r.turnCentreGap - 21}/${r.turnOrbitAir ?? "–"}`).join(" "));
   const full = rows.filter(r => /^org_orbit_\d+$/.test(r.org) && r.layout === "full" && r.compactness.some(v => v !== "1.00"));
   ok("O-7 card sizes come from the packing, not the compactness (the same box for the same title at every count)", new Set(full.map(r => r.cardSizes[0])).size === 1, full.map(r => r.cardSizes[0]).join(" "));
   if (BEFORE) ok("O-8 every card keeps its size against the base commit (± 1 px of sub-pixel rounding)", rows.every(r => sameSizes(BEFORE.rows.find(b => b.org === r.org)?.cardSizes ?? [], r.cardSizes)));

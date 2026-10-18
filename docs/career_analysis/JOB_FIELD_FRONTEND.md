@@ -699,7 +699,7 @@ renders of the Capability shell differ only by the selector and the shell marker
 
 **Observation O-JF-PANEL (documented only):** at 1280 px width the organization cosmos' orbit is wide enough that rotating role
 cards pass over the field's left info panel (pool / organization line, key hints) for part of their turn; at 1600 px they do not.
-Not changed in this pass (the orbit's width is the layout's). Reduced by the role orbit refinement (§13.2.30).
+Not changed in this pass (the orbit's width is the layout's). Reduced by the role orbit refinement (§13.2.30, §13.2.31).
 
 #### 13.2.7 Decision Loop Labs brand core (owner "ONE FIELD GRAMMAR. NEW BRAND CORE.", GO 2026-10-13)
 
@@ -1396,6 +1396,9 @@ including PERSON, JOB, a withheld comparison and loading.
 
 #### 13.2.30 Role orbit refinement (owner "SFE — GRÜN | ROLE ORBIT REFINEMENT", 2026-10-18)
 
+*Geometry superseded by §13.2.31 (owner visual review of 7a51d89: not accepted, the orbit still too large); the record below is the
+first pass as validated by PINK §3.45 / §3.46.*
+
 On `frontend/demo-ui-fix` 0b5a8ea, GRÜN only. The organization cosmos' role orbit was the shared L1 packing fitted to the whole level
 box: a wide, flat ellipse (at 1600 × 1000 662.5 × 298 px, at 1280 × 720 502.5 × 278 px), so the role cards sat far from their
 organization. Minimal delta: the orbit is drawn closer to the centre; nothing else changes.
@@ -1434,6 +1437,58 @@ organization. Minimal delta: the orbit is drawn closer to the centre; nothing el
   titles at 1280).
 - **Regression and e2e.** tsc 0; ESLint unchanged in `SyntxField.tsx`, clean in the new files; regression 69 files / 505 green;
   workflow e2e 10/10 ×2.
+
+#### 13.2.31 Role orbit — second visual refinement (owner "SFE — GRÜN | ROLE ORBIT — SECOND VISUAL REFINEMENT", 2026-10-19)
+
+On `frontend/role-orbit` 7a51d89, GRÜN only. The owner's visual review of 7a51d89 (Kestrel Logistics, three roles): not accepted —
+after 22 % the orbit was still clearly too large and the role cards too far from the organization centre. Wanted: a much more compact,
+visually coherent constellation, the smallest sensible orbit reconstructed from card sizes, role count, motion and minimum air, no
+further flat percentage.
+
+- **Reconstruction.** The air rules of §13.2.30 already state every geometric limit: the cards keep 108 px from the centre point (the
+  174 px disc, its 4 + 1 px rings, 16 px air), two cards 12 px horizontal / 20 px vertical air, every card measured as drawn
+  (estimate + 12 px, PINK §3.45), in every phase of the turn. What stopped at 0.78 was only the search, which began there. Mapped
+  over all factor pairs, the pairs that hold form an up-set (every air is a factor times a fixed length less a fixed size, so it grows
+  with each factor), and its lower edge does not depend on the level box: for Kestrel the smallest orbit is about 245 × 195 px at
+  1600 and at 1280 alike, against 516.8 × 232.4 / 392 × 216.8 after the first pass and 662.5 × 298 / 502.5 × 278 packed.
+- **Geometry.** `compactRoleOrbit` now takes, of all pairs that hold, the smallest drawn orbit: the least product of the two factors
+  (the area of the outer orbit; at a tie the narrower one), provided the orbit stays at least as wide as it is tall (every orbit of the
+  field is a lying ellipse). `ROLE_ORBIT_COMPACTNESS` and the `target` parameter are gone. Each air is read against every card with
+  its own size and every pair of cards on an orbit (no longer the orbit's largest card and the next two neighbours), so mixed card
+  sizes draw in as far as they really allow.
+- **Closed form, no reading gaps.** With the orbit at its limit, a check every half degree left room between two checks (−0.56 px in
+  the seeded title test). Both same-orbit rules are therefore solved exactly instead of sampled: a card keeps the centre clear in every
+  phase exactly when its orbit encloses the card rectangle widened by the clearance (its corner arc, read every quarter degree, where
+  the bound is smooth); two cards Δ apart in phase stand at (Dx·sin u, Dy·cos u) from each other with Dx = 2·kx·Rx·|sin(Δ/2)|,
+  Dy = 2·ky·Ry·|sin(Δ/2)|, and keep the air W × H in every phase exactly when (W/Dx)² + (H/Dy)² ≤ 1. For a horizontal factor this
+  gives the least vertical factor directly, in one pass.
+- **Across orbits (PINK §3.46 O-RO-CROSS-GRID).** Neighbouring orbits turn at their own periods; their phase pairs are now read on a
+  5° grid (formerly 15°). In practice no layout with more than one orbit is drawn in (0 of 245 multi-orbit layouts, 1 – 60 roles at
+  six boxes): their packing does not hold the air, so they stay as packed.
+- **Cost (GELB / PINK O-RO-COST).** Warm, at most about 11 ms per layout (8 – 10 roles); 1 – 5 roles 1 – 3 ms; crowded and multi-orbit
+  layouts end at the first reading (0 – 5 ms). The first pass took up to 85 ms (156.5 ms under load).
+- **Unchanged.** Everything §13.2.30 lists as unchanged; the attributes `data-orbit-compactness-x` / `-y` keep their meaning.
+- **Measured** (`evidence/job-pool/role-orbit/README.md`, packed → first pass → now): Kestrel at 1600 × 1000 662.5 × 298 → 516.8 ×
+  232.4 → 251.8 × 190.7 px (0.38 / 0.64), mean card distance 495 → 386 → 222 px; at 1280 × 720 502.5 × 278 → 392 × 216.8 → 246.2 ×
+  194.6 (0.49 / 0.70), 397 → 310 → 221 px. 8 roles 395.3 × 220.5 at 1600, 414.8 × 211.3 at 1280; 12 short titles 401.3 × 284.6 /
+  402.6 × 283.1; 8 long titles 510.7 × 268.8 at 1600 (a smaller area than the first pass's 498.1 × 286.1, slightly wider), unchanged
+  474.3 × 269 at 1280; 14 roles unchanged. O-JF-PANEL: Kestrel passes under the orientation surface in 0 of 216 phases at 1600 (first
+  pass 9) and 3 at 1280 (19); 8 roles 0 of 576 at 1600 (20), 51 at 1280 (65).
+
+**Proof** (no live Gemini, :3017, :41831, :41851 and the owner's review lab :41803 untouched):
+- **Unit tests.** `test/career/job-pool/syntx-role-orbit.test.ts` (7): for 1, 2, 3, 5 roles (mixed and Kestrel titles) the long axis
+  drawn in beyond 0.78 and, for the same cards, orbits of the same area (± 3 %) at five boxes whose packed orbits differ by up to 320 px;
+  minimality — one step closer on either axis breaks an air (read between the layout's own readings, within 0.5 px) or stands the
+  orbit upright, and every orbit lies at least as wide as tall (> 100 edges, three title sets × six boxes × nine counts); the earlier
+  invariants (cards, phases, periods, centre; air for three title sets and six seeded random title sets every quarter degree; unchanged
+  where crowded, for the grid, for an empty organization; deterministic). `syntx-field-ssr.test.tsx`: 0.42 / 0.95, orbit 207.69 × 176.7.
+- **Independent dense reading** (scratch, not committed): 616 layouts from eight seeded title sets (3 – 110 characters) × seven boxes ×
+  eleven counts, 391 drawn in, every 0.1° offset from every grid: least air on the layout's card +0.015 px to the centre and +0.023 px
+  between cards, on the drawn card (+11.25) +0.32 / +0.48 px; none upright.
+- **Lab walk.** 59/59 at 1600 × 1000 and at 1280 × 720 (`evidence/job-pool/role-orbit/`): now every pair of rendered cards on an
+  orbit every half degree (O-3b), O-5 beyond 0.78 for up to five roles, O-6 never widened and lying, O-9 at the limit (least rendered
+  air under 20 px; Kestrel 5 – 6 px beyond the clearance). First-pass shots and results kept as `pass1-*`.
+- **Regression and e2e.** tsc 0; ESLint clean in the changed files; regression 69 files / 506 green; workflow e2e 10/10 ×2.
 
 ### 13.3 DOM contract (PINK BR-1 … BR-5; GELB conditions a/b)
 
@@ -1611,3 +1666,4 @@ observation point. Readable labels wrap at word boundaries (`wrapLines`), never 
 | 2026-10-15 | GELB hardening d54c718 / 4e72260 merged (e83a9e4) | §13.2.28: run scope identity and SCOPE_UNAVAILABLE fall into UNRESOLVED; DRAFT e2e step waits for rest | 10 files / 163; walk 46/46; workflow e2e 10/10 ×3 |
 | 2026-10-15 | DEMO UI FIX + SEMIONTIC REFINEMENT (owner, on integration 5434c01) | §13.2.29: Escape at any time (field root keeps the focus, document fallback), pool list below the orientation surface, surface z-index 47; NO ANALYSIS state line as a legible nerve signal (4.8 s, opacity/transform, LIVE only), the field's own statement legible and clear of the non-claims | tsc 0; regression 68 files / 498 (a second run hit the 10 s `beforeAll` limit of GELB's `job-structure.postgres.test.ts` under load, also on the unchanged 5434c01; 11.7 s with a longer limit, green); workflow e2e 10/10 ×2; lab walk 36/36 at 1280 and 1600 (modal-layer guard after GELB's review); 0 Gemini hosts |
 | 2026-10-18 | Role orbit refinement (owner "SFE — GRÜN | ROLE ORBIT REFINEMENT", on frontend/demo-ui-fix 0b5a8ea) | §13.2.30: the organization cosmos draws its role orbit 22 % closer per axis as far as the geometry allows (`compactRoleOrbit`; cards, phases, periods, navigation unchanged; `data-orbit-compactness-x/-y`); PINK D-RO-1 fixed (half-degree checks, drawn card height) | tsc 0; new 1 file / 6 + SSR 1; regression 69 files / 505; workflow e2e 10/10 ×2; lab walk 58/58 at 1600 and 1280; 0 Gemini hosts |
+| 2026-10-19 | Role orbit — second visual refinement (owner "SFE — GRÜN | ROLE ORBIT — SECOND VISUAL REFINEMENT", on frontend/role-orbit 7a51d89) | §13.2.31: the role orbit drawn in to the smallest orbit its geometry carries (least area of the pairs that hold, lying; per card and per pair, closed form on one orbit, 5° across orbits); Kestrel 516.8 × 232.4 → 251.8 × 190.7 at 1600 | tsc 0; unit 7 + SSR 10; regression 69 files / 506; workflow e2e 10/10 ×2; lab walk 59/59 at 1600 and 1280; 0 Gemini hosts |

@@ -6,14 +6,14 @@
    "org": "org_kestrel",
    "count": 3,
    "compactness": [
-    "0.78",
-    "0.78"
+    "0.49",
+    "0.70"
    ],
    "layout": "full",
    "orbits": [
     [
-     392,
-     216.8
+     246.2,
+     194.6
     ]
    ],
    "cards": 3,
@@ -22,81 +22,81 @@
     "158×83",
     "219×88"
    ],
-   "centreGap": 85,
-   "pairGap": 223,
-   "meanDistance": 310,
-   "turnCentreGap": 75,
-   "turnOrbitAir": 191.7,
-   "turnTopSpace": 223,
-   "turnBottomSpace": 215,
-   "turnSurfacePhases": 19
+   "centreGap": 33,
+   "pairGap": 190,
+   "meanDistance": 221,
+   "turnCentreGap": 26,
+   "turnOrbitAir": 108.6,
+   "turnTopSpace": 245,
+   "turnBottomSpace": 237,
+   "turnSurfacePhases": 3
   },
   {
    "org": "org_pink_alpha",
    "count": 1,
    "compactness": [
-    "0.78",
-    "0.78"
+    "0.44",
+    "0.67"
    ],
    "layout": "full",
    "orbits": [
     [
-     406.4,
-     216.8
+     229.2,
+     186.3
     ]
    ],
    "cards": 1,
    "cardSizes": [
     "182×98"
    ],
-   "centreGap": 80,
+   "centreGap": 50,
    "pairGap": null,
-   "meanDistance": 218,
-   "turnCentreGap": 74,
+   "meanDistance": 187,
+   "turnCentreGap": 22,
    "turnOrbitAir": null,
-   "turnTopSpace": 218,
-   "turnBottomSpace": 210,
-   "turnSurfacePhases": 7
+   "turnTopSpace": 249,
+   "turnBottomSpace": 241,
+   "turnSurfacePhases": 0
   },
   {
    "org": "org_orbit_1",
    "count": 1,
    "compactness": [
-    "0.78",
-    "0.78"
+    "0.49",
+    "0.70"
    ],
    "layout": "full",
    "orbits": [
     [
-     392,
-     216.8
+     246.2,
+     194.6
     ]
    ],
    "cards": 1,
    "cardSizes": [
     "219×88"
    ],
-   "centreGap": 85,
+   "centreGap": 63,
    "pairGap": null,
-   "meanDistance": 219,
-   "turnCentreGap": 75,
+   "meanDistance": 195,
+   "turnCentreGap": 26,
    "turnOrbitAir": null,
-   "turnTopSpace": 223,
-   "turnBottomSpace": 215,
-   "turnSurfacePhases": 7
+   "turnTopSpace": 245,
+   "turnBottomSpace": 237,
+   "turnSurfacePhases": 2
   },
   {
    "org": "org_orbit_2",
    "count": 2,
    "compactness": [
-    "0.78",
-    "0.78"
+    "0.49",
+    "0.70"
    ],
    "layout": "full",
    "orbits": [
     [
-     392,
-     216.8
+     246.2,
+     194.6
     ]
    ],
    "cards": 2,
@@ -104,27 +104,27 @@
     "219×88",
     "182×98"
    ],
-   "centreGap": 80,
-   "pairGap": 340,
-   "meanDistance": 218,
-   "turnCentreGap": 74,
-   "turnOrbitAir": 241.4,
-   "turnTopSpace": 218,
-   "turnBottomSpace": 210,
-   "turnSurfacePhases": 14
+   "centreGap": 58,
+   "pairGap": 295,
+   "meanDistance": 195,
+   "turnCentreGap": 26,
+   "turnOrbitAir": 151.2,
+   "turnTopSpace": 241,
+   "turnBottomSpace": 233,
+   "turnSurfacePhases": 4
   },
   {
    "org": "org_orbit_3",
    "count": 3,
    "compactness": [
-    "0.78",
-    "0.78"
+    "0.49",
+    "0.70"
    ],
    "layout": "full",
    "orbits": [
     [
-     392,
-     216.8
+     246.2,
+     194.6
     ]
    ],
    "cards": 3,
@@ -133,27 +133,27 @@
     "182×98",
     "147×83"
    ],
-   "centreGap": 85,
-   "pairGap": 224,
-   "meanDistance": 310,
-   "turnCentreGap": 74,
-   "turnOrbitAir": 189.8,
-   "turnTopSpace": 218,
-   "turnBottomSpace": 210,
-   "turnSurfacePhases": 19
+   "centreGap": 41,
+   "pairGap": 192,
+   "meanDistance": 221,
+   "turnCentreGap": 26,
+   "turnOrbitAir": 108.9,
+   "turnTopSpace": 241,
+   "turnBottomSpace": 233,
+   "turnSurfacePhases": 4
   },
   {
    "org": "org_orbit_5",
    "count": 5,
    "compactness": [
-    "0.78",
-    "0.78"
+    "0.53",
+    "0.72"
    ],
    "layout": "full",
    "orbits": [
     [
-     380.6,
-     216.8
+     258.6,
+     200.2
     ]
    ],
    "cards": 5,
@@ -164,27 +164,27 @@
     "248×88",
     "133×83"
    ],
-   "centreGap": 85,
-   "pairGap": 138,
-   "meanDistance": 304,
-   "turnCentreGap": 70,
-   "turnOrbitAir": 80.4,
-   "turnTopSpace": 218,
-   "turnBottomSpace": 210,
-   "turnSurfacePhases": 30
+   "centreGap": 30,
+   "pairGap": 60,
+   "meanDistance": 230,
+   "turnCentreGap": 26,
+   "turnOrbitAir": 30.1,
+   "turnTopSpace": 235,
+   "turnBottomSpace": 227,
+   "turnSurfacePhases": 12
   },
   {
    "org": "org_orbit_8",
    "count": 8,
    "compactness": [
-    "0.84",
-    "1.00"
+    "0.85",
+    "0.76"
    ],
    "layout": "full",
    "orbits": [
     [
-     409.9,
-     278
+     414.8,
+     211.3
     ]
    ],
    "cards": 8,
@@ -198,14 +198,14 @@
     "195×88",
     "151×83"
    ],
-   "centreGap": 132,
-   "pairGap": 78,
-   "meanDistance": 347,
-   "turnCentreGap": 126,
-   "turnOrbitAir": 26,
-   "turnTopSpace": 157,
-   "turnBottomSpace": 149,
-   "turnSurfacePhases": 65
+   "centreGap": 80,
+   "pairGap": 59,
+   "meanDistance": 321,
+   "turnCentreGap": 69,
+   "turnOrbitAir": 5.4,
+   "turnTopSpace": 224,
+   "turnBottomSpace": 216,
+   "turnSurfacePhases": 51
   },
   {
    "org": "org_orbit_14",
@@ -240,7 +240,7 @@
     "155×83",
     "164×98",
     "219×88",
-    "182×98",
+    "182×97",
     "147×83",
     "248×88",
     "133×83",
@@ -250,11 +250,11 @@
     "160×88",
     "180×98"
    ],
-   "centreGap": 108,
+   "centreGap": 107,
    "pairGap": -13,
    "meanDistance": 485,
    "turnCentreGap": 18,
-   "turnOrbitAir": -78.2,
+   "turnOrbitAir": -78.1,
    "turnTopSpace": 113,
    "turnBottomSpace": 105,
    "turnSurfacePhases": 110
@@ -288,7 +288,7 @@
    "pairGap": 68,
    "meanDistance": 379,
    "turnCentreGap": 116,
-   "turnOrbitAir": 7.9,
+   "turnOrbitAir": 8.4,
    "turnTopSpace": 162,
    "turnBottomSpace": 154,
    "turnSurfacePhases": 80
@@ -297,14 +297,14 @@
    "org": "org_orbit_short_12",
    "count": 12,
    "compactness": [
-    "0.78",
-    "0.95"
+    "0.74",
+    "0.99"
    ],
    "layout": "full",
    "orbits": [
     [
-     424.3,
-     271.7
+     402.6,
+     283.1
     ]
    ],
    "cards": 12,
@@ -322,13 +322,13 @@
     "136×83",
     "133×83"
    ],
-   "centreGap": 142,
-   "pairGap": 24,
-   "meanDistance": 352,
-   "turnCentreGap": 138,
-   "turnOrbitAir": 1.1,
-   "turnTopSpace": 171,
-   "turnBottomSpace": 163,
+   "centreGap": 153,
+   "pairGap": 23,
+   "meanDistance": 345,
+   "turnCentreGap": 148,
+   "turnOrbitAir": 0.8,
+   "turnTopSpace": 159,
+   "turnBottomSpace": 151,
    "turnSurfacePhases": 84
   }
  ]

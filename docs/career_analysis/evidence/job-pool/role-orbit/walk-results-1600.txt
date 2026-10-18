@@ -1,52 +1,53 @@
 PASS O-1 org_kestrel (3 roles): every role card present, one orbit sign per role — 3
-PASS O-2 org_kestrel (3 roles): no card covers the centre body or another card (at rest) — centre 101 px, pair 275
-PASS O-3 org_kestrel (3 roles): over a whole turn every card keeps ≥ 16 px to the centre disc and stays inside the level — centre 95, top 228, bottom 220
-PASS O-3b org_kestrel (3 roles): over a whole turn neighbours on the orbit keep their air (rendered boxes, 12 px / 20 px, every half degree) — 238.2
-PASS O-4 org_kestrel (3 roles): in motion (3 frames) no overlap — 99/290 97/295 97/304
+PASS O-2 org_kestrel (3 roles): no card covers the centre body or another card (at rest) — centre 37 px, pair 184
+PASS O-3 org_kestrel (3 roles): over a whole turn every card keeps ≥ 16 px to the centre disc and stays inside the level — centre 27, top 269, bottom 261
+PASS O-3b org_kestrel (3 roles): over a whole turn neighbours on the orbit keep their air (rendered boxes, 12 px / 20 px, every half degree) — 109.4
+PASS O-4 org_kestrel (3 roles): in motion (3 frames) no overlap — 40/173 42/163 45/151
 PASS O-1 org_pink_alpha (1 role): every role card present, one orbit sign per role — 1
-PASS O-2 org_pink_alpha (1 role): no card covers the centre body or another card (at rest) — centre 96 px, pair null
-PASS O-3 org_pink_alpha (1 role): over a whole turn every card keeps ≥ 16 px to the centre disc and stays inside the level — centre 93, top 223, bottom 215
+PASS O-2 org_pink_alpha (1 role): no card covers the centre body or another card (at rest) — centre 49 px, pair null
+PASS O-3 org_pink_alpha (1 role): over a whole turn every card keeps ≥ 16 px to the centre disc and stays inside the level — centre 22, top 270, bottom 262
 PASS O-3b org_pink_alpha (1 role): over a whole turn neighbours on the orbit keep their air (rendered boxes, 12 px / 20 px, every half degree) — null
-PASS O-4 org_pink_alpha (1 role): in motion (3 frames) no overlap — 96/null 95/null 93/null
+PASS O-4 org_pink_alpha (1 role): in motion (3 frames) no overlap — 49/null 48/null 46/null
 PASS O-1 org_orbit_1 (1 role): every role card present, one orbit sign per role — 1
-PASS O-2 org_orbit_1 (1 role): no card covers the centre body or another card (at rest) — centre 101 px, pair null
-PASS O-3 org_orbit_1 (1 role): over a whole turn every card keeps ≥ 16 px to the centre disc and stays inside the level — centre 95, top 228, bottom 220
+PASS O-2 org_orbit_1 (1 role): no card covers the centre body or another card (at rest) — centre 59 px, pair null
+PASS O-3 org_orbit_1 (1 role): over a whole turn every card keeps ≥ 16 px to the centre disc and stays inside the level — centre 27, top 269, bottom 261
 PASS O-3b org_orbit_1 (1 role): over a whole turn neighbours on the orbit keep their air (rendered boxes, 12 px / 20 px, every half degree) — null
-PASS O-4 org_orbit_1 (1 role): in motion (3 frames) no overlap — 101/null 100/null 98/null
+PASS O-4 org_orbit_1 (1 role): in motion (3 frames) no overlap — 59/null 59/null 57/null
 PASS O-1 org_orbit_2 (2 roles): every role card present, one orbit sign per role — 2
-PASS O-2 org_orbit_2 (2 roles): no card covers the centre body or another card (at rest) — centre 96 px, pair 370
-PASS O-3 org_orbit_2 (2 roles): over a whole turn every card keeps ≥ 16 px to the centre disc and stays inside the level — centre 93, top 223, bottom 215
-PASS O-3b org_orbit_2 (2 roles): over a whole turn neighbours on the orbit keep their air (rendered boxes, 12 px / 20 px, every half degree) — 293.6
-PASS O-4 org_orbit_2 (2 roles): in motion (3 frames) no overlap — 93/365 92/361 94/356
+PASS O-2 org_orbit_2 (2 roles): no card covers the centre body or another card (at rest) — centre 55 px, pair 288
+PASS O-3 org_orbit_2 (2 roles): over a whole turn every card keeps ≥ 16 px to the centre disc and stays inside the level — centre 27, top 265, bottom 257
+PASS O-3b org_orbit_2 (2 roles): over a whole turn neighbours on the orbit keep their air (rendered boxes, 12 px / 20 px, every half degree) — 152
+PASS O-4 org_orbit_2 (2 roles): in motion (3 frames) no overlap — 53/284 51/281 49/277
 PASS O-1 org_orbit_3 (3 roles): every role card present, one orbit sign per role — 3
-PASS O-2 org_orbit_3 (3 roles): no card covers the centre body or another card (at rest) — centre 101 px, pair 271
-PASS O-3 org_orbit_3 (3 roles): over a whole turn every card keeps ≥ 16 px to the centre disc and stays inside the level — centre 93, top 223, bottom 215
-PASS O-3b org_orbit_3 (3 roles): over a whole turn neighbours on the orbit keep their air (rendered boxes, 12 px / 20 px, every half degree) — 236
-PASS O-4 org_orbit_3 (3 roles): in motion (3 frames) no overlap — 101/271 100/279 98/285
+PASS O-2 org_orbit_3 (3 roles): no card covers the centre body or another card (at rest) — centre 44 px, pair 188
+PASS O-3 org_orbit_3 (3 roles): over a whole turn every card keeps ≥ 16 px to the centre disc and stays inside the level — centre 27, top 265, bottom 257
+PASS O-3b org_orbit_3 (3 roles): over a whole turn neighbours on the orbit keep their air (rendered boxes, 12 px / 20 px, every half degree) — 110.1
+PASS O-4 org_orbit_3 (3 roles): in motion (3 frames) no overlap — 44/188 42/181 39/170
 PASS O-1 org_orbit_5 (5 roles): every role card present, one orbit sign per role — 5
-PASS O-2 org_orbit_5 (5 roles): no card covers the centre body or another card (at rest) — centre 101 px, pair 162
-PASS O-3 org_orbit_5 (5 roles): over a whole turn every card keeps ≥ 16 px to the centre disc and stays inside the level — centre 93, top 223, bottom 215
-PASS O-3b org_orbit_5 (5 roles): over a whole turn neighbours on the orbit keep their air (rendered boxes, 12 px / 20 px, every half degree) — 115.7
-PASS O-4 org_orbit_5 (5 roles): in motion (3 frames) no overlap — 101/162 100/157 98/150
+PASS O-2 org_orbit_5 (5 roles): no card covers the centre body or another card (at rest) — centre 30 px, pair 59
+PASS O-3 org_orbit_5 (5 roles): over a whole turn every card keeps ≥ 16 px to the centre disc and stays inside the level — centre 26, top 256, bottom 248
+PASS O-3b org_orbit_5 (5 roles): over a whole turn neighbours on the orbit keep their air (rendered boxes, 12 px / 20 px, every half degree) — 29.9
+PASS O-4 org_orbit_5 (5 roles): in motion (3 frames) no overlap — 30/59 28/66 26/77
 PASS O-1 org_orbit_8 (8 roles): every role card present, one orbit sign per role — 8
-PASS O-2 org_orbit_8 (8 roles): no card covers the centre body or another card (at rest) — centre 101 px, pair 75
-PASS O-3 org_orbit_8 (8 roles): over a whole turn every card keeps ≥ 16 px to the centre disc and stays inside the level — centre 93, top 223, bottom 215
-PASS O-3b org_orbit_8 (8 roles): over a whole turn neighbours on the orbit keep their air (rendered boxes, 12 px / 20 px, every half degree) — 27.4
-PASS O-4 org_orbit_8 (8 roles): in motion (3 frames) no overlap — 98/64 96/59 95/56
+PASS O-2 org_orbit_8 (8 roles): no card covers the centre body or another card (at rest) — centre 89 px, pair 65
+PASS O-3 org_orbit_8 (8 roles): over a whole turn every card keeps ≥ 16 px to the centre disc and stays inside the level — centre 75, top 235, bottom 227
+PASS O-3b org_orbit_8 (8 roles): over a whole turn neighbours on the orbit keep their air (rendered boxes, 12 px / 20 px, every half degree) — 4.8
+PASS O-4 org_orbit_8 (8 roles): in motion (3 frames) no overlap — 86/59 82/52 78/42
 PASS O-1 org_orbit_14 (14 roles): every role card present, one orbit sign per role — 14
 PASS O-2 org_orbit_14 (14 roles): no room to draw in — the orbit stays exactly as packed — 324,149 648,298
 PASS O-1 org_orbit_long_8 (8 roles): every role card present, one orbit sign per role — 8
-PASS O-2 org_orbit_long_8 (8 roles): no card covers the centre body or another card (at rest) — centre 146 px, pair 68
-PASS O-3 org_orbit_long_8 (8 roles): over a whole turn every card keeps ≥ 16 px to the centre disc and stays inside the level — centre 131, top 165, bottom 157
-PASS O-3b org_orbit_long_8 (8 roles): over a whole turn neighbours on the orbit keep their air (rendered boxes, 12 px / 20 px, every half degree) — 9.8
-PASS O-4 org_orbit_long_8 (8 roles): in motion (3 frames) no overlap — 146/68 144/55 142/47
+PASS O-2 org_orbit_long_8 (8 roles): no card covers the centre body or another card (at rest) — centre 128 px, pair 74
+PASS O-3 org_orbit_long_8 (8 roles): over a whole turn every card keeps ≥ 16 px to the centre disc and stays inside the level — centre 115, top 182, bottom 174
+PASS O-3b org_orbit_long_8 (8 roles): over a whole turn neighbours on the orbit keep their air (rendered boxes, 12 px / 20 px, every half degree) — 7.8
+PASS O-4 org_orbit_long_8 (8 roles): in motion (3 frames) no overlap — 128/74 126/63 124/53
 PASS O-1 org_orbit_short_12 (12 roles): every role card present, one orbit sign per role — 12
-PASS O-2 org_orbit_short_12 (12 roles): no card covers the centre body or another card (at rest) — centre 109 px, pair 33
-PASS O-3 org_orbit_short_12 (12 roles): over a whole turn every card keeps ≥ 16 px to the centre disc and stays inside the level — centre 108, top 224, bottom 216
-PASS O-3b org_orbit_short_12 (12 roles): over a whole turn neighbours on the orbit keep their air (rendered boxes, 12 px / 20 px, every half degree) — 2.2
-PASS O-4 org_orbit_short_12 (12 roles): in motion (3 frames) no overlap — 109/33 108/31 108/29
-PASS O-5 organizations with up to five roles: the orbit is drawn 22 % closer on both axes — 3:0.78/0.78 1:0.78/0.78 1:0.78/0.78 2:0.78/0.78 3:0.78/0.78 5:0.78/0.78
-PASS O-6 every organization: the orbit is never widened, the compactness is in [0.78, 1] — 3:0.78/0.78 1:0.78/0.78 1:0.78/0.78 2:0.78/0.78 3:0.78/0.78 5:0.78/0.78 8:0.78/0.78 14:1.00/1.00 8:0.79/0.99 12:0.78/0.78
+PASS O-2 org_orbit_short_12 (12 roles): no card covers the centre body or another card (at rest) — centre 154 px, pair 21
+PASS O-3 org_orbit_short_12 (12 roles): over a whole turn every card keeps ≥ 16 px to the centre disc and stays inside the level — centre 149, top 178, bottom 170
+PASS O-3b org_orbit_short_12 (12 roles): over a whole turn neighbours on the orbit keep their air (rendered boxes, 12 px / 20 px, every half degree) — 0.8
+PASS O-4 org_orbit_short_12 (12 roles): in motion (3 frames) no overlap — 154/21 151/31 150/36
+PASS O-5 organizations with up to five roles: the long axis is drawn in further than the first pass's 0.78 — 3:0.38/0.64 1:0.34/0.62 1:0.38/0.64 2:0.38/0.64 3:0.38/0.64 5:0.40/0.67
+PASS O-6 every organization: the orbit is never widened (compactness in (0, 1]) and lies at least as wide as tall — 3:0.38/0.64 251.8×190.7 1:0.34/0.62 231.5×184.8 1:0.38/0.64 251.8×190.7 2:0.38/0.64 251.8×190.7 3:0.38/0.64 251.8×190.7 5:0.40/0.67 259.2×199.7 8:0.61/0.74 395.3×220.5 14:1.00/1.00 324×149,648×298 8:0.81/0.93 510.7×268.8 12:0.57/0.93 401.3×284.6
+PASS O-9 every drawn-in orbit is at its limit: the least air over a turn is under 20 px — org_kestrel:6/109.4 org_pink_alpha:1/– org_orbit_1:6/– org_orbit_2:6/152 org_orbit_3:6/110.1 org_orbit_5:5/29.9 org_orbit_8:54/4.8 org_orbit_long_8:94/7.8 org_orbit_short_12:128/0.8
 PASS O-7 card sizes come from the packing, not the compactness (the same box for the same title at every count) — 219×88 219×88 219×88 219×88 219×88
 PASS O-8 every card keeps its size against the base commit (± 1 px of sub-pixel rounding)
 PASS N-1 a role card on the drawn-in orbit opens its role by pointer — syntx-role-role_kestrel_engineering_lead
@@ -54,5 +55,5 @@ PASS N-2 at the role, the organization cosmos recedes with the role as its ancho
 PASS N-3 Escape returns to the organization
 PASS N-4 Tab reaches a role card and Enter opens it — syntx-role-role_kestrel_frontend_architect
 PASS N-5 the centre returns to the field
-PASS R-1 reduced motion: the same compactness and orbit, the cards hold still — 0.78/0.78 516.8,232.4
+PASS R-1 reduced motion: the same compactness and orbit, the cards hold still — 0.38/0.64 251.8,190.7
 PASS E-1 no page errors
