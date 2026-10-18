@@ -189,6 +189,24 @@ Owner-Vorgabe: Der alte pool-weite Vergleich bleibt vorerst rollenübergreifend.
   - PINK: ohne Abweichung (§3.44, `demo-ui-fix.e2e` 62/62).
 
   Integriert wird er erst auf ein Wort des Owners an GELB.
+- **GRÜN `frontend/role-orbit`** (`6d386cc`, gestapelt auf `0b5a8ea`; Owner-Auftrag an GRÜN „ROLE ORBIT REFINEMENT“ vom 2026-10-18, STOP vor Integration). Inhalt:
+  - Der Rollenorbit des Organisations-Kosmos rückt per `compactRoleOrbit` bis zu 22 % pro Achse ans Zentrum, solange in jeder Phase die Luft zum Zentrum und zwischen den Karten hält. Ohne Platz und beim statischen Raster bleibt das Packing unverändert.
+  - Zusätzlich die Attribute `data-orbit-compactness-x/-y`.
+
+  Stand der Prüfung:
+  - GELB, technisch:
+    - Nur Geometrie. Phasen, Ringe, Perioden, Karten und Reihenfolge bleiben gleich; die geteilte `buildCapabilityCosmosLayout` ist unberührt. Damit gibt es keine neue Bewegungsart und kein R15b-Thema; auf dem kleineren Orbit laufen die Karten bei gleicher Periode nur langsamer über den Bildschirm.
+    - Einziger Aufrufer ist `SyntxField.tsx`. Keine Backend-, Gemini- oder Datenbankänderung.
+    - Leak-Prüfung der hinzugefügten Zeilen sauber. Die Evidence besteht aus synthetischen Daten, die zwölf PNGs sind zusammen rund 9 MB groß.
+    - O-JF-PANEL wird verringert, nicht behoben.
+  - GELB-Probe `7c2971c` + `6d386cc` (konfliktfrei, mit `demo-ui-fix`), außerhalb des Demo-Verzeichnisses:
+    - `tsc` 0.
+    - Job-Pool, Orbit-Härtung, drei Modi und Investigation: 249 grün, 4 übersprungen.
+    - E2E: `syntx-walk` 3/3, `job-scope-gate` 1/1, `job-pool-workflow` 10/10.
+    - Volle Suite: die 27 bekannten Rotfälle sowie 11 Zeitüberschreitungen von 5 s in Outcome-Valence- und Decision-Core-Dateien, die das Delta nicht berührt; die Last lag bei etwa 6. Seriell laufen dieselben 7 Dateien auf `7c2971c` ebenfalls rot (15 statt 11).
+  - PINK: angefragt durch GRÜN, ausstehend.
+
+  Integriert wird er erst nach PINK und auf ein Wort des Owners an GELB, zusammen mit oder nach `demo-ui-fix`. Die Sichtwirkung beurteilt der Owner.
 - **PINK-Skript** `support/syntx-readonly-walk.mjs` (P-4) ist nicht neu gebunden; es braucht eine Umgebung mit gespeicherten Aufträgen.
 - **Für GRÜN (O-SX-INACTIVE-NAMING):** Der Feldzustand INACTIVE_POOL entsteht nur aus einer 409 von `/matches`. Unter der URL-Grenze ist er mit konsistenten Daten nicht mehr erreichbar; das Feld zeigt dann OTHER_POOL.
 - **Zur Information (PINK):**
