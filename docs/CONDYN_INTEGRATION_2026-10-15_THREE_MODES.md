@@ -215,6 +215,13 @@ Owner-Vorgabe: Der alte pool-weite Vergleich bleibt vorerst rollenübergreifend.
 
   Behoben werden muss D-RO-1 von GRÜN. Ein möglicher Weg ist eine dichtere Prüfung zwischen den Phasen oder ein Sicherheitsabstand, der den Fehler zwischen zwei Prüfphasen abdeckt. Integriert wird erst nach einer Korrektur, einer erneuten Prüfung durch PINK und einem Wort des Owners an GELB.
 
+  Korrektur GRÜN `7a51d89` (2026-10-18):
+  - Was GRÜN geändert hat: Geprüft wird jetzt alle 0,5°, jede Kartenhöhe bekommt 12 px Zuschlag für den gerenderten Text, und es gibt einen Test mit variablen Titeln.
+  - Von GELB mit derselben Messung wie oben nachgeprüft: 2031 eingezogene Layouts, kein Fall unter der Luft. Der schlechteste Wert ist +5,54 px auf der geschätzten Höhe und +0,06 px mit 11,25 px Mehrhöhe; keine Überlappung.
+  - Probe `6f31846` + `7a51d89`: `tsc` 0; Job-Pool, Orbit-Härtung, drei Modi und Investigation 250 grün, 4 übersprungen.
+  - Beobachtung O-RO-COST, kein Mangel: Die Berechnung dauert in Node bis etwa 85 ms pro Layout. Am meisten kosten volle Orbits, die am Ende unverändert bleiben (14 und 24 Rollen bei 1600). Sie läuft in `useMemo` bei jeder Größenänderung.
+  - PINK: erneute Prüfung angefragt, ausstehend.
+
   Wenn er integriert wird, dann zusammen mit oder nach `demo-ui-fix`. Die Sichtwirkung beurteilt der Owner.
 - **PINK-Skript** `support/syntx-readonly-walk.mjs` (P-4) ist nicht neu gebunden; es braucht eine Umgebung mit gespeicherten Aufträgen.
 - **Für GRÜN (O-SX-INACTIVE-NAMING):** Der Feldzustand INACTIVE_POOL entsteht nur aus einer 409 von `/matches`. Unter der URL-Grenze ist er mit konsistenten Daten nicht mehr erreichbar; das Feld zeigt dann OTHER_POOL.
