@@ -113,6 +113,42 @@ describe("role orbit refinement (organization cosmos)", () => {
     expect(drawnIn).toBeGreaterThan(60);
   });
 
+  it("keeps the air across orbits in every phase pair, never closer than the packing in motion (tall level boxes, PINK D-RO-2)", () => {
+    /** Every degree of either orbit, offset from the layout's quarter-degree readings: the orbits turn at their own periods, so a
+     * card meets the other orbit at every point of its own; the least air of each pair of card sizes on each pair of orbits. */
+    const DEGREES = Array.from({ length: 360 }, (_, index) => ((index + 0.5) * Math.PI) / 180);
+    const across = (layout: CapabilityCosmosLayout): Map<string, number> => {
+      const points = new Map(layout.rings.map(ring => [ring.index, DEGREES.map(phase => ({ x: Math.cos(phase) * ring.radiusX, y: Math.sin(phase) * ring.radiusY }))]));
+      const least = new Map<string, number>();
+      for (const a of layout.nodes) for (const b of layout.nodes) {
+        if (b.ringIndex <= a.ringIndex) continue;
+        const key = `${a.ringIndex}/${b.ringIndex} ${a.width}×${drawn(a)} ${b.width}×${drawn(b)}`;
+        if (least.has(key)) continue;
+        const w = (a.width + b.width) / 2 + ROLE_ORBIT_CARD_GAP.x, h = (drawn(a) + drawn(b)) / 2 + ROLE_ORBIT_CARD_GAP.y;
+        let air = Infinity;
+        for (const p of points.get(a.ringIndex)!) for (const q of points.get(b.ringIndex)!) air = Math.min(air, Math.max(Math.abs(p.x - q.x) - w, Math.abs(p.y - q.y) - h));
+        least.set(key, air);
+      }
+      return least;
+    };
+    let seed = 20261018;
+    const next = () => { seed = (seed * 1664525 + 1013904223) >>> 0; return seed / 2 ** 32; };
+    const RANDOM = Array.from({ length: 16 }, () => ["Senior", "Staff Engineer", "Platform", "Settlement and Reconciliation", "QA", "Lead", "Clinical Interoperability"].filter(() => next() < 0.5).join(" ") || "SRE");
+    let drawnIn = 0;
+    for (const titles of [TITLES, RANDOM]) for (const [width, height] of [[1600, 960], [1536, 960], [1408, 1060], [1920, 1180], [2112, 940]] as Array<[number, number]>) for (const count of [12, 14, 16, 18]) {
+      const before = packed(count, width, height, titles);
+      const { layout, compactness } = compactRoleOrbit(before);
+      if ((compactness.x === 1 && compactness.y === 1) || new Set(layout.nodes.map(node => node.ringIndex)).size < 2) continue;
+      drawnIn += 1;
+      const packedAir = across(before);
+      for (const [key, air] of across(layout)) expect(air, `${count} roles (${titles[0].slice(0, 12)}…) at ${width} × ${height}, ${key}`).toBeGreaterThanOrEqual(Math.min(0, packedAir.get(key)!) - 0.5);
+    }
+    expect(drawnIn).toBeGreaterThan(10);
+    // PINK D-RO-2: fourteen roles at 1600 × 960 kept their air packed (+13.03 px) and fell to −6.27 px drawn in to 0.88 / 0.92.
+    const fourteen = compactRoleOrbit(packed(14, 1600, 960));
+    expect(fourteen.compactness).not.toEqual({ x: 0.88, y: 0.92 });
+  }, 60_000);
+
   it("keeps its air for variable titles (seeded random title sets of 4 to 80 characters, GELB / PINK §3.45 D-RO-1)", () => {
     const WORDS = ["Senior", "Staff", "Principal", "Engineer", "Platform", "Data", "Settlement", "Clinical", "Interoperability", "Lead", "Manager", "of", "and", "–", "Reliability", "QA", "SRE", "Telemetry", "Gateways", "Architect"];
     let seed = 0x5eed;

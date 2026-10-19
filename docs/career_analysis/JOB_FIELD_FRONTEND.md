@@ -1464,7 +1464,8 @@ further flat percentage.
   gives the least vertical factor directly, in one pass.
 - **Across orbits (PINK §3.46 O-RO-CROSS-GRID).** Neighbouring orbits turn at their own periods; their phase pairs are now read on a
   5° grid (formerly 15°). In practice no layout with more than one orbit is drawn in (0 of 245 multi-orbit layouts, 1 – 60 roles at
-  six boxes): their packing does not hold the air, so they stay as packed.
+  six boxes): their packing does not hold the air, so they stay as packed. *Superseded by §13.2.32 (PINK D-RO-2): that held only for
+  level boxes up to about 820 px tall; the 5° grid is replaced by a closed form.*
 - **Cost (GELB / PINK O-RO-COST).** Warm, at most about 11 ms per layout (8 – 10 roles); 1 – 5 roles 1 – 3 ms; crowded and multi-orbit
   layouts end at the first reading (0 – 5 ms). The first pass took up to 85 ms (156.5 ms under load).
 - **Unchanged.** Everything §13.2.30 lists as unchanged; the attributes `data-orbit-compactness-x` / `-y` keep their meaning.
@@ -1489,6 +1490,45 @@ further flat percentage.
   orbit every half degree (O-3b), O-5 beyond 0.78 for up to five roles, O-6 never widened and lying, O-9 at the limit (least rendered
   air under 20 px; Kestrel 5 – 6 px beyond the clearance). First-pass shots and results kept as `pass1-*`.
 - **Regression and e2e.** tsc 0; ESLint clean in the changed files; regression 69 files / 506 green; workflow e2e 10/10 ×2.
+
+#### 13.2.32 Role orbit — air across orbits in every phase pair (PINK D-RO-2, 2026-10-19)
+
+On `frontend/role-orbit` 3be1920, GRÜN only. PINK (probe ea125e5 = cdedfef + 3be1920, preliminary finding): from level boxes about
+840 px tall (viewport 1600 × 1200 → box 1600 × 940) two-orbit packings are drawn in after all — 323 of 2886 moving multi-orbit layouts
+in PINK's scan — and where the packing keeps the orbits apart in motion (51), the drawn-in orbits broke the 12 / 20 px air between
+the 5° phase pairs: worst −6.6 px (14 / 16 roles, boxes 1408 – 2112 × 840 – 1180; 14 real titles at 1600 × 960, 0.88 / 0.92: packed
++13.03, drawn in −6.27 px). The same class as D-RO-1 — the orbits turn at their own periods, so the air must hold in every phase pair,
+and a grid misses the minimum; §13.2.31's "no multi-orbit layout is drawn in" was measured only at boxes up to 820 px.
+
+- **Closed form across orbits.** The packing nests its orbits (checked over 10 845 multi-orbit packings, 1024 – 2560 × 440 – 1300, 2 –
+  53 roles: sorted by width, every orbit lies inside the next). A card on the outer orbit enters the air rectangle w × h (half sizes
+  plus gap) of a card on the inner orbit somewhere exactly when the outer orbit leaves that rectangle's enclosure; since every phase
+  pair occurs, the outer orbit must enclose the rectangle at every phase α of the inner card, i.e. its far corner
+  (kx·rx·cos α + w, ky·ry·sin α + h): ky ≥ h / (Ry·√(1 − X²) − ry·sin α), X = (kx·rx·cos α + w) / (kx·Rx), over the quarter turn —
+  read every quarter degree and each local maximum refined to its peak (golden section), so no phase between readings is left unread.
+  Every pair of orbits, every pair of card sizes (dominated ones dropped).
+- **Never closer than the packing in motion.** Where the packing itself falls short of the air in some phase pair, its shortfall
+  (exact to a hundredth of a pixel, by the same closed form at full size) is taken off the rectangle for that card pair, so the drawn-in
+  orbit is never closer in motion than the packing; at rest, as before, never closer than the packing between any two cards. This
+  replaces the former split into a motion rule (grid) where the packing held and a rest-only rule where it did not: the rest-only
+  rule let the drawn-in orbits come closer in motion than packed (e.g. 16 roles at 1408 × 960: −10.78 → −14.93 px).
+- **Order and cost.** The centre and each orbit's own air are read first; where they do not hold at full size, nothing across is read
+  (53 roles: from up to 378 ms back to under 1 ms). Warm at most about 11 ms per layout (24 roles at 2112 × 1060), median 0.36 ms.
+- **Effect.** One-orbit layouts unchanged: 1260 of 1260 (Kestrel 0.38 / 0.64, 251.8 × 190.7 at 1600 as before). Multi-orbit layouts:
+  32 of 788 change, every one less drawn in (14 real titles at 1600 × 960: 0.88 / 0.92 → 0.99 / 0.86; 16 at 1536 × 960 → 1 / 0.98).
+
+**Proof** (no live Gemini, :3017, :41831, :41851 and the owner's review lab :41803 untouched):
+- **Unit test** `syntx-role-orbit.test.ts` (8): new — across orbits, every degree of either orbit offset from the layout's readings,
+  each pair of card sizes on each pair of orbits as drawn (estimate + 12), never below min(0, packed) − 0.5 px, two title sets (real,
+  seeded) × five tall boxes × 12 – 18 roles, and PINK's 14 roles at 1600 × 960 no longer at 0.88 / 0.92. Negative control on 3be1920:
+  fails at 14 roles, 1600 × 960 (−5.75 px).
+- **Independent reading** (scratch, not committed): PINK's scan widths 1280 – 2560 × heights 740 – 1180 × 6 – 24 roles, real and
+  seeded titles (20261018), every 1° × 1° with each card in its own size: 55 multi-orbit layouts drawn in, 0 closer than
+  min(0, packed) − 0.05 px, worst +0.113 px where the packing holds; minimality — one step closer on either axis breaks an air
+  (0.5° × 0.5°, within 0.5 px) or stands the orbit upright: 92 of 92, 34 of them across orbits.
+- **Regression.** tsc 0; ESLint clean in the changed files; regression 69 files / 507 green; `syntx-field-ssr` unchanged (0.42 / 0.95).
+  Lab walk and workflow e2e not repeated: the lab organizations at 1600 × 1000 and 1280 × 720 have one orbit (identical) or stay
+  as packed (14 roles; the rule only adds air, so nothing is drawn in further than before).
 
 ### 13.3 DOM contract (PINK BR-1 … BR-5; GELB conditions a/b)
 
@@ -1667,3 +1707,4 @@ observation point. Readable labels wrap at word boundaries (`wrapLines`), never 
 | 2026-10-15 | DEMO UI FIX + SEMIONTIC REFINEMENT (owner, on integration 5434c01) | §13.2.29: Escape at any time (field root keeps the focus, document fallback), pool list below the orientation surface, surface z-index 47; NO ANALYSIS state line as a legible nerve signal (4.8 s, opacity/transform, LIVE only), the field's own statement legible and clear of the non-claims | tsc 0; regression 68 files / 498 (a second run hit the 10 s `beforeAll` limit of GELB's `job-structure.postgres.test.ts` under load, also on the unchanged 5434c01; 11.7 s with a longer limit, green); workflow e2e 10/10 ×2; lab walk 36/36 at 1280 and 1600 (modal-layer guard after GELB's review); 0 Gemini hosts |
 | 2026-10-18 | Role orbit refinement (owner "SFE — GRÜN | ROLE ORBIT REFINEMENT", on frontend/demo-ui-fix 0b5a8ea) | §13.2.30: the organization cosmos draws its role orbit 22 % closer per axis as far as the geometry allows (`compactRoleOrbit`; cards, phases, periods, navigation unchanged; `data-orbit-compactness-x/-y`); PINK D-RO-1 fixed (half-degree checks, drawn card height) | tsc 0; new 1 file / 6 + SSR 1; regression 69 files / 505; workflow e2e 10/10 ×2; lab walk 58/58 at 1600 and 1280; 0 Gemini hosts |
 | 2026-10-19 | Role orbit — second visual refinement (owner "SFE — GRÜN | ROLE ORBIT — SECOND VISUAL REFINEMENT", on frontend/role-orbit 7a51d89) | §13.2.31: the role orbit drawn in to the smallest orbit its geometry carries (least area of the pairs that hold, lying; per card and per pair, closed form on one orbit, 5° across orbits); Kestrel 516.8 × 232.4 → 251.8 × 190.7 at 1600 | tsc 0; unit 7 + SSR 10; regression 69 files / 506; workflow e2e 10/10 ×2; lab walk 59/59 at 1600 and 1280; 0 Gemini hosts |
+| 2026-10-19 | Role orbit — air across orbits (PINK D-RO-2 on 3be1920) | §13.2.32: closed form across orbits (the outer orbit encloses every inner card's air rectangle in every phase), never closer than the packing in motion; one-orbit layouts unchanged, 32 of 788 multi-orbit layouts less drawn in | tsc 0; unit 8 + SSR 10; regression 69 files / 507; negative control on 3be1920 fails; independent 1° × 1° reading 0 violations |

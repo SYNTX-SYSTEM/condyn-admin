@@ -42,3 +42,11 @@ The walk runs against GRÜN's three-mode lab (`../three-modes/scripts/modes-lab.
 the unchanged worker, Gemini replaced by the loopback stand-in under the network sentinel. The sentinel recorded one connection, the
 `next dev` version check to registry.npmjs.org; there was no Gemini host. `before` was measured on the same lab with the two changed
 files reset to 0b5a8ea. Scripts run from the repository root; Playwright comes from `CONDYN_PLAYWRIGHT_MODULE`, else from the repository.
+
+## Air across orbits (PINK D-RO-2)
+
+From level boxes about 840 px tall two-orbit packings are drawn in; 3be1920 read their phase pairs on a 5° grid, and the air broke
+between the grid points (worst −6.6 px, PINK). The orbits are now kept apart in closed form (JOB_FIELD_FRONTEND.md §13.2.32): the
+outer orbit encloses every inner card's air rectangle in every phase, never closer than the packing in motion. The rule only adds
+air, so it never draws in further: the organizations in these shots have one orbit, or (14 roles) stay as packed; their layouts,
+shots and walk results are unchanged.
