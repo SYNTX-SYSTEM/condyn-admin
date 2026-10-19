@@ -1,0 +1,226 @@
+{
+  "viewport": "1920x1080",
+  "gemini": "STANDIN",
+  "personAnalysis": "ANL_1792420703113_255",
+  "pxjAnalysis": "ANL_1792420764195_79",
+  "timings": {
+    "personAnalysisMs": 8153,
+    "pxjAnalysisMs": 5222
+  },
+  "analyzeBodies": [
+    {
+      "investigation": {
+        "mode": "PERSON"
+      },
+      "jobScope": null,
+      "documents": [
+        {
+          "type": "pdf",
+          "title": "cv.synthetic.pdf"
+        }
+      ]
+    },
+    {
+      "investigation": {
+        "mode": "PERSON_X_JOB"
+      },
+      "jobScope": {
+        "jobPoolUploadId": "JPOOL_B94850C439974E27496FE3B1A9A076B5",
+        "poolRoleId": "role_kestrel_fullstack"
+      },
+      "documents": [
+        {
+          "type": "pdf",
+          "title": "cv.synthetic.pdf"
+        }
+      ]
+    }
+  ],
+  "urls": {
+    "start": "<BASE>/career/demo",
+    "pxjAtRole": "<BASE>/career/demo?analysisId=ANL_1792420764195_79&focus=FIELD&jobPoolUploadId=JPOOL_B94850C439974E27496FE3B1A9A076B5&jobOrganizationId=org_kestrel&jobRoleId=role_kestrel_fullstack&jobScopePoolUploadId=JPOOL_B94850C439974E27496FE3B1A9A076B5&jobScopeRoleId=role_kestrel_fullstack",
+    "jobOnly": "<BASE>/career/demo?focus=FIELD&jobPoolUploadId=JPOOL_B94850C439974E27496FE3B1A9A076B5&jobOrganizationId=org_kestrel&jobRoleId=role_kestrel_frontend_architect&jobScopePoolUploadId=JPOOL_B94850C439974E27496FE3B1A9A076B5&jobScopeRoleId=role_kestrel_frontend_architect&investigationMode=JOB"
+  },
+  "results": [
+    {
+      "id": "V-01a",
+      "name": "first visit shows the onboarding; it closes with its close button (Escape does not close it)",
+      "pass": true,
+      "extra": ""
+    },
+    {
+      "id": "V-01b",
+      "name": "ground state: PERSON × JOB, Capability gated (AWAITING_JOB), no pool",
+      "pass": true,
+      "extra": "[\"PERSON_X_JOB\",\"AWAITING_JOB\",0,1]"
+    },
+    {
+      "id": "V-02a",
+      "name": "PERSON chosen: Capability open without a job, indicator NO JOB SCOPE · PERSON",
+      "pass": true,
+      "extra": ""
+    },
+    {
+      "id": "V-02b",
+      "name": "PDF staged; the dock names the boundary PERSON at the trigger",
+      "pass": true,
+      "extra": ""
+    },
+    {
+      "id": "V-02c",
+      "name": "one ANALYZE request: one PDF document, investigation { mode: PERSON }, no job scope",
+      "pass": true,
+      "extra": "{\"investigation\":{\"mode\":\"PERSON\"},\"jobScope\":null,\"documents\":[{\"type\":\"pdf\",\"title\":\"cv.synthetic.pdf\"}]}"
+    },
+    {
+      "id": "V-02d",
+      "name": "success banner: PERSON · WITHOUT A JOB SCOPE",
+      "pass": true,
+      "extra": "ANALYSIS COMPLETED SUCCESSFULLYIDENTITY CORE & ORBITS MANIFESTEDPERSON · WITHOUT A JOB SCOPE"
+    },
+    {
+      "id": "V-03a",
+      "name": "Capability Field (02) opens the proposal cosmos: every proposal PROPOSED with its evidence state",
+      "pass": true,
+      "extra": "12 proposals"
+    },
+    {
+      "id": "V-03b",
+      "name": "TypeScript in deep focus: the evidence surface names the PDF and quotes it verbatim (SOURCE MATCHING ONLY)",
+      "pass": true,
+      "extra": "EVIDENCE // SOURCE MATCHING ONLYcv.synthetic.pdf // DOCUMENTin logistics. Focus on TypeScript, React and Node.js, relational databases and automated testing."
+    },
+    {
+      "id": "V-03c",
+      "name": "nucleus → cosmos, cosmos centre → field (zoom 0): the dock usable again",
+      "pass": true,
+      "extra": ""
+    },
+    {
+      "id": "V-04a",
+      "name": "ORIGINAL RESPONSE retained and byte-identical to the archived exchange",
+      "pass": true,
+      "extra": "ANL_1792420703113_255"
+    },
+    {
+      "id": "V-04b",
+      "name": "SCOPE view: PERSON, UNSCOPED",
+      "pass": true,
+      "extra": ""
+    },
+    {
+      "id": "V-04c",
+      "name": "PROCESSING view: parser, verification (the invented claim REJECTED) and convergence apart",
+      "pass": true,
+      "extra": "03PARSER · VERIFICATION · CONVERGENCEparser result (parsed and schema-checked, not the original text) · rawOutputHash cd97f07e025821c186fce8c200498953e9e2fdd12a026e2f8be4bac83723af2f{ \"capabilities\": "
+    },
+    {
+      "id": "V-05a",
+      "name": "UPLOAD PERSISTED (NEW) with the content-derived upload id",
+      "pass": true,
+      "extra": "UPLOAD PERSISTED (NEW)JPOOL_B94850C439974E27496FE3B1A9A076B5DLL Engineering & Architecture Pool v1 · ACTIVEUPLOADED != SELECTED · select it in the list below"
+    },
+    {
+      "id": "V-05b",
+      "name": "pool selected: URL carries jobPoolUploadId; 3 organizations, 9 roles",
+      "pass": true,
+      "extra": "Job pool DLL Engineering & Architecture Pool, version 1, ACTIVE: 3 organizations containing 9 roles. No presentation matching was read."
+    },
+    {
+      "id": "V-06a",
+      "name": "organization cosmos of Kestrel with its three role cards",
+      "pass": true,
+      "extra": ""
+    },
+    {
+      "id": "V-06b",
+      "name": "role level: the role's requirements (9); the PERSON analysis is not compared (analysis source NONE)",
+      "pass": true,
+      "extra": "requirements=9"
+    },
+    {
+      "id": "V-07a",
+      "name": "B2 refuses the PERSON analysis for the role (ERR_JOB_COMPARISON_NOT_SCOPED); /matches refuses it (409)",
+      "pass": true,
+      "extra": "409 ERR_JOB_COMPARISON_NOT_SCOPED / 409 ERR_JOB_POOL_MATCHES_PERSON_ANALYSIS"
+    },
+    {
+      "id": "V-08a",
+      "name": "job scope selected: the indicator names the role; Capability open again",
+      "pass": true,
+      "extra": "JOBSenior Full-Stack Engineer – Shipment TrackingKestrel Logistics Software GmbH · DLL Engineering & Architecture Pool"
+    },
+    {
+      "id": "V-08b",
+      "name": "the PDF is still staged after the PERSON analysis and the field switches",
+      "pass": true,
+      "extra": ""
+    },
+    {
+      "id": "V-08c",
+      "name": "the dock names the boundary PERSON × JOB with the role at the trigger",
+      "pass": true,
+      "extra": "INVESTIGATION BOUNDARY · PERSON × JOB"
+    },
+    {
+      "id": "V-08d",
+      "name": "one new ANALYZE request: the same PDF, investigation PERSON_X_JOB, jobScope exactly this pool and role",
+      "pass": true,
+      "extra": "{\"investigation\":{\"mode\":\"PERSON_X_JOB\"},\"jobScope\":{\"jobPoolUploadId\":\"JPOOL_B94850C439974E27496FE3B1A9A076B5\",\"poolRoleId\":\"role_kestrel_fullstack\"},\"documents\":[{\"type\":\"pdf\",\"title\":\"cv.synthetic.pdf\"}]}"
+    },
+    {
+      "id": "V-09a",
+      "name": "the role compares this PERSON × JOB analysis (source JOB_RESULT); requirement support as delivered",
+      "pass": true,
+      "extra": "[\"req_kestrel_fullstack_01:SUPPORTED\",\"req_kestrel_fullstack_02:SUPPORTED\",\"req_kestrel_fullstack_03:SUPPORTED\",\"req_kestrel_fullstack_04:SUPPORTED\",\"req_kestrel_fullstack_06:SUPPORTED\",\"req_kestrel_fullstack_09:SUPPORTED\",\"req_kestrel_fullstack_05:WEAK\",\"req_kestrel_fullstack_07:OPEN\",\"req_kestrel_fullstack_08:OPEN\"]"
+    },
+    {
+      "id": "V-09b",
+      "name": "B2: unconfirmed name coverage for exactly this role, bound to this analysis; scored false",
+      "pass": true,
+      "extra": "covered=7 notCovered=2 [\"req_kestrel_fullstack_01:COVERED/EXACT\",\"req_kestrel_fullstack_02:COVERED/EXACT\",\"req_kestrel_fullstack_03:COVERED/EXACT\",\"req_kestrel_fullstack_04:COVERED/EXACT\",\"req_kestrel_fullstack_05:COVERED/TOKEN_CONTAINMENT\",\"req_kestrel_fullstack_06:COVERED/EXACT\",\"req_kestrel_fullstack_07:NOT_COVERED/\",\"req_kestrel_fullstack_08:NOT_COVERED/\",\"req_kestrel_fullstack_09:COVERED/EXAC"
+    },
+    {
+      "id": "V-10a",
+      "name": "SCOPE view: RETAINED, carries the role",
+      "pass": true,
+      "extra": ""
+    },
+    {
+      "id": "V-11a",
+      "name": "JOB: Capability closed (JOB_MODE), the Job Field reads no analysis",
+      "pass": true,
+      "extra": ""
+    },
+    {
+      "id": "V-11b",
+      "name": "JOB_STRUCTURE_V1: the role's requirements in pool order with pool-source lines and findings",
+      "pass": true,
+      "extra": "rows=10 findings=8"
+    },
+    {
+      "id": "V-11c",
+      "name": "GEMINI OUTPUT in JOB: no Gemini call in this mode",
+      "pass": true,
+      "extra": ""
+    },
+    {
+      "id": "V-12a",
+      "name": "deep link to the PERSON × JOB analysis at its role: B2 AVAILABLE again",
+      "pass": true,
+      "extra": ""
+    },
+    {
+      "id": "V-12b",
+      "name": "deep link to the PERSON analysis at the same role: NOT_SCOPED, no job comparison",
+      "pass": true,
+      "extra": "B2 · SELECTED ROLE COVERAGEUnconfirmed name coverage of the selected role by the capability proposals of this analysis: counts, never a score.This analysis is a PERSON analysis: no job comparison."
+    },
+    {
+      "id": "V-99",
+      "name": "no page error during the walk",
+      "pass": true,
+      "extra": "[]"
+    }
+  ]
+}

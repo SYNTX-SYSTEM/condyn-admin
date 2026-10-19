@@ -136,8 +136,10 @@ Für die Video-Dramaturgie zeigen V-07 und V-12 die Architekturgrenze; beide sin
 Owner, 2026-10-19: „Ein echter Gemini-Test ist als nächster gesonderter Schritt vorgesehen; noch kein unkontrollierter Modellaufruf.“ Der Schritt ist so vorbereitet, dass er mit einem einzigen Befehl läuft und dabei kontrolliert bleibt. **Ausgeführt wird er erst nach dem GO des Owners.**
 
 **Aufbau** (`scripts/video-lab.ts`, `scripts/video-gemini-relay.ts`)
-- Server und Worker laufen wie bisher unter dem Netzwerkwächter, nur Loopback, und haben **keinen** echten Schlüssel. Der Worker trägt einen Platzhalter und erreicht Gemini ausschließlich über ein Relay auf 127.0.0.1 im Laborprozess.
-- **Das Relay** leitet nur `POST /v1beta/models/<das eine Modell>:generateContent` an `generativelanguage.googleapis.com` weiter. Dabei ersetzt es den Platzhalter durch den echten Schlüssel.
+- Server und Worker laufen wie bisher unter dem Netzwerkwächter, nur Loopback, und haben **keinen** echten Schlüssel. Der Worker trägt einen zufälligen Platzhalter, der pro Labor neu erzeugt wird. Gemini erreicht er ausschließlich über ein Relay auf 127.0.0.1 im Laborprozess.
+- **Nur der Worker dieses Labors:** Ohne genau diesen Platzhalter leitet das Relay nichts weiter (401, nicht gezählt). Kein anderer lokaler Prozess kann den echten Schlüssel über den Loopback-Port nutzen (PINK R-AUTH).
+- **Das Relay** leitet nur `POST /v1beta/models/<das eine Modell>:generateContent` an `generativelanguage.googleapis.com` weiter. Dabei ersetzt es den Platzhalter durch den echten Schlüssel. Den Body reicht es Byte für Byte durch, ohne ihn zu dekodieren. So wird kein Mehrbyte-Zeichen an einer Chunk-Grenze beschädigt (PINK R-UTF8: vorher ab etwa 120 KB möglich).
+- **Keine zweite Scope-Sperre** (PINK R-KIND): Art und Scope-Block protokolliert das Relay nur, es erzwingt sie nicht. Die Scope-Prüfung liegt allein in der App, beim Gate an Route und Worker.
 - **Lokal abgelehnt** werden alle anderen Modelle der Provider-Kaskade, `countTokens`, `models.get` und Embeddings: 403, nie weitergeleitet, nicht gezählt.
 - **Hartes Budget:** pro Labor höchstens `VIDEO_LAB_GEMINI_BUDGET` Aufrufe, Standard 8, erlaubt 1 bis 12. Ein voller Walk braucht 6 (PERSON und PERSON × JOB je Discovery, Convergence, Legacy; JOB ONLY ruft Gemini nicht). Jeder weitere Aufruf wird lokal mit 429 abgelehnt.
 - **Protokoll** `relay.jsonl`: Art, Modell, ob ein INVESTIGATION_SCOPE-Block dabei war, Status, Dauer, Größen und Restbudget. Nie Inhalte und nie den Schlüssel. Die Inhalte stehen nur in der Wegwerf-Datenbank des Labors; GEMINI OUTPUT liest sie dort, und beim Stoppen wird die Datenbank gelöscht.
@@ -150,12 +152,17 @@ Owner, 2026-10-19: „Ein echter Gemini-Test ist als nächster gesonderter Schri
   Alle anderen 27 Punkte sind unverändert.
 
 **Ohne echten Aufruf geprüft**
-- `scripts/relay-check.mts` gegen ein Loopback-Double: 12/12. Geprüft sind Weiterleitung, Schlüsseltausch, die Ablehnung fremder Modelle sowie von `countTokens` und `models.get`, das Budget, kein Schlüssel und kein Inhalt im Protokoll und die Startprüfungen.
-- Die Sperren: Alle fünf Fehlkonfigurationen brechen mit Exit 2 ab, das Laborverzeichnis bleibt leer.
+- `scripts/relay-check.mts` gegen ein Loopback-Double: 16/16.
+  - Geprüft sind Weiterleitung, Schlüsseltausch, die Ablehnung fremder Modelle sowie von `countTokens` und `models.get` und das Budget.
+  - Dazu: Aufrufer ohne oder mit fremdem Schlüssel bekommen 401. Ein Body von 547 KB mit Mehrbyte-Zeichen kommt bytegleich an. Im Protokoll stehen weder Schlüssel, Platzhalter noch Inhalt. Sieben Startprüfungen.
+  - Negativkontrolle mit dem Relay aus `e023d55`: 10/16. Die Prüfungen zu R-AUTH und R-UTF8 schlagen dort an.
+- Die Sperren: Alle fünf Fehlkonfigurationen brechen mit Exit 2 ab, das Laborverzeichnis bleibt leer. PINK hat neun geprüft, ebenfalls alle mit Exit 2 und ohne angelegtes Verzeichnis oder Datenbank.
 - Trockenlauf der gesamten Live-Verdrahtung auf `5293eb1` (Durchgang 8): Relay → lokaler Stand-in als Gegenstelle, Testschlüssel. Alle Node-Prozesse liefen unter dem Wächter.
   - Ergebnis: 30/30. Genau 6 weitergeleitete Aufrufe, Restbudget 2. Der Scope-Block war nur bei der PERSON-×-JOB-Discovery dabei. Der Testschlüssel steht in keinem Log.
   - Netzwerk: nur die geblockte Versionsabfrage von `next dev`.
   - Belege: `results/live-wiring-dryrun-5293eb1-1920*.json(l)`.
+  - Nach der Korrektur von R-UTF8 und R-AUTH wiederholt: Trockenlauf 30/30 mit 6 weitergeleiteten Aufrufen und Restbudget 2; Platzhalter und Testschlüssel in keinem Log oder Ergebnis (`results/live-wiring-dryrun-relay-fix-1920*`). Ein Stand-in-Durchgang mit dem jetzt zufälligen Worker-Platzhalter: 30/30 (`results/integration-relay-fix-standin-1920.json`).
+  - Der Stand-in (`video-standin.ts`) setzt Bodies weiter als Text zusammen. Bei den Bodies des Walks (9–19 KB) ist das ohne Wirkung, und für den Live-Lauf spielt es keine Rolle. Er bleibt unverändert, damit die verifizierten Stand-in-Durchgänge gültig bleiben.
 
 **Befehl für den GO-Schritt** (aus dem Repository-Root einer Arbeitskopie auf dem Integrationsstand, in der kein anderer `next dev` läuft):
 

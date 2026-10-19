@@ -1,0 +1,6 @@
+{"at":"2026-10-19T14:40:52.659Z","path":"/v1beta/models/video-relay-test-model:generateContent","kind":"DISCOVERY","scopeBlock":false,"requestBytes":9211,"forwarded":true,"status":200,"ms":27,"responseBytes":9495,"budgetLeft":7}
+{"at":"2026-10-19T14:40:52.909Z","path":"/v1beta/models/video-relay-test-model:generateContent","kind":"CONVERGENCE","scopeBlock":false,"requestBytes":9949,"forwarded":true,"status":200,"ms":8,"responseBytes":3598,"budgetLeft":6}
+{"at":"2026-10-19T14:40:52.944Z","path":"/v1beta/models/video-relay-test-model:generateContent","kind":"LEGACY","scopeBlock":false,"requestBytes":11477,"forwarded":true,"status":200,"ms":6,"responseBytes":6535,"budgetLeft":5}
+{"at":"2026-10-19T14:41:47.346Z","path":"/v1beta/models/video-relay-test-model:generateContent","kind":"DISCOVERY","scopeBlock":true,"requestBytes":18679,"forwarded":true,"status":200,"ms":6,"responseBytes":9495,"budgetLeft":4}
+{"at":"2026-10-19T14:41:47.389Z","path":"/v1beta/models/video-relay-test-model:generateContent","kind":"CONVERGENCE","scopeBlock":false,"requestBytes":9949,"forwarded":true,"status":200,"ms":4,"responseBytes":3598,"budgetLeft":3}
+{"at":"2026-10-19T14:41:47.414Z","path":"/v1beta/models/video-relay-test-model:generateContent","kind":"LEGACY","scopeBlock":false,"requestBytes":11477,"forwarded":true,"status":200,"ms":4,"responseBytes":6535,"budgetLeft":2}

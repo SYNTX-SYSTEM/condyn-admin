@@ -1,32 +1,39 @@
 /* Offline check of video-gemini-relay.ts against a loopback fake upstream (no network, no Gemini, no real key). */
 import { createServer } from "node:http";
 import { startGeminiRelay, type RelayRecord } from "./video-gemini-relay";
-const seen: Array<{ path: string; key: string | undefined }> = [];
-const fake = createServer(async (req, res) => { let b = ""; for await (const c of req) b += String(c); seen.push({ path: req.url ?? "", key: req.headers["x-goog-api-key"] as string | undefined }); res.writeHead(200, { "content-type": "application/json" }); res.end(JSON.stringify({ candidates: [{ content: { parts: [{ text: "SECRET-RESPONSE-CONTENT" }] } }] })); });
+const seen: Array<{ path: string; key: string | undefined; body: Buffer }> = [];
+const fake = createServer(async (req, res) => { const parts: Buffer[] = []; for await (const c of req) parts.push(c as Buffer); seen.push({ path: req.url ?? "", key: req.headers["x-goog-api-key"] as string | undefined, body: Buffer.concat(parts) }); res.writeHead(200, { "content-type": "application/json" }); res.end(JSON.stringify({ candidates: [{ content: { parts: [{ text: "SECRET-RESPONSE-CONTENT" }] } }] })); });
 await new Promise<void>(r => fake.listen(0, "127.0.0.1", () => r()));
 const upstream = `http://127.0.0.1:${(fake.address() as any).port}`;
 const records: RelayRecord[] = [];
 const KEY = "TEST-ONLY-FAKE-KEY-0123456789abcdef";
-const relay = await startGeminiRelay({ apiKey: KEY, model: "gemini-test-model", budget: 2, upstream, onRecord: r => records.push(r) });
+const WORKER = "video-lab-worker-TEST-ONLY-0123456789";
+const relay = await startGeminiRelay({ apiKey: KEY, workerKey: WORKER, model: "gemini-test-model", budget: 3, upstream, onRecord: r => records.push(r) });
 const url = (p: string) => `http://127.0.0.1:${relay.port}${p}`;
-const post = (p: string, body: string) => fetch(url(p), { method: "POST", headers: { "content-type": "application/json", "x-goog-api-key": "video-lab-dummy-not-a-key" }, body });
+const post = (p: string, body: string | Buffer, key: string | null = WORKER) => fetch(url(p), { method: "POST", headers: { "content-type": "application/json", ...(key === null ? {} : { "x-goog-api-key": key }) }, body });
 const body = JSON.stringify({ contents: "CONDYN CAPABILITY DISCOVERY SOURCE CORPUS <INVESTIGATION_SCOPE> SECRET-PROMPT-CONTENT" });
 const results: Array<[string, boolean]> = [];
 const a = await post("/v1beta/models/gemini-test-model:generateContent", body); results.push(["1st call forwarded 200", a.status === 200 && (await a.text()).includes("SECRET-RESPONSE-CONTENT")]);
 const b = await post("/v1beta/models/gemini-2.0-flash:generateContent", body); results.push(["other model refused 403", b.status === 403]);
 const c = await post("/v1beta/models/gemini-test-model:countTokens", body); results.push(["countTokens refused 403", c.status === 403]);
-const d = await fetch(url("/v1beta/models/gemini-test-model"), { method: "GET" }); results.push(["models.get refused 403", d.status === 403]);
+const d = await fetch(url("/v1beta/models/gemini-test-model"), { method: "GET", headers: { "x-goog-api-key": WORKER } }); results.push(["models.get refused 403", d.status === 403]);
 const e = await post("/v1beta/models/gemini-test-model:generateContent", body); results.push(["2nd call forwarded", e.status === 200]);
-const f = await post("/v1beta/models/gemini-test-model:generateContent", body); results.push(["3rd call over budget 429", f.status === 429]);
-results.push(["upstream saw exactly 2 calls", seen.length === 2]);
-results.push(["upstream got the real key, never the dummy", seen.every(s => s.key === KEY)]);
+const g1 = await post("/v1beta/models/gemini-test-model:generateContent", body, null); results.push(["caller without key refused 401 (R-AUTH)", g1.status === 401]);
+const g2 = await post("/v1beta/models/gemini-test-model:generateContent", body, "some-other-local-process-key-000000"); results.push(["caller with a foreign key refused 401 (R-AUTH)", g2.status === 401]);
+// R-UTF8: ~456 KB of multibyte text, sent in many chunks; the upstream must receive exactly these bytes.
+const big = Buffer.from(JSON.stringify({ contents: "CONDYN CAPABILITY DISCOVERY SOURCE CORPUS <INVESTIGATION_SCOPE> " + "Größe ü € 😀 Kapazität — ".repeat(16000) }), "utf8");
+const h = await post("/v1beta/models/gemini-test-model:generateContent", big); results.push(["3rd call (multibyte, " + Math.round(big.length / 1024) + " KB) forwarded", h.status === 200]);
+results.push(["multibyte body reaches upstream byte-identical, no U+FFFD (R-UTF8)", seen.length === 3 && seen[2].body.equals(big) && !seen[2].body.toString("utf8").includes("\uFFFD")]);
+const f = await post("/v1beta/models/gemini-test-model:generateContent", body); results.push(["4th call over budget 429", f.status === 429]);
+results.push(["upstream saw exactly 3 calls", seen.length === 3]);
+results.push(["upstream got the real key, never the worker placeholder", seen.every(s => s.key === KEY)]);
 results.push(["upstream path is the one model", seen.every(s => s.path === "/v1beta/models/gemini-test-model:generateContent")]);
 const log = JSON.stringify(records);
-results.push(["log has 6 records; the 5 POSTs kind DISCOVERY with scope block; 2 forwarded", records.length === 6 && records.filter(r => r.kind === "DISCOVERY" && r.scopeBlock).length === 5 && records.filter(r => r.forwarded).length === 2]);
-results.push(["log never holds key or content", !log.includes(KEY) && !log.includes("SECRET-PROMPT") && !log.includes("SECRET-RESPONSE")]);
+results.push(["log has 9 records; the 8 POSTs kind DISCOVERY with scope block; 3 forwarded; byte count exact", records.length === 9 && records.filter(r => r.kind === "DISCOVERY" && r.scopeBlock).length === 8 && records.filter(r => r.forwarded).length === 3 && records.some(r => r.forwarded && r.requestBytes === big.length)]);
+results.push(["log never holds key, placeholder or content", !log.includes(KEY) && !log.includes(WORKER) && !log.includes("SECRET-PROMPT") && !log.includes("SECRET-RESPONSE")]);
 let threw = 0;
-for (const bad of [{ upstream: "https://example.com" }, { model: "../x" }, { budget: 13 }, { budget: 0 }, { apiKey: "short" }]) { try { await startGeminiRelay({ apiKey: KEY, model: "m", budget: 2, onRecord: () => {}, ...bad }); } catch { threw += 1; } }
-results.push(["bad upstream/model/budget/key refused at start (5/5)", threw === 5]);
+for (const bad of [{ upstream: "https://example.com" }, { model: "../x" }, { budget: 13 }, { budget: 0 }, { apiKey: "short" }, { workerKey: "short" }, { workerKey: KEY }]) { try { await startGeminiRelay({ apiKey: KEY, workerKey: WORKER, model: "m", budget: 2, onRecord: () => {}, ...bad }); } catch { threw += 1; } }
+results.push(["bad upstream/model/budget/key/placeholder refused at start (7/7)", threw === 7]);
 for (const [name, pass] of results) console.log(`${pass ? "PASS" : "FAIL"} ${name}`);
 console.log(`${results.filter(r => r[1]).length}/${results.length}`);
 relay.server.close(); fake.close();

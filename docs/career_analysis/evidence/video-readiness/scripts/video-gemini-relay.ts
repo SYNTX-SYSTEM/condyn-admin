@@ -2,19 +2,22 @@
  * "Ein echter Gemini-Test ist als nächster gesonderter Schritt vorgesehen; noch kein unkontrollierter Modellaufruf").
  *
  * Used ONLY when video-lab.ts runs with VIDEO_LAB_GEMINI=live, which itself requires the owner's separate GO. The worker keeps its
- * network sentinel (loopback only) and a dummy key; it reaches Gemini solely through this loopback relay, which runs in the lab
- * process and:
+ * network sentinel (loopback only) and a random per-lab placeholder key; it reaches Gemini solely through this loopback relay, which
+ * runs in the lab process and:
+ *   - forwards nothing for a caller without that placeholder (401, not counted; PINK R-AUTH): no other local process can spend the
+ *     real key through the relay;
  *   - forwards only POST /v1beta/models/<the one configured model>:generateContent, nothing else (other models of the provider
  *     cascade, countTokens, models.get, embeddings: refused locally with 403, never forwarded, not counted);
- *   - replaces the dummy x-goog-api-key with the real key, which never enters the server's or the worker's environment;
+ *   - replaces the placeholder x-goog-api-key with the real key, which never enters the server's or the worker's environment;
  *   - forwards at most BUDGET calls in the lab's lifetime; every further call is refused locally with 429 (not forwarded);
+ *   - forwards the request body byte for byte (PINK R-UTF8: no decoding, so no character is broken at a chunk boundary);
  *   - records per call kind, model, whether an INVESTIGATION_SCOPE block was present, upstream status, latency and sizes — never the
  *     request or response content and never the key (the content is the run's own record in the disposable database, which the
  *     GEMINI OUTPUT inspector reads and the lab drops on stop). */
 import { createServer, type Server } from "node:http";
 
 export interface RelayRecord { at: string; path: string; kind: "DISCOVERY" | "CONVERGENCE" | "LEGACY" | "OTHER"; scopeBlock: boolean; forwarded: boolean; status: number; reason?: string; ms?: number; requestBytes: number; responseBytes?: number; budgetLeft: number }
-export interface RelayOptions { apiKey: string; model: string; budget: number; upstream?: string; onRecord: (record: RelayRecord) => void }
+export interface RelayOptions { apiKey: string; workerKey: string; model: string; budget: number; upstream?: string; onRecord: (record: RelayRecord) => void }
 
 const GEMINI = "https://generativelanguage.googleapis.com";
 const kindOf = (raw: string): RelayRecord["kind"] => raw.includes("CONDYN CAPABILITY DISCOVERY SOURCE CORPUS") ? "DISCOVERY" : raw.includes("CONDYN CAPABILITY CONVERGENCE INPUT") ? "CONVERGENCE" : raw.includes("PC-CONDYN-CAP-v1.0") ? "LEGACY" : "OTHER";
@@ -26,23 +29,26 @@ export function startGeminiRelay(options: RelayOptions): Promise<{ server: Serve
   if (!/^[A-Za-z0-9._-]+$/.test(options.model)) throw new Error("relay model name is not a plain model id");
   if (!Number.isInteger(options.budget) || options.budget < 1 || options.budget > 12) throw new Error("relay budget must be 1..12");
   if (options.apiKey.length < 20) throw new Error("relay key missing");
+  if (options.workerKey.length < 20 || options.workerKey === options.apiKey) throw new Error("relay worker placeholder missing");
   const allowed = `/v1beta/models/${options.model}:generateContent`;
   let used = 0;
   const server = createServer(async (request, response) => {
-    let raw = ""; for await (const chunk of request) raw += String(chunk);
+    const chunks: Buffer[] = []; for await (const chunk of request) chunks.push(chunk as Buffer);
+    const body = Buffer.concat(chunks), raw = body.toString("utf8");
     const path = (request.url ?? "").split("?")[0];
-    const base = { at: new Date().toISOString(), path, kind: kindOf(raw), scopeBlock: raw.includes("<INVESTIGATION_SCOPE>"), requestBytes: Buffer.byteLength(raw) };
+    const base = { at: new Date().toISOString(), path, kind: kindOf(raw), scopeBlock: raw.includes("<INVESTIGATION_SCOPE>"), requestBytes: body.length };
     const refuse = (status: number, reason: string) => {
       options.onRecord({ ...base, forwarded: false, status, reason, budgetLeft: options.budget - used });
       response.writeHead(status, { "content-type": "application/json" });
-      response.end(JSON.stringify({ error: { code: status, message: `video relay: ${reason}`, status: status === 429 ? "RESOURCE_EXHAUSTED" : "PERMISSION_DENIED" } }));
+      response.end(JSON.stringify({ error: { code: status, message: `video relay: ${reason}`, status: status === 429 ? "RESOURCE_EXHAUSTED" : status === 401 ? "UNAUTHENTICATED" : "PERMISSION_DENIED" } }));
     };
+    if (request.headers["x-goog-api-key"] !== options.workerKey) return refuse(401, "caller is not this lab's worker");
     if (request.method !== "POST" || path !== allowed) return refuse(403, "only generateContent of the configured model is forwarded");
     if (used >= options.budget) return refuse(429, "live call budget of this lab exhausted");
     used += 1;
     const t0 = Date.now();
     try {
-      const upstreamResponse = await fetch(`${upstream}${allowed}`, { method: "POST", headers: { "content-type": "application/json", "x-goog-api-key": options.apiKey }, body: raw });
+      const upstreamResponse = await fetch(`${upstream}${allowed}`, { method: "POST", headers: { "content-type": "application/json", "x-goog-api-key": options.apiKey }, body });
       const text = await upstreamResponse.text();
       options.onRecord({ ...base, forwarded: true, status: upstreamResponse.status, ms: Date.now() - t0, responseBytes: Buffer.byteLength(text), budgetLeft: options.budget - used });
       response.writeHead(upstreamResponse.status, { "content-type": upstreamResponse.headers.get("content-type") ?? "application/json" });

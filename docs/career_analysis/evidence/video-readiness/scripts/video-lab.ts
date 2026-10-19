@@ -55,8 +55,10 @@ const live = LIVE ? (() => {
   const db = await provisionDatabase();
   await registerUnifiedPersistenceSchema(db.sql);
   console.log(`[video-lab] empty database ${db.databaseName} (schema only)`);
+  // The worker's placeholder key, random per lab: the live relay forwards only for it (PINK R-AUTH); the stand-in ignores it.
+  const workerKey = `video-lab-worker-${randomBytes(24).toString("base64url")}`;
   const gemini = live
-    ? await startGeminiRelay({ apiKey: live.apiKey, model: live.model, budget: live.budget, upstream: process.env.VIDEO_LAB_RELAY_TEST_UPSTREAM, onRecord: record => appendFileSync(resolve(DIR, "relay.jsonl"), `${JSON.stringify(record)}\n`) })
+    ? await startGeminiRelay({ apiKey: live.apiKey, workerKey, model: live.model, budget: live.budget, upstream: process.env.VIDEO_LAB_RELAY_TEST_UPSTREAM, onRecord: record => appendFileSync(resolve(DIR, "relay.jsonl"), `${JSON.stringify(record)}\n`) })
     : await startVideoStandIn(record => appendFileSync(resolve(DIR, "standin.jsonl"), `${JSON.stringify(record)}\n`));
   const token = randomBytes(36).toString("base64url");
   const base = `http://127.0.0.1:${PORT}`;
@@ -89,7 +91,7 @@ const live = LIVE ? (() => {
   for (let i = 0; i < 240; i += 1) { try { const r = await fetch(`${base}/api/career/job-pools`); if (r.status === 200) { await r.json(); break; } } catch {} await delay(500); }
   // Warm the page once so the first recorded load is not a cold compile.
   try { await (await fetch(`${base}/career/demo`)).text(); } catch {}
-  const worker = spawn(process.execPath, [resolve(W, "node_modules/tsx/dist/cli.mjs"), resolve(W, "scripts/run-career-worker.ts")], { cwd: W, env: { ...process.env, ...common, GEMINI_API_KEY: "video-lab-dummy-not-a-key", GEMINI_MODEL: live ? live.model : "video-standin-model", GOOGLE_GEMINI_BASE_URL: `http://127.0.0.1:${gemini.port}`, PROMPT_ENCRYPTION_KEY: randomBytes(32).toString("base64"), CAREER_WORKER_ID: "gelb-video-lab-worker" }, stdio: ["ignore", "pipe", "pipe"] });
+  const worker = spawn(process.execPath, [resolve(W, "node_modules/tsx/dist/cli.mjs"), resolve(W, "scripts/run-career-worker.ts")], { cwd: W, env: { ...process.env, ...common, GEMINI_API_KEY: workerKey, GEMINI_MODEL: live ? live.model : "video-standin-model", GOOGLE_GEMINI_BASE_URL: `http://127.0.0.1:${gemini.port}`, PROMPT_ENCRYPTION_KEY: randomBytes(32).toString("base64"), CAREER_WORKER_ID: "gelb-video-lab-worker" }, stdio: ["ignore", "pipe", "pipe"] });
   children.push(worker);
   worker.stdout?.on("data", chunk => appendFileSync(resolve(DIR, "worker.log"), String(chunk)));
   worker.stderr?.on("data", chunk => appendFileSync(resolve(DIR, "worker.log"), String(chunk)));
