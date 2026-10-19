@@ -176,7 +176,7 @@ CONDYN_PLAYWRIGHT_MODULE=<playwright/index.js> bash docs/career_analysis/evidenc
 
 - Erwartet werden zwei echte Analysen von je etwa zwei Minuten (Demo vom 2026-10-13) und 6 echte Gemini-Aufrufe.
 - Nur der Laborprozess, also das Relay, spricht mit der Gemini-API.
-- Danach werden `relay.jsonl` und das Walk-Ergebnis geprüft. Rohantworten werden nicht eingecheckt.
+- Danach werden `relay.jsonl` und das Walk-Ergebnis geprüft. Rohantworten werden nicht als Datei eingecheckt. **Ausnahme, siehe F-LIVE-RAW in §9:** Bildschirmfotos zeigen Teile davon.
 
 **Danach:**
 - ANTIGRAVITY: der volle Browserablauf einschließlich PDF-Upload und Jobzuordnung. B-2 (Datei-Input) und B-4 (bewegte Ziele) klärt die Antigravity-Probe.
@@ -294,6 +294,12 @@ Keine davon ist ein Fehler gegen einen bestehenden Vertrag. Die Bewertung liegt 
   - `…-summary.json`: Antworthülle, Vorschläge mit Zitaten, Urteile, Convergence, Projektion, Legacy-Fähigkeiten, B2;
   - `…-private-SHA256SUMS.txt`;
   - `storyboard-live/01…20` (960 × 540, echte Gemini-Ergebnisse).
+- **Korrektur F-LIVE-RAW (PINK §3.50):** Die Angabe „ohne Rohtext“ stimmt für die Bilder nicht.
+  - `storyboard-live/06-person-gemini-output.jpg` zeigt die Ansicht ORIGINAL RESPONSE mit einem lesbaren Teil der rohen Discovery-Antwort.
+  - `07-person-gemini-processing.jpg` zeigt einen Teil des Parser-Ergebnisses mit Modellsätzen (`structural_definition`).
+  - Geheim ist nichts davon; es ist Modelltext zum synthetischen Lebenslauf. Es widerspricht aber der eigenen Regel.
+  - Die Bilder sind gepusht und damit in der Geschichte des öffentlichen Repositorys. Ob sie bleiben, zugeschnitten oder ersetzt werden, und ob dafür die Geschichte umgeschrieben wird, entscheidet der Owner.
+  - Dasselbe gilt sinngemäß für `storyboard/06`; das zeigt aber nur den Text des Stand-ins.
 - **Rohdaten** mit den vollständigen Discovery-Antworten, Scope-Texten und Analysen liegen lokal außerhalb des Repositorys (Modus 0700/0600). Prüfbar sind sie über `…-private-SHA256SUMS.txt`; veröffentlicht werden sie nur auf ein Wort des Owners.
 
 **Video-Readiness danach**
