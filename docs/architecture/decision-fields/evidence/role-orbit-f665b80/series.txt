@@ -1,0 +1,14 @@
+PINK regression series on probe f665b80 = integration bc24e11 + frontend/role-orbit e6493a7 (on 3be1920, on 7a51d89), 2026-10-19
+tsc --noEmit                         0 errors (including PINK's two proofs)
+full suite without e2e               5 files / 28 tests red = the 27 base failures (identical set) + 1 environment failure in exchange-archive.postgres
+                                     ("must be a superuser to terminate superuser process" while dropping its own disposable database; alone:
+                                     once the same, once 6/6); 0 network attempts
+  GRÜN unit tests                    syntx-role-orbit 8/8, syntx-field-ssr 10/10
+job-scope-gate.e2e                   74/74
+three-modes.e2e                      plain 91/91, inspector 97/97 (one Next version check against the npm registry from next dev)
+url-boundary.e2e                     1/1
+syntx-walk.e2e                       3/3, Q-06 BOUNDARY-MATCH R15b-PENDING
+GRÜN workflow e2e                    10/10
+demo-ui-fix.e2e                      62/62
+role-orbit.e2e (PINK, 4 viewports)   395/395 at 1600 x 1000, 1280 x 720, 1366 x 768, 1600 x 1200 (3be1920 on ea125e5: 395/395)
+role-orbit-geometry (PINK)           56/56; negative controls: 3be1920 (ea125e5) 54/56 (across orbits), 7a51d89 (b46d1ff) 16/56 (minimality, across)
