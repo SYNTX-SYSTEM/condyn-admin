@@ -20,6 +20,7 @@ Integrationszweig ist `integration/job-field-governance`, Basis `311d6ee`. `main
 | `d3e76ce` | PINK `validation/hr-decision-loop-pink` `5f5c636` | F-PINK-ORDER (§3.44): `http-canonical-inverse` nutzt eine eigene Pool-ID. Vorher hing die volle Suite von der Dateireihenfolge mit `pdf-path` ab, bis zu 10 Rotfälle. Dazu `pdf-path` byte-gleich zur Integration (`ad7bc55`) und PINKs Prüfung von GRÜNs `frontend/demo-ui-fix` (nicht integriert, §5) |
 | `aab797c` | PINK `validation/hr-decision-loop-pink` `97cc57a` | PINK §3.45: Prüfung von GRÜNs `frontend/role-orbit` `6d386cc` auf der Probe `4b5774c`, nur Protokoll und Beweise als `.txt`, kein Code. Der Rollenorbit selbst ist nicht integriert (§5) |
 | `55aec63` | PINK `validation/hr-decision-loop-pink` `ffe9954` | PINK §3.46: erneute Prüfung von GRÜNs Korrektur `7a51d89` auf der Probe `c8e99d8`; nur Protokoll und Beweise als `.txt`, kein Code. Der Rollenorbit selbst ist nicht integriert (§5) |
+| `9098618` | PINK `validation/hr-decision-loop-pink` `de6829d` | PINK §3.47: D-RO-2 auf `3be1920` bestätigt und GRÜNs Korrektur `e6493a7` auf der Probe `f665b80` geprüft; nur Protokoll und Evidenz, kein Code. Der Rollenorbit selbst ist nicht integriert (§5) |
 | `a3c3759` | PINK `validation/hr-decision-loop-pink` `916e884` | PINK §3.43: `syntx-walk.e2e` an die Invarianten neu gebunden (siehe §2.3); nur diese Testdatei und Belege |
 | `73a4701` | PINK `validation/hr-decision-loop-pink` `122aa6c` | PINKs Prüfprotokolle §3.41 (Integration `0fb7b05`) und §3.42 (Delta `eacfc97`) sowie die übernommenen Fixture-Änderungen für `http-canonical-inverse` und `pdf-path`. Der pdf-path-Schritt erwartet 409 und gilt nur zusammen mit `eacfc97`; deshalb wurde `eacfc97` zuerst gemergt |
 
@@ -259,7 +260,14 @@ Owner-Vorgabe: Der alte pool-weite Vergleich bleibt vorerst rollenübergreifend.
     - Übliche Boxen: dasselbe Ergebnis wie auf `3be1920` (565 Layouts, +0,29 px und +0,52 px).
     - Rechenzeit höchstens 23,7 ms pro Layout.
   - Probe `dcd5cbc` + `e6493a7`: `tsc` 0; Job-Pool, Orbit-Härtung, drei Modi und Investigation 252 grün, 4 übersprungen.
-  - PINK: Prüfung von `e6493a7` angefragt, ausstehend.
+  - PINK §3.47 (`de6829d`, Protokoll gemergt als `9098618`): `e6493a7` validiert, keine neue Abweichung.
+    - D-RO-2 auf `3be1920` bestätigt: schlechtester Wert −6,27 px; einzelne Kartenpaare liegen bis zu 32,9 px näher als gepackt.
+    - Geometrie 56/56 einschließlich Minimalität, liegender Ellipse und Fläche sowie 6585 Layouts mit mehreren Orbits in hohen Boxen.
+    - Browserlauf 395/395 bei vier Viewports, darunter 1600 × 1200.
+    - Gegenproben erkannt: `3be1920` 54/56, `7a51d89` 16/56.
+    - Regression grün: Gate 74/74, drei Modi 91/91 + 97/97, `syntx-walk` 3/3 (Q-06 R15b-PENDING), Workflow 10/10, `demo-ui-fix` 62/62.
+    - Volle Suite: 27 Basisfälle und ein Umgebungsfehler (O-ENV-DROP: Beim Löschen einer Wegwerf-Datenbank war noch ein Superuser-Prozess verbunden, vermutlich Autovacuum). PINK hat die zwei zurückgebliebenen eigenen Wegwerf-Datenbanken selbst gelöscht. Die gemeinsame `condyn` ist nicht berührt.
+    - O-RO-COST erledigt (≤ 22,7 ms); dazu die Beobachtungen O-RO-GRID und O-RO-COLD (nicht nachgestellt).
 
   Integriert wird erst, wenn PINK geprüft hat, der Owner die Sicht erneut abgenommen hat und GELB sein Wort bekommt, zusammen mit `demo-ui-fix` (`0b5a8ea`), auf dem der Rollenorbit aufbaut. Das Sichtlabor des Owners läuft bei GRÜN auf :41805; GELB greift dort nicht ein.
 
