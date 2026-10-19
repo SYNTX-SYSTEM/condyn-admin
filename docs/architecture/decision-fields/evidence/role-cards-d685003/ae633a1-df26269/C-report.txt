@@ -1,0 +1,668 @@
+ok   C-1 1600x1000 org_rc_3: the in-process factors are the drawn ones · {"dom":["0.38","0.64"],"inProcess":{"x":0.38,"y":0.64}}
+ok   C-1 1600x1000 org_rc_3: data-card-box "orbit" on every card (factors 0.38/0.64) · []
+ok   C-1 1600x1000 org_rc_3: rendered width = the estimate's, height = estimate + 12 (±0.5 px), title lines = the counted ones · {"width":[],"height":[],"lines":[]}
+ok   C-2 1600x1000 org_rc_3: nothing cut (every line inside the padding box), no title clamped that fits in four lines · {"cut":[],"clamp":[]}
+ok   C-3 1600x1000 org_rc_3: every line and title row centred on the card's axis (±1 px) · []
+ok   C-4 1600x1000 org_rc_3: standing, title, domain, requirements, matching as the pool states them; hollow mark; nothing else · {"texts":[],"mark":[]}
+ok   C-6 1600x1000 org_rc_3: the tether lamp on the card's edge where the line from the centre meets it · []
+DEV  C-7 1600x1000 org_rc_3: the tether lamp and its conduction stub are drawn as on e6493a7 (not clipped by the card's overflow) · [["role_rc_3_00","orbit",49],["role_rc_3_01","orbit",52],["role_rc_3_02","orbit",62]]
+ok   C-1 1600x1000 org_rc_8: the in-process factors are the drawn ones · {"dom":["0.61","0.74"],"inProcess":{"x":0.61,"y":0.74}}
+ok   C-1 1600x1000 org_rc_8: data-card-box "orbit" on every card (factors 0.61/0.74) · []
+ok   C-1 1600x1000 org_rc_8: rendered width = the estimate's, height = estimate + 12 (±0.5 px), title lines = the counted ones · {"width":[],"height":[],"lines":[]}
+ok   C-2 1600x1000 org_rc_8: nothing cut (every line inside the padding box), no title clamped that fits in four lines · {"cut":[],"clamp":[]}
+ok   C-3 1600x1000 org_rc_8: every line and title row centred on the card's axis (±1 px) · []
+ok   C-4 1600x1000 org_rc_8: standing, title, domain, requirements, matching as the pool states them; hollow mark; nothing else · {"texts":[],"mark":[]}
+ok   C-6 1600x1000 org_rc_8: the tether lamp on the card's edge where the line from the centre meets it · []
+DEV  C-7 1600x1000 org_rc_8: the tether lamp and its conduction stub are drawn as on e6493a7 (not clipped by the card's overflow) · [["role_rc_8_00","orbit",52],["role_rc_8_01","orbit",97],["role_rc_8_02","orbit",43],["role_rc_8_03","orbit",41],["role_rc_8_04","orbit",122],["role_rc_8_05","orbit",83],["role_rc_8_06","orbit",51],["role_rc_8_07","orbit",90]]
+ok   C-1 1600x1000 org_rc_14: the in-process factors are the drawn ones · {"dom":["1.00","1.00"],"inProcess":{"x":1,"y":1}}
+ok   C-1 1600x1000 org_rc_14: data-card-box "packed" on every card (factors 1.00/1.00) · []
+ok   C-1 1600x1000 org_rc_14: rendered width = the estimate's, height = the estimate (±0.5 px), title lines = the counted ones · {"width":[],"height":[],"lines":[]}
+ok   C-2 1600x1000 org_rc_14: nothing cut (every line inside the padding box), no title clamped that fits in four lines · {"cut":[],"clamp":[]}
+ok   C-3 1600x1000 org_rc_14: every line and title row centred on the card's axis (±1 px) · []
+ok   C-4 1600x1000 org_rc_14: standing, title, domain, requirements, matching as the pool states them; hollow mark; nothing else · {"texts":[],"mark":[]}
+ok   C-6 1600x1000 org_rc_14: the tether lamp on the card's edge where the line from the centre meets it · []
+DEV  C-7 1600x1000 org_rc_14: the tether lamp and its conduction stub are drawn as on e6493a7 (not clipped by the card's overflow) · [["role_rc_14_00","packed",45],["role_rc_14_01","packed",41],["role_rc_14_02","packed",41],["role_rc_14_03","packed",79],["role_rc_14_04","packed",50],["role_rc_14_05","packed",54],["role_rc_14_06","packed",50],["role_rc_14_07","packed",90],["role_rc_14_08","packed",43],["role_rc_14_09","packed",88],["role_rc_14_10","packed",81],["role_rc_14_11","packed",92],["role_rc_14_12","packed",52],["role_rc_14_13","packed",87]]
+ok   C-1 1600x1000 org_rc_long_6: the in-process factors are the drawn ones · {"dom":["0.74","0.65"],"inProcess":{"x":0.74,"y":0.65}}
+ok   C-1 1600x1000 org_rc_long_6: data-card-box "orbit" on every card (factors 0.74/0.65) · []
+ok   C-1 1600x1000 org_rc_long_6: rendered width = the estimate's, height = estimate + 12 (±0.5 px), title lines = the counted ones · {"width":[],"height":[],"lines":[]}
+ok   C-2 1600x1000 org_rc_long_6: nothing cut (every line inside the padding box), no title clamped that fits in four lines · {"cut":[],"clamp":[]}
+ok   C-3 1600x1000 org_rc_long_6: every line and title row centred on the card's axis (±1 px) · []
+ok   C-4 1600x1000 org_rc_long_6: standing, title, domain, requirements, matching as the pool states them; hollow mark; nothing else · {"texts":[],"mark":[]}
+ok   C-6 1600x1000 org_rc_long_6: the tether lamp on the card's edge where the line from the centre meets it · []
+DEV  C-7 1600x1000 org_rc_long_6: the tether lamp and its conduction stub are drawn as on e6493a7 (not clipped by the card's overflow) · [["role_rc_long_6_00","orbit",52],["role_rc_long_6_01","orbit",44],["role_rc_long_6_02","orbit",45],["role_rc_long_6_03","orbit",90],["role_rc_long_6_04","orbit",52],["role_rc_long_6_05","orbit",53]]
+ok   C-1 1600x1000 org_rc_short_12: the in-process factors are the drawn ones · {"dom":["0.54","0.93"],"inProcess":{"x":0.54,"y":0.93}}
+ok   C-1 1600x1000 org_rc_short_12: data-card-box "orbit" on every card (factors 0.54/0.93) · []
+ok   C-1 1600x1000 org_rc_short_12: rendered width = the estimate's, height = estimate + 12 (±0.5 px), title lines = the counted ones · {"width":[],"height":[],"lines":[]}
+ok   C-2 1600x1000 org_rc_short_12: nothing cut (every line inside the padding box), no title clamped that fits in four lines · {"cut":[],"clamp":[]}
+ok   C-3 1600x1000 org_rc_short_12: every line and title row centred on the card's axis (±1 px) · []
+ok   C-4 1600x1000 org_rc_short_12: standing, title, domain, requirements, matching as the pool states them; hollow mark; nothing else · {"texts":[],"mark":[]}
+ok   C-6 1600x1000 org_rc_short_12: the tether lamp on the card's edge where the line from the centre meets it · []
+DEV  C-7 1600x1000 org_rc_short_12: the tether lamp and its conduction stub are drawn as on e6493a7 (not clipped by the card's overflow) · [["role_rc_short_12_00","orbit",54],["role_rc_short_12_01","orbit",54],["role_rc_short_12_02","orbit",47],["role_rc_short_12_03","orbit",44],["role_rc_short_12_04","orbit",45],["role_rc_short_12_05","orbit",78],["role_rc_short_12_06","orbit",118],["role_rc_short_12_07","orbit",78],["role_rc_short_12_08","orbit",54],["role_rc_short_12_09","orbit",54],["role_rc_short_12_10","orbit",56],["role_rc_short_12_11","orbit",53]]
+ok   C-1 1600x1000 org_rc_stress_10: the in-process factors are the drawn ones · {"dom":["0.84","0.92"],"inProcess":{"x":0.84,"y":0.92}}
+ok   C-1 1600x1000 org_rc_stress_10: data-card-box "orbit" on every card (factors 0.84/0.92) · []
+ok   C-1 1600x1000 org_rc_stress_10: rendered width = the estimate's, height = estimate + 12 (±0.5 px), title lines = the counted ones · {"width":[],"height":[],"lines":[]}
+DEV  C-2 1600x1000 org_rc_stress_10: nothing cut (every line inside the padding box), no title clamped that fits in four lines · {"cut":[],"clamp":[["role_rc_stress_10_00","QA LEAD – EMEA OPERATIONS MANAGEMENT",{"counted":2,"natural":3}]]}
+ok   C-3 1600x1000 org_rc_stress_10: every line and title row centred on the card's axis (±1 px) · []
+ok   C-4 1600x1000 org_rc_stress_10: standing, title, domain, requirements, matching as the pool states them; hollow mark; nothing else · {"texts":[],"mark":[]}
+ok   C-6 1600x1000 org_rc_stress_10: the tether lamp on the card's edge where the line from the centre meets it · []
+DEV  C-7 1600x1000 org_rc_stress_10: the tether lamp and its conduction stub are drawn as on e6493a7 (not clipped by the card's overflow) · [["role_rc_stress_10_00","orbit",56],["role_rc_stress_10_01","orbit",53],["role_rc_stress_10_02","orbit",45],["role_rc_stress_10_03","orbit",45],["role_rc_stress_10_04","orbit",46],["role_rc_stress_10_05","orbit",85],["role_rc_stress_10_06","orbit",43],["role_rc_stress_10_07","orbit",57],["role_rc_stress_10_08","orbit",58],["role_rc_stress_10_09","orbit",55]]
+ok   C-1 1600x1000 org_rc_r20261018_0: the in-process factors are the drawn ones · {"dom":["0.84","0.76"],"inProcess":{"x":0.84,"y":0.76}}
+ok   C-1 1600x1000 org_rc_r20261018_0: data-card-box "orbit" on every card (factors 0.84/0.76) · []
+ok   C-1 1600x1000 org_rc_r20261018_0: rendered width = the estimate's, height = estimate + 12 (±0.5 px), title lines = the counted ones · {"width":[],"height":[],"lines":[]}
+DEV  C-2 1600x1000 org_rc_r20261018_0: nothing cut (every line inside the padding box), no title clamped that fits in four lines · {"cut":[],"clamp":[["role_rc_r20261018_0_02","Engineer QA Lead Infrastructure Senior Machine P",{"counted":2,"natural":3}]]}
+ok   C-3 1600x1000 org_rc_r20261018_0: every line and title row centred on the card's axis (±1 px) · []
+ok   C-4 1600x1000 org_rc_r20261018_0: standing, title, domain, requirements, matching as the pool states them; hollow mark; nothing else · {"texts":[],"mark":[]}
+ok   C-6 1600x1000 org_rc_r20261018_0: the tether lamp on the card's edge where the line from the centre meets it · []
+DEV  C-7 1600x1000 org_rc_r20261018_0: the tether lamp and its conduction stub are drawn as on e6493a7 (not clipped by the card's overflow) · [["role_rc_r20261018_0_00","orbit",52],["role_rc_r20261018_0_01","orbit",43],["role_rc_r20261018_0_02","orbit",46],["role_rc_r20261018_0_03","orbit",58],["role_rc_r20261018_0_04","orbit",45],["role_rc_r20261018_0_05","orbit",57],["role_rc_r20261018_0_06","orbit",66]]
+ok   C-1 1600x1000 org_rc_r20261018_1: the in-process factors are the drawn ones · {"dom":["0.65","0.77"],"inProcess":{"x":0.65,"y":0.77}}
+ok   C-1 1600x1000 org_rc_r20261018_1: data-card-box "orbit" on every card (factors 0.65/0.77) · []
+ok   C-1 1600x1000 org_rc_r20261018_1: rendered width = the estimate's, height = estimate + 12 (±0.5 px), title lines = the counted ones · {"width":[],"height":[],"lines":[]}
+DEV  C-2 1600x1000 org_rc_r20261018_1: nothing cut (every line inside the padding box), no title clamped that fits in four lines · {"cut":[],"clamp":[["role_rc_r20261018_1_05","Data Payments (EMEA) Engineer II Principal of Manager",{"counted":2,"natural":3}]]}
+ok   C-3 1600x1000 org_rc_r20261018_1: every line and title row centred on the card's axis (±1 px) · []
+ok   C-4 1600x1000 org_rc_r20261018_1: standing, title, domain, requirements, matching as the pool states them; hollow mark; nothing else · {"texts":[],"mark":[]}
+ok   C-6 1600x1000 org_rc_r20261018_1: the tether lamp on the card's edge where the line from the centre meets it · []
+DEV  C-7 1600x1000 org_rc_r20261018_1: the tether lamp and its conduction stub are drawn as on e6493a7 (not clipped by the card's overflow) · [["role_rc_r20261018_1_00","orbit",52],["role_rc_r20261018_1_01","orbit",56],["role_rc_r20261018_1_02","orbit",49],["role_rc_r20261018_1_03","orbit",88],["role_rc_r20261018_1_04","orbit",70],["role_rc_r20261018_1_05","orbit",53],["role_rc_r20261018_1_06","orbit",91]]
+ok   C-1 1600x1000 org_rc_r20261018_2: the in-process factors are the drawn ones · {"dom":["0.76","0.71"],"inProcess":{"x":0.76,"y":0.71}}
+ok   C-1 1600x1000 org_rc_r20261018_2: data-card-box "orbit" on every card (factors 0.76/0.71) · []
+ok   C-1 1600x1000 org_rc_r20261018_2: rendered width = the estimate's, height = estimate + 12 (±0.5 px), title lines = the counted ones · {"width":[],"height":[],"lines":[]}
+ok   C-2 1600x1000 org_rc_r20261018_2: nothing cut (every line inside the padding box), no title clamped that fits in four lines · {"cut":[],"clamp":[]}
+ok   C-3 1600x1000 org_rc_r20261018_2: every line and title row centred on the card's axis (±1 px) · []
+ok   C-4 1600x1000 org_rc_r20261018_2: standing, title, domain, requirements, matching as the pool states them; hollow mark; nothing else · {"texts":[],"mark":[]}
+ok   C-6 1600x1000 org_rc_r20261018_2: the tether lamp on the card's edge where the line from the centre meets it · []
+DEV  C-7 1600x1000 org_rc_r20261018_2: the tether lamp and its conduction stub are drawn as on e6493a7 (not clipped by the card's overflow) · [["role_rc_r20261018_2_00","orbit",52],["role_rc_r20261018_2_01","orbit",40],["role_rc_r20261018_2_02","orbit",41],["role_rc_r20261018_2_03","orbit",65],["role_rc_r20261018_2_04","orbit",47],["role_rc_r20261018_2_05","orbit",49],["role_rc_r20261018_2_06","orbit",69]]
+ok   C-1 1600x1000 org_rc_r20261018_3: the in-process factors are the drawn ones · {"dom":["0.84","0.76"],"inProcess":{"x":0.84,"y":0.76}}
+ok   C-1 1600x1000 org_rc_r20261018_3: data-card-box "orbit" on every card (factors 0.84/0.76) · []
+ok   C-1 1600x1000 org_rc_r20261018_3: rendered width = the estimate's, height = estimate + 12 (±0.5 px), title lines = the counted ones · {"width":[],"height":[],"lines":[]}
+ok   C-2 1600x1000 org_rc_r20261018_3: nothing cut (every line inside the padding box), no title clamped that fits in four lines · {"cut":[],"clamp":[]}
+ok   C-3 1600x1000 org_rc_r20261018_3: every line and title row centred on the card's axis (±1 px) · []
+ok   C-4 1600x1000 org_rc_r20261018_3: standing, title, domain, requirements, matching as the pool states them; hollow mark; nothing else · {"texts":[],"mark":[]}
+ok   C-6 1600x1000 org_rc_r20261018_3: the tether lamp on the card's edge where the line from the centre meets it · []
+DEV  C-7 1600x1000 org_rc_r20261018_3: the tether lamp and its conduction stub are drawn as on e6493a7 (not clipped by the card's overflow) · [["role_rc_r20261018_3_00","orbit",52],["role_rc_r20261018_3_01","orbit",43],["role_rc_r20261018_3_02","orbit",45],["role_rc_r20261018_3_03","orbit",64],["role_rc_r20261018_3_04","orbit",64],["role_rc_r20261018_3_05","orbit",51],["role_rc_r20261018_3_06","orbit",53]]
+ok   C-1 1600x1000 org_rc_r20261018_4: the in-process factors are the drawn ones · {"dom":["0.84","0.74"],"inProcess":{"x":0.84,"y":0.74}}
+ok   C-1 1600x1000 org_rc_r20261018_4: data-card-box "orbit" on every card (factors 0.84/0.74) · []
+ok   C-1 1600x1000 org_rc_r20261018_4: rendered width = the estimate's, height = estimate + 12 (±0.5 px), title lines = the counted ones · {"width":[],"height":[],"lines":[]}
+ok   C-2 1600x1000 org_rc_r20261018_4: nothing cut (every line inside the padding box), no title clamped that fits in four lines · {"cut":[],"clamp":[]}
+ok   C-3 1600x1000 org_rc_r20261018_4: every line and title row centred on the card's axis (±1 px) · []
+ok   C-4 1600x1000 org_rc_r20261018_4: standing, title, domain, requirements, matching as the pool states them; hollow mark; nothing else · {"texts":[],"mark":[]}
+ok   C-6 1600x1000 org_rc_r20261018_4: the tether lamp on the card's edge where the line from the centre meets it · []
+DEV  C-7 1600x1000 org_rc_r20261018_4: the tether lamp and its conduction stub are drawn as on e6493a7 (not clipped by the card's overflow) · [["role_rc_r20261018_4_00","orbit",51],["role_rc_r20261018_4_01","orbit",51],["role_rc_r20261018_4_02","orbit",42],["role_rc_r20261018_4_03","orbit",41],["role_rc_r20261018_4_04","orbit",68],["role_rc_r20261018_4_05","orbit",51],["role_rc_r20261018_4_06","orbit",56]]
+ok   C-1 1600x1000 org_rc_r20261018_5: the in-process factors are the drawn ones · {"dom":["0.84","0.76"],"inProcess":{"x":0.84,"y":0.76}}
+ok   C-1 1600x1000 org_rc_r20261018_5: data-card-box "orbit" on every card (factors 0.84/0.76) · []
+ok   C-1 1600x1000 org_rc_r20261018_5: rendered width = the estimate's, height = estimate + 12 (±0.5 px), title lines = the counted ones · {"width":[],"height":[],"lines":[]}
+ok   C-2 1600x1000 org_rc_r20261018_5: nothing cut (every line inside the padding box), no title clamped that fits in four lines · {"cut":[],"clamp":[]}
+ok   C-3 1600x1000 org_rc_r20261018_5: every line and title row centred on the card's axis (±1 px) · []
+ok   C-4 1600x1000 org_rc_r20261018_5: standing, title, domain, requirements, matching as the pool states them; hollow mark; nothing else · {"texts":[],"mark":[]}
+ok   C-6 1600x1000 org_rc_r20261018_5: the tether lamp on the card's edge where the line from the centre meets it · []
+DEV  C-7 1600x1000 org_rc_r20261018_5: the tether lamp and its conduction stub are drawn as on e6493a7 (not clipped by the card's overflow) · [["role_rc_r20261018_5_00","orbit",52],["role_rc_r20261018_5_01","orbit",59],["role_rc_r20261018_5_02","orbit",45],["role_rc_r20261018_5_03","orbit",64],["role_rc_r20261018_5_04","orbit",43],["role_rc_r20261018_5_05","orbit",57],["role_rc_r20261018_5_06","orbit",54]]
+ok   C-1 1600x1000 org_rc_r20261018_6: the in-process factors are the drawn ones · {"dom":["0.68","0.82"],"inProcess":{"x":0.68,"y":0.82}}
+ok   C-1 1600x1000 org_rc_r20261018_6: data-card-box "orbit" on every card (factors 0.68/0.82) · []
+ok   C-1 1600x1000 org_rc_r20261018_6: rendered width = the estimate's, height = estimate + 12 (±0.5 px), title lines = the counted ones · {"width":[],"height":[],"lines":[]}
+ok   C-2 1600x1000 org_rc_r20261018_6: nothing cut (every line inside the padding box), no title clamped that fits in four lines · {"cut":[],"clamp":[]}
+ok   C-3 1600x1000 org_rc_r20261018_6: every line and title row centred on the card's axis (±1 px) · []
+ok   C-4 1600x1000 org_rc_r20261018_6: standing, title, domain, requirements, matching as the pool states them; hollow mark; nothing else · {"texts":[],"mark":[]}
+ok   C-6 1600x1000 org_rc_r20261018_6: the tether lamp on the card's edge where the line from the centre meets it · []
+DEV  C-7 1600x1000 org_rc_r20261018_6: the tether lamp and its conduction stub are drawn as on e6493a7 (not clipped by the card's overflow) · [["role_rc_r20261018_6_00","orbit",55],["role_rc_r20261018_6_01","orbit",48],["role_rc_r20261018_6_02","orbit",43],["role_rc_r20261018_6_03","orbit",89],["role_rc_r20261018_6_04","orbit",87],["role_rc_r20261018_6_05","orbit",50],["role_rc_r20261018_6_06","orbit",77]]
+ok   C-1 1600x1000 org_rc_r20261018_7: the in-process factors are the drawn ones · {"dom":["0.50","0.70"],"inProcess":{"x":0.5,"y":0.7}}
+ok   C-1 1600x1000 org_rc_r20261018_7: data-card-box "orbit" on every card (factors 0.50/0.70) · []
+ok   C-1 1600x1000 org_rc_r20261018_7: rendered width = the estimate's, height = estimate + 12 (±0.5 px), title lines = the counted ones · {"width":[],"height":[],"lines":[]}
+ok   C-2 1600x1000 org_rc_r20261018_7: nothing cut (every line inside the padding box), no title clamped that fits in four lines · {"cut":[],"clamp":[]}
+ok   C-3 1600x1000 org_rc_r20261018_7: every line and title row centred on the card's axis (±1 px) · []
+ok   C-4 1600x1000 org_rc_r20261018_7: standing, title, domain, requirements, matching as the pool states them; hollow mark; nothing else · {"texts":[],"mark":[]}
+ok   C-6 1600x1000 org_rc_r20261018_7: the tether lamp on the card's edge where the line from the centre meets it · []
+DEV  C-7 1600x1000 org_rc_r20261018_7: the tether lamp and its conduction stub are drawn as on e6493a7 (not clipped by the card's overflow) · [["role_rc_r20261018_7_00","orbit",52],["role_rc_r20261018_7_01","orbit",37],["role_rc_r20261018_7_02","orbit",126],["role_rc_r20261018_7_03","orbit",51]]
+ok   C-1 1600x1000 org_rc_r4711_0: the in-process factors are the drawn ones · {"dom":["0.84","0.76"],"inProcess":{"x":0.84,"y":0.76}}
+ok   C-1 1600x1000 org_rc_r4711_0: data-card-box "orbit" on every card (factors 0.84/0.76) · []
+ok   C-1 1600x1000 org_rc_r4711_0: rendered width = the estimate's, height = estimate + 12 (±0.5 px), title lines = the counted ones · {"width":[],"height":[],"lines":[]}
+ok   C-2 1600x1000 org_rc_r4711_0: nothing cut (every line inside the padding box), no title clamped that fits in four lines · {"cut":[],"clamp":[]}
+ok   C-3 1600x1000 org_rc_r4711_0: every line and title row centred on the card's axis (±1 px) · []
+ok   C-4 1600x1000 org_rc_r4711_0: standing, title, domain, requirements, matching as the pool states them; hollow mark; nothing else · {"texts":[],"mark":[]}
+ok   C-6 1600x1000 org_rc_r4711_0: the tether lamp on the card's edge where the line from the centre meets it · []
+DEV  C-7 1600x1000 org_rc_r4711_0: the tether lamp and its conduction stub are drawn as on e6493a7 (not clipped by the card's overflow) · [["role_rc_r4711_0_00","orbit",52],["role_rc_r4711_0_01","orbit",59],["role_rc_r4711_0_02","orbit",45],["role_rc_r4711_0_03","orbit",64],["role_rc_r4711_0_04","orbit",48],["role_rc_r4711_0_05","orbit",57],["role_rc_r4711_0_06","orbit",66]]
+ok   C-1 1600x1000 org_rc_r4711_1: the in-process factors are the drawn ones · {"dom":["0.84","0.76"],"inProcess":{"x":0.84,"y":0.76}}
+ok   C-1 1600x1000 org_rc_r4711_1: data-card-box "orbit" on every card (factors 0.84/0.76) · []
+ok   C-1 1600x1000 org_rc_r4711_1: rendered width = the estimate's, height = estimate + 12 (±0.5 px), title lines = the counted ones · {"width":[],"height":[],"lines":[]}
+ok   C-2 1600x1000 org_rc_r4711_1: nothing cut (every line inside the padding box), no title clamped that fits in four lines · {"cut":[],"clamp":[]}
+ok   C-3 1600x1000 org_rc_r4711_1: every line and title row centred on the card's axis (±1 px) · []
+ok   C-4 1600x1000 org_rc_r4711_1: standing, title, domain, requirements, matching as the pool states them; hollow mark; nothing else · {"texts":[],"mark":[]}
+ok   C-6 1600x1000 org_rc_r4711_1: the tether lamp on the card's edge where the line from the centre meets it · []
+DEV  C-7 1600x1000 org_rc_r4711_1: the tether lamp and its conduction stub are drawn as on e6493a7 (not clipped by the card's overflow) · [["role_rc_r4711_1_00","orbit",52],["role_rc_r4711_1_01","orbit",43],["role_rc_r4711_1_02","orbit",45],["role_rc_r4711_1_03","orbit",48],["role_rc_r4711_1_04","orbit",62],["role_rc_r4711_1_05","orbit",57],["role_rc_r4711_1_06","orbit",66]]
+ok   C-1 1600x1000 org_rc_r4711_2: the in-process factors are the drawn ones · {"dom":["0.84","0.76"],"inProcess":{"x":0.84,"y":0.76}}
+ok   C-1 1600x1000 org_rc_r4711_2: data-card-box "orbit" on every card (factors 0.84/0.76) · []
+ok   C-1 1600x1000 org_rc_r4711_2: rendered width = the estimate's, height = estimate + 12 (±0.5 px), title lines = the counted ones · {"width":[],"height":[],"lines":[]}
+ok   C-2 1600x1000 org_rc_r4711_2: nothing cut (every line inside the padding box), no title clamped that fits in four lines · {"cut":[],"clamp":[]}
+ok   C-3 1600x1000 org_rc_r4711_2: every line and title row centred on the card's axis (±1 px) · []
+ok   C-4 1600x1000 org_rc_r4711_2: standing, title, domain, requirements, matching as the pool states them; hollow mark; nothing else · {"texts":[],"mark":[]}
+ok   C-6 1600x1000 org_rc_r4711_2: the tether lamp on the card's edge where the line from the centre meets it · []
+DEV  C-7 1600x1000 org_rc_r4711_2: the tether lamp and its conduction stub are drawn as on e6493a7 (not clipped by the card's overflow) · [["role_rc_r4711_2_00","orbit",52],["role_rc_r4711_2_01","orbit",59],["role_rc_r4711_2_02","orbit",42],["role_rc_r4711_2_03","orbit",58],["role_rc_r4711_2_04","orbit",48],["role_rc_r4711_2_05","orbit",57],["role_rc_r4711_2_06","orbit",64]]
+ok   C-1 1600x1000 org_rc_r4711_3: the in-process factors are the drawn ones · {"dom":["0.75","0.81"],"inProcess":{"x":0.75,"y":0.81}}
+ok   C-1 1600x1000 org_rc_r4711_3: data-card-box "orbit" on every card (factors 0.75/0.81) · []
+ok   C-1 1600x1000 org_rc_r4711_3: rendered width = the estimate's, height = estimate + 12 (±0.5 px), title lines = the counted ones · {"width":[],"height":[],"lines":[]}
+ok   C-2 1600x1000 org_rc_r4711_3: nothing cut (every line inside the padding box), no title clamped that fits in four lines · {"cut":[],"clamp":[]}
+ok   C-3 1600x1000 org_rc_r4711_3: every line and title row centred on the card's axis (±1 px) · []
+ok   C-4 1600x1000 org_rc_r4711_3: standing, title, domain, requirements, matching as the pool states them; hollow mark; nothing else · {"texts":[],"mark":[]}
+ok   C-6 1600x1000 org_rc_r4711_3: the tether lamp on the card's edge where the line from the centre meets it · []
+DEV  C-7 1600x1000 org_rc_r4711_3: the tether lamp and its conduction stub are drawn as on e6493a7 (not clipped by the card's overflow) · [["role_rc_r4711_3_00","orbit",54],["role_rc_r4711_3_01","orbit",47],["role_rc_r4711_3_02","orbit",44],["role_rc_r4711_3_03","orbit",63],["role_rc_r4711_3_04","orbit",64],["role_rc_r4711_3_05","orbit",52],["role_rc_r4711_3_06","orbit",80]]
+ok   C-1 1600x1000 org_rc_r4711_4: the in-process factors are the drawn ones · {"dom":["0.81","0.76"],"inProcess":{"x":0.81,"y":0.76}}
+ok   C-1 1600x1000 org_rc_r4711_4: data-card-box "orbit" on every card (factors 0.81/0.76) · []
+ok   C-1 1600x1000 org_rc_r4711_4: rendered width = the estimate's, height = estimate + 12 (±0.5 px), title lines = the counted ones · {"width":[],"height":[],"lines":[]}
+ok   C-2 1600x1000 org_rc_r4711_4: nothing cut (every line inside the padding box), no title clamped that fits in four lines · {"cut":[],"clamp":[]}
+ok   C-3 1600x1000 org_rc_r4711_4: every line and title row centred on the card's axis (±1 px) · []
+ok   C-4 1600x1000 org_rc_r4711_4: standing, title, domain, requirements, matching as the pool states them; hollow mark; nothing else · {"texts":[],"mark":[]}
+ok   C-6 1600x1000 org_rc_r4711_4: the tether lamp on the card's edge where the line from the centre meets it · []
+DEV  C-7 1600x1000 org_rc_r4711_4: the tether lamp and its conduction stub are drawn as on e6493a7 (not clipped by the card's overflow) · [["role_rc_r4711_4_00","orbit",52],["role_rc_r4711_4_01","orbit",48],["role_rc_r4711_4_02","orbit",43],["role_rc_r4711_4_03","orbit",61],["role_rc_r4711_4_04","orbit",61],["role_rc_r4711_4_05","orbit",50],["role_rc_r4711_4_06","orbit",76]]
+ok   C-1 1600x1000 org_rc_r4711_5: the in-process factors are the drawn ones · {"dom":["0.77","0.70"],"inProcess":{"x":0.77,"y":0.7}}
+ok   C-1 1600x1000 org_rc_r4711_5: data-card-box "orbit" on every card (factors 0.77/0.70) · []
+ok   C-1 1600x1000 org_rc_r4711_5: rendered width = the estimate's, height = estimate + 12 (±0.5 px), title lines = the counted ones · {"width":[],"height":[],"lines":[]}
+ok   C-2 1600x1000 org_rc_r4711_5: nothing cut (every line inside the padding box), no title clamped that fits in four lines · {"cut":[],"clamp":[]}
+ok   C-3 1600x1000 org_rc_r4711_5: every line and title row centred on the card's axis (±1 px) · []
+ok   C-4 1600x1000 org_rc_r4711_5: standing, title, domain, requirements, matching as the pool states them; hollow mark; nothing else · {"texts":[],"mark":[]}
+ok   C-6 1600x1000 org_rc_r4711_5: the tether lamp on the card's edge where the line from the centre meets it · []
+DEV  C-7 1600x1000 org_rc_r4711_5: the tether lamp and its conduction stub are drawn as on e6493a7 (not clipped by the card's overflow) · [["role_rc_r4711_5_00","orbit",55],["role_rc_r4711_5_01","orbit",44],["role_rc_r4711_5_02","orbit",44],["role_rc_r4711_5_03","orbit",65],["role_rc_r4711_5_04","orbit",54],["role_rc_r4711_5_05","orbit",55],["role_rc_r4711_5_06","orbit",58]]
+ok   C-1 1600x1000 org_rc_r4711_6: the in-process factors are the drawn ones · {"dom":["0.70","0.76"],"inProcess":{"x":0.7,"y":0.76}}
+ok   C-1 1600x1000 org_rc_r4711_6: data-card-box "orbit" on every card (factors 0.70/0.76) · []
+ok   C-1 1600x1000 org_rc_r4711_6: rendered width = the estimate's, height = estimate + 12 (±0.5 px), title lines = the counted ones · {"width":[],"height":[],"lines":[]}
+ok   C-2 1600x1000 org_rc_r4711_6: nothing cut (every line inside the padding box), no title clamped that fits in four lines · {"cut":[],"clamp":[]}
+ok   C-3 1600x1000 org_rc_r4711_6: every line and title row centred on the card's axis (±1 px) · []
+ok   C-4 1600x1000 org_rc_r4711_6: standing, title, domain, requirements, matching as the pool states them; hollow mark; nothing else · {"texts":[],"mark":[]}
+ok   C-6 1600x1000 org_rc_r4711_6: the tether lamp on the card's edge where the line from the centre meets it · []
+DEV  C-7 1600x1000 org_rc_r4711_6: the tether lamp and its conduction stub are drawn as on e6493a7 (not clipped by the card's overflow) · [["role_rc_r4711_6_00","orbit",52],["role_rc_r4711_6_01","orbit",95],["role_rc_r4711_6_02","orbit",39],["role_rc_r4711_6_03","orbit",67],["role_rc_r4711_6_04","orbit",64],["role_rc_r4711_6_05","orbit",53],["role_rc_r4711_6_06","orbit",84]]
+ok   C-1 1600x1000 org_rc_r4711_7: the in-process factors are the drawn ones · {"dom":["0.50","0.70"],"inProcess":{"x":0.5,"y":0.7}}
+ok   C-1 1600x1000 org_rc_r4711_7: data-card-box "orbit" on every card (factors 0.50/0.70) · []
+ok   C-1 1600x1000 org_rc_r4711_7: rendered width = the estimate's, height = estimate + 12 (±0.5 px), title lines = the counted ones · {"width":[],"height":[],"lines":[]}
+ok   C-2 1600x1000 org_rc_r4711_7: nothing cut (every line inside the padding box), no title clamped that fits in four lines · {"cut":[],"clamp":[]}
+ok   C-3 1600x1000 org_rc_r4711_7: every line and title row centred on the card's axis (±1 px) · []
+ok   C-4 1600x1000 org_rc_r4711_7: standing, title, domain, requirements, matching as the pool states them; hollow mark; nothing else · {"texts":[],"mark":[]}
+ok   C-6 1600x1000 org_rc_r4711_7: the tether lamp on the card's edge where the line from the centre meets it · []
+DEV  C-7 1600x1000 org_rc_r4711_7: the tether lamp and its conduction stub are drawn as on e6493a7 (not clipped by the card's overflow) · [["role_rc_r4711_7_00","orbit",55],["role_rc_r4711_7_01","orbit",37],["role_rc_r4711_7_02","orbit",127],["role_rc_r4711_7_03","orbit",52]]
+ok   C-1 1280x720 org_rc_3: the in-process factors are the drawn ones · {"dom":["0.49","0.70"],"inProcess":{"x":0.49,"y":0.7}}
+ok   C-1 1280x720 org_rc_3: data-card-box "orbit" on every card (factors 0.49/0.70) · []
+ok   C-1 1280x720 org_rc_3: rendered width = the estimate's, height = estimate + 12 (±0.5 px), title lines = the counted ones · {"width":[],"height":[],"lines":[]}
+ok   C-2 1280x720 org_rc_3: nothing cut (every line inside the padding box), no title clamped that fits in four lines · {"cut":[],"clamp":[]}
+ok   C-3 1280x720 org_rc_3: every line and title row centred on the card's axis (±1 px) · []
+ok   C-4 1280x720 org_rc_3: standing, title, domain, requirements, matching as the pool states them; hollow mark; nothing else · {"texts":[],"mark":[]}
+ok   C-6 1280x720 org_rc_3: the tether lamp on the card's edge where the line from the centre meets it · []
+DEV  C-7 1280x720 org_rc_3: the tether lamp and its conduction stub are drawn as on e6493a7 (not clipped by the card's overflow) · [["role_rc_3_00","orbit",52],["role_rc_3_01","orbit",57],["role_rc_3_02","orbit",65]]
+ok   C-1 1280x720 org_rc_8: the in-process factors are the drawn ones · {"dom":["0.85","0.76"],"inProcess":{"x":0.85,"y":0.76}}
+ok   C-1 1280x720 org_rc_8: data-card-box "orbit" on every card (factors 0.85/0.76) · []
+ok   C-1 1280x720 org_rc_8: rendered width = the estimate's, height = estimate + 12 (±0.5 px), title lines = the counted ones · {"width":[],"height":[],"lines":[]}
+ok   C-2 1280x720 org_rc_8: nothing cut (every line inside the padding box), no title clamped that fits in four lines · {"cut":[],"clamp":[]}
+ok   C-3 1280x720 org_rc_8: every line and title row centred on the card's axis (±1 px) · []
+ok   C-4 1280x720 org_rc_8: standing, title, domain, requirements, matching as the pool states them; hollow mark; nothing else · {"texts":[],"mark":[]}
+ok   C-6 1280x720 org_rc_8: the tether lamp on the card's edge where the line from the centre meets it · []
+DEV  C-7 1280x720 org_rc_8: the tether lamp and its conduction stub are drawn as on e6493a7 (not clipped by the card's overflow) · [["role_rc_8_00","orbit",56],["role_rc_8_01","orbit",80],["role_rc_8_02","orbit",43],["role_rc_8_03","orbit",42],["role_rc_8_04","orbit",103],["role_rc_8_05","orbit",87],["role_rc_8_06","orbit",54],["role_rc_8_07","orbit",84]]
+ok   C-1 1280x720 org_rc_14: the in-process factors are the drawn ones · {"dom":["1.00","1.00"],"inProcess":{"x":1,"y":1}}
+ok   C-1 1280x720 org_rc_14: data-card-box "packed" on every card (factors 1.00/1.00) · []
+ok   C-1 1280x720 org_rc_14: rendered width = the estimate's, height = the estimate (±0.5 px), title lines = the counted ones · {"width":[],"height":[],"lines":[]}
+ok   C-2 1280x720 org_rc_14: nothing cut (every line inside the padding box), no title clamped that fits in four lines · {"cut":[],"clamp":[]}
+ok   C-3 1280x720 org_rc_14: every line and title row centred on the card's axis (±1 px) · []
+ok   C-4 1280x720 org_rc_14: standing, title, domain, requirements, matching as the pool states them; hollow mark; nothing else · {"texts":[],"mark":[]}
+ok   C-6 1280x720 org_rc_14: the tether lamp on the card's edge where the line from the centre meets it · []
+DEV  C-7 1280x720 org_rc_14: the tether lamp and its conduction stub are drawn as on e6493a7 (not clipped by the card's overflow) · [["role_rc_14_05","packed",50],["role_rc_14_06","packed",41],["role_rc_14_09","packed",51],["role_rc_14_10","packed",43],["role_rc_14_00","packed",53],["role_rc_14_02","packed",59],["role_rc_14_03","packed",44],["role_rc_14_04","packed",54],["role_rc_14_07","packed",47],["role_rc_14_08","packed",55],["role_rc_14_11","packed",46],["role_rc_14_12","packed",54]]
+ok   C-1 1280x720 org_rc_long_6: the in-process factors are the drawn ones · {"dom":["0.75","0.89"],"inProcess":{"x":0.75,"y":0.89}}
+ok   C-1 1280x720 org_rc_long_6: data-card-box "orbit" on every card (factors 0.75/0.89) · []
+ok   C-1 1280x720 org_rc_long_6: rendered width = the estimate's, height = estimate + 12 (±0.5 px), title lines = the counted ones · {"width":[],"height":[],"lines":[]}
+ok   C-2 1280x720 org_rc_long_6: nothing cut (every line inside the padding box), no title clamped that fits in four lines · {"cut":[],"clamp":[]}
+ok   C-3 1280x720 org_rc_long_6: every line and title row centred on the card's axis (±1 px) · []
+ok   C-4 1280x720 org_rc_long_6: standing, title, domain, requirements, matching as the pool states them; hollow mark; nothing else · {"texts":[],"mark":[]}
+ok   C-6 1280x720 org_rc_long_6: the tether lamp on the card's edge where the line from the centre meets it · []
+DEV  C-7 1280x720 org_rc_long_6: the tether lamp and its conduction stub are drawn as on e6493a7 (not clipped by the card's overflow) · [["role_rc_long_6_00","orbit",54],["role_rc_long_6_01","orbit",46],["role_rc_long_6_02","orbit",45],["role_rc_long_6_03","orbit",125],["role_rc_long_6_04","orbit",57],["role_rc_long_6_05","orbit",57]]
+ok   C-1 1280x720 org_rc_short_12: the in-process factors are the drawn ones · {"dom":["0.71","0.98"],"inProcess":{"x":0.71,"y":0.98}}
+ok   C-1 1280x720 org_rc_short_12: data-card-box "orbit" on every card (factors 0.71/0.98) · []
+ok   C-1 1280x720 org_rc_short_12: rendered width = the estimate's, height = estimate + 12 (±0.5 px), title lines = the counted ones · {"width":[],"height":[],"lines":[]}
+ok   C-2 1280x720 org_rc_short_12: nothing cut (every line inside the padding box), no title clamped that fits in four lines · {"cut":[],"clamp":[]}
+ok   C-3 1280x720 org_rc_short_12: every line and title row centred on the card's axis (±1 px) · []
+ok   C-4 1280x720 org_rc_short_12: standing, title, domain, requirements, matching as the pool states them; hollow mark; nothing else · {"texts":[],"mark":[]}
+ok   C-6 1280x720 org_rc_short_12: the tether lamp on the card's edge where the line from the centre meets it · []
+DEV  C-7 1280x720 org_rc_short_12: the tether lamp and its conduction stub are drawn as on e6493a7 (not clipped by the card's overflow) · [["role_rc_short_12_00","orbit",58],["role_rc_short_12_01","orbit",58],["role_rc_short_12_02","orbit",45],["role_rc_short_12_03","orbit",40],["role_rc_short_12_04","orbit",42],["role_rc_short_12_08","orbit",51],["role_rc_short_12_09","orbit",49],["role_rc_short_12_10","orbit",54],["role_rc_short_12_11","orbit",54]]
+ok   C-1 1280x720 org_rc_stress_10: the in-process factors are the drawn ones · {"dom":["1.00","1.00"],"inProcess":{"x":1,"y":1}}
+ok   C-1 1280x720 org_rc_stress_10: data-card-box "packed" on every card (factors 1.00/1.00) · []
+ok   C-1 1280x720 org_rc_stress_10: rendered width = the estimate's, height = the estimate (±0.5 px), title lines = the counted ones · {"width":[],"height":[],"lines":[]}
+DEV  C-2 1280x720 org_rc_stress_10: nothing cut (every line inside the padding box), no title clamped that fits in four lines · {"cut":[],"clamp":[["role_rc_stress_10_00","QA LEAD – EMEA OPERATIONS MANAGEMENT",{"counted":2,"natural":3}]]}
+ok   C-3 1280x720 org_rc_stress_10: every line and title row centred on the card's axis (±1 px) · []
+ok   C-4 1280x720 org_rc_stress_10: standing, title, domain, requirements, matching as the pool states them; hollow mark; nothing else · {"texts":[],"mark":[]}
+ok   C-6 1280x720 org_rc_stress_10: the tether lamp on the card's edge where the line from the centre meets it · []
+DEV  C-7 1280x720 org_rc_stress_10: the tether lamp and its conduction stub are drawn as on e6493a7 (not clipped by the card's overflow) · [["role_rc_stress_10_00","packed",50],["role_rc_stress_10_01","packed",51],["role_rc_stress_10_02","packed",45],["role_rc_stress_10_03","packed",45],["role_rc_stress_10_07","packed",54],["role_rc_stress_10_08","packed",55],["role_rc_stress_10_09","packed",51]]
+ok   C-1 1280x720 org_rc_r20261018_0: the in-process factors are the drawn ones · {"dom":["0.91","0.97"],"inProcess":{"x":0.91,"y":0.97}}
+ok   C-1 1280x720 org_rc_r20261018_0: data-card-box "orbit" on every card (factors 0.91/0.97) · []
+ok   C-1 1280x720 org_rc_r20261018_0: rendered width = the estimate's, height = estimate + 12 (±0.5 px), title lines = the counted ones · {"width":[],"height":[],"lines":[]}
+DEV  C-2 1280x720 org_rc_r20261018_0: nothing cut (every line inside the padding box), no title clamped that fits in four lines · {"cut":[],"clamp":[["role_rc_r20261018_0_02","Engineer QA Lead Infrastructure Senior Machine P",{"counted":2,"natural":3}]]}
+ok   C-3 1280x720 org_rc_r20261018_0: every line and title row centred on the card's axis (±1 px) · []
+ok   C-4 1280x720 org_rc_r20261018_0: standing, title, domain, requirements, matching as the pool states them; hollow mark; nothing else · {"texts":[],"mark":[]}
+ok   C-6 1280x720 org_rc_r20261018_0: the tether lamp on the card's edge where the line from the centre meets it · []
+DEV  C-7 1280x720 org_rc_r20261018_0: the tether lamp and its conduction stub are drawn as on e6493a7 (not clipped by the card's overflow) · [["role_rc_r20261018_0_00","orbit",54],["role_rc_r20261018_0_01","orbit",52],["role_rc_r20261018_0_02","orbit",44],["role_rc_r20261018_0_03","orbit",68],["role_rc_r20261018_0_04","orbit",15],["role_rc_r20261018_0_05","orbit",53],["role_rc_r20261018_0_06","orbit",63]]
+ok   C-1 1280x720 org_rc_r20261018_1: the in-process factors are the drawn ones · {"dom":["0.87","0.78"],"inProcess":{"x":0.87,"y":0.78}}
+ok   C-1 1280x720 org_rc_r20261018_1: data-card-box "orbit" on every card (factors 0.87/0.78) · []
+ok   C-1 1280x720 org_rc_r20261018_1: rendered width = the estimate's, height = estimate + 12 (±0.5 px), title lines = the counted ones · {"width":[],"height":[],"lines":[]}
+DEV  C-2 1280x720 org_rc_r20261018_1: nothing cut (every line inside the padding box), no title clamped that fits in four lines · {"cut":[],"clamp":[["role_rc_r20261018_1_05","Data Payments (EMEA) Engineer II Principal of Manager",{"counted":2,"natural":3}]]}
+ok   C-3 1280x720 org_rc_r20261018_1: every line and title row centred on the card's axis (±1 px) · []
+ok   C-4 1280x720 org_rc_r20261018_1: standing, title, domain, requirements, matching as the pool states them; hollow mark; nothing else · {"texts":[],"mark":[]}
+ok   C-6 1280x720 org_rc_r20261018_1: the tether lamp on the card's edge where the line from the centre meets it · []
+DEV  C-7 1280x720 org_rc_r20261018_1: the tether lamp and its conduction stub are drawn as on e6493a7 (not clipped by the card's overflow) · [["role_rc_r20261018_1_00","orbit",51],["role_rc_r20261018_1_01","orbit",46],["role_rc_r20261018_1_02","orbit",42],["role_rc_r20261018_1_03","orbit",63],["role_rc_r20261018_1_04","orbit",56],["role_rc_r20261018_1_05","orbit",47],["role_rc_r20261018_1_06","orbit",67]]
+ok   C-1 1280x720 org_rc_r20261018_2: the in-process factors are the drawn ones · {"dom":["0.92","0.83"],"inProcess":{"x":0.92,"y":0.83}}
+ok   C-1 1280x720 org_rc_r20261018_2: data-card-box "orbit" on every card (factors 0.92/0.83) · []
+ok   C-1 1280x720 org_rc_r20261018_2: rendered width = the estimate's, height = estimate + 12 (±0.5 px), title lines = the counted ones · {"width":[],"height":[],"lines":[]}
+ok   C-2 1280x720 org_rc_r20261018_2: nothing cut (every line inside the padding box), no title clamped that fits in four lines · {"cut":[],"clamp":[]}
+ok   C-3 1280x720 org_rc_r20261018_2: every line and title row centred on the card's axis (±1 px) · []
+ok   C-4 1280x720 org_rc_r20261018_2: standing, title, domain, requirements, matching as the pool states them; hollow mark; nothing else · {"texts":[],"mark":[]}
+ok   C-6 1280x720 org_rc_r20261018_2: the tether lamp on the card's edge where the line from the centre meets it · []
+DEV  C-7 1280x720 org_rc_r20261018_2: the tether lamp and its conduction stub are drawn as on e6493a7 (not clipped by the card's overflow) · [["role_rc_r20261018_2_00","orbit",52],["role_rc_r20261018_2_01","orbit",49],["role_rc_r20261018_2_02","orbit",43],["role_rc_r20261018_2_03","orbit",73],["role_rc_r20261018_2_04","orbit",54],["role_rc_r20261018_2_05","orbit",51],["role_rc_r20261018_2_06","orbit",86]]
+ok   C-1 1280x720 org_rc_r20261018_3: the in-process factors are the drawn ones · {"dom":["0.87","0.96"],"inProcess":{"x":0.87,"y":0.96}}
+ok   C-1 1280x720 org_rc_r20261018_3: data-card-box "orbit" on every card (factors 0.87/0.96) · []
+ok   C-1 1280x720 org_rc_r20261018_3: rendered width = the estimate's, height = estimate + 12 (±0.5 px), title lines = the counted ones · {"width":[],"height":[],"lines":[]}
+ok   C-2 1280x720 org_rc_r20261018_3: nothing cut (every line inside the padding box), no title clamped that fits in four lines · {"cut":[],"clamp":[]}
+ok   C-3 1280x720 org_rc_r20261018_3: every line and title row centred on the card's axis (±1 px) · []
+ok   C-4 1280x720 org_rc_r20261018_3: standing, title, domain, requirements, matching as the pool states them; hollow mark; nothing else · {"texts":[],"mark":[]}
+ok   C-6 1280x720 org_rc_r20261018_3: the tether lamp on the card's edge where the line from the centre meets it · []
+DEV  C-7 1280x720 org_rc_r20261018_3: the tether lamp and its conduction stub are drawn as on e6493a7 (not clipped by the card's overflow) · [["role_rc_r20261018_3_00","orbit",54],["role_rc_r20261018_3_01","orbit",81],["role_rc_r20261018_3_02","orbit",47],["role_rc_r20261018_3_03","orbit",68],["role_rc_r20261018_3_04","orbit",65],["role_rc_r20261018_3_05","orbit",54],["role_rc_r20261018_3_06","orbit",61]]
+ok   C-1 1280x720 org_rc_r20261018_4: the in-process factors are the drawn ones · {"dom":["0.87","0.96"],"inProcess":{"x":0.87,"y":0.96}}
+ok   C-1 1280x720 org_rc_r20261018_4: data-card-box "orbit" on every card (factors 0.87/0.96) · []
+ok   C-1 1280x720 org_rc_r20261018_4: rendered width = the estimate's, height = estimate + 12 (±0.5 px), title lines = the counted ones · {"width":[],"height":[],"lines":[]}
+ok   C-2 1280x720 org_rc_r20261018_4: nothing cut (every line inside the padding box), no title clamped that fits in four lines · {"cut":[],"clamp":[]}
+ok   C-3 1280x720 org_rc_r20261018_4: every line and title row centred on the card's axis (±1 px) · []
+ok   C-4 1280x720 org_rc_r20261018_4: standing, title, domain, requirements, matching as the pool states them; hollow mark; nothing else · {"texts":[],"mark":[]}
+ok   C-6 1280x720 org_rc_r20261018_4: the tether lamp on the card's edge where the line from the centre meets it · []
+DEV  C-7 1280x720 org_rc_r20261018_4: the tether lamp and its conduction stub are drawn as on e6493a7 (not clipped by the card's overflow) · [["role_rc_r20261018_4_00","orbit",53],["role_rc_r20261018_4_01","orbit",84],["role_rc_r20261018_4_02","orbit",47],["role_rc_r20261018_4_03","orbit",34],["role_rc_r20261018_4_04","orbit",65],["role_rc_r20261018_4_05","orbit",56],["role_rc_r20261018_4_06","orbit",85]]
+ok   C-1 1280x720 org_rc_r20261018_5: the in-process factors are the drawn ones · {"dom":["0.87","0.96"],"inProcess":{"x":0.87,"y":0.96}}
+ok   C-1 1280x720 org_rc_r20261018_5: data-card-box "orbit" on every card (factors 0.87/0.96) · []
+ok   C-1 1280x720 org_rc_r20261018_5: rendered width = the estimate's, height = estimate + 12 (±0.5 px), title lines = the counted ones · {"width":[],"height":[],"lines":[]}
+ok   C-2 1280x720 org_rc_r20261018_5: nothing cut (every line inside the padding box), no title clamped that fits in four lines · {"cut":[],"clamp":[]}
+ok   C-3 1280x720 org_rc_r20261018_5: every line and title row centred on the card's axis (±1 px) · []
+ok   C-4 1280x720 org_rc_r20261018_5: standing, title, domain, requirements, matching as the pool states them; hollow mark; nothing else · {"texts":[],"mark":[]}
+ok   C-6 1280x720 org_rc_r20261018_5: the tether lamp on the card's edge where the line from the centre meets it · []
+DEV  C-7 1280x720 org_rc_r20261018_5: the tether lamp and its conduction stub are drawn as on e6493a7 (not clipped by the card's overflow) · [["role_rc_r20261018_5_00","orbit",54],["role_rc_r20261018_5_01","orbit",64],["role_rc_r20261018_5_02","orbit",47],["role_rc_r20261018_5_03","orbit",65],["role_rc_r20261018_5_05","orbit",57],["role_rc_r20261018_5_06","orbit",75]]
+ok   C-1 1280x720 org_rc_r20261018_6: the in-process factors are the drawn ones · {"dom":["0.91","0.83"],"inProcess":{"x":0.91,"y":0.83}}
+ok   C-1 1280x720 org_rc_r20261018_6: data-card-box "orbit" on every card (factors 0.91/0.83) · []
+ok   C-1 1280x720 org_rc_r20261018_6: rendered width = the estimate's, height = estimate + 12 (±0.5 px), title lines = the counted ones · {"width":[],"height":[],"lines":[]}
+ok   C-2 1280x720 org_rc_r20261018_6: nothing cut (every line inside the padding box), no title clamped that fits in four lines · {"cut":[],"clamp":[]}
+ok   C-3 1280x720 org_rc_r20261018_6: every line and title row centred on the card's axis (±1 px) · []
+ok   C-4 1280x720 org_rc_r20261018_6: standing, title, domain, requirements, matching as the pool states them; hollow mark; nothing else · {"texts":[],"mark":[]}
+ok   C-6 1280x720 org_rc_r20261018_6: the tether lamp on the card's edge where the line from the centre meets it · []
+DEV  C-7 1280x720 org_rc_r20261018_6: the tether lamp and its conduction stub are drawn as on e6493a7 (not clipped by the card's overflow) · [["role_rc_r20261018_6_00","orbit",52],["role_rc_r20261018_6_01","orbit",48],["role_rc_r20261018_6_02","orbit",46],["role_rc_r20261018_6_03","orbit",65],["role_rc_r20261018_6_04","orbit",68],["role_rc_r20261018_6_05","orbit",56],["role_rc_r20261018_6_06","orbit",65]]
+ok   C-1 1280x720 org_rc_r20261018_7: the in-process factors are the drawn ones · {"dom":["0.58","0.82"],"inProcess":{"x":0.58,"y":0.82}}
+ok   C-1 1280x720 org_rc_r20261018_7: data-card-box "orbit" on every card (factors 0.58/0.82) · []
+ok   C-1 1280x720 org_rc_r20261018_7: rendered width = the estimate's, height = estimate + 12 (±0.5 px), title lines = the counted ones · {"width":[],"height":[],"lines":[]}
+ok   C-2 1280x720 org_rc_r20261018_7: nothing cut (every line inside the padding box), no title clamped that fits in four lines · {"cut":[],"clamp":[]}
+ok   C-3 1280x720 org_rc_r20261018_7: every line and title row centred on the card's axis (±1 px) · []
+ok   C-4 1280x720 org_rc_r20261018_7: standing, title, domain, requirements, matching as the pool states them; hollow mark; nothing else · {"texts":[],"mark":[]}
+ok   C-6 1280x720 org_rc_r20261018_7: the tether lamp on the card's edge where the line from the centre meets it · []
+DEV  C-7 1280x720 org_rc_r20261018_7: the tether lamp and its conduction stub are drawn as on e6493a7 (not clipped by the card's overflow) · [["role_rc_r20261018_7_00","orbit",52],["role_rc_r20261018_7_01","orbit",41],["role_rc_r20261018_7_02","orbit",91],["role_rc_r20261018_7_03","orbit",54]]
+ok   C-1 1280x720 org_rc_r4711_0: the in-process factors are the drawn ones · {"dom":["0.91","0.97"],"inProcess":{"x":0.91,"y":0.97}}
+ok   C-1 1280x720 org_rc_r4711_0: data-card-box "orbit" on every card (factors 0.91/0.97) · []
+ok   C-1 1280x720 org_rc_r4711_0: rendered width = the estimate's, height = estimate + 12 (±0.5 px), title lines = the counted ones · {"width":[],"height":[],"lines":[]}
+ok   C-2 1280x720 org_rc_r4711_0: nothing cut (every line inside the padding box), no title clamped that fits in four lines · {"cut":[],"clamp":[]}
+ok   C-3 1280x720 org_rc_r4711_0: every line and title row centred on the card's axis (±1 px) · []
+ok   C-4 1280x720 org_rc_r4711_0: standing, title, domain, requirements, matching as the pool states them; hollow mark; nothing else · {"texts":[],"mark":[]}
+ok   C-6 1280x720 org_rc_r4711_0: the tether lamp on the card's edge where the line from the centre meets it · []
+DEV  C-7 1280x720 org_rc_r4711_0: the tether lamp and its conduction stub are drawn as on e6493a7 (not clipped by the card's overflow) · [["role_rc_r4711_0_00","orbit",54],["role_rc_r4711_0_01","orbit",89],["role_rc_r4711_0_02","orbit",44],["role_rc_r4711_0_03","orbit",67],["role_rc_r4711_0_05","orbit",53],["role_rc_r4711_0_06","orbit",63]]
+ok   C-1 1280x720 org_rc_r4711_1: the in-process factors are the drawn ones · {"dom":["0.92","0.85"],"inProcess":{"x":0.92,"y":0.85}}
+ok   C-1 1280x720 org_rc_r4711_1: data-card-box "orbit" on every card (factors 0.92/0.85) · []
+ok   C-1 1280x720 org_rc_r4711_1: rendered width = the estimate's, height = estimate + 12 (±0.5 px), title lines = the counted ones · {"width":[],"height":[],"lines":[]}
+ok   C-2 1280x720 org_rc_r4711_1: nothing cut (every line inside the padding box), no title clamped that fits in four lines · {"cut":[],"clamp":[]}
+ok   C-3 1280x720 org_rc_r4711_1: every line and title row centred on the card's axis (±1 px) · []
+ok   C-4 1280x720 org_rc_r4711_1: standing, title, domain, requirements, matching as the pool states them; hollow mark; nothing else · {"texts":[],"mark":[]}
+ok   C-6 1280x720 org_rc_r4711_1: the tether lamp on the card's edge where the line from the centre meets it · []
+DEV  C-7 1280x720 org_rc_r4711_1: the tether lamp and its conduction stub are drawn as on e6493a7 (not clipped by the card's overflow) · [["role_rc_r4711_1_00","orbit",52],["role_rc_r4711_1_01","orbit",45],["role_rc_r4711_1_02","orbit",43],["role_rc_r4711_1_03","orbit",63],["role_rc_r4711_1_04","orbit",64],["role_rc_r4711_1_05","orbit",54],["role_rc_r4711_1_06","orbit",65]]
+ok   C-1 1280x720 org_rc_r4711_2: the in-process factors are the drawn ones · {"dom":["0.87","0.96"],"inProcess":{"x":0.87,"y":0.96}}
+ok   C-1 1280x720 org_rc_r4711_2: data-card-box "orbit" on every card (factors 0.87/0.96) · []
+ok   C-1 1280x720 org_rc_r4711_2: rendered width = the estimate's, height = estimate + 12 (±0.5 px), title lines = the counted ones · {"width":[],"height":[],"lines":[]}
+ok   C-2 1280x720 org_rc_r4711_2: nothing cut (every line inside the padding box), no title clamped that fits in four lines · {"cut":[],"clamp":[]}
+ok   C-3 1280x720 org_rc_r4711_2: every line and title row centred on the card's axis (±1 px) · []
+ok   C-4 1280x720 org_rc_r4711_2: standing, title, domain, requirements, matching as the pool states them; hollow mark; nothing else · {"texts":[],"mark":[]}
+ok   C-6 1280x720 org_rc_r4711_2: the tether lamp on the card's edge where the line from the centre meets it · []
+DEV  C-7 1280x720 org_rc_r4711_2: the tether lamp and its conduction stub are drawn as on e6493a7 (not clipped by the card's overflow) · [["role_rc_r4711_2_00","orbit",54],["role_rc_r4711_2_01","orbit",64],["role_rc_r4711_2_02","orbit",44],["role_rc_r4711_2_03","orbit",68],["role_rc_r4711_2_04","orbit",33],["role_rc_r4711_2_05","orbit",56],["role_rc_r4711_2_06","orbit",85]]
+ok   C-1 1280x720 org_rc_r4711_3: the in-process factors are the drawn ones · {"dom":["0.91","0.83"],"inProcess":{"x":0.91,"y":0.83}}
+ok   C-1 1280x720 org_rc_r4711_3: data-card-box "orbit" on every card (factors 0.91/0.83) · []
+ok   C-1 1280x720 org_rc_r4711_3: rendered width = the estimate's, height = estimate + 12 (±0.5 px), title lines = the counted ones · {"width":[],"height":[],"lines":[]}
+DEV  C-2 1280x720 org_rc_r4711_3: nothing cut (every line inside the padding box), no title clamped that fits in four lines · {"cut":[],"clamp":[["role_rc_r4711_3_00","Cloud Platform Payments Lead Manager Reliability QA Infrastructure UX Infrastructure Ma",{"counted":3,"natural":4}]]}
+ok   C-3 1280x720 org_rc_r4711_3: every line and title row centred on the card's axis (±1 px) · []
+ok   C-4 1280x720 org_rc_r4711_3: standing, title, domain, requirements, matching as the pool states them; hollow mark; nothing else · {"texts":[],"mark":[]}
+ok   C-6 1280x720 org_rc_r4711_3: the tether lamp on the card's edge where the line from the centre meets it · []
+DEV  C-7 1280x720 org_rc_r4711_3: the tether lamp and its conduction stub are drawn as on e6493a7 (not clipped by the card's overflow) · [["role_rc_r4711_3_00","orbit",52],["role_rc_r4711_3_01","orbit",48],["role_rc_r4711_3_02","orbit",46],["role_rc_r4711_3_03","orbit",65],["role_rc_r4711_3_04","orbit",67],["role_rc_r4711_3_05","orbit",56],["role_rc_r4711_3_06","orbit",69]]
+ok   C-1 1280x720 org_rc_r4711_4: the in-process factors are the drawn ones · {"dom":["0.87","0.96"],"inProcess":{"x":0.87,"y":0.96}}
+ok   C-1 1280x720 org_rc_r4711_4: data-card-box "orbit" on every card (factors 0.87/0.96) · []
+ok   C-1 1280x720 org_rc_r4711_4: rendered width = the estimate's, height = estimate + 12 (±0.5 px), title lines = the counted ones · {"width":[],"height":[],"lines":[]}
+ok   C-2 1280x720 org_rc_r4711_4: nothing cut (every line inside the padding box), no title clamped that fits in four lines · {"cut":[],"clamp":[]}
+ok   C-3 1280x720 org_rc_r4711_4: every line and title row centred on the card's axis (±1 px) · []
+ok   C-4 1280x720 org_rc_r4711_4: standing, title, domain, requirements, matching as the pool states them; hollow mark; nothing else · {"texts":[],"mark":[]}
+ok   C-6 1280x720 org_rc_r4711_4: the tether lamp on the card's edge where the line from the centre meets it · []
+DEV  C-7 1280x720 org_rc_r4711_4: the tether lamp and its conduction stub are drawn as on e6493a7 (not clipped by the card's overflow) · [["role_rc_r4711_4_00","orbit",54],["role_rc_r4711_4_01","orbit",88],["role_rc_r4711_4_02","orbit",47],["role_rc_r4711_4_03","orbit",68],["role_rc_r4711_4_04","orbit",34],["role_rc_r4711_4_05","orbit",57],["role_rc_r4711_4_06","orbit",70]]
+ok   C-1 1280x720 org_rc_r4711_5: the in-process factors are the drawn ones · {"dom":["0.89","0.85"],"inProcess":{"x":0.89,"y":0.85}}
+ok   C-1 1280x720 org_rc_r4711_5: data-card-box "orbit" on every card (factors 0.89/0.85) · []
+ok   C-1 1280x720 org_rc_r4711_5: rendered width = the estimate's, height = estimate + 12 (±0.5 px), title lines = the counted ones · {"width":[],"height":[],"lines":[]}
+ok   C-2 1280x720 org_rc_r4711_5: nothing cut (every line inside the padding box), no title clamped that fits in four lines · {"cut":[],"clamp":[]}
+ok   C-3 1280x720 org_rc_r4711_5: every line and title row centred on the card's axis (±1 px) · []
+ok   C-4 1280x720 org_rc_r4711_5: standing, title, domain, requirements, matching as the pool states them; hollow mark; nothing else · {"texts":[],"mark":[]}
+ok   C-6 1280x720 org_rc_r4711_5: the tether lamp on the card's edge where the line from the centre meets it · []
+DEV  C-7 1280x720 org_rc_r4711_5: the tether lamp and its conduction stub are drawn as on e6493a7 (not clipped by the card's overflow) · [["role_rc_r4711_5_00","orbit",55],["role_rc_r4711_5_01","orbit",56],["role_rc_r4711_5_02","orbit",43],["role_rc_r4711_5_03","orbit",65],["role_rc_r4711_5_04","orbit",61],["role_rc_r4711_5_05","orbit",57],["role_rc_r4711_5_06","orbit",63]]
+ok   C-1 1280x720 org_rc_r4711_6: the in-process factors are the drawn ones · {"dom":["0.84","0.89"],"inProcess":{"x":0.84,"y":0.89}}
+ok   C-1 1280x720 org_rc_r4711_6: data-card-box "orbit" on every card (factors 0.84/0.89) · []
+ok   C-1 1280x720 org_rc_r4711_6: rendered width = the estimate's, height = estimate + 12 (±0.5 px), title lines = the counted ones · {"width":[],"height":[],"lines":[]}
+ok   C-2 1280x720 org_rc_r4711_6: nothing cut (every line inside the padding box), no title clamped that fits in four lines · {"cut":[],"clamp":[]}
+ok   C-3 1280x720 org_rc_r4711_6: every line and title row centred on the card's axis (±1 px) · []
+ok   C-4 1280x720 org_rc_r4711_6: standing, title, domain, requirements, matching as the pool states them; hollow mark; nothing else · {"texts":[],"mark":[]}
+ok   C-6 1280x720 org_rc_r4711_6: the tether lamp on the card's edge where the line from the centre meets it · []
+DEV  C-7 1280x720 org_rc_r4711_6: the tether lamp and its conduction stub are drawn as on e6493a7 (not clipped by the card's overflow) · [["role_rc_r4711_6_00","orbit",54],["role_rc_r4711_6_01","orbit",58],["role_rc_r4711_6_02","orbit",45],["role_rc_r4711_6_03","orbit",80],["role_rc_r4711_6_04","orbit",90],["role_rc_r4711_6_05","orbit",57],["role_rc_r4711_6_06","orbit",67]]
+ok   C-1 1280x720 org_rc_r4711_7: the in-process factors are the drawn ones · {"dom":["0.58","0.82"],"inProcess":{"x":0.58,"y":0.82}}
+ok   C-1 1280x720 org_rc_r4711_7: data-card-box "orbit" on every card (factors 0.58/0.82) · []
+ok   C-1 1280x720 org_rc_r4711_7: rendered width = the estimate's, height = estimate + 12 (±0.5 px), title lines = the counted ones · {"width":[],"height":[],"lines":[]}
+ok   C-2 1280x720 org_rc_r4711_7: nothing cut (every line inside the padding box), no title clamped that fits in four lines · {"cut":[],"clamp":[]}
+ok   C-3 1280x720 org_rc_r4711_7: every line and title row centred on the card's axis (±1 px) · []
+ok   C-4 1280x720 org_rc_r4711_7: standing, title, domain, requirements, matching as the pool states them; hollow mark; nothing else · {"texts":[],"mark":[]}
+ok   C-6 1280x720 org_rc_r4711_7: the tether lamp on the card's edge where the line from the centre meets it · []
+DEV  C-7 1280x720 org_rc_r4711_7: the tether lamp and its conduction stub are drawn as on e6493a7 (not clipped by the card's overflow) · [["role_rc_r4711_7_00","orbit",56],["role_rc_r4711_7_01","orbit",41],["role_rc_r4711_7_02","orbit",92],["role_rc_r4711_7_03","orbit",53]]
+ok   C-1 1366x768 org_rc_3: the in-process factors are the drawn ones · {"dom":["0.45","0.70"],"inProcess":{"x":0.45,"y":0.7}}
+ok   C-1 1366x768 org_rc_3: data-card-box "orbit" on every card (factors 0.45/0.70) · []
+ok   C-1 1366x768 org_rc_3: rendered width = the estimate's, height = estimate + 12 (±0.5 px), title lines = the counted ones · {"width":[],"height":[],"lines":[]}
+ok   C-2 1366x768 org_rc_3: nothing cut (every line inside the padding box), no title clamped that fits in four lines · {"cut":[],"clamp":[]}
+ok   C-3 1366x768 org_rc_3: every line and title row centred on the card's axis (±1 px) · []
+ok   C-4 1366x768 org_rc_3: standing, title, domain, requirements, matching as the pool states them; hollow mark; nothing else · {"texts":[],"mark":[]}
+ok   C-6 1366x768 org_rc_3: the tether lamp on the card's edge where the line from the centre meets it · []
+ok   C-1 1366x768 org_rc_8: the in-process factors are the drawn ones · {"dom":["0.73","0.81"],"inProcess":{"x":0.73,"y":0.81}}
+ok   C-1 1366x768 org_rc_8: data-card-box "orbit" on every card (factors 0.73/0.81) · []
+ok   C-1 1366x768 org_rc_8: rendered width = the estimate's, height = estimate + 12 (±0.5 px), title lines = the counted ones · {"width":[],"height":[],"lines":[]}
+ok   C-2 1366x768 org_rc_8: nothing cut (every line inside the padding box), no title clamped that fits in four lines · {"cut":[],"clamp":[]}
+ok   C-3 1366x768 org_rc_8: every line and title row centred on the card's axis (±1 px) · []
+ok   C-4 1366x768 org_rc_8: standing, title, domain, requirements, matching as the pool states them; hollow mark; nothing else · {"texts":[],"mark":[]}
+ok   C-6 1366x768 org_rc_8: the tether lamp on the card's edge where the line from the centre meets it · []
+ok   C-1 1366x768 org_rc_14: the in-process factors are the drawn ones · {"dom":["1.00","1.00"],"inProcess":{"x":1,"y":1}}
+ok   C-1 1366x768 org_rc_14: data-card-box "packed" on every card (factors 1.00/1.00) · []
+ok   C-1 1366x768 org_rc_14: rendered width = the estimate's, height = the estimate (±0.5 px), title lines = the counted ones · {"width":[],"height":[],"lines":[]}
+ok   C-2 1366x768 org_rc_14: nothing cut (every line inside the padding box), no title clamped that fits in four lines · {"cut":[],"clamp":[]}
+ok   C-3 1366x768 org_rc_14: every line and title row centred on the card's axis (±1 px) · []
+ok   C-4 1366x768 org_rc_14: standing, title, domain, requirements, matching as the pool states them; hollow mark; nothing else · {"texts":[],"mark":[]}
+ok   C-6 1366x768 org_rc_14: the tether lamp on the card's edge where the line from the centre meets it · []
+ok   C-1 1366x768 org_rc_long_6: the in-process factors are the drawn ones · {"dom":["0.76","0.87"],"inProcess":{"x":0.76,"y":0.87}}
+ok   C-1 1366x768 org_rc_long_6: data-card-box "orbit" on every card (factors 0.76/0.87) · []
+ok   C-1 1366x768 org_rc_long_6: rendered width = the estimate's, height = estimate + 12 (±0.5 px), title lines = the counted ones · {"width":[],"height":[],"lines":[]}
+ok   C-2 1366x768 org_rc_long_6: nothing cut (every line inside the padding box), no title clamped that fits in four lines · {"cut":[],"clamp":[]}
+ok   C-3 1366x768 org_rc_long_6: every line and title row centred on the card's axis (±1 px) · []
+ok   C-4 1366x768 org_rc_long_6: standing, title, domain, requirements, matching as the pool states them; hollow mark; nothing else · {"texts":[],"mark":[]}
+ok   C-6 1366x768 org_rc_long_6: the tether lamp on the card's edge where the line from the centre meets it · []
+ok   C-1 1366x768 org_rc_short_12: the in-process factors are the drawn ones · {"dom":["0.65","0.99"],"inProcess":{"x":0.65,"y":0.99}}
+ok   C-1 1366x768 org_rc_short_12: data-card-box "orbit" on every card (factors 0.65/0.99) · []
+ok   C-1 1366x768 org_rc_short_12: rendered width = the estimate's, height = estimate + 12 (±0.5 px), title lines = the counted ones · {"width":[],"height":[],"lines":[]}
+ok   C-2 1366x768 org_rc_short_12: nothing cut (every line inside the padding box), no title clamped that fits in four lines · {"cut":[],"clamp":[]}
+ok   C-3 1366x768 org_rc_short_12: every line and title row centred on the card's axis (±1 px) · []
+ok   C-4 1366x768 org_rc_short_12: standing, title, domain, requirements, matching as the pool states them; hollow mark; nothing else · {"texts":[],"mark":[]}
+ok   C-6 1366x768 org_rc_short_12: the tether lamp on the card's edge where the line from the centre meets it · []
+ok   C-1 1366x768 org_rc_stress_10: the in-process factors are the drawn ones · {"dom":["1.00","1.00"],"inProcess":{"x":1,"y":1}}
+ok   C-1 1366x768 org_rc_stress_10: data-card-box "packed" on every card (factors 1.00/1.00) · []
+ok   C-1 1366x768 org_rc_stress_10: rendered width = the estimate's, height = the estimate (±0.5 px), title lines = the counted ones · {"width":[],"height":[],"lines":[]}
+DEV  C-2 1366x768 org_rc_stress_10: nothing cut (every line inside the padding box), no title clamped that fits in four lines · {"cut":[],"clamp":[["role_rc_stress_10_00","QA LEAD – EMEA OPERATIONS MANAGEMENT",{"counted":2,"natural":3}]]}
+ok   C-3 1366x768 org_rc_stress_10: every line and title row centred on the card's axis (±1 px) · []
+ok   C-4 1366x768 org_rc_stress_10: standing, title, domain, requirements, matching as the pool states them; hollow mark; nothing else · {"texts":[],"mark":[]}
+ok   C-6 1366x768 org_rc_stress_10: the tether lamp on the card's edge where the line from the centre meets it · []
+ok   C-1 1366x768 org_rc_r20261018_0: the in-process factors are the drawn ones · {"dom":["0.88","0.94"],"inProcess":{"x":0.88,"y":0.94}}
+ok   C-1 1366x768 org_rc_r20261018_0: data-card-box "orbit" on every card (factors 0.88/0.94) · []
+ok   C-1 1366x768 org_rc_r20261018_0: rendered width = the estimate's, height = estimate + 12 (±0.5 px), title lines = the counted ones · {"width":[],"height":[],"lines":[]}
+DEV  C-2 1366x768 org_rc_r20261018_0: nothing cut (every line inside the padding box), no title clamped that fits in four lines · {"cut":[],"clamp":[["role_rc_r20261018_0_02","Engineer QA Lead Infrastructure Senior Machine P",{"counted":2,"natural":3}]]}
+ok   C-3 1366x768 org_rc_r20261018_0: every line and title row centred on the card's axis (±1 px) · []
+ok   C-4 1366x768 org_rc_r20261018_0: standing, title, domain, requirements, matching as the pool states them; hollow mark; nothing else · {"texts":[],"mark":[]}
+ok   C-6 1366x768 org_rc_r20261018_0: the tether lamp on the card's edge where the line from the centre meets it · []
+ok   C-1 1366x768 org_rc_r20261018_1: the in-process factors are the drawn ones · {"dom":["0.85","0.77"],"inProcess":{"x":0.85,"y":0.77}}
+ok   C-1 1366x768 org_rc_r20261018_1: data-card-box "orbit" on every card (factors 0.85/0.77) · []
+ok   C-1 1366x768 org_rc_r20261018_1: rendered width = the estimate's, height = estimate + 12 (±0.5 px), title lines = the counted ones · {"width":[],"height":[],"lines":[]}
+DEV  C-2 1366x768 org_rc_r20261018_1: nothing cut (every line inside the padding box), no title clamped that fits in four lines · {"cut":[],"clamp":[["role_rc_r20261018_1_05","Data Payments (EMEA) Engineer II Principal of Manager",{"counted":2,"natural":3}]]}
+ok   C-3 1366x768 org_rc_r20261018_1: every line and title row centred on the card's axis (±1 px) · []
+ok   C-4 1366x768 org_rc_r20261018_1: standing, title, domain, requirements, matching as the pool states them; hollow mark; nothing else · {"texts":[],"mark":[]}
+ok   C-6 1366x768 org_rc_r20261018_1: the tether lamp on the card's edge where the line from the centre meets it · []
+ok   C-1 1366x768 org_rc_r20261018_2: the in-process factors are the drawn ones · {"dom":["0.86","0.77"],"inProcess":{"x":0.86,"y":0.77}}
+ok   C-1 1366x768 org_rc_r20261018_2: data-card-box "orbit" on every card (factors 0.86/0.77) · []
+ok   C-1 1366x768 org_rc_r20261018_2: rendered width = the estimate's, height = estimate + 12 (±0.5 px), title lines = the counted ones · {"width":[],"height":[],"lines":[]}
+ok   C-2 1366x768 org_rc_r20261018_2: nothing cut (every line inside the padding box), no title clamped that fits in four lines · {"cut":[],"clamp":[]}
+ok   C-3 1366x768 org_rc_r20261018_2: every line and title row centred on the card's axis (±1 px) · []
+ok   C-4 1366x768 org_rc_r20261018_2: standing, title, domain, requirements, matching as the pool states them; hollow mark; nothing else · {"texts":[],"mark":[]}
+ok   C-6 1366x768 org_rc_r20261018_2: the tether lamp on the card's edge where the line from the centre meets it · []
+ok   C-1 1366x768 org_rc_r20261018_3: the in-process factors are the drawn ones · {"dom":["0.93","0.81"],"inProcess":{"x":0.93,"y":0.81}}
+ok   C-1 1366x768 org_rc_r20261018_3: data-card-box "orbit" on every card (factors 0.93/0.81) · []
+ok   C-1 1366x768 org_rc_r20261018_3: rendered width = the estimate's, height = estimate + 12 (±0.5 px), title lines = the counted ones · {"width":[],"height":[],"lines":[]}
+ok   C-2 1366x768 org_rc_r20261018_3: nothing cut (every line inside the padding box), no title clamped that fits in four lines · {"cut":[],"clamp":[]}
+ok   C-3 1366x768 org_rc_r20261018_3: every line and title row centred on the card's axis (±1 px) · []
+ok   C-4 1366x768 org_rc_r20261018_3: standing, title, domain, requirements, matching as the pool states them; hollow mark; nothing else · {"texts":[],"mark":[]}
+ok   C-6 1366x768 org_rc_r20261018_3: the tether lamp on the card's edge where the line from the centre meets it · []
+ok   C-1 1366x768 org_rc_r20261018_4: the in-process factors are the drawn ones · {"dom":["0.94","0.83"],"inProcess":{"x":0.94,"y":0.83}}
+ok   C-1 1366x768 org_rc_r20261018_4: data-card-box "orbit" on every card (factors 0.94/0.83) · []
+ok   C-1 1366x768 org_rc_r20261018_4: rendered width = the estimate's, height = estimate + 12 (±0.5 px), title lines = the counted ones · {"width":[],"height":[],"lines":[]}
+DEV  C-2 1366x768 org_rc_r20261018_4: nothing cut (every line inside the padding box), no title clamped that fits in four lines · {"cut":[],"clamp":[["role_rc_r20261018_4_02","UX Manager QA Platform and Manager Senior UX Platform Reliability Lead II of of (EMEA) Cloud Engi",{"counted":3,"natural":4}]]}
+ok   C-3 1366x768 org_rc_r20261018_4: every line and title row centred on the card's axis (±1 px) · []
+ok   C-4 1366x768 org_rc_r20261018_4: standing, title, domain, requirements, matching as the pool states them; hollow mark; nothing else · {"texts":[],"mark":[]}
+ok   C-6 1366x768 org_rc_r20261018_4: the tether lamp on the card's edge where the line from the centre meets it · []
+ok   C-1 1366x768 org_rc_r20261018_5: the in-process factors are the drawn ones · {"dom":["0.88","0.94"],"inProcess":{"x":0.88,"y":0.94}}
+ok   C-1 1366x768 org_rc_r20261018_5: data-card-box "orbit" on every card (factors 0.88/0.94) · []
+ok   C-1 1366x768 org_rc_r20261018_5: rendered width = the estimate's, height = estimate + 12 (±0.5 px), title lines = the counted ones · {"width":[],"height":[],"lines":[]}
+DEV  C-2 1366x768 org_rc_r20261018_5: nothing cut (every line inside the padding box), no title clamped that fits in four lines · {"cut":[],"clamp":[["role_rc_r20261018_5_01","Payments Learning Machine QA Lead Payments Data Payments Data Engineer UX Tracking Machine Ops Engine",{"counted":3,"natural":4}]]}
+ok   C-3 1366x768 org_rc_r20261018_5: every line and title row centred on the card's axis (±1 px) · []
+ok   C-4 1366x768 org_rc_r20261018_5: standing, title, domain, requirements, matching as the pool states them; hollow mark; nothing else · {"texts":[],"mark":[]}
+ok   C-6 1366x768 org_rc_r20261018_5: the tether lamp on the card's edge where the line from the centre meets it · []
+ok   C-1 1366x768 org_rc_r20261018_6: the in-process factors are the drawn ones · {"dom":["0.90","0.80"],"inProcess":{"x":0.9,"y":0.8}}
+ok   C-1 1366x768 org_rc_r20261018_6: data-card-box "orbit" on every card (factors 0.90/0.80) · []
+ok   C-1 1366x768 org_rc_r20261018_6: rendered width = the estimate's, height = estimate + 12 (±0.5 px), title lines = the counted ones · {"width":[],"height":[],"lines":[]}
+ok   C-2 1366x768 org_rc_r20261018_6: nothing cut (every line inside the padding box), no title clamped that fits in four lines · {"cut":[],"clamp":[]}
+ok   C-3 1366x768 org_rc_r20261018_6: every line and title row centred on the card's axis (±1 px) · []
+ok   C-4 1366x768 org_rc_r20261018_6: standing, title, domain, requirements, matching as the pool states them; hollow mark; nothing else · {"texts":[],"mark":[]}
+ok   C-6 1366x768 org_rc_r20261018_6: the tether lamp on the card's edge where the line from the centre meets it · []
+ok   C-1 1366x768 org_rc_r20261018_7: the in-process factors are the drawn ones · {"dom":["0.55","0.84"],"inProcess":{"x":0.55,"y":0.84}}
+ok   C-1 1366x768 org_rc_r20261018_7: data-card-box "orbit" on every card (factors 0.55/0.84) · []
+ok   C-1 1366x768 org_rc_r20261018_7: rendered width = the estimate's, height = estimate + 12 (±0.5 px), title lines = the counted ones · {"width":[],"height":[],"lines":[]}
+ok   C-2 1366x768 org_rc_r20261018_7: nothing cut (every line inside the padding box), no title clamped that fits in four lines · {"cut":[],"clamp":[]}
+ok   C-3 1366x768 org_rc_r20261018_7: every line and title row centred on the card's axis (±1 px) · []
+ok   C-4 1366x768 org_rc_r20261018_7: standing, title, domain, requirements, matching as the pool states them; hollow mark; nothing else · {"texts":[],"mark":[]}
+ok   C-6 1366x768 org_rc_r20261018_7: the tether lamp on the card's edge where the line from the centre meets it · []
+ok   C-1 1366x768 org_rc_r4711_0: the in-process factors are the drawn ones · {"dom":["0.88","0.94"],"inProcess":{"x":0.88,"y":0.94}}
+ok   C-1 1366x768 org_rc_r4711_0: data-card-box "orbit" on every card (factors 0.88/0.94) · []
+ok   C-1 1366x768 org_rc_r4711_0: rendered width = the estimate's, height = estimate + 12 (±0.5 px), title lines = the counted ones · {"width":[],"height":[],"lines":[]}
+DEV  C-2 1366x768 org_rc_r4711_0: nothing cut (every line inside the padding box), no title clamped that fits in four lines · {"cut":[],"clamp":[["role_rc_r4711_0_02","QA Machine UX and Payments and QA Tracking Payments Platform Manager Security Learning Cloud (EMEA) Op",{"counted":3,"natural":4}]]}
+ok   C-3 1366x768 org_rc_r4711_0: every line and title row centred on the card's axis (±1 px) · []
+ok   C-4 1366x768 org_rc_r4711_0: standing, title, domain, requirements, matching as the pool states them; hollow mark; nothing else · {"texts":[],"mark":[]}
+ok   C-6 1366x768 org_rc_r4711_0: the tether lamp on the card's edge where the line from the centre meets it · []
+ok   C-1 1366x768 org_rc_r4711_1: the in-process factors are the drawn ones · {"dom":["0.94","0.83"],"inProcess":{"x":0.94,"y":0.83}}
+ok   C-1 1366x768 org_rc_r4711_1: data-card-box "orbit" on every card (factors 0.94/0.83) · []
+ok   C-1 1366x768 org_rc_r4711_1: rendered width = the estimate's, height = estimate + 12 (±0.5 px), title lines = the counted ones · {"width":[],"height":[],"lines":[]}
+ok   C-2 1366x768 org_rc_r4711_1: nothing cut (every line inside the padding box), no title clamped that fits in four lines · {"cut":[],"clamp":[]}
+ok   C-3 1366x768 org_rc_r4711_1: every line and title row centred on the card's axis (±1 px) · []
+ok   C-4 1366x768 org_rc_r4711_1: standing, title, domain, requirements, matching as the pool states them; hollow mark; nothing else · {"texts":[],"mark":[]}
+ok   C-6 1366x768 org_rc_r4711_1: the tether lamp on the card's edge where the line from the centre meets it · []
+ok   C-1 1366x768 org_rc_r4711_2: the in-process factors are the drawn ones · {"dom":["0.88","0.94"],"inProcess":{"x":0.88,"y":0.94}}
+ok   C-1 1366x768 org_rc_r4711_2: data-card-box "orbit" on every card (factors 0.88/0.94) · []
+ok   C-1 1366x768 org_rc_r4711_2: rendered width = the estimate's, height = estimate + 12 (±0.5 px), title lines = the counted ones · {"width":[],"height":[],"lines":[]}
+ok   C-2 1366x768 org_rc_r4711_2: nothing cut (every line inside the padding box), no title clamped that fits in four lines · {"cut":[],"clamp":[]}
+ok   C-3 1366x768 org_rc_r4711_2: every line and title row centred on the card's axis (±1 px) · []
+ok   C-4 1366x768 org_rc_r4711_2: standing, title, domain, requirements, matching as the pool states them; hollow mark; nothing else · {"texts":[],"mark":[]}
+ok   C-6 1366x768 org_rc_r4711_2: the tether lamp on the card's edge where the line from the centre meets it · []
+ok   C-1 1366x768 org_rc_r4711_3: the in-process factors are the drawn ones · {"dom":["0.91","0.82"],"inProcess":{"x":0.91,"y":0.82}}
+ok   C-1 1366x768 org_rc_r4711_3: data-card-box "orbit" on every card (factors 0.91/0.82) · []
+ok   C-1 1366x768 org_rc_r4711_3: rendered width = the estimate's, height = estimate + 12 (±0.5 px), title lines = the counted ones · {"width":[],"height":[],"lines":[]}
+ok   C-2 1366x768 org_rc_r4711_3: nothing cut (every line inside the padding box), no title clamped that fits in four lines · {"cut":[],"clamp":[]}
+ok   C-3 1366x768 org_rc_r4711_3: every line and title row centred on the card's axis (±1 px) · []
+ok   C-4 1366x768 org_rc_r4711_3: standing, title, domain, requirements, matching as the pool states them; hollow mark; nothing else · {"texts":[],"mark":[]}
+ok   C-6 1366x768 org_rc_r4711_3: the tether lamp on the card's edge where the line from the centre meets it · []
+ok   C-1 1366x768 org_rc_r4711_4: the in-process factors are the drawn ones · {"dom":["0.88","0.94"],"inProcess":{"x":0.88,"y":0.94}}
+ok   C-1 1366x768 org_rc_r4711_4: data-card-box "orbit" on every card (factors 0.88/0.94) · []
+ok   C-1 1366x768 org_rc_r4711_4: rendered width = the estimate's, height = estimate + 12 (±0.5 px), title lines = the counted ones · {"width":[],"height":[],"lines":[]}
+ok   C-2 1366x768 org_rc_r4711_4: nothing cut (every line inside the padding box), no title clamped that fits in four lines · {"cut":[],"clamp":[]}
+ok   C-3 1366x768 org_rc_r4711_4: every line and title row centred on the card's axis (±1 px) · []
+ok   C-4 1366x768 org_rc_r4711_4: standing, title, domain, requirements, matching as the pool states them; hollow mark; nothing else · {"texts":[],"mark":[]}
+ok   C-6 1366x768 org_rc_r4711_4: the tether lamp on the card's edge where the line from the centre meets it · []
+ok   C-1 1366x768 org_rc_r4711_5: the in-process factors are the drawn ones · {"dom":["0.87","0.76"],"inProcess":{"x":0.87,"y":0.76}}
+ok   C-1 1366x768 org_rc_r4711_5: data-card-box "orbit" on every card (factors 0.87/0.76) · []
+ok   C-1 1366x768 org_rc_r4711_5: rendered width = the estimate's, height = estimate + 12 (±0.5 px), title lines = the counted ones · {"width":[],"height":[],"lines":[]}
+ok   C-2 1366x768 org_rc_r4711_5: nothing cut (every line inside the padding box), no title clamped that fits in four lines · {"cut":[],"clamp":[]}
+ok   C-3 1366x768 org_rc_r4711_5: every line and title row centred on the card's axis (±1 px) · []
+ok   C-4 1366x768 org_rc_r4711_5: standing, title, domain, requirements, matching as the pool states them; hollow mark; nothing else · {"texts":[],"mark":[]}
+ok   C-6 1366x768 org_rc_r4711_5: the tether lamp on the card's edge where the line from the centre meets it · []
+ok   C-1 1366x768 org_rc_r4711_6: the in-process factors are the drawn ones · {"dom":["0.87","0.75"],"inProcess":{"x":0.87,"y":0.75}}
+ok   C-1 1366x768 org_rc_r4711_6: data-card-box "orbit" on every card (factors 0.87/0.75) · []
+ok   C-1 1366x768 org_rc_r4711_6: rendered width = the estimate's, height = estimate + 12 (±0.5 px), title lines = the counted ones · {"width":[],"height":[],"lines":[]}
+DEV  C-2 1366x768 org_rc_r4711_6: nothing cut (every line inside the padding box), no title clamped that fits in four lines · {"cut":[],"clamp":[["role_rc_r4711_6_03","UX QA Reliability II Platform Reliability Payments (EMEA) Payments (EMEA) (EMEA) Infrastructure",{"counted":3,"natural":4}]]}
+ok   C-3 1366x768 org_rc_r4711_6: every line and title row centred on the card's axis (±1 px) · []
+ok   C-4 1366x768 org_rc_r4711_6: standing, title, domain, requirements, matching as the pool states them; hollow mark; nothing else · {"texts":[],"mark":[]}
+ok   C-6 1366x768 org_rc_r4711_6: the tether lamp on the card's edge where the line from the centre meets it · []
+ok   C-1 1366x768 org_rc_r4711_7: the in-process factors are the drawn ones · {"dom":["0.54","0.78"],"inProcess":{"x":0.54,"y":0.78}}
+ok   C-1 1366x768 org_rc_r4711_7: data-card-box "orbit" on every card (factors 0.54/0.78) · []
+ok   C-1 1366x768 org_rc_r4711_7: rendered width = the estimate's, height = estimate + 12 (±0.5 px), title lines = the counted ones · {"width":[],"height":[],"lines":[]}
+DEV  C-2 1366x768 org_rc_r4711_7: nothing cut (every line inside the padding box), no title clamped that fits in four lines · {"cut":[],"clamp":[["role_rc_r4711_7_02","Platform Manager Principal Engineer QA (EMEA) Cloud QA UX Infrastructure Infrastructure (EMEA) P",{"counted":3,"natural":4}]]}
+ok   C-3 1366x768 org_rc_r4711_7: every line and title row centred on the card's axis (±1 px) · []
+ok   C-4 1366x768 org_rc_r4711_7: standing, title, domain, requirements, matching as the pool states them; hollow mark; nothing else · {"texts":[],"mark":[]}
+ok   C-6 1366x768 org_rc_r4711_7: the tether lamp on the card's edge where the line from the centre meets it · []
+ok   C-1 1600x1200 org_rc_3: the in-process factors are the drawn ones · {"dom":["0.37","0.49"],"inProcess":{"x":0.37,"y":0.49}}
+ok   C-1 1600x1200 org_rc_3: data-card-box "orbit" on every card (factors 0.37/0.49) · []
+ok   C-1 1600x1200 org_rc_3: rendered width = the estimate's, height = estimate + 12 (±0.5 px), title lines = the counted ones · {"width":[],"height":[],"lines":[]}
+ok   C-2 1600x1200 org_rc_3: nothing cut (every line inside the padding box), no title clamped that fits in four lines · {"cut":[],"clamp":[]}
+ok   C-3 1600x1200 org_rc_3: every line and title row centred on the card's axis (±1 px) · []
+ok   C-4 1600x1200 org_rc_3: standing, title, domain, requirements, matching as the pool states them; hollow mark; nothing else · {"texts":[],"mark":[]}
+ok   C-6 1600x1200 org_rc_3: the tether lamp on the card's edge where the line from the centre meets it · []
+ok   C-1 1600x1200 org_rc_8: the in-process factors are the drawn ones · {"dom":["0.63","0.54"],"inProcess":{"x":0.63,"y":0.54}}
+ok   C-1 1600x1200 org_rc_8: data-card-box "orbit" on every card (factors 0.63/0.54) · []
+ok   C-1 1600x1200 org_rc_8: rendered width = the estimate's, height = estimate + 12 (±0.5 px), title lines = the counted ones · {"width":[],"height":[],"lines":[]}
+ok   C-2 1600x1200 org_rc_8: nothing cut (every line inside the padding box), no title clamped that fits in four lines · {"cut":[],"clamp":[]}
+ok   C-3 1600x1200 org_rc_8: every line and title row centred on the card's axis (±1 px) · []
+ok   C-4 1600x1200 org_rc_8: standing, title, domain, requirements, matching as the pool states them; hollow mark; nothing else · {"texts":[],"mark":[]}
+ok   C-6 1600x1200 org_rc_8: the tether lamp on the card's edge where the line from the centre meets it · []
+ok   C-1 1600x1200 org_rc_14: the in-process factors are the drawn ones · {"dom":["0.98","0.89"],"inProcess":{"x":0.98,"y":0.89}}
+ok   C-1 1600x1200 org_rc_14: data-card-box "orbit" on every card (factors 0.98/0.89) · []
+ok   C-1 1600x1200 org_rc_14: rendered width = the estimate's, height = estimate + 12 (±0.5 px), title lines = the counted ones · {"width":[],"height":[],"lines":[]}
+ok   C-2 1600x1200 org_rc_14: nothing cut (every line inside the padding box), no title clamped that fits in four lines · {"cut":[],"clamp":[]}
+ok   C-3 1600x1200 org_rc_14: every line and title row centred on the card's axis (±1 px) · []
+ok   C-4 1600x1200 org_rc_14: standing, title, domain, requirements, matching as the pool states them; hollow mark; nothing else · {"texts":[],"mark":[]}
+ok   C-6 1600x1200 org_rc_14: the tether lamp on the card's edge where the line from the centre meets it · []
+ok   C-1 1600x1200 org_rc_long_6: the in-process factors are the drawn ones · {"dom":["0.70","0.51"],"inProcess":{"x":0.7,"y":0.51}}
+ok   C-1 1600x1200 org_rc_long_6: data-card-box "orbit" on every card (factors 0.70/0.51) · []
+ok   C-1 1600x1200 org_rc_long_6: rendered width = the estimate's, height = estimate + 12 (±0.5 px), title lines = the counted ones · {"width":[],"height":[],"lines":[]}
+ok   C-2 1600x1200 org_rc_long_6: nothing cut (every line inside the padding box), no title clamped that fits in four lines · {"cut":[],"clamp":[]}
+ok   C-3 1600x1200 org_rc_long_6: every line and title row centred on the card's axis (±1 px) · []
+ok   C-4 1600x1200 org_rc_long_6: standing, title, domain, requirements, matching as the pool states them; hollow mark; nothing else · {"texts":[],"mark":[]}
+ok   C-6 1600x1200 org_rc_long_6: the tether lamp on the card's edge where the line from the centre meets it · []
+ok   C-1 1600x1200 org_rc_short_12: the in-process factors are the drawn ones · {"dom":["0.55","0.69"],"inProcess":{"x":0.55,"y":0.69}}
+ok   C-1 1600x1200 org_rc_short_12: data-card-box "orbit" on every card (factors 0.55/0.69) · []
+ok   C-1 1600x1200 org_rc_short_12: rendered width = the estimate's, height = estimate + 12 (±0.5 px), title lines = the counted ones · {"width":[],"height":[],"lines":[]}
+ok   C-2 1600x1200 org_rc_short_12: nothing cut (every line inside the padding box), no title clamped that fits in four lines · {"cut":[],"clamp":[]}
+ok   C-3 1600x1200 org_rc_short_12: every line and title row centred on the card's axis (±1 px) · []
+ok   C-4 1600x1200 org_rc_short_12: standing, title, domain, requirements, matching as the pool states them; hollow mark; nothing else · {"texts":[],"mark":[]}
+ok   C-6 1600x1200 org_rc_short_12: the tether lamp on the card's edge where the line from the centre meets it · []
+ok   C-1 1600x1200 org_rc_stress_10: the in-process factors are the drawn ones · {"dom":["0.84","0.69"],"inProcess":{"x":0.84,"y":0.69}}
+ok   C-1 1600x1200 org_rc_stress_10: data-card-box "orbit" on every card (factors 0.84/0.69) · []
+ok   C-1 1600x1200 org_rc_stress_10: rendered width = the estimate's, height = estimate + 12 (±0.5 px), title lines = the counted ones · {"width":[],"height":[],"lines":[]}
+DEV  C-2 1600x1200 org_rc_stress_10: nothing cut (every line inside the padding box), no title clamped that fits in four lines · {"cut":[],"clamp":[["role_rc_stress_10_00","QA LEAD – EMEA OPERATIONS MANAGEMENT",{"counted":2,"natural":3}]]}
+ok   C-3 1600x1200 org_rc_stress_10: every line and title row centred on the card's axis (±1 px) · []
+ok   C-4 1600x1200 org_rc_stress_10: standing, title, domain, requirements, matching as the pool states them; hollow mark; nothing else · {"texts":[],"mark":[]}
+ok   C-6 1600x1200 org_rc_stress_10: the tether lamp on the card's edge where the line from the centre meets it · []
+ok   C-1 1600x1200 org_rc_r20261018_0: the in-process factors are the drawn ones · {"dom":["0.83","0.57"],"inProcess":{"x":0.83,"y":0.57}}
+ok   C-1 1600x1200 org_rc_r20261018_0: data-card-box "orbit" on every card (factors 0.83/0.57) · []
+ok   C-1 1600x1200 org_rc_r20261018_0: rendered width = the estimate's, height = estimate + 12 (±0.5 px), title lines = the counted ones · {"width":[],"height":[],"lines":[]}
+DEV  C-2 1600x1200 org_rc_r20261018_0: nothing cut (every line inside the padding box), no title clamped that fits in four lines · {"cut":[],"clamp":[["role_rc_r20261018_0_02","Engineer QA Lead Infrastructure Senior Machine P",{"counted":2,"natural":3}]]}
+ok   C-3 1600x1200 org_rc_r20261018_0: every line and title row centred on the card's axis (±1 px) · []
+ok   C-4 1600x1200 org_rc_r20261018_0: standing, title, domain, requirements, matching as the pool states them; hollow mark; nothing else · {"texts":[],"mark":[]}
+ok   C-6 1600x1200 org_rc_r20261018_0: the tether lamp on the card's edge where the line from the centre meets it · []
+ok   C-1 1600x1200 org_rc_r20261018_1: the in-process factors are the drawn ones · {"dom":["0.70","0.53"],"inProcess":{"x":0.7,"y":0.53}}
+ok   C-1 1600x1200 org_rc_r20261018_1: data-card-box "orbit" on every card (factors 0.70/0.53) · []
+ok   C-1 1600x1200 org_rc_r20261018_1: rendered width = the estimate's, height = estimate + 12 (±0.5 px), title lines = the counted ones · {"width":[],"height":[],"lines":[]}
+DEV  C-2 1600x1200 org_rc_r20261018_1: nothing cut (every line inside the padding box), no title clamped that fits in four lines · {"cut":[],"clamp":[["role_rc_r20261018_1_05","Data Payments (EMEA) Engineer II Principal of Manager",{"counted":2,"natural":3}]]}
+ok   C-3 1600x1200 org_rc_r20261018_1: every line and title row centred on the card's axis (±1 px) · []
+ok   C-4 1600x1200 org_rc_r20261018_1: standing, title, domain, requirements, matching as the pool states them; hollow mark; nothing else · {"texts":[],"mark":[]}
+ok   C-6 1600x1200 org_rc_r20261018_1: the tether lamp on the card's edge where the line from the centre meets it · []
+ok   C-1 1600x1200 org_rc_r20261018_2: the in-process factors are the drawn ones · {"dom":["0.73","0.55"],"inProcess":{"x":0.73,"y":0.55}}
+ok   C-1 1600x1200 org_rc_r20261018_2: data-card-box "orbit" on every card (factors 0.73/0.55) · []
+ok   C-1 1600x1200 org_rc_r20261018_2: rendered width = the estimate's, height = estimate + 12 (±0.5 px), title lines = the counted ones · {"width":[],"height":[],"lines":[]}
+ok   C-2 1600x1200 org_rc_r20261018_2: nothing cut (every line inside the padding box), no title clamped that fits in four lines · {"cut":[],"clamp":[]}
+ok   C-3 1600x1200 org_rc_r20261018_2: every line and title row centred on the card's axis (±1 px) · []
+ok   C-4 1600x1200 org_rc_r20261018_2: standing, title, domain, requirements, matching as the pool states them; hollow mark; nothing else · {"texts":[],"mark":[]}
+ok   C-6 1600x1200 org_rc_r20261018_2: the tether lamp on the card's edge where the line from the centre meets it · []
+ok   C-1 1600x1200 org_rc_r20261018_3: the in-process factors are the drawn ones · {"dom":["0.83","0.57"],"inProcess":{"x":0.83,"y":0.57}}
+ok   C-1 1600x1200 org_rc_r20261018_3: data-card-box "orbit" on every card (factors 0.83/0.57) · []
+ok   C-1 1600x1200 org_rc_r20261018_3: rendered width = the estimate's, height = estimate + 12 (±0.5 px), title lines = the counted ones · {"width":[],"height":[],"lines":[]}
+ok   C-2 1600x1200 org_rc_r20261018_3: nothing cut (every line inside the padding box), no title clamped that fits in four lines · {"cut":[],"clamp":[]}
+ok   C-3 1600x1200 org_rc_r20261018_3: every line and title row centred on the card's axis (±1 px) · []
+ok   C-4 1600x1200 org_rc_r20261018_3: standing, title, domain, requirements, matching as the pool states them; hollow mark; nothing else · {"texts":[],"mark":[]}
+ok   C-6 1600x1200 org_rc_r20261018_3: the tether lamp on the card's edge where the line from the centre meets it · []
+ok   C-1 1600x1200 org_rc_r20261018_4: the in-process factors are the drawn ones · {"dom":["0.78","0.59"],"inProcess":{"x":0.78,"y":0.59}}
+ok   C-1 1600x1200 org_rc_r20261018_4: data-card-box "orbit" on every card (factors 0.78/0.59) · []
+ok   C-1 1600x1200 org_rc_r20261018_4: rendered width = the estimate's, height = estimate + 12 (±0.5 px), title lines = the counted ones · {"width":[],"height":[],"lines":[]}
+ok   C-2 1600x1200 org_rc_r20261018_4: nothing cut (every line inside the padding box), no title clamped that fits in four lines · {"cut":[],"clamp":[]}
+ok   C-3 1600x1200 org_rc_r20261018_4: every line and title row centred on the card's axis (±1 px) · []
+ok   C-4 1600x1200 org_rc_r20261018_4: standing, title, domain, requirements, matching as the pool states them; hollow mark; nothing else · {"texts":[],"mark":[]}
+ok   C-6 1600x1200 org_rc_r20261018_4: the tether lamp on the card's edge where the line from the centre meets it · []
+ok   C-1 1600x1200 org_rc_r20261018_5: the in-process factors are the drawn ones · {"dom":["0.83","0.57"],"inProcess":{"x":0.83,"y":0.57}}
+ok   C-1 1600x1200 org_rc_r20261018_5: data-card-box "orbit" on every card (factors 0.83/0.57) · []
+ok   C-1 1600x1200 org_rc_r20261018_5: rendered width = the estimate's, height = estimate + 12 (±0.5 px), title lines = the counted ones · {"width":[],"height":[],"lines":[]}
+ok   C-2 1600x1200 org_rc_r20261018_5: nothing cut (every line inside the padding box), no title clamped that fits in four lines · {"cut":[],"clamp":[]}
+ok   C-3 1600x1200 org_rc_r20261018_5: every line and title row centred on the card's axis (±1 px) · []
+ok   C-4 1600x1200 org_rc_r20261018_5: standing, title, domain, requirements, matching as the pool states them; hollow mark; nothing else · {"texts":[],"mark":[]}
+ok   C-6 1600x1200 org_rc_r20261018_5: the tether lamp on the card's edge where the line from the centre meets it · []
+ok   C-1 1600x1200 org_rc_r20261018_6: the in-process factors are the drawn ones · {"dom":["0.70","0.59"],"inProcess":{"x":0.7,"y":0.59}}
+ok   C-1 1600x1200 org_rc_r20261018_6: data-card-box "orbit" on every card (factors 0.70/0.59) · []
+ok   C-1 1600x1200 org_rc_r20261018_6: rendered width = the estimate's, height = estimate + 12 (±0.5 px), title lines = the counted ones · {"width":[],"height":[],"lines":[]}
+ok   C-2 1600x1200 org_rc_r20261018_6: nothing cut (every line inside the padding box), no title clamped that fits in four lines · {"cut":[],"clamp":[]}
+ok   C-3 1600x1200 org_rc_r20261018_6: every line and title row centred on the card's axis (±1 px) · []
+ok   C-4 1600x1200 org_rc_r20261018_6: standing, title, domain, requirements, matching as the pool states them; hollow mark; nothing else · {"texts":[],"mark":[]}
+ok   C-6 1600x1200 org_rc_r20261018_6: the tether lamp on the card's edge where the line from the centre meets it · []
+ok   C-1 1600x1200 org_rc_r20261018_7: the in-process factors are the drawn ones · {"dom":["0.48","0.54"],"inProcess":{"x":0.48,"y":0.54}}
+ok   C-1 1600x1200 org_rc_r20261018_7: data-card-box "orbit" on every card (factors 0.48/0.54) · []
+ok   C-1 1600x1200 org_rc_r20261018_7: rendered width = the estimate's, height = estimate + 12 (±0.5 px), title lines = the counted ones · {"width":[],"height":[],"lines":[]}
+ok   C-2 1600x1200 org_rc_r20261018_7: nothing cut (every line inside the padding box), no title clamped that fits in four lines · {"cut":[],"clamp":[]}
+ok   C-3 1600x1200 org_rc_r20261018_7: every line and title row centred on the card's axis (±1 px) · []
+ok   C-4 1600x1200 org_rc_r20261018_7: standing, title, domain, requirements, matching as the pool states them; hollow mark; nothing else · {"texts":[],"mark":[]}
+ok   C-6 1600x1200 org_rc_r20261018_7: the tether lamp on the card's edge where the line from the centre meets it · []
+ok   C-1 1600x1200 org_rc_r4711_0: the in-process factors are the drawn ones · {"dom":["0.83","0.57"],"inProcess":{"x":0.83,"y":0.57}}
+ok   C-1 1600x1200 org_rc_r4711_0: data-card-box "orbit" on every card (factors 0.83/0.57) · []
+ok   C-1 1600x1200 org_rc_r4711_0: rendered width = the estimate's, height = estimate + 12 (±0.5 px), title lines = the counted ones · {"width":[],"height":[],"lines":[]}
+ok   C-2 1600x1200 org_rc_r4711_0: nothing cut (every line inside the padding box), no title clamped that fits in four lines · {"cut":[],"clamp":[]}
+ok   C-3 1600x1200 org_rc_r4711_0: every line and title row centred on the card's axis (±1 px) · []
+ok   C-4 1600x1200 org_rc_r4711_0: standing, title, domain, requirements, matching as the pool states them; hollow mark; nothing else · {"texts":[],"mark":[]}
+ok   C-6 1600x1200 org_rc_r4711_0: the tether lamp on the card's edge where the line from the centre meets it · []
+ok   C-1 1600x1200 org_rc_r4711_1: the in-process factors are the drawn ones · {"dom":["0.83","0.57"],"inProcess":{"x":0.83,"y":0.57}}
+ok   C-1 1600x1200 org_rc_r4711_1: data-card-box "orbit" on every card (factors 0.83/0.57) · []
+ok   C-1 1600x1200 org_rc_r4711_1: rendered width = the estimate's, height = estimate + 12 (±0.5 px), title lines = the counted ones · {"width":[],"height":[],"lines":[]}
+ok   C-2 1600x1200 org_rc_r4711_1: nothing cut (every line inside the padding box), no title clamped that fits in four lines · {"cut":[],"clamp":[]}
+ok   C-3 1600x1200 org_rc_r4711_1: every line and title row centred on the card's axis (±1 px) · []
+ok   C-4 1600x1200 org_rc_r4711_1: standing, title, domain, requirements, matching as the pool states them; hollow mark; nothing else · {"texts":[],"mark":[]}
+ok   C-6 1600x1200 org_rc_r4711_1: the tether lamp on the card's edge where the line from the centre meets it · []
+ok   C-1 1600x1200 org_rc_r4711_2: the in-process factors are the drawn ones · {"dom":["0.83","0.57"],"inProcess":{"x":0.83,"y":0.57}}
+ok   C-1 1600x1200 org_rc_r4711_2: data-card-box "orbit" on every card (factors 0.83/0.57) · []
+ok   C-1 1600x1200 org_rc_r4711_2: rendered width = the estimate's, height = estimate + 12 (±0.5 px), title lines = the counted ones · {"width":[],"height":[],"lines":[]}
+ok   C-2 1600x1200 org_rc_r4711_2: nothing cut (every line inside the padding box), no title clamped that fits in four lines · {"cut":[],"clamp":[]}
+ok   C-3 1600x1200 org_rc_r4711_2: every line and title row centred on the card's axis (±1 px) · []
+ok   C-4 1600x1200 org_rc_r4711_2: standing, title, domain, requirements, matching as the pool states them; hollow mark; nothing else · {"texts":[],"mark":[]}
+ok   C-6 1600x1200 org_rc_r4711_2: the tether lamp on the card's edge where the line from the centre meets it · []
+ok   C-1 1600x1200 org_rc_r4711_3: the in-process factors are the drawn ones · {"dom":["0.79","0.57"],"inProcess":{"x":0.79,"y":0.57}}
+ok   C-1 1600x1200 org_rc_r4711_3: data-card-box "orbit" on every card (factors 0.79/0.57) · []
+ok   C-1 1600x1200 org_rc_r4711_3: rendered width = the estimate's, height = estimate + 12 (±0.5 px), title lines = the counted ones · {"width":[],"height":[],"lines":[]}
+ok   C-2 1600x1200 org_rc_r4711_3: nothing cut (every line inside the padding box), no title clamped that fits in four lines · {"cut":[],"clamp":[]}
+ok   C-3 1600x1200 org_rc_r4711_3: every line and title row centred on the card's axis (±1 px) · []
+ok   C-4 1600x1200 org_rc_r4711_3: standing, title, domain, requirements, matching as the pool states them; hollow mark; nothing else · {"texts":[],"mark":[]}
+ok   C-6 1600x1200 org_rc_r4711_3: the tether lamp on the card's edge where the line from the centre meets it · []
+ok   C-1 1600x1200 org_rc_r4711_4: the in-process factors are the drawn ones · {"dom":["0.79","0.58"],"inProcess":{"x":0.79,"y":0.58}}
+ok   C-1 1600x1200 org_rc_r4711_4: data-card-box "orbit" on every card (factors 0.79/0.58) · []
+ok   C-1 1600x1200 org_rc_r4711_4: rendered width = the estimate's, height = estimate + 12 (±0.5 px), title lines = the counted ones · {"width":[],"height":[],"lines":[]}
+ok   C-2 1600x1200 org_rc_r4711_4: nothing cut (every line inside the padding box), no title clamped that fits in four lines · {"cut":[],"clamp":[]}
+ok   C-3 1600x1200 org_rc_r4711_4: every line and title row centred on the card's axis (±1 px) · []
+ok   C-4 1600x1200 org_rc_r4711_4: standing, title, domain, requirements, matching as the pool states them; hollow mark; nothing else · {"texts":[],"mark":[]}
+ok   C-6 1600x1200 org_rc_r4711_4: the tether lamp on the card's edge where the line from the centre meets it · []
+ok   C-1 1600x1200 org_rc_r4711_5: the in-process factors are the drawn ones · {"dom":["0.74","0.54"],"inProcess":{"x":0.74,"y":0.54}}
+ok   C-1 1600x1200 org_rc_r4711_5: data-card-box "orbit" on every card (factors 0.74/0.54) · []
+ok   C-1 1600x1200 org_rc_r4711_5: rendered width = the estimate's, height = estimate + 12 (±0.5 px), title lines = the counted ones · {"width":[],"height":[],"lines":[]}
+ok   C-2 1600x1200 org_rc_r4711_5: nothing cut (every line inside the padding box), no title clamped that fits in four lines · {"cut":[],"clamp":[]}
+ok   C-3 1600x1200 org_rc_r4711_5: every line and title row centred on the card's axis (±1 px) · []
+ok   C-4 1600x1200 org_rc_r4711_5: standing, title, domain, requirements, matching as the pool states them; hollow mark; nothing else · {"texts":[],"mark":[]}
+ok   C-6 1600x1200 org_rc_r4711_5: the tether lamp on the card's edge where the line from the centre meets it · []
+ok   C-1 1600x1200 org_rc_r4711_6: the in-process factors are the drawn ones · {"dom":["0.73","0.54"],"inProcess":{"x":0.73,"y":0.54}}
+ok   C-1 1600x1200 org_rc_r4711_6: data-card-box "orbit" on every card (factors 0.73/0.54) · []
+ok   C-1 1600x1200 org_rc_r4711_6: rendered width = the estimate's, height = estimate + 12 (±0.5 px), title lines = the counted ones · {"width":[],"height":[],"lines":[]}
+ok   C-2 1600x1200 org_rc_r4711_6: nothing cut (every line inside the padding box), no title clamped that fits in four lines · {"cut":[],"clamp":[]}
+ok   C-3 1600x1200 org_rc_r4711_6: every line and title row centred on the card's axis (±1 px) · []
+ok   C-4 1600x1200 org_rc_r4711_6: standing, title, domain, requirements, matching as the pool states them; hollow mark; nothing else · {"texts":[],"mark":[]}
+ok   C-6 1600x1200 org_rc_r4711_6: the tether lamp on the card's edge where the line from the centre meets it · []
+ok   C-1 1600x1200 org_rc_r4711_7: the in-process factors are the drawn ones · {"dom":["0.48","0.54"],"inProcess":{"x":0.48,"y":0.54}}
+ok   C-1 1600x1200 org_rc_r4711_7: data-card-box "orbit" on every card (factors 0.48/0.54) · []
+ok   C-1 1600x1200 org_rc_r4711_7: rendered width = the estimate's, height = estimate + 12 (±0.5 px), title lines = the counted ones · {"width":[],"height":[],"lines":[]}
+ok   C-2 1600x1200 org_rc_r4711_7: nothing cut (every line inside the padding box), no title clamped that fits in four lines · {"cut":[],"clamp":[]}
+ok   C-3 1600x1200 org_rc_r4711_7: every line and title row centred on the card's axis (±1 px) · []
+ok   C-4 1600x1200 org_rc_r4711_7: standing, title, domain, requirements, matching as the pool states them; hollow mark; nothing else · {"texts":[],"mark":[]}
+ok   C-6 1600x1200 org_rc_r4711_7: the tether lamp on the card's edge where the line from the centre meets it · []
+ok   C-5 least contrast of the standing line over every card (1600 × 1000, 1280 × 720) ≥ 4.5 : 1 · {"ratio":8.16,"at":"1600x1000 org_rc_8 syntx-role-role_rc_8_01"}
+ok   C-5 least contrast of the title line over every card (1600 × 1000, 1280 × 720) ≥ 4.5 : 1 · {"ratio":14.27,"at":"1280x720 org_rc_r4711_4 syntx-role-role_rc_r4711_4_06"}
+ok   C-5 least contrast of the domain line over every card (1600 × 1000, 1280 × 720) ≥ 4.5 : 1 · {"ratio":8.56,"at":"1280x720 org_rc_r20261018_3 syntx-role-role_rc_r20261018_3_06"}
+ok   C-5 least contrast of the requirements line over every card (1600 × 1000, 1280 × 720) ≥ 4.5 : 1 · {"ratio":10.84,"at":"1280x720 org_rc_14 syntx-role-role_rc_14_12"}
+DEV  C-5 least contrast of the matching line over every card (1600 × 1000, 1280 × 720) ≥ 4.5 : 1 · {"ratio":1.66,"at":"1280x720 org_rc_14 syntx-role-role_rc_14_12"}
+ok   C-0 no page errors, no non-GET request from the page · {"pageErrors":[],"nonGet":[]}
+
+603/666 checks ok · page errors 0 · non-GET 0 · net 1

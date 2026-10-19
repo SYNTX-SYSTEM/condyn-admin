@@ -1,0 +1,98 @@
+/**
+ * PINK proof of GRÜN frontend/role-cards (owner "SFE — GRÜN | ROLE ORBIT CARD REFINEMENT", relayed by GRÜN; ae633a1 on e6493a7):
+ * what a role card of the organization cosmos states, server-rendered, with PINK's own pool body and a delivered presentation matching
+ * for two of four roles (the e2e world has no analysis, so MATCHING READ is proven here). Every card of the observed organization:
+ *   S-1 standing = the pool's seniority in its parts, upper case, joined by " · "; ROLE where the pool states none ("", " / ")
+ *   S-2 title = the canonical mapping's title (a spaced dash bound to the word before it by a no-break space, nothing else changed)
+ *   S-3 domain = the pool's domain_focus on a drawn-in card ("orbit" box), absent where the pool states none or the card is "packed"
+ *   S-4 requirements = "N REQUIREMENTS", "1 REQUIREMENT" in the singular, = data-requirement-count = the mapping's requirement count
+ *   S-5 matching = MATCHING READ with a filled mark exactly where the presentation matching delivered the role, else NO MATCHING READ
+ *       with a hollow mark (= data-matching-read)
+ *   S-6 no score, rank, resonance, percentage or "//" in the card's text
+ */
+import React from "react";
+import { describe, expect, it, vi } from "vitest";
+import { renderToString } from "react-dom/server";
+import { matches, summary, UPLOAD_ID, view } from "../career/job-pool/fixtures/match-bodies";
+
+vi.mock("../../lib/career/ui/useCareerAnalysisJob", () => ({
+  useCareerAnalysisJob: () => ({ state: { state: "IDLE", resultAnalysisId: null, canonicalAnalysis: null, currentOperation: null, attemptCount: null, errorCode: null, errorSummary: null }, submitAnalysis: () => undefined })
+}));
+const ROLES = [
+  { id: "ROLE_A", title: "Platform Engineer", seniority: "Senior / L4", domain: "Platform", requirements: 2, matched: true },
+  { id: "ROLE_B", title: "Data Analyst – Reporting", seniority: "", domain: null, requirements: 1, matched: false },
+  { id: "ROLE_C", title: "Security Analyst", seniority: " / ", domain: "Data & Analytics", requirements: 3, matched: false },
+  { id: "ROLE_D", title: "Engineering Manager, Payments", seniority: "Lead/M1", domain: "Payments", requirements: 2, matched: true }
+];
+const fixture = vi.hoisted(() => ({ value: null as unknown }));
+vi.mock("../../lib/career/ui/useJobPool", async (importOriginal) => {
+  const original = await importOriginal<typeof import("../../lib/career/ui/useJobPool")>();
+  return { ...original, useJobPoolWorkflow: () => fixture.value };
+});
+vi.mock("../../lib/career/ui/useJobPoolSources", () => ({ useAnalysisSources: () => ({ state: "IDLE" }) }));
+vi.mock("../../lib/career/ui/useRoleInvestigation", async (importOriginal) => ({ ...(await importOriginal<typeof import("../../lib/career/ui/useRoleInvestigation")>()), useAnalysisBoundary: (analysisId: string | null) => analysisId === null ? { state: "IDLE" } : { state: "RESOLVED", value: { investigationVersion: "ANALYSIS_INVESTIGATION_V1", analysisId, jobId: "JOB_TEST", mode: "PERSON_X_JOB", jobScopeSelection: { jobPoolUploadId: UPLOAD_ID, poolRoleId: "ROLE_A" }, basis: "JOB_DECLARATION", discoveryRunId: null, investigationScopeHash: null } } }));
+vi.mock("../../lib/career/ui/useJobScope", () => ({ useJobScopeValidation: () => ({ state: "NONE" }) }));
+
+import { SemanticCareerIntelligenceField } from "../../app/components/career/demo/SemanticCareerIntelligenceField";
+import { EMPTY_CAREER_INTELLIGENCE_DATA } from "../../app/career/demo/demo-data";
+
+const template = view.canonicalMapping.roles[0];
+const myView = {
+  ...view,
+  roleCount: ROLES.length,
+  pool: { pool: { id: "POOL_SAMPLE" }, roles: ROLES.map(r => ({ id: r.id, seniority: r.seniority, ...(r.domain === null ? {} : { domain_focus: r.domain }) })) },
+  canonicalMapping: {
+    ...view.canonicalMapping,
+    roles: ROLES.map((r, i) => ({ ...template, poolRoleId: r.id, title: r.title, targetRoleEntityId: `TRENT_${i}`, targetRoleProfileRevisionId: `TRPREV_${i}`, requirements: Array.from({ length: r.requirements }, (_, k) => ({ ...template.requirements[0], poolRequirementId: `REQ_${r.id}_${k}`, targetRequirementEntityId: `TRQENT_${r.id}_${k}`, targetRequirementRevisionId: `TRQREV_${r.id}_${k}` })) }))
+  }
+};
+const myMatches = { ...matches, roleMatches: ROLES.filter(r => r.matched).map(r => ({ ...matches.roleMatches[0], poolRoleId: r.id, title: r.title })) };
+fixture.value = { pools: { state: "AVAILABLE", jobPools: [summary] }, upload: { state: "IDLE" }, selectedJobPoolUploadId: UPLOAD_ID, view: { state: "AVAILABLE", jobPoolUploadId: UPLOAD_ID, upload: myView }, matches: { state: "AVAILABLE", jobPoolUploadId: UPLOAD_ID, analysisId: "ANL_TEST", matches: myMatches }, submitUpload: async () => undefined, select: () => undefined, reloadPools: async () => undefined, reloadMatches: async () => undefined };
+
+const decode = (s: string) => s.replace(/<!-- -->/g, "").replace(/<[^>]+>/g, "").replace(/&amp;/g, "&").replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&quot;/g, '"').replace(/&#x27;/g, "'");
+/** The element carrying `attribute` inside `html`, balanced by its tag name. */
+function element(html: string, attribute: string): string | null {
+  const at = html.indexOf(attribute);
+  if (at < 0) return null;
+  const start = html.lastIndexOf("<", at);
+  const tag = /^<(\w+)/.exec(html.slice(start))![1];
+  let depth = 0;
+  const re = new RegExp(`<(/?)${tag}\\b[^>]*>`, "g");
+  re.lastIndex = start;
+  for (let m = re.exec(html); m; m = re.exec(html)) { depth += m[1] ? -1 : 1; if (depth === 0) return html.slice(start, m.index + m[0].length); }
+  return null;
+}
+
+describe("PINK: role cards state only what the pool and the matching state (GRÜN frontend/role-cards)", () => {
+  it("S-1 … S-6 at the organization level", () => {
+    const html = renderToString(<SemanticCareerIntelligenceField data={EMPTY_CAREER_INTELLIGENCE_DATA} fieldFocus="FIELD" jobPoolUploadId="JPOOL_RC" analysisId="ANL_TEST" jobOrganizationId="ORG_1" />);
+    expect(html).toContain('data-observation-kind="ORGANIZATION"');
+    const report: unknown[] = [];
+    for (const role of ROLES) {
+      const card = element(html, `data-testid="syntx-role-${role.id}"`);
+      expect(card, role.id).not.toBeNull();
+      const box = /data-card-box="(\w+)"/.exec(card!)?.[1];
+      const parts = role.seniority.split("/").map(p => p.trim()).filter(Boolean);
+      const standing = decode(element(card!, "data-sx-role-standing")!);
+      const title = decode(element(card!, "data-sx-role-title")!);
+      const domainEl = element(card!, "data-sx-role-domain");
+      const requirements = decode(element(card!, "data-sx-role-requirements")!);
+      const matchingEl = element(card!, "data-sx-role-matching")!;
+      const matching = decode(matchingEl);
+      const dot = /<span[^>]*style="([^"]*)"/.exec(matchingEl.slice(matchingEl.indexOf(">") + 1))![1];
+      report.push({ id: role.id, box, standing, title, domain: domainEl && decode(domainEl), requirements, matching, dot });
+      expect(standing, `S-1 ${role.id}`).toBe(parts.length ? parts.map(p => p.toUpperCase()).join(" · ") : "ROLE");
+      expect(title.replace(/ /g, " "), `S-2 ${role.id}`).toBe(role.title);
+      expect(title, `S-2 ${role.id} dash bound`).toBe(role.title.replace(/ ([–—-]) /g, " $1 "));
+      expect(["orbit", "packed"], `S-3 ${role.id} box`).toContain(box);
+      if (box === "orbit" && role.domain !== null) expect(domainEl && decode(domainEl), `S-3 ${role.id}`).toBe(role.domain); else expect(domainEl, `S-3 ${role.id}`).toBeNull();
+      expect(requirements, `S-4 ${role.id}`).toBe(`${role.requirements} ${role.requirements === 1 ? "REQUIREMENT" : "REQUIREMENTS"}`);
+      expect(card!, `S-4 ${role.id}`).toContain(`data-requirement-count="${role.requirements}"`);
+      expect(matching, `S-5 ${role.id}`).toBe(role.matched ? "MATCHING READ" : "NO MATCHING READ");
+      expect(card!, `S-5 ${role.id}`).toContain(`data-matching-read="${role.matched}"`);
+      expect(/background:transparent/.test(dot), `S-5 ${role.id} mark`).toBe(!role.matched);
+      expect(decode(card!), `S-6 ${role.id}`).not.toMatch(/\/\/|resonan|score|rank|%|0\.\d/i);
+    }
+    console.log(JSON.stringify(report));
+  });
+});

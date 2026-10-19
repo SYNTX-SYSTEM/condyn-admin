@@ -1,0 +1,1986 @@
+{
+ "tip": "nc-f665b80",
+ "recordedAt": "2026-10-19T10:48:19.298Z",
+ "passed": 969,
+ "total": 2186,
+ "note": "negative control e6493a7 (probe f665b80), final proof: trimmed by PINK — per check id the counts and the first three deviations; the measured block in full except the per-organization card lists",
+ "perCheck": {
+  "C-0": {
+   "ok": 1,
+   "dev": 0,
+   "firstDeviations": []
+  },
+  "C-1": {
+   "ok": 308,
+   "dev": 589,
+   "firstDeviations": [
+    {
+     "id": "C-1",
+     "name": "1600x1000 org_rc_3: data-card-box \"orbit\" on every card (factors 0.38/0.64)",
+     "ok": false,
+     "detail": [
+      [
+       "role_rc_3_00",
+       null
+      ],
+      [
+       "role_rc_3_01",
+       null
+      ],
+      [
+       "role_rc_3_02",
+       null
+      ]
+     ]
+    },
+    {
+     "id": "C-1",
+     "name": "1600x1000 org_rc_3: rendered width = the estimate's, height = estimate + 12 (±0.5 px), title lines = the counted ones",
+     "ok": false,
+     "detail": {
+      "width": [],
+      "height": [
+       [
+        "role_rc_3_00",
+        88,
+        100
+       ],
+       [
+        "role_rc_3_01",
+        97.5,
+        100
+       ],
+       [
+        "role_rc_3_02",
+        83.25,
+        84
+       ]
+      ],
+      "lines": [
+       [
+        "role_rc_3_00",
+        null,
+        2
+       ],
+       [
+        "role_rc_3_01",
+        null,
+        2
+       ],
+       [
+        "role_rc_3_02",
+        null,
+        1
+       ]
+      ]
+     }
+    },
+    {
+     "id": "C-1",
+     "name": "1600x1000 org_rc_8: data-card-box \"orbit\" on every card (factors 0.61/0.74)",
+     "ok": false,
+     "detail": [
+      [
+       "role_rc_8_00",
+       null
+      ],
+      [
+       "role_rc_8_01",
+       null
+      ],
+      [
+       "role_rc_8_02",
+       null
+      ],
+      [
+       "role_rc_8_03",
+       null
+      ],
+      [
+       "role_rc_8_04",
+       null
+      ],
+      [
+       "role_rc_8_05",
+       null
+      ],
+      [
+       "role_rc_8_06",
+       null
+      ],
+      [
+       "role_rc_8_07",
+       null
+      ]
+     ]
+    }
+   ]
+  },
+  "C-2": {
+   "ok": 299,
+   "dev": 0,
+   "firstDeviations": []
+  },
+  "C-3": {
+   "ok": 299,
+   "dev": 0,
+   "firstDeviations": []
+  },
+  "C-4": {
+   "ok": 0,
+   "dev": 299,
+   "firstDeviations": [
+    {
+     "id": "C-4",
+     "name": "1600x1000 org_rc_3: standing, title, domain, requirements, matching as the pool states them; hollow mark; nothing else",
+     "ok": false,
+     "detail": {
+      "texts": [
+       [
+        "role_rc_3_00",
+        "standing",
+        null,
+        "SENIOR · L4"
+       ],
+       [
+        "role_rc_3_00",
+        "title",
+        null,
+        "Senior Full-Stack Engineer – Shipment Tracking"
+       ],
+       [
+        "role_rc_3_00",
+        "domain",
+        null,
+        "Shipment Tracking"
+       ],
+       [
+        "role_rc_3_00",
+        "requirements",
+        null,
+        "1 REQUIREMENT"
+       ],
+       [
+        "role_rc_3_00",
+        "matching",
+        null,
+        "NO MATCHING READ"
+       ],
+       [
+        "role_rc_3_01",
+        "standing",
+        null,
+        "LEAD · M1"
+       ],
+       [
+        "role_rc_3_01",
+        "title",
+        null,
+        "Platform Reliability Engineer"
+       ],
+       [
+        "role_rc_3_01",
+        "domain",
+        null,
+        "Distributed Payments Infrastructure, Settlement and Reconciliation (EMEA)"
+       ],
+       [
+        "role_rc_3_01",
+        "requirements",
+        null,
+        "3 REQUIREMENTS"
+       ],
+       [
+        "role_rc_3_01",
+        "matching",
+        null,
+        "NO MATCHING READ"
+       ],
+       [
+        "role_rc_3_02",
+        "standing",
+        null,
+        "STAFF"
+       ],
+       [
+        "role_rc_3_02",
+        "title",
+        null,
+        "Data Engineer"
+       ],
+       [
+        "role_rc_3_02",
+        "domain",
+        null,
+        "Machine Learning"
+       ],
+       [
+        "role_rc_3_02",
+        "requirements",
+        null,
+        "0 REQUIREMENTS"
+       ],
+       [
+        "role_rc_3_02",
+        "matching",
+        null,
+        "NO MATCHING READ"
+       ]
+      ],
+      "mark": [
+       [
+        "role_rc_3_00",
+        null
+       ],
+       [
+        "role_rc_3_01",
+        null
+       ],
+       [
+        "role_rc_3_02",
+        null
+       ]
+      ]
+     }
+    },
+    {
+     "id": "C-4",
+     "name": "1600x1000 org_rc_8: standing, title, domain, requirements, matching as the pool states them; hollow mark; nothing else",
+     "ok": false,
+     "detail": {
+      "texts": [
+       [
+        "role_rc_8_00",
+        "standing",
+        null,
+        "LEAD · M1"
+       ],
+       [
+        "role_rc_8_00",
+        "title",
+        null,
+        "Senior Full-Stack Engineer – Shipment Tracking"
+       ],
+       [
+        "role_rc_8_00",
+        "domain",
+        null,
+        "Distributed Payments Infrastructure, Settlement and Reconciliation (EMEA)"
+       ],
+       [
+        "role_rc_8_00",
+        "requirements",
+        null,
+        "7 REQUIREMENTS"
+       ],
+       [
+        "role_rc_8_00",
+        "matching",
+        null,
+        "NO MATCHING READ"
+       ],
+       [
+        "role_rc_8_01",
+        "standing",
+        null,
+        "STAFF"
+       ],
+       [
+        "role_rc_8_01",
+        "title",
+        null,
+        "Platform Reliability Engineer"
+       ],
+       [
+        "role_rc_8_01",
+        "domain",
+        null,
+        "Machine Learning"
+       ],
+       [
+        "role_rc_8_01",
+        "requirements",
+        null,
+        "1 REQUIREMENT"
+       ],
+       [
+        "role_rc_8_01",
+        "matching",
+        null,
+        "NO MATCHING READ"
+       ],
+       [
+        "role_rc_8_02",
+        "standing",
+        null,
+        "ROLE"
+       ],
+       [
+        "role_rc_8_02",
+        "title",
+        null,
+        "Data Engineer"
+       ],
+       [
+        "role_rc_8_02",
+        "domain",
+        null,
+        "Payments"
+       ],
+       [
+        "role_rc_8_02",
+        "requirements",
+        null,
+        "3 REQUIREMENTS"
+       ],
+       [
+        "role_rc_8_02",
+        "matching",
+        null,
+        "NO MATCHING READ"
+       ],
+       [
+        "role_rc_8_03",
+        "standing",
+        null,
+        "ROLE"
+       ],
+       [
+        "role_rc_8_03",
+        "title",
+        null,
+        "Engineering Manager, Payments Infrastructure and Settlement"
+       ],
+       [
+        "role_rc_8_03",
+        "domain",
+        null,
+        "Security & Compliance"
+       ],
+       [
+        "role_rc_8_03",
+        "requirements",
+        null,
+        "0 REQUIREMENTS"
+       ],
+       [
+        "role_rc_8_03",
+        "matching",
+        null,
+        "NO MATCHING READ"
+       ],
+       [
+        "role_rc_8_04",
+        "standing",
+        null,
+        "SENIOR"
+       ],
+       [
+        "role_rc_8_04",
+        "title",
+        null,
+        "QA Lead"
+       ],
+       [
+        "role_rc_8_04",
+        "requirements",
+        null,
+        "2 REQUIREMENTS"
+       ],
+       [
+        "role_rc_8_04",
+        "matching",
+        null,
+        "NO MATCHING READ"
+       ],
+       [
+        "role_rc_8_05",
+        "standing",
+        null,
+        "SENIOR · L4"
+       ],
+       [
+        "role_rc_8_05",
+        "title",
+        null,
+        "Product Designer"
+       ],
+       [
+        "role_rc_8_05",
+        "domain",
+        null,
+        "Data"
+       ],
+       [
+        "role_rc_8_05",
+        "requirements",
+        null,
+        "7 REQUIREMENTS"
+       ],
+       [
+        "role_rc_8_05",
+        "matching",
+        null,
+        "NO MATCHING READ"
+       ],
+       [
+        "role_rc_8_06",
+        "standing",
+        null,
+        "PRINCIPAL · DISTINGUISHED ENGINEER · LEVEL 9 (TECHNICAL FELLOW TRACK)"
+       ],
+       [
+        "role_rc_8_06",
+        "title",
+        null,
+        "Machine Learning Engineer (Ranking)"
+       ],
+       [
+        "role_rc_8_06",
+        "domain",
+        null,
+        "Shipment Tracking"
+       ],
+       [
+        "role_rc_8_06",
+        "requirements",
+        null,
+        "1 REQUIREMENT"
+       ],
+       [
+        "role_rc_8_06",
+        "matching",
+        null,
+        "NO MATCHING READ"
+       ],
+       [
+        "role_rc_8_07",
+        "standing",
+        null,
+        "MID · L3"
+       ],
+       [
+        "role_rc_8_07",
+        "title",
+        null,
+        "DevOps Engineer"
+       ],
+       [
+        "role_rc_8_07",
+        "domain",
+        null,
+        "Distributed Payments Infrastructure, Settlement and Reconciliation (EMEA)"
+       ],
+       [
+        "role_rc_8_07",
+        "requirements",
+        null,
+        "3 REQUIREMENTS"
+       ],
+       [
+        "role_rc_8_07",
+        "matching",
+        null,
+        "NO MATCHING READ"
+       ]
+      ],
+      "mark": [
+       [
+        "role_rc_8_00",
+        null
+       ],
+       [
+        "role_rc_8_01",
+        null
+       ],
+       [
+        "role_rc_8_02",
+        null
+       ],
+       [
+        "role_rc_8_03",
+        null
+       ],
+       [
+        "role_rc_8_04",
+        null
+       ],
+       [
+        "role_rc_8_05",
+        null
+       ],
+       [
+        "role_rc_8_06",
+        null
+       ],
+       [
+        "role_rc_8_07",
+        null
+       ]
+      ]
+     }
+    },
+    {
+     "id": "C-4",
+     "name": "1600x1000 org_rc_14: standing, title, domain, requirements, matching as the pool states them; hollow mark; nothing else",
+     "ok": false,
+     "detail": {
+      "texts": [
+       [
+        "role_rc_14_00",
+        "standing",
+        null,
+        "STAFF"
+       ],
+       [
+        "role_rc_14_00",
+        "title",
+        null,
+        "Senior Full-Stack Engineer – Shipment Tracking"
+       ],
+       [
+        "role_rc_14_00",
+        "requirements",
+        null,
+        "2 REQUIREMENTS"
+       ],
+       [
+        "role_rc_14_00",
+        "matching",
+        null,
+        "NO MATCHING READ"
+       ],
+       [
+        "role_rc_14_01",
+        "standing",
+        null,
+        "ROLE"
+       ],
+       [
+        "role_rc_14_01",
+        "title",
+        null,
+        "Platform Reliability Engineer"
+       ],
+       [
+        "role_rc_14_01",
+        "requirements",
+        null,
+        "7 REQUIREMENTS"
+       ],
+       [
+        "role_rc_14_01",
+        "matching",
+        null,
+        "NO MATCHING READ"
+       ],
+       [
+        "role_rc_14_02",
+        "standing",
+        null,
+        "ROLE"
+       ],
+       [
+        "role_rc_14_02",
+        "title",
+        null,
+        "Data Engineer"
+       ],
+       [
+        "role_rc_14_02",
+        "requirements",
+        null,
+        "1 REQUIREMENT"
+       ],
+       [
+        "role_rc_14_02",
+        "matching",
+        null,
+        "NO MATCHING READ"
+       ],
+       [
+        "role_rc_14_03",
+        "standing",
+        null,
+        "SENIOR"
+       ],
+       [
+        "role_rc_14_03",
+        "title",
+        null,
+        "Engineering Manager, Payments Infrastructure and Settlement"
+       ],
+       [
+        "role_rc_14_03",
+        "requirements",
+        null,
+        "3 REQUIREMENTS"
+       ],
+       [
+        "role_rc_14_03",
+        "matching",
+        null,
+        "NO MATCHING READ"
+       ],
+       [
+        "role_rc_14_04",
+        "standing",
+        null,
+        "SENIOR · L4"
+       ],
+       [
+        "role_rc_14_04",
+        "title",
+        null,
+        "QA Lead"
+       ],
+       [
+        "role_rc_14_04",
+        "requirements",
+        null,
+        "0 REQUIREMENTS"
+       ],
+       [
+        "role_rc_14_04",
+        "matching",
+        null,
+        "NO MATCHING READ"
+       ],
+       [
+        "role_rc_14_05",
+        "standing",
+        null,
+        "PRINCIPAL · DISTINGUISHED ENGINEER · LEVEL 9 (TECHNICAL FELLOW TRACK)"
+       ],
+       [
+        "role_rc_14_05",
+        "title",
+        null,
+        "Product Designer"
+       ],
+       [
+        "role_rc_14_05",
+        "requirements",
+        null,
+        "2 REQUIREMENTS"
+       ],
+       [
+        "role_rc_14_05",
+        "matching",
+        null,
+        "NO MATCHING READ"
+       ],
+       [
+        "role_rc_14_06",
+        "standing",
+        null,
+        "MID · L3"
+       ],
+       [
+        "role_rc_14_06",
+        "title",
+        null,
+        "Machine Learning Engineer (Ranking)"
+       ],
+       [
+        "role_rc_14_06",
+        "requirements",
+        null,
+        "7 REQUIREMENTS"
+       ],
+       [
+        "role_rc_14_06",
+        "matching",
+        null,
+        "NO MATCHING READ"
+       ],
+       [
+        "role_rc_14_07",
+        "standing",
+        null,
+        "JUNIOR"
+       ],
+       [
+        "role_rc_14_07",
+        "title",
+        null,
+        "DevOps Engineer"
+       ],
+       [
+        "role_rc_14_07",
+        "requirements",
+        null,
+        "1 REQUIREMENT"
+       ],
+       [
+        "role_rc_14_07",
+        "matching",
+        null,
+        "NO MATCHING READ"
+       ],
+       [
+        "role_rc_14_08",
+        "standing",
+        null,
+        "SENIOR · L4"
+       ],
+       [
+        "role_rc_14_08",
+        "title",
+        null,
+        "Security Analyst"
+       ],
+       [
+        "role_rc_14_08",
+        "requirements",
+        null,
+        "3 REQUIREMENTS"
+       ],
+       [
+        "role_rc_14_08",
+        "matching",
+        null,
+        "NO MATCHING READ"
+       ],
+       [
+        "role_rc_14_09",
+        "standing",
+        null,
+        "LEAD · M1"
+       ],
+       [
+        "role_rc_14_09",
+        "title",
+        null,
+        "Frontend Engineer"
+       ],
+       [
+        "role_rc_14_09",
+        "requirements",
+        null,
+        "0 REQUIREMENTS"
+       ],
+       [
+        "role_rc_14_09",
+        "matching",
+        null,
+        "NO MATCHING READ"
+       ],
+       [
+        "role_rc_14_10",
+        "standing",
+        null,
+        "STAFF"
+       ],
+       [
+        "role_rc_14_10",
+        "title",
+        null,
+        "Backend Engineer (Go)"
+       ],
+       [
+        "role_rc_14_10",
+        "requirements",
+        null,
+        "2 REQUIREMENTS"
+       ],
+       [
+        "role_rc_14_10",
+        "matching",
+        null,
+        "NO MATCHING READ"
+       ],
+       [
+        "role_rc_14_11",
+        "standing",
+        null,
+        "ROLE"
+       ],
+       [
+        "role_rc_14_11",
+        "title",
+        null,
+        "Technical Writer"
+       ],
+       [
+        "role_rc_14_11",
+        "requirements",
+        null,
+        "7 REQUIREMENTS"
+       ],
+       [
+        "role_rc_14_11",
+        "matching",
+        null,
+        "NO MATCHING READ"
+       ],
+       [
+        "role_rc_14_12",
+        "standing",
+        null,
+        "ROLE"
+       ],
+       [
+        "role_rc_14_12",
+        "title",
+        null,
+        "Solutions Architect"
+       ],
+       [
+        "role_rc_14_12",
+        "requirements",
+        null,
+        "1 REQUIREMENT"
+       ],
+       [
+        "role_rc_14_12",
+        "matching",
+        null,
+        "NO MATCHING READ"
+       ],
+       [
+        "role_rc_14_13",
+        "standing",
+        null,
+        "SENIOR"
+       ],
+       [
+        "role_rc_14_13",
+        "title",
+        null,
+        "Site Reliability Engineer II"
+       ],
+       [
+        "role_rc_14_13",
+        "requirements",
+        null,
+        "3 REQUIREMENTS"
+       ],
+       [
+        "role_rc_14_13",
+        "matching",
+        null,
+        "NO MATCHING READ"
+       ]
+      ],
+      "mark": [
+       [
+        "role_rc_14_00",
+        null
+       ],
+       [
+        "role_rc_14_01",
+        null
+       ],
+       [
+        "role_rc_14_02",
+        null
+       ],
+       [
+        "role_rc_14_03",
+        null
+       ],
+       [
+        "role_rc_14_04",
+        null
+       ],
+       [
+        "role_rc_14_05",
+        null
+       ],
+       [
+        "role_rc_14_06",
+        null
+       ],
+       [
+        "role_rc_14_07",
+        null
+       ],
+       [
+        "role_rc_14_08",
+        null
+       ],
+       [
+        "role_rc_14_09",
+        null
+       ],
+       [
+        "role_rc_14_10",
+        null
+       ],
+       [
+        "role_rc_14_11",
+        null
+       ],
+       [
+        "role_rc_14_12",
+        null
+       ],
+       [
+        "role_rc_14_13",
+        null
+       ]
+      ]
+     }
+    }
+   ]
+  },
+  "C-6": {
+   "ok": 62,
+   "dev": 237,
+   "firstDeviations": [
+    {
+     "id": "C-6",
+     "name": "1600x1000 org_rc_3: the tether lamp on the card's edge where the line from the centre meets it",
+     "ok": false,
+     "detail": [
+      [
+       "role_rc_3_01",
+       {
+        "edge": 1,
+        "off": 3.52
+       }
+      ],
+      [
+       "role_rc_3_02",
+       {
+        "edge": 1,
+        "off": 4.19
+       }
+      ]
+     ]
+    },
+    {
+     "id": "C-6",
+     "name": "1600x1000 org_rc_8: the tether lamp on the card's edge where the line from the centre meets it",
+     "ok": false,
+     "detail": [
+      [
+       "role_rc_8_01",
+       {
+        "edge": 1,
+        "off": 3.7
+       }
+      ],
+      [
+       "role_rc_8_05",
+       {
+        "edge": 1,
+        "off": 4.45
+       }
+      ],
+      [
+       "role_rc_8_07",
+       {
+        "edge": 1,
+        "off": 4.46
+       }
+      ]
+     ]
+    },
+    {
+     "id": "C-6",
+     "name": "1600x1000 org_rc_14: the tether lamp on the card's edge where the line from the centre meets it",
+     "ok": false,
+     "detail": [
+      [
+       "role_rc_14_01",
+       {
+        "edge": 1,
+        "off": 2.25
+       }
+      ],
+      [
+       "role_rc_14_02",
+       {
+        "edge": 1,
+        "off": 2.69
+       }
+      ],
+      [
+       "role_rc_14_04",
+       {
+        "edge": 1,
+        "off": 5.3
+       }
+      ],
+      [
+       "role_rc_14_05",
+       {
+        "edge": 1,
+        "off": 15.86
+       }
+      ],
+      [
+       "role_rc_14_07",
+       {
+        "edge": 1,
+        "off": 4.46
+       }
+      ],
+      [
+       "role_rc_14_09",
+       {
+        "edge": 1,
+        "off": 4.58
+       }
+      ],
+      [
+       "role_rc_14_11",
+       {
+        "edge": 1,
+        "off": 4.53
+       }
+      ],
+      [
+       "role_rc_14_13",
+       {
+        "edge": 1,
+        "off": 3.61
+       }
+      ]
+     ]
+    }
+   ]
+  },
+  "C-7": {
+   "ok": 0,
+   "dev": 92,
+   "firstDeviations": [
+    {
+     "id": "C-7",
+     "name": "1600x1000 org_rc_3: the tether lamp and its conduction stub are drawn as on e6493a7 (not clipped by the card's overflow)",
+     "ok": false,
+     "detail": [
+      [
+       "role_rc_3_00",
+       null,
+       50
+      ],
+      [
+       "role_rc_3_01",
+       null,
+       66
+      ],
+      [
+       "role_rc_3_02",
+       null,
+       72
+      ]
+     ]
+    },
+    {
+     "id": "C-7",
+     "name": "1600x1000 org_rc_8: the tether lamp and its conduction stub are drawn as on e6493a7 (not clipped by the card's overflow)",
+     "ok": false,
+     "detail": [
+      [
+       "role_rc_8_00",
+       null,
+       54
+      ],
+      [
+       "role_rc_8_01",
+       null,
+       50
+      ],
+      [
+       "role_rc_8_02",
+       null,
+       43
+      ],
+      [
+       "role_rc_8_03",
+       null,
+       63
+      ],
+      [
+       "role_rc_8_04",
+       null,
+       84
+      ],
+      [
+       "role_rc_8_05",
+       null,
+       48
+      ],
+      [
+       "role_rc_8_06",
+       null,
+       52
+      ],
+      [
+       "role_rc_8_07",
+       null,
+       57
+      ]
+     ]
+    },
+    {
+     "id": "C-7",
+     "name": "1600x1000 org_rc_14: the tether lamp and its conduction stub are drawn as on e6493a7 (not clipped by the card's overflow)",
+     "ok": false,
+     "detail": [
+      [
+       "role_rc_14_00",
+       null,
+       45
+      ],
+      [
+       "role_rc_14_01",
+       null,
+       43
+      ],
+      [
+       "role_rc_14_02",
+       null,
+       39
+      ],
+      [
+       "role_rc_14_03",
+       null,
+       79
+      ],
+      [
+       "role_rc_14_04",
+       null,
+       50
+      ],
+      [
+       "role_rc_14_05",
+       null,
+       48
+      ],
+      [
+       "role_rc_14_06",
+       null,
+       50
+      ],
+      [
+       "role_rc_14_07",
+       null,
+       82
+      ],
+      [
+       "role_rc_14_08",
+       null,
+       46
+      ],
+      [
+       "role_rc_14_09",
+       null,
+       83
+      ],
+      [
+       "role_rc_14_10",
+       null,
+       109
+      ],
+      [
+       "role_rc_14_11",
+       null,
+       88
+      ],
+      [
+       "role_rc_14_12",
+       null,
+       50
+      ],
+      [
+       "role_rc_14_13",
+       null,
+       79
+      ]
+     ]
+    }
+   ]
+  }
+ },
+ "measured": {
+  "1600x1000 org_rc_3 footer cut": [],
+  "1600x1000 org_rc_8 footer cut": [],
+  "1600x1000 org_rc_14 footer cut": [],
+  "1600x1000 org_rc_32 footer cut": [],
+  "1600x1000 org_rc_long_6 footer cut": [],
+  "1600x1000 org_rc_short_12 footer cut": [],
+  "1600x1000 org_rc_stress_10 footer cut": [],
+  "1600x1000 org_rc_r20261018_0 footer cut": [],
+  "1600x1000 org_rc_r20261018_1 footer cut": [],
+  "1600x1000 org_rc_r20261018_2 footer cut": [],
+  "1600x1000 org_rc_r20261018_3 footer cut": [],
+  "1600x1000 org_rc_r20261018_4 footer cut": [],
+  "1600x1000 org_rc_r20261018_5 footer cut": [],
+  "1600x1000 org_rc_r20261018_6 footer cut": [],
+  "1600x1000 org_rc_r20261018_7 footer cut": [],
+  "1600x1000 org_rc_r4711_0 footer cut": [],
+  "1600x1000 org_rc_r4711_1 footer cut": [],
+  "1600x1000 org_rc_r4711_2 footer cut": [],
+  "1600x1000 org_rc_r4711_3 footer cut": [],
+  "1600x1000 org_rc_r4711_4 footer cut": [],
+  "1600x1000 org_rc_r4711_5 footer cut": [],
+  "1600x1000 org_rc_r4711_6 footer cut": [],
+  "1600x1000 org_rc_r4711_7 footer cut": [],
+  "1280x720 org_rc_3 footer cut": [],
+  "1280x720 org_rc_8 footer cut": [],
+  "1280x720 org_rc_14 footer cut": [],
+  "1280x720 org_rc_32 footer cut": [],
+  "1280x720 org_rc_long_6 footer cut": [],
+  "1280x720 org_rc_short_12 footer cut": [],
+  "1280x720 org_rc_stress_10 footer cut": [],
+  "1280x720 org_rc_r20261018_0 footer cut": [],
+  "1280x720 org_rc_r20261018_1 footer cut": [],
+  "1280x720 org_rc_r20261018_2 footer cut": [],
+  "1280x720 org_rc_r20261018_3 footer cut": [],
+  "1280x720 org_rc_r20261018_4 footer cut": [],
+  "1280x720 org_rc_r20261018_5 footer cut": [],
+  "1280x720 org_rc_r20261018_6 footer cut": [],
+  "1280x720 org_rc_r20261018_7 footer cut": [],
+  "1280x720 org_rc_r4711_0 footer cut": [],
+  "1280x720 org_rc_r4711_1 footer cut": [],
+  "1280x720 org_rc_r4711_2 footer cut": [],
+  "1280x720 org_rc_r4711_3 footer cut": [],
+  "1280x720 org_rc_r4711_4 footer cut": [],
+  "1280x720 org_rc_r4711_5 footer cut": [],
+  "1280x720 org_rc_r4711_6 footer cut": [],
+  "1280x720 org_rc_r4711_7 footer cut": [],
+  "1366x768 org_rc_3 footer cut": [],
+  "1366x768 org_rc_8 footer cut": [],
+  "1366x768 org_rc_14 footer cut": [],
+  "1366x768 org_rc_32 footer cut": [],
+  "1366x768 org_rc_long_6 footer cut": [],
+  "1366x768 org_rc_short_12 footer cut": [],
+  "1366x768 org_rc_stress_10 footer cut": [],
+  "1366x768 org_rc_r20261018_0 footer cut": [],
+  "1366x768 org_rc_r20261018_1 footer cut": [],
+  "1366x768 org_rc_r20261018_2 footer cut": [],
+  "1366x768 org_rc_r20261018_3 footer cut": [],
+  "1366x768 org_rc_r20261018_4 footer cut": [],
+  "1366x768 org_rc_r20261018_5 footer cut": [],
+  "1366x768 org_rc_r20261018_6 footer cut": [],
+  "1366x768 org_rc_r20261018_7 footer cut": [],
+  "1366x768 org_rc_r4711_0 footer cut": [],
+  "1366x768 org_rc_r4711_1 footer cut": [],
+  "1366x768 org_rc_r4711_2 footer cut": [],
+  "1366x768 org_rc_r4711_3 footer cut": [],
+  "1366x768 org_rc_r4711_4 footer cut": [],
+  "1366x768 org_rc_r4711_5 footer cut": [],
+  "1366x768 org_rc_r4711_6 footer cut": [],
+  "1366x768 org_rc_r4711_7 footer cut": [],
+  "1600x1200 org_rc_3 footer cut": [],
+  "1600x1200 org_rc_8 footer cut": [],
+  "1600x1200 org_rc_14 footer cut": [],
+  "1600x1200 org_rc_32 footer cut": [],
+  "1600x1200 org_rc_long_6 footer cut": [],
+  "1600x1200 org_rc_short_12 footer cut": [],
+  "1600x1200 org_rc_stress_10 footer cut": [],
+  "1600x1200 org_rc_r20261018_0 footer cut": [],
+  "1600x1200 org_rc_r20261018_1 footer cut": [],
+  "1600x1200 org_rc_r20261018_2 footer cut": [],
+  "1600x1200 org_rc_r20261018_3 footer cut": [],
+  "1600x1200 org_rc_r20261018_4 footer cut": [],
+  "1600x1200 org_rc_r20261018_5 footer cut": [],
+  "1600x1200 org_rc_r20261018_6 footer cut": [],
+  "1600x1200 org_rc_r20261018_7 footer cut": [],
+  "1600x1200 org_rc_r4711_0 footer cut": [],
+  "1600x1200 org_rc_r4711_1 footer cut": [],
+  "1600x1200 org_rc_r4711_2 footer cut": [],
+  "1600x1200 org_rc_r4711_3 footer cut": [],
+  "1600x1200 org_rc_r4711_4 footer cut": [],
+  "1600x1200 org_rc_r4711_5 footer cut": [],
+  "1600x1200 org_rc_r4711_6 footer cut": [],
+  "1600x1200 org_rc_r4711_7 footer cut": [],
+  "1600x1000 de org_rc_3 footer cut": [],
+  "1600x1000 de org_rc_8 footer cut": [],
+  "1600x1000 de org_rc_14 footer cut": [],
+  "1600x1000 de org_rc_32 footer cut": [],
+  "1600x1000 de org_rc_long_6 footer cut": [],
+  "1600x1000 de org_rc_short_12 footer cut": [],
+  "1600x1000 de org_rc_stress_10 footer cut": [],
+  "1600x1000 de org_rc_r20261018_0 footer cut": [],
+  "1600x1000 de org_rc_r20261018_1 footer cut": [],
+  "1600x1000 de org_rc_r20261018_2 footer cut": [],
+  "1600x1000 de org_rc_r20261018_3 footer cut": [],
+  "1600x1000 de org_rc_r20261018_4 footer cut": [],
+  "1600x1000 de org_rc_r20261018_5 footer cut": [],
+  "1600x1000 de org_rc_r20261018_6 footer cut": [],
+  "1600x1000 de org_rc_r20261018_7 footer cut": [],
+  "1600x1000 de org_rc_r4711_0 footer cut": [],
+  "1600x1000 de org_rc_r4711_1 footer cut": [],
+  "1600x1000 de org_rc_r4711_2 footer cut": [],
+  "1600x1000 de org_rc_r4711_3 footer cut": [],
+  "1600x1000 de org_rc_r4711_4 footer cut": [],
+  "1600x1000 de org_rc_r4711_5 footer cut": [],
+  "1600x1000 de org_rc_r4711_6 footer cut": [],
+  "1600x1000 de org_rc_r4711_7 footer cut": [],
+  "1280x720 de org_rc_3 footer cut": [],
+  "1280x720 de org_rc_8 footer cut": [],
+  "1280x720 de org_rc_14 footer cut": [],
+  "1280x720 de org_rc_32 footer cut": [],
+  "1280x720 de org_rc_long_6 footer cut": [],
+  "1280x720 de org_rc_short_12 footer cut": [],
+  "1280x720 de org_rc_stress_10 footer cut": [],
+  "1280x720 de org_rc_r20261018_0 footer cut": [],
+  "1280x720 de org_rc_r20261018_1 footer cut": [],
+  "1280x720 de org_rc_r20261018_2 footer cut": [],
+  "1280x720 de org_rc_r20261018_3 footer cut": [],
+  "1280x720 de org_rc_r20261018_4 footer cut": [],
+  "1280x720 de org_rc_r20261018_5 footer cut": [],
+  "1280x720 de org_rc_r20261018_6 footer cut": [],
+  "1280x720 de org_rc_r20261018_7 footer cut": [],
+  "1280x720 de org_rc_r4711_0 footer cut": [],
+  "1280x720 de org_rc_r4711_1 footer cut": [],
+  "1280x720 de org_rc_r4711_2 footer cut": [],
+  "1280x720 de org_rc_r4711_3 footer cut": [],
+  "1280x720 de org_rc_r4711_4 footer cut": [],
+  "1280x720 de org_rc_r4711_5 footer cut": [],
+  "1280x720 de org_rc_r4711_6 footer cut": [],
+  "1280x720 de org_rc_r4711_7 footer cut": [],
+  "1280x800 @1.25 org_rc_3 footer cut": [],
+  "1280x800 @1.25 org_rc_8 footer cut": [],
+  "1280x800 @1.25 org_rc_14 footer cut": [],
+  "1280x800 @1.25 org_rc_32 footer cut": [],
+  "1280x800 @1.25 org_rc_long_6 footer cut": [],
+  "1280x800 @1.25 org_rc_short_12 footer cut": [],
+  "1280x800 @1.25 org_rc_stress_10 footer cut": [],
+  "1280x800 @1.25 org_rc_r20261018_0 footer cut": [],
+  "1280x800 @1.25 org_rc_r20261018_1 footer cut": [],
+  "1280x800 @1.25 org_rc_r20261018_2 footer cut": [],
+  "1280x800 @1.25 org_rc_r20261018_3 footer cut": [],
+  "1280x800 @1.25 org_rc_r20261018_4 footer cut": [],
+  "1280x800 @1.25 org_rc_r20261018_5 footer cut": [],
+  "1280x800 @1.25 org_rc_r20261018_6 footer cut": [],
+  "1280x800 @1.25 org_rc_r20261018_7 footer cut": [],
+  "1280x800 @1.25 org_rc_r4711_0 footer cut": [],
+  "1280x800 @1.25 org_rc_r4711_1 footer cut": [],
+  "1280x800 @1.25 org_rc_r4711_2 footer cut": [],
+  "1280x800 @1.25 org_rc_r4711_3 footer cut": [],
+  "1280x800 @1.25 org_rc_r4711_4 footer cut": [],
+  "1280x800 @1.25 org_rc_r4711_5 footer cut": [],
+  "1280x800 @1.25 org_rc_r4711_6 footer cut": [],
+  "1280x800 @1.25 org_rc_r4711_7 footer cut": [],
+  "1600x1000 @2 org_rc_3 footer cut": [],
+  "1600x1000 @2 org_rc_8 footer cut": [],
+  "1600x1000 @2 org_rc_14 footer cut": [],
+  "1600x1000 @2 org_rc_32 footer cut": [],
+  "1600x1000 @2 org_rc_long_6 footer cut": [],
+  "1600x1000 @2 org_rc_short_12 footer cut": [],
+  "1600x1000 @2 org_rc_stress_10 footer cut": [],
+  "1600x1000 @2 org_rc_r20261018_0 footer cut": [],
+  "1600x1000 @2 org_rc_r20261018_1 footer cut": [],
+  "1600x1000 @2 org_rc_r20261018_2 footer cut": [],
+  "1600x1000 @2 org_rc_r20261018_3 footer cut": [],
+  "1600x1000 @2 org_rc_r20261018_4 footer cut": [],
+  "1600x1000 @2 org_rc_r20261018_5 footer cut": [],
+  "1600x1000 @2 org_rc_r20261018_6 footer cut": [],
+  "1600x1000 @2 org_rc_r20261018_7 footer cut": [],
+  "1600x1000 @2 org_rc_r4711_0 footer cut": [],
+  "1600x1000 @2 org_rc_r4711_1 footer cut": [],
+  "1600x1000 @2 org_rc_r4711_2 footer cut": [],
+  "1600x1000 @2 org_rc_r4711_3 footer cut": [],
+  "1600x1000 @2 org_rc_r4711_4 footer cut": [],
+  "1600x1000 @2 org_rc_r4711_5 footer cut": [],
+  "1600x1000 @2 org_rc_r4711_6 footer cut": [],
+  "1600x1000 @2 org_rc_r4711_7 footer cut": [],
+  "1280x800 de @1.25 org_rc_3 footer cut": [],
+  "1280x800 de @1.25 org_rc_8 footer cut": [],
+  "1280x800 de @1.25 org_rc_14 footer cut": [],
+  "1280x800 de @1.25 org_rc_32 footer cut": [],
+  "1280x800 de @1.25 org_rc_long_6 footer cut": [],
+  "1280x800 de @1.25 org_rc_short_12 footer cut": [],
+  "1280x800 de @1.25 org_rc_stress_10 footer cut": [],
+  "1280x800 de @1.25 org_rc_r20261018_0 footer cut": [],
+  "1280x800 de @1.25 org_rc_r20261018_1 footer cut": [],
+  "1280x800 de @1.25 org_rc_r20261018_2 footer cut": [],
+  "1280x800 de @1.25 org_rc_r20261018_3 footer cut": [],
+  "1280x800 de @1.25 org_rc_r20261018_4 footer cut": [],
+  "1280x800 de @1.25 org_rc_r20261018_5 footer cut": [],
+  "1280x800 de @1.25 org_rc_r20261018_6 footer cut": [],
+  "1280x800 de @1.25 org_rc_r20261018_7 footer cut": [],
+  "1280x800 de @1.25 org_rc_r4711_0 footer cut": [],
+  "1280x800 de @1.25 org_rc_r4711_1 footer cut": [],
+  "1280x800 de @1.25 org_rc_r4711_2 footer cut": [],
+  "1280x800 de @1.25 org_rc_r4711_3 footer cut": [],
+  "1280x800 de @1.25 org_rc_r4711_4 footer cut": [],
+  "1280x800 de @1.25 org_rc_r4711_5 footer cut": [],
+  "1280x800 de @1.25 org_rc_r4711_6 footer cut": [],
+  "1280x800 de @1.25 org_rc_r4711_7 footer cut": [],
+  "1280x720 de [DejaVu Sans Mono] org_rc_3 footer cut": [],
+  "1280x720 de [DejaVu Sans Mono] org_rc_8 footer cut": [],
+  "1280x720 de [DejaVu Sans Mono] org_rc_14 footer cut": [],
+  "1280x720 de [DejaVu Sans Mono] org_rc_32 footer cut": [],
+  "1280x720 de [DejaVu Sans Mono] org_rc_long_6 footer cut": [],
+  "1280x720 de [DejaVu Sans Mono] org_rc_short_12 footer cut": [],
+  "1280x720 de [DejaVu Sans Mono] org_rc_stress_10 footer cut": [],
+  "1280x720 de [DejaVu Sans Mono] org_rc_r20261018_0 footer cut": [],
+  "1280x720 de [DejaVu Sans Mono] org_rc_r20261018_1 footer cut": [],
+  "1280x720 de [DejaVu Sans Mono] org_rc_r20261018_2 footer cut": [],
+  "1280x720 de [DejaVu Sans Mono] org_rc_r20261018_3 footer cut": [],
+  "1280x720 de [DejaVu Sans Mono] org_rc_r20261018_4 footer cut": [],
+  "1280x720 de [DejaVu Sans Mono] org_rc_r20261018_5 footer cut": [],
+  "1280x720 de [DejaVu Sans Mono] org_rc_r20261018_6 footer cut": [],
+  "1280x720 de [DejaVu Sans Mono] org_rc_r20261018_7 footer cut": [],
+  "1280x720 de [DejaVu Sans Mono] org_rc_r4711_0 footer cut": [],
+  "1280x720 de [DejaVu Sans Mono] org_rc_r4711_1 footer cut": [],
+  "1280x720 de [DejaVu Sans Mono] org_rc_r4711_2 footer cut": [],
+  "1280x720 de [DejaVu Sans Mono] org_rc_r4711_3 footer cut": [],
+  "1280x720 de [DejaVu Sans Mono] org_rc_r4711_4 footer cut": [],
+  "1280x720 de [DejaVu Sans Mono] org_rc_r4711_5 footer cut": [],
+  "1280x720 de [DejaVu Sans Mono] org_rc_r4711_6 footer cut": [],
+  "1280x720 de [DejaVu Sans Mono] org_rc_r4711_7 footer cut": [],
+  "1280x720 de [FreeMono] org_rc_3 footer cut": [],
+  "1280x720 de [FreeMono] org_rc_8 footer cut": [],
+  "1280x720 de [FreeMono] org_rc_14 footer cut": [],
+  "1280x720 de [FreeMono] org_rc_32 footer cut": [],
+  "1280x720 de [FreeMono] org_rc_long_6 footer cut": [],
+  "1280x720 de [FreeMono] org_rc_short_12 footer cut": [],
+  "1280x720 de [FreeMono] org_rc_stress_10 footer cut": [],
+  "1280x720 de [FreeMono] org_rc_r20261018_0 footer cut": [],
+  "1280x720 de [FreeMono] org_rc_r20261018_1 footer cut": [],
+  "1280x720 de [FreeMono] org_rc_r20261018_2 footer cut": [],
+  "1280x720 de [FreeMono] org_rc_r20261018_3 footer cut": [],
+  "1280x720 de [FreeMono] org_rc_r20261018_4 footer cut": [],
+  "1280x720 de [FreeMono] org_rc_r20261018_5 footer cut": [],
+  "1280x720 de [FreeMono] org_rc_r20261018_6 footer cut": [],
+  "1280x720 de [FreeMono] org_rc_r20261018_7 footer cut": [],
+  "1280x720 de [FreeMono] org_rc_r4711_0 footer cut": [],
+  "1280x720 de [FreeMono] org_rc_r4711_1 footer cut": [],
+  "1280x720 de [FreeMono] org_rc_r4711_2 footer cut": [],
+  "1280x720 de [FreeMono] org_rc_r4711_3 footer cut": [],
+  "1280x720 de [FreeMono] org_rc_r4711_4 footer cut": [],
+  "1280x720 de [FreeMono] org_rc_r4711_5 footer cut": [],
+  "1280x720 de [FreeMono] org_rc_r4711_6 footer cut": [],
+  "1280x720 de [FreeMono] org_rc_r4711_7 footer cut": [],
+  "1280x720 de [Fira Code] org_rc_3 footer cut": [],
+  "1280x720 de [Fira Code] org_rc_8 footer cut": [],
+  "1280x720 de [Fira Code] org_rc_14 footer cut": [],
+  "1280x720 de [Fira Code] org_rc_32 footer cut": [],
+  "1280x720 de [Fira Code] org_rc_long_6 footer cut": [],
+  "1280x720 de [Fira Code] org_rc_short_12 footer cut": [],
+  "1280x720 de [Fira Code] org_rc_stress_10 footer cut": [],
+  "1280x720 de [Fira Code] org_rc_r20261018_0 footer cut": [],
+  "1280x720 de [Fira Code] org_rc_r20261018_1 footer cut": [],
+  "1280x720 de [Fira Code] org_rc_r20261018_2 footer cut": [],
+  "1280x720 de [Fira Code] org_rc_r20261018_3 footer cut": [],
+  "1280x720 de [Fira Code] org_rc_r20261018_4 footer cut": [],
+  "1280x720 de [Fira Code] org_rc_r20261018_5 footer cut": [],
+  "1280x720 de [Fira Code] org_rc_r20261018_6 footer cut": [],
+  "1280x720 de [Fira Code] org_rc_r20261018_7 footer cut": [],
+  "1280x720 de [Fira Code] org_rc_r4711_0 footer cut": [],
+  "1280x720 de [Fira Code] org_rc_r4711_1 footer cut": [],
+  "1280x720 de [Fira Code] org_rc_r4711_2 footer cut": [],
+  "1280x720 de [Fira Code] org_rc_r4711_3 footer cut": [],
+  "1280x720 de [Fira Code] org_rc_r4711_4 footer cut": [],
+  "1280x720 de [Fira Code] org_rc_r4711_5 footer cut": [],
+  "1280x720 de [Fira Code] org_rc_r4711_6 footer cut": [],
+  "1280x720 de [Fira Code] org_rc_r4711_7 footer cut": [],
+  "1280x720 de [IBM Plex Mono] org_rc_3 footer cut": [],
+  "1280x720 de [IBM Plex Mono] org_rc_8 footer cut": [],
+  "1280x720 de [IBM Plex Mono] org_rc_14 footer cut": [],
+  "1280x720 de [IBM Plex Mono] org_rc_32 footer cut": [],
+  "1280x720 de [IBM Plex Mono] org_rc_long_6 footer cut": [],
+  "1280x720 de [IBM Plex Mono] org_rc_short_12 footer cut": [],
+  "1280x720 de [IBM Plex Mono] org_rc_stress_10 footer cut": [],
+  "1280x720 de [IBM Plex Mono] org_rc_r20261018_0 footer cut": [],
+  "1280x720 de [IBM Plex Mono] org_rc_r20261018_1 footer cut": [],
+  "1280x720 de [IBM Plex Mono] org_rc_r20261018_2 footer cut": [],
+  "1280x720 de [IBM Plex Mono] org_rc_r20261018_3 footer cut": [],
+  "1280x720 de [IBM Plex Mono] org_rc_r20261018_4 footer cut": [],
+  "1280x720 de [IBM Plex Mono] org_rc_r20261018_5 footer cut": [],
+  "1280x720 de [IBM Plex Mono] org_rc_r20261018_6 footer cut": [],
+  "1280x720 de [IBM Plex Mono] org_rc_r20261018_7 footer cut": [],
+  "1280x720 de [IBM Plex Mono] org_rc_r4711_0 footer cut": [],
+  "1280x720 de [IBM Plex Mono] org_rc_r4711_1 footer cut": [],
+  "1280x720 de [IBM Plex Mono] org_rc_r4711_2 footer cut": [],
+  "1280x720 de [IBM Plex Mono] org_rc_r4711_3 footer cut": [],
+  "1280x720 de [IBM Plex Mono] org_rc_r4711_4 footer cut": [],
+  "1280x720 de [IBM Plex Mono] org_rc_r4711_5 footer cut": [],
+  "1280x720 de [IBM Plex Mono] org_rc_r4711_6 footer cut": [],
+  "1280x720 de [IBM Plex Mono] org_rc_r4711_7 footer cut": [],
+  "contrast": {},
+  "lampClip": [
+   {
+    "tag": "1600x1000 org_rc_3",
+    "cards": 3,
+    "clipped": 3
+   },
+   {
+    "tag": "1600x1000 org_rc_8",
+    "cards": 8,
+    "clipped": 8
+   },
+   {
+    "tag": "1600x1000 org_rc_14",
+    "cards": 14,
+    "clipped": 14
+   },
+   {
+    "tag": "1600x1000 org_rc_32",
+    "cards": 32,
+    "clipped": 31
+   },
+   {
+    "tag": "1600x1000 org_rc_long_6",
+    "cards": 6,
+    "clipped": 6
+   },
+   {
+    "tag": "1600x1000 org_rc_short_12",
+    "cards": 12,
+    "clipped": 12
+   },
+   {
+    "tag": "1600x1000 org_rc_stress_10",
+    "cards": 10,
+    "clipped": 10
+   },
+   {
+    "tag": "1600x1000 org_rc_r20261018_0",
+    "cards": 7,
+    "clipped": 7
+   },
+   {
+    "tag": "1600x1000 org_rc_r20261018_1",
+    "cards": 7,
+    "clipped": 7
+   },
+   {
+    "tag": "1600x1000 org_rc_r20261018_2",
+    "cards": 7,
+    "clipped": 7
+   },
+   {
+    "tag": "1600x1000 org_rc_r20261018_3",
+    "cards": 7,
+    "clipped": 7
+   },
+   {
+    "tag": "1600x1000 org_rc_r20261018_4",
+    "cards": 7,
+    "clipped": 7
+   },
+   {
+    "tag": "1600x1000 org_rc_r20261018_5",
+    "cards": 7,
+    "clipped": 7
+   },
+   {
+    "tag": "1600x1000 org_rc_r20261018_6",
+    "cards": 7,
+    "clipped": 7
+   },
+   {
+    "tag": "1600x1000 org_rc_r20261018_7",
+    "cards": 4,
+    "clipped": 4
+   },
+   {
+    "tag": "1600x1000 org_rc_r4711_0",
+    "cards": 7,
+    "clipped": 7
+   },
+   {
+    "tag": "1600x1000 org_rc_r4711_1",
+    "cards": 7,
+    "clipped": 7
+   },
+   {
+    "tag": "1600x1000 org_rc_r4711_2",
+    "cards": 7,
+    "clipped": 7
+   },
+   {
+    "tag": "1600x1000 org_rc_r4711_3",
+    "cards": 7,
+    "clipped": 7
+   },
+   {
+    "tag": "1600x1000 org_rc_r4711_4",
+    "cards": 7,
+    "clipped": 7
+   },
+   {
+    "tag": "1600x1000 org_rc_r4711_5",
+    "cards": 7,
+    "clipped": 7
+   },
+   {
+    "tag": "1600x1000 org_rc_r4711_6",
+    "cards": 7,
+    "clipped": 7
+   },
+   {
+    "tag": "1600x1000 org_rc_r4711_7",
+    "cards": 4,
+    "clipped": 4
+   },
+   {
+    "tag": "1280x720 org_rc_3",
+    "cards": 3,
+    "clipped": 3
+   },
+   {
+    "tag": "1280x720 org_rc_8",
+    "cards": 8,
+    "clipped": 8
+   },
+   {
+    "tag": "1280x720 org_rc_14",
+    "cards": 14,
+    "clipped": 12
+   },
+   {
+    "tag": "1280x720 org_rc_32",
+    "cards": 32,
+    "clipped": 29
+   },
+   {
+    "tag": "1280x720 org_rc_long_6",
+    "cards": 6,
+    "clipped": 6
+   },
+   {
+    "tag": "1280x720 org_rc_short_12",
+    "cards": 12,
+    "clipped": 9
+   },
+   {
+    "tag": "1280x720 org_rc_stress_10",
+    "cards": 10,
+    "clipped": 7
+   },
+   {
+    "tag": "1280x720 org_rc_r20261018_0",
+    "cards": 7,
+    "clipped": 6
+   },
+   {
+    "tag": "1280x720 org_rc_r20261018_1",
+    "cards": 7,
+    "clipped": 7
+   },
+   {
+    "tag": "1280x720 org_rc_r20261018_2",
+    "cards": 7,
+    "clipped": 7
+   },
+   {
+    "tag": "1280x720 org_rc_r20261018_3",
+    "cards": 7,
+    "clipped": 7
+   },
+   {
+    "tag": "1280x720 org_rc_r20261018_4",
+    "cards": 7,
+    "clipped": 7
+   },
+   {
+    "tag": "1280x720 org_rc_r20261018_5",
+    "cards": 7,
+    "clipped": 7
+   },
+   {
+    "tag": "1280x720 org_rc_r20261018_6",
+    "cards": 7,
+    "clipped": 7
+   },
+   {
+    "tag": "1280x720 org_rc_r20261018_7",
+    "cards": 4,
+    "clipped": 4
+   },
+   {
+    "tag": "1280x720 org_rc_r4711_0",
+    "cards": 7,
+    "clipped": 6
+   },
+   {
+    "tag": "1280x720 org_rc_r4711_1",
+    "cards": 7,
+    "clipped": 7
+   },
+   {
+    "tag": "1280x720 org_rc_r4711_2",
+    "cards": 7,
+    "clipped": 6
+   },
+   {
+    "tag": "1280x720 org_rc_r4711_3",
+    "cards": 7,
+    "clipped": 7
+   },
+   {
+    "tag": "1280x720 org_rc_r4711_4",
+    "cards": 7,
+    "clipped": 6
+   },
+   {
+    "tag": "1280x720 org_rc_r4711_5",
+    "cards": 7,
+    "clipped": 7
+   },
+   {
+    "tag": "1280x720 org_rc_r4711_6",
+    "cards": 7,
+    "clipped": 7
+   },
+   {
+    "tag": "1280x720 org_rc_r4711_7",
+    "cards": 4,
+    "clipped": 4
+   },
+   {
+    "tag": "1600x1000 de org_rc_3",
+    "cards": 3,
+    "clipped": 3
+   },
+   {
+    "tag": "1600x1000 de org_rc_8",
+    "cards": 8,
+    "clipped": 8
+   },
+   {
+    "tag": "1600x1000 de org_rc_14",
+    "cards": 14,
+    "clipped": 14
+   },
+   {
+    "tag": "1600x1000 de org_rc_32",
+    "cards": 32,
+    "clipped": 31
+   },
+   {
+    "tag": "1600x1000 de org_rc_long_6",
+    "cards": 6,
+    "clipped": 6
+   },
+   {
+    "tag": "1600x1000 de org_rc_short_12",
+    "cards": 12,
+    "clipped": 12
+   },
+   {
+    "tag": "1600x1000 de org_rc_stress_10",
+    "cards": 10,
+    "clipped": 10
+   },
+   {
+    "tag": "1600x1000 de org_rc_r20261018_0",
+    "cards": 7,
+    "clipped": 7
+   },
+   {
+    "tag": "1600x1000 de org_rc_r20261018_1",
+    "cards": 7,
+    "clipped": 7
+   },
+   {
+    "tag": "1600x1000 de org_rc_r20261018_2",
+    "cards": 7,
+    "clipped": 7
+   },
+   {
+    "tag": "1600x1000 de org_rc_r20261018_3",
+    "cards": 7,
+    "clipped": 7
+   },
+   {
+    "tag": "1600x1000 de org_rc_r20261018_4",
+    "cards": 7,
+    "clipped": 7
+   },
+   {
+    "tag": "1600x1000 de org_rc_r20261018_5",
+    "cards": 7,
+    "clipped": 7
+   },
+   {
+    "tag": "1600x1000 de org_rc_r20261018_6",
+    "cards": 7,
+    "clipped": 7
+   },
+   {
+    "tag": "1600x1000 de org_rc_r20261018_7",
+    "cards": 4,
+    "clipped": 4
+   },
+   {
+    "tag": "1600x1000 de org_rc_r4711_0",
+    "cards": 7,
+    "clipped": 7
+   },
+   {
+    "tag": "1600x1000 de org_rc_r4711_1",
+    "cards": 7,
+    "clipped": 7
+   },
+   {
+    "tag": "1600x1000 de org_rc_r4711_2",
+    "cards": 7,
+    "clipped": 7
+   },
+   {
+    "tag": "1600x1000 de org_rc_r4711_3",
+    "cards": 7,
+    "clipped": 7
+   },
+   {
+    "tag": "1600x1000 de org_rc_r4711_4",
+    "cards": 7,
+    "clipped": 7
+   },
+   {
+    "tag": "1600x1000 de org_rc_r4711_5",
+    "cards": 7,
+    "clipped": 7
+   },
+   {
+    "tag": "1600x1000 de org_rc_r4711_6",
+    "cards": 7,
+    "clipped": 7
+   },
+   {
+    "tag": "1600x1000 de org_rc_r4711_7",
+    "cards": 4,
+    "clipped": 4
+   },
+   {
+    "tag": "1280x720 de org_rc_3",
+    "cards": 3,
+    "clipped": 3
+   },
+   {
+    "tag": "1280x720 de org_rc_8",
+    "cards": 8,
+    "clipped": 8
+   },
+   {
+    "tag": "1280x720 de org_rc_14",
+    "cards": 14,
+    "clipped": 12
+   },
+   {
+    "tag": "1280x720 de org_rc_32",
+    "cards": 32,
+    "clipped": 29
+   },
+   {
+    "tag": "1280x720 de org_rc_long_6",
+    "cards": 6,
+    "clipped": 6
+   },
+   {
+    "tag": "1280x720 de org_rc_short_12",
+    "cards": 12,
+    "clipped": 9
+   },
+   {
+    "tag": "1280x720 de org_rc_stress_10",
+    "cards": 10,
+    "clipped": 7
+   },
+   {
+    "tag": "1280x720 de org_rc_r20261018_0",
+    "cards": 7,
+    "clipped": 6
+   },
+   {
+    "tag": "1280x720 de org_rc_r20261018_1",
+    "cards": 7,
+    "clipped": 7
+   },
+   {
+    "tag": "1280x720 de org_rc_r20261018_2",
+    "cards": 7,
+    "clipped": 7
+   },
+   {
+    "tag": "1280x720 de org_rc_r20261018_3",
+    "cards": 7,
+    "clipped": 7
+   },
+   {
+    "tag": "1280x720 de org_rc_r20261018_4",
+    "cards": 7,
+    "clipped": 7
+   },
+   {
+    "tag": "1280x720 de org_rc_r20261018_5",
+    "cards": 7,
+    "clipped": 7
+   },
+   {
+    "tag": "1280x720 de org_rc_r20261018_6",
+    "cards": 7,
+    "clipped": 7
+   },
+   {
+    "tag": "1280x720 de org_rc_r20261018_7",
+    "cards": 4,
+    "clipped": 4
+   },
+   {
+    "tag": "1280x720 de org_rc_r4711_0",
+    "cards": 7,
+    "clipped": 6
+   },
+   {
+    "tag": "1280x720 de org_rc_r4711_1",
+    "cards": 7,
+    "clipped": 7
+   },
+   {
+    "tag": "1280x720 de org_rc_r4711_2",
+    "cards": 7,
+    "clipped": 7
+   },
+   {
+    "tag": "1280x720 de org_rc_r4711_3",
+    "cards": 7,
+    "clipped": 7
+   },
+   {
+    "tag": "1280x720 de org_rc_r4711_4",
+    "cards": 7,
+    "clipped": 6
+   },
+   {
+    "tag": "1280x720 de org_rc_r4711_5",
+    "cards": 7,
+    "clipped": 7
+   },
+   {
+    "tag": "1280x720 de org_rc_r4711_6",
+    "cards": 7,
+    "clipped": 7
+   },
+   {
+    "tag": "1280x720 de org_rc_r4711_7",
+    "cards": 4,
+    "clipped": 4
+   }
+  ],
+  "contrastByTag": {},
+  "titlesClamped": [],
+  "cardsOverTheCentreDisc": [],
+  "footerInOtherFonts": {
+   "DejaVu Sans Mono": [],
+   "FreeMono": [],
+   "Fira Code": [],
+   "IBM Plex Mono": []
+  },
+  "titleSizes": {},
+  "footerSizes": {},
+  "totals": {
+   "cards": 2483,
+   "clampedBeyondFour": 0,
+   "needMoreThanCounted": [],
+   "ellipsized": [],
+   "leastRoomPadding": null,
+   "leastRoomContent": null,
+   "leastRoomAt": ""
+  }
+ },
+ "pageErrors": [],
+ "nonGet": [],
+ "net": 0
+}

@@ -1,0 +1,28 @@
+PINK regression on probe d685003 (b823f68 + 4ecfe67)
+tsc exit 2 lines 1
+full exit 1
+ Test Files  4 failed | 410 passed | 8 skipped (422)
+      Tests  27 failed | 2723 passed | 8 skipped (2758)
+net 0
+gate exit 0
+74/74 checks ok
+three-modes plain exit 0
+91/91 checks ok
+net fetch https://registry.npmjs.org/-/package/next/dist-tags 
+three-modes inspector exit 0
+97/97 checks ok
+net fetch https://registry.npmjs.org/-/package/next/dist-tags 
+url-boundary.e2e exit 0
+      Tests  1 passed (1)
+syntx-walk exit 0
+      Tests  3 passed (3)
+workflow exit 0
+      Tests  10 passed (10)
+demo-ui-fix exit 0
+62/62 checks ok
+DONE
+
+tsc with all four PINK proofs present: exit 0
+role-cards-ssr + GRÜN syntx-role-orbit + syntx-field-ssr:
+ Test Files  3 passed (3)
+      Tests  23 passed (23)

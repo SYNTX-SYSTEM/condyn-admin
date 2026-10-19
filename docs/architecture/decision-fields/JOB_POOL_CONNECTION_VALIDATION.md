@@ -2215,6 +2215,146 @@ Factors measured in the DOM (`e6493a7`; the factor pair, then the outer orbit's 
 - Integration: STOP, as GRÜN requested. It needs the owner's renewed visual acceptance and the owner's word to GELB; demo-ui-fix `0b5a8ea` beneath it needs one too.
 - Evidence is in `evidence/role-orbit-f665b80/`.
 
+### 3.48 Role cards: GRÜN `frontend/role-cards` `ae633a1`, `frontend/role-card-footer` `6f9bc2b` and fix `4ecfe67` (D-RC-1, D-RC-2) (2026-10-19)
+
+**Request.**
+- GRÜN relayed the owner's order "SFE — GRÜN | ROLE ORBIT CARD REFINEMENT" and asked PINK to validate `ae633a1` on `frontend/role-cards`. Base: `e6493a7`, which GRÜN reports as visually accepted by the owner. PINK did not see that acceptance first-hand.
+- GRÜN then relayed "SFE — GRÜN | ROLE CARDS — FOOTER READABILITY" (`6f9bc2b` on `frontend/role-card-footer`, on `ae633a1`).
+- After PINK's interim findings, GRÜN committed the fix `4ecfe67` on `6f9bc2b` and named it the tip to validate.
+- STOP before integration; the owner's visual acceptance follows.
+
+**What changes (presentation in the organization cosmos only; no backend, no Gemini).**
+- **`ae633a1`, the card itself:**
+  - Centred, with five lines, each carrying its own attribute:
+    - standing (the pool's seniority in its parts, or the class word);
+    - title (in the lines the estimate counted);
+    - domain (`domain_focus`, one line, drawn-in orbits only);
+    - "N REQUIREMENTS";
+    - NO MATCHING READ / MATCHING READ with a hollow or filled mark.
+  - No "//", score or rank.
+  - `roleCardBox`: on a drawn-in orbit the card is drawn exactly in the box every air is measured on (estimate + 12); where the orbit stays as packed, at the estimate.
+  - New attributes `data-card-box` and `data-card-title-lines`.
+- **`6f9bc2b`:**
+  - The footer reads at up to 8.5 px.
+  - `monoLineSize` picks the largest quarter-pixel size at which monospaced capitals (0.6 em advance plus letter spacing) fit; both footer lines take the smaller of the two.
+- **`4ecfe67`:**
+  - The card sets `overflow: visible`; every line limits itself.
+  - `RoleCardTitle` keeps the counted lines and, after layout, reads a dense title smaller in half pixels down to 10 px. It ends in "…" only where even 10 px does not fit.
+  - Tooltips carry the full title, seniority and domain.
+  - The standing's hairlines give way first.
+- **The layout library only gains functions** (`roleCardBox`, `roleSeniorityParts`, `ROLE_CARD_FOOTER`, `monoLineSize`). `compactRoleOrbit`, the packing and the estimate are unchanged, so the orbit is the one of `e6493a7`.
+
+**Scope.**
+- Probes:
+  - `df26269` = integration `b823f68` + `ae633a1`;
+  - `5100a1d` = `b823f68` + `6f9bc2b`;
+  - `d685003` = `b823f68` + `4ecfe67`.
+  - All three merge without conflicts. Like `f665b80` in §3.47, they carry demo-ui-fix `0b5a8ea` and the role-orbit commits beneath them.
+- Negative control: `f665b80` (`e6493a7`).
+
+**PINK's proofs** (copies as `.txt` in `evidence/role-cards-d685003/`).
+- **`role-cards.e2e`:**
+  - Setup: a real `next dev` server on a disposable database, no worker, `GEMINI_API_KEY` empty, PINK's net sentinel in the server, motion reduced.
+  - PINK's own pool, 23 organizations: 3, 8, 14 and 32 real-length roles (32 gives the compact packing at 1280 × 720), long, short, ten "stress" titles (upper case, wide letters, a German compound, spaced dashes), and PINK's two seeded random title sets.
+  - Each role has its own seniority (with and without parts, empty, " / ", lower case, very long), domain (short, empty, very long) and requirement count (0, 1, 2, 3, 7).
+  - 13 runs:
+    - English at 1600 × 1000, 1280 × 720, 1366 × 768 and 1600 × 1200;
+    - German (switched through the System Codex) at 1600 × 1000 and 1280 × 720;
+    - zoom: device scale 1.25 on 1280 × 800 (English and German) and 2 on 1600 × 1000;
+    - German at 1280 × 720 with the monospaced lines in DejaVu Sans Mono, FreeMono, Fira Code and IBM Plex Mono.
+  - Checks:
+    - C-1 box kind, width and height against the in-process estimate (±0.5 px), and the counted title lines;
+    - C-2 nothing cut (every line inside the padding box), no title cut that the base size draws in four lines or fewer;
+    - C-3 every line and title row centred (±1 px);
+    - C-4 texts as the pool states them, in the run's language;
+    - C-5 contrast of every line over the card's own glass (text hidden; other cards, the orientation surface, the centre disc and the dev server's indicator left out), WCAG ≥ 4.5 : 1;
+    - C-6 the tether lamp on the card's edge where the line from the centre meets it;
+    - C-7 the lamp and its conduction stub, drawn against the same frame with every card's overflow let visible;
+    - C-8 the footer whole, at one size ≤ 8.5 px, 8.5 px in English;
+    - C-9 (`4ecfe67`) titles at 10 … 11.5 px, "…" only at 10 px, and the tooltips.
+- **`role-cards-ssr`:**
+  - Server-rendered with PINK's own pool body and a presentation matching delivered for two of four roles.
+  - Checks: standing (`Senior / L4` → `SENIOR · L4`, `""` and `" / "` → `ROLE`); the title with the dash bound; the domain; `1 REQUIREMENT` / `N REQUIREMENTS`; MATCHING READ with a filled mark exactly for the matched roles; no score, rank or "//".
+- `role-orbit-geometry` and `role-orbit.e2e` from §3.47, unchanged.
+
+**Deviation D-RC-1 (the tether lamp and its stub are clipped) — older than `ae633a1`.**
+- **On `ae633a1`:** the card's `overflow: hidden` cut off the outer half of the lamp and the whole 16 px stub towards the centre. 308 of 318 cards; crops in `ae633a1-df26269/lamp-*.png`.
+- **Correction:** PINK's interim message to GRÜN said the lamp was whole on `e6493a7`. That was wrong.
+  - `app/globals.css` gives every `button` `overflow: hidden`, and every role card is a button.
+  - PINK's first reading of `e6493a7` opened the overflow only on cards with `data-card-box`, which `e6493a7` does not have.
+  - With the corrected reading: `e6493a7` clips 733 of 764.
+- **Fixed in `4ecfe67`:** 0 of 764.
+
+**Deviation D-RC-2 (dense titles cut) — new with `ae633a1`.**
+- The title was clamped to the lines the estimate counted. Where the estimate counts too few (upper case, dense word sequences), the title ended in "…" although it fits in four lines. `e6493a7` showed it in full (clamp 4, the card grew).
+- Example: "QA LEAD – EMEA OPERATIONS MANAGEMENT" at 197 px: counted 2, needs 3, drawn "QA LEAD – / EMEA OPERATIONS…".
+- On `df26269`: 4 titles, 18 renderings.
+- On `e6493a7`: none.
+- None with the real title set.
+- **Fixed in `4ecfe67`:**
+  - All 52 renderings (9 titles) that need more lines than counted stand whole, at 10.5 or 11 px.
+  - "…" appears only on the compact form at 10 px (54 renderings), as before on `e6493a7`, with the full title as tooltip.
+
+**Observation O-RC-ELLIPSIS (`ae633a1`).**
+- One-line texts ended in "…" with no way to read them in full:
+  - "SENIOR · L4" on 128–129 px cards;
+  - "Security & Compliance" on 128 px cards;
+  - PINK's very long seniority and domain everywhere.
+- **On `4ecfe67`:**
+  - "SENIOR · L4" fits.
+  - The ellipses left are PINK's extreme strings and "Security & Compliance" at 128 px.
+  - Each carries its full text as tooltip (C-9).
+
+**Result on `d685003` (`4ecfe67`).**
+
+| Check | Result |
+| --- | --- |
+| `role-cards.e2e` | **2697/2697** over the 13 runs (2483 cards); 0 page errors, 0 non-GET, 0 Gemini attempts (one Next version check against the npm registry) |
+| Card box (C-1) | exact: orbit cards estimate + 12, packed cards the estimate, compact cards their own form; title lines as counted |
+| Nothing cut (C-2, C-7) | least room of a line to the padding box 7.61 px. Lamps clipped 0 of 764. No title cut that fits. Least room to the content box 0.61 px (`org_rc_3`, matching line); the card no longer clips there |
+| Centring (C-3) | ±1 px |
+| Contrast (C-5) | least over every card: standing 7.75, title 13.96, domain 8.56, requirements 13.4, matching 9.54 : 1 (GRÜN measured 10.2, 17.9, 9.6, 15.3, 10.7 on its lab) |
+| Footer (C-8) | English 8.5 px everywhere, compact included. German: 7.75 px (91), 8 px (14), 8.25 px (30), 8.5 px (1010), compact 8.5 px (192). Whole on every card with the app's font, at device scale 1.25 and 2 |
+| Titles (C-9) | 11.5 px 2143, 11 px 259, 10.5 px 27, 10 px 54 (compact form). Tooltips for title, seniority and domain present and exact |
+| `role-cards-ssr` | 1/1. On `e6493a7` it fails (no line attributes): detected |
+| GRÜN unit tests | `syntx-role-orbit` 11/11, `syntx-field-ssr` 11/11 |
+| `role-orbit-geometry` | 56/56. Run on `5100a1d`, whose layout library equals `d685003`'s |
+| `role-orbit.e2e` | 395/395 on `d685003` (also on `df26269`) |
+| Negative control `e6493a7` (`f665b80`) | 969/2186: C-1 (no card box), C-4 (old texts, "//"), C-6 (lamp off the edge: the anchor used the estimate while the card grew), C-7 (733 of 764 clipped). No title cut. Detected |
+| `6f9bc2b` (`5100a1d`, before C-9) | 2340/2490: D-RC-1 (C-7 in 92 organization readings), D-RC-2 (52 renderings), footer whole with the app's font; the four C-5 failures were the centre disc and the dev indicator (see below) |
+
+**Regression on `d685003`:**
+
+| Check | Result |
+| --- | --- |
+| `tsc` | 0 (with all four PINK proofs) |
+| Gate walk | 74/74 |
+| `three-modes.e2e` | plain 91/91, inspector 97/97 |
+| `url-boundary.e2e` | 1/1 |
+| `syntx-walk.e2e` | 3/3; Q-04-sweep and Q-06 still BOUNDARY-MATCH (R15b pending) |
+| GRÜN workflow e2e | 10/10 |
+| `demo-ui-fix.e2e` | 62/62 |
+| Full suite without e2e | exactly the 27 base failures (identical set); the O-ENV-DROP failure of §3.47 did not recur; 0 network attempts |
+
+**Observations (informational):**
+- **O-RC-MONO.** `--font-mono` is defined nowhere, so the monospaced lines use a locally installed JetBrains Mono, else the system's monospace.
+  - `monoLineSize` assumes a 0.6 em advance.
+  - Fira Code (0.615 em) cuts "KEIN MATCHING GELESEN" by 2 px on the two 129 px German cards (110 px in 108).
+  - DejaVu Sans Mono, FreeMono and IBM Plex Mono hold.
+  - GRÜN offers a reserve of 0.62 em as a small follow-up commit (German 128 px: 7.75 → 7.5 px; 133 px: 8.25 → 8 px; English unchanged), if the owner wants it. Setting `--font-mono` would be a global font decision.
+- **O-RC-DISC.** In the compact packing (32 roles at 1280 × 720) two cards lie under the centre disc (crops `compact-under-disc-*.png`). This predates `ae633a1`: on `e6493a7` the compact cards drew up to 148.6 px high, now at most 88 px. The packed 14 roles at 1280 × 720 also no longer grow (131.3 → 88 px).
+- **O-RC-DEVTOOLS.** In `next dev` the Next indicator (`nextjs-portal`) lies over a corner of the field. It is no part of the field and is hidden for the contrast reading.
+- **PINK process.**
+  - The first geometry run on this tip went without the proof's `--testTimeout/--hookTimeout`. It produced 43 timeouts, not findings, and was rerun with them.
+  - PINK's interim statement about `e6493a7` (D-RC-1) was corrected to GRÜN the same day.
+
+**Status.**
+- D-RC-2 (new with `ae633a1`) and the older D-RC-1 are fixed in `4ecfe67`.
+- The orbit, its air and motion are unchanged from `e6493a7` (geometry 56/56, `role-orbit.e2e` 395/395).
+- No new deviation.
+- Integration: STOP, as GRÜN requested. The stack `0b5a8ea` … `e6493a7` → `ae633a1` → `6f9bc2b` → `4ecfe67` needs the owner's visual acceptance and the owner's word to GELB.
+- Evidence is in `evidence/role-cards-d685003/`. The earlier readings are in `ae633a1-df26269/` and `6f9bc2b-5100a1d/` (earlier proof versions).
+
 ## 4. Boundaries and findings for coordination
 
 - F-JP-1 (closed in `b782793`): `JOB_POOL_CONNECTION.md` §4 followed the per-role `JOB_POOL_JSON_ROLE` design;
