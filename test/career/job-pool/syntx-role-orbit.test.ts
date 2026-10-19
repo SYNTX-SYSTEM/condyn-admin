@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { compactRoleOrbit, ROLE_ORBIT_CARD_GAP, ROLE_ORBIT_CARD_HEIGHT_ALLOWANCE, ROLE_ORBIT_CENTRE_CLEARANCE, syntxCosmosLayout, syntxCosmosPacking } from "../../../lib/career/job-pool/syntx-manifestation-layout";
+import { compactRoleOrbit, ROLE_ORBIT_CARD_GAP, ROLE_ORBIT_CARD_HEIGHT_ALLOWANCE, ROLE_ORBIT_CENTRE_CLEARANCE, roleCardBox, roleSeniorityParts, syntxCosmosLayout, syntxCosmosPacking } from "../../../lib/career/job-pool/syntx-manifestation-layout";
 import type { CapabilityCosmosLayout } from "../../../lib/career/view-model/capability-cosmos-layout";
 
 /* ROLE ORBIT REFINEMENT (owner "SFE — GRÜN | ROLE ORBIT REFINEMENT", 2026-10-18; "… — SECOND VISUAL REFINEMENT", 2026-10-19): the
@@ -179,6 +179,35 @@ describe("role orbit refinement (organization cosmos)", () => {
     expect(compactRoleOrbit(grid).layout).toBe(grid);
     const empty = packed(0, 1600, 740);
     expect(compactRoleOrbit(empty)).toEqual({ layout: empty, compactness: { x: 1, y: 1 } });
+  });
+
+  it("draws every role card in exactly the box its orbit keeps its air for — drawn in: estimate + allowance, packed: the estimate — its title in the lines the layout counted (ROLE ORBIT CARD REFINEMENT)", () => {
+    // The estimate is 52 px plus 18 px per title line, 72 … 126 px; the card is drawn at the estimate plus the allowance.
+    expect([72, 88, 106, 124, 126].map(height => roleCardBox({ width: 160, height }, true))).toEqual([84, 100, 118, 136, 138].map((height, index) => ({ width: 160, height, titleLines: [1, 2, 3, 4, 4][index], domain: true })));
+    // Where the orbit stays as packed, the card keeps to the packing's estimate (and leaves the domain line out).
+    expect(roleCardBox({ width: 160, height: 88 }, false)).toEqual({ width: 160, height: 88, titleLines: 2, domain: false });
+    let cards = 0;
+    for (const titles of [TITLES, LONG, SHORT]) for (const [width, height] of BOXES) for (const count of COUNTS) {
+      // The compact packings (shortened titles, uniform 120 × 44) keep their own card form.
+      const { layout, compact, compactness } = syntxCosmosLayout(roles(count, titles), width, height);
+      if (layout.staticPositions || compact) continue;
+      const drawnIn = compactness.x < 1 || compactness.y < 1;
+      for (const node of layout.nodes) {
+        const box = roleCardBox(node, drawnIn);
+        expect(box.height).toBe(node.height + (drawnIn ? ROLE_ORBIT_CARD_HEIGHT_ALLOWANCE : 0));
+        expect(Math.min(126, Math.max(72, 52 + 18 * box.titleLines)), node.title).toBe(node.height);
+        cards += 1;
+      }
+    }
+    expect(cards).toBeGreaterThan(300);
+  });
+
+  it("states the pool's seniority in its delivered parts, nothing where the pool states none", () => {
+    expect(roleSeniorityParts("Senior / L4")).toEqual(["Senior", "L4"]);
+    expect(roleSeniorityParts("Lead / M1")).toEqual(["Lead", "M1"]);
+    expect(roleSeniorityParts("Staff")).toEqual(["Staff"]);
+    expect(roleSeniorityParts(null)).toEqual([]);
+    expect(roleSeniorityParts(" / ")).toEqual([]);
   });
 
   it("is deterministic", () => {

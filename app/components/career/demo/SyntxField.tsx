@@ -59,7 +59,9 @@ import {
   evidenceRelationPath,
   EVIDENCE_ROW,
   requirementCardMode,
+  roleCardBox,
   roleCosmosRotation,
+  roleSeniorityParts,
   syntxCosmosLayout,
   syntxEcologyFrame,
   syntxRequirementFocus,
@@ -175,20 +177,18 @@ const JOB_COSMOS_CENTRE_MATERIAL: React.CSSProperties = {
   background: "radial-gradient(circle at 50% 36%, rgba(56, 229, 255, 0.2), rgba(56, 229, 255, 0.06) 46%, transparent 70%), radial-gradient(circle, #06192a 0%, #04111d 58%, #020910 100%)",
   boxShadow: "0 0 0 4px rgba(2, 8, 14, 0.55), 0 0 0 5px rgba(92, 200, 255, 0.12), 0 0 34px rgba(56, 229, 255, 0.26), 0 0 80px rgba(56, 229, 255, 0.08), inset 0 0 26px rgba(56, 229, 255, 0.16), inset 0 1px 0 rgba(210, 250, 255, 0.25)"
 };
-/** Role cards of the organization cosmos: semantic carriers in the field — a calmer deep glass, a light edge, two registration ticks
- * and a layered field glow (static). */
+/** Role cards of the organization cosmos: semantic carriers of the orbit (ROLE ORBIT CARD REFINEMENT) — a calm deep glass lit from
+ * above the centre line, a light edge and a symmetric field glow (static); everything on the card is centred on its axis. */
 const JOB_ROLE_CARD_MATERIAL: React.CSSProperties = {
   ...JOB_NODE_MATERIAL,
-  border: `1px solid ${azure(0.4)}`,
+  border: `1px solid ${azure(0.36)}`,
   background: [
-    `linear-gradient(${azure(0.5)}, ${azure(0.5)}) 5px 5px / 7px 1px no-repeat`, `linear-gradient(${azure(0.5)}, ${azure(0.5)}) 5px 5px / 1px 7px no-repeat`,
-    `linear-gradient(${azure(0.32)}, ${azure(0.32)}) calc(100% - 5px) calc(100% - 5px) / 7px 1px no-repeat`, `linear-gradient(${azure(0.32)}, ${azure(0.32)}) calc(100% - 5px) calc(100% - 5px) / 1px 7px no-repeat`,
-    "radial-gradient(130% 80% at 16% -10%, rgba(120, 214, 255, 0.13), transparent 52%)",
-    "radial-gradient(90% 70% at 100% 115%, rgba(84, 232, 236, 0.05), transparent 60%)",
-    "linear-gradient(170deg, rgba(8, 22, 36, 0.97), rgba(3, 10, 19, 0.98))"
+    "radial-gradient(120% 95% at 50% -18%, rgba(120, 214, 255, 0.15), transparent 58%)",
+    "radial-gradient(70% 55% at 50% 118%, rgba(84, 232, 236, 0.06), transparent 64%)",
+    "linear-gradient(180deg, rgba(8, 22, 36, 0.97), rgba(3, 10, 19, 0.98))"
   ].join(", "),
-  borderRadius: "14px",
-  boxShadow: `0 0 0 1px rgba(1, 5, 10, 0.6), 0 0 24px rgba(56, 160, 230, 0.15), 0 0 58px rgba(56, 160, 230, 0.05), 0 10px 22px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(190, 240, 255, 0.15), inset 0 0 0 1px rgba(150, 220, 255, 0.035), inset 0 0 22px ${azure(0.045)}`
+  borderRadius: "16px",
+  boxShadow: `0 0 0 1px rgba(1, 5, 10, 0.6), 0 0 24px rgba(56, 160, 230, 0.15), 0 0 58px rgba(56, 160, 230, 0.05), 0 10px 22px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(190, 240, 255, 0.16), inset 0 0 0 1px rgba(150, 220, 255, 0.035), inset 0 0 22px ${azure(0.045)}`
 };
 /** Where the cosmos tether reaches a role card: the point on the card's edge facing the centre, in percent of the card box (exactly on
  * the edge whatever the card's rendered height), and the direction towards the centre. */
@@ -914,7 +914,11 @@ function OrganizationCosmosLayer({ field, mode, t, size, onObserve, organization
       renderNode={(node, ring) => {
         const role = byId.get(node.id)!;
         const at = syntxCosmosPoint(layout, node, ring, elapsedMs);
-        const anchorPoint = cardAnchor(layout.centerX - at.x, layout.centerY - at.y, node.width / 2, node.height / 2);
+        // The card as drawn: on a drawn-in orbit the box it keeps its air for (estimate plus allowance), else the packing's estimate; the
+        // compact packings keep their own card form.
+        const box = roleCardBox(node, compactness.x < 1 || compactness.y < 1);
+        const anchorPoint = cardAnchor(layout.centerX - at.x, layout.centerY - at.y, node.width / 2, (compact ? node.height : box.height) / 2);
+        const seniority = roleSeniorityParts(role.seniority);
         // The observed role is now the centre of its own cosmos: here it remains as the receding anchor (no sign, no pointer).
         const anchor = recededLevel && role.id === observation.roleId;
         const select = () => onObserve(observeRole(observation, role.organizationId, role.id));
@@ -930,17 +934,30 @@ function OrganizationCosmosLayer({ field, mode, t, size, onObserve, organization
             aria-pressed={anchor ? undefined : role.sign.state === "role_selected"}
             onClick={stop(select)}
             data-sx-role-card
-            style={{ position: "absolute", left: 0, top: 0, width: `${node.width}px`, minHeight: `${node.height}px`, transform: "translate(-50%, -50%)", ...JOB_ROLE_CARD_MATERIAL, ...(compact ? { padding: "7px 10px" } : {}), color: INK, cursor: "pointer", fontFamily: MONO, textAlign: "left", overflowWrap: "anywhere", hyphens: "auto", opacity: anchor ? 0.42 : 1 }}
+            data-card-title-lines={compact ? undefined : box.titleLines}
+            data-card-box={compact ? "compact" : box.domain ? "orbit" : "packed"}
+            style={{ position: "absolute", left: 0, top: 0, width: `${node.width}px`, ...JOB_ROLE_CARD_MATERIAL, ...(compact ? { minHeight: `${node.height}px`, padding: "7px 10px" } : { height: `${box.height}px`, padding: "8px 12px 7px", overflow: "hidden" }), boxSizing: "border-box", transform: "translate(-50%, -50%)", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", color: INK, cursor: "pointer", fontFamily: MONO, textAlign: "center", overflowWrap: "anywhere", hyphens: "auto", opacity: anchor ? 0.42 : 1 }}
           >
-            <span aria-hidden="true" style={{ position: "absolute", left: "16px", right: "16px", top: "-1px", height: "1px", background: "linear-gradient(90deg, transparent, rgba(190, 244, 255, 0.7), transparent)", pointerEvents: "none" }} />
+            <span aria-hidden="true" style={{ position: "absolute", left: "22%", right: "22%", top: "-1px", height: "1px", background: "linear-gradient(90deg, transparent, rgba(190, 244, 255, 0.75), transparent)", pointerEvents: "none" }} />
             {/* The field connection: where the tether from the centre reaches the card, a lamp on the edge and a short conduction stub. */}
             <span data-sx-card-anchor aria-hidden="true" style={{ position: "absolute", left: `${anchorPoint.left.toFixed(2)}%`, top: `${anchorPoint.top.toFixed(2)}%`, width: 0, height: 0, pointerEvents: "none" }}>
               <span style={{ position: "absolute", left: 0, top: "-0.5px", width: "16px", height: "1px", transformOrigin: "0 50%", transform: `rotate(${anchorPoint.angle.toFixed(1)}deg)`, background: `linear-gradient(90deg, ${azure(0.6)}, transparent)` }} />
               <span style={{ position: "absolute", left: "-2.5px", top: "-2.5px", width: "5px", height: "5px", borderRadius: "50%", background: "#c4f5ff", boxShadow: `0 0 6px ${azure(0.95)}, 0 0 12px ${azure(0.4)}` }} />
             </span>
-            <span style={{ display: "flex", alignItems: "center", gap: "6px", fontSize: "8.5px", fontWeight: 600, letterSpacing: "1.3px" }}><span aria-hidden="true" style={{ width: "4px", height: "4px", borderRadius: "50%", flexShrink: 0, background: CYAN, boxShadow: `0 0 5px ${CYAN}` }} /><span><span style={{ color: CYAN, textShadow: `0 0 8px ${SIL_TOKENS.colors.cyanGlow}` }}>{t.manifest.role}</span><span style={{ color: "rgba(140, 206, 238, 0.78)" }}>{role.seniority !== null ? ` // ${role.seniority.toUpperCase()}` : ""}</span></span></span>
-            <span style={{ display: "-webkit-box", marginTop: "5px", fontFamily: SANS, fontSize: compact ? "11px" : "11.5px", fontWeight: 600, lineHeight: 1.24, letterSpacing: "0.1px", color: "#eef8fc", WebkitLineClamp: compact ? 2 : 4, WebkitBoxOrient: "vertical", overflow: "hidden" }}>{role.title}</span>
-            <span style={{ display: "block", marginTop: "5px", paddingTop: "3px", borderTop: `1px solid ${azure(0.14)}`, color: "rgba(150, 182, 202, 0.78)", fontSize: "7.5px", letterSpacing: "0.1px", lineHeight: 1.4 }}><span style={{ color: "rgba(214, 236, 246, 0.92)" }}>{role.requirementCount} {t.requirements}</span> // {role.matching === null ? t.manifest.matchingNotRead : t.manifest.matchingRead}</span>
+            {/* Identity: the role's standing (the pool's seniority in its parts), framed by two hairlines; the class where none is stated. */}
+            <span data-sx-role-standing style={{ display: "flex", flexShrink: 0, alignItems: "center", justifyContent: "center", gap: "6px", maxWidth: "100%", fontSize: "7.5px", fontWeight: 600, letterSpacing: "1.8px", lineHeight: 1.2, color: "rgba(150, 224, 255, 0.88)", textShadow: `0 0 8px ${SIL_TOKENS.colors.cyanGlow}`, whiteSpace: "nowrap" }}>
+              <span aria-hidden="true" style={{ width: "12px", height: "1px", flexShrink: 0, background: `linear-gradient(90deg, transparent, ${azure(0.55)})` }} />
+              <span aria-hidden="true" style={{ width: "4px", height: "4px", flexShrink: 0, transform: "rotate(45deg)", background: CYAN, boxShadow: `0 0 5px ${CYAN}` }} />
+              <span style={{ overflow: "hidden", textOverflow: "ellipsis" }}>{seniority.length > 0 ? seniority.map(part => part.toUpperCase()).join(" · ") : t.manifest.role}</span>
+              <span aria-hidden="true" style={{ width: "12px", height: "1px", flexShrink: 0, background: `linear-gradient(90deg, ${azure(0.55)}, transparent)` }} />
+            </span>
+            <span data-sx-role-title style={{ display: "-webkit-box", flexShrink: 0, maxWidth: "100%", marginTop: "3px", fontFamily: SANS, fontSize: compact ? "11px" : "11.5px", fontWeight: 600, lineHeight: 1.22, letterSpacing: "0.05px", color: "#f1fafd", textWrap: "balance", WebkitLineClamp: compact ? 2 : box.titleLines, WebkitBoxOrient: "vertical", overflow: "hidden" } as React.CSSProperties}>{role.title.replace(/ ([–—-]) /g, "\u00a0$1 ")}</span>
+            {/* The role's domain as the pool states it (one line); nothing where it states none. */}
+            {!compact && box.domain && role.domainFocus !== null && <span data-sx-role-domain style={{ display: "block", flexShrink: 0, maxWidth: "100%", marginTop: "2px", fontFamily: SANS, fontSize: "9.5px", fontWeight: 500, lineHeight: 1.2, letterSpacing: "0.3px", color: "rgba(150, 212, 240, 0.9)", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{role.domainFocus}</span>}
+            <span aria-hidden="true" style={{ display: "block", flexShrink: 0, width: "56%", height: "1px", margin: "4px 0 3px", background: `linear-gradient(90deg, transparent, ${azure(0.32)}, transparent)` }} />
+            {/* What the pool states of the role (its requirements) and what was read for it (the presentation matching), each on its own line. */}
+            <span data-sx-role-requirements style={{ display: "block", flexShrink: 0, maxWidth: "100%", fontSize: "7.5px", fontWeight: 600, letterSpacing: "0.9px", lineHeight: 1.2, color: "rgba(214, 236, 246, 0.9)", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{role.requirementCount} {role.requirementCount === 1 ? t.manifest.requirement : t.requirements}</span>
+            <span data-sx-role-matching style={{ display: "flex", flexShrink: 0, alignItems: "center", justifyContent: "center", gap: "4px", maxWidth: "100%", fontSize: "7.5px", letterSpacing: "0.6px", lineHeight: 1.2, color: "rgba(160, 192, 212, 0.8)", whiteSpace: "nowrap" }}><span aria-hidden="true" style={{ display: "block", width: "5px", height: "5px", flexShrink: 0, borderRadius: "50%", border: `1px solid ${azure(role.matching === null ? 0.45 : 0.9)}`, background: role.matching === null ? "transparent" : azure(0.9), boxSizing: "border-box" }} /><span style={{ display: "block", overflow: "hidden", textOverflow: "ellipsis" }}>{role.matching === null ? t.manifest.matchingNotRead : t.manifest.matchingRead}</span></span>
           </button>
         );
       }}

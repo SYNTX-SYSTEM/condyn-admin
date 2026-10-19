@@ -186,6 +186,22 @@ describe("SYNTX field (server-rendered)", () => {
     expect(html).toContain('data-testid="syntx-role-ROLE_B"');
   });
 
+  it("ROLE ORBIT CARD REFINEMENT: a role card of the organization cosmos is centred, drawn at its box, and states only what the pool states", () => {
+    const html = renderToString(<SemanticCareerIntelligenceField data={EMPTY_CAREER_INTELLIGENCE_DATA} fieldFocus="FIELD" jobPoolUploadId="JPOOL_WITH_MATCHES" analysisId="ANL_TEST" jobRoleId="ROLE_A" />);
+    const at = html.indexOf('data-testid="syntx-role-ROLE_B"');
+    const card = html.slice(html.lastIndexOf("<button", at), html.indexOf("</button>", at));
+    // "Data Analyst": one title line, the estimate 72 px, drawn at 72 + 12; everything on the card's axis.
+    expect(card).toMatch(/data-sx-role-card="true" data-card-title-lines="1" data-card-box="orbit" style="[^"]*height:84px[^"]*text-align:center/);
+    // No seniority and no domain stated in this pool: the class stands in, no domain line; one requirement in the singular.
+    expect(card).toMatch(/data-sx-role-standing="true"[\s\S]*>ROLE</);
+    expect(card).not.toContain("data-sx-role-domain");
+    expect(card).toMatch(/data-sx-role-title="true"[^>]*>Data Analyst</);
+    expect(card).toMatch(/data-sx-role-requirements="true"[^>]*>1<!-- --> <!-- -->REQUIREMENT</);
+    expect(card).toMatch(/data-sx-role-matching="true"[\s\S]*>MATCHING READ</);
+    // No score, rank or debug separators on the card.
+    expect(card).not.toMatch(/\/\/|resonance|score|rank/i);
+  });
+
   it("REQUIREMENT state from the URL: the observed anchor is selected and its traces inspectable, the rest recedes; the aperture is never opened by the URL", () => {
     const html = renderToString(<SemanticCareerIntelligenceField data={EMPTY_CAREER_INTELLIGENCE_DATA} fieldFocus="FIELD" jobPoolUploadId="JPOOL_WITH_MATCHES" analysisId="ANL_TEST" jobRoleId="ROLE_A" jobRequirementId="REQ_1" />);
     expect(html).toContain('data-observation-kind="REQUIREMENT"');
