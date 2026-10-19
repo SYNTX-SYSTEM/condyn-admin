@@ -1,0 +1,6 @@
+{"at":"2026-10-19T10:40:07.142Z","path":"/v1beta/models/video-standin-model:generateContent","kind":"DISCOVERY","scopeBlock":false,"status":200,"capabilities":13}
+{"at":"2026-10-19T10:40:07.219Z","path":"/v1beta/models/video-standin-model:generateContent","kind":"CONVERGENCE","scopeBlock":false,"status":200,"capabilities":12}
+{"at":"2026-10-19T10:40:07.257Z","path":"/v1beta/models/video-standin-model:generateContent","kind":"LEGACY","scopeBlock":false,"status":200,"capabilities":12}
+{"at":"2026-10-19T10:41:05.788Z","path":"/v1beta/models/video-standin-model:generateContent","kind":"DISCOVERY","scopeBlock":true,"status":200,"capabilities":13}
+{"at":"2026-10-19T10:41:05.835Z","path":"/v1beta/models/video-standin-model:generateContent","kind":"CONVERGENCE","scopeBlock":false,"status":200,"capabilities":12}
+{"at":"2026-10-19T10:41:05.860Z","path":"/v1beta/models/video-standin-model:generateContent","kind":"LEGACY","scopeBlock":false,"status":200,"capabilities":12}
