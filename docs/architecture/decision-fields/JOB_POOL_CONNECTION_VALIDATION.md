@@ -2439,6 +2439,92 @@ Factors measured in the DOM (`e6493a7`; the factor pair, then the outer orbit's 
 - PINK did not check the handoff document `docs/CONDYN_ANTIGRAVITY_VIDEO_HANDOFF_2026-10-19.md`.
 - Evidence is in `evidence/integration-5293eb1/`. The proofs are kept as `.txt` there and under §3.44, §3.47 and §3.48. The relay probes are `pink-relay-*.mts.txt`, offline and loopback only.
 
+### 3.50 Antigravity video handoff `60d2a3b` and the one live-Gemini run `104410d` (evidence `de21f2b`) (2026-10-19)
+
+**Request.**
+- GELB asked PINK to check `docs/CONDYN_ANTIGRAVITY_VIDEO_HANDOFF_2026-10-19.md` (`60d2a3b`, owner order "SFE — GELB | ANTIGRAVITY VIDEO HANDOFF") independently, without Gemini. The focus points:
+  - §4: selectors, wait conditions and the "actual" states;
+  - §5/§6: missing or misnamed states and error codes;
+  - §7: whether the abort criteria are enough, in particular "never RETRY in live mode";
+  - §10: whether anything is shown as passed that did not run.
+- GELB then amended the handoff and ran the one live-Gemini run (`de21f2b`), under the owner's "HUMAN AUTHORITY — LIVE GEMINI GO", which PINK did not see first-hand. GELB asked PINK to record the review here and, optionally, to check the committed live evidence against the handoff without Gemini.
+
+**Method.**
+- PINK's own fresh stand-in lab from `fe5cbea`: GELB's `video-lab.ts` unchanged, port 41871, disposable databases, PINK's own PID, stopped after each run.
+- PINK's own probe (`pink-handoff-probe.mjs.txt`), not GELB's `handoff-probe-walk.mjs`. It uses only the handoff's selectors and wait conditions, tries a pointer click first and records a DOM click only as fallback.
+- Two runs. The second fixes artefacts of PINK's own probe: a truncated text, a too-broad role selector and a guessed test id.
+- A code cross-check on `fe5cbea` (`code-crosscheck-fe5cbea.txt`; the retry, cascade, lease and error-title paths read by PINK).
+- No Gemini call by PINK.
+
+**§4 on the stand-in (run 2): 79 hold, 4 differ, 15 informational.**
+- Confirmed:
+  - Escape does not close the onboarding and does not leave the Capability deep focus; it does close B2.
+  - 12 proposals, all PROPOSED; the TypeScript quote verbatim; G-4 on three nodes; zoom 1 → 0.
+  - The inspector: AVAILABLE / RETAINED / `sha256 ✓` / `parser = text ✓` / STOP, `video-standin-001 · video-…`, `data-run-reused=false`, `data-analysis-id` ANL_….
+  - UNSCOPED; one REJECTED claim (Quantum Annealing); upload CREATED with its text; 3 organizations; "PERSON · NO JOB COMPARISON".
+  - B2 409 `ERR_JOB_COMPARISON_NOT_SCOPED` and `/matches` 409 `ERR_JOB_POOL_MATCHES_PERSON_ANALYSIS`.
+  - Gate AWAITING_JOB → OPEN and the indicator text; 6 SUPPORTED / 1 WEAK / 2 OPEN; B2 7/2, scored false, bound to the PERSON × JOB analysis.
+  - Scope RETAINED naming `role_kestrel_fullstack`; JOB / JOB_MODE / NONE; 10 requirements and 8 findings; NO_GEMINI.
+  - Deep link 35 as 29; 36 NOT_SCOPED with the stated sentence.
+  - No page error; no non-GET besides ANALYZE and the pool upload.
+- Differences, all minor:
+  - Step 26: the dock does not name the role. Its text is only "INVESTIGATION BOUNDARY · PERSON × JOB" and its tooltip is generic.
+  - Step 33: "JOB_STRUCTURE_V1" is neither visible nor in the DOM. The heading is "JOB · STRUCTURE".
+  - Step 6: the telemetry step "ANALYZING SOURCES..." was never seen (150 ms sampling, both runs).
+  - Coordinates: between PINK's two fresh runs, the pool file input and the Kestrel body stood 61 px higher once (y 301 vs 362, 109 vs 170).
+  - The visible upload button `add-pdf-source-btn` was not named.
+  - All 9 role cards are in the DOM and reported visible.
+  - Pointer clicks on the moving nodes (3 of 3) and on the role card did not land within 5 s; only the DOM click did (P-3).
+  - READ was not seen to slide in.
+- **§5/§6:** several reachable states were missing, and one value was misnamed. The upload's "already there" value is `IDENTICAL_EXISTS`, and rejections and failures appear in their own elements.
+  - Important: "PROVIDER TRUNCATION" (503) and "SEMANTIC BOUNDARY VIOLATION" (422) come only from the POST's HTTP status. Worker failures carry none, so a real Gemini failure shows "ANALYSIS FAILED" with `EXECUTION_FAILED` (or the error's own code).
+  - G-7's "this job made no Gemini call" holds for Discovery only; the legacy analysis calls Gemini on every new job.
+- **§7:** "never RETRY" is right, since RETRY is a new submission. It is not the only path to new Gemini calls:
+  - the worker retries non-terminal failures up to 3 attempts before the banner appears;
+  - the legacy step has a model cascade and regenerates on MAX_TOKENS;
+  - a RUNNING job with an expired lease is claimed again.
+  - PINK proposed: the relay budget as the hard limit (read `relay.jsonl`, not the banner), A-9 (operator stops the lab at once on a banner, a timeout or budget 0), and no reload or worker restart in live mode.
+- **§9/§10:**
+  - Nothing is shown as passed that did not run.
+  - The walk does not check G-1, G-3 or G-7, and in a LIVE lab it checks V-03b, V-04c and V-09b only weakly. The dry runs ran as `gemini=LIVE` with stand-in answers and still reported 30/30.
+  - The read-out chain row in §9 had no evidence in the repository.
+- **Amended in `de21f2b`:** PINK read the handoff diff. Every point above is taken in: §4 steps 5, 6, 22, 26 and 33 plus the coordinates; the §6 states and titles; G-6 NOT_RETAINED; G-7 Discovery only; the §7 re-call paths and A-9; "what the walk does not check"; and the stand-in read-out summary, committed with the correction that it ran on `d29cc00`.
+  - GELB's precision is correct: `claimNextJob` also raises `attempt_count` on a re-claim (`job-repository.ts:109`); the cap is checked only in the failure path.
+
+**The live run, checked from the committed evidence only** (`live-check-de21f2b.txt`, `pink-live-check.mjs.txt`).
+- Offline, no Gemini. The raw data stays with GELB; only `relay.jsonl` could be matched to the private SHA256SUMS.
+- Result: 29/29.
+
+| Check | Result |
+| --- | --- |
+| Relay | 6 calls, all forwarded 200, one model (`gemini-3.1-pro-preview`), DISCOVERY / CONVERGENCE / LEGACY twice, budget left 2. A scope block only on the PERSON × JOB discovery. Equal to the private file (SHA256SUMS) |
+| Secrets | no key, worker placeholder, inspector token or local path in the committed files. Network: only Next's npm version check, refused |
+| Walk | LIVE, 1920 × 1080, 30/30, analyses 113.5 s and 104.6 s. ANALYZE bodies PERSON without a job scope, then PERSON × JOB with exactly this pool and role. The same two analyses as the summary |
+| G-1 / G-2 / G-3 | both discoveries: real model version, responseId not `video-…`; RETAINED, sha256 and parser = text; STOP |
+| G-4 | all 38 evidence quotes (20 PERSON, 18 PERSON × JOB) stand verbatim in `cv.synthetic.pdf` (pdftotext, PINK's own reading) |
+| G-5 | every claim VERIFIED, projection = verified candidates (10/10 and 8/8); nothing rejected (O-LIVE-4) |
+| G-6 / G-7 | PERSON UNSCOPED; PERSON × JOB RETAINED with the role, text matches its hash; neither run reused |
+| G-8 | PERSON B2 409 `ERR_JOB_COMPARISON_NOT_SCOPED`; PERSON × JOB 9 requirements, 8 covered, 1 not (Geospatial Visualisation) |
+| Archive | one COMPLETED exchange per job, attempt 1, lease 1, STOP, sha ok: no worker retry |
+| Summary | no free text beyond CV quotes, names and hashes |
+
+- **O-LIVE-1 confirmed:**
+  - Under the job scope all 8 proposals carry exactly the role's requirement names (PERSON run: 0 of 10), so B2 is EXACT throughout.
+  - The validator checks the quote, not the name. Example: "Event-Driven Architecture" (L3) rests on "Wrote Python ETL jobs that load shipment events from Apache Kafka into the data warehouse." and "Thesis: event stream processing for parcel tracking."; "Web Platform Engineering" rests on the CV's summary sentence.
+- **O-LIVE-3 confirmed:** both LEGACY requests have the same size (11477 bytes), so there is no scope in the legacy prompt. The legacy capabilities differ: 7 against 3.
+
+**Finding F-LIVE-RAW (for the owner).**
+- The readiness document §9 lists `storyboard-live/01…20` under "in the repository, without raw text" (§8: "raw responses are not committed").
+- Frame `06-person-gemini-output.jpg` shows the ORIGINAL RESPONSE pane with part of the raw Discovery text, legible at 960 × 540. Frame `07-person-gemini-processing.jpg` shows part of the parser result (canonical names, quotes, `structural_definition` sentences).
+- Nothing in them is secret: it is the synthetic CV and the model's words about it. But it is model raw text in the public repository, against the document's own rule.
+- Keeping, cropping or replacing the frames is the owner's call.
+
+**Status.**
+- Handoff: reviewed; all points amended in `de21f2b`.
+- The live evidence agrees with the handoff and with GELB's figures; one finding (F-LIVE-RAW).
+- Open, as the handoff states: everything about Antigravity itself (P-1 … P-3, P-5 … P-8) and the behaviour on real model failures.
+- PINK made no Gemini call. Evidence is in `evidence/handoff-60d2a3b-live-104410d/`.
+
 ## 4. Boundaries and findings for coordination
 
 - F-JP-1 (closed in `b782793`): `JOB_POOL_CONNECTION.md` §4 followed the per-role `JOB_POOL_JSON_ROLE` design;

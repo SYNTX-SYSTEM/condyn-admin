@@ -1,0 +1,319 @@
+// PINK independent probe of docs/CONDYN_ANTIGRAVITY_VIDEO_HANDOFF_2026-10-19.md §4 (60d2a3b) on a stand-in lab (fe5cbea).
+// Uses only the doc's selectors and wait conditions; records what is actually there. Pointer clicks first (what a
+// coordinate agent would do), DOM click only as fallback, recorded. No Gemini (stand-in lab), GET-only API reads.
+//   node pink-handoff-probe.mjs <state.json> <out dir>
+import { readFileSync, writeFileSync } from "node:fs";
+import { resolve } from "node:path";
+import { pathToFileURL } from "node:url";
+const playwright = await import(pathToFileURL(process.env.CONDYN_PLAYWRIGHT_MODULE).href);
+const { chromium } = playwright.chromium ? playwright : playwright.default;
+const [STATE, OUT] = process.argv.slice(2);
+const st = JSON.parse(readFileSync(STATE, "utf8"));
+const BASE = st.base, TOKEN = st.token;
+const POOL = "JPOOL_B94850C439974E27496FE3B1A9A076B5", ORG = "org_kestrel", ROLE = "role_kestrel_fullstack", JROLE = "role_kestrel_frontend_architect";
+const PDF = resolve(process.cwd(), "docs/examples/cv.synthetic.pdf"), POOLF = resolve(process.cwd(), "docs/examples/job-pool-tests/DLL_JOBPOOL_ENGINEERING.json");
+const rec = []; const R = (step, claim, pass, observed) => { rec.push({ step, claim, pass: pass === null ? null : Boolean(pass), observed }); console.log(`${pass === null ? "INFO" : pass ? "ok  " : "DIFF"} ${step} ${claim} :: ${JSON.stringify(observed).slice(0, 260)}`); };
+const browser = await chromium.launch();
+const ctx = await browser.newContext({ viewport: { width: 1920, height: 1080 } });
+const page = await ctx.newPage();
+const errors = []; page.on("pageerror", e => errors.push(String(e).slice(0, 200)));
+const bodies = []; page.on("request", r => { if (r.url().endsWith("/api/career/analyze") && r.method() === "POST") { const b = JSON.parse(r.postData() ?? "null"); bodies.push({ investigation: b?.investigation ?? null, jobScope: b?.jobScope ?? null, docs: (b?.documents ?? []).map(d => d.type) }); } });
+const nonGet = []; page.on("request", r => { if (r.method() !== "GET" && !r.url().endsWith("/api/career/analyze") && !/job-pools$|job-pools\?/.test(r.url())) nonGet.push(`${r.method()} ${r.url().replace(BASE, "")}`); });
+const t = id => page.getByTestId(id);
+const root = () => t("semantic-career-intelligence-field");
+const rootAttr = n => root().getAttribute(n);
+const waitRoot = (n, v, timeout = 30000) => page.locator(`[data-testid="semantic-career-intelligence-field"][${n}="${v}"]`).waitFor({ timeout });
+const txt = async loc => ((await loc.textContent({ timeout: 5000 }).catch(() => "")) ?? "").replace(/\s+/g, " ").trim();
+const box = async loc => { const b = await loc.boundingBox().catch(() => null); return b && { x: Math.round(b.x), y: Math.round(b.y), w: Math.round(b.width), h: Math.round(b.height) }; };
+const moves = async loc => { const a = await loc.boundingBox(); await page.waitForTimeout(400); const b = await loc.boundingBox(); return a && b ? Math.round(Math.max(Math.abs(a.x - b.x), Math.abs(a.y - b.y)) * 100) / 100 : null; };
+const press = async (loc, label) => { await loc.waitFor({ timeout: 30000 }); try { await loc.click({ timeout: 5000 }); return "pointer"; } catch { await loc.dispatchEvent("click"); R(label, "pointer click did not land within 5 s, DOM click used", null, "fallback"); return "dom"; } };
+const near = (b, x, y, tol = 12) => b && Math.abs(b.x - x) <= tol && Math.abs(b.y - y) <= tol;
+const shots = []; const shot = async n => { const f = `${OUT}/${String(shots.length + 1).padStart(2, "0")}-${n}.png`; await page.screenshot({ path: f }); shots.push(f); };
+const step = async (n, fn) => { try { await fn(); } catch (e) { R(n, "step threw", false, String(e).split("\n")[0]); await shot(`ERROR-${n}`).catch(() => {}); } };
+let personId = null, pxjId = null;
+
+await step(1, async () => {
+  await page.goto(`${BASE}/career/demo`, { waitUntil: "networkidle" });
+  await t("guided-onboarding-overlay").waitFor({ timeout: 30000 });
+  R(1, "onboarding overlay visible", await t("guided-onboarding-overlay").isVisible(), true);
+});
+await step(2, async () => {
+  const close = t("onboarding-close-btn"); const b = await box(close);
+  R(2, "close button 8 × 18 at about (1183, 443)", b && near(b, 1183, 443) && Math.abs(b.w - 8) <= 2 && Math.abs(b.h - 18) <= 2, b);
+  R(2, "close button visible label ✕", (await txt(close)).includes("✕"), await txt(close));
+  await page.keyboard.press("Escape"); await page.waitForTimeout(800);
+  R(2, "Escape does NOT close the onboarding", await t("guided-onboarding-overlay").count() === 1 && await t("guided-onboarding-overlay").isVisible(), await t("guided-onboarding-overlay").count());
+  await press(close, 2);
+  await t("guided-onboarding-overlay").waitFor({ state: "detached", timeout: 10000 });
+  const g = { mode: await rootAttr("data-investigation-mode"), gate: await rootAttr("data-capability-gate"), noPool: await t("syntx-no-pool").count(), listEmpty: await t("job-pool-list-empty").count() };
+  R(2, "ground: PERSON_X_JOB, gate AWAITING_JOB, no pool", g.mode === "PERSON_X_JOB" && g.gate === "AWAITING_JOB" && (g.noPool + g.listEmpty) >= 1, g);
+  await shot("ground");
+});
+await step(3, async () => {
+  const b = t("investigation-mode-PERSON"); R(3, "PERSON switch at about (1209, 82), label PERSON", near(await box(b), 1209, 82) && /PERSON/.test(await txt(b)), { box: await box(b), text: await txt(b) });
+  await press(b, 3); await waitRoot("data-investigation-mode", "PERSON");
+  R(3, "gate OPEN; indicator 'NO JOB SCOPE · PERSON'", await rootAttr("data-capability-gate") === "OPEN" && (await txt(t("job-scope-indicator"))).includes("NO JOB SCOPE · PERSON"), { gate: await rootAttr("data-capability-gate"), indicator: await txt(t("job-scope-indicator")) });
+});
+await step(4, async () => {
+  const b = t("field-focus-capability-btn"); R(4, "'◈ CAPABILITY FIELD' at about (729, 76)", near(await box(b), 729, 76) && (await txt(b)).includes("CAPABILITY FIELD"), { box: await box(b), text: await txt(b) });
+  await press(b, 4); await waitRoot("data-field-focus", "CAPABILITY");
+  R(4, "dock 'INGEST KNOWLEDGE' visible", await page.getByText("INGEST KNOWLEDGE").first().isVisible().catch(() => false), true);
+});
+await step(5, async () => {
+  const input = t("source-dock-file-input");
+  const display = await input.evaluate(el => getComputedStyle(el).display + "/" + el.type);
+  R(5, "PDF input is a hidden <input type=file> (display:none)", display === "none/file", display);
+  const btn = t("add-pdf-source-btn"); R(5, "'+ UPLOAD PDF DOCUMENT' visible (testid add-pdf-source-btn, not named in the doc)", await btn.isVisible() && (await txt(btn)).includes("+ UPLOAD PDF DOCUMENT"), { box: await box(btn), text: await txt(btn) });
+  await input.setInputFiles(PDF);
+  await t("analyze-investigation").waitFor({ timeout: 20000 });
+  const pageText = await txt(page.locator("body"));
+  R(5, "STAGED SOURCES shows 'PDF cv.synthetic.pdf'", /STAGED SOURCES/.test(pageText) && pageText.includes("cv.synthetic.pdf"), pageText.match(/STAGED SOURCES.{0,80}/)?.[0]);
+  R(5, "dock names 'INVESTIGATION BOUNDARY · PERSON'", (await txt(t("analyze-investigation"))).includes("INVESTIGATION BOUNDARY") && (await txt(t("analyze-investigation"))).includes("PERSON"), await txt(t("analyze-investigation")));
+});
+await step(6, async () => {
+  const b = t("start-intake-analysis-btn"); R(6, "'START ANALYSIS (POST)' at about (68, 738)", near(await box(b), 68, 738) && (await txt(b)).includes("START ANALYSIS (POST)"), { box: await box(b), text: await txt(b) });
+  const seen = new Set(); let polling = true;
+  const poll = (async () => { while (polling) { const v = await txt(t("intake-telemetry-banner")).catch(() => ""); if (v) seen.add(v.replace(/.*STEP:\s*/, "").slice(0, 60)); await page.waitForTimeout(150); } })();
+  const t0 = Date.now(); await press(b, 6);
+  await t("intake-success-banner").waitFor({ timeout: 300000 }); polling = false; await poll;
+  R(6, "telemetry steps seen (doc: SUBMITTING → QUEUED → ANALYZING SOURCES... → LOADING_RESULT)", null, [...seen]);
+  R(6, "duration (doc: stand-in 2–17 s)", null, `${((Date.now() - t0) / 1000).toFixed(1)} s`);
+  const body = bodies.at(-1);
+  R(6, "exactly one ANALYZE: one pdf, investigation {mode:PERSON}, no jobScope", bodies.length === 1 && body.docs.length === 1 && body.docs[0] === "pdf" && JSON.stringify(body.investigation) === '{"mode":"PERSON"}' && body.jobScope === null, body);
+  R(6, "banner 'ANALYSIS COMPLETED SUCCESSFULLY' + 'PERSON · WITHOUT A JOB SCOPE', mode PERSON", (await txt(t("intake-success-banner"))).includes("ANALYSIS COMPLETED SUCCESSFULLY") && (await txt(t("intake-success-investigation"))).includes("PERSON · WITHOUT A JOB SCOPE") && await t("intake-success-investigation").getAttribute("data-investigation-mode") === "PERSON", { banner: await txt(t("intake-success-banner")) });
+  await shot("person-done");
+});
+await step(7, async () => {
+  const b = t("focused-stage-bubble-02"); const bb = await box(b);
+  R(7, "bubble '02 ⬡ CAPABILITY FIELD' at about (1162, 352), 168 × 168", near(bb, 1162, 352) && Math.abs(bb.w - 168) <= 4, { box: bb, text: await txt(b), moves: await moves(b) });
+  await press(b, 7);
+  await page.locator('[data-testid^="capability-cosmos-node-"]').first().waitFor({ timeout: 30000 });
+  const names = await page.locator('[data-testid^="capability-cosmos-node-"]').allTextContents();
+  R(7, "12 proposals, all PROPOSED", names.length === 12 && names.every(n => /PROPOSED/.test(n)), { n: names.length, names: names.map(n => n.replace(/\s+/g, " ").slice(0, 40)) });
+});
+await step(8, async () => {
+  // G-4 on three nodes: TypeScript first, then two more
+  const all = page.locator('[data-testid^="capability-cosmos-node-"]');
+  const ids = await all.evaluateAll(l => l.map(e => e.getAttribute("data-testid")));
+  const tsId = (await page.locator('[data-testid^="capability-cosmos-node-"]', { hasText: "TypeScript" }).first().getAttribute("data-testid"));
+  const order = [tsId, ...ids.filter(i => i !== tsId).slice(0, 2)];
+  for (const [k, id] of order.entries()) {
+    const node = page.locator(`[data-testid="${id}"]`);
+    const m = await moves(node), b = await box(node);
+    const how = await press(node, `8.${k}`);
+    await t("capability-focus-evidence-surface").waitFor({ timeout: 20000 });
+    const s = await txt(t("capability-focus-evidence-surface"));
+    R(`8.${k}`, `node ${id.replace("capability-cosmos-node-", "")}: moves, ~140 × 103; surface 'EVIDENCE // SOURCE MATCHING ONLY', 'cv.synthetic.pdf // DOCUMENT', a quote`, /SOURCE MATCHING ONLY/.test(s) && s.includes("cv.synthetic.pdf"), { moves: m, box: b, click: how, surface: s.slice(0, 220) });
+    if (k === 0) {
+      R(8, "TypeScript quotes the PDF line verbatim", s.includes("Focus on TypeScript, React and Node.js, relational databases and automated testing."), null);
+      await page.keyboard.press("Escape"); await page.waitForTimeout(800);
+      R(9, "Escape does NOT leave the deep focus", await t("capability-focus-evidence-surface").count() > 0, { zoom: await rootAttr("data-zoom-level") });
+    }
+    // back: nucleus, then cosmos centre
+    const nuc = page.locator('[data-testid^="capability-focus-nucleus-"]').first();
+    R(9, "nucleus text 'CAPABILITY NUCLEUS // PROPOSED …'", /CAPABILITY NUCLEUS/.test(await txt(nuc)) && /PROPOSED/.test(await txt(nuc)), (await txt(nuc)).slice(0, 80));
+    await press(nuc, `9.${k}`);
+    await waitRoot("data-zoom-level", "1", 10000).catch(() => {});
+    const z1 = await rootAttr("data-zoom-level");
+    if (k < order.length - 1) { R(`9.${k}`, "after nucleus click data-zoom-level=1", z1 === "1", z1); continue; }
+    const centre = t("capability-cosmos-center");
+    R(9, "centre '02 CAPABILITY FIELD · CAPABILITY COSMOS', moves", null, { text: (await txt(centre)).slice(0, 80), moves: await moves(centre) });
+    await press(centre, 9);
+    await waitRoot("data-zoom-level", "0", 10000).catch(() => {});
+    R(9, "zoom 1 after nucleus, 0 after centre", z1 === "1" && await rootAttr("data-zoom-level") === "0", { afterNucleus: z1, afterCentre: await rootAttr("data-zoom-level") });
+  }
+});
+await step(10, async () => {
+  const b = t("job-pool-panel-toggle"); R(10, "'⬡ JOB FIELD' at about (977, 76)", near(await box(b), 977, 76) && (await txt(b)).includes("JOB FIELD"), { box: await box(b), text: await txt(b) });
+  await press(b, 10); await waitRoot("data-field-focus", "FIELD");
+  const body = await txt(page.locator("body"));
+  R(10, "card JOB FIELD with POOLS, + INTAKE, GEMINI OUTPUT", body.includes("POOLS") && body.includes("+ INTAKE") && body.includes("GEMINI OUTPUT"), null);
+});
+const readInspector = async (n, expectAnalysis) => {
+  const tog = t("syntx-gemini-output-toggle"); R(n, "toggle label 'GEMINI OUTPUT'", /GEMINI OUTPUT/.test(await txt(tog)), await txt(tog));
+  await press(tog, n); await t("syntx-gemini-output").waitFor({ timeout: 30000 });
+  const s0 = await t("syntx-gemini-output").getAttribute("data-inspection-state");
+  if (await t("syntx-gemini-read").count()) R(n, "READ right after opening: moves", null, await moves(t("syntx-gemini-read")));
+  R(n, "panel opens IDLE (or already AVAILABLE)", null, s0);
+  const token = t("syntx-gemini-token");
+  if (await token.count()) { await token.fill(TOKEN); }
+  const read = t("syntx-gemini-read");
+  if (await read.count()) { R(n, "READ moves on opening", null, { moves: await moves(read), text: await txt(read) }); await press(read, n); }
+  await page.locator('[data-testid="syntx-gemini-output"][data-inspection-state="AVAILABLE"]').waitFor({ timeout: 30000 });
+  const p = t("syntx-gemini-output");
+  const a = { analysisId: await p.getAttribute("data-analysis-id"), runReused: await p.getAttribute("data-run-reused"), original: await page.locator("[data-original-state]").first().getAttribute("data-original-state").catch(() => null) };
+  const ptext = await txt(p);
+  R(n, "AVAILABLE, RETAINED, chips 'sha256 ✓', 'parser = text ✓', 'STOP', meta video-standin-001 · video-…", a.original === "RETAINED" && ptext.includes("sha256 ✓") && ptext.includes("parser = text ✓") && ptext.includes("STOP") && ptext.includes("video-standin-001") && /video-[A-Za-z0-9]/.test(ptext), { ...a, meta: ptext.match(/video-standin-001.{0,120}/)?.[0] });
+  R(n, "G-7 data-run-reused present and false", a.runReused === "false", a.runReused);
+  if (expectAnalysis) R(n, "data-analysis-id is an ANL_ id", /^ANL_/.test(a.analysisId ?? ""), a.analysisId);
+  return a;
+};
+await step(11, async () => { const a = await readInspector(11, true); personId = a.analysisId; await shot("person-inspector"); });
+await step(13, async () => {
+  await press(t("syntx-gemini-view-SCOPE"), 13); await t("syntx-gemini-scope").waitFor({ timeout: 30000 });
+  R(13, "SCOPE: label 'INVESTIGATION SCOPE', data-scope-state UNSCOPED", (await txt(t("syntx-gemini-view-SCOPE"))).includes("INVESTIGATION SCOPE") && await t("syntx-gemini-scope").getAttribute("data-scope-state") === "UNSCOPED", { label: await txt(t("syntx-gemini-view-SCOPE")), state: await t("syntx-gemini-scope").getAttribute("data-scope-state") });
+});
+await step(14, async () => {
+  const v = t("syntx-gemini-view-PROCESSING"); await press(v, 14); await t("syntx-gemini-processing").waitFor({ timeout: 30000 });
+  const p = await txt(t("syntx-gemini-processing"));
+  R(14, "label 'PARSER · VERIFICATION · CONVERGENCE'; exactly one REJECTED (Quantum Annealing)", (await txt(v)).includes("PARSER · VERIFICATION · CONVERGENCE") && (p.match(/REJECTED/g) ?? []).length >= 1 && /Quantum Annealing/i.test(p), { label: await txt(v), rejectedTokens: (p.match(/REJECTED[A-Z_]*/g) ?? []), statuses: [...new Set(p.match(/\b(VERIFIED|REJECTED_[A-Z_]+|SOURCE_MATCH_VERIFIED)\b/g) ?? [])] });
+});
+await step(15, async () => {
+  const tog = t("syntx-gemini-output-toggle"); R(15, "toggle reads 'HIDE GEMINI OUTPUT'", (await txt(tog)).includes("HIDE GEMINI OUTPUT"), await txt(tog));
+  await press(tog, 15); await page.waitForTimeout(600);
+  R(15, "panel gone", !(await t("syntx-gemini-output").isVisible().catch(() => false)), await t("syntx-gemini-output").count());
+});
+await step(16, async () => {
+  const b = t("job-pool-intake-toggle"); R(16, "'+ INTAKE'", (await txt(b)).includes("INTAKE"), await txt(b));
+  await press(b, 16); await t("job-pool-upload").waitFor({ timeout: 30000 }); R(16, "job-pool-upload visible", await t("job-pool-upload").isVisible(), await box(t("job-pool-upload")));
+});
+await step(17, async () => {
+  R(17, "layout context", null, { field: await box(t("semantic-career-intelligence-field")), scrollY: await page.evaluate(() => scrollY), successBanner: await t("intake-success-banner").isVisible().catch(() => false), upload: await box(t("job-pool-upload")) });
+  const f = t("job-pool-file-input"); const d = await f.evaluate(el => getComputedStyle(el).display + "/" + el.type);
+  R(17, "pool file input native and VISIBLE at about (1608, 362), 252 × 26", d !== "none/file" && await f.isVisible() && near(await box(f), 1608, 362), { display: d, box: await box(f) });
+  const before = await t("job-pool-upload-btn").isEnabled();
+  await f.setInputFiles(POOLF); await page.waitForTimeout(500);
+  R(17, "upload button enabled after choosing the file", await t("job-pool-upload-btn").isEnabled(), { before, after: await t("job-pool-upload-btn").isEnabled() });
+});
+await step(18, async () => {
+  const a = t("job-pool-actor-input"); const v0 = await a.inputValue(); await a.fill("DLL_VIDEO_OPERATOR");
+  R(18, "actor input prefilled (doc: replace the prefilled value)", v0.length > 0, v0);
+});
+await step(19, async () => {
+  const b = t("job-pool-upload-btn"); R(19, "'UPLOAD →'", (await txt(b)).includes("UPLOAD"), await txt(b));
+  await press(b, 19); await t("job-pool-upload-result").waitFor({ timeout: 60000 });
+  const r = t("job-pool-upload-result");
+  R(19, "outcome CREATED; 'UPLOAD PERSISTED (NEW) · JPOOL_B94850C4… · DLL Engineering & Architecture Pool v1 · ACTIVE · UPLOADED != SELECTED'", await r.getAttribute("data-upload-outcome") === "CREATED" && (await txt(r)).includes("UPLOAD PERSISTED (NEW)") && (await txt(r)).includes("UPLOADED != SELECTED"), { outcome: await r.getAttribute("data-upload-outcome"), text: (await txt(r)).slice(0, 200) });
+});
+await step(20, async () => {
+  const tog = t("job-pool-intake-toggle"); R(20, "toggle reads 'HIDE INTAKE'", (await txt(tog)).includes("HIDE INTAKE"), await txt(tog));
+  await press(tog, 20);
+  const sel = t(`job-pool-select-${POOL}`); R(20, "SELECT on the pool", (await txt(sel)).includes("SELECT"), await txt(sel));
+  await press(sel, 20); await t(`syntx-organization-${ORG}`).waitFor({ timeout: 30000 });
+  const orgs = await page.locator('[data-testid^="syntx-organization-"]').evaluateAll(l => l.map(e => e.getAttribute("data-testid")).filter(i => /^syntx-organization-org_[a-z0-9_]+$/.test(i)));
+  R(20, "URL carries jobPoolUploadId; 3 organizations", new URL(page.url()).searchParams.get("jobPoolUploadId") === POOL && orgs.length === 3, { url: page.url().replace(BASE, ""), orgs });
+});
+await step(21, async () => {
+  const o = t(`syntx-organization-${ORG}`); const b = await box(o);
+  R(21, "body '01 ⬡ KESTREL LOGISTICS SOFTWARE GMBH' at about (873, 170), 175 × 175", near(b, 873, 170) && Math.abs(b.w - 175) <= 4, { box: b, text: (await txt(o)).slice(0, 60), moves: await moves(o) });
+  await press(o, 21); await t(`syntx-role-${ROLE}`).waitFor({ timeout: 30000 });
+  const all = page.locator('[data-testid^="syntx-role-role_"]'); const roles = [];
+  for (let i = 0; i < await all.count(); i += 1) if (await all.nth(i).isVisible()) roles.push(await all.nth(i).getAttribute("data-testid"));
+  R(21, "3 visible role cards (kestrel)", roles.length === 3 && roles.every(r => r.includes("kestrel")), roles);
+});
+await step(22, async () => {
+  const c = t(`syntx-role-${ROLE}`); const tx = await txt(c);
+  R(22, "card 'SENIOR · L4 · Senior Full-Stack Engineer – Shipment Tracking', orbits, ~219 × 100", tx.includes("SENIOR · L4") && tx.includes("Senior Full-Stack Engineer – Shipment Tracking"), { text: tx.slice(0, 120), box: await box(c), moves: await moves(c) });
+  await press(c, 22);
+  await page.locator(`[data-testid="syntx-field"][data-observation-kind="ROLE"][data-observation-id="${ROLE}"]`).waitFor({ timeout: 30000 });
+  const f = t("syntx-field"); const body = await txt(page.locator("body"));
+  R(22, "data-analysis-source NONE; 'PERSON · NO JOB COMPARISON'; 9 requirements", await f.getAttribute("data-analysis-source") === "NONE" && body.includes("PERSON · NO JOB COMPARISON"), { source: await f.getAttribute("data-analysis-source"), support: await page.locator("[data-support]").count(), reqText: body.match(/\d+ REQUIREMENTS?/)?.[0] });
+  await shot("role-person");
+});
+await step(23, async () => {
+  const b2 = await page.request.get(`${BASE}/api/career/analyses/${personId}/job-comparison?jobPoolUploadId=${POOL}&poolRoleId=${ROLE}`);
+  const m = await page.request.get(`${BASE}/api/career/job-pools/${POOL}/matches?analysisId=${personId}`);
+  const bj = await b2.json().catch(() => null), mj = await m.json().catch(() => null);
+  R(23, "B2 409 ERR_JOB_COMPARISON_NOT_SCOPED; /matches 409 ERR_JOB_POOL_MATCHES_PERSON_ANALYSIS", b2.status() === 409 && JSON.stringify(bj).includes("ERR_JOB_COMPARISON_NOT_SCOPED") && m.status() === 409 && JSON.stringify(mj).includes("ERR_JOB_POOL_MATCHES_PERSON_ANALYSIS"), { b2: [b2.status(), JSON.stringify(bj).slice(0, 120)], matches: [m.status(), JSON.stringify(mj).slice(0, 120)] });
+});
+await step(24, async () => {
+  const b = t("investigation-mode-PERSON_X_JOB"); R(24, "'PERSON × JOB' at about (1276, 82)", near(await box(b), 1276, 82) && (await txt(b)).includes("PERSON × JOB"), { box: await box(b), text: await txt(b) });
+  await press(b, 24); await waitRoot("data-investigation-mode", "PERSON_X_JOB");
+  R(24, "gate locked again until a job is chosen", await rootAttr("data-capability-gate") === "AWAITING_JOB", await rootAttr("data-capability-gate"));
+});
+await step(25, async () => {
+  const s = t("syntx-job-scope-select"); R(25, "'◎ SELECT AS JOB'", (await txt(s)).includes("SELECT AS JOB"), await txt(s));
+  await press(s, 25); await waitRoot("data-capability-gate", "OPEN");
+  const i = t("job-scope-indicator");
+  R(25, "indicator VALID, 'JOB · Senior Full-Stack Engineer – Shipment Tracking · Kestrel Logistics Software GmbH · DLL Engineering & Architecture Pool'", await i.getAttribute("data-job-scope-state") === "VALID" && (await txt(i)).includes("Senior Full-Stack Engineer – Shipment Tracking") && (await txt(i)).includes("Kestrel Logistics Software GmbH"), { state: await i.getAttribute("data-job-scope-state"), text: await txt(i) });
+});
+await step(26, async () => {
+  await press(t("field-focus-capability-btn"), 26); await waitRoot("data-field-focus", "CAPABILITY");
+  const ai = await txt(t("analyze-investigation")); const body = await txt(page.locator("body"));
+  const title = await t("analyze-investigation").getAttribute("title");
+  R(26, "PDF still staged; dock 'INVESTIGATION BOUNDARY · PERSON × JOB'", body.includes("cv.synthetic.pdf") && ai.includes("INVESTIGATION BOUNDARY · PERSON × JOB"), ai);
+  R(26, "the dock names the role (visible text or tooltip)", ai.includes("Senior Full-Stack Engineer") || (title ?? "").includes("Senior Full-Stack Engineer"), { text: ai, title });
+});
+await step(27, async () => {
+  const before = bodies.length, t0 = Date.now();
+  await press(t("start-intake-analysis-btn"), 27);
+  await page.locator('[data-testid="intake-success-investigation"][data-investigation-mode="PERSON_X_JOB"]').waitFor({ timeout: 300000 });
+  R(27, "duration", null, `${((Date.now() - t0) / 1000).toFixed(1)} s`);
+  const b = bodies.at(-1);
+  R(27, "one new ANALYZE: same pdf, PERSON_X_JOB, jobScope = pool + role", bodies.length === before + 1 && b.docs[0] === "pdf" && JSON.stringify(b.investigation) === '{"mode":"PERSON_X_JOB"}' && JSON.stringify(b.jobScope) === JSON.stringify({ jobPoolUploadId: POOL, poolRoleId: ROLE }), b);
+});
+await step(28, async () => {
+  await press(t("job-scope-indicator"), 28);
+  await page.locator('[data-testid="syntx-field"][data-analysis-source="JOB_RESULT"]').waitFor({ timeout: 30000 });
+  const sup = await page.locator("[data-support]").evaluateAll(l => l.map(e => e.getAttribute("data-support")));
+  const c = s => sup.filter(x => x === s).length;
+  R(28, "JOB_RESULT; 6 SUPPORTED, 1 WEAK, 2 OPEN", c("SUPPORTED") === 6 && c("WEAK") === 1 && c("OPEN") === 2, { all: sup.length, SUPPORTED: c("SUPPORTED"), WEAK: c("WEAK"), OPEN: c("OPEN"), other: [...new Set(sup)] });
+});
+const b2open = async (n, expect) => {
+  const tog = t("syntx-investigation-toggle"); R(n, "toggle label '◎ B2 COVERAGE'", (await txt(tog)).includes("B2 COVERAGE"), await txt(tog));
+  await press(tog, n); await t("syntx-coverage").waitFor({ timeout: 30000 });
+  await page.waitForFunction(() => document.querySelector('[data-testid="syntx-coverage"]')?.getAttribute("data-coverage-state") !== "LOADING", null, { timeout: 30000 });
+  const c = t("syntx-coverage");
+  const a = { state: await c.getAttribute("data-coverage-state"), covered: await c.getAttribute("data-covered"), notCovered: await c.getAttribute("data-not-covered"), scored: await c.getAttribute("data-scored"), binding: await c.getAttribute("data-binding-analysis") };
+  const rows = await page.locator('[data-testid^="syntx-coverage-req-"]').evaluateAll(l => l.map(e => `${e.getAttribute("data-coverage")}/${e.getAttribute("data-match-basis") ?? ""}`));
+  return { ...a, rows, text: await txt(c) };
+};
+await step(29, async () => {
+  const a = await b2open(29); pxjId = a.binding;
+  R(29, "AVAILABLE, covered 7, not covered 2, EXACT/TOKEN_CONTAINMENT, scored false, bound to the PxJ analysis ≠ PERSON", a.state === "AVAILABLE" && a.covered === "7" && a.notCovered === "2" && a.scored === "false" && /^ANL_/.test(a.binding ?? "") && a.binding !== personId, a);
+  await shot("b2");
+});
+await step(30, async () => {
+  await page.keyboard.press("Escape"); await page.waitForTimeout(800);
+  R(30, "Escape closes B2", !(await t("syntx-coverage").isVisible().catch(() => false)), await t("syntx-coverage").count());
+});
+await step(31, async () => {
+  const a = await readInspector(31, true);
+  R(31, "inspector reads the PxJ analysis", a.analysisId === pxjId, { inspector: a.analysisId, b2: pxjId });
+  await press(t("syntx-gemini-view-SCOPE"), 31); await t("syntx-gemini-scope").waitFor({ timeout: 30000 });
+  const s = await txt(t("syntx-gemini-scope"));
+  R(31, "SCOPE RETAINED, names role_kestrel_fullstack, says it is no evidence", await t("syntx-gemini-scope").getAttribute("data-scope-state") === "RETAINED" && s.includes(ROLE), { state: await t("syntx-gemini-scope").getAttribute("data-scope-state"), noEvidence: /not evidence|no evidence|NOT EVIDENCE|NO EVIDENCE/i.test(s), text: s.slice(0, 200) });
+  await press(t("syntx-gemini-output-toggle"), 31);
+});
+await step(32, async () => {
+  await page.goto(`${BASE}/career/demo?focus=FIELD&jobPoolUploadId=${POOL}&jobOrganizationId=${ORG}&jobRoleId=${JROLE}&jobScopePoolUploadId=${POOL}&jobScopeRoleId=${JROLE}&investigationMode=JOB`, { waitUntil: "networkidle" });
+  const ob = await t("guided-onboarding-overlay").count(); R(32, "no onboarding again after a deep link in the same profile", ob === 0, ob);
+  await page.locator('[data-testid="job-scope-indicator"][data-job-scope-state="VALID"]').waitFor({ timeout: 30000 });
+  const g = { mode: await rootAttr("data-investigation-mode"), gate: await rootAttr("data-capability-gate"), source: await t("syntx-field").getAttribute("data-analysis-source") };
+  R(32, "JOB, JOB_MODE, analysis source NONE", g.mode === "JOB" && g.gate === "JOB_MODE" && g.source === "NONE", g);
+});
+await step(33, async () => {
+  const tog = t("syntx-investigation-toggle"); R(33, "toggle '⬡ JOB STRUCTURE'", (await txt(tog)).includes("JOB STRUCTURE"), await txt(tog));
+  await press(tog, 33); await page.locator('[data-testid="syntx-job-structure"][data-structure-state="AVAILABLE"]').waitFor({ timeout: 30000 });
+  const s = await txt(t("syntx-job-structure"));
+  const reqs = await page.locator('[data-testid^="syntx-structure-req-"]').count(), findings = await t("syntx-job-structure-findings").getAttribute("data-finding-count");
+  const html = await t("syntx-job-structure").evaluate(e => e.outerHTML);
+  R(33, "10 requirements, 8 findings", reqs === 10 && findings === "8", { reqs, findings, sectionFindingCount: await t("syntx-job-structure").getAttribute("data-finding-count") });
+  R(33, "'JOB_STRUCTURE_V1' visible or in the DOM", s.includes("JOB_STRUCTURE_V1") || html.includes("JOB_STRUCTURE_V1"), { visibleHeading: s.slice(0, 40), inDom: html.includes("JOB_STRUCTURE_V1") });
+});
+await step(34, async () => {
+  await page.keyboard.press("Escape"); await page.waitForTimeout(500);
+  await press(t("syntx-gemini-output-toggle"), 34); await t("syntx-gemini-output").waitFor({ timeout: 30000 });
+  await page.waitForTimeout(500);
+  R(34, "NO_GEMINI, 'No Gemini call in this mode'", await t("syntx-gemini-output").getAttribute("data-inspection-state") === "NO_GEMINI" && (await txt(t("syntx-gemini-output"))).includes("No Gemini call in this mode"), { state: await t("syntx-gemini-output").getAttribute("data-inspection-state"), text: (await txt(t("syntx-gemini-output"))).slice(0, 120) });
+});
+const deep = id => `${BASE}/career/demo?focus=FIELD&jobPoolUploadId=${POOL}&jobOrganizationId=${ORG}&jobRoleId=${ROLE}&analysisId=${id}&jobScopePoolUploadId=${POOL}&jobScopeRoleId=${ROLE}`;
+await step(35, async () => {
+  await page.goto(deep(pxjId), { waitUntil: "networkidle" });
+  await t("syntx-investigation-toggle").waitFor({ timeout: 30000 });
+  const a = await b2open(35);
+  R(35, "B2 as in 29", a.state === "AVAILABLE" && a.covered === "7" && a.binding === pxjId, a);
+});
+await step(36, async () => {
+  await page.goto(deep(personId), { waitUntil: "networkidle" });
+  await t("syntx-investigation-toggle").waitFor({ timeout: 30000 });
+  const a = await b2open(36);
+  R(36, "NOT_SCOPED, 'This analysis is a PERSON analysis: no job comparison.'", a.state === "NOT_SCOPED" && a.text.includes("This analysis is a PERSON analysis: no job comparison."), a);
+  await shot("b2-person");
+});
+R(99, "no page error", errors.length === 0, errors);
+R(99, "no non-GET besides ANALYZE and the pool upload", nonGet.length === 0, nonGet);
+await browser.close();
+writeFileSync(`${OUT}/pink-handoff-probe.json`, JSON.stringify({ base: "<BASE>", personId, pxjId, bodies, rec }, null, 2));
+const diffs = rec.filter(r => r.pass === false).length, oks = rec.filter(r => r.pass === true).length;
+console.log(`${oks} ok, ${diffs} differ, ${rec.filter(r => r.pass === null).length} info`);

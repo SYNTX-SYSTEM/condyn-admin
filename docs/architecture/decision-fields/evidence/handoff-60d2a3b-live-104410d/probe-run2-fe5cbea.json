@@ -1,0 +1,959 @@
+{
+  "base": "<BASE>",
+  "personId": "ANL_1792423621101_990",
+  "pxjId": "ANL_1792423700843_387",
+  "bodies": [
+    {
+      "investigation": {
+        "mode": "PERSON"
+      },
+      "jobScope": null,
+      "docs": [
+        "pdf"
+      ]
+    },
+    {
+      "investigation": {
+        "mode": "PERSON_X_JOB"
+      },
+      "jobScope": {
+        "jobPoolUploadId": "JPOOL_B94850C439974E27496FE3B1A9A076B5",
+        "poolRoleId": "role_kestrel_fullstack"
+      },
+      "docs": [
+        "pdf"
+      ]
+    }
+  ],
+  "rec": [
+    {
+      "step": 1,
+      "claim": "onboarding overlay visible",
+      "pass": true,
+      "observed": true
+    },
+    {
+      "step": 2,
+      "claim": "close button 8 × 18 at about (1183, 443)",
+      "pass": true,
+      "observed": {
+        "x": 1183,
+        "y": 443,
+        "w": 8,
+        "h": 18
+      }
+    },
+    {
+      "step": 2,
+      "claim": "close button visible label ✕",
+      "pass": true,
+      "observed": "✕"
+    },
+    {
+      "step": 2,
+      "claim": "Escape does NOT close the onboarding",
+      "pass": true,
+      "observed": 1
+    },
+    {
+      "step": 2,
+      "claim": "ground: PERSON_X_JOB, gate AWAITING_JOB, no pool",
+      "pass": true,
+      "observed": {
+        "mode": "PERSON_X_JOB",
+        "gate": "AWAITING_JOB",
+        "noPool": 1,
+        "listEmpty": 1
+      }
+    },
+    {
+      "step": 3,
+      "claim": "PERSON switch at about (1209, 82), label PERSON",
+      "pass": true,
+      "observed": {
+        "box": {
+          "x": 1209,
+          "y": 82,
+          "w": 65,
+          "h": 24
+        },
+        "text": "PERSON"
+      }
+    },
+    {
+      "step": 3,
+      "claim": "gate OPEN; indicator 'NO JOB SCOPE · PERSON'",
+      "pass": true,
+      "observed": {
+        "gate": "OPEN",
+        "indicator": "JOBNO JOB SCOPE · PERSON"
+      }
+    },
+    {
+      "step": 4,
+      "claim": "'◈ CAPABILITY FIELD' at about (729, 76)",
+      "pass": true,
+      "observed": {
+        "box": {
+          "x": 729,
+          "y": 76,
+          "w": 214,
+          "h": 36
+        },
+        "text": "◈ CAPABILITY FIELD"
+      }
+    },
+    {
+      "step": 4,
+      "claim": "dock 'INGEST KNOWLEDGE' visible",
+      "pass": true,
+      "observed": true
+    },
+    {
+      "step": 5,
+      "claim": "PDF input is a hidden <input type=file> (display:none)",
+      "pass": true,
+      "observed": "none/file"
+    },
+    {
+      "step": 5,
+      "claim": "'+ UPLOAD PDF DOCUMENT' visible (testid add-pdf-source-btn, not named in the doc)",
+      "pass": false,
+      "observed": {
+        "box": {
+          "x": 68,
+          "y": 550,
+          "w": 287,
+          "h": 42
+        },
+        "text": "+ UPLOAD PDF DOCUMENT"
+      }
+    },
+    {
+      "step": 5,
+      "claim": "STAGED SOURCES shows 'PDF cv.synthetic.pdf'",
+      "pass": true,
+      "observed": "STAGED SOURCES (1)PDFcv.synthetic.pdf×INVESTIGATION BOUNDARY · PERSONSTART ANALYSIS (POST)DECI"
+    },
+    {
+      "step": 5,
+      "claim": "dock names 'INVESTIGATION BOUNDARY · PERSON'",
+      "pass": true,
+      "observed": "INVESTIGATION BOUNDARY · PERSON"
+    },
+    {
+      "step": 6,
+      "claim": "'START ANALYSIS (POST)' at about (68, 738)",
+      "pass": true,
+      "observed": {
+        "box": {
+          "x": 68,
+          "y": 738,
+          "w": 287,
+          "h": 45
+        },
+        "text": "START ANALYSIS (POST)"
+      }
+    },
+    {
+      "step": 6,
+      "claim": "telemetry steps seen (doc: SUBMITTING → QUEUED → ANALYZING SOURCES... → LOADING_RESULT)",
+      "pass": null,
+      "observed": [
+        "SUBMITTING",
+        "QUEUED",
+        "LOADING_RESULT"
+      ]
+    },
+    {
+      "step": 6,
+      "claim": "duration (doc: stand-in 2–17 s)",
+      "pass": null,
+      "observed": "14.2 s"
+    },
+    {
+      "step": 6,
+      "claim": "exactly one ANALYZE: one pdf, investigation {mode:PERSON}, no jobScope",
+      "pass": true,
+      "observed": {
+        "investigation": {
+          "mode": "PERSON"
+        },
+        "jobScope": null,
+        "docs": [
+          "pdf"
+        ]
+      }
+    },
+    {
+      "step": 6,
+      "claim": "banner 'ANALYSIS COMPLETED SUCCESSFULLY' + 'PERSON · WITHOUT A JOB SCOPE', mode PERSON",
+      "pass": true,
+      "observed": {
+        "banner": "ANALYSIS COMPLETED SUCCESSFULLYIDENTITY CORE & ORBITS MANIFESTEDPERSON · WITHOUT A JOB SCOPE"
+      }
+    },
+    {
+      "step": 7,
+      "claim": "bubble '02 ⬡ CAPABILITY FIELD' at about (1162, 352), 168 × 168",
+      "pass": true,
+      "observed": {
+        "box": {
+          "x": 1162,
+          "y": 352,
+          "w": 168,
+          "h": 168
+        },
+        "text": "@keyframes orbitFloatPhase2 { 0% { transform: translateY(0px) translateX(0px) scale(1); } 30% { transform: translateY(2px) translateX(-1px) scale(1.005); } 65% { transform: translateY(-3px) translateX(1px) scale(1.01); } 100% { transform: translateY(0px) translateX(0px) scale(1); } } @keyframes ringPulse { 0% { transform: scale(1); opacity: 0.75; } 100% { transform: scale(1.35); opacity: 0; } } @keyframes atmosphereGlow { 0%, 100% { opacity: 0.5; } 50% { opacity: 0.9; } } @keyframes hologramFloat { 0%, 100% { translate: 0px 0px; } 50% { translate: 0px -4px; } } @keyframes moonOrbit { from { transform: rotate(0deg) translateX(110px) rotate(0deg); } to { transform: rotate(360deg) translateX(110px) rotate(-360deg); } } @keyframes emptyProjectionBreathe { 0%, 100% { transform: scale(0.98); opacity: 0.42; box-shadow: 0 0 14px rgba(255, 56, 68, 0.34), 0 0 30px rgba(255, 56, 68, 0.20); } 50% { transform: scale(1.16); opacity: 0.98; box-shadow: 0 0 26px rgba(255, 56, 68, 0.82), 0 0 58px rgba(255, 56, 68, 0.52); } } @keyframes emptyProjectionShellBreathe { 0%, 100% { transform: scale(1.01); opacity: 0.38; } 50% { transform: scale(1.10); opacity: 0.96; } } @media (prefers-reduced-motion: reduce) { [data-testid=\"empty-projection-breathing-halo\"], [data-testid=\"empty-projection-breathing-shell\"] { animation: none !important; } } 02⬡ CAPABILITY FIELDSemantic capability corePRE-CANONICAL DISCOVERY12 items",
+        "moves": 0
+      }
+    },
+    {
+      "step": 7,
+      "claim": "12 proposals, all PROPOSED",
+      "pass": true,
+      "observed": {
+        "n": 12,
+        "names": [
+          "CLUSTER NODE // PROPOSEDPython1 EVIDENCE",
+          "CLUSTER NODE // PROPOSEDDocker1 EVIDENCE",
+          "CLUSTER NODE // PROPOSEDEnglish1 EVIDENC",
+          "CLUSTER NODE // PROPOSEDTeam Leadership1",
+          "CLUSTER NODE // PROPOSEDPostgreSQL1 EVID",
+          "CLUSTER NODE // PROPOSEDTypeScript1 EVID",
+          "CLUSTER NODE // PROPOSEDKubernetes1 EVID",
+          "CLUSTER NODE // PROPOSEDCI/CD1 EVIDENCE ",
+          "CLUSTER NODE // PROPOSEDApache Kafka1 EV",
+          "CLUSTER NODE // PROPOSEDReact1 EVIDENCE ",
+          "CLUSTER NODE // PROPOSEDAutomated Testin",
+          "CLUSTER NODE // PROPOSEDNode.js1 EVIDENC"
+        ]
+      }
+    },
+    {
+      "step": "8.0",
+      "claim": "pointer click did not land within 5 s, DOM click used",
+      "pass": null,
+      "observed": "fallback"
+    },
+    {
+      "step": "8.0",
+      "claim": "node PCAP_AAFB8C7F8820052B592BDE11: moves, ~140 × 103; surface 'EVIDENCE // SOURCE MATCHING ONLY', 'cv.synthetic.pdf // DOCUMENT', a quote",
+      "pass": true,
+      "observed": {
+        "moves": 17.4,
+        "box": {
+          "x": 1300,
+          "y": 967,
+          "w": 140,
+          "h": 103
+        },
+        "click": "dom",
+        "surface": "EVIDENCE // SOURCE MATCHING ONLYcv.synthetic.pdf // DOCUMENTin logistics. Focus on TypeScript, React and Node.js, relational databases and automated testing."
+      }
+    },
+    {
+      "step": 8,
+      "claim": "TypeScript quotes the PDF line verbatim",
+      "pass": true,
+      "observed": null
+    },
+    {
+      "step": 9,
+      "claim": "Escape does NOT leave the deep focus",
+      "pass": true,
+      "observed": {
+        "zoom": "2"
+      }
+    },
+    {
+      "step": 9,
+      "claim": "nucleus text 'CAPABILITY NUCLEUS // PROPOSED …'",
+      "pass": true,
+      "observed": "CAPABILITY NUCLEUS // PROPOSEDTypeScriptPROPOSED // EVIDENCE PASSED // SEMANTIC "
+    },
+    {
+      "step": "9.0",
+      "claim": "after nucleus click data-zoom-level=1",
+      "pass": true,
+      "observed": "1"
+    },
+    {
+      "step": "8.1",
+      "claim": "pointer click did not land within 5 s, DOM click used",
+      "pass": null,
+      "observed": "fallback"
+    },
+    {
+      "step": "8.1",
+      "claim": "node PCAP_025308E990A808F14E50681F: moves, ~140 × 103; surface 'EVIDENCE // SOURCE MATCHING ONLY', 'cv.synthetic.pdf // DOCUMENT', a quote",
+      "pass": true,
+      "observed": {
+        "moves": 375.83,
+        "box": {
+          "x": 910,
+          "y": 68,
+          "w": 131,
+          "h": 115
+        },
+        "click": "dom",
+        "surface": "EVIDENCE // SOURCE MATCHING ONLYcv.synthetic.pdf // DOCUMENT• Wrote Python ETL jobs that load shipment events from Apache Kafka into the data warehouse."
+      }
+    },
+    {
+      "step": 9,
+      "claim": "nucleus text 'CAPABILITY NUCLEUS // PROPOSED …'",
+      "pass": true,
+      "observed": "CAPABILITY NUCLEUS // PROPOSEDPythonPROPOSED // EVIDENCE PASSED // SEMANTIC DEFI"
+    },
+    {
+      "step": "9.1",
+      "claim": "after nucleus click data-zoom-level=1",
+      "pass": true,
+      "observed": "1"
+    },
+    {
+      "step": "8.2",
+      "claim": "pointer click did not land within 5 s, DOM click used",
+      "pass": null,
+      "observed": "fallback"
+    },
+    {
+      "step": "8.2",
+      "claim": "node PCAP_197E601417B24700E27604D7: moves, ~140 × 103; surface 'EVIDENCE // SOURCE MATCHING ONLY', 'cv.synthetic.pdf // DOCUMENT', a quote",
+      "pass": true,
+      "observed": {
+        "moves": 19.51,
+        "box": {
+          "x": 1341,
+          "y": 138,
+          "w": 131,
+          "h": 115
+        },
+        "click": "dom",
+        "surface": "EVIDENCE // SOURCE MATCHING ONLYcv.synthetic.pdf // DOCUMENT• Set up CI/CD pipelines with GitHub Actions and built Docker images for every service."
+      }
+    },
+    {
+      "step": 9,
+      "claim": "nucleus text 'CAPABILITY NUCLEUS // PROPOSED …'",
+      "pass": true,
+      "observed": "CAPABILITY NUCLEUS // PROPOSEDDockerPROPOSED // EVIDENCE PASSED // SEMANTIC DEFI"
+    },
+    {
+      "step": 9,
+      "claim": "centre '02 CAPABILITY FIELD · CAPABILITY COSMOS', moves",
+      "pass": null,
+      "observed": {
+        "text": "02 CAPABILITY FIELDCAPABILITY COSMOS // PROPOSAL FIELD",
+        "moves": 337.03
+      }
+    },
+    {
+      "step": 9,
+      "claim": "zoom 1 after nucleus, 0 after centre",
+      "pass": true,
+      "observed": {
+        "afterNucleus": "1",
+        "afterCentre": "0"
+      }
+    },
+    {
+      "step": 10,
+      "claim": "'⬡ JOB FIELD' at about (977, 76)",
+      "pass": true,
+      "observed": {
+        "box": {
+          "x": 977,
+          "y": 76,
+          "w": 214,
+          "h": 36
+        },
+        "text": "⬡ JOB FIELD"
+      }
+    },
+    {
+      "step": 10,
+      "claim": "card JOB FIELD with POOLS, + INTAKE, GEMINI OUTPUT",
+      "pass": true,
+      "observed": null
+    },
+    {
+      "step": 11,
+      "claim": "toggle label 'GEMINI OUTPUT'",
+      "pass": true,
+      "observed": "GEMINI OUTPUT"
+    },
+    {
+      "step": 11,
+      "claim": "READ right after opening: moves",
+      "pass": null,
+      "observed": 0
+    },
+    {
+      "step": 11,
+      "claim": "panel opens IDLE (or already AVAILABLE)",
+      "pass": null,
+      "observed": "IDLE"
+    },
+    {
+      "step": 11,
+      "claim": "READ moves on opening",
+      "pass": null,
+      "observed": {
+        "moves": 0,
+        "text": "READ"
+      }
+    },
+    {
+      "step": 11,
+      "claim": "AVAILABLE, RETAINED, chips 'sha256 ✓', 'parser = text ✓', 'STOP', meta video-standin-001 · video-…",
+      "pass": true,
+      "observed": {
+        "analysisId": "ANL_1792423621101_990",
+        "runReused": "false",
+        "original": "RETAINED",
+        "meta": "video-standin-001 · video-discovery-1 · 2026-10-19T15:27:02.763Z · EXC_EBE75D9CDB6D4005A2124525 · received for job JOB_1792423621101_990 "
+      }
+    },
+    {
+      "step": 11,
+      "claim": "G-7 data-run-reused present and false",
+      "pass": true,
+      "observed": "false"
+    },
+    {
+      "step": 11,
+      "claim": "data-analysis-id is an ANL_ id",
+      "pass": true,
+      "observed": "ANL_1792423621101_990"
+    },
+    {
+      "step": 13,
+      "claim": "SCOPE: label 'INVESTIGATION SCOPE', data-scope-state UNSCOPED",
+      "pass": true,
+      "observed": {
+        "label": "INVESTIGATION SCOPE",
+        "state": "UNSCOPED"
+      }
+    },
+    {
+      "step": 14,
+      "claim": "label 'PARSER · VERIFICATION · CONVERGENCE'; exactly one REJECTED (Quantum Annealing)",
+      "pass": true,
+      "observed": {
+        "label": "PARSER · VERIFICATION · CONVERGENCE",
+        "rejectedTokens": [
+          "REJECTED",
+          "REJECTED_QUOTE_NOT_FOUND"
+        ],
+        "statuses": [
+          "VERIFIED",
+          "REJECTED_QUOTE_NOT_FOUND"
+        ]
+      }
+    },
+    {
+      "step": 15,
+      "claim": "toggle reads 'HIDE GEMINI OUTPUT'",
+      "pass": true,
+      "observed": "HIDE GEMINI OUTPUT"
+    },
+    {
+      "step": 15,
+      "claim": "panel gone",
+      "pass": true,
+      "observed": 0
+    },
+    {
+      "step": 16,
+      "claim": "'+ INTAKE'",
+      "pass": true,
+      "observed": "+ INTAKE"
+    },
+    {
+      "step": 16,
+      "claim": "job-pool-upload visible",
+      "pass": true,
+      "observed": {
+        "x": 1576,
+        "y": 211,
+        "w": 316,
+        "h": 277
+      }
+    },
+    {
+      "step": 17,
+      "claim": "layout context",
+      "pass": null,
+      "observed": {
+        "field": {
+          "x": 0,
+          "y": 61,
+          "w": 1920,
+          "h": 1080
+        },
+        "scrollY": 0,
+        "successBanner": false,
+        "upload": {
+          "x": 1576,
+          "y": 211,
+          "w": 316,
+          "h": 277
+        }
+      }
+    },
+    {
+      "step": 17,
+      "claim": "pool file input native and VISIBLE at about (1608, 362), 252 × 26",
+      "pass": true,
+      "observed": {
+        "display": "inline-block/file",
+        "box": {
+          "x": 1608,
+          "y": 362,
+          "w": 252,
+          "h": 26
+        }
+      }
+    },
+    {
+      "step": 17,
+      "claim": "upload button enabled after choosing the file",
+      "pass": true,
+      "observed": {
+        "before": false,
+        "after": true
+      }
+    },
+    {
+      "step": 18,
+      "claim": "actor input prefilled (doc: replace the prefilled value)",
+      "pass": true,
+      "observed": "JOB_POOL_UPLOADER_LOCAL"
+    },
+    {
+      "step": 19,
+      "claim": "'UPLOAD →'",
+      "pass": true,
+      "observed": "UPLOAD →"
+    },
+    {
+      "step": 19,
+      "claim": "outcome CREATED; 'UPLOAD PERSISTED (NEW) · JPOOL_B94850C4… · DLL Engineering & Architecture Pool v1 · ACTIVE · UPLOADED != SELECTED'",
+      "pass": true,
+      "observed": {
+        "outcome": "CREATED",
+        "text": "UPLOAD PERSISTED (NEW)JPOOL_B94850C439974E27496FE3B1A9A076B5DLL Engineering & Architecture Pool v1 · ACTIVEUPLOADED != SELECTED · select it in the list below"
+      }
+    },
+    {
+      "step": 20,
+      "claim": "toggle reads 'HIDE INTAKE'",
+      "pass": true,
+      "observed": "HIDE INTAKE"
+    },
+    {
+      "step": 20,
+      "claim": "SELECT on the pool",
+      "pass": true,
+      "observed": "SELECT"
+    },
+    {
+      "step": 20,
+      "claim": "URL carries jobPoolUploadId; 3 organizations",
+      "pass": true,
+      "observed": {
+        "url": "/career/demo?investigationMode=PERSON&focus=FIELD&jobPoolUploadId=JPOOL_B94850C439974E27496FE3B1A9A076B5",
+        "orgs": [
+          "syntx-organization-org_kestrel",
+          "syntx-organization-org_aurelion",
+          "syntx-organization-org_brightwater"
+        ]
+      }
+    },
+    {
+      "step": 21,
+      "claim": "body '01 ⬡ KESTREL LOGISTICS SOFTWARE GMBH' at about (873, 170), 175 × 175",
+      "pass": true,
+      "observed": {
+        "box": {
+          "x": 873,
+          "y": 170,
+          "w": 175,
+          "h": 175
+        },
+        "text": "01⬡ Kestrel Logistics Software GmbHLogistics SaaS · HamburgO",
+        "moves": 0
+      }
+    },
+    {
+      "step": 21,
+      "claim": "3 visible role cards (kestrel)",
+      "pass": false,
+      "observed": [
+        "syntx-role-role_aurelion_principal_architect",
+        "syntx-role-role_aurelion_security_engineer",
+        "syntx-role-role_aurelion_backend_interop",
+        "syntx-role-role_brightwater_cloud_platform",
+        "syntx-role-role_brightwater_devops",
+        "syntx-role-role_brightwater_backend_ledger",
+        "syntx-role-role_kestrel_engineering_lead",
+        "syntx-role-role_kestrel_frontend_architect",
+        "syntx-role-role_kestrel_fullstack"
+      ]
+    },
+    {
+      "step": 22,
+      "claim": "card 'SENIOR · L4 · Senior Full-Stack Engineer – Shipment Tracking', orbits, ~219 × 100",
+      "pass": true,
+      "observed": {
+        "text": "SENIOR · L4Senior Full-Stack Engineer – Shipment TrackingWeb Platforms9 REQUIREMENTSNO MATCHING READ",
+        "box": {
+          "x": 630,
+          "y": 650,
+          "w": 219,
+          "h": 100
+        },
+        "moves": 3.59
+      }
+    },
+    {
+      "step": 22,
+      "claim": "pointer click did not land within 5 s, DOM click used",
+      "pass": null,
+      "observed": "fallback"
+    },
+    {
+      "step": 22,
+      "claim": "data-analysis-source NONE; 'PERSON · NO JOB COMPARISON'; 9 requirements",
+      "pass": true,
+      "observed": {
+        "source": "NONE",
+        "support": 9,
+        "reqText": "9 REQUIREMENTS"
+      }
+    },
+    {
+      "step": 23,
+      "claim": "B2 409 ERR_JOB_COMPARISON_NOT_SCOPED; /matches 409 ERR_JOB_POOL_MATCHES_PERSON_ANALYSIS",
+      "pass": true,
+      "observed": {
+        "b2": [
+          409,
+          "{\"success\":false,\"issues\":[{\"code\":\"ERR_JOB_COMPARISON_NOT_SCOPED\"}]}"
+        ],
+        "matches": [
+          409,
+          "{\"error\":{\"code\":\"ERR_JOB_POOL_MATCHES_PERSON_ANALYSIS\",\"message\":\"ERR_JOB_POOL_MATCHES_PERSON_ANALYSIS: ANL_17924236211"
+        ]
+      }
+    },
+    {
+      "step": 24,
+      "claim": "'PERSON × JOB' at about (1276, 82)",
+      "pass": true,
+      "observed": {
+        "box": {
+          "x": 1276,
+          "y": 82,
+          "w": 101,
+          "h": 24
+        },
+        "text": "PERSON × JOB"
+      }
+    },
+    {
+      "step": 24,
+      "claim": "gate locked again until a job is chosen",
+      "pass": true,
+      "observed": "AWAITING_JOB"
+    },
+    {
+      "step": 25,
+      "claim": "'◎ SELECT AS JOB'",
+      "pass": true,
+      "observed": "◎ SELECT AS JOB"
+    },
+    {
+      "step": 25,
+      "claim": "indicator VALID, 'JOB · Senior Full-Stack Engineer – Shipment Tracking · Kestrel Logistics Software GmbH · DLL Engineering & Architecture Pool'",
+      "pass": true,
+      "observed": {
+        "state": "VALID",
+        "text": "JOBSenior Full-Stack Engineer – Shipment TrackingKestrel Logistics Software GmbH · DLL Engineering & Architecture Pool"
+      }
+    },
+    {
+      "step": 26,
+      "claim": "PDF still staged; dock 'INVESTIGATION BOUNDARY · PERSON × JOB'",
+      "pass": true,
+      "observed": "INVESTIGATION BOUNDARY · PERSON × JOB"
+    },
+    {
+      "step": 26,
+      "claim": "the dock names the role (visible text or tooltip)",
+      "pass": false,
+      "observed": {
+        "text": "INVESTIGATION BOUNDARY · PERSON × JOB",
+        "title": "The person inside the scope of the selected job: needs a selected job"
+      }
+    },
+    {
+      "step": 27,
+      "claim": "duration",
+      "pass": null,
+      "observed": "8.0 s"
+    },
+    {
+      "step": 27,
+      "claim": "one new ANALYZE: same pdf, PERSON_X_JOB, jobScope = pool + role",
+      "pass": true,
+      "observed": {
+        "investigation": {
+          "mode": "PERSON_X_JOB"
+        },
+        "jobScope": {
+          "jobPoolUploadId": "JPOOL_B94850C439974E27496FE3B1A9A076B5",
+          "poolRoleId": "role_kestrel_fullstack"
+        },
+        "docs": [
+          "pdf"
+        ]
+      }
+    },
+    {
+      "step": 28,
+      "claim": "JOB_RESULT; 6 SUPPORTED, 1 WEAK, 2 OPEN",
+      "pass": true,
+      "observed": {
+        "all": 9,
+        "SUPPORTED": 6,
+        "WEAK": 1,
+        "OPEN": 2,
+        "other": [
+          "SUPPORTED",
+          "WEAK",
+          "OPEN"
+        ]
+      }
+    },
+    {
+      "step": 29,
+      "claim": "toggle label '◎ B2 COVERAGE'",
+      "pass": true,
+      "observed": "◎ B2 COVERAGE"
+    },
+    {
+      "step": 29,
+      "claim": "AVAILABLE, covered 7, not covered 2, EXACT/TOKEN_CONTAINMENT, scored false, bound to the PxJ analysis ≠ PERSON",
+      "pass": true,
+      "observed": {
+        "state": "AVAILABLE",
+        "covered": "7",
+        "notCovered": "2",
+        "scored": "false",
+        "binding": "ANL_1792423700843_387",
+        "rows": [
+          "COVERED/EXACT",
+          "COVERED/EXACT",
+          "COVERED/EXACT",
+          "COVERED/EXACT",
+          "COVERED/TOKEN_CONTAINMENT",
+          "COVERED/EXACT",
+          "NOT_COVERED/",
+          "NOT_COVERED/",
+          "COVERED/EXACT"
+        ],
+        "text": "B2 · SELECTED ROLE COVERAGEUnconfirmed name coverage of the selected role by the capability proposals of this analysis: counts, never a score.01BINDINGSenior Full-Stack Engineer – Shipment Tracking · Kestrel Logistics Software GmbHANL_1792423700843_387 · RUN_418B7A50835F221F9125ED2F · CONV_13A8472E190C12862637B7D9JPOOL_B94850C439974E27496FE3B1A9A076B5 · v1 · role_kestrel_fullstack · scope 8016b7c10667d472…02REQUIREMENTS OF THE ROLETypeScriptCOVEREDREQUIRED · L4 - Advanced · weight 0.9 · TOOL_TECHNOLOGY · MATCHING_INELIGIBLEby TypeScript · exact name · SOURCE_MATCH_VERIFIED · authority NONEDOC_001“in logistics. Focus on TypeScript, React and Node.js, relational databases and automated testing.”ReactCOVEREDREQUIRED · L4 - Advanced · weight 0.85 · TOOL_TECHNOLOGY · MATCHING_INELIGIBLEby React · exact name · SOURCE_MATCH_VERIFIED · authority NONEDOC_001“in logistics. Focus on TypeScript, React and Node.js, relational databases and automated testing.”Node.jsCOVEREDREQUIRED · L4 - Advanced · weight 0.8 · TOOL_TECHNOLOGY · MATCHING_INELIGIBLEby Node.js · exact name · SOURCE_MATCH_VERIFIED · authority NONEDOC_001“in logistics. Focus on TypeScript, React and Node.js, relational databases and automated testing.”PostgreSQLCOVEREDREQUIRED · L3 - Proficient · weight 0.65 · TOOL_TECHNOLOGY · MATCHING_INELIGIBLEby PostgreSQL · exact name · SOURCE_MATCH_VERIFIED · authority NONEDOC_001“• Designed the PostgreSQL schema for orders and invoices and wrote complex SQL reporting”Event-Driven ArchitectureWEAK · HEURISTICPREFERRED · L3 - Proficient · weight 0.6 · CAPABILITY · MATCHING_ELIGIBLE_PROPOSAL_ONLYby Apache Kafka · token containment (heuristic) · SOURCE_MATCH_VERIFIED · authority NONEDOC_001“• Wrote Python ETL jobs that load shipment events from Apache Kafka into the data warehouse.”Automated TestingCOVEREDREQUIRED · L4 - Advanced · weight 0.7 · CAPABILITY · MATCHING_ELIGIBLE_PROPOSAL_ONLYby Automated Testing · exact name · SOURCE_MATCH_VERIFIED · authority NONEDOC_001“in logistics. Focus on TypeScript, React and Node.js, relational databases and automated testing.”Geospatial VisualisationNOT COVEREDOPTIONAL · L2 - Working · weight 0.3 · CAPABILITY · MATCHING_ELIGIBLE_PROPOSAL_ONLYNot covered is no judgement: no capability proposal of this analysis names this requirement.Web Platform EngineeringNOT COVEREDREQUIRED · 5+ years · weight 0.75 · EXPERIENCE · MATCHING_INELIGIBLENot covered is no judgement: no capability proposal of this analysis names this requirement.EnglishCOVEREDREQUIRED · C1 · weight 0.4 · LANGUAGE · MATCHING_INELIGIBLEby English · exact name · SOURCE_MATCH_VERIFIED · authority NONEDOC_001“German (native), English (C1).”verbatim from the candidate documents03CAPABILITY PROPOSALSAutomated Testing · ATOMIC · covers req_kestrel_fullstack_06Docker · ATOMIC · covers no requirement of this roleTeam Leadership · ATOMIC · covers no requirement of this roleCI/CD · ATOMIC · covers no requirement of this roleKubernetes · ATOMIC · covers no requirement of this roleTypeScript · ATOMIC · covers req_kestrel_fullstack_01Node.js · ATOMIC · covers req_kestrel_fullstack_03PostgreSQL · ATOMIC · covers req_kestrel_fullstack_04English · ATOMIC · covers req_kestrel_fullstack_09React · ATOMIC · covers req_kestrel_fullstack_02Apache Kafka · ATOMIC · covers req_kestrel_fullstack_05Python · ATOMIC · covers no requirement of this role04AUTHORITYscored falseNOT_EVALUATEDauthority NONECAPABILITY_PROPOSAL_NAME_COVERAGE9 requirements · 7 covered · 2 not covered · 12 proposals · VERIFIED_CAPABILITY_SNAPSHOT_ABSENTCounts, not a score: no ranking, no confirmed capability-requirement relation (NOT_EVALUATED)."
+      }
+    },
+    {
+      "step": 30,
+      "claim": "Escape closes B2",
+      "pass": true,
+      "observed": 0
+    },
+    {
+      "step": 31,
+      "claim": "toggle label 'GEMINI OUTPUT'",
+      "pass": true,
+      "observed": "GEMINI OUTPUT"
+    },
+    {
+      "step": 31,
+      "claim": "READ right after opening: moves",
+      "pass": null,
+      "observed": 0
+    },
+    {
+      "step": 31,
+      "claim": "panel opens IDLE (or already AVAILABLE)",
+      "pass": null,
+      "observed": "IDLE"
+    },
+    {
+      "step": 31,
+      "claim": "READ moves on opening",
+      "pass": null,
+      "observed": {
+        "moves": 0,
+        "text": "READ"
+      }
+    },
+    {
+      "step": 31,
+      "claim": "AVAILABLE, RETAINED, chips 'sha256 ✓', 'parser = text ✓', 'STOP', meta video-standin-001 · video-…",
+      "pass": true,
+      "observed": {
+        "analysisId": "ANL_1792423700843_387",
+        "runReused": "false",
+        "original": "RETAINED",
+        "meta": "video-standin-001 · video-discovery-4 · 2026-10-19T15:28:21.512Z · EXC_4107E7177FF4425AB34B8E1A · received for job JOB_1792423700843_387 "
+      }
+    },
+    {
+      "step": 31,
+      "claim": "G-7 data-run-reused present and false",
+      "pass": true,
+      "observed": "false"
+    },
+    {
+      "step": 31,
+      "claim": "data-analysis-id is an ANL_ id",
+      "pass": true,
+      "observed": "ANL_1792423700843_387"
+    },
+    {
+      "step": 31,
+      "claim": "inspector reads the PxJ analysis",
+      "pass": true,
+      "observed": {
+        "inspector": "ANL_1792423700843_387",
+        "b2": "ANL_1792423700843_387"
+      }
+    },
+    {
+      "step": 31,
+      "claim": "SCOPE RETAINED, names role_kestrel_fullstack, says it is no evidence",
+      "pass": true,
+      "observed": {
+        "state": "RETAINED",
+        "noEvidence": false,
+        "text": "01INVESTIGATION SCOPEmode PERSON_X_JOBrole_kestrel_fullstackRUN_418B7A50835F221F9125ED2F · gemini · video-standin-model · discovery-schema-v1 · kernel discovery-v1scope text (system prompt only, never"
+      }
+    },
+    {
+      "step": 32,
+      "claim": "no onboarding again after a deep link in the same profile",
+      "pass": true,
+      "observed": 0
+    },
+    {
+      "step": 32,
+      "claim": "JOB, JOB_MODE, analysis source NONE",
+      "pass": true,
+      "observed": {
+        "mode": "JOB",
+        "gate": "JOB_MODE",
+        "source": "NONE"
+      }
+    },
+    {
+      "step": 33,
+      "claim": "toggle '⬡ JOB STRUCTURE'",
+      "pass": true,
+      "observed": "⬡ JOB STRUCTURE"
+    },
+    {
+      "step": 33,
+      "claim": "10 requirements, 8 findings",
+      "pass": true,
+      "observed": {
+        "reqs": 10,
+        "findings": "8",
+        "sectionFindingCount": "8"
+      }
+    },
+    {
+      "step": 33,
+      "claim": "'JOB_STRUCTURE_V1' visible or in the DOM",
+      "pass": false,
+      "observed": {
+        "visibleHeading": "JOB · STRUCTUREThe selected job as decla",
+        "inDom": false
+      }
+    },
+    {
+      "step": 34,
+      "claim": "NO_GEMINI, 'No Gemini call in this mode'",
+      "pass": true,
+      "observed": {
+        "state": "NO_GEMINI",
+        "text": "GEMINI OUTPUTRead-only inspector of the stored Gemini exchange of this analysis: nothing is started, nothing is stored.N"
+      }
+    },
+    {
+      "step": 35,
+      "claim": "toggle label '◎ B2 COVERAGE'",
+      "pass": true,
+      "observed": "◎ B2 COVERAGE"
+    },
+    {
+      "step": 35,
+      "claim": "B2 as in 29",
+      "pass": true,
+      "observed": {
+        "state": "AVAILABLE",
+        "covered": "7",
+        "notCovered": "2",
+        "scored": "false",
+        "binding": "ANL_1792423700843_387",
+        "rows": [
+          "COVERED/EXACT",
+          "COVERED/EXACT",
+          "COVERED/EXACT",
+          "COVERED/EXACT",
+          "COVERED/TOKEN_CONTAINMENT",
+          "COVERED/EXACT",
+          "NOT_COVERED/",
+          "NOT_COVERED/",
+          "COVERED/EXACT"
+        ],
+        "text": "B2 · SELECTED ROLE COVERAGEUnconfirmed name coverage of the selected role by the capability proposals of this analysis: counts, never a score.01BINDINGSenior Full-Stack Engineer – Shipment Tracking · Kestrel Logistics Software GmbHANL_1792423700843_387 · RUN_418B7A50835F221F9125ED2F · CONV_13A8472E190C12862637B7D9JPOOL_B94850C439974E27496FE3B1A9A076B5 · v1 · role_kestrel_fullstack · scope 8016b7c10667d472…02REQUIREMENTS OF THE ROLETypeScriptCOVEREDREQUIRED · L4 - Advanced · weight 0.9 · TOOL_TECHNOLOGY · MATCHING_INELIGIBLEby TypeScript · exact name · SOURCE_MATCH_VERIFIED · authority NONEDOC_001“in logistics. Focus on TypeScript, React and Node.js, relational databases and automated testing.”ReactCOVEREDREQUIRED · L4 - Advanced · weight 0.85 · TOOL_TECHNOLOGY · MATCHING_INELIGIBLEby React · exact name · SOURCE_MATCH_VERIFIED · authority NONEDOC_001“in logistics. Focus on TypeScript, React and Node.js, relational databases and automated testing.”Node.jsCOVEREDREQUIRED · L4 - Advanced · weight 0.8 · TOOL_TECHNOLOGY · MATCHING_INELIGIBLEby Node.js · exact name · SOURCE_MATCH_VERIFIED · authority NONEDOC_001“in logistics. Focus on TypeScript, React and Node.js, relational databases and automated testing.”PostgreSQLCOVEREDREQUIRED · L3 - Proficient · weight 0.65 · TOOL_TECHNOLOGY · MATCHING_INELIGIBLEby PostgreSQL · exact name · SOURCE_MATCH_VERIFIED · authority NONEDOC_001“• Designed the PostgreSQL schema for orders and invoices and wrote complex SQL reporting”Event-Driven ArchitectureWEAK · HEURISTICPREFERRED · L3 - Proficient · weight 0.6 · CAPABILITY · MATCHING_ELIGIBLE_PROPOSAL_ONLYby Apache Kafka · token containment (heuristic) · SOURCE_MATCH_VERIFIED · authority NONEDOC_001“• Wrote Python ETL jobs that load shipment events from Apache Kafka into the data warehouse.”Automated TestingCOVEREDREQUIRED · L4 - Advanced · weight 0.7 · CAPABILITY · MATCHING_ELIGIBLE_PROPOSAL_ONLYby Automated Testing · exact name · SOURCE_MATCH_VERIFIED · authority NONEDOC_001“in logistics. Focus on TypeScript, React and Node.js, relational databases and automated testing.”Geospatial VisualisationNOT COVEREDOPTIONAL · L2 - Working · weight 0.3 · CAPABILITY · MATCHING_ELIGIBLE_PROPOSAL_ONLYNot covered is no judgement: no capability proposal of this analysis names this requirement.Web Platform EngineeringNOT COVEREDREQUIRED · 5+ years · weight 0.75 · EXPERIENCE · MATCHING_INELIGIBLENot covered is no judgement: no capability proposal of this analysis names this requirement.EnglishCOVEREDREQUIRED · C1 · weight 0.4 · LANGUAGE · MATCHING_INELIGIBLEby English · exact name · SOURCE_MATCH_VERIFIED · authority NONEDOC_001“German (native), English (C1).”verbatim from the candidate documents03CAPABILITY PROPOSALSAutomated Testing · ATOMIC · covers req_kestrel_fullstack_06Docker · ATOMIC · covers no requirement of this roleTeam Leadership · ATOMIC · covers no requirement of this roleCI/CD · ATOMIC · covers no requirement of this roleKubernetes · ATOMIC · covers no requirement of this roleTypeScript · ATOMIC · covers req_kestrel_fullstack_01Node.js · ATOMIC · covers req_kestrel_fullstack_03PostgreSQL · ATOMIC · covers req_kestrel_fullstack_04English · ATOMIC · covers req_kestrel_fullstack_09React · ATOMIC · covers req_kestrel_fullstack_02Apache Kafka · ATOMIC · covers req_kestrel_fullstack_05Python · ATOMIC · covers no requirement of this role04AUTHORITYscored falseNOT_EVALUATEDauthority NONECAPABILITY_PROPOSAL_NAME_COVERAGE9 requirements · 7 covered · 2 not covered · 12 proposals · VERIFIED_CAPABILITY_SNAPSHOT_ABSENTCounts, not a score: no ranking, no confirmed capability-requirement relation (NOT_EVALUATED)."
+      }
+    },
+    {
+      "step": 36,
+      "claim": "toggle label '◎ B2 COVERAGE'",
+      "pass": true,
+      "observed": "◎ B2 COVERAGE"
+    },
+    {
+      "step": 36,
+      "claim": "NOT_SCOPED, 'This analysis is a PERSON analysis: no job comparison.'",
+      "pass": true,
+      "observed": {
+        "state": "NOT_SCOPED",
+        "covered": "",
+        "notCovered": "",
+        "scored": "false",
+        "binding": "",
+        "rows": [],
+        "text": "B2 · SELECTED ROLE COVERAGEUnconfirmed name coverage of the selected role by the capability proposals of this analysis: counts, never a score.This analysis is a PERSON analysis: no job comparison."
+      }
+    },
+    {
+      "step": 99,
+      "claim": "no page error",
+      "pass": true,
+      "observed": []
+    },
+    {
+      "step": 99,
+      "claim": "no non-GET besides ANALYZE and the pool upload",
+      "pass": true,
+      "observed": []
+    }
+  ]
+}

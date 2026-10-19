@@ -1,0 +1,45 @@
+// PINK: independent check of the committed live-Gemini evidence (de21f2b) against the handoff, offline, no Gemini.
+//   node pink-live-check.mjs <dir with the committed results files> <cv text (pdftotext, raw)> <cv text (pdftotext -layout)>
+import { readFileSync } from "node:fs";
+import { createHash } from "node:crypto";
+const [D, CV1, CV2] = process.argv.slice(2);
+const read = f => readFileSync(`${D}/${f}`, "utf8");
+const norm = s => s.replace(/\s+/g, " ").trim();
+const cv = [norm(readFileSync(CV1, "utf8")), norm(readFileSync(CV2, "utf8"))];
+const out = []; let ok = 0, all = 0; const R = (id, claim, pass, obs) => { all += 1; if (pass) ok += 1; out.push(`${pass ? "ok  " : "DIFF"} ${id} ${claim} :: ${JSON.stringify(obs)}`); };
+const relay = read("live-104410d-1920-relay.jsonl").trim().split("\n").map(l => JSON.parse(l));
+const sums = Object.fromEntries(read("live-104410d-1920-private-SHA256SUMS.txt").trim().split("\n").map(l => l.split(/\s+/).reverse()));
+const j = JSON.parse(read("live-104410d-1920-summary.json")), w = JSON.parse(read("live-104410d-1920.json"));
+R("L-1", "relay: 6 calls, all forwarded 200, one model, kinds D/C/L twice, budget left 2", relay.length === 6 && relay.every(r => r.forwarded && r.status === 200) && new Set(relay.map(r => r.path)).size === 1 && relay.map(r => r.kind[0]).join("") === "DCLDCL" && relay.at(-1).budgetLeft === 2, { path: relay[0].path, kinds: relay.map(r => r.kind), left: relay.at(-1).budgetLeft, ms: relay.map(r => r.ms) });
+R("L-2", "relay: scope block only on the PERSON × JOB discovery", relay.map(r => r.scopeBlock).join() === "false,false,false,true,false,false", relay.map(r => r.scopeBlock));
+R("L-3", "relay.jsonl in the repo equals the private one (SHA256SUMS)", createHash("sha256").update(read("live-104410d-1920-relay.jsonl")).digest("hex") === sums["relay.jsonl"], sums["relay.jsonl"]);
+R("L-4", "O-LIVE-3: both LEGACY requests the same size (no scope in the legacy prompt)", relay[2].requestBytes === relay[5].requestBytes, [relay[2].requestBytes, relay[5].requestBytes]);
+const all3 = JSON.stringify([j, w, relay, read("live-104410d-1920-net.jsonl")]);
+R("L-5", "no key, worker placeholder, inspector token or local path in the committed files", !/AIza[0-9A-Za-z_-]{20,}|video-lab-worker-|\/home\/|\/tmp\/|"token"/.test(all3), null);
+R("L-6", "net: only Next's npm version check, refused", read("live-104410d-1920-net.jsonl").trim().split("\n").every(l => JSON.parse(l).target.includes("registry.npmjs.org")), read("live-104410d-1920-net.jsonl").trim().split("\n").length);
+R("W-1", "walk LIVE 1920 × 1080, 30/30, no page error", w.gemini === "LIVE" && w.viewport === "1920x1080" && w.results.every(r => r.pass) && w.results.length === 30, { timings: w.timings });
+R("W-2", "ANALYZE bodies: PERSON without jobScope, then PERSON_X_JOB with exactly this pool and role", JSON.stringify(w.analyzeBodies.map(b => [b.investigation, b.jobScope])) === JSON.stringify([[{ mode: "PERSON" }, null], [{ mode: "PERSON_X_JOB" }, { jobPoolUploadId: "JPOOL_B94850C439974E27496FE3B1A9A076B5", poolRoleId: "role_kestrel_fullstack" }]]), w.analyzeBodies.map(b => b.investigation.mode));
+R("W-3", "walk and summary name the same two analyses", w.personAnalysis === j.person.analysisId && w.pxjAnalysis === j.personXJob.analysisId, [w.personAnalysis, w.pxjAnalysis]);
+for (const [k, label] of [["person", "PERSON"], ["personXJob", "PxJ"]]) {
+  const a = j[k], d = a.discoveryResponse;
+  R(`G-1 ${label}`, "provenance: real model version, responseId not video-…", d.modelVersion === "gemini-3.1-pro-preview" && !/^video-/.test(d.responseId), [d.modelVersion, d.responseId]);
+  R(`G-2 ${label}`, "RETAINED, sha256 and parser = text", d.state === "RETAINED" && d.textMatchesSha256 && d.parserResultMatchesText, [d.state, d.textMatchesSha256, d.parserResultMatchesText]);
+  R(`G-3 ${label}`, "finishReason STOP", d.finishReason === "STOP", d.finishReason);
+  const quotes = [...a.proposedByModel, ...a.projection].flatMap(c => c.quotes);
+  const miss = quotes.filter(q => !cv.some(t => t.includes(norm(q))));
+  R(`G-4 ${label}`, "every evidence quote stands verbatim in cv.synthetic.pdf", miss.length === 0, { quotes: quotes.length, notVerbatim: miss });
+  const statuses = a.verification.flatMap(v => v.claims.map(c => c.verdict));
+  R(`G-5 ${label}`, "every claim has a status; projection = verified candidates", statuses.every(s => s) && a.projection.length === a.verification.filter(v => v.status === "EVIDENCE_PASSED").length, { claims: statuses.length, statuses: [...new Set(statuses)], proposed: a.proposedByModel.length, projection: a.projection.length });
+  R(`G-6 ${label}`, label === "PERSON" ? "scope UNSCOPED" : "scope RETAINED with the role, text matches hash", label === "PERSON" ? a.input.scopeState === "UNSCOPED" : a.input.scopeState === "RETAINED" && a.input.scopeTextMatchesHash === true && a.input.jobScopeSelection?.poolRoleId === "role_kestrel_fullstack", [a.input.scopeState, a.input.scopeTextMatchesHash]);
+  R(`G-7 ${label}`, "discovery run not reused", a.input.reused === false, a.input.reused);
+}
+R("G-8", "B2: PERSON 409 NOT_SCOPED; PxJ 9 requirements, 8 covered, 1 not", j.person.httpStatus.b2 === 409 && JSON.stringify(j.person.b2).includes("ERR_JOB_COMPARISON_NOT_SCOPED") && j.personXJob.b2.counts.covered === 8 && j.personXJob.b2.counts.notCovered === 1, j.personXJob.b2.counts);
+const reqs = j.personXJob.b2.requirements.map(r => r.capability), pxjNames = j.personXJob.proposedByModel.map(c => c.name);
+R("O-LIVE-1", "PxJ proposals named exactly like the role's requirements; every B2 basis EXACT", pxjNames.every(n => reqs.includes(n)) && j.personXJob.b2.requirements.filter(r => r.coverage === "COVERED").every(r => r.matchBasis === "EXACT"), { equal: `${pxjNames.filter(n => reqs.includes(n)).length}/${pxjNames.length}`, personEqual: j.person.proposedByModel.filter(c => reqs.includes(c.name)).length, examples: ["Event-Driven Architecture", "Web Platform Engineering", "English"].map(n => [n, j.personXJob.proposedByModel.find(c => c.name === n)?.quotes]) });
+R("O-LIVE-3", "legacy capabilities differ between the two runs", null === null, j.person.legacyAnalysis.capabilities.length !== j.personXJob.legacyAnalysis.capabilities.length ? [j.person.legacyAnalysis.capabilities.map(c => c.name), j.personXJob.legacyAnalysis.capabilities.map(c => c.name)] : "same");
+R("O-LIVE-4", "nothing rejected", [j.person, j.personXJob].every(a => a.verification.every(v => v.status === "EVIDENCE_PASSED")), null);
+R("X-1", "exchange archive: one COMPLETED exchange per job, attempt 1 lease 1, STOP, sha ok", j.exchanges.every(x => x.exchanges.length === 1 && x.exchanges[0].outcome === "COMPLETED" && x.exchanges[0].attempt.leaseVersion === 1 && x.exchanges[0].finishReason === "STOP" && x.exchanges[0].textMatchesSha256), j.exchanges.map(x => x.jobId));
+const strings = []; const walk = (v, p) => { if (typeof v === "string") { if (v.length > 60 && !cv.some(t => t.includes(norm(v))) && !/^[0-9a-f]{64}$/.test(v)) strings.push(p); } else if (v && typeof v === "object") for (const [x, y] of Object.entries(v)) walk(y, `${p}.${x}`); };
+walk(j, "");
+R("S-1", "summary carries no free text beyond CV quotes, names and hashes", strings.length === 0, strings);
+console.log(out.join("\n")); console.log(`${ok}/${all}`);
