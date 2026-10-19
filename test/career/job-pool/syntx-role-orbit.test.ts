@@ -2,7 +2,8 @@ import { describe, expect, it } from "vitest";
 import { compactRoleOrbit, monoLineSize, ROLE_CARD_FOOTER, ROLE_ORBIT_CARD_GAP, ROLE_ORBIT_CARD_HEIGHT_ALLOWANCE, ROLE_ORBIT_CENTRE_CLEARANCE, roleCardBox, roleSeniorityParts, syntxCosmosLayout, syntxCosmosPacking } from "../../../lib/career/job-pool/syntx-manifestation-layout";
 import type { CapabilityCosmosLayout } from "../../../lib/career/view-model/capability-cosmos-layout";
 
-/* ROLE ORBIT REFINEMENT (owner "SFE — GRÜN | ROLE ORBIT REFINEMENT", 2026-10-18; "… — SECOND VISUAL REFINEMENT", 2026-10-19): the
+/* The geometry readings below run for seconds; under a loaded machine they get 30 s instead of the default 5 s.
+ * ROLE ORBIT REFINEMENT (owner "SFE — GRÜN | ROLE ORBIT REFINEMENT", 2026-10-18; "… — SECOND VISUAL REFINEMENT", 2026-10-19): the
  * organization cosmos' role orbit drawn in to the smallest orbit its geometry carries; cards, order, phases and periods unchanged. */
 const TITLES = ["Senior Full-Stack Engineer – Shipment Tracking", "Platform Reliability Engineer", "Data Engineer", "Engineering Manager, Payments Infrastructure and Settlement", "QA Lead", "Product Designer", "Machine Learning Engineer (Ranking)", "DevOps Engineer", "Security Analyst", "Frontend Engineer", "Backend Engineer (Go)", "Technical Writer", "Solutions Architect", "Site Reliability Engineer II"];
 /** PINK §3.45 D-RO-1: long and short title sets, where the least air between neighbours fell between the 5° checks. */
@@ -82,7 +83,7 @@ describe("role orbit refinement (organization cosmos)", () => {
       expect(outer.radiusY * compactness.y).toBeLessThanOrEqual(outer.radiusX * compactness.x + 1e-9);
     }
     expect(edges).toBeGreaterThan(100);
-  });
+  }, 30_000);
 
   it("keeps every card, its title, size, order, phase and orbit, every orbit its period and the centre; only the radii change", () => {
     for (const [width, height] of BOXES) for (const count of COUNTS) {
@@ -111,7 +112,7 @@ describe("role orbit refinement (organization cosmos)", () => {
       expect(separation(layout, false, [0]), label).toBeGreaterThanOrEqual(Math.min(0, separation(before, false, [0])) - 0.01);
     }
     expect(drawnIn).toBeGreaterThan(60);
-  });
+  }, 30_000);
 
   it("keeps the air across orbits in every phase pair, never closer than the packing in motion (tall level boxes, PINK D-RO-2)", () => {
     /** Every degree of either orbit, offset from the layout's quarter-degree readings: the orbits turn at their own periods, so a
@@ -169,7 +170,7 @@ describe("role orbit refinement (organization cosmos)", () => {
       }
     }
     expect(drawnIn).toBeGreaterThan(100);
-  });
+  }, 30_000);
 
   it("stays as packed where the geometry leaves no room, and for the static grid fallback and an empty organization", () => {
     const crowded = packed(14, 1600, 740);

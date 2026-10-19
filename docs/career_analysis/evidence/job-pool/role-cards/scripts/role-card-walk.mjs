@@ -4,7 +4,8 @@
 // matching read each on their own line — inside exactly the box the accepted orbit (e6493a7) keeps its air for (estimate + 12 px), so
 // the orbit, its air, motion and navigation stay as accepted. The orbit checks (O-*, N-*, R-1, E-1) are the role orbit walk's
 // (../../role-orbit/scripts/role-orbit-walk.mjs); O-8 now holds the orbit to the accepted one, C-* read the cards. Footer readability
-// (owner "SFE — GRÜN | ROLE CARDS — FOOTER READABILITY"): C-7 reads every card in German too, C-8 the footer's size.
+// (owner "SFE — GRÜN | ROLE CARDS — FOOTER READABILITY"): C-7 reads every card in German too, C-8 the footer's size. PINK's findings
+// on ae633a1: C-9 the card clips nothing (anchor lamp and stub whole), C-10 dense titles and long statements (./dense-pool.mjs).
 // Run from the repository root. Playwright: CONDYN_PLAYWRIGHT_MODULE, else resolved from the repository.
 // argv: <out dir> <lab state.json> [width height]
 import { existsSync, readFileSync, writeFileSync } from "node:fs";
@@ -12,6 +13,7 @@ import { createRequire } from "node:module";
 import { resolve as resolvePath } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { scalePool } from "../../role-orbit/scripts/scale-pool.mjs";
+import { densePool } from "./dense-pool.mjs";
 const playwright = await import(pathToFileURL(process.env.CONDYN_PLAYWRIGHT_MODULE || createRequire(resolvePath(process.cwd(), "package.json")).resolve("playwright")).href);
 const { chromium } = playwright.chromium ? playwright : playwright.default;
 const [OUT, STATE, W = "1600", H = "1000"] = process.argv.slice(2);
@@ -25,8 +27,15 @@ if (!SP) {
   const response = await (await fetch(`${BASE}/api/career/job-pools`, { method: "POST", headers: { "content-type": "application/json", "x-condyn-principal-actor-id": "GRUEN_ORBIT_LAB" }, body: JSON.stringify(scalePool(st.database.slice(-8))) })).json();
   SP = response.jobPoolUploadId ?? response.upload?.jobPoolUploadId; writeFileSync(poolFile, SP);
 }
+// The dense pool (titles needing more lines than counted, long seniorities and domains), uploaded once per lab like the scale pool.
+const denseFile = `${STATE}.${st.database}.dense-pool`;
+let DP = existsSync(denseFile) ? readFileSync(denseFile, "utf8").trim() : null;
+if (!DP) {
+  const response = await (await fetch(`${BASE}/api/career/job-pools`, { method: "POST", headers: { "content-type": "application/json", "x-condyn-principal-actor-id": "GRUEN_ORBIT_LAB" }, body: JSON.stringify(densePool(st.database.slice(-8))) })).json();
+  DP = response.jobPoolUploadId ?? response.upload?.jobPoolUploadId; writeFileSync(denseFile, DP);
+}
 // What the pools state of each role (seniority, domain focus): the DLL engineering pool and the scale pool, as uploaded by the lab.
-const STATED = new Map([...JSON.parse(readFileSync(resolvePath(process.cwd(), "docs/examples/job-pool-tests/DLL_JOBPOOL_ENGINEERING.json"), "utf8")).roles, ...scalePool(st.database.slice(-8)).roles].map(role => [role.id, role]));
+const STATED = new Map([...JSON.parse(readFileSync(resolvePath(process.cwd(), "docs/examples/job-pool-tests/DLL_JOBPOOL_ENGINEERING.json"), "utf8")).roles, ...scalePool(st.database.slice(-8)).roles, ...densePool(st.database.slice(-8)).roles].map(role => [role.id, role]));
 const CASES = [[st.engineeringUploadId, "org_kestrel", 3], [st.validationUploadId, "org_pink_alpha", 1], ...[1, 2, 3, 5, 8, 14].map(n => [SP, `org_orbit_${n}`, n]), [SP, "org_orbit_long_8", 8], [SP, "org_orbit_short_12", 12]];
 const results = []; const ok = (name, cond, extra = "") => results.push(`${cond ? "PASS" : "FAIL"} ${name}${extra ? " — " + extra : ""}`);
 const browser = await chromium.launch();
@@ -114,7 +123,11 @@ const readCards = page => page.evaluate(() => {
     const top = Math.min(...flow.map(e => e.getBoundingClientRect().top)) - parseFloat(getComputedStyle(flow[0]).marginTop), bottom = Math.max(...flow.map(e => e.getBoundingClientRect().bottom));
     const part = name => card.querySelector(`[data-sx-role-${name}]`);
     const title = part("title"), lineHeight = parseFloat(getComputedStyle(title).lineHeight);
-    const cut = [part("domain"), part("requirements"), part("matching")?.lastElementChild, part("standing")?.children[2]].filter(Boolean).some(e => e.scrollWidth > e.clientWidth + 1);
+    const overruns = e => e.scrollWidth > e.clientWidth + 1;
+    // The footer lines are never cut; the standing and the domain may end in "…" only with their full text as tooltip.
+    const cut = [part("requirements"), part("matching")?.lastElementChild].filter(Boolean).some(overruns);
+    const labels = [part("standing")?.children[2], part("domain")].filter(Boolean);
+    const labelCut = labels.filter(overruns).length, labelCutWithoutTip = labels.filter(e => overruns(e) && !e.getAttribute("title")).length;
     const centre = box.left + box.width / 2;
     return {
       id: card.getAttribute("data-testid").replace("syntx-role-", ""), w: box.width, h: box.height, lines: Number(card.getAttribute("data-card-title-lines")), form: card.getAttribute("data-card-box"),
@@ -122,6 +135,7 @@ const readCards = page => page.evaluate(() => {
       room: box.height - parseFloat(cs.paddingTop) - parseFloat(cs.paddingBottom) - parseFloat(cs.borderTopWidth) - parseFloat(cs.borderBottomWidth), content: bottom - top,
       offCentre: Math.max(...flow.map(e => { const r = e.getBoundingClientRect(); return Math.abs(r.left + r.width / 2 - centre); })), align: cs.textAlign,
       standing: part("standing").textContent.trim(), domain: part("domain")?.textContent ?? null, requirements: part("requirements").textContent, matching: part("matching").textContent,
+      labelCut, labelCutWithoutTip, clips: cs.overflow !== "visible" || cs.overflowX !== "visible" || cs.overflowY !== "visible", titleSize: parseFloat(getComputedStyle(title).fontSize), titleTip: title.getAttribute("title"),
       footerPx: Math.min(parseFloat(getComputedStyle(part("requirements")).fontSize), parseFloat(getComputedStyle(part("matching")).fontSize)),
       requirementCount: Number(card.getAttribute("data-requirement-count")), matchingRead: card.getAttribute("data-matching-read") === "true",
       contrast: { title: contrast(title), domain: part("domain") ? contrast(part("domain")) : null, standing: contrast(part("standing").children[2]), requirements: contrast(part("requirements")), matching: contrast(part("matching")) }
@@ -146,7 +160,7 @@ for (const [pool, org, count] of CASES) {
   // Drawn in: the box every air is measured on (estimate + 12 px); left as packed: the packing's own estimate.
   const drawnIn = m.compactness.some(v => v !== "1.00");
   ok(`C-1 ${label}: every card is drawn at exactly the box its orbit keeps its air for (${drawnIn ? "estimate + 12 px" : "the packing's estimate"}), its title in the lines the layout counted`, cards.every(c => c.form === (drawnIn ? "orbit" : "packed") && Math.abs(c.h - (Math.min(126, Math.max(72, 52 + 18 * c.lines)) + (drawnIn ? 12 : 0))) < 0.5 && c.titleLines <= c.lines), cards.map(c => `${Math.round(c.w)}×${c.h}/${c.titleLines}`).join(" "));
-  ok(`C-2 ${label}: everything fits — no title, standing, domain or line clipped, the content within the card's room`, cards.every(c => !c.clipped && c.content <= c.room + 0.5), `least room ${Math.min(...cards.map(c => c.room - c.content)).toFixed(1)} px`);
+  ok(`C-2 ${label}: everything fits — no title, standing, domain or line clipped, the content within the card's room`, cards.every(c => !c.clipped && c.labelCut === 0 && c.content <= c.room + 0.5), `least room ${Math.min(...cards.map(c => c.room - c.content)).toFixed(1)} px`);
   ok(`C-3 ${label}: centred — every line on the card's axis (± 1 px)`, cards.every(c => c.align === "center" && c.offCentre <= 1), `${Math.max(...cards.map(c => c.offCentre)).toFixed(2)} px`);
   const stated = cards.filter(c => STATED.has(c.id));
   ok(`C-4 ${label}: the card states what the pool states — standing (seniority parts), domain focus, requirement count and the matching read`, stated.every(c => { const role = STATED.get(c.id); const parts = (role.seniority ?? "").split("/").map(p => p.trim()).filter(Boolean); return c.standing === (parts.length ? parts.map(p => p.toUpperCase()).join(" · ") : "ROLE") && c.domain === (c.form === "orbit" ? role.domain_focus || null : null); }) && cards.every(c => c.requirements === `${c.requirementCount} ${c.requirementCount === 1 ? "REQUIREMENT" : "REQUIREMENTS"}` && c.matching === (c.matchingRead ? "MATCHING READ" : "NO MATCHING READ")), `${stated.length} of ${cards.length} against the pool file`);
@@ -204,6 +218,12 @@ for (const [pool, org, count] of CASES) {
   const a = await measure(still); await still.waitForTimeout(1500); const b = await measure(still);
   const live = rows.find(r => r.org === "org_kestrel");
   ok("R-1 reduced motion: the same compactness and orbit, the cards hold still", a.compactness.join() === live.compactness.join() && a.orbits.join() === live.orbits.join() && a.meanDistance === b.meanDistance && a.centreGap === b.centreGap, `${a.compactness.join("/")} ${a.orbits.join(" ")}`);
+  ok("C-9 no card clips anything it draws: the anchor lamp and its stub stay whole (overflow visible)", allCards.every(c => !c.clips), `${allCards.filter(c => c.clips).length} clipping`);
+  // Dense titles and long statements: every line within the card, the title in its counted lines (smaller, never below 10 px, instead of
+  // cut), the full title in its tooltip; standing and domain may end in "…" only with the full text in theirs.
+  const dense = [];
+  for (const org of ["org_cards_dense", "org_cards_narrow"]) { await enterOrganization(page, DP, org); await page.waitForTimeout(600); dense.push(...(await readCards(page)).map(c => ({ org, ...c }))); await page.screenshot({ path: `${OUT}/${TAG}-${org}-${W}.png` }); }
+  ok("C-10 dense titles and long statements: nothing clipped, the content within the card's room, the title ≥ 10 px in its counted lines with its full text as tooltip, the standing and domain as the pool states them", dense.length === 7 && dense.every(c => !c.clipped && c.labelCutWithoutTip === 0 && !c.clips && c.content <= c.room + 0.5 && c.titleSize >= 10 && c.titleLines <= c.lines && c.titleTip === STATED.get(c.id).title) && dense.every(c => c.form !== "orbit" || c.domain === STATED.get(c.id).domain_focus), dense.map(c => `${c.id.replace("role_cards_", "")}:${Math.round(c.w)}w ${c.titleSize}px ${c.titleLines}/${c.lines}${c.labelCut ? ` …${c.labelCut}` : ""}`).join(" "));
   ok("C-8 English: the footer (requirements, matching read) reads at 8.5 px on every card (formerly 7.5 px)", allCards.every(c => c.footerPx >= 8.5), `${Math.min(...allCards.map(c => c.footerPx))} px`);
   // German: the longer copy (ANFORDERUNGEN, KEIN MATCHING GELESEN) fits every card as well (the locale is switched in the System Codex).
   const german = await open("/career/demo?focus=FIELD");
@@ -215,7 +235,7 @@ for (const [pool, org, count] of CASES) {
     deCards.push(...(await readCards(german)).map(c => ({ org, ...c })));
   }
   await german.screenshot({ path: `${OUT}/${TAG}-de-${CASES[CASES.length - 1][1]}-${W}.png` });
-  ok("C-7 German: every card fits — nothing clipped, the content within the card's room, the footer never smaller than the former 7.5 px", deCards.length === allCards.length && deCards.every(c => !c.clipped && c.content <= c.room + 0.5 && c.footerPx >= 7.5) && deCards.some(c => c.matching.includes("GELESEN")), `${deCards.length} cards, least room ${Math.min(...deCards.map(c => c.room - c.content)).toFixed(1)} px, footer ${Math.min(...deCards.map(c => c.footerPx))} – ${Math.max(...deCards.map(c => c.footerPx))} px (${deCards.filter(c => c.footerPx >= 8.5).length} at 8.5)${deCards.filter(c => c.clipped).length ? `, clipped ${deCards.filter(c => c.clipped).map(c => `${c.org}:${Math.round(c.w)}`).join(" ")}` : ""}`);
+  ok("C-7 German: every card fits — nothing clipped, the content within the card's room, the footer never smaller than the former 7.5 px", deCards.length === allCards.length && deCards.every(c => !c.clipped && c.labelCutWithoutTip === 0 && c.content <= c.room + 0.5 && c.footerPx >= 7.5) && deCards.some(c => c.matching.includes("GELESEN")), `${deCards.length} cards, least room ${Math.min(...deCards.map(c => c.room - c.content)).toFixed(1)} px, footer ${Math.min(...deCards.map(c => c.footerPx))} – ${Math.max(...deCards.map(c => c.footerPx))} px (${deCards.filter(c => c.footerPx >= 8.5).length} at 8.5)${deCards.filter(c => c.clipped).length ? `, clipped ${deCards.filter(c => c.clipped).map(c => `${c.org}:${Math.round(c.w)}`).join(" ")}` : ""}`);
   ok("E-1 no page errors", errors.length === 0, errors.slice(0, 2).join(" | "));
 }
 writeFileSync(`${OUT}/${TAG}-measure-${W}.json`, `${JSON.stringify({ viewport: `${W}×${H}`, tag: TAG, rows, cards: allCards }, null, 1)}\n`);

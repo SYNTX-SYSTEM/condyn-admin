@@ -54,3 +54,14 @@ and a German shot (`after-de-org_orbit_short_12-*.png`).
 | room left on a one-line card | 1.6 px | 1.2 px (the divider's air 7 → 5 px) |
 
 The card's box, the orbit and every air are unchanged.
+
+## PINK's findings on ae633a1 (`footer/`, `scripts/dense-pool.mjs`)
+
+| Finding | Cause | Now |
+|---|---|---|
+| anchor lamp and stub cut at the card's edge (PINK: 308 of 318 cards) | `button { overflow: hidden }` in `globals.css` and the card's own `overflow: hidden` | the card sets `overflow: visible` (C-9: 0 cards clip) |
+| dense titles cut with "…" where the estimate counts too few lines | the card's box keeps the estimate's lines | the title reads smaller after layout, in half pixels down to 10 px (C-10: "QA LEAD – EMEA OPERATIONS MANAGEMENT" 10.5 px in 2 lines at 197 px) |
+| `SENIOR · L4` and long domains end in "…" on 128 px cards | the standing's hairlines did not yield | the hairlines yield first (`SENIOR · L4` fits); standing, domain and title carry their full text as tooltip |
+
+The walk uploads a second synthetic pool (`dense-pool.mjs`: three dense titles, four roles on 128 px cards with long seniorities and
+domains) and reads it in C-10.

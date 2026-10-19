@@ -1584,7 +1584,9 @@ card's footer — the requirement count and the matching read — was too small;
   `KEIN MATCHING GELESEN` needs 113 px at 8.5 px — more than the narrowest cards offer; at 7.5 px it was already cut there (ae633a1,
   measured in English only). `monoLineSize` gives the largest size up to 8.5 px, in quarter pixels, at which a line of monospaced
   capitals (0.6 em advance plus its letter spacing) fits the line's width; both footer lines of a card take the smaller of their two
-  sizes. English: 8.5 px on every card. German: 8.5 px from 136 px wide, 8.25 px at 133 px, 7.75 px at 128 px — never below the former 7.5.
+  sizes. English: 8.5 px on every card. German on the full cards: 8.5 px from 136 px wide, 8.25 px at 133 px, 7.75 px at 128 px — never
+  below the former 7.5; on the compact packings' 120 px cards 7.5 px, as before (GELB). `monoLineSize` has no floor: a much longer
+  translation would read smaller, which a copy change has to keep in view.
 - **Geometry.** Unchanged: the card's box (§13.2.33) is the same; the larger lines fit in it because the divider's air gave 2 px back
   (least room on a one-line card 1.6 → 1.2 px). The orbit, its air, the motion and the navigation are those of `e6493a7` / `ae633a1`.
 
@@ -1596,6 +1598,31 @@ card's footer — the requirement count and the matching read — was too small;
   (English footer at 8.5 px on every card) and C-7 (German: 57 cards, nothing clipped, footer 7.75 – 8.5 px, 45 at 8.5); contrast
   requirements 12.6 → 15.3, matching 6.7 → 10.7 : 1; the orbit equal to the accepted one (O-8), air as before (C-6).
 - **Regression.** tsc 0; ESLint: no new finding; regression 69 files / 511 green; workflow e2e 10/10 ×2.
+
+#### 13.2.35 Role cards — PINK's findings on ae633a1 (2026-10-19)
+
+On `frontend/role-card-footer` over `6f9bc2b`. PINK (preliminary, probe df26269 = b823f68 + ae633a1, PINK's own pool of 22
+organizations with real, long, short, stress and random titles): the card box, centring, texts and the orbit hold; two rendered findings.
+
+- **Anchor lamp and stub cut.** The global rule `button { overflow: hidden }` (`globals.css`, for a hover ripple the field switches off)
+  and ae633a1's own `overflow: hidden` cut the outer half of the anchor lamp and the 16 px stub towards the centre (PINK: 308 of 318
+  cards). The role card now sets `overflow: visible`; every line keeps its own bound (the title its line clamp, the one-line texts
+  their ellipsis), and the content stays within the card's room (C-2).
+- **Dense titles cut.** The packing's estimate counts a title's lines from its length (7.2 px per character); dense words need more
+  (PINK: "QA LEAD – EMEA OPERATIONS MANAGEMENT", counted 2, needs 3; 4 titles, 18 renderings), and ae633a1 cut them with "…".
+  `RoleCardTitle` keeps the counted lines (the card's box, which every air is measured on, stays) and, measured after layout on the
+  drawn text, reads such a title a little smaller — in half pixels, down to 10 px; only where even 10 px does not fit does it end in
+  "…". The full title is the title's tooltip (and, as before, in the card's label).
+- **One-line texts.** The standing's hairlines yield first (`SENIOR · L4` fits the 128 px cards), and the standing and the domain carry
+  their full text as tooltip where they end in "…" (PINK's observation).
+
+**Proof.** `syntx-field-ssr.test.tsx` (11): the card `overflow:visible`, the title's tooltip and base size. Lab walk
+(`evidence/job-pool/role-cards/footer/`, now with `scripts/dense-pool.mjs`): C-9 no card clips (every card `overflow: visible`); C-10
+the dense titles and long statements — nothing clipped, the content within the room, the title ≥ 10 px in its counted lines with its
+full title as tooltip, the standing and domain as the pool states them (ending in "…" only with the tooltip). 123/123 at 1600 × 1000
+and 1280 × 720. The three geometry readings of `syntx-role-orbit.test.ts` get 30 s (they ran into the default 5 s on a machine at
+load 15). Regression: 68 of 69 files green; `job-structure.postgres.test.ts` (GELB, untouched here: schema and pool uploads only) ran
+into its 10 s `beforeAll` limit twice on the loaded shared Postgres — the integration line already gives it 60 s. Workflow e2e 10/10 ×2.
 
 ### 13.3 DOM contract (PINK BR-1 … BR-5; GELB conditions a/b)
 
