@@ -243,10 +243,23 @@ Owner-Vorgabe: Der alte pool-weite Vergleich bleibt vorerst rollenübergreifend.
   - Unabhängige Nachmessung durch GELB, mit eigenen Zufallstiteln, sieben Viewports und 1 bis 14 Rollen; Zentrum und Nachbarn alle 0,25°, zwischen den Orbits 1° × 1°:
     - Eingezogen werden 565 Layouts; die Luftregeln verletzt keines. Kein äußerer Orbit wird höher als breit.
     - Schlechteste Luft auf der geschätzten Höhe: Zentrum +4,02 px, Nachbarn +6,09 px. Mit 11,25 px Mehrhöhe: +0,29 px und +0,52 px.
-    - Ein mehrfacher Orbit wird in keinem Fall eingezogen; das gilt auch bis 53 Rollen bei sechs Viewports. Die Regel zwischen den Orbits ist damit derzeit ohne Wirkung.
+    - ~~Ein mehrfacher Orbit wird in keinem Fall eingezogen~~ **Falsch, korrigiert (D-RO-2, unten):** Die Aussage galt nur für Level-Boxen bis 820 px Höhe; GELB hatte keine höheren gemessen.
     - Höchstens 13,7 ms pro Layout in Node; O-RO-COST ist damit deutlich verringert.
   - Probe `cdedfef` + `3be1920`: `tsc` 0; Job-Pool, Orbit-Härtung, drei Modi und Investigation 251 grün, 4 übersprungen.
-  - PINK: Prüfung angefragt, ausstehend.
+  - PINK: **Abweichung D-RO-2** auf `3be1920`.
+    - Ab etwa 840 px Boxhöhe werden auch Packungen mit zwei Orbits eingezogen.
+    - Die Luft zwischen den Orbits ist dabei nur im 5°-Raster geprüft und wird zwischen den Rasterpunkten unterschritten; PINKs schlechtester Wert ist −6,6 px.
+    - GELB hat das nachgemessen: sieben hohe Boxen von 840 bis 1240 px, 6 bis 24 Rollen, zwischen den Orbits 1° × 1°, Kartenhöhe mit 11,25 px Zuschlag. Ergebnis: 6 von 124 eingezogenen Layouts verletzen die Luft, schlechtester Wert −5,48 px. Mit der geschätzten Höhe allein gibt es keine Verletzung.
+
+  Korrektur GRÜN `e6493a7` (2026-10-19):
+  - Die Luft zwischen den Orbits ist jetzt in geschlossener Form geregelt. Weil die Packung ihre Orbits ineinanderlegt, muss der äußere Orbit in jeder Phase das Luftrechteck jeder inneren Karte umschließen.
+  - Layouts mit nur einem Orbit sind laut GRÜN unverändert, Kestrel eingeschlossen; 32 von 788 Layouts mit mehreren Orbits ziehen weniger ein.
+  - GELB hat auf `e6493a7` nachgemessen, jeweils mit 11,25 px Zuschlag auf die Kartenhöhe:
+    - Hohe Boxen: 110 eingezogene Layouts, davon 11 mit mehreren Orbits, keine Verletzung. Schlechteste Luft zwischen den Orbits +0,96 px, am Zentrum +0,45 px, zwischen Nachbarn +0,51 px.
+    - Übliche Boxen: dasselbe Ergebnis wie auf `3be1920` (565 Layouts, +0,29 px und +0,52 px).
+    - Rechenzeit höchstens 23,7 ms pro Layout.
+  - Probe `dcd5cbc` + `e6493a7`: `tsc` 0; Job-Pool, Orbit-Härtung, drei Modi und Investigation 252 grün, 4 übersprungen.
+  - PINK: Prüfung von `e6493a7` angefragt, ausstehend.
 
   Integriert wird erst, wenn PINK geprüft hat, der Owner die Sicht erneut abgenommen hat und GELB sein Wort bekommt, zusammen mit `demo-ui-fix` (`0b5a8ea`), auf dem der Rollenorbit aufbaut. Das Sichtlabor des Owners läuft bei GRÜN auf :41805; GELB greift dort nicht ein.
 
