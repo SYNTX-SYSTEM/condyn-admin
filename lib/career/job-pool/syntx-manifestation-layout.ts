@@ -95,6 +95,20 @@ export const ROLE_ORBIT_CARD_GAP = Object.freeze({ x: 12, y: 20 });
  * D-RO-1): every air is measured on the estimate plus this allowance, so it holds for the card as drawn. */
 export const ROLE_ORBIT_CARD_HEIGHT_ALLOWANCE = 12;
 export interface RoleOrbitCompactness { x: number; y: number }
+/**
+ * A role card of the organization cosmos as drawn (owner "SFE — GRÜN | ROLE ORBIT CARD REFINEMENT"). On a drawn-in orbit: exactly the
+ * box every air of the orbit is measured on — the packing's estimate plus the height allowance — with room for the role's domain. Where
+ * the orbit stays as packed (no room to draw in), the packing knows only its estimate: the card keeps to it, without the domain line, so
+ * a crowded constellation never comes closer than packed. Either way the title keeps to the lines the estimate counted (52 px plus 18 px
+ * per line, 72 … 126 px).
+ */
+export function roleCardBox(node: { width: number; height: number }, drawnIn: boolean): { width: number; height: number; titleLines: number; domain: boolean } {
+  return { width: node.width, height: node.height + (drawnIn ? ROLE_ORBIT_CARD_HEIGHT_ALLOWANCE : 0), titleLines: Math.min(4, Math.max(1, Math.floor((node.height - 51) / 18))), domain: drawnIn };
+}
+/** The pool's seniority ("Senior / L4") in its delivered parts ("Senior", "L4"); none where the pool states none. */
+export function roleSeniorityParts(seniority: string | null): string[] {
+  return (seniority ?? "").split("/").map(part => part.trim()).filter(part => part.length > 0);
+}
 /** A quarter turn, every quarter degree: the corner arc of the widened card, and the phases of an inner card against an outer orbit. */
 const QUARTER = Array.from({ length: 361 }, (_, index) => (index * Math.PI) / 720);
 const GOLDEN = (Math.sqrt(5) - 1) / 2;

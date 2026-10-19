@@ -1,0 +1,119 @@
+PASS O-1 org_kestrel (3 roles): every role card present, one orbit sign per role — 3
+PASS O-8 org_kestrel (3 roles): the orbit is the accepted one (e6493a7) — compactness, radii and card widths — 0.38/0.64 251.8,190.7
+PASS C-1 org_kestrel (3 roles): every card is drawn at exactly the box its orbit keeps its air for (estimate + 12 px), its title in the lines the layout counted — 195×100/2 158×84/1 219×100/2
+PASS C-2 org_kestrel (3 roles): everything fits — no title, standing, domain or line clipped, the content within the card's room — least room 1.6 px
+PASS C-3 org_kestrel (3 roles): centred — every line on the card's axis (± 1 px) — 0.01 px
+PASS C-4 org_kestrel (3 roles): the card states what the pool states — standing (seniority parts), domain focus, requirement count and the matching read — 3 of 3 against the pool file
+PASS C-6 org_kestrel (3 roles): over a whole turn no air below the accepted orbit's rule or rendering — centre 22 (accepted 27), orbit 103.3 (109.4)
+PASS O-2 org_kestrel (3 roles): no card covers the centre body or another card (at rest) — centre 35 px, pair 173
+PASS O-3 org_kestrel (3 roles): over a whole turn every card keeps ≥ 16 px to the centre disc and stays inside the level — centre 22, top 263, bottom 255
+PASS O-3b org_kestrel (3 roles): over a whole turn neighbours on the orbit keep their air (rendered boxes, 12 px / 20 px, every half degree) — 103.3
+PASS O-4 org_kestrel (3 roles): in motion (3 frames) no overlap — 37/165 41/154 44/143
+PASS O-1 org_pink_alpha (1 role): every role card present, one orbit sign per role — 1
+PASS O-8 org_pink_alpha (1 role): the orbit is the accepted one (e6493a7) — compactness, radii and card widths — 0.34/0.62 231.5,184.8
+PASS C-1 org_pink_alpha (1 role): every card is drawn at exactly the box its orbit keeps its air for (estimate + 12 px), its title in the lines the layout counted — 182×100/2
+PASS C-2 org_pink_alpha (1 role): everything fits — no title, standing, domain or line clipped, the content within the card's room — least room 3.6 px
+PASS C-3 org_pink_alpha (1 role): centred — every line on the card's axis (± 1 px) — 0.01 px
+PASS C-4 org_pink_alpha (1 role): the card states what the pool states — standing (seniority parts), domain focus, requirement count and the matching read — 0 of 1 against the pool file
+PASS C-6 org_pink_alpha (1 role): over a whole turn no air below the accepted orbit's rule or rendering — centre 21 (accepted 22), orbit null (null)
+PASS O-2 org_pink_alpha (1 role): no card covers the centre body or another card (at rest) — centre 47 px, pair null
+PASS O-3 org_pink_alpha (1 role): over a whole turn every card keeps ≥ 16 px to the centre disc and stays inside the level — centre 21, top 269, bottom 261
+PASS O-3b org_pink_alpha (1 role): over a whole turn neighbours on the orbit keep their air (rendered boxes, 12 px / 20 px, every half degree) — null
+PASS O-4 org_pink_alpha (1 role): in motion (3 frames) no overlap — 47/null 47/null 45/null
+PASS O-1 org_orbit_1 (1 role): every role card present, one orbit sign per role — 1
+PASS O-8 org_orbit_1 (1 role): the orbit is the accepted one (e6493a7) — compactness, radii and card widths — 0.38/0.64 251.8,190.7
+PASS C-1 org_orbit_1 (1 role): every card is drawn at exactly the box its orbit keeps its air for (estimate + 12 px), its title in the lines the layout counted — 219×100/2
+PASS C-2 org_orbit_1 (1 role): everything fits — no title, standing, domain or line clipped, the content within the card's room — least room 3.6 px
+PASS C-3 org_orbit_1 (1 role): centred — every line on the card's axis (± 1 px) — 0.01 px
+PASS C-4 org_orbit_1 (1 role): the card states what the pool states — standing (seniority parts), domain focus, requirement count and the matching read — 1 of 1 against the pool file
+PASS C-6 org_orbit_1 (1 role): over a whole turn no air below the accepted orbit's rule or rendering — centre 22 (accepted 27), orbit null (null)
+PASS O-2 org_orbit_1 (1 role): no card covers the centre body or another card (at rest) — centre 53 px, pair null
+PASS O-3 org_orbit_1 (1 role): over a whole turn every card keeps ≥ 16 px to the centre disc and stays inside the level — centre 22, top 263, bottom 255
+PASS O-3b org_orbit_1 (1 role): over a whole turn neighbours on the orbit keep their air (rendered boxes, 12 px / 20 px, every half degree) — null
+PASS O-4 org_orbit_1 (1 role): in motion (3 frames) no overlap — 53/null 52/null 51/null
+PASS O-1 org_orbit_2 (2 roles): every role card present, one orbit sign per role — 2
+PASS O-8 org_orbit_2 (2 roles): the orbit is the accepted one (e6493a7) — compactness, radii and card widths — 0.38/0.64 251.8,190.7
+PASS C-1 org_orbit_2 (2 roles): every card is drawn at exactly the box its orbit keeps its air for (estimate + 12 px), its title in the lines the layout counted — 219×100/2 182×100/2
+PASS C-2 org_orbit_2 (2 roles): everything fits — no title, standing, domain or line clipped, the content within the card's room — least room 3.6 px
+PASS C-3 org_orbit_2 (2 roles): centred — every line on the card's axis (± 1 px) — 0.01 px
+PASS C-4 org_orbit_2 (2 roles): the card states what the pool states — standing (seniority parts), domain focus, requirement count and the matching read — 2 of 2 against the pool file
+PASS C-6 org_orbit_2 (2 roles): over a whole turn no air below the accepted orbit's rule or rendering — centre 22 (accepted 27), orbit 147.9 (152)
+PASS O-2 org_orbit_2 (2 roles): no card covers the centre body or another card (at rest) — centre 53 px, pair 281
+PASS O-3 org_orbit_2 (2 roles): over a whole turn every card keeps ≥ 16 px to the centre disc and stays inside the level — centre 22, top 263, bottom 255
+PASS O-3b org_orbit_2 (2 roles): over a whole turn neighbours on the orbit keep their air (rendered boxes, 12 px / 20 px, every half degree) — 147.9
+PASS O-4 org_orbit_2 (2 roles): in motion (3 frames) no overlap — 53/281 52/279 51/276
+PASS O-1 org_orbit_3 (3 roles): every role card present, one orbit sign per role — 3
+PASS O-8 org_orbit_3 (3 roles): the orbit is the accepted one (e6493a7) — compactness, radii and card widths — 0.38/0.64 251.8,190.7
+PASS C-1 org_orbit_3 (3 roles): every card is drawn at exactly the box its orbit keeps its air for (estimate + 12 px), its title in the lines the layout counted — 219×100/2 182×100/2 147×84/1
+PASS C-2 org_orbit_3 (3 roles): everything fits — no title, standing, domain or line clipped, the content within the card's room — least room 1.6 px
+PASS C-3 org_orbit_3 (3 roles): centred — every line on the card's axis (± 1 px) — 0.01 px
+PASS C-4 org_orbit_3 (3 roles): the card states what the pool states — standing (seniority parts), domain focus, requirement count and the matching read — 3 of 3 against the pool file
+PASS C-6 org_orbit_3 (3 roles): over a whole turn no air below the accepted orbit's rule or rendering — centre 22 (accepted 27), orbit 106 (110.1)
+PASS O-2 org_orbit_3 (3 roles): no card covers the centre body or another card (at rest) — centre 43 px, pair 181
+PASS O-3 org_orbit_3 (3 roles): over a whole turn every card keeps ≥ 16 px to the centre disc and stays inside the level — centre 22, top 263, bottom 255
+PASS O-3b org_orbit_3 (3 roles): over a whole turn neighbours on the orbit keep their air (rendered boxes, 12 px / 20 px, every half degree) — 106
+PASS O-4 org_orbit_3 (3 roles): in motion (3 frames) no overlap — 43/181 40/171 38/162
+PASS O-1 org_orbit_5 (5 roles): every role card present, one orbit sign per role — 5
+PASS O-8 org_orbit_5 (5 roles): the orbit is the accepted one (e6493a7) — compactness, radii and card widths — 0.40/0.67 259.2,199.7
+PASS C-1 org_orbit_5 (5 roles): every card is drawn at exactly the box its orbit keeps its air for (estimate + 12 px), its title in the lines the layout counted — 219×100/2 182×100.00003051757812/2 147×84/1 248×100/2 133×84/1
+PASS C-2 org_orbit_5 (5 roles): everything fits — no title, standing, domain or line clipped, the content within the card's room — least room 1.6 px
+PASS C-3 org_orbit_5 (5 roles): centred — every line on the card's axis (± 1 px) — 0.01 px
+PASS C-4 org_orbit_5 (5 roles): the card states what the pool states — standing (seniority parts), domain focus, requirement count and the matching read — 5 of 5 against the pool file
+PASS C-6 org_orbit_5 (5 roles): over a whole turn no air below the accepted orbit's rule or rendering — centre 21 (accepted 26), orbit 26.4 (29.9)
+PASS O-2 org_orbit_5 (5 roles): no card covers the centre body or another card (at rest) — centre 25 px, pair 50
+PASS O-3 org_orbit_5 (5 roles): over a whole turn every card keeps ≥ 16 px to the centre disc and stays inside the level — centre 21, top 254, bottom 246
+PASS O-3b org_orbit_5 (5 roles): over a whole turn neighbours on the orbit keep their air (rendered boxes, 12 px / 20 px, every half degree) — 26.4
+PASS O-4 org_orbit_5 (5 roles): in motion (3 frames) no overlap — 25/50 23/59 22/68
+PASS O-1 org_orbit_8 (8 roles): every role card present, one orbit sign per role — 8
+PASS O-8 org_orbit_8 (8 roles): the orbit is the accepted one (e6493a7) — compactness, radii and card widths — 0.61/0.74 395.3,220.5
+PASS C-1 org_orbit_8 (8 roles): every card is drawn at exactly the box its orbit keeps its air for (estimate + 12 px), its title in the lines the layout counted — 219×100/2 182×100/2 147×84/1 248×100/2 133×84/1 153×84/1 195×100.00003051757812/2 151×84/1
+PASS C-2 org_orbit_8 (8 roles): everything fits — no title, standing, domain or line clipped, the content within the card's room — least room 1.6 px
+PASS C-3 org_orbit_8 (8 roles): centred — every line on the card's axis (± 1 px) — 0.01 px
+PASS C-4 org_orbit_8 (8 roles): the card states what the pool states — standing (seniority parts), domain focus, requirement count and the matching read — 8 of 8 against the pool file
+PASS C-6 org_orbit_8 (8 roles): over a whole turn no air below the accepted orbit's rule or rendering — centre 69 (accepted 75), orbit 0.2 (4.8)
+PASS O-2 org_orbit_8 (8 roles): no card covers the centre body or another card (at rest) — centre 83 px, pair 59
+PASS O-3 org_orbit_8 (8 roles): over a whole turn every card keeps ≥ 16 px to the centre disc and stays inside the level — centre 69, top 233, bottom 225
+PASS O-3b org_orbit_8 (8 roles): over a whole turn neighbours on the orbit keep their air (rendered boxes, 12 px / 20 px, every half degree) — 0.2
+PASS O-4 org_orbit_8 (8 roles): in motion (3 frames) no overlap — 82/54 79/50 74/45
+PASS O-1 org_orbit_14 (14 roles): every role card present, one orbit sign per role — 14
+PASS O-8 org_orbit_14 (14 roles): the orbit is the accepted one (e6493a7) — compactness, radii and card widths — 1.00/1.00 324,149 648,298
+PASS C-1 org_orbit_14 (14 roles): every card is drawn at exactly the box its orbit keeps its air for (the packing's estimate), its title in the lines the layout counted — 219×88/2 182×88/2 147×72/1 248×88/2 133×72/1 153×72/1 195×88/2 151×72/1 153×72/1 155×72/1 164×88/2 153×72/1 160×88.00003051757812/1 180×88/2
+PASS C-2 org_orbit_14 (14 roles): everything fits — no title, standing, domain or line clipped, the content within the card's room — least room 3.0 px
+PASS C-3 org_orbit_14 (14 roles): centred — every line on the card's axis (± 1 px) — 0.01 px
+PASS C-4 org_orbit_14 (14 roles): the card states what the pool states — standing (seniority parts), domain focus, requirement count and the matching read — 14 of 14 against the pool file
+PASS C-6 org_orbit_14 (14 roles): over a whole turn no air below the accepted orbit's rule or rendering — centre 5 (accepted 5), orbit 3.2 (0.1)
+PASS O-2 org_orbit_14 (14 roles): no room to draw in — the orbit stays exactly as packed — 324,149 648,298
+PASS O-1 org_orbit_long_8 (8 roles): every role card present, one orbit sign per role — 8
+PASS O-8 org_orbit_long_8 (8 roles): the orbit is the accepted one (e6493a7) — compactness, radii and card widths — 0.81/0.93 510.7,268.8
+PASS C-1 org_orbit_long_8 (8 roles): every card is drawn at exactly the box its orbit keeps its air for (estimate + 12 px), its title in the lines the layout counted — 272×118/3 265×118/2 283×118/3 272×118/3 265×118/2 283×118/3 272×118/3 265×118/2
+PASS C-2 org_orbit_long_8 (8 roles): everything fits — no title, standing, domain or line clipped, the content within the card's room — least room 7.6 px
+PASS C-3 org_orbit_long_8 (8 roles): centred — every line on the card's axis (± 1 px) — 0.01 px
+PASS C-4 org_orbit_long_8 (8 roles): the card states what the pool states — standing (seniority parts), domain focus, requirement count and the matching read — 8 of 8 against the pool file
+PASS C-6 org_orbit_long_8 (8 roles): over a whole turn no air below the accepted orbit's rule or rendering — centre 109 (accepted 115), orbit 0.7 (7.8)
+PASS O-2 org_orbit_long_8 (8 roles): no card covers the centre body or another card (at rest) — centre 122 px, pair 66
+PASS O-3 org_orbit_long_8 (8 roles): over a whole turn every card keeps ≥ 16 px to the centre disc and stays inside the level — centre 109, top 176, bottom 168
+PASS O-3b org_orbit_long_8 (8 roles): over a whole turn neighbours on the orbit keep their air (rendered boxes, 12 px / 20 px, every half degree) — 0.7
+PASS O-4 org_orbit_long_8 (8 roles): in motion (3 frames) no overlap — 120/60 118/54 115/41
+PASS O-1 org_orbit_short_12 (12 roles): every role card present, one orbit sign per role — 12
+PASS O-8 org_orbit_short_12 (12 roles): the orbit is the accepted one (e6493a7) — compactness, radii and card widths — 0.57/0.93 401.3,284.6
+PASS C-1 org_orbit_short_12 (12 roles): every card is drawn at exactly the box its orbit keeps its air for (estimate + 12 px), its title in the lines the layout counted — 133×84.00001525878906/1 128×84/1 136×84/1 133×84/1 133×84/1 128×84/1 136×84/1 133×84/1 133×84/1 128×84.00003051757812/1 136×84/1 133×84/1
+PASS C-2 org_orbit_short_12 (12 roles): everything fits — no title, standing, domain or line clipped, the content within the card's room — least room 1.6 px
+PASS C-3 org_orbit_short_12 (12 roles): centred — every line on the card's axis (± 1 px) — 0.01 px
+PASS C-4 org_orbit_short_12 (12 roles): the card states what the pool states — standing (seniority parts), domain focus, requirement count and the matching read — 12 of 12 against the pool file
+PASS C-6 org_orbit_short_12 (12 roles): over a whole turn no air below the accepted orbit's rule or rendering — centre 149 (accepted 149), orbit 0.4 (0.8)
+PASS O-2 org_orbit_short_12 (12 roles): no card covers the centre body or another card (at rest) — centre 154 px, pair 21
+PASS O-3 org_orbit_short_12 (12 roles): over a whole turn every card keeps ≥ 16 px to the centre disc and stays inside the level — centre 149, top 177, bottom 169
+PASS O-3b org_orbit_short_12 (12 roles): over a whole turn neighbours on the orbit keep their air (rendered boxes, 12 px / 20 px, every half degree) — 0.4
+PASS O-4 org_orbit_short_12 (12 roles): in motion (3 frames) no overlap — 150/32 149/38 149/42
+PASS O-5 organizations with up to five roles: the long axis is drawn in further than the first pass's 0.78 — 3:0.38/0.64 1:0.34/0.62 1:0.38/0.64 2:0.38/0.64 3:0.38/0.64 5:0.40/0.67
+PASS O-6 every organization: the orbit is never widened (compactness in (0, 1]) and lies at least as wide as tall — 3:0.38/0.64 251.8×190.7 1:0.34/0.62 231.5×184.8 1:0.38/0.64 251.8×190.7 2:0.38/0.64 251.8×190.7 3:0.38/0.64 251.8×190.7 5:0.40/0.67 259.2×199.7 8:0.61/0.74 395.3×220.5 14:1.00/1.00 324×149,648×298 8:0.81/0.93 510.7×268.8 12:0.57/0.93 401.3×284.6
+PASS O-9 every drawn-in orbit is at its limit: the least air over a turn is under 20 px — org_kestrel:1/103.3 org_pink_alpha:0/– org_orbit_1:1/– org_orbit_2:1/147.9 org_orbit_3:1/106 org_orbit_5:0/26.4 org_orbit_8:48/0.2 org_orbit_long_8:88/0.7 org_orbit_short_12:128/0.4
+PASS O-7 card sizes come from the packing, not the compactness (the same box for the same title at every count) — 219×100 219×100 219×100 219×100 219×100
+PASS C-5 legible: title ≥ 7:1, standing, domain, requirements and matching ≥ 4.5:1 on the card's glass — title 17.9, standing 10.2, domain 9.6, requirements 12.6, matching 6.7
+PASS N-1 a role card on the drawn-in orbit opens its role by pointer — syntx-role-role_kestrel_engineering_lead
+PASS N-2 at the role, the organization cosmos recedes with the role as its anchor
+PASS N-3 Escape returns to the organization
+PASS N-4 Tab reaches a role card and Enter opens it — syntx-role-role_kestrel_frontend_architect
+PASS N-5 the centre returns to the field
+PASS R-1 reduced motion: the same compactness and orbit, the cards hold still — 0.38/0.64 251.8,190.7
+PASS E-1 no page errors

@@ -1530,6 +1530,48 @@ and a grid misses the minimum; §13.2.31's "no multi-orbit layout is drawn in" w
   Lab walk and workflow e2e not repeated: the lab organizations at 1600 × 1000 and 1280 × 720 have one orbit (identical) or stay
   as packed (14 roles; the rule only adds air, so nothing is drawn in further than before).
 
+#### 13.2.33 Role orbit — card refinement (owner "SFE — GRÜN | ROLE ORBIT CARD REFINEMENT", 2026-10-19)
+
+On `frontend/role-cards`, stacked on `e6493a7` (the compact orbit, visually accepted by the owner; its geometry stays). GRÜN only, no
+backend, no live Gemini. The owner: the role cards in the orbit read left-heavy, typographically weak and unstructured, like
+technical debug containers; wanted: a recognisable role identity in a centred, balanced hierarchy, better legibility, contrast and
+spacing, meaningful information from the data already there, calm integration into the DLL aesthetic.
+
+- **Reconstruction.** The card was one left-aligned column: a `ROLE // SENIOR / L4` kicker, the title, and one line
+  `9 REQUIREMENTS // NO MATCHING READ` that wrapped on narrow cards (the reason for PINK's +11.25 px, §3.45). The pool's domain focus
+  reached the field (`SyntxRole.domainFocus`) but was shown only at the job structure. The card was drawn at the packing's estimate
+  (or up to 11.25 px more), while every air of the drawn-in orbit is measured on the estimate plus 12 px.
+- **Card.** Centred on its axis, five lines in a fixed order (`data-sx-role-standing`, `-title`, `-domain`, `-requirements`,
+  `-matching`): the standing — the pool's seniority in its delivered parts (`SENIOR · L4`) with a role mark between two hairlines,
+  `ROLE` where the pool states none; the title (sans 11.5 px / 600, balanced; a dash stays at the end of its line); the domain focus
+  (one line); a short hairline; the requirement count (`1 REQUIREMENT` in the singular) and, on its own line, the matching read with a
+  hollow / filled mark. The glass is lit from above the centre line (no corner ticks, no side-weighted light); hover, focus, anchor
+  lamp and tether unchanged. Nothing new is stated: no score, rank or relation; texts only from the pool, the canonical mapping and the
+  delivered matching (as before).
+- **Geometry kept.** `roleCardBox(node, drawnIn)` (`syntx-manifestation-layout.ts`): on a drawn-in orbit the card is drawn at exactly
+  the box every air is measured on — the estimate plus `ROLE_ORBIT_CARD_HEIGHT_ALLOWANCE` — and the title keeps to the lines the
+  estimate counted (52 px + 18 px per line), so the drawn card equals the card of the rule and the accepted orbit holds unchanged (the
+  same compactness and radii; the cards keep their widths). Where the orbit stays as packed (no room to draw in), the packing knows
+  only its estimate: the card keeps to it and leaves the domain line out, so a crowded constellation never comes closer than packed
+  (14 roles at 1600: least air to the disc 5 → 5 px, between cards 0.1 → 3.2 px). The compact packings keep their own card form.
+  `data-card-box` (`orbit` / `packed` / `compact`) and `data-card-title-lines` on the card.
+- **Effect.** The drawn-in cards are up to 12 px taller than drawn before (to the box the orbit already kept free): the rendered air
+  shrinks accordingly but never below the rule (Kestrel: least air to the disc 27 → 22 px against 21; 8 roles 75 → 69 px). Kestrel
+  at 1280 passes under the orientation surface in 5 of 216 phases (3 before; O-JF-PANEL).
+
+**Proof** (no live Gemini, :3017, :41831, :41851 and the owner's review lab :41803 untouched):
+- **Unit tests.** `syntx-role-orbit.test.ts` (10): every card box over three title sets × six boxes × nine counts equals the estimate
+  plus the allowance where drawn in, the estimate where packed, and its title lines reproduce the estimate; the seniority parts.
+  `syntx-field-ssr.test.tsx` (11): the card centred at 84 px, `ROLE` standing and no domain line where the pool states neither, the
+  singular, the matching read, no score / rank / `//`.
+- **Lab walk** (`evidence/job-pool/role-cards/`): 119/119 at 1600 × 1000 and at 1280 × 720 — the role orbit walk's orbit and
+  navigation checks (O-1 … O-7, O-9, N-1 … N-5, R-1, E-1), O-8 the orbit equal to the accepted one, and the cards: C-1 drawn at their
+  box, title in its counted lines; C-2 nothing clipped (least room 1.6 px); C-3 every line on the card's axis; C-4 standing and domain
+  equal to the pool file, count and matching equal to the card's attributes; C-5 contrast (title 17.9, standing 10.2, domain 9.6,
+  requirements 12.6, matching 6.7 : 1); C-6 no air below the accepted orbit's rule (drawn in) or rendering (packed).
+- **Regression.** tsc 0; ESLint: no new finding (the card's former `//` text node is gone); regression 69 files / 510 green; workflow
+  e2e 10/10 ×2.
+
 ### 13.3 DOM contract (PINK BR-1 … BR-5; GELB conditions a/b)
 
 **BR-1 field root** `data-testid="syntx-field"`: `data-field-grammar="SYNTX_FIELD_V1"`, `data-observation-kind` FIELD|ORGANIZATION|ROLE|REQUIREMENT
@@ -1708,3 +1750,4 @@ observation point. Readable labels wrap at word boundaries (`wrapLines`), never 
 | 2026-10-18 | Role orbit refinement (owner "SFE — GRÜN | ROLE ORBIT REFINEMENT", on frontend/demo-ui-fix 0b5a8ea) | §13.2.30: the organization cosmos draws its role orbit 22 % closer per axis as far as the geometry allows (`compactRoleOrbit`; cards, phases, periods, navigation unchanged; `data-orbit-compactness-x/-y`); PINK D-RO-1 fixed (half-degree checks, drawn card height) | tsc 0; new 1 file / 6 + SSR 1; regression 69 files / 505; workflow e2e 10/10 ×2; lab walk 58/58 at 1600 and 1280; 0 Gemini hosts |
 | 2026-10-19 | Role orbit — second visual refinement (owner "SFE — GRÜN | ROLE ORBIT — SECOND VISUAL REFINEMENT", on frontend/role-orbit 7a51d89) | §13.2.31: the role orbit drawn in to the smallest orbit its geometry carries (least area of the pairs that hold, lying; per card and per pair, closed form on one orbit, 5° across orbits); Kestrel 516.8 × 232.4 → 251.8 × 190.7 at 1600 | tsc 0; unit 7 + SSR 10; regression 69 files / 506; workflow e2e 10/10 ×2; lab walk 59/59 at 1600 and 1280; 0 Gemini hosts |
 | 2026-10-19 | Role orbit — air across orbits (PINK D-RO-2 on 3be1920) | §13.2.32: closed form across orbits (the outer orbit encloses every inner card's air rectangle in every phase), never closer than the packing in motion; one-orbit layouts unchanged, 32 of 788 multi-orbit layouts less drawn in | tsc 0; unit 8 + SSR 10; regression 69 files / 507; negative control on 3be1920 fails; independent 1° × 1° reading 0 violations |
+| 2026-10-19 | Role orbit — card refinement (owner "SFE — GRÜN | ROLE ORBIT CARD REFINEMENT", on frontend/role-cards over e6493a7) | §13.2.33: centred role card (standing, title, domain, requirements, matching read), drawn at exactly the box the orbit keeps its air for; the accepted orbit unchanged | tsc 0; unit 10 + SSR 11; regression 69 files / 510; workflow e2e 10/10 ×2; lab walk 119/119 at 1600 and 1280 |
