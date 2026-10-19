@@ -269,7 +269,26 @@ Owner-Vorgabe: Der alte pool-weite Vergleich bleibt vorerst rollenübergreifend.
     - Volle Suite: 27 Basisfälle und ein Umgebungsfehler (O-ENV-DROP: Beim Löschen einer Wegwerf-Datenbank war noch ein Superuser-Prozess verbunden, vermutlich Autovacuum). PINK hat die zwei zurückgebliebenen eigenen Wegwerf-Datenbanken selbst gelöscht. Die gemeinsame `condyn` ist nicht berührt.
     - O-RO-COST erledigt (≤ 22,7 ms); dazu die Beobachtungen O-RO-GRID und O-RO-COLD (nicht nachgestellt).
 
-  Integriert wird erst, wenn PINK geprüft hat, der Owner die Sicht erneut abgenommen hat und GELB sein Wort bekommt, zusammen mit `demo-ui-fix` (`0b5a8ea`), auf dem der Rollenorbit aufbaut. Das Sichtlabor des Owners läuft bei GRÜN auf :41805; GELB greift dort nicht ein.
+  Sichtabnahme von `e6493a7`: Nach Angabe von GRÜN hat der Owner sie erteilt. Das Wort zur Integration an GELB steht noch aus, und GELB integriert nur auf das direkte Wort des Owners, zusammen mit `demo-ui-fix` (`0b5a8ea`), auf dem der Rollenorbit aufbaut. Das Sichtlabor des Owners läuft bei GRÜN auf :41805; GELB greift dort nicht ein.
+- **GRÜN `frontend/role-cards`** (`ae633a1`, gestapelt auf `e6493a7`; Owner-Auftrag an GRÜN „ROLE ORBIT CARD REFINEMENT“, STOP vor Integration, danach PINK und Sichtabnahme). Inhalt:
+  - Die Rollenkarte im Organisationskosmos ist neu gestaltet. Alles steht zentriert untereinander:
+    - die Seniorität des Pools, in ihre Teile zerlegt (`roleSeniorityParts`);
+    - der Titel;
+    - `domain_focus`, aber nur auf eingezogenem Orbit;
+    - die Zahl der Anforderungen;
+    - die Matching-Lesung.
+  - Die Karte hat jetzt eine feste Höhe und schneidet überstehenden Inhalt ab (`roleCardBox`).
+    - Auf eingezogenem Orbit ist sie genau so hoch wie die Box, auf der die Luft gemessen wird: Schätzhöhe + 12 px. Der Abstand zwischen geschätzter und gerenderter Höhe aus D-RO-1 ist damit für die gezeichnete Karte geschlossen.
+    - Gepackt ist sie genau so hoch wie die Schätzhöhe und ohne Fachgebietszeile; früher war das nur eine Mindesthöhe.
+  - `compactRoleOrbit` ist unverändert.
+  - GELB-Review:
+    - Die Änderung betrifft nur das Frontend: `SyntxField.tsx` und zwei reine Funktionen in `syntx-manifestation-layout.ts`.
+    - `domainFocus` und `seniority` stammen aus dem bestehenden Feld-View-Model, also aus den Pooldaten. Die Matching-Anzeige liest wie bisher `role.matching`. Damit wird nichts Neues behauptet.
+    - Der Ankerpunkt der Verbindungslinie rechnet mit der gezeichneten Höhe.
+    - Nach GELBs Abschätzung passt der Inhalt bei einer bis vier Titelzeilen in beide Höhen. GRÜNs Messung meldet keine abgeschnittene Karte.
+    - Leak-Prüfung der hinzugefügten Zeilen sauber.
+  - Probe `b823f68` + `ae633a1`: `tsc` 0; Job-Pool, Orbit-Härtung, drei Modi und Investigation 255 grün, 4 übersprungen.
+  - PINK: Prüfung angefragt, ausstehend. Danach Sichtabnahme durch den Owner. Integriert wird nur auf das Wort des Owners an GELB und nur zusammen mit `role-orbit` und `demo-ui-fix` darunter oder nach ihnen.
 
   Wenn er integriert wird, dann zusammen mit oder nach `demo-ui-fix`. Die Sichtwirkung beurteilt der Owner.
 - **PINK-Skript** `support/syntx-readonly-walk.mjs` (P-4) ist nicht neu gebunden; es braucht eine Umgebung mit gespeicherten Aufträgen.
