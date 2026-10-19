@@ -21,6 +21,7 @@ Integrationszweig ist `integration/job-field-governance`, Basis `311d6ee`. `main
 | `aab797c` | PINK `validation/hr-decision-loop-pink` `97cc57a` | PINK §3.45: Prüfung von GRÜNs `frontend/role-orbit` `6d386cc` auf der Probe `4b5774c`, nur Protokoll und Beweise als `.txt`, kein Code. Der Rollenorbit selbst ist nicht integriert (§5) |
 | `55aec63` | PINK `validation/hr-decision-loop-pink` `ffe9954` | PINK §3.46: erneute Prüfung von GRÜNs Korrektur `7a51d89` auf der Probe `c8e99d8`; nur Protokoll und Beweise als `.txt`, kein Code. Der Rollenorbit selbst ist nicht integriert (§5) |
 | `9098618` | PINK `validation/hr-decision-loop-pink` `de6829d` | PINK §3.47: D-RO-2 auf `3be1920` bestätigt und GRÜNs Korrektur `e6493a7` auf der Probe `f665b80` geprüft; nur Protokoll und Evidenz, kein Code. Der Rollenorbit selbst ist nicht integriert (§5) |
+| `16f117b` | PINK `validation/hr-decision-loop-pink` `b88d33f` | PINK §3.48: Rollenkarten `ae633a1` → `6f9bc2b` → `4ecfe67` geprüft; nur Protokoll und Evidenz, kein Code. Die Rollenkarten selbst sind nicht integriert (§5) |
 | `a3c3759` | PINK `validation/hr-decision-loop-pink` `916e884` | PINK §3.43: `syntx-walk.e2e` an die Invarianten neu gebunden (siehe §2.3); nur diese Testdatei und Belege |
 | `73a4701` | PINK `validation/hr-decision-loop-pink` `122aa6c` | PINKs Prüfprotokolle §3.41 (Integration `0fb7b05`) und §3.42 (Delta `eacfc97`) sowie die übernommenen Fixture-Änderungen für `http-canonical-inverse` und `pdf-path`. Der pdf-path-Schritt erwartet 409 und gilt nur zusammen mit `eacfc97`; deshalb wurde `eacfc97` zuerst gemergt |
 
@@ -305,7 +306,21 @@ Owner-Vorgabe: Der alte pool-weite Vergleich bleibt vorerst rollenübergreifend.
   - Probe `62bfbcc` + `6f9bc2b`: `tsc` 0; Job-Pool, Orbit-Härtung, drei Modi und Investigation 256 grün, 4 übersprungen.
   - PINK: Prüfung angefragt, ausstehend.
 
-  Die Integrationsreihenfolge, falls der Owner sie so will: `demo-ui-fix` → `role-orbit` → `role-cards` → `role-card-footer`. Integriert wird nur auf das direkte Wort des Owners an GELB.
+  Korrektur GRÜN `4ecfe67` zu PINKs Befunden auf `ae633a1`:
+  - **D-RC-1:** Andock-Lampe und Stummel wurden abgeschnitten, wegen der globalen Regel `button { overflow: hidden }`; das galt schon vor `ae633a1`. Die Karte setzt jetzt `overflow: visible`.
+  - **D-RC-2:** Dichte Titel wurden gekürzt. `RoleCardTitle` verkleinert sie jetzt nach dem Layout bis 10 px, per `useLayoutEffect` ohne `setState`; die Box bleibt.
+  - GELB-Review ohne Befund. Probe `c43621e` + `4ecfe67`: `tsc` 0; Job-Pool, Orbit-Härtung, drei Modi und Investigation 27/27 Dateien grün.
+  - Video-Walk (`docs/CONDYN_VIDEO_READINESS_2026-10-19.md`) auf dieser Probe: 30/30.
+
+  PINK §3.48 (`b88d33f`, Protokoll gemergt als `16f117b`): Kette `ae633a1` → `6f9bc2b` → `4ecfe67` validiert, keine neue Abweichung.
+  - Probe `d685003` = `b823f68` + `4ecfe67`.
+  - `role-cards.e2e` 2697/2697; Geometrie 56/56; `role-orbit.e2e` 395/395, der Orbit ist gleich `e6493a7`.
+  - Regression grün; volle Suite genau die 27 Basisfälle.
+  - Die gezeichnete Karte ist exakt die Box, auf der die Luft gemessen wird (±0,5 px). Gepackte Karten wachsen nicht mehr (14 Rollen bei 1280: vorher bis 131,3 px, jetzt 88 px).
+  - Gerendert auf Deutsch ist die Fußzeile auf jeder Karte vollständig (7,75–8,5 px). **Auch auf den kompakten 120-px-Karten sind es 8,5 px, nicht wie von GELB gerechnet 7,5 px.** GELBs Rechnung nahm 0,6 em Zeichenbreite an; die tatsächlich gerenderte Schrift ist schmaler (PINK O-RC-MONO: Fira Code).
+  - Beobachtungen: O-RC-MONO, O-RC-DISC (kompakte Karten unter der Scheibe, vorbestehend), O-RC-DEVTOOLS.
+
+  Integrationsreihenfolge, falls der Owner sie so will: `demo-ui-fix` → `role-orbit` → `role-cards` → `role-card-footer` (bis `4ecfe67`). Integriert wird nur auf das direkte Wort des Owners an GELB. Für die Rollenkarten steht außerdem die Sichtabnahme der Korrektur aus.
 
   Wenn er integriert wird, dann zusammen mit oder nach `demo-ui-fix`. Die Sichtwirkung beurteilt der Owner.
 - **PINK-Skript** `support/syntx-readonly-walk.mjs` (P-4) ist nicht neu gebunden; es braucht eine Umgebung mit gespeicherten Aufträgen.
