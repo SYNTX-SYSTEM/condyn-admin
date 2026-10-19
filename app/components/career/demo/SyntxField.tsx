@@ -894,7 +894,7 @@ function OrganizationCosmosLayer({ field, mode, t, size, onObserve, organization
   const elapsedMs = mode === "LIVE" ? runtimeMs : 0;
   const observation = field.observation;
   const roles = useMemo(() => field.roles.filter(role => role.organizationId === organization.id), [field.roles, organization.id]);
-  const { layout, compact } = useMemo(() => syntxCosmosLayout(roles.map(role => ({ id: role.id, title: role.title })), size.width, size.height - 2 * ROLE_CARD_CLEARANCE), [roles, size.width, size.height]);
+  const { layout, compact, compactness } = useMemo(() => syntxCosmosLayout(roles.map(role => ({ id: role.id, title: role.title })), size.width, size.height - 2 * ROLE_CARD_CLEARANCE), [roles, size.width, size.height]);
   const byId = useMemo(() => new Map(roles.map(role => [role.id, role])), [roles]);
   const recededLevel = field.depth >= 2;
   const index = field.organizations.indexOf(organization);
@@ -902,7 +902,7 @@ function OrganizationCosmosLayer({ field, mode, t, size, onObserve, organization
     <div data-sx-level="organization" data-sx-depth={recededLevel ? "far" : "near"} style={{ position: "absolute", inset: 0, zIndex: 22, overflow: "hidden", background: JOB_COSMOS_BACKDROP, opacity: recededLevel ? 0.3 : 1, filter: recededLevel ? SYNTX_FOCUS.recededFilter : undefined, pointerEvents: recededLevel ? "none" : "auto", transition: "opacity 0.62s ease, filter 0.62s ease" }}>
     <SyntxCosmosShell
       testId="syntx-cosmos-organization"
-      attributes={{ "data-organization-id": organization.id, "data-layout": compact ? "compact" : "full" }}
+      attributes={{ "data-organization-id": organization.id, "data-layout": compact ? "compact" : "full", "data-orbit-compactness-x": compactness.x.toFixed(2), "data-orbit-compactness-y": compactness.y.toFixed(2) }}
       style={{ ...levelBox, top: `${LEVEL_INSET.top + ROLE_CARD_CLEARANCE}px`, bottom: `${LEVEL_INSET.bottom + ROLE_CARD_CLEARANCE}px`, overflow: "visible" }}
       styleText=""
       layout={layout}
