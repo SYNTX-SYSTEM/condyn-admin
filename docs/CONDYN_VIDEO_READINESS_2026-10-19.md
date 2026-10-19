@@ -5,6 +5,8 @@ Ziel ist ein ausführbarer, dokumentierter Browser-Walk als Grundlage für die V
 
 **Nachtrag 2026-10-19, Owner-GO „GRÜN-Stapel kontrolliert integrieren“, danach VIDEO FREEZE:** Der GRÜN-Stapel ist integriert (`5293eb1`). Der Walk besteht dort 30/30 (Durchgänge 6 und 7), damit ist B-5 entschieden. Der Live-Gemini-Schritt ist vorbereitet und ohne echten Aufruf geprüft (§8). **STOP vor dem ersten echten Gemini-Aufruf.**
 
+**Nachtrag 2026-10-19, Owner „ANTIGRAVITY VIDEO HANDOFF“:** Bedienreihenfolge, Prüfungen, Zustände, Abbruchkriterien und Videoablauf für Antigravity stehen in `docs/CONDYN_ANTIGRAVITY_VIDEO_HANDOFF_2026-10-19.md`. PINK hat die Integration ohne Abweichung nachgeprüft. Der freigegebene Live-Test ist noch nicht gelaufen: Das Handoff-Mandat stoppt vor neuen Live-Gemini-Aufrufen.
+
 ## 1. Ergebnis
 
 Der gesamte Ablauf funktioniert im Browser, auch reproduzierbar: PDF-Upload → PERSON-Analyse → Ergebnis → Capability Field und Evidenz → GEMINI OUTPUT → Jobpool → Organisation → Rolle → PERSON × JOB → B2-Abdeckung, dazu JOB ONLY.

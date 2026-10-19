@@ -379,7 +379,8 @@ Lokale Umgebung auf `127.0.0.1:41851` mit dem Integrationsbaum `6da26a7`. Sie l�
 ## 7. Ablauf
 
 **2026-10-19, Owner-GO „GRÜN-Stapel kontrolliert integrieren“:** SFE::INTEGRATE → VERIFY → FREEZE → GEMINI GO → ANTIGRAVITY → VIDEO.
-- INTEGRATE und VERIFY: §1, §2.5. PINK-Nachprüfung angefragt.
+- INTEGRATE und VERIFY: §1, §2.5. **PINK-Nachprüfung ohne Abweichung** (2026-10-19): Bäume von `7e9f2c8`, `63f4dd8`, `17181d5` und `5293eb1` gleich PINKs Nachbau; tsc 0; `role-cards.e2e` 2697/2697, role-cards-ssr 23/23, Geometrie 56/56, `role-orbit.e2e` 395/395, `demo-ui-fix.e2e` 62/62, Gate 74/74; Relay `d29cc00` offline 16/16 und PINK-Probe 8/8.
+- HANDOFF: `docs/CONDYN_ANTIGRAVITY_VIDEO_HANDOFF_2026-10-19.md`.
 - **VIDEO FREEZE ab `5293eb1`:** keine weiteren kosmetischen Änderungen vor dem ersten Film. Gilt für alle drei Sessions; Funktionsfehler, die den Videopfad blockieren, gehen als Befund an den Owner.
 - GEMINI GO: Der Live-Modus des Video-Labors ist vorbereitet, gesperrt und ohne echten Aufruf geprüft (`docs/CONDYN_VIDEO_READINESS_2026-10-19.md` §8). STOP vor dem ersten echten Gemini-Aufruf.
 
