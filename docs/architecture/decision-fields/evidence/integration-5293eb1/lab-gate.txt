@@ -1,0 +1,12 @@
+# PINK: live-mode gate of video-lab.ts (e023d55; d29cc00 leaves the gate unchanged). Fake env files only, no real key; PINK net sentinel, 0 attempts.
+# exit and whether VIDEO_LAB_DIR was created, then the lab's first line
+L-foo exit 2 dir-created no: [video-lab] VIDEO_LAB_GEMINI must be standin or live
+L-nogo exit 2 dir-created no: [video-lab] live Gemini refused: VIDEO_LAB_LIVE_GEMINI_GO=owner-go is set only after the owner's GO
+L-wronggo exit 2 dir-created no: [video-lab] live Gemini refused: VIDEO_LAB_LIVE_GEMINI_GO=owner-go is set only after the owner's GO
+L-noenv exit 2 dir-created no: [video-lab] live Gemini refused: VIDEO_LAB_GEMINI_ENV names no env file
+L-shortkey exit 2 dir-created no: [video-lab] live Gemini refused: key, model or budget (1..12) missing or invalid
+L-badmodel exit 2 dir-created no: [video-lab] live Gemini refused: key, model or budget (1..12) missing or invalid
+L-budget13 exit 2 dir-created no: [video-lab] live Gemini refused: key, model or budget (1..12) missing or invalid
+L-budget0 exit 2 dir-created no: [video-lab] live Gemini refused: key, model or budget (1..12) missing or invalid
+L-envmodel-bad exit 2 dir-created no: [video-lab] live Gemini refused: key, model or budget (1..12) missing or invalid
+cases: foo = VIDEO_LAB_GEMINI=foo; nogo = live without GO; wronggo = GO=yes; noenv = no env file; shortkey = key 'short'; badmodel = model '../x'; budget13/budget0; envmodel-bad = VIDEO_LAB_GEMINI_MODEL 'a/b'

@@ -2355,6 +2355,90 @@ Factors measured in the DOM (`e6493a7`; the factor pair, then the outer orbit's 
 - Integration: STOP, as GRÜN requested. The stack `0b5a8ea` … `e6493a7` → `ae633a1` → `6f9bc2b` → `4ecfe67` needs the owner's visual acceptance and the owner's word to GELB.
 - Evidence is in `evidence/role-cards-d685003/`. The earlier readings are in `ae633a1-df26269/` and `6f9bc2b-5100a1d/` (earlier proof versions).
 
+### 3.49 Integration of the GRÜN stack `5293eb1` and the live-Gemini relay of the video lab `e023d55` → `d29cc00` (R-UTF8, R-AUTH) (2026-10-19)
+
+**Request.**
+- GELB reported the integration of the GRÜN stack on `integration/job-field-governance`, under an owner GO to GELB of 2026-10-19 that PINK did not see first-hand.
+- The merges, in stack order: `7e9f2c8` (demo-ui-fix `0b5a8ea`), `63f4dd8` (role-orbit `e6493a7`), `17181d5` (role-cards `ae633a1`), `5293eb1` (role-card-footer `6f9bc2b` + fix `4ecfe67`). VIDEO FREEZE applies from `5293eb1`.
+- GELB asked PINK for three things:
+  - tree equality of `5293eb1` with `27f3253` + `4ecfe67`;
+  - PINK's role-orbit, role-cards and demo-ui-fix proofs on the integrated tree;
+  - a review of the live-Gemini wiring of the video lab in `e023d55` (`video-gemini-relay.ts`, the gate in `video-lab.ts`), without any real Gemini call.
+- After PINK's interim findings, GELB fixed the relay in `d29cc00` and added the live-run tools in `fe5cbea`. GELB then asked for this record.
+
+**Tree.** Recomputed by PINK in a scratch worktree (`merge --no-commit` + `write-tree`); see `tree-equality.txt`.
+- `27f3253` + `4ecfe67` gives `193ba70`, which is the tree of `5293eb1`.
+- Each step is tree-identical to PINK's own merge: `7e9f2c8` (`a5c6fac`), `63f4dd8` (`7dd32da`), `17181d5` (`264969f`). The first parent of `7e9f2c8` is `27f3253`.
+- Only files under `docs/` change in `b823f68..27f3253` and in `5293eb1..fe5cbea`. The app code of `5293eb1`, `d29cc00` and `fe5cbea` is therefore the code of probe `d685003` (§3.48).
+
+**Proofs on `5293eb1`.**
+- Run detached in PINK's own worktree, on disposable databases, with `GEMINI_API_KEY` unset and PINK's net sentinel in the server.
+- The proofs are byte-identical to the evidence of §3.48 (`role-cards-d685003`), §3.47 (`role-orbit-f665b80`) and §3.44 (`demo-ui-fix-0b5a8ea`).
+
+| Check | Result |
+| --- | --- |
+| `tsc` | 0 (with all PINK proofs) |
+| `role-cards.e2e` (footer and fit checks on) | **2697/2697**; the `measured` block equals `d685003`'s exactly |
+| `role-cards-ssr` + GRÜN units (`syntx-role-orbit`, `syntx-field-ssr`) | 23/23 |
+| `role-orbit-geometry` | 56/56 |
+| `role-orbit.e2e` | 395/395 |
+| `demo-ui-fix.e2e` | 62/62 |
+| Gate walk | 74/74 |
+| Page errors / non-GET | 0 / 0. The only outbound attempt was Next's npm version check, refused by the sentinel |
+
+**Review of the live-Gemini wiring.**
+- Everything ran offline: against a loopback double, with fake keys and fake env files, and under PINK's net sentinel (0 outbound attempts). There was no Gemini call and no real key.
+- **The relay-start gate in `video-lab.ts`** (`lab-gate.txt`): 9 of 9 false starts exit with code 2 before anything is created (no lab directory, no database). The cases:
+  - a wrong mode;
+  - GO missing, and GO with the wrong value;
+  - no env file;
+  - a key that is too short;
+  - model `../x`;
+  - budget 13 and budget 0;
+  - `VIDEO_LAB_GEMINI_MODEL` `a/b`.
+  - `d29cc00` leaves the gate unchanged.
+- **The relay on `e023d55`:** GELB's `relay-check.mts` passes 12/12. Its routing is sound: the key is swapped, other models, `countTokens` and `models.get` get 403, the budget gives 429, and the log holds neither key nor content.
+  - `?key=` and `?alt=sse` are dropped.
+  - `streamGenerateContent` and `/v1/` get 403.
+  - Refusals cost no budget.
+- **Finding R-UTF8 (defect, small; `e023d55`).**
+  - Cause: the body was assembled with `raw += String(chunk)`, so a multibyte UTF-8 character on a transport-chunk boundary became U+FFFD and was sent to Gemini that way.
+  - Damaged bodies over loopback, 10 per size: 9, 19, 40, 64 and 80 KB 0/10; 120 KB 1/10. One body of 456 KB carried 5 × U+FFFD.
+  - The walk's own bodies (9–19 KB) were not affected.
+  - The stand-in has the same pattern; GELB left it unchanged on purpose so that the verified takes stay valid.
+- **Finding R-AUTH (hardening; `e023d55`).**
+  - The relay did not check its caller, so any local process on the loopback port could have the real key spent for it while the lab ran (without a key: 200; with a foreign key: 200).
+  - The budget of at most 12 limited the damage.
+- **Note R-KIND.** The relay records kind and scope block but does not enforce them; LEGACY and OTHER are forwarded. The scope check stays with the app gate alone. GELB records this in the video document §8; no code was changed for it.
+- **Fixed in `d29cc00`:**
+  - The relay forwards the buffered body byte for byte, and `requestBytes` comes from the buffer.
+  - Each lab gets a random worker placeholder; any other caller gets 401, which is not counted and not forwarded.
+  - A placeholder that is too short or equal to the key is refused at start.
+- **PINK's probe on `d29cc00`: 8/8.**
+  - 40 bodies of 120 KB – 1 MB with ü, „“, 能力 and 😀 arrive byte-identical, without U+FFFD.
+  - No key, the old dummy, the real key, a truncated and an upper-cased placeholder each get 401; nothing is forwarded and no budget is spent.
+  - The key is checked before the method.
+  - The placeholder is forwarded with the real key.
+  - Start refusals: 3/3.
+  - Neither key, placeholder nor content appears in the log.
+  - GELB's `relay-check.mts` on `d29cc00`: 16/16.
+- **Negative control:** the same probe against the relay of `e023d55` gives 2/8 (24 of 40 bodies damaged, every caller forwarded). Detected.
+- **`fe5cbea` (tools only; no finding that holds up the run):**
+  - `live-extract.mjs` states the rule "out dir outside the repository" but does not check it. Its `mkdir` mode 0700 applies only to a newly created directory.
+  - `live-summarize.mjs` carries `investigation`, `coverageAudit` and `excluded` as raw objects. They hold no secrets but may hold free model text, so GELB checks the summary before committing it.
+  - Extract before stopping, because the stop drops the database.
+  - GELB adopted all three points (handoff §7).
+
+**Process note.**
+- PINK's first probe on `d29cc00` showed 5/8. The cause was PINK's own case "placeholder padded with a blank": HTTP strips leading and trailing blanks from header values, so the case is not a distinct key.
+- PINK replaced it with an upper-cased placeholder; the result is 8/8. The relay was not at fault.
+
+**Status.**
+- The integrated stack `5293eb1` is validated, with no deviation. The relay fixes R-UTF8 and R-AUTH are validated in `d29cc00`.
+- PINK made no Gemini call. The single live end-to-end run is GELB's, under the owner's separate GO. GELB reports that the run is on hold until the owner confirms the GO after the "ANTIGRAVITY VIDEO HANDOFF" order.
+- PINK did not check the handoff document `docs/CONDYN_ANTIGRAVITY_VIDEO_HANDOFF_2026-10-19.md`.
+- Evidence is in `evidence/integration-5293eb1/`. The proofs are kept as `.txt` there and under §3.44, §3.47 and §3.48. The relay probes are `pink-relay-*.mts.txt`, offline and loopback only.
+
 ## 4. Boundaries and findings for coordination
 
 - F-JP-1 (closed in `b782793`): `JOB_POOL_CONNECTION.md` §4 followed the per-role `JOB_POOL_JSON_ROLE` design;

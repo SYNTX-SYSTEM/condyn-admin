@@ -1,0 +1,7 @@
+9 KB: 0/10 bodies damaged
+19 KB: 0/10 bodies damaged
+40 KB: 0/10 bodies damaged
+64 KB: 0/10 bodies damaged
+80 KB: 0/10 bodies damaged
+120 KB: 1/10 bodies damaged
+exit 0

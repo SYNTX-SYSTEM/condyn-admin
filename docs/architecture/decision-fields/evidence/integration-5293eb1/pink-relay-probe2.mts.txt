@@ -1,0 +1,38 @@
+/* PINK offline probe of video-gemini-relay.ts (d29cc00) against a loopback fake upstream: no network, no Gemini, no real key. */
+import { createServer } from "node:http";
+import { startGeminiRelay, type RelayRecord } from "./video-gemini-relay";
+const seen: Buffer[] = []; const keys: Array<string | undefined> = [];
+const fake = createServer(async (req, res) => { const p: Buffer[] = []; for await (const c of req) p.push(c as Buffer); seen.push(Buffer.concat(p)); keys.push(req.headers["x-goog-api-key"] as string | undefined); res.writeHead(200, { "content-type": "application/json" }); res.end("{}"); });
+await new Promise<void>(r => fake.listen(0, "127.0.0.1", () => r()));
+const upstream = `http://127.0.0.1:${(fake.address() as any).port}`;
+const KEY = "PINK-FAKE-KEY-0123456789abcdef-not-real", WK = "video-lab-worker-PINKtestPINKtestPINKtest";
+const out: string[] = []; let pass = 0, all = 0; const ok = (name: string, c: boolean, d = "") => { all += 1; if (c) pass += 1; out.push(`${c ? "PASS" : "FAIL"} ${name}${d ? ` (${d})` : ""}`); };
+const recs: RelayRecord[] = [];
+const relay = await startGeminiRelay({ apiKey: KEY, workerKey: WK, model: "m", budget: 12, upstream, onRecord: r => recs.push(r) });
+const url = `http://127.0.0.1:${relay.port}/v1beta/models/m:generateContent`;
+const post = (body: Buffer | string, key?: string, u = url) => fetch(u, { method: "POST", headers: { "content-type": "application/json", ...(key === undefined ? {} : { "x-goog-api-key": key }) }, body }).then(async r => { await r.text(); return r.status; });
+// UTF-8: the sizes that broke e023d55 (120 KB 1/10, 456 KB 5 × U+FFFD), ten offsets each, plus 456 KB / 1 MB
+const line = "Prüfung der Anforderungen für Führung, Größenordnung und Übergabe — „belegt“ · 能力 😀 ";
+let damaged = 0, n = 0;
+for (const kb of process.env.PROBE_QUICK ? [120] : [120, 200, 456, 1024]) for (let i = 0; i < 10; i += 1) {
+  let text = "x".repeat(i * 7); while (Buffer.byteLength(text) < kb * 1024) text += line;
+  const body = Buffer.from(JSON.stringify({ contents: [{ parts: [{ text }] }] }));
+  const relayI = await startGeminiRelay({ apiKey: KEY, workerKey: WK, model: "m", budget: 1, upstream, onRecord: () => {} });
+  const before = seen.length;
+  await post(body, WK, `http://127.0.0.1:${relayI.port}/v1beta/models/m:generateContent`); relayI.server.close();
+  n += 1; if (!seen[before]?.equals(body) || seen[before].toString("utf8").includes("�")) damaged += 1;
+}
+ok("P-1 bodies 120 KB–1 MB with multibyte text byte-identical upstream, no U+FFFD", damaged === 0, `${damaged}/${n} damaged`);
+const base = seen.length;
+const s1 = await post("{}"), s2 = await post("{}", "video-lab-dummy-not-a-key"), s3 = await post("{}", KEY), s4 = await post("{}", WK.slice(0, -1)), s5 = await post("{}", WK.toUpperCase());
+ok("P-2 without key / old dummy / the real key / truncated / upper-cased placeholder (leading/trailing blanks are stripped by HTTP itself, so not a separate case) → 401, nothing forwarded", [s1, s2, s3, s4, s5].every(s => s === 401) && seen.length === base, [s1, s2, s3, s4, s5].join(","));
+ok("P-3 401s cost no budget", recs.at(-1)!.budgetLeft === 12 && recs.slice(-5).every(r => !r.forwarded && r.status === 401));
+const g = await fetch(url, { method: "GET", headers: { "x-goog-api-key": "wrong" } }); await g.text();
+ok("P-4 wrong key on a wrong method is 401 (key checked first)", g.status === 401);
+const s6 = await post("{}", WK); ok("P-5 the placeholder is forwarded with the real key", s6 === 200 && keys.at(-1) === KEY && seen.length === base + 1);
+ok("P-6 request bytes recorded from the buffer", recs.at(-1)!.requestBytes === 2);
+let threw = 0; for (const bad of [{ workerKey: "short" }, { workerKey: KEY }, { workerKey: "" }]) { try { await startGeminiRelay({ apiKey: KEY, workerKey: WK, model: "m", budget: 2, onRecord: () => {}, upstream, ...bad }); } catch { threw += 1; } }
+ok("P-7 short, empty or real-key placeholder refused at start", threw === 3, `${threw}/3`);
+ok("P-8 log holds neither key nor placeholder nor content", !JSON.stringify(recs).includes(KEY) && !JSON.stringify(recs).includes(WK) && !JSON.stringify(recs).includes("Prüfung"));
+console.log(out.join("\n")); console.log(`${pass}/${all}`);
+relay.server.close(); fake.close(); process.exit(pass === all ? 0 : 1);

@@ -1,0 +1,10 @@
+PASS P-1 bodies 120 KB–1 MB with multibyte text byte-identical upstream, no U+FFFD (0/40 damaged)
+PASS P-2 without key / old dummy / the real key / truncated / upper-cased placeholder (leading/trailing blanks are stripped by HTTP itself, so not a separate case) → 401, nothing forwarded (401,401,401,401,401)
+PASS P-3 401s cost no budget
+PASS P-4 wrong key on a wrong method is 401 (key checked first)
+PASS P-5 the placeholder is forwarded with the real key
+PASS P-6 request bytes recorded from the buffer
+PASS P-7 short, empty or real-key placeholder refused at start (3/3)
+PASS P-8 log holds neither key nor placeholder nor content
+8/8
+exit 0
