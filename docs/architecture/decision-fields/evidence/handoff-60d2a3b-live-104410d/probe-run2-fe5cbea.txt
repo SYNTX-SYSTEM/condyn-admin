@@ -1,0 +1,99 @@
+ok   1 onboarding overlay visible :: true
+ok   2 close button 8 × 18 at about (1183, 443) :: {"x":1183,"y":443,"w":8,"h":18}
+ok   2 close button visible label ✕ :: "✕"
+ok   2 Escape does NOT close the onboarding :: 1
+ok   2 ground: PERSON_X_JOB, gate AWAITING_JOB, no pool :: {"mode":"PERSON_X_JOB","gate":"AWAITING_JOB","noPool":1,"listEmpty":1}
+ok   3 PERSON switch at about (1209, 82), label PERSON :: {"box":{"x":1209,"y":82,"w":65,"h":24},"text":"PERSON"}
+ok   3 gate OPEN; indicator 'NO JOB SCOPE · PERSON' :: {"gate":"OPEN","indicator":"JOBNO JOB SCOPE · PERSON"}
+ok   4 '◈ CAPABILITY FIELD' at about (729, 76) :: {"box":{"x":729,"y":76,"w":214,"h":36},"text":"◈ CAPABILITY FIELD"}
+ok   4 dock 'INGEST KNOWLEDGE' visible :: true
+ok   5 PDF input is a hidden <input type=file> (display:none) :: "none/file"
+DIFF 5 '+ UPLOAD PDF DOCUMENT' visible (testid add-pdf-source-btn, not named in the doc) :: {"box":{"x":68,"y":550,"w":287,"h":42},"text":"+ UPLOAD PDF DOCUMENT"}
+ok   5 STAGED SOURCES shows 'PDF cv.synthetic.pdf' :: "STAGED SOURCES (1)PDFcv.synthetic.pdf×INVESTIGATION BOUNDARY · PERSONSTART ANALYSIS (POST)DECI"
+ok   5 dock names 'INVESTIGATION BOUNDARY · PERSON' :: "INVESTIGATION BOUNDARY · PERSON"
+ok   6 'START ANALYSIS (POST)' at about (68, 738) :: {"box":{"x":68,"y":738,"w":287,"h":45},"text":"START ANALYSIS (POST)"}
+INFO 6 telemetry steps seen (doc: SUBMITTING → QUEUED → ANALYZING SOURCES... → LOADING_RESULT) :: ["SUBMITTING","QUEUED","LOADING_RESULT"]
+INFO 6 duration (doc: stand-in 2–17 s) :: "14.2 s"
+ok   6 exactly one ANALYZE: one pdf, investigation {mode:PERSON}, no jobScope :: {"investigation":{"mode":"PERSON"},"jobScope":null,"docs":["pdf"]}
+ok   6 banner 'ANALYSIS COMPLETED SUCCESSFULLY' + 'PERSON · WITHOUT A JOB SCOPE', mode PERSON :: {"banner":"ANALYSIS COMPLETED SUCCESSFULLYIDENTITY CORE & ORBITS MANIFESTEDPERSON · WITHOUT A JOB SCOPE"}
+ok   7 bubble '02 ⬡ CAPABILITY FIELD' at about (1162, 352), 168 × 168 :: {"box":{"x":1162,"y":352,"w":168,"h":168},"text":"@keyframes orbitFloatPhase2 { 0% { transform: translateY(0px) translateX(0px) scale(1); } 30% { transform: translateY(2px) translateX(-1px) scale(1.005); } 65% { transform: translateY(-3px) translateX(1px) scal
+ok   7 12 proposals, all PROPOSED :: {"n":12,"names":["CLUSTER NODE // PROPOSEDPython1 EVIDENCE","CLUSTER NODE // PROPOSEDDocker1 EVIDENCE","CLUSTER NODE // PROPOSEDEnglish1 EVIDENC","CLUSTER NODE // PROPOSEDTeam Leadership1","CLUSTER NODE // PROPOSEDPostgreSQL1 EVID","CLUSTER NODE // PROPOSEDTyp
+INFO 8.0 pointer click did not land within 5 s, DOM click used :: "fallback"
+ok   8.0 node PCAP_AAFB8C7F8820052B592BDE11: moves, ~140 × 103; surface 'EVIDENCE // SOURCE MATCHING ONLY', 'cv.synthetic.pdf // DOCUMENT', a quote :: {"moves":17.4,"box":{"x":1300,"y":967,"w":140,"h":103},"click":"dom","surface":"EVIDENCE // SOURCE MATCHING ONLYcv.synthetic.pdf // DOCUMENTin logistics. Focus on TypeScript, React and Node.js, relational databases and automated testing."}
+ok   8 TypeScript quotes the PDF line verbatim :: null
+ok   9 Escape does NOT leave the deep focus :: {"zoom":"2"}
+ok   9 nucleus text 'CAPABILITY NUCLEUS // PROPOSED …' :: "CAPABILITY NUCLEUS // PROPOSEDTypeScriptPROPOSED // EVIDENCE PASSED // SEMANTIC "
+ok   9.0 after nucleus click data-zoom-level=1 :: "1"
+INFO 8.1 pointer click did not land within 5 s, DOM click used :: "fallback"
+ok   8.1 node PCAP_025308E990A808F14E50681F: moves, ~140 × 103; surface 'EVIDENCE // SOURCE MATCHING ONLY', 'cv.synthetic.pdf // DOCUMENT', a quote :: {"moves":375.83,"box":{"x":910,"y":68,"w":131,"h":115},"click":"dom","surface":"EVIDENCE // SOURCE MATCHING ONLYcv.synthetic.pdf // DOCUMENT• Wrote Python ETL jobs that load shipment events from Apache Kafka into the data warehouse."}
+ok   9 nucleus text 'CAPABILITY NUCLEUS // PROPOSED …' :: "CAPABILITY NUCLEUS // PROPOSEDPythonPROPOSED // EVIDENCE PASSED // SEMANTIC DEFI"
+ok   9.1 after nucleus click data-zoom-level=1 :: "1"
+INFO 8.2 pointer click did not land within 5 s, DOM click used :: "fallback"
+ok   8.2 node PCAP_197E601417B24700E27604D7: moves, ~140 × 103; surface 'EVIDENCE // SOURCE MATCHING ONLY', 'cv.synthetic.pdf // DOCUMENT', a quote :: {"moves":19.51,"box":{"x":1341,"y":138,"w":131,"h":115},"click":"dom","surface":"EVIDENCE // SOURCE MATCHING ONLYcv.synthetic.pdf // DOCUMENT• Set up CI/CD pipelines with GitHub Actions and built Docker images for every service."}
+ok   9 nucleus text 'CAPABILITY NUCLEUS // PROPOSED …' :: "CAPABILITY NUCLEUS // PROPOSEDDockerPROPOSED // EVIDENCE PASSED // SEMANTIC DEFI"
+INFO 9 centre '02 CAPABILITY FIELD · CAPABILITY COSMOS', moves :: {"text":"02 CAPABILITY FIELDCAPABILITY COSMOS // PROPOSAL FIELD","moves":337.03}
+ok   9 zoom 1 after nucleus, 0 after centre :: {"afterNucleus":"1","afterCentre":"0"}
+ok   10 '⬡ JOB FIELD' at about (977, 76) :: {"box":{"x":977,"y":76,"w":214,"h":36},"text":"⬡ JOB FIELD"}
+ok   10 card JOB FIELD with POOLS, + INTAKE, GEMINI OUTPUT :: null
+ok   11 toggle label 'GEMINI OUTPUT' :: "GEMINI OUTPUT"
+INFO 11 READ right after opening: moves :: 0
+INFO 11 panel opens IDLE (or already AVAILABLE) :: "IDLE"
+INFO 11 READ moves on opening :: {"moves":0,"text":"READ"}
+ok   11 AVAILABLE, RETAINED, chips 'sha256 ✓', 'parser = text ✓', 'STOP', meta video-standin-001 · video-… :: {"analysisId":"ANL_1792423621101_990","runReused":"false","original":"RETAINED","meta":"video-standin-001 · video-discovery-1 · 2026-10-19T15:27:02.763Z · EXC_EBE75D9CDB6D4005A2124525 · received for job JOB_1792423621101_990 "}
+ok   11 G-7 data-run-reused present and false :: "false"
+ok   11 data-analysis-id is an ANL_ id :: "ANL_1792423621101_990"
+ok   13 SCOPE: label 'INVESTIGATION SCOPE', data-scope-state UNSCOPED :: {"label":"INVESTIGATION SCOPE","state":"UNSCOPED"}
+ok   14 label 'PARSER · VERIFICATION · CONVERGENCE'; exactly one REJECTED (Quantum Annealing) :: {"label":"PARSER · VERIFICATION · CONVERGENCE","rejectedTokens":["REJECTED","REJECTED_QUOTE_NOT_FOUND"],"statuses":["VERIFIED","REJECTED_QUOTE_NOT_FOUND"]}
+ok   15 toggle reads 'HIDE GEMINI OUTPUT' :: "HIDE GEMINI OUTPUT"
+ok   15 panel gone :: 0
+ok   16 '+ INTAKE' :: "+ INTAKE"
+ok   16 job-pool-upload visible :: {"x":1576,"y":211,"w":316,"h":277}
+INFO 17 layout context :: {"field":{"x":0,"y":61,"w":1920,"h":1080},"scrollY":0,"successBanner":false,"upload":{"x":1576,"y":211,"w":316,"h":277}}
+ok   17 pool file input native and VISIBLE at about (1608, 362), 252 × 26 :: {"display":"inline-block/file","box":{"x":1608,"y":362,"w":252,"h":26}}
+ok   17 upload button enabled after choosing the file :: {"before":false,"after":true}
+ok   18 actor input prefilled (doc: replace the prefilled value) :: "JOB_POOL_UPLOADER_LOCAL"
+ok   19 'UPLOAD →' :: "UPLOAD →"
+ok   19 outcome CREATED; 'UPLOAD PERSISTED (NEW) · JPOOL_B94850C4… · DLL Engineering & Architecture Pool v1 · ACTIVE · UPLOADED != SELECTED' :: {"outcome":"CREATED","text":"UPLOAD PERSISTED (NEW)JPOOL_B94850C439974E27496FE3B1A9A076B5DLL Engineering & Architecture Pool v1 · ACTIVEUPLOADED != SELECTED · select it in the list below"}
+ok   20 toggle reads 'HIDE INTAKE' :: "HIDE INTAKE"
+ok   20 SELECT on the pool :: "SELECT"
+ok   20 URL carries jobPoolUploadId; 3 organizations :: {"url":"/career/demo?investigationMode=PERSON&focus=FIELD&jobPoolUploadId=JPOOL_B94850C439974E27496FE3B1A9A076B5","orgs":["syntx-organization-org_kestrel","syntx-organization-org_aurelion","syntx-organization-org_brightwater"]}
+ok   21 body '01 ⬡ KESTREL LOGISTICS SOFTWARE GMBH' at about (873, 170), 175 × 175 :: {"box":{"x":873,"y":170,"w":175,"h":175},"text":"01⬡ Kestrel Logistics Software GmbHLogistics SaaS · HamburgO","moves":0}
+DIFF 21 3 visible role cards (kestrel) :: ["syntx-role-role_aurelion_principal_architect","syntx-role-role_aurelion_security_engineer","syntx-role-role_aurelion_backend_interop","syntx-role-role_brightwater_cloud_platform","syntx-role-role_brightwater_devops","syntx-role-role_brightwater_backend_ledge
+ok   22 card 'SENIOR · L4 · Senior Full-Stack Engineer – Shipment Tracking', orbits, ~219 × 100 :: {"text":"SENIOR · L4Senior Full-Stack Engineer – Shipment TrackingWeb Platforms9 REQUIREMENTSNO MATCHING READ","box":{"x":630,"y":650,"w":219,"h":100},"moves":3.59}
+INFO 22 pointer click did not land within 5 s, DOM click used :: "fallback"
+ok   22 data-analysis-source NONE; 'PERSON · NO JOB COMPARISON'; 9 requirements :: {"source":"NONE","support":9,"reqText":"9 REQUIREMENTS"}
+ok   23 B2 409 ERR_JOB_COMPARISON_NOT_SCOPED; /matches 409 ERR_JOB_POOL_MATCHES_PERSON_ANALYSIS :: {"b2":[409,"{\"success\":false,\"issues\":[{\"code\":\"ERR_JOB_COMPARISON_NOT_SCOPED\"}]}"],"matches":[409,"{\"error\":{\"code\":\"ERR_JOB_POOL_MATCHES_PERSON_ANALYSIS\",\"message\":\"ERR_JOB_POOL_MATCHES_PERSON_ANALYSIS: ANL_17924236211"]}
+ok   24 'PERSON × JOB' at about (1276, 82) :: {"box":{"x":1276,"y":82,"w":101,"h":24},"text":"PERSON × JOB"}
+ok   24 gate locked again until a job is chosen :: "AWAITING_JOB"
+ok   25 '◎ SELECT AS JOB' :: "◎ SELECT AS JOB"
+ok   25 indicator VALID, 'JOB · Senior Full-Stack Engineer – Shipment Tracking · Kestrel Logistics Software GmbH · DLL Engineering & Architecture Pool' :: {"state":"VALID","text":"JOBSenior Full-Stack Engineer – Shipment TrackingKestrel Logistics Software GmbH · DLL Engineering & Architecture Pool"}
+ok   26 PDF still staged; dock 'INVESTIGATION BOUNDARY · PERSON × JOB' :: "INVESTIGATION BOUNDARY · PERSON × JOB"
+DIFF 26 the dock names the role (visible text or tooltip) :: {"text":"INVESTIGATION BOUNDARY · PERSON × JOB","title":"The person inside the scope of the selected job: needs a selected job"}
+INFO 27 duration :: "8.0 s"
+ok   27 one new ANALYZE: same pdf, PERSON_X_JOB, jobScope = pool + role :: {"investigation":{"mode":"PERSON_X_JOB"},"jobScope":{"jobPoolUploadId":"JPOOL_B94850C439974E27496FE3B1A9A076B5","poolRoleId":"role_kestrel_fullstack"},"docs":["pdf"]}
+ok   28 JOB_RESULT; 6 SUPPORTED, 1 WEAK, 2 OPEN :: {"all":9,"SUPPORTED":6,"WEAK":1,"OPEN":2,"other":["SUPPORTED","WEAK","OPEN"]}
+ok   29 toggle label '◎ B2 COVERAGE' :: "◎ B2 COVERAGE"
+ok   29 AVAILABLE, covered 7, not covered 2, EXACT/TOKEN_CONTAINMENT, scored false, bound to the PxJ analysis ≠ PERSON :: {"state":"AVAILABLE","covered":"7","notCovered":"2","scored":"false","binding":"ANL_1792423700843_387","rows":["COVERED/EXACT","COVERED/EXACT","COVERED/EXACT","COVERED/EXACT","COVERED/TOKEN_CONTAINMENT","COVERED/EXACT","NOT_COVERED/","NOT_COVERED/","COVERED/EX
+ok   30 Escape closes B2 :: 0
+ok   31 toggle label 'GEMINI OUTPUT' :: "GEMINI OUTPUT"
+INFO 31 READ right after opening: moves :: 0
+INFO 31 panel opens IDLE (or already AVAILABLE) :: "IDLE"
+INFO 31 READ moves on opening :: {"moves":0,"text":"READ"}
+ok   31 AVAILABLE, RETAINED, chips 'sha256 ✓', 'parser = text ✓', 'STOP', meta video-standin-001 · video-… :: {"analysisId":"ANL_1792423700843_387","runReused":"false","original":"RETAINED","meta":"video-standin-001 · video-discovery-4 · 2026-10-19T15:28:21.512Z · EXC_4107E7177FF4425AB34B8E1A · received for job JOB_1792423700843_387 "}
+ok   31 G-7 data-run-reused present and false :: "false"
+ok   31 data-analysis-id is an ANL_ id :: "ANL_1792423700843_387"
+ok   31 inspector reads the PxJ analysis :: {"inspector":"ANL_1792423700843_387","b2":"ANL_1792423700843_387"}
+ok   31 SCOPE RETAINED, names role_kestrel_fullstack, says it is no evidence :: {"state":"RETAINED","noEvidence":false,"text":"01INVESTIGATION SCOPEmode PERSON_X_JOBrole_kestrel_fullstackRUN_418B7A50835F221F9125ED2F · gemini · video-standin-model · discovery-schema-v1 · kernel discovery-v1scope text (system prompt only, never"}
+ok   32 no onboarding again after a deep link in the same profile :: 0
+ok   32 JOB, JOB_MODE, analysis source NONE :: {"mode":"JOB","gate":"JOB_MODE","source":"NONE"}
+ok   33 toggle '⬡ JOB STRUCTURE' :: "⬡ JOB STRUCTURE"
+ok   33 10 requirements, 8 findings :: {"reqs":10,"findings":"8","sectionFindingCount":"8"}
+DIFF 33 'JOB_STRUCTURE_V1' visible or in the DOM :: {"visibleHeading":"JOB · STRUCTUREThe selected job as decla","inDom":false}
+ok   34 NO_GEMINI, 'No Gemini call in this mode' :: {"state":"NO_GEMINI","text":"GEMINI OUTPUTRead-only inspector of the stored Gemini exchange of this analysis: nothing is started, nothing is stored.N"}
+ok   35 toggle label '◎ B2 COVERAGE' :: "◎ B2 COVERAGE"
+ok   35 B2 as in 29 :: {"state":"AVAILABLE","covered":"7","notCovered":"2","scored":"false","binding":"ANL_1792423700843_387","rows":["COVERED/EXACT","COVERED/EXACT","COVERED/EXACT","COVERED/EXACT","COVERED/TOKEN_CONTAINMENT","COVERED/EXACT","NOT_COVERED/","NOT_COVERED/","COVERED/EX
+ok   36 toggle label '◎ B2 COVERAGE' :: "◎ B2 COVERAGE"
+ok   36 NOT_SCOPED, 'This analysis is a PERSON analysis: no job comparison.' :: {"state":"NOT_SCOPED","covered":"","notCovered":"","scored":"false","binding":"","rows":[],"text":"B2 · SELECTED ROLE COVERAGEUnconfirmed name coverage of the selected role by the capability proposals of this analysis: counts, never a score.This analysis is a 
+ok   99 no page error :: []
+ok   99 no non-GET besides ANALYZE and the pool upload :: []
+79 ok, 4 differ, 15 info

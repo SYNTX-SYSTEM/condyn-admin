@@ -1,0 +1,12 @@
+# PINK code cross-check of the handoff 60d2a3b against fe5cbea (git show / git grep only; no run). SF = app/components/career/demo/SyntxField.tsx,
+# SCIF = app/components/career/demo/SemanticCareerIntelligenceField.tsx. Items spot-read by PINK are marked (read).
+Upload outcome values: CREATED, IDENTICAL_EXISTS (SF:2219-2225); rejections in job-pool-upload-rejected (data-rejection-code/-status: 400 ERR_JOB_POOL_JSON_INVALID / ACTOR_INVALID, 413 TOO_LARGE, 422 SCHEMA_INVALID / REFERENCE_INVALID), job-pool-upload-not-provisioned, job-pool-upload-failed
+Intake error titles (SCIF:866, read): scope codes -> NO VALID JOB SCOPE; boundary codes -> NO CLEAR INVESTIGATION BOUNDARY; else status 422 -> SEMANTIC BOUNDARY VIOLATION, 503 -> PROVIDER TRUNCATION, else ANALYSIS FAILED
+Worker failures carry no HTTP status (lib/career/orchestration/career-job-controller.ts:184-191); code = error.code || "EXECUTION_FAILED" (lib/career/orchestration/worker.ts:78) -> a Gemini failure shows ANALYSIS FAILED
+Missing states in 60d2a3b: B2 NO_ANALYSIS (SF:1652); match basis ALIAS, COMPOSITE_CONSTITUENT; structure LOADING; job-scope-indicator NONE/CHECKING/INVALID; analysis source URL; data-support SWEEP_ONLY/UNREAD; gemini scope NOT_RETAINED
+RETRY (retry-intake-btn, SCIF:888-894, read): handleAnalyze(lastStagedDocs) -> new submission, new job, whole pipeline
+Worker retry (lib/career/orchestration/job-repository.ts:236-262, read): non-terminal failure -> PENDING until attempt_count >= 3
+Lease re-claim (job-repository.ts:98-122, read): PENDING or RUNNING with expired lease, attempt_count + 1, cap checked only in the failure path
+Legacy model cascade (lib/career/providers/gemini.ts:6-11, 145-153, 405-428, read): GEMINI_MODEL, then gemini-2.0-flash, 2.5-flash, 1.5-pro, 1.5-flash on 503/429/UNAVAILABLE/RESOURCE_EXHAUSTED text; other errors stop
+"RUN REUSED" holds for Discovery only; the legacy step calls Gemini on every new job (lib/career/orchestration/career-analysis-job-processor.ts:73-76, 142-153)
+Escape: no handler on the onboarding overlay or the Capability deep focus; B2 closes on Escape (SF:2008-2040)

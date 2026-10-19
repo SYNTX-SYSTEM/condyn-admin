@@ -1,0 +1,30 @@
+ok   L-1 relay: 6 calls, all forwarded 200, one model, kinds D/C/L twice, budget left 2 :: {"path":"/v1beta/models/gemini-3.1-pro-preview:generateContent","kinds":["DISCOVERY","CONVERGENCE","LEGACY","DISCOVERY","CONVERGENCE","LEGACY"],"left":2,"ms":[28489,26743,48723,28411,22601,48914]}
+ok   L-2 relay: scope block only on the PERSON × JOB discovery :: [false,false,false,true,false,false]
+ok   L-3 relay.jsonl in the repo equals the private one (SHA256SUMS) :: "8d63ba4698e04767db728d1b70fa83582fa63ae17b6058c25d99b344f6cfadc6"
+ok   L-4 O-LIVE-3: both LEGACY requests the same size (no scope in the legacy prompt) :: [11477,11477]
+ok   L-5 no key, worker placeholder, inspector token or local path in the committed files :: null
+ok   L-6 net: only Next's npm version check, refused :: 1
+ok   W-1 walk LIVE 1920 × 1080, 30/30, no page error :: {"timings":{"personAnalysisMs":113521,"pxjAnalysisMs":104576}}
+ok   W-2 ANALYZE bodies: PERSON without jobScope, then PERSON_X_JOB with exactly this pool and role :: ["PERSON","PERSON_X_JOB"]
+ok   W-3 walk and summary name the same two analyses :: ["ANL_1792423422831_52","ANL_1792423582996_615"]
+ok   G-1 PERSON provenance: real model version, responseId not video-… :: ["gemini-3.1-pro-preview","_zXWauTtGe-ykdUPycm48Qk"]
+ok   G-2 PERSON RETAINED, sha256 and parser = text :: ["RETAINED",true,true]
+ok   G-3 PERSON finishReason STOP :: "STOP"
+ok   G-4 PERSON every evidence quote stands verbatim in cv.synthetic.pdf :: {"quotes":20,"notVerbatim":[]}
+ok   G-5 PERSON every claim has a status; projection = verified candidates :: {"claims":10,"statuses":["VERIFIED"],"proposed":10,"projection":10}
+ok   G-6 PERSON scope UNSCOPED :: ["UNSCOPED",null]
+ok   G-7 PERSON discovery run not reused :: false
+ok   G-1 PxJ provenance: real model version, responseId not video-… :: ["gemini-3.1-pro-preview","nzbWaqnnMfP6xs0PqKaTuAk"]
+ok   G-2 PxJ RETAINED, sha256 and parser = text :: ["RETAINED",true,true]
+ok   G-3 PxJ finishReason STOP :: "STOP"
+ok   G-4 PxJ every evidence quote stands verbatim in cv.synthetic.pdf :: {"quotes":18,"notVerbatim":[]}
+ok   G-5 PxJ every claim has a status; projection = verified candidates :: {"claims":9,"statuses":["VERIFIED"],"proposed":8,"projection":8}
+ok   G-6 PxJ scope RETAINED with the role, text matches hash :: ["RETAINED",true]
+ok   G-7 PxJ discovery run not reused :: false
+ok   G-8 B2: PERSON 409 NOT_SCOPED; PxJ 9 requirements, 8 covered, 1 not :: {"requirements":9,"covered":8,"notCovered":1,"proposals":8}
+ok   O-LIVE-1 PxJ proposals named exactly like the role's requirements; every B2 basis EXACT :: {"equal":"8/8","personEqual":0,"examples":[["Event-Driven Architecture",["Wrote Python ETL jobs that load shipment events from Apache Kafka into the data warehouse.","Thesis: event stream processing for parcel tracking."]],["Web Platform Engineering",["Senior software engineer with eight years of experience building web platforms and data pipelines in logistics."]],["English",["English (C1)."]]]}
+ok   O-LIVE-3 legacy capabilities differ between the two runs :: [["TypeScript","React","Node.js","PostgreSQL","Python","Apache Kafka","Team Leadership"],["TypeScript and Node.js Development","Python ETL Development","Team Leadership"]]
+ok   O-LIVE-4 nothing rejected :: null
+ok   X-1 exchange archive: one COMPLETED exchange per job, attempt 1 lease 1, STOP, sha ok :: ["JOB_1792423422831_52","JOB_1792423582996_615"]
+ok   S-1 summary carries no free text beyond CV quotes, names and hashes :: []
+29/29
