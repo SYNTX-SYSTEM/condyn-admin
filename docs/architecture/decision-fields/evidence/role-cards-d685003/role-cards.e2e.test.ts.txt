@@ -1,0 +1,453 @@
+/**
+ * PINK proof of GRÜN frontend/role-cards (owner "SFE — GRÜN | ROLE ORBIT CARD REFINEMENT", relayed by GRÜN; ae633a1 on the accepted
+ * orbit e6493a7) on a real Next server (next dev, disposable database, no worker, GEMINI_API_KEY empty, PINK's net sentinel in the
+ * server process). PINK's own pool: real-length, long, short, wide/upper-case/compound "stress" titles and PINK's seeded random titles
+ * (the role-orbit geometry proof's two seeds), each role with its own seniority (with and without parts, empty, " / ", very long),
+ * domain (short, empty, very long) and requirement count (0, 1, 2, 3, 7). Measured in the rendered DOM with motion reduced (the cards
+ * stand still; their boxes do not depend on motion), at 1600 × 1000, 1280 × 720, 1366 × 768 and 1600 × 1200. The shared layout
+ * function is called in-process only to restate the estimate the page drew. Every card of every organization:
+ *   C-1 box: data-card-box "orbit" exactly where the orbit is drawn in (a factor below 1), "packed" where it stays as packed, "compact"
+ *       for the compact packings; rendered width = the estimate's width; rendered height = estimate + 12 ("orbit") or = estimate
+ *       ("packed") (±0.5 px) — the drawn card is the box the geometry proof keeps every air for (orbit), never taller than the
+ *       packing's estimate (packed); data-card-title-lines = the lines the estimate counted (1 … 4)
+ *   C-2 nothing cut: every line inside the card's padding box (overflow is hidden there), no bottom overflow; the title not clamped
+ *       wherever it needs no more than the lines the estimate counted; DEV where a title that fits in four lines (what e6493a7 showed
+ *       in full) is clamped; measured: least room, titles needing more lines than counted, ellipsized one-line texts
+ *   C-3 centred: every line element and every rendered title line centred on the card's axis (±1 px)
+ *   C-4 texts: standing = the pool's seniority parts upper case joined by " · ", ROLE where none; title = the pool title (a spaced
+ *       dash bound to the word before by a no-break space); domain = domain_focus on "orbit" cards where stated, absent otherwise;
+ *       "N REQUIREMENTS" / "1 REQUIREMENT" = data-requirement-count; NO MATCHING READ with a hollow mark (no analysis here; MATCHING
+ *       READ is proven server-rendered in role-cards-ssr); no "//", score, rank, resonance or percentage
+ *   C-5 contrast (measured, 1600 × 1000 and 1280 × 720): every line's text colour over the lightest pixel of the card's own glass under
+ *       its glyph box (text hidden for the reading; pixels under another card + 20 px, the orientation surface or the centre disc + 6 px
+ *       left out, the dev server's indicator hidden; cards over the disc are recorded), WCAG ratio,
+ *       least per line kind; checked against 4.5 : 1
+ *   C-8 footer (requirements, matching): with ROLE_CARDS_FOOTER=1 (6f9bc2b) both lines whole (not ellipsized) on every card in every run
+ *       with the app's font (the four other fonts are measured: footerInOtherFonts),
+ *       both at one size ≤ 8.5 px, 8.5 px in English with the app's font; before it the cuts are recorded as measured. German runs
+ *       switch the language through the System Codex; zoom runs use device scale 1.25 and 2; four other monospaced fonts stand in for
+ *       the app's in the German 1280 × 720 runs
+ *   C-6 the tether lamp lies on the card's edge (±1.5 px: it is placed on the padding box) where the line from the centre meets it (±1.5 px)
+ *   C-7 (1600 × 1000, 1280 × 720) the tether lamp and its conduction stub as drawn against the same frame with the card's overflow
+ *       let visible (pixels within 24 px of the lamp differing by more than 24 in a channel; 10 or more = clipped). Every role card is
+ *       a button, and app/globals.css gives every button overflow: hidden, so the reading is the same on every tip
+ *   C-9 (ROLE_CARDS_FIT=1, 4ecfe67) the title fitted after layout: data-title-size 10 … 11.5 px (compact 11), "…" only at 10 px; the
+ *       full title, the pool's seniority and domain as tooltips
+ * Set ROLE_CARDS_TIP; run on e6493a7 as the negative control (the card attributes are absent there).
+ */
+import { spawn, type ChildProcess } from "node:child_process";
+import { once } from "node:events";
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { createRequire } from "node:module";
+import { createServer } from "node:net";
+import { resolve } from "node:path";
+import { afterAll, beforeAll, describe, expect, it } from "vitest";
+import * as layoutLib from "../../lib/career/job-pool/syntx-manifestation-layout";
+import { SIL_COPY } from "../../lib/career/view-model/sil-language";
+import { createJobPoolPostgresWorld, type JobPoolWorld } from "../career/job-pool/fixtures/job-pool-postgres-world";
+
+const requireHere = createRequire(resolve(process.cwd(), "package.json"));
+function resolvePlaywright(): string | null {
+  const explicit = process.env.CONDYN_PLAYWRIGHT_MODULE;
+  if (explicit !== undefined && explicit.length > 0) return explicit;
+  try { return requireHere.resolve("playwright"); } catch { return null; }
+}
+const playwrightModule = resolvePlaywright();
+const TIP = process.env.ROLE_CARDS_TIP ?? "local";
+/** Set on a tip with the footer delta (6f9bc2b): C-8 is then checked; before it, footer cuts are recorded as measured. */
+const FOOTER_TIP = process.env.ROLE_CARDS_FOOTER === "1";
+/** Set on a tip with the fitted title and the tooltips (4ecfe67): C-9 is then checked. */
+const FIT_TIP = process.env.ROLE_CARDS_FIT === "1";
+const EVIDENCE_DIR = resolve(process.cwd(), `docs/architecture/decision-fields/evidence/role-cards-${TIP}`);
+const SENTINEL = process.env.PINK_NET_SENTINEL;
+const NET_LOG = process.env.PINK_ROLE_CARDS_NET_LOG ?? "";
+/** The runs: four viewports in English; German at the two contrast viewports; zoom (device scale 1.25 on a 1280 × 800 layout = 125 %
+ * of 1600 × 1000, and 2 at 1600 × 1000); German at 1280 × 720 with the monospaced lines (standing, footer) in four other monospaced
+ * fonts of this machine (other metrics than the app's). Contrast and the lamp reading (C-5, C-7) at device scale 1 with the app's font. */
+interface Run { width: number; height: number; lang: "en" | "de"; scale?: number; font?: string }
+const RUNS: Run[] = [
+  { width: 1600, height: 1000, lang: "en" }, { width: 1280, height: 720, lang: "en" }, { width: 1366, height: 768, lang: "en" }, { width: 1600, height: 1200, lang: "en" },
+  { width: 1600, height: 1000, lang: "de" }, { width: 1280, height: 720, lang: "de" },
+  { width: 1280, height: 800, lang: "en", scale: 1.25 }, { width: 1600, height: 1000, lang: "en", scale: 2 }, { width: 1280, height: 800, lang: "de", scale: 1.25 },
+  ...["DejaVu Sans Mono", "FreeMono", "Fira Code", "IBM Plex Mono"].map(font => ({ width: 1280, height: 720, lang: "de" as const, font }))
+];
+const runTag = (r: Run) => `${r.width}x${r.height}${r.lang === "de" ? " de" : ""}${r.scale ? ` @${r.scale}` : ""}${r.font ? ` [${r.font}]` : ""}`;
+const READ_CONTRAST = (r: Run) => !r.scale && !r.font && (r.width === 1600 && r.height === 1000 || r.width === 1280 && r.height === 720);
+const POOL_ID = "pool_pink_role_cards_v1";
+const REAL = ["Senior Full-Stack Engineer – Shipment Tracking", "Platform Reliability Engineer", "Data Engineer", "Engineering Manager, Payments Infrastructure and Settlement", "QA Lead", "Product Designer", "Machine Learning Engineer (Ranking)", "DevOps Engineer", "Security Analyst", "Frontend Engineer", "Backend Engineer (Go)", "Technical Writer", "Solutions Architect", "Site Reliability Engineer II"];
+const LONG = "Principal Engineering Manager for Distributed Payments Infrastructure, Settlement and Reconciliation (EMEA)";
+const SHORT = ["QA", "UX", "Ops", "Dev", "PM", "SRE", "ML", "BI"];
+const STRESS = ["QA LEAD – EMEA OPERATIONS MANAGEMENT", "WWW Mobile Web Workflow Owner", "Kubernetesplattformzuverlässigkeitsingenieurin", "Leiter:in Datenplattform & Analytics (m/w/d)", "Senior Full-Stack Engineer – Shipment Tracking – Europe", "Head of Machine-Learning-Operations / MLOps", "Ingeniera de Fiabilidad de Plataforma — Pagos", "VP, Engineering", "MMMMMMMMMMMMMMMMMMMM", "Software Engineer - Backend - Payments - Settlement"];
+function seeded(seed: number): string[] {
+  let t = seed; const rnd = () => { t = (t + 0x6d2b79f5) | 0; let r = Math.imul(t ^ (t >>> 15), 1 | t); r = (r + Math.imul(r ^ (r >>> 7), 61 | r)) ^ r; return ((r ^ (r >>> 14)) >>> 0) / 4294967296; };
+  const words = ["Lead", "Data", "Platform", "Engineer", "of", "Reliability", "UX", "Senior", "Cloud", "Payments", "Infrastructure", "and", "QA", "Machine", "Learning", "Security", "Principal", "Ops", "(EMEA)", "Manager", "–", "Tracking", "II"];
+  return Array.from({ length: 53 }, () => { let title = ""; const length = 3 + Math.floor(rnd() * 108); while (title.length < length) title += `${title ? " " : ""}${words[Math.floor(rnd() * words.length)]}`; return title.slice(0, length).trim(); });
+}
+const chunks = (list: string[], size: number) => Array.from({ length: Math.ceil(list.length / size) }, (_, i) => list.slice(i * size, i * size + size));
+const ORGS: Array<{ id: string; titles: string[] }> = [
+  { id: "org_rc_3", titles: REAL.slice(0, 3) },
+  { id: "org_rc_8", titles: REAL.slice(0, 8) },
+  { id: "org_rc_14", titles: REAL.slice(0, 14) },
+  // 32 roles: a compact packing (120 px cards) at 1280 × 720 and 1366 × 768, the narrowest footer
+  { id: "org_rc_32", titles: Array.from({ length: 32 }, (_, i) => REAL[i % REAL.length]) },
+  { id: "org_rc_long_6", titles: Array.from({ length: 6 }, () => LONG) },
+  { id: "org_rc_short_12", titles: Array.from({ length: 12 }, (_, i) => SHORT[i % SHORT.length]) },
+  { id: "org_rc_stress_10", titles: STRESS },
+  ...[20261018, 4711].flatMap(seed => chunks(seeded(seed), 7).map((titles, i) => ({ id: `org_rc_r${seed}_${i}`, titles })))
+];
+const SENIORITY = ["Senior / L4", "Lead / M1", "Staff", "", " / ", "senior", "Senior/L4", "Principal / Distinguished Engineer / Level 9 (Technical Fellow Track)", "Mid / L3", "Junior"];
+const DOMAIN = ["Shipment Tracking", "", "Payments", "Distributed Payments Infrastructure, Settlement and Reconciliation (EMEA)", "Data", "Security & Compliance", "Machine Learning"];
+const REQUIREMENTS = [1, 2, 3, 7, 0];
+const roleId = (org: string, i: number) => `${org.replace("org_", "role_")}_${String(i).padStart(2, "0")}`;
+interface PoolRole { id: string; title: string; seniority: string; domain: string; requirements: number }
+const ROLES = new Map<string, PoolRole>();
+ORGS.forEach((o, oi) => o.titles.forEach((title, i) => { const k = oi + i; ROLES.set(roleId(o.id, i), { id: roleId(o.id, i), title, seniority: SENIORITY[k % SENIORITY.length], domain: DOMAIN[(k * 3) % DOMAIN.length], requirements: REQUIREMENTS[(k * 2 + oi) % REQUIREMENTS.length] }); }));
+const pool = {
+  pool: { id: POOL_ID, name: "PINK role cards pool", description: "Organizations with varied role texts for the role card proof.", version: 1, status: "ACTIVE", created_at: "2026-10-19T00:00:00.000Z" },
+  organizations: ORGS.map(o => ({ id: o.id, pool_id: POOL_ID, org_id: o.id.toUpperCase(), name: `PINK Cards ${o.id.slice(7)}`, country_iso: "DE", region: "Berlin", industry: "Test", scale: "TEST", description: "PINK role card organization." })),
+  roles: ORGS.flatMap(o => o.titles.map((_, i) => { const r = ROLES.get(roleId(o.id, i))!; return { id: r.id, pool_id: POOL_ID, organization_id: o.id, title: r.title, seniority: r.seniority, domain_focus: r.domain, description: "PINK role card role." }; })),
+  requirements: [...ROLES.values()].flatMap(r => Array.from({ length: r.requirements }, (_, k) => ({ id: `req_${r.id}_${k}`, role_id: r.id, capability_name: `Distributed Systems ${k}`, domain: "Engineering", weight: 1, required_level: "advanced", necessity: "REQUIRED" })))
+};
+const ALLOWANCE = 12;
+const WCAG = 4.5;
+
+let world: JobPoolWorld;
+let server: ChildProcess | undefined;
+let port = 0;
+let serverOutput = "";
+const base = () => `http://127.0.0.1:${port}`;
+const delay = (ms: number) => new Promise<void>((done) => setTimeout(done, ms));
+async function availablePort(): Promise<number> {
+  const listener = createServer();
+  await new Promise<void>((ok) => listener.listen(0, "127.0.0.1", () => ok()));
+  const port = (listener.address() as { port: number }).port;
+  await new Promise<void>((ok) => listener.close(() => ok()));
+  return port;
+}
+const KINDS = ["standing", "title", "domain", "requirements", "matching"] as const;
+type Kind = (typeof KINDS)[number];
+interface Line { kind: Kind; l: number; t: number; r: number; b: number; text: string; scrollW: number; clientW: number; color: string; fontSize: number; tip: string | null; glyphs: { l: number; t: number; r: number; b: number } }
+interface CardRead {
+  id: string; box: string | null; titleLines: string | null; reqAttr: string | null; matchAttr: string | null;
+  l: number; t: number; r: number; b: number; border: number; padTop: number; padBottom: number; scrollH: number; clientH: number;
+  lines: Line[]; titleRows: Array<{ l: number; r: number }>; titleScrollH: number; titleClientH: number; titleNatural: number; titleNaturalBase: number; titleLineH: number; titleSize: string | null; titleTip: string | null;
+  markBackground: string | null; anchor: { x: number; y: number } | null; cardText: string;
+}
+
+describe.skipIf(playwrightModule === null)("PINK: role cards of the organization orbit (GRÜN frontend/role-cards)", () => {
+  let browser: any;
+  let uploadId = "";
+  const checks: Array<{ id: string; name: string; ok: boolean; detail?: unknown }> = [];
+  const measured: Record<string, unknown> = {};
+  const pageErrors: string[] = [];
+  const nonGet: string[] = [];
+  const check = (id: string, name: string, ok: boolean, detail?: unknown) => { checks.push({ id, name, ok, ...(detail === undefined ? {} : { detail }) }); };
+
+  async function open(run: Run) {
+    const page = await browser.newPage({ viewport: { width: run.width, height: run.height }, deviceScaleFactor: run.scale ?? 1, reducedMotion: "reduce" });
+    page.on("pageerror", (error: unknown) => pageErrors.push(String(error)));
+    page.on("request", (request: any) => { if (request.method() !== "GET") nonGet.push(`${request.method()} ${request.url()}`); });
+    await page.goto(`${base()}/career/demo?focus=FIELD&jobPoolUploadId=${uploadId}`, { waitUntil: "domcontentloaded", timeout: 120_000 });
+    await page.getByTestId("field-focus-strip").waitFor({ timeout: 120_000 });
+    const overlay = page.getByTestId("guided-onboarding-overlay");
+    try { await overlay.waitFor({ timeout: 8_000 }); await page.getByTestId("onboarding-close-btn").click(); await overlay.waitFor({ state: "detached", timeout: 30_000 }); } catch { /* no overlay */ }
+    if (run.lang === "de") {
+      // the language is switched as a user does it: System Codex, Deutsch, close
+      await page.getByTestId("open-system-codex-btn").click();
+      await page.getByTestId("switch-lang-de").click();
+      await page.getByTestId("system-codex-close").click();
+      await delay(400);
+    }
+    if (run.font) await page.addStyleTag({ content: `[data-sx-role-standing], [data-sx-role-standing] *, [data-sx-role-requirements], [data-sx-role-matching], [data-sx-role-matching] * { font-family: '${run.font}', monospace !important; }` });
+    return page;
+  }
+  async function enter(page: any, org: string) {
+    await page.getByTestId(`syntx-organization-${org}`).waitFor({ timeout: 60_000 });
+    await page.getByTestId(`syntx-organization-${org}`).evaluate((element: HTMLElement) => element.click());
+    await page.locator('[data-testid="syntx-field"][data-observation-kind="ORGANIZATION"]').waitFor({ timeout: 30_000 });
+    await page.locator(`[data-testid="syntx-cosmos-organization"][data-organization-id="${org}"]`).waitFor({ timeout: 30_000 });
+    await delay(900);
+  }
+  const read = (page: any): Promise<{ kx: string | null; ky: string | null; svgW: number; svgH: number; cx: number; cy: number; cards: CardRead[] }> => page.evaluate((kinds: string[]) => {
+    const shell = document.querySelector('[data-testid="syntx-cosmos-organization"]') as HTMLElement;
+    const svg = shell.querySelector("svg") as SVGSVGElement;
+    const centre = (shell.querySelector('[data-testid="syntx-cosmos-centre"]') as HTMLElement).getBoundingClientRect();
+    const px = (v: string) => Number.parseFloat(v) || 0;
+    const cards = [...shell.querySelectorAll("[data-sx-role-card][data-testid]")].map(node => {
+      const el = node as HTMLElement; const b = el.getBoundingClientRect(); const cs = getComputedStyle(el);
+      const lines = kinds.map(kind => {
+        const line = el.querySelector(`[data-sx-role-${kind}]`) as HTMLElement | null;
+        if (!line) return null;
+        const lb = line.getBoundingClientRect();
+        // the text-bearing element: the line itself, or its last text span (standing: the parts between the hairlines; matching: after the mark)
+        const spans = [...line.querySelectorAll("span")].filter(s => (s.textContent ?? "").trim().length > 0 && s.children.length === 0);
+        const carrier = (kind === "standing" || kind === "matching") && spans.length > 0 ? spans[spans.length - 1] : line;
+        const cb = carrier.getBoundingClientRect();
+        return { kind, l: lb.left, t: lb.top, r: lb.right, b: lb.bottom, text: line.textContent ?? "", scrollW: carrier.scrollWidth, clientW: carrier.clientWidth, color: getComputedStyle(carrier).color, fontSize: Number.parseFloat(getComputedStyle(carrier).fontSize), tip: carrier.getAttribute("title") ?? line.getAttribute("title"), glyphs: { l: cb.left, t: cb.top, r: cb.right, b: cb.bottom } };
+      }).filter(Boolean);
+      const title = el.querySelector("[data-sx-role-title]") as HTMLElement | null;
+      let titleRows: Array<{ l: number; r: number }> = [], titleNatural = 0, titleNaturalBase = 0, titleLineH = 0;
+      if (title) {
+        const range = document.createRange(); range.selectNodeContents(title);
+        const rows = new Map<number, { l: number; r: number }>();
+        for (const rc of range.getClientRects()) { if (rc.width < 0.5) continue; const key = Math.round(rc.top); const row = rows.get(key); rows.set(key, row ? { l: Math.min(row.l, rc.left), r: Math.max(row.r, rc.right) } : { l: rc.left, r: rc.right }); }
+        titleRows = [...rows.values()];
+        // the title's natural lines at the same width, unclamped
+        const clone = title.cloneNode(true) as HTMLElement;
+        clone.removeAttribute("data-sx-role-title");
+        // at the card's content width (the most the title may take: max-width 100%)
+        Object.assign(clone.style, { position: "absolute", visibility: "hidden", left: "0", top: "0", width: `${el.clientWidth - px(cs.paddingLeft) - px(cs.paddingRight)}px`, maxWidth: "none", display: "block", overflow: "visible" });
+        clone.style.setProperty("-webkit-line-clamp", "unset");
+        el.appendChild(clone);
+        titleLineH = px(getComputedStyle(clone).lineHeight);
+        titleNatural = Math.round(clone.getBoundingClientRect().height / titleLineH);
+        // the same at the base size (11.5 px; 11 px on the compact form): the lines e6493a7 drew it in
+        clone.style.fontSize = el.getAttribute("data-card-box") === "compact" ? "11px" : "11.5px";
+        titleNaturalBase = Math.round(clone.getBoundingClientRect().height / px(getComputedStyle(clone).lineHeight));
+        el.removeChild(clone);
+      }
+      const mark = el.querySelector("[data-sx-role-matching] > span[aria-hidden]") as HTMLElement | null;
+      const anchorEl = el.querySelector("[data-sx-card-anchor]") as HTMLElement | null; const ab = anchorEl?.getBoundingClientRect();
+      return {
+        id: el.getAttribute("data-testid")!, box: el.getAttribute("data-card-box"), titleLines: el.getAttribute("data-card-title-lines"), reqAttr: el.getAttribute("data-requirement-count"), matchAttr: el.getAttribute("data-matching-read"),
+        l: b.left, t: b.top, r: b.right, b: b.bottom, border: px(cs.borderTopWidth), padTop: px(cs.paddingTop), padBottom: px(cs.paddingBottom), scrollH: el.scrollHeight, clientH: el.clientHeight,
+        lines, titleRows, titleScrollH: title?.scrollHeight ?? 0, titleClientH: title?.clientHeight ?? 0, titleNatural, titleNaturalBase, titleLineH, titleSize: title?.getAttribute("data-title-size") ?? null, titleTip: title?.getAttribute("title") ?? null,
+        markBackground: mark ? getComputedStyle(mark).backgroundColor : null, anchor: ab ? { x: ab.left, y: ab.top } : null,
+        cardText: [...el.querySelectorAll("[data-sx-role-standing], [data-sx-role-title], [data-sx-role-domain], [data-sx-role-requirements], [data-sx-role-matching]")].map(n => n.textContent).join(" | ")
+      };
+    });
+    return { kx: shell.getAttribute("data-orbit-compactness-x"), ky: shell.getAttribute("data-orbit-compactness-y"), svgW: Number(svg.getAttribute("width")), svgH: Number(svg.getAttribute("height")), cx: centre.left + centre.width / 2, cy: centre.top + centre.height / 2, cards };
+  }, KINDS as unknown as string[]);
+
+  beforeAll(async () => {
+    world = await createJobPoolPostgresWorld();
+    port = await availablePort();
+    server = spawn(process.execPath, [resolve(process.cwd(), "node_modules/next/dist/bin/next"), "dev", "--webpack", "-p", String(port), "-H", "127.0.0.1"], {
+      cwd: process.cwd(),
+      env: { ...process.env, DATABASE_URL: world.databaseUrl, NEXT_TELEMETRY_DISABLED: "1", GEMINI_API_KEY: "", ...(SENTINEL && NET_LOG ? { NODE_OPTIONS: `--require ${SENTINEL}`, PINK_NET_LOG: NET_LOG } : {}) },
+      stdio: ["ignore", "pipe", "pipe"]
+    });
+    server.stdout?.on("data", (chunk) => { serverOutput += String(chunk); });
+    server.stderr?.on("data", (chunk) => { serverOutput += String(chunk); });
+    for (let attempt = 0; attempt < 200; attempt += 1) {
+      try { const response = await fetch(`${base()}/api/career/job-pools`); if (response.status === 200) { await response.json(); break; } } catch { /* not ready */ }
+      await delay(500);
+      if (attempt === 199) throw new Error(`server not ready:\n${serverOutput}`);
+    }
+    const uploaded = await fetch(`${base()}/api/career/job-pools`, { method: "POST", headers: { "content-type": "application/json", "x-condyn-principal-actor-id": "PINK_ROLE_CARDS" }, body: JSON.stringify(pool) });
+    const body = await uploaded.json();
+    if (typeof body.jobPoolUploadId !== "string") throw new Error(`upload refused ${uploaded.status}: ${JSON.stringify(body).slice(0, 2000)}`);
+    uploadId = body.jobPoolUploadId;
+    mkdirSync(EVIDENCE_DIR, { recursive: true });
+    const playwright = await import(playwrightModule as string);
+    browser = await playwright.chromium.launch({ headless: true });
+  }, 300_000);
+
+  afterAll(async () => {
+    if (browser) await browser.close();
+    if (server && server.exitCode === null && server.signalCode === null) {
+      server.kill("SIGTERM");
+      await Promise.race([once(server, "exit"), delay(10_000)]);
+      if (server.exitCode === null && server.signalCode === null) { server.kill("SIGKILL"); await once(server, "exit"); }
+    }
+    if (world) await world.destroy();
+    const net = NET_LOG && existsSync(NET_LOG) ? readFileSync(NET_LOG, "utf8").trim().split("\n").filter(Boolean) : [];
+    const failed = checks.filter((entry) => !entry.ok);
+    writeFileSync(resolve(EVIDENCE_DIR, "C-report.json"), `${JSON.stringify({ tip: TIP, recordedAt: new Date().toISOString(), passed: checks.length - failed.length, total: checks.length, deviations: failed, checks, measured, pageErrors, nonGet, net }, null, 2)}\n`);
+    writeFileSync(resolve(EVIDENCE_DIR, "C-report.txt"), `${checks.map((entry) => `${entry.ok ? "ok  " : "DEV "} ${entry.id} ${entry.name}${entry.detail === undefined ? "" : ` · ${JSON.stringify(entry.detail)}`}`).join("\n")}\n\n${checks.length - failed.length}/${checks.length} checks ok · page errors ${pageErrors.length} · non-GET ${nonGet.length} · net ${net.length}\n`);
+  }, 60_000);
+
+  it("C-1 … C-6", async () => {
+    const sharp = requireHere("sharp");
+    const lum = (r: number, g: number, b: number) => { const f = (c: number) => { c /= 255; return c <= 0.03928 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4; }; return 0.2126 * f(r) + 0.7152 * f(g) + 0.0722 * f(b); };
+    const rgba = (s: string) => { const m = /rgba?\(([^)]+)\)/.exec(s)!; const [r, g, b, a] = m[1].split(",").map(Number); return { r, g, b, a: a === undefined || Number.isNaN(a) ? 1 : a }; };
+    const leastContrast: Record<string, { ratio: number }> = {};
+    const lampClip: unknown[] = [];
+    const footerSizes: string[] = [];
+    const titleSizes: string[] = [];
+    const overDisc = new Set<string>();
+    const fontCuts: Array<{ tag: string; cut: unknown[] }> = [];
+    const contrastByTag: Record<string, { ratio: number }> = {};
+    let lampCropped = false;
+    const titleCrops = new Set<string>();
+    const totals = { cards: 0, clampedBeyondFour: 0, needMoreThanCounted: [] as unknown[], ellipsized: [] as unknown[], leastRoomPadding: Infinity, leastRoomContent: Infinity, leastRoomAt: "" };
+    for (const run of RUNS) {
+      const v = runTag(run);
+      const t = (SIL_COPY as any)[run.lang].syntx;
+      const page = await open(run);
+      for (const org of ORGS) {
+        const tag = `${v} ${org.id}`;
+        await enter(page, org.id);
+        const f = await read(page);
+        const items = org.titles.map((title, i) => ({ id: roleId(org.id, i), title }));
+        const { layout, compact, compactness } = (layoutLib as any).syntxCosmosLayout(items, f.svgW, f.svgH);
+        const drawnIn = compactness.x < 1 || compactness.y < 1;
+        const expectedBox = compact ? "compact" : drawnIn ? "orbit" : "packed";
+        check("C-1", `${tag}: the in-process factors are the drawn ones`, Number(f.kx) === compactness.x && Number(f.ky) === compactness.y, { dom: [f.kx, f.ky], inProcess: compactness });
+        const bad: Record<string, unknown[]> = { box: [], width: [], height: [], lines: [], cut: [], clamp: [], centre: [], texts: [], mark: [], anchor: [], footer: [], fit: [] };
+        for (const card of f.cards) {
+          totals.cards += 1;
+          const role = ROLES.get(card.id.replace("syntx-role-", ""))!;
+          const node = layout.nodes.find((n: { id: string }) => n.id === role.id);
+          const w = card.r - card.l, h = card.b - card.t, x = (card.l + card.r) / 2, y = (card.t + card.b) / 2;
+          // ---- C-1 ----
+          if (card.box !== expectedBox) bad.box.push([role.id, card.box]);
+          if (Math.abs(w - node.width) > 0.5) bad.width.push([role.id, w, node.width]);
+          const wantH = expectedBox === "orbit" ? node.height + ALLOWANCE : node.height;
+          if (expectedBox !== "compact" && Math.abs(h - wantH) > 0.5) bad.height.push([role.id, Number(h.toFixed(2)), wantH]);
+          const counted = Math.min(4, Math.max(1, Math.floor((node.height - 51) / 18)));
+          if (expectedBox !== "compact" && card.titleLines !== String(counted)) bad.lines.push([role.id, card.titleLines, counted]);
+          // ---- C-2 ----
+          const padTop = card.t + card.border, padBottom = card.b - card.border;
+          for (const line of card.lines) {
+            const roomPad = Math.min(line.t - padTop, padBottom - line.b), roomContent = Math.min(line.t - padTop - card.padTop, padBottom - card.padBottom - line.b);
+            if (roomPad < totals.leastRoomPadding) { totals.leastRoomPadding = roomPad; totals.leastRoomAt = `${tag} ${role.id} ${line.kind}`; }
+            totals.leastRoomContent = Math.min(totals.leastRoomContent, roomContent);
+            if (roomPad < -0.5 || line.l < card.l + card.border - 0.5 || line.r > card.r - card.border + 0.5) bad.cut.push([role.id, line.kind, Number(roomPad.toFixed(2))]);
+            if (line.kind !== "title" && line.scrollW > line.clientW + 1) totals.ellipsized.push({ tag, id: role.id, kind: line.kind, text: line.text, cardWidth: Number(w.toFixed(1)), scrollW: line.scrollW, clientW: line.clientW });
+          }
+          const clamped = card.titleScrollH > card.titleClientH + 1;
+          if (expectedBox !== "compact" && card.titleNaturalBase > counted) totals.needMoreThanCounted.push({ tag, id: role.id, title: role.title, counted, naturalAtBase: card.titleNaturalBase, size: card.titleSize, cut: clamped, width: node.width, box: card.box });
+          if (expectedBox !== "compact" && clamped && card.titleNaturalBase <= 4) bad.clamp.push([role.id, role.title, { counted, naturalAtBase: card.titleNaturalBase, size: card.titleSize }]);
+          if (clamped && card.titleNaturalBase > 4) totals.clampedBeyondFour += 1;
+          if (card.titleSize !== null) titleSizes.push(card.titleSize);
+          // ---- C-9 (4ecfe67): the title read smaller in half pixels down to 10 px, "…" only below that; full texts as tooltips ----
+          if (FIT_TIP) {
+            const size = Number(card.titleSize);
+            if (card.titleSize === null || !(size >= 10 && size <= (expectedBox === "compact" ? 11 : 11.5)) || (clamped && size > 10)) bad.fit.push([role.id, { size: card.titleSize, cut: clamped }]);
+            if (card.titleTip !== role.title) bad.fit.push([role.id, "title tooltip", card.titleTip]);
+            const standingLine = card.lines.find(l => l.kind === "standing"), domainLine = card.lines.find(l => l.kind === "domain");
+            if (standingLine && (standingLine.tip ?? "") !== role.seniority) bad.fit.push([role.id, "standing tooltip", standingLine.tip, role.seniority]);
+            if (domainLine && domainLine.tip !== role.domain) bad.fit.push([role.id, "domain tooltip", domainLine.tip]);
+          }
+          // ---- C-3 ----
+          for (const line of card.lines) if (Math.abs((line.l + line.r) / 2 - x) > 1) bad.centre.push([role.id, line.kind, Number(((line.l + line.r) / 2 - x).toFixed(2))]);
+          for (const row of card.titleRows) if (Math.abs((row.l + row.r) / 2 - x) > 1) bad.centre.push([role.id, "title row", Number(((row.l + row.r) / 2 - x).toFixed(2))]);
+          // ---- C-4 ----
+          const parts = role.seniority.split("/").map(p => p.trim()).filter(Boolean);
+          const text = (kind: Kind) => card.lines.find(l => l.kind === kind)?.text ?? null;
+          const want = {
+            standing: parts.length ? parts.map(p => p.toUpperCase()).join(" · ") : t.manifest.role,
+            title: role.title.replace(/ ([–—-]) /g, " $1 "),
+            domain: expectedBox === "orbit" && role.domain.length > 0 ? role.domain : null,
+            requirements: `${role.requirements} ${role.requirements === 1 ? t.manifest.requirement : t.requirements}`,
+            matching: t.manifest.matchingNotRead
+          };
+          for (const kind of KINDS) if (text(kind) !== want[kind]) bad.texts.push([role.id, kind, text(kind), want[kind]]);
+          if (card.reqAttr !== String(role.requirements) || card.matchAttr !== "false") bad.texts.push([role.id, "attributes", card.reqAttr, card.matchAttr]);
+          if (/\/\/|\bresonance\b|\bscore\b|\brank\b|%/i.test(card.cardText.replace(role.title, ""))) bad.texts.push([role.id, "forbidden", card.cardText]);
+          if (card.markBackground === null || rgba(card.markBackground).a !== 0) bad.mark.push([role.id, card.markBackground]);
+          // ---- C-8 footer: both lines whole, at one size, at most 8.5 px ----
+          const req = card.lines.find(l => l.kind === "requirements"), mat = card.lines.find(l => l.kind === "matching");
+          if (req && mat) {
+            footerSizes.push(`${run.lang}${expectedBox === "compact" ? " compact" : ""} ${req.fontSize}`);
+            if (req.scrollW > req.clientW + 1 || mat.scrollW > mat.clientW + 1 || Math.abs(req.fontSize - mat.fontSize) > 0.01 || req.fontSize > 8.5) bad.footer.push([role.id, { req: [req.text, req.scrollW, req.clientW, req.fontSize], mat: [mat.text, mat.scrollW, mat.clientW, mat.fontSize], width: Number(w.toFixed(1)) }]);
+            if (run.lang === "en" && !run.font && req.fontSize !== 8.5) bad.footer.push([role.id, "English below 8.5 px", req.fontSize]);
+          }
+          // ---- C-6 ----
+          if (card.anchor) {
+            const dx = f.cx - x, dy = f.cy - y, len = Math.hypot(dx, dy);
+            const ax = card.anchor.x - x, ay = card.anchor.y - y;
+            const edge = Math.min(Math.abs(Math.abs(ax) - w / 2), Math.abs(Math.abs(ay) - h / 2));
+            const inside = Math.abs(ax) <= w / 2 + 1 && Math.abs(ay) <= h / 2 + 1;
+            const off = Math.abs(ax * dy - ay * dx) / len;
+            if (!(edge <= 1.5 && inside && off <= 1.5 && ax * dx + ay * dy > 0)) bad.anchor.push([role.id, { edge: Number(edge.toFixed(2)), off: Number(off.toFixed(2)) }]);
+          } else bad.anchor.push([role.id, "no anchor"]);
+        }
+        measured[tag] = { factors: [f.kx, f.ky], box: expectedBox, svg: [f.svgW, f.svgH], cards: f.cards.map(c => [c.id.replace("syntx-role-", ""), Number((c.r - c.l).toFixed(1)), Number((c.b - c.t).toFixed(1)), c.titleLines]) };
+        check("C-1", `${tag}: data-card-box "${expectedBox}" on every card (factors ${f.kx}/${f.ky})`, bad.box.length === 0 && f.cards.length === items.length, bad.box);
+        check("C-1", `${tag}: rendered width = the estimate's, height = ${expectedBox === "orbit" ? "estimate + 12" : expectedBox === "packed" ? "the estimate" : "(compact form)"} (±0.5 px), title lines = the counted ones`, bad.width.length + bad.height.length + bad.lines.length === 0, { width: bad.width, height: bad.height, lines: bad.lines });
+        check("C-2", `${tag}: nothing cut (every line inside the padding box), no title clamped that fits in four lines`, bad.cut.length + bad.clamp.length === 0, { cut: bad.cut, clamp: bad.clamp });
+        check("C-3", `${tag}: every line and title row centred on the card's axis (±1 px)`, bad.centre.length === 0, bad.centre);
+        check("C-4", `${tag}: standing, title, domain, requirements, matching as the pool states them; hollow mark; nothing else`, bad.texts.length + bad.mark.length === 0, { texts: bad.texts, mark: bad.mark });
+        if (FOOTER_TIP && !run.font) check("C-8", `${tag}: footer (requirements, matching) whole on every card, both at one size ≤ 8.5 px${run.lang === "en" && !run.font ? ", 8.5 px in English" : ""}`, bad.footer.length === 0, bad.footer);
+        else measured[`${tag} footer cut`] = bad.footer.filter(b => typeof (b as unknown[])[1] === "object");
+        if (FOOTER_TIP && run.font) fontCuts.push({ tag, cut: bad.footer });
+        if (FIT_TIP) check("C-9", `${tag}: titles at 10 … ${"11.5"} px in the counted lines, "…" only where 10 px does not fit; the full title, seniority and domain as tooltips`, bad.fit.length === 0, bad.fit);
+        check("C-6", `${tag}: the tether lamp on the card's edge where the line from the centre meets it`, bad.anchor.length === 0, bad.anchor);
+        // ---- C-5 contrast ----
+        if (READ_CONTRAST(run)) {
+          const surface = await page.evaluate(() => { const r = document.querySelector('[data-sx-surface="header"]')?.getBoundingClientRect(); return r ? { l: r.left, t: r.top, r: r.right, b: r.bottom } : null; });
+          // ---- C-7 the tether lamp and its conduction stub, drawn vs. with the card's overflow let visible ----
+          const drawn = await sharp(await page.screenshot({ type: "png" })).raw().toBuffer({ resolveWithObject: true });
+          const free = await page.addStyleTag({ content: "[data-sx-role-card] { overflow: visible !important; }" });
+          await delay(150);
+          const freed = await sharp(await page.screenshot({ type: "png" })).raw().toBuffer({ resolveWithObject: true });
+          await free.evaluate((node: Element) => node.remove());
+          const clipped: unknown[] = [];
+          for (const card of f.cards) {
+            if (!card.anchor) continue;
+            let differing = 0;
+            for (let py = Math.max(0, Math.floor(card.anchor.y - 24)); py < Math.min(drawn.info.height, Math.ceil(card.anchor.y + 24)); py += 1) for (let pxl = Math.max(0, Math.floor(card.anchor.x - 24)); pxl < Math.min(drawn.info.width, Math.ceil(card.anchor.x + 24)); pxl += 1) {
+              const o = (py * drawn.info.width + pxl) * drawn.info.channels;
+              if (Math.max(Math.abs(drawn.data[o] - freed.data[o]), Math.abs(drawn.data[o + 1] - freed.data[o + 1]), Math.abs(drawn.data[o + 2] - freed.data[o + 2])) > 24) differing += 1;
+            }
+            if (differing >= 10) clipped.push([card.id.replace("syntx-role-", ""), card.box, differing]);
+          }
+          lampClip.push({ tag, cards: f.cards.length, clipped: clipped.length });
+          if (v === "1600x1000" && clipped.length > 0 && !lampCropped) {
+            lampCropped = true;
+            const c = f.cards.find(x => x.id.endsWith(String((clipped[0] as string[])[0])))!;
+            const region = { left: Math.max(0, Math.round(Math.min(c.l, c.anchor!.x) - 30)), top: Math.max(0, Math.round(Math.min(c.t, c.anchor!.y) - 30)) };
+            const size = { width: Math.round(Math.max(c.r, c.anchor!.x) + 30) - region.left, height: Math.round(Math.max(c.b, c.anchor!.y) + 30) - region.top };
+            for (const [name, img] of [["drawn", drawn], ["overflow-visible", freed]] as const) await sharp(img.data, { raw: { width: img.info.width, height: img.info.height, channels: img.info.channels } }).extract({ ...region, ...size }).resize({ width: size.width * 2, kernel: "nearest" }).png().toFile(resolve(EVIDENCE_DIR, `lamp-${name}.png`));
+          }
+          check("C-7", `${tag}: the tether lamp and its conduction stub are drawn as on e6493a7 (not clipped by the card's overflow)`, clipped.length === 0, clipped);
+          // ---- titles clamped: a crop of each card for the record ----
+          for (const card of f.cards) {
+            const r = ROLES.get(card.id.replace("syntx-role-", ""))!;
+            if (card.titleScrollH > card.titleClientH + 1 && card.titleNatural <= 4 && !titleCrops.has(r.title)) {
+              titleCrops.add(r.title);
+              await sharp(drawn.data, { raw: { width: drawn.info.width, height: drawn.info.height, channels: drawn.info.channels } }).extract({ left: Math.max(0, Math.round(card.l - 6)), top: Math.max(0, Math.round(card.t - 6)), width: Math.round(card.r - card.l + 12), height: Math.round(card.b - card.t + 12) }).resize({ width: Math.round(card.r - card.l + 12) * 2, kernel: "nearest" }).png().toFile(resolve(EVIDENCE_DIR, `title-clamped-${titleCrops.size}-${v.replace(/[^0-9a-z]+/gi, "-")}.png`));
+            }
+          }
+          // text hidden for the reading; the dev server's own indicator (nextjs-portal) is no part of the field
+          const hide = await page.addStyleTag({ content: "[data-sx-role-card] * { color: transparent !important; text-shadow: none !important; } nextjs-portal { display: none !important; }" });
+          const disc = await page.evaluate(() => { const r = document.querySelector('[data-testid="syntx-cosmos-centre"]')?.getBoundingClientRect(); return r ? { l: r.left - 6, t: r.top - 6, r: r.right + 6, b: r.bottom + 6 } : null; });
+          await delay(150);
+          const shot = await page.screenshot({ type: "png" });
+          const { data, info } = await sharp(shot).raw().toBuffer({ resolveWithObject: true });
+          for (const card of f.cards) for (const line of card.lines) {
+            let worst = -1, bg = { r: 0, g: 0, b: 0 }, at = { x: 0, y: 0 };
+            const g = line.glyphs;
+            // only the card's own glass: pixels under another card (or its lamp, +20 px) or under the orientation surface are left out
+            const others = f.cards.filter(o => o.id !== card.id).map(o => ({ l: o.l - 20, t: o.t - 20, r: o.r + 20, b: o.b + 20 })).concat(surface ? [surface] : [], disc ? [disc] : []);
+            if (disc && card.l < disc.r && card.r > disc.l && card.t < disc.b && card.b > disc.t) overDisc.add(`${tag} ${card.id.replace("syntx-role-", "")}`);
+            for (let py = Math.max(0, Math.floor(g.t)); py < Math.min(info.height, Math.ceil(g.b)); py += 1) for (let pxl = Math.max(0, Math.floor(g.l)); pxl < Math.min(info.width, Math.ceil(g.r)); pxl += 1) {
+              if (others.some(o => pxl >= o.l && pxl <= o.r && py >= o.t && py <= o.b)) continue;
+              const o = (py * info.width + pxl) * info.channels; const L = lum(data[o], data[o + 1], data[o + 2]);
+              if (L > worst) { worst = L; bg = { r: data[o], g: data[o + 1], b: data[o + 2] }; at = { x: pxl - Math.round(card.l), y: py - Math.round(card.t) }; }
+            }
+            const c = rgba(line.color); const fg = { r: c.r * c.a + bg.r * (1 - c.a), g: c.g * c.a + bg.g * (1 - c.a), b: c.b * c.a + bg.b * (1 - c.a) };
+            const L1 = lum(fg.r, fg.g, fg.b), L2 = lum(bg.r, bg.g, bg.b);
+            const ratio = (Math.max(L1, L2) + 0.05) / (Math.min(L1, L2) + 0.05);
+            if (worst < 0) continue;
+            const entry: Record<string, unknown> & { ratio: number } = { ratio: Number(ratio.toFixed(2)), at: `${tag} ${card.id}`, glass: [bg.r, bg.g, bg.b], pixel: at, text: line.color };
+            if (ratio < WCAG) entry.topmost = await page.evaluate(([x, y, id]: [number, number, string]) => { const hit = document.elementFromPoint(x, y) as HTMLElement | null; if (!hit) return null; const card = hit.closest("[data-sx-role-card]"); return { tag: hit.tagName.toLowerCase(), testid: hit.closest("[data-testid]")?.getAttribute("data-testid") ?? null, ownCard: card?.getAttribute("data-testid") === id, style: (hit.getAttribute("style") ?? "").slice(0, 120) }; }, [Math.round(card.l) + at.x, Math.round(card.t) + at.y, card.id] as [number, number, string]);
+            if (!leastContrast[line.kind] || ratio < leastContrast[line.kind].ratio) leastContrast[line.kind] = entry;
+            const key = `${tag} ${line.kind}`;
+            if (!(contrastByTag[key]?.ratio <= ratio)) contrastByTag[key] = entry;
+          }
+          await hide.evaluate((node: Element) => node.remove());
+        }
+        await page.keyboard.press("Escape");
+        await page.locator('[data-testid="syntx-field"][data-observation-kind="FIELD"]').waitFor({ timeout: 30_000 }).catch(() => undefined);
+        if ((await page.getByTestId("syntx-field").getAttribute("data-observation-kind")) !== "FIELD") { await page.goto(`${base()}/career/demo?focus=FIELD&jobPoolUploadId=${uploadId}`, { waitUntil: "domcontentloaded" }); await page.getByTestId("field-focus-strip").waitFor({ timeout: 120_000 }); }
+      }
+      await page.close();
+    }
+    measured.contrast = leastContrast;
+    measured.lampClip = lampClip;
+    measured.contrastByTag = contrastByTag;
+    measured.titlesClamped = [...titleCrops];
+    measured.cardsOverTheCentreDisc = [...overDisc];
+    measured.footerInOtherFonts = Object.fromEntries(["DejaVu Sans Mono", "FreeMono", "Fira Code", "IBM Plex Mono"].map(font => [font, fontCuts.filter(c => c.tag.includes(`[${font}]`)).flatMap(c => c.cut.map(x => [c.tag.split(" ").pop(), x]))]));
+    measured.titleSizes = Object.fromEntries([...new Set(titleSizes)].sort().map(k => [k, titleSizes.filter(x => x === k).length]));
+    measured.footerSizes = Object.fromEntries([...new Set(footerSizes)].sort().map(k => [k, footerSizes.filter(x => x === k).length]));
+    measured.totals = { ...totals, leastRoomPadding: Number(totals.leastRoomPadding.toFixed(2)), leastRoomContent: Number(totals.leastRoomContent.toFixed(2)) };
+    for (const kind of KINDS) if (leastContrast[kind]) check("C-5", `least contrast of the ${kind} line over every card (1600 × 1000, 1280 × 720) ≥ ${WCAG} : 1`, leastContrast[kind].ratio >= WCAG, leastContrast[kind]);
+    check("C-0", "no page errors, no non-GET request from the page", pageErrors.length === 0 && nonGet.length === 0, { pageErrors, nonGet });
+    const failed = checks.filter(entry => !entry.ok);
+    expect(failed, JSON.stringify(failed, null, 1).slice(0, 20_000)).toEqual([]);
+  }, 5_400_000);
+});

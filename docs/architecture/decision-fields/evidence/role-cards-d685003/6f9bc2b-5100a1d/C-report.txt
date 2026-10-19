@@ -1,0 +1,21 @@
+6f9bc2b (probe 5100a1d), proof before C-9 and the disc/dev-indicator exclusion in C-5 · 2340/2490 checks ok
+C-0: ok 1, DEV 0
+C-1: ok 897, DEV 0
+C-2: ok 247, DEV 52
+C-3: ok 299, DEV 0
+C-4: ok 299, DEV 0
+C-5: ok 1, DEV 4
+C-6: ok 299, DEV 0
+C-7: ok 0, DEV 92
+C-8: ok 297, DEV 2
+DEV  C-2 1600x1000 org_rc_stress_10: nothing cut (every line inside the padding box), no title clamped that fits in four lines · {"cut": [], "clamp": [["role_rc_stress_10_00", "QA LEAD – EMEA OPERATIONS MANAGEMENT", {"counted": 2, "natural": 3}]]}
+DEV  C-2 1600x1000 org_rc_r20261018_0: nothing cut (every line inside the padding box), no title clamped that fits in four lines · {"cut": [], "clamp": [["role_rc_r20261018_0_02", "Engineer QA Lead Infrastructure Senior Machine P", {"counted": 2, "natural": 3}]]}
+DEV  C-2 1600x1000 org_rc_r20261018_1: nothing cut (every line inside the padding box), no title clamped that fits in four lines · {"cut": [], "clamp": [["role_rc_r20261018_1_05", "Data Payments (EMEA) Engineer II Principal of Manager", {"counted": 2, "natural": 3}]]}
+DEV  C-5 least contrast of the standing line over every card (1600 × 1000, 1280 × 720) ≥ 4.5 : 1 · {"ratio": 1.21, "at": "1280x720 de org_rc_32 syntx-role-role_rc_32_17", "glass": [227, 238, 245], "pixel": {"x": 54, "y": 20}, "text": "rgba(150, 224, 255, 0.88)"}
+DEV  C-5 least contrast of the title line over every card (1600 × 1000, 1280 × 720) ≥ 4.5 : 1 · {"ratio": 1.08, "at": "1280x720 org_rc_32 syntx-role-role_rc_32_17", "glass": [230, 241, 248], "pixel": {"x": 13, "y": 23}, "text": "rgb(241, 250, 253)"}
+DEV  C-5 least contrast of the requirements line over every card (1600 × 1000, 1280 × 720) ≥ 4.5 : 1 · {"ratio": 1.14, "at": "1280x720 org_rc_32 syntx-role-role_rc_32_28", "glass": [255, 255, 255], "pixel": {"x": 49, "y": 65}, "text": "rgba(226, 242, 250, 0.96)"}
+DEV  C-7 1600x1000 org_rc_3: the tether lamp and its conduction stub are drawn as on e6493a7 (not clipped by the card's overflow) · [["role_rc_3_00", "orbit", 49], ["role_rc_3_01", "orbit", 52], ["role_rc_3_02", "orbit", 62]]
+DEV  C-7 1600x1000 org_rc_8: the tether lamp and its conduction stub are drawn as on e6493a7 (not clipped by the card's overflow) · [["role_rc_8_00", "orbit", 52], ["role_rc_8_01", "orbit", 97], ["role_rc_8_02", "orbit", 43], ["role_rc_8_03", "orbit", 41], ["role_rc_8_04", "orbit", 122], ["role_rc_8_05", "orbit", 83], ["role_rc_8_06", "orbit", 51], ["role_rc_8_07", "orbit", 92]]
+DEV  C-7 1600x1000 org_rc_14: the tether lamp and its conduction stub are drawn as on e6493a7 (not clipped by the card's overflow) · [["role_rc_14_00", "packed", 45], ["role_rc_14_01", "packed", 41], ["role_rc_14_02", "packed", 41], ["role_rc_14_03", "packed", 79], ["role_rc_14_04", "packed", 50], ["role_rc_14_05", "packed", 54], ["role_rc_14_06", "packed", 50], ["role_rc_14_07", "packed", 90], ["role_rc_14_08", "packed", 43], ["role_rc_14_09", "packed", 88], ["role_rc_14_10", "packed", 81], ["role_rc_14_11", "packed", 92], ["role_rc_14_12", "packed", 52], ["role_rc_14_13", "packed", 87]]
+DEV  C-8 1280x720 de [Fira Code] org_rc_r20261018_7: footer (requirements, matching) whole on every card, both at one size ≤ 8.5 px · [["role_rc_r20261018_7_03", {"req": ["7 ANFORDERUNGEN", 83, 83, 8], "mat": ["KEIN MATCHING GELESEN", 110, 108, 8], "width": 129}]]
+DEV  C-8 1280x720 de [Fira Code] org_rc_r4711_1: footer (requirements, matching) whole on every card, both at one size ≤ 8.5 px · [["role_rc_r4711_1_01", {"req": ["1 ANFORDERUNG", 72, 72, 8], "mat": ["KEIN MATCHING GELESEN", 110, 108, 8], "width": 129}]]
