@@ -20,6 +20,8 @@ const [STATE, OUT, W = "1600", H = "1000"] = process.argv.slice(2);
 const st = JSON.parse(readFileSync(STATE, "utf8"));
 const BASE = st.base;
 const LIVE = st.gemini === "LIVE";
+// A live analysis takes minutes; the stand-in finishes in seconds.
+const ANALYSIS_WAIT_MS = LIVE ? 900000 : 300000;
 const PDF = resolve(process.cwd(), "docs/examples/cv.synthetic.pdf");
 const POOL_FILE = resolve(process.cwd(), "docs/examples/job-pool-tests/DLL_JOBPOOL_ENGINEERING.json");
 const POOL = "JPOOL_B94850C439974E27496FE3B1A9A076B5", ORG = "org_kestrel", ROLE = "role_kestrel_fullstack", JOB_ROLE = "role_kestrel_frontend_architect";
@@ -70,7 +72,7 @@ await step("V-02", async () => {
   await shot("person-pdf-staged");
   const t0 = Date.now();
   await t("start-intake-analysis-btn").click();
-  await t("intake-success-banner").waitFor({ timeout: 300000 });
+  await t("intake-success-banner").waitFor({ timeout: ANALYSIS_WAIT_MS });
   timings.personAnalysisMs = Date.now() - t0;
   const body = analyzeBodies.at(-1);
   ok("V-02c", "one ANALYZE request: one PDF document, investigation { mode: PERSON }, no job scope", analyzeBodies.length === 1 && body.documents.length === 1 && body.documents[0].type === "pdf" && JSON.stringify(body.investigation) === '{"mode":"PERSON"}' && body.jobScope === null, JSON.stringify(body));
@@ -179,7 +181,7 @@ await step("V-08", async () => {
   await shot("pxj-staged");
   const before = analyzeBodies.length, t0 = Date.now();
   await t("start-intake-analysis-btn").click();
-  await page.locator('[data-testid="intake-success-investigation"][data-investigation-mode="PERSON_X_JOB"]').waitFor({ timeout: 300000 });
+  await page.locator('[data-testid="intake-success-investigation"][data-investigation-mode="PERSON_X_JOB"]').waitFor({ timeout: ANALYSIS_WAIT_MS });
   timings.pxjAnalysisMs = Date.now() - t0;
   const body = analyzeBodies.at(-1);
   ok("V-08d", "one new ANALYZE request: the same PDF, investigation PERSON_X_JOB, jobScope exactly this pool and role", analyzeBodies.length === before + 1 && body.documents[0]?.type === "pdf" && JSON.stringify(body.investigation) === '{"mode":"PERSON_X_JOB"}' && JSON.stringify(body.jobScope) === JSON.stringify({ jobPoolUploadId: POOL, poolRoleId: ROLE }), JSON.stringify(body));
