@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { SIL_RED_FIELD_TYPE, SIL_TOKENS } from "./SILTokens";
 import { useOrbitalMotionElapsedMs } from "./OrbitalSatelliteMotion";
 import { renderSemioticSignature } from "./OrbitalResonanceBubble";
@@ -58,8 +58,10 @@ import {
   ecologyToScreen,
   evidenceRelationPath,
   EVIDENCE_ROW,
+  monoLineSize,
   requirementCardMode,
   roleCardBox,
+  ROLE_CARD_FOOTER,
   roleCosmosRotation,
   roleSeniorityParts,
   syntxCosmosLayout,
@@ -190,6 +192,26 @@ const JOB_ROLE_CARD_MATERIAL: React.CSSProperties = {
   borderRadius: "16px",
   boxShadow: `0 0 0 1px rgba(1, 5, 10, 0.6), 0 0 24px rgba(56, 160, 230, 0.15), 0 0 58px rgba(56, 160, 230, 0.05), 0 10px 22px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(190, 240, 255, 0.16), inset 0 0 0 1px rgba(150, 220, 255, 0.035), inset 0 0 22px ${azure(0.045)}`
 };
+/**
+ * The role title on its card, in the lines the layout counted (ROLE CARDS, PINK): the packing's estimate counts lines from the title's
+ * length, so a dense title can need one more; it then reads a little smaller — in half pixels, down to 10 px — instead of being cut
+ * (the card's box, which every air is measured on, stays). Only where even 10 px does not fit does the line end in "…"; the full title
+ * is in the card's label and in the title's tooltip. Measured after layout on the drawn text; the server renders the base size.
+ */
+function RoleCardTitle({ title, lines, size, width }: { title: string; lines: number; size: number; width: number }) {
+  const ref = useRef<HTMLSpanElement>(null);
+  useLayoutEffect(() => {
+    const element = ref.current;
+    if (element === null) return;
+    let fitted = size;
+    element.style.fontSize = `${fitted}px`;
+    while (element.scrollHeight > element.clientHeight + 1 && fitted > 10) { fitted -= 0.5; element.style.fontSize = `${fitted}px`; }
+    element.dataset.titleSize = String(fitted);
+  }, [title, lines, size, width]);
+  return (
+    <span ref={ref} data-sx-role-title title={title} style={{ display: "-webkit-box", flexShrink: 0, maxWidth: "100%", marginTop: "3px", fontFamily: SANS, fontSize: `${size}px`, fontWeight: 600, lineHeight: 1.22, letterSpacing: "0.05px", color: "#f1fafd", textWrap: "balance", WebkitLineClamp: lines, WebkitBoxOrient: "vertical", overflow: "hidden" } as React.CSSProperties}>{title.replace(/ ([–—-]) /g, "\u00a0$1 ")}</span>
+  );
+}
 /** Where the cosmos tether reaches a role card: the point on the card's edge facing the centre, in percent of the card box (exactly on
  * the edge whatever the card's rendered height), and the direction towards the centre. */
 function cardAnchor(dx: number, dy: number, halfWidth: number, halfHeight: number): { left: number; top: number; angle: number } {
@@ -919,6 +941,13 @@ function OrganizationCosmosLayer({ field, mode, t, size, onObserve, organization
         const box = roleCardBox(node, compactness.x < 1 || compactness.y < 1);
         const anchorPoint = cardAnchor(layout.centerX - at.x, layout.centerY - at.y, node.width / 2, (compact ? node.height : box.height) / 2);
         const seniority = roleSeniorityParts(role.seniority);
+        // The footer: what the pool states (requirements) and what was read (matching), both lines at one size — the largest up to 8.5 px
+        // at which both fit the card's width (less the border and the padding left beside the lines; the matching line less its mark).
+        const requirementsText = `${role.requirementCount} ${role.requirementCount === 1 ? t.manifest.requirement : t.requirements}`;
+        const matchingText = role.matching === null ? t.manifest.matchingNotRead : t.manifest.matchingRead;
+        const footerWidth = node.width - 2 - 2 * ((compact ? 10 : 12) - ROLE_CARD_FOOTER.reach);
+        const footerSize = Math.min(monoLineSize(requirementsText, footerWidth, ROLE_CARD_FOOTER.size, 0.6), monoLineSize(matchingText, footerWidth - 11, ROLE_CARD_FOOTER.size, 0.3));
+        const footerLine: React.CSSProperties = { flexShrink: 0, maxWidth: `calc(100% + ${2 * ROLE_CARD_FOOTER.reach}px)`, margin: `0 -${ROLE_CARD_FOOTER.reach}px`, fontSize: `${footerSize}px`, lineHeight: 1.2, whiteSpace: "nowrap" };
         // The observed role is now the centre of its own cosmos: here it remains as the receding anchor (no sign, no pointer).
         const anchor = recededLevel && role.id === observation.roleId;
         const select = () => onObserve(observeRole(observation, role.organizationId, role.id));
@@ -936,7 +965,7 @@ function OrganizationCosmosLayer({ field, mode, t, size, onObserve, organization
             data-sx-role-card
             data-card-title-lines={compact ? undefined : box.titleLines}
             data-card-box={compact ? "compact" : box.domain ? "orbit" : "packed"}
-            style={{ position: "absolute", left: 0, top: 0, width: `${node.width}px`, ...JOB_ROLE_CARD_MATERIAL, ...(compact ? { minHeight: `${node.height}px`, padding: "7px 10px" } : { height: `${box.height}px`, padding: "8px 12px 7px", overflow: "hidden" }), boxSizing: "border-box", transform: "translate(-50%, -50%)", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", color: INK, cursor: "pointer", fontFamily: MONO, textAlign: "center", overflowWrap: "anywhere", hyphens: "auto", opacity: anchor ? 0.42 : 1 }}
+            style={{ position: "absolute", left: 0, top: 0, width: `${node.width}px`, ...JOB_ROLE_CARD_MATERIAL, ...(compact ? { minHeight: `${node.height}px`, padding: "7px 10px" } : { height: `${box.height}px`, padding: "8px 12px 7px" }), boxSizing: "border-box", overflow: "visible", transform: "translate(-50%, -50%)", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", color: INK, cursor: "pointer", fontFamily: MONO, textAlign: "center", overflowWrap: "anywhere", hyphens: "auto", opacity: anchor ? 0.42 : 1 }}
           >
             <span aria-hidden="true" style={{ position: "absolute", left: "22%", right: "22%", top: "-1px", height: "1px", background: "linear-gradient(90deg, transparent, rgba(190, 244, 255, 0.75), transparent)", pointerEvents: "none" }} />
             {/* The field connection: where the tether from the centre reaches the card, a lamp on the edge and a short conduction stub. */}
@@ -946,18 +975,18 @@ function OrganizationCosmosLayer({ field, mode, t, size, onObserve, organization
             </span>
             {/* Identity: the role's standing (the pool's seniority in its parts), framed by two hairlines; the class where none is stated. */}
             <span data-sx-role-standing style={{ display: "flex", flexShrink: 0, alignItems: "center", justifyContent: "center", gap: "6px", maxWidth: "100%", fontSize: "7.5px", fontWeight: 600, letterSpacing: "1.8px", lineHeight: 1.2, color: "rgba(150, 224, 255, 0.88)", textShadow: `0 0 8px ${SIL_TOKENS.colors.cyanGlow}`, whiteSpace: "nowrap" }}>
-              <span aria-hidden="true" style={{ width: "12px", height: "1px", flexShrink: 0, background: `linear-gradient(90deg, transparent, ${azure(0.55)})` }} />
+              <span aria-hidden="true" style={{ width: "12px", minWidth: 0, height: "1px", flexShrink: 100, background: `linear-gradient(90deg, transparent, ${azure(0.55)})` }} />
               <span aria-hidden="true" style={{ width: "4px", height: "4px", flexShrink: 0, transform: "rotate(45deg)", background: CYAN, boxShadow: `0 0 5px ${CYAN}` }} />
-              <span style={{ overflow: "hidden", textOverflow: "ellipsis" }}>{seniority.length > 0 ? seniority.map(part => part.toUpperCase()).join(" · ") : t.manifest.role}</span>
-              <span aria-hidden="true" style={{ width: "12px", height: "1px", flexShrink: 0, background: `linear-gradient(90deg, ${azure(0.55)}, transparent)` }} />
+              <span title={role.seniority ?? undefined} style={{ overflow: "hidden", textOverflow: "ellipsis" }}>{seniority.length > 0 ? seniority.map(part => part.toUpperCase()).join(" · ") : t.manifest.role}</span>
+              <span aria-hidden="true" style={{ width: "12px", minWidth: 0, height: "1px", flexShrink: 100, background: `linear-gradient(90deg, ${azure(0.55)}, transparent)` }} />
             </span>
-            <span data-sx-role-title style={{ display: "-webkit-box", flexShrink: 0, maxWidth: "100%", marginTop: "3px", fontFamily: SANS, fontSize: compact ? "11px" : "11.5px", fontWeight: 600, lineHeight: 1.22, letterSpacing: "0.05px", color: "#f1fafd", textWrap: "balance", WebkitLineClamp: compact ? 2 : box.titleLines, WebkitBoxOrient: "vertical", overflow: "hidden" } as React.CSSProperties}>{role.title.replace(/ ([–—-]) /g, "\u00a0$1 ")}</span>
+            <RoleCardTitle title={role.title} lines={compact ? 2 : box.titleLines} size={compact ? 11 : 11.5} width={node.width} />
             {/* The role's domain as the pool states it (one line); nothing where it states none. */}
-            {!compact && box.domain && role.domainFocus !== null && <span data-sx-role-domain style={{ display: "block", flexShrink: 0, maxWidth: "100%", marginTop: "2px", fontFamily: SANS, fontSize: "9.5px", fontWeight: 500, lineHeight: 1.2, letterSpacing: "0.3px", color: "rgba(150, 212, 240, 0.9)", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{role.domainFocus}</span>}
-            <span aria-hidden="true" style={{ display: "block", flexShrink: 0, width: "56%", height: "1px", margin: "4px 0 3px", background: `linear-gradient(90deg, transparent, ${azure(0.32)}, transparent)` }} />
+            {!compact && box.domain && role.domainFocus !== null && <span data-sx-role-domain title={role.domainFocus} style={{ display: "block", flexShrink: 0, maxWidth: "100%", marginTop: "2px", fontFamily: SANS, fontSize: "9.5px", fontWeight: 500, lineHeight: 1.2, letterSpacing: "0.3px", color: "rgba(150, 212, 240, 0.9)", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{role.domainFocus}</span>}
+            <span aria-hidden="true" style={{ display: "block", flexShrink: 0, width: "56%", height: "1px", margin: "3px 0 2px", background: `linear-gradient(90deg, transparent, ${azure(0.32)}, transparent)` }} />
             {/* What the pool states of the role (its requirements) and what was read for it (the presentation matching), each on its own line. */}
-            <span data-sx-role-requirements style={{ display: "block", flexShrink: 0, maxWidth: "100%", fontSize: "7.5px", fontWeight: 600, letterSpacing: "0.9px", lineHeight: 1.2, color: "rgba(214, 236, 246, 0.9)", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{role.requirementCount} {role.requirementCount === 1 ? t.manifest.requirement : t.requirements}</span>
-            <span data-sx-role-matching style={{ display: "flex", flexShrink: 0, alignItems: "center", justifyContent: "center", gap: "4px", maxWidth: "100%", fontSize: "7.5px", letterSpacing: "0.6px", lineHeight: 1.2, color: "rgba(160, 192, 212, 0.8)", whiteSpace: "nowrap" }}><span aria-hidden="true" style={{ display: "block", width: "5px", height: "5px", flexShrink: 0, borderRadius: "50%", border: `1px solid ${azure(role.matching === null ? 0.45 : 0.9)}`, background: role.matching === null ? "transparent" : azure(0.9), boxSizing: "border-box" }} /><span style={{ display: "block", overflow: "hidden", textOverflow: "ellipsis" }}>{role.matching === null ? t.manifest.matchingNotRead : t.manifest.matchingRead}</span></span>
+            <span data-sx-role-requirements style={{ ...footerLine, display: "block", fontWeight: 700, letterSpacing: "0.6px", color: "rgba(226, 242, 250, 0.96)", overflow: "hidden", textOverflow: "ellipsis" }}>{requirementsText}</span>
+            <span data-sx-role-matching style={{ ...footerLine, display: "flex", alignItems: "center", justifyContent: "center", gap: "5px", fontWeight: 500, letterSpacing: "0.3px", color: "rgba(186, 214, 230, 0.92)" }}><span aria-hidden="true" style={{ display: "block", width: "6px", height: "6px", flexShrink: 0, borderRadius: "50%", border: `1px solid ${azure(role.matching === null ? 0.45 : 0.9)}`, background: role.matching === null ? "transparent" : azure(0.9), boxSizing: "border-box" }} /><span style={{ display: "block", overflow: "hidden", textOverflow: "ellipsis" }}>{matchingText}</span></span>
           </button>
         );
       }}

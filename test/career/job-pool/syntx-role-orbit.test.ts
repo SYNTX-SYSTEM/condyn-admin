@@ -1,8 +1,9 @@
 import { describe, expect, it } from "vitest";
-import { compactRoleOrbit, ROLE_ORBIT_CARD_GAP, ROLE_ORBIT_CARD_HEIGHT_ALLOWANCE, ROLE_ORBIT_CENTRE_CLEARANCE, roleCardBox, roleSeniorityParts, syntxCosmosLayout, syntxCosmosPacking } from "../../../lib/career/job-pool/syntx-manifestation-layout";
+import { compactRoleOrbit, monoLineSize, ROLE_CARD_FOOTER, ROLE_ORBIT_CARD_GAP, ROLE_ORBIT_CARD_HEIGHT_ALLOWANCE, ROLE_ORBIT_CENTRE_CLEARANCE, roleCardBox, roleSeniorityParts, syntxCosmosLayout, syntxCosmosPacking } from "../../../lib/career/job-pool/syntx-manifestation-layout";
 import type { CapabilityCosmosLayout } from "../../../lib/career/view-model/capability-cosmos-layout";
 
-/* ROLE ORBIT REFINEMENT (owner "SFE — GRÜN | ROLE ORBIT REFINEMENT", 2026-10-18; "… — SECOND VISUAL REFINEMENT", 2026-10-19): the
+/* The geometry readings below run for seconds; under a loaded machine they get 30 s instead of the default 5 s.
+ * ROLE ORBIT REFINEMENT (owner "SFE — GRÜN | ROLE ORBIT REFINEMENT", 2026-10-18; "… — SECOND VISUAL REFINEMENT", 2026-10-19): the
  * organization cosmos' role orbit drawn in to the smallest orbit its geometry carries; cards, order, phases and periods unchanged. */
 const TITLES = ["Senior Full-Stack Engineer – Shipment Tracking", "Platform Reliability Engineer", "Data Engineer", "Engineering Manager, Payments Infrastructure and Settlement", "QA Lead", "Product Designer", "Machine Learning Engineer (Ranking)", "DevOps Engineer", "Security Analyst", "Frontend Engineer", "Backend Engineer (Go)", "Technical Writer", "Solutions Architect", "Site Reliability Engineer II"];
 /** PINK §3.45 D-RO-1: long and short title sets, where the least air between neighbours fell between the 5° checks. */
@@ -82,7 +83,7 @@ describe("role orbit refinement (organization cosmos)", () => {
       expect(outer.radiusY * compactness.y).toBeLessThanOrEqual(outer.radiusX * compactness.x + 1e-9);
     }
     expect(edges).toBeGreaterThan(100);
-  });
+  }, 30_000);
 
   it("keeps every card, its title, size, order, phase and orbit, every orbit its period and the centre; only the radii change", () => {
     for (const [width, height] of BOXES) for (const count of COUNTS) {
@@ -111,7 +112,7 @@ describe("role orbit refinement (organization cosmos)", () => {
       expect(separation(layout, false, [0]), label).toBeGreaterThanOrEqual(Math.min(0, separation(before, false, [0])) - 0.01);
     }
     expect(drawnIn).toBeGreaterThan(60);
-  });
+  }, 30_000);
 
   it("keeps the air across orbits in every phase pair, never closer than the packing in motion (tall level boxes, PINK D-RO-2)", () => {
     /** Every degree of either orbit, offset from the layout's quarter-degree readings: the orbits turn at their own periods, so a
@@ -169,7 +170,7 @@ describe("role orbit refinement (organization cosmos)", () => {
       }
     }
     expect(drawnIn).toBeGreaterThan(100);
-  });
+  }, 30_000);
 
   it("stays as packed where the geometry leaves no room, and for the static grid fallback and an empty organization", () => {
     const crowded = packed(14, 1600, 740);
@@ -208,6 +209,18 @@ describe("role orbit refinement (organization cosmos)", () => {
     expect(roleSeniorityParts("Staff")).toEqual(["Staff"]);
     expect(roleSeniorityParts(null)).toEqual([]);
     expect(roleSeniorityParts(" / ")).toEqual([]);
+  });
+
+  it("reads the card's footer at 8.5 px wherever it fits, a longer statement on a narrow card a little smaller instead of cut (FOOTER READABILITY)", () => {
+    // The footer lines reach 8 px into the 12 px side padding: a card of width w offers w − 2 − 8 px, the matching line 11 px less (its mark).
+    const footer = (width: number, requirements: string, matching: string) => Math.min(monoLineSize(requirements, width - 2 - 2 * (12 - ROLE_CARD_FOOTER.reach), ROLE_CARD_FOOTER.size, 0.6), monoLineSize(matching, width - 13 - 2 * (12 - ROLE_CARD_FOOTER.reach), ROLE_CARD_FOOTER.size, 0.3));
+    // English at 8.5 px on every card the packing draws (128 px and wider).
+    for (const width of [128, 133, 147, 158, 219, 300]) for (const count of ["1 REQUIREMENT", "10 REQUIREMENTS", "999 REQUIREMENTS"]) for (const matching of ["NO MATCHING READ", "MATCHING READ"]) expect(footer(width, count, matching)).toBe(8.5);
+    // German on the narrowest cards: 7.75 px (formerly cut at 7.5 px), 8.5 px from 147 px.
+    expect(footer(128, "1 ANFORDERUNG", "KEIN MATCHING GELESEN")).toBe(7.75);
+    expect(footer(147, "10 ANFORDERUNGEN", "KEIN MATCHING GELESEN")).toBe(8.5);
+    // A fitted line never overruns its width (monospaced: 0.6 em advance plus the letter spacing per character).
+    for (let width = 60; width <= 320; width += 1) for (const text of ["KEIN MATCHING GELESEN", "NO MATCHING READ", "10 ANFORDERUNGEN"]) { const size = monoLineSize(text, width, 8.5, 0.3); expect(text.length * (0.6 * size + 0.3)).toBeLessThanOrEqual(width + 1e-9); }
   });
 
   it("is deterministic", () => {

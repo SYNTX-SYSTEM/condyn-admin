@@ -36,3 +36,32 @@ No score, rank or relation; nothing the pool and the matching do not state.
 Contrast on the card's glass (WCAG ratio, least over every card): title 17.9, standing 10.2, domain 9.6, requirements 12.6,
 matching 6.7. Passing under the orientation surface (O-JF-PANEL, card phases over a turn): Kestrel at 1280 3 → 5 of 216, the taller
 cards; elsewhere unchanged.
+
+## Footer readability (`footer/`)
+
+Owner "SFE — GRÜN | ROLE CARDS — FOOTER READABILITY" (2026-10-19, `frontend/role-card-footer` over `ae633a1`): only the card's footer
+(requirements, matching read) changes. `footer/` holds the same walk with two more checks, 121/121 at 1600 × 1000 and 1280 × 720,
+and a German shot (`after-de-org_orbit_short_12-*.png`).
+
+| | before (ae633a1) | now |
+|---|---|---|
+| size | 7.5 px | 8.5 px (English on every card); German 8.5 px from 136 px wide, 8.25 px at 133 px, 7.75 px at 128 px |
+| width | inside the 12 px side padding | 8 px into the padding (4 px from the edge) |
+| weight / colour | 600 / 500; 0.9 / 0.8 alpha | 700 / 500; 0.96 / 0.92 alpha |
+| contrast (least) | requirements 12.6, matching 6.7 : 1 | requirements 15.3, matching 10.7 : 1 |
+| mark | 5 px | 6 px |
+| German on narrow cards | `KEIN MATCHING GELESEN` cut (128 – 136 px cards) | fits every card |
+| room left on a one-line card | 1.6 px | 1.2 px (the divider's air 7 → 5 px) |
+
+The card's box, the orbit and every air are unchanged.
+
+## PINK's findings on ae633a1 (`footer/`, `scripts/dense-pool.mjs`)
+
+| Finding | Cause | Now |
+|---|---|---|
+| anchor lamp and stub cut at the card's edge (PINK: 308 of 318 cards) | `button { overflow: hidden }` in `globals.css` and the card's own `overflow: hidden` | the card sets `overflow: visible` (C-9: 0 cards clip) |
+| dense titles cut with "…" where the estimate counts too few lines | the card's box keeps the estimate's lines | the title reads smaller after layout, in half pixels down to 10 px (C-10: "QA LEAD – EMEA OPERATIONS MANAGEMENT" 10.5 px in 2 lines at 197 px) |
+| `SENIOR · L4` and long domains end in "…" on 128 px cards | the standing's hairlines did not yield | the hairlines yield first (`SENIOR · L4` fits); standing, domain and title carry their full text as tooltip |
+
+The walk uploads a second synthetic pool (`dense-pool.mjs`: three dense titles, four roles on 128 px cards with long seniorities and
+domains) and reads it in C-10.

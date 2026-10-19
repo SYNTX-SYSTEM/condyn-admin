@@ -192,12 +192,16 @@ describe("SYNTX field (server-rendered)", () => {
     const card = html.slice(html.lastIndexOf("<button", at), html.indexOf("</button>", at));
     // "Data Analyst": one title line, the estimate 72 px, drawn at 72 + 12; everything on the card's axis.
     expect(card).toMatch(/data-sx-role-card="true" data-card-title-lines="1" data-card-box="orbit" style="[^"]*height:84px[^"]*text-align:center/);
+    // The card clips nothing it draws (the global button rule would cut the anchor lamp and its stub at the edge, PINK).
+    expect(card).toMatch(/data-card-box="orbit" style="[^"]*overflow:visible/);
+    // The full title is reachable as the title's tooltip; the server renders it at its base size (the client fits a dense title).
+    expect(card).toMatch(/data-sx-role-title="true" title="Data Analyst" style="[^"]*font-size:11.5px/);
     // No seniority and no domain stated in this pool: the class stands in, no domain line; one requirement in the singular.
     expect(card).toMatch(/data-sx-role-standing="true"[\s\S]*>ROLE</);
     expect(card).not.toContain("data-sx-role-domain");
     expect(card).toMatch(/data-sx-role-title="true"[^>]*>Data Analyst</);
-    expect(card).toMatch(/data-sx-role-requirements="true"[^>]*>1<!-- --> <!-- -->REQUIREMENT</);
-    expect(card).toMatch(/data-sx-role-matching="true"[\s\S]*>MATCHING READ</);
+    expect(card).toMatch(/data-sx-role-requirements="true" style="[^"]*font-size:8.5px[^"]*">1 REQUIREMENT</);
+    expect(card).toMatch(/data-sx-role-matching="true" style="[^"]*font-size:8.5px[^"]*"[\s\S]*>MATCHING READ</);
     // No score, rank or debug separators on the card.
     expect(card).not.toMatch(/\/\/|resonance|score|rank/i);
   });
