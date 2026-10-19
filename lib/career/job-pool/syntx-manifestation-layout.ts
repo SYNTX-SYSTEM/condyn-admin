@@ -105,6 +105,14 @@ export interface RoleOrbitCompactness { x: number; y: number }
 export function roleCardBox(node: { width: number; height: number }, drawnIn: boolean): { width: number; height: number; titleLines: number; domain: boolean } {
   return { width: node.width, height: node.height + (drawnIn ? ROLE_ORBIT_CARD_HEIGHT_ALLOWANCE : 0), titleLines: Math.min(4, Math.max(1, Math.floor((node.height - 51) / 18))), domain: drawnIn };
 }
+/** The card's footer (owner "SFE — GRÜN | ROLE CARDS — FOOTER READABILITY"): read at up to 8.5 px, the lines reaching 8 px into the
+ * card's side padding. */
+export const ROLE_CARD_FOOTER = Object.freeze({ size: 8.5, reach: 8 });
+/** The largest size, up to `max` and in quarter pixels, at which a line of monospaced capitals (advance 0.6 em plus the letter
+ * spacing) fits `width`: a longer statement (German, a narrow card) reads a little smaller instead of being cut. */
+export function monoLineSize(text: string, width: number, max: number, letterSpacing: number): number {
+  return Math.min(max, Math.floor(((width / Math.max(1, text.length) - letterSpacing) / 0.6) * 4) / 4);
+}
 /** The pool's seniority ("Senior / L4") in its delivered parts ("Senior", "L4"); none where the pool states none. */
 export function roleSeniorityParts(seniority: string | null): string[] {
   return (seniority ?? "").split("/").map(part => part.trim()).filter(part => part.length > 0);

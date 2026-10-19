@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { compactRoleOrbit, ROLE_ORBIT_CARD_GAP, ROLE_ORBIT_CARD_HEIGHT_ALLOWANCE, ROLE_ORBIT_CENTRE_CLEARANCE, roleCardBox, roleSeniorityParts, syntxCosmosLayout, syntxCosmosPacking } from "../../../lib/career/job-pool/syntx-manifestation-layout";
+import { compactRoleOrbit, monoLineSize, ROLE_CARD_FOOTER, ROLE_ORBIT_CARD_GAP, ROLE_ORBIT_CARD_HEIGHT_ALLOWANCE, ROLE_ORBIT_CENTRE_CLEARANCE, roleCardBox, roleSeniorityParts, syntxCosmosLayout, syntxCosmosPacking } from "../../../lib/career/job-pool/syntx-manifestation-layout";
 import type { CapabilityCosmosLayout } from "../../../lib/career/view-model/capability-cosmos-layout";
 
 /* ROLE ORBIT REFINEMENT (owner "SFE — GRÜN | ROLE ORBIT REFINEMENT", 2026-10-18; "… — SECOND VISUAL REFINEMENT", 2026-10-19): the
@@ -208,6 +208,18 @@ describe("role orbit refinement (organization cosmos)", () => {
     expect(roleSeniorityParts("Staff")).toEqual(["Staff"]);
     expect(roleSeniorityParts(null)).toEqual([]);
     expect(roleSeniorityParts(" / ")).toEqual([]);
+  });
+
+  it("reads the card's footer at 8.5 px wherever it fits, a longer statement on a narrow card a little smaller instead of cut (FOOTER READABILITY)", () => {
+    // The footer lines reach 8 px into the 12 px side padding: a card of width w offers w − 2 − 8 px, the matching line 11 px less (its mark).
+    const footer = (width: number, requirements: string, matching: string) => Math.min(monoLineSize(requirements, width - 2 - 2 * (12 - ROLE_CARD_FOOTER.reach), ROLE_CARD_FOOTER.size, 0.6), monoLineSize(matching, width - 13 - 2 * (12 - ROLE_CARD_FOOTER.reach), ROLE_CARD_FOOTER.size, 0.3));
+    // English at 8.5 px on every card the packing draws (128 px and wider).
+    for (const width of [128, 133, 147, 158, 219, 300]) for (const count of ["1 REQUIREMENT", "10 REQUIREMENTS", "999 REQUIREMENTS"]) for (const matching of ["NO MATCHING READ", "MATCHING READ"]) expect(footer(width, count, matching)).toBe(8.5);
+    // German on the narrowest cards: 7.75 px (formerly cut at 7.5 px), 8.5 px from 147 px.
+    expect(footer(128, "1 ANFORDERUNG", "KEIN MATCHING GELESEN")).toBe(7.75);
+    expect(footer(147, "10 ANFORDERUNGEN", "KEIN MATCHING GELESEN")).toBe(8.5);
+    // A fitted line never overruns its width (monospaced: 0.6 em advance plus the letter spacing per character).
+    for (let width = 60; width <= 320; width += 1) for (const text of ["KEIN MATCHING GELESEN", "NO MATCHING READ", "10 ANFORDERUNGEN"]) { const size = monoLineSize(text, width, 8.5, 0.3); expect(text.length * (0.6 * size + 0.3)).toBeLessThanOrEqual(width + 1e-9); }
   });
 
   it("is deterministic", () => {

@@ -3,13 +3,14 @@
 // sentinel). The role cards of the organization cosmos are redrawn — centred, the pool's standing and domain, requirements and the
 // matching read each on their own line — inside exactly the box the accepted orbit (e6493a7) keeps its air for (estimate + 12 px), so
 // the orbit, its air, motion and navigation stay as accepted. The orbit checks (O-*, N-*, R-1, E-1) are the role orbit walk's
-// (../../role-orbit/scripts/role-orbit-walk.mjs); O-8 now holds the orbit to the accepted one, C-* read the cards.
+// (../../role-orbit/scripts/role-orbit-walk.mjs); O-8 now holds the orbit to the accepted one, C-* read the cards. Footer readability
+// (owner "SFE — GRÜN | ROLE CARDS — FOOTER READABILITY"): C-7 reads every card in German too, C-8 the footer's size.
 // Run from the repository root. Playwright: CONDYN_PLAYWRIGHT_MODULE, else resolved from the repository.
 // argv: <out dir> <lab state.json> [width height]
 import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import { createRequire } from "node:module";
 import { resolve as resolvePath } from "node:path";
-import { pathToFileURL } from "node:url";
+import { fileURLToPath, pathToFileURL } from "node:url";
 import { scalePool } from "../../role-orbit/scripts/scale-pool.mjs";
 const playwright = await import(pathToFileURL(process.env.CONDYN_PLAYWRIGHT_MODULE || createRequire(resolvePath(process.cwd(), "package.json")).resolve("playwright")).href);
 const { chromium } = playwright.chromium ? playwright : playwright.default;
@@ -121,12 +122,13 @@ const readCards = page => page.evaluate(() => {
       room: box.height - parseFloat(cs.paddingTop) - parseFloat(cs.paddingBottom) - parseFloat(cs.borderTopWidth) - parseFloat(cs.borderBottomWidth), content: bottom - top,
       offCentre: Math.max(...flow.map(e => { const r = e.getBoundingClientRect(); return Math.abs(r.left + r.width / 2 - centre); })), align: cs.textAlign,
       standing: part("standing").textContent.trim(), domain: part("domain")?.textContent ?? null, requirements: part("requirements").textContent, matching: part("matching").textContent,
+      footerPx: Math.min(parseFloat(getComputedStyle(part("requirements")).fontSize), parseFloat(getComputedStyle(part("matching")).fontSize)),
       requirementCount: Number(card.getAttribute("data-requirement-count")), matchingRead: card.getAttribute("data-matching-read") === "true",
       contrast: { title: contrast(title), domain: part("domain") ? contrast(part("domain")) : null, standing: contrast(part("standing").children[2]), requirements: contrast(part("requirements")), matching: contrast(part("matching")) }
     };
   });
 });
-const ACCEPTED = JSON.parse(readFileSync(resolvePath(OUT, `../role-orbit/after-measure-${W}.json`), "utf8"));
+const ACCEPTED = JSON.parse(readFileSync(resolvePath(fileURLToPath(new URL(".", import.meta.url)), `../../role-orbit/after-measure-${W}.json`), "utf8"));
 const allCards = [];
 const rows = [];
 let page = await open("/career/demo?focus=FIELD");
@@ -202,6 +204,18 @@ for (const [pool, org, count] of CASES) {
   const a = await measure(still); await still.waitForTimeout(1500); const b = await measure(still);
   const live = rows.find(r => r.org === "org_kestrel");
   ok("R-1 reduced motion: the same compactness and orbit, the cards hold still", a.compactness.join() === live.compactness.join() && a.orbits.join() === live.orbits.join() && a.meanDistance === b.meanDistance && a.centreGap === b.centreGap, `${a.compactness.join("/")} ${a.orbits.join(" ")}`);
+  ok("C-8 English: the footer (requirements, matching read) reads at 8.5 px on every card (formerly 7.5 px)", allCards.every(c => c.footerPx >= 8.5), `${Math.min(...allCards.map(c => c.footerPx))} px`);
+  // German: the longer copy (ANFORDERUNGEN, KEIN MATCHING GELESEN) fits every card as well (the locale is switched in the System Codex).
+  const german = await open("/career/demo?focus=FIELD");
+  const deCards = [];
+  for (const [pool, org] of CASES) {
+    await german.goto(`${BASE}/career/demo?focus=FIELD&jobPoolUploadId=${pool}&jobOrganizationId=${org}`, { waitUntil: "networkidle" });
+    await german.locator('[data-testid="syntx-cosmos-organization"]').waitFor({ timeout: 60000 }).catch(async () => { await german.reload({ waitUntil: "networkidle" }); await german.locator('[data-testid="syntx-cosmos-organization"]').waitFor({ timeout: 60000 }); });
+    await german.getByTestId("open-system-codex-btn").evaluate(el => el.click()); await german.getByTestId("switch-lang-de").click(); await german.getByTestId("system-codex-close").click(); await german.getByTestId("system-codex-modal").waitFor({ state: "detached" }); await german.waitForTimeout(800);
+    deCards.push(...(await readCards(german)).map(c => ({ org, ...c })));
+  }
+  await german.screenshot({ path: `${OUT}/${TAG}-de-${CASES[CASES.length - 1][1]}-${W}.png` });
+  ok("C-7 German: every card fits — nothing clipped, the content within the card's room, the footer never smaller than the former 7.5 px", deCards.length === allCards.length && deCards.every(c => !c.clipped && c.content <= c.room + 0.5 && c.footerPx >= 7.5) && deCards.some(c => c.matching.includes("GELESEN")), `${deCards.length} cards, least room ${Math.min(...deCards.map(c => c.room - c.content)).toFixed(1)} px, footer ${Math.min(...deCards.map(c => c.footerPx))} – ${Math.max(...deCards.map(c => c.footerPx))} px (${deCards.filter(c => c.footerPx >= 8.5).length} at 8.5)${deCards.filter(c => c.clipped).length ? `, clipped ${deCards.filter(c => c.clipped).map(c => `${c.org}:${Math.round(c.w)}`).join(" ")}` : ""}`);
   ok("E-1 no page errors", errors.length === 0, errors.slice(0, 2).join(" | "));
 }
 writeFileSync(`${OUT}/${TAG}-measure-${W}.json`, `${JSON.stringify({ viewport: `${W}×${H}`, tag: TAG, rows, cards: allCards }, null, 1)}\n`);

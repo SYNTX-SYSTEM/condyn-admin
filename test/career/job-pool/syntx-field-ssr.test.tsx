@@ -196,8 +196,8 @@ describe("SYNTX field (server-rendered)", () => {
     expect(card).toMatch(/data-sx-role-standing="true"[\s\S]*>ROLE</);
     expect(card).not.toContain("data-sx-role-domain");
     expect(card).toMatch(/data-sx-role-title="true"[^>]*>Data Analyst</);
-    expect(card).toMatch(/data-sx-role-requirements="true"[^>]*>1<!-- --> <!-- -->REQUIREMENT</);
-    expect(card).toMatch(/data-sx-role-matching="true"[\s\S]*>MATCHING READ</);
+    expect(card).toMatch(/data-sx-role-requirements="true" style="[^"]*font-size:8.5px[^"]*">1 REQUIREMENT</);
+    expect(card).toMatch(/data-sx-role-matching="true" style="[^"]*font-size:8.5px[^"]*"[\s\S]*>MATCHING READ</);
     // No score, rank or debug separators on the card.
     expect(card).not.toMatch(/\/\/|resonance|score|rank/i);
   });

@@ -1572,6 +1572,31 @@ spacing, meaningful information from the data already there, calm integration in
 - **Regression.** tsc 0; ESLint: no new finding (the card's former `//` text node is gone); regression 69 files / 510 green; workflow
   e2e 10/10 ×2.
 
+#### 13.2.34 Role cards — footer readability (owner "SFE — GRÜN | ROLE CARDS — FOOTER READABILITY", 2026-10-19)
+
+On `frontend/role-card-footer` over `ae633a1` (the card design of §13.2.33, visually accepted in principle by the owner). Only the
+card's footer — the requirement count and the matching read — was too small; minimal delta, nothing else redrawn.
+
+- **Changed.** Both footer lines at 8.5 px (formerly 7.5 px), the count bolder (700) and brighter, the matching read brighter, its mark
+  6 px; the divider's air above and below 4 / 3 → 3 / 2 px; the two lines reach 8 px into the card's 12 px side padding
+  (`ROLE_CARD_FOOTER`). Copy, order, centring, the other lines and the card's material are unchanged.
+- **Fitted, not cut.** The card's width comes from the packing (the shared L1 estimate; 128 px and wider). In German the matching read
+  `KEIN MATCHING GELESEN` needs 113 px at 8.5 px — more than the narrowest cards offer; at 7.5 px it was already cut there (ae633a1,
+  measured in English only). `monoLineSize` gives the largest size up to 8.5 px, in quarter pixels, at which a line of monospaced
+  capitals (0.6 em advance plus its letter spacing) fits the line's width; both footer lines of a card take the smaller of their two
+  sizes. English: 8.5 px on every card. German: 8.5 px from 136 px wide, 8.25 px at 133 px, 7.75 px at 128 px — never below the former 7.5.
+- **Geometry.** Unchanged: the card's box (§13.2.33) is the same; the larger lines fit in it because the divider's air gave 2 px back
+  (least room on a one-line card 1.6 → 1.2 px). The orbit, its air, the motion and the navigation are those of `e6493a7` / `ae633a1`.
+
+**Proof** (no live Gemini, :3017, :41831, :41851 and the owner's review lab :41803 untouched):
+- **Unit tests.** `syntx-role-orbit.test.ts` (11): English at 8.5 px on every card width the packing draws and for every count;
+  German 7.75 px at 128 px, 8.5 px at 147 px; a fitted line never overruns its width (60 – 320 px). `syntx-field-ssr.test.tsx` (11):
+  both footer lines at `font-size:8.5px`.
+- **Lab walk** (`evidence/job-pool/role-cards/footer/`): 121/121 at 1600 × 1000 and 1280 × 720 — everything of §13.2.33 plus C-8
+  (English footer at 8.5 px on every card) and C-7 (German: 57 cards, nothing clipped, footer 7.75 – 8.5 px, 45 at 8.5); contrast
+  requirements 12.6 → 15.3, matching 6.7 → 10.7 : 1; the orbit equal to the accepted one (O-8), air as before (C-6).
+- **Regression.** tsc 0; ESLint: no new finding; regression 69 files / 511 green; workflow e2e 10/10 ×2.
+
 ### 13.3 DOM contract (PINK BR-1 … BR-5; GELB conditions a/b)
 
 **BR-1 field root** `data-testid="syntx-field"`: `data-field-grammar="SYNTX_FIELD_V1"`, `data-observation-kind` FIELD|ORGANIZATION|ROLE|REQUIREMENT
@@ -1751,3 +1776,4 @@ observation point. Readable labels wrap at word boundaries (`wrapLines`), never 
 | 2026-10-19 | Role orbit — second visual refinement (owner "SFE — GRÜN | ROLE ORBIT — SECOND VISUAL REFINEMENT", on frontend/role-orbit 7a51d89) | §13.2.31: the role orbit drawn in to the smallest orbit its geometry carries (least area of the pairs that hold, lying; per card and per pair, closed form on one orbit, 5° across orbits); Kestrel 516.8 × 232.4 → 251.8 × 190.7 at 1600 | tsc 0; unit 7 + SSR 10; regression 69 files / 506; workflow e2e 10/10 ×2; lab walk 59/59 at 1600 and 1280; 0 Gemini hosts |
 | 2026-10-19 | Role orbit — air across orbits (PINK D-RO-2 on 3be1920) | §13.2.32: closed form across orbits (the outer orbit encloses every inner card's air rectangle in every phase), never closer than the packing in motion; one-orbit layouts unchanged, 32 of 788 multi-orbit layouts less drawn in | tsc 0; unit 8 + SSR 10; regression 69 files / 507; negative control on 3be1920 fails; independent 1° × 1° reading 0 violations |
 | 2026-10-19 | Role orbit — card refinement (owner "SFE — GRÜN | ROLE ORBIT CARD REFINEMENT", on frontend/role-cards over e6493a7) | §13.2.33: centred role card (standing, title, domain, requirements, matching read), drawn at exactly the box the orbit keeps its air for; the accepted orbit unchanged | tsc 0; unit 10 + SSR 11; regression 69 files / 510; workflow e2e 10/10 ×2; lab walk 119/119 at 1600 and 1280 |
+| 2026-10-19 | Role cards — footer readability (owner "SFE — GRÜN | ROLE CARDS — FOOTER READABILITY", on frontend/role-card-footer over ae633a1) | §13.2.34: footer at 8.5 px (fitted per card, German ≥ 7.75 px instead of cut), 8 px into the side padding, brighter; card box and orbit unchanged | tsc 0; unit 11 + SSR 11; regression 69 files / 511; workflow e2e 10/10 ×2; lab walk 121/121 at 1600 and 1280 (incl. German) |

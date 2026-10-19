@@ -36,3 +36,21 @@ No score, rank or relation; nothing the pool and the matching do not state.
 Contrast on the card's glass (WCAG ratio, least over every card): title 17.9, standing 10.2, domain 9.6, requirements 12.6,
 matching 6.7. Passing under the orientation surface (O-JF-PANEL, card phases over a turn): Kestrel at 1280 3 → 5 of 216, the taller
 cards; elsewhere unchanged.
+
+## Footer readability (`footer/`)
+
+Owner "SFE — GRÜN | ROLE CARDS — FOOTER READABILITY" (2026-10-19, `frontend/role-card-footer` over `ae633a1`): only the card's footer
+(requirements, matching read) changes. `footer/` holds the same walk with two more checks, 121/121 at 1600 × 1000 and 1280 × 720,
+and a German shot (`after-de-org_orbit_short_12-*.png`).
+
+| | before (ae633a1) | now |
+|---|---|---|
+| size | 7.5 px | 8.5 px (English on every card); German 8.5 px from 136 px wide, 8.25 px at 133 px, 7.75 px at 128 px |
+| width | inside the 12 px side padding | 8 px into the padding (4 px from the edge) |
+| weight / colour | 600 / 500; 0.9 / 0.8 alpha | 700 / 500; 0.96 / 0.92 alpha |
+| contrast (least) | requirements 12.6, matching 6.7 : 1 | requirements 15.3, matching 10.7 : 1 |
+| mark | 5 px | 6 px |
+| German on narrow cards | `KEIN MATCHING GELESEN` cut (128 – 136 px cards) | fits every card |
+| room left on a one-line card | 1.6 px | 1.2 px (the divider's air 7 → 5 px) |
+
+The card's box, the orbit and every air are unchanged.
