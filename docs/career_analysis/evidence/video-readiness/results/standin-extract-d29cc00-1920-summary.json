@@ -1,0 +1,1471 @@
+{
+  "summaryVersion": "LIVE_GEMINI_VALIDATION_SUMMARY_V1",
+  "person": {
+    "analysisId": "ANL_1792421211667_227",
+    "jobId": "JOB_1792421211667_227",
+    "httpStatus": {
+      "analysis": 200,
+      "investigation": 200,
+      "geminiResult": 200,
+      "b2": 409
+    },
+    "analysisStatus": "VERIFIED",
+    "investigation": {
+      "success": true,
+      "investigation": {
+        "investigationVersion": "ANALYSIS_INVESTIGATION_V1",
+        "analysisId": "ANL_1792421211667_227",
+        "jobId": "JOB_1792421211667_227",
+        "mode": "PERSON",
+        "jobScopeSelection": null,
+        "basis": "JOB_DECLARATION_AND_DISCOVERY_RUN",
+        "discoveryRunId": "RUN_475EE9F9DAA4A9DB2024E019",
+        "investigationScopeHash": null
+      }
+    },
+    "input": {
+      "mode": "PERSON",
+      "jobScopeSelection": null,
+      "scopeState": "UNSCOPED",
+      "scopeTextMatchesHash": null,
+      "scopeTextLength": null,
+      "inference": {
+        "provider": "gemini",
+        "model": "video-standin-model"
+      },
+      "kernel": "discovery-v1",
+      "discoveryRunId": "RUN_475EE9F9DAA4A9DB2024E019",
+      "reused": false
+    },
+    "discoveryResponse": {
+      "state": "RETAINED",
+      "modelVersion": "video-standin-001",
+      "responseId": "video-discovery-1",
+      "finishReason": "STOP",
+      "usageMetadata": {
+        "promptTokenCount": 2297,
+        "candidatesTokenCount": 1878
+      },
+      "textLength": 7509,
+      "textSha256": "02d82a7fa8c46e8eb8d9fa962e8418a69c05fe7491769781785014e72e940bb7",
+      "textMatchesSha256": true,
+      "parserResultMatchesText": true
+    },
+    "proposedByModel": [
+      {
+        "name": "TypeScript",
+        "scope": "ATOMIC",
+        "domain": "Software Engineering",
+        "level": null,
+        "confidence": 0.86,
+        "evidenceMode": "EXPLICIT",
+        "quotes": [
+          "in logistics. Focus on TypeScript, React and Node.js, relational databases and automated testing."
+        ]
+      },
+      {
+        "name": "React",
+        "scope": "ATOMIC",
+        "domain": "Software Engineering",
+        "level": null,
+        "confidence": 0.86,
+        "evidenceMode": "EXPLICIT",
+        "quotes": [
+          "in logistics. Focus on TypeScript, React and Node.js, relational databases and automated testing."
+        ]
+      },
+      {
+        "name": "Node.js",
+        "scope": "ATOMIC",
+        "domain": "Software Engineering",
+        "level": null,
+        "confidence": 0.86,
+        "evidenceMode": "EXPLICIT",
+        "quotes": [
+          "in logistics. Focus on TypeScript, React and Node.js, relational databases and automated testing."
+        ]
+      },
+      {
+        "name": "PostgreSQL",
+        "scope": "ATOMIC",
+        "domain": "Data",
+        "level": null,
+        "confidence": 0.86,
+        "evidenceMode": "EXPLICIT",
+        "quotes": [
+          "• Designed the PostgreSQL schema for orders and invoices and wrote complex SQL reporting"
+        ]
+      },
+      {
+        "name": "Automated Testing",
+        "scope": "ATOMIC",
+        "domain": "Software Engineering",
+        "level": null,
+        "confidence": 0.86,
+        "evidenceMode": "EXPLICIT",
+        "quotes": [
+          "in logistics. Focus on TypeScript, React and Node.js, relational databases and automated testing."
+        ]
+      },
+      {
+        "name": "Apache Kafka",
+        "scope": "ATOMIC",
+        "domain": "Data",
+        "level": null,
+        "confidence": 0.86,
+        "evidenceMode": "EXPLICIT",
+        "quotes": [
+          "• Wrote Python ETL jobs that load shipment events from Apache Kafka into the data warehouse."
+        ]
+      },
+      {
+        "name": "Docker",
+        "scope": "ATOMIC",
+        "domain": "Delivery",
+        "level": null,
+        "confidence": 0.86,
+        "evidenceMode": "EXPLICIT",
+        "quotes": [
+          "• Set up CI/CD pipelines with GitHub Actions and built Docker images for every service."
+        ]
+      },
+      {
+        "name": "CI/CD",
+        "scope": "ATOMIC",
+        "domain": "Delivery",
+        "level": null,
+        "confidence": 0.86,
+        "evidenceMode": "EXPLICIT",
+        "quotes": [
+          "• Set up CI/CD pipelines with GitHub Actions and built Docker images for every service."
+        ]
+      },
+      {
+        "name": "Python",
+        "scope": "ATOMIC",
+        "domain": "Software Engineering",
+        "level": null,
+        "confidence": 0.86,
+        "evidenceMode": "EXPLICIT",
+        "quotes": [
+          "• Wrote Python ETL jobs that load shipment events from Apache Kafka into the data warehouse."
+        ]
+      },
+      {
+        "name": "Kubernetes",
+        "scope": "ATOMIC",
+        "domain": "Delivery",
+        "level": null,
+        "confidence": 0.86,
+        "evidenceMode": "EXPLICIT",
+        "quotes": [
+          "• Deployed services to a Kubernetes test cluster and maintained Linux build agents."
+        ]
+      },
+      {
+        "name": "Team Leadership",
+        "scope": "ATOMIC",
+        "domain": "Leadership",
+        "level": null,
+        "confidence": 0.86,
+        "evidenceMode": "EXPLICIT",
+        "quotes": [
+          "• Led a team of four engineers and ran the weekly architecture review."
+        ]
+      },
+      {
+        "name": "English",
+        "scope": "ATOMIC",
+        "domain": "Language",
+        "level": null,
+        "confidence": 0.86,
+        "evidenceMode": "EXPLICIT",
+        "quotes": [
+          "German (native), English (C1)."
+        ]
+      },
+      {
+        "name": "Quantum Annealing",
+        "scope": "ATOMIC",
+        "domain": null,
+        "level": null,
+        "confidence": 0.4,
+        "evidenceMode": "EXPLICIT",
+        "quotes": [
+          "Designed quantum annealing schedules for logistics."
+        ]
+      }
+    ],
+    "coverageAudit": {
+      "capability_count": 13,
+      "atomic_capability_count": 13,
+      "source_documents_examined": 1,
+      "attribution_pass_completed": true,
+      "composite_capability_count": 0,
+      "unresolved_target_operations": 0,
+      "atomic_extraction_pass_completed": true,
+      "method_capability_pass_completed": true,
+      "global_convergence_pass_completed": true,
+      "target_state_ownership_pass_completed": true,
+      "composite_reconstruction_pass_completed": true,
+      "inventory_reconciliation_pass_completed": true,
+      "final_reconciliation_produced_new_capabilities": false,
+      "segments_classified_as_external_source_content": 0,
+      "segments_excluded_due_to_attribution_ambiguity": 0,
+      "segments_classified_as_target_subject_operation": 0,
+      "segments_classified_as_target_organization_capability": 0,
+      "segments_classified_as_target_subject_designed_target_state": 0
+    },
+    "verification": [
+      {
+        "name": "TypeScript",
+        "status": "EVIDENCE_PASSED",
+        "claims": [
+          {
+            "quote": "in logistics. Focus on TypeScript, React and Node.js, relational databases and automated testing.",
+            "verdict": "VERIFIED",
+            "matchedDocId": "DOC_001"
+          }
+        ]
+      },
+      {
+        "name": "React",
+        "status": "EVIDENCE_PASSED",
+        "claims": [
+          {
+            "quote": "in logistics. Focus on TypeScript, React and Node.js, relational databases and automated testing.",
+            "verdict": "VERIFIED",
+            "matchedDocId": "DOC_001"
+          }
+        ]
+      },
+      {
+        "name": "Node.js",
+        "status": "EVIDENCE_PASSED",
+        "claims": [
+          {
+            "quote": "in logistics. Focus on TypeScript, React and Node.js, relational databases and automated testing.",
+            "verdict": "VERIFIED",
+            "matchedDocId": "DOC_001"
+          }
+        ]
+      },
+      {
+        "name": "PostgreSQL",
+        "status": "EVIDENCE_PASSED",
+        "claims": [
+          {
+            "quote": "• Designed the PostgreSQL schema for orders and invoices and wrote complex SQL reporting",
+            "verdict": "VERIFIED",
+            "matchedDocId": "DOC_001"
+          }
+        ]
+      },
+      {
+        "name": "Automated Testing",
+        "status": "EVIDENCE_PASSED",
+        "claims": [
+          {
+            "quote": "in logistics. Focus on TypeScript, React and Node.js, relational databases and automated testing.",
+            "verdict": "VERIFIED",
+            "matchedDocId": "DOC_001"
+          }
+        ]
+      },
+      {
+        "name": "Apache Kafka",
+        "status": "EVIDENCE_PASSED",
+        "claims": [
+          {
+            "quote": "• Wrote Python ETL jobs that load shipment events from Apache Kafka into the data warehouse.",
+            "verdict": "VERIFIED",
+            "matchedDocId": "DOC_001"
+          }
+        ]
+      },
+      {
+        "name": "Docker",
+        "status": "EVIDENCE_PASSED",
+        "claims": [
+          {
+            "quote": "• Set up CI/CD pipelines with GitHub Actions and built Docker images for every service.",
+            "verdict": "VERIFIED",
+            "matchedDocId": "DOC_001"
+          }
+        ]
+      },
+      {
+        "name": "CI/CD",
+        "status": "EVIDENCE_PASSED",
+        "claims": [
+          {
+            "quote": "• Set up CI/CD pipelines with GitHub Actions and built Docker images for every service.",
+            "verdict": "VERIFIED",
+            "matchedDocId": "DOC_001"
+          }
+        ]
+      },
+      {
+        "name": "Python",
+        "status": "EVIDENCE_PASSED",
+        "claims": [
+          {
+            "quote": "• Wrote Python ETL jobs that load shipment events from Apache Kafka into the data warehouse.",
+            "verdict": "VERIFIED",
+            "matchedDocId": "DOC_001"
+          }
+        ]
+      },
+      {
+        "name": "Kubernetes",
+        "status": "EVIDENCE_PASSED",
+        "claims": [
+          {
+            "quote": "• Deployed services to a Kubernetes test cluster and maintained Linux build agents.",
+            "verdict": "VERIFIED",
+            "matchedDocId": "DOC_001"
+          }
+        ]
+      },
+      {
+        "name": "Team Leadership",
+        "status": "EVIDENCE_PASSED",
+        "claims": [
+          {
+            "quote": "• Led a team of four engineers and ran the weekly architecture review.",
+            "verdict": "VERIFIED",
+            "matchedDocId": "DOC_001"
+          }
+        ]
+      },
+      {
+        "name": "English",
+        "status": "EVIDENCE_PASSED",
+        "claims": [
+          {
+            "quote": "German (native), English (C1).",
+            "verdict": "VERIFIED",
+            "matchedDocId": "DOC_001"
+          }
+        ]
+      },
+      {
+        "name": "Quantum Annealing",
+        "status": "EVIDENCE_REJECTED",
+        "claims": [
+          {
+            "quote": "Designed quantum annealing schedules for logistics.",
+            "verdict": "REJECTED_QUOTE_NOT_FOUND",
+            "matchedDocId": null
+          }
+        ]
+      }
+    ],
+    "convergence": {
+      "runId": "CONV_75B8E742D99598CACE1DEA17",
+      "reconciliation": "PASSED",
+      "drafts": [
+        {
+          "name": "Node.js",
+          "scope": "ATOMIC",
+          "members": 1
+        },
+        {
+          "name": "Team Leadership",
+          "scope": "ATOMIC",
+          "members": 1
+        },
+        {
+          "name": "English",
+          "scope": "ATOMIC",
+          "members": 1
+        },
+        {
+          "name": "Python",
+          "scope": "ATOMIC",
+          "members": 1
+        },
+        {
+          "name": "React",
+          "scope": "ATOMIC",
+          "members": 1
+        },
+        {
+          "name": "Docker",
+          "scope": "ATOMIC",
+          "members": 1
+        },
+        {
+          "name": "TypeScript",
+          "scope": "ATOMIC",
+          "members": 1
+        },
+        {
+          "name": "Apache Kafka",
+          "scope": "ATOMIC",
+          "members": 1
+        },
+        {
+          "name": "Automated Testing",
+          "scope": "ATOMIC",
+          "members": 1
+        },
+        {
+          "name": "Kubernetes",
+          "scope": "ATOMIC",
+          "members": 1
+        },
+        {
+          "name": "PostgreSQL",
+          "scope": "ATOMIC",
+          "members": 1
+        },
+        {
+          "name": "CI/CD",
+          "scope": "ATOMIC",
+          "members": 1
+        }
+      ],
+      "relations": 0,
+      "excluded": null
+    },
+    "projection": [
+      {
+        "name": "Node.js",
+        "scope": "ATOMIC",
+        "domain": "Software Engineering",
+        "evidenceState": "EVIDENCE_PASSED",
+        "quotes": [
+          "in logistics. Focus on TypeScript, React and Node.js, relational databases and automated testing."
+        ]
+      },
+      {
+        "name": "Team Leadership",
+        "scope": "ATOMIC",
+        "domain": "Leadership",
+        "evidenceState": "EVIDENCE_PASSED",
+        "quotes": [
+          "• Led a team of four engineers and ran the weekly architecture review."
+        ]
+      },
+      {
+        "name": "English",
+        "scope": "ATOMIC",
+        "domain": "Language",
+        "evidenceState": "EVIDENCE_PASSED",
+        "quotes": [
+          "German (native), English (C1)."
+        ]
+      },
+      {
+        "name": "Python",
+        "scope": "ATOMIC",
+        "domain": "Software Engineering",
+        "evidenceState": "EVIDENCE_PASSED",
+        "quotes": [
+          "• Wrote Python ETL jobs that load shipment events from Apache Kafka into the data warehouse."
+        ]
+      },
+      {
+        "name": "React",
+        "scope": "ATOMIC",
+        "domain": "Software Engineering",
+        "evidenceState": "EVIDENCE_PASSED",
+        "quotes": [
+          "in logistics. Focus on TypeScript, React and Node.js, relational databases and automated testing."
+        ]
+      },
+      {
+        "name": "Docker",
+        "scope": "ATOMIC",
+        "domain": "Delivery",
+        "evidenceState": "EVIDENCE_PASSED",
+        "quotes": [
+          "• Set up CI/CD pipelines with GitHub Actions and built Docker images for every service."
+        ]
+      },
+      {
+        "name": "TypeScript",
+        "scope": "ATOMIC",
+        "domain": "Software Engineering",
+        "evidenceState": "EVIDENCE_PASSED",
+        "quotes": [
+          "in logistics. Focus on TypeScript, React and Node.js, relational databases and automated testing."
+        ]
+      },
+      {
+        "name": "Apache Kafka",
+        "scope": "ATOMIC",
+        "domain": "Data",
+        "evidenceState": "EVIDENCE_PASSED",
+        "quotes": [
+          "• Wrote Python ETL jobs that load shipment events from Apache Kafka into the data warehouse."
+        ]
+      },
+      {
+        "name": "Automated Testing",
+        "scope": "ATOMIC",
+        "domain": "Software Engineering",
+        "evidenceState": "EVIDENCE_PASSED",
+        "quotes": [
+          "in logistics. Focus on TypeScript, React and Node.js, relational databases and automated testing."
+        ]
+      },
+      {
+        "name": "Kubernetes",
+        "scope": "ATOMIC",
+        "domain": "Delivery",
+        "evidenceState": "EVIDENCE_PASSED",
+        "quotes": [
+          "• Deployed services to a Kubernetes test cluster and maintained Linux build agents."
+        ]
+      },
+      {
+        "name": "PostgreSQL",
+        "scope": "ATOMIC",
+        "domain": "Data",
+        "evidenceState": "EVIDENCE_PASSED",
+        "quotes": [
+          "• Designed the PostgreSQL schema for orders and invoices and wrote complex SQL reporting"
+        ]
+      },
+      {
+        "name": "CI/CD",
+        "scope": "ATOMIC",
+        "domain": "Delivery",
+        "evidenceState": "EVIDENCE_PASSED",
+        "quotes": [
+          "• Set up CI/CD pipelines with GitHub Actions and built Docker images for every service."
+        ]
+      }
+    ],
+    "legacyAnalysis": {
+      "capabilities": [
+        {
+          "name": "TypeScript",
+          "confidence": 0.84,
+          "validation": "PASSED",
+          "quotes": [
+            "in logistics. Focus on TypeScript, React and Node.js, relational databases and automated testing."
+          ]
+        },
+        {
+          "name": "React",
+          "confidence": 0.84,
+          "validation": "PASSED",
+          "quotes": [
+            "in logistics. Focus on TypeScript, React and Node.js, relational databases and automated testing."
+          ]
+        },
+        {
+          "name": "Node.js",
+          "confidence": 0.84,
+          "validation": "PASSED",
+          "quotes": [
+            "in logistics. Focus on TypeScript, React and Node.js, relational databases and automated testing."
+          ]
+        },
+        {
+          "name": "PostgreSQL",
+          "confidence": 0.84,
+          "validation": "PASSED",
+          "quotes": [
+            "• Designed the PostgreSQL schema for orders and invoices and wrote complex SQL reporting"
+          ]
+        },
+        {
+          "name": "Automated Testing",
+          "confidence": 0.84,
+          "validation": "PASSED",
+          "quotes": [
+            "in logistics. Focus on TypeScript, React and Node.js, relational databases and automated testing."
+          ]
+        },
+        {
+          "name": "Apache Kafka",
+          "confidence": 0.84,
+          "validation": "PASSED",
+          "quotes": [
+            "• Wrote Python ETL jobs that load shipment events from Apache Kafka into the data warehouse."
+          ]
+        },
+        {
+          "name": "Docker",
+          "confidence": 0.84,
+          "validation": "PASSED",
+          "quotes": [
+            "• Set up CI/CD pipelines with GitHub Actions and built Docker images for every service."
+          ]
+        },
+        {
+          "name": "CI/CD",
+          "confidence": 0.84,
+          "validation": "PASSED",
+          "quotes": [
+            "• Set up CI/CD pipelines with GitHub Actions and built Docker images for every service."
+          ]
+        },
+        {
+          "name": "Python",
+          "confidence": 0.84,
+          "validation": "PASSED",
+          "quotes": [
+            "• Wrote Python ETL jobs that load shipment events from Apache Kafka into the data warehouse."
+          ]
+        },
+        {
+          "name": "Kubernetes",
+          "confidence": 0.84,
+          "validation": "PASSED",
+          "quotes": [
+            "• Deployed services to a Kubernetes test cluster and maintained Linux build agents."
+          ]
+        },
+        {
+          "name": "Team Leadership",
+          "confidence": 0.84,
+          "validation": "PASSED",
+          "quotes": [
+            "• Led a team of four engineers and ran the weekly architecture review."
+          ]
+        },
+        {
+          "name": "English",
+          "confidence": 0.84,
+          "validation": "PASSED",
+          "quotes": [
+            "German (native), English (C1)."
+          ]
+        }
+      ],
+      "counts": {
+        "roles": 0,
+        "domains": 0,
+        "documents": 1,
+        "strategies": 0,
+        "capabilities": 12,
+        "requirements": 0,
+        "opportunities": 0,
+        "organizations": 0,
+        "search_queries": 0,
+        "organization_classes": 0
+      }
+    },
+    "b2": {
+      "success": false,
+      "issues": [
+        {
+          "code": "ERR_JOB_COMPARISON_NOT_SCOPED"
+        }
+      ]
+    }
+  },
+  "personXJob": {
+    "analysisId": "ANL_1792421290490_45",
+    "jobId": "JOB_1792421290490_45",
+    "httpStatus": {
+      "analysis": 200,
+      "investigation": 200,
+      "geminiResult": 200,
+      "b2": 200
+    },
+    "analysisStatus": "VERIFIED",
+    "investigation": {
+      "success": true,
+      "investigation": {
+        "investigationVersion": "ANALYSIS_INVESTIGATION_V1",
+        "analysisId": "ANL_1792421290490_45",
+        "jobId": "JOB_1792421290490_45",
+        "mode": "PERSON_X_JOB",
+        "jobScopeSelection": {
+          "jobPoolUploadId": "JPOOL_B94850C439974E27496FE3B1A9A076B5",
+          "poolRoleId": "role_kestrel_fullstack"
+        },
+        "basis": "JOB_DECLARATION_AND_DISCOVERY_RUN",
+        "discoveryRunId": "RUN_418B7A50835F221F9125ED2F",
+        "investigationScopeHash": "8016b7c10667d4720a01b2f2b24aff709b6bf77414385e376b113faf350870e7"
+      }
+    },
+    "input": {
+      "mode": "PERSON_X_JOB",
+      "jobScopeSelection": {
+        "jobPoolUploadId": "JPOOL_B94850C439974E27496FE3B1A9A076B5",
+        "poolRoleId": "role_kestrel_fullstack"
+      },
+      "scopeState": "RETAINED",
+      "scopeTextMatchesHash": true,
+      "scopeTextLength": 8626,
+      "inference": {
+        "provider": "gemini",
+        "model": "video-standin-model"
+      },
+      "kernel": "discovery-v1",
+      "discoveryRunId": "RUN_418B7A50835F221F9125ED2F",
+      "reused": false
+    },
+    "discoveryResponse": {
+      "state": "RETAINED",
+      "modelVersion": "video-standin-001",
+      "responseId": "video-discovery-4",
+      "finishReason": "STOP",
+      "usageMetadata": {
+        "promptTokenCount": 4663,
+        "candidatesTokenCount": 1878
+      },
+      "textLength": 7509,
+      "textSha256": "02d82a7fa8c46e8eb8d9fa962e8418a69c05fe7491769781785014e72e940bb7",
+      "textMatchesSha256": true,
+      "parserResultMatchesText": true
+    },
+    "proposedByModel": [
+      {
+        "name": "TypeScript",
+        "scope": "ATOMIC",
+        "domain": "Software Engineering",
+        "level": null,
+        "confidence": 0.86,
+        "evidenceMode": "EXPLICIT",
+        "quotes": [
+          "in logistics. Focus on TypeScript, React and Node.js, relational databases and automated testing."
+        ]
+      },
+      {
+        "name": "React",
+        "scope": "ATOMIC",
+        "domain": "Software Engineering",
+        "level": null,
+        "confidence": 0.86,
+        "evidenceMode": "EXPLICIT",
+        "quotes": [
+          "in logistics. Focus on TypeScript, React and Node.js, relational databases and automated testing."
+        ]
+      },
+      {
+        "name": "Node.js",
+        "scope": "ATOMIC",
+        "domain": "Software Engineering",
+        "level": null,
+        "confidence": 0.86,
+        "evidenceMode": "EXPLICIT",
+        "quotes": [
+          "in logistics. Focus on TypeScript, React and Node.js, relational databases and automated testing."
+        ]
+      },
+      {
+        "name": "PostgreSQL",
+        "scope": "ATOMIC",
+        "domain": "Data",
+        "level": null,
+        "confidence": 0.86,
+        "evidenceMode": "EXPLICIT",
+        "quotes": [
+          "• Designed the PostgreSQL schema for orders and invoices and wrote complex SQL reporting"
+        ]
+      },
+      {
+        "name": "Automated Testing",
+        "scope": "ATOMIC",
+        "domain": "Software Engineering",
+        "level": null,
+        "confidence": 0.86,
+        "evidenceMode": "EXPLICIT",
+        "quotes": [
+          "in logistics. Focus on TypeScript, React and Node.js, relational databases and automated testing."
+        ]
+      },
+      {
+        "name": "Apache Kafka",
+        "scope": "ATOMIC",
+        "domain": "Data",
+        "level": null,
+        "confidence": 0.86,
+        "evidenceMode": "EXPLICIT",
+        "quotes": [
+          "• Wrote Python ETL jobs that load shipment events from Apache Kafka into the data warehouse."
+        ]
+      },
+      {
+        "name": "Docker",
+        "scope": "ATOMIC",
+        "domain": "Delivery",
+        "level": null,
+        "confidence": 0.86,
+        "evidenceMode": "EXPLICIT",
+        "quotes": [
+          "• Set up CI/CD pipelines with GitHub Actions and built Docker images for every service."
+        ]
+      },
+      {
+        "name": "CI/CD",
+        "scope": "ATOMIC",
+        "domain": "Delivery",
+        "level": null,
+        "confidence": 0.86,
+        "evidenceMode": "EXPLICIT",
+        "quotes": [
+          "• Set up CI/CD pipelines with GitHub Actions and built Docker images for every service."
+        ]
+      },
+      {
+        "name": "Python",
+        "scope": "ATOMIC",
+        "domain": "Software Engineering",
+        "level": null,
+        "confidence": 0.86,
+        "evidenceMode": "EXPLICIT",
+        "quotes": [
+          "• Wrote Python ETL jobs that load shipment events from Apache Kafka into the data warehouse."
+        ]
+      },
+      {
+        "name": "Kubernetes",
+        "scope": "ATOMIC",
+        "domain": "Delivery",
+        "level": null,
+        "confidence": 0.86,
+        "evidenceMode": "EXPLICIT",
+        "quotes": [
+          "• Deployed services to a Kubernetes test cluster and maintained Linux build agents."
+        ]
+      },
+      {
+        "name": "Team Leadership",
+        "scope": "ATOMIC",
+        "domain": "Leadership",
+        "level": null,
+        "confidence": 0.86,
+        "evidenceMode": "EXPLICIT",
+        "quotes": [
+          "• Led a team of four engineers and ran the weekly architecture review."
+        ]
+      },
+      {
+        "name": "English",
+        "scope": "ATOMIC",
+        "domain": "Language",
+        "level": null,
+        "confidence": 0.86,
+        "evidenceMode": "EXPLICIT",
+        "quotes": [
+          "German (native), English (C1)."
+        ]
+      },
+      {
+        "name": "Quantum Annealing",
+        "scope": "ATOMIC",
+        "domain": null,
+        "level": null,
+        "confidence": 0.4,
+        "evidenceMode": "EXPLICIT",
+        "quotes": [
+          "Designed quantum annealing schedules for logistics."
+        ]
+      }
+    ],
+    "coverageAudit": {
+      "capability_count": 13,
+      "atomic_capability_count": 13,
+      "source_documents_examined": 1,
+      "attribution_pass_completed": true,
+      "composite_capability_count": 0,
+      "unresolved_target_operations": 0,
+      "atomic_extraction_pass_completed": true,
+      "method_capability_pass_completed": true,
+      "global_convergence_pass_completed": true,
+      "target_state_ownership_pass_completed": true,
+      "composite_reconstruction_pass_completed": true,
+      "inventory_reconciliation_pass_completed": true,
+      "final_reconciliation_produced_new_capabilities": false,
+      "segments_classified_as_external_source_content": 0,
+      "segments_excluded_due_to_attribution_ambiguity": 0,
+      "segments_classified_as_target_subject_operation": 0,
+      "segments_classified_as_target_organization_capability": 0,
+      "segments_classified_as_target_subject_designed_target_state": 0
+    },
+    "verification": [
+      {
+        "name": "TypeScript",
+        "status": "EVIDENCE_PASSED",
+        "claims": [
+          {
+            "quote": "in logistics. Focus on TypeScript, React and Node.js, relational databases and automated testing.",
+            "verdict": "VERIFIED",
+            "matchedDocId": "DOC_001"
+          }
+        ]
+      },
+      {
+        "name": "React",
+        "status": "EVIDENCE_PASSED",
+        "claims": [
+          {
+            "quote": "in logistics. Focus on TypeScript, React and Node.js, relational databases and automated testing.",
+            "verdict": "VERIFIED",
+            "matchedDocId": "DOC_001"
+          }
+        ]
+      },
+      {
+        "name": "Node.js",
+        "status": "EVIDENCE_PASSED",
+        "claims": [
+          {
+            "quote": "in logistics. Focus on TypeScript, React and Node.js, relational databases and automated testing.",
+            "verdict": "VERIFIED",
+            "matchedDocId": "DOC_001"
+          }
+        ]
+      },
+      {
+        "name": "PostgreSQL",
+        "status": "EVIDENCE_PASSED",
+        "claims": [
+          {
+            "quote": "• Designed the PostgreSQL schema for orders and invoices and wrote complex SQL reporting",
+            "verdict": "VERIFIED",
+            "matchedDocId": "DOC_001"
+          }
+        ]
+      },
+      {
+        "name": "Automated Testing",
+        "status": "EVIDENCE_PASSED",
+        "claims": [
+          {
+            "quote": "in logistics. Focus on TypeScript, React and Node.js, relational databases and automated testing.",
+            "verdict": "VERIFIED",
+            "matchedDocId": "DOC_001"
+          }
+        ]
+      },
+      {
+        "name": "Apache Kafka",
+        "status": "EVIDENCE_PASSED",
+        "claims": [
+          {
+            "quote": "• Wrote Python ETL jobs that load shipment events from Apache Kafka into the data warehouse.",
+            "verdict": "VERIFIED",
+            "matchedDocId": "DOC_001"
+          }
+        ]
+      },
+      {
+        "name": "Docker",
+        "status": "EVIDENCE_PASSED",
+        "claims": [
+          {
+            "quote": "• Set up CI/CD pipelines with GitHub Actions and built Docker images for every service.",
+            "verdict": "VERIFIED",
+            "matchedDocId": "DOC_001"
+          }
+        ]
+      },
+      {
+        "name": "CI/CD",
+        "status": "EVIDENCE_PASSED",
+        "claims": [
+          {
+            "quote": "• Set up CI/CD pipelines with GitHub Actions and built Docker images for every service.",
+            "verdict": "VERIFIED",
+            "matchedDocId": "DOC_001"
+          }
+        ]
+      },
+      {
+        "name": "Python",
+        "status": "EVIDENCE_PASSED",
+        "claims": [
+          {
+            "quote": "• Wrote Python ETL jobs that load shipment events from Apache Kafka into the data warehouse.",
+            "verdict": "VERIFIED",
+            "matchedDocId": "DOC_001"
+          }
+        ]
+      },
+      {
+        "name": "Kubernetes",
+        "status": "EVIDENCE_PASSED",
+        "claims": [
+          {
+            "quote": "• Deployed services to a Kubernetes test cluster and maintained Linux build agents.",
+            "verdict": "VERIFIED",
+            "matchedDocId": "DOC_001"
+          }
+        ]
+      },
+      {
+        "name": "Team Leadership",
+        "status": "EVIDENCE_PASSED",
+        "claims": [
+          {
+            "quote": "• Led a team of four engineers and ran the weekly architecture review.",
+            "verdict": "VERIFIED",
+            "matchedDocId": "DOC_001"
+          }
+        ]
+      },
+      {
+        "name": "English",
+        "status": "EVIDENCE_PASSED",
+        "claims": [
+          {
+            "quote": "German (native), English (C1).",
+            "verdict": "VERIFIED",
+            "matchedDocId": "DOC_001"
+          }
+        ]
+      },
+      {
+        "name": "Quantum Annealing",
+        "status": "EVIDENCE_REJECTED",
+        "claims": [
+          {
+            "quote": "Designed quantum annealing schedules for logistics.",
+            "verdict": "REJECTED_QUOTE_NOT_FOUND",
+            "matchedDocId": null
+          }
+        ]
+      }
+    ],
+    "convergence": {
+      "runId": "CONV_13A8472E190C12862637B7D9",
+      "reconciliation": "PASSED",
+      "drafts": [
+        {
+          "name": "Automated Testing",
+          "scope": "ATOMIC",
+          "members": 1
+        },
+        {
+          "name": "Docker",
+          "scope": "ATOMIC",
+          "members": 1
+        },
+        {
+          "name": "Team Leadership",
+          "scope": "ATOMIC",
+          "members": 1
+        },
+        {
+          "name": "CI/CD",
+          "scope": "ATOMIC",
+          "members": 1
+        },
+        {
+          "name": "Kubernetes",
+          "scope": "ATOMIC",
+          "members": 1
+        },
+        {
+          "name": "TypeScript",
+          "scope": "ATOMIC",
+          "members": 1
+        },
+        {
+          "name": "Node.js",
+          "scope": "ATOMIC",
+          "members": 1
+        },
+        {
+          "name": "PostgreSQL",
+          "scope": "ATOMIC",
+          "members": 1
+        },
+        {
+          "name": "English",
+          "scope": "ATOMIC",
+          "members": 1
+        },
+        {
+          "name": "React",
+          "scope": "ATOMIC",
+          "members": 1
+        },
+        {
+          "name": "Apache Kafka",
+          "scope": "ATOMIC",
+          "members": 1
+        },
+        {
+          "name": "Python",
+          "scope": "ATOMIC",
+          "members": 1
+        }
+      ],
+      "relations": 0,
+      "excluded": null
+    },
+    "projection": [
+      {
+        "name": "Automated Testing",
+        "scope": "ATOMIC",
+        "domain": "Software Engineering",
+        "evidenceState": "EVIDENCE_PASSED",
+        "quotes": [
+          "in logistics. Focus on TypeScript, React and Node.js, relational databases and automated testing."
+        ]
+      },
+      {
+        "name": "Docker",
+        "scope": "ATOMIC",
+        "domain": "Delivery",
+        "evidenceState": "EVIDENCE_PASSED",
+        "quotes": [
+          "• Set up CI/CD pipelines with GitHub Actions and built Docker images for every service."
+        ]
+      },
+      {
+        "name": "Team Leadership",
+        "scope": "ATOMIC",
+        "domain": "Leadership",
+        "evidenceState": "EVIDENCE_PASSED",
+        "quotes": [
+          "• Led a team of four engineers and ran the weekly architecture review."
+        ]
+      },
+      {
+        "name": "CI/CD",
+        "scope": "ATOMIC",
+        "domain": "Delivery",
+        "evidenceState": "EVIDENCE_PASSED",
+        "quotes": [
+          "• Set up CI/CD pipelines with GitHub Actions and built Docker images for every service."
+        ]
+      },
+      {
+        "name": "Kubernetes",
+        "scope": "ATOMIC",
+        "domain": "Delivery",
+        "evidenceState": "EVIDENCE_PASSED",
+        "quotes": [
+          "• Deployed services to a Kubernetes test cluster and maintained Linux build agents."
+        ]
+      },
+      {
+        "name": "TypeScript",
+        "scope": "ATOMIC",
+        "domain": "Software Engineering",
+        "evidenceState": "EVIDENCE_PASSED",
+        "quotes": [
+          "in logistics. Focus on TypeScript, React and Node.js, relational databases and automated testing."
+        ]
+      },
+      {
+        "name": "Node.js",
+        "scope": "ATOMIC",
+        "domain": "Software Engineering",
+        "evidenceState": "EVIDENCE_PASSED",
+        "quotes": [
+          "in logistics. Focus on TypeScript, React and Node.js, relational databases and automated testing."
+        ]
+      },
+      {
+        "name": "PostgreSQL",
+        "scope": "ATOMIC",
+        "domain": "Data",
+        "evidenceState": "EVIDENCE_PASSED",
+        "quotes": [
+          "• Designed the PostgreSQL schema for orders and invoices and wrote complex SQL reporting"
+        ]
+      },
+      {
+        "name": "English",
+        "scope": "ATOMIC",
+        "domain": "Language",
+        "evidenceState": "EVIDENCE_PASSED",
+        "quotes": [
+          "German (native), English (C1)."
+        ]
+      },
+      {
+        "name": "React",
+        "scope": "ATOMIC",
+        "domain": "Software Engineering",
+        "evidenceState": "EVIDENCE_PASSED",
+        "quotes": [
+          "in logistics. Focus on TypeScript, React and Node.js, relational databases and automated testing."
+        ]
+      },
+      {
+        "name": "Apache Kafka",
+        "scope": "ATOMIC",
+        "domain": "Data",
+        "evidenceState": "EVIDENCE_PASSED",
+        "quotes": [
+          "• Wrote Python ETL jobs that load shipment events from Apache Kafka into the data warehouse."
+        ]
+      },
+      {
+        "name": "Python",
+        "scope": "ATOMIC",
+        "domain": "Software Engineering",
+        "evidenceState": "EVIDENCE_PASSED",
+        "quotes": [
+          "• Wrote Python ETL jobs that load shipment events from Apache Kafka into the data warehouse."
+        ]
+      }
+    ],
+    "legacyAnalysis": {
+      "capabilities": [
+        {
+          "name": "TypeScript",
+          "confidence": 0.84,
+          "validation": "PASSED",
+          "quotes": [
+            "in logistics. Focus on TypeScript, React and Node.js, relational databases and automated testing."
+          ]
+        },
+        {
+          "name": "React",
+          "confidence": 0.84,
+          "validation": "PASSED",
+          "quotes": [
+            "in logistics. Focus on TypeScript, React and Node.js, relational databases and automated testing."
+          ]
+        },
+        {
+          "name": "Node.js",
+          "confidence": 0.84,
+          "validation": "PASSED",
+          "quotes": [
+            "in logistics. Focus on TypeScript, React and Node.js, relational databases and automated testing."
+          ]
+        },
+        {
+          "name": "PostgreSQL",
+          "confidence": 0.84,
+          "validation": "PASSED",
+          "quotes": [
+            "• Designed the PostgreSQL schema for orders and invoices and wrote complex SQL reporting"
+          ]
+        },
+        {
+          "name": "Automated Testing",
+          "confidence": 0.84,
+          "validation": "PASSED",
+          "quotes": [
+            "in logistics. Focus on TypeScript, React and Node.js, relational databases and automated testing."
+          ]
+        },
+        {
+          "name": "Apache Kafka",
+          "confidence": 0.84,
+          "validation": "PASSED",
+          "quotes": [
+            "• Wrote Python ETL jobs that load shipment events from Apache Kafka into the data warehouse."
+          ]
+        },
+        {
+          "name": "Docker",
+          "confidence": 0.84,
+          "validation": "PASSED",
+          "quotes": [
+            "• Set up CI/CD pipelines with GitHub Actions and built Docker images for every service."
+          ]
+        },
+        {
+          "name": "CI/CD",
+          "confidence": 0.84,
+          "validation": "PASSED",
+          "quotes": [
+            "• Set up CI/CD pipelines with GitHub Actions and built Docker images for every service."
+          ]
+        },
+        {
+          "name": "Python",
+          "confidence": 0.84,
+          "validation": "PASSED",
+          "quotes": [
+            "• Wrote Python ETL jobs that load shipment events from Apache Kafka into the data warehouse."
+          ]
+        },
+        {
+          "name": "Kubernetes",
+          "confidence": 0.84,
+          "validation": "PASSED",
+          "quotes": [
+            "• Deployed services to a Kubernetes test cluster and maintained Linux build agents."
+          ]
+        },
+        {
+          "name": "Team Leadership",
+          "confidence": 0.84,
+          "validation": "PASSED",
+          "quotes": [
+            "• Led a team of four engineers and ran the weekly architecture review."
+          ]
+        },
+        {
+          "name": "English",
+          "confidence": 0.84,
+          "validation": "PASSED",
+          "quotes": [
+            "German (native), English (C1)."
+          ]
+        }
+      ],
+      "counts": {
+        "roles": 0,
+        "domains": 0,
+        "documents": 1,
+        "strategies": 0,
+        "capabilities": 12,
+        "requirements": 0,
+        "opportunities": 0,
+        "organizations": 0,
+        "search_queries": 0,
+        "organization_classes": 0
+      }
+    },
+    "b2": {
+      "counts": {
+        "requirements": 9,
+        "covered": 7,
+        "notCovered": 2,
+        "proposals": 12
+      },
+      "authority": {
+        "comparisonBasis": "CAPABILITY_PROPOSAL_NAME_COVERAGE",
+        "operand": "CAPABILITY_PROPOSAL_PROJECTION",
+        "scored": false,
+        "authorityState": "NONE",
+        "capabilityRequirementRelationState": "NOT_EVALUATED",
+        "reason": "VERIFIED_CAPABILITY_SNAPSHOT_ABSENT"
+      },
+      "requirements": [
+        {
+          "id": "req_kestrel_fullstack_01",
+          "capability": "TypeScript",
+          "coverage": "COVERED",
+          "matchBasis": "EXACT",
+          "proposal": "TypeScript",
+          "quotes": [
+            "in logistics. Focus on TypeScript, React and Node.js, relational databases and automated testing."
+          ]
+        },
+        {
+          "id": "req_kestrel_fullstack_02",
+          "capability": "React",
+          "coverage": "COVERED",
+          "matchBasis": "EXACT",
+          "proposal": "React",
+          "quotes": [
+            "in logistics. Focus on TypeScript, React and Node.js, relational databases and automated testing."
+          ]
+        },
+        {
+          "id": "req_kestrel_fullstack_03",
+          "capability": "Node.js",
+          "coverage": "COVERED",
+          "matchBasis": "EXACT",
+          "proposal": "Node.js",
+          "quotes": [
+            "in logistics. Focus on TypeScript, React and Node.js, relational databases and automated testing."
+          ]
+        },
+        {
+          "id": "req_kestrel_fullstack_04",
+          "capability": "PostgreSQL",
+          "coverage": "COVERED",
+          "matchBasis": "EXACT",
+          "proposal": "PostgreSQL",
+          "quotes": [
+            "• Designed the PostgreSQL schema for orders and invoices and wrote complex SQL reporting"
+          ]
+        },
+        {
+          "id": "req_kestrel_fullstack_05",
+          "capability": "Event-Driven Architecture",
+          "coverage": "COVERED",
+          "matchBasis": "TOKEN_CONTAINMENT",
+          "proposal": "Apache Kafka",
+          "quotes": [
+            "• Wrote Python ETL jobs that load shipment events from Apache Kafka into the data warehouse."
+          ]
+        },
+        {
+          "id": "req_kestrel_fullstack_06",
+          "capability": "Automated Testing",
+          "coverage": "COVERED",
+          "matchBasis": "EXACT",
+          "proposal": "Automated Testing",
+          "quotes": [
+            "in logistics. Focus on TypeScript, React and Node.js, relational databases and automated testing."
+          ]
+        },
+        {
+          "id": "req_kestrel_fullstack_07",
+          "capability": "Geospatial Visualisation",
+          "coverage": "NOT_COVERED",
+          "matchBasis": null,
+          "proposal": null,
+          "quotes": []
+        },
+        {
+          "id": "req_kestrel_fullstack_08",
+          "capability": "Web Platform Engineering",
+          "coverage": "NOT_COVERED",
+          "matchBasis": null,
+          "proposal": null,
+          "quotes": []
+        },
+        {
+          "id": "req_kestrel_fullstack_09",
+          "capability": "English",
+          "coverage": "COVERED",
+          "matchBasis": "EXACT",
+          "proposal": "English",
+          "quotes": [
+            "German (native), English (C1)."
+          ]
+        }
+      ]
+    }
+  },
+  "exchanges": [
+    {
+      "jobId": "JOB_1792421211667_227",
+      "archive": "AVAILABLE",
+      "exchanges": [
+        {
+          "runId": "RUN_475EE9F9DAA4A9DB2024E019",
+          "outcome": "COMPLETED",
+          "errorCode": null,
+          "attempt": {
+            "jobId": "JOB_1792421211667_227",
+            "leaseVersion": 1
+          },
+          "model": "video-standin-model",
+          "scopeBlock": false,
+          "responseId": "video-discovery-1",
+          "finishReason": "STOP",
+          "textLength": 7509,
+          "textSha256": "02d82a7fa8c46e8eb8d9fa962e8418a69c05fe7491769781785014e72e940bb7",
+          "textMatchesSha256": true
+        }
+      ]
+    },
+    {
+      "jobId": "JOB_1792421290490_45",
+      "archive": "AVAILABLE",
+      "exchanges": [
+        {
+          "runId": "RUN_418B7A50835F221F9125ED2F",
+          "outcome": "COMPLETED",
+          "errorCode": null,
+          "attempt": {
+            "jobId": "JOB_1792421290490_45",
+            "leaseVersion": 1
+          },
+          "model": "video-standin-model",
+          "scopeBlock": true,
+          "responseId": "video-discovery-4",
+          "finishReason": "STOP",
+          "textLength": 7509,
+          "textSha256": "02d82a7fa8c46e8eb8d9fa962e8418a69c05fe7491769781785014e72e940bb7",
+          "textMatchesSha256": true
+        }
+      ]
+    }
+  ]
+}

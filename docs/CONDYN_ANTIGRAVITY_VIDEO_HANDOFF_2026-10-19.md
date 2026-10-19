@@ -20,10 +20,12 @@ Grundlagen:
 | Ablauf im Browser mit dem lokalen Gemini-Stand-in | **bestanden**, 30/30 in jedem Durchgang, zuletzt auf `fe5cbea` | §9 |
 | Bedienelemente: Beschriftung, Größe, Lage, Sichtbarkeit, Bewegung | **erfasst** bei 1920 × 1080 (43 Interaktionen) | `evidence/video-readiness/results/handoff-targets-fe5cbea-1920.json` |
 | Live-Verdrahtung (Relay, Budget, Schlüsselgrenze) | **nur als Trockenlauf bestanden**: Relay gegen den lokalen Stand-in, Testschlüssel. PINK hat sie unabhängig geprüft | Readiness-Dokument §8 |
-| **Echter Live-Gemini-Durchgang** | **nicht ausgeführt.** Es gibt kein einziges echtes Modellergebnis dieses Stands | §10, P-4 |
+| **Echter Live-Gemini-Durchgang** | **einmal ausgeführt, 2026-10-19 (Owner-GO):** Walk 30/30, 6 echte Aufrufe (`gemini-3.1-pro-preview`), alle 200 und STOP, Restbudget 2. G-1, G-3 und G-7 sind über die Zusammenfassung geprüft, nicht über den Walk (§9). Beobachtungen O-LIVE-1 bis O-LIVE-4 | Readiness-Dokument §9 |
 | **Antigravity: Datei-Upload, Klicks auf bewegte Ziele, Aufnahme, Erreichbarkeit von 127.0.0.1** | **nicht geprüft** | §10, P-1 bis P-3, P-5 bis P-8 |
 
-Bestanden ist damit nur, was mit Playwright und dem Stand-in gelaufen ist. Alles, was Antigravity selbst betrifft, und der echte Gemini-Pfad sind offen.
+Bestanden ist damit, was mit Playwright gelaufen ist: mehrfach mit dem Stand-in und einmal mit echtem Gemini. Alles, was Antigravity selbst betrifft, ist offen.
+
+**Nachtrag 2026-10-19:** PINK hat dieses Dokument unabhängig geprüft, mit eigenem Stand-in-Labor und Code-Abgleich auf `fe5cbea`: 79 Punkte stimmen, 4 weichen ab. Die Korrekturen sind eingearbeitet: §4 Schritte 5, 6, 22, 26, 33 und Lage; §5 G-6, G-7; §6 Upload, Analysefehler, weitere Zustände; §7 Worker-Wiederholungen, A-9; §9.
 
 ## 1. Zwei getrennte Gemini-Modelle (Grundregel)
 
@@ -92,7 +94,7 @@ Jede Zeile ist eine Szene des Films und ein Prüfpunkt des Referenzskripts (V-xx
 - **Ziel:** die sichtbare Beschriftung, darunter das `data-testid`.
 - **Warten bis:** die Bedingung, nach der die nächste Zeile beginnt.
 - **Erwartet:** zuerst der *tatsächliche* Zustand aus dem Stand-in-Durchgang auf `fe5cbea`. Wo Live abweichen darf, steht das dabei.
-- **Lage:** Die Pixelangaben sind bei 1920 × 1080 gemessen (x, y, Breite × Höhe). Sie gelten nur für diesen Viewport und nur als Hinweis.
+- **Lage:** Die Pixelangaben sind bei 1920 × 1080 in einem Lauf gemessen (x, y, Breite × Höhe). **Sie sind nicht reproduzierbar:** In PINKs frischem Lauf lagen Pool-Dateifeld und Kestrel-Körper einmal 61 px höher. Ziele immer über Beschriftung oder `data-testid` finden, nie über Koordinaten.
 - **Bewegung:** „bewegt sich“ heißt, das Element hat sich in 400 ms um mehr als 1 px verschoben; hier hilft der Tipp zu B-4 in §10.
 
 | # | Szene | Aktion | Ziel (sichtbar · `data-testid`) | Warten bis | Erwartet (tatsächlich) |
@@ -101,8 +103,8 @@ Jede Zeile ist eine Szene des Films und ein Prüfpunkt des Referenzskripts (V-xx
 | 2 | V-01 | Onboarding schließen | „✕“ oben rechts im Overlay · `onboarding-close-btn` (8 × 18 px bei 1183, 443; sehr klein). **Esc schließt es nicht** | Overlay entfernt | Grundzustand: Modus PERSON × JOB, Capability gesperrt (`data-capability-gate=AWAITING_JOB` am Wurzelelement `semantic-career-intelligence-field`), kein Pool |
 | 3 | V-02 | Modus PERSON wählen | „PERSON“ im Modus-Schalter oben rechts · `investigation-mode-PERSON` (1209, 82) | `data-investigation-mode=PERSON` am Wurzelelement | Capability offen (`OPEN`); oben links „NO JOB SCOPE · PERSON“ |
 | 4 | V-02 | Capability Field öffnen | „◈ CAPABILITY FIELD“ · `field-focus-capability-btn` (729, 76) | `data-field-focus=CAPABILITY` | Die Dock „INGEST KNOWLEDGE“ ist links sichtbar |
-| 5 | V-02 | **PDF hochladen** | „+ UPLOAD PDF DOCUMENT“ öffnet den nativen Dateidialog; das eigentliche Feld `source-dock-file-input` ist ein **verstecktes** `<input type=file>` (`display:none`). Die Datei ist `cv.synthetic.pdf` (P-1) | unter STAGED SOURCES steht „PDF cv.synthetic.pdf“; `analyze-investigation` erscheint | Die Dock nennt „INVESTIGATION BOUNDARY · PERSON“ |
-| 6 | V-02 | Analyse starten | „START ANALYSIS (POST)“ · `start-intake-analysis-btn` (68, 738) | `intake-success-banner` sichtbar. Dazwischen zeigt `intake-telemetry-banner` „INTAKE TELEMETRY // STEP: SUBMITTING → QUEUED → ANALYZING SOURCES... → LOADING_RESULT“. **Stand-in einige Sekunden (gemessen 2–17 s); live erwartet einige Minuten, Zeitlimit 15 min** | Genau ein ANALYZE-Request: ein PDF, `investigation:{mode:PERSON}`, kein `jobScope`. Banner „ANALYSIS COMPLETED SUCCESSFULLY“, darunter „PERSON · WITHOUT A JOB SCOPE“ (`intake-success-investigation`, `data-investigation-mode=PERSON`) |
+| 5 | V-02 | **PDF hochladen** | „+ UPLOAD PDF DOCUMENT“ · `add-pdf-source-btn` öffnet den nativen Dateidialog; das eigentliche Feld `source-dock-file-input` ist ein **verstecktes** `<input type=file>` (`display:none`). Die Datei ist `cv.synthetic.pdf` (P-1) | unter STAGED SOURCES steht „PDF cv.synthetic.pdf“; `analyze-investigation` erscheint | Die Dock nennt „INVESTIGATION BOUNDARY · PERSON“ |
+| 6 | V-02 | Analyse starten | „START ANALYSIS (POST)“ · `start-intake-analysis-btn` (68, 738) | `intake-success-banner` sichtbar. Dazwischen zeigt `intake-telemetry-banner` „INTAKE TELEMETRY // STEP: …“ mit SUBMITTING, QUEUED, LOADING_RESULT und möglicherweise „ANALYZING SOURCES...“ (von PINK nie beobachtet). Die Stufen sind keine Wartebedingung. **Stand-in einige Sekunden (gemessen 2–17 s); live gemessen 113,5 s, Zeitlimit 15 min** | Genau ein ANALYZE-Request: ein PDF, `investigation:{mode:PERSON}`, kein `jobScope`. Banner „ANALYSIS COMPLETED SUCCESSFULLY“, darunter „PERSON · WITHOUT A JOB SCOPE“ (`intake-success-investigation`, `data-investigation-mode=PERSON`) |
 | 7 | V-03 | Capability-Kosmos öffnen | Kreis „02 ⬡ CAPABILITY FIELD“ · `focused-stage-bubble-02` (1162, 352; 168 × 168) | Knoten `capability-cosmos-node-*` vorhanden | Stand-in: 12 Vorschläge, alle „PROPOSED“. **Live: Anzahl und Namen frei**; jeder Knoten muss PROPOSED tragen |
 | 8 | V-03 | Einen Vorschlag öffnen | Knoten „TypeScript“ (Stand-in) bzw. ein beliebiger Knoten (live) · `capability-cosmos-node-<PCAP_…>` (**bewegt sich**, ca. 140 × 103) | `capability-focus-evidence-surface` sichtbar | „EVIDENCE // SOURCE MATCHING ONLY“, Quelle „cv.synthetic.pdf // DOCUMENT“ und das wörtliche Zitat aus dem PDF (siehe §5) |
 | 9 | V-03 | Zurück | zuerst der Nukleus „CAPABILITY NUCLEUS // PROPOSED …“ · `capability-focus-nucleus-<PCAP_…>`, dann das Kosmos-Zentrum „02 CAPABILITY FIELD · CAPABILITY COSMOS“ · `capability-cosmos-center` (**bewegt sich**). **Esc verlässt den Tiefenfokus nicht** | `data-zoom-level=1`, dann `0` | Grundebene; die Dock ist wieder bedienbar |
@@ -118,18 +120,18 @@ Jede Zeile ist eine Szene des Films und ein Prüfpunkt des Referenzskripts (V-xx
 | 19 | V-05 | Hochladen | „UPLOAD →“ · `job-pool-upload-btn` | `job-pool-upload-result` mit `data-upload-outcome=CREATED` | „UPLOAD PERSISTED (NEW) · JPOOL_B94850C4… · DLL Engineering & Architecture Pool v1 · ACTIVE · UPLOADED != SELECTED“ |
 | 20 | V-05 | Intake schließen, Pool wählen | „HIDE INTAKE“, dann „SELECT“ am Pool · `job-pool-select-JPOOL_B94850C439974E27496FE3B1A9A076B5` | `syntx-organization-org_kestrel` vorhanden | Die URL trägt `jobPoolUploadId`. 3 Organisationen, 9 Rollen |
 | 21 | V-06 | Organisation Kestrel | Körper „01 ⬡ KESTREL LOGISTICS SOFTWARE GMBH“ · `syntx-organization-org_kestrel` (873, 170; 175 × 175) | `syntx-role-role_kestrel_fullstack` vorhanden | Organisations-Kosmos mit 3 Rollenkarten auf dem kompakten Orbit (Storyboard 10) |
-| 22 | V-06 | Rolle wählen | Karte „SENIOR · L4 · Senior Full-Stack Engineer – Shipment Tracking“ · `syntx-role-role_kestrel_fullstack` (**kreist**, ca. 219 × 100) | `syntx-field` mit `data-observation-kind=ROLE`, `data-observation-id=role_kestrel_fullstack` | 9 Anforderungen. Die PERSON-Analyse wird **nicht** verglichen: `data-analysis-source=NONE`, Hinweis „PERSON · NO JOB COMPARISON“ |
+| 22 | V-06 | Rolle wählen | Karte „SENIOR · L4 · Senior Full-Stack Engineer – Shipment Tracking“ · `syntx-role-role_kestrel_fullstack` (**kreist**, ca. 219 × 100). Im DOM liegen die Karten aller 9 Rollen, auch die der anderen Organisationen: über die Test-ID ansprechen, nicht zählen | `syntx-field` mit `data-observation-kind=ROLE`, `data-observation-id=role_kestrel_fullstack` | 9 Anforderungen. Die PERSON-Analyse wird **nicht** verglichen: `data-analysis-source=NONE`, Hinweis „PERSON · NO JOB COMPARISON“ |
 | 23 | V-07 | (Nachweis, kein Bild) | — | — | B2 lehnt die PERSON-Analyse für diese Rolle mit 409 `ERR_JOB_COMPARISON_NOT_SCOPED` ab; `/matches` ebenfalls mit 409 `ERR_JOB_POOL_MATCHES_PERSON_ANALYSIS`. Im Bild ist das Schritt 22 und V-12b |
 | 24 | V-08 | Modus PERSON × JOB | „PERSON × JOB“ · `investigation-mode-PERSON_X_JOB` (1276, 82) | `data-investigation-mode=PERSON_X_JOB` | Capability wieder gesperrt, bis ein Job gewählt ist |
 | 25 | V-08 | Rolle als Job wählen | „◎ SELECT AS JOB“ · `syntx-job-scope-select` | `data-capability-gate=OPEN`; `job-scope-indicator` mit `data-job-scope-state=VALID` | Oben links „JOB · Senior Full-Stack Engineer – Shipment Tracking · Kestrel Logistics Software GmbH · DLL Engineering & Architecture Pool“ |
-| 26 | V-08 | Capability Field | „◈ CAPABILITY FIELD“ · `field-focus-capability-btn` | `data-field-focus=CAPABILITY` | **Das PDF ist noch gestagt**, kein zweiter Upload. Die Dock nennt „INVESTIGATION BOUNDARY · PERSON × JOB“ mit der Rolle |
-| 27 | V-08 | Zweite Analyse starten | „START ANALYSIS (POST)“ · `start-intake-analysis-btn` | `intake-success-investigation` mit `data-investigation-mode=PERSON_X_JOB`. **Stand-in einige Sekunden (gemessen 2–17 s); live einige Minuten, Zeitlimit 15 min** | Genau ein neuer ANALYZE-Request: dasselbe PDF, `investigation:{mode:PERSON_X_JOB}`, `jobScope` = genau dieser Pool und diese Rolle |
+| 26 | V-08 | Capability Field | „◈ CAPABILITY FIELD“ · `field-focus-capability-btn` | `data-field-focus=CAPABILITY` | **Das PDF ist noch gestagt**, kein zweiter Upload. Die Dock nennt „INVESTIGATION BOUNDARY · PERSON × JOB“. Die Rolle steht nicht an der Dock, nur im Job-Indikator oben links |
+| 27 | V-08 | Zweite Analyse starten | „START ANALYSIS (POST)“ · `start-intake-analysis-btn` | `intake-success-investigation` mit `data-investigation-mode=PERSON_X_JOB`. **Stand-in einige Sekunden (gemessen 2–17 s); live gemessen 104,6 s, Zeitlimit 15 min** | Genau ein neuer ANALYZE-Request: dasselbe PDF, `investigation:{mode:PERSON_X_JOB}`, `jobScope` = genau dieser Pool und diese Rolle |
 | 28 | V-09 | Zur Rolle | Job-Indikator oben links · `job-scope-indicator` | `syntx-field` mit `data-analysis-source=JOB_RESULT` | Die Rolle vergleicht diese Analyse. Je Anforderung `data-support`; Stand-in: 6 SUPPORTED, 1 WEAK, 2 OPEN |
 | 29 | V-09 | B2 öffnen | „◎ B2 COVERAGE“ · `syntx-investigation-toggle` | `syntx-coverage` mit `data-coverage-state=AVAILABLE` | Stand-in: `data-covered=7`, `data-not-covered=2`, je Anforderung EXACT oder TOKEN_CONTAINMENT mit wörtlichem Zitat, `data-scored=false`, gebunden an diese Analyse (`data-binding-analysis`). **Live: Zahlen frei, die Bindung muss stimmen** |
 | 30 | V-09 | B2 schließen | Esc | — | — |
 | 31 | V-10 | GEMINI OUTPUT der zweiten Analyse | wie 11–13 | `data-inspection-state=AVAILABLE`, dann SCOPE | `data-scope-state=RETAINED`. Der Scope-Text nennt `role_kestrel_fullstack`; er ist ausdrücklich keine Evidenz |
 | 32 | V-11 | JOB ONLY | Deep Link (§4.1, „JOB ONLY“) | `job-scope-indicator` mit `data-job-scope-state=VALID` | `data-investigation-mode=JOB`, `data-capability-gate=JOB_MODE`, `data-analysis-source=NONE` |
-| 33 | V-11 | Struktur | „⬡ JOB STRUCTURE“ · `syntx-investigation-toggle` | `syntx-job-structure` mit `data-structure-state=AVAILABLE` | `JOB_STRUCTURE_V1`: 10 Anforderungen in Pool-Reihenfolge mit Belegzeilen aus der Pool-Quelle, 8 Befunde |
+| 33 | V-11 | Struktur | „⬡ JOB STRUCTURE“ · `syntx-investigation-toggle` | `syntx-job-structure` mit `data-structure-state=AVAILABLE` | Überschrift „JOB · STRUCTURE“ (Vertrag `JOB_STRUCTURE_V1`, nicht sichtbar). 10 Anforderungen (`syntx-structure-req-*`) in Pool-Reihenfolge mit Belegzeilen aus der Pool-Quelle; 8 Befunde (`syntx-job-structure-findings[data-finding-count]`) |
 | 34 | V-11 | GEMINI OUTPUT in JOB | Esc, dann „GEMINI OUTPUT“ | `data-inspection-state=NO_GEMINI` | „No Gemini call in this mode“ |
 | 35 | V-12 | Deep Link PERSON × JOB | §4.1, „Analyse an ihrer Rolle“ mit der Analyse aus 27, dann „◎ B2 COVERAGE“ | `data-coverage-state=AVAILABLE` | B2 wie in 29 |
 | 36 | V-12 | Deep Link PERSON an derselben Rolle | derselbe Link mit der Analyse aus 6, dann „◎ B2 COVERAGE“ | `data-coverage-state` ≠ LOADING | `NOT_SCOPED`: „This analysis is a PERSON analysis: no job comparison.“ |
@@ -159,8 +161,10 @@ Diese Prüfungen gelten in beiden Modi. Im Live-Modus sind sie der eigentliche G
 | G-3 | Abschluss | Chip mit dem finishReason | `STOP`. Alles andere, etwa `MAX_TOKENS` oder `SAFETY`, wird festgehalten und ist eine Abweichung |
 | G-4 | Evidenz je Vorschlag | Capability-Kosmos → Knoten → Evidenzfläche (Schritt 8), für mindestens drei Knoten | Jede Evidenz nennt `cv.synthetic.pdf` und zitiert eine Zeile, die wörtlich im PDF steht. Der Status ist SOURCE_MATCH_VERIFIED, im Bild „SOURCE MATCHING ONLY“ |
 | G-5 | Verworfene Ansprüche | PROCESSING | Jeder Anspruch hat einen Prüfstatus (VERIFIED oder REJECTED_*). Verworfene erscheinen **nicht** als Knoten im Kosmos |
-| G-6 | Grenze der Antwort | SCOPE | PERSON: UNSCOPED. PERSON × JOB: RETAINED mit der gewählten Rolle |
-| G-7 | Wiederverwendung | Panel GEMINI OUTPUT, `data-run-reused` | `false`. Bei `true` hat dieser Auftrag Gemini nicht selbst aufgerufen; das ist im Film falsch |
+| G-6 | Grenze der Antwort | SCOPE | PERSON: UNSCOPED. PERSON × JOB: RETAINED mit der gewählten Rolle. `NOT_RETAINED` (nur Hash) bei PERSON × JOB ist eine Abweichung |
+| G-7 | Wiederverwendung | Panel GEMINI OUTPUT, `data-run-reused` | `false`. Bei `true` hat dieser Auftrag die **Discovery** nicht selbst aufgerufen; das ist im Film falsch. Die Legacy-Analyse ruft Gemini bei jedem neuen Auftrag auf |
+
+**Was der Walk nicht prüft:** Das Referenzskript prüft G-1 (Herkunft), G-3 (finishReason) und G-7 nicht. Im LIVE-Modus prüft es V-03b, V-04c und V-09b nur abgeschwächt. Ein Labor im Modus LIVE mit Stand-in-Antworten bestünde den Walk also (so geschehen in den Trockenläufen, absichtlich). G-1, G-3 und G-7 prüfen der Mensch oder `live-summarize.mjs` (Modellversion, `responseId`, finishReason, `reused`).
 | G-8 | Bindung von B2 | `syntx-coverage` | `data-binding-analysis` ist die PERSON-×-JOB-Analyse, nicht die PERSON-Analyse; `data-scored=false` |
 
 **Was GEMINI OUTPUT nicht zeigt:** Die Originalantwort ist nur für die **Discovery** aufbewahrt. Die zweite und dritte Gemini-Antwort je Analyse (Convergence und die Legacy-Analyse) sind nicht als Rohtext archiviert. Von ihnen ist nur das verarbeitete Ergebnis sichtbar: Convergence in PROCESSING, die Legacy-Analyse als Banner und Feld. Antigravity darf für diese beiden Aufrufe keine Originalantwort als „geprüft“ melden.
@@ -173,7 +177,7 @@ Diese Prüfungen gelten in beiden Modi. Im Live-Modus sind sie der eigentliche G
 |---|---|---|
 | läuft | `intake-telemetry-banner`: SUBMITTING → QUEUED → ANALYZING SOURCES... → LOADING_RESULT | warten, Zeitlimit §4 |
 | fertig | `intake-success-banner`, `intake-success-investigation[data-investigation-mode]` | weiter |
-| abgelehnt oder fehlgeschlagen | `intake-error-banner` mit `data-error-code` und `data-http-status`. Titel: „NO VALID JOB SCOPE“, „NO CLEAR INVESTIGATION BOUNDARY“, „SEMANTIC BOUNDARY VIOLATION“ (422), „PROVIDER TRUNCATION“ (503) oder „ANALYSIS FAILED“ | **Abbruch A-2.** Code, Status und Meldung festhalten. **„RETRY“ (`retry-intake-btn`) nicht drücken**: Im Live-Modus löst das neue Gemini-Aufrufe aus |
+| abgelehnt oder fehlgeschlagen | `intake-error-banner` mit `data-error-code` und `data-http-status`. Titel: „NO VALID JOB SCOPE“, „NO CLEAR INVESTIGATION BOUNDARY“, „SEMANTIC BOUNDARY VIOLATION“ (HTTP 422) oder „PROVIDER TRUNCATION“ (HTTP 503), sonst „ANALYSIS FAILED“. **Ein Fehler im Worker, also jeder Gemini-Fehler (Truncation, 429, 5xx, 401/403), hat keinen HTTP-Status.** Er erscheint als „ANALYSIS FAILED“ mit dem Code des Fehlers oder `EXECUTION_FAILED`; der eigentliche `ERR_…` steht im Meldungstext. Die Analyze-Route selbst liefert nie 503, und ihr einziger 422 ist `ERR_JOB_SCOPE_INVALID` (PINK) | **Abbruch A-2.** Code, Status und Meldung festhalten. **„RETRY“ (`retry-intake-btn`) nicht drücken**: Im Live-Modus löst das neue Gemini-Aufrufe aus |
 | Job fehlt | `analyze-job-scope-required` an der Dock (PERSON × JOB ohne gewählten Job); START ANALYSIS gesperrt | Ablauffehler: zurück zu Schritt 25 |
 
 **GEMINI OUTPUT** (`syntx-gemini-output[data-inspection-state]`)
@@ -193,15 +197,27 @@ Diese Prüfungen gelten in beiden Modi. Im Live-Modus sind sie der eigentliche G
 - **NOT_SCOPED:** PERSON-Analyse oder Lauf ohne Scope. In Schritt 36 erwartet, sonst Abweichung.
 - **SCOPE_MISMATCH**, **SCOPE_DRIFT**, **SCOPE_UNAVAILABLE:** Die Analyse gehört zu einem anderen oder veränderten Job.
 - **LINEAGE_INVALID**, **NOT_FOUND**, **NOT_PROVISIONED**, **FAILED:** Abweichung, festhalten.
+- Außerdem **IDLE**, **LOADING** und **NO_ANALYSIS** (keine Analyse im Blick).
+- `data-match-basis` je Anforderung: EXACT, ALIAS, COMPOSITE_CONSTITUENT oder TOKEN_CONTAINMENT.
 
 **JOB-Struktur** (`syntx-job-structure[data-structure-state]`)
 - **AVAILABLE:** Struktur liegt vor.
 - **UNAVAILABLE:** Pool unbekannt, Rolle nicht im Pool oder Pool nicht ACTIVE.
-- **LINEAGE_INVALID**, **NOT_PROVISIONED**, **FAILED:** Abweichung.
+- **LINEAGE_INVALID**, **NOT_PROVISIONED**, **FAILED:** Abweichung. Außerdem **IDLE** und **LOADING**.
+
+**Weitere Zustände**
+- Job-Indikator `job-scope-indicator[data-job-scope-state]`: VALID, NONE, CHECKING, INVALID.
+- Quelle des Vergleichs `syntx-field[data-analysis-source]`: NONE, JOB_RESULT und URL (über den Deep Link mit `analysisId`).
+- Unterstützung je Anforderung `data-support`: SUPPORTED, WEAK, SWEEP_ONLY („nur durch einen unbewerteten Sweep-Vorschlag abgedeckt“), OPEN, UNREAD.
+- Scope in GEMINI OUTPUT `syntx-gemini-scope[data-scope-state]`: UNSCOPED, RETAINED, NOT_RETAINED.
 
 **Pool-Upload** (`job-pool-upload-result[data-upload-outcome]`)
 - **CREATED:** im frischen Labor erwartet.
-- Ein bereits vorhandener identischer Pool ergibt „IDENTICAL UPLOAD ALREADY PERSISTED“. Dann ist das Labor nicht frisch; zurück zu §3.
+- **IDENTICAL_EXISTS** („IDENTICAL UPLOAD ALREADY PERSISTED“): Das Labor ist nicht frisch; zurück zu §3.
+- Ablehnungen und Fehler stehen in eigenen Elementen, alle eine Abweichung:
+  - `job-pool-upload-rejected` mit `data-rejection-code` und `data-rejection-status`: 400 `ERR_JOB_POOL_JSON_INVALID` oder ACTOR_INVALID, 413 TOO_LARGE, 422 SCHEMA_INVALID oder REFERENCE_INVALID;
+  - `job-pool-upload-not-provisioned`;
+  - `job-pool-upload-failed`.
 
 **Grenzen, die nicht verletzt werden dürfen** (V-07 und V-12b): Die PERSON-Analyse bekommt nie einen Jobvergleich. B2 antwortet 409 `ERR_JOB_COMPARISON_NOT_SCOPED`, `/matches` 409 `ERR_JOB_POOL_MATCHES_PERSON_ANALYSIS`, und die Seite zeigt NOT_SCOPED.
 
@@ -221,6 +237,17 @@ Diese Prüfungen gelten in beiden Modi. Im Live-Modus sind sie der eigentliche G
 - **A-6:** Der Pool ist schon vorhanden, oder G-7 zeigt Wiederverwendung. Das Labor ist dann nicht frisch.
 - **A-7:** Die Herkunft (G-1) passt nicht zum Modus des Labors.
 - **A-8:** Antigravity müsste von dieser Reihenfolge abweichen oder raten.
+- **A-9 (Operator, Live-Modus):** Bei einem Fehler-Banner, einem abgelaufenen Zeitlimit oder Restbudget 0 in `relay.jsonl` stoppt der Operator das Labor **sofort**. Er wartet nicht auf Wiederholungen des Workers.
+
+**Neue Gemini-Aufrufe entstehen nicht nur über RETRY** (PINK, Code auf `fe5cbea`):
+- **RETRY** (`retry-intake-btn`) ist eine neue Einreichung mit neuem Auftrag und der ganzen Pipeline. Nie drücken.
+- **Der Worker wiederholt selbst,** ohne Aktion in der UI. Ein nicht-terminaler Fehler, also jeder Gemini-Fehler, setzt den Auftrag zurück auf PENDING, bis zu 3 Versuche. Erst danach erscheint der Fehler-Banner; bis dahin können schon mehrere echte Aufrufe gelaufen sein.
+  - Die Discovery kann ab dem zweiten Versuch wiederverwendet werden; die Legacy-Analyse ruft jedes Mal neu.
+- **Die Legacy-Analyse hat eine Modell-Kaskade:** GEMINI_MODEL, dann ältere Modelle. Bei MAX_TOKENS erzeugt sie bis zu dreimal neu. Das Relay weist fremde Modelle mit 403 ab und beendet die Kaskade dort.
+- **Abgelaufener Lease:** Ein Auftrag im Zustand RUNNING, dessen Lease abgelaufen ist (30 s, Heartbeat 15 s), wird neu vergeben. Ein Neustart des Workers während einer Live-Analyse heißt: Der Lauf beginnt von vorn.
+- **Die harte Grenze ist das Relay-Budget**, 8 pro Labor. Ein Fehlschlag kann schon mehrere Aufrufe verbraucht haben. Maßgeblich ist `relay.jsonl`, nicht der Banner.
+- **Im Live-Modus** die Seite nicht neu laden und den Worker nicht neu starten. Neu laden reicht nichts neu ein, aber die UI verliert den laufenden Auftrag.
+- **Keine Gemini-Aufrufe lösen aus:** Deep Links, Moduswechsel, GEMINI OUTPUT, B2 und die JOB-Struktur. Das sind nur GET-Anfragen. START ANALYSIS ist gegen Doppelklick geschützt.
 
 Nach einem Abbruch:
 - Der Operator liest aus und stoppt das Labor (siehe Auslesen).
@@ -268,7 +295,8 @@ Alle Durchgänge mit Playwright (Referenzskript, DOM-Klick für bewegte Ziele) u
 | Readiness 1–7 | `c43621e` bis `5293eb1` | 1600 und 1920 | jeweils 30/30 (Readiness-Dokument §1) |
 | Stand-in nach der Relay-Korrektur | `d29cc00` | 1920 × 1080 | 30/30 |
 | Probe der Bedienelemente | `fe5cbea` | 1920 × 1080 | 30/30; 43 Interaktionen erfasst (`results/handoff-targets-fe5cbea-1920.json`); Analysedauer 8,8 s und 13,7 s |
-| Auslesekette | `fe5cbea` | 1920 × 1080 | Walk 30/30; 10 Lesezugriffe; Zusammenfassung vollständig (Stand-in) |
+| Auslesekette | `d29cc00` (Werkzeuge damals noch nicht committet, inhaltsgleich mit `fe5cbea`) | 1920 × 1080 | Walk 30/30; 10 Lesezugriffe; Zusammenfassung vollständig (Stand-in; `results/standin-extract-d29cc00-1920-summary.json`) |
+| **Live-Gemini, einmal** | `104410d` (App-Code `5293eb1`) | 1920 × 1080 | **30/30**; 6 echte Aufrufe, Restbudget 2; Zusammenfassung `results/live-104410d-1920-summary.json` (Readiness-Dokument §9) |
 | Live-Verdrahtung, Trockenlauf | `5293eb1` und `d29cc00` | 1920 × 1080 | 30/30; genau 6 weitergeleitete Aufrufe; kein Schlüssel in Logs |
 
 **Storyboard:** `docs/career_analysis/evidence/video-readiness/storyboard/01-…20-*.jpg`, 960 × 540, aus der Probe auf `fe5cbea`. Es sind Stand-in-Bilder. Frame 06 zeigt deshalb `video-standin-001`.
@@ -280,7 +308,7 @@ Alle Durchgänge mit Playwright (Referenzskript, DOM-Klick für bewegte Ziele) u
 | **P-1** | Datei-Upload durch Antigravity | Das PDF-Feld ist ein verstecktes `<input type=file>`; „+ UPLOAD PDF DOCUMENT“ öffnet den nativen Dateidialog. Das Pool-Feld ist ein sichtbares natives Dateifeld. Ob Antigravity Dateien direkt an ein File-Input übergeben (wie Playwright `setInputFiles`) oder den nativen Dialog bedienen kann, ist nicht geprüft (B-2) | Probe aus §7 bis Schritt 5 und 17. Wenn es nicht geht: Der Operator lädt hoch, im Film wird geschnitten. Das Protokoll sagt das |
 | **P-2** | Bildschirm- oder Browseraufnahme | Ob Antigravity Video in 1920 × 1080 mit flüssigen Animationen aufnimmt (kreisende Körper, langsames Leuchten), ist unbekannt | Probe aufnehmen, Bildrate und Auflösung prüfen |
 | **P-3** | Klicks auf bewegte Ziele | Knoten, Organisationskörper und Rollenkarten kreisen (in §4 „bewegt sich“). Ein Zeigerklick wartet in Playwright auf Ruhe; ein koordinatenbasierter Agent kann danebentreffen. Hover hält die Bewegung nicht an (B-4) | Probe: Schritte 8, 9, 21, 22. Wenn ein Klick danebengeht, die Fokusführung per Tastatur versuchen (Tab, Enter; die Karte „JOB FIELD“ nennt „Tab moves between carriers“, „Enter selects“) oder für das Jobfeld den Deep Link nehmen |
-| **P-4** | **Echter Live-Gemini-Pfad** | Nie ausgeführt. Bekannt sind nur der Trockenlauf und PINKs Offline-Prüfung des Relays. Unbekannt sind Dauer, Antwortqualität, finishReason, Validator-Quote und das Verhalten bei Fehlern des echten Modells (`gemini-3.1-pro-preview` aus `.env.local`) | Ein Durchgang nach eigenem Owner-GO, mit Auslesung (Readiness-Dokument §8) |
+| ~~P-4~~ | Echter Live-Gemini-Pfad | **Einmal bestanden am 2026-10-19** (Readiness-Dokument §9): 30/30, alle 6 Antworten STOP, alle Ansprüche VERIFIED. Weiter ungeprüft ist das Verhalten bei Fehlern des echten Modells (Wiederholungen, Kaskade, §7). Mit echtem Gemini sieht der Film anders aus als mit dem Stand-in: kein verworfener Anspruch, andere Namen, B2 8/1, Rollenebene meist SWEEP_ONLY (O-LIVE-1, O-LIVE-2) | Eine Aufnahme mit echtem Gemini braucht ein neues GO |
 | **P-5** | Lesen von DOM-Attributen | Viele Prüfungen in §4 bis §6 stehen in `data-*`-Attributen. Ob Antigravity das DOM lesen kann oder nur das Bild sieht, ist unbekannt | Probe. Rein visuell bleiben Banner, Titel und Chips; die Attribute ergänzt dann der Operator aus dem Referenzskript |
 | **P-6** | Token-Eingabe | Das Passwortfeld nimmt Einfügen und Tippen an; mit Antigravity nicht geprüft | Probe, Schritt 12 |
 | **P-7** | Onboarding im Antigravity-Browser | Es erscheint nur bei leerem Browserzustand | frisches Profil (§3) |

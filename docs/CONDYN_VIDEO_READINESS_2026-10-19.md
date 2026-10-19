@@ -23,6 +23,7 @@ Jeder Durchgang lief auf einem frischen, leeren Labor. Der Walk umfasst 30 Prüf
 | 6 | **Integration `5293eb1`** (GRÜN-Stapel integriert) | `next dev` | 1920 × 1080 | 30/30 | 7,4 s / 3,3 s |
 | 7 | **Integration `5293eb1`** | `next dev` | 1600 × 1000 | 30/30 | 8,1 s / 3,1 s |
 | 8 | Integration `5293eb1`, **Live-Verdrahtung als Trockenlauf** (§8): Relay → lokaler Stand-in statt Gemini, Testschlüssel | `next dev` | 1920 × 1080 | 30/30 | — |
+| 9 | **Integration `104410d` (App-Code `5293eb1`), echtes Gemini** `gemini-3.1-pro-preview`, einmal nach Owner-GO (§9) | `next dev` | 1920 × 1080 | **30/30**, 6 echte Aufrufe | 113,5 s / 104,6 s |
 
 Weitere einzelne Durchgänge während der Rekonstruktion bestanden ebenfalls 30/30.
 
@@ -181,3 +182,124 @@ CONDYN_PLAYWRIGHT_MODULE=<playwright/index.js> bash docs/career_analysis/evidenc
 - ANTIGRAVITY: der volle Browserablauf einschließlich PDF-Upload und Jobzuordnung. B-2 (Datei-Input) und B-4 (bewegte Ziele) klärt die Antigravity-Probe.
 - VIDEO.
 - B-3, Produktions-Build ohne Dev-Indikator, ist weiterhin eine eigene Owner-Entscheidung.
+
+
+## 9. Live-Gemini-Validierung, 2026-10-19 (ausgeführt)
+
+Owner-Aufträge „SFE — GELB | LIVE GEMINI VALIDATION GO“ und „SFE — GELB | HUMAN AUTHORITY — LIVE GEMINI GO“: genau ein kontrollierter Durchgang, höchstens 8 Aufrufe, keine Wiederholung ohne neues GO. **Ausgeführt wurde genau ein Durchgang. Es gibt keine Wiederholung.**
+
+**Rahmen**
+- **Code:** `104410d`; der App-Code ist gleich `5293eb1`, VIDEO FREEZE.
+- **Labor:** frisch, nach §8. Leere Wegwerf-Datenbank, echter Next-Server (`next dev`) und echter Worker.
+- **Modell:** `gemini-3.1-pro-preview` aus `.env.local`, Budget 8.
+- **Ablauf:** Walk bei 1920 × 1080, danach Auslesen (`live-extract.mjs`) und erst dann Stopp.
+- **Zeit:** 2026-10-19, 17:23:08 bis 17:29:13 MESZ.
+
+**Aufrufe** (`results/live-104410d-1920-relay.jsonl`; nur Metadaten)
+
+| # | Art | Status | Dauer | Request / Antwort | Scope-Block | Restbudget |
+|---|---|---|---|---|---|---|
+| 1 | DISCOVERY (PERSON) | 200 | 28,5 s | 9 211 / 23 579 B | nein | 7 |
+| 2 | CONVERGENCE | 200 | 26,7 s | 9 909 / 16 699 B | nein | 6 |
+| 3 | LEGACY | 200 | 48,7 s | 11 477 / 34 095 B | nein | 5 |
+| 4 | DISCOVERY (PERSON × JOB) | 200 | 28,4 s | 18 679 / 23 666 B | **ja** | 4 |
+| 5 | CONVERGENCE | 200 | 22,6 s | 8 813 / 14 609 B | nein | 3 |
+| 6 | LEGACY | 200 | 48,9 s | 11 477 / 34 332 B | nein | 2 |
+
+- Es gab 6 echte Aufrufe, keine Ablehnung durch das Relay, keinen Fehler und keine Wiederholung.
+- Weitere Netzwerkversuche gab es nicht; nur `next dev` versuchte die Version bei der npm-Registry abzufragen, und der Wächter blockierte das.
+- Im Worker-Log steht kein Fehler.
+
+**Walk: 30/30** (`results/live-104410d-1920.json`). Alle Grenzprüfungen wie im Stand-in.
+- Analysedauer im Browser: PERSON 113,5 s, PERSON × JOB 104,6 s.
+- Seitenfehler: keine.
+
+**PERSON-Analyse** `ANL_1792423422831_52`
+- **Antwort:**
+  - Modellversion `gemini-3.1-pro-preview`, `responseId` `_zXWauTtGe-ykdUPycm48Qk`, finishReason `STOP`.
+  - Tokens: 611 Prompt, 1 335 Antwort, 3 228 Denken.
+  - Text 5 836 Zeichen; SHA-256 und Parser stimmen.
+  - Grenze: UNSCOPED, nicht wiederverwendet.
+- **Vorschläge des Modells:** 10, davon 9 atomar und 1 zusammengesetzt. Alle mit einem wörtlichen Zitat aus dem PDF, alle **VERIFIED**; der Validator hat keinen Anspruch verworfen.
+  - TypeScript and Node.js Backend Development
+  - React Dashboard Development
+  - PostgreSQL Database Design and SQL Reporting
+  - Test-Driven Development (TDD) with Jest
+  - CI/CD Pipeline and Docker Containerization
+  - Engineering Team Leadership and Architecture Review (zusammengesetzt)
+  - Python ETL Pipeline Development
+  - Dimensional Data Modeling
+  - Kubernetes Deployment and Linux Maintenance
+  - Event Stream Processing
+- **Weiterverarbeitung:** Convergence PASSED mit 10 Entwürfen, ohne Zusammenlegung und ohne Relationen. Das Capability Field zeigt 10 Vorschläge.
+- **Legacy-Analyse:** 7 Fähigkeiten, alle PASSED: TypeScript, React, Node.js, PostgreSQL, Python, Apache Kafka, Team Leadership.
+- **B2 für die Rolle:** 409 `ERR_JOB_COMPARISON_NOT_SCOPED`, wie verlangt.
+
+**PERSON-×-JOB-Analyse** `ANL_1792423582996_615` (Pool `JPOOL_B94850C4…`, Rolle `role_kestrel_fullstack`)
+- **Antwort:**
+  - `responseId` `nzbWaqnnMfP6xs0PqKaTuAk`, finishReason `STOP`.
+  - Tokens: 3 487 Prompt, 1 655 Antwort, 3 289 Denken.
+  - Text 6 044 Zeichen; SHA-256 und Parser stimmen.
+  - Scope: RETAINED, 8 626 Zeichen, Hash stimmt. Nicht wiederverwendet.
+- **Vorschläge des Modells:** 8, davon 5 atomar und 3 zusammengesetzt, alle **VERIFIED**. Das Zitat steht jeweils dahinter:
+
+  | Vorschlag | Stufe | Zitat aus `cv.synthetic.pdf` |
+  |---|---|---|
+  | TypeScript | L4 | „Built the customer billing platform in TypeScript and Node.js with Express; migrated 40 services to strict TypeScript.“ |
+  | React | L4 | „Implemented the React dashboard used by 300 dispatchers, including accessibility fixes against WCAG 2.1.“ |
+  | Node.js | L4 | „Built the customer billing platform in TypeScript and Node.js with Express“ |
+  | PostgreSQL | L3 | „Designed the PostgreSQL schema for orders and invoices and wrote complex SQL reporting queries.“ |
+  | Event-Driven Architecture (zusammengesetzt) | L3 | „Wrote Python ETL jobs that load shipment events from Apache Kafka into the data warehouse.“ · „Thesis: event stream processing for parcel tracking.“ |
+  | Automated Testing (zusammengesetzt) | L4 | „Introduced test-driven development with Jest and raised unit test coverage from 35% to 80%.“ |
+  | Web Platform Engineering (zusammengesetzt) | — | „Senior software engineer with eight years of experience building web platforms and data pipelines in logistics.“ |
+  | English | — | „English (C1).“ |
+
+- **Weiterverarbeitung:** Convergence PASSED mit 8 Entwürfen, ohne Relationen.
+- **Legacy-Analyse:** 3 Fähigkeiten: TypeScript and Node.js Development, Python ETL Development, Team Leadership.
+- **B2:** 8 abgedeckt, 1 nicht abgedeckt, `scored: false`, gebunden an diese Analyse.
+  - Abgedeckt, alle EXACT: TypeScript, React, Node.js, PostgreSQL, Event-Driven Architecture, Automated Testing, Web Platform Engineering, English.
+  - Nicht abgedeckt: Geospatial Visualisation.
+- **Rollenebene im Jobfeld:**
+  - SUPPORTED: TypeScript.
+  - WEAK: Node.js.
+  - SWEEP_ONLY: 6 Anforderungen, also „nur durch einen unbewerteten Sweep-Vorschlag abgedeckt“.
+  - OPEN: Geospatial Visualisation.
+
+**Beobachtungen**
+
+Keine davon ist ein Fehler gegen einen bestehenden Vertrag. Die Bewertung liegt beim Owner (Human Authority).
+- **O-LIVE-1 (Scope prägt die Namen):**
+  - Unter PERSON × JOB übernimmt Gemini die Anforderungsnamen der Rolle wörtlich als Fähigkeitsnamen; in PERSON wählt es eigene, beschreibende Namen. Deshalb deckt B2 dort 8 von 9 Anforderungen mit EXACT ab.
+  - Jedes Zitat steht wörtlich im PDF. Der Validator prüft aber nur, ob das Zitat existiert, nicht, ob es die genannte Fähigkeit trägt: Die Relation Fähigkeit → Anforderung ist ausdrücklich `NOT_EVALUATED` (`VERIFIED_CAPABILITY_SNAPSHOT_ABSENT`).
+  - Zwei Belege sind dünn: „Web Platform Engineering“ stützt sich nur auf den Profilsatz, „Event-Driven Architecture“ auf ETL aus Kafka und die Thesis.
+  - Auch die Stufen L3/L4 erscheinen nur unter Scope.
+  - B2 ist vertraglich eine „unbestätigte Namensabdeckung, nie eine Bewertung“. Im Film sollte das so stehen bleiben und nicht als Eignungsurteil erscheinen.
+- **O-LIVE-2 (zwei Vergleiche auf derselben Rolle):** Die Rollenebene zeigt überwiegend SWEEP_ONLY, B2 aber 8 abgedeckt.
+  - Ursache: Die Rollenebene vergleicht zuerst über die Legacy-Analyse. Diese lieferte unter PERSON × JOB nur 3 grobe Fähigkeiten, deshalb stammt der Rest aus dem Sweep.
+  - Mit dem Stand-in stimmten beide überein, weil seine Legacy-Namen den Discovery-Namen glichen.
+  - Für den Film ist das erklärungsbedürftig.
+- **O-LIVE-3 (Legacy ohne Scope, nicht deterministisch):**
+  - Die beiden Legacy-Requests sind gleich groß (11 477 B); die Legacy-Analyse bekommt den Job-Scope nicht.
+  - Trotzdem lieferte sie einmal 7 und einmal 3 Fähigkeiten, beim zweiten Mal dazu 2 Rollen und 2 Organisationen.
+- **O-LIVE-4 (nichts verworfen):**
+  - Im Live-Lauf hat der Validator keinen Anspruch verworfen. Die Szene „erfundener Anspruch REJECTED“ gibt es nur mit dem Stand-in.
+  - PROCESSING zeigt live die Prüfung, aber kein REJECTED.
+- **Bekannte Grenze:** Nur die Discovery-Antworten sind als Rohtext aufbewahrt und in GEMINI OUTPUT byte-gleich nachprüfbar. Von Convergence und Legacy gibt es nur das verarbeitete Ergebnis.
+
+**Was der Walk dabei nicht prüft** (PINK): Herkunft, finishReason und Wiederverwendung prüft der Walk nicht. Sie sind hier über die Zusammenfassung geprüft: Modellversion `gemini-3.1-pro-preview`, beide `responseId` echt, beide `STOP`, beide `reused: false`. Im LIVE-Modus prüft der Walk V-03b, V-04c und V-09b nur abgeschwächt.
+
+**Evidenz**
+- Im Repository, ohne Rohtext:
+  - `results/live-104410d-1920.json` (Walk), `…-relay.jsonl`, `…-net.jsonl`;
+  - `…-summary.json`: Antworthülle, Vorschläge mit Zitaten, Urteile, Convergence, Projektion, Legacy-Fähigkeiten, B2;
+  - `…-private-SHA256SUMS.txt`;
+  - `storyboard-live/01…20` (960 × 540, echte Gemini-Ergebnisse).
+- **Rohdaten** mit den vollständigen Discovery-Antworten, Scope-Texten und Analysen liegen lokal außerhalb des Repositorys (Modus 0700/0600). Prüfbar sind sie über `…-private-SHA256SUMS.txt`; veröffentlicht werden sie nur auf ein Wort des Owners.
+
+**Video-Readiness danach**
+- **B-1 (echtes Gemini):** Der Pfad ist einmal live bestanden. Eine Analyse dauert etwa 105–115 s, im Film ist zu schneiden.
+- **Offen:**
+  - B-2, B-4 und P-1 bis P-3, P-5 bis P-8 aus dem Handoff (Antigravity: Upload, Aufnahme, bewegte Ziele, DOM, Erreichbarkeit);
+  - B-3 (Produktions-Build);
+  - O-LIVE-1 und O-LIVE-2 als Fragen der Darstellung.
+- **Eine Aufnahme mit echtem Gemini braucht ein neues GO:** neue Aufrufe in einem frischen Labor, wieder 6.
