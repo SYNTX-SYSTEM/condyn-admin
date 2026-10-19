@@ -1,0 +1,415 @@
+[test-db] admin role condyn_test_runner (least privilege)
+[test-db] created condyn_test_4647afc0c006efd9
+[database-isolation] verified disposable test database condyn_test_4647afc0c006efd9
+O-3 estimate: worst centre air 4.616 px at 12 real 1366x960 (0.97/0.99)
+O-4 estimate: worst same-orbit air 3.621 px at 12 short 960x960 (0.8/0.99); below -0.5 px: 0 of 3228; least gap 17.76 px
+O-5 estimate: drawn-in layouts with more than one orbit: 14
+12 real 1366x960 0.97/0.99: rings 0-1 packed -4.27 drawn -8.91; at rest packed 83.34 drawn 78.73
+14 real 1366x960 0.97/0.99: rings 0-1 packed -4.27 drawn -8.91; at rest packed 91.30 drawn 82.19
+16 real 1366x960 0.97/0.99: rings 0-1 packed -11.29 drawn -15.42; at rest packed 29.25 drawn 21.89
+14 real 1600x960 1/0.98: rings 0-1 packed 19.55 drawn 18.63; at rest packed 86.50 drawn 82.77
+16 real 1600x960 1/0.98: rings 0-1 packed 14.28 drawn 13.15; at rest packed 96.00 drawn 91.92
+  …
+O-3 drawn card: worst centre air 0.384 px at 2 random_4711 1366x560 (0.78/0.9)
+O-4 drawn card: worst same-orbit air -0.205 px at 10 long 1600x960 (0.98/0.99); below -0.5 px: 0 of 3228; least gap 14.70 px
+O-5 drawn card: drawn-in layouts with more than one orbit: 14
+12 real 1366x960 0.97/0.99: rings 0-1 packed -9.08 drawn -13.44; at rest packed 72.09 drawn 70.18
+14 real 1366x960 0.97/0.99: rings 0-1 packed -9.08 drawn -13.44; at rest packed 91.30 drawn 82.19
+16 real 1366x960 0.97/0.99: rings 0-1 packed -16.27 drawn -20.41; at rest packed 29.25 drawn 21.89
+14 real 1600x960 1/0.98: rings 0-1 packed 13.60 drawn 12.14; at rest packed 75.25 drawn 71.52
+16 real 1600x960 1/0.98: rings 0-1 packed 8.30 drawn 7.36; at rest packed 84.75 drawn 80.67
+  …
+O-5 rule: drawn-in layouts with more than one orbit: 14; least air where the packing held -14.68 px; air broken where the packing held: 30; closer than the packing: 67; at rest: 0
+14 real 1366x960 0.97/0.99 rings 0-1 219x88/180x88: packed 1.72 drawn -2.17
+16 real 1366x960 0.97/0.99 rings 0-1 219x88/180x88: packed 1.72 drawn -2.17
+16 real 1366x960 0.97/0.99 rings 0-1 219x88/182x88: packed 1.28 drawn -2.49
+16 real 1366x960 0.97/0.99 rings 0-1 182x88/219x88: packed 1.28 drawn -2.49
+12 random_20261018 1600x960 0.97/0.99 rings 0-1 272x106/171x88: packed 1.68 drawn -1.97
+  …
+O-11 moving layouts with more than one orbit: 6585; drawn in: 451; least air where the packing held -23.95 px; air broken where the packing held: 607; closer than the packing: 993
+14 real 1344x980 0.98/0.98 rings 0-1 219x88/180x88: packed 0.77 drawn -2.02
+16 real 1344x980 0.98/0.98 rings 0-1 219x88/180x88: packed 0.77 drawn -2.02
+16 real 1344x980 0.98/0.98 rings 0-1 219x88/182x88: packed 0.77 drawn -3.02
+16 real 1344x980 0.98/0.98 rings 0-1 182x88/219x88: packed 0.77 drawn -3.02
+12 real 1408x920 0.98/0.99 rings 0-1 248x88/164x88: packed 0.24 drawn -2.84
+  …
+O-6 real height 420: tighter steps 308; read again every 0.01°: 0; still holding: 0
+O-6 real height 500: tighter steps 322; read again every 0.01°: 68; still holding: 68
+1 real 1024x500 (1 orbits) at 0.78/0.97: 0.77/0.97 still holds (0.330 px at 0.01°)
+2 real 1024x500 (1 orbits) at 0.78/0.97: 0.77/0.97 still holds (0.330 px at 0.01°)
+3 real 1024x500 (1 orbits) at 0.78/0.97: 0.77/0.97 still holds (0.330 px at 0.01°)
+1 real 1180x500 (1 orbits) at 0.78/0.95: 0.77/0.95 still holds (0.836 px at 0.01°)
+2 real 1180x500 (1 orbits) at 0.78/0.95: 0.77/0.95 still holds (0.836 px at 0.01°)
+  …
+O-6 real height 560: tighter steps 312; read again every 0.01°: 114; still holding: 113
+6 real 960x560 (1 orbits) at 0.79/1: 0.78/1.00 still holds (5.573 px at 0.01°)
+6 real 960x560 (1 orbits) at 0.79/1: 0.79/0.99 still holds (5.930 px at 0.01°)
+1 real 1024x560 (1 orbits) at 0.78/0.83: 0.77/0.83 still holds (0.313 px at 0.01°)
+2 real 1024x560 (1 orbits) at 0.78/0.83: 0.77/0.83 still holds (0.313 px at 0.01°)
+3 real 1024x560 (1 orbits) at 0.78/0.83: 0.77/0.83 still holds (0.313 px at 0.01°)
+  …
+O-6 real height 620: tighter steps 314; read again every 0.01°: 188; still holding: 188
+6 real 960x620 (1 orbits) at 0.78/0.89: 0.77/0.89 still holds (6.167 px at 0.01°)
+6 real 960x620 (1 orbits) at 0.78/0.89: 0.78/0.88 still holds (6.521 px at 0.01°)
+7 real 960x620 (1 orbits) at 0.92/1: 0.91/1.00 still holds (4.384 px at 0.01°)
+7 real 960x620 (1 orbits) at 0.92/1: 0.92/0.99 still holds (4.614 px at 0.01°)
+1 real 1024x620 (1 orbits) at 0.78/0.78: 0.77/0.78 still holds (11.242 px at 0.01°)
+  …
+O-6 real height 700: tighter steps 334; read again every 0.01°: 222; still holding: 222
+1 real 960x700 (1 orbits) at 0.78/0.78: 0.77/0.78 still holds (20.409 px at 0.01°)
+1 real 960x700 (1 orbits) at 0.78/0.78: 0.78/0.77 still holds (19.319 px at 0.01°)
+2 real 960x700 (1 orbits) at 0.78/0.78: 0.77/0.78 still holds (20.409 px at 0.01°)
+2 real 960x700 (1 orbits) at 0.78/0.78: 0.78/0.77 still holds (19.319 px at 0.01°)
+3 real 960x700 (1 orbits) at 0.78/0.78: 0.77/0.78 still holds (20.409 px at 0.01°)
+  …
+O-6 real height 740: tighter steps 338; read again every 0.01°: 227; still holding: 227
+1 real 960x740 (1 orbits) at 0.78/0.78: 0.77/0.78 still holds (31.109 px at 0.01°)
+1 real 960x740 (1 orbits) at 0.78/0.78: 0.78/0.77 still holds (30.387 px at 0.01°)
+2 real 960x740 (1 orbits) at 0.78/0.78: 0.77/0.78 still holds (31.109 px at 0.01°)
+2 real 960x740 (1 orbits) at 0.78/0.78: 0.78/0.77 still holds (30.387 px at 0.01°)
+3 real 960x740 (1 orbits) at 0.78/0.78: 0.77/0.78 still holds (31.109 px at 0.01°)
+  …
+O-6 real height 820: tighter steps 344; read again every 0.01°: 238; still holding: 238
+1 real 960x820 (1 orbits) at 0.78/0.78: 0.77/0.78 still holds (47.562 px at 0.01°)
+1 real 960x820 (1 orbits) at 0.78/0.78: 0.78/0.77 still holds (48.167 px at 0.01°)
+2 real 960x820 (1 orbits) at 0.78/0.78: 0.77/0.78 still holds (47.562 px at 0.01°)
+2 real 960x820 (1 orbits) at 0.78/0.78: 0.78/0.77 still holds (48.167 px at 0.01°)
+3 real 960x820 (1 orbits) at 0.78/0.78: 0.77/0.78 still holds (47.562 px at 0.01°)
+  …
+O-6 real height 960: tighter steps 342; read again every 0.01°: 230; still holding: 230
+1 real 1180x960 (1 orbits) at 0.78/0.78: 0.77/0.78 still holds (112.227 px at 0.01°)
+1 real 1180x960 (1 orbits) at 0.78/0.78: 0.78/0.77 still holds (113.283 px at 0.01°)
+2 real 1180x960 (1 orbits) at 0.78/0.78: 0.77/0.78 still holds (112.227 px at 0.01°)
+2 real 1180x960 (1 orbits) at 0.78/0.78: 0.78/0.77 still holds (113.283 px at 0.01°)
+3 real 1180x960 (1 orbits) at 0.78/0.78: 0.77/0.78 still holds (112.227 px at 0.01°)
+  …
+O-6 short height 420: tighter steps 368; read again every 0.01°: 0; still holding: 0
+O-6 short height 500: tighter steps 364; read again every 0.01°: 85; still holding: 85
+1 short 1024x500 (1 orbits) at 0.78/0.83: 0.77/0.83 still holds (0.720 px at 0.01°)
+2 short 1024x500 (1 orbits) at 0.78/0.83: 0.77/0.83 still holds (0.720 px at 0.01°)
+3 short 1024x500 (1 orbits) at 0.78/0.83: 0.77/0.83 still holds (0.720 px at 0.01°)
+4 short 1024x500 (1 orbits) at 0.78/0.83: 0.77/0.83 still holds (0.720 px at 0.01°)
+5 short 1024x500 (1 orbits) at 0.78/0.83: 0.77/0.83 still holds (0.720 px at 0.01°)
+  …
+O-6 short height 560: tighter steps 360; read again every 0.01°: 195; still holding: 195
+1 short 960x560 (1 orbits) at 0.78/0.78: 0.77/0.78 still holds (13.343 px at 0.01°)
+1 short 960x560 (1 orbits) at 0.78/0.78: 0.78/0.77 still holds (11.462 px at 0.01°)
+2 short 960x560 (1 orbits) at 0.78/0.78: 0.77/0.78 still holds (13.343 px at 0.01°)
+2 short 960x560 (1 orbits) at 0.78/0.78: 0.78/0.77 still holds (11.462 px at 0.01°)
+3 short 960x560 (1 orbits) at 0.78/0.78: 0.77/0.78 still holds (13.343 px at 0.01°)
+  …
+O-6 short height 620: tighter steps 358; read again every 0.01°: 214; still holding: 214
+1 short 960x620 (1 orbits) at 0.78/0.78: 0.77/0.78 still holds (35.310 px at 0.01°)
+1 short 960x620 (1 orbits) at 0.78/0.78: 0.78/0.77 still holds (33.258 px at 0.01°)
+2 short 960x620 (1 orbits) at 0.78/0.78: 0.77/0.78 still holds (35.310 px at 0.01°)
+2 short 960x620 (1 orbits) at 0.78/0.78: 0.78/0.77 still holds (33.258 px at 0.01°)
+3 short 960x620 (1 orbits) at 0.78/0.78: 0.77/0.78 still holds (35.310 px at 0.01°)
+  …
+O-6 short height 700: tighter steps 360; read again every 0.01°: 239; still holding: 239
+1 short 960x700 (1 orbits) at 0.78/0.78: 0.77/0.78 still holds (63.643 px at 0.01°)
+1 short 960x700 (1 orbits) at 0.78/0.78: 0.78/0.77 still holds (61.518 px at 0.01°)
+2 short 960x700 (1 orbits) at 0.78/0.78: 0.77/0.78 still holds (63.643 px at 0.01°)
+2 short 960x700 (1 orbits) at 0.78/0.78: 0.78/0.77 still holds (61.518 px at 0.01°)
+3 short 960x700 (1 orbits) at 0.78/0.78: 0.77/0.78 still holds (63.643 px at 0.01°)
+  …
+O-6 short height 740: tighter steps 360; read again every 0.01°: 248; still holding: 247
+1 short 960x740 (1 orbits) at 0.78/0.78: 0.77/0.78 still holds (77.065 px at 0.01°)
+1 short 960x740 (1 orbits) at 0.78/0.78: 0.78/0.77 still holds (75.046 px at 0.01°)
+2 short 960x740 (1 orbits) at 0.78/0.78: 0.77/0.78 still holds (77.065 px at 0.01°)
+2 short 960x740 (1 orbits) at 0.78/0.78: 0.78/0.77 still holds (75.046 px at 0.01°)
+3 short 960x740 (1 orbits) at 0.78/0.78: 0.77/0.78 still holds (77.065 px at 0.01°)
+  …
+O-6 short height 820: tighter steps 360; read again every 0.01°: 261; still holding: 261
+1 short 960x820 (1 orbits) at 0.78/0.78: 0.77/0.78 still holds (100.594 px at 0.01°)
+1 short 960x820 (1 orbits) at 0.78/0.78: 0.78/0.77 still holds (99.527 px at 0.01°)
+2 short 960x820 (1 orbits) at 0.78/0.78: 0.77/0.78 still holds (100.594 px at 0.01°)
+2 short 960x820 (1 orbits) at 0.78/0.78: 0.78/0.77 still holds (99.527 px at 0.01°)
+3 short 960x820 (1 orbits) at 0.78/0.78: 0.77/0.78 still holds (100.594 px at 0.01°)
+  …
+O-6 short height 960: tighter steps 366; read again every 0.01°: 245; still holding: 245
+1 short 1024x960 (1 orbits) at 0.78/0.78: 0.78/0.77 still holds (140.566 px at 0.01°)
+2 short 1024x960 (1 orbits) at 0.78/0.78: 0.78/0.77 still holds (140.566 px at 0.01°)
+3 short 1024x960 (1 orbits) at 0.78/0.78: 0.78/0.77 still holds (140.566 px at 0.01°)
+4 short 1024x960 (1 orbits) at 0.78/0.78: 0.78/0.77 still holds (140.566 px at 0.01°)
+5 short 1024x960 (1 orbits) at 0.78/0.78: 0.78/0.77 still holds (140.566 px at 0.01°)
+  …
+O-6 long height 420: tighter steps 290; read again every 0.01°: 0; still holding: 0
+O-6 long height 500: tighter steps 276; read again every 0.01°: 0; still holding: 0
+O-6 long height 560: tighter steps 262; read again every 0.01°: 38; still holding: 38
+1 long 1280x560 (1 orbits) at 0.78/1: 0.77/1.00 still holds (0.175 px at 0.01°)
+2 long 1280x560 (1 orbits) at 0.78/1: 0.77/1.00 still holds (0.175 px at 0.01°)
+3 long 1280x560 (1 orbits) at 0.78/1: 0.77/1.00 still holds (0.175 px at 0.01°)
+4 long 1280x560 (1 orbits) at 0.78/1: 0.77/1.00 still holds (0.175 px at 0.01°)
+5 long 1280x560 (1 orbits) at 0.78/1: 0.77/1.00 still holds (0.175 px at 0.01°)
+  …
+O-6 long height 620: tighter steps 262; read again every 0.01°: 69; still holding: 69
+1 long 1024x620 (1 orbits) at 0.78/0.89: 0.77/0.89 still holds (1.001 px at 0.01°)
+2 long 1024x620 (1 orbits) at 0.78/0.89: 0.77/0.89 still holds (1.001 px at 0.01°)
+3 long 1024x620 (1 orbits) at 0.78/0.89: 0.77/0.89 still holds (1.001 px at 0.01°)
+4 long 1024x620 (1 orbits) at 0.78/0.89: 0.77/0.89 still holds (1.001 px at 0.01°)
+5 long 1024x620 (1 orbits) at 0.78/0.89: 0.77/0.89 still holds (1.001 px at 0.01°)
+  …
+O-6 long height 700: tighter steps 278; read again every 0.01°: 129; still holding: 129
+1 long 960x700 (1 orbits) at 0.78/0.78: 0.77/0.78 still holds (5.537 px at 0.01°)
+1 long 960x700 (1 orbits) at 0.78/0.78: 0.78/0.77 still holds (4.211 px at 0.01°)
+2 long 960x700 (1 orbits) at 0.78/0.78: 0.77/0.78 still holds (5.537 px at 0.01°)
+2 long 960x700 (1 orbits) at 0.78/0.78: 0.78/0.77 still holds (4.211 px at 0.01°)
+3 long 960x700 (1 orbits) at 0.78/0.78: 0.77/0.78 still holds (5.537 px at 0.01°)
+  …
+O-6 long height 740: tighter steps 268; read again every 0.01°: 132; still holding: 131
+1 long 960x740 (1 orbits) at 0.78/0.78: 0.77/0.78 still holds (17.249 px at 0.01°)
+1 long 960x740 (1 orbits) at 0.78/0.78: 0.78/0.77 still holds (16.135 px at 0.01°)
+2 long 960x740 (1 orbits) at 0.78/0.78: 0.77/0.78 still holds (17.249 px at 0.01°)
+2 long 960x740 (1 orbits) at 0.78/0.78: 0.78/0.77 still holds (16.135 px at 0.01°)
+3 long 960x740 (1 orbits) at 0.78/0.78: 0.77/0.78 still holds (17.249 px at 0.01°)
+  …
+O-6 long height 820: tighter steps 276; read again every 0.01°: 147; still holding: 146
+1 long 960x820 (1 orbits) at 0.78/0.78: 0.77/0.78 still holds (36.938 px at 0.01°)
+1 long 960x820 (1 orbits) at 0.78/0.78: 0.78/0.77 still holds (36.759 px at 0.01°)
+2 long 960x820 (1 orbits) at 0.78/0.78: 0.77/0.78 still holds (36.938 px at 0.01°)
+2 long 960x820 (1 orbits) at 0.78/0.78: 0.78/0.77 still holds (36.759 px at 0.01°)
+3 long 960x820 (1 orbits) at 0.78/0.78: 0.77/0.78 still holds (36.938 px at 0.01°)
+  …
+O-6 long height 960: tighter steps 302; read again every 0.01°: 132; still holding: 132
+1 long 1180x960 (1 orbits) at 0.78/0.78: 0.77/0.78 still holds (84.047 px at 0.01°)
+1 long 1180x960 (1 orbits) at 0.78/0.78: 0.78/0.77 still holds (84.174 px at 0.01°)
+2 long 1180x960 (1 orbits) at 0.78/0.78: 0.77/0.78 still holds (84.047 px at 0.01°)
+2 long 1180x960 (1 orbits) at 0.78/0.78: 0.78/0.77 still holds (84.174 px at 0.01°)
+3 long 1180x960 (1 orbits) at 0.78/0.78: 0.77/0.78 still holds (84.047 px at 0.01°)
+  …
+O-6 random_20261018 height 420: tighter steps 302; read again every 0.01°: 0; still holding: 0
+O-6 random_20261018 height 500: tighter steps 306; read again every 0.01°: 0; still holding: 0
+O-6 random_20261018 height 560: tighter steps 302; read again every 0.01°: 50; still holding: 50
+1 random_20261018 1024x560 (1 orbits) at 0.78/0.92: 0.77/0.92 still holds (0.575 px at 0.01°)
+2 random_20261018 1024x560 (1 orbits) at 0.78/0.92: 0.77/0.92 still holds (0.575 px at 0.01°)
+3 random_20261018 1024x560 (1 orbits) at 0.78/0.92: 0.77/0.92 still holds (0.575 px at 0.01°)
+4 random_20261018 1024x560 (1 orbits) at 0.78/0.92: 0.77/0.92 still holds (0.575 px at 0.01°)
+5 random_20261018 1024x560 (1 orbits) at 0.78/0.92: 0.77/0.92 still holds (0.575 px at 0.01°)
+  …
+O-6 random_20261018 height 620: tighter steps 306; read again every 0.01°: 97; still holding: 96
+1 random_20261018 1024x620 (1 orbits) at 0.78/0.8: 0.77/0.80 still holds (0.676 px at 0.01°)
+2 random_20261018 1024x620 (1 orbits) at 0.78/0.8: 0.77/0.80 still holds (0.676 px at 0.01°)
+3 random_20261018 1024x620 (1 orbits) at 0.78/0.8: 0.77/0.80 still holds (0.676 px at 0.01°)
+4 random_20261018 1024x620 (1 orbits) at 0.78/0.8: 0.77/0.80 still holds (0.676 px at 0.01°)
+5 random_20261018 1024x620 (1 orbits) at 0.78/0.8: 0.77/0.80 still holds (0.676 px at 0.01°)
+  …
+O-6 random_20261018 height 700: tighter steps 308; read again every 0.01°: 139; still holding: 139
+1 random_20261018 960x700 (1 orbits) at 0.78/0.78: 0.77/0.78 still holds (7.054 px at 0.01°)
+1 random_20261018 960x700 (1 orbits) at 0.78/0.78: 0.78/0.77 still holds (5.747 px at 0.01°)
+2 random_20261018 960x700 (1 orbits) at 0.78/0.78: 0.77/0.78 still holds (7.054 px at 0.01°)
+2 random_20261018 960x700 (1 orbits) at 0.78/0.78: 0.78/0.77 still holds (5.747 px at 0.01°)
+3 random_20261018 960x700 (1 orbits) at 0.78/0.78: 0.77/0.78 still holds (7.054 px at 0.01°)
+  …
+O-6 random_20261018 height 740: tighter steps 300; read again every 0.01°: 145; still holding: 144
+1 random_20261018 960x740 (1 orbits) at 0.78/0.78: 0.77/0.78 still holds (18.680 px at 0.01°)
+1 random_20261018 960x740 (1 orbits) at 0.78/0.78: 0.78/0.77 still holds (17.598 px at 0.01°)
+2 random_20261018 960x740 (1 orbits) at 0.78/0.78: 0.77/0.78 still holds (18.680 px at 0.01°)
+2 random_20261018 960x740 (1 orbits) at 0.78/0.78: 0.78/0.77 still holds (17.598 px at 0.01°)
+3 random_20261018 960x740 (1 orbits) at 0.78/0.78: 0.77/0.78 still holds (18.680 px at 0.01°)
+  …
+O-6 random_20261018 height 820: tighter steps 316; read again every 0.01°: 151; still holding: 150
+1 random_20261018 960x820 (1 orbits) at 0.78/0.78: 0.77/0.78 still holds (38.085 px at 0.01°)
+1 random_20261018 960x820 (1 orbits) at 0.78/0.78: 0.78/0.77 still holds (37.976 px at 0.01°)
+2 random_20261018 960x820 (1 orbits) at 0.78/0.78: 0.77/0.78 still holds (38.085 px at 0.01°)
+2 random_20261018 960x820 (1 orbits) at 0.78/0.78: 0.78/0.77 still holds (37.976 px at 0.01°)
+3 random_20261018 960x820 (1 orbits) at 0.78/0.78: 0.77/0.78 still holds (38.085 px at 0.01°)
+  …
+O-6 random_20261018 height 960: tighter steps 322; read again every 0.01°: 138; still holding: 138
+1 random_20261018 1180x960 (1 orbits) at 0.78/0.78: 0.77/0.78 still holds (93.238 px at 0.01°)
+1 random_20261018 1180x960 (1 orbits) at 0.78/0.78: 0.78/0.77 still holds (94.171 px at 0.01°)
+2 random_20261018 1180x960 (1 orbits) at 0.78/0.78: 0.77/0.78 still holds (93.238 px at 0.01°)
+2 random_20261018 1180x960 (1 orbits) at 0.78/0.78: 0.78/0.77 still holds (94.171 px at 0.01°)
+3 random_20261018 1180x960 (1 orbits) at 0.78/0.78: 0.77/0.78 still holds (93.238 px at 0.01°)
+  …
+O-6 random_4711 height 420: tighter steps 290; read again every 0.01°: 0; still holding: 0
+O-6 random_4711 height 500: tighter steps 286; read again every 0.01°: 8; still holding: 8
+1 random_4711 1024x500 (1 orbits) at 0.78/0.97: 0.77/0.97 still holds (0.330 px at 0.01°)
+1 random_4711 1180x500 (1 orbits) at 0.78/0.94: 0.77/0.94 still holds (0.490 px at 0.01°)
+1 random_4711 1280x500 (1 orbits) at 0.78/0.93: 0.77/0.93 still holds (0.732 px at 0.01°)
+1 random_4711 1366x500 (1 orbits) at 0.78/0.92: 0.77/0.92 still holds (0.188 px at 0.01°)
+1 random_4711 1440x500 (1 orbits) at 0.78/0.92: 0.77/0.92 still holds (0.944 px at 0.01°)
+  …
+O-6 random_4711 height 560: tighter steps 292; read again every 0.01°: 38; still holding: 38
+1 random_4711 1024x560 (1 orbits) at 0.78/0.83: 0.77/0.83 still holds (0.313 px at 0.01°)
+1 random_4711 1180x560 (1 orbits) at 0.78/0.81: 0.77/0.81 still holds (1.560 px at 0.01°)
+1 random_4711 1280x560 (1 orbits) at 0.78/0.8: 0.77/0.80 still holds (1.544 px at 0.01°)
+2 random_4711 1280x560 (1 orbits) at 0.78/0.91: 0.77/0.91 still holds (1.014 px at 0.01°)
+3 random_4711 1280x560 (1 orbits) at 0.78/1: 0.77/1.00 still holds (0.175 px at 0.01°)
+  …
+O-6 random_4711 height 620: tighter steps 298; read again every 0.01°: 83; still holding: 83
+1 random_4711 960x620 (1 orbits) at 0.78/0.78: 0.77/0.78 still holds (10.105 px at 0.01°)
+1 random_4711 960x620 (1 orbits) at 0.78/0.78: 0.78/0.77 still holds (8.833 px at 0.01°)
+1 random_4711 1024x620 (1 orbits) at 0.78/0.78: 0.77/0.78 still holds (11.242 px at 0.01°)
+1 random_4711 1024x620 (1 orbits) at 0.78/0.78: 0.78/0.77 still holds (9.833 px at 0.01°)
+2 random_4711 1024x620 (1 orbits) at 0.78/0.88: 0.77/0.88 still holds (0.856 px at 0.01°)
+  …
+O-6 random_4711 height 700: tighter steps 308; read again every 0.01°: 134; still holding: 133
+1 random_4711 960x700 (1 orbits) at 0.78/0.78: 0.77/0.78 still holds (33.065 px at 0.01°)
+1 random_4711 960x700 (1 orbits) at 0.78/0.78: 0.78/0.77 still holds (32.307 px at 0.01°)
+2 random_4711 960x700 (1 orbits) at 0.78/0.78: 0.77/0.78 still holds (5.537 px at 0.01°)
+2 random_4711 960x700 (1 orbits) at 0.78/0.78: 0.78/0.77 still holds (4.211 px at 0.01°)
+3 random_4711 960x700 (1 orbits) at 0.78/0.78: 0.77/0.78 still holds (5.537 px at 0.01°)
+  …
+O-6 random_4711 height 740: tighter steps 298; read again every 0.01°: 139; still holding: 138
+1 random_4711 960x740 (1 orbits) at 0.78/0.78: 0.77/0.78 still holds (42.493 px at 0.01°)
+1 random_4711 960x740 (1 orbits) at 0.78/0.78: 0.78/0.77 still holds (42.301 px at 0.01°)
+2 random_4711 960x740 (1 orbits) at 0.78/0.78: 0.77/0.78 still holds (17.249 px at 0.01°)
+2 random_4711 960x740 (1 orbits) at 0.78/0.78: 0.78/0.77 still holds (16.135 px at 0.01°)
+3 random_4711 960x740 (1 orbits) at 0.78/0.78: 0.77/0.78 still holds (17.249 px at 0.01°)
+  …
+O-6 random_4711 height 820: tighter steps 310; read again every 0.01°: 151; still holding: 150
+1 random_4711 960x820 (1 orbits) at 0.78/0.78: 0.77/0.78 still holds (55.306 px at 0.01°)
+1 random_4711 960x820 (1 orbits) at 0.78/0.78: 0.78/0.77 still holds (56.732 px at 0.01°)
+2 random_4711 960x820 (1 orbits) at 0.78/0.78: 0.77/0.78 still holds (36.938 px at 0.01°)
+2 random_4711 960x820 (1 orbits) at 0.78/0.78: 0.78/0.77 still holds (36.759 px at 0.01°)
+3 random_4711 960x820 (1 orbits) at 0.78/0.78: 0.77/0.78 still holds (36.938 px at 0.01°)
+  …
+O-6 random_4711 height 960: tighter steps 314; read again every 0.01°: 138; still holding: 138
+1 random_4711 1180x960 (1 orbits) at 0.78/0.78: 0.77/0.78 still holds (118.927 px at 0.01°)
+1 random_4711 1180x960 (1 orbits) at 0.78/0.78: 0.78/0.77 still holds (119.386 px at 0.01°)
+2 random_4711 1180x960 (1 orbits) at 0.78/0.78: 0.77/0.78 still holds (84.047 px at 0.01°)
+2 random_4711 1180x960 (1 orbits) at 0.78/0.78: 0.78/0.77 still holds (84.174 px at 0.01°)
+3 random_4711 1180x960 (1 orbits) at 0.78/0.78: 0.77/0.78 still holds (84.047 px at 0.01°)
+  …
+O-7 real: subset 25 layouts; a smaller holding orbit found: 20
+1 real 960x420: chosen 1/1 (10000) PINK least 1/1 (10000)
+2 real 960x420: chosen 1/1 (10000) PINK least 1/1 (10000)
+3 real 960x420: chosen 1/1 (10000) PINK least 1/1 (10000)
+5 real 960x420: chosen 1/1 (10000) PINK least 1/1 (10000)
+8 real 960x420: chosen 1/1 (10000) PINK least 1/1 (10000)
+  …
+O-7 random_4711: subset 25 layouts; a smaller holding orbit found: 18
+1 random_4711 960x420: chosen 1/1 (10000) PINK least 1/1 (10000)
+2 random_4711 960x420: chosen 1/1 (10000) PINK least 1/1 (10000)
+3 random_4711 960x420: chosen 1/1 (10000) PINK least 1/1 (10000)
+5 random_4711 960x420: chosen 1/1 (10000) PINK least 1/1 (10000)
+8 random_4711 960x420: chosen 1/1 (10000) PINK least 1/1 (10000)
+  …
+O-7 long: subset 25 layouts; a smaller holding orbit found: 18
+1 long 960x420: chosen 1/1 (10000) PINK least 1/1 (10000)
+2 long 960x420: chosen 1/1 (10000) PINK least 1/1 (10000)
+3 long 960x420: chosen 1/1 (10000) PINK least 1/1 (10000)
+5 long 960x420: chosen 1/1 (10000) PINK least 1/1 (10000)
+8 long 960x420: chosen 1/1 (10000) PINK least 1/1 (10000)
+  …
+O-8 single-orbit card sets drawn in at more than one box: 215; widest spread over the boxes that can carry the least orbit +543.55 %; above the hundredth grid: 2461
+  +543.55 % (grid 7.12 %) over 77 boxes: short 1 128x72
+  +543.55 % (grid 7.12 %) over 77 boxes: short 2 128x72,128x72
+  +543.55 % (grid 7.12 %) over 77 boxes: short 3 128x72,128x72,128x72
+  +543.55 % (grid 7.12 %) over 77 boxes: short 4 128x72,128x72,128x72,128x72
+  +543.55 % (grid 7.12 %) over 77 boxes: short 5 128x72,128x72,128x72,128x72,128x72
+  +543.55 % (grid 7.12 %) over 77 boxes: short 6 128x72,128x72,128x72,128x72,128x72,128x72
+real 1 192x106@-1.5708 at 960x700 0.78/0.78: +14.61 % > 3.25 %
+real 1 192x106@-1.5708 at 960x740 0.78/0.78: +23.13 % > 3.36 %
+real 1 192x106@-1.5708 at 960x820 0.78/0.78: +40.17 % > 3.58 %
+real 1 192x106@-1.5708 at 960x960 0.78/0.78: +69.99 % > 3.96 %
+real 2 192x106@-1.5708,182x88@1.5708 at 960x700 0.78/0.78: +14.61 % > 3.25 %
+real 2 192x106@-1.5708,182x88@1.5708 at 960x740 0.78/0.78: +23.13 % > 3.36 %
+real 2 192x106@-1.5708,182x88@1.5708 at 960x820 0.78/0.78: +40.17 % > 3.58 %
+real 2 192x106@-1.5708,182x88@1.5708 at 960x960 0.78/0.78: +69.99 % > 3.96 %
+real 3 192x106@-1.5708,182x88@0.5236,147x72@2.6180 at 960x700 0.78/0.78: +14.61 % > 3.25 %
+real 3 192x106@-1.5708,182x88@0.5236,147x72@2.6180 at 960x740 0.78/0.78: +23.13 % > 3.36 %
+real 3 192x106@-1.5708,182x88@0.5236,147x72@2.6180 at 960x820 0.78/0.78: +40.17 % > 3.58 %
+real 3 192x106@-1.5708,182x88@0.5236,147x72@2.6180 at 960x960 0.78/0.78: +69.99 % > 3.96 %
+O-9 syntxCosmosLayout over 7480 layouts: median 2.30 ms, p99 31.1 ms, slowest 79.3 ms
+O-9 drawn in: 3228 of 7480 (1 orbit(s): 3214, 2 orbit(s): 14); moving layouts with more than one orbit: 1356, drawn in 14; static 1189
+O-9 factors drawn in: kx 0.78–1, ky 0.78–1
+ ❯ test/job-pool-validation/role-orbit-geometry.test.ts (56 tests | 40 failed) 1326675ms
+   ✓ PINK role orbit geometry (frontend/role-orbit) > O-1 identity: cards, titles, sizes, order, phases, orbits, periods, centre, box and static flag unchanged; only radii and rest points move  3787ms
+   × PINK role orbit geometry (frontend/role-orbit) > O-2 bounds: each factor in (0, 1] in hundredths; a drawn-in outer orbit lies (ry ≤ rx); the static grid and an organization the geometry does not allow stay exactly as packed 1043ms
+     → expected [ '7 real 960x740', …(97) ] to deeply equal []
+   ✓ PINK role orbit geometry (frontend/role-orbit) > O-3 centre body (estimate): every drawn-in card keeps its 16 px air to the disc at every 0.25° (±0.5 px) 51ms
+   ✓ PINK role orbit geometry (frontend/role-orbit) > O-4 one orbit (estimate): every pair of cards on an orbit keeps 12 px / 20 px air at every 0.25° (±0.5 px), never touching 46ms
+   ✓ PINK role orbit geometry (frontend/role-orbit) > O-5 across orbits (estimate, measured): drawn-in layouts with more than one orbit, the least air in motion (1° x 1°) packed and drawn 2ms
+   ✓ PINK role orbit geometry (frontend/role-orbit) > O-3 centre body (drawn card): every drawn-in card keeps its 16 px air to the disc at every 0.25° (±0.5 px) 47ms
+   ✓ PINK role orbit geometry (frontend/role-orbit) > O-4 one orbit (drawn card): every pair of cards on an orbit keeps 12 px / 20 px air at every 0.25° (±0.5 px), never touching 38ms
+   ✓ PINK role orbit geometry (frontend/role-orbit) > O-5 across orbits (drawn card, measured): drawn-in layouts with more than one orbit, the least air in motion (1° x 1°) packed and drawn 2ms
+   × PINK role orbit geometry (frontend/role-orbit) > O-5 across orbits (rule card height, estimate + 12; every pair of orbits, every pair of card sizes, 0.5° x 0.5°): in motion the drawn-in orbits keep the air where the packing did and never come closer than the packing where it did not (±0.5 px); at rest never closer 5ms
+     → expected { apart: [ …(30) ], …(2) } to deeply equal { apart: [], closer: [], rest: [] }
+   × PINK role orbit geometry (frontend/role-orbit) > O-11 tall boxes (1280–2560 x 840–1180, 6–53 roles, five title sets): every drawn-in layout with more than one orbit keeps the across rule of O-5 at 1° x 1° 202164ms
+     → expected { apart: [ …(607) ], …(1) } to deeply equal { apart: [], closer: [] }
+   ✓ PINK role orbit geometry (frontend/role-orbit) > O-6 smallest orbit, one step (real, height 420): a step of 0.01 tighter on either axis breaks an air (rule card height, confirmed every 0.01°) or stands the outer orbit up  7093ms
+   × PINK role orbit geometry (frontend/role-orbit) > O-6 smallest orbit, one step (real, height 500): a step of 0.01 tighter on either axis breaks an air (rule card height, confirmed every 0.01°) or stands the outer orbit up 11113ms
+     → expected [ …(68) ] to deeply equal []
+   × PINK role orbit geometry (frontend/role-orbit) > O-6 smallest orbit, one step (real, height 560): a step of 0.01 tighter on either axis breaks an air (rule card height, confirmed every 0.01°) or stands the outer orbit up 20185ms
+     → expected [ …(113) ] to deeply equal []
+   × PINK role orbit geometry (frontend/role-orbit) > O-6 smallest orbit, one step (real, height 620): a step of 0.01 tighter on either axis breaks an air (rule card height, confirmed every 0.01°) or stands the outer orbit up 33236ms
+     → expected [ …(188) ] to deeply equal []
+   × PINK role orbit geometry (frontend/role-orbit) > O-6 smallest orbit, one step (real, height 700): a step of 0.01 tighter on either axis breaks an air (rule card height, confirmed every 0.01°) or stands the outer orbit up 44820ms
+     → expected [ …(222) ] to deeply equal []
+   × PINK role orbit geometry (frontend/role-orbit) > O-6 smallest orbit, one step (real, height 740): a step of 0.01 tighter on either axis breaks an air (rule card height, confirmed every 0.01°) or stands the outer orbit up 41175ms
+     → expected [ …(227) ] to deeply equal []
+   × PINK role orbit geometry (frontend/role-orbit) > O-6 smallest orbit, one step (real, height 820): a step of 0.01 tighter on either axis breaks an air (rule card height, confirmed every 0.01°) or stands the outer orbit up 36985ms
+     → expected [ …(238) ] to deeply equal []
+   × PINK role orbit geometry (frontend/role-orbit) > O-6 smallest orbit, one step (real, height 960): a step of 0.01 tighter on either axis breaks an air (rule card height, confirmed every 0.01°) or stands the outer orbit up 71003ms
+     → expected [ …(230) ] to deeply equal []
+   ✓ PINK role orbit geometry (frontend/role-orbit) > O-6 smallest orbit, one step (short, height 420): a step of 0.01 tighter on either axis breaks an air (rule card height, confirmed every 0.01°) or stands the outer orbit up  7329ms
+   × PINK role orbit geometry (frontend/role-orbit) > O-6 smallest orbit, one step (short, height 500): a step of 0.01 tighter on either axis breaks an air (rule card height, confirmed every 0.01°) or stands the outer orbit up 14059ms
+     → expected [ …(85) ] to deeply equal []
+   × PINK role orbit geometry (frontend/role-orbit) > O-6 smallest orbit, one step (short, height 560): a step of 0.01 tighter on either axis breaks an air (rule card height, confirmed every 0.01°) or stands the outer orbit up 25656ms
+     → expected [ …(195) ] to deeply equal []
+   × PINK role orbit geometry (frontend/role-orbit) > O-6 smallest orbit, one step (short, height 620): a step of 0.01 tighter on either axis breaks an air (rule card height, confirmed every 0.01°) or stands the outer orbit up 35230ms
+     → expected [ …(214) ] to deeply equal []
+   × PINK role orbit geometry (frontend/role-orbit) > O-6 smallest orbit, one step (short, height 700): a step of 0.01 tighter on either axis breaks an air (rule card height, confirmed every 0.01°) or stands the outer orbit up 52775ms
+     → expected [ …(239) ] to deeply equal []
+   × PINK role orbit geometry (frontend/role-orbit) > O-6 smallest orbit, one step (short, height 740): a step of 0.01 tighter on either axis breaks an air (rule card height, confirmed every 0.01°) or stands the outer orbit up 51748ms
+     → expected [ …(247) ] to deeply equal []
+   × PINK role orbit geometry (frontend/role-orbit) > O-6 smallest orbit, one step (short, height 820): a step of 0.01 tighter on either axis breaks an air (rule card height, confirmed every 0.01°) or stands the outer orbit up 55068ms
+     → expected [ …(261) ] to deeply equal []
+   × PINK role orbit geometry (frontend/role-orbit) > O-6 smallest orbit, one step (short, height 960): a step of 0.01 tighter on either axis breaks an air (rule card height, confirmed every 0.01°) or stands the outer orbit up 65050ms
+     → expected [ …(245) ] to deeply equal []
+   ✓ PINK role orbit geometry (frontend/role-orbit) > O-6 smallest orbit, one step (long, height 420): a step of 0.01 tighter on either axis breaks an air (rule card height, confirmed every 0.01°) or stands the outer orbit up  9559ms
+   ✓ PINK role orbit geometry (frontend/role-orbit) > O-6 smallest orbit, one step (long, height 500): a step of 0.01 tighter on either axis breaks an air (rule card height, confirmed every 0.01°) or stands the outer orbit up  7006ms
+   × PINK role orbit geometry (frontend/role-orbit) > O-6 smallest orbit, one step (long, height 560): a step of 0.01 tighter on either axis breaks an air (rule card height, confirmed every 0.01°) or stands the outer orbit up 10187ms
+     → expected [ …(38) ] to deeply equal []
+   × PINK role orbit geometry (frontend/role-orbit) > O-6 smallest orbit, one step (long, height 620): a step of 0.01 tighter on either axis breaks an air (rule card height, confirmed every 0.01°) or stands the outer orbit up 10734ms
+     → expected [ …(69) ] to deeply equal []
+   × PINK role orbit geometry (frontend/role-orbit) > O-6 smallest orbit, one step (long, height 700): a step of 0.01 tighter on either axis breaks an air (rule card height, confirmed every 0.01°) or stands the outer orbit up 13707ms
+     → expected [ …(129) ] to deeply equal []
+   × PINK role orbit geometry (frontend/role-orbit) > O-6 smallest orbit, one step (long, height 740): a step of 0.01 tighter on either axis breaks an air (rule card height, confirmed every 0.01°) or stands the outer orbit up 13025ms
+     → expected [ …(131) ] to deeply equal []
+   × PINK role orbit geometry (frontend/role-orbit) > O-6 smallest orbit, one step (long, height 820): a step of 0.01 tighter on either axis breaks an air (rule card height, confirmed every 0.01°) or stands the outer orbit up 14235ms
+     → expected [ …(146) ] to deeply equal []
+   × PINK role orbit geometry (frontend/role-orbit) > O-6 smallest orbit, one step (long, height 960): a step of 0.01 tighter on either axis breaks an air (rule card height, confirmed every 0.01°) or stands the outer orbit up 10218ms
+     → expected [ …(132) ] to deeply equal []
+   ✓ PINK role orbit geometry (frontend/role-orbit) > O-6 smallest orbit, one step (random_20261018, height 420): a step of 0.01 tighter on either axis breaks an air (rule card height, confirmed every 0.01°) or stands the outer orbit up  5296ms
+   ✓ PINK role orbit geometry (frontend/role-orbit) > O-6 smallest orbit, one step (random_20261018, height 500): a step of 0.01 tighter on either axis breaks an air (rule card height, confirmed every 0.01°) or stands the outer orbit up  5317ms
+   × PINK role orbit geometry (frontend/role-orbit) > O-6 smallest orbit, one step (random_20261018, height 560): a step of 0.01 tighter on either axis breaks an air (rule card height, confirmed every 0.01°) or stands the outer orbit up 7862ms
+     → expected [ …(50) ] to deeply equal []
+   × PINK role orbit geometry (frontend/role-orbit) > O-6 smallest orbit, one step (random_20261018, height 620): a step of 0.01 tighter on either axis breaks an air (rule card height, confirmed every 0.01°) or stands the outer orbit up 10418ms
+     → expected [ …(96) ] to deeply equal []
+   × PINK role orbit geometry (frontend/role-orbit) > O-6 smallest orbit, one step (random_20261018, height 700): a step of 0.01 tighter on either axis breaks an air (rule card height, confirmed every 0.01°) or stands the outer orbit up 12254ms
+     → expected [ …(139) ] to deeply equal []
+   × PINK role orbit geometry (frontend/role-orbit) > O-6 smallest orbit, one step (random_20261018, height 740): a step of 0.01 tighter on either axis breaks an air (rule card height, confirmed every 0.01°) or stands the outer orbit up 11413ms
+     → expected [ …(144) ] to deeply equal []
+   × PINK role orbit geometry (frontend/role-orbit) > O-6 smallest orbit, one step (random_20261018, height 820): a step of 0.01 tighter on either axis breaks an air (rule card height, confirmed every 0.01°) or stands the outer orbit up 12421ms
+     → expected [ …(150) ] to deeply equal []
+   × PINK role orbit geometry (frontend/role-orbit) > O-6 smallest orbit, one step (random_20261018, height 960): a step of 0.01 tighter on either axis breaks an air (rule card height, confirmed every 0.01°) or stands the outer orbit up 12143ms
+     → expected [ …(138) ] to deeply equal []
+   ✓ PINK role orbit geometry (frontend/role-orbit) > O-6 smallest orbit, one step (random_4711, height 420): a step of 0.01 tighter on either axis breaks an air (rule card height, confirmed every 0.01°) or stands the outer orbit up  5631ms
+   × PINK role orbit geometry (frontend/role-orbit) > O-6 smallest orbit, one step (random_4711, height 500): a step of 0.01 tighter on either axis breaks an air (rule card height, confirmed every 0.01°) or stands the outer orbit up 5271ms
+     → expected [ …(8) ] to deeply equal []
+   × PINK role orbit geometry (frontend/role-orbit) > O-6 smallest orbit, one step (random_4711, height 560): a step of 0.01 tighter on either axis breaks an air (rule card height, confirmed every 0.01°) or stands the outer orbit up 6202ms
+     → expected [ …(38) ] to deeply equal []
+   × PINK role orbit geometry (frontend/role-orbit) > O-6 smallest orbit, one step (random_4711, height 620): a step of 0.01 tighter on either axis breaks an air (rule card height, confirmed every 0.01°) or stands the outer orbit up 7219ms
+     → expected [ …(83) ] to deeply equal []
+   × PINK role orbit geometry (frontend/role-orbit) > O-6 smallest orbit, one step (random_4711, height 700): a step of 0.01 tighter on either axis breaks an air (rule card height, confirmed every 0.01°) or stands the outer orbit up 10063ms
+     → expected [ …(133) ] to deeply equal []
+   × PINK role orbit geometry (frontend/role-orbit) > O-6 smallest orbit, one step (random_4711, height 740): a step of 0.01 tighter on either axis breaks an air (rule card height, confirmed every 0.01°) or stands the outer orbit up 10065ms
+     → expected [ …(138) ] to deeply equal []
+   × PINK role orbit geometry (frontend/role-orbit) > O-6 smallest orbit, one step (random_4711, height 820): a step of 0.01 tighter on either axis breaks an air (rule card height, confirmed every 0.01°) or stands the outer orbit up 13791ms
+     → expected [ …(150) ] to deeply equal []
+   × PINK role orbit geometry (frontend/role-orbit) > O-6 smallest orbit, one step (random_4711, height 960): a step of 0.01 tighter on either axis breaks an air (rule card height, confirmed every 0.01°) or stands the outer orbit up 15115ms
+     → expected [ …(138) ] to deeply equal []
+   × PINK role orbit geometry (frontend/role-orbit) > O-7 smallest orbit, every horizontal factor (subset, real): no pair of factors that holds and lies gives a smaller kx·ky than the chosen one (confirmed every 0.01°) 109700ms
+     → expected [ …(20) ] to deeply equal []
+   × PINK role orbit geometry (frontend/role-orbit) > O-7 smallest orbit, every horizontal factor (subset, random_4711): no pair of factors that holds and lies gives a smaller kx·ky than the chosen one (confirmed every 0.01°) 63502ms
+     → expected [ …(18) ] to deeply equal []
+   × PINK role orbit geometry (frontend/role-orbit) > O-7 smallest orbit, every horizontal factor (subset, long): no pair of factors that holds and lies gives a smaller kx·ky than the chosen one (confirmed every 0.01°) 55523ms
+     → expected [ …(18) ] to deeply equal []
+   × PINK role orbit geometry (frontend/role-orbit) > O-8 the same cards give the same drawn orbit over every box that can carry it (packed radii at least the least orbit's): outer orbit area within the hundredth grid of the factors 50ms
+     → expected [ …(2461) ] to deeply equal []
+   ✓ PINK role orbit geometry (frontend/role-orbit) > O-9 cost and distribution (measured) 9ms
+   ✓ PINK role orbit geometry (frontend/role-orbit) > O-10 Capability Field untouched: the shared L1 packing called directly is the layout syntxCosmosPacking returns for fitting items 0ms
+ Test Files  1 failed (1)
+      Tests  40 failed | 16 passed (56)

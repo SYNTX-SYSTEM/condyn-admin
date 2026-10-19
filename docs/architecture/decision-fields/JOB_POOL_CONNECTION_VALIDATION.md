@@ -2116,6 +2116,105 @@ GELB's own re-measurement (random titles, 0.25°; recorded in GELB's integration
 - Integration: STOP, as GRÜN requested. It needs the owner's word to GELB, and demo-ui-fix `0b5a8ea` beneath it needs one too.
 - Evidence is in `evidence/role-orbit-c8e99d8/`.
 
+### 3.47 Role orbit second refinement: GRÜN `frontend/role-orbit` `3be1920` (D-RO-2) and fix `e6493a7` (2026-10-19)
+
+**Request.** The owner did not accept `7a51d89` visually; the orbit was still too large (relayed by GRÜN and GELB, not seen first-hand by PINK). GRÜN asked PINK to validate the second refinement `3be1920`, then its fix `e6493a7`; STOP before integration and the owner's renewed visual acceptance.
+- **`3be1920`:**
+  - There is no fixed target any more. Of all factor pairs that keep the air rules, the smallest drawn orbit wins: the least kx·ky, at a tie the narrower one, as long as the outer orbit lies (ry ≤ rx).
+  - Centre and same-orbit air are solved in closed form, with every card at its own size and every pair on an orbit.
+  - Across orbits it checks on a 5° grid where the packing kept the orbits apart in motion, otherwise only at rest.
+- **`e6493a7` (fix of PINK's D-RO-2):**
+  - Across orbits it also uses a closed form: the outer orbit must enclose the far corner of each inner card's air rectangle in every phase, refined by golden section.
+  - The rule holds for every pair of orbits and every pair of card sizes. In motion the cards are never closer than the packing (its own shortfall, exact to 0.01 px, is taken off the rectangle); at rest never closer than the packing, always in addition.
+- Code changes only in `lib/career/job-pool/syntx-manifestation-layout.ts`, plus GRÜN's tests, documentation and evidence.
+
+**Scope.**
+- Probe `ea125e5` = integration `cdedfef` + `3be1920`.
+- Probe `f665b80` = integration `bc24e11` + `e6493a7`. `bc24e11` differs from `cdedfef` only in GELB's integration document; both merges are free of conflicts.
+- Negative controls with the final proofs:
+  - `3be1920` (`ea125e5`) against the fix;
+  - `b46d1ff` = `cdedfef` + `7a51d89` (the 0.78 version the owner did not accept) for minimality.
+
+**PINK's proofs, rewritten for the new rule** (copies in `evidence/role-orbit-f665b80/`).
+- `role-orbit-geometry`, 56 checks over the same 7480 layouts:
+  - O-2 bounds now: factors in hundredths, in (0, 1], the drawn-in outer orbit lies.
+  - O-3 and O-4: centre and every pair on one orbit, read as before.
+  - New O-5: across orbits at the rule's card height (estimate + 12), for every pair of orbits and every pair of card sizes, at 0.5° × 0.5°. In motion: keep the air where the packing kept it, never closer than the packing where it did not. At rest: never closer than the packing.
+  - New O-6 minimality: a step of 0.01 tighter on either axis must break an air or stand the outer orbit up. A tighter step that holds on PINK's 0.25° reading is read again every 0.01°; across orbits every 0.25°.
+  - New O-7: a full search of every horizontal factor on 75 layouts, with a bisection for the least vertical one. No pair that holds and lies may give a smaller kx·ky.
+  - New O-8: the same cards give the same orbit area on every box that can carry the least orbit, within the hundredth grid of the factors.
+  - New O-11: a sweep of tall boxes, 1280–2560 × 840–1180, 6–53 roles, five title sets (6585 moving multi-orbit layouts), with the across rule at 1° × 1°.
+  - O-9 measures cost and distribution. O-10: the Capability Field is untouched.
+- `role-orbit.e2e`:
+  - A fourth viewport, 1600 × 1200 (level box 1600 × 940), so that a multi-orbit organization is drawn in.
+  - The drawn factors must equal `syntxCosmosLayout`'s for the drawn box.
+  - The drawn-in outer ellipse must lie.
+  - O-COLD (measured): the first direct link with `jobOrganizationId` after a cold `next dev` start.
+
+**Deviation D-RO-2 on `3be1920` (across orbits).**
+- GRÜN's statement "no multi-orbit layout is drawn in (0 of 245)" held only up to 820 px box height. From about 840 px, for example a 1600 × 1200 viewport, two-orbit packings are drawn in. GELB withdrew the same statement in `bc24e11`.
+- **By `3be1920`'s own rule:**
+  - Where its own 5° reading (largest card, +12) said the packing kept the orbits apart, the drawn-in orbits break the 12 / 20 px air between the grid points.
+  - That is 4 of the 22 drawn-in multi-orbit layouts in the 7480 grid, and 51 in PINK's tall-box scan.
+  - Worst −6.27 px at the rule height, for example 14 real roles at 1600 × 960 (0.88 / 0.92): packed +13.03 px. Drawn card: −5.52 px.
+  - No overlap.
+  - In the rendered DOM (1600 × 1200, 14 real roles), the air across orbits held by only +0.09 px.
+- **Per pair of card sizes** (the rule of the fix):
+  - In the 7480 grid: 50 pairs break the air where the packing held, and 71 pairs come closer than the packing.
+  - In the tall-box sweep: 878 multi-orbit layouts drawn in; 1206 pairs break the air where the packing held, worst −29.10 px; 1465 pairs come closer than the packing, up to 32.9 px closer (−11.5 → −44.4 px, overlapping in motion).
+  - GRÜN found the second class independently; it came from the at-rest-only branch.
+
+**Result on `f665b80` (`e6493a7`).**
+
+| Check | Result |
+| --- | --- |
+| `role-orbit-geometry` | **56/56**, 3273 layouts drawn in, 8 of them with two orbits. Centre air: estimate +3.98 px, drawn card +0.27 px. Air on one orbit: estimate +5.88 px, drawn card +0.40 px; least gap 16.34 px. Across orbits: least air +0.48 px where the packing held; 0 pairs broken, 0 closer than the packing, 0 at rest. Tall-box sweep: 553 of 6585 drawn in, least air +0.01 px where the packing held; 0 / 0. Minimality: every tighter step breaks; no smaller holding orbit in the 75 searched layouts. Area spread at most +1.98 %, within the grid |
+| `role-orbit.e2e` | **395/395** at 1600 × 1000, 1280 × 720, 1366 × 768 and 1600 × 1200. 0 page errors, 0 non-GET, 0 Gemini attempts (one Next version check against the npm registry). Single-orbit factors are identical to `3be1920` at all four viewports (`3be1920` on `ea125e5`: also 395/395). 14 real roles at 1600 × 1200: 0.88 / 0.94 → 0.98 / 0.89, rendered air across orbits +0.09 → +7.36 px |
+| Negative control `3be1920` (`ea125e5`) | 54/56: O-5 and O-11 fail (as above). Detected |
+| Negative control `7a51d89` (`b46d1ff`) | 16/56: 4822 tighter steps still hold; 56 of the 75 searched layouts have a smaller holding orbit; the across checks fail too. Detected |
+
+Factors measured in the DOM (`e6493a7`; the factor pair, then the outer orbit's radii in px):
+
+| Organization | 1600 × 1000 | 1280 × 720 | 1366 × 768 | 1600 × 1200 |
+| --- | --- | --- | --- | --- |
+| 1–3 roles | 0.38 / 0.64 (251.8 × 190.7) | 0.49 / 0.70 (246.2 × 194.6) | 0.45 / 0.70 | 0.37 / 0.49 |
+| 5 roles | 0.40 / 0.67 | 0.53 / 0.72 | 0.50 / 0.70 | 0.41 / 0.49 |
+| 8 roles | 0.61 / 0.74 (395.3 × 220.5) | 0.85 / 0.76 (414.8 × 211.3) | 0.73 / 0.81 | 0.63 / 0.54 |
+| 6 / 8 long titles | 0.74 / 0.65, 0.93 / 0.88 | 0.75 / 0.89, as packed | 0.76 / 0.87, as packed | 0.70 / 0.51, 0.91 / 0.67 |
+| 12 short titles | 0.54 / 0.93 | 0.71 / 0.98 | 0.65 / 0.99 | 0.55 / 0.69 |
+| 14 roles | as packed | as packed | as packed | 0.98 / 0.89 (two orbits) |
+
+- These match GRÜN's measurements: Kestrel 251.8 × 190.7 at 1600 and 246.2 × 194.6 at 1280; 8 roles 395.3 × 220.5 and 414.8 × 211.3.
+- O-JF-PANEL, measured in quarter degrees for five roles: 1600: 640 → 0; 1280: 888 → 227; 1366: 825 → 49; 1600 × 1200: 452 → 0, of 7200.
+
+**Regression on `f665b80`:**
+
+| Check | Result |
+| --- | --- |
+| `tsc` | 0 (including both proofs) |
+| GRÜN unit tests | `syntx-role-orbit` 8/8, `syntx-field-ssr` 10/10 |
+| Gate walk | 74/74 |
+| `three-modes.e2e` | plain 91/91, inspector 97/97 |
+| `url-boundary.e2e` | 1/1 |
+| `syntx-walk.e2e` | 3/3, Q-06 still BOUNDARY-MATCH R15b-PENDING |
+| GRÜN workflow e2e | 10/10 |
+| `demo-ui-fix.e2e` | 62/62 |
+| Full suite without e2e | the 27 base failures (identical set), plus 1 environment failure in `exchange-archive.postgres` ("must be a superuser to terminate superuser process" while it drops its own disposable database). Run alone: once the same, once 6/6. 0 network attempts |
+
+**Observations (informational):**
+- **O-RO-COLD** (GRÜN's observation). The first direct link with `jobOrganizationId` after a cold `next dev` start opened the organization on both tips (`ea125e5`, `f665b80`), and so did the second. Not reproduced; GRÜN considers it closed.
+- **O-RO-GRID.** Factors are hundredths of the packing's radii, so the step grows with the box: at 2560 px width, 0.01 of kx is about 11 px. The chosen orbit is the smallest on that grid (O-6, O-7), not the continuous optimum. O-8 bounds the effect.
+- **O-RO-COST.** Under parallel load: median 0.50 ms, p99 7.5 ms, slowest 22.7 ms per layout (`3be1920`: 17.5 ms; `7a51d89`: 156.5 ms). This closes PINK's earlier cost observation.
+- **O-ENV-DROP.** `dropDisposableTestDatabase` can meet a superuser backend (likely autovacuum) in a just-created database. Two of PINK's own databases were left behind this way and dropped by PINK. It is the same class as the earlier `demo-ui-fix` teardown.
+
+**Status.**
+- D-RO-2 (`3be1920`) is fixed in `e6493a7`, in the layout and in the rendered DOM.
+- The smallest-orbit rule holds: minimal on the hundredth grid, lying, the same area across boxes.
+- Centre, same-orbit air and the Capability Field are unchanged from `3be1920`.
+- No new deviation.
+- Integration: STOP, as GRÜN requested. It needs the owner's renewed visual acceptance and the owner's word to GELB; demo-ui-fix `0b5a8ea` beneath it needs one too.
+- Evidence is in `evidence/role-orbit-f665b80/`.
+
 ## 4. Boundaries and findings for coordination
 
 - F-JP-1 (closed in `b782793`): `JOB_POOL_CONNECTION.md` §4 followed the per-role `JOB_POOL_JSON_ROLE` design;

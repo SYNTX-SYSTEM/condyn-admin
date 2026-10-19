@@ -1,0 +1,167 @@
+[test-db] admin role condyn_test_runner (least privilege)
+[test-db] created condyn_test_9e1fb079eeaa6137
+[database-isolation] verified disposable test database condyn_test_9e1fb079eeaa6137
+O-3 estimate: worst centre air 3.983 px at 1 short 1180x500 (0.38/0.95)
+O-4 estimate: worst same-orbit air 5.881 px at 9 real 960x960 (1/0.83); below -0.5 px: 0 of 3287; least gap 20.97 px
+O-5 estimate: drawn-in layouts with more than one orbit: 22
+12 real 1366x960 1/0.96: rings 0-1 packed -4.27 drawn -6.26; at rest packed 83.34 drawn 75.69
+14 real 1366x960 1/0.96: rings 0-1 packed -4.27 drawn -6.26; at rest packed 91.30 drawn 91.30
+16 real 1366x960 1/0.96: rings 0-1 packed -11.29 drawn -12.62; at rest packed 29.25 drawn 29.25
+14 real 1440x960 0.99/0.91: rings 0-1 packed 4.00 drawn -2.32; at rest packed 86.50 drawn 69.71
+16 real 1440x960 0.99/0.91: rings 0-1 packed -2.02 drawn -7.85; at rest packed 96.00 drawn 77.64
+  …
+O-3 drawn card: worst centre air 0.274 px at 1 random_20261018 1728x960 (0.39/0.54)
+O-4 drawn card: worst same-orbit air 0.396 px at 10 short 1180x820 (0.61/0.73); below -0.5 px: 0 of 3287; least gap 16.34 px
+O-5 drawn card: drawn-in layouts with more than one orbit: 22
+12 real 1366x960 1/0.96: rings 0-1 packed -9.08 drawn -11.59; at rest packed 72.09 drawn 64.44
+14 real 1366x960 1/0.96: rings 0-1 packed -9.08 drawn -11.59; at rest packed 91.30 drawn 84.59
+16 real 1366x960 1/0.96: rings 0-1 packed -16.27 drawn -17.51; at rest packed 29.25 drawn 29.25
+14 real 1440x960 0.99/0.91: rings 0-1 packed -1.37 drawn -8.07; at rest packed 75.25 drawn 58.46
+16 real 1440x960 0.99/0.91: rings 0-1 packed -7.25 drawn -13.57; at rest packed 84.75 drawn 66.39
+  …
+O-5 rule: drawn-in layouts with more than one orbit: 22; least air where the packing held -16.83 px; air broken where the packing held: 50; closer than the packing: 71; at rest: 0
+16 real 1366x960 1/0.96 rings 0-1 219x88/182x88: packed 1.28 drawn -1.13
+16 real 1366x960 1/0.96 rings 0-1 182x88/219x88: packed 1.28 drawn -1.13
+14 real 1440x960 0.99/0.91 rings 0-1 219x88/195x88: packed 5.23 drawn -1.64
+14 real 1440x960 0.99/0.91 rings 0-1 248x88/164x88: packed 5.96 drawn -1.46
+14 real 1440x960 0.99/0.91 rings 0-1 248x88/180x88: packed 1.91 drawn -4.84
+  …
+O-11 moving layouts with more than one orbit: 6585; drawn in: 878; least air where the packing held -29.10 px; air broken where the packing held: 1206; closer than the packing: 1465
+14 real 1344x980 1/0.96 rings 0-1 219x88/180x88: packed 0.77 drawn -1.22
+16 real 1344x980 1/0.96 rings 0-1 219x88/180x88: packed 0.77 drawn -1.22
+16 real 1344x980 1/0.96 rings 0-1 219x88/182x88: packed 0.77 drawn -1.36
+16 real 1344x980 1/0.96 rings 0-1 182x88/219x88: packed 0.77 drawn -1.36
+14 real 1344x1000 1/0.98 rings 0-1 248x88/160x88: packed 0.31 drawn -1.21
+  …
+O-6 real height 420: tighter steps 308; read again every 0.01°: 0; still holding: 0
+O-6 real height 500: tighter steps 322; read again every 0.01°: 3; still holding: 0
+O-6 real height 560: tighter steps 312; read again every 0.01°: 1; still holding: 0
+O-6 real height 620: tighter steps 314; read again every 0.01°: 0; still holding: 0
+O-6 real height 700: tighter steps 334; read again every 0.01°: 1; still holding: 0
+O-6 real height 740: tighter steps 338; read again every 0.01°: 0; still holding: 0
+O-6 real height 820: tighter steps 344; read again every 0.01°: 1; still holding: 0
+O-6 real height 960: tighter steps 342; read again every 0.01°: 1; still holding: 0
+O-6 short height 420: tighter steps 368; read again every 0.01°: 0; still holding: 0
+O-6 short height 500: tighter steps 364; read again every 0.01°: 4; still holding: 0
+O-6 short height 560: tighter steps 360; read again every 0.01°: 2; still holding: 0
+O-6 short height 620: tighter steps 358; read again every 0.01°: 1; still holding: 0
+O-6 short height 700: tighter steps 360; read again every 0.01°: 1; still holding: 0
+O-6 short height 740: tighter steps 360; read again every 0.01°: 0; still holding: 0
+O-6 short height 820: tighter steps 360; read again every 0.01°: 0; still holding: 0
+O-6 short height 960: tighter steps 366; read again every 0.01°: 0; still holding: 0
+O-6 long height 420: tighter steps 290; read again every 0.01°: 0; still holding: 0
+O-6 long height 500: tighter steps 276; read again every 0.01°: 0; still holding: 0
+O-6 long height 560: tighter steps 262; read again every 0.01°: 0; still holding: 0
+O-6 long height 620: tighter steps 262; read again every 0.01°: 3; still holding: 0
+O-6 long height 700: tighter steps 278; read again every 0.01°: 0; still holding: 0
+O-6 long height 740: tighter steps 268; read again every 0.01°: 0; still holding: 0
+O-6 long height 820: tighter steps 276; read again every 0.01°: 0; still holding: 0
+O-6 long height 960: tighter steps 302; read again every 0.01°: 1; still holding: 0
+O-6 random_20261018 height 420: tighter steps 302; read again every 0.01°: 0; still holding: 0
+O-6 random_20261018 height 500: tighter steps 306; read again every 0.01°: 0; still holding: 0
+O-6 random_20261018 height 560: tighter steps 302; read again every 0.01°: 0; still holding: 0
+O-6 random_20261018 height 620: tighter steps 306; read again every 0.01°: 3; still holding: 0
+O-6 random_20261018 height 700: tighter steps 308; read again every 0.01°: 1; still holding: 0
+O-6 random_20261018 height 740: tighter steps 300; read again every 0.01°: 0; still holding: 0
+O-6 random_20261018 height 820: tighter steps 316; read again every 0.01°: 0; still holding: 0
+O-6 random_20261018 height 960: tighter steps 322; read again every 0.01°: 1; still holding: 0
+O-6 random_4711 height 420: tighter steps 290; read again every 0.01°: 0; still holding: 0
+O-6 random_4711 height 500: tighter steps 286; read again every 0.01°: 0; still holding: 0
+O-6 random_4711 height 560: tighter steps 292; read again every 0.01°: 0; still holding: 0
+O-6 random_4711 height 620: tighter steps 298; read again every 0.01°: 2; still holding: 0
+O-6 random_4711 height 700: tighter steps 308; read again every 0.01°: 0; still holding: 0
+O-6 random_4711 height 740: tighter steps 298; read again every 0.01°: 0; still holding: 0
+O-6 random_4711 height 820: tighter steps 310; read again every 0.01°: 1; still holding: 0
+O-6 random_4711 height 960: tighter steps 314; read again every 0.01°: 1; still holding: 0
+O-7 real: subset 25 layouts; a smaller holding orbit found: 0
+1 real 960x420: chosen 1/1 (10000) PINK least 1/1 (10000)
+2 real 960x420: chosen 1/1 (10000) PINK least 1/1 (10000)
+3 real 960x420: chosen 1/1 (10000) PINK least 1/1 (10000)
+5 real 960x420: chosen 1/1 (10000) PINK least 1/1 (10000)
+8 real 960x420: chosen 1/1 (10000) PINK least 1/1 (10000)
+  …
+O-7 random_4711: subset 25 layouts; a smaller holding orbit found: 0
+1 random_4711 960x420: chosen 1/1 (10000) PINK least 1/1 (10000)
+2 random_4711 960x420: chosen 1/1 (10000) PINK least 1/1 (10000)
+3 random_4711 960x420: chosen 1/1 (10000) PINK least 1/1 (10000)
+5 random_4711 960x420: chosen 1/1 (10000) PINK least 1/1 (10000)
+8 random_4711 960x420: chosen 1/1 (10000) PINK least 1/1 (10000)
+  …
+O-7 long: subset 25 layouts; a smaller holding orbit found: 0
+1 long 960x420: chosen 1/1 (10000) PINK least 1/1 (10000)
+2 long 960x420: chosen 1/1 (10000) PINK least 1/1 (10000)
+3 long 960x420: chosen 1/1 (10000) PINK least 1/1 (10000)
+5 long 960x420: chosen 1/1 (10000) PINK least 1/1 (10000)
+8 long 960x420: chosen 1/1 (10000) PINK least 1/1 (10000)
+  …
+O-8 single-orbit card sets drawn in at more than one box: 218; widest spread over the boxes that can carry the least orbit +1.98 %; above the hundredth grid: 0
+  +1.98 % (grid 9.10 %) over 77 boxes: short 1 128x72
+  +1.98 % (grid 9.10 %) over 77 boxes: short 2 128x72,128x72
+  +1.98 % (grid 9.10 %) over 77 boxes: short 3 128x72,128x72,128x72
+  +1.98 % (grid 9.10 %) over 77 boxes: short 4 128x72,128x72,128x72,128x72
+  +1.98 % (grid 9.10 %) over 77 boxes: short 5 128x72,128x72,128x72,128x72,128x72
+  +1.98 % (grid 9.10 %) over 77 boxes: short 6 128x72,128x72,128x72,128x72,128x72,128x72
+O-9 syntxCosmosLayout over 7480 layouts: median 0.74 ms, p99 8.2 ms, slowest 31.2 ms
+O-9 drawn in: 3287 of 7480 (1 orbit(s): 3265, 2 orbit(s): 22); moving layouts with more than one orbit: 1356, drawn in 22; static 1189
+O-9 factors drawn in: kx 0.16–1, ky 0.4–1
+ ❯ test/job-pool-validation/role-orbit-geometry.test.ts (56 tests | 2 failed) 427165ms
+   ✓ PINK role orbit geometry (frontend/role-orbit) > O-1 identity: cards, titles, sizes, order, phases, orbits, periods, centre, box and static flag unchanged; only radii and rest points move  2838ms
+   ✓ PINK role orbit geometry (frontend/role-orbit) > O-2 bounds: each factor in (0, 1] in hundredths; a drawn-in outer orbit lies (ry ≤ rx); the static grid and an organization the geometry does not allow stay exactly as packed  954ms
+   ✓ PINK role orbit geometry (frontend/role-orbit) > O-3 centre body (estimate): every drawn-in card keeps its 16 px air to the disc at every 0.25° (±0.5 px) 54ms
+   ✓ PINK role orbit geometry (frontend/role-orbit) > O-4 one orbit (estimate): every pair of cards on an orbit keeps 12 px / 20 px air at every 0.25° (±0.5 px), never touching 44ms
+   ✓ PINK role orbit geometry (frontend/role-orbit) > O-5 across orbits (estimate, measured): drawn-in layouts with more than one orbit, the least air in motion (1° x 1°) packed and drawn 1ms
+   ✓ PINK role orbit geometry (frontend/role-orbit) > O-3 centre body (drawn card): every drawn-in card keeps its 16 px air to the disc at every 0.25° (±0.5 px) 48ms
+   ✓ PINK role orbit geometry (frontend/role-orbit) > O-4 one orbit (drawn card): every pair of cards on an orbit keeps 12 px / 20 px air at every 0.25° (±0.5 px), never touching 44ms
+   ✓ PINK role orbit geometry (frontend/role-orbit) > O-5 across orbits (drawn card, measured): drawn-in layouts with more than one orbit, the least air in motion (1° x 1°) packed and drawn 1ms
+   × PINK role orbit geometry (frontend/role-orbit) > O-5 across orbits (rule card height, estimate + 12; every pair of orbits, every pair of card sizes, 0.5° x 0.5°): in motion the drawn-in orbits keep the air where the packing did and never come closer than the packing where it did not (±0.5 px); at rest never closer 21ms
+     → expected { apart: [ …(50) ], …(2) } to deeply equal { apart: [], closer: [], rest: [] }
+   × PINK role orbit geometry (frontend/role-orbit) > O-11 tall boxes (1280–2560 x 840–1180, 6–53 roles, five title sets): every drawn-in layout with more than one orbit keeps the across rule of O-5 at 1° x 1° 108927ms
+     → expected { apart: [ …(1206) ], …(1) } to deeply equal { apart: [], closer: [] }
+   ✓ PINK role orbit geometry (frontend/role-orbit) > O-6 smallest orbit, one step (real, height 420): a step of 0.01 tighter on either axis breaks an air (rule card height, confirmed every 0.01°) or stands the outer orbit up  5617ms
+   ✓ PINK role orbit geometry (frontend/role-orbit) > O-6 smallest orbit, one step (real, height 500): a step of 0.01 tighter on either axis breaks an air (rule card height, confirmed every 0.01°) or stands the outer orbit up  5210ms
+   ✓ PINK role orbit geometry (frontend/role-orbit) > O-6 smallest orbit, one step (real, height 560): a step of 0.01 tighter on either axis breaks an air (rule card height, confirmed every 0.01°) or stands the outer orbit up  4674ms
+   ✓ PINK role orbit geometry (frontend/role-orbit) > O-6 smallest orbit, one step (real, height 620): a step of 0.01 tighter on either axis breaks an air (rule card height, confirmed every 0.01°) or stands the outer orbit up  4856ms
+   ✓ PINK role orbit geometry (frontend/role-orbit) > O-6 smallest orbit, one step (real, height 700): a step of 0.01 tighter on either axis breaks an air (rule card height, confirmed every 0.01°) or stands the outer orbit up  5464ms
+   ✓ PINK role orbit geometry (frontend/role-orbit) > O-6 smallest orbit, one step (real, height 740): a step of 0.01 tighter on either axis breaks an air (rule card height, confirmed every 0.01°) or stands the outer orbit up  3815ms
+   ✓ PINK role orbit geometry (frontend/role-orbit) > O-6 smallest orbit, one step (real, height 820): a step of 0.01 tighter on either axis breaks an air (rule card height, confirmed every 0.01°) or stands the outer orbit up  4702ms
+   ✓ PINK role orbit geometry (frontend/role-orbit) > O-6 smallest orbit, one step (real, height 960): a step of 0.01 tighter on either axis breaks an air (rule card height, confirmed every 0.01°) or stands the outer orbit up  3473ms
+   ✓ PINK role orbit geometry (frontend/role-orbit) > O-6 smallest orbit, one step (short, height 420): a step of 0.01 tighter on either axis breaks an air (rule card height, confirmed every 0.01°) or stands the outer orbit up  7687ms
+   ✓ PINK role orbit geometry (frontend/role-orbit) > O-6 smallest orbit, one step (short, height 500): a step of 0.01 tighter on either axis breaks an air (rule card height, confirmed every 0.01°) or stands the outer orbit up  6629ms
+   ✓ PINK role orbit geometry (frontend/role-orbit) > O-6 smallest orbit, one step (short, height 560): a step of 0.01 tighter on either axis breaks an air (rule card height, confirmed every 0.01°) or stands the outer orbit up  6319ms
+   ✓ PINK role orbit geometry (frontend/role-orbit) > O-6 smallest orbit, one step (short, height 620): a step of 0.01 tighter on either axis breaks an air (rule card height, confirmed every 0.01°) or stands the outer orbit up  5869ms
+   ✓ PINK role orbit geometry (frontend/role-orbit) > O-6 smallest orbit, one step (short, height 700): a step of 0.01 tighter on either axis breaks an air (rule card height, confirmed every 0.01°) or stands the outer orbit up  6577ms
+   ✓ PINK role orbit geometry (frontend/role-orbit) > O-6 smallest orbit, one step (short, height 740): a step of 0.01 tighter on either axis breaks an air (rule card height, confirmed every 0.01°) or stands the outer orbit up  5134ms
+   ✓ PINK role orbit geometry (frontend/role-orbit) > O-6 smallest orbit, one step (short, height 820): a step of 0.01 tighter on either axis breaks an air (rule card height, confirmed every 0.01°) or stands the outer orbit up  4661ms
+   ✓ PINK role orbit geometry (frontend/role-orbit) > O-6 smallest orbit, one step (short, height 960): a step of 0.01 tighter on either axis breaks an air (rule card height, confirmed every 0.01°) or stands the outer orbit up  5878ms
+   ✓ PINK role orbit geometry (frontend/role-orbit) > O-6 smallest orbit, one step (long, height 420): a step of 0.01 tighter on either axis breaks an air (rule card height, confirmed every 0.01°) or stands the outer orbit up  6146ms
+   ✓ PINK role orbit geometry (frontend/role-orbit) > O-6 smallest orbit, one step (long, height 500): a step of 0.01 tighter on either axis breaks an air (rule card height, confirmed every 0.01°) or stands the outer orbit up  5815ms
+   ✓ PINK role orbit geometry (frontend/role-orbit) > O-6 smallest orbit, one step (long, height 560): a step of 0.01 tighter on either axis breaks an air (rule card height, confirmed every 0.01°) or stands the outer orbit up  4463ms
+   ✓ PINK role orbit geometry (frontend/role-orbit) > O-6 smallest orbit, one step (long, height 620): a step of 0.01 tighter on either axis breaks an air (rule card height, confirmed every 0.01°) or stands the outer orbit up  4627ms
+   ✓ PINK role orbit geometry (frontend/role-orbit) > O-6 smallest orbit, one step (long, height 700): a step of 0.01 tighter on either axis breaks an air (rule card height, confirmed every 0.01°) or stands the outer orbit up  4001ms
+   ✓ PINK role orbit geometry (frontend/role-orbit) > O-6 smallest orbit, one step (long, height 740): a step of 0.01 tighter on either axis breaks an air (rule card height, confirmed every 0.01°) or stands the outer orbit up  3307ms
+   ✓ PINK role orbit geometry (frontend/role-orbit) > O-6 smallest orbit, one step (long, height 820): a step of 0.01 tighter on either axis breaks an air (rule card height, confirmed every 0.01°) or stands the outer orbit up  3484ms
+   ✓ PINK role orbit geometry (frontend/role-orbit) > O-6 smallest orbit, one step (long, height 960): a step of 0.01 tighter on either axis breaks an air (rule card height, confirmed every 0.01°) or stands the outer orbit up  1846ms
+   ✓ PINK role orbit geometry (frontend/role-orbit) > O-6 smallest orbit, one step (random_20261018, height 420): a step of 0.01 tighter on either axis breaks an air (rule card height, confirmed every 0.01°) or stands the outer orbit up  5620ms
+   ✓ PINK role orbit geometry (frontend/role-orbit) > O-6 smallest orbit, one step (random_20261018, height 500): a step of 0.01 tighter on either axis breaks an air (rule card height, confirmed every 0.01°) or stands the outer orbit up  5241ms
+   ✓ PINK role orbit geometry (frontend/role-orbit) > O-6 smallest orbit, one step (random_20261018, height 560): a step of 0.01 tighter on either axis breaks an air (rule card height, confirmed every 0.01°) or stands the outer orbit up  4414ms
+   ✓ PINK role orbit geometry (frontend/role-orbit) > O-6 smallest orbit, one step (random_20261018, height 620): a step of 0.01 tighter on either axis breaks an air (rule card height, confirmed every 0.01°) or stands the outer orbit up  5087ms
+   ✓ PINK role orbit geometry (frontend/role-orbit) > O-6 smallest orbit, one step (random_20261018, height 700): a step of 0.01 tighter on either axis breaks an air (rule card height, confirmed every 0.01°) or stands the outer orbit up  4933ms
+   ✓ PINK role orbit geometry (frontend/role-orbit) > O-6 smallest orbit, one step (random_20261018, height 740): a step of 0.01 tighter on either axis breaks an air (rule card height, confirmed every 0.01°) or stands the outer orbit up  3910ms
+   ✓ PINK role orbit geometry (frontend/role-orbit) > O-6 smallest orbit, one step (random_20261018, height 820): a step of 0.01 tighter on either axis breaks an air (rule card height, confirmed every 0.01°) or stands the outer orbit up  4211ms
+   ✓ PINK role orbit geometry (frontend/role-orbit) > O-6 smallest orbit, one step (random_20261018, height 960): a step of 0.01 tighter on either axis breaks an air (rule card height, confirmed every 0.01°) or stands the outer orbit up  2314ms
+   ✓ PINK role orbit geometry (frontend/role-orbit) > O-6 smallest orbit, one step (random_4711, height 420): a step of 0.01 tighter on either axis breaks an air (rule card height, confirmed every 0.01°) or stands the outer orbit up  5485ms
+   ✓ PINK role orbit geometry (frontend/role-orbit) > O-6 smallest orbit, one step (random_4711, height 500): a step of 0.01 tighter on either axis breaks an air (rule card height, confirmed every 0.01°) or stands the outer orbit up  5245ms
+   ✓ PINK role orbit geometry (frontend/role-orbit) > O-6 smallest orbit, one step (random_4711, height 560): a step of 0.01 tighter on either axis breaks an air (rule card height, confirmed every 0.01°) or stands the outer orbit up  4994ms
+   ✓ PINK role orbit geometry (frontend/role-orbit) > O-6 smallest orbit, one step (random_4711, height 620): a step of 0.01 tighter on either axis breaks an air (rule card height, confirmed every 0.01°) or stands the outer orbit up  5403ms
+   ✓ PINK role orbit geometry (frontend/role-orbit) > O-6 smallest orbit, one step (random_4711, height 700): a step of 0.01 tighter on either axis breaks an air (rule card height, confirmed every 0.01°) or stands the outer orbit up  4625ms
+   ✓ PINK role orbit geometry (frontend/role-orbit) > O-6 smallest orbit, one step (random_4711, height 740): a step of 0.01 tighter on either axis breaks an air (rule card height, confirmed every 0.01°) or stands the outer orbit up  3738ms
+   ✓ PINK role orbit geometry (frontend/role-orbit) > O-6 smallest orbit, one step (random_4711, height 820): a step of 0.01 tighter on either axis breaks an air (rule card height, confirmed every 0.01°) or stands the outer orbit up  4546ms
+   ✓ PINK role orbit geometry (frontend/role-orbit) > O-6 smallest orbit, one step (random_4711, height 960): a step of 0.01 tighter on either axis breaks an air (rule card height, confirmed every 0.01°) or stands the outer orbit up  2487ms
+   ✓ PINK role orbit geometry (frontend/role-orbit) > O-7 smallest orbit, every horizontal factor (subset, real): no pair of factors that holds and lies gives a smaller kx·ky than the chosen one (confirmed every 0.01°)  23030ms
+   ✓ PINK role orbit geometry (frontend/role-orbit) > O-7 smallest orbit, every horizontal factor (subset, random_4711): no pair of factors that holds and lies gives a smaller kx·ky than the chosen one (confirmed every 0.01°)  17215ms
+   ✓ PINK role orbit geometry (frontend/role-orbit) > O-7 smallest orbit, every horizontal factor (subset, long): no pair of factors that holds and lies gives a smaller kx·ky than the chosen one (confirmed every 0.01°)  17999ms
+   ✓ PINK role orbit geometry (frontend/role-orbit) > O-8 the same cards give the same drawn orbit over every box that can carry it (packed radii at least the least orbit's): outer orbit area within the hundredth grid of the factors 25ms
+   ✓ PINK role orbit geometry (frontend/role-orbit) > O-9 cost and distribution (measured) 9ms
+   ✓ PINK role orbit geometry (frontend/role-orbit) > O-10 Capability Field untouched: the shared L1 packing called directly is the layout syntxCosmosPacking returns for fitting items 0ms
+ Test Files  1 failed (1)
+      Tests  2 failed | 54 passed (56)

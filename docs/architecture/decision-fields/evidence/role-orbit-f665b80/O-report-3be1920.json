@@ -1,0 +1,5682 @@
+{
+  "tip": "ea125e5",
+  "recordedAt": "2026-10-19T00:47:04.388Z",
+  "passed": 395,
+  "total": 395,
+  "deviations": [],
+  "checks": [
+    {
+      "id": "O-1",
+      "name": "1600 org_ro_1: compactness attributes present with two decimals",
+      "ok": true,
+      "detail": [
+        "0.38",
+        "0.64",
+        "full"
+      ]
+    },
+    {
+      "id": "O-1",
+      "name": "1600 org_ro_1: every role card present by data-testid, its title the accessible name, tabbable",
+      "ok": true,
+      "detail": [
+        "syntx-role-role_ro_1_00"
+      ]
+    },
+    {
+      "id": "O-1",
+      "name": "1600 org_ro_1: drawn ellipses = packing radii × the factors (±0.01)",
+      "ok": true,
+      "detail": {
+        "factors": [
+          0.38,
+          0.64
+        ],
+        "ratio": [
+          [
+            "0.3800",
+            "0.6400"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "O-1",
+      "name": "1600 org_ro_1: the drawn factors are syntxCosmosLayout's for the drawn box",
+      "ok": true,
+      "detail": {
+        "dom": [
+          0.38,
+          0.64
+        ],
+        "inProcess": [
+          0.38,
+          0.64
+        ]
+      }
+    },
+    {
+      "id": "O-1",
+      "name": "1600 org_ro_1: the drawn-in outer orbit lies (ry ≤ rx)",
+      "ok": true,
+      "detail": {
+        "rx": 251.75,
+        "ry": 190.72
+      }
+    },
+    {
+      "id": "O-2",
+      "name": "1600 org_ro_1: rendered card width = packed card width, height never below it",
+      "ok": true,
+      "detail": {
+        "widthDiff": "0.00",
+        "heightExcessMax": "0.00"
+      }
+    },
+    {
+      "id": "O-2",
+      "name": "1600 org_ro_1: each card on its drawn ellipse in two LIVE frames 1 s apart (normalised radius 1 ± 0.01) and moving",
+      "ok": true,
+      "detail": {
+        "off": [
+          "0.0000",
+          "0.0000"
+        ],
+        "moved": "13.16"
+      }
+    },
+    {
+      "id": "O-2",
+      "name": "1600 org_ro_1: every tether ends at its card's centre (±1 px)",
+      "ok": true,
+      "detail": "0.00"
+    },
+    {
+      "id": "O-3",
+      "name": "1600 org_ro_1: 16 px to the centre disc's outer rings at every 0.25° (rendered sizes, ±0.5 px)",
+      "ok": true,
+      "detail": "5.80"
+    },
+    {
+      "id": "O-3",
+      "name": "1600 org_ro_1: 12 px / 20 px between cards of one orbit at every 0.25° (rendered sizes, ±0.5 px)",
+      "ok": true,
+      "detail": {
+        "drawn": "Infinity",
+        "packed": "Infinity"
+      }
+    },
+    {
+      "id": "O-3",
+      "name": "1600 org_ro_1: no two rendered cards of one orbit overlap at any 0.25°",
+      "ok": true,
+      "detail": {
+        "drawn": "Infinity",
+        "packed": "Infinity"
+      }
+    },
+    {
+      "id": "O-1",
+      "name": "1600 org_ro_2: compactness attributes present with two decimals",
+      "ok": true,
+      "detail": [
+        "0.38",
+        "0.64",
+        "full"
+      ]
+    },
+    {
+      "id": "O-1",
+      "name": "1600 org_ro_2: every role card present by data-testid, its title the accessible name, tabbable",
+      "ok": true,
+      "detail": [
+        "syntx-role-role_ro_2_00",
+        "syntx-role-role_ro_2_01"
+      ]
+    },
+    {
+      "id": "O-1",
+      "name": "1600 org_ro_2: drawn ellipses = packing radii × the factors (±0.01)",
+      "ok": true,
+      "detail": {
+        "factors": [
+          0.38,
+          0.64
+        ],
+        "ratio": [
+          [
+            "0.3800",
+            "0.6400"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "O-1",
+      "name": "1600 org_ro_2: the drawn factors are syntxCosmosLayout's for the drawn box",
+      "ok": true,
+      "detail": {
+        "dom": [
+          0.38,
+          0.64
+        ],
+        "inProcess": [
+          0.38,
+          0.64
+        ]
+      }
+    },
+    {
+      "id": "O-1",
+      "name": "1600 org_ro_2: the drawn-in outer orbit lies (ry ≤ rx)",
+      "ok": true,
+      "detail": {
+        "rx": 251.75,
+        "ry": 190.72
+      }
+    },
+    {
+      "id": "O-2",
+      "name": "1600 org_ro_2: rendered card width = packed card width, height never below it",
+      "ok": true,
+      "detail": {
+        "widthDiff": "0.00",
+        "heightExcessMax": "9.50"
+      }
+    },
+    {
+      "id": "O-2",
+      "name": "1600 org_ro_2: each card on its drawn ellipse in two LIVE frames 1 s apart (normalised radius 1 ± 0.01) and moving",
+      "ok": true,
+      "detail": {
+        "off": [
+          "0.0000",
+          "0.0000"
+        ],
+        "moved": "12.35"
+      }
+    },
+    {
+      "id": "O-2",
+      "name": "1600 org_ro_2: every tether ends at its card's centre (±1 px)",
+      "ok": true,
+      "detail": "0.00"
+    },
+    {
+      "id": "O-3",
+      "name": "1600 org_ro_2: 16 px to the centre disc's outer rings at every 0.25° (rendered sizes, ±0.5 px)",
+      "ok": true,
+      "detail": "5.80"
+    },
+    {
+      "id": "O-3",
+      "name": "1600 org_ro_2: 12 px / 20 px between cards of one orbit at every 0.25° (rendered sizes, ±0.5 px)",
+      "ok": true,
+      "detail": {
+        "drawn": "151.50",
+        "packed": "412.75"
+      }
+    },
+    {
+      "id": "O-3",
+      "name": "1600 org_ro_2: no two rendered cards of one orbit overlap at any 0.25°",
+      "ok": true,
+      "detail": {
+        "drawn": "167.88",
+        "packed": "431.52"
+      }
+    },
+    {
+      "id": "O-1",
+      "name": "1600 org_ro_3: compactness attributes present with two decimals",
+      "ok": true,
+      "detail": [
+        "0.38",
+        "0.64",
+        "full"
+      ]
+    },
+    {
+      "id": "O-1",
+      "name": "1600 org_ro_3: every role card present by data-testid, its title the accessible name, tabbable",
+      "ok": true,
+      "detail": [
+        "syntx-role-role_ro_3_00",
+        "syntx-role-role_ro_3_01",
+        "syntx-role-role_ro_3_02"
+      ]
+    },
+    {
+      "id": "O-1",
+      "name": "1600 org_ro_3: drawn ellipses = packing radii × the factors (±0.01)",
+      "ok": true,
+      "detail": {
+        "factors": [
+          0.38,
+          0.64
+        ],
+        "ratio": [
+          [
+            "0.3800",
+            "0.6400"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "O-1",
+      "name": "1600 org_ro_3: the drawn factors are syntxCosmosLayout's for the drawn box",
+      "ok": true,
+      "detail": {
+        "dom": [
+          0.38,
+          0.64
+        ],
+        "inProcess": [
+          0.38,
+          0.64
+        ]
+      }
+    },
+    {
+      "id": "O-1",
+      "name": "1600 org_ro_3: the drawn-in outer orbit lies (ry ≤ rx)",
+      "ok": true,
+      "detail": {
+        "rx": 251.75,
+        "ry": 190.72
+      }
+    },
+    {
+      "id": "O-2",
+      "name": "1600 org_ro_3: rendered card width = packed card width, height never below it",
+      "ok": true,
+      "detail": {
+        "widthDiff": "0.00",
+        "heightExcessMax": "11.25"
+      }
+    },
+    {
+      "id": "O-2",
+      "name": "1600 org_ro_3: each card on its drawn ellipse in two LIVE frames 1 s apart (normalised radius 1 ± 0.01) and moving",
+      "ok": true,
+      "detail": {
+        "off": [
+          "0.0000",
+          "0.0000"
+        ],
+        "moved": "13.57"
+      }
+    },
+    {
+      "id": "O-2",
+      "name": "1600 org_ro_3: every tether ends at its card's centre (±1 px)",
+      "ok": true,
+      "detail": "0.00"
+    },
+    {
+      "id": "O-3",
+      "name": "1600 org_ro_3: 16 px to the centre disc's outer rings at every 0.25° (rendered sizes, ±0.5 px)",
+      "ok": true,
+      "detail": "5.80"
+    },
+    {
+      "id": "O-3",
+      "name": "1600 org_ro_3: 12 px / 20 px between cards of one orbit at every 0.25° (rendered sizes, ±0.5 px)",
+      "ok": true,
+      "detail": {
+        "drawn": "109.78",
+        "packed": "340.21"
+      }
+    },
+    {
+      "id": "O-3",
+      "name": "1600 org_ro_3: no two rendered cards of one orbit overlap at any 0.25°",
+      "ok": true,
+      "detail": {
+        "drawn": "126.57",
+        "packed": "358.25"
+      }
+    },
+    {
+      "id": "O-1",
+      "name": "1600 org_ro_5: compactness attributes present with two decimals",
+      "ok": true,
+      "detail": [
+        "0.40",
+        "0.67",
+        "full"
+      ]
+    },
+    {
+      "id": "O-1",
+      "name": "1600 org_ro_5: every role card present by data-testid, its title the accessible name, tabbable",
+      "ok": true,
+      "detail": [
+        "syntx-role-role_ro_5_00",
+        "syntx-role-role_ro_5_01",
+        "syntx-role-role_ro_5_02",
+        "syntx-role-role_ro_5_03",
+        "syntx-role-role_ro_5_04"
+      ]
+    },
+    {
+      "id": "O-1",
+      "name": "1600 org_ro_5: drawn ellipses = packing radii × the factors (±0.01)",
+      "ok": true,
+      "detail": {
+        "factors": [
+          0.4,
+          0.67
+        ],
+        "ratio": [
+          [
+            "0.4000",
+            "0.6700"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "O-1",
+      "name": "1600 org_ro_5: the drawn factors are syntxCosmosLayout's for the drawn box",
+      "ok": true,
+      "detail": {
+        "dom": [
+          0.4,
+          0.67
+        ],
+        "inProcess": [
+          0.4,
+          0.67
+        ]
+      }
+    },
+    {
+      "id": "O-1",
+      "name": "1600 org_ro_5: the drawn-in outer orbit lies (ry ≤ rx)",
+      "ok": true,
+      "detail": {
+        "rx": 259.2,
+        "ry": 199.66
+      }
+    },
+    {
+      "id": "O-2",
+      "name": "1600 org_ro_5: rendered card width = packed card width, height never below it",
+      "ok": true,
+      "detail": {
+        "widthDiff": "0.00",
+        "heightExcessMax": "11.25"
+      }
+    },
+    {
+      "id": "O-2",
+      "name": "1600 org_ro_5: each card on its drawn ellipse in two LIVE frames 1 s apart (normalised radius 1 ± 0.01) and moving",
+      "ok": true,
+      "detail": {
+        "off": [
+          "0.0000",
+          "0.0000"
+        ],
+        "moved": "14.17"
+      }
+    },
+    {
+      "id": "O-2",
+      "name": "1600 org_ro_5: every tether ends at its card's centre (±1 px)",
+      "ok": true,
+      "detail": "0.00"
+    },
+    {
+      "id": "O-3",
+      "name": "1600 org_ro_5: 16 px to the centre disc's outer rings at every 0.25° (rendered sizes, ±0.5 px)",
+      "ok": true,
+      "detail": "4.53"
+    },
+    {
+      "id": "O-3",
+      "name": "1600 org_ro_5: 12 px / 20 px between cards of one orbit at every 0.25° (rendered sizes, ±0.5 px)",
+      "ok": true,
+      "detail": {
+        "drawn": "29.73",
+        "packed": "186.27"
+      }
+    },
+    {
+      "id": "O-3",
+      "name": "1600 org_ro_5: no two rendered cards of one orbit overlap at any 0.25°",
+      "ok": true,
+      "detail": {
+        "drawn": "45.70",
+        "packed": "204.30"
+      }
+    },
+    {
+      "id": "O-1",
+      "name": "1600 org_ro_8: compactness attributes present with two decimals",
+      "ok": true,
+      "detail": [
+        "0.61",
+        "0.74",
+        "full"
+      ]
+    },
+    {
+      "id": "O-1",
+      "name": "1600 org_ro_8: every role card present by data-testid, its title the accessible name, tabbable",
+      "ok": true,
+      "detail": [
+        "syntx-role-role_ro_8_00",
+        "syntx-role-role_ro_8_01",
+        "syntx-role-role_ro_8_02",
+        "syntx-role-role_ro_8_03",
+        "syntx-role-role_ro_8_04",
+        "syntx-role-role_ro_8_05",
+        "syntx-role-role_ro_8_06",
+        "syntx-role-role_ro_8_07"
+      ]
+    },
+    {
+      "id": "O-1",
+      "name": "1600 org_ro_8: drawn ellipses = packing radii × the factors (±0.01)",
+      "ok": true,
+      "detail": {
+        "factors": [
+          0.61,
+          0.74
+        ],
+        "ratio": [
+          [
+            "0.6100",
+            "0.7400"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "O-1",
+      "name": "1600 org_ro_8: the drawn factors are syntxCosmosLayout's for the drawn box",
+      "ok": true,
+      "detail": {
+        "dom": [
+          0.61,
+          0.74
+        ],
+        "inProcess": [
+          0.61,
+          0.74
+        ]
+      }
+    },
+    {
+      "id": "O-1",
+      "name": "1600 org_ro_8: the drawn-in outer orbit lies (ry ≤ rx)",
+      "ok": true,
+      "detail": {
+        "rx": 395.28,
+        "ry": 220.52
+      }
+    },
+    {
+      "id": "O-2",
+      "name": "1600 org_ro_8: rendered card width = packed card width, height never below it",
+      "ok": true,
+      "detail": {
+        "widthDiff": "0.00",
+        "heightExcessMax": "11.25"
+      }
+    },
+    {
+      "id": "O-2",
+      "name": "1600 org_ro_8: each card on its drawn ellipse in two LIVE frames 1 s apart (normalised radius 1 ± 0.01) and moving",
+      "ok": true,
+      "detail": {
+        "off": [
+          "0.0000",
+          "0.0000"
+        ],
+        "moved": "18.42"
+      }
+    },
+    {
+      "id": "O-2",
+      "name": "1600 org_ro_8: every tether ends at its card's centre (±1 px)",
+      "ok": true,
+      "detail": "0.00"
+    },
+    {
+      "id": "O-3",
+      "name": "1600 org_ro_8: 16 px to the centre disc's outer rings at every 0.25° (rendered sizes, ±0.5 px)",
+      "ok": true,
+      "detail": "53.67"
+    },
+    {
+      "id": "O-3",
+      "name": "1600 org_ro_8: 12 px / 20 px between cards of one orbit at every 0.25° (rendered sizes, ±0.5 px)",
+      "ok": true,
+      "detail": {
+        "drawn": "4.76",
+        "packed": "73.74"
+      }
+    },
+    {
+      "id": "O-3",
+      "name": "1600 org_ro_8: no two rendered cards of one orbit overlap at any 0.25°",
+      "ok": true,
+      "detail": {
+        "drawn": "22.02",
+        "packed": "91.72"
+      }
+    },
+    {
+      "id": "O-1",
+      "name": "1600 org_ro_14: compactness attributes present with two decimals",
+      "ok": true,
+      "detail": [
+        "1.00",
+        "1.00",
+        "full"
+      ]
+    },
+    {
+      "id": "O-1",
+      "name": "1600 org_ro_14: every role card present by data-testid, its title the accessible name, tabbable",
+      "ok": true,
+      "detail": [
+        "syntx-role-role_ro_14_00",
+        "syntx-role-role_ro_14_01",
+        "syntx-role-role_ro_14_02",
+        "syntx-role-role_ro_14_03",
+        "syntx-role-role_ro_14_04",
+        "syntx-role-role_ro_14_05",
+        "syntx-role-role_ro_14_06",
+        "syntx-role-role_ro_14_07",
+        "syntx-role-role_ro_14_08",
+        "syntx-role-role_ro_14_09",
+        "syntx-role-role_ro_14_10",
+        "syntx-role-role_ro_14_11",
+        "syntx-role-role_ro_14_12",
+        "syntx-role-role_ro_14_13"
+      ]
+    },
+    {
+      "id": "O-1",
+      "name": "1600 org_ro_14: drawn ellipses = packing radii × the factors (±0.01)",
+      "ok": true,
+      "detail": {
+        "factors": [
+          1,
+          1
+        ],
+        "ratio": [
+          [
+            "1.0000",
+            "1.0000"
+          ],
+          [
+            "1.0000",
+            "1.0000"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "O-1",
+      "name": "1600 org_ro_14: the drawn factors are syntxCosmosLayout's for the drawn box",
+      "ok": true,
+      "detail": {
+        "dom": [
+          1,
+          1
+        ],
+        "inProcess": [
+          1,
+          1
+        ]
+      }
+    },
+    {
+      "id": "O-2",
+      "name": "1600 org_ro_14: rendered card width = packed card width, height never below it",
+      "ok": true,
+      "detail": {
+        "widthDiff": "0.00",
+        "heightExcessMax": "11.25"
+      }
+    },
+    {
+      "id": "O-2",
+      "name": "1600 org_ro_14: each card on its drawn ellipse in two LIVE frames 1 s apart (normalised radius 1 ± 0.01) and moving",
+      "ok": true,
+      "detail": {
+        "off": [
+          "0.0000",
+          "0.0000"
+        ],
+        "moved": "25.86"
+      }
+    },
+    {
+      "id": "O-2",
+      "name": "1600 org_ro_14: every tether ends at its card's centre (±1 px)",
+      "ok": true,
+      "detail": "0.00"
+    },
+    {
+      "id": "O-3",
+      "name": "1600 org_ro_14: not drawn in, the orbit is the packing (air identical)",
+      "ok": true,
+      "detail": {
+        "centre": -16.32,
+        "same": -0.13,
+        "across": -3.79,
+        "overlap": 17.72
+      }
+    },
+    {
+      "id": "O-1",
+      "name": "1600 org_ro_long_6: compactness attributes present with two decimals",
+      "ok": true,
+      "detail": [
+        "0.74",
+        "0.65",
+        "full"
+      ]
+    },
+    {
+      "id": "O-1",
+      "name": "1600 org_ro_long_6: every role card present by data-testid, its title the accessible name, tabbable",
+      "ok": true,
+      "detail": [
+        "syntx-role-role_ro_long_6_00",
+        "syntx-role-role_ro_long_6_01",
+        "syntx-role-role_ro_long_6_02",
+        "syntx-role-role_ro_long_6_03",
+        "syntx-role-role_ro_long_6_04",
+        "syntx-role-role_ro_long_6_05"
+      ]
+    },
+    {
+      "id": "O-1",
+      "name": "1600 org_ro_long_6: drawn ellipses = packing radii × the factors (±0.01)",
+      "ok": true,
+      "detail": {
+        "factors": [
+          0.74,
+          0.65
+        ],
+        "ratio": [
+          [
+            "0.7400",
+            "0.6500"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "O-1",
+      "name": "1600 org_ro_long_6: the drawn factors are syntxCosmosLayout's for the drawn box",
+      "ok": true,
+      "detail": {
+        "dom": [
+          0.74,
+          0.65
+        ],
+        "inProcess": [
+          0.74,
+          0.65
+        ]
+      }
+    },
+    {
+      "id": "O-1",
+      "name": "1600 org_ro_long_6: the drawn-in outer orbit lies (ry ≤ rx)",
+      "ok": true,
+      "detail": {
+        "rx": 460.28,
+        "ry": 187.85
+      }
+    },
+    {
+      "id": "O-2",
+      "name": "1600 org_ro_long_6: rendered card width = packed card width, height never below it",
+      "ok": true,
+      "detail": {
+        "widthDiff": "0.00",
+        "heightExcessMax": "0.00"
+      }
+    },
+    {
+      "id": "O-2",
+      "name": "1600 org_ro_long_6: each card on its drawn ellipse in two LIVE frames 1 s apart (normalised radius 1 ± 0.01) and moving",
+      "ok": true,
+      "detail": {
+        "off": [
+          "0.0000",
+          "0.0000"
+        ],
+        "moved": "25.87"
+      }
+    },
+    {
+      "id": "O-2",
+      "name": "1600 org_ro_long_6: every tether ends at its card's centre (±1 px)",
+      "ok": true,
+      "detail": "0.00"
+    },
+    {
+      "id": "O-3",
+      "name": "1600 org_ro_long_6: 16 px to the centre disc's outer rings at every 0.25° (rendered sizes, ±0.5 px)",
+      "ok": true,
+      "detail": "15.20"
+    },
+    {
+      "id": "O-3",
+      "name": "1600 org_ro_long_6: 12 px / 20 px between cards of one orbit at every 0.25° (rendered sizes, ±0.5 px)",
+      "ok": true,
+      "detail": {
+        "drawn": "8.79",
+        "packed": "93.27"
+      }
+    },
+    {
+      "id": "O-3",
+      "name": "1600 org_ro_long_6: no two rendered cards of one orbit overlap at any 0.25°",
+      "ok": true,
+      "detail": {
+        "drawn": "26.48",
+        "packed": "110.95"
+      }
+    },
+    {
+      "id": "O-1",
+      "name": "1600 org_ro_long_8: compactness attributes present with two decimals",
+      "ok": true,
+      "detail": [
+        "0.93",
+        "0.88",
+        "full"
+      ]
+    },
+    {
+      "id": "O-1",
+      "name": "1600 org_ro_long_8: every role card present by data-testid, its title the accessible name, tabbable",
+      "ok": true,
+      "detail": [
+        "syntx-role-role_ro_long_8_00",
+        "syntx-role-role_ro_long_8_01",
+        "syntx-role-role_ro_long_8_02",
+        "syntx-role-role_ro_long_8_03",
+        "syntx-role-role_ro_long_8_04",
+        "syntx-role-role_ro_long_8_05",
+        "syntx-role-role_ro_long_8_06",
+        "syntx-role-role_ro_long_8_07"
+      ]
+    },
+    {
+      "id": "O-1",
+      "name": "1600 org_ro_long_8: drawn ellipses = packing radii × the factors (±0.01)",
+      "ok": true,
+      "detail": {
+        "factors": [
+          0.93,
+          0.88
+        ],
+        "ratio": [
+          [
+            "0.9300",
+            "0.8800"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "O-1",
+      "name": "1600 org_ro_long_8: the drawn factors are syntxCosmosLayout's for the drawn box",
+      "ok": true,
+      "detail": {
+        "dom": [
+          0.93,
+          0.88
+        ],
+        "inProcess": [
+          0.93,
+          0.88
+        ]
+      }
+    },
+    {
+      "id": "O-1",
+      "name": "1600 org_ro_long_8: the drawn-in outer orbit lies (ry ≤ rx)",
+      "ok": true,
+      "detail": {
+        "rx": 578.46,
+        "ry": 254.32
+      }
+    },
+    {
+      "id": "O-2",
+      "name": "1600 org_ro_long_8: rendered card width = packed card width, height never below it",
+      "ok": true,
+      "detail": {
+        "widthDiff": "0.00",
+        "heightExcessMax": "0.00"
+      }
+    },
+    {
+      "id": "O-2",
+      "name": "1600 org_ro_long_8: each card on its drawn ellipse in two LIVE frames 1 s apart (normalised radius 1 ± 0.01) and moving",
+      "ok": true,
+      "detail": {
+        "off": [
+          "0.0000",
+          "0.0000"
+        ],
+        "moved": "29.27"
+      }
+    },
+    {
+      "id": "O-2",
+      "name": "1600 org_ro_long_8: every tether ends at its card's centre (±1 px)",
+      "ok": true,
+      "detail": "0.00"
+    },
+    {
+      "id": "O-3",
+      "name": "1600 org_ro_long_8: 16 px to the centre disc's outer rings at every 0.25° (rendered sizes, ±0.5 px)",
+      "ok": true,
+      "detail": "83.04"
+    },
+    {
+      "id": "O-3",
+      "name": "1600 org_ro_long_8: 12 px / 20 px between cards of one orbit at every 0.25° (rendered sizes, ±0.5 px)",
+      "ok": true,
+      "detail": {
+        "drawn": "8.36",
+        "packed": "28.62"
+      }
+    },
+    {
+      "id": "O-3",
+      "name": "1600 org_ro_long_8: no two rendered cards of one orbit overlap at any 0.25°",
+      "ok": true,
+      "detail": {
+        "drawn": "25.88",
+        "packed": "45.98"
+      }
+    },
+    {
+      "id": "O-1",
+      "name": "1600 org_ro_short_12: compactness attributes present with two decimals",
+      "ok": true,
+      "detail": [
+        "0.54",
+        "0.93",
+        "full"
+      ]
+    },
+    {
+      "id": "O-1",
+      "name": "1600 org_ro_short_12: every role card present by data-testid, its title the accessible name, tabbable",
+      "ok": true,
+      "detail": [
+        "syntx-role-role_ro_short_12_00",
+        "syntx-role-role_ro_short_12_01",
+        "syntx-role-role_ro_short_12_02",
+        "syntx-role-role_ro_short_12_03",
+        "syntx-role-role_ro_short_12_04",
+        "syntx-role-role_ro_short_12_05",
+        "syntx-role-role_ro_short_12_06",
+        "syntx-role-role_ro_short_12_07",
+        "syntx-role-role_ro_short_12_08",
+        "syntx-role-role_ro_short_12_09",
+        "syntx-role-role_ro_short_12_10",
+        "syntx-role-role_ro_short_12_11"
+      ]
+    },
+    {
+      "id": "O-1",
+      "name": "1600 org_ro_short_12: drawn ellipses = packing radii × the factors (±0.01)",
+      "ok": true,
+      "detail": {
+        "factors": [
+          0.54,
+          0.93
+        ],
+        "ratio": [
+          [
+            "0.5400",
+            "0.9300"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "O-1",
+      "name": "1600 org_ro_short_12: the drawn factors are syntxCosmosLayout's for the drawn box",
+      "ok": true,
+      "detail": {
+        "dom": [
+          0.54,
+          0.93
+        ],
+        "inProcess": [
+          0.54,
+          0.93
+        ]
+      }
+    },
+    {
+      "id": "O-1",
+      "name": "1600 org_ro_short_12: the drawn-in outer orbit lies (ry ≤ rx)",
+      "ok": true,
+      "detail": {
+        "rx": 382.32,
+        "ry": 284.58
+      }
+    },
+    {
+      "id": "O-2",
+      "name": "1600 org_ro_short_12: rendered card width = packed card width, height never below it",
+      "ok": true,
+      "detail": {
+        "widthDiff": "0.00",
+        "heightExcessMax": "11.25"
+      }
+    },
+    {
+      "id": "O-2",
+      "name": "1600 org_ro_short_12: each card on its drawn ellipse in two LIVE frames 1 s apart (normalised radius 1 ± 0.01) and moving",
+      "ok": true,
+      "detail": {
+        "off": [
+          "0.0000",
+          "0.0000"
+        ],
+        "moved": "18.75"
+      }
+    },
+    {
+      "id": "O-2",
+      "name": "1600 org_ro_short_12: every tether ends at its card's centre (±1 px)",
+      "ok": true,
+      "detail": "0.00"
+    },
+    {
+      "id": "O-3",
+      "name": "1600 org_ro_short_12: 16 px to the centre disc's outer rings at every 0.25° (rendered sizes, ±0.5 px)",
+      "ok": true,
+      "detail": "127.33"
+    },
+    {
+      "id": "O-3",
+      "name": "1600 org_ro_short_12: 12 px / 20 px between cards of one orbit at every 0.25° (rendered sizes, ±0.5 px)",
+      "ok": true,
+      "detail": {
+        "drawn": "0.64",
+        "packed": "35.75"
+      }
+    },
+    {
+      "id": "O-3",
+      "name": "1600 org_ro_short_12: no two rendered cards of one orbit overlap at any 0.25°",
+      "ok": true,
+      "detail": {
+        "drawn": "17.03",
+        "packed": "54.41"
+      }
+    },
+    {
+      "id": "O-4",
+      "name": "1600: a role card selects its role (kind ROLE, URL jobRoleId)",
+      "ok": true,
+      "detail": {
+        "kind": "ROLE",
+        "url": "?focus=FIELD&jobPoolUploadId=JPOOL_0E80C088ADB81C788DC570CECC20F956&jobOrganizationId=org_ro_5&jobRoleId=role_ro_5_02"
+      }
+    },
+    {
+      "id": "O-4",
+      "name": "1600: Escape returns to the organization",
+      "ok": true,
+      "detail": "?focus=FIELD&jobPoolUploadId=JPOOL_0E80C088ADB81C788DC570CECC20F956&jobOrganizationId=org_ro_5"
+    },
+    {
+      "id": "O-4",
+      "name": "1600: REDUCED: the drawn-in orbit holds still (1.5 s) with the same factors",
+      "ok": true,
+      "detail": {
+        "still": "0.000",
+        "factors": [
+          "0.40",
+          "0.67"
+        ]
+      }
+    },
+    {
+      "id": "O-1",
+      "name": "1280 org_ro_1: compactness attributes present with two decimals",
+      "ok": true,
+      "detail": [
+        "0.49",
+        "0.70",
+        "full"
+      ]
+    },
+    {
+      "id": "O-1",
+      "name": "1280 org_ro_1: every role card present by data-testid, its title the accessible name, tabbable",
+      "ok": true,
+      "detail": [
+        "syntx-role-role_ro_1_00"
+      ]
+    },
+    {
+      "id": "O-1",
+      "name": "1280 org_ro_1: drawn ellipses = packing radii × the factors (±0.01)",
+      "ok": true,
+      "detail": {
+        "factors": [
+          0.49,
+          0.7
+        ],
+        "ratio": [
+          [
+            "0.4900",
+            "0.7000"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "O-1",
+      "name": "1280 org_ro_1: the drawn factors are syntxCosmosLayout's for the drawn box",
+      "ok": true,
+      "detail": {
+        "dom": [
+          0.49,
+          0.7
+        ],
+        "inProcess": [
+          0.49,
+          0.7
+        ]
+      }
+    },
+    {
+      "id": "O-1",
+      "name": "1280 org_ro_1: the drawn-in outer orbit lies (ry ≤ rx)",
+      "ok": true,
+      "detail": {
+        "rx": 246.23,
+        "ry": 194.6
+      }
+    },
+    {
+      "id": "O-2",
+      "name": "1280 org_ro_1: rendered card width = packed card width, height never below it",
+      "ok": true,
+      "detail": {
+        "widthDiff": "0.00",
+        "heightExcessMax": "0.00"
+      }
+    },
+    {
+      "id": "O-2",
+      "name": "1280 org_ro_1: each card on its drawn ellipse in two LIVE frames 1 s apart (normalised radius 1 ± 0.01) and moving",
+      "ok": true,
+      "detail": {
+        "off": [
+          "0.0000",
+          "0.0000"
+        ],
+        "moved": "11.49"
+      }
+    },
+    {
+      "id": "O-2",
+      "name": "1280 org_ro_1: every tether ends at its card's centre (±1 px)",
+      "ok": true,
+      "detail": "0.00"
+    },
+    {
+      "id": "O-3",
+      "name": "1280 org_ro_1: 16 px to the centre disc's outer rings at every 0.25° (rendered sizes, ±0.5 px)",
+      "ok": true,
+      "detail": "5.26"
+    },
+    {
+      "id": "O-3",
+      "name": "1280 org_ro_1: 12 px / 20 px between cards of one orbit at every 0.25° (rendered sizes, ±0.5 px)",
+      "ok": true,
+      "detail": {
+        "drawn": "Infinity",
+        "packed": "Infinity"
+      }
+    },
+    {
+      "id": "O-3",
+      "name": "1280 org_ro_1: no two rendered cards of one orbit overlap at any 0.25°",
+      "ok": true,
+      "detail": {
+        "drawn": "Infinity",
+        "packed": "Infinity"
+      }
+    },
+    {
+      "id": "O-1",
+      "name": "1280 org_ro_2: compactness attributes present with two decimals",
+      "ok": true,
+      "detail": [
+        "0.49",
+        "0.70",
+        "full"
+      ]
+    },
+    {
+      "id": "O-1",
+      "name": "1280 org_ro_2: every role card present by data-testid, its title the accessible name, tabbable",
+      "ok": true,
+      "detail": [
+        "syntx-role-role_ro_2_00",
+        "syntx-role-role_ro_2_01"
+      ]
+    },
+    {
+      "id": "O-1",
+      "name": "1280 org_ro_2: drawn ellipses = packing radii × the factors (±0.01)",
+      "ok": true,
+      "detail": {
+        "factors": [
+          0.49,
+          0.7
+        ],
+        "ratio": [
+          [
+            "0.4900",
+            "0.7000"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "O-1",
+      "name": "1280 org_ro_2: the drawn factors are syntxCosmosLayout's for the drawn box",
+      "ok": true,
+      "detail": {
+        "dom": [
+          0.49,
+          0.7
+        ],
+        "inProcess": [
+          0.49,
+          0.7
+        ]
+      }
+    },
+    {
+      "id": "O-1",
+      "name": "1280 org_ro_2: the drawn-in outer orbit lies (ry ≤ rx)",
+      "ok": true,
+      "detail": {
+        "rx": 246.23,
+        "ry": 194.6
+      }
+    },
+    {
+      "id": "O-2",
+      "name": "1280 org_ro_2: rendered card width = packed card width, height never below it",
+      "ok": true,
+      "detail": {
+        "widthDiff": "0.00",
+        "heightExcessMax": "9.50"
+      }
+    },
+    {
+      "id": "O-2",
+      "name": "1280 org_ro_2: each card on its drawn ellipse in two LIVE frames 1 s apart (normalised radius 1 ± 0.01) and moving",
+      "ok": true,
+      "detail": {
+        "off": [
+          "0.0000",
+          "0.0000"
+        ],
+        "moved": "12.28"
+      }
+    },
+    {
+      "id": "O-2",
+      "name": "1280 org_ro_2: every tether ends at its card's centre (±1 px)",
+      "ok": true,
+      "detail": "0.00"
+    },
+    {
+      "id": "O-3",
+      "name": "1280 org_ro_2: 16 px to the centre disc's outer rings at every 0.25° (rendered sizes, ±0.5 px)",
+      "ok": true,
+      "detail": "5.26"
+    },
+    {
+      "id": "O-3",
+      "name": "1280 org_ro_2: 12 px / 20 px between cards of one orbit at every 0.25° (rendered sizes, ±0.5 px)",
+      "ok": true,
+      "detail": {
+        "drawn": "150.69",
+        "packed": "348.74"
+      }
+    },
+    {
+      "id": "O-3",
+      "name": "1280 org_ro_2: no two rendered cards of one orbit overlap at any 0.25°",
+      "ok": true,
+      "detail": {
+        "drawn": "166.92",
+        "packed": "366.57"
+      }
+    },
+    {
+      "id": "O-1",
+      "name": "1280 org_ro_3: compactness attributes present with two decimals",
+      "ok": true,
+      "detail": [
+        "0.49",
+        "0.70",
+        "full"
+      ]
+    },
+    {
+      "id": "O-1",
+      "name": "1280 org_ro_3: every role card present by data-testid, its title the accessible name, tabbable",
+      "ok": true,
+      "detail": [
+        "syntx-role-role_ro_3_00",
+        "syntx-role-role_ro_3_01",
+        "syntx-role-role_ro_3_02"
+      ]
+    },
+    {
+      "id": "O-1",
+      "name": "1280 org_ro_3: drawn ellipses = packing radii × the factors (±0.01)",
+      "ok": true,
+      "detail": {
+        "factors": [
+          0.49,
+          0.7
+        ],
+        "ratio": [
+          [
+            "0.4900",
+            "0.7000"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "O-1",
+      "name": "1280 org_ro_3: the drawn factors are syntxCosmosLayout's for the drawn box",
+      "ok": true,
+      "detail": {
+        "dom": [
+          0.49,
+          0.7
+        ],
+        "inProcess": [
+          0.49,
+          0.7
+        ]
+      }
+    },
+    {
+      "id": "O-1",
+      "name": "1280 org_ro_3: the drawn-in outer orbit lies (ry ≤ rx)",
+      "ok": true,
+      "detail": {
+        "rx": 246.23,
+        "ry": 194.6
+      }
+    },
+    {
+      "id": "O-2",
+      "name": "1280 org_ro_3: rendered card width = packed card width, height never below it",
+      "ok": true,
+      "detail": {
+        "widthDiff": "0.00",
+        "heightExcessMax": "11.25"
+      }
+    },
+    {
+      "id": "O-2",
+      "name": "1280 org_ro_3: each card on its drawn ellipse in two LIVE frames 1 s apart (normalised radius 1 ± 0.01) and moving",
+      "ok": true,
+      "detail": {
+        "off": [
+          "0.0000",
+          "0.0000"
+        ],
+        "moved": "11.88"
+      }
+    },
+    {
+      "id": "O-2",
+      "name": "1280 org_ro_3: every tether ends at its card's centre (±1 px)",
+      "ok": true,
+      "detail": "0.00"
+    },
+    {
+      "id": "O-3",
+      "name": "1280 org_ro_3: 16 px to the centre disc's outer rings at every 0.25° (rendered sizes, ±0.5 px)",
+      "ok": true,
+      "detail": "5.26"
+    },
+    {
+      "id": "O-3",
+      "name": "1280 org_ro_3: 12 px / 20 px between cards of one orbit at every 0.25° (rendered sizes, ±0.5 px)",
+      "ok": true,
+      "detail": {
+        "drawn": "108.88",
+        "packed": "283.36"
+      }
+    },
+    {
+      "id": "O-3",
+      "name": "1280 org_ro_3: no two rendered cards of one orbit overlap at any 0.25°",
+      "ok": true,
+      "detail": {
+        "drawn": "125.48",
+        "packed": "300.96"
+      }
+    },
+    {
+      "id": "O-1",
+      "name": "1280 org_ro_5: compactness attributes present with two decimals",
+      "ok": true,
+      "detail": [
+        "0.53",
+        "0.72",
+        "full"
+      ]
+    },
+    {
+      "id": "O-1",
+      "name": "1280 org_ro_5: every role card present by data-testid, its title the accessible name, tabbable",
+      "ok": true,
+      "detail": [
+        "syntx-role-role_ro_5_00",
+        "syntx-role-role_ro_5_01",
+        "syntx-role-role_ro_5_02",
+        "syntx-role-role_ro_5_03",
+        "syntx-role-role_ro_5_04"
+      ]
+    },
+    {
+      "id": "O-1",
+      "name": "1280 org_ro_5: drawn ellipses = packing radii × the factors (±0.01)",
+      "ok": true,
+      "detail": {
+        "factors": [
+          0.53,
+          0.72
+        ],
+        "ratio": [
+          [
+            "0.5300",
+            "0.7200"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "O-1",
+      "name": "1280 org_ro_5: the drawn factors are syntxCosmosLayout's for the drawn box",
+      "ok": true,
+      "detail": {
+        "dom": [
+          0.53,
+          0.72
+        ],
+        "inProcess": [
+          0.53,
+          0.72
+        ]
+      }
+    },
+    {
+      "id": "O-1",
+      "name": "1280 org_ro_5: the drawn-in outer orbit lies (ry ≤ rx)",
+      "ok": true,
+      "detail": {
+        "rx": 258.64,
+        "ry": 200.16
+      }
+    },
+    {
+      "id": "O-2",
+      "name": "1280 org_ro_5: rendered card width = packed card width, height never below it",
+      "ok": true,
+      "detail": {
+        "widthDiff": "0.00",
+        "heightExcessMax": "11.25"
+      }
+    },
+    {
+      "id": "O-2",
+      "name": "1280 org_ro_5: each card on its drawn ellipse in two LIVE frames 1 s apart (normalised radius 1 ± 0.01) and moving",
+      "ok": true,
+      "detail": {
+        "off": [
+          "0.0000",
+          "0.0000"
+        ],
+        "moved": "12.48"
+      }
+    },
+    {
+      "id": "O-2",
+      "name": "1280 org_ro_5: every tether ends at its card's centre (±1 px)",
+      "ok": true,
+      "detail": "0.00"
+    },
+    {
+      "id": "O-3",
+      "name": "1280 org_ro_5: 16 px to the centre disc's outer rings at every 0.25° (rendered sizes, ±0.5 px)",
+      "ok": true,
+      "detail": "4.45"
+    },
+    {
+      "id": "O-3",
+      "name": "1280 org_ro_5: 12 px / 20 px between cards of one orbit at every 0.25° (rendered sizes, ±0.5 px)",
+      "ok": true,
+      "detail": {
+        "drawn": "29.84",
+        "packed": "143.54"
+      }
+    },
+    {
+      "id": "O-3",
+      "name": "1280 org_ro_5: no two rendered cards of one orbit overlap at any 0.25°",
+      "ok": true,
+      "detail": {
+        "drawn": "45.79",
+        "packed": "161.31"
+      }
+    },
+    {
+      "id": "O-1",
+      "name": "1280 org_ro_8: compactness attributes present with two decimals",
+      "ok": true,
+      "detail": [
+        "0.85",
+        "0.76",
+        "full"
+      ]
+    },
+    {
+      "id": "O-1",
+      "name": "1280 org_ro_8: every role card present by data-testid, its title the accessible name, tabbable",
+      "ok": true,
+      "detail": [
+        "syntx-role-role_ro_8_00",
+        "syntx-role-role_ro_8_01",
+        "syntx-role-role_ro_8_02",
+        "syntx-role-role_ro_8_03",
+        "syntx-role-role_ro_8_04",
+        "syntx-role-role_ro_8_05",
+        "syntx-role-role_ro_8_06",
+        "syntx-role-role_ro_8_07"
+      ]
+    },
+    {
+      "id": "O-1",
+      "name": "1280 org_ro_8: drawn ellipses = packing radii × the factors (±0.01)",
+      "ok": true,
+      "detail": {
+        "factors": [
+          0.85,
+          0.76
+        ],
+        "ratio": [
+          [
+            "0.8500",
+            "0.7600"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "O-1",
+      "name": "1280 org_ro_8: the drawn factors are syntxCosmosLayout's for the drawn box",
+      "ok": true,
+      "detail": {
+        "dom": [
+          0.85,
+          0.76
+        ],
+        "inProcess": [
+          0.85,
+          0.76
+        ]
+      }
+    },
+    {
+      "id": "O-1",
+      "name": "1280 org_ro_8: the drawn-in outer orbit lies (ry ≤ rx)",
+      "ok": true,
+      "detail": {
+        "rx": 414.8,
+        "ry": 211.28
+      }
+    },
+    {
+      "id": "O-2",
+      "name": "1280 org_ro_8: rendered card width = packed card width, height never below it",
+      "ok": true,
+      "detail": {
+        "widthDiff": "0.00",
+        "heightExcessMax": "11.25"
+      }
+    },
+    {
+      "id": "O-2",
+      "name": "1280 org_ro_8: each card on its drawn ellipse in two LIVE frames 1 s apart (normalised radius 1 ± 0.01) and moving",
+      "ok": true,
+      "detail": {
+        "off": [
+          "0.0000",
+          "0.0000"
+        ],
+        "moved": "18.99"
+      }
+    },
+    {
+      "id": "O-2",
+      "name": "1280 org_ro_8: every tether ends at its card's centre (±1 px)",
+      "ok": true,
+      "detail": "0.00"
+    },
+    {
+      "id": "O-3",
+      "name": "1280 org_ro_8: 16 px to the centre disc's outer rings at every 0.25° (rendered sizes, ±0.5 px)",
+      "ok": true,
+      "detail": "47.10"
+    },
+    {
+      "id": "O-3",
+      "name": "1280 org_ro_8: 12 px / 20 px between cards of one orbit at every 0.25° (rendered sizes, ±0.5 px)",
+      "ok": true,
+      "detail": {
+        "drawn": "5.23",
+        "packed": "42.70"
+      }
+    },
+    {
+      "id": "O-3",
+      "name": "1280 org_ro_8: no two rendered cards of one orbit overlap at any 0.25°",
+      "ok": true,
+      "detail": {
+        "drawn": "22.42",
+        "packed": "59.92"
+      }
+    },
+    {
+      "id": "O-1",
+      "name": "1280 org_ro_14: compactness attributes present with two decimals",
+      "ok": true,
+      "detail": [
+        "1.00",
+        "1.00",
+        "full"
+      ]
+    },
+    {
+      "id": "O-1",
+      "name": "1280 org_ro_14: every role card present by data-testid, its title the accessible name, tabbable",
+      "ok": true,
+      "detail": [
+        "syntx-role-role_ro_14_05",
+        "syntx-role-role_ro_14_06",
+        "syntx-role-role_ro_14_09",
+        "syntx-role-role_ro_14_10",
+        "syntx-role-role_ro_14_00",
+        "syntx-role-role_ro_14_01",
+        "syntx-role-role_ro_14_02",
+        "syntx-role-role_ro_14_03",
+        "syntx-role-role_ro_14_04",
+        "syntx-role-role_ro_14_07",
+        "syntx-role-role_ro_14_08",
+        "syntx-role-role_ro_14_11",
+        "syntx-role-role_ro_14_12",
+        "syntx-role-role_ro_14_13"
+      ]
+    },
+    {
+      "id": "O-1",
+      "name": "1280 org_ro_14: drawn ellipses = packing radii × the factors (±0.01)",
+      "ok": true,
+      "detail": {
+        "factors": [
+          1,
+          1
+        ],
+        "ratio": [
+          [
+            "1.0000",
+            "1.0000"
+          ],
+          [
+            "1.0000",
+            "1.0000"
+          ],
+          [
+            "1.0000",
+            "1.0000"
+          ],
+          [
+            "1.0000",
+            "1.0000"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "O-1",
+      "name": "1280 org_ro_14: the drawn factors are syntxCosmosLayout's for the drawn box",
+      "ok": true,
+      "detail": {
+        "dom": [
+          1,
+          1
+        ],
+        "inProcess": [
+          1,
+          1
+        ]
+      }
+    },
+    {
+      "id": "O-2",
+      "name": "1280 org_ro_14: rendered card width = packed card width, height never below it",
+      "ok": true,
+      "detail": {
+        "widthDiff": "0.00",
+        "heightExcessMax": "11.25"
+      }
+    },
+    {
+      "id": "O-2",
+      "name": "1280 org_ro_14: each card on its drawn ellipse in two LIVE frames 1 s apart (normalised radius 1 ± 0.01) and moving",
+      "ok": true,
+      "detail": {
+        "off": [
+          "0.0000",
+          "0.0000"
+        ],
+        "moved": "14.29"
+      }
+    },
+    {
+      "id": "O-2",
+      "name": "1280 org_ro_14: every tether ends at its card's centre (±1 px)",
+      "ok": true,
+      "detail": "0.00"
+    },
+    {
+      "id": "O-3",
+      "name": "1280 org_ro_14: not drawn in, the orbit is the packing (air identical)",
+      "ok": true,
+      "detail": {
+        "centre": -3.04,
+        "same": -78.11,
+        "across": -1.74,
+        "overlap": -62.98
+      }
+    },
+    {
+      "id": "O-1",
+      "name": "1280 org_ro_long_6: compactness attributes present with two decimals",
+      "ok": true,
+      "detail": [
+        "0.75",
+        "0.89",
+        "full"
+      ]
+    },
+    {
+      "id": "O-1",
+      "name": "1280 org_ro_long_6: every role card present by data-testid, its title the accessible name, tabbable",
+      "ok": true,
+      "detail": [
+        "syntx-role-role_ro_long_6_00",
+        "syntx-role-role_ro_long_6_01",
+        "syntx-role-role_ro_long_6_02",
+        "syntx-role-role_ro_long_6_03",
+        "syntx-role-role_ro_long_6_04",
+        "syntx-role-role_ro_long_6_05"
+      ]
+    },
+    {
+      "id": "O-1",
+      "name": "1280 org_ro_long_6: drawn ellipses = packing radii × the factors (±0.01)",
+      "ok": true,
+      "detail": {
+        "factors": [
+          0.75,
+          0.89
+        ],
+        "ratio": [
+          [
+            "0.7500",
+            "0.8900"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "O-1",
+      "name": "1280 org_ro_long_6: the drawn factors are syntxCosmosLayout's for the drawn box",
+      "ok": true,
+      "detail": {
+        "dom": [
+          0.75,
+          0.89
+        ],
+        "inProcess": [
+          0.75,
+          0.89
+        ]
+      }
+    },
+    {
+      "id": "O-1",
+      "name": "1280 org_ro_long_6: the drawn-in outer orbit lies (ry ≤ rx)",
+      "ok": true,
+      "detail": {
+        "rx": 363,
+        "ry": 231.4
+      }
+    },
+    {
+      "id": "O-2",
+      "name": "1280 org_ro_long_6: rendered card width = packed card width, height never below it",
+      "ok": true,
+      "detail": {
+        "widthDiff": "0.00",
+        "heightExcessMax": "0.00"
+      }
+    },
+    {
+      "id": "O-2",
+      "name": "1280 org_ro_long_6: each card on its drawn ellipse in two LIVE frames 1 s apart (normalised radius 1 ± 0.01) and moving",
+      "ok": true,
+      "detail": {
+        "off": [
+          "0.0000",
+          "0.0000"
+        ],
+        "moved": "17.21"
+      }
+    },
+    {
+      "id": "O-2",
+      "name": "1280 org_ro_long_6: every tether ends at its card's centre (±1 px)",
+      "ok": true,
+      "detail": "0.00"
+    },
+    {
+      "id": "O-3",
+      "name": "1280 org_ro_long_6: 16 px to the centre disc's outer rings at every 0.25° (rendered sizes, ±0.5 px)",
+      "ok": true,
+      "detail": "40.35"
+    },
+    {
+      "id": "O-3",
+      "name": "1280 org_ro_long_6: 12 px / 20 px between cards of one orbit at every 0.25° (rendered sizes, ±0.5 px)",
+      "ok": true,
+      "detail": {
+        "drawn": "7.35",
+        "packed": "51.76"
+      }
+    },
+    {
+      "id": "O-3",
+      "name": "1280 org_ro_long_6: no two rendered cards of one orbit overlap at any 0.25°",
+      "ok": true,
+      "detail": {
+        "drawn": "23.66",
+        "packed": "68.80"
+      }
+    },
+    {
+      "id": "O-1",
+      "name": "1280 org_ro_long_8: compactness attributes present with two decimals",
+      "ok": true,
+      "detail": [
+        "1.00",
+        "1.00",
+        "full"
+      ]
+    },
+    {
+      "id": "O-1",
+      "name": "1280 org_ro_long_8: every role card present by data-testid, its title the accessible name, tabbable",
+      "ok": true,
+      "detail": [
+        "syntx-role-role_ro_long_8_00",
+        "syntx-role-role_ro_long_8_01",
+        "syntx-role-role_ro_long_8_02",
+        "syntx-role-role_ro_long_8_03",
+        "syntx-role-role_ro_long_8_04",
+        "syntx-role-role_ro_long_8_05",
+        "syntx-role-role_ro_long_8_06",
+        "syntx-role-role_ro_long_8_07"
+      ]
+    },
+    {
+      "id": "O-1",
+      "name": "1280 org_ro_long_8: drawn ellipses = packing radii × the factors (±0.01)",
+      "ok": true,
+      "detail": {
+        "factors": [
+          1,
+          1
+        ],
+        "ratio": [
+          [
+            "1.0000",
+            "1.0000"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "O-1",
+      "name": "1280 org_ro_long_8: the drawn factors are syntxCosmosLayout's for the drawn box",
+      "ok": true,
+      "detail": {
+        "dom": [
+          1,
+          1
+        ],
+        "inProcess": [
+          1,
+          1
+        ]
+      }
+    },
+    {
+      "id": "O-2",
+      "name": "1280 org_ro_long_8: rendered card width = packed card width, height never below it",
+      "ok": true,
+      "detail": {
+        "widthDiff": "0.00",
+        "heightExcessMax": "0.00"
+      }
+    },
+    {
+      "id": "O-2",
+      "name": "1280 org_ro_long_8: each card on its drawn ellipse in two LIVE frames 1 s apart (normalised radius 1 ± 0.01) and moving",
+      "ok": true,
+      "detail": {
+        "off": [
+          "0.0000",
+          "0.0000"
+        ],
+        "moved": "21.39"
+      }
+    },
+    {
+      "id": "O-2",
+      "name": "1280 org_ro_long_8: every tether ends at its card's centre (±1 px)",
+      "ok": true,
+      "detail": "0.00"
+    },
+    {
+      "id": "O-3",
+      "name": "1280 org_ro_long_8: not drawn in, the orbit is the packing (air identical)",
+      "ok": true,
+      "detail": {
+        "centre": 78.13,
+        "same": -4.24,
+        "across": null,
+        "overlap": 13.15
+      }
+    },
+    {
+      "id": "O-1",
+      "name": "1280 org_ro_short_12: compactness attributes present with two decimals",
+      "ok": true,
+      "detail": [
+        "0.71",
+        "0.98",
+        "full"
+      ]
+    },
+    {
+      "id": "O-1",
+      "name": "1280 org_ro_short_12: every role card present by data-testid, its title the accessible name, tabbable",
+      "ok": true,
+      "detail": [
+        "syntx-role-role_ro_short_12_00",
+        "syntx-role-role_ro_short_12_01",
+        "syntx-role-role_ro_short_12_02",
+        "syntx-role-role_ro_short_12_03",
+        "syntx-role-role_ro_short_12_04",
+        "syntx-role-role_ro_short_12_05",
+        "syntx-role-role_ro_short_12_06",
+        "syntx-role-role_ro_short_12_07",
+        "syntx-role-role_ro_short_12_08",
+        "syntx-role-role_ro_short_12_09",
+        "syntx-role-role_ro_short_12_10",
+        "syntx-role-role_ro_short_12_11"
+      ]
+    },
+    {
+      "id": "O-1",
+      "name": "1280 org_ro_short_12: drawn ellipses = packing radii × the factors (±0.01)",
+      "ok": true,
+      "detail": {
+        "factors": [
+          0.71,
+          0.98
+        ],
+        "ratio": [
+          [
+            "0.7100",
+            "0.9800"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "O-1",
+      "name": "1280 org_ro_short_12: the drawn factors are syntxCosmosLayout's for the drawn box",
+      "ok": true,
+      "detail": {
+        "dom": [
+          0.71,
+          0.98
+        ],
+        "inProcess": [
+          0.71,
+          0.98
+        ]
+      }
+    },
+    {
+      "id": "O-1",
+      "name": "1280 org_ro_short_12: the drawn-in outer orbit lies (ry ≤ rx)",
+      "ok": true,
+      "detail": {
+        "rx": 389.08,
+        "ry": 280.28
+      }
+    },
+    {
+      "id": "O-2",
+      "name": "1280 org_ro_short_12: rendered card width = packed card width, height never below it",
+      "ok": true,
+      "detail": {
+        "widthDiff": "0.00",
+        "heightExcessMax": "11.25"
+      }
+    },
+    {
+      "id": "O-2",
+      "name": "1280 org_ro_short_12: each card on its drawn ellipse in two LIVE frames 1 s apart (normalised radius 1 ± 0.01) and moving",
+      "ok": true,
+      "detail": {
+        "off": [
+          "0.0000",
+          "0.0000"
+        ],
+        "moved": "20.33"
+      }
+    },
+    {
+      "id": "O-2",
+      "name": "1280 org_ro_short_12: every tether ends at its card's centre (±1 px)",
+      "ok": true,
+      "detail": "0.00"
+    },
+    {
+      "id": "O-3",
+      "name": "1280 org_ro_short_12: 16 px to the centre disc's outer rings at every 0.25° (rendered sizes, ±0.5 px)",
+      "ok": true,
+      "detail": "123.81"
+    },
+    {
+      "id": "O-3",
+      "name": "1280 org_ro_short_12: 12 px / 20 px between cards of one orbit at every 0.25° (rendered sizes, ±0.5 px)",
+      "ok": true,
+      "detail": {
+        "drawn": "0.79",
+        "packed": "19.27"
+      }
+    },
+    {
+      "id": "O-3",
+      "name": "1280 org_ro_short_12: no two rendered cards of one orbit overlap at any 0.25°",
+      "ok": true,
+      "detail": {
+        "drawn": "17.26",
+        "packed": "37.13"
+      }
+    },
+    {
+      "id": "O-4",
+      "name": "1280: a role card selects its role (kind ROLE, URL jobRoleId)",
+      "ok": true,
+      "detail": {
+        "kind": "ROLE",
+        "url": "?focus=FIELD&jobPoolUploadId=JPOOL_0E80C088ADB81C788DC570CECC20F956&jobOrganizationId=org_ro_5&jobRoleId=role_ro_5_02"
+      }
+    },
+    {
+      "id": "O-4",
+      "name": "1280: Escape returns to the organization",
+      "ok": true,
+      "detail": "?focus=FIELD&jobPoolUploadId=JPOOL_0E80C088ADB81C788DC570CECC20F956&jobOrganizationId=org_ro_5"
+    },
+    {
+      "id": "O-4",
+      "name": "1280: REDUCED: the drawn-in orbit holds still (1.5 s) with the same factors",
+      "ok": true,
+      "detail": {
+        "still": "0.000",
+        "factors": [
+          "0.53",
+          "0.72"
+        ]
+      }
+    },
+    {
+      "id": "O-1",
+      "name": "1366 org_ro_1: compactness attributes present with two decimals",
+      "ok": true,
+      "detail": [
+        "0.45",
+        "0.70",
+        "full"
+      ]
+    },
+    {
+      "id": "O-1",
+      "name": "1366 org_ro_1: every role card present by data-testid, its title the accessible name, tabbable",
+      "ok": true,
+      "detail": [
+        "syntx-role-role_ro_1_00"
+      ]
+    },
+    {
+      "id": "O-1",
+      "name": "1366 org_ro_1: drawn ellipses = packing radii × the factors (±0.01)",
+      "ok": true,
+      "detail": {
+        "factors": [
+          0.45,
+          0.7
+        ],
+        "ratio": [
+          [
+            "0.4500",
+            "0.7000"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "O-1",
+      "name": "1366 org_ro_1: the drawn factors are syntxCosmosLayout's for the drawn box",
+      "ok": true,
+      "detail": {
+        "dom": [
+          0.45,
+          0.7
+        ],
+        "inProcess": [
+          0.45,
+          0.7
+        ]
+      }
+    },
+    {
+      "id": "O-1",
+      "name": "1366 org_ro_1: the drawn-in outer orbit lies (ry ≤ rx)",
+      "ok": true,
+      "detail": {
+        "rx": 245.48,
+        "ry": 194.6
+      }
+    },
+    {
+      "id": "O-2",
+      "name": "1366 org_ro_1: rendered card width = packed card width, height never below it",
+      "ok": true,
+      "detail": {
+        "widthDiff": "0.00",
+        "heightExcessMax": "0.00"
+      }
+    },
+    {
+      "id": "O-2",
+      "name": "1366 org_ro_1: each card on its drawn ellipse in two LIVE frames 1 s apart (normalised radius 1 ± 0.01) and moving",
+      "ok": true,
+      "detail": {
+        "off": [
+          "0.0000",
+          "0.0000"
+        ],
+        "moved": "11.45"
+      }
+    },
+    {
+      "id": "O-2",
+      "name": "1366 org_ro_1: every tether ends at its card's centre (±1 px)",
+      "ok": true,
+      "detail": "0.00"
+    },
+    {
+      "id": "O-3",
+      "name": "1366 org_ro_1: 16 px to the centre disc's outer rings at every 0.25° (rendered sizes, ±0.5 px)",
+      "ok": true,
+      "detail": "4.87"
+    },
+    {
+      "id": "O-3",
+      "name": "1366 org_ro_1: 12 px / 20 px between cards of one orbit at every 0.25° (rendered sizes, ±0.5 px)",
+      "ok": true,
+      "detail": {
+        "drawn": "Infinity",
+        "packed": "Infinity"
+      }
+    },
+    {
+      "id": "O-3",
+      "name": "1366 org_ro_1: no two rendered cards of one orbit overlap at any 0.25°",
+      "ok": true,
+      "detail": {
+        "drawn": "Infinity",
+        "packed": "Infinity"
+      }
+    },
+    {
+      "id": "O-1",
+      "name": "1366 org_ro_2: compactness attributes present with two decimals",
+      "ok": true,
+      "detail": [
+        "0.45",
+        "0.70",
+        "full"
+      ]
+    },
+    {
+      "id": "O-1",
+      "name": "1366 org_ro_2: every role card present by data-testid, its title the accessible name, tabbable",
+      "ok": true,
+      "detail": [
+        "syntx-role-role_ro_2_00",
+        "syntx-role-role_ro_2_01"
+      ]
+    },
+    {
+      "id": "O-1",
+      "name": "1366 org_ro_2: drawn ellipses = packing radii × the factors (±0.01)",
+      "ok": true,
+      "detail": {
+        "factors": [
+          0.45,
+          0.7
+        ],
+        "ratio": [
+          [
+            "0.4500",
+            "0.7000"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "O-1",
+      "name": "1366 org_ro_2: the drawn factors are syntxCosmosLayout's for the drawn box",
+      "ok": true,
+      "detail": {
+        "dom": [
+          0.45,
+          0.7
+        ],
+        "inProcess": [
+          0.45,
+          0.7
+        ]
+      }
+    },
+    {
+      "id": "O-1",
+      "name": "1366 org_ro_2: the drawn-in outer orbit lies (ry ≤ rx)",
+      "ok": true,
+      "detail": {
+        "rx": 245.48,
+        "ry": 194.6
+      }
+    },
+    {
+      "id": "O-2",
+      "name": "1366 org_ro_2: rendered card width = packed card width, height never below it",
+      "ok": true,
+      "detail": {
+        "widthDiff": "0.00",
+        "heightExcessMax": "9.50"
+      }
+    },
+    {
+      "id": "O-2",
+      "name": "1366 org_ro_2: each card on its drawn ellipse in two LIVE frames 1 s apart (normalised radius 1 ± 0.01) and moving",
+      "ok": true,
+      "detail": {
+        "off": [
+          "0.0000",
+          "0.0000"
+        ],
+        "moved": "10.07"
+      }
+    },
+    {
+      "id": "O-2",
+      "name": "1366 org_ro_2: every tether ends at its card's centre (±1 px)",
+      "ok": true,
+      "detail": "0.00"
+    },
+    {
+      "id": "O-3",
+      "name": "1366 org_ro_2: 16 px to the centre disc's outer rings at every 0.25° (rendered sizes, ±0.5 px)",
+      "ok": true,
+      "detail": "4.87"
+    },
+    {
+      "id": "O-3",
+      "name": "1366 org_ro_2: 12 px / 20 px between cards of one orbit at every 0.25° (rendered sizes, ±0.5 px)",
+      "ok": true,
+      "detail": {
+        "drawn": "150.05",
+        "packed": "360.56"
+      }
+    },
+    {
+      "id": "O-3",
+      "name": "1366 org_ro_2: no two rendered cards of one orbit overlap at any 0.25°",
+      "ok": true,
+      "detail": {
+        "drawn": "166.35",
+        "packed": "379.26"
+      }
+    },
+    {
+      "id": "O-1",
+      "name": "1366 org_ro_3: compactness attributes present with two decimals",
+      "ok": true,
+      "detail": [
+        "0.45",
+        "0.70",
+        "full"
+      ]
+    },
+    {
+      "id": "O-1",
+      "name": "1366 org_ro_3: every role card present by data-testid, its title the accessible name, tabbable",
+      "ok": true,
+      "detail": [
+        "syntx-role-role_ro_3_00",
+        "syntx-role-role_ro_3_01",
+        "syntx-role-role_ro_3_02"
+      ]
+    },
+    {
+      "id": "O-1",
+      "name": "1366 org_ro_3: drawn ellipses = packing radii × the factors (±0.01)",
+      "ok": true,
+      "detail": {
+        "factors": [
+          0.45,
+          0.7
+        ],
+        "ratio": [
+          [
+            "0.4500",
+            "0.7000"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "O-1",
+      "name": "1366 org_ro_3: the drawn factors are syntxCosmosLayout's for the drawn box",
+      "ok": true,
+      "detail": {
+        "dom": [
+          0.45,
+          0.7
+        ],
+        "inProcess": [
+          0.45,
+          0.7
+        ]
+      }
+    },
+    {
+      "id": "O-1",
+      "name": "1366 org_ro_3: the drawn-in outer orbit lies (ry ≤ rx)",
+      "ok": true,
+      "detail": {
+        "rx": 245.48,
+        "ry": 194.6
+      }
+    },
+    {
+      "id": "O-2",
+      "name": "1366 org_ro_3: rendered card width = packed card width, height never below it",
+      "ok": true,
+      "detail": {
+        "widthDiff": "0.00",
+        "heightExcessMax": "11.25"
+      }
+    },
+    {
+      "id": "O-2",
+      "name": "1366 org_ro_3: each card on its drawn ellipse in two LIVE frames 1 s apart (normalised radius 1 ± 0.01) and moving",
+      "ok": true,
+      "detail": {
+        "off": [
+          "0.0000",
+          "0.0000"
+        ],
+        "moved": "10.86"
+      }
+    },
+    {
+      "id": "O-2",
+      "name": "1366 org_ro_3: every tether ends at its card's centre (±1 px)",
+      "ok": true,
+      "detail": "0.00"
+    },
+    {
+      "id": "O-3",
+      "name": "1366 org_ro_3: 16 px to the centre disc's outer rings at every 0.25° (rendered sizes, ±0.5 px)",
+      "ok": true,
+      "detail": "4.87"
+    },
+    {
+      "id": "O-3",
+      "name": "1366 org_ro_3: 12 px / 20 px between cards of one orbit at every 0.25° (rendered sizes, ±0.5 px)",
+      "ok": true,
+      "detail": {
+        "drawn": "108.82",
+        "packed": "293.80"
+      }
+    },
+    {
+      "id": "O-3",
+      "name": "1366 org_ro_3: no two rendered cards of one orbit overlap at any 0.25°",
+      "ok": true,
+      "detail": {
+        "drawn": "124.58",
+        "packed": "312.02"
+      }
+    },
+    {
+      "id": "O-1",
+      "name": "1366 org_ro_5: compactness attributes present with two decimals",
+      "ok": true,
+      "detail": [
+        "0.50",
+        "0.70",
+        "full"
+      ]
+    },
+    {
+      "id": "O-1",
+      "name": "1366 org_ro_5: every role card present by data-testid, its title the accessible name, tabbable",
+      "ok": true,
+      "detail": [
+        "syntx-role-role_ro_5_00",
+        "syntx-role-role_ro_5_01",
+        "syntx-role-role_ro_5_02",
+        "syntx-role-role_ro_5_03",
+        "syntx-role-role_ro_5_04"
+      ]
+    },
+    {
+      "id": "O-1",
+      "name": "1366 org_ro_5: drawn ellipses = packing radii × the factors (±0.01)",
+      "ok": true,
+      "detail": {
+        "factors": [
+          0.5,
+          0.7
+        ],
+        "ratio": [
+          [
+            "0.5000",
+            "0.7000"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "O-1",
+      "name": "1366 org_ro_5: the drawn factors are syntxCosmosLayout's for the drawn box",
+      "ok": true,
+      "detail": {
+        "dom": [
+          0.5,
+          0.7
+        ],
+        "inProcess": [
+          0.5,
+          0.7
+        ]
+      }
+    },
+    {
+      "id": "O-1",
+      "name": "1366 org_ro_5: the drawn-in outer orbit lies (ry ≤ rx)",
+      "ok": true,
+      "detail": {
+        "rx": 265.5,
+        "ry": 194.6
+      }
+    },
+    {
+      "id": "O-2",
+      "name": "1366 org_ro_5: rendered card width = packed card width, height never below it",
+      "ok": true,
+      "detail": {
+        "widthDiff": "0.00",
+        "heightExcessMax": "11.25"
+      }
+    },
+    {
+      "id": "O-2",
+      "name": "1366 org_ro_5: each card on its drawn ellipse in two LIVE frames 1 s apart (normalised radius 1 ± 0.01) and moving",
+      "ok": true,
+      "detail": {
+        "off": [
+          "0.0000",
+          "0.0000"
+        ],
+        "moved": "13.24"
+      }
+    },
+    {
+      "id": "O-2",
+      "name": "1366 org_ro_5: every tether ends at its card's centre (±1 px)",
+      "ok": true,
+      "detail": "0.00"
+    },
+    {
+      "id": "O-3",
+      "name": "1366 org_ro_5: 16 px to the centre disc's outer rings at every 0.25° (rendered sizes, ±0.5 px)",
+      "ok": true,
+      "detail": "5.11"
+    },
+    {
+      "id": "O-3",
+      "name": "1366 org_ro_5: 12 px / 20 px between cards of one orbit at every 0.25° (rendered sizes, ±0.5 px)",
+      "ok": true,
+      "detail": {
+        "drawn": "30.75",
+        "packed": "152.81"
+      }
+    },
+    {
+      "id": "O-3",
+      "name": "1366 org_ro_5: no two rendered cards of one orbit overlap at any 0.25°",
+      "ok": true,
+      "detail": {
+        "drawn": "46.83",
+        "packed": "170.30"
+      }
+    },
+    {
+      "id": "O-1",
+      "name": "1366 org_ro_8: compactness attributes present with two decimals",
+      "ok": true,
+      "detail": [
+        "0.73",
+        "0.81",
+        "full"
+      ]
+    },
+    {
+      "id": "O-1",
+      "name": "1366 org_ro_8: every role card present by data-testid, its title the accessible name, tabbable",
+      "ok": true,
+      "detail": [
+        "syntx-role-role_ro_8_00",
+        "syntx-role-role_ro_8_01",
+        "syntx-role-role_ro_8_02",
+        "syntx-role-role_ro_8_03",
+        "syntx-role-role_ro_8_04",
+        "syntx-role-role_ro_8_05",
+        "syntx-role-role_ro_8_06",
+        "syntx-role-role_ro_8_07"
+      ]
+    },
+    {
+      "id": "O-1",
+      "name": "1366 org_ro_8: drawn ellipses = packing radii × the factors (±0.01)",
+      "ok": true,
+      "detail": {
+        "factors": [
+          0.73,
+          0.81
+        ],
+        "ratio": [
+          [
+            "0.7300",
+            "0.8100"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "O-1",
+      "name": "1366 org_ro_8: the drawn factors are syntxCosmosLayout's for the drawn box",
+      "ok": true,
+      "detail": {
+        "dom": [
+          0.73,
+          0.81
+        ],
+        "inProcess": [
+          0.73,
+          0.81
+        ]
+      }
+    },
+    {
+      "id": "O-1",
+      "name": "1366 org_ro_8: the drawn-in outer orbit lies (ry ≤ rx)",
+      "ok": true,
+      "detail": {
+        "rx": 387.63,
+        "ry": 225.18
+      }
+    },
+    {
+      "id": "O-2",
+      "name": "1366 org_ro_8: rendered card width = packed card width, height never below it",
+      "ok": true,
+      "detail": {
+        "widthDiff": "0.00",
+        "heightExcessMax": "11.25"
+      }
+    },
+    {
+      "id": "O-2",
+      "name": "1366 org_ro_8: each card on its drawn ellipse in two LIVE frames 1 s apart (normalised radius 1 ± 0.01) and moving",
+      "ok": true,
+      "detail": {
+        "off": [
+          "0.0000",
+          "0.0000"
+        ],
+        "moved": "16.20"
+      }
+    },
+    {
+      "id": "O-2",
+      "name": "1366 org_ro_8: every tether ends at its card's centre (±1 px)",
+      "ok": true,
+      "detail": "0.00"
+    },
+    {
+      "id": "O-3",
+      "name": "1366 org_ro_8: 16 px to the centre disc's outer rings at every 0.25° (rendered sizes, ±0.5 px)",
+      "ok": true,
+      "detail": "56.91"
+    },
+    {
+      "id": "O-3",
+      "name": "1366 org_ro_8: 12 px / 20 px between cards of one orbit at every 0.25° (rendered sizes, ±0.5 px)",
+      "ok": true,
+      "detail": {
+        "drawn": "4.83",
+        "packed": "49.88"
+      }
+    },
+    {
+      "id": "O-3",
+      "name": "1366 org_ro_8: no two rendered cards of one orbit overlap at any 0.25°",
+      "ok": true,
+      "detail": {
+        "drawn": "21.67",
+        "packed": "67.47"
+      }
+    },
+    {
+      "id": "O-1",
+      "name": "1366 org_ro_14: compactness attributes present with two decimals",
+      "ok": true,
+      "detail": [
+        "1.00",
+        "1.00",
+        "full"
+      ]
+    },
+    {
+      "id": "O-1",
+      "name": "1366 org_ro_14: every role card present by data-testid, its title the accessible name, tabbable",
+      "ok": true,
+      "detail": [
+        "syntx-role-role_ro_14_00",
+        "syntx-role-role_ro_14_01",
+        "syntx-role-role_ro_14_02",
+        "syntx-role-role_ro_14_03",
+        "syntx-role-role_ro_14_04",
+        "syntx-role-role_ro_14_05",
+        "syntx-role-role_ro_14_06",
+        "syntx-role-role_ro_14_07",
+        "syntx-role-role_ro_14_08",
+        "syntx-role-role_ro_14_09",
+        "syntx-role-role_ro_14_10",
+        "syntx-role-role_ro_14_11",
+        "syntx-role-role_ro_14_12",
+        "syntx-role-role_ro_14_13"
+      ]
+    },
+    {
+      "id": "O-1",
+      "name": "1366 org_ro_14: drawn ellipses = packing radii × the factors (±0.01)",
+      "ok": true,
+      "detail": {
+        "factors": [
+          1,
+          1
+        ],
+        "ratio": [
+          [
+            "1.0000",
+            "1.0000"
+          ],
+          [
+            "1.0000",
+            "1.0000"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "O-1",
+      "name": "1366 org_ro_14: the drawn factors are syntxCosmosLayout's for the drawn box",
+      "ok": true,
+      "detail": {
+        "dom": [
+          1,
+          1
+        ],
+        "inProcess": [
+          1,
+          1
+        ]
+      }
+    },
+    {
+      "id": "O-2",
+      "name": "1366 org_ro_14: rendered card width = packed card width, height never below it",
+      "ok": true,
+      "detail": {
+        "widthDiff": "0.00",
+        "heightExcessMax": "11.25"
+      }
+    },
+    {
+      "id": "O-2",
+      "name": "1366 org_ro_14: each card on its drawn ellipse in two LIVE frames 1 s apart (normalised radius 1 ± 0.01) and moving",
+      "ok": true,
+      "detail": {
+        "off": [
+          "0.0000",
+          "0.0000"
+        ],
+        "moved": "20.85"
+      }
+    },
+    {
+      "id": "O-2",
+      "name": "1366 org_ro_14: every tether ends at its card's centre (±1 px)",
+      "ok": true,
+      "detail": "0.00"
+    },
+    {
+      "id": "O-3",
+      "name": "1366 org_ro_14: not drawn in, the orbit is the packing (air identical)",
+      "ok": true,
+      "detail": {
+        "centre": -32.68,
+        "same": 4.7,
+        "across": -23,
+        "overlap": 21.98
+      }
+    },
+    {
+      "id": "O-1",
+      "name": "1366 org_ro_long_6: compactness attributes present with two decimals",
+      "ok": true,
+      "detail": [
+        "0.76",
+        "0.87",
+        "full"
+      ]
+    },
+    {
+      "id": "O-1",
+      "name": "1366 org_ro_long_6: every role card present by data-testid, its title the accessible name, tabbable",
+      "ok": true,
+      "detail": [
+        "syntx-role-role_ro_long_6_00",
+        "syntx-role-role_ro_long_6_01",
+        "syntx-role-role_ro_long_6_02",
+        "syntx-role-role_ro_long_6_03",
+        "syntx-role-role_ro_long_6_04",
+        "syntx-role-role_ro_long_6_05"
+      ]
+    },
+    {
+      "id": "O-1",
+      "name": "1366 org_ro_long_6: drawn ellipses = packing radii × the factors (±0.01)",
+      "ok": true,
+      "detail": {
+        "factors": [
+          0.76,
+          0.87
+        ],
+        "ratio": [
+          [
+            "0.7600",
+            "0.8700"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "O-1",
+      "name": "1366 org_ro_long_6: the drawn factors are syntxCosmosLayout's for the drawn box",
+      "ok": true,
+      "detail": {
+        "dom": [
+          0.76,
+          0.87
+        ],
+        "inProcess": [
+          0.76,
+          0.87
+        ]
+      }
+    },
+    {
+      "id": "O-1",
+      "name": "1366 org_ro_long_6: the drawn-in outer orbit lies (ry ≤ rx)",
+      "ok": true,
+      "detail": {
+        "rx": 394.06,
+        "ry": 226.2
+      }
+    },
+    {
+      "id": "O-2",
+      "name": "1366 org_ro_long_6: rendered card width = packed card width, height never below it",
+      "ok": true,
+      "detail": {
+        "widthDiff": "0.00",
+        "heightExcessMax": "0.00"
+      }
+    },
+    {
+      "id": "O-2",
+      "name": "1366 org_ro_long_6: each card on its drawn ellipse in two LIVE frames 1 s apart (normalised radius 1 ± 0.01) and moving",
+      "ok": true,
+      "detail": {
+        "off": [
+          "0.0000",
+          "0.0000"
+        ],
+        "moved": "20.58"
+      }
+    },
+    {
+      "id": "O-2",
+      "name": "1366 org_ro_long_6: every tether ends at its card's centre (±1 px)",
+      "ok": true,
+      "detail": "0.00"
+    },
+    {
+      "id": "O-3",
+      "name": "1366 org_ro_long_6: 16 px to the centre disc's outer rings at every 0.25° (rendered sizes, ±0.5 px)",
+      "ok": true,
+      "detail": "37.83"
+    },
+    {
+      "id": "O-3",
+      "name": "1366 org_ro_long_6: 12 px / 20 px between cards of one orbit at every 0.25° (rendered sizes, ±0.5 px)",
+      "ok": true,
+      "detail": {
+        "drawn": "7.65",
+        "packed": "53.26"
+      }
+    },
+    {
+      "id": "O-3",
+      "name": "1366 org_ro_long_6: no two rendered cards of one orbit overlap at any 0.25°",
+      "ok": true,
+      "detail": {
+        "drawn": "24.70",
+        "packed": "71.03"
+      }
+    },
+    {
+      "id": "O-1",
+      "name": "1366 org_ro_long_8: compactness attributes present with two decimals",
+      "ok": true,
+      "detail": [
+        "1.00",
+        "1.00",
+        "full"
+      ]
+    },
+    {
+      "id": "O-1",
+      "name": "1366 org_ro_long_8: every role card present by data-testid, its title the accessible name, tabbable",
+      "ok": true,
+      "detail": [
+        "syntx-role-role_ro_long_8_00",
+        "syntx-role-role_ro_long_8_01",
+        "syntx-role-role_ro_long_8_02",
+        "syntx-role-role_ro_long_8_03",
+        "syntx-role-role_ro_long_8_04",
+        "syntx-role-role_ro_long_8_05",
+        "syntx-role-role_ro_long_8_06",
+        "syntx-role-role_ro_long_8_07"
+      ]
+    },
+    {
+      "id": "O-1",
+      "name": "1366 org_ro_long_8: drawn ellipses = packing radii × the factors (±0.01)",
+      "ok": true,
+      "detail": {
+        "factors": [
+          1,
+          1
+        ],
+        "ratio": [
+          [
+            "1.0000",
+            "1.0000"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "O-1",
+      "name": "1366 org_ro_long_8: the drawn factors are syntxCosmosLayout's for the drawn box",
+      "ok": true,
+      "detail": {
+        "dom": [
+          1,
+          1
+        ],
+        "inProcess": [
+          1,
+          1
+        ]
+      }
+    },
+    {
+      "id": "O-2",
+      "name": "1366 org_ro_long_8: rendered card width = packed card width, height never below it",
+      "ok": true,
+      "detail": {
+        "widthDiff": "0.00",
+        "heightExcessMax": "0.00"
+      }
+    },
+    {
+      "id": "O-2",
+      "name": "1366 org_ro_long_8: each card on its drawn ellipse in two LIVE frames 1 s apart (normalised radius 1 ± 0.01) and moving",
+      "ok": true,
+      "detail": {
+        "off": [
+          "0.0000",
+          "0.0000"
+        ],
+        "moved": "27.90"
+      }
+    },
+    {
+      "id": "O-2",
+      "name": "1366 org_ro_long_8: every tether ends at its card's centre (±1 px)",
+      "ok": true,
+      "detail": "0.00"
+    },
+    {
+      "id": "O-3",
+      "name": "1366 org_ro_long_8: not drawn in, the orbit is the packing (air identical)",
+      "ok": true,
+      "detail": {
+        "centre": 78.65,
+        "same": -3.66,
+        "across": null,
+        "overlap": 13.86
+      }
+    },
+    {
+      "id": "O-1",
+      "name": "1366 org_ro_short_12: compactness attributes present with two decimals",
+      "ok": true,
+      "detail": [
+        "0.65",
+        "0.99",
+        "full"
+      ]
+    },
+    {
+      "id": "O-1",
+      "name": "1366 org_ro_short_12: every role card present by data-testid, its title the accessible name, tabbable",
+      "ok": true,
+      "detail": [
+        "syntx-role-role_ro_short_12_00",
+        "syntx-role-role_ro_short_12_01",
+        "syntx-role-role_ro_short_12_02",
+        "syntx-role-role_ro_short_12_03",
+        "syntx-role-role_ro_short_12_04",
+        "syntx-role-role_ro_short_12_05",
+        "syntx-role-role_ro_short_12_06",
+        "syntx-role-role_ro_short_12_07",
+        "syntx-role-role_ro_short_12_08",
+        "syntx-role-role_ro_short_12_09",
+        "syntx-role-role_ro_short_12_10",
+        "syntx-role-role_ro_short_12_11"
+      ]
+    },
+    {
+      "id": "O-1",
+      "name": "1366 org_ro_short_12: drawn ellipses = packing radii × the factors (±0.01)",
+      "ok": true,
+      "detail": {
+        "factors": [
+          0.65,
+          0.99
+        ],
+        "ratio": [
+          [
+            "0.6500",
+            "0.9900"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "O-1",
+      "name": "1366 org_ro_short_12: the drawn factors are syntxCosmosLayout's for the drawn box",
+      "ok": true,
+      "detail": {
+        "dom": [
+          0.65,
+          0.99
+        ],
+        "inProcess": [
+          0.65,
+          0.99
+        ]
+      }
+    },
+    {
+      "id": "O-1",
+      "name": "1366 org_ro_short_12: the drawn-in outer orbit lies (ry ≤ rx)",
+      "ok": true,
+      "detail": {
+        "rx": 384.15,
+        "ry": 283.14
+      }
+    },
+    {
+      "id": "O-2",
+      "name": "1366 org_ro_short_12: rendered card width = packed card width, height never below it",
+      "ok": true,
+      "detail": {
+        "widthDiff": "0.00",
+        "heightExcessMax": "11.25"
+      }
+    },
+    {
+      "id": "O-2",
+      "name": "1366 org_ro_short_12: each card on its drawn ellipse in two LIVE frames 1 s apart (normalised radius 1 ± 0.01) and moving",
+      "ok": true,
+      "detail": {
+        "off": [
+          "0.0000",
+          "0.0000"
+        ],
+        "moved": "21.93"
+      }
+    },
+    {
+      "id": "O-2",
+      "name": "1366 org_ro_short_12: every tether ends at its card's centre (±1 px)",
+      "ok": true,
+      "detail": "0.00"
+    },
+    {
+      "id": "O-3",
+      "name": "1366 org_ro_short_12: 16 px to the centre disc's outer rings at every 0.25° (rendered sizes, ±0.5 px)",
+      "ok": true,
+      "detail": "126.14"
+    },
+    {
+      "id": "O-3",
+      "name": "1366 org_ro_short_12: 12 px / 20 px between cards of one orbit at every 0.25° (rendered sizes, ±0.5 px)",
+      "ok": true,
+      "detail": {
+        "drawn": "0.57",
+        "packed": "22.44"
+      }
+    },
+    {
+      "id": "O-3",
+      "name": "1366 org_ro_short_12: no two rendered cards of one orbit overlap at any 0.25°",
+      "ok": true,
+      "detail": {
+        "drawn": "17.07",
+        "packed": "40.41"
+      }
+    },
+    {
+      "id": "O-4",
+      "name": "1366: a role card selects its role (kind ROLE, URL jobRoleId)",
+      "ok": true,
+      "detail": {
+        "kind": "ROLE",
+        "url": "?focus=FIELD&jobPoolUploadId=JPOOL_0E80C088ADB81C788DC570CECC20F956&jobOrganizationId=org_ro_5&jobRoleId=role_ro_5_02"
+      }
+    },
+    {
+      "id": "O-4",
+      "name": "1366: Escape returns to the organization",
+      "ok": true,
+      "detail": "?focus=FIELD&jobPoolUploadId=JPOOL_0E80C088ADB81C788DC570CECC20F956&jobOrganizationId=org_ro_5"
+    },
+    {
+      "id": "O-4",
+      "name": "1366: REDUCED: the drawn-in orbit holds still (1.5 s) with the same factors",
+      "ok": true,
+      "detail": {
+        "still": "0.000",
+        "factors": [
+          "0.50",
+          "0.70"
+        ]
+      }
+    },
+    {
+      "id": "O-1",
+      "name": "1600x1200 org_ro_1: compactness attributes present with two decimals",
+      "ok": true,
+      "detail": [
+        "0.37",
+        "0.49",
+        "full"
+      ]
+    },
+    {
+      "id": "O-1",
+      "name": "1600x1200 org_ro_1: every role card present by data-testid, its title the accessible name, tabbable",
+      "ok": true,
+      "detail": [
+        "syntx-role-role_ro_1_00"
+      ]
+    },
+    {
+      "id": "O-1",
+      "name": "1600x1200 org_ro_1: drawn ellipses = packing radii × the factors (±0.01)",
+      "ok": true,
+      "detail": {
+        "factors": [
+          0.37,
+          0.49
+        ],
+        "ratio": [
+          [
+            "0.3700",
+            "0.4900"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "O-1",
+      "name": "1600x1200 org_ro_1: the drawn factors are syntxCosmosLayout's for the drawn box",
+      "ok": true,
+      "detail": {
+        "dom": [
+          0.37,
+          0.49
+        ],
+        "inProcess": [
+          0.37,
+          0.49
+        ]
+      }
+    },
+    {
+      "id": "O-1",
+      "name": "1600x1200 org_ro_1: the drawn-in outer orbit lies (ry ≤ rx)",
+      "ok": true,
+      "detail": {
+        "rx": 245.13,
+        "ry": 195.02
+      }
+    },
+    {
+      "id": "O-2",
+      "name": "1600x1200 org_ro_1: rendered card width = packed card width, height never below it",
+      "ok": true,
+      "detail": {
+        "widthDiff": "0.00",
+        "heightExcessMax": "0.00"
+      }
+    },
+    {
+      "id": "O-2",
+      "name": "1600x1200 org_ro_1: each card on its drawn ellipse in two LIVE frames 1 s apart (normalised radius 1 ± 0.01) and moving",
+      "ok": true,
+      "detail": {
+        "off": [
+          "0.0000",
+          "0.0000"
+        ],
+        "moved": "13.21"
+      }
+    },
+    {
+      "id": "O-2",
+      "name": "1600x1200 org_ro_1: every tether ends at its card's centre (±1 px)",
+      "ok": true,
+      "detail": "0.00"
+    },
+    {
+      "id": "O-3",
+      "name": "1600x1200 org_ro_1: 16 px to the centre disc's outer rings at every 0.25° (rendered sizes, ±0.5 px)",
+      "ok": true,
+      "detail": "4.89"
+    },
+    {
+      "id": "O-3",
+      "name": "1600x1200 org_ro_1: 12 px / 20 px between cards of one orbit at every 0.25° (rendered sizes, ±0.5 px)",
+      "ok": true,
+      "detail": {
+        "drawn": "Infinity",
+        "packed": "Infinity"
+      }
+    },
+    {
+      "id": "O-3",
+      "name": "1600x1200 org_ro_1: no two rendered cards of one orbit overlap at any 0.25°",
+      "ok": true,
+      "detail": {
+        "drawn": "Infinity",
+        "packed": "Infinity"
+      }
+    },
+    {
+      "id": "O-1",
+      "name": "1600x1200 org_ro_2: compactness attributes present with two decimals",
+      "ok": true,
+      "detail": [
+        "0.37",
+        "0.49",
+        "full"
+      ]
+    },
+    {
+      "id": "O-1",
+      "name": "1600x1200 org_ro_2: every role card present by data-testid, its title the accessible name, tabbable",
+      "ok": true,
+      "detail": [
+        "syntx-role-role_ro_2_00",
+        "syntx-role-role_ro_2_01"
+      ]
+    },
+    {
+      "id": "O-1",
+      "name": "1600x1200 org_ro_2: drawn ellipses = packing radii × the factors (±0.01)",
+      "ok": true,
+      "detail": {
+        "factors": [
+          0.37,
+          0.49
+        ],
+        "ratio": [
+          [
+            "0.3700",
+            "0.4900"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "O-1",
+      "name": "1600x1200 org_ro_2: the drawn factors are syntxCosmosLayout's for the drawn box",
+      "ok": true,
+      "detail": {
+        "dom": [
+          0.37,
+          0.49
+        ],
+        "inProcess": [
+          0.37,
+          0.49
+        ]
+      }
+    },
+    {
+      "id": "O-1",
+      "name": "1600x1200 org_ro_2: the drawn-in outer orbit lies (ry ≤ rx)",
+      "ok": true,
+      "detail": {
+        "rx": 245.13,
+        "ry": 195.02
+      }
+    },
+    {
+      "id": "O-2",
+      "name": "1600x1200 org_ro_2: rendered card width = packed card width, height never below it",
+      "ok": true,
+      "detail": {
+        "widthDiff": "0.00",
+        "heightExcessMax": "9.50"
+      }
+    },
+    {
+      "id": "O-2",
+      "name": "1600x1200 org_ro_2: each card on its drawn ellipse in two LIVE frames 1 s apart (normalised radius 1 ± 0.01) and moving",
+      "ok": true,
+      "detail": {
+        "off": [
+          "0.0000",
+          "0.0000"
+        ],
+        "moved": "11.63"
+      }
+    },
+    {
+      "id": "O-2",
+      "name": "1600x1200 org_ro_2: every tether ends at its card's centre (±1 px)",
+      "ok": true,
+      "detail": "0.00"
+    },
+    {
+      "id": "O-3",
+      "name": "1600x1200 org_ro_2: 16 px to the centre disc's outer rings at every 0.25° (rendered sizes, ±0.5 px)",
+      "ok": true,
+      "detail": "4.89"
+    },
+    {
+      "id": "O-3",
+      "name": "1600x1200 org_ro_2: 12 px / 20 px between cards of one orbit at every 0.25° (rendered sizes, ±0.5 px)",
+      "ok": true,
+      "detail": {
+        "drawn": "150.00",
+        "packed": "542.07"
+      }
+    },
+    {
+      "id": "O-3",
+      "name": "1600x1200 org_ro_2: no two rendered cards of one orbit overlap at any 0.25°",
+      "ok": true,
+      "detail": {
+        "drawn": "166.21",
+        "packed": "560.09"
+      }
+    },
+    {
+      "id": "O-1",
+      "name": "1600x1200 org_ro_3: compactness attributes present with two decimals",
+      "ok": true,
+      "detail": [
+        "0.37",
+        "0.49",
+        "full"
+      ]
+    },
+    {
+      "id": "O-1",
+      "name": "1600x1200 org_ro_3: every role card present by data-testid, its title the accessible name, tabbable",
+      "ok": true,
+      "detail": [
+        "syntx-role-role_ro_3_00",
+        "syntx-role-role_ro_3_01",
+        "syntx-role-role_ro_3_02"
+      ]
+    },
+    {
+      "id": "O-1",
+      "name": "1600x1200 org_ro_3: drawn ellipses = packing radii × the factors (±0.01)",
+      "ok": true,
+      "detail": {
+        "factors": [
+          0.37,
+          0.49
+        ],
+        "ratio": [
+          [
+            "0.3700",
+            "0.4900"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "O-1",
+      "name": "1600x1200 org_ro_3: the drawn factors are syntxCosmosLayout's for the drawn box",
+      "ok": true,
+      "detail": {
+        "dom": [
+          0.37,
+          0.49
+        ],
+        "inProcess": [
+          0.37,
+          0.49
+        ]
+      }
+    },
+    {
+      "id": "O-1",
+      "name": "1600x1200 org_ro_3: the drawn-in outer orbit lies (ry ≤ rx)",
+      "ok": true,
+      "detail": {
+        "rx": 245.13,
+        "ry": 195.02
+      }
+    },
+    {
+      "id": "O-2",
+      "name": "1600x1200 org_ro_3: rendered card width = packed card width, height never below it",
+      "ok": true,
+      "detail": {
+        "widthDiff": "0.00",
+        "heightExcessMax": "11.25"
+      }
+    },
+    {
+      "id": "O-2",
+      "name": "1600x1200 org_ro_3: each card on its drawn ellipse in two LIVE frames 1 s apart (normalised radius 1 ± 0.01) and moving",
+      "ok": true,
+      "detail": {
+        "off": [
+          "0.0000",
+          "0.0000"
+        ],
+        "moved": "14.79"
+      }
+    },
+    {
+      "id": "O-2",
+      "name": "1600x1200 org_ro_3: every tether ends at its card's centre (±1 px)",
+      "ok": true,
+      "detail": "0.00"
+    },
+    {
+      "id": "O-3",
+      "name": "1600x1200 org_ro_3: 16 px to the centre disc's outer rings at every 0.25° (rendered sizes, ±0.5 px)",
+      "ok": true,
+      "detail": "4.89"
+    },
+    {
+      "id": "O-3",
+      "name": "1600x1200 org_ro_3: 12 px / 20 px between cards of one orbit at every 0.25° (rendered sizes, ±0.5 px)",
+      "ok": true,
+      "detail": {
+        "drawn": "108.42",
+        "packed": "450.90"
+      }
+    },
+    {
+      "id": "O-3",
+      "name": "1600x1200 org_ro_3: no two rendered cards of one orbit overlap at any 0.25°",
+      "ok": true,
+      "detail": {
+        "drawn": "124.83",
+        "packed": "467.77"
+      }
+    },
+    {
+      "id": "O-1",
+      "name": "1600x1200 org_ro_5: compactness attributes present with two decimals",
+      "ok": true,
+      "detail": [
+        "0.41",
+        "0.49",
+        "full"
+      ]
+    },
+    {
+      "id": "O-1",
+      "name": "1600x1200 org_ro_5: every role card present by data-testid, its title the accessible name, tabbable",
+      "ok": true,
+      "detail": [
+        "syntx-role-role_ro_5_00",
+        "syntx-role-role_ro_5_01",
+        "syntx-role-role_ro_5_02",
+        "syntx-role-role_ro_5_03",
+        "syntx-role-role_ro_5_04"
+      ]
+    },
+    {
+      "id": "O-1",
+      "name": "1600x1200 org_ro_5: drawn ellipses = packing radii × the factors (±0.01)",
+      "ok": true,
+      "detail": {
+        "factors": [
+          0.41,
+          0.49
+        ],
+        "ratio": [
+          [
+            "0.4100",
+            "0.4900"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "O-1",
+      "name": "1600x1200 org_ro_5: the drawn factors are syntxCosmosLayout's for the drawn box",
+      "ok": true,
+      "detail": {
+        "dom": [
+          0.41,
+          0.49
+        ],
+        "inProcess": [
+          0.41,
+          0.49
+        ]
+      }
+    },
+    {
+      "id": "O-1",
+      "name": "1600x1200 org_ro_5: the drawn-in outer orbit lies (ry ≤ rx)",
+      "ok": true,
+      "detail": {
+        "rx": 265.68,
+        "ry": 195.02
+      }
+    },
+    {
+      "id": "O-2",
+      "name": "1600x1200 org_ro_5: rendered card width = packed card width, height never below it",
+      "ok": true,
+      "detail": {
+        "widthDiff": "0.00",
+        "heightExcessMax": "11.25"
+      }
+    },
+    {
+      "id": "O-2",
+      "name": "1600x1200 org_ro_5: each card on its drawn ellipse in two LIVE frames 1 s apart (normalised radius 1 ± 0.01) and moving",
+      "ok": true,
+      "detail": {
+        "off": [
+          "0.0000",
+          "0.0000"
+        ],
+        "moved": "15.81"
+      }
+    },
+    {
+      "id": "O-2",
+      "name": "1600x1200 org_ro_5: every tether ends at its card's centre (±1 px)",
+      "ok": true,
+      "detail": "0.00"
+    },
+    {
+      "id": "O-3",
+      "name": "1600x1200 org_ro_5: 16 px to the centre disc's outer rings at every 0.25° (rendered sizes, ±0.5 px)",
+      "ok": true,
+      "detail": "5.42"
+    },
+    {
+      "id": "O-3",
+      "name": "1600x1200 org_ro_5: 12 px / 20 px between cards of one orbit at every 0.25° (rendered sizes, ±0.5 px)",
+      "ok": true,
+      "detail": {
+        "drawn": "31.06",
+        "packed": "256.44"
+      }
+    },
+    {
+      "id": "O-3",
+      "name": "1600x1200 org_ro_5: no two rendered cards of one orbit overlap at any 0.25°",
+      "ok": true,
+      "detail": {
+        "drawn": "47.13",
+        "packed": "273.92"
+      }
+    },
+    {
+      "id": "O-1",
+      "name": "1600x1200 org_ro_8: compactness attributes present with two decimals",
+      "ok": true,
+      "detail": [
+        "0.63",
+        "0.54",
+        "full"
+      ]
+    },
+    {
+      "id": "O-1",
+      "name": "1600x1200 org_ro_8: every role card present by data-testid, its title the accessible name, tabbable",
+      "ok": true,
+      "detail": [
+        "syntx-role-role_ro_8_00",
+        "syntx-role-role_ro_8_01",
+        "syntx-role-role_ro_8_02",
+        "syntx-role-role_ro_8_03",
+        "syntx-role-role_ro_8_04",
+        "syntx-role-role_ro_8_05",
+        "syntx-role-role_ro_8_06",
+        "syntx-role-role_ro_8_07"
+      ]
+    },
+    {
+      "id": "O-1",
+      "name": "1600x1200 org_ro_8: drawn ellipses = packing radii × the factors (±0.01)",
+      "ok": true,
+      "detail": {
+        "factors": [
+          0.63,
+          0.54
+        ],
+        "ratio": [
+          [
+            "0.6300",
+            "0.5400"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "O-1",
+      "name": "1600x1200 org_ro_8: the drawn factors are syntxCosmosLayout's for the drawn box",
+      "ok": true,
+      "detail": {
+        "dom": [
+          0.63,
+          0.54
+        ],
+        "inProcess": [
+          0.63,
+          0.54
+        ]
+      }
+    },
+    {
+      "id": "O-1",
+      "name": "1600x1200 org_ro_8: the drawn-in outer orbit lies (ry ≤ rx)",
+      "ok": true,
+      "detail": {
+        "rx": 408.24,
+        "ry": 214.92
+      }
+    },
+    {
+      "id": "O-2",
+      "name": "1600x1200 org_ro_8: rendered card width = packed card width, height never below it",
+      "ok": true,
+      "detail": {
+        "widthDiff": "0.00",
+        "heightExcessMax": "11.25"
+      }
+    },
+    {
+      "id": "O-2",
+      "name": "1600x1200 org_ro_8: each card on its drawn ellipse in two LIVE frames 1 s apart (normalised radius 1 ± 0.01) and moving",
+      "ok": true,
+      "detail": {
+        "off": [
+          "0.0000",
+          "0.0000"
+        ],
+        "moved": "22.63"
+      }
+    },
+    {
+      "id": "O-2",
+      "name": "1600x1200 org_ro_8: every tether ends at its card's centre (±1 px)",
+      "ok": true,
+      "detail": "0.00"
+    },
+    {
+      "id": "O-3",
+      "name": "1600x1200 org_ro_8: 16 px to the centre disc's outer rings at every 0.25° (rendered sizes, ±0.5 px)",
+      "ok": true,
+      "detail": "49.88"
+    },
+    {
+      "id": "O-3",
+      "name": "1600x1200 org_ro_8: 12 px / 20 px between cards of one orbit at every 0.25° (rendered sizes, ±0.5 px)",
+      "ok": true,
+      "detail": {
+        "drawn": "5.28",
+        "packed": "115.75"
+      }
+    },
+    {
+      "id": "O-3",
+      "name": "1600x1200 org_ro_8: no two rendered cards of one orbit overlap at any 0.25°",
+      "ok": true,
+      "detail": {
+        "drawn": "22.74",
+        "packed": "133.09"
+      }
+    },
+    {
+      "id": "O-1",
+      "name": "1600x1200 org_ro_14: compactness attributes present with two decimals",
+      "ok": true,
+      "detail": [
+        "0.88",
+        "0.94",
+        "full"
+      ]
+    },
+    {
+      "id": "O-1",
+      "name": "1600x1200 org_ro_14: every role card present by data-testid, its title the accessible name, tabbable",
+      "ok": true,
+      "detail": [
+        "syntx-role-role_ro_14_00",
+        "syntx-role-role_ro_14_01",
+        "syntx-role-role_ro_14_02",
+        "syntx-role-role_ro_14_03",
+        "syntx-role-role_ro_14_04",
+        "syntx-role-role_ro_14_05",
+        "syntx-role-role_ro_14_06",
+        "syntx-role-role_ro_14_07",
+        "syntx-role-role_ro_14_08",
+        "syntx-role-role_ro_14_09",
+        "syntx-role-role_ro_14_10",
+        "syntx-role-role_ro_14_11",
+        "syntx-role-role_ro_14_12",
+        "syntx-role-role_ro_14_13"
+      ]
+    },
+    {
+      "id": "O-1",
+      "name": "1600x1200 org_ro_14: drawn ellipses = packing radii × the factors (±0.01)",
+      "ok": true,
+      "detail": {
+        "factors": [
+          0.88,
+          0.94
+        ],
+        "ratio": [
+          [
+            "0.8800",
+            "0.9400"
+          ],
+          [
+            "0.8800",
+            "0.9400"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "O-1",
+      "name": "1600x1200 org_ro_14: the drawn factors are syntxCosmosLayout's for the drawn box",
+      "ok": true,
+      "detail": {
+        "dom": [
+          0.88,
+          0.94
+        ],
+        "inProcess": [
+          0.88,
+          0.94
+        ]
+      }
+    },
+    {
+      "id": "O-1",
+      "name": "1600x1200 org_ro_14: the drawn-in outer orbit lies (ry ≤ rx)",
+      "ok": true,
+      "detail": {
+        "rx": 570.24,
+        "ry": 374.12
+      }
+    },
+    {
+      "id": "O-2",
+      "name": "1600x1200 org_ro_14: rendered card width = packed card width, height never below it",
+      "ok": true,
+      "detail": {
+        "widthDiff": "0.00",
+        "heightExcessMax": "11.25"
+      }
+    },
+    {
+      "id": "O-2",
+      "name": "1600x1200 org_ro_14: each card on its drawn ellipse in two LIVE frames 1 s apart (normalised radius 1 ± 0.01) and moving",
+      "ok": true,
+      "detail": {
+        "off": [
+          "0.0000",
+          "0.0000"
+        ],
+        "moved": "22.77"
+      }
+    },
+    {
+      "id": "O-2",
+      "name": "1600x1200 org_ro_14: every tether ends at its card's centre (±1 px)",
+      "ok": true,
+      "detail": "0.00"
+    },
+    {
+      "id": "O-3",
+      "name": "1600x1200 org_ro_14: 16 px to the centre disc's outer rings at every 0.25° (rendered sizes, ±0.5 px)",
+      "ok": true,
+      "detail": "7.53"
+    },
+    {
+      "id": "O-3",
+      "name": "1600x1200 org_ro_14: 12 px / 20 px between cards of one orbit at every 0.25° (rendered sizes, ±0.5 px)",
+      "ok": true,
+      "detail": {
+        "drawn": "7.03",
+        "packed": "23.85"
+      }
+    },
+    {
+      "id": "O-3",
+      "name": "1600x1200 org_ro_14: no two rendered cards of one orbit overlap at any 0.25°",
+      "ok": true,
+      "detail": {
+        "drawn": "23.31",
+        "packed": "40.66"
+      }
+    },
+    {
+      "id": "O-3",
+      "name": "1600x1200 org_ro_14: across orbits apart in motion where the packing was (1° x 1°, ±0.5 px)",
+      "ok": true,
+      "detail": {
+        "drawn": "0.09",
+        "packed": "18.04"
+      }
+    },
+    {
+      "id": "O-1",
+      "name": "1600x1200 org_ro_long_6: compactness attributes present with two decimals",
+      "ok": true,
+      "detail": [
+        "0.70",
+        "0.51",
+        "full"
+      ]
+    },
+    {
+      "id": "O-1",
+      "name": "1600x1200 org_ro_long_6: every role card present by data-testid, its title the accessible name, tabbable",
+      "ok": true,
+      "detail": [
+        "syntx-role-role_ro_long_6_00",
+        "syntx-role-role_ro_long_6_01",
+        "syntx-role-role_ro_long_6_02",
+        "syntx-role-role_ro_long_6_03",
+        "syntx-role-role_ro_long_6_04",
+        "syntx-role-role_ro_long_6_05"
+      ]
+    },
+    {
+      "id": "O-1",
+      "name": "1600x1200 org_ro_long_6: drawn ellipses = packing radii × the factors (±0.01)",
+      "ok": true,
+      "detail": {
+        "factors": [
+          0.7,
+          0.51
+        ],
+        "ratio": [
+          [
+            "0.7000",
+            "0.5100"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "O-1",
+      "name": "1600x1200 org_ro_long_6: the drawn factors are syntxCosmosLayout's for the drawn box",
+      "ok": true,
+      "detail": {
+        "dom": [
+          0.7,
+          0.51
+        ],
+        "inProcess": [
+          0.7,
+          0.51
+        ]
+      }
+    },
+    {
+      "id": "O-1",
+      "name": "1600x1200 org_ro_long_6: the drawn-in outer orbit lies (ry ≤ rx)",
+      "ok": true,
+      "detail": {
+        "rx": 435.4,
+        "ry": 198.39
+      }
+    },
+    {
+      "id": "O-2",
+      "name": "1600x1200 org_ro_long_6: rendered card width = packed card width, height never below it",
+      "ok": true,
+      "detail": {
+        "widthDiff": "0.00",
+        "heightExcessMax": "0.00"
+      }
+    },
+    {
+      "id": "O-2",
+      "name": "1600x1200 org_ro_long_6: each card on its drawn ellipse in two LIVE frames 1 s apart (normalised radius 1 ± 0.01) and moving",
+      "ok": true,
+      "detail": {
+        "off": [
+          "0.0000",
+          "0.0000"
+        ],
+        "moved": "18.89"
+      }
+    },
+    {
+      "id": "O-2",
+      "name": "1600x1200 org_ro_long_6: every tether ends at its card's centre (±1 px)",
+      "ok": true,
+      "detail": "0.00"
+    },
+    {
+      "id": "O-3",
+      "name": "1600x1200 org_ro_long_6: 16 px to the centre disc's outer rings at every 0.25° (rendered sizes, ±0.5 px)",
+      "ok": true,
+      "detail": "23.06"
+    },
+    {
+      "id": "O-3",
+      "name": "1600x1200 org_ro_long_6: 12 px / 20 px between cards of one orbit at every 0.25° (rendered sizes, ±0.5 px)",
+      "ok": true,
+      "detail": {
+        "drawn": "8.41",
+        "packed": "141.03"
+      }
+    },
+    {
+      "id": "O-3",
+      "name": "1600x1200 org_ro_long_6: no two rendered cards of one orbit overlap at any 0.25°",
+      "ok": true,
+      "detail": {
+        "drawn": "25.72",
+        "packed": "157.55"
+      }
+    },
+    {
+      "id": "O-1",
+      "name": "1600x1200 org_ro_long_8: compactness attributes present with two decimals",
+      "ok": true,
+      "detail": [
+        "0.91",
+        "0.67",
+        "full"
+      ]
+    },
+    {
+      "id": "O-1",
+      "name": "1600x1200 org_ro_long_8: every role card present by data-testid, its title the accessible name, tabbable",
+      "ok": true,
+      "detail": [
+        "syntx-role-role_ro_long_8_00",
+        "syntx-role-role_ro_long_8_01",
+        "syntx-role-role_ro_long_8_02",
+        "syntx-role-role_ro_long_8_03",
+        "syntx-role-role_ro_long_8_04",
+        "syntx-role-role_ro_long_8_05",
+        "syntx-role-role_ro_long_8_06",
+        "syntx-role-role_ro_long_8_07"
+      ]
+    },
+    {
+      "id": "O-1",
+      "name": "1600x1200 org_ro_long_8: drawn ellipses = packing radii × the factors (±0.01)",
+      "ok": true,
+      "detail": {
+        "factors": [
+          0.91,
+          0.67
+        ],
+        "ratio": [
+          [
+            "0.9100",
+            "0.6700"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "O-1",
+      "name": "1600x1200 org_ro_long_8: the drawn factors are syntxCosmosLayout's for the drawn box",
+      "ok": true,
+      "detail": {
+        "dom": [
+          0.91,
+          0.67
+        ],
+        "inProcess": [
+          0.91,
+          0.67
+        ]
+      }
+    },
+    {
+      "id": "O-1",
+      "name": "1600x1200 org_ro_long_8: the drawn-in outer orbit lies (ry ≤ rx)",
+      "ok": true,
+      "detail": {
+        "rx": 566.02,
+        "ry": 260.63
+      }
+    },
+    {
+      "id": "O-2",
+      "name": "1600x1200 org_ro_long_8: rendered card width = packed card width, height never below it",
+      "ok": true,
+      "detail": {
+        "widthDiff": "0.00",
+        "heightExcessMax": "0.00"
+      }
+    },
+    {
+      "id": "O-2",
+      "name": "1600x1200 org_ro_long_8: each card on its drawn ellipse in two LIVE frames 1 s apart (normalised radius 1 ± 0.01) and moving",
+      "ok": true,
+      "detail": {
+        "off": [
+          "0.0000",
+          "0.0000"
+        ],
+        "moved": "26.81"
+      }
+    },
+    {
+      "id": "O-2",
+      "name": "1600x1200 org_ro_long_8: every tether ends at its card's centre (±1 px)",
+      "ok": true,
+      "detail": "0.00"
+    },
+    {
+      "id": "O-3",
+      "name": "1600x1200 org_ro_long_8: 16 px to the centre disc's outer rings at every 0.25° (rendered sizes, ±0.5 px)",
+      "ok": true,
+      "detail": "88.41"
+    },
+    {
+      "id": "O-3",
+      "name": "1600x1200 org_ro_long_8: 12 px / 20 px between cards of one orbit at every 0.25° (rendered sizes, ±0.5 px)",
+      "ok": true,
+      "detail": {
+        "drawn": "8.38",
+        "packed": "59.95"
+      }
+    },
+    {
+      "id": "O-3",
+      "name": "1600x1200 org_ro_long_8: no two rendered cards of one orbit overlap at any 0.25°",
+      "ok": true,
+      "detail": {
+        "drawn": "25.79",
+        "packed": "76.68"
+      }
+    },
+    {
+      "id": "O-1",
+      "name": "1600x1200 org_ro_short_12: compactness attributes present with two decimals",
+      "ok": true,
+      "detail": [
+        "0.55",
+        "0.69",
+        "full"
+      ]
+    },
+    {
+      "id": "O-1",
+      "name": "1600x1200 org_ro_short_12: every role card present by data-testid, its title the accessible name, tabbable",
+      "ok": true,
+      "detail": [
+        "syntx-role-role_ro_short_12_00",
+        "syntx-role-role_ro_short_12_01",
+        "syntx-role-role_ro_short_12_02",
+        "syntx-role-role_ro_short_12_03",
+        "syntx-role-role_ro_short_12_04",
+        "syntx-role-role_ro_short_12_05",
+        "syntx-role-role_ro_short_12_06",
+        "syntx-role-role_ro_short_12_07",
+        "syntx-role-role_ro_short_12_08",
+        "syntx-role-role_ro_short_12_09",
+        "syntx-role-role_ro_short_12_10",
+        "syntx-role-role_ro_short_12_11"
+      ]
+    },
+    {
+      "id": "O-1",
+      "name": "1600x1200 org_ro_short_12: drawn ellipses = packing radii × the factors (±0.01)",
+      "ok": true,
+      "detail": {
+        "factors": [
+          0.55,
+          0.69
+        ],
+        "ratio": [
+          [
+            "0.5500",
+            "0.6900"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "O-1",
+      "name": "1600x1200 org_ro_short_12: the drawn factors are syntxCosmosLayout's for the drawn box",
+      "ok": true,
+      "detail": {
+        "dom": [
+          0.55,
+          0.69
+        ],
+        "inProcess": [
+          0.55,
+          0.69
+        ]
+      }
+    },
+    {
+      "id": "O-1",
+      "name": "1600x1200 org_ro_short_12: the drawn-in outer orbit lies (ry ≤ rx)",
+      "ok": true,
+      "detail": {
+        "rx": 389.4,
+        "ry": 280.14
+      }
+    },
+    {
+      "id": "O-2",
+      "name": "1600x1200 org_ro_short_12: rendered card width = packed card width, height never below it",
+      "ok": true,
+      "detail": {
+        "widthDiff": "0.00",
+        "heightExcessMax": "11.25"
+      }
+    },
+    {
+      "id": "O-2",
+      "name": "1600x1200 org_ro_short_12: each card on its drawn ellipse in two LIVE frames 1 s apart (normalised radius 1 ± 0.01) and moving",
+      "ok": true,
+      "detail": {
+        "off": [
+          "0.0000",
+          "0.0000"
+        ],
+        "moved": "20.03"
+      }
+    },
+    {
+      "id": "O-2",
+      "name": "1600x1200 org_ro_short_12: every tether ends at its card's centre (±1 px)",
+      "ok": true,
+      "detail": "0.00"
+    },
+    {
+      "id": "O-3",
+      "name": "1600x1200 org_ro_short_12: 16 px to the centre disc's outer rings at every 0.25° (rendered sizes, ±0.5 px)",
+      "ok": true,
+      "detail": "123.70"
+    },
+    {
+      "id": "O-3",
+      "name": "1600x1200 org_ro_short_12: 12 px / 20 px between cards of one orbit at every 0.25° (rendered sizes, ±0.5 px)",
+      "ok": true,
+      "detail": {
+        "drawn": "0.80",
+        "packed": "69.42"
+      }
+    },
+    {
+      "id": "O-3",
+      "name": "1600x1200 org_ro_short_12: no two rendered cards of one orbit overlap at any 0.25°",
+      "ok": true,
+      "detail": {
+        "drawn": "17.30",
+        "packed": "86.99"
+      }
+    },
+    {
+      "id": "O-4",
+      "name": "1600x1200: a role card selects its role (kind ROLE, URL jobRoleId)",
+      "ok": true,
+      "detail": {
+        "kind": "ROLE",
+        "url": "?focus=FIELD&jobPoolUploadId=JPOOL_0E80C088ADB81C788DC570CECC20F956&jobOrganizationId=org_ro_5&jobRoleId=role_ro_5_02"
+      }
+    },
+    {
+      "id": "O-4",
+      "name": "1600x1200: Escape returns to the organization",
+      "ok": true,
+      "detail": "?focus=FIELD&jobPoolUploadId=JPOOL_0E80C088ADB81C788DC570CECC20F956&jobOrganizationId=org_ro_5"
+    },
+    {
+      "id": "O-4",
+      "name": "1600x1200: REDUCED: the drawn-in orbit holds still (1.5 s) with the same factors",
+      "ok": true,
+      "detail": {
+        "still": "0.000",
+        "factors": [
+          "0.41",
+          "0.49"
+        ]
+      }
+    },
+    {
+      "id": "O-0",
+      "name": "no page errors, no non-GET request from the page",
+      "ok": true,
+      "detail": {
+        "pageErrors": [],
+        "nonGet": []
+      }
+    }
+  ],
+  "measured": {
+    "O-COLD first": {
+      "kind": "ORGANIZATION",
+      "organization": "org_ro_5",
+      "url": "?focus=FIELD&jobPoolUploadId=JPOOL_0E80C088ADB81C788DC570CECC20F956&jobOrganizationId=org_ro_5"
+    },
+    "O-COLD second": {
+      "kind": "ORGANIZATION",
+      "organization": "org_ro_5",
+      "url": "?focus=FIELD&jobPoolUploadId=JPOOL_0E80C088ADB81C788DC570CECC20F956&jobOrganizationId=org_ro_5"
+    },
+    "1600 org_ro_1 outer ellipse": {
+      "rx": 251.75,
+      "ry": 190.72,
+      "packed": [
+        662.5,
+        298
+      ]
+    },
+    "1600 org_ro_1 air": {
+      "factors": [
+        "0.38",
+        "0.64"
+      ],
+      "box": [
+        1600,
+        740
+      ],
+      "layout": "full",
+      "rings": 1,
+      "discRadius": 87,
+      "heightExcessMax": 0,
+      "drawn": {
+        "centre": 5.8,
+        "same": null,
+        "across": null,
+        "overlap": null
+      },
+      "packed": {
+        "centre": 141.05,
+        "same": null,
+        "across": null,
+        "overlap": null
+      }
+    },
+    "1600 org_ro_1 O-JF-PANEL": {
+      "packed": 138,
+      "drawn": 0,
+      "of": 1440
+    },
+    "1600 org_ro_1 animations": [],
+    "1600 org_ro_2 outer ellipse": {
+      "rx": 251.75,
+      "ry": 190.72,
+      "packed": [
+        662.5,
+        298
+      ]
+    },
+    "1600 org_ro_2 air": {
+      "factors": [
+        "0.38",
+        "0.64"
+      ],
+      "box": [
+        1600,
+        740
+      ],
+      "layout": "full",
+      "rings": 1,
+      "discRadius": 87,
+      "heightExcessMax": 9.5,
+      "drawn": {
+        "centre": 5.8,
+        "same": 151.5,
+        "across": null,
+        "overlap": 167.88
+      },
+      "packed": {
+        "centre": 137.85,
+        "same": 412.75,
+        "across": null,
+        "overlap": 431.52
+      }
+    },
+    "1600 org_ro_2 O-JF-PANEL": {
+      "packed": 272,
+      "drawn": 0,
+      "of": 2880
+    },
+    "1600 org_ro_2 animations": [],
+    "1600 org_ro_3 outer ellipse": {
+      "rx": 251.75,
+      "ry": 190.72,
+      "packed": [
+        662.5,
+        298
+      ]
+    },
+    "1600 org_ro_3 air": {
+      "factors": [
+        "0.38",
+        "0.64"
+      ],
+      "box": [
+        1600,
+        740
+      ],
+      "layout": "full",
+      "rings": 1,
+      "discRadius": 87,
+      "heightExcessMax": 11.25,
+      "drawn": {
+        "centre": 5.8,
+        "same": 109.78,
+        "across": null,
+        "overlap": 126.57
+      },
+      "packed": {
+        "centre": 137.85,
+        "same": 340.21,
+        "across": null,
+        "overlap": 358.25
+      }
+    },
+    "1600 org_ro_3 O-JF-PANEL": {
+      "packed": 393,
+      "drawn": 0,
+      "of": 4320
+    },
+    "1600 org_ro_3 animations": [],
+    "1600 org_ro_5 outer ellipse": {
+      "rx": 259.2,
+      "ry": 199.66,
+      "packed": [
+        648,
+        298
+      ]
+    },
+    "1600 org_ro_5 air": {
+      "factors": [
+        "0.40",
+        "0.67"
+      ],
+      "box": [
+        1600,
+        740
+      ],
+      "layout": "full",
+      "rings": 1,
+      "discRadius": 87,
+      "heightExcessMax": 11.25,
+      "drawn": {
+        "centre": 4.53,
+        "same": 29.73,
+        "across": null,
+        "overlap": 45.7
+      },
+      "packed": {
+        "centre": 137.66,
+        "same": 186.27,
+        "across": null,
+        "overlap": 204.3
+      }
+    },
+    "1600 org_ro_5 O-JF-PANEL": {
+      "packed": 640,
+      "drawn": 0,
+      "of": 7200
+    },
+    "1600 org_ro_5 animations": [],
+    "1600 org_ro_8 outer ellipse": {
+      "rx": 395.28,
+      "ry": 220.52,
+      "packed": [
+        648,
+        298
+      ]
+    },
+    "1600 org_ro_8 air": {
+      "factors": [
+        "0.61",
+        "0.74"
+      ],
+      "box": [
+        1600,
+        740
+      ],
+      "layout": "full",
+      "rings": 1,
+      "discRadius": 87,
+      "heightExcessMax": 11.25,
+      "drawn": {
+        "centre": 53.67,
+        "same": 4.76,
+        "across": null,
+        "overlap": 22.02
+      },
+      "packed": {
+        "centre": 137.66,
+        "same": 73.74,
+        "across": null,
+        "overlap": 91.72
+      }
+    },
+    "1600 org_ro_8 O-JF-PANEL": {
+      "packed": 1008,
+      "drawn": 6,
+      "of": 11520
+    },
+    "1600 org_ro_8 animations": [],
+    "1600 org_ro_14 outer ellipse": {
+      "rx": 648,
+      "ry": 298,
+      "packed": [
+        648,
+        298
+      ]
+    },
+    "1600 org_ro_14 air": {
+      "factors": [
+        "1.00",
+        "1.00"
+      ],
+      "box": [
+        1600,
+        740
+      ],
+      "layout": "full",
+      "rings": 2,
+      "discRadius": 87,
+      "heightExcessMax": 11.25,
+      "drawn": {
+        "centre": -16.32,
+        "same": -0.13,
+        "across": -3.79,
+        "overlap": 17.72
+      },
+      "packed": {
+        "centre": -16.32,
+        "same": -0.13,
+        "across": -3.79,
+        "overlap": 17.72
+      }
+    },
+    "1600 org_ro_14 O-JF-PANEL": {
+      "packed": 986,
+      "drawn": 986,
+      "of": 20160
+    },
+    "1600 org_ro_14 animations": [],
+    "1600 org_ro_long_6 outer ellipse": {
+      "rx": 460.28,
+      "ry": 187.85,
+      "packed": [
+        622,
+        289
+      ]
+    },
+    "1600 org_ro_long_6 air": {
+      "factors": [
+        "0.74",
+        "0.65"
+      ],
+      "box": [
+        1600,
+        740
+      ],
+      "layout": "full",
+      "rings": 1,
+      "discRadius": 87,
+      "heightExcessMax": 0,
+      "drawn": {
+        "centre": 15.2,
+        "same": 8.79,
+        "across": null,
+        "overlap": 26.48
+      },
+      "packed": {
+        "centre": 117.63,
+        "same": 93.27,
+        "across": null,
+        "overlap": 110.95
+      }
+    },
+    "1600 org_ro_long_6 O-JF-PANEL": {
+      "packed": 900,
+      "drawn": 258,
+      "of": 8640
+    },
+    "1600 org_ro_long_6 animations": [],
+    "1600 org_ro_long_8 outer ellipse": {
+      "rx": 578.46,
+      "ry": 254.32,
+      "packed": [
+        622,
+        289
+      ]
+    },
+    "1600 org_ro_long_8 air": {
+      "factors": [
+        "0.93",
+        "0.88"
+      ],
+      "box": [
+        1600,
+        740
+      ],
+      "layout": "full",
+      "rings": 1,
+      "discRadius": 87,
+      "heightExcessMax": 0,
+      "drawn": {
+        "centre": 83.04,
+        "same": 8.36,
+        "across": null,
+        "overlap": 25.88
+      },
+      "packed": {
+        "centre": 117.63,
+        "same": 28.62,
+        "across": null,
+        "overlap": 45.98
+      }
+    },
+    "1600 org_ro_long_8 O-JF-PANEL": {
+      "packed": 1200,
+      "drawn": 1008,
+      "of": 11520
+    },
+    "1600 org_ro_long_8 animations": [],
+    "1600 org_ro_short_12 outer ellipse": {
+      "rx": 382.32,
+      "ry": 284.58,
+      "packed": [
+        708,
+        306
+      ]
+    },
+    "1600 org_ro_short_12 air": {
+      "factors": [
+        "0.54",
+        "0.93"
+      ],
+      "box": [
+        1600,
+        740
+      ],
+      "layout": "full",
+      "rings": 1,
+      "discRadius": 87,
+      "heightExcessMax": 11.25,
+      "drawn": {
+        "centre": 127.33,
+        "same": 0.64,
+        "across": null,
+        "overlap": 17.03
+      },
+      "packed": {
+        "centre": 154.88,
+        "same": 35.75,
+        "across": null,
+        "overlap": 54.41
+      }
+    },
+    "1600 org_ro_short_12 O-JF-PANEL": {
+      "packed": 1560,
+      "drawn": 0,
+      "of": 17280
+    },
+    "1600 org_ro_short_12 animations": [],
+    "1600 O-4 click": {
+      "tries": 0,
+      "owner": "card"
+    },
+    "1280 org_ro_1 outer ellipse": {
+      "rx": 246.23,
+      "ry": 194.6,
+      "packed": [
+        502.5,
+        278
+      ]
+    },
+    "1280 org_ro_1 air": {
+      "factors": [
+        "0.49",
+        "0.70"
+      ],
+      "box": [
+        1280,
+        700
+      ],
+      "layout": "full",
+      "rings": 1,
+      "discRadius": 87,
+      "heightExcessMax": 0,
+      "drawn": {
+        "centre": 5.26,
+        "same": null,
+        "across": null,
+        "overlap": null
+      },
+      "packed": {
+        "centre": 116.99,
+        "same": null,
+        "across": null,
+        "overlap": null
+      }
+    },
+    "1280 org_ro_1 O-JF-PANEL": {
+      "packed": 189,
+      "drawn": 53,
+      "of": 1440
+    },
+    "1280 org_ro_1 animations": [],
+    "1280 org_ro_2 outer ellipse": {
+      "rx": 246.23,
+      "ry": 194.6,
+      "packed": [
+        502.5,
+        278
+      ]
+    },
+    "1280 org_ro_2 air": {
+      "factors": [
+        "0.49",
+        "0.70"
+      ],
+      "box": [
+        1280,
+        700
+      ],
+      "layout": "full",
+      "rings": 1,
+      "discRadius": 87,
+      "heightExcessMax": 9.5,
+      "drawn": {
+        "centre": 5.26,
+        "same": 150.69,
+        "across": null,
+        "overlap": 166.92
+      },
+      "packed": {
+        "centre": 115.1,
+        "same": 348.74,
+        "across": null,
+        "overlap": 366.57
+      }
+    },
+    "1280 org_ro_2 O-JF-PANEL": {
+      "packed": 373,
+      "drawn": 89,
+      "of": 2880
+    },
+    "1280 org_ro_2 animations": [],
+    "1280 org_ro_3 outer ellipse": {
+      "rx": 246.23,
+      "ry": 194.6,
+      "packed": [
+        502.5,
+        278
+      ]
+    },
+    "1280 org_ro_3 air": {
+      "factors": [
+        "0.49",
+        "0.70"
+      ],
+      "box": [
+        1280,
+        700
+      ],
+      "layout": "full",
+      "rings": 1,
+      "discRadius": 87,
+      "heightExcessMax": 11.25,
+      "drawn": {
+        "centre": 5.26,
+        "same": 108.88,
+        "across": null,
+        "overlap": 125.48
+      },
+      "packed": {
+        "centre": 115.1,
+        "same": 283.36,
+        "across": null,
+        "overlap": 300.96
+      }
+    },
+    "1280 org_ro_3 O-JF-PANEL": {
+      "packed": 542,
+      "drawn": 89,
+      "of": 4320
+    },
+    "1280 org_ro_3 animations": [],
+    "1280 org_ro_5 outer ellipse": {
+      "rx": 258.64,
+      "ry": 200.16,
+      "packed": [
+        488,
+        278
+      ]
+    },
+    "1280 org_ro_5 air": {
+      "factors": [
+        "0.53",
+        "0.72"
+      ],
+      "box": [
+        1280,
+        700
+      ],
+      "layout": "full",
+      "rings": 1,
+      "discRadius": 87,
+      "heightExcessMax": 11.25,
+      "drawn": {
+        "centre": 4.45,
+        "same": 29.84,
+        "across": null,
+        "overlap": 45.79
+      },
+      "packed": {
+        "centre": 113.42,
+        "same": 143.54,
+        "across": null,
+        "overlap": 161.31
+      }
+    },
+    "1280 org_ro_5 O-JF-PANEL": {
+      "packed": 888,
+      "drawn": 227,
+      "of": 7200
+    },
+    "1280 org_ro_5 animations": [],
+    "1280 org_ro_8 outer ellipse": {
+      "rx": 414.8,
+      "ry": 211.28,
+      "packed": [
+        488,
+        278
+      ]
+    },
+    "1280 org_ro_8 air": {
+      "factors": [
+        "0.85",
+        "0.76"
+      ],
+      "box": [
+        1280,
+        700
+      ],
+      "layout": "full",
+      "rings": 1,
+      "discRadius": 87,
+      "heightExcessMax": 11.25,
+      "drawn": {
+        "centre": 47.1,
+        "same": 5.23,
+        "across": null,
+        "overlap": 22.42
+      },
+      "packed": {
+        "centre": 113.42,
+        "same": 42.7,
+        "across": null,
+        "overlap": 59.92
+      }
+    },
+    "1280 org_ro_8 O-JF-PANEL": {
+      "packed": 1403,
+      "drawn": 998,
+      "of": 11520
+    },
+    "1280 org_ro_8 animations": [],
+    "1280 org_ro_14 outer ellipse": {
+      "rx": 612,
+      "ry": 322,
+      "packed": [
+        612,
+        322
+      ]
+    },
+    "1280 org_ro_14 air": {
+      "factors": [
+        "1.00",
+        "1.00"
+      ],
+      "box": [
+        1280,
+        700
+      ],
+      "layout": "full",
+      "rings": 4,
+      "discRadius": 87,
+      "heightExcessMax": 11.25,
+      "drawn": {
+        "centre": -3.04,
+        "same": -78.11,
+        "across": -1.74,
+        "overlap": -62.98
+      },
+      "packed": {
+        "centre": -3.04,
+        "same": -78.11,
+        "across": -1.74,
+        "overlap": -62.98
+      }
+    },
+    "1280 org_ro_14 O-JF-PANEL": {
+      "packed": 2181,
+      "drawn": 2181,
+      "of": 20160
+    },
+    "1280 org_ro_14 animations": [],
+    "1280 org_ro_long_6 outer ellipse": {
+      "rx": 363,
+      "ry": 231.4,
+      "packed": [
+        484,
+        260
+      ]
+    },
+    "1280 org_ro_long_6 air": {
+      "factors": [
+        "0.75",
+        "0.89"
+      ],
+      "box": [
+        1280,
+        700
+      ],
+      "layout": "full",
+      "rings": 1,
+      "discRadius": 87,
+      "heightExcessMax": 0,
+      "drawn": {
+        "centre": 40.35,
+        "same": 7.35,
+        "across": null,
+        "overlap": 23.66
+      },
+      "packed": {
+        "centre": 78.13,
+        "same": 51.76,
+        "across": null,
+        "overlap": 68.8
+      }
+    },
+    "1280 org_ro_long_6 O-JF-PANEL": {
+      "packed": 1230,
+      "drawn": 1020,
+      "of": 8640
+    },
+    "1280 org_ro_long_6 animations": [],
+    "1280 org_ro_long_8 outer ellipse": {
+      "rx": 484,
+      "ry": 260,
+      "packed": [
+        484,
+        260
+      ]
+    },
+    "1280 org_ro_long_8 air": {
+      "factors": [
+        "1.00",
+        "1.00"
+      ],
+      "box": [
+        1280,
+        700
+      ],
+      "layout": "full",
+      "rings": 1,
+      "discRadius": 87,
+      "heightExcessMax": 0,
+      "drawn": {
+        "centre": 78.13,
+        "same": -4.24,
+        "across": null,
+        "overlap": 13.15
+      },
+      "packed": {
+        "centre": 78.13,
+        "same": -4.24,
+        "across": null,
+        "overlap": 13.15
+      }
+    },
+    "1280 org_ro_long_8 O-JF-PANEL": {
+      "packed": 1640,
+      "drawn": 1640,
+      "of": 11520
+    },
+    "1280 org_ro_long_8 animations": [],
+    "1280 org_ro_short_12 outer ellipse": {
+      "rx": 389.08,
+      "ry": 280.28,
+      "packed": [
+        548,
+        286
+      ]
+    },
+    "1280 org_ro_short_12 air": {
+      "factors": [
+        "0.71",
+        "0.98"
+      ],
+      "box": [
+        1280,
+        700
+      ],
+      "layout": "full",
+      "rings": 1,
+      "discRadius": 87,
+      "heightExcessMax": 11.25,
+      "drawn": {
+        "centre": 123.81,
+        "same": 0.79,
+        "across": null,
+        "overlap": 17.26
+      },
+      "packed": {
+        "centre": 133.82,
+        "same": 19.27,
+        "across": null,
+        "overlap": 37.13
+      }
+    },
+    "1280 org_ro_short_12 O-JF-PANEL": {
+      "packed": 2112,
+      "drawn": 1608,
+      "of": 17280
+    },
+    "1280 org_ro_short_12 animations": [],
+    "1280 O-4 click": {
+      "tries": 0,
+      "owner": "card"
+    },
+    "1366 org_ro_1 outer ellipse": {
+      "rx": 245.48,
+      "ry": 194.6,
+      "packed": [
+        545.5,
+        278
+      ]
+    },
+    "1366 org_ro_1 air": {
+      "factors": [
+        "0.45",
+        "0.70"
+      ],
+      "box": [
+        1366,
+        700
+      ],
+      "layout": "full",
+      "rings": 1,
+      "discRadius": 87,
+      "heightExcessMax": 0,
+      "drawn": {
+        "centre": 4.87,
+        "same": null,
+        "across": null,
+        "overlap": null
+      },
+      "packed": {
+        "centre": 118.75,
+        "same": null,
+        "across": null,
+        "overlap": null
+      }
+    },
+    "1366 org_ro_1 O-JF-PANEL": {
+      "packed": 176,
+      "drawn": 0,
+      "of": 1440
+    },
+    "1366 org_ro_1 animations": [],
+    "1366 org_ro_2 outer ellipse": {
+      "rx": 245.48,
+      "ry": 194.6,
+      "packed": [
+        545.5,
+        278
+      ]
+    },
+    "1366 org_ro_2 air": {
+      "factors": [
+        "0.45",
+        "0.70"
+      ],
+      "box": [
+        1366,
+        700
+      ],
+      "layout": "full",
+      "rings": 1,
+      "discRadius": 87,
+      "heightExcessMax": 9.5,
+      "drawn": {
+        "centre": 4.87,
+        "same": 150.05,
+        "across": null,
+        "overlap": 166.35
+      },
+      "packed": {
+        "centre": 116.29,
+        "same": 360.56,
+        "across": null,
+        "overlap": 379.26
+      }
+    },
+    "1366 org_ro_2 O-JF-PANEL": {
+      "packed": 347,
+      "drawn": 0,
+      "of": 2880
+    },
+    "1366 org_ro_2 animations": [],
+    "1366 org_ro_3 outer ellipse": {
+      "rx": 245.48,
+      "ry": 194.6,
+      "packed": [
+        545.5,
+        278
+      ]
+    },
+    "1366 org_ro_3 air": {
+      "factors": [
+        "0.45",
+        "0.70"
+      ],
+      "box": [
+        1366,
+        700
+      ],
+      "layout": "full",
+      "rings": 1,
+      "discRadius": 87,
+      "heightExcessMax": 11.25,
+      "drawn": {
+        "centre": 4.87,
+        "same": 108.82,
+        "across": null,
+        "overlap": 124.58
+      },
+      "packed": {
+        "centre": 116.29,
+        "same": 293.8,
+        "across": null,
+        "overlap": 312.02
+      }
+    },
+    "1366 org_ro_3 O-JF-PANEL": {
+      "packed": 504,
+      "drawn": 0,
+      "of": 4320
+    },
+    "1366 org_ro_3 animations": [],
+    "1366 org_ro_5 outer ellipse": {
+      "rx": 265.5,
+      "ry": 194.6,
+      "packed": [
+        531,
+        278
+      ]
+    },
+    "1366 org_ro_5 air": {
+      "factors": [
+        "0.50",
+        "0.70"
+      ],
+      "box": [
+        1366,
+        700
+      ],
+      "layout": "full",
+      "rings": 1,
+      "discRadius": 87,
+      "heightExcessMax": 11.25,
+      "drawn": {
+        "centre": 5.11,
+        "same": 30.75,
+        "across": null,
+        "overlap": 46.83
+      },
+      "packed": {
+        "centre": 115.93,
+        "same": 152.81,
+        "across": null,
+        "overlap": 170.3
+      }
+    },
+    "1366 org_ro_5 O-JF-PANEL": {
+      "packed": 825,
+      "drawn": 49,
+      "of": 7200
+    },
+    "1366 org_ro_5 animations": [],
+    "1366 org_ro_8 outer ellipse": {
+      "rx": 387.63,
+      "ry": 225.18,
+      "packed": [
+        531,
+        278
+      ]
+    },
+    "1366 org_ro_8 air": {
+      "factors": [
+        "0.73",
+        "0.81"
+      ],
+      "box": [
+        1366,
+        700
+      ],
+      "layout": "full",
+      "rings": 1,
+      "discRadius": 87,
+      "heightExcessMax": 11.25,
+      "drawn": {
+        "centre": 56.91,
+        "same": 4.83,
+        "across": null,
+        "overlap": 21.67
+      },
+      "packed": {
+        "centre": 115.93,
+        "same": 49.88,
+        "across": null,
+        "overlap": 67.47
+      }
+    },
+    "1366 org_ro_8 O-JF-PANEL": {
+      "packed": 1302,
+      "drawn": 765,
+      "of": 11520
+    },
+    "1366 org_ro_8 animations": [],
+    "1366 org_ro_14 outer ellipse": {
+      "rx": 531,
+      "ry": 278,
+      "packed": [
+        531,
+        278
+      ]
+    },
+    "1366 org_ro_14 air": {
+      "factors": [
+        "1.00",
+        "1.00"
+      ],
+      "box": [
+        1366,
+        700
+      ],
+      "layout": "full",
+      "rings": 2,
+      "discRadius": 87,
+      "heightExcessMax": 11.25,
+      "drawn": {
+        "centre": -32.68,
+        "same": 4.7,
+        "across": -23,
+        "overlap": 21.98
+      },
+      "packed": {
+        "centre": -32.68,
+        "same": 4.7,
+        "across": -23,
+        "overlap": 21.98
+      }
+    },
+    "1366 org_ro_14 O-JF-PANEL": {
+      "packed": 1434,
+      "drawn": 1434,
+      "of": 20160
+    },
+    "1366 org_ro_14 animations": [],
+    "1366 org_ro_long_6 outer ellipse": {
+      "rx": 394.06,
+      "ry": 226.2,
+      "packed": [
+        518.5,
+        260
+      ]
+    },
+    "1366 org_ro_long_6 air": {
+      "factors": [
+        "0.76",
+        "0.87"
+      ],
+      "box": [
+        1366,
+        700
+      ],
+      "layout": "full",
+      "rings": 1,
+      "discRadius": 87,
+      "heightExcessMax": 0,
+      "drawn": {
+        "centre": 37.83,
+        "same": 7.65,
+        "across": null,
+        "overlap": 24.7
+      },
+      "packed": {
+        "centre": 78.65,
+        "same": 53.26,
+        "across": null,
+        "overlap": 71.03
+      }
+    },
+    "1366 org_ro_long_6 O-JF-PANEL": {
+      "packed": 1164,
+      "drawn": 912,
+      "of": 8640
+    },
+    "1366 org_ro_long_6 animations": [],
+    "1366 org_ro_long_8 outer ellipse": {
+      "rx": 518.5,
+      "ry": 260,
+      "packed": [
+        518.5,
+        260
+      ]
+    },
+    "1366 org_ro_long_8 air": {
+      "factors": [
+        "1.00",
+        "1.00"
+      ],
+      "box": [
+        1366,
+        700
+      ],
+      "layout": "full",
+      "rings": 1,
+      "discRadius": 87,
+      "heightExcessMax": 0,
+      "drawn": {
+        "centre": 78.65,
+        "same": -3.66,
+        "across": null,
+        "overlap": 13.86
+      },
+      "packed": {
+        "centre": 78.65,
+        "same": -3.66,
+        "across": null,
+        "overlap": 13.86
+      }
+    },
+    "1366 org_ro_long_8 O-JF-PANEL": {
+      "packed": 1552,
+      "drawn": 1552,
+      "of": 11520
+    },
+    "1366 org_ro_long_8 animations": [],
+    "1366 org_ro_short_12 outer ellipse": {
+      "rx": 384.15,
+      "ry": 283.14,
+      "packed": [
+        591,
+        286
+      ]
+    },
+    "1366 org_ro_short_12 air": {
+      "factors": [
+        "0.65",
+        "0.99"
+      ],
+      "box": [
+        1366,
+        700
+      ],
+      "layout": "full",
+      "rings": 1,
+      "discRadius": 87,
+      "heightExcessMax": 11.25,
+      "drawn": {
+        "centre": 126.14,
+        "same": 0.57,
+        "across": null,
+        "overlap": 17.07
+      },
+      "packed": {
+        "centre": 134.27,
+        "same": 22.44,
+        "across": null,
+        "overlap": 40.41
+      }
+    },
+    "1366 org_ro_short_12 O-JF-PANEL": {
+      "packed": 1980,
+      "drawn": 1212,
+      "of": 17280
+    },
+    "1366 org_ro_short_12 animations": [],
+    "1366 O-4 click": {
+      "tries": 0,
+      "owner": "card"
+    },
+    "1600x1200 org_ro_1 outer ellipse": {
+      "rx": 245.13,
+      "ry": 195.02,
+      "packed": [
+        662.5,
+        398
+      ]
+    },
+    "1600x1200 org_ro_1 air": {
+      "factors": [
+        "0.37",
+        "0.49"
+      ],
+      "box": [
+        1600,
+        940
+      ],
+      "layout": "full",
+      "rings": 1,
+      "discRadius": 87,
+      "heightExcessMax": 0,
+      "drawn": {
+        "centre": 4.89,
+        "same": null,
+        "across": null,
+        "overlap": null
+      },
+      "packed": {
+        "centre": 237.92,
+        "same": null,
+        "across": null,
+        "overlap": null
+      }
+    },
+    "1600x1200 org_ro_1 O-JF-PANEL": {
+      "packed": 100,
+      "drawn": 0,
+      "of": 1440
+    },
+    "1600x1200 org_ro_1 animations": [],
+    "1600x1200 org_ro_2 outer ellipse": {
+      "rx": 245.13,
+      "ry": 195.02,
+      "packed": [
+        662.5,
+        398
+      ]
+    },
+    "1600x1200 org_ro_2 air": {
+      "factors": [
+        "0.37",
+        "0.49"
+      ],
+      "box": [
+        1600,
+        940
+      ],
+      "layout": "full",
+      "rings": 1,
+      "discRadius": 87,
+      "heightExcessMax": 9.5,
+      "drawn": {
+        "centre": 4.89,
+        "same": 150,
+        "across": null,
+        "overlap": 166.21
+      },
+      "packed": {
+        "centre": 235.72,
+        "same": 542.07,
+        "across": null,
+        "overlap": 560.09
+      }
+    },
+    "1600x1200 org_ro_2 O-JF-PANEL": {
+      "packed": 196,
+      "drawn": 0,
+      "of": 2880
+    },
+    "1600x1200 org_ro_2 animations": [],
+    "1600x1200 org_ro_3 outer ellipse": {
+      "rx": 245.13,
+      "ry": 195.02,
+      "packed": [
+        662.5,
+        398
+      ]
+    },
+    "1600x1200 org_ro_3 air": {
+      "factors": [
+        "0.37",
+        "0.49"
+      ],
+      "box": [
+        1600,
+        940
+      ],
+      "layout": "full",
+      "rings": 1,
+      "discRadius": 87,
+      "heightExcessMax": 11.25,
+      "drawn": {
+        "centre": 4.89,
+        "same": 108.42,
+        "across": null,
+        "overlap": 124.83
+      },
+      "packed": {
+        "centre": 235.72,
+        "same": 450.9,
+        "across": null,
+        "overlap": 467.77
+      }
+    },
+    "1600x1200 org_ro_3 O-JF-PANEL": {
+      "packed": 280,
+      "drawn": 0,
+      "of": 4320
+    },
+    "1600x1200 org_ro_3 animations": [],
+    "1600x1200 org_ro_5 outer ellipse": {
+      "rx": 265.68,
+      "ry": 195.02,
+      "packed": [
+        648,
+        398
+      ]
+    },
+    "1600x1200 org_ro_5 air": {
+      "factors": [
+        "0.41",
+        "0.49"
+      ],
+      "box": [
+        1600,
+        940
+      ],
+      "layout": "full",
+      "rings": 1,
+      "discRadius": 87,
+      "heightExcessMax": 11.25,
+      "drawn": {
+        "centre": 5.42,
+        "same": 31.06,
+        "across": null,
+        "overlap": 47.13
+      },
+      "packed": {
+        "centre": 234.9,
+        "same": 256.44,
+        "across": null,
+        "overlap": 273.92
+      }
+    },
+    "1600x1200 org_ro_5 O-JF-PANEL": {
+      "packed": 452,
+      "drawn": 0,
+      "of": 7200
+    },
+    "1600x1200 org_ro_5 animations": [],
+    "1600x1200 org_ro_8 outer ellipse": {
+      "rx": 408.24,
+      "ry": 214.92,
+      "packed": [
+        648,
+        398
+      ]
+    },
+    "1600x1200 org_ro_8 air": {
+      "factors": [
+        "0.63",
+        "0.54"
+      ],
+      "box": [
+        1600,
+        940
+      ],
+      "layout": "full",
+      "rings": 1,
+      "discRadius": 87,
+      "heightExcessMax": 11.25,
+      "drawn": {
+        "centre": 49.88,
+        "same": 5.28,
+        "across": null,
+        "overlap": 22.74
+      },
+      "packed": {
+        "centre": 234.9,
+        "same": 115.75,
+        "across": null,
+        "overlap": 133.09
+      }
+    },
+    "1600x1200 org_ro_8 O-JF-PANEL": {
+      "packed": 708,
+      "drawn": 0,
+      "of": 11520
+    },
+    "1600x1200 org_ro_8 animations": [],
+    "1600x1200 org_ro_14 outer ellipse": {
+      "rx": 570.24,
+      "ry": 374.12,
+      "packed": [
+        648,
+        398
+      ]
+    },
+    "1600x1200 org_ro_14 air": {
+      "factors": [
+        "0.88",
+        "0.94"
+      ],
+      "box": [
+        1600,
+        940
+      ],
+      "layout": "full",
+      "rings": 2,
+      "discRadius": 87,
+      "heightExcessMax": 11.25,
+      "drawn": {
+        "centre": 7.53,
+        "same": 7.03,
+        "across": 0.09,
+        "overlap": 23.31
+      },
+      "packed": {
+        "centre": 25.57,
+        "same": 23.85,
+        "across": 18.04,
+        "overlap": 40.66
+      }
+    },
+    "1600x1200 org_ro_14 O-JF-PANEL": {
+      "packed": 686,
+      "drawn": 435,
+      "of": 20160
+    },
+    "1600x1200 org_ro_14 animations": [],
+    "1600x1200 org_ro_long_6 outer ellipse": {
+      "rx": 435.4,
+      "ry": 198.39,
+      "packed": [
+        622,
+        389
+      ]
+    },
+    "1600x1200 org_ro_long_6 air": {
+      "factors": [
+        "0.70",
+        "0.51"
+      ],
+      "box": [
+        1600,
+        940
+      ],
+      "layout": "full",
+      "rings": 1,
+      "discRadius": 87,
+      "heightExcessMax": 0,
+      "drawn": {
+        "centre": 23.06,
+        "same": 8.41,
+        "across": null,
+        "overlap": 25.72
+      },
+      "packed": {
+        "centre": 210.61,
+        "same": 141.03,
+        "across": null,
+        "overlap": 157.55
+      }
+    },
+    "1600x1200 org_ro_long_6 O-JF-PANEL": {
+      "packed": 666,
+      "drawn": 0,
+      "of": 8640
+    },
+    "1600x1200 org_ro_long_6 animations": [],
+    "1600x1200 org_ro_long_8 outer ellipse": {
+      "rx": 566.02,
+      "ry": 260.63,
+      "packed": [
+        622,
+        389
+      ]
+    },
+    "1600x1200 org_ro_long_8 air": {
+      "factors": [
+        "0.91",
+        "0.67"
+      ],
+      "box": [
+        1600,
+        940
+      ],
+      "layout": "full",
+      "rings": 1,
+      "discRadius": 87,
+      "heightExcessMax": 0,
+      "drawn": {
+        "centre": 88.41,
+        "same": 8.38,
+        "across": null,
+        "overlap": 25.79
+      },
+      "packed": {
+        "centre": 210.61,
+        "same": 59.95,
+        "across": null,
+        "overlap": 76.68
+      }
+    },
+    "1600x1200 org_ro_long_8 O-JF-PANEL": {
+      "packed": 888,
+      "drawn": 32,
+      "of": 11520
+    },
+    "1600x1200 org_ro_long_8 animations": [],
+    "1600x1200 org_ro_short_12 outer ellipse": {
+      "rx": 389.4,
+      "ry": 280.14,
+      "packed": [
+        708,
+        406
+      ]
+    },
+    "1600x1200 org_ro_short_12 air": {
+      "factors": [
+        "0.55",
+        "0.69"
+      ],
+      "box": [
+        1600,
+        940
+      ],
+      "layout": "full",
+      "rings": 1,
+      "discRadius": 87,
+      "heightExcessMax": 11.25,
+      "drawn": {
+        "centre": 123.7,
+        "same": 0.8,
+        "across": null,
+        "overlap": 17.3
+      },
+      "packed": {
+        "centre": 254.02,
+        "same": 69.42,
+        "across": null,
+        "overlap": 86.99
+      }
+    },
+    "1600x1200 org_ro_short_12 O-JF-PANEL": {
+      "packed": 1116,
+      "drawn": 0,
+      "of": 17280
+    },
+    "1600x1200 org_ro_short_12 animations": [],
+    "1600x1200 O-4 click": {
+      "tries": 0,
+      "owner": "card"
+    }
+  },
+  "pageErrors": [],
+  "nonGet": [],
+  "net": [
+    "947023 fetch https://registry.npmjs.org/-/package/next/dist-tags"
+  ]
+}
