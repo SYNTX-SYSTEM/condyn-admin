@@ -285,10 +285,27 @@ Owner-Vorgabe: Der alte pool-weite Vergleich bleibt vorerst rollenübergreifend.
     - Die Änderung betrifft nur das Frontend: `SyntxField.tsx` und zwei reine Funktionen in `syntx-manifestation-layout.ts`.
     - `domainFocus` und `seniority` stammen aus dem bestehenden Feld-View-Model, also aus den Pooldaten. Die Matching-Anzeige liest wie bisher `role.matching`. Damit wird nichts Neues behauptet.
     - Der Ankerpunkt der Verbindungslinie rechnet mit der gezeichneten Höhe.
-    - Nach GELBs Abschätzung passt der Inhalt bei einer bis vier Titelzeilen in beide Höhen. GRÜNs Messung meldet keine abgeschnittene Karte.
+    - Nach GELBs Abschätzung passt der Inhalt bei einer bis vier Titelzeilen in beide Höhen. GRÜNs Messung meldet keine abgeschnittene Karte. **Einschränkung:** Abschätzung und Messung galten nur der Höhe und nur auf Englisch. In der Breite war auf `ae633a1` das deutsche „KEIN MATCHING GELESEN“ bei schmalen Karten abgeschnitten; GRÜN hat das selbst gefunden und in `6f9bc2b` behoben (unten).
     - Leak-Prüfung der hinzugefügten Zeilen sauber.
   - Probe `b823f68` + `ae633a1`: `tsc` 0; Job-Pool, Orbit-Härtung, drei Modi und Investigation 255 grün, 4 übersprungen.
   - PINK: Prüfung angefragt, ausstehend. Danach Sichtabnahme durch den Owner. Integriert wird nur auf das Wort des Owners an GELB und nur zusammen mit `role-orbit` und `demo-ui-fix` darunter oder nach ihnen.
+  - Sichtabnahme: Nach Angabe von GRÜN hat der Owner die Kartengestaltung grundsätzlich abgenommen; nur die Fußzeile war ihm zu klein.
+- **GRÜN `frontend/role-card-footer`** (`6f9bc2b`, gestapelt auf `ae633a1`; Owner-Auftrag an GRÜN „ROLE CARDS — FOOTER READABILITY“, STOP vor Integration). Inhalt:
+  - Die Fußzeile (Anforderungen, Matching-Lesung) ist größer und heller: bis 8,5 px statt 7,5 px.
+  - Die Größe wählt `monoLineSize` je Karte: die größte Viertelpixel-Größe, bei der beide Zeilen in die Kartenbreite passen.
+  - Die Zeilen reichen 8 px in den seitlichen Innenabstand. Die Trennlinie gibt 2 px Höhe zurück. Kartenbox und Orbit bleiben unverändert.
+  - GELB-Review:
+    - Nur Frontend; Leak-Prüfung sauber.
+    - Die Höhe wächst netto um etwa 0,4 px und passt weiter in die feste Box.
+    - Nachgerechnet:
+      - Englisch: 8,5 px auf jeder Karte.
+      - Deutsch „KEIN MATCHING GELESEN“: auf der schmalsten vollen Karte (128 px) 7,75 px, ab etwa 150 px 8,5 px.
+      - Deutsch auf kompakten Karten (120 px, viele Rollen): 7,5 px, also so groß wie bisher.
+    - `monoLineSize` kennt keine Untergrenze. Bei den heutigen Texten und Kartenbreiten ergibt sich kein Wert unter 7,5 px.
+  - Probe `62bfbcc` + `6f9bc2b`: `tsc` 0; Job-Pool, Orbit-Härtung, drei Modi und Investigation 256 grün, 4 übersprungen.
+  - PINK: Prüfung angefragt, ausstehend.
+
+  Die Integrationsreihenfolge, falls der Owner sie so will: `demo-ui-fix` → `role-orbit` → `role-cards` → `role-card-footer`. Integriert wird nur auf das direkte Wort des Owners an GELB.
 
   Wenn er integriert wird, dann zusammen mit oder nach `demo-ui-fix`. Die Sichtwirkung beurteilt der Owner.
 - **PINK-Skript** `support/syntx-readonly-walk.mjs` (P-4) ist nicht neu gebunden; es braucht eine Umgebung mit gespeicherten Aufträgen.
