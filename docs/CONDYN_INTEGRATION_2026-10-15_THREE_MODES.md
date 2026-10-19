@@ -22,6 +22,10 @@ Integrationszweig ist `integration/job-field-governance`, Basis `311d6ee`. `main
 | `55aec63` | PINK `validation/hr-decision-loop-pink` `ffe9954` | PINK §3.46: erneute Prüfung von GRÜNs Korrektur `7a51d89` auf der Probe `c8e99d8`; nur Protokoll und Beweise als `.txt`, kein Code. Der Rollenorbit selbst ist nicht integriert (§5) |
 | `9098618` | PINK `validation/hr-decision-loop-pink` `de6829d` | PINK §3.47: D-RO-2 auf `3be1920` bestätigt und GRÜNs Korrektur `e6493a7` auf der Probe `f665b80` geprüft; nur Protokoll und Evidenz, kein Code. Der Rollenorbit selbst ist nicht integriert (§5) |
 | `16f117b` | PINK `validation/hr-decision-loop-pink` `b88d33f` | PINK §3.48: Rollenkarten `ae633a1` → `6f9bc2b` → `4ecfe67` geprüft; nur Protokoll und Evidenz, kein Code. Die Rollenkarten selbst sind nicht integriert (§5) |
+| `7e9f2c8` | GRÜN `frontend/demo-ui-fix` `0b5a8ea` | Owner-GO vom 2026-10-19 „GRÜN-Stapel kontrolliert integrieren“, erster von vier gestapelten Merges: GEMINI OUTPUT jederzeit schließbar, NO ANALYSIS als Signal, Esc lässt einem Dialog den Vortritt (`d9c7fea`, `0b5a8ea`; PINK §3.44) |
+| `63f4dd8` | GRÜN `frontend/role-orbit` `e6493a7` | kompakter Rollenorbit `6d386cc` → `7a51d89` → `3be1920` → `e6493a7` (D-RO-1, D-RO-2 behoben; PINK §3.45–§3.47). Sichtrichtung vom Owner angenommen |
+| `17181d5` | GRÜN `frontend/role-cards` `ae633a1` | neue Rollenkarten (PINK §3.48). Sichtrichtung vom Owner angenommen |
+| `5293eb1` | GRÜN `frontend/role-card-footer` `4ecfe67` | Fußzeile bis 8,5 px (`6f9bc2b`) und Korrektur `4ecfe67` (D-RC-1, D-RC-2; PINK §3.48). Letzter Merge des Stapels; danach VIDEO FREEZE (§7) |
 | `a3c3759` | PINK `validation/hr-decision-loop-pink` `916e884` | PINK §3.43: `syntx-walk.e2e` an die Invarianten neu gebunden (siehe §2.3); nur diese Testdatei und Belege |
 | `73a4701` | PINK `validation/hr-decision-loop-pink` `122aa6c` | PINKs Prüfprotokolle §3.41 (Integration `0fb7b05`) und §3.42 (Delta `eacfc97`) sowie die übernommenen Fixture-Änderungen für `http-canonical-inverse` und `pdf-path`. Der pdf-path-Schritt erwartet 409 und gilt nur zusammen mit `eacfc97`; deshalb wurde `eacfc97` zuerst gemergt |
 
@@ -100,6 +104,25 @@ Die Testdatei ist byte-gleich mit PINKs `916e884`; `tsc` 0. Nachgeprüft in eine
   - **Dev-Sperre:** `g2-g3-vertical-proof` und `hr-decision-loop-p7` starten einen eigenen `next dev` im Worktree und treffen auf die Sperre der laufenden Demo (§6). Im separaten Worktree auf `d3e76ce` sind beide grün (2 Dateien, 77 Tests zusammen mit Outcome-Valence).
   - **Last:** eine Zeitüberschreitung in `career-outcome-valence-feedback-context-revision-postgres`. Sie hängt von der Last ab: einzeln einmal 8/8, einmal 7/8. Der Code dort ist seit der Basis unverändert; PINK hat dasselbe auch auf der Basis gemessen (§3.41).
 - Solange die Demo läuft, müssen volle Suite und E2E in einem anderen Worktree laufen.
+
+### 2.5 Fünfter Schritt, `5293eb1` (GRÜN-Stapel, Owner-GO 2026-10-19)
+
+Die vier Merges (`7e9f2c8`, `63f4dd8`, `17181d5`, `5293eb1`) liefen konfliktfrei, in der Reihenfolge des Stapels. Gemacht und geprüft wurden sie im eigenen Worktree auf einem losgelösten Stand, nicht im Integrations-Worktree: Dort läuft die Demo aus §6 als `next dev`, und ein Code-Merge hätte sie per Hot Reload verändert. Der Integrations-Worktree bleibt deshalb auf `27f3253`, bis der Owner das Herunterfahren der Demo freigibt.
+
+- **Leak-Check** `27f3253...4ecfe67` (alle neuen Zeilen, auch die 47 PNG-Dateien): 0 Treffer für lokale Pfade, Datenbank-URLs oder Schlüssel.
+- **Abhängigkeiten** (`package.json`, Lockfile) unverändert. Der Stapel ändert nur `SyntxField.tsx`, `syntx-manifestation-layout.ts`, drei Testdateien, `JOB_FIELD_FRONTEND.md`, einen Vorschlagseintrag und GRÜNs Evidenz.
+
+Alle Läufe auf Wegwerf-Datenbanken unter der Testrolle, ohne Gemini:
+
+| Prüfung | Ergebnis |
+|---|---|
+| `tsc --noEmit` | 0 Fehler |
+| Job-Pool, Orbit-Härtung, drei Modi, Investigation | 27/27 Dateien, 256 grün, 4 übersprungen |
+| Volle Suite (ohne E2E) | 2644 grün, 29 rot, 8 übersprungen. 27 sind die namensgleichen Basis-Rotfälle (4 Lifecycle-/Policy-Dateien). Dazu zwei Zeitüberschreitungen nach 5 s unter Last in Dateien, die der Stapel nicht berührt: `outcome-valence-declaration/persistence-postgres` einzeln zweimal 8/8. `structural-consequences/reconstruct` braucht einzeln für den Fall „propagates sealed source-gap errors“ 4,1–5,0 s, auf `27f3253` gleich wie auf `5293eb1` (abwechselnd gemessen: 4954/4087/4413/4646 ms); einzeln einmal 1 von 8 rot, sonst 8/8. Der Fall liegt also auf beiden Ständen an der 5-s-Grenze; `lib/decision-core` und `test/decision-core` sind zwischen den Ständen unverändert |
+| E2E | `syntx-walk.e2e` 3/3, `job-scope-gate.e2e` 1/1, `job-pool-workflow.e2e` 10/10. Überschriebene Belege zurückgesetzt |
+| Video-Walk (`docs/CONDYN_VIDEO_READINESS_2026-10-19.md`) | 30/30 bei 1920 × 1080 und 30/30 bei 1600 × 1000, je ein frisches Labor; 12 Vorschläge, B2 7 abgedeckt / 2 nicht, JOB-Struktur 10 Zeilen / 8 Befunde. Netzwerk: nur die geblockte Versionsabfrage von `next dev` |
+
+PINK-Nachprüfung des integrierten Stands: angefragt.
 
 ## 3. E2E-Suiten
 
@@ -192,7 +215,7 @@ Owner-Vorgabe: Der alte pool-weite Vergleich bleibt vorerst rollenübergreifend.
   - GELB: technisch R15b-konform; Probe-Merge auf `18b7c2a` mit `tsc` 0 und 206/206.
   - PINK: ohne Abweichung (§3.44, `demo-ui-fix.e2e` 62/62).
 
-  Integriert wird er erst auf ein Wort des Owners an GELB.
+  **Integriert am 2026-10-19 als `7e9f2c8`** (Owner-GO, §1, §2.5).
 - **GRÜN `frontend/role-orbit`** (`6d386cc`, gestapelt auf `0b5a8ea`; Owner-Auftrag an GRÜN „ROLE ORBIT REFINEMENT“ vom 2026-10-18, STOP vor Integration). Inhalt:
   - Der Rollenorbit des Organisations-Kosmos rückt per `compactRoleOrbit` bis zu 22 % pro Achse ans Zentrum, solange in jeder Phase die Luft zum Zentrum und zwischen den Karten hält. Ohne Platz und beim statischen Raster bleibt das Packing unverändert.
   - Zusätzlich die Attribute `data-orbit-compactness-x/-y`.
@@ -320,9 +343,7 @@ Owner-Vorgabe: Der alte pool-weite Vergleich bleibt vorerst rollenübergreifend.
   - Gerendert auf Deutsch ist die Fußzeile auf jeder Karte vollständig (7,75–8,5 px). **Auch auf den kompakten 120-px-Karten sind es 8,5 px, nicht wie von GELB gerechnet 7,5 px.** GELBs Rechnung nahm 0,6 em Zeichenbreite an; die tatsächlich gerenderte Schrift ist schmaler (PINK O-RC-MONO: Fira Code).
   - Beobachtungen: O-RC-MONO, O-RC-DISC (kompakte Karten unter der Scheibe, vorbestehend), O-RC-DEVTOOLS.
 
-  Integrationsreihenfolge, falls der Owner sie so will: `demo-ui-fix` → `role-orbit` → `role-cards` → `role-card-footer` (bis `4ecfe67`). Integriert wird nur auf das direkte Wort des Owners an GELB. Für die Rollenkarten steht außerdem die Sichtabnahme der Korrektur aus.
-
-  Wenn er integriert wird, dann zusammen mit oder nach `demo-ui-fix`. Die Sichtwirkung beurteilt der Owner.
+  **Integriert am 2026-10-19** auf das Owner-GO an GELB, in der Reihenfolge `demo-ui-fix` → `role-orbit` → `role-cards` → `role-card-footer` bis `4ecfe67` (`7e9f2c8`, `63f4dd8`, `17181d5`, `5293eb1`; §1, §2.5). Der Owner hat die Sichtrichtung des kompakten Rollenorbits und der neuen Rollenkarten angenommen. Die Einträge zu `role-orbit`, `role-cards` und `role-card-footer` oben sind der Prüfverlauf bis dahin.
 - **PINK-Skript** `support/syntx-readonly-walk.mjs` (P-4) ist nicht neu gebunden; es braucht eine Umgebung mit gespeicherten Aufträgen.
 - **Für GRÜN (O-SX-INACTIVE-NAMING):** Der Feldzustand INACTIVE_POOL entsteht nur aus einer 409 von `/matches`. Unter der URL-Grenze ist er mit konsistenten Daten nicht mehr erreichbar; das Feld zeigt dann OTHER_POOL.
 - **Zur Information (PINK):**
@@ -356,5 +377,12 @@ Lokale Umgebung auf `127.0.0.1:41851` mit dem Integrationsbaum `6da26a7`. Sie l�
 | Seitenfehler im Browser | keine | ja |
 
 ## 7. Ablauf
+
+**2026-10-19, Owner-GO „GRÜN-Stapel kontrolliert integrieren“:** SFE::INTEGRATE → VERIFY → FREEZE → GEMINI GO → ANTIGRAVITY → VIDEO.
+- INTEGRATE und VERIFY: §1, §2.5. PINK-Nachprüfung angefragt.
+- **VIDEO FREEZE ab `5293eb1`:** keine weiteren kosmetischen Änderungen vor dem ersten Film. Gilt für alle drei Sessions; Funktionsfehler, die den Videopfad blockieren, gehen als Befund an den Owner.
+- GEMINI GO: Der Live-Modus des Video-Labors ist vorbereitet, gesperrt und ohne echten Aufruf geprüft (`docs/CONDYN_VIDEO_READINESS_2026-10-19.md` §8). STOP vor dem ersten echten Gemini-Aufruf.
+
+Bisheriger Ablauf:
 
 SFE::INTEGRATE → VERIFY → PINK → **DEMO REVIEW**. PINK hat Integration und Delta ohne Abweichung im Code bestätigt (§3.41, §3.42). Die Demo nach §6 steht für das DEMO REVIEW durch den Owner bereit; sie läuft, bis der Owner das Herunterfahren freigibt.
