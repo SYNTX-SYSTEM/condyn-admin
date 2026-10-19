@@ -327,7 +327,7 @@ export const SYNTX_RESONANCE_BREATH_PROTOTYPE = process.env.NEXT_PUBLIC_SYNTX_RE
 /** Infinite animations of the Job Field in LIVE mode (closed list; the planetarium's and the field's own; everything else is finite). */
 export const SYNTX_AMBIENT_NAMES = Object.freeze(["orbitFloatPhase2", "moonOrbit", "ringPulse", "atmosphereGlow", "hologramFloat", "coreBreathe", "corePulseCommunicate", "plasmaRotateCw", "plasmaRotateCcw", "plasmaFlarePulse", "waveExpand", "particleIn", "rotateClockwise", "focusTransitionPulse", "sxSuspend"]);
 
-const SYNTX_CSS = `
+export const SYNTX_CSS = `
 ${SYNTX_RESONANCE_BODY_KEYFRAMES}
 ${SYNTX_CORE_KEYFRAMES}
 ${SYNTX_FOCUS_PULSE_KEYFRAMES}
@@ -439,6 +439,15 @@ ${SYNTX_FOCUS_PULSE_KEYFRAMES}
 [data-testid="syntx-field"][data-motion-mode="LIVE"] [data-sx-giant-seam] { animation: sxGiantSeam 10s infinite; }
 [data-testid="syntx-field"][data-motion-mode="LIVE"] [data-sx-giant-membrane] { animation: sxGiantMembrane 10s infinite; }
 [data-testid="syntx-field"][data-motion-mode="LIVE"] [data-sx-giant-ring] { animation: sxGiantRing 10s 0.35s infinite backwards; }
+/* NO ANALYSIS nerve signal (owner "DEMO UI FIX + SEMIONTIC REFINEMENT", 2026-10-15; new motion kind, R15b approval by GELB
+ * required): the amber indicator fires (a short rise, a long organic decay, a rest) and the signal reaches the chip's outer aura a
+ * moment later, as along a nerve. 4.8 s; opacity and transform only, on two decorative layers (the indicator scales about its centre
+ * inside a fixed 14 px ring); the message, its text and the chip's box stay still. Bound to the state: it ends with NO ANALYSIS.
+ * LIVE only; REDUCED keeps the static base (none). */
+@keyframes sxSignalCore { 0%, 100% { opacity: 0.6; transform: scale(1); animation-timing-function: cubic-bezier(0.3, 0, 0.2, 1); } 12% { opacity: 1; transform: scale(1.32); animation-timing-function: cubic-bezier(0.33, 0, 0.25, 1); } 58% { opacity: 0.6; transform: scale(1); } }
+@keyframes sxSignalAura { 0%, 100% { opacity: 0.38; animation-timing-function: cubic-bezier(0.3, 0, 0.2, 1); } 18% { opacity: 1; animation-timing-function: cubic-bezier(0.33, 0, 0.25, 1); } 70% { opacity: 0.38; } }
+[data-testid="syntx-field"][data-motion-mode="LIVE"] [data-sx-signal="awaiting-analysis"] [data-sx-signal-core] { animation: sxSignalCore 4.8s infinite; }
+[data-testid="syntx-field"][data-motion-mode="LIVE"] [data-sx-signal="awaiting-analysis"] [data-sx-signal-aura] { animation: sxSignalAura 4.8s 0.24s infinite backwards; }
 @media (prefers-reduced-motion: reduce) {
   [data-testid="syntx-field"], [data-testid="syntx-field"] * { animation: none !important; transition: none !important; }
   [data-testid="syntx-field"] *::before, [data-testid="syntx-field"] *::after { animation: none !important; transition: none !important; }
@@ -469,6 +478,36 @@ function useStageSize(ref: React.RefObject<HTMLElement | null>): { width: number
     return () => observer.disconnect();
   }, [ref]);
   return size;
+}
+
+/** NO ANALYSIS in two voices (owner "SEMIONTIC REFINEMENT", 2026-10-15): the status word and the instruction of one copy; the
+ *  separator stays for the reader (visually hidden), so the text is the copy unchanged. */
+function MessageVoices({ copy }: { copy: string }) {
+  const cut = copy.indexOf(": ");
+  const head = cut < 0 ? copy : copy.slice(0, cut);
+  const body = cut < 0 ? "" : copy.slice(cut + 2);
+  return (
+    <>
+      <span style={{ fontFamily: MONO, fontSize: "10px", fontWeight: 700, lineHeight: 1.3, letterSpacing: "1.8px", color: "#ffbf5c", textShadow: `0 0 10px rgba(${AMBER_RGB}, 0.35)` }}>{head}</span>
+      {body !== "" && <><span style={visuallyHidden}>: </span><span style={{ fontFamily: SANS, fontSize: "11.5px", fontWeight: 500, lineHeight: 1.45, letterSpacing: "0.15px", color: "rgba(255, 232, 200, 0.95)", wordBreak: "break-word" }}>{body}</span></>}
+    </>
+  );
+}
+
+/** Modal layers of the shell that sit above the Job Field while they are mounted (each renders only while open). */
+const MODAL_LAYERS = '[data-testid="guided-onboarding-overlay"], [data-testid="system-codex-modal-backdrop"], [aria-modal="true"]';
+
+/** The bottom edge of an element in its offset parent; 0 until measured (server render, no ResizeObserver). */
+function useOffsetBottom(ref: React.RefObject<HTMLElement | null>): number {
+  const [bottom, setBottom] = useState(0);
+  useEffect(() => {
+    const element = ref.current;
+    if (!element || typeof ResizeObserver === "undefined") return;
+    const observer = new ResizeObserver(() => setBottom(element.offsetTop + element.offsetHeight));
+    observer.observe(element);
+    return () => observer.disconnect();
+  }, [ref]);
+  return bottom;
 }
 
 export function describeSyntxFieldState(workflow: JobPoolWorkflow, analysisSource: JobPoolAnalysisSource): SyntxFieldState {
@@ -1851,6 +1890,10 @@ export function SyntxField({ workflow, analysisSource, observation: requested, o
   const rootRef = useRef<HTMLElement | null>(null);
   const stageRef = useRef<HTMLDivElement | null>(null);
   const size = useStageSize(stageRef);
+  /** The orientation surface grows with the observation path and its state; the pool list opens below it, never over its actions
+   *  (DEMO UI FIX, 2026-10-15: at a role the list covered HIDE GEMINI OUTPUT). The list keeps its place while the surface is short. */
+  const orientRef = useRef<HTMLDivElement | null>(null);
+  const poolsTop = Math.max(300, useOffsetBottom(orientRef) + 16);
   const state = describeSyntxFieldState(workflow, analysisSource);
   const view = workflow.view.state === "AVAILABLE" ? workflow.view.upload : null;
   const matching = workflow.matches.state === "AVAILABLE" ? workflow.matches.matches : null;
@@ -1891,6 +1934,8 @@ export function SyntxField({ workflow, analysisSource, observation: requested, o
   const coverageRead = useSelectedRoleCoverage(investigationVisible && investigationBody === "COVERAGE" ? investigation.analysisId : null, investigationVisible && investigationBody === "COVERAGE" ? jobScope : null);
   const structureRead = useJobStructure(investigationVisible && investigationBody === "STRUCTURE" ? jobScope : null);
   const anyBodyOpen = boundaryOpen || investigationVisible || geminiOpen;
+  /** NO ANALYSIS in PERSON × JOB: the one state line that asks for an action, shown as a signal (owner "SEMIONTIC REFINEMENT"). */
+  const awaitingAnalysis = investigation.mode === "PERSON_X_JOB" && withheld === null && state === "NO_ANALYSIS";
 
   /** F-SX-1 (PINK, R8): when a return or an aperture close unmounts the focused sign, focus moves to the sign of the new observation point, else to the field root, so Escape keeps working at every level. */
   useEffect(() => {
@@ -1912,10 +1957,11 @@ export function SyntxField({ workflow, analysisSource, observation: requested, o
     setFileText(await file.text());
   };
 
-  /** Escape returns one level (R8); with an edge lens open it closes that first. */
-  const onKeyDown = (event: React.KeyboardEvent) => {
-    if (event.key !== "Escape") return;
-    event.preventDefault();
+  /** Escape returns one level (R8); with an edge lens open it closes that first. A focus inside the closing surface moves to the
+   *  field root first, so the next Escape still reaches the field. */
+  const escapeOneLevel = () => {
+    const active = typeof document === "undefined" ? null : document.activeElement;
+    if (active instanceof HTMLElement && active.closest("[data-sx-panel]") !== null) rootRef.current?.focus({ preventScroll: true });
     if (intakeOpen) { setIntakeOpen(false); return; }
     if (geminiOpen) { setGeminiOpen(false); return; }
     if (investigationVisible) { setInvestigationOpen(false); return; }
@@ -1923,6 +1969,29 @@ export function SyntxField({ workflow, analysisSource, observation: requested, o
     if (poolsOpen && selection.kind !== "NONE") { setPoolsOpen(false); return; }
     if (observation.kind !== "FIELD") onObserve(returnFrom(observation));
   };
+  const onKeyDown = (event: React.KeyboardEvent) => {
+    if (event.key !== "Escape") return;
+    event.preventDefault();
+    escapeOneLevel();
+  };
+  /** DEMO UI FIX (2026-10-15): a focus lost to the document (a control that closed with its surface) leaves Escape nowhere to go;
+   *  while the field is open, an Escape on the bare document is the field's. Focus anywhere else keeps its own Escape, and a modal
+   *  layer above the field (onboarding, System Codex, any aria-modal dialog) keeps the field still (GELB review of d9c7fea). */
+  const escapeRef = useRef(escapeOneLevel);
+  useEffect(() => { escapeRef.current = escapeOneLevel; });
+  useEffect(() => {
+    const onDocumentKeyDown = (event: KeyboardEvent) => {
+      if (event.key !== "Escape" || event.defaultPrevented) return;
+      const active = document.activeElement;
+      if (active !== null && active !== document.body && active !== document.documentElement) return;
+      if (document.querySelector(MODAL_LAYERS) !== null) return;
+      event.preventDefault();
+      rootRef.current?.focus({ preventScroll: true });
+      escapeRef.current();
+    };
+    document.addEventListener("keydown", onDocumentKeyDown);
+    return () => document.removeEventListener("keydown", onDocumentKeyDown);
+  }, []);
 
   const path: Array<{ kind: SyntxObservation["kind"]; name: string; target: SyntxObservation }> = [];
   if (field !== null) {
@@ -1994,13 +2063,13 @@ export function SyntxField({ workflow, analysisSource, observation: requested, o
             {withheld === "OTHER_POOL" && investigation.onOpenAnalysisPool && <button data-testid="syntx-analysis-pool-open" data-sx-orient-action onClick={investigation.onOpenAnalysisPool} style={{ ...orientAction(false), fontSize: "8.5px", letterSpacing: "1.3px", padding: "4px 12px" }}>{t.investigation.openAnalysisPool}</button>}
           </span>
         )}
-        {investigation.mode === "PERSON_X_JOB" && withheld === null && state === "NO_ANALYSIS" && field !== null && <span data-testid="syntx-no-analysis" style={{ ...micro, color: AMBER, position: "absolute", left: "50%", bottom: "calc(var(--condyn-page-header-height, 60px) + 44px)", transform: "translateX(-50%)", width: "min(520px, 80%)", textAlign: "center", zIndex: 41 }}>{tp.analysisNone}</span>}
+        {investigation.mode === "PERSON_X_JOB" && withheld === null && state === "NO_ANALYSIS" && field !== null && <span data-testid="syntx-no-analysis" style={{ position: "absolute", left: "50%", bottom: "calc(var(--condyn-page-header-height, 60px) + 64px)", transform: "translateX(-50%)", width: "min(620px, 80%)", display: "flex", flexDirection: "column", alignItems: "center", gap: "4px", textAlign: "center", zIndex: 41 }}><MessageVoices copy={tp.analysisNone} /></span>}
       </div>
 
       {/* Orientation surface: (A) the field and its relation to the Capability Field, (B) the observation path (each step a return),
           (C) the read state, (D) the keys, (E) the edge actions. The one header that is always visible (§12.2): a calm, lit glass at
           the edge; its only motion is one light pass on each context change (finite, none in REDUCED). */}
-      <div data-sx-surface="header" data-sx-orient data-sx-resonance={anyBodyOpen ? "retreated" : "inactive"} style={{ position: "absolute", left: "28px", top: "84px", display: "flex", flexDirection: "column", zIndex: 46, width: "min(340px, 28vw)", boxSizing: "border-box", padding: "12px 14px 12px 16px", borderRadius: "14px", border: `1px solid ${azure(0.2)}`, background: `radial-gradient(120% 90% at 0% 0%, rgba(84, 232, 236, 0.1), transparent 55%), linear-gradient(160deg, rgba(12, 31, 47, 0.7), rgba(5, 14, 24, 0.62))`, boxShadow: `0 0 0 1px rgba(1, 5, 10, 0.45), 0 0 34px rgba(64, 190, 230, 0.1), 0 0 70px rgba(64, 190, 230, 0.04), 0 14px 32px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(210, 248, 255, 0.13), inset 0 0 0 1px rgba(170, 235, 255, 0.035)`, backdropFilter: "blur(8px)" }}>
+      <div ref={orientRef} data-sx-surface="header" data-sx-orient data-sx-resonance={anyBodyOpen ? "retreated" : "inactive"} style={{ position: "absolute", left: "28px", top: "84px", display: "flex", flexDirection: "column", zIndex: 47, width: "min(340px, 28vw)", boxSizing: "border-box", padding: "12px 14px 12px 16px", borderRadius: "14px", border: `1px solid ${azure(0.2)}`, background: `radial-gradient(120% 90% at 0% 0%, rgba(84, 232, 236, 0.1), transparent 55%), linear-gradient(160deg, rgba(12, 31, 47, 0.7), rgba(5, 14, 24, 0.62))`, boxShadow: `0 0 0 1px rgba(1, 5, 10, 0.45), 0 0 34px rgba(64, 190, 230, 0.1), 0 0 70px rgba(64, 190, 230, 0.04), 0 14px 32px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(210, 248, 255, 0.13), inset 0 0 0 1px rgba(170, 235, 255, 0.035)`, backdropFilter: "blur(8px)" }}>
         <span aria-hidden="true" style={{ position: "absolute", right: "-1px", top: "22px", width: 0, height: 0, pointerEvents: "none" }}>
           <span style={{ position: "absolute", left: 0, top: "-0.5px", width: "38px", height: "1px", background: `linear-gradient(90deg, ${azure(0.5)}, transparent)` }} />
           <span style={{ position: "absolute", left: "-2.5px", top: "-2.5px", width: "5px", height: "5px", borderRadius: "50%", background: "#bff4ff", boxShadow: `0 0 7px ${azure(0.85)}, 0 0 14px ${azure(0.35)}` }} />
@@ -2025,10 +2094,20 @@ export function SyntxField({ workflow, analysisSource, observation: requested, o
           {observation.kind !== "FIELD" && <button data-testid="syntx-return-btn" data-sx-orient-action onClick={() => onObserve(returnFrom(observation))} style={{ ...action("cyan"), fontSize: "8px", letterSpacing: "1.3px", padding: "2px 8px", borderRadius: "999px", border: "1px solid rgba(56, 229, 255, 0.4)", background: "rgba(56, 229, 255, 0.06)" }}>← {t.returnLabel}</button>}
         </nav>
         {/* C · the read state, D · the keys. */}
-        <span data-testid="syntx-state" data-state={state} style={{ ...micro, alignSelf: "flex-start", display: "inline-flex", alignItems: "center", gap: "8px", marginTop: "10px", padding: "3px 10px 3px 8px", borderRadius: "999px", fontSize: "8.5px", letterSpacing: "1.3px", color: state === "AVAILABLE" ? "rgba(196, 236, 248, 0.92)" : AMBER, border: `1px solid ${state === "AVAILABLE" ? "rgba(56, 229, 255, 0.28)" : "rgba(245, 166, 35, 0.4)"}`, background: state === "AVAILABLE" ? "rgba(56, 229, 255, 0.06)" : "rgba(245, 166, 35, 0.07)" }}>
-          <span aria-hidden="true" style={{ width: "6px", height: "6px", borderRadius: "50%", backgroundColor: state === "AVAILABLE" ? CYAN : AMBER, boxShadow: `0 0 6px ${state === "AVAILABLE" ? CYAN : AMBER}`, flexShrink: 0 }} />
-          {investigation.mode !== "PERSON_X_JOB" && state !== "NO_POOL" ? t.investigation.state[investigation.mode] : withheld !== null && state !== "NO_POOL" ? t.investigation.withheld[withheld] : state === "AVAILABLE" ? t.matching : state === "NO_POOL" ? tp.selectionNone : state === "NO_ANALYSIS" ? tp.analysisNone : state === "LOADING" ? tp.matchesLoading : state === "NOT_FOUND" ? tp.matchesNotFound : state === "INACTIVE_POOL" ? tp.matchesInactive : state === "NOT_PROVISIONED" ? tp.notProvisioned : tp.matchesFailed}
-        </span>
+        {awaitingAnalysis ? (
+          <span data-testid="syntx-state" data-state={state} data-sx-signal="awaiting-analysis" style={{ position: "relative", alignSelf: "stretch", display: "flex", alignItems: "flex-start", gap: "11px", marginTop: "12px", padding: "11px 14px 12px 12px", borderRadius: "12px", border: `1px solid rgba(${AMBER_RGB}, 0.5)`, background: `radial-gradient(120% 140% at 0% 0%, rgba(${AMBER_RGB}, 0.16), transparent 60%), rgba(28, 18, 6, 0.55)`, boxShadow: "inset 0 1px 0 rgba(255, 222, 170, 0.1)" }}>
+            <span data-sx-signal-aura aria-hidden="true" style={{ position: "absolute", inset: "-1px", borderRadius: "inherit", pointerEvents: "none", opacity: 0.5, boxShadow: `0 0 0 1px rgba(${AMBER_RGB}, 0.22), 0 0 14px 1px rgba(${AMBER_RGB}, 0.3), 0 0 32px 4px rgba(${AMBER_RGB}, 0.12)` }} />
+            <span aria-hidden="true" style={{ position: "relative", flexShrink: 0, width: "14px", height: "14px", marginTop: "1px", display: "inline-flex", alignItems: "center", justifyContent: "center", borderRadius: "50%", border: `1px solid rgba(${AMBER_RGB}, 0.38)` }}>
+              <span data-sx-signal-core style={{ width: "7px", height: "7px", transformOrigin: "50% 50%", borderRadius: "50%", background: AMBER, boxShadow: `0 0 7px ${AMBER}, 0 0 16px rgba(${AMBER_RGB}, 0.55)` }} />
+            </span>
+            <span style={{ display: "flex", flexDirection: "column", gap: "5px", minWidth: 0 }}><MessageVoices copy={tp.analysisNone} /></span>
+          </span>
+        ) : (
+          <span data-testid="syntx-state" data-state={state} style={{ ...micro, alignSelf: "flex-start", display: "inline-flex", alignItems: "center", gap: "8px", marginTop: "10px", padding: "3px 10px 3px 8px", borderRadius: "999px", fontSize: "8.5px", letterSpacing: "1.3px", color: state === "AVAILABLE" ? "rgba(196, 236, 248, 0.92)" : AMBER, border: `1px solid ${state === "AVAILABLE" ? "rgba(56, 229, 255, 0.28)" : "rgba(245, 166, 35, 0.4)"}`, background: state === "AVAILABLE" ? "rgba(56, 229, 255, 0.06)" : "rgba(245, 166, 35, 0.07)" }}>
+            <span aria-hidden="true" style={{ width: "6px", height: "6px", borderRadius: "50%", backgroundColor: state === "AVAILABLE" ? CYAN : AMBER, boxShadow: `0 0 6px ${state === "AVAILABLE" ? CYAN : AMBER}`, flexShrink: 0 }} />
+            {investigation.mode !== "PERSON_X_JOB" && state !== "NO_POOL" ? t.investigation.state[investigation.mode] : withheld !== null && state !== "NO_POOL" ? t.investigation.withheld[withheld] : state === "AVAILABLE" ? t.matching : state === "NO_POOL" ? tp.selectionNone : state === "NO_ANALYSIS" ? tp.analysisNone : state === "LOADING" ? tp.matchesLoading : state === "NOT_FOUND" ? tp.matchesNotFound : state === "INACTIVE_POOL" ? tp.matchesInactive : state === "NOT_PROVISIONED" ? tp.notProvisioned : tp.matchesFailed}
+          </span>
+        )}
         {/* C' · the job scope: the observed role becomes the selected job only by this explicit action (SFE invariant). */}
         {field !== null && onSelectJobScope !== undefined && (observation.kind === "ROLE" || observation.kind === "REQUIREMENT") && observation.roleId !== null && (() => {
           const scopeHere = jobScope !== null && jobScope.jobPoolUploadId === field.pool.jobPoolUploadId && jobScope.poolRoleId === observation.roleId;
@@ -2051,7 +2130,7 @@ export function SyntxField({ workflow, analysisSource, observation: requested, o
       </div>
 
       {/* Edge aperture: the persisted uploads (explicit selection only); the contextual action while nothing is at the field. */}
-      <div data-testid="job-pool-list" data-pool-count={listed.length} data-list-state={workflow.pools.state} hidden={!poolsVisible} data-sx-reveal={poolsVisible ? "true" : undefined} data-sx-surface="pools" data-sx-panel="pools" style={{ ...panel, display: poolsVisible ? "flex" : "none", flexDirection: "column", gap: "12px", left: "28px", top: "300px", width: "min(316px, 27vw)", maxHeight: "calc(100vh - 420px)", overflowY: "auto", zIndex: 46 }}>
+      <div data-testid="job-pool-list" data-pool-count={listed.length} data-list-state={workflow.pools.state} hidden={!poolsVisible} data-sx-reveal={poolsVisible ? "true" : undefined} data-sx-surface="pools" data-sx-panel="pools" style={{ ...panel, display: poolsVisible ? "flex" : "none", flexDirection: "column", gap: "12px", left: "28px", top: `${poolsTop}px`, width: "min(316px, 27vw)", maxHeight: `max(160px, calc(100vh - ${poolsTop + 120}px))`, overflowY: "auto", zIndex: 46 }}>
         <PanelNode side="right" top="26px" />
         <span data-sx-kicker style={panelKicker()}>{tp.pools}</span>
         {(workflow.pools.state === "IDLE" || workflow.pools.state === "LOADING") && <span data-testid="job-pool-list-loading" style={{ ...micro, color: AMBER }}>{tp.poolsLoading}</span>}
@@ -2068,7 +2147,7 @@ export function SyntxField({ workflow, analysisSource, observation: requested, o
                   <span style={{ gridColumn: 1, gridRow: 1, minWidth: 0, fontFamily: SANS, fontSize: "13px", fontWeight: selected ? 600 : 500, lineHeight: 1.3, letterSpacing: "0.1px", color: selected ? "#f4fcff" : "rgba(222, 236, 245, 0.88)", textShadow: selected ? "0 0 14px rgba(56, 229, 255, 0.25)" : "none" }}>{pool.poolName}</span>
                   <span style={{ gridColumn: "1 / -1", gridRow: 2, fontFamily: MONO, fontSize: "8.5px", letterSpacing: "0.5px", lineHeight: 1.5, color: pool.poolStatus === "ACTIVE" ? (selected ? "rgba(170, 214, 232, 0.86)" : "rgba(140, 170, 190, 0.74)") : AMBER, wordBreak: "break-word" }}>v{pool.poolVersion} · {pool.poolStatus} · {pool.organizationCount} org · {pool.roleCount} roles · {pool.requirementCount} req</span>
                 </span>
-                <button data-testid={`job-pool-select-${pool.jobPoolUploadId}`} disabled={selected} aria-pressed={selected} onClick={() => { onSelectPool(pool.jobPoolUploadId); setPoolsOpen(false); }} style={{ ...action("cyan", true), gridColumn: 2, gridRow: 1, justifySelf: "end", minWidth: "84px", boxSizing: "border-box", display: "inline-flex", alignItems: "center", justifyContent: "center", gap: "6px", fontSize: "8px", letterSpacing: "1.5px", padding: "5px 10px", borderRadius: "999px", cursor: selected ? "default" : "pointer", color: selected ? "#e4fbff" : "rgba(56, 229, 255, 0.88)", border: `1px solid ${selected ? "rgba(56, 229, 255, 0.62)" : azure(0.26)}`, background: selected ? "linear-gradient(180deg, rgba(56, 229, 255, 0.2), rgba(56, 229, 255, 0.08))" : "rgba(4, 14, 24, 0.6)", boxShadow: selected ? "0 0 14px rgba(56, 229, 255, 0.2), inset 0 1px 0 rgba(220, 250, 255, 0.18)" : "none", textShadow: selected ? `0 0 8px ${SIL_TOKENS.colors.cyanGlow}` : "none", transition: "border-color .3s ease, background .3s ease, color .3s ease" }}>{selected && <span aria-hidden="true" style={{ width: "5px", height: "5px", borderRadius: "50%", background: CYAN, boxShadow: `0 0 6px ${CYAN}` }} />}{selected ? tp.selected : tp.select}</button>
+                <button data-testid={`job-pool-select-${pool.jobPoolUploadId}`} disabled={selected} aria-pressed={selected} onClick={() => { rootRef.current?.focus({ preventScroll: true }); onSelectPool(pool.jobPoolUploadId); setPoolsOpen(false); }} style={{ ...action("cyan", true), gridColumn: 2, gridRow: 1, justifySelf: "end", minWidth: "84px", boxSizing: "border-box", display: "inline-flex", alignItems: "center", justifyContent: "center", gap: "6px", fontSize: "8px", letterSpacing: "1.5px", padding: "5px 10px", borderRadius: "999px", cursor: selected ? "default" : "pointer", color: selected ? "#e4fbff" : "rgba(56, 229, 255, 0.88)", border: `1px solid ${selected ? "rgba(56, 229, 255, 0.62)" : azure(0.26)}`, background: selected ? "linear-gradient(180deg, rgba(56, 229, 255, 0.2), rgba(56, 229, 255, 0.08))" : "rgba(4, 14, 24, 0.6)", boxShadow: selected ? "0 0 14px rgba(56, 229, 255, 0.2), inset 0 1px 0 rgba(220, 250, 255, 0.18)" : "none", textShadow: selected ? `0 0 8px ${SIL_TOKENS.colors.cyanGlow}` : "none", transition: "border-color .3s ease, background .3s ease, color .3s ease" }}>{selected && <span aria-hidden="true" style={{ width: "5px", height: "5px", borderRadius: "50%", background: CYAN, boxShadow: `0 0 6px ${CYAN}` }} />}{selected ? tp.selected : tp.select}</button>
               </li>
             );
           })}

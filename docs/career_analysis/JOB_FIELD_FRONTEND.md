@@ -1335,6 +1335,65 @@ All of these fall into UNRESOLVED / FAILED: no comparison, no frontend change. P
 
 
 
+#### 13.2.29 GEMINI OUTPUT always closable; NO ANALYSIS as a signal (owner "SFE — GRÜN | DEMO UI FIX + SEMIONTIC REFINEMENT", 2026-10-15)
+
+Found in the owner's demo review on :41851: after GEMINI OUTPUT was opened and a pool chosen, the interface seemed blocked. The
+inspector did not close reliably and the field did not answer. Reconstructed in GRÜN's lab (:41803, integration tree 5434c01).
+There were three causes, all in the frontend:
+
+| Cause | Effect |
+|---|---|
+| **Focus lost.** Choosing a pool closes the list, which also removes the focused SELECT button, so the focus fell to the document. Escape is handled at the field root. | Escape did nothing after a pool choice (also after Escape inside the token input, whose body closes). |
+| **List over the actions.** The pool list opened at a fixed `top: 300px`, while the orientation surface grows with the path (at a role: path, state line, SELECT AS JOB). | At a role with the list open, the list covered the whole action row, including HIDE GEMINI OUTPUT (all five probe points hit `job-pool-list`). |
+| **Body and veil over the field.** With GEMINI OUTPUT open, its body and veil cover the field centre. In PERSON × JOB without a job, the Capability Field stays gated (`AWAITING_JOB`, JOB POOL FIRST, sealed). | The way to a job ran under the open body, so closing it is the way back. That is why the first two causes looked like a block. |
+
+**Minimal delta (`SyntxField.tsx` only, no backend, no Gemini):**
+- **Escape at any time.**
+  - `escapeOneLevel` is the one Escape of the field (R8 order unchanged).
+  - A focus inside a closing surface (`[data-sx-panel]`) moves to the field root first.
+  - While the Job Field is open, an Escape on the bare document is the field's. A focus anywhere else keeps its own Escape, and an Escape already handled (`defaultPrevented`) is left alone.
+  - A modal layer above the field keeps the field still: the onboarding, the System Codex or any `aria-modal` dialog. None of them handles Escape itself (GELB review of d9c7fea).
+- **Pool choice keeps the focus.** SELECT moves the focus to the field root before the list closes.
+- **The list under the surface.** The pool list opens at `max(300, bottom of the orientation surface + 16)` px (`useOffsetBottom`, ResizeObserver) with `max-height: max(160px, calc(100vh − top − 120px))`. The surface is unchanged while it is short (≤ 284 px); before measuring (SSR) the list keeps 300 px.
+- **The header above the bodies.** The orientation surface has `z-index` 47 (was 46): the one header that is always visible (§12.2) is never covered by a centre body.
+- **What stays.** GEMINI OUTPUT still does not close by itself on a pool choice. Pool and mode stay. The JOB POOL FIRST gate is untouched.
+
+**NO ANALYSIS state line (semiontic refinement).** The amber state line of PERSON × JOB with a pool and no analysis
+(`syntx-state`, `data-sx-signal="awaiting-analysis"`) is the existing component with a second form. Every other state keeps its line,
+including PERSON, JOB, a withheld comparison and loading.
+- **Hierarchy.** The message stays one text (`textContent` = the copy, EN/DE unchanged) in two voices:
+  - the status word in 10 px mono, amber `#ffbf5c`;
+  - the instruction in 11.5 px sans, `rgba(255, 232, 200, 0.95)`, 14.7 : 1 against the chip.
+  
+  The separator „: “ stays for screen readers (visually hidden). Before, it was 8.5 px mono throughout.
+- **Space.** Full width of the surface, padding 11/14/12/12 px, radius 12 px, gap 11 px; a 14 px ring around the 7 px indicator.
+- **Nerve signal (new motion kind, R15b).** GELB found it technically conform (2026-10-15); it is approved after GELB's review of the commit and binding after the owner's visual approval. It is listed in `proposals/SYNTX_SEMIOTIC_TRANSFER_PROPOSALS.md` P-2. Opacity and transform only, on two `aria-hidden` layers; the indicator scales about its centre inside a fixed 14 px ring. It is bound to the state (`[data-motion-mode="LIVE"] [data-sx-signal="awaiting-analysis"]`) and ends with NO ANALYSIS. LIVE only; reduced motion has no animation and keeps the static signal visible (aura 0.5).
+
+  | Layer | Keyframes | Course |
+  |---|---|---|
+  | Indicator `[data-sx-signal-core]` | `sxSignalCore`, 4.8 s | rise to 12 % (opacity 0.6 → 1, scale 1 → 1.32), long decay to 58 %, rest |
+  | Aura `[data-sx-signal-aura]` | `sxSignalAura`, 4.8 s, 0.24 s later | opacity 0.38 → 1 (18 %) → 0.38 (70 %) |
+
+  No blinking. The chip box and the text do not move.
+- **The field's own statement** (`syntx-no-analysis`, bottom of the field, contract E-09) says the same in the same two voices, still
+  and without a signal of its own. It is 620 px wide and sits 64 px above the page edge, like the withheld statement. Before, it was
+  9 px mono, and at 1600 × 1000 its second line ran into the non-claims line.
+
+**Proof** (no live Gemini, :3017, :41831 and :41851 untouched):
+- **SSR tests.** `three-modes-ssr.test.tsx`, „Job Field: NO ANALYSIS signal and edge layout“:
+  - the signal, the copy EN/DE and the voices;
+  - no signal for PERSON, a withheld comparison or AVAILABLE;
+  - keyframes opacity / transform only, LIVE only, 4.8 s, and the reduced-motion block;
+  - SSR list top 300 px and surface z-index 47;
+  - the bottom statement: same copy and voices, no signal.
+- **Lab walk.** 36/36 at 1280 × 720 and at 1600 × 1000 (`evidence/job-pool/demo-ui-fix/`; earlier 32-check version 6 of 6 runs green, `walk-stability.txt`):
+  - U-1 … U-6: HIDE and Escape without an analysis, after a pool choice, at a role with the list open, after another pool, with the focus on the document, in the token input; with the System Codex or the onboarding open (U-4d/e: the field stays as it is); afterwards field clicks, the Capability Field and the kept pool / mode.
+  - S-1 … S-10: copy, type sizes, contrast, LIVE motion, box stability over a cycle, keyframe properties, reduced motion, the infinite-motion inventory (NO ANALYSIS adds exactly `sxSignalAura` and `sxSignalCore`), signal only at NO ANALYSIS, and the bottom statement clear of the non-claims line (16 px).
+- **Regression and e2e.** tsc 0. Regression 68 files / 498 green; workflow e2e 10/10 twice.
+  - A second regression run hit the 10 s `beforeAll` limit of `job-structure.postgres.test.ts` (backend, untouched here) under a machine load of about 6.
+  - The unchanged tree 5434c01 behaves the same; with a longer limit the hook takes 11.7 s and the file is green.
+- **Not changed.** At 1280 × 720 the Capability Field's idle inspector card lies over the „add text source“ button. This is independent of GEMINI OUTPUT and already so before this delta; it is noted for the owner and not touched here.
+
 ### 13.3 DOM contract (PINK BR-1 … BR-5; GELB conditions a/b)
 
 **BR-1 field root** `data-testid="syntx-field"`: `data-field-grammar="SYNTX_FIELD_V1"`, `data-observation-kind` FIELD|ORGANIZATION|ROLE|REQUIREMENT
@@ -1415,7 +1474,7 @@ the planetarium focus anchor's scale, 1 or 1.12), `syntx-orbits`, `syntx-pool-co
 
 Every carrier, anchor, trace and boundary is a focusable `role="button"` (`tabIndex` 0 while not receded) with an `aria-label` from the
 same view model; Enter / Space selects or inspects; Escape returns one level (closing an edge aperture or the inspection aperture first);
-the observation path (`syntx-path-*`) and `← RETURN` are buttons. The summary (`syntx-summary`) is the screen-reader reading of the
+the observation path (`syntx-path-*`) and `← RETURN` are buttons. Escape also reaches the field when the focus fell to the document, and a closing surface hands its focus to the field root (§13.2.29). The summary (`syntx-summary`) is the screen-reader reading of the
 observation point. Readable labels wrap at word boundaries (`wrapLines`), never truncated as the primary display (§9.3).
 
 ### 13.5 Boundaries
@@ -1509,3 +1568,4 @@ observation point. Readable labels wrap at word boundaries (`wrapLines`), never 
 | 2026-10-15 | PINK §3.36 observation O-MODE-KEYBOARD-FOCUS (on 00deaf0) | §13.2.27: the Job Field's F-SX-1 focus effect leaves a focus in the investigation selector alone | tsc unchanged; regression 58 files / 442; walk 40/40 incl. MK-4/MK-5 |
 | 2026-10-15 | URL boundary closure (owner "SFE — GELB / GRÜN | URL BOUNDARY CLOSURE", on bd9eb72 + GELB 26df225 / ef189d3) | §13.2.28: the Job Field compares an analysis only when its persisted boundary is PERSON_X_JOB and its own pool is on view (`legacyJobComparisonPermitted`); RESOLVING / PERSON / UNRESOLVED / OTHER_POOL named, the pool opened only explicitly; e2e world persists the analysis's job | tsc unchanged; 9 files / 128; workflow e2e 10/10; lab walk 46/46 at 1600 and 1280; 0 Gemini hosts |
 | 2026-10-15 | GELB hardening d54c718 / 4e72260 merged (e83a9e4) | §13.2.28: run scope identity and SCOPE_UNAVAILABLE fall into UNRESOLVED; DRAFT e2e step waits for rest | 10 files / 163; walk 46/46; workflow e2e 10/10 ×3 |
+| 2026-10-15 | DEMO UI FIX + SEMIONTIC REFINEMENT (owner, on integration 5434c01) | §13.2.29: Escape at any time (field root keeps the focus, document fallback), pool list below the orientation surface, surface z-index 47; NO ANALYSIS state line as a legible nerve signal (4.8 s, opacity/transform, LIVE only), the field's own statement legible and clear of the non-claims | tsc 0; regression 68 files / 498 (a second run hit the 10 s `beforeAll` limit of GELB's `job-structure.postgres.test.ts` under load, also on the unchanged 5434c01; 11.7 s with a longer limit, green); workflow e2e 10/10 ×2; lab walk 36/36 at 1280 and 1600 (modal-layer guard after GELB's review); 0 Gemini hosts |
