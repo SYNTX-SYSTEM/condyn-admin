@@ -1,0 +1,9 @@
+R-1 utf8 body 456080 B → upstream 456089 B, identical false, U+FFFD in upstream body 5; recorded requestBytes 456089
+R-2 without key → 200, foreign key → 200; upstream calls 3, upstream key always real true; budget left 3
+R-3 with ?key=&alt=sse → 200; recorded path /v1beta/models/pink-model:generateContent
+R-4 /v1beta/models/pink-model:streamGenerateContent → 403
+R-4 /v1beta/models/other:generateContent → 403
+R-4 /v1/models/pink-model:generateContent → 403
+R-4 budget unchanged by refusals true
+log holds key false, holds content false
+exit 0

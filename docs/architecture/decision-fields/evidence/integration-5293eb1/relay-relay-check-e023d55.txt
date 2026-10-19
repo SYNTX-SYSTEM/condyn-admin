@@ -1,0 +1,14 @@
+PASS 1st call forwarded 200
+PASS other model refused 403
+PASS countTokens refused 403
+PASS models.get refused 403
+PASS 2nd call forwarded
+PASS 3rd call over budget 429
+PASS upstream saw exactly 2 calls
+PASS upstream got the real key, never the dummy
+PASS upstream path is the one model
+PASS log has 6 records; the 5 POSTs kind DISCOVERY with scope block; 2 forwarded
+PASS log never holds key or content
+PASS bad upstream/model/budget/key refused at start (5/5)
+12/12
+relay-check e023d55 exit 0

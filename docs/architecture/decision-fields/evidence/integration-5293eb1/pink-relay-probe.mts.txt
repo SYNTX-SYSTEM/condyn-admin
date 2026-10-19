@@ -1,0 +1,34 @@
+/* PINK offline probe of video-gemini-relay.ts (e023d55) against a loopback fake upstream: no network, no Gemini, no real key. */
+import { createServer } from "node:http";
+import { startGeminiRelay, type RelayRecord } from "./video-gemini-relay";
+const seen: Buffer[] = []; const keys: Array<string | undefined> = [];
+const fake = createServer(async (req, res) => { const parts: Buffer[] = []; for await (const c of req) parts.push(c as Buffer); seen.push(Buffer.concat(parts)); keys.push(req.headers["x-goog-api-key"] as string | undefined); res.writeHead(200, { "content-type": "application/json" }); res.end("{}"); });
+await new Promise<void>(r => fake.listen(0, "127.0.0.1", () => r()));
+const upstream = `http://127.0.0.1:${(fake.address() as any).port}`;
+const records: RelayRecord[] = [];
+const KEY = "PINK-FAKE-KEY-0123456789abcdef-not-real";
+const relay = await startGeminiRelay({ apiKey: KEY, model: "pink-model", budget: 6, upstream, onRecord: r => records.push(r) });
+const target = `http://127.0.0.1:${relay.port}/v1beta/models/pink-model:generateContent`;
+const out: string[] = [];
+// R-1 UTF-8 integrity: a large German/CJK body, several transport chunks
+const text = "CONDYN CAPABILITY DISCOVERY SOURCE CORPUS " + "Prüfungsergebnis Größe Übergänge – Anforderungsprofil · 能力 😀 ".repeat(6000);
+const body = Buffer.from(JSON.stringify({ contents: [{ parts: [{ text }] }] }), "utf8");
+const r1 = await fetch(target, { method: "POST", headers: { "content-type": "application/json", "x-goog-api-key": "video-lab-dummy-not-a-key" }, body });
+await r1.text();
+const got = seen[0];
+const replacement = got ? (got.toString("utf8").match(/�/g) ?? []).length : -1;
+out.push(`R-1 utf8 body ${body.length} B → upstream ${got?.length} B, identical ${got ? got.equals(body) : false}, U+FFFD in upstream body ${replacement}; recorded requestBytes ${records[0]?.requestBytes}`);
+// R-2 incoming key is not checked: no key and a foreign key are forwarded with the real key
+const r2 = await fetch(target, { method: "POST", headers: { "content-type": "application/json" }, body: "{}" }); await r2.text();
+const r3 = await fetch(target, { method: "POST", headers: { "content-type": "application/json", "x-goog-api-key": "some-other-local-process" }, body: "{}" }); await r3.text();
+out.push(`R-2 without key → ${r2.status}, foreign key → ${r3.status}; upstream calls ${seen.length}, upstream key always real ${keys.every(k => k === KEY)}; budget left ${records.at(-1)?.budgetLeft}`);
+// R-3 query string: ?key= and ?alt=sse are dropped before forwarding
+const r4 = await fetch(`${target}?key=dummy&alt=sse`, { method: "POST", body: "{}" }); await r4.text();
+out.push(`R-3 with ?key=&alt=sse → ${r4.status}; recorded path ${records.at(-1)?.path}`);
+// R-4 refusals do not consume budget
+const before = records.at(-1)!.budgetLeft;
+for (const p of ["/v1beta/models/pink-model:streamGenerateContent", "/v1beta/models/other:generateContent", "/v1/models/pink-model:generateContent"]) { const r = await fetch(`http://127.0.0.1:${relay.port}${p}`, { method: "POST", body: "{}" }); await r.text(); out.push(`R-4 ${p} → ${r.status}`); }
+out.push(`R-4 budget unchanged by refusals ${records.at(-1)!.budgetLeft === before}`);
+out.push(`log holds key ${JSON.stringify(records).includes(KEY)}, holds content ${JSON.stringify(records).includes("Prüfungsergebnis")}`);
+console.log(out.join("\n"));
+relay.server.close(); fake.close();

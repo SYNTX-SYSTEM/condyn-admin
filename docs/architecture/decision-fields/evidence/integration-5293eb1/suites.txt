@@ -1,0 +1,22 @@
+# PINK suites on 5293eb1 (detached in PINK's worktree; disposable databases; GEMINI_API_KEY unset; PINK net sentinel)
+HEAD 5293eb1 tree 193ba703fdbddd10c5fd0b7941c52ddda5435a45
+role-cards.e2e.test.ts = evidence d685003
+role-cards-ssr.test.tsx = evidence d685003
+tsc exit 0 lines 0
+cards exit 0
+2697/2697 checks ok · page errors 0 · non-GET 0 · net 1
+ssr+units exit 0
+      Tests  23 passed (23)
+geom exit 0
+      Tests  56 passed (56)
+orbit exit 0
+395/395 checks ok · page errors 0 · non-GET 0 · net 1
+demo-ui-fix exit 0
+62/62 checks ok
+gate exit 0
+74/74 checks ok
+net cards: fetch https://registry.npmjs.org/-/package/next/dist-tags 
+net orbit: fetch https://registry.npmjs.org/-/package/next/dist-tags 
+net uifix: fetch https://registry.npmjs.org/-/package/next/dist-tags 
+role-cards measured block identical to evidence/role-cards-d685003/C-report.json: true
+geometry: Duration  458.87s (with --testTimeout/--hookTimeout 3000000)

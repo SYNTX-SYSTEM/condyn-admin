@@ -1,0 +1,12 @@
+# PINK: tree equality of the GRÜN stack integration (own merges, git 2.34, merge --no-commit + write-tree, in a scratch worktree)
+27f3253 + 4ecfe67 -> 193ba703fdbddd10c5fd0b7941c52ddda5435a45 = 5293eb1^{tree} 193ba703fdbddd10c5fd0b7941c52ddda5435a45
+7e9f2c8 (27f3253 + 0b5a8ea): own a5c6fac87bd8cb9840e79ddf5b0faaba542219a1 = a5c6fac87bd8cb9840e79ddf5b0faaba542219a1
+63f4dd8 (7e9f2c8 + e6493a7): own 7dd32dafffb920ccdfc5ce088f35051f0643b336 = 7dd32dafffb920ccdfc5ce088f35051f0643b336
+17181d5 (63f4dd8 + ae633a1): own 264969fb30a64d57bc51467234810d9635fe5e54 = 264969fb30a64d57bc51467234810d9635fe5e54
+7e9f2c8 parents 27f3253715171124242c451bdaeda595569dc646 0b5a8ea1ee67326275bc288a474112ba8981f855
+63f4dd8 parents 7e9f2c868d11c75fb451eb1482d0b593e899a4b4 e6493a7b97eb5b201933671af0d6adf8ec3d2b3a
+17181d5 parents 63f4dd8f3f7fbb99495ea16a7874e79de71abefb ae633a10b78c1ad7c660973fe77105945173450c
+5293eb1 parents 17181d5c508d40279062d9243becc41523419721 4ecfe67605ecc69bc4fcc0d0f0aec8239e94bed0
+files outside docs/ changed b823f68..27f3253: 0
+files outside docs/ changed 5293eb1..fe5cbea: 0
+=> app code of 5293eb1 (and of d29cc00, fe5cbea) = probe d685003 (b823f68 + 4ecfe67) of §3.48

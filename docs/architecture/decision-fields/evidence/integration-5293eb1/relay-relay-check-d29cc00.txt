@@ -1,0 +1,18 @@
+PASS 1st call forwarded 200
+PASS other model refused 403
+PASS countTokens refused 403
+PASS models.get refused 403
+PASS 2nd call forwarded
+PASS caller without key refused 401 (R-AUTH)
+PASS caller with a foreign key refused 401 (R-AUTH)
+PASS 3rd call (multibyte, 547 KB) forwarded
+PASS multibyte body reaches upstream byte-identical, no U+FFFD (R-UTF8)
+PASS 4th call over budget 429
+PASS upstream saw exactly 3 calls
+PASS upstream got the real key, never the worker placeholder
+PASS upstream path is the one model
+PASS log has 9 records; the 8 POSTs kind DISCOVERY with scope block; 3 forwarded; byte count exact
+PASS log never holds key, placeholder or content
+PASS bad upstream/model/budget/key/placeholder refused at start (7/7)
+16/16
+relay-check d29cc00 exit 0

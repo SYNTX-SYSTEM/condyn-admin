@@ -1,0 +1,24 @@
+/* PINK: how often does the relay damage UTF-8 at realistic prompt sizes (9–80 KB, German text)? Loopback fake only. */
+import { createServer } from "node:http";
+import { startGeminiRelay } from "./video-gemini-relay";
+const seen: Buffer[] = [];
+const fake = createServer(async (req, res) => { const p: Buffer[] = []; for await (const c of req) p.push(c as Buffer); seen.push(Buffer.concat(p)); res.writeHead(200); res.end("{}"); });
+await new Promise<void>(r => fake.listen(0, "127.0.0.1", () => r()));
+const relay = await startGeminiRelay({ apiKey: "PINK-FAKE-KEY-0123456789abcdef", model: "m", budget: 12, upstream: `http://127.0.0.1:${(fake.address() as any).port}`, onRecord: () => {} });
+// the relay's own budget is 12; restart per batch
+const line = "Prüfung der Anforderungen für Führung, Größenordnung und Übergabe — Qualitätsmerkmale „belegt“. ";
+for (const kb of [9, 19, 40, 64, 80, 120]) {
+  let damaged = 0, n = 0;
+  for (let i = 0; i < 10; i += 1) {
+    const r = await startGeminiRelay({ apiKey: "PINK-FAKE-KEY-0123456789abcdef", model: "m", budget: 1, upstream: `http://127.0.0.1:${(fake.address() as any).port}`, onRecord: () => {} });
+    const pad = "x".repeat(i * 7);
+    let text = pad; while (Buffer.byteLength(text) < kb * 1024) text += line;
+    const body = Buffer.from(JSON.stringify({ contents: [{ parts: [{ text }] }] }));
+    const before = seen.length;
+    await (await fetch(`http://127.0.0.1:${r.port}/v1beta/models/m:generateContent`, { method: "POST", headers: { "content-type": "application/json" }, body })).text();
+    n += 1; if (!seen[before].equals(body)) damaged += 1;
+    r.server.close();
+  }
+  console.log(`${kb} KB: ${damaged}/${n} bodies damaged`);
+}
+relay.server.close(); fake.close();
