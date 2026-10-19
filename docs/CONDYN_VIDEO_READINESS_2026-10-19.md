@@ -3,6 +3,8 @@
 Stand: 2026-10-19. Owner-Auftrag „SFE — GELB | END-TO-END VIDEO READINESS“. Verantwortlich: GELB.
 Ziel ist ein ausführbarer, dokumentierter Browser-Walk als Grundlage für die Videoaufnahme durch Antigravity. Danach STOP für das Owner-GO.
 
+**Nachtrag 2026-10-19, Owner-GO „GRÜN-Stapel kontrolliert integrieren“, danach VIDEO FREEZE:** Der GRÜN-Stapel ist integriert (`5293eb1`). Der Walk besteht dort 30/30 (Durchgänge 6 und 7), damit ist B-5 entschieden. Der Live-Gemini-Schritt ist vorbereitet und ohne echten Aufruf geprüft (§8). **STOP vor dem ersten echten Gemini-Aufruf.**
+
 ## 1. Ergebnis
 
 Der gesamte Ablauf funktioniert im Browser, auch reproduzierbar: PDF-Upload → PERSON-Analyse → Ergebnis → Capability Field und Evidenz → GEMINI OUTPUT → Jobpool → Organisation → Rolle → PERSON × JOB → B2-Abdeckung, dazu JOB ONLY.
@@ -16,6 +18,9 @@ Jeder Durchgang lief auf einem frischen, leeren Labor. Der Walk umfasst 30 Prüf
 | 3 | Probe `c43621e` + GRÜN `6f9bc2b` | `next dev` | 1920 × 1080 | 30/30 | 10,8 s / 8,3 s |
 | 4 | Probe `c43621e` + GRÜN `4ecfe67` | `next dev` | 1920 × 1080 | 30/30 | 8,0 s / 3,0 s |
 | 5 | Experiment: `c43621e` mit lokal entferntem `export` (B-3), nicht committet | Produktions-Build, `next start` | 1920 × 1080 | 30/30 | 2,5 s / 2,4 s |
+| 6 | **Integration `5293eb1`** (GRÜN-Stapel integriert) | `next dev` | 1920 × 1080 | 30/30 | 7,4 s / 3,3 s |
+| 7 | **Integration `5293eb1`** | `next dev` | 1600 × 1000 | 30/30 | 8,1 s / 3,1 s |
+| 8 | Integration `5293eb1`, **Live-Verdrahtung als Trockenlauf** (§8): Relay → lokaler Stand-in statt Gemini, Testschlüssel | `next dev` | 1920 × 1080 | 30/30 | — |
 
 Weitere einzelne Durchgänge während der Rekonstruktion bestanden ebenfalls 30/30.
 
@@ -104,11 +109,11 @@ Für die Video-Dramaturgie zeigen V-07 und V-12 die Architekturgrenze; beide sin
 
 | ID | Thema | Befund | Was es braucht |
 |---|---|---|---|
-| **B-1** | Live-Gemini | Der verifizierte Walk nutzt den Stand-in. GEMINI OUTPUT zeigt dann sichtbar dessen Antwort: Modell `video-standin-001`, `responseId` `video-…`, ein erfundener, verworfener Anspruch. Das darf im Video nicht als Gemini erscheinen. Mit echtem Gemini dauert eine Analyse erfahrungsgemäß etwa 2 Minuten (Demo vom 2026-10-13), hier sind es zwei | **Owner-Entscheidung.** Entweder ein Live-Gemini-GO für Aufnahme-Läufe (echter Schlüssel nur im Worker, Netzwerk nur zur Gemini-API, Wartezeit schneiden), oder eine Aufnahme mit Stand-in, im Video ausdrücklich als solche gekennzeichnet. Ein Live-Modus ist im Labor bewusst nicht eingebaut |
+| **B-1** | Live-Gemini | Der verifizierte Walk nutzt den Stand-in. GEMINI OUTPUT zeigt dann sichtbar dessen Antwort: Modell `video-standin-001`, `responseId` `video-…`, ein erfundener, verworfener Anspruch. Das darf im Video nicht als Gemini erscheinen. Mit echtem Gemini dauert eine Analyse erfahrungsgemäß etwa 2 Minuten (Demo vom 2026-10-13), hier sind es zwei | **Owner-Entscheidung.** Entweder ein Live-Gemini-GO für Aufnahme-Läufe, oder eine Aufnahme mit Stand-in, im Video ausdrücklich als solche gekennzeichnet. **Stand 2026-10-19:** Der Owner sieht einen echten Gemini-Test als nächsten gesonderten Schritt vor. Der Live-Modus ist vorbereitet und gesperrt (§8); ausgeführt wurde er nur gegen den lokalen Stand-in |
 | **B-2** | Datei-Upload | Das PDF geht über ein verstecktes `<input type="file">` (`source-dock-file-input`, `display:none`), der Pool über `job-pool-file-input`. Ein Klick auf „+ UPLOAD PDF DOCUMENT“ öffnet den nativen Dateidialog des Betriebssystems | Klären, ob Antigravity Dateien direkt an ein File-Input übergeben kann (wie Playwright `setInputFiles`). Wenn nicht: den Upload im Video manuell bedienen oder schneiden. Der Rest des Walks braucht keinen Dateidialog |
 | **B-3** | Produktions-Build | `next dev` zeigt unten links den Next.js-Dev-Indikator „N“ im Bild. `next build` scheitert auf der Integration an `app/api/admin/proxy/[...path]/route.ts`: Die Datei exportiert `handleProxy`, das ist kein gültiger Route-Export. Sie stammt aus `8677ffa`, liegt nicht auf `main` und ist von dieser Arbeit unabhängig. Lokal und nicht committet: Ohne dieses `export` baut die Integration, und der Walk besteht im Produktionsmodus 30/30 ohne Indikator (Durchgang 5). Nebenwirkung: Der Build legt `.next/types` an, und `tsc -p .` schlägt dann fehl, solange der Fehler besteht | Owner-GO für das Ein-Zeilen-Delta (`handleProxy` nicht exportieren; kein anderer Aufrufer). Alternativ mit Indikator aufnehmen |
 | **B-4** | Bewegte Ziele | Capability-Knoten, Organisationskörper und Rollenkarten kreisen. Ein Zeigerklick wartet auf ein ruhendes Element (Playwright), oder ein koordinatenbasierter Agent trifft womöglich daneben. Der Walk löst sie per DOM-Klick aus. Hover hält die Bewegung nicht an | Mit Antigravity testen. Für das Jobfeld gibt es Deep Links (Abschnitt 4), für den Capability-Knoten nicht |
-| **B-5** | Codestand fürs Video | Die Integration `c43621e` enthält GRÜNs vom Owner abgenommene Sichtstände nicht: Demo-UI-Fix, Rollenorbit, Rollenkarten, Fußzeile. Der Walk besteht auf beiden Ständen (Durchgänge 3 und 4) | **Owner-Entscheidung:** Aufnahme auf der Integration oder erst nach Integration des GRÜN-Stapels (eigenes Wort an GELB, PINK-Prüfung von `4ecfe67` läuft) |
+| ~~B-5~~ | Codestand fürs Video | **Entschieden 2026-10-19:** Der GRÜN-Stapel ist integriert (`5293eb1`), danach gilt VIDEO FREEZE. Aufgenommen wird der Integrationsstand ab `5293eb1`; der Walk besteht dort 30/30 (Durchgänge 6, 7) | — |
 
 **Beobachtungen ohne Blocker**
 - **Onboarding:** Beim ersten Besuch erscheint das Onboarding. Es schließt nur über ×, nicht über Esc.
@@ -122,5 +127,48 @@ Für die Video-Dramaturgie zeigen V-07 und V-12 die Architekturgrenze; beide sin
 - Kein Live-Gemini; die Netzwerkwächter haben jeden Fremdzugriff verweigert.
 - Datenbank nur als Wegwerf-Datenbank, die gemeinsame `condyn` nicht.
 - Die Umgebungen :3017, :41831, :41851 (DEMO REVIEW) und GRÜNs :41805 sind unberührt.
-- Das B-3-Experiment lief nur in einer losgelösten Arbeitskopie und ist zurückgesetzt.
+- Das B-3-Experiment lief nur in einer losgelösten Arbeitskopie und ist zurückgesetzt. B-3 bleibt offen; das Ein-Zeilen-Delta ist nicht freigegeben.
 - Neu sind nur Skripte, Belege und dieses Dokument. Das Labor ist eine Variante des bestehenden Drei-Modi-Labors von GRÜN (`evidence/job-pool/three-modes/scripts/`); der Netzwerkwächter ist byte-gleich.
+
+
+## 8. Gesonderter Schritt: echter Gemini-Test (vorbereitet, nicht ausgeführt)
+
+Owner, 2026-10-19: „Ein echter Gemini-Test ist als nächster gesonderter Schritt vorgesehen; noch kein unkontrollierter Modellaufruf.“ Der Schritt ist so vorbereitet, dass er mit einem einzigen Befehl läuft und dabei kontrolliert bleibt. **Ausgeführt wird er erst nach dem GO des Owners.**
+
+**Aufbau** (`scripts/video-lab.ts`, `scripts/video-gemini-relay.ts`)
+- Server und Worker laufen wie bisher unter dem Netzwerkwächter, nur Loopback, und haben **keinen** echten Schlüssel. Der Worker trägt einen Platzhalter und erreicht Gemini ausschließlich über ein Relay auf 127.0.0.1 im Laborprozess.
+- **Das Relay** leitet nur `POST /v1beta/models/<das eine Modell>:generateContent` an `generativelanguage.googleapis.com` weiter. Dabei ersetzt es den Platzhalter durch den echten Schlüssel.
+- **Lokal abgelehnt** werden alle anderen Modelle der Provider-Kaskade, `countTokens`, `models.get` und Embeddings: 403, nie weitergeleitet, nicht gezählt.
+- **Hartes Budget:** pro Labor höchstens `VIDEO_LAB_GEMINI_BUDGET` Aufrufe, Standard 8, erlaubt 1 bis 12. Ein voller Walk braucht 6 (PERSON und PERSON × JOB je Discovery, Convergence, Legacy; JOB ONLY ruft Gemini nicht). Jeder weitere Aufruf wird lokal mit 429 abgelehnt.
+- **Protokoll** `relay.jsonl`: Art, Modell, ob ein INVESTIGATION_SCOPE-Block dabei war, Status, Dauer, Größen und Restbudget. Nie Inhalte und nie den Schlüssel. Die Inhalte stehen nur in der Wegwerf-Datenbank des Labors; GEMINI OUTPUT liest sie dort, und beim Stoppen wird die Datenbank gelöscht.
+- **Sperre:** Der Live-Modus startet nur, wenn alle drei Variablen gesetzt sind: `VIDEO_LAB_GEMINI=live`, `VIDEO_LAB_LIVE_GEMINI_GO=owner-go` und `VIDEO_LAB_GEMINI_ENV=<Env-Datei mit GEMINI_API_KEY und GEMINI_MODEL>`. Schlüssel, Modell und Budget müssen gültig sein. Sonst bricht das Labor ab, bevor es irgendetwas anlegt.
+- **Walk:** Gegen ein Live-Labor (`state.json`: `gemini: "LIVE"`) prüfen drei Punkte dieselben Flächen, ohne die Antwort des Stand-ins vorauszusetzen:
+  - V-03b: ein Vorschlag mit Evidenz aus dem PDF, nicht zwingend TypeScript;
+  - V-04c: PROCESSING vorhanden, ohne den erfundenen, verworfenen Anspruch;
+  - V-09b: B2 verfügbar und gebunden, ohne Mindestzahl an Abdeckungen.
+
+  Alle anderen 27 Punkte sind unverändert.
+
+**Ohne echten Aufruf geprüft**
+- `scripts/relay-check.mts` gegen ein Loopback-Double: 12/12. Geprüft sind Weiterleitung, Schlüsseltausch, die Ablehnung fremder Modelle sowie von `countTokens` und `models.get`, das Budget, kein Schlüssel und kein Inhalt im Protokoll und die Startprüfungen.
+- Die Sperren: Alle fünf Fehlkonfigurationen brechen mit Exit 2 ab, das Laborverzeichnis bleibt leer.
+- Trockenlauf der gesamten Live-Verdrahtung auf `5293eb1` (Durchgang 8): Relay → lokaler Stand-in als Gegenstelle, Testschlüssel. Alle Node-Prozesse liefen unter dem Wächter.
+  - Ergebnis: 30/30. Genau 6 weitergeleitete Aufrufe, Restbudget 2. Der Scope-Block war nur bei der PERSON-×-JOB-Discovery dabei. Der Testschlüssel steht in keinem Log.
+  - Netzwerk: nur die geblockte Versionsabfrage von `next dev`.
+  - Belege: `results/live-wiring-dryrun-5293eb1-1920*.json(l)`.
+
+**Befehl für den GO-Schritt** (aus dem Repository-Root einer Arbeitskopie auf dem Integrationsstand, in der kein anderer `next dev` läuft):
+
+```
+VIDEO_LAB_GEMINI=live VIDEO_LAB_LIVE_GEMINI_GO=owner-go VIDEO_LAB_GEMINI_ENV=<.env.local> VIDEO_LAB_GEMINI_BUDGET=8 \
+CONDYN_PLAYWRIGHT_MODULE=<playwright/index.js> bash docs/career_analysis/evidence/video-readiness/scripts/run-take.sh <out> 1920 1080
+```
+
+- Erwartet werden zwei echte Analysen von je etwa zwei Minuten (Demo vom 2026-10-13) und 6 echte Gemini-Aufrufe.
+- Nur der Laborprozess, also das Relay, spricht mit der Gemini-API.
+- Danach werden `relay.jsonl` und das Walk-Ergebnis geprüft. Rohantworten werden nicht eingecheckt.
+
+**Danach:**
+- ANTIGRAVITY: der volle Browserablauf einschließlich PDF-Upload und Jobzuordnung. B-2 (Datei-Input) und B-4 (bewegte Ziele) klärt die Antigravity-Probe.
+- VIDEO.
+- B-3, Produktions-Build ohne Dev-Indikator, ist weiterhin eine eigene Owner-Entscheidung.

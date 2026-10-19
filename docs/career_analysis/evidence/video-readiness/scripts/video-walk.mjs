@@ -7,6 +7,9 @@
 // rendered DOM. Moving bodies (capability nodes, organization bodies, orbiting role cards) are activated with a DOM click event
 // (dispatchEvent), because a pointer click waits for a stable element; see the readiness document for what that means for a
 // recording agent. Inputs: docs/examples/cv.synthetic.pdf and docs/examples/job-pool-tests/DLL_JOBPOOL_ENGINEERING.json.
+// Against a LIVE lab (state.json gemini: "LIVE", only after the owner's GO) the three checks that depend on the stand-in's fixed
+// answer (TypeScript proposed, the invented claim rejected, at least one requirement covered) assert the same surfaces without
+// presupposing what Gemini answers; every other check is identical.
 import { readFileSync, writeFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { pathToFileURL } from "node:url";
@@ -16,6 +19,7 @@ const { chromium } = playwright.chromium ? playwright : playwright.default;
 const [STATE, OUT, W = "1600", H = "1000"] = process.argv.slice(2);
 const st = JSON.parse(readFileSync(STATE, "utf8"));
 const BASE = st.base;
+const LIVE = st.gemini === "LIVE";
 const PDF = resolve(process.cwd(), "docs/examples/cv.synthetic.pdf");
 const POOL_FILE = resolve(process.cwd(), "docs/examples/job-pool-tests/DLL_JOBPOOL_ENGINEERING.json");
 const POOL = "JPOOL_B94850C439974E27496FE3B1A9A076B5", ORG = "org_kestrel", ROLE = "role_kestrel_fullstack", JOB_ROLE = "role_kestrel_frontend_architect";
@@ -81,10 +85,11 @@ await step("V-03", async () => {
   const names = await page.locator('[data-testid^="capability-cosmos-node-"]').allTextContents();
   ok("V-03a", "Capability Field (02) opens the proposal cosmos: every proposal PROPOSED with its evidence state", names.length >= 5 && names.every(n => /PROPOSED/.test(n)), `${names.length} proposals`);
   await shot("capability-cosmos");
-  await tap(page.locator('[data-testid^="capability-cosmos-node-"]', { hasText: "TypeScript" }).first());
+  const typescript = page.locator('[data-testid^="capability-cosmos-node-"]', { hasText: "TypeScript" });
+  await tap(LIVE && await typescript.count() === 0 ? page.locator('[data-testid^="capability-cosmos-node-"]').first() : typescript.first());
   await t("capability-focus-evidence-surface").waitFor({ timeout: 20000 });
   const surface = await text("capability-focus-evidence-surface");
-  ok("V-03b", "TypeScript in deep focus: the evidence surface names the PDF and quotes it verbatim (SOURCE MATCHING ONLY)", surface.includes("cv.synthetic.pdf") && surface.includes(PDF_TEXT_LINE) && /SOURCE MATCHING ONLY/.test(surface), surface);
+  ok("V-03b", LIVE ? "a proposal in deep focus: the evidence surface names the PDF (SOURCE MATCHING ONLY)" : "TypeScript in deep focus: the evidence surface names the PDF and quotes it verbatim (SOURCE MATCHING ONLY)", surface.includes("cv.synthetic.pdf") && (LIVE || surface.includes(PDF_TEXT_LINE)) && /SOURCE MATCHING ONLY/.test(surface), surface);
   await shot("capability-evidence");
   // Back out (Escape does not leave the Capability deep focus): the nucleus returns to the cosmos, the cosmos centre to the field.
   await page.locator('[data-testid^="capability-focus-nucleus-"]').first().click();
@@ -112,7 +117,7 @@ await step("V-04", async () => {
   ok("V-04b", "SCOPE view: PERSON, UNSCOPED", await attr("syntx-gemini-scope", "data-scope-state") === "UNSCOPED");
   await t("syntx-gemini-view-PROCESSING").click();
   const processing = await text("syntx-gemini-processing");
-  ok("V-04c", "PROCESSING view: parser, verification (the invented claim REJECTED) and convergence apart", processing.includes("REJECTED"), processing.slice(0, 200));
+  ok("V-04c", LIVE ? "PROCESSING view: parser, verification and convergence apart" : "PROCESSING view: parser, verification (the invented claim REJECTED) and convergence apart", LIVE ? processing.length > 0 : processing.includes("REJECTED"), processing.slice(0, 200));
   await shot("person-gemini-processing");
   await t("syntx-gemini-output-toggle").click();
 });
@@ -194,7 +199,7 @@ await step("V-09", async () => {
   pxjAnalysis = await attr("syntx-coverage", "data-binding-analysis");
   const covered = await attr("syntx-coverage", "data-covered"), notCovered = await attr("syntx-coverage", "data-not-covered");
   const rows = await page.locator('[data-testid^="syntx-coverage-req-"]').evaluateAll(list => list.map(el => `${el.getAttribute("data-testid").replace("syntx-coverage-req-", "")}:${el.getAttribute("data-coverage")}/${el.getAttribute("data-match-basis") ?? ""}`));
-  ok("V-09b", "B2: unconfirmed name coverage for exactly this role, bound to this analysis; scored false", Number(covered) >= 1 && await attr("syntx-coverage", "data-scored") === "false" && pxjAnalysis !== null && pxjAnalysis !== personAnalysis, `covered=${covered} notCovered=${notCovered} ${JSON.stringify(rows)}`);
+  ok("V-09b", "B2: unconfirmed name coverage for exactly this role, bound to this analysis; scored false", (LIVE ? covered !== null : Number(covered) >= 1) && await attr("syntx-coverage", "data-scored") === "false" && pxjAnalysis !== null && pxjAnalysis !== personAnalysis, `covered=${covered} notCovered=${notCovered} ${JSON.stringify(rows)}`);
   await shot("b2-coverage");
   await page.keyboard.press("Escape");
 });
@@ -246,6 +251,6 @@ const urls = { start: `${BASE}/career/demo`, pxjAtRole: pxjAnalysis && `${BASE}/
 ok("V-99", "no page error during the walk", errors.length === 0, JSON.stringify(errors));
 await browser.close();
 const failed = results.filter(r => !r.pass);
-writeFileSync(`${OUT}/walk-results-${W}.json`, JSON.stringify({ viewport: `${W}x${H}`, personAnalysis, pxjAnalysis, timings, analyzeBodies, urls: Object.fromEntries(Object.entries(urls).map(([k, v]) => [k, v && v.replace(BASE, "<BASE>")])), results }, null, 2));
+writeFileSync(`${OUT}/walk-results-${W}.json`, JSON.stringify({ viewport: `${W}x${H}`, gemini: LIVE ? "LIVE" : "STANDIN", personAnalysis, pxjAnalysis, timings, analyzeBodies, urls: Object.fromEntries(Object.entries(urls).map(([k, v]) => [k, v && v.replace(BASE, "<BASE>")])), results }, null, 2));
 console.log(`${results.length - failed.length}/${results.length} passed`);
 process.exit(failed.length === 0 ? 0 : 1);
