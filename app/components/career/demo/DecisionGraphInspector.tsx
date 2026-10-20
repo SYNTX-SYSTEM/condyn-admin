@@ -70,7 +70,7 @@ export const DecisionGraphInspector: React.FC<DecisionGraphInspectorProps> = ({
               borderRadius: "999px",
               backgroundColor: "#1e293b",
               padding: "2px 8px",
-              fontSize: "10px",
+              fontSize: "11.5px",
               color: "#94a3b8"
             }}
           >
@@ -175,7 +175,7 @@ export const DecisionGraphInspector: React.FC<DecisionGraphInspectorProps> = ({
         padding: "20px",
         color: "#e2e8f0",
         fontFamily: "var(--font-mono, 'JetBrains Mono', monospace)",
-        fontSize: "12px",
+        fontSize: "13px",
         boxShadow: "0 18px 48px rgba(0, 0, 0, 0.72)",
         backdropFilter: "blur(14px)"
       }}

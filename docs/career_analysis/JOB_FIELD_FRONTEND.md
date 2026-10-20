@@ -1624,6 +1624,47 @@ and 1280 × 720. The three geometry readings of `syntx-role-orbit.test.ts` get 3
 load 15). Regression: 68 of 69 files green; `job-structure.postgres.test.ts` (GELB, untouched here: schema and pool uploads only) ran
 into its 10 s `beforeAll` limit twice on the loaded shared Postgres — the integration line already gives it 60 s. Workflow e2e 10/10 ×2.
 
+#### 13.2.36 UI typography & readability sweep (owner "SFE::UI TYPOGRAPHY & READABILITY SWEEP", 2026-10-20)
+
+On `frontend/ui-typography` from the integration tip `35f00bc`. The VIDEO FREEZE is superseded only for this isolated work; the branch
+stops before integration. The evidence, method and all values are in `evidence/ui-typography/README.md` and `values.md`.
+
+- **Scope.** The whole demo application: the shell row, the Job Field (orientation surface, field edge, panels, bodies), the Capability
+  Field (regions, Source Dock, inspector, cosmos and deep focus) and the overlays (onboarding, codex, guide). Legacy components that
+  `/career/demo` does not render are not touched. The HR Decision Loop dock (only with an exact DCTXREV) is not part of this sweep.
+- **Contracts kept.** Every `data-testid` and every visible copy is unchanged, as is every `text-transform` (GELB's video-walk and
+  handoff contract). No geometry, orbit, motion or interaction change. The role cards in the orbit are byte-identical (§13.2.33–35).
+- **Hierarchy.** L1 headings and states are 11–12 px mono caps. L2 names are 11.5–13.5 px. L3 function text is 10–13.5 px, with sans
+  sentences at 12.5–14 px. L4 metadata is 8.5–11 px. Interface text follows one step map (7 → 8.5 … 13 → 14; 14 px and above unchanged).
+  Fixed bodies take smaller, measured steps. Single-line tracked capitals of fixed width keep that width by giving the size increase back
+  in letter spacing.
+- **Fixed.**
+  - The mode statement no longer overlaps the field laws (5 frames at 1920 before).
+  - The role in the observation path is no longer cut by an ellipsis.
+  - `textMuted` goes from 4.4 to 6.0 : 1.
+  - The unselected field and investigation modes go from 5.1 / 5.7 to 7.5 / 9.1 : 1.
+  - The field laws go from 5.6 to 8.7 : 1.
+  - The shell row keeps at least 8 px of air between controls from 1280 to 1920 px, in both fields and both languages (before: 6.9 and
+    2.4 px at 1280).
+- **Geometry-bound decisions.**
+  - The selected job's title stays at 12.5 px: the shell row's width is fixed, and at 13.5 px the title is cut at 1440 px.
+  - The investigation selector is 9.5 px below 1366 px viewport width, so it stays clear of the Capability Field's SEMANTIC GUIDE.
+  - The Source Dock gives section air back (18 → 12 px), so START ANALYSIS stays in view at 1280 × 720.
+  - The inspector hint stays at 12 px.
+  - Below 600 px viewport height (about 200 % zoom on 1080p) the orientation surface scrolls.
+- **Pre-existing, reported.** F-TY-GUIDE: the SEMANTIC GUIDE drawer opens hidden under the Job Field's surfaces (functional; not on the
+  video path). O-TY-CODEX: the codex language highlight lags under load. O-TY-720: at 1280 × 720 the pool field's lower bodies and the
+  inspector over the Source Dock. O-TY-TSC: the `relay-check.mts` type error exists on `35f00bc` itself.
+
+**Proof** (no live Gemini; :3017, :41831, :41851 and :41803 untouched):
+- **Video walk.** GELB's walk, instrumented, runs against GRÜN's own labs. It passes 30/30 at 1920 × 1080, 1440 × 900 and 1280 × 720,
+  both before and after.
+- **Text measures.**
+  - Walk plus extra surfaces, 35 frames per width: no new collision, no new clipped run.
+  - Zoom, font and language conditions, 108 frames: no new collision. 26 clipped runs fewer; one more at 200 %, inside the now
+    scrollable surface.
+- **Tests.** tsc: no new error. Field, shell and mode tests: 148/148.
+
 ### 13.3 DOM contract (PINK BR-1 … BR-5; GELB conditions a/b)
 
 **BR-1 field root** `data-testid="syntx-field"`: `data-field-grammar="SYNTX_FIELD_V1"`, `data-observation-kind` FIELD|ORGANIZATION|ROLE|REQUIREMENT

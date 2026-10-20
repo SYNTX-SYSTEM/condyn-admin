@@ -220,11 +220,11 @@ describe("Job Field: NO ANALYSIS signal and edge layout", () => {
     expect(text(chip)).toBe(SIL_COPY.en.jobPool.analysisNone);
     expect(chip).toMatch(/data-sx-signal-aura="true" aria-hidden="true"/);
     expect(chip).toMatch(/aria-hidden="true"[^>]*><span data-sx-signal-core="true"/);
-    expect(chip).toContain("font-size:11.5px");
+    expect(chip).toContain("font-size:12.5px");
     // The field's own statement of the same state: the same voices, legible, still (no signal of its own).
     const statement = element(renderToString(<SyntxField {...props} workflow={noAnalysis} analysisSource={{ kind: "NONE" }} />), "syntx-no-analysis");
     expect(text(statement)).toBe(SIL_COPY.en.jobPool.analysisNone);
-    expect(statement).toContain("font-size:11.5px");
+    expect(statement).toContain("font-size:12.5px");
     expect(statement).not.toContain("data-sx-signal");
     expect(text(element(renderToString(<SyntxField {...props} workflow={noAnalysis} analysisSource={{ kind: "NONE" }} locale="de" />), "syntx-state"))).toBe(SIL_COPY.de.jobPool.analysisNone);
   });

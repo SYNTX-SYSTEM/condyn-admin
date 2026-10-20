@@ -55,7 +55,7 @@ export function OrbitalCosmosView({ stageId, stageName, items, onSelectItem, onE
       layout={layout}
       elapsedMs={elapsedMs}
       ringAttribute="data-orbital-cosmos-ring"
-      afterOrbits={items.length === 0 && <div data-testid={`orbital-cosmos-empty-${stageId}`} style={{ position: "absolute", left: `${layout.centerX}px`, top: `${layout.centerY + 120}px`, transform: "translate(-50%, -50%)", color: "rgba(206, 232, 241, 0.58)", fontFamily: SIL_TOKENS.typography.mono, fontSize: "10px", letterSpacing: "0.8px" }}>NO ACTUAL ITEMS PROJECTED</div>}
+      afterOrbits={items.length === 0 && <div data-testid={`orbital-cosmos-empty-${stageId}`} style={{ position: "absolute", left: `${layout.centerX}px`, top: `${layout.centerY + 120}px`, transform: "translate(-50%, -50%)", color: "rgba(206, 232, 241, 0.58)", fontFamily: SIL_TOKENS.typography.mono, fontSize: "11px", letterSpacing: "0.8px" }}>NO ACTUAL ITEMS PROJECTED</div>}
       renderNode={(node) => {
           const sourceSatellite = itemById.get(node.id)?.sourceSatellite;
 
@@ -70,7 +70,7 @@ export function OrbitalCosmosView({ stageId, stageName, items, onSelectItem, onE
                     justifyContent: "space-between",
                     gap: "8px",
                     color: SIL_TOKENS.colors.cyanActive,
-                    fontSize: "7.5px",
+                    fontSize: "8.5px",
                     fontWeight: 800,
                     letterSpacing: "1px",
                     lineHeight: 1
@@ -86,7 +86,7 @@ export function OrbitalCosmosView({ stageId, stageName, items, onSelectItem, onE
                   style={{
                     display: "-webkit-box",
                     marginTop: "8px",
-                    fontSize: "11px",
+                    fontSize: "12px",
                     fontWeight: 800,
                     lineHeight: 1.25,
                     WebkitLineClamp: 2,
@@ -104,7 +104,7 @@ export function OrbitalCosmosView({ stageId, stageName, items, onSelectItem, onE
                     display: "block",
                     marginTop: "8px",
                     color: "rgba(126, 255, 204, 0.62)",
-                    fontSize: "7px",
+                    fontSize: "8px",
                     fontWeight: 700,
                     letterSpacing: "0.8px",
                     lineHeight: 1
@@ -114,13 +114,13 @@ export function OrbitalCosmosView({ stageId, stageName, items, onSelectItem, onE
                 </span>
               </>
             ) : (
-              <span style={{ display: "block", fontSize: "11px", fontWeight: 700, lineHeight: 1.32 }}>
+              <span style={{ display: "block", fontSize: "12px", fontWeight: 700, lineHeight: 1.32 }}>
                 {node.title}
               </span>
             )}
           </button>;
       }}
-      center={<button type="button" data-testid={`orbital-cosmos-center-${stageId}`} onClick={(event) => { event.stopPropagation(); onExit(); }} style={{ position: "absolute", left: `${layout.centerX}px`, top: `${layout.centerY}px`, transform: "translate(-50%, -50%)", width: "174px", minHeight: "174px", borderRadius: "50%", border: `1.5px solid ${SIL_TOKENS.colors.cyanActive}`, background: "radial-gradient(circle, rgba(56, 229, 255, 0.25), rgba(5, 18, 29, 0.92) 58%, rgba(2, 7, 13, 0.98))", boxShadow: "0 0 38px rgba(56, 229, 255, 0.3)", color: SIL_TOKENS.colors.textPrimary, cursor: "pointer", fontFamily: SIL_TOKENS.typography.mono, fontSize: "10px", fontWeight: 700, letterSpacing: "1px", lineHeight: 1.55 }}>{stageId} {stageName}<br /><span style={{ color: SIL_TOKENS.colors.cyanActive, fontSize: "8px" }}>ORBIT COSMOS</span></button>}
+      center={<button type="button" data-testid={`orbital-cosmos-center-${stageId}`} onClick={(event) => { event.stopPropagation(); onExit(); }} style={{ position: "absolute", left: `${layout.centerX}px`, top: `${layout.centerY}px`, transform: "translate(-50%, -50%)", width: "174px", minHeight: "174px", borderRadius: "50%", border: `1.5px solid ${SIL_TOKENS.colors.cyanActive}`, background: "radial-gradient(circle, rgba(56, 229, 255, 0.25), rgba(5, 18, 29, 0.92) 58%, rgba(2, 7, 13, 0.98))", boxShadow: "0 0 38px rgba(56, 229, 255, 0.3)", color: SIL_TOKENS.colors.textPrimary, cursor: "pointer", fontFamily: SIL_TOKENS.typography.mono, fontSize: "10.5px", fontWeight: 700, letterSpacing: "1px", lineHeight: 1.55 }}>{stageId} {stageName}<br /><span style={{ color: SIL_TOKENS.colors.cyanActive, fontSize: "9px" }}>ORBIT COSMOS</span></button>}
     />
   );
 }

@@ -336,7 +336,7 @@ export function SystemCodexModal({
             <h2 style={{ margin: 0, fontSize: "14px", color: SIL_TOKENS.colors.cyanActive, fontWeight: 700 }}>
               {t.title}
             </h2>
-            <div style={{ fontSize: "10px", color: SIL_TOKENS.colors.textMuted, marginTop: "2px" }}>
+            <div style={{ fontSize: "11px", color: SIL_TOKENS.colors.textMuted, marginTop: "2px" }}>
               {t.subtitle}
             </div>
           </div>
@@ -361,7 +361,7 @@ export function SystemCodexModal({
                   backgroundColor: lang === "de" ? SIL_TOKENS.colors.cyanActive : "transparent",
                   color: lang === "de" ? "#060a10" : SIL_TOKENS.colors.textPrimary,
                   border: "none",
-                  fontSize: "10px",
+                  fontSize: "11px",
                   fontWeight: 700,
                   cursor: "pointer"
                 }}
@@ -376,7 +376,7 @@ export function SystemCodexModal({
                   backgroundColor: lang === "en" ? SIL_TOKENS.colors.cyanActive : "transparent",
                   color: lang === "en" ? "#060a10" : SIL_TOKENS.colors.textPrimary,
                   border: "none",
-                  fontSize: "10px",
+                  fontSize: "11px",
                   fontWeight: 700,
                   cursor: "pointer"
                 }}
@@ -394,7 +394,7 @@ export function SystemCodexModal({
                 border: `1px solid ${SIL_TOKENS.colors.cyanActive}`,
                 borderRadius: "6px",
                 color: SIL_TOKENS.colors.cyanActive,
-                fontSize: "11px",
+                fontSize: "12px",
                 fontWeight: 700,
                 cursor: "pointer"
               }}
@@ -435,7 +435,7 @@ export function SystemCodexModal({
                       : `1px solid transparent`,
                     borderRadius: "6px",
                     color: isSelected ? SIL_TOKENS.colors.cyanActive : SIL_TOKENS.colors.textPrimary,
-                    fontSize: "11px",
+                    fontSize: "12px",
                     fontWeight: isSelected ? 700 : 400,
                     cursor: "pointer",
                     transition: "all 0.15s ease"
@@ -454,7 +454,7 @@ export function SystemCodexModal({
               padding: "24px 32px",
               overflowY: "auto",
               lineHeight: 1.6,
-              fontSize: "12px"
+              fontSize: "13px"
             }}
           >
             <h3 style={{ marginTop: 0, fontSize: "16px", color: SIL_TOKENS.colors.cyanActive }}>

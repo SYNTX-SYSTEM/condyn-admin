@@ -72,7 +72,7 @@ export function SemanticGuideDrawer({
         <h3
           style={{
             margin: 0,
-            fontSize: "12px",
+            fontSize: "13px",
             color: SIL_TOKENS.colors.cyanActive,
             textTransform: "uppercase",
             letterSpacing: "1px"
@@ -105,10 +105,10 @@ export function SemanticGuideDrawer({
               borderRadius: "6px"
             }}
           >
-            <div style={{ fontSize: "11px", color: SIL_TOKENS.colors.cyanActive, fontWeight: 700 }}>
+            <div style={{ fontSize: "12px", color: SIL_TOKENS.colors.cyanActive, fontWeight: 700 }}>
               {st.id} {st.title}
             </div>
-            <div style={{ fontSize: "10px", color: SIL_TOKENS.colors.textMuted, marginTop: "3px", lineHeight: 1.3 }}>
+            <div style={{ fontSize: "11.5px", color: SIL_TOKENS.colors.textMuted, marginTop: "3px", lineHeight: 1.3 }}>
               {st.desc}
             </div>
           </div>

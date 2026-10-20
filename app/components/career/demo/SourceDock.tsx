@@ -119,7 +119,7 @@ export function SourceDock({
         color: SIL_TOKENS.colors.textPrimary,
         display: "flex",
         flexDirection: "column",
-        gap: "18px",
+        gap: "12px",
         boxShadow: "0 12px 40px rgba(0, 0, 0, 0.7), 0 0 20px rgba(56, 229, 255, 0.1)",
         backdropFilter: "blur(16px)"
       }}
@@ -143,7 +143,7 @@ export function SourceDock({
         >
           <span style={{ fontSize: "16px" }}>◰</span> {t.title}
         </h3>
-        <p style={{ margin: "6px 0 0 0", fontSize: "12px", color: SIL_TOKENS.colors.textMuted, lineHeight: 1.4 }}>
+        <p style={{ margin: "6px 0 0 0", fontSize: "13px", color: SIL_TOKENS.colors.textMuted, lineHeight: 1.4 }}>
           {t.description}
         </p>
       </div>
@@ -167,12 +167,12 @@ export function SourceDock({
             alignItems: "center",
             justifyContent: "center",
             gap: "8px",
-            padding: "12px",
+            padding: "10px",
             border: `1px dashed ${SIL_TOKENS.colors.cyanActive}`,
             borderRadius: "8px",
             backgroundColor: "rgba(56, 229, 255, 0.05)",
             color: SIL_TOKENS.colors.cyanActive,
-            fontSize: "12px",
+            fontSize: "13px",
             fontWeight: 700,
             letterSpacing: "0.5px",
             cursor: "pointer",
@@ -189,12 +189,12 @@ export function SourceDock({
           <button
             onClick={() => setActiveInputMode(activeInputMode === "github" ? "none" : "github")}
             style={{
-              padding: "10px",
+              padding: "9px 10px",
               backgroundColor: activeInputMode === "github" ? "rgba(56, 229, 255, 0.15)" : "rgba(3, 5, 8, 0.6)",
               border: `1px solid ${activeInputMode === "github" ? SIL_TOKENS.colors.cyanActive : SIL_TOKENS.colors.fieldBorder}`,
               borderRadius: "6px",
               color: SIL_TOKENS.colors.textPrimary,
-              fontSize: "11px",
+              fontSize: "12px",
               fontWeight: 600,
               cursor: "pointer",
               transition: "all 0.2s"
@@ -206,12 +206,12 @@ export function SourceDock({
           <button
             onClick={() => setActiveInputMode(activeInputMode === "website" ? "none" : "website")}
             style={{
-              padding: "10px",
+              padding: "9px 10px",
               backgroundColor: activeInputMode === "website" ? "rgba(56, 229, 255, 0.15)" : "rgba(3, 5, 8, 0.6)",
               border: `1px solid ${activeInputMode === "website" ? SIL_TOKENS.colors.cyanActive : SIL_TOKENS.colors.fieldBorder}`,
               borderRadius: "6px",
               color: SIL_TOKENS.colors.textPrimary,
-              fontSize: "11px",
+              fontSize: "12px",
               fontWeight: 600,
               cursor: "pointer",
               transition: "all 0.2s"
@@ -225,12 +225,12 @@ export function SourceDock({
         <button
           onClick={() => setActiveInputMode(activeInputMode === "text" ? "none" : "text")}
           style={{
-            padding: "10px",
+            padding: "9px 10px",
             backgroundColor: activeInputMode === "text" ? "rgba(56, 229, 255, 0.15)" : "rgba(3, 5, 8, 0.6)",
             border: `1px solid ${activeInputMode === "text" ? SIL_TOKENS.colors.cyanActive : SIL_TOKENS.colors.fieldBorder}`,
             borderRadius: "6px",
             color: SIL_TOKENS.colors.textPrimary,
-            fontSize: "11px",
+            fontSize: "12px",
             fontWeight: 600,
             textAlign: "center",
             cursor: "pointer",
@@ -255,7 +255,7 @@ export function SourceDock({
             gap: "8px"
           }}
         >
-          <div style={{ fontSize: "10px", color: SIL_TOKENS.colors.cyanActive, fontWeight: 700 }}>
+          <div style={{ fontSize: "11.5px", color: SIL_TOKENS.colors.cyanActive, fontWeight: 700 }}>
             {activeInputMode === "github"
               ? t.repositoryUrl
               : activeInputMode === "website"
@@ -274,7 +274,7 @@ export function SourceDock({
               borderRadius: "4px",
               padding: "6px 8px",
               color: "#fff",
-              fontSize: "11px",
+              fontSize: "12px",
               fontFamily: "inherit"
             }}
           />
@@ -291,7 +291,7 @@ export function SourceDock({
                 borderRadius: "4px",
                 padding: "6px 8px",
                 color: "#fff",
-                fontSize: "11px",
+                fontSize: "12px",
                 fontFamily: "inherit"
               }}
               data-testid="source-url-input"
@@ -308,7 +308,7 @@ export function SourceDock({
                 borderRadius: "4px",
                 padding: "6px 8px",
                 color: "#fff",
-                fontSize: "11px",
+                fontSize: "12px",
                 fontFamily: "inherit",
                 resize: "vertical"
               }}
@@ -325,7 +325,7 @@ export function SourceDock({
                 border: "1px solid #555",
                 borderRadius: "4px",
                 color: "#aaa",
-                fontSize: "10px",
+                fontSize: "11.5px",
                 cursor: "pointer"
               }}
             >
@@ -344,7 +344,7 @@ export function SourceDock({
                 borderRadius: "4px",
                 color: "#0a0e14",
                 fontWeight: 700,
-                fontSize: "10px",
+                fontSize: "11.5px",
                 cursor: "pointer"
               }}
               data-testid="submit-source-btn"
@@ -359,7 +359,7 @@ export function SourceDock({
       <div>
         <div
           style={{
-            fontSize: "10px",
+            fontSize: "11.5px",
             color: SIL_TOKENS.colors.textMuted,
             textTransform: "uppercase",
             marginBottom: "6px",
@@ -369,7 +369,7 @@ export function SourceDock({
           {t.stagedSources} ({stagedDocs.length})
         </div>
         {stagedDocs.length === 0 ? (
-          <div style={{ fontSize: "11px", color: SIL_TOKENS.colors.textMuted, fontStyle: "italic" }}>
+          <div style={{ fontSize: "12px", color: SIL_TOKENS.colors.textMuted, fontStyle: "italic" }}>
             {t.noSources}
           </div>
         ) : (
@@ -385,7 +385,7 @@ export function SourceDock({
                   backgroundColor: "rgba(3, 5, 8, 0.8)",
                   border: `1px solid ${SIL_TOKENS.colors.fieldBorder}`,
                   borderRadius: "6px",
-                  fontSize: "11px"
+                  fontSize: "12px"
                 }}
               >
                 <div style={{ display: "flex", alignItems: "center", gap: "6px", overflow: "hidden" }}>
@@ -403,7 +403,7 @@ export function SourceDock({
                     border: "none",
                     color: "#ff5555",
                     cursor: "pointer",
-                    fontSize: "12px",
+                    fontSize: "13px",
                     padding: "0 4px"
                   }}
                   title={t.removeSource}
@@ -418,13 +418,13 @@ export function SourceDock({
 
       {/* The investigation boundary this ANALYZE would be declared with. */}
       {stagedDocs.length > 0 && investigation !== null && (
-        <p data-testid="analyze-investigation" data-investigation-mode={investigation.mode} title={investigation.hint} style={{ margin: "0 0 -6px", fontSize: "9.5px", fontWeight: 700, letterSpacing: "1.3px", lineHeight: 1.45, color: "rgba(196, 236, 248, 0.86)" }}>
+        <p data-testid="analyze-investigation" data-investigation-mode={investigation.mode} title={investigation.hint} style={{ margin: "0 0 -6px", fontSize: "11px", fontWeight: 700, letterSpacing: "1.3px", lineHeight: 1.45, color: "rgba(196, 236, 248, 0.86)" }}>
           {investigation.label}
         </p>
       )}
       {/* Trigger Analysis Button (blocked without a valid job scope: the owner's sentence stands at the trigger) */}
       {stagedDocs.length > 0 && analyzeBlockedMessage !== null && !isAnalyzing && (
-        <p data-testid="analyze-job-scope-required" role="status" style={{ margin: "0 0 -6px", fontSize: "11px", fontWeight: 700, letterSpacing: "0.4px", lineHeight: 1.45, color: "#ffc46b", textShadow: "0 0 10px rgba(255, 176, 64, 0.35)" }}>
+        <p data-testid="analyze-job-scope-required" role="status" style={{ margin: "0 0 -6px", fontSize: "12px", fontWeight: 700, letterSpacing: "0.4px", lineHeight: 1.45, color: "#ffc46b", textShadow: "0 0 10px rgba(255, 176, 64, 0.35)" }}>
           {analyzeBlockedMessage}
         </p>
       )}
@@ -435,13 +435,13 @@ export function SourceDock({
           data-job-scope-blocked={analyzeBlockedMessage !== null ? "true" : "false"}
           onClick={() => analyzeBlockedMessage === null && onAnalyze && onAnalyze(stagedDocs)}
           style={{
-            padding: "14px",
+            padding: "12px 14px",
             backgroundColor: isAnalyzing ? "rgba(56, 229, 255, 0.3)" : analyzeBlockedMessage !== null ? "rgba(56, 229, 255, 0.14)" : SIL_TOKENS.colors.cyanActive,
             border: "none",
             borderRadius: "8px",
             color: analyzeBlockedMessage !== null && !isAnalyzing ? "rgba(190, 236, 248, 0.62)" : "#0a0e14",
             fontWeight: 800,
-            fontSize: "13px",
+            fontSize: "14px",
             letterSpacing: "1px",
             cursor: isAnalyzing ? "wait" : analyzeBlockedMessage !== null ? "not-allowed" : "pointer",
             boxShadow: isAnalyzing || analyzeBlockedMessage !== null ? "none" : "0 0 20px rgba(56, 229, 255, 0.5)",

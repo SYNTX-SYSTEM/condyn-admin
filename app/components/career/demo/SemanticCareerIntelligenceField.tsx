@@ -714,7 +714,7 @@ export function SemanticCareerIntelligenceField({
           const isCurrent = zoomLevel === item.level;
           return (
             <React.Fragment key={item.level}>
-              {idx > 0 && <span style={{ color: "rgba(56, 229, 255, 0.3)", fontSize: "9px" }}>●──</span>}
+              {idx > 0 && <span style={{ color: "rgba(56, 229, 255, 0.3)", fontSize: "10.5px" }}>●──</span>}
               <button
                 suppressHydrationWarning
                 type="button"
@@ -743,7 +743,7 @@ export function SemanticCareerIntelligenceField({
                   color: isCurrent ? "#ffffff" : item.isEnabled ? SIL_TOKENS.colors.cyanActive : "rgba(56, 229, 255, 0.35)",
                   cursor: item.isEnabled ? "pointer" : "not-allowed",
                   padding: "3px 8px",
-                  fontSize: "9px",
+                  fontSize: "10.5px",
                   fontWeight: 700,
                   fontFamily: SIL_TOKENS.typography.mono,
                   letterSpacing: "0.5px",
@@ -788,7 +788,7 @@ export function SemanticCareerIntelligenceField({
             padding: "8px 16px",
             color: SIL_TOKENS.colors.cyanActive,
             fontFamily: SIL_TOKENS.typography.mono,
-            fontSize: "11px",
+            fontSize: "12px",
             zIndex: 100,
             boxShadow: "0 0 20px rgba(56, 229, 255, 0.35)",
             display: "flex",
@@ -815,7 +815,7 @@ export function SemanticCareerIntelligenceField({
             padding: "10px 18px",
             color: SIL_TOKENS.colors.cyanActive,
             fontFamily: SIL_TOKENS.typography.mono,
-            fontSize: "11px",
+            fontSize: "12px",
             zIndex: 100,
             boxShadow: "0 0 24px rgba(56, 229, 255, 0.4)",
             display: "flex",
@@ -825,10 +825,10 @@ export function SemanticCareerIntelligenceField({
           }}
         >
           <div style={{ fontWeight: 700 }}>{t.analysis.successTitle}</div>
-          <div style={{ fontSize: "10px", color: SIL_TOKENS.colors.textPrimary }}>
+          <div style={{ fontSize: "11.5px", color: SIL_TOKENS.colors.textPrimary }}>
             {t.analysis.successSubtitle}
           </div>
-          {viewedAnalysisMode !== null && <div data-testid="intake-success-investigation" data-investigation-mode={viewedAnalysisMode} style={{ fontSize: "9.5px", letterSpacing: "1.2px", color: "rgba(196, 236, 248, 0.86)" }}>{investigationCopy.result[viewedAnalysisMode]}{analysisBoundary.state === "RESOLVED" && analysisBoundary.value.jobScopeSelection !== null ? ` · ${analysisBoundary.value.jobScopeSelection.poolRoleId}` : ""}</div>}
+          {viewedAnalysisMode !== null && <div data-testid="intake-success-investigation" data-investigation-mode={viewedAnalysisMode} style={{ fontSize: "11px", letterSpacing: "1.2px", color: "rgba(196, 236, 248, 0.86)" }}>{investigationCopy.result[viewedAnalysisMode]}{analysisBoundary.state === "RESOLVED" && analysisBoundary.value.jobScopeSelection !== null ? ` · ${analysisBoundary.value.jobScopeSelection.poolRoleId}` : ""}</div>}
         </div>
       )}
 
@@ -865,17 +865,17 @@ export function SemanticCareerIntelligenceField({
             <div style={{ fontWeight: 800, fontSize: "14px", letterSpacing: "1px" }}>
               {scopeFailure ? t.analysis.jobScopeTitle : boundaryFailure ? t.analysis.investigationTitle : errData.status === 422 ? "SEMANTIC BOUNDARY VIOLATION" : errData.status === 503 ? "PROVIDER TRUNCATION" : t.analysis.failed}
             </div>
-            {errData.status !== null && <div style={{ fontSize: "10px", color: "rgba(255, 85, 85, 0.7)" }}>HTTP {errData.status}</div>}
+            {errData.status !== null && <div style={{ fontSize: "11.5px", color: "rgba(255, 85, 85, 0.7)" }}>HTTP {errData.status}</div>}
           </div>
           
-          <div style={{ fontSize: "11px", color: "#ffbaba", lineHeight: "1.5" }}>
+          <div style={{ fontSize: "12px", color: "#ffbaba", lineHeight: "1.5" }}>
             {!scopeFailure && !boundaryFailure && errData.status === 422 && t.analysis.semanticBoundary}
             {!scopeFailure && !boundaryFailure && errData.status === 503 && t.analysis.providerTruncation}
           </div>
 
           <div style={{ maxHeight: "150px", overflowY: "auto", borderTop: "1px solid rgba(255, 51, 51, 0.3)", paddingTop: "8px", marginTop: "4px" }}>
             {errData.issues.map((issue: any, i: number) => (
-              <div key={i} style={{ fontSize: "10px", marginBottom: "6px", display: "flex", gap: "8px" }}>
+              <div key={i} style={{ fontSize: "11.5px", marginBottom: "6px", display: "flex", gap: "8px" }}>
                 <span style={{ color: "#ff3333" }}>•</span>
                 <div>
                   {issue.code && <strong style={{ color: "#ff3333", display: "block" }}>[{issue.code}]</strong>}
@@ -886,7 +886,7 @@ export function SemanticCareerIntelligenceField({
           </div>
 
           <div style={{ display: "flex", justifyContent: "flex-end", alignItems: "center", gap: "12px", marginTop: "8px" }}>
-            {analyzeBlockedMessage !== null && <span data-testid="retry-job-scope-required" role="status" style={{ fontSize: "11px", fontWeight: 700, color: "#ffc46b" }}>{analyzeBlockedMessage}</span>}
+            {analyzeBlockedMessage !== null && <span data-testid="retry-job-scope-required" role="status" style={{ fontSize: "12px", fontWeight: 700, color: "#ffc46b" }}>{analyzeBlockedMessage}</span>}
             <button
               data-testid="retry-intake-btn"
               disabled={analyzeBlockedMessage !== null}
@@ -899,7 +899,7 @@ export function SemanticCareerIntelligenceField({
                 border: "none",
                 borderRadius: "4px",
                 fontWeight: 800,
-                fontSize: "11px",
+                fontSize: "12px",
                 cursor: analyzeBlockedMessage !== null ? "not-allowed" : "pointer",
                 letterSpacing: "1px",
                 transition: "background 0.2s"
@@ -1258,19 +1258,19 @@ export function SemanticCareerIntelligenceField({
                       animation: "rotateCounterClockwise 160s linear infinite"
                     }}
                   >
-                    <div style={{ fontSize: "8px", color: SIL_TOKENS.colors.cyanActive, fontWeight: 700 }}>
+                    <div style={{ fontSize: "9px", color: SIL_TOKENS.colors.cyanActive, fontWeight: 700 }}>
                       {t.field.clusterNode} {cluster.projectionState === "PROPOSED"
                         ? "// PROPOSED"
                         : cluster.confidence ? `// ${cluster.confidence}` : "// N/A"}
                     </div>
-                    <div style={{ fontSize: "10px", fontWeight: 700, margin: "3px 0", lineHeight: "1.2" }}>
+                    <div style={{ fontSize: "11px", fontWeight: 700, margin: "3px 0", lineHeight: "1.2" }}>
                       {cluster.title}
                     </div>
-                    <div style={{ fontSize: "8px", color: SIL_TOKENS.colors.textMuted }}>
+                    <div style={{ fontSize: "9px", color: SIL_TOKENS.colors.textMuted }}>
                       {cluster.evidenceCount !== undefined ? `${cluster.evidenceCount} ${t.field.evidences}` : t.field.noEvidence}
                     </div>
                     {cluster.projectionState === "PROPOSED" && (
-                      <div style={{ fontSize: "8px", color: SIL_TOKENS.colors.textMuted, marginTop: "3px" }}>
+                      <div style={{ fontSize: "9px", color: SIL_TOKENS.colors.textMuted, marginTop: "3px" }}>
                         EVIDENCE PASSED // SEMANTIC DEFINITION NOT RUN
                       </div>
                     )}
@@ -1301,13 +1301,13 @@ export function SemanticCareerIntelligenceField({
                         zIndex: 16
                       }}
                     >
-                      <div style={{ fontSize: "8px", color: "#38e5ff", fontWeight: 700 }}>
+                      <div style={{ fontSize: "9px", color: "#38e5ff", fontWeight: 700 }}>
                         EVIDENCE // {ev.sourceType}
                       </div>
-                      <div style={{ fontSize: "10px", fontWeight: 700, margin: "3px 0" }}>
+                      <div style={{ fontSize: "11px", fontWeight: 700, margin: "3px 0" }}>
                         {ev.title}
                       </div>
-                      <div style={{ fontSize: "9px", color: "#63788a" }}>
+                      <div style={{ fontSize: "10px", color: SIL_TOKENS.colors.textMuted }}>
                         {ev.snippet}
                       </div>
                     </div>
@@ -1408,7 +1408,7 @@ export function SemanticCareerIntelligenceField({
             alignItems: "center",
             gap: "18px",
             color: SIL_TOKENS.colors.textPrimary,
-            fontSize: "11px",
+            fontSize: "12px",
             opacity: isOrbitStageFocus ? 0.12 : 1,
             filter: isOrbitStageFocus ? "blur(2px)" : undefined,
             pointerEvents: isOrbitStageFocus ? "none" : "auto",
@@ -1416,10 +1416,10 @@ export function SemanticCareerIntelligenceField({
           }}
         >
           <div>
-            <div style={{ fontSize: "9px", color: SIL_TOKENS.colors.cyanActive, fontWeight: 700, letterSpacing: "1px" }}>
+            <div style={{ fontSize: "10.5px", color: SIL_TOKENS.colors.cyanActive, fontWeight: 700, letterSpacing: "1px" }}>
               {t.focus.activeFocus} // ORBIT {activeStageId}
             </div>
-            <div style={{ fontWeight: 600, fontSize: "12px", marginTop: "2px" }}>
+            <div style={{ fontWeight: 600, fontSize: "13px", marginTop: "2px" }}>
               {stages.find((s) => s.stageId === activeStageId)?.stageName}
             </div>
           </div>
@@ -1439,7 +1439,7 @@ export function SemanticCareerIntelligenceField({
                 style={{
                   display: "flex",
                   gap: "12px",
-                  fontSize: "10px",
+                  fontSize: "11.5px",
                   color:
                     SIL_TOKENS.colors.textMuted
                 }}
@@ -1488,7 +1488,7 @@ export function SemanticCareerIntelligenceField({
               backgroundColor: "transparent",
               border: `1px solid rgba(56, 229, 255, 0.35)`,
               color: SIL_TOKENS.colors.cyanActive,
-              fontSize: "9px",
+              fontSize: "10.5px",
               padding: "4px 8px",
               borderRadius: "3px",
               cursor: "pointer"
@@ -1521,7 +1521,7 @@ export function SemanticCareerIntelligenceField({
             borderRadius: "8px",
             color: SIL_TOKENS.colors.cyanActive,
             fontFamily: SIL_TOKENS.typography.mono,
-            fontSize: "11px",
+            fontSize: "12px",
             fontWeight: 700,
             cursor: "pointer",
             boxShadow: `0 0 16px rgba(56, 229, 255, 0.25)`
@@ -1539,7 +1539,7 @@ export function SemanticCareerIntelligenceField({
             borderRadius: "8px",
             color: SIL_TOKENS.colors.cyanActive,
             fontFamily: SIL_TOKENS.typography.mono,
-            fontSize: "11px",
+            fontSize: "12px",
             fontWeight: 700,
             cursor: "pointer",
             boxShadow: `0 0 16px rgba(56, 229, 255, 0.3)`

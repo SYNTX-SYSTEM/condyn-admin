@@ -78,7 +78,7 @@ export function CapabilityDeepFocusView({
               transform: "translate(-50%, -50%) scale(var(--satellite-scale))", "--satellite-scale": satellite.scale, "--satellite-opacity": satellite.opacity,
               opacity: satellite.opacity, animation: "capabilityDeepFocusSatellite 0.72s cubic-bezier(0.16, 1, 0.3, 1) both",
               ...SYNTX_SATELLITE_MATERIAL,
-              fontFamily: SIL_TOKENS.typography.mono, fontSize: "9px", fontWeight: 700, textAlign: "left", cursor: "pointer", overflowWrap: "anywhere", hyphens: "auto"
+              fontFamily: SIL_TOKENS.typography.mono, fontSize: "10px", fontWeight: 700, textAlign: "left", cursor: "pointer", overflowWrap: "anywhere", hyphens: "auto"
             } as React.CSSProperties}
           >
             {cluster?.title ?? satellite.title}
@@ -97,10 +97,10 @@ export function CapabilityDeepFocusView({
           color: SIL_TOKENS.colors.textPrimary, cursor: "pointer", fontFamily: SIL_TOKENS.typography.mono, textAlign: "center", overflowWrap: "anywhere", hyphens: "auto"
         }}
       >
-        <span style={{ display: "block", color: SIL_TOKENS.colors.cyanActive, fontSize: "9px", fontWeight: 800, letterSpacing: "1.1px" }}>CAPABILITY NUCLEUS // {selected.projectionState ?? "PROJECTED"}</span>
+        <span style={{ display: "block", color: SIL_TOKENS.colors.cyanActive, fontSize: "10px", fontWeight: 800, letterSpacing: "1.1px" }}>CAPABILITY NUCLEUS // {selected.projectionState ?? "PROJECTED"}</span>
         <span style={{ display: "block", marginTop: "8px", fontSize: "14px", fontWeight: 800, lineHeight: 1.34 }}>{selected.title}</span>
-        {selected.projectionState === "PROPOSED" && <span style={{ display: "block", marginTop: "10px", color: "rgba(206, 232, 241, 0.86)", fontSize: "8px", fontWeight: 700, lineHeight: 1.6 }}>PROPOSED // EVIDENCE PASSED // SEMANTIC DEFINITION NOT RUN</span>}
-        <span style={{ display: "block", marginTop: "10px", color: "rgba(56, 229, 255, 0.66)", fontSize: "8px", letterSpacing: "0.7px" }}>RETURN TO CAPABILITY COSMOS</span>
+        {selected.projectionState === "PROPOSED" && <span style={{ display: "block", marginTop: "10px", color: "rgba(206, 232, 241, 0.86)", fontSize: "9px", fontWeight: 700, lineHeight: 1.6 }}>PROPOSED // EVIDENCE PASSED // SEMANTIC DEFINITION NOT RUN</span>}
+        <span style={{ display: "block", marginTop: "10px", color: "rgba(56, 229, 255, 0.66)", fontSize: "9px", letterSpacing: "0.7px" }}>RETURN TO CAPABILITY COSMOS</span>
       </button>
       <section
         data-testid="capability-focus-evidence-surface"
@@ -109,10 +109,10 @@ export function CapabilityDeepFocusView({
           transform: "translate(-50%, -50%)", ...SYNTX_EVIDENCE_SURFACE_MATERIAL, color: SIL_TOKENS.colors.textPrimary, fontFamily: SIL_TOKENS.typography.mono
         }}
       >
-        <div style={{ color: "#7effcc", fontSize: "8px", fontWeight: 800, letterSpacing: "0.9px" }}>
+        <div style={{ color: "#7effcc", fontSize: "9px", fontWeight: 800, letterSpacing: "0.9px" }}>
           {selected.projectionState === "PROPOSED" ? "EVIDENCE // SOURCE MATCHING ONLY" : "EVIDENCE"}
         </div>
-        {selected.evidences.map((evidence) => <div key={evidence.id} data-testid={`capability-focus-evidence-${evidence.id}`} style={{ marginTop: "7px", fontSize: "9px", lineHeight: 1.4, overflowWrap: "anywhere" }}>
+        {selected.evidences.map((evidence) => <div key={evidence.id} data-testid={`capability-focus-evidence-${evidence.id}`} style={{ marginTop: "7px", fontSize: "10px", lineHeight: 1.4, overflowWrap: "anywhere" }}>
           <strong style={{ color: "rgba(225, 245, 247, 0.94)" }}>{evidence.title}</strong>
           <span style={{ color: "rgba(126, 255, 204, 0.72)" }}> // {evidence.sourceType}</span>
           <span style={{ display: "block", color: "rgba(206, 232, 241, 0.7)", marginTop: "3px" }}>{evidence.snippet}</span>

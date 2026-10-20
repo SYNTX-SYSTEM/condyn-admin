@@ -124,13 +124,13 @@ export function CapabilityCosmosView({
                     hyphens: "auto"
                   }}
                 >
-                  <span style={{ display: "block", color: SIL_TOKENS.colors.cyanActive, fontSize: "8px", fontWeight: 700, letterSpacing: "0.8px" }}>
+                  <span style={{ display: "block", color: SIL_TOKENS.colors.cyanActive, fontSize: "9px", fontWeight: 700, letterSpacing: "0.8px" }}>
                     CLUSTER NODE // PROPOSED
                   </span>
-                  <span style={{ display: "block", marginTop: "5px", fontSize: "11px", fontWeight: 700, lineHeight: 1.32 }}>
+                  <span style={{ display: "block", marginTop: "5px", fontSize: "12px", fontWeight: 700, lineHeight: 1.32 }}>
                     {node.title}
                   </span>
-                  <span style={{ display: "block", marginTop: "7px", color: "rgba(206, 232, 241, 0.72)", fontSize: "8px", lineHeight: 1.45 }}>
+                  <span style={{ display: "block", marginTop: "7px", color: "rgba(206, 232, 241, 0.72)", fontSize: "9px", lineHeight: 1.45 }}>
                     {cluster?.evidenceCount ?? 0} EVIDENCE // EVIDENCE PASSED // SEMANTIC DEFINITION NOT RUN
                   </span>
                 </button>
@@ -153,14 +153,14 @@ export function CapabilityCosmosView({
           color: SIL_TOKENS.colors.textPrimary,
           cursor: "pointer",
           fontFamily: SIL_TOKENS.typography.mono,
-          fontSize: "10px",
+          fontSize: "11px",
           fontWeight: 700,
           letterSpacing: "1px",
           lineHeight: 1.55
         }}
       >
         02 CAPABILITY FIELD<br />
-        <span style={{ color: SIL_TOKENS.colors.cyanActive, fontSize: "8px" }}>CAPABILITY COSMOS // PROPOSAL FIELD</span>
+        <span style={{ color: SIL_TOKENS.colors.cyanActive, fontSize: "9px" }}>CAPABILITY COSMOS // PROPOSAL FIELD</span>
       </button>
       }
     />

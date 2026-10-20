@@ -68,7 +68,7 @@ export function IdentityCoreDropZone({ sources, onDropSource, isCommunicating = 
           </div>
           <div
             style={{
-              fontSize: "10px",
+              fontSize: "10.5px",
               color: SIL_TOKENS.colors.cyanActive,
               letterSpacing: "2px",
               fontWeight: 700,
@@ -81,7 +81,7 @@ export function IdentityCoreDropZone({ sources, onDropSource, isCommunicating = 
           <div
             style={{
               marginTop: "8px",
-              fontSize: "10px",
+              fontSize: "10.5px",
               color: isDragging ? SIL_TOKENS.colors.cyanActive : SIL_TOKENS.colors.textPrimary,
               padding: "3px 10px",
               borderRadius: "12px",

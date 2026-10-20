@@ -270,7 +270,7 @@ export function OrbitalResonanceBubble({
               {/* TITLE */}
               <div
                 style={{
-                  fontSize: "11px",
+                  fontSize: "12px",
                   color: SIL_TOKENS.colors.cyanActive,
                   textTransform: "uppercase",
                   letterSpacing: "1.5px",
@@ -284,7 +284,7 @@ export function OrbitalResonanceBubble({
                 }}
               >
                 <span>{stageName}</span>
-                <span style={{ fontSize: "9px", color: "rgba(56, 229, 255, 0.6)" }}>{t.hud.hologram}</span>
+                <span style={{ fontSize: "10.5px", color: "rgba(56, 229, 255, 0.6)" }}>{t.hud.hologram}</span>
               </div>
 
               {/* PRIMARY METRIC */}
@@ -307,7 +307,7 @@ export function OrbitalResonanceBubble({
                     style={{
                       display: "flex",
                       justifyContent: "space-between",
-                      fontSize: "10px",
+                      fontSize: "11.5px",
                       color: SIL_TOKENS.colors.textMuted,
                       marginBottom: "4px"
                     }}
@@ -343,7 +343,7 @@ export function OrbitalResonanceBubble({
                     style={{
                       display: "flex",
                       justifyContent: "space-between",
-                      fontSize: "10px",
+                      fontSize: "11.5px",
                       color: SIL_TOKENS.colors.textMuted,
                       marginBottom: "4px"
                     }}
@@ -353,7 +353,7 @@ export function OrbitalResonanceBubble({
                   </div>
                   <div style={{ display: "flex", gap: "4px" }}>
                     {["●", "●", "●", "●", "●", "●", "●"].map((dot, idx) => (
-                      <span key={idx} style={{ color: idx < 6 ? SIL_TOKENS.colors.cyanActive : "rgba(56, 229, 255, 0.25)", fontSize: "10px" }}>
+                      <span key={idx} style={{ color: idx < 6 ? SIL_TOKENS.colors.cyanActive : "rgba(56, 229, 255, 0.25)", fontSize: "11.5px" }}>
                         {dot}
                       </span>
                     ))}
@@ -365,7 +365,7 @@ export function OrbitalResonanceBubble({
               <div style={{ marginBottom: "10px" }}>
                 <div
                   style={{
-                    fontSize: "9px",
+                    fontSize: "10.5px",
                     color: SIL_TOKENS.colors.textMuted,
                     textTransform: "uppercase",
                     letterSpacing: "0.8px",
@@ -378,12 +378,12 @@ export function OrbitalResonanceBubble({
                 <div style={{ display: "flex", gap: "6px", flexWrap: "wrap" }}>
                   {sourcePresentation && sourcePresentation.labels.length > 0 ? (
                     sourcePresentation.labels.map((label, idx) => (
-                      <span key={idx} style={{ fontSize: "10px", padding: "2px 8px", borderRadius: "10px", backgroundColor: "rgba(56, 229, 255, 0.15)", border: `1px solid ${SIL_TOKENS.colors.cyanActive}`, color: SIL_TOKENS.colors.cyanActive }}>
+                      <span key={idx} style={{ fontSize: "11.5px", padding: "2px 8px", borderRadius: "10px", backgroundColor: "rgba(56, 229, 255, 0.15)", border: `1px solid ${SIL_TOKENS.colors.cyanActive}`, color: SIL_TOKENS.colors.cyanActive }}>
                         {label} ●
                       </span>
                     ))
                   ) : (
-                    <span style={{ fontSize: "10px", padding: "2px 8px", borderRadius: "10px", backgroundColor: "rgba(56, 229, 255, 0.15)", border: `1px solid ${SIL_TOKENS.colors.cyanActive}`, color: SIL_TOKENS.colors.cyanActive }}>
+                    <span style={{ fontSize: "11.5px", padding: "2px 8px", borderRadius: "10px", backgroundColor: "rgba(56, 229, 255, 0.15)", border: `1px solid ${SIL_TOKENS.colors.cyanActive}`, color: SIL_TOKENS.colors.cyanActive }}>
                       SRC ●
                     </span>
                   )}
@@ -395,7 +395,7 @@ export function OrbitalResonanceBubble({
                 <div style={{ marginBottom: "10px" }}>
                   <div
                     style={{
-                      fontSize: "9px",
+                      fontSize: "10.5px",
                       color: SIL_TOKENS.colors.textMuted,
                       textTransform: "uppercase",
                       letterSpacing: "0.8px",
@@ -410,7 +410,7 @@ export function OrbitalResonanceBubble({
                       <div
                         key={idx}
                         style={{
-                          fontSize: "11px",
+                          fontSize: "12px",
                           color: SIL_TOKENS.colors.textPrimary,
                           overflow: "hidden",
                           textOverflow: "ellipsis",
@@ -476,7 +476,7 @@ export function OrbitalResonanceBubble({
                       backgroundColor: act.bg,
                       border: `1px solid ${act.border}77`,
                       color: act.color,
-                      fontSize: "8.5px",
+                      fontSize: "10px",
                       fontWeight: 700,
                       letterSpacing: "0.5px",
                       padding: "6px 4px",
@@ -505,7 +505,7 @@ export function OrbitalResonanceBubble({
               {/* ACTION HINT */}
               <div
                 style={{
-                  fontSize: "9px",
+                  fontSize: "10.5px",
                   color: "rgba(56, 229, 255, 0.65)",
                   borderTop: `1px solid rgba(56, 229, 255, 0.15)`,
                   paddingTop: "6px",
@@ -546,7 +546,7 @@ export function OrbitalResonanceBubble({
         </span>
         <span
           style={{
-            fontSize: "10px",
+            fontSize: "10.5px",
             color: SIL_TOKENS.colors.textMuted,
             marginTop: "4px",
             lineHeight: 1.2,
@@ -559,14 +559,14 @@ export function OrbitalResonanceBubble({
         </span>
         <span
           data-testid={`canonical-sil-region-state-${stageId}`}
-          style={{ fontSize: "9px", color: canonicalState === "PRE_CANONICAL" ? SIL_TOKENS.colors.textMuted : SIL_TOKENS.colors.cyanActive, marginTop: "3px", position: "relative", zIndex: 1, ...(isEmptyProjectionAttention && canonicalState === "PRE_CANONICAL" ? SIL_RED_FIELD_TYPE.bodyState : null) }}
+          style={{ fontSize: "9.5px", color: canonicalState === "PRE_CANONICAL" ? SIL_TOKENS.colors.textMuted : SIL_TOKENS.colors.cyanActive, marginTop: "3px", position: "relative", zIndex: 1, ...(isEmptyProjectionAttention && canonicalState === "PRE_CANONICAL" ? SIL_RED_FIELD_TYPE.bodyState : null) }}
         >
           {canonicalState === "PRE_CANONICAL" ? "PRE-CANONICAL DISCOVERY" : `CANONICAL ${canonicalState}`}
         </span>
         <span
           style={{
             marginTop: "8px",
-            fontSize: "10px",
+            fontSize: "10.5px",
             color: isHighlighted ? SIL_TOKENS.colors.cyanActive : SIL_TOKENS.colors.textPrimary,
             backgroundColor: isHighlighted ? "rgba(56, 229, 255, 0.15)" : "rgba(255,255,255,0.05)",
             padding: "2px 8px",

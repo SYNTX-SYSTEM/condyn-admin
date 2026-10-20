@@ -78,7 +78,7 @@ export function GuidedOnboardingOverlay({
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
           <span
             style={{
-              fontSize: "11px",
+              fontSize: "12px",
               color: SIL_TOKENS.colors.cyanActive,
               textTransform: "uppercase",
               letterSpacing: "1px",
@@ -106,7 +106,7 @@ export function GuidedOnboardingOverlay({
           <h3 style={{ margin: 0, fontSize: "18px", color: SIL_TOKENS.colors.cyanActive }}>
             {currentStep.title}
           </h3>
-          <p style={{ margin: "10px 0 0", fontSize: "13px", lineHeight: 1.5, color: SIL_TOKENS.colors.textPrimary }}>
+          <p style={{ margin: "10px 0 0", fontSize: "14px", lineHeight: 1.5, color: SIL_TOKENS.colors.textPrimary }}>
             {currentStep.description}
           </p>
         </div>
@@ -140,7 +140,7 @@ export function GuidedOnboardingOverlay({
                   border: `1px solid ${SIL_TOKENS.colors.fieldBorder}`,
                   borderRadius: "6px",
                   color: SIL_TOKENS.colors.textPrimary,
-                  fontSize: "11px",
+                  fontSize: "12px",
                   cursor: "pointer"
                 }}
               >
@@ -163,7 +163,7 @@ export function GuidedOnboardingOverlay({
                   border: `1px solid ${SIL_TOKENS.colors.cyanActive}`,
                   borderRadius: "6px",
                   color: SIL_TOKENS.colors.cyanActive,
-                  fontSize: "11px",
+                  fontSize: "12px",
                   fontWeight: 700,
                   cursor: "pointer"
                 }}
@@ -182,7 +182,7 @@ export function GuidedOnboardingOverlay({
                   border: "none",
                   borderRadius: "6px",
                   color: "#060a10",
-                  fontSize: "11px",
+                  fontSize: "12px",
                   fontWeight: 700,
                   cursor: "pointer"
                 }}
@@ -199,7 +199,7 @@ export function GuidedOnboardingOverlay({
                   border: "none",
                   borderRadius: "6px",
                   color: "#060a10",
-                  fontSize: "11px",
+                  fontSize: "12px",
                   fontWeight: 700,
                   cursor: "pointer"
                 }}

@@ -14,7 +14,7 @@ export const SIL_TOKENS = {
     cyanGlow: "rgba(56, 229, 255, 0.18)", // Aura um verifizierte Knoten
     cyanGlowStrong: "rgba(56, 229, 255, 0.35)", // Starke Resonanzaura
     textPrimary: "#e6f1f8",  // Identitäts- und Rollennamen
-    textMuted: "#63788a",    // Hashes, Metadaten und Kontext
+    textMuted: "#7a8fa1",    // Hashes, Metadaten und Kontext (6:1 auf dem Feldgrund; vorher #63788a, 4,4:1)
     tensionAmber: "#f5a623", // Semantische Spannung (Capability Gap)
     tensionGlow: "rgba(245, 166, 35, 0.15)", // Spannungsfeld
     evolutionGreen: "#3fb950", // Wachstum und Resonanzanhebung
