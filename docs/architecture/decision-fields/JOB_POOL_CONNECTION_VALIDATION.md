@@ -2525,6 +2525,102 @@ Factors measured in the DOM (`e6493a7`; the factor pair, then the outer orbit's 
 - Open, as the handoff states: everything about Antigravity itself (P-1 … P-3, P-5 … P-8) and the behaviour on real model failures.
 - PINK made no Gemini call. Evidence is in `evidence/handoff-60d2a3b-live-104410d/`.
 
+### 3.51 UI typography & readability sweep GRÜN `frontend/ui-typography` `7a3ca6a` (base `35f00bc`) (2026-10-20)
+
+**Request.**
+- GRÜN asked PINK to check `frontend/ui-typography` at `7a3ca6a` (base `35f00bc`) independently. The work follows the owner order "SFE::UI TYPOGRAPHY & READABILITY SWEEP" (2026-10-20). The owner lifted the VIDEO FREEZE for this isolated work only, and the branch stops before integration. PINK did not see the owner order first-hand.
+- GRÜN named six places where the geometry limits the size and asked PINK to check them on purpose:
+  1. the selected job's title;
+  2. the investigation selector below 1366 px;
+  3. the meta dock beside the brand at 1280 px in German;
+  4. the Source Dock at 1280 × 720;
+  5. the orientation surface below 600 px viewport height;
+  6. the inspector hint and the organization-cosmos line.
+- GRÜN also named two corrections: the mode statement no longer overlaps the field laws, and the current path step wraps instead of cutting the title.
+
+**Method.**
+- **Static.** PINK diffed every changed app and test file with all type values (font-size, letter-spacing, line-height) masked, so that only non-typographic changes remain (`static-contract.txt`). It classified every changed font size against GRÜN's step map, compared the role-card code byte for byte and computed the `textMuted` contrast.
+- **Walks.** PINK ran its own instrumented copy of GELB's `video-walk.mjs`: the checks are unchanged, and every shot also writes PINK's own frame measure (`pink-typo-measure.mjs.txt`, independent of GRÜN's `inventory.mjs`).
+  - The measure records every visible text run: its type, the per-line rectangles of the text itself, the cut by hidden or clip ancestors (separate from text that only scrolls inside a panel), ellipsis and line clamp.
+  - It counts a text collision only where both texts are actually painted. Text hidden under an opaque panel does not count.
+  - One fresh stand-in lab per run (GELB's `video-lab.ts`, port 41871, disposable databases, PINK's own PID, stopped after each run). Viewports 1920 × 1080, 1440 × 900, **1366 × 768** (not in GRÜN's set) and 1280 × 720, on both commits.
+- **Targeted probe** (`pink-typo-extras.mjs.txt`), identical on both commits:
+  - the shell row over 1240–1960 px in 8 px steps plus 1365 / 1366 / 1367, in six states, EN / DE;
+  - the selected job's title for all 9 engineering roles and 5 roles of PINK's own long-title pool, at five widths;
+  - START ANALYSIS in three dock states at four viewports;
+  - the orientation surface at six low viewports;
+  - the organization-cosmos kicker in five monospace settings × 2 widths × EN / DE × 3 organizations;
+  - the current path step for 14 roles × 3 viewports × EN / DE.
+- **Follow-up probes.** `pink-typo-probe2.mjs.txt` sweeps START ANALYSIS against the inspector over viewport heights 660–920 in 4 px steps. `pink-typo-probe3.mjs.txt` checks whether each edge action can be reached at every page-scroll position.
+- **Regression.** PINK's own suites on `7a3ca6a`, plus the full suite on both commits.
+- No Gemini call by PINK. The lab net logs show only Next dev's npm dist-tags check.
+
+**Confirmed.**
+- **Contracts.**
+  - Every `data-testid`, every visible copy literal and every `text-transform` is unchanged. No font size decreased.
+  - 141 steps follow the map exactly and 64 are smaller, geometry-bound steps; none is larger than the map.
+  - At run time: 6890 text runs matched across 77 frames, none smaller than before, and the smallest size is 7.5 px (the role cards' standing line, kept).
+  - `textMuted` #63788a → #7a8fa1: 4.45 → 6.09 : 1 on void and 4.22 → 5.78 : 1 on the field ground.
+- **Role cards unchanged.**
+  - `RoleCardTitle` is byte-identical, and in `OrganizationCosmosLayer` only the cosmos centre changed.
+  - Role cards 2697/2697: the report is identical to `d685003` except the five C-5 contrast lines. Those are sampled from the pixels behind the translucent cards; they are still ≥ 4.5 : 1 and at least 7.73.
+  - Orbit e2e 395/395 and geometry 56/56.
+- **Walks.**
+  - 30/30 at all four viewports on the base, and on `7a3ca6a` at 1920, 1440 and 1280.
+  - The first 1366 × 768 lab on `7a3ca6a` gave 28/29: V-11 timed out because the server answered the job-structure route with 404 at its first compile. The route has no 404 path, and a second lab gave 200 and 30/30. This is the Next dev environment, not the typography change.
+- **Corrections.**
+  - The mode statement and the field laws overlapped at **every** measured width on the base (94 of 94, at most 2.4 px), not only in 5 frames at 1920. On `7a3ca6a` there are at least 11.8 px between them everywhere, in both languages.
+  - `syntx-path-ROLE`: ellipsis on 36 of 84 role views before, 0 after. The step wraps to two or three lines, stays inside the surface and collides with nothing.
+  - No new cut text in any walk frame. 23 runs are no longer cut.
+- **The six places.**
+  1. **Job title.** It stays 12.5 px, and the title box is equally wide at 1280, 1366 and 1440. The same titles are cut as before, and none newly; at 1440 every engineering role fits. Every role title at 1280 and the 46–48-character titles at 1366 were cut by ellipsis already on the base.
+  2. **Investigation selector.** 9.5 px below 1366 and 10 px from 1366. At 1280 it is 216 px wide (base 224); from 1366 it is 240.6 px (+16.5).
+  3. **Shell row.** At least 8.0 px air everywhere in 1280–1920, in both fields, in six states, EN / DE. Base minimum: 6.9 px (Capability) and 2.4 px (German Job Field, meta dock against the brand). The Job Field meta dock keeps its width (158 / 200 / 162 px).
+  4. **Source Dock.** START ANALYSIS ends at 712.2 px (PERSON) and 720.1 px (PERSON × JOB) at 1280 × 720, against 723.2 px on the base.
+  5. **Orientation surface.** The scroll rule applies only at a viewport height of 600 px or less.
+  6. **Cosmos line.** The inspector hint stays 12 px. The organization-cosmos kicker (8 → 9 px, tracking 1.6 → 1 px) keeps its advance exactly (121.6 / 128 px EN / DE) and wraps between its two parts in all 60 cases on both commits. On the base, PINK saw no break inside "ORGANISATIONS-KOSMOS" in any of the five font settings, so the base break GRÜN describes was not reproduced.
+- **Regression on `7a3ca6a`.**
+  - tsc: one error, `relay-check.mts` (13,214), which is the same on `35f00bc` (O-TY-TSC confirmed).
+  - SSR and units 54/54, demo-ui-fix 62/62, gate 74/74, three-modes 91/91 + 97/97, url-boundary 1/1, syntx-walk 3/3, workflow e2e 10/10.
+  - Full suite (no e2e) on both commits: 37 failures on `7a3ca6a`, all 37 also on `35f00bc`. The base has one more failure, a timeout. There is no new failure, and net is 0.
+  - The base failures are the test database's legacy DDL drift (`career_policy_versions.version`, F-JP-5) and 5000 ms timeouts in the lifecycle suites. GRÜN counted 28 in its own environment.
+
+**Findings.**
+- **D-TY-1 (new, minor; not on the 1920 × 1080 video path).** At 1280 × 720, in PERSON with a staged PDF, START ANALYSIS rises 8–11 px and its label goes under the Decision Graph Inspector.
+  - Painted share of the label: 71 % → 29 %. Clickable rows on the button's centre line: 24 → 16.
+  - GELB's walk clicks START with a pointer click. On `7a3ca6a` that first hits the inspector, and Playwright scrolls the page by 301 px before the click lands. The field and the shell then stand shifted in the "analysis done" frame (`start-label-1280x720-base-after.png`).
+  - It is a shift inside a band that already exists (P-TY-START): the heights where the label is less than half visible are 660–844 px on the base and 660–836 px after. Heights 712–728 become worse, and 688–704 and 836–848 become better. In PERSON × JOB nothing measurable changes at 720.
+- **P-TY-START (existing, both commits; functional; not on the video path).** The dock is placed from the top and the inspector from the bottom.
+  - At viewport heights of 748–820 px on the base and 736–816 px on `7a3ca6a` (PERSON), for example 1366 × 768 and 1280 × 800, the inspector covers START ANALYSIS completely: no row of the button can be clicked. Below about 680 px the button lies under the viewport's edge.
+  - GELB's walk passes there only because Playwright scrolls the page; on both commits the page then stands 253 px higher at 1366 × 768.
+  - GRÜN's O-TY-720 describes this overlap at 720 only.
+- **D-TY-2 (new, minor; at about 200 % zoom).** At 960 × 540, the scroll rule `max-height: calc(100vh - 100px)` does not keep the surface inside the viewport, because the surface starts at 145 px. Its bottom reaches 585 px.
+  - POOLS · 1, + INTAKE and GEMINI OUTPUT start below the viewport. They are reached after 10–30 px of page scroll; on the base they were visible at once.
+  - SELECT AS JOB is visible at once in PINK's state. This differs from GRÜN's description "reachable only after scrolling".
+  - At 560–600 px heights everything fits.
+- **O-TY-WIDTH (documentation).** README §3 lists the edge actions, the surface title and the investigation selector among the single-line capitals that keep their width. Measured:
+  - the edge actions and toggles grow by 4–13 px (← CAPABILITY FIELD 129.8 → 137, ← RETURN 66.8 → 74, SELECT AS JOB 122.6 → 135.2);
+  - the investigation selector grows by 16.5 px from 1366;
+  - the controls grow 1–3 px in height (membrane 32 → 34, buttons 24 → 26, toggles 22 → 23). GRÜN's message says "geometry unchanged".
+  - No new collision results from this. Only the wording is imprecise.
+- **O-TY-UNBOUND (documentation).** The empty field's kicker "JOB FIELD // UNBOUND" stays 10 px. It is not listed in README §6.
+- **O-TY-SCROLLJUMP (existing).** At 1366 × 768 the document scrolls by up to 253 px on both commits. Since 7a3ca6a it also does so at 1280 × 720. The shell header then leaves the view. Its cause is P-TY-START or D-TY-1, through Playwright's pointer click.
+- **Not new, only measured:**
+  - A 2.4 px hairline between the faint region-state text (opacity 0.42) and the cosmos centre. The pattern of body text behind the translucent centre exists on both commits.
+  - The B2 and Job Structure panels scroll about 11 % longer.
+  - At widths below 1280 the shell row overlaps on both commits (after −30.8 px, base −37.6 px in German at 1240).
+
+**Run record.**
+- Evidence: `evidence/ui-typography-7a3ca6a/`.
+  - `static-contract.txt`, `walks.txt`, `frames-compare.txt`, `extras-compare.txt`, `start-vs-inspector.txt`, `low-viewports.txt`, `suites.txt`, `full-suite.txt`;
+  - `reports/` (C, O, U, G and T reports of `7a3ca6a`);
+  - `scripts/*.txt` (PINK's proofs, never committed as live tests);
+  - `start-label-1280x720-base-after.png`;
+  - `manifest.sha256`.
+- PINK's worktree returned clean to `validation/hr-decision-loop-pink` after every run.
+- Nothing of GRÜN's worktrees or labs (:41807, :41808) was used. :3017, :41805, :41821, :41831, :41851 and :41803 were not touched.
+- No owner decision is taken here. Integration remains with the owner's GO, and D-TY-1 and D-TY-2 are GRÜN's to weigh.
+
 ## 4. Boundaries and findings for coordination
 
 - F-JP-1 (closed in `b782793`): `JOB_POOL_CONNECTION.md` §4 followed the per-role `JOB_POOL_JSON_ROLE` design;

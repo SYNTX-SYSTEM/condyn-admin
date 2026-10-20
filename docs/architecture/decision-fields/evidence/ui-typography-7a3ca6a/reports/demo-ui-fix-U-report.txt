@@ -1,0 +1,64 @@
+ok   U-1 1600: GEMINI OUTPUT control present (engineering build)
+ok   U-1 1600: opens without an analysis · "NO_ANALYSIS"
+ok   U-1 1600: HIDE GEMINI OUTPUT owns the pointer · {"owned":true,"hit":"button#syntx-gemini-output-toggle"}
+ok   U-1 1600: HIDE closes it
+ok   U-1 1600: Escape with the focus on its control closes it · "button#syntx-gemini-output-toggle"
+ok   U-1 1600: Escape on the bare document closes it · {"focusBefore":"body","focusAfter":"section#syntx-field"}
+ok   U-1 1600: afterwards the field observes (organization) · "ORGANIZATION"
+ok   U-1 1600: pool and mode unchanged · "http://127.0.0.1:36637/career/demo?focus=FIELD&jobPoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7&jobOrganizationId=org_pink_alpha"
+ok   U-3 1600: a focus outside the field (strip) keeps its Escape — the observation stays · {"outsideInField":false,"kind":"ORGANIZATION"}
+ok   U-3 1600: Escape on the bare document returns one level · "FIELD"
+ok   U-2 1600: at a ROLE with the pools open, HIDE GEMINI OUTPUT owns the pointer · {"owned":true,"hit":"button#syntx-gemini-output-toggle"}
+ok   U-2 1600: the pools list opens below the orientation glass · {"listTop":461,"glassBottom":444.890625}
+ok   U-2 1600: HIDE closes it at the ROLE
+ok   U-2 1600: SELECT moves focus to the field root · "section#syntx-field"
+ok   U-2 1600: the new pool is selected, the investigation mode kept · "http://127.0.0.1:36637/career/demo?focus=FIELD&analysisId=ANL_PINK_UI_FIX&jobPoolUploadId=JPOOL_0B5B226D77F03C0AD4237A3C43B143DA&investigationMode=PERSON_X_JOB"
+ok   U-2 1600: after the pool change Escape closes GEMINI OUTPUT · "section#syntx-field"
+ok   U-1 1280: GEMINI OUTPUT control present (engineering build)
+ok   U-1 1280: opens without an analysis · "NO_ANALYSIS"
+ok   U-1 1280: HIDE GEMINI OUTPUT owns the pointer · {"owned":true,"hit":"button#syntx-gemini-output-toggle"}
+ok   U-1 1280: HIDE closes it
+ok   U-1 1280: Escape with the focus on its control closes it · "button#syntx-gemini-output-toggle"
+ok   U-1 1280: Escape on the bare document closes it · {"focusBefore":"body","focusAfter":"section#syntx-field"}
+ok   U-1 1280: afterwards the field observes (organization) · "ORGANIZATION"
+ok   U-1 1280: pool and mode unchanged · "http://127.0.0.1:36637/career/demo?focus=FIELD&jobPoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7&jobOrganizationId=org_pink_alpha"
+ok   U-3 1280: a focus outside the field (strip) keeps its Escape — the observation stays · {"outsideInField":false,"kind":"ORGANIZATION"}
+ok   U-3 1280: Escape on the bare document returns one level · "FIELD"
+ok   U-2 1280: at a ROLE with the pools open, HIDE GEMINI OUTPUT owns the pointer · {"owned":true,"hit":"button#syntx-gemini-output-toggle"}
+ok   U-2 1280: the pools list opens below the orientation glass · {"listTop":461,"glassBottom":444.890625}
+ok   U-2 1280: HIDE closes it at the ROLE
+ok   U-2 1280: SELECT moves focus to the field root · "section#syntx-field"
+ok   U-2 1280: the new pool is selected, the investigation mode kept · "http://127.0.0.1:36637/career/demo?focus=FIELD&analysisId=ANL_PINK_UI_FIX&jobPoolUploadId=JPOOL_0B5B226D77F03C0AD4237A3C43B143DA&investigationMode=PERSON_X_JOB"
+ok   U-2 1280: after the pool change Escape closes GEMINI OUTPUT · "section#syntx-field"
+ok   U-3 Capability Field (Job Field unmounted): Escape on the bare document changes nothing · {"capFocus":"CAPABILITY","before":"http://127.0.0.1:36637/career/demo?focus=CAPABILITY&analysisId=ANL_PINK_UI_FIX&jobPoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7&jobOrganizationId=org_pink_alpha&jobScopePoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7&jobScopeRoleId=role_pink_alpha_architect","after":"http://127.0.0.1:36637/career/demo?focus=CAPABILITY&analysisId=ANL_PINK_UI_FIX&jobPoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7&jobOrganizationId=org_pink_alpha&jobScopePoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7&jobScopeRoleId=role_pink_alpha_architect"}
+ok   U-3 onboarding overlay open, focus on the bare document: Escape leaves the field still (0b5a8ea) · {"overlayShown":true,"kind":"ORGANIZATION"}
+ok   U-3 onboarding overlay open, focus on a sign beneath it (measured): Escape · {"initialFocus":"div#syntx-organization-org_pink_alpha","focus":"div#syntx-organization-org_pink_alpha","kindAfter":"FIELD","overlayStill":true}
+ok   U-4 1600: the state line is the signal
+ok   U-4 1600: its text is the copy unchanged · "NO ANALYSIS: run the capability sweep (identity core) or open the page with an exact analysisId"
+ok   U-4 1600: the field statement carries the same copy · "NO ANALYSIS: run the capability sweep (identity core) or open the page with an exact analysisId"
+ok   U-4 1600: motion only sxSignalCore on the indicator and sxSignalAura on the aura · [{"name":"sxSignalAura","target":"aura","duration":4800,"iterations":null,"properties":["opacity"],"minOpacity":0.38},{"name":"sxSignalCore","target":"core","duration":4800,"iterations":null,"properties":["opacity","transform"],"minOpacity":0.6}]
+ok   U-4 1600: opacity and transform only, 4.8 s, infinite · [{"name":"sxSignalAura","target":"aura","duration":4800,"iterations":null,"properties":["opacity"],"minOpacity":0.38},{"name":"sxSignalCore","target":"core","duration":4800,"iterations":null,"properties":["opacity","transform"],"minOpacity":0.6}]
+ok   U-4 1600: no blinking (opacity never below .3) · [0.38,0.6]
+ok   U-4 1600: larger type than the 8.5 px state line · "11.5px,12.5px"
+ok   U-4 1600: no layout or text movement over 6 s (chip, statement, text boxes identical in 60 frames) · {"distinct":1}
+ok   U-4 1600: the text never blinks (computed opacity constant) · ["1,1,1,1"]
+ok   U-4 1600: the field statement is calm · 0
+ok   U-4 1600: every infinite motion at NO_ANALYSIS is in the closed R15b list or proposed (sxSignalCore, sxSignalAura) · ["atmosphereGlow","coreBreathe","moonOrbit","orbitFloatPhase2","particleIn","plasmaFlarePulse","plasmaRotateCcw","plasmaRotateCw","rotateClockwise","sxSignalAura","sxSignalCore","waveExpand"]
+ok   U-4 1280: the state line is the signal
+ok   U-4 1280: its text is the copy unchanged · "NO ANALYSIS: run the capability sweep (identity core) or open the page with an exact analysisId"
+ok   U-4 1280: the field statement carries the same copy · "NO ANALYSIS: run the capability sweep (identity core) or open the page with an exact analysisId"
+ok   U-4 1280: motion only sxSignalCore on the indicator and sxSignalAura on the aura · [{"name":"sxSignalAura","target":"aura","duration":4800,"iterations":null,"properties":["opacity"],"minOpacity":0.38},{"name":"sxSignalCore","target":"core","duration":4800,"iterations":null,"properties":["opacity","transform"],"minOpacity":0.6}]
+ok   U-4 1280: opacity and transform only, 4.8 s, infinite · [{"name":"sxSignalAura","target":"aura","duration":4800,"iterations":null,"properties":["opacity"],"minOpacity":0.38},{"name":"sxSignalCore","target":"core","duration":4800,"iterations":null,"properties":["opacity","transform"],"minOpacity":0.6}]
+ok   U-4 1280: no blinking (opacity never below .3) · [0.38,0.6]
+ok   U-4 1280: larger type than the 8.5 px state line · "11.5px,12.5px"
+ok   U-4 1280: no layout or text movement over 6 s (chip, statement, text boxes identical in 60 frames) · {"distinct":1}
+ok   U-4 1280: the text never blinks (computed opacity constant) · ["1,1,1,1"]
+ok   U-4 1280: the field statement is calm · 0
+ok   U-4 1280: every infinite motion at NO_ANALYSIS is in the closed R15b list or proposed (sxSignalCore, sxSignalAura) · ["atmosphereGlow","coreBreathe","moonOrbit","orbitFloatPhase2","particleIn","plasmaFlarePulse","plasmaRotateCcw","plasmaRotateCw","rotateClockwise","sxSignalAura","sxSignalCore","waveExpand"]
+ok   U-4 REDUCED: the signal is static (no running animation) · 0
+ok   U-4 AVAILABLE: no signal and no sxSignal motion · {"attribute":null,"names":[]}
+ok   U-5 read-only pages: no non-GET request · []
+ok   U-5 no page error · []
+ok   U-5 0 Gemini attempts in the server
+
+62/62 checks ok

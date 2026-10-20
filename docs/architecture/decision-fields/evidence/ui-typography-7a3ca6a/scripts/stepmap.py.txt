@@ -1,0 +1,37 @@
+import subprocess,re,difflib,collections,sys
+M={7:8.5,7.5:9,8:9.5,8.5:10,9:10.5,9.5:11,10:11.5,10.5:12,11:12,11.5:12.5,12:13,12.5:13.5,13:14}
+R='.'  # run from the repository root
+def show(c,f): return subprocess.run(['git','-C',R,'show',f'{c}:{f}'],capture_output=True,text=True).stdout.split('\n')
+files=subprocess.run(['git','-C',R,'ls-tree','-r','--name-only','7a3ca6a','app/components/career'],capture_output=True,text=True).stdout.split()
+files=[f for f in files if f.endswith(('.tsx','.ts'))]
+pat=re.compile(r'(?:fontSize\s*:\s*["\'`]?|font-size\s*:\s*)(\d+(?:\.\d+)?)(?:px)?')
+cls=collections.Counter(); dec=[]; offmap=collections.Counter(); kept_small=collections.Counter(); kept_files=collections.Counter(); changed_files=set()
+for f in files:
+  a=show('35f00bc',f); b=show('7a3ca6a',f)
+  if a==b:
+    for l in b:
+      for v in pat.findall(l):
+        if float(v)<14: kept_files[f]+=1
+    continue
+  changed_files.add(f)
+  sm=difflib.SequenceMatcher(None,a,b,autojunk=False)
+  for op,i1,i2,j1,j2 in sm.get_opcodes():
+    if op=='equal':
+      for l in a[i1:i2]:
+        for v in pat.findall(l):
+          if float(v)<14: kept_small[(f.split('/')[-1],float(v))]+=1
+    elif op=='replace' and i2-i1==j2-j1:
+      for x,y in zip(a[i1:i2],b[j1:j2]):
+        va=[float(v) for v in pat.findall(x)]; vb=[float(v) for v in pat.findall(y)]
+        if len(va)!=len(vb): cls['count-mismatch']+=1; continue
+        for p,q in zip(va,vb):
+          if p==q: cls['same' if p>=14 else 'same<14']+=1; 
+          elif q<p: cls['DECREASED']+=1; dec.append((f.split('/')[-1],p,q))
+          elif p in M and q==M[p]: cls['per-map']+=1
+          elif p in M and q<M[p]: cls['smaller-step']+=1; offmap[(p,q)]+=1
+          elif p in M and q>M[p]: cls['LARGER-than-map']+=1; offmap[(p,q)]+=1
+          else: cls['other']+=1; offmap[(p,q)]+=1
+    else: cls['structural-hunk']+=1
+print('classes',dict(cls)); print('decreased',dec); print('off-map steps',sorted(offmap.items()))
+print('kept <14 in changed lines-equal regions',sum(kept_small.values()), sorted(kept_small.items())[:60])
+print('untouched files with literal sizes <14:',dict(kept_files))

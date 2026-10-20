@@ -1,0 +1,28 @@
+// PINK: at low viewports, for every window scroll position (10 px steps) and the orientation surface's own scroll at its top and bottom,
+// is each edge action of the orientation surface (and SELECT AS JOB) visible and topmost? argv: <lab state.json> <out.json>
+import { readFileSync, writeFileSync } from "node:fs";
+import { pathToFileURL } from "node:url";
+const playwright = await import(pathToFileURL(process.env.CONDYN_PLAYWRIGHT_MODULE).href);
+const { chromium } = playwright.chromium ? playwright : playwright.default;
+const [STATE, OUT] = process.argv.slice(2);
+const BASE = JSON.parse(readFileSync(STATE, "utf8")).base; const POOL = "JPOOL_B94850C439974E27496FE3B1A9A076B5";
+await fetch(`${BASE}/api/career/job-pools`, { method: "POST", headers: { "content-type": "application/json", "x-condyn-principal-actor-id": "PINK_TYPO_LAB" }, body: readFileSync("docs/examples/job-pool-tests/DLL_JOBPOOL_ENGINEERING.json", "utf8") });
+const browser = await chromium.launch(); const res = [];
+const IDS = ["syntx-job-scope-select", "syntx-pools-toggle", "job-pool-intake-toggle", "syntx-gemini-output-toggle", "syntx-boundary-toggle", "syntx-return-btn"];
+for (const [w, h] of [[960, 540], [1280, 560], [1280, 600], [1366, 600], [1920, 560], [1536, 864]]) {
+  const ctx = await browser.newContext({ viewport: { width: w, height: h } }); await ctx.addInitScript(() => { try { localStorage.setItem("condyn_onboarding_seen", "1"); } catch {} });
+  const page = await ctx.newPage();
+  await page.goto(`${BASE}/career/demo?focus=FIELD&jobPoolUploadId=${POOL}&jobOrganizationId=org_kestrel&jobRoleId=role_kestrel_fullstack`, { waitUntil: "networkidle" });
+  await page.getByTestId("syntx-job-scope-select").waitFor({ state: "attached", timeout: 30000 }); await page.waitForTimeout(800);
+  const r = await page.evaluate(async ids => {
+    const o = document.querySelector("[data-sx-orient]"); const max = document.scrollingElement.scrollHeight - innerHeight;
+    const ok = id => { const e = document.querySelector(`[data-testid="${id}"]`); if (!e) return null; const q = e.getBoundingClientRect(); if (q.height === 0) return null; const x = (q.left + q.right) / 2, y = (q.top + q.bottom) / 2; if (y < 0 || y >= innerHeight) return false; const t = document.elementFromPoint(x, y); return Boolean(t && (t === e || e.contains(t))); };
+    const atStart = {}; for (const id of ids) atStart[id] = ok(id);
+    const reach = {}; for (const id of ids) reach[id] = [];
+    for (const inner of [0, 1]) { o.scrollTop = inner ? o.scrollHeight : 0; for (let y = 0; y <= max; y += 10) { window.scrollTo(0, y); await new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r))); for (const id of ids) if (ok(id)) reach[id].push(`${inner ? "S" : ""}${y}`); } }
+    window.scrollTo(0, 0); o.scrollTop = 0;
+    return { docScroll: max, atStart, reachableAt: Object.fromEntries(Object.entries(reach).map(([k, v]) => [k, v.length ? `${v.length} positions, first ${v[0]}, last ${v[v.length - 1]}` : "NEVER"])) };
+  }, IDS);
+  res.push({ w, h, ...r }); await ctx.close();
+}
+writeFileSync(OUT, JSON.stringify(res, null, 1)); console.log("PROBE3", res.length); await browser.close();

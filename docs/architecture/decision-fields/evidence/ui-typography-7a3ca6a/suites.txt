@@ -1,0 +1,43 @@
+PINK regression on 7a3ca6a (PINK's worktree, detached; disposable condyn_test_* databases through test:isolated; no Gemini key in the environment).
+PINK proofs copied from evidence for the run and removed afterwards (never committed as live tests).
+
+HEAD 7a3ca6a
+role-cards.e2e.test.ts = evidence d685003
+role-cards-ssr.test.tsx = evidence d685003
+tsc exit 2 errors 1:       1 docs/career_analysis/evidence/video-readiness/scripts/relay-check.mts 
+cards exit 0 :: 2697/2697 checks ok · page errors 0 · non-GET 0 · net 1
+ssr+units exit 0 ::       Tests  54 passed (54)
+geom exit 0 ::       Tests  56 passed (56)
+orbit exit 0 :: 395/395 checks ok · page errors 0 · non-GET 0 · net 1
+demo-ui-fix exit 0 :: 62/62 checks ok
+gate exit 0 :: 74/74 checks ok
+three-modes plain exit 0 :: 91/91 checks ok (T-report-plain)
+three-modes inspector exit 0 :: 97/97 checks ok (T-report-inspector)
+url-boundary exit 0 ::       Tests  1 passed (1)
+syntx-walk exit 0 ::       Tests  3 passed (3)
+workflow exit 0 ::       Tests  10 passed (10)
+net cards: fetch https://registry.npmjs.org/-/package/next/dist-tags 
+net orbit: fetch https://registry.npmjs.org/-/package/next/dist-tags 
+net uifix: fetch https://registry.npmjs.org/-/package/next/dist-tags 
+net tm-plain: fetch https://registry.npmjs.org/-/package/next/dist-tags 
+net tm-inspector: fetch https://registry.npmjs.org/-/package/next/dist-tags 
+net ub: fetch https://registry.npmjs.org/-/package/next/dist-tags 
+SUITES-END
+
+role-cards C-report 7a3ca6a vs the validated d685003 / 5293eb1 reports: identical except the five C-5 contrast lines (pixel-sampled
+glass behind the translucent cards; still >= 4.5 : 1, least 7.73):
+   2692,2696c2692,2696
+   < ok   C-5 least contrast of the standing line over every card (1600 × 1000, 1280 × 720) ≥ 4.5 : 1 · {"ratio":7.75,"at":"1280x720 org_rc_stress_10 syntx-role-role_rc_stress_10_09","glass":[16,48,60],"pixel":{"x":133,"y":11},"text":"rgba(150, 224, 255, 
+   < ok   C-5 least contrast of the title line over every card (1600 × 1000, 1280 × 720) ≥ 4.5 : 1 · {"ratio":13.96,"at":"1280x720 de org_rc_r4711_4 syntx-role-role_rc_r4711_4_06","glass":[12,43,57],"pixel":{"x":186,"y":26},"text":"rgb(241, 250, 253)"}
+   < ok   C-5 least contrast of the domain line over every card (1600 × 1000, 1280 × 720) ≥ 4.5 : 1 · {"ratio":8.56,"at":"1280x720 org_rc_r8_3 syntx-role-role_rc_r8_3_06","glass":[7,33,44],"pixel":{"x":37,"y":50},"text":"rgba(150, 212, 240, 0.9)"}
+   < ok   C-5 least contrast of the requirements line over every card (1600 × 1000, 1280 × 720) ≥ 4.5 : 1 · {"ratio":13.4,"at":"1280x720 org_rc_32 syntx-role-role_rc_32_17","glass":[7,33,46],"pixel":{"x":90,"y":55},"text":"rgba(226, 242, 250, 0.96)"}
+   < ok   C-5 least contrast of the matching line over every card (1600 × 1000, 1280 × 720) ≥ 4.5 : 1 · {"ratio":9.54,"at":"1280x720 de org_rc_stress_10 syntx-role-role_rc_stress_10_09","glass":[6,32,44],"pixel":{"x":133,"y":77},"text":"rgba(186, 214, 230
+   ---
+   > ok   C-5 least contrast of the standing line over every card (1600 × 1000, 1280 × 720) ≥ 4.5 : 1 · {"ratio":7.73,"at":"1600x1000 de org_rc_r4711_0 syntx-role-role_rc_r4711_0_06","glass":[15,48,63],"pixel":{"x":127,"y":12},"text":"rgba(150, 224, 255, 
+   > ok   C-5 least contrast of the title line over every card (1600 × 1000, 1280 × 720) ≥ 4.5 : 1 · {"ratio":12.8,"at":"1280x720 de org_rc_14 syntx-role-role_rc_14_00","glass":[13,50,65],"pixel":{"x":69,"y":23},"text":"rgb(241, 250, 253)"}
+   > ok   C-5 least contrast of the domain line over every card (1600 × 1000, 1280 × 720) ≥ 4.5 : 1 · {"ratio":8.39,"at":"1280x720 org_rc_8 syntx-role-role_rc_8_07","glass":[8,35,46],"pixel":{"x":98,"y":37},"text":"rgba(150, 212, 240, 0.9)"}
+   > ok   C-5 least contrast of the requirements line over every card (1600 × 1000, 1280 × 720) ≥ 4.5 : 1 · {"ratio":13.29,"at":"1280x720 de org_rc_32 syntx-role-role_rc_32_02","glass":[7,34,46],"pixel":{"x":96,"y":41},"text":"rgba(226, 242, 250, 0.96)"}
+   > ok   C-5 least contrast of the matching line over every card (1600 × 1000, 1280 × 720) ≥ 4.5 : 1 · {"ratio":9.53,"at":"1280x720 org_rc_stress_10 syntx-role-role_rc_stress_10_09","glass":[6,32,45],"pixel":{"x":133,"y":77},"text":"rgba(186, 214, 230, 0
+
+role-orbit O-report 7a3ca6a vs 5293eb1: identical except the time-dependent O-2 'moved' distances between two live frames:
+   changed lines: 34

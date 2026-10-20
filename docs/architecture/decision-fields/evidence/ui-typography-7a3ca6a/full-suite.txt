@@ -1,0 +1,28 @@
+PINK full vitest suite (no e2e, no geometry sweep) on 35f00bc and 7a3ca6a in PINK's worktree, disposable condyn_test_* databases,
+network sentinel on (net = non-loopback connections); tsc on both. Failing sets compared test by test (full-compare.py.txt).
+
+HEAD 35f00bc
+tsc 35f00bc exit 2 errors 1: docs/career_analysis/evidence/video-readiness/scripts/relay-check.mts(13,214): error TS2769: No overload matches this call. 
+full 35f00bc exit 1 ::  Test Files  10 failed | 389 passed | 8 skipped (407)       Tests  38 failed | 2635 passed | 8 skipped (2681)  net 0
+HEAD 7a3ca6a
+tsc 7a3ca6a exit 2 errors 1: docs/career_analysis/evidence/video-readiness/scripts/relay-check.mts(13,214): error TS2769: No overload matches this call. 
+full 7a3ca6a exit 1 ::  Test Files  9 failed | 390 passed | 8 skipped (407)       Tests  37 failed | 2636 passed | 8 skipped (2681)  net 0
+
+base: 38 failed / 2635 passed / 2681 total, files failed 20
+after: 37 failed / 2636 passed / 2681 total, files failed 18
+failing on both: 37; only after (NEW): 0; only base: 1
+  BASE-ONLY  test/career/outcome-valence-feedback-context-revision-lifecycle/field-integration.test.ts :: T49 COVFCR deterministic lifecycle integration preserves every valence through first-revision persistence and derivation replay without creating a current or authority claim | Error: STACK_TRACE_ERROR
+failing on base, by file:
+    10 test/career-policy-activation-atomicity.test.ts
+     6 test/career-lifecycle-concurrency-idempotency.test.ts
+     6 test/career-lifecycle-postgres-persistence.test.ts
+     5 test/career-lifecycle-recovery.test.ts
+     4 test/career/relation-adapters/outcome-valence-feedback-context-revision-persistence/career-outcome-valence-feedback-context-revision-postgres.test.ts
+     2 test/career/relation/outcome-valence-feedback-context-revision-persistence/career-outcome-valence-feedback-context-revision-persistence.test.ts
+     2 test/career/relation/outcome-valence-feedback-context-revision-replay/career-outcome-valence-feedback-context-revision-replay.test.ts
+     1 test/career/outcome-valence-feedback-context-revision-lifecycle/field-integration.test.ts
+     1 test/decision-core/structural-consequences/reconstruct.test.ts
+     1 test/career/relation/outcome-valence-feedback-context-revision/career-outcome-valence-feedback-context-revision.test.ts
+
+Base failure causes (log): legacy DDL drift of the test database (column "version" of relation "career_policy_versions" does not exist, F-JP-5)
+and 5000 ms timeouts in the lifecycle / COVFCR Postgres suites; the base-only T49 failure is such a timeout. GRÜN counted 28 in its environment.

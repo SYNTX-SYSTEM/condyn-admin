@@ -1,0 +1,106 @@
+PINK static contract check of frontend/ui-typography 7a3ca6a against its base 35f00bc (git only, no build)
+
+1. Changed files outside docs/:
+   app/components/career/demo/CapabilityCosmosView.tsx
+   app/components/career/demo/CapabilityDeepFocusView.tsx
+   app/components/career/demo/DecisionGraphInspector.tsx
+   app/components/career/demo/GuidedOnboardingOverlay.tsx
+   app/components/career/demo/IdentityCoreDropZone.tsx
+   app/components/career/demo/OrbitalCosmosView.tsx
+   app/components/career/demo/OrbitalDeepFocusView.tsx
+   app/components/career/demo/OrbitalResonanceBubble.tsx
+   app/components/career/demo/SILTokens.ts
+   app/components/career/demo/SemanticCareerIntelligenceField.tsx
+   app/components/career/demo/SemanticGuideDrawer.tsx
+   app/components/career/demo/SourceDock.tsx
+   app/components/career/demo/SyntxField.tsx
+   app/components/career/demo/SyntxFieldSelector.tsx
+   app/components/career/demo/SyntxInvestigationSelector.tsx
+   app/components/career/demo/SystemCodexModal.tsx
+   test/career/three-modes/three-modes-ssr.test.tsx
+
+2. Every changed app/test file with all fontSize / letterSpacing / lineHeight values (JS and CSS) masked, then diffed.
+   What remains is every non-typographic change (normalize.py.txt):
+   -                      <div style={{ fontSize: «V», color: "#63788a" }}>
+   +                      <div style={{ fontSize: «V», color: SIL_TOKENS.colors.textMuted }}>
+   -    textMuted: "#63788a",    // Hashes, Metadaten und Kontext
+   +    textMuted: "#7a8fa1",    // Hashes, Metadaten und Kontext (6:1 auf dem Feldgrund; vorher #63788a, 4,4:1)
+   -        gap: "18px",
+   +        gap: "12px",
+   -            padding: "12px",
+   +            padding: "10px",
+   -              padding: "10px",
+   +              padding: "9px 10px",
+   -              padding: "10px",
+   +              padding: "9px 10px",
+   -            padding: "10px",
+   +            padding: "9px 10px",
+   -            padding: "14px",
+   +            padding: "12px 14px",
+   -        {scope.detail !== null && <span data-testid="job-scope-detail" style={{ overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", fontSize: «V», fontWeight: 600, letterSpacing: «V», color: "rgba(168, 206, 226, 0.78)", marginTop: "2px" }}>{scope.detail}</span>}
+   +        {scope.detail !== null && <span data-testid="job-scope-detail" style={{ overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", fontSize: «V», fontWeight: 600, letterSpacing: «V», color: "rgba(176, 212, 230, 0.86)", marginTop: "2px" }}>{scope.detail}</span>}
+   -              style={{ "--sx-tone": tone, position: "relative", display: "inline-flex", alignItems: "center", gap: "9px", padding: "10px 20px 10px 15px", width: "214px", justifyContent: "center", borderRadius: "999px", border: `1px solid ${active ? `rgba(${tone}, 0.8)` : "transparent"}`, background: active ? `radial-gradient(120% 170% at 50% 0%, rgba(${tone}, 0.32), rgba(${tone}, 0.1) 62%, rgb
+   +              style={{ "--sx-tone": tone, position: "relative", display: "inline-flex", alignItems: "center", gap: "9px", padding: "10px 20px 10px 15px", width: "214px", justifyContent: "center", borderRadius: "999px", border: `1px solid ${active ? `rgba(${tone}, 0.8)` : "transparent"}`, background: active ? `radial-gradient(120% 170% at 50% 0%, rgba(${tone}, 0.32), rgba(${tone}, 0.1) 62%, rgb
+   +/* Very low viewports (browser zoom ≥ 200 % on 1080 p): the orientation surface scrolls instead of pushing its edge actions out of view
+   + * (typography sweep 2026-10-20). Its outer halo is clipped there; at every other height nothing changes. */
+   +@media (max-height: 600px) { [data-sx-orient] { max-height: calc(100vh - 100px); overflow-y: auto; } }
+   -          <span style={{ color: CYAN, fontSize: «V», fontWeight: 600, letterSpacing: «V», lineHeight: «V»}}><span>{t.manifest.organizationCosmos}</span> <span style={{ whiteSpace: "nowrap" }}>// {roles.length} {t.roles}</span></span>
+   +          <span style={{ color: CYAN, fontSize: «V», fontWeight: 600, letterSpacing: «V», lineHeight: «V»}}><span style={{ whiteSpace: "nowrap" }}>{t.manifest.organizationCosmos}</span> <span style={{ whiteSpace: "nowrap" }}>// {roles.length} {t.roles}</span></span>
+   -        {investigation.mode !== "PERSON_X_JOB" && field !== null && <span data-testid="syntx-investigation-statement" data-investigation-mode={investigation.mode} style={{ ...micro, color: "rgba(196, 236, 248, 0.86)", position: "absolute", left: "50%", bottom: "calc(var(--condyn-page-header-height, 60px) + 44px)", transform: "translateX(-50%)", width: "min(560px, 80%)", textAlign: "center", zI
+   +        {investigation.mode !== "PERSON_X_JOB" && field !== null && <span data-testid="syntx-investigation-statement" data-investigation-mode={investigation.mode} style={{ ...micro, color: "rgba(196, 236, 248, 0.86)", position: "absolute", left: "50%", bottom: "calc(var(--condyn-page-header-height, 60px) + 62px)", transform: "translateX(-50%)", width: "min(640px, 80%)", textAlign: "center", zI
+   -              <button data-testid={`syntx-path-${step.kind}`} data-sx-orient-step data-current={index === path.length - 1 ? "true" : "false"} disabled={index === path.length - 1} onClick={() => onObserve(step.target)} style={{ ...ghost, fontFamily: SANS, fontSize: «V», fontWeight: index === path.length - 1 ? 600 : 400, color: index === path.length - 1 ? "#f2fbff" : "rgba(170, 198, 216, 0.78)
+   +              <button data-testid={`syntx-path-${step.kind}`} data-sx-orient-step data-current={index === path.length - 1 ? "true" : "false"} disabled={index === path.length - 1} onClick={() => onObserve(step.target)} style={{ ...ghost, fontFamily: SANS, fontSize: «V», fontWeight: index === path.length - 1 ? 600 : 400, color: index === path.length - 1 ? "#f2fbff" : "rgba(170, 198, 216, 0.78)
+   -      <span data-testid="job-pool-non-claims" style={{ position: "absolute", left: "50%", bottom: "calc(var(--condyn-page-header-height, 60px) + 22px)", transform: "translateX(-50%)", maxWidth: "min(960px, 84vw)", textAlign: "center", ...micro, fontSize: «V», letterSpacing: «V», color: "rgba(230, 241, 248, 0.55)", zIndex: 46 }}>{t.nonClaims}</span>
+   +      <span data-testid="job-pool-non-claims" style={{ position: "absolute", left: "50%", bottom: "calc(var(--condyn-page-header-height, 60px) + 22px)", transform: "translateX(-50%)", maxWidth: "min(960px, 84vw)", textAlign: "center", ...micro, fontSize: «V», letterSpacing: «V», color: "rgba(230, 241, 248, 0.7)", zIndex: 46 }}>{t.nonClaims}</span>
+   +/* Below 1366 px the Capability Field's SEMANTIC GUIDE stands 8 px to the right of the membrane: one step smaller and tighter there, so
+   + * the membrane is no wider than before the typography sweep (2026-10-20). */
+   +@media (max-width: 1365px) { [data-testid="investigation-mode-selector"] button { font-size: «V»; letter-spacing: «V»; padding: 0 7px !important; } }
+   -      style={{ position: "fixed", left: "calc(50% + 245px)", top: "94px", transform: "translateY(-50%)", zIndex: 60, display: "flex", alignItems: "center", gap: "2px", boxSizing: "border-box", height: "32px", padding: "3px", borderRadius: "999px", border: "1px solid rgba(120, 214, 255, 0.24)", background: "linear-gradient(180deg, rgba(8, 21, 34, 0.92), rgba(3, 8, 15, 0.95))", boxShadow: "0 0 0
+   +      style={{ position: "fixed", left: "calc(50% + 245px)", top: "94px", transform: "translateY(-50%)", zIndex: 60, display: "flex", alignItems: "center", gap: "2px", boxSizing: "border-box", height: "34px", padding: "3px", borderRadius: "999px", border: "1px solid rgba(120, 214, 255, 0.24)", background: "linear-gradient(180deg, rgba(8, 21, 34, 0.92), rgba(3, 8, 15, 0.95))", boxShadow: "0 0 0
+   -            style={{ "--sx-tone": tone, display: "inline-flex", alignItems: "center", gap: "5px", height: "24px", padding: "0 8px", borderRadius: "999px", border: `1px solid ${active ? `rgba(${tone}, 0.75)` : "transparent"}`, background: active ? `radial-gradient(120% 170% at 50% 0%, rgba(${tone}, 0.3), rgba(${tone}, 0.08) 65%)` : "transparent", boxShadow: active ? `0 0 14px rgba(${tone}, 0.24
+   +            style={{ "--sx-tone": tone, display: "inline-flex", alignItems: "center", gap: "5px", height: "26px", padding: "0 9px", borderRadius: "999px", border: `1px solid ${active ? `rgba(${tone}, 0.75)` : "transparent"}`, background: active ? `radial-gradient(120% 170% at 50% 0%, rgba(${tone}, 0.3), rgba(${tone}, 0.08) 65%)` : "transparent", boxShadow: active ? `0 0 14px rgba(${tone}, 0.24
+
+   Token-level reading of the remaining lines (style keys that changed besides type values):
+    SyntxFieldSelector.tsx line 81 - color: "rgba(168, + color: "rgba(176, - 206, - 226, + 212, + 230, - 0.78)", + 0.86)",
+    SyntxFieldSelector.tsx line 150 - color: active ? "#f2fdff" : "rgba(160, + color: active ? "#f2fdff" : "rgba(170, - 196, - 214, + 204, - 0.66)", + 222, + 0.78)",
+    SyntxField.tsx insert base lines 437 - 436 -> after 437 - 439
+    SyntxField.tsx line 1005 - ><span>{ + ><span style={ + { + whiteSpace: "nowrap" } + } + >{
+    SyntxField.tsx line 2105 - 60px) + 44px)", + 60px) + 62px)", - width: "min(560px, + width: "min(640px,
+    SyntxField.tsx line 2137 - whiteSpace: "nowrap", + whiteSpace: index === path.length - 1 ? "normal" : "nowrap", + textAlign: "left", + title={ + step.name}
+    SyntxField.tsx line 2287 - 0.55)", + 0.7)",
+    SyntxInvestigationSelector.tsx insert base lines 20 - 19 -> after 20 - 22
+    SyntxInvestigationSelector.tsx line 48 - height: "32px", + height: "34px",
+    SyntxInvestigationSelector.tsx line 68 - height: "24px", + height: "26px", - padding: "0 8px", + padding: "0 9px", - color: active ? "#f2fdff" : "rgba(160, + color: active ? "#f2fdff" : "rgba(176, - 196, - 214, + 210, + 228, - 0.7)", + 0.84)",
+    SourceDock.tsx line 122 -         gap: "18px", +         gap: "12px",
+    SourceDock.tsx line 170 -             padding: "12px", +             padding: "10px",
+    SourceDock.tsx line 192 -               padding: "10px", +               padding: "9px 10px",
+    SourceDock.tsx line 209 -               padding: "10px", +               padding: "9px 10px",
+    SourceDock.tsx line 228 -             padding: "10px", +             padding: "9px 10px",
+    SourceDock.tsx line 438 -             padding: "14px", +             padding: "12px 14px",
+    SemanticCareerIntelligenceField.tsx line 1310 - color: "#63788a" } + color: SIL_TOKENS.colors.textMuted }
+    SILTokens.ts line 17 -     textMuted: "#63788a", +     textMuted: "#7a8fa1", - Metadaten und Kontext + Metadaten und Kontext (6:1 auf dem Feldgrund; vorher #63788a, + 4, + 4:1)
+
+   => data-testid set, visible copy literals and text-transform values: unchanged (no other diff line remains).
+
+3. Font-size steps per changed literal, classified against GRÜN's step map M (stepmap.py.txt):
+   classes {'smaller-step': 64, 'per-map': 141, 'same': 1, 'structural-hunk': 2}
+   decreased []
+   off-map steps [((7.0, 8.0), 1), ((7.5, 8.5), 6), ((8.0, 9.0), 21), ((8.5, 9.5), 2), ((9.0, 9.5), 2), ((9.0, 10.0), 10), ((9.5, 10.5), 3), ((10.0, 10.5), 6), ((10.0, 11.0), 11), ((10.5, 11.0), 1), ((12.5, 13.0), 1)]
+   kept <14 in changed lines-equal regions 12 [(('DecisionGraphInspector.tsx', 12.0), 1), (('OrbitalCosmosView.tsx', 10.0), 1), (('OrbitalResonanceBubble.tsx', 11.0), 1), (('OrbitalResonanceBubble.tsx', 13.0), 1), (('SILTokens.ts', 9.0), 1), (('SILTokens.ts', 10.0), 1), (('SILTokens.ts', 12.0), 1), (('SemanticGuideDrawer.tsx', 11.0), 1), (('SyntxField.tsx', 7.5), 1), (('SyntxField.tsx', 9.5), 1), (('SyntxField.tsx', 10.0), 1), (('SyntxField.tsx', 13.0), 1)]
+   untouched files with literal sizes <14: {'app/components/career/BlueprintEdge.tsx': 1, 'app/components/career/Inspector.tsx': 30, 'app/components/career/LayerInspector.tsx': 10, 'app/components/career/ReactFlowCareerGraphNode.tsx': 1, 'app/components/career/Sidebar.tsx': 6, 'app/components/career/demo/CapabilityField.tsx': 6, 'app/components/career/demo/EvolutionLayer.tsx': 5, 'app/components/career/demo/HrDecisionLoopDock.tsx': 6, 'app/components/career/demo/IdentityCoreNode.tsx': 6, 'app/components/career/demo/InferenceTelemetryHUD.tsx': 7, 'app/components/career/demo/OrbitalSubspaceView.tsx': 17, 'app/components/career/demo/ResonanceOrbits.tsx': 4, 'app/components/career/demo/RoleManifestation.tsx': 5, 'app/components/career/demo/TensionLayer.tsx': 5}
+
+4. Role cards: the RoleCardTitle function is byte-identical (md5 of the function body):
+   35f00bc d30b42973df8ee155e65686668898013  -
+   7a3ca6a d30b42973df8ee155e65686668898013  -
+   OrganizationCosmosLayer (where the orbit's role cards are drawn): only the cosmos centre changed:
+   <           style={{ position: "absolute … fontSize: "10.5px", fontWeight: 700, letterSpacing: "1.4px" …
+   >           style={{ position: "absolute … fontSize: "11px", fontWeight: 700, letterSpacing: "1.4px" …
+   <           <span style={{ color: CYAN,  … fontSize: "8px", fontWeight: 600, letterSpacing: "1.6px" …
+   >           <span style={{ color: CYAN,  … fontSize: "9px", fontWeight: 600, letterSpacing: "1px" …
+
+5. textMuted contrast (WCAG relative luminance), on SIL void #030508 and field #0a0e14:
+   35f00bc #63788a void 4.45 : 1, field 4.22 : 1
+   7a3ca6a #7a8fa1 void 6.09 : 1, field 5.78 : 1
+
+6. The one changed test: test/career/three-modes/three-modes-ssr.test.tsx expects the NO ANALYSIS chip and statement at 12.5 px
+   instead of 11.5 px (step map 11.5 -> 12.5); no assertion removed.
