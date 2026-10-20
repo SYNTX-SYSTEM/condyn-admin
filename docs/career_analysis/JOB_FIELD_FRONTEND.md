@@ -1663,7 +1663,12 @@ stops before integration. The evidence, method and all values are in `evidence/u
   - Walk plus extra surfaces, 35 frames per width: no new collision, no new clipped run.
   - Zoom, font and language conditions, 108 frames: no new collision. 26 clipped runs fewer; one more at 200 %, inside the now
     scrollable surface.
-- **Tests.** tsc: no new error. Field, shell and mode tests: 148/148.
+- **Tests.**
+  - tsc: no new error.
+  - Field, shell and mode tests: 148/148.
+  - Full suite on isolated databases: 28 failures after, every one of them also failing on `35f00bc` (40 there, backend lifecycle
+    suites under load); no new failure.
+  - Workflow e2e: 10/10, run twice.
 
 ### 13.3 DOM contract (PINK BR-1 … BR-5; GELB conditions a/b)
 
@@ -1845,3 +1850,4 @@ observation point. Readable labels wrap at word boundaries (`wrapLines`), never 
 | 2026-10-19 | Role orbit — air across orbits (PINK D-RO-2 on 3be1920) | §13.2.32: closed form across orbits (the outer orbit encloses every inner card's air rectangle in every phase), never closer than the packing in motion; one-orbit layouts unchanged, 32 of 788 multi-orbit layouts less drawn in | tsc 0; unit 8 + SSR 10; regression 69 files / 507; negative control on 3be1920 fails; independent 1° × 1° reading 0 violations |
 | 2026-10-19 | Role orbit — card refinement (owner "SFE — GRÜN | ROLE ORBIT CARD REFINEMENT", on frontend/role-cards over e6493a7) | §13.2.33: centred role card (standing, title, domain, requirements, matching read), drawn at exactly the box the orbit keeps its air for; the accepted orbit unchanged | tsc 0; unit 10 + SSR 11; regression 69 files / 510; workflow e2e 10/10 ×2; lab walk 119/119 at 1600 and 1280 |
 | 2026-10-19 | Role cards — footer readability (owner "SFE — GRÜN | ROLE CARDS — FOOTER READABILITY", on frontend/role-card-footer over ae633a1) | §13.2.34: footer at 8.5 px (fitted per card, German ≥ 7.75 px instead of cut), 8 px into the side padding, brighter; card box and orbit unchanged | tsc 0; unit 11 + SSR 11; regression 69 files / 511; workflow e2e 10/10 ×2; lab walk 121/121 at 1600 and 1280 (incl. German) |
+| 2026-10-20 | UI typography & readability sweep (owner "SFE::UI TYPOGRAPHY & READABILITY SWEEP", on frontend/ui-typography from 35f00bc) | §13.2.36: one type scale over the demo application (L1–L4), the mode statement off the field laws, the full role title in the path, textMuted 6:1, shell air ≥ 8 px from 1280 px; role cards, geometry, copy and testids unchanged | video walk 30/30 at 1920 / 1440 / 1280 before and after; no new collision or clipped run (35 frames × 3 widths, 108 zoom/font/locale frames); full suite no new failure; workflow e2e 10/10 ×2 |
