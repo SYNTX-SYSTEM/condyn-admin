@@ -1,0 +1,67 @@
+# Static check of frontend/focus-readability 49e2bc6 (9fb1df6 → 9ac5702 → 49e2bc6) (PINK)
+
+49e2bc6 docs(career): record the overlong single word as a pre-existing limit in §13.2.37 (GELB L-FR-1)
+9ac5702 fix(career): focus name steps also limit the longest word, which cannot wrap (PINK D-FR-1)
+
+## files outside docs/ 9fb1df6 → 49e2bc6
+ app/components/career/demo/SyntxField.tsx | 14 +++++++++-----
+ 1 file changed, 9 insertions(+), 5 deletions(-)
+
+## 9ac5702 → 49e2bc6 outside docs/: none
+
+## code diff 9fb1df6 → 49e2bc6
+diff --git a/app/components/career/demo/SyntxField.tsx b/app/components/career/demo/SyntxField.tsx
+index 76b4dbc..115ec7a 100644
+--- a/app/components/career/demo/SyntxField.tsx
++++ b/app/components/career/demo/SyntxField.tsx
+@@ -174,11 +174,15 @@ const JOB_NODE_MATERIAL: React.CSSProperties = {
+ };
+ /** Focused identities lead their context (owner "FOCUS_DEPENDENT_READABILITY", 2026-10-21): the pool's name in the field's core and the
+  * organization's name in its cosmos centre take the size their body holds without growing; a name too long for that keeps the earlier
+- * size, so no body changes its geometry. Steps by the length of the label as shown, upper case (ß → SS, GELB F-FR-1):
+- * [max characters, size]. */
+-const POOL_NAME_STEPS: ReadonlyArray<readonly [number, string]> = [[36, "14px"], [54, "12px"]];
+-const CENTRE_NAME_STEPS: ReadonlyArray<readonly [number, string]> = [[34, "13px"], [38, "12px"]];
+-const focusNameSize = (label: string, steps: ReadonlyArray<readonly [number, string]>, fallback: string) => steps.find(([max]) => label.toUpperCase().length <= max)?.[1] ?? fallback;
++ * size, so no body changes its geometry. Steps by the label as shown, upper case (ß → SS, GELB F-FR-1): its length and its longest
++ * word, which cannot wrap (PINK D-FR-1): [max characters, max word, size]. */
++const POOL_NAME_STEPS: ReadonlyArray<readonly [number, number, string]> = [[36, 19, "14px"], [54, 22, "12px"]];
++const CENTRE_NAME_STEPS: ReadonlyArray<readonly [number, number, string]> = [[34, 16, "13px"], [38, 18, "12px"]];
++const focusNameSize = (label: string, steps: ReadonlyArray<readonly [number, number, string]>, fallback: string) => {
++  const shown = label.toUpperCase();
++  const word = Math.max(...shown.split(/\s+/).map(part => part.length));
++  return steps.find(([max, maxWord]) => shown.length <= max && word <= maxWord)?.[2] ?? fallback;
++};
+ /** The organization cosmos' centre: the shared centre material with an opaque deep core, so the receded organization body behind it
+  * no longer shows through the text; a finer membrane and a calmer glow. */
+ const JOB_COSMOS_CENTRE_MATERIAL: React.CSSProperties = {
+
+## the committed step code evaluated for every fixture name (fixture-steps-pink.mjs: the code block is taken verbatim from SyntxField.tsx of each commit, types stripped)
+AI_DATA pool   len 36 word  8 38ebc31 10.5px | 9fb1df6 14px | 9ac5702(=49e2bc6) 14px · DLL AI, Data & Semantic Systems Pool
+AI_DATA centre len 27 word  8 38ebc31 11px | 9fb1df6 13px | 9ac5702(=49e2bc6) 13px · 01 Lumen Semantic Labs GmbH
+AI_DATA centre len 25 word  9 38ebc31 11px | 9fb1df6 13px | 9ac5702(=49e2bc6) 13px · 02 Northbeam Analytics AB
+AI_DATA centre len 26 word  8 38ebc31 11px | 9fb1df6 13px | 9ac5702(=49e2bc6) 13px · 03 Veritas Clinical AI SAS
+AI_DATA centre len 27 word  9 38ebc31 11px | 9fb1df6 13px | 9ac5702(=49e2bc6) 13px · 04 Orbisure Insurance Group
+AI_DATA centre len 30 word  8 38ebc31 11px | 9fb1df6 13px | 9ac5702(=49e2bc6) 13px · 05 Helix Robotics Research Ltd
+ENGINEERING pool   len 35 word 12 38ebc31 10.5px | 9fb1df6 14px | 9ac5702(=49e2bc6) 14px · DLL Engineering & Architecture Pool
+ENGINEERING centre len 34 word  9 38ebc31 11px | 9fb1df6 13px | 9ac5702(=49e2bc6) 13px · 01 Kestrel Logistics Software GmbH
+ENGINEERING centre len 29 word  8 38ebc31 11px | 9fb1df6 13px | 9ac5702(=49e2bc6) 13px · 02 Aurelion Health Systems AG
+ENGINEERING centre len 28 word 11 38ebc31 11px | 9fb1df6 13px | 9ac5702(=49e2bc6) 13px · 03 Brightwater Payments B.V.
+ENTERPRISE_SCALE pool   len 25 word 10 38ebc31 10.5px | 9fb1df6 14px | 9ac5702(=49e2bc6) 14px · DLL Enterprise Scale Pool
+ENTERPRISE_SCALE centre len 32 word 16 38ebc31 11px | 9fb1df6 13px | 9ac5702(=49e2bc6) 13px · 01 Rheinmark Industrieanlagen AG
+ENTERPRISE_SCALE centre len 36 word  7 38ebc31 11px | 9fb1df6 12px | 9ac5702(=49e2bc6) 12px · 02 Nordisk Pumps & Fluid Systems A/S
+ENTERPRISE_SCALE centre len 26 word 10 38ebc31 11px | 9fb1df6 13px | 9ac5702(=49e2bc6) 13px · 03 Quillstone Software Ltd
+ENTERPRISE_SCALE centre len 24 word  8 38ebc31 11px | 9fb1df6 13px | 9ac5702(=49e2bc6) 13px · 04 Tessaro Workflow GmbH
+ENTERPRISE_SCALE centre len 37 word 11 38ebc31 11px | 9fb1df6 12px | 9ac5702(=49e2bc6) 12px · 05 Valcor Automotive Electronics GmbH
+ENTERPRISE_SCALE centre len 26 word  8 38ebc31 11px | 9fb1df6 13px | 9ac5702(=49e2bc6) 13px · 06 Corvane Mobility s.r.o.
+ENTERPRISE_SCALE centre len 29 word  8 38ebc31 11px | 9fb1df6 13px | 9ac5702(=49e2bc6) 13px · 07 Sentinel Ridge Security Oy
+ENTERPRISE_SCALE centre len 28 word 12 38ebc31 11px | 9fb1df6 13px | 9ac5702(=49e2bc6) 13px · 08 Ironquay Cryptography Ltd
+ENTERPRISE_SCALE centre len 21 word 10 38ebc31 11px | 9fb1df6 13px | 9ac5702(=49e2bc6) 13px · 09 Ledgerline Bank SE
+ENTERPRISE_SCALE centre len 35 word 12 38ebc31 11px | 9fb1df6 12px | 9ac5702(=49e2bc6) 12px · 10 Paxford Capital Technologies Ltd
+ENTERPRISE_SCALE centre len 31 word  8 38ebc31 11px | 9fb1df6 13px | 9ac5702(=49e2bc6) 13px · 11 Medivane Digital Health GmbH
+ENTERPRISE_SCALE centre len 24 word  8 38ebc31 11px | 9fb1df6 13px | 9ac5702(=49e2bc6) 13px · 12 Carelink Imaging B.V.
+ENTERPRISE_SCALE centre len 24 word 11 38ebc31 11px | 9fb1df6 13px | 9ac5702(=49e2bc6) 13px · 13 Stratoforge Cloud SAS
+ENTERPRISE_SCALE centre len 27 word  8 38ebc31 11px | 9fb1df6 13px | 9ac5702(=49e2bc6) 13px · 14 Arcvale Edge Networks AB
+ENTERPRISE_SCALE centre len 26 word 10 38ebc31 11px | 9fb1df6 13px | 9ac5702(=49e2bc6) 13px · 15 Datalume Consulting SpA
+ENTERPRISE_SCALE centre len 36 word 12 38ebc31 11px | 9fb1df6 12px | 9ac5702(=49e2bc6) 12px · 16 Synaptiq Speech Technologies S.L.
+names 27; size differs between 9fb1df6 and 9ac5702(=49e2bc6): 0

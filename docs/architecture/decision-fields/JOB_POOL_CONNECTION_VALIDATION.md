@@ -2762,6 +2762,62 @@ Factors measured in the DOM (`e6493a7`; the factor pair, then the outer orbit's 
 - GRÜN's review labs :41809 and :41810 were not touched, nor were :3017, :41805, :41821, :41831, :41851 or :41803.
 - Integration remains with the owner's GO. D-FR-1 is GRÜN's to weigh.
 
+### 3.54 D-FR-1 fix GRÜN `9ac5702` / `49e2bc6` (`frontend/focus-readability`, base `38ebc31`) to §3.53 (2026-10-22)
+
+**Request.**
+- GRÜN fixed D-FR-1 from §3.53 in `9ac5702` and asked PINK to re-check it.
+- The tip then moved to `49e2bc6`, which adds one documentation line: GELB's L-FR-1 records the overlong single word as an existing limit. The base stays `38ebc31`.
+
+**What changed (`static-49e2bc6.txt`).**
+- `9fb1df6` → `9ac5702` changes only `focusNameSize` and the two step constants in `SyntxField.tsx`. `9ac5702` → `49e2bc6` changes nothing outside `docs/`.
+- Each step now also has a limit on the longest word, read from the label in upper case. A word is a run between whitespace, so hyphenated words count whole. The limits:
+  - pool: 14 px up to a 19-character word, 12 px up to 22, otherwise 10.5;
+  - centre: 13 px up to a 16-character word, 12 px up to 18, otherwise 11.
+- The label-length limits 36/54 and 34/38 are unchanged.
+- **Fixtures.** `fixture-steps-pink.mjs.txt` takes the step code verbatim from each commit's `SyntxField.tsx` and evaluates it for all 27 fixture pool names and centre labels. `9ac5702` gives the same size as `9fb1df6` for every one; the longest fixture word has 16 characters. GELB's walk therefore renders as in §3.53, and PINK did not repeat the walks.
+
+**Method.**
+- PINK's length-step probe from §3.53, extended by word edges and run on one fresh stand-in lab per commit, on `49e2bc6` and `38ebc31`. The extended set has 29 pool and 28 organization variants.
+- The word edges sit at and around every word limit:
+  - pool words of 19, 20, 22 and 23 characters;
+  - centre words of 16, 17, 18 and 19 characters.
+- Each is tested as a German compound, as W only (the widest capital), first in the label, and with "ß", which shows one character longer.
+- PINK's keyboard probe and suites ran on `49e2bc6`.
+
+**Result: D-FR-1 is fixed, and nothing new appears.**
+- **The §3.53 cases.**
+  - "TELECOMMUNICATIONS" → 12 px, 2.2 px inside the disc.
+  - "VERSICHERUNGSGRUPPE" → 11 px, 3.7 px inside, as on the base.
+  - "GESUNDHEITSPLATTFORMEN" → 12 px, 7.1 px inside the body ring, within the content width.
+  - "INTERNATIONALIZATION" → 12 px.
+  - The 29-character word → 10.5 px.
+- **Word edges.** At 1920, 1280 (EN / DE) and 960 the least line air is:
+  - pool 19 → 14 px, 6.9 px air;
+  - pool 20 and 22 → 12 px, 7.1–13.1 px;
+  - pool 23 → 10.5 px;
+  - centre 16 → 13 px, 5.4 px;
+  - centre 17 and 18 → 12 px, 2.2–6.2 px;
+  - centre 19 → 11 px.
+  - W-only words measure the same (monospace). A word placed first and the "ß" variants (STRASSENBAUFIRMEN, 17 shown → 12 px) follow the rule.
+- **Against the base** (285 name rows):
+  - No enlarged name lies closer to the edge than on `38ebc31`, and nothing is newly cut. The smallest air of an enlarged name is 2.2 px (centre, 18-character word at 12 px).
+  - Only the 29-character pool word and the 25-character centre word reach past the edge. They keep 10.5 / 11 px, exactly as on `38ebc31`; that is GELB's L-FR-1.
+- **Against `9fb1df6`.** Only the five D-FR-1 variants change size. Every other variant and the receded siblings are identical.
+- **Keyboard and focus.** Identical to `38ebc31`: 8 × 70 tab stops, and the descent with Escape steps.
+- **Regression on `49e2bc6`.**
+  - tsc: only the base's `relay-check.mts` error.
+  - Role cards 2697/2697, byte-identical to the `38ebc31` report. Orbit 395/395; only the LIVE motion distances differ.
+  - SSR and units 54/54, geometry 56/56, demo-ui-fix 62/62, gate 74/74, three-modes 91/91 + 97/97 (with ports masked, identical to `38ebc31`), url-boundary 1/1, syntx-walk 3/3, workflow 10/10.
+
+**Run record.**
+- Evidence: `evidence/focus-readability-49e2bc6/`.
+  - `static-49e2bc6.txt`, `edges-38ebc31-vs-49e2bc6.txt`, `keys-38ebc31-vs-49e2bc6.txt`, `suites-49e2bc6.txt`;
+  - `pairs/*.png` (left `38ebc31`, right `49e2bc6`);
+  - `scripts/*.txt`;
+  - `manifest.sha256`.
+- PINK's worktree returned clean. GRÜN's review labs :41809 and :41810 were not touched.
+- Integration remains with the owner's GO.
+
 ## 4. Boundaries and findings for coordination
 
 - F-JP-1 (closed in `b782793`): `JOB_POOL_CONNECTION.md` §4 followed the per-role `JOB_POOL_JSON_ROLE` design;
