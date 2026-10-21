@@ -436,7 +436,9 @@ ${SYNTX_FOCUS_PULSE_KEYFRAMES}
 [data-sx-orient][data-sx-resonance="retreated"]:not(:hover):not(:has(:focus-visible))::after { box-shadow: 0 0 4px 0 rgba(56, 229, 255, 0.05), 0 0 12px 0 rgba(56, 229, 255, 0.02); }
 /* Very low viewports (browser zoom ≥ 200 % on 1080 p): the orientation surface scrolls instead of pushing its edge actions out of view
  * (typography sweep 2026-10-20). Its outer halo is clipped there; at every other height nothing changes. */
-@media (max-height: 600px) { [data-sx-orient] { max-height: calc(100vh - 100px); overflow-y: auto; } }
+/* Low windows (about 200 % zoom): below 1214 px 28vw narrows the surface until path and statement wrap past the window; 340 px keeps
+ * every edge action in view without a scroll area of its own (PINK D-TY-2). Wider windows already use 340 px. */
+@media (max-height: 600px) { [data-sx-orient] { width: min(340px, 36vw) !important; } }
 /* Breathing prototype (R15b approval required; off by default): only the ACTIVE seam breathes, on the existing name atmosphereGlow
  * (opacity .5 ↔ .9) at 24 s; none in REDUCED. */
 [data-sx-resonance-breath] [data-sx-resonance="active"] [data-sx-halo], [data-sx-resonance-breath] [data-sx-resonance]:focus-visible [data-sx-halo], [data-sx-resonance-breath] [data-sx-orient]:hover::after, [data-sx-resonance-breath] [data-sx-orient]:has(:focus-visible)::after { animation: atmosphereGlow 24s ease-in-out infinite; }

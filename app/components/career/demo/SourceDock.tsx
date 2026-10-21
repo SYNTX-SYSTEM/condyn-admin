@@ -119,7 +119,7 @@ export function SourceDock({
         color: SIL_TOKENS.colors.textPrimary,
         display: "flex",
         flexDirection: "column",
-        gap: "12px",
+        gap: "17px",
         boxShadow: "0 12px 40px rgba(0, 0, 0, 0.7), 0 0 20px rgba(56, 229, 255, 0.1)",
         backdropFilter: "blur(16px)"
       }}

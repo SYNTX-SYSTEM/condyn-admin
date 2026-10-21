@@ -1669,6 +1669,15 @@ stops before integration. The evidence, method and all values are in `evidence/u
   - Full suite on isolated databases: 28 failures after, every one of them also failing on `35f00bc` (40 there, backend lifecycle
     suites under load); no new failure.
   - Workflow e2e: 10/10, run twice.
+- **Follow-up to PINK §3.51** (evidence README §8). PINK found two new small deviations off the video path; both are corrected.
+  - D-TY-1: the Source Dock's air goes 12 → 17 px. START ANALYSIS returns to its old place at 1280 × 720 (680–722 px, base
+    678–723). Its label is 86 % painted (base 71 %, `7a3ca6a` 29 %).
+  - D-TY-2: below 600 px height the orientation surface keeps 340 px width instead of a scroll area of its own. At 960 × 540 every
+    edge action is in view at once.
+  - Re-measured: walk 30/30 at three widths; no new collision or clipped run in 35 frames × 3 widths; 108 condition frames with no
+    new collision; 148/148.
+  - Corrected in the README: O-TY-WIDTH and O-TY-UNBOUND.
+  - Left to the owner: P-TY-START. Between about 748 and 820 px window height the inspector hint covers START, on the base as now.
 
 ### 13.3 DOM contract (PINK BR-1 … BR-5; GELB conditions a/b)
 
@@ -1851,3 +1860,4 @@ observation point. Readable labels wrap at word boundaries (`wrapLines`), never 
 | 2026-10-19 | Role orbit — card refinement (owner "SFE — GRÜN | ROLE ORBIT CARD REFINEMENT", on frontend/role-cards over e6493a7) | §13.2.33: centred role card (standing, title, domain, requirements, matching read), drawn at exactly the box the orbit keeps its air for; the accepted orbit unchanged | tsc 0; unit 10 + SSR 11; regression 69 files / 510; workflow e2e 10/10 ×2; lab walk 119/119 at 1600 and 1280 |
 | 2026-10-19 | Role cards — footer readability (owner "SFE — GRÜN | ROLE CARDS — FOOTER READABILITY", on frontend/role-card-footer over ae633a1) | §13.2.34: footer at 8.5 px (fitted per card, German ≥ 7.75 px instead of cut), 8 px into the side padding, brighter; card box and orbit unchanged | tsc 0; unit 11 + SSR 11; regression 69 files / 511; workflow e2e 10/10 ×2; lab walk 121/121 at 1600 and 1280 (incl. German) |
 | 2026-10-20 | UI typography & readability sweep (owner "SFE::UI TYPOGRAPHY & READABILITY SWEEP", on frontend/ui-typography from 35f00bc) | §13.2.36: one type scale over the demo application (L1–L4), the mode statement off the field laws, the full role title in the path, textMuted 6:1, shell air ≥ 8 px from 1280 px; role cards, geometry, copy and testids unchanged | video walk 30/30 at 1920 / 1440 / 1280 before and after; no new collision or clipped run (35 frames × 3 widths, 108 zoom/font/locale frames); full suite no new failure; workflow e2e 10/10 ×2 |
+| 2026-10-21 | UI typography — follow-up to PINK §3.51 (D-TY-1, D-TY-2) | §13.2.36: Source Dock air 17 px (START at its old place, label 86 % painted at 1280 × 720); orientation surface 340 px wide below 600 px height instead of its own scroll; README O-TY-WIDTH / O-TY-UNBOUND | walk 30/30 at 1920 / 1440 / 1280; no new collision or clipped run (35 frames × 3, 108 conditions); 148/148 |

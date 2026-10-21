@@ -1,0 +1,103 @@
+frames: baseline 35, after 35
+syntx-field                                     6.9–10.5 → 8.4–12.0    c   2.2 → 2.2   clip   0 → 0   JOB FIELD
+syntx-body-org*                                 7.0–12.3 → 8.0–12.3    c   6.6 → 6.6   clip   0 → 0   01
+syntx-role*                                     7.5–11.7 → 7.5–12.0    c   6.0 → 6.0   clip  27 → 27  LEAD · M1
+syntx-req*                                       7.5–9.5 → 8.5–10.0    c   3.6 → 3.6   clip   0 → 0   REQUIREMENT
+syntx-cosmos-centre                             8.0–10.5 → 9.0–11.0    c  13.4 → 13.4  clip   0 → 0   01 KESTREL LOGISTICS SOFTWARE GMBH
+syntx-return-btn                                 8.0–8.0 → 9.5–9.5     c  12.4 → 12.4  clip   0 → 0   ← RETURN
+syntx-exit-btn                                   8.0–8.0 → 9.5–9.5     c   8.3 → 8.3   clip   0 → 0   ← CAPABILITY FIELD
+job-pool-upload-result                           8.0–9.0 → 9.5–10.5    c   4.5 → 6.1   clip   0 → 0   UPLOAD PERSISTED (NEW)
+syntx-job-structure                             8.0–12.5 → 9.0–13.5    c  10.0 → 10.0  clip   0 → 0   JOB · STRUCTURE
+cap*                                            8.0–14.0 → 9.0–14.0    c   6.0 → 6.0   clip   0 → 0   CLUSTER NODE // PROPOSED
+syntx-gemini-scope                               8.0–9.5 → 9.0–11.0    c  12.0 → 12.0  clip   0 → 0   INVESTIGATION SCOPE
+syntx-gemini-original                            8.0–9.5 → 9.0–11.0    c  12.0 → 12.0  clip   0 → 0   ORIGINAL RESPONSE
+syntx-coverage                                  8.0–12.5 → 9.0–13.5    c  10.0 → 10.0  clip   0 → 0   B2 · SELECTED ROLE COVERAGE
+syntx-gemini-processing                         8.0–10.5 → 9.0–12.0    c  12.0 → 12.0  clip   1 → 1   PARSER · VERIFICATION · CONVERGENCE
+job-pool-select-JPOOL*                           8.0–8.0 → 9.5–9.5     c  10.2 → 10.2  clip   0 → 0   SELECT
+syntx-coverage-req*                             8.4–12.6 → 10.0–13.6   c  10.5 → 10.5  clip   0 → 0   TypeScript
+investigation-mode-PERSON                        8.4–8.4 → 9.5–9.5     c   5.7 → 9.1   clip   0 → 0   PERSON
+syntx-gemini-view-SCOPE                          8.5–8.5 → 10.0–10.0   c   9.4 → 9.4   clip   0 → 0   INVESTIGATION SCOPE
+syntx-gemini-view-ORIGINAL                       8.5–8.5 → 10.0–10.0   c   9.4 → 9.4   clip   0 → 0   ORIGINAL RESPONSE
+syntx-investigation-toggle                       8.5–8.5 → 10.0–10.0   c   9.4 → 9.4   clip   0 → 0   ◎ B2 COVERAGE
+syntx-job-structure-responsibility               8.5–8.5 → 10.0–10.0   c  17.1 → 17.1  clip   0 → 0   responsibility · NOT DECLARED
+syntx-gemini-view-EXCHANGES                      8.5–8.5 → 10.0–10.0   c   9.4 → 9.4   clip   0 → 0   EXCHANGES OF THE JOB
+job-pool-upload                                  8.5–9.5 → 10.0–11.0   c   8.6 → 8.6   clip   0 → 0   INTAKE · UPLOAD JOB POOL (JSON)
+job-pool-intake-toggle                           8.5–8.5 → 10.0–10.0   c   9.4 → 9.4   clip   0 → 0   + INTAKE
+syntx-gemini-view-PROCESSING                     8.5–8.5 → 10.0–10.0   c   9.4 → 9.4   clip   0 → 0   PARSER · VERIFICATION · CONVERGENCE
+syntx-gemini-view-PROJECTION                     8.5–8.5 → 10.0–10.0   c   9.4 → 9.4   clip   0 → 0   PROJECTION
+syntx-gemini-output                             8.5–11.0 → 10.0–12.0   c   7.3 → 7.3   clip   0 → 0   GEMINI OUTPUT
+syntx-state                                     8.5–11.5 → 10.0–12.5   c   9.3 → 9.3   clip   0 → 0   NO UPLOAD SELECTED (explicit selecti
+syntx-pools-toggle                               8.5–8.5 → 10.0–10.0   c   9.4 → 9.4   clip   0 → 0   HIDE POOLS
+job-pool-item-JPOOL*                            8.5–13.0 → 10.0–14.0   c   4.9 → 4.9   clip   0 → 0   DLL Engineering & Architecture Pool
+syntx-gemini-output-toggle                       8.5–8.5 → 10.0–10.0   c   9.4 → 9.4   clip   0 → 0   GEMINI OUTPUT
+job-scope-detail                                 8.5–8.5 → 10.0–10.0   c   7.5 → 9.7   clip   9 → 9   Kestrel Logistics Software GmbH · DL
+syntx-boundary-toggle                            8.5–8.5 → 10.0–10.0   c   9.4 → 9.4   clip   0 → 0   BOUNDARY
+investigation-mode-PERSON_X_JOB                  8.5–8.5 → 9.5–9.5     c   5.7 → 9.1   clip   0 → 0   PERSON × JOB
+investigation-mode-JOB                           8.6–8.6 → 9.5–9.5     c   5.7 → 9.1   clip   0 → 0   JOB
+syntx-pool-core                                  8.8–9.5 → 9.7–10.3    c  13.2 → 13.2  clip   0 → 0   JOB POOL
+syntx-job-scope-select                           9.0–9.0 → 10.5–10.5   c  12.4 → 12.4  clip   0 → 0   ◎ SELECT AS JOB
+semantic-zoom-telemetry                          9.0–9.1 → 10.4–10.5   c   2.1 → 2.1   clip  54 → 54  L0 PLANETARIUM
+syntx-job-scope-clear                            9.0–9.0 → 10.5–10.5   c   9.4 → 9.4   clip   0 → 0   × REMOVE JOB
+job-pool-list-empty                              9.0–9.0 → 10.5–10.5   c   4.5 → 6.1   clip   0 → 0   NO JOB POOL UPLOAD PERSISTED
+canonical-sil-region-state-05                    9.0–9.1 → 9.5–9.6     c   4.2 → 5.8   clip   0 → 0   PRE-CANONICAL DISCOVERY
+canonical-sil-region-state-06                    9.0–9.1 → 9.5–9.6     c   4.2 → 5.8   clip   0 → 0   PRE-CANONICAL DISCOVERY
+canonical-sil-region-state-01                    9.0–9.1 → 9.5–9.6     c   4.2 → 5.8   clip   0 → 0   PRE-CANONICAL DISCOVERY
+canonical-sil-region-state-02                    9.1–9.1 → 9.5–9.6     c   4.2 → 5.8   clip   0 → 0   PRE-CANONICAL DISCOVERY
+job-scope-indicator                              9.4–9.4 → 10.4–10.4   c   9.3 → 9.3   clip   0 → 0   JOB
+job-pool-list                                    9.5–9.5 → 11.0–11.0   c  13.3 → 13.3  clip   0 → 0   PERSISTED JOB POOL UPLOADS
+syntx-structure-req*                            9.5–12.5 → —           c  12.0 → —     clip   0 → —   Frontend Architecture
+syntx-gemini-read                                9.5–9.5 → 10.9–10.9   c  13.4 → 13.4  clip   0 → 0   READ
+job-pool-upload-btn                              9.5–9.5 → 11.0–11.0   c  13.4 → 13.4  clip   0 → 0   UPLOAD →
+job-pool-file-name                               9.5–9.5 → 11.0–11.0   c  17.8 → 17.8  clip   0 → 0   DLL_JOBPOOL_ENGINEERING.json
+analyze-investigation                            9.5–9.5 → 11.0–11.0   c  11.7 → 11.7  clip   0 → 0   INVESTIGATION BOUNDARY · PERSON
+identity-core-dropzone                          9.8–10.2 → 10.3–10.7   c  13.2 → 13.2  clip   0 → 0   SYNTX CORE • ORGANISM
+job-scope-title                                10.0–12.5 → 11.0–12.5   c   9.3 → 9.3   clip   7 → 7   NO JOB SELECTED
+syntx-path-ORGANIZATION                        10.0–11.5 → 11.5–13.0   c   7.1 → 7.1   clip   0 → 0   Kestrel Logistics Software GmbH
+syntx-no-pool                                  10.0–17.0 → 10.0–17.0   c   8.4 → 8.4   clip   0 → 0   JOB FIELD // UNBOUND
+syntx-path-FIELD                               10.0–11.5 → 11.5–13.0   c   7.1 → 7.1   clip   0 → 0   DLL Engineering & Architecture Pool
+open-system-codex-btn                          10.0–11.0 → 11.0–12.0   c  10.3 → 10.3  clip  35 → 35  📖 SYSTEM CODEX [DE|EN]
+semantic-guide-drawer-toggle                   10.0–11.0 → 11.0–11.0   c  11.6 → 11.6  clip  28 → 28  ⓘ SEMANTIC GUIDE
+decision-graph-inspector-idle                  10.0–12.0 → 11.5–12.0   c   4.4 → 4.4   clip   0 → 0   DECISION GRAPH INSPECTOR
+switch-lang-de                                 10.0–10.0 → 11.0–11.0   c  13.1 → 13.1  clip   0 → 0   🇩🇪 DEUTSCH
+source-dock                                    10.0–16.2 → 11.5–16.2   c   4.3 → 5.9   clip   0 → 0   INGEST KNOWLEDGE
+how-this-works-btn                             10.0–11.0 → 11.0–12.0   c  11.6 → 11.6  clip  35 → 35  ? HOW THIS WORKS
+syntx-path                                     10.0–10.0 → 10.6–10.6   c   2.9 → 2.9   clip   0 → 0   ›
+switch-lang-en                                 10.0–10.0 → 11.0–11.0   c  13.1 → 13.1  clip   0 → 0   🇬🇧 ENGLISH
+semantic-guide-drawer                          10.0–14.7 → 11.5–14.7   c   4.2 → 5.8   clip   0 → 0   DER 6-STUFIGE FLUSS
+orbital-physics-05                             10.0–13.1 → 10.5–13.2   c   4.2 → 5.8   clip   0 → 0   05
+orbital-physics-06                             10.0–13.1 → 10.5–13.1   c   4.2 → 5.8   clip   0 → 0   06
+system-codex-modal                             10.0–16.0 → 11.0–16.0   c   4.2 → 5.8   clip   0 → 0   CONDYN / SYNTX — SYSTEM CODEX & OPER
+orbital-physics-01                             10.0–13.1 → 10.5–13.1   c   4.2 → 5.8   clip   0 → 0   01
+orbital-physics-03                             10.0–13.1 → 10.5–13.1   c   4.2 → 5.8   clip   0 → 0   03
+orbital-physics-02                             10.1–13.1 → 10.5–13.1   c   4.2 → 5.8   clip   0 → 0   02
+syntx-gemini-scope-text                        10.5–10.5 → 12.0–12.0   c  18.4 → 18.4  clip   1 → 1   JOB_POOL_UPLOAD_ID: "JPOOL_B94850C43
+syntx-gemini-original-text                     10.5–10.5 → 12.0–12.0   c  18.4 → 18.4  clip   1 → 1   { "coverage_audit": { "source_docume
+onboarding-next-btn                            10.9–10.9 → 12.0–12.0   c  13.1 → 13.1  clip   0 → 0   NEXT ▶
+add-github-source-btn                          11.0–11.0 → 12.0–12.0   c  17.6 → 17.6  clip   0 → 0   + GITHUB URL
+add-website-source-btn                         11.0–11.0 → 12.0–12.0   c  17.6 → 17.6  clip   0 → 0   + WEBSITE URL
+job-pool-panel-toggle                          11.0–11.0 → 12.0–12.0   c   5.1 → 7.5   clip   0 → 0   ⬡ JOB FIELD
+codex-chapter-what-is-condyn                   11.0–11.0 → 12.0–12.0   c   9.8 → 9.8   clip   0 → 0   1. WHAT IS CONDYN?
+codex-chapter-ontology                         11.0–11.0 → 12.0–12.0   c  17.3 → 17.3  clip   0 → 0   6. ONTOLOGY: NODES & EDGES
+codex-chapter-semantic-zoom                    11.0–11.0 → 12.0–12.0   c  17.3 → 17.3  clip   0 → 0   4. SEMANTIC ZOOM L0–L4
+codex-chapter-decision-graph-states            11.0–11.0 → 12.0–12.0   c  17.3 → 17.3  clip   0 → 0   5. DECISION GRAPH: SUPPORTED & BLOCK
+codex-chapter-trust-questions                  11.0–11.0 → 12.0–12.0   c  17.3 → 17.3  clip   0 → 0   7. THE 5 TRUST QUESTIONS
+codex-chapter-laws-and-invariants              11.0–11.0 → 12.0–12.0   c  17.3 → 17.3  clip   0 → 0   2. THE 2 CORE LAWS & 8 INVARIANTS
+field-focus-cap*                               11.0–11.0 → 12.0–12.0   c   5.1 → 7.5   clip   0 → 0   ◈ CAPABILITY FIELD
+codex-chapter-identity-core-and-orbits         11.0–11.0 → 12.0–12.0   c  17.3 → 17.3  clip   0 → 0   3. IDENTITY CORE & THE 6 ORBITS
+codex-chapter-step-by-step                     11.0–11.0 → 12.0–12.0   c  17.3 → 17.3  clip   0 → 0   8. STEP-BY-STEP OPERATING GUIDE
+add-text-source-btn                            11.0–11.0 → 12.0–12.0   c  17.6 → 17.6  clip   0 → 0   + ENTER TEXT / MARKDOWN
+onboarding-step-card                           11.0–18.0 → 12.0–18.0   c  12.7 → 12.7  clip   0 → 0   CONDYN ONBOARDING // STEP 1 OF 6
+open-codex-from-onboarding                     11.0–11.0 → 12.0–12.0   c  10.6 → 10.6  clip   0 → 0   📖 OPEN MANUAL
+system-codex-close                             11.0–11.0 → 12.0–12.1   c  12.7 → 12.7  clip   0 → 0   ✕ CLOSE
+syntx-path-ROLE                                11.5–11.5 → 13.0–13.0   c  19.4 → 19.4  clip   7 → 0   Senior Full-Stack Engineer – Shipmen
+codex-chapter-content                          12.0–12.0 → 13.0–13.0   c  16.9 → 16.9  clip   0 → 0   is not a generic dashboard or a blac
+add-pdf-source-btn                             12.0–12.0 → 13.0–13.0   c  12.2 → 12.2  clip   0 → 0   + UPLOAD PDF DOCUMENT
+syntx-coverage-state                           12.5–12.5 → 13.5–13.5   c  13.4 → 13.4  clip   0 → 0   This analysis is a PERSON analysis: 
+syntx-gemini-unavailable                       12.5–12.5 → 13.5–13.5   c  13.4 → 13.4  clip   0 → 0   No Gemini call in this mode.
+start-intake-analysis-btn                      13.0–13.0 → 14.0–14.0   c  12.7 → 12.7  clip   0 → 0   START ANALYSIS (POST)
+shell-brand-dll                                14.0–14.5 → 14.0–14.5   c   8.2 → 8.2   clip   0 → 0   DECISION LOOP LABS
+career-intelligence-dashboard                  14.0–14.0 → 14.0–14.0   c  13.4 → 13.4  clip   0 → 0   CONDYN / SYNTX — SEMANTIC CAREER INT
+onboarding-close-btn                           14.7–14.7 → 14.7–14.7   c   4.2 → 5.8   clip   0 → 0   ✕
+
+collisions baseline:
+collisions after:

@@ -83,14 +83,21 @@ The inventory read 92 text carriers over 35 frames.
 
 The small sizes rise most (+1.5 px) and the readable ones least (+0.5–1 px), so the hierarchy closes from below and stays ordered.
 
-**Single-line tracked capitals** whose width is fixed keep their width: the size rises and the letter spacing gives the advance back
-(advance = 0.6 em + tracking). This covers:
+**Single-line tracked capitals** whose width is fixed give most of their growth back: the size rises and the letter spacing returns
+the advance (advance = 0.6 em + tracking). This covers:
 - the meta dock (10 → 11 px, tracking 1.4 → 0.6);
 - the field selector (11 → 12, 2.2 → 1.6);
 - the investigation selector (8.5 → 10, 1 → 0.6);
 - the job scope label;
 - the edge actions;
 - the surface title.
+
+The return is not exact (PINK O-TY-WIDTH, §3.51). Measured on `7a3ca6a`:
+- edge actions and toggles are 4–13 px wider;
+- the investigation selector is 16.5 px wider from 1366 px on;
+- the controls are 1–3 px taller.
+
+None of this causes a collision. The shell row keeps ≥ 8 px of air (§5).
 
 **Bodies with a fixed form** take smaller, geometry-checked steps: organization bodies, pool core, cosmos and role centres, requirement
 cards, the Capability regions, satellites and evidence rows.
@@ -118,7 +125,11 @@ cards, the Capability regions, satellites and evidence rows.
   - state chip 8.5 → 10;
   - NO ANALYSIS voices 10 / 11.5 → 11.5 / 12.5;
   - keys 7.5 / 7 → 9 / 8.5.
-- Below 600 px viewport height (≈ 200 % zoom on 1080p) the orientation surface scrolls instead of pushing its actions out of view.
+- Below 600 px viewport height (≈ 200 % zoom on 1080p) the orientation surface keeps its full 340 px width (otherwise 28vw, i.e.
+  269 px at 960 px). Path and statement then wrap less, and every edge action stays in view without a scroll area of its own.
+  - The first version used `max-height: calc(100vh − 100px)` with its own scroll instead.
+  - That rule ignored that the surface starts at 145 px, so at 960 × 540 POOLS, INTAKE and GEMINI OUTPUT lay under the window
+    (PINK D-TY-2).
 - Field edge:
   - mode statement 9 → 10.5 px, lifted from +44 to +62 px above the field laws — the collision is gone;
   - field laws 8.5 → 9.5 px, contrast 5.6 → 8.7 : 1.
@@ -146,8 +157,11 @@ cards, the Capability regions, satellites and evidence rows.
 - Identity core 10 → 10.5.
 - Zoom telemetry 9 → 10.5.
 - Intake banner 10–11 → 11.5–12.
-- Source Dock 10–13 → 11.5–14. Its section air goes 18 → 12 and its button padding −1 to −2 px, so it keeps its height (START at
-  1280 × 720 as before).
+- Source Dock 10–13 → 11.5–14. Its section air goes 18 → 17 and its button padding −1 to −2 px, so it keeps its height and START
+  ANALYSIS its place.
+  - The first version took the air to 12 px. That lifted START 11 px into the Decision Graph Inspector's band: at 1280 × 720, PERSON
+    with a staged PDF, 29 % of the label stayed painted (PINK D-TY-1).
+  - At 17 px START lies at 680–722 px (base 681–723); 86 % of the label is painted and 24 rows are clickable.
 - Cosmos and deep-focus cards 8 → 9, 10 / 11 → 11 / 12.
 - Inspector hint stays 12; inspector detail 12 → 13.
 
@@ -181,7 +195,8 @@ became bright.
 - 26 clipped runs fewer:
   - the role and pool path at 100 / 125 / 200 %;
   - one dense-card domain.
-- One new clipped run: SELECT AS JOB at 200 %. There the orientation surface scrolls, and the action is reached by scrolling.
+- One new clipped run in the first version: SELECT AS JOB at 200 %, inside the orientation surface's scroll area. It is gone with the
+  follow-up (§8).
 
 **Shell row.** At least 8 px air everywhere, in both fields, EN / DE, 1280–1920. Before, the minimum was 6.9 px (1280, Capability)
 and 2.4 px (1280 DE, Job Field).
@@ -199,6 +214,7 @@ and 2.4 px (1280 DE, Job Field).
 | Requirement card kind label, organization kind, cosmos / role-centre kickers | 8.5–9 | Inside fixed bodies. The same word is repeated by the body's position and by the level heading. |
 | Key caps of the orientation surface | 8.5 | Glyphs in a cap. The action words beside them are 9 px. |
 | Disabled zoom levels L1–L4 (Capability telemetry) | 10.5, contrast 2.4 | Disabled controls. They are dim on purpose and carry no state. |
+| Red field type `SIL_RED_FIELD_TYPE` (e.g. JOB FIELD // UNBOUND, the empty orbit state) | status 10, mark 9 | Not part of this pass (PINK O-TY-UNBOUND). It is the shared token of the validated red field grammar in both fields (status and mark: Job Field NO POOL and the Capability orbit empty state). It is a single tracked kicker above a 16 px heading. Raising it changes that grammar in both fields at once, so it waits for the owner's word. |
 | Field laws | 9.5 | The field's standing legend, two lines of at most 960 px. Raising it further would cost a third line at the field's edge. |
 
 ## 7 · Files
@@ -210,4 +226,54 @@ and 2.4 px (1280 DE, Job Field).
   - the comparisons `compare-<width>.txt`;
   - `conditions-compare.txt`;
   - `shell-base.txt` and `shell-after.txt`.
+- `measures/pink-followup/`: the follow-up to PINK §3.51 (§8):
+  - `start-and-orient.txt`;
+  - the conditions against the baseline and against `7a3ca6a`;
+  - `compare-<width>.txt`;
+  - `video-walk.txt`.
+- `scripts/start-probe.mjs` and `scripts/orient-probe.mjs`: PINK's two measures, re-run on GRÜN's labs.
 - `values.md`: every changed value.
+
+## 8 · Follow-up to PINK's validation (§3.51 of `JOB_POOL_CONNECTION_VALIDATION.md`)
+
+PINK found the sweep green, with two new small deviations off the 1920 × 1080 video path. Both are corrected.
+
+**D-TY-1 · START ANALYSIS under the Decision Graph Inspector.**
+- Cause: the Source Dock's section air of 12 px lifted START by 11 px. At 1280 × 720 that moved it further into the band of the
+  inspector hint, which is fixed to the bottom.
+- Correction: the air is now 17 px, and START is back at its old place.
+- Measured at 1280 × 720 (PERSON, staged PDF; `start-and-orient.txt`):
+
+  | | START | label painted | clickable rows |
+  |---|---|---|---|
+  | base | 678–723 | 71 % | 24 |
+  | 7a3ca6a | 670–712 | 29 % | 16 |
+  | now | 680–722 | 86 % | 24 |
+
+**D-TY-2 · Edge actions below the window at 200 % zoom.**
+- Cause: the scroll rule `max-height: calc(100vh − 100px)` ignored that the surface starts at 145 px.
+- Correction: below 600 px height the surface keeps its 340 px width instead. At 960 × 540 it ends at 534 px, and POOLS, INTAKE,
+  GEMINI OUTPUT and SELECT AS JOB are in view at once. Base: 517 px, all in view.
+
+**Re-measured:**
+- Video walk 30/30 at 1920 / 1440 / 1280.
+- 35 frames per width against the baseline: no new collision and no new clipped run.
+- 108 condition frames:
+  - no new collision;
+  - SELECT AS JOB at 200 % is no longer clipped;
+  - against the baseline, 25 clipped runs fewer and one more. That one is a role card that the orbiting motion carries over the stage
+    edge, depending on its phase; the card code is unchanged.
+- Field, shell and mode tests 148/148; `tsc` only the base `relay-check` error.
+
+**Documentation, corrected:**
+- O-TY-WIDTH in §3;
+- O-TY-UNBOUND in §6.
+
+**Pre-existing, for the owner (not changed):**
+- **P-TY-START.**
+  - The Source Dock is centred from above and the inspector hint is fixed from below.
+  - Between about 748 and 820 px window height (1366 × 768, 1280 × 800) the hint covers START ANALYSIS completely. This holds on the
+    base and now alike.
+  - Resolving it is a layout decision, not typography. O-TY-720 is its 720 px case.
+- **O-TY-SCROLLJUMP.** It follows from P-TY-START: a pointer click on START scrolls the page first.
+

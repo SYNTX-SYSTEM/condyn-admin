@@ -1,0 +1,9 @@
+frames compared: 108; smallest rendered size: baseline 6.8 px, after 6.2 px
+new clipped: 2
+   1 100 syntx-role*: Security & Compliance Operatio
+   1 125 syntx-role*: Security & Compliance Operatio
+no longer clipped: 2
+   1 100 syntx-role*: Security & Compliance Operatio
+   1 200 syntx-job-scope-select: ◎ SELECT AS JOB
+new collisions: 0
+collisions gone: 0

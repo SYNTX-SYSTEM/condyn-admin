@@ -1,0 +1,45 @@
+# START ANALYSIS, PERSON + staged PDF (PINK D-TY-1 measure): base 35f00bc / after 7a3ca6a / fix
+== base
+1280 720 empty-dock 386–696 dock 333.8–748.2 btn 678.2–723.2 labelPainted 0.71 clickRows 24
+1440 900 empty-dock 386–696 dock 333.8–748.2 btn 678.2–723.2 labelPainted 1.00 clickRows 45
+1366 768 empty-dock 386–696 dock 333.8–748.2 btn 678.2–723.2 labelPainted 0.00 clickRows 0
+1920 1080 empty-dock 386–696 dock 393.8–808.2 btn 738.2–783.2 labelPainted 1.00 clickRows 45
+== after
+1280 720 empty-dock 390–692 dock 344.8–737.2 btn 670.2–712.2 labelPainted 0.29 clickRows 16
+1440 900 empty-dock 390–692 dock 344.8–737.2 btn 670.2–712.2 labelPainted 1.00 clickRows 42
+1366 768 empty-dock 390–692 dock 344.8–737.2 btn 670.2–712.2 labelPainted 0.00 clickRows 0
+1920 1080 empty-dock 390–692 dock 404.8–797.2 btn 730.2–772.2 labelPainted 1.00 clickRows 42
+== fix
+1280 720 empty-dock 385–697 dock 334.8–747.2 btn 680.2–722.2 labelPainted 0.86 clickRows 24
+1440 900 empty-dock 385–697 dock 334.8–747.2 btn 680.2–722.2 labelPainted 1.00 clickRows 42
+1366 768 empty-dock 385–697 dock 334.8–747.2 btn 680.2–722.2 labelPainted 0.00 clickRows 0
+1920 1080 empty-dock 385–697 dock 394.8–807.2 btn 740.2–782.2 labelPainted 1.00 clickRows 42
+
+# Orientation surface, role observation, PINK probe2 state
+== base 960 540
+"surface": "28,145–297,517 scrollH=371 clientH=370"
+"acts": [ "syntx-job-scope-select: 378–402 VISIBLE", "syntx-pools-toggle: 454–476 VISIBLE", "job-pool-intake-toggle: 454–476 VISIBLE", "syntx-gemini-output-toggle: 482–504 VISIBLE", "syntx-return-btn: 247–263 VISIBLE" ]}
+== base 1280 560
+"surface": "28,145–368,461 scrollH=315 clientH=314"
+"acts": [ "syntx-job-scope-select: 361–385 VISIBLE", "syntx-pools-toggle: 426–448 VISIBLE", "job-pool-intake-toggle: 426–448 VISIBLE", "syntx-gemini-output-toggle: 426–448 VISIBLE", "syntx-return-btn: 247–263 VISIBLE" ]}
+== base 1366 600
+"surface": "28,145–368,461 scrollH=315 clientH=314"
+"acts": [ "syntx-job-scope-select: 361–385 VISIBLE", "syntx-pools-toggle: 426–448 VISIBLE", "job-pool-intake-toggle: 426–448 VISIBLE", "syntx-gemini-output-toggle: 426–448 VISIBLE", "syntx-return-btn: 247–263 VISIBLE" ]}
+== after 960 540
+"surface": "28,145–297,585 scrollH=446 clientH=438"
+"acts": [ "syntx-job-scope-select: 459–471 VISIBLE", "syntx-pools-toggle: 528–551 hidden", "job-pool-intake-toggle: 528–551 hidden", "syntx-gemini-output-toggle: 557–580 hidden", "syntx-return-btn: 301–320 VISIBLE" ]}
+== after 1280 560
+"surface": "28,145–368,534 scrollH=388 clientH=387"
+"acts": [ "syntx-job-scope-select: 415–441 VISIBLE", "syntx-pools-toggle: 498–521 VISIBLE", "job-pool-intake-toggle: 498–521 VISIBLE", "syntx-gemini-output-toggle: 498–521 VISIBLE", "syntx-return-btn: 275–294 VISIBLE" ]}
+== after 1366 600
+"surface": "28,145–368,534 scrollH=388 clientH=387"
+"acts": [ "syntx-job-scope-select: 415–441 VISIBLE", "syntx-pools-toggle: 498–521 VISIBLE", "job-pool-intake-toggle: 498–521 VISIBLE", "syntx-gemini-output-toggle: 498–521 VISIBLE", "syntx-return-btn: 275–294 VISIBLE" ]}
+== fix 960 540
+"surface": "28,145–368,534 scrollH=388 clientH=387"
+"acts": [ "syntx-job-scope-select: 415–441 VISIBLE", "syntx-pools-toggle: 498–521 VISIBLE", "job-pool-intake-toggle: 498–521 VISIBLE", "syntx-gemini-output-toggle: 498–521 VISIBLE", "syntx-return-btn: 275–294 VISIBLE" ]}
+== fix 1280 560
+"surface": "28,145–368,534 scrollH=388 clientH=387"
+"acts": [ "syntx-job-scope-select: 415–441 VISIBLE", "syntx-pools-toggle: 498–521 VISIBLE", "job-pool-intake-toggle: 498–521 VISIBLE", "syntx-gemini-output-toggle: 498–521 VISIBLE", "syntx-return-btn: 275–294 VISIBLE" ]}
+== fix 1366 600
+"surface": "28,145–368,534 scrollH=388 clientH=387"
+"acts": [ "syntx-job-scope-select: 415–441 VISIBLE", "syntx-pools-toggle: 498–521 VISIBLE", "job-pool-intake-toggle: 498–521 VISIBLE", "syntx-gemini-output-toggle: 498–521 VISIBLE", "syntx-return-btn: 275–294 VISIBLE" ]}
