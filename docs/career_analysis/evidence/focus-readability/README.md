@@ -26,7 +26,8 @@ Owner mandates "SYNTX::SFE::FOCUS_DEPENDENT_READABILITY" and "FOCUS_READABILITY_
   cards. Each is measured on the engineering pool and on three variants with lengthened names:
   - edge: pool name 36 characters, centre label 35;
   - middle: 48 / 42;
-  - long: 77 / 71, plus two requirement names of 63 characters.
+  - long: 77 / 71, plus two requirement names of 63 characters;
+  - two with „ß“ one character below a step as written and on it as shown (ß → SS; GELB F-FR-1): 36→37 / 34→35 and 54→55 / 38→39.
 - **Orbit at rest** (`scripts/orbit-freeze.mjs`): every role-card rectangle with `prefers-reduced-motion`, which puts the orbit at
   rest. Measured on the scale and dense pools at 1920 and 1280.
 - **Reference measures.** The measures of PINK §3.51 / §3.52 and of `../ui-typography/` (video walk, 35 frames per width, 108
@@ -72,6 +73,7 @@ All values are rendered px, weight and contrast. They hold identically at every 
 | `cebc78c` | `SyntxField.tsx`, pool core | pool name 10.5 → 14 px; 12 px from 37 characters; 10.5 px beyond 54 | The name leads its context. The steps keep the core content inside the organism for every length (`measures/geometry-*.json`). |
 | `cebc78c` | `SyntxField.tsx`, organization cosmos centre | centre name 11 → 13 px; 12 px for 35–38 characters of its label; 11 px beyond | The name keeps the size it has in the field (13 px). The disc stays 174 × 174 at every length. |
 | `cebc78c` | `SyntxField.tsx` | stale comment above the low-window rule removed | PINK O-TY-COMMENT. |
+| follow-up | `SyntxField.tsx`, `focusNameSize` | the step reads the label's length in upper case, as it is shown | GELB F-FR-1: ß → SS made a name one character longer than measured. With ß at all four step edges the next step applies (12 / 10.5 / 12 / 11 px), the disc stays 174 × 174 and the chip inside the core (`measures/geometry-sharp-s-*.json`). |
 | `26b54be` | `SyntxField.tsx`, requirement siblings; `CapabilityDeepFocusView.tsx`, capability siblings | 9.5 / 10 → 11 px (rendered 7.3 / 7.8 → 8.6) | Owner decision 02. Scale 0.78 and opacity 0.42 (the layout's recede) stay. No card grows, and they stay below the 14 px nucleus. |
 
 **Unchanged:**

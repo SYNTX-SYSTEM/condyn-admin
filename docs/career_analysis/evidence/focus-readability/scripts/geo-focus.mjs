@@ -24,7 +24,11 @@ edge.pool.id = "pool_dll_engineering_edgenames"; edge.pool.name = "DLL Engineeri
 for (const r of [edge.roles, edge.requirements, edge.organizations]) for (const x of r) x.pool_id = edge.pool.id;
 edge.organizations[0].name = "Kestrel Logistics Softwares GmbH"; // 32 (+3 = 35)
 const post = async body => { const r = await (await fetch(`${BASE}/api/career/job-pools`, { method: "POST", headers: { "content-type": "application/json", "x-condyn-principal-actor-id": "GRUEN_FOCUS_LAB" }, body: JSON.stringify(body) })).json(); return r.jobPoolUploadId ?? r.upload?.jobPoolUploadId; };
-const pools = { eng: await post(eng), edge: await post(edge), mid: await post(mid), long: await post(long) };
+// GELB F-FR-1: ß grows to SS in upper case, so each name sits one character below a step as written and on it as shown.
+const sharp = (id, poolName, orgName) => { const v = structuredClone(eng); v.pool.id = id; v.pool.name = poolName; for (const r of [v.roles, v.requirements, v.organizations]) for (const x of r) x.pool_id = id; v.organizations[0].name = orgName; return v; };
+const sz1 = sharp("pool_dll_engineering_sz1", "DLL Straßenbau & Architektur Pool EU", "Kestrel Straßenlogistik Soft AG"); // 36 → 37 shown; label 34 → 35
+const sz2 = sharp("pool_dll_engineering_sz2", "DLL Straßenbau, Architektur & Plattform Pool Europa EU", "Kestrel Straßenlogistik Software AG"); // 54 → 55; label 38 → 39
+const pools = { eng: await post(eng), edge: await post(edge), mid: await post(mid), long: await post(long), sz1: await post(sz1), sz2: await post(sz2) };
 const browser = await chromium.launch(); const ctx = await browser.newContext({ viewport: { width: +W, height: +H } });
 await ctx.addInitScript(() => { try { localStorage.setItem("condyn_onboarding_seen", "1"); } catch {} });
 const page = await ctx.newPage(); const t = id => page.getByTestId(id);

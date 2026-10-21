@@ -174,10 +174,11 @@ const JOB_NODE_MATERIAL: React.CSSProperties = {
 };
 /** Focused identities lead their context (owner "FOCUS_DEPENDENT_READABILITY", 2026-10-21): the pool's name in the field's core and the
  * organization's name in its cosmos centre take the size their body holds without growing; a name too long for that keeps the earlier
- * size, so no body changes its geometry. Steps by the label's length: [max characters, size]. */
+ * size, so no body changes its geometry. Steps by the length of the label as shown, upper case (ß → SS, GELB F-FR-1):
+ * [max characters, size]. */
 const POOL_NAME_STEPS: ReadonlyArray<readonly [number, string]> = [[36, "14px"], [54, "12px"]];
 const CENTRE_NAME_STEPS: ReadonlyArray<readonly [number, string]> = [[34, "13px"], [38, "12px"]];
-const focusNameSize = (label: string, steps: ReadonlyArray<readonly [number, string]>, fallback: string) => steps.find(([max]) => label.length <= max)?.[1] ?? fallback;
+const focusNameSize = (label: string, steps: ReadonlyArray<readonly [number, string]>, fallback: string) => steps.find(([max]) => label.toUpperCase().length <= max)?.[1] ?? fallback;
 /** The organization cosmos' centre: the shared centre material with an opaque deep core, so the receded organization body behind it
  * no longer shows through the text; a finer membrane and a calmer glow. */
 const JOB_COSMOS_CENTRE_MATERIAL: React.CSSProperties = {
