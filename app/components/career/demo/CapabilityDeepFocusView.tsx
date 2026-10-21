@@ -78,7 +78,7 @@ export function CapabilityDeepFocusView({
               transform: "translate(-50%, -50%) scale(var(--satellite-scale))", "--satellite-scale": satellite.scale, "--satellite-opacity": satellite.opacity,
               opacity: satellite.opacity, animation: "capabilityDeepFocusSatellite 0.72s cubic-bezier(0.16, 1, 0.3, 1) both",
               ...SYNTX_SATELLITE_MATERIAL,
-              fontFamily: SIL_TOKENS.typography.mono, fontSize: "10px", fontWeight: 700, textAlign: "left", cursor: "pointer", overflowWrap: "anywhere", hyphens: "auto"
+              fontFamily: SIL_TOKENS.typography.mono, fontSize: "11px", fontWeight: 700, textAlign: "left", cursor: "pointer", overflowWrap: "anywhere", hyphens: "auto"
             } as React.CSSProperties}
           >
             {cluster?.title ?? satellite.title}
