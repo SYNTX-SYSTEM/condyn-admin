@@ -1,0 +1,160 @@
+{
+ "pools": {
+  "w1": "JPOOL_63E330BCA75070964547502D03D1E1D9",
+  "w2": "JPOOL_7058B045E4DE7F7A783086E46B9C7F4E",
+  "w3": "JPOOL_A889D43794165F01F2E7AAC97D6AD42C",
+  "w4": "JPOOL_91D47E34B1626FA86FACEB28AFE7827E",
+  "w5": "JPOOL_011174CBE18B7C18B32A634B5CB68D46",
+  "w6": "JPOOL_FB0FFFB7B05E86A46E19B6EBB4AAF470",
+  "w7": "JPOOL_3A25507732AC5A4AD6DC61EDFBA4CE79"
+ },
+ "rows": [
+  {
+   "v": "w1",
+   "state": "FIELD",
+   "text": "DLL Wohnungswirtschaftsma Pool",
+   "font": "10.5px",
+   "lines": 2,
+   "ringAir": 10.4,
+   "overContent": -1.6
+  },
+  {
+   "v": "w1",
+   "state": "ORGANIZATION",
+   "text": "01 INDUSTRIEANLAGEN",
+   "font": "11px",
+   "disc": [
+    174,
+    174
+   ],
+   "lines": 2,
+   "discAir": 17.7
+  },
+  {
+   "v": "w2",
+   "state": "FIELD",
+   "text": "Wohnungswirtschaftsman Pool",
+   "font": "10.5px",
+   "lines": 2,
+   "ringAir": 18.8,
+   "overContent": -11.4
+  },
+  {
+   "v": "w2",
+   "state": "ORGANIZATION",
+   "text": "01 TELECOMMUNICATIONS",
+   "font": "11px",
+   "disc": [
+    174,
+    174
+   ],
+   "lines": 2,
+   "discAir": 10.1
+  },
+  {
+   "v": "w3",
+   "state": "FIELD",
+   "text": "Gesundheitsplattformen",
+   "font": "10.5px",
+   "lines": 1,
+   "ringAir": 15.3,
+   "overContent": 0
+  },
+  {
+   "v": "w3",
+   "state": "ORGANIZATION",
+   "text": "01 VERSICHERUNGSGRUPPE",
+   "font": "11px",
+   "disc": [
+    174,
+    174
+   ],
+   "lines": 2,
+   "discAir": 6.3
+  },
+  {
+   "v": "w4",
+   "state": "FIELD",
+   "text": "DLL Wohnungswirtschaftsmanag",
+   "font": "10.5px",
+   "lines": 2,
+   "ringAir": 6.4,
+   "overContent": -4.9
+  },
+  {
+   "v": "w4",
+   "state": "ORGANIZATION",
+   "text": "01 KESTREL INDUSTRIEANLAGENX",
+   "font": "11px",
+   "disc": [
+    174,
+    174
+   ],
+   "lines": 2,
+   "discAir": 13.9
+  },
+  {
+   "v": "w5",
+   "state": "FIELD",
+   "text": "DLL Stra\u00dfenbauplattform EU",
+   "font": "10.5px",
+   "lines": 2,
+   "ringAir": 13.2,
+   "overContent": -4.9
+  },
+  {
+   "v": "w5",
+   "state": "ORGANIZATION",
+   "text": "01 STRASSENBAUFIRMEN",
+   "font": "11px",
+   "disc": [
+    174,
+    174
+   ],
+   "lines": 2,
+   "discAir": 13.9
+  },
+  {
+   "v": "w6",
+   "state": "FIELD",
+   "text": "Energieversorgungsunternehmen",
+   "font": "10.5px",
+   "lines": 1,
+   "ringAir": -3.9,
+   "overContent": 11.3
+  },
+  {
+   "v": "w6",
+   "state": "ORGANIZATION",
+   "text": "01 ENERGIEVERSORGUNGSUNTERNEHMEN",
+   "font": "11px",
+   "disc": [
+    174,
+    174
+   ],
+   "lines": 2,
+   "discAir": -32.7
+  },
+  {
+   "v": "w7",
+   "state": "FIELD",
+   "text": "DLL Wohnungswirtschafts Pool",
+   "font": "10.5px",
+   "lines": 2,
+   "ringAir": 16,
+   "overContent": -8.1
+  },
+  {
+   "v": "w7",
+   "state": "ORGANIZATION",
+   "text": "01 KESTREL WOHNUNGSWIRTSCH",
+   "font": "11px",
+   "disc": [
+    174,
+    174
+   ],
+   "lines": 2,
+   "discAir": 21.4
+  }
+ ]
+}

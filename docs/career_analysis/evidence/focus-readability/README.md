@@ -28,6 +28,12 @@ Owner mandates "SYNTX::SFE::FOCUS_DEPENDENT_READABILITY" and "FOCUS_READABILITY_
   - middle: 48 / 42;
   - long: 77 / 71, plus two requirement names of 63 characters;
   - two with „ß“ one character below a step as written and on it as shown (ß → SS; GELB F-FR-1): 36→37 / 34→35 and 54→55 / 38→39.
+- **Long words** (PINK D-FR-1). A word cannot wrap, so its length limits the size apart from the label's length.
+  - `scripts/word-probe.mjs` sets the text and the font size on the rendered pool name and centre. It records the worst corner air
+    per longest-word length 12–26, over three letter sets (wide / mid / narrow) and three positions (alone / first / last word).
+  - `scripts/geo-words.mjs` then measures seven real pools with long words at each step edge, on both commits, at 1920 and 1280. Two
+    of them have „ß“ in the word.
+  - `scripts/fixture-steps.mjs` compares the step chosen before and after for every pool and organization name in the fixtures.
 - **Orbit at rest** (`scripts/orbit-freeze.mjs`): every role-card rectangle with `prefers-reduced-motion`, which puts the orbit at
   rest. Measured on the scale and dense pools at 1920 and 1280.
 - **Reference measures.** The measures of PINK §3.51 / §3.52 and of `../ui-typography/` (video walk, 35 frames per width, 108
@@ -74,6 +80,7 @@ All values are rendered px, weight and contrast. They hold identically at every 
 | `cebc78c` | `SyntxField.tsx`, organization cosmos centre | centre name 11 → 13 px; 12 px for 35–38 characters of its label; 11 px beyond | The name keeps the size it has in the field (13 px). The disc stays 174 × 174 at every length. |
 | `cebc78c` | `SyntxField.tsx` | stale comment above the low-window rule removed | PINK O-TY-COMMENT. |
 | follow-up | `SyntxField.tsx`, `focusNameSize` | the step reads the label's length in upper case, as it is shown | GELB F-FR-1: ß → SS made a name one character longer than measured. With ß at all four step edges the next step applies (12 / 10.5 / 12 / 11 px), the disc stays 174 × 174 and the chip inside the core (`measures/geometry-sharp-s-*.json`). |
+| follow-up | `SyntxField.tsx`, `focusNameSize` | each step also has a longest-word limit: pool 14 px up to 19 characters, 12 px up to 22; centre 13 px up to 16, 12 px up to 18 | PINK D-FR-1. Each limit is the longest word with at least 2 px air in its worst case (`measures/word-steps-1920.txt`). A longer word takes the next step. For the fixture names nothing changes: 27 names, longest word 16. |
 | `26b54be` | `SyntxField.tsx`, requirement siblings; `CapabilityDeepFocusView.tsx`, capability siblings | 9.5 / 10 → 11 px (rendered 7.3 / 7.8 → 8.6) | Owner decision 02. Scale 0.78 and opacity 0.42 (the layout's recede) stay. No card grows, and they stay below the 14 px nucleus. |
 
 **Unchanged:**
@@ -115,6 +122,16 @@ All values are rendered px, weight and contrast. They hold identically at every 
   - core content inside the organism for every length;
   - sibling cards never above their 78 px body: 0 overlaps among them and 0 with the nucleus or the evidence surface, at 1920 and
     1280.
+- **Long words** (`measures/geometry-words-*.json`, 1920 and 1280, after and `38ebc31`):
+  - Each word takes the step its limit gives. „TELECOMMUNICATIONS“ (18) and „INDUSTRIEANLAGENX“ (17) take 12 px in the centre, and
+    „VERSICHERUNGSGRUPPE“ (19) keeps 11 px. „GESUNDHEITSPLATTFORMEN“ (22) takes 12 px in the pool, and a 24-character word keeps
+    10.5 px. With „ß“, „STRASSENBAUFIRMEN“ (17 as shown) takes 12 px.
+  - At the edges, a 19-character pool word at 14 px keeps 6.9–7.7 px air to the core, and a 16-character centre word at 13 px keeps
+    8.5 px to the disc.
+  - Every name stays inside: at least 4.9 px air to the disc and 6.4 px to the core, and no line passes the core's content width.
+    The disc stays 174 × 174.
+  - The one exception is a 29-character word („ENERGIEVERSORGUNGSUNTERNEHMEN“). It keeps the earlier sizes and passes the disc and the
+    core exactly as much as on `38ebc31`.
 - **Tests:** field, shell and mode tests 148/148. `tsc` reports only the `relay-check` error of the base.
 
 ## 5 · Remaining limits (DERIVED)
@@ -130,6 +147,8 @@ All values are rendered px, weight and contrast. They hold identically at every 
   pass.
 - **Long names.**
   - Organization names beyond 38 characters keep 11 px.
+  - A single word longer than about 20 characters in the centre or 25 in the pool already passes its body at the earlier sizes on
+    `38ebc31`. These names keep those sizes, so the overflow is unchanged.
   - At 71 characters, the text block's corners already pass the disc on `38ebc31`. This is pre-existing and unchanged.
 - **Pre-existing, with the owner:** P-TY-START / O-TY-PXJ-SHIFT, O-TY-SCROLLJUMP, F-TY-GUIDE.
 
@@ -140,4 +159,5 @@ All values are rendered px, weight and contrast. They hold identically at every 
 - `measures/`: the matrices, the comparisons, the conditions, geometry, orbit at rest, the focus map and the runs.
 - `scripts/`:
   - `focus-states.mjs`, `matrix.py`, `focus-table.py`;
-  - `geo-focus.mjs`, `orbit-freeze.mjs`, `crops.mjs`.
+  - `geo-focus.mjs`, `orbit-freeze.mjs`, `crops.mjs`;
+  - `word-probe.mjs`, `geo-words.mjs`, `fixture-steps.mjs` (PINK D-FR-1).

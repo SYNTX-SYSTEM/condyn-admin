@@ -1694,7 +1694,10 @@ Two inversions were confirmed:
 - The pool name in the core goes 10.5 → 14 px. Long names step down (12 px from 37 characters, 10.5 px beyond 54).
 - The organization centre's name goes 11 → 13 px (12 px for 35–38 characters, 11 px beyond).
 - The receded siblings in REQUIREMENT and Capability deep focus go 9.5 / 10 → 11 px, at the unchanged scale 0.78 and opacity 0.42.
-- The steps depend only on the name's length, so the centre disc stays 174 × 174 px and the core content stays inside the organism.
+- The steps depend only on the name as shown in upper case: its length and its longest word, which cannot wrap (GELB F-FR-1, PINK
+  D-FR-1). The pool takes 14 px only up to a 19-character word and 12 px up to 22. The centre takes 13 px only up to 16 and 12 px up
+  to 18. Each limit is the longest word that keeps at least 2 px air in its worst letter set and position. So the centre disc stays
+  174 × 174 px and the core content stays inside the organism.
 
 **Proof:**
 - walk 30/30 at 1920 / 1440 / 1280;
@@ -1892,4 +1895,4 @@ observation point. Readable labels wrap at word boundaries (`wrapLines`), never 
 | 2026-10-19 | Role cards — footer readability (owner "SFE — GRÜN | ROLE CARDS — FOOTER READABILITY", on frontend/role-card-footer over ae633a1) | §13.2.34: footer at 8.5 px (fitted per card, German ≥ 7.75 px instead of cut), 8 px into the side padding, brighter; card box and orbit unchanged | tsc 0; unit 11 + SSR 11; regression 69 files / 511; workflow e2e 10/10 ×2; lab walk 121/121 at 1600 and 1280 (incl. German) |
 | 2026-10-20 | UI typography & readability sweep (owner "SFE::UI TYPOGRAPHY & READABILITY SWEEP", on frontend/ui-typography from 35f00bc) | §13.2.36: one type scale over the demo application (L1–L4), the mode statement off the field laws, the full role title in the path, textMuted 6:1, shell air ≥ 8 px from 1280 px; role cards, geometry, copy and testids unchanged | video walk 30/30 at 1920 / 1440 / 1280 before and after; no new collision or clipped run (35 frames × 3 widths, 108 zoom/font/locale frames); full suite no new failure; workflow e2e 10/10 ×2 |
 | 2026-10-21 | UI typography — follow-up to PINK §3.51 (D-TY-1, D-TY-2) | §13.2.36: Source Dock air 17 px (START at its old place, label 86 % painted at 1280 × 720); orientation surface 340 px wide below 600 px height instead of its own scroll; README O-TY-WIDTH / O-TY-UNBOUND | walk 30/30 at 1920 / 1440 / 1280; no new collision or clipped run (35 frames × 3, 108 conditions); 148/148 |
-| 2026-10-21 | Focus-dependent readability (owner FOCUS_DEPENDENT_READABILITY, on frontend/focus-readability from 38ebc31) | §13.2.37: focused pool name 14 px and organization centre name 13 px (length steps keep every body's geometry); receded siblings 11 px | walk 30/30 at 1920 / 1440 / 1280; 10 states × EN / DE × 5 viewports; no new collision or clip count; orbit at rest identical; 148/148 |
+| 2026-10-21 | Focus-dependent readability (owner FOCUS_DEPENDENT_READABILITY, on frontend/focus-readability from 38ebc31) | §13.2.37: focused pool name 14 px and organization centre name 13 px (length steps keep every body's geometry); receded siblings 11 px | walk 30/30 at 1920 / 1440 / 1280; 10 states × EN / DE × 5 viewports; no new collision or clip count; orbit at rest identical; long words (D-FR-1) inside disc and core at 1920 / 1280, no fixture name changes its step; 148/148 |
