@@ -1,0 +1,192 @@
+== s1-field: kind=FIELD aperture=false source=NONE mode=PERSON
+   focused-stage-bubble-01      state=None                   op=1     tab=-1 ×1
+   focused-stage-bubble-02      state=None                   op=1     tab=-1 ×1
+   focused-stage-bubble-03      state=None                   op=1     tab=-1 ×1
+   focused-stage-bubble-04      state=None                   op=1     tab=-1 ×1
+   focused-stage-bubble-05      state=None                   op=1     tab=-1 ×1
+   focused-stage-bubble-06      state=None                   op=1     tab=-1 ×1
+   focused-stage-bubble-syntx-* state=None                   op=1     tab=-1 ×3
+   identity-core-dropzone       state=None                   op=1     tab=-1 ×1
+   identity-core-wrapper        state=None                   op=1     tab=-1 ×1
+   syntx-*                      state=field                  op=1     tab=-1 ×9
+   syntx-*                      state=field                  op=1     tab= 0 ×3
+   syntx-body-*                 state=None                   op=1     tab=-1 ×3
+   syntx-pool                   state=field                  op=1     tab=-1 ×1
+   syntx-pool-core              state=None                   op=1     tab=-1 ×1
+   syntx-pools-toggle           state=None                   op=1     tab= 0 ×1
+== s2-organization: kind=ORGANIZATION aperture=false source=NONE mode=PERSON
+   focused-stage-bubble-01      state=None                   op=1     tab=-1 ×1
+   focused-stage-bubble-02      state=None                   op=1     tab=-1 ×1
+   focused-stage-bubble-03      state=None                   op=1     tab=-1 ×1
+   focused-stage-bubble-04      state=None                   op=1     tab=-1 ×1
+   focused-stage-bubble-05      state=None                   op=1     tab=-1 ×1
+   focused-stage-bubble-06      state=None                   op=1     tab=-1 ×1
+   focused-stage-bubble-syntx-* state=None                   op=0.12  tab=-1 ×2
+   focused-stage-bubble-syntx-* state=None                   op=0.42  tab=-1 ×1
+   identity-core-dropzone       state=None                   op=1     tab=-1 ×1
+   identity-core-wrapper        state=None                   op=1     tab=-1 ×1
+   syntx-*                      state=field                  op=1     tab= 0 ×3
+   syntx-*                      state=organization_selected  op=0.42  tab= 0 ×1
+   syntx-*                      state=receded                op=0.12  tab=-1 ×6
+   syntx-*                      state=receded                op=0.12  tab= 0 ×2
+   syntx-body-*                 state=None                   op=0.12  tab=-1 ×2
+   syntx-body-*                 state=None                   op=0.42  tab=-1 ×1
+   syntx-cosmos-centre          state=None                   op=1     tab=-1 ×1
+   syntx-pool                   state=receded                op=1     tab=-1 ×1
+   syntx-pool-core              state=None                   op=0.12  tab=-1 ×1
+   syntx-pools-toggle           state=None                   op=1     tab= 0 ×1
+== s3-role: kind=ROLE aperture=false source=NONE mode=PERSON
+   focused-stage-bubble-01      state=None                   op=1     tab=-1 ×1
+   focused-stage-bubble-02      state=None                   op=1     tab=-1 ×1
+   focused-stage-bubble-03      state=None                   op=1     tab=-1 ×1
+   focused-stage-bubble-04      state=None                   op=1     tab=-1 ×1
+   focused-stage-bubble-05      state=None                   op=1     tab=-1 ×1
+   focused-stage-bubble-06      state=None                   op=1     tab=-1 ×1
+   focused-stage-bubble-syntx-* state=None                   op=0.12  tab=-1 ×2
+   focused-stage-bubble-syntx-* state=None                   op=0.42  tab=-1 ×1
+   identity-core-dropzone       state=None                   op=1     tab=-1 ×1
+   identity-core-wrapper        state=None                   op=1     tab=-1 ×1
+   syntx-*                      state=None                   op=1     tab=-1 ×9
+   syntx-*                      state=field                  op=0.42  tab=-1 ×1
+   syntx-*                      state=receded                op=0.12  tab=-1 ×8
+   syntx-*                      state=receded                op=0.3   tab=-1 ×2
+   syntx-*                      state=role_selected          op=1     tab= 0 ×1
+   syntx-body-*                 state=None                   op=0.12  tab=-1 ×2
+   syntx-body-*                 state=None                   op=0.42  tab=-1 ×1
+   syntx-cosmos-centre          state=None                   op=0     tab=-1 ×1
+   syntx-pool                   state=receded                op=1     tab=-1 ×1
+   syntx-pool-core              state=None                   op=0.12  tab=-1 ×1
+   syntx-pools-toggle           state=None                   op=1     tab= 0 ×1
+== s4-requirement: kind=REQUIREMENT aperture=false source=NONE mode=PERSON
+   focused-stage-bubble-01      state=None                   op=1     tab=-1 ×1
+   focused-stage-bubble-02      state=None                   op=1     tab=-1 ×1
+   focused-stage-bubble-03      state=None                   op=1     tab=-1 ×1
+   focused-stage-bubble-04      state=None                   op=1     tab=-1 ×1
+   focused-stage-bubble-05      state=None                   op=1     tab=-1 ×1
+   focused-stage-bubble-06      state=None                   op=1     tab=-1 ×1
+   focused-stage-bubble-syntx-* state=None                   op=0.12  tab=-1 ×2
+   focused-stage-bubble-syntx-* state=None                   op=0.42  tab=-1 ×1
+   identity-core-dropzone       state=None                   op=1     tab=-1 ×1
+   identity-core-wrapper        state=None                   op=1     tab=-1 ×1
+   syntx-*                      state=None                   op=1     tab=-1 ×9
+   syntx-*                      state=field                  op=0.34  tab=-1 ×1
+   syntx-*                      state=field                  op=0.42  tab=-1 ×1
+   syntx-*                      state=receded                op=0.12  tab=-1 ×8
+   syntx-*                      state=receded                op=0.3   tab=-1 ×2
+   syntx-body-*                 state=None                   op=0.12  tab=-1 ×2
+   syntx-body-*                 state=None                   op=0.42  tab=-1 ×1
+   syntx-cosmos-centre          state=None                   op=0     tab=-1 ×1
+   syntx-evidence-surface       state=None                   op=1     tab=-1 ×1
+   syntx-pool                   state=receded                op=1     tab=-1 ×1
+   syntx-pool-core              state=None                   op=0.12  tab=-1 ×1
+   syntx-pools-toggle           state=None                   op=1     tab= 0 ×1
+== s5-pxj-role: kind=ROLE aperture=false source=URL mode=PERSON_X_JOB
+   focused-stage-bubble-01      state=None                   op=1     tab=-1 ×1
+   focused-stage-bubble-02      state=None                   op=1     tab=-1 ×1
+   focused-stage-bubble-03      state=None                   op=1     tab=-1 ×1
+   focused-stage-bubble-04      state=None                   op=1     tab=-1 ×1
+   focused-stage-bubble-05      state=None                   op=1     tab=-1 ×1
+   focused-stage-bubble-06      state=None                   op=1     tab=-1 ×1
+   focused-stage-bubble-syntx-* state=None                   op=0.12  tab=-1 ×2
+   focused-stage-bubble-syntx-* state=None                   op=0.42  tab=-1 ×1
+   identity-core-dropzone       state=None                   op=1     tab=-1 ×1
+   identity-core-wrapper        state=None                   op=1     tab=-1 ×1
+   syntx-*                      state=None                   op=1     tab=-1 ×9
+   syntx-*                      state=field                  op=0.42  tab=-1 ×1
+   syntx-*                      state=field                  op=1     tab= 0 ×14
+   syntx-*                      state=receded                op=0.12  tab=-1 ×8
+   syntx-*                      state=receded                op=0.3   tab=-1 ×2
+   syntx-*                      state=role_selected          op=1     tab= 0 ×1
+   syntx-body-*                 state=None                   op=0.12  tab=-1 ×2
+   syntx-body-*                 state=None                   op=0.42  tab=-1 ×1
+   syntx-cosmos-centre          state=None                   op=0     tab=-1 ×1
+   syntx-open-*                 state=field                  op=1     tab= 0 ×2
+   syntx-pool                   state=receded                op=1     tab=-1 ×1
+   syntx-pool-core              state=None                   op=0.12  tab=-1 ×1
+   syntx-pools-toggle           state=None                   op=1     tab= 0 ×1
+   syntx-source-*               state=field                  op=1     tab=-1 ×1
+== s6-pxj-requirement: kind=REQUIREMENT aperture=false source=URL mode=PERSON_X_JOB
+   focused-stage-bubble-01      state=None                   op=1     tab=-1 ×1
+   focused-stage-bubble-02      state=None                   op=1     tab=-1 ×1
+   focused-stage-bubble-03      state=None                   op=1     tab=-1 ×1
+   focused-stage-bubble-04      state=None                   op=1     tab=-1 ×1
+   focused-stage-bubble-05      state=None                   op=1     tab=-1 ×1
+   focused-stage-bubble-06      state=None                   op=1     tab=-1 ×1
+   focused-stage-bubble-syntx-* state=None                   op=0.12  tab=-1 ×2
+   focused-stage-bubble-syntx-* state=None                   op=0.42  tab=-1 ×1
+   identity-core-dropzone       state=None                   op=1     tab=-1 ×1
+   identity-core-wrapper        state=None                   op=1     tab=-1 ×1
+   syntx-*                      state=None                   op=1     tab=-1 ×9
+   syntx-*                      state=field                  op=0.34  tab=-1 ×1
+   syntx-*                      state=field                  op=0.42  tab=-1 ×1
+   syntx-*                      state=inspectable            op=1     tab= 0 ×2
+   syntx-*                      state=receded                op=0.05  tab=-1 ×12
+   syntx-*                      state=receded                op=0.12  tab=-1 ×8
+   syntx-*                      state=receded                op=0.3   tab=-1 ×2
+   syntx-body-*                 state=None                   op=0.12  tab=-1 ×2
+   syntx-body-*                 state=None                   op=0.42  tab=-1 ×1
+   syntx-cosmos-centre          state=None                   op=0     tab=-1 ×1
+   syntx-evidence-surface       state=None                   op=1     tab=-1 ×1
+   syntx-open-*                 state=receded                op=0.42  tab=-1 ×2
+   syntx-pool                   state=receded                op=1     tab=-1 ×1
+   syntx-pool-core              state=None                   op=0.12  tab=-1 ×1
+   syntx-pools-toggle           state=None                   op=1     tab= 0 ×1
+   syntx-source-*               state=inspectable            op=1     tab=-1 ×1
+== s7-pxj-evidence: kind=REQUIREMENT aperture=true source=URL mode=PERSON_X_JOB
+   focused-stage-bubble-01      state=None                   op=1     tab=-1 ×1
+   focused-stage-bubble-02      state=None                   op=1     tab=-1 ×1
+   focused-stage-bubble-03      state=None                   op=1     tab=-1 ×1
+   focused-stage-bubble-04      state=None                   op=1     tab=-1 ×1
+   focused-stage-bubble-05      state=None                   op=1     tab=-1 ×1
+   focused-stage-bubble-06      state=None                   op=1     tab=-1 ×1
+   focused-stage-bubble-syntx-* state=None                   op=0.12  tab=-1 ×2
+   focused-stage-bubble-syntx-* state=None                   op=0.42  tab=-1 ×1
+   identity-core-dropzone       state=None                   op=1     tab=-1 ×1
+   identity-core-wrapper        state=None                   op=1     tab=-1 ×1
+   syntx-*                      state=None                   op=1     tab=-1 ×9
+   syntx-*                      state=field                  op=0.34  tab=-1 ×1
+   syntx-*                      state=field                  op=0.42  tab=-1 ×1
+   syntx-*                      state=inspectable            op=1     tab= 0 ×2
+   syntx-*                      state=receded                op=0.05  tab=-1 ×12
+   syntx-*                      state=receded                op=0.12  tab=-1 ×8
+   syntx-*                      state=receded                op=0.3   tab=-1 ×2
+   syntx-body-*                 state=None                   op=0.12  tab=-1 ×2
+   syntx-body-*                 state=None                   op=0.42  tab=-1 ×1
+   syntx-cosmos-centre          state=None                   op=0     tab=-1 ×1
+   syntx-evidence-surface       state=None                   op=1     tab=-1 ×1
+   syntx-open-*                 state=receded                op=0.42  tab=-1 ×2
+   syntx-pool                   state=receded                op=1     tab=-1 ×1
+   syntx-pool-core              state=None                   op=0.12  tab=-1 ×1
+   syntx-pools-toggle           state=None                   op=1     tab= 0 ×1
+   syntx-source-*               state=inspectable            op=1     tab=-1 ×1
+== s8-person-capability-field: kind=None aperture=None source=None mode=PERSON
+   focused-stage-bubble-01      state=None                   op=1     tab=-1 ×1
+   focused-stage-bubble-02      state=None                   op=1     tab=-1 ×1
+   focused-stage-bubble-03      state=None                   op=1     tab=-1 ×1
+   focused-stage-bubble-04      state=None                   op=1     tab=-1 ×1
+   focused-stage-bubble-05      state=None                   op=1     tab=-1 ×1
+   focused-stage-bubble-06      state=None                   op=1     tab=-1 ×1
+   identity-core-dropzone       state=None                   op=1     tab=-1 ×1
+   identity-core-wrapper        state=None                   op=1     tab=-1 ×1
+== s8b-capability-cosmos: kind=None aperture=None source=None mode=PERSON
+   *                            state=None                   op=1     tab= 0 ×13
+   focused-stage-bubble-01      state=None                   op=0.12  tab=-1 ×1
+   focused-stage-bubble-02      state=None                   op=0.42  tab=-1 ×1
+   focused-stage-bubble-03      state=None                   op=0.12  tab=-1 ×1
+   focused-stage-bubble-04      state=None                   op=0.12  tab=-1 ×1
+   focused-stage-bubble-05      state=None                   op=0.12  tab=-1 ×1
+   focused-stage-bubble-06      state=None                   op=0.12  tab=-1 ×1
+   identity-core-dropzone       state=None                   op=0.12  tab=-1 ×1
+   identity-core-wrapper        state=None                   op=0.12  tab=-1 ×1
+== s9-capability-evidence: kind=None aperture=None source=None mode=PERSON
+   *                            state=None                   op=0.42  tab= 0 ×11
+   *                            state=None                   op=1     tab=-1 ×2
+   *                            state=None                   op=1     tab= 0 ×1
+   focused-stage-bubble-01      state=None                   op=0.12  tab=-1 ×1
+   focused-stage-bubble-02      state=None                   op=0.42  tab=-1 ×1
+   focused-stage-bubble-03      state=None                   op=0.12  tab=-1 ×1
+   focused-stage-bubble-04      state=None                   op=0.12  tab=-1 ×1
+   focused-stage-bubble-05      state=None                   op=0.12  tab=-1 ×1
+   focused-stage-bubble-06      state=None                   op=0.12  tab=-1 ×1
+   identity-core-dropzone       state=None                   op=0.12  tab=-1 ×1
+   identity-core-wrapper        state=None                   op=0.12  tab=-1 ×1

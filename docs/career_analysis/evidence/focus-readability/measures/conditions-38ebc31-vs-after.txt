@@ -1,0 +1,7 @@
+frames compared: 108; smallest rendered size: baseline 6.2 px, after 6.8 px
+new clipped: 4
+   1 100 syntx-role*: SENIOR
+   3 100 syntx-role*: Security & Compliance Operatio
+no longer clipped: 0
+new collisions: 0
+collisions gone: 0

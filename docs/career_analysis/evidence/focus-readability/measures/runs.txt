@@ -1,0 +1,17 @@
+# GELB's video walk (instrumented copy) on frontend/focus-readability, fresh video lab per width; extras and focus states on the same lab
+== 1920 walk PASS 30 FAIL 0
+1920 extras FAIL 0
+1920 en: 10 snaps, 0 fail
+1920 de: 10 snaps, 0 fail
+zoom 1536 en: 10 snaps, 0 fail
+zoom 1536 de: 10 snaps, 0 fail
+zoom 960 en: 10 snaps, 0 fail
+zoom 960 de: 10 snaps, 0 fail
+== 1440 walk PASS 30 FAIL 0
+1440 extras FAIL 0
+1440 en: 10 snaps, 0 fail
+1440 de: 10 snaps, 0 fail
+== 1280 walk PASS 30 FAIL 0
+1280 extras FAIL 0
+1280 en: 10 snaps, 0 fail
+1280 de: 10 snaps, 0 fail

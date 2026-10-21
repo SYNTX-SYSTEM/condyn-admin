@@ -1,0 +1,316 @@
+{
+ "rows": [
+  {
+   "pool": "eng",
+   "state": "FIELD",
+   "core": [
+    537,
+    438,
+    743,
+    644
+   ],
+   "emblem": [
+    457,
+    551
+   ],
+   "kicker": [
+    558,
+    571
+   ],
+   "name": [
+    558,
+    574,
+    722,
+    598
+   ],
+   "nameLines": 2,
+   "nameText": "DLL Engineering & Architecture Pool",
+   "chip": [
+    604,
+    625
+   ],
+   "gapNameChip": 6,
+   "gapKickerName": 3,
+   "nameFont": "10.5px"
+  },
+  {
+   "pool": "eng",
+   "state": "ORGANIZATION",
+   "disc": [
+    174,
+    174
+   ],
+   "nameFont": "11px",
+   "nameLines": 3,
+   "nameMaxLineW": 104,
+   "nameText": "01 KESTREL LOGISTICS SOFTWARE GMBH",
+   "nameBlock": [
+    41,
+    88
+   ],
+   "kickerBlock": [
+    105,
+    133
+   ],
+   "cornerAirName": [
+    2,
+    2,
+    15,
+    15
+   ],
+   "cornerAirKicker": [
+    13,
+    13,
+    2,
+    2
+   ],
+   "nearestRoleCardAir": 28
+  },
+  {
+   "pool": "edge",
+   "state": "FIELD",
+   "core": [
+    537,
+    438,
+    743,
+    644
+   ],
+   "emblem": [
+    457,
+    551
+   ],
+   "kicker": [
+    558,
+    571
+   ],
+   "name": [
+    558,
+    574,
+    722,
+    598
+   ],
+   "nameLines": 2,
+   "nameText": "DLL Engineering & Architecture Pools",
+   "chip": [
+    604,
+    625
+   ],
+   "gapNameChip": 6,
+   "gapKickerName": 3,
+   "nameFont": "10.5px"
+  },
+  {
+   "pool": "edge",
+   "state": "ORGANIZATION",
+   "disc": [
+    174,
+    174
+   ],
+   "nameFont": "11px",
+   "nameLines": 3,
+   "nameMaxLineW": 112,
+   "nameText": "01 KESTREL LOGISTICS SOFTWARES GMBH",
+   "nameBlock": [
+    41,
+    88
+   ],
+   "kickerBlock": [
+    105,
+    133
+   ],
+   "cornerAirName": [
+    2,
+    2,
+    15,
+    15
+   ],
+   "cornerAirKicker": [
+    13,
+    13,
+    2,
+    2
+   ],
+   "nearestRoleCardAir": 26
+  },
+  {
+   "pool": "mid",
+   "state": "FIELD",
+   "core": [
+    538,
+    439,
+    742,
+    643
+   ],
+   "emblem": [
+    451,
+    545
+   ],
+   "kicker": [
+    552,
+    565
+   ],
+   "name": [
+    558,
+    568,
+    722,
+    605
+   ],
+   "nameLines": 3,
+   "nameText": "DLL Engineering, Architecture & Platform Pool EU",
+   "chip": [
+    610,
+    631
+   ],
+   "gapNameChip": 6,
+   "gapKickerName": 3,
+   "nameFont": "10.5px"
+  },
+  {
+   "pool": "mid",
+   "state": "ORGANIZATION",
+   "disc": [
+    174,
+    174
+   ],
+   "nameFont": "11px",
+   "nameLines": 4,
+   "nameMaxLineW": 128,
+   "nameText": "01 KESTREL LOGISTICS SOFTWARE HOLDING GMBH",
+   "nameBlock": [
+    34,
+    95
+   ],
+   "kickerBlock": [
+    112,
+    140
+   ],
+   "cornerAirName": [
+    -2,
+    -2,
+    15,
+    15
+   ],
+   "cornerAirKicker": [
+    11,
+    11,
+    -2,
+    -2
+   ],
+   "nearestRoleCardAir": 27
+  },
+  {
+   "pool": "long",
+   "state": "FIELD",
+   "core": [
+    537,
+    438,
+    743,
+    644
+   ],
+   "emblem": [
+    445,
+    538
+   ],
+   "kicker": [
+    546,
+    559
+   ],
+   "name": [
+    558,
+    562,
+    722,
+    611
+   ],
+   "nameLines": 4,
+   "nameText": "Decision Loop Labs Engineering, Architecture & Platform Reliability Pool Europe",
+   "chip": [
+    616,
+    637
+   ],
+   "gapNameChip": 6,
+   "gapKickerName": 3,
+   "nameFont": "10.5px"
+  },
+  {
+   "pool": "long",
+   "state": "ORGANIZATION",
+   "disc": [
+    174,
+    175
+   ],
+   "nameFont": "11px",
+   "nameLines": 6,
+   "nameMaxLineW": 128,
+   "nameText": "01 KESTREL LOGISTICS SOFTWARE UND PLATTFORMDIENSTE HOLDING GMBH & CO. KG",
+   "nameBlock": [
+    19,
+    111
+   ],
+   "kickerBlock": [
+    128,
+    156
+   ],
+   "cornerAirName": [
+    -13,
+    -13,
+    12,
+    12
+   ],
+   "cornerAirKicker": [
+    5,
+    5,
+    -13,
+    -13
+   ],
+   "nearestRoleCardAir": 28
+  },
+  {
+   "pool": "eng",
+   "state": "REQUIREMENT",
+   "siblings": 8,
+   "font": "9.5px",
+   "maxLines": 2,
+   "grown": [],
+   "overlaps": 0,
+   "onNucleus": 0,
+   "onEvidence": 0,
+   "offscreen": 1
+  },
+  {
+   "pool": "edge",
+   "state": "REQUIREMENT",
+   "siblings": 8,
+   "font": "9.5px",
+   "maxLines": 2,
+   "grown": [],
+   "overlaps": 0,
+   "onNucleus": 0,
+   "onEvidence": 0,
+   "offscreen": 1
+  },
+  {
+   "pool": "mid",
+   "state": "REQUIREMENT",
+   "siblings": 8,
+   "font": "9.5px",
+   "maxLines": 2,
+   "grown": [],
+   "overlaps": 0,
+   "onNucleus": 0,
+   "onEvidence": 0,
+   "offscreen": 1
+  },
+  {
+   "pool": "long",
+   "state": "REQUIREMENT",
+   "siblings": 8,
+   "font": "9.5px",
+   "maxLines": 4,
+   "grown": [],
+   "overlaps": 0,
+   "onNucleus": 0,
+   "onEvidence": 0,
+   "offscreen": 1
+  }
+ ]
+}
