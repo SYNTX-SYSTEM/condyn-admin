@@ -172,6 +172,12 @@ const JOB_NODE_MATERIAL: React.CSSProperties = {
   background: "radial-gradient(circle at 18% 0%, rgba(120, 212, 255, 0.15), transparent 46%), linear-gradient(172deg, rgba(8, 21, 36, 0.97), rgba(4, 11, 21, 0.97))",
   boxShadow: `0 0 22px rgba(46, 132, 226, 0.16), 0 8px 20px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(180, 232, 255, 0.12), inset 0 0 18px ${azure(0.04)}`
 };
+/** Focused identities lead their context (owner "FOCUS_DEPENDENT_READABILITY", 2026-10-21): the pool's name in the field's core and the
+ * organization's name in its cosmos centre take the size their body holds without growing; a name too long for that keeps the earlier
+ * size, so no body changes its geometry. Steps by the label's length: [max characters, size]. */
+const POOL_NAME_STEPS: ReadonlyArray<readonly [number, string]> = [[36, "14px"], [54, "12px"]];
+const CENTRE_NAME_STEPS: ReadonlyArray<readonly [number, string]> = [[34, "13px"], [38, "12px"]];
+const focusNameSize = (label: string, steps: ReadonlyArray<readonly [number, string]>, fallback: string) => steps.find(([max]) => label.length <= max)?.[1] ?? fallback;
 /** The organization cosmos' centre: the shared centre material with an opaque deep core, so the receded organization body behind it
  * no longer shows through the text; a finer membrane and a calmer glow. */
 const JOB_COSMOS_CENTRE_MATERIAL: React.CSSProperties = {
@@ -434,8 +440,6 @@ ${SYNTX_FOCUS_PULSE_KEYFRAMES}
 [data-sx-orient]::after { content: ""; position: absolute; inset: -1px; border-radius: inherit; pointer-events: none; z-index: -1; box-shadow: 0 0 5px 0 rgba(56, 229, 255, 0.15), 0 0 16px 1px rgba(56, 229, 255, 0.055); transition: box-shadow .9s cubic-bezier(0.16, 1, 0.3, 1), opacity .9s cubic-bezier(0.16, 1, 0.3, 1); }
 [data-sx-orient]:hover::after, [data-sx-orient]:has(:focus-visible)::after { box-shadow: 0 0 7px 1px rgba(56, 229, 255, 0.3), 0 0 22px 3px rgba(56, 229, 255, 0.11); }
 [data-sx-orient][data-sx-resonance="retreated"]:not(:hover):not(:has(:focus-visible))::after { box-shadow: 0 0 4px 0 rgba(56, 229, 255, 0.05), 0 0 12px 0 rgba(56, 229, 255, 0.02); }
-/* Very low viewports (browser zoom ≥ 200 % on 1080 p): the orientation surface scrolls instead of pushing its edge actions out of view
- * (typography sweep 2026-10-20). Its outer halo is clipped there; at every other height nothing changes. */
 /* Low windows (about 200 % zoom): below 1214 px 28vw narrows the surface until path and statement wrap past the window; 340 px keeps
  * every edge action in view without a scroll area of its own (PINK D-TY-2). Wider windows already use 340 px. */
 @media (max-height: 600px) { [data-sx-orient] { width: min(340px, 36vw) !important; } }
@@ -742,7 +746,7 @@ function PlanetariumLayer({ field, mode, t, locale, size, onObserve }: LayerProp
           <div style={{ textAlign: "center", zIndex: 2, display: "flex", flexDirection: "column", alignItems: "center", maxWidth: "176px" }}>
             <DecisionLoopLabsCoreEmblem idPrefix="sx-pool-dll" />
             <div style={{ fontSize: "11px", color: CYAN, letterSpacing: "2px", fontWeight: 700, textTransform: "uppercase" }}>{tm.pool}</div>
-            <div style={{ marginTop: "3px", fontSize: "10.5px", color: INK, letterSpacing: "0.6px", fontWeight: 700, textTransform: "uppercase", lineHeight: 1.25 }}>{wrapLines(field.pool.poolName, 18, 2).join(" ")}</div>
+            <div style={{ marginTop: "3px", fontSize: focusNameSize(field.pool.poolName, POOL_NAME_STEPS, "10.5px"), color: INK, letterSpacing: "0.6px", fontWeight: 700, textTransform: "uppercase", lineHeight: 1.25 }}>{wrapLines(field.pool.poolName, 18, 2).join(" ")}</div>
             <div style={{ marginTop: "6px", fontSize: "11px", color: INK, padding: "3px 10px", borderRadius: "12px", backgroundColor: "rgba(56, 229, 255, 0.12)", border: `1px solid ${CYAN}`, letterSpacing: "0.5px" }}>⬡ {field.organizations.length} {t.organizations}</div>
           </div>
         </SyntxCoreOrganism>
@@ -1002,7 +1006,7 @@ function OrganizationCosmosLayer({ field, mode, t, size, onObserve, organization
           aria-label={t.manifest.returnToField}
           tabIndex={-1}
           onClick={stop(() => onObserve(returnFrom({ ...observation, kind: "ORGANIZATION", roleId: null, requirementId: null, apertureSignId: null })))}
-          style={{ position: "absolute", left: `${layout.centerX}px`, top: `${layout.centerY}px`, transform: "translate(-50%, -50%)", ...SYNTX_COSMOS_CENTER_MATERIAL, ...JOB_COSMOS_CENTRE_MATERIAL, color: INK, cursor: "pointer", fontFamily: MONO, fontSize: "11px", fontWeight: 700, letterSpacing: "1.4px", lineHeight: 1.4, padding: "18px 16px", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: "8px", opacity: recededLevel ? 0 : 1 }}
+          style={{ position: "absolute", left: `${layout.centerX}px`, top: `${layout.centerY}px`, transform: "translate(-50%, -50%)", ...SYNTX_COSMOS_CENTER_MATERIAL, ...JOB_COSMOS_CENTRE_MATERIAL, color: INK, cursor: "pointer", fontFamily: MONO, fontSize: focusNameSize(`${String(index + 1).padStart(2, "0")} ${organization.name}`, CENTRE_NAME_STEPS, "11px"), fontWeight: 700, letterSpacing: "1.4px", lineHeight: 1.4, padding: "18px 16px", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: "8px", opacity: recededLevel ? 0 : 1 }}
         >
           <span aria-hidden="true" style={{ position: "absolute", inset: "7px", borderRadius: "50%", border: `1px solid ${azure(0.16)}`, pointerEvents: "none" }} />
           <span style={{ display: "block", textShadow: "0 0 12px rgba(56, 229, 255, 0.35)" }}>{String(index + 1).padStart(2, "0")} {organization.name.toUpperCase()}</span>
