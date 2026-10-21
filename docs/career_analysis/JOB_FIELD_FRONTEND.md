@@ -1711,7 +1711,9 @@ Two inversions were confirmed:
 **Not changed:**
 - the Capability cosmos centre: 13 px would fill 96 % of its widest chord;
 - the receded organizations and roles (bound to the recede opacity);
-- the evidence surface.
+- the evidence surface;
+- a word longer than the last step (GELB L-FR-1). It keeps the earlier size (10.5 / 11 px) and, from about 21 characters in the centre
+  or 26 in the pool, passes its body exactly as on `38ebc31`; the pool line has no `overflowWrap`. Left to the owner.
 
 ### 13.3 DOM contract (PINK BR-1 … BR-5; GELB conditions a/b)
 
