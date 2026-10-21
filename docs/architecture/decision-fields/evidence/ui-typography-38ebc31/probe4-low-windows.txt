@@ -1,0 +1,44 @@
+errors [0, 0, 0]
+surface width / box per viewport (role state, en):
+  768x432: base 215.031px y 145–369.8 own scroll 1 | 7a3ca6a 215.031px y 145–414.9 own scroll 1 | 38ebc31 276.469px y 145–563.2 own scroll 1
+  960x540: base 268.797px y 145–517.2 own scroll 1 | 7a3ca6a 268.797px y 145–585 own scroll 8 | 38ebc31 340px y 145–534.2 own scroll 1
+  1024x576: base 286.719px y 145–517.2 own scroll 1 | 7a3ca6a 286.719px y 145–563.2 own scroll 1 | 38ebc31 340px y 145–534.2 own scroll 1
+  1152x600: base 322.547px y 145–477.5 own scroll 1 | 7a3ca6a 322.547px y 145–563.2 own scroll 1 | 38ebc31 340px y 145–534.2 own scroll 1
+  1213x600: base 339.625px y 145–460.9 own scroll 1 | 7a3ca6a 339.625px y 145–534.2 own scroll 1 | 38ebc31 340px y 145–534.2 own scroll 1
+  1214x600: base 339.906px y 145–460.9 own scroll 1 | 7a3ca6a 339.906px y 145–534.2 own scroll 1 | 38ebc31 340px y 145–534.2 own scroll 1
+  1280x600: base 340px y 145–460.9 own scroll 1 | 7a3ca6a 340px y 145–534.2 own scroll 1 | 38ebc31 340px y 145–534.2 own scroll 1
+  1280x601: base 340px y 145–460.9 own scroll 1 | 7a3ca6a 340px y 145–534.2 own scroll 1 | 38ebc31 340px y 145–534.2 own scroll 1
+  1366x600: base 340px y 145–460.9 own scroll 1 | 7a3ca6a 340px y 145–534.2 own scroll 1 | 38ebc31 340px y 145–534.2 own scroll 1
+  1536x864: base 340px y 145–460.9 own scroll 1 | 7a3ca6a 340px y 145–534.2 own scroll 1 | 38ebc31 340px y 145–534.2 own scroll 1
+edge actions not reachable without scroll (count of viewport x lang x state cases):
+  base: {'syntx-pools-toggle': 5, 'job-pool-intake-toggle': 6, 'syntx-gemini-output-toggle': 7, 'syntx-investigation-toggle': 2, 'syntx-job-scope-select': 1}
+  7a3ca6a: {'syntx-pools-toggle': 8, 'job-pool-intake-toggle': 8, 'syntx-gemini-output-toggle': 9, 'syntx-investigation-toggle': 2, 'syntx-job-scope-select': 1}
+  38ebc31: {'syntx-pools-toggle': 6, 'job-pool-intake-toggle': 6, 'syntx-gemini-output-toggle': 8, 'syntx-investigation-toggle': 2}
+  base cases: ['768x432 organization', '768x432 pool', '768x432 role', '768x432 role-scoped-JOB']
+  7a3ca6a cases: ['768x432 organization', '768x432 pool', '768x432 role', '768x432 role-scoped-JOB', '960x540 role']
+  38ebc31 cases: ['768x432 organization', '768x432 pool', '768x432 role', '768x432 role-scoped-JOB']
+painted collisions involving surface text (cases with any):
+  base: 0 cases
+  7a3ca6a: 0 cases
+  38ebc31: 0 cases
+cut text of the surface carriers (ellipsis, clip or beyond the viewport), per commit; then cases new against the base:
+  base: 54 runs in 27 cases
+  7a3ca6a: 37 runs in 9 cases
+  38ebc31: 25 runs in 9 cases
+  7a3ca6a new vs base: 8
+      (768, 432, 'de', 'role') syntx-path-ORGANIZATION<syntx-path|Kestrel Logistics Software GmbH#1 clip 17.8 off 0 ellipsis
+      (768, 432, 'de', 'role-scoped-JOB') syntx-path-ORGANIZATION<syntx-path|Kestrel Logistics Software GmbH#1 clip 17.8 off 0 ellipsis
+      (768, 432, 'en', 'role-scoped-JOB') syntx-path-ORGANIZATION<syntx-path|Kestrel Logistics Software GmbH#1 clip 17.8 off 0 ellipsis
+      (960, 540, 'de', 'role') syntx-gemini-output-toggle<syntx-field|GEMINI OUTPUT#1 clip 0 off 23.3
+      (960, 540, 'en', 'role') job-pool-intake-toggle<syntx-field|+ INTAKE#1 clip 0 off 6.3
+      (960, 540, 'en', 'role') syntx-gemini-output-toggle<syntx-field|GEMINI OUTPUT#1 clip 0 off 35.3
+      (960, 540, 'en', 'role') syntx-job-scope-select<syntx-field|◎ SELECT AS JOB#1 clip 8 off 0
+      (960, 540, 'en', 'role') syntx-pools-toggle<syntx-field|⬡ POOLS · 1#1 clip 0 off 6.3
+  7a3ca6a no longer cut vs base: 25
+  38ebc31 new vs base: 5
+      (768, 432, 'en', 'role') job-pool-intake-toggle<syntx-field|+ INTAKE#1 clip 0 off 84.2
+      (768, 432, 'en', 'role') syntx-gemini-output-toggle<syntx-field|GEMINI OUTPUT#1 clip 0 off 113.2
+      (768, 432, 'en', 'role') syntx-job-scope-select<syntx-field|◎ SELECT AS JOB#1 clip 0 off 3.3
+      (768, 432, 'en', 'role') syntx-pools-toggle<syntx-field|⬡ POOLS · 1#1 clip 0 off 84.2
+      (960, 540, 'de', 'role') syntx-gemini-output-toggle<syntx-field|GEMINI OUTPUT#1 clip 0 off 5.2
+  38ebc31 no longer cut vs base: 34

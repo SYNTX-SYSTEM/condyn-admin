@@ -1,0 +1,37 @@
+PINK walks on 38ebc31 (same instrumented copy of GELB's video walk, fresh stand-in lab per viewport, port 41871):
+   1920x1080: 30/30 passed
+   1440x900: 30/30 passed
+   1366x768: 30/30 passed
+   1280x720: 30/30 passed
+
+Page offset after the START click (field root top; 61 = not scrolled), frame 03 person-analysis-done:
+    35f00bc 1920x1080 61 1440x900 61 1366x768 -192 1280x720 58
+    7a3ca6a 1920x1080 61 1440x900 61 1366x768 -192 1280x720 -240
+    38ebc31 1920x1080 61 1440x900 61 1366x768 -192 1280x720 59
+
+Frames 38ebc31 against the base 35f00bc (pink-typo-compare.py, 80 frames):
+frames base 80 after 80 matched 80; only base [] only after []
+texts {'texts-base': 7348, 'texts-after': 7348, 'matched': 7324, 'frames-shifted': 19}
+size steps {'kept': 1688, 'smaller': 2292, 'map': 3304, 'larger': 40}
+min font size after 7.5
+DECREASED 0 []
+new clipped (non-moving) 0
+new clipped (non-moving) 0
+clipped no more 24
+clipped no more 24
+   11-role-person-no-comparison-1280x720.m.json syntx-path-ROLE<syntx-path|Senior Full-Stack Engineer – Shipment Tracking#1
+new visible collisions 10
+   04-capability-cosmos-1366x768.m.json capability-cosmos-node-PCAP_4F218651C9962531C79269DF<capability-cosmos-view|1 EVIDENCE // EVIDENCE PASSED // SEMANTIC DEFINITION NOT RUN#1 semantic-guide-drawer-toggle<semantic-career-intelligence-field|ⓘ SEMANTIC GUIDE#1
+   04-capability-cosmos-1366x768.m.json canonical-sil-region-state-02<orbital-physics-02|PRE-CANONICAL DISCOVERY#1 capability-cosmos-center<capability-cosmos-view|CAPABILITY COSMOS // PROPOSAL FIELD#1
+   04-capability-cosmos-1440x900.m.json orbital-physics-02<focused-stage-bubble-02|Semantic capability core#1 capability-cosmos-center<capability-cosmos-view|02 CAPABILITY FIELD#1
+   04-capability-cosmos-1440x900.m.json canonical-sil-region-state-02<orbital-physics-02|PRE-CANONICAL DISCOVERY#1 capability-cosmos-center<capability-cosmos-view|CAPABILITY COSMOS // PROPOSAL FIELD#1
+   05-capability-evidence-1280x720.m.json orbital-physics-02<focused-stage-bubble-02|02#1 capability-focus-nucleus-PCAP_AAFB8C7F8820052B592BDE11<capability-deep-focus-view|PROPOSED // EVIDENCE PASSED // SEMANTIC DEFINITION NOT RUN#1
+   05-capability-evidence-1366x768.m.json orbital-physics-02<focused-stage-bubble-02|02#1 capability-focus-nucleus-PCAP_AAFB8C7F8820052B592BDE11<capability-deep-focus-view|PROPOSED // EVIDENCE PASSED // SEMANTIC DEFINITION NOT RUN#1
+   05-capability-evidence-1440x900.m.json orbital-physics-02<focused-stage-bubble-02|02#1 capability-focus-nucleus-PCAP_AAFB8C7F8820052B592BDE11<capability-deep-focus-view|PROPOSED // EVIDENCE PASSED // SEMANTIC DEFINITION NOT RUN#1
+   19-job-no-gemini-1280x720.m.json syntx-body-org_kestrel<syntx-organization-org_kestrel|ORGANIZATION#1 syntx-role-role_kestrel_frontend_architect<syntx-ecology|RETURN TO THE ORGANIZATION COSMOS#1
+   19-job-no-gemini-1366x768.m.json syntx-body-org_kestrel<syntx-organization-org_kestrel|ORGANIZATION#1 syntx-role-role_kestrel_frontend_architect<syntx-ecology|RETURN TO THE ORGANIZATION COSMOS#1
+   19-job-no-gemini-1440x900.m.json syntx-body-org_kestrel<syntx-organization-org_kestrel|ORGANIZATION#1 syntx-role-role_kestrel_frontend_architect<syntx-ecology|RETURN TO THE ORGANIZATION COSMOS#1
+visible collisions gone 13
+
+The one painted collision not seen on 7a3ca6a (04-capability-cosmos-1366x768, 2.2 x 4.3 px): an orbiting capability node under the
+fixed SEMANTIC GUIDE toggle; the node stands 1–2 px apart between the three runs (phase), the page offset is the same on all three.

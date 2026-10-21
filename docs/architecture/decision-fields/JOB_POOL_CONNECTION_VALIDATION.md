@@ -2621,6 +2621,59 @@ Factors measured in the DOM (`e6493a7`; the factor pair, then the outer orbit's 
 - Nothing of GRÜN's worktrees or labs (:41807, :41808) was used. :3017, :41805, :41821, :41831, :41851 and :41803 were not touched.
 - No owner decision is taken here. Integration remains with the owner's GO, and D-TY-1 and D-TY-2 are GRÜN's to weigh.
 
+### 3.52 Typography follow-up GRÜN `38ebc31` (`frontend/ui-typography-pink-followup` = `7a3ca6a` + 1) to §3.51 (2026-10-21)
+
+**Request.**
+- GRÜN corrected D-TY-1 and D-TY-2 from §3.51 in `38ebc31`, on its own branch. `frontend/ui-typography` stays on `7a3ca6a` because the owner is accepting it on :41807.
+- GRÜN asked PINK to check `38ebc31` with PINK's own labs and probes.
+
+**What changed (`static-38ebc31.txt`).**
+- Two style values changed, and nothing else in app or test code:
+  - the Source Dock's section air went from 12 to 17 px;
+  - the low-window rule `max-height: calc(100vh − 100px); overflow-y: auto` is replaced by `width: min(340px, 36vw) !important` at `max-height: 600px`. This only acts below 1214 px width, because the surface is otherwise `min(340px, 28vw)`.
+- Leftover: the comment above the new rule still describes the removed one ("scrolls instead of … Its outer halo is clipped there").
+
+**Method.**
+- Same as §3.51, on fresh stand-in labs from `38ebc31` (port 41871, PINK's own PID, disposable databases, no Gemini):
+  - the instrumented walk at 1920, 1440, 1366 and 1280 against the base frames;
+  - the targeted probe, probe2 and probe3.
+- New `pink-typo-probe4.mjs.txt`, run on all three commits. It covers ten low windows from 768 × 432 to 1536 × 864, including 1213 / 1214 × 600 at the rule's width edge, in four Job Field states, EN / DE. For each it records the surface box, every painted collision with surface text, cut surface text and whether each edge action is reachable without scrolling.
+
+**Result: D-TY-1 and D-TY-2 are fixed, and nothing new of weight appears.**
+- **Walks and frames.**
+  - Walks 30/30 at all four viewports.
+  - Against the base (80 frames): nothing cut newly, 24 runs no longer cut, no size decreased.
+  - The painted collisions are the §3.51 set. The one addition is an orbiting capability node under the fixed SEMANTIC GUIDE toggle at 1366 (2.2 × 4.3 px); it depends on the orbit's phase.
+- **D-TY-1 fixed.** At 1280 × 720:
+  - PERSON: label painted 0.71 (base) → 0.29 (`7a3ca6a`) → **0.86**, with 24 clickable rows.
+  - PERSON × JOB: 0.71 → 0.71 → **1.00**.
+  - The page no longer jumps after GELB's pointer click at 1280 × 720 (root top 59; base 58, `7a3ca6a` −240).
+- **D-TY-2 fixed.** At 960 × 540 the surface is 340 px wide and ends at 534 px (base 517), with no scroll of its own, and every edge action is visible at start. All six probe3 windows show every action at start on `38ebc31`, as on the base.
+- **probe4.**
+  - No painted collision with surface text on any of the three commits.
+  - Edge actions out of view at start: only at 768 × 432 (≈ 250 %), and there on all three commits.
+  - Cut surface text: base 54 runs, `7a3ca6a` 37, `38ebc31` 25.
+  - Against the base, 5 runs are newly cut. Four are at 768 × 432. The fifth is GEMINI OUTPUT at 960 × 540 in German: it reaches 5.2 px past the viewport's edge, while its centre stays visible and clickable.
+- **Regression.**
+  - tsc: only the base's `relay-check.mts` error.
+  - Role cards 2697/2697 (only the C-5 pixel-contrast lines differ from `d685003`), SSR and units 54/54, geometry 56/56, orbit 395/395, demo-ui-fix 62/62, gate 74/74, three-modes 91/91 + 97/97, url-boundary 1/1, syntx-walk 3/3, workflow 10/10.
+  - The full suite was not repeated: the change is two style values, and `7a3ca6a` had no new failure.
+
+**Observations.**
+- **O-TY-PXJ-SHIFT (minor).** In PERSON × JOB, START sits 8 px lower than in PERSON: at 688–730 at 1280 × 720 (base 678–723 in both states), so its button reaches 10 px past the viewport's edge. The label (700–718) stays fully visible.
+  - Inside the existing band P-TY-START, the heights 700–712 and 844–860 px show less of the label than on the base. At the common heights 720, 768, 800 and 900 the result equals the base or is better.
+  - Fully covered: 756–832 px (base 748–820).
+- **O-TY-COMMENT.** The stale comment noted above.
+- P-TY-START and O-TY-SCROLLJUMP stay with the owner as a layout question, as GRÜN records.
+
+**Run record.**
+- Evidence: `evidence/ui-typography-38ebc31/`.
+  - `static-38ebc31.txt`, `walks-frames-38ebc31.txt`, `extras-compare-base-vs-38ebc31.txt`, `start-and-low-38ebc31.txt`, `probe4-low-windows.txt`, `suites-38ebc31.txt`;
+  - `scripts/*.txt`;
+  - `manifest.sha256`.
+- PINK's worktree returned clean after every run. GRÜN's labs (:41807, :41809) and :3017 were not touched.
+- Integration remains with the owner's GO.
+
 ## 4. Boundaries and findings for coordination
 
 - F-JP-1 (closed in `b782793`): `JOB_POOL_CONNECTION.md` §4 followed the per-role `JOB_POOL_JSON_ROLE` design;

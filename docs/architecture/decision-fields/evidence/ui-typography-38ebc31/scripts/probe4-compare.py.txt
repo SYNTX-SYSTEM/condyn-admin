@@ -1,0 +1,35 @@
+# PINK: probe4 across base / 7a3ca6a / 38ebc31. python3 -I probe4-compare.py <base.json> <after.json> <fix.json>
+import json,sys,collections
+L=['base','7a3ca6a','38ebc31']; D=[{(r['w'],r['h'],r['lang'],r['st']):r for r in json.load(open(p))} for p in sys.argv[1:4]]
+print('errors', [sum(1 for r in d.values() if r.get('error')) for d in D])
+print('surface width / box per viewport (role state, en):')
+for k in sorted(k for k in D[2] if k[2]=='en' and k[3]=='role'):
+  print(f"  {k[0]}x{k[1]}: "+' | '.join(f"{L[i]} {D[i][k]['width']} y {D[i][k]['surface'][1]}–{D[i][k]['surface'][3]} own scroll {D[i][k]['ownScroll']}" for i in range(3)))
+print('edge actions not reachable without scroll (count of viewport x lang x state cases):')
+for i in range(3):
+  c=collections.Counter(); 
+  for k,r in D[i].items():
+    for a,ok in r.get('reach',{}).items():
+      if not ok: c[a]+=1
+  print(f'  {L[i]}: {dict(c)}')
+for i in range(3):
+  bad=[(k,a) for k,r in D[i].items() for a,ok in r.get('reach',{}).items() if not ok]
+  print(f'  {L[i]} cases:', sorted({f"{k[0]}x{k[1]} {k[3]}" for k,a in bad}))
+print('painted collisions involving surface text (cases with any):')
+for i in range(3):
+  cs=[(k,r['collisions']) for k,r in sorted(D[i].items()) if r.get('collisions')]
+  print(f'  {L[i]}: {len(cs)} cases')
+  for k,c in cs[:12]: print('     ',k,c[:2])
+# Cut text of the surface's own carriers (path steps, job scope actions, edge toggles, return / exit); the field summary and the field
+# laws are outside the surface and the probe's filter let them through, so they are left out here.
+import re
+SURF=re.compile(r'^(syntx-path|syntx-job-scope|syntx-pools-toggle|job-pool-intake-toggle|syntx-gemini-output-toggle|syntx-investigation-toggle|syntx-return-btn|syntx-exit-btn)')
+print('cut text of the surface carriers (ellipsis, clip or beyond the viewport), per commit; then cases new against the base:')
+cuts=[]
+for i in range(3):
+  c={(k,x.split(' clip')[0]):x for k,r in D[i].items() for x in r.get('cut',[]) if SURF.match(x)}
+  cuts.append(c); print(f'  {L[i]}: {len(c)} runs in {len({k for k,_ in c})} cases')
+for i in (1,2):
+  new=sorted(set(cuts[i])-set(cuts[0])); gone=sorted(set(cuts[0])-set(cuts[i]))
+  print(f'  {L[i]} new vs base: {len(new)}'); [print('     ',k,cuts[i][(k,t)]) for k,t in new[:14]]
+  print(f'  {L[i]} no longer cut vs base: {len(gone)}')

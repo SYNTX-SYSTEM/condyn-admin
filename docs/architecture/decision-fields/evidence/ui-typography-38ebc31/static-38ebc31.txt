@@ -1,0 +1,19 @@
+PINK static check of GRÜN's follow-up 38ebc31 (frontend/ui-typography-pink-followup = 7a3ca6a + 1 commit).
+
+App/test files changed against 7a3ca6a:
+    app/components/career/demo/SourceDock.tsx | 2 +-
+    app/components/career/demo/SyntxField.tsx | 4 +++-
+    2 files changed, 4 insertions(+), 2 deletions(-)
+
+   -        gap: "12px",
+   +        gap: "17px",
+   -@media (max-height: 600px) { [data-sx-orient] { max-height: calc(100vh - 100px); overflow-y: auto; } }
+   +/* Low windows (about 200 % zoom): below 1214 px 28vw narrows the surface until path and statement wrap past the window; 340 px keeps
+   + * every edge action in view without a scroll area of its own (PINK D-TY-2). Wider windows already use 340 px. */
+   +@media (max-height: 600px) { [data-sx-orient] { width: min(340px, 36vw) !important; } }
+
+Note: the comment above the new rule still describes the removed one ("the orientation surface scrolls instead of pushing its
+edge actions out of view … Its outer halo is clipped there"); the surface no longer scrolls.
+
+Base width of the surface (unchanged): width: "min(340px, 28vw)"
+Video walk scripts identical 7a3ca6a..38ebc31: yes
