@@ -1,0 +1,39 @@
+# PINK keyboard / focus-transition probe (pink-focus-keys.mjs) on 38ebc31 vs 9fb1df6, same labs as the edge probe; python3 -I keys-compare.py
+# Tab start without a click (a click on the field's ground returns one level; PINK's first run did that and was discarded on both commits)
+errors base [] tip []
+tab FIELD        1920 start FIELD->FIELD stops 70 identical order/aria/ring/inView/kind: True; distinct 16; max focus-box shift 0 px
+tab ORGANIZATION 1920 start ORGANIZATION->ORGANIZATION stops 70 identical order/aria/ring/inView/kind: True; distinct 21; max focus-box shift 0 px
+tab ROLE         1920 start ROLE->ROLE stops 70 identical order/aria/ring/inView/kind: True; distinct 27; max focus-box shift 0 px
+tab REQUIREMENT  1920 start REQUIREMENT->REQUIREMENT stops 70 identical order/aria/ring/inView/kind: True; distinct 19; max focus-box shift 0 px
+tab FIELD        1280 start FIELD->FIELD stops 70 identical order/aria/ring/inView/kind: True; distinct 16; max focus-box shift 0 px
+tab ORGANIZATION 1280 start ORGANIZATION->ORGANIZATION stops 70 identical order/aria/ring/inView/kind: True; distinct 21; max focus-box shift 0 px
+tab ROLE         1280 start ROLE->ROLE stops 70 identical order/aria/ring/inView/kind: True; distinct 27; max focus-box shift 0 px
+tab REQUIREMENT  1280 start REQUIREMENT->REQUIREMENT stops 70 identical order/aria/ring/inView/kind: True; distinct 19; max focus-box shift 0 px
+descent 1920
+   organization target syntx-organization-org_kestrel==syntx-organization-org_kestrel kind ORGANIZATION->ORGANIZATION url-equal True focus syntx-organization-org_kestrel->syntx-organization-org_kestrel
+   role         target syntx-role-role_kestrel_engineering_lead==syntx-role-role_kestrel_engineering_lead kind ROLE->ROLE url-equal True focus None->None
+   requirement  target syntx-requirement-req_kestrel_engineering_lead_01==syntx-requirement-req_kestrel_engineering_lead_01 kind REQUIREMENT->REQUIREMENT url-equal True focus None->None
+   escape 1     target None==None kind ROLE->ROLE url-equal True focus None->None
+   escape 2     target None==None kind ORGANIZATION->ORGANIZATION url-equal True focus syntx-organization-org_kestrel->syntx-organization-org_kestrel
+   escape 3     target None==None kind FIELD->FIELD url-equal True focus syntx-organization-org_kestrel->syntx-organization-org_kestrel
+descent 1280
+   organization target syntx-organization-org_kestrel==syntx-organization-org_kestrel kind ORGANIZATION->ORGANIZATION url-equal True focus syntx-organization-org_kestrel->syntx-organization-org_kestrel
+   role         target syntx-role-role_kestrel_engineering_lead==syntx-role-role_kestrel_engineering_lead kind ROLE->ROLE url-equal True focus None->None
+   requirement  target syntx-requirement-req_kestrel_engineering_lead_01==syntx-requirement-req_kestrel_engineering_lead_01 kind REQUIREMENT->REQUIREMENT url-equal True focus None->None
+   escape 1     target None==None kind ROLE->ROLE url-equal True focus None->None
+   escape 2     target None==None kind ORGANIZATION->ORGANIZATION url-equal True focus syntx-organization-org_kestrel->syntx-organization-org_kestrel
+   escape 3     target None==None kind FIELD->FIELD url-equal True focus syntx-organization-org_kestrel->syntx-organization-org_kestrel
+
+# focus after each keyboard step (9fb1df6; 38ebc31 identical, see above)
+1920 organization → ORGANIZATION | focus on syntx-organization-org_kestrel · Kestrel Logistics Software GmbH · ring outline 1px · in view True
+1920 role → ROLE | focus on syntx-cosmos-organization · Engineering Lead – Routing Platform · Kestrel Logi · ring outline 1px · in view True
+1920 requirement → REQUIREMENT | focus on syntx-ecology · Engineering Team Leadership · NO MATCHING READ · ring outline 1px · in view True
+1920 escape 1 → ROLE | focus on syntx-requirement-req_kestrel_engineering_lead_01 · Engineering Team Leadership · NO MATCHING READ · ring outline 1px · in view True
+1920 escape 2 → ORGANIZATION | focus on syntx-organization-org_kestrel · Kestrel Logistics Software GmbH · ring outline 1px · in view True
+1920 escape 3 → FIELD | focus on syntx-organization-org_kestrel · Kestrel Logistics Software GmbH · ring outline 1px · in view True
+1280 organization → ORGANIZATION | focus on syntx-organization-org_kestrel · Kestrel Logistics Software GmbH · ring outline 1px · in view True
+1280 role → ROLE | focus on syntx-cosmos-organization · Engineering Lead – Routing Platform · Kestrel Logi · ring outline 1px · in view True
+1280 requirement → REQUIREMENT | focus on syntx-ecology · Engineering Team Leadership · NO MATCHING READ · ring outline 1px · in view True
+1280 escape 1 → ROLE | focus on syntx-requirement-req_kestrel_engineering_lead_01 · Engineering Team Leadership · NO MATCHING READ · ring outline 1px · in view True
+1280 escape 2 → ORGANIZATION | focus on syntx-organization-org_kestrel · Kestrel Logistics Software GmbH · ring outline 1px · in view True
+1280 escape 3 → FIELD | focus on syntx-organization-org_kestrel · Kestrel Logistics Software GmbH · ring outline 1px · in view True

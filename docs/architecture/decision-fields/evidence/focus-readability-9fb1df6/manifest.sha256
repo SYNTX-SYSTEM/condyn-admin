@@ -1,0 +1,17 @@
+5db0e036d32424776048666cb2c88efcc86cec2d6addb47559a270bb3b05ce8a  ./edges-38ebc31-vs-9fb1df6.txt
+52420484dcb38616e901d1298dc462d93045ce3efc62b8f5e0b3e815e1e5d2ab  ./keys-38ebc31-vs-9fb1df6.txt
+0c4ff0aa49115e6c3ca477584c0ebefa4c4b597d30b2c452fcae508655956733  ./pairs/c30-word19-1920-38ebc31-left-9fb1df6-right.png
+3bca1c6ea2bd41ff33775f979ee38083b406665386a3ef18891ef7d917e9dc9c  ./pairs/c32-word18-1920-38ebc31-left-9fb1df6-right.png
+7f29409e0872c3b9245443ade8380f36177380d1eff94e5bb66a5c5be66672ef  ./pairs/c34-fixture-1920-38ebc31-left-9fb1df6-right.png
+1398dc4d8eecfcb8d94119748a60d3162115bfb3c893552b888da5dd27335e41  ./pairs/p31-word22-1920-38ebc31-left-9fb1df6-right.png
+94af90d81bec920817ffd1d096ced23acb9c6a778022e229d1e75d700d148ff3  ./pairs/p35-fixture-1920-38ebc31-left-9fb1df6-right.png
+8b004e60a64baf7c23d579ca4bdd5cecdf2ea02c8e48e05f5b8acbabbb7616f2  ./pairs/p54-adv11-1920-38ebc31-left-9fb1df6-right.png
+35141279e6749f03544432e4530d3aec8b5b6785878cee0ba68f1e2dcb828f56  ./scripts/edges-compare.py.txt
+d30a3dbe0306f201662560db786ac2e612766d6ed5fc31c758f2a570c39c7824  ./scripts/keys-compare.py.txt
+61a39ffb4388f28c93c89ad20443df7ff6760ab22c6e0723e50cb306a1c5eb19  ./scripts/pink-focus-compare.py.txt
+95e51d1fade421cc54fcd1d1b926bcb45759606b96488f8d888a5de7c476e895  ./scripts/pink-focus-edges.mjs.txt
+f42b94ea8b679d432dc17153bc7ca2ffd4f012851e2606c7b2f32f1868be0a87  ./scripts/pink-focus-keys.mjs.txt
+1a0f17828b682feec60e6c763e74befa026baaed5a11ae7835748b97b88b5d97  ./scripts/pink-typo-measure.mjs.txt
+918e63aa4b716f2cbbddb50b0f7d61a505de40c9d95d4fa4e082127b29927e24  ./static-9fb1df6.txt
+10458d57e51decc61e80b83a2353321cf272b0d64d5fc71a590e95ec53371e15  ./suites-9fb1df6.txt
+bede6d047ea1492f1f70db10c47bd60cf4ef701d2f9cffb19b625695cd019bcc  ./walks-frames-121dc6d.txt

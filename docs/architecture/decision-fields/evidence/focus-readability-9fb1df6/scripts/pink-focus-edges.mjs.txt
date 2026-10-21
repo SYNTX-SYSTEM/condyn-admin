@@ -1,0 +1,125 @@
+// PINK's own probe of GRÜN's focus-readability length steps (frontend/focus-readability 9fb1df6, base 38ebc31), run identically on both
+// commits. Synthetic pools (clones of the engineering fixture, own pool ids) carry pool names and organization names exactly at and
+// around the step edges, in four shapes: natural words, adversarial word lengths (each line holds one word), one long word, and "ß"
+// (which grows under upper case). Measures the pool name in the core organism (FIELD), the organization name in the cosmos centre
+// (ORGANIZATION) and the receded requirement siblings (REQUIREMENT, via the URL's jobRequirementId), plus PINK's frame measure.
+// Stand-in lab only; POSTs go to PINK's own disposable lab only. argv: <lab state.json> <out.json>. Run from the repository root.
+import { readFileSync, writeFileSync } from "node:fs";
+import { pathToFileURL } from "node:url";
+const [STATE, OUT, MEASURE] = process.argv.slice(2);
+const { measure } = await import(pathToFileURL(MEASURE).href);
+const pw = await import(pathToFileURL(process.env.CONDYN_PLAYWRIGHT_MODULE).href); const { chromium } = pw.chromium ? pw : pw.default;
+const BASE = JSON.parse(readFileSync(STATE, "utf8")).base;
+const ENG = JSON.parse(readFileSync("docs/examples/job-pool-tests/DLL_JOBPOOL_ENGINEERING.json", "utf8"));
+const res = { variants: [], rows: [], errors: [] };
+const SEG = "ENGINEERINGPLATFORMARCHITECTURERELIABILITYOBSERVABILITY";
+// Adversarial: words of length w (two never share a line at the target size), the last word takes the rest; exactly L characters.
+const adv = (L, w) => { const out = []; let n = 0, k = 0; while (L - n > w + 1) { out.push(SEG.slice(k, k + w)); n += w + 1; k = (k + w) % (SEG.length - w); } out.push(SEG.slice(0, L - n)); return out.join(" "); };
+const POOLS = [
+  ["p36-nat", "Nordlicht Data & Platform Team Pools", 36], ["p37-nat", "Nordlicht Data & Platform Talent Pool", 37],
+  ["p54-nat", "Decision Loop Labs Engineering, Platforms & Data Pools", 54], ["p55-nat", "Decision Loop Labs Engineering, Platform & Data Pool EU", 55],
+  ["p36-adv10", adv(36, 10), 36], ["p36-adv12", adv(36, 12), 36], ["p37-adv11", adv(37, 11), 37], ["p54-adv11", adv(54, 11), 54], ["p54-adv13", adv(54, 13), 54], ["p55-adv12", adv(55, 12), 55],
+  ["p29-word20", "DLL Internationalization Pool", 29], ["p31-word22", "DLL Gesundheitsplattformen Pool", 31], ["p33-word29", "DLL Plattformbetriebsorganisation", 33],
+  ["p33-sz", "Großhandel & Straßenlogistik Pool", 33], ["p36u-sz", "Großhandel & Straßenlogistik Pools", 34], ["p37u-sz", "Großhandel & Lagerlogistik Pool Nord", 36],
+  ["p54u-sz", "Decision Loop Labs Großhandel, Platforms & Data Pools", 53], ["p55u-sz", "Decision Loop Labs Großhandel, Platform & Data Pool EU", 54],
+  ["p25-short", "DLL Pool", 8], ["p35-fixture", ENG.pool.name, 35]
+];
+// Centre label = "NN " + organization name: organization name length = label length − 3.
+const ORGS = [
+  ["c34-nat", "Kestrel Logistics Platform GmbH", 34], ["c35-nat", "Kestrel Logistics Platforms GmbH", 35], ["c38-nat", "Kestrel Logistics Software Group AG", 38], ["c39-nat", "Kestrel Logistics Software Groups AG", 39],
+  ["c34-adv8", adv(31, 8), 34], ["c34-adv10", adv(31, 10), 34], ["c35-adv9", adv(32, 9), 35], ["c38-adv9", adv(35, 9), 38], ["c38-adv11", adv(35, 11), 38], ["c39-adv10", adv(36, 10), 39],
+  ["c32-word18", "Kestrel Telecommunications AG", 32], ["c30-word19", "Versicherungsgruppe Nord AG", 30], ["c39-word25", "Kestrel Versicherungsgesellschaft AG", 39],
+  ["c31-sz", "Kestrel Straßenlogistik GmbH", 31], ["c34u-sz", "Kestrel Straßenlogistik Ost AG", 33], ["c35u-sz", "Kestrel Straßenlogistik Nord AG", 34],
+  ["c38u-sz", "Kestrel Straßenlogistik Nordost AG", 37], ["c39u-sz", "Kestrel Straßenlogistik Nordwest AG", 38],
+  ["c10-short", "Kestrel AG", 13], ["c34-fixture", ENG.organizations.find(o => o.id === "org_kestrel").name, 34]
+];
+const SIBS = ["Event-Driven Distributed Systems Architecture", "Event-Driven Distributed Systems Architecture with Kafka Streams",
+  "Geospatial Visualisation and Real-Time Fleet Tracking Interfaces for Dispatch", "Datenschutzkonforme Softwarearchitekturentwicklung", "Kubernetes"];
+for (const [id, s, L] of POOLS) if (s.length !== L) { console.log("LENGTH", id, s.length, L); process.exit(2); }
+for (const [id, s, L] of ORGS) if (s.length + 3 !== L) { console.log("LENGTH", id, s.length + 3, L); process.exit(2); }
+const post = async body => { const r = await fetch(`${BASE}/api/career/job-pools`, { method: "POST", headers: { "content-type": "application/json", "x-condyn-principal-actor-id": "PINK_FOCUS_LAB" }, body: JSON.stringify(body) }); const j = await r.json(); return j.jobPoolUploadId ?? j.upload?.jobPoolUploadId ?? null; };
+const clone = (pid, poolName, orgName, sibs) => {
+  const p = structuredClone(ENG); p.pool.id = pid; if (poolName) p.pool.name = poolName;
+  for (const r of [p.roles, p.requirements, p.organizations]) for (const x of r) if ("pool_id" in x) x.pool_id = pid;
+  if (orgName) p.organizations.find(o => o.id === "org_kestrel").name = orgName;
+  if (sibs) { const rq = p.requirements.filter(r => r.role_id === "role_kestrel_fullstack" && r.id !== "req_kestrel_fullstack_01"); rq.forEach((r, i) => { if (sibs[i]) r.capability_name = sibs[i]; }); }
+  return p;
+};
+const n = Math.max(POOLS.length, ORGS.length);
+for (let i = 0; i < n; i += 1) {
+  const pv = POOLS[i], ov = ORGS[i]; const pid = `pool_pink_focus_${i}`;
+  const up = await post(clone(pid, pv?.[1], ov?.[1], i === 0 ? SIBS : null));
+  res.variants.push({ i, pid, upload: up, pool: pv && { id: pv[0], name: pv[1], len: pv[1].length, upper: pv[1].toUpperCase().length }, org: ov && { id: ov[0], name: ov[1], label: ov[2], upper: ov[1].toUpperCase().length + 3 }, sibs: i === 0 ? SIBS : null });
+  if (!up) { console.log("FAIL upload", i); res.errors.push(`upload ${i}`); }
+}
+const engUp = await post(ENG); res.engUpload = engUp;
+const browser = await chromium.launch(); let ctx, page;
+const fresh = async (w, h) => { if (ctx) await ctx.close(); ctx = await browser.newContext({ viewport: { width: w, height: h }, reducedMotion: "reduce" }); await ctx.addInitScript(() => { try { localStorage.setItem("condyn_onboarding_seen", "1"); } catch {} }); page = await ctx.newPage(); page.on("pageerror", e => res.errors.push(String(e).slice(0, 200))); };
+const t = id => page.getByTestId(id);
+const lang = async l => { if (l !== "de") return; await t("open-system-codex-btn").click(); await t("switch-lang-de").click(); await t("system-codex-close").click(); await page.waitForTimeout(300); };
+const go = async (q, l) => { await page.goto(`${BASE}/career/demo?focus=FIELD&${q}&investigationMode=PERSON`, { waitUntil: "networkidle" }); await t("syntx-field").waitFor({ timeout: 60000 }); await lang(l); await page.waitForTimeout(1300); };
+const step = async (name, fn) => { try { await fn(); } catch (e) { res.errors.push(`${name}: ${String(e).split("\n")[0].slice(0, 200)}`); console.log("FAIL", name, String(e).split("\n")[0].slice(0, 160)); } };
+const relevant = (m, re) => ({ collisions: m.collisions.filter(c => c.visible && (re.test(c.a) || re.test(c.b))), clipped: m.texts.filter(x => re.test(x.tp) && (x.clipPx > 0.5 || x.ellipsis || x.clamp)).map(x => ({ key: x.key, clipPx: x.clipPx, clipBy: x.clipBy })) });
+const readCore = () => page.evaluate(() => {
+  const r1 = v => Math.round(v * 10) / 10;
+  const core = document.querySelector('[data-testid="syntx-pool-core"]'); const content = core.querySelector('div[style*="max-width"]');
+  const kids = [...content.children]; const nameEl = kids[2]; const cb = core.getBoundingClientRect(); const cx = (cb.left + cb.right) / 2, cy = (cb.top + cb.bottom) / 2, R = Math.min(cb.width, cb.height) / 2;
+  const rr = el => { const r = document.createRange(); r.selectNodeContents(el); return [...r.getClientRects()].filter(q => q.width > 0.5); };
+  const union = qs => qs.length ? { l: Math.min(...qs.map(q => q.left)), t: Math.min(...qs.map(q => q.top)), r: Math.max(...qs.map(q => q.right)), b: Math.max(...qs.map(q => q.bottom)) } : null;
+  const air = u => u && r1(R - Math.max(...[[u.l, u.t], [u.r, u.t], [u.l, u.b], [u.r, u.b]].map(([x, y]) => Math.hypot(x - cx, y - cy))));
+  const nr = rr(nameEl), nu = union(nr); const parts = kids.map(k => union(k.tagName === "svg" || !k.textContent.trim() ? [k.getBoundingClientRect()] : rr(k)));
+  const all = union(parts.filter(Boolean).map(u => ({ left: u.l, top: u.t, right: u.r, bottom: u.b })));
+  // Per line against the organism's rings (220 px body, inner membrane inset 18 px = 184 px; scaled with the body's box).
+  const k = cb.width / 220, Ro = 110 * k, Ri = 92 * k;
+  const cornerAir = (qs, Rr) => r1(Math.min(...qs.map(q => Rr - Math.max(Math.hypot(q.left - cx, q.top - cy), Math.hypot(q.right - cx, q.top - cy), Math.hypot(q.left - cx, q.bottom - cy), Math.hypot(q.right - cx, q.bottom - cy)))));
+  const chipQ = [kids[3].getBoundingClientRect()], kickQ = rr(kids[1]);
+  const ringAir = { nameOuter: cornerAir(nr, Ro), nameInner: cornerAir(nr, Ri), chipOuter: cornerAir(chipQ, Ro), chipInner: cornerAir(chipQ, Ri), kickerInner: cornerAir(kickQ, Ri), scale: r1(k * 100) / 100 };
+  return { ringAir, core: [r1(cb.width), r1(cb.height)], font: getComputedStyle(nameEl).fontSize, text: nameEl.textContent, lines: new Set(nr.map(q => Math.round(q.top))).size, nameW: r1(nu.r - nu.l), nameH: r1(nu.b - nu.t),
+    overMax: r1(Math.max(0, (nu.r - nu.l) - 176)), nameAir: air(nu), contentAir: air(all), contentH: r1(all.b - all.t), kickerToName: r1(nu.t - parts[1].b), nameToChip: r1(parts[3].t - nu.b) };
+});
+const readCentre = () => page.evaluate(() => {
+  const r1 = v => Math.round(v * 10) / 10;
+  const c = document.querySelector('[data-testid="syntx-cosmos-centre"]'); const b = c.getBoundingClientRect(); const nameEl = c.children[1], kick = c.children[3];
+  const rr = el => { const r = document.createRange(); r.selectNodeContents(el); return [...r.getClientRects()].filter(q => q.width > 0.5); };
+  const union = qs => ({ l: Math.min(...qs.map(q => q.left)), t: Math.min(...qs.map(q => q.top)), r: Math.max(...qs.map(q => q.right)), b: Math.max(...qs.map(q => q.bottom)) });
+  const cx = (b.left + b.right) / 2, cy = (b.top + b.bottom) / 2, R = b.width / 2 - 1.5;
+  const air = u => r1(R - Math.max(...[[u.l, u.t], [u.r, u.t], [u.l, u.b], [u.r, u.b]].map(([x, y]) => Math.hypot(x - cx, y - cy))));
+  // Per line: the line's own corners against the disc (a line's air, not the block's).
+  const lineAir = qs => r1(Math.min(...qs.map(q => R - Math.max(Math.hypot(q.left - cx, q.top - cy), Math.hypot(q.right - cx, q.top - cy), Math.hypot(q.left - cx, q.bottom - cy), Math.hypot(q.right - cx, q.bottom - cy)))));
+  const nr = rr(nameEl), kr = rr(kick), nu = union(nr), ku = union(kr);
+  const cards = [...document.querySelectorAll('[data-testid^="syntx-role-"]')].map(e => e.getBoundingClientRect()).filter(q => q.width > 20 && q.height > 20);
+  const gap = q => Math.max(q.left - b.right, b.left - q.right, q.top - b.bottom, b.top - q.bottom);
+  return { disc: [r1(b.width), r1(b.height)], font: getComputedStyle(c).fontSize, text: nameEl.textContent, lines: new Set(nr.map(q => Math.round(q.top))).size, maxLineW: r1(Math.max(...nr.map(q => q.width))), inner: r1(b.width - 32),
+    overDisc: r1(Math.max(0, nu.l < b.left ? b.left - nu.l : 0, nu.r > b.right ? nu.r - b.right : 0)), nameLineAir: lineAir(nr), kickerLineAir: lineAir(kr), nameBlock: [r1(nu.t - b.top), r1(nu.b - b.top)], kickerBlock: [r1(ku.t - b.top), r1(ku.b - b.top)], nearestCard: cards.length ? r1(Math.min(...cards.map(gap))) : null };
+});
+const readSibs = () => page.evaluate(() => {
+  const r1 = v => Math.round(v * 10) / 10;
+  const cards = [...document.querySelectorAll('[data-testid^="syntx-requirement-"] > button[aria-pressed="false"]')];
+  const rects = cards.map(c => c.getBoundingClientRect()); let overlaps = 0;
+  for (let i = 0; i < rects.length; i++) for (let j = i + 1; j < rects.length; j++) { const a = rects[i], q = rects[j]; if (a.left < q.right && q.left < a.right && a.top < q.bottom && q.top < a.bottom) overlaps++; }
+  const nucleus = document.querySelector('[data-testid^="syntx-requirement-"] > button[aria-pressed="true"]')?.getBoundingClientRect();
+  const hits = q => q ? rects.filter(a => a.left < q.right && q.left < a.right && a.top < q.bottom && q.top < a.bottom).length : null;
+  return { n: cards.length, cards: cards.map((c, i) => { const sp = c.querySelector("span"); const r = document.createRange(); r.selectNodeContents(sp); const qs = [...r.getClientRects()].filter(q => q.width > 0.5); const cr = rects[i];
+    const out = Math.max(0, ...qs.map(q => Math.max(cr.left - q.left, q.right - cr.right, cr.top - q.top, q.bottom - cr.bottom)));
+    return { text: sp.textContent.slice(0, 40), font: getComputedStyle(c).fontSize, op: getComputedStyle(c).opacity, h: c.offsetHeight, minH: parseFloat(getComputedStyle(c).minHeight), w: c.offsetWidth, lines: new Set(qs.map(q => Math.round(q.top))).size, textOut: r1(out), box: [r1(cr.left), r1(cr.top), r1(cr.right), r1(cr.bottom)], off: cr.left < 0 || cr.top < 0 || cr.right > innerWidth || cr.bottom > innerHeight }; }),
+    overlaps, onNucleus: hits(nucleus) };
+});
+import { dirname } from "node:path";
+const SHOTS = new Set(["p35-fixture", "p29-word20", "p31-word22", "p54-nat", "p54-adv11", "p37u-sz", "c34-fixture", "c30-word19", "c32-word18", "c38-nat", "c35u-sz"]);
+const shot = async (id, W, l, testid) => { if (!SHOTS.has(id) || l !== "en" || W === 960) return; const b = await t(testid).boundingBox(); if (!b) return; const pad = 30;
+  await page.screenshot({ path: `${dirname(OUT)}/shot-${id}-${W}.png`, clip: { x: Math.max(0, b.x - pad), y: Math.max(0, b.y - pad), width: b.width + 2 * pad, height: b.height + 2 * pad } }); };
+const VPS = [[1920, 1080, ["en", "de"]], [1280, 720, ["en", "de"]], [960, 540, ["en"]]];
+for (const [W, H, langs] of VPS) {
+  await fresh(W, H);
+  for (const l of langs) for (const v of res.variants) {
+    if (!v.upload) continue;
+    if (v.pool) await step(`core ${v.pool.id} ${W} ${l}`, async () => { await go(`jobPoolUploadId=${v.upload}`, l); await t("syntx-pool-core").waitFor({ timeout: 30000 }); await page.waitForTimeout(400); const m = await measure(page); res.rows.push({ kind: "core", id: v.pool.id, w: W, l, ...(await readCore()), ...relevant(m, /syntx-pool-core/) }); await shot(v.pool.id, W, l, "syntx-pool-core"); });
+    if (v.org) await step(`centre ${v.org.id} ${W} ${l}`, async () => { await go(`jobPoolUploadId=${v.upload}&jobOrganizationId=org_kestrel`, l); await t("syntx-cosmos-centre").waitFor({ timeout: 30000 }); await page.waitForTimeout(400); const m = await measure(page); res.rows.push({ kind: "centre", id: v.org.id, w: W, l, ...(await readCentre()), ...relevant(m, /syntx-cosmos-centre/) }); await shot(v.org.id, W, l, "syntx-cosmos-centre"); });
+  }
+  for (const l of langs) for (const [label, up, req] of [["sib-long", res.variants[0].upload, "req_kestrel_fullstack_01"], ["sib-fixture", engUp, "req_kestrel_fullstack_01"], ["sib-fixture-02", engUp, "req_kestrel_fullstack_02"]]) {
+    await step(`sibs ${label} ${W} ${l}`, async () => { await go(`jobPoolUploadId=${up}&jobOrganizationId=org_kestrel&jobRoleId=role_kestrel_fullstack&jobRequirementId=${req}`, l); const m = await measure(page);
+      const kind = await page.getByTestId("syntx-field").getAttribute("data-observation-kind");
+      res.rows.push({ kind: "sibs", id: label, w: W, l, observation: kind, ...(await readSibs()), ...relevant(m, /syntx-requirement-/) }); });
+  }
+}
+writeFileSync(OUT, JSON.stringify(res, null, 1)); console.log("EDGES rows", res.rows.length, "errors", res.errors.length); await browser.close();

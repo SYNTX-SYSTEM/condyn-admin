@@ -2674,6 +2674,94 @@ Factors measured in the DOM (`e6493a7`; the factor pair, then the outer orbit's 
 - PINK's worktree returned clean after every run. GRÜN's labs (:41807, :41809) and :3017 were not touched.
 - Integration remains with the owner's GO.
 
+### 3.53 Focus-dependent readability GRÜN `frontend/focus-readability` `9fb1df6` (base `38ebc31`) (2026-10-21)
+
+**Request.**
+- The owner mandates are "FOCUS_DEPENDENT_READABILITY" and "FOCUS_READABILITY_OWNER_DECISION". GRÜN relayed them, and PINK did not see them first-hand.
+  - Decision 04: the focused pool name and organization name lead their context.
+  - Decision 02: the receded siblings become slightly more readable, without changing opacity globally.
+- GRÜN asked PINK to check `121dc6d` and then moved the check to `9fb1df6` (fast-forward, + 1 commit). That commit fixes GELB's F-FR-1: the steps now count the label as shown, in upper case, so "ß" counts as "SS".
+- GRÜN asked PINK to check three things: the step edges, PINK's role-card and orbit suites, and keyboard and focus transitions. GELB asked for the edges ±1 with "ß", and for pool names of 37–54 characters at 12 px running through `wrapLines(…, 18, 2)`.
+- The base is `38ebc31`. GRÜN reports that the owner chose it after §3.52; PINK did not see that first-hand.
+
+**What changed (`static-9fb1df6.txt`).**
+- Only font sizes changed, in `SyntxField.tsx` and `CapabilityDeepFocusView.tsx`. With every font-size expression masked, the code is identical to `38ebc31` apart from the three step constants. No test id, copy, colour, weight, sign state or tabIndex changed, and nothing in `lib/` or `test/`.
+- The steps count the label as shown (upper case):
+  - pool name in the core: up to 36 characters 14 px, 37–54 characters 12 px, from 55 characters 10.5 px (base 10.5);
+  - cosmos centre label "NN NAME": up to 34 characters 13 px, 35–38 characters 12 px, from 39 characters 11 px (base 11);
+  - receded requirement siblings 9.5 → 11 px and capability deep-focus satellites 10 → 11 px; scale 0.78 and opacity 0.42 are kept.
+- The stale comment is removed (O-TY-COMMENT closed).
+- No fixture name changes length in upper case, so `121dc6d` and `9fb1df6` render GELB's walk identically.
+
+**Method.**
+- **Walks.** PINK's instrumented walk on `121dc6d` at 1920, 1440, 1366 and 1280, plus the §3.51 extras, compared with the `38ebc31` frames of §3.52.
+- **Length steps** (`pink-focus-edges.mjs.txt`): new and identical on both commits, one fresh stand-in lab per commit, reduced motion.
+  - 20 pool names and 20 organization names: at and around every step edge (pool 36/37 and 54/55, centre 34/35 and 38/39), in four shapes:
+    - natural words;
+    - adversarial word lengths, where every line holds one word;
+    - one long word (18–29 characters);
+    - "ß" at all four edges, with the raw length one below the edge in upper case.
+  - Measured:
+    - per line: the air to the core's body ring (220 px) and inner membrane (184 px), and to the 174 px centre disc;
+    - the chip;
+    - the role cards;
+    - PINK's frame measure.
+  - The receded siblings are measured in the REQUIREMENT state, reached through the URL's `jobRequirementId`. That uses the fixture and PINK's long requirement names (up to 77 characters).
+  - Viewports 1920 and 1280 (EN / DE) and 960 × 540.
+- **Keyboard** (`pink-focus-keys.mjs.txt`).
+  - Tab order: 70 stops in FIELD, ORGANIZATION, ROLE and REQUIREMENT at 1920 and 1280, recording each stop's test id, aria label, focus ring, visibility, focus box and observation kind.
+  - Keyboard descent: FIELD → organization → role → requirement by Tab + Enter, then Escape × 3.
+  - PINK's first keyboard run started with a click on the field's ground. That click returns one level, so the run was discarded on both commits and repeated without a click.
+- **Regression.** PINK's suites on `9fb1df6`.
+- No Gemini call by PINK. The net logs show only Next dev's npm dist-tags check.
+
+**Confirmed.**
+- **Step edges, including "ß" (GELB's F-FR-1 fixed).** Every variant gets the size its upper-case length calls for: pool 36 → 14, 37 → 12, 54 → 12, 55 → 10.5; centre 34 → 13, 35 → 12, 38 → 12, 39 → 11.
+  - The four "ß" names whose raw length is one below the edge each get the next step: raw 36 / upper 37 → 12, raw 54 / upper 55 → 10.5, raw 34 / upper 35 → 12, raw 38 / upper 39 → 11.
+  - The centre disc stays 174 × 174 in all 100 centre rows per commit, and no centre text is newly cut. The 25-character word at 11 px is cut on both commits. In the 100 core rows no name is cut and no painted collision appears.
+- **Pool names of 37–54 characters at 12 px.** The text that `wrapLines(…, 18, 2)` joins wraps to 2–4 lines in the browser. Every name line keeps at least 4.4 px inside the body ring. The worst case is PINK's adversarial 54-character name with four lines: the core's content block grows from 177 to 196 px, and the chip's corners reach 18 px past the body ring (base 10 px).
+- **Walks and frames.** 30/30 at all four viewports.
+  - Only the intended sizes changed: pool name 10.5 → 14 (2 lines stay 2), centre 11 → 13 (3 lines stay 3), capability satellites 10 → 11 (1 line stays 1).
+  - No size decreased and nothing is cut newly. The §3.51 extras (shell row, job title, START, low windows, cosmos kicker, path step) are identical.
+  - The painted collisions listed as new or gone belong to three families that occur on all four commits, depending on the orbit phase. On `35f00bc` / `7a3ca6a` / `38ebc31` / `121dc6d` they count:
+    - organization body text × the role card's RETURN line: 44 / 41 / 40 / 41;
+    - capability cosmos centre: 12 / 22 / 19 / 21;
+    - capability nucleus: 7 / 9 / 9 / 9.
+- **Siblings with fixture names.** At 11 px no card grows, none overlaps another or the nucleus, and no text leaves its card, at any viewport.
+- **Keyboard and focus.** Identical on both commits:
+  - 8 × 70 tab stops (order, names, focus ring, in view, kind; focus boxes ±0 px);
+  - the descent and the Escape steps, with the same URLs and the same focused element.
+- **Regression on `9fb1df6`.**
+  - tsc: only the base's `relay-check.mts` error.
+  - Role cards 2697/2697, byte-identical to the `38ebc31` report. Orbit 395/395; only the LIVE motion distances differ.
+  - SSR and units 54/54, geometry 56/56, demo-ui-fix 62/62, gate 74/74, three-modes 91/91 + 97/97 (with ports masked, identical to `38ebc31`), url-boundary 1/1, syntx-walk 3/3, workflow 10/10.
+
+**Finding.**
+- **D-FR-1 (new, minor; not in any fixture, not on the video path).** The steps count the whole label, not its longest word. A word that fitted at the old size no longer fits at the new one.
+  - **Centre, 13 px.**
+    - "TELECOMMUNICATIONS" (18 characters, label 32) reaches 3.1 px past the disc's rim.
+    - "VERSICHERUNGSGRUPPE" (19 characters, label 30) reaches 7.4 px past it, and its first and last letters sit on the rim.
+    - On the base both stayed 7.4 and 3.7 px inside.
+  - **Pool core, 14 px.** "GESUNDHEITSPLATTFORMEN" (22 characters, pool name 31) leaves the 176 px content width and reaches 3.9–4.3 px past the body ring; on the base it stayed 15–17 px inside.
+  - Evidence: `pairs/*.png` (left `38ebc31`, right `9fb1df6`).
+  - "STRASSENLOGISTIK" (16 characters) still fits at 13 px, 5.4 px inside. The longest word in any fixture name has 16 characters (Industrieanlagen).
+  - German compounds of this length are plausible in uploaded pools. How to bound it is GRÜN's choice; for example, the step could also depend on the longest word.
+
+**Observations.**
+- **O-FR-SIB.** "Sibling cards do not grow" holds for the fixture names. A requirement name of 77 characters grows its card from 78 to 90 px at 1920 and 1280. At 960 × 540 three long names grow: 98 → 104, 98 → 118 and 78 → 90; on the base two cards had already grown there. No overlap and nothing cut.
+- **Core at 14 px (intended growth, measured).** The fixture's two name lines pass the inner membrane by 8–9 px at their corners (base 6.6–7.3 px inside), and the content block grows by 8–9 px. Natural names keep at least 2.2 px inside the body ring.
+- **Measure note.** PINK's measure counts the radial-gradient centre core as translucent. It therefore lists receded organization-body text behind the centre as touching. The centre's core is opaque, so this text is not visible, and the counts are the same on both commits.
+
+**Run record.**
+- Evidence: `evidence/focus-readability-9fb1df6/`.
+  - `static-9fb1df6.txt`, `walks-frames-121dc6d.txt`, `edges-38ebc31-vs-9fb1df6.txt`, `keys-38ebc31-vs-9fb1df6.txt`, `suites-9fb1df6.txt`;
+  - `pairs/*.png`;
+  - `scripts/*.txt` (PINK's proofs, never committed as live tests);
+  - `manifest.sha256`.
+- PINK's worktree returned clean to `validation/hr-decision-loop-pink` after every run.
+- GRÜN's review labs :41809 and :41810 were not touched, nor were :3017, :41805, :41821, :41831, :41851 or :41803.
+- Integration remains with the owner's GO. D-FR-1 is GRÜN's to weigh.
+
 ## 4. Boundaries and findings for coordination
 
 - F-JP-1 (closed in `b782793`): `JOB_POOL_CONNECTION.md` §4 followed the per-role `JOB_POOL_JSON_ROLE` design;

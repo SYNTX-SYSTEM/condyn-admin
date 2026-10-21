@@ -1,0 +1,76 @@
+// PINK's own text measure for the typography sweep validation (independent of GRÜN's inventory.mjs).
+// One call returns every visible text run (owner element = parent of its own text nodes): computed type, per-line rects of the text
+// itself (Range), clipping by overflow ancestors and the viewport, ellipsis / line clamp, and the box of every visible data-testid.
+// Collisions: two text runs of different, unrelated owners whose line rects intersect by more than 1 x 1 px; "visible" when the
+// topmost element at the intersection centre belongs to one of the two owners.
+export const measure = page => page.evaluate(() => {
+  const vw = innerWidth, vh = innerHeight;
+  const R = r => [Math.round(r.left * 10) / 10, Math.round(r.top * 10) / 10, Math.round(r.right * 10) / 10, Math.round(r.bottom * 10) / 10];
+  const opacity = el => { let o = 1; for (let e = el; e && e.nodeType === 1; e = e.parentElement) o *= parseFloat(getComputedStyle(e).opacity || "1"); return o; };
+  const testidPath = el => { const p = []; for (let e = el; e && e.nodeType === 1; e = e.parentElement) { const id = e.getAttribute("data-testid"); if (id) p.push(id); if (p.length === 2) break; } return p.join("<") || "-"; };
+  const owners = new Map();
+  const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+  for (let n = walker.nextNode(); n; n = walker.nextNode()) {
+    if (!n.nodeValue.trim()) continue; const el = n.parentElement; if (!el || ["SCRIPT", "STYLE", "NOSCRIPT", "TITLE"].includes(el.tagName)) continue;
+    if (!owners.has(el)) owners.set(el, []); owners.get(el).push(n);
+  }
+  const texts = []; const seen = new Map();
+  for (const [el, nodes] of owners) {
+    const cs = getComputedStyle(el); if (cs.visibility === "hidden" || cs.display === "none") continue;
+    const op = opacity(el); if (op < 0.05) continue;
+    const lines = [];
+    for (const n of nodes) { const r = document.createRange(); r.selectNodeContents(n); for (const q of r.getClientRects()) if (q.width > 0.5 && q.height > 0.5) lines.push(q); }
+    if (!lines.length) continue;
+    // Merge pieces on the same line (same top within 2 px).
+    const merged = [];
+    for (const q of lines.sort((a, b) => a.top - b.top || a.left - b.left)) { const m = merged.find(x => Math.abs(x.top - q.top) < 2); if (m) { m.left = Math.min(m.left, q.left); m.right = Math.max(m.right, q.right); m.bottom = Math.max(m.bottom, q.bottom); } else merged.push({ left: q.left, top: q.top, right: q.right, bottom: q.bottom }); }
+    const text = nodes.map(n => n.nodeValue).join(" ").replace(/\s+/g, " ").trim();
+    const tp = testidPath(el); const base = `${tp}|${text.slice(0, 80)}`; const k = (seen.get(base) ?? 0) + 1; seen.set(base, k);
+    // Clipping by overflow ancestors (including el itself) and by the viewport.
+    // Hidden/clip ancestors cut the text (clipPx); auto/scroll ancestors only scroll it out of their view (scrollPx).
+    let clipPx = 0, clipBy = null, scrollPx = 0, scrollBy = null;
+    for (let e = el; e && e.nodeType === 1 && e !== document.body; e = e.parentElement) {
+      const s = getComputedStyle(e); if (s.overflowX === "visible" && s.overflowY === "visible" && s.clipPath === "none") continue;
+      const scrolls = /auto|scroll/.test(s.overflowX + s.overflowY);
+      const b = e.getBoundingClientRect();
+      for (const q of merged) { const over = Math.max(b.left - q.left, q.right - b.right, b.top - q.top, q.bottom - b.bottom, 0);
+        if (scrolls) { if (over > scrollPx + 0.5) { scrollPx = over; scrollBy = e.getAttribute("data-testid") || e.tagName.toLowerCase(); } }
+        else if (over > clipPx + 0.5) { clipPx = over; clipBy = e.getAttribute("data-testid") || e.tagName.toLowerCase(); } }
+    }
+    let offscreen = 0; for (const q of merged) offscreen = Math.max(offscreen, -q.left, q.right - vw, -q.top, q.bottom - vh, 0);
+    const ellipsis = cs.textOverflow === "ellipsis" && el.scrollWidth > el.clientWidth + 0.5;
+    const clamp = cs.webkitLineClamp && cs.webkitLineClamp !== "none" && el.scrollHeight > el.clientHeight + 1;
+    texts.push({ key: `${base}#${k}`, tp, text: text.slice(0, 120), fs: parseFloat(cs.fontSize), ls: cs.letterSpacing, fw: cs.fontWeight, lh: cs.lineHeight, color: cs.color, tt: cs.textTransform, ws: cs.whiteSpace, ff: cs.fontFamily.split(",")[0].replace(/["']/g, "").trim(), op: Math.round(op * 100) / 100,
+      lines: merged.map(R), clipPx: Math.round(clipPx * 10) / 10, clipBy, scrollPx: Math.round(scrollPx * 10) / 10, scrollBy, offscreen: Math.round(offscreen * 10) / 10, ellipsis, clamp: Boolean(clamp), _el: null });
+    texts[texts.length - 1]._idx = texts.length - 1; el.__pinkIdx = texts.length - 1;
+  }
+  const els = [...owners.keys()].filter(e => e.__pinkIdx !== undefined);
+  const owner = el => { for (let e = el; e && e.nodeType === 1; e = e.parentElement) if (e.__pinkIdx !== undefined) return e.__pinkIdx; return -1; };
+  // Both texts are painted at (x, y) when, in the hit stack, the upper owner comes first (only non-opaque layers above it) and
+  // nothing with an opaque background lies between the upper and the lower owner (the upper text's own panel hides the lower text).
+  const opaque = e => { const s = getComputedStyle(e); const m = s.backgroundColor.match(/rgba?\(([^)]+)\)/); const al = m ? (m[1].split(",")[3] === undefined ? 1 : parseFloat(m[1].split(",")[3])) : 0; return al >= 0.5 || (s.backgroundImage !== "none" && !/radial-gradient/.test(s.backgroundImage)) || s.backdropFilter !== "none"; };
+  const bothPainted = (a, b, x, y) => {
+    if (x < 0 || y < 0 || x >= vw || y >= vh) return false;
+    const stack = document.elementsFromPoint(x, y); const ia = stack.findIndex(e => e === a || a.contains(e)), ib = stack.findIndex(e => e === b || b.contains(e));
+    if (ia < 0 || ib < 0) return false; const hi = Math.min(ia, ib), lo = Math.max(ia, ib), upper = hi === ia ? a : b;
+    for (let i = 0; i < hi; i += 1) if (opaque(stack[i])) return false;
+    for (let i = hi + 1; i < lo; i += 1) { const e = stack[i]; if (e === upper || upper.contains(e)) continue; if (opaque(e)) return false; }
+    return true;
+  };
+  const collisions = [];
+  for (let i = 0; i < els.length; i += 1) for (let j = i + 1; j < els.length; j += 1) {
+    const a = els[i], b = els[j]; if (a.contains(b) || b.contains(a)) continue;
+    const ta = texts[a.__pinkIdx], tb = texts[b.__pinkIdx];
+    for (const p of ta.lines) for (const q of tb.lines) {
+      const w = Math.min(p[2], q[2]) - Math.max(p[0], q[0]), h = Math.min(p[3], q[3]) - Math.max(p[1], q[1]);
+      if (w > 1 && h > 1) {
+        const cx = (Math.max(p[0], q[0]) + Math.min(p[2], q[2])) / 2, cy = (Math.max(p[1], q[1]) + Math.min(p[3], q[3])) / 2;
+        collisions.push({ a: ta.key, b: tb.key, w: Math.round(w * 10) / 10, h: Math.round(h * 10) / 10, visible: bothPainted(a, b, cx, cy) });
+      }
+    }
+  }
+  for (const e of els) delete e.__pinkIdx;
+  const boxes = {};
+  for (const e of document.querySelectorAll("[data-testid]")) { const b = e.getBoundingClientRect(); if (b.width > 0 && b.height > 0 && getComputedStyle(e).visibility !== "hidden") { const id = e.getAttribute("data-testid"); boxes[boxes[id] ? `${id}#${Object.keys(boxes).filter(x => x === id || x.startsWith(id + "#")).length + 1}` : id] = R(b); } }
+  return { vw, vh, texts: texts.map(({ _el, _idx, ...t }) => t), collisions, boxes };
+});
