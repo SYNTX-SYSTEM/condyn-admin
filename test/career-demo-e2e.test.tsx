@@ -160,9 +160,11 @@ describe("CONDYN Career Analysis Protocol v1.0 — Step 26: End-to-End Live Demo
       submitAnalysis: vi.fn()
     });
 
+    // Owner G1 Q1: the default PERSON × JOB hides orbits 03–06; the six-orbit field is PERSON.
     const html = renderToString(
       <SemanticCareerIntelligenceField
         data={sampleData}
+        investigationMode="PERSON"
       />
     );
 

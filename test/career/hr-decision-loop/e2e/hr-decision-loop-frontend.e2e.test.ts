@@ -165,7 +165,8 @@ describe("HR Decision Loop over HTTP against the production composition roots", 
   }, 60_000);
 
   it("server-renders the dock only for an explicit DCTXREV and keeps the SIL field otherwise untouched", async () => {
-    const withLoop = await (await fetch(`${base()}/career/demo?careerDecisionContextRevisionId=${world.contextA}&decisionContextRevisionId=${world.g2.childRevisionId}`)).text();
+    // Owner G1 Q1: the default PERSON × JOB hides orbits 03–06; the untouched six-orbit field is checked under PERSON.
+    const withLoop = await (await fetch(`${base()}/career/demo?careerDecisionContextRevisionId=${world.contextA}&decisionContextRevisionId=${world.g2.childRevisionId}&investigationMode=PERSON`)).text();
     expect(withLoop).toContain('data-testid="hr-decision-loop-dock"');
     expect(withLoop).toContain(`data-hr-decision-loop-context="${world.contextA}"`);
     expect(withLoop).toContain('data-sil-mode="PRE_CANONICAL_DISCOVERY"');
@@ -205,7 +206,7 @@ describe.skipIf(playwrightModule === null)("HR Decision Loop in a real browser",
 
   it("renders context A with all fifteen persisted states, the reconstructed next context lineage, and the DCDRB-bound root as an exact entry point, without touching the planetarium", async () => {
     pageErrors = [];
-    const page = await openPage(`/career/demo?careerDecisionContextRevisionId=${world.contextA}&decisionContextRevisionId=${world.g2.childRevisionId}`);
+    const page = await openPage(`/career/demo?careerDecisionContextRevisionId=${world.contextA}&decisionContextRevisionId=${world.g2.childRevisionId}&investigationMode=PERSON`);
     const dock = page.locator('[data-testid="hr-decision-loop-dock"][data-loop-read-state="AVAILABLE"]');
     await dock.waitFor({ timeout: 120_000 });
     expect(await page.locator('[data-testid^="hr-decision-loop-region-"][data-region-state="AVAILABLE"]').count()).toBe(15);
@@ -295,7 +296,7 @@ describe.skipIf(playwrightModule === null)("HR Decision Loop in a real browser",
 
   it("leaves the SIL field without any dock when no exact DCTXREV is selected", async () => {
     pageErrors = [];
-    const page = await openPage("/career/demo");
+    const page = await openPage("/career/demo?investigationMode=PERSON");
     await page.getByTestId("semantic-career-intelligence-field").waitFor({ timeout: 120_000 });
     expect(await page.locator('[data-testid^="hr-decision-loop"]').count()).toBe(0);
     for (const stage of ["01", "02", "03", "04", "05", "06"]) expect(await page.getByTestId(`focus-transition-stage-shell-${stage}`).count()).toBe(1);
