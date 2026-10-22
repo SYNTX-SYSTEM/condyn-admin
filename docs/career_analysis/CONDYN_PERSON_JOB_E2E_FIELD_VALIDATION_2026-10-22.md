@@ -227,7 +227,35 @@ Der Beleg eines Zitats ist kein Beleg professioneller Kompetenz.
 
 ## 11 — Unabhängige Prüfung durch PINK
 
-Angefragt am 2026-10-22, nur mit GET-Anfragen gegen :41862. Das Ergebnis steht noch aus; es folgt als Nachtrag.
+Angefragt am 2026-10-22, nur mit GET-Anfragen gegen :41862. Hier steht PINKs Rückmeldung, wie PINK sie berichtet hat; den eigenen Eintrag §3.55 schreibt PINK selbst.
+
+Rahmen:
+- PINK hat nur GET gesendet, etwa 22 per curl und 26 im Browser. Kein Gemini, kein Analyze, kein Upload.
+- Den Inspector-Token hat PINK **nicht** gelesen. Der Zugriff auf GELBs Laborverzeichnis wurde in PINKs eigener Session abgelehnt, und PINK hat das nicht umgangen.
+- Ohne Token antworten `gemini-result` und `gemini-exchanges` mit 404, wie vorgesehen.
+
+| # | Punkt | PINK |
+|---|---|---|
+| 1 | Session-Identität | **PASS**: Job → Analyse → Run → Convergence → Bindung stimmen überein |
+| 2 | PDF-Identität | **INCONCLUSIVE**: inhaltlich übereinstimmend (`DOC_001`, 247 Wörter, alle Zitate im PDF, Datei `efaa47ef…`); den Hash des Quellbündels zeigt nur der Inspector |
+| 3 | Pool-Identität | **PASS**: `rawSha256` gleich der Datei; den kanonischen Hash `b94850c4…` hat PINK selbst aus der Datei berechnet |
+| 4 | Rollen-Identität | **PASS**: 9/9 Anforderungen; `investigationScopeHash` unabhängig nachgerechnet, `8016b7c1…` |
+| 5 | Echte Modellausführung | **INCONCLUSIVE**: Inspector und Relay-Log waren für PINK nicht lesbar; nur Indizien (Ausführungsdauer) |
+| 6 | Persistiertes Ergebnis | **PASS**, über die lesenden Routen; die DB selbst hat PINK nicht gelesen |
+| 7 | Relationen | **PASS / NOT IMPLEMENTED**: B2 unabhängig nachgerechnet, 8/1, 9/9 Zeilen gleich; Rollenebene 1/2/5/1. Eine kanonische Relation ist nicht implementiert (NOT_EVALUATED). Beobachtung O-PXJ-NAME: Unter Scope heißen die Vorschläge wie die Anforderungen, die Namensabdeckung ist dadurch fast zirkulär |
+| 8 | Rückverfolgbarkeit | **PASS** auf Zitatebene (18 Discovery-, 16 Legacy- und 11 Trace-Zitate im PDF); **INCONCLUSIVE** für Spannen und Hashes, die nur der Inspector zeigt |
+| 9 | Erster Bildschirm | **PASS mit Beobachtungen**, geprüft am Deep Link auf die Rolle: 9 Anforderungen, 11 Evidenzspuren, B2 nach einem Klick. Beobachtung O-PXJ-PERSONLINK: Beim Deep Link auf die PERSON-Analyse zeigt der Modusschalter PERSON × JOB, das Feld lädt die Analyse aber korrekt nicht (NOT_SCOPED) |
+| 10 | Keine Vermischung | **PASS**: keine gemeinsamen IDs; Negativfälle 409 / 400 / 404 / SCOPE_MISMATCH |
+
+Unterschiedliche Lesart bei Punkt 9:
+- PINK hat den Deep Link auf die Rolle (Job Field) als ersten Bildschirm genommen.
+- GELB hat den Bildschirm geprüft, den die App direkt nach ANALYZE zeigt (Capability Field). Dort ist keine Relation sichtbar, deshalb G-1.
+- Beide Befunde stimmen. Welcher Bildschirm als „erster“ gilt, entscheidet der Owner.
+
+Offen für Punkt 5 und für die Spannen in Punkt 8:
+- PINK hat keinen unabhängigen Lesezugang zum Inspector.
+- `relay.jsonl` und `summary.json` in diesem Beleg stammen von GELB und sind für PINK keine unabhängige Quelle.
+- Ob PINK den Token bekommt, entscheidet der Owner.
 
 ## 12 — Quellen und Commits
 
