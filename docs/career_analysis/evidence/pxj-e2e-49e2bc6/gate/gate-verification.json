@@ -1,0 +1,425 @@
+{
+ "when": "2026-10-22T12:13:25.347Z",
+ "passed": 67,
+ "failed": 0,
+ "results": [
+  {
+   "id": "S1.1 bound only to 127.0.0.1",
+   "ok": true,
+   "detail": [
+    "127.0.0.1:41898"
+   ]
+  },
+  {
+   "id": "S1.2 unreachable via 192.168.2.124",
+   "ok": true,
+   "detail": "ECONNREFUSED"
+  },
+  {
+   "id": "S1.2 unreachable via 172.17.0.1",
+   "ok": true,
+   "detail": "ECONNREFUSED"
+  },
+  {
+   "id": "S1.2 unreachable via 192.168.123.1",
+   "ok": true,
+   "detail": "ECONNREFUSED"
+  },
+  {
+   "id": "S2.1 allowed ANL_1792628831636_456/gemini-result",
+   "ok": true,
+   "detail": 200
+  },
+  {
+   "id": "S2.1 allowed ANL_1792628993472_10/gemini-result",
+   "ok": true,
+   "detail": 200
+  },
+  {
+   "id": "S2.1 allowed JOB_1792628831636_456/gemini-exchanges",
+   "ok": true,
+   "detail": 200
+  },
+  {
+   "id": "S2.1 allowed JOB_1792628993472_10/gemini-exchanges",
+   "ok": true,
+   "detail": 200
+  },
+  {
+   "id": "S2.2 upstream received exactly the allowed calls",
+   "ok": true,
+   "detail": 4
+  },
+  {
+   "id": "S2.3 rejected /api/career/analyze",
+   "ok": true,
+   "detail": 403
+  },
+  {
+   "id": "S2.3 rejected /api/career/analyses/ANL_1792628993472_10",
+   "ok": true,
+   "detail": 403
+  },
+  {
+   "id": "S2.3 rejected /api/career/analyses/ANL_1792628993472_10/job-comparison?jobPoolUpload",
+   "ok": true,
+   "detail": 403
+  },
+  {
+   "id": "S2.3 rejected /api/career/analyses/ANL_1792628993472_10/investigation",
+   "ok": true,
+   "detail": 403
+  },
+  {
+   "id": "S2.3 rejected /api/career/analyses/ANL_9999999999999_1/gemini-result",
+   "ok": true,
+   "detail": 403
+  },
+  {
+   "id": "S2.3 rejected /api/career/jobs/JOB_9999999999999_1/gemini-exchanges",
+   "ok": true,
+   "detail": 403
+  },
+  {
+   "id": "S2.3 rejected /api/career/analyses/ANL_1792628993472_10/gemini-result?raw=1",
+   "ok": true,
+   "detail": 403
+  },
+  {
+   "id": "S2.3 rejected /api/career/analyses/ANL_1792628993472_10/gemini-result/",
+   "ok": true,
+   "detail": 403
+  },
+  {
+   "id": "S2.3 rejected //api/career/analyses/ANL_1792628993472_10/gemini-result",
+   "ok": true,
+   "detail": 403
+  },
+  {
+   "id": "S2.3 rejected /api/career/analyses/ANL_1792628993472_10/gemini-result#x",
+   "ok": true,
+   "detail": 403
+  },
+  {
+   "id": "S2.3 rejected /api/career/analyses/ANL_1792628993472_10/gemini-result/../../ANL_9999",
+   "ok": true,
+   "detail": 403
+  },
+  {
+   "id": "S2.3 rejected /api/career/analyses/ANL_1792628993472_10%2Fgemini-result",
+   "ok": true,
+   "detail": 403
+  },
+  {
+   "id": "S2.3 rejected /api/career/analyses/ANL_1792628993472_10/gemini-result%00",
+   "ok": true,
+   "detail": 403
+  },
+  {
+   "id": "S2.3 rejected /API/career/analyses/ANL_1792628993472_10/gemini-result",
+   "ok": true,
+   "detail": 403
+  },
+  {
+   "id": "S2.3 rejected http://127.0.0.1:41862/api/career/analyses/ANL_1792628993472_10/gemini",
+   "ok": true,
+   "detail": 403
+  },
+  {
+   "id": "S2.3 rejected http://evil.example/api/career/analyses/ANL_1792628993472_10/gemini-re",
+   "ok": true,
+   "detail": 403
+  },
+  {
+   "id": "S2.3 rejected *",
+   "ok": true,
+   "detail": 403
+  },
+  {
+   "id": "S2.3 rejected /aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+   "ok": true,
+   "detail": 403
+  },
+  {
+   "id": "S2.3 rejected /",
+   "ok": true,
+   "detail": 403
+  },
+  {
+   "id": "S2.4 nothing rejected reached the upstream",
+   "ok": true,
+   "detail": 4
+  },
+  {
+   "id": "S3.1 POST refused",
+   "ok": true,
+   "detail": 405
+  },
+  {
+   "id": "S3.1 PUT refused",
+   "ok": true,
+   "detail": 405
+  },
+  {
+   "id": "S3.1 PATCH refused",
+   "ok": true,
+   "detail": 405
+  },
+  {
+   "id": "S3.1 DELETE refused",
+   "ok": true,
+   "detail": 405
+  },
+  {
+   "id": "S3.1 OPTIONS refused",
+   "ok": true,
+   "detail": 405
+  },
+  {
+   "id": "S3.1 HEAD refused",
+   "ok": true,
+   "detail": 405
+  },
+  {
+   "id": "S3.1 TRACE refused",
+   "ok": true,
+   "detail": 405
+  },
+  {
+   "id": "S3.2 CONNECT refused",
+   "ok": true,
+   "detail": 405
+  },
+  {
+   "id": "S3.3 upgrade not forwarded",
+   "ok": true,
+   "detail": 405
+  },
+  {
+   "id": "S3.4 no refused method reached the upstream",
+   "ok": true,
+   "detail": 4
+  },
+  {
+   "id": "S5.1 host evil.example rejected",
+   "ok": true,
+   "detail": 403
+  },
+  {
+   "id": "S5.1 host localhost:41898 rejected",
+   "ok": true,
+   "detail": 403
+  },
+  {
+   "id": "S5.1 host 127.0.0.1:41862 rejected",
+   "ok": true,
+   "detail": 403
+  },
+  {
+   "id": "S5.1 host (none) rejected",
+   "ok": true,
+   "detail": 403
+  },
+  {
+   "id": "S5.2 no rejected host reached the upstream",
+   "ok": true,
+   "detail": 4
+  },
+  {
+   "id": "S4.1 client headers not forwarded (fresh header set)",
+   "ok": true,
+   "detail": [
+    "accept",
+    "connection",
+    "host",
+    "x-condyn-result-inspector-token"
+   ]
+  },
+  {
+   "id": "S6.1 no set-cookie, no CORS, no upstream extra headers",
+   "ok": true,
+   "detail": [
+    "content-type",
+    "cache-control",
+    "date",
+    "connection",
+    "transfer-encoding"
+   ]
+  },
+  {
+   "id": "S10.1 upstream down gives local 502",
+   "ok": true,
+   "detail": 502
+  },
+  {
+   "id": "S4.2 token absent from every response",
+   "ok": true,
+   "detail": 25
+  },
+  {
+   "id": "S4.3 token absent from gate log, stdout and stderr",
+   "ok": true,
+   "detail": {
+    "logLines": 38
+   }
+  },
+  {
+   "id": "S4.4 token absent from argv and environment",
+   "ok": true,
+   "detail": {
+    "argv": [
+     "node",
+     "inspector-read-gate.mjs",
+     "config.json"
+    ],
+    "envKeys": [
+     "PATH"
+    ]
+   }
+  },
+  {
+   "id": "S4.5 log holds metadata only",
+   "ok": true,
+   "detail": "keys"
+  },
+  {
+   "id": "S9.1 stop by own PID closes the port and removes the pid file",
+   "ok": true,
+   "detail": "[stop-gate] stopped pid 2647539, port 41898 closed"
+  },
+  {
+   "id": "S9.2 TTL stops the gate by itself",
+   "ok": true,
+   "detail": {
+    "upBefore": true,
+    "exit": 0
+   }
+  },
+  {
+   "id": "S8 refuses listen-any",
+   "ok": true,
+   "detail": {
+    "code": 2,
+    "err": "[gate] refused: LISTEN_NOT_LOOPBACK",
+    "bound": 0
+   }
+  },
+  {
+   "id": "S8 refuses listen-lan",
+   "ok": true,
+   "detail": {
+    "code": 2,
+    "err": "[gate] refused: LISTEN_NOT_LOOPBACK",
+    "bound": 0
+   }
+  },
+  {
+   "id": "S8 refuses upstream-lan",
+   "ok": true,
+   "detail": {
+    "code": 2,
+    "err": "[gate] refused: UPSTREAM_NOT_LOOPBACK",
+    "bound": 0
+   }
+  },
+  {
+   "id": "S8 refuses upstream-https",
+   "ok": true,
+   "detail": {
+    "code": 2,
+    "err": "[gate] refused: UPSTREAM_NOT_LOOPBACK",
+    "bound": 0
+   }
+  },
+  {
+   "id": "S8 refuses upstream-remote",
+   "ok": true,
+   "detail": {
+    "code": 2,
+    "err": "[gate] refused: UPSTREAM_NOT_LOOPBACK",
+    "bound": 0
+   }
+  },
+  {
+   "id": "S8 refuses upstream-path",
+   "ok": true,
+   "detail": {
+    "code": 2,
+    "err": "[gate] refused: UPSTREAM_NOT_LOOPBACK",
+    "bound": 0
+   }
+  },
+  {
+   "id": "S8 refuses same-port",
+   "ok": true,
+   "detail": {
+    "code": 2,
+    "err": "[gate] refused: LISTEN_PORT_INVALID",
+    "bound": 0
+   }
+  },
+  {
+   "id": "S8 refuses allow-analyze",
+   "ok": true,
+   "detail": {
+    "code": 2,
+    "err": "[gate] refused: ALLOWLIST_INVALID",
+    "bound": 0
+   }
+  },
+  {
+   "id": "S8 refuses allow-b2",
+   "ok": true,
+   "detail": {
+    "code": 2,
+    "err": "[gate] refused: ALLOWLIST_INVALID",
+    "bound": 0
+   }
+  },
+  {
+   "id": "S8 refuses allow-empty",
+   "ok": true,
+   "detail": {
+    "code": 2,
+    "err": "[gate] refused: ALLOWLIST_INVALID",
+    "bound": 0
+   }
+  },
+  {
+   "id": "S8 refuses token-short",
+   "ok": true,
+   "detail": {
+    "code": 2,
+    "err": "[gate] refused: TOKEN_INVALID",
+    "bound": 0
+   }
+  },
+  {
+   "id": "S8 refuses token-mode",
+   "ok": true,
+   "detail": {
+    "code": 2,
+    "err": "[gate] refused: TOKEN_FILE_MODE",
+    "bound": 0
+   }
+  },
+  {
+   "id": "S8 refuses ttl-missing",
+   "ok": true,
+   "detail": {
+    "code": 2,
+    "err": "[gate] refused: TTL_INVALID",
+    "bound": 0
+   }
+  },
+  {
+   "id": "S8 refuses port-busy",
+   "ok": true,
+   "detail": {
+    "code": 2,
+    "err": "[gate] refused: LISTEN_PORT_BUSY",
+    "bound": 1
+   }
+  }
+ ]
+}

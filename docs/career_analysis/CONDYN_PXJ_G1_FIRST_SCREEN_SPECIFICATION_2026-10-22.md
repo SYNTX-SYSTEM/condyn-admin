@@ -286,3 +286,15 @@ Eine Umsetzung braucht einen **eigenen Owner-Auftrag an GRÜN**. Diese Übergabe
 - Keine Implementierung, keine Backend-Änderung, kein Gemini-Aufruf, keine Integration.
 - Labor :41862 läuft unverändert.
 - STOP.
+
+## 11 — Owner-Entscheidung G1 (2026-10-22, „SYNTX::SFE::OWNER_DECISION_G1“)
+
+Die Architektur ist angenommen (ARCHITECTURE_SPECIFICATION_ACCEPTED). Die Fragen aus §09 sind beantwortet:
+
+- **Q-1:** Legacy-Orbits werden unter PERSON × JOB ausgeblendet, wo sie ein Matching oder eine Bewertung nahelegen. B2 ist die einzige Quelle. Daraus folgt: 03, 04, 05 und 06 werden ausgeblendet (Auftrag §06.1).
+- **Q-2:** Die Wiederherstellung nach einem Reload gehört zu G1. **P-15 ist damit ersetzt** durch Auftrag §03 und §04.
+- **Q-3:** Stufe 1 mit vorhandenen persistierten Testdaten oder deterministischem Fixture; Stufe 2 mit echtem Gemini nur nach einem eigenen GO. Stand-in nie als Modellausführung.
+- **Q-4:** Die Legacy-Rollendarstellung ist eine eigene, nicht autoritative Schicht. Quelle und Grenzen werden offengelegt, das Verhalten bleibt in G1 unverändert.
+- **Q-5:** Das Lesetor ist nur unter Bedingungen freigegeben. Der Prüfbericht liegt in `CONDYN_PINK_INSPECTOR_READ_GATE_SECURITY_2026-10-22.md`; gestartet wird erst auf ein Wort des Owners.
+
+Auftrag an GRÜN (Entwurf zur Freigabe): `CONDYN_PXJ_G1_GRUEN_ASSIGNMENT_2026-10-22.md`.
