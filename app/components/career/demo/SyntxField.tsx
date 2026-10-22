@@ -2168,6 +2168,15 @@ export function SyntxField({ workflow, analysisSource, observation: requested, o
             {investigation.mode !== "PERSON_X_JOB" && state !== "NO_POOL" ? t.investigation.state[investigation.mode] : withheld !== null && state !== "NO_POOL" ? t.investigation.withheld[withheld] : state === "AVAILABLE" ? t.matching : state === "NO_POOL" ? tp.selectionNone : state === "NO_ANALYSIS" ? tp.analysisNone : state === "LOADING" ? tp.matchesLoading : state === "NOT_FOUND" ? tp.matchesNotFound : state === "INACTIVE_POOL" ? tp.matchesInactive : state === "NOT_PROVISIONED" ? tp.notProvisioned : tp.matchesFailed}
           </span>
         )}
+        {/* C'' · owner G1 Q4: in PERSON × JOB the role level's presentation names its source and its limits (it is not B2). */}
+        {field !== null && investigation.mode === "PERSON_X_JOB" && (observation.kind === "ROLE" || observation.kind === "REQUIREMENT") && (
+          <span data-testid="syntx-legacy-disclosure" data-sx-disclosure="legacy" style={{ ...micro, display: "flex", flexDirection: "column", gap: "3px", marginTop: "10px", padding: "7px 10px", borderRadius: "10px", border: `1px solid rgba(${AMBER_RGB}, 0.32)`, background: `rgba(${AMBER_RGB}, 0.05)`, fontSize: "10px", lineHeight: 1.5, color: "rgba(214, 226, 236, 0.86)" }}>
+            <span style={{ fontWeight: 700, letterSpacing: "1.3px", color: AMBER }}>{t.legacyDisclosure.title}</span>
+            <span>{t.legacyDisclosure.source}</span>
+            <span>{t.legacyDisclosure.reach}</span>
+            <span>{t.legacyDisclosure.limits}</span>
+          </span>
+        )}
         {/* C' · the job scope: the observed role becomes the selected job only by this explicit action (SFE invariant). */}
         {field !== null && onSelectJobScope !== undefined && (observation.kind === "ROLE" || observation.kind === "REQUIREMENT") && observation.roleId !== null && (() => {
           const scopeHere = jobScope !== null && jobScope.jobPoolUploadId === field.pool.jobPoolUploadId && jobScope.poolRoleId === observation.roleId;

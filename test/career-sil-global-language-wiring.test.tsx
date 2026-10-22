@@ -50,12 +50,14 @@ const emptyGraph: any = {
   edges: []
 };
 
+// Owner G1 Q1: the default PERSON × JOB hides orbits 03–06; the complete six-orbit chrome is rendered under PERSON.
 describe("SIL global locale wiring", () => {
   it("renders the complete active SIL root chrome in English", () => {
     const html = renderToString(
       <SemanticCareerIntelligenceField
         data={emptyData}
         initialLocale="en"
+        investigationMode="PERSON"
       />
     );
 
@@ -85,6 +87,7 @@ describe("SIL global locale wiring", () => {
       <SemanticCareerIntelligenceField
         data={emptyData}
         initialLocale="de"
+        investigationMode="PERSON"
       />
     );
 

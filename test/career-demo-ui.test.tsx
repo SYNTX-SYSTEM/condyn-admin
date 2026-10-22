@@ -33,7 +33,8 @@ describe("CONDYN / SYNTX — Step 22c: Semantic Career Intelligence Field (SIL v
   });
 
   it("should render SemanticCareerIntelligenceField in pure Zero-State without fake fallback data", () => {
-    const html = renderToString(<SemanticCareerIntelligenceField data={EMPTY_CAREER_INTELLIGENCE_DATA} />);
+    // Owner G1 Q1: the default PERSON × JOB hides orbits 03–06; the six-orbit zero state is the PERSON field.
+    const html = renderToString(<SemanticCareerIntelligenceField data={EMPTY_CAREER_INTELLIGENCE_DATA} investigationMode="PERSON" />);
 
     // Basic layout asserts
     expect(html).toContain("SYNTX CORE • ORGANISM");

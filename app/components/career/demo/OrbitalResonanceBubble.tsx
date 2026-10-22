@@ -153,6 +153,8 @@ export interface OrbitalResonanceBubbleProps {
   locale?: SilLocale;
   attentionState?: "EMPTY_PROJECTION_ATTENTION" | null;
   canonicalState?: "AVAILABLE" | "EMPTY" | "NOT_PRODUCED" | "UNKNOWN" | "FAILED" | "PRE_CANONICAL";
+  /** PERSON × JOB (owner G1, D-G1-1): the action is not rendered; without the prop nothing changes. */
+  hideViewMatches?: boolean;
 }
 
 export function getOrbitAccentColor(stageId: string): string {
@@ -220,7 +222,8 @@ export function OrbitalResonanceBubble({
   sourcePresentation,
   locale = SIL_COPY.defaultLocale,
   attentionState = null,
-  canonicalState = "PRE_CANONICAL"
+  canonicalState = "PRE_CANONICAL",
+  hideViewMatches = false
 }: OrbitalResonanceBubbleProps) {
   const t = SIL_COPY[locale];
   const isEmptyProjectionAttention =
@@ -459,7 +462,7 @@ export function OrbitalResonanceBubble({
                     bg: "rgba(0, 255, 213, 0.16)",
                     border: "#00ffd5"
                   }
-                ].map((act) => (
+                ].filter((act) => !(hideViewMatches && act.id === "view-matches")).map((act) => (
                   <button
                     key={act.id}
                     data-testid={`hud-action-${act.id}`}

@@ -28,7 +28,10 @@ import { FocusTransitionStageShell } from "./manifestation/SyntxFocusShell";
 import { observationFromParams, type SyntxObservation } from "../../../../lib/career/job-pool/syntx-field-view-model";
 import { useJobPoolWorkflow } from "../../../../lib/career/ui/useJobPool";
 import { useJobScopeValidation } from "../../../../lib/career/ui/useJobScope";
-import { useAnalysisBoundary } from "../../../../lib/career/ui/useRoleInvestigation";
+import { useAnalysisBoundary, useSelectedRoleCoverage } from "../../../../lib/career/ui/useRoleInvestigation";
+import { useAnalysisResult } from "../../../../lib/career/ui/useAnalysisResult";
+import { decodeAnalysisResult, demoStateFromResult, firstScreenCoverageRequest, projectPxjFirstScreen, showsAnalysis, withoutLegacyOrbits, type AnalysisResultState } from "../../../../lib/career/view-model/pxj-first-screen";
+import { PxjAnalysisJobOffer, PxjFirstScreen, pxjFirstScreenVisible } from "./PxjFirstScreen";
 import { legacyJobComparisonPermitted } from "../../../../lib/career/investigation/client";
 import { JOB_SCOPE_REQUIRED_MESSAGE, JOB_SCOPE_URL_PARAMS, isJobScopeErrorCode, jobScopeFromParams, type JobScope } from "../../../../lib/career/job-pool/job-scope";
 import type { SyntxJobScopePresentation } from "./SyntxFieldSelector";
@@ -37,14 +40,12 @@ import { describeAnalysisSource } from "../../../../lib/career/job-pool/frontend
 import { buildEvidenceGraph } from "../../../../lib/career/evidence/traversal";
 import { computeGraphFocus } from "../../../../lib/career/evidence/highlight";
 import { DecisionGraphInspector } from "./DecisionGraphInspector";
-import { adaptCanonicalToDemoState } from "../../../../lib/career/ui-adapter";
-import { applyCapabilityProposalProjectionToDemoState } from "../../../../lib/career/capability-proposal-sil-adapter";
 import { buildSilSourcePresentation } from "../../../../lib/career/view-model/source-presentation";
 import { buildSilClusterPresentation } from "../../../../lib/career/view-model/cluster-presentation";
 import { useCareerAnalysisJob } from "../../../../lib/career/ui/useCareerAnalysisJob";
 import { SIL_COPY, type SilLocale } from "../../../../lib/career/view-model/sil-language";
 import { buildSilOrbitEmptyState } from "../../../../lib/career/view-model/orbit-empty-state";
-import { buildOrbitFocusProjection } from "../../../../lib/career/view-model/orbit-focus-projection";
+import { buildOrbitFocusProjection, presentSourcePlaceholders } from "../../../../lib/career/view-model/orbit-focus-projection";
 import { resolveOrbitalFocusNavigation } from "../../../../lib/career/view-model/orbital-focus-navigation";
 import type { SilOrbitStageId } from "../../../../lib/career/view-model/sil-language";
 import { decodeCanonicalSilFrontendPresentation, type CanonicalSilFrontendPresentation, type CanonicalSilFrontendRegionName } from "../../../../lib/career/sil-projection/frontend-presentation";
@@ -249,17 +250,16 @@ export function SemanticCareerIntelligenceField({
 }: SemanticCareerIntelligenceFieldProps) {
   const [locale, setLocale] = useState<SilLocale>(initialLocale);
   const t = SIL_COPY[locale];
-  const [activeData, setActiveData] = useState(data);
   const [canonicalSilPresentation, setCanonicalSilPresentation] = useState<CanonicalSilFrontendPresentation | null>(null);
-  const [activeStageId, setActiveStageId] = useState<string | null>(
+  const [requestedStageId, setActiveStageId] = useState<string | null>(
     initialFocus?.stageId ?? null
   );
-  const [hoveredStageId, setHoveredStageId] = useState<string | null>(null);
+  const [requestedHoverStageId, setHoveredStageId] = useState<string | null>(null);
   const hoverTimeoutRef = React.useRef<NodeJS.Timeout | null>(null);
-  const [zoomLevel, setZoomLevel] = useState<SemanticZoomLevel>(
+  const [requestedZoomLevel, setZoomLevel] = useState<SemanticZoomLevel>(
     initialFocus?.zoomLevel ?? 0
   );
-  const [selectedClusterId, setSelectedClusterId] = useState<string | null>(null);
+  const [requestedClusterId, setSelectedClusterId] = useState<string | null>(null);
   
   const job = useCareerAnalysisJob();
   const jobState = job.state.state;
@@ -275,15 +275,6 @@ export function SemanticCareerIntelligenceField({
     : null;
   const analysisSuccess = jobState === "SUCCEEDED";
   const analysisStep = jobState; // fallback mapping
-  const focusedOrbitPresentation =
-    jobState === "SUCCEEDED"
-      ? resolveSilFocusedOrbitPresentation(
-          activeStageId,
-          zoomLevel,
-          activeData,
-          locale
-        )
-      : null;
 
   /** The investigation boundary (owner GO "DEMO FRONTEND", 2026-10-15): one explicit mode for both fields, written to the URL only
    *  when chosen. A mode change never removes the selected job (G-05) and never touches sources or analyses. */
@@ -306,20 +297,26 @@ export function SemanticCareerIntelligenceField({
   const viewedAnalysisMode: "PERSON" | "PERSON_X_JOB" | null = analysisBoundary.state === "RESOLVED" ? analysisBoundary.value.mode : null;
   /** The pool the analysis was investigated in (its persisted PERSON_X_JOB scope's upload); never the interface's. */
   const analysisPool: string | null = analysisBoundary.state === "RESOLVED" && analysisBoundary.value.mode === "PERSON_X_JOB" ? analysisBoundary.value.jobScopeSelection?.jobPoolUploadId ?? null : null;
+  /** The requested field. Job Pool first (owner "JOB POOL FIRST / CAPABILITY GATE"): the Job Field is the ground state; CAPABILITY is
+   *  only requested here — it becomes the active field only while the job scope is VALID (`activeFieldFocus`, below). */
+  const [fieldFocus, setFieldFocus] = useState<"CAPABILITY" | "FIELD">(initialFieldFocus ?? "FIELD");
+  /** Capability gate: PERSON always open (the person needs no job); PERSON × JOB open only for a VALID job scope (a loaded, ACTIVE,
+   *  mapped pool and one of its roles); JOB closed (no person). Closed, the Job Field is the active field whatever was requested;
+   *  the request is kept, so the field returns to Capability as soon as the gate opens again. */
+  const capabilityGateOpen = investigationMode === "PERSON" || (investigationMode === "PERSON_X_JOB" && jobScopeValidation.state === "VALID");
+  const activeFieldFocus: "CAPABILITY" | "FIELD" = fieldFocus === "CAPABILITY" && capabilityGateOpen ? "CAPABILITY" : "FIELD";
   /** The Job Field compares an analysis with a pool only in PERSON × JOB, only for an analysis whose persisted boundary is
    *  PERSON_X_JOB, and only with the very pool it was investigated in (GELB legacyJobComparisonPermitted: no comparison across job
    *  scopes, also not with another version of the pool). The role is not a condition (the legacy comparison is pool-wide; the
    *  role-exact one is B2). A PERSON analysis, a boundary still being read, one the server cannot name, or another pool compare
    *  nothing (no misleading matching); the pool is never switched silently. JOB reads no analysis. */
   const comparisonCandidate = investigationMode === "PERSON_X_JOB" && analysisPool !== null;
-  const jobPoolWorkflow = useJobPoolWorkflow({ analysisId: comparisonCandidate && viewedAnalysisSource.kind !== "NONE" ? viewedAnalysisSource.analysisId : null, analysisJobPoolUploadId: analysisPool, initialJobPoolUploadId: jobPoolUploadId ?? null });
+  // The legacy pool comparison (/matches) is the Job Field's: read only while the Job Field is the active field (owner G1, A-02).
+  const jobPoolWorkflow = useJobPoolWorkflow({ analysisId: comparisonCandidate && activeFieldFocus === "FIELD" && viewedAnalysisSource.kind !== "NONE" ? viewedAnalysisSource.analysisId : null, analysisJobPoolUploadId: analysisPool, initialJobPoolUploadId: jobPoolUploadId ?? null });
   const jobComparisonAllowed = investigationMode === "PERSON_X_JOB" && viewedAnalysisSource.kind !== "NONE" && jobPoolWorkflow.selectedJobPoolUploadId !== null
     && legacyJobComparisonPermitted(analysisBoundary.state === "RESOLVED" ? analysisBoundary : null, { analysisId: viewedAnalysisSource.analysisId, jobPoolUploadId: jobPoolWorkflow.selectedJobPoolUploadId });
   const comparisonWithheld: "RESOLVING" | "PERSON" | "UNRESOLVED" | "OTHER_POOL" | null = investigationMode !== "PERSON_X_JOB" || viewedAnalysisSource.kind === "NONE" || jobComparisonAllowed ? null : analysisBoundary.state === "RESOLVING" || analysisBoundary.state === "IDLE" ? "RESOLVING" : viewedAnalysisMode === "PERSON" ? "PERSON" : analysisPool !== null ? (jobPoolWorkflow.selectedJobPoolUploadId === null ? null : "OTHER_POOL") : "UNRESOLVED";
   const jobPoolAnalysisSource = jobComparisonAllowed ? viewedAnalysisSource : describeAnalysisSource(null, null);
-  /** The requested field. Job Pool first (owner "JOB POOL FIRST / CAPABILITY GATE"): the Job Field is the ground state; CAPABILITY is
-   *  only requested here — it becomes the active field only while the job scope is VALID (`activeFieldFocus`, below). */
-  const [fieldFocus, setFieldFocus] = useState<"CAPABILITY" | "FIELD">(initialFieldFocus ?? "FIELD");
   const [observation, setObservation] = useState<SyntxObservation>(() => observationFromParams(initialJobOrganizationId, initialJobRoleId, initialJobRequirementId));
   const replaceUrlParam = (name: string, value: string | null) => {
     if (typeof window === "undefined" || typeof window.history?.replaceState !== "function") return;
@@ -390,15 +387,72 @@ export function SemanticCareerIntelligenceField({
   /** ANALYZE per mode: PERSON needs no job; PERSON × JOB only with a VALID scope (otherwise the owner's sentence stands at the
    *  trigger, verbatim); JOB is no document analysis. */
   const analyzeBlockedMessage = investigationMode === "PERSON" ? null : investigationMode === "JOB" ? investigationCopy.jobNotAnalyzable : jobScopeValidation.state === "VALID" ? null : JOB_SCOPE_REQUIRED_MESSAGE;
-  /** Capability gate: PERSON always open (the person needs no job); PERSON × JOB open only for a VALID job scope (a loaded, ACTIVE,
-   *  mapped pool and one of its roles); JOB closed (no person). Closed, the Job Field is the active field whatever was requested;
-   *  the request is kept, so the field returns to Capability as soon as the gate opens again. */
-  const capabilityGateOpen = investigationMode === "PERSON" || (investigationMode === "PERSON_X_JOB" && jobScopeValidation.state === "VALID");
   const capabilityGatedHint = investigationMode === "JOB" ? investigationCopy.capabilityGatedJob : t.syntx.selector.capabilityGated;
-  const activeFieldFocus: "CAPABILITY" | "FIELD" = fieldFocus === "CAPABILITY" && capabilityGateOpen ? "CAPABILITY" : "FIELD";
   /** The shell's brand follows the active field: directly on a switch (above), and here when the gate itself moves the field (a job
    *  becoming VALID after a reload with focus=CAPABILITY, or the selected job turning invalid). */
   useEffect(() => { onFieldFocusChange?.(activeFieldFocus); }, [activeFieldFocus]);
+
+  /* PERSON × JOB · the first screen (owner G1, 2026-10-22): analysisId → persisted result → boundary → B2 → one closed state. */
+  /** The mode an analysis of this session was declared with; written to the URL with its id once it SUCCEEDED (§03.1). */
+  const declaredModeRef = React.useRef<InvestigationMode | null>(null);
+  useEffect(() => {
+    if (jobState !== "SUCCEEDED" || !job.state.resultAnalysisId) return;
+    replaceUrlParam("analysisId", job.state.resultAnalysisId);
+    if (declaredModeRef.current !== null) replaceUrlParam(INVESTIGATION_URL_PARAM, declaredModeRef.current);
+  }, [jobState, job.state.resultAnalysisId]);
+  /** The session's own result (M-01) has precedence; it is decoded exactly like a reload's. */
+  const sessionResult = React.useMemo(
+    () => viewedAnalysisSource.kind === "JOB_RESULT" && job.state.canonicalAnalysis ? decodeAnalysisResult(job.state.canonicalAnalysis, viewedAnalysisSource.analysisId) : null,
+    [viewedAnalysisSource.kind, viewedAnalysisSource.kind === "NONE" ? null : viewedAnalysisSource.analysisId, job.state.canonicalAnalysis]
+  );
+  /** Reload or deep link: the same route read again (GET), only while no session result is on view and the mode reads analyses. */
+  const persistedResult = useAnalysisResult(sessionResult === null && investigationMode !== "JOB" && viewedAnalysisSource.kind !== "NONE" ? viewedAnalysisSource.analysisId : null);
+  const resultState: AnalysisResultState = sessionResult === null ? persistedResult : sessionResult.ok ? { state: "AVAILABLE", result: sessionResult.result } : { state: "FAILED", code: sessionResult.code };
+  const firstScreenInput = {
+    mode: investigationMode,
+    analysisId: viewedAnalysisSource.kind === "NONE" ? null : viewedAnalysisSource.analysisId,
+    result: resultState,
+    boundary: analysisBoundary,
+    selection: jobScopeValidation.state === "VALID" ? jobScopeValidation.scope : null
+  };
+  /** B2 is read only on the Capability Field, in PERSON × JOB, for the analysis's own selected job (P-01); with the existing hook. */
+  const coverageRequest = activeFieldFocus === "CAPABILITY" ? firstScreenCoverageRequest(firstScreenInput) : null;
+  const firstScreenCoverage = useSelectedRoleCoverage(coverageRequest?.analysisId ?? null, coverageRequest?.scope ?? null);
+  const firstScreen = projectPxjFirstScreen({ ...firstScreenInput, coverage: firstScreenCoverage });
+  /** Whether this analysis is on the Capability Field at all: only in the states that show its proposals. */
+  const shownResult = showsAnalysis(firstScreen) ? firstScreen.result : null;
+  /** The orbits count as projected (empty-projection presentation, attention, clusters) when this analysis is on the field, or, as
+   *  before G1, after a SUCCEEDED job that names no analysis (the field's own data). Never while a state withholds the analysis. */
+  const resultOnView = shownResult !== null || (jobState === "SUCCEEDED" && firstScreen.state === "NO_ANALYSIS");
+  /** Q1: under PERSON × JOB the legacy orbits (03 resonance, 04 roles, 05 tension, 06 evolution) are not shown: no orbit, count, HUD
+   *  action, coupling line, inspector node or text. A focus requested on one of them is not shown either. */
+  const legacyHidden = investigationMode === "PERSON_X_JOB";
+  const legacyStage = (stageId: string | null) => legacyHidden && stageId !== null && ["03", "04", "05", "06"].includes(stageId);
+  const stageMasked = legacyStage(requestedStageId);
+  const activeStageId = stageMasked ? null : requestedStageId;
+  const hoveredStageId = legacyStage(requestedHoverStageId) ? null : requestedHoverStageId;
+  const zoomLevel: SemanticZoomLevel = stageMasked ? 0 : requestedZoomLevel;
+  const selectedClusterId = stageMasked ? null : requestedClusterId;
+  const activeData = React.useMemo(() => {
+    const shown = canonicalSilPresentation !== null || shownResult === null ? data : legacyHidden ? withoutLegacyOrbits(demoStateFromResult(shownResult)) : demoStateFromResult(shownResult);
+    // §07: a placeholder is named as one (title / hash not delivered), never shown as a title or a hash; in every mode.
+    return { ...shown, sources: presentSourcePlaceholders(shown.sources, { title: t.pxjFirst.titleNotDelivered, hash: t.pxjFirst.hashNotDelivered }) };
+  }, [data, canonicalSilPresentation, shownResult, legacyHidden, t]);
+  const focusedOrbitPresentation =
+    resultOnView
+      ? resolveSilFocusedOrbitPresentation(
+          activeStageId,
+          zoomLevel,
+          activeData,
+          locale
+        )
+      : null;
+  /** ROLE_MISMATCH offers the analysis's own job as an explicit choice; the selection changes only by this action. */
+  const selectAnalysisJob = (scope: JobScope) => {
+    setJobScope(scope);
+    replaceUrlParam(JOB_SCOPE_URL_PARAMS.jobPoolUploadId, scope.jobPoolUploadId);
+    replaceUrlParam(JOB_SCOPE_URL_PARAMS.poolRoleId, scope.poolRoleId);
+  };
   const [inferenceTelemetry, setInferenceTelemetry] = useState<any>(initialAnalysisState?.inferenceTelemetry ?? null);
   const [lastStagedDocs, setLastStagedDocs] = useState<any[]>([]);
   const [isCodexOpen, setIsCodexOpen] = useState(false);
@@ -439,23 +493,14 @@ export function SemanticCareerIntelligenceField({
       if (canonical.inferenceTelemetry) {
         setInferenceTelemetry(canonical.inferenceTelemetry);
       }
-      
-      const realData = canonical.analysis || canonical.data || canonical;
-      const projectedLegacyState = adaptCanonicalToDemoState(
-        realData, 
-        lastStagedDocs, 
-        canonical.sourceManifest
-      );
-      // F11 overlays only the explicit proposal capability representation;
-      // the legacy analysis projection remains responsible for every other orbit.
-      setActiveData(applyCapabilityProposalProjectionToDemoState(
-        projectedLegacyState,
-        canonical.capabilityProposalProjection ?? null
-      ));
+      // The Capability Field's data follows the first screen's state (above): the session's result passes the same decoder and
+      // adapters as a reload's (adaptCanonicalToDemoState, then the F11 proposal overlay), and is not shown where its state says no.
     }
   }, [job.state.state, job.state.canonicalAnalysis, canonicalSilPresentation]);
 
   const handleHudAction = (action: "OPEN EVIDENCE" | "INSPECT SOURCES" | "VIEW MATCHES", stageId: string) => {
+    // No legacy matching in PERSON × JOB (Q1): the action is not rendered there, and not acted on either.
+    if (legacyHidden && (action === "VIEW MATCHES" || legacyStage(stageId))) return;
     setActiveStageId(stageId);
 
     if (stageId !== "02") {
@@ -493,6 +538,7 @@ export function SemanticCareerIntelligenceField({
     // is no document analysis (the controller re-checks the payload).
     const declared = declareAnalysis(investigationMode, jobScopeValidation);
     if (!declared.ok) return;
+    declaredModeRef.current = investigationMode;
     setLastStagedDocs(stagedDocs);
     const documentsPayload = stagedDocs.map((doc) => {
       if (doc.type === "pdf") {
@@ -618,7 +664,7 @@ export function SemanticCareerIntelligenceField({
       previewItems: canonicalStage("06")?.artifactIds.slice(0, 3) ?? activeData.nextActions.slice(0, 3).map((a) => a.title),
       canonicalState: canonicalDisplayState("06")
     }
-  ];
+  ].filter((stage) => !legacyStage(stage.stageId));
 
   const radius = 330;
   const center = 400;
@@ -647,7 +693,7 @@ export function SemanticCareerIntelligenceField({
 
   const subClusters = buildSilClusterPresentation(
     activeStageId,
-    analysisSuccess,
+    resultOnView,
     sourcePresentation,
     activeData
   );
@@ -995,7 +1041,7 @@ export function SemanticCareerIntelligenceField({
               <SyntxPlanetariumBackdrop center={center} radius={radius} glowOpacity={focusedStageId ? "0.32" : "0.22"} />
 
               {/* Phase 2d: Inter-Orbital Coupling weighted relationships */}
-              <g data-testid="inter-orbital-coupling">
+              {!legacyHidden && <g data-testid="inter-orbital-coupling">
                 <path
                   d="M 565 685.79 Q 540 320 235 685.79"
                   fill="none"
@@ -1011,7 +1057,7 @@ export function SemanticCareerIntelligenceField({
                   strokeWidth="1.2"
                   strokeDasharray="3 5"
                 />
-              </g>
+              </g>}
 
               {/* Energy Rays Connecting Core to Each Orbital Node */}
               {stages.map((st) => {
@@ -1117,7 +1163,7 @@ export function SemanticCareerIntelligenceField({
                     copyAboveAnchorOpacity
                     emptyVisualUnderlay={
                       isCosmosAnchor &&
-                      jobState === "SUCCEEDED" &&
+                      resultOnView &&
                       focusedOrbitPresentation?.kind === "EMPTY_PROJECTION" &&
                       focusedOrbitPresentation.emptyState ? (
                         <SilOrbitEmptyState
@@ -1130,7 +1176,7 @@ export function SemanticCareerIntelligenceField({
                     }
                     emptyCopyForeground={
                       isCosmosAnchor &&
-                      jobState === "SUCCEEDED" &&
+                      resultOnView &&
                       focusedOrbitPresentation?.kind === "EMPTY_PROJECTION" &&
                       focusedOrbitPresentation.emptyState ? (
                         <SilOrbitEmptyStateCopy
@@ -1157,8 +1203,9 @@ export function SemanticCareerIntelligenceField({
                       attentionState={resolveSilOrbitAttentionState(
                         st.stageId,
                         activeData,
-                        jobState
+                        resultOnView ? "SUCCEEDED" : "WITHHELD"
                       )}
+                      hideViewMatches={legacyHidden}
                       onClick={() => {
                         const nextFocus = resolveOrbitalFocusNavigation({
                           activeStageId: activeStageId as SilOrbitStageId | null,
@@ -1498,6 +1545,14 @@ export function SemanticCareerIntelligenceField({
           </button>
         </div>
       )}
+
+      {/* PERSON × JOB · the first screen: the closed state of the chain and, when available, the B2 coverage of the selected role. */}
+      {activeFieldFocus === "CAPABILITY" && investigationMode !== "JOB" && pxjFirstScreenVisible(firstScreen, investigationMode) && (
+        <div style={{ opacity: isOrbitStageFocus ? 0.12 : 1, filter: isOrbitStageFocus ? "blur(3px)" : undefined, pointerEvents: isOrbitStageFocus ? "none" : "auto", transition: "opacity 0.56s ease, filter 0.56s ease" }}>
+          <PxjFirstScreen screen={firstScreen} mode={investigationMode} locale={locale} onSwitchMode={selectInvestigationMode} onSelectRole={selectAnalysisJob} />
+        </div>
+      )}
+      {activeFieldFocus === "FIELD" && investigationMode === "PERSON_X_JOB" && <PxjAnalysisJobOffer screen={firstScreen} locale={locale} onSelectRole={selectAnalysisJob} />}
 
       {/* Persistent Top-Right How This Works / Codex Button */}
       <div

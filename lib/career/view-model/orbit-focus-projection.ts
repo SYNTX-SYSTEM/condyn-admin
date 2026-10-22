@@ -18,6 +18,22 @@ function present(values: Array<string | undefined>) {
   return values.filter((value): value is string => Boolean(value && value.trim()));
 }
 
+/** The legacy adapter's placeholders (lib/career/ui-adapter.ts): a missing title and a missing content hash. */
+const TITLE_PLACEHOLDER = "Unknown Document";
+const HASH_PLACEHOLDER = /^HASH-/;
+
+/**
+ * §07 of owner G1 (F-SRC-HASH): a placeholder is named as one, never shown as a title or a hash. Display only, in every mode; the
+ * adapter's values stay as they are, and the source's identity (sourceDocumentId) is not touched.
+ */
+export function presentSourcePlaceholders<T extends { sourceTitle?: string; contentHash: string }>(sources: T[], labels: { title: string; hash: string }): T[] {
+  return sources.map((source) => {
+    const title = source.sourceTitle === TITLE_PLACEHOLDER ? labels.title : source.sourceTitle;
+    const contentHash = HASH_PLACEHOLDER.test(source.contentHash) ? labels.hash : source.contentHash;
+    return title === source.sourceTitle && contentHash === source.contentHash ? source : { ...source, sourceTitle: title, contentHash };
+  });
+}
+
 /**
  * Adapts each existing SIL collection to the shared spatial shell while
  * retaining its own identity and legitimate secondary content.

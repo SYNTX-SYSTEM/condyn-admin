@@ -77,6 +77,7 @@ describe("SIL empty-orbit visual attention", () => {
     );
   });
 
+  // Owner G1 Q1: the default PERSON × JOB hides orbits 03–06; the six-orbit attention is checked under PERSON.
   it("wires all six empty orbits after SUCCEEDED", () => {
     (useCareerAnalysisJob as any).mockReturnValue({
       state: {
@@ -91,7 +92,7 @@ describe("SIL empty-orbit visual attention", () => {
     });
 
     const html = renderToString(
-      <SemanticCareerIntelligenceField data={emptyData} />
+      <SemanticCareerIntelligenceField data={emptyData} investigationMode="PERSON" />
     );
 
     const matches =
@@ -139,6 +140,7 @@ describe("SIL empty-orbit visual attention", () => {
 
     const html = renderToString(
       <SemanticCareerIntelligenceField
+        investigationMode="PERSON"
         data={{
           ...emptyData,
           capabilities: [

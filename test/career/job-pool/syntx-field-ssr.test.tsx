@@ -32,7 +32,8 @@ import { CareerIntelligenceDashboard } from "../../../app/components/career/demo
 import { EMPTY_CAREER_INTELLIGENCE_DATA } from "../../../app/career/demo/demo-data";
 
 const chrome = ["semantic-career-intelligence-field", "semantic-zoom-telemetry", "identity-core-wrapper", "decision-graph-inspector-idle", "how-this-works-btn", "open-system-codex-btn", "semantic-guide-drawer-toggle"];
-const stages = ["01", "02", "03", "04", "05", "06"];
+/** Owner G1 Q1: PERSON × JOB (the default) mounts the Capability Field with orbits 01 and 02 only; 03–06 are not rendered. */
+const pxjStages = ["01", "02"], legacyStages = ["03", "04", "05", "06"];
 const RETIRED = ["job-field", "job-field-nearest", "job-field-thread-", "job-field-nebula-", "job-field-lens", "job-field-legend", "job-pool-panel\"", "job-pool-selected", "job-pool-orbit", "job-pool-structure-", "job-pool-role-list", "job-pool-role-lens-", "field-focus-job-btn"];
 /** Visible text of one server-rendered region (everything outside tags between two markers), to prove that proof ids are attributes only. */
 const textOf = (html: string, startMarker: string, endMarker: string): string => {
@@ -57,7 +58,8 @@ describe("SYNTX field (server-rendered)", () => {
     for (const id of RETIRED) expect(html).not.toContain(`data-testid="${id}`);
     // The Capability Field stays mounted underneath (hidden by the exclusivity rule), so no staged state can be lost.
     for (const id of chrome) expect(html).toContain(`data-testid="${id}"`);
-    for (const stage of stages) expect(html).toContain(`data-testid="focus-transition-stage-shell-${stage}"`);
+    for (const stage of pxjStages) expect(html).toContain(`data-testid="focus-transition-stage-shell-${stage}"`);
+    for (const stage of legacyStages) expect(html).not.toContain(`data-testid="focus-transition-stage-shell-${stage}"`);
     expect(html).not.toContain("hr-decision-loop-dock");
   });
 
@@ -98,7 +100,8 @@ describe("SYNTX field (server-rendered)", () => {
     expect(noPool).toContain('data-testid="job-pool-upload"');
     expect(noPool).toMatch(/data-testid="job-pool-upload"[^>]*hidden=""/);
     for (const id of chrome) expect(noPool).toContain(`data-testid="${id}"`);
-    for (const stage of stages) expect(noPool).toContain(`data-testid="focus-transition-stage-shell-${stage}"`);
+    for (const stage of pxjStages) expect(noPool).toContain(`data-testid="focus-transition-stage-shell-${stage}"`);
+    for (const stage of legacyStages) expect(noPool).not.toContain(`data-testid="focus-transition-stage-shell-${stage}"`);
     const listed = renderToString(<SemanticCareerIntelligenceField data={EMPTY_CAREER_INTELLIGENCE_DATA} fieldFocus="FIELD" jobPoolUploadId="JPOOL_LISTED" analysisId="ANL_TEST" />);
     expect(listed).toContain(`data-testid="job-pool-select-${UPLOAD_ID}"`);
     const byUpload = renderToString(<SemanticCareerIntelligenceField data={EMPTY_CAREER_INTELLIGENCE_DATA} jobPoolUploadId="JPOOL_WITH_MATCHES" analysisId="ANL_TEST" />);

@@ -23,7 +23,8 @@ describe("SIL HR Decision Loop dock (server-rendered field)", () => {
   });
 
   it("mounts the dock for an explicit DCTXREV and preserves the complete field geometry", () => {
-    const html = renderToString(<SemanticCareerIntelligenceField data={EMPTY_CAREER_INTELLIGENCE_DATA} careerDecisionContextRevisionId="DCTXREV_SSR" decisionContextRevisionId="DREV_SSR" />);
+    // Owner G1 Q1: the default PERSON × JOB hides orbits 03–06; the complete field geometry is the PERSON field.
+    const html = renderToString(<SemanticCareerIntelligenceField data={EMPTY_CAREER_INTELLIGENCE_DATA} careerDecisionContextRevisionId="DCTXREV_SSR" decisionContextRevisionId="DREV_SSR" investigationMode="PERSON" />);
     expect(html).toContain('data-testid="hr-decision-loop-dock"');
     expect(html).toContain('data-hr-decision-loop-context="DCTXREV_SSR"');
     expect(html).toContain('data-loop-read-state="IDLE"');
