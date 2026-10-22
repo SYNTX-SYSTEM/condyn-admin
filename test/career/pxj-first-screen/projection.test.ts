@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { decodeAnalysisResult, demoStateFromResult, firstScreenCoverageRequest, projectPxjFirstScreen, withoutLegacyOrbits, type FirstScreenInput } from "../../../lib/career/view-model/pxj-first-screen";
 import { readAnalysisResult } from "../../../lib/career/ui/useAnalysisResult";
-import { ANALYSIS, OTHER_ROLE, ROLE, UPLOAD, boundary, coverage, projection, resultBody, scripted, selection } from "./fixtures";
+import { ANALYSIS, LEGACY_CAPABILITIES, OTHER_ROLE, ROLE, UPLOAD, boundary, coverage, projection, resultBody, scripted, selection } from "./fixtures";
 
 /** PERSON × JOB · first screen (owner G1): the decoder (T-01), one way for session and reload (T-02), the bindings (T-04), the lineage (T-05) and the quote join (T-06). */
 const accepted = () => { const decoded = decodeAnalysisResult(resultBody(), ANALYSIS); if (!decoded.ok) throw new Error(decoded.code); return decoded.result; };
@@ -71,6 +71,16 @@ describe("T-02 · one way for the session and a reload", () => {
     expect([hidden.companyMatches, hidden.roleMatches, hidden.capabilityGaps, hidden.nextActions]).toEqual([[], [], [], []]);
     expect(hidden.capabilities).toEqual(data.capabilities);
     expect(hidden.sources).toEqual(data.sources);
+  });
+
+  it("PINK D-G1-P1: without a projection the legacy capabilities stay the PERSON field's; under PERSON × JOB orbit 02 is empty", () => {
+    const decoded = decodeAnalysisResult(resultBody({ capabilityProposalProjection: null }), ANALYSIS);
+    if (!decoded.ok) throw new Error(decoded.code);
+    const legacy = demoStateFromResult(decoded.result);
+    expect(legacy.capabilities.map(capability => [capability.name, capability.evidenceConfidence])).toEqual(LEGACY_CAPABILITIES.map(name => [name, 0.93]));
+    expect(withoutLegacyOrbits(legacy).capabilities).toEqual([]);
+    // With a projection only its proposals remain; a legacy capability never stands beside them.
+    expect(withoutLegacyOrbits(demoStateFromResult(accepted())).capabilities.every(capability => capability.projectionState === "PROPOSED")).toBe(true);
   });
 });
 

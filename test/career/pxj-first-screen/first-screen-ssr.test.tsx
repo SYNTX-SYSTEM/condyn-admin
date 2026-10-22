@@ -2,7 +2,7 @@ import React from "react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { renderToString } from "react-dom/server";
 import { matches, summary, UPLOAD_ID, view } from "../job-pool/fixtures/match-bodies";
-import { ANALYSIS, LEGACY_NAMES, OTHER_ROLE, ROLE, UPLOAD, boundary, coverage, resultBody, scripted, selection } from "./fixtures";
+import { ANALYSIS, LEGACY_CAPABILITIES, LEGACY_NAMES, OTHER_ROLE, ROLE, UPLOAD, boundary, coverage, resultBody, scripted, selection } from "./fixtures";
 
 /** PERSON × JOB · the first screen, server-rendered (owner G1): states (T-03), legacy (T-07), no number (T-08), placeholders (T-10), role level (T-11). */
 const control = vi.hoisted(() => ({
@@ -230,6 +230,28 @@ describe("D-G1-1 · VIEW MATCHES (owner: only the optional prop hideViewMatches)
     expect(hidden).not.toMatch(/VIEW MATCHES/i);
     expect(hidden).toContain('data-testid="hud-action-open-evidence"');
     expect(without.replace(/<button[^>]*data-testid="hud-action-view-matches"[^>]*>[\s\S]*?<\/button>/, "")).toBe(hidden);
+  });
+});
+
+describe("PINK D-G1-P1 · NO_PROJECTION under PERSON × JOB: no legacy capability anywhere", () => {
+  const noProjection = () => { const decoded = decodeAnalysisResult(resultBody({ capabilityProposalProjection: null }), ANALYSIS); if (!decoded.ok) throw new Error(decoded.code); control.result = { state: "AVAILABLE", result: decoded.result }; };
+  it("L0, orbit 02 cosmos (zoom 1) and orbit 02 at zoom 2: no legacy name, no %, orbit 02 counts nothing; the panel says so", () => {
+    noProjection();
+    for (const props of [{}, { initialFocus: { stageId: "02", zoomLevel: 1 } }, { initialFocus: { stageId: "02", zoomLevel: 2 } }]) {
+      const html = field(props);
+      expect(tag(html, "pxj-first-screen")).toContain('data-state="NO_PROJECTION"');
+      for (const name of [...LEGACY_CAPABILITIES, ...LEGACY_NAMES]) expect(html, `${name} ${JSON.stringify(props)}`).not.toContain(name);
+      expect(html).not.toContain("CAP_00");
+      expect(visibleText(html.replace(/<p data-pxj-quote[^>]*>[\s\S]*?<\/p>/g, " ")).match(/\d+\s*%/)).toBeNull();
+      expect(visibleText(region(html, "focus-transition-stage-shell-02"))).toMatch(/\b0 items\b/);
+      expect(region(html, "decision-graph-inspector-idle") + region(html, "decision-graph-inspector")).not.toMatch(/CAP_00|Legacy/);
+    }
+  });
+
+  it("under PERSON a PERSON analysis without a projection keeps today's legacy capabilities (unchanged)", () => {
+    noProjection();
+    control.boundary = { state: "RESOLVED", value: boundary({ mode: "PERSON", jobScopeSelection: null, investigationScopeHash: null }) };
+    expect(visibleText(region(field({ investigationMode: "PERSON" }), "focus-transition-stage-shell-02"))).toMatch(/\b2 items\b/);
   });
 });
 

@@ -99,9 +99,12 @@ export function demoStateFromResult(result: DecodedAnalysisResult): DemoCareerIn
   return applyCapabilityProposalProjectionToDemoState(adaptCanonicalToDemoState(result.body.analysis, []), result.projection);
 }
 
-/** PERSON × JOB shows no legacy orbit (owner Q1): no organisation, role, gap or strategy reaches a projection or the inspector. */
+/**
+ * PERSON × JOB shows nothing of the legacy analysis (owner Q1): no organisation, role, gap or strategy, and no capability but the
+ * projection's proposals. Without a projection the legacy adapter's capabilities would stand in orbit 02 (PINK D-G1-P1): they stay out.
+ */
 export function withoutLegacyOrbits(data: DemoCareerIntelligenceData): DemoCareerIntelligenceData {
-  return { ...data, companyMatches: [], roleMatches: [], capabilityGaps: [], nextActions: [] };
+  return { ...data, capabilities: data.capabilities.filter(capability => capability.projectionState === "PROPOSED"), companyMatches: [], roleMatches: [], capabilityGaps: [], nextActions: [] };
 }
 
 /* ---------------------------------------------------------------- read states (inputs) */

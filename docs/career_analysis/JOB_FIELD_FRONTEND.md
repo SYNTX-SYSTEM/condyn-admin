@@ -1754,6 +1754,8 @@ already fail on `49e2bc6`.
   explicitly under PERSON; `syntx-field-ssr` expects 01/02 and no 03–06 in the default mode.
 - K-G1-1 (GELB): evidence under `docs/` is not a file-list deviation.
 - D-G1-3 (GRÜN, for review): the Job Field's legacy comparison (`/matches`) is read only while the Job Field is active.
+- PINK D-G1-P1 (fixed): without a projection, PERSON × JOB shows no legacy capability in orbit 02; only proposals of the
+  projection reach it.
 
 ### 13.3 DOM contract (PINK BR-1 … BR-5; GELB conditions a/b)
 

@@ -26,6 +26,8 @@ export const projection = () => ({
 
 /** The legacy analysis carries one organisation, one role and one strategy: under PERSON × JOB none of them may surface. */
 export const LEGACY_NAMES = ["Legacy Resonance Works", "Legacy Inferred Lead", "Legacy Strategy Path"] as const;
+/** The unscoped legacy analysis's own capabilities (with a confidence): never on the first screen under PERSON × JOB (PINK D-G1-P1). */
+export const LEGACY_CAPABILITIES = ["Legacy Unscoped Kubernetes", "Legacy Unscoped Leadership"] as const;
 
 export const resultBody = (overrides: Record<string, unknown> = {}) => ({
   success: true,
@@ -40,7 +42,7 @@ export const resultBody = (overrides: Record<string, unknown> = {}) => ({
       analysis: {
         metadata: { analysis_id: ANALYSIS, analysis_timestamp: "2026-10-22T08:00:00.000Z" },
         documents: [{ entity_id: "DOC_001", identity: { name: "Synthetic profile.pdf" }, properties: { hash_sha256: "5f1c0ffee5f1c0ffee5f1c0ffee5f1c0ffee5f1c0ffee5f1c0ffee5f1c0ffee5" } }],
-        capabilities: [],
+        capabilities: LEGACY_CAPABILITIES.map((name, index) => ({ entity_id: `CAP_00${index + 1}`, identity: { name }, properties: { category: "Engineering" }, confidence: 0.93, evidence: [{ context_quote: "legacy context" }] })),
         organizations: [{ entity_id: "ORG_L1", identity: { name: LEGACY_NAMES[0] }, evidence: [] }],
         roles: [{ entity_id: "ROLE_L1", identity: { name: LEGACY_NAMES[1] }, relationships: [], evidence: [] }],
         requirements: [],

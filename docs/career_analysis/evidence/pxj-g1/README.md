@@ -95,6 +95,12 @@ analysis's own job. `/matches` is read only while the Job Field is the active fi
     from the persisted documents (§07). For this route the session's output is the same as before.
   - A result about another analysis than the one on view is treated as not yet arrived (RESULT_LOADING), never shown.
 
+- **PINK D-G1-P1 (fixed after §3.56):** in NO_PROJECTION under PERSON × JOB the legacy adapter's capabilities stood in orbit 02
+  (count, names, `evidenceConfidence` as a percentage). `withoutLegacyOrbits` now keeps only the projection's proposals, so without a
+  projection orbit 02 is empty. A test with legacy capabilities in the analysis checks L0, zoom 1 and zoom 2 under PERSON × JOB
+  and the unchanged PERSON field. It fails on `50776fc` and passes with the fix: G1 tests 74/74, with the adapted files and the
+  field's SSR group 263/263. The legacy fixture of the earlier tests had no capabilities, so it could not see this path.
+
 ## 5 · Findings outside G1 (not changed)
 
 - **F-G1-MD:** a `.md` or `.txt` file through the Source Dock's file input is sent as `type: "pdf"`; the worker answers
