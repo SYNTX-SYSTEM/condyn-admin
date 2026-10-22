@@ -1,0 +1,52 @@
+# PINK static check of frontend/pxj-first-screen-g1 50776fc against 49e2bc6 and the assignment (15332a5, §08 files).
+
+## Changed files (git diff --name-status 49e2bc6 50776fc, shots folded)
+M	app/components/career/demo/OrbitalResonanceBubble.tsx
+A	app/components/career/demo/PxjFirstScreen.tsx
+M	app/components/career/demo/SemanticCareerIntelligenceField.tsx
+M	app/components/career/demo/SyntxField.tsx
+M	docs/career_analysis/JOB_FIELD_FRONTEND.md
+A	docs/career_analysis/evidence/pxj-g1/README.md
+A	docs/career_analysis/evidence/pxj-g1/measures/STANDIN-layout.json
+A	docs/career_analysis/evidence/pxj-g1/measures/STANDIN-walk-1280.json
+A	docs/career_analysis/evidence/pxj-g1/measures/STANDIN-walk-1920.json
+A	docs/career_analysis/evidence/pxj-g1/measures/suite.txt
+A	docs/career_analysis/evidence/pxj-g1/scripts/person-markup-base.test.tsx.txt
+A	docs/career_analysis/evidence/pxj-g1/scripts/pxj-layout.mjs
+A	docs/career_analysis/evidence/pxj-g1/scripts/pxj-walk.mjs
+A	docs/career_analysis/evidence/pxj-g1/scripts/role-level-base.test.tsx.txt
+A	lib/career/ui/useAnalysisResult.ts
+M	lib/career/view-model/orbit-focus-projection.ts
+A	lib/career/view-model/pxj-first-screen.ts
+M	lib/career/view-model/sil-language.ts
+M	test/career-demo-e2e.test.tsx
+M	test/career-demo-ui.test.tsx
+M	test/career-f12-pulse-alignment.test.tsx
+M	test/career-sil-empty-orbit-visual-attention.test.tsx
+M	test/career-sil-global-language-wiring.test.tsx
+M	test/career/hr-decision-loop/dock-ssr.test.tsx
+M	test/career/hr-decision-loop/e2e/hr-decision-loop-frontend.e2e.test.ts
+M	test/career/job-pool/syntx-field-ssr.test.tsx
+A	test/career/pxj-first-screen/first-screen-ssr.test.tsx
+A	test/career/pxj-first-screen/fixtures.ts
+A	test/career/pxj-first-screen/fixtures/person-markup-49e2bc6.sha256.json
+A	test/career/pxj-first-screen/fixtures/role-level-49e2bc6.json
+A	test/career/pxj-first-screen/person-markup.test.tsx
+A	test/career/pxj-first-screen/projection.test.ts
+A	test/career/pxj-first-screen/result-hook.test.ts
+   + 28 shots under docs/career_analysis/evidence/pxj-g1/shots/ (all named STANDIN-*)
+
+## Classification against §08
+- allowed by §08: SemanticCareerIntelligenceField.tsx, SyntxField.tsx (only syntx-legacy-disclosure), PxjFirstScreen.tsx (new), lib/career/view-model/pxj-first-screen.ts (new), lib/career/ui/useAnalysisResult.ts (new), orbit-focus-projection.ts (presentSourcePlaceholders only), sil-language.ts (texts only), test/career/pxj-first-screen/* (new).
+- D-G1-1 (owner, relayed by GRÜN): OrbitalResonanceBubble.tsx: optional prop hideViewMatches, default false, one filter on the action list. Nothing else.
+- D-G1-2 (owner, relayed by GRÜN): eight existing test files: only investigationMode="PERSON" / &investigationMode=PERSON added; syntx-field-ssr splits one presence loop into presence (01, 02) and absence (03-06). No assertion removed (PINK read every hunk).
+- K-G1-1 (GELB): docs/career_analysis/** (README, JOB_FIELD_FRONTEND.md §13.2.38, measures, scripts, shots).
+- not touched: app/api/**, lib/career/job-pool/*, job-scope/*, capability-core/*, investigation/*, result-inspector/*, useRoleInvestigation.ts, career-job-controller.ts, ui-adapter.ts, test/job-pool-validation/*, configuration, migrations, lab scripts.
+
+## Code reading (PINK)
+- useAnalysisResult: GET /api/career/analyses/{id}, cache no-store, AbortController per analysisId, generation guard; 404 ERR_ANALYSIS_NOT_FOUND -> NOT_FOUND, anything else FAILED with code; decoded by the same decodeAnalysisResult as the session's body.
+- decodeAnalysisResult: success true, status VERIFIED, analysisId and metadata.analysis_id equal to the requested id, structured analysis an object, documents with entity_id, projection null or with the fixed states of reader.ts and every quote SOURCE_MATCH_VERIFIED.
+- The field: B2 only via the existing useSelectedRoleCoverage, only when activeFieldFocus is CAPABILITY and firstScreenCoverageRequest (P-01) is non-null; /matches (useJobPoolWorkflow) only while activeFieldFocus is FIELD (D-G1-3); legacy stages 03-06 filtered from the stage list and inter-orbital-coupling not rendered under PERSON_X_JOB; handleHudAction ignores VIEW MATCHES and legacy stages there.
+- Without a shown result the field falls back to the page's data prop, which is EMPTY_CAREER_INTELLIGENCE_DATA on /career/demo (no demo substitution).
+- D-G1-P1 (PINK): in NO_PROJECTION the field shows the result (showsAnalysis), and demoStateFromResult = applyCapabilityProposalProjectionToDemoState(adaptCanonicalToDemoState(..), null) returns the legacy state unchanged; withoutLegacyOrbits empties 03-06 but not capabilities. Orbit 02 then carries the legacy analysis's capabilities (CAP_..., evidenceConfidence). See D-G1-P1-no-projection.txt.
+- Texts: pxjFirst.boundary carries the five P-07 statements in EN and DE; quoteVerified = "source-match verified · not a competence verification" (§07 wording); NOT_COVERED = neutral chip + "No capability proposal of this analysis names this requirement." (no gap/missing). "match" occurs on the first screen only inside the mandated "source-match"; "presentation matching" only in the Job Field's legacy disclosure (source name).

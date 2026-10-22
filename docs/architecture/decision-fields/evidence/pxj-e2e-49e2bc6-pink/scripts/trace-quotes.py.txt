@@ -1,0 +1,13 @@
+# PINK: the quotes behind the 11 traces of the selected role (legacy matching + sweep proposals) against the PDF text.
+import json,re
+norm=lambda s:re.sub(r'\s+',' ',s).strip(); T=norm(open('cv-raw.txt').read()); TL=norm(open('cv.txt').read())
+m=json.load(open('get/matches-pxj.json')); r=[x for x in m['roleMatches'] if x['poolRoleId']=='role_kestrel_fullstack'][0]
+qs=[]
+for k in ('matched','weakEvidence','missing'):
+  for x in r[k]:
+    for e in x.get('evidence') or []: qs.append((k,x['capabilityName'],e.get('docId') or e.get('sourceDocumentId'),e.get('quote') or e.get('exactQuote')))
+    sp=x.get('sweepProposal')
+    if sp:
+      for e in sp['evidence']: qs.append(('sweep',x['capabilityName'],e.get('docId') or e.get('sourceDocumentId'),e.get('quote') or e.get('exactQuote')))
+miss=[q for q in qs if not q[3] or (norm(q[3]) not in T and norm(q[3]) not in TL)]
+print('trace quotes',len(qs),'in pdf',len(qs)-len(miss),'docs',sorted({q[2] for q in qs})); [print('  MISSING',q) for q in miss]

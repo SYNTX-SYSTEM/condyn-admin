@@ -1,0 +1,21 @@
+# PINK: derived, quote-free summaries of the G1 walks for the public repo (E-6: ids, hashes, counts, verdicts only).
+import json,sys,hashlib,re
+sha=lambda s:hashlib.sha256(str(s).encode()).hexdigest()[:12]
+for f in sys.argv[1:]:
+  r=json.load(open(f)); print(f"### {f.split('/')[-1]}  gemini={r['gemini']} ({r['note']}) viewport={r['viewport']} pageErrors={len(r['pageErrors'])}")
+  print(f"pool upload {r.get('poolUpload')} analyses {r.get('analyses')}")
+  for s in r['steps']:
+    st=s.get('stateText') or ''
+    st=re.sub(r'ANL_\d+_\d+','ANL_*',st)
+    print(f"{s['name']:30} ok={s['ok']} state={s.get('state')} field={(s.get('root') or {}).get('field')} mode={(s.get('root') or {}).get('mode')} gate={(s.get('root') or {}).get('gate')} orbits={''.join(x for x in (s.get('stages') or []) if x.isdigit())} coupling={s.get('coupling')} viewMatches={s.get('viewMatches')} proposals={len(s.get('proposals') or [])} rows={len(s.get('rows') or [])} quotes={len(s.get('quotes') or [])} verified={sum(1 for q in (s.get('quotes') or []) if q.get('data-verified')=='true')} HASH-={s.get('hashPlaceholder')} UnknownDoc={s.get('unknownDoc')} offer={bool(s.get('offer'))} disclosure={bool(s.get('disclosure'))}")
+    if s.get('rows'): print('    rows', ' '.join(f"{x['data-testid'][-2:]}:{x['data-coverage']}/{x['data-match-basis'] or '-'}" for x in s['rows']))
+    if s.get('counts'): print('    counts', s['counts'])
+    if st and s.get('state') not in (None,'AVAILABLE'): print('    statement', st[:220])
+    if s.get('error'): print('    error', s['error'][:200])
+  c=r['checks']
+  if 'pa01' in c: print('PA-01 stand-in DOM vs. server bodies', json.dumps({k:v for k,v in c['pa01'].items() if k not in ('binding','serverBinding')}))
+  if 'focus' in c: print('focus/hover/Tab', json.dumps(c['focus']))
+  if 'urlAfterSession' in c: print('URL after SUCCEEDED has analysisId + investigationMode:', all(k in (c['urlAfterSession'] or '') for k in ('analysisId=','investigationMode=')))
+  n=c['network']; print('network nonGet', n['nonGet']); print('network gemini-* reads', n['geminiInspector'], '| /matches reads', n['matches'], '| /matches while CAPABILITY active', n['matchesWhileCapability'])
+  print('network B2 reads', [re.sub(r'ANL_\d+_\d+','ANL_*',x) for x in n['b2']])
+  print()

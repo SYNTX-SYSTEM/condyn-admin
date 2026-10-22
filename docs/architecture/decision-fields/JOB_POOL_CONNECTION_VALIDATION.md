@@ -2818,6 +2818,85 @@ Factors measured in the DOM (`e6493a7`; the factor pair, then the outer orbit's 
 - PINK's worktree returned clean. GRÜN's review labs :41809 and :41810 were not touched.
 - Integration remains with the owner's GO.
 
+### 3.55 Live PERSON × JOB run on GELB's lab :41862 (`49e2bc6`), GET only (2026-10-22)
+
+**Request.**
+- GELB asked PINK to check the real PERSON × JOB run of the owner order "SYNTX::SFE::PERSON_JOB_END_TO_END_FIELD_VALIDATION" (§09) independently: ten points, each PASS / FAIL / INCONCLUSIVE / NOT IMPLEMENTED. The owner's GO for the live Gemini calls was given to GELB; PINK did not see it first-hand.
+- Lab :41862 on `49e2bc6`, disposable database, live Gemini through GELB's relay (6 of 8 calls used). PINK was asked to send GET only.
+
+**Method.**
+- PINK read the code of every GET route it used and found no write, no Gemini call and no legacy analysis on them; the only side effect is the idempotent schema registration on a verified disposable database.
+- About 22 GETs with curl and 26 from a browser in which every non-GET request was aborted (none was). Inspector routes without a token answer 404, as designed.
+- **Inspector access.** PINK did not read the inspector token. Reading GELB's lab state was refused in PINK's session as credential exploration, and PINK did not work around it. After the owner's decision (PINK_EVIDENCE_ACCESS = AUTHORIZED_READ_ONLY_MINIMUM_SCOPE) GELB opened a token-free GET gate on :41864. PINK's first request to it was refused in PINK's session the same way, so 0 requests reached the gate. Lifting that needs the user's own permission rule.
+- Hashes recomputed with the pure code of `49e2bc6` in PINK's scratch (no database): `parseJobPoolUpload` for the pool file, `resolveJobScopeFromStoredPool` + `renderInvestigationScope` for the scope hash.
+- Quotes checked against the text of `docs/examples/cv.synthetic.pdf` (pdftotext, whitespace normalised).
+
+**Result.**
+
+| # | Point | Verdict |
+|---|---|---|
+| 1 | Session identity | PASS: job → analysis → discovery run → convergence agree in /jobs, /investigation and the B2 binding |
+| 2 | PDF identity | INCONCLUSIVE: content PASS (DOC_001 = cv.synthetic.pdf in both analyses, every quote in the PDF); the bundle hash is visible only through the inspector |
+| 3 | Pool identity | PASS: raw sha256 `6475800a…` of the file = lab; canonical `b94850c4…` recomputed → `JPOOL_B948…` |
+| 4 | Role identity | PASS: 9 requirements equal to the file; `investigationScopeHash` `8016b7c1…` recomputed from the file and the lab's mapping |
+| 5 | Real model execution | INCONCLUSIVE: neither inspector nor relay readable by PINK; GELB's `relay.jsonl` is not an independent source (E-7) |
+| 6 | Persisted result | PASS, through the read routes (no direct database read) |
+| 7 | Capability → requirement relations | PASS for B2: 8 COVERED / 1 NOT_COVERED recomputed from the pool file, all 9 rows equal to the server, scored false. The canonical relation is NOT IMPLEMENTED (NOT_EVALUATED, VERIFIED_CAPABILITY_SNAPSHOT_ABSENT) and declared as such |
+| 8 | Evidence traceability | PASS at quote level: 18 discovery quotes (SOURCE_MATCH_VERIFIED), 16 legacy context quotes and the 11 trace quotes of the role are verbatim in the PDF. Spans and document hashes: INCONCLUSIVE (inspector only) |
+| 9 | First screen | PINK saw the role deep link at 1920 × 1080: correct identities, B2 one click away. GELB's correction K-1 later named walk shot 14 (directly after ANALYZE) as the first screen; that screen is G1's subject (§3.56) |
+| 10 | No mixing across sessions or roles | PASS: no shared proposal, evidence or candidate id; B2 proposals = the PERSON × JOB projection; the negative GETs refuse (NOT_SCOPED, SCOPE_MISMATCH, SELECTION_REQUIRED, 409 on /matches for PERSON, 404 for unknown ids) |
+
+- **O-PXJ-NAME.** Under the scope all 8 proposals carry exactly the requirement names, so B2's name coverage is nearly circular; the substance is in the quotes (GELB V-7).
+- **O-PXJ-PERSONLINK.** A PERSON deep link without `investigationMode` lands in the default PERSON × JOB; the field correctly refuses the analysis (handled by G1 as MODE_MISMATCH).
+
+**Run record.** `evidence/pxj-e2e-49e2bc6-pink/` (`verdicts.txt`, `scripts/*.txt`, `manifest.sha256`): ids, hashes, counts and verdicts only, no quote and no model text (E-6). GELB took the result into §11 of its report (`0df3040`).
+
+### 3.56 G1 · PERSON × JOB first screen GRÜN `frontend/pxj-first-screen-g1` `50776fc` (base `49e2bc6`) (2026-10-22)
+
+**Request.**
+- GRÜN delivered G1 and GELB asked PINK to validate it against PA-01 … PA-14 of the assignment `CONDYN_PXJ_G1_GRUEN_ASSIGNMENT_2026-10-22.md` (`15332a5`, specification `9d9f519`).
+- Deviations as relayed: D-G1-1 and D-G1-2 (+ addendum) approved by the owner directly to GRÜN, K-G1-1 by GELB, D-G1-3 GRÜN's for review. PINK did not see the owner's words first-hand.
+
+**Method.**
+- **Static** (`static-50776fc.txt`): every changed file classified against §08; every hunk of the eight D-G1-2 test files read; the new code read.
+- **Stage 1b** (`stage-1b-41862.txt`): the persisted bodies of :41862 (result, /investigation, B2; GET only) through GRÜN's pure `decodeAnalysisResult` / `projectPxjFirstScreen` and the existing boundary and B2 decoders, in PINK's scratch. GRÜN's code did not run against the lab database.
+- **Stage 1c** (`walks-STANDIN-50776fc.txt`): PINK's own probe `pink-g1-walk.mjs` (independent of GRÜN's walk) on PINK's own lab (`video-lab.ts`, port 41873, disposable database, loopback **STAND-IN, no model execution**), at 1920 × 1080 and 1280 × 720. 19 steps: PERSON session, PERSON × JOB session, deep link, focus/hover/Tab, reload, German, role switch in the session, explicit role selection, a second PERSON × JOB analysis for another role, the first analysis under that role, PERSON × JOB analysis under PERSON, PERSON deep link in the default mode, the explicit mode switch, unknown id, no selected job, orbit 01 focus, role level. Every API request is logged with the active field at its time.
+- **Base comparison** (`role-level-and-person-base-vs-tip.txt`): the same PERSON session, PERSON deep link and Job Field role level on fresh labs of `49e2bc6` and `50776fc`.
+- **PINK proof** (`D-G1-P1-no-projection.txt`): a scratch SSR test on `50776fc` with GRÜN's mock harness, run once and removed; and GRÜN's pure functions on the persisted :41862 body.
+- **Suite** (`suite-50776fc-vs-49e2bc6.txt`): tsc and the whole isolated suite including e2e on both commits, fresh disposable databases, network sentinel.
+
+**Result.**
+
+| PA | Verdict | Evidence |
+|---|---|---|
+| PA-01 mapping M-01 … M-14 | PASS | 1b: AVAILABLE, 8/9, pool order, M-05 … M-14 field-equal with the server body, proposals = projection in order, 8/8 quotes byte-equal and verified with DOC_001 / cv.synthetic.pdf. Stand-in: DOM rows, bases, proposal ids, quote hashes and counts equal to the server bodies (7/9 there) |
+| PA-02 reconstruction | PASS | session, deep link and reload give the same state, rows, quotes and counts at both widths; T-02 green |
+| PA-03 no empty, no invented | PASS, except D-G1-P1 | the PERSON × JOB result is reconstructed after a reload; unknown id → RESULT_NOT_FOUND with no data of any analysis |
+| PA-04 only B2 | PASS | 0 `gemini-*` reads; `/matches` read 5 times per width, always with the Job Field active (D-G1-3 holds); B2 read only on the Capability Field and only for the analysis's own job; none in ROLE_MISMATCH or MODE_MISMATCH. L-1 … L-4 tested by GRÜN's T-05 |
+| PA-05 no legacy score, orbits 03–06 | **FAIL in one state (D-G1-P1)**, otherwise PASS | under PERSON × JOB only orbits 01/02, no coupling, no VIEW MATCHES, no forbidden word outside the mandated statements (EN/DE); under PERSON the session screen equals `49e2bc6` |
+| PA-06 boundaries | PASS | ROLE_MISMATCH without proposals (in session and deep link, orbit 02 "0 items"); MODE_MISMATCH switches nothing (mode unchanged after 3 s, switch only by the explicit button); a second analysis for another role replaces the URL's analysisId, and the first analysis under that role is ROLE_MISMATCH |
+| PA-07 provenance | PASS | quotes byte-equal; `HASH-` and "Unknown Document" never rendered; T-06/T-10 green |
+| PA-08 every state visible, no source jump | **FAIL in NO_PROJECTION (D-G1-P1)**, otherwise PASS | all other states seen or green in T-03 |
+| PA-09 mandatory texts and word bans | PASS | the five P-07 statements beside the coverage in EN and DE; "match" occurs only in the mandated "source-match verified" |
+| PA-10 role level unchanged | PASS | 26/26 role-level entries (requirements, traces, open boundaries, source) identical between `49e2bc6` and `50776fc` once the sources read has settled; new only `syntx-legacy-disclosure` with its text |
+| PA-11 focus is no selection | PASS | hover, focus and 25 × Tab: URL unchanged, 0 requests |
+| PA-12 stand-in marked | PASS | GRÜN's 3 measure files carry `"gemini": "STAND_IN"`, all shots are named `STANDIN-*` and carry the visible mark; no stand-in result is called Gemini or live |
+| PA-13 untouched, files | PASS | files within §08 plus D-G1-1, D-G1-2, K-G1-1; no backend file; no path, URL, key, token, :41862 id or quote in the diff (0 of 12 live quotes); PINK touched :41862 with GET only |
+| PA-14 T-12 | PASS | tsc only `relay-check.mts(13,214)` on both; suite 27 failed on `50776fc`, 28 on `49e2bc6`, 0 only on `50776fc` (the base's extra one is a postgres adapter test); the 27 are the lifecycle / policy-activation DDL drift (F-JP-5); 71/71 new tests and all eight D-G1-2 files green; no test lost |
+
+- **D-G1-P1 (new, PINK).** In NO_PROJECTION under PERSON × JOB the field still shows the analysis, and `demoStateFromResult` keeps the legacy analysis's capabilities when the projection is `null` (`applyCapabilityProposalProjectionToDemoState(…, null)` returns the legacy state; `withoutLegacyOrbits` empties 03–06 only).
+  - Orbit 02 then shows the unscoped legacy capabilities: "2 items" at L0, their names at zoom 1 and "93%" (`evidenceConfidence`) at zoom 2, while the panel says "This analysis has no capability proposals". On the persisted :41862 body with the projection set to `null`, orbit 02 would carry `CAP_001` … `CAP_005` with 0.9 / 0.95.
+  - Against P-08 (no `evidenceConfidence`), NO_HIDDEN_SOURCE_SUBSTITUTION and §04 NO_PROJECTION. GRÜN's fixture has `capabilities: []`, so its tests cannot see the path.
+  - Reach: only a PERSON × JOB analysis whose persisted result has no proposal projection; not on the live or the stand-in path of today. Under PERSON the behaviour is unchanged from `49e2bc6`.
+- **GRÜN's decisions inside the assignment** are compatible with §03/§04: PERSON_RESULT (today's screen, §04 last line); ROLE_MISMATCH also without a job (in practice the gate stays closed and the Job Field offers the analysis's job, as §03.4 asks); MODE_MISMATCH and BOUNDARY_* without proposals (stricter than §04 asks); a foreign result as RESULT_LOADING (late answers invisible).
+- **GELB's note.** A PERSON deep link with `investigationMode=PERSON` now restores the PERSON result (orbits 1/12 items instead of 0 on `49e2bc6`, plus the empty-projection halo on 03–06). The PERSON session screen itself is byte-for-byte the base's. Both follow from Q2 and §04.
+- **Observations.** At 1280 × 720 the inspector still covers START ANALYSIS (P-TY-START, pre-existing). A PINK probe timing artefact (role level read before the sources read) first looked like a T-11 difference; settled, both commits are identical.
+
+**Run record.**
+- Evidence: `evidence/pxj-g1-50776fc/`: `static-50776fc.txt`, `stage-1b-41862.txt`, `walks-STANDIN-50776fc.txt`, `walks-STANDIN-compare-runs.txt`, `role-level-and-person-base-vs-tip.txt`, `D-G1-P1-no-projection.txt`, `suite-50776fc-vs-49e2bc6.txt`, `shots/STANDIN-*.png` with `CAPTIONS.txt` (only screens without quotes, E-6), `scripts/*.txt`, `manifest.sha256`.
+- PINK's labs ran on port 41873 under PINK's PIDs and were stopped; the worktree returned clean to `validation/hr-decision-loop-pink`. GRÜN's lab :41871, :41862 (GET only), :41864 (no request reached it), :3017, :41805, :41821, :41831, :41851 and :41803 were otherwise not touched. No Gemini call.
+- No integration; D-G1-P1 is GRÜN's to fix or the owner's to accept.
+
 ## 4. Boundaries and findings for coordination
 
 - F-JP-1 (closed in `b782793`): `JOB_POOL_CONNECTION.md` §4 followed the per-role `JOB_POOL_JSON_ROLE` design;

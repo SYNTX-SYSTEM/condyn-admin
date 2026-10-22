@@ -1,0 +1,12 @@
+#!/bin/bash
+# PINK G1: tsc + whole isolated suite (incl. e2e) on 50776fc and 49e2bc6 in PINK's worktree, fresh disposable DBs, net sentinel.
+S=<pink-scratch>; G=<pink-scratch>; P=<local>
+cd $P; set -a; . ~/.config/condyn/test-db-role.env; set +a; unset GEMINI_API_KEY GEMINI_MODEL
+for C in 50776fc 49e2bc6; do
+  git checkout -q --detach $C && echo "HEAD $(git rev-parse --short HEAD)"
+  npx tsc --noEmit -p . > $G/tsc-$C.log 2>&1; echo "tsc $C exit $? errors $(grep -c 'error TS' $G/tsc-$C.log): $(grep 'error TS' $G/tsc-$C.log | cut -c1-160 | tr '\n' ' ')"
+  rm -f $G/net-$C.log
+  env PINK_NET_LOG=$G/net-$C.log NODE_OPTIONS="--require $S/scope-paths/pink-net-sentinel.cjs" PINK_NET_SENTINEL=$S/scope-paths/pink-net-sentinel.cjs PINK_NET_CONTROL=$S/scope-paths/positive-control.mjs PINK_SCRIPTS_OUT=$G/scripts-$C npm run -s test:isolated -- --reporter=default --reporter=json --outputFile.json=$G/full-$C.json > $G/full-$C.log 2>&1; echo "full $C exit $? :: $(grep -E 'Test Files|Tests  ' $G/full-$C.log | tail -2 | tr '\n' ' ') net $(cat $G/net-$C.log 2>/dev/null | wc -l)"
+  rm -f output2.txt; git status --short | head -5
+done
+git checkout -q validation/hr-decision-loop-pink && echo "back on $(git branch --show-current)"; echo SUITE-END

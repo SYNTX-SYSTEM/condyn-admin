@@ -1,0 +1,63 @@
+// PINK stage 1b: persisted bodies of :41862 (read with GET) through GRÜN's pure decoder and projection (50776fc) and the existing
+// boundary/B2 decoders. Prints ids, states, counts and booleans only — no quote text, no model text.
+import { readFileSync } from "node:fs";
+import { createHash } from "node:crypto";
+import { decodeAnalysisResult, projectPxjFirstScreen, demoStateFromResult, withoutLegacyOrbits } from "./lib/career/view-model/pxj-first-screen";
+import { decodeAnalysisInvestigation } from "./lib/career/investigation/client";
+import { decodeSelectedRoleCoverage } from "./lib/career/ui/useRoleInvestigation";
+const dir = process.argv[2];
+const read = (f: string) => JSON.parse(readFileSync(`${dir}/${f}`, "utf8"));
+const X = "ANL_1792628993472_10", P = "ANL_1792628831636_456";
+const scope = { jobPoolUploadId: "JPOOL_B94850C439974E27496FE3B1A9A076B5", poolRoleId: "role_kestrel_fullstack" };
+const h = (s: string) => createHash("sha256").update(s, "utf8").digest("hex").slice(0, 12);
+const out: string[] = []; const log = (...a: unknown[]) => out.push(a.map(x => typeof x === "string" ? x : JSON.stringify(x)).join(" "));
+const resX = decodeAnalysisResult(read("a-pxj.json"), X), resP = decodeAnalysisResult(read("a-person.json"), P);
+log("decode PXJ", resX.ok ? "ok" : resX.code, "| decode PERSON", resP.ok ? "ok" : resP.code);
+log("decode PXJ body under foreign id", (decodeAnalysisResult(read("a-pxj.json"), P) as any).code, "| 404 body", (decodeAnalysisResult(read("a-unknown.json"), "ANL_0_0") as any).code);
+const invX = decodeAnalysisInvestigation(read("inv-pxj.json").investigation), invP = decodeAnalysisInvestigation(read("inv-person.json").investigation);
+const cov = decodeSelectedRoleCoverage(read("cmp-pxj.json").comparison);
+log("boundary PXJ", invX?.mode, "| boundary PERSON", invP?.mode, "| B2 decoded", cov !== null);
+if (!resX.ok || !resP.ok || !invX || !invP || !cov) { console.log(out.join("\n")); process.exit(1); }
+const base = { analysisId: X, result: { state: "AVAILABLE", result: resX.result } as const, boundary: { state: "RESOLVED", value: invX } as const };
+const s = projectPxjFirstScreen({ ...base, mode: "PERSON_X_JOB", selection: scope, coverage: { state: "AVAILABLE", coverage: cov } });
+log("PXJ/PXJ/own role state", s.state);
+if (s.state === "AVAILABLE") {
+  const c = s.coverage;
+  log(" binding", c.binding, "role", h(c.role.title), c.role.organizationName.length, "relation", c.relationState, c.reason);
+  log(" counts", c.counts, "proposals", s.proposals.length);
+  log(" pool order", c.requirements.map(r => r.poolRequirementId).join(",") === cov.requirements.map(r => r.poolRequirementId).join(","), c.requirements.map(r => r.poolRequirementId.slice(-2)).join(" "));
+  for (const r of c.requirements) log("  ", r.poolRequirementId.slice(-2), r.coverage, r.matchBasis, r.weak ? "weak" : "-", r.proposal ? `${r.proposal.id} inProj=${r.proposal.inProjection}` : "no-proposal", "quotes", r.quotes.map(q => `${q.docId}:inProj=${q.inProjection}:resolved=${q.sourceResolved}:title=${q.sourceTitle}:verified=${q.verified}:sha=${h(q.quote)}`).join(" "));
+  const quotes = c.requirements.flatMap(r => r.quotes);
+  log(" quotes", quotes.length, "verified", quotes.filter(q => q.verified).length, "docs", [...new Set(quotes.map(q => q.docId))]);
+  // field-by-field M-07..M-14 against the server body
+  const srv = read("cmp-pxj.json").comparison;
+  const eq = (a: unknown, b: unknown) => JSON.stringify(a) === JSON.stringify(b);
+  const checks: Record<string, boolean> = {
+    "M-07 role": c.role.title === srv.role.title && c.role.organizationName === srv.role.organizationName,
+    "M-08 binding": ["analysisId", "jobPoolUploadId", "poolRoleId", "discoveryRunId", "convergenceRunId", "investigationScopeHash"].every(k => (c.binding as any)[k] === srv.binding[k]),
+    "M-09 requirements": eq(c.requirements.map(r => [r.poolRequirementId, r.capabilityName, r.necessityState, r.requiredLevel]), srv.requirements.map((r: any) => [r.poolRequirementId, r.capabilityName, r.necessityState, r.requiredLevel])),
+    "M-10 coverage": eq(c.requirements.map(r => [r.coverage, r.proposal?.id ?? null, r.proposal?.name ?? null, r.matchBasis, r.matchedConstituent]), srv.requirements.map((r: any) => [r.coverage.state, r.coverage.proposal?.capabilityProposalId ?? null, r.coverage.proposal?.name ?? null, r.coverage.proposal?.matchBasis ?? null, r.coverage.proposal?.matchedConstituent ?? null])),
+    "M-11 quotes": eq(c.requirements.map(r => r.quotes.map(q => [q.docId, q.quote])), srv.requirements.map((r: any) => (r.coverage.proposal?.evidence ?? []).map((e: any) => [e.docId, e.quote]))),
+    "M-12 relation": c.relationState === srv.authority.capabilityRequirementRelationState && c.reason === srv.authority.reason,
+    "M-13 counts": eq(c.counts, { requirements: srv.counts.requirements, covered: srv.counts.covered, notCovered: srv.counts.notCovered }),
+    "M-14 covers": eq(c.covers, Object.fromEntries(srv.proposals.map((p: any) => [p.id, p.coversPoolRequirementIds])))
+  };
+  log(" field checks", checks);
+  const proj = read("a-pxj.json").capabilityProposalProjection;
+  log(" M-06 proposals = projection ids in order", eq(s.proposals.map(p => p.id), proj.capabilities.map((x: any) => x.id)));
+  const demo = withoutLegacyOrbits(demoStateFromResult(resX.result));
+  log(" M-05/M-06 demo state: sources", (demo as any).sources?.map((x: any) => [x.sourceId ?? x.id, x.sourceTitle ?? x.title, String(x.hash ?? x.sourceHash ?? "").slice(0, 5)]), "capabilities", demo.capabilities.length, "ids match", eq(demo.capabilities.map((x: any) => x.id).sort(), proj.capabilities.map((x: any) => x.id).sort()), "legacy", demo.companyMatches.length, demo.roleMatches.length, demo.capabilityGaps.length, demo.nextActions.length);
+}
+// negative and boundary cases from persisted data
+const other = { jobPoolUploadId: scope.jobPoolUploadId, poolRoleId: "role_kestrel_frontend_architect" };
+log("PXJ analysis, other role selected", projectPxjFirstScreen({ ...base, mode: "PERSON_X_JOB", selection: other, coverage: { state: "IDLE" } }).state);
+log("PXJ analysis, no job selected", projectPxjFirstScreen({ ...base, mode: "PERSON_X_JOB", selection: null, coverage: { state: "IDLE" } }).state);
+log("PXJ analysis under PERSON", projectPxjFirstScreen({ ...base, mode: "PERSON", selection: scope, coverage: { state: "IDLE" } }).state);
+const baseP = { analysisId: P, result: { state: "AVAILABLE", result: resP.result } as const, boundary: { state: "RESOLVED", value: invP } as const };
+log("PERSON analysis under PXJ", projectPxjFirstScreen({ ...baseP, mode: "PERSON_X_JOB", selection: scope, coverage: { state: "NOT_SCOPED" } }).state);
+log("PERSON analysis under PERSON", projectPxjFirstScreen({ ...baseP, mode: "PERSON", selection: scope, coverage: { state: "IDLE" } }).state);
+log("PXJ B2 paired with PERSON result+boundary (cross-session)", projectPxjFirstScreen({ ...baseP, mode: "PERSON_X_JOB", selection: scope, coverage: { state: "AVAILABLE", coverage: cov } }).state);
+log("PXJ result with PERSON boundary", projectPxjFirstScreen({ analysisId: X, result: base.result, boundary: { state: "RESOLVED", value: invP }, mode: "PERSON_X_JOB", selection: scope, coverage: { state: "AVAILABLE", coverage: cov } }).state);
+log("PERSON result under PXJ id", projectPxjFirstScreen({ analysisId: X, result: { state: "AVAILABLE", result: resP.result }, boundary: base.boundary, mode: "PERSON_X_JOB", selection: scope, coverage: { state: "AVAILABLE", coverage: cov } }).state);
+log("404 result", projectPxjFirstScreen({ analysisId: "ANL_0_0", result: { state: "NOT_FOUND" }, boundary: { state: "IDLE" }, mode: "PERSON_X_JOB", selection: scope, coverage: { state: "IDLE" } }).state);
+console.log(out.join("\n"));

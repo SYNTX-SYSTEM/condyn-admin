@@ -1,0 +1,18 @@
+# PINK: identifiers of the PERSON and the PERSON x JOB analysis must not cross.
+import json
+P=json.load(open('get/a-person.json')); X=json.load(open('get/a-pxj.json')); M=json.load(open('get/matches-pxj.json')); C=json.load(open('get/cmp-pxj.json'))['comparison']
+ids=lambda d,k:{c[k] for c in d}
+pp=P['capabilityProposalProjection']; xp=X['capabilityProposalProjection']
+print('proposal ids overlap', ids(pp['capabilities'],'id')&ids(xp['capabilities'],'id'))
+print('evidence ids overlap', {e['evidenceId'] for c in pp['capabilities'] for e in c['evidence']}&{e['evidenceId'] for c in xp['capabilities'] for e in c['evidence']})
+print('candidate ids overlap', {x for c in pp['capabilities'] for x in c['sourceCandidateIds']}&{x for c in xp['capabilities'] for x in c['sourceCandidateIds']})
+print('B2 proposals == PXJ projection', ids(C['proposals'],'id')==ids(xp['capabilities'],'id'), '| B2 proposals in PERSON', ids(C['proposals'],'id')&ids(pp['capabilities'],'id'))
+print('relations PXJ reference own caps only', all(r['sourceCapabilityId'] in ids(xp['capabilities'],'id') and r.get('targetCapabilityId',list(ids(xp['capabilities'],'id'))[0]) in ids(xp['capabilities'],'id') for r in xp['relations']), list(xp['relations'][0].keys()))
+xs=X['analysis']['structured_data']['analysis']['capabilities']; print('PXJ legacy capabilities', len(xs), [c.get('entity_id') for c in xs], 'matches candidateCapabilityCount', M['candidateCapabilityCount'])
+sp=[x['sweepProposal']['capabilityProposalId'] for r in M['roleMatches'] for x in r['missing'] if x.get('sweepProposal')]
+print('sweepProposal ids in matches ⊆ PXJ projection', set(sp)<=ids(xp['capabilities'],'id'), len(set(sp)))
+mc=[x['matchedCapabilityEntityId'] for r in M['roleMatches'] for k in ('matched','weakEvidence') for x in r[k]]
+print('matched legacy entity ids ⊆ PXJ legacy caps', set(mc)<={c.get('entity_id') for c in xs})
+print('PERSON names', sorted(c['name'] for c in pp['capabilities']))
+print('PXJ names', sorted(c['name'] for c in xp['capabilities']))
+print('docs', [d['identity']['name']+'/'+d['entity_id']+'/words '+str(d['properties'].get('raw_word_count')) for a in (P,X) for d in a['analysis']['structured_data']['analysis']['documents']])

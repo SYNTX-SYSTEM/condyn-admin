@@ -1,0 +1,32 @@
+### pink-g1-base-1920.json  gemini=STAND_IN (STAND-IN · keine Modellausführung) viewport=1920x1080 pageErrors=0
+pool upload {'status': 201, 'id': 'JPOOL_B94850C439974E27496FE3B1A9A076B5'} analyses {'personA': 'ANL_1792702835627_71', 'pxjA': 'ANL_1792702852825_730'}
+S1-person-session              ok=True state=None field=CAPABILITY mode=PERSON gate=OPEN orbits=010203040506 coupling=True viewMatches=0 proposals=0 rows=0 quotes=0 verified=0 HASH-=False UnknownDoc=False offer=False disclosure=False
+S2-pxj-session                 ok=True state=None field=CAPABILITY mode=PERSON_X_JOB gate=OPEN orbits=010203040506 coupling=True viewMatches=0 proposals=0 rows=0 quotes=0 verified=0 HASH-=False UnknownDoc=False offer=False disclosure=False
+S3-role-level                  ok=True state=None field=FIELD mode=PERSON_X_JOB gate=OPEN orbits=010203040506 coupling=True viewMatches=0 proposals=0 rows=0 quotes=0 verified=0 HASH-=False UnknownDoc=False offer=False disclosure=False
+S4-person-deep-link            ok=True state=None field=CAPABILITY mode=PERSON gate=OPEN orbits=010203040506 coupling=True viewMatches=0 proposals=0 rows=0 quotes=0 verified=0 HASH-=False UnknownDoc=False offer=False disclosure=False
+network nonGet ['S1-person-session POST /api/career/analyze', 'S2-pxj-session POST /api/career/analyze']
+network gemini-* reads 0 | /matches reads ['S2-pxj-session field=CAPABILITY', 'S3-role-level field=FIELD'] | /matches while CAPABILITY active ['S2-pxj-session /api/career/job-pools/JPOOL_B94850C439974E27496FE3B1A9A076B5/matches?analysisId=ANL_1792702852825_730']
+network B2 reads []
+
+### pink-g1-rlbase-1920.json  gemini=STAND_IN (STAND-IN · keine Modellausführung) viewport=1920x1080 pageErrors=0
+pool upload {'status': 201, 'id': 'JPOOL_B94850C439974E27496FE3B1A9A076B5'} analyses {'personA': 'ANL_1792703033490_250', 'pxjA': 'ANL_1792703050280_765'}
+S1-person-session              ok=True state=None field=CAPABILITY mode=PERSON gate=OPEN orbits=010203040506 coupling=True viewMatches=0 proposals=0 rows=0 quotes=0 verified=0 HASH-=False UnknownDoc=False offer=False disclosure=False
+S2-pxj-session                 ok=True state=None field=CAPABILITY mode=PERSON_X_JOB gate=OPEN orbits=010203040506 coupling=True viewMatches=0 proposals=0 rows=0 quotes=0 verified=0 HASH-=False UnknownDoc=False offer=False disclosure=False
+S3-role-level                  ok=True state=None field=FIELD mode=PERSON_X_JOB gate=OPEN orbits=010203040506 coupling=True viewMatches=0 proposals=0 rows=0 quotes=0 verified=0 HASH-=False UnknownDoc=False offer=False disclosure=False
+S4-person-deep-link            ok=True state=None field=CAPABILITY mode=PERSON gate=OPEN orbits=010203040506 coupling=True viewMatches=0 proposals=0 rows=0 quotes=0 verified=0 HASH-=False UnknownDoc=False offer=False disclosure=False
+network nonGet ['S1-person-session POST /api/career/analyze', 'S2-pxj-session POST /api/career/analyze']
+network gemini-* reads 0 | /matches reads ['S2-pxj-session field=CAPABILITY', 'S3-role-level field=FIELD'] | /matches while CAPABILITY active ['S2-pxj-session /api/career/job-pools/JPOOL_B94850C439974E27496FE3B1A9A076B5/matches?analysisId=ANL_1792703050280_765']
+network B2 reads []
+
+### pink-g1-rltip-1920.json  gemini=STAND_IN (STAND-IN · keine Modellausführung) viewport=1920x1080 pageErrors=0
+pool upload {'status': 201, 'id': 'JPOOL_B94850C439974E27496FE3B1A9A076B5'} analyses {'personA': 'ANL_1792702954222_717', 'pxjA': 'ANL_1792702972131_127'}
+S1-person-session              ok=True state=None field=CAPABILITY mode=PERSON gate=OPEN orbits=010203040506 coupling=True viewMatches=0 proposals=0 rows=0 quotes=0 verified=0 HASH-=False UnknownDoc=False offer=False disclosure=False
+S2-pxj-session                 ok=True state=AVAILABLE field=CAPABILITY mode=PERSON_X_JOB gate=OPEN orbits=0102 coupling=False viewMatches=0 proposals=12 rows=9 quotes=7 verified=7 HASH-=False UnknownDoc=False offer=False disclosure=False
+    rows 01:COVERED/EXACT 02:COVERED/EXACT 03:COVERED/EXACT 04:COVERED/EXACT 05:COVERED/TOKEN_CONTAINMENT 06:COVERED/EXACT 07:NOT_COVERED/- 08:NOT_COVERED/- 09:COVERED/EXACT
+    counts 7 covered · 2 not covered · 9 requirements · NOT_EVALUATED
+S3-role-level                  ok=True state=None field=FIELD mode=PERSON_X_JOB gate=OPEN orbits=0102 coupling=False viewMatches=0 proposals=0 rows=0 quotes=0 verified=0 HASH-=False UnknownDoc=False offer=False disclosure=True
+S4-person-deep-link            ok=True state=None field=CAPABILITY mode=PERSON gate=OPEN orbits=010203040506 coupling=True viewMatches=0 proposals=0 rows=0 quotes=0 verified=0 HASH-=False UnknownDoc=False offer=False disclosure=False
+network nonGet ['S1-person-session POST /api/career/analyze', 'S2-pxj-session POST /api/career/analyze']
+network gemini-* reads 0 | /matches reads ['S3-role-level field=FIELD'] | /matches while CAPABILITY active []
+network B2 reads ['S2-pxj-session field=CAPABILITY /api/career/analyses/ANL_*/job-comparison?poolRoleId=role_kestrel_fullstack']
+

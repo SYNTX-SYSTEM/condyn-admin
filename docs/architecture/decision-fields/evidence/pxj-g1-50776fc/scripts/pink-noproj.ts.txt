@@ -1,0 +1,17 @@
+// PINK: NO_PROJECTION under PERSON x JOB — which capabilities reach orbit 02? GRÜN's pure functions (50776fc), persisted :41862 body
+// with capabilityProposalProjection set to null (the state's precondition). Prints counts, field names and booleans only.
+import { readFileSync } from "node:fs";
+import { decodeAnalysisResult, projectPxjFirstScreen, showsAnalysis, demoStateFromResult, withoutLegacyOrbits } from "./lib/career/view-model/pxj-first-screen";
+import { decodeAnalysisInvestigation } from "./lib/career/investigation/client";
+const dir = process.argv[2];
+const body = JSON.parse(readFileSync(`${dir}/a-pxj.json`, "utf8")); body.capabilityProposalProjection = null;
+const X = "ANL_1792628993472_10", scope = { jobPoolUploadId: "JPOOL_B94850C439974E27496FE3B1A9A076B5", poolRoleId: "role_kestrel_fullstack" };
+const dec = decodeAnalysisResult(body, X); if (!dec.ok) throw new Error(dec.code);
+const inv = decodeAnalysisInvestigation(JSON.parse(readFileSync(`${dir}/inv-pxj.json`, "utf8")).investigation)!;
+const screen = projectPxjFirstScreen({ mode: "PERSON_X_JOB", analysisId: X, result: { state: "AVAILABLE", result: dec.result }, boundary: { state: "RESOLVED", value: inv }, selection: scope, coverage: { state: "IDLE" } });
+console.log("state", screen.state, "showsAnalysis", showsAnalysis(screen));
+const data: any = withoutLegacyOrbits(demoStateFromResult(dec.result));
+console.log("orbit 02 capabilities", data.capabilities.length, "ids", data.capabilities.map((c: any) => c.id).join(","));
+console.log("any PCAP_ id", data.capabilities.some((c: any) => String(c.id).startsWith("PCAP_")), "| projectionState set", data.capabilities.filter((c: any) => c.projectionState).length);
+console.log("fields", Object.keys(data.capabilities[0] ?? {}).join(","), "| evidenceConfidence values", data.capabilities.map((c: any) => c.evidenceConfidence ?? null).join(","));
+console.log("legacy orbits", data.companyMatches.length, data.roleMatches.length, data.capabilityGaps.length, data.nextActions.length);

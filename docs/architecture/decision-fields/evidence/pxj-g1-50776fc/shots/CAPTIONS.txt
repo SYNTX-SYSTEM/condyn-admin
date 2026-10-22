@@ -1,0 +1,5 @@
+STAND-IN · keine Modellausführung. Every image here comes from PINK's own lab (video-lab.ts, port 41873, disposable database, loopback stand-in; no Gemini call) on 50776fc at 1920 x 1080. Images with coverage rows are not committed, because they carry quotes from the synthetic CV (E-6).
+STANDIN-T5-role-switch-session-1920.png   another role selected in the session: ROLE_MISMATCH, no proposals, orbit 02 "0 items", explicit SELECT THIS ROLE
+STANDIN-T9-pxj-under-person-1920.png      the PERSON x JOB analysis under PERSON: MODE_MISMATCH, nothing switches by itself
+STANDIN-T12-unknown-1920.png              unknown analysisId: RESULT_NOT_FOUND, no data of any analysis
+STANDIN-T13-no-job-1920.png               PERSON x JOB without a selected job: gate AWAITING_JOB, Job Field with the analysis's job offered

@@ -1,0 +1,29 @@
+# PINK: B2 of the PERSON x JOB analysis recomputed from the pool file and the analysis's own capability proposals.
+import json,re
+p=json.load(open('pool-file.json')); c=json.load(open('get/cmp-pxj.json'))['comparison']; a=json.load(open('get/a-pxj.json'))
+role=[r for r in p['roles'] if r.get('role_id',r.get('id'))=='role_kestrel_fullstack']
+print('pool file role keys', list(p['roles'][0].keys())); print('role', json.dumps(role[0],ensure_ascii=False)[:300] if role else None)
+print('req keys', list(p['requirements'][0].keys()))
+rid=role[0].get('id'); reqs=[q for q in p['requirements'] if q.get('role_id')==rid or q.get('role_id')=='role_kestrel_fullstack']
+print('file requirements for role', len(reqs))
+cr={q['poolRequirementId']:q for q in c['requirements']}
+for q in reqs:
+  k=q.get('requirement_id',q.get('id')); x=cr.get(k)
+  diffs=[]
+  if x is None: print('  MISSING in comparison',k); continue
+  for fk,ck in [('capability_name','capabilityName'),('weight','weight'),('required_level','requiredLevel'),('domain','domain')]:
+    if fk in q and q[fk]!=x[ck]: diffs.append((fk,q[fk],x[ck]))
+  print('  ',k,x['capabilityName'],x['necessityState'],x['coverage']['state'],'diffs',diffs)
+caps=a['capabilityProposalProjection']['capabilities']
+norm=lambda s:re.sub(r'[^a-z0-9]','',s.lower())
+print('own recompute (name or alias equality, normalised):')
+cov=0
+for x in c['requirements']:
+  names={norm(x['capabilityName'])}|{norm(y) for y in x['aliases']}
+  hit=[cap['name'] for cap in caps if norm(cap['name']) in names]
+  st='COVERED' if hit else 'NOT_COVERED'; cov+=bool(hit)
+  srv=x['coverage']['state']; sp=(x['coverage'].get('proposal') or {}).get('capabilityProposalId')
+  print(f"   {x['capabilityName']:28} pink={st:12} server={srv:12} {'OK' if st==srv else 'DIFF'} proposal={sp}")
+print('covered',cov,'of',len(c['requirements']))
+print('proposal quotes:')
+for cap in caps: print('  ',cap['name'],'|',cap['evidence'][0]['exactQuote'])
