@@ -1,0 +1,135 @@
+{
+ "gemini": "STAND_IN",
+ "note": "STAND-IN · keine Modellausführung",
+ "analysisId": "ANL_1792693552957_763",
+ "rows": [
+  {
+   "viewport": "1920x1080",
+   "scrollY": 0,
+   "panel": [
+    1496,
+    193,
+    1896,
+    1045
+   ],
+   "orbit02": [
+    1162,
+    352,
+    1330,
+    520
+   ],
+   "orbit01": [
+    876,
+    187,
+    1044,
+    355
+   ],
+   "core": [
+    850,
+    491,
+    1070,
+    711
+   ],
+   "panelOverOrbit02": false,
+   "panelOverOrbit01": false,
+   "panelOverCore": false,
+   "panelUnderShell": false
+  },
+  {
+   "viewport": "1600x900",
+   "scrollY": 0,
+   "panel": [
+    1176,
+    193,
+    1576,
+    865
+   ],
+   "orbit02": [
+    1002,
+    292,
+    1170,
+    460
+   ],
+   "orbit01": [
+    716,
+    127,
+    884,
+    295
+   ],
+   "core": [
+    690,
+    431,
+    910,
+    651
+   ],
+   "panelOverOrbit02": false,
+   "panelOverOrbit01": false,
+   "panelOverCore": false,
+   "panelUnderShell": false
+  },
+  {
+   "viewport": "1440x900",
+   "scrollY": 0,
+   "panel": [
+    1016,
+    485,
+    1416,
+    925
+   ],
+   "orbit02": [
+    922,
+    292,
+    1090,
+    460
+   ],
+   "orbit01": [
+    636,
+    127,
+    804,
+    295
+   ],
+   "core": [
+    610,
+    431,
+    830,
+    651
+   ],
+   "panelOverOrbit02": false,
+   "panelOverOrbit01": false,
+   "panelOverCore": false,
+   "panelUnderShell": false
+  },
+  {
+   "viewport": "1280x720",
+   "scrollY": 0,
+   "panel": [
+    885,
+    485,
+    1256,
+    925
+   ],
+   "orbit02": [
+    842,
+    292,
+    1010,
+    460
+   ],
+   "orbit01": [
+    556,
+    127,
+    724,
+    295
+   ],
+   "core": [
+    530,
+    431,
+    750,
+    651
+   ],
+   "panelOverOrbit02": false,
+   "panelOverOrbit01": false,
+   "panelOverCore": false,
+   "panelUnderShell": false
+  }
+ ]
+}

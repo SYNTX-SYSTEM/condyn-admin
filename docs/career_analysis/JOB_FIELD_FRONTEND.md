@@ -1715,6 +1715,46 @@ Two inversions were confirmed:
 - a word longer than the last step (GELB L-FR-1). It keeps the earlier size (10.5 / 11 px) and, from about 21 characters in the centre
   or 26 in the pool, passes its body exactly as on `38ebc31`; the pool line has no `overflowWrap`. Left to the owner.
 
+#### 13.2.38 PERSON × JOB · the first screen (owner G1, 2026-10-22)
+
+Owner GO "SYNTX::SFE::EXPLICIT_OWNER_GO" (Q1 = GO), given to GRÜN directly. The specification and the assignment are
+`CONDYN_PXJ_G1_FIRST_SCREEN_SPECIFICATION_2026-10-22.md` and `CONDYN_PXJ_G1_GRUEN_ASSIGNMENT_2026-10-22.md` (`15332a5`). Base
+`49e2bc6`. The evidence is in `evidence/pxj-g1/README.md`. No Gemini call; the browser walk ran against the loopback STAND-IN.
+
+**Chain.** `analysisId` → persisted result (`GET /api/career/analyses/{id}`) → investigation boundary → source identity → B2
+(`SELECTED_ROLE_COVERAGE_V1`) → one closed state of the first screen.
+- One decoder (`decodeAnalysisResult`) serves the session and a reload. It accepts only `success`, `VERIFIED`, the requested
+  `analysisId` in the body and in `metadata.analysis_id`, an analysis object and a projection with the reader's fixed states;
+  everything else is `RESULT_FAILED` with a code.
+- One pure projection (`projectPxjFirstScreen`, `lib/career/view-model/pxj-first-screen.ts`) gives `NO_ANALYSIS`, `RESULT_*`,
+  `BOUNDARY_*`, `MODE_MISMATCH`, `ROLE_MISMATCH`, `NO_PROJECTION`, `COVERAGE_*`, `LINEAGE_MISMATCH` (L-1 … L-4) or `AVAILABLE`, and
+  `PERSON_RESULT` for a PERSON analysis under PERSON (today's screen).
+- B2 is read only on the Capability Field, in PERSON × JOB, for the analysis's own selected job, with the existing
+  `useSelectedRoleCoverage`. Joins are by id only; a quote is verified only when `(docId, quote)` is byte-identical in the same
+  proposal's evidence and its document is one of the persisted documents.
+
+**Screen.**
+- `pxj-first-screen` beside the planetarium carries `pxj-first-state` (`data-state`) in every state. In `AVAILABLE` it shows
+  `pxj-first-coverage`: the boundary statement (`pxj-first-coverage-boundary`, permanently), the binding, B2's whole counts, the
+  proposals (focus only highlights) and the requirements in pool order with their verbatim quotes.
+- Under PERSON × JOB the orbits 03–06 are not rendered (no orbit, count, ray, coupling, VIEW MATCHES, inspector node or text).
+- `ROLE_MISMATCH` and `MODE_MISMATCH` show no proposals and switch nothing; each offers one explicit action. In the Job Field the
+  analysis's own job is offered when it is not the selected one (`pxj-analysis-job-offer`).
+- The role level of the Job Field keeps its behaviour and discloses its source and limits (`syntx-legacy-disclosure`).
+- A placeholder of the legacy adapter is named as one (title / hash not delivered), in every mode.
+
+**Proof:** new tests 71/71 (T-01 … T-11); under PERSON the field's markup is byte-identical with `49e2bc6` in seven variants; walk 1c
+12/12 at 1920 and 1280 (STAND-IN), session and reload equal, no request but GET outside the two ANALYZE posts, no `gemini-*` read,
+no `/matches` read on the Capability Field; `tsc` only the base's `relay-check`; the whole isolated suite fails only the 27 tests that
+already fail on `49e2bc6`.
+
+**Deviations (owner-approved, directly to GRÜN):**
+- D-G1-1 "Ja, nur diese Prop": the optional `hideViewMatches` in `OrbitalResonanceBubble.tsx` (outside the file list).
+- D-G1-2 "Ja, minimal anpassen" (and "Ja, genauso anpassen" for two e2e files): eight existing GRÜN tests render the six-orbit field
+  explicitly under PERSON; `syntx-field-ssr` expects 01/02 and no 03–06 in the default mode.
+- K-G1-1 (GELB): evidence under `docs/` is not a file-list deviation.
+- D-G1-3 (GRÜN, for review): the Job Field's legacy comparison (`/matches`) is read only while the Job Field is active.
+
 ### 13.3 DOM contract (PINK BR-1 … BR-5; GELB conditions a/b)
 
 **BR-1 field root** `data-testid="syntx-field"`: `data-field-grammar="SYNTX_FIELD_V1"`, `data-observation-kind` FIELD|ORGANIZATION|ROLE|REQUIREMENT

@@ -1,0 +1,23 @@
+// Temporary (never committed): the role level's signature on 49e2bc6 for T-11; run in the 49e2bc6 worktree, writes JSON to argv path.
+import React from "react";
+import { describe, it, vi } from "vitest";
+import { writeFileSync } from "node:fs";
+import { renderToString } from "react-dom/server";
+import { matches, summary, UPLOAD_ID, view } from "./job-pool/fixtures/match-bodies";
+vi.mock("../../lib/career/ui/useCareerAnalysisJob", () => ({ useCareerAnalysisJob: () => ({ state: { state: "IDLE", activeJobId: null, resultAnalysisId: null, canonicalAnalysis: null, currentOperation: null, attemptCount: null, errorCode: null, errorSummary: null, httpStatus: null }, submitAnalysis: async () => undefined }) }));
+vi.mock("../../lib/career/ui/useJobScope", () => ({ useJobScopeValidation: () => ({ state: "NONE" }) }));
+const idle = (selected: string | null) => ({ pools: { state: "IDLE" }, upload: { state: "IDLE" }, selectedJobPoolUploadId: selected, view: { state: "IDLE" }, matches: { state: "IDLE" }, submitUpload: async () => undefined, select: () => undefined, reloadPools: async () => undefined, reloadMatches: async () => undefined });
+vi.mock("../../lib/career/ui/useJobPool", async (importOriginal) => {
+  const original = await importOriginal<typeof import("../../lib/career/ui/useJobPool")>();
+  return { ...original, useJobPoolWorkflow: (options: { analysisId: string | null; initialJobPoolUploadId?: string | null }) => options.initialJobPoolUploadId === "JPOOL_WITH_MATCHES" ? { ...idle(UPLOAD_ID), pools: { state: "AVAILABLE", jobPools: [summary] }, view: { state: "AVAILABLE", jobPoolUploadId: UPLOAD_ID, upload: view }, matches: options.analysisId === null ? { state: "IDLE" } : { state: "AVAILABLE", jobPoolUploadId: UPLOAD_ID, analysisId: "ANL_TEST", matches } } : idle(options.initialJobPoolUploadId ?? null) };
+});
+vi.mock("../../lib/career/ui/useJobPoolSources", () => ({ useAnalysisSources: () => ({ state: "IDLE" }) }));
+vi.mock("../../lib/career/ui/useRoleInvestigation", async (importOriginal) => ({ ...(await importOriginal<typeof import("../../lib/career/ui/useRoleInvestigation")>()), useAnalysisBoundary: (analysisId: string | null) => analysisId === null ? { state: "IDLE" } : { state: "RESOLVED", value: { investigationVersion: "ANALYSIS_INVESTIGATION_V1", analysisId: "ANL_TEST", jobId: "JOB_TEST", mode: "PERSON_X_JOB", jobScopeSelection: { jobPoolUploadId: UPLOAD_ID, poolRoleId: "ROLE_A" }, basis: "JOB_DECLARATION", discoveryRunId: null, investigationScopeHash: null } } }));
+import { SemanticCareerIntelligenceField } from "../../app/components/career/demo/SemanticCareerIntelligenceField";
+import { EMPTY_CAREER_INTELLIGENCE_DATA } from "../../app/career/demo/demo-data";
+const roleLevelSignature = (html: string): string[] => [...html.matchAll(/<[a-z]+ [^>]*data-testid="(syntx-requirement-|syntx-trace-|syntx-open-|syntx-source-)[^"]*"[^>]*>/g)].map(match => [...match[0].matchAll(/ (data-[a-z-]+)="([^"]*)"/g)].map(attribute => `${attribute[1]}=${attribute[2]}`).join(" "));
+describe("49e2bc6 role level", () => it("signature", () => {
+  const out: Record<string, string[]> = {};
+  for (const [name, props] of Object.entries({ role: { jobRoleId: "ROLE_A" }, requirement: { jobRoleId: "ROLE_A", jobRequirementId: "REQ_1" } })) out[name] = roleLevelSignature(renderToString(<SemanticCareerIntelligenceField data={EMPTY_CAREER_INTELLIGENCE_DATA} fieldFocus="FIELD" jobPoolUploadId="JPOOL_WITH_MATCHES" analysisId="ANL_TEST" {...props} />));
+  writeFileSync(process.env.ROLE_LEVEL_OUT!, JSON.stringify(out, null, 1) + "\n");
+}));

@@ -1,0 +1,30 @@
+Whole isolated suite (npm run test:isolated, fresh disposable database per run), each in a clean checkout without any lab.
+
+49e2bc6 (base):
+ Test Files  7 failed | 396 passed | 11 skipped (414)
+      Tests  27 failed | 2658 passed | 32 skipped (2717)
+
+afcf89f (G1 code):
+ Test Files  9 failed | 398 passed | 11 skipped (418)
+      Tests  29 failed | 2727 passed | 32 skipped (2788)
+
+Failing on both (pre-existing, 27 tests in 7 files):
+      6  FAIL  test/career-lifecycle-concurrency-idempotency.test.ts
+      6  FAIL  test/career-lifecycle-postgres-persistence.test.ts
+      5  FAIL  test/career-lifecycle-recovery.test.ts
+     10  FAIL  test/career-policy-activation-atomicity.test.ts
+      1  FAIL  test/decision-integration/g2-g3-vertical-proof.test.ts
+      1  FAIL  test/decision-integration/hr-decision-loop-p7.test.ts [ test/decision-integration/hr-decision-loop-p7.test.ts ]
+      1  FAIL  test/decision-runtime/e2e/local-decision-context-http.e2e.test.ts [ test/decision-runtime/e2e/local-decision-context-http.e2e.test.ts ]
+
+Failing only on afcf89f (Q1: six orbits expected in the default mode), adapted in 40cd810 (owner, D-G1-2 addendum):
+      1  FAIL  test/career-demo-e2e.test.tsx
+      1  FAIL  test/career/hr-decision-loop/e2e/hr-decision-loop-frontend.e2e.test.ts
+
+40cd810, those two files:
+ Test Files  2 passed (2)
+      Tests  11 passed | 3 skipped (14)
+(3 skipped: browser parts that do not run in this environment; the whole suite skips 32 tests on both commits)
+
+G1 tests and the field's SSR group on afcf89f: 18 files, 253/253 (test/career/pxj-first-screen 71/71).
+tsc --noEmit: only docs/career_analysis/evidence/video-readiness/scripts/relay-check.mts(13,214), as on the base.
