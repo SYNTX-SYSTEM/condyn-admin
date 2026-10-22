@@ -794,6 +794,8 @@ export const SIL_COPY = {
         MODE_MISMATCH: "This analysis ran in another investigation mode: nothing is shown, nothing switches by itself.",
         ROLE_MISMATCH: "This analysis belongs to another job than the selected one: neither its proposals nor coverage are shown.",
         ROLE_NONE: "No job is selected: this analysis belongs to the job below.",
+        JOB_CHECKING: "CHECKING THE SELECTED JOB …",
+        JOB_INVALID: "The selected job is not valid: neither proposals nor coverage of this analysis are shown.",
         PERSON_RESULT: "PERSON · without a job scope.",
         NO_PROJECTION: "This analysis has no capability proposals: no coverage.",
         COVERAGE_LOADING: "READING B2 COVERAGE …",
@@ -811,6 +813,7 @@ export const SIL_COPY = {
       modeAnalysis: "ran in",
       modeInterface: "interface",
       jobOfAnalysis: "job of this analysis",
+      reason: "reason",
       selectedJob: "selected job"
     },
     emptyStates: {
@@ -1611,6 +1614,8 @@ export const SIL_COPY = {
         MODE_MISMATCH: "Diese Analyse lief in einem anderen Untersuchungsmodus: nichts wird gezeigt, nichts schaltet von selbst um.",
         ROLE_MISMATCH: "Diese Analyse gehört zu einem anderen Job als dem gewählten: weder ihre Vorschläge noch eine Abdeckung werden gezeigt.",
         ROLE_NONE: "Kein Job gewählt: Diese Analyse gehört zum Job unten.",
+        JOB_CHECKING: "GEWÄHLTER JOB WIRD GEPRÜFT …",
+        JOB_INVALID: "Der gewählte Job ist ungültig: weder Vorschläge noch Abdeckung dieser Analyse werden gezeigt.",
         PERSON_RESULT: "PERSON · ohne Job-Scope.",
         NO_PROJECTION: "Diese Analyse hat keine Fähigkeitsvorschläge: keine Abdeckung.",
         COVERAGE_LOADING: "B2-ABDECKUNG WIRD GELESEN …",
@@ -1628,6 +1633,7 @@ export const SIL_COPY = {
       modeAnalysis: "lief in",
       modeInterface: "Oberfläche",
       jobOfAnalysis: "Job dieser Analyse",
+      reason: "Grund",
       selectedJob: "gewählter Job"
     },
     emptyStates: {

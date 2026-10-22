@@ -417,7 +417,8 @@ export function SemanticCareerIntelligenceField({
     analysisId: viewedAnalysisSource.kind === "NONE" ? null : viewedAnalysisSource.analysisId,
     result: resultState,
     boundary: analysisBoundary,
-    selection: jobScopeValidation.state === "VALID" ? jobScopeValidation.scope : null
+    selection: jobScopeValidation.state === "VALID" ? jobScopeValidation.scope : null,
+    pendingSelection: jobScopeValidation.state === "CHECKING" ? { state: "CHECKING" as const, scope: jobScopeValidation.scope } : jobScopeValidation.state === "INVALID" ? { state: "INVALID" as const, scope: jobScopeValidation.scope, reason: jobScopeValidation.reason } : null
   };
   /** B2 is read only on the Capability Field, in PERSON × JOB, for the analysis's own selected job (P-01); with the existing hook. */
   const coverageRequest = activeFieldFocus === "CAPABILITY" ? firstScreenCoverageRequest(firstScreenInput) : null;

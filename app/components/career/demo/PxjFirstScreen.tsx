@@ -28,7 +28,7 @@ const chip = (rgb: string): React.CSSProperties => ({ display: "inline-flex", al
 const action: React.CSSProperties = { alignSelf: "flex-start", marginTop: "4px", padding: "5px 12px", borderRadius: "999px", border: `1px solid rgba(${CYAN_RGB}, 0.55)`, background: `rgba(${CYAN_RGB}, 0.08)`, color: SIL_TOKENS.colors.cyanActive, fontFamily: MONO, fontSize: "10.5px", fontWeight: 700, letterSpacing: "1.2px", cursor: "pointer" };
 const layer: React.CSSProperties = { display: "flex", flexDirection: "column", gap: "6px", padding: "10px 12px", borderRadius: "10px", border: "1px solid rgba(120, 214, 255, 0.14)", background: "rgba(4, 12, 21, 0.6)" };
 
-const LOADING_STATES = new Set(["RESULT_LOADING", "BOUNDARY_RESOLVING", "COVERAGE_LOADING"]);
+const LOADING_STATES = new Set(["RESULT_LOADING", "BOUNDARY_RESOLVING", "COVERAGE_LOADING", "JOB_CHECKING"]);
 
 export interface PxjFirstScreenProps {
   screen: PxjFirstScreenModel;
@@ -52,6 +52,8 @@ function stateDetail(screen: PxjFirstScreenModel, c: Copy, modes: Record<Investi
     case "RESULT_FAILED": return `${c.analysis} ${screen.analysisId}${screen.code ? ` · ${screen.code}` : ""}`;
     case "BOUNDARY_UNRESOLVED": return `${c.analysis} ${screen.analysisId}${screen.reason ? ` · ${screen.reason}` : ""}`;
     case "MODE_MISMATCH": return `${c.analysis} ${screen.analysisId} · ${c.modeAnalysis} ${modes[screen.analysisMode]} · ${c.modeInterface} ${modes[screen.interfaceMode]}`;
+    case "JOB_CHECKING": return `${c.selectedJob}: ${screen.selection.poolRoleId} · ${screen.selection.jobPoolUploadId}`;
+    case "JOB_INVALID": return `${c.selectedJob}: ${screen.selection.poolRoleId} · ${c.reason} ${screen.reason} · ${c.jobOfAnalysis}: ${screen.analysisSelection.poolRoleId}`;
     case "ROLE_MISMATCH": return `${c.jobOfAnalysis}: ${screen.analysisSelection.poolRoleId} · ${screen.analysisSelection.jobPoolUploadId}${screen.selection === null ? "" : ` · ${c.selectedJob}: ${screen.selection.poolRoleId}`}`;
     case "COVERAGE_FAILED": return `${c.analysis} ${screen.analysisId}${screen.code ? ` · ${screen.code}` : ""}`;
     case "LINEAGE_MISMATCH": return `${screen.check} · ${c.lineage[screen.check]}`;
@@ -173,15 +175,19 @@ export function PxjFirstScreen({ screen, mode, locale, onSwitchMode, onSelectRol
 
 /** In the Job Field (§03.4): the job of the analysis on view, offered as an explicit choice when it is not the selected one. */
 export function PxjAnalysisJobOffer({ screen, locale, onSelectRole }: { screen: PxjFirstScreenModel; locale: SilLocale; onSelectRole: (scope: JobScope) => void }) {
-  if (screen.state !== "ROLE_MISMATCH") return null;
+  // JOB_CHECKING offers nothing (the selected job is still being checked); JOB_INVALID names the invalid job and its reason.
+  if (screen.state !== "ROLE_MISMATCH" && screen.state !== "JOB_INVALID") return null;
   const c = SIL_COPY[locale].pxjFirst;
+  const invalid = screen.state === "JOB_INVALID";
+  const offer = !invalid || screen.selection.jobPoolUploadId !== screen.analysisSelection.jobPoolUploadId || screen.selection.poolRoleId !== screen.analysisSelection.poolRoleId;
   return (
     <div data-testid="pxj-analysis-job-offer" data-sx-shell="pxj-offer" data-state={screen.state} role="status" style={{ position: "fixed", left: "50%", bottom: "28px", transform: "translateX(-50%)", zIndex: 58, display: "flex", alignItems: "center", gap: "12px", maxWidth: "min(720px, calc(100vw - 48px))", boxSizing: "border-box", padding: "8px 10px 8px 16px", borderRadius: "999px", border: `1px solid rgba(${AMBER_RGB}, 0.42)`, background: "linear-gradient(180deg, rgba(8, 21, 34, 0.94), rgba(3, 8, 15, 0.96))", boxShadow: "0 12px 32px rgba(0, 0, 0, 0.55)", backdropFilter: "blur(10px)" }}>
       <span style={{ display: "flex", flexDirection: "column", gap: "2px", minWidth: 0 }}>
-        <span style={{ ...statement, fontSize: "12px", color: `rgb(${AMBER_RGB})` }}>{screen.selection === null ? c.states.ROLE_NONE : c.states.ROLE_MISMATCH}</span>
+        <span style={{ ...statement, fontSize: "12px", color: `rgb(${AMBER_RGB})` }}>{invalid ? c.states.JOB_INVALID : screen.selection === null ? c.states.ROLE_NONE : c.states.ROLE_MISMATCH}</span>
+        {invalid && <span data-testid="pxj-analysis-job-invalid" data-reason={screen.reason} style={meta}>{c.selectedJob}: {screen.selection.poolRoleId} · {c.reason} {screen.reason}</span>}
         <span style={meta}>{c.jobOfAnalysis}: {screen.analysisSelection.poolRoleId} · {screen.analysisSelection.jobPoolUploadId}</span>
       </span>
-      <button type="button" data-testid="pxj-analysis-job-select" onClick={() => onSelectRole(screen.analysisSelection)} style={{ ...action, alignSelf: "center", marginTop: 0, whiteSpace: "nowrap" }}>{c.selectRole}</button>
+      {offer && <button type="button" data-testid="pxj-analysis-job-select" onClick={() => onSelectRole(screen.analysisSelection)} style={{ ...action, alignSelf: "center", marginTop: 0, whiteSpace: "nowrap" }}>{c.selectRole}</button>}
     </div>
   );
 }

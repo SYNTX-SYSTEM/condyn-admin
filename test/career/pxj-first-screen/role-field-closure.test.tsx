@@ -220,3 +220,48 @@ describe("F-RF-2 · the analysis on view follows the current URL after the mount
     expect(screenOf(settle(mount(new URL(url).search.slice(1))))?.analysisId).toBe(A2);
   });
 });
+
+describe("F-RF-3 · a selected job that is still checked or invalid", () => {
+  const offerOf = (tree: ReactElement) => find(tree, PxjAnalysisJobOffer)?.props.screen as { state: string; selection?: unknown; reason?: string } | undefined;
+
+  it("REPRODUCE CHECKING: while the selected job is checked there is no mismatch and no 'no job selected' offer", () => {
+    control.validation = (scope) => scope === null ? { state: "NONE" } : { state: "CHECKING", scope };
+    const tree = settle(mount(`focus=FIELD&investigationMode=PERSON_X_JOB&analysisId=${A1}&jobScopePoolUploadId=${UPLOAD}&jobScopeRoleId=${ROLE}`));
+    expect(offerOf(tree)?.state).toBe("JOB_CHECKING");
+  });
+
+  it("REPRODUCE INVALID: an invalid selected job is named as such with its reason, never as 'no job selected'", () => {
+    control.validation = (scope) => scope === null ? { state: "NONE" } : { state: "INVALID", scope, reason: "POOL_NOT_ACTIVE" };
+    const tree = settle(mount(`focus=FIELD&investigationMode=PERSON_X_JOB&analysisId=${A1}&jobScopePoolUploadId=${UPLOAD}&jobScopeRoleId=${ROLE}`));
+    expect(offerOf(tree)).toMatchObject({ state: "JOB_INVALID", reason: "POOL_NOT_ACTIVE" });
+  });
+
+  it("inverse: a real other job is ROLE_MISMATCH with that selection; no job at all is ROLE_MISMATCH without one", () => {
+    const other = settle(mount(`focus=FIELD&investigationMode=PERSON_X_JOB&analysisId=${A1}&jobScopePoolUploadId=${OTHER.jobPoolUploadId}&jobScopeRoleId=${OTHER.poolRoleId}`));
+    expect(offerOf(other)).toMatchObject({ state: "ROLE_MISMATCH", selection: OTHER });
+    const none = settle(mount(`focus=FIELD&investigationMode=PERSON_X_JOB&analysisId=${A1}`));
+    expect(offerOf(none)).toMatchObject({ state: "ROLE_MISMATCH", selection: null });
+    // The analysis's own valid job: no mismatch and no job state in the Job Field (B2 is read only on the Capability Field), AVAILABLE there.
+    expect(offerOf(settle(mount(`focus=FIELD&investigationMode=PERSON_X_JOB&analysisId=${A1}&jobScopePoolUploadId=${UPLOAD}&jobScopeRoleId=${ROLE}`)))?.state).toBe("COVERAGE_LOADING");
+    expect(screenOf(settle(mount(pxjQuery(`&analysisId=${A1}`))))?.state).toBe("AVAILABLE");
+  });
+});
+
+describe("F-RF-3 · what the Job Field says (server-rendered offer)", () => {
+  it("JOB_INVALID names the invalid job and its reason, never 'no job selected'; JOB_CHECKING offers nothing", async () => {
+    const { renderToString } = await vi.importActual<typeof import("react-dom/server")>("react-dom/server");
+    const { createElement } = await vi.importActual<typeof import("react")>("react");
+    const { SIL_COPY } = await import("../../../lib/career/view-model/sil-language");
+    for (const locale of ["en", "de"] as const) {
+      const c = SIL_COPY[locale].pxjFirst;
+      const invalid = renderToString(createElement(PxjAnalysisJobOffer, { locale, onSelectRole: () => undefined, screen: { state: "JOB_INVALID", analysisId: A1, analysisSelection: SCOPE, selection: OTHER, reason: "POOL_NOT_ACTIVE" } }));
+      expect(invalid).toContain(c.states.JOB_INVALID);
+      expect(invalid).toContain('data-reason="POOL_NOT_ACTIVE"');
+      expect(invalid).not.toContain(c.states.ROLE_NONE);
+      expect(invalid).toContain('data-testid="pxj-analysis-job-select"');
+      // The invalid job is the analysis's own: nothing to offer instead.
+      expect(renderToString(createElement(PxjAnalysisJobOffer, { locale, onSelectRole: () => undefined, screen: { state: "JOB_INVALID", analysisId: A1, analysisSelection: SCOPE, selection: SCOPE, reason: "UPLOAD_NOT_FOUND" } }))).not.toContain('data-testid="pxj-analysis-job-select"');
+      expect(renderToString(createElement(PxjAnalysisJobOffer, { locale, onSelectRole: () => undefined, screen: { state: "JOB_CHECKING", analysisId: A1, analysisSelection: SCOPE, selection: SCOPE } }))).toBe("");
+    }
+  });
+});

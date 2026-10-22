@@ -142,6 +142,8 @@ export interface FirstScreenInput {
   boundary: FirstScreenBoundary;
   /** The selected job, only when VALID; null when none is selected (or it is not valid). */
   selection: JobScope | null;
+  /** A selected job that is still being checked or is invalid (GELB F-RF-3); absent or null when none is selected or it is VALID. */
+  pendingSelection?: { state: "CHECKING"; scope: JobScope } | { state: "INVALID"; scope: JobScope; reason: string } | null;
   coverage: FirstScreenCoverage;
 }
 
@@ -202,6 +204,10 @@ export type PxjFirstScreen =
   | { state: "BOUNDARY_FAILED"; analysisId: string }
   /** The analysis ran under another boundary than the interface's mode; nothing switches by itself. */
   | { state: "MODE_MISMATCH"; analysisId: string; analysisMode: "PERSON" | "PERSON_X_JOB"; interfaceMode: InvestigationMode }
+  /** The selected job is still being checked: no mismatch is named yet, nothing of the analysis is shown. */
+  | { state: "JOB_CHECKING"; analysisId: string; analysisSelection: JobScope; selection: JobScope }
+  /** The selected job is invalid (with the validation's reason): named as such, never as "no job selected". */
+  | { state: "JOB_INVALID"; analysisId: string; analysisSelection: JobScope; selection: JobScope; reason: string }
   /** The analysis belongs to another job than the selected one (or none is selected): neither proposals nor coverage. */
   | { state: "ROLE_MISMATCH"; analysisId: string; analysisSelection: JobScope; selection: JobScope | null }
   /** A PERSON analysis under PERSON: today's first screen (no coverage). */
@@ -284,6 +290,9 @@ export function projectPxjFirstScreen(input: FirstScreenInput): PxjFirstScreen {
   if (persisted.mode === "PERSON") return { state: "PERSON_RESULT", analysisId, result: decoded };
   // PERSON_X_JOB: the proposals arose under the scope of the analysis's own job; under another (or no) selected job none is shown.
   if (persisted.jobScopeSelection === null) return { state: "BOUNDARY_FAILED", analysisId };
+  const pending = selection === null ? input.pendingSelection ?? null : null;
+  if (pending?.state === "CHECKING") return { state: "JOB_CHECKING", analysisId, analysisSelection: { ...persisted.jobScopeSelection }, selection: { ...pending.scope } };
+  if (pending?.state === "INVALID") return { state: "JOB_INVALID", analysisId, analysisSelection: { ...persisted.jobScopeSelection }, selection: { ...pending.scope }, reason: pending.reason };
   if (!sameScope(persisted.jobScopeSelection, selection)) return { state: "ROLE_MISMATCH", analysisId, analysisSelection: { ...persisted.jobScopeSelection }, selection };
   const projection = decoded.projection;
   if (projection === null) return { state: "NO_PROJECTION", analysisId, result: decoded };
