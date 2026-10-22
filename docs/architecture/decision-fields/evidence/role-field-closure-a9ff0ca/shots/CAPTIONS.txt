@@ -1,0 +1,11 @@
+STAND-IN · keine Modellausführung. PINK's own lab (video-lab.ts, port 41873, disposable database, loopback stand-in) on a9ff0ca, 1920 x 1080. Screens with coverage rows (AVAILABLE) are not committed: they carry quotes from the synthetic CV (E-6).
+STANDIN-F1-run-then-person-1920.jpg        F-RF-1: interface PERSON, session MODE_MISMATCH, while the URL already says PERSON_X_JOB (reload shows AVAILABLE)
+STANDIN-F2a-A2-running-1920.jpg            F-RF-2 a: A2 running, URL names A1, screen NO_ANALYSIS
+STANDIN-F2a-A2-failed-1920.jpg             F-RF-2 a: A2 FAILED, screen still NO_ANALYSIS (reload shows A1)
+STANDIN-F3-invalid-unknown-role-1920.jpg   F-RF-3: shell "JOB NOT VALID", Job Field offer "No job is selected"
+STANDIN-F3-invalid-archived-pool-1920.jpg  F-RF-3: the same with a job of an ARCHIVED pool
+STANDIN-X-05-other-role-same-org-1920.jpg  X-05: ROLE_MISMATCH, no proposals
+STANDIN-X-10-select-role_pink_twin_a-1920.jpg / _b: F-RF-5: two roles of one organization with one title: identical shell text
+STANDIN-X-11-mode-person-1920.jpg          X-11: MODE_MISMATCH, nothing switches
+STANDIN-X-12-mode-job-1920.jpg             X-12: JOB mode, gate JOB_MODE
+STANDIN-X-19-unknown-analysis-1920.jpg     X-19: RESULT_NOT_FOUND

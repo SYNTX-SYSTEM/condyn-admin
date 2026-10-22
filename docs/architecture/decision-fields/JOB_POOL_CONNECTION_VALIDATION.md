@@ -2911,6 +2911,54 @@ Factors measured in the DOM (`e6493a7`; the factor pair, then the outer orbit's 
 
 **Run record.** `evidence/pxj-g1-a9ff0ca/`: `static-a9ff0ca.txt`, `D-G1-P1-fix-proof.txt`, `walk-STANDIN-a9ff0ca.txt`, `role-level-and-person-49e2bc6-vs-a9ff0ca.txt`, `suite-a9ff0ca.txt`, `manifest.sha256` (ids, counts, verdicts; no quotes). PINK's lab on port 41873, stopped; worktree clean; GRÜN's :41871 not touched; no Gemini call. G1 now meets PA-01 … PA-14 on PINK's checks; integration remains with the owner.
 
+### 3.58 Role-field closure: F-RF-1 … F-RF-3 reproduced and the matrix X-01 … X-24 swept on `a9ff0ca` (2026-10-23)
+
+**Request.** GELB relayed the owner order "SYNTX::SFE::RECURSIVE_ROLE_FIELD_CLOSURE" (base `49e2bc6`, G1 candidate `a9ff0ca`; no integration, no deployment, no Gemini). Basis: GELB's state graph `CONDYN_ROLE_FIELD_CLOSURE_2026-10-22.md` (`c02d756`), all CODE_INSPECTION. PINK's lane: reproduce F-RF-1 … F-RF-3 before any fix, sweep X-01 … X-24 in the browser, keep the evidence classes apart.
+
+**Method.**
+- PINK's own probe `pink-rf-sweep.mjs` on a fresh lab of `a9ff0ca` (`video-lab.ts`, port 41873, disposable database). Evidence class **STAND_IN** (no model execution) for every browser step; the B2 409 checks of X-24 are GETs against the same lab. :41862 was not used (no PERSISTED_REAL_RESULT in this section).
+- Three pools uploaded to PINK's own lab: the DLL pool, a synthetic PINK pool (`pools/PINK_RF_POOL.json`: the DLL role id `role_kestrel_fullstack` again, two roles titled "Platform Engineer" in one organization and a third in another, a role without requirements) and the same pool with status ARCHIVED.
+- Each step records URL, mode, field, gate, selected job (state, used, shell text), observed role, first-screen state and statement, Job Field offer, proposals and orbit counts, and the requests. Phases that the stand-in finishes too fast were held by delaying responses in the browser; each such step says so.
+
+**Pool schema (X-07, X-09, X-10).** All three pools were accepted (201). The canonical mapping lists every role, `role_pink_empty` with 0 requirements; the ARCHIVED pool is stored as such. Selecting the empty role gives VALID, an analysis for it gives B2 200 with "0 covered · 0 not covered · 0 requirements".
+
+**Reproduced (`sweep-STANDIN-a9ff0ca.txt`).**
+- **F-RF-1 confirmed.** PxJ with a VALID job → ANALYZE → mode PERSON while the job runs (job polls held 4 s). After SUCCEEDED the URL says `investigationMode=PERSON_X_JOB` (the declared mode), the interface stays PERSON and shows MODE_MISMATCH; the reload shows PERSON × JOB with AVAILABLE. Session ≠ reload.
+- **F-RF-2 a confirmed.** Page without `analysisId` → A1 AVAILABLE (URL A1) → A2 (a text file named .pdf, so the worker fails with EXECUTION_FAILED). While A2 runs and after it failed, the screen shows NO_ANALYSIS although the URL names A1; the reload shows A1 AVAILABLE.
+- **F-RF-2 b confirmed.** Page with `?analysisId=A0` → A1 AVAILABLE (URL A1) → A2 running and failed: the screen shows **A0** (coverage bound to A0), neither the running analysis nor the URL's A1; the reload shows A1.
+- **F-RF-3 confirmed.**
+  - CHECKING (upload read held 7 s; result and boundary not delayed): from 2.5 s to 9.5 s the Job Field offers "No job is selected: this analysis belongs to the job below … SELECT THIS ROLE" while the shell says CHECKING; at 10 s VALID and coverage.
+  - INVALID, permanently: an unknown role id, a job of the ARCHIVED pool and an unknown upload all give the shell "JOB NOT VALID <role id>" and, below it, the offer "No job is selected".
+
+**Matrix.**
+
+| # | Result (STAND_IN) |
+|---|---|
+| X-01 / X-21 | role opened by click or deep link (`jobRoleId` only): job NONE, gate AWAITING_JOB, "select" not pressed; reload equal — PASS |
+| X-02 | select → VALID, URL `jobScope*`, gate OPEN, "select" pressed and disabled; reload equal — PASS |
+| X-03 | selecting again: button disabled, 0 requests — PASS |
+| X-04 | remove → NONE, URL without `jobScope*`, gate AWAITING_JOB, field FIELD, role stays opened, analyses 5 → 5; reload equal — PASS |
+| X-05 / X-06 | other role (same organization / other organization) in the session with A0 on view → ROLE_MISMATCH without proposals; reload equal — PASS |
+| X-07 | DLL role selected, PINK pool viewed with the same role id: "select" not pressed there, shell still names the DLL pool; Capability keeps A0 AVAILABLE — PASS |
+| X-08 | selecting that role in the PINK pool replaces the job (shell names the PINK pool); A0 → ROLE_MISMATCH; reload equal; B2 for the same role id under the other upload: 409 SCOPE_MISMATCH — PASS |
+| X-09 | role without requirements: VALID; analysis → B2 counts 0/0/0, proposals shown, no other number — PASS |
+| X-10 | twin A and twin B (same title, same organization): identical shell text "Platform Engineer · Kestrel … · PINK pool"; twin C differs only by its organization — **F-RF-5 confirmed** |
+| X-11 | mode PERSON with A0 on view: MODE_MISMATCH, shell "selected job not used"; reload equal — PASS |
+| X-12 | mode JOB: gate JOB_MODE, field FIELD, 0 analysis reads after the switch; reload equal — PASS |
+| X-13 | = F-RF-1 — FAIL |
+| X-14 | = F-RF-2 a/b — FAIL |
+| X-15 | another role selected while the analysis runs: ROLE_MISMATCH in the session and after the reload — PASS |
+| X-16 | reload equal in every step except X-13 / X-14 — PASS with those exceptions |
+| X-17 | = F-RF-3 CHECKING — FAIL |
+| X-18 | = F-RF-3 INVALID: shell, gate and the absent proposals are right, the naming is wrong — FAIL (naming) |
+| X-19 | unknown id → RESULT_NOT_FOUND; the PERSON analysis under PxJ → MODE_MISMATCH — PASS |
+| X-20 | `jobScopePoolUploadId` without role → NONE; malformed upload id → NONE; `investigationMode=FOO` → PERSON × JOB (the URL keeps "FOO") — PASS |
+| X-22 | Back leaves the state for the previous document (B-NAV confirmed). Forward restores the URL and mode PERSON, but 3.5 s later the first screen was still RESULT_LOADING with the job CHECKING — INCONCLUSIVE, to be repeated with a longer wait |
+| X-23 | PxJ without a job: START disabled, 0 ANALYZE posts — PASS |
+| X-24 | B2 for another role of A0's pool and for the same role id in another upload: 409 SCOPE_MISMATCH — PASS |
+
+**Run record.** `evidence/role-field-closure-a9ff0ca/`: `sweep-STANDIN-a9ff0ca.txt`, `pools/*.json` (synthetic), `shots/STANDIN-*.jpg` with `CAPTIONS.txt` (screens without CV quotes only), `scripts/*.txt`, `manifest.sha256`. PINK's lab on port 41873 under PINK's PID, stopped; worktree clean. :41862, :41864 and GRÜN's :41871 not touched. No Gemini call. The fixes of F-RF-1 … F-RF-3 are GRÜN's; PINK re-checks them on GELB's word.
+
 ## 4. Boundaries and findings for coordination
 
 - F-JP-1 (closed in `b782793`): `JOB_POOL_CONNECTION.md` §4 followed the per-role `JOB_POOL_JSON_ROLE` design;

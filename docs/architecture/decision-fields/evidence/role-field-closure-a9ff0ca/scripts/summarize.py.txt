@@ -1,0 +1,20 @@
+# PINK: quote-free summary of the role-field sweep (ids mapped to A0/P0/…; states, statements, offers, counts, requests).
+import json,sys,re
+r=json.load(open(sys.argv[1]))
+print(f"# gemini={r['gemini']} ({r['note']}) viewport={r['viewport']} pageErrors={len(r['pageErrors'])}")
+print('# uploads (POST to PINK\'s own lab):',json.dumps({k:({kk:vv for kk,vv in v.items() if kk!='issues'} if isinstance(v,dict) else v) for k,v in r['uploads'].items()}))
+A={v:k for k,v in r['analyses'].items() if v}
+nm=lambda s:re.sub(r'ANL_\d+_\d+',lambda m:A.get(m.group(0),'ANL_other'),s) if isinstance(s,str) else s
+print('# analyses:',' '.join(f'{k}=ANL_*' for k in r['analyses']))
+for s in r['steps']:
+  o=s.get('obs') or {}; j=o.get('job') or {}; f=o.get('first') or {}; ob=o.get('observation') or {}; u=o.get('url') or {}
+  print(f"\n{s['name']}  ok={s['ok']}" + (f"  note: {s['note']}" if s.get('note') else ''))
+  print(f"  mode={o.get('mode')} field={o.get('field')} gate={o.get('gate')} job={j.get('state')} used={j.get('used')} observed={ob.get('kind')}:{ob.get('id')} select={o.get('select')}")
+  print(f"  url: analysisId={nm(u.get('analysisId'))} investigationMode={u.get('investigationMode')} jobScopeRoleId={u.get('jobScopeRoleId')} jobScopePool={'set' if u.get('jobScopePoolUploadId') else None} jobRoleId={u.get('jobRoleId')}")
+  print(f"  first={f.get('state')} binding={nm(f.get('binding'))} counts={f.get('counts')} proposals={o.get('proposals')} rows={o.get('rows')} orbitItems={o.get('items')} errorBanner={o.get('error')}")
+  if j.get('text'): print('  job shell:',j['text'])
+  if f.get('statement') and f.get('state')!='AVAILABLE': print('  first statement:',nm(f['statement']))
+  if o.get('offer'): print('  job-field offer:',o['offer'])
+  extra={k:v for k,v in s.items() if k not in('name','ok','obs','requests','ms','note','error')}
+  if extra: print('  extra:',nm(json.dumps(extra,ensure_ascii=False)))
+  if s.get('error'): print('  ERROR',s['error'])
