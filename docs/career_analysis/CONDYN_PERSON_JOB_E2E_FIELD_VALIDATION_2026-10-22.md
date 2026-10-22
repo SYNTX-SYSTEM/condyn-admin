@@ -192,6 +192,8 @@ Der Beleg eines Zitats ist kein Beleg professioneller Kompetenz.
 
 `shots/14-pxj-analysis-done`, `shots/p1-first-screen`. Sonde: `first-screen-probe.json`.
 
+> **Korrektur K-1 (2026-10-22, GELB):** `shots/p1-first-screen` und `first-screen-probe.json → first` zeigen nicht das Capability Field, sondern das Job Field ohne gewählten Pool. Die Sonde hatte `focus=CAPABILITY` nicht gesetzt. Der Beleg für den ersten Bildschirm ist allein `shots/14-pxj-analysis-done`; das Ergebnis G-1 bleibt gleich. Ein Reload mit `focus=CAPABILITY` füllt das Capability Field nicht, alle Orbits zeigen 0 Einträge (F-PXJ-RELOAD, `capability-reload-probe.json`, `shots/q1-capability-reload-empty`). Einzelheiten: `CONDYN_PXJ_G1_FIRST_SCREEN_SPECIFICATION_2026-10-22.md` §02.
+
 | Zustand | Erster Bildschirm (Capability Field nach ANALYZE) | Job Field, Rollenebene (`shots/15`, `p2`) | B2-Fläche (`shots/16`) |
 |---|---|---|---|
 | AVAILABLE | B2 und Matching liegen über bestehende Routen vor | ja | ja |
@@ -223,7 +225,7 @@ Der Beleg eines Zitats ist kein Beleg professioneller Kompetenz.
   - Ob solche Werte in einer PERSON-×-JOB-Relation erscheinen dürfen, entscheidet der Owner.
 - **G-5 (Evidenzsemantik):** Der Validator prüft, ob das Zitat existiert, nicht, ob es die Fähigkeit trägt. Bekannt als O-LIVE-1.
 - **G-6 (Archiv):** Nur Discovery ist als Rohtext archiviert. Convergence und Legacy lassen sich nur auf der verarbeiteten Ebene prüfen.
-- **O-1 (Beobachtung):** Die 7 vorgeschlagenen Beziehungen zwischen Fähigkeiten sind neu gegenüber dem 2026-10-19. Ob und wo sie angezeigt werden, habe ich nicht geprüft.
+- **O-1 (Beobachtung):** Die 7 vorgeschlagenen Beziehungen zwischen Fähigkeiten sind neu gegenüber dem 2026-10-19. Nachtrag: Sie werden nirgends angezeigt; der Adapter übernimmt nur `capabilities` (Spezifikation §01.1).
 
 ## 11 — Unabhängige Prüfung durch PINK
 

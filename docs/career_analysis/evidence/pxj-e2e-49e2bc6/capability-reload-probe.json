@@ -1,0 +1,44 @@
+{
+ "l0": {
+  "url": "http://127.0.0.1:41862/career/demo?analysisId=ANL_1792628993472_10&focus=CAPABILITY&investigationMode=PERSON_X_JOB&jobScopePoolUploadId=JPOOL_B94850C439974E27496FE3B1A9A076B5&jobScopeRoleId=role_kestrel_fullstack",
+  "field": "CAPABILITY",
+  "mode": "PERSON_X_JOB",
+  "legacyHits": [],
+  "requirementNodes": 0,
+  "coverage": 0,
+  "geospatial": 0
+ },
+ "o02": {
+  "zoom": "0",
+  "stage": "",
+  "nodes": [],
+  "legacyHits": [],
+  "requirementNodes": 0,
+  "coverage": 0,
+  "geospatial": 0
+ },
+ "o03": {
+  "zoom": "1",
+  "stage": "03",
+  "nodes": [],
+  "legacyHits": [],
+  "requirementNodes": 0,
+  "coverage": 0,
+  "geospatial": 0
+ },
+ "o04": {
+  "zoom": "1",
+  "stage": "04",
+  "nodes": [],
+  "legacyHits": [],
+  "requirementNodes": 0,
+  "coverage": 0,
+  "geospatial": 0
+ },
+ "apiReads": [
+  "/api/career/job-pools/JPOOL_B94850C439974E27496FE3B1A9A076B5",
+  "/api/career/analyses/ANL_1792628993472_10/investigation",
+  "/api/career/job-pools"
+ ],
+ "nonGetRequests": []
+}

@@ -1,0 +1,32 @@
+// GELB read-only probe (owner OWNER_DECISION_PXJ_E2E): the Capability Field as the first screen of the PERSON × JOB analysis.
+// GET navigation and client-side clicks only; every non-GET request is recorded and must be zero.
+import { pathToFileURL } from "node:url";
+import { writeFileSync } from "node:fs";
+const pw = await import(pathToFileURL(process.env.CONDYN_PLAYWRIGHT_MODULE).href);
+const { chromium } = pw.chromium ? pw : pw.default;
+const [BASE, A, OUT] = process.argv.slice(2);
+const POOL = "JPOOL_B94850C439974E27496FE3B1A9A076B5", ROLE = "role_kestrel_fullstack";
+const browser = await chromium.launch(); const page = await browser.newPage({ viewport: { width: 1920, height: 1080 } });
+const writes = [], reads = []; page.on("request", r => { if (!["GET", "HEAD"].includes(r.method())) writes.push(`${r.method()} ${r.url()}`); else if (r.url().includes("/api/")) reads.push(new URL(r.url()).pathname); });
+await page.addInitScript(() => { try { localStorage.setItem("condyn_onboarding_seen", "1"); } catch {} });
+const LEGACY = /\b\d{1,3}\s?%|SCORED|RESONANCE\s*%|RANK\s*#|CONTRIBUTION|CONFIDENCE|fit\s*score/i;
+const scan = async () => { const text = await page.locator("body").innerText(); const hits = [...new Set((text.match(new RegExp(LEGACY.source, "gi")) || []))]; return { legacyHits: hits, requirementNodes: await page.locator('[data-testid^="syntx-requirement-"]').count(), coverage: await page.locator('[data-testid="syntx-coverage"]').count(), geospatial: await page.locator("text=Geospatial Visualisation").count() }; };
+const res = {};
+await page.goto(`${BASE}/career/demo?analysisId=${A}&focus=CAPABILITY&investigationMode=PERSON_X_JOB&jobScopePoolUploadId=${POOL}&jobScopeRoleId=${ROLE}`, { waitUntil: "networkidle" });
+await page.waitForTimeout(6000);
+const close = page.locator('[data-testid="onboarding-close-btn"]'); if (await close.count()) await close.click();
+await page.waitForTimeout(1500);
+res.l0 = { url: page.url(), field: await page.getAttribute('[data-testid="semantic-career-intelligence-field"]', "data-field-focus").catch(() => null), mode: await page.getAttribute("[data-investigation-mode]", "data-investigation-mode").catch(() => null), ...(await scan()) };
+await page.screenshot({ path: `${OUT}/q1-capability-first-screen-1920.png` });
+for (const [tag, name] of [["02", "CAPABILITY FIELD"], ["03", "RESONANCE ORBITS"], ["04", "ROLE MANIFESTATION"]]) {
+  const stage = page.locator(`text=${name}`).last();
+  if (!(await stage.count())) { res[`o${tag}`] = "STAGE_ABSENT"; continue; }
+  await stage.click({ force: true }); await page.waitForTimeout(2500);
+  res[`o${tag}`] = { zoom: await page.getAttribute('[data-testid="semantic-career-intelligence-field"]', "data-zoom-level"), stage: await page.getAttribute('[data-testid="semantic-career-intelligence-field"]', "data-focused-stage-id"), nodes: await page.$$eval('[data-testid^="orbital-cosmos-node-"]', els => els.map(e => e.innerText.replace(/\s+/g, " ").slice(0, 160))), ...(await scan()) };
+  await page.screenshot({ path: `${OUT}/q-${tag}-cosmos-1920.png` });
+  const exit = page.locator(`[data-testid="orbital-cosmos-center-${tag}"]`); if (await exit.count()) { await exit.click(); await page.waitForTimeout(1500); } else { await page.keyboard.press("Escape"); await page.waitForTimeout(1500); }
+}
+res.apiReads = [...new Set(reads)];
+res.nonGetRequests = writes;
+writeFileSync(`${OUT}/capability-first-screen-probe.json`, JSON.stringify(res, null, 1));
+await browser.close();
