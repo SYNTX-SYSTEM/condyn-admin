@@ -1,0 +1,13 @@
+# PINK: tsc and the whole isolated suite on a9ff0ca (e2e included, disposable databases, network sentinel).
+tsc exit 2 errors 1: docs/career_analysis/evidence/video-readiness/scripts/relay-check.mts(13,214): error TS2769: No overload matches this ca 
+full a9ff0ca exit 1 ::  Test Files  10 failed | 397 passed | 11 skipped (418)       Tests  33 failed | 2738 passed | 20 skipped (2791)  net 2
+failed a9ff0ca 33 | 50776fc 27 | only on a9ff0ca 6 | only on 50776fc 0
+  only on a9ff0ca (Test timed out in 5000ms): test/career/outcome-valence-feedback-context-revision-lifecycle/field-integration.test.ts
+  only on a9ff0ca (Test timed out in 5000ms): test/career/relation/outcome-valence-feedback-context-revision-replay/career-outcome-valence-feedback-context-revision-replay.test.ts
+  only on a9ff0ca (Test timed out in 5000ms): test/career/relation/outcome-valence-feedback-context-revision/career-outcome-valence-feedback-context-revision.test.ts
+  only on a9ff0ca (Test timed out in 5000ms): test/decision-core/context/contract.test.ts
+  only on a9ff0ca (Test timed out in 5000ms): test/decision-core/structural-consequences/reconstruct.test.ts
+  only on a9ff0ca (Test timed out in 5000ms): test/decision-core/validation/authority.test.ts
+test/career/pxj-first-screen: {'first-screen-ssr.test.tsx': 36, 'person-markup.test.tsx': 1, 'projection.test.ts': 35, 'result-hook.test.ts': 2} = 74 all passed: True
+# None of the six files imports pxj-first-screen or withoutLegacyOrbits (git grep). Rerun of the six on a9ff0ca:  Tests 2 failed | 61 passed (63) (both in the replay file).
+# That replay file alone: a9ff0ca  Tests 1 failed | 4 passed (5); 49e2bc6  Tests 1 failed | 4 passed (5); 50776fc  Tests 1 failed | 4 passed (5) — a 5000 ms timeout under machine load on every commit, not G1.

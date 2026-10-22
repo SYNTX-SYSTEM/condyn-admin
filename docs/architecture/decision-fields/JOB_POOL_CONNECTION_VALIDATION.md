@@ -2897,6 +2897,20 @@ Factors measured in the DOM (`e6493a7`; the factor pair, then the outer orbit's 
 - PINK's labs ran on port 41873 under PINK's PIDs and were stopped; the worktree returned clean to `validation/hr-decision-loop-pink`. GRÜN's lab :41871, :41862 (GET only), :41864 (no request reached it), :3017, :41805, :41821, :41831, :41851 and :41803 were otherwise not touched. No Gemini call.
 - No integration; D-G1-P1 is GRÜN's to fix or the owner's to accept.
 
+### 3.57 D-G1-P1 fix GRÜN `a9ff0ca` (`frontend/pxj-first-screen-g1`, on `50776fc`) to §3.56 (2026-10-22)
+
+**Request.** GRÜN fixed D-G1-P1 in `a9ff0ca`; GRÜN and GELB asked PINK to re-check PA-05 and PA-08, and T-07 under PERSON.
+
+**What changed (`static-a9ff0ca.txt`).** One line of code: under PERSON × JOB `withoutLegacyOrbits` keeps only capabilities with `projectionState` PROPOSED (the projection overlay sets it, the legacy adapter never does). `projectPxjFirstScreen` is unchanged. Tests: the legacy fixture now has capabilities with confidence; a unit test and SSR checks at L0, zoom 1 and zoom 2 were added.
+
+**Result: D-G1-P1 is fixed, nothing else changed.**
+- **PA-05 / PA-08 now PASS.** PINK's own proof test from §3.56, unchanged, on `a9ff0ca`: NO_PROJECTION with legacy capabilities → orbit 02 "0 items", no legacy name at zoom 1 or 2, no "%", the NO_PROJECTION statement shown. On `50776fc` the same test gave "2 items", the names and "93%". GRÜN's pure functions on the persisted :41862 body with the projection removed: orbit 02 0 capabilities (was `CAP_001` … `CAP_005`).
+- **AVAILABLE unchanged.** Stage 1b on the :41862 bodies gives output identical to `50776fc` (orbit 02 keeps the 8 PCAP proposals). PINK's stand-in walk on a fresh lab: all 20 steps equal to `50776fc` in state, proposals, rows, orbits, coupling and placeholders; orbit 02 "12 items" in AVAILABLE, "0" in ROLE_MISMATCH; PA-01 field-equal; session = deep link = reload; focus changes nothing; `/matches` never with the Capability Field active; 0 `gemini-*`.
+- **T-07 under PERSON.** GRÜN's PERSON markup test (byte-identical with `49e2bc6`) is green; on PINK's labs the PERSON session screen equals `49e2bc6` and the role level is 26/26 identical.
+- **Regression.** tsc: only `relay-check.mts(13,214)`. Whole suite: 74/74 G1 tests green; 33 failed = the 27 of `50776fc` plus 6 timeouts (5000 ms) in decision-core and outcome-valence files that import nothing of G1. Rerun alone, five of the six pass; the remaining replay file times out alone on `a9ff0ca`, `50776fc` and `49e2bc6` alike, so it is machine load, not G1.
+
+**Run record.** `evidence/pxj-g1-a9ff0ca/`: `static-a9ff0ca.txt`, `D-G1-P1-fix-proof.txt`, `walk-STANDIN-a9ff0ca.txt`, `role-level-and-person-49e2bc6-vs-a9ff0ca.txt`, `suite-a9ff0ca.txt`, `manifest.sha256` (ids, counts, verdicts; no quotes). PINK's lab on port 41873, stopped; worktree clean; GRÜN's :41871 not touched; no Gemini call. G1 now meets PA-01 … PA-14 on PINK's checks; integration remains with the owner.
+
 ## 4. Boundaries and findings for coordination
 
 - F-JP-1 (closed in `b782793`): `JOB_POOL_CONNECTION.md` §4 followed the per-role `JOB_POOL_JSON_ROLE` design;

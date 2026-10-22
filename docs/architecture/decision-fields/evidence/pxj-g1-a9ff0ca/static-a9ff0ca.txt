@@ -1,0 +1,29 @@
+# PINK: D-G1-P1 fix GRÜN a9ff0ca (on 50776fc). Code diff of lib/ and app/:
+diff --git a/lib/career/view-model/pxj-first-screen.ts b/lib/career/view-model/pxj-first-screen.ts
+index 5f9a3d2..a6d3fc9 100644
+--- a/lib/career/view-model/pxj-first-screen.ts
++++ b/lib/career/view-model/pxj-first-screen.ts
+@@ -99,9 +99,12 @@ export function demoStateFromResult(result: DecodedAnalysisResult): DemoCareerIn
+   return applyCapabilityProposalProjectionToDemoState(adaptCanonicalToDemoState(result.body.analysis, []), result.projection);
+ }
+ 
+-/** PERSON × JOB shows no legacy orbit (owner Q1): no organisation, role, gap or strategy reaches a projection or the inspector. */
++/**
++ * PERSON × JOB shows nothing of the legacy analysis (owner Q1): no organisation, role, gap or strategy, and no capability but the
++ * projection's proposals. Without a projection the legacy adapter's capabilities would stand in orbit 02 (PINK D-G1-P1): they stay out.
++ */
+ export function withoutLegacyOrbits(data: DemoCareerIntelligenceData): DemoCareerIntelligenceData {
+-  return { ...data, companyMatches: [], roleMatches: [], capabilityGaps: [], nextActions: [] };
++  return { ...data, capabilities: data.capabilities.filter(capability => capability.projectionState === "PROPOSED"), companyMatches: [], roleMatches: [], capabilityGaps: [], nextActions: [] };
+ }
+ 
+ /* ---------------------------------------------------------------- read states (inputs) */
+
+# Files changed 50776fc..a9ff0ca:
+ docs/career_analysis/JOB_FIELD_FRONTEND.md         |  2 ++
+ docs/career_analysis/evidence/pxj-g1/README.md     |  6 ++++++
+ lib/career/view-model/pxj-first-screen.ts          |  7 +++++--
+ .../pxj-first-screen/first-screen-ssr.test.tsx     | 24 +++++++++++++++++++++-
+ test/career/pxj-first-screen/fixtures.ts           |  4 +++-
+ test/career/pxj-first-screen/projection.test.ts    | 12 ++++++++++-
+ 6 files changed, 50 insertions(+), 5 deletions(-)
