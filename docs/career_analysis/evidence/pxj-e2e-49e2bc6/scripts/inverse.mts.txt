@@ -1,0 +1,49 @@
+// GELB inverse verification (read-only): original PDF / job pool file → persisted records of the live lab.
+import { readFileSync } from "node:fs";
+import { createHash } from "node:crypto";
+const [repo, E] = process.argv.slice(2);
+const { extractTextFromPdf } = await import(`${repo}/lib/career/loaders/pdf.ts`);
+const { normalizeSourceText, normalizeEvidenceMatchText } = await import(`${repo}/lib/career/capability-core/source.ts`);
+const sha = (s: string | Buffer) => createHash("sha256").update(s).digest("hex");
+const pdf = readFileSync(`${repo}/docs/examples/cv.synthetic.pdf`);
+const raw = await extractTextFromPdf(pdf);
+const norm = normalizeSourceText(raw);
+const state = JSON.parse(readFileSync(`${E}/lab/state.json`, "utf8"));
+const out: Record<string, unknown> = { pdfFileSha256: sha(pdf), extractedRawSha256: sha(raw), extractedNormalizedSha256: sha(norm) };
+for (const k of ["person", "pxj"]) {
+  const insp = JSON.parse(readFileSync(`${E}/private/${k}-gemini-result.json`, "utf8")).body.inspection;
+  const doc = insp.investigationInput.sourceDocuments[0];
+  const claims = insp.evidenceVerification.candidates.flatMap((c: any) => c.evidenceClaims.map((e: any) => ({ cand: c.proposedCanonicalName, ...e })));
+  const spans = claims.map((c: any) => ({ cand: c.cand, verdict: c.verification.status, doc: c.verification.matchedDocId,
+    spanOk: c.verification.sourceSpanStart != null && normalizeEvidenceMatchText(norm).slice(c.verification.sourceSpanStart, c.verification.sourceSpanEnd) === c.verification.matchedNormalizedQuote }));
+  // projection evidence ids must be exactly the verified claim ids of its source candidates
+  const verifiedIds = new Set(claims.filter((c: any) => c.verification.status === "VERIFIED").map((c: any) => c.evidenceId));
+  const projEvidence = insp.projection.capabilities.flatMap((p: any) => p.evidence.map((e: any) => e.evidenceId));
+  out[k] = { docRawHashMatches: doc.rawContentHash === sha(raw), docNormHashMatches: doc.normalizedTextHash === sha(norm), title: doc.title,
+    claims: spans.length, verified: spans.filter((s: any) => s.verdict === "VERIFIED").length, spansOk: spans.filter((s: any) => s.spanOk).length,
+    badSpans: spans.filter((s: any) => !s.spanOk), projectionEvidenceAllVerified: projEvidence.every((id: string) => verifiedIds.has(id)), projectionEvidence: projEvidence.length,
+    runIdsBound: insp.evidenceVerification.candidates.every((c: any) => c.runId === insp.investigationInput.discoveryRunId),
+    projectionState: insp.projection.projectionState, authority: insp.projection.authorityState, semantic: insp.projection.semanticDefinitionState,
+    relations: insp.projection.relations.map((r: any) => `${r.relationType}/${r.state}`) };
+}
+// job pool chain
+const poolFile = readFileSync(`${repo}/docs/examples/job-pool-tests/DLL_JOBPOOL_ENGINEERING.json`);
+const poolId = "JPOOL_B94850C439974E27496FE3B1A9A076B5";
+const pool = await (await fetch(`${state.base}/api/career/job-pools/${poolId}`)).json();
+const rec = pool.upload ?? pool;
+const orig = JSON.parse(poolFile.toString("utf8"));
+const role = orig.roles.find((r: any) => r.id === "role_kestrel_fullstack" || r.roleId === "role_kestrel_fullstack");
+const origReq = orig.requirements.filter((q: any) => (q.roleId ?? q.role_id ?? q.role) === "role_kestrel_fullstack");
+const b2 = JSON.parse(readFileSync(`${E}/private/pxj-b2.json`, "utf8")).body.comparison;
+const insp = JSON.parse(readFileSync(`${E}/private/pxj-gemini-result.json`, "utf8")).body.inspection;
+const scopeText: string = insp.investigationInput.investigationScope.text;
+out.pool = { httpKeys: Object.keys(pool).slice(0, 12), fileSha256: sha(poolFile), rawSha256: rec.rawSha256, rawMatches: rec.rawSha256 === sha(poolFile),
+  idFromCanonical: rec.canonicalSha256 ? `JPOOL_${rec.canonicalSha256.slice(0, 32).toUpperCase()}` === poolId : "n/a",
+  roleInOriginal: !!role, roleOrg: role?.organizationId ?? role?.organization_id, originalReqCount: origReq.length,
+  originalReqIds: origReq.map((q: any) => q.id), b2ReqIds: b2.requirements?.map((r: any) => r.requirementId ?? r.id),
+  b2Binding: { analysisId: b2.analysisId, jobPoolUploadId: b2.jobPoolUploadId ?? b2.selection?.jobPoolUploadId, poolRoleId: b2.poolRoleId ?? b2.selection?.poolRoleId },
+  scopeHashOk: sha(scopeText) === insp.investigationInput.investigationScope.scopeHash,
+  scopeNamesPool: scopeText.includes(poolId), scopeNamesRole: scopeText.includes("role_kestrel_fullstack"),
+  scopeNamesOtherRoles: orig.roles.map((r: any) => r.id ?? r.roleId).filter((id: string) => id !== "role_kestrel_fullstack" && scopeText.includes(id)),
+  scopeHasAllReqIds: origReq.every((q: any) => scopeText.includes(q.id)) };
+console.log(JSON.stringify(out, null, 1));

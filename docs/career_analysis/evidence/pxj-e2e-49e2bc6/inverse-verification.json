@@ -1,0 +1,102 @@
+{
+ "pdfFileSha256": "efaa47ef0c02e625adb0e0e34d7f31aecbe9a45c3c02cd1d97134e9e299f7df3",
+ "extractedRawSha256": "3cde24511c9eb0ebe5568c10147f01a17178f13dbda39af1e70a4aaf480a5e34",
+ "extractedNormalizedSha256": "3cde24511c9eb0ebe5568c10147f01a17178f13dbda39af1e70a4aaf480a5e34",
+ "person": {
+  "docRawHashMatches": true,
+  "docNormHashMatches": true,
+  "title": "cv.synthetic.pdf",
+  "claims": 10,
+  "verified": 10,
+  "spansOk": 10,
+  "badSpans": [],
+  "projectionEvidenceAllVerified": true,
+  "projectionEvidence": 10,
+  "runIdsBound": true,
+  "projectionState": "PROPOSED",
+  "authority": "NONE",
+  "semantic": "NOT_RUN",
+  "relations": [
+   "RELATED_CAPABILITY/PROPOSED",
+   "RELATED_CAPABILITY/PROPOSED",
+   "RELATED_CAPABILITY/PROPOSED",
+   "DISTINCT_CAPABILITY/PROPOSED",
+   "RELATED_CAPABILITY/PROPOSED"
+  ]
+ },
+ "pxj": {
+  "docRawHashMatches": true,
+  "docNormHashMatches": true,
+  "title": "cv.synthetic.pdf",
+  "claims": 8,
+  "verified": 8,
+  "spansOk": 8,
+  "badSpans": [],
+  "projectionEvidenceAllVerified": true,
+  "projectionEvidence": 8,
+  "runIdsBound": true,
+  "projectionState": "PROPOSED",
+  "authority": "NONE",
+  "semantic": "NOT_RUN",
+  "relations": [
+   "PARENT_CHILD/PROPOSED",
+   "PARENT_CHILD/PROPOSED",
+   "PARENT_CHILD/PROPOSED",
+   "PARENT_CHILD/PROPOSED",
+   "PARENT_CHILD/PROPOSED",
+   "RELATED_CAPABILITY/PROPOSED",
+   "RELATED_CAPABILITY/PROPOSED"
+  ]
+ },
+ "pool": {
+  "httpKeys": [
+   "jobPoolUploadId",
+   "poolId",
+   "poolVersion",
+   "poolName",
+   "poolStatus",
+   "organizationCount",
+   "roleCount",
+   "requirementCount",
+   "uploadedByActorRef",
+   "uploadedAt",
+   "canonicalSha256",
+   "rawSha256"
+  ],
+  "fileSha256": "6475800a080f8b18380e53c812d88d4bf6c631505b4f9fb542ae21dad68aaf30",
+  "rawSha256": "6475800a080f8b18380e53c812d88d4bf6c631505b4f9fb542ae21dad68aaf30",
+  "rawMatches": true,
+  "idFromCanonical": true,
+  "roleInOriginal": true,
+  "roleOrg": "org_kestrel",
+  "originalReqCount": 9,
+  "originalReqIds": [
+   "req_kestrel_fullstack_01",
+   "req_kestrel_fullstack_02",
+   "req_kestrel_fullstack_03",
+   "req_kestrel_fullstack_04",
+   "req_kestrel_fullstack_05",
+   "req_kestrel_fullstack_06",
+   "req_kestrel_fullstack_07",
+   "req_kestrel_fullstack_08",
+   "req_kestrel_fullstack_09"
+  ],
+  "b2ReqIds": [
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null
+  ],
+  "b2Binding": {},
+  "scopeHashOk": true,
+  "scopeNamesPool": true,
+  "scopeNamesRole": true,
+  "scopeNamesOtherRoles": [],
+  "scopeHasAllReqIds": true
+ }
+}

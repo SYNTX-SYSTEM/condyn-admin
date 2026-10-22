@@ -1,0 +1,37 @@
+// GELB read-only probe (no clicks that write): first screen after the PERSON × JOB analysis, the role level, and two requirement inspections.
+import { pathToFileURL } from "node:url";
+import { writeFileSync } from "node:fs";
+const pw = await import(pathToFileURL(process.env.CONDYN_PLAYWRIGHT_MODULE).href);
+const { chromium } = pw.chromium ? pw : pw.default;
+const [BASE, A, OUT] = process.argv.slice(2);
+const POOL = "JPOOL_B94850C439974E27496FE3B1A9A076B5", ORG = "org_kestrel", ROLE = "role_kestrel_fullstack";
+const browser = await chromium.launch(); const page = await browser.newPage({ viewport: { width: 1920, height: 1080 } });
+const writes = []; page.on("request", r => { if (!["GET", "HEAD"].includes(r.method())) writes.push(`${r.method()} ${r.url()}`); });
+await page.addInitScript(() => { try { localStorage.setItem("condyn.onboarding.seen", "1"); } catch {} });
+const res = {};
+const dump = async sel => page.$$eval(sel, els => els.map(e => Object.fromEntries([...e.attributes].filter(a => a.name.startsWith("data-") || a.name === "aria-label").map(a => [a.name, a.value]))));
+// (a) first screen: the analysis alone, no focus parameters (what the app shows after ANALYZE completes, with the job scope kept)
+await page.goto(`${BASE}/career/demo?analysisId=${A}&jobScopePoolUploadId=${POOL}&jobScopeRoleId=${ROLE}`, { waitUntil: "networkidle" });
+await page.waitForTimeout(4000);
+const close = page.locator('[data-testid="onboarding-close-btn"]'); if (await close.count()) await close.click();
+await page.waitForTimeout(1500);
+res.first = { url: page.url(), rootMode: await page.getAttribute("[data-investigation-mode]", "data-investigation-mode").catch(() => null),
+  requirementNodes: await page.locator('[data-testid^="syntx-requirement-"]').count(), coverage: await page.locator('[data-testid="syntx-coverage"]').count(),
+  requirementTextHits: await page.locator("text=Geospatial Visualisation").count(), jobIndicator: (await page.locator('[data-testid="job-scope-indicator"]').innerText().catch(() => "")).slice(0, 160) };
+await page.screenshot({ path: `${OUT}/p1-first-screen-1920.png` });
+// (b) the role level in the Job Field
+await page.goto(`${BASE}/career/demo?analysisId=${A}&focus=FIELD&jobPoolUploadId=${POOL}&jobOrganizationId=${ORG}&jobRoleId=${ROLE}&jobScopePoolUploadId=${POOL}&jobScopeRoleId=${ROLE}`, { waitUntil: "networkidle" });
+await page.waitForTimeout(5000);
+res.role = { requirements: await dump('[data-testid^="syntx-requirement-"]'), open: await dump('[data-testid^="syntx-open-"]'), sources: await dump('[data-testid^="syntx-source-"]') };
+await page.screenshot({ path: `${OUT}/p2-role-level-1920.png` });
+for (const [i, id] of [["p3", "req_kestrel_fullstack_01"], ["p4", "req_kestrel_fullstack_06"], ["p5", "req_kestrel_fullstack_07"]]) {
+  const node = page.locator(`[data-testid="syntx-requirement-${id}"]`).first();
+  if (!(await node.count())) { res[i] = "NODE_ABSENT"; continue; }
+  await node.dispatchEvent("click"); await page.waitForTimeout(2500);
+  res[i] = { id, aperture: (await page.locator('[data-testid="syntx-aperture"]').innerText().catch(() => "")).replace(/\s+/g, " ").slice(0, 900), attrs: await dump('[data-testid^="syntx-aperture"]') };
+  await page.screenshot({ path: `${OUT}/${i}-requirement-${id}-1920.png` });
+  await page.keyboard.press("Escape"); await page.waitForTimeout(1500);
+}
+res.nonGetRequests = writes;
+writeFileSync(`${OUT}/probe.json`, JSON.stringify(res, null, 1));
+await browser.close();
