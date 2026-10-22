@@ -6,7 +6,7 @@ Owner-Auftrag „SYNTX::SFE::OWNER_DECISION_G1“, Q5:
 
 Grundlage ist §06 der Spezifikation `CONDYN_PXJ_G1_FIRST_SCREEN_SPECIFICATION_2026-10-22.md`, E-1 bis E-8.
 
-**Stand: gebaut und gegen ein lokales Double geprüft. Nicht gestartet, nicht mit dem Labor verbunden, PINK hat keinen Port.** Der Start wartet auf das Wort des Owners.
+**Stand: gestartet auf Owner-GO vom 2026-10-22 („SYNTX::SFE::EXPLICIT_OWNER_GO“, Q2), Smoke-Test 26/26, PINK hat Port und Pfade (§5).**
 
 ## 1 — Was geprüft wurde
 
@@ -57,3 +57,30 @@ Zusätzlich gilt: Das Log enthält nur Metadaten, nämlich Zeit, Methode, gekür
    - danach löscht GELB Konfiguration, Log und PID-Datei aus dem Scratch-Verzeichnis.
 
 Das Labor :41862, sein Code und seine Konfiguration bleiben dabei unverändert.
+
+## 5 — Start und Smoke-Test (2026-10-22, Owner-GO Q2)
+
+Owner-Vorgaben: PORT = 41864, MAX_RUNTIME = 8 HOURS, BINDING = LOOPBACK_ONLY, METHODS = APPROVED_GET_ONLY, SCOPE = EXISTING_SYNTHETIC_LAB_DATA.
+
+- **Gestartet:** 2026-10-22T14:39:59Z auf `127.0.0.1:41864`. Upstream ist `http://127.0.0.1:41862/`, die Allowlist enthält genau die vier Pfade aus §06 E-3.
+- **Automatisches Ende, doppelt gesichert:**
+  - Die TTL des Tors beträgt 28 800 s; damit endet es spätestens um 2026-10-22T22:39:59Z.
+  - Unabhängig davon läuft der Prozess unter `timeout` mit 28 860 s. Nach weiteren 30 s folgt SIGKILL.
+- **Prozessumgebung:** Der Prozess läuft mit leerer Umgebung (`env -i`, nur `PATH` und `HOME`).
+- **Smoke-Test gegen :41862:** `gate/gate-smoke-41862.json` und `gate/gate-smoke.py.txt`, **26 von 26 PASS**.
+  - Die vier Pfade geben 200. Jeder Body ist inhaltlich gleich der privaten Lesekopie von 02:32 Z (kanonisches JSON).
+  - Fünf fremde Pfade (B2, Ergebnis, Query, `../`, fremde ID) geben 403.
+  - POST und DELETE geben 405.
+  - Die Host-Header `evil.example`, `localhost` und `127.0.0.1:41862` geben 403.
+  - Ein Token und ein Cookie vom Client werden ignoriert. Ohne Tor bleibt der Upstream bei 404.
+  - Auf allen acht Nicht-Loopback-Adressen kommt ECONNREFUSED; `ss` zeigt nur Loopback.
+  - Der Token fehlt in Antworten, Log, stdout/stderr, cmdline und environ. Die Token-Datei hat Modus 0600.
+  - Die TTL und das Elternteil `timeout` sind belegt.
+- **Log nach dem Smoke-Test:** 5 Weiterleitungen (200), 5 abgelehnte Pfade (403), 3 abgelehnte Methoden (405) und 3 abgelehnte Hosts (403).
+- **PINK erhalten:** nur Port, die vier Pfade, die Endzeit und die Body-SHA-256. Keine Datei, kein Token.
+- **PINK blockiert:** Die Rechteprüfung in PINKs eigener Session hat schon den ersten GET abgelehnt („Credential Exploration“). PINK hat 0 Anfragen an das Tor gesendet und legt die Freigabe seinem Menschen vor. GELB ruft die Antworten nicht für PINK ab, denn das würde PINKs Rechteentscheidung umgehen. Die Punkte 2, 5 und 8 bleiben INCONCLUSIVE, bis PINK in der eigenen Session zugreifen darf.
+
+**Befund B-GATE-1 (Lesepfad mit Löschanweisung):** Jeder Lesezugriff auf das Exchange-Archiv führt zuerst `purgeExpired()` aus (`lib/career/result-inspector/postgres-exchange-store.ts`, `completedForRun` / `forJob`), also `DELETE … WHERE expires_at <= now()`.
+- Alle Exchanges des Labors laufen am 2026-10-29 ab (Aufbewahrung 7 Tage). Innerhalb der Laufzeit des Tors trifft die Anweisung daher 0 Zeilen.
+- Die Bodies vor und nach dem Smoke-Test sind gleich.
+- Das ist bestehendes Verhalten, eine Löschung abgelaufener Daten nach Owner-Regel vom 2026-10-15. Es wurde nicht geändert. Festgehalten wird es, weil „nur lesend“ für diese Route nicht wörtlich gilt.

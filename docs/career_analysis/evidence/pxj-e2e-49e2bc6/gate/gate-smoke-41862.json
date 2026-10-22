@@ -1,0 +1,237 @@
+{
+ "passed": 26,
+ "total": 26,
+ "results": [
+  {
+   "case": "GET /api/career/analyses/ANL_1792628831636_456/gemini-result",
+   "pass": true,
+   "status": 200,
+   "bytes": 44507,
+   "raw_sha256": "69fe63f26cd05aa2ae8b6699455c8d10906c736cef0bc6a45b3f08fac4397af9",
+   "canonical_sha256": "8b3b49413364e9b74aaa9932b014898bef9fa417b885e1b0cfe858c2aa2e41ba",
+   "equals_private_copy": true,
+   "headers": [
+    "cache-control",
+    "connection",
+    "content-type",
+    "date",
+    "keep-alive",
+    "transfer-encoding"
+   ],
+   "no_set_cookie": true,
+   "no_cors": true
+  },
+  {
+   "case": "GET /api/career/analyses/ANL_1792628993472_10/gemini-result",
+   "pass": true,
+   "status": 200,
+   "bytes": 47250,
+   "raw_sha256": "49177be5859bbffefb5b927fceaf07ebe8f284366a0570186fdc4f0397bce80d",
+   "canonical_sha256": "b1e53ce3b26ba3872ab60f77e0a29ecb8f6fe2e10faede3969f77dc7853d61bc",
+   "equals_private_copy": true,
+   "headers": [
+    "cache-control",
+    "connection",
+    "content-type",
+    "date",
+    "keep-alive",
+    "transfer-encoding"
+   ],
+   "no_set_cookie": true,
+   "no_cors": true
+  },
+  {
+   "case": "GET /api/career/jobs/JOB_1792628831636_456/gemini-exchanges",
+   "pass": true,
+   "status": 200,
+   "bytes": 9004,
+   "raw_sha256": "9213e53401d977b6a80e49e61b59f960113807e4626d1a0cbb1642e53fa21530",
+   "canonical_sha256": "c128ce8c49a8d40795d6b3f94ff9fc9dc11af5e307f3707ee7a36917ec906a60",
+   "equals_private_copy": true,
+   "headers": [
+    "cache-control",
+    "connection",
+    "content-type",
+    "date",
+    "keep-alive",
+    "transfer-encoding"
+   ],
+   "no_set_cookie": true,
+   "no_cors": true
+  },
+  {
+   "case": "GET /api/career/jobs/JOB_1792628993472_10/gemini-exchanges",
+   "pass": true,
+   "status": 200,
+   "bytes": 16461,
+   "raw_sha256": "2f31b139da702ce601d42198c685788247908c1e506bd7260247fb2d800121c4",
+   "canonical_sha256": "407512397943ff7de6ca64cf5f6db7aba262dc5d66a2a84bd5fb3d12f32375d9",
+   "equals_private_copy": true,
+   "headers": [
+    "cache-control",
+    "connection",
+    "content-type",
+    "date",
+    "keep-alive",
+    "transfer-encoding"
+   ],
+   "no_set_cookie": true,
+   "no_cors": true
+  },
+  {
+   "case": "B2 path not allowed",
+   "pass": true,
+   "status": 403,
+   "want": 403
+  },
+  {
+   "case": "analysis result not allowed",
+   "pass": true,
+   "status": 403,
+   "want": 403
+  },
+  {
+   "case": "query suffix",
+   "pass": true,
+   "status": 403,
+   "want": 403
+  },
+  {
+   "case": "traversal",
+   "pass": true,
+   "status": 403,
+   "want": 403
+  },
+  {
+   "case": "foreign analysis id",
+   "pass": true,
+   "status": 403,
+   "want": 403
+  },
+  {
+   "case": "POST analyze",
+   "pass": true,
+   "status": 405,
+   "want": 405
+  },
+  {
+   "case": "POST allowed path",
+   "pass": true,
+   "status": 405,
+   "want": 405
+  },
+  {
+   "case": "DELETE allowed path",
+   "pass": true,
+   "status": 405,
+   "want": 405
+  },
+  {
+   "case": "Host rebinding",
+   "pass": true,
+   "status": 403,
+   "want": 403
+  },
+  {
+   "case": "Host localhost",
+   "pass": true,
+   "status": 403,
+   "want": 403
+  },
+  {
+   "case": "Host upstream",
+   "pass": true,
+   "status": 403,
+   "want": 403
+  },
+  {
+   "case": "client token/cookie ignored",
+   "pass": true,
+   "status": 200
+  },
+  {
+   "case": "upstream without token stays 404",
+   "pass": true,
+   "status": 404
+  },
+  {
+   "case": "not reachable on non-loopback addresses",
+   "pass": true,
+   "probes": [
+    [
+     "192.168.2.124",
+     "ConnectionRefusedError"
+    ],
+    [
+     "192.168.123.1",
+     "ConnectionRefusedError"
+    ],
+    [
+     "172.20.0.1",
+     "ConnectionRefusedError"
+    ],
+    [
+     "172.18.0.1",
+     "ConnectionRefusedError"
+    ],
+    [
+     "172.21.0.1",
+     "ConnectionRefusedError"
+    ],
+    [
+     "172.17.0.1",
+     "ConnectionRefusedError"
+    ],
+    [
+     "172.19.0.1",
+     "ConnectionRefusedError"
+    ],
+    [
+     "172.22.0.1",
+     "ConnectionRefusedError"
+    ]
+   ]
+  },
+  {
+   "case": "ss shows loopback only",
+   "pass": true
+  },
+  {
+   "case": "token absent in all responses",
+   "pass": true
+  },
+  {
+   "case": "token absent in gate log",
+   "pass": true,
+   "log_lines": 17
+  },
+  {
+   "case": "token absent in gate stdout/stderr",
+   "pass": true
+  },
+  {
+   "case": "token absent in cmdline/environ",
+   "pass": true
+  },
+  {
+   "case": "token file mode 0600",
+   "pass": true
+  },
+  {
+   "case": "gate TTL 28800 s",
+   "pass": true,
+   "start": "2026-10-22T14:39:59.133Z"
+  },
+  {
+   "case": "timeout backstop 28860 s parent",
+   "pass": true,
+   "parent": [
+    "timeout",
+    "--signal=TERM",
+    "--kill-after=30",
+    "28860",
+    "<node>"
+   ]
+  }
+ ]
+}

@@ -1,0 +1,74 @@
+import json, sys, hashlib, http.client, socket, os, subprocess
+S, R = sys.argv[1], sys.argv[2]
+token = json.load(open(S + "/e2e-pxj/lab/state.json"))["token"].encode()
+pid = json.load(open(R + "/gate.pid"))["pid"]
+res = []
+def rec(name, ok, **kw): res.append({"case": name, "pass": bool(ok), **kw})
+def req(method, path, host="127.0.0.1:41864", headers=None, addr="127.0.0.1"):
+    c = http.client.HTTPConnection(addr, 41864, timeout=90)
+    c.putrequest(method, path, skip_host=True, skip_accept_encoding=True)
+    if host is not None: c.putheader("Host", host)
+    for k, v in (headers or {}).items(): c.putheader(k, v)
+    c.endheaders(); r = c.getresponse(); b = r.read(); c.close()
+    return r.status, dict((k.lower(), v) for k, v in r.getheaders()), b
+canon = lambda o: hashlib.sha256(json.dumps(o, sort_keys=True, ensure_ascii=False, separators=(",", ":")).encode()).hexdigest()
+bodies = []
+paths = {
+ "person-gemini-result.json": "/api/career/analyses/ANL_1792628831636_456/gemini-result",
+ "pxj-gemini-result.json": "/api/career/analyses/ANL_1792628993472_10/gemini-result",
+ "exchanges-JOB_1792628831636_456.json": "/api/career/jobs/JOB_1792628831636_456/gemini-exchanges",
+ "exchanges-JOB_1792628993472_10.json": "/api/career/jobs/JOB_1792628993472_10/gemini-exchanges"}
+for f, p in paths.items():
+    priv = json.load(open(S + "/e2e-pxj/private/" + f))
+    st, h, b = req("GET", p); bodies.append(b)
+    live = json.loads(b)
+    same = canon(live) == canon(priv["body"])
+    rec("GET " + p, st == 200 and same, status=st, bytes=len(b), raw_sha256=hashlib.sha256(b).hexdigest(), canonical_sha256=canon(live), equals_private_copy=same,
+        headers=sorted(h), no_set_cookie="set-cookie" not in h, no_cors=not any(k.startswith("access-control") for k in h))
+for name, m, p, host, hd, want in [
+  ("B2 path not allowed", "GET", "/api/career/analyses/ANL_1792628993472_10/job-comparison?jobPoolUploadId=JPOOL_B94850C439974E27496FE3B1A9A076B5&poolRoleId=role_kestrel_fullstack", "127.0.0.1:41864", {}, 403),
+  ("analysis result not allowed", "GET", "/api/career/analyses/ANL_1792628993472_10", "127.0.0.1:41864", {}, 403),
+  ("query suffix", "GET", "/api/career/analyses/ANL_1792628993472_10/gemini-result?x=1", "127.0.0.1:41864", {}, 403),
+  ("traversal", "GET", "/api/career/analyses/ANL_1792628993472_10/gemini-result/../../ANL_1792628993472_10", "127.0.0.1:41864", {}, 403),
+  ("foreign analysis id", "GET", "/api/career/analyses/ANL_1_1/gemini-result", "127.0.0.1:41864", {}, 403),
+  ("POST analyze", "POST", "/api/career/analyze", "127.0.0.1:41864", {"content-length": "0"}, 405),
+  ("POST allowed path", "POST", "/api/career/analyses/ANL_1792628993472_10/gemini-result", "127.0.0.1:41864", {"content-length": "0"}, 405),
+  ("DELETE allowed path", "DELETE", "/api/career/jobs/JOB_1792628993472_10/gemini-exchanges", "127.0.0.1:41864", {}, 405),
+  ("Host rebinding", "GET", "/api/career/analyses/ANL_1792628993472_10/gemini-result", "evil.example", {}, 403),
+  ("Host localhost", "GET", "/api/career/analyses/ANL_1792628993472_10/gemini-result", "localhost:41864", {}, 403),
+  ("Host upstream", "GET", "/api/career/analyses/ANL_1792628993472_10/gemini-result", "127.0.0.1:41862", {}, 403),
+]:
+    st, h, b = req(m, p, host, hd); bodies.append(b)
+    rec(name, st == want, status=st, want=want)
+# no-token client gets the result only through the gate; client token header is ignored, not forwarded (gate builds its own)
+st, h, b = req("GET", "/api/career/analyses/ANL_1792628993472_10/gemini-result", headers={"x-condyn-result-inspector-token": "x" * 40, "cookie": "a=b"}); bodies.append(b)
+rec("client token/cookie ignored", st == 200, status=st)
+# direct upstream without token stays closed (gate is the only opener)
+c = http.client.HTTPConnection("127.0.0.1", 41862, timeout=30); c.request("GET", "/api/career/analyses/ANL_1792628993472_10/gemini-result"); r = c.getresponse(); r.read(); c.close()
+rec("upstream without token stays 404", r.status == 404, status=r.status)
+# loopback only
+lan = []
+for a in subprocess.run(["hostname", "-I"], capture_output=True, text=True).stdout.split():
+    if ":" in a: continue
+    s = socket.socket(); s.settimeout(2)
+    try: s.connect((a, 41864)); lan.append((a, "CONNECTED"))
+    except OSError as e: lan.append((a, type(e).__name__))
+    finally: s.close()
+rec("not reachable on non-loopback addresses", all(x[1] != "CONNECTED" for x in lan), probes=lan)
+ssout = subprocess.run(["ss", "-ltnH", "sport = :41864"], capture_output=True, text=True).stdout.split()
+rec("ss shows loopback only", "127.0.0.1:41864" in ssout and not any(x.endswith(":41864") and x != "127.0.0.1:41864" for x in ssout))
+# token disclosure
+rec("token absent in all responses", all(token not in b for b in bodies))
+logb = open(R + "/gate.log", "rb").read()
+rec("token absent in gate log", token not in logb, log_lines=logb.count(b"\n"))
+outb = b"".join(open(p, "rb").read() for p in sys.argv[3:] if os.path.exists(p))
+rec("token absent in gate stdout/stderr", token not in outb)
+rec("token absent in cmdline/environ", token not in open(f"/proc/{pid}/cmdline", "rb").read() and token not in open(f"/proc/{pid}/environ", "rb").read())
+rec("token file mode 0600", (os.stat(S + "/e2e-pxj/lab/state.json").st_mode & 0o777) == 0o600)
+# TTL backstops
+start = [json.loads(l) for l in logb.splitlines() if b'"START"' in l][-1]
+rec("gate TTL 28800 s", start.get("ttlSeconds") == 28800, start=start["t"])
+ppid = int(open(f"/proc/{pid}/stat").read().split()[3])
+pcmd = open(f"/proc/{ppid}/cmdline", "rb").read().split(b"\0")
+rec("timeout backstop 28860 s parent", pcmd[:1] == [b"timeout"] and b"28860" in pcmd, parent=[x.decode() for x in pcmd[:5]])
+print(json.dumps({"passed": sum(r["pass"] for r in res), "total": len(res), "results": res}, indent=1))
