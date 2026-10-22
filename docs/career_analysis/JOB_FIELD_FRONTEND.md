@@ -1756,6 +1756,12 @@ already fail on `49e2bc6`.
 - D-G1-3 (GRÜN, for review): the Job Field's legacy comparison (`/matches`) is read only while the Job Field is active.
 - PINK D-G1-P1 (fixed): without a projection, PERSON × JOB shows no legacy capability in orbit 02; only proposals of the
   projection reach it.
+- GELB F-RF-1 … F-RF-3 (owner "RECURSIVE_ROLE_FIELD_CLOSURE", fixed):
+  - the URL carries the interface's mode after SUCCEEDED;
+  - the analysis on view follows the URL's current analysis, also during a new run and after it failed;
+  - a selected job that is still checked gives `JOB_CHECKING` (no offer), and an invalid one gives `JOB_INVALID` with its reason,
+    never "no job selected";
+  - F-RF-5: the shell names the role id of a VALID selected job, so two roles with the same title are told apart.
 
 ### 13.3 DOM contract (PINK BR-1 … BR-5; GELB conditions a/b)
 

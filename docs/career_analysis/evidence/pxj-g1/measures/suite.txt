@@ -28,3 +28,25 @@ Failing only on afcf89f (Q1: six orbits expected in the default mode), adapted i
 
 G1 tests and the field's SSR group on afcf89f: 18 files, 253/253 (test/career/pxj-first-screen 71/71).
 tsc --noEmit: only docs/career_analysis/evidence/video-readiness/scripts/relay-check.mts(13,214), as on the base.
+
+--- Owner RECURSIVE_ROLE_FIELD_CLOSURE (F-RF-1 … F-RF-3, F-RF-5) ---
+
+25e90bf (F-RF-1..3), whole suite in a clean checkout, run while the lab and a browser walk were active:
+ Test Files  11 failed | 397 passed | 11 skipped (419)
+      Tests  38 failed | 2731 passed | 32 skipped (2801)
+Beyond the 27 base failures, 11 more, all timeouts (5 s / 15 s) in four backend files G1 does not touch:
+      3  FAIL  test/career/relation-adapters/outcome-valence-feedback-context-revision-persistence/career-outcome-valence-feedback-context-revision-postgres.test.ts
+      2  FAIL  test/career/relation/outcome-valence-feedback-context-revision-persistence/career-outcome-valence-feedback-context-revision-persistence.test.ts
+      5  FAIL  test/career/relation/outcome-valence-feedback-context-revision-replay/career-outcome-valence-feedback-context-revision-replay.test.ts
+      1  FAIL  test/career-worker-config-validation.test.ts
+
+The same four files, rerun without that load, minutes apart:
+46a95bb:
+      Tests  10 failed | 11 passed (21)
+49e2bc6:
+      Tests  9 failed | 12 passed (21)
+Both fail with timeouts: the machine / database was slow at that time, on the base as well. Not caused by G1.
+
+Negative check: role-field-closure.test.tsx against the code of a9ff0ca: 6 failed (the finding tests) | 4 passed (the inverse tests).
+On 46a95bb: test/career/pxj-first-screen together with job-scope-ssr, three-modes-ssr and syntx-field-ssr: 140/140.
+Final tip 46a95bb + docs: G1 tests, the eight D-G1-2 files and the field's SSR group: 20 files 268/268 (SSR) and 2 files 11 passed | 3 skipped (the two e2e files, clean checkout). tsc: only relay-check.

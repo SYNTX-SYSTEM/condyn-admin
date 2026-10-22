@@ -101,6 +101,26 @@ analysis's own job. `/matches` is read only while the Job Field is the active fi
   and the unchanged PERSON field. It fails on `50776fc` and passes with the fix: G1 tests 74/74, with the adapted files and the
   field's SSR group 263/263. The legacy fixture of the earlier tests had no capabilities, so it could not see this path.
 
+- **Owner "RECURSIVE_ROLE_FIELD_CLOSURE"** (GELB `CONDYN_ROLE_FIELD_CLOSURE_2026-10-22.md` §5, `c02d756`). All three candidates
+  reproduced on `a9ff0ca`. Each fix is its own commit.
+  - **F-RF-1** (`575e225`): after SUCCEEDED the URL now carries the interface's mode, not the mode the run was declared with.
+    Before, a mode chosen during the run was overwritten, so the session showed MODE_MISMATCH and a reload AVAILABLE. Nothing
+    switches by itself.
+  - **F-RF-2** (`0dd55e5`): the analysis on view follows the URL's current analysis, kept as state, not the mount's. During a new
+    run or after it FAILED, the session, the URL and a reload show the last SUCCEEDED analysis.
+  - **F-RF-3** (`25e90bf`): a selected job that is CHECKING gives `JOB_CHECKING` (no offer). An INVALID one gives `JOB_INVALID`,
+    which names the job and the validation's reason and is never "no job selected". ROLE_MISMATCH is unchanged for a real other job
+    or no job.
+  - **F-RF-5** (`46a95bb`, confirmed by PINK §3.58): two roles with the same title in one organization had identical shell texts.
+    The detail of a VALID job now ends with the role id, also under PERSON ("kept"). Selection by id, texts and testids are
+    unchanged. Test: `shell-role-identity.test.tsx`; REPRODUCE fails before the fix.
+  - **Tests:** `test/career/pxj-first-screen/role-field-closure.test.tsx`. Against the code of `a9ff0ca` the 6 finding tests fail
+    and the 4 inverse tests pass; on the tip all pass.
+  - **Harness, and what it proves:** the harness calls the field component itself over several renders. `react`'s hooks are a
+    minimal runtime, `history.replaceState` is a stub, the read hooks are steered, and a reload is a fresh mount with the URL's
+    parameters. This proves the field's own state logic across renders. It does not prove React's real scheduling, the children's
+    rendering or a browser reload; those are for PINK's browser check.
+
 ## 5 · Findings outside G1 (not changed)
 
 - **F-G1-MD:** a `.md` or `.txt` file through the Source Dock's file input is sent as `type: "pdf"`; the worker answers
