@@ -287,7 +287,10 @@ export function SemanticCareerIntelligenceField({
 
   // Job Connection: one workflow read shared by the control panel and the Job Field focus (presentation only).
   /** The analysis on view (the job result, else the URL's), independent of the mode: the GEMINI OUTPUT inspector reads it. */
-  const viewedAnalysisSource = describeAnalysisSource(jobState === "SUCCEEDED" ? job.state.resultAnalysisId : null, analysisId ?? null);
+  /** The URL's analysis as it stands now: the mount's, replaced by every SUCCEEDED analysis written to the URL (GELB F-RF-2). A new
+   *  run clears the job's result, so without this the mount's id, not the URL's, would return while it runs or after it FAILED. */
+  const [urlAnalysisId, setUrlAnalysisId] = useState<string | null>(analysisId ?? null);
+  const viewedAnalysisSource = describeAnalysisSource(jobState === "SUCCEEDED" ? job.state.resultAnalysisId : null, urlAnalysisId);
   /** SFE job-scope invariant: one selected job for both fields; independent of the observation point (return, field change and pool change keep it). */
   const [jobScope, setJobScope] = useState<JobScope | null>(() => jobScopeFromParams(initialJobScopePoolUploadId, initialJobScopeRoleId));
   const jobScopeValidation = useJobScopeValidation(jobScope);
@@ -398,6 +401,7 @@ export function SemanticCareerIntelligenceField({
   useEffect(() => {
     if (jobState !== "SUCCEEDED" || !job.state.resultAnalysisId) return;
     replaceUrlParam("analysisId", job.state.resultAnalysisId);
+    setUrlAnalysisId(job.state.resultAnalysisId);
     replaceUrlParam(INVESTIGATION_URL_PARAM, investigationMode);
   }, [jobState, job.state.resultAnalysisId]);
   /** The session's own result (M-01) has precedence; it is decoded exactly like a reload's. */

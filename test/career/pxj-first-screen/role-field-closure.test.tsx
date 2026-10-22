@@ -167,3 +167,56 @@ describe("F-RF-1 · a mode change during a running analysis", () => {
     expect(param("investigationMode")).toBe("PERSON_X_JOB");
   });
 });
+
+describe("F-RF-2 · the analysis on view follows the current URL after the mount", () => {
+  it("REPRODUCE a: opened without analysisId → A1 SUCCEEDED → A2 running and FAILED: A1 stays on view, as the URL and a reload say", async () => {
+    const draw = mount(pxjQuery());
+    let tree = settle(draw);
+    await analyze(tree);
+    succeed(A1);
+    tree = settle(draw);
+    expect(param("analysisId")).toBe(A1);
+    await analyze(tree);
+    control.job = { ...IDLE_JOB, state: "RUNNING", activeJobId: "JOB_A2" };
+    tree = settle(draw);
+    expect(screenOf(tree)?.analysisId).toBe(A1);
+    expect(screenOf(tree)?.state).toBe("AVAILABLE");
+    control.job = { ...IDLE_JOB, state: "FAILED", activeJobId: "JOB_A2", errorCode: "ERR_X", errorSummary: "x" };
+    tree = settle(draw);
+    expect(screenOf(tree)?.analysisId).toBe(A1);
+    control.job = { ...IDLE_JOB };
+    expect(screenOf(settle(mount(new URL(url).search.slice(1))))?.analysisId).toBe(A1);
+  });
+
+  it("REPRODUCE b: opened with ?analysisId=A0 → A1 SUCCEEDED → A2 running and FAILED: never A0 again, always A1", async () => {
+    const draw = mount(pxjQuery(`&analysisId=${A0}`));
+    let tree = settle(draw);
+    expect(screenOf(tree)?.analysisId).toBe(A0);
+    await analyze(tree);
+    succeed(A1);
+    tree = settle(draw);
+    expect([screenOf(tree)?.analysisId, param("analysisId")]).toEqual([A1, A1]);
+    await analyze(tree);
+    control.job = { ...IDLE_JOB, state: "RUNNING", activeJobId: "JOB_A2" };
+    tree = settle(draw);
+    expect(screenOf(tree)?.analysisId).toBe(A1);
+    control.job = { ...IDLE_JOB, state: "FAILED", activeJobId: "JOB_A2", errorCode: "ERR_X", errorSummary: "x" };
+    tree = settle(draw);
+    expect(screenOf(tree)?.analysisId).toBe(A1);
+    expect(control.resultReads.filter(read => read === A0).length).toBeGreaterThan(0);
+  });
+
+  it("inverse: a SUCCEEDED job's own result has precedence; A2 SUCCEEDED replaces A1 everywhere", async () => {
+    const draw = mount(pxjQuery(`&analysisId=${A0}`));
+    let tree = settle(draw);
+    await analyze(tree);
+    succeed(A1);
+    tree = settle(draw);
+    await analyze(tree);
+    succeed(A2);
+    tree = settle(draw);
+    expect([screenOf(tree)?.analysisId, param("analysisId")]).toEqual([A2, A2]);
+    control.job = { ...IDLE_JOB };
+    expect(screenOf(settle(mount(new URL(url).search.slice(1))))?.analysisId).toBe(A2);
+  });
+});
