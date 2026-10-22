@@ -393,12 +393,12 @@ export function SemanticCareerIntelligenceField({
   useEffect(() => { onFieldFocusChange?.(activeFieldFocus); }, [activeFieldFocus]);
 
   /* PERSON × JOB · the first screen (owner G1, 2026-10-22): analysisId → persisted result → boundary → B2 → one closed state. */
-  /** The mode an analysis of this session was declared with; written to the URL with its id once it SUCCEEDED (§03.1). */
-  const declaredModeRef = React.useRef<InvestigationMode | null>(null);
+  /** Once an analysis SUCCEEDED its id is written to the URL with the interface's mode (§03.1). The interface's mode, not the one the
+   *  run was declared with: a mode chosen during the run stays chosen, and the session and a reload show the same (GELB F-RF-1). */
   useEffect(() => {
     if (jobState !== "SUCCEEDED" || !job.state.resultAnalysisId) return;
     replaceUrlParam("analysisId", job.state.resultAnalysisId);
-    if (declaredModeRef.current !== null) replaceUrlParam(INVESTIGATION_URL_PARAM, declaredModeRef.current);
+    replaceUrlParam(INVESTIGATION_URL_PARAM, investigationMode);
   }, [jobState, job.state.resultAnalysisId]);
   /** The session's own result (M-01) has precedence; it is decoded exactly like a reload's. */
   const sessionResult = React.useMemo(
@@ -538,7 +538,6 @@ export function SemanticCareerIntelligenceField({
     // is no document analysis (the controller re-checks the payload).
     const declared = declareAnalysis(investigationMode, jobScopeValidation);
     if (!declared.ok) return;
-    declaredModeRef.current = investigationMode;
     setLastStagedDocs(stagedDocs);
     const documentsPayload = stagedDocs.map((doc) => {
       if (doc.type === "pdf") {
