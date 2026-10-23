@@ -37,7 +37,7 @@ import { decodeAnalysisResult, demoStateFromResult, firstScreenCoverageRequest, 
 import { PxjAnalysisJobOffer, PxjFirstScreen, pxjFirstScreenVisible } from "./PxjFirstScreen";
 import { legacyJobComparisonPermitted } from "../../../../lib/career/investigation/client";
 import { JOB_SCOPE_REQUIRED_MESSAGE, JOB_SCOPE_URL_PARAMS, isJobScopeErrorCode, jobScopeFromParams, type JobScope } from "../../../../lib/career/job-pool/job-scope";
-import type { SyntxJobScopePresentation } from "./SyntxFieldSelector";
+import type { SyntxCapabilityGatePresentation, SyntxJobScopePresentation } from "./SyntxFieldSelector";
 import { DEFAULT_INVESTIGATION_MODE, INVESTIGATION_URL_PARAM, declareAnalysis, investigationModeFromParam, isInvestigationErrorCode, type InvestigationMode } from "../../../../lib/career/job-pool/investigation-mode";
 import { describeAnalysisSource } from "../../../../lib/career/job-pool/frontend-presentation";
 import { buildEvidenceGraph } from "../../../../lib/career/evidence/traversal";
@@ -419,6 +419,9 @@ export function SemanticCareerIntelligenceField({
    *  trigger, verbatim); JOB is no document analysis. */
   const analyzeBlockedMessage = investigationMode === "PERSON" ? null : investigationMode === "JOB" ? investigationCopy.jobNotAnalyzable : jobScopeValidation.state === "VALID" ? null : JOB_SCOPE_REQUIRED_MESSAGE;
   const capabilityGatedHint = investigationMode === "JOB" ? investigationCopy.capabilityGatedJob : t.syntx.selector.capabilityGated;
+  /** UX-04: the closed gate names its cause and the way to open it (PERSON is always open; the gate itself is unchanged). */
+  const capabilityGateCause: SyntxCapabilityGatePresentation["state"] | null = capabilityGateOpen ? null : investigationMode === "JOB" ? "JOB" : jobScopeValidation.state === "VALID" ? null : jobScopeValidation.state;
+  const capabilityGate: SyntxCapabilityGatePresentation | null = capabilityGateCause === null ? null : { state: capabilityGateCause, label: t.syntx.gate.label, reason: t.syntx.gate.reason[capabilityGateCause], way: t.syntx.gate.way[capabilityGateCause] };
   /** The shell's brand follows the active field: directly on a switch (above), and here when the gate itself moves the field (a job
    *  becoming VALID after a reload with focus=CAPABILITY, or the selected job turning invalid). */
   useEffect(() => { onFieldFocusChange?.(activeFieldFocus); }, [activeFieldFocus]);
@@ -1682,6 +1685,7 @@ export function SemanticCareerIntelligenceField({
         focus={activeFieldFocus}
         capabilityGated={!capabilityGateOpen}
         capabilityGatedHint={capabilityGatedHint}
+        capabilityGate={capabilityGate}
         groupLabel={t.syntx.selector.group}
         capabilityLabel={t.syntx.selector.capability}
         jobLabel={t.syntx.toggle}

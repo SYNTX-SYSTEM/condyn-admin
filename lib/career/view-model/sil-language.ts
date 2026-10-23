@@ -475,6 +475,22 @@ export const SIL_COPY = {
       toggle: "⬡ JOB FIELD",
       /** The field selector of the application shell: two equal fields of one system. */
       selector: { group: "SYNTX FIELD", capability: "◈ CAPABILITY FIELD", capabilityGated: "Select a job in the Job Field first (open a role, then SELECT AS JOB)" },
+      /** UX-04: why the Capability Field is closed and the way to open it, visible at the shell (the gate itself is unchanged). */
+      gate: {
+        label: "CAPABILITY FIELD CLOSED",
+        reason: {
+          NONE: "PERSON × JOB needs a valid role selected as the job: none is selected",
+          CHECKING: "PERSON × JOB needs a valid role selected as the job: the selected job is still being checked",
+          INVALID: "PERSON × JOB needs a valid role selected as the job: the selected job is not valid",
+          JOB: "JOB investigates the job only: no person field in this mode"
+        },
+        way: {
+          NONE: "Way: open a role in the Job Field, then SELECT AS JOB",
+          CHECKING: "Way: wait for the check; it opens once the job is valid",
+          INVALID: "Way: open a valid role in the Job Field, then SELECT AS JOB",
+          JOB: "Way: choose PERSON or PERSON × JOB as the investigation boundary"
+        }
+      },
       exit: "← CAPABILITY FIELD",
       observation: { FIELD: "FIELD", ORGANIZATION: "ORGANIZATION", ROLE: "ROLE", REQUIREMENT: "REQUIREMENT" },
       returnLabel: "RETURN",
@@ -1304,6 +1320,21 @@ export const SIL_COPY = {
       title: "JOB-FELD",
       toggle: "⬡ JOB-FELD",
       selector: { group: "SYNTX-FELD", capability: "◈ CAPABILITY-FELD", capabilityGated: "Zuerst im Job-Feld einen Job wählen (Rolle öffnen, dann ALS JOB WÄHLEN)" },
+      gate: {
+        label: "CAPABILITY-FELD GESCHLOSSEN",
+        reason: {
+          NONE: "PERSON × JOB braucht eine gültige Rolle als gewählten Job: keine ist gewählt",
+          CHECKING: "PERSON × JOB braucht eine gültige Rolle als gewählten Job: der gewählte Job wird noch geprüft",
+          INVALID: "PERSON × JOB braucht eine gültige Rolle als gewählten Job: der gewählte Job ist nicht gültig",
+          JOB: "JOB untersucht nur den Job: kein Personenfeld in diesem Modus"
+        },
+        way: {
+          NONE: "Weg: im Job-Feld eine Rolle öffnen, dann ALS JOB WÄHLEN",
+          CHECKING: "Weg: die Prüfung abwarten; es öffnet sich, sobald der Job gültig ist",
+          INVALID: "Weg: im Job-Feld eine gültige Rolle öffnen, dann ALS JOB WÄHLEN",
+          JOB: "Weg: PERSON oder PERSON × JOB als Untersuchungsgrenze wählen"
+        }
+      },
       exit: "← CAPABILITY-FELD",
       observation: { FIELD: "FELD", ORGANIZATION: "ORGANISATION", ROLE: "ROLLE", REQUIREMENT: "ANFORDERUNG" },
       returnLabel: "ZURÜCK",

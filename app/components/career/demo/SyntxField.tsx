@@ -23,6 +23,7 @@ import { readGeminiExchangeInspection, readGeminiResultInspection, type Inspecto
 import type { GeminiExchangeInspection, GeminiResultInspection } from "../../../../lib/career/result-inspector/reader";
 import type { JobStructure } from "../../../../lib/career/job-pool/job-structure";
 import { DecisionLoopLabsCoreEmblem, DLL_TEAL } from "./DecisionLoopLabsMark";
+import { CAPABILITY_GATE_REASON_ID } from "./SyntxFieldSelector";
 import {
   deriveSyntxField,
   inspectSign,
@@ -2141,7 +2142,7 @@ export function SyntxField({ workflow, analysisSource, observation: requested, o
         {/* A · where: the field, and the way back to the Capability Field. */}
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "10px", flexWrap: "wrap" }}>
           <h3 style={{ ...label, display: "inline-flex", alignItems: "center", gap: "8px", color: CYAN, fontSize: "12px", letterSpacing: "2px", textShadow: `0 0 14px ${SIL_TOKENS.colors.cyanGlowStrong}` }}><span aria-hidden="true" style={{ width: "6px", height: "6px", borderRadius: "50%", background: CYAN, boxShadow: `0 0 8px ${CYAN}, 0 0 16px ${azure(0.5)}` }} />{t.title}</h3>
-          <button data-testid="syntx-exit-btn" data-sx-orient-action data-field-gate={capabilityAvailable ? "OPEN" : "AWAITING_JOB"} disabled={!capabilityAvailable || undefined} aria-disabled={!capabilityAvailable || undefined} title={capabilityAvailable ? undefined : capabilityGatedHint} onClick={onExit} style={{ ...action("muted"), opacity: capabilityAvailable ? 1 : 0.42, cursor: capabilityAvailable ? "pointer" : "not-allowed", fontSize: "9.5px", letterSpacing: "0.8px", padding: "3px 9px", borderRadius: "999px", border: `1px solid ${azure(0.22)}`, color: "rgba(168, 206, 226, 0.82)" }}>{t.exit}</button>
+          <button data-testid="syntx-exit-btn" data-sx-orient-action data-field-gate={capabilityAvailable ? "OPEN" : "AWAITING_JOB"} disabled={!capabilityAvailable || undefined} aria-disabled={!capabilityAvailable || undefined} aria-describedby={capabilityAvailable ? undefined : CAPABILITY_GATE_REASON_ID} title={capabilityAvailable ? undefined : capabilityGatedHint} onClick={onExit} style={{ ...action("muted"), opacity: capabilityAvailable ? 1 : 0.42, cursor: capabilityAvailable ? "pointer" : "not-allowed", fontSize: "9.5px", letterSpacing: "0.8px", padding: "3px 9px", borderRadius: "999px", border: `1px solid ${azure(0.22)}`, color: "rgba(168, 206, 226, 0.82)" }}>{t.exit}</button>
         </div>
         {/* B · the active context: the observation path on its rail. */}
         <nav data-testid="syntx-path" aria-label={t.observation[observation.kind]} style={{ ...row(6), rowGap: "3px", marginTop: "10px", paddingLeft: "10px", borderLeft: `1px solid ${azure(0.3)}` }}>

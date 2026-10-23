@@ -55,6 +55,17 @@ export interface SyntxJobScopePresentation {
   used?: boolean;
 }
 
+/** UX-04: why the Capability Field is closed and how it opens (the gate's contract is unchanged; this only says it). */
+export interface SyntxCapabilityGatePresentation {
+  /** The cause: no job, a job still checked, an invalid job (PERSON × JOB), or the mode JOB. */
+  state: "NONE" | "CHECKING" | "INVALID" | "JOB";
+  label: string;
+  reason: string;
+  way: string;
+}
+
+export const CAPABILITY_GATE_REASON_ID = "capability-gate-reason";
+
 const SCOPE_TONE: Record<SyntxJobScopePresentation["state"], string> = { VALID: "92, 200, 255", CHECKING: "120, 170, 200", NONE: "255, 190, 92", INVALID: "255, 150, 92" };
 
 function SyntxJobScopeIndicator({ scope, onActivate }: { scope: SyntxJobScopePresentation; onActivate?: () => void }) {
@@ -84,7 +95,7 @@ function SyntxJobScopeIndicator({ scope, onActivate }: { scope: SyntxJobScopePre
   );
 }
 
-export function SyntxFieldSelector({ focus, groupLabel, capabilityLabel, jobLabel, onSelect, jobScope, onJobScopeActivate, capabilityGated = false, capabilityGatedHint }: { focus: SyntxFieldFocus; groupLabel: string; capabilityLabel: string; jobLabel: string; onSelect(next: SyntxFieldFocus): void; jobScope?: SyntxJobScopePresentation; onJobScopeActivate?(): void; /** Capability gate closed (no VALID job scope): the Capability option cannot be selected. */ capabilityGated?: boolean; capabilityGatedHint?: string }) {
+export function SyntxFieldSelector({ focus, groupLabel, capabilityLabel, jobLabel, onSelect, jobScope, onJobScopeActivate, capabilityGated = false, capabilityGatedHint, capabilityGate = null }: { focus: SyntxFieldFocus; groupLabel: string; capabilityLabel: string; jobLabel: string; onSelect(next: SyntxFieldFocus): void; jobScope?: SyntxJobScopePresentation; onJobScopeActivate?(): void; /** Capability gate closed (no VALID job scope): the Capability option cannot be selected. */ capabilityGated?: boolean; capabilityGatedHint?: string; /** UX-04: the closed gate's reason and way, shown as text below the capsule. */ capabilityGate?: SyntxCapabilityGatePresentation | null }) {
   const buttons = useRef<Record<SyntxFieldFocus, HTMLButtonElement | null>>({ CAPABILITY: null, FIELD: null });
   const options: Array<{ id: string; focus: SyntxFieldFocus; label: string }> = [
     { id: "field-focus-capability-btn", focus: "CAPABILITY", label: capabilityLabel },
@@ -144,6 +155,7 @@ export function SyntxFieldSelector({ focus, groupLabel, capabilityLabel, jobLabe
               aria-pressed={active}
               disabled={gated || undefined}
               aria-disabled={gated || undefined}
+              aria-describedby={gated && capabilityGate !== null ? CAPABILITY_GATE_REASON_ID : undefined}
               title={gated ? capabilityGatedHint : undefined}
               onClick={() => select(option.focus)}
               onKeyDown={onKeyDown}
@@ -157,6 +169,20 @@ export function SyntxFieldSelector({ focus, groupLabel, capabilityLabel, jobLabe
         );
       })}
     </div>
+    {capabilityGated && capabilityGate !== null && (
+      <p
+        id={CAPABILITY_GATE_REASON_ID}
+        data-testid="capability-gate-reason"
+        data-sx-shell="gate-reason"
+        data-gate={capabilityGate.state}
+        role="note"
+        style={{ position: "fixed", left: "50%", top: "128px", transform: "translateX(-50%)", zIndex: 60, boxSizing: "border-box", width: "max-content", maxWidth: "min(540px, calc(44vw - 80px))", margin: 0, display: "flex", flexDirection: "column", alignItems: "center", gap: "2px", padding: "6px 14px 7px", borderRadius: "12px", border: "1px solid rgba(255, 190, 92, 0.34)", background: "linear-gradient(180deg, rgba(14, 22, 30, 0.92), rgba(5, 10, 16, 0.94))", boxShadow: "0 8px 22px rgba(0, 0, 0, 0.45)", textAlign: "center", fontFamily: SIL_TOKENS.typography.mono, pointerEvents: "none" }}
+      >
+        <span style={{ fontSize: "10px", fontWeight: 700, letterSpacing: "1.5px", color: "rgba(255, 206, 128, 0.96)" }}>{capabilityGate.label}</span>
+        <span data-testid="capability-gate-cause" style={{ fontFamily: SIL_TOKENS.typography.sans, fontSize: "12px", lineHeight: 1.4, color: "#e6f1f8" }}>{capabilityGate.reason}</span>
+        <span data-testid="capability-gate-way" style={{ fontFamily: SIL_TOKENS.typography.sans, fontSize: "12px", lineHeight: 1.4, color: "rgba(196, 226, 240, 0.92)" }}>{capabilityGate.way}</span>
+      </p>
+    )}
     </>
   );
 }
