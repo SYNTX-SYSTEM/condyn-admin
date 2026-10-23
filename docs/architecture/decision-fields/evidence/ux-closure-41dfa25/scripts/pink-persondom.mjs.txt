@@ -1,0 +1,54 @@
+// PINK §10 K-UX-2: PERSON DOM inventory (text, element, order, state) on a STAND-IN lab; run on base and candidate, then diffed.
+// argv: <lab state.json> <repo root> <out dir> <label>. Inline styles and <style> contents are excluded (visual only); ids normalised.
+import { readFileSync, writeFileSync, mkdirSync } from "node:fs";
+import { pathToFileURL } from "node:url";
+const [STATE, ROOT, OUT, LABEL] = process.argv.slice(2); mkdirSync(OUT, { recursive: true });
+const pw = await import(pathToFileURL(process.env.CONDYN_PLAYWRIGHT_MODULE).href); const { chromium } = pw.chromium ? pw : pw.default;
+const st = JSON.parse(readFileSync(STATE, "utf8")); const BASE = st.base; if (st.gemini !== "STANDIN") throw new Error("not a stand-in lab");
+const DLL = "JPOOL_B94850C439974E27496FE3B1A9A076B5", KES = "org_kestrel", ROLE = "role_kestrel_fullstack";
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+await fetch(`${BASE}/api/career/job-pools`, { method: "POST", headers: { "content-type": "application/json", "x-condyn-principal-actor-id": "JOB_POOL_UPLOADER:PINK_S10" }, body: readFileSync(`${ROOT}/docs/examples/job-pool-tests/DLL_JOBPOOL_ENGINEERING.json`, "utf8") });
+const browser = await chromium.launch(); const out = { label: LABEL, evidenceClass: "STAND_IN", scenes: {} };
+const errors = [];
+for (const [w, h] of [[1920, 1080], [1280, 720]]) {
+  const ctx = await browser.newContext({ viewport: { width: w, height: h } }); await ctx.addInitScript(() => { try { localStorage.setItem("condyn_onboarding_seen", "true"); } catch {} });
+  const page = await ctx.newPage(); page.on("pageerror", e => errors.push(String(e).slice(0, 160)));
+  let anl = null;
+  if (w === 1920) { // one PERSON analysis by the interface (stand-in)
+    await page.goto(`${BASE}/career/demo?investigationMode=PERSON&focus=CAPABILITY`, { waitUntil: "domcontentloaded" }); await sleep(3000);
+    const before = new Set(((await (await fetch(`${BASE}/api/career/analyses`)).json()).analyses ?? []).map(a => a.analysisId));
+    await page.getByTestId("source-dock-file-input").setInputFiles(`${ROOT}/docs/examples/cv.synthetic.pdf`); await page.locator('[data-testid="start-intake-analysis-btn"]:not([disabled])').waitFor({ timeout: 30000 }); await page.getByTestId("start-intake-analysis-btn").click();
+    for (let i = 0; i < 300 && !anl; i += 1) { await sleep(1000); anl = ((await (await fetch(`${BASE}/api/career/analyses`)).json()).analyses ?? []).map(a => a.analysisId).find(id => !before.has(id)) ?? null; }
+    await sleep(6000); out.personAnalysis = !!anl;
+  } else anl = out._anl;
+  out._anl = anl;
+  const scenes = {
+    "D1-plain": `${BASE}/career/demo`,
+    "D2-person": `${BASE}/career/demo?investigationMode=PERSON`,
+    "D3-person-pool-opened": `${BASE}/career/demo?investigationMode=PERSON&jobPoolUploadId=${DLL}`,
+    "D4-person-role-opened": `${BASE}/career/demo?investigationMode=PERSON&jobPoolUploadId=${DLL}&jobOrganizationId=${KES}&jobRoleId=${ROLE}`,
+    "D5-person-job-selected-field": `${BASE}/career/demo?investigationMode=PERSON&jobPoolUploadId=${DLL}&jobOrganizationId=${KES}&jobRoleId=${ROLE}&jobScopePoolUploadId=${DLL}&jobScopeRoleId=${ROLE}`,
+    "D6-person-job-selected-capability": `${BASE}/career/demo?investigationMode=PERSON&focus=CAPABILITY&jobPoolUploadId=${DLL}&jobScopePoolUploadId=${DLL}&jobScopeRoleId=${ROLE}`,
+    "D7-person-analysis": `${BASE}/career/demo?investigationMode=PERSON&analysisId=${anl}`,
+    "D8-person-analysis-unknown": `${BASE}/career/demo?investigationMode=PERSON&analysisId=ANL_1000000000000_1`
+  };
+  for (const [name, url] of Object.entries(scenes)) {
+    await page.goto(url, { waitUntil: "networkidle" }).catch(() => {}); await sleep(5000);
+    const inv = await page.evaluate(() => {
+      const norm = s => s.replace(/ANL_\d+_\d+/g, "ANL_x").replace(/JOB_\d+_\d+/g, "JOB_x").replace(/\b(RUN|CONV|TRPREV|SNAP|CSB|EVD|ART)_[A-F0-9]{8,}\b/g, "$1_x").replace(/\b[a-f0-9]{16,64}\b/g, "HEX").replace(/\d{4}-\d{2}-\d{2}[T ]\d{2}:\d{2}(:\d{2}(\.\d+)?)?Z?( UTC)?/g, "TIME").replace(/\b\d+(\.\d+)? ?(ms|s)\b/g, "N$2");
+      const rows = []; const walk = (el, depth) => {
+        if (["SCRIPT", "STYLE", "NOSCRIPT", "LINK", "META"].includes(el.tagName)) return;
+        const cs = getComputedStyle(el); const attrs = [];
+        for (const a of el.attributes) { if (a.name === "style" || a.name === "class" || (el instanceof SVGElement && ["d", "x", "y", "cx", "cy", "r", "x1", "x2", "y1", "y2", "transform", "points", "width", "height", "viewBox", "rx", "ry", "offset", "stop-color", "stop-opacity", "opacity", "fill", "stroke", "stroke-width", "stroke-dasharray", "stroke-dashoffset", "fill-opacity", "stroke-opacity", "filter", "font-size", "letter-spacing", "dx", "dy", "text-anchor", "dominant-baseline"].includes(a.name))) continue; attrs.push(`${a.name}=${norm(a.value)}`); }
+        const own = [...el.childNodes].filter(n => n.nodeType === 3).map(n => n.textContent).join("").replace(/\s+/g, " ").trim();
+        rows.push({ d: depth, tag: el.tagName.toLowerCase(), a: attrs.sort().join(" "), t: norm(own), hidden: cs.display === "none" || cs.visibility === "hidden" });
+        for (const c of el.children) walk(c, depth + 1);
+      }; walk(document.body, 0); return rows;
+    });
+    out.scenes[`${name}@${w}`] = inv;
+  }
+  await ctx.close();
+}
+delete out._anl; out.pageErrors = errors; writeFileSync(`${OUT}/persondom-${LABEL}.json`, JSON.stringify(out));
+console.log("DONE", JSON.stringify({ scenes: Object.keys(out.scenes).length, rows: Object.values(out.scenes).map(s => s.length), errors: errors.length, personAnalysis: out.personAnalysis }));
+await browser.close();

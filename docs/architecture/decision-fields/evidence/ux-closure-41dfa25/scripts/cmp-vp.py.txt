@@ -1,0 +1,17 @@
+# PINK §10: viewport matrix, pre-sweep (421e382) vs candidate, from pink-ux JSON. argv: <before json> <after json>
+import json, sys
+B, A = (json.load(open(f)) for f in sys.argv[1:3])
+def idx(d): return {(v["viewport"], v["state"]): v for v in d["viewports"]}
+ib, ia = idx(B), idx(A)
+def act(v):
+  return {a["id"]: (a.get("clickablePoints") if a.get("present") else "absent", "in" if a.get("box", {}).get("fullyInViewport") else ("part" if a.get("box", {}).get("inViewport") else "out"), ",".join(sorted(set(c if isinstance(c, str) else c.get("id", "?") for c in a.get("coveredBy", []))))[:40]) for a in v["actions"]}
+for key in sorted(set(ib) | set(ia), key=lambda k: (k[1], k[0])):
+  vb, va = ib.get(key), ia.get(key)
+  ab, aa = act(vb) if vb else {}, act(va) if va else {}
+  pb = vb and vb.get("panel") or {}; pa = va and va.get("panel") or {}
+  hs = lambda v: v and v["page"]["horizontalScroll"]
+  print(f"{key[1]:<28} {key[0]:<20} hscroll {hs(vb)}→{hs(va)}  panel share {pb.get('visibleShare')}→{pa.get('visibleShare')} scroll {pb.get('scroll')}→{pa.get('scroll')}")
+  for i in sorted(set(ab) | set(aa)):
+    x, y = ab.get(i), aa.get(i)
+    flag = "" if x == y else "  *"
+    if x != y or (y and (y[0] not in ("5/5", "absent") or y[1] != "in")): print(f"    {i:<44} {x} → {y}{flag}")

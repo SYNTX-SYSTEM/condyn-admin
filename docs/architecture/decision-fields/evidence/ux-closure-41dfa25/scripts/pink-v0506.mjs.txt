@@ -1,0 +1,24 @@
+// PINK §10 V-05 / V-06: gate cause per state (NONE, CHECKING held, INVALID, JOB), the tooltip beside it, the followed job's NOT_FOUND
+// banner (close = one push without analysisJobId, Back names it again, no POST), the Job Field's NO_ANALYSIS. GET only (non-GET aborted).
+// argv: <base> <out dir> [analysisId]
+import { pathToFileURL } from "node:url";
+const [BASE, OUT, ANL = "ANL_1792628993472_10"] = process.argv.slice(2);
+const pw = await import(pathToFileURL(process.env.CONDYN_PLAYWRIGHT_MODULE).href); const { chromium } = pw.chromium ? pw : pw.default;
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+const DLL = "JPOOL_B94850C439974E27496FE3B1A9A076B5", ROLE = "role_kestrel_fullstack", sel = r => `&jobScopePoolUploadId=${DLL}&jobScopeRoleId=${r}`;
+const b = await chromium.launch(); const ctx = await b.newContext({ viewport: { width: 1920, height: 1080 } }); let blocked = 0, hold = false;
+await ctx.addInitScript(() => { try { localStorage.setItem("condyn_onboarding_seen", "true"); } catch {} });
+await ctx.route("**/*", async r => { const m = r.request().method(); if (m !== "GET" && m !== "HEAD") { blocked += 1; return r.abort(); } if (hold && /\/api\/career\/job-pools\//.test(r.request().url())) await sleep(7000); try { await r.continue(); } catch {} });
+const p = await ctx.newPage(); const out = {};
+const gate = () => p.evaluate(() => { const q = s => document.querySelector(s); const btn = q('[data-testid="field-focus-capability-btn"]'); return { job: q('[data-testid="job-scope-indicator"]')?.dataset.jobScopeState ?? null, disabled: btn?.disabled ?? null, title: btn?.getAttribute("title"), describedBy: btn?.getAttribute("aria-describedby"), cause: q('[data-testid="capability-gate-cause"]')?.innerText ?? null, way: q('[data-testid="capability-gate-way"]')?.innerText ?? null, noAnalysis: q('[data-testid="syntx-no-analysis"]')?.innerText.replace(/\s+/g, " ") ?? null }; });
+for (const [name, url, held] of [["NONE", `${BASE}/career/demo?investigationMode=PERSON_X_JOB&jobPoolUploadId=${DLL}`, false], ["CHECKING", `${BASE}/career/demo?investigationMode=PERSON_X_JOB&jobPoolUploadId=${DLL}${sel(ROLE)}`, true], ["INVALID", `${BASE}/career/demo?investigationMode=PERSON_X_JOB&jobPoolUploadId=${DLL}${sel("role_pink_does_not_exist")}`, false], ["JOB", `${BASE}/career/demo?investigationMode=JOB&jobPoolUploadId=${DLL}${sel(ROLE)}`, false], ["VALID-field-no-analysis", `${BASE}/career/demo?investigationMode=PERSON_X_JOB&jobPoolUploadId=${DLL}&jobOrganizationId=org_kestrel&jobRoleId=${ROLE}${sel(ROLE)}`, false]]) {
+  hold = held; await p.goto(url, { waitUntil: "domcontentloaded" }); await sleep(held ? 2500 : 6000); out[name] = await gate(); if (held) { hold = false; await sleep(8000); out[name + "-after"] = await gate(); }
+}
+// followed job NOT_FOUND
+await p.goto(`${BASE}/career/demo?investigationMode=PERSON_X_JOB&jobPoolUploadId=${DLL}${sel(ROLE)}&analysisId=${ANL}&focus=CAPABILITY&analysisJobId=JOB_1000000000000_1`, { waitUntil: "domcontentloaded" }); await sleep(7000);
+const h0 = await p.evaluate(() => history.length); const banner0 = await p.evaluate(() => { const b = document.querySelector('[data-testid="intake-error-banner"]'); return b ? { code: b.dataset.errorCode, resume: b.dataset.jobResume ?? null, retry: !!document.querySelector('[data-testid="retry-intake-btn"]'), close: !!document.querySelector('[data-testid="intake-error-dismiss"]') } : null; });
+let closed = null; if (banner0?.close) { await p.getByTestId("intake-error-dismiss").click(); await sleep(2500); closed = await p.evaluate(() => ({ banner: !!document.querySelector('[data-testid="intake-error-banner"]'), job: new URL(location.href).searchParams.get("analysisJobId"), analysisId: new URL(location.href).searchParams.get("analysisId"), h: history.length, first: document.querySelector('[data-testid="pxj-first-screen"]')?.dataset.state ?? null })); closed.hDelta = closed.h - h0;
+  await p.goBack({ waitUntil: "commit" }); await sleep(6000); closed.back = await p.evaluate(() => ({ banner: !!document.querySelector('[data-testid="intake-error-banner"]'), job: new URL(location.href).searchParams.get("analysisJobId") })); }
+out.jobNotFound = { banner0, closed };
+await p.screenshot({ path: `${OUT}/V06-job-not-found-back-1920.jpg`, type: "jpeg", quality: 70, mask: [p.locator("[data-pxj-quote]")] }).catch(() => {});
+console.log(JSON.stringify({ blocked, ...out }, null, 1)); await b.close();

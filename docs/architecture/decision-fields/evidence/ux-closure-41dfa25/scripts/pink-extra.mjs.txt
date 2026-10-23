@@ -1,0 +1,28 @@
+// PINK §10 extras on a fresh STAND-IN lab (no pool yet): V-07 the empty list's + INTAKE opens the upload; V-08 .docx refused, a
+// broken .pdf FAILED without RETRY. argv: <lab state.json> <repo root> <out dir>
+import { readFileSync, writeFileSync, mkdirSync } from "node:fs";
+import { pathToFileURL } from "node:url";
+const [STATE, ROOT, OUT] = process.argv.slice(2); mkdirSync(OUT, { recursive: true });
+const pw = await import(pathToFileURL(process.env.CONDYN_PLAYWRIGHT_MODULE).href); const { chromium } = pw.chromium ? pw : pw.default;
+const st = JSON.parse(readFileSync(STATE, "utf8")); const BASE = st.base; if (st.gemini !== "STANDIN") throw new Error("not a stand-in lab");
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+const b = await chromium.launch(); const ctx = await b.newContext({ viewport: { width: 1920, height: 1080 } }); await ctx.addInitScript(() => { try { localStorage.setItem("condyn_onboarding_seen", "true"); } catch {} });
+const p = await ctx.newPage(); const t = id => p.getByTestId(id); const out = { evidenceClass: "STAND_IN" }; const reqs = []; p.on("request", r => { const u = new URL(r.url()); if (u.pathname.startsWith("/api/")) reqs.push(`${r.method()} ${u.pathname}`); });
+await p.goto(`${BASE}/career/demo`, { waitUntil: "domcontentloaded" }); await sleep(5000);
+const vis = id => p.evaluate(id => { const e = document.querySelector(`[data-testid="${id}"]`); if (!e) return false; const r = e.getBoundingClientRect(); const cs = getComputedStyle(e); return r.width > 0 && r.height > 0 && cs.visibility !== "hidden" && cs.display !== "none"; }, id);
+out.emptyIntake = { before: { list: await p.evaluate(() => document.querySelector('[data-testid="job-pool-list"]')?.dataset.state ?? null), button: await vis("job-pool-list-empty-intake"), upload: await vis("job-pool-upload") }, h0: await p.evaluate(() => history.length), url0: p.url() };
+if (out.emptyIntake.before.button) { const r0 = reqs.length; await t("job-pool-list-empty-intake").click(); await sleep(1500); out.emptyIntake.after = { upload: await vis("job-pool-upload"), focusIn: await p.evaluate(() => document.activeElement?.closest("[data-testid]")?.dataset.testid ?? null), h: await p.evaluate(() => history.length), urlChanged: p.url() !== out.emptyIntake.url0, nonGet: reqs.slice(r0).filter(x => !x.startsWith("GET")) }; }
+await p.screenshot({ path: `${OUT}/STANDIN-V07-empty-intake-1920.jpg`, type: "jpeg", quality: 70 });
+// V-08 under PERSON capability (no job needed)
+await p.goto(`${BASE}/career/demo?investigationMode=PERSON&focus=CAPABILITY`, { waitUntil: "domcontentloaded" }); await sleep(4000);
+const docx = `${OUT}/pink-note.docx`; writeFileSync(docx, "PK\u0003\u0004 not a real docx (PINK synthetic)");
+await t("source-dock-file-input").setInputFiles(docx); await sleep(1200);
+out.docx = await p.evaluate(() => ({ refused: document.querySelector('[data-testid="source-dock-file-refused"]')?.innerText ?? null, staged: [...document.querySelectorAll('[data-testid="source-dock"] button')].filter(b => b.textContent.trim() === "×").length, analyzeEnabled: !!document.querySelector('[data-testid="start-intake-analysis-btn"]:not([disabled])') }));
+await p.reload({ waitUntil: "domcontentloaded" }); await sleep(4000);
+const bogus = `${OUT}/pink-bogus.pdf`; writeFileSync(bogus, "PINK: plain text named .pdf (forces ERR_PDF_PARSE_FAILURE)\n");
+await t("source-dock-file-input").setInputFiles(bogus); await p.locator('[data-testid="start-intake-analysis-btn"]:not([disabled])').waitFor({ timeout: 30000 }); await t("start-intake-analysis-btn").click();
+await p.waitForSelector('[data-testid="intake-error-banner"]', { timeout: 300000 }).catch(() => {}); await sleep(1500);
+out.brokenPdf = await p.evaluate(() => { const bn = document.querySelector('[data-testid="intake-error-banner"]'); return bn ? { code: bn.dataset.errorCode, format: document.querySelector('[data-testid="intake-error-format"]')?.innerText ?? null, retry: !!document.querySelector('[data-testid="retry-intake-btn"]'), dismiss: !!document.querySelector('[data-testid="intake-error-dismiss"]'), textHasParse: /PDF_PARSE/.test(bn.innerText) } : null; });
+await p.screenshot({ path: `${OUT}/STANDIN-V08-broken-pdf-1920.jpg`, type: "jpeg", quality: 70 });
+out.posts = reqs.filter(x => x === "POST /api/career/analyze").length;
+writeFileSync(`${OUT}/pink-extra.json`, JSON.stringify(out, null, 1)); console.log("DONE", JSON.stringify(out)); await b.close();

@@ -1,0 +1,26 @@
+// PINK §10: organisation level at 1280×720 — role cards' boxes, opacity, cover; overlap of the stage's bottom texts. GET only.
+import { pathToFileURL } from "node:url";
+const [BASE, OUT] = process.argv.slice(2);
+const pw = await import(pathToFileURL(process.env.CONDYN_PLAYWRIGHT_MODULE).href); const { chromium } = pw.chromium ? pw : pw.default;
+const b = await chromium.launch(); let blocked = 0; const res = [];
+for (const [n, w, h] of [["1280x720", 1280, 720], ["1440x900", 1440, 900], ["1920x1080", 1920, 1080]]) {
+const ctx = await b.newContext({ viewport: { width: w, height: h }, deviceScaleFactor: 2 }); await ctx.addInitScript(() => { try { localStorage.setItem("condyn_onboarding_seen", "true"); } catch {} });
+await ctx.route("**/*", r => { const m = r.request().method(); if (m !== "GET" && m !== "HEAD") { blocked += 1; return r.abort(); } return r.continue(); });
+const p = await ctx.newPage();
+for (const [scene, q] of [["org-PXJ-nojob", "investigationMode=PERSON_X_JOB&jobPoolUploadId=JPOOL_B94850C439974E27496FE3B1A9A076B5&jobOrganizationId=org_kestrel"], ["org-PERSON", "investigationMode=PERSON&jobPoolUploadId=JPOOL_B94850C439974E27496FE3B1A9A076B5&jobOrganizationId=org_kestrel"]]) {
+await p.goto(`${BASE}/career/demo?${q}`, { waitUntil: "domcontentloaded" }); await new Promise(r => setTimeout(r, 7000));
+const r = await p.evaluate(() => {
+  const vis = e => { let o = 1; for (let a = e; a; a = a.parentElement) o *= parseFloat(getComputedStyle(a).opacity || "1"); return Math.round(o * 100) / 100; };
+  const cards = [...document.querySelectorAll('[data-testid^="syntx-role-"]')].map(e => { const r = e.getBoundingClientRect(); const c = document.elementFromPoint(r.left + r.width / 2, r.top + r.height / 2); return { id: e.dataset.testid.replace("syntx-role-role_kestrel_", ""), box: [Math.round(r.left), Math.round(r.top), Math.round(r.width), Math.round(r.height)], opacity: vis(e), centreHit: c ? (e.contains(c) ? "self" : c.closest("[data-testid]")?.dataset.testid ?? c.tagName) : null }; });
+  // text lines in the lower stage: every text node's line boxes, then pairwise vertical overlap of different elements
+  const lines = []; const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+  for (let n = walker.nextNode(); n; n = walker.nextNode()) { if (!n.textContent.trim()) continue; const el = n.parentElement; const cs = getComputedStyle(el); if (cs.visibility === "hidden" || cs.display === "none") continue; const rg = document.createRange(); rg.selectNodeContents(n); for (const r of rg.getClientRects()) if (r.width > 2 && r.height > 2 && r.top > innerHeight * 0.55 && r.bottom < innerHeight && r.left < innerWidth) lines.push({ el, tid: el.closest("[data-testid]")?.dataset.testid ?? null, t: n.textContent.trim().slice(0, 30), x1: r.left, x2: r.right, y1: r.top, y2: r.bottom }); }
+  const overlaps = [];
+  for (let i = 0; i < lines.length; i += 1) for (let j = i + 1; j < lines.length; j += 1) { const a = lines[i], c = lines[j]; if (a.el === c.el || a.el.contains(c.el) || c.el.contains(a.el)) continue; const ox = Math.min(a.x2, c.x2) - Math.max(a.x1, c.x1), oy = Math.min(a.y2, c.y2) - Math.max(a.y1, c.y1); if (ox > 2 && oy > 1) overlaps.push({ a: `${a.tid}:«${a.t}»`, b: `${c.tid}:«${c.t}»`, ox: Math.round(ox), oy: Math.round(oy * 10) / 10 }); }
+  return { cards, overlaps: overlaps.slice(0, 8) };
+});
+res.push({ vp: n, scene, ...r });
+await p.screenshot({ path: `${OUT}/V19-org-${scene}-${n}.jpg`, type: "jpeg", quality: 75, clip: { x: 0, y: Math.round(h * 0.55), width: w, height: Math.round(h * 0.45) } });
+}
+await ctx.close(); }
+console.log(JSON.stringify({ blocked, res }, null, 1)); await b.close();

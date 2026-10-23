@@ -1,0 +1,73 @@
+PINK §10 · independent validation of GRÜN's final candidate 41dfa25 (code 4b826cc) on frontend/pxj-ux-closure (base 70d1cb4 = 421e382 + B-3)
+Owner mandate "SYNTX::SFE::OWNER_GO — RECURSIVE UX/UI & SYSTEM CLOSURE". Findings only — PINK changes no application file.
+
+Evidence classes (kept apart):
+  PERSISTED_REAL_RESULT  GELB's acceptance lab :41872 (production build of 41dfa25, DB copy condyn_test_fe7534ec510e1946), GET only — every
+                         non-GET aborted in the browser and counted (0 in every probe). File: real-41872-PERSISTED_REAL_RESULT.txt
+  STAND_IN               PINK's own production labs :41873 (no LAB_ONLY_BUILD_FLAG), real worker, loopback Gemini stand-in.
+                         STAND-IN · keine Modellausführung. Files: standin-STAND_IN.txt, person-dom-K-UX-2-STAND_IN.txt, regression-STAND_IN.txt
+  MEASUREMENT / CODE_INSPECTION  static-MEASUREMENT.txt
+No Gemini call (real or other) by PINK. No quote or CV text recorded; screenshots with B2 mask [data-pxj-quote].
+
+ID            | Verdict       | Class                    | Measurement (short)
+--------------+---------------+--------------------------+-------------------------------------------------------------------------------------------
+STATIC        | PASS          | MEASUREMENT              | frontend only (0 backend/API/DB/config files); tsc 0; 14 production builds without the flag; focused group
+              |               |                          | 57 files / 498 passed / 4 skipped; counter-proof on 421e382 43 fail / 17 pass (GRÜN's count exactly; GELB's
+              |               |                          | 16/45/18 not reproduced); one existing literal changed (K-UX-3)
+V-01          | PASS          | PERSISTED_REAL_RESULT    | 1280×720 ENTER TEXT 0/5 → 5/5 at load; at 200 % both source actions 5/5 full after page scroll (all 6 viewports)
+V-02          | PASS          | PERSISTED_REAL_RESULT    | JOB mode at 200 % of 1280 (640×360): out → in view, 5/5
+V-03          | PASS          | PERSISTED_REAL_RESULT    | first B2 row in view at load from 1440×900 (1280×720 part); 9/9 rows fully in view and hit by wheel (60 px) at
+              |               |                          | all six viewports; 640×360 at 240 px 8/9 (row 03 share 0.99 = step artefact, GELB's note confirmed); head and
+              |               |                          | counts in view at load everywhere; at 640×360 the binding section and status line below the fold at load
+V-04          | PASS          | PERSISTED_REAL_RESULT    | cause + way as visible text (12 px), aria-describedby on the closed control; pointer-transparent, not covered
+V-05          | PASS (rest)   | PERSISTED_REAL_RESULT    | visible cause correct for NONE / CHECKING (held 7 s) / INVALID (+reason) / JOB; REST R-05: the title tooltip
+              |               |                          | still says "Select a job in the Job Field first…" during CHECKING and INVALID (contradicts the visible cause)
+V-06          | PASS          | PERSISTED_REAL_RESULT    | NO_ANALYSIS names both ways + picker; RESULT_NOT_FOUND → picker; job NOT_FOUND banner: no RETRY, CLOSE = one
+              |               |                          | push without analysisJobId, B2 stays AVAILABLE, Back names the job again, 0 POST
+V-07          | PASS          | STAND_IN                 | empty list names + INTAKE; the button opens the upload form, no URL / history change, 0 non-GET
+V-08          | FAIL          | STAND_IN (real worker)   | .md staged as TXT and analysed; .docx refused with reason; BUT a broken .pdf still offers RETRY: the banner's
+              |               |                          | code is EXECUTION_FAILED (ERR_PDF_PARSE_FAILURE only inside the summary), d8d97b8 tests code ===
+              |               |                          | "ERR_PDF_PARSE_FAILURE" → never true with the running worker (D-S10-1)
+V-09          | PARTIAL       | PERSISTED_REAL_RESULT    | B2 ≥ 10.5 px, job indicator 11 px, pool list 10 px, telemetry 11 px; remaining < 10 px: role cards 7.5 / 8.5 px
+              |               |                          | (owner-set sizes, open), 9.5 px labels in the Capability Field (e.g. PRE-CANONICAL DISCOVERY) and the mode
+              |               |                          | labels at 200 %
+V-10          | PARTIAL       | PERSISTED_REAL_RESULT    | low-contrast texts in the field 9 → 1 (left: 4.39:1 "Hover or select any node…", 12 px); receded role titles of
+              |               |                          | other organisations 1.02:1 and role titles at the closed gate 1.32:1 unchanged (owner decision, open)
+V-11          | FAIL          | STAND_IN + REAL          | regression of the keyboard path: same probe on base / candidate — from Enter on the role to SELECT AS JOB
+              |               |                          | 14 → 21 Tab presses, role view on load 4 → 11 (both viewports; real 21 / 11). Cause: the shell (job indicator,
+              |               |                          | Job Field toggle, mode group) and the header now come BEFORE the Job Field panel in the Tab order. Within
+              |               |                          | the panel SELECT AS JOB does stand right after the path and RETURN (UX-02 holds). Real journey: SELECT AS JOB
+              |               |                          | 9 → 21, CAPABILITY FIELD 6 → 18
+V-12          | PASS          | STAND_IN + REAL          | arrows / Home / End move focus only (URL, history, aria-checked unchanged, 0 API); Enter / Space choose (+1)
+V-13          | PASS          | PERSISTED_REAL_RESULT    | SELECT AS JOB and pool item change on hover; hover never changes URL / history
+V-14          | PASS          | PERSISTED_REAL_RESULT    | no control under 24 px (POOLS toggle 23 → 26 px)
+V-15          | UNCHANGED     | STAND_IN                 | not addressed by the candidate; long-name truncation identical to 421e382 (syntx-summary cut without
+              |               |                          | ellipsis or title, job indicator only via title)
+V-16          | PASS          | PERSISTED_REAL_RESULT    | zoom telemetry below the shell, fully in view at every viewport (after scroll at 200 %)
+K-UX-2 T-07   | PASS          | MEASUREMENT + STAND_IN   | T-07 green; runtime Capability Field under PERSON (D6) identical apart from a new attribute data-sx-layout on
+              |               |                          | the dashboard wrapper
+K-UX-2 rest   | FAIL          | STAND_IN                 | under investigationMode=PERSON the Job Field changes text (UX-07 wording: UPLOADED JOB POOLS, OPEN/OPENED,
+              |               |                          | NO JOB POOL OPENED…), elements (syntx-level, syntx-job-scope-hint, syntx-opened-role), order (panel header
+              |               |                          | before the pool list, key hint after the state, shell before the panel) and, at ≤ 1280×720, role cards
+              |               |                          | switch to the packed form without their domain line (V-18). GRÜN README §3 ("no text, element, order or
+              |               |                          | state") does not hold for the Job Field shown under PERSON. Whether the Job Field is inside the PERSON
+              |               |                          | perimeter is GELB's / the owner's call
+O-NAV-SUBMIT  | PASS in page  | STAND_IN                 | Back 0.03–0.15 s after ANALYZE (POST held 1.5 s or not), Back+Forward: 1 POST, 1 analysis, named by replace
+              |               |                          | in the entry on view (history +0), B2 AVAILABLE there
+  S3 / S4     | OBSERVATION   | STAND_IN                 | when the entry on view has another boundary, the job is named THERE: a PERSON entry then shows MODE_MISMATCH,
+              |               |                          | an entry with another selected job ROLE_MISMATCH (named, never lost; its earlier view changes)
+  S6          | FAIL          | STAND_IN                 | Back across the document boundary 0.06 s after ANALYZE (e.g. the owner's deep link as first entry): the analysis
+              |               |                          | is made (1 POST, +1) and NO history entry names it — the handover ends with the page session (same class as
+              |               |                          | "reload during SUBMITTING", open owner decision)
+D-PICK        | PASS          | STAND_IN + REAL          | only the exact (mode, upload, role) offered — RF upload with the same role id and DLL × other role never cross;
+              |               |                          | PERSON / JOB: no picker, 0 boundary reads; nothing read before opening, nothing chosen by opening; OPEN =
+              |               |                          | one push (analysisId, focus=CAPABILITY) → B2 AVAILABLE; Back removes it; analysis on view listed, disabled;
+              |               |                          | real: only ANL_1792628993472_10 offered, never ANL_1792628831636_456
+REGRESSION    | PASS          | STAND_IN + REAL          | nav 88/90 (same two probe errors as 421e382, no verdict changed); rf 54/54; g1 states identical (2×20 steps);
+              |               |                          | X-22 identical; 600 Tab presses per lab without URL / history change, trap, hidden focus or missing
+              |               |                          | indicator; hover never authority; Esc ROLE → ORGANIZATION → FIELD
+V-18 (new)    | FINDING       | REAL + STAND_IN          | at 1280×720 and 200 % every role card is "packed" (no domain line, removed from the DOM); orbit form with
+              |               |                          | domain line only from 1440×900; base 70d1cb4 still showed the domain line at 1280×720
+V-19 (new)    | FAIL          | REAL + STAND_IN          | at 1280×720 the organisation level puts the Senior Full-Stack Engineer card under the Job Field panel: mouse hit
+              |               |                          | 0/5 in 6 samples (PXJ and PERSON; covered by NO ANALYSIS / POOLS / + INTAKE); base 70d1cb4 5/5. ORG → ROLE_OPEN
+              |               |                          | of the owner's role is not possible by mouse at 1280×720 (keyboard works)

@@ -1,0 +1,32 @@
+#!/bin/bash
+# PINK §10 second pass: fresh STAND-IN production labs (no LAB_ONLY_BUILD_FLAG), port 41873, own PIDs, disposable DBs.
+# argv: <commit> <label> <probe...: extra | v11 | s10 | persondom>
+S=<scratch>; X=$S/s10; P=<repo>
+C=$1; L=$2; shift 2
+cd $P && git checkout -q --detach $C && echo "HEAD $(git rev-parse --short HEAD) ($L, prod, no flag)"
+set -a; . <test-db-role env>; set +a
+unset DATABASE_URL CONDYN_ALLOW_SHARED_DATABASE GEMINI_API_KEY GEMINI_MODEL GOOGLE_GEMINI_BASE_URL VIDEO_LAB_GEMINI VIDEO_LAB_LIVE_GEMINI_GO VIDEO_LAB_GEMINI_ENV
+export CONDYN_PLAYWRIGHT_MODULE=<playwright> VIDEO_LAB_PROD=1
+OUT=$X/out-$L; mkdir -p $OUT
+echo "next.config.ts sha256 $(sha256sum next.config.ts | cut -c1-16)… committed = served (no LAB_ONLY_BUILD_FLAG) $(git diff --stat -- next.config.ts)" >> $OUT/build-config.txt
+for PR in "$@"; do
+  LAB=$X/lab-$L-$PR; rm -rf "${LAB:?}"; mkdir -p $LAB
+  VIDEO_LAB_PORT=41873 VIDEO_LAB_DIR=$LAB npx tsx docs/career_analysis/evidence/video-readiness/scripts/video-lab.ts > $LAB/lab.log 2>&1 &
+  for k in $(seq 1 900); do grep -qE "VIDEO LAB READY|Error|failed" $LAB/lab.log && break; sleep 3; done
+  if grep -qE "VIDEO LAB READY" $LAB/lab.log; then
+    B=$(python3 -c "import json;print(json.load(open(\"$LAB/state.json\"))[\"base\"])")
+    echo "$PR lab $(grep -oE "gemini=[A-Z]+" $LAB/lab.log | head -1) build-errors-ignored:$(grep -c 'Skipping validation of types' $LAB/lab.log)"
+    case $PR in
+      extra) timeout 1200 node $X/pink-extra.mjs $LAB/state.json $P $OUT > $OUT/extra.log 2>&1; echo "extra exit $? :: $(tail -1 $OUT/extra.log | cut -c1-900)";;
+      v11) for VP in 1920x1080 1280x720; do timeout 900 node $X/pink-v11-order.mjs $B ${VP%x*} ${VP#*x} standin $P > $OUT/v11-$VP.json 2>&1; echo "v11 $VP exit $?"; done;;
+      s10) timeout 5400 node $X/pink-s10.mjs $LAB/state.json $P $OUT $S/rf/PINK_RF_POOL.json $L 1920 1080 > $OUT/s10.log 2>&1; echo "s10 exit $? :: $(tail -1 $OUT/s10.log | cut -c1-700)";;
+      cardhit) timeout 1500 node $X/pink-cardhit.mjs $B $OUT standin $P > $OUT/cardhit.log 2>&1; echo "cardhit exit $?"; cat $OUT/cardhit.log | cut -c1-400;;
+      persondom) timeout 1800 node $X/pink-persondom.mjs $LAB/state.json $P $OUT $L > $OUT/persondom.log 2>&1; echo "persondom exit $? :: $(tail -1 $OUT/persondom.log | cut -c1-400)";;
+    esac
+    cp $LAB/net.jsonl $OUT/net-$PR.jsonl 2>/dev/null
+  else echo "$PR lab failed"; grep -E "Error|failed" $LAB/lab.log | sed -E 's/(postgres[a-z]*:\/\/)[^ ]*/\1***/g' | head -5; fi
+  bash docs/career_analysis/evidence/video-readiness/scripts/stop-lab.sh $LAB; sleep 3
+done
+wait
+git status --short | head -5; git checkout -q validation/hr-decision-loop-pink && echo "back on $(git branch --show-current)"
+echo "S10B-END $L"

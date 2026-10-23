@@ -1,0 +1,440 @@
+PINK §10 · GELB's owner acceptance lab :41872 (production build of 41dfa25, copy of the 41862 DB) · PERSISTED_REAL_RESULT
+Every browser context aborts non-GET; counts below. No token, no state file, no upload, no ANALYZE.
+
+pink-ux (same probe as the pre-sweep §3.61): blockedNonGet 0, pageErrors 0
+
+Keyboard journey (Tab presses to reach each step), 421e382 → 41dfa25:
+  POOL                                    3 → 3
+  ORG                                     1 → 3
+  ROLE                                    5 → 5
+  SELECT AS JOB                           9 → 21
+  CAPABILITY FIELD                        6 → 18
+  EVIDENCE                                9 → 9
+  RETURN                                  3 → 3
+Tab sweeps: 600 presses, violations (URL/history change, trap, hidden or off-view focus, no indicator, unnamed): none
+Esc chain: role level → ORGANIZATION · org level → FIELD · pool list open → FIELD
+Hover: org card: filter (URL False, history 0) · role card: boxShadow+borderTopColor+filter (URL False, history 0) · requirement row: borderTopColor+backgroundColor (URL False, history 0) · select as job: outlineColor+borderTopColor+backgroundColor+color (URL False, history 0) · pool item: borderTopColor+backgroundColor (URL False, history 0)
+
+Viewport matrix at load (pink-ux), 421e382 → 41dfa25: actions whose clickable points or view state changed
+  S1-start-pools             zoom200-1280x720   syntx-pools-toggle                       ('1/1', 'part') → ('0/0', 'out')
+  S2-role-view               zoom200-1920x1080  syntx-job-scope-select                   ('0/0', 'out') → ('5/5', 'in')
+  S3-capability-no-analysis  1280x720           add-text-source-btn                      ('0/5', 'in') → ('5/5', 'in')
+  S3-capability-no-analysis  zoom200-1280x720   investigation-mode-JOB                   ('0/0', 'out') → ('5/5', 'in')
+  S3-capability-no-analysis  zoom200-1280x720   first-screen panel visible share 0 → 0.88
+  S3-capability-no-analysis  zoom200-1920x1080  add-pdf-source-btn                       ('1/5', 'in') → ('0/0', 'out')
+  S3-capability-no-analysis  zoom200-1920x1080  first-screen panel visible share 0.42 → 1
+  S4-b2-available            1280x720           pxj-first-req-                           ('0/0', 'out') → ('1/1', 'part')
+  S4-b2-available            1280x720           first-screen panel visible share 0.53 → 1
+  S4-b2-available            1440x900           pxj-first-req-                           ('0/0', 'out') → ('5/5', 'in')
+  S4-b2-available            1440x900           first-screen panel visible share 0.94 → 1
+  S4-b2-available            zoom200-1280x720   first-screen panel visible share 0 → 0.09
+  S4-b2-available            zoom200-1920x1080  first-screen panel visible share 0.13 → 0.22
+  S5-role-mismatch-offer     zoom200-1280x720   pxj-first-select-role                    ('0/0', 'out') → ('1/1', 'part')
+  S5-role-mismatch-offer     zoom200-1280x720   first-screen panel visible share 0 → 0.77
+  S5-role-mismatch-offer     zoom200-1920x1080  pxj-first-select-role                    ('0/0', 'out') → ('5/5', 'in')
+  S5-role-mismatch-offer     zoom200-1920x1080  first-screen panel visible share 0.2 → 1
+  horizontal page scroll at any viewport: False
+
+Readability (min font px / texts under 10 px / low-contrast texts) per region, 421e382 → 41dfa25, where changed:
+  1280x720           S1-start-pools             job-pool-list                        (9.5, 1, 0) → (10, 0, 0)
+  1280x720           S1-start-pools             job-scope-indicator                  (10.5, 0, 0) → (11, 0, 0)
+  1280x720           S1-start-pools             semantic-career-intelligence-field   (8.5, 10, 0) → (9.5, 3, 0)
+  1280x720           S2-role-view               job-scope-indicator                  (10.5, 0, 0) → (11, 0, 0)
+  1280x720           S2-role-view               semantic-career-intelligence-field   (7.5, 25, 0) → (7.5, 6, 0)
+  1280x720           S2-role-view               syntx-organization-*                 (8.5, 2, 0) → (10, 0, 0)
+  1280x720           S2-role-view               syntx-path                           (9.5, 1, 0) → (10.5, 0, 0)
+  1280x720           S2-role-view               syntx-role-*                         (7.5, 10, 4) → (7.5, 6, 6)
+  1280x720           S3-capability-no-analysis  job-scope-indicator                  (10, 0, 0) → (11, 0, 0)
+  1280x720           S3-capability-no-analysis  pxj-first-screen                     (10.5, 0, 0) → (11, 0, 0)
+  1280x720           S3-capability-no-analysis  semantic-career-intelligence-field   (9.5, 5, 9) → (9.5, 5, 1)
+  1280x720           S4-b2-available            job-scope-indicator                  (10, 0, 0) → (11, 0, 0)
+  1280x720           S4-b2-available            pxj-first-screen                     (9.5, 1, 0) → (10.5, 0, 0)
+  1280x720           S4-b2-available            semantic-career-intelligence-field   (9.5, 5, 9) → (9.5, 5, 1)
+  1280x720           S5-role-mismatch-offer     job-scope-indicator                  (10, 0, 0) → (11, 0, 0)
+  1280x720           S5-role-mismatch-offer     pxj-first-screen                     (10.5, 0, 0) → (11, 0, 0)
+  1280x720           S5-role-mismatch-offer     semantic-career-intelligence-field   (9.5, 5, 9) → (9.5, 5, 1)
+  1280x720           S6-gate-closed-no-job      job-scope-indicator                  (10.5, 0, 0) → (11, 0, 0)
+  1280x720           S6-gate-closed-no-job      semantic-career-intelligence-field   (8.5, 10, 0) → (9.5, 3, 0)
+  1280x720           S6-gate-closed-no-job      syntx-organization-*                 (8.5, 1, 0) → (10, 0, 0)
+  1280x720           S6-gate-closed-no-job      syntx-role-*                         (16, 0, 7) → (16, 0, 9)
+  1920x1080          S1-start-pools             job-pool-list                        (9.5, 1, 0) → (10, 0, 0)
+  1920x1080          S1-start-pools             job-scope-indicator                  (10.5, 0, 0) → (11, 0, 0)
+  1920x1080          S1-start-pools             semantic-career-intelligence-field   (8.5, 8, 0) → (10, 0, 0)
+  1920x1080          S2-role-view               job-scope-indicator                  (10.5, 0, 0) → (11, 0, 0)
+  1920x1080          S2-role-view               semantic-career-intelligence-field   (7.5, 23, 0) → (7.5, 4, 0)
+  1920x1080          S2-role-view               syntx-organization-*                 (8.5, 3, 0) → (10, 0, 0)
+  1920x1080          S2-role-view               syntx-path                           (9.5, 1, 0) → (10.5, 0, 0)
+  1920x1080          S2-role-view               syntx-role-*                         (7.5, 10, 6) → (7.5, 8, 6)
+  1920x1080          S3-capability-no-analysis  job-scope-indicator                  (10, 0, 0) → (11, 0, 0)
+  1920x1080          S3-capability-no-analysis  pxj-first-screen                     (10.5, 0, 0) → (11, 0, 0)
+  1920x1080          S3-capability-no-analysis  semantic-career-intelligence-field   (9.5, 2, 9) → (9.5, 2, 1)
+  1920x1080          S4-b2-available            job-scope-indicator                  (10, 0, 0) → (11, 0, 0)
+  1920x1080          S4-b2-available            pxj-first-screen                     (9.5, 2, 0) → (10.5, 0, 0)
+  1920x1080          S4-b2-available            semantic-career-intelligence-field   (9.5, 2, 9) → (9.5, 2, 1)
+  1920x1080          S5-role-mismatch-offer     job-scope-indicator                  (10, 0, 0) → (11, 0, 0)
+  1920x1080          S5-role-mismatch-offer     pxj-first-screen                     (10.5, 0, 0) → (11, 0, 0)
+  1920x1080          S5-role-mismatch-offer     semantic-career-intelligence-field   (9.5, 2, 9) → (9.5, 2, 1)
+  1920x1080          S6-gate-closed-no-job      job-scope-indicator                  (10.5, 0, 0) → (11, 0, 0)
+  1920x1080          S6-gate-closed-no-job      semantic-career-intelligence-field   (8.5, 8, 0) → (10, 0, 0)
+  1920x1080          S6-gate-closed-no-job      syntx-organization-*                 (8.5, 3, 0) → (10, 0, 0)
+  zoom200-1920x1080  S1-start-pools             job-pool-list                        (9.5, 1, 0) → (10, 0, 0)
+  zoom200-1920x1080  S1-start-pools             job-scope-indicator                  (10.5, 0, 0) → (11, 0, 0)
+  zoom200-1920x1080  S1-start-pools             semantic-career-intelligence-field   (8.5, 10, 0) → (9.5, 3, 0)
+  zoom200-1920x1080  S2-role-view               job-scope-indicator                  (10.5, 0, 0) → (11, 0, 0)
+  zoom200-1920x1080  S2-role-view               semantic-career-intelligence-field   (8.5, 10, 0) → (9.5, 3, 0)
+  zoom200-1920x1080  S2-role-view               syntx-organization-*                 (10, 0, 0) → None
+  zoom200-1920x1080  S2-role-view               syntx-path                           (9.5, 1, 0) → (10.5, 0, 0)
+  zoom200-1920x1080  S2-role-view               syntx-role-*                         (7.5, 5, 0) → None
+  zoom200-1920x1080  S3-capability-no-analysis  job-scope-indicator                  (10, 0, 0) → (11, 0, 0)
+  zoom200-1920x1080  S3-capability-no-analysis  pxj-first-screen                     (10.5, 0, 0) → (11, 0, 0)
+  zoom200-1920x1080  S3-capability-no-analysis  semantic-career-intelligence-field   (9.5, 5, 9) → (9.5, 4, 0)
+  zoom200-1920x1080  S3-capability-no-analysis  source-dock                          (12, 0, 0) → None
+  zoom200-1920x1080  S4-b2-available            job-scope-indicator                  (10, 0, 0) → (11, 0, 0)
+  zoom200-1920x1080  S4-b2-available            pxj-first-screen                     (10.5, 0, 0) → (11, 0, 0)
+  zoom200-1920x1080  S4-b2-available            semantic-career-intelligence-field   (9.5, 5, 9) → (9.5, 3, 0)
+  zoom200-1920x1080  S4-b2-available            source-dock                          (12, 0, 0) → None
+  zoom200-1920x1080  S5-role-mismatch-offer     job-scope-indicator                  (10, 0, 0) → (11, 0, 0)
+  zoom200-1920x1080  S5-role-mismatch-offer     pxj-first-screen                     (10.5, 0, 0) → (11, 0, 0)
+  zoom200-1920x1080  S5-role-mismatch-offer     semantic-career-intelligence-field   (9.5, 5, 9) → (9.5, 4, 0)
+  zoom200-1920x1080  S5-role-mismatch-offer     source-dock                          (12, 0, 0) → None
+  zoom200-1920x1080  S6-gate-closed-no-job      job-scope-indicator                  (10.5, 0, 0) → (11, 0, 0)
+  zoom200-1920x1080  S6-gate-closed-no-job      semantic-career-intelligence-field   (8.5, 10, 0) → (9.5, 3, 0)
+  zoom200-1920x1080  S6-gate-closed-no-job      syntx-organization-*                 (8.5, 1, 0) → None
+  zoom200-1920x1080  S6-gate-closed-no-job      syntx-role-*                         (16, 0, 3) → None
+Remaining examples (candidate): 1.02:1 16px «Principal Software Architect – Clinical »; 1.02:1 16px «Security Engineer – Clinical Systems»; 1.32:1 16px «Frontend Architect»; 1.32:1 16px «Senior Full-Stack Engineer – Shipment Tr»; 4.39:1 12px «Hover or select any node in the Planetar»; 7.5px «LEAD · M1»; 8.5px «9 REQUIREMENTS»; 9.5px «Engineering Management»; 9.5px «PERSON × JOB»; 9.5px «PERSON»; 9.5px «PRE-CANONICAL DISCOVERY»
+Targets under 24 px (V-14): none
+
+States and their next step (V-04 … V-06), candidate:
+  NO_ANALYSIS (valid job, no analysis)         first NO_ANALYSIS        actions ['analysis-picker-toggle'] gate describedBy None banner -
+  RESULT_NOT_FOUND                             first RESULT_NOT_FOUND   actions ['analysis-picker-toggle'] gate describedBy None banner -
+  MODE_MISMATCH (PERSON analysis under PxJ)    first MODE_MISMATCH      actions ['pxj-first-switch-mode'] gate describedBy None banner -
+  ROLE_MISMATCH (other role selected)          first ROLE_MISMATCH      actions ['pxj-first-select-role'] gate describedBy None banner -
+  JOB_INVALID (unknown role)                   first None               actions ['pxj-analysis-job-select'] gate describedBy capability-gate-reason banner -
+  NO JOB (PxJ, no scope) with analysis         first None               actions ['pxj-analysis-job-select'] gate describedBy capability-gate-reason banner -
+  GATE CLOSED (PxJ, no job, Job Field)         first None               actions - gate describedBy capability-gate-reason banner -
+  JOB mode (gate)                              first None               actions - gate describedBy capability-gate-reason banner -
+  PERSON mode with PxJ analysis                first MODE_MISMATCH      actions ['pxj-first-switch-mode'] gate describedBy None banner -
+  JOB NOT_FOUND (analysisJobId)                first AVAILABLE          actions ['pxj-first-proposal-PCAP_6B8E12A0AE2A4A29AA45C784', 'pxj-first-proposal-PCAP_FFD5CA78438C60DEC0A1C6BB', 'pxj-first-proposal-PCAP_6B66C4A822CBE888BF11452D', 'pxj-first-proposal-PCAP_A760B8EBDBE4843296B6A18C', 'pxj-first-proposal-PCAP_91055A69A115375C99797880', 'pxj-first-proposal-PCAP_AAFB8C7F8820052B592BDE11', 'pxj-first-proposal-PCAP_4F218651C9962531C79269DF', 'pxj-first-proposal-PCAP_CD636CDD76F3EB4CB25D97D6'] gate describedBy None banner NOT_FOUND
+  UNKNOWN UPLOAD (selected pool)               first None               actions - gate describedBy capability-gate-reason banner -
+  RESULT_LOADING (result read held 6 s)        first RESULT_LOADING     actions - gate describedBy None banner -
+  JOB_CHECKING (pool read held 6 s)            first None               actions - gate describedBy capability-gate-reason banner -
+  BOUNDARY_RESOLVING (investigation held 6 s)  first BOUNDARY_RESOLVING actions - gate describedBy None banner -
+
+Gate cause per job state (pink-v0506, 1920×1080, GET only, blocked 0):
+  NONE                     job NONE      disabled True  describedBy capability-gate-reason cause «PERSON × JOB needs a valid role selected as the job: none is selected» way «Way: open a role in the Job Field, then SELECT AS JOB» title «Select a job in the Job Field first (open a role, then SELECT AS JOB)»
+  CHECKING                 job CHECKING  disabled True  describedBy capability-gate-reason cause «PERSON × JOB needs a valid role selected as the job: the selected job is still being checked» way «Way: wait for the check; it opens once the job is valid» title «Select a job in the Job Field first (open a role, then SELECT AS JOB)»
+  CHECKING-after           job VALID     disabled False describedBy None                   cause «None» way «None» title «None»
+  INVALID                  job INVALID   disabled True  describedBy capability-gate-reason cause «PERSON × JOB needs a valid role selected as the job: the selected job is not valid · ROLE_NOT_IN_POOL» way «Way: open a valid role in the Job Field, then SELECT AS JOB» title «Select a job in the Job Field first (open a role, then SELECT AS JOB)»
+  JOB                      job VALID     disabled True  describedBy capability-gate-reason cause «JOB investigates the job only: no person field in this mode» way «Way: choose PERSON or PERSON × JOB as the investigation boundary» title «JOB investigates the job only: the Capability Field holds no person in this mode»
+  VALID-field-no-analysis  job VALID     disabled False describedBy None                   cause «None» way «None» title «None»
+  followed job NOT_FOUND: banner {'code': 'NOT_FOUND', 'resume': 'NOT_FOUND', 'retry': False, 'close': True}, CLOSE → banner False, analysisJobId None, history +1, B2 AVAILABLE; Back → banner True, job named again True
+  closed-gate texts: 1920x1080 capability-gate-reason 16px pointer-events none; 1920x1080 capability-gate-cause 12px pointer-events none; 1920x1080 capability-gate-way 12px pointer-events none; 1280x720 capability-gate-reason 16px pointer-events none; 1280x720 capability-gate-cause 12px pointer-events none; 1280x720 capability-gate-way 12px pointer-events none; zoom200-1280x720 capability-gate-reason 16px pointer-events none; zoom200-1280x720 capability-gate-cause 12px pointer-events none; zoom200-1280x720 capability-gate-way 12px pointer-events none (visible in the crops V04-*.jpg; pointer-transparent, not covered)
+
+Reach (pink-reach: at load and after a user's own scrolling; 5 points 3 px inside the box; blocked 0, pageErrors 0):
+  Partial points on rounded controls are their own parent containers (corners), listed with the covering element.
+  1920x1080          S1-start                   job-pool-select-JPOOL_B94850C439974E load 2/5 full · after scroll 2/5 full cover ['job-pool-item-JPOOL_B94850C439974E27496FE3B1A9A076B5'] user-scrollable True
+  1920x1080          S1-start                   syntx-pools-toggle                   load 2/5 full · after scroll 2/5 full cover ['syntx-field'] user-scrollable True
+  1920x1080          S1-start                   semantic-zoom-telemetry              load 0/5 full · after scroll 0/5 full cover ['syntx-stage'] user-scrollable True
+  1920x1080          S1-start                   job-scope-indicator                  load 1/5 full · after scroll 1/5 full cover ['syntx-stage'] user-scrollable True
+  1920x1080          S1-start                   investigation-mode-PERSON            load 2/5 full · after scroll 2/5 full cover ['investigation-mode-selector'] user-scrollable True
+  1920x1080          S1-start                   investigation-mode-PERSON_X_JOB      load 1/5 full · after scroll 1/5 full cover ['investigation-mode-selector'] user-scrollable True
+  1920x1080          S1-start                   investigation-mode-JOB               load 2/5 full · after scroll 2/5 full cover ['investigation-mode-selector'] user-scrollable True
+  1920x1080          S2-role-view               syntx-job-scope-select               load 1/5 full · after scroll 1/5 full cover ['syntx-field'] user-scrollable True
+  1920x1080          S2-role-view               syntx-path-FIELD                     load 5/5 full · after scroll 5/5 full cover [] user-scrollable True
+  1920x1080          S2-role-view               syntx-path-ORGANIZATION              load 5/5 full · after scroll 5/5 full cover [] user-scrollable True
+  1920x1080          S2-role-view               syntx-return-btn                     load 5/5 full · after scroll 5/5 full cover [] user-scrollable True
+  1920x1080          S2-role-view               syntx-pools-toggle                   load 2/5 full · after scroll 2/5 full cover ['syntx-field'] user-scrollable True
+  1920x1080          S2-role-view               job-pool-panel-toggle                load 1/5 full · after scroll 1/5 full cover ['field-focus-strip'] user-scrollable True
+  1920x1080          S2b-role-view-selected     analysis-picker-toggle               load 1/5 full · after scroll 1/5 full cover ['analysis-picker'] user-scrollable True
+  1920x1080          S2b-role-view-selected     syntx-job-scope-clear                load 3/5 full · after scroll 3/5 full cover ['syntx-field'] user-scrollable True
+  1920x1080          S2b-role-view-selected     field-focus-capability-btn           load 1/5 full · after scroll 1/5 full cover ['field-focus-strip'] user-scrollable True
+  1920x1080          S2b-role-view-selected     syntx-pools-toggle                   load 2/5 full · after scroll 2/5 full cover ['syntx-field'] user-scrollable True
+  1920x1080          S3-capability-no-analysis  add-text-source-btn                  load 5/5 full · after scroll 5/5 full cover [] user-scrollable True
+  1920x1080          S3-capability-no-analysis  add-pdf-source-btn                   load 5/5 full · after scroll 5/5 full cover [] user-scrollable True
+  1920x1080          S3-capability-no-analysis  analysis-picker-toggle               load 1/5 full · after scroll 1/5 full cover ['analysis-picker'] user-scrollable True
+  1920x1080          S3-capability-no-analysis  investigation-mode-PERSON            load 2/5 full · after scroll 2/5 full cover ['investigation-mode-selector'] user-scrollable True
+  1920x1080          S3-capability-no-analysis  investigation-mode-PERSON_X_JOB      load 1/5 full · after scroll 1/5 full cover ['investigation-mode-selector'] user-scrollable True
+  1920x1080          S3-capability-no-analysis  investigation-mode-JOB               load 2/5 full · after scroll 2/5 full cover ['investigation-mode-selector'] user-scrollable True
+  1920x1080          S3-capability-no-analysis  job-pool-panel-toggle                load 1/5 full · after scroll 1/5 full cover ['field-focus-strip'] user-scrollable True
+  1920x1080          S3-capability-no-analysis  field-focus-capability-btn           load 1/5 full · after scroll 1/5 full cover ['field-focus-strip'] user-scrollable True
+  1920x1080          S3-capability-no-analysis  semantic-zoom-telemetry              load 1/5 full · after scroll 1/5 full cover ['semantic-career-intelligence-field'] user-scrollable True
+  1920x1080          S4-b2-available            add-text-source-btn                  load 5/5 full · after scroll 5/5 full cover [] user-scrollable True
+  1920x1080          S4-b2-available            add-pdf-source-btn                   load 5/5 full · after scroll 5/5 full cover [] user-scrollable True
+  1920x1080          S4-b2-available            investigation-mode-JOB               load 2/5 full · after scroll 2/5 full cover ['investigation-mode-selector'] user-scrollable True
+  1920x1080          S4-b2-available            job-pool-panel-toggle                load 1/5 full · after scroll 1/5 full cover ['field-focus-strip'] user-scrollable True
+  1920x1080          S4-b2-available            semantic-zoom-telemetry              load 1/5 full · after scroll 1/5 full cover ['semantic-career-intelligence-field'] user-scrollable True
+  1920x1080          S4-b2-available            pxj-first-counts                     load 5/5 full · after scroll 5/5 full cover [] user-scrollable True
+  1920x1080          S4-b2-available            pxj-first-state                      load 5/5 full · after scroll 5/5 full cover [] user-scrollable True
+  1920x1080          S4-b2-available            pxj-first-coverage-boundary          load 5/5 full · after scroll 5/5 full cover [] user-scrollable True
+  1920x1080          S6-gate-closed             field-focus-capability-btn           load 1/5 full · after scroll 1/5 full cover ['field-focus-strip'] user-scrollable True
+  1920x1080          S6-gate-closed             capability-gate-reason               load 0/5 full · after scroll 0/5 full cover ['syntx-canvas'] user-scrollable True
+  1920x1080          S6-gate-closed             capability-gate-cause                load 0/5 full · after scroll 0/5 full cover ['syntx-canvas'] user-scrollable True
+  1920x1080          S6-gate-closed             capability-gate-way                  load 0/5 full · after scroll 0/5 full cover ['syntx-body-org_kestrel', 'syntx-canvas'] user-scrollable True
+  1600x900           S1-start                   job-pool-select-JPOOL_B94850C439974E load 2/5 full · after scroll 2/5 full cover ['job-pool-item-JPOOL_B94850C439974E27496FE3B1A9A076B5'] user-scrollable True
+  1600x900           S1-start                   syntx-pools-toggle                   load 2/5 full · after scroll 2/5 full cover ['syntx-field'] user-scrollable True
+  1600x900           S1-start                   semantic-zoom-telemetry              load 0/5 full · after scroll 0/5 full cover ['syntx-stage', 'job-pool-list'] user-scrollable True
+  1600x900           S1-start                   job-scope-indicator                  load 1/5 full · after scroll 1/5 full cover ['syntx-stage'] user-scrollable True
+  1600x900           S1-start                   investigation-mode-PERSON            load 2/5 full · after scroll 2/5 full cover ['investigation-mode-selector'] user-scrollable True
+  1600x900           S1-start                   investigation-mode-PERSON_X_JOB      load 1/5 full · after scroll 1/5 full cover ['investigation-mode-selector'] user-scrollable True
+  1600x900           S1-start                   investigation-mode-JOB               load 2/5 full · after scroll 2/5 full cover ['investigation-mode-selector'] user-scrollable True
+  1600x900           S2-role-view               syntx-job-scope-select               load 1/5 full · after scroll 1/5 full cover ['syntx-field'] user-scrollable True
+  1600x900           S2-role-view               syntx-path-FIELD                     load 5/5 full · after scroll 5/5 full cover [] user-scrollable True
+  1600x900           S2-role-view               syntx-path-ORGANIZATION              load 5/5 full · after scroll 5/5 full cover [] user-scrollable True
+  1600x900           S2-role-view               syntx-return-btn                     load 5/5 full · after scroll 5/5 full cover [] user-scrollable True
+  1600x900           S2-role-view               syntx-pools-toggle                   load 2/5 full · after scroll 2/5 full cover ['syntx-field'] user-scrollable True
+  1600x900           S2-role-view               job-pool-panel-toggle                load 1/5 full · after scroll 1/5 full cover ['field-focus-strip'] user-scrollable True
+  1600x900           S2b-role-view-selected     analysis-picker-toggle               load 1/5 full · after scroll 1/5 full cover ['analysis-picker'] user-scrollable True
+  1600x900           S2b-role-view-selected     syntx-job-scope-clear                load 3/5 full · after scroll 3/5 full cover ['syntx-field'] user-scrollable True
+  1600x900           S2b-role-view-selected     field-focus-capability-btn           load 1/5 full · after scroll 1/5 full cover ['field-focus-strip'] user-scrollable True
+  1600x900           S2b-role-view-selected     syntx-pools-toggle                   load 2/5 full · after scroll 2/5 full cover ['syntx-field'] user-scrollable True
+  1600x900           S3-capability-no-analysis  add-text-source-btn                  load 5/5 full · after scroll 5/5 full cover [] user-scrollable True
+  1600x900           S3-capability-no-analysis  add-pdf-source-btn                   load 5/5 full · after scroll 5/5 full cover [] user-scrollable True
+  1600x900           S3-capability-no-analysis  analysis-picker-toggle               load 1/5 full · after scroll 1/5 full cover ['analysis-picker'] user-scrollable True
+  1600x900           S3-capability-no-analysis  investigation-mode-PERSON            load 2/5 full · after scroll 2/5 full cover ['investigation-mode-selector'] user-scrollable True
+  1600x900           S3-capability-no-analysis  investigation-mode-PERSON_X_JOB      load 1/5 full · after scroll 1/5 full cover ['investigation-mode-selector'] user-scrollable True
+  1600x900           S3-capability-no-analysis  investigation-mode-JOB               load 2/5 full · after scroll 2/5 full cover ['investigation-mode-selector'] user-scrollable True
+  1600x900           S3-capability-no-analysis  job-pool-panel-toggle                load 1/5 full · after scroll 1/5 full cover ['field-focus-strip'] user-scrollable True
+  1600x900           S3-capability-no-analysis  field-focus-capability-btn           load 1/5 full · after scroll 1/5 full cover ['field-focus-strip'] user-scrollable True
+  1600x900           S3-capability-no-analysis  semantic-zoom-telemetry              load 1/5 full · after scroll 1/5 full cover ['semantic-career-intelligence-field'] user-scrollable True
+  1600x900           S4-b2-available            add-text-source-btn                  load 5/5 full · after scroll 5/5 full cover [] user-scrollable True
+  1600x900           S4-b2-available            add-pdf-source-btn                   load 5/5 full · after scroll 5/5 full cover [] user-scrollable True
+  1600x900           S4-b2-available            investigation-mode-JOB               load 2/5 full · after scroll 2/5 full cover ['investigation-mode-selector'] user-scrollable True
+  1600x900           S4-b2-available            job-pool-panel-toggle                load 1/5 full · after scroll 1/5 full cover ['field-focus-strip'] user-scrollable True
+  1600x900           S4-b2-available            semantic-zoom-telemetry              load 1/5 full · after scroll 1/5 full cover ['semantic-career-intelligence-field'] user-scrollable True
+  1600x900           S4-b2-available            pxj-first-counts                     load 5/5 full · after scroll 5/5 full cover [] user-scrollable True
+  1600x900           S4-b2-available            pxj-first-state                      load 5/5 full · after scroll 5/5 full cover [] user-scrollable True
+  1600x900           S4-b2-available            pxj-first-coverage-boundary          load 5/5 full · after scroll 5/5 full cover [] user-scrollable True
+  1600x900           S6-gate-closed             field-focus-capability-btn           load 1/5 full · after scroll 1/5 full cover ['field-focus-strip'] user-scrollable True
+  1600x900           S6-gate-closed             capability-gate-reason               load 0/5 full · after scroll 0/5 full cover ['syntx-body-org_kestrel', 'syntx-canvas'] user-scrollable True
+  1600x900           S6-gate-closed             capability-gate-cause                load 0/5 full · after scroll 0/5 full cover ['syntx-body-org_kestrel', 'syntx-canvas'] user-scrollable True
+  1600x900           S6-gate-closed             capability-gate-way                  load 0/5 full · after scroll 0/5 full cover ['syntx-body-org_kestrel', 'syntx-canvas'] user-scrollable True
+  1440x900           S1-start                   job-pool-select-JPOOL_B94850C439974E load 2/5 full · after scroll 2/5 full cover ['job-pool-item-JPOOL_B94850C439974E27496FE3B1A9A076B5'] user-scrollable True
+  1440x900           S1-start                   syntx-pools-toggle                   load 2/5 full · after scroll 2/5 full cover ['syntx-field'] user-scrollable True
+  1440x900           S1-start                   semantic-zoom-telemetry              load 0/5 full · after scroll 0/5 full cover ['syntx-stage', 'job-pool-list'] user-scrollable True
+  1440x900           S1-start                   job-scope-indicator                  load 1/5 full · after scroll 1/5 full cover ['syntx-stage'] user-scrollable True
+  1440x900           S1-start                   investigation-mode-PERSON            load 2/5 full · after scroll 2/5 full cover ['investigation-mode-selector'] user-scrollable True
+  1440x900           S1-start                   investigation-mode-PERSON_X_JOB      load 1/5 full · after scroll 1/5 full cover ['investigation-mode-selector'] user-scrollable True
+  1440x900           S1-start                   investigation-mode-JOB               load 2/5 full · after scroll 2/5 full cover ['investigation-mode-selector'] user-scrollable True
+  1440x900           S2-role-view               syntx-job-scope-select               load 1/5 full · after scroll 1/5 full cover ['syntx-field'] user-scrollable True
+  1440x900           S2-role-view               syntx-path-FIELD                     load 5/5 full · after scroll 5/5 full cover [] user-scrollable True
+  1440x900           S2-role-view               syntx-path-ORGANIZATION              load 5/5 full · after scroll 5/5 full cover [] user-scrollable True
+  1440x900           S2-role-view               syntx-return-btn                     load 5/5 full · after scroll 5/5 full cover [] user-scrollable True
+  1440x900           S2-role-view               syntx-pools-toggle                   load 2/5 full · after scroll 2/5 full cover ['syntx-field'] user-scrollable True
+  1440x900           S2-role-view               job-pool-panel-toggle                load 1/5 full · after scroll 1/5 full cover ['field-focus-strip'] user-scrollable True
+  1440x900           S2b-role-view-selected     analysis-picker-toggle               load 1/5 full · after scroll 1/5 full cover ['analysis-picker'] user-scrollable True
+  1440x900           S2b-role-view-selected     syntx-job-scope-clear                load 3/5 full · after scroll 3/5 full cover ['syntx-field'] user-scrollable True
+  1440x900           S2b-role-view-selected     field-focus-capability-btn           load 1/5 full · after scroll 1/5 full cover ['field-focus-strip'] user-scrollable True
+  1440x900           S2b-role-view-selected     syntx-pools-toggle                   load 2/5 full · after scroll 2/5 full cover ['syntx-field'] user-scrollable True
+  1440x900           S3-capability-no-analysis  add-text-source-btn                  load 5/5 full · after scroll 5/5 full cover [] user-scrollable True
+  1440x900           S3-capability-no-analysis  add-pdf-source-btn                   load 5/5 full · after scroll 5/5 full cover [] user-scrollable True
+  1440x900           S3-capability-no-analysis  analysis-picker-toggle               load 1/5 full · after scroll 1/5 full cover ['analysis-picker'] user-scrollable True
+  1440x900           S3-capability-no-analysis  investigation-mode-PERSON            load 2/5 full · after scroll 2/5 full cover ['investigation-mode-selector'] user-scrollable True
+  1440x900           S3-capability-no-analysis  investigation-mode-PERSON_X_JOB      load 1/5 full · after scroll 1/5 full cover ['investigation-mode-selector'] user-scrollable True
+  1440x900           S3-capability-no-analysis  investigation-mode-JOB               load 2/5 full · after scroll 2/5 full cover ['investigation-mode-selector'] user-scrollable True
+  1440x900           S3-capability-no-analysis  job-pool-panel-toggle                load 1/5 full · after scroll 1/5 full cover ['field-focus-strip'] user-scrollable True
+  1440x900           S3-capability-no-analysis  field-focus-capability-btn           load 1/5 full · after scroll 1/5 full cover ['field-focus-strip'] user-scrollable True
+  1440x900           S3-capability-no-analysis  semantic-zoom-telemetry              load 1/5 full · after scroll 1/5 full cover ['semantic-career-intelligence-field'] user-scrollable True
+  1440x900           S4-b2-available            add-text-source-btn                  load 5/5 full · after scroll 5/5 full cover [] user-scrollable True
+  1440x900           S4-b2-available            add-pdf-source-btn                   load 5/5 full · after scroll 5/5 full cover [] user-scrollable True
+  1440x900           S4-b2-available            investigation-mode-JOB               load 2/5 full · after scroll 2/5 full cover ['investigation-mode-selector'] user-scrollable True
+  1440x900           S4-b2-available            job-pool-panel-toggle                load 1/5 full · after scroll 1/5 full cover ['field-focus-strip'] user-scrollable True
+  1440x900           S4-b2-available            semantic-zoom-telemetry              load 1/5 full · after scroll 1/5 full cover ['semantic-career-intelligence-field'] user-scrollable True
+  1440x900           S4-b2-available            pxj-first-counts                     load 5/5 full · after scroll 5/5 full cover [] user-scrollable True
+  1440x900           S4-b2-available            pxj-first-state                      load 5/5 full · after scroll 5/5 full cover [] user-scrollable True
+  1440x900           S4-b2-available            pxj-first-coverage-boundary          load 5/5 full · after scroll 5/5 full cover [] user-scrollable True
+  1440x900           S6-gate-closed             field-focus-capability-btn           load 1/5 full · after scroll 1/5 full cover ['field-focus-strip'] user-scrollable True
+  1440x900           S6-gate-closed             capability-gate-reason               load 0/5 full · after scroll 0/5 full cover ['syntx-body-org_kestrel', 'syntx-canvas'] user-scrollable True
+  1440x900           S6-gate-closed             capability-gate-cause                load 0/5 full · after scroll 0/5 full cover ['syntx-body-org_kestrel', 'syntx-canvas'] user-scrollable True
+  1440x900           S6-gate-closed             capability-gate-way                  load 0/5 full · after scroll 0/5 full cover ['syntx-body-org_kestrel', 'syntx-canvas'] user-scrollable True
+  1280x720           S1-start                   job-pool-select-JPOOL_B94850C439974E load 2/5 full · after scroll 2/5 full cover ['job-pool-item-JPOOL_B94850C439974E27496FE3B1A9A076B5'] user-scrollable True
+  1280x720           S1-start                   syntx-pools-toggle                   load 2/5 full · after scroll 2/5 full cover ['syntx-field'] user-scrollable True
+  1280x720           S1-start                   semantic-zoom-telemetry              load 0/5 full · after scroll 0/5 full cover ['syntx-stage', 'job-pool-list'] user-scrollable True
+  1280x720           S1-start                   job-scope-indicator                  load 1/5 full · after scroll 1/5 full cover ['syntx-stage'] user-scrollable True
+  1280x720           S1-start                   investigation-mode-PERSON            load 2/5 full · after scroll 2/5 full cover ['investigation-mode-selector'] user-scrollable True
+  1280x720           S1-start                   investigation-mode-PERSON_X_JOB      load 2/5 full · after scroll 2/5 full cover ['investigation-mode-selector'] user-scrollable True
+  1280x720           S1-start                   investigation-mode-JOB               load 2/5 full · after scroll 2/5 full cover ['investigation-mode-selector'] user-scrollable True
+  1280x720           S2-role-view               syntx-job-scope-select               load 1/5 full · after scroll 1/5 full cover ['syntx-field'] user-scrollable True
+  1280x720           S2-role-view               syntx-path-FIELD                     load 5/5 full · after scroll 5/5 full cover [] user-scrollable True
+  1280x720           S2-role-view               syntx-path-ORGANIZATION              load 5/5 full · after scroll 5/5 full cover [] user-scrollable True
+  1280x720           S2-role-view               syntx-return-btn                     load 5/5 full · after scroll 5/5 full cover [] user-scrollable True
+  1280x720           S2-role-view               syntx-pools-toggle                   load 0/0 part/out · after scroll 2/5 full cover ['syntx-field'] user-scrollable True
+  1280x720           S2-role-view               job-pool-panel-toggle                load 1/5 full · after scroll 1/5 full cover ['field-focus-strip'] user-scrollable True
+  1280x720           S2b-role-view-selected     analysis-picker-toggle               load 1/5 full · after scroll 1/5 full cover ['analysis-picker'] user-scrollable True
+  1280x720           S2b-role-view-selected     syntx-job-scope-clear                load 3/5 full · after scroll 3/5 full cover ['syntx-field'] user-scrollable True
+  1280x720           S2b-role-view-selected     field-focus-capability-btn           load 1/5 full · after scroll 1/5 full cover ['field-focus-strip'] user-scrollable True
+  1280x720           S2b-role-view-selected     syntx-pools-toggle                   load 0/0 part/out · after scroll 2/5 full cover ['syntx-field'] user-scrollable True
+  1280x720           S3-capability-no-analysis  add-text-source-btn                  load 5/5 full · after scroll 5/5 full cover [] user-scrollable True
+  1280x720           S3-capability-no-analysis  add-pdf-source-btn                   load 5/5 full · after scroll 5/5 full cover [] user-scrollable True
+  1280x720           S3-capability-no-analysis  analysis-picker-toggle               load 1/5 full · after scroll 1/5 full cover ['analysis-picker'] user-scrollable True
+  1280x720           S3-capability-no-analysis  investigation-mode-PERSON            load 2/5 full · after scroll 2/5 full cover ['investigation-mode-selector'] user-scrollable True
+  1280x720           S3-capability-no-analysis  investigation-mode-PERSON_X_JOB      load 2/5 full · after scroll 2/5 full cover ['investigation-mode-selector'] user-scrollable True
+  1280x720           S3-capability-no-analysis  investigation-mode-JOB               load 2/5 full · after scroll 2/5 full cover ['investigation-mode-selector'] user-scrollable True
+  1280x720           S3-capability-no-analysis  job-pool-panel-toggle                load 1/5 full · after scroll 1/5 full cover ['field-focus-strip'] user-scrollable True
+  1280x720           S3-capability-no-analysis  field-focus-capability-btn           load 1/5 full · after scroll 1/5 full cover ['field-focus-strip'] user-scrollable True
+  1280x720           S3-capability-no-analysis  semantic-zoom-telemetry              load 1/5 full · after scroll 1/5 full cover ['semantic-career-intelligence-field'] user-scrollable True
+  1280x720           S4-b2-available            add-text-source-btn                  load 5/5 full · after scroll 5/5 full cover [] user-scrollable True
+  1280x720           S4-b2-available            add-pdf-source-btn                   load 5/5 full · after scroll 5/5 full cover [] user-scrollable True
+  1280x720           S4-b2-available            investigation-mode-JOB               load 2/5 full · after scroll 2/5 full cover ['investigation-mode-selector'] user-scrollable True
+  1280x720           S4-b2-available            job-pool-panel-toggle                load 1/5 full · after scroll 1/5 full cover ['field-focus-strip'] user-scrollable True
+  1280x720           S4-b2-available            semantic-zoom-telemetry              load 1/5 full · after scroll 1/5 full cover ['semantic-career-intelligence-field'] user-scrollable True
+  1280x720           S4-b2-available            pxj-first-counts                     load 5/5 full · after scroll 5/5 full cover [] user-scrollable True
+  1280x720           S4-b2-available            pxj-first-state                      load 5/5 full · after scroll 5/5 full cover [] user-scrollable True
+  1280x720           S4-b2-available            pxj-first-coverage-boundary          load 5/5 full · after scroll 5/5 full cover [] user-scrollable True
+  1280x720           S6-gate-closed             field-focus-capability-btn           load 1/5 full · after scroll 1/5 full cover ['field-focus-strip'] user-scrollable True
+  1280x720           S6-gate-closed             capability-gate-reason               load 0/5 full · after scroll 0/5 full cover ['syntx-body-org_kestrel', 'syntx-canvas'] user-scrollable True
+  1280x720           S6-gate-closed             capability-gate-cause                load 0/5 full · after scroll 0/5 full cover ['syntx-body-org_kestrel', 'syntx-canvas'] user-scrollable True
+  1280x720           S6-gate-closed             capability-gate-way                  load 0/5 full · after scroll 0/5 full cover ['syntx-body-org_kestrel', 'syntx-canvas'] user-scrollable True
+  zoom200-1920x1080  S1-start                   job-pool-select-JPOOL_B94850C439974E load 1/5 full · after scroll 1/5 full cover ['job-pool-item-JPOOL_B94850C439974E27496FE3B1A9A076B5'] user-scrollable True
+  zoom200-1920x1080  S1-start                   syntx-pools-toggle                   load 1/5 full · after scroll 1/5 full cover ['syntx-field'] user-scrollable True
+  zoom200-1920x1080  S1-start                   semantic-zoom-telemetry              load 0/2 full · after scroll 0/2 full cover ['career-intelligence-dashboard'] user-scrollable True
+  zoom200-1920x1080  S1-start                   job-scope-indicator                  load 1/5 full · after scroll 1/5 full cover ['semantic-career-intelligence-field'] user-scrollable True
+  zoom200-1920x1080  S1-start                   investigation-mode-PERSON            load 2/5 full · after scroll 2/5 full cover ['investigation-mode-selector'] user-scrollable True
+  zoom200-1920x1080  S1-start                   investigation-mode-PERSON_X_JOB      load 2/5 full · after scroll 2/5 full cover ['investigation-mode-selector'] user-scrollable True
+  zoom200-1920x1080  S1-start                   investigation-mode-JOB               load 2/5 full · after scroll 2/5 full cover ['investigation-mode-selector'] user-scrollable True
+  zoom200-1920x1080  S2-role-view               syntx-job-scope-select               load 2/5 full · after scroll 2/5 full cover ['syntx-field'] user-scrollable True
+  zoom200-1920x1080  S2-role-view               syntx-path-FIELD                     load 5/5 full · after scroll 5/5 full cover [] user-scrollable True
+  zoom200-1920x1080  S2-role-view               syntx-path-ORGANIZATION              load 5/5 full · after scroll 5/5 full cover [] user-scrollable True
+  zoom200-1920x1080  S2-role-view               syntx-return-btn                     load 5/5 full · after scroll 5/5 full cover [] user-scrollable True
+  zoom200-1920x1080  S2-role-view               syntx-pools-toggle                   load 0/0 part/out · after scroll 1/5 full cover ['syntx-field'] user-scrollable True
+  zoom200-1920x1080  S2-role-view               job-pool-panel-toggle                load 1/5 full · after scroll 1/5 full cover ['field-focus-strip'] user-scrollable True
+  zoom200-1920x1080  S2b-role-view-selected     analysis-picker-toggle               load 3/5 full · after scroll 3/5 full cover ['analysis-picker'] user-scrollable True
+  zoom200-1920x1080  S2b-role-view-selected     syntx-job-scope-clear                load 2/5 full · after scroll 2/5 full cover ['syntx-field'] user-scrollable True
+  zoom200-1920x1080  S2b-role-view-selected     field-focus-capability-btn           load 1/5 full · after scroll 1/5 full cover ['field-focus-strip'] user-scrollable True
+  zoom200-1920x1080  S2b-role-view-selected     syntx-pools-toggle                   load 0/0 part/out · after scroll 2/5 full cover ['syntx-field'] user-scrollable True
+  zoom200-1920x1080  S3-capability-no-analysis  add-text-source-btn                  load 0/0 part/out · after scroll 5/5 full cover [] user-scrollable True
+  zoom200-1920x1080  S3-capability-no-analysis  add-pdf-source-btn                   load 0/0 part/out · after scroll 5/5 full cover [] user-scrollable True
+  zoom200-1920x1080  S3-capability-no-analysis  analysis-picker-toggle               load 2/5 full · after scroll 2/5 full cover ['analysis-picker'] user-scrollable True
+  zoom200-1920x1080  S3-capability-no-analysis  investigation-mode-PERSON            load 2/5 full · after scroll 2/5 full cover ['investigation-mode-selector'] user-scrollable True
+  zoom200-1920x1080  S3-capability-no-analysis  investigation-mode-PERSON_X_JOB      load 2/5 full · after scroll 2/5 full cover ['investigation-mode-selector'] user-scrollable True
+  zoom200-1920x1080  S3-capability-no-analysis  investigation-mode-JOB               load 2/5 full · after scroll 2/5 full cover ['investigation-mode-selector'] user-scrollable True
+  zoom200-1920x1080  S3-capability-no-analysis  job-pool-panel-toggle                load 1/5 full · after scroll 1/5 full cover ['field-focus-strip'] user-scrollable True
+  zoom200-1920x1080  S3-capability-no-analysis  field-focus-capability-btn           load 1/5 full · after scroll 1/5 full cover ['field-focus-strip'] user-scrollable True
+  zoom200-1920x1080  S3-capability-no-analysis  semantic-zoom-telemetry              load 0/0 part/out · after scroll 1/5 full cover ['semantic-career-intelligence-field'] user-scrollable True
+  zoom200-1920x1080  S4-b2-available            add-text-source-btn                  load 0/0 part/out · after scroll 5/5 full cover [] user-scrollable True
+  zoom200-1920x1080  S4-b2-available            add-pdf-source-btn                   load 0/0 part/out · after scroll 5/5 full cover [] user-scrollable True
+  zoom200-1920x1080  S4-b2-available            investigation-mode-JOB               load 2/5 full · after scroll 2/5 full cover ['investigation-mode-selector'] user-scrollable True
+  zoom200-1920x1080  S4-b2-available            job-pool-panel-toggle                load 1/5 full · after scroll 1/5 full cover ['field-focus-strip'] user-scrollable True
+  zoom200-1920x1080  S4-b2-available            semantic-zoom-telemetry              load 0/0 part/out · after scroll 1/5 full cover ['semantic-career-intelligence-field'] user-scrollable True
+  zoom200-1920x1080  S4-b2-available            pxj-first-counts                     load 5/5 full · after scroll 5/5 full cover [] user-scrollable True
+  zoom200-1920x1080  S4-b2-available            pxj-first-state                      load 5/5 full · after scroll 5/5 full cover [] user-scrollable True
+  zoom200-1920x1080  S4-b2-available            pxj-first-coverage-boundary          load 5/5 full · after scroll 5/5 full cover [] user-scrollable True
+  zoom200-1920x1080  S6-gate-closed             field-focus-capability-btn           load 1/5 full · after scroll 1/5 full cover ['field-focus-strip'] user-scrollable True
+  zoom200-1920x1080  S6-gate-closed             capability-gate-reason               load 0/5 full · after scroll 0/5 full cover ['semantic-career-intelligence-field'] user-scrollable True
+  zoom200-1920x1080  S6-gate-closed             capability-gate-cause                load 0/5 full · after scroll 0/5 full cover ['semantic-career-intelligence-field'] user-scrollable True
+  zoom200-1920x1080  S6-gate-closed             capability-gate-way                  load 0/5 full · after scroll 0/5 full cover ['semantic-career-intelligence-field'] user-scrollable True
+  zoom200-1280x720   S1-start                   job-pool-select-JPOOL_B94850C439974E load 0/0 part/out · after scroll 1/5 full cover ['job-pool-item-JPOOL_B94850C439974E27496FE3B1A9A076B5'] user-scrollable True
+  zoom200-1280x720   S1-start                   syntx-pools-toggle                   load 0/0 part/out · after scroll 1/5 full cover ['syntx-field'] user-scrollable True
+  zoom200-1280x720   S1-start                   semantic-zoom-telemetry              load 0/2 full · after scroll 0/2 full cover ['career-intelligence-dashboard'] user-scrollable True
+  zoom200-1280x720   S1-start                   job-scope-indicator                  load 1/5 full · after scroll 1/5 full cover ['semantic-career-intelligence-field'] user-scrollable True
+  zoom200-1280x720   S1-start                   investigation-mode-PERSON            load 2/5 full · after scroll 2/5 full cover ['investigation-mode-selector'] user-scrollable True
+  zoom200-1280x720   S1-start                   investigation-mode-PERSON_X_JOB      load 2/5 full · after scroll 2/5 full cover ['investigation-mode-selector'] user-scrollable True
+  zoom200-1280x720   S1-start                   investigation-mode-JOB               load 2/5 full · after scroll 2/5 full cover ['investigation-mode-selector'] user-scrollable True
+  zoom200-1280x720   S2-role-view               syntx-job-scope-select               load 0/0 part/out · after scroll 2/5 full cover ['syntx-field'] user-scrollable True
+  zoom200-1280x720   S2-role-view               syntx-path-FIELD                     load 5/5 full · after scroll 5/5 full cover [] user-scrollable True
+  zoom200-1280x720   S2-role-view               syntx-path-ORGANIZATION              load 5/5 full · after scroll 5/5 full cover [] user-scrollable True
+  zoom200-1280x720   S2-role-view               syntx-return-btn                     load 0/0 part/out · after scroll 5/5 full cover [] user-scrollable True
+  zoom200-1280x720   S2-role-view               syntx-pools-toggle                   load 0/0 part/out · after scroll 2/5 full cover ['syntx-field'] user-scrollable True
+  zoom200-1280x720   S2-role-view               job-pool-panel-toggle                load 1/5 full · after scroll 1/5 full cover ['field-focus-strip'] user-scrollable True
+  zoom200-1280x720   S2b-role-view-selected     analysis-picker-toggle               load 0/0 part/out · after scroll 2/5 full cover ['analysis-picker'] user-scrollable True
+  zoom200-1280x720   S2b-role-view-selected     syntx-job-scope-clear                load 1/2 part/out · after scroll 2/5 NOT FULL cover ['syntx-field'] user-scrollable True
+  zoom200-1280x720   S2b-role-view-selected     field-focus-capability-btn           load 1/5 full · after scroll 1/5 full cover ['field-focus-strip'] user-scrollable True
+  zoom200-1280x720   S2b-role-view-selected     syntx-pools-toggle                   load 0/0 part/out · after scroll 2/5 full cover ['syntx-field'] user-scrollable True
+  zoom200-1280x720   S3-capability-no-analysis  add-text-source-btn                  load 0/0 part/out · after scroll 5/5 full cover [] user-scrollable True
+  zoom200-1280x720   S3-capability-no-analysis  add-pdf-source-btn                   load 0/0 part/out · after scroll 5/5 full cover [] user-scrollable True
+  zoom200-1280x720   S3-capability-no-analysis  analysis-picker-toggle               load 2/5 full · after scroll 2/5 full cover ['analysis-picker'] user-scrollable True
+  zoom200-1280x720   S3-capability-no-analysis  investigation-mode-PERSON            load 2/5 full · after scroll 2/5 full cover ['investigation-mode-selector'] user-scrollable True
+  zoom200-1280x720   S3-capability-no-analysis  investigation-mode-PERSON_X_JOB      load 2/5 full · after scroll 2/5 full cover ['investigation-mode-selector'] user-scrollable True
+  zoom200-1280x720   S3-capability-no-analysis  investigation-mode-JOB               load 2/5 full · after scroll 2/5 full cover ['investigation-mode-selector'] user-scrollable True
+  zoom200-1280x720   S3-capability-no-analysis  job-pool-panel-toggle                load 1/5 full · after scroll 1/5 full cover ['field-focus-strip'] user-scrollable True
+  zoom200-1280x720   S3-capability-no-analysis  field-focus-capability-btn           load 1/5 full · after scroll 1/5 full cover ['field-focus-strip'] user-scrollable True
+  zoom200-1280x720   S3-capability-no-analysis  semantic-zoom-telemetry              load 0/0 part/out · after scroll 1/5 full cover ['semantic-career-intelligence-field'] user-scrollable True
+  zoom200-1280x720   S4-b2-available            add-text-source-btn                  load 0/0 part/out · after scroll 5/5 full cover [] user-scrollable True
+  zoom200-1280x720   S4-b2-available            add-pdf-source-btn                   load 0/0 part/out · after scroll 5/5 full cover [] user-scrollable True
+  zoom200-1280x720   S4-b2-available            investigation-mode-JOB               load 2/5 full · after scroll 2/5 full cover ['investigation-mode-selector'] user-scrollable True
+  zoom200-1280x720   S4-b2-available            job-pool-panel-toggle                load 1/5 full · after scroll 1/5 full cover ['field-focus-strip'] user-scrollable True
+  zoom200-1280x720   S4-b2-available            semantic-zoom-telemetry              load 0/0 part/out · after scroll 1/5 full cover ['semantic-career-intelligence-field'] user-scrollable True
+  zoom200-1280x720   S4-b2-available            pxj-first-counts                     load 5/5 full · after scroll 5/5 full cover [] user-scrollable True
+  zoom200-1280x720   S4-b2-available            pxj-first-state                      load 0/0 part/out · after scroll 5/5 full cover [] user-scrollable True
+  zoom200-1280x720   S4-b2-available            pxj-first-coverage-boundary          load 0/0 part/out · after scroll 5/5 full cover [] user-scrollable True
+  zoom200-1280x720   S6-gate-closed             field-focus-capability-btn           load 1/5 full · after scroll 1/5 full cover ['field-focus-strip'] user-scrollable True
+  zoom200-1280x720   S6-gate-closed             capability-gate-reason               load 0/5 full · after scroll 0/5 full cover ['semantic-career-intelligence-field'] user-scrollable True
+  zoom200-1280x720   S6-gate-closed             capability-gate-cause                load 0/5 full · after scroll 0/5 full cover ['semantic-career-intelligence-field'] user-scrollable True
+  zoom200-1280x720   S6-gate-closed             capability-gate-way                  load 0/5 full · after scroll 0/5 full cover ['semantic-career-intelligence-field'] user-scrollable True
+B2 rows by mouse wheel (row counts when fully in view and its centre hits itself):
+  1920x1080          step  60 px: 9/9 · at load head True boundary True binding True counts True status True
+  1920x1080          step 240 px: 9/9 · at load head True boundary True binding True counts True status True
+  1600x900           step  60 px: 9/9 · at load head True boundary True binding True counts True status True
+  1600x900           step 240 px: 9/9 · at load head True boundary True binding True counts True status True
+  1440x900           step  60 px: 9/9 · at load head True boundary True binding True counts True status True
+  1440x900           step 240 px: 9/9 · at load head True boundary True binding True counts True status True
+  1280x720           step  60 px: 9/9 · at load head True boundary True binding True counts True status True
+  1280x720           step 240 px: 9/9 · at load head True boundary True binding True counts True status True
+  zoom200-1920x1080  step  60 px: 9/9 · at load head True boundary True binding True counts True status True
+  zoom200-1920x1080  step 240 px: 9/9 · at load head True boundary True binding True counts True status True
+  zoom200-1280x720   step  60 px: 9/9 · at load head True boundary False binding False counts True status False
+  zoom200-1280x720   step 240 px: 8/9 · at load head True boundary False binding False counts True status False  req_kestrel_fullstack_03 NO share0.99 h161 clip360
+
+V-11 · Tab order from ROLE_OPEN to SELECT AS JOB (pink-v11-order):
+  1920x1080  from-ORG-Enter-on-ROLE     21 presses: syntx-cosmos-organization → syntx-requirement-req_kestrel_fullstack_01 → syntx-requirement-req_kestrel_fullstack_02 → syntx-requirement-req_kestrel_fullstack_03 → syntx-requirement-req_kestrel_fullstack_04 → syntx-requirement-req_kestrel_fullstack_05 → syntx-requirement-req_kestrel_fullstack_06 → syntx-requirement-req_kestrel_fullstack_07 → syntx-requirement-req_kestrel_fullstack_08 → syntx-requirement-req_kestrel_fullstack_09 → syntx-role-role_kestrel_fullstack → job-scope-indicator → job-pool-panel-toggle → investigation-mode-PERSON_X_JOB → None → how-this-works-btn → open-system-codex-btn → semantic-guide-drawer-toggle → syntx-path-FIELD → syntx-path-ORGANIZATION → syntx-return-btn → syntx-job-scope-select
+  1920x1080  role-view-document-load    11 presses: job-scope-indicator → job-pool-panel-toggle → investigation-mode-PERSON_X_JOB → None → how-this-works-btn → open-system-codex-btn → semantic-guide-drawer-toggle → syntx-path-FIELD → syntx-path-ORGANIZATION → syntx-return-btn → syntx-job-scope-select
+  1280x720   from-ORG-Enter-on-ROLE     21 presses: syntx-cosmos-organization → syntx-requirement-req_kestrel_fullstack_01 → syntx-requirement-req_kestrel_fullstack_02 → syntx-requirement-req_kestrel_fullstack_03 → syntx-requirement-req_kestrel_fullstack_04 → syntx-requirement-req_kestrel_fullstack_05 → syntx-requirement-req_kestrel_fullstack_06 → syntx-requirement-req_kestrel_fullstack_07 → syntx-requirement-req_kestrel_fullstack_08 → syntx-requirement-req_kestrel_fullstack_09 → syntx-role-role_kestrel_fullstack → job-scope-indicator → job-pool-panel-toggle → investigation-mode-PERSON_X_JOB → None → how-this-works-btn → open-system-codex-btn → semantic-guide-drawer-toggle → syntx-path-FIELD → syntx-path-ORGANIZATION → syntx-return-btn → syntx-job-scope-select
+  1280x720   role-view-document-load    11 presses: job-scope-indicator → job-pool-panel-toggle → investigation-mode-PERSON_X_JOB → None → how-this-works-btn → open-system-codex-btn → semantic-guide-drawer-toggle → syntx-path-FIELD → syntx-path-ORGANIZATION → syntx-return-btn → syntx-job-scope-select
+
+V-12 · mode group by keyboard (pink-mode-keys, blocked 0):
+  start          focus investigation-mode-PERSON_X_JOB    checked ['investigation-mode-PERSON_X_JOB'] URL mode PERSON_X_JOB history 2
+  ArrowRight-1   focus investigation-mode-JOB             checked ['investigation-mode-PERSON_X_JOB'] URL mode PERSON_X_JOB history 2
+  ArrowRight-2   focus investigation-mode-JOB             checked ['investigation-mode-PERSON_X_JOB'] URL mode PERSON_X_JOB history 2
+  ArrowLeft-3    focus investigation-mode-PERSON_X_JOB    checked ['investigation-mode-PERSON_X_JOB'] URL mode PERSON_X_JOB history 2
+  ArrowLeft-4    focus investigation-mode-PERSON          checked ['investigation-mode-PERSON_X_JOB'] URL mode PERSON_X_JOB history 2
+  ArrowLeft-5    focus investigation-mode-PERSON          checked ['investigation-mode-PERSON_X_JOB'] URL mode PERSON_X_JOB history 2
+  Home-6         focus investigation-mode-PERSON          checked ['investigation-mode-PERSON_X_JOB'] URL mode PERSON_X_JOB history 2
+  End-7          focus investigation-mode-JOB             checked ['investigation-mode-PERSON_X_JOB'] URL mode PERSON_X_JOB history 2
+  Home-8         focus investigation-mode-PERSON          checked ['investigation-mode-PERSON_X_JOB'] URL mode PERSON_X_JOB history 2
+  Enter-9        focus investigation-mode-PERSON          checked ['investigation-mode-PERSON'] URL mode PERSON history 3
+
+D-PICK on the real result (pink-dpick-real, blocked 0):
+  1920x1080  first-screen  reads before open 0 · offered [('ANL_1792628993472_10', 'PERSON_X_JOB', 'role_kestrel_fullstack')] · open changed URL/history False · OPEN: history +1, analysisId ANL_1792628993472_10, focus CAPABILITY, B2 AVAILABLE; Back → analysisId None
+  1920x1080  role-view     reads before open 0 · offered [('ANL_1792628993472_10', 'PERSON_X_JOB', 'role_kestrel_fullstack')] · open changed URL/history False · OPEN: history +1, analysisId ANL_1792628993472_10, focus CAPABILITY, B2 AVAILABLE; Back → analysisId None
+  1920x1080  PERSON        pickers 0 boundary reads 0
+  1920x1080  PERSON-role   pickers 0 boundary reads 0
+  1920x1080  JOB-role      pickers 0 boundary reads 0
+  1280x720   first-screen  reads before open 0 · offered [('ANL_1792628993472_10', 'PERSON_X_JOB', 'role_kestrel_fullstack')] · open changed URL/history False · OPEN: history +1, analysisId ANL_1792628993472_10, focus CAPABILITY, B2 AVAILABLE; Back → analysisId None
+  1280x720   role-view     reads before open 0 · offered [('ANL_1792628993472_10', 'PERSON_X_JOB', 'role_kestrel_fullstack')] · open changed URL/history False · OPEN: history +1, analysisId ANL_1792628993472_10, focus CAPABILITY, B2 AVAILABLE; Back → analysisId None
+  1280x720   PERSON        pickers 0 boundary reads 0
+  1280x720   PERSON-role   pickers 0 boundary reads 0
+  1280x720   JOB-role      pickers 0 boundary reads 0
+
+Role-card form per viewport (pink-cardbox, blocked 0): orbit = with domain line; packed = without
+  1920x1080          org-PXJ   engineering_lead:orbit+domain frontend_architect:orbit+domain fullstack:orbit+domain
+  1920x1080          role-PXJ  engineering_lead:orbit+domain frontend_architect:orbit+domain :orbit+domain
+  1920x1080          org-PERSON engineering_lead:orbit+domain frontend_architect:orbit+domain fullstack:orbit+domain
+  1600x900           org-PXJ   engineering_lead:orbit+domain frontend_architect:orbit+domain fullstack:orbit+domain
+  1600x900           role-PXJ  engineering_lead:orbit+domain frontend_architect:orbit+domain :orbit+domain
+  1600x900           org-PERSON engineering_lead:orbit+domain frontend_architect:orbit+domain fullstack:orbit+domain
+  1440x900           org-PXJ   engineering_lead:orbit+domain frontend_architect:orbit+domain fullstack:orbit+domain
+  1440x900           role-PXJ  engineering_lead:orbit+domain frontend_architect:orbit+domain :orbit+domain
+  1440x900           org-PERSON engineering_lead:orbit+domain frontend_architect:orbit+domain fullstack:orbit+domain
+  1280x720           org-PXJ   engineering_lead:packed frontend_architect:packed fullstack:packed
+  1280x720           role-PXJ  engineering_lead:packed frontend_architect:packed :packed
+  1280x720           org-PERSON engineering_lead:packed frontend_architect:packed fullstack:packed
+  zoom200-1920x1080  org-PXJ   engineering_lead:packed frontend_architect:packed fullstack:packed
+  zoom200-1920x1080  role-PXJ  engineering_lead:packed frontend_architect:packed :packed
+  zoom200-1920x1080  org-PERSON engineering_lead:packed frontend_architect:packed fullstack:packed
+  zoom200-1280x720   org-PXJ   engineering_lead:packed frontend_architect:packed fullstack:packed
+  zoom200-1280x720   role-PXJ  engineering_lead:packed frontend_architect:packed :packed
+  zoom200-1280x720   org-PERSON engineering_lead:packed frontend_architect:packed fullstack:packed
+
+V-19 · role cards at the organisation level, mouse hit over time (pink-cardhit: centre + 4 inner points, 6 samples in 3 s; blocked 0):
+  1920x1080          org-PXJ    fullstack: best 5/5 samples-with-hit 6/6 cover [] box [596, 562, 219, 100]  frontend_architect: best 5/5 samples-with-hit 6/6 cover [] box [946, 746, 158, 84]  engineering_lead: best 5/5 samples-with-hit 6/6 cover [] box [1091, 471, 195, 100]
+  1920x1080          org-PERSON fullstack: best 5/5 samples-with-hit 6/6 cover [] box [596, 560, 219, 100]  frontend_architect: best 5/5 samples-with-hit 6/6 cover [] box [941, 747, 158, 84]  engineering_lead: best 5/5 samples-with-hit 6/6 cover [] box [1092, 472, 195, 100]
+  1600x900           org-PXJ    fullstack: best 5/5 samples-with-hit 6/6 cover [] box [439, 443, 219, 100]  frontend_architect: best 5/5 samples-with-hit 6/6 cover [] box [784, 626, 158, 84]  engineering_lead: best 5/5 samples-with-hit 6/6 cover [] box [928, 350, 195, 100]
+  1600x900           org-PERSON fullstack: best 5/5 samples-with-hit 6/6 cover [] box [439, 441, 219, 100]  frontend_architect: best 5/5 samples-with-hit 6/6 cover [] box [781, 626, 158, 84]  engineering_lead: best 5/5 samples-with-hit 6/6 cover [] box [929, 351, 195, 100]
+  1440x900           org-PXJ    fullstack: best 5/5 samples-with-hit 6/6 cover [] box [366, 443, 219, 100]  frontend_architect: best 5/5 samples-with-hit 6/6 cover [] box [704, 632, 158, 84]  engineering_lead: best 5/5 samples-with-hit 6/6 cover [] box [841, 347, 195, 100]
+  1440x900           org-PERSON fullstack: best 5/5 samples-with-hit 6/6 cover [] box [366, 442, 219, 100]  frontend_architect: best 5/5 samples-with-hit 6/6 cover [] box [700, 632, 158, 84]  engineering_lead: best 5/5 samples-with-hit 6/6 cover [] box [842, 349, 195, 100]
+  1280x720           org-PXJ    fullstack: best 0/5 samples-with-hit 0/6 cover ['syntx-state'] box [29, 356, 219, 88]  frontend_architect: best 5/5 samples-with-hit 6/6 cover ['syntx-no-analysis'] box [688, 482, 158, 72]  engineering_lead: best 5/5 samples-with-hit 6/6 cover [] box [992, 293, 195, 88]
+  1280x720           org-PERSON fullstack: best 0/5 samples-with-hit 0/6 cover ['syntx-pools-toggle', 'syntx-field', 'job-pool-intake-toggle'] box [28, 356, 219, 88]  frontend_architect: best 5/5 samples-with-hit 6/6 cover [] box [687, 482, 158, 72]  engineering_lead: best 5/5 samples-with-hit 6/6 cover [] box [993, 294, 195, 88]
+  zoom200-1920x1080  org-PXJ    fullstack: best 0/5 samples-with-hit 0/6 cover [] box [44, 791, 186, 106]  frontend_architect: best 0/5 samples-with-hit 0/6 cover [] box [487, 872, 158, 72]  engineering_lead: best 0/5 samples-with-hit 0/6 cover [] box [694, 766, 186, 88]
+  zoom200-1920x1080  org-PERSON fullstack: best 0/5 samples-with-hit 0/6 cover [] box [44, 678, 186, 106]  frontend_architect: best 0/5 samples-with-hit 0/6 cover [] box [485, 759, 158, 72]  engineering_lead: best 0/5 samples-with-hit 0/6 cover [] box [695, 654, 186, 88]
+  zoom200-1280x720   org-PXJ    fullstack: best 0/5 samples-with-hit 0/6 cover [] box [44, 809, 144, 106]  frontend_architect: best 0/5 samples-with-hit 0/6 cover [] box [299, 882, 144, 88]  engineering_lead: best 0/5 samples-with-hit 0/6 cover [] box [431, 775, 144, 106]
+  zoom200-1280x720   org-PERSON fullstack: best 0/5 samples-with-hit 0/6 cover [] box [44, 677, 144, 106]  frontend_architect: best 0/5 samples-with-hit 0/6 cover [] box [296, 751, 144, 88]  engineering_lead: best 0/5 samples-with-hit 0/6 cover [] box [432, 645, 144, 106]
+  200 %: role cards below the fold at load; after mouse-wheel page scroll: zoom200-1920x1080 {'fullstack': 1, 'frontend_architect': 1, 'engineering_lead': 1}; zoom200-1280x720 {'fullstack': 1, 'frontend_architect': 1, 'engineering_lead': 1}

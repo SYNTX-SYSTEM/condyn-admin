@@ -3119,6 +3119,72 @@ Type sizes go down to 7.5 px (V-09). Contrast is computable only partly (V-10); 
 
 **Run record.** `evidence/ux-presweep-421e382/`: findings.txt, keyboard.txt, viewports.txt, readability.txt, states-hover-names.txt, shots/ (20 JPEGs, quotes masked), scripts/ and manifest.sha256.
 
+### 3.62 §10 validation of GRÜN's final candidate `41dfa25` (code `4b826cc`) for "RECURSIVE UX/UI & SYSTEM CLOSURE" (2026-10-24)
+
+**Request.** GELB asked for an independent §10 check of `41dfa25` on `frontend/pxj-ux-closure` (22 commits on `70d1cb4` = `421e382` + B-3), with a verdict per item and the evidence classes kept apart. It covers:
+- V-01 … V-15 from §3.61;
+- K-UX-2 (PERSON changes visually, not in markup);
+- O-NAV-SUBMIT on PINK's stand-in lab;
+- D-PICK;
+- V-12;
+- the held items and the keyboard journey.
+
+**Labs.** PERSISTED_REAL_RESULT on GELB's :41872 (production build of `41dfa25`, DB copy), GET only: every non-GET is aborted in the browser, 0 were blocked and there were 0 page errors. STAND_IN on 14 fresh PINK production builds of `41dfa25` and `70d1cb4`, without LAB_ONLY_BUILD_FLAG: `next.config.ts` was unchanged and the logs show no type-check skip. Static checks ran on `git archive` trees in PINK's scratch.
+
+**Static: PASS.**
+- Frontend only: no backend, API, DB, config or package file.
+- tsc reports 0 errors; GRÜN's focused group passes 57 files, 498 passed, 4 skipped.
+- Counter-proof on `421e382`: 43 of 60 fail and 17 pass, as GRÜN reports. GELB's 16 files / 45 / 18 was not reproduced.
+- One existing literal changed (K-UX-3).
+
+**Verdicts (`verdicts.txt`).**
+
+PASS:
+- **V-01.** ENTER TEXT is 5/5 clickable at 1280×720; both source actions are 5/5 after scrolling at every viewport.
+- **V-02.** JOB mode is in view at 640×360.
+- **V-03.** Wheel-scrolling in 60 px steps brings all 9/9 B2 rows fully into view and hits them at every viewport. With 240 px steps at 640×360 the result is 8/9, a step artefact that confirms GELB's note.
+- **V-04.** The gate cause and the way out are visible text, linked by `aria-describedby`.
+- **V-06.** Each state names its next step; the job NOT_FOUND banner closes with one push and no POST, and Back names the job again.
+- **V-07**, **V-12** (arrow keys move focus only; Enter or Space choose), **V-13**, **V-14** and **V-16**.
+- **V-05**, with one rest R-05: the `title` tooltip still says "Select a job … first" during CHECKING and INVALID.
+
+PARTIAL:
+- **V-09.** Role cards stay at 7.5 / 8.5 px (owner sizes); 9.5 px labels remain in the field and in the mode group at 200 %.
+- **V-10.** Receded role titles are still 1.02:1 (owner item).
+
+UNCHANGED: **V-15**, which the candidate did not address.
+
+FAIL:
+- **V-08 (D-S10-1).** The candidate is meant to drop RETRY for a broken PDF, but RETRY still appears. The running worker reports the failure as `EXECUTION_FAILED`, with `ERR_PDF_PARSE_FAILURE` only in the summary. `d8d97b8` checks `code === "ERR_PDF_PARSE_FAILURE"`, which is never true with the real worker. `.md` / `.txt` staging and the refusal of `.docx` work.
+- **V-11.** The keyboard path got longer. The same probe on base and candidate needs 14 → 21 Tab presses from Enter on the role to SELECT AS JOB, and 4 → 11 when the role view loads. The shell and header now come before the Job Field panel in Tab order. Inside the panel, UX-02 holds.
+- **K-UX-2.** The T-07 part passes: the Capability Field under PERSON is identical apart from a new `data-sx-layout` attribute on the dashboard wrapper. But the Job Field shown under `investigationMode=PERSON` changes text (UX-07 wording), elements (LEVEL, job hint, OPENED ROLE) and order. GRÜN's README §3 claim does not hold there. Whether the Job Field belongs to the PERSON perimeter is for GELB or the owner to decide.
+
+**O-NAV-SUBMIT (STAND_IN).**
+- **In-page: PASS.** Back 0.03–0.15 s after ANALYZE, with the POST held 1.5 s or not, and Back followed by Forward, all give 1 POST and 1 analysis. The analysis is named by replace in the entry on view, and B2 is AVAILABLE there.
+- **Observation.** When that entry has another boundary, the job is named there: a PERSON entry then shows MODE_MISMATCH, and an entry for another job shows ROLE_MISMATCH.
+- **FAIL across the document boundary (S6).** Example: the owner's deep link is the first entry, and the user presses Back 0.06 s after ANALYZE. The analysis is made, and no history entry names it. This is the same class as a reload during SUBMITTING, which is an open owner decision.
+
+**D-PICK: PASS, stand-in and real.**
+- Only the exact mode, upload and role are offered. The RF upload with the same role id and the same pool with another role never cross.
+- PERSON and JOB show no picker and make 0 boundary reads.
+- Nothing is read before the picker opens, and opening chooses nothing.
+- OPEN is one push (`analysisId`, `focus=CAPABILITY`) to B2 AVAILABLE, and Back removes it.
+- On :41872 only `ANL_1792628993472_10` is offered, never the PERSON analysis.
+
+**Regression: PASS.**
+- nav 88/90, the same two probe errors as `421e382`.
+- rf 54/54.
+- g1 states are identical; X-22 is identical.
+- 600 Tab presses per lab without a URL or history change, trap or hidden focus.
+- Hover never acts as authority; Esc steps back one level at a time.
+
+**New findings.**
+- **V-18.** From 1280×720 down, every role card switches to the packed form, and its domain line leaves the DOM. Base `70d1cb4` still showed it at 1280×720.
+- **V-19 (FAIL, real and stand-in).** At 1280×720 the organisation level puts the "Senior Full-Stack Engineer" card under the Job Field panel. The mouse hits it 0/5 in 6 samples, in PXJ and PERSON; base `70d1cb4` hits it 5/5. The owner's ORG → ROLE_OPEN step cannot be done by mouse at that size; the keyboard still works.
+- **Observation.** In the job NOT_FOUND state at 1920 the RUNTIME TELEMETRY box sits over the lower B2 rows. Not compared with base.
+
+**Run record.** `evidence/ux-closure-41dfa25/`: verdicts.txt, static-MEASUREMENT.txt, real-41872-PERSISTED_REAL_RESULT.txt, standin-STAND_IN.txt, person-dom-K-UX-2-STAND_IN.txt, regression-STAND_IN.txt, shots/ (15 JPEGs; REAL ones have quotes masked or none on view, STANDIN ones are labelled), scripts/ and manifest.sha256.
+
 ## 4. Boundaries and findings for coordination
 
 - F-JP-1 (closed in `b782793`): `JOB_POOL_CONNECTION.md` §4 followed the per-role `JOB_POOL_JSON_ROLE` design;

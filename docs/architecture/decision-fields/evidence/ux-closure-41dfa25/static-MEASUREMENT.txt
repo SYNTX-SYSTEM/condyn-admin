@@ -1,0 +1,46 @@
+PINK §10 · static checks on 41dfa25 (code 4b826cc), MEASUREMENT / CODE_INSPECTION. Trees extracted by git archive into PINK's scratch
+(no checkout, no worktree), node_modules linked; isolated suite = npm run test:isolated (fresh disposable database), net sentinel on.
+
+Scope 70d1cb4..4b826cc:  31 files changed, 2210 insertions(+), 115 deletions(-)
+       10 app/components/career/demo
+        4 lib/career/ui
+        1 lib/career/view-model
+        1 test/career/job-pool
+       15 test/career/pxj-first-screen
+  backend / API / DB / scripts / next.config / package files touched: 0
+  4b826cc..41dfa25 touches only docs/: yes
+  new client fetches: GET /api/career/analyses and GET /api/career/analyses/{id}/investigation (analysis-picker.ts, method fixed to GET);
+  no new POST, no storage API (localStorage/sessionStorage/indexedDB) in non-test code: 0 hits
+
+tsc --noEmit on 41dfa25: exit 0, 0 errors
+next build --webpack without LAB_ONLY_BUILD_FLAG: 14 production labs built from 41dfa25 / 70d1cb4 (one per probe), every one READY, 'Skipping validation of types' 0 (lab logs)
+
+Focused group (GRÜN's list) on 41dfa25:  Test Files 57 passed (57)  Tests 498 passed | 4 skipped (502) 
+  net sentinel: 1 outbound attempt(s), refused: fetch https://registry.npmjs.org/-/package/next/dist-tags  (Next's version check in test/build, as in every earlier run)
+
+Counter-proof: the 15 new test files of 70d1cb4..4b826cc copied into a 421e382 tree:  Test Files 15 failed (15)  Tests 43 failed | 17 passed (60) 
+  analysis-picker-read.test.ts   pass  0 fail  0  (fails at import: new module)
+  analysis-picker.test.tsx       pass  2 fail  3
+  gate-reason.test.tsx           pass  2 fail  2
+  job-level-label.test.tsx       pass  0 fail  1
+  job-levels.test.tsx            pass  1 fail  3
+  mode-keyboard.test.tsx         pass  2 fail  1
+  next-step.test.tsx             pass  1 fail  2
+  pools-first.test.tsx           pass  1 fail  2
+  readability.test.tsx           pass  1 fail  7
+  recovery-ways.test.tsx         pass  1 fail  6
+  source-files.test.tsx          pass  2 fail  4
+  submit-handoff.test.tsx        pass  2 fail  3
+  terms.test.tsx                 pass  1 fail  3
+  viewport-fit.test.ts           pass  0 fail  0  (fails at import: new module)
+  viewport-layout.test.tsx       pass  1 fail  6
+  failures by kind: {'AssertionError': 41, 'TypeError': 2}
+  failing tests not named REPRODUCE (explained by GRÜN: inverse tests that depend on 2d97c01 / 6c36644; the handover guard needs the handover):
+    recovery-ways.test.tsx · inverse: no job — the cause names none, without a reason
+    recovery-ways.test.tsx · inverse: without a selected job it still asks for one first
+    submit-handoff.test.tsx · guard (GELB): the handover is taken once — a further mount on an entry without the job nei
+  GRÜN: 15 files, 43 of 60 fail, 17 pass — reproduced exactly. GELB's message names 16 files, 45 FAIL, 18 PASS (count not reproduced; same direction).
+
+Existing tests changed: test/career/job-pool/syntx-field-ssr.test.tsx  — one literal (K-UX-3):
+  -    expect(de).toContain("KEIN JOB-POOL GEWÄHLT");
+  +    expect(de).toContain("KEIN JOB-POOL GEÖFFNET"); // UX-06 / UX-07 (3d706b5): a pool is opened, only the job is selected
