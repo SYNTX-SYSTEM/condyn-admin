@@ -514,6 +514,8 @@ export const SIL_COPY = {
         /** UX-02: at the pool and the organisation level, where the job is chosen. */
         openRoleHint: "Open a role to select it as the job."
       },
+      /** UX-01: the level of the observation point, as text in the panel. */
+      levelLine: { label: "LEVEL", names: { FIELD: "POOL", ORGANIZATION: "ORGANIZATION", ROLE: "ROLE", REQUIREMENT: "REQUIREMENT" } },
       /** UX-02: the legacy box below the job action collapses; open by default. */
       legacyToggle: { hide: "HIDE", show: "SHOW" },
       /** The investigation boundary (owner GO "DEMO FRONTEND", 2026-10-15): three explicit modes, one shell control in both fields. */
@@ -1382,6 +1384,7 @@ export const SIL_COPY = {
         choose: "Einen Job im Job-Feld wählen (Rolle öffnen, dann ALS JOB WÄHLEN)",
         openRoleHint: "Öffne eine Rolle, um sie als Job zu wählen."
       },
+      levelLine: { label: "EBENE", names: { FIELD: "POOL", ORGANIZATION: "ORGANISATION", ROLE: "ROLLE", REQUIREMENT: "ANFORDERUNG" } },
       legacyToggle: { hide: "AUSBLENDEN", show: "EINBLENDEN" },
       investigation: {
         group: "UNTERSUCHUNGSGRENZE",
