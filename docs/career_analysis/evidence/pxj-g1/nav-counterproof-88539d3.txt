@@ -1,0 +1,44 @@
+ × run-recovery.test.tsx > N-2 · the field: the running job stands in the URL and is followed after a reload > REPRODUCE: on the 202 the job id is replaced into the URL (no new history entry)
+ × run-recovery.test.tsx > N-2 · the field: the running job stands in the URL and is followed after a reload > REPRODUCE: a reload with analysisJobId and no job in memory follows that job (resume, no submission)
+ × run-recovery.test.tsx > N-2 · the field: the running job stands in the URL and is followed after a reload > REPRODUCE: SUCCEEDED writes analysisId and removes analysisJobId in one replace
+ × run-recovery.test.tsx > N-2 · the field: the running job stands in the URL and is followed after a reload > REPRODUCE: a FAILED job from the URL is shown with its id, the parameter stays, no retry (no POST)
+ × run-recovery.test.tsx > N-2 · the field: the running job stands in the URL and is followed after a reload > REPRODUCE: a job the server does not know (404) is its own state, named, nothing guessed; EN and DE
+ × run-recovery.test.tsx > N-2 · the field: the running job stands in the URL and is followed after a reload > REPRODUCE: a value in another format (or repeated) is no job id — removed by replace, never read
+ ✓ run-recovery.test.tsx > N-2 · the field: the running job stands in the URL and is followed after a reload > inverse: during a second run the analysis on view stays the URL's (F-RF-2); without analysisJobId nothing is resumed
+ × run-recovery.test.tsx > N-2 · the controller: resumeJob reads, never submits > REPRODUCE: GET /api/career/jobs/{id} until SUCCEEDED, then the result; no POST
+ × run-recovery.test.tsx > N-2 · the controller: resumeJob reads, never submits > REPRODUCE: 404 is FAILED NOT_FOUND with HTTP 404, polling stops, no POST
+ × run-recovery.test.tsx > N-2 · the controller: resumeJob reads, never submits > GELB (1): the remount — the old controller released, the new one follows by analysisJobId: one GET poll, one POST in all, one job
+ × run-recovery.test.tsx > N-2 · the controller: resumeJob reads, never submits > inverse: no resume while another run is in progress; the same job twice (development double mount) polls once
+ × navigation.test.tsx > N-1 · every user decision the URL carries is one history entry > REPRODUCE: a mode, a field, an observation, a pool, a job chosen / removed / opened, the offer's role — each one push
+ × navigation.test.tsx > N-1 · every user decision the URL carries is one history entry > REPRODUCE: the ROLE_MISMATCH offer's "choose this role" is one push
+ × navigation.test.tsx > N-1 · every user decision the URL carries is one history entry > inverse: one action writing several parameters is one entry; an unchanged URL writes nothing; SUCCEEDED replaces
+ × navigation.test.tsx > N-1 · Back / Forward mount the field from the entry's URL (NAV ≡ RELOAD) > REPRODUCE: popstate remounts the dashboard (a new key) with exactly the props a reload of that URL gives
+ × navigation.test.tsx > N-1 · Back / Forward mount the field from the entry's URL (NAV ≡ RELOAD) > inverse: a field mounted from the restored props shows what a reload shows — same first screen, rows and quotes
+ ✓ navigation.test.tsx > N-1 · Back / Forward mount the field from the entry's URL (NAV ≡ RELOAD) > inverse: the listener is released on unmount; without popstate the server's props stay
+ × navigation.test.tsx > N-1 · one parser for page.tsx and the history (GELB point 3) > same URL, same props on both paths: focus=CAPABILITY&investigationMode=PERSON_X_JOB&jobScopePoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294
+ × navigation.test.tsx > N-1 · one parser for page.tsx and the history (GELB point 3) > same URL, same props on both paths: focus=JOB&jobPoolUploadId=JPOOL_1&jobOrganizationId=org_a&jobRoleId=role_a&jobRequirementId=req_a
+ × navigation.test.tsx > N-1 · one parser for page.tsx and the history (GELB point 3) > same URL, same props on both paths: focus=POOL&investigationMode=JOB&canonicalSilAssociationId=SILA_1&careerDecisionContextRevisionId=DCTXRE
+ × navigation.test.tsx > N-1 · one parser for page.tsx and the history (GELB point 3) > same URL, same props on both paths: focus=elsewhere&investigationMode=BOGUS
+ × navigation.test.tsx > N-1 · one parser for page.tsx and the history (GELB point 3) > same URL, same props on both paths: investigationMode=PERSON&investigationMode=JOB&analysisId=ANL_1792044447366_377&analysisId=ANL_2
+ × navigation.test.tsx > N-1 · one parser for page.tsx and the history (GELB point 3) > same URL, same props on both paths: 
+ × navigation.test.tsx > N-1 · one parser for page.tsx and the history (GELB point 3) > inverse: a repeated parameter is ambiguous and read as absent on both paths
+ × mode-normalization.test.tsx > N-3 · an unknown investigationMode is removed on mount > REPRODUCE: investigationMode=BOGUS → removed by replace, the default as without it
+ × mode-normalization.test.tsx > N-3 · an unknown investigationMode is removed on mount > REPRODUCE: investigationMode=person → removed by replace, the default as without it
+ × mode-normalization.test.tsx > N-3 · an unknown investigationMode is removed on mount > REPRODUCE: investigationMode= → removed by replace, the default as without it
+ × mode-normalization.test.tsx > N-3 · an unknown investigationMode is removed on mount > REPRODUCE: investigationMode=PERSON&investigationMode=JOB → removed by replace, the default as without it
+ ✓ mode-normalization.test.tsx > N-3 · an unknown investigationMode is removed on mount > inverse: investigationMode=PERSON stays; nothing is written
+ ✓ mode-normalization.test.tsx > N-3 · an unknown investigationMode is removed on mount > inverse: investigationMode=PERSON_X_JOB stays; nothing is written
+ ✓ mode-normalization.test.tsx > N-3 · an unknown investigationMode is removed on mount > inverse: investigationMode=JOB stays; nothing is written
+ ✓ mode-normalization.test.tsx > N-3 · an unknown investigationMode is removed on mount > inverse: without the parameter nothing is added (the default is not written)
+ × nav-reads.test.tsx > N-1 · the remount reads what a reload reads (GET only) > guard: same GETs on both paths, no write request, no /api/career/analyze
+ × staged-sources-hint.test.tsx > N-5 · staged sources say they are not kept > REPRODUCE: with staged sources the dock names it, EN and DE
+ ✓ staged-sources-hint.test.tsx > N-5 · staged sources say they are not kept > inverse: without staged sources there is no hint; the staged list and ANALYZE stay as they were
+ ✓ staged-sources-hint.test.tsx > N-5 · staged sources say they are not kept > negative: the dock stores nothing in the browser (no localStorage, sessionStorage or IndexedDB)
+ × job-release.test.tsx > N-1 · the old mount's job controller is released > REPRODUCE: after cleanup a poll answer still on its way changes nothing and notifies nobody; no further GET
+ ✓ job-release.test.tsx > N-1 · the old mount's job controller is released > guard: the hook's unmount releases its controller (the unmount of a remount): no further GET, still one POST
+ × job-release.test.tsx > N-1 · the old mount's job controller is released > inverse: React's development double mount (cleanup, then the effect again) leaves the controller working
+ × analysis-id-comment.test.ts > N-4 · the analysisId comment says what G1 does > REPRODUCE: no declaration says the analysis is the match panel's only or loads nothing
+ × analysis-id-comment.test.ts > N-4 · the analysisId comment says what G1 does > inverse: the shared URL props and the field name the first screen at analysisId
+⎯⎯⎯⎯⎯⎯ Failed Tests 32 ⎯⎯⎯⎯⎯⎯⎯
+ Test Files  7 failed (7)
+      Tests  32 failed | 9 passed (41)

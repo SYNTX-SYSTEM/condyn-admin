@@ -121,6 +121,53 @@ analysis's own job. `/matches` is read only while the Job Field is the active fi
     parameters. This proves the field's own state logic across renders. It does not prove React's real scheduling, the children's
     rendering or a browser reload; those are for PINK's browser check.
 
+- **Owner "OWNER_GO_FULL_PXJ_CLOSURE" §05, navigation and recovery** (GELB assignment N-1 … N-5 on `88539d3`). One commit per
+  finding; each REPRODUCE test fails on `88539d3` (`nav-counterproof-88539d3.txt`: 32 of 41 new tests fail there, all 20
+  REPRODUCE among them, each at its own assertion; the 9 passing are inverse and guard tests).
+  - **N-1 B-NAV** (`dea34eb`): every decision the user takes that the URL carries is one history entry (push). That covers mode,
+    field, pool, observation, a job chosen, removed or opened, and the offer's role. Several parameters of one action share their
+    entry, and an unchanged URL writes nothing. The system's addenda replace the entry on view.
+    `CareerDemoHistory` listens to popstate and remounts the dashboard from the entry's URL through the parser `page.tsx` uses
+    (`careerDemoPropsFromSearchParams`), so NAV ≡ RELOAD. A repeated parameter is ambiguous and read as absent on both paths.
+    What the URL does not carry is reset as on a reload: language, orbit and zoom, staged sources. The released
+    `CareerJobController` neither polls nor takes a late answer.
+  - **N-2 B-RUN** (`ee91062`): on the 202 the job id is replaced into the URL (`analysisJobId`). A mount with it follows the job by
+    GET only (`resumeJob`). SUCCEEDED writes `analysisId` and removes `analysisJobId` in one replace. FAILED and 404 ("analysis job
+    not found", its own state) show the job id and keep the parameter. There is no retry button and no POST. A value outside
+    `JOB_<ms>_<n>`, or a repeated one, is removed.
+  - **N-3 O-RF-1** (`e6d9ba2`): an `investigationMode` that is no mode (unknown, empty or repeated) is removed on mount by a
+    replace. The result is the same default as without it.
+  - **N-4 F-RF-4** (`1dcc273`): the `analysisId` comment says that G1 loads the analysis for the first screen. The comment moved
+    from `page.tsx` to `lib/career/ui/career-demo-url.ts` with N-1, and the field's prop comment had the same error.
+  - **N-5 B-SRC** (`2f96e63`): with STAGED SOURCES the dock says, fixed in EN and DE, that staged sources live in this page only and
+    that nothing is stored. Nothing is persisted, also not in browser storage.
+  - **Copy:** `app/components/career/demo/navigation-copy.ts`, beside the components. The assignment's file boundary leaves
+    `sil-language.ts` unchanged.
+  - **Tests** (`test/career/pxj-first-screen/`):
+    - `navigation`, `nav-reads`, `job-release` (N-1);
+    - `run-recovery` (N-2);
+    - `mode-normalization` (N-3);
+    - `analysis-id-comment` (N-4);
+    - `staged-sources-hint` (N-5);
+    - the shared hook runtime `harness.ts`, the same model as `role-field-closure` with unmount and `useSyncExternalStore`.
+  - **GELB's three points:**
+    - (1) the old controller is released, and the new one follows the job only by `analysisJobId`, with one GET poll, one POST in
+      all and one job (`job-release`, `run-recovery`);
+    - (2) the remount reads the same GETs as a reload, with no write and no `/api/career/analyze` (`nav-reads`);
+    - (3) one parser, compared for the same URL on both paths (`navigation`).
+  - **Walk on the production server** (`next build` + `next start`, stand-in lab :41871, `scripts/pxj-nav-walk.mjs`,
+    `measures/STANDIN-nav-walk-1920.json`, `shots/STANDIN-nav-*`): 33/33 steps pass.
+    - Eight decisions push eight entries. Each of the 8 Back and 8 Forward steps equals a fresh load of its URL in a second tab
+      (first-screen state, text, rows, quotes, offer, field, mode).
+    - Back leaves the demo for the document before it, and Forward loads the demo document again (AVAILABLE, equal to reload).
+    - The navigation steps send only GETs, with no analyze and no inspector read.
+    - A second run, reloaded while it ran, is followed by its job id. Meanwhile the first analysis stays on view; afterwards the
+      second one shows. There are 2 POSTs in all, one per run.
+    - An unknown job id gives NOT_FOUND, a malformed one is removed, an unknown mode is removed, and the hint stands with staged
+      sources and is gone after a reload.
+    - `ignoreBuildErrors` was set for the build in the measuring worktree only and never committed (route type error, owner
+      decision B-3).
+
 ## 5 · Findings outside G1 (not changed)
 
 - **F-G1-MD:** a `.md` or `.txt` file through the Source Dock's file input is sent as `type: "pdf"`; the worker answers
@@ -132,6 +179,8 @@ analysis's own job. `/matches` is read only while the Job Field is the active fi
 ## 6 · Files
 
 - `shots/`: `STANDIN-<step>-<width>.jpg` (walk), `STANDIN-layout-available-<viewport>.jpg`.
-- `measures/`: `STANDIN-walk-1920.json`, `STANDIN-walk-1280.json`, `STANDIN-layout.json`, `suite.txt`.
-- `scripts/`: `pxj-walk.mjs`, `pxj-layout.mjs` (argv: lab state file, repo root / analysis id, out dir; Playwright from
+- `measures/`: `STANDIN-walk-1920.json`, `STANDIN-walk-1280.json`, `STANDIN-layout.json`, `suite.txt`, `STANDIN-nav-walk-1920.json`
+  (N-1 … N-5, production server).
+- `nav-counterproof-88539d3.txt`: the new tests of N-1 … N-5 run against `88539d3`.
+- `scripts/`: `pxj-walk.mjs`, `pxj-layout.mjs`, `pxj-nav-walk.mjs` (argv: lab state file, repo root / analysis id, out dir; Playwright from
   `CONDYN_PLAYWRIGHT_MODULE`), `role-level-base.test.tsx.txt` and `person-markup-base.test.tsx.txt` (run once on `49e2bc6` to produce the T-11 and T-07 fixtures; never part of the suite).

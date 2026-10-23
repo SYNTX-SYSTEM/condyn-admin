@@ -1,0 +1,2876 @@
+{
+ "gemini": "STAND_IN",
+ "server": "next start (production build)",
+ "note": "STAND-IN · keine Modellausführung: the lab's Gemini is GRÜN's deterministic loopback stand-in",
+ "base": "http://127.0.0.1:41871",
+ "viewport": "1920x1080",
+ "steps": [
+  {
+   "name": "01-other-document",
+   "ok": true,
+   "ms": 1914,
+   "state": null,
+   "text": null,
+   "rows": [],
+   "quotes": [],
+   "offer": null,
+   "field": null,
+   "mode": null,
+   "url": "",
+   "historyLength": 2
+  },
+  {
+   "name": "02-session-pxj",
+   "ok": true,
+   "ms": 6868,
+   "jobSeenInUrlWhileRunning": "JOB_1792755521491_321",
+   "state": "AVAILABLE",
+   "text": "B2 · REQUIREMENT COVERAGE\nB2 coverage of the selected role\nName coverage by a capability proposal · not scored · relation NOT_EVALUATED · not a competence verification · not a hiring decision\nBINDING\nDistributed Systems Architect · Alpha Industrial Systems\nanalysis ANL_1792755521491_321 · role_pink_alpha_architect\n2 covered · 1 not covered · 3 requirements · NOT_EVALUATED\nCAPABILITY PROPOSALS OF THIS ANALYSIS\nIoT Infrastructure Transformation\nEdge Computing\nGossip Protocols\nDistributed Systems Architecture\nREQUIREMENTS · POOL ORDER\nDistributed Systems Architecture\nCOVERED\nREQUIRED · L5 expert\nby Distributed Systems Architecture · exact name\n\n“Architected distributed IIoT Edge Computing systems with 99.999% uptime guarantees.”\n\nManual Text Input · DOC_001 · ✓ source-match verified · not a competence verification\nEdge Computing\nCOVERED\nPREFERRED · advanced\nby Edge Computing · exact name\n\n“high-throughput edge automation”\n\nManual Text Input · DOC_001 · ✓ source-match verified · not a competence verification\nIndustrial IoT Protocol Design\nNOT COVERED\nUNKNOWN · —\nNo capability proposal of this analysis names this requirement.",
+   "rows": [
+    {
+     "id": "pxj-first-req-req_pink_alpha_1",
+     "coverage": "COVERED",
+     "basis": "EXACT",
+     "proposal": "PCAP_2C6DEB475A64BD5AB853833A"
+    },
+    {
+     "id": "pxj-first-req-req_pink_alpha_2",
+     "coverage": "COVERED",
+     "basis": "EXACT",
+     "proposal": "PCAP_610D2EA58EA68E6E57703F3F"
+    },
+    {
+     "id": "pxj-first-req-req_pink_alpha_3",
+     "coverage": "NOT_COVERED",
+     "basis": "",
+     "proposal": ""
+    }
+   ],
+   "quotes": [
+    {
+     "id": "pxj-first-quote-req_pink_alpha_1-0",
+     "doc": "DOC_001",
+     "verified": "true"
+    },
+    {
+     "id": "pxj-first-quote-req_pink_alpha_2-0",
+     "doc": "DOC_001",
+     "verified": "true"
+    }
+   ],
+   "offer": null,
+   "field": "CAPABILITY",
+   "mode": "PERSON_X_JOB",
+   "url": "?focus=CAPABILITY&investigationMode=PERSON_X_JOB&jobPoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7&jobScopePoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7&jobScopeRoleId=role_pink_alpha_architect&analysisId=ANL_1792755521491_321",
+   "historyLength": 3
+  },
+  {
+   "name": "03-mode-person",
+   "ok": true,
+   "ms": 1180,
+   "state": "MODE_MISMATCH",
+   "text": "B2 · REQUIREMENT COVERAGE\nThis analysis ran in another investigation mode: nothing is shown, nothing switches by itself.\nanalysis ANL_1792755521491_321 · ran in PERSON × JOB · interface PERSON\nSWITCH TO PERSON × JOB",
+   "rows": [],
+   "quotes": [],
+   "offer": null,
+   "field": "CAPABILITY",
+   "mode": "PERSON",
+   "url": "?focus=CAPABILITY&investigationMode=PERSON&jobPoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7&jobScopePoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7&jobScopeRoleId=role_pink_alpha_architect&analysisId=ANL_1792755521491_321",
+   "historyLength": 4
+  },
+  {
+   "name": "04-mode-pxj",
+   "ok": true,
+   "ms": 1342,
+   "state": "AVAILABLE",
+   "text": "B2 · REQUIREMENT COVERAGE\nB2 coverage of the selected role\nName coverage by a capability proposal · not scored · relation NOT_EVALUATED · not a competence verification · not a hiring decision\nBINDING\nDistributed Systems Architect · Alpha Industrial Systems\nanalysis ANL_1792755521491_321 · role_pink_alpha_architect\n2 covered · 1 not covered · 3 requirements · NOT_EVALUATED\nCAPABILITY PROPOSALS OF THIS ANALYSIS\nIoT Infrastructure Transformation\nEdge Computing\nGossip Protocols\nDistributed Systems Architecture\nREQUIREMENTS · POOL ORDER\nDistributed Systems Architecture\nCOVERED\nREQUIRED · L5 expert\nby Distributed Systems Architecture · exact name\n\n“Architected distributed IIoT Edge Computing systems with 99.999% uptime guarantees.”\n\nManual Text Input · DOC_001 · ✓ source-match verified · not a competence verification\nEdge Computing\nCOVERED\nPREFERRED · advanced\nby Edge Computing · exact name\n\n“high-throughput edge automation”\n\nManual Text Input · DOC_001 · ✓ source-match verified · not a competence verification\nIndustrial IoT Protocol Design\nNOT COVERED\nUNKNOWN · —\nNo capability proposal of this analysis names this requirement.",
+   "rows": [
+    {
+     "id": "pxj-first-req-req_pink_alpha_1",
+     "coverage": "COVERED",
+     "basis": "EXACT",
+     "proposal": "PCAP_2C6DEB475A64BD5AB853833A"
+    },
+    {
+     "id": "pxj-first-req-req_pink_alpha_2",
+     "coverage": "COVERED",
+     "basis": "EXACT",
+     "proposal": "PCAP_610D2EA58EA68E6E57703F3F"
+    },
+    {
+     "id": "pxj-first-req-req_pink_alpha_3",
+     "coverage": "NOT_COVERED",
+     "basis": "",
+     "proposal": ""
+    }
+   ],
+   "quotes": [
+    {
+     "id": "pxj-first-quote-req_pink_alpha_1-0",
+     "doc": "DOC_001",
+     "verified": "true"
+    },
+    {
+     "id": "pxj-first-quote-req_pink_alpha_2-0",
+     "doc": "DOC_001",
+     "verified": "true"
+    }
+   ],
+   "offer": null,
+   "field": "CAPABILITY",
+   "mode": "PERSON_X_JOB",
+   "url": "?focus=CAPABILITY&investigationMode=PERSON_X_JOB&jobPoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7&jobScopePoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7&jobScopeRoleId=role_pink_alpha_architect&analysisId=ANL_1792755521491_321",
+   "historyLength": 5
+  },
+  {
+   "name": "05-job-field",
+   "ok": true,
+   "ms": 1767,
+   "state": null,
+   "text": null,
+   "rows": [],
+   "quotes": [],
+   "offer": null,
+   "field": "FIELD",
+   "mode": "PERSON_X_JOB",
+   "url": "?focus=FIELD&investigationMode=PERSON_X_JOB&jobPoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7&jobScopePoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7&jobScopeRoleId=role_pink_alpha_architect&analysisId=ANL_1792755521491_321",
+   "historyLength": 6
+  },
+  {
+   "name": "06-observe-role",
+   "ok": true,
+   "ms": 2445,
+   "state": null,
+   "text": null,
+   "rows": [],
+   "quotes": [],
+   "offer": null,
+   "field": "FIELD",
+   "mode": "PERSON_X_JOB",
+   "url": "?focus=FIELD&investigationMode=PERSON_X_JOB&jobPoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7&jobScopePoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7&jobScopeRoleId=role_pink_alpha_architect&analysisId=ANL_1792755521491_321&jobOrganizationId=org_pink_beta&jobRoleId=role_pink_beta_platform",
+   "historyLength": 8
+  },
+  {
+   "name": "07-select-other-job",
+   "ok": true,
+   "ms": 2286,
+   "state": null,
+   "text": null,
+   "rows": [],
+   "quotes": [],
+   "offer": "This analysis belongs to another job than the selected one: neither its proposals nor coverage are shown.\njob of this analysis: role_pink_alpha_architect · JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7\n◎ SELECT THIS ROLE",
+   "field": "FIELD",
+   "mode": "PERSON_X_JOB",
+   "url": "?focus=FIELD&investigationMode=PERSON_X_JOB&jobPoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7&jobScopePoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7&jobScopeRoleId=role_pink_beta_platform&analysisId=ANL_1792755521491_321&jobOrganizationId=org_pink_beta&jobRoleId=role_pink_beta_platform",
+   "historyLength": 9
+  },
+  {
+   "name": "08-capability-mismatch",
+   "ok": true,
+   "ms": 2136,
+   "state": "ROLE_MISMATCH",
+   "text": "B2 · REQUIREMENT COVERAGE\nThis analysis belongs to another job than the selected one: neither its proposals nor coverage are shown.\njob of this analysis: role_pink_alpha_architect · JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7 · selected job: role_pink_beta_platform\n◎ SELECT THIS ROLE",
+   "rows": [],
+   "quotes": [],
+   "offer": null,
+   "field": "CAPABILITY",
+   "mode": "PERSON_X_JOB",
+   "url": "?focus=CAPABILITY&investigationMode=PERSON_X_JOB&jobPoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7&jobScopePoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7&jobScopeRoleId=role_pink_beta_platform&analysisId=ANL_1792755521491_321",
+   "historyLength": 10
+  },
+  {
+   "name": "09-offer-role-back",
+   "ok": true,
+   "ms": 1243,
+   "state": "AVAILABLE",
+   "text": "B2 · REQUIREMENT COVERAGE\nB2 coverage of the selected role\nName coverage by a capability proposal · not scored · relation NOT_EVALUATED · not a competence verification · not a hiring decision\nBINDING\nDistributed Systems Architect · Alpha Industrial Systems\nanalysis ANL_1792755521491_321 · role_pink_alpha_architect\n2 covered · 1 not covered · 3 requirements · NOT_EVALUATED\nCAPABILITY PROPOSALS OF THIS ANALYSIS\nIoT Infrastructure Transformation\nEdge Computing\nGossip Protocols\nDistributed Systems Architecture\nREQUIREMENTS · POOL ORDER\nDistributed Systems Architecture\nCOVERED\nREQUIRED · L5 expert\nby Distributed Systems Architecture · exact name\n\n“Architected distributed IIoT Edge Computing systems with 99.999% uptime guarantees.”\n\nManual Text Input · DOC_001 · ✓ source-match verified · not a competence verification\nEdge Computing\nCOVERED\nPREFERRED · advanced\nby Edge Computing · exact name\n\n“high-throughput edge automation”\n\nManual Text Input · DOC_001 · ✓ source-match verified · not a competence verification\nIndustrial IoT Protocol Design\nNOT COVERED\nUNKNOWN · —\nNo capability proposal of this analysis names this requirement.",
+   "rows": [
+    {
+     "id": "pxj-first-req-req_pink_alpha_1",
+     "coverage": "COVERED",
+     "basis": "EXACT",
+     "proposal": "PCAP_2C6DEB475A64BD5AB853833A"
+    },
+    {
+     "id": "pxj-first-req-req_pink_alpha_2",
+     "coverage": "COVERED",
+     "basis": "EXACT",
+     "proposal": "PCAP_610D2EA58EA68E6E57703F3F"
+    },
+    {
+     "id": "pxj-first-req-req_pink_alpha_3",
+     "coverage": "NOT_COVERED",
+     "basis": "",
+     "proposal": ""
+    }
+   ],
+   "quotes": [
+    {
+     "id": "pxj-first-quote-req_pink_alpha_1-0",
+     "doc": "DOC_001",
+     "verified": "true"
+    },
+    {
+     "id": "pxj-first-quote-req_pink_alpha_2-0",
+     "doc": "DOC_001",
+     "verified": "true"
+    }
+   ],
+   "offer": null,
+   "field": "CAPABILITY",
+   "mode": "PERSON_X_JOB",
+   "url": "?focus=CAPABILITY&investigationMode=PERSON_X_JOB&jobPoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7&jobScopePoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7&jobScopeRoleId=role_pink_alpha_architect&analysisId=ANL_1792755521491_321",
+   "historyLength": 11
+  },
+  {
+   "name": "10-back-1",
+   "ok": true,
+   "ms": 5820,
+   "reloadState": "ROLE_MISMATCH",
+   "reloadUrl": "?focus=CAPABILITY&investigationMode=PERSON_X_JOB&jobPoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7&jobScopePoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7&jobScopeRoleId=role_pink_beta_platform&analysisId=ANL_1792755521491_321",
+   "state": "ROLE_MISMATCH",
+   "text": "B2 · REQUIREMENT COVERAGE\nThis analysis belongs to another job than the selected one: neither its proposals nor coverage are shown.\njob of this analysis: role_pink_alpha_architect · JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7 · selected job: role_pink_beta_platform\n◎ SELECT THIS ROLE",
+   "rows": [],
+   "quotes": [],
+   "offer": null,
+   "field": "CAPABILITY",
+   "mode": "PERSON_X_JOB",
+   "url": "?focus=CAPABILITY&investigationMode=PERSON_X_JOB&jobPoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7&jobScopePoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7&jobScopeRoleId=role_pink_beta_platform&analysisId=ANL_1792755521491_321",
+   "historyLength": 11
+  },
+  {
+   "name": "10-back-2",
+   "ok": true,
+   "ms": 7430,
+   "reloadState": null,
+   "reloadUrl": "?focus=FIELD&investigationMode=PERSON_X_JOB&jobPoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7&jobScopePoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7&jobScopeRoleId=role_pink_beta_platform&analysisId=ANL_1792755521491_321&jobOrganizationId=org_pink_beta&jobRoleId=role_pink_beta_platform",
+   "state": null,
+   "text": null,
+   "rows": [],
+   "quotes": [],
+   "offer": "This analysis belongs to another job than the selected one: neither its proposals nor coverage are shown.\njob of this analysis: role_pink_alpha_architect · JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7\n◎ SELECT THIS ROLE",
+   "field": "FIELD",
+   "mode": "PERSON_X_JOB",
+   "url": "?focus=FIELD&investigationMode=PERSON_X_JOB&jobPoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7&jobScopePoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7&jobScopeRoleId=role_pink_beta_platform&analysisId=ANL_1792755521491_321&jobOrganizationId=org_pink_beta&jobRoleId=role_pink_beta_platform",
+   "historyLength": 11
+  },
+  {
+   "name": "10-back-3",
+   "ok": true,
+   "ms": 8740,
+   "reloadState": null,
+   "reloadUrl": "?focus=FIELD&investigationMode=PERSON_X_JOB&jobPoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7&jobScopePoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7&jobScopeRoleId=role_pink_alpha_architect&analysisId=ANL_1792755521491_321&jobOrganizationId=org_pink_beta&jobRoleId=role_pink_beta_platform",
+   "state": null,
+   "text": null,
+   "rows": [],
+   "quotes": [],
+   "offer": null,
+   "field": "FIELD",
+   "mode": "PERSON_X_JOB",
+   "url": "?focus=FIELD&investigationMode=PERSON_X_JOB&jobPoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7&jobScopePoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7&jobScopeRoleId=role_pink_alpha_architect&analysisId=ANL_1792755521491_321&jobOrganizationId=org_pink_beta&jobRoleId=role_pink_beta_platform",
+   "historyLength": 11
+  },
+  {
+   "name": "10-back-4",
+   "ok": true,
+   "ms": 6496,
+   "reloadState": null,
+   "reloadUrl": "?focus=FIELD&investigationMode=PERSON_X_JOB&jobPoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7&jobScopePoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7&jobScopeRoleId=role_pink_alpha_architect&analysisId=ANL_1792755521491_321&jobOrganizationId=org_pink_beta",
+   "state": null,
+   "text": null,
+   "rows": [],
+   "quotes": [],
+   "offer": null,
+   "field": "FIELD",
+   "mode": "PERSON_X_JOB",
+   "url": "?focus=FIELD&investigationMode=PERSON_X_JOB&jobPoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7&jobScopePoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7&jobScopeRoleId=role_pink_alpha_architect&analysisId=ANL_1792755521491_321&jobOrganizationId=org_pink_beta",
+   "historyLength": 11
+  },
+  {
+   "name": "10-back-5",
+   "ok": true,
+   "ms": 6673,
+   "reloadState": null,
+   "reloadUrl": "?focus=FIELD&investigationMode=PERSON_X_JOB&jobPoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7&jobScopePoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7&jobScopeRoleId=role_pink_alpha_architect&analysisId=ANL_1792755521491_321",
+   "state": null,
+   "text": null,
+   "rows": [],
+   "quotes": [],
+   "offer": null,
+   "field": "FIELD",
+   "mode": "PERSON_X_JOB",
+   "url": "?focus=FIELD&investigationMode=PERSON_X_JOB&jobPoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7&jobScopePoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7&jobScopeRoleId=role_pink_alpha_architect&analysisId=ANL_1792755521491_321",
+   "historyLength": 11
+  },
+  {
+   "name": "10-back-6",
+   "ok": true,
+   "ms": 5537,
+   "reloadState": "AVAILABLE",
+   "reloadUrl": "?focus=CAPABILITY&investigationMode=PERSON_X_JOB&jobPoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7&jobScopePoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7&jobScopeRoleId=role_pink_alpha_architect&analysisId=ANL_1792755521491_321",
+   "state": "AVAILABLE",
+   "text": "B2 · REQUIREMENT COVERAGE\nB2 coverage of the selected role\nName coverage by a capability proposal · not scored · relation NOT_EVALUATED · not a competence verification · not a hiring decision\nBINDING\nDistributed Systems Architect · Alpha Industrial Systems\nanalysis ANL_1792755521491_321 · role_pink_alpha_architect\n2 covered · 1 not covered · 3 requirements · NOT_EVALUATED\nCAPABILITY PROPOSALS OF THIS ANALYSIS\nIoT Infrastructure Transformation\nEdge Computing\nGossip Protocols\nDistributed Systems Architecture\nREQUIREMENTS · POOL ORDER\nDistributed Systems Architecture\nCOVERED\nREQUIRED · L5 expert\nby Distributed Systems Architecture · exact name\n\n“Architected distributed IIoT Edge Computing systems with 99.999% uptime guarantees.”\n\nManual Text Input · DOC_001 · ✓ source-match verified · not a competence verification\nEdge Computing\nCOVERED\nPREFERRED · advanced\nby Edge Computing · exact name\n\n“high-throughput edge automation”\n\nManual Text Input · DOC_001 · ✓ source-match verified · not a competence verification\nIndustrial IoT Protocol Design\nNOT COVERED\nUNKNOWN · —\nNo capability proposal of this analysis names this requirement.",
+   "rows": [
+    {
+     "id": "pxj-first-req-req_pink_alpha_1",
+     "coverage": "COVERED",
+     "basis": "EXACT",
+     "proposal": "PCAP_2C6DEB475A64BD5AB853833A"
+    },
+    {
+     "id": "pxj-first-req-req_pink_alpha_2",
+     "coverage": "COVERED",
+     "basis": "EXACT",
+     "proposal": "PCAP_610D2EA58EA68E6E57703F3F"
+    },
+    {
+     "id": "pxj-first-req-req_pink_alpha_3",
+     "coverage": "NOT_COVERED",
+     "basis": "",
+     "proposal": ""
+    }
+   ],
+   "quotes": [
+    {
+     "id": "pxj-first-quote-req_pink_alpha_1-0",
+     "doc": "DOC_001",
+     "verified": "true"
+    },
+    {
+     "id": "pxj-first-quote-req_pink_alpha_2-0",
+     "doc": "DOC_001",
+     "verified": "true"
+    }
+   ],
+   "offer": null,
+   "field": "CAPABILITY",
+   "mode": "PERSON_X_JOB",
+   "url": "?focus=CAPABILITY&investigationMode=PERSON_X_JOB&jobPoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7&jobScopePoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7&jobScopeRoleId=role_pink_alpha_architect&analysisId=ANL_1792755521491_321",
+   "historyLength": 11
+  },
+  {
+   "name": "10-back-7",
+   "ok": true,
+   "ms": 5564,
+   "reloadState": "MODE_MISMATCH",
+   "reloadUrl": "?focus=CAPABILITY&investigationMode=PERSON&jobPoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7&jobScopePoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7&jobScopeRoleId=role_pink_alpha_architect&analysisId=ANL_1792755521491_321",
+   "state": "MODE_MISMATCH",
+   "text": "B2 · REQUIREMENT COVERAGE\nThis analysis ran in another investigation mode: nothing is shown, nothing switches by itself.\nanalysis ANL_1792755521491_321 · ran in PERSON × JOB · interface PERSON\nSWITCH TO PERSON × JOB",
+   "rows": [],
+   "quotes": [],
+   "offer": null,
+   "field": "CAPABILITY",
+   "mode": "PERSON",
+   "url": "?focus=CAPABILITY&investigationMode=PERSON&jobPoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7&jobScopePoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7&jobScopeRoleId=role_pink_alpha_architect&analysisId=ANL_1792755521491_321",
+   "historyLength": 11
+  },
+  {
+   "name": "10-back-8",
+   "ok": true,
+   "ms": 5508,
+   "reloadState": "AVAILABLE",
+   "reloadUrl": "?focus=CAPABILITY&investigationMode=PERSON_X_JOB&jobPoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7&jobScopePoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7&jobScopeRoleId=role_pink_alpha_architect&analysisId=ANL_1792755521491_321",
+   "state": "AVAILABLE",
+   "text": "B2 · REQUIREMENT COVERAGE\nB2 coverage of the selected role\nName coverage by a capability proposal · not scored · relation NOT_EVALUATED · not a competence verification · not a hiring decision\nBINDING\nDistributed Systems Architect · Alpha Industrial Systems\nanalysis ANL_1792755521491_321 · role_pink_alpha_architect\n2 covered · 1 not covered · 3 requirements · NOT_EVALUATED\nCAPABILITY PROPOSALS OF THIS ANALYSIS\nIoT Infrastructure Transformation\nEdge Computing\nGossip Protocols\nDistributed Systems Architecture\nREQUIREMENTS · POOL ORDER\nDistributed Systems Architecture\nCOVERED\nREQUIRED · L5 expert\nby Distributed Systems Architecture · exact name\n\n“Architected distributed IIoT Edge Computing systems with 99.999% uptime guarantees.”\n\nManual Text Input · DOC_001 · ✓ source-match verified · not a competence verification\nEdge Computing\nCOVERED\nPREFERRED · advanced\nby Edge Computing · exact name\n\n“high-throughput edge automation”\n\nManual Text Input · DOC_001 · ✓ source-match verified · not a competence verification\nIndustrial IoT Protocol Design\nNOT COVERED\nUNKNOWN · —\nNo capability proposal of this analysis names this requirement.",
+   "rows": [
+    {
+     "id": "pxj-first-req-req_pink_alpha_1",
+     "coverage": "COVERED",
+     "basis": "EXACT",
+     "proposal": "PCAP_2C6DEB475A64BD5AB853833A"
+    },
+    {
+     "id": "pxj-first-req-req_pink_alpha_2",
+     "coverage": "COVERED",
+     "basis": "EXACT",
+     "proposal": "PCAP_610D2EA58EA68E6E57703F3F"
+    },
+    {
+     "id": "pxj-first-req-req_pink_alpha_3",
+     "coverage": "NOT_COVERED",
+     "basis": "",
+     "proposal": ""
+    }
+   ],
+   "quotes": [
+    {
+     "id": "pxj-first-quote-req_pink_alpha_1-0",
+     "doc": "DOC_001",
+     "verified": "true"
+    },
+    {
+     "id": "pxj-first-quote-req_pink_alpha_2-0",
+     "doc": "DOC_001",
+     "verified": "true"
+    }
+   ],
+   "offer": null,
+   "field": "CAPABILITY",
+   "mode": "PERSON_X_JOB",
+   "url": "?focus=CAPABILITY&investigationMode=PERSON_X_JOB&jobPoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7&jobScopePoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7&jobScopeRoleId=role_pink_alpha_architect&analysisId=ANL_1792755521491_321",
+   "historyLength": 11
+  },
+  {
+   "name": "11-back-leaves-document",
+   "ok": true,
+   "ms": 1607,
+   "state": null,
+   "text": null,
+   "rows": [],
+   "quotes": [],
+   "offer": null,
+   "field": null,
+   "mode": null,
+   "url": "",
+   "historyLength": 11
+  },
+  {
+   "name": "12-forward-document",
+   "ok": true,
+   "ms": 6120,
+   "reloadState": "AVAILABLE",
+   "reloadUrl": "?focus=CAPABILITY&investigationMode=PERSON_X_JOB&jobPoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7&jobScopePoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7&jobScopeRoleId=role_pink_alpha_architect&analysisId=ANL_1792755521491_321",
+   "state": "AVAILABLE",
+   "text": "B2 · REQUIREMENT COVERAGE\nB2 coverage of the selected role\nName coverage by a capability proposal · not scored · relation NOT_EVALUATED · not a competence verification · not a hiring decision\nBINDING\nDistributed Systems Architect · Alpha Industrial Systems\nanalysis ANL_1792755521491_321 · role_pink_alpha_architect\n2 covered · 1 not covered · 3 requirements · NOT_EVALUATED\nCAPABILITY PROPOSALS OF THIS ANALYSIS\nIoT Infrastructure Transformation\nEdge Computing\nGossip Protocols\nDistributed Systems Architecture\nREQUIREMENTS · POOL ORDER\nDistributed Systems Architecture\nCOVERED\nREQUIRED · L5 expert\nby Distributed Systems Architecture · exact name\n\n“Architected distributed IIoT Edge Computing systems with 99.999% uptime guarantees.”\n\nManual Text Input · DOC_001 · ✓ source-match verified · not a competence verification\nEdge Computing\nCOVERED\nPREFERRED · advanced\nby Edge Computing · exact name\n\n“high-throughput edge automation”\n\nManual Text Input · DOC_001 · ✓ source-match verified · not a competence verification\nIndustrial IoT Protocol Design\nNOT COVERED\nUNKNOWN · —\nNo capability proposal of this analysis names this requirement.",
+   "rows": [
+    {
+     "id": "pxj-first-req-req_pink_alpha_1",
+     "coverage": "COVERED",
+     "basis": "EXACT",
+     "proposal": "PCAP_2C6DEB475A64BD5AB853833A"
+    },
+    {
+     "id": "pxj-first-req-req_pink_alpha_2",
+     "coverage": "COVERED",
+     "basis": "EXACT",
+     "proposal": "PCAP_610D2EA58EA68E6E57703F3F"
+    },
+    {
+     "id": "pxj-first-req-req_pink_alpha_3",
+     "coverage": "NOT_COVERED",
+     "basis": "",
+     "proposal": ""
+    }
+   ],
+   "quotes": [
+    {
+     "id": "pxj-first-quote-req_pink_alpha_1-0",
+     "doc": "DOC_001",
+     "verified": "true"
+    },
+    {
+     "id": "pxj-first-quote-req_pink_alpha_2-0",
+     "doc": "DOC_001",
+     "verified": "true"
+    }
+   ],
+   "offer": null,
+   "field": "CAPABILITY",
+   "mode": "PERSON_X_JOB",
+   "url": "?focus=CAPABILITY&investigationMode=PERSON_X_JOB&jobPoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7&jobScopePoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7&jobScopeRoleId=role_pink_alpha_architect&analysisId=ANL_1792755521491_321",
+   "historyLength": 11
+  },
+  {
+   "name": "13-forward-1",
+   "ok": true,
+   "ms": 5128,
+   "reloadState": "MODE_MISMATCH",
+   "reloadUrl": "?focus=CAPABILITY&investigationMode=PERSON&jobPoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7&jobScopePoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7&jobScopeRoleId=role_pink_alpha_architect&analysisId=ANL_1792755521491_321",
+   "state": "MODE_MISMATCH",
+   "text": "B2 · REQUIREMENT COVERAGE\nThis analysis ran in another investigation mode: nothing is shown, nothing switches by itself.\nanalysis ANL_1792755521491_321 · ran in PERSON × JOB · interface PERSON\nSWITCH TO PERSON × JOB",
+   "rows": [],
+   "quotes": [],
+   "offer": null,
+   "field": "CAPABILITY",
+   "mode": "PERSON",
+   "url": "?focus=CAPABILITY&investigationMode=PERSON&jobPoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7&jobScopePoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7&jobScopeRoleId=role_pink_alpha_architect&analysisId=ANL_1792755521491_321",
+   "historyLength": 11
+  },
+  {
+   "name": "13-forward-2",
+   "ok": true,
+   "ms": 5341,
+   "reloadState": "AVAILABLE",
+   "reloadUrl": "?focus=CAPABILITY&investigationMode=PERSON_X_JOB&jobPoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7&jobScopePoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7&jobScopeRoleId=role_pink_alpha_architect&analysisId=ANL_1792755521491_321",
+   "state": "AVAILABLE",
+   "text": "B2 · REQUIREMENT COVERAGE\nB2 coverage of the selected role\nName coverage by a capability proposal · not scored · relation NOT_EVALUATED · not a competence verification · not a hiring decision\nBINDING\nDistributed Systems Architect · Alpha Industrial Systems\nanalysis ANL_1792755521491_321 · role_pink_alpha_architect\n2 covered · 1 not covered · 3 requirements · NOT_EVALUATED\nCAPABILITY PROPOSALS OF THIS ANALYSIS\nIoT Infrastructure Transformation\nEdge Computing\nGossip Protocols\nDistributed Systems Architecture\nREQUIREMENTS · POOL ORDER\nDistributed Systems Architecture\nCOVERED\nREQUIRED · L5 expert\nby Distributed Systems Architecture · exact name\n\n“Architected distributed IIoT Edge Computing systems with 99.999% uptime guarantees.”\n\nManual Text Input · DOC_001 · ✓ source-match verified · not a competence verification\nEdge Computing\nCOVERED\nPREFERRED · advanced\nby Edge Computing · exact name\n\n“high-throughput edge automation”\n\nManual Text Input · DOC_001 · ✓ source-match verified · not a competence verification\nIndustrial IoT Protocol Design\nNOT COVERED\nUNKNOWN · —\nNo capability proposal of this analysis names this requirement.",
+   "rows": [
+    {
+     "id": "pxj-first-req-req_pink_alpha_1",
+     "coverage": "COVERED",
+     "basis": "EXACT",
+     "proposal": "PCAP_2C6DEB475A64BD5AB853833A"
+    },
+    {
+     "id": "pxj-first-req-req_pink_alpha_2",
+     "coverage": "COVERED",
+     "basis": "EXACT",
+     "proposal": "PCAP_610D2EA58EA68E6E57703F3F"
+    },
+    {
+     "id": "pxj-first-req-req_pink_alpha_3",
+     "coverage": "NOT_COVERED",
+     "basis": "",
+     "proposal": ""
+    }
+   ],
+   "quotes": [
+    {
+     "id": "pxj-first-quote-req_pink_alpha_1-0",
+     "doc": "DOC_001",
+     "verified": "true"
+    },
+    {
+     "id": "pxj-first-quote-req_pink_alpha_2-0",
+     "doc": "DOC_001",
+     "verified": "true"
+    }
+   ],
+   "offer": null,
+   "field": "CAPABILITY",
+   "mode": "PERSON_X_JOB",
+   "url": "?focus=CAPABILITY&investigationMode=PERSON_X_JOB&jobPoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7&jobScopePoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7&jobScopeRoleId=role_pink_alpha_architect&analysisId=ANL_1792755521491_321",
+   "historyLength": 11
+  },
+  {
+   "name": "13-forward-3",
+   "ok": true,
+   "ms": 6092,
+   "reloadState": null,
+   "reloadUrl": "?focus=FIELD&investigationMode=PERSON_X_JOB&jobPoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7&jobScopePoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7&jobScopeRoleId=role_pink_alpha_architect&analysisId=ANL_1792755521491_321",
+   "state": null,
+   "text": null,
+   "rows": [],
+   "quotes": [],
+   "offer": null,
+   "field": "FIELD",
+   "mode": "PERSON_X_JOB",
+   "url": "?focus=FIELD&investigationMode=PERSON_X_JOB&jobPoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7&jobScopePoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7&jobScopeRoleId=role_pink_alpha_architect&analysisId=ANL_1792755521491_321",
+   "historyLength": 11
+  },
+  {
+   "name": "13-forward-4",
+   "ok": true,
+   "ms": 5931,
+   "reloadState": null,
+   "reloadUrl": "?focus=FIELD&investigationMode=PERSON_X_JOB&jobPoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7&jobScopePoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7&jobScopeRoleId=role_pink_alpha_architect&analysisId=ANL_1792755521491_321&jobOrganizationId=org_pink_beta",
+   "state": null,
+   "text": null,
+   "rows": [],
+   "quotes": [],
+   "offer": null,
+   "field": "FIELD",
+   "mode": "PERSON_X_JOB",
+   "url": "?focus=FIELD&investigationMode=PERSON_X_JOB&jobPoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7&jobScopePoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7&jobScopeRoleId=role_pink_alpha_architect&analysisId=ANL_1792755521491_321&jobOrganizationId=org_pink_beta",
+   "historyLength": 11
+  },
+  {
+   "name": "13-forward-5",
+   "ok": true,
+   "ms": 7019,
+   "reloadState": null,
+   "reloadUrl": "?focus=FIELD&investigationMode=PERSON_X_JOB&jobPoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7&jobScopePoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7&jobScopeRoleId=role_pink_alpha_architect&analysisId=ANL_1792755521491_321&jobOrganizationId=org_pink_beta&jobRoleId=role_pink_beta_platform",
+   "state": null,
+   "text": null,
+   "rows": [],
+   "quotes": [],
+   "offer": null,
+   "field": "FIELD",
+   "mode": "PERSON_X_JOB",
+   "url": "?focus=FIELD&investigationMode=PERSON_X_JOB&jobPoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7&jobScopePoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7&jobScopeRoleId=role_pink_alpha_architect&analysisId=ANL_1792755521491_321&jobOrganizationId=org_pink_beta&jobRoleId=role_pink_beta_platform",
+   "historyLength": 11
+  },
+  {
+   "name": "13-forward-6",
+   "ok": true,
+   "ms": 7180,
+   "reloadState": null,
+   "reloadUrl": "?focus=FIELD&investigationMode=PERSON_X_JOB&jobPoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7&jobScopePoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7&jobScopeRoleId=role_pink_beta_platform&analysisId=ANL_1792755521491_321&jobOrganizationId=org_pink_beta&jobRoleId=role_pink_beta_platform",
+   "state": null,
+   "text": null,
+   "rows": [],
+   "quotes": [],
+   "offer": "This analysis belongs to another job than the selected one: neither its proposals nor coverage are shown.\njob of this analysis: role_pink_alpha_architect · JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7\n◎ SELECT THIS ROLE",
+   "field": "FIELD",
+   "mode": "PERSON_X_JOB",
+   "url": "?focus=FIELD&investigationMode=PERSON_X_JOB&jobPoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7&jobScopePoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7&jobScopeRoleId=role_pink_beta_platform&analysisId=ANL_1792755521491_321&jobOrganizationId=org_pink_beta&jobRoleId=role_pink_beta_platform",
+   "historyLength": 11
+  },
+  {
+   "name": "13-forward-7",
+   "ok": true,
+   "ms": 5877,
+   "reloadState": "ROLE_MISMATCH",
+   "reloadUrl": "?focus=CAPABILITY&investigationMode=PERSON_X_JOB&jobPoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7&jobScopePoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7&jobScopeRoleId=role_pink_beta_platform&analysisId=ANL_1792755521491_321",
+   "state": "ROLE_MISMATCH",
+   "text": "B2 · REQUIREMENT COVERAGE\nThis analysis belongs to another job than the selected one: neither its proposals nor coverage are shown.\njob of this analysis: role_pink_alpha_architect · JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7 · selected job: role_pink_beta_platform\n◎ SELECT THIS ROLE",
+   "rows": [],
+   "quotes": [],
+   "offer": null,
+   "field": "CAPABILITY",
+   "mode": "PERSON_X_JOB",
+   "url": "?focus=CAPABILITY&investigationMode=PERSON_X_JOB&jobPoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7&jobScopePoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7&jobScopeRoleId=role_pink_beta_platform&analysisId=ANL_1792755521491_321",
+   "historyLength": 11
+  },
+  {
+   "name": "13-forward-8",
+   "ok": true,
+   "ms": 5251,
+   "reloadState": "AVAILABLE",
+   "reloadUrl": "?focus=CAPABILITY&investigationMode=PERSON_X_JOB&jobPoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7&jobScopePoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7&jobScopeRoleId=role_pink_alpha_architect&analysisId=ANL_1792755521491_321",
+   "state": "AVAILABLE",
+   "text": "B2 · REQUIREMENT COVERAGE\nB2 coverage of the selected role\nName coverage by a capability proposal · not scored · relation NOT_EVALUATED · not a competence verification · not a hiring decision\nBINDING\nDistributed Systems Architect · Alpha Industrial Systems\nanalysis ANL_1792755521491_321 · role_pink_alpha_architect\n2 covered · 1 not covered · 3 requirements · NOT_EVALUATED\nCAPABILITY PROPOSALS OF THIS ANALYSIS\nIoT Infrastructure Transformation\nEdge Computing\nGossip Protocols\nDistributed Systems Architecture\nREQUIREMENTS · POOL ORDER\nDistributed Systems Architecture\nCOVERED\nREQUIRED · L5 expert\nby Distributed Systems Architecture · exact name\n\n“Architected distributed IIoT Edge Computing systems with 99.999% uptime guarantees.”\n\nManual Text Input · DOC_001 · ✓ source-match verified · not a competence verification\nEdge Computing\nCOVERED\nPREFERRED · advanced\nby Edge Computing · exact name\n\n“high-throughput edge automation”\n\nManual Text Input · DOC_001 · ✓ source-match verified · not a competence verification\nIndustrial IoT Protocol Design\nNOT COVERED\nUNKNOWN · —\nNo capability proposal of this analysis names this requirement.",
+   "rows": [
+    {
+     "id": "pxj-first-req-req_pink_alpha_1",
+     "coverage": "COVERED",
+     "basis": "EXACT",
+     "proposal": "PCAP_2C6DEB475A64BD5AB853833A"
+    },
+    {
+     "id": "pxj-first-req-req_pink_alpha_2",
+     "coverage": "COVERED",
+     "basis": "EXACT",
+     "proposal": "PCAP_610D2EA58EA68E6E57703F3F"
+    },
+    {
+     "id": "pxj-first-req-req_pink_alpha_3",
+     "coverage": "NOT_COVERED",
+     "basis": "",
+     "proposal": ""
+    }
+   ],
+   "quotes": [
+    {
+     "id": "pxj-first-quote-req_pink_alpha_1-0",
+     "doc": "DOC_001",
+     "verified": "true"
+    },
+    {
+     "id": "pxj-first-quote-req_pink_alpha_2-0",
+     "doc": "DOC_001",
+     "verified": "true"
+    }
+   ],
+   "offer": null,
+   "field": "CAPABILITY",
+   "mode": "PERSON_X_JOB",
+   "url": "?focus=CAPABILITY&investigationMode=PERSON_X_JOB&jobPoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7&jobScopePoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7&jobScopeRoleId=role_pink_alpha_architect&analysisId=ANL_1792755521491_321",
+   "historyLength": 11
+  },
+  {
+   "name": "14-second-run-reload",
+   "ok": true,
+   "ms": 5193,
+   "job": "JOB_1792755647649_670",
+   "urlRightAfterReload": "?focus=CAPABILITY&investigationMode=PERSON_X_JOB&jobPoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7&jobScopePoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7&jobScopeRoleId=role_pink_alpha_architect&analysisId=ANL_1792755521491_321&analysisJobId=JOB_1792755647649_670",
+   "jobReads": 3,
+   "state": "AVAILABLE",
+   "text": "B2 · REQUIREMENT COVERAGE\nB2 coverage of the selected role\nName coverage by a capability proposal · not scored · relation NOT_EVALUATED · not a competence verification · not a hiring decision\nBINDING\nDistributed Systems Architect · Alpha Industrial Systems\nanalysis ANL_1792755647649_670 · role_pink_alpha_architect\n2 covered · 1 not covered · 3 requirements · NOT_EVALUATED\nCAPABILITY PROPOSALS OF THIS ANALYSIS\nIoT Infrastructure Transformation\nEdge Computing\nGossip Protocols\nDistributed Systems Architecture\nREQUIREMENTS · POOL ORDER\nDistributed Systems Architecture\nCOVERED\nREQUIRED · L5 expert\nby Distributed Systems Architecture · exact name\n\n“Architected distributed IIoT Edge Computing systems with 99.999% uptime guarantees.”\n\nManual Text Input · DOC_001 · ✓ source-match verified · not a competence verification\nEdge Computing\nCOVERED\nPREFERRED · advanced\nby Edge Computing · exact name\n\n“high-throughput edge automation”\n\nManual Text Input · DOC_001 · ✓ source-match verified · not a competence verification\nIndustrial IoT Protocol Design\nNOT COVERED\nUNKNOWN · —\nNo capability proposal of this analysis names this requirement.",
+   "rows": [
+    {
+     "id": "pxj-first-req-req_pink_alpha_1",
+     "coverage": "COVERED",
+     "basis": "EXACT",
+     "proposal": "PCAP_2C6DEB475A64BD5AB853833A"
+    },
+    {
+     "id": "pxj-first-req-req_pink_alpha_2",
+     "coverage": "COVERED",
+     "basis": "EXACT",
+     "proposal": "PCAP_610D2EA58EA68E6E57703F3F"
+    },
+    {
+     "id": "pxj-first-req-req_pink_alpha_3",
+     "coverage": "NOT_COVERED",
+     "basis": "",
+     "proposal": ""
+    }
+   ],
+   "quotes": [
+    {
+     "id": "pxj-first-quote-req_pink_alpha_1-0",
+     "doc": "DOC_001",
+     "verified": "true"
+    },
+    {
+     "id": "pxj-first-quote-req_pink_alpha_2-0",
+     "doc": "DOC_001",
+     "verified": "true"
+    }
+   ],
+   "offer": null,
+   "field": "CAPABILITY",
+   "mode": "PERSON_X_JOB",
+   "url": "?focus=CAPABILITY&investigationMode=PERSON_X_JOB&jobPoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7&jobScopePoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7&jobScopeRoleId=role_pink_alpha_architect&analysisId=ANL_1792755647649_670",
+   "historyLength": 11
+  },
+  {
+   "name": "15-unknown-job",
+   "ok": true,
+   "ms": 1907,
+   "banner": "NOT_FOUND",
+   "state": "NO_ANALYSIS",
+   "text": "B2 · REQUIREMENT COVERAGE\nNo analysis yet: run ANALYZE in PERSON × JOB with the selected job.",
+   "rows": [],
+   "quotes": [],
+   "offer": null,
+   "field": "CAPABILITY",
+   "mode": "PERSON_X_JOB",
+   "url": "?focus=CAPABILITY&investigationMode=PERSON_X_JOB&jobScopePoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7&jobScopeRoleId=role_pink_alpha_architect&analysisJobId=JOB_1000000000000_1",
+   "historyLength": 12
+  },
+  {
+   "name": "16-malformed-job",
+   "ok": true,
+   "ms": 2921,
+   "state": "NO_ANALYSIS",
+   "text": "B2 · REQUIREMENT COVERAGE\nNo analysis yet: run ANALYZE in PERSON × JOB with the selected job.",
+   "rows": [],
+   "quotes": [],
+   "offer": null,
+   "field": "CAPABILITY",
+   "mode": "PERSON_X_JOB",
+   "url": "?focus=CAPABILITY&investigationMode=PERSON_X_JOB&jobScopePoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7&jobScopeRoleId=role_pink_alpha_architect",
+   "historyLength": 13
+  },
+  {
+   "name": "17-unknown-mode",
+   "ok": true,
+   "ms": 2931,
+   "state": null,
+   "text": null,
+   "rows": [],
+   "quotes": [],
+   "offer": null,
+   "field": "FIELD",
+   "mode": "PERSON_X_JOB",
+   "url": "?focus=FIELD&jobPoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7",
+   "historyLength": 14
+  },
+  {
+   "name": "18-staged-hint",
+   "ok": true,
+   "ms": 4476,
+   "hint": "Staged sources live in this page only: reloading, Back or Forward discards them. Nothing is stored.",
+   "state": null,
+   "text": null,
+   "rows": [],
+   "quotes": [],
+   "offer": null,
+   "field": "CAPABILITY",
+   "mode": "PERSON",
+   "url": "?focus=CAPABILITY&investigationMode=PERSON",
+   "historyLength": 15
+  },
+  {
+   "name": "19-staged-after-reload",
+   "ok": true,
+   "ms": 2939,
+   "state": null,
+   "text": null,
+   "rows": [],
+   "quotes": [],
+   "offer": null,
+   "field": "CAPABILITY",
+   "mode": "PERSON",
+   "url": "?focus=CAPABILITY&investigationMode=PERSON",
+   "historyLength": 15
+  }
+ ],
+ "analyses": {
+  "first": "ANL_1792755521491_321",
+  "second": "ANL_1792755647649_670",
+  "runJob": "JOB_1792755521491_321"
+ },
+ "checks": {
+  "historyLengthsSessionThroughDecisions": [
+   3,
+   4,
+   5,
+   6,
+   8,
+   9,
+   10,
+   11
+  ],
+  "entriesPushedByDecisions": 8,
+  "navEqualsReload": [
+   {
+    "step": "10-back-1",
+    "ok": true,
+    "state": "ROLE_MISMATCH",
+    "reloadState": "ROLE_MISMATCH"
+   },
+   {
+    "step": "10-back-2",
+    "ok": true,
+    "state": null,
+    "reloadState": null
+   },
+   {
+    "step": "10-back-3",
+    "ok": true,
+    "state": null,
+    "reloadState": null
+   },
+   {
+    "step": "10-back-4",
+    "ok": true,
+    "state": null,
+    "reloadState": null
+   },
+   {
+    "step": "10-back-5",
+    "ok": true,
+    "state": null,
+    "reloadState": null
+   },
+   {
+    "step": "10-back-6",
+    "ok": true,
+    "state": "AVAILABLE",
+    "reloadState": "AVAILABLE"
+   },
+   {
+    "step": "10-back-7",
+    "ok": true,
+    "state": "MODE_MISMATCH",
+    "reloadState": "MODE_MISMATCH"
+   },
+   {
+    "step": "10-back-8",
+    "ok": true,
+    "state": "AVAILABLE",
+    "reloadState": "AVAILABLE"
+   },
+   {
+    "step": "12-forward-document",
+    "ok": true,
+    "state": "AVAILABLE",
+    "reloadState": "AVAILABLE"
+   },
+   {
+    "step": "13-forward-1",
+    "ok": true,
+    "state": "MODE_MISMATCH",
+    "reloadState": "MODE_MISMATCH"
+   },
+   {
+    "step": "13-forward-2",
+    "ok": true,
+    "state": "AVAILABLE",
+    "reloadState": "AVAILABLE"
+   },
+   {
+    "step": "13-forward-3",
+    "ok": true,
+    "state": null,
+    "reloadState": null
+   },
+   {
+    "step": "13-forward-4",
+    "ok": true,
+    "state": null,
+    "reloadState": null
+   },
+   {
+    "step": "13-forward-5",
+    "ok": true,
+    "state": null,
+    "reloadState": null
+   },
+   {
+    "step": "13-forward-6",
+    "ok": true,
+    "state": null,
+    "reloadState": null
+   },
+   {
+    "step": "13-forward-7",
+    "ok": true,
+    "state": "ROLE_MISMATCH",
+    "reloadState": "ROLE_MISMATCH"
+   },
+   {
+    "step": "13-forward-8",
+    "ok": true,
+    "state": "AVAILABLE",
+    "reloadState": "AVAILABLE"
+   }
+  ],
+  "navNonGet": [],
+  "navAnalyze": [],
+  "navDocumentLoads": [
+   "11-back-leaves-document /career/analyses",
+   "12-forward-document /career/demo"
+  ],
+  "posts": [
+   "02-session-pxj POST /api/career/analyze",
+   "14-second-run-reload POST /api/career/analyze"
+  ],
+  "geminiInspector": 0
+ },
+ "requests": [
+  {
+   "phase": "01-other-document",
+   "tab": "nav",
+   "method": "GET",
+   "type": "document",
+   "path": "/career/analyses"
+  },
+  {
+   "phase": "01-other-document",
+   "tab": "nav",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/analyses"
+  },
+  {
+   "phase": "02-session-pxj",
+   "tab": "nav",
+   "method": "GET",
+   "type": "document",
+   "path": "/career/demo?focus=CAPABILITY&investigationMode=PERSON_X_JOB&jobPoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7&jobScopePoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7&jobScopeRoleId=role_pink_alpha_architect"
+  },
+  {
+   "phase": "02-session-pxj",
+   "tab": "nav",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/job-pools/JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7"
+  },
+  {
+   "phase": "02-session-pxj",
+   "tab": "nav",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/job-pools"
+  },
+  {
+   "phase": "02-session-pxj",
+   "tab": "nav",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/job-pools/JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7"
+  },
+  {
+   "phase": "02-session-pxj",
+   "tab": "nav",
+   "method": "POST",
+   "type": "fetch",
+   "path": "/api/career/analyze"
+  },
+  {
+   "phase": "02-session-pxj",
+   "tab": "nav",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/jobs/JOB_1792755521491_321"
+  },
+  {
+   "phase": "02-session-pxj",
+   "tab": "nav",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/jobs/JOB_1792755521491_321"
+  },
+  {
+   "phase": "02-session-pxj",
+   "tab": "nav",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/jobs/JOB_1792755521491_321"
+  },
+  {
+   "phase": "02-session-pxj",
+   "tab": "nav",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/analyses/ANL_1792755521491_321"
+  },
+  {
+   "phase": "02-session-pxj",
+   "tab": "nav",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/analyses/ANL_1792755521491_321/investigation"
+  },
+  {
+   "phase": "02-session-pxj",
+   "tab": "nav",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/analyses/ANL_1792755521491_321/job-comparison?jobPoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7&poolRoleId=role_pink_alpha_architect"
+  },
+  {
+   "phase": "04-mode-pxj",
+   "tab": "nav",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/analyses/ANL_1792755521491_321/job-comparison?jobPoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7&poolRoleId=role_pink_alpha_architect"
+  },
+  {
+   "phase": "05-job-field",
+   "tab": "nav",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/job-pools/JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7/matches?analysisId=ANL_1792755521491_321"
+  },
+  {
+   "phase": "05-job-field",
+   "tab": "nav",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/analyses/ANL_1792755521491_321"
+  },
+  {
+   "phase": "07-select-other-job",
+   "tab": "nav",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/job-pools/JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7"
+  },
+  {
+   "phase": "09-offer-role-back",
+   "tab": "nav",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/job-pools/JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7"
+  },
+  {
+   "phase": "09-offer-role-back",
+   "tab": "nav",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/job-pools/JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7/matches?analysisId=ANL_1792755521491_321"
+  },
+  {
+   "phase": "09-offer-role-back",
+   "tab": "nav",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/analyses/ANL_1792755521491_321/job-comparison?jobPoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7&poolRoleId=role_pink_alpha_architect"
+  },
+  {
+   "phase": "10-back-1",
+   "tab": "nav",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/job-pools/JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7"
+  },
+  {
+   "phase": "10-back-1",
+   "tab": "nav",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/analyses/ANL_1792755521491_321/investigation"
+  },
+  {
+   "phase": "10-back-1",
+   "tab": "nav",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/job-pools"
+  },
+  {
+   "phase": "10-back-1",
+   "tab": "nav",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/job-pools/JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7"
+  },
+  {
+   "phase": "10-back-1",
+   "tab": "nav",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/analyses/ANL_1792755521491_321"
+  },
+  {
+   "phase": "10-back-1",
+   "tab": "reload",
+   "method": "GET",
+   "type": "document",
+   "path": "/career/demo?focus=CAPABILITY&investigationMode=PERSON_X_JOB&jobPoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7&jobScopePoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7&jobScopeRoleId=role_pink_beta_platform&analysisId=ANL_1792755521491_321"
+  },
+  {
+   "phase": "10-back-1",
+   "tab": "reload",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/job-pools/JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7"
+  },
+  {
+   "phase": "10-back-1",
+   "tab": "reload",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/analyses/ANL_1792755521491_321/investigation"
+  },
+  {
+   "phase": "10-back-1",
+   "tab": "reload",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/job-pools"
+  },
+  {
+   "phase": "10-back-1",
+   "tab": "reload",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/job-pools/JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7"
+  },
+  {
+   "phase": "10-back-1",
+   "tab": "reload",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/analyses/ANL_1792755521491_321"
+  },
+  {
+   "phase": "10-back-2",
+   "tab": "nav",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/job-pools/JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7"
+  },
+  {
+   "phase": "10-back-2",
+   "tab": "nav",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/analyses/ANL_1792755521491_321/investigation"
+  },
+  {
+   "phase": "10-back-2",
+   "tab": "nav",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/job-pools"
+  },
+  {
+   "phase": "10-back-2",
+   "tab": "nav",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/job-pools/JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7"
+  },
+  {
+   "phase": "10-back-2",
+   "tab": "nav",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/analyses/ANL_1792755521491_321"
+  },
+  {
+   "phase": "10-back-2",
+   "tab": "nav",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/job-pools/JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7/matches?analysisId=ANL_1792755521491_321"
+  },
+  {
+   "phase": "10-back-2",
+   "tab": "nav",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/analyses/ANL_1792755521491_321"
+  },
+  {
+   "phase": "10-back-2",
+   "tab": "reload",
+   "method": "GET",
+   "type": "document",
+   "path": "/career/demo?focus=FIELD&investigationMode=PERSON_X_JOB&jobPoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7&jobScopePoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7&jobScopeRoleId=role_pink_beta_platform&analysisId=ANL_1792755521491_321&jobOrganizationId=org_pink_beta&jobRoleId=role_pink_beta_platform"
+  },
+  {
+   "phase": "10-back-2",
+   "tab": "reload",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/job-pools/JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7"
+  },
+  {
+   "phase": "10-back-2",
+   "tab": "reload",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/analyses/ANL_1792755521491_321/investigation"
+  },
+  {
+   "phase": "10-back-2",
+   "tab": "reload",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/job-pools"
+  },
+  {
+   "phase": "10-back-2",
+   "tab": "reload",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/job-pools/JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7"
+  },
+  {
+   "phase": "10-back-2",
+   "tab": "reload",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/analyses/ANL_1792755521491_321"
+  },
+  {
+   "phase": "10-back-2",
+   "tab": "reload",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/job-pools/JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7/matches?analysisId=ANL_1792755521491_321"
+  },
+  {
+   "phase": "10-back-2",
+   "tab": "reload",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/analyses/ANL_1792755521491_321"
+  },
+  {
+   "phase": "10-back-3",
+   "tab": "nav",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/job-pools/JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7"
+  },
+  {
+   "phase": "10-back-3",
+   "tab": "nav",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/analyses/ANL_1792755521491_321/investigation"
+  },
+  {
+   "phase": "10-back-3",
+   "tab": "nav",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/job-pools"
+  },
+  {
+   "phase": "10-back-3",
+   "tab": "nav",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/job-pools/JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7"
+  },
+  {
+   "phase": "10-back-3",
+   "tab": "nav",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/analyses/ANL_1792755521491_321"
+  },
+  {
+   "phase": "10-back-3",
+   "tab": "nav",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/job-pools/JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7/matches?analysisId=ANL_1792755521491_321"
+  },
+  {
+   "phase": "10-back-3",
+   "tab": "nav",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/analyses/ANL_1792755521491_321"
+  },
+  {
+   "phase": "10-back-3",
+   "tab": "reload",
+   "method": "GET",
+   "type": "document",
+   "path": "/career/demo?focus=FIELD&investigationMode=PERSON_X_JOB&jobPoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7&jobScopePoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7&jobScopeRoleId=role_pink_alpha_architect&analysisId=ANL_1792755521491_321&jobOrganizationId=org_pink_beta&jobRoleId=role_pink_beta_platform"
+  },
+  {
+   "phase": "10-back-3",
+   "tab": "reload",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/job-pools/JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7"
+  },
+  {
+   "phase": "10-back-3",
+   "tab": "reload",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/analyses/ANL_1792755521491_321/investigation"
+  },
+  {
+   "phase": "10-back-3",
+   "tab": "reload",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/job-pools"
+  },
+  {
+   "phase": "10-back-3",
+   "tab": "reload",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/job-pools/JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7"
+  },
+  {
+   "phase": "10-back-3",
+   "tab": "reload",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/analyses/ANL_1792755521491_321"
+  },
+  {
+   "phase": "10-back-3",
+   "tab": "reload",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/job-pools/JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7/matches?analysisId=ANL_1792755521491_321"
+  },
+  {
+   "phase": "10-back-3",
+   "tab": "reload",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/analyses/ANL_1792755521491_321"
+  },
+  {
+   "phase": "10-back-4",
+   "tab": "nav",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/job-pools/JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7"
+  },
+  {
+   "phase": "10-back-4",
+   "tab": "nav",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/analyses/ANL_1792755521491_321/investigation"
+  },
+  {
+   "phase": "10-back-4",
+   "tab": "nav",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/job-pools"
+  },
+  {
+   "phase": "10-back-4",
+   "tab": "nav",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/job-pools/JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7"
+  },
+  {
+   "phase": "10-back-4",
+   "tab": "nav",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/analyses/ANL_1792755521491_321"
+  },
+  {
+   "phase": "10-back-4",
+   "tab": "nav",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/job-pools/JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7/matches?analysisId=ANL_1792755521491_321"
+  },
+  {
+   "phase": "10-back-4",
+   "tab": "nav",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/analyses/ANL_1792755521491_321"
+  },
+  {
+   "phase": "10-back-4",
+   "tab": "reload",
+   "method": "GET",
+   "type": "document",
+   "path": "/career/demo?focus=FIELD&investigationMode=PERSON_X_JOB&jobPoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7&jobScopePoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7&jobScopeRoleId=role_pink_alpha_architect&analysisId=ANL_1792755521491_321&jobOrganizationId=org_pink_beta"
+  },
+  {
+   "phase": "10-back-4",
+   "tab": "reload",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/job-pools/JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7"
+  },
+  {
+   "phase": "10-back-4",
+   "tab": "reload",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/analyses/ANL_1792755521491_321/investigation"
+  },
+  {
+   "phase": "10-back-4",
+   "tab": "reload",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/job-pools"
+  },
+  {
+   "phase": "10-back-4",
+   "tab": "reload",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/job-pools/JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7"
+  },
+  {
+   "phase": "10-back-4",
+   "tab": "reload",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/analyses/ANL_1792755521491_321"
+  },
+  {
+   "phase": "10-back-4",
+   "tab": "reload",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/job-pools/JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7/matches?analysisId=ANL_1792755521491_321"
+  },
+  {
+   "phase": "10-back-4",
+   "tab": "reload",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/analyses/ANL_1792755521491_321"
+  },
+  {
+   "phase": "10-back-5",
+   "tab": "nav",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/job-pools/JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7"
+  },
+  {
+   "phase": "10-back-5",
+   "tab": "nav",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/analyses/ANL_1792755521491_321/investigation"
+  },
+  {
+   "phase": "10-back-5",
+   "tab": "nav",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/job-pools"
+  },
+  {
+   "phase": "10-back-5",
+   "tab": "nav",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/job-pools/JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7"
+  },
+  {
+   "phase": "10-back-5",
+   "tab": "nav",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/analyses/ANL_1792755521491_321"
+  },
+  {
+   "phase": "10-back-5",
+   "tab": "nav",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/job-pools/JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7/matches?analysisId=ANL_1792755521491_321"
+  },
+  {
+   "phase": "10-back-5",
+   "tab": "nav",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/analyses/ANL_1792755521491_321"
+  },
+  {
+   "phase": "10-back-5",
+   "tab": "reload",
+   "method": "GET",
+   "type": "document",
+   "path": "/career/demo?focus=FIELD&investigationMode=PERSON_X_JOB&jobPoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7&jobScopePoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7&jobScopeRoleId=role_pink_alpha_architect&analysisId=ANL_1792755521491_321"
+  },
+  {
+   "phase": "10-back-5",
+   "tab": "reload",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/job-pools/JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7"
+  },
+  {
+   "phase": "10-back-5",
+   "tab": "reload",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/analyses/ANL_1792755521491_321/investigation"
+  },
+  {
+   "phase": "10-back-5",
+   "tab": "reload",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/job-pools"
+  },
+  {
+   "phase": "10-back-5",
+   "tab": "reload",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/job-pools/JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7"
+  },
+  {
+   "phase": "10-back-5",
+   "tab": "reload",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/analyses/ANL_1792755521491_321"
+  },
+  {
+   "phase": "10-back-5",
+   "tab": "reload",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/job-pools/JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7/matches?analysisId=ANL_1792755521491_321"
+  },
+  {
+   "phase": "10-back-5",
+   "tab": "reload",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/analyses/ANL_1792755521491_321"
+  },
+  {
+   "phase": "10-back-6",
+   "tab": "nav",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/job-pools/JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7"
+  },
+  {
+   "phase": "10-back-6",
+   "tab": "nav",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/analyses/ANL_1792755521491_321/investigation"
+  },
+  {
+   "phase": "10-back-6",
+   "tab": "nav",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/job-pools"
+  },
+  {
+   "phase": "10-back-6",
+   "tab": "nav",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/job-pools/JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7"
+  },
+  {
+   "phase": "10-back-6",
+   "tab": "nav",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/analyses/ANL_1792755521491_321"
+  },
+  {
+   "phase": "10-back-6",
+   "tab": "nav",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/analyses/ANL_1792755521491_321/job-comparison?jobPoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7&poolRoleId=role_pink_alpha_architect"
+  },
+  {
+   "phase": "10-back-6",
+   "tab": "reload",
+   "method": "GET",
+   "type": "document",
+   "path": "/career/demo?focus=CAPABILITY&investigationMode=PERSON_X_JOB&jobPoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7&jobScopePoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7&jobScopeRoleId=role_pink_alpha_architect&analysisId=ANL_1792755521491_321"
+  },
+  {
+   "phase": "10-back-6",
+   "tab": "reload",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/job-pools/JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7"
+  },
+  {
+   "phase": "10-back-6",
+   "tab": "reload",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/analyses/ANL_1792755521491_321/investigation"
+  },
+  {
+   "phase": "10-back-6",
+   "tab": "reload",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/job-pools"
+  },
+  {
+   "phase": "10-back-6",
+   "tab": "reload",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/job-pools/JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7"
+  },
+  {
+   "phase": "10-back-6",
+   "tab": "reload",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/analyses/ANL_1792755521491_321"
+  },
+  {
+   "phase": "10-back-6",
+   "tab": "reload",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/analyses/ANL_1792755521491_321/job-comparison?jobPoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7&poolRoleId=role_pink_alpha_architect"
+  },
+  {
+   "phase": "10-back-7",
+   "tab": "nav",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/job-pools/JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7"
+  },
+  {
+   "phase": "10-back-7",
+   "tab": "nav",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/analyses/ANL_1792755521491_321/investigation"
+  },
+  {
+   "phase": "10-back-7",
+   "tab": "nav",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/job-pools"
+  },
+  {
+   "phase": "10-back-7",
+   "tab": "nav",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/job-pools/JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7"
+  },
+  {
+   "phase": "10-back-7",
+   "tab": "nav",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/analyses/ANL_1792755521491_321"
+  },
+  {
+   "phase": "10-back-7",
+   "tab": "reload",
+   "method": "GET",
+   "type": "document",
+   "path": "/career/demo?focus=CAPABILITY&investigationMode=PERSON&jobPoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7&jobScopePoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7&jobScopeRoleId=role_pink_alpha_architect&analysisId=ANL_1792755521491_321"
+  },
+  {
+   "phase": "10-back-7",
+   "tab": "reload",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/job-pools/JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7"
+  },
+  {
+   "phase": "10-back-7",
+   "tab": "reload",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/analyses/ANL_1792755521491_321/investigation"
+  },
+  {
+   "phase": "10-back-7",
+   "tab": "reload",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/job-pools"
+  },
+  {
+   "phase": "10-back-7",
+   "tab": "reload",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/job-pools/JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7"
+  },
+  {
+   "phase": "10-back-7",
+   "tab": "reload",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/analyses/ANL_1792755521491_321"
+  },
+  {
+   "phase": "10-back-8",
+   "tab": "nav",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/job-pools/JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7"
+  },
+  {
+   "phase": "10-back-8",
+   "tab": "nav",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/analyses/ANL_1792755521491_321/investigation"
+  },
+  {
+   "phase": "10-back-8",
+   "tab": "nav",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/job-pools"
+  },
+  {
+   "phase": "10-back-8",
+   "tab": "nav",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/job-pools/JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7"
+  },
+  {
+   "phase": "10-back-8",
+   "tab": "nav",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/analyses/ANL_1792755521491_321"
+  },
+  {
+   "phase": "10-back-8",
+   "tab": "nav",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/analyses/ANL_1792755521491_321/job-comparison?jobPoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7&poolRoleId=role_pink_alpha_architect"
+  },
+  {
+   "phase": "10-back-8",
+   "tab": "reload",
+   "method": "GET",
+   "type": "document",
+   "path": "/career/demo?focus=CAPABILITY&investigationMode=PERSON_X_JOB&jobPoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7&jobScopePoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7&jobScopeRoleId=role_pink_alpha_architect&analysisId=ANL_1792755521491_321"
+  },
+  {
+   "phase": "10-back-8",
+   "tab": "reload",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/job-pools/JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7"
+  },
+  {
+   "phase": "10-back-8",
+   "tab": "reload",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/analyses/ANL_1792755521491_321/investigation"
+  },
+  {
+   "phase": "10-back-8",
+   "tab": "reload",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/job-pools"
+  },
+  {
+   "phase": "10-back-8",
+   "tab": "reload",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/job-pools/JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7"
+  },
+  {
+   "phase": "10-back-8",
+   "tab": "reload",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/analyses/ANL_1792755521491_321"
+  },
+  {
+   "phase": "10-back-8",
+   "tab": "reload",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/analyses/ANL_1792755521491_321/job-comparison?jobPoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7&poolRoleId=role_pink_alpha_architect"
+  },
+  {
+   "phase": "11-back-leaves-document",
+   "tab": "nav",
+   "method": "GET",
+   "type": "document",
+   "path": "/career/analyses"
+  },
+  {
+   "phase": "11-back-leaves-document",
+   "tab": "nav",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/analyses"
+  },
+  {
+   "phase": "12-forward-document",
+   "tab": "nav",
+   "method": "GET",
+   "type": "document",
+   "path": "/career/demo?focus=CAPABILITY&investigationMode=PERSON_X_JOB&jobPoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7&jobScopePoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7&jobScopeRoleId=role_pink_alpha_architect&analysisId=ANL_1792755521491_321"
+  },
+  {
+   "phase": "12-forward-document",
+   "tab": "nav",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/job-pools/JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7"
+  },
+  {
+   "phase": "12-forward-document",
+   "tab": "nav",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/analyses/ANL_1792755521491_321/investigation"
+  },
+  {
+   "phase": "12-forward-document",
+   "tab": "nav",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/job-pools"
+  },
+  {
+   "phase": "12-forward-document",
+   "tab": "nav",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/job-pools/JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7"
+  },
+  {
+   "phase": "12-forward-document",
+   "tab": "nav",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/analyses/ANL_1792755521491_321"
+  },
+  {
+   "phase": "12-forward-document",
+   "tab": "nav",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/analyses/ANL_1792755521491_321/job-comparison?jobPoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7&poolRoleId=role_pink_alpha_architect"
+  },
+  {
+   "phase": "12-forward-document",
+   "tab": "reload",
+   "method": "GET",
+   "type": "document",
+   "path": "/career/demo?focus=CAPABILITY&investigationMode=PERSON_X_JOB&jobPoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7&jobScopePoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7&jobScopeRoleId=role_pink_alpha_architect&analysisId=ANL_1792755521491_321"
+  },
+  {
+   "phase": "12-forward-document",
+   "tab": "reload",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/job-pools/JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7"
+  },
+  {
+   "phase": "12-forward-document",
+   "tab": "reload",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/analyses/ANL_1792755521491_321/investigation"
+  },
+  {
+   "phase": "12-forward-document",
+   "tab": "reload",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/job-pools"
+  },
+  {
+   "phase": "12-forward-document",
+   "tab": "reload",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/job-pools/JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7"
+  },
+  {
+   "phase": "12-forward-document",
+   "tab": "reload",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/analyses/ANL_1792755521491_321"
+  },
+  {
+   "phase": "12-forward-document",
+   "tab": "reload",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/analyses/ANL_1792755521491_321/job-comparison?jobPoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7&poolRoleId=role_pink_alpha_architect"
+  },
+  {
+   "phase": "13-forward-1",
+   "tab": "nav",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/job-pools/JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7"
+  },
+  {
+   "phase": "13-forward-1",
+   "tab": "nav",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/analyses/ANL_1792755521491_321/investigation"
+  },
+  {
+   "phase": "13-forward-1",
+   "tab": "nav",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/job-pools"
+  },
+  {
+   "phase": "13-forward-1",
+   "tab": "nav",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/job-pools/JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7"
+  },
+  {
+   "phase": "13-forward-1",
+   "tab": "nav",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/analyses/ANL_1792755521491_321"
+  },
+  {
+   "phase": "13-forward-1",
+   "tab": "reload",
+   "method": "GET",
+   "type": "document",
+   "path": "/career/demo?focus=CAPABILITY&investigationMode=PERSON&jobPoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7&jobScopePoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7&jobScopeRoleId=role_pink_alpha_architect&analysisId=ANL_1792755521491_321"
+  },
+  {
+   "phase": "13-forward-1",
+   "tab": "reload",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/job-pools/JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7"
+  },
+  {
+   "phase": "13-forward-1",
+   "tab": "reload",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/analyses/ANL_1792755521491_321/investigation"
+  },
+  {
+   "phase": "13-forward-1",
+   "tab": "reload",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/job-pools"
+  },
+  {
+   "phase": "13-forward-1",
+   "tab": "reload",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/job-pools/JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7"
+  },
+  {
+   "phase": "13-forward-1",
+   "tab": "reload",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/analyses/ANL_1792755521491_321"
+  },
+  {
+   "phase": "13-forward-2",
+   "tab": "nav",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/job-pools/JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7"
+  },
+  {
+   "phase": "13-forward-2",
+   "tab": "nav",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/analyses/ANL_1792755521491_321/investigation"
+  },
+  {
+   "phase": "13-forward-2",
+   "tab": "nav",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/job-pools"
+  },
+  {
+   "phase": "13-forward-2",
+   "tab": "nav",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/job-pools/JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7"
+  },
+  {
+   "phase": "13-forward-2",
+   "tab": "nav",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/analyses/ANL_1792755521491_321"
+  },
+  {
+   "phase": "13-forward-2",
+   "tab": "nav",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/analyses/ANL_1792755521491_321/job-comparison?jobPoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7&poolRoleId=role_pink_alpha_architect"
+  },
+  {
+   "phase": "13-forward-2",
+   "tab": "reload",
+   "method": "GET",
+   "type": "document",
+   "path": "/career/demo?focus=CAPABILITY&investigationMode=PERSON_X_JOB&jobPoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7&jobScopePoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7&jobScopeRoleId=role_pink_alpha_architect&analysisId=ANL_1792755521491_321"
+  },
+  {
+   "phase": "13-forward-2",
+   "tab": "reload",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/job-pools/JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7"
+  },
+  {
+   "phase": "13-forward-2",
+   "tab": "reload",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/analyses/ANL_1792755521491_321/investigation"
+  },
+  {
+   "phase": "13-forward-2",
+   "tab": "reload",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/job-pools"
+  },
+  {
+   "phase": "13-forward-2",
+   "tab": "reload",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/job-pools/JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7"
+  },
+  {
+   "phase": "13-forward-2",
+   "tab": "reload",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/analyses/ANL_1792755521491_321"
+  },
+  {
+   "phase": "13-forward-2",
+   "tab": "reload",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/analyses/ANL_1792755521491_321/job-comparison?jobPoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7&poolRoleId=role_pink_alpha_architect"
+  },
+  {
+   "phase": "13-forward-3",
+   "tab": "nav",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/job-pools/JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7"
+  },
+  {
+   "phase": "13-forward-3",
+   "tab": "nav",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/analyses/ANL_1792755521491_321/investigation"
+  },
+  {
+   "phase": "13-forward-3",
+   "tab": "nav",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/job-pools"
+  },
+  {
+   "phase": "13-forward-3",
+   "tab": "nav",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/job-pools/JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7"
+  },
+  {
+   "phase": "13-forward-3",
+   "tab": "nav",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/analyses/ANL_1792755521491_321"
+  },
+  {
+   "phase": "13-forward-3",
+   "tab": "nav",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/job-pools/JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7/matches?analysisId=ANL_1792755521491_321"
+  },
+  {
+   "phase": "13-forward-3",
+   "tab": "nav",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/analyses/ANL_1792755521491_321"
+  },
+  {
+   "phase": "13-forward-3",
+   "tab": "reload",
+   "method": "GET",
+   "type": "document",
+   "path": "/career/demo?focus=FIELD&investigationMode=PERSON_X_JOB&jobPoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7&jobScopePoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7&jobScopeRoleId=role_pink_alpha_architect&analysisId=ANL_1792755521491_321"
+  },
+  {
+   "phase": "13-forward-3",
+   "tab": "reload",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/job-pools/JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7"
+  },
+  {
+   "phase": "13-forward-3",
+   "tab": "reload",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/analyses/ANL_1792755521491_321/investigation"
+  },
+  {
+   "phase": "13-forward-3",
+   "tab": "reload",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/job-pools"
+  },
+  {
+   "phase": "13-forward-3",
+   "tab": "reload",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/job-pools/JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7"
+  },
+  {
+   "phase": "13-forward-3",
+   "tab": "reload",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/analyses/ANL_1792755521491_321"
+  },
+  {
+   "phase": "13-forward-3",
+   "tab": "reload",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/job-pools/JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7/matches?analysisId=ANL_1792755521491_321"
+  },
+  {
+   "phase": "13-forward-3",
+   "tab": "reload",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/analyses/ANL_1792755521491_321"
+  },
+  {
+   "phase": "13-forward-4",
+   "tab": "nav",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/job-pools/JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7"
+  },
+  {
+   "phase": "13-forward-4",
+   "tab": "nav",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/analyses/ANL_1792755521491_321/investigation"
+  },
+  {
+   "phase": "13-forward-4",
+   "tab": "nav",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/job-pools"
+  },
+  {
+   "phase": "13-forward-4",
+   "tab": "nav",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/job-pools/JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7"
+  },
+  {
+   "phase": "13-forward-4",
+   "tab": "nav",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/analyses/ANL_1792755521491_321"
+  },
+  {
+   "phase": "13-forward-4",
+   "tab": "nav",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/job-pools/JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7/matches?analysisId=ANL_1792755521491_321"
+  },
+  {
+   "phase": "13-forward-4",
+   "tab": "nav",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/analyses/ANL_1792755521491_321"
+  },
+  {
+   "phase": "13-forward-4",
+   "tab": "reload",
+   "method": "GET",
+   "type": "document",
+   "path": "/career/demo?focus=FIELD&investigationMode=PERSON_X_JOB&jobPoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7&jobScopePoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7&jobScopeRoleId=role_pink_alpha_architect&analysisId=ANL_1792755521491_321&jobOrganizationId=org_pink_beta"
+  },
+  {
+   "phase": "13-forward-4",
+   "tab": "reload",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/job-pools/JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7"
+  },
+  {
+   "phase": "13-forward-4",
+   "tab": "reload",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/analyses/ANL_1792755521491_321/investigation"
+  },
+  {
+   "phase": "13-forward-4",
+   "tab": "reload",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/job-pools"
+  },
+  {
+   "phase": "13-forward-4",
+   "tab": "reload",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/job-pools/JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7"
+  },
+  {
+   "phase": "13-forward-4",
+   "tab": "reload",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/analyses/ANL_1792755521491_321"
+  },
+  {
+   "phase": "13-forward-4",
+   "tab": "reload",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/job-pools/JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7/matches?analysisId=ANL_1792755521491_321"
+  },
+  {
+   "phase": "13-forward-4",
+   "tab": "reload",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/analyses/ANL_1792755521491_321"
+  },
+  {
+   "phase": "13-forward-5",
+   "tab": "nav",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/job-pools/JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7"
+  },
+  {
+   "phase": "13-forward-5",
+   "tab": "nav",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/analyses/ANL_1792755521491_321/investigation"
+  },
+  {
+   "phase": "13-forward-5",
+   "tab": "nav",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/job-pools"
+  },
+  {
+   "phase": "13-forward-5",
+   "tab": "nav",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/job-pools/JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7"
+  },
+  {
+   "phase": "13-forward-5",
+   "tab": "nav",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/analyses/ANL_1792755521491_321"
+  },
+  {
+   "phase": "13-forward-5",
+   "tab": "nav",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/job-pools/JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7/matches?analysisId=ANL_1792755521491_321"
+  },
+  {
+   "phase": "13-forward-5",
+   "tab": "nav",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/analyses/ANL_1792755521491_321"
+  },
+  {
+   "phase": "13-forward-5",
+   "tab": "reload",
+   "method": "GET",
+   "type": "document",
+   "path": "/career/demo?focus=FIELD&investigationMode=PERSON_X_JOB&jobPoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7&jobScopePoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7&jobScopeRoleId=role_pink_alpha_architect&analysisId=ANL_1792755521491_321&jobOrganizationId=org_pink_beta&jobRoleId=role_pink_beta_platform"
+  },
+  {
+   "phase": "13-forward-5",
+   "tab": "reload",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/job-pools/JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7"
+  },
+  {
+   "phase": "13-forward-5",
+   "tab": "reload",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/analyses/ANL_1792755521491_321/investigation"
+  },
+  {
+   "phase": "13-forward-5",
+   "tab": "reload",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/job-pools"
+  },
+  {
+   "phase": "13-forward-5",
+   "tab": "reload",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/job-pools/JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7"
+  },
+  {
+   "phase": "13-forward-5",
+   "tab": "reload",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/analyses/ANL_1792755521491_321"
+  },
+  {
+   "phase": "13-forward-5",
+   "tab": "reload",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/job-pools/JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7/matches?analysisId=ANL_1792755521491_321"
+  },
+  {
+   "phase": "13-forward-5",
+   "tab": "reload",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/analyses/ANL_1792755521491_321"
+  },
+  {
+   "phase": "13-forward-6",
+   "tab": "nav",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/job-pools/JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7"
+  },
+  {
+   "phase": "13-forward-6",
+   "tab": "nav",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/analyses/ANL_1792755521491_321/investigation"
+  },
+  {
+   "phase": "13-forward-6",
+   "tab": "nav",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/job-pools"
+  },
+  {
+   "phase": "13-forward-6",
+   "tab": "nav",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/job-pools/JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7"
+  },
+  {
+   "phase": "13-forward-6",
+   "tab": "nav",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/analyses/ANL_1792755521491_321"
+  },
+  {
+   "phase": "13-forward-6",
+   "tab": "nav",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/job-pools/JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7/matches?analysisId=ANL_1792755521491_321"
+  },
+  {
+   "phase": "13-forward-6",
+   "tab": "nav",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/analyses/ANL_1792755521491_321"
+  },
+  {
+   "phase": "13-forward-6",
+   "tab": "reload",
+   "method": "GET",
+   "type": "document",
+   "path": "/career/demo?focus=FIELD&investigationMode=PERSON_X_JOB&jobPoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7&jobScopePoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7&jobScopeRoleId=role_pink_beta_platform&analysisId=ANL_1792755521491_321&jobOrganizationId=org_pink_beta&jobRoleId=role_pink_beta_platform"
+  },
+  {
+   "phase": "13-forward-6",
+   "tab": "reload",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/job-pools/JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7"
+  },
+  {
+   "phase": "13-forward-6",
+   "tab": "reload",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/analyses/ANL_1792755521491_321/investigation"
+  },
+  {
+   "phase": "13-forward-6",
+   "tab": "reload",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/job-pools"
+  },
+  {
+   "phase": "13-forward-6",
+   "tab": "reload",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/job-pools/JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7"
+  },
+  {
+   "phase": "13-forward-6",
+   "tab": "reload",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/analyses/ANL_1792755521491_321"
+  },
+  {
+   "phase": "13-forward-6",
+   "tab": "reload",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/job-pools/JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7/matches?analysisId=ANL_1792755521491_321"
+  },
+  {
+   "phase": "13-forward-6",
+   "tab": "reload",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/analyses/ANL_1792755521491_321"
+  },
+  {
+   "phase": "13-forward-7",
+   "tab": "nav",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/job-pools/JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7"
+  },
+  {
+   "phase": "13-forward-7",
+   "tab": "nav",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/analyses/ANL_1792755521491_321/investigation"
+  },
+  {
+   "phase": "13-forward-7",
+   "tab": "nav",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/job-pools"
+  },
+  {
+   "phase": "13-forward-7",
+   "tab": "nav",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/job-pools/JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7"
+  },
+  {
+   "phase": "13-forward-7",
+   "tab": "nav",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/analyses/ANL_1792755521491_321"
+  },
+  {
+   "phase": "13-forward-7",
+   "tab": "reload",
+   "method": "GET",
+   "type": "document",
+   "path": "/career/demo?focus=CAPABILITY&investigationMode=PERSON_X_JOB&jobPoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7&jobScopePoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7&jobScopeRoleId=role_pink_beta_platform&analysisId=ANL_1792755521491_321"
+  },
+  {
+   "phase": "13-forward-7",
+   "tab": "reload",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/job-pools/JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7"
+  },
+  {
+   "phase": "13-forward-7",
+   "tab": "reload",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/analyses/ANL_1792755521491_321/investigation"
+  },
+  {
+   "phase": "13-forward-7",
+   "tab": "reload",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/job-pools"
+  },
+  {
+   "phase": "13-forward-7",
+   "tab": "reload",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/job-pools/JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7"
+  },
+  {
+   "phase": "13-forward-7",
+   "tab": "reload",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/analyses/ANL_1792755521491_321"
+  },
+  {
+   "phase": "13-forward-8",
+   "tab": "nav",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/job-pools/JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7"
+  },
+  {
+   "phase": "13-forward-8",
+   "tab": "nav",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/analyses/ANL_1792755521491_321/investigation"
+  },
+  {
+   "phase": "13-forward-8",
+   "tab": "nav",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/job-pools"
+  },
+  {
+   "phase": "13-forward-8",
+   "tab": "nav",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/job-pools/JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7"
+  },
+  {
+   "phase": "13-forward-8",
+   "tab": "nav",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/analyses/ANL_1792755521491_321"
+  },
+  {
+   "phase": "13-forward-8",
+   "tab": "nav",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/analyses/ANL_1792755521491_321/job-comparison?jobPoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7&poolRoleId=role_pink_alpha_architect"
+  },
+  {
+   "phase": "13-forward-8",
+   "tab": "reload",
+   "method": "GET",
+   "type": "document",
+   "path": "/career/demo?focus=CAPABILITY&investigationMode=PERSON_X_JOB&jobPoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7&jobScopePoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7&jobScopeRoleId=role_pink_alpha_architect&analysisId=ANL_1792755521491_321"
+  },
+  {
+   "phase": "13-forward-8",
+   "tab": "reload",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/job-pools/JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7"
+  },
+  {
+   "phase": "13-forward-8",
+   "tab": "reload",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/analyses/ANL_1792755521491_321/investigation"
+  },
+  {
+   "phase": "13-forward-8",
+   "tab": "reload",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/job-pools"
+  },
+  {
+   "phase": "13-forward-8",
+   "tab": "reload",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/job-pools/JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7"
+  },
+  {
+   "phase": "13-forward-8",
+   "tab": "reload",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/analyses/ANL_1792755521491_321"
+  },
+  {
+   "phase": "13-forward-8",
+   "tab": "reload",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/analyses/ANL_1792755521491_321/job-comparison?jobPoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7&poolRoleId=role_pink_alpha_architect"
+  },
+  {
+   "phase": "14-second-run-reload",
+   "tab": "nav",
+   "method": "POST",
+   "type": "fetch",
+   "path": "/api/career/analyze"
+  },
+  {
+   "phase": "14-second-run-reload",
+   "tab": "nav",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/jobs/JOB_1792755647649_670"
+  },
+  {
+   "phase": "14-second-run-reload",
+   "tab": "nav",
+   "method": "GET",
+   "type": "document",
+   "path": "/career/demo?focus=CAPABILITY&investigationMode=PERSON_X_JOB&jobPoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7&jobScopePoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7&jobScopeRoleId=role_pink_alpha_architect&analysisId=ANL_1792755521491_321&analysisJobId=JOB_1792755647649_670"
+  },
+  {
+   "phase": "14-second-run-reload",
+   "tab": "nav",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/jobs/JOB_1792755647649_670"
+  },
+  {
+   "phase": "14-second-run-reload",
+   "tab": "nav",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/job-pools/JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7"
+  },
+  {
+   "phase": "14-second-run-reload",
+   "tab": "nav",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/analyses/ANL_1792755521491_321/investigation"
+  },
+  {
+   "phase": "14-second-run-reload",
+   "tab": "nav",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/job-pools"
+  },
+  {
+   "phase": "14-second-run-reload",
+   "tab": "nav",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/job-pools/JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7"
+  },
+  {
+   "phase": "14-second-run-reload",
+   "tab": "nav",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/analyses/ANL_1792755521491_321"
+  },
+  {
+   "phase": "14-second-run-reload",
+   "tab": "nav",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/analyses/ANL_1792755521491_321/job-comparison?jobPoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7&poolRoleId=role_pink_alpha_architect"
+  },
+  {
+   "phase": "14-second-run-reload",
+   "tab": "nav",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/jobs/JOB_1792755647649_670"
+  },
+  {
+   "phase": "14-second-run-reload",
+   "tab": "nav",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/analyses/ANL_1792755647649_670"
+  },
+  {
+   "phase": "14-second-run-reload",
+   "tab": "nav",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/analyses/ANL_1792755647649_670/investigation"
+  },
+  {
+   "phase": "14-second-run-reload",
+   "tab": "nav",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/analyses/ANL_1792755647649_670/job-comparison?jobPoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7&poolRoleId=role_pink_alpha_architect"
+  },
+  {
+   "phase": "15-unknown-job",
+   "tab": "nav",
+   "method": "GET",
+   "type": "document",
+   "path": "/career/demo?focus=CAPABILITY&investigationMode=PERSON_X_JOB&jobScopePoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7&jobScopeRoleId=role_pink_alpha_architect&analysisJobId=JOB_1000000000000_1"
+  },
+  {
+   "phase": "15-unknown-job",
+   "tab": "nav",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/jobs/JOB_1000000000000_1"
+  },
+  {
+   "phase": "15-unknown-job",
+   "tab": "nav",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/job-pools/JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7"
+  },
+  {
+   "phase": "15-unknown-job",
+   "tab": "nav",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/job-pools"
+  },
+  {
+   "phase": "16-malformed-job",
+   "tab": "nav",
+   "method": "GET",
+   "type": "document",
+   "path": "/career/demo?focus=CAPABILITY&investigationMode=PERSON_X_JOB&jobScopePoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7&jobScopeRoleId=role_pink_alpha_architect&analysisJobId=..%2Fx"
+  },
+  {
+   "phase": "16-malformed-job",
+   "tab": "nav",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/job-pools/JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7"
+  },
+  {
+   "phase": "16-malformed-job",
+   "tab": "nav",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/job-pools"
+  },
+  {
+   "phase": "17-unknown-mode",
+   "tab": "nav",
+   "method": "GET",
+   "type": "document",
+   "path": "/career/demo?focus=FIELD&investigationMode=BOGUS&jobPoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7"
+  },
+  {
+   "phase": "17-unknown-mode",
+   "tab": "nav",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/job-pools"
+  },
+  {
+   "phase": "17-unknown-mode",
+   "tab": "nav",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/job-pools/JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7"
+  },
+  {
+   "phase": "18-staged-hint",
+   "tab": "nav",
+   "method": "GET",
+   "type": "document",
+   "path": "/career/demo?focus=CAPABILITY&investigationMode=PERSON"
+  },
+  {
+   "phase": "18-staged-hint",
+   "tab": "nav",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/job-pools"
+  },
+  {
+   "phase": "19-staged-after-reload",
+   "tab": "nav",
+   "method": "GET",
+   "type": "document",
+   "path": "/career/demo?focus=CAPABILITY&investigationMode=PERSON"
+  },
+  {
+   "phase": "19-staged-after-reload",
+   "tab": "nav",
+   "method": "GET",
+   "type": "fetch",
+   "path": "/api/career/job-pools"
+  }
+ ]
+}

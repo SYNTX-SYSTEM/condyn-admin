@@ -1,0 +1,14 @@
+N-1 … N-5 on 2f96e63 (owner "OWNER_GO_FULL_PXJ_CLOSURE" §05), npm run test:isolated on a fresh disposable database each run.
+
+tsc --noEmit: only docs/career_analysis/evidence/video-readiness/scripts/relay-check.mts(13,214) (known, unchanged); each of the
+five commits on its own: no other error.
+
+Focused group (test/career/pxj-first-screen, test/career/three-modes, career-demo-ui, career-f12-pulse-alignment,
+career-sil-empty-orbit-visual-attention, career-sil-global-language-wiring, hr-decision-loop/dock-ssr, job-pool/syntx-field-ssr,
+career-frontend-job-lifecycle): Test Files 23 passed (23), Tests 291 passed (291).
+test/career/pxj-first-screen alone: Test Files 13 passed (13), Tests 127 passed (127).
+
+e2e (clean worktree on 2f96e63, no lab in that checkout): career-demo-e2e + hr-decision-loop-frontend.e2e:
+Test Files 2 passed (2), Tests 14 passed (14).
+
+Counter-proof: the new tests against 88539d3 → nav-counterproof-88539d3.txt (32 failed | 9 passed of 41; every REPRODUCE fails).

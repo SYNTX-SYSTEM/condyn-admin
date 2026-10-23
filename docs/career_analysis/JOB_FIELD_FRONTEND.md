@@ -1763,6 +1763,29 @@ already fail on `49e2bc6`.
     never "no job selected";
   - F-RF-5: the shell names the role id of a VALID selected job, so two roles with the same title are told apart.
 
+#### 13.2.39 Navigation and recovery (owner "OWNER_GO_FULL_PXJ_CLOSURE" §05, GELB N-1 … N-5, 2026-10-23)
+
+- **N-1 Back / Forward (NAV ≡ RELOAD).**
+  - A decision the user takes that the URL carries is one history entry (push). That covers mode, field, pool, observation, a job
+    chosen, removed or opened, and the offer's role.
+  - What the system adds afterwards replaces the entry on view: `analysisId` and mode on SUCCEEDED, `analysisJobId`, and the
+    normalisations.
+  - On popstate the dashboard is mounted afresh from the entry's URL by `CareerDemoHistory`. It uses the parser of `page.tsx`
+    (`lib/career/ui/career-demo-url.ts`).
+  - Not kept across Back / Forward, as on a reload: language, orbit and zoom, staged sources.
+  - The HR Decision Loop dock keeps its replace.
+- **N-2 a running analysis survives a reload.**
+  - `analysisJobId` is written on the 202. The job is then followed by GET only (`CareerJobController.resumeJob`).
+  - SUCCEEDED replaces it with `analysisId`.
+  - FAILED and "analysis job not found" (404) show the job id and keep the parameter.
+  - There is no restart and no retry POST.
+  - Only the server's `JOB_<ms>_<n>` counts; any other value is removed.
+- **N-3:** an unknown `investigationMode` is removed on mount (the same default as without it).
+- **N-4:** the `analysisId` comment says what G1 does.
+- **N-5:** staged sources say, EN and DE, that a reload, Back or Forward discards them. Nothing is stored.
+- **Evidence:** `docs/career_analysis/evidence/pxj-g1/README.md` §4. The walk ran on the production server, because next dev's
+  `no-cache` documents are not revalidated on Back / Forward across documents (GELB).
+
 ### 13.3 DOM contract (PINK BR-1 … BR-5; GELB conditions a/b)
 
 **BR-1 field root** `data-testid="syntx-field"`: `data-field-grammar="SYNTX_FIELD_V1"`, `data-observation-kind` FIELD|ORGANIZATION|ROLE|REQUIREMENT
