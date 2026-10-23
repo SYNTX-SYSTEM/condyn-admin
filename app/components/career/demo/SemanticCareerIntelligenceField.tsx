@@ -301,6 +301,11 @@ export function SemanticCareerIntelligenceField({
     setInvestigationMode(next);
     writeCareerDemoUrl({ [INVESTIGATION_URL_PARAM]: next }, "push");
   };
+  /** N-3 O-RF-1: a mode the URL names that is none (unknown, empty or repeated) is removed on mount, so the URL says what the
+   *  interface shows: the same default as without the parameter (a replace; nothing to write when the URL names none). */
+  useEffect(() => {
+    if (investigationModeFromParam(initialInvestigationMode) === null) writeCareerDemoUrl({ [INVESTIGATION_URL_PARAM]: null }, "replace");
+  }, []);
   const investigationCopy = t.syntx.investigation;
 
   // Job Connection: one workflow read shared by the control panel and the Job Field focus (presentation only).
