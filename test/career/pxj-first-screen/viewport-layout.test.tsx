@@ -32,6 +32,11 @@ describe("O-PXJ-720 · the dashboard carries the viewport rules", () => {
     expect(fit).toMatch(/\[data-testid="semantic-career-intelligence-field"\] \{ min-height: 0 !important; height: auto !important;/);
   });
 
+  it("REPRODUCE: the Job Field's panel ends above the bottom edge (its own scroll) and the uploaded pools open beside it", () => {
+    expect(fit).toContain('[data-sx-field="job"] > [data-sx-orient] { max-height: calc(100vh - 161px); overflow-y: auto; overflow-x: hidden; overscroll-behavior: contain; }');
+    expect(fit).toContain('[data-sx-field="job"] > [data-testid="job-pool-list"] { top: 84px !important; left: calc(40px + min(340px, 28vw)) !important; max-height: calc(100vh - 161px) !important; }');
+  });
+
   it("REPRODUCE: the source dock starts below the shell and ends above the fixed inspector (V-01)", () => {
     expect(fit).toMatch(/div:has\(\[data-testid="source-dock"\]\) \{ top: 71px !important; transform: none !important; max-height: calc\(100vh - 132px - 172px\); overflow-y: auto; \}/);
     // The idle inspector is 122 px high at bottom 24 px: its top is 146 px above the bottom edge, the dock ends 172 px above it.

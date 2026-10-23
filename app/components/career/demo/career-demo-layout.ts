@@ -114,6 +114,10 @@ ${HUD} > span { color: rgba(130, 200, 224, 0.85) !important; }
   ${STAGE} { transform-origin: 0 0; scale: var(--sx-stage-scale, 1); translate: var(--sx-stage-dx, 0px) var(--sx-stage-dy, 0px); }
   ${FIELD}:has([data-pxj-panel]) > div:has(> svg[data-testid="resonance-energy-paths"]) { scale: var(--sx-stage-scale-panel, 1); translate: var(--sx-stage-dx-panel, 0px) var(--sx-stage-dy-panel, 0px); }
   ${DOCK} { top: ${FIT_TOP - 61}px !important; transform: none !important; max-height: calc(100vh - ${FIT_TOP}px - 172px); overflow-y: auto; }
+  /* The Job Field's panel ends above the bottom edge and scrolls in itself (its edge actions stay reachable at 720 px). */
+  ${JOB} > [data-sx-orient] { max-height: calc(100vh - 161px); overflow-y: auto; overflow-x: hidden; overscroll-behavior: contain; }
+  /* … so the uploaded pools open beside it, not below it (out of the viewport). */
+  ${JOB} > [data-testid="job-pool-list"] { top: 84px !important; left: calc(40px + min(340px, 28vw)) !important; max-height: calc(100vh - 161px) !important; }
   ${FIELD} [data-pxj-panel] { top: ${FIT_TOP - 61}px !important; bottom: 16px !important; right: 24px !important; max-height: none !important; width: min(400px, 30vw) !important; align-self: stretch !important; }
 }
 @media ${STACK} {
