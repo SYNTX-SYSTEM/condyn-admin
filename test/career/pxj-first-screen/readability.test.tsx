@@ -72,6 +72,14 @@ describe("V-09 · inverse", () => {
   });
 });
 
+describe("V-10 · the telemetry's inactive levels and separators reach AA", () => {
+  it("REPRODUCE: inactive levels and separators get an AA colour (stylesheet; markup unchanged)", () => {
+    const css = dashboardCss();
+    expect(css).toMatch(/\[data-testid="semantic-zoom-telemetry"\] button:disabled \{ color: rgba\(156, 186, 204, 0\.95\) !important; \}/);
+    expect(css).toMatch(/\[data-testid="semantic-zoom-telemetry"\] > span \{ color: rgba\(130, 200, 224, 0\.85\) !important; \}/);
+  });
+});
+
 describe("V-13 · hover in the Job Field", () => {
   it("REPRODUCE (V-13): SELECT AS JOB, the pool item and its OPEN show a hover (look only)", () => {
     const html = jobField("ROLE");
