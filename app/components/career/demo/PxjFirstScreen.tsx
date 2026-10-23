@@ -37,7 +37,7 @@ export interface PxjFirstScreenProps {
   locale: SilLocale;
   onSwitchMode: (mode: InvestigationMode) => void;
   onSelectRole: (scope: JobScope) => void;
-  /** NO_ANALYSIS (UX-03 / D-PICK): the way to an existing investigation of the selected role (the caller's element). */
+  /** NO_ANALYSIS and RESULT_NOT_FOUND (UX-03 / D-PICK / V-06): the way to an existing investigation of the selected role (the caller's element). */
   noAnalysis?: React.ReactNode;
 }
 
@@ -144,6 +144,12 @@ export function PxjFirstScreen({ screen, mode, locale, onSwitchMode, onSelectRol
               {noAnalysis}
             </div>
             <span data-testid="pxj-first-way-analyze" style={{ ...statement, fontSize: "12px" }}>{c.ways.analyze}</span>
+          </div>
+        )}
+        {screen.state === "RESULT_NOT_FOUND" && noAnalysis !== undefined && (
+          <div data-testid="pxj-first-way-existing" style={{ display: "flex", flexDirection: "column", gap: "6px", marginTop: "4px" }}>
+            <span style={{ ...statement, fontSize: "12px" }}>{c.ways.existing}</span>
+            {noAnalysis}
           </div>
         )}
         {screen.state === "ROLE_MISMATCH" && <button type="button" data-testid="pxj-first-select-role" data-pool-upload={screen.analysisSelection.jobPoolUploadId} data-pool-role={screen.analysisSelection.poolRoleId} onClick={() => onSelectRole(screen.analysisSelection)} style={action}>{c.selectRole}</button>}

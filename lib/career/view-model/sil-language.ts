@@ -339,6 +339,8 @@ export const SIL_COPY = {
       canonicalMappingBoundary: "Target revisions are PROPOSAL_ONLY with authority NONE. The Capability-Requirement Relation is NOT EVALUATED: no PHASE4_VERIFIED capability snapshot exists (HIA-1).",
       analysis: "ANALYSIS FOR MATCHING",
       analysisNone: "NO ANALYSIS: select a role as the job, then choose an existing investigation at its role or add a source in the Capability Field and run ANALYZE",
+      /** UX-03 with a valid selected job: its two ways, without asking for a job that is already selected. */
+      analysisNoneWithJob: "NO ANALYSIS: open the selected job's role to choose an existing investigation, or add a source in the Capability Field and run ANALYZE",
       analysisFromJob: "FROM THIS SESSION'S SUCCEEDED CAPABILITY SWEEP",
       analysisFromUrl: "FROM THE URL (EXACT ID, ASSUMED PERSISTED)",
       matches: "ROLE MATCHES (LAYER P)",
@@ -1206,6 +1208,7 @@ export const SIL_COPY = {
       canonicalMappingBoundary: "Zielrevisionen sind PROPOSAL_ONLY mit Autorität NONE. Die Capability-Requirement-Relation ist NOT EVALUATED: kein PHASE4_VERIFIED-Capability-Snapshot existiert (HIA-1).",
       analysis: "ANALYSE FÜR DAS MATCHING",
       analysisNone: "KEINE ANALYSE: eine Rolle als Job wählen, dann an ihrer Rolle eine vorhandene Untersuchung wählen oder im Capability-Feld eine Quelle hinzufügen und ANALYZE ausführen",
+      analysisNoneWithJob: "KEINE ANALYSE: die Rolle des gewählten Jobs öffnen und dort eine vorhandene Untersuchung wählen oder im Capability-Feld eine Quelle hinzufügen und ANALYZE ausführen",
       analysisFromJob: "AUS DEM ERFOLGREICHEN CAPABILITY-SWEEP DIESER SITZUNG",
       analysisFromUrl: "AUS DER URL (EXAKTE ID, ALS PERSISTIERT ANGENOMMEN)",
       matches: "ROLLEN-MATCHES (SCHICHT P)",

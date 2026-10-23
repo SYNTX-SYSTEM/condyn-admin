@@ -2126,7 +2126,7 @@ export function SyntxField({ workflow, analysisSource, observation: requested, o
             {withheld === "OTHER_POOL" && investigation.onOpenAnalysisPool && <button data-testid="syntx-analysis-pool-open" data-sx-orient-action onClick={investigation.onOpenAnalysisPool} style={{ ...orientAction(false), fontSize: "10px", letterSpacing: "1.3px", padding: "4px 12px" }}>{t.investigation.openAnalysisPool}</button>}
           </span>
         )}
-        {investigation.mode === "PERSON_X_JOB" && withheld === null && state === "NO_ANALYSIS" && field !== null && <span data-testid="syntx-no-analysis" style={{ position: "absolute", left: "50%", bottom: "calc(var(--condyn-page-header-height, 60px) + 64px)", transform: "translateX(-50%)", width: "min(620px, 80%)", display: "flex", flexDirection: "column", alignItems: "center", gap: "4px", textAlign: "center", zIndex: 41 }}><MessageVoices copy={tp.analysisNone} /></span>}
+        {investigation.mode === "PERSON_X_JOB" && withheld === null && state === "NO_ANALYSIS" && field !== null && <span data-testid="syntx-no-analysis" style={{ position: "absolute", left: "50%", bottom: "calc(var(--condyn-page-header-height, 60px) + 64px)", transform: "translateX(-50%)", width: "min(620px, 80%)", display: "flex", flexDirection: "column", alignItems: "center", gap: "4px", textAlign: "center", zIndex: 41 }}><MessageVoices copy={investigation.scopeValid ? tp.analysisNoneWithJob : tp.analysisNone} /></span>}
       </div>
 
       {/* Orientation surface: (A) the field and its relation to the Capability Field, (B) the observation path (each step a return),
@@ -2163,12 +2163,12 @@ export function SyntxField({ workflow, analysisSource, observation: requested, o
             <span aria-hidden="true" style={{ position: "relative", flexShrink: 0, width: "14px", height: "14px", marginTop: "1px", display: "inline-flex", alignItems: "center", justifyContent: "center", borderRadius: "50%", border: `1px solid rgba(${AMBER_RGB}, 0.38)` }}>
               <span data-sx-signal-core style={{ width: "7px", height: "7px", transformOrigin: "50% 50%", borderRadius: "50%", background: AMBER, boxShadow: `0 0 7px ${AMBER}, 0 0 16px rgba(${AMBER_RGB}, 0.55)` }} />
             </span>
-            <span style={{ display: "flex", flexDirection: "column", gap: "5px", minWidth: 0 }}><MessageVoices copy={tp.analysisNone} /></span>
+            <span style={{ display: "flex", flexDirection: "column", gap: "5px", minWidth: 0 }}><MessageVoices copy={investigation.scopeValid ? tp.analysisNoneWithJob : tp.analysisNone} /></span>
           </span>
         ) : (
           <span data-testid="syntx-state" data-state={state} style={{ ...micro, alignSelf: "flex-start", display: "inline-flex", alignItems: "center", gap: "8px", marginTop: "10px", padding: "3px 10px 3px 8px", borderRadius: "999px", fontSize: "10px", letterSpacing: "1.3px", color: state === "AVAILABLE" ? "rgba(196, 236, 248, 0.92)" : AMBER, border: `1px solid ${state === "AVAILABLE" ? "rgba(56, 229, 255, 0.28)" : "rgba(245, 166, 35, 0.4)"}`, background: state === "AVAILABLE" ? "rgba(56, 229, 255, 0.06)" : "rgba(245, 166, 35, 0.07)" }}>
             <span aria-hidden="true" style={{ width: "6px", height: "6px", borderRadius: "50%", backgroundColor: state === "AVAILABLE" ? CYAN : AMBER, boxShadow: `0 0 6px ${state === "AVAILABLE" ? CYAN : AMBER}`, flexShrink: 0 }} />
-            {investigation.mode !== "PERSON_X_JOB" && state !== "NO_POOL" ? t.investigation.state[investigation.mode] : withheld !== null && state !== "NO_POOL" ? t.investigation.withheld[withheld] : state === "AVAILABLE" ? t.matching : state === "NO_POOL" ? tp.selectionNone : state === "NO_ANALYSIS" ? tp.analysisNone : state === "LOADING" ? tp.matchesLoading : state === "NOT_FOUND" ? tp.matchesNotFound : state === "INACTIVE_POOL" ? tp.matchesInactive : state === "NOT_PROVISIONED" ? tp.notProvisioned : tp.matchesFailed}
+            {investigation.mode !== "PERSON_X_JOB" && state !== "NO_POOL" ? t.investigation.state[investigation.mode] : withheld !== null && state !== "NO_POOL" ? t.investigation.withheld[withheld] : state === "AVAILABLE" ? t.matching : state === "NO_POOL" ? tp.selectionNone : state === "NO_ANALYSIS" ? (investigation.scopeValid ? tp.analysisNoneWithJob : tp.analysisNone) : state === "LOADING" ? tp.matchesLoading : state === "NOT_FOUND" ? tp.matchesNotFound : state === "INACTIVE_POOL" ? tp.matchesInactive : state === "NOT_PROVISIONED" ? tp.notProvisioned : tp.matchesFailed}
           </span>
         )}
         {/* C'' · owner G1 Q4: in PERSON × JOB the role level's presentation names its source and its limits (it is not B2). */}

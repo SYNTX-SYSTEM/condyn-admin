@@ -275,7 +275,11 @@ export function SemanticCareerIntelligenceField({
   /** N-2 B-RUN: the URL's running job, followed after a reload by GET only (no POST, no second job, no retry); a value in another
    *  format is no job id and is removed. Polling the job stays the controller's; the field only names it. */
   const [resumedJobId] = useState<string | null>(() => analysisJobIdFromParam(initialAnalysisJobId));
+  /** V-06: the banner of a job followed from the URL (FAILED or not found) can be closed: one push without analysisJobId (a reload of
+   *  that entry shows no banner, Back returns to the entry that names the job); no retry, no POST. */
+  const [dismissedJobId, setDismissedJobId] = useState<string | null>(null);
   const resumedJobOnView = resumedJobId !== null && job.state.activeJobId === resumedJobId;
+  const jobBannerDismissed = resumedJobOnView && dismissedJobId === resumedJobId;
   useEffect(() => {
     if (resumedJobId !== null) job.resumeJob(resumedJobId);
     else writeCareerDemoUrl({ [ANALYSIS_JOB_URL_PARAM]: null }, "replace"); // nothing to write when the URL names none
@@ -427,7 +431,7 @@ export function SemanticCareerIntelligenceField({
   const capabilityGatedHint = investigationMode === "JOB" ? investigationCopy.capabilityGatedJob : t.syntx.selector.capabilityGated;
   /** UX-04: the closed gate names its cause and the way to open it (PERSON is always open; the gate itself is unchanged). */
   const capabilityGateCause: SyntxCapabilityGatePresentation["state"] | null = capabilityGateOpen ? null : investigationMode === "JOB" ? "JOB" : jobScopeValidation.state === "VALID" ? null : jobScopeValidation.state;
-  const capabilityGate: SyntxCapabilityGatePresentation | null = capabilityGateCause === null ? null : { state: capabilityGateCause, label: t.syntx.gate.label, reason: t.syntx.gate.reason[capabilityGateCause], way: t.syntx.gate.way[capabilityGateCause] };
+  const capabilityGate: SyntxCapabilityGatePresentation | null = capabilityGateCause === null ? null : { state: capabilityGateCause, label: t.syntx.gate.label, reason: capabilityGateCause === "INVALID" && jobScopeValidation.state === "INVALID" ? `${t.syntx.gate.reason.INVALID} · ${jobScopeValidation.reason}` : t.syntx.gate.reason[capabilityGateCause], way: t.syntx.gate.way[capabilityGateCause] };
   /** The shell's brand follows the active field: directly on a switch (above), and here when the gate itself moves the field (a job
    *  becoming VALID after a reload with focus=CAPABILITY, or the selected job turning invalid). */
   useEffect(() => { onFieldFocusChange?.(activeFieldFocus); }, [activeFieldFocus]);
@@ -461,12 +465,12 @@ export function SemanticCareerIntelligenceField({
   const firstScreenCoverage = useSelectedRoleCoverage(coverageRequest?.analysisId ?? null, coverageRequest?.scope ?? null);
   const firstScreen = projectPxjFirstScreen({ ...firstScreenInput, coverage: firstScreenCoverage });
   /** D-PICK (UX-05): in PERSON × JOB with a valid selected job, at NO_ANALYSIS on the first screen and at the selected job's role in
-   *  the Job Field. Read only while opened there (GET only); chosen only by the explicit OPEN — one push of analysisId (from the role
+   *  the Job Field; V-06: also when the analysis on view is not found (a way out besides Back). Read only while opened there (GET only); chosen only by the explicit OPEN — one push of analysisId (from the role
    *  view with focus=CAPABILITY, one decision), never by itself. Opening runs the first screen's B2 checks unchanged. */
   const [pickerOpen, setPickerOpen] = useState(false);
   const pickerSelection = investigationMode === "PERSON_X_JOB" && jobScopeValidation.state === "VALID" ? jobScopeValidation.scope : null;
   const pickerAtRole = activeFieldFocus === "FIELD" && pickerSelection !== null && (observation.kind === "ROLE" || observation.kind === "REQUIREMENT") && observation.roleId === pickerSelection.poolRoleId && jobPoolWorkflow.selectedJobPoolUploadId === pickerSelection.jobPoolUploadId;
-  const pickerPlace: "first-screen" | "role-view" | null = pickerSelection === null ? null : activeFieldFocus === "CAPABILITY" && firstScreen.state === "NO_ANALYSIS" ? "first-screen" : pickerAtRole ? "role-view" : null;
+  const pickerPlace: "first-screen" | "role-view" | null = pickerSelection === null ? null : activeFieldFocus === "CAPABILITY" && (firstScreen.state === "NO_ANALYSIS" || firstScreen.state === "RESULT_NOT_FOUND") ? "first-screen" : pickerAtRole ? "role-view" : null;
   const pickerState = useAnalysisPicker(pickerOpen && pickerPlace !== null, investigationMode, pickerSelection);
   const pickAnalysis = (picked: string) => {
     const fromRole = pickerPlace === "role-view";
@@ -945,7 +949,7 @@ export function SemanticCareerIntelligenceField({
         </div>
       )}
 
-      {analysisError && (() => {
+      {analysisError && !jobBannerDismissed && (() => {
         const errData = { status: analysisError.status, issues: [{ code: analysisError.code, message: analysisError.message }] };
         const scopeFailure = isJobScopeErrorCode(analysisError.code);
         const boundaryFailure = isInvestigationErrorCode(analysisError.code);
@@ -1004,6 +1008,7 @@ export function SemanticCareerIntelligenceField({
           </div>
 
           {resumedJobOnView && <div data-testid="intake-error-job-id" style={{ fontSize: "11.5px", color: "#ffbaba" }}>{navigationCopy.jobIdLabel} · {resumedJobId}</div>}
+          {resumedJobOnView && <button type="button" data-testid="intake-error-dismiss" onClick={() => { setDismissedJobId(resumedJobId); writeCareerDemoUrl({ [ANALYSIS_JOB_URL_PARAM]: null }, "push"); }} style={{ alignSelf: "flex-end", padding: "6px 14px", borderRadius: "6px", border: "1px solid rgba(255, 186, 186, 0.6)", background: "transparent", color: "#ffbaba", fontFamily: SIL_TOKENS.typography.mono, fontSize: "11.5px", fontWeight: 700, letterSpacing: "1px", cursor: "pointer" }}>× {navigationCopy.dismiss}</button>}
 
           {/* A job followed from the URL has no staged sources in this mount: no retry here (no POST, no second job). */}
           {!resumedJobOnView && <div style={{ display: "flex", justifyContent: "flex-end", alignItems: "center", gap: "12px", marginTop: "8px" }}>
