@@ -510,8 +510,12 @@ export const SIL_COPY = {
         clear: "× REMOVE JOB",
         clearHint: "Remove the selected job: ANALYZE is blocked until a job is selected again (sources and analyses stay)",
         open: "Open the selected job in the Job Field",
-        choose: "Choose a job in the Job Field (open a role, then SELECT AS JOB)"
+        choose: "Choose a job in the Job Field (open a role, then SELECT AS JOB)",
+        /** UX-02: at the pool and the organisation level, where the job is chosen. */
+        openRoleHint: "Open a role to select it as the job."
       },
+      /** UX-02: the legacy box below the job action collapses; open by default. */
+      legacyToggle: { hide: "HIDE", show: "SHOW" },
       /** The investigation boundary (owner GO "DEMO FRONTEND", 2026-10-15): three explicit modes, one shell control in both fields. */
       investigation: {
         group: "INVESTIGATION BOUNDARY",
@@ -1375,8 +1379,10 @@ export const SIL_COPY = {
         clear: "× JOB ENTFERNEN",
         clearHint: "Gewählten Job entfernen: ANALYZE ist gesperrt, bis wieder ein Job gewählt ist (Quellen und Analysen bleiben)",
         open: "Den gewählten Job im Job-Feld öffnen",
-        choose: "Einen Job im Job-Feld wählen (Rolle öffnen, dann ALS JOB WÄHLEN)"
+        choose: "Einen Job im Job-Feld wählen (Rolle öffnen, dann ALS JOB WÄHLEN)",
+        openRoleHint: "Öffne eine Rolle, um sie als Job zu wählen."
       },
+      legacyToggle: { hide: "AUSBLENDEN", show: "EINBLENDEN" },
       investigation: {
         group: "UNTERSUCHUNGSGRENZE",
         modes: { PERSON: "PERSON", PERSON_X_JOB: "PERSON × JOB", JOB: "JOB" },

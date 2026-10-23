@@ -1971,6 +1971,8 @@ export function SyntxField({ workflow, analysisSource, observation: requested, o
   const [poolsOpen, setPoolsOpen] = useState(false);
   const [intakeOpen, setIntakeOpen] = useState(false);
   const [boundaryOpen, setBoundaryOpen] = useState(false);
+  /** UX-02: the legacy disclosure collapses below the job action; open by default (its source and limits stay reachable). */
+  const [legacyOpen, setLegacyOpen] = useState(true);
   /** The investigation bodies (B2 / job structure) and GEMINI OUTPUT open at the centre like the boundary: one body at a time. */
   const [investigationOpen, setInvestigationOpen] = useState(false);
   const [geminiOpen, setGeminiOpen] = useState(false);
@@ -2114,21 +2116,6 @@ export function SyntxField({ workflow, analysisSource, observation: requested, o
       {/* BR-4: the screen-reader summary of the observation point, generated from the same view model as the signs. */}
       <p data-testid="syntx-summary" data-summary-for={observationId} aria-live="polite" style={visuallyHidden}>{summary ?? ""}</p>
 
-      {/* The stage: every level of the field and the aperture share one coordinate space (the whole field area, as the Capability Field's). */}
-      <div ref={stageRef} data-testid="syntx-stage" style={{ position: "absolute", inset: 0, overflow: "hidden" }}>
-        {field !== null && <FieldStage field={field} mode={mode} t={t} locale={locale} size={size} onObserve={onObserve} />}
-        {resolution.stale !== null && <span data-testid="syntx-stale" data-stale-kind={resolution.stale.kind} data-stale-id={resolution.stale.id} data-sx-reveal="true" style={{ ...lens, ...prose, color: AMBER, position: "absolute", left: "50%", top: "calc(50% + 150px)", transform: "translateX(-50%)", width: "min(320px, 40%)", textAlign: "center", zIndex: 41 }}>{t.stale[resolution.stale.kind]}</span>}
-        {state === "NO_POOL" && <NoPoolGiant copy={t.noPool} />}
-        {investigation.mode !== "PERSON_X_JOB" && field !== null && <span data-testid="syntx-investigation-statement" data-investigation-mode={investigation.mode} style={{ ...micro, color: "rgba(196, 236, 248, 0.86)", position: "absolute", left: "50%", bottom: "calc(var(--condyn-page-header-height, 60px) + 62px)", transform: "translateX(-50%)", width: "min(640px, 80%)", textAlign: "center", zIndex: 41 }}>{t.investigation.field[investigation.mode]}</span>}
-        {withheld !== null && field !== null && (
-          <span data-testid="syntx-analysis-boundary" data-boundary-state={withheld} data-analysis-pool={investigation.analysisPool ?? ""} style={{ ...micro, color: AMBER, position: "absolute", left: "50%", bottom: "calc(var(--condyn-page-header-height, 60px) + 64px)", transform: "translateX(-50%)", width: "min(560px, 80%)", textAlign: "center", zIndex: 46, display: "flex", flexDirection: "column", alignItems: "center", gap: "8px" }}>
-            <span>{t.investigation.withheld[withheld]}{withheld === "OTHER_POOL" && investigation.analysisPool ? ` ${listed.find(pool => pool.jobPoolUploadId === investigation.analysisPool)?.poolName ?? investigation.analysisPool}` : ""}</span>
-            {withheld === "OTHER_POOL" && investigation.onOpenAnalysisPool && <button data-testid="syntx-analysis-pool-open" data-sx-orient-action onClick={investigation.onOpenAnalysisPool} style={{ ...orientAction(false), fontSize: "10px", letterSpacing: "1.3px", padding: "4px 12px" }}>{t.investigation.openAnalysisPool}</button>}
-          </span>
-        )}
-        {investigation.mode === "PERSON_X_JOB" && withheld === null && state === "NO_ANALYSIS" && field !== null && <span data-testid="syntx-no-analysis" style={{ position: "absolute", left: "50%", bottom: "calc(var(--condyn-page-header-height, 60px) + 64px)", transform: "translateX(-50%)", width: "min(620px, 80%)", display: "flex", flexDirection: "column", alignItems: "center", gap: "4px", textAlign: "center", zIndex: 41 }}><MessageVoices copy={investigation.scopeValid ? tp.analysisNoneWithJob : tp.analysisNone} /></span>}
-      </div>
-
       {/* Orientation surface: (A) the field and its relation to the Capability Field, (B) the observation path (each step a return),
           (C) the read state, (D) the keys, (E) the edge actions. The one header that is always visible (§12.2): a calm, lit glass at
           the edge; its only motion is one light pass on each context change (finite, none in REDUCED). */}
@@ -2156,6 +2143,19 @@ export function SyntxField({ workflow, analysisSource, observation: requested, o
           ))}
           {observation.kind !== "FIELD" && <button data-testid="syntx-return-btn" data-sx-orient-action onClick={() => onObserve(returnFrom(observation))} style={{ ...action("cyan"), fontSize: "9.5px", letterSpacing: "1.3px", padding: "2px 8px", borderRadius: "999px", border: "1px solid rgba(56, 229, 255, 0.4)", background: "rgba(56, 229, 255, 0.06)" }}>← {t.returnLabel}</button>}
         </nav>
+        {/* C' · the job scope: the observed role becomes the selected job only by this explicit action (SFE invariant). */}
+        {field !== null && onSelectJobScope !== undefined && (observation.kind === "ROLE" || observation.kind === "REQUIREMENT") && observation.roleId !== null && (() => {
+          const scopeHere = jobScope !== null && jobScope.jobPoolUploadId === field.pool.jobPoolUploadId && jobScope.poolRoleId === observation.roleId;
+          const roleId = observation.roleId;
+          const removable = scopeHere && onClearJobScope !== undefined;
+          const select = <button data-testid="syntx-job-scope-select" data-sx-orient-action data-job-scope-selected={scopeHere ? "true" : "false"} aria-pressed={scopeHere} disabled={scopeHere} onClick={() => onSelectJobScope(roleId)} style={{ ...orientAction(scopeHere), alignSelf: "flex-start", marginTop: removable ? 0 : "10px", fontSize: "10.5px", letterSpacing: "1.5px", padding: "5px 12px", color: scopeHere ? "#e9fbff" : CYAN, border: `1px solid ${scopeHere ? "rgba(56, 229, 255, 0.7)" : "rgba(56, 229, 255, 0.45)"}`, background: scopeHere ? "rgba(56, 229, 255, 0.16)" : "rgba(56, 229, 255, 0.06)", cursor: scopeHere ? "default" : "pointer" }}>{scopeHere ? t.jobScope.selected : t.jobScope.select}</button>;
+          if (!removable) return select;
+          // G-05: the selected job is removed only here, by this explicit action (beside the selection it reverses).
+          return <div style={{ ...row(6), alignSelf: "flex-start", marginTop: "10px" }}>{select}<button data-testid="syntx-job-scope-clear" data-sx-orient-action title={t.jobScope.clearHint} onClick={onClearJobScope} style={{ ...orientAction(false), fontSize: "10.5px", letterSpacing: "1.5px", padding: "5px 12px" }}>{t.jobScope.clear}</button></div>;
+        })()}
+        {/* UX-02 · at the pool and the organisation level: where the job is chosen (the action itself stands at a role). */}
+        {field !== null && onSelectJobScope !== undefined && (observation.kind === "FIELD" || observation.kind === "ORGANIZATION") && <span data-testid="syntx-job-scope-hint" style={{ ...micro, marginTop: "10px", fontSize: "11px", lineHeight: 1.45, letterSpacing: "0.2px", color: "rgba(196, 230, 244, 0.92)" }}>{t.jobScope.openRoleHint}</span>}
+        {atSelectedJob && investigation.mode === "PERSON_X_JOB" && analysisPicker !== undefined && <div data-sx-orient-picker style={{ display: "flex", marginTop: "10px", minWidth: 0 }}>{analysisPicker}</div>}
         {/* C · the read state, D · the keys. */}
         {awaitingAnalysis ? (
           <span data-testid="syntx-state" data-state={state} data-sx-signal="awaiting-analysis" style={{ position: "relative", alignSelf: "stretch", display: "flex", alignItems: "flex-start", gap: "11px", marginTop: "12px", padding: "11px 14px 12px 12px", borderRadius: "12px", border: `1px solid rgba(${AMBER_RGB}, 0.5)`, background: `radial-gradient(120% 140% at 0% 0%, rgba(${AMBER_RGB}, 0.16), transparent 60%), rgba(28, 18, 6, 0.55)`, boxShadow: "inset 0 1px 0 rgba(255, 222, 170, 0.1)" }}>
@@ -2174,23 +2174,15 @@ export function SyntxField({ workflow, analysisSource, observation: requested, o
         {/* C'' · owner G1 Q4: in PERSON × JOB the role level's presentation names its source and its limits (it is not B2). */}
         {field !== null && investigation.mode === "PERSON_X_JOB" && (observation.kind === "ROLE" || observation.kind === "REQUIREMENT") && (
           <span data-testid="syntx-legacy-disclosure" data-sx-disclosure="legacy" style={{ ...micro, display: "flex", flexDirection: "column", gap: "3px", marginTop: "10px", padding: "7px 10px", borderRadius: "10px", border: `1px solid rgba(${AMBER_RGB}, 0.32)`, background: `rgba(${AMBER_RGB}, 0.05)`, fontSize: "10px", lineHeight: 1.5, color: "rgba(214, 226, 236, 0.86)" }}>
-            <span style={{ fontWeight: 700, letterSpacing: "1.3px", color: AMBER }}>{t.legacyDisclosure.title}</span>
-            <span>{t.legacyDisclosure.source}</span>
-            <span>{t.legacyDisclosure.reach}</span>
-            <span>{t.legacyDisclosure.limits}</span>
+            <span style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "8px" }}>
+              <span style={{ fontWeight: 700, letterSpacing: "1.3px", color: AMBER }}>{t.legacyDisclosure.title}</span>
+              <button type="button" data-testid="syntx-legacy-toggle" aria-expanded={legacyOpen} onClick={() => setLegacyOpen(value => !value)} style={{ ...ghost, flexShrink: 0, fontSize: "9.5px", letterSpacing: "1px", padding: "1px 6px", borderRadius: "999px", border: `1px solid rgba(${AMBER_RGB}, 0.35)`, color: "rgba(255, 214, 160, 0.92)", cursor: "pointer" }}>{legacyOpen ? t.legacyToggle.hide : t.legacyToggle.show}</button>
+            </span>
+            {legacyOpen && <span>{t.legacyDisclosure.source}</span>}
+            {legacyOpen && <span>{t.legacyDisclosure.reach}</span>}
+            {legacyOpen && <span>{t.legacyDisclosure.limits}</span>}
           </span>
         )}
-        {/* C' · the job scope: the observed role becomes the selected job only by this explicit action (SFE invariant). */}
-        {field !== null && onSelectJobScope !== undefined && (observation.kind === "ROLE" || observation.kind === "REQUIREMENT") && observation.roleId !== null && (() => {
-          const scopeHere = jobScope !== null && jobScope.jobPoolUploadId === field.pool.jobPoolUploadId && jobScope.poolRoleId === observation.roleId;
-          const roleId = observation.roleId;
-          const removable = scopeHere && onClearJobScope !== undefined;
-          const select = <button data-testid="syntx-job-scope-select" data-sx-orient-action data-job-scope-selected={scopeHere ? "true" : "false"} aria-pressed={scopeHere} disabled={scopeHere} onClick={() => onSelectJobScope(roleId)} style={{ ...orientAction(scopeHere), alignSelf: "flex-start", marginTop: removable ? 0 : "10px", fontSize: "10.5px", letterSpacing: "1.5px", padding: "5px 12px", color: scopeHere ? "#e9fbff" : CYAN, border: `1px solid ${scopeHere ? "rgba(56, 229, 255, 0.7)" : "rgba(56, 229, 255, 0.45)"}`, background: scopeHere ? "rgba(56, 229, 255, 0.16)" : "rgba(56, 229, 255, 0.06)", cursor: scopeHere ? "default" : "pointer" }}>{scopeHere ? t.jobScope.selected : t.jobScope.select}</button>;
-          if (!removable) return select;
-          // G-05: the selected job is removed only here, by this explicit action (beside the selection it reverses).
-          return <div style={{ ...row(6), alignSelf: "flex-start", marginTop: "10px" }}>{select}<button data-testid="syntx-job-scope-clear" data-sx-orient-action title={t.jobScope.clearHint} onClick={onClearJobScope} style={{ ...orientAction(false), fontSize: "10.5px", letterSpacing: "1.5px", padding: "5px 12px" }}>{t.jobScope.clear}</button></div>;
-        })()}
-        {atSelectedJob && investigation.mode === "PERSON_X_JOB" && analysisPicker !== undefined && <div data-sx-orient-picker style={{ display: "flex", marginTop: "10px", minWidth: 0 }}>{analysisPicker}</div>}
         <span style={{ ...micro, marginTop: "8px", fontSize: "9px", letterSpacing: "0.1px", color: "rgba(150, 180, 198, 0.78)" }}>{t.keys.split(" · ").map((part, index) => { const gap = part.indexOf(" "); const key = gap < 0 ? part : part.slice(0, gap); return <React.Fragment key={index}>{index > 0 && <span style={{ color: "rgba(120, 160, 184, 0.45)" }}> · </span>}<kbd style={{ fontFamily: MONO, fontSize: "8.5px", padding: "0 4px", borderRadius: "4px", border: "1px solid rgba(150, 205, 230, 0.28)", background: "rgba(255, 255, 255, 0.04)", boxShadow: "inset 0 -1px 0 rgba(0, 0, 0, 0.45)", color: "rgba(224, 240, 248, 0.92)" }}>{key}</kbd>{gap < 0 ? "" : part.slice(gap)}</React.Fragment>; })}</span>
         {/* E · the edge actions (panels open / closed). */}
         <div style={{ ...row(6), marginTop: "10px", paddingTop: "10px", borderTop: "1px solid transparent", borderImage: `linear-gradient(90deg, ${azure(0.24)}, ${azure(0.03)}) 1` }}>
@@ -2200,6 +2192,21 @@ export function SyntxField({ workflow, analysisSource, observation: requested, o
           {investigationBody !== null && <button data-testid="syntx-investigation-toggle" data-sx-orient-action data-investigation-body={investigationBody} aria-expanded={investigationVisible} onClick={toggleInvestigation} style={orientAction(investigationVisible)}>{investigationBody === "COVERAGE" ? (investigationVisible ? t.coverage.hide : t.coverage.toggle) : (investigationVisible ? t.structure.hide : t.structure.toggle)}</button>}
           {geminiOutputEnabled && <button data-testid="syntx-gemini-output-toggle" data-sx-orient-action aria-expanded={geminiOpen} onClick={toggleGemini} style={orientAction(geminiOpen)}>{geminiOpen ? t.gemini.hide : t.gemini.toggle}</button>}
         </div>
+      </div>
+
+      {/* The stage: every level of the field and the aperture share one coordinate space (the whole field area, as the Capability Field's). */}
+      <div ref={stageRef} data-testid="syntx-stage" style={{ position: "absolute", inset: 0, overflow: "hidden" }}>
+        {field !== null && <FieldStage field={field} mode={mode} t={t} locale={locale} size={size} onObserve={onObserve} />}
+        {resolution.stale !== null && <span data-testid="syntx-stale" data-stale-kind={resolution.stale.kind} data-stale-id={resolution.stale.id} data-sx-reveal="true" style={{ ...lens, ...prose, color: AMBER, position: "absolute", left: "50%", top: "calc(50% + 150px)", transform: "translateX(-50%)", width: "min(320px, 40%)", textAlign: "center", zIndex: 41 }}>{t.stale[resolution.stale.kind]}</span>}
+        {state === "NO_POOL" && <NoPoolGiant copy={t.noPool} />}
+        {investigation.mode !== "PERSON_X_JOB" && field !== null && <span data-testid="syntx-investigation-statement" data-investigation-mode={investigation.mode} style={{ ...micro, color: "rgba(196, 236, 248, 0.86)", position: "absolute", left: "50%", bottom: "calc(var(--condyn-page-header-height, 60px) + 62px)", transform: "translateX(-50%)", width: "min(640px, 80%)", textAlign: "center", zIndex: 41 }}>{t.investigation.field[investigation.mode]}</span>}
+        {withheld !== null && field !== null && (
+          <span data-testid="syntx-analysis-boundary" data-boundary-state={withheld} data-analysis-pool={investigation.analysisPool ?? ""} style={{ ...micro, color: AMBER, position: "absolute", left: "50%", bottom: "calc(var(--condyn-page-header-height, 60px) + 64px)", transform: "translateX(-50%)", width: "min(560px, 80%)", textAlign: "center", zIndex: 46, display: "flex", flexDirection: "column", alignItems: "center", gap: "8px" }}>
+            <span>{t.investigation.withheld[withheld]}{withheld === "OTHER_POOL" && investigation.analysisPool ? ` ${listed.find(pool => pool.jobPoolUploadId === investigation.analysisPool)?.poolName ?? investigation.analysisPool}` : ""}</span>
+            {withheld === "OTHER_POOL" && investigation.onOpenAnalysisPool && <button data-testid="syntx-analysis-pool-open" data-sx-orient-action onClick={investigation.onOpenAnalysisPool} style={{ ...orientAction(false), fontSize: "10px", letterSpacing: "1.3px", padding: "4px 12px" }}>{t.investigation.openAnalysisPool}</button>}
+          </span>
+        )}
+        {investigation.mode === "PERSON_X_JOB" && withheld === null && state === "NO_ANALYSIS" && field !== null && <span data-testid="syntx-no-analysis" style={{ position: "absolute", left: "50%", bottom: "calc(var(--condyn-page-header-height, 60px) + 64px)", transform: "translateX(-50%)", width: "min(620px, 80%)", display: "flex", flexDirection: "column", alignItems: "center", gap: "4px", textAlign: "center", zIndex: 41 }}><MessageVoices copy={investigation.scopeValid ? tp.analysisNoneWithJob : tp.analysisNone} /></span>}
       </div>
 
       {/* Edge aperture: the persisted uploads (explicit selection only); the contextual action while nothing is at the field. */}
