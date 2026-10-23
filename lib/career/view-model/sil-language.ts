@@ -830,7 +830,26 @@ export const SIL_COPY = {
       modeInterface: "interface",
       jobOfAnalysis: "job of this analysis",
       reason: "reason",
-      selectedJob: "selected job"
+      selectedJob: "selected job",
+      /** D-PICK (UX-05): an existing investigation of the selected role, chosen explicitly (GET only, nothing chosen by itself). */
+      picker: {
+        open: "◎ CHOOSE AN EXISTING INVESTIGATION OF THIS ROLE",
+        close: "HIDE EXISTING INVESTIGATIONS",
+        title: "EXISTING INVESTIGATIONS · THIS ROLE · PERSON × JOB",
+        loading: "READING THE EXISTING ANALYSES AND THEIR BOUNDARIES …",
+        failed: "The list of analyses cannot be read: nothing is offered.",
+        empty: "No existing investigation of this role in PERSON × JOB.",
+        scope: (considered: number, listed: number, unreadable: number) => `Checked: the newest ${considered} of ${listed} analyses${unreadable > 0 ? ` · ${unreadable} with an unreadable boundary, not offered` : ""}. Offered only with the same mode and exactly this job.`,
+        id: "analysis",
+        time: "created",
+        validation: "validation",
+        mode: "mode",
+        job: "bound job",
+        binding: "binding",
+        choose: "OPEN",
+        onView: "ON VIEW",
+        utc: "UTC"
+      }
     },
     emptyStates: {
       "01": {
@@ -1665,7 +1684,25 @@ export const SIL_COPY = {
       modeInterface: "Oberfläche",
       jobOfAnalysis: "Job dieser Analyse",
       reason: "Grund",
-      selectedJob: "gewählter Job"
+      selectedJob: "gewählter Job",
+      picker: {
+        open: "◎ VORHANDENE UNTERSUCHUNG DIESER ROLLE WÄHLEN",
+        close: "VORHANDENE UNTERSUCHUNGEN AUSBLENDEN",
+        title: "VORHANDENE UNTERSUCHUNGEN · DIESE ROLLE · PERSON × JOB",
+        loading: "LESE DIE VORHANDENEN ANALYSEN UND IHRE GRENZEN …",
+        failed: "Die Liste der Analysen ist nicht lesbar: nichts wird angeboten.",
+        empty: "Keine vorhandene Untersuchung dieser Rolle in PERSON × JOB.",
+        scope: (considered: number, listed: number, unreadable: number) => `Geprüft: die neuesten ${considered} von ${listed} Analysen${unreadable > 0 ? ` · ${unreadable} mit nicht lesbarer Grenze, nicht angeboten` : ""}. Angeboten nur mit gleichem Modus und genau diesem Job.`,
+        id: "Analyse",
+        time: "erstellt",
+        validation: "Validierung",
+        mode: "Modus",
+        job: "gebundener Job",
+        binding: "Bindung",
+        choose: "ÖFFNEN",
+        onView: "AUF SICHT",
+        utc: "UTC"
+      }
     },
     emptyStates: {
       "01": {

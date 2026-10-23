@@ -37,6 +37,8 @@ export interface PxjFirstScreenProps {
   locale: SilLocale;
   onSwitchMode: (mode: InvestigationMode) => void;
   onSelectRole: (scope: JobScope) => void;
+  /** NO_ANALYSIS (UX-03 / D-PICK): the way to an existing investigation of the selected role (the caller's element). */
+  noAnalysis?: React.ReactNode;
 }
 
 /** Whether the surface is shown at all: under PERSON today's first screen stays unchanged (NO_ANALYSIS and a PERSON result). */
@@ -107,7 +109,7 @@ function Requirement({ requirement, c, focused, onFocus }: { requirement: FirstS
   );
 }
 
-export function PxjFirstScreen({ screen, mode, locale, onSwitchMode, onSelectRole }: PxjFirstScreenProps) {
+export function PxjFirstScreen({ screen, mode, locale, onSwitchMode, onSelectRole, noAnalysis }: PxjFirstScreenProps) {
   const copy = SIL_COPY[locale];
   const c = copy.pxjFirst;
   const modes = copy.syntx.investigation.modes;
@@ -135,6 +137,7 @@ export function PxjFirstScreen({ screen, mode, locale, onSwitchMode, onSelectRol
         <span style={{ ...statement, color: screen.state === "AVAILABLE" ? "#e6f1f8" : `rgb(${rgb})`, fontWeight: 600 }}>{sentence}</span>
         {detail !== null && <span style={meta}>{detail}</span>}
         {screen.state === "MODE_MISMATCH" && <button type="button" data-testid="pxj-first-switch-mode" data-target-mode={screen.analysisMode} onClick={() => onSwitchMode(screen.analysisMode)} style={action}>{c.switchMode} {modes[screen.analysisMode]}</button>}
+        {screen.state === "NO_ANALYSIS" && noAnalysis}
         {screen.state === "ROLE_MISMATCH" && <button type="button" data-testid="pxj-first-select-role" data-pool-upload={screen.analysisSelection.jobPoolUploadId} data-pool-role={screen.analysisSelection.poolRoleId} onClick={() => onSelectRole(screen.analysisSelection)} style={action}>{c.selectRole}</button>}
       </div>
       {coverage !== null && (

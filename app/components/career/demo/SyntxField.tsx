@@ -109,6 +109,8 @@ export interface SyntxFieldProps {
   jobScope?: JobScope | null;
   /** Selects the observed role of the selected pool as the job scope (explicit, never inferred). */
   onSelectJobScope?(poolRoleId: string): void;
+  /** D-PICK (UX-05): the existing investigations of the selected job, shown at its role in PERSON × JOB (the caller's element). */
+  analysisPicker?: React.ReactNode;
   /** Owner G-05: removes the selected job (explicit action at the selected role); ANALYZE is blocked afterwards. */
   onClearJobScope?(): void;
   /** Capability gate (Job Pool first): false while no VALID job is selected; the way back to the Capability Field is then closed. */
@@ -1944,7 +1946,7 @@ export function GeminiOutputBody({ mode, t, investigation, fetcher = inspectorFe
   );
 }
 
-export function SyntxField({ workflow, analysisSource, observation: requested, onObserve, onSelectPool, onExit, locale = SIL_COPY.defaultLocale, jobScope = null, onSelectJobScope, onClearJobScope, capabilityAvailable = true, capabilityGatedHint, investigation: investigationContext, geminiOutputEnabled = SYNTX_GEMINI_OUTPUT_ENABLED }: SyntxFieldProps) {
+export function SyntxField({ workflow, analysisSource, observation: requested, onObserve, onSelectPool, onExit, locale = SIL_COPY.defaultLocale, jobScope = null, onSelectJobScope, onClearJobScope, capabilityAvailable = true, capabilityGatedHint, analysisPicker, investigation: investigationContext, geminiOutputEnabled = SYNTX_GEMINI_OUTPUT_ENABLED }: SyntxFieldProps) {
   const t = SIL_COPY[locale].syntx;
   const tp: PoolCopy = SIL_COPY[locale].jobPool;
   const mode = useMotionMode();
@@ -2188,6 +2190,7 @@ export function SyntxField({ workflow, analysisSource, observation: requested, o
           // G-05: the selected job is removed only here, by this explicit action (beside the selection it reverses).
           return <div style={{ ...row(6), alignSelf: "flex-start", marginTop: "10px" }}>{select}<button data-testid="syntx-job-scope-clear" data-sx-orient-action title={t.jobScope.clearHint} onClick={onClearJobScope} style={{ ...orientAction(false), fontSize: "10.5px", letterSpacing: "1.5px", padding: "5px 12px" }}>{t.jobScope.clear}</button></div>;
         })()}
+        {atSelectedJob && investigation.mode === "PERSON_X_JOB" && analysisPicker !== undefined && <div data-sx-orient-picker style={{ display: "flex", marginTop: "10px", minWidth: 0 }}>{analysisPicker}</div>}
         <span style={{ ...micro, marginTop: "8px", fontSize: "9px", letterSpacing: "0.1px", color: "rgba(150, 180, 198, 0.78)" }}>{t.keys.split(" · ").map((part, index) => { const gap = part.indexOf(" "); const key = gap < 0 ? part : part.slice(0, gap); return <React.Fragment key={index}>{index > 0 && <span style={{ color: "rgba(120, 160, 184, 0.45)" }}> · </span>}<kbd style={{ fontFamily: MONO, fontSize: "8.5px", padding: "0 4px", borderRadius: "4px", border: "1px solid rgba(150, 205, 230, 0.28)", background: "rgba(255, 255, 255, 0.04)", boxShadow: "inset 0 -1px 0 rgba(0, 0, 0, 0.45)", color: "rgba(224, 240, 248, 0.92)" }}>{key}</kbd>{gap < 0 ? "" : part.slice(gap)}</React.Fragment>; })}</span>
         {/* E · the edge actions (panels open / closed). */}
         <div style={{ ...row(6), marginTop: "10px", paddingTop: "10px", borderTop: "1px solid transparent", borderImage: `linear-gradient(90deg, ${azure(0.24)}, ${azure(0.03)}) 1` }}>

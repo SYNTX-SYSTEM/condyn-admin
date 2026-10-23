@@ -32,6 +32,8 @@ import { useAnalysisBoundary, useSelectedRoleCoverage } from "../../../../lib/ca
 import { useAnalysisResult } from "../../../../lib/career/ui/useAnalysisResult";
 import { ANALYSIS_JOB_URL_PARAM, analysisJobIdFromParam, writeCareerDemoUrl } from "../../../../lib/career/ui/career-demo-url";
 import { careerJobHandoff } from "../../../../lib/career/ui/career-job-handoff";
+import { useAnalysisPicker } from "../../../../lib/career/ui/analysis-picker";
+import { AnalysisPicker } from "./AnalysisPicker";
 import { NAVIGATION_COPY } from "./navigation-copy";
 import { decodeAnalysisResult, demoStateFromResult, firstScreenCoverageRequest, projectPxjFirstScreen, showsAnalysis, withoutLegacyOrbits, type AnalysisResultState } from "../../../../lib/career/view-model/pxj-first-screen";
 import { PxjAnalysisJobOffer, PxjFirstScreen, pxjFirstScreenVisible } from "./PxjFirstScreen";
@@ -324,7 +326,11 @@ export function SemanticCareerIntelligenceField({
   /** The URL's analysis as it stands now: the mount's, replaced by every SUCCEEDED analysis written to the URL (GELB F-RF-2). A new
    *  run clears the job's result, so without this the mount's id, not the URL's, would return while it runs or after it FAILED. */
   const [urlAnalysisId, setUrlAnalysisId] = useState<string | null>(analysisId ?? null);
-  const viewedAnalysisSource = describeAnalysisSource(jobState === "SUCCEEDED" ? job.state.resultAnalysisId : null, urlAnalysisId);
+  /** D-PICK: an existing analysis chosen explicitly takes the place of this session's SUCCEEDED one (as a reload of the URL would
+   *  show it) until the next run is submitted. */
+  const [analysisPicked, setAnalysisPicked] = useState(false);
+  useEffect(() => { if (jobState === "SUBMITTING") setAnalysisPicked(false); }, [jobState]);
+  const viewedAnalysisSource = describeAnalysisSource(jobState === "SUCCEEDED" && !analysisPicked ? job.state.resultAnalysisId : null, urlAnalysisId);
   /** SFE job-scope invariant: one selected job for both fields; independent of the observation point (return, field change and pool change keep it). */
   const [jobScope, setJobScope] = useState<JobScope | null>(() => jobScopeFromParams(initialJobScopePoolUploadId, initialJobScopeRoleId));
   const jobScopeValidation = useJobScopeValidation(jobScope);
@@ -454,6 +460,34 @@ export function SemanticCareerIntelligenceField({
   const coverageRequest = activeFieldFocus === "CAPABILITY" ? firstScreenCoverageRequest(firstScreenInput) : null;
   const firstScreenCoverage = useSelectedRoleCoverage(coverageRequest?.analysisId ?? null, coverageRequest?.scope ?? null);
   const firstScreen = projectPxjFirstScreen({ ...firstScreenInput, coverage: firstScreenCoverage });
+  /** D-PICK (UX-05): in PERSON × JOB with a valid selected job, at NO_ANALYSIS on the first screen and at the selected job's role in
+   *  the Job Field. Read only while opened there (GET only); chosen only by the explicit OPEN — one push of analysisId (from the role
+   *  view with focus=CAPABILITY, one decision), never by itself. Opening runs the first screen's B2 checks unchanged. */
+  const [pickerOpen, setPickerOpen] = useState(false);
+  const pickerSelection = investigationMode === "PERSON_X_JOB" && jobScopeValidation.state === "VALID" ? jobScopeValidation.scope : null;
+  const pickerAtRole = activeFieldFocus === "FIELD" && pickerSelection !== null && (observation.kind === "ROLE" || observation.kind === "REQUIREMENT") && observation.roleId === pickerSelection.poolRoleId && jobPoolWorkflow.selectedJobPoolUploadId === pickerSelection.jobPoolUploadId;
+  const pickerPlace: "first-screen" | "role-view" | null = pickerSelection === null ? null : activeFieldFocus === "CAPABILITY" && firstScreen.state === "NO_ANALYSIS" ? "first-screen" : pickerAtRole ? "role-view" : null;
+  const pickerState = useAnalysisPicker(pickerOpen && pickerPlace !== null, investigationMode, pickerSelection);
+  const pickAnalysis = (picked: string) => {
+    const fromRole = pickerPlace === "role-view";
+    setUrlAnalysisId(picked);
+    setAnalysisPicked(true);
+    setPickerOpen(false);
+    pushUrl({ analysisId: picked });
+    if (fromRole) switchFieldFocus("CAPABILITY");
+  };
+  const analysisPicker = (place: "first-screen" | "role-view") => pickerPlace !== place ? undefined : (
+    <AnalysisPicker
+      place={place}
+      state={pickerState}
+      open={pickerOpen}
+      onToggle={() => setPickerOpen(value => !value)}
+      onPick={pickAnalysis}
+      locale={locale}
+      job={jobScopeValidation.state === "VALID" ? { poolName: jobScopeValidation.poolName, roleTitle: jobScopeValidation.roleTitle } : null}
+      onViewAnalysisId={viewedAnalysisSource.kind === "NONE" ? null : viewedAnalysisSource.analysisId}
+    />
+  );
   /** Whether this analysis is on the Capability Field at all: only in the states that show its proposals. */
   const shownResult = showsAnalysis(firstScreen) ? firstScreen.result : null;
   /** The orbits count as projected (empty-projection presentation, attention, clusters) when this analysis is on the field, or, as
@@ -1590,7 +1624,7 @@ export function SemanticCareerIntelligenceField({
       {/* PERSON × JOB · the first screen: the closed state of the chain and, when available, the B2 coverage of the selected role. */}
       {activeFieldFocus === "CAPABILITY" && investigationMode !== "JOB" && pxjFirstScreenVisible(firstScreen, investigationMode) && (
         <div style={{ opacity: isOrbitStageFocus ? 0.12 : 1, filter: isOrbitStageFocus ? "blur(3px)" : undefined, pointerEvents: isOrbitStageFocus ? "none" : "auto", transition: "opacity 0.56s ease, filter 0.56s ease" }}>
-          <PxjFirstScreen screen={firstScreen} mode={investigationMode} locale={locale} onSwitchMode={selectInvestigationMode} onSelectRole={selectAnalysisJob} />
+          <PxjFirstScreen screen={firstScreen} mode={investigationMode} locale={locale} onSwitchMode={selectInvestigationMode} onSelectRole={selectAnalysisJob} noAnalysis={analysisPicker("first-screen")} />
         </div>
       )}
       {activeFieldFocus === "FIELD" && investigationMode === "PERSON_X_JOB" && <PxjAnalysisJobOffer screen={firstScreen} locale={locale} onSelectRole={selectAnalysisJob} />}
@@ -1676,6 +1710,7 @@ export function SemanticCareerIntelligenceField({
           onClearJobScope={clearJobScope}
           capabilityAvailable={capabilityGateOpen}
           capabilityGatedHint={capabilityGatedHint}
+          analysisPicker={analysisPicker("role-view")}
           investigation={{ mode: investigationMode, analysisId: viewedAnalysisSource.kind === "NONE" ? null : viewedAnalysisSource.analysisId, analysisMode: viewedAnalysisMode, comparisonWithheld, analysisPool, onOpenAnalysisPool: analysisPool === null ? undefined : () => selectJobPool(analysisPool), jobId: viewedAnalysisSource.kind === "JOB_RESULT" ? job.state.activeJobId : null, scopeValid: jobScopeValidation.state === "VALID" }}
         />
       )}
