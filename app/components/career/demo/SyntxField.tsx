@@ -253,9 +253,9 @@ const label: React.CSSProperties = { fontFamily: MONO, fontSize: "10.5px", fontW
 const prose: React.CSSProperties = { fontFamily: SANS, fontSize: "13.5px", lineHeight: 1.65, color: INK_SOFT, margin: 0 };
 const stack = (gap = 8): React.CSSProperties => ({ display: "flex", flexDirection: "column", gap: `${gap}px` });
 const row = (gap = 8): React.CSSProperties => ({ display: "flex", alignItems: "center", gap: `${gap}px`, flexWrap: "wrap" });
-const word = (color: string): React.CSSProperties => ({ fontFamily: MONO, fontSize: "9.5px", fontWeight: 600, letterSpacing: "1.2px", textTransform: "uppercase", color, whiteSpace: "nowrap" });
+const word = (color: string): React.CSSProperties => ({ fontFamily: MONO, fontSize: "10.5px", fontWeight: 600, letterSpacing: "1.2px", textTransform: "uppercase", color, whiteSpace: "nowrap" });
 const action = (tone: "cyan" | "muted" = "cyan", enabled = true): React.CSSProperties => ({ background: "transparent", border: "none", padding: "4px 0", fontFamily: MONO, fontSize: "10.5px", fontWeight: 600, letterSpacing: "1.4px", textTransform: "uppercase", color: !enabled ? "rgba(99, 120, 138, 0.6)" : tone === "cyan" ? CYAN : MUTED, cursor: enabled ? "pointer" : "not-allowed", textShadow: enabled && tone === "cyan" ? `0 0 10px ${SIL_TOKENS.colors.cyanGlow}` : undefined, transition: "color .25s ease" });
-const ghost: React.CSSProperties = { ...action("muted"), fontSize: "9.5px", letterSpacing: "1px" };
+const ghost: React.CSSProperties = { ...action("muted"), fontSize: "10.5px", letterSpacing: "1px" };
 /** An edge lens: the hologram HUD surface of the planetarium (opaque universe body, cyan frame), placed at the field's edge. */
 const lens: React.CSSProperties = { ...SYNTX_HUD_SURFACE, position: undefined, width: undefined, zIndex: undefined };
 const input: React.CSSProperties = { width: "100%", boxSizing: "border-box", background: "transparent", border: "none", borderBottom: "1px solid rgba(99, 120, 138, 0.4)", color: INK, fontFamily: MONO, fontSize: "11.5px", padding: "5px 0", outline: "none" };
@@ -902,7 +902,7 @@ function OrganizationBody({ organization, index, roles, observation, depth, isAn
           <span style={{ fontSize: "10px", color: highlighted ? CYAN : azure(0.78), fontWeight: 700, letterSpacing: "2px", position: "relative", zIndex: 1, textShadow: READING_HALO, transition: "color 0.6s ease" }}>{String(index + 1).padStart(2, "0")}</span>
           <span style={{ ...readingPlate(highlighted), fontSize: "13px", color: INK, fontWeight: 700, marginTop: "4px", lineHeight: 1.24, position: "relative", zIndex: 1, textTransform: "uppercase", letterSpacing: "0.8px", textShadow: `${READING_HALO}, 0 0 14px ${highlighted ? "rgba(56, 229, 255, 0.5)" : "rgba(92, 200, 255, 0.26)"}` }}>⬡ {organization.name}</span>
           {subtitle.length > 0 && <span style={{ ...readingPlate(highlighted), fontSize: "11px", fontWeight: 500, color: "rgba(214, 234, 244, 0.94)", marginTop: "6px", lineHeight: 1.3, letterSpacing: "0.3px", position: "relative", zIndex: 1, textShadow: READING_HALO }}>{subtitle}</span>}
-          <span style={{ ...readingPlate(highlighted), fontSize: "8.5px", fontWeight: 700, color: highlighted ? "rgba(150, 238, 255, 0.9)" : azure(0.82), marginTop: "6px", position: "relative", zIndex: 1, letterSpacing: "2.4px", textShadow: READING_HALO, transition: "color 0.6s ease" }}>{t.manifest.organization}</span>
+          <span style={{ ...readingPlate(highlighted), fontSize: "10px", fontWeight: 700, color: highlighted ? "rgba(150, 238, 255, 0.9)" : azure(0.82), marginTop: "6px", position: "relative", zIndex: 1, letterSpacing: "2.4px", textShadow: READING_HALO, transition: "color 0.6s ease" }}>{t.manifest.organization}</span>
           <span style={{ marginTop: "8px", fontSize: "10.5px", fontWeight: 600, letterSpacing: "1.3px", color: highlighted ? CYAN : INK, backgroundColor: highlighted ? "rgba(56, 229, 255, 0.15)" : "rgba(6, 18, 32, 0.92)", padding: "2px 10px", borderRadius: "8px", border: `1px solid ${highlighted ? "rgba(56, 229, 255, 0.4)" : azure(0.28)}`, boxShadow: highlighted ? "0 0 10px rgba(56, 229, 255, 0.18)" : `0 0 8px ${azure(0.08)}, inset 0 1px 0 ${azure(0.12)}`, position: "relative", zIndex: 1 }}>{organization.roleIds.length} {t.roles}</span>
         </SyntxResonanceBody>
       </div>
@@ -1026,7 +1026,7 @@ function OrganizationCosmosLayer({ field, mode, t, size, onObserve, organization
           <span aria-hidden="true" style={{ position: "absolute", inset: "7px", borderRadius: "50%", border: `1px solid ${azure(0.16)}`, pointerEvents: "none" }} />
           <span style={{ display: "block", textShadow: "0 0 12px rgba(56, 229, 255, 0.35)" }}>{String(index + 1).padStart(2, "0")} {organization.name.toUpperCase()}</span>
           <span aria-hidden="true" style={{ width: "44px", height: "1px", background: `linear-gradient(90deg, transparent, ${azure(0.6)}, transparent)` }} />
-          <span style={{ color: CYAN, fontSize: "9px", fontWeight: 600, letterSpacing: "1px", lineHeight: 1.55 }}><span style={{ whiteSpace: "nowrap" }}>{t.manifest.organizationCosmos}</span> <span style={{ whiteSpace: "nowrap" }}>// {roles.length} {t.roles}</span></span>
+          <span style={{ color: CYAN, fontSize: "10px", fontWeight: 600, letterSpacing: "1px", lineHeight: 1.55 }}><span style={{ whiteSpace: "nowrap" }}>{t.manifest.organizationCosmos}</span> <span style={{ whiteSpace: "nowrap" }}>// {roles.length} {t.roles}</span></span>
         </button>
       }
     />
@@ -1132,11 +1132,11 @@ function RoleCosmosLayer({ field, mode, t, size, onObserve, role }: LayerProps &
               </svg>
               {cardMode !== "glyph" ? (
                 <span style={{ position: "absolute", left: `${card.x - half.w - left}px`, top: `${card.y - half.h - top}px`, width: `${half.w * 2}px`, minHeight: `${half.h * 2}px`, boxSizing: "border-box", ...JOB_NODE_MATERIAL, borderRadius: "14px", padding: cardMode === "full" ? "7px 10px" : "5px 8px", fontFamily: MONO, textAlign: "left", color: INK, pointerEvents: "none" }}>
-                  <span style={{ display: "block", color: requirement.support === "OPEN" ? NEUTRAL : CYAN, fontSize: "8.5px", fontWeight: 700, letterSpacing: "0.8px" }}>{t.manifest.requirement}</span>
+                  <span style={{ display: "block", color: requirement.support === "OPEN" ? NEUTRAL : CYAN, fontSize: "10px", fontWeight: 700, letterSpacing: "0.8px" }}>{t.manifest.requirement}</span>
                   <span style={{ display: "-webkit-box", marginTop: "3px", fontSize: cardMode === "full" ? "11.5px" : "10px", fontWeight: 700, lineHeight: 1.28, WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden", overflowWrap: "anywhere" }}>{requirement.name}</span>
                 </span>
               ) : (
-                <span title={requirement.name} style={{ position: "absolute", left: `${card.x - left}px`, top: `${card.y - top}px`, transform: "translate(-50%, -50%)", maxWidth: "104px", padding: "2px 6px", borderRadius: "8px", border: "1px solid rgba(56, 229, 255, 0.28)", background: "rgba(3, 12, 20, 0.92)", fontFamily: MONO, fontSize: "9px", fontWeight: 700, color: INK_SOFT, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", pointerEvents: "none" }}>{requirement.name}</span>
+                <span title={requirement.name} style={{ position: "absolute", left: `${card.x - left}px`, top: `${card.y - top}px`, transform: "translate(-50%, -50%)", maxWidth: "104px", padding: "2px 6px", borderRadius: "8px", border: "1px solid rgba(56, 229, 255, 0.28)", background: "rgba(3, 12, 20, 0.92)", fontFamily: MONO, fontSize: "10px", fontWeight: 700, color: INK_SOFT, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", pointerEvents: "none" }}>{requirement.name}</span>
               )}
             </div>
             {anchorSign && requirement.openBoundary !== null && (
@@ -1173,9 +1173,9 @@ function RoleCosmosLayer({ field, mode, t, size, onObserve, role }: LayerProps &
         style={{ position: "absolute", left: `${centre.x}px`, top: `${centre.y}px`, transform: "translate(-50%, -50%)", ...SYNTX_COSMOS_CENTER_MATERIAL, color: INK, cursor: "pointer", fontFamily: MONO, fontSize: "10.5px", fontWeight: 700, letterSpacing: "1px", lineHeight: 1.45, padding: "18px 16px", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: "4px", zIndex: 3 }}
       >
         <svg aria-hidden="true" width={174} height={174} style={{ position: "absolute", left: "50%", top: "50%", transform: "translate(-50%, -50%)", pointerEvents: "none", overflow: "visible" }}><circle cx={87} cy={87} r={86} fill="none" stroke="transparent" /></svg>
-        <span style={{ color: CYAN, fontSize: "9px", letterSpacing: "0.5px" }}>{t.manifest.role} // {role.requirementCount} {t.requirements}</span>
+        <span style={{ color: CYAN, fontSize: "10px", letterSpacing: "0.5px" }}>{t.manifest.role} // {role.requirementCount} {t.requirements}</span>
         <span style={{ fontSize: "12px", textTransform: "uppercase", lineHeight: 1.3 }}>{role.title}</span>
-        <span style={{ color: "rgba(56, 229, 255, 0.66)", fontSize: "8.5px", letterSpacing: "0.7px" }}>{t.manifest.returnToOrganization}</span>
+        <span style={{ color: "rgba(56, 229, 255, 0.66)", fontSize: "10px", letterSpacing: "0.7px" }}>{t.manifest.returnToOrganization}</span>
       </button>
       </div>
     </div>
@@ -1215,9 +1215,9 @@ function SourceSatellite({ source, point, centre, rotation, t, inSurface = false
             <path d="M 0.5 0.5 L 0.5 15.5 L 15.5 15.5 Z" fill="rgba(126, 255, 204, 0.16)" stroke="rgba(126, 255, 204, 0.32)" strokeWidth={0.8} strokeLinejoin="round" />
             <path d="M 0.5 0.5 L 15.5 15.5" stroke="rgba(190, 255, 232, 0.85)" strokeWidth={1} />
           </svg>
-          <span style={{ display: "flex", alignItems: "center", gap: "7px", color: "rgba(126, 255, 204, 0.86)", fontSize: "8.5px", fontWeight: 800, letterSpacing: "1.15px", lineHeight: 1, paddingRight: "8px", whiteSpace: "nowrap" }}>{sourceGlyph(10)}<span>{t.source} // {t.manifest.document}</span></span>
+          <span style={{ display: "flex", alignItems: "center", gap: "7px", color: "rgba(126, 255, 204, 0.86)", fontSize: "10px", fontWeight: 800, letterSpacing: "1.15px", lineHeight: 1, paddingRight: "8px", whiteSpace: "nowrap" }}>{sourceGlyph(10)}<span>{t.source} // {t.manifest.document}</span></span>
           <span style={{ display: "-webkit-box", marginTop: "8px", fontFamily: SANS, fontSize: "13px", fontWeight: 650, letterSpacing: "0.1px", lineHeight: 1.25, WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden", overflowWrap: "anywhere", color: source.title !== null ? "#f2fdff" : MUTED, textShadow: source.title !== null ? "0 0 12px rgba(126, 255, 204, 0.18)" : undefined }}>{source.title ?? (source.titleState === "NOT_READ" ? t.sourceNotRead : t.sourceUnresolved)}</span>
-          <span style={{ display: "flex", alignItems: "center", gap: "6px", marginTop: "8px", color: "rgba(126, 255, 204, 0.74)", fontSize: "8.5px", fontWeight: 700, letterSpacing: "1.1px", lineHeight: 1 }}><span aria-hidden="true" style={{ width: "12px", height: "1px", background: "linear-gradient(90deg, rgba(126, 255, 204, 0.8), rgba(126, 255, 204, 0.2))" }} />{source.traceCount} {t.manifest.evidenceCount}</span>
+          <span style={{ display: "flex", alignItems: "center", gap: "6px", marginTop: "8px", color: "rgba(126, 255, 204, 0.74)", fontSize: "10px", fontWeight: 700, letterSpacing: "1.1px", lineHeight: 1 }}><span aria-hidden="true" style={{ width: "12px", height: "1px", background: "linear-gradient(90deg, rgba(126, 255, 204, 0.8), rgba(126, 255, 204, 0.2))" }} />{source.traceCount} {t.manifest.evidenceCount}</span>
         </span>
       </span>
     </div>
@@ -1311,8 +1311,8 @@ function RequirementFocusLayer({ field, mode, t, onObserve, requirement, focus, 
         >
           <span style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "7px", color: CYAN, fontSize: "10px", fontWeight: 800, letterSpacing: "1.1px" }}><svg aria-hidden="true" width={16} height={16} style={{ overflow: "visible", flexShrink: 0 }}><circle cx={8} cy={8} r={shape.r * 0.85} fill={shape.fill} stroke={shape.stroke} strokeWidth={shape.strokeWidth} strokeDasharray={shape.dash} /></svg>{t.manifest.nucleus} // {t.support[requirement.support]}</span>
           <span style={{ display: "block", marginTop: "8px", fontSize: "14px", fontWeight: 800, lineHeight: 1.34 }}>{requirement.name}</span>
-          {requirement.evaluationState === "NOT_EVALUATED" && <span style={{ display: "block", marginTop: "10px", color: "rgba(206, 232, 241, 0.86)", fontSize: "9px", fontWeight: 700, lineHeight: 1.6, textTransform: "uppercase" }}>{t.relation.pending_evaluation}</span>}
-          <span style={{ display: "block", marginTop: "10px", color: "rgba(56, 229, 255, 0.66)", fontSize: "9px", letterSpacing: "0.7px" }}>{t.manifest.returnToRole}</span>
+          {requirement.evaluationState === "NOT_EVALUATED" && <span style={{ display: "block", marginTop: "10px", color: "rgba(206, 232, 241, 0.86)", fontSize: "10px", fontWeight: 700, lineHeight: 1.6, textTransform: "uppercase" }}>{t.relation.pending_evaluation}</span>}
+          <span style={{ display: "block", marginTop: "10px", color: "rgba(56, 229, 255, 0.66)", fontSize: "10px", letterSpacing: "0.7px" }}>{t.manifest.returnToRole}</span>
         </button>
       </div>
 
@@ -1325,7 +1325,7 @@ function RequirementFocusLayer({ field, mode, t, onObserve, requirement, focus, 
         style={{ position: "absolute", left: `${surface.left}px`, top: `${surface.top}px`, width: `${surface.width}px`, height: `${surface.height}px`, boxSizing: "border-box", overflowY: surface.scroll ? "auto" : "hidden", ...SYNTX_EVIDENCE_SURFACE_MATERIAL, padding: 0, color: INK, fontFamily: MONO, zIndex: 2 }}
       >
         <div style={{ position: "relative", height: `${EVIDENCE_ROW.header + groups.length * EVIDENCE_ROW.group + rows.length * EVIDENCE_ROW.entry + (requirement.openBoundary !== null ? EVIDENCE_ROW.entry : 0) + EVIDENCE_ROW.padding}px` }}>
-          <div style={{ position: "absolute", left: "15px", right: "15px", top: "11px", color: MINT, fontSize: "9px", fontWeight: 800, letterSpacing: "0.9px" }}>{t.manifest.evidence} // {requirement.traces.length} {t.manifest.relations}</div>
+          <div style={{ position: "absolute", left: "15px", right: "15px", top: "11px", color: MINT, fontSize: "10px", fontWeight: 800, letterSpacing: "0.9px" }}>{t.manifest.evidence} // {requirement.traces.length} {t.manifest.relations}</div>
           {groups.map(group => {
             const source = sourcesByDoc.get(group.docId);
             if (source === undefined) return null;
@@ -1342,13 +1342,13 @@ function RequirementFocusLayer({ field, mode, t, onObserve, requirement, focus, 
             const unscored = trace.kind === "covers_unscored";
             return (
               <div key={trace.sign.id} data-sx-evidence-row={trace.sign.id} data-trace-kind={trace.kind} aria-hidden="true" onClick={stop(() => inspectTrace(trace))} style={{ position: "absolute", left: "15px", right: "15px", top: `${placed.top}px`, height: `${EVIDENCE_ROW.entry}px`, boxSizing: "border-box", padding: "5px 0 5px 10px", borderLeft: `${trace.kind === "weakly_supports" ? 1 : 2}px ${unscored ? "dashed" : "solid"} ${unscored ? "rgba(142, 239, 255, 0.6)" : trace.kind === "supports" ? "rgba(126, 255, 204, 0.85)" : "rgba(126, 255, 204, 0.5)"}`, cursor: "pointer", background: trace.sign.id === observation.apertureSignId ? "rgba(56, 229, 255, 0.08)" : undefined }}>
-                <div style={{ fontSize: "9px", fontWeight: 800, letterSpacing: "0.8px", color: unscored ? "rgba(142, 239, 255, 0.85)" : MINT, textTransform: "uppercase" }}>{t.relation[trace.kind]} · {unscored ? t.manifest.unscored : t.manifest.scored}</div>
+                <div style={{ fontSize: "10px", fontWeight: 800, letterSpacing: "0.8px", color: unscored ? "rgba(142, 239, 255, 0.85)" : MINT, textTransform: "uppercase" }}>{t.relation[trace.kind]} · {unscored ? t.manifest.unscored : t.manifest.scored}</div>
                 <div style={{ marginTop: "4px", fontSize: "10px", color: "rgba(206, 232, 241, 0.74)", fontStyle: "italic", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>“{trace.quote}”</div>
               </div>
             );
           })}
           {requirement.openBoundary !== null && (
-            <div data-testid={`syntx-open-${requirement.id}`} {...signAttributes(requirement.openBoundary)} role="button" tabIndex={0} aria-label={`${t.relation.missing_support} · ${requirement.name}`} onClick={stop(inspectOpen)} onKeyDown={keyActivate(inspectOpen)} style={{ position: "absolute", left: "15px", right: "15px", top: `${EVIDENCE_ROW.header + groups.length * EVIDENCE_ROW.group + rows.length * EVIDENCE_ROW.entry}px`, height: `${EVIDENCE_ROW.entry}px`, display: "flex", alignItems: "center", gap: "10px", cursor: "pointer", color: NEUTRAL, fontSize: "9.5px", fontWeight: 700, letterSpacing: "0.8px" }}>
+            <div data-testid={`syntx-open-${requirement.id}`} {...signAttributes(requirement.openBoundary)} role="button" tabIndex={0} aria-label={`${t.relation.missing_support} · ${requirement.name}`} onClick={stop(inspectOpen)} onKeyDown={keyActivate(inspectOpen)} style={{ position: "absolute", left: "15px", right: "15px", top: `${EVIDENCE_ROW.header + groups.length * EVIDENCE_ROW.group + rows.length * EVIDENCE_ROW.entry}px`, height: `${EVIDENCE_ROW.entry}px`, display: "flex", alignItems: "center", gap: "10px", cursor: "pointer", color: NEUTRAL, fontSize: "10.5px", fontWeight: 700, letterSpacing: "0.8px" }}>
               <svg aria-hidden="true" width={18} height={18} style={{ overflow: "visible", flexShrink: 0 }}><path d={openArc(9, 9, 7, 0)} fill="none" stroke={NEUTRAL} strokeWidth={1.2} strokeLinecap="round" /></svg>
               <span>{t.support.OPEN}</span>
             </div>
@@ -2138,7 +2138,7 @@ export function SyntxField({ workflow, analysisSource, observation: requested, o
         {/* A · where: the field, and the way back to the Capability Field. */}
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "10px", flexWrap: "wrap" }}>
           <h3 style={{ ...label, display: "inline-flex", alignItems: "center", gap: "8px", color: CYAN, fontSize: "12px", letterSpacing: "2px", textShadow: `0 0 14px ${SIL_TOKENS.colors.cyanGlowStrong}` }}><span aria-hidden="true" style={{ width: "6px", height: "6px", borderRadius: "50%", background: CYAN, boxShadow: `0 0 8px ${CYAN}, 0 0 16px ${azure(0.5)}` }} />{t.title}</h3>
-          <button data-testid="syntx-exit-btn" data-sx-orient-action data-field-gate={capabilityAvailable ? "OPEN" : "AWAITING_JOB"} disabled={!capabilityAvailable || undefined} aria-disabled={!capabilityAvailable || undefined} aria-describedby={capabilityAvailable ? undefined : CAPABILITY_GATE_REASON_ID} title={capabilityAvailable ? undefined : capabilityGatedHint} onClick={onExit} style={{ ...action("muted"), opacity: capabilityAvailable ? 1 : 0.42, cursor: capabilityAvailable ? "pointer" : "not-allowed", fontSize: "9.5px", letterSpacing: "0.8px", padding: "3px 9px", borderRadius: "999px", border: `1px solid ${azure(0.22)}`, color: "rgba(168, 206, 226, 0.82)" }}>{t.exit}</button>
+          <button data-testid="syntx-exit-btn" data-sx-orient-action data-field-gate={capabilityAvailable ? "OPEN" : "AWAITING_JOB"} disabled={!capabilityAvailable || undefined} aria-disabled={!capabilityAvailable || undefined} aria-describedby={capabilityAvailable ? undefined : CAPABILITY_GATE_REASON_ID} title={capabilityAvailable ? undefined : capabilityGatedHint} onClick={onExit} style={{ ...action("muted"), opacity: capabilityAvailable ? 1 : 0.42, cursor: capabilityAvailable ? "pointer" : "not-allowed", fontSize: "10.5px", letterSpacing: "0.8px", padding: "3px 9px", borderRadius: "999px", border: `1px solid ${azure(0.22)}`, color: "rgba(168, 206, 226, 0.82)" }}>{t.exit}</button>
         </div>
         {/* UX-01 · the level of the observation point, as text (not only implied by the path). */}
         {field !== null && <span data-testid="syntx-level" data-level={observation.kind} style={{ ...micro, marginTop: "8px", fontSize: "10.5px", fontWeight: 700, letterSpacing: "1.6px", color: "rgba(170, 226, 244, 0.92)" }}>{t.levelLine.label} · {t.levelLine.names[observation.kind]}</span>}
@@ -2150,7 +2150,7 @@ export function SyntxField({ workflow, analysisSource, observation: requested, o
               <button data-testid={`syntx-path-${step.kind}`} data-sx-orient-step data-current={index === path.length - 1 ? "true" : "false"} disabled={index === path.length - 1} onClick={() => onObserve(step.target)} style={{ ...ghost, fontFamily: SANS, fontSize: index === path.length - 1 ? "13px" : "11.5px", fontWeight: index === path.length - 1 ? 600 : 400, color: index === path.length - 1 ? "#f2fbff" : "rgba(170, 198, 216, 0.78)", cursor: index === path.length - 1 ? "default" : "pointer", textTransform: "none", letterSpacing: "0.1px", lineHeight: 1.45, padding: "1px 0", maxWidth: "100%", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: index === path.length - 1 ? "normal" : "nowrap", textAlign: "left", transition: "color .3s ease" }} title={step.name}>{step.name}</button>
             </React.Fragment>
           ))}
-          {observation.kind !== "FIELD" && <button data-testid="syntx-return-btn" data-sx-orient-action onClick={() => onObserve(returnFrom(observation))} style={{ ...action("cyan"), fontSize: "9.5px", letterSpacing: "1.3px", padding: "2px 8px", borderRadius: "999px", border: "1px solid rgba(56, 229, 255, 0.4)", background: "rgba(56, 229, 255, 0.06)" }}>← {t.returnLabel}</button>}
+          {observation.kind !== "FIELD" && <button data-testid="syntx-return-btn" data-sx-orient-action onClick={() => onObserve(returnFrom(observation))} style={{ ...action("cyan"), fontSize: "10.5px", letterSpacing: "1.3px", padding: "2px 8px", borderRadius: "999px", border: "1px solid rgba(56, 229, 255, 0.4)", background: "rgba(56, 229, 255, 0.06)" }}>← {t.returnLabel}</button>}
         </nav>
         {/* UX-07 · the opened role, and whether it is the selected job (uploaded · opened · selected: one word each). */}
         {field !== null && (observation.kind === "ROLE" || observation.kind === "REQUIREMENT") && observation.roleId !== null && (() => {
@@ -2190,14 +2190,14 @@ export function SyntxField({ workflow, analysisSource, observation: requested, o
           <span data-testid="syntx-legacy-disclosure" data-sx-disclosure="legacy" style={{ ...micro, display: "flex", flexDirection: "column", gap: "3px", marginTop: "10px", padding: "7px 10px", borderRadius: "10px", border: `1px solid rgba(${AMBER_RGB}, 0.32)`, background: `rgba(${AMBER_RGB}, 0.05)`, fontSize: "10px", lineHeight: 1.5, color: "rgba(214, 226, 236, 0.86)" }}>
             <span style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "8px" }}>
               <span style={{ fontWeight: 700, letterSpacing: "1.3px", color: AMBER }}>{t.legacyDisclosure.title}</span>
-              <button type="button" data-testid="syntx-legacy-toggle" aria-expanded={legacyOpen} onClick={() => setLegacyOpen(value => !value)} style={{ ...ghost, flexShrink: 0, fontSize: "9.5px", letterSpacing: "1px", padding: "1px 6px", borderRadius: "999px", border: `1px solid rgba(${AMBER_RGB}, 0.35)`, color: "rgba(255, 214, 160, 0.92)", cursor: "pointer" }}>{legacyOpen ? t.legacyToggle.hide : t.legacyToggle.show}</button>
+              <button type="button" data-testid="syntx-legacy-toggle" aria-expanded={legacyOpen} onClick={() => setLegacyOpen(value => !value)} style={{ ...ghost, flexShrink: 0, fontSize: "10.5px", letterSpacing: "1px", padding: "1px 6px", borderRadius: "999px", border: `1px solid rgba(${AMBER_RGB}, 0.35)`, color: "rgba(255, 214, 160, 0.92)", cursor: "pointer" }}>{legacyOpen ? t.legacyToggle.hide : t.legacyToggle.show}</button>
             </span>
             {legacyOpen && <span>{t.legacyDisclosure.source}</span>}
             {legacyOpen && <span>{t.legacyDisclosure.reach}</span>}
             {legacyOpen && <span>{t.legacyDisclosure.limits}</span>}
           </span>
         )}
-        <span style={{ ...micro, marginTop: "8px", fontSize: "9px", letterSpacing: "0.1px", color: "rgba(150, 180, 198, 0.78)" }}>{t.keys.split(" · ").map((part, index) => { const gap = part.indexOf(" "); const key = gap < 0 ? part : part.slice(0, gap); return <React.Fragment key={index}>{index > 0 && <span style={{ color: "rgba(120, 160, 184, 0.45)" }}> · </span>}<kbd style={{ fontFamily: MONO, fontSize: "8.5px", padding: "0 4px", borderRadius: "4px", border: "1px solid rgba(150, 205, 230, 0.28)", background: "rgba(255, 255, 255, 0.04)", boxShadow: "inset 0 -1px 0 rgba(0, 0, 0, 0.45)", color: "rgba(224, 240, 248, 0.92)" }}>{key}</kbd>{gap < 0 ? "" : part.slice(gap)}</React.Fragment>; })}</span>
+        <span style={{ ...micro, marginTop: "8px", fontSize: "10px", letterSpacing: "0.1px", color: "rgba(150, 180, 198, 0.78)" }}>{t.keys.split(" · ").map((part, index) => { const gap = part.indexOf(" "); const key = gap < 0 ? part : part.slice(0, gap); return <React.Fragment key={index}>{index > 0 && <span style={{ color: "rgba(120, 160, 184, 0.45)" }}> · </span>}<kbd style={{ fontFamily: MONO, fontSize: "10px", padding: "0 4px", borderRadius: "4px", border: "1px solid rgba(150, 205, 230, 0.28)", background: "rgba(255, 255, 255, 0.04)", boxShadow: "inset 0 -1px 0 rgba(0, 0, 0, 0.45)", color: "rgba(224, 240, 248, 0.92)" }}>{key}</kbd>{gap < 0 ? "" : part.slice(gap)}</React.Fragment>; })}</span>
         {/* E · the edge actions (panels open / closed). */}
         <div style={{ ...row(6), marginTop: "10px", paddingTop: "10px", borderTop: "1px solid transparent", borderImage: `linear-gradient(90deg, ${azure(0.24)}, ${azure(0.03)}) 1` }}>
           <button data-testid="syntx-pools-toggle" data-sx-orient-action aria-expanded={poolsVisible} onClick={() => setPoolsOpen(value => !value)} style={orientAction(poolsVisible)}>{poolsVisible ? t.poolsHide : `⬡ ${t.pools}${listed.length > 0 ? ` · ${listed.length}` : ""}`}</button>
@@ -2242,7 +2242,7 @@ export function SyntxField({ workflow, analysisSource, observation: requested, o
                   <span style={{ gridColumn: 1, gridRow: 1, minWidth: 0, fontFamily: SANS, fontSize: "14px", fontWeight: selected ? 600 : 500, lineHeight: 1.3, letterSpacing: "0.1px", color: selected ? "#f4fcff" : "rgba(222, 236, 245, 0.88)", textShadow: selected ? "0 0 14px rgba(56, 229, 255, 0.25)" : "none" }}>{pool.poolName}</span>
                   <span style={{ gridColumn: "1 / -1", gridRow: 2, fontFamily: MONO, fontSize: "10px", letterSpacing: "0.5px", lineHeight: 1.5, color: pool.poolStatus === "ACTIVE" ? (selected ? "rgba(170, 214, 232, 0.86)" : "rgba(140, 170, 190, 0.74)") : AMBER, wordBreak: "break-word" }}>v{pool.poolVersion} · {pool.poolStatus} · {pool.organizationCount} org · {pool.roleCount} roles · {pool.requirementCount} req</span>
                 </span>
-                <button data-testid={`job-pool-select-${pool.jobPoolUploadId}`} disabled={selected} aria-pressed={selected} onClick={() => { rootRef.current?.focus({ preventScroll: true }); onSelectPool(pool.jobPoolUploadId); setPoolsOpen(false); }} style={{ ...action("cyan", true), gridColumn: 2, gridRow: 1, justifySelf: "end", minWidth: "84px", boxSizing: "border-box", display: "inline-flex", alignItems: "center", justifyContent: "center", gap: "6px", fontSize: "9.5px", letterSpacing: "1.5px", padding: "5px 10px", borderRadius: "999px", cursor: selected ? "default" : "pointer", color: selected ? "#e4fbff" : "rgba(56, 229, 255, 0.88)", border: `1px solid ${selected ? "rgba(56, 229, 255, 0.62)" : azure(0.26)}`, background: selected ? "linear-gradient(180deg, rgba(56, 229, 255, 0.2), rgba(56, 229, 255, 0.08))" : "rgba(4, 14, 24, 0.6)", boxShadow: selected ? "0 0 14px rgba(56, 229, 255, 0.2), inset 0 1px 0 rgba(220, 250, 255, 0.18)" : "none", textShadow: selected ? `0 0 8px ${SIL_TOKENS.colors.cyanGlow}` : "none", transition: "border-color .3s ease, background .3s ease, color .3s ease" }}>{selected && <span aria-hidden="true" style={{ width: "5px", height: "5px", borderRadius: "50%", background: CYAN, boxShadow: `0 0 6px ${CYAN}` }} />}{selected ? tp.selected : tp.select}</button>
+                <button data-testid={`job-pool-select-${pool.jobPoolUploadId}`} disabled={selected} aria-pressed={selected} onClick={() => { rootRef.current?.focus({ preventScroll: true }); onSelectPool(pool.jobPoolUploadId); setPoolsOpen(false); }} style={{ ...action("cyan", true), gridColumn: 2, gridRow: 1, justifySelf: "end", minWidth: "84px", boxSizing: "border-box", display: "inline-flex", alignItems: "center", justifyContent: "center", gap: "6px", fontSize: "10.5px", letterSpacing: "1.5px", padding: "5px 10px", borderRadius: "999px", cursor: selected ? "default" : "pointer", color: selected ? "#e4fbff" : "rgba(56, 229, 255, 0.88)", border: `1px solid ${selected ? "rgba(56, 229, 255, 0.62)" : azure(0.26)}`, background: selected ? "linear-gradient(180deg, rgba(56, 229, 255, 0.2), rgba(56, 229, 255, 0.08))" : "rgba(4, 14, 24, 0.6)", boxShadow: selected ? "0 0 14px rgba(56, 229, 255, 0.2), inset 0 1px 0 rgba(220, 250, 255, 0.18)" : "none", textShadow: selected ? `0 0 8px ${SIL_TOKENS.colors.cyanGlow}` : "none", transition: "border-color .3s ease, background .3s ease, color .3s ease" }}>{selected && <span aria-hidden="true" style={{ width: "5px", height: "5px", borderRadius: "50%", background: CYAN, boxShadow: `0 0 6px ${CYAN}` }} />}{selected ? tp.selected : tp.select}</button>
               </li>
             );
           })}
@@ -2313,7 +2313,7 @@ export function SyntxField({ workflow, analysisSource, observation: requested, o
             {/* 3 · the capability sweep: its state line, then what sweep coverage is and is not. */}
             <div data-sx-section="sweep" data-testid="job-pool-capability-sweep" data-sweep-state={field.boundary.capabilitySweep.state} data-proposal-count={field.boundary.capabilitySweep.proposalCount} data-scored="false" style={boundaryLayer(azure(0.85))}>
               <span data-sx-boundary-heading style={boundaryHeading(azure(0.8))}><span aria-hidden="true">03</span>{tp.sweep}</span>
-              <span style={boundaryMeta}><span aria-hidden="true" style={{ ...chipDot(field.boundary.capabilitySweep.state === "AVAILABLE" ? CYAN_RGB : AMBER_RGB), marginRight: "7px", verticalAlign: "1px" }} />{tp.sweepStates[field.boundary.capabilitySweep.state]} · {tp.sweepProposals} {field.boundary.capabilitySweep.proposalCount} · <span data-sx-boundary-limit="true" style={{ ...boundaryChip(AMBER_RGB), padding: "1px 7px", fontSize: "9.5px", verticalAlign: "1px" }}>{tp.unscored}</span></span>
+              <span style={boundaryMeta}><span aria-hidden="true" style={{ ...chipDot(field.boundary.capabilitySweep.state === "AVAILABLE" ? CYAN_RGB : AMBER_RGB), marginRight: "7px", verticalAlign: "1px" }} />{tp.sweepStates[field.boundary.capabilitySweep.state]} · {tp.sweepProposals} {field.boundary.capabilitySweep.proposalCount} · <span data-sx-boundary-limit="true" style={{ ...boundaryChip(AMBER_RGB), padding: "1px 7px", fontSize: "10.5px", verticalAlign: "1px" }}>{tp.unscored}</span></span>
               <span data-sx-boundary-statement style={boundaryStatement()}>{tp.sweepBoundary}</span>
             </div>
             {/* 4 · gaps: the read's parameters, then what missing requirements are. */}
@@ -2333,7 +2333,7 @@ export function SyntxField({ workflow, analysisSource, observation: requested, o
       {geminiOutputEnabled && geminiOpen && <GeminiOutputBody mode={mode} t={t} investigation={investigation} />}
 
       {/* Field-edge semantic line: the laws of the field, always visible, never in the way. */}
-      <span data-testid="job-pool-non-claims" style={{ position: "absolute", left: "50%", bottom: "calc(var(--condyn-page-header-height, 60px) + 22px)", transform: "translateX(-50%)", maxWidth: "min(960px, 84vw)", textAlign: "center", ...micro, fontSize: "9.5px", letterSpacing: "1.2px", color: "rgba(230, 241, 248, 0.7)", zIndex: 46 }}>{t.nonClaims}</span>
+      <span data-testid="job-pool-non-claims" style={{ position: "absolute", left: "50%", bottom: "calc(var(--condyn-page-header-height, 60px) + 22px)", transform: "translateX(-50%)", maxWidth: "min(960px, 84vw)", textAlign: "center", ...micro, fontSize: "10.5px", letterSpacing: "1.2px", color: "rgba(230, 241, 248, 0.7)", zIndex: 46 }}>{t.nonClaims}</span>
     </section>
   );
 }

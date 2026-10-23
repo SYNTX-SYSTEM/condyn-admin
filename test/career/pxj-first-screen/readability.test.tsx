@@ -42,6 +42,36 @@ const smallOutsideCards = (html: string, floor: number) => {
 };
 const dashboardCss = () => /<div[^>]*data-testid="career-intelligence-dashboard"[^>]*><style>([\s\S]*?)<\/style>/.exec(renderToString(<CareerIntelligenceDashboard data={EMPTY_CAREER_INTELLIGENCE_DATA} investigationMode="PERSON" />))?.[1].replace(/&quot;/g, '"').replace(/&gt;/g, ">") ?? "";
 
+describe("V-09 · type sizes", () => {
+  it("REPRODUCE: the Job Field has no text under 10 px outside the role cards (pool, organisation and role level)", () => {
+    for (const kind of ["FIELD", "ORGANIZATION", "ROLE"] as const) expect(smallOutsideCards(jobField(kind), 10), kind).toEqual([]);
+  });
+
+  it("REPRODUCE: the B2 panel has no text under 10.5 px", () => {
+    const html = renderToString(<SemanticCareerIntelligenceField data={EMPTY_CAREER_INTELLIGENCE_DATA} fieldFocus="CAPABILITY" investigationMode="PERSON_X_JOB" jobScopePoolUploadId={selection.jobPoolUploadId} jobScopeRoleId={selection.poolRoleId} analysisId={ANALYSIS} />);
+    const start = html.indexOf('data-testid="pxj-first-screen"');
+    expect(start).toBeGreaterThan(0);
+    const panel = html.slice(start, html.indexOf("</aside>", start));
+    expect(panel).toContain('data-testid="pxj-first-counts"');
+    expect([...panel.matchAll(/font-size:([\d.]+)px/g)].map(match => Number(match[1])).filter(size => size < 10.5)).toEqual([]);
+  });
+
+  it("REPRODUCE: the shared job indicator reads at 11 px (stylesheet; its markup unchanged)", () => {
+    const css = dashboardCss();
+    expect(css).toContain('[data-testid="job-scope-indicator"] [data-testid="job-scope-detail"] { font-size: 11px !important; }');
+    expect(css).toContain('[data-testid="job-scope-indicator"] > span:nth-child(2) { font-size: 11px !important; }');
+  });
+});
+
+describe("V-09 · inverse", () => {
+  it("inverse: the role cards keep their owner-set sizes — footer at most 8.5 px, standing 7.5 px (orbit geometry unchanged)", () => {
+    const html = jobField("ORGANIZATION");
+    const card = /<button[^>]*data-sx-role-card[\s\S]*?<\/button>/.exec(html)?.[0] ?? "";
+    expect(card).toMatch(/data-sx-role-standing="true" style="[^"]*font-size:7.5px/);
+    expect(Math.max(...[...card.matchAll(/font-size:([\d.]+)px[^"]*white-space:nowrap/g)].map(match => Number(match[1])))).toBeLessThanOrEqual(8.5);
+  });
+});
+
 describe("V-13 · hover in the Job Field", () => {
   it("REPRODUCE (V-13): SELECT AS JOB, the pool item and its OPEN show a hover (look only)", () => {
     const html = jobField("ROLE");

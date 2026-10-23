@@ -16,8 +16,8 @@ const SANS = SIL_TOKENS.typography.sans;
 const CYAN_RGB = "56, 229, 255";
 const AMBER_RGB = "245, 196, 107";
 
-const meta: React.CSSProperties = { fontFamily: MONO, fontSize: "10.5px", lineHeight: 1.55, letterSpacing: "0.3px", color: "rgba(176, 200, 216, 0.9)", wordBreak: "break-word" };
-const action = (on: boolean): React.CSSProperties => ({ alignSelf: "flex-start", padding: "5px 12px", borderRadius: "999px", border: `1px solid rgba(${CYAN_RGB}, ${on ? 0.6 : 0.45})`, background: `rgba(${CYAN_RGB}, ${on ? 0.12 : 0.06})`, color: SIL_TOKENS.colors.cyanActive, fontFamily: MONO, fontSize: "10.5px", fontWeight: 700, letterSpacing: "1.2px", cursor: "pointer", textAlign: "left" });
+const meta: React.CSSProperties = { fontFamily: MONO, fontSize: "11px", lineHeight: 1.55, letterSpacing: "0.3px", color: "rgba(176, 200, 216, 0.9)", wordBreak: "break-word" };
+const action = (on: boolean): React.CSSProperties => ({ alignSelf: "flex-start", padding: "5px 12px", borderRadius: "999px", border: `1px solid rgba(${CYAN_RGB}, ${on ? 0.6 : 0.45})`, background: `rgba(${CYAN_RGB}, ${on ? 0.12 : 0.06})`, color: SIL_TOKENS.colors.cyanActive, fontFamily: MONO, fontSize: "11px", fontWeight: 700, letterSpacing: "1.2px", cursor: "pointer", textAlign: "left" });
 
 /** createdAt as delivered, written in UTC to the minute (no locale-dependent reformatting). */
 export function pickerTime(createdAt: string, utc: string): string {
@@ -48,7 +48,7 @@ export function AnalysisPicker({ state, open, onToggle, onPick, locale, job, onV
       <button type="button" data-testid="analysis-picker-toggle" aria-expanded={open} onClick={onToggle} style={action(open)}>{open ? c.close : c.open}</button>
       {open && (
         <section aria-label={c.title} style={{ display: "flex", flexDirection: "column", gap: "7px", padding: "9px 10px", borderRadius: "10px", border: `1px solid rgba(${CYAN_RGB}, 0.18)`, background: "rgba(4, 12, 21, 0.62)", maxHeight: place === "role-view" ? "min(320px, 40vh)" : "none", overflowY: place === "role-view" ? "auto" : "visible" }}>
-          <span style={{ fontFamily: MONO, fontSize: "10.5px", fontWeight: 700, letterSpacing: "1.6px", color: "rgba(160, 232, 250, 0.92)" }}>{c.title}</span>
+          <span style={{ fontFamily: MONO, fontSize: "11px", fontWeight: 700, letterSpacing: "1.6px", color: "rgba(160, 232, 250, 0.92)" }}>{c.title}</span>
           {(state.state === "IDLE" || state.state === "LOADING") && <span data-testid="analysis-picker-loading" role="status" style={{ ...meta, color: `rgb(${CYAN_RGB})` }}>{c.loading}</span>}
           {state.state === "FAILED" && <span data-testid="analysis-picker-failed" role="status" style={{ ...meta, color: `rgb(${AMBER_RGB})` }}>{c.failed}{state.code ? ` · ${state.code}` : ""}</span>}
           {state.state === "AVAILABLE" && (

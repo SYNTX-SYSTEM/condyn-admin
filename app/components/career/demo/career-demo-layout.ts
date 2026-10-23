@@ -98,6 +98,11 @@ const STACK = `(max-width: ${LAYOUT_FIT.width - 1}px), (max-height: ${LAYOUT_FIT
 
 export const CAREER_DEMO_LAYOUT_CSS = `
 ${HUD} { top: ${HUD_TOP_FULL - 61}px !important; max-width: none !important; }
+/* P3 on shared shell elements (GELB: visual only — size and contrast; no text, element, order or state changes, in PERSON too).
+   V-09: the job indicator's smallest type (10 px detail, 10.5 px label) and the telemetry's levels read at 11 px. */
+[data-testid="job-scope-indicator"] [data-testid="job-scope-detail"] { font-size: 11px !important; }
+[data-testid="job-scope-indicator"] > span:nth-child(2) { font-size: 11px !important; }
+${HUD} button { font-size: 11px !important; }
 @media ${FIT} {
   ${HUD} { top: ${FIT_TOP - 61}px !important; left: var(--sx-hud-x, 50%) !important; max-width: var(--sx-hud-w, 560px) !important; flex-wrap: wrap; justify-content: center; row-gap: 2px; }
   ${FIELD}:has([data-pxj-panel]) > [data-testid="semantic-zoom-telemetry"] { left: var(--sx-hud-x-panel, 50%) !important; max-width: var(--sx-hud-w-panel, 560px) !important; }

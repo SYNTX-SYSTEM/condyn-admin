@@ -21,11 +21,11 @@ const CYAN_RGB = "56, 229, 255";
 const AMBER_RGB = "245, 196, 107";
 const NEUTRAL_RGB = "214, 228, 238";
 
-const kicker: React.CSSProperties = { fontFamily: MONO, fontSize: "10.5px", fontWeight: 700, letterSpacing: "1.8px", textTransform: "uppercase", color: "rgba(160, 232, 250, 0.92)" };
-const meta: React.CSSProperties = { fontFamily: MONO, fontSize: "10.5px", lineHeight: 1.55, letterSpacing: "0.3px", color: "rgba(176, 200, 216, 0.88)", wordBreak: "break-word" };
+const kicker: React.CSSProperties = { fontFamily: MONO, fontSize: "11px", fontWeight: 700, letterSpacing: "1.8px", textTransform: "uppercase", color: "rgba(160, 232, 250, 0.92)" };
+const meta: React.CSSProperties = { fontFamily: MONO, fontSize: "11px", lineHeight: 1.55, letterSpacing: "0.3px", color: "rgba(176, 200, 216, 0.88)", wordBreak: "break-word" };
 const statement: React.CSSProperties = { fontFamily: SANS, fontSize: "12.5px", lineHeight: 1.5, color: "#e6f1f8" };
-const chip = (rgb: string): React.CSSProperties => ({ display: "inline-flex", alignItems: "center", flexShrink: 0, padding: "2px 8px", borderRadius: "999px", border: `1px solid rgba(${rgb}, 0.5)`, background: `rgba(${rgb}, 0.08)`, color: `rgb(${rgb})`, fontFamily: MONO, fontSize: "9.5px", fontWeight: 700, letterSpacing: "1.1px", whiteSpace: "nowrap" });
-const action: React.CSSProperties = { alignSelf: "flex-start", marginTop: "4px", padding: "5px 12px", borderRadius: "999px", border: `1px solid rgba(${CYAN_RGB}, 0.55)`, background: `rgba(${CYAN_RGB}, 0.08)`, color: SIL_TOKENS.colors.cyanActive, fontFamily: MONO, fontSize: "10.5px", fontWeight: 700, letterSpacing: "1.2px", cursor: "pointer" };
+const chip = (rgb: string): React.CSSProperties => ({ display: "inline-flex", alignItems: "center", flexShrink: 0, padding: "2px 8px", borderRadius: "999px", border: `1px solid rgba(${rgb}, 0.5)`, background: `rgba(${rgb}, 0.08)`, color: `rgb(${rgb})`, fontFamily: MONO, fontSize: "10.5px", fontWeight: 700, letterSpacing: "1.1px", whiteSpace: "nowrap" });
+const action: React.CSSProperties = { alignSelf: "flex-start", marginTop: "4px", padding: "5px 12px", borderRadius: "999px", border: `1px solid rgba(${CYAN_RGB}, 0.55)`, background: `rgba(${CYAN_RGB}, 0.08)`, color: SIL_TOKENS.colors.cyanActive, fontFamily: MONO, fontSize: "11px", fontWeight: 700, letterSpacing: "1.2px", cursor: "pointer" };
 const layer: React.CSSProperties = { display: "flex", flexDirection: "column", gap: "6px", padding: "10px 12px", borderRadius: "10px", border: "1px solid rgba(120, 214, 255, 0.14)", background: "rgba(4, 12, 21, 0.6)" };
 
 const LOADING_STATES = new Set(["RESULT_LOADING", "BOUNDARY_RESOLVING", "COVERAGE_LOADING", "JOB_CHECKING"]);
@@ -98,7 +98,7 @@ function Requirement({ requirement, c, focused, onFocus }: { requirement: FirstS
       {requirement.quotes.map((quote, index) => (
         <div key={`${quote.docId}:${index}`} data-testid={`pxj-first-quote-${requirement.poolRequirementId}-${index}`} data-doc-id={quote.docId} data-quote-in-projection={String(quote.inProjection)} data-source-resolved={String(quote.sourceResolved)} data-verified={String(quote.verified)} style={{ display: "flex", flexDirection: "column", gap: "3px", paddingLeft: "9px", borderLeft: `2px solid rgba(${quote.verified ? "126, 255, 204" : AMBER_RGB}, 0.45)` }}>
           <p data-pxj-quote style={{ margin: 0, fontFamily: SANS, fontSize: "12px", lineHeight: 1.5, color: "rgba(224, 238, 246, 0.92)" }}>“{quote.quote}”</p>
-          <span style={{ ...meta, fontSize: "10px" }}>
+          <span style={{ ...meta, fontSize: "10.5px" }}>
             {quote.sourceResolved ? (quote.sourceTitle ?? c.titleNotDelivered) : c.sourceNotResolved} · {quote.docId}
             {quote.verified ? <span data-pxj-quote-verified style={{ color: "rgba(126, 255, 204, 0.9)" }}> · ✓ {c.quoteVerified}</span> : !quote.inProjection ? <span style={{ color: `rgb(${AMBER_RGB})` }}> · {c.quoteNotInProjection}</span> : null}
           </span>
