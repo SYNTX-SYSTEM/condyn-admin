@@ -42,6 +42,16 @@ const smallOutsideCards = (html: string, floor: number) => {
 };
 const dashboardCss = () => /<div[^>]*data-testid="career-intelligence-dashboard"[^>]*><style>([\s\S]*?)<\/style>/.exec(renderToString(<CareerIntelligenceDashboard data={EMPTY_CAREER_INTELLIGENCE_DATA} investigationMode="PERSON" />))?.[1].replace(/&quot;/g, '"').replace(/&gt;/g, ">") ?? "";
 
+describe("V-13 · hover in the Job Field", () => {
+  it("REPRODUCE (V-13): SELECT AS JOB, the pool item and its OPEN show a hover (look only)", () => {
+    const html = jobField("ROLE");
+    expect(html).toMatch(/\[data-job-scope-selected="false"\]:not\(:disabled\):hover \{/);
+    expect(html).toMatch(/\[data-testid\^=job-pool-item-\]:hover \{/);
+    expect(html).toMatch(/\[data-testid\^=job-pool-select-\]:not\(:disabled\) \{ cursor: pointer; \}/);
+  });
+
+});
+
 describe("V-14 · target size in the Job Field", () => {
   it("REPRODUCE (V-14): the panel's actions (POOLS, + INTAKE, …) are at least 24 px high", () => {
     const tag = /<button[^>]*data-testid="syntx-pools-toggle"[^>]*>/.exec(jobField("FIELD"))?.[0] ?? "";

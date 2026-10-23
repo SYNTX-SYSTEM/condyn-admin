@@ -491,6 +491,13 @@ ${SYNTX_FOCUS_PULSE_KEYFRAMES}
   [data-testid="syntx-field"], [data-testid="syntx-field"] * { animation: none !important; transition: none !important; }
   [data-testid="syntx-field"] *::before, [data-testid="syntx-field"] *::after { animation: none !important; transition: none !important; }
 }
+
+/* V-13: visible hover on the job action and the pool list (hover changes nothing but the look: no URL, no history). */
+[data-job-scope-selected="false"]:not(:disabled):hover { border-color: rgba(56, 229, 255, 0.85) !important; background: rgba(56, 229, 255, 0.16) !important; color: #f2fdff !important; box-shadow: 0 0 14px rgba(56, 229, 255, 0.25); }
+[data-testid^=job-pool-item-]:hover { border-color: rgba(56, 229, 255, 0.28) !important; background: rgba(56, 229, 255, 0.045) !important; }
+[data-testid^=job-pool-select-]:not(:disabled) { cursor: pointer; }
+[data-testid^=job-pool-select-]:not(:disabled):hover { border-color: rgba(56, 229, 255, 0.7) !important; background: rgba(56, 229, 255, 0.14) !important; color: #e9fbff !important; }
+[data-sx-orient-action]:not(:disabled):hover { border-color: rgba(56, 229, 255, 0.6) !important; color: #e9fbff !important; }
 `;
 
 function useMotionMode(): SyntxMotionMode {
