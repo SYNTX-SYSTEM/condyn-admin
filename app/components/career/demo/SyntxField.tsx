@@ -2205,7 +2205,7 @@ export function SyntxField({ workflow, analysisSource, observation: requested, o
       <div ref={stageRef} data-testid="syntx-stage" style={{ position: "absolute", inset: 0, overflow: "hidden" }}>
         {field !== null && <FieldStage field={field} mode={mode} t={t} locale={locale} size={size} onObserve={onObserve} />}
         {resolution.stale !== null && <span data-testid="syntx-stale" data-stale-kind={resolution.stale.kind} data-stale-id={resolution.stale.id} data-sx-reveal="true" style={{ ...lens, ...prose, color: AMBER, position: "absolute", left: "50%", top: "calc(50% + 150px)", transform: "translateX(-50%)", width: "min(320px, 40%)", textAlign: "center", zIndex: 41 }}>{t.stale[resolution.stale.kind]}</span>}
-        {state === "NO_POOL" && <NoPoolGiant copy={t.noPool} />}
+        {state === "NO_POOL" && <NoPoolGiant copy={{ ...t.noPool, orientation: workflow.pools.state === "EMPTY" ? t.noPool.orientationEmpty : t.noPool.orientation }} />}
         {investigation.mode !== "PERSON_X_JOB" && field !== null && <span data-testid="syntx-investigation-statement" data-investigation-mode={investigation.mode} style={{ ...micro, color: "rgba(196, 236, 248, 0.86)", position: "absolute", left: "50%", bottom: "calc(var(--condyn-page-header-height, 60px) + 62px)", transform: "translateX(-50%)", width: "min(640px, 80%)", textAlign: "center", zIndex: 41 }}>{t.investigation.field[investigation.mode]}</span>}
         {withheld !== null && field !== null && (
           <span data-testid="syntx-analysis-boundary" data-boundary-state={withheld} data-analysis-pool={investigation.analysisPool ?? ""} style={{ ...micro, color: AMBER, position: "absolute", left: "50%", bottom: "calc(var(--condyn-page-header-height, 60px) + 64px)", transform: "translateX(-50%)", width: "min(560px, 80%)", textAlign: "center", zIndex: 46, display: "flex", flexDirection: "column", alignItems: "center", gap: "8px" }}>
@@ -2221,7 +2221,8 @@ export function SyntxField({ workflow, analysisSource, observation: requested, o
         <PanelNode side="right" top="26px" />
         <span data-sx-kicker style={panelKicker()}>{tp.pools}</span>
         {(workflow.pools.state === "IDLE" || workflow.pools.state === "LOADING") && <span data-testid="job-pool-list-loading" style={{ ...micro, color: AMBER }}>{tp.poolsLoading}</span>}
-        {workflow.pools.state === "EMPTY" && <span data-testid="job-pool-list-empty" style={micro}>{tp.poolsEmpty}</span>}
+        {/* V-07: the empty list points to the intake and opens it (the form stays behind its own toggle otherwise). */}
+        {workflow.pools.state === "EMPTY" && <span data-testid="job-pool-list-empty" style={{ ...micro, display: "flex", flexDirection: "column", alignItems: "flex-start", gap: "8px" }}>{tp.poolsEmpty}<button type="button" data-testid="job-pool-list-empty-intake" data-sx-orient-action aria-expanded={intakeVisible} onClick={() => setIntakeOpen(true)} style={orientAction(intakeVisible)}>{tp.intakeOpen}</button></span>}
         {workflow.pools.state === "NOT_PROVISIONED" && <span data-testid="job-pool-list-not-provisioned" style={{ ...micro, color: AMBER }}>{tp.notProvisioned}</span>}
         {workflow.pools.state === "FAILED" && <span data-testid="job-pool-list-failed" style={{ ...micro, color: AMBER }}>{tp.poolsFailed}{workflow.pools.code ? ` · ${workflow.pools.code}` : ""}</span>}
         {selection.kind === "NOT_LISTED" && <span data-testid="job-pool-selection-not-listed" style={{ ...micro, color: AMBER }}>{tp.selectionNotListed} · {selection.jobPoolUploadId}</span>}

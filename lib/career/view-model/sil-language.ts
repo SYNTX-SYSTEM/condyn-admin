@@ -326,7 +326,7 @@ export const SIL_COPY = {
        *  organisation, a role), SELECTED (the one job, at the shell). */
       pools: "UPLOADED JOB POOLS",
       poolsLoading: "READING JOB POOL UPLOADS...",
-      poolsEmpty: "NO JOB POOL UPLOAD PERSISTED",
+      poolsEmpty: "NO JOB POOL UPLOADED YET · upload one via + INTAKE",
       poolsFailed: "JOB POOL UPLOADS COULD NOT BE READ",
       notProvisioned: "JOB POOL PERSISTENCE NOT PROVISIONED (no verified disposable database)",
       select: "OPEN",
@@ -670,9 +670,11 @@ export const SIL_COPY = {
       /** NO_POOL at the field: no explicit selection (a persisted upload may exist); not an error, a failed upload or a judgement. */
       noPool: {
         status: "JOB FIELD // UNBOUND",
-        title: "NO JOB POOL SELECTED",
-        reason: "This field awaits an explicitly selected job pool.",
-        orientation: "Upload via INTAKE · Select via POOLS"
+        title: "NO JOB POOL OPENED",
+        reason: "This field awaits an explicitly opened job pool.",
+        /** UX-06: the uploaded pools first (no upload is needed to reach an existing investigation); the upload after them. */
+        orientation: "Open an uploaded pool in POOLS · or upload one via + INTAKE",
+        orientationEmpty: "No pool uploaded yet · upload one via + INTAKE"
       },
       support: {
         SUPPORTED: "SUPPORTED (SCORED EVIDENCE)",
@@ -1206,7 +1208,7 @@ export const SIL_COPY = {
       uploadNotSelected: "HOCHGELADEN ≠ GEÖFFNET · in der Liste unten öffnen",
       pools: "HOCHGELADENE JOB-POOLS",
       poolsLoading: "JOB-POOL-UPLOADS WERDEN GELESEN...",
-      poolsEmpty: "KEIN JOB-POOL-UPLOAD PERSISTIERT",
+      poolsEmpty: "NOCH KEIN JOB-POOL HOCHGELADEN · über + AUFNAHME hochladen",
       poolsFailed: "JOB-POOL-UPLOADS KONNTEN NICHT GELESEN WERDEN",
       notProvisioned: "JOB-POOL-PERSISTENZ NICHT BEREITGESTELLT (keine verifizierte Wegwerf-Datenbank)",
       select: "ÖFFNEN",
@@ -1535,9 +1537,10 @@ export const SIL_COPY = {
       },
       noPool: {
         status: "JOB-FELD // UNGEBUNDEN",
-        title: "KEIN JOB-POOL GEWÄHLT",
-        reason: "Dieses Feld wartet auf einen ausdrücklich gewählten Job-Pool.",
-        orientation: "Hochladen über AUFNAHME · Wählen über POOLS"
+        title: "KEIN JOB-POOL GEÖFFNET",
+        reason: "Dieses Feld wartet auf einen ausdrücklich geöffneten Job-Pool.",
+        orientation: "Einen hochgeladenen Pool in POOLS öffnen · oder einen über + AUFNAHME hochladen",
+        orientationEmpty: "Noch kein Pool hochgeladen · einen über + AUFNAHME hochladen"
       },
       support: {
         SUPPORTED: "GESTÜTZT (BEWERTETE EVIDENZ)",
