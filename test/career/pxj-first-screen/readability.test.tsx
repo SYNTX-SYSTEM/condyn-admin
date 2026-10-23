@@ -97,3 +97,13 @@ describe("V-14 · target size in the Job Field", () => {
   });
 });
 
+describe("O-PXJ-720 rest · 640×360", () => {
+  it("REPRODUCE: in the stack tier B2's binding and counts come first, the boundary statement right after them — no duplicate", () => {
+    const css = dashboardCss();
+    const stack = css.slice(css.indexOf("@media (max-width: 1099px), (max-height: 599px)"));
+    expect(stack).toMatch(/\[data-pxj-panel\] \[data-testid=pxj-first-coverage\] \{ display: contents !important; \}/);
+    expect(stack).toMatch(/\[data-pxj-section=binding\] \{ order: 1; \}/);
+    expect(stack).toMatch(/\[data-testid=pxj-first-coverage-boundary\] \{ order: 2; \}/);
+    expect(stack).toMatch(/\[data-testid=pxj-first-state\] \{ order: 3; \}/);
+  });
+});

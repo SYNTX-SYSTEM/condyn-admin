@@ -118,9 +118,9 @@ ${HUD} > span { color: rgba(130, 200, 224, 0.85) !important; }
 }
 @media ${STACK} {
   [data-testid="career-intelligence-dashboard"] { min-height: 100vh; overflow-x: clip; }
-  [data-testid="career-intelligence-dashboard"] > div:first-of-type { flex-wrap: wrap; row-gap: 8px; padding: 12px 16px !important; }
+  [data-testid="career-intelligence-dashboard"] > div:first-of-type { flex-wrap: wrap; row-gap: 8px; padding: 8px 16px !important; }
   [data-testid="career-intelligence-dashboard"] > div:first-of-type span { white-space: normal; overflow-wrap: anywhere; }
-  ${FIELD} { height: auto !important; min-height: calc(100vh - 61px) !important; overflow: visible !important; display: grid !important; grid-template-columns: minmax(0, 1fr) auto; grid-auto-rows: auto; align-items: start; justify-items: stretch; gap: 10px 12px; padding: 12px 16px 28px; box-sizing: border-box; }
+  ${FIELD} { height: auto !important; min-height: calc(100vh - 61px) !important; overflow: visible !important; display: grid !important; grid-template-columns: minmax(0, 1fr) auto; grid-auto-rows: auto; align-items: start; justify-items: stretch; gap: 6px 12px; padding: 8px 16px 28px; box-sizing: border-box; }
   ${FIELD} > * { grid-column: 1 / -1; }
   ${FIELD} > [data-sx-shell="controls"] { position: relative !important; top: auto !important; right: auto !important; order: 1; justify-self: end; flex-wrap: wrap; justify-content: flex-end; }
   ${FIELD} > [data-sx-shell="guide"] { order: 1; justify-self: start; align-self: center; }
@@ -135,6 +135,14 @@ ${HUD} > span { color: rgba(130, 200, 224, 0.85) !important; }
   ${FIELD} > [data-sx-shell="gate-reason"] { position: relative !important; left: auto !important; top: auto !important; transform: none !important; order: 4; max-width: 100% !important; width: auto !important; justify-self: stretch; }
   ${FIELD} > [data-testid="intake-telemetry-banner"], ${FIELD} > [data-testid="intake-error-banner"], ${FIELD} > [data-testid="intake-success-banner"] { position: relative !important; left: auto !important; top: auto !important; bottom: auto !important; transform: none !important; order: 5; max-width: 100% !important; width: auto !important; }
   ${PANEL_WRAP} { order: 6; }
+  /* 640 × 360 (GELB): the binding with its counts first, the boundary statement right after it (P-07), then the state, the
+     proposals and the rows — the same elements, no duplicate; the coverage section lends its children to the panel's column. */
+  ${FIELD} [data-pxj-panel] [data-testid=pxj-first-coverage] { display: contents !important; }
+  ${FIELD} [data-pxj-panel] [data-pxj-section=binding] { order: 1; }
+  ${FIELD} [data-pxj-panel] [data-testid=pxj-first-coverage-boundary] { order: 2; }
+  ${FIELD} [data-pxj-panel] [data-testid=pxj-first-state] { order: 3; }
+  ${FIELD} [data-pxj-panel] [data-pxj-section=proposals] { order: 4; }
+  ${FIELD} [data-pxj-panel] [data-pxj-section=requirements] { order: 5; }
   ${FIELD} [data-pxj-panel] { position: relative !important; top: auto !important; right: auto !important; bottom: auto !important; width: 100% !important; max-height: none !important; overflow: visible !important; }
   ${STAGE} { position: relative !important; left: auto !important; top: auto !important; transform: none !important; zoom: var(--sx-stage-zoom, 0.6); order: 7; justify-self: center; }
   ${FIELD} > [data-testid="semantic-zoom-telemetry"] { position: relative !important; left: auto !important; top: auto !important; transform: none !important; order: 8; justify-self: center; max-width: 100%; }
