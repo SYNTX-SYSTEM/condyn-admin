@@ -10,7 +10,7 @@ const KEY = "TEST-ONLY-FAKE-KEY-0123456789abcdef";
 const WORKER = "video-lab-worker-TEST-ONLY-0123456789";
 const relay = await startGeminiRelay({ apiKey: KEY, workerKey: WORKER, model: "gemini-test-model", budget: 3, upstream, onRecord: r => records.push(r) });
 const url = (p: string) => `http://127.0.0.1:${relay.port}${p}`;
-const post = (p: string, body: string | Buffer, key: string | null = WORKER) => fetch(url(p), { method: "POST", headers: { "content-type": "application/json", ...(key === null ? {} : { "x-goog-api-key": key }) }, body });
+const post = (p: string, body: string | Buffer, key: string | null = WORKER) => fetch(url(p), { method: "POST", headers: { "content-type": "application/json", ...(key === null ? {} : { "x-goog-api-key": key }) }, body: typeof body === "string" ? body : new Uint8Array(body) });
 const body = JSON.stringify({ contents: "CONDYN CAPABILITY DISCOVERY SOURCE CORPUS <INVESTIGATION_SCOPE> SECRET-PROMPT-CONTENT" });
 const results: Array<[string, boolean]> = [];
 const a = await post("/v1beta/models/gemini-test-model:generateContent", body); results.push(["1st call forwarded 200", a.status === 200 && (await a.text()).includes("SECRET-RESPONSE-CONTENT")]);

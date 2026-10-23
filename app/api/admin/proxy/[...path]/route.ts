@@ -6,7 +6,7 @@ type ProxyRouteContext = {
   }>;
 };
 
-export async function handleProxy(req: NextRequest, context: ProxyRouteContext) {
+async function handleProxy(req: NextRequest, context: ProxyRouteContext) {
   const API_URL = process.env.CONDYN_API_URL;
   const TOKEN = process.env.BACKEND_TOKEN;
 
