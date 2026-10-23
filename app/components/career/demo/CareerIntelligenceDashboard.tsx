@@ -1,10 +1,11 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { DemoCareerIntelligenceData } from "../../../career/demo/demo-data";
 import { SemanticCareerIntelligenceField } from "./SemanticCareerIntelligenceField";
 import { SIL_TOKENS } from "./SILTokens";
 import { DecisionLoopLabsMark, DLL_TEAL } from "./DecisionLoopLabsMark";
+import { CAREER_DEMO_LAYOUT_CSS, applyCareerDemoStageFit } from "./career-demo-layout";
 
 export interface CareerIntelligenceDashboardProps {
   data: DemoCareerIntelligenceData;
@@ -36,8 +37,17 @@ export function CareerIntelligenceDashboard({ data, canonicalSilAssociationId, c
   /* The brand surface follows the active field: Decision Loop Labs in the Job Field context; the Capability context is unchanged.
      Job Pool first: the Job Field is active until the field reports a VALID job scope and an entered Capability Field. */
   const [activeField, setActiveField] = useState<"CAPABILITY" | "FIELD">("FIELD");
+  /** O-PXJ-720 (PINK V-01 … V-03): the viewport tier and the planetarium's fit, written on this root (career-demo-layout.ts). */
+  const rootRef = useRef<HTMLDivElement | null>(null);
+  useEffect(() => {
+    const fit = () => { const root = rootRef.current; if (root) applyCareerDemoStageFit(root, window.innerWidth, window.innerHeight, root.querySelector<HTMLElement>(":scope > div")?.getBoundingClientRect().height ?? 61); };
+    fit();
+    window.addEventListener("resize", fit);
+    return () => window.removeEventListener("resize", fit);
+  }, []);
   return (
     <div
+      ref={rootRef}
       data-testid="career-intelligence-dashboard"
       style={{
         backgroundColor: SIL_TOKENS.colors.void,
@@ -47,6 +57,7 @@ export function CareerIntelligenceDashboard({ data, canonicalSilAssociationId, c
         position: "relative"
       }}
     >
+      <style>{CAREER_DEMO_LAYOUT_CSS}</style>
       {/* Top Controls Bar */}
       <div
         style={{
