@@ -137,4 +137,45 @@ reachable only by scrolling the page (301 px) and then the panel (scrollHeight 2
 scrolled the fixed shell overlaps the field (`REAL-R01b-scrolled-1280x720.jpg`). Present since G1 (GRÜN's STANDIN-layout.json
 shows the same box). At 1920×1080 the panel is fully in view.
 
-PINK validation: pending (§8).
+PINK validation: §8.
+
+## 8 PINK validation and closure state
+
+**PINK §3.60 — PASS on 421e382** (`validation/hr-decision-loop-pink` 32d7d73, evidence `evidence/pxj-full-closure-421e382/`):
+
+- Stand-in, production build (LAB_ONLY_BUILD_FLAG, next.config.ts restored): 88/90. The two misses (C15, C18) were PINK probe errors;
+  the job removal they targeted is covered elsewhere (GELB B07, sweep X-04). Chain pool → organisation → role → select → Capability
+  = +1 entry each; the same selection or mode and staging = +0. 22× Back + 22× Forward = 44/44 equal to a fresh load, including the
+  document boundary. B-RUN: reload during RUNNING follows by GET only; FAILED shows the banner without retry. (a) Back/Forward during
+  a run and (b) reload during a second analysis: PASS, 1 POST per run. O-RF-1, B-SRC (EN text exact; DE INCONCLUSIVE in the browser,
+  CODE_INSPECTION only), X-22 in production 3/3.
+- Acceptance lab :41872, PERSISTED_REAL_RESULT, GET only: 58/58 at 1920×1080, 57/58 at 1280×720 (the miss = O-PXJ-720); 522
+  requests per run, all GET, 0 page errors, 0 inspector reads; lineage confirmed over the API. The source bundle
+  `CSB_JOB_1792628993472_10` has no GET route → INCONCLUSIVE for PINK (proven only by GELB's read-only DB read, §1).
+- Regression vs 88539d3: only the intended changes; G1 walk PA-01…PA-14 20/20 at 1920 and 1280. Suite 2786 green / 38 red (88539d3:
+  31); the additional red are 5000 ms timeouts in untouched outcome-valence files; pxj-first-screen 127/127.
+- PINK's NAV ≠ RELOAD reports (A) and (B) under `next dev` are **DEV_ONLY**: the fresh load reaches the same state after 3–8 s under
+  dev load; in a production build both are stable from 1 s. GELB reproduced (A) independently in a production build on a separate
+  writable copy lab (:41876, RF pool uploaded there only) — 14/14 equal (`nav-repro/repro-a-prod-41876.json`); (B) 6/6 equal
+  (`nav-repro/nav-probe-prod-41872.json`). A GELB probe mismatch was a probe artefact (two clicks = two entries;
+  `nav-repro/nav-trace-prod-41872.json`). The repro lab was stopped and its copy dropped.
+
+**New owner observation O-NAV-SUBMIT (PINK I24, not a FAIL):** Back about 0.3 s after ANALYZE, while the POST is in flight: the
+released controller discards the 202; the job runs to SUCCEEDED and its analysis is persisted, but no entry of the session names it.
+NAV ≡ RELOAD holds; a reload during SUBMITTING is the same class (the job id is known only after the 202).
+
+**States not closed**
+
+| Item | State |
+|---|---|
+| O-PXJ-720 | B2 below the fold at 1280×720, shell overlaps while scrolled — owner decision (accept / GRÜN layout fix) |
+| O-NAV-SUBMIT | analysis started but not named when leaving during SUBMITTING — owner decision (accept / follow-up, e.g. idempotency-key recovery) |
+| B-SRC persistence (D-SRC) | hint only; persistence = owner decision |
+| D-PICK | no UI way to an existing analysis of the selected job; today deep link or ANALYZE |
+| B-3 | production build needs the lab-only flag (proxy route type error) |
+| CSB via API | no GET route; proven by DB read only |
+| B-SRC DE text | browser INCONCLUSIVE (code inspection only) |
+| Integration | no GO; nothing integrated |
+
+Labs: :41872 (owner acceptance, production build of 421e382, real result copy, GET only) keeps running for the owner; :41862
+unchanged; :41871 GRÜN stand-in; :41873/:41876 stopped.

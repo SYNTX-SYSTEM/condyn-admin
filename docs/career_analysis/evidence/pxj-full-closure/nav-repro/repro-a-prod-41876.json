@@ -1,0 +1,457 @@
+{
+ "RF": "<RF>",
+ "steps": [
+  {
+   "label": "deep(DLL)",
+   "len": 2,
+   "url": "?investigationMode=PERSON_X_JOB&jobPoolUploadId=<DLL>&jobScopePoolUploadId=<DLL>&jobScopeRoleId=role_kestrel_fullstack&analysisId=ANL_1792628993472_10&focus=CAPABILITY",
+   "field": "CAPABILITY",
+   "obs": null,
+   "first": "AVAILABLE",
+   "job": "VALID:JOB Senior Full-Stack Engineer \u2013 Shipment Tracking Kestrel Logistics Software GmbH \u00b7 DLL E",
+   "offer": null
+  },
+  {
+   "label": "field",
+   "len": 3,
+   "url": "?investigationMode=PERSON_X_JOB&jobPoolUploadId=<DLL>&jobScopePoolUploadId=<DLL>&jobScopeRoleId=role_kestrel_fullstack&analysisId=ANL_1792628993472_10&focus=FIELD",
+   "field": "FIELD",
+   "obs": "FIELD:JPOOL_B94850C439974E27496FE3B1A9A076B5:JPOOL_B94850C439974E27496FE3B1A9A076B5",
+   "first": null,
+   "job": "VALID:JOB Senior Full-Stack Engineer \u2013 Shipment Tracking Kestrel Logistics Software GmbH \u00b7 DLL E",
+   "offer": null
+  },
+  {
+   "label": "select RF pool",
+   "len": 4,
+   "url": "?investigationMode=PERSON_X_JOB&jobPoolUploadId=<RF>&jobScopePoolUploadId=<DLL>&jobScopeRoleId=role_kestrel_fullstack&analysisId=ANL_1792628993472_10&focus=FIELD",
+   "field": "FIELD",
+   "obs": "FIELD:<RF>:<RF>",
+   "first": null,
+   "job": "VALID:JOB Senior Full-Stack Engineer \u2013 Shipment Tracking Kestrel Logistics Software GmbH \u00b7 DLL E",
+   "offer": null
+  },
+  {
+   "label": "open org",
+   "len": 5,
+   "url": "?investigationMode=PERSON_X_JOB&jobPoolUploadId=<RF>&jobScopePoolUploadId=<DLL>&jobScopeRoleId=role_kestrel_fullstack&analysisId=ANL_1792628993472_10&focus=FIELD&jobOrganizationId=org_kestrel",
+   "field": "FIELD",
+   "obs": "ORGANIZATION:org_kestrel:<RF>",
+   "first": null,
+   "job": "VALID:JOB Senior Full-Stack Engineer \u2013 Shipment Tracking Kestrel Logistics Software GmbH \u00b7 DLL E",
+   "offer": null
+  },
+  {
+   "label": "open role",
+   "len": 6,
+   "url": "?investigationMode=PERSON_X_JOB&jobPoolUploadId=<RF>&jobScopePoolUploadId=<DLL>&jobScopeRoleId=role_kestrel_fullstack&analysisId=ANL_1792628993472_10&focus=FIELD&jobOrganizationId=org_kestrel&jobRoleId=role_kestrel_fullstack",
+   "field": "FIELD",
+   "obs": "ROLE:role_kestrel_fullstack:<RF>",
+   "first": null,
+   "job": "VALID:JOB Senior Full-Stack Engineer \u2013 Shipment Tracking Kestrel Logistics Software GmbH \u00b7 DLL E",
+   "offer": null
+  },
+  {
+   "label": "select as job (RF)",
+   "len": 7,
+   "url": "?investigationMode=PERSON_X_JOB&jobPoolUploadId=<RF>&jobScopePoolUploadId=<RF>&jobScopeRoleId=role_kestrel_fullstack&analysisId=ANL_1792628993472_10&focus=FIELD&jobOrganizationId=org_kestrel&jobRoleId=role_kestrel_fullstack",
+   "field": "FIELD",
+   "obs": "ROLE:role_kestrel_fullstack:<RF>",
+   "first": null,
+   "job": "VALID:JOB Senior Full-Stack Engineer \u2013 Shipment Tracking Kestrel Logistics Software GmbH \u00b7 PINK ",
+   "offer": "ROLE_MISMATCH"
+  },
+  {
+   "label": "capability",
+   "len": 8,
+   "url": "?investigationMode=PERSON_X_JOB&jobPoolUploadId=<RF>&jobScopePoolUploadId=<RF>&jobScopeRoleId=role_kestrel_fullstack&analysisId=ANL_1792628993472_10&focus=CAPABILITY",
+   "field": "CAPABILITY",
+   "obs": null,
+   "first": "ROLE_MISMATCH",
+   "job": "VALID:JOB Senior Full-Stack Engineer \u2013 Shipment Tracking Kestrel Logistics Software GmbH \u00b7 PINK ",
+   "offer": null
+  },
+  {
+   "label": "select analysis role (DLL)",
+   "len": 9,
+   "url": "?investigationMode=PERSON_X_JOB&jobPoolUploadId=<RF>&jobScopePoolUploadId=<DLL>&jobScopeRoleId=role_kestrel_fullstack&analysisId=ANL_1792628993472_10&focus=CAPABILITY",
+   "field": "CAPABILITY",
+   "obs": null,
+   "first": "AVAILABLE",
+   "job": "VALID:JOB Senior Full-Stack Engineer \u2013 Shipment Tracking Kestrel Logistics Software GmbH \u00b7 DLL E",
+   "offer": null
+  }
+ ],
+ "checks": [
+  {
+   "dir": "back",
+   "url": "?investigationMode=PERSON_X_JOB&jobPoolUploadId=<RF>&jobScopePoolUploadId=<RF>&jobScopeRoleId=role_kestrel_fullstack&analysisId=ANL_1792628993472_10&focus=CAPABILITY",
+   "same": true,
+   "here": {
+    "field": "CAPABILITY",
+    "obs": null,
+    "first": "ROLE_MISMATCH",
+    "job": "VALID:JOB Senior Full-Stack Engineer \u2013 Shipment Tracking Kestrel Logistics Software GmbH \u00b7 PINK ",
+    "offer": null
+   },
+   "there": {
+    "field": "CAPABILITY",
+    "obs": null,
+    "first": "ROLE_MISMATCH",
+    "job": "VALID:JOB Senior Full-Stack Engineer \u2013 Shipment Tracking Kestrel Logistics Software GmbH \u00b7 PINK ",
+    "offer": null
+   },
+   "reqs": [
+    "GET /api/career/job-pools/<RF>",
+    "GET /api/career/analyses/ANL_1792628993472_10/investigation",
+    "GET /api/career/job-pools",
+    "GET /api/career/job-pools/<RF>",
+    "GET /api/career/analyses/ANL_1792628993472_10"
+   ]
+  },
+  {
+   "dir": "back",
+   "url": "?investigationMode=PERSON_X_JOB&jobPoolUploadId=<RF>&jobScopePoolUploadId=<RF>&jobScopeRoleId=role_kestrel_fullstack&analysisId=ANL_1792628993472_10&focus=FIELD&jobOrganizationId=org_kestrel&jobRoleId=role_kestrel_fullstack",
+   "same": true,
+   "here": {
+    "field": "FIELD",
+    "obs": "ROLE:role_kestrel_fullstack:<RF>",
+    "first": null,
+    "job": "VALID:JOB Senior Full-Stack Engineer \u2013 Shipment Tracking Kestrel Logistics Software GmbH \u00b7 PINK ",
+    "offer": "ROLE_MISMATCH"
+   },
+   "there": {
+    "field": "FIELD",
+    "obs": "ROLE:role_kestrel_fullstack:<RF>",
+    "first": null,
+    "job": "VALID:JOB Senior Full-Stack Engineer \u2013 Shipment Tracking Kestrel Logistics Software GmbH \u00b7 PINK ",
+    "offer": "ROLE_MISMATCH"
+   },
+   "reqs": [
+    "GET /api/career/job-pools/<RF>",
+    "GET /api/career/analyses/ANL_1792628993472_10/investigation",
+    "GET /api/career/job-pools",
+    "GET /api/career/job-pools/<RF>",
+    "GET /api/career/analyses/ANL_1792628993472_10"
+   ]
+  },
+  {
+   "dir": "back",
+   "url": "?investigationMode=PERSON_X_JOB&jobPoolUploadId=<RF>&jobScopePoolUploadId=<DLL>&jobScopeRoleId=role_kestrel_fullstack&analysisId=ANL_1792628993472_10&focus=FIELD&jobOrganizationId=org_kestrel&jobRoleId=role_kestrel_fullstack",
+   "same": true,
+   "here": {
+    "field": "FIELD",
+    "obs": "ROLE:role_kestrel_fullstack:<RF>",
+    "first": null,
+    "job": "VALID:JOB Senior Full-Stack Engineer \u2013 Shipment Tracking Kestrel Logistics Software GmbH \u00b7 DLL E",
+    "offer": null
+   },
+   "there": {
+    "field": "FIELD",
+    "obs": "ROLE:role_kestrel_fullstack:<RF>",
+    "first": null,
+    "job": "VALID:JOB Senior Full-Stack Engineer \u2013 Shipment Tracking Kestrel Logistics Software GmbH \u00b7 DLL E",
+    "offer": null
+   },
+   "reqs": [
+    "GET /api/career/job-pools/<DLL>",
+    "GET /api/career/analyses/ANL_1792628993472_10/investigation",
+    "GET /api/career/job-pools",
+    "GET /api/career/job-pools/<RF>",
+    "GET /api/career/analyses/ANL_1792628993472_10"
+   ]
+  },
+  {
+   "dir": "back",
+   "url": "?investigationMode=PERSON_X_JOB&jobPoolUploadId=<RF>&jobScopePoolUploadId=<DLL>&jobScopeRoleId=role_kestrel_fullstack&analysisId=ANL_1792628993472_10&focus=FIELD&jobOrganizationId=org_kestrel",
+   "same": true,
+   "here": {
+    "field": "FIELD",
+    "obs": "ORGANIZATION:org_kestrel:<RF>",
+    "first": null,
+    "job": "VALID:JOB Senior Full-Stack Engineer \u2013 Shipment Tracking Kestrel Logistics Software GmbH \u00b7 DLL E",
+    "offer": null
+   },
+   "there": {
+    "field": "FIELD",
+    "obs": "ORGANIZATION:org_kestrel:<RF>",
+    "first": null,
+    "job": "VALID:JOB Senior Full-Stack Engineer \u2013 Shipment Tracking Kestrel Logistics Software GmbH \u00b7 DLL E",
+    "offer": null
+   },
+   "reqs": [
+    "GET /api/career/job-pools/<DLL>",
+    "GET /api/career/analyses/ANL_1792628993472_10/investigation",
+    "GET /api/career/job-pools",
+    "GET /api/career/job-pools/<RF>",
+    "GET /api/career/analyses/ANL_1792628993472_10"
+   ]
+  },
+  {
+   "dir": "back",
+   "url": "?investigationMode=PERSON_X_JOB&jobPoolUploadId=<RF>&jobScopePoolUploadId=<DLL>&jobScopeRoleId=role_kestrel_fullstack&analysisId=ANL_1792628993472_10&focus=FIELD",
+   "same": true,
+   "here": {
+    "field": "FIELD",
+    "obs": "FIELD:<RF>:<RF>",
+    "first": null,
+    "job": "VALID:JOB Senior Full-Stack Engineer \u2013 Shipment Tracking Kestrel Logistics Software GmbH \u00b7 DLL E",
+    "offer": null
+   },
+   "there": {
+    "field": "FIELD",
+    "obs": "FIELD:<RF>:<RF>",
+    "first": null,
+    "job": "VALID:JOB Senior Full-Stack Engineer \u2013 Shipment Tracking Kestrel Logistics Software GmbH \u00b7 DLL E",
+    "offer": null
+   },
+   "reqs": [
+    "GET /api/career/job-pools/<DLL>",
+    "GET /api/career/analyses/ANL_1792628993472_10/investigation",
+    "GET /api/career/job-pools",
+    "GET /api/career/job-pools/<RF>",
+    "GET /api/career/analyses/ANL_1792628993472_10"
+   ]
+  },
+  {
+   "dir": "back",
+   "url": "?investigationMode=PERSON_X_JOB&jobPoolUploadId=<DLL>&jobScopePoolUploadId=<DLL>&jobScopeRoleId=role_kestrel_fullstack&analysisId=ANL_1792628993472_10&focus=FIELD",
+   "same": true,
+   "here": {
+    "field": "FIELD",
+    "obs": "FIELD:JPOOL_B94850C439974E27496FE3B1A9A076B5:JPOOL_B94850C439974E27496FE3B1A9A076B5",
+    "first": null,
+    "job": "VALID:JOB Senior Full-Stack Engineer \u2013 Shipment Tracking Kestrel Logistics Software GmbH \u00b7 DLL E",
+    "offer": null
+   },
+   "there": {
+    "field": "FIELD",
+    "obs": "FIELD:JPOOL_B94850C439974E27496FE3B1A9A076B5:JPOOL_B94850C439974E27496FE3B1A9A076B5",
+    "first": null,
+    "job": "VALID:JOB Senior Full-Stack Engineer \u2013 Shipment Tracking Kestrel Logistics Software GmbH \u00b7 DLL E",
+    "offer": null
+   },
+   "reqs": [
+    "GET /api/career/job-pools/<DLL>",
+    "GET /api/career/analyses/ANL_1792628993472_10/investigation",
+    "GET /api/career/job-pools",
+    "GET /api/career/job-pools/<DLL>",
+    "GET /api/career/analyses/ANL_1792628993472_10",
+    "GET /api/career/job-pools/<DLL>/matches",
+    "GET /api/career/analyses/ANL_1792628993472_10"
+   ]
+  },
+  {
+   "dir": "back",
+   "url": "?investigationMode=PERSON_X_JOB&jobPoolUploadId=<DLL>&jobScopePoolUploadId=<DLL>&jobScopeRoleId=role_kestrel_fullstack&analysisId=ANL_1792628993472_10&focus=CAPABILITY",
+   "same": true,
+   "here": {
+    "field": "CAPABILITY",
+    "obs": null,
+    "first": "AVAILABLE",
+    "job": "VALID:JOB Senior Full-Stack Engineer \u2013 Shipment Tracking Kestrel Logistics Software GmbH \u00b7 DLL E",
+    "offer": null
+   },
+   "there": {
+    "field": "CAPABILITY",
+    "obs": null,
+    "first": "AVAILABLE",
+    "job": "VALID:JOB Senior Full-Stack Engineer \u2013 Shipment Tracking Kestrel Logistics Software GmbH \u00b7 DLL E",
+    "offer": null
+   },
+   "reqs": [
+    "GET /api/career/job-pools/<DLL>",
+    "GET /api/career/analyses/ANL_1792628993472_10/investigation",
+    "GET /api/career/job-pools",
+    "GET /api/career/job-pools/<DLL>",
+    "GET /api/career/analyses/ANL_1792628993472_10",
+    "GET /api/career/analyses/ANL_1792628993472_10/job-comparison"
+   ]
+  },
+  {
+   "dir": "forward",
+   "url": "?investigationMode=PERSON_X_JOB&jobPoolUploadId=<DLL>&jobScopePoolUploadId=<DLL>&jobScopeRoleId=role_kestrel_fullstack&analysisId=ANL_1792628993472_10&focus=FIELD",
+   "same": true,
+   "here": {
+    "field": "FIELD",
+    "obs": "FIELD:JPOOL_B94850C439974E27496FE3B1A9A076B5:JPOOL_B94850C439974E27496FE3B1A9A076B5",
+    "first": null,
+    "job": "VALID:JOB Senior Full-Stack Engineer \u2013 Shipment Tracking Kestrel Logistics Software GmbH \u00b7 DLL E",
+    "offer": null
+   },
+   "there": {
+    "field": "FIELD",
+    "obs": "FIELD:JPOOL_B94850C439974E27496FE3B1A9A076B5:JPOOL_B94850C439974E27496FE3B1A9A076B5",
+    "first": null,
+    "job": "VALID:JOB Senior Full-Stack Engineer \u2013 Shipment Tracking Kestrel Logistics Software GmbH \u00b7 DLL E",
+    "offer": null
+   },
+   "reqs": [
+    "GET /api/career/job-pools/<DLL>",
+    "GET /api/career/analyses/ANL_1792628993472_10/investigation",
+    "GET /api/career/job-pools",
+    "GET /api/career/job-pools/<DLL>",
+    "GET /api/career/analyses/ANL_1792628993472_10",
+    "GET /api/career/job-pools/<DLL>/matches",
+    "GET /api/career/analyses/ANL_1792628993472_10"
+   ]
+  },
+  {
+   "dir": "forward",
+   "url": "?investigationMode=PERSON_X_JOB&jobPoolUploadId=<RF>&jobScopePoolUploadId=<DLL>&jobScopeRoleId=role_kestrel_fullstack&analysisId=ANL_1792628993472_10&focus=FIELD",
+   "same": true,
+   "here": {
+    "field": "FIELD",
+    "obs": "FIELD:<RF>:<RF>",
+    "first": null,
+    "job": "VALID:JOB Senior Full-Stack Engineer \u2013 Shipment Tracking Kestrel Logistics Software GmbH \u00b7 DLL E",
+    "offer": null
+   },
+   "there": {
+    "field": "FIELD",
+    "obs": "FIELD:<RF>:<RF>",
+    "first": null,
+    "job": "VALID:JOB Senior Full-Stack Engineer \u2013 Shipment Tracking Kestrel Logistics Software GmbH \u00b7 DLL E",
+    "offer": null
+   },
+   "reqs": [
+    "GET /api/career/job-pools/<DLL>",
+    "GET /api/career/analyses/ANL_1792628993472_10/investigation",
+    "GET /api/career/job-pools",
+    "GET /api/career/job-pools/<RF>",
+    "GET /api/career/analyses/ANL_1792628993472_10"
+   ]
+  },
+  {
+   "dir": "forward",
+   "url": "?investigationMode=PERSON_X_JOB&jobPoolUploadId=<RF>&jobScopePoolUploadId=<DLL>&jobScopeRoleId=role_kestrel_fullstack&analysisId=ANL_1792628993472_10&focus=FIELD&jobOrganizationId=org_kestrel",
+   "same": true,
+   "here": {
+    "field": "FIELD",
+    "obs": "ORGANIZATION:org_kestrel:<RF>",
+    "first": null,
+    "job": "VALID:JOB Senior Full-Stack Engineer \u2013 Shipment Tracking Kestrel Logistics Software GmbH \u00b7 DLL E",
+    "offer": null
+   },
+   "there": {
+    "field": "FIELD",
+    "obs": "ORGANIZATION:org_kestrel:<RF>",
+    "first": null,
+    "job": "VALID:JOB Senior Full-Stack Engineer \u2013 Shipment Tracking Kestrel Logistics Software GmbH \u00b7 DLL E",
+    "offer": null
+   },
+   "reqs": [
+    "GET /api/career/job-pools/<DLL>",
+    "GET /api/career/analyses/ANL_1792628993472_10/investigation",
+    "GET /api/career/job-pools",
+    "GET /api/career/job-pools/<RF>",
+    "GET /api/career/analyses/ANL_1792628993472_10"
+   ]
+  },
+  {
+   "dir": "forward",
+   "url": "?investigationMode=PERSON_X_JOB&jobPoolUploadId=<RF>&jobScopePoolUploadId=<DLL>&jobScopeRoleId=role_kestrel_fullstack&analysisId=ANL_1792628993472_10&focus=FIELD&jobOrganizationId=org_kestrel&jobRoleId=role_kestrel_fullstack",
+   "same": true,
+   "here": {
+    "field": "FIELD",
+    "obs": "ROLE:role_kestrel_fullstack:<RF>",
+    "first": null,
+    "job": "VALID:JOB Senior Full-Stack Engineer \u2013 Shipment Tracking Kestrel Logistics Software GmbH \u00b7 DLL E",
+    "offer": null
+   },
+   "there": {
+    "field": "FIELD",
+    "obs": "ROLE:role_kestrel_fullstack:<RF>",
+    "first": null,
+    "job": "VALID:JOB Senior Full-Stack Engineer \u2013 Shipment Tracking Kestrel Logistics Software GmbH \u00b7 DLL E",
+    "offer": null
+   },
+   "reqs": [
+    "GET /api/career/job-pools/<DLL>",
+    "GET /api/career/analyses/ANL_1792628993472_10/investigation",
+    "GET /api/career/job-pools",
+    "GET /api/career/job-pools/<RF>",
+    "GET /api/career/analyses/ANL_1792628993472_10"
+   ]
+  },
+  {
+   "dir": "forward",
+   "url": "?investigationMode=PERSON_X_JOB&jobPoolUploadId=<RF>&jobScopePoolUploadId=<RF>&jobScopeRoleId=role_kestrel_fullstack&analysisId=ANL_1792628993472_10&focus=FIELD&jobOrganizationId=org_kestrel&jobRoleId=role_kestrel_fullstack",
+   "same": true,
+   "here": {
+    "field": "FIELD",
+    "obs": "ROLE:role_kestrel_fullstack:<RF>",
+    "first": null,
+    "job": "VALID:JOB Senior Full-Stack Engineer \u2013 Shipment Tracking Kestrel Logistics Software GmbH \u00b7 PINK ",
+    "offer": "ROLE_MISMATCH"
+   },
+   "there": {
+    "field": "FIELD",
+    "obs": "ROLE:role_kestrel_fullstack:<RF>",
+    "first": null,
+    "job": "VALID:JOB Senior Full-Stack Engineer \u2013 Shipment Tracking Kestrel Logistics Software GmbH \u00b7 PINK ",
+    "offer": "ROLE_MISMATCH"
+   },
+   "reqs": [
+    "GET /api/career/job-pools/<RF>",
+    "GET /api/career/analyses/ANL_1792628993472_10/investigation",
+    "GET /api/career/job-pools",
+    "GET /api/career/job-pools/<RF>",
+    "GET /api/career/analyses/ANL_1792628993472_10"
+   ]
+  },
+  {
+   "dir": "forward",
+   "url": "?investigationMode=PERSON_X_JOB&jobPoolUploadId=<RF>&jobScopePoolUploadId=<RF>&jobScopeRoleId=role_kestrel_fullstack&analysisId=ANL_1792628993472_10&focus=CAPABILITY",
+   "same": true,
+   "here": {
+    "field": "CAPABILITY",
+    "obs": null,
+    "first": "ROLE_MISMATCH",
+    "job": "VALID:JOB Senior Full-Stack Engineer \u2013 Shipment Tracking Kestrel Logistics Software GmbH \u00b7 PINK ",
+    "offer": null
+   },
+   "there": {
+    "field": "CAPABILITY",
+    "obs": null,
+    "first": "ROLE_MISMATCH",
+    "job": "VALID:JOB Senior Full-Stack Engineer \u2013 Shipment Tracking Kestrel Logistics Software GmbH \u00b7 PINK ",
+    "offer": null
+   },
+   "reqs": [
+    "GET /api/career/job-pools/<RF>",
+    "GET /api/career/analyses/ANL_1792628993472_10/investigation",
+    "GET /api/career/job-pools",
+    "GET /api/career/job-pools/<RF>",
+    "GET /api/career/analyses/ANL_1792628993472_10"
+   ]
+  },
+  {
+   "dir": "forward",
+   "url": "?investigationMode=PERSON_X_JOB&jobPoolUploadId=<RF>&jobScopePoolUploadId=<DLL>&jobScopeRoleId=role_kestrel_fullstack&analysisId=ANL_1792628993472_10&focus=CAPABILITY",
+   "same": true,
+   "here": {
+    "field": "CAPABILITY",
+    "obs": null,
+    "first": "AVAILABLE",
+    "job": "VALID:JOB Senior Full-Stack Engineer \u2013 Shipment Tracking Kestrel Logistics Software GmbH \u00b7 DLL E",
+    "offer": null
+   },
+   "there": {
+    "field": "CAPABILITY",
+    "obs": null,
+    "first": "AVAILABLE",
+    "job": "VALID:JOB Senior Full-Stack Engineer \u2013 Shipment Tracking Kestrel Logistics Software GmbH \u00b7 DLL E",
+    "offer": null
+   },
+   "reqs": [
+    "GET /api/career/job-pools/<DLL>",
+    "GET /api/career/analyses/ANL_1792628993472_10/investigation",
+    "GET /api/career/job-pools",
+    "GET /api/career/job-pools/<RF>",
+    "GET /api/career/analyses/ANL_1792628993472_10",
+    "GET /api/career/analyses/ANL_1792628993472_10/job-comparison"
+   ]
+  }
+ ]
+}
