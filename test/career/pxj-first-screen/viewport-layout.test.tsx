@@ -45,7 +45,7 @@ describe("O-PXJ-720 · the dashboard carries the viewport rules", () => {
     expect(stack).toMatch(/\{ min-height: 100vh; overflow-x: clip; \}/);
   });
 
-  it("inverse: 1920 × 1080 keeps today's layout — no rule applies at or above 1600 × 1000", () => {
+  it("inverse: no viewport tier applies at or above 1600 × 1000 (1920 × 1080 changes only by V-16, below)", () => {
     const medias = [...css.matchAll(/@media ([^{]+)\{/g)].map(match => match[1]);
     for (const media of medias) for (const clause of media.split(",")) {
       const holds = (w: number, h: number) => clause.split(" and ").every(term => { const m = /\((min|max)-(width|height): (\d+)px\)/.exec(term); if (!m) return true; const value = m[2] === "width" ? w : h; return m[1] === "min" ? value >= Number(m[3]) : value <= Number(m[3]); });
@@ -54,3 +54,21 @@ describe("O-PXJ-720 · the dashboard carries the viewport rules", () => {
     }
   });
 });
+
+describe("V-16 · the zoom telemetry stands in view, below the shell row", () => {
+  const css = styleOf(renderToString(<CareerIntelligenceDashboard data={EMPTY_CAREER_INTELLIGENCE_DATA} investigationMode="PERSON" />)).replace(/&quot;/g, '"').replace(/&gt;/g, ">");
+  const telemetry = /\[data-testid="semantic-career-intelligence-field"\] > \[data-testid="semantic-zoom-telemetry"\] \{ ([^}]*)\}/;
+
+  it("REPRODUCE: at every viewport it leaves top −46 px (clipped by the field: invisible, out of reach) for page y 128, uncapped", () => {
+    const base = css.slice(0, css.indexOf("@media"));
+    expect(telemetry.exec(base)?.[1]).toBe("top: 67px !important; max-width: none !important; ");
+  });
+
+  it("REPRODUCE: in the fit tier it stands over the free area and may wrap; at 200 % it is part of the column", () => {
+    const fit = block(css, /@media \(min-width: 1100px\) and \(min-height: 600px\) and \(max-width: 1599px\)/);
+    expect(telemetry.exec(fit)?.[1]).toMatch(/top: 71px !important; left: var\(--sx-hud-x, 50%\) !important; max-width: var\(--sx-hud-w, 560px\) !important; flex-wrap: wrap;/);
+    const stack = block(css, /@media \(max-width: 1099px\), \(max-height: 599px\)/);
+    expect(telemetry.exec(stack)?.[1]).toMatch(/^position: relative !important;/);
+  });
+});
+

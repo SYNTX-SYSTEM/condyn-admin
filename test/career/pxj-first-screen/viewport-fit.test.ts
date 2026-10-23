@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { FIT_LEFT, FIT_TOP, STAGE_EXTENT, careerDemoLayoutTier, careerDemoStackZoom, careerDemoStageFit, fitPanelWidth } from "../../../app/components/career/demo/career-demo-layout";
+import { FIT_LEFT, FIT_TOP, STAGE_EXTENT, hudHeight, careerDemoLayoutTier, careerDemoStackZoom, careerDemoStageFit, fitPanelWidth } from "../../../app/components/career/demo/career-demo-layout";
 
 /** O-PXJ-720: the tiers of the five acceptance viewports (+ 200 % of 1280×720) and the planetarium's fit. New module: on 421e382 this file fails at its import. */
 const VIEWPORTS: Array<[string, number, number, string]> = [["1920x1080", 1920, 1080, "full"], ["1600x900", 1600, 900, "fit"], ["1440x900", 1440, 900, "fit"], ["1280x720", 1280, 720, "fit"], ["200% of 1920x1080", 960, 540, "stack"], ["200% of 1280x720", 640, 360, "stack"]];
@@ -17,7 +17,8 @@ describe("O-PXJ-720 · tiers and the planetarium's fit", () => {
         expect(scale, name).toBeLessThanOrEqual(1);
         expect(cx - half, `${name} left${panel ? " panel" : ""}`).toBeGreaterThanOrEqual(FIT_LEFT - 0.5);
         expect(cx + half, `${name} right${panel ? " panel" : ""}`).toBeLessThanOrEqual(right + 0.5);
-        expect(cy - half, `${name} top`).toBeGreaterThanOrEqual(FIT_TOP - 0.5);
+        // Below the shell and below the zoom telemetry over the free area (V-16).
+        expect(cy - half, `${name} top`).toBeGreaterThanOrEqual(FIT_TOP + hudHeight(right - FIT_LEFT) + 10 - 0.5);
         expect(cy + half, `${name} bottom`).toBeLessThanOrEqual(height - 16 + 0.5);
       }
     }

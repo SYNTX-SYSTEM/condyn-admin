@@ -28,6 +28,13 @@ export const STAGE_EXTENT = 810;
 export const FIT_TOP = 132;
 /** Right of the source dock (40 … 380 px) with air. */
 export const FIT_LEFT = 400;
+/**
+ * V-16: the zoom telemetry (L0 PLANETARIUM … L4 ORIGINAL) stood at top −46 px of the field, which clips it: invisible and out of
+ * reach at every viewport. It now stands below the shell row (page y 128 in full, FIT_TOP in fit), centred over the free area;
+ * one row of 36 px, two rows when the free area is narrower than it (560 px). The planetarium starts below it.
+ */
+export const HUD_TOP_FULL = 128;
+export const hudHeight = (freeWidth: number) => (freeWidth < 580 ? 70 : 36);
 
 export function careerDemoLayoutTier(width: number, height: number): CareerDemoLayoutTier {
   if (width >= LAYOUT_FULL.width && height >= LAYOUT_FULL.height) return "full";
@@ -38,7 +45,7 @@ export function careerDemoLayoutTier(width: number, height: number): CareerDemoL
 /** The B2 panel's width in the fit tier (the CSS below uses the same). */
 export const fitPanelWidth = (width: number) => Math.min(400, Math.round(width * 0.3));
 
-export interface StageFit { scale: number; dx: number; dy: number }
+export interface StageFit { scale: number; dx: number; dy: number; /** The free area's centre (the telemetry stands over it) and width. */ hudX: number; hudWidth: number }
 
 /**
  * The planetarium in the fit tier: the largest scale (≤ 1) that keeps its extent inside the free area — below the shell, above
@@ -46,8 +53,9 @@ export interface StageFit { scale: number; dx: number; dy: number }
  * when that costs little, else in the free area. `dx`/`dy` move it from its own centre (the field's centre) in CSS px.
  */
 export function careerDemoStageFit(width: number, height: number, header: number, panel: boolean): StageFit {
-  const top = FIT_TOP, bottom = height - 16, left = FIT_LEFT;
+  const left = FIT_LEFT, bottom = height - 16;
   const right = panel ? width - 24 - fitPanelWidth(width) - 16 : width - 24;
+  const top = FIT_TOP + hudHeight(right - left) + 10;
   const vertical = (bottom - top) / STAGE_EXTENT;
   const centred = Math.min(1, vertical, (2 * Math.min(width / 2 - left, right - width / 2)) / STAGE_EXTENT);
   const shifted = Math.min(1, vertical, (right - left) / STAGE_EXTENT);
@@ -55,7 +63,7 @@ export function careerDemoStageFit(width: number, height: number, header: number
   const scale = Math.max(0.2, useCentre ? centred : shifted);
   const dx = useCentre ? 0 : (left + right) / 2 - width / 2;
   const dy = (top + bottom) / 2 - (header + (height - header) / 2);
-  return { scale: Math.round(scale * 1000) / 1000, dx: Math.round(dx), dy: Math.round(dy) };
+  return { scale: Math.floor(scale * 1000) / 1000, dx: Math.round(dx), dy: Math.round(dy), hudX: Math.round((left + right) / 2), hudWidth: Math.round(right - left) };
 }
 
 /** The planetarium in the stack tier: zoomed to the column and to one screen height. */
@@ -70,6 +78,11 @@ export function applyCareerDemoStageFit(root: HTMLElement, width: number, height
   root.style.setProperty("--sx-stage-scale-panel", String(panel.scale));
   root.style.setProperty("--sx-stage-dx-panel", `${panel.dx}px`);
   root.style.setProperty("--sx-stage-dy", `${free.dy}px`);
+  root.style.setProperty("--sx-stage-dy-panel", `${panel.dy}px`);
+  root.style.setProperty("--sx-hud-x", `${free.hudX}px`);
+  root.style.setProperty("--sx-hud-w", `${free.hudWidth}px`);
+  root.style.setProperty("--sx-hud-x-panel", `${panel.hudX}px`);
+  root.style.setProperty("--sx-hud-w-panel", `${panel.hudWidth}px`);
   root.style.setProperty("--sx-stage-zoom", String(careerDemoStackZoom(width, height)));
 }
 
@@ -78,16 +91,20 @@ const STAGE = `${FIELD} > div:has(> svg[data-testid="resonance-energy-paths"])`;
 const DOCK = `${FIELD} > div:has([data-testid="source-dock"])`;
 const PANEL_WRAP = `${FIELD} > div:has(> [data-pxj-panel])`;
 const JOB = '[data-sx-field="job"]';
+const HUD = `${FIELD} > [data-testid="semantic-zoom-telemetry"]`;
 const INSPECTOR = '[data-testid="decision-graph-inspector-idle"], [data-testid="decision-graph-inspector"]';
 const FIT = `(min-width: ${LAYOUT_FIT.width}px) and (min-height: ${LAYOUT_FIT.height}px) and (max-width: ${LAYOUT_FULL.width - 1}px), (min-width: ${LAYOUT_FIT.width}px) and (min-height: ${LAYOUT_FIT.height}px) and (max-height: ${LAYOUT_FULL.height - 1}px)`;
 const STACK = `(max-width: ${LAYOUT_FIT.width - 1}px), (max-height: ${LAYOUT_FIT.height - 1}px)`;
 
 export const CAREER_DEMO_LAYOUT_CSS = `
+${HUD} { top: ${HUD_TOP_FULL - 61}px !important; max-width: none !important; }
 @media ${FIT} {
+  ${HUD} { top: ${FIT_TOP - 61}px !important; left: var(--sx-hud-x, 50%) !important; max-width: var(--sx-hud-w, 560px) !important; flex-wrap: wrap; justify-content: center; row-gap: 2px; }
+  ${FIELD}:has([data-pxj-panel]) > [data-testid="semantic-zoom-telemetry"] { left: var(--sx-hud-x-panel, 50%) !important; max-width: var(--sx-hud-w-panel, 560px) !important; }
   [data-testid="career-intelligence-dashboard"] { height: 100vh; overflow: hidden; display: flex; flex-direction: column; }
   ${FIELD} { min-height: 0 !important; height: auto !important; flex: 1 1 auto; }
   ${STAGE} { transform-origin: 0 0; scale: var(--sx-stage-scale, 1); translate: var(--sx-stage-dx, 0px) var(--sx-stage-dy, 0px); }
-  ${FIELD}:has([data-pxj-panel]) > div:has(> svg[data-testid="resonance-energy-paths"]) { scale: var(--sx-stage-scale-panel, 1); translate: var(--sx-stage-dx-panel, 0px) var(--sx-stage-dy, 0px); }
+  ${FIELD}:has([data-pxj-panel]) > div:has(> svg[data-testid="resonance-energy-paths"]) { scale: var(--sx-stage-scale-panel, 1); translate: var(--sx-stage-dx-panel, 0px) var(--sx-stage-dy-panel, 0px); }
   ${DOCK} { top: ${FIT_TOP - 61}px !important; transform: none !important; max-height: calc(100vh - ${FIT_TOP}px - 172px); overflow-y: auto; }
   ${FIELD} [data-pxj-panel] { top: ${FIT_TOP - 61}px !important; bottom: 16px !important; right: 24px !important; max-height: none !important; width: min(400px, 30vw) !important; align-self: stretch !important; }
 }
