@@ -1,0 +1,113 @@
+# PINK UX pre-sweep · rendered type sizes and label contrast per region · MEASUREMENT (text elements visible in the viewport; contrast = WCAG ratio of colour × opacity chain over the composited background colours; regions on a gradient/image are 'unknown'; quote text never recorded)
+
+## PERSISTED_REAL_RESULT
+1280x720           job-pool-list                        min 9.5px · texts 4 · <12px 3 · <11px 2 · <10px 1 · contrast below AA 0 · contrast unknown 4
+     smallest: 10px «v1 · ACTIVE · 3 org · 9 roles · 79 req» | 9.5px «SELECT»
+1280x720           job-scope-indicator                  min 10px · texts 15 · <12px 12 · <11px 9 · <10px 0 · contrast below AA 0 · contrast unknown 15
+     smallest: 10.5px «JOB» | 10px «Kestrel Logistics Software GmbH · DLL En»
+1280x720           page                                 min 14px · texts 9 · <12px 0 · <11px 0 · <10px 0 · contrast below AA 0 · contrast unknown 0
+1280x720           pxj-first-screen                     min 9.5px · texts 29 · <12px 23 · <11px 14 · <10px 1 · contrast below AA 0 · contrast unknown 29
+     smallest: 10.5px «8 covered · 1 not covered · 9 requiremen» | 10.5px «B2 · REQUIREMENT COVERAGE» | 10.5px «BINDING» | 10.5px «CAPABILITY PROPOSALS OF THIS ANALYSIS» | 10.5px «REQUIREMENTS · POOL ORDER» | 10.5px «analysis ANL_1792628993472_10 · role_kes»
+1280x720           semantic-career-intelligence-field   min 7.5px · texts 199 · <12px 157 · <11px 127 · <10px 60 · contrast below AA 27 · contrast unknown 118
+     smallest: 10.5px «L0 PLANETARIUM» | 10.5px «L1 CLUSTER» | 10.5px «L2 EVIDENCE» | 10.5px «●──» | 10px «JOB FIELD // UNBOUND» | 10px «NO UPLOAD SELECTED (explicit selection o»
+     low contrast: 2.09:1 10.5px «●──» | 2.44:1 10.5px «L1 CLUSTER» | 2.44:1 10.5px «L2 EVIDENCE» | 2.44:1 10.5px «L3 SOURCE»
+1280x720           source-dock                          min 11.5px · texts 27 · <12px 3 · <11px 0 · <10px 0 · contrast below AA 0 · contrast unknown 0
+1280x720           syntx-organization-*                 min 8.5px · texts 23 · <12px 17 · <11px 11 · <10px 3 · contrast below AA 0 · contrast unknown 23
+     smallest: 10.5px «3 ROLES» | 10px «01» | 10px «02» | 10px «03» | 8.5px «ORGANIZATION»
+1280x720           syntx-path                           min 9.5px · texts 7 · <12px 5 · <11px 1 · <10px 1 · contrast below AA 0 · contrast unknown 7
+     smallest: 9.5px «← RETURN»
+1280x720           syntx-role-*                         min 7.5px · texts 24 · <12px 12 · <11px 10 · <10px 10 · contrast below AA 11 · contrast unknown 13
+     smallest: 7.5px «LEAD · M1» | 7.5px «STAFF · L5» | 8.5px «9 REQUIREMENTS» | 8.5px «NO MATCHING READ» | 9.5px «Engineering Management» | 9.5px «Frontend Architecture»
+     low contrast: 1.02:1 16px «Backend Engineer – Interoperability Gate» | 1.02:1 16px «Backend Engineer – Ledger» | 1.02:1 16px «Cloud Platform Engineer» | 1.02:1 16px «Principal Software Architect – Clinical » | 1.32:1 16px «Backend Engineer – Interoperability Gate» | 1.32:1 16px «Cloud Platform Engineer»
+1920x1080          job-pool-list                        min 9.5px · texts 4 · <12px 3 · <11px 2 · <10px 1 · contrast below AA 0 · contrast unknown 4
+     smallest: 10px «v1 · ACTIVE · 3 org · 9 roles · 79 req» | 9.5px «SELECT»
+1920x1080          job-scope-indicator                  min 10px · texts 15 · <12px 12 · <11px 9 · <10px 0 · contrast below AA 0 · contrast unknown 15
+     smallest: 10.5px «JOB» | 10px «Kestrel Logistics Software GmbH · DLL En»
+1920x1080          page                                 min 14px · texts 9 · <12px 0 · <11px 0 · <10px 0 · contrast below AA 0 · contrast unknown 0
+1920x1080          pxj-first-screen                     min 9.5px · texts 39 · <12px 31 · <11px 22 · <10px 2 · contrast below AA 0 · contrast unknown 39
+     smallest: 10.5px «8 covered · 1 not covered · 9 requiremen» | 10.5px «B2 · REQUIREMENT COVERAGE» | 10.5px «BINDING» | 10.5px «CAPABILITY PROPOSALS OF THIS ANALYSIS» | 10.5px «REQUIREMENTS · POOL ORDER» | 10.5px «analysis ANL_1792628993472_10 · role_kes»
+1920x1080          semantic-career-intelligence-field   min 7.5px · texts 208 · <12px 162 · <11px 121 · <10px 45 · contrast below AA 27 · contrast unknown 127
+     smallest: 10.5px «L0 PLANETARIUM» | 10.5px «L1 CLUSTER» | 10.5px «L2 EVIDENCE» | 10.5px «●──» | 10px «JOB FIELD // UNBOUND» | 10px «NO UPLOAD SELECTED (explicit selection o»
+     low contrast: 2.09:1 10.5px «●──» | 2.44:1 10.5px «L1 CLUSTER» | 2.44:1 10.5px «L2 EVIDENCE» | 2.44:1 10.5px «L3 SOURCE»
+1920x1080          source-dock                          min 11.5px · texts 27 · <12px 3 · <11px 0 · <10px 0 · contrast below AA 0 · contrast unknown 0
+1920x1080          syntx-organization-*                 min 8.5px · texts 30 · <12px 24 · <11px 18 · <10px 6 · contrast below AA 0 · contrast unknown 30
+     smallest: 10.5px «3 ROLES» | 10px «01» | 10px «02» | 8.5px «ORGANIZATION»
+1920x1080          syntx-path                           min 9.5px · texts 7 · <12px 5 · <11px 1 · <10px 1 · contrast below AA 0 · contrast unknown 7
+     smallest: 9.5px «← RETURN»
+1920x1080          syntx-role-*                         min 7.5px · texts 28 · <12px 12 · <11px 10 · <10px 10 · contrast below AA 15 · contrast unknown 13
+     smallest: 7.5px «LEAD · M1» | 7.5px «STAFF · L5» | 8.5px «9 REQUIREMENTS» | 8.5px «NO MATCHING READ» | 9.5px «Engineering Management» | 9.5px «Frontend Architecture»
+     low contrast: 1.02:1 16px «Backend Engineer – Interoperability Gate» | 1.02:1 16px «Backend Engineer – Ledger» | 1.02:1 16px «Cloud Platform Engineer» | 1.02:1 16px «DevOps Engineer – Release & Reliability» | 1.02:1 16px «Principal Software Architect – Clinical » | 1.02:1 16px «Security Engineer – Clinical Systems»
+zoom200-1920x1080  job-pool-list                        min 9.5px · texts 4 · <12px 3 · <11px 2 · <10px 1 · contrast below AA 0 · contrast unknown 4
+     smallest: 10px «v1 · ACTIVE · 3 org · 9 roles · 79 req» | 9.5px «SELECT»
+zoom200-1920x1080  job-scope-indicator                  min 10px · texts 15 · <12px 12 · <11px 9 · <10px 0 · contrast below AA 0 · contrast unknown 15
+     smallest: 10.5px «JOB» | 10px «Kestrel Logistics Software GmbH · DLL En»
+zoom200-1920x1080  page                                 min 14px · texts 9 · <12px 0 · <11px 0 · <10px 0 · contrast below AA 0 · contrast unknown 0
+zoom200-1920x1080  pxj-first-screen                     min 10.5px · texts 19 · <12px 15 · <11px 6 · <10px 0 · contrast below AA 0 · contrast unknown 19
+     smallest: 10.5px «8 covered · 1 not covered · 9 requiremen» | 10.5px «B2 · REQUIREMENT COVERAGE» | 10.5px «BINDING» | 10.5px «CAPABILITY PROPOSALS OF THIS ANALYSIS» | 10.5px «analysis ANL_1792628993472_10 · role_kes»
+zoom200-1920x1080  semantic-career-intelligence-field   min 8.5px · texts 162 · <12px 123 · <11px 100 · <10px 45 · contrast below AA 27 · contrast unknown 87
+     smallest: 10.5px «L0 PLANETARIUM» | 10.5px «L1 CLUSTER» | 10.5px «L2 EVIDENCE» | 10.5px «●──» | 10px «JOB FIELD // UNBOUND» | 10px «NO UPLOAD SELECTED (explicit selection o»
+     low contrast: 2.09:1 10.5px «●──» | 2.44:1 10.5px «L1 CLUSTER» | 2.44:1 10.5px «L2 EVIDENCE» | 2.44:1 10.5px «L3 SOURCE»
+zoom200-1920x1080  source-dock                          min 12px · texts 18 · <12px 0 · <11px 0 · <10px 0 · contrast below AA 0 · contrast unknown 0
+zoom200-1920x1080  syntx-organization-*                 min 8.5px · texts 7 · <12px 5 · <11px 4 · <10px 1 · contrast below AA 0 · contrast unknown 7
+     smallest: 10.5px «3 ROLES» | 10px «01» | 8.5px «ORGANIZATION»
+zoom200-1920x1080  syntx-path                           min 9.5px · texts 7 · <12px 5 · <11px 1 · <10px 1 · contrast below AA 0 · contrast unknown 7
+     smallest: 9.5px «← RETURN»
+zoom200-1920x1080  syntx-role-*                         min 7.5px · texts 10 · <12px 6 · <11px 5 · <10px 5 · contrast below AA 3 · contrast unknown 7
+     smallest: 7.5px «LEAD · M1» | 8.5px «9 REQUIREMENTS» | 8.5px «NO MATCHING READ» | 9.5px «Engineering Management» | 9px «ROLE // 9 REQUIREMENTS»
+     low contrast: 1.32:1 16px «Engineering Lead – Routing Platform» | 1.32:1 16px «Frontend Architect» | 1.32:1 16px «Senior Full-Stack Engineer – Shipment Tr»
+
+## STAND_IN
+1280x720           job-pool-list                        min 9.5px · texts 4 · <12px 3 · <11px 2 · <10px 1 · contrast below AA 0 · contrast unknown 4
+     smallest: 10px «v1 · ACTIVE · 3 org · 9 roles · 79 req» | 9.5px «SELECT»
+1280x720           job-scope-indicator                  min 10px · texts 15 · <12px 12 · <11px 9 · <10px 0 · contrast below AA 0 · contrast unknown 15
+     smallest: 10.5px «JOB» | 10px «Kestrel Logistics Software GmbH · DLL En»
+1280x720           page                                 min 14px · texts 9 · <12px 0 · <11px 0 · <10px 0 · contrast below AA 0 · contrast unknown 0
+1280x720           pxj-first-screen                     min 9.5px · texts 33 · <12px 27 · <11px 14 · <10px 1 · contrast below AA 0 · contrast unknown 33
+     smallest: 10.5px «7 covered · 2 not covered · 9 requiremen» | 10.5px «B2 · REQUIREMENT COVERAGE» | 10.5px «BINDING» | 10.5px «CAPABILITY PROPOSALS OF THIS ANALYSIS» | 10.5px «REQUIREMENTS · POOL ORDER» | 10.5px «analysis ANL_1792763314736_902 · role_ke»
+1280x720           semantic-career-intelligence-field   min 7.5px · texts 202 · <12px 160 · <11px 130 · <10px 60 · contrast below AA 27 · contrast unknown 121
+     smallest: 10.5px «L0 PLANETARIUM» | 10.5px «L1 CLUSTER» | 10.5px «L2 EVIDENCE» | 10.5px «●──» | 10px «JOB FIELD // UNBOUND» | 10px «NO UPLOAD SELECTED (explicit selection o»
+     low contrast: 2.09:1 10.5px «●──» | 2.44:1 10.5px «L1 CLUSTER» | 2.44:1 10.5px «L2 EVIDENCE» | 2.44:1 10.5px «L3 SOURCE»
+1280x720           source-dock                          min 11.5px · texts 27 · <12px 3 · <11px 0 · <10px 0 · contrast below AA 0 · contrast unknown 0
+1280x720           syntx-organization-*                 min 8.5px · texts 23 · <12px 17 · <11px 11 · <10px 3 · contrast below AA 0 · contrast unknown 23
+     smallest: 10.5px «3 ROLES» | 10px «01» | 10px «02» | 10px «03» | 8.5px «ORGANIZATION»
+1280x720           syntx-path                           min 9.5px · texts 7 · <12px 5 · <11px 1 · <10px 1 · contrast below AA 0 · contrast unknown 7
+     smallest: 9.5px «← RETURN»
+1280x720           syntx-role-*                         min 7.5px · texts 24 · <12px 12 · <11px 10 · <10px 10 · contrast below AA 11 · contrast unknown 13
+     smallest: 7.5px «LEAD · M1» | 7.5px «STAFF · L5» | 8.5px «9 REQUIREMENTS» | 8.5px «NO MATCHING READ» | 9.5px «Engineering Management» | 9.5px «Frontend Architecture»
+     low contrast: 1.02:1 16px «Backend Engineer – Interoperability Gate» | 1.02:1 16px «Backend Engineer – Ledger» | 1.02:1 16px «Cloud Platform Engineer» | 1.02:1 16px «Principal Software Architect – Clinical » | 1.32:1 16px «Backend Engineer – Interoperability Gate» | 1.32:1 16px «Cloud Platform Engineer»
+1920x1080          job-pool-list                        min 9.5px · texts 4 · <12px 3 · <11px 2 · <10px 1 · contrast below AA 0 · contrast unknown 4
+     smallest: 10px «v1 · ACTIVE · 3 org · 9 roles · 79 req» | 9.5px «SELECT»
+1920x1080          job-scope-indicator                  min 10px · texts 15 · <12px 12 · <11px 9 · <10px 0 · contrast below AA 0 · contrast unknown 15
+     smallest: 10.5px «JOB» | 10px «Kestrel Logistics Software GmbH · DLL En»
+1920x1080          page                                 min 14px · texts 9 · <12px 0 · <11px 0 · <10px 0 · contrast below AA 0 · contrast unknown 0
+1920x1080          pxj-first-screen                     min 9.5px · texts 43 · <12px 35 · <11px 22 · <10px 2 · contrast below AA 0 · contrast unknown 43
+     smallest: 10.5px «7 covered · 2 not covered · 9 requiremen» | 10.5px «B2 · REQUIREMENT COVERAGE» | 10.5px «BINDING» | 10.5px «CAPABILITY PROPOSALS OF THIS ANALYSIS» | 10.5px «REQUIREMENTS · POOL ORDER» | 10.5px «analysis ANL_1792763314736_902 · role_ke»
+1920x1080          semantic-career-intelligence-field   min 7.5px · texts 211 · <12px 165 · <11px 124 · <10px 45 · contrast below AA 27 · contrast unknown 130
+     smallest: 10.5px «L0 PLANETARIUM» | 10.5px «L1 CLUSTER» | 10.5px «L2 EVIDENCE» | 10.5px «●──» | 10px «JOB FIELD // UNBOUND» | 10px «NO UPLOAD SELECTED (explicit selection o»
+     low contrast: 2.09:1 10.5px «●──» | 2.44:1 10.5px «L1 CLUSTER» | 2.44:1 10.5px «L2 EVIDENCE» | 2.44:1 10.5px «L3 SOURCE»
+1920x1080          source-dock                          min 11.5px · texts 27 · <12px 3 · <11px 0 · <10px 0 · contrast below AA 0 · contrast unknown 0
+1920x1080          syntx-organization-*                 min 8.5px · texts 30 · <12px 24 · <11px 18 · <10px 6 · contrast below AA 0 · contrast unknown 30
+     smallest: 10.5px «3 ROLES» | 10px «01» | 10px «02» | 8.5px «ORGANIZATION»
+1920x1080          syntx-path                           min 9.5px · texts 7 · <12px 5 · <11px 1 · <10px 1 · contrast below AA 0 · contrast unknown 7
+     smallest: 9.5px «← RETURN»
+1920x1080          syntx-role-*                         min 7.5px · texts 28 · <12px 12 · <11px 10 · <10px 10 · contrast below AA 15 · contrast unknown 13
+     smallest: 7.5px «LEAD · M1» | 7.5px «STAFF · L5» | 8.5px «9 REQUIREMENTS» | 8.5px «NO MATCHING READ» | 9.5px «Engineering Management» | 9.5px «Frontend Architecture»
+     low contrast: 1.02:1 16px «Backend Engineer – Interoperability Gate» | 1.02:1 16px «Backend Engineer – Ledger» | 1.02:1 16px «Cloud Platform Engineer» | 1.02:1 16px «DevOps Engineer – Release & Reliability» | 1.02:1 16px «Principal Software Architect – Clinical » | 1.02:1 16px «Security Engineer – Clinical Systems»
+zoom200-1920x1080  job-pool-list                        min 9.5px · texts 4 · <12px 3 · <11px 2 · <10px 1 · contrast below AA 0 · contrast unknown 4
+     smallest: 10px «v1 · ACTIVE · 3 org · 9 roles · 79 req» | 9.5px «SELECT»
+zoom200-1920x1080  job-scope-indicator                  min 10px · texts 15 · <12px 12 · <11px 9 · <10px 0 · contrast below AA 0 · contrast unknown 15
+     smallest: 10.5px «JOB» | 10px «Kestrel Logistics Software GmbH · DLL En»
+zoom200-1920x1080  page                                 min 14px · texts 9 · <12px 0 · <11px 0 · <10px 0 · contrast below AA 0 · contrast unknown 0
+zoom200-1920x1080  pxj-first-screen                     min 10.5px · texts 23 · <12px 19 · <11px 6 · <10px 0 · contrast below AA 0 · contrast unknown 23
+     smallest: 10.5px «7 covered · 2 not covered · 9 requiremen» | 10.5px «B2 · REQUIREMENT COVERAGE» | 10.5px «BINDING» | 10.5px «CAPABILITY PROPOSALS OF THIS ANALYSIS» | 10.5px «analysis ANL_1792763314736_902 · role_ke»
+zoom200-1920x1080  semantic-career-intelligence-field   min 7.5px · texts 165 · <12px 126 · <11px 103 · <10px 46 · contrast below AA 27 · contrast unknown 90
+     smallest: 10.5px «L0 PLANETARIUM» | 10.5px «L1 CLUSTER» | 10.5px «L2 EVIDENCE» | 10.5px «●──» | 10px «JOB FIELD // UNBOUND» | 10px «NO UPLOAD SELECTED (explicit selection o»
+     low contrast: 2.09:1 10.5px «●──» | 2.44:1 10.5px «L1 CLUSTER» | 2.44:1 10.5px «L2 EVIDENCE» | 2.44:1 10.5px «L3 SOURCE»
+zoom200-1920x1080  source-dock                          min 12px · texts 18 · <12px 0 · <11px 0 · <10px 0 · contrast below AA 0 · contrast unknown 0
+zoom200-1920x1080  syntx-organization-*                 min 8.5px · texts 7 · <12px 5 · <11px 4 · <10px 1 · contrast below AA 0 · contrast unknown 7
+     smallest: 10.5px «3 ROLES» | 10px «01» | 8.5px «ORGANIZATION»
+zoom200-1920x1080  syntx-path                           min 9.5px · texts 7 · <12px 5 · <11px 1 · <10px 1 · contrast below AA 0 · contrast unknown 7
+     smallest: 9.5px «← RETURN»
+zoom200-1920x1080  syntx-role-*                         min 7.5px · texts 10 · <12px 6 · <11px 5 · <10px 5 · contrast below AA 3 · contrast unknown 7
+     smallest: 7.5px «LEAD · M1» | 8.5px «9 REQUIREMENTS» | 8.5px «NO MATCHING READ» | 9.5px «Engineering Management» | 9px «ROLE // 9 REQUIREMENTS»
+     low contrast: 1.32:1 16px «Engineering Lead – Routing Platform» | 1.32:1 16px «Frontend Architect» | 1.32:1 16px «Senior Full-Stack Engineer – Shipment Tr»

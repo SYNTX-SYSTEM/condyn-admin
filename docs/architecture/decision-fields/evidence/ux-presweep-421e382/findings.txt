@@ -1,0 +1,62 @@
+PINK · UX pre-sweep on 421e382 (owner "SYNTX::SFE::OWNER_GO — RECURSIVE UX/UI & SYSTEM CLOSURE") · findings only, no fixes
+Labs: PERSISTED_REAL_RESULT = GELB :41872 (production build 421e382, GET only: every non-GET aborted in the browser, 0 blocked, 0 page errors)
+      STAND_IN = PINK :41873 (production build 421e382 with LAB_ONLY_BUILD_FLAG; stand-in model; own disposable DB; DLL pool + synthetic long-names pool)
+Method: MEASUREMENT (Playwright; elementFromPoint at 5 points per action; computed styles; history.length / URL per key press).
+Screenshots in shots/: quotes masked (grey boxes); stand-in shots carry "STAND-IN · keine Modellausführung".
+Each finding reproduces in both labs unless a lab is named.
+
+ID    | Viewport                          | Step                         | Measurement                                                                                       | Shot                                                        | Class
+------+-----------------------------------+------------------------------+---------------------------------------------------------------------------------------------------+-------------------------------------------------------------+------
+V-01  | 1280×720; 200 % of 1920×1080      | SOURCE (Capability Field)    | Fixed "DECISION GRAPH INSPECTOR" (z 40, 24…408 × 574…696) lies over the source dock: "+ ENTER TEXT / | REAL-VP-S3-capability-no-analysis-1280x720.jpg;             | both
+      |                                   |                              | MARKDOWN" 0/5 points clickable, also after scrollIntoView (fixed layer) → not clickable at all at    | REAL-VP-S3-capability-no-analysis-zoom200-1920x1080.jpg     |
+      |                                   |                              | 1280×720; at 200 % of 1920 "+ UPLOAD PDF" 1/5. Keyboard still reaches both (Tab + Enter).          |                                                             |
+V-02  | 200 % of 1280×720 (640×360 CSS)   | MODE / shell                 | investigation-mode-JOB at x 733 > 640, clipped by the field (overflow hidden), no horizontal page   | REAL-VP-S3-capability-no-analysis-zoom200-1280x720.jpg      | both
+      |                                   |                              | scroll → unreachable by pointer (only Arrow keys). Shell title runs under HOW THIS WORKS / SYSTEM   |                                                             |
+      |                                   |                              | CODEX; job indicator shows only "J"; SEMANTIC GUIDE off-screen; inspector covers the field.        |                                                             |
+V-03  | 1440×900, 1280×720, 200 %         | B2 first screen (O-PXJ-720+) | Below 1600 px width the B2 panel moves to top 485: visible without scrolling 1440×900 94 % (first   | REAL-VP-S4-b2-available-1440x900.jpg; …-1280x720.jpg;      | both
+      |                                   |                              | requirement row at y 1012 > 900, only via the panel's own scroll 2023/438), 1280×720 53 %,          | …-zoom200-1920x1080.jpg                                     |
+      |                                   |                              | 200 % of 1920 13 %, 200 % of 1280 0 %. 1920×1080 and 1600×900: panel top 193, 100 %.               |                                                             |
+V-04  | all                               | CAPABILITY FIELD gate        | When closed (no job, JOB_INVALID, CHECKING, JOB mode) the reason is only a title attribute on a     | REAL-ST-JOB-8-1920.jpg                                      | both
+      |                                   | (extends UX-04)              | disabled button: no aria-describedby, not focusable → never reaches keyboard, screen-reader or      |                                                             |
+      |                                   |                              | touch users; nothing visible near the control says why or how to open it.                          |                                                             |
+V-05  | all                               | selected job CHECKING        | While the selected job is CHECKING (pool read held 6 s) the gate reason reads "Select a job in the  | REAL-ST-held-13-1920.jpg                                    | both
+      |                                   |                              | Job Field first (open a role, then SELECT AS JOB)" although a job is selected; the same text for an  |                                                             |
+      |                                   |                              | INVALID job (reason only in the offer) and for an unknown selected upload. No first-screen statement |                                                             |
+      |                                   |                              | during CHECKING (indicator "CHECKING THE JOB …" only).                                              |                                                             |
+V-06  | all                               | states without a next step   | NO_ANALYSIS: 0 actions in the panel (UX-03). RESULT_NOT_FOUND: "Analysis not found: no result, no   | REAL-ST-NO_ANALYSIS-1-1920.jpg; REAL-ST-RESULT_NOT_FOUND-2- | both
+      |                                   |                              | demo data." with 0 actions. Job NOT_FOUND banner (analysisJobId): 0 actions, no dismiss — the       | 1920.jpg; REAL-ST-JOB-10-1920.jpg                           |
+      |                                   |                              | banner stays over the field while the analysis on view is AVAILABLE.                                 |                                                             |
+V-07  | 1920×1080                         | START, no pool persisted     | List state EMPTY "NO JOB POOL UPLOAD PERSISTED"; the upload form is hidden (behind "+ INTAKE"); the  | STANDIN-ST-EMPTY-start-no-pool-1920.jpg                     | STAND_IN
+      |                                   | (UX-06)                      | empty statement does not point to it.                                                               |                                                             |
+V-08  | 1920×1080                         | SOURCE .md (F-G1-MD)         | .md via the file input is staged as "PDF pink-ux-note.md" → EXECUTION_FAILED "ERR_PDF_PARSE_FAILURE  | STANDIN-ST-FAILED-md-as-pdf-1920.jpg                        | STAND_IN
+      |                                   |                              | … Invalid PDF structure"; the banner offers RETRY, which repeats the same failure.                  |                                                             |
+V-09  | 1920×1080 and 1280×720            | type size (V-TYPO)           | Smallest rendered: role cards 7.5 px ("LEAD · M1", "STAFF · L5"), organisation 8.5 px              | REAL-KB-02-role-1920.jpg; REAL-KB-05-row-focus-1920.jpg     | both
+      |                                   |                              | ("ORGANIZATION", "9 REQUIREMENTS", "NO MATCHING READ"), pool list 9.5 px ("SELECT"), path 9.5 px    |                                                             |
+      |                                   |                              | ("← RETURN"); B2 panel min 9.5 px, 31 of 39 texts < 12 px, 22 < 11 px (1920); job indicator 10 px,   |                                                             |
+      |                                   |                              | 9 of 15 < 11 px. Details per region: readability.txt.                                               |                                                             |
+V-10  | 1920×1080                         | label contrast               | Computable labels below AA: zoom telemetry "L1 CLUSTER / L2 EVIDENCE / L3 SOURCE" 2.44:1 and         | readability.txt                                             | both
+      |                                   |                              | "●──" 2.09:1 at 10.5 px; receded role titles of other organisations 1.02:1 (designed recession, still|                                                             |
+      |                                   |                              | rendered text). Most field text sits on gradients → contrast INCONCLUSIVE by computation (127 of 208).|                                                             |
+V-11  | 1920×1080                         | ROLE → SELECT AS JOB         | Tab order at role level: 9 requirement nodes, role card, path, RETURN, then SELECT AS JOB → 9 (real) | REAL-KB-02-role-1920.jpg                                    | both
+      |                                   | (UX-02)                      | and 14 (stand-in) presses from the opened role to the main action.                                  |                                                             |
+V-12  | all                               | MODE (keyboard)              | Radio group with roving tabindex: only the checked mode is in the Tab order; PERSON / JOB are        | keyboard.txt                                                | REAL
+      |                                   |                              | reachable only with Arrow keys, and an Arrow press selects (one history entry each). Not reachable  |                                                             |
+      |                                   |                              | with Tab / Shift+Tab / Enter / Esc. Owner: FOCUS ≠ SELECTION vs. the standard radio pattern.         |                                                             |
+V-13  | 1920×1080                         | hover                        | SELECT AS JOB and the pool list item show no visual hover change (only the cursor; pool item cursor  | REAL-HV-select-as-job-1920.jpg; REAL-HV-pool-item-1920.jpg  | REAL
+      |                                   |                              | auto). Organisation card: filter only.                                                              |                                                             |
+V-14  | all                               | POOLS toggle                 | syntx-pools-toggle 91 × 23 px (target below 24 px).                                                  | viewports.txt                                               | both
+V-15  | 1920×1080, 1280×720               | long names (V-NAMES)         | Synthetic pool (organisation 119, role title 131, role id 92 characters): job indicator title and     | STANDIN-NM-selected-capability-1280x720.jpg; STANDIN-NM-    | STAND_IN
+      |                                   |                              | detail cut with ellipsis (full text only in a title attribute); path ORGANIZATION cut with ellipsis; | role-view-1280x720.jpg; STANDIN-NM-selected-org-view-1920x  |
+      |                                   |                              | syntx-summary cut without ellipsis and without title; role card at organisation level partial text. | 1080.jpg                                                    |
+      |                                   |                              | No viewport overflow.                                                                               |                                                             |
+
+Held (no finding):
+- No focus trap; no focus on hidden or off-viewport elements; every focused element changed style (indicator present); no unnamed controls.
+- FOCUS ≠ SELECTION: Tab moved focus only — 0 URL / history changes across 600 Tab presses per lab. Focus on a B2 row couples its proposal (designed) and selects nothing; Enter on a row changes nothing.
+- HOVER ≠ AUTHORITY: hover never changed URL or history.
+- Esc: role → organisation → field; Esc closes the open pool list.
+- Shift+Tab order is the exact reverse.
+- Journey by keyboard: POOL 3–4, ORG 1, ROLE 5, SELECT AS JOB 9–14, CAPABILITY 6–7, SOURCE 2 (Enter opens the file chooser), ANALYZE 5 (stand-in), first B2 row 1–9, RETURN 3 presses; RELOAD keeps the state.
+- COVERED / NOT COVERED carry a text chip on every row; the mode radios carry aria-checked; no colour-only meaning found in the B2 panel.
+- No horizontal page scroll at any viewport.
+- MODE_MISMATCH and ROLE_MISMATCH offer exactly one explicit action each (switch mode, select this role); JOB_INVALID explains with reason; RESULT_LOADING and BOUNDARY_RESOLVING say what is being read.

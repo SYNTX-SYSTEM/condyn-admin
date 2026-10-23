@@ -1,0 +1,356 @@
+# PINK UX pre-sweep · viewport matrix · actions: present, box, clickable points (elementFromPoint at 5 points), covering element, clipping ancestor, after scrollIntoView · B2 panel: box, share visible without scrolling, grid points covered · MEASUREMENT
+# zoom200-W×H = deviceScaleFactor 2 at (W/2)×(H/2) CSS px (browser zoom 200 % of a W×H window)
+
+## PERSISTED_REAL_RESULT
+1920x1080          S1-start-pools               first=None pageScrollH=1141 hScroll=False shot=VP-S1-start-pools-1920x1080.jpg
+     job-pool-select-DLL: 226,424 84×25 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+     syntx-pools-toggle: 45,295 91×23 inVP=True click=5/5 coveredBy=[] clip=False <24px=True
+     job-pool-panel-toggle: 977,76 214×38 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+     field-focus-capability-btn: 729,76 214×38 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+1920x1080          S2-role-view                 first=None pageScrollH=1141 hScroll=False shot=VP-S2-role-view-1920x1080.jpg
+     syntx-job-scope-select: 45,585 143×26 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+     field-focus-capability-btn: 729,76 214×38 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+     job-scope-indicator: 28,74 207×40 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+1920x1080          S3-capability-no-analysis    first=NO_ANALYSIS pageScrollH=1141 hScroll=False panel=1496,193 400×114 visible=1 panelScroll=[112, 112] gridCovered={} shot=VP-S3-capability-no-analysis-1920x1080.jpg
+     start-intake-analysis-btn: absent
+     add-pdf-source-btn: 68,551 287×39 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+     add-text-source-btn: 68,642 287×36 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+     job-pool-panel-toggle: 977,76 214×38 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+     investigation-mode-PERSON: 1209,81 70×26 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+     investigation-mode-JOB: 1392,81 50×26 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+1920x1080          S4-b2-available              first=AVAILABLE pageScrollH=1141 hScroll=False panel=1496,193 400×852 visible=1 panelScroll=[2023, 850] gridCovered={} shot=VP-S4-b2-available-1920x1080.jpg
+     pxj-first-req-: 1524,720 344×175 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+     job-pool-panel-toggle: 977,76 214×38 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+     field-focus-capability-btn: 729,76 214×38 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+     investigation-mode-PERSON: 1209,81 70×26 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+     job-scope-indicator: 28,74 677×40 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+     start-intake-analysis-btn: absent
+1920x1080          S5-role-mismatch-offer       first=ROLE_MISMATCH pageScrollH=1141 hScroll=False panel=1496,193 400×221 visible=1 panelScroll=[219, 219] gridCovered={} shot=VP-S5-role-mismatch-offer-1920x1080.jpg
+     pxj-first-select-role: 1523,361 161×26 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+     job-pool-panel-toggle: 977,76 214×38 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+1920x1080          S6-gate-closed-no-job        first=None pageScrollH=1141 hScroll=False shot=VP-S6-gate-closed-no-job-1920x1080.jpg
+     field-focus-capability-btn: 729,76 214×38 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+     job-pool-panel-toggle: 977,76 214×38 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+1600x900           S1-start-pools               first=None pageScrollH=1021 hScroll=False shot=VP-S1-start-pools-1600x900.jpg
+     job-pool-select-DLL: 226,424 84×25 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+     syntx-pools-toggle: 45,295 91×23 inVP=True click=5/5 coveredBy=[] clip=False <24px=True
+     job-pool-panel-toggle: 817,76 214×38 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+     field-focus-capability-btn: 569,76 214×38 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+1600x900           S2-role-view                 first=None pageScrollH=1021 hScroll=False shot=VP-S2-role-view-1600x900.jpg
+     syntx-job-scope-select: 45,585 143×26 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+     field-focus-capability-btn: 569,76 214×38 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+     job-scope-indicator: 28,74 207×40 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+1600x900           S3-capability-no-analysis    first=NO_ANALYSIS pageScrollH=1021 hScroll=False panel=1176,193 400×114 visible=1 panelScroll=[112, 112] gridCovered={} shot=VP-S3-capability-no-analysis-1600x900.jpg
+     start-intake-analysis-btn: absent
+     add-pdf-source-btn: 68,491 287×39 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+     add-text-source-btn: 68,582 287×36 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+     job-pool-panel-toggle: 817,76 214×38 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+     investigation-mode-PERSON: 1049,81 70×26 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+     investigation-mode-JOB: 1232,81 50×26 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+1600x900           S4-b2-available              first=AVAILABLE pageScrollH=1021 hScroll=False panel=1176,193 400×672 visible=1 panelScroll=[2023, 670] gridCovered={} shot=VP-S4-b2-available-1600x900.jpg
+     pxj-first-req-: 1204,720 344×175 inVP=True click=5/5 coveredBy=[] clip={'by': 'pxj-first-screen', 'overflow': 'auto'} <24px=False
+     job-pool-panel-toggle: 817,76 214×38 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+     field-focus-capability-btn: 569,76 214×38 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+     investigation-mode-PERSON: 1049,81 70×26 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+     job-scope-indicator: 28,74 517×40 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+     start-intake-analysis-btn: absent
+1600x900           S5-role-mismatch-offer       first=ROLE_MISMATCH pageScrollH=1021 hScroll=False panel=1176,193 400×221 visible=1 panelScroll=[219, 219] gridCovered={} shot=VP-S5-role-mismatch-offer-1600x900.jpg
+     pxj-first-select-role: 1203,361 161×26 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+     job-pool-panel-toggle: 817,76 214×38 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+1600x900           S6-gate-closed-no-job        first=None pageScrollH=1021 hScroll=False shot=VP-S6-gate-closed-no-job-1600x900.jpg
+     field-focus-capability-btn: 569,76 214×38 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+     job-pool-panel-toggle: 817,76 214×38 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+1440x900           S1-start-pools               first=None pageScrollH=1021 hScroll=False shot=VP-S1-start-pools-1440x900.jpg
+     job-pool-select-DLL: 226,424 84×25 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+     syntx-pools-toggle: 45,295 91×23 inVP=True click=5/5 coveredBy=[] clip=False <24px=True
+     job-pool-panel-toggle: 737,76 214×38 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+     field-focus-capability-btn: 489,76 214×38 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+1440x900           S2-role-view                 first=None pageScrollH=1021 hScroll=False shot=VP-S2-role-view-1440x900.jpg
+     syntx-job-scope-select: 45,585 143×26 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+     field-focus-capability-btn: 489,76 214×38 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+     job-scope-indicator: 28,74 207×40 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+1440x900           S3-capability-no-analysis    first=NO_ANALYSIS pageScrollH=1021 hScroll=False panel=1016,485 400×114 visible=1 panelScroll=[112, 112] gridCovered={} shot=VP-S3-capability-no-analysis-1440x900.jpg
+     start-intake-analysis-btn: absent
+     add-pdf-source-btn: 68,491 287×39 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+     add-text-source-btn: 68,582 287×36 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+     job-pool-panel-toggle: 737,76 214×38 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+     investigation-mode-PERSON: 969,81 70×26 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+     investigation-mode-JOB: 1152,81 50×26 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+1440x900           S4-b2-available              first=AVAILABLE pageScrollH=1021 hScroll=False panel=1016,485 400×440 visible=0.94 panelScroll=[2023, 438] gridCovered={} shot=VP-S4-b2-available-1440x900.jpg
+     pxj-first-req-: 1044,1012 344×175 inVP=False click=0/0 coveredBy=[] clip={'by': 'pxj-first-screen', 'overflow': 'auto'} <24px=False afterScroll=5/5 [] inVP=True
+     job-pool-panel-toggle: 737,76 214×38 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+     field-focus-capability-btn: 489,76 214×38 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+     investigation-mode-PERSON: 969,81 70×26 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+     job-scope-indicator: 28,74 437×40 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+     start-intake-analysis-btn: absent
+1440x900           S5-role-mismatch-offer       first=ROLE_MISMATCH pageScrollH=1021 hScroll=False panel=1016,485 400×221 visible=1 panelScroll=[219, 219] gridCovered={} shot=VP-S5-role-mismatch-offer-1440x900.jpg
+     pxj-first-select-role: 1043,653 161×26 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+     job-pool-panel-toggle: 737,76 214×38 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+1440x900           S6-gate-closed-no-job        first=None pageScrollH=1021 hScroll=False shot=VP-S6-gate-closed-no-job-1440x900.jpg
+     field-focus-capability-btn: 489,76 214×38 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+     job-pool-panel-toggle: 737,76 214×38 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+1280x720           S1-start-pools               first=None pageScrollH=1021 hScroll=False shot=VP-S1-start-pools-1280x720.jpg
+     job-pool-select-DLL: 226,424 84×25 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+     syntx-pools-toggle: 45,295 91×23 inVP=True click=5/5 coveredBy=[] clip=False <24px=True
+     job-pool-panel-toggle: 657,76 214×38 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+     field-focus-capability-btn: 409,76 214×38 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+1280x720           S2-role-view                 first=None pageScrollH=1021 hScroll=False shot=VP-S2-role-view-1280x720.jpg
+     syntx-job-scope-select: 45,585 143×26 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+     field-focus-capability-btn: 409,76 214×38 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+     job-scope-indicator: 28,74 207×40 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+1280x720           S3-capability-no-analysis    first=NO_ANALYSIS pageScrollH=1021 hScroll=False panel=885,485 371×114 visible=1 panelScroll=[112, 112] gridCovered={} shot=VP-S3-capability-no-analysis-1280x720.jpg
+     start-intake-analysis-btn: absent
+     add-pdf-source-btn: 68,491 287×39 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+     add-text-source-btn: 68,582 287×36 inVP=True click=0/5 coveredBy=['decision-graph-inspector-idle'] clip=False <24px=False afterScroll=0/5 ['decision-graph-inspector-idle'] inVP=True
+     job-pool-panel-toggle: 657,76 214×38 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+     investigation-mode-PERSON: 889,81 62×26 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+     investigation-mode-JOB: 1053,81 44×26 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+1280x720           S4-b2-available              first=AVAILABLE pageScrollH=1021 hScroll=False panel=885,485 371×440 visible=0.53 panelScroll=[2059, 438] gridCovered={} shot=VP-S4-b2-available-1280x720.jpg
+     pxj-first-req-: 913,1012 315×175 inVP=False click=0/0 coveredBy=[] clip={'by': 'pxj-first-screen', 'overflow': 'auto'} <24px=False afterScroll=5/5 [] inVP=True
+     job-pool-panel-toggle: 657,76 214×38 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+     field-focus-capability-btn: 409,76 214×38 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+     investigation-mode-PERSON: 889,81 62×26 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+     job-scope-indicator: 28,74 357×40 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+     start-intake-analysis-btn: absent
+1280x720           S5-role-mismatch-offer       first=ROLE_MISMATCH pageScrollH=1021 hScroll=False panel=885,485 371×221 visible=1 panelScroll=[219, 219] gridCovered={} shot=VP-S5-role-mismatch-offer-1280x720.jpg
+     pxj-first-select-role: 912,653 161×26 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+     job-pool-panel-toggle: 657,76 214×38 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+1280x720           S6-gate-closed-no-job        first=None pageScrollH=1021 hScroll=False shot=VP-S6-gate-closed-no-job-1280x720.jpg
+     field-focus-capability-btn: 409,76 214×38 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+     job-pool-panel-toggle: 657,76 214×38 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+zoom200-1280x720   S1-start-pools               first=None pageScrollH=1021 hScroll=False shot=VP-S1-start-pools-zoom200-1280x720.jpg
+     job-pool-select-DLL: 86,522 84×25 inVP=False click=0/0 coveredBy=[] clip=False <24px=False afterScroll=5/5 [] inVP=True
+     syntx-pools-toggle: 45,352 91×23 inVP=False click=1/1 coveredBy=[] clip=False <24px=True afterScroll=5/5 [] inVP=True
+     job-pool-panel-toggle: 337,76 214×38 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+     field-focus-capability-btn: 89,76 214×38 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+zoom200-1280x720   S2-role-view                 first=None pageScrollH=1021 hScroll=False shot=VP-S2-role-view-zoom200-1280x720.jpg
+     syntx-job-scope-select: 45,757 143×26 inVP=False click=0/0 coveredBy=[] clip=False <24px=False afterScroll=5/5 [] inVP=True
+     field-focus-capability-btn: 89,76 214×38 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+     job-scope-indicator: 28,74 37×40 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+zoom200-1280x720   S3-capability-no-analysis    first=NO_ANALYSIS pageScrollH=1021 hScroll=False panel=430,485 186×184 visible=0 panelScroll=[182, 182] gridCovered={} shot=VP-S3-capability-no-analysis-zoom200-1280x720.jpg
+     start-intake-analysis-btn: absent
+     add-pdf-source-btn: 68,491 287×39 inVP=False click=0/0 coveredBy=[] clip=False <24px=False afterScroll=5/5 [] inVP=True
+     add-text-source-btn: 68,582 287×36 inVP=False click=0/0 coveredBy=[] clip=False <24px=False afterScroll=5/5 [] inVP=True
+     job-pool-panel-toggle: 337,76 214×38 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+     investigation-mode-PERSON: 569,81 62×26 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+     investigation-mode-JOB: 733,81 44×26 inVP=False click=0/0 coveredBy=[] clip={'by': 'semantic-career-intelligence-field', 'overflow': 'hidden'} <24px=False afterScroll=0/0 [] inVP=False
+zoom200-1280x720   S4-b2-available              first=AVAILABLE pageScrollH=1021 hScroll=False panel=430,485 186×440 visible=0 panelScroll=[4127, 438] gridCovered={} shot=VP-S4-b2-available-zoom200-1280x720.jpg
+     pxj-first-req-: 458,1424 130×395 inVP=False click=0/0 coveredBy=[] clip={'by': 'pxj-first-screen', 'overflow': 'auto'} <24px=False afterScroll=5/5 [] inVP=True
+     job-pool-panel-toggle: 337,76 214×38 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+     field-focus-capability-btn: 89,76 214×38 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+     investigation-mode-PERSON: 569,81 62×26 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+     job-scope-indicator: 28,74 37×40 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+     start-intake-analysis-btn: absent
+zoom200-1280x720   S5-role-mismatch-offer       first=ROLE_MISMATCH pageScrollH=1021 hScroll=False panel=430,485 186×440 visible=0 panelScroll=[438, 438] gridCovered={} shot=VP-S5-role-mismatch-offer-zoom200-1280x720.jpg
+     pxj-first-select-role: 457,858 132×40 inVP=False click=0/0 coveredBy=[] clip=False <24px=False afterScroll=5/5 [] inVP=True
+     job-pool-panel-toggle: 337,76 214×38 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+zoom200-1280x720   S6-gate-closed-no-job        first=None pageScrollH=1021 hScroll=False shot=VP-S6-gate-closed-no-job-zoom200-1280x720.jpg
+     field-focus-capability-btn: 89,76 214×38 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+     job-pool-panel-toggle: 337,76 214×38 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+zoom200-1920x1080  S1-start-pools               first=None pageScrollH=1021 hScroll=False shot=VP-S1-start-pools-zoom200-1920x1080.jpg
+     job-pool-select-DLL: 169,465 84×25 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+     syntx-pools-toggle: 45,295 91×23 inVP=True click=5/5 coveredBy=[] clip=False <24px=True
+     job-pool-panel-toggle: 497,76 214×38 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+     field-focus-capability-btn: 249,76 214×38 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+zoom200-1920x1080  S2-role-view                 first=None pageScrollH=1021 hScroll=False shot=VP-S2-role-view-zoom200-1920x1080.jpg
+     syntx-job-scope-select: 45,585 143×26 inVP=False click=0/0 coveredBy=[] clip=False <24px=False afterScroll=5/5 [] inVP=True
+     field-focus-capability-btn: 249,76 214×38 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+     job-scope-indicator: 28,74 197×40 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+zoom200-1920x1080  S3-capability-no-analysis    first=NO_ANALYSIS pageScrollH=1021 hScroll=False panel=658,485 278×132 visible=0.42 panelScroll=[130, 130] gridCovered={} shot=VP-S3-capability-no-analysis-zoom200-1920x1080.jpg
+     start-intake-analysis-btn: absent
+     add-pdf-source-btn: 68,491 287×39 inVP=True click=1/5 coveredBy=['decision-graph-inspector-idle'] clip=False <24px=False
+     add-text-source-btn: 68,582 287×36 inVP=False click=0/0 coveredBy=[] clip=False <24px=False afterScroll=5/5 [] inVP=True
+     job-pool-panel-toggle: 497,76 214×38 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+     investigation-mode-PERSON: 729,81 62×26 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+     investigation-mode-JOB: 893,81 44×26 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+zoom200-1920x1080  S4-b2-available              first=AVAILABLE pageScrollH=1021 hScroll=False panel=658,485 278×440 visible=0.13 panelScroll=[2589, 438] gridCovered={} shot=VP-S4-b2-available-zoom200-1920x1080.jpg
+     pxj-first-req-: 686,1109 222×226 inVP=False click=0/0 coveredBy=[] clip={'by': 'pxj-first-screen', 'overflow': 'auto'} <24px=False afterScroll=5/5 [] inVP=True
+     job-pool-panel-toggle: 497,76 214×38 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+     field-focus-capability-btn: 249,76 214×38 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+     investigation-mode-PERSON: 729,81 62×26 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+     job-scope-indicator: 28,74 197×40 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+     start-intake-analysis-btn: absent
+zoom200-1920x1080  S5-role-mismatch-offer       first=ROLE_MISMATCH pageScrollH=1021 hScroll=False panel=658,485 278×272 visible=0.2 panelScroll=[270, 270] gridCovered={} shot=VP-S5-role-mismatch-offer-zoom200-1920x1080.jpg
+     pxj-first-select-role: 685,704 161×26 inVP=False click=0/0 coveredBy=[] clip=False <24px=False afterScroll=5/5 [] inVP=True
+     job-pool-panel-toggle: 497,76 214×38 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+zoom200-1920x1080  S6-gate-closed-no-job        first=None pageScrollH=1021 hScroll=False shot=VP-S6-gate-closed-no-job-zoom200-1920x1080.jpg
+     field-focus-capability-btn: 249,76 214×38 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+     job-pool-panel-toggle: 497,76 214×38 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+fixed elements (1280×720, B2): [["decision-graph-inspector-idle", 24, 574, 384, 122, "40"], ["semantic-career-intelligence-field", 905, 24, 351, 34, "60"], ["semantic-guide-drawer-toggle", 1116, 84, 140, 34, "50"], ["job-scope-indicator", 28, 74, 357, 40, "60"], ["field-focus-strip", 403, 70, 474, 50, "60"], ["investigation-mode-selector", 885, 77, 216, 34, "60"]]
+
+## STAND_IN
+1920x1080          S1-start-pools               first=None pageScrollH=1141 hScroll=False shot=VP-S1-start-pools-1920x1080.jpg
+     job-pool-select-DLL: 226,424 84×25 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+     syntx-pools-toggle: 45,295 91×23 inVP=True click=5/5 coveredBy=[] clip=False <24px=True
+     job-pool-panel-toggle: 977,76 214×38 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+     field-focus-capability-btn: 729,76 214×38 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+1920x1080          S2-role-view                 first=None pageScrollH=1141 hScroll=False shot=VP-S2-role-view-1920x1080.jpg
+     syntx-job-scope-select: 45,585 143×26 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+     field-focus-capability-btn: 729,76 214×38 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+     job-scope-indicator: 28,74 207×40 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+1920x1080          S3-capability-no-analysis    first=NO_ANALYSIS pageScrollH=1141 hScroll=False panel=1496,193 400×114 visible=1 panelScroll=[112, 112] gridCovered={} shot=VP-S3-capability-no-analysis-1920x1080.jpg
+     start-intake-analysis-btn: absent
+     add-pdf-source-btn: 68,551 287×39 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+     add-text-source-btn: 68,642 287×36 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+     job-pool-panel-toggle: 977,76 214×38 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+     investigation-mode-PERSON: 1209,81 70×26 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+     investigation-mode-JOB: 1392,81 50×26 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+1920x1080          S4-b2-available              first=AVAILABLE pageScrollH=1141 hScroll=False panel=1496,193 400×852 visible=1 panelScroll=[1980, 850] gridCovered={} shot=VP-S4-b2-available-1920x1080.jpg
+     pxj-first-req-: 1524,720 344×175 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+     job-pool-panel-toggle: 977,76 214×38 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+     field-focus-capability-btn: 729,76 214×38 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+     investigation-mode-PERSON: 1209,81 70×26 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+     job-scope-indicator: 28,74 677×40 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+     start-intake-analysis-btn: absent
+1920x1080          S5-role-mismatch-offer       first=ROLE_MISMATCH pageScrollH=1141 hScroll=False panel=1496,193 400×221 visible=1 panelScroll=[219, 219] gridCovered={} shot=VP-S5-role-mismatch-offer-1920x1080.jpg
+     pxj-first-select-role: 1523,361 161×26 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+     job-pool-panel-toggle: 977,76 214×38 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+1920x1080          S6-gate-closed-no-job        first=None pageScrollH=1141 hScroll=False shot=VP-S6-gate-closed-no-job-1920x1080.jpg
+     field-focus-capability-btn: 729,76 214×38 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+     job-pool-panel-toggle: 977,76 214×38 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+1600x900           S1-start-pools               first=None pageScrollH=1021 hScroll=False shot=VP-S1-start-pools-1600x900.jpg
+     job-pool-select-DLL: 226,424 84×25 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+     syntx-pools-toggle: 45,295 91×23 inVP=True click=5/5 coveredBy=[] clip=False <24px=True
+     job-pool-panel-toggle: 817,76 214×38 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+     field-focus-capability-btn: 569,76 214×38 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+1600x900           S2-role-view                 first=None pageScrollH=1021 hScroll=False shot=VP-S2-role-view-1600x900.jpg
+     syntx-job-scope-select: 45,585 143×26 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+     field-focus-capability-btn: 569,76 214×38 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+     job-scope-indicator: 28,74 207×40 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+1600x900           S3-capability-no-analysis    first=NO_ANALYSIS pageScrollH=1021 hScroll=False panel=1176,193 400×114 visible=1 panelScroll=[112, 112] gridCovered={} shot=VP-S3-capability-no-analysis-1600x900.jpg
+     start-intake-analysis-btn: absent
+     add-pdf-source-btn: 68,491 287×39 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+     add-text-source-btn: 68,582 287×36 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+     job-pool-panel-toggle: 817,76 214×38 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+     investigation-mode-PERSON: 1049,81 70×26 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+     investigation-mode-JOB: 1232,81 50×26 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+1600x900           S4-b2-available              first=AVAILABLE pageScrollH=1021 hScroll=False panel=1176,193 400×672 visible=1 panelScroll=[1980, 670] gridCovered={} shot=VP-S4-b2-available-1600x900.jpg
+     pxj-first-req-: 1204,720 344×175 inVP=True click=5/5 coveredBy=[] clip={'by': 'pxj-first-screen', 'overflow': 'auto'} <24px=False
+     job-pool-panel-toggle: 817,76 214×38 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+     field-focus-capability-btn: 569,76 214×38 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+     investigation-mode-PERSON: 1049,81 70×26 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+     job-scope-indicator: 28,74 517×40 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+     start-intake-analysis-btn: absent
+1600x900           S5-role-mismatch-offer       first=ROLE_MISMATCH pageScrollH=1021 hScroll=False panel=1176,193 400×221 visible=1 panelScroll=[219, 219] gridCovered={} shot=VP-S5-role-mismatch-offer-1600x900.jpg
+     pxj-first-select-role: 1203,361 161×26 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+     job-pool-panel-toggle: 817,76 214×38 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+1600x900           S6-gate-closed-no-job        first=None pageScrollH=1021 hScroll=False shot=VP-S6-gate-closed-no-job-1600x900.jpg
+     field-focus-capability-btn: 569,76 214×38 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+     job-pool-panel-toggle: 817,76 214×38 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+1440x900           S1-start-pools               first=None pageScrollH=1021 hScroll=False shot=VP-S1-start-pools-1440x900.jpg
+     job-pool-select-DLL: 226,424 84×25 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+     syntx-pools-toggle: 45,295 91×23 inVP=True click=5/5 coveredBy=[] clip=False <24px=True
+     job-pool-panel-toggle: 737,76 214×38 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+     field-focus-capability-btn: 489,76 214×38 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+1440x900           S2-role-view                 first=None pageScrollH=1021 hScroll=False shot=VP-S2-role-view-1440x900.jpg
+     syntx-job-scope-select: 45,585 143×26 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+     field-focus-capability-btn: 489,76 214×38 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+     job-scope-indicator: 28,74 207×40 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+1440x900           S3-capability-no-analysis    first=NO_ANALYSIS pageScrollH=1021 hScroll=False panel=1016,485 400×114 visible=1 panelScroll=[112, 112] gridCovered={} shot=VP-S3-capability-no-analysis-1440x900.jpg
+     start-intake-analysis-btn: absent
+     add-pdf-source-btn: 68,491 287×39 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+     add-text-source-btn: 68,582 287×36 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+     job-pool-panel-toggle: 737,76 214×38 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+     investigation-mode-PERSON: 969,81 70×26 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+     investigation-mode-JOB: 1152,81 50×26 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+1440x900           S4-b2-available              first=AVAILABLE pageScrollH=1021 hScroll=False panel=1016,485 400×440 visible=0.94 panelScroll=[1980, 438] gridCovered={} shot=VP-S4-b2-available-1440x900.jpg
+     pxj-first-req-: 1044,1012 344×175 inVP=False click=0/0 coveredBy=[] clip={'by': 'pxj-first-screen', 'overflow': 'auto'} <24px=False afterScroll=5/5 [] inVP=True
+     job-pool-panel-toggle: 737,76 214×38 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+     field-focus-capability-btn: 489,76 214×38 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+     investigation-mode-PERSON: 969,81 70×26 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+     job-scope-indicator: 28,74 437×40 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+     start-intake-analysis-btn: absent
+1440x900           S5-role-mismatch-offer       first=ROLE_MISMATCH pageScrollH=1021 hScroll=False panel=1016,485 400×221 visible=1 panelScroll=[219, 219] gridCovered={} shot=VP-S5-role-mismatch-offer-1440x900.jpg
+     pxj-first-select-role: 1043,653 161×26 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+     job-pool-panel-toggle: 737,76 214×38 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+1440x900           S6-gate-closed-no-job        first=None pageScrollH=1021 hScroll=False shot=VP-S6-gate-closed-no-job-1440x900.jpg
+     field-focus-capability-btn: 489,76 214×38 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+     job-pool-panel-toggle: 737,76 214×38 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+1280x720           S1-start-pools               first=None pageScrollH=1021 hScroll=False shot=VP-S1-start-pools-1280x720.jpg
+     job-pool-select-DLL: 226,424 84×25 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+     syntx-pools-toggle: 45,295 91×23 inVP=True click=5/5 coveredBy=[] clip=False <24px=True
+     job-pool-panel-toggle: 657,76 214×38 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+     field-focus-capability-btn: 409,76 214×38 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+1280x720           S2-role-view                 first=None pageScrollH=1021 hScroll=False shot=VP-S2-role-view-1280x720.jpg
+     syntx-job-scope-select: 45,585 143×26 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+     field-focus-capability-btn: 409,76 214×38 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+     job-scope-indicator: 28,74 207×40 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+1280x720           S3-capability-no-analysis    first=NO_ANALYSIS pageScrollH=1021 hScroll=False panel=885,485 371×114 visible=1 panelScroll=[112, 112] gridCovered={} shot=VP-S3-capability-no-analysis-1280x720.jpg
+     start-intake-analysis-btn: absent
+     add-pdf-source-btn: 68,491 287×39 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+     add-text-source-btn: 68,582 287×36 inVP=True click=0/5 coveredBy=['decision-graph-inspector-idle'] clip=False <24px=False afterScroll=0/5 ['decision-graph-inspector-idle'] inVP=True
+     job-pool-panel-toggle: 657,76 214×38 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+     investigation-mode-PERSON: 889,81 62×26 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+     investigation-mode-JOB: 1053,81 44×26 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+1280x720           S4-b2-available              first=AVAILABLE pageScrollH=1021 hScroll=False panel=885,485 371×440 visible=0.53 panelScroll=[2031, 438] gridCovered={} shot=VP-S4-b2-available-1280x720.jpg
+     pxj-first-req-: 913,1012 315×175 inVP=False click=0/0 coveredBy=[] clip={'by': 'pxj-first-screen', 'overflow': 'auto'} <24px=False afterScroll=5/5 [] inVP=True
+     job-pool-panel-toggle: 657,76 214×38 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+     field-focus-capability-btn: 409,76 214×38 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+     investigation-mode-PERSON: 889,81 62×26 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+     job-scope-indicator: 28,74 357×40 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+     start-intake-analysis-btn: absent
+1280x720           S5-role-mismatch-offer       first=ROLE_MISMATCH pageScrollH=1021 hScroll=False panel=885,485 371×221 visible=1 panelScroll=[219, 219] gridCovered={} shot=VP-S5-role-mismatch-offer-1280x720.jpg
+     pxj-first-select-role: 912,653 161×26 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+     job-pool-panel-toggle: 657,76 214×38 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+1280x720           S6-gate-closed-no-job        first=None pageScrollH=1021 hScroll=False shot=VP-S6-gate-closed-no-job-1280x720.jpg
+     field-focus-capability-btn: 409,76 214×38 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+     job-pool-panel-toggle: 657,76 214×38 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+zoom200-1280x720   S1-start-pools               first=None pageScrollH=1021 hScroll=False shot=VP-S1-start-pools-zoom200-1280x720.jpg
+     job-pool-select-DLL: 86,551 84×25 inVP=False click=0/0 coveredBy=[] clip=False <24px=False afterScroll=5/5 [] inVP=True
+     syntx-pools-toggle: 45,352 91×23 inVP=False click=1/1 coveredBy=[] clip=False <24px=True afterScroll=5/5 [] inVP=True
+     job-pool-panel-toggle: 337,76 214×38 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+     field-focus-capability-btn: 89,76 214×38 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+zoom200-1280x720   S2-role-view                 first=None pageScrollH=1021 hScroll=False shot=VP-S2-role-view-zoom200-1280x720.jpg
+     syntx-job-scope-select: 45,757 143×26 inVP=False click=0/0 coveredBy=[] clip=False <24px=False afterScroll=5/5 [] inVP=True
+     field-focus-capability-btn: 89,76 214×38 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+     job-scope-indicator: 28,74 37×40 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+zoom200-1280x720   S3-capability-no-analysis    first=NO_ANALYSIS pageScrollH=1021 hScroll=False panel=430,485 186×184 visible=0 panelScroll=[182, 182] gridCovered={} shot=VP-S3-capability-no-analysis-zoom200-1280x720.jpg
+     start-intake-analysis-btn: absent
+     add-pdf-source-btn: 68,491 287×39 inVP=False click=0/0 coveredBy=[] clip=False <24px=False afterScroll=5/5 [] inVP=True
+     add-text-source-btn: 68,582 287×36 inVP=False click=0/0 coveredBy=[] clip=False <24px=False afterScroll=5/5 [] inVP=True
+     job-pool-panel-toggle: 337,76 214×38 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+     investigation-mode-PERSON: 569,81 62×26 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+     investigation-mode-JOB: 733,81 44×26 inVP=False click=0/0 coveredBy=[] clip={'by': 'semantic-career-intelligence-field', 'overflow': 'hidden'} <24px=False afterScroll=0/0 [] inVP=False
+zoom200-1280x720   S4-b2-available              first=AVAILABLE pageScrollH=1021 hScroll=False panel=430,485 186×440 visible=0 panelScroll=[4032, 438] gridCovered={} shot=VP-S4-b2-available-zoom200-1280x720.jpg
+     pxj-first-req-: 458,1508 130×377 inVP=False click=0/0 coveredBy=[] clip={'by': 'pxj-first-screen', 'overflow': 'auto'} <24px=False afterScroll=5/5 [] inVP=True
+     job-pool-panel-toggle: 337,76 214×38 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+     field-focus-capability-btn: 89,76 214×38 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+     investigation-mode-PERSON: 569,81 62×26 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+     job-scope-indicator: 28,74 37×40 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+     start-intake-analysis-btn: absent
+zoom200-1280x720   S5-role-mismatch-offer       first=ROLE_MISMATCH pageScrollH=1021 hScroll=False panel=430,485 186×440 visible=0 panelScroll=[438, 438] gridCovered={} shot=VP-S5-role-mismatch-offer-zoom200-1280x720.jpg
+     pxj-first-select-role: 457,858 132×40 inVP=False click=0/0 coveredBy=[] clip=False <24px=False afterScroll=5/5 [] inVP=True
+     job-pool-panel-toggle: 337,76 214×38 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+zoom200-1280x720   S6-gate-closed-no-job        first=None pageScrollH=1021 hScroll=False shot=VP-S6-gate-closed-no-job-zoom200-1280x720.jpg
+     field-focus-capability-btn: 89,76 214×38 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+     job-pool-panel-toggle: 337,76 214×38 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+zoom200-1920x1080  S1-start-pools               first=None pageScrollH=1021 hScroll=False shot=VP-S1-start-pools-zoom200-1920x1080.jpg
+     job-pool-select-DLL: 169,465 84×25 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+     syntx-pools-toggle: 45,295 91×23 inVP=True click=5/5 coveredBy=[] clip=False <24px=True
+     job-pool-panel-toggle: 497,76 214×38 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+     field-focus-capability-btn: 249,76 214×38 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+zoom200-1920x1080  S2-role-view                 first=None pageScrollH=1021 hScroll=False shot=VP-S2-role-view-zoom200-1920x1080.jpg
+     syntx-job-scope-select: 45,585 143×26 inVP=False click=0/0 coveredBy=[] clip=False <24px=False afterScroll=5/5 [] inVP=True
+     field-focus-capability-btn: 249,76 214×38 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+     job-scope-indicator: 28,74 197×40 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+zoom200-1920x1080  S3-capability-no-analysis    first=NO_ANALYSIS pageScrollH=1021 hScroll=False panel=658,485 278×132 visible=0.42 panelScroll=[130, 130] gridCovered={} shot=VP-S3-capability-no-analysis-zoom200-1920x1080.jpg
+     start-intake-analysis-btn: absent
+     add-pdf-source-btn: 68,491 287×39 inVP=True click=1/5 coveredBy=['decision-graph-inspector-idle'] clip=False <24px=False
+     add-text-source-btn: 68,582 287×36 inVP=False click=0/0 coveredBy=[] clip=False <24px=False afterScroll=5/5 [] inVP=True
+     job-pool-panel-toggle: 497,76 214×38 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+     investigation-mode-PERSON: 729,81 62×26 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+     investigation-mode-JOB: 893,81 44×26 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+zoom200-1920x1080  S4-b2-available              first=AVAILABLE pageScrollH=1021 hScroll=False panel=658,485 278×440 visible=0.13 panelScroll=[2506, 438] gridCovered={} shot=VP-S4-b2-available-zoom200-1920x1080.jpg
+     pxj-first-req-: 686,1137 222×208 inVP=False click=0/0 coveredBy=[] clip={'by': 'pxj-first-screen', 'overflow': 'auto'} <24px=False afterScroll=5/5 [] inVP=True
+     job-pool-panel-toggle: 497,76 214×38 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+     field-focus-capability-btn: 249,76 214×38 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+     investigation-mode-PERSON: 729,81 62×26 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+     job-scope-indicator: 28,74 197×40 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+     start-intake-analysis-btn: absent
+zoom200-1920x1080  S5-role-mismatch-offer       first=ROLE_MISMATCH pageScrollH=1021 hScroll=False panel=658,485 278×272 visible=0.2 panelScroll=[270, 270] gridCovered={} shot=VP-S5-role-mismatch-offer-zoom200-1920x1080.jpg
+     pxj-first-select-role: 685,704 161×26 inVP=False click=0/0 coveredBy=[] clip=False <24px=False afterScroll=5/5 [] inVP=True
+     job-pool-panel-toggle: 497,76 214×38 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+zoom200-1920x1080  S6-gate-closed-no-job        first=None pageScrollH=1021 hScroll=False shot=VP-S6-gate-closed-no-job-zoom200-1920x1080.jpg
+     field-focus-capability-btn: 249,76 214×38 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+     job-pool-panel-toggle: 497,76 214×38 inVP=True click=5/5 coveredBy=[] clip=False <24px=False
+fixed elements (1280×720, B2): [["decision-graph-inspector-idle", 24, 574, 384, 122, "40"], ["semantic-career-intelligence-field", 905, 24, 351, 34, "60"], ["semantic-guide-drawer-toggle", 1116, 84, 140, 34, "50"], ["job-scope-indicator", 28, 74, 357, 40, "60"], ["field-focus-strip", 403, 70, 474, 50, "60"], ["investigation-mode-selector", 885, 77, 216, 34, "60"]]

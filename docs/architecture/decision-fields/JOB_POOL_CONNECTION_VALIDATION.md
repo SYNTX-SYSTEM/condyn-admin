@@ -3089,6 +3089,36 @@ The production build is the local `next start` with LAB_ONLY_BUILD_FLAG, `Cache-
 
 No quote text and no screenshot is committed; first-screen text appears only as sha256/16. PINK's labs on :41873 are stopped by `stop-lab.sh` (its stop drops the lab's disposable DBs; no state file is left, no listener on :41873 / :41874). :41872 was only read.
 
+### 3.61 UX pre-sweep on `421e382` for the owner mandate "RECURSIVE UX/UI & SYSTEM CLOSURE" — findings only (2026-10-23)
+
+**Request.** GELB asked for an independent pre-sweep, findings only and no fixes; the list goes to GRÜN as the P3 fine list. It covers:
+- the keyboard journey;
+- focus and hover;
+- viewports 1920×1080, 1600×900, 1440×900, 1280×720 and 200 % zoom (overlap, clipping, real clickability);
+- readability (type size, contrast, long names, colour-only meaning);
+- loading, empty and error states and their next step.
+
+**Labs.** PERSISTED_REAL_RESULT on GELB's :41872, GET only: every non-GET is aborted in the browser; 0 were blocked and there were 0 page errors. STAND_IN on PINK's own production build of `421e382` with LAB_ONLY_BUILD_FLAG; there ANALYZE, the empty start, `.md` staging and a synthetic long-names pool were added. Screenshots mask every quote.
+
+**Findings (`findings.txt`).** Fifteen findings, V-01 … V-15, each with viewport, step, measured value, screenshot and evidence class. The ones that block an action or a reading:
+- **V-01.** The fixed Decision Graph Inspector covers "+ ENTER TEXT / MARKDOWN" at 1280×720: 0/5 points are clickable, even after scrolling. At 200 % of 1920 it covers "+ UPLOAD PDF" (1/5).
+- **V-02.** At 200 % of 1280×720 the JOB mode is clipped at x 733 > 640 and cannot be reached by pointer. The shell title runs under its buttons, and the job indicator shows only "J".
+- **V-03.** O-PXJ-720 extends to 1440×900: 94 % of the panel is visible, but the first row lies below the fold. At 200 % zoom the visible share drops to 13 % and 0 %.
+- **V-04 / V-05.** The reason for the closed Capability gate is only a title on a disabled button, which keyboard and screen-reader users cannot reach. During CHECKING it names the wrong reason.
+- **V-06.** NO_ANALYSIS, RESULT_NOT_FOUND and the job NOT_FOUND banner offer no next step.
+
+Type sizes go down to 7.5 px (V-09). Contrast is computable only partly (V-10); most field text sits on gradients. Also found: Tab order at role level (V-11), the mode radio group reachable only with Arrow keys (V-12), missing hover feedback (V-13), a 23 px target (V-14), and truncation without the full text (V-15).
+
+**Held.**
+- No focus trap; the focus indicator is present on every focused element.
+- 600 Tab presses per lab without a URL or history change (FOCUS ≠ SELECTION); hover never changed URL or history (HOVER ≠ AUTHORITY).
+- Esc returns level by level and closes the pool list.
+- The journey can be done by keyboard, from POOL to ANALYZE and RETURN.
+- Every B2 row carries a COVERED / NOT COVERED text chip.
+- No horizontal page scroll at any viewport.
+
+**Run record.** `evidence/ux-presweep-421e382/`: findings.txt, keyboard.txt, viewports.txt, readability.txt, states-hover-names.txt, shots/ (20 JPEGs, quotes masked), scripts/ and manifest.sha256.
+
 ## 4. Boundaries and findings for coordination
 
 - F-JP-1 (closed in `b782793`): `JOB_POOL_CONNECTION.md` §4 followed the per-role `JOB_POOL_JSON_ROLE` design;

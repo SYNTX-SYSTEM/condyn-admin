@@ -1,0 +1,250 @@
+// PINK UX pre-sweep (owner "SYNTX::SFE::OWNER_GO — RECURSIVE UX/UI & SYSTEM CLOSURE"): findings only, no fixes. MEASUREMENT.
+// argv: <mode real|standin> <base> <out dir> [repo root] [long pool json]
+//  real    : GELB's acceptance lab (PERSISTED_REAL_RESULT), GET ONLY — every non-GET is aborted in the browser and counted.
+//  standin : PINK's own stand-in lab (STAND_IN): pool uploads, staging and ANALYZE allowed (its own disposable DB).
+// Measures: keyboard journey (Tab / Shift+Tab / Enter / Esc), focus visibility and order, FOCUS ≠ SELECTION, hover, viewport matrix
+// (overlap, clipping, real clickability), type sizes and label contrast per region, truncation, colour-only meaning, state texts and
+// their next step. Quote text is never recorded; quotes are masked in every screenshot.
+import { readFileSync, writeFileSync, mkdirSync } from "node:fs";
+import { pathToFileURL } from "node:url";
+const [MODE, BASE, OUT, ROOT = "", LONG_POOL = ""] = process.argv.slice(2); mkdirSync(OUT, { recursive: true });
+const pw = await import(pathToFileURL(process.env.CONDYN_PLAYWRIGHT_MODULE).href); const { chromium } = pw.chromium ? pw : pw.default;
+const REAL = MODE === "real";
+const DLL = "JPOOL_B94850C439974E27496FE3B1A9A076B5", KES = "org_kestrel", ROLE = "role_kestrel_fullstack", ROLE2 = "role_kestrel_frontend_architect";
+let ANL = REAL ? "ANL_1792628993472_10" : null, PANL = REAL ? "ANL_1792628831636_456" : null;
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+const rec = { mode: MODE, evidenceClass: REAL ? "PERSISTED_REAL_RESULT" : "STAND_IN", note: REAL ? "GELB :41872, GET only" : "STAND-IN · keine Modellausführung", keyboard: {}, hover: [], viewports: [], readability: [], states: [], names: [], colourOnly: [], blockedNonGet: [], pageErrors: [] };
+let phase = "setup";
+const browser = await chromium.launch();
+const mkctx = async (vp, dsf = 1) => { const ctx = await browser.newContext({ viewport: vp, deviceScaleFactor: dsf }); await ctx.addInitScript(() => { try { localStorage.setItem("condyn_onboarding_seen", "true"); } catch {} }); if (REAL) await ctx.route("**/*", async r => { const m = r.request().method(); if (m !== "GET" && m !== "HEAD") { rec.blockedNonGet.push({ phase, method: m, path: new URL(r.request().url()).pathname }); return r.abort("blockedbyclient"); } return r.continue(); }); return ctx; };
+const settle = async (page, ms = 1500) => { await page.waitForSelector('[data-testid="semantic-career-intelligence-field"]', { timeout: 60000 }).catch(() => {}); await page.waitForFunction(() => { const f = document.querySelector('[data-testid="pxj-first-screen"]')?.dataset.state; const j = document.querySelector('[data-testid="job-scope-indicator"]')?.dataset.jobScopeState; return !/LOADING|RESOLVING|CHECKING/.test(f ?? "") && j !== "CHECKING"; }, null, { timeout: 30000 }).catch(() => {}); await sleep(ms); };
+const maskAndShot = async (page, file, label) => { await page.evaluate(label => { document.querySelectorAll("[data-pxj-quote]").forEach(q => { q.style.background = "#333"; q.style.color = "#333"; q.dataset.pinkMasked = "1"; }); let d = document.getElementById("pink-mark"); if (!d) { d = document.createElement("div"); d.id = "pink-mark"; Object.assign(d.style, { position: "fixed", left: "8px", bottom: "8px", zIndex: 2147483647, padding: "2px 8px", borderRadius: "5px", background: "rgba(245,166,35,0.92)", color: "#111", font: "700 11px monospace", pointerEvents: "none" }); document.body.appendChild(d); } d.textContent = label; }, `${REAL ? "PERSISTED_REAL_RESULT · GET only · quotes masked" : "STAND-IN · keine Modellausführung"} · ${label}`); await page.screenshot({ path: `${OUT}/${file}`, type: "jpeg", quality: 62 }); await page.evaluate(() => { document.querySelectorAll('[data-pink-masked="1"]').forEach(q => { q.style.background = ""; q.style.color = ""; delete q.dataset.pinkMasked; }); document.getElementById("pink-mark")?.remove(); }); return file; };
+const deep = (extra = "", mode = "PERSON_X_JOB", focus = "CAPABILITY") => `${BASE}/career/demo?investigationMode=${mode}&jobPoolUploadId=${DLL}&jobScopePoolUploadId=${DLL}&jobScopeRoleId=${ROLE}${extra}&focus=${focus}`;
+const roleView = (extra = "") => `${BASE}/career/demo?focus=FIELD&investigationMode=PERSON_X_JOB&jobPoolUploadId=${DLL}&jobOrganizationId=${KES}&jobRoleId=${ROLE}${extra}`;
+
+// ---------------------------------------------------------------- in-page helpers
+const PAGE_HELPERS = () => {
+  if (window.__pink) return;
+  const quoteLike = el => !!el.closest?.("[data-pxj-quote]");
+  const tid = el => { const c = el?.closest?.("[data-testid]"); return c ? c.dataset.testid : null; };
+  const label = el => { if (!el || el === document.body) return null; const a = el.getAttribute?.("aria-label"); if (a) return a.slice(0, 80); if (el.querySelector?.("[data-pxj-quote]") || quoteLike(el)) return "[contains quote]"; return (el.innerText || el.textContent || "").replace(/\s+/g, " ").trim().slice(0, 60); };
+  const STYLE_KEYS = ["outlineStyle", "outlineWidth", "outlineColor", "boxShadow", "borderTopColor", "backgroundColor", "color", "textDecorationLine", "filter", "opacity", "transform"];
+  const styleOf = el => { const s = getComputedStyle(el); const o = {}; for (const k of STYLE_KEYS) o[k] = s[k]; return o; };
+  const visibleBox = el => { const r = el.getBoundingClientRect(); const s = getComputedStyle(el); return { x: Math.round(r.left), y: Math.round(r.top), w: Math.round(r.width), h: Math.round(r.height), inViewport: r.width > 0 && r.height > 0 && r.right > 0 && r.bottom > 0 && r.left < innerWidth && r.top < innerHeight, fullyInViewport: r.left >= 0 && r.top >= 0 && r.right <= innerWidth && r.bottom <= innerHeight, hidden: s.visibility === "hidden" || s.display === "none" || Number(s.opacity) === 0 || r.width === 0 || r.height === 0 }; };
+  const regionOf = el => { const r = el.closest?.('[data-testid="pxj-first-screen"],[data-testid="source-dock"],[data-testid="job-scope-indicator"],[data-sx-panel],[data-testid="syntx-field-selector"],[data-testid^="syntx-organization-"],[data-testid^="syntx-role-"],[data-testid="intake-error-banner"],[data-testid="semantic-career-intelligence-field"],header,nav'); return r ? (r.dataset?.testid?.replace(/-(org|role)_[a-z0-9_]+$/, "-*") ?? (r.dataset?.sxPanel ? `panel:${r.dataset.sxPanel}` : r.tagName.toLowerCase())) : "page"; };
+  const parseRgb = c => { const m = c.match(/rgba?\(([^)]+)\)/); if (!m) return null; const p = m[1].split(/[ ,/]+/).filter(Boolean).map(Number); return { r: p[0], g: p[1], b: p[2], a: p.length > 3 ? p[3] : 1 }; };
+  const lum = c => { const f = v => { v /= 255; return v <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4; }; return 0.2126 * f(c.r) + 0.7152 * f(c.g) + 0.0722 * f(c.b); };
+  const effectiveBg = el => { const layers = []; let n = el, img = false; while (n && n.nodeType === 1) { const s = getComputedStyle(n); if (s.backgroundImage && s.backgroundImage !== "none") img = true; const c = parseRgb(s.backgroundColor); if (c && c.a > 0) { layers.push(c); if (c.a >= 1) break; } n = n.parentElement; } let base = { r: 0, g: 0, b: 0 }; for (const l of layers.reverse()) base = { r: l.r * l.a + base.r * (1 - l.a), g: l.g * l.a + base.g * (1 - l.a), b: l.b * l.a + base.b * (1 - l.a) }; return { bg: base, gradientOrImage: img }; };
+  const contrast = el => { const s = getComputedStyle(el); const fg = parseRgb(s.color); if (!fg) return null; const { bg, gradientOrImage } = effectiveBg(el); const a = fg.a * Number(s.opacity || 1); let o = el.parentElement, op = 1; while (o) { op *= Number(getComputedStyle(o).opacity || 1); o = o.parentElement; } const alpha = a * op; const f = { r: fg.r * alpha + bg.r * (1 - alpha), g: fg.g * alpha + bg.g * (1 - alpha), b: fg.b * alpha + bg.b * (1 - alpha) }; const L1 = lum(f), L2 = lum(bg); return { ratio: Math.round(((Math.max(L1, L2) + 0.05) / (Math.min(L1, L2) + 0.05)) * 100) / 100, gradientOrImage }; };
+  window.__pink = { tid, label, styleOf, visibleBox, regionOf, contrast, quoteLike };
+};
+
+const focusSnap = page => page.evaluate(() => { const el = document.activeElement; const p = window.__pink; if (!el || el === document.body) return { body: true, url: location.search, h: history.length }; window.__pinkPrev = el; return { tag: el.tagName.toLowerCase(), testid: p.tid(el), role: el.getAttribute("role"), label: p.label(el), box: p.visibleBox(el), focusVisible: el.matches(":focus-visible"), style: p.styleOf(el), url: location.search, h: history.length, region: p.regionOf(el) }; });
+const prevStyle = page => page.evaluate(() => { const el = window.__pinkPrev; return el && el !== document.activeElement ? window.__pink.styleOf(el) : null; });
+const indicator = (focused, unfocused, unfocused2) => { if (!unfocused) return null; const changed = Object.keys(focused).filter(k => focused[k] !== unfocused[k] && (!unfocused2 || unfocused[k] === unfocused2[k])); return changed; };
+
+// Tab through the page: order, visibility, indicator, URL / history changes without Enter (FOCUS ≠ SELECTION), traps.
+const tabSweep = async (page, name, max = 160, shift = false) => {
+  await page.evaluate(PAGE_HELPERS); await page.evaluate(() => { document.activeElement?.blur?.(); window.scrollTo(0, 0); });
+  const startUrl = page.url(), startH = await page.evaluate(() => history.length); const order = []; let lastKey = null, repeats = 0;
+  for (let i = 0; i < max; i += 1) {
+    await page.keyboard.press(shift ? "Shift+Tab" : "Tab"); await sleep(120);
+    const f = await focusSnap(page); await sleep(220); const u1 = await prevStyle(page); await sleep(260); const u2 = await prevStyle(page);
+    if (order.length) { const last = order.at(-1); last.indicatorChanged = indicator(last.style, u1, u2); last.animatedUnfocused = u1 && u2 ? Object.keys(u1).filter(k => u1[k] !== u2[k]) : null; delete last.style; }
+    order.push(f); const key = `${f.testid}|${f.label}|${f.box?.x},${f.box?.y}`; repeats = key === lastKey ? repeats + 1 : 0; lastKey = key; if (repeats >= 3) break;
+  }
+  const last = order.at(-1); if (last) delete last.style;
+  const changes = order.filter((f, i) => i > 0 && (f.url !== order[i - 1].url || f.h !== order[i - 1].h)).map(f => ({ at: f.testid, url: f.url, h: f.h }));
+  const res = { name, shift, steps: order.length, startUrlChangedByTabbing: page.url() !== startUrl, historyDelta: (await page.evaluate(() => history.length)) - startH, urlChangesDuringTab: changes, trapped: repeats >= 3 ? lastKey : null,
+    focusOnHidden: order.filter(f => f.box?.hidden).map(f => f.testid ?? f.label), focusOutsideViewport: order.filter(f => f.box && !f.box.hidden && !f.box.inViewport).map(f => f.testid ?? f.label),
+    noIndicator: order.filter(f => f.indicatorChanged && f.indicatorChanged.length === 0 && !f.body).map(f => f.testid ?? f.label), unnamed: order.filter(f => !f.body && !f.label && !f.testid).length,
+    order: order.map(f => f.body ? "<body>" : `${f.testid ?? f.tag}${f.label ? ` «${f.label.slice(0, 40)}»` : ""}${f.box?.hidden ? " [hidden]" : ""}${f.box && !f.box.inViewport ? " [off-viewport]" : ""}${f.indicatorChanged && f.indicatorChanged.length === 0 ? " [no indicator]" : ""}`) };
+  return res;
+};
+// Tab to the first element matching a predicate (testid prefix), up to max presses; record count and any URL change before Enter.
+const tabTo = async (page, testidPrefix, max = 220) => { await page.evaluate(PAGE_HELPERS); const u0 = page.url(); for (let i = 1; i <= max; i += 1) { await page.keyboard.press("Tab"); await sleep(90); const t = await page.evaluate(() => window.__pink.tid(document.activeElement)); if (t && t.startsWith(testidPrefix)) { return { reached: true, presses: i, testid: t, urlChangedBeforeEnter: page.url() !== u0 }; } } return { reached: false, presses: max, urlChangedBeforeEnter: page.url() !== u0 }; };
+
+// stand-in: the empty start (no pool uploaded yet) and a FAILED run's banner, then the DLL pool is uploaded to PINK's own lab
+if (!REAL) {
+  phase = "empty"; const ctx = await mkctx({ width: 1920, height: 1080 }); const page = await ctx.newPage();
+  await page.goto(`${BASE}/career/demo`, { waitUntil: "domcontentloaded" }); await settle(page, 3000); await page.evaluate(PAGE_HELPERS);
+  rec.emptyStart = await page.evaluate(() => { const p = window.__pink; const l = document.querySelector('[data-testid="job-pool-list"]'); const vis = [...document.querySelectorAll("button,a,[role=button],input")].filter(b => !p.visibleBox(b).hidden).map(b => p.tid(b) ?? b.tagName.toLowerCase()); return { listState: l?.dataset.listState ?? null, listHidden: l?.hidden ?? null, emptyText: document.querySelector('[data-testid="job-pool-list-empty"]')?.innerText ?? null, visibleControls: vis.slice(0, 40), uploadVisible: !document.querySelector('[data-testid="job-pool-upload"]')?.hidden }; });
+  rec.emptyStart.shot = await maskAndShot(page, "ST-EMPTY-start-no-pool-1920.jpg", "empty start · no pool uploaded");
+  const up = await fetch(`${BASE}/api/career/job-pools`, { method: "POST", headers: { "content-type": "application/json", "x-condyn-principal-actor-id": "JOB_POOL_UPLOADER:PINK_UX" }, body: readFileSync(`${ROOT}/docs/examples/job-pool-tests/DLL_JOBPOOL_ENGINEERING.json`, "utf8") }); rec.uploads = { dll: up.status };
+  // F-G1-MD: a .md file from the file input
+  await page.goto(deep(), { waitUntil: "domcontentloaded" }); await settle(page, 2500);
+  const md = `${OUT}/pink-ux-note.md`; writeFileSync(md, "# PINK synthetic note\n\nTypeScript, React, Node.js, PostgreSQL. Synthetic text for a staging check.\n");
+  await page.getByTestId("source-dock-file-input").setInputFiles(md); await sleep(1500);
+  rec.mdStaging = await page.evaluate(() => ({ staged: [...document.querySelectorAll('[data-testid="source-dock"] button')].filter(b => b.textContent.trim() === "×").length, dockText: document.querySelector('[data-testid="source-dock"]')?.innerText.replace(/\s+/g, " ").slice(0, 300) }));
+  await page.locator('[data-testid="start-intake-analysis-btn"]:not([disabled])').waitFor({ timeout: 20000 }).catch(() => {}); await page.getByTestId("start-intake-analysis-btn").click().catch(() => {});
+  await page.waitForSelector('[data-testid="intake-error-banner"], [data-testid="intake-success-banner"]', { timeout: 300000 }).catch(() => {}); await sleep(1500); await page.evaluate(PAGE_HELPERS);
+  rec.mdStaging.after = await page.evaluate(() => { const b = document.querySelector('[data-testid="intake-error-banner"]'); return { error: b ? { code: b.dataset.errorCode, http: b.dataset.httpStatus, text: b.innerText.replace(/\s+/g, " ").slice(0, 300), actions: [...b.querySelectorAll("button")].map(x => x.dataset.testid ?? x.innerText.trim().slice(0, 30)) } : null, success: !!document.querySelector('[data-testid="intake-success-banner"]') }; });
+  rec.mdStaging.shot = await maskAndShot(page, "ST-FAILED-md-as-pdf-1920.jpg", "F-G1-MD · .md from the file input");
+  await ctx.close();
+}
+
+// ---------------------------------------------------------------- 1 · keyboard journey (1920 × 1080)
+{
+  phase = "keyboard"; const ctx = await mkctx({ width: 1920, height: 1080 }); const page = await ctx.newPage(); page.on("pageerror", e => rec.pageErrors.push(`kb ${String(e).slice(0, 160)}`));
+  const K = rec.keyboard; const j = K.journey = [];
+  const leg = async (name, prefix, after) => { const r = await tabTo(page, prefix); let effect = null; if (r.reached) { const h0 = await page.evaluate(() => history.length); await page.keyboard.press("Enter"); await sleep(2500); await settle(page, 800); effect = { url: new URL(page.url()).search, historyDelta: (await page.evaluate(() => history.length)) - h0, ...(after ? await after() : {}) }; } j.push({ name, ...r, effect }); console.log("KB", name, JSON.stringify({ reached: r.reached, presses: r.presses, effect: effect?.url?.slice(0, 120) })); return r.reached; };
+  const obs = () => page.evaluate(() => { const q = s => document.querySelector(s); const f = q('[data-testid="syntx-field"]'); return { field: q('[data-testid="semantic-career-intelligence-field"]')?.dataset.fieldFocus, observation: f ? `${f.dataset.observationKind}:${f.dataset.observationId ?? ""}` : null, job: q('[data-testid="job-scope-indicator"]')?.dataset.jobScopeState, first: q('[data-testid="pxj-first-screen"]')?.dataset.state ?? null }; });
+  await page.goto(`${BASE}/career/demo`, { waitUntil: "domcontentloaded" }); await settle(page, 2500);
+  K.startSweep = await tabSweep(page, "START /career/demo", 120); await page.goto(`${BASE}/career/demo`, { waitUntil: "domcontentloaded" }); await settle(page, 2500);
+  K.startShot = await maskAndShot(page, "KB-01-start-1920.jpg", "START");
+  (await leg("POOL", `job-pool-select-${DLL}`, obs)) && (await leg("ORG", `syntx-organization-${KES}`, obs)) && (await leg("ROLE", `syntx-role-${ROLE}`, obs));
+  K.roleSweep = await tabSweep(page, "ROLE view", 120); K.roleShot = await maskAndShot(page, "KB-02-role-1920.jpg", "ROLE (after keyboard)");
+  await page.evaluate(() => document.activeElement?.blur?.());
+  (await leg("SELECT AS JOB", "syntx-job-scope-select", obs)) && (await leg("CAPABILITY FIELD", "field-focus-capability-btn", obs));
+  K.capabilityNoAnalysisSweep = await tabSweep(page, "CAPABILITY · no analysis", 120); K.noAnalysisShot = await maskAndShot(page, "KB-03-capability-no-analysis-1920.jpg", "CAPABILITY · NO_ANALYSIS");
+  if (!REAL) { // SOURCE + ANALYZE by keyboard
+    await page.evaluate(() => document.activeElement?.blur?.());
+    const r = await tabTo(page, "add-pdf-source-btn"); let staged = null;
+    if (r.reached) { const fc = page.waitForEvent("filechooser", { timeout: 8000 }).catch(() => null); await page.keyboard.press("Enter"); const ch = await fc; if (ch) { await ch.setFiles(`${ROOT}/docs/examples/cv.synthetic.pdf`); await sleep(1500); staged = true; } else staged = false; }
+    j.push({ name: "SOURCE (Enter opens the file chooser)", ...r, effect: { fileChooserOpened: staged } });
+    const before = await page.evaluate(() => new URL(location.href).searchParams.get("analysisId"));
+    const a = await tabTo(page, "start-intake-analysis-btn"); let ran = null;
+    if (a.reached) { await page.keyboard.press("Enter"); await page.waitForFunction(b => { const x = new URL(location.href).searchParams.get("analysisId"); return x !== null && x !== b && new URL(location.href).searchParams.get("analysisJobId") === null; }, before, { timeout: 300000 }).catch(() => {}); await settle(page, 2500); ran = await obs(); ANL = new URL(page.url()).searchParams.get("analysisId"); }
+    j.push({ name: "ANALYZE (Enter)", ...a, effect: ran });
+  } else { await page.goto(deep(`&analysisId=${ANL}`), { waitUntil: "domcontentloaded" }); await settle(page, 2500); j.push({ name: "ANALYZE skipped (GET only) → owner deep link", reached: null }); }
+  K.b2Sweep = await tabSweep(page, "B2 first screen", 160); K.b2Shot = await maskAndShot(page, "KB-04-b2-1920.jpg", "B2 · AVAILABLE");
+  // EVIDENCE: Tab to the first requirement row, its focus state; does focus select anything?
+  await page.evaluate(() => document.activeElement?.blur?.()); const ev = await tabTo(page, "pxj-first-req-"); const evState = ev.reached ? await page.evaluate(() => { const a = document.activeElement; return { focus: a.dataset.focus, inViewport: window.__pink.visibleBox(a).inViewport, focusVisible: a.matches(":focus-visible"), url: location.search }; }) : null;
+  j.push({ name: "EVIDENCE (row focus)", ...ev, effect: evState });
+  if (ev.reached) { const h0 = await page.evaluate(() => history.length); await page.keyboard.press("Enter"); await sleep(1200); j.push({ name: "EVIDENCE Enter on a row", effect: { historyDelta: (await page.evaluate(() => history.length)) - h0, url: new URL(page.url()).search } }); K.rowShot = await maskAndShot(page, "KB-05-row-focus-1920.jpg", "EVIDENCE · row focus"); }
+  // RELOAD (keyboard F5 is a browser action; Playwright reload) and RETURN to the Job Field by keyboard
+  await page.reload({ waitUntil: "domcontentloaded" }); await settle(page, 2500); j.push({ name: "RELOAD", effect: await obs() });
+  await page.evaluate(() => document.activeElement?.blur?.()); await leg("RETURN (Job Field toggle)", "job-pool-panel-toggle", obs);
+  // Esc at each level
+  const esc = []; for (const [n, u] of [["role level", roleView(`&jobScopePoolUploadId=${DLL}&jobScopeRoleId=${ROLE}`)], ["org level", `${BASE}/career/demo?focus=FIELD&investigationMode=PERSON_X_JOB&jobPoolUploadId=${DLL}&jobOrganizationId=${KES}`], ["pool list open", `${BASE}/career/demo?focus=FIELD&jobPoolUploadId=${DLL}`]]) {
+    await page.goto(u, { waitUntil: "domcontentloaded" }); await settle(page, 2000); if (n === "pool list open") await page.getByTestId("syntx-pools-toggle").click().catch(() => {}); await page.locator('[data-testid="syntx-field"]').focus().catch(() => {}); const b = await obs(); const poolsBefore = await page.evaluate(() => !document.querySelector('[data-testid="job-pool-list"]')?.hidden);
+    await page.keyboard.press("Escape"); await sleep(1200); const a = await obs(); const poolsAfter = await page.evaluate(() => !document.querySelector('[data-testid="job-pool-list"]')?.hidden); esc.push({ level: n, before: b.observation, after: a.observation, poolListOpen: [poolsBefore, poolsAfter], url: new URL(page.url()).search });
+  }
+  K.escape = esc;
+  // Shift+Tab from the end of the B2 page (reverse order sane, no trap)
+  await page.goto(deep(`&analysisId=${ANL}`), { waitUntil: "domcontentloaded" }); await settle(page, 2500); K.b2ReverseSweep = await tabSweep(page, "B2 first screen, Shift+Tab", 80, true);
+  await ctx.close();
+}
+
+// ---------------------------------------------------------------- 2 · hover: visual change, URL / state unchanged (HOVER ≠ AUTHORITY, FOCUS ≠ SELECTION)
+{
+  phase = "hover"; const ctx = await mkctx({ width: 1920, height: 1080 }); const page = await ctx.newPage();
+  for (const [n, u, sel] of [["org card", `${BASE}/career/demo?focus=FIELD&investigationMode=PERSON_X_JOB&jobPoolUploadId=${DLL}`, `[data-testid="syntx-organization-${KES}"]`], ["role card", `${BASE}/career/demo?focus=FIELD&investigationMode=PERSON_X_JOB&jobPoolUploadId=${DLL}&jobOrganizationId=${KES}`, `[data-testid="syntx-role-${ROLE}"]`], ["requirement row", deep(`&analysisId=${ANL}`), '[data-testid^="pxj-first-req-"]'], ["select as job", roleView(), '[data-testid="syntx-job-scope-select"]'], ["pool item", `${BASE}/career/demo`, `[data-testid="job-pool-item-${DLL}"]`]]) {
+    await page.goto(u, { waitUntil: "domcontentloaded" }); await settle(page, 2500); await page.evaluate(PAGE_HELPERS); await page.mouse.move(5, 5); await sleep(400);
+    const el = page.locator(sel).first(); if (!(await el.count())) { rec.hover.push({ target: n, present: false }); continue; }
+    const before = await el.evaluate(e => ({ s: window.__pink.styleOf(e), url: location.search, h: history.length, cursor: getComputedStyle(e).cursor })); await sleep(350); const before2 = await el.evaluate(e => window.__pink.styleOf(e));
+    await el.hover({ force: true }).catch(() => {}); await sleep(700); const during = await el.evaluate(e => ({ s: window.__pink.styleOf(e), url: location.search, h: history.length, cursor: getComputedStyle(e).cursor, sub: [...e.querySelectorAll("*")].slice(0, 400).map(x => getComputedStyle(x).boxShadow + getComputedStyle(x).color + getComputedStyle(x).opacity).join("|").length }));
+    const changed = Object.keys(before.s).filter(k => before.s[k] !== during.s[k] && before.s[k] === before2[k]);
+    rec.hover.push({ target: n, present: true, styleChangedOnHover: changed, cursor: during.cursor, urlChanged: during.url !== before.url, historyDelta: during.h - before.h, shot: await maskAndShot(page, `HV-${n.replace(/ /g, "-")}-1920.jpg`, `hover · ${n}`) });
+  }
+  await ctx.close();
+}
+
+// ---------------------------------------------------------------- 3 + 4 · viewport matrix, clickability, overlap, type and contrast
+const VPS = [["1920x1080", { width: 1920, height: 1080 }, 1], ["1600x900", { width: 1600, height: 900 }, 1], ["1440x900", { width: 1440, height: 900 }, 1], ["1280x720", { width: 1280, height: 720 }, 1], ["zoom200-1280x720", { width: 640, height: 360 }, 2], ["zoom200-1920x1080", { width: 960, height: 540 }, 2]];
+const STATES = [
+  ["S1-start-pools", `${BASE}/career/demo`, [`job-pool-select-${DLL}`, "syntx-pools-toggle", "job-pool-panel-toggle", "field-focus-capability-btn"]],
+  ["S2-role-view", roleView(), ["syntx-job-scope-select", "field-focus-capability-btn", "job-scope-indicator"]],
+  ["S3-capability-no-analysis", deep(), ["start-intake-analysis-btn", "add-pdf-source-btn", "add-text-source-btn", "job-pool-panel-toggle", "investigation-mode-PERSON", "investigation-mode-JOB"]],
+  ["S4-b2-available", null, ["pxj-first-req-", "job-pool-panel-toggle", "field-focus-capability-btn", "investigation-mode-PERSON", "job-scope-indicator", "start-intake-analysis-btn"]],
+  ["S5-role-mismatch-offer", null, ["pxj-first-select-role", "job-pool-panel-toggle"]],
+  ["S6-gate-closed-no-job", `${BASE}/career/demo?focus=FIELD&investigationMode=PERSON_X_JOB&jobPoolUploadId=${DLL}`, ["field-focus-capability-btn", "job-pool-panel-toggle"]]
+];
+const measure = (page, actions) => page.evaluate(actions => {
+  const p = window.__pink; const out = { actions: [], fixed: [], regions: {}, panel: null, page: { scrollH: document.scrollingElement.scrollHeight, scrollW: document.scrollingElement.scrollWidth, vw: innerWidth, vh: innerHeight, horizontalScroll: document.scrollingElement.scrollWidth > innerWidth + 1 } };
+  const hitOwner = (el, x, y) => { const h = document.elementFromPoint(x, y); return { ok: !!h && (h === el || el.contains(h)), by: h && !(h === el || el.contains(h)) ? (p.tid(h) ?? h.tagName.toLowerCase()) : null }; };
+  for (const a of actions) {
+    const el = document.querySelector(`[data-testid^="${a}"]`); if (!el) { out.actions.push({ id: a, present: false }); continue; }
+    const b = p.visibleBox(el); const r = el.getBoundingClientRect();
+    const pts = [[0.5, 0.5], [0.2, 0.5], [0.8, 0.5], [0.5, 0.2], [0.5, 0.8]].map(([fx, fy]) => [r.left + r.width * fx, r.top + r.height * fy]).filter(([x, y]) => x >= 0 && y >= 0 && x < innerWidth && y < innerHeight);
+    const hits = pts.map(([x, y]) => hitOwner(el, x, y)); let clipped = false; let n = el.parentElement; while (n) { const s = getComputedStyle(n); if (/(hidden|clip|auto|scroll)/.test(s.overflow + s.overflowX + s.overflowY)) { const pr = n.getBoundingClientRect(); if (r.left < pr.left - 1 || r.right > pr.right + 1 || r.top < pr.top - 1 || r.bottom > pr.bottom + 1) { clipped = { by: p.tid(n) ?? n.tagName.toLowerCase(), overflow: s.overflow }; break; } } n = n.parentElement; }
+    out.actions.push({ id: a, present: true, box: b, disabled: !!el.disabled || el.getAttribute("aria-disabled") === "true", clickablePoints: `${hits.filter(h => h.ok).length}/${hits.length}`, coveredBy: [...new Set(hits.filter(h => !h.ok).map(h => h.by))], clippedByAncestor: clipped, tooSmall: b.w < 24 || b.h < 24 });
+  }
+  for (const el of document.querySelectorAll("body *")) { const s = getComputedStyle(el); if (s.position === "fixed" && el.offsetWidth * el.offsetHeight > 2000 && s.visibility !== "hidden" && s.display !== "none") out.fixed.push({ id: p.tid(el) ?? el.tagName.toLowerCase(), box: p.visibleBox(el), z: s.zIndex }); }
+  const panel = document.querySelector('[data-testid="pxj-first-screen"]');
+  if (panel) { const r = panel.getBoundingClientRect(); let ok = 0, n2 = 0; const by = {}; for (let i = 1; i < 10; i += 1) for (let k = 1; k < 10; k += 1) { const x = r.left + r.width * i / 10, y = r.top + r.height * k / 10; if (x < 0 || y < 0 || x >= innerWidth || y >= innerHeight) continue; n2 += 1; const h = document.elementFromPoint(x, y); if (h && panel.contains(h)) ok += 1; else { const t = h ? (p.tid(h) ?? h.tagName.toLowerCase()) : "none"; by[t] = (by[t] ?? 0) + 1; } }
+    out.panel = { box: p.visibleBox(panel), visibleShare: Math.round(Math.max(0, Math.min(r.bottom, innerHeight) - Math.max(r.top, 0)) / Math.max(1, r.height) * 100) / 100, gridPointsInViewport: n2, gridPointsOnPanel: ok, coveredBy: by, scroll: [panel.scrollHeight, panel.clientHeight] }; }
+  return out;
+}, actions);
+const typeAndContrast = page => page.evaluate(() => {
+  const p = window.__pink; const regions = {};
+  const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT); const seen = new Set();
+  while (walker.nextNode()) { const t = walker.currentNode; if (!t.textContent.trim()) continue; const el = t.parentElement; if (!el || seen.has(el)) continue; seen.add(el); const s = getComputedStyle(el); const b = p.visibleBox(el); if (b.hidden || !b.inViewport || el.closest("svg") && !el.closest("foreignObject") && el.tagName !== "text" && el.tagName !== "tspan") { if (b.hidden || !b.inViewport) continue; }
+    const fs = parseFloat(s.fontSize); const reg = p.regionOf(el); const R = regions[reg] ??= { texts: 0, minFont: 99, under12: 0, under11: 0, under10: 0, lowContrast: 0, contrastUnknown: 0, examplesSmall: [], examplesLowContrast: [] };
+    R.texts += 1; R.minFont = Math.min(R.minFont, fs); if (fs < 12) R.under12 += 1; if (fs < 11) R.under11 += 1; if (fs < 10) R.under10 += 1;
+    const quote = p.quoteLike(el); const txt = quote ? "[quote]" : el.textContent.replace(/\s+/g, " ").trim().slice(0, 40);
+    if (fs < 11 && R.examplesSmall.length < 6) R.examplesSmall.push(`${fs}px «${txt}»`);
+    const c = p.contrast(el); if (!c) continue; if (c.gradientOrImage) { R.contrastUnknown += 1; continue; } const large = fs >= 24 || (fs >= 18.66 && Number(s.fontWeight) >= 700);
+    if (c.ratio < (large ? 3 : 4.5)) { R.lowContrast += 1; if (R.examplesLowContrast.length < 6) R.examplesLowContrast.push(`${c.ratio}:1 ${fs}px «${txt}»`); } }
+  return regions;
+});
+for (const [vpName, vp, dsf] of VPS) {
+  phase = `vp-${vpName}`; const ctx = await mkctx(vp, dsf); const page = await ctx.newPage(); page.on("pageerror", e => rec.pageErrors.push(`${vpName} ${String(e).slice(0, 160)}`));
+  for (const [sName, url0, actions] of STATES) {
+    const url = sName === "S4-b2-available" ? deep(`&analysisId=${ANL}`) : sName === "S5-role-mismatch-offer" ? `${BASE}/career/demo?investigationMode=PERSON_X_JOB&jobPoolUploadId=${DLL}&jobScopePoolUploadId=${DLL}&jobScopeRoleId=${ROLE2}&analysisId=${ANL}&focus=CAPABILITY` : url0;
+    if (!url || url.includes("analysisId=null")) continue;
+    await page.goto(url, { waitUntil: "domcontentloaded" }); await settle(page, 2500); await page.evaluate(PAGE_HELPERS);
+    const m = await measure(page, actions); const shot = await maskAndShot(page, `VP-${sName}-${vpName}.jpg`, `${sName} · ${vpName}`);
+    const entry = { viewport: vpName, state: sName, first: await page.evaluate(() => document.querySelector('[data-testid="pxj-first-screen"]')?.dataset.state ?? null), ...m, shot };
+    // real clickability after scrolling the action into view (reachable at all?)
+    for (const a of entry.actions.filter(x => x.present && x.clickablePoints.startsWith("0/") || x.present && x.box && !x.box.fullyInViewport)) { const el = page.locator(`[data-testid^="${a.id}"]`).first(); await el.scrollIntoViewIfNeeded({ timeout: 3000 }).catch(() => {}); await sleep(300); const r2 = await measure(page, [a.id]); a.afterScrollIntoView = { box: r2.actions[0].box, clickablePoints: r2.actions[0].clickablePoints, coveredBy: r2.actions[0].coveredBy }; await page.evaluate(() => window.scrollTo(0, 0)); }
+    if (["1920x1080", "1280x720", "zoom200-1920x1080"].includes(vpName)) rec.readability.push({ viewport: vpName, state: sName, regions: await typeAndContrast(page) });
+    rec.viewports.push(entry); console.log("VP", vpName, sName, entry.first, JSON.stringify(entry.actions.map(a => `${a.id}:${a.present ? a.clickablePoints + (a.coveredBy?.length ? "/" + a.coveredBy.join("+") : "") + (a.box?.fullyInViewport ? "" : "/out") : "absent"}`)), entry.panel ? `panel ${entry.panel.visibleShare}` : "");
+  }
+  await ctx.close();
+}
+
+// ---------------------------------------------------------------- 5 · states: statement and next step; colour-only meaning
+{
+  phase = "states"; const ctx = await mkctx({ width: 1920, height: 1080 }); const page = await ctx.newPage();
+  const stateRead = () => page.evaluate(() => { const q = s => document.querySelector(s); const p = window.__pink; const panel = q('[data-testid="pxj-first-screen"]'); const banner = q('[data-testid="intake-error-banner"]'); const offer = q('[data-testid="pxj-analysis-job-offer"]'); const ind = q('[data-testid="job-scope-indicator"]'); const gate = q('[data-testid="field-focus-capability-btn"]'); const pools = q('[data-testid="job-pool-list"]'); const req = q('[data-testid="analyze-job-scope-required"]');
+    const actions = el => el ? [...el.querySelectorAll("button,a,[role=button]")].filter(b => !p.visibleBox(b).hidden).map(b => `${p.tid(b) ?? b.tagName.toLowerCase()}${b.disabled ? "[disabled]" : ""}`) : [];
+    const txt = el => el ? (el.querySelector("[data-pxj-quote]") ? null : el.innerText.replace(/\s+/g, " ").trim().slice(0, 300)) : null;
+    return { first: panel?.dataset.state ?? null, statement: txt(q('[data-testid="pxj-first-state"]')) ?? (panel ? "[panel contains quotes]" : null), firstActions: actions(panel), offer: offer ? { state: offer.dataset.state, text: txt(offer), actions: actions(offer) } : null, banner: banner ? { code: banner.dataset.errorCode, resume: banner.dataset.jobResume ?? null, text: txt(banner), actions: actions(banner) } : null, job: ind ? { state: ind.dataset.jobScopeState, text: txt(ind) } : null, gate: gate ? { disabled: gate.disabled || gate.getAttribute("aria-disabled") === "true", title: gate.getAttribute("title"), text: txt(gate), describedBy: gate.getAttribute("aria-describedby") } : null, pools: pools ? { state: pools.dataset.listState, count: pools.dataset.poolCount, hidden: pools.hidden } : null, analyzeRequired: txt(req), url: location.search }; });
+  const S = [
+    ["NO_ANALYSIS (valid job, no analysis)", deep()],
+    ["RESULT_NOT_FOUND", deep("&analysisId=ANL_0000000000000_0")],
+    ["MODE_MISMATCH (PERSON analysis under PxJ)", PANL ? deep(`&analysisId=${PANL}`) : null],
+    ["ROLE_MISMATCH (other role selected)", `${BASE}/career/demo?investigationMode=PERSON_X_JOB&jobPoolUploadId=${DLL}&jobScopePoolUploadId=${DLL}&jobScopeRoleId=${ROLE2}&analysisId=${ANL}&focus=CAPABILITY`],
+    ["JOB_INVALID (unknown role)", `${BASE}/career/demo?investigationMode=PERSON_X_JOB&jobPoolUploadId=${DLL}&jobScopePoolUploadId=${DLL}&jobScopeRoleId=role_pink_does_not_exist&analysisId=${ANL}&focus=CAPABILITY`],
+    ["NO JOB (PxJ, no scope) with analysis", `${BASE}/career/demo?investigationMode=PERSON_X_JOB&jobPoolUploadId=${DLL}&analysisId=${ANL}&focus=CAPABILITY`],
+    ["GATE CLOSED (PxJ, no job, Job Field)", `${BASE}/career/demo?investigationMode=PERSON_X_JOB&jobPoolUploadId=${DLL}&focus=FIELD`],
+    ["JOB mode (gate)", deep(`&analysisId=${ANL}`, "JOB")],
+    ["PERSON mode with PxJ analysis", deep(`&analysisId=${ANL}`, "PERSON")],
+    ["JOB NOT_FOUND (analysisJobId)", deep(`&analysisId=${ANL}&analysisJobId=JOB_1000000000000_1`)],
+    ["UNKNOWN UPLOAD (selected pool)", `${BASE}/career/demo?investigationMode=PERSON_X_JOB&jobPoolUploadId=JPOOL_00000000000000000000000000000000&focus=FIELD`]
+  ];
+  for (const [n, u] of S) { if (!u || u.includes("null")) continue; await page.goto(u, { waitUntil: "domcontentloaded" }); await settle(page, 3000); await page.evaluate(PAGE_HELPERS); const s = await stateRead(); s.name = n; s.shot = await maskAndShot(page, `ST-${n.split(" ")[0].replace(/[^A-Z_]/g, "")}-${rec.states.length + 1}-1920.jpg`, n); rec.states.push(s); console.log("STATE", n, s.first, JSON.stringify(s.firstActions), s.statement?.slice(0, 100)); }
+  // delayed states: RESULT_LOADING / CHECKING (all GET, held in the browser)
+  for (const [n, pat] of [["RESULT_LOADING (result read held 6 s)", `**/api/career/analyses/${ANL}`], ["JOB_CHECKING (pool read held 6 s)", `**/api/career/job-pools/${DLL}`], ["BOUNDARY_RESOLVING (investigation held 6 s)", `**/api/career/analyses/${ANL}/investigation`]]) {
+    await page.route(pat, async r => { await sleep(6000); try { await r.continue(); } catch {} }); await page.goto(deep(`&analysisId=${ANL}`), { waitUntil: "domcontentloaded" }); await sleep(2500); await page.evaluate(PAGE_HELPERS); const s = await stateRead(); s.name = n; s.shot = await maskAndShot(page, `ST-held-${rec.states.length + 1}-1920.jpg`, n); rec.states.push(s); await page.unroute(pat); console.log("STATE", n, s.first, s.job?.state, s.statement?.slice(0, 100));
+  }
+  // colour-only: requirement rows carry a text chip; mode buttons / pool items carry aria-pressed; buttons without a name
+  await page.goto(deep(`&analysisId=${ANL}`), { waitUntil: "domcontentloaded" }); await settle(page, 2500); await page.evaluate(PAGE_HELPERS);
+  rec.colourOnly.push(await page.evaluate(() => { const p = window.__pink; const rows = [...document.querySelectorAll('[data-testid^="pxj-first-req-"]')].map(r => ({ coverage: r.dataset.coverage, chip: [...r.querySelectorAll("span")].map(s => s.innerText.trim()).find(t => /^(COVERED|NOT COVERED|WEAK|ABGEDECKT|NICHT ABGEDECKT|SCHWACH)/i.test(t)) ?? null }));
+    const modes = [...document.querySelectorAll('[data-testid^="investigation-mode-"]')].map(b => ({ id: b.dataset.testid, pressed: b.getAttribute("aria-pressed"), current: b.getAttribute("aria-current"), checked: b.getAttribute("aria-checked") }));
+    const unnamed = [...document.querySelectorAll('button,[role="button"],a[href]')].filter(b => !p.visibleBox(b).hidden && !(b.getAttribute("aria-label") || b.innerText.trim() || b.getAttribute("title"))).map(b => p.tid(b) ?? b.tagName.toLowerCase());
+    const svgButtons = [...document.querySelectorAll('svg [role="button"], svg [tabindex]')].map(b => ({ id: p.tid(b), name: b.getAttribute("aria-label") }));
+    return { state: "B2 AVAILABLE", rowChips: rows, modes, unnamedControls: unnamed, svgControls: svgButtons.length, svgUnnamed: svgButtons.filter(s => !s.name).map(s => s.id) }; }));
+  await page.goto(`${BASE}/career/demo?focus=FIELD&investigationMode=PERSON_X_JOB&jobPoolUploadId=${DLL}&jobOrganizationId=${KES}`, { waitUntil: "domcontentloaded" }); await settle(page, 2500); await page.evaluate(PAGE_HELPERS);
+  rec.colourOnly.push(await page.evaluate(() => { const p = window.__pink; const unnamed = [...document.querySelectorAll('button,[role="button"],a[href],[tabindex="0"]')].filter(b => !p.visibleBox(b).hidden && !(b.getAttribute("aria-label") || (b.innerText || "").trim() || b.getAttribute("title") || b.querySelector("title"))).map(b => p.tid(b) ?? b.tagName.toLowerCase()); return { state: "Job Field · organisation", unnamedControls: unnamed, roleCards: [...document.querySelectorAll('[data-testid^="syntx-role-"]')].map(r => ({ id: r.dataset.testid, role: r.getAttribute("role"), tabindex: r.getAttribute("tabindex"), name: (r.getAttribute("aria-label") || "").slice(0, 60) })) }; }));
+  await ctx.close();
+}
+
+// ---------------------------------------------------------------- long names (stand-in only: a synthetic pool with long names)
+if (!REAL && LONG_POOL) {
+  phase = "names"; const body = readFileSync(LONG_POOL, "utf8"); const r = await fetch(`${BASE}/api/career/job-pools`, { method: "POST", headers: { "content-type": "application/json", "x-condyn-principal-actor-id": "JOB_POOL_UPLOADER:PINK_UX" }, body }); const up = await r.json().catch(() => ({})); const LP = up?.jobPoolUploadId; const j = JSON.parse(body); const org = j.organizations[0], role = j.roles[0];
+  rec.names.push({ upload: r.status, orgNameLength: org.name.length, roleTitleLength: role.title.length, roleIdLength: role.id.length });
+  for (const [vpName, vp] of [["1920x1080", { width: 1920, height: 1080 }], ["1280x720", { width: 1280, height: 720 }]]) {
+    const ctx = await mkctx(vp); const page = await ctx.newPage();
+    for (const [n, u] of [["role view", `${BASE}/career/demo?focus=FIELD&investigationMode=PERSON_X_JOB&jobPoolUploadId=${LP}&jobOrganizationId=${org.id}&jobRoleId=${role.id}`], ["selected, capability", `${BASE}/career/demo?focus=CAPABILITY&investigationMode=PERSON_X_JOB&jobPoolUploadId=${LP}&jobScopePoolUploadId=${LP}&jobScopeRoleId=${role.id}`], ["selected, org view", `${BASE}/career/demo?focus=FIELD&investigationMode=PERSON_X_JOB&jobPoolUploadId=${LP}&jobOrganizationId=${org.id}&jobScopePoolUploadId=${LP}&jobScopeRoleId=${role.id}`]]) {
+      await page.goto(u, { waitUntil: "domcontentloaded" }); await settle(page, 3000); await page.evaluate(PAGE_HELPERS);
+      const t = await page.evaluate(([on, rt, rid]) => { const p = window.__pink; const hits = []; for (const el of document.querySelectorAll("body *")) { const own = [...el.childNodes].filter(c => c.nodeType === 3).map(c => c.textContent).join("").trim(); if (!own) continue; const hasName = [on, rt, rid].some(x => own.includes(x.slice(0, 18))); if (!hasName) continue; const s = getComputedStyle(el); const b = p.visibleBox(el); hits.push({ id: p.tid(el), region: p.regionOf(el), truncated: el.scrollWidth > el.clientWidth + 1 || el.scrollHeight > el.clientHeight + 1 && s.overflow !== "visible", ellipsis: s.textOverflow === "ellipsis", full: [on, rt, rid].some(x => own.includes(x)), title: el.getAttribute("title") ?? el.closest("[title]")?.getAttribute("title") ?? null, box: b, overflowsViewport: b.x + b.w > innerWidth }); } return hits; }, [org.name, role.title, role.id]);
+      rec.names.push({ viewport: vpName, view: n, elements: t, shot: await maskAndShot(page, `NM-${n.replace(/[ ,]+/g, "-")}-${vpName}.jpg`, `long names · ${n}`) });
+    }
+    await ctx.close();
+  }
+}
+writeFileSync(`${OUT}/pink-ux-${MODE}.json`, JSON.stringify(rec, null, 1));
+console.log("DONE", JSON.stringify({ keyboard: rec.keyboard.journey?.map(x => `${x.name}:${x.reached === null ? "skip" : x.reached ? x.presses : "NOT REACHED"}`), viewports: rec.viewports.length, states: rec.states.length, blockedNonGet: rec.blockedNonGet.length, pageErrors: rec.pageErrors.length }));
+await browser.close();
