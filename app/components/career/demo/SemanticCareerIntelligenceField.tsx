@@ -417,7 +417,7 @@ export function SemanticCareerIntelligenceField({
   const validJobPresentation: SyntxJobScopePresentation | null = jobScopeValidation.state === "VALID" ? { state: "VALID", label: jobScopeCopy.label, title: jobScopeValidation.roleTitle, detail: [jobScopeValidation.organizationName, jobScopeValidation.poolName, jobScopeValidation.scope.poolRoleId].filter((part): part is string => part !== null && part.length > 0).join(" · ") || null, hint: jobScopeCopy.open } : null;
   /** PERSON uses no job scope: the shell says so (the selected job stays selected, unused, and is named as such). */
   const jobScopePresentation: SyntxJobScopePresentation = investigationMode === "PERSON"
-    ? { state: jobScopeValidation.state, used: false, label: jobScopeCopy.label, title: investigationCopy.personScope, detail: validJobPresentation === null || jobScopeValidation.state !== "VALID" ? null : `${investigationCopy.personScopeKept}${validJobPresentation.title} · ${jobScopeValidation.scope.poolRoleId}`, hint: jobScopeCopy.open }
+    ? { state: jobScopeValidation.state, used: false, label: jobScopeCopy.labelUnused, title: investigationCopy.personScope, detail: validJobPresentation === null || jobScopeValidation.state !== "VALID" ? null : `${investigationCopy.personScopeKept}${validJobPresentation.title} · ${jobScopeValidation.scope.poolRoleId}`, hint: jobScopeCopy.open }
     : jobScopeValidation.state === "VALID"
     ? { state: "VALID", label: jobScopeCopy.label, title: jobScopeValidation.roleTitle, detail: [jobScopeValidation.organizationName, jobScopeValidation.poolName, jobScopeValidation.scope.poolRoleId].filter((part): part is string => part !== null && part.length > 0).join(" · ") || null, hint: jobScopeCopy.open }
     : jobScopeValidation.state === "CHECKING"

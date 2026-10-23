@@ -2145,6 +2145,11 @@ export function SyntxField({ workflow, analysisSource, observation: requested, o
           ))}
           {observation.kind !== "FIELD" && <button data-testid="syntx-return-btn" data-sx-orient-action onClick={() => onObserve(returnFrom(observation))} style={{ ...action("cyan"), fontSize: "9.5px", letterSpacing: "1.3px", padding: "2px 8px", borderRadius: "999px", border: "1px solid rgba(56, 229, 255, 0.4)", background: "rgba(56, 229, 255, 0.06)" }}>← {t.returnLabel}</button>}
         </nav>
+        {/* UX-07 · the opened role, and whether it is the selected job (uploaded · opened · selected: one word each). */}
+        {field !== null && (observation.kind === "ROLE" || observation.kind === "REQUIREMENT") && observation.roleId !== null && (() => {
+          const isJob = jobScope !== null && jobScope.jobPoolUploadId === field.pool.jobPoolUploadId && jobScope.poolRoleId === observation.roleId;
+          return <span data-testid="syntx-opened-role" data-selected-job={isJob ? "true" : "false"} style={{ ...micro, marginTop: "10px", fontSize: "10.5px", fontWeight: 700, letterSpacing: "1.1px", color: isJob ? "rgba(196, 240, 255, 0.95)" : "rgba(170, 206, 226, 0.88)" }}>{isJob ? t.jobScope.roleOpenedSelected : t.jobScope.roleOpened}</span>;
+        })()}
         {/* C' · the job scope: the observed role becomes the selected job only by this explicit action (SFE invariant). */}
         {field !== null && onSelectJobScope !== undefined && (observation.kind === "ROLE" || observation.kind === "REQUIREMENT") && observation.roleId !== null && (() => {
           const scopeHere = jobScope !== null && jobScope.jobPoolUploadId === field.pool.jobPoolUploadId && jobScope.poolRoleId === observation.roleId;

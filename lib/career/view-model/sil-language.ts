@@ -321,16 +321,18 @@ export const SIL_COPY = {
       uploadIdentical: "IDENTICAL UPLOAD ALREADY PERSISTED",
       uploadRejected: "UPLOAD REJECTED",
       uploadFailed: "UPLOAD FAILED",
-      uploadNotSelected: "UPLOADED != SELECTED · select it in the list below",
-      pools: "PERSISTED JOB POOL UPLOADS",
+      uploadNotSelected: "UPLOADED ≠ OPENED · open it in the list below",
+      /** UX-07: three words, one meaning each — UPLOADED (persisted, in this list), OPENED (shown in the Job Field: a pool, an
+       *  organisation, a role), SELECTED (the one job, at the shell). */
+      pools: "UPLOADED JOB POOLS",
       poolsLoading: "READING JOB POOL UPLOADS...",
       poolsEmpty: "NO JOB POOL UPLOAD PERSISTED",
       poolsFailed: "JOB POOL UPLOADS COULD NOT BE READ",
       notProvisioned: "JOB POOL PERSISTENCE NOT PROVISIONED (no verified disposable database)",
-      select: "SELECT",
-      selected: "SELECTED",
-      selectedPool: "SELECTED UPLOAD",
-      selectionNone: "NO UPLOAD SELECTED (explicit selection only, never a latest pool)",
+      select: "OPEN",
+      selected: "OPENED",
+      selectedPool: "OPENED POOL",
+      selectionNone: "NO POOL OPENED (explicit choice only, never a latest pool)",
       selectionNotListed: "SELECTED UPLOAD ID IS NOT AMONG THE PERSISTED UPLOADS",
       viewLoading: "READING EXACT UPLOAD...",
       viewNotFound: "NO PERSISTED UPLOAD WITH THIS EXACT ID",
@@ -501,7 +503,9 @@ export const SIL_COPY = {
       poolsHide: "HIDE POOLS",
       /** The selected job scope (SFE invariant): shown at the application shell in both fields; ANALYZE needs a VALID one. */
       jobScope: {
-        label: "JOB",
+        label: "SELECTED JOB",
+        /** Under PERSON the job is not used: the shell keeps its plain label (PERSON first screen unchanged). */
+        labelUnused: "JOB",
         none: "NO JOB SELECTED",
         checking: "CHECKING THE JOB …",
         invalid: "JOB NOT VALID",
@@ -512,7 +516,10 @@ export const SIL_COPY = {
         open: "Open the selected job in the Job Field",
         choose: "Choose a job in the Job Field (open a role, then SELECT AS JOB)",
         /** UX-02: at the pool and the organisation level, where the job is chosen. */
-        openRoleHint: "Open a role to select it as the job."
+        openRoleHint: "Open a role to select it as the job.",
+        /** UX-07: the opened role, and whether it is the selected job. */
+        roleOpened: "OPENED ROLE · not the selected job",
+        roleOpenedSelected: "OPENED ROLE · the selected job"
       },
       /** UX-01: the level of the observation point, as text in the panel. */
       levelLine: { label: "LEVEL", names: { FIELD: "POOL", ORGANIZATION: "ORGANIZATION", ROLE: "ROLE", REQUIREMENT: "REQUIREMENT" } },
@@ -1196,16 +1203,16 @@ export const SIL_COPY = {
       uploadIdentical: "IDENTISCHER UPLOAD BEREITS PERSISTIERT",
       uploadRejected: "UPLOAD ABGELEHNT",
       uploadFailed: "UPLOAD FEHLGESCHLAGEN",
-      uploadNotSelected: "HOCHGELADEN != AUSGEWÄHLT · in der Liste unten auswählen",
-      pools: "PERSISTIERTE JOB-POOL-UPLOADS",
+      uploadNotSelected: "HOCHGELADEN ≠ GEÖFFNET · in der Liste unten öffnen",
+      pools: "HOCHGELADENE JOB-POOLS",
       poolsLoading: "JOB-POOL-UPLOADS WERDEN GELESEN...",
       poolsEmpty: "KEIN JOB-POOL-UPLOAD PERSISTIERT",
       poolsFailed: "JOB-POOL-UPLOADS KONNTEN NICHT GELESEN WERDEN",
       notProvisioned: "JOB-POOL-PERSISTENZ NICHT BEREITGESTELLT (keine verifizierte Wegwerf-Datenbank)",
-      select: "AUSWÄHLEN",
-      selected: "AUSGEWÄHLT",
-      selectedPool: "AUSGEWÄHLTER UPLOAD",
-      selectionNone: "KEIN UPLOAD AUSGEWÄHLT (nur explizite Auswahl, nie ein neuester Pool)",
+      select: "ÖFFNEN",
+      selected: "GEÖFFNET",
+      selectedPool: "GEÖFFNETER POOL",
+      selectionNone: "KEIN POOL GEÖFFNET (nur explizite Wahl, nie ein neuester Pool)",
       selectionNotListed: "AUSGEWÄHLTE UPLOAD-ID IST NICHT UNTER DEN PERSISTIERTEN UPLOADS",
       viewLoading: "EXAKTER UPLOAD WIRD GELESEN...",
       viewNotFound: "KEIN PERSISTIERTER UPLOAD MIT DIESER EXAKTEN ID",
@@ -1372,7 +1379,8 @@ export const SIL_COPY = {
       pools: "POOLS",
       poolsHide: "POOLS VERBERGEN",
       jobScope: {
-        label: "JOB",
+        label: "GEWÄHLTER JOB",
+        labelUnused: "JOB",
         none: "KEIN JOB GEWÄHLT",
         checking: "JOB WIRD GEPRÜFT …",
         invalid: "JOB UNGÜLTIG",
@@ -1382,7 +1390,9 @@ export const SIL_COPY = {
         clearHint: "Gewählten Job entfernen: ANALYZE ist gesperrt, bis wieder ein Job gewählt ist (Quellen und Analysen bleiben)",
         open: "Den gewählten Job im Job-Feld öffnen",
         choose: "Einen Job im Job-Feld wählen (Rolle öffnen, dann ALS JOB WÄHLEN)",
-        openRoleHint: "Öffne eine Rolle, um sie als Job zu wählen."
+        openRoleHint: "Öffne eine Rolle, um sie als Job zu wählen.",
+        roleOpened: "GEÖFFNETE ROLLE · nicht der gewählte Job",
+        roleOpenedSelected: "GEÖFFNETE ROLLE · der gewählte Job"
       },
       levelLine: { label: "EBENE", names: { FIELD: "POOL", ORGANIZATION: "ORGANISATION", ROLE: "ROLLE", REQUIREMENT: "ANFORDERUNG" } },
       legacyToggle: { hide: "AUSBLENDEN", show: "EINBLENDEN" },
