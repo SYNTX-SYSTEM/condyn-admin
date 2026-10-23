@@ -2986,6 +2986,109 @@ Factors measured in the DOM (`e6493a7`; the factor pair, then the outer orbit's 
 
 **Run record.** `evidence/role-field-closure-88539d3/`: `static-88539d3.txt`, `sweep-STANDIN-88539d3.txt`, `sweep-a9ff0ca-vs-88539d3.txt`, `pure-and-proof-88539d3.txt`, `g1-walk-STANDIN-88539d3.txt`, `role-level-and-person-49e2bc6-vs-88539d3.txt`, `suite-88539d3.txt`, `x22-back-forward.txt`, `scripts/*.txt`, `manifest.sha256`. PINK's labs on port 41873, stopped; the production-build attempt wrote only `.next` of PINK's worktree (ignored). :41862, :41871 not touched; no Gemini call.
 
+### 3.60 Full PxJ closure: candidate GRÜN `421e382` (N-1 … N-5 on `88539d3`), on PINK's stand-in lab and GET-only on the owner acceptance lab (2026-10-23)
+
+**Request.** Owner mandate "SYNTX::SFE::OWNER_GO_FULL_PXJ_CLOSURE" §06 / §07.9, relayed by GELB.
+- PINK confirms the final candidate independently on its own stand-in lab (movements, error cases, pool switches).
+- PINK checks the chain POOL → ORG → ROLE_OPEN → SELECT_AS_JOB → SOURCE_BINDING → analysis → CAPABILITY_FIELD → B2 → evidence → RELOAD → BACK → FORWARD → ROLE / POOL / MODE switch, forwards, backwards and inverse.
+- On GELB's owner acceptance lab :41872 (production build of `421e382`, copy of the 41862 DB, no worker, no Gemini, no token) PINK reads with GET only.
+- GELB added two cases:
+  - (a) in-page Back / Forward while a run is going;
+  - (b) a reload during a second run over an analysis on view.
+
+**What changed (`static-421e382.txt`, CODE_INSPECTION).** Fast-forward of `88539d3`, six commits, 35 files. All of them are in `app/`, `lib/career/ui/`, `test/` or `docs/`. There is no API, DB, worker or script file, no new fetch and no non-GET call. The leak scan of the added lines is clean.
+- N-1 B-NAV: one URL parser for a reload and for popstate. On popstate the dashboard is remounted. A user decision is a push, a system addendum is a replace, one action is one entry, and an unchanged URL writes nothing.
+- N-2 B-RUN: `analysisJobId` is only taken in the server's format and only when it stands once. It is followed by GET only. FAILED and 404 keep the parameter, show a banner and offer no retry.
+- N-3 O-RF-1: an unknown, empty or repeated mode is removed by replace.
+- N-4 F-RF-4: a comment.
+- N-5 B-SRC: a fixed hint while sources are staged.
+
+**Result, STAND_IN, production build (`nav-STANDIN-prod-421e382.txt`): 88 / 90, every check of the candidate passes.** The two failing steps, C15 and C18, are PINK probe errors:
+- C15 read the analysis from an element that is not mounted in the Capability Field; the URL and state are right.
+- C18 looked for the clear button at field level; it is offered at role level.
+- Clearing the job is covered by the acceptance lab (B07 PASS) and by the sweep (X-04).
+
+The production build is the local `next start` with LAB_ONLY_BUILD_FLAG, `Cache-Control: no-store`.
+- **Chain, one entry per decision.** Each step adds exactly one history entry: pool, organisation, role, "select as job" and Capability Field; Capability writes focus and observation together. Repeating the selection or choosing the mode already active adds none. Staging a source adds none.
+- **Analysis.** During the run `analysisJobId` stands in the URL by replace, without a new entry. One POST is sent. On SUCCEEDED, `analysisId` is set and `analysisJobId` removed; the first screen is AVAILABLE, bound to the analysis, with rows and quotes, and a row takes focus. The reload is field-equal.
+- **Switches.** Modes PERSON → JOB → PERSON_X_JOB add one entry each. The role switch gives ROLE_MISMATCH. The pool switch selects the same role id in the other pool and also gives ROLE_MISMATCH. The offer's "select this role" adds one entry and leads to AVAILABLE.
+- **History.** 22 × Back and 22 × Forward, all of them PASS: 44 / 44 equal to a fresh load of the same URL in a second tab. The comparison covers URL, mode, field, gate, job and its text, observation, first screen, binding, counts, rows, quote doc ids, sha256 of the first-screen text, offer and error banner. No step sent a POST. The document boundary is included: the last Back loads `/career/analyses` as a document, the first Forward loads `/career/demo` as a document, and that entry is also equal.
+- **Inverse.**
+  - FOO, empty, repeated and lowercase modes are removed without a new entry; the default is PERSON_X_JOB.
+  - A valid PERSON_X_JOB without scope stays "no job".
+  - An unknown role, the archived pool and an unknown upload give INVALID; a malformed pool gives no AVAILABLE.
+  - The other pool with the same role id gives ROLE_MISMATCH; an unknown analysis gives RESULT_NOT_FOUND.
+  - Five malformed `analysisJobId` values and a repeated one are removed, with 0 job reads.
+  - An unknown job gives NOT_FOUND with the job id and no retry; the analysis on view stays.
+  - A SUCCEEDED job in the URL leads, with 0 POSTs, to its analysis.
+- **B-RUN.**
+  - A reload during RUNNING: GET only (one job read), 0 non-GET, one POST in all, AVAILABLE afterwards, history unchanged.
+  - A reload after FAILED: the banner shows FAILED with the job id and no retry; A0 stays on view and in the URL (F-RF-2).
+- **(b) PASS.** A reload during a second run: meanwhile `analysisId=A0`, the binding A0 and AVAILABLE, with `analysisJobId` in the URL. On SUCCEEDED, A2 replaces A0. One POST.
+- **(a) PASS.** Back / Forward during a run. The PERSON entry pushed during the run carries the job id. Back and Forward are each equal to a fresh load, with the polls held 4 s in both tabs. After SUCCEEDED, Back to the earlier entry follows the job and shows its analysis, again equal to a fresh load. One POST, 0 non-GET during navigation.
+- **N-5.** The EN hint reads exactly "Staged sources live in this page only: reloading, Back or Forward discards them. Nothing is stored." After a reload, Back or Forward there are no staged sources and no hint. The DE copy was checked by code inspection only.
+- **X-22 / O-RF-2 in production (`x22-prod-421e382.txt`).** In 3 / 3 cases Forward shows, after 1 s and after 20 s, what the reload shows. `pageshow.persisted` is false and 5 to 6 API reads follow. The O-RF-2 stall stays a next dev effect, as GELB found (`no-cache` under dev, `no-store` under `next start`).
+
+**next dev (`nav-STANDIN-dev-421e382.txt`, `repro-AB-dev-vs-prod.txt`): DEV_ONLY, no finding.** The dev run had 82 / 90:
+- three PINK probe errors: C15, C18 and I22, where 2.5 s after the reload dev had not yet drawn the first screen; I22 is PASS in production;
+- five NAV ≠ RELOAD entries:
+  - (A) Back onto the other-pool entry showed for ≥ 1.2 s the previous entry (AVAILABLE, DLL);
+  - (B) entries with organisation or role but no `focus` showed the field level on the fresh load.
+- The targeted repro sampled each case at 1, 3, 8 and 15 s:
+  - under dev the fresh load reaches the same observation after 3 to 8 s, and in (A) Back reached the right state (ROLE_MISMATCH, RF pool) after 3 s;
+  - in the production build both cases are stable and equal to the reload from 1 s on.
+- GELB found the same in its own production lab (:41876, writable copy).
+- These are load and compile delays of next dev, not defects of the candidate.
+
+**Owner acceptance lab :41872, PERSISTED_REAL_RESULT, GET only (`accept-41872-*.txt`, `lineage-41872-api.txt`).**
+- **API lineage.**
+  - The B2 binding is ANL_1792628993472_10 / JOB_1792628993472_10, JPOOL_B94850C4… / role_kestrel_fullstack, scope hash `8016b7c1…`, RUN_6BB62BDC…, CONV_A30D955F… and TRPREV_3B6311C8…. The pool sha256 matches the upload id.
+  - B2 is SELECTED_ROLE_COVERAGE_V1 with 9 requirements: 8 COVERED, 1 NOT_COVERED (req_07), 8 proposals. Every proposal is EXACT and SOURCE_MATCH_VERIFIED; scored = false, authority NONE, relation NOT_EVALUATED (VERIFIED_CAPABILITY_SNAPSHOT_ABSENT).
+  - `/investigation` gives PERSON_X_JOB with the same run and hash.
+  - The job is SUCCEEDED → the same analysis. The other analysis is PERSON.
+  - The source bundle CSB_JOB_1792628993472_10 has no GET route; for PINK it is **INCONCLUSIVE**, stated by GELB from a read-only DB transaction.
+- **Browser, 1920 × 1080: 58 / 58 PASS. 1280 × 720: 57 / 58.**
+  - Each run had 522 requests, all GET. 0 requests were blocked (the probe aborts every non-GET), with 0 page errors and 0 inspector reads.
+  - Steps covered:
+    - the owner deep link and its reload (AVAILABLE, 9 rows, 8 COVERED, req_07 NOT_COVERED, 8 verified quotes, no percentage or score outside the quotes);
+    - 3 × Back / Forward over the document boundary, hydrated and equal to the deep link;
+    - mode, role, offer and clear-job decisions, one entry each;
+    - 11 × Back and 11 × Forward, each equal to a fresh load;
+    - the inverse cases (modes, no scope, unknown role or upload, PERSON analysis → MODE_MISMATCH, unknown analysis → RESULT_NOT_FOUND);
+    - the job cases (SUCCEEDED job → the same ANL by replace, unknown → NOT_FOUND without retry, malformed or repeated → removed with 0 job reads).
+- **O-PXJ-720, confirmed independently, owner decision.** At 1280 × 720 the B2 panel stands at 885,485 – 1256,925, 53 % visible without scrolling. Its scrollHeight is 2059 at clientHeight 438, the page's 1021. GELB reports the same layout since G1.
+
+**Regression (`regression-88539d3-vs-421e382.txt`, STAND_IN, dev).**
+- **Role-field sweep:** no failed step. Only the intended changes appear: `analysisJobId` during the run; after the reload of a FAILED A2 the FAILED banner while A1 stays; FOO removed (X-20c); X-22 now in-app, Forward correct after 574 ms.
+- **G1 walk, PA-01 … PA-14, at 1920 and 1280:** 20 / 20 steps, field-equal to `88539d3` apart from the staged-sources hint.
+
+**Suite (`suite-421e382.txt`).**
+- tsc as on `88539d3`: `relay-check`. The second message is from generated `.next/types` left in PINK's worktree (proxy route B-3).
+- Whole isolated suite: 2786 passed, 38 failed (31 on `88539d3`).
+  - The 9 new failures are 5000 ms timeouts (5016 – 5620 ms) in outcome-valence files the candidate does not touch.
+  - Rerun alone: 30 / 33 pass, the remaining 3 also time out at 5000 ms.
+- `test/career/pxj-first-screen`: 13 files, 127 / 127.
+
+**Observation for the owner, not a failure: O-NAV-SUBMIT (I24).**
+- Back within ≈ 0.3 s of ANALYZE, while the POST is still on its way, leaves a server job that no history entry names.
+- The released controller drops the 202. The job runs to SUCCEEDED and its analysis is persisted (listed in `/api/career/analyses`), but no entry of the session shows it. Back and Forward are each equal to a fresh load.
+- A reload during SUBMITTING has the same outcome class: no `analysisJobId` has been written yet.
+
+**Verdict.**
+- **PASS on PINK's stand-in lab (production build).** Chain, NAV ≡ RELOAD including document boundaries, B-RUN with (a) and (b), O-RF-1 and B-SRC all pass.
+- **PASS on the acceptance lab (GET only, real persisted data)**, except E01 at 1280 × 720 (O-PXJ-720, owner).
+- **INCONCLUSIVE:** CSB via GET, and the DE hint in the browser.
+- **Owner:** O-PXJ-720, O-NAV-SUBMIT, B-3 (proxy-route type error), integration.
+
+**Run record.** `evidence/pxj-full-closure-421e382/`:
+- README.txt, static-421e382.txt, suite-421e382.txt;
+- nav-STANDIN-dev-421e382.txt, nav-STANDIN-prod-421e382.txt, repro-AB-dev-vs-prod.txt, x22-prod-421e382.txt, regression-88539d3-vs-421e382.txt;
+- accept-41872-PERSISTED_REAL_RESULT-1920.txt and -1280.txt, lineage-41872-api.txt;
+- LAB_ONLY_BUILD_FLAG.txt (next.config.ts sha256 committed = restored `bf55df41…`, lab only `78a45603…`, diff);
+- scripts/ and manifest.sha256.
+
+No quote text and no screenshot is committed; first-screen text appears only as sha256/16. PINK's labs on :41873 are stopped by `stop-lab.sh` (its stop drops the lab's disposable DBs; no state file is left, no listener on :41873 / :41874). :41872 was only read.
+
 ## 4. Boundaries and findings for coordination
 
 - F-JP-1 (closed in `b782793`): `JOB_POOL_CONNECTION.md` §4 followed the per-role `JOB_POOL_JSON_ROLE` design;

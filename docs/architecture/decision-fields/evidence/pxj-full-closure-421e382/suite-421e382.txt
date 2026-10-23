@@ -1,0 +1,34 @@
+# PINK: tsc and the whole isolated suite on 421e382 in PINK's worktree (npm run test:isolated, e2e included, disposable databases, network sentinel).
+tsc 421e382 exit 2 errors 2: .next/types/app/api/admin/proxy/[...path]/route.ts(14,13): error TS2344: Type 'OmitWithTag<typeof import("<repo>/app/ docs/career_analysis/evidence/video-readiness/scripts/relay-check.mts(13,214): error TS2769: No overload matches this call. 
+full 421e382 exit 1 ::  Test Files  9 failed | 407 passed | 11 skipped (427)       Tests  38 failed | 2786 passed | 20 skipped (2844)  net 2
+# tsc: relay-check.mts (pre-existing, also on 88539d3) + .next/types/app/api/admin/proxy/[...path]/route.ts: generated types left in PINK's worktree .next by an earlier local build; the proxy-route type error is the known B-3 (not in the candidate's diff).
+# net: the 2 sentinel entries are npm's registry dist-tags lookups (refused by the sentinel), same count as on 88539d3.
+failed 88539d3 31 | 421e382 38 | only on 421e382 9 | only on 88539d3 2
+  only on 421e382 (Error: STACK_TRACE_ERROR): test/career/relation-adapters/outcome-valence-feedback-context-revision-persistence/career-outcome-valence-feedback-context-revision-postgres.test.ts
+  only on 421e382 (Error: STACK_TRACE_ERROR): test/career/relation-adapters/outcome-valence-feedback-context-revision-persistence/career-outcome-valence-feedback-context-revision-postgres.test.ts
+  only on 421e382 (Error: STACK_TRACE_ERROR): test/career/relation/outcome-valence-feedback-context-revision-persistence/career-outcome-valence-feedback-context-revision-persistence.test.ts
+  only on 421e382 (Error: STACK_TRACE_ERROR): test/career/relation/outcome-valence-feedback-context-revision-persistence/career-outcome-valence-feedback-context-revision-persistence.test.ts
+  only on 421e382 (Error: STACK_TRACE_ERROR): test/career/relation/outcome-valence-feedback-context-revision-replay/career-outcome-valence-feedback-context-revision-replay.test.ts
+  only on 421e382 (Error: STACK_TRACE_ERROR): test/career/relation/outcome-valence-feedback-context-revision-replay/career-outcome-valence-feedback-context-revision-replay.test.ts
+  only on 421e382 (Error: STACK_TRACE_ERROR): test/career/relation/outcome-valence-feedback-context-revision-replay/career-outcome-valence-feedback-context-revision-replay.test.ts
+  only on 421e382 (Error: STACK_TRACE_ERROR): test/career/relation/outcome-valence-feedback-context-revision/career-outcome-valence-feedback-context-revision.test.ts
+  only on 421e382 (Error: STACK_TRACE_ERROR): test/career/relation/outcome-valence-feedback-context-revision/career-outcome-valence-feedback-context-revision.test.ts
+  only on 88539d3: test/career/relation/outcome-valence-feedback-context-revision-replay/career-outcome-valence-feedback-context-revision-replay.test.ts
+  only on 88539d3: test/decision-core/structural-consequences/reconstruct.test.ts
+  failure messages on 421e382: {"Error: Failed query: insert into \"career_policy_versions\" (\"id\", \"version\", \"par": 21, "AssertionError: expected [Function] to throw error including 'ERR_UNKNOWN_DECISI": 1, "AssertionError: expected [Function] to throw error including 'ERR_UNKNOWN_COMMIT": 1, "AssertionError: expected [Function] to throw error including 'ERR_UNKNOWN_ACTION": 1, "AssertionError: expected [Function] to throw error including 'ERR_UNKNOWN_FEEDBA": 1, "Error: Failed query: insert into \"career_commitments\" (\"id\", \"decision_id\", \"tim": 1, "AssertionError: expected [Function] to throw error including 'ERR_POLICY_NOT_FOU": 1, "Error: STACK_TRACE_ERROR": 11}
+test/career/pxj-first-screen: 13 files, 127 tests, failed 0
+  analysis-id-comment.test.ts: 2
+  first-screen-ssr.test.tsx: 36
+  job-release.test.tsx: 3
+  mode-normalization.test.tsx: 8
+  nav-reads.test.tsx: 1
+  navigation.test.tsx: 13
+  person-markup.test.tsx: 1
+  projection.test.ts: 35
+  result-hook.test.ts: 2
+  role-field-closure.test.tsx: 10
+  run-recovery.test.tsx: 11
+  shell-role-identity.test.tsx: 2
+  staged-sources-hint.test.tsx: 3
+# rerun alone (the four outcome-valence files + structural-consequences): Test Files  2 failed | 3 passed (5) | Tests  3 failed | 30 passed (33) · remaining failures: 3 × 'Test timed out in 5000ms' (machine load; files untouched by 88539d3..421e382)
+# STACK_TRACE_ERROR above is vitest's timeout stack: durations of those failures [5017, 5228, 5295, 5339, 5413, 5439, 5502, 5598, 5620, 5873, 6102] ms (limit 5000 ms).

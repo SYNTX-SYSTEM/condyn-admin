@@ -1,0 +1,37 @@
+# PINK: quote-free summary of pink-nav / pink-accept JSON (ids mapped, states, counts, history, requests).
+import json,sys,re
+r=json.load(open(sys.argv[1])); kind=sys.argv[2]
+ids={}
+def m(s):
+  if not isinstance(s,str): return s
+  def a(x):
+    v=x.group(0)
+    if v not in ids: ids[v]=f"{v.split('_')[0]}#{sum(1 for k in ids if k.startswith(v.split('_')[0]))+1}"
+    return ids[v]
+  s=re.sub(r'JPOOL_B94850C439974E27496FE3B1A9A076B5','DLL',s)
+  s=re.sub(r'JPOOL_[0-9A-F]{32}',lambda x:'JPOOL_other' if x.group(0)!='JPOOL_00000000000000000000000000000000' else 'JPOOL_0…0',s)
+  if kind=='nav': s=re.sub(r'ANL_\d+_\d+|JOB_\d{13}_\d+',a,s)
+  return s
+hdr={k:r.get(k) for k in ('label','gemini','note','evidenceClass','lab','viewport')}
+print('#',json.dumps({k:v for k,v in hdr.items() if v}))
+if kind=='nav': print('# uploads (POST to PINK\'s own stand-in lab only):',{k:v['status'] for k,v in r['uploads'].items()})
+for s in r['steps']:
+  o=s.get('obs') or {}
+  extra={k:v for k,v in s.items() if k not in ('name','ok','note','ms','obs','requests','diff','equal','historyBefore','historyAfter','error','nav')}
+  line=f"{s['name']:32s} {'PASS' if s['ok'] else 'FAIL'}  h={s.get('historyBefore')}→{o.get('historyLength')}  mode={o.get('mode')} field={o.get('field')} job={o.get('job')} first={o.get('first')} binding={m(o.get('binding'))} counts={o.get('counts')} rows={len(o.get('rows') or [])} quotes={len(o.get('quotes') or [])} err={o.get('error')}"
+  if 'equal' in s: line+=f"  NAV≡RELOAD={s['equal']}" + (f" diff={[d['k'] if isinstance(d,dict) else d for d in s['diff']]}" if s.get('diff') else '')
+  if s.get('error'): line+=f"  error={s['error'][:160]}"
+  print(line)
+  print(f"{'':34s}url: {m('&'.join(o.get('url') or []))}")
+  if extra: print(f"{'':34s}extra: {m(json.dumps(extra))[:900]}")
+  if s.get('note'): print(f"{'':34s}note: {s['note']}")
+  nonget=[x for x in s.get('requests',[]) if not x.startswith('GET')]
+  if nonget: print(f"{'':34s}non-GET: {m(json.dumps(nonget))}")
+for k in ('navigation','analyses','jobs','pageErrors','inspectorReads','blockedNonGet','nonGetRequests','requestCount'):
+  if k in r: print(f"# {k}: {m(json.dumps(r[k]))[:1500]}")
+if 'requests' in r:
+  rq=r['requests']; meth={}
+  for x in rq:
+    mm=x['method'] if isinstance(x,dict) else x.split(' ')[2]; meth[mm]=meth.get(mm,0)+1
+  print('# requests by method:',meth)
+  if kind=='nav': print('# non-GET requests (all tabs):',sorted(set(f"{x['phase']} {x['method']} {x['path']}" for x in rq if x['method']!='GET')))

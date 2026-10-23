@@ -1,0 +1,49 @@
+// PINK repro for two NAV ≠ RELOAD observations of pink-nav (N-back-02; N-back-18/19, N-forward-03/04). STAND-IN lab only.
+// argv: <lab state.json> <repo root> <out dir> <rf pool json> <label> <withAnalysis 0|1>
+// Each case: the same URL loaded fresh, and reached by in-app Back, sampled at 1 / 3 / 8 / 15 s after landing.
+import { readFileSync, writeFileSync, mkdirSync } from "node:fs";
+import { pathToFileURL } from "node:url";
+const [STATE, ROOT, OUT, RF_POOL, LABEL, WITH = "1"] = process.argv.slice(2); mkdirSync(OUT, { recursive: true });
+const pw = await import(pathToFileURL(process.env.CONDYN_PLAYWRIGHT_MODULE).href); const { chromium } = pw.chromium ? pw : pw.default;
+const st = JSON.parse(readFileSync(STATE, "utf8")); const BASE = st.base; if (st.gemini !== "STANDIN") throw new Error("not a stand-in lab");
+const DLL = "JPOOL_B94850C439974E27496FE3B1A9A076B5", KES = "org_kestrel", ROLE = "role_kestrel_fullstack";
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+const up = async f => { const r = await fetch(`${BASE}/api/career/job-pools`, { method: "POST", headers: { "content-type": "application/json", "x-condyn-principal-actor-id": "JOB_POOL_UPLOADER:PINK_REPRO" }, body: readFileSync(f, "utf8") }); return (await r.json().catch(() => ({})))?.jobPoolUploadId ?? null; };
+await up(`${ROOT}/docs/examples/job-pool-tests/DLL_JOBPOOL_ENGINEERING.json`); const RF = await up(RF_POOL);
+const browser = await chromium.launch(); const ctx = await browser.newContext({ viewport: { width: 1920, height: 1080 } });
+await ctx.addInitScript(() => { try { localStorage.setItem("condyn_onboarding_seen", "true"); } catch {} });
+const page = await ctx.newPage(); const t = id => page.getByTestId(id);
+const snap = () => page.evaluate(() => { const q = s => document.querySelector(s); const f = q('[data-testid="syntx-field"]'), i = q('[data-testid="job-scope-indicator"]'), p = q('[data-testid="pxj-first-screen"]'), r = q('[data-testid="semantic-career-intelligence-field"]');
+  return { search: location.search, field: r?.dataset.fieldFocus ?? null, observation: f ? `${f.dataset.observationKind}:${f.dataset.observationId ?? ""}` : null, pool: f?.dataset.selectedPool ?? null, job: i?.dataset.jobScopeState ?? null, jobPool: i ? (i.innerText.includes("PINK role-field") ? "RF" : i.innerText.includes("DLL Engineering") ? "DLL" : "?") : null, first: p?.dataset.state ?? null, binding: q('[data-testid="pxj-first-coverage"]')?.dataset.bindingAnalysis ?? null }; }).catch(e => ({ error: String(e).slice(0, 120) }));
+const sample = async () => { const out = {}; let last = 0; for (const at of [1000, 3000, 8000, 15000]) { await sleep(at - last); last = at; out[`${at / 1000}s`] = await snap(); } return out; };
+const rec = { label: LABEL, gemini: "STAND_IN", cases: {} };
+const waitParam = (n, v) => page.waitForFunction(([n, v]) => new URL(location.href).searchParams.get(n) === v, [n, v], { timeout: 30000 });
+const openRole = async (org, role) => { await t(`syntx-organization-${org}`).dispatchEvent("click"); await t(`syntx-role-${role}`).waitFor({ timeout: 20000 }); await t(`syntx-role-${role}`).dispatchEvent("click"); await page.waitForFunction(r => document.querySelector('[data-testid="syntx-field"]')?.dataset.observationId === r, role, { timeout: 20000 }); };
+// R2 · observation without focus
+const ORG_URL = `${BASE}/career/demo?jobPoolUploadId=${DLL}&jobOrganizationId=${KES}`, ROLE_URL = `${ORG_URL}&jobRoleId=${ROLE}`;
+for (const [n, u] of [["R2-fresh-org", ORG_URL], ["R2-fresh-role", ROLE_URL], ["R2-fresh-org-focusFIELD", `${ORG_URL}&focus=FIELD`], ["R2-fresh-role-focusFIELD", `${ROLE_URL}&focus=FIELD`]]) { await page.goto(u, { waitUntil: "domcontentloaded" }); rec.cases[n] = await sample(); }
+await page.goto(`${BASE}/career/demo`, { waitUntil: "domcontentloaded" }); await sleep(4000);
+let inApp = true; try { await t(`job-pool-select-${DLL}`).click(); await waitParam("jobPoolUploadId", DLL); await sleep(1500); await t(`syntx-organization-${KES}`).dispatchEvent("click"); await waitParam("jobOrganizationId", KES); await sleep(1500); rec.cases["R2-session-org"] = await snap(); await t(`syntx-role-${ROLE}`).dispatchEvent("click"); await waitParam("jobRoleId", ROLE); await sleep(1500); rec.cases["R2-session-role"] = await snap(); } catch (e) { inApp = false; rec.cases["R2-session-error"] = String(e).slice(0, 200); }
+if (inApp && WITH === "1") { await t("syntx-job-scope-select").click(); await sleep(1500); await page.goBack({ waitUntil: "commit" }); rec.cases["R2-back-to-role"] = await sample(); await page.goBack({ waitUntil: "commit" }); rec.cases["R2-back-to-org"] = await sample(); }
+// R1 · selection in the other pool with the same role id, analysis bound to DLL
+if (WITH === "1") {
+  const cap = extra => `${BASE}/career/demo?focus=CAPABILITY&investigationMode=PERSON_X_JOB&jobPoolUploadId=${DLL}${extra}`;
+  await page.goto(cap(`&jobScopePoolUploadId=${DLL}&jobScopeRoleId=${ROLE}`), { waitUntil: "domcontentloaded" }); await page.waitForSelector('[data-testid="semantic-career-intelligence-field"][data-capability-gate="OPEN"]', { timeout: 60000 });
+  const before = new Set(((await (await fetch(`${BASE}/api/career/analyses`)).json()).analyses ?? []).map(a => a.analysisId));
+  await t("source-dock-file-input").setInputFiles(`${ROOT}/docs/examples/cv.synthetic.pdf`); await page.locator('[data-testid="start-intake-analysis-btn"]:not([disabled])').waitFor({ timeout: 30000 }); await t("start-intake-analysis-btn").click();
+  await page.waitForFunction(() => new URL(location.href).searchParams.get("analysisId") !== null && new URL(location.href).searchParams.get("analysisJobId") === null, null, { timeout: 300000 }); await sleep(3000);
+  const A0 = new URL(page.url()).searchParams.get("analysisId"); rec.A0 = before.has(A0) ? "old?" : "new";
+  const U22 = cap(`&jobScopePoolUploadId=${RF}&jobScopeRoleId=${ROLE}&analysisId=${A0}`).replace(`jobPoolUploadId=${DLL}`, `jobPoolUploadId=${RF}`);
+  await page.goto(U22, { waitUntil: "domcontentloaded" }); rec.cases["R1-fresh-rf-scope"] = await sample();
+  // in-app: A0 deep link (DLL scope) → Job Field → RF pool → org → role → select → capability → offer back → Back
+  await page.goto(cap(`&jobScopePoolUploadId=${DLL}&jobScopeRoleId=${ROLE}&analysisId=${A0}`), { waitUntil: "domcontentloaded" }); await sleep(4000);
+  await t("job-pool-panel-toggle").click(); await sleep(1500); await t("syntx-pools-toggle").click(); await t(`job-pool-select-${RF}`).click(); await waitParam("jobPoolUploadId", RF); await sleep(1500);
+  await openRole(KES, ROLE); await t("syntx-job-scope-select").click(); await waitParam("jobScopePoolUploadId", RF); await sleep(2000);
+  await t("field-focus-capability-btn").click(); await sleep(4000); rec.cases["R1-session-rf-scope"] = await snap();
+  await t("pxj-first-select-role").click().catch(() => {}); await sleep(3000); rec.cases["R1-session-offer-back"] = await snap();
+  await page.goBack({ waitUntil: "commit" }); rec.cases["R1-back-to-rf-scope"] = await sample();
+  await page.reload({ waitUntil: "domcontentloaded" }); rec.cases["R1-reload-of-that-entry"] = await sample();
+}
+writeFileSync(`${OUT}/pink-repro-${LABEL}.json`, JSON.stringify(rec, null, 1));
+for (const [k, v] of Object.entries(rec.cases)) console.log(k, JSON.stringify(v).replace(/"search":"[^"]*",?/g, "").slice(0, 700));
+await browser.close();

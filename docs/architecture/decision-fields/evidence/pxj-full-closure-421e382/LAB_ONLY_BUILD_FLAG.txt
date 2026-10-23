@@ -1,0 +1,15 @@
+bf55df411c3cf92cc1e6a294aaf94216688161115e83df30812d2a89ab7de288  next.config.ts (committed)
+78a456032a17410a99730fe6494a90ad1e3123ca9a641d765be27a320cd4e147  next.config.ts (lab only)
+diff --git a/next.config.ts b/next.config.ts
+index 4410b96..1ebf2aa 100644
+--- a/next.config.ts
++++ b/next.config.ts
+@@ -2,6 +2,7 @@ import type { NextConfig } from "next";
+ 
+ const nextConfig: NextConfig = {
+   serverExternalPackages: ["pdf-parse"],
++  typescript: { ignoreBuildErrors: true }, // PINK LAB_ONLY_BUILD_FLAG: never committed
+ };
+ 
+ export default nextConfig;
+bf55df411c3cf92cc1e6a294aaf94216688161115e83df30812d2a89ab7de288  next.config.ts (restored)

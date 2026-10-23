@@ -1,0 +1,224 @@
+// PINK full PxJ closure probe (owner "SYNTX::SFE::OWNER_GO_FULL_PXJ_CLOSURE" §06 / §07.9). STAND-IN lab only: no model execution.
+// argv: <lab state.json> <repo root> <out dir> <rf pool json> <archived rf pool json> <label> [W] [H]
+// Chain POOL → ORG → ROLE_OPEN → SELECT_AS_JOB → CAPABILITY → SOURCE_BINDING → ANALYSE → B2 → EVIDENCE → RELOAD → MODE / ROLE /
+// POOL switches, then Back through every entry and Forward through every entry; every entry is compared with a fresh load of the same
+// URL in a second tab (NAV ≡ RELOAD). Inverse cases: modes, scopes, analysisJobId (malformed, repeated, unknown, FAILED, RUNNING),
+// a second run reloaded over an analysis on view, Back / Forward during a run, Back during SUBMITTING, staged-source hint.
+// Recorded: ids, states, counts, sha256 of first-screen text, request method + path. No quote text, no CV text.
+import { readFileSync, writeFileSync, mkdirSync } from "node:fs";
+import { createHash } from "node:crypto";
+import { pathToFileURL } from "node:url";
+const [STATE, ROOT, OUT, RF_POOL, RF_ARCH, LABEL, W = "1920", H = "1080"] = process.argv.slice(2);
+mkdirSync(OUT, { recursive: true });
+const pw = await import(pathToFileURL(process.env.CONDYN_PLAYWRIGHT_MODULE).href); const { chromium } = pw.chromium ? pw : pw.default;
+const st = JSON.parse(readFileSync(STATE, "utf8")); const BASE = st.base;
+if (st.gemini !== "STANDIN") throw new Error("not a stand-in lab");
+const PDF = `${ROOT}/docs/examples/cv.synthetic.pdf`, BOGUS = `${OUT}/bogus-not-a.pdf`;
+writeFileSync(BOGUS, "PINK: this is plain text named .pdf; the worker cannot parse it (forces a FAILED analysis).\n");
+const DLL = "JPOOL_B94850C439974E27496FE3B1A9A076B5", KES = "org_kestrel", ROLE = "role_kestrel_fullstack", ROLE2 = "role_kestrel_frontend_architect";
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+const sha = s => s === null || s === undefined ? null : createHash("sha256").update(s).digest("hex").slice(0, 16);
+const rec = { label: LABEL, gemini: "STAND_IN", note: "STAND-IN · keine Modellausführung", viewport: `${W}x${H}`, steps: [], uploads: {} };
+const get = async p => { const r = await fetch(`${BASE}${p}`, { cache: "no-store" }); return { status: r.status, body: await r.json().catch(() => null) }; };
+const upload = async (file, actor) => { const r = await fetch(`${BASE}/api/career/job-pools`, { method: "POST", headers: { "content-type": "application/json", "x-condyn-principal-actor-id": actor }, body: readFileSync(file, "utf8") }); const b = await r.json().catch(() => ({})); return { status: r.status, id: b?.jobPoolUploadId ?? null }; };
+rec.uploads.dll = await upload(`${ROOT}/docs/examples/job-pool-tests/DLL_JOBPOOL_ENGINEERING.json`, "JOB_POOL_UPLOADER:PINK_FC");
+rec.uploads.rf = await upload(RF_POOL, "JOB_POOL_UPLOADER:PINK_FC");
+rec.uploads.rfArchived = await upload(RF_ARCH, "JOB_POOL_UPLOADER:PINK_FC");
+const RF = rec.uploads.rf.id, ARCH = rec.uploads.rfArchived.id;
+
+const browser = await chromium.launch();
+const ctx = await browser.newContext({ viewport: { width: +W, height: +H } });
+await ctx.addInitScript(() => { try { localStorage.setItem("condyn_onboarding_seen", "true"); } catch {} });
+const page = await ctx.newPage(), twin = await ctx.newPage(); const t = id => page.getByTestId(id);
+const errors = []; for (const [tab, n] of [[page, "nav"], [twin, "twin"]]) tab.on("pageerror", e => errors.push(`${n} ${String(e).slice(0, 200)}`));
+let phase = "setup"; const requests = []; const jobs = [];
+for (const [tab, n] of [[page, "nav"], [twin, "twin"]]) tab.on("request", r => { const u = new URL(r.url()); if (u.pathname.startsWith("/api/") || r.resourceType() === "document") requests.push({ phase, tab: n, at: Date.now(), method: r.method(), type: r.resourceType(), path: u.pathname }); });
+page.on("response", async r => { if (r.request().method() === "POST" && new URL(r.url()).pathname === "/api/career/analyze") { const b = await r.json().catch(() => null); jobs.push({ phase, status: r.status(), jobId: b?.jobId ?? null }); } });
+
+const snap = tab => tab.evaluate(() => {
+  const q = s => document.querySelector(s), qa = s => [...document.querySelectorAll(s)];
+  const root = q('[data-testid="semantic-career-intelligence-field"]'), field = q('[data-testid="syntx-field"]'), ind = q('[data-testid="job-scope-indicator"]');
+  const panel = q('[data-testid="pxj-first-screen"]'), cov = q('[data-testid="pxj-first-coverage"]'), banner = q('[data-testid="intake-error-banner"]');
+  const p = new URLSearchParams(location.search);
+  return {
+    url: [...p.entries()].map(([k, v]) => `${k}=${v}`).sort(), path: location.pathname, historyLength: history.length,
+    mode: root?.dataset.investigationMode ?? null, field: root?.dataset.fieldFocus ?? null, gate: root?.dataset.capabilityGate ?? null,
+    job: ind ? ind.dataset.jobScopeState ?? null : null, jobText: ind ? ind.innerText.replace(/\s+/g, " ").trim() : null,
+    observation: field ? `${field.dataset.observationKind}:${field.dataset.observationId ?? ""}` : null, analysisOnView: field?.dataset.analysisId ?? null, pool: field?.dataset.selectedPool ?? null,
+    first: panel?.dataset.state ?? null, binding: cov?.dataset.bindingAnalysis ?? null, bindingRole: cov?.dataset.bindingRole ?? null, counts: q('[data-testid="pxj-first-counts"]')?.innerText.replace(/\s+/g, " ") ?? null,
+    rows: qa('[data-testid^="pxj-first-req-"]').map(e => `${e.dataset.testid.replace("pxj-first-req-", "")}:${e.dataset.coverage}:${e.dataset.matchBasis}:${e.dataset.proposalId ? "P" : "-"}`),
+    quotes: qa('[data-testid^="pxj-first-quote-"]').map(e => `${e.dataset.docId}:${e.dataset.quoteInProjection}`),
+    firstText: panel ? panel.innerText : null,
+    offer: q('[data-testid="pxj-analysis-job-offer"]')?.dataset.state ?? null, offerReason: q('[data-testid="pxj-analysis-job-invalid"]')?.dataset.reason ?? null,
+    staged: qa('[data-testid="source-dock"] button').filter(b => b.textContent.trim() === "×").length, stagedHint: q('[data-testid="staged-sources-not-kept"]')?.innerText ?? null,
+    error: banner ? `${banner.dataset.errorCode}|${banner.dataset.httpStatus}|${banner.dataset.jobResume ?? ""}` : null, errorJobId: !!q('[data-testid="intake-error-job-id"]'), retry: !!q('[data-testid="retry-intake-btn"]'),
+    success: !!q('[data-testid="intake-success-banner"]'), analyzing: !!q('[data-testid="intake-telemetry-banner"]')
+  };
+}).then(s => { s.firstTextSha = sha(s.firstText); delete s.firstText; return s; }).catch(e => ({ error: String(e).slice(0, 160) }));
+const settle = async (tab, ms = 1200) => {
+  await tab.waitForSelector('[data-testid="semantic-career-intelligence-field"]', { timeout: 60000 }).catch(() => {});
+  await tab.waitForFunction(() => { const f = document.querySelector('[data-testid="pxj-first-screen"]')?.dataset.state; const j = document.querySelector('[data-testid="job-scope-indicator"]')?.dataset.jobScopeState; return !/LOADING|RESOLVING|CHECKING/.test(f ?? "") && j !== "CHECKING"; }, null, { timeout: 30000 }).catch(() => {});
+  await sleep(ms);
+};
+const KEYS = ["url", "path", "mode", "field", "gate", "job", "jobText", "observation", "analysisOnView", "pool", "first", "binding", "bindingRole", "counts", "rows", "quotes", "firstTextSha", "offer", "offerReason", "staged", "stagedHint", "error", "errorJobId", "retry"];
+const diff = (a, b) => KEYS.filter(k => JSON.stringify(a[k]) !== JSON.stringify(b[k])).map(k => ({ k, nav: a[k], reload: b[k] }));
+const versusReload = async () => { await settle(page); const nav = await snap(page); await twin.goto(`${BASE}${nav.path}?${nav.url.map(x => { const i = x.indexOf("="); return `${encodeURIComponent(x.slice(0, i))}=${encodeURIComponent(x.slice(i + 1))}`; }).join("&")}`, { waitUntil: "domcontentloaded" }); await settle(twin); const reload = await snap(twin); const d = nav.path === "/career/demo" ? diff(nav, reload) : []; return { equal: d.length === 0, diff: d, nav }; };
+const step = async (name, fn, expect = () => true, note = null) => {
+  phase = name; const n0 = requests.length; const h0 = await page.evaluate(() => history.length).catch(() => null); const s0 = Date.now(); let out = {};
+  try { out = (await fn()) ?? {}; await sleep(500); const o = out.nav ?? await snap(page); const ok = !!expect(o, out); delete out.nav;
+    rec.steps.push({ name, ok, note, ms: Date.now() - s0, historyBefore: h0, historyAfter: o.historyLength, ...out, obs: o, requests: requests.slice(n0).filter(r => r.tab === "nav").map(r => `${r.method} ${r.type === "document" ? "DOC " : ""}${r.path}`) });
+    if (/^(C|S)/.test(name)) await page.screenshot({ path: `${OUT}/STANDIN-${name}-${W}.jpg`, type: "jpeg", quality: 70 }).catch(() => {}); }
+  catch (e) { rec.steps.push({ name, ok: false, note, error: String(e).split("\n")[0].slice(0, 300), ...out, obs: await snap(page) }); }
+  const l = rec.steps.at(-1); console.log(`${l.ok ? "PASS" : "FAIL"} ${name} :: ${l.error ?? ""} ${JSON.stringify({ h: [l.historyBefore, l.historyAfter], mode: l.obs?.mode, field: l.obs?.field, job: l.obs?.job, first: l.obs?.first, err: l.obs?.error, eq: l.equal, diff: l.diff?.map(d => d.k) })}`);
+  return l;
+};
+const delayJobs = async (ms, tab = page) => tab.route("**/api/career/jobs/**", async r => { if (r.request().method() === "GET") await sleep(ms); try { await r.continue(); } catch {} });
+const undelayJobs = async (tab = page) => tab.unroute("**/api/career/jobs/**");
+let jobMark = 0;
+const waitServerJob = async (timeout = 420000) => { const t0 = Date.now(); while (Date.now() - t0 < timeout) { const id = jobs.length > jobMark ? jobs.at(-1)?.jobId : null; if (id) { const j = await get(`/api/career/jobs/${id}`); if (["SUCCEEDED", "FAILED"].includes(j.body?.status)) return j.body; } await sleep(1000); } throw new Error("job did not finish"); };
+const stage = async file => { await t("source-dock-file-input").setInputFiles(file); await page.locator('[data-testid="start-intake-analysis-btn"]:not([disabled])').waitFor({ timeout: 30000 }); };
+const start = async () => { jobMark = jobs.length; await t("start-intake-analysis-btn").click(); };
+const param = n => new URL(page.url()).searchParams.get(n);
+const waitParam = async (n, pred, timeout = 120000) => page.waitForFunction(([n, v]) => { const x = new URL(location.href).searchParams.get(n); return v === "__NULL__" ? x === null : v === "__SET__" ? x !== null : x === v; }, [n, pred], { timeout });
+const waitFirst = async (states, timeout = 120000) => page.waitForFunction(s => s.includes(document.querySelector('[data-testid="pxj-first-screen"]')?.dataset.state), states, { timeout });
+const waitJob = async (state, timeout = 60000) => page.waitForFunction(s => document.querySelector('[data-testid="job-scope-indicator"]')?.dataset.jobScopeState === s, state, { timeout });
+const capUrl = (mode, extra = "") => `${BASE}/career/demo?focus=CAPABILITY&investigationMode=${mode}&jobPoolUploadId=${DLL}${extra}`;
+const sel = (pool, role) => `&jobScopePoolUploadId=${pool}&jobScopeRoleId=${role}`;
+const posts = () => requests.filter(r => r.method === "POST" && r.path === "/api/career/analyze").length;
+const openRole = async (org, role) => { await t(`syntx-organization-${org}`).dispatchEvent("click"); await t(`syntx-role-${role}`).waitFor({ timeout: 20000 }); await t(`syntx-role-${role}`).dispatchEvent("click"); await page.waitForFunction(r => document.querySelector('[data-testid="syntx-field"]')?.dataset.observationId === r, role, { timeout: 20000 }); };
+const H1 = (o, out) => o.historyLength === out.h0 + 1; // exactly one entry pushed
+const hist = () => page.evaluate(() => history.length);
+
+// ================================================================ C · forward chain (one session, in-app history)
+await step("C00-other-document", async () => { await page.goto(`${BASE}/career/analyses`, { waitUntil: "domcontentloaded" }); await sleep(1500); }, o => o.path === "/career/analyses");
+await step("C01-demo-plain", async () => { await page.goto(`${BASE}/career/demo`, { waitUntil: "domcontentloaded" }); await settle(page); }, o => o.field === "FIELD");
+await step("C02-POOL", async () => { const h0 = await hist(); await t(`job-pool-select-${DLL}`).click(); await waitParam("jobPoolUploadId", DLL); return { h0 }; }, (o, out) => H1(o, out) && o.pool === DLL);
+await step("C03-ORG", async () => { const h0 = await hist(); await t(`syntx-organization-${KES}`).dispatchEvent("click"); await waitParam("jobOrganizationId", KES); return { h0 }; }, H1);
+await step("C04-ROLE_OPEN", async () => { const h0 = await hist(); await t(`syntx-role-${ROLE}`).dispatchEvent("click"); await waitParam("jobRoleId", ROLE); return { h0 }; }, (o, out) => H1(o, out) && o.job === "NONE");
+await step("C05-SELECT_AS_JOB", async () => { const h0 = await hist(); await t("syntx-job-scope-select").click(); await waitParam("jobScopeRoleId", ROLE); await waitJob("VALID"); return { h0 }; }, (o, out) => H1(o, out) && o.job === "VALID");
+await step("C05b-select-again-no-entry", async () => { const h0 = await hist(); await t("syntx-job-scope-select").click({ timeout: 3000 }).catch(() => null); await sleep(1500); return { h0 }; }, (o, out) => o.historyLength === out.h0);
+await step("C06-CAPABILITY", async () => { const h0 = await hist(); await t("field-focus-capability-btn").click(); await page.waitForSelector('[data-testid="semantic-career-intelligence-field"][data-field-focus="CAPABILITY"]', { timeout: 30000 }); await sleep(800); return { h0 }; }, (o, out) => H1(o, out) && o.field === "CAPABILITY" && o.url.includes("focus=CAPABILITY") && !o.url.some(x => x.startsWith("jobRoleId=")));
+await step("C06b-same-mode-no-entry", async () => { const h0 = await hist(); await t("investigation-mode-PERSON_X_JOB").click(); await sleep(1200); return { h0 }; }, (o, out) => o.historyLength === out.h0);
+await step("C07-SOURCE_BINDING", async () => { const h0 = await hist(); await stage(PDF); return { h0 }; }, (o, out) => o.historyLength === out.h0 && o.staged >= 1 && o.stagedHint === "Staged sources live in this page only: reloading, Back or Forward discards them. Nothing is stored.");
+let A0 = null, runJobSeen = null;
+await step("C08-ANALYSE", async () => {
+  const h0 = await hist(); const p0 = posts(); await delayJobs(1500); await start();
+  await waitParam("analysisJobId", "__SET__", 60000); runJobSeen = param("analysisJobId"); const hRunning = await hist();
+  await waitServerJob(); await undelayJobs(); await waitParam("analysisId", "__SET__", 120000); await waitFirst(["AVAILABLE"]); A0 = param("analysisId");
+  return { h0, hRunning, runJobPattern: /^JOB_[0-9]{1,16}_[0-9]{1,6}$/.test(runJobSeen ?? ""), postsDelta: posts() - p0 };
+}, (o, out) => out.runJobPattern && out.hRunning === out.h0 && o.historyLength === out.h0 && out.postsDelta === 1 && !o.url.some(x => x.startsWith("analysisJobId=")) && o.first === "AVAILABLE", "job polls held 1.5 s so analysisJobId is observable in the URL");
+await step("C09-B2", async () => ({ b2Reads: requests.filter(r => r.phase === "C08-ANALYSE" && /job-comparison/.test(r.path)).length }), o => o.first === "AVAILABLE" && o.binding === A0 && o.rows.length > 0);
+await step("C10-EVIDENCE", async () => { const row = page.locator('[data-testid^="pxj-first-req-"]').first(); await row.focus(); await sleep(600); return { focused: await row.getAttribute("data-focus") }; }, (o, out) => out.focused === "true" && o.quotes.length > 0);
+let afterRun = null;
+await step("C11-RELOAD", async () => { afterRun = await snap(page); await page.reload({ waitUntil: "domcontentloaded" }); await settle(page, 2500); const now = await snap(page); return { reloadDiff: diff(afterRun, now).filter(d => !["staged", "stagedHint"].includes(d.k)), stagedAfter: now.staged }; }, (o, out) => out.reloadDiff.length === 0 && out.stagedAfter === 0);
+await step("C12-MODE-PERSON", async () => { const h0 = await hist(); await t("investigation-mode-PERSON").click(); await waitParam("investigationMode", "PERSON"); await settle(page); return { h0 }; }, (o, out) => H1(o, out) && o.mode === "PERSON");
+await step("C13-MODE-JOB", async () => { const h0 = await hist(); await t("investigation-mode-JOB").click(); await waitParam("investigationMode", "JOB"); await settle(page); return { h0 }; }, (o, out) => H1(o, out) && o.mode === "JOB");
+await step("C14-MODE-PXJ", async () => { const h0 = await hist(); await t("investigation-mode-PERSON_X_JOB").click(); await waitParam("investigationMode", "PERSON_X_JOB"); await settle(page); return { h0 }; }, (o, out) => H1(o, out) && o.first === "AVAILABLE");
+await step("C15-ROLE_SWITCH", async () => {
+  const h0 = await hist(); await t("job-pool-panel-toggle").click(); await page.waitForSelector('[data-testid="semantic-career-intelligence-field"][data-field-focus="FIELD"]', { timeout: 20000 }); const hField = await hist();
+  await openRole(KES, ROLE2); await t("syntx-job-scope-select").click(); await waitParam("jobScopeRoleId", ROLE2); await waitJob("VALID");
+  await t("field-focus-capability-btn").click(); await waitFirst(["ROLE_MISMATCH"]); await settle(page); return { h0, hField };
+}, o => o.first === "ROLE_MISMATCH" && o.analysisOnView === A0);
+await step("C16-POOL_SWITCH", async () => {
+  await t("job-pool-panel-toggle").click(); await page.waitForSelector('[data-testid="semantic-career-intelligence-field"][data-field-focus="FIELD"]', { timeout: 20000 });
+  await t("syntx-pools-toggle").click(); await t(`job-pool-select-${RF}`).click(); await waitParam("jobPoolUploadId", RF);
+  await openRole(KES, ROLE); await t("syntx-job-scope-select").click(); await waitParam("jobScopePoolUploadId", RF); await waitJob("VALID");
+  await t("field-focus-capability-btn").click(); await waitFirst(["ROLE_MISMATCH"]); await settle(page);
+}, o => o.first === "ROLE_MISMATCH" && o.url.includes(`jobScopePoolUploadId=${RF}`) && o.url.includes(`jobScopeRoleId=${ROLE}`), "the other pool carries a role with the same id (role_kestrel_fullstack)");
+await step("C17-OFFER-ROLE-BACK", async () => { const h0 = await hist(); await t("pxj-first-select-role").click(); await waitFirst(["AVAILABLE"]); await settle(page); return { h0 }; }, (o, out) => H1(o, out) && o.url.includes(`jobScopePoolUploadId=${DLL}`) && o.binding === A0);
+await step("C18-CLEAR-JOB", async () => { const h0 = await hist(); await t("job-pool-panel-toggle").click(); await page.waitForSelector('[data-testid="semantic-career-intelligence-field"][data-field-focus="FIELD"]', { timeout: 20000 }); await sleep(800); const h1 = await hist(); await t("syntx-job-scope-clear").click(); await waitJob("NONE"); await settle(page); return { h0, h1 }; }, (o, out) => o.historyLength === out.h1 + 1 && o.job === "NONE" && !o.url.some(x => x.startsWith("jobScope")));
+// ================================================================ N · Back through every entry (to the other document), Forward through every entry
+const total = await hist(); const navStart = rec.steps.length; let backs = 0;
+for (let i = 1; i <= 40; i += 1) {
+  const l = await step(`N-back-${String(i).padStart(2, "0")}`, async () => { const p0 = posts(); await page.goBack({ waitUntil: "commit" }).catch(() => {}); const v = await versusReload(); return { ...v, postsDelta: posts() - p0 }; }, (o, out) => out.equal && out.postsDelta === 0);
+  backs = i; if (l.obs?.path !== "/career/demo") break;
+}
+for (let i = 1; i <= backs; i += 1) await step(`N-forward-${String(i).padStart(2, "0")}`, async () => { const p0 = posts(); await page.goForward({ waitUntil: "commit" }).catch(() => {}); const v = await versusReload(); return { ...v, postsDelta: posts() - p0 }; }, (o, out) => out.equal && out.postsDelta === 0);
+rec.navigation = { historyLengthAtEnd: total, backs, documentLoadsDuringInAppNav: rec.steps.slice(navStart).map(s => ({ step: s.name, docs: s.requests.filter(r => r.includes("DOC ")) })).filter(x => x.docs.length) };
+
+// ================================================================ I · inverse and recovery cases
+const inv = async (name, url, expect, note) => step(name, async () => { await page.goto(url, { waitUntil: "domcontentloaded" }); const h0 = await hist(); await settle(page, 2500); return { h0 }; }, expect, note);
+await inv("I01-mode-FOO", capUrl("FOO", sel(DLL, ROLE) + `&analysisId=${A0}`), (o, out) => !o.url.some(x => x.startsWith("investigationMode=")) && o.mode === "PERSON_X_JOB" && o.historyLength === out.h0 && o.first === "AVAILABLE");
+await inv("I02-mode-empty", capUrl("", sel(DLL, ROLE) + `&analysisId=${A0}`), (o, out) => !o.url.some(x => x.startsWith("investigationMode=")) && o.mode === "PERSON_X_JOB" && o.historyLength === out.h0);
+await inv("I03-mode-repeated", capUrl("PERSON", sel(DLL, ROLE) + `&analysisId=${A0}&investigationMode=JOB`), (o, out) => !o.url.some(x => x.startsWith("investigationMode=")) && o.mode === "PERSON_X_JOB" && o.historyLength === out.h0);
+await inv("I04-mode-lowercase", capUrl("person", sel(DLL, ROLE) + `&analysisId=${A0}`), o => !o.url.some(x => x.startsWith("investigationMode=")) && o.mode === "PERSON_X_JOB", "lowercase is not a mode (exact values only)");
+await inv("I05-pxj-without-scope", capUrl("PERSON_X_JOB", `&analysisId=${A0}`), o => o.url.includes("investigationMode=PERSON_X_JOB") && o.job === "NONE" && o.offer !== null, "valid mode, no job: stays 'no job' with the offer (O-RF-1 does not touch it)");
+await inv("I06-unknown-role", capUrl("PERSON_X_JOB", sel(DLL, "role_pink_does_not_exist") + `&analysisId=${A0}`), o => o.job === "INVALID" && o.first !== "AVAILABLE");
+await inv("I07-archived-pool", capUrl("PERSON_X_JOB", sel(ARCH ?? "JPOOL_NONE", ROLE) + `&analysisId=${A0}`), o => o.job === "INVALID" && o.first !== "AVAILABLE");
+await inv("I08-unknown-upload", capUrl("PERSON_X_JOB", sel("JPOOL_00000000000000000000000000000000", ROLE) + `&analysisId=${A0}`), o => o.job === "INVALID" && o.first !== "AVAILABLE");
+await inv("I09-malformed-pool", capUrl("PERSON_X_JOB", sel("not-a-pool", ROLE) + `&analysisId=${A0}`), o => o.first !== "AVAILABLE");
+await inv("I10-other-pool-same-role-id", capUrl("PERSON_X_JOB", sel(RF, ROLE) + `&analysisId=${A0}`), o => o.first === "ROLE_MISMATCH", "selection RF/role_kestrel_fullstack, analysis bound to DLL/role_kestrel_fullstack");
+await inv("I11-unknown-analysis", capUrl("PERSON_X_JOB", sel(DLL, ROLE) + "&analysisId=ANL_0000000000000_0"), o => o.first === "RESULT_NOT_FOUND");
+for (const [n, v] of [["I12-job-traversal", "..%2Fx"], ["I13-job-short", "JOB_1"], ["I14-job-lowercase", "job_1792628993472_10"], ["I15-job-too-long", "JOB_12345678901234567_1"], ["I16-job-suffix", "JOB_1792628993472_10x"]]) {
+  await step(n, async () => { phase = n; await page.goto(capUrl("PERSON_X_JOB", sel(DLL, ROLE) + `&analysisId=${A0}&analysisJobId=${v}`), { waitUntil: "domcontentloaded" }); await settle(page, 2500); return { jobReads: requests.filter(r => r.phase === n && r.path.startsWith("/api/career/jobs/")).length }; }, (o, out) => !o.url.some(x => x.startsWith("analysisJobId=")) && out.jobReads === 0 && o.first === "AVAILABLE" && o.error === null);
+}
+await step("I17-job-repeated", async () => { phase = "I17-job-repeated"; await page.goto(capUrl("PERSON_X_JOB", sel(DLL, ROLE) + `&analysisId=${A0}&analysisJobId=${runJobSeen}&analysisJobId=${runJobSeen}`), { waitUntil: "domcontentloaded" }); await settle(page, 2500); return { jobReads: requests.filter(r => r.phase === "I17-job-repeated" && r.path.startsWith("/api/career/jobs/")).length }; }, (o, out) => !o.url.some(x => x.startsWith("analysisJobId=")) && out.jobReads === 0);
+await step("I18-job-unknown", async () => { const p0 = posts(); await page.goto(capUrl("PERSON_X_JOB", sel(DLL, ROLE) + `&analysisId=${A0}&analysisJobId=JOB_1000000000000_1`), { waitUntil: "domcontentloaded" }); await t("intake-error-banner").waitFor({ timeout: 30000 }); await settle(page); return { postsDelta: posts() - p0 }; }, (o, out) => o.error?.endsWith("|NOT_FOUND") && o.errorJobId && !o.retry && o.url.includes("analysisJobId=JOB_1000000000000_1") && out.postsDelta === 0 && o.binding === A0, "the analysis on view stays");
+await step("I19-job-succeeded-in-url", async () => { const p0 = posts(); await page.goto(capUrl("PERSON_X_JOB", sel(DLL, ROLE) + `&analysisJobId=${runJobSeen}`), { waitUntil: "domcontentloaded" }); await waitParam("analysisJobId", "__NULL__", 60000); await waitParam("analysisId", A0, 60000); await settle(page); return { postsDelta: posts() - p0 }; }, (o, out) => out.postsDelta === 0 && o.first === "AVAILABLE" && o.binding === A0, "an already SUCCEEDED job named by the URL: read, its analysis set (replace), no POST");
+// RUNNING → reload → resumed by GET only
+await step("I20-reload-running", async () => {
+  await page.goto(capUrl("PERSON_X_JOB", sel(DLL, ROLE)), { waitUntil: "domcontentloaded" }); await settle(page);
+  await delayJobs(3000); await stage(PDF); const p0 = posts(); await start(); await waitParam("analysisJobId", "__SET__", 60000); const job = param("analysisJobId"); const h0 = await hist();
+  phase = "I20-reload-running:after"; await page.reload({ waitUntil: "domcontentloaded" }); await sleep(1200); const during = await snap(page);
+  await waitServerJob(); await undelayJobs(); await waitParam("analysisJobId", "__NULL__", 120000); await waitParam("analysisId", "__SET__", 60000); await settle(page);
+  const after = requests.filter(r => r.phase === "I20-reload-running:after" && r.tab === "nav");
+  return { h0, jobMatches: /^JOB_/.test(job), during: { url: during.url, analyzing: during.analyzing, first: during.first, error: during.error }, postsDelta: posts() - p0, nonGetAfterReload: after.filter(r => r.method !== "GET").map(r => r.path), jobReadsAfterReload: after.filter(r => r.path.startsWith(`/api/career/jobs/${job}`)).length };
+}, (o, out) => out.postsDelta === 1 && out.nonGetAfterReload.length === 0 && out.jobReadsAfterReload > 0 && o.first === "AVAILABLE" && o.historyLength === out.h0 && out.during.url.some(x => x.startsWith("analysisJobId=")), "job polls held 3 s; one POST before the reload, none after");
+// FAILED → reload → FAILED banner, no retry, param kept
+await step("I21-reload-failed", async () => {
+  await page.goto(capUrl("PERSON_X_JOB", sel(DLL, ROLE) + `&analysisId=${A0}`), { waitUntil: "domcontentloaded" }); await waitFirst(["AVAILABLE"]);
+  await delayJobs(3000); await t("source-dock-file-input").setInputFiles(BOGUS); await page.locator('[data-testid="start-intake-analysis-btn"]:not([disabled])').waitFor({ timeout: 30000 }); const p0 = posts(); await start(); await waitParam("analysisJobId", "__SET__", 60000); const job = param("analysisJobId");
+  const sj = await waitServerJob(); await undelayJobs(); await page.reload({ waitUntil: "domcontentloaded" }); await t("intake-error-banner").waitFor({ timeout: 60000 }); await settle(page);
+  return { serverJob: sj.status, postsDelta: posts() - p0, job: /^JOB_/.test(job) };
+}, (o, out) => out.serverJob === "FAILED" && o.error?.endsWith("|FAILED") && o.errorJobId && !o.retry && o.url.some(x => x.startsWith("analysisJobId=")) && out.postsDelta === 1 && o.binding === A0 && o.url.includes(`analysisId=${A0}`), "the old analysis A0 stays on view (F-RF-2)");
+// (b) second run over an analysis on view, reloaded while running: A0 stays meanwhile, then replaced on SUCCEEDED
+let A2 = null;
+await step("I22-second-run-reload", async () => {
+  await page.goto(capUrl("PERSON_X_JOB", sel(DLL, ROLE) + `&analysisId=${A0}`), { waitUntil: "domcontentloaded" }); await waitFirst(["AVAILABLE"]);
+  await delayJobs(3000); await stage(PDF); const p0 = posts(); await start(); await waitParam("analysisJobId", "__SET__", 60000);
+  await page.reload({ waitUntil: "domcontentloaded" }); await sleep(2500); const during = await snap(page);
+  await waitServerJob(); await undelayJobs(); await waitParam("analysisJobId", "__NULL__", 120000); await page.waitForFunction(a => { const x = new URL(location.href).searchParams.get("analysisId"); return x !== null && x !== a; }, A0, { timeout: 60000 }); await waitFirst(["AVAILABLE"]); await settle(page); A2 = param("analysisId");
+  return { during: { analysisParam: during.url.find(x => x.startsWith("analysisId=")) === `analysisId=${A0}`, binding: during.binding === A0, first: during.first, jobParam: during.url.some(x => x.startsWith("analysisJobId=")) }, postsDelta: posts() - p0 };
+}, (o, out) => out.during.analysisParam && out.during.binding && out.during.first === "AVAILABLE" && out.during.jobParam && out.postsDelta === 1 && o.binding === A2 && A2 !== A0, "GELB case (b)");
+// (a) in-page Back / Forward during a running job (analysisJobId in an earlier entry)
+await step("I23-back-forward-running", async () => {
+  await page.goto(capUrl("PERSON_X_JOB", sel(DLL, ROLE) + `&analysisId=${A0}`), { waitUntil: "domcontentloaded" }); await waitFirst(["AVAILABLE"]);
+  await delayJobs(4000); await delayJobs(4000, twin); await stage(PDF); const p0 = posts(); await start(); await waitParam("analysisJobId", "__SET__", 60000); const job = param("analysisJobId");
+  await t("investigation-mode-PERSON").click(); await waitParam("investigationMode", "PERSON"); const entryPerson = (await snap(page)).url;
+  phase = "I23:back"; await page.goBack({ waitUntil: "commit" }); const back = await versusReload();
+  phase = "I23:forward"; await page.goForward({ waitUntil: "commit" }); const fwd = await versusReload();
+  await waitServerJob(); await undelayJobs(); await undelayJobs(twin); await waitParam("analysisJobId", "__NULL__", 120000); await settle(page, 2500); const done = await snap(page);
+  phase = "I23:back-after"; await page.goBack({ waitUntil: "commit" }); await waitParam("analysisJobId", "__NULL__", 120000).catch(() => {}); const backAfter = await versusReload();
+  return { job: /^JOB_/.test(job), entryPersonCarriesJob: entryPerson.some(x => x === `analysisJobId=${job}`), back: { equal: back.equal, diff: back.diff, jobParam: back.nav.url.some(x => x.startsWith("analysisJobId=")), mode: back.nav.mode, binding: back.nav.binding === A0 }, forward: { equal: fwd.equal, diff: fwd.diff, mode: fwd.nav.mode }, done: { mode: done.mode, newAnalysis: done.url.find(x => x.startsWith("analysisId=")) !== `analysisId=${A0}` }, backAfter: { equal: backAfter.equal, diff: backAfter.diff, mode: backAfter.nav.mode, jobParam: backAfter.nav.url.some(x => x.startsWith("analysisJobId=")), analysis: backAfter.nav.url.find(x => x.startsWith("analysisId=")) === `analysisId=${A0}` ? "A0" : "other" }, postsDelta: posts() - p0, nonGetDuringNav: requests.filter(r => /^I23:/.test(r.phase) && r.method !== "GET").map(r => `${r.tab} ${r.path}`) };
+}, (o, out) => out.back.equal && out.forward.equal && out.backAfter.equal && out.postsDelta === 1 && out.nonGetDuringNav.length === 0, "GELB case (a); job polls held 4 s in both tabs");
+// Back during SUBMITTING (the POST still on its way): observation
+await step("I24-back-during-submitting", async () => {
+  await page.goto(`${BASE}/career/demo?investigationMode=PERSON`, { waitUntil: "domcontentloaded" }); await settle(page);
+  await page.goto(capUrl("PERSON_X_JOB", sel(DLL, ROLE) + `&analysisId=${A0}`), { waitUntil: "domcontentloaded" }); await waitFirst(["AVAILABLE"]);
+  await t("investigation-mode-PERSON").click(); await waitParam("investigationMode", "PERSON"); await t("investigation-mode-PERSON_X_JOB").click(); await waitParam("investigationMode", "PERSON_X_JOB"); await settle(page);
+  const before = new Set((await get("/api/career/jobs")).body?.jobs?.map(j => j.jobId) ?? []); const anBefore = ((await get("/api/career/analyses")).body?.analyses ?? []).length;
+  await page.route("**/api/career/analyze", async r => { await sleep(3000); try { await r.continue(); } catch {} });
+  await stage(PDF); const p0 = posts(); await start(); await sleep(300); phase = "I24:back"; await page.goBack({ waitUntil: "commit" }); const back = await versusReload();
+  await sleep(6000); await page.unroute("**/api/career/analyze"); const serverJobAfter = jobs.length > jobMark ? jobs.at(-1) : null; let job = null;
+  if (serverJobAfter?.jobId) { for (let i = 0; i < 120; i += 1) { job = (await get(`/api/career/jobs/${serverJobAfter.jobId}`)).body; if (["SUCCEEDED", "FAILED"].includes(job?.status)) break; await sleep(1000); } }
+  await settle(page, 2500); const later = await snap(page);
+  phase = "I24:forward"; await page.goForward({ waitUntil: "commit" }); const fwd = await versusReload();
+  const anAfter = ((await get("/api/career/analyses")).body?.analyses ?? []).length;
+  return { postsDelta: posts() - p0, analyzeAnswered: serverJobAfter ? { status: serverJobAfter.status, phase: serverJobAfter.phase } : null, serverJob: job?.status ?? null, analysesDelta: anAfter - anBefore, back: { equal: back.equal, mode: back.nav.mode, jobParam: back.nav.url.some(x => x.startsWith("analysisJobId=")), analyzing: back.nav.analyzing }, laterOnBackEntry: { analyzing: later.analyzing, jobParam: later.url.some(x => x.startsWith("analysisJobId=")), binding: later.binding === A0 }, forward: { equal: fwd.equal, jobParam: fwd.nav.url.some(x => x.startsWith("analysisJobId=")), binding: fwd.nav.binding === A0, analyzing: fwd.nav.analyzing } };
+}, (o, out) => out.back.equal && out.forward.equal, "observation: POST /api/career/analyze held 3 s, Back 0.3 s after ANALYZE; what becomes of the job is recorded, not judged");
+// N-5 staged hint gone after in-app Back / Forward
+await step("I25-staged-after-nav", async () => {
+  await page.goto(capUrl("PERSON_X_JOB", sel(DLL, ROLE) + `&analysisId=${A0}`), { waitUntil: "domcontentloaded" }); await waitFirst(["AVAILABLE"]);
+  await t("investigation-mode-PERSON").click(); await waitParam("investigationMode", "PERSON"); await stage(PDF); const staged = await snap(page);
+  await page.goBack({ waitUntil: "commit" }); await settle(page); const b = await snap(page); await page.goForward({ waitUntil: "commit" }); await settle(page); const f = await snap(page);
+  return { stagedBefore: staged.staged, hintBefore: staged.stagedHint !== null, back: [b.staged, b.stagedHint], forward: [f.staged, f.stagedHint] };
+}, (o, out) => out.stagedBefore >= 1 && out.hintBefore && out.back[0] === 0 && out.back[1] === null && out.forward[0] === 0 && out.forward[1] === null);
+
+rec.analyses = { A0: A0 ? "set" : null, A2: A2 ? "set" : null, distinct: A0 !== A2 };
+rec.jobs = jobs.map(j => ({ phase: j.phase, status: j.status, jobId: j.jobId ? "JOB_…" : null }));
+rec.pageErrors = errors;
+rec.inspectorReads = requests.filter(r => /gemini-result|gemini-exchanges/.test(r.path)).length;
+rec.requests = requests.map(r => ({ phase: r.phase, tab: r.tab, method: r.method, type: r.type, path: r.path.replace(/(ANL|JOB|JPOOL)_[A-Z0-9_]+/g, "$1_…") }));
+writeFileSync(`${OUT}/pink-nav-${LABEL}-${W}.json`, JSON.stringify(rec, null, 1));
+console.log("DONE", JSON.stringify({ pass: rec.steps.filter(s => s.ok).length, of: rec.steps.length, failed: rec.steps.filter(s => !s.ok).map(s => s.name), errors: errors.length, inspectorReads: rec.inspectorReads }));
+await browser.close();
