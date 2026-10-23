@@ -24,7 +24,7 @@ cdp.on("Network.responseReceived", e => { const u = new URL(e.response.url); if 
 cdp.on("Network.loadingFailed", e => net.push({ phase, kind: "fail", type: e.type, error: e.errorText, canceled: e.canceled }));
 const errors = [], consoleErr = []; page.on("pageerror", e => errors.push({ phase, e: String(e).slice(0, 200) })); page.on("console", m => { if (m.type() === "error") consoleErr.push({ phase, m: m.text().slice(0, 200) }); });
 const requests = []; page.on("request", r => { const u = new URL(r.url()); if (u.pathname.startsWith("/api/")) requests.push({ phase, method: r.method(), path: u.pathname + u.search }); });
-const obs = async () => page.evaluate(() => {
+const OBS = () => {
   const q = s => document.querySelector(s), qa = s => [...document.querySelectorAll(s)];
   const root = q('[data-testid="semantic-career-intelligence-field"]'), panel = q('[data-testid="pxj-first-screen"]'), ind = q('[data-testid="job-scope-indicator"]'), field = q('[data-testid="syntx-field"]');
   const cov = q('[data-testid="pxj-first-coverage"]');
@@ -45,7 +45,8 @@ const obs = async () => page.evaluate(() => {
     viewMatches: qa('[data-testid="hud-action-view-matches"]').length,
     pageshow: (() => { try { return JSON.parse(sessionStorage.getItem("__ps") || "[]").slice(-1)[0] ?? null; } catch { return null; } })()
   };
-}).catch(e => ({ error: String(e).slice(0, 160) }));
+};
+const obs = async (target = page) => target.evaluate(OBS).catch(e => ({ error: String(e).slice(0, 160) }));
 const shot = async name => {
   await page.evaluate(label => { if (document.getElementById("real-mark")) return; const d = document.createElement("div"); d.id = "real-mark"; d.textContent = label; Object.assign(d.style, { position: "fixed", left: "12px", top: "8px", zIndex: 99999, padding: "3px 10px", borderRadius: "6px", background: "rgba(126,255,204,0.92)", color: "#06121c", font: "700 12px monospace", pointerEvents: "none" }); document.body.appendChild(d); }, LABEL).catch(() => {});
   await page.screenshot({ path: `${OUT}/REAL-${name}-${W}x${H}.png` });
@@ -111,6 +112,49 @@ for (const k of [1, 2, 3]) await step(`R08-back-forward-${k}`, async () => {
   const f1 = (await sleep(1000), await obs()), f5 = (await sleep(4000), await obs()), f20 = (await sleep(15000), await obs());
   return { back: { url: back.url, mode: back.mode, hydrated: back.hydrated }, f1: { h: f1.hydrated, first: f1.first?.state, job: f1.job?.state, ps: f1.pageshow }, f5: { h: f5.hydrated, first: f5.first?.state, job: f5.job?.state }, f20: { h: f20.hydrated, first: f20.first?.state, job: f20.job?.state }, apiAfterForward: requests.slice(n0).map(r => `${r.method} ${r.path.split("?")[0]}`), docAndChunksAfterForward: net.slice(m0).filter(x => x.kind === "fail" || x.type === "Document" || x.type === "Script").map(x => x.kind === "fail" ? `FAIL ${x.type} ${x.error}` : `${x.type} ${x.status} ${x.disk ? "DISK" : x.prefetch ? "PREFETCH" : "NET"} ${x.path}`) };
 });
+
+// R09 — in-app history (N-1 B-NAV): the UI path again from a fresh tab; every entry is compared with a fresh load of its URL in a
+// second tab (NAV ≡ RELOAD). Compared: first-screen state, statement, binding, counts, rows, quotes, field, mode, job state, observation.
+const fingerprint = o => JSON.stringify({ first: o?.first ?? null, rows: o?.rows ?? [], quotes: o?.quotes ?? [], field: o?.field, mode: o?.mode, job: o?.job?.state ?? null, observation: o?.observation ? { kind: o.observation.kind, id: o.observation.id, analysisId: o.observation.analysisId } : null, offer: o?.offer ?? null });
+const settle = async () => { await page.waitForLoadState("networkidle").catch(() => {}); await sleep(2500); };
+await step("R09-in-app-history", async () => {
+  const entries = [];
+  const remember = async label => { entries.push({ label, url: page.url(), history: await page.evaluate(() => history.length) }); };
+  await page.goto(`${BASE}/career/demo?investigationMode=PERSON_X_JOB&analysisId=${ANL}&focus=FIELD`, { waitUntil: "networkidle" }); await waitField("FIELD"); await settle(); await remember("start");
+  if (await t(`job-pool-select-${POOL}`).count() === 0) await t("syntx-pools-toggle").click();
+  await t(`job-pool-select-${POOL}`).click(); await settle(); await remember("pool");
+  await t(`syntx-organization-${ORG}`).dispatchEvent("click"); await t(`syntx-role-${ROLE}`).waitFor({ timeout: 20000 }); await settle(); await remember("organization");
+  await openRole(ROLE); await settle(); await remember("role");
+  await t("syntx-job-scope-select").click(); await page.waitForFunction(() => document.querySelector('[data-testid="job-scope-indicator"]')?.dataset.jobScopeState === "VALID", null, { timeout: 30000 }); await settle(); await remember("select-as-job");
+  await toCapability(); await waitFirst(["AVAILABLE"]); await settle(); await remember("capability-field");
+  await t("investigation-mode-PERSON").click(); await waitFirst(["MODE_MISMATCH"]); await settle(); await remember("mode-person");
+  const historyGrowth = entries.map(e => e.history);
+  const checks = [];
+  const compare = async (label, url) => { const here = await obs(); const p2 = await ctx.newPage(); await p2.goto(url, { waitUntil: "networkidle" }); await sleep(2500); const there = await obs(p2); await p2.close(); checks.push({ label, url: new URL(url).search, same: fingerprint(here) === fingerprint(there), here: here.first?.state ?? here.field, there: there.first?.state ?? there.field, hydrated: here.hydrated }); };
+  // Back through every entry, then Forward to the end.
+  for (let i = entries.length - 2; i >= 0; i -= 1) { await page.goBack(); await settle(); if (page.url() !== entries[i].url) checks.push({ label: `back-to-${entries[i].label}`, urlMismatch: [page.url(), entries[i].url] }); await compare(`back-to-${entries[i].label}`, entries[i].url); }
+  for (let i = 1; i < entries.length; i += 1) { await page.goForward(); await settle(); if (page.url() !== entries[i].url) checks.push({ label: `forward-to-${entries[i].label}`, urlMismatch: [page.url(), entries[i].url] }); await compare(`forward-to-${entries[i].label}`, entries[i].url); }
+  const failed = checks.filter(c => !c.same || c.urlMismatch);
+  if (failed.length) throw new Error(`NAV != RELOAD: ${JSON.stringify(failed).slice(0, 250)}`);
+  return { historyGrowth, checks };
+});
+// R10 — O-RF-1: an unknown mode is removed by replace (no new history entry); the screen equals the URL without the parameter.
+await step("R10-unknown-mode", async () => {
+  await page.goto(`${BASE}/career/demo?investigationMode=FOO&jobPoolUploadId=${POOL}&jobScopePoolUploadId=${POOL}&jobScopeRoleId=${ROLE}&analysisId=${ANL}&focus=CAPABILITY`, { waitUntil: "networkidle" });
+  const h0 = await page.evaluate(() => history.length); await waitFirst(["AVAILABLE"]); await settle();
+  const mode = new URL(page.url()).searchParams.get("investigationMode"); const h1 = await page.evaluate(() => history.length);
+  if (mode !== null) throw new Error(`investigationMode still ${mode}`); if (h1 !== h0) throw new Error(`history grew ${h0} → ${h1}`);
+  return { modeAfter: mode, historyBefore: h0, historyAfter: h1 };
+});
+// R11 — B-RUN on the real job: a URL naming the (finished) job JOB_1792628993472_10 is followed by GET only and lands on its analysis.
+await step("R11a-resume-real-job", async () => {
+  await page.goto(`${BASE}/career/demo?investigationMode=PERSON_X_JOB&jobPoolUploadId=${POOL}&jobScopePoolUploadId=${POOL}&jobScopeRoleId=${ROLE}&analysisJobId=JOB_1792628993472_10&focus=CAPABILITY`, { waitUntil: "networkidle" });
+  await page.waitForFunction(a => new URL(location.href).searchParams.get("analysisId") === a, ANL, { timeout: 60000 }); await waitFirst(["AVAILABLE"]); await settle();
+  const url = new URL(page.url()).searchParams; if (url.get("analysisJobId") !== null) throw new Error("analysisJobId not removed after SUCCEEDED");
+  return { analysisIdAfter: url.get("analysisId") };
+});
+await step("R11b-unknown-job", async () => { await page.goto(`${BASE}/career/demo?investigationMode=PERSON_X_JOB&jobPoolUploadId=${POOL}&jobScopePoolUploadId=${POOL}&jobScopeRoleId=${ROLE}&analysisJobId=JOB_1000000000000_1&focus=CAPABILITY`, { waitUntil: "networkidle" }); await page.waitForSelector('[data-testid="intake-error-banner"][data-job-resume="NOT_FOUND"]', { timeout: 60000 }); if (await page.locator('[data-testid="retry-intake-btn"]').count() !== 0) throw new Error("retry offered for a URL job"); });
+await step("R11c-bad-job-format", async () => { await page.goto(`${BASE}/career/demo?investigationMode=PERSON_X_JOB&jobPoolUploadId=${POOL}&jobScopePoolUploadId=${POOL}&jobScopeRoleId=${ROLE}&analysisJobId=not-a-job&analysisId=${ANL}&focus=CAPABILITY`, { waitUntil: "networkidle" }); await waitFirst(["AVAILABLE"]); await settle(); if (new URL(page.url()).searchParams.get("analysisJobId") !== null) throw new Error("bad analysisJobId kept"); });
 
 const same = (a, b) => JSON.stringify([a?.obs?.first, a?.obs?.rows, a?.obs?.quotes]) === JSON.stringify([b?.obs?.first, b?.obs?.rows, b?.obs?.quotes]);
 rec.checks = { deepLinkEqualsReload: r01 && r03 ? same(r01, r03) : null, deepLinkEqualsUiPath: r01 && r04 ? same(r01, r04) : null, nonGet: requests.filter(r => r.method !== "GET"), geminiRoutes: requests.filter(r => /gemini|analyze/.test(r.path)), pageErrors: errors, consoleErrors: consoleErr.slice(0, 20) };

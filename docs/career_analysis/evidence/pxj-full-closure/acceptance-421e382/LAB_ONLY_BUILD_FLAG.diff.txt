@@ -1,0 +1,14 @@
+diff --git a/next.config.ts b/next.config.ts
+index 4410b96..84eee30 100644
+--- a/next.config.ts
++++ b/next.config.ts
+@@ -1,7 +1,9 @@
+ import type { NextConfig } from "next";
+ 
++// GELB measurement worktree only (O-RF-2): the pre-existing proxy route type error blocks `next build`; never committed.
+ const nextConfig: NextConfig = {
+   serverExternalPackages: ["pdf-parse"],
++  typescript: { ignoreBuildErrors: true },
+ };
+ 
+ export default nextConfig;

@@ -98,3 +98,43 @@ the copied real data, walks it at 1920×1080 and 1280×720, then PINK validates 
 - **B-3** — fix of the proxy route type error so a production build works without the measurement override.
 - **Integration GO** — none given; nothing integrated.
 - Stop of lab :41862.
+- **O-PXJ-720** — first-screen layout at 1280×720 (B2 below the fold, shell overlaps while scrolled): accept or assign a GRÜN layout fix.
+
+## 7 Candidate 421e382 — GELB check and owner acceptance lab
+
+GRÜN delivered N-1…N-5 as `421e382` on `frontend/pxj-first-screen-g1` (fast-forward of 88539d3): dea34eb N-1 B-NAV · ee91062 N-2
+B-RUN · e6d9ba2 N-3 O-RF-1 · 1dcc273 N-4 F-RF-4 · 2f96e63 N-5 B-SRC · 421e382 evidence + JOB_FIELD_FRONTEND.md §13.2.39.
+
+**GELB check (CODE_INSPECTION + test runs):** files only `app/components/career/demo/*`, `lib/career/ui/*`, `app/career/demo/page.tsx`,
+tests under `test/career/pxj-first-screen/`, G1 evidence and §13.2.39 — no backend, API or DB file. New copy table
+`navigation-copy.ts` beside the components (sil-language.ts was outside the file list; accepted). tsc: only the known relay-check
+error. Focused group (`npm run test:isolated`, 23 files): **291/291**. Counter-proof by GELB: the 7 new test files on 88539d3 →
+**32 FAIL / 9 PASS** (the 9 are inverse and guard tests), identical to GRÜN's record. Leak scan clean. Review notes: one user action
+= one entry (first write push, the rest of the same task replace); system writes are replace; the remount releases the old job
+controller (no polling, late answers ignored); `resumeJob` polls `GET /api/career/jobs/{id}` only; a URL job has no retry button.
+
+**Owner acceptance lab** `http://127.0.0.1:41872/career/demo` — local production build (`next start`) of 421e382 with the
+LAB_ONLY_BUILD_FLAG (`typescript.ignoreBuildErrors` in `next.config.ts`, not committed; diff and sha256 before/after in
+`acceptance-421e382/`); database `condyn_test_e58e405b7791d0e8` = new disposable copy of `condyn_test_f96356700c836e92`, 124 tables
+row-identical (`acceptance-421e382/copy-proof.json`); no worker, no Gemini key, network sentinel, no token.
+
+**Walk on PERSISTED_REAL_RESULT** (`acceptance-421e382/real-walk-{1920x1080,1280x720}.json`, 37 shots): **28/28 steps ok in both
+viewports**, all requests GET (206 per run), 0 page errors (console 404s only where an unknown id is the test).
+
+| Step | 1920×1080 | 1280×720 |
+|---|---|---|
+| R01–R03 deep link, evidence focus, reload | AVAILABLE 9/8/1, 8 verified quotes, identical | same |
+| R04 UI path pool → Kestrel → role → select as job → Capability Field (+ reload) | AVAILABLE, identical to deep link | same |
+| R05 role switch / reload / back · R06 mode PERSON / reload / back | ROLE_MISMATCH · MODE_MISMATCH → AVAILABLE | same |
+| R07 foreign pool · PERSON analysis under PxJ · unknown analysis | JOB_INVALID (offer, no coverage) · MODE_MISMATCH · RESULT_NOT_FOUND | same |
+| R08 Back/Forward across documents (3 settle times) | 3/3 hydrated, AVAILABLE | same |
+| R09 in-app history: 7 decisions → 7 entries; 6× Back + 6× Forward vs fresh load of each URL in a second tab | 12/12 equal (NAV ≡ RELOAD) | 12/12 |
+| R10 `investigationMode=FOO` | removed, history length unchanged, AVAILABLE | same |
+| R11 `analysisJobId=JOB_1792628993472_10` · unknown job · bad format | one GET on the job → analysisId set, parameter removed, AVAILABLE · NOT_FOUND banner with job id, no retry · removed | same |
+
+**O-PXJ-720 (not PASS, owner decision):** at 1280×720 the B2 panel sits at 885,485–1256,925, i.e. below the fold; the coverage is
+reachable only by scrolling the page (301 px) and then the panel (scrollHeight 2059 / clientHeight 438), and while the page is
+scrolled the fixed shell overlaps the field (`REAL-R01b-scrolled-1280x720.jpg`). Present since G1 (GRÜN's STANDIN-layout.json
+shows the same box). At 1920×1080 the panel is fully in view.
+
+PINK validation: pending (§8).
