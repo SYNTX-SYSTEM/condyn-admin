@@ -175,3 +175,52 @@ Evidenz: **C** = Code (GELB), **T** = deterministischer Test (GRÜN), **B** = Br
    - nach dem Fix vollständige Nachprüfung aller betroffenen Übergänge (X-11..X-18, X-16) und der G1-Kriterien PA-01..PA-14.
 3. **GELB:** Einordnung neuer Befunde, Prüfung jedes Fix-Commits (Dateien, tsc, isolierte Tests, Lecks). Danach ein erneuter Sweep, bis keine neuen Befunde im Umfang mehr auftauchen. Sich wiederholende Befunde gehen an den Owner.
 4. **Owner:** B-NAV, B-SRC, B-RUN, F-RF-4; danach Sichtabnahme und Integration.
+
+## 8 — Ergebnis der Schließung (2026-10-23)
+
+**Reproduktion auf `a9ff0ca`** (PINK §3.58, `73e20c0`, STAND_IN):
+- F-RF-1, F-RF-2a, F-RF-2b und F-RF-3 (CHECKING und INVALID) sind reproduziert, F-RF-5 ist bestätigt.
+- Matrix: 17 PASS. X-13, X-14, X-17 und X-18 sind FAIL, das sind F-RF-1 bis F-RF-3. X-22 ist INCONCLUSIVE.
+- Pool-Schema:
+  - gleiche Rollen-ID in zwei Pools, gleiche Titel und eine Rolle ohne Anforderungen werden angenommen;
+  - B2 einer leeren Rolle ergibt 0/0/0;
+  - B2 für eine fremde Rolle oder einen fremden Upload ergibt 409 SCOPE_MISMATCH.
+
+**Fixes** (GRÜN, `frontend/pxj-first-screen-g1`, ein Commit pro Befund, nur §08):
+
+| Befund | Commit | Kern |
+|---|---|---|
+| F-RF-1 | `575e225` | Die URL trägt nach SUCCEEDED den Modus des Interfaces; `declaredModeRef` ist entfernt. |
+| F-RF-2 | `0dd55e5` | `urlAnalysisId` ist State: der Mount-Wert, ersetzt durch jede SUCCEEDED-Analyse; er ist der Rückfall der Analyse im Bild. |
+| F-RF-3 | `25e90bf` | `pendingSelection` mit JOB_CHECKING (kein Angebot) und JOB_INVALID (Job und Grund). Ohne den Input verhält sich alles wie vorher. |
+| F-RF-5 | `46a95bb` | Der Shell-Detailtext nennt die Rollen-ID, auch unter PERSON. |
+| Doku | `88539d3` | README und §13.2.38 |
+
+**Regression und Gegenprobe:**
+- GELB:
+  - tsc: nur `relay-check.mts(13,214)`.
+  - `test:isolated` mit den G1-Tests, den neuen Tests und den D-G1-2-SSR-Dateien: 131/131.
+  - Die neuen Tests (`role-field-closure`, `shell-role-identity`) ergeben gegen den Code von `a9ff0ca` 7 FAIL (alle REPRODUCE-Fälle) und 5 PASS (die inversen Tests).
+- GRÜN: Walk 1c 12/12.
+- Grenze von GRÜNs Tests: Ein Ersatz-Harness ersetzt React-Scheduling, das Rendern der Kinder und den echten Reload. Das deckt PINK im Browser ab.
+
+**Nachprüfung** (PINK §3.59, `e334a9e`, STAND_IN):
+- Alle Befunde sind mit unveränderten Folgen behoben. X-16 ist jetzt überall gleich zum Reload, auch für X-13 und X-14.
+- G1 erfüllt weiter PA-01 bis PA-14; der Walk mit 20 Schritten ist gleich, PERSON stimmt mit der Basis überein (26/26).
+- Suite: 27 Fehlschläge wie auf der Basis, dazu 4 Zeitüberschreitungen in Backend-Dateien ohne G1-Import (Last).
+- Ein erneuter Sweep ergab **keinen neuen Befund im Umfang**.
+
+**Nicht geschlossen:**
+- **X-22 / O-RF-2**, älter als G1, auch auf `49e2bc6`:
+  - Zurück verlässt die Seite (B-NAV).
+  - Danach lädt Vor neu (`pageshow.persisted = false`), aber in 2 von 3 Fällen geht unter Next dev 20 s lang keine API-Anfrage hinaus. Der gewählte Job bleibt dann auf CHECKING, der erste Schirm auf RESULT_LOADING bzw. leer. Ein Reload behebt es.
+  - Gemessen ist das nur unter Next dev. Ein Produktions-Build scheitert vorher an `app/api/admin/proxy/[...path]/route.ts` (bekannt). Ursache ungeklärt.
+  - Es liegt außerhalb von G1 und der Rollensetzung → Owner.
+- **B-NAV, B-SRC, B-RUN** (§6), **F-RF-4** (Kommentar) und **O-RF-1** (`investigationMode=FOO` wird nicht aus der URL entfernt; nichts wird geraten): Owner.
+
+**Evidenzklassen:**
+- Browser: nur STAND_IN.
+- 1b: PERSISTED_REAL_RESULT aus :41862, nur GET.
+- Tests: DETERMINISTIC_FIXTURE.
+- Dieses Dokument: CODE_INSPECTION.
+- REAL_GEMINI wurde nicht verwendet.
