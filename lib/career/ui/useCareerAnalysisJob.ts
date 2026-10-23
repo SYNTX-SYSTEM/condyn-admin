@@ -1,8 +1,10 @@
 import { useSyncExternalStore, useMemo, useEffect, useRef } from 'react';
 import { CareerJobController } from './career-job-controller';
+import { careerJobHandoff } from './career-job-handoff';
 
 export function useCareerAnalysisJob() {
-  const controller = useMemo(() => new CareerJobController(), []);
+  // O-NAV-SUBMIT: a 202 arriving after this mount's unmount is handed over to the field mounted then.
+  const controller = useMemo(() => new CareerJobController(undefined, { onReleasedJob: jobId => careerJobHandoff.handOver(jobId) }), []);
   
   useEffect(() => {
     controller.activate();

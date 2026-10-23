@@ -46,9 +46,12 @@ export class CareerJobController {
   private released = false;
   
   private fetchFn: typeof fetch;
+  /** O-NAV-SUBMIT: where a 202 goes that arrives after the release (the field mounted now takes the job over). */
+  private onReleasedJob: ((jobId: string) => void) | null;
   
-  constructor(fetchFn?: typeof fetch) {
+  constructor(fetchFn?: typeof fetch, options: { onReleasedJob?: (jobId: string) => void } = {}) {
     this.fetchFn = fetchFn || (typeof window !== 'undefined' ? window.fetch.bind(window) : global.fetch.bind(global));
+    this.onReleasedJob = options.onReleasedJob ?? null;
   }
 
   public getState() {
@@ -111,6 +114,11 @@ export class CareerJobController {
 
       if (res.status === 202) {
         const data = await res.json();
+        // Released while the POST was on its way (a remount): the job exists, so it is handed over, never dropped and never polled here.
+        if (this.released) {
+          if (typeof data?.jobId === "string" && data.jobId.length > 0) this.onReleasedJob?.(data.jobId);
+          return;
+        }
         this.updateState({
           activeJobId: data.jobId,
           state: "PENDING"

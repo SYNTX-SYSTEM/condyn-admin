@@ -31,6 +31,7 @@ import { useJobScopeValidation } from "../../../../lib/career/ui/useJobScope";
 import { useAnalysisBoundary, useSelectedRoleCoverage } from "../../../../lib/career/ui/useRoleInvestigation";
 import { useAnalysisResult } from "../../../../lib/career/ui/useAnalysisResult";
 import { ANALYSIS_JOB_URL_PARAM, analysisJobIdFromParam, writeCareerDemoUrl } from "../../../../lib/career/ui/career-demo-url";
+import { careerJobHandoff } from "../../../../lib/career/ui/career-job-handoff";
 import { NAVIGATION_COPY } from "./navigation-copy";
 import { decodeAnalysisResult, demoStateFromResult, firstScreenCoverageRequest, projectPxjFirstScreen, showsAnalysis, withoutLegacyOrbits, type AnalysisResultState } from "../../../../lib/career/view-model/pxj-first-screen";
 import { PxjAnalysisJobOffer, PxjFirstScreen, pxjFirstScreenVisible } from "./PxjFirstScreen";
@@ -283,6 +284,15 @@ export function SemanticCareerIntelligenceField({
     else if ((jobState === "PENDING" || jobState === "RUNNING") && job.state.activeJobId) writeCareerDemoUrl({ [ANALYSIS_JOB_URL_PARAM]: job.state.activeJobId }, "replace");
   }, [jobState, job.state.activeJobId]);
   const isAnalyzing = jobState === "SUBMITTING" || jobState === "PENDING" || jobState === "RUNNING" || jobState === "LOADING_RESULT";
+  /** O-NAV-SUBMIT: a job whose 202 reached the previous mount after its unmount is taken over once this field runs none of its own:
+   *  followed by GET only (resumeJob), and named in the entry on view by the replace above (PENDING writes analysisJobId). */
+  const [handedOver, setHandedOver] = useState(() => careerJobHandoff.version());
+  useEffect(() => careerJobHandoff.subscribe(() => setHandedOver(careerJobHandoff.version())), []);
+  useEffect(() => {
+    if (isAnalyzing) return;
+    const jobId = analysisJobIdFromParam(careerJobHandoff.take() ?? undefined);
+    if (jobId !== null) job.resumeJob(jobId);
+  }, [handedOver, isAnalyzing]);
   const showsRuntimeTelemetry = isAnalyzing || jobState === "FAILED";
   const runtimePresentationOperation =
     jobState === "SUBMITTING" || jobState === "LOADING_RESULT" || jobState === "FAILED"
