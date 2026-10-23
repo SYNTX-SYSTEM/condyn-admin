@@ -5,6 +5,7 @@ export function useCareerAnalysisJob() {
   const controller = useMemo(() => new CareerJobController(), []);
   
   useEffect(() => {
+    controller.activate();
     return () => controller.cleanup();
   }, [controller]);
 

@@ -30,6 +30,7 @@ import { useJobPoolWorkflow } from "../../../../lib/career/ui/useJobPool";
 import { useJobScopeValidation } from "../../../../lib/career/ui/useJobScope";
 import { useAnalysisBoundary, useSelectedRoleCoverage } from "../../../../lib/career/ui/useRoleInvestigation";
 import { useAnalysisResult } from "../../../../lib/career/ui/useAnalysisResult";
+import { writeCareerDemoUrl } from "../../../../lib/career/ui/career-demo-url";
 import { decodeAnalysisResult, demoStateFromResult, firstScreenCoverageRequest, projectPxjFirstScreen, showsAnalysis, withoutLegacyOrbits, type AnalysisResultState } from "../../../../lib/career/view-model/pxj-first-screen";
 import { PxjAnalysisJobOffer, PxjFirstScreen, pxjFirstScreenVisible } from "./PxjFirstScreen";
 import { legacyJobComparisonPermitted } from "../../../../lib/career/investigation/client";
@@ -281,7 +282,7 @@ export function SemanticCareerIntelligenceField({
   const [investigationMode, setInvestigationMode] = useState<InvestigationMode>(() => investigationModeFromParam(initialInvestigationMode) ?? DEFAULT_INVESTIGATION_MODE);
   const selectInvestigationMode = (next: InvestigationMode) => {
     setInvestigationMode(next);
-    replaceUrlParam(INVESTIGATION_URL_PARAM, next);
+    writeCareerDemoUrl({ [INVESTIGATION_URL_PARAM]: next }, "push");
   };
   const investigationCopy = t.syntx.investigation;
 
@@ -321,21 +322,16 @@ export function SemanticCareerIntelligenceField({
   const comparisonWithheld: "RESOLVING" | "PERSON" | "UNRESOLVED" | "OTHER_POOL" | null = investigationMode !== "PERSON_X_JOB" || viewedAnalysisSource.kind === "NONE" || jobComparisonAllowed ? null : analysisBoundary.state === "RESOLVING" || analysisBoundary.state === "IDLE" ? "RESOLVING" : viewedAnalysisMode === "PERSON" ? "PERSON" : analysisPool !== null ? (jobPoolWorkflow.selectedJobPoolUploadId === null ? null : "OTHER_POOL") : "UNRESOLVED";
   const jobPoolAnalysisSource = jobComparisonAllowed ? viewedAnalysisSource : describeAnalysisSource(null, null);
   const [observation, setObservation] = useState<SyntxObservation>(() => observationFromParams(initialJobOrganizationId, initialJobRoleId, initialJobRequirementId));
-  const replaceUrlParam = (name: string, value: string | null) => {
-    if (typeof window === "undefined" || typeof window.history?.replaceState !== "function") return;
-    try {
-      const url = new URL(window.location.href);
-      if (value === null) url.searchParams.delete(name); else url.searchParams.set(name, value);
-      window.history.replaceState(window.history.state, "", url.toString());
-    } catch { /* navigation state is a convenience, never a requirement */ }
-  };
+  /** N-1 B-NAV: every decision the user takes here is one history entry (push; several parameters of one action share it); what the
+   *  system adds afterwards replaces the entry on view. Back / Forward remount the field from the entry's URL (CareerDemoHistory). */
+  const pushUrl = (changes: Record<string, string | null>) => writeCareerDemoUrl(changes, "push");
   /** The field is always written explicitly (focus=FIELD / focus=CAPABILITY), so a reload reopens the field that was chosen (B-POOL-INITIAL-FOCUS). */
   const FIELD_LEVEL: SyntxObservation = { kind: "FIELD", organizationId: null, roleId: null, requirementId: null, apertureSignId: null };
-  const writeObservation = (next: SyntxObservation) => {
-    replaceUrlParam("jobOrganizationId", next.kind === "FIELD" ? null : next.organizationId);
-    replaceUrlParam("jobRoleId", next.kind === "ROLE" || next.kind === "REQUIREMENT" ? next.roleId : null);
-    replaceUrlParam("jobRequirementId", next.kind === "REQUIREMENT" ? next.requirementId : null);
-  };
+  const writeObservation = (next: SyntxObservation) => pushUrl({
+    jobOrganizationId: next.kind === "FIELD" ? null : next.organizationId,
+    jobRoleId: next.kind === "ROLE" || next.kind === "REQUIREMENT" ? next.roleId : null,
+    jobRequirementId: next.kind === "REQUIREMENT" ? next.requirementId : null
+  });
   /** Field changes since mount: each one is crossed by one calm veil (the shell's transition; none on the first paint). */
   const [fieldSwitches, setFieldSwitches] = useState(0);
   const switchFieldFocus = (next: "CAPABILITY" | "FIELD") => {
@@ -345,26 +341,24 @@ export function SemanticCareerIntelligenceField({
     if (next !== activeFieldFocus) setFieldSwitches(count => count + 1);
     setFieldFocus(next);
     onFieldFocusChange?.(next);
-    replaceUrlParam("focus", next);
+    pushUrl({ focus: next });
     if (next === "CAPABILITY") { setObservation(FIELD_LEVEL); writeObservation(FIELD_LEVEL); }
   };
   /** Selection reorganises the field and is reversible; the observation point is written to the URL (the aperture never is). */
   const observeField = (next: SyntxObservation) => { setObservation(next); writeObservation(next); };
-  const selectJobPool = (id: string) => { jobPoolWorkflow.select(id); replaceUrlParam("jobPoolUploadId", id); observeField(FIELD_LEVEL); };
+  const selectJobPool = (id: string) => { jobPoolWorkflow.select(id); pushUrl({ jobPoolUploadId: id }); observeField(FIELD_LEVEL); };
   const selectJobScope = (poolRoleId: string) => {
     const uploadId = jobPoolWorkflow.selectedJobPoolUploadId;
     const next = uploadId === null ? null : jobScopeFromParams(uploadId, poolRoleId);
     if (next === null) return;
     setJobScope(next);
-    replaceUrlParam(JOB_SCOPE_URL_PARAMS.jobPoolUploadId, next.jobPoolUploadId);
-    replaceUrlParam(JOB_SCOPE_URL_PARAMS.poolRoleId, next.poolRoleId);
+    pushUrl({ [JOB_SCOPE_URL_PARAMS.jobPoolUploadId]: next.jobPoolUploadId, [JOB_SCOPE_URL_PARAMS.poolRoleId]: next.poolRoleId });
   };
   /** Owner G-05: the selected job is removed only by this explicit action. Afterwards no job scope is selected: ANALYZE is blocked and
    *  the Capability gate closes (the Job Field stays the field). Staged sources and existing analyses are not touched. */
   const clearJobScope = () => {
     setJobScope(null);
-    replaceUrlParam(JOB_SCOPE_URL_PARAMS.jobPoolUploadId, null);
-    replaceUrlParam(JOB_SCOPE_URL_PARAMS.poolRoleId, null);
+    pushUrl({ [JOB_SCOPE_URL_PARAMS.jobPoolUploadId]: null, [JOB_SCOPE_URL_PARAMS.poolRoleId]: null });
     switchFieldFocus("FIELD");
   };
   /** The shell indicator opens the selected job in the Job Field (its pool selected, the role observed), or the field to choose one. */
@@ -372,7 +366,7 @@ export function SemanticCareerIntelligenceField({
     switchFieldFocus("FIELD");
     if (jobScopeValidation.state !== "VALID") return;
     const scope = jobScopeValidation.scope;
-    if (jobPoolWorkflow.selectedJobPoolUploadId !== scope.jobPoolUploadId) { jobPoolWorkflow.select(scope.jobPoolUploadId); replaceUrlParam("jobPoolUploadId", scope.jobPoolUploadId); }
+    if (jobPoolWorkflow.selectedJobPoolUploadId !== scope.jobPoolUploadId) { jobPoolWorkflow.select(scope.jobPoolUploadId); pushUrl({ jobPoolUploadId: scope.jobPoolUploadId }); }
     observeField({ kind: "ROLE", organizationId: jobScopeValidation.organizationId, roleId: scope.poolRoleId, requirementId: null, apertureSignId: null });
   };
   const jobScopeCopy = t.syntx.jobScope;
@@ -401,9 +395,8 @@ export function SemanticCareerIntelligenceField({
    *  run was declared with: a mode chosen during the run stays chosen, and the session and a reload show the same (GELB F-RF-1). */
   useEffect(() => {
     if (jobState !== "SUCCEEDED" || !job.state.resultAnalysisId) return;
-    replaceUrlParam("analysisId", job.state.resultAnalysisId);
+    writeCareerDemoUrl({ analysisId: job.state.resultAnalysisId, [INVESTIGATION_URL_PARAM]: investigationMode }, "replace");
     setUrlAnalysisId(job.state.resultAnalysisId);
-    replaceUrlParam(INVESTIGATION_URL_PARAM, investigationMode);
   }, [jobState, job.state.resultAnalysisId]);
   /** The session's own result (M-01) has precedence; it is decoded exactly like a reload's. */
   const sessionResult = React.useMemo(
@@ -456,8 +449,7 @@ export function SemanticCareerIntelligenceField({
   /** ROLE_MISMATCH offers the analysis's own job as an explicit choice; the selection changes only by this action. */
   const selectAnalysisJob = (scope: JobScope) => {
     setJobScope(scope);
-    replaceUrlParam(JOB_SCOPE_URL_PARAMS.jobPoolUploadId, scope.jobPoolUploadId);
-    replaceUrlParam(JOB_SCOPE_URL_PARAMS.poolRoleId, scope.poolRoleId);
+    pushUrl({ [JOB_SCOPE_URL_PARAMS.jobPoolUploadId]: scope.jobPoolUploadId, [JOB_SCOPE_URL_PARAMS.poolRoleId]: scope.poolRoleId });
   };
   const [inferenceTelemetry, setInferenceTelemetry] = useState<any>(initialAnalysisState?.inferenceTelemetry ?? null);
   const [lastStagedDocs, setLastStagedDocs] = useState<any[]>([]);

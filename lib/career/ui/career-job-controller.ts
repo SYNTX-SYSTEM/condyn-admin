@@ -41,6 +41,9 @@ export class CareerJobController {
   private currentIdempotencyKey: string | null = null;
   private pollIntervalId: ReturnType<typeof setTimeout> | null = null;
   private listeners: Set<() => void> = new Set();
+  /** Released by its component's unmount (N-1: Back / Forward remount the field): no further polling, and an answer still on its
+   *  way changes nothing. `activate` undoes it for the same component (React's development double mount). */
+  private released = false;
   
   private fetchFn: typeof fetch;
   
@@ -64,6 +67,7 @@ export class CareerJobController {
   }
 
   private updateState(partial: Partial<JobState>) {
+    if (this.released) return;
     this.state = { ...this.state, ...partial };
     this.notify();
   }
@@ -160,7 +164,7 @@ export class CareerJobController {
   }
 
   private async pollJob(jobId: string) {
-    if (this.state.activeJobId !== jobId) {
+    if (this.released || this.state.activeJobId !== jobId) {
       this.stopPolling();
       return; // Stale protection
     }
@@ -226,7 +230,12 @@ export class CareerJobController {
     }
   }
 
+  public activate() {
+    this.released = false;
+  }
+
   public cleanup() {
+    this.released = true;
     this.stopPolling();
   }
 }
