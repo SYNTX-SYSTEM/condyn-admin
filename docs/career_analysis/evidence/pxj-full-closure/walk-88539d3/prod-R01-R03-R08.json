@@ -1,0 +1,1118 @@
+{
+ "evidenceClass": "PERSISTED_REAL_RESULT",
+ "note": "REAL_GEMINI_RESULT \u00b7 persistiert 2026-10-22 \u00b7 kein neuer Aufruf",
+ "commit": "88539d3f553744ac850c6de58e959355794cdfd2",
+ "database": "condyn_test_e20196d7b0241a42",
+ "source": "condyn_test_f96356700c836e92",
+ "viewport": "1920x1080",
+ "ownerDeepLink": "http://127.0.0.1:41873/career/demo?investigationMode=PERSON_X_JOB&jobPoolUploadId=JPOOL_B94850C439974E27496FE3B1A9A076B5&jobScopePoolUploadId=JPOOL_B94850C439974E27496FE3B1A9A076B5&jobScopeRoleId=role_kestrel_fullstack&analysisId=ANL_1792628993472_10&focus=CAPABILITY",
+ "steps": [
+  {
+   "name": "R01-owner-deep-link",
+   "ok": true,
+   "ms": 2544,
+   "obs": {
+    "hydrated": true,
+    "url": {
+     "investigationMode": "PERSON_X_JOB",
+     "jobPoolUploadId": "JPOOL_B94850C439974E27496FE3B1A9A076B5",
+     "jobScopePoolUploadId": "JPOOL_B94850C439974E27496FE3B1A9A076B5",
+     "jobScopeRoleId": "role_kestrel_fullstack",
+     "analysisId": "ANL_1792628993472_10",
+     "focus": "CAPABILITY"
+    },
+    "mode": "PERSON_X_JOB",
+    "field": "CAPABILITY",
+    "gate": "OPEN",
+    "job": {
+     "state": "VALID",
+     "text": "JOB Senior Full-Stack Engineer \u2013 Shipment Tracking Kestrel Logistics Software GmbH \u00b7 DLL Engineering & Architecture Pool \u00b7 role_kestrel_fullstack"
+    },
+    "observation": null,
+    "first": {
+     "state": "AVAILABLE",
+     "statement": "B2 coverage of the selected role",
+     "boundary": "Name coverage by a capability proposal \u00b7 not scored \u00b7 relation NOT_EVALUATED \u00b7 not a competence verification \u00b7 not a hiring decision",
+     "binding": {
+      "analysis": "ANL_1792628993472_10",
+      "upload": "JPOOL_B94850C439974E27496FE3B1A9A076B5",
+      "role": "role_kestrel_fullstack",
+      "scored": "false",
+      "relation": "NOT_EVALUATED"
+     },
+     "counts": "8 covered \u00b7 1 not covered \u00b7 9 requirements \u00b7 NOT_EVALUATED"
+    },
+    "rows": [
+     {
+      "id": "req_kestrel_fullstack_01",
+      "coverage": "COVERED",
+      "basis": "EXACT",
+      "proposal": "PCAP_AAFB8C7F8820052B592BDE11"
+     },
+     {
+      "id": "req_kestrel_fullstack_02",
+      "coverage": "COVERED",
+      "basis": "EXACT",
+      "proposal": "PCAP_CD636CDD76F3EB4CB25D97D6"
+     },
+     {
+      "id": "req_kestrel_fullstack_03",
+      "coverage": "COVERED",
+      "basis": "EXACT",
+      "proposal": "PCAP_FFD5CA78438C60DEC0A1C6BB"
+     },
+     {
+      "id": "req_kestrel_fullstack_04",
+      "coverage": "COVERED",
+      "basis": "EXACT",
+      "proposal": "PCAP_6B66C4A822CBE888BF11452D"
+     },
+     {
+      "id": "req_kestrel_fullstack_05",
+      "coverage": "COVERED",
+      "basis": "EXACT",
+      "proposal": "PCAP_A760B8EBDBE4843296B6A18C"
+     },
+     {
+      "id": "req_kestrel_fullstack_06",
+      "coverage": "COVERED",
+      "basis": "EXACT",
+      "proposal": "PCAP_6B8E12A0AE2A4A29AA45C784"
+     },
+     {
+      "id": "req_kestrel_fullstack_07",
+      "coverage": "NOT_COVERED",
+      "basis": "",
+      "proposal": ""
+     },
+     {
+      "id": "req_kestrel_fullstack_08",
+      "coverage": "COVERED",
+      "basis": "EXACT",
+      "proposal": "PCAP_91055A69A115375C99797880"
+     },
+     {
+      "id": "req_kestrel_fullstack_09",
+      "coverage": "COVERED",
+      "basis": "EXACT",
+      "proposal": "PCAP_4F218651C9962531C79269DF"
+     }
+    ],
+    "quotes": [
+     {
+      "id": "req_kestrel_fullstack_01-0",
+      "doc": "DOC_001",
+      "inProjection": "true",
+      "resolved": "true",
+      "verified": "true",
+      "text": "\u201cBuilt the customer billing platform in TypeScript and Node.js with Express; migrated 40 services to strict TypeScript.\u201d"
+     },
+     {
+      "id": "req_kestrel_fullstack_02-0",
+      "doc": "DOC_001",
+      "inProjection": "true",
+      "resolved": "true",
+      "verified": "true",
+      "text": "\u201cImplemented the React dashboard used by 300 dispatchers, including accessibility fixes against WCAG 2.1.\u201d"
+     },
+     {
+      "id": "req_kestrel_fullstack_03-0",
+      "doc": "DOC_001",
+      "inProjection": "true",
+      "resolved": "true",
+      "verified": "true",
+      "text": "\u201cBuilt the customer billing platform in TypeScript and Node.js with Express; migrated 40 services to strict TypeScript.\u201d"
+     },
+     {
+      "id": "req_kestrel_fullstack_04-0",
+      "doc": "DOC_001",
+      "inProjection": "true",
+      "resolved": "true",
+      "verified": "true",
+      "text": "\u201cDesigned the PostgreSQL schema for orders and invoices and wrote complex SQL reporting queries.\u201d"
+     },
+     {
+      "id": "req_kestrel_fullstack_05-0",
+      "doc": "DOC_001",
+      "inProjection": "true",
+      "resolved": "true",
+      "verified": "true",
+      "text": "\u201cWrote Python ETL jobs that load shipment events from Apache Kafka into the data warehouse.\u201d"
+     },
+     {
+      "id": "req_kestrel_fullstack_06-0",
+      "doc": "DOC_001",
+      "inProjection": "true",
+      "resolved": "true",
+      "verified": "true",
+      "text": "\u201cIntroduced test-driven development with Jest and raised unit test coverage from 35% to 80%.\u201d"
+     },
+     {
+      "id": "req_kestrel_fullstack_08-0",
+      "doc": "DOC_001",
+      "inProjection": "true",
+      "resolved": "true",
+      "verified": "true",
+      "text": "\u201cSenior software engineer with eight years of experience building web platforms and data pipelines in logistics.\u201d"
+     },
+     {
+      "id": "req_kestrel_fullstack_09-0",
+      "doc": "DOC_001",
+      "inProjection": "true",
+      "resolved": "true",
+      "verified": "true",
+      "text": "\u201cEnglish (C1).\u201d"
+     }
+    ],
+    "proposals": [
+     "Automated Testing",
+     "Node.js",
+     "PostgreSQL",
+     "Event-Driven Architecture",
+     "Web Platform Engineering",
+     "TypeScript",
+     "English",
+     "React"
+    ],
+    "offer": null,
+    "percentInPanel": true,
+    "scoreWord": false,
+    "legacyOrbits": [
+     "01",
+     "02"
+    ],
+    "viewMatches": 0,
+    "pageshow": {
+     "persisted": false,
+     "at": 1792753403765
+    }
+   },
+   "requests": [
+    "GET /api/career/job-pools/JPOOL_B94850C439974E27496FE3B1A9A076B5",
+    "GET /api/career/analyses/ANL_1792628993472_10/investigation",
+    "GET /api/career/job-pools",
+    "GET /api/career/job-pools/JPOOL_B94850C439974E27496FE3B1A9A076B5",
+    "GET /api/career/analyses/ANL_1792628993472_10",
+    "GET /api/career/analyses/ANL_1792628993472_10/job-comparison?jobPoolUploadId=JPOOL_B94850C439974E27496FE3B1A9A076B5&poolRoleId=role_kestrel_fullstack"
+   ]
+  },
+  {
+   "name": "R03-reload",
+   "ok": true,
+   "ms": 1645,
+   "obs": {
+    "hydrated": true,
+    "url": {
+     "investigationMode": "PERSON_X_JOB",
+     "jobPoolUploadId": "JPOOL_B94850C439974E27496FE3B1A9A076B5",
+     "jobScopePoolUploadId": "JPOOL_B94850C439974E27496FE3B1A9A076B5",
+     "jobScopeRoleId": "role_kestrel_fullstack",
+     "analysisId": "ANL_1792628993472_10",
+     "focus": "CAPABILITY"
+    },
+    "mode": "PERSON_X_JOB",
+    "field": "CAPABILITY",
+    "gate": "OPEN",
+    "job": {
+     "state": "VALID",
+     "text": "JOB Senior Full-Stack Engineer \u2013 Shipment Tracking Kestrel Logistics Software GmbH \u00b7 DLL Engineering & Architecture Pool \u00b7 role_kestrel_fullstack"
+    },
+    "observation": null,
+    "first": {
+     "state": "AVAILABLE",
+     "statement": "B2 coverage of the selected role",
+     "boundary": "Name coverage by a capability proposal \u00b7 not scored \u00b7 relation NOT_EVALUATED \u00b7 not a competence verification \u00b7 not a hiring decision",
+     "binding": {
+      "analysis": "ANL_1792628993472_10",
+      "upload": "JPOOL_B94850C439974E27496FE3B1A9A076B5",
+      "role": "role_kestrel_fullstack",
+      "scored": "false",
+      "relation": "NOT_EVALUATED"
+     },
+     "counts": "8 covered \u00b7 1 not covered \u00b7 9 requirements \u00b7 NOT_EVALUATED"
+    },
+    "rows": [
+     {
+      "id": "req_kestrel_fullstack_01",
+      "coverage": "COVERED",
+      "basis": "EXACT",
+      "proposal": "PCAP_AAFB8C7F8820052B592BDE11"
+     },
+     {
+      "id": "req_kestrel_fullstack_02",
+      "coverage": "COVERED",
+      "basis": "EXACT",
+      "proposal": "PCAP_CD636CDD76F3EB4CB25D97D6"
+     },
+     {
+      "id": "req_kestrel_fullstack_03",
+      "coverage": "COVERED",
+      "basis": "EXACT",
+      "proposal": "PCAP_FFD5CA78438C60DEC0A1C6BB"
+     },
+     {
+      "id": "req_kestrel_fullstack_04",
+      "coverage": "COVERED",
+      "basis": "EXACT",
+      "proposal": "PCAP_6B66C4A822CBE888BF11452D"
+     },
+     {
+      "id": "req_kestrel_fullstack_05",
+      "coverage": "COVERED",
+      "basis": "EXACT",
+      "proposal": "PCAP_A760B8EBDBE4843296B6A18C"
+     },
+     {
+      "id": "req_kestrel_fullstack_06",
+      "coverage": "COVERED",
+      "basis": "EXACT",
+      "proposal": "PCAP_6B8E12A0AE2A4A29AA45C784"
+     },
+     {
+      "id": "req_kestrel_fullstack_07",
+      "coverage": "NOT_COVERED",
+      "basis": "",
+      "proposal": ""
+     },
+     {
+      "id": "req_kestrel_fullstack_08",
+      "coverage": "COVERED",
+      "basis": "EXACT",
+      "proposal": "PCAP_91055A69A115375C99797880"
+     },
+     {
+      "id": "req_kestrel_fullstack_09",
+      "coverage": "COVERED",
+      "basis": "EXACT",
+      "proposal": "PCAP_4F218651C9962531C79269DF"
+     }
+    ],
+    "quotes": [
+     {
+      "id": "req_kestrel_fullstack_01-0",
+      "doc": "DOC_001",
+      "inProjection": "true",
+      "resolved": "true",
+      "verified": "true",
+      "text": "\u201cBuilt the customer billing platform in TypeScript and Node.js with Express; migrated 40 services to strict TypeScript.\u201d"
+     },
+     {
+      "id": "req_kestrel_fullstack_02-0",
+      "doc": "DOC_001",
+      "inProjection": "true",
+      "resolved": "true",
+      "verified": "true",
+      "text": "\u201cImplemented the React dashboard used by 300 dispatchers, including accessibility fixes against WCAG 2.1.\u201d"
+     },
+     {
+      "id": "req_kestrel_fullstack_03-0",
+      "doc": "DOC_001",
+      "inProjection": "true",
+      "resolved": "true",
+      "verified": "true",
+      "text": "\u201cBuilt the customer billing platform in TypeScript and Node.js with Express; migrated 40 services to strict TypeScript.\u201d"
+     },
+     {
+      "id": "req_kestrel_fullstack_04-0",
+      "doc": "DOC_001",
+      "inProjection": "true",
+      "resolved": "true",
+      "verified": "true",
+      "text": "\u201cDesigned the PostgreSQL schema for orders and invoices and wrote complex SQL reporting queries.\u201d"
+     },
+     {
+      "id": "req_kestrel_fullstack_05-0",
+      "doc": "DOC_001",
+      "inProjection": "true",
+      "resolved": "true",
+      "verified": "true",
+      "text": "\u201cWrote Python ETL jobs that load shipment events from Apache Kafka into the data warehouse.\u201d"
+     },
+     {
+      "id": "req_kestrel_fullstack_06-0",
+      "doc": "DOC_001",
+      "inProjection": "true",
+      "resolved": "true",
+      "verified": "true",
+      "text": "\u201cIntroduced test-driven development with Jest and raised unit test coverage from 35% to 80%.\u201d"
+     },
+     {
+      "id": "req_kestrel_fullstack_08-0",
+      "doc": "DOC_001",
+      "inProjection": "true",
+      "resolved": "true",
+      "verified": "true",
+      "text": "\u201cSenior software engineer with eight years of experience building web platforms and data pipelines in logistics.\u201d"
+     },
+     {
+      "id": "req_kestrel_fullstack_09-0",
+      "doc": "DOC_001",
+      "inProjection": "true",
+      "resolved": "true",
+      "verified": "true",
+      "text": "\u201cEnglish (C1).\u201d"
+     }
+    ],
+    "proposals": [
+     "Automated Testing",
+     "Node.js",
+     "PostgreSQL",
+     "Event-Driven Architecture",
+     "Web Platform Engineering",
+     "TypeScript",
+     "English",
+     "React"
+    ],
+    "offer": null,
+    "percentInPanel": true,
+    "scoreWord": false,
+    "legacyOrbits": [
+     "01",
+     "02"
+    ],
+    "viewMatches": 0,
+    "pageshow": {
+     "persisted": false,
+     "at": 1792753406907
+    }
+   },
+   "requests": [
+    "GET /api/career/job-pools/JPOOL_B94850C439974E27496FE3B1A9A076B5",
+    "GET /api/career/analyses/ANL_1792628993472_10/investigation",
+    "GET /api/career/job-pools",
+    "GET /api/career/job-pools/JPOOL_B94850C439974E27496FE3B1A9A076B5",
+    "GET /api/career/analyses/ANL_1792628993472_10",
+    "GET /api/career/analyses/ANL_1792628993472_10/job-comparison?jobPoolUploadId=JPOOL_B94850C439974E27496FE3B1A9A076B5&poolRoleId=role_kestrel_fullstack"
+   ]
+  },
+  {
+   "name": "R08-back-forward-1",
+   "ok": true,
+   "ms": 26282,
+   "back": {
+    "url": {
+     "investigationMode": "PERSON"
+    },
+    "mode": "PERSON",
+    "hydrated": true
+   },
+   "f1": {
+    "h": true,
+    "first": "AVAILABLE",
+    "job": "VALID",
+    "ps": {
+     "persisted": false,
+     "at": 1792753414684
+    }
+   },
+   "f5": {
+    "h": true,
+    "first": "AVAILABLE",
+    "job": "VALID"
+   },
+   "f20": {
+    "h": true,
+    "first": "AVAILABLE",
+    "job": "VALID"
+   },
+   "apiAfterForward": [
+    "GET /api/career/job-pools/JPOOL_B94850C439974E27496FE3B1A9A076B5",
+    "GET /api/career/analyses/ANL_1792628993472_10/investigation",
+    "GET /api/career/job-pools",
+    "GET /api/career/job-pools/JPOOL_B94850C439974E27496FE3B1A9A076B5",
+    "GET /api/career/analyses/ANL_1792628993472_10",
+    "GET /api/career/analyses/ANL_1792628993472_10/job-comparison"
+   ],
+   "docAndChunksAfterForward": [
+    "Document 200 NET /career/demo",
+    "Script 200 NET /_next/static/chunks/webpack-e74e5bddc23b6a97.js",
+    "Script 200 NET /_next/static/chunks/c185a74a-b7b97900af8ae2a2.js",
+    "Script 200 NET /_next/static/chunks/9826-8fa208bb110d0310.js",
+    "Script 200 NET /_next/static/chunks/main-app-c74ecef6f1223ab2.js",
+    "Script 200 NET /_next/static/chunks/9664-655599695a52d9df.js",
+    "Script 200 NET /_next/static/chunks/app/career/demo/page-7cff3fbb83e29021.js"
+   ],
+   "obs": {
+    "hydrated": true,
+    "url": {
+     "investigationMode": "PERSON_X_JOB",
+     "jobPoolUploadId": "JPOOL_B94850C439974E27496FE3B1A9A076B5",
+     "jobScopePoolUploadId": "JPOOL_B94850C439974E27496FE3B1A9A076B5",
+     "jobScopeRoleId": "role_kestrel_fullstack",
+     "analysisId": "ANL_1792628993472_10",
+     "focus": "CAPABILITY"
+    },
+    "mode": "PERSON_X_JOB",
+    "field": "CAPABILITY",
+    "gate": "OPEN",
+    "job": {
+     "state": "VALID",
+     "text": "JOB Senior Full-Stack Engineer \u2013 Shipment Tracking Kestrel Logistics Software GmbH \u00b7 DLL Engineering & Architecture Pool \u00b7 role_kestrel_fullstack"
+    },
+    "observation": null,
+    "first": {
+     "state": "AVAILABLE",
+     "statement": "B2 coverage of the selected role",
+     "boundary": "Name coverage by a capability proposal \u00b7 not scored \u00b7 relation NOT_EVALUATED \u00b7 not a competence verification \u00b7 not a hiring decision",
+     "binding": {
+      "analysis": "ANL_1792628993472_10",
+      "upload": "JPOOL_B94850C439974E27496FE3B1A9A076B5",
+      "role": "role_kestrel_fullstack",
+      "scored": "false",
+      "relation": "NOT_EVALUATED"
+     },
+     "counts": "8 covered \u00b7 1 not covered \u00b7 9 requirements \u00b7 NOT_EVALUATED"
+    },
+    "rows": [
+     {
+      "id": "req_kestrel_fullstack_01",
+      "coverage": "COVERED",
+      "basis": "EXACT",
+      "proposal": "PCAP_AAFB8C7F8820052B592BDE11"
+     },
+     {
+      "id": "req_kestrel_fullstack_02",
+      "coverage": "COVERED",
+      "basis": "EXACT",
+      "proposal": "PCAP_CD636CDD76F3EB4CB25D97D6"
+     },
+     {
+      "id": "req_kestrel_fullstack_03",
+      "coverage": "COVERED",
+      "basis": "EXACT",
+      "proposal": "PCAP_FFD5CA78438C60DEC0A1C6BB"
+     },
+     {
+      "id": "req_kestrel_fullstack_04",
+      "coverage": "COVERED",
+      "basis": "EXACT",
+      "proposal": "PCAP_6B66C4A822CBE888BF11452D"
+     },
+     {
+      "id": "req_kestrel_fullstack_05",
+      "coverage": "COVERED",
+      "basis": "EXACT",
+      "proposal": "PCAP_A760B8EBDBE4843296B6A18C"
+     },
+     {
+      "id": "req_kestrel_fullstack_06",
+      "coverage": "COVERED",
+      "basis": "EXACT",
+      "proposal": "PCAP_6B8E12A0AE2A4A29AA45C784"
+     },
+     {
+      "id": "req_kestrel_fullstack_07",
+      "coverage": "NOT_COVERED",
+      "basis": "",
+      "proposal": ""
+     },
+     {
+      "id": "req_kestrel_fullstack_08",
+      "coverage": "COVERED",
+      "basis": "EXACT",
+      "proposal": "PCAP_91055A69A115375C99797880"
+     },
+     {
+      "id": "req_kestrel_fullstack_09",
+      "coverage": "COVERED",
+      "basis": "EXACT",
+      "proposal": "PCAP_4F218651C9962531C79269DF"
+     }
+    ],
+    "quotes": [
+     {
+      "id": "req_kestrel_fullstack_01-0",
+      "doc": "DOC_001",
+      "inProjection": "true",
+      "resolved": "true",
+      "verified": "true",
+      "text": "\u201cBuilt the customer billing platform in TypeScript and Node.js with Express; migrated 40 services to strict TypeScript.\u201d"
+     },
+     {
+      "id": "req_kestrel_fullstack_02-0",
+      "doc": "DOC_001",
+      "inProjection": "true",
+      "resolved": "true",
+      "verified": "true",
+      "text": "\u201cImplemented the React dashboard used by 300 dispatchers, including accessibility fixes against WCAG 2.1.\u201d"
+     },
+     {
+      "id": "req_kestrel_fullstack_03-0",
+      "doc": "DOC_001",
+      "inProjection": "true",
+      "resolved": "true",
+      "verified": "true",
+      "text": "\u201cBuilt the customer billing platform in TypeScript and Node.js with Express; migrated 40 services to strict TypeScript.\u201d"
+     },
+     {
+      "id": "req_kestrel_fullstack_04-0",
+      "doc": "DOC_001",
+      "inProjection": "true",
+      "resolved": "true",
+      "verified": "true",
+      "text": "\u201cDesigned the PostgreSQL schema for orders and invoices and wrote complex SQL reporting queries.\u201d"
+     },
+     {
+      "id": "req_kestrel_fullstack_05-0",
+      "doc": "DOC_001",
+      "inProjection": "true",
+      "resolved": "true",
+      "verified": "true",
+      "text": "\u201cWrote Python ETL jobs that load shipment events from Apache Kafka into the data warehouse.\u201d"
+     },
+     {
+      "id": "req_kestrel_fullstack_06-0",
+      "doc": "DOC_001",
+      "inProjection": "true",
+      "resolved": "true",
+      "verified": "true",
+      "text": "\u201cIntroduced test-driven development with Jest and raised unit test coverage from 35% to 80%.\u201d"
+     },
+     {
+      "id": "req_kestrel_fullstack_08-0",
+      "doc": "DOC_001",
+      "inProjection": "true",
+      "resolved": "true",
+      "verified": "true",
+      "text": "\u201cSenior software engineer with eight years of experience building web platforms and data pipelines in logistics.\u201d"
+     },
+     {
+      "id": "req_kestrel_fullstack_09-0",
+      "doc": "DOC_001",
+      "inProjection": "true",
+      "resolved": "true",
+      "verified": "true",
+      "text": "\u201cEnglish (C1).\u201d"
+     }
+    ],
+    "proposals": [
+     "Automated Testing",
+     "Node.js",
+     "PostgreSQL",
+     "Event-Driven Architecture",
+     "Web Platform Engineering",
+     "TypeScript",
+     "English",
+     "React"
+    ],
+    "offer": null,
+    "percentInPanel": true,
+    "scoreWord": false,
+    "legacyOrbits": [
+     "01",
+     "02"
+    ],
+    "viewMatches": 0,
+    "pageshow": {
+     "persisted": false,
+     "at": 1792753414684
+    }
+   },
+   "requests": [
+    "GET /api/career/job-pools",
+    "GET /api/career/job-pools/JPOOL_B94850C439974E27496FE3B1A9A076B5",
+    "GET /api/career/analyses/ANL_1792628993472_10/investigation",
+    "GET /api/career/job-pools",
+    "GET /api/career/job-pools/JPOOL_B94850C439974E27496FE3B1A9A076B5",
+    "GET /api/career/analyses/ANL_1792628993472_10",
+    "GET /api/career/analyses/ANL_1792628993472_10/job-comparison?jobPoolUploadId=JPOOL_B94850C439974E27496FE3B1A9A076B5&poolRoleId=role_kestrel_fullstack",
+    "GET /api/career/job-pools",
+    "GET /api/career/job-pools/JPOOL_B94850C439974E27496FE3B1A9A076B5",
+    "GET /api/career/analyses/ANL_1792628993472_10/investigation",
+    "GET /api/career/job-pools",
+    "GET /api/career/job-pools/JPOOL_B94850C439974E27496FE3B1A9A076B5",
+    "GET /api/career/analyses/ANL_1792628993472_10",
+    "GET /api/career/analyses/ANL_1792628993472_10/job-comparison?jobPoolUploadId=JPOOL_B94850C439974E27496FE3B1A9A076B5&poolRoleId=role_kestrel_fullstack"
+   ]
+  },
+  {
+   "name": "R08-back-forward-2",
+   "ok": true,
+   "ms": 28765,
+   "back": {
+    "url": {
+     "investigationMode": "PERSON"
+    },
+    "mode": "PERSON",
+    "hydrated": true
+   },
+   "f1": {
+    "h": true,
+    "first": "AVAILABLE",
+    "job": "VALID",
+    "ps": {
+     "persisted": false,
+     "at": 1792753444240
+    }
+   },
+   "f5": {
+    "h": true,
+    "first": "AVAILABLE",
+    "job": "VALID"
+   },
+   "f20": {
+    "h": true,
+    "first": "AVAILABLE",
+    "job": "VALID"
+   },
+   "apiAfterForward": [
+    "GET /api/career/job-pools/JPOOL_B94850C439974E27496FE3B1A9A076B5",
+    "GET /api/career/analyses/ANL_1792628993472_10/investigation",
+    "GET /api/career/job-pools",
+    "GET /api/career/job-pools/JPOOL_B94850C439974E27496FE3B1A9A076B5",
+    "GET /api/career/analyses/ANL_1792628993472_10",
+    "GET /api/career/analyses/ANL_1792628993472_10/job-comparison"
+   ],
+   "docAndChunksAfterForward": [
+    "Document 200 NET /career/demo",
+    "Script 200 NET /_next/static/chunks/webpack-e74e5bddc23b6a97.js",
+    "Script 200 NET /_next/static/chunks/c185a74a-b7b97900af8ae2a2.js",
+    "Script 200 NET /_next/static/chunks/9826-8fa208bb110d0310.js",
+    "Script 200 NET /_next/static/chunks/main-app-c74ecef6f1223ab2.js",
+    "Script 200 NET /_next/static/chunks/9664-655599695a52d9df.js",
+    "Script 200 NET /_next/static/chunks/app/career/demo/page-7cff3fbb83e29021.js"
+   ],
+   "obs": {
+    "hydrated": true,
+    "url": {
+     "investigationMode": "PERSON_X_JOB",
+     "jobPoolUploadId": "JPOOL_B94850C439974E27496FE3B1A9A076B5",
+     "jobScopePoolUploadId": "JPOOL_B94850C439974E27496FE3B1A9A076B5",
+     "jobScopeRoleId": "role_kestrel_fullstack",
+     "analysisId": "ANL_1792628993472_10",
+     "focus": "CAPABILITY"
+    },
+    "mode": "PERSON_X_JOB",
+    "field": "CAPABILITY",
+    "gate": "OPEN",
+    "job": {
+     "state": "VALID",
+     "text": "JOB Senior Full-Stack Engineer \u2013 Shipment Tracking Kestrel Logistics Software GmbH \u00b7 DLL Engineering & Architecture Pool \u00b7 role_kestrel_fullstack"
+    },
+    "observation": null,
+    "first": {
+     "state": "AVAILABLE",
+     "statement": "B2 coverage of the selected role",
+     "boundary": "Name coverage by a capability proposal \u00b7 not scored \u00b7 relation NOT_EVALUATED \u00b7 not a competence verification \u00b7 not a hiring decision",
+     "binding": {
+      "analysis": "ANL_1792628993472_10",
+      "upload": "JPOOL_B94850C439974E27496FE3B1A9A076B5",
+      "role": "role_kestrel_fullstack",
+      "scored": "false",
+      "relation": "NOT_EVALUATED"
+     },
+     "counts": "8 covered \u00b7 1 not covered \u00b7 9 requirements \u00b7 NOT_EVALUATED"
+    },
+    "rows": [
+     {
+      "id": "req_kestrel_fullstack_01",
+      "coverage": "COVERED",
+      "basis": "EXACT",
+      "proposal": "PCAP_AAFB8C7F8820052B592BDE11"
+     },
+     {
+      "id": "req_kestrel_fullstack_02",
+      "coverage": "COVERED",
+      "basis": "EXACT",
+      "proposal": "PCAP_CD636CDD76F3EB4CB25D97D6"
+     },
+     {
+      "id": "req_kestrel_fullstack_03",
+      "coverage": "COVERED",
+      "basis": "EXACT",
+      "proposal": "PCAP_FFD5CA78438C60DEC0A1C6BB"
+     },
+     {
+      "id": "req_kestrel_fullstack_04",
+      "coverage": "COVERED",
+      "basis": "EXACT",
+      "proposal": "PCAP_6B66C4A822CBE888BF11452D"
+     },
+     {
+      "id": "req_kestrel_fullstack_05",
+      "coverage": "COVERED",
+      "basis": "EXACT",
+      "proposal": "PCAP_A760B8EBDBE4843296B6A18C"
+     },
+     {
+      "id": "req_kestrel_fullstack_06",
+      "coverage": "COVERED",
+      "basis": "EXACT",
+      "proposal": "PCAP_6B8E12A0AE2A4A29AA45C784"
+     },
+     {
+      "id": "req_kestrel_fullstack_07",
+      "coverage": "NOT_COVERED",
+      "basis": "",
+      "proposal": ""
+     },
+     {
+      "id": "req_kestrel_fullstack_08",
+      "coverage": "COVERED",
+      "basis": "EXACT",
+      "proposal": "PCAP_91055A69A115375C99797880"
+     },
+     {
+      "id": "req_kestrel_fullstack_09",
+      "coverage": "COVERED",
+      "basis": "EXACT",
+      "proposal": "PCAP_4F218651C9962531C79269DF"
+     }
+    ],
+    "quotes": [
+     {
+      "id": "req_kestrel_fullstack_01-0",
+      "doc": "DOC_001",
+      "inProjection": "true",
+      "resolved": "true",
+      "verified": "true",
+      "text": "\u201cBuilt the customer billing platform in TypeScript and Node.js with Express; migrated 40 services to strict TypeScript.\u201d"
+     },
+     {
+      "id": "req_kestrel_fullstack_02-0",
+      "doc": "DOC_001",
+      "inProjection": "true",
+      "resolved": "true",
+      "verified": "true",
+      "text": "\u201cImplemented the React dashboard used by 300 dispatchers, including accessibility fixes against WCAG 2.1.\u201d"
+     },
+     {
+      "id": "req_kestrel_fullstack_03-0",
+      "doc": "DOC_001",
+      "inProjection": "true",
+      "resolved": "true",
+      "verified": "true",
+      "text": "\u201cBuilt the customer billing platform in TypeScript and Node.js with Express; migrated 40 services to strict TypeScript.\u201d"
+     },
+     {
+      "id": "req_kestrel_fullstack_04-0",
+      "doc": "DOC_001",
+      "inProjection": "true",
+      "resolved": "true",
+      "verified": "true",
+      "text": "\u201cDesigned the PostgreSQL schema for orders and invoices and wrote complex SQL reporting queries.\u201d"
+     },
+     {
+      "id": "req_kestrel_fullstack_05-0",
+      "doc": "DOC_001",
+      "inProjection": "true",
+      "resolved": "true",
+      "verified": "true",
+      "text": "\u201cWrote Python ETL jobs that load shipment events from Apache Kafka into the data warehouse.\u201d"
+     },
+     {
+      "id": "req_kestrel_fullstack_06-0",
+      "doc": "DOC_001",
+      "inProjection": "true",
+      "resolved": "true",
+      "verified": "true",
+      "text": "\u201cIntroduced test-driven development with Jest and raised unit test coverage from 35% to 80%.\u201d"
+     },
+     {
+      "id": "req_kestrel_fullstack_08-0",
+      "doc": "DOC_001",
+      "inProjection": "true",
+      "resolved": "true",
+      "verified": "true",
+      "text": "\u201cSenior software engineer with eight years of experience building web platforms and data pipelines in logistics.\u201d"
+     },
+     {
+      "id": "req_kestrel_fullstack_09-0",
+      "doc": "DOC_001",
+      "inProjection": "true",
+      "resolved": "true",
+      "verified": "true",
+      "text": "\u201cEnglish (C1).\u201d"
+     }
+    ],
+    "proposals": [
+     "Automated Testing",
+     "Node.js",
+     "PostgreSQL",
+     "Event-Driven Architecture",
+     "Web Platform Engineering",
+     "TypeScript",
+     "English",
+     "React"
+    ],
+    "offer": null,
+    "percentInPanel": true,
+    "scoreWord": false,
+    "legacyOrbits": [
+     "01",
+     "02"
+    ],
+    "viewMatches": 0,
+    "pageshow": {
+     "persisted": false,
+     "at": 1792753444240
+    }
+   },
+   "requests": [
+    "GET /api/career/job-pools",
+    "GET /api/career/job-pools/JPOOL_B94850C439974E27496FE3B1A9A076B5",
+    "GET /api/career/analyses/ANL_1792628993472_10/investigation",
+    "GET /api/career/job-pools",
+    "GET /api/career/job-pools/JPOOL_B94850C439974E27496FE3B1A9A076B5",
+    "GET /api/career/analyses/ANL_1792628993472_10",
+    "GET /api/career/analyses/ANL_1792628993472_10/job-comparison?jobPoolUploadId=JPOOL_B94850C439974E27496FE3B1A9A076B5&poolRoleId=role_kestrel_fullstack",
+    "GET /api/career/job-pools",
+    "GET /api/career/job-pools/JPOOL_B94850C439974E27496FE3B1A9A076B5",
+    "GET /api/career/analyses/ANL_1792628993472_10/investigation",
+    "GET /api/career/job-pools",
+    "GET /api/career/job-pools/JPOOL_B94850C439974E27496FE3B1A9A076B5",
+    "GET /api/career/analyses/ANL_1792628993472_10",
+    "GET /api/career/analyses/ANL_1792628993472_10/job-comparison?jobPoolUploadId=JPOOL_B94850C439974E27496FE3B1A9A076B5&poolRoleId=role_kestrel_fullstack"
+   ]
+  },
+  {
+   "name": "R08-back-forward-3",
+   "ok": true,
+   "ms": 33778,
+   "back": {
+    "url": {
+     "investigationMode": "PERSON"
+    },
+    "mode": "PERSON",
+    "hydrated": true
+   },
+   "f1": {
+    "h": true,
+    "first": "AVAILABLE",
+    "job": "VALID",
+    "ps": {
+     "persisted": false,
+     "at": 1792753478853
+    }
+   },
+   "f5": {
+    "h": true,
+    "first": "AVAILABLE",
+    "job": "VALID"
+   },
+   "f20": {
+    "h": true,
+    "first": "AVAILABLE",
+    "job": "VALID"
+   },
+   "apiAfterForward": [
+    "GET /api/career/job-pools/JPOOL_B94850C439974E27496FE3B1A9A076B5",
+    "GET /api/career/analyses/ANL_1792628993472_10/investigation",
+    "GET /api/career/job-pools",
+    "GET /api/career/job-pools/JPOOL_B94850C439974E27496FE3B1A9A076B5",
+    "GET /api/career/analyses/ANL_1792628993472_10",
+    "GET /api/career/analyses/ANL_1792628993472_10/job-comparison"
+   ],
+   "docAndChunksAfterForward": [
+    "Document 200 NET /career/demo",
+    "Script 200 NET /_next/static/chunks/webpack-e74e5bddc23b6a97.js",
+    "Script 200 NET /_next/static/chunks/c185a74a-b7b97900af8ae2a2.js",
+    "Script 200 NET /_next/static/chunks/9826-8fa208bb110d0310.js",
+    "Script 200 NET /_next/static/chunks/main-app-c74ecef6f1223ab2.js",
+    "Script 200 NET /_next/static/chunks/9664-655599695a52d9df.js",
+    "Script 200 NET /_next/static/chunks/app/career/demo/page-7cff3fbb83e29021.js"
+   ],
+   "obs": {
+    "hydrated": true,
+    "url": {
+     "investigationMode": "PERSON_X_JOB",
+     "jobPoolUploadId": "JPOOL_B94850C439974E27496FE3B1A9A076B5",
+     "jobScopePoolUploadId": "JPOOL_B94850C439974E27496FE3B1A9A076B5",
+     "jobScopeRoleId": "role_kestrel_fullstack",
+     "analysisId": "ANL_1792628993472_10",
+     "focus": "CAPABILITY"
+    },
+    "mode": "PERSON_X_JOB",
+    "field": "CAPABILITY",
+    "gate": "OPEN",
+    "job": {
+     "state": "VALID",
+     "text": "JOB Senior Full-Stack Engineer \u2013 Shipment Tracking Kestrel Logistics Software GmbH \u00b7 DLL Engineering & Architecture Pool \u00b7 role_kestrel_fullstack"
+    },
+    "observation": null,
+    "first": {
+     "state": "AVAILABLE",
+     "statement": "B2 coverage of the selected role",
+     "boundary": "Name coverage by a capability proposal \u00b7 not scored \u00b7 relation NOT_EVALUATED \u00b7 not a competence verification \u00b7 not a hiring decision",
+     "binding": {
+      "analysis": "ANL_1792628993472_10",
+      "upload": "JPOOL_B94850C439974E27496FE3B1A9A076B5",
+      "role": "role_kestrel_fullstack",
+      "scored": "false",
+      "relation": "NOT_EVALUATED"
+     },
+     "counts": "8 covered \u00b7 1 not covered \u00b7 9 requirements \u00b7 NOT_EVALUATED"
+    },
+    "rows": [
+     {
+      "id": "req_kestrel_fullstack_01",
+      "coverage": "COVERED",
+      "basis": "EXACT",
+      "proposal": "PCAP_AAFB8C7F8820052B592BDE11"
+     },
+     {
+      "id": "req_kestrel_fullstack_02",
+      "coverage": "COVERED",
+      "basis": "EXACT",
+      "proposal": "PCAP_CD636CDD76F3EB4CB25D97D6"
+     },
+     {
+      "id": "req_kestrel_fullstack_03",
+      "coverage": "COVERED",
+      "basis": "EXACT",
+      "proposal": "PCAP_FFD5CA78438C60DEC0A1C6BB"
+     },
+     {
+      "id": "req_kestrel_fullstack_04",
+      "coverage": "COVERED",
+      "basis": "EXACT",
+      "proposal": "PCAP_6B66C4A822CBE888BF11452D"
+     },
+     {
+      "id": "req_kestrel_fullstack_05",
+      "coverage": "COVERED",
+      "basis": "EXACT",
+      "proposal": "PCAP_A760B8EBDBE4843296B6A18C"
+     },
+     {
+      "id": "req_kestrel_fullstack_06",
+      "coverage": "COVERED",
+      "basis": "EXACT",
+      "proposal": "PCAP_6B8E12A0AE2A4A29AA45C784"
+     },
+     {
+      "id": "req_kestrel_fullstack_07",
+      "coverage": "NOT_COVERED",
+      "basis": "",
+      "proposal": ""
+     },
+     {
+      "id": "req_kestrel_fullstack_08",
+      "coverage": "COVERED",
+      "basis": "EXACT",
+      "proposal": "PCAP_91055A69A115375C99797880"
+     },
+     {
+      "id": "req_kestrel_fullstack_09",
+      "coverage": "COVERED",
+      "basis": "EXACT",
+      "proposal": "PCAP_4F218651C9962531C79269DF"
+     }
+    ],
+    "quotes": [
+     {
+      "id": "req_kestrel_fullstack_01-0",
+      "doc": "DOC_001",
+      "inProjection": "true",
+      "resolved": "true",
+      "verified": "true",
+      "text": "\u201cBuilt the customer billing platform in TypeScript and Node.js with Express; migrated 40 services to strict TypeScript.\u201d"
+     },
+     {
+      "id": "req_kestrel_fullstack_02-0",
+      "doc": "DOC_001",
+      "inProjection": "true",
+      "resolved": "true",
+      "verified": "true",
+      "text": "\u201cImplemented the React dashboard used by 300 dispatchers, including accessibility fixes against WCAG 2.1.\u201d"
+     },
+     {
+      "id": "req_kestrel_fullstack_03-0",
+      "doc": "DOC_001",
+      "inProjection": "true",
+      "resolved": "true",
+      "verified": "true",
+      "text": "\u201cBuilt the customer billing platform in TypeScript and Node.js with Express; migrated 40 services to strict TypeScript.\u201d"
+     },
+     {
+      "id": "req_kestrel_fullstack_04-0",
+      "doc": "DOC_001",
+      "inProjection": "true",
+      "resolved": "true",
+      "verified": "true",
+      "text": "\u201cDesigned the PostgreSQL schema for orders and invoices and wrote complex SQL reporting queries.\u201d"
+     },
+     {
+      "id": "req_kestrel_fullstack_05-0",
+      "doc": "DOC_001",
+      "inProjection": "true",
+      "resolved": "true",
+      "verified": "true",
+      "text": "\u201cWrote Python ETL jobs that load shipment events from Apache Kafka into the data warehouse.\u201d"
+     },
+     {
+      "id": "req_kestrel_fullstack_06-0",
+      "doc": "DOC_001",
+      "inProjection": "true",
+      "resolved": "true",
+      "verified": "true",
+      "text": "\u201cIntroduced test-driven development with Jest and raised unit test coverage from 35% to 80%.\u201d"
+     },
+     {
+      "id": "req_kestrel_fullstack_08-0",
+      "doc": "DOC_001",
+      "inProjection": "true",
+      "resolved": "true",
+      "verified": "true",
+      "text": "\u201cSenior software engineer with eight years of experience building web platforms and data pipelines in logistics.\u201d"
+     },
+     {
+      "id": "req_kestrel_fullstack_09-0",
+      "doc": "DOC_001",
+      "inProjection": "true",
+      "resolved": "true",
+      "verified": "true",
+      "text": "\u201cEnglish (C1).\u201d"
+     }
+    ],
+    "proposals": [
+     "Automated Testing",
+     "Node.js",
+     "PostgreSQL",
+     "Event-Driven Architecture",
+     "Web Platform Engineering",
+     "TypeScript",
+     "English",
+     "React"
+    ],
+    "offer": null,
+    "percentInPanel": true,
+    "scoreWord": false,
+    "legacyOrbits": [
+     "01",
+     "02"
+    ],
+    "viewMatches": 0,
+    "pageshow": {
+     "persisted": false,
+     "at": 1792753478853
+    }
+   },
+   "requests": [
+    "GET /api/career/job-pools",
+    "GET /api/career/job-pools/JPOOL_B94850C439974E27496FE3B1A9A076B5",
+    "GET /api/career/analyses/ANL_1792628993472_10/investigation",
+    "GET /api/career/job-pools",
+    "GET /api/career/job-pools/JPOOL_B94850C439974E27496FE3B1A9A076B5",
+    "GET /api/career/analyses/ANL_1792628993472_10",
+    "GET /api/career/analyses/ANL_1792628993472_10/job-comparison?jobPoolUploadId=JPOOL_B94850C439974E27496FE3B1A9A076B5&poolRoleId=role_kestrel_fullstack",
+    "GET /api/career/job-pools",
+    "GET /api/career/job-pools/JPOOL_B94850C439974E27496FE3B1A9A076B5",
+    "GET /api/career/analyses/ANL_1792628993472_10/investigation",
+    "GET /api/career/job-pools",
+    "GET /api/career/job-pools/JPOOL_B94850C439974E27496FE3B1A9A076B5",
+    "GET /api/career/analyses/ANL_1792628993472_10",
+    "GET /api/career/analyses/ANL_1792628993472_10/job-comparison?jobPoolUploadId=JPOOL_B94850C439974E27496FE3B1A9A076B5&poolRoleId=role_kestrel_fullstack"
+   ]
+  }
+ ],
+ "checks": {
+  "deepLinkEqualsReload": true,
+  "deepLinkEqualsUiPath": true,
+  "nonGet": [],
+  "geminiRoutes": [],
+  "pageErrors": [],
+  "consoleErrors": []
+ },
+ "measuredOn": "local production build (next start), 88539d3 + measurement-only typescript.ignoreBuildErrors, :41873"
+}
