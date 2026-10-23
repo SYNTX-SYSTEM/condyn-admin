@@ -96,6 +96,32 @@ describe("O-NAV-SUBMIT · a run submitted before Back keeps its name", () => {
     after.unmount();
   });
 
+  it("guard (GELB): the handover is taken once — a further mount on an entry without the job neither follows nor names it; no reset", async () => {
+    const history = await openPage();
+    const before = mount(history.settle());
+    void analyze(before.draw());
+    tab.back();
+    const after = mount(history.settle());
+    before.unmount();
+    after.draw();
+    net.answer(202, { jobId: JOB });
+    await flush();
+    after.draw(); await flush(); after.draw();
+    expect(param(tab.entries[0], "analysisJobId")).toBe(JOB);
+    // Forward to the entry ANALYZE was pressed on: a further remount; that entry names no job, and the handover is empty.
+    tab.forward();
+    const again = mount(history.settle());
+    after.unmount();
+    const reads = net.requests.filter(request => request === `GET /api/career/jobs/${JOB}`).length;
+    again.draw(); await flush(); again.draw(); await flush(); again.draw();
+    await vi.advanceTimersByTimeAsync(6_000);
+    expect(tab.url).toBe(tab.entries[1]);
+    expect(param(tab.url, "analysisJobId")).toBeNull();
+    expect(net.requests.filter(request => request === `GET /api/career/jobs/${JOB}`).length).toBe(reads);
+    expect(posts()).toBe(1);
+    again.unmount();
+  });
+
   it("REPRODUCE: the released controller hands the 202's job over and does not poll it itself", async () => {
     let answer: (value: unknown) => void = () => undefined;
     const fetcher = vi.fn().mockReturnValueOnce(new Promise(resolve => { answer = resolve; }));
