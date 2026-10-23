@@ -2959,6 +2959,33 @@ Factors measured in the DOM (`e6493a7`; the factor pair, then the outer orbit's 
 
 **Run record.** `evidence/role-field-closure-a9ff0ca/`: `sweep-STANDIN-a9ff0ca.txt`, `pools/*.json` (synthetic), `shots/STANDIN-*.jpg` with `CAPTIONS.txt` (screens without CV quotes only), `scripts/*.txt`, `manifest.sha256`. PINK's lab on port 41873 under PINK's PID, stopped; worktree clean. :41862, :41864 and GRÜN's :41871 not touched. No Gemini call. The fixes of F-RF-1 … F-RF-3 are GRÜN's; PINK re-checks them on GELB's word.
 
+### 3.59 Role-field fixes GRÜN `575e225` / `0dd55e5` / `25e90bf` / `46a95bb` (tip `88539d3`) to §3.58, with G1 re-checked (2026-10-23)
+
+**Request.** GELB asked PINK to re-check GRÜN's fixes of F-RF-1, F-RF-2, F-RF-3 and F-RF-5 (tip `88539d3`, on `a9ff0ca`): the §3.58 sequences unchanged, X-11 … X-18 and X-16, X-22 with a longer wait, and PA-01 … PA-14 again.
+
+**What changed (`static-88539d3.txt`).** `SemanticCareerIntelligenceField.tsx`, `PxjFirstScreen.tsx`, `pxj-first-screen.ts`, `sil-language.ts` (all within §08) and two new test files:
+- F-RF-1: after SUCCEEDED the URL gets the interface's mode (`declaredModeRef` removed);
+- F-RF-2: the URL's analysis is state, replaced by every SUCCEEDED analysis;
+- F-RF-3: the optional input `pendingSelection` gives JOB_CHECKING (no offer) and JOB_INVALID (job and reason; the offer only when the analysis's job is another);
+- F-RF-5: the shell detail ends with the role id.
+
+**Result (STAND_IN, `sweep-a9ff0ca-vs-88539d3.txt`): the four findings are fixed, nothing else moved.**
+- **F-RF-1 PASS.** The same sequence: the URL keeps PERSON, the session shows MODE_MISMATCH, and so does the reload.
+- **F-RF-2 PASS.** a: while A2 runs and after it FAILED the screen shows A1 (the URL's) with its coverage, as the reload does. b: the screen shows A1, no longer A0.
+- **F-RF-3 PASS.** CHECKING held 7 s: no offer at any of the 20 samples, then VALID. INVALID, all three causes: the Job Field offer is JOB_INVALID with the reason (ROLE_NOT_IN_POOL, POOL_NOT_ACTIVE, UPLOAD_NOT_FOUND); "No job is selected" is gone.
+- **F-RF-5 PASS.** The twins now read "… · PINK role-field closure pool · role_pink_twin_a" and "… · role_pink_twin_b"; under PERSON "selected job not used: <title> · <role id>".
+- **Every other step of the sweep is unchanged** against `a9ff0ca`, apart from the role id in the shell: X-01 … X-12, X-15, X-19 … X-21, X-23, X-24. X-16: the reload equals the session in every step now, including X-13 and X-14.
+- **Pure functions** (`pure-and-proof-88539d3.txt`): stage 1b on the :41862 bodies identical to `50776fc`; NO_PROJECTION still 0 legacy capabilities; `pendingSelection` gives JOB_CHECKING / JOB_INVALID only without a VALID selection and never overrides one. PINK's NO_PROJECTION proof test is green.
+
+**G1 again (`g1-walk-STANDIN-88539d3.txt`, `role-level-and-person-49e2bc6-vs-88539d3.txt`, `suite-88539d3.txt`).** PINK's G1 walk at 1920 and 1280: all 20 steps equal to `50776fc`; PA-01 field-equal, session = deep link = reload, focus changes nothing, `/matches` never with the Capability Field active, 0 `gemini-*`. PERSON session equal to `49e2bc6`, role level 26/26 identical. tsc: only `relay-check.mts`. Suite: all 86 G1 tests green; 31 failed = the 27 of `50776fc` plus 4 timeouts (5000 ms) in the outcome-valence / decision-core files of §3.57. **PA-01 … PA-14 still hold.**
+
+**X-22 (`x22-back-forward.txt`): INCONCLUSIVE for the goal, but a pre-existing effect found (O-RF-2).**
+- Back leaves `/career/demo` for the previous document (B-NAV).
+- Forward loads the page again (`pageshow.persisted` false). In 2 of 3 cases it then sent **no API request for 20 s** and stood in the initial states (selected job CHECKING, first screen RESULT_LOADING or none); the reload heals it. The third case loaded normally.
+- The same happens on `49e2bc6` (job CHECKING, 0 requests), so it is not G1 and not the fixes. A production build could not be checked: `next build` fails at type check on `app/api/admin/proxy/[...path]/route.ts` (pre-existing).
+
+**Run record.** `evidence/role-field-closure-88539d3/`: `static-88539d3.txt`, `sweep-STANDIN-88539d3.txt`, `sweep-a9ff0ca-vs-88539d3.txt`, `pure-and-proof-88539d3.txt`, `g1-walk-STANDIN-88539d3.txt`, `role-level-and-person-49e2bc6-vs-88539d3.txt`, `suite-88539d3.txt`, `x22-back-forward.txt`, `scripts/*.txt`, `manifest.sha256`. PINK's labs on port 41873, stopped; the production-build attempt wrote only `.next` of PINK's worktree (ignored). :41862, :41871 not touched; no Gemini call.
+
 ## 4. Boundaries and findings for coordination
 
 - F-JP-1 (closed in `b782793`): `JOB_POOL_CONNECTION.md` §4 followed the per-role `JOB_POOL_JSON_ROLE` design;

@@ -1,0 +1,104 @@
+### pink-g1-tipfx-1920.json  gemini=STAND_IN (STAND-IN · keine Modellausführung) viewport=1920x1080 pageErrors=0
+pool upload {'status': 201, 'id': 'JPOOL_B94850C439974E27496FE3B1A9A076B5'} analyses {'personA': 'ANL_1792714050920_772', 'pxjA': 'ANL_1792714071852_136', 'pxjB': 'ANL_1792714144147_75'}
+S1-person-session              ok=True state=None field=CAPABILITY mode=PERSON gate=OPEN orbits=010203040506 coupling=True viewMatches=0 proposals=0 rows=0 quotes=0 verified=0 HASH-=False UnknownDoc=False offer=False disclosure=False
+S2-pxj-session                 ok=True state=AVAILABLE field=CAPABILITY mode=PERSON_X_JOB gate=OPEN orbits=0102 coupling=False viewMatches=0 proposals=12 rows=9 quotes=7 verified=7 HASH-=False UnknownDoc=False offer=False disclosure=False
+    rows 01:COVERED/EXACT 02:COVERED/EXACT 03:COVERED/EXACT 04:COVERED/EXACT 05:COVERED/TOKEN_CONTAINMENT 06:COVERED/EXACT 07:NOT_COVERED/- 08:NOT_COVERED/- 09:COVERED/EXACT
+    counts 7 covered · 2 not covered · 9 requirements · NOT_EVALUATED
+S3-role-level                  ok=True state=None field=FIELD mode=PERSON_X_JOB gate=OPEN orbits=0102 coupling=False viewMatches=0 proposals=0 rows=0 quotes=0 verified=0 HASH-=False UnknownDoc=False offer=False disclosure=True
+S4-person-deep-link            ok=True state=None field=CAPABILITY mode=PERSON gate=OPEN orbits=010203040506 coupling=True viewMatches=0 proposals=0 rows=0 quotes=0 verified=0 HASH-=False UnknownDoc=False offer=False disclosure=False
+T1-session-again               ok=True state=AVAILABLE field=CAPABILITY mode=PERSON_X_JOB gate=OPEN orbits=0102 coupling=False viewMatches=0 proposals=12 rows=9 quotes=7 verified=7 HASH-=False UnknownDoc=False offer=False disclosure=False
+    rows 01:COVERED/EXACT 02:COVERED/EXACT 03:COVERED/EXACT 04:COVERED/EXACT 05:COVERED/TOKEN_CONTAINMENT 06:COVERED/EXACT 07:NOT_COVERED/- 08:NOT_COVERED/- 09:COVERED/EXACT
+    counts 7 covered · 2 not covered · 9 requirements · NOT_EVALUATED
+T2-focus-hover                 ok=True state=AVAILABLE field=CAPABILITY mode=PERSON_X_JOB gate=OPEN orbits=0102 coupling=False viewMatches=0 proposals=12 rows=9 quotes=7 verified=7 HASH-=False UnknownDoc=False offer=False disclosure=False
+    rows 01:COVERED/EXACT 02:COVERED/EXACT 03:COVERED/EXACT 04:COVERED/EXACT 05:COVERED/TOKEN_CONTAINMENT 06:COVERED/EXACT 07:NOT_COVERED/- 08:NOT_COVERED/- 09:COVERED/EXACT
+    counts 7 covered · 2 not covered · 9 requirements · NOT_EVALUATED
+T3-reload                      ok=True state=AVAILABLE field=CAPABILITY mode=PERSON_X_JOB gate=OPEN orbits=0102 coupling=False viewMatches=0 proposals=12 rows=9 quotes=7 verified=7 HASH-=False UnknownDoc=False offer=False disclosure=False
+    rows 01:COVERED/EXACT 02:COVERED/EXACT 03:COVERED/EXACT 04:COVERED/EXACT 05:COVERED/TOKEN_CONTAINMENT 06:COVERED/EXACT 07:NOT_COVERED/- 08:NOT_COVERED/- 09:COVERED/EXACT
+    counts 7 covered · 2 not covered · 9 requirements · NOT_EVALUATED
+T4-reload-de                   ok=True state=AVAILABLE field=CAPABILITY mode=PERSON_X_JOB gate=OPEN orbits=0102 coupling=False viewMatches=0 proposals=12 rows=9 quotes=7 verified=7 HASH-=False UnknownDoc=False offer=False disclosure=False
+    rows 01:COVERED/EXACT 02:COVERED/EXACT 03:COVERED/EXACT 04:COVERED/EXACT 05:COVERED/TOKEN_CONTAINMENT 06:COVERED/EXACT 07:NOT_COVERED/- 08:NOT_COVERED/- 09:COVERED/EXACT
+    counts 7 abgedeckt · 2 nicht abgedeckt · 9 Anforderungen · NOT_EVALUATED
+T4b-back-en                    ok=True state=AVAILABLE field=CAPABILITY mode=PERSON_X_JOB gate=OPEN orbits=0102 coupling=False viewMatches=0 proposals=12 rows=9 quotes=7 verified=7 HASH-=False UnknownDoc=False offer=False disclosure=False
+    rows 01:COVERED/EXACT 02:COVERED/EXACT 03:COVERED/EXACT 04:COVERED/EXACT 05:COVERED/TOKEN_CONTAINMENT 06:COVERED/EXACT 07:NOT_COVERED/- 08:NOT_COVERED/- 09:COVERED/EXACT
+    counts 7 covered · 2 not covered · 9 requirements · NOT_EVALUATED
+T5-role-switch-session         ok=True state=ROLE_MISMATCH field=CAPABILITY mode=PERSON_X_JOB gate=OPEN orbits=0102 coupling=False viewMatches=0 proposals=0 rows=0 quotes=0 verified=0 HASH-=False UnknownDoc=False offer=False disclosure=False
+    statement This analysis belongs to another job than the selected one: neither its proposals nor coverage are shown. job of this analysis: role_kestrel_fullstack · JPOOL_B94850C439974E27496FE3B1A9A076B5 · selected job: role_kestrel
+T6-select-this-role            ok=True state=AVAILABLE field=CAPABILITY mode=PERSON_X_JOB gate=OPEN orbits=0102 coupling=False viewMatches=0 proposals=12 rows=9 quotes=7 verified=7 HASH-=False UnknownDoc=False offer=False disclosure=False
+    rows 01:COVERED/EXACT 02:COVERED/EXACT 03:COVERED/EXACT 04:COVERED/EXACT 05:COVERED/TOKEN_CONTAINMENT 06:COVERED/EXACT 07:NOT_COVERED/- 08:NOT_COVERED/- 09:COVERED/EXACT
+    counts 7 covered · 2 not covered · 9 requirements · NOT_EVALUATED
+T7-pxj-session-other-role      ok=True state=AVAILABLE field=CAPABILITY mode=PERSON_X_JOB gate=OPEN orbits=0102 coupling=False viewMatches=0 proposals=12 rows=10 quotes=2 verified=2 HASH-=False UnknownDoc=False offer=False disclosure=False
+    rows 01:NOT_COVERED/- 02:COVERED/EXACT 03:COVERED/EXACT 04:NOT_COVERED/- 05:NOT_COVERED/- 06:NOT_COVERED/- 07:NOT_COVERED/- 08:NOT_COVERED/- 09:NOT_COVERED/- 10:NOT_COVERED/-
+    counts 2 covered · 8 not covered · 10 requirements · NOT_EVALUATED
+T8-deep-link-A-under-B         ok=True state=ROLE_MISMATCH field=CAPABILITY mode=PERSON_X_JOB gate=OPEN orbits=0102 coupling=False viewMatches=0 proposals=0 rows=0 quotes=0 verified=0 HASH-=False UnknownDoc=False offer=False disclosure=False
+    statement This analysis belongs to another job than the selected one: neither its proposals nor coverage are shown. job of this analysis: role_kestrel_fullstack · JPOOL_B94850C439974E27496FE3B1A9A076B5 · selected job: role_kestrel
+T9-pxj-under-person            ok=True state=MODE_MISMATCH field=CAPABILITY mode=PERSON gate=OPEN orbits=010203040506 coupling=True viewMatches=0 proposals=0 rows=0 quotes=0 verified=0 HASH-=False UnknownDoc=False offer=False disclosure=False
+    statement This analysis ran in another investigation mode: nothing is shown, nothing switches by itself. analysis ANL_* · ran in PERSON × JOB · interface PERSON SWITCH TO PERSON × JOB
+T10-person-deep-link-default   ok=True state=MODE_MISMATCH field=CAPABILITY mode=PERSON_X_JOB gate=OPEN orbits=0102 coupling=False viewMatches=0 proposals=0 rows=0 quotes=0 verified=0 HASH-=False UnknownDoc=False offer=False disclosure=False
+    statement This analysis ran in another investigation mode: nothing is shown, nothing switches by itself. analysis ANL_* · ran in PERSON · interface PERSON × JOB SWITCH TO PERSON
+T11-switch-mode-explicit       ok=True state=None field=CAPABILITY mode=PERSON gate=OPEN orbits=010203040506 coupling=True viewMatches=0 proposals=0 rows=0 quotes=0 verified=0 HASH-=False UnknownDoc=False offer=False disclosure=False
+T12-unknown                    ok=True state=RESULT_NOT_FOUND field=CAPABILITY mode=PERSON_X_JOB gate=OPEN orbits=0102 coupling=False viewMatches=0 proposals=0 rows=0 quotes=0 verified=0 HASH-=False UnknownDoc=False offer=False disclosure=False
+    statement Analysis not found: no result, no demo data. analysis ANL_*
+T13-no-job                     ok=True state=None field=FIELD mode=PERSON_X_JOB gate=AWAITING_JOB orbits=0102 coupling=False viewMatches=0 proposals=0 rows=0 quotes=0 verified=0 HASH-=False UnknownDoc=False offer=True disclosure=False
+T14-orbit01-focus              ok=True state=AVAILABLE field=CAPABILITY mode=PERSON_X_JOB gate=OPEN orbits=0102 coupling=False viewMatches=0 proposals=12 rows=9 quotes=7 verified=7 HASH-=False UnknownDoc=False offer=False disclosure=False
+    rows 01:COVERED/EXACT 02:COVERED/EXACT 03:COVERED/EXACT 04:COVERED/EXACT 05:COVERED/TOKEN_CONTAINMENT 06:COVERED/EXACT 07:NOT_COVERED/- 08:NOT_COVERED/- 09:COVERED/EXACT
+    counts 7 covered · 2 not covered · 9 requirements · NOT_EVALUATED
+T15-role-level-disclosure      ok=True state=None field=FIELD mode=PERSON_X_JOB gate=OPEN orbits=0102 coupling=False viewMatches=0 proposals=0 rows=0 quotes=0 verified=0 HASH-=False UnknownDoc=False offer=False disclosure=True
+PA-01 stand-in DOM vs. server bodies {"b2Status": 200, "rowsOrder": true, "coverage": true, "quotes": true, "quotesVerified": "7/7", "counts": "7 covered \u00b7 2 not covered \u00b7 9 requirements \u00b7 NOT_EVALUATED", "serverCounts": {"requirements": 9, "covered": 7, "notCovered": 2, "proposals": 12}, "proposalsEqualProjection": true, "sessionEqualsReload": {"sessionVsReload": true, "deepLinkVsReload": true}}
+focus/hover/Tab {"urlUnchanged": true, "requestsDuringFocus": []}
+URL after SUCCEEDED has analysisId + investigationMode: True
+network nonGet ['S1-person-session POST /api/career/analyze', 'S2-pxj-session POST /api/career/analyze', 'T7-pxj-session-other-role POST /api/career/analyze']
+network gemini-* reads 0 | /matches reads ['S3-role-level field=FIELD', 'T5-role-switch-session field=FIELD', 'T6-select-this-role field=FIELD', 'T13-no-job field=FIELD', 'T15-role-level-disclosure field=FIELD'] | /matches while CAPABILITY active []
+network B2 reads ['S2-pxj-session field=CAPABILITY /api/career/analyses/ANL_*/job-comparison?poolRoleId=role_kestrel_fullstack', 'T1-session-again field=CAPABILITY /api/career/analyses/ANL_*/job-comparison?poolRoleId=role_kestrel_fullstack', 'T3-reload field=CAPABILITY /api/career/analyses/ANL_*/job-comparison?poolRoleId=role_kestrel_fullstack', 'T6-select-this-role field=CAPABILITY /api/career/analyses/ANL_*/job-comparison?poolRoleId=role_kestrel_fullstack', 'T7-pxj-session-other-role field=CAPABILITY /api/career/analyses/ANL_*/job-comparison?poolRoleId=role_kestrel_frontend_architect', 'T14-orbit01-focus field=CAPABILITY /api/career/analyses/ANL_*/job-comparison?poolRoleId=role_kestrel_fullstack']
+
+### pink-g1-tipfx-1280.json  gemini=STAND_IN (STAND-IN · keine Modellausführung) viewport=1280x720 pageErrors=0
+pool upload {'status': 200, 'id': 'JPOOL_B94850C439974E27496FE3B1A9A076B5'} analyses {'personA': 'ANL_1792714206503_289', 'pxjA': 'ANL_1792714216161_520', 'pxjB': 'ANL_1792714268304_886'}
+S1-person-session              ok=True state=None field=CAPABILITY mode=PERSON gate=OPEN orbits=010203040506 coupling=True viewMatches=0 proposals=0 rows=0 quotes=0 verified=0 HASH-=False UnknownDoc=False offer=False disclosure=False
+S2-pxj-session                 ok=True state=AVAILABLE field=CAPABILITY mode=PERSON_X_JOB gate=OPEN orbits=0102 coupling=False viewMatches=0 proposals=12 rows=9 quotes=7 verified=7 HASH-=False UnknownDoc=False offer=False disclosure=False
+    rows 01:COVERED/EXACT 02:COVERED/EXACT 03:COVERED/EXACT 04:COVERED/EXACT 05:COVERED/TOKEN_CONTAINMENT 06:COVERED/EXACT 07:NOT_COVERED/- 08:NOT_COVERED/- 09:COVERED/EXACT
+    counts 7 covered · 2 not covered · 9 requirements · NOT_EVALUATED
+S3-role-level                  ok=True state=None field=FIELD mode=PERSON_X_JOB gate=OPEN orbits=0102 coupling=False viewMatches=0 proposals=0 rows=0 quotes=0 verified=0 HASH-=False UnknownDoc=False offer=False disclosure=True
+S4-person-deep-link            ok=True state=None field=CAPABILITY mode=PERSON gate=OPEN orbits=010203040506 coupling=True viewMatches=0 proposals=0 rows=0 quotes=0 verified=0 HASH-=False UnknownDoc=False offer=False disclosure=False
+T1-session-again               ok=True state=AVAILABLE field=CAPABILITY mode=PERSON_X_JOB gate=OPEN orbits=0102 coupling=False viewMatches=0 proposals=12 rows=9 quotes=7 verified=7 HASH-=False UnknownDoc=False offer=False disclosure=False
+    rows 01:COVERED/EXACT 02:COVERED/EXACT 03:COVERED/EXACT 04:COVERED/EXACT 05:COVERED/TOKEN_CONTAINMENT 06:COVERED/EXACT 07:NOT_COVERED/- 08:NOT_COVERED/- 09:COVERED/EXACT
+    counts 7 covered · 2 not covered · 9 requirements · NOT_EVALUATED
+T2-focus-hover                 ok=True state=AVAILABLE field=CAPABILITY mode=PERSON_X_JOB gate=OPEN orbits=0102 coupling=False viewMatches=0 proposals=12 rows=9 quotes=7 verified=7 HASH-=False UnknownDoc=False offer=False disclosure=False
+    rows 01:COVERED/EXACT 02:COVERED/EXACT 03:COVERED/EXACT 04:COVERED/EXACT 05:COVERED/TOKEN_CONTAINMENT 06:COVERED/EXACT 07:NOT_COVERED/- 08:NOT_COVERED/- 09:COVERED/EXACT
+    counts 7 covered · 2 not covered · 9 requirements · NOT_EVALUATED
+T3-reload                      ok=True state=AVAILABLE field=CAPABILITY mode=PERSON_X_JOB gate=OPEN orbits=0102 coupling=False viewMatches=0 proposals=12 rows=9 quotes=7 verified=7 HASH-=False UnknownDoc=False offer=False disclosure=False
+    rows 01:COVERED/EXACT 02:COVERED/EXACT 03:COVERED/EXACT 04:COVERED/EXACT 05:COVERED/TOKEN_CONTAINMENT 06:COVERED/EXACT 07:NOT_COVERED/- 08:NOT_COVERED/- 09:COVERED/EXACT
+    counts 7 covered · 2 not covered · 9 requirements · NOT_EVALUATED
+T4-reload-de                   ok=True state=AVAILABLE field=CAPABILITY mode=PERSON_X_JOB gate=OPEN orbits=0102 coupling=False viewMatches=0 proposals=12 rows=9 quotes=7 verified=7 HASH-=False UnknownDoc=False offer=False disclosure=False
+    rows 01:COVERED/EXACT 02:COVERED/EXACT 03:COVERED/EXACT 04:COVERED/EXACT 05:COVERED/TOKEN_CONTAINMENT 06:COVERED/EXACT 07:NOT_COVERED/- 08:NOT_COVERED/- 09:COVERED/EXACT
+    counts 7 abgedeckt · 2 nicht abgedeckt · 9 Anforderungen · NOT_EVALUATED
+T4b-back-en                    ok=True state=AVAILABLE field=CAPABILITY mode=PERSON_X_JOB gate=OPEN orbits=0102 coupling=False viewMatches=0 proposals=12 rows=9 quotes=7 verified=7 HASH-=False UnknownDoc=False offer=False disclosure=False
+    rows 01:COVERED/EXACT 02:COVERED/EXACT 03:COVERED/EXACT 04:COVERED/EXACT 05:COVERED/TOKEN_CONTAINMENT 06:COVERED/EXACT 07:NOT_COVERED/- 08:NOT_COVERED/- 09:COVERED/EXACT
+    counts 7 covered · 2 not covered · 9 requirements · NOT_EVALUATED
+T5-role-switch-session         ok=True state=ROLE_MISMATCH field=CAPABILITY mode=PERSON_X_JOB gate=OPEN orbits=0102 coupling=False viewMatches=0 proposals=0 rows=0 quotes=0 verified=0 HASH-=False UnknownDoc=False offer=False disclosure=False
+    statement This analysis belongs to another job than the selected one: neither its proposals nor coverage are shown. job of this analysis: role_kestrel_fullstack · JPOOL_B94850C439974E27496FE3B1A9A076B5 · selected job: role_kestrel
+T6-select-this-role            ok=True state=AVAILABLE field=CAPABILITY mode=PERSON_X_JOB gate=OPEN orbits=0102 coupling=False viewMatches=0 proposals=12 rows=9 quotes=7 verified=7 HASH-=False UnknownDoc=False offer=False disclosure=False
+    rows 01:COVERED/EXACT 02:COVERED/EXACT 03:COVERED/EXACT 04:COVERED/EXACT 05:COVERED/TOKEN_CONTAINMENT 06:COVERED/EXACT 07:NOT_COVERED/- 08:NOT_COVERED/- 09:COVERED/EXACT
+    counts 7 covered · 2 not covered · 9 requirements · NOT_EVALUATED
+T7-pxj-session-other-role      ok=True state=AVAILABLE field=CAPABILITY mode=PERSON_X_JOB gate=OPEN orbits=0102 coupling=False viewMatches=0 proposals=12 rows=10 quotes=2 verified=2 HASH-=False UnknownDoc=False offer=False disclosure=False
+    rows 01:NOT_COVERED/- 02:COVERED/EXACT 03:COVERED/EXACT 04:NOT_COVERED/- 05:NOT_COVERED/- 06:NOT_COVERED/- 07:NOT_COVERED/- 08:NOT_COVERED/- 09:NOT_COVERED/- 10:NOT_COVERED/-
+    counts 2 covered · 8 not covered · 10 requirements · NOT_EVALUATED
+T8-deep-link-A-under-B         ok=True state=ROLE_MISMATCH field=CAPABILITY mode=PERSON_X_JOB gate=OPEN orbits=0102 coupling=False viewMatches=0 proposals=0 rows=0 quotes=0 verified=0 HASH-=False UnknownDoc=False offer=False disclosure=False
+    statement This analysis belongs to another job than the selected one: neither its proposals nor coverage are shown. job of this analysis: role_kestrel_fullstack · JPOOL_B94850C439974E27496FE3B1A9A076B5 · selected job: role_kestrel
+T9-pxj-under-person            ok=True state=MODE_MISMATCH field=CAPABILITY mode=PERSON gate=OPEN orbits=010203040506 coupling=True viewMatches=0 proposals=0 rows=0 quotes=0 verified=0 HASH-=False UnknownDoc=False offer=False disclosure=False
+    statement This analysis ran in another investigation mode: nothing is shown, nothing switches by itself. analysis ANL_* · ran in PERSON × JOB · interface PERSON SWITCH TO PERSON × JOB
+T10-person-deep-link-default   ok=True state=MODE_MISMATCH field=CAPABILITY mode=PERSON_X_JOB gate=OPEN orbits=0102 coupling=False viewMatches=0 proposals=0 rows=0 quotes=0 verified=0 HASH-=False UnknownDoc=False offer=False disclosure=False
+    statement This analysis ran in another investigation mode: nothing is shown, nothing switches by itself. analysis ANL_* · ran in PERSON · interface PERSON × JOB SWITCH TO PERSON
+T11-switch-mode-explicit       ok=True state=None field=CAPABILITY mode=PERSON gate=OPEN orbits=010203040506 coupling=True viewMatches=1 proposals=0 rows=0 quotes=0 verified=0 HASH-=False UnknownDoc=False offer=False disclosure=False
+T12-unknown                    ok=True state=RESULT_NOT_FOUND field=CAPABILITY mode=PERSON_X_JOB gate=OPEN orbits=0102 coupling=False viewMatches=0 proposals=0 rows=0 quotes=0 verified=0 HASH-=False UnknownDoc=False offer=False disclosure=False
+    statement Analysis not found: no result, no demo data. analysis ANL_*
+T13-no-job                     ok=True state=None field=FIELD mode=PERSON_X_JOB gate=AWAITING_JOB orbits=0102 coupling=False viewMatches=0 proposals=0 rows=0 quotes=0 verified=0 HASH-=False UnknownDoc=False offer=True disclosure=False
+T14-orbit01-focus              ok=True state=AVAILABLE field=CAPABILITY mode=PERSON_X_JOB gate=OPEN orbits=0102 coupling=False viewMatches=0 proposals=12 rows=9 quotes=7 verified=7 HASH-=False UnknownDoc=False offer=False disclosure=False
+    rows 01:COVERED/EXACT 02:COVERED/EXACT 03:COVERED/EXACT 04:COVERED/EXACT 05:COVERED/TOKEN_CONTAINMENT 06:COVERED/EXACT 07:NOT_COVERED/- 08:NOT_COVERED/- 09:COVERED/EXACT
+    counts 7 covered · 2 not covered · 9 requirements · NOT_EVALUATED
+T15-role-level-disclosure      ok=True state=None field=FIELD mode=PERSON_X_JOB gate=OPEN orbits=0102 coupling=False viewMatches=0 proposals=0 rows=0 quotes=0 verified=0 HASH-=False UnknownDoc=False offer=False disclosure=True
+PA-01 stand-in DOM vs. server bodies {"b2Status": 200, "rowsOrder": true, "coverage": true, "quotes": true, "quotesVerified": "7/7", "counts": "7 covered \u00b7 2 not covered \u00b7 9 requirements \u00b7 NOT_EVALUATED", "serverCounts": {"requirements": 9, "covered": 7, "notCovered": 2, "proposals": 12}, "proposalsEqualProjection": true, "sessionEqualsReload": {"sessionVsReload": true, "deepLinkVsReload": true}}
+focus/hover/Tab {"urlUnchanged": true, "requestsDuringFocus": []}
+URL after SUCCEEDED has analysisId + investigationMode: True
+network nonGet ['S1-person-session POST /api/career/analyze', 'S2-pxj-session POST /api/career/analyze', 'T7-pxj-session-other-role POST /api/career/analyze']
+network gemini-* reads 0 | /matches reads ['S3-role-level field=FIELD', 'T5-role-switch-session field=FIELD', 'T6-select-this-role field=FIELD', 'T13-no-job field=FIELD', 'T15-role-level-disclosure field=FIELD'] | /matches while CAPABILITY active []
+network B2 reads ['S2-pxj-session field=CAPABILITY /api/career/analyses/ANL_*/job-comparison?poolRoleId=role_kestrel_fullstack', 'T1-session-again field=CAPABILITY /api/career/analyses/ANL_*/job-comparison?poolRoleId=role_kestrel_fullstack', 'T3-reload field=CAPABILITY /api/career/analyses/ANL_*/job-comparison?poolRoleId=role_kestrel_fullstack', 'T6-select-this-role field=CAPABILITY /api/career/analyses/ANL_*/job-comparison?poolRoleId=role_kestrel_fullstack', 'T7-pxj-session-other-role field=CAPABILITY /api/career/analyses/ANL_*/job-comparison?poolRoleId=role_kestrel_frontend_architect', 'T14-orbit01-focus field=CAPABILITY /api/career/analyses/ANL_*/job-comparison?poolRoleId=role_kestrel_fullstack']
+

@@ -1,0 +1,38 @@
+// PINK X-22 probe: Back / Forward around the first screen. STAND-IN lab only. argv: <state.json> <repo root> <out dir> <label>
+// Records pageshow.persisted (bfcache), the state before leaving, after Forward at 1 s / 5 s / 20 s, and the API requests after Forward.
+import { readFileSync, writeFileSync, mkdirSync } from "node:fs";
+import { pathToFileURL } from "node:url";
+const [STATE, ROOT, OUT, LABEL] = process.argv.slice(2); mkdirSync(OUT, { recursive: true });
+const pw = await import(pathToFileURL(process.env.CONDYN_PLAYWRIGHT_MODULE).href); const { chromium } = pw.chromium ? pw : pw.default;
+const st = JSON.parse(readFileSync(STATE, "utf8")); const BASE = st.base; if (st.gemini !== "STANDIN") throw new Error("not a stand-in lab");
+const DLL = "JPOOL_B94850C439974E27496FE3B1A9A076B5", ROLE = "role_kestrel_fullstack";
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+await fetch(`${BASE}/api/career/job-pools`, { method: "POST", headers: { "content-type": "application/json", "x-condyn-principal-actor-id": "JOB_POOL_UPLOADER:PINK_X22" }, body: readFileSync(`${ROOT}/docs/examples/job-pool-tests/DLL_JOBPOOL_ENGINEERING.json`, "utf8") });
+const browser = await chromium.launch(); const ctx = await browser.newContext({ viewport: { width: 1920, height: 1080 } });
+await ctx.addInitScript(() => { try { localStorage.setItem("condyn_onboarding_seen", "true"); } catch {} window.addEventListener("pageshow", e => { const l = JSON.parse(sessionStorage.getItem("__ps") || "[]"); l.push({ persisted: e.persisted, url: location.search.slice(0, 60), at: Date.now() }); sessionStorage.setItem("__ps", JSON.stringify(l)); }); });
+const page = await ctx.newPage(); const t = id => page.getByTestId(id);
+const requests = []; page.on("request", r => { const u = new URL(r.url()); if (u.pathname.startsWith("/api/")) requests.push({ at: Date.now(), m: r.method(), p: u.pathname }); });
+const errors = []; page.on("pageerror", e => errors.push(String(e).slice(0, 160)));
+const obs = async () => page.evaluate(() => { const q = s => document.querySelector(s); const root = q('[data-testid="semantic-career-intelligence-field"]'); return { mode: root?.dataset.investigationMode ?? null, first: q('[data-testid="pxj-first-screen"]')?.dataset.state ?? null, job: q('[data-testid="job-scope-indicator"]')?.dataset.jobScopeState ?? null, analysis: q('[data-testid="syntx-field"]')?.dataset.analysisId ?? null, items: [...(root?.innerText ?? "").matchAll(/(\d+) items/g)].map(m => m[1]).join(","), ps: JSON.parse(sessionStorage.getItem("__ps") || "[]").slice(-2) }; }).catch(e => ({ error: String(e).slice(0, 120) }));
+const capUrl = (mode, extra = "") => `${BASE}/career/demo?focus=CAPABILITY&investigationMode=${mode}&jobPoolUploadId=${DLL}&jobScopePoolUploadId=${DLL}&jobScopeRoleId=${ROLE}${extra}`;
+// one stand-in PERSON x JOB analysis A0
+await page.goto(capUrl("PERSON_X_JOB"), { waitUntil: "networkidle" }); await page.waitForSelector('[data-testid="semantic-career-intelligence-field"][data-capability-gate="OPEN"]', { timeout: 60000 });
+const before = new Set(((await (await fetch(`${BASE}/api/career/analyses`)).json()).analyses ?? []).map(a => a.analysisId));
+await t("source-dock-file-input").setInputFiles(`${ROOT}/docs/examples/cv.synthetic.pdf`); await page.locator('[data-testid="start-intake-analysis-btn"]:not([disabled])').waitFor({ timeout: 30000 }); await t("start-intake-analysis-btn").click();
+let A0 = null; for (let i = 0; i < 300 && !A0; i += 1) { await sleep(1000); A0 = ((await (await fetch(`${BASE}/api/career/analyses`)).json()).analyses ?? []).map(a => a.analysisId).find(id => !before.has(id)) ?? null; }
+await sleep(5000);
+const rec = { label: LABEL, gemini: "STAND_IN", A0: A0 ? "set" : null, cases: [] };
+for (const [name, act, settle] of [["leave-settled", null, 0], ["leave-1.5s-after-PERSON", "PERSON", 1500], ["leave-8s-after-PERSON", "PERSON", 8000]]) {
+  await page.goto(`${BASE}/career/demo?investigationMode=PERSON`, { waitUntil: "networkidle" });
+  await page.goto(capUrl("PERSON_X_JOB", `&analysisId=${A0}`), { waitUntil: "networkidle" }); await sleep(6000);
+  if (act) { await t(`investigation-mode-${act}`).click(); await sleep(settle); }
+  const left = await obs();
+  await page.goBack({ waitUntil: "load" }).catch(() => {}); await sleep(1500); const back = { search: new URL(page.url()).search, ...(await obs()) };
+  const n = requests.length; await page.goForward({ waitUntil: "load" }).catch(() => {});
+  const f1 = (await sleep(1000), await obs()), f5 = (await sleep(4000), await obs()), f20 = (await sleep(15000), await obs());
+  const afterForward = requests.slice(n).map(r => `${r.m} ${r.p}`);
+  await page.reload({ waitUntil: "networkidle" }); await sleep(6000); const reload = await obs();
+  rec.cases.push({ name, left, back, forward1s: f1, forward5s: f5, forward20s: f20, requestsAfterForward: afterForward, reload });
+  console.log(name, JSON.stringify({ left: [left.mode, left.first, left.job], f1: [f1.mode, f1.first, f1.job, f1.ps?.at(-1)?.persisted], f20: [f20.mode, f20.first, f20.job], req: afterForward.length, reload: [reload.mode, reload.first, reload.job] }));
+}
+rec.pageErrors = errors; writeFileSync(`${OUT}/pink-x22-${LABEL}.json`, JSON.stringify(rec, null, 1)); await browser.close();

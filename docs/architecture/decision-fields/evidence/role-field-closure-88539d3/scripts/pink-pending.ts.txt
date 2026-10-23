@@ -1,0 +1,13 @@
+// PINK: 88539d3 pendingSelection on the persisted :41862 bodies (CHECKING / INVALID same job / INVALID other job / absent).
+import { readFileSync } from "node:fs";
+import { decodeAnalysisResult, projectPxjFirstScreen } from "./lib/career/view-model/pxj-first-screen";
+import { decodeAnalysisInvestigation } from "./lib/career/investigation/client";
+const dir = process.argv[2]; const X = "ANL_1792628993472_10";
+const res = decodeAnalysisResult(JSON.parse(readFileSync(`${dir}/a-pxj.json`, "utf8")), X); if (!res.ok) throw new Error(res.code);
+const inv = decodeAnalysisInvestigation(JSON.parse(readFileSync(`${dir}/inv-pxj.json`, "utf8")).investigation)!;
+const own = { jobPoolUploadId: "JPOOL_B94850C439974E27496FE3B1A9A076B5", poolRoleId: "role_kestrel_fullstack" }, other = { ...own, poolRoleId: "role_x" };
+const base = { mode: "PERSON_X_JOB" as const, analysisId: X, result: { state: "AVAILABLE" as const, result: res.result }, boundary: { state: "RESOLVED" as const, value: inv }, coverage: { state: "IDLE" as const } };
+for (const [name, input] of [["no pending, no selection", { selection: null }], ["CHECKING own job", { selection: null, pendingSelection: { state: "CHECKING", scope: own } }], ["INVALID own job", { selection: null, pendingSelection: { state: "INVALID", scope: own, reason: "NOT_ACTIVE" } }], ["INVALID other job", { selection: null, pendingSelection: { state: "INVALID", scope: other, reason: "ROLE_NOT_IN_POOL" } }], ["VALID own + stale pending", { selection: own, pendingSelection: { state: "CHECKING", scope: other } }]] as const) {
+  const s: any = projectPxjFirstScreen({ ...base, ...(input as any) });
+  console.log(name.padEnd(28), s.state, s.selection ? `selection=${s.selection.poolRoleId}` : "", s.reason ?? "", "proposals" in s ? `proposals=${s.proposals.length}` : "");
+}
