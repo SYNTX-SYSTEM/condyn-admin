@@ -57,7 +57,7 @@ B-3 → production build without exception → every later browser proof of cros
   `GET /api/career/analyses/{id}/investigation` (mode, bound job). Offered are only analyses whose persisted mode equals the
   interface mode and — in PERSON × JOB — whose `jobScopeSelection` equals the selected job exactly (upload id and role id). An
   analysis whose boundary cannot be read is not offered. Selection only by an explicit click (one push of `analysisId`), never
-  automatic, also not for a single candidate. Opening it runs the existing B2 scope-hash check unchanged. Bounded read (newest
+  automatic, also not for a single candidate. Opening it runs the existing B2 scope-hash check unchanged. From the Job Field role view the click pushes `analysisId` and `focus=CAPABILITY` as one entry (GELB K-UX-1); each candidate shows its own persisted binding (upload id, role id) from its investigation read. Bounded read (newest
   25, at most 4 parallel), lazily when the list is opened. A server-side filtered list would be new backend semantics → owner.
 - **O-NAV-SUBMIT:** no analysis submitted in this session may become unnamed. If the field remounts while the POST is in flight,
   the 202's job id is handed to the field now mounted and written by replace into the entry on view, then followed by GET only (no
@@ -72,4 +72,5 @@ B-3 → production build without exception → every later browser proof of cros
 - D-SRC (B-SRC persistence) — new storage of personal documents.
 - Reload during SUBMITTING — server lookup contract (§4).
 - Server-side filtered analysis list — only if D-PICK's bounded client read proves too slow.
+- D-PICK-PERSON — a place for choosing existing PERSON analyses would change the PERSON first screen (G1 owner decision: PERSON unchanged); D-PICK is PxJ-only in the UI, its filter is mode-exact and tested for PERSON.
 - Integration GO.
