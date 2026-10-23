@@ -100,3 +100,19 @@ PINK measured 421e382 on :41872 (PERSISTED_REAL_RESULT, GET only) and its stand-
 
 Held (PINK): no focus trap, focus indicators present, 600 tabs without URL/history change, Esc chain, Shift+Tab exact, text chips
 for COVERED / NOT COVERED, no horizontal page scroll, MODE_MISMATCH and ROLE_MISMATCH offer exactly one action.
+
+## 7 Progress and GELB decisions
+
+- GRÜN P1 interim `2946224` — GELB pre-check: files frontend only, tsc 0, `next build` without flag exit 0, focused 332/332;
+  PERSISTED_REAL_RESULT walk on a production check lab (copy of the :41862 DB, GET only): 6 viewports 107/108 (only 200 % of
+  1280×720: B2 head visible at first sight, the counts line one scroll below), navigation regression R01–R11 28/28.
+- GRÜN P1 + P2 `d8d97b8` (fe736ce V-05/V-06 · 7daffdd V-12 · 688bdd7 UX-02/V-11 · d24aeb2 UX-01 · 44f9eed UX-07 · 2a59d23 UX-06/V-07 ·
+  d8d97b8 F-G1-MD/V-08); GRÜN: 489/489 focused, tsc 0, PERSON markup hash (T-07) unchanged. Checked by GELB on the final candidate.
+- **K-UX-2 (GELB):** P3 readability on elements that also render under PERSON (job indicator, telemetry) goes through the
+  dashboard stylesheet: markup byte-identical, T-07 unchanged; visual only (size, contrast, spacing — no text, element, order or
+  state change). Reported as „PERSON: visual change without markup change“ with selectors and before/after shots; PINK checks it.
+- **K-UX-3 (GELB):** an existing test literal (`job-pool/syntx-field-ssr`, „KEIN JOB-POOL GEWÄHLT“ → „GEÖFFNET“) follows the UX-07
+  wording — same check, not loosened, named in the commit.
+- **PERSON-HASH-REBASE (owner):** two F-G1-MD remainders change the PERSON markup and thus the T-07 hash — `.markdown` in the file
+  dialog's accept filter and an upload label naming PDF/MD/TXT. Not done. Functionally F-G1-MD is closed (.md/.txt via the dialog,
+  .markdown via „all files“, other types refused, no retry after a parse failure).
