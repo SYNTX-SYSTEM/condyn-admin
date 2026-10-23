@@ -1,0 +1,68 @@
+Counter-proof: the 15 new test files of frontend/pxj-ux-closure against 421e382 (npm run test:isolated, fresh disposable database).
+Every REPRODUCE fails at its own assertion; 2 files fail at their import (new modules: lib/career/ui/analysis-picker.ts,
+app/components/career/demo/career-demo-layout.ts). Inverse / guard tests pass, except the two of recovery-ways.test.tsx whose subject
+exists only since 2d97c01 / 6c36644 (gate text, NO_ANALYSIS text): against the parent 2946224 they pass (3/3 inverse) — see the commit fe736ce.
+
+ Test Files  15 failed (15)
+      Tests  43 failed | 17 passed (60)
+
+   × D-PICK · the first screen's NO_ANALYSIS offers the existing investigations of this job > REPRODUCE: opened by a click, read by GET only, exactly the selected job's analysis offered — and nothing chosen by itself
+   × D-PICK · the first screen's NO_ANALYSIS offers the existing investigations of this job > REPRODUCE: the click is one push of analysisId; the screen then runs the B2 checks and equals a fresh load of the URL
+   × D-PICK · the selected job's role view in the Job Field > REPRODUCE: one click — analysisId and focus=CAPABILITY in one entry; Back is the role view without analysisId, as a fresh load
+   ✓ D-PICK · where it is not > inverse: an analysis on view — no NO_ANALYSIS, no picker on the first screen; without a click the URL keeps its analysis
+   ✓ D-PICK · where it is not > inverse: PERSON and JOB offer no picker and read no analysis list; without a valid job none either
+   ✓ F-G1-MD · a file's kind decides how it is staged > inverse: a .pdf stays pdf (read as a data URL, base64 content)
+   × F-G1-MD · a file's kind decides how it is staged > REPRODUCE: any other file is refused with a sentence and not staged
+   × F-G1-MD · a file's kind decides how it is staged > REPRODUCE: .md, .markdown and .txt are read as text and staged as text, with their name and content
+   × F-G1-MD · a file's kind decides how it is staged > REPRODUCE: without an extension the MIME type decides (text/markdown → text)
+   × O-NAV-SUBMIT · a run submitted before Back keeps its name > guard (GELB): the handover is taken once — a further mount on an entry without the job neither follows nor names it; no reset
+   ✓ O-NAV-SUBMIT · a run submitted before Back keeps its name > inverse: a submission refused after the remount (422) names nothing and reads no job; still one POST
+   ✓ O-NAV-SUBMIT · a run submitted before Back keeps its name > inverse: without a remount the 202 stays with its own field — named in its own entry, one POST, nothing handed over
+   × O-NAV-SUBMIT · a run submitted before Back keeps its name > REPRODUCE: Back while the POST is on its way — the 202's job id lands in the entry on view (replace) and is followed by GET only
+   × O-NAV-SUBMIT · a run submitted before Back keeps its name > REPRODUCE: the released controller hands the 202's job over and does not poll it itself
+   × O-PXJ-720 rest · 640×360 > REPRODUCE: in the stack tier B2's binding and counts come first, the boundary statement right after them — no duplicate
+   ✓ O-PXJ-720 · the dashboard carries the viewport rules > inverse: no viewport tier applies at or above 1600 × 1000 (1920 × 1080 changes only by V-16, below)
+   × O-PXJ-720 · the dashboard carries the viewport rules > REPRODUCE: at 200 % the shell, the panel, the planetarium, the dock and the inspector stand in one scrolling column (V-02)
+   × O-PXJ-720 · the dashboard carries the viewport rules > REPRODUCE: below 1600 × 1000 the B2 panel spans from below the shell to the bottom edge; the page is the viewport
+   × O-PXJ-720 · the dashboard carries the viewport rules > REPRODUCE: the Job Field's panel ends above the bottom edge (its own scroll) and the uploaded pools open beside it
+   × O-PXJ-720 · the dashboard carries the viewport rules > REPRODUCE: the source dock starts below the shell and ends above the fixed inspector (V-01)
+   × UX-01 · the level stands in the panel as text > REPRODUCE: POOL, ORGANIZATION and ROLE are named at their level (EN, DE)
+   ✓ UX-02 · where the job is chosen > inverse: the selection contract is unchanged — the one action at the role, its test id, pressed state and label
+   × UX-02 · where the job is chosen > REPRODUCE: at the pool and the organisation level the panel says to open a role (EN, DE); no action there
+   × UX-02 · where the job is chosen > REPRODUCE: the legacy box below the action has a collapse control; open by default with its source and limits
+   × UX-02 · where the job is chosen > REPRODUCE (V-11): at the role SELECT AS JOB follows the path — before the state, the legacy box and every requirement sign
+   ✓ UX-03 · NO_ANALYSIS names its next steps > inverse: with an analysis on view (any other state) no ways and no picker; PERSON's first screen stays absent
+   × UX-03 · NO_ANALYSIS names its next steps > REPRODUCE: no NO_ANALYSIS statement asks for a deep link; the Job Field's names both ways (its chip renders this copy: three-modes-ssr)
+   × UX-03 · NO_ANALYSIS names its next steps > REPRODUCE: the first screen names (a) an existing investigation of this role, with its control, and (b) a source and ANALYZE (EN, DE)
+   ✓ UX-04 · the closed Capability Field says why and how it opens > inverse: open — PERSON always, PERSON × JOB with a valid job — no reason is shown and nothing points to one
+   ✓ UX-04 · the closed Capability Field says why and how it opens > inverse: the gate is unchanged — closed it stays closed (disabled, the Job Field active); no cause names an analysis
+   × UX-04 · the closed Capability Field says why and how it opens > REPRODUCE: a job still checked and an invalid job are named as such; JOB says it has no person field
+   × UX-04 · the closed Capability Field says why and how it opens > REPRODUCE: PERSON × JOB without a job — the cause and the way stand as text at the shell; the control points to them (EN, DE)
+   ✓ UX-06 · the uploaded pools first, the upload after them > inverse: unchanged — without an opened pool the uploaded pools are listed at once, the intake form stays closed
+   × UX-06 · the uploaded pools first, the upload after them > REPRODUCE (V-07): with none uploaded the list and the statement point to + INTAKE, and the list opens it
+   × UX-06 · the uploaded pools first, the upload after them > REPRODUCE: with uploaded pools the start's statement leads with opening one of them; the upload comes second (EN, DE)
+   ✓ UX-07 · uploaded, opened, selected > inverse: under PERSON the shell keeps JOB (the job is not used there)
+   × UX-07 · uploaded, opened, selected > REPRODUCE: the opened role says whether it is the selected job
+   × UX-07 · uploaded, opened, selected > REPRODUCE: the pool list is the UPLOADED pools; its item is OPENED, not SELECTED (EN, DE)
+   × UX-07 · uploaded, opened, selected > REPRODUCE: the shell names the job SELECTED JOB in PERSON × JOB and JOB (DE GEWÄHLTER JOB)
+   × V-05 · the gate names an invalid job with its reason > inverse: no job — the cause names none, without a reason
+   × V-05 · the gate names an invalid job with its reason > REPRODUCE: INVALID — the cause carries the validation's reason, not the sentence of no job
+   ✓ V-06 · a job followed from the URL: its banner closes > inverse: a run of this session that FAILED keeps its banner with RETRY and has no CLOSE (unchanged)
+   × V-06 · a job followed from the URL: its banner closes > REPRODUCE: NOT FOUND — CLOSE hides the banner by one push without analysisJobId; no retry, no POST; Back names the job again
+   × V-06 · RESULT_NOT_FOUND has a way out > REPRODUCE: the first screen offers the existing investigations of the selected role (D-PICK)
+   × V-06 · the Job Field's NO_ANALYSIS with a selected job > inverse: without a selected job it still asks for one first
+   × V-06 · the Job Field's NO_ANALYSIS with a selected job > REPRODUCE: it does not ask to select a job that is selected; it names the selected job's role and ANALYZE
+   ✓ V-08 · a format failure offers no pointless RETRY > inverse: another worker failure keeps its RETRY
+   × V-08 · a format failure offers no pointless RETRY > REPRODUCE: ERR_PDF_PARSE_FAILURE — no RETRY; the banner names the way to a readable source
+   ✓ V-09 · inverse > inverse: the role cards keep their owner-set sizes — footer at most 8.5 px, standing 7.5 px (orbit geometry unchanged)
+   × V-09 · type sizes > REPRODUCE: the B2 panel has no text under 10.5 px
+   × V-09 · type sizes > REPRODUCE: the Job Field has no text under 10 px outside the role cards (pool, organisation and role level)
+   × V-09 · type sizes > REPRODUCE: the shared job indicator reads at 11 px (stylesheet; its markup unchanged)
+   × V-10 · the telemetry's inactive levels and separators reach AA > REPRODUCE: inactive levels and separators get an AA colour (stylesheet; markup unchanged)
+   ✓ V-12 · the mode group: the arrow moves the focus, Enter / Space choose > guard: the Tab stop follows the focus — the option the arrow reached is the one Tab returns to (on 421e382 too, there by choosing)
+   ✓ V-12 · the mode group: the arrow moves the focus, Enter / Space choose > inverse: Enter / Space (the button's click) choose — one push, the mode checked
+   × V-12 · the mode group: the arrow moves the focus, Enter / Space choose > REPRODUCE: → and ← and Home / End change neither the mode, the URL nor the history
+   × V-13 · hover in the Job Field > REPRODUCE (V-13): SELECT AS JOB, the pool item and its OPEN show a hover (look only)
+   × V-14 · target size in the Job Field > REPRODUCE (V-14): the panel's actions (POOLS, + INTAKE, …) are at least 24 px high
+   × V-16 · the zoom telemetry stands in view, below the shell row > REPRODUCE: at every viewport it leaves top −46 px (clipped by the field: invisible, out of reach) for page y 128, uncapped
+   × V-16 · the zoom telemetry stands in view, below the shell row > REPRODUCE: in the fit tier it stands over the free area and may wrap; at 200 % it is part of the column

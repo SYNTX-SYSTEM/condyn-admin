@@ -1,0 +1,4 @@
+1280 720 {"list":[380,145,696,406],"orient":[28,145,368,704],"vh":720,"buttonHit":true} click true
+1440 900 {"list":[380,145,696,406],"orient":[28,145,368,793],"vh":900,"buttonHit":true} click true
+1600 900 {"list":[380,145,696,406],"orient":[28,145,368,793],"vh":900,"buttonHit":true} click true
+1920 1080 {"list":[28,809,344,1021],"orient":[28,145,368,793],"vh":1080,"buttonHit":true} click true

@@ -1,0 +1,9 @@
+Final state 4b826cc (frontend/pxj-ux-closure on 70d1cb4).
+tsc --noEmit: 0 errors.
+next build --webpack, no typescript.ignoreBuildErrors: exit 0.
+
+Focused group (npm run test:isolated, fresh disposable database): test/career/pxj-first-screen, test/career/three-modes, test/career/job-pool,
+test/career-demo-ui, test/career-f12-pulse-alignment, test/career-sil-empty-orbit-visual-attention, test/career-sil-global-language-wiring,
+test/career/hr-decision-loop/dock-ssr, test/career-frontend-job-lifecycle, test/build:
+ Test Files  57 passed (57)
+      Tests  498 passed | 4 skipped (502)

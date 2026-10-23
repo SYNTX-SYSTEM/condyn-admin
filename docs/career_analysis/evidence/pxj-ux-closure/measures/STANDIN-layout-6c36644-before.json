@@ -1,0 +1,3008 @@
+{
+  "tag": "before",
+  "css": null,
+  "rows": [
+    {
+      "vname": "1920x1080",
+      "scene": "cap-no-analysis",
+      "vw": 1920,
+      "vh": 1080,
+      "scrollW": 1920,
+      "scrollH": 1141,
+      "controls": 15,
+      "problems": [
+        {
+          "control": "L0 PLANETARIUM",
+          "own": 0,
+          "off": 0,
+          "by": [
+            "career-intelligence-dashboard"
+          ],
+          "rect": [
+            695,
+            22,
+            99,
+            22
+          ]
+        }
+      ],
+      "rects": {
+        "header": [
+          0,
+          0,
+          1920,
+          61
+        ],
+        "jobScope": [
+          28,
+          74,
+          616,
+          114
+        ],
+        "strip": [
+          723,
+          70,
+          1197,
+          120
+        ],
+        "modes": [
+          1205,
+          77,
+          1446,
+          111
+        ],
+        "guide": [
+          1756,
+          84,
+          1896,
+          118
+        ],
+        "dock": [
+          40,
+          445,
+          380,
+          757
+        ],
+        "inspector": null,
+        "stage": [
+          560,
+          201,
+          1360,
+          1001
+        ],
+        "panel": [
+          1496,
+          193,
+          1896,
+          424
+        ],
+        "counts": null,
+        "gate": null,
+        "orient": null
+      }
+    },
+    {
+      "vname": "1920x1080",
+      "scene": "b2",
+      "vw": 1920,
+      "vh": 1080,
+      "scrollW": 1920,
+      "scrollH": 1141,
+      "controls": 21,
+      "problems": [
+        {
+          "control": "L0 PLANETARIUM",
+          "own": 0,
+          "off": 0,
+          "by": [
+            "career-intelligence-dashboard"
+          ],
+          "rect": [
+            695,
+            22,
+            99,
+            22
+          ]
+        },
+        {
+          "control": "pxj-first-req-req_pink_alpha_3",
+          "own": 4,
+          "off": 0,
+          "by": [
+            "pxj-first-screen"
+          ],
+          "rect": [
+            1524,
+            971,
+            344,
+            98
+          ]
+        }
+      ],
+      "rects": {
+        "header": [
+          0,
+          0,
+          1920,
+          61
+        ],
+        "jobScope": [
+          28,
+          74,
+          616,
+          114
+        ],
+        "strip": [
+          723,
+          70,
+          1197,
+          120
+        ],
+        "modes": [
+          1205,
+          77,
+          1446,
+          111
+        ],
+        "guide": [
+          1756,
+          84,
+          1896,
+          118
+        ],
+        "dock": [
+          40,
+          445,
+          380,
+          757
+        ],
+        "inspector": null,
+        "stage": [
+          560,
+          201,
+          1360,
+          1001
+        ],
+        "panel": [
+          1496,
+          193,
+          1896,
+          1045
+        ],
+        "counts": [
+          1524,
+          478,
+          1868,
+          510
+        ],
+        "gate": null,
+        "orient": null
+      }
+    },
+    {
+      "vname": "1920x1080",
+      "scene": "person",
+      "vw": 1920,
+      "vh": 1080,
+      "scrollW": 1920,
+      "scrollH": 1141,
+      "controls": 14,
+      "problems": [
+        {
+          "control": "L0 PLANETARIUM",
+          "own": 0,
+          "off": 0,
+          "by": [
+            "career-intelligence-dashboard"
+          ],
+          "rect": [
+            695,
+            22,
+            99,
+            22
+          ]
+        }
+      ],
+      "rects": {
+        "header": [
+          0,
+          0,
+          1920,
+          61
+        ],
+        "jobScope": [
+          28,
+          74,
+          280,
+          114
+        ],
+        "strip": [
+          723,
+          70,
+          1197,
+          120
+        ],
+        "modes": [
+          1205,
+          77,
+          1446,
+          111
+        ],
+        "guide": [
+          1756,
+          84,
+          1896,
+          118
+        ],
+        "dock": [
+          40,
+          445,
+          380,
+          757
+        ],
+        "inspector": null,
+        "stage": [
+          560,
+          201,
+          1360,
+          1001
+        ],
+        "panel": null,
+        "counts": null,
+        "gate": null,
+        "orient": null
+      }
+    },
+    {
+      "vname": "1920x1080",
+      "scene": "role-view",
+      "vw": 1920,
+      "vh": 1080,
+      "scrollW": 1920,
+      "scrollH": 1141,
+      "controls": 23,
+      "problems": [
+        {
+          "control": "Distributed Systems Architect · Alpha In",
+          "own": 0,
+          "off": 0,
+          "by": [
+            "syntx-ecology"
+          ],
+          "rect": [
+            890,
+            367,
+            182,
+            100
+          ]
+        }
+      ],
+      "rects": {
+        "header": [
+          0,
+          0,
+          1920,
+          61
+        ],
+        "jobScope": [
+          28,
+          74,
+          616,
+          114
+        ],
+        "strip": [
+          723,
+          70,
+          1197,
+          120
+        ],
+        "modes": [
+          1205,
+          77,
+          1446,
+          111
+        ],
+        "guide": [
+          1734,
+          13,
+          1896,
+          47
+        ],
+        "dock": [
+          40,
+          445,
+          380,
+          757
+        ],
+        "inspector": null,
+        "stage": [
+          560,
+          201,
+          1360,
+          1001
+        ],
+        "panel": null,
+        "counts": null,
+        "gate": null,
+        "orient": [
+          28,
+          145,
+          368,
+          732
+        ]
+      }
+    },
+    {
+      "vname": "1600x900",
+      "scene": "cap-no-analysis",
+      "vw": 1600,
+      "vh": 900,
+      "scrollW": 1600,
+      "scrollH": 1021,
+      "controls": 15,
+      "problems": [
+        {
+          "control": "L0 PLANETARIUM",
+          "own": 0,
+          "off": 0,
+          "by": [
+            "career-intelligence-dashboard"
+          ],
+          "rect": [
+            535,
+            22,
+            99,
+            22
+          ]
+        }
+      ],
+      "rects": {
+        "header": [
+          0,
+          0,
+          1600,
+          61
+        ],
+        "jobScope": [
+          28,
+          74,
+          545,
+          114
+        ],
+        "strip": [
+          563,
+          70,
+          1037,
+          120
+        ],
+        "modes": [
+          1045,
+          77,
+          1286,
+          111
+        ],
+        "guide": [
+          1436,
+          84,
+          1576,
+          118
+        ],
+        "dock": [
+          40,
+          385,
+          380,
+          697
+        ],
+        "inspector": null,
+        "stage": [
+          400,
+          141,
+          1200,
+          941
+        ],
+        "panel": [
+          1176,
+          193,
+          1576,
+          424
+        ],
+        "counts": null,
+        "gate": null,
+        "orient": null
+      }
+    },
+    {
+      "vname": "1600x900",
+      "scene": "b2",
+      "vw": 1600,
+      "vh": 900,
+      "scrollW": 1600,
+      "scrollH": 1021,
+      "controls": 21,
+      "problems": [
+        {
+          "control": "L0 PLANETARIUM",
+          "own": 0,
+          "off": 0,
+          "by": [
+            "career-intelligence-dashboard"
+          ],
+          "rect": [
+            535,
+            22,
+            99,
+            22
+          ]
+        },
+        {
+          "control": "pxj-first-req-req_pink_alpha_2",
+          "own": 1,
+          "off": 1,
+          "by": [
+            "semantic-career-intelligence-field"
+          ],
+          "rect": [
+            1204,
+            827,
+            344,
+            139
+          ]
+        },
+        {
+          "control": "pxj-first-req-req_pink_alpha_3",
+          "own": 0,
+          "off": 5,
+          "by": [],
+          "rect": [
+            1204,
+            971,
+            344,
+            98
+          ]
+        }
+      ],
+      "rects": {
+        "header": [
+          0,
+          0,
+          1600,
+          61
+        ],
+        "jobScope": [
+          28,
+          74,
+          545,
+          114
+        ],
+        "strip": [
+          563,
+          70,
+          1037,
+          120
+        ],
+        "modes": [
+          1045,
+          77,
+          1286,
+          111
+        ],
+        "guide": [
+          1436,
+          84,
+          1576,
+          118
+        ],
+        "dock": [
+          40,
+          385,
+          380,
+          697
+        ],
+        "inspector": null,
+        "stage": [
+          400,
+          141,
+          1200,
+          941
+        ],
+        "panel": [
+          1176,
+          193,
+          1576,
+          865
+        ],
+        "counts": [
+          1204,
+          478,
+          1548,
+          510
+        ],
+        "gate": null,
+        "orient": null
+      }
+    },
+    {
+      "vname": "1600x900",
+      "scene": "person",
+      "vw": 1600,
+      "vh": 900,
+      "scrollW": 1600,
+      "scrollH": 1021,
+      "controls": 14,
+      "problems": [
+        {
+          "control": "L0 PLANETARIUM",
+          "own": 0,
+          "off": 0,
+          "by": [
+            "career-intelligence-dashboard"
+          ],
+          "rect": [
+            535,
+            22,
+            99,
+            22
+          ]
+        }
+      ],
+      "rects": {
+        "header": [
+          0,
+          0,
+          1600,
+          61
+        ],
+        "jobScope": [
+          28,
+          74,
+          280,
+          114
+        ],
+        "strip": [
+          563,
+          70,
+          1037,
+          120
+        ],
+        "modes": [
+          1045,
+          77,
+          1286,
+          111
+        ],
+        "guide": [
+          1436,
+          84,
+          1576,
+          118
+        ],
+        "dock": [
+          40,
+          385,
+          380,
+          697
+        ],
+        "inspector": null,
+        "stage": [
+          400,
+          141,
+          1200,
+          941
+        ],
+        "panel": null,
+        "counts": null,
+        "gate": null,
+        "orient": null
+      }
+    },
+    {
+      "vname": "1600x900",
+      "scene": "role-view",
+      "vw": 1600,
+      "vh": 900,
+      "scrollW": 1600,
+      "scrollH": 1021,
+      "controls": 23,
+      "problems": [
+        {
+          "control": "Distributed Systems Architect · Alpha In",
+          "own": 0,
+          "off": 0,
+          "by": [
+            "syntx-requirement-req_pink_alpha_1",
+            "syntx-ecology"
+          ],
+          "rect": [
+            730,
+            304,
+            182,
+            100
+          ]
+        }
+      ],
+      "rects": {
+        "header": [
+          0,
+          0,
+          1600,
+          61
+        ],
+        "jobScope": [
+          28,
+          74,
+          545,
+          114
+        ],
+        "strip": [
+          563,
+          70,
+          1037,
+          120
+        ],
+        "modes": [
+          1045,
+          77,
+          1286,
+          111
+        ],
+        "guide": [
+          1414,
+          13,
+          1576,
+          47
+        ],
+        "dock": [
+          40,
+          385,
+          380,
+          697
+        ],
+        "inspector": null,
+        "stage": [
+          400,
+          141,
+          1200,
+          941
+        ],
+        "panel": null,
+        "counts": null,
+        "gate": null,
+        "orient": [
+          28,
+          145,
+          368,
+          732
+        ]
+      }
+    },
+    {
+      "vname": "1440x900",
+      "scene": "cap-no-analysis",
+      "vw": 1440,
+      "vh": 900,
+      "scrollW": 1440,
+      "scrollH": 1021,
+      "controls": 15,
+      "problems": [
+        {
+          "control": "L0 PLANETARIUM",
+          "own": 0,
+          "off": 0,
+          "by": [
+            "career-intelligence-dashboard"
+          ],
+          "rect": [
+            455,
+            22,
+            99,
+            22
+          ]
+        }
+      ],
+      "rects": {
+        "header": [
+          0,
+          0,
+          1440,
+          61
+        ],
+        "jobScope": [
+          28,
+          74,
+          465,
+          114
+        ],
+        "strip": [
+          483,
+          70,
+          957,
+          120
+        ],
+        "modes": [
+          965,
+          77,
+          1206,
+          111
+        ],
+        "guide": [
+          1276,
+          84,
+          1416,
+          118
+        ],
+        "dock": [
+          40,
+          385,
+          380,
+          697
+        ],
+        "inspector": null,
+        "stage": [
+          320,
+          141,
+          1120,
+          941
+        ],
+        "panel": [
+          1016,
+          485,
+          1416,
+          716
+        ],
+        "counts": null,
+        "gate": null,
+        "orient": null
+      }
+    },
+    {
+      "vname": "1440x900",
+      "scene": "b2",
+      "vw": 1440,
+      "vh": 900,
+      "scrollW": 1440,
+      "scrollH": 1021,
+      "controls": 21,
+      "problems": [
+        {
+          "control": "L0 PLANETARIUM",
+          "own": 0,
+          "off": 0,
+          "by": [
+            "career-intelligence-dashboard"
+          ],
+          "rect": [
+            455,
+            22,
+            99,
+            22
+          ]
+        },
+        {
+          "control": "pxj-first-req-req_pink_alpha_1",
+          "own": 0,
+          "off": 5,
+          "by": [],
+          "rect": [
+            1044,
+            956,
+            344,
+            157
+          ]
+        },
+        {
+          "control": "pxj-first-req-req_pink_alpha_2",
+          "own": 0,
+          "off": 5,
+          "by": [],
+          "rect": [
+            1044,
+            1119,
+            344,
+            139
+          ]
+        },
+        {
+          "control": "pxj-first-req-req_pink_alpha_3",
+          "own": 0,
+          "off": 5,
+          "by": [],
+          "rect": [
+            1044,
+            1263,
+            344,
+            98
+          ]
+        }
+      ],
+      "rects": {
+        "header": [
+          0,
+          0,
+          1440,
+          61
+        ],
+        "jobScope": [
+          28,
+          74,
+          465,
+          114
+        ],
+        "strip": [
+          483,
+          70,
+          957,
+          120
+        ],
+        "modes": [
+          965,
+          77,
+          1206,
+          111
+        ],
+        "guide": [
+          1276,
+          84,
+          1416,
+          118
+        ],
+        "dock": [
+          40,
+          385,
+          380,
+          697
+        ],
+        "inspector": null,
+        "stage": [
+          320,
+          141,
+          1120,
+          941
+        ],
+        "panel": [
+          1016,
+          485,
+          1416,
+          925
+        ],
+        "counts": [
+          1044,
+          770,
+          1388,
+          802
+        ],
+        "gate": null,
+        "orient": null
+      }
+    },
+    {
+      "vname": "1440x900",
+      "scene": "person",
+      "vw": 1440,
+      "vh": 900,
+      "scrollW": 1440,
+      "scrollH": 1021,
+      "controls": 14,
+      "problems": [
+        {
+          "control": "L0 PLANETARIUM",
+          "own": 0,
+          "off": 0,
+          "by": [
+            "career-intelligence-dashboard"
+          ],
+          "rect": [
+            455,
+            22,
+            99,
+            22
+          ]
+        }
+      ],
+      "rects": {
+        "header": [
+          0,
+          0,
+          1440,
+          61
+        ],
+        "jobScope": [
+          28,
+          74,
+          280,
+          114
+        ],
+        "strip": [
+          483,
+          70,
+          957,
+          120
+        ],
+        "modes": [
+          965,
+          77,
+          1206,
+          111
+        ],
+        "guide": [
+          1276,
+          84,
+          1416,
+          118
+        ],
+        "dock": [
+          40,
+          385,
+          380,
+          697
+        ],
+        "inspector": null,
+        "stage": [
+          320,
+          141,
+          1120,
+          941
+        ],
+        "panel": null,
+        "counts": null,
+        "gate": null,
+        "orient": null
+      }
+    },
+    {
+      "vname": "1440x900",
+      "scene": "role-view",
+      "vw": 1440,
+      "vh": 900,
+      "scrollW": 1440,
+      "scrollH": 1021,
+      "controls": 23,
+      "problems": [
+        {
+          "control": "Distributed Systems Architect · Alpha In",
+          "own": 0,
+          "off": 0,
+          "by": [
+            "syntx-ecology",
+            "syntx-requirement-req_pink_alpha_1"
+          ],
+          "rect": [
+            652,
+            312,
+            182,
+            100
+          ]
+        }
+      ],
+      "rects": {
+        "header": [
+          0,
+          0,
+          1440,
+          61
+        ],
+        "jobScope": [
+          28,
+          74,
+          465,
+          114
+        ],
+        "strip": [
+          483,
+          70,
+          957,
+          120
+        ],
+        "modes": [
+          965,
+          77,
+          1206,
+          111
+        ],
+        "guide": [
+          1254,
+          13,
+          1416,
+          47
+        ],
+        "dock": [
+          40,
+          385,
+          380,
+          697
+        ],
+        "inspector": null,
+        "stage": [
+          320,
+          141,
+          1120,
+          941
+        ],
+        "panel": null,
+        "counts": null,
+        "gate": null,
+        "orient": [
+          28,
+          145,
+          368,
+          732
+        ]
+      }
+    },
+    {
+      "vname": "1280x720",
+      "scene": "cap-no-analysis",
+      "vw": 1280,
+      "vh": 720,
+      "scrollW": 1280,
+      "scrollH": 1021,
+      "controls": 15,
+      "problems": [
+        {
+          "control": "L0 PLANETARIUM",
+          "own": 0,
+          "off": 0,
+          "by": [
+            "career-intelligence-dashboard"
+          ],
+          "rect": [
+            375,
+            22,
+            99,
+            22
+          ]
+        },
+        {
+          "control": "add-text-source-btn",
+          "own": 0,
+          "off": 0,
+          "by": [
+            "decision-graph-inspector-idle"
+          ],
+          "rect": [
+            68,
+            582,
+            287,
+            36
+          ]
+        }
+      ],
+      "rects": {
+        "header": [
+          0,
+          0,
+          1280,
+          61
+        ],
+        "jobScope": [
+          28,
+          74,
+          385,
+          114
+        ],
+        "strip": [
+          403,
+          70,
+          877,
+          120
+        ],
+        "modes": [
+          885,
+          77,
+          1101,
+          111
+        ],
+        "guide": [
+          1116,
+          84,
+          1256,
+          118
+        ],
+        "dock": [
+          40,
+          385,
+          380,
+          697
+        ],
+        "inspector": null,
+        "stage": [
+          240,
+          141,
+          1040,
+          941
+        ],
+        "panel": [
+          885,
+          485,
+          1256,
+          716
+        ],
+        "counts": null,
+        "gate": null,
+        "orient": null
+      }
+    },
+    {
+      "vname": "1280x720",
+      "scene": "b2",
+      "vw": 1280,
+      "vh": 720,
+      "scrollW": 1280,
+      "scrollH": 1021,
+      "controls": 21,
+      "problems": [
+        {
+          "control": "L0 PLANETARIUM",
+          "own": 0,
+          "off": 0,
+          "by": [
+            "career-intelligence-dashboard"
+          ],
+          "rect": [
+            375,
+            22,
+            99,
+            22
+          ]
+        },
+        {
+          "control": "add-text-source-btn",
+          "own": 0,
+          "off": 0,
+          "by": [
+            "decision-graph-inspector-idle"
+          ],
+          "rect": [
+            68,
+            582,
+            287,
+            36
+          ]
+        },
+        {
+          "control": "pxj-first-proposal-PCAP_FBDAB9B354C0B3FD",
+          "own": 0,
+          "off": 5,
+          "by": [],
+          "rect": [
+            913,
+            854,
+            210,
+            22
+          ]
+        },
+        {
+          "control": "pxj-first-proposal-PCAP_610D2EA58EA68E6E",
+          "own": 0,
+          "off": 5,
+          "by": [],
+          "rect": [
+            913,
+            882,
+            116,
+            22
+          ]
+        },
+        {
+          "control": "pxj-first-proposal-PCAP_993DF54962BF9BC9",
+          "own": 0,
+          "off": 5,
+          "by": [],
+          "rect": [
+            1035,
+            882,
+            114,
+            22
+          ]
+        },
+        {
+          "control": "pxj-first-proposal-PCAP_2C6DEB475A64BD5A",
+          "own": 0,
+          "off": 5,
+          "by": [],
+          "rect": [
+            913,
+            910,
+            211,
+            22
+          ]
+        },
+        {
+          "control": "pxj-first-req-req_pink_alpha_1",
+          "own": 0,
+          "off": 5,
+          "by": [],
+          "rect": [
+            913,
+            984,
+            315,
+            189
+          ]
+        },
+        {
+          "control": "pxj-first-req-req_pink_alpha_2",
+          "own": 0,
+          "off": 5,
+          "by": [],
+          "rect": [
+            913,
+            1179,
+            315,
+            139
+          ]
+        },
+        {
+          "control": "pxj-first-req-req_pink_alpha_3",
+          "own": 0,
+          "off": 5,
+          "by": [],
+          "rect": [
+            913,
+            1323,
+            315,
+            114
+          ]
+        }
+      ],
+      "rects": {
+        "header": [
+          0,
+          0,
+          1280,
+          61
+        ],
+        "jobScope": [
+          28,
+          74,
+          385,
+          114
+        ],
+        "strip": [
+          403,
+          70,
+          877,
+          120
+        ],
+        "modes": [
+          885,
+          77,
+          1101,
+          111
+        ],
+        "guide": [
+          1116,
+          84,
+          1256,
+          118
+        ],
+        "dock": [
+          40,
+          385,
+          380,
+          697
+        ],
+        "inspector": null,
+        "stage": [
+          240,
+          141,
+          1040,
+          941
+        ],
+        "panel": [
+          885,
+          485,
+          1256,
+          925
+        ],
+        "counts": [
+          913,
+          770,
+          1228,
+          802
+        ],
+        "gate": null,
+        "orient": null
+      }
+    },
+    {
+      "vname": "1280x720",
+      "scene": "person",
+      "vw": 1280,
+      "vh": 720,
+      "scrollW": 1280,
+      "scrollH": 1021,
+      "controls": 14,
+      "problems": [
+        {
+          "control": "L0 PLANETARIUM",
+          "own": 0,
+          "off": 0,
+          "by": [
+            "career-intelligence-dashboard"
+          ],
+          "rect": [
+            375,
+            22,
+            99,
+            22
+          ]
+        },
+        {
+          "control": "add-text-source-btn",
+          "own": 0,
+          "off": 0,
+          "by": [
+            "decision-graph-inspector-idle"
+          ],
+          "rect": [
+            68,
+            582,
+            287,
+            36
+          ]
+        }
+      ],
+      "rects": {
+        "header": [
+          0,
+          0,
+          1280,
+          61
+        ],
+        "jobScope": [
+          28,
+          74,
+          280,
+          114
+        ],
+        "strip": [
+          403,
+          70,
+          877,
+          120
+        ],
+        "modes": [
+          885,
+          77,
+          1101,
+          111
+        ],
+        "guide": [
+          1116,
+          84,
+          1256,
+          118
+        ],
+        "dock": [
+          40,
+          385,
+          380,
+          697
+        ],
+        "inspector": null,
+        "stage": [
+          240,
+          141,
+          1040,
+          941
+        ],
+        "panel": null,
+        "counts": null,
+        "gate": null,
+        "orient": null
+      }
+    },
+    {
+      "vname": "1280x720",
+      "scene": "role-view",
+      "vw": 1280,
+      "vh": 720,
+      "scrollW": 1280,
+      "scrollH": 1021,
+      "controls": 23,
+      "problems": [
+        {
+          "control": "Distributed Systems Architect · Alpha In",
+          "own": 0,
+          "off": 0,
+          "by": [
+            "syntx-ecology",
+            "syntx-requirement-req_pink_alpha_1"
+          ],
+          "rect": [
+            572,
+            310,
+            182,
+            100
+          ]
+        },
+        {
+          "control": "Industrial IoT Protocol Design · NO MATC",
+          "own": 1,
+          "off": 0,
+          "by": [
+            "syntx-field",
+            "syntx-legacy-disclosure"
+          ],
+          "rect": [
+            271,
+            496,
+            181,
+            50
+          ]
+        }
+      ],
+      "rects": {
+        "header": [
+          0,
+          0,
+          1280,
+          61
+        ],
+        "jobScope": [
+          28,
+          74,
+          385,
+          114
+        ],
+        "strip": [
+          403,
+          70,
+          877,
+          120
+        ],
+        "modes": [
+          885,
+          77,
+          1101,
+          111
+        ],
+        "guide": [
+          1094,
+          13,
+          1256,
+          47
+        ],
+        "dock": [
+          40,
+          385,
+          380,
+          697
+        ],
+        "inspector": null,
+        "stage": [
+          240,
+          141,
+          1040,
+          941
+        ],
+        "panel": null,
+        "counts": null,
+        "gate": null,
+        "orient": [
+          28,
+          145,
+          368,
+          732
+        ]
+      }
+    },
+    {
+      "vname": "zoom200-1920x1080",
+      "scene": "cap-no-analysis",
+      "vw": 960,
+      "vh": 540,
+      "scrollW": 960,
+      "scrollH": 1021,
+      "controls": 15,
+      "problems": [
+        {
+          "control": "L0 PLANETARIUM",
+          "own": 0,
+          "off": 0,
+          "by": [
+            "career-intelligence-dashboard"
+          ],
+          "rect": [
+            215,
+            22,
+            99,
+            22
+          ]
+        },
+        {
+          "control": "add-pdf-source-btn",
+          "own": 1,
+          "off": 0,
+          "by": [
+            "decision-graph-inspector-idle"
+          ],
+          "rect": [
+            68,
+            491,
+            287,
+            39
+          ]
+        },
+        {
+          "control": "add-github-source-btn",
+          "own": 0,
+          "off": 5,
+          "by": [],
+          "rect": [
+            68,
+            538,
+            140,
+            36
+          ]
+        },
+        {
+          "control": "add-website-source-btn",
+          "own": 0,
+          "off": 5,
+          "by": [],
+          "rect": [
+            216,
+            538,
+            140,
+            36
+          ]
+        },
+        {
+          "control": "add-text-source-btn",
+          "own": 0,
+          "off": 5,
+          "by": [],
+          "rect": [
+            68,
+            582,
+            287,
+            36
+          ]
+        },
+        {
+          "control": "analysis-picker-toggle",
+          "own": 0,
+          "off": 5,
+          "by": [],
+          "rect": [
+            685,
+            641,
+            224,
+            40
+          ]
+        },
+        {
+          "control": "semantic-guide-drawer-toggle",
+          "own": 0,
+          "off": 0,
+          "by": [
+            "investigation-mode-PERSON_X_JOB",
+            "investigation-mode-JOB",
+            "investigation-mode-selector"
+          ],
+          "rect": [
+            796,
+            84,
+            140,
+            35
+          ]
+        }
+      ],
+      "rects": {
+        "header": [
+          0,
+          0,
+          960,
+          61
+        ],
+        "jobScope": [
+          28,
+          74,
+          225,
+          114
+        ],
+        "strip": [
+          243,
+          70,
+          717,
+          120
+        ],
+        "modes": [
+          725,
+          77,
+          941,
+          111
+        ],
+        "guide": [
+          796,
+          84,
+          936,
+          119
+        ],
+        "dock": [
+          40,
+          385,
+          380,
+          697
+        ],
+        "inspector": null,
+        "stage": [
+          80,
+          141,
+          880,
+          941
+        ],
+        "panel": [
+          658,
+          485,
+          936,
+          752
+        ],
+        "counts": null,
+        "gate": null,
+        "orient": null
+      }
+    },
+    {
+      "vname": "zoom200-1920x1080",
+      "scene": "b2",
+      "vw": 960,
+      "vh": 540,
+      "scrollW": 960,
+      "scrollH": 1021,
+      "controls": 21,
+      "problems": [
+        {
+          "control": "L0 PLANETARIUM",
+          "own": 0,
+          "off": 0,
+          "by": [
+            "career-intelligence-dashboard"
+          ],
+          "rect": [
+            215,
+            22,
+            99,
+            22
+          ]
+        },
+        {
+          "control": "add-pdf-source-btn",
+          "own": 1,
+          "off": 0,
+          "by": [
+            "decision-graph-inspector-idle"
+          ],
+          "rect": [
+            68,
+            491,
+            287,
+            39
+          ]
+        },
+        {
+          "control": "add-github-source-btn",
+          "own": 0,
+          "off": 5,
+          "by": [],
+          "rect": [
+            68,
+            538,
+            140,
+            36
+          ]
+        },
+        {
+          "control": "add-website-source-btn",
+          "own": 0,
+          "off": 5,
+          "by": [],
+          "rect": [
+            216,
+            538,
+            140,
+            36
+          ]
+        },
+        {
+          "control": "add-text-source-btn",
+          "own": 0,
+          "off": 5,
+          "by": [],
+          "rect": [
+            68,
+            582,
+            287,
+            36
+          ]
+        },
+        {
+          "control": "pxj-first-proposal-PCAP_FBDAB9B354C0B3FD",
+          "own": 0,
+          "off": 5,
+          "by": [],
+          "rect": [
+            686,
+            904,
+            210,
+            22
+          ]
+        },
+        {
+          "control": "pxj-first-proposal-PCAP_610D2EA58EA68E6E",
+          "own": 0,
+          "off": 5,
+          "by": [],
+          "rect": [
+            686,
+            932,
+            116,
+            22
+          ]
+        },
+        {
+          "control": "pxj-first-proposal-PCAP_993DF54962BF9BC9",
+          "own": 0,
+          "off": 5,
+          "by": [],
+          "rect": [
+            686,
+            960,
+            114,
+            22
+          ]
+        },
+        {
+          "control": "pxj-first-proposal-PCAP_2C6DEB475A64BD5A",
+          "own": 0,
+          "off": 5,
+          "by": [],
+          "rect": [
+            686,
+            988,
+            211,
+            22
+          ]
+        },
+        {
+          "control": "pxj-first-req-req_pink_alpha_1",
+          "own": 0,
+          "off": 5,
+          "by": [],
+          "rect": [
+            686,
+            1062,
+            222,
+            240
+          ]
+        },
+        {
+          "control": "pxj-first-req-req_pink_alpha_2",
+          "own": 0,
+          "off": 5,
+          "by": [],
+          "rect": [
+            686,
+            1308,
+            222,
+            172
+          ]
+        },
+        {
+          "control": "pxj-first-req-req_pink_alpha_3",
+          "own": 0,
+          "off": 5,
+          "by": [],
+          "rect": [
+            686,
+            1486,
+            222,
+            148
+          ]
+        },
+        {
+          "control": "semantic-guide-drawer-toggle",
+          "own": 0,
+          "off": 0,
+          "by": [
+            "investigation-mode-PERSON_X_JOB",
+            "investigation-mode-JOB",
+            "investigation-mode-selector"
+          ],
+          "rect": [
+            796,
+            84,
+            140,
+            35
+          ]
+        }
+      ],
+      "rects": {
+        "header": [
+          0,
+          0,
+          960,
+          61
+        ],
+        "jobScope": [
+          28,
+          74,
+          225,
+          114
+        ],
+        "strip": [
+          243,
+          70,
+          717,
+          120
+        ],
+        "modes": [
+          725,
+          77,
+          941,
+          111
+        ],
+        "guide": [
+          796,
+          84,
+          936,
+          119
+        ],
+        "dock": [
+          40,
+          385,
+          380,
+          697
+        ],
+        "inspector": null,
+        "stage": [
+          80,
+          141,
+          880,
+          941
+        ],
+        "panel": [
+          658,
+          485,
+          936,
+          925
+        ],
+        "counts": [
+          686,
+          806,
+          908,
+          838
+        ],
+        "gate": null,
+        "orient": null
+      }
+    },
+    {
+      "vname": "zoom200-1920x1080",
+      "scene": "person",
+      "vw": 960,
+      "vh": 540,
+      "scrollW": 960,
+      "scrollH": 1021,
+      "controls": 14,
+      "problems": [
+        {
+          "control": "L0 PLANETARIUM",
+          "own": 0,
+          "off": 0,
+          "by": [
+            "career-intelligence-dashboard"
+          ],
+          "rect": [
+            215,
+            22,
+            99,
+            22
+          ]
+        },
+        {
+          "control": "add-pdf-source-btn",
+          "own": 1,
+          "off": 0,
+          "by": [
+            "decision-graph-inspector-idle"
+          ],
+          "rect": [
+            68,
+            491,
+            287,
+            39
+          ]
+        },
+        {
+          "control": "add-github-source-btn",
+          "own": 0,
+          "off": 5,
+          "by": [],
+          "rect": [
+            68,
+            538,
+            140,
+            36
+          ]
+        },
+        {
+          "control": "add-website-source-btn",
+          "own": 0,
+          "off": 5,
+          "by": [],
+          "rect": [
+            216,
+            538,
+            140,
+            36
+          ]
+        },
+        {
+          "control": "add-text-source-btn",
+          "own": 0,
+          "off": 5,
+          "by": [],
+          "rect": [
+            68,
+            582,
+            287,
+            36
+          ]
+        },
+        {
+          "control": "semantic-guide-drawer-toggle",
+          "own": 0,
+          "off": 0,
+          "by": [
+            "investigation-mode-PERSON_X_JOB",
+            "investigation-mode-JOB",
+            "investigation-mode-selector"
+          ],
+          "rect": [
+            796,
+            84,
+            140,
+            35
+          ]
+        }
+      ],
+      "rects": {
+        "header": [
+          0,
+          0,
+          960,
+          61
+        ],
+        "jobScope": [
+          28,
+          74,
+          225,
+          114
+        ],
+        "strip": [
+          243,
+          70,
+          717,
+          120
+        ],
+        "modes": [
+          725,
+          77,
+          941,
+          111
+        ],
+        "guide": [
+          796,
+          84,
+          936,
+          119
+        ],
+        "dock": [
+          40,
+          385,
+          380,
+          697
+        ],
+        "inspector": null,
+        "stage": [
+          80,
+          141,
+          880,
+          941
+        ],
+        "panel": null,
+        "counts": null,
+        "gate": null,
+        "orient": null
+      }
+    },
+    {
+      "vname": "zoom200-1920x1080",
+      "scene": "role-view",
+      "vw": 960,
+      "vh": 540,
+      "scrollW": 960,
+      "scrollH": 1021,
+      "controls": 23,
+      "problems": [
+        {
+          "control": "Distributed Systems Architect · Alpha In",
+          "own": 0,
+          "off": 0,
+          "by": [
+            "syntx-requirement-req_pink_alpha_1",
+            "syntx-ecology"
+          ],
+          "rect": [
+            411,
+            301,
+            182,
+            100
+          ]
+        },
+        {
+          "control": "Edge Computing · NO MATCHING READ",
+          "own": 0,
+          "off": 5,
+          "by": [],
+          "rect": [
+            668,
+            544,
+            181,
+            50
+          ]
+        },
+        {
+          "control": "Industrial IoT Protocol Design · NO MATC",
+          "own": 0,
+          "off": 0,
+          "by": [
+            "syntx-legacy-disclosure"
+          ],
+          "rect": [
+            111,
+            496,
+            181,
+            50
+          ]
+        },
+        {
+          "control": "syntx-role-role_pink_alpha_architect",
+          "own": 1,
+          "off": 4,
+          "by": [],
+          "rect": [
+            393,
+            458,
+            174,
+            174
+          ]
+        },
+        {
+          "control": "syntx-job-scope-clear",
+          "own": 0,
+          "off": 5,
+          "by": [],
+          "rect": [
+            186,
+            563,
+            120,
+            26
+          ]
+        },
+        {
+          "control": "analysis-picker-toggle",
+          "own": 0,
+          "off": 5,
+          "by": [],
+          "rect": [
+            45,
+            599,
+            308,
+            40
+          ]
+        },
+        {
+          "control": "syntx-pools-toggle",
+          "own": 0,
+          "off": 5,
+          "by": [],
+          "rect": [
+            45,
+            696,
+            101,
+            23
+          ]
+        },
+        {
+          "control": "job-pool-intake-toggle",
+          "own": 0,
+          "off": 5,
+          "by": [],
+          "rect": [
+            152,
+            696,
+            77,
+            23
+          ]
+        },
+        {
+          "control": "syntx-investigation-toggle",
+          "own": 0,
+          "off": 5,
+          "by": [],
+          "rect": [
+            235,
+            696,
+            112,
+            23
+          ]
+        }
+      ],
+      "rects": {
+        "header": [
+          0,
+          0,
+          960,
+          61
+        ],
+        "jobScope": [
+          28,
+          74,
+          225,
+          114
+        ],
+        "strip": [
+          243,
+          70,
+          717,
+          120
+        ],
+        "modes": [
+          725,
+          77,
+          941,
+          111
+        ],
+        "guide": [
+          774,
+          13,
+          936,
+          47
+        ],
+        "dock": [
+          40,
+          385,
+          380,
+          697
+        ],
+        "inspector": null,
+        "stage": [
+          80,
+          141,
+          880,
+          941
+        ],
+        "panel": null,
+        "counts": null,
+        "gate": null,
+        "orient": [
+          28,
+          145,
+          368,
+          732
+        ]
+      }
+    },
+    {
+      "vname": "zoom200-1280x720",
+      "scene": "cap-no-analysis",
+      "vw": 640,
+      "vh": 360,
+      "scrollW": 640,
+      "scrollH": 1021,
+      "controls": 15,
+      "problems": [
+        {
+          "control": "L0 PLANETARIUM",
+          "own": 0,
+          "off": 0,
+          "by": [
+            "career-intelligence-dashboard"
+          ],
+          "rect": [
+            55,
+            22,
+            99,
+            22
+          ]
+        },
+        {
+          "control": "add-pdf-source-btn",
+          "own": 0,
+          "off": 5,
+          "by": [],
+          "rect": [
+            68,
+            491,
+            287,
+            39
+          ]
+        },
+        {
+          "control": "add-github-source-btn",
+          "own": 0,
+          "off": 5,
+          "by": [],
+          "rect": [
+            68,
+            538,
+            140,
+            36
+          ]
+        },
+        {
+          "control": "add-website-source-btn",
+          "own": 0,
+          "off": 5,
+          "by": [],
+          "rect": [
+            216,
+            538,
+            140,
+            36
+          ]
+        },
+        {
+          "control": "add-text-source-btn",
+          "own": 0,
+          "off": 5,
+          "by": [],
+          "rect": [
+            68,
+            582,
+            287,
+            36
+          ]
+        },
+        {
+          "control": "analysis-picker-toggle",
+          "own": 0,
+          "off": 5,
+          "by": [],
+          "rect": [
+            457,
+            692,
+            132,
+            68
+          ]
+        },
+        {
+          "control": "semantic-guide-drawer-toggle",
+          "own": 0,
+          "off": 0,
+          "by": [
+            "job-pool-panel-toggle",
+            "investigation-mode-PERSON",
+            "field-focus-strip"
+          ],
+          "rect": [
+            476,
+            84,
+            140,
+            35
+          ]
+        },
+        {
+          "control": "investigation-mode-PERSON_X_JOB",
+          "own": 0,
+          "off": 5,
+          "by": [],
+          "rect": [
+            633,
+            81,
+            98,
+            26
+          ]
+        },
+        {
+          "control": "investigation-mode-JOB",
+          "own": 0,
+          "off": 5,
+          "by": [],
+          "rect": [
+            733,
+            81,
+            44,
+            26
+          ]
+        }
+      ],
+      "rects": {
+        "header": [
+          0,
+          0,
+          640,
+          61
+        ],
+        "jobScope": [
+          28,
+          74,
+          65,
+          114
+        ],
+        "strip": [
+          83,
+          70,
+          557,
+          120
+        ],
+        "modes": [
+          565,
+          77,
+          781,
+          111
+        ],
+        "guide": [
+          476,
+          84,
+          616,
+          119
+        ],
+        "dock": [
+          40,
+          385,
+          380,
+          697
+        ],
+        "inspector": null,
+        "stage": [
+          -80,
+          141,
+          720,
+          941
+        ],
+        "panel": [
+          430,
+          485,
+          616,
+          867
+        ],
+        "counts": null,
+        "gate": null,
+        "orient": null
+      }
+    },
+    {
+      "vname": "zoom200-1280x720",
+      "scene": "b2",
+      "vw": 640,
+      "vh": 360,
+      "scrollW": 640,
+      "scrollH": 1021,
+      "controls": 21,
+      "problems": [
+        {
+          "control": "L0 PLANETARIUM",
+          "own": 0,
+          "off": 0,
+          "by": [
+            "career-intelligence-dashboard"
+          ],
+          "rect": [
+            55,
+            22,
+            99,
+            22
+          ]
+        },
+        {
+          "control": "add-pdf-source-btn",
+          "own": 0,
+          "off": 5,
+          "by": [],
+          "rect": [
+            68,
+            491,
+            287,
+            39
+          ]
+        },
+        {
+          "control": "add-github-source-btn",
+          "own": 0,
+          "off": 5,
+          "by": [],
+          "rect": [
+            68,
+            538,
+            140,
+            36
+          ]
+        },
+        {
+          "control": "add-website-source-btn",
+          "own": 0,
+          "off": 5,
+          "by": [],
+          "rect": [
+            216,
+            538,
+            140,
+            36
+          ]
+        },
+        {
+          "control": "add-text-source-btn",
+          "own": 0,
+          "off": 5,
+          "by": [],
+          "rect": [
+            68,
+            582,
+            287,
+            36
+          ]
+        },
+        {
+          "control": "pxj-first-proposal-PCAP_FBDAB9B354C0B3FD",
+          "own": 0,
+          "off": 5,
+          "by": [],
+          "rect": [
+            458,
+            1103,
+            130,
+            36
+          ]
+        },
+        {
+          "control": "pxj-first-proposal-PCAP_610D2EA58EA68E6E",
+          "own": 0,
+          "off": 5,
+          "by": [],
+          "rect": [
+            458,
+            1145,
+            116,
+            22
+          ]
+        },
+        {
+          "control": "pxj-first-proposal-PCAP_993DF54962BF9BC9",
+          "own": 0,
+          "off": 5,
+          "by": [],
+          "rect": [
+            458,
+            1173,
+            114,
+            22
+          ]
+        },
+        {
+          "control": "pxj-first-proposal-PCAP_2C6DEB475A64BD5A",
+          "own": 0,
+          "off": 5,
+          "by": [],
+          "rect": [
+            458,
+            1201,
+            130,
+            50
+          ]
+        },
+        {
+          "control": "pxj-first-req-req_pink_alpha_1",
+          "own": 0,
+          "off": 5,
+          "by": [],
+          "rect": [
+            458,
+            1317,
+            130,
+            441
+          ]
+        },
+        {
+          "control": "pxj-first-req-req_pink_alpha_2",
+          "own": 0,
+          "off": 5,
+          "by": [],
+          "rect": [
+            458,
+            1763,
+            130,
+            335
+          ]
+        },
+        {
+          "control": "pxj-first-req-req_pink_alpha_3",
+          "own": 0,
+          "off": 5,
+          "by": [],
+          "rect": [
+            458,
+            2104,
+            130,
+            198
+          ]
+        },
+        {
+          "control": "semantic-guide-drawer-toggle",
+          "own": 0,
+          "off": 0,
+          "by": [
+            "job-pool-panel-toggle",
+            "investigation-mode-PERSON",
+            "field-focus-strip"
+          ],
+          "rect": [
+            476,
+            84,
+            140,
+            35
+          ]
+        },
+        {
+          "control": "investigation-mode-PERSON_X_JOB",
+          "own": 0,
+          "off": 5,
+          "by": [],
+          "rect": [
+            633,
+            81,
+            98,
+            26
+          ]
+        },
+        {
+          "control": "investigation-mode-JOB",
+          "own": 0,
+          "off": 5,
+          "by": [],
+          "rect": [
+            733,
+            81,
+            44,
+            26
+          ]
+        }
+      ],
+      "rects": {
+        "header": [
+          0,
+          0,
+          640,
+          61
+        ],
+        "jobScope": [
+          28,
+          74,
+          65,
+          114
+        ],
+        "strip": [
+          83,
+          70,
+          557,
+          120
+        ],
+        "modes": [
+          565,
+          77,
+          781,
+          111
+        ],
+        "guide": [
+          476,
+          84,
+          616,
+          119
+        ],
+        "dock": [
+          40,
+          385,
+          380,
+          697
+        ],
+        "inspector": null,
+        "stage": [
+          -80,
+          141,
+          720,
+          941
+        ],
+        "panel": [
+          430,
+          485,
+          616,
+          925
+        ],
+        "counts": [
+          458,
+          958,
+          588,
+          1023
+        ],
+        "gate": null,
+        "orient": null
+      }
+    },
+    {
+      "vname": "zoom200-1280x720",
+      "scene": "person",
+      "vw": 640,
+      "vh": 360,
+      "scrollW": 640,
+      "scrollH": 1021,
+      "controls": 14,
+      "problems": [
+        {
+          "control": "L0 PLANETARIUM",
+          "own": 0,
+          "off": 0,
+          "by": [
+            "career-intelligence-dashboard"
+          ],
+          "rect": [
+            55,
+            22,
+            99,
+            22
+          ]
+        },
+        {
+          "control": "add-pdf-source-btn",
+          "own": 0,
+          "off": 5,
+          "by": [],
+          "rect": [
+            68,
+            491,
+            287,
+            39
+          ]
+        },
+        {
+          "control": "add-github-source-btn",
+          "own": 0,
+          "off": 5,
+          "by": [],
+          "rect": [
+            68,
+            538,
+            140,
+            36
+          ]
+        },
+        {
+          "control": "add-website-source-btn",
+          "own": 0,
+          "off": 5,
+          "by": [],
+          "rect": [
+            216,
+            538,
+            140,
+            36
+          ]
+        },
+        {
+          "control": "add-text-source-btn",
+          "own": 0,
+          "off": 5,
+          "by": [],
+          "rect": [
+            68,
+            582,
+            287,
+            36
+          ]
+        },
+        {
+          "control": "semantic-guide-drawer-toggle",
+          "own": 0,
+          "off": 0,
+          "by": [
+            "job-pool-panel-toggle",
+            "investigation-mode-PERSON",
+            "field-focus-strip"
+          ],
+          "rect": [
+            476,
+            84,
+            140,
+            35
+          ]
+        },
+        {
+          "control": "investigation-mode-PERSON_X_JOB",
+          "own": 0,
+          "off": 5,
+          "by": [],
+          "rect": [
+            633,
+            81,
+            98,
+            26
+          ]
+        },
+        {
+          "control": "investigation-mode-JOB",
+          "own": 0,
+          "off": 5,
+          "by": [],
+          "rect": [
+            733,
+            81,
+            44,
+            26
+          ]
+        }
+      ],
+      "rects": {
+        "header": [
+          0,
+          0,
+          640,
+          61
+        ],
+        "jobScope": [
+          28,
+          74,
+          65,
+          114
+        ],
+        "strip": [
+          83,
+          70,
+          557,
+          120
+        ],
+        "modes": [
+          565,
+          77,
+          781,
+          111
+        ],
+        "guide": [
+          476,
+          84,
+          616,
+          119
+        ],
+        "dock": [
+          40,
+          385,
+          380,
+          697
+        ],
+        "inspector": null,
+        "stage": [
+          -80,
+          141,
+          720,
+          941
+        ],
+        "panel": null,
+        "counts": null,
+        "gate": null,
+        "orient": null
+      }
+    },
+    {
+      "vname": "zoom200-1280x720",
+      "scene": "role-view",
+      "vw": 640,
+      "vh": 360,
+      "scrollW": 640,
+      "scrollH": 1021,
+      "controls": 23,
+      "problems": [
+        {
+          "control": "Distributed Systems Architect · Alpha In",
+          "own": 0,
+          "off": 1,
+          "by": [
+            "none",
+            "syntx-requirement-req_pink_alpha_1"
+          ],
+          "rect": [
+            269,
+            310,
+            144,
+            100
+          ]
+        },
+        {
+          "control": "Distributed Systems Architecture · NO MA",
+          "own": 4,
+          "off": 1,
+          "by": [],
+          "rect": [
+            261,
+            312,
+            152,
+            84
+          ]
+        },
+        {
+          "control": "Edge Computing · NO MATCHING READ",
+          "own": 0,
+          "off": 5,
+          "by": [],
+          "rect": [
+            469,
+            541,
+            181,
+            50
+          ]
+        },
+        {
+          "control": "Industrial IoT Protocol Design · NO MATC",
+          "own": 0,
+          "off": 5,
+          "by": [],
+          "rect": [
+            -10,
+            499,
+            181,
+            50
+          ]
+        },
+        {
+          "control": "syntx-role-role_pink_alpha_architect",
+          "own": 0,
+          "off": 5,
+          "by": [],
+          "rect": [
+            233,
+            458,
+            174,
+            174
+          ]
+        },
+        {
+          "control": "syntx-job-scope-clear",
+          "own": 0,
+          "off": 5,
+          "by": [],
+          "rect": [
+            45,
+            791,
+            120,
+            26
+          ]
+        },
+        {
+          "control": "analysis-picker-toggle",
+          "own": 0,
+          "off": 5,
+          "by": [],
+          "rect": [
+            45,
+            827,
+            198,
+            54
+          ]
+        },
+        {
+          "control": "syntx-pools-toggle",
+          "own": 0,
+          "off": 5,
+          "by": [],
+          "rect": [
+            45,
+            938,
+            101,
+            23
+          ]
+        },
+        {
+          "control": "job-pool-intake-toggle",
+          "own": 0,
+          "off": 5,
+          "by": [],
+          "rect": [
+            152,
+            938,
+            77,
+            23
+          ]
+        },
+        {
+          "control": "syntx-investigation-toggle",
+          "own": 0,
+          "off": 5,
+          "by": [],
+          "rect": [
+            45,
+            967,
+            112,
+            23
+          ]
+        },
+        {
+          "control": "investigation-mode-PERSON_X_JOB",
+          "own": 0,
+          "off": 5,
+          "by": [],
+          "rect": [
+            633,
+            81,
+            98,
+            26
+          ]
+        },
+        {
+          "control": "investigation-mode-JOB",
+          "own": 0,
+          "off": 5,
+          "by": [],
+          "rect": [
+            733,
+            81,
+            44,
+            26
+          ]
+        }
+      ],
+      "rects": {
+        "header": [
+          0,
+          0,
+          640,
+          61
+        ],
+        "jobScope": [
+          28,
+          74,
+          65,
+          114
+        ],
+        "strip": [
+          83,
+          70,
+          557,
+          120
+        ],
+        "modes": [
+          565,
+          77,
+          781,
+          111
+        ],
+        "guide": [
+          454,
+          13,
+          616,
+          47
+        ],
+        "dock": [
+          40,
+          385,
+          380,
+          697
+        ],
+        "inspector": null,
+        "stage": [
+          -80,
+          141,
+          720,
+          941
+        ],
+        "panel": null,
+        "counts": null,
+        "gate": null,
+        "orient": [
+          28,
+          145,
+          258,
+          1003
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,1650 @@
+{
+  "tag": "final",
+  "css": null,
+  "rows": [
+    {
+      "vname": "1920x1080",
+      "scene": "cap-no-analysis",
+      "vw": 1920,
+      "vh": 1080,
+      "scrollW": 1920,
+      "scrollH": 1141,
+      "controls": 15,
+      "problems": [],
+      "rects": {
+        "header": [
+          0,
+          0,
+          1920,
+          61
+        ],
+        "jobScope": [
+          28,
+          74,
+          705,
+          114
+        ],
+        "strip": [
+          723,
+          70,
+          1197,
+          120
+        ],
+        "modes": [
+          1205,
+          77,
+          1446,
+          111
+        ],
+        "guide": [
+          1756,
+          84,
+          1896,
+          118
+        ],
+        "dock": [
+          40,
+          445,
+          380,
+          757
+        ],
+        "inspector": null,
+        "stage": [
+          560,
+          201,
+          1360,
+          1001
+        ],
+        "panel": [
+          1496,
+          193,
+          1896,
+          424
+        ],
+        "counts": null,
+        "gate": null,
+        "orient": null
+      }
+    },
+    {
+      "vname": "1920x1080",
+      "scene": "b2",
+      "vw": 1920,
+      "vh": 1080,
+      "scrollW": 1920,
+      "scrollH": 1141,
+      "controls": 21,
+      "problems": [
+        {
+          "control": "pxj-first-req-req_pink_alpha_3",
+          "own": 1,
+          "off": 1,
+          "by": [
+            "semantic-career-intelligence-field"
+          ],
+          "rect": [
+            1524,
+            1015,
+            344,
+            116
+          ]
+        }
+      ],
+      "rects": {
+        "header": [
+          0,
+          0,
+          1920,
+          61
+        ],
+        "jobScope": [
+          28,
+          74,
+          705,
+          114
+        ],
+        "strip": [
+          723,
+          70,
+          1197,
+          120
+        ],
+        "modes": [
+          1205,
+          77,
+          1446,
+          111
+        ],
+        "guide": [
+          1756,
+          84,
+          1896,
+          118
+        ],
+        "dock": [
+          40,
+          445,
+          380,
+          757
+        ],
+        "inspector": null,
+        "stage": [
+          560,
+          201,
+          1360,
+          1001
+        ],
+        "panel": [
+          1496,
+          193,
+          1896,
+          1045
+        ],
+        "counts": [
+          1524,
+          479,
+          1868,
+          513
+        ],
+        "gate": null,
+        "orient": null
+      }
+    },
+    {
+      "vname": "1920x1080",
+      "scene": "person",
+      "vw": 1920,
+      "vh": 1080,
+      "scrollW": 1920,
+      "scrollH": 1141,
+      "controls": 14,
+      "problems": [],
+      "rects": {
+        "header": [
+          0,
+          0,
+          1920,
+          61
+        ],
+        "jobScope": [
+          28,
+          74,
+          281,
+          114
+        ],
+        "strip": [
+          723,
+          70,
+          1197,
+          120
+        ],
+        "modes": [
+          1205,
+          77,
+          1446,
+          111
+        ],
+        "guide": [
+          1756,
+          84,
+          1896,
+          118
+        ],
+        "dock": [
+          40,
+          445,
+          380,
+          757
+        ],
+        "inspector": null,
+        "stage": [
+          560,
+          201,
+          1360,
+          1001
+        ],
+        "panel": null,
+        "counts": null,
+        "gate": null,
+        "orient": null
+      }
+    },
+    {
+      "vname": "1920x1080",
+      "scene": "role-view",
+      "vw": 1920,
+      "vh": 1080,
+      "scrollW": 1920,
+      "scrollH": 1141,
+      "controls": 24,
+      "problems": [
+        {
+          "control": "Distributed Systems Architect · Alpha In",
+          "own": 0,
+          "off": 0,
+          "by": [
+            "syntx-ecology"
+          ],
+          "rect": [
+            901,
+            368,
+            182,
+            100
+          ]
+        }
+      ],
+      "rects": {
+        "header": [
+          0,
+          0,
+          1920,
+          61
+        ],
+        "jobScope": [
+          28,
+          74,
+          705,
+          114
+        ],
+        "strip": [
+          723,
+          70,
+          1197,
+          120
+        ],
+        "modes": [
+          1205,
+          77,
+          1446,
+          111
+        ],
+        "guide": [
+          1734,
+          13,
+          1896,
+          47
+        ],
+        "dock": [
+          40,
+          445,
+          380,
+          757
+        ],
+        "inspector": null,
+        "stage": [
+          560,
+          201,
+          1360,
+          1001
+        ],
+        "panel": null,
+        "counts": null,
+        "gate": null,
+        "orient": [
+          28,
+          145,
+          368,
+          825
+        ]
+      }
+    },
+    {
+      "vname": "1600x900",
+      "scene": "cap-no-analysis",
+      "vw": 1600,
+      "vh": 900,
+      "scrollW": 1600,
+      "scrollH": 900,
+      "controls": 15,
+      "problems": [],
+      "rects": {
+        "header": [
+          0,
+          0,
+          1600,
+          61
+        ],
+        "jobScope": [
+          28,
+          74,
+          545,
+          114
+        ],
+        "strip": [
+          563,
+          70,
+          1037,
+          120
+        ],
+        "modes": [
+          1045,
+          77,
+          1286,
+          111
+        ],
+        "guide": [
+          1436,
+          84,
+          1576,
+          118
+        ],
+        "dock": [
+          40,
+          132,
+          380,
+          443
+        ],
+        "inspector": null,
+        "stage": [
+          452,
+          183,
+          1148,
+          880
+        ],
+        "panel": [
+          1176,
+          132,
+          1576,
+          884
+        ],
+        "counts": null,
+        "gate": null,
+        "orient": null
+      }
+    },
+    {
+      "vname": "1600x900",
+      "scene": "b2",
+      "vw": 1600,
+      "vh": 900,
+      "scrollW": 1600,
+      "scrollH": 900,
+      "controls": 21,
+      "problems": [],
+      "rects": {
+        "header": [
+          0,
+          0,
+          1600,
+          61
+        ],
+        "jobScope": [
+          28,
+          74,
+          545,
+          114
+        ],
+        "strip": [
+          563,
+          70,
+          1037,
+          120
+        ],
+        "modes": [
+          1045,
+          77,
+          1286,
+          111
+        ],
+        "guide": [
+          1436,
+          84,
+          1576,
+          118
+        ],
+        "dock": [
+          40,
+          132,
+          380,
+          443
+        ],
+        "inspector": null,
+        "stage": [
+          452,
+          183,
+          1148,
+          880
+        ],
+        "panel": [
+          1176,
+          132,
+          1576,
+          884
+        ],
+        "counts": [
+          1204,
+          418,
+          1548,
+          452
+        ],
+        "gate": null,
+        "orient": null
+      }
+    },
+    {
+      "vname": "1600x900",
+      "scene": "person",
+      "vw": 1600,
+      "vh": 900,
+      "scrollW": 1600,
+      "scrollH": 900,
+      "controls": 14,
+      "problems": [],
+      "rects": {
+        "header": [
+          0,
+          0,
+          1600,
+          61
+        ],
+        "jobScope": [
+          28,
+          74,
+          281,
+          114
+        ],
+        "strip": [
+          563,
+          70,
+          1037,
+          120
+        ],
+        "modes": [
+          1045,
+          77,
+          1286,
+          111
+        ],
+        "guide": [
+          1436,
+          84,
+          1576,
+          118
+        ],
+        "dock": [
+          40,
+          132,
+          380,
+          443
+        ],
+        "inspector": null,
+        "stage": [
+          452,
+          183,
+          1148,
+          880
+        ],
+        "panel": null,
+        "counts": null,
+        "gate": null,
+        "orient": null
+      }
+    },
+    {
+      "vname": "1600x900",
+      "scene": "role-view",
+      "vw": 1600,
+      "vh": 900,
+      "scrollW": 1600,
+      "scrollH": 900,
+      "controls": 24,
+      "problems": [
+        {
+          "control": "Distributed Systems Architect · Alpha In",
+          "own": 0,
+          "off": 0,
+          "by": [
+            "syntx-requirement-req_pink_alpha_1"
+          ],
+          "rect": [
+            740,
+            251,
+            182,
+            100
+          ]
+        }
+      ],
+      "rects": {
+        "header": [
+          0,
+          0,
+          1600,
+          61
+        ],
+        "jobScope": [
+          28,
+          74,
+          545,
+          114
+        ],
+        "strip": [
+          563,
+          70,
+          1037,
+          120
+        ],
+        "modes": [
+          1045,
+          77,
+          1286,
+          111
+        ],
+        "guide": [
+          1414,
+          13,
+          1576,
+          47
+        ],
+        "dock": [
+          40,
+          132,
+          380,
+          443
+        ],
+        "inspector": null,
+        "stage": [
+          452,
+          183,
+          1148,
+          880
+        ],
+        "panel": null,
+        "counts": null,
+        "gate": null,
+        "orient": [
+          28,
+          145,
+          368,
+          825
+        ]
+      }
+    },
+    {
+      "vname": "1440x900",
+      "scene": "cap-no-analysis",
+      "vw": 1440,
+      "vh": 900,
+      "scrollW": 1440,
+      "scrollH": 900,
+      "controls": 15,
+      "problems": [],
+      "rects": {
+        "header": [
+          0,
+          0,
+          1440,
+          61
+        ],
+        "jobScope": [
+          28,
+          74,
+          465,
+          114
+        ],
+        "strip": [
+          483,
+          70,
+          957,
+          120
+        ],
+        "modes": [
+          965,
+          77,
+          1206,
+          111
+        ],
+        "guide": [
+          1276,
+          84,
+          1416,
+          118
+        ],
+        "dock": [
+          40,
+          132,
+          380,
+          443
+        ],
+        "inspector": null,
+        "stage": [
+          444,
+          255,
+          996,
+          808
+        ],
+        "panel": [
+          1016,
+          132,
+          1416,
+          884
+        ],
+        "counts": null,
+        "gate": null,
+        "orient": null
+      }
+    },
+    {
+      "vname": "1440x900",
+      "scene": "b2",
+      "vw": 1440,
+      "vh": 900,
+      "scrollW": 1440,
+      "scrollH": 900,
+      "controls": 21,
+      "problems": [],
+      "rects": {
+        "header": [
+          0,
+          0,
+          1440,
+          61
+        ],
+        "jobScope": [
+          28,
+          74,
+          465,
+          114
+        ],
+        "strip": [
+          483,
+          70,
+          957,
+          120
+        ],
+        "modes": [
+          965,
+          77,
+          1206,
+          111
+        ],
+        "guide": [
+          1276,
+          84,
+          1416,
+          118
+        ],
+        "dock": [
+          40,
+          132,
+          380,
+          443
+        ],
+        "inspector": null,
+        "stage": [
+          444,
+          255,
+          996,
+          808
+        ],
+        "panel": [
+          1016,
+          132,
+          1416,
+          884
+        ],
+        "counts": [
+          1044,
+          418,
+          1388,
+          452
+        ],
+        "gate": null,
+        "orient": null
+      }
+    },
+    {
+      "vname": "1440x900",
+      "scene": "person",
+      "vw": 1440,
+      "vh": 900,
+      "scrollW": 1440,
+      "scrollH": 900,
+      "controls": 14,
+      "problems": [],
+      "rects": {
+        "header": [
+          0,
+          0,
+          1440,
+          61
+        ],
+        "jobScope": [
+          28,
+          74,
+          281,
+          114
+        ],
+        "strip": [
+          483,
+          70,
+          957,
+          120
+        ],
+        "modes": [
+          965,
+          77,
+          1206,
+          111
+        ],
+        "guide": [
+          1276,
+          84,
+          1416,
+          118
+        ],
+        "dock": [
+          40,
+          132,
+          380,
+          443
+        ],
+        "inspector": null,
+        "stage": [
+          404,
+          216,
+          1036,
+          848
+        ],
+        "panel": null,
+        "counts": null,
+        "gate": null,
+        "orient": null
+      }
+    },
+    {
+      "vname": "1440x900",
+      "scene": "role-view",
+      "vw": 1440,
+      "vh": 900,
+      "scrollW": 1440,
+      "scrollH": 900,
+      "controls": 24,
+      "problems": [
+        {
+          "control": "Distributed Systems Architect · Alpha In",
+          "own": 0,
+          "off": 0,
+          "by": [
+            "syntx-requirement-req_pink_alpha_1"
+          ],
+          "rect": [
+            657,
+            249,
+            182,
+            100
+          ]
+        }
+      ],
+      "rects": {
+        "header": [
+          0,
+          0,
+          1440,
+          61
+        ],
+        "jobScope": [
+          28,
+          74,
+          465,
+          114
+        ],
+        "strip": [
+          483,
+          70,
+          957,
+          120
+        ],
+        "modes": [
+          965,
+          77,
+          1206,
+          111
+        ],
+        "guide": [
+          1254,
+          13,
+          1416,
+          47
+        ],
+        "dock": [
+          40,
+          132,
+          380,
+          443
+        ],
+        "inspector": null,
+        "stage": [
+          404,
+          216,
+          1036,
+          848
+        ],
+        "panel": null,
+        "counts": null,
+        "gate": null,
+        "orient": [
+          28,
+          145,
+          368,
+          825
+        ]
+      }
+    },
+    {
+      "vname": "1280x720",
+      "scene": "cap-no-analysis",
+      "vw": 1280,
+      "vh": 720,
+      "scrollW": 1280,
+      "scrollH": 720,
+      "controls": 15,
+      "problems": [],
+      "rects": {
+        "header": [
+          0,
+          0,
+          1280,
+          61
+        ],
+        "jobScope": [
+          28,
+          74,
+          385,
+          114
+        ],
+        "strip": [
+          403,
+          70,
+          877,
+          120
+        ],
+        "modes": [
+          885,
+          77,
+          1101,
+          111
+        ],
+        "guide": [
+          1116,
+          84,
+          1256,
+          118
+        ],
+        "dock": [
+          40,
+          132,
+          380,
+          443
+        ],
+        "inspector": null,
+        "stage": [
+          427,
+          245,
+          853,
+          672
+        ],
+        "panel": [
+          872,
+          132,
+          1256,
+          704
+        ],
+        "counts": null,
+        "gate": null,
+        "orient": null
+      }
+    },
+    {
+      "vname": "1280x720",
+      "scene": "b2",
+      "vw": 1280,
+      "vh": 720,
+      "scrollW": 1280,
+      "scrollH": 720,
+      "controls": 21,
+      "problems": [],
+      "rects": {
+        "header": [
+          0,
+          0,
+          1280,
+          61
+        ],
+        "jobScope": [
+          28,
+          74,
+          385,
+          114
+        ],
+        "strip": [
+          403,
+          70,
+          877,
+          120
+        ],
+        "modes": [
+          885,
+          77,
+          1101,
+          111
+        ],
+        "guide": [
+          1116,
+          84,
+          1256,
+          118
+        ],
+        "dock": [
+          40,
+          132,
+          380,
+          443
+        ],
+        "inspector": null,
+        "stage": [
+          427,
+          245,
+          853,
+          672
+        ],
+        "panel": [
+          872,
+          132,
+          1256,
+          704
+        ],
+        "counts": [
+          900,
+          418,
+          1228,
+          452
+        ],
+        "gate": null,
+        "orient": null
+      }
+    },
+    {
+      "vname": "1280x720",
+      "scene": "person",
+      "vw": 1280,
+      "vh": 720,
+      "scrollW": 1280,
+      "scrollH": 720,
+      "controls": 14,
+      "problems": [],
+      "rects": {
+        "header": [
+          0,
+          0,
+          1280,
+          61
+        ],
+        "jobScope": [
+          28,
+          74,
+          281,
+          114
+        ],
+        "strip": [
+          403,
+          70,
+          877,
+          120
+        ],
+        "modes": [
+          885,
+          77,
+          1101,
+          111
+        ],
+        "guide": [
+          1116,
+          84,
+          1256,
+          118
+        ],
+        "dock": [
+          40,
+          132,
+          380,
+          443
+        ],
+        "inspector": null,
+        "stage": [
+          403,
+          205,
+          877,
+          678
+        ],
+        "panel": null,
+        "counts": null,
+        "gate": null,
+        "orient": null
+      }
+    },
+    {
+      "vname": "1280x720",
+      "scene": "role-view",
+      "vw": 1280,
+      "vh": 720,
+      "scrollW": 1280,
+      "scrollH": 720,
+      "controls": 24,
+      "problems": [
+        {
+          "control": "Distributed Systems Architect · Alpha In",
+          "own": 0,
+          "off": 0,
+          "by": [
+            "syntx-ecology",
+            "syntx-requirement-req_pink_alpha_1"
+          ],
+          "rect": [
+            610,
+            224,
+            182,
+            88
+          ]
+        },
+        {
+          "control": "Industrial IoT Protocol Design · NO MATC",
+          "own": 4,
+          "off": 0,
+          "by": [
+            "syntx-field"
+          ],
+          "rect": [
+            331,
+            347,
+            182,
+            50
+          ]
+        }
+      ],
+      "rects": {
+        "header": [
+          0,
+          0,
+          1280,
+          61
+        ],
+        "jobScope": [
+          28,
+          74,
+          385,
+          114
+        ],
+        "strip": [
+          403,
+          70,
+          877,
+          120
+        ],
+        "modes": [
+          885,
+          77,
+          1101,
+          111
+        ],
+        "guide": [
+          1094,
+          13,
+          1256,
+          47
+        ],
+        "dock": [
+          40,
+          132,
+          380,
+          443
+        ],
+        "inspector": null,
+        "stage": [
+          403,
+          205,
+          877,
+          678
+        ],
+        "panel": null,
+        "counts": null,
+        "gate": null,
+        "orient": [
+          28,
+          145,
+          368,
+          704
+        ]
+      }
+    },
+    {
+      "vname": "zoom200-1920x1080",
+      "scene": "cap-no-analysis",
+      "vw": 960,
+      "vh": 540,
+      "scrollW": 960,
+      "scrollH": 1413,
+      "controls": 15,
+      "problems": [],
+      "rects": {
+        "header": [
+          0,
+          0,
+          960,
+          45
+        ],
+        "jobScope": [
+          16,
+          156,
+          581,
+          196
+        ],
+        "strip": [
+          282,
+          100,
+          678,
+          150
+        ],
+        "modes": [
+          728,
+          159,
+          944,
+          193
+        ],
+        "guide": [
+          16,
+          53,
+          156,
+          88
+        ],
+        "dock": [
+          16,
+          945,
+          356,
+          1257
+        ],
+        "inspector": null,
+        "stage": [
+          225,
+          388,
+          735,
+          897
+        ],
+        "panel": [
+          16,
+          202,
+          944,
+          382
+        ],
+        "counts": null,
+        "gate": null,
+        "orient": null
+      }
+    },
+    {
+      "vname": "zoom200-1920x1080",
+      "scene": "b2",
+      "vw": 960,
+      "vh": 540,
+      "scrollW": 960,
+      "scrollH": 1969,
+      "controls": 21,
+      "problems": [],
+      "rects": {
+        "header": [
+          0,
+          0,
+          960,
+          45
+        ],
+        "jobScope": [
+          16,
+          156,
+          581,
+          196
+        ],
+        "strip": [
+          282,
+          100,
+          678,
+          150
+        ],
+        "modes": [
+          728,
+          159,
+          944,
+          193
+        ],
+        "guide": [
+          16,
+          53,
+          156,
+          88
+        ],
+        "dock": [
+          16,
+          1501,
+          356,
+          1813
+        ],
+        "inspector": null,
+        "stage": [
+          225,
+          944,
+          735,
+          1453
+        ],
+        "panel": [
+          16,
+          202,
+          944,
+          938
+        ],
+        "counts": [
+          44,
+          320,
+          916,
+          337
+        ],
+        "gate": null,
+        "orient": null
+      }
+    },
+    {
+      "vname": "zoom200-1920x1080",
+      "scene": "person",
+      "vw": 960,
+      "vh": 540,
+      "scrollW": 960,
+      "scrollH": 1227,
+      "controls": 14,
+      "problems": [],
+      "rects": {
+        "header": [
+          0,
+          0,
+          960,
+          45
+        ],
+        "jobScope": [
+          16,
+          156,
+          581,
+          196
+        ],
+        "strip": [
+          282,
+          100,
+          678,
+          150
+        ],
+        "modes": [
+          728,
+          159,
+          944,
+          193
+        ],
+        "guide": [
+          16,
+          53,
+          156,
+          88
+        ],
+        "dock": [
+          16,
+          760,
+          356,
+          1071
+        ],
+        "inspector": null,
+        "stage": [
+          225,
+          202,
+          735,
+          712
+        ],
+        "panel": null,
+        "counts": null,
+        "gate": null,
+        "orient": null
+      }
+    },
+    {
+      "vname": "zoom200-1920x1080",
+      "scene": "role-view",
+      "vw": 960,
+      "vh": 540,
+      "scrollW": 960,
+      "scrollH": 1315,
+      "controls": 24,
+      "problems": [
+        {
+          "control": "Distributed Systems Architect · Alpha In",
+          "afterScroll": true,
+          "inside": true,
+          "by": [
+            "syntx-ecology"
+          ]
+        }
+      ],
+      "rects": {
+        "header": [
+          0,
+          0,
+          960,
+          45
+        ],
+        "jobScope": [
+          16,
+          149,
+          574,
+          189
+        ],
+        "strip": [
+          282,
+          93,
+          678,
+          143
+        ],
+        "modes": [
+          728,
+          152,
+          944,
+          186
+        ],
+        "guide": [
+          16,
+          53,
+          178,
+          87
+        ],
+        "dock": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "inspector": null,
+        "stage": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "panel": null,
+        "counts": null,
+        "gate": null,
+        "orient": [
+          16,
+          199,
+          944,
+          659
+        ]
+      }
+    },
+    {
+      "vname": "zoom200-1280x720",
+      "scene": "cap-no-analysis",
+      "vw": 640,
+      "vh": 360,
+      "scrollW": 640,
+      "scrollH": 1235,
+      "controls": 15,
+      "problems": [],
+      "rects": {
+        "header": [
+          0,
+          0,
+          640,
+          45
+        ],
+        "jobScope": [
+          16,
+          156,
+          261,
+          196
+        ],
+        "strip": [
+          122,
+          100,
+          518,
+          150
+        ],
+        "modes": [
+          408,
+          159,
+          624,
+          193
+        ],
+        "guide": [
+          16,
+          53,
+          156,
+          88
+        ],
+        "dock": [
+          16,
+          768,
+          356,
+          1079
+        ],
+        "inspector": null,
+        "stage": [
+          154,
+          388,
+          486,
+          720
+        ],
+        "panel": [
+          16,
+          202,
+          624,
+          382
+        ],
+        "counts": null,
+        "gate": null,
+        "orient": null
+      }
+    },
+    {
+      "vname": "zoom200-1280x720",
+      "scene": "b2",
+      "vw": 640,
+      "vh": 360,
+      "scrollW": 640,
+      "scrollH": 1887,
+      "controls": 21,
+      "problems": [],
+      "rects": {
+        "header": [
+          0,
+          0,
+          640,
+          45
+        ],
+        "jobScope": [
+          16,
+          156,
+          261,
+          196
+        ],
+        "strip": [
+          122,
+          100,
+          518,
+          150
+        ],
+        "modes": [
+          408,
+          159,
+          624,
+          193
+        ],
+        "guide": [
+          16,
+          53,
+          156,
+          88
+        ],
+        "dock": [
+          16,
+          1419,
+          356,
+          1731
+        ],
+        "inspector": null,
+        "stage": [
+          154,
+          1039,
+          486,
+          1371
+        ],
+        "panel": [
+          16,
+          202,
+          624,
+          1033
+        ],
+        "counts": [
+          44,
+          320,
+          596,
+          337
+        ],
+        "gate": null,
+        "orient": null
+      }
+    },
+    {
+      "vname": "zoom200-1280x720",
+      "scene": "person",
+      "vw": 640,
+      "vh": 360,
+      "scrollW": 640,
+      "scrollH": 1049,
+      "controls": 14,
+      "problems": [],
+      "rects": {
+        "header": [
+          0,
+          0,
+          640,
+          45
+        ],
+        "jobScope": [
+          16,
+          156,
+          261,
+          196
+        ],
+        "strip": [
+          122,
+          100,
+          518,
+          150
+        ],
+        "modes": [
+          408,
+          159,
+          624,
+          193
+        ],
+        "guide": [
+          16,
+          53,
+          156,
+          88
+        ],
+        "dock": [
+          16,
+          582,
+          356,
+          893
+        ],
+        "inspector": null,
+        "stage": [
+          154,
+          202,
+          486,
+          534
+        ],
+        "panel": null,
+        "counts": null,
+        "gate": null,
+        "orient": null
+      }
+    },
+    {
+      "vname": "zoom200-1280x720",
+      "scene": "role-view",
+      "vw": 640,
+      "vh": 360,
+      "scrollW": 640,
+      "scrollH": 1388,
+      "controls": 24,
+      "problems": [
+        {
+          "control": "Distributed Systems Architect · Alpha In",
+          "afterScroll": true,
+          "inside": true,
+          "by": [
+            "syntx-role-role_pink_alpha_architect"
+          ]
+        }
+      ],
+      "rects": {
+        "header": [
+          0,
+          0,
+          640,
+          45
+        ],
+        "jobScope": [
+          16,
+          149,
+          254,
+          189
+        ],
+        "strip": [
+          122,
+          93,
+          518,
+          143
+        ],
+        "modes": [
+          408,
+          152,
+          624,
+          186
+        ],
+        "guide": [
+          16,
+          53,
+          178,
+          87
+        ],
+        "dock": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "inspector": null,
+        "stage": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "panel": null,
+        "counts": null,
+        "gate": null,
+        "orient": [
+          16,
+          199,
+          624,
+          715
+        ]
+      }
+    }
+  ]
+}

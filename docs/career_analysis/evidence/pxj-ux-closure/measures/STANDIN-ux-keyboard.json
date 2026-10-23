@@ -1,0 +1,28 @@
+{
+  "tab600": {
+    "urlUnchanged": true,
+    "historyUnchanged": true,
+    "hiddenFocus": 0
+  },
+  "shiftTabReverse": true,
+  "escChain": [
+    "ROLE",
+    "ORGANIZATION",
+    "FIELD"
+  ],
+  "ok": true,
+  "firstTabs": [
+    "job-scope-indicator",
+    "field-focus-capability-btn",
+    "job-pool-panel-toggle",
+    "investigation-mode-PERSON_X_JOB",
+    "BODY",
+    "how-this-works-btn",
+    "open-system-codex-btn",
+    "semantic-guide-drawer-toggle",
+    "syntx-exit-btn",
+    "syntx-path-FIELD",
+    "syntx-path-ORGANIZATION",
+    "syntx-return-btn"
+  ]
+}
