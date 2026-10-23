@@ -338,7 +338,7 @@ export const SIL_COPY = {
       canonicalMapping: "CANONICAL MAPPING (LAYER C)",
       canonicalMappingBoundary: "Target revisions are PROPOSAL_ONLY with authority NONE. The Capability-Requirement Relation is NOT EVALUATED: no PHASE4_VERIFIED capability snapshot exists (HIA-1).",
       analysis: "ANALYSIS FOR MATCHING",
-      analysisNone: "NO ANALYSIS: run the capability sweep (identity core) or open the page with an exact analysisId",
+      analysisNone: "NO ANALYSIS: select a role as the job, then choose an existing investigation at its role or add a source in the Capability Field and run ANALYZE",
       analysisFromJob: "FROM THIS SESSION'S SUCCEEDED CAPABILITY SWEEP",
       analysisFromUrl: "FROM THE URL (EXACT ID, ASSUMED PERSISTED)",
       matches: "ROLE MATCHES (LAYER P)",
@@ -561,7 +561,7 @@ export const SIL_COPY = {
         countsStatement: "Counts, not a score: no ranking, no confirmed capability-requirement relation (NOT_EVALUATED).",
         states: {
           LOADING: "READING B2 COVERAGE …",
-          NO_ANALYSIS: "No analysis yet: run ANALYZE in PERSON × JOB with this job selected.",
+          NO_ANALYSIS: "No analysis on view: choose an existing investigation of this role above, or add a source in the Capability Field and run ANALYZE.",
           NOT_SCOPED: "This analysis is a PERSON analysis: no job comparison.",
           SCOPE_MISMATCH: "Analysis belongs to another job.",
           SCOPE_DRIFT: "The selected job has changed since this analysis (scope drift): no comparison.",
@@ -799,7 +799,7 @@ export const SIL_COPY = {
         "L-4": "its proposals are not the proposals of this analysis"
       },
       states: {
-        NO_ANALYSIS: "No analysis yet: run ANALYZE in PERSON × JOB with the selected job.",
+        NO_ANALYSIS: "No analysis of the selected job on view yet. Two ways lead to one:",
         RESULT_LOADING: "READING THE PERSISTED RESULT …",
         RESULT_NOT_FOUND: "Analysis not found: no result, no demo data.",
         RESULT_FAILED: "The result of this analysis cannot be read: nothing is shown.",
@@ -831,6 +831,8 @@ export const SIL_COPY = {
       jobOfAnalysis: "job of this analysis",
       reason: "reason",
       selectedJob: "selected job",
+      /** UX-03: the two ways out of NO_ANALYSIS. */
+      ways: { existing: "(a) Choose an existing investigation of this role:", analyze: "(b) Add a source under INGEST KNOWLEDGE (left) and run ANALYZE." },
       /** D-PICK (UX-05): an existing investigation of the selected role, chosen explicitly (GET only, nothing chosen by itself). */
       picker: {
         open: "◎ CHOOSE AN EXISTING INVESTIGATION OF THIS ROLE",
@@ -1203,7 +1205,7 @@ export const SIL_COPY = {
       canonicalMapping: "KANONISCHE ABBILDUNG (SCHICHT C)",
       canonicalMappingBoundary: "Zielrevisionen sind PROPOSAL_ONLY mit Autorität NONE. Die Capability-Requirement-Relation ist NOT EVALUATED: kein PHASE4_VERIFIED-Capability-Snapshot existiert (HIA-1).",
       analysis: "ANALYSE FÜR DAS MATCHING",
-      analysisNone: "KEINE ANALYSE: Capability-Sweep starten (Identitätskern) oder Seite mit exakter analysisId öffnen",
+      analysisNone: "KEINE ANALYSE: eine Rolle als Job wählen, dann an ihrer Rolle eine vorhandene Untersuchung wählen oder im Capability-Feld eine Quelle hinzufügen und ANALYZE ausführen",
       analysisFromJob: "AUS DEM ERFOLGREICHEN CAPABILITY-SWEEP DIESER SITZUNG",
       analysisFromUrl: "AUS DER URL (EXAKTE ID, ALS PERSISTIERT ANGENOMMEN)",
       matches: "ROLLEN-MATCHES (SCHICHT P)",
@@ -1420,7 +1422,7 @@ export const SIL_COPY = {
         countsStatement: "Zählungen, kein Score: kein Ranking, keine bestätigte Capability-Requirement-Relation (NOT_EVALUATED).",
         states: {
           LOADING: "B2-ABDECKUNG WIRD GELESEN …",
-          NO_ANALYSIS: "Noch keine Analyse: ANALYZE in PERSON × JOB mit diesem gewählten Job ausführen.",
+          NO_ANALYSIS: "Keine Analyse auf Sicht: oben eine vorhandene Untersuchung dieser Rolle wählen oder im Capability-Feld eine Quelle hinzufügen und ANALYZE ausführen.",
           NOT_SCOPED: "Diese Analyse ist eine PERSON-Analyse: kein Jobvergleich.",
           SCOPE_MISMATCH: "Analyse gehört zu einem anderen Job",
           SCOPE_DRIFT: "Der gewählte Job hat sich seit dieser Analyse verändert (Scope-Drift): kein Vergleich.",
@@ -1653,7 +1655,7 @@ export const SIL_COPY = {
         "L-4": "ihre Vorschläge sind nicht die Vorschläge dieser Analyse"
       },
       states: {
-        NO_ANALYSIS: "Noch keine Analyse: ANALYZE in PERSON × JOB mit dem gewählten Job ausführen.",
+        NO_ANALYSIS: "Für den gewählten Job ist noch keine Analyse auf Sicht. Zwei Wege führen zu einer:",
         RESULT_LOADING: "PERSISTIERTES ERGEBNIS WIRD GELESEN …",
         RESULT_NOT_FOUND: "Analyse nicht gefunden: kein Ergebnis, keine Demo-Daten.",
         RESULT_FAILED: "Das Ergebnis dieser Analyse ist nicht lesbar: nichts wird gezeigt.",
@@ -1685,6 +1687,7 @@ export const SIL_COPY = {
       jobOfAnalysis: "Job dieser Analyse",
       reason: "Grund",
       selectedJob: "gewählter Job",
+      ways: { existing: "(a) Eine vorhandene Untersuchung dieser Rolle wählen:", analyze: "(b) Unter WISSEN EINSPEISEN (links) eine Quelle hinzufügen und ANALYZE ausführen." },
       picker: {
         open: "◎ VORHANDENE UNTERSUCHUNG DIESER ROLLE WÄHLEN",
         close: "VORHANDENE UNTERSUCHUNGEN AUSBLENDEN",

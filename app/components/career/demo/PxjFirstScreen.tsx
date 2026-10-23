@@ -137,7 +137,15 @@ export function PxjFirstScreen({ screen, mode, locale, onSwitchMode, onSelectRol
         <span style={{ ...statement, color: screen.state === "AVAILABLE" ? "#e6f1f8" : `rgb(${rgb})`, fontWeight: 600 }}>{sentence}</span>
         {detail !== null && <span style={meta}>{detail}</span>}
         {screen.state === "MODE_MISMATCH" && <button type="button" data-testid="pxj-first-switch-mode" data-target-mode={screen.analysisMode} onClick={() => onSwitchMode(screen.analysisMode)} style={action}>{c.switchMode} {modes[screen.analysisMode]}</button>}
-        {screen.state === "NO_ANALYSIS" && noAnalysis}
+        {screen.state === "NO_ANALYSIS" && (
+          <div data-testid="pxj-first-ways" style={{ display: "flex", flexDirection: "column", gap: "8px", marginTop: "4px" }}>
+            <div data-testid="pxj-first-way-existing" style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
+              <span style={{ ...statement, fontSize: "12px" }}>{c.ways.existing}</span>
+              {noAnalysis}
+            </div>
+            <span data-testid="pxj-first-way-analyze" style={{ ...statement, fontSize: "12px" }}>{c.ways.analyze}</span>
+          </div>
+        )}
         {screen.state === "ROLE_MISMATCH" && <button type="button" data-testid="pxj-first-select-role" data-pool-upload={screen.analysisSelection.jobPoolUploadId} data-pool-role={screen.analysisSelection.poolRoleId} onClick={() => onSelectRole(screen.analysisSelection)} style={action}>{c.selectRole}</button>}
       </div>
       {coverage !== null && (
