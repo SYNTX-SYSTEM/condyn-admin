@@ -956,6 +956,8 @@ export function SemanticCareerIntelligenceField({
         /** N-2: a job the URL named that the server does not know is its own state; nothing is restarted or guessed. */
         const jobNotFound = resumedJobOnView && analysisError.status === 404;
         const navigationCopy = NAVIGATION_COPY[locale];
+        /** V-08: a source the worker cannot parse fails the same way on every retry: no RETRY, the way to a readable source instead. */
+        const formatFailure = analysisError.code === "ERR_PDF_PARSE_FAILURE";
 
         return (
         <div
@@ -1011,7 +1013,8 @@ export function SemanticCareerIntelligenceField({
           {resumedJobOnView && <button type="button" data-testid="intake-error-dismiss" onClick={() => { setDismissedJobId(resumedJobId); writeCareerDemoUrl({ [ANALYSIS_JOB_URL_PARAM]: null }, "push"); }} style={{ alignSelf: "flex-end", padding: "6px 14px", borderRadius: "6px", border: "1px solid rgba(255, 186, 186, 0.6)", background: "transparent", color: "#ffbaba", fontFamily: SIL_TOKENS.typography.mono, fontSize: "11.5px", fontWeight: 700, letterSpacing: "1px", cursor: "pointer" }}>× {navigationCopy.dismiss}</button>}
 
           {/* A job followed from the URL has no staged sources in this mount: no retry here (no POST, no second job). */}
-          {!resumedJobOnView && <div style={{ display: "flex", justifyContent: "flex-end", alignItems: "center", gap: "12px", marginTop: "8px" }}>
+          {!resumedJobOnView && formatFailure && <div data-testid="intake-error-format" role="note" style={{ fontSize: "12px", lineHeight: 1.5, color: "#ffc46b" }}>{navigationCopy.formatFailure}</div>}
+          {!resumedJobOnView && !formatFailure && <div style={{ display: "flex", justifyContent: "flex-end", alignItems: "center", gap: "12px", marginTop: "8px" }}>
             {analyzeBlockedMessage !== null && <span data-testid="retry-job-scope-required" role="status" style={{ fontSize: "12px", fontWeight: 700, color: "#ffc46b" }}>{analyzeBlockedMessage}</span>}
             <button
               data-testid="retry-intake-btn"

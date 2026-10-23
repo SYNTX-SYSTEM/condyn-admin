@@ -48,6 +48,8 @@ export const SIL_COPY = {
       title: "INGEST KNOWLEDGE",
       description: "Add documents, repositories, URLs, or text for analysis.",
       uploadPdf: "UPLOAD PDF DOCUMENT",
+      /** F-G1-MD: a file the dock does not stage, and why. */
+      fileRefused: { TYPE: (name: string) => `Not added: ${name} — only PDF, Markdown (.md, .markdown) or text (.txt) files. Other text: ENTER TEXT / MARKDOWN.`, EMPTY: (name: string) => `Not added: ${name} is empty.` },
       githubUrl: "GITHUB URL",
       websiteUrl: "WEBSITE URL",
       enterText: "ENTER TEXT / MARKDOWN",
@@ -932,6 +934,7 @@ export const SIL_COPY = {
       title: "WISSEN EINSPEISEN",
       description: "Fügen Sie Dokumente, Repositories, URLs oder Text zur Analyse hinzu.",
       uploadPdf: "PDF-DOKUMENT HOCHLADEN",
+      fileRefused: { TYPE: (name: string) => `Nicht hinzugefügt: ${name} — nur PDF-, Markdown- (.md, .markdown) oder Textdateien (.txt). Anderer Text: TEXT / MARKDOWN EINGEBEN.`, EMPTY: (name: string) => `Nicht hinzugefügt: ${name} ist leer.` },
       githubUrl: "GITHUB-URL",
       websiteUrl: "WEBSITE-URL",
       enterText: "TEXT / MARKDOWN EINGEBEN",

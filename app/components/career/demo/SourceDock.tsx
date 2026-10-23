@@ -26,6 +26,21 @@ export interface SourceDockProps {
 }
 
 /**
+ * F-G1-MD (owner "RECURSIVE UX/UI & SYSTEM CLOSURE" §03; PINK V-08): a file's kind by its extension, else its MIME type. Markdown
+ * and plain text are read as text and staged as `text` (the existing text path, as ENTER TEXT); a PDF stays `pdf`; anything else is
+ * refused, never staged (on 421e382 every file was read as a data URL and staged as `pdf`, so a .md failed in the PDF parser).
+ */
+export function sourceFileKind(name: string, mime: string): "text" | "pdf" | null {
+  const extension = /\.([a-z0-9]+)$/i.exec(name)?.[1]?.toLowerCase() ?? null;
+  if (extension === "md" || extension === "markdown" || extension === "txt") return "text";
+  if (extension === "pdf") return "pdf";
+  if (extension !== null) return null;
+  if (mime === "text/markdown" || mime === "text/x-markdown" || mime === "text/plain") return "text";
+  if (mime === "application/pdf") return "pdf";
+  return null;
+}
+
+/**
  * CONDYN / SYNTX — Semantic Interface Language (SIL v3.0 Phase 3c)
  * SourceDock: Functional left-side ingestion dock focused on feeding the core with PDF, URL, and Text sources.
  */
@@ -45,12 +60,27 @@ export function SourceDock({
   const [inputText, setInputText] = useState("");
 
   const fileInputRef = useRef<HTMLInputElement | null>(null);
+  /** F-G1-MD: the last file refused (its name and why), shown until the next file is chosen. */
+  const [refusedFile, setRefusedFile] = useState<{ name: string; reason: "TYPE" | "EMPTY" } | null>(null);
 
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
+    const kind = sourceFileKind(file.name, file.type);
+    setRefusedFile(kind === null ? { name: file.name, reason: "TYPE" } : null);
+    if (kind === null) { e.target.value = ""; return; }
 
     const reader = new FileReader();
+    if (kind === "text") {
+      reader.onload = (event) => {
+        const text = String(event.target?.result ?? "");
+        if (text.trim().length === 0) { setRefusedFile({ name: file.name, reason: "EMPTY" }); return; }
+        setStagedDocs((prev) => [...prev, { id: `doc_text_${Date.now()}`, type: "text", title: file.name, content: text }]);
+      };
+      reader.readAsText(file);
+      e.target.value = "";
+      return;
+    }
     reader.onload = (event) => {
       const result = event.target?.result as string;
       const base64Content = result.includes(",") ? result.split(",")[1] : result;
@@ -185,6 +215,7 @@ export function SourceDock({
         >
           + {t.uploadPdf}
         </button>
+        {refusedFile !== null && <p data-testid="source-dock-file-refused" data-reason={refusedFile.reason} role="alert" style={{ margin: 0, fontSize: "11.5px", lineHeight: 1.45, color: "#ffc46b" }}>{t.fileRefused[refusedFile.reason](refusedFile.name)}</p>}
 
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px" }}>
           <button
