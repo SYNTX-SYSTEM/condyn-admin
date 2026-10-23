@@ -3,6 +3,7 @@
 import React, { useState, useRef } from "react";
 import { SIL_TOKENS } from "./SILTokens";
 import { SIL_COPY, type SilLocale } from "../../../../lib/career/view-model/sil-language";
+import { NAVIGATION_COPY } from "./navigation-copy";
 
 export interface StagedDocumentItem {
   id: string;
@@ -413,6 +414,12 @@ export function SourceDock({
               </div>
             ))}
           </div>
+        )}
+        {/* N-5 B-SRC: staged sources are not persisted (no file is stored, also not in the browser); the dock says so, fixed. */}
+        {stagedDocs.length > 0 && (
+          <p data-testid="staged-sources-not-kept" role="note" style={{ margin: "8px 0 0", fontSize: "11.5px", lineHeight: 1.45, color: "rgba(196, 236, 248, 0.78)" }}>
+            {NAVIGATION_COPY[locale].stagedNotKept}
+          </p>
         )}
       </div>
 
