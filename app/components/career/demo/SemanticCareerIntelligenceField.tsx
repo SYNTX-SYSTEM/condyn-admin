@@ -30,7 +30,8 @@ import { useJobPoolWorkflow } from "../../../../lib/career/ui/useJobPool";
 import { useJobScopeValidation } from "../../../../lib/career/ui/useJobScope";
 import { useAnalysisBoundary, useSelectedRoleCoverage } from "../../../../lib/career/ui/useRoleInvestigation";
 import { useAnalysisResult } from "../../../../lib/career/ui/useAnalysisResult";
-import { writeCareerDemoUrl } from "../../../../lib/career/ui/career-demo-url";
+import { ANALYSIS_JOB_URL_PARAM, analysisJobIdFromParam, writeCareerDemoUrl } from "../../../../lib/career/ui/career-demo-url";
+import { NAVIGATION_COPY } from "./navigation-copy";
 import { decodeAnalysisResult, demoStateFromResult, firstScreenCoverageRequest, projectPxjFirstScreen, showsAnalysis, withoutLegacyOrbits, type AnalysisResultState } from "../../../../lib/career/view-model/pxj-first-screen";
 import { PxjAnalysisJobOffer, PxjFirstScreen, pxjFirstScreenVisible } from "./PxjFirstScreen";
 import { legacyJobComparisonPermitted } from "../../../../lib/career/investigation/client";
@@ -75,6 +76,8 @@ export interface SemanticCareerIntelligenceFieldProps {
   /** Explicitly chosen investigation mode (URL investigationMode = PERSON | PERSON_X_JOB | JOB); never inferred. Without a choice the
    *  ground state is PERSON_X_JOB (JOB POOL FIRST), so every earlier link keeps its meaning. */
   investigationMode?: string;
+  /** The analysis job of the URL (N-2 B-RUN): a run still going when the page was reloaded, followed by reading it only. */
+  analysisJobId?: string;
   /** The application shell's brand surface follows the active field (Decision Loop Labs in the Job Field context). */
   onFieldFocusChange?: (focus: "CAPABILITY" | "FIELD") => void;
   initialAnalysisState?: {
@@ -244,6 +247,7 @@ export function SemanticCareerIntelligenceField({
   jobScopePoolUploadId: initialJobScopePoolUploadId,
   jobScopeRoleId: initialJobScopeRoleId,
   investigationMode: initialInvestigationMode,
+  analysisJobId: initialAnalysisJobId,
   onFieldFocusChange,
   initialAnalysisState,
   initialLocale = SIL_COPY.defaultLocale,
@@ -264,6 +268,19 @@ export function SemanticCareerIntelligenceField({
   
   const job = useCareerAnalysisJob();
   const jobState = job.state.state;
+  /** N-2 B-RUN: the URL's running job, followed after a reload by GET only (no POST, no second job, no retry); a value in another
+   *  format is no job id and is removed. Polling the job stays the controller's; the field only names it. */
+  const [resumedJobId] = useState<string | null>(() => analysisJobIdFromParam(initialAnalysisJobId));
+  const resumedJobOnView = resumedJobId !== null && job.state.activeJobId === resumedJobId;
+  useEffect(() => {
+    if (resumedJobId !== null) job.resumeJob(resumedJobId);
+    else writeCareerDemoUrl({ [ANALYSIS_JOB_URL_PARAM]: null }, "replace"); // nothing to write when the URL names none
+  }, []);
+  /** The run's job id stands in the URL while it runs (written on the 202, a replace: the system's addendum), so a reload follows it. */
+  useEffect(() => {
+    if (jobState === "SUBMITTING") writeCareerDemoUrl({ [ANALYSIS_JOB_URL_PARAM]: null }, "replace");
+    else if ((jobState === "PENDING" || jobState === "RUNNING") && job.state.activeJobId) writeCareerDemoUrl({ [ANALYSIS_JOB_URL_PARAM]: job.state.activeJobId }, "replace");
+  }, [jobState, job.state.activeJobId]);
   const isAnalyzing = jobState === "SUBMITTING" || jobState === "PENDING" || jobState === "RUNNING" || jobState === "LOADING_RESULT";
   const showsRuntimeTelemetry = isAnalyzing || jobState === "FAILED";
   const runtimePresentationOperation =
@@ -395,7 +412,7 @@ export function SemanticCareerIntelligenceField({
    *  run was declared with: a mode chosen during the run stays chosen, and the session and a reload show the same (GELB F-RF-1). */
   useEffect(() => {
     if (jobState !== "SUCCEEDED" || !job.state.resultAnalysisId) return;
-    writeCareerDemoUrl({ analysisId: job.state.resultAnalysisId, [INVESTIGATION_URL_PARAM]: investigationMode }, "replace");
+    writeCareerDemoUrl({ analysisId: job.state.resultAnalysisId, [INVESTIGATION_URL_PARAM]: investigationMode, [ANALYSIS_JOB_URL_PARAM]: null }, "replace");
     setUrlAnalysisId(job.state.resultAnalysisId);
   }, [jobState, job.state.resultAnalysisId]);
   /** The session's own result (M-01) has precedence; it is decoded exactly like a reload's. */
@@ -879,12 +896,16 @@ export function SemanticCareerIntelligenceField({
         const errData = { status: analysisError.status, issues: [{ code: analysisError.code, message: analysisError.message }] };
         const scopeFailure = isJobScopeErrorCode(analysisError.code);
         const boundaryFailure = isInvestigationErrorCode(analysisError.code);
+        /** N-2: a job the URL named that the server does not know is its own state; nothing is restarted or guessed. */
+        const jobNotFound = resumedJobOnView && analysisError.status === 404;
+        const navigationCopy = NAVIGATION_COPY[locale];
 
         return (
         <div
           data-testid="intake-error-banner"
           data-error-code={analysisError.code ?? ""}
           data-http-status={analysisError.status ?? ""}
+          data-job-resume={resumedJobOnView ? (jobNotFound ? "NOT_FOUND" : "FAILED") : undefined}
           style={{
             position: "absolute",
             top: "80px",
@@ -906,13 +927,14 @@ export function SemanticCareerIntelligenceField({
         >
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: "18px" }}>
             <div style={{ fontWeight: 800, fontSize: "14px", letterSpacing: "1px" }}>
-              {scopeFailure ? t.analysis.jobScopeTitle : boundaryFailure ? t.analysis.investigationTitle : errData.status === 422 ? "SEMANTIC BOUNDARY VIOLATION" : errData.status === 503 ? "PROVIDER TRUNCATION" : t.analysis.failed}
+              {jobNotFound ? navigationCopy.jobNotFoundTitle : scopeFailure ? t.analysis.jobScopeTitle : boundaryFailure ? t.analysis.investigationTitle : errData.status === 422 ? "SEMANTIC BOUNDARY VIOLATION" : errData.status === 503 ? "PROVIDER TRUNCATION" : t.analysis.failed}
             </div>
             {errData.status !== null && <div style={{ fontSize: "11.5px", color: "rgba(255, 85, 85, 0.7)" }}>HTTP {errData.status}</div>}
           </div>
           
           <div style={{ fontSize: "12px", color: "#ffbaba", lineHeight: "1.5" }}>
-            {!scopeFailure && !boundaryFailure && errData.status === 422 && t.analysis.semanticBoundary}
+            {jobNotFound && navigationCopy.jobNotFound}
+            {!jobNotFound && !scopeFailure && !boundaryFailure && errData.status === 422 && t.analysis.semanticBoundary}
             {!scopeFailure && !boundaryFailure && errData.status === 503 && t.analysis.providerTruncation}
           </div>
 
@@ -928,7 +950,10 @@ export function SemanticCareerIntelligenceField({
             ))}
           </div>
 
-          <div style={{ display: "flex", justifyContent: "flex-end", alignItems: "center", gap: "12px", marginTop: "8px" }}>
+          {resumedJobOnView && <div data-testid="intake-error-job-id" style={{ fontSize: "11.5px", color: "#ffbaba" }}>{navigationCopy.jobIdLabel} · {resumedJobId}</div>}
+
+          {/* A job followed from the URL has no staged sources in this mount: no retry here (no POST, no second job). */}
+          {!resumedJobOnView && <div style={{ display: "flex", justifyContent: "flex-end", alignItems: "center", gap: "12px", marginTop: "8px" }}>
             {analyzeBlockedMessage !== null && <span data-testid="retry-job-scope-required" role="status" style={{ fontSize: "12px", fontWeight: 700, color: "#ffc46b" }}>{analyzeBlockedMessage}</span>}
             <button
               data-testid="retry-intake-btn"
@@ -952,7 +977,7 @@ export function SemanticCareerIntelligenceField({
             >
               {t.analysis.retry}
             </button>
-          </div>
+          </div>}
         </div>
       );})()}
 

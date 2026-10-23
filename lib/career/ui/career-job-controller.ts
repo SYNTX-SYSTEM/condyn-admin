@@ -136,6 +136,21 @@ export class CareerJobController {
     }
   }
 
+  /**
+   * N-2 B-RUN: a job named by the URL (a reload during the run) is followed by reading it — GET /api/career/jobs/{id} until it ends,
+   * then its result — never submitted again. Nothing happens while another run of this controller is in progress, or for the same
+   * job read to its end; for the same job still running (React's development double mount) the polling is resumed.
+   */
+  public resumeJob(jobId: string) {
+    const running = this.state.state === "PENDING" || this.state.state === "RUNNING";
+    const busy = running || this.state.state === "SUBMITTING" || this.state.state === "LOADING_RESULT";
+    if (this.state.activeJobId === jobId ? !running : busy) return;
+    if (this.state.activeJobId !== jobId) {
+      this.updateState({ state: "PENDING", activeJobId: jobId, resultAnalysisId: null, canonicalAnalysis: null, currentOperation: null, attemptCount: null, errorCode: null, errorSummary: null, httpStatus: null });
+    }
+    this.startPolling(jobId);
+  }
+
   public retryActiveJob() {
     const httpStatus = this.state.httpStatus;
     const clientRejection = httpStatus !== null && httpStatus >= 400 && httpStatus < 500;

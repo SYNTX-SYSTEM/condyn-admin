@@ -26,6 +26,8 @@ export interface CareerDemoUrlProps {
   jobScopeRoleId?: string;
   /** Explicitly chosen investigation mode (PERSON | PERSON_X_JOB | JOB); never inferred. */
   investigationMode?: string;
+  /** The analysis job still running when the URL was written (N-2 B-RUN): read again by its id only, never started anew. */
+  analysisJobId?: string;
 }
 
 /** The shape Next.js hands a page: a repeated parameter arrives as an array. */
@@ -33,6 +35,14 @@ export type CareerDemoSearchParams = Readonly<Record<string, string | string[] |
 
 /** A parameter counts only when it stands exactly once; a repeated one is ambiguous and is read as absent (never one of them guessed). */
 const single = (value: string | string[] | undefined): string | undefined => typeof value === "string" ? value : undefined;
+
+/** N-2 B-RUN: the running analysis job in the URL, written by the field on the 202 and removed when it SUCCEEDED. */
+export const ANALYSIS_JOB_URL_PARAM = "analysisJobId";
+
+/** Only the server's own job id format (`JOB_<ms>_<n>`); anything else is no job id (it is removed, never read). */
+export function analysisJobIdFromParam(value: string | null | undefined): string | null {
+  return typeof value === "string" && /^JOB_[0-9]{1,16}_[0-9]{1,6}$/.test(value) ? value : null;
+}
 
 export function careerDemoPropsFromSearchParams(params: CareerDemoSearchParams): CareerDemoUrlProps {
   const focus = single(params.focus);
@@ -48,7 +58,8 @@ export function careerDemoPropsFromSearchParams(params: CareerDemoSearchParams):
     jobRequirementId: single(params.jobRequirementId),
     jobScopePoolUploadId: single(params.jobScopePoolUploadId),
     jobScopeRoleId: single(params.jobScopeRoleId),
-    investigationMode: single(params.investigationMode)
+    investigationMode: single(params.investigationMode),
+    analysisJobId: single(params[ANALYSIS_JOB_URL_PARAM])
   };
 }
 

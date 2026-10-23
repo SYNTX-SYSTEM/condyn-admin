@@ -17,6 +17,7 @@ export function useCareerAnalysisJob() {
 
   return {
     state,
-    submitAnalysis: (payload: any) => controller.submitAnalysis(payload)
+    submitAnalysis: (payload: any) => controller.submitAnalysis(payload),
+    resumeJob: (jobId: string) => controller.resumeJob(jobId)
   };
 }
