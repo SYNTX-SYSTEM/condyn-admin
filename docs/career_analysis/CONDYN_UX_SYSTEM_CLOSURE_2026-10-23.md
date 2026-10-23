@@ -116,3 +116,36 @@ for COVERED / NOT COVERED, no horizontal page scroll, MODE_MISMATCH and ROLE_MIS
 - **PERSON-HASH-REBASE (owner):** two F-G1-MD remainders change the PERSON markup and thus the T-07 hash — `.markdown` in the file
   dialog's accept filter and an upload label naming PDF/MD/TXT. Not done. Functionally F-G1-MD is closed (.md/.txt via the dialog,
   .markdown via „all files“, other types refused, no retry after a parse failure).
+
+## 8 Final candidate 41dfa25 — GELB check and owner acceptance lab
+
+GRÜN delivered `41dfa25` on `frontend/pxj-ux-closure` (22 commits on 70d1cb4; code state 4b826cc, 41dfa25 evidence only;
+`docs/career_analysis/evidence/pxj-ux-closure/README.md`). Per DEFECT_ID: O-NAV-SUBMIT 0f8d74e+f4d2688 · UX-04/V-04 2d97c01 ·
+UX-05 D-PICK 08df393 · UX-03 6c36644 · O-PXJ-720 (V-01/02/03) 6a12b59+ee9831b+0fe6081+4b826cc · V-16 2946224 · V-05/V-06 fe736ce ·
+V-12 7daffdd · UX-02/V-11 688bdd7 · UX-01 d24aeb2 · UX-07 44f9eed · UX-06/V-07 2a59d23 · F-G1-MD/V-08 d8d97b8 · V-14 0a5da26 ·
+V-13 f59bab0 · V-09 73e797a · V-10 5d93985.
+
+**GELB check:** files frontend only (no backend, API or DB file); leak scan clean; the only change to an existing test is the
+agreed literal (K-UX-3), no assertion removed. `tsc --noEmit` 0 errors; `next build --webpack` exit 0 **without** any
+type-check exception. Focused group (`npm run test:isolated`, 57 files incl. test/career/job-pool and test/build): **498 passed, 4
+skipped** (pre-existing skips). Counter-proof by GELB: the 16 test files added since 421e382 run against 421e382 → **45 FAIL / 18
+PASS** (= GRÜN's 43/17 + GELB's B-3 test 2/1); the passing ones are inverse and guard tests.
+
+**Owner acceptance lab** `http://127.0.0.1:41872/career/demo` — production build of 41dfa25 (`next build` + `next start`, next.config
+pristine); database `condyn_test_fe7534ec510e1946` = new disposable copy of the :41862 database, 124 tables row-identical; no
+worker, no Gemini key, network sentinel, no token.
+
+**Walks on PERSISTED_REAL_RESULT** (`evidence/ux-closure-41dfa25/`, 53 shots):
+- Viewports 1920×1080, 1600×900, 1440×900, 1280×720, 200 % of 1920×1080 (960×540 @2x), 200 % of 1280×720 (640×360 @2x):
+  B2 at first sight, all 9 rows reachable by wheel, controls uncovered (≥ 4/5 points), real click on ENTER TEXT, visible gate
+  reason with aria-describedby, NO_ANALYSIS names both ways, D-PICK lists exactly ANL_1792628993472_10 (never the PERSON
+  analysis), opening the list selects nothing, an explicit OPEN = one entry → AVAILABLE, Back → NO_ANALYSIS, no picker under
+  PERSON; 0 non-GET, 0 page errors. Script result 107/108 with two lines at 640×360 marked FAIL — both **probe artefacts**, re-measured:
+  (1) the first-sight check required the statement line, which 0fe6081 deliberately moved below binding and counts; binding and
+  counts are in view at first sight (shot `REAL-01-owner-deep-link-zoom200-1280x720.jpg`); (2) the reach loop's 240 px wheel
+  steps skipped the window in which a 161 px row is fully visible; with 60 px steps all 9/9 rows are fully in view and hit
+  (`scripts/row-probe.mjs.txt`).
+- Navigation regression R01–R11 at 1920×1080 and 1280×720: **28/28 each** (NAV ≡ RELOAD 12/12, job resume GET only, O-RF-1,
+  foreign pool / analysis / job, Back/Forward across documents), all GET.
+
+PINK §10 validation: pending (§9).

@@ -1,0 +1,30 @@
+{
+ "source": "condyn_test_f96356700c836e92",
+ "copy": "condyn_test_fe7534ec510e1946",
+ "tables": 124,
+ "identical": true,
+ "differing": [],
+ "tablesWithRows": [
+  "candidate_source_bundle_document_references|2:822bfbacb5ea8bb6a001cf9c9618755d",
+  "candidate_source_bundles|2:c4cb10fc55f411e96ac366bc993d92d9",
+  "career_analyses|2:b7f25b5022727769c098224d3d4eebfb",
+  "career_analysis_jobs|2:31e23b32f8b6dc5fd326304a4b18c11d",
+  "career_capability_proposal_projection_references|2:609337351719c9e60cf097afff54f0da",
+  "career_capability_runs|4:1d04b84dde912775deb2b6caaa36e218",
+  "career_gemini_provider_exchanges|2:49dedb1f69d00a9ab357df6143656daf",
+  "career_job_pool_canonical_mappings|1:eb8c09b42faf4dca328ce7a642ac1b71",
+  "career_job_pool_uploads|1:df7f18c483b83d6eb4c5bc0c951d9af2",
+  "target_organization_revisions|3:32241b541afa4168e0bc0be6a2a8bb86",
+  "target_requirement_entity_admissions|79:01de1c11ffbfafb4c06e179d87380b51",
+  "target_requirement_raw_provider_outputs|1:9dea6c9ef30a5c57f2eff635e5e0447e",
+  "target_requirement_reconstruction_batch_runs|1:90b9697bae236bf6bf9bd564cf552d32",
+  "target_requirement_reconstruction_results|79:2d7f9ef6660a065972ad3e2495e004e1",
+  "target_requirement_revisions|79:639b1a5b1082287ac4e9a663078e158c",
+  "target_role_organization_binding_revisions|9:c07cd3df4636dbe90c723ec28e8f4f2e",
+  "target_role_profile_revisions|9:f73512b24c9337da0fa487505db450ad",
+  "target_role_reconstruction_batch_runs|1:4f68b12b524d6c4d62020bfaf522b41e",
+  "target_role_reconstruction_results|9:db9c89536eff513be2780d9a7fd7fecb",
+  "target_role_source_binding_revisions|9:62404ce0f3669d34f5c956f136b2750e",
+  "target_source_revisions|1:ceb2ce25105a19ce3a4b73188a3e1fed"
+ ]
+}
