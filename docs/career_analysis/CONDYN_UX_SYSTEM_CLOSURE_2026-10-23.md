@@ -74,3 +74,29 @@ B-3 → production build without exception → every later browser proof of cros
 - Server-side filtered analysis list — only if D-PICK's bounded client read proves too slow.
 - D-PICK-PERSON — a place for choosing existing PERSON analyses would change the PERSON first screen (G1 owner decision: PERSON unchanged); D-PICK is PxJ-only in the UI, its filter is mode-exact and tested for PERSON.
 - Integration GO.
+
+## 6 PINK pre-sweep §3.61 (7f3ec3f) — mapped
+
+PINK measured 421e382 on :41872 (PERSISTED_REAL_RESULT, GET only) and its stand-in production build; 15 findings, no fixes
+(`evidence/ux-presweep-421e382/findings.txt`). GELB mapping, forwarded to GRÜN:
+
+| PINK | Inventory | Prio | Note |
+|---|---|---|---|
+| V-01 inspector overlays the source dock (1280×720, 200 %) | new — blocked action | P1 | §10.6 |
+| V-02 shell cut at 200 % of 1280 (JOB mode unreachable by pointer) | new — blocked action | P1 | §10.6 |
+| V-03 B2 below the fold < 1600 px | O-PXJ-720 | P1 | 1440×900 94 %, 1280×720 53 %, 200 % 13 %/0 % |
+| V-04 gate reason only in a disabled button's title | UX-04 | P1 | not reachable by keyboard/screen reader |
+| V-05 CHECKING/INVALID shown as „select a job first“ | UX-04 | P1 | honest per state |
+| V-06 NO_ANALYSIS / RESULT_NOT_FOUND / job NOT_FOUND without an action | UX-03 | P1 | NOT_FOUND banner needs a close |
+| V-07 empty start does not point to + INTAKE | UX-06 | P2 | |
+| V-08 .md as PDF + useless retry | F-G1-MD | P2 | |
+| V-11 9–14 tabs to SELECT AS JOB | UX-02 | P2 | |
+| V-12 mode radiogroup selects on arrow | FOCUS ≠ SELECTION | P2 | GELB decision (§09, small, reversible): manual activation — arrow moves focus, Enter/Space selects |
+| V-09 type 7.5–9.5 px | V-TYPO | P3 | |
+| V-10 contrast below AA (telemetry labels, receded titles) | V-TYPO | P3 | gradient text INCONCLUSIVE |
+| V-13 no visible hover on SELECT AS JOB / pool item | V-FOCUS | P3 | |
+| V-14 POOLS toggle 23 px high | V-FOCUS | P3 | |
+| V-15 long names cut without ellipsis/title | V-NAMES | P3 | |
+
+Held (PINK): no focus trap, focus indicators present, 600 tabs without URL/history change, Esc chain, Shift+Tab exact, text chips
+for COVERED / NOT COVERED, no horizontal page scroll, MODE_MISMATCH and ROLE_MISMATCH offer exactly one action.
