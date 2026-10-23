@@ -60,7 +60,8 @@ export interface SemanticCareerIntelligenceFieldProps {
   careerDecisionContextRevisionId?: string;
   /** Explicit G2 Decision Context revision (DREV) to read as the reconstructed next context. */
   decisionContextRevisionId?: string;
-  /** Exact analysis for the Job Pool match panel only; the planetarium keeps its own job-driven state. */
+  /** Exact analysis on view (URL analysisId): its persisted result is read for the first screen (owner G1), its boundary decides
+   *  the Job Field's comparison; a SUCCEEDED job of this session takes its place. */
   analysisId?: string;
   /** Exact Job Pool upload selected for matching (URL). */
   jobPoolUploadId?: string;

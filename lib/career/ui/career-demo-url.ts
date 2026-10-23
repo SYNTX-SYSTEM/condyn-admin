@@ -4,14 +4,15 @@
  * one writer that keeps the browser history: a push for every decision the user takes that the URL carries, a replace for what the
  * system adds afterwards.
  */
-/** The page's search parameters, as `app/career/demo/page.tsx` declared them before (comments carried over unchanged). */
+/** The page's search parameters, as `app/career/demo/page.tsx` declared them before. */
 export interface CareerDemoUrlProps {
   canonicalSilAssociationId?: string;
   /** Exact G3 DCTXREV; opens the HR Decision Loop dock. Never inferred. */
   careerDecisionContextRevisionId?: string;
   /** Exact G2 DREV read as the reconstructed next decision context. */
   decisionContextRevisionId?: string;
-  /** Exact analysis fed to the Job Pool match panel only; it loads nothing into the planetarium. */
+  /** Exact analysis on view (N-4 F-RF-4; stale since G1): its persisted result is read for the Capability Field's first screen
+   *  (owner G1: result → boundary → B2), its boundary decides the Job Field's comparison. Never inferred, never a latest analysis. */
   analysisId?: string;
   /** Exact Job Pool upload selected for matching. Never inferred, never a latest pool. */
   jobPoolUploadId?: string;
