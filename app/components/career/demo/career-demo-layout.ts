@@ -9,7 +9,8 @@
  *
  *   full   ≥ 1600 × 1000 CSS px: unchanged.
  *   fit    from 1100 × 600 CSS px: the page is the viewport (no page scroll); the source dock starts below the shell and ends above
- *          the inspector; the B2 panel spans from below the shell to the bottom edge (its own scroll for the rows); the planetarium
+ *          the inspector; the B2 panel spans from below the shell to the bottom edge (its own scroll for the rows; `align-self:
+ *          stretch`, since its inline `flex-start` would size an absolute box to its content); the planetarium
  *          is scaled into the free area between them (`--sx-stage-*`, set by `applyCareerDemoStageFit`).
  *   stack  narrower or lower (200 % browser zoom): one column that scrolls as a page — the shell wraps in rows and scrolls away
  *          with the page (nothing fixed lies over the content), then the B2 panel, the planetarium (zoomed to the column), the
@@ -88,7 +89,7 @@ export const CAREER_DEMO_LAYOUT_CSS = `
   ${STAGE} { transform-origin: 0 0; scale: var(--sx-stage-scale, 1); translate: var(--sx-stage-dx, 0px) var(--sx-stage-dy, 0px); }
   ${FIELD}:has([data-pxj-panel]) > div:has(> svg[data-testid="resonance-energy-paths"]) { scale: var(--sx-stage-scale-panel, 1); translate: var(--sx-stage-dx-panel, 0px) var(--sx-stage-dy, 0px); }
   ${DOCK} { top: ${FIT_TOP - 61}px !important; transform: none !important; max-height: calc(100vh - ${FIT_TOP}px - 172px); overflow-y: auto; }
-  ${FIELD} [data-pxj-panel] { top: ${FIT_TOP - 61}px !important; bottom: 16px !important; right: 24px !important; max-height: none !important; width: min(400px, 30vw) !important; }
+  ${FIELD} [data-pxj-panel] { top: ${FIT_TOP - 61}px !important; bottom: 16px !important; right: 24px !important; max-height: none !important; width: min(400px, 30vw) !important; align-self: stretch !important; }
 }
 @media ${STACK} {
   [data-testid="career-intelligence-dashboard"] { min-height: 100vh; overflow-x: clip; }
