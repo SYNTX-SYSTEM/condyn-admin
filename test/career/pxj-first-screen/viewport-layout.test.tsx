@@ -28,8 +28,9 @@ describe("O-PXJ-720 · the dashboard carries the viewport rules", () => {
     expect(fit).toMatch(/\[data-pxj-panel\] \{ top: 71px !important; bottom: 16px !important;[^}]*max-height: none !important/);
     // Its own scroll for the rows: the box spans top … bottom (an absolute box with align-self flex-start would take its content height).
     expect(fit).toMatch(/\[data-pxj-panel\] \{[^}]*align-self: stretch !important; \}/);
-    expect(fit).toMatch(/\[data-testid="career-intelligence-dashboard"\] \{ height: 100vh; overflow: hidden;/);
-    expect(fit).toMatch(/\[data-testid="semantic-career-intelligence-field"\] \{ min-height: 0 !important; height: auto !important;/);
+    // Since V-18 / V-19 only while the Capability Field is the active field (the Job Field keeps 70d1cb4's size).
+    expect(fit).toMatch(/\[data-testid="career-intelligence-dashboard"\]:has\(> \[data-testid="semantic-career-intelligence-field"\]\[data-field-focus="CAPABILITY"\]\) \{ height: 100vh; overflow: hidden;/);
+    expect(fit).toMatch(/\[data-testid="semantic-career-intelligence-field"\]\[data-field-focus="CAPABILITY"\] \{ min-height: 0 !important; height: auto !important;/);
   });
 
   it("REPRODUCE: the Job Field's panel ends above the bottom edge (its own scroll) and the uploaded pools open beside it", () => {

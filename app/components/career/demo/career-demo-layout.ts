@@ -109,8 +109,11 @@ ${HUD} > span { color: rgba(130, 200, 224, 0.85) !important; }
 @media ${FIT} {
   ${HUD} { top: ${FIT_TOP - 61}px !important; left: var(--sx-hud-x, 50%) !important; max-width: var(--sx-hud-w, 560px) !important; flex-wrap: wrap; justify-content: center; row-gap: 2px; }
   ${FIELD}:has([data-pxj-panel]) > [data-testid="semantic-zoom-telemetry"] { left: var(--sx-hud-x-panel, 50%) !important; max-width: var(--sx-hud-w-panel, 560px) !important; }
-  [data-testid="career-intelligence-dashboard"] { height: 100vh; overflow: hidden; display: flex; flex-direction: column; }
-  ${FIELD} { min-height: 0 !important; height: auto !important; flex: 1 1 auto; }
+  /* V-18 / V-19: only the Capability Field becomes the viewport. The Job Field keeps 70d1cb4's size (≥ 960 px, the page scrolls):
+     its role orbits are laid out on the stage's size — on a viewport-high stage they packed (no domain line) and moved under the
+     panel. */
+  [data-testid="career-intelligence-dashboard"]:has(> [data-testid="semantic-career-intelligence-field"][data-field-focus="CAPABILITY"]) { height: 100vh; overflow: hidden; display: flex; flex-direction: column; }
+  ${FIELD}[data-field-focus="CAPABILITY"] { min-height: 0 !important; height: auto !important; flex: 1 1 auto; }
   ${STAGE} { transform-origin: 0 0; scale: var(--sx-stage-scale, 1); translate: var(--sx-stage-dx, 0px) var(--sx-stage-dy, 0px); }
   ${FIELD}:has([data-pxj-panel]) > div:has(> svg[data-testid="resonance-energy-paths"]) { scale: var(--sx-stage-scale-panel, 1); translate: var(--sx-stage-dx-panel, 0px) var(--sx-stage-dy-panel, 0px); }
   ${DOCK} { top: ${FIT_TOP - 61}px !important; transform: none !important; max-height: calc(100vh - ${FIT_TOP}px - 172px); overflow-y: auto; }
@@ -159,7 +162,7 @@ ${HUD} > span { color: rgba(130, 200, 224, 0.85) !important; }
   ${FIELD} > ${JOB} { position: relative !important; inset: auto !important; order: 6; display: flex !important; flex-direction: column; gap: 12px; padding: 4px 0 12px; min-height: 0; }
   ${JOB} > [data-sx-orient] { position: relative !important; left: auto !important; top: auto !important; width: auto !important; order: 1; }
   ${JOB} > [data-testid="job-pool-list"], ${JOB} > [data-testid="job-pool-upload"], ${JOB} > [data-testid="job-pool-matches"] { position: relative !important; left: auto !important; right: auto !important; top: auto !important; width: auto !important; max-height: none !important; order: 2; }
-  ${JOB} > [data-testid="syntx-stage"] { position: relative !important; inset: auto !important; height: min(560px, 92vw); order: 3; }
+  ${JOB} > [data-testid="syntx-stage"] { position: relative !important; inset: auto !important; height: 960px; order: 3; }
   ${JOB} > [data-testid="job-pool-non-claims"] { position: relative !important; left: auto !important; bottom: auto !important; transform: none !important; width: auto !important; order: 4; }
 }
 `;
