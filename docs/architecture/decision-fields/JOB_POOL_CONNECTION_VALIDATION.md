@@ -3324,6 +3324,28 @@ C-1 is decided as a specification in §10 of the discovery doc (`e2c7191`): the 
 
 **Run record.** `evidence/role-discovery-2dba126/`: verdicts.txt, cache-recheck-MEASUREMENT.txt, scripts/ and manifest.sha256.
 
+### 3.67 Relation-cache convergence `600c7c1` (O-RC-3) re-checked (2026-10-24)
+
+**Request.** GELB asked for a targeted re-check of `600c7c1` on `backend/pool-role-discovery`. The commit does three things:
+- it names every constraint (`prr_*`) and adds any that are missing by ALTER;
+- it verifies at registration, through `pg_constraint` and `pg_trigger`, that every guarantee exists;
+- it fails the registration when an existing row violates a constraint.
+
+O-RC-4 (fail-closed) and O-RC-5 (owner ≠ app role) are decided in §10 of the discovery doc (`427cac7`).
+
+**Method.** One fresh disposable database per table history: fresh, created by `ccc0cc1`'s DDL, created by `ccc0cc1`'s DDL plus a row whose JSON claims VERIFIED, and created by `2dba126`'s DDL. Each runs `600c7c1`'s registration. The probes are scratch only, and there is no Gemini call.
+
+**Verdicts (`evidence/role-discovery-600c7c1/verdicts.txt`).**
+- **Convergence: PASS.**
+  - The `ccc0cc1` and `2dba126` tables end with all 7 `prr_*` constraints and both triggers, exactly like a fresh table.
+  - Every invalid insert and every UPDATE, DELETE and TRUNCATE is refused; a valid row is accepted.
+- **Dirty table: PASS.** The registration throws, also on a second call, and the job pool application is refused, so nothing is reported as registered.
+- **Tests: PASS.** The subset passes 60 files, 480 tests, 4 skipped; `relation-cache.postgres` passes 8/8. On `2dba126` exactly the O-RC-3 test fails; tsc reports 0 errors.
+- **O-RC-6 (observation).** After a failed convergence the table stays half converged: 6 of 7 constraints, no trigger. The whole job pool persistence stays unavailable until the row is removed by hand. That is fail-closed, but it is worth a runbook line.
+- **Note.** Old tables keep their auto-named checks next to the `prr_*` ones. The overlap is harmless.
+
+**Run record.** `evidence/role-discovery-600c7c1/`: verdicts.txt, cache-converge-MEASUREMENT.txt, scripts/ and manifest.sha256.
+
 ## 4. Boundaries and findings for coordination
 
 - F-JP-1 (closed in `b782793`): `JOB_POOL_CONNECTION.md` §4 followed the per-role `JOB_POOL_JSON_ROLE` design;

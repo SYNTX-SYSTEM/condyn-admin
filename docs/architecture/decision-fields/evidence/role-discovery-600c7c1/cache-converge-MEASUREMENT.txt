@@ -1,0 +1,68 @@
+PINK §3.67 · O-RC-3 fix 600c7c1 re-checked. MEASUREMENT on four fresh verified disposable databases (npm run test:isolated, one per
+history), code = git archive of 600c7c1; earlier DDL taken verbatim from ccc0cc1 / 2dba126; scratch-only probes (scripts/*.txt).
+
+== fresh
+  kind                         fresh
+  tableBefore                  0
+  registration                 REGISTERED
+  registrationAgain            REGISTERED
+  application                  created
+  constraints                  ['prr_authority_none', 'prr_engine_hash_format', 'prr_proposal_hash_format', 'prr_record_binds_columns', 'prr_relation_key_format', 'prr_requirement_hash_format', 'prr_state_known']
+  triggers                     ['career_proposal_requirement_relations_no_truncate', 'career_proposal_requirement_relations_no_update_delete']
+  insertJsonAuthorityVerified  refused: PostgresError: new row for relation "career_proposal_requirement_relations" violates check
+  insertJsonStateMismatch      refused: PostgresError: new row for relation "career_proposal_requirement_relations" violates check
+  insertBadKeyFormat           refused: PostgresError: new row for relation "career_proposal_requirement_relations" violates check
+  insertBadHashFormat          refused: PostgresError: new row for relation "career_proposal_requirement_relations" violates check
+  insertValid                  ok 1
+  update                       refused: PostgresError: ERR_RELATION_CACHE_IMMUTABLE: UPDATE on career_proposal_requirement_relatio
+  delete                       refused: PostgresError: ERR_RELATION_CACHE_IMMUTABLE: DELETE on career_proposal_requirement_relatio
+  truncate                     refused: PostgresError: ERR_RELATION_CACHE_IMMUTABLE: TRUNCATE on career_proposal_requirement_relat
+
+== ccc-clean
+  kind                         ccc-clean
+  tableBefore                  0
+  registration                 REGISTERED
+  registrationAgain            REGISTERED
+  application                  created
+  constraints                  ['career_proposal_requirement_relations_authority_state_check', 'career_proposal_requirement_relations_relation_state_check', 'prr_authority_none', 'prr_engine_hash_format', 'prr_proposal_hash_format', 'prr_record_binds_columns', 'prr_relation_key_format', 'prr_requirement_hash_format', 'prr_state_known']
+  triggers                     ['career_proposal_requirement_relations_no_truncate', 'career_proposal_requirement_relations_no_update_delete']
+  insertJsonAuthorityVerified  refused: PostgresError: new row for relation "career_proposal_requirement_relations" violates check
+  insertJsonStateMismatch      refused: PostgresError: new row for relation "career_proposal_requirement_relations" violates check
+  insertBadKeyFormat           refused: PostgresError: new row for relation "career_proposal_requirement_relations" violates check
+  insertBadHashFormat          refused: PostgresError: new row for relation "career_proposal_requirement_relations" violates check
+  insertValid                  ok 1
+  update                       refused: PostgresError: ERR_RELATION_CACHE_IMMUTABLE: UPDATE on career_proposal_requirement_relatio
+  delete                       refused: PostgresError: ERR_RELATION_CACHE_IMMUTABLE: DELETE on career_proposal_requirement_relatio
+  truncate                     refused: PostgresError: ERR_RELATION_CACHE_IMMUTABLE: TRUNCATE on career_proposal_requirement_relat
+
+== ccc-dirty
+  kind                         ccc-dirty
+  tableBefore                  0
+  dirtyRow                     ok 1
+  registration                 threw: PostgresError: check constraint "prr_record_binds_columns" of relation "career_proposal_requirement_relations" is violated by some row
+  registrationAgain            threw: PostgresError: check constraint "prr_record_binds_columns" of relation "career_proposal_requirement_
+  application                  refused: PostgresError: check constraint "prr_record_binds_columns" of relation "career_proposal_requirement_
+  constraints                  ['career_proposal_requirement_relations_authority_state_check', 'career_proposal_requirement_relations_relation_state_check', 'prr_authority_none', 'prr_engine_hash_format', 'prr_proposal_hash_format', 'prr_relation_key_format', 'prr_requirement_hash_format', 'prr_state_known']
+  triggers                     []
+  dirtyRowStillThere           1
+
+== 2db-clean
+  kind                         2db-clean
+  tableBefore                  0
+  registration                 REGISTERED
+  registrationAgain            REGISTERED
+  application                  created
+  constraints                  ['career_proposal_requirement_rela_requirement_content_hash_check', 'career_proposal_requirement_relatio_proposal_content_hash_check', 'career_proposal_requirement_relations_authority_state_check', 'career_proposal_requirement_relations_engine_version_hash_check', 'career_proposal_requirement_relations_record_binds_columns', 'career_proposal_requirement_relations_relation_key_check', 'career_proposal_requirement_relations_relation_state_check', 'prr_authority_none', 'prr_engine_hash_format', 'prr_proposal_hash_format', 'prr_record_binds_columns', 'prr_relation_key_format', 'prr_requirement_hash_format', 'prr_state_known']
+  triggers                     ['career_proposal_requirement_relations_no_truncate', 'career_proposal_requirement_relations_no_update_delete']
+  insertJsonAuthorityVerified  refused: PostgresError: new row for relation "career_proposal_requirement_relations" violates check
+  insertJsonStateMismatch      refused: PostgresError: new row for relation "career_proposal_requirement_relations" violates check
+  insertBadKeyFormat           refused: PostgresError: new row for relation "career_proposal_requirement_relations" violates check
+  insertBadHashFormat          refused: PostgresError: new row for relation "career_proposal_requirement_relations" violates check
+  insertValid                  ok 1
+  update                       refused: PostgresError: ERR_RELATION_CACHE_IMMUTABLE: UPDATE on career_proposal_requirement_relatio
+  delete                       refused: PostgresError: ERR_RELATION_CACHE_IMMUTABLE: DELETE on career_proposal_requirement_relatio
+  truncate                     refused: PostgresError: ERR_RELATION_CACHE_IMMUTABLE: TRUNCATE on career_proposal_requirement_relat
+
+Suites on 600c7c1:  Test Files 60 passed (60)  Tests 480 passed | 4 skipped (484) · relation-cache.postgres 8/8
+Counter-proof: 600c7c1's relation-cache.postgres.test.ts on a 2dba126 tree:  Tests 1 failed | 7 passed (8) — only the O-RC-3 case fails
+tsc --noEmit on 600c7c1: 0 errors. Scope 2dba126..600c7c1:  2 files changed, 72 insertions(+), 17 deletions(-)
