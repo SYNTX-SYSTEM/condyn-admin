@@ -244,3 +244,19 @@ focused group 73 files 585 passed, 4 skipped; tsc 0. The existing registration g
   partial or tampered cache; it signals an integrity breach, not a normal state. **O-RC-5 noted:** the table owner (app role) can
   still disable triggers or drop the table; real protection against that is a role separation (owner role ≠ app role), part of any
   production migration decision.
+- **PINK §3.67 (`7733942`) on 600c7c1:** O-RC-3 PASS (tables from ccc0cc1 and 2dba126 converge to all 7 prr_* constraints and both
+  triggers; a dirty table fails registration). **O-RC-6** (a failed convergence left the table half-converged) **fixed** on the
+  branch: convergence and verification run in one transaction; a failure rolls back completely.
+
+**RUNBOOK — relation cache registration fails (`ERR_RELATION_CACHE_GUARANTEES_MISSING` or a constraint error at startup)**
+- *Effect (fail closed, by design):* the cache DDL is part of the job pool persistence registration, so every job pool route answers
+  503 `ERR_JOB_POOL_PERSISTENCE_NOT_PROVISIONED` until registration succeeds — not only the discovery. Only disposable databases are
+  ever registered.
+- *Cause:* a row in `career_proposal_requirement_relations` that violates a guarantee (in practice only a table written by an earlier
+  version or by hand).
+- *Find:* `SELECT relation_key FROM career_proposal_requirement_relations WHERE NOT ((record_json::jsonb->>'relationKey') = relation_key
+  AND (record_json::jsonb->>'state') = relation_state AND (record_json::jsonb->>'authorityState') = authority_state
+  AND authority_state = 'NONE' AND relation_key ~ '^PRREL_[0-9A-F]{40}$')`.
+- *Repair:* the failed registration rolled back, so the table has no triggers yet; delete the listed rows (they are cache entries,
+  re-derivable from raw outputs by replay), then restart the process (the registration memo resets after a failure). No other
+  table is touched.
