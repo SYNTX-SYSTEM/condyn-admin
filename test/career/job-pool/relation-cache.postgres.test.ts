@@ -2,7 +2,7 @@ import { beforeAll, describe, expect, it } from "vitest";
 import { db } from "../../../lib/career/db/client";
 import { ensureJobPoolPersistenceRegistration } from "../../../lib/career/job-pool/local-composition";
 import { canonicalJson, engineVersionHash, proposalContentHash, relationKey, requirementContentHash, type CachedRelation } from "../../../lib/career/job-pool/relation-cache";
-import { PostgresRelationCacheRepository, RELATION_CACHE_TABLE } from "../../../lib/career/job-pool/relation-cache-repository";
+import { PostgresRelationCacheRepository, RELATION_CACHE_CONSTRAINTS, RELATION_CACHE_TABLE, registerRelationCacheSchema } from "../../../lib/career/job-pool/relation-cache-repository";
 
 /** Relation cache on PostgreSQL (verified disposable test database): first-wins insert, database-enforced immutability (PINK D-RC-1, C-2). */
 const ENGINE = { contractVersion: "PROPOSAL_REQUIREMENT_RELATION_V1", promptChecksum: `P_${Date.now()}`, provider: "stand-in", model: "stand-in-model" };
@@ -71,6 +71,33 @@ describe("relation cache repository (PostgreSQL)", () => {
     // Columns and bound fields are consistent, but an owner-mandated field is empty: the database cannot see that, the reader does.
     await rawInsert(r, { record_json: canonicalJson({ ...r, evidenceLimitation: "" }) });
     await expect(repository.getByKeys([r.relationKey])).rejects.toThrow(`ERR_RELATION_CACHE_RECORD_CORRUPT:${r.relationKey}`);
+  });
+
+  it("O-RC-3: a table created by the earlier DDL (ccc0cc1) gets every constraint and trigger on registration; a violating row fails it", async () => {
+    // Own schema on a reserved connection, so the shared table of the other test files is never touched.
+    const CCC0CC1_TABLE = `CREATE TABLE ${RELATION_CACHE_TABLE} (relation_key text PRIMARY KEY, proposal_content_hash text NOT NULL, requirement_content_hash text NOT NULL,
+      engine_version_hash text NOT NULL, relation_state text NOT NULL CHECK (relation_state IN ('EQUIVALENT', 'COVERS', 'PARTIAL', 'DIFFERENT', 'UNCLEAR')),
+      authority_state text NOT NULL CHECK (authority_state = 'NONE'), record_json text NOT NULL, created_at text NOT NULL)`;
+    const conn = await db.$client.reserve();
+    const schemas = [`orc3_clean_${Date.now()}`, `orc3_dirty_${Date.now()}`];
+    try {
+      await conn.unsafe(`CREATE SCHEMA ${schemas[0]}; SET search_path TO ${schemas[0]}`);
+      await conn.unsafe(CCC0CC1_TABLE);
+      await registerRelationCacheSchema(conn as never);
+      const names = (await conn.unsafe<{ conname: string }[]>(`SELECT conname FROM pg_constraint WHERE conrelid = '${RELATION_CACHE_TABLE}'::regclass`)).map(c => c.conname);
+      for (const [name] of RELATION_CACHE_CONSTRAINTS) expect(names, name).toContain(name);
+      await expect(conn.unsafe(`INSERT INTO ${RELATION_CACHE_TABLE} VALUES ('not-a-key','p','r','e','COVERS','NONE','{}','t')`)).rejects.toThrow();
+      await expect(conn.unsafe(`TRUNCATE ${RELATION_CACHE_TABLE}`)).rejects.toThrow(/ERR_RELATION_CACHE_IMMUTABLE/);
+
+      await conn.unsafe(`CREATE SCHEMA ${schemas[1]}; SET search_path TO ${schemas[1]}`);
+      await conn.unsafe(CCC0CC1_TABLE);
+      const r = make("Dirty Row", "Requirement");
+      await conn.unsafe(`INSERT INTO ${RELATION_CACHE_TABLE} VALUES ($1,$2,$3,$4,$5,$6,$7,$8)`, [r.relationKey, r.proposalContentHash, r.requirementContentHash, r.engineVersionHash, r.state, r.authorityState, canonicalJson({ ...r, authorityState: "VERIFIED" }), r.createdAt]);
+      await expect(registerRelationCacheSchema(conn as never)).rejects.toThrow();
+    } finally {
+      await conn.unsafe(`SET search_path TO public; DROP SCHEMA IF EXISTS ${schemas[0]} CASCADE; DROP SCHEMA IF EXISTS ${schemas[1]} CASCADE`);
+      conn.release();
+    }
   });
 
   it("refuses invalid records before the database", async () => {

@@ -16,38 +16,66 @@ export const RELATION_CACHE_TABLE = "career_proposal_requirement_relations";
 
 const json = (field: string) => `(record_json::jsonb ->> '${field}')`;
 
-export const RELATION_CACHE_DDL = [
-  `CREATE TABLE IF NOT EXISTS ${RELATION_CACHE_TABLE} (
-    relation_key text PRIMARY KEY CHECK (relation_key ~ '^PRREL_[0-9A-F]{40}$'),
-    proposal_content_hash text NOT NULL CHECK (proposal_content_hash ~ '^[0-9a-f]{64}$'),
-    requirement_content_hash text NOT NULL CHECK (requirement_content_hash ~ '^[0-9a-f]{64}$'),
-    engine_version_hash text NOT NULL CHECK (engine_version_hash ~ '^[0-9a-f]{64}$'),
-    relation_state text NOT NULL CHECK (relation_state IN ('EQUIVALENT', 'COVERS', 'PARTIAL', 'DIFFERENT', 'UNCLEAR')),
-    authority_state text NOT NULL CHECK (authority_state = 'NONE'),
-    record_json text NOT NULL,
-    created_at text NOT NULL,
-    CONSTRAINT ${RELATION_CACHE_TABLE}_record_binds_columns CHECK (
+/**
+ * Named constraints, added to the table whether it is new or was created by an earlier version of this DDL (PINK O-RC-3:
+ * `CREATE TABLE IF NOT EXISTS` alone would skip them on an existing table). Registration then verifies that every constraint and
+ * trigger is present and fails otherwise — it never reports a table without its guarantees as registered.
+ */
+export const RELATION_CACHE_CONSTRAINTS: ReadonlyArray<readonly [name: string, definition: string]> = [
+  ["prr_relation_key_format", "CHECK (relation_key ~ '^PRREL_[0-9A-F]{40}$')"],
+  ["prr_proposal_hash_format", "CHECK (proposal_content_hash ~ '^[0-9a-f]{64}$')"],
+  ["prr_requirement_hash_format", "CHECK (requirement_content_hash ~ '^[0-9a-f]{64}$')"],
+  ["prr_engine_hash_format", "CHECK (engine_version_hash ~ '^[0-9a-f]{64}$')"],
+  ["prr_state_known", "CHECK (relation_state IN ('EQUIVALENT', 'COVERS', 'PARTIAL', 'DIFFERENT', 'UNCLEAR'))"],
+  ["prr_authority_none", "CHECK (authority_state = 'NONE')"],
+  ["prr_record_binds_columns", `CHECK (
       ${json("relationKey")} = relation_key AND ${json("state")} = relation_state AND ${json("authorityState")} = authority_state
       AND ${json("proposalContentHash")} = proposal_content_hash AND ${json("requirementContentHash")} = requirement_content_hash
-      AND ${json("engineVersionHash")} = engine_version_hash AND ${json("createdAt")} = created_at
-    )
+      AND ${json("engineVersionHash")} = engine_version_hash AND ${json("createdAt")} = created_at)`]
+];
+export const RELATION_CACHE_TRIGGERS = [`${RELATION_CACHE_TABLE}_no_update_delete`, `${RELATION_CACHE_TABLE}_no_truncate`] as const;
+
+export const RELATION_CACHE_DDL = [
+  `CREATE TABLE IF NOT EXISTS ${RELATION_CACHE_TABLE} (
+    relation_key text PRIMARY KEY,
+    proposal_content_hash text NOT NULL,
+    requirement_content_hash text NOT NULL,
+    engine_version_hash text NOT NULL,
+    relation_state text NOT NULL,
+    authority_state text NOT NULL,
+    record_json text NOT NULL,
+    created_at text NOT NULL
   )`,
+  ...RELATION_CACHE_CONSTRAINTS.map(([name, definition]) => `DO $$ BEGIN
+    IF NOT EXISTS (SELECT 1 FROM pg_constraint WHERE conname = '${name}' AND conrelid = '${RELATION_CACHE_TABLE}'::regclass) THEN
+      ALTER TABLE ${RELATION_CACHE_TABLE} ADD CONSTRAINT ${name} ${definition};
+    END IF;
+  END $$`),
   `CREATE INDEX IF NOT EXISTS ${RELATION_CACHE_TABLE}_requirement_idx ON ${RELATION_CACHE_TABLE} (requirement_content_hash, engine_version_hash)`,
   `CREATE INDEX IF NOT EXISTS ${RELATION_CACHE_TABLE}_proposal_idx ON ${RELATION_CACHE_TABLE} (proposal_content_hash, engine_version_hash)`,
   `CREATE OR REPLACE FUNCTION ${RELATION_CACHE_TABLE}_immutable() RETURNS trigger LANGUAGE plpgsql AS $$
     BEGIN RAISE EXCEPTION 'ERR_RELATION_CACHE_IMMUTABLE: % on ${RELATION_CACHE_TABLE} refused', TG_OP; END $$`,
   `DO $$ BEGIN
-    IF NOT EXISTS (SELECT 1 FROM pg_trigger WHERE tgname = '${RELATION_CACHE_TABLE}_no_update_delete' AND tgrelid = '${RELATION_CACHE_TABLE}'::regclass) THEN
-      CREATE TRIGGER ${RELATION_CACHE_TABLE}_no_update_delete BEFORE UPDATE OR DELETE ON ${RELATION_CACHE_TABLE} FOR EACH ROW EXECUTE FUNCTION ${RELATION_CACHE_TABLE}_immutable();
+    IF NOT EXISTS (SELECT 1 FROM pg_trigger WHERE tgname = '${RELATION_CACHE_TRIGGERS[0]}' AND tgrelid = '${RELATION_CACHE_TABLE}'::regclass) THEN
+      CREATE TRIGGER ${RELATION_CACHE_TRIGGERS[0]} BEFORE UPDATE OR DELETE ON ${RELATION_CACHE_TABLE} FOR EACH ROW EXECUTE FUNCTION ${RELATION_CACHE_TABLE}_immutable();
     END IF;
-    IF NOT EXISTS (SELECT 1 FROM pg_trigger WHERE tgname = '${RELATION_CACHE_TABLE}_no_truncate' AND tgrelid = '${RELATION_CACHE_TABLE}'::regclass) THEN
-      CREATE TRIGGER ${RELATION_CACHE_TABLE}_no_truncate BEFORE TRUNCATE ON ${RELATION_CACHE_TABLE} FOR EACH STATEMENT EXECUTE FUNCTION ${RELATION_CACHE_TABLE}_immutable();
+    IF NOT EXISTS (SELECT 1 FROM pg_trigger WHERE tgname = '${RELATION_CACHE_TRIGGERS[1]}' AND tgrelid = '${RELATION_CACHE_TABLE}'::regclass) THEN
+      CREATE TRIGGER ${RELATION_CACHE_TRIGGERS[1]} BEFORE TRUNCATE ON ${RELATION_CACHE_TABLE} FOR EACH STATEMENT EXECUTE FUNCTION ${RELATION_CACHE_TABLE}_immutable();
     END IF;
   END $$`
 ] as const;
 
+/** Applies the DDL and verifies the guarantees exist; a missing constraint or trigger fails the registration (O-RC-3). An existing
+ *  row that violates a constraint makes the ALTER fail, so such a table is never reported as registered either. */
 export async function registerRelationCacheSchema(sql: Sql): Promise<readonly string[]> {
   for (const statement of RELATION_CACHE_DDL) await sql.unsafe(statement);
+  const constraints = await sql.unsafe<{ conname: string }[]>(`SELECT conname FROM pg_constraint WHERE conrelid = '${RELATION_CACHE_TABLE}'::regclass`);
+  const triggers = await sql.unsafe<{ tgname: string }[]>(`SELECT tgname FROM pg_trigger WHERE tgrelid = '${RELATION_CACHE_TABLE}'::regclass AND NOT tgisinternal`);
+  const missing = [
+    ...RELATION_CACHE_CONSTRAINTS.map(([name]) => name).filter(name => !constraints.some(c => c.conname === name)),
+    ...RELATION_CACHE_TRIGGERS.filter(name => !triggers.some(t => t.tgname === name))
+  ];
+  if (missing.length) throw new Error(`ERR_RELATION_CACHE_GUARANTEES_MISSING:${missing.join(",")}`);
   return [RELATION_CACHE_TABLE];
 }
 
