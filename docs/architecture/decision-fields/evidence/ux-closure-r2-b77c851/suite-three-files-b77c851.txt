@@ -4,5 +4,5 @@ disposable database, net sentinel on (0 outbound attempts). MEASUREMENT.
   decision-integration/g2-g3-vertical-proof.test.ts              passed  passed 63 failed 0 skipped 0
   decision-integration/hr-decision-loop-p7.test.ts               passed  passed 7 failed 0 skipped 0
   decision-runtime/e2e/local-decision-context-http.e2e.test.ts   passed  passed 1 failed 0 skipped 0
-  total: files 16/16 passed, tests 71/71 passed, 0 failed
+  total: files 3/3 passed (16/16 describe suites), tests 71/71 passed, 0 failed
   No file red → no comparison run on 70d1cb4 needed.
