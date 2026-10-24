@@ -18,7 +18,7 @@ const ENGINEERING = TEST_JOB_SCOPE.jobPoolUploadId;
 const get = (analysisId: string, uploads: string[]) =>
   GET(new Request(`http://local/api/career/analyses/${analysisId}/role-discovery?${uploads.map(u => `jobPoolUploadId=${encodeURIComponent(u)}`).join("&")}`), { params: Promise.resolve({ analysisId }) });
 const source = (label: string) => createSourceDocument({ docId: "CV", title: "cv.synthetic.pdf", rawContent: `${SOURCE} (${label})` });
-const tableCounts = async () => Object.fromEntries(await Promise.all(["career_analyses", "career_analysis_jobs", "career_job_pool_uploads", "career_capability_runs", "career_capability_proposal_projection_references", "capability_requirement_relations"].map(async table => [table, Number(((await db.execute(sql.raw(`SELECT count(*)::int AS n FROM ${table}`))) as unknown as Array<{ n: number }>)[0].n)])));
+const tableCounts = async () => Object.fromEntries(await Promise.all(["career_analyses", "career_analysis_jobs", "career_job_pool_uploads", "career_capability_runs", "career_capability_proposal_projection_references", "capability_requirement_relations", "career_proposal_requirement_relations"].map(async table => [table, Number(((await db.execute(sql.raw(`SELECT count(*)::int AS n FROM ${table}`))) as unknown as Array<{ n: number }>)[0].n)])));
 
 describe("role discovery route (PostgreSQL, no Gemini)", () => {
   const jobs = new JobRepository(db);
@@ -65,6 +65,8 @@ describe("role discovery route (PostgreSQL, no Gemini)", () => {
     const typescript = discovery.roles.flatMap((r: { requirements: unknown[] }) => r.requirements).filter((q: { requirementText: string }) => q.requirementText === "TypeScript");
     expect(typescript.length).toBeGreaterThan(1);
     expect(typescript.every((q: { lexical: { basis: string; evidence: Array<{ exactQuote: string }> } }) => q.lexical.basis === "NAME_EXACT" && q.lexical.evidence[0].exactQuote === SOURCE)).toBe(true);
+    // The semantic layer is not executed and says so; the plan counts the call volume (one call per role with requirements).
+    expect(discovery.semanticPlan).toMatchObject({ cacheVersion: "PROPOSAL_REQUIREMENT_RELATION_CACHE_V1", state: "ENGINE_NOT_SPECIFIED", engineVersionHash: null, pairs: 79, cachedPairs: 0, pendingPairs: 79, callsNeeded: 9 });
     expect(raw).not.toContain(LEGACY_MARKER);
     expect(raw).not.toContain(other);
     expect(raw).not.toMatch(/resonance|"score"/i);

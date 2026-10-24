@@ -9,6 +9,8 @@ import { JobPoolError } from "../../../../../../lib/career/job-pool/errors";
 import { createLocalJobPoolApplication } from "../../../../../../lib/career/job-pool/local-composition";
 import { POOL_ROLE_DISCOVERY_MAX_POOLS, buildPoolRoleDiscovery, type DiscoveryPoolInput } from "../../../../../../lib/career/job-pool/pool-role-discovery";
 import { PostgresJobPoolRepository } from "../../../../../../lib/career/job-pool/repository";
+import { planSemanticInvestigation, type RelationEngineIdentity } from "../../../../../../lib/career/job-pool/relation-cache";
+import { PostgresRelationCacheRepository } from "../../../../../../lib/career/job-pool/relation-cache-repository";
 import { createJobScopeResolver } from "../../../../../../lib/career/job-scope/scope";
 import type { CompanyPoolData } from "../../../../../../lib/career/matching/pool";
 import { JobRepository } from "../../../../../../lib/career/orchestration/job-repository";
@@ -17,6 +19,8 @@ export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 const NO_STORE = { "cache-control": "no-store" };
+/** The semantic relation engine (D-RD-2/D-RD-3, stage 3) is not specified yet: no engine, no lookup, no execution. */
+const SEMANTIC_RELATION_ENGINE: RelationEngineIdentity | null = null;
 const issue = (code: string, status: number, extra: Record<string, string> = {}) => NextResponse.json({ success: false, issues: [{ code, ...extra }] }, { status, headers: NO_STORE });
 
 /**
@@ -66,7 +70,14 @@ export async function GET(request: Request, { params }: { params: Promise<{ anal
       pools.push({ jobPoolUploadId: view.jobPoolUploadId, poolId: view.poolId, poolVersion: view.poolVersion, poolName: view.poolName, poolStatus: view.poolStatus, canonicalSha256: view.canonicalSha256, pool: view.pool as CompanyPoolData, canonicalMapping: view.canonicalMapping });
     }
     const discovery = buildPoolRoleDiscovery({ analysis: { analysisId, jobId: investigation.jobId, discoveryRunId: investigation.discoveryRunId }, projection, pools });
-    return NextResponse.json({ success: true, discovery }, { headers: NO_STORE });
+    // The call volume a semantic investigation of these roles would need, minus what the relation cache already holds.
+    const requirements = new Map(pools.flatMap(p => p.pool.requirements.map(r => [`${p.jobPoolUploadId}\u0000${r.role_id}\u0000${r.id}`, r] as const)));
+    const semanticPlan = await planSemanticInvestigation({
+      discovery, proposals: projection.capabilities,
+      requirementsByKey: key => requirements.get(`${key.jobPoolUploadId}\u0000${key.poolRoleId}\u0000${key.poolRequirementId}`) ?? null,
+      engine: SEMANTIC_RELATION_ENGINE, cache: SEMANTIC_RELATION_ENGINE ? new PostgresRelationCacheRepository(db.$client) : null
+    });
+    return NextResponse.json({ success: true, discovery: { ...discovery, semanticPlan } }, { headers: NO_STORE });
   } catch (error) {
     if (error instanceof JobPoolError && error.status === 503) return issue(error.code, 503);
     console.error("[role-discovery] failed", error instanceof Error ? error.name : "unknown");
