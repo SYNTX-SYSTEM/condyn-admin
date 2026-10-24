@@ -1,10 +1,10 @@
 import { beforeAll, describe, expect, it } from "vitest";
 import { db } from "../../../lib/career/db/client";
 import { ensureJobPoolPersistenceRegistration } from "../../../lib/career/job-pool/local-composition";
-import { engineVersionHash, proposalContentHash, relationKey, requirementContentHash, type CachedRelation } from "../../../lib/career/job-pool/relation-cache";
+import { canonicalJson, engineVersionHash, proposalContentHash, relationKey, requirementContentHash, type CachedRelation } from "../../../lib/career/job-pool/relation-cache";
 import { PostgresRelationCacheRepository, RELATION_CACHE_TABLE } from "../../../lib/career/job-pool/relation-cache-repository";
 
-/** Relation cache on PostgreSQL (verified disposable test database): immutable rows, idempotent insert, conflict refused, DB checks. */
+/** Relation cache on PostgreSQL (verified disposable test database): first-wins insert, database-enforced immutability (PINK D-RC-1, C-2). */
 const ENGINE = { contractVersion: "PROPOSAL_REQUIREMENT_RELATION_V1", promptChecksum: `P_${Date.now()}`, provider: "stand-in", model: "stand-in-model" };
 const make = (name: string, requirement: string, state: CachedRelation["state"] = "COVERS"): CachedRelation => {
   const p = { name, scope: "ATOMIC" as const, structuralDefinition: "d", evidence: [{ evidenceId: "E", sourceDocumentId: "DOC_001", exactQuote: `${name} quote`, verificationState: "SOURCE_MATCH_VERIFIED" as const }] };
@@ -13,35 +13,67 @@ const make = (name: string, requirement: string, state: CachedRelation["state"] 
   return { relationKey: relationKey(ph, rh, eh), proposalContentHash: ph, requirementContentHash: rh, engineVersionHash: eh, engine: ENGINE, state, capabilityName: name, requirementText: requirement,
     sourceEvidence: [{ sourceDocumentId: "DOC_001", exactQuote: `${name} quote` }], relationExplanation: "explained", evidenceLimitation: "limited", rawOutputSha256: "b".repeat(64), authorityState: "NONE", createdAt: "2026-10-24T00:00:00.000Z" };
 };
+/** A direct insert that bypasses the repository (to prove what the database itself refuses or lets through). */
+const rawInsert = (r: CachedRelation, overrides: Partial<Record<"relation_key" | "relation_state" | "authority_state" | "record_json", string>> = {}) => db.$client.unsafe(
+  `INSERT INTO ${RELATION_CACHE_TABLE} (relation_key, proposal_content_hash, requirement_content_hash, engine_version_hash, relation_state, authority_state, record_json, created_at) VALUES ($1,$2,$3,$4,$5,$6,$7,$8)`,
+  [overrides.relation_key ?? r.relationKey, r.proposalContentHash, r.requirementContentHash, r.engineVersionHash, overrides.relation_state ?? r.state, overrides.authority_state ?? r.authorityState, overrides.record_json ?? canonicalJson(r), r.createdAt]
+);
 
 describe("relation cache repository (PostgreSQL)", () => {
   const repository = new PostgresRelationCacheRepository(db.$client);
   beforeAll(async () => { expect(await ensureJobPoolPersistenceRegistration()).toBe("REGISTERED"); });
 
-  it("the table exists after the guarded registration", async () => {
-    const rows = await db.$client<{ n: number }[]>`SELECT count(*)::int AS n FROM information_schema.tables WHERE table_name = ${RELATION_CACHE_TABLE}`;
-    expect(rows[0].n).toBe(1);
+  it("the table and its immutability triggers exist after the guarded registration", async () => {
+    const tables = await db.$client<{ n: number }[]>`SELECT count(*)::int AS n FROM information_schema.tables WHERE table_name = ${RELATION_CACHE_TABLE}`;
+    const triggers = await db.$client<{ tgname: string }[]>`SELECT tgname FROM pg_trigger WHERE tgrelid = ${RELATION_CACHE_TABLE}::regclass AND NOT tgisinternal ORDER BY tgname`;
+    expect(tables[0].n).toBe(1);
+    expect(triggers.map(t => t.tgname)).toEqual([`${RELATION_CACHE_TABLE}_no_truncate`, `${RELATION_CACHE_TABLE}_no_update_delete`]);
   });
 
-  it("stores once, reads by key, repeats are no-ops", async () => {
+  it("stores once, reads by key, an identical repeat is a duplicate", async () => {
     const a = make("Kubernetes Deployment", "Kubernetes"), b = make("PostgreSQL Database Design", "SQL", "PARTIAL");
-    expect(await repository.saveIfAbsent([a, b])).toEqual({ inserted: 2, existing: 0 });
-    expect(await repository.saveIfAbsent([a])).toEqual({ inserted: 0, existing: 1 });
+    expect(await repository.saveIfAbsent([a, b])).toEqual({ inserted: 2, duplicates: 0, divergent: [] });
+    expect(await repository.saveIfAbsent([a])).toEqual({ inserted: 0, duplicates: 1, divergent: [] });
     const read = await repository.getByKeys([a.relationKey, b.relationKey, "PRREL_UNKNOWN", a.relationKey]);
     expect(read.map(r => r.relationKey).sort()).toEqual([a.relationKey, b.relationKey].sort());
     expect(read.find(r => r.relationKey === b.relationKey)).toEqual(b);
   });
 
-  it("immutable: another record under an existing key is refused, the stored one stays", async () => {
+  it("first wins (C-2): another run of the same pair is a duplicate when its result is the same, divergent when not; the first record stays", async () => {
     const a = make("Linux Administration", "Linux Systems Engineering", "PARTIAL");
     await repository.saveIfAbsent([a]);
-    await expect(repository.saveIfAbsent([{ ...a, relationExplanation: "changed" }])).rejects.toThrow(/ERR_RELATION_CACHE_CONFLICT/);
-    expect((await repository.getByKeys([a.relationKey]))[0].relationExplanation).toBe("explained");
+    const rerun = { ...a, createdAt: "2026-10-25T00:00:00.000Z", rawOutputSha256: "c".repeat(64) };
+    expect(await repository.saveIfAbsent([rerun])).toEqual({ inserted: 0, duplicates: 1, divergent: [] });
+    expect(await repository.saveIfAbsent([{ ...rerun, state: "COVERS", relationExplanation: "changed" }])).toEqual({ inserted: 0, duplicates: 0, divergent: [a.relationKey] });
+    expect((await repository.getByKeys([a.relationKey]))[0]).toEqual(a);
   });
 
-  it("refuses invalid records before the database, and the database refuses authority and unknown states itself", async () => {
+  it("the database refuses UPDATE, DELETE and TRUNCATE (D-RC-1)", async () => {
+    const a = make("Python ETL Development", "Python", "PARTIAL");
+    await repository.saveIfAbsent([a]);
+    await expect(db.$client.unsafe(`UPDATE ${RELATION_CACHE_TABLE} SET relation_state = 'EQUIVALENT' WHERE relation_key = $1`, [a.relationKey])).rejects.toThrow(/ERR_RELATION_CACHE_IMMUTABLE/);
+    await expect(db.$client.unsafe(`DELETE FROM ${RELATION_CACHE_TABLE} WHERE relation_key = $1`, [a.relationKey])).rejects.toThrow(/ERR_RELATION_CACHE_IMMUTABLE/);
+    await expect(db.$client.unsafe(`TRUNCATE ${RELATION_CACHE_TABLE}`)).rejects.toThrow(/ERR_RELATION_CACHE_IMMUTABLE/);
+    expect((await repository.getByKeys([a.relationKey]))[0]).toEqual(a);
+  });
+
+  it("the database binds the JSON record to its columns and fixes the key format (D-RC-1)", async () => {
+    const r = make("React Frontend Development", "React");
+    await expect(rawInsert(r, { relation_state: "EQUIVALENT" })).rejects.toThrow(/record_binds_columns/);
+    await expect(rawInsert(r, { record_json: canonicalJson({ ...r, authorityState: "VERIFIED" }) })).rejects.toThrow(/record_binds_columns/);
+    await expect(rawInsert(r, { relation_key: "PRREL_lowercase", record_json: canonicalJson({ ...r, relationKey: "PRREL_lowercase" }) })).rejects.toThrow();
+    await expect(rawInsert(r, { authority_state: "VERIFIED", record_json: canonicalJson({ ...r, authorityState: "VERIFIED" }) })).rejects.toThrow();
+    await expect(rawInsert(r, { relation_state: "SUPPORTS", record_json: canonicalJson({ ...r, state: "SUPPORTS" }) })).rejects.toThrow();
+  });
+
+  it("the reader refuses a stored record that does not hold, instead of serving it (D-RC-1)", async () => {
+    const r = make("Engineering Leadership", "Architecture Review");
+    // Columns and bound fields are consistent, but an owner-mandated field is empty: the database cannot see that, the reader does.
+    await rawInsert(r, { record_json: canonicalJson({ ...r, evidenceLimitation: "" }) });
+    await expect(repository.getByKeys([r.relationKey])).rejects.toThrow(`ERR_RELATION_CACHE_RECORD_CORRUPT:${r.relationKey}`);
+  });
+
+  it("refuses invalid records before the database", async () => {
     await expect(repository.saveIfAbsent([{ ...make("X", "Y"), evidenceLimitation: "" }])).rejects.toThrow(/ERR_RELATION_CACHE_RECORD_INVALID/);
-    await expect(db.$client.unsafe(`INSERT INTO ${RELATION_CACHE_TABLE} VALUES ('K1','p','r','e','EQUIVALENT','VERIFIED','{}','t')`)).rejects.toThrow();
-    await expect(db.$client.unsafe(`INSERT INTO ${RELATION_CACHE_TABLE} VALUES ('K2','p','r','e','SUPPORTS','NONE','{}','t')`)).rejects.toThrow();
   });
 });
