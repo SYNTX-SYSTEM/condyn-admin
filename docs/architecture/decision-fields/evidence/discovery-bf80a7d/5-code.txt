@@ -1,0 +1,29 @@
+Point 5 · GELB's code reconstruction (doc §1) checked against 41dfa25. CODE_INSPECTION (+ live GET on :41878, 5-live.txt).
+
+API routes at 41dfa25 (app/api/**/route.ts): admin/proxy/[...path]; career/analyses; …/[analysisId]; …/gemini-result; …/investigation;
+…/job-comparison; career/analyze; career/canonical-sil/[associationId]; career/canonical-sil/execute; career/hr-decision-loop/{contexts,
+decisions}; career/job-pools; …/[jobPoolUploadId]; …/matches; …/roles/[poolRoleId]/structure; career/jobs/[jobId]; …/gemini-exchanges;
+decision-contexts(/[revisionId]); pdf; topology/[companyId]. No other pool-wide or discovery route.
+
+Confirmed as GELB states:
+- findSweepCoverage (presentation-matching.ts): EXACT > ALIAS > COMPOSITE_CONSTITUENT > TOKEN_CONTAINMENT (weak), scored: false.
+- /job-pools/{upload}/matches is pool-wide, refuses PERSON (application.ts assertComparableBoundary → ERR_JOB_POOL_MATCHES_PERSON_ANALYSIS,
+  live: 409) and carries resonanceScore per role (live: 9/9 for the PxJ run).
+- /analyses/{id}/job-comparison is single-role (the analysis's own selected role).
+- relation/capability-requirement producer admits only PHASE4_VERIFIED + relation-eligible operands (producer.ts:30); the relation and
+  role-relation modules have no caller in app/ (only persistence adapters and the T11 schema import them) → not reachable from the
+  product path.
+- search/engine.ts (indexCompanyPoolEntities over CompanyPoolData = the uploaded job-pool schema, embeddings gemini | deterministic,
+  pgvector store) has no importer in app/, lib/ outside search/ and embeddings/, or scripts/ → exists, not wired.
+
+Missed or mis-classified by GELB:
+- M-1 (missed, relevant to G-1 / D-RD-1): GET /api/career/analyses/{id} runs the legacy scored engine
+  matchCareerAnalysisAgainstPool(analysis, DEMO_COMPANY_POOL) (lib/career/matching/engine.ts: "sorts roles strictly by deterministic score
+  descending", computeRoleResonanceScore) plus generateCareerRecommendations, for every analysis regardless of its mode. Live, for the PERSON
+  analysis ANL_…_456: pool pool_demo_master_v1, 3 role matches with resonanceScore, 3 organisation matches, 1 search query, 6 capability
+  gaps, 5 next actions. So a PERSON analysis IS compared with roles today — against a built-in demo pool, scored and ordered, in the same
+  response the first screen reads. Not shown on the first screen as far as PINK knows, but it is the existing "pool-wide, scored" path the
+  invariant and D-RD-1 must name (keep, drop or fence).
+- M-2 (minor): admin/proxy/[...path] forwards any path to an external backend (CONDYN_API_URL + BACKEND_TOKEN); in this repo it is used
+  only by the legacy admin panels (prompts, analyze). What that backend offers (e.g. a search) cannot be inspected here → INCONCLUSIVE
+  for "no other pool-wide or semantic path"; within this repository there is none.

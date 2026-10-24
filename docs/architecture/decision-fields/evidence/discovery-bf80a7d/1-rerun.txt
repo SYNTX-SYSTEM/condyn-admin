@@ -1,0 +1,9 @@
+Point 1 · re-run of GELB's discovery-proof.mts (bf80a7d) by PINK against :41878 (GET only), code tree = git archive of 41dfa25,
+source text = pdftotext of docs/examples/cv.synthetic.pdf (sha256 efaa47ef0c02e625…, equal at 41dfa25 and bf80a7d). DETERMINISTIC on PERSISTED_REAL_RESULT.
+
+ANL_1792628831636_456 (PERSON, 10 proposals): pools 4, roles 78, requirements 507, by status {'PARTIAL': 39, 'NO_RELATION': 38, 'NO_REQUIREMENTS': 1}
+  inverse {checked 52, proposalFound 52, quoteInProjection 52, quoteInSource 52, failures 0}
+  whole JSON equal to GELB's evidence discovery-person-456.json: True
+ANL_1792628993472_10 (PERSON_X_JOB, 8 proposals): pools 4, roles 78, requirements 507, by status {'NO_RELATION': 64, 'PARTIAL': 9, 'ALL_REQUIREMENTS_NAME_RELATED': 4, 'NO_REQUIREMENTS': 1}
+  inverse {checked 27, proposalFound 27, quoteInProjection 27, quoteInSource 27, failures 0}
+  whole JSON equal to GELB's evidence discovery-pxj-10.json: True

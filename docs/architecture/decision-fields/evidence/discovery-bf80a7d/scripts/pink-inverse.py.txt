@@ -1,0 +1,31 @@
+# PINK independent inverse check (CAPABILITY_TO_JOBPOOL_DISCOVERY): every related requirement row of a discovery JSON →
+# proposal (by id, from a fresh GET of the projection) → quote among that proposal's evidence → quote in the pdftotext text
+# (own normalisation; raw and de-hyphenated variants) → does the quote carry the requirement (name / alias tokens in the quote)?
+# argv: <base> <discovery json> <pdftotext file> <out json>. Prints counts only; quotes stay in the local out file.
+import json, sys, re, unicodedata, urllib.request, hashlib
+BASE, DISC, TXT, OUT = sys.argv[1:5]
+def get(p): return json.load(urllib.request.urlopen(BASE + p))
+def n(s): s = unicodedata.normalize("NFKC", s); s = re.sub(r"[‐-―−]", "-", s); s = s.replace("­", ""); return re.sub(r"\s+", " ", s).strip().lower()
+raw = open(TXT, encoding="utf8").read(); text = n(raw); dehy = n(re.sub(r"-\n(?=[a-z])", "", raw))
+d = json.load(open(DISC)); A = d["analysis"]["analysisId"]
+proj = get(f"/api/career/analyses/{A}")["capabilityProposalProjection"]
+props = {c["id"]: c for c in proj["capabilities"]}
+tok = lambda s: [t for t in re.findall(r"[a-z0-9+#.]+", n(s)) if len(t) > 1 and t not in {"and", "of", "the", "in", "for", "with", "to", "a"}]
+rows = []; c = {"related": 0, "proposalFound": 0, "quoteAmongProposalEvidence": 0, "quoteInPdfText": 0, "quoteInPdfDehyphenated": 0, "reqNameInQuote": 0, "reqTokenInQuote": 0, "noReqTokenInQuote": 0}
+for role in d["roles"]:
+  for r in role["requirements"]:
+    if r["relation"] == "NO_NAME_RELATION": continue
+    c["related"] += 1; p = props.get(r["proposal"]["id"])
+    if p: c["proposalFound"] += 1
+    qs = [e["quote"] for e in r["evidence"]]
+    among = bool(p) and all(any(q == e.get("exactQuote") for e in p.get("evidence", [])) for q in qs)
+    inpdf = bool(qs) and all(n(q) in text for q in qs); inde = bool(qs) and all(n(q) in dehy for q in qs)
+    names = [r["capabilityName"]] + r["aliases"]
+    full = any(n(x) in n(" ".join(qs)) for x in names)
+    rt = set(t for x in names for t in tok(x)); qt = set(tok(" ".join(qs)))
+    part = sorted(rt & qt)
+    c["quoteAmongProposalEvidence"] += among; c["quoteInPdfText"] += inpdf; c["quoteInPdfDehyphenated"] += inde
+    c["reqNameInQuote"] += full; c["reqTokenInQuote"] += (bool(part) and not full); c["noReqTokenInQuote"] += (not part and not full)
+    rows.append({"pool": role["jobPoolUploadId"][-6:], "role": role["poolRoleId"], "req": r["poolRequirementId"], "reqName": r["capabilityName"], "aliases": r["aliases"], "relation": r["relation"], "proposal": r["proposal"]["name"], "constituent": r["proposal"]["constituent"], "quotes": qs, "quoteSha": [hashlib.sha256(q.encode()).hexdigest()[:10] for q in qs], "among": among, "inPdf": inpdf, "reqNameInQuote": full, "reqTokensInQuote": part})
+json.dump({"analysisId": A, "counts": c, "rows": rows}, open(OUT, "w"), indent=1, ensure_ascii=False)
+print(json.dumps({"analysisId": A, **c}))

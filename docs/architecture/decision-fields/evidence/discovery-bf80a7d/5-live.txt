@@ -1,0 +1,6 @@
+Point 5 · live checks on :41878 (GET only) for the code reconstruction:
+  GET /api/career/job-pools/<DLL>/matches?analysisId=ANL_…_456 (PERSON) → ERR_JOB_POOL_MATCHES_PERSON_ANALYSIS
+  same with ANL_…_10 (PxJ) → 9 roleMatches, every one with resonanceScore: True (presentation {'kind': 'DETERMINISTIC_RESONANCE_PRESENTATION', 'policyVersion': 'JOB_POOL_PRESENTATION_MATCHING_V1', 'authorityState': 'NONE', 'canonicalEvaluation': False, 'decision': False, 'weakEvidenceThreshold': 0.7})
+  GET /api/career/analyses/ANL_…_456 (PERSON) carries 'matching' = matchCareerAnalysisAgainstPool(analysis, DEMO_COMPANY_POOL):
+    pool pool_demo_master_v1 v1, role_matches 3 with resonanceScore [0, 0, 0], organization_matches 3, search_queries 1
+    and 'recommendations' {'analysisId': 'ANL_1792628831636_456', 'generatedAt': '2026-10-24T01:31:54.776Z', 'capabilityGaps': 6, 'evidenceEnhancements': 0, 'nextActions': 5}

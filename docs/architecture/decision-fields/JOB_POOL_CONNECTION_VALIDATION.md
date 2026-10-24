@@ -3185,6 +3185,39 @@ FAIL:
 
 **Run record.** `evidence/ux-closure-41dfa25/`: verdicts.txt, static-MEASUREMENT.txt, real-41872-PERSISTED_REAL_RESULT.txt, standin-STAND_IN.txt, person-dom-K-UX-2-STAND_IN.txt, regression-STAND_IN.txt, shots/ (15 JPEGs; REAL ones have quotes masked or none on view, STANDIN ones are labelled), scripts/ and manifest.sha256.
 
+### 3.63 Review of GELB's isolated proof "CAPABILITY_TO_JOBPOOL_DISCOVERY" (`bf80a7d`) (2026-10-24)
+
+**Request.** Owner directive PRIORITY PRODUCT_CORE. GELB asked for an independent check of the proof in §5 and the code reconstruction in §1 of `CONDYN_CAPABILITY_TO_JOBPOOL_DISCOVERY_2026-10-24.md`, with five points:
+1. re-run;
+2. inverse check down to the quote;
+3. honesty of the relation kinds;
+4. the §05 cases;
+5. the code reconstruction.
+
+**Method.** GET only on GELB's disposable lab :41878; PINK uploaded nothing and made no Gemini call. Evidence classes are DETERMINISTIC (computation on PERSISTED_REAL_RESULT), live GET and CODE_INSPECTION. Quotes are never written to the evidence, only their sha256 prefix.
+
+**Verdicts (`evidence/discovery-bf80a7d/verdicts.txt`).**
+- **1 PASS.** Both runs reproduce exactly; the whole JSON equals GELB's evidence.
+  - PERSON: 78 roles, 507 requirements; PARTIAL 39, NO_RELATION 38, NO_REQUIREMENTS 1; inverse 52/52.
+  - PxJ: NO_RELATION 64, PARTIAL 9, ALL 4, NO_REQUIREMENTS 1; inverse 27/27.
+- **2 PASS.** The inverse check is PINK's own code, independent of `findSweepCoverage` and GELB's script.
+  - Every proposal exists, every quote belongs to its proposal, and every quote is verbatim in the pdftotext text.
+  - In 49/52 the quote names the requirement. The rest: "Backend Development" ×2, where "backend" appears only in the proposal name, and the "domain" part of "Dimensional and Domain Data Modeling".
+- **3 FAIL (labels).** The relation and status labels can mislead:
+  - 29 of the 39 PARTIAL roles rest on weak token hits only, 25 on a single one (mostly "Python" ← "Python ETL Development", including requirements aliased PyTorch / FastAPI / R).
+  - In the same proposal "TypeScript and Node.js Backend Development", TypeScript is NAME_COMPOSITE_CONSTITUENT but Node.js only WEAK.
+  - WEAK understates head-term hits (Kubernetes, PostgreSQL, React) and overstates one-word overlaps ("Linux Systems Engineering" ← "Linux Administration", the alias "ETL").
+  - Lexical misses confirm G-2: SQL ×10, "CI/CD Pipelines" missed only because of the plural against "CI/CD Pipeline Engineering", TDD against Automated Testing / Test Automation, and leadership and architecture variants.
+- **4 PASS.**
+  - The role without requirements is NO_REQUIREMENTS, and duplicate role ids and titles are kept apart by (upload, role) across 4 pools.
+  - Requirement ids also repeat across uploads (`req_kestrel_fullstack_01/02`), so a route must key requirements by upload + role + requirement.
+  - "Python" carries 7 different alias sets and collapses onto one proposal.
+- **5 FAIL (gap).** The blocks listed in §1 hold: matches refuses PERSON (live 409) and carries `resonanceScore`, the relation producer needs PHASE4_VERIFIED and has no app caller, and the embedding search exists but has no importer. Two gaps:
+  - **M-1, missed.** `GET /api/career/analyses/{id}` runs the legacy scored engine `matchCareerAnalysisAgainstPool(analysis, DEMO_COMPANY_POOL)` plus recommendations for every analysis, PERSON included. Live for ANL_…_456: pool `pool_demo_master_v1`, 3 roles with `resonanceScore`, 6 gaps, 5 actions. A PERSON analysis is therefore already compared with roles, scored and ordered; D-RD-1 must name this path.
+  - **M-2, INCONCLUSIVE.** The admin proxy forwards to an external backend that cannot be inspected from this repository.
+
+**Run record.** `evidence/discovery-bf80a7d/`: verdicts.txt, 1-rerun.txt, 2-inverse.txt, 3-relations.txt, 4-cases.txt, 5-code.txt, 5-live.txt, scripts/ and manifest.sha256.
+
 ## 4. Boundaries and findings for coordination
 
 - F-JP-1 (closed in `b782793`): `JOB_POOL_CONNECTION.md` §4 followed the per-role `JOB_POOL_JSON_ROLE` design;

@@ -1,0 +1,37 @@
+Point 3 · relation kinds on the PERSON run (DETERMINISTIC). Rule (presentation-matching.ts): EXACT name, ALIAS, COMPOSITE_CONSTITUENT,
+TOKEN_CONTAINMENT = every token of the requirement NAME OR OF ONE ALIAS occurs in the proposal name (reported weak).
+
+Related pairs (count × relation · requirement [aliases] ← proposal):
+   9× NAME_COMPOSITE_CONSTITUENT «TypeScript» ['TS'] ← «TypeScript and Node.js Backend Development»
+   1× NAME_EXACT                 «Linux Administration» ['Linux'] ← «Linux Administration»
+   2× WEAK_TOKEN_CONTAINMENT     «Backend Development» [] ← «TypeScript and Node.js Backend Development»
+   1× WEAK_TOKEN_CONTAINMENT     «Data Mapping and Transformation» ['Data Transformation', 'ETL'] ← «Python ETL Development»
+   1× WEAK_TOKEN_CONTAINMENT     «Dimensional and Domain Data Modeling» ['Data Modeling', 'Kimball', 'Data Vault'] ← «Dimensional Data Modeling»
+   2× WEAK_TOKEN_CONTAINMENT     «Kubernetes» ['K8s'] ← «Kubernetes Deployment»
+   1× WEAK_TOKEN_CONTAINMENT     «Kubernetes» ['K8s', 'EKS'] ← «Kubernetes Deployment»
+   1× WEAK_TOKEN_CONTAINMENT     «Linux Systems Engineering» ['Linux'] ← «Linux Administration»
+   2× WEAK_TOKEN_CONTAINMENT     «Node.js» ['NodeJS'] ← «TypeScript and Node.js Backend Development»
+   3× WEAK_TOKEN_CONTAINMENT     «PostgreSQL» ['Postgres'] ← «PostgreSQL Database Design and Querying»
+  16× WEAK_TOKEN_CONTAINMENT     «Python» [] ← «Python ETL Development»
+   1× WEAK_TOKEN_CONTAINMENT     «Python» ['FastAPI'] ← «Python ETL Development»
+   1× WEAK_TOKEN_CONTAINMENT     «Python» ['NumPy'] ← «Python ETL Development»
+   1× WEAK_TOKEN_CONTAINMENT     «Python» ['PyTorch'] ← «Python ETL Development»
+   2× WEAK_TOKEN_CONTAINMENT     «Python» ['R'] ← «Python ETL Development»
+   1× WEAK_TOKEN_CONTAINMENT     «Python» ['pandas'] ← «Python ETL Development»
+   1× WEAK_TOKEN_CONTAINMENT     «Python» ['pandas', 'NumPy'] ← «Python ETL Development»
+   1× WEAK_TOKEN_CONTAINMENT     «React» ['React.js'] ← «React Frontend Development»
+   5× WEAK_TOKEN_CONTAINMENT     «React» ['React.js', 'ReactJS'] ← «React Frontend Development»
+
+Status PARTIAL 39: 29 of them rest on weak token hits only, 25 on one single weak hit.
+
+Misses (NO_NAME_RELATION although a proposal plainly names the same thing — lexical limits, G-2 confirmed):
+   1× «Automated Testing» ['Test Automation', 'Unit Testing']
+   1× «CI/CD Pipelines» ['Continuous Delivery', 'GitHub Actions', 'GitLab CI']
+   1× «Data Modeling for BI» ['Star Schema']
+   1× «Database Internals» ['PostgreSQL Internals', 'Query Planning']
+   1× «Engineering Team Leadership» ['Engineering Management', 'Team Lead']
+   9× «SQL» []
+   1× «SQL» ['Relational Databases']
+   1× «Software Architecture» ['Solution Architecture', 'System Architecture']
+   1× «Technical Leadership» ['Tech Lead']
+   1× «Test Automation» ['Automated Testing']

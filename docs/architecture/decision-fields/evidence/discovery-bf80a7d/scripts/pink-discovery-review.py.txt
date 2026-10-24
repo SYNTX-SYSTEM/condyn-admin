@@ -1,0 +1,82 @@
+# PINK review of GELB's CAPABILITY_TO_JOBPOOL_DISCOVERY proof (bf80a7d): writes the evidence texts from the re-run JSON, PINK's
+# independent inverse JSON and the saved live responses. No quote text is written (quotes only as sha256/10). argv: <work dir> <out dir>
+import json, sys, re, collections
+W, E = sys.argv[1:3]; O = f"{W}/out"
+L = lambda f: json.load(open(f"{O}/{f}"))
+def w(name, lines): open(f"{E}/{name}", "w").write("\n".join(lines) + "\n")
+runs = [("person-456", "ANL_1792628831636_456"), ("pxj-10", "ANL_1792628993472_10")]
+# 1 re-run
+lines = ["Point 1 · re-run of GELB's discovery-proof.mts (bf80a7d) by PINK against :41878 (GET only), code tree = git archive of 41dfa25,",
+         "source text = pdftotext of docs/examples/cv.synthetic.pdf (sha256 efaa47ef0c02e625…, equal at 41dfa25 and bf80a7d). DETERMINISTIC on PERSISTED_REAL_RESULT.", ""]
+for n, a in runs:
+  g, r = L(f"gelb-{n}.json"), L(f"rerun-{a}.json")
+  t = r["totals"]
+  lines += [f"{a} ({r['analysis']['mode']}, {len(r['analysis']['proposals'])} proposals): pools {len(r['pools'])}, roles {t['roles']}, requirements {t['requirements']}, by status {t['byStatus']}",
+            f"  inverse {{checked {r['inverse']['checked']}, proposalFound {r['inverse']['proposalFound']}, quoteInProjection {r['inverse']['quoteInProjection']}, quoteInSource {r['inverse']['quoteInSource']}, failures {len(r['inverse']['failures'])}}}",
+            f"  whole JSON equal to GELB's evidence discovery-{n}.json: {g == r}"]
+w("1-rerun.txt", lines)
+# 2 inverse
+lines = ["Point 2 · PINK's independent inverse check (pink-inverse.py): own code, not findSweepCoverage and not GELB's script. Per related row:",
+         "proposal by id from a fresh GET of the projection → quote among that proposal's evidence → quote in the pdftotext text (own",
+         "normalisation; also de-hyphenated) → does the quote carry the requirement (requirement name or an alias in the quote, else shared",
+         "tokens)? Quotes appear here only as sha256/10 (E-6).", ""]
+for n, a in runs:
+  d = L(f"inverse-{n}.json"); c = d["counts"]
+  lines.append(f"{a}: " + json.dumps(c))
+  for r in d["rows"]:
+    if not r["reqNameInQuote"]:
+      lines.append(f"  name/alias NOT in the quote: pool …{r['pool']} {r['role']} {r['req']} «{r['reqName']}» {r['relation']} ← «{r['proposal']}» quote {r['quoteSha']} shared tokens {r['reqTokensInQuote']}")
+lines += ["", "Reading (PINK): every quote exists verbatim in the PDF text and belongs to the named proposal (mechanically 52/52, 27/27).",
+          "Carrying: in 49/52 (PERSON) the requirement name or an alias is in the quote. The 3 rest:",
+          "  - «Backend Development» ×2 ← «TypeScript and Node.js Backend Development»: the quote names TypeScript / Node.js / services; 'backend'",
+          "    is only in the model-given proposal name — plausible, but the quote does not say it.",
+          "  - «Dimensional and Domain Data Modeling» ← «Dimensional Data Modeling»: the quote carries the dimensional part, not 'domain'.",
+          "  PxJ (negative control): «Web Platform Engineering» NAME_EXACT rests on a profile summary sentence; «Automated Testing» EXACT and",
+          "  «Test Automation» ALIAS rest on a test-driven-development / unit-coverage sentence — carried, but the EXACT name exists only because",
+          "  the scoped proposal was named after the requirement (G-3)."]
+w("2-inverse.txt", lines)
+# 3 relation honesty
+g = L("gelb-person-456.json"); d = L("inverse-person-456.json")
+lines = ["Point 3 · relation kinds on the PERSON run (DETERMINISTIC). Rule (presentation-matching.ts): EXACT name, ALIAS, COMPOSITE_CONSTITUENT,",
+         "TOKEN_CONTAINMENT = every token of the requirement NAME OR OF ONE ALIAS occurs in the proposal name (reported weak).", "", "Related pairs (count × relation · requirement [aliases] ← proposal):"]
+seen = collections.Counter((r["relation"], r["reqName"], tuple(r["aliases"]), r["proposal"]) for r in d["rows"])
+for (rel, req, al, pr), v in sorted(seen.items()): lines.append(f"  {v:>2}× {rel:<26} «{req}» {list(al)} ← «{pr}»")
+R = g["roles"]; partial = [r for r in R if r["status"] == "PARTIAL"]; weak = [r for r in partial if r["counts"]["nameRelated"] == 0]
+lines += ["", f"Status PARTIAL {len(partial)}: {len(weak)} of them rest on weak token hits only, {sum(1 for r in weak if r['counts']['weakTokenOnly'] == 1)} on one single weak hit.",
+          "", "Misses (NO_NAME_RELATION although a proposal plainly names the same thing — lexical limits, G-2 confirmed):"]
+miss = collections.Counter()
+for role in R:
+  for q in role["requirements"]:
+    if q["relation"] == "NO_NAME_RELATION" and re.search(r"^(SQL|CI/CD Pipelines|Automated Testing|Test Automation|Engineering Team Leadership|Technical Leadership|Software Architecture|Data Modeling for BI|Database Internals)$", q["capabilityName"]):
+      miss[(q["capabilityName"], tuple(q["aliases"]))] += 1
+for (n_, al), v in sorted(miss.items()): lines.append(f"  {v:>2}× «{n_}» {list(al)}")
+w("3-relations.txt", lines)
+# 4 cases
+lines = ["Point 4 · §05 cases on the two runs (DETERMINISTIC)."]
+for n, a in runs:
+  R = L(f"gelb-{n}.json")["roles"]; keys = [(r["jobPoolUploadId"], r["poolRoleId"]) for r in R]
+  rq = collections.defaultdict(set)
+  for r in R:
+    for q in r["requirements"]: rq[q["capabilityName"]].add(tuple(q["aliases"]))
+  reqids = collections.Counter(q["poolRequirementId"] for r in R for q in r["requirements"])
+  lines += ["", f"{a}:",
+    f"  role without requirements: {[(r['jobPoolUploadId'][-6:], r['poolRoleId'], r['status'], r['counts']['requirements']) for r in R if r['counts']['requirements'] == 0]}",
+    f"  (upload, role) unique {len(keys) == len(set(keys))}; role id alone unique {len({k[1] for k in keys}) == len(keys)}",
+    f"  role_kestrel_fullstack ×2: {[(r['jobPoolUploadId'][-6:], r['status'], r['counts']) for r in R if r['poolRoleId'] == 'role_kestrel_fullstack']}",
+    f"  'Platform Engineer' ×3: {[(r['jobPoolUploadId'][-6:], r['poolRoleId'], r['organizationName'], r['status']) for r in R if r['title'] == 'Platform Engineer']}",
+    f"  requirement ids repeated across uploads: {[k for k, v in reqids.items() if v > 1]} (kept apart only by upload + role)",
+    f"  requirement names with different alias sets: {len([k for k, v in rq.items() if len(v) > 1])}, e.g. Python {sorted(rq['Python'])}",
+    f"  counts consistent (requirements = name + weak + open) for every role: {all(r['counts']['requirements'] == r['counts']['nameRelated'] + r['counts']['weakTokenOnly'] + r['counts']['open'] for r in R)}",
+    f"  by pool and status: {dict(collections.Counter((r['poolName'][:24], r['status']) for r in R))}"]
+w("4-cases.txt", lines)
+# 5 code (live parts)
+mp, mx, lg = L("matches-person.json"), L("matches-pxj.json"), L("legacy-person.json")
+rm = mx.get("roleMatches", [])
+lines = ["Point 5 · live checks on :41878 (GET only) for the code reconstruction:",
+  f"  GET /api/career/job-pools/<DLL>/matches?analysisId=ANL_…_456 (PERSON) → {mp.get('error', {}).get('code')}",
+  f"  same with ANL_…_10 (PxJ) → {len(rm)} roleMatches, every one with resonanceScore: {all('resonanceScore' in r for r in rm)} (presentation {mx.get('presentation')})",
+  f"  GET /api/career/analyses/ANL_…_456 (PERSON) carries 'matching' = matchCareerAnalysisAgainstPool(analysis, DEMO_COMPANY_POOL):",
+  f"    pool {lg['matching']['pool_id']} v{lg['matching']['pool_version']}, role_matches {len(lg['matching']['role_matches'])} with resonanceScore {[r.get('resonanceScore') for r in lg['matching']['role_matches']]}, organization_matches {len(lg['matching']['organization_matches'])}, search_queries {len(lg['matching']['search_queries'])}",
+  f"    and 'recommendations' {lg['recommendations']}"]
+w("5-live.txt", lines)
+print("ok")
