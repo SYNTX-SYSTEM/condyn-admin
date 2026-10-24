@@ -1,0 +1,27 @@
+   × V-15 · a cut name carries its full text > REPRODUCE: no element in the Job Field cuts a name without title or aria-label (pool, organisation, role, requirement level) 126ms
+   ✓ V-15 · a cut name carries its full text > inverse: the role card title and the path keep their own full text (unchanged) 30ms
+   × V-11-R · the Tab path to SELECT AS JOB is no longer than on 70d1cb4 > REPRODUCE: from the opened role's anchor, SELECT AS JOB is reached within 70d1cb4's presses — no shell or header stop in between 88ms
+   ✓ V-11-R · the Tab path to SELECT AS JOB is no longer than on 70d1cb4 > inverse: inside the panel SELECT AS JOB still follows the path and RETURN (UX-02) 49ms
+   × V-08-R · a broken PDF from the running worker offers no RETRY > REPRODUCE: EXECUTION_FAILED with ERR_PDF_PARSE_FAILURE in its summary — no RETRY, the way to a readable source 35ms
+   × V-08-R · a broken PDF from the running worker offers no RETRY > REPRODUCE: the token stands anywhere in the summary as a word of its own (a wrapped message) 19ms
+   ✓ V-08-R · a broken PDF from the running worker offers no RETRY > inverse: an exact token only — a longer code, a prefix glued to it, or another failure keep RETRY 114ms
+   × V-18 / V-19 · the Job Field keeps its size > REPRODUCE: in the fit tier the page becomes the viewport only while the Capability Field is active — no unscoped height rule 61ms
+   × V-18 / V-19 · the Job Field keeps its size > REPRODUCE: in the stack tier the Job Field's stage keeps 960 px (its orbits are laid out on the stage's size) 29ms
+   ✓ V-18 / V-19 · the Job Field keeps its size > inverse: the Capability Field's fit (B2 from below the shell to the bottom edge, its own row scroll) is unchanged 28ms
+   × V-20 · B2 ends above the runtime telemetry box > REPRODUCE: full and fit tier — while the box is shown, the panel's bottom clears its measured height 169ms
+   × V-20 · B2 ends above the runtime telemetry box > REPRODUCE: at 200 % the box stands in the column (not fixed over it) 54ms
+   ✓ V-20 · B2 ends above the runtime telemetry box > inverse: every clearance hangs on the box being shown 20ms
+   × R-05 · the tooltip says what the visible cause says > REPRODUCE: CHECKING — the capsule's and the exit's tooltip carry the cause and the way 65ms
+     → field-focus-capability-btn: expected 'Select a job in the Job Field first (…' to be 'PERSON × JOB needs a valid role selec…' // Object.is equality
+   × R-05 · the tooltip says what the visible cause says > REPRODUCE: INVALID — with the validation's reason 24ms
+     → expected 'Select a job in the Job Field first (…' to be 'PERSON × JOB needs a valid role selec…' // Object.is equality
+   ✓ R-05 · the tooltip says what the visible cause says > inverse: no job — the existing sentence stays (it says the same) 21ms
+AssertionError: field-focus-capability-btn: expected 'Select a job in the Job Field first (…' to be 'PERSON × JOB needs a valid role selec…' // Object.is equality
+Expected: "PERSON × JOB needs a valid role selected as the job: the selected job is still being checked. Way: wait for the check; it opens once the job is valid"
+AssertionError: expected 'Select a job in the Job Field first (…' to be 'PERSON × JOB needs a valid role selec…' // Object.is equality
+Expected: "PERSON × JOB needs a valid role selected as the job: the selected job is not valid · ROLE_NOT_IN_POOL. Way: open a valid role in the Job Field, then SELECT AS JOB"
+  /* 640 × 360 (GELB): the binding with its counts first, the boundary statement right after it (P-07), then the state, the
++   /* 640 × 360 (GELB): the binding with its counts first, the boundary statement right after it (P-07), then the state, the
++   /* 640 × 360 (GELB): the binding with its counts first, the boundary statement right after it (P-07), then the state, the
+ Test Files  6 failed (6)
+      Tests  10 failed | 6 passed (16)

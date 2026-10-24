@@ -149,3 +149,25 @@ worker, no Gemini key, network sentinel, no token.
   foreign pool / analysis / job, Back/Forward across documents), all GET.
 
 PINK §10 validation: pending (§9).
+
+## 9 PINK §3.62 on 41dfa25 and round 2 (b77c851)
+
+PINK §3.62 (`831ef92`) on 41dfa25: static PASS, D-PICK PASS, regression PASS, V-01…V-07/V-12…V-14/V-16 PASS; **FAIL** V-08 (RETRY
+after a broken PDF — the worker's code is EXECUTION_FAILED, the parse token stands in the summary), V-11 regression (14 → 21 tabs),
+V-18 (role cards lost the domain line ≤ 1280×720 — information loss), V-19 (owner role card under the panel at 1280×720, 0/5),
+O-NAV-SUBMIT across the document boundary (owner class). K-UX-2 clarified by GELB: protected is the PERSON first screen
+(Capability Field under PERSON, T-07); Job Field changes in every mode are the ordered UX-01/02/06/07.
+
+GRÜN round 2 `b77c851` (code 9a8a28e, 9 commits on 41dfa25): V-11-R 984b0ed · V-18/V-19 d91ecb0 + 99d4d44 · V-20 71a04b0 + 9a8a28e ·
+V-08-R e3f7acf · R-05 394e5dc · V-15 b4b6ed9 · README b77c851. Changed tests are this branch's own (none existed at 70d1cb4); their
+assertions are replaced by corrected ones, not dropped.
+
+**GELB check:** frontend only, leak scan clean; tsc 0; `next build` without exception exit 0; focused 63 files **514 passed, 4
+skipped**; counter-proof of the 6 new test files on 41dfa25: **10 FAIL / 6 PASS** (inverse). Owner lab :41872 rebuilt on
+b77c851 (copy `condyn_test_2725fd602c574421`, 124 tables identical). PERSISTED_REAL_RESULT walks (`evidence/ux-closure-b77c851/`):
+6 viewports **113/114** — the one line is the known first-sight criterion at 640×360 (counts and binding in view, the statement
+deliberately below; see §8); wheel steps refined to 80 px, all rows reachable everywhere; new check: at the organisation level a
+real mouse click opens the owner role card in all 6 viewports (V-19). Navigation R01–R11 **28/28** at 1920 and 1280. The
+discovery lab :41878 was stopped (copy dropped).
+
+PINK targeted re-check: pending.

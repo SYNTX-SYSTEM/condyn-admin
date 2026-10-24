@@ -1,0 +1,78 @@
+ ✓ test/career/job-pool/e2e/job-pool-workflow.e2e.test.ts (10 tests | 4 skipped) 29004ms
+   ✓ Job Pool workflow over HTTP against the production routes > lists no upload on a fresh verified database, persists the sample pool once, and reports an identical re-upload as existing  4238ms
+   ✓ Job Pool workflow over HTTP against the production routes > reads the presentation matching for the exact analysis and the exact upload, ranked as delivered, with evidence quotes and the canonical NOT_EVALUATED state  2204ms
+   ✓ Job Pool workflow over HTTP against the production routes > serves the analysis sources the SYNTX aperture may join: the seeded document title, the capability evidence location, no projection  1812ms
+   ✓ Job Pool workflow over HTTP against the production routes > persists a DRAFT copy of the pool and refuses matching for it with 409, so an inactive pool is visible as inactive  1335ms
+   ✓ Job Pool workflow over HTTP against the production routes > server-renders the field-state strip and opens on the SYNTX field (Job Pool first, Capability gated without a job), also for an exact upload, never a dock without an exact DCTXREV  5210ms
+ ✓ test/career/job-pool/syntx-role-orbit.test.ts (11 tests) 6406ms
+   ✓ role orbit refinement (organization cosmos) > is the smallest orbit that holds: one step closer on either axis breaks the air or stands the orbit upright  1301ms
+   ✓ role orbit refinement (organization cosmos) > keeps its air in every phase: to the centre body, between neighbours on an orbit; across orbits never closer than the packing at rest  1383ms
+   ✓ role orbit refinement (organization cosmos) > keeps the air across orbits in every phase pair, never closer than the packing in motion (tall level boxes, PINK D-RO-2)  1472ms
+   ✓ role orbit refinement (organization cosmos) > keeps its air for variable titles (seeded random title sets of 4 to 80 characters, GELB / PINK §3.45 D-RO-1)  1521ms
+ ✓ test/career/job-pool/job-structure.postgres.test.ts (3 tests) 6391ms
+ ✓ test/career/job-pool/job-pool.postgres.test.ts (8 tests) 2586ms
+   ✓ JSON Job Pool on PostgreSQL (JP-C, JP-I, JP-H) > registers its tables through the gate and maps the sample pool onto canonical target revisions (201)  998ms
+   ✓ JSON Job Pool on PostgreSQL (JP-C, JP-I, JP-H) > is idempotent: an equivalent re-upload answers 200 with the same id and adds no row, and a re-run of the mapping is byte-identical  401ms
+   ✓ JSON Job Pool on PostgreSQL (JP-C, JP-I, JP-H) > answers the documented error statuses  581ms
+ ✓ test/career/pxj-first-screen/analysis-picker.test.tsx (5 tests) 691ms
+ ✓ test/career/job-pool/job-scope-ssr.test.tsx (12 tests) 610ms
+ ✓ test/career/pxj-first-screen/role-field-closure.test.tsx (10 tests) 557ms
+ ✓ test/career/job-pool/syntx-field-ssr.test.tsx (11 tests) 560ms
+ ✓ test/career/job-pool/local-composition-gate.test.ts (2 tests) 605ms
+   ✓ Job Pool persistence registration gate > registers unified and job pool schemas once, on the verified URL's dedicated client, and ends it  460ms
+ ✓ test/career/pxj-first-screen/first-screen-ssr.test.tsx (36 tests) 612ms
+ ✓ test/career/three-modes/three-modes-ssr.test.tsx (31 tests) 498ms
+ ✓ test/career/pxj-first-screen/navigation.test.tsx (13 tests) 401ms
+ ✓ test/career/job-pool/job-comparison.postgres.test.ts (2 tests) 367ms
+ ✓ test/career/pxj-first-screen/run-recovery.test.tsx (11 tests) 370ms
+ ✓ test/career/pxj-first-screen/submit-handoff.test.tsx (5 tests) 311ms
+ ✓ test/career/pxj-first-screen/terms.test.tsx (4 tests) 439ms
+ ✓ test/career-f12-pulse-alignment.test.tsx (10 tests) 336ms
+ ✓ test/career/pxj-first-screen/readability.test.tsx (8 tests) 266ms
+ ✓ test/career/pxj-first-screen/job-levels.test.tsx (4 tests) 242ms
+ ✓ test/career/job-pool/syntx-field-governance.test.ts (10 tests) 278ms
+ ✓ test/career/pxj-first-screen/mode-normalization.test.tsx (8 tests) 225ms
+ ✓ test/career/pxj-first-screen/gate-reason.test.tsx (4 tests) 192ms
+ ✓ test/career/pxj-first-screen/recovery-ways.test.tsx (7 tests) 151ms
+ ✓ test/career/pxj-first-screen/mode-keyboard.test.tsx (3 tests) 174ms
+ ✓ test/career/pxj-first-screen/shell-role-identity.test.tsx (2 tests) 172ms
+ ✓ test/career/pxj-first-screen/person-markup.test.tsx (1 test) 183ms
+ ✓ test/career/pxj-first-screen/pdf-parse-token.test.tsx (3 tests) 136ms
+ ✓ test/career/pxj-first-screen/full-names.test.tsx (2 tests) 171ms
+ ✓ test/career/pxj-first-screen/job-level-label.test.tsx (1 test) 247ms
+ ✓ test/career/hr-decision-loop/dock-ssr.test.tsx (4 tests) 175ms
+ ✓ test/career/job-pool/syntx-field-view-model.test.ts (15 tests) 182ms
+ ✓ test/career-sil-global-language-wiring.test.tsx (9 tests) 133ms
+ ✓ test/career-sil-empty-orbit-visual-attention.test.tsx (7 tests) 143ms
+ ✓ test/career/pxj-first-screen/tab-path.test.tsx (2 tests) 148ms
+ ✓ test/career/pxj-first-screen/next-step.test.tsx (3 tests) 116ms
+ ✓ test/career/pxj-first-screen/gate-title.test.tsx (3 tests) 107ms
+ ✓ test/career/pxj-first-screen/telemetry-clearance.test.tsx (3 tests) 110ms
+ ✓ test/career/pxj-first-screen/job-field-size.test.tsx (3 tests) 116ms
+ ✓ test/career-demo-ui.test.tsx (4 tests) 93ms
+ ✓ test/career/job-pool/provider.test.ts (5 tests) 67ms
+ ✓ test/career/job-pool/presentation-matching.test.ts (11 tests) 80ms
+ ✓ test/career/job-pool/client-reads.test.ts (4 tests) 48ms
+ ✓ test/career/job-pool/selected-role-coverage.test.ts (6 tests) 48ms
+ ✓ test/career/pxj-first-screen/pools-first.test.tsx (3 tests) 43ms
+ ✓ test/career/pxj-first-screen/source-files.test.tsx (6 tests) 52ms
+ ✓ test/career-frontend-job-lifecycle.test.tsx (34 tests) 38ms
+ ✓ test/career/pxj-first-screen/nav-reads.test.tsx (1 test) 35ms
+ ✓ test/career/job-pool/semantic-governance.test.ts (4 tests) 31ms
+ ✓ test/career/pxj-first-screen/analysis-picker-read.test.ts (7 tests) 28ms
+ ✓ test/career/pxj-first-screen/projection.test.ts (35 tests) 39ms
+ ✓ test/career/job-pool/upload.test.ts (5 tests) 26ms
+ ✓ test/career/pxj-first-screen/staged-sources-hint.test.tsx (3 tests) 21ms
+ ✓ test/career/pxj-first-screen/job-release.test.tsx (3 tests) 21ms
+ ✓ test/career/three-modes/role-investigation.test.ts (37 tests) 16ms
+ ✓ test/career/job-pool/frontend-presentation.test.ts (9 tests) 15ms
+ ✓ test/career/pxj-first-screen/result-hook.test.ts (2 tests) 9ms
+ ✓ test/career/three-modes/investigation-mode.test.ts (17 tests) 10ms
+ ✓ test/career/job-pool/job-scope.test.ts (12 tests) 8ms
+ ✓ test/career/job-pool/job-field-presentation.test.ts (4 tests) 8ms
+ ✓ test/build/route-exports.test.ts (3 tests) 7ms
+ ✓ test/career/pxj-first-screen/viewport-layout.test.tsx (7 tests) 7ms
+ ✓ test/career/pxj-first-screen/viewport-fit.test.ts (8 tests) 9ms
+ ✓ test/career/pxj-first-screen/analysis-id-comment.test.ts (2 tests) 5ms
+ Test Files  63 passed (63)
+      Tests  514 passed | 4 skipped (518)

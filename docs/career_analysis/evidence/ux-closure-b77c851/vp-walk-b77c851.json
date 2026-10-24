@@ -1,0 +1,1039 @@
+{
+ "evidenceClass": "PERSISTED_REAL_RESULT",
+ "commit": "b77c8514c20dd3936fd22fed81d4d008b30f8a6c",
+ "viewports": {
+  "1920x1080": {
+   "checks": [
+    {
+     "id": "B2-first-sight",
+     "ok": true,
+     "panel": {
+      "top": 193,
+      "bottom": 1045,
+      "visible": true
+     },
+     "state": {
+      "top": 232,
+      "bottom": 271,
+      "visible": true
+     },
+     "counts": {
+      "top": 479,
+      "bottom": 513,
+      "visible": true
+     },
+     "boundary": {
+      "top": 281,
+      "bottom": 355,
+      "visible": true
+     },
+     "hScroll": false
+    },
+    {
+     "id": "no-horizontal-page-scroll",
+     "ok": true
+    },
+    {
+     "id": "B2-rows-reachable",
+     "ok": 9,
+     "rows": 9,
+     "fails": []
+    },
+    {
+     "id": "control investigation-mode-PERSON",
+     "ok": true,
+     "hits": 5,
+     "rect": [
+      1209,
+      81,
+      1279,
+      107
+     ]
+    },
+    {
+     "id": "control investigation-mode-PERSON_X_JOB",
+     "ok": true,
+     "hits": 5,
+     "rect": [
+      1281,
+      81,
+      1390,
+      107
+     ]
+    },
+    {
+     "id": "control investigation-mode-JOB",
+     "ok": true,
+     "hits": 5,
+     "rect": [
+      1392,
+      81,
+      1442,
+      107
+     ]
+    },
+    {
+     "id": "control job-pool-panel-toggle",
+     "ok": true,
+     "hits": 5,
+     "rect": [
+      977,
+      76,
+      1191,
+      114
+     ]
+    },
+    {
+     "id": "control add-text-source-btn",
+     "ok": true,
+     "hits": 5,
+     "rect": [
+      68,
+      642,
+      355,
+      678
+     ]
+    },
+    {
+     "id": "control add-pdf-source-btn",
+     "ok": true,
+     "hits": 5,
+     "rect": [
+      68,
+      551,
+      355,
+      590
+     ]
+    },
+    {
+     "id": "control job-scope-indicator",
+     "ok": true,
+     "hits": 5,
+     "rect": [
+      28,
+      74,
+      705,
+      114
+     ]
+    },
+    {
+     "id": "click ENTER TEXT opens the text input",
+     "ok": true
+    },
+    {
+     "id": "gate-reason-visible",
+     "ok": true,
+     "cause": "PERSON \u00d7 JOB needs a valid role selected as the job: none is selected",
+     "way": "Way: open a role in the Job Field, then SELECT AS JOB",
+     "visible": true,
+     "describedBy": "capability-gate-reason"
+    },
+    {
+     "id": "NO_ANALYSIS names both ways",
+     "ok": true,
+     "existing": true,
+     "analyze": true
+    },
+    {
+     "id": "picker lists exactly the fitting analysis",
+     "ok": true,
+     "listed": [
+      "ANL_1792628993472_10"
+     ]
+    },
+    {
+     "id": "opening the picker selects nothing",
+     "ok": true
+    },
+    {
+     "id": "explicit pick opens the analysis as one entry",
+     "ok": true,
+     "state": "AVAILABLE",
+     "analysisId": "ANL_1792628993472_10",
+     "len": 5
+    },
+    {
+     "id": "Back returns before the pick",
+     "ok": true,
+     "state": "NO_ANALYSIS",
+     "analysisId": null
+    },
+    {
+     "id": "org level: mouse click opens the owner role card",
+     "ok": true,
+     "tries": 1
+    },
+    {
+     "id": "PERSON shows no PxJ picker",
+     "ok": true
+    },
+    {
+     "id": "page errors",
+     "ok": true,
+     "errors": []
+    }
+   ]
+  },
+  "1600x900": {
+   "checks": [
+    {
+     "id": "B2-first-sight",
+     "ok": true,
+     "panel": {
+      "top": 132,
+      "bottom": 884,
+      "visible": true
+     },
+     "state": {
+      "top": 171,
+      "bottom": 210,
+      "visible": true
+     },
+     "counts": {
+      "top": 418,
+      "bottom": 452,
+      "visible": true
+     },
+     "boundary": {
+      "top": 220,
+      "bottom": 294,
+      "visible": true
+     },
+     "hScroll": false
+    },
+    {
+     "id": "no-horizontal-page-scroll",
+     "ok": true
+    },
+    {
+     "id": "B2-rows-reachable",
+     "ok": 9,
+     "rows": 9,
+     "fails": []
+    },
+    {
+     "id": "control investigation-mode-PERSON",
+     "ok": true,
+     "hits": 5,
+     "rect": [
+      1049,
+      81,
+      1119,
+      107
+     ]
+    },
+    {
+     "id": "control investigation-mode-PERSON_X_JOB",
+     "ok": true,
+     "hits": 5,
+     "rect": [
+      1121,
+      81,
+      1230,
+      107
+     ]
+    },
+    {
+     "id": "control investigation-mode-JOB",
+     "ok": true,
+     "hits": 5,
+     "rect": [
+      1232,
+      81,
+      1282,
+      107
+     ]
+    },
+    {
+     "id": "control job-pool-panel-toggle",
+     "ok": true,
+     "hits": 5,
+     "rect": [
+      817,
+      76,
+      1031,
+      114
+     ]
+    },
+    {
+     "id": "control add-text-source-btn",
+     "ok": true,
+     "hits": 5,
+     "rect": [
+      68,
+      328,
+      355,
+      364
+     ]
+    },
+    {
+     "id": "control add-pdf-source-btn",
+     "ok": true,
+     "hits": 5,
+     "rect": [
+      68,
+      237,
+      355,
+      276
+     ]
+    },
+    {
+     "id": "control job-scope-indicator",
+     "ok": true,
+     "hits": 5,
+     "rect": [
+      28,
+      74,
+      545,
+      114
+     ]
+    },
+    {
+     "id": "click ENTER TEXT opens the text input",
+     "ok": true
+    },
+    {
+     "id": "gate-reason-visible",
+     "ok": true,
+     "cause": "PERSON \u00d7 JOB needs a valid role selected as the job: none is selected",
+     "way": "Way: open a role in the Job Field, then SELECT AS JOB",
+     "visible": true,
+     "describedBy": "capability-gate-reason"
+    },
+    {
+     "id": "NO_ANALYSIS names both ways",
+     "ok": true,
+     "existing": true,
+     "analyze": true
+    },
+    {
+     "id": "picker lists exactly the fitting analysis",
+     "ok": true,
+     "listed": [
+      "ANL_1792628993472_10"
+     ]
+    },
+    {
+     "id": "opening the picker selects nothing",
+     "ok": true
+    },
+    {
+     "id": "explicit pick opens the analysis as one entry",
+     "ok": true,
+     "state": "AVAILABLE",
+     "analysisId": "ANL_1792628993472_10",
+     "len": 5
+    },
+    {
+     "id": "Back returns before the pick",
+     "ok": true,
+     "state": "NO_ANALYSIS",
+     "analysisId": null
+    },
+    {
+     "id": "org level: mouse click opens the owner role card",
+     "ok": true,
+     "tries": 1
+    },
+    {
+     "id": "PERSON shows no PxJ picker",
+     "ok": true
+    },
+    {
+     "id": "page errors",
+     "ok": true,
+     "errors": []
+    }
+   ]
+  },
+  "1440x900": {
+   "checks": [
+    {
+     "id": "B2-first-sight",
+     "ok": true,
+     "panel": {
+      "top": 132,
+      "bottom": 884,
+      "visible": true
+     },
+     "state": {
+      "top": 171,
+      "bottom": 210,
+      "visible": true
+     },
+     "counts": {
+      "top": 418,
+      "bottom": 452,
+      "visible": true
+     },
+     "boundary": {
+      "top": 220,
+      "bottom": 294,
+      "visible": true
+     },
+     "hScroll": false
+    },
+    {
+     "id": "no-horizontal-page-scroll",
+     "ok": true
+    },
+    {
+     "id": "B2-rows-reachable",
+     "ok": 9,
+     "rows": 9,
+     "fails": []
+    },
+    {
+     "id": "control investigation-mode-PERSON",
+     "ok": true,
+     "hits": 5,
+     "rect": [
+      969,
+      81,
+      1039,
+      107
+     ]
+    },
+    {
+     "id": "control investigation-mode-PERSON_X_JOB",
+     "ok": true,
+     "hits": 5,
+     "rect": [
+      1041,
+      81,
+      1150,
+      107
+     ]
+    },
+    {
+     "id": "control investigation-mode-JOB",
+     "ok": true,
+     "hits": 5,
+     "rect": [
+      1152,
+      81,
+      1202,
+      107
+     ]
+    },
+    {
+     "id": "control job-pool-panel-toggle",
+     "ok": true,
+     "hits": 5,
+     "rect": [
+      737,
+      76,
+      951,
+      114
+     ]
+    },
+    {
+     "id": "control add-text-source-btn",
+     "ok": true,
+     "hits": 5,
+     "rect": [
+      68,
+      328,
+      355,
+      364
+     ]
+    },
+    {
+     "id": "control add-pdf-source-btn",
+     "ok": true,
+     "hits": 5,
+     "rect": [
+      68,
+      237,
+      355,
+      276
+     ]
+    },
+    {
+     "id": "control job-scope-indicator",
+     "ok": true,
+     "hits": 5,
+     "rect": [
+      28,
+      74,
+      465,
+      114
+     ]
+    },
+    {
+     "id": "click ENTER TEXT opens the text input",
+     "ok": true
+    },
+    {
+     "id": "gate-reason-visible",
+     "ok": true,
+     "cause": "PERSON \u00d7 JOB needs a valid role selected as the job: none is selected",
+     "way": "Way: open a role in the Job Field, then SELECT AS JOB",
+     "visible": true,
+     "describedBy": "capability-gate-reason"
+    },
+    {
+     "id": "NO_ANALYSIS names both ways",
+     "ok": true,
+     "existing": true,
+     "analyze": true
+    },
+    {
+     "id": "picker lists exactly the fitting analysis",
+     "ok": true,
+     "listed": [
+      "ANL_1792628993472_10"
+     ]
+    },
+    {
+     "id": "opening the picker selects nothing",
+     "ok": true
+    },
+    {
+     "id": "explicit pick opens the analysis as one entry",
+     "ok": true,
+     "state": "AVAILABLE",
+     "analysisId": "ANL_1792628993472_10",
+     "len": 5
+    },
+    {
+     "id": "Back returns before the pick",
+     "ok": true,
+     "state": "NO_ANALYSIS",
+     "analysisId": null
+    },
+    {
+     "id": "org level: mouse click opens the owner role card",
+     "ok": true,
+     "tries": 1
+    },
+    {
+     "id": "PERSON shows no PxJ picker",
+     "ok": true
+    },
+    {
+     "id": "page errors",
+     "ok": true,
+     "errors": []
+    }
+   ]
+  },
+  "1280x720": {
+   "checks": [
+    {
+     "id": "B2-first-sight",
+     "ok": true,
+     "panel": {
+      "top": 132,
+      "bottom": 704,
+      "visible": true
+     },
+     "state": {
+      "top": 171,
+      "bottom": 210,
+      "visible": true
+     },
+     "counts": {
+      "top": 418,
+      "bottom": 452,
+      "visible": true
+     },
+     "boundary": {
+      "top": 220,
+      "bottom": 294,
+      "visible": true
+     },
+     "hScroll": false
+    },
+    {
+     "id": "no-horizontal-page-scroll",
+     "ok": true
+    },
+    {
+     "id": "B2-rows-reachable",
+     "ok": 9,
+     "rows": 9,
+     "fails": []
+    },
+    {
+     "id": "control investigation-mode-PERSON",
+     "ok": true,
+     "hits": 5,
+     "rect": [
+      889,
+      81,
+      951,
+      107
+     ]
+    },
+    {
+     "id": "control investigation-mode-PERSON_X_JOB",
+     "ok": true,
+     "hits": 5,
+     "rect": [
+      953,
+      81,
+      1051,
+      107
+     ]
+    },
+    {
+     "id": "control investigation-mode-JOB",
+     "ok": true,
+     "hits": 5,
+     "rect": [
+      1053,
+      81,
+      1097,
+      107
+     ]
+    },
+    {
+     "id": "control job-pool-panel-toggle",
+     "ok": true,
+     "hits": 5,
+     "rect": [
+      657,
+      76,
+      871,
+      114
+     ]
+    },
+    {
+     "id": "control add-text-source-btn",
+     "ok": true,
+     "hits": 5,
+     "rect": [
+      68,
+      328,
+      355,
+      364
+     ]
+    },
+    {
+     "id": "control add-pdf-source-btn",
+     "ok": true,
+     "hits": 5,
+     "rect": [
+      68,
+      237,
+      355,
+      276
+     ]
+    },
+    {
+     "id": "control job-scope-indicator",
+     "ok": true,
+     "hits": 5,
+     "rect": [
+      28,
+      74,
+      385,
+      114
+     ]
+    },
+    {
+     "id": "click ENTER TEXT opens the text input",
+     "ok": true
+    },
+    {
+     "id": "gate-reason-visible",
+     "ok": true,
+     "cause": "PERSON \u00d7 JOB needs a valid role selected as the job: none is selected",
+     "way": "Way: open a role in the Job Field, then SELECT AS JOB",
+     "visible": true,
+     "describedBy": "capability-gate-reason"
+    },
+    {
+     "id": "NO_ANALYSIS names both ways",
+     "ok": true,
+     "existing": true,
+     "analyze": true
+    },
+    {
+     "id": "picker lists exactly the fitting analysis",
+     "ok": true,
+     "listed": [
+      "ANL_1792628993472_10"
+     ]
+    },
+    {
+     "id": "opening the picker selects nothing",
+     "ok": true
+    },
+    {
+     "id": "explicit pick opens the analysis as one entry",
+     "ok": true,
+     "state": "AVAILABLE",
+     "analysisId": "ANL_1792628993472_10",
+     "len": 5
+    },
+    {
+     "id": "Back returns before the pick",
+     "ok": true,
+     "state": "NO_ANALYSIS",
+     "analysisId": null
+    },
+    {
+     "id": "org level: mouse click opens the owner role card",
+     "ok": true,
+     "tries": 1
+    },
+    {
+     "id": "PERSON shows no PxJ picker",
+     "ok": true
+    },
+    {
+     "id": "page errors",
+     "ok": true,
+     "errors": []
+    }
+   ]
+  },
+  "zoom200-1920x1080": {
+   "checks": [
+    {
+     "id": "B2-first-sight",
+     "ok": true,
+     "panel": {
+      "top": 202,
+      "bottom": 1732,
+      "visible": false
+     },
+     "state": {
+      "top": 407,
+      "bottom": 446,
+      "visible": true
+     },
+     "counts": {
+      "top": 320,
+      "bottom": 337,
+      "visible": true
+     },
+     "boundary": {
+      "top": 358,
+      "bottom": 397,
+      "visible": true
+     },
+     "hScroll": false
+    },
+    {
+     "id": "no-horizontal-page-scroll",
+     "ok": true
+    },
+    {
+     "id": "B2-rows-reachable",
+     "ok": 9,
+     "rows": 9,
+     "fails": []
+    },
+    {
+     "id": "control investigation-mode-PERSON",
+     "ok": true,
+     "hits": 5,
+     "rect": [
+      732,
+      163,
+      794,
+      189
+     ]
+    },
+    {
+     "id": "control investigation-mode-PERSON_X_JOB",
+     "ok": true,
+     "hits": 5,
+     "rect": [
+      796,
+      163,
+      894,
+      189
+     ]
+    },
+    {
+     "id": "control investigation-mode-JOB",
+     "ok": true,
+     "hits": 5,
+     "rect": [
+      896,
+      163,
+      940,
+      189
+     ]
+    },
+    {
+     "id": "control job-pool-panel-toggle",
+     "ok": true,
+     "hits": 5,
+     "rect": [
+      526,
+      106,
+      672,
+      144
+     ]
+    },
+    {
+     "id": "control add-text-source-btn",
+     "ok": true,
+     "hits": 5,
+     "rect": [
+      44,
+      492,
+      331,
+      528
+     ]
+    },
+    {
+     "id": "control add-pdf-source-btn",
+     "ok": true,
+     "hits": 5,
+     "rect": [
+      44,
+      401,
+      331,
+      440
+     ]
+    },
+    {
+     "id": "control job-scope-indicator",
+     "ok": true,
+     "hits": 5,
+     "rect": [
+      16,
+      76,
+      581,
+      116
+     ]
+    },
+    {
+     "id": "click ENTER TEXT opens the text input",
+     "ok": true
+    },
+    {
+     "id": "gate-reason-visible",
+     "ok": true,
+     "cause": "PERSON \u00d7 JOB needs a valid role selected as the job: none is selected",
+     "way": "Way: open a role in the Job Field, then SELECT AS JOB",
+     "visible": true,
+     "describedBy": "capability-gate-reason"
+    },
+    {
+     "id": "NO_ANALYSIS names both ways",
+     "ok": true,
+     "existing": true,
+     "analyze": true
+    },
+    {
+     "id": "picker lists exactly the fitting analysis",
+     "ok": true,
+     "listed": [
+      "ANL_1792628993472_10"
+     ]
+    },
+    {
+     "id": "opening the picker selects nothing",
+     "ok": true
+    },
+    {
+     "id": "explicit pick opens the analysis as one entry",
+     "ok": true,
+     "state": "AVAILABLE",
+     "analysisId": "ANL_1792628993472_10",
+     "len": 5
+    },
+    {
+     "id": "Back returns before the pick",
+     "ok": true,
+     "state": "NO_ANALYSIS",
+     "analysisId": null
+    },
+    {
+     "id": "org level: mouse click opens the owner role card",
+     "ok": true,
+     "tries": 1
+    },
+    {
+     "id": "PERSON shows no PxJ picker",
+     "ok": true
+    },
+    {
+     "id": "page errors",
+     "ok": true,
+     "errors": []
+    }
+   ]
+  },
+  "zoom200-1280x720": {
+   "checks": [
+    {
+     "id": "B2-first-sight",
+     "ok": false,
+     "panel": {
+      "top": 202,
+      "bottom": 2052,
+      "visible": false
+     },
+     "state": {
+      "top": 443,
+      "bottom": 482,
+      "visible": false
+     },
+     "counts": {
+      "top": 339,
+      "bottom": 356,
+      "visible": true
+     },
+     "boundary": {
+      "top": 377,
+      "bottom": 433,
+      "visible": false
+     },
+     "hScroll": false
+    },
+    {
+     "id": "no-horizontal-page-scroll",
+     "ok": true
+    },
+    {
+     "id": "B2-rows-reachable",
+     "ok": 9,
+     "rows": 9,
+     "fails": []
+    },
+    {
+     "id": "control investigation-mode-PERSON",
+     "ok": true,
+     "hits": 5,
+     "rect": [
+      412,
+      163,
+      474,
+      189
+     ]
+    },
+    {
+     "id": "control investigation-mode-PERSON_X_JOB",
+     "ok": true,
+     "hits": 5,
+     "rect": [
+      476,
+      163,
+      574,
+      189
+     ]
+    },
+    {
+     "id": "control investigation-mode-JOB",
+     "ok": true,
+     "hits": 5,
+     "rect": [
+      576,
+      163,
+      620,
+      189
+     ]
+    },
+    {
+     "id": "control job-pool-panel-toggle",
+     "ok": true,
+     "hits": 5,
+     "rect": [
+      366,
+      106,
+      512,
+      144
+     ]
+    },
+    {
+     "id": "control add-text-source-btn",
+     "ok": true,
+     "hits": 5,
+     "rect": [
+      44,
+      314,
+      331,
+      350
+     ]
+    },
+    {
+     "id": "control add-pdf-source-btn",
+     "ok": true,
+     "hits": 5,
+     "rect": [
+      44,
+      223,
+      331,
+      262
+     ]
+    },
+    {
+     "id": "control job-scope-indicator",
+     "ok": true,
+     "hits": 5,
+     "rect": [
+      16,
+      76,
+      261,
+      116
+     ]
+    },
+    {
+     "id": "click ENTER TEXT opens the text input",
+     "ok": true
+    },
+    {
+     "id": "gate-reason-visible",
+     "ok": true,
+     "cause": "PERSON \u00d7 JOB needs a valid role selected as the job: none is selected",
+     "way": "Way: open a role in the Job Field, then SELECT AS JOB",
+     "visible": true,
+     "describedBy": "capability-gate-reason"
+    },
+    {
+     "id": "NO_ANALYSIS names both ways",
+     "ok": true,
+     "existing": true,
+     "analyze": true
+    },
+    {
+     "id": "picker lists exactly the fitting analysis",
+     "ok": true,
+     "listed": [
+      "ANL_1792628993472_10"
+     ]
+    },
+    {
+     "id": "opening the picker selects nothing",
+     "ok": true
+    },
+    {
+     "id": "explicit pick opens the analysis as one entry",
+     "ok": true,
+     "state": "AVAILABLE",
+     "analysisId": "ANL_1792628993472_10",
+     "len": 5
+    },
+    {
+     "id": "Back returns before the pick",
+     "ok": true,
+     "state": "NO_ANALYSIS",
+     "analysisId": null
+    },
+    {
+     "id": "org level: mouse click opens the owner role card",
+     "ok": true,
+     "tries": 1
+    },
+    {
+     "id": "PERSON shows no PxJ picker",
+     "ok": true
+    },
+    {
+     "id": "page errors",
+     "ok": true,
+     "errors": []
+    }
+   ]
+  }
+ },
+ "nonGet": []
+}
