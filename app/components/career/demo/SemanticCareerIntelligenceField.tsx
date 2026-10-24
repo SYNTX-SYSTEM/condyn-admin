@@ -442,6 +442,9 @@ export function SemanticCareerIntelligenceField({
   /** UX-04: the closed gate names its cause and the way to open it (PERSON is always open; the gate itself is unchanged). */
   const capabilityGateCause: SyntxCapabilityGatePresentation["state"] | null = capabilityGateOpen ? null : investigationMode === "JOB" ? "JOB" : jobScopeValidation.state === "VALID" ? null : jobScopeValidation.state;
   const capabilityGate: SyntxCapabilityGatePresentation | null = capabilityGateCause === null ? null : { state: capabilityGateCause, label: t.syntx.gate.label, reason: capabilityGateCause === "INVALID" && jobScopeValidation.state === "INVALID" ? `${t.syntx.gate.reason.INVALID} · ${jobScopeValidation.reason}` : t.syntx.gate.reason[capabilityGateCause], way: t.syntx.gate.way[capabilityGateCause] };
+  /** R-05: while a job is checked or invalid the closed controls' tooltip says what the visible note says (not "Select a job …
+   *  first"); for no job and for JOB the existing sentence already says it. */
+  const capabilityGateTitle = capabilityGate !== null && (capabilityGate.state === "CHECKING" || capabilityGate.state === "INVALID") ? `${capabilityGate.reason}. ${capabilityGate.way}` : capabilityGatedHint;
   /** The shell's brand follows the active field: directly on a switch (above), and here when the gate itself moves the field (a job
    *  becoming VALID after a reload with focus=CAPABILITY, or the selected job turning invalid). */
   useEffect(() => { onFieldFocusChange?.(activeFieldFocus); }, [activeFieldFocus]);
@@ -1727,7 +1730,7 @@ export function SemanticCareerIntelligenceField({
           onSelectJobScope={selectJobScope}
           onClearJobScope={clearJobScope}
           capabilityAvailable={capabilityGateOpen}
-          capabilityGatedHint={capabilityGatedHint}
+          capabilityGatedHint={capabilityGateTitle}
           analysisPicker={analysisPicker("role-view")}
           investigation={{ mode: investigationMode, analysisId: viewedAnalysisSource.kind === "NONE" ? null : viewedAnalysisSource.analysisId, analysisMode: viewedAnalysisMode, comparisonWithheld, analysisPool, onOpenAnalysisPool: analysisPool === null ? undefined : () => selectJobPool(analysisPool), jobId: viewedAnalysisSource.kind === "JOB_RESULT" ? job.state.activeJobId : null, scopeValid: jobScopeValidation.state === "VALID" }}
         />
@@ -1737,7 +1740,7 @@ export function SemanticCareerIntelligenceField({
       <SyntxFieldSelector
         focus={activeFieldFocus}
         capabilityGated={!capabilityGateOpen}
-        capabilityGatedHint={capabilityGatedHint}
+        capabilityGatedHint={capabilityGateTitle}
         capabilityGate={capabilityGate}
         groupLabel={t.syntx.selector.group}
         capabilityLabel={t.syntx.selector.capability}
