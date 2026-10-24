@@ -2123,6 +2123,21 @@ export function SyntxField({ workflow, analysisSource, observation: requested, o
       {/* BR-4: the screen-reader summary of the observation point, generated from the same view model as the signs. */}
       <p data-testid="syntx-summary" data-summary-for={observationId} aria-live="polite" style={visuallyHidden}>{summary ?? ""}</p>
 
+      {/* The stage: every level of the field and the aperture share one coordinate space (the whole field area, as the Capability Field's). */}
+      <div ref={stageRef} data-testid="syntx-stage" style={{ position: "absolute", inset: 0, overflow: "hidden" }}>
+        {field !== null && <FieldStage field={field} mode={mode} t={t} locale={locale} size={size} onObserve={onObserve} />}
+        {resolution.stale !== null && <span data-testid="syntx-stale" data-stale-kind={resolution.stale.kind} data-stale-id={resolution.stale.id} data-sx-reveal="true" style={{ ...lens, ...prose, color: AMBER, position: "absolute", left: "50%", top: "calc(50% + 150px)", transform: "translateX(-50%)", width: "min(320px, 40%)", textAlign: "center", zIndex: 41 }}>{t.stale[resolution.stale.kind]}</span>}
+        {state === "NO_POOL" && <NoPoolGiant copy={{ ...t.noPool, orientation: workflow.pools.state === "EMPTY" ? t.noPool.orientationEmpty : t.noPool.orientation }} />}
+        {investigation.mode !== "PERSON_X_JOB" && field !== null && <span data-testid="syntx-investigation-statement" data-investigation-mode={investigation.mode} style={{ ...micro, color: "rgba(196, 236, 248, 0.86)", position: "absolute", left: "50%", bottom: "calc(var(--condyn-page-header-height, 60px) + 62px)", transform: "translateX(-50%)", width: "min(640px, 80%)", textAlign: "center", zIndex: 41 }}>{t.investigation.field[investigation.mode]}</span>}
+        {withheld !== null && field !== null && (
+          <span data-testid="syntx-analysis-boundary" data-boundary-state={withheld} data-analysis-pool={investigation.analysisPool ?? ""} style={{ ...micro, color: AMBER, position: "absolute", left: "50%", bottom: "calc(var(--condyn-page-header-height, 60px) + 64px)", transform: "translateX(-50%)", width: "min(560px, 80%)", textAlign: "center", zIndex: 46, display: "flex", flexDirection: "column", alignItems: "center", gap: "8px" }}>
+            <span>{t.investigation.withheld[withheld]}{withheld === "OTHER_POOL" && investigation.analysisPool ? ` ${listed.find(pool => pool.jobPoolUploadId === investigation.analysisPool)?.poolName ?? investigation.analysisPool}` : ""}</span>
+            {withheld === "OTHER_POOL" && investigation.onOpenAnalysisPool && <button data-testid="syntx-analysis-pool-open" data-sx-orient-action onClick={investigation.onOpenAnalysisPool} style={{ ...orientAction(false), fontSize: "10px", letterSpacing: "1.3px", padding: "4px 12px" }}>{t.investigation.openAnalysisPool}</button>}
+          </span>
+        )}
+        {investigation.mode === "PERSON_X_JOB" && withheld === null && state === "NO_ANALYSIS" && field !== null && <span data-testid="syntx-no-analysis" style={{ position: "absolute", left: "50%", bottom: "calc(var(--condyn-page-header-height, 60px) + 64px)", transform: "translateX(-50%)", width: "min(620px, 80%)", display: "flex", flexDirection: "column", alignItems: "center", gap: "4px", textAlign: "center", zIndex: 41 }}><MessageVoices copy={investigation.scopeValid ? tp.analysisNoneWithJob : tp.analysisNone} /></span>}
+      </div>
+
       {/* Orientation surface: (A) the field and its relation to the Capability Field, (B) the observation path (each step a return),
           (C) the read state, (D) the keys, (E) the edge actions. The one header that is always visible (§12.2): a calm, lit glass at
           the edge; its only motion is one light pass on each context change (finite, none in REDUCED). */}
@@ -2206,21 +2221,6 @@ export function SyntxField({ workflow, analysisSource, observation: requested, o
           {investigationBody !== null && <button data-testid="syntx-investigation-toggle" data-sx-orient-action data-investigation-body={investigationBody} aria-expanded={investigationVisible} onClick={toggleInvestigation} style={orientAction(investigationVisible)}>{investigationBody === "COVERAGE" ? (investigationVisible ? t.coverage.hide : t.coverage.toggle) : (investigationVisible ? t.structure.hide : t.structure.toggle)}</button>}
           {geminiOutputEnabled && <button data-testid="syntx-gemini-output-toggle" data-sx-orient-action aria-expanded={geminiOpen} onClick={toggleGemini} style={orientAction(geminiOpen)}>{geminiOpen ? t.gemini.hide : t.gemini.toggle}</button>}
         </div>
-      </div>
-
-      {/* The stage: every level of the field and the aperture share one coordinate space (the whole field area, as the Capability Field's). */}
-      <div ref={stageRef} data-testid="syntx-stage" style={{ position: "absolute", inset: 0, overflow: "hidden" }}>
-        {field !== null && <FieldStage field={field} mode={mode} t={t} locale={locale} size={size} onObserve={onObserve} />}
-        {resolution.stale !== null && <span data-testid="syntx-stale" data-stale-kind={resolution.stale.kind} data-stale-id={resolution.stale.id} data-sx-reveal="true" style={{ ...lens, ...prose, color: AMBER, position: "absolute", left: "50%", top: "calc(50% + 150px)", transform: "translateX(-50%)", width: "min(320px, 40%)", textAlign: "center", zIndex: 41 }}>{t.stale[resolution.stale.kind]}</span>}
-        {state === "NO_POOL" && <NoPoolGiant copy={{ ...t.noPool, orientation: workflow.pools.state === "EMPTY" ? t.noPool.orientationEmpty : t.noPool.orientation }} />}
-        {investigation.mode !== "PERSON_X_JOB" && field !== null && <span data-testid="syntx-investigation-statement" data-investigation-mode={investigation.mode} style={{ ...micro, color: "rgba(196, 236, 248, 0.86)", position: "absolute", left: "50%", bottom: "calc(var(--condyn-page-header-height, 60px) + 62px)", transform: "translateX(-50%)", width: "min(640px, 80%)", textAlign: "center", zIndex: 41 }}>{t.investigation.field[investigation.mode]}</span>}
-        {withheld !== null && field !== null && (
-          <span data-testid="syntx-analysis-boundary" data-boundary-state={withheld} data-analysis-pool={investigation.analysisPool ?? ""} style={{ ...micro, color: AMBER, position: "absolute", left: "50%", bottom: "calc(var(--condyn-page-header-height, 60px) + 64px)", transform: "translateX(-50%)", width: "min(560px, 80%)", textAlign: "center", zIndex: 46, display: "flex", flexDirection: "column", alignItems: "center", gap: "8px" }}>
-            <span>{t.investigation.withheld[withheld]}{withheld === "OTHER_POOL" && investigation.analysisPool ? ` ${listed.find(pool => pool.jobPoolUploadId === investigation.analysisPool)?.poolName ?? investigation.analysisPool}` : ""}</span>
-            {withheld === "OTHER_POOL" && investigation.onOpenAnalysisPool && <button data-testid="syntx-analysis-pool-open" data-sx-orient-action onClick={investigation.onOpenAnalysisPool} style={{ ...orientAction(false), fontSize: "10px", letterSpacing: "1.3px", padding: "4px 12px" }}>{t.investigation.openAnalysisPool}</button>}
-          </span>
-        )}
-        {investigation.mode === "PERSON_X_JOB" && withheld === null && state === "NO_ANALYSIS" && field !== null && <span data-testid="syntx-no-analysis" style={{ position: "absolute", left: "50%", bottom: "calc(var(--condyn-page-header-height, 60px) + 64px)", transform: "translateX(-50%)", width: "min(620px, 80%)", display: "flex", flexDirection: "column", alignItems: "center", gap: "4px", textAlign: "center", zIndex: 41 }}><MessageVoices copy={investigation.scopeValid ? tp.analysisNoneWithJob : tp.analysisNone} /></span>}
       </div>
 
       {/* Edge aperture: the persisted uploads (explicit selection only); the contextual action while nothing is at the field. */}

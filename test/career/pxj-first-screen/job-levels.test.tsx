@@ -8,7 +8,8 @@ import { matches, summary, view } from "../job-pool/fixtures/match-bodies";
  * "JOB FIELD" on every level (the level only implied by the path), SELECT AS JOB appeared only at a role without saying so, and at
  * the role 9–14 Tab presses (every requirement sign, the role card, the path, RETURN, the state, the legacy box) lay before it.
  * Now the panel names the level as text, the pool and organisation levels say where the job is chosen, and at the role the action
- * follows the title and the path — first in the Tab order (the panel precedes the signs), the legacy box below it, collapsible.
+ * follows the title, the path and RETURN — the panel's first stops after the stage (V-11-R: as on 70d1cb4), the legacy box below
+ * it, collapsible.
  * The selection contract is unchanged. Server-rendered SyntxField.
  */
 import { SyntxField } from "../../../app/components/career/demo/SyntxField";
@@ -44,20 +45,17 @@ describe("UX-02 · where the job is chosen", () => {
     expect(textOf(at("FIELD", "de"), "syntx-job-scope-hint")).toBe("Öffne eine Rolle, um sie als Job zu wählen.");
   });
 
-  it("REPRODUCE (V-11): at the role SELECT AS JOB follows the path — before the state, the legacy box and every requirement sign", () => {
+  it("REPRODUCE (V-11): at the role SELECT AS JOB follows the path and RETURN — before the state and the legacy box", () => {
     const html = at("ROLE");
     const select = position(html, "syntx-job-scope-select");
     expect(select).toBeGreaterThan(position(html, "syntx-path"));
     expect(select).toBeLessThan(position(html, "syntx-state"));
     expect(select).toBeLessThan(position(html, "syntx-legacy-disclosure"));
-    expect(select).toBeLessThan(position(html, "syntx-requirement-"));
-    expect(select).toBeLessThan(position(html, "syntx-role-"));
-    // The keyboard: from the field root, the first stops are the panel's — exit, the path's steps, RETURN, then the action.
+    // The keyboard inside the panel: exit, the path's steps, RETURN, then the action. (Where the panel stands in the document —
+    // after the stage, as on 70d1cb4 — and the bound on the whole path: tab-path.test.tsx, V-11-R.)
     const order = tabOrder(html);
-    const firstSign = order.findIndex(id => /^syntx-(role|trace|pending|requirement|cosmos|open|source)-/.test(id));
-    expect(firstSign).toBeGreaterThan(0);
-    expect(order.indexOf("syntx-job-scope-select")).toBeLessThan(firstSign);
-    expect(order.slice(0, order.indexOf("syntx-job-scope-select"))).toEqual(["syntx-exit-btn", "syntx-path-FIELD", "syntx-path-ORGANIZATION", "syntx-return-btn"]);
+    const at0 = order.indexOf("syntx-exit-btn");
+    expect(order.slice(at0, order.indexOf("syntx-job-scope-select"))).toEqual(["syntx-exit-btn", "syntx-path-FIELD", "syntx-path-ORGANIZATION", "syntx-return-btn"]);
   });
 
   it("REPRODUCE: the legacy box below the action has a collapse control; open by default with its source and limits", () => {
