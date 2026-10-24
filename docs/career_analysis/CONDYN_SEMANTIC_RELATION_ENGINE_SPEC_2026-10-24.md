@@ -14,7 +14,7 @@ One relation = one (PERSON capability proposal, role requirement) pair, evaluate
 | `requirementId` | key (upload, role, requirement) | echoed, must be one of the requested requirements |
 | `state` | model | exactly one of **EQUIVALENT · COVERS · PARTIAL · DIFFERENT · UNCLEAR** |
 | `sourceEvidence` | **not model-written**: the model cites evidence ids of that proposal; the server resolves them to the stored exact quotes and source document ids | cited ids must belong to the proposal; ≥ 1 for EQUIVALENT/COVERS/PARTIAL; DIFFERENT/UNCLEAR may cite none |
-| `requirementText` | the stored requirement (name, aliases, level, type) | never model-written |
+| `requirementText` | the stored requirement (name, aliases, level, type) | never model-written; the engine sees **no role or organisation text** (C-1): a relation depends only on the two operands, which is what the cache key carries |
 | `relationExplanation` | model | non-empty; must not claim verified competence, level attainment or suitability (refused by a lexical guard: „verified“, „proven“, „qualified“, „suitable“, „score“, percentages) |
 | `evidenceLimitation` | model | non-empty; what the cited evidence does not show |
 
@@ -58,8 +58,9 @@ FAILED | BUDGET_EXHAUSTED | INTERRUPTED | CANCELLED`, or `CACHED` at planning.
 
 - **Investigation idempotency key** = hash(analysis id, released uploads' canonical sha256, sorted role keys, engine identity, client
   request id) — a repeated submit returns the same investigation, no second call.
-- **Relation idempotency:** the cache key; insert-once; identical repeat is a no-op, a different record under the key is refused
-  (built).
+- **Relation idempotency:** the cache key; insert-once, **first wins** (C-2): a repeat with the same result is a duplicate, a repeat
+  with another result (model nondeterminism) is reported as divergent and never stored; the database refuses UPDATE / DELETE /
+  TRUNCATE and binds the record to its columns (`2dba126`).
 - **Replay:** the raw provider output of every call is stored (text + sha256) with the parser version. Records can be re-derived
   from raw outputs without a model call (as G2 replay does); a replay that would produce a different record is reported, never
   silently stored.

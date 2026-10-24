@@ -212,6 +212,28 @@ Not cached and identified: the LEGACY Gemini call of every analysis (the live re
 LEGACY per analysis; the second LEGACY request was byte-identical in size, 11 477 bytes, same source). Role discovery does not
 use it; reusing it would change the analysis pipeline → separate owner decision (C-LEGACY).
 
-**Tests:** discovery 13/13, relation cache 17/17 (keys, admission, plan, incremental reuse, Postgres immutability, DB checks);
+**Tests:** discovery 13/13, relation cache 20/20 (corrected count, PINK §3.65) (keys, admission, plan, incremental reuse, Postgres immutability, DB checks);
 focused group 73 files 585 passed, 4 skipped; tsc 0. The existing registration gate test stays unchanged (the cache DDL lives in
 `registerJobPoolPersistenceSchema`). No model call anywhere (DETERMINISTIC_FIXTURE / PERSISTED_REAL_RESULT).
+
+## 10 PINK §3.65, corrections and decisions (2026-10-24)
+
+- **PINK §3.65 (`02b6eee`) on ccc0cc1:** contract PASS, §3.63 findings PASS, inverse trace via the route 52/52 PASS, read-only PASS,
+  keys / plan / DDL gate / DB checks PASS; **immutability FAIL (D-RC-1)** — UPDATE/DELETE passed on the database, the JSON record was
+  not bound to the checked columns, the reader served rows unchecked. **Fixed in `2dba126`:** trigger refuses UPDATE / DELETE /
+  TRUNCATE; CHECK binds record_json to key, state, authority, hashes, createdAt; key and hash formats fixed; the reader re-admits
+  every row and refuses a corrupt one. Test on ccc0cc1: 6 fail / 1 pass; on 2dba126 7/7; job-pool + pxj-first-screen + three-modes
+  60 files 479 passed, 4 skipped; tsc 0.
+- **C-2 (PINK) → defined: first wins.** A second evaluation of the same pair is a duplicate (same result apart from createdAt and raw
+  output hash) or divergent (reported, never stored); the first record stays. Spec §4 updated.
+- **C-1 (PINK) → decided: the engine sees no role or organisation text.** The requirement key carries only the requirement's own
+  content; the role-level call is batching for economy, not context. Spec §1 updated.
+- **Correction of M-1 / G-8 (GRÜN, from code):** the PERSON orbits 03–06 do **not** read the demo-pool matching of the analysis
+  route. They come from the legacy analysis result itself (`ui-adapter.ts`): 03 ← `analysis.organizations`, 04 ← `analysis.roles`
+  with a legacy fitScore (`evaluateAlignment`), 05 ← always empty, 06 ← `analysis.strategies`. The demo-pool matching is reached only
+  through VIEW MATCHES. D-RD-5 still applies to exactly these orbits (legacy role/organisation presentation with a legacy score);
+  my earlier statement „shown in the PERSON orbits“ was wrong in its provenance.
+- **K-RD-1 (GELB, under D-RD-5):** removing 03–06 under PERSON breaks, besides T-07, 15 tests in 6 files that were set to PERSON in G1
+  to keep checking those orbits. Decision: (1) where a test asserted 03–06 present under PERSON it becomes the inverse (absent, as
+  under PxJ), every other assertion verbatim; (2) the orbit components 03–06 are tested directly (focus shell, empty projection,
+  labels EN/DE). No test deleted, no assertion loosened; own commit with a before/after table per test; PINK checks coverage.
