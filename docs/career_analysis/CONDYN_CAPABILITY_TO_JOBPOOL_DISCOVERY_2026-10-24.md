@@ -118,3 +118,67 @@ requirement) · relation labels **FAIL** (PARTIAL misleading, asymmetric composi
 into G-2 and the WEAK_ONLY status) · §05 cases PASS (plus requirement-id repetition, G-9) · code reconstruction **FAIL (gap)**:
 M-1 legacy demo-pool scoring in every analysis read — confirmed by GELB in code and live, added to §1/§2 (G-8) and D-RD-5; M-2
 external proxy INCONCLUSIVE.
+
+## 8 Decision brief D-RD-1 … D-RD-5 (owner „OWNER_DIRECTION_ROLE_DISCOVERY“)
+
+UX/UI closure accepted as validated candidate `b77c851` (not integrated); it stays untouched. Facts below are from §1–§7.
+
+### D-RD-1 — May a scope-free PERSON projection be related to job pools?
+*Today:* owner invariant 2026-10-15, enforced in code (`ERR_JOB_POOL_MATCHES_PERSON_ANALYSIS`): a PERSON analysis is never compared
+with a job; B2 exists only for the one role a PxJ analysis was run for. G1: the PERSON first screen stays unchanged (T-07).
+- **A** keep the invariant — discovery only through a manual role choice + scoped analysis. Contradicts the objective.
+- **B (recommended)** POOL_ROLE_DISCOVERY_V1: the projection of a PERSON analysis may be related, **read only**, to the roles of
+  **explicitly released** pool uploads (a list the user chooses; never „all“ implicitly, never a latest pool); PxJ and JOB analyses
+  refused as operand (G-3); fixed authority block (`scored: false`, `ranking: false`, `decision: false`); keys (upload, role,
+  requirement). Consequences: one new GET route (no model, no storage); the PERSON Capability Map gains a role layer, so the G1 rule
+  „PERSON first screen unchanged“ and its hash T-07 must be re-set together with this decision.
+- **C** pool-scoped re-discovery: a new model run with the whole pool as scope so proposal names align with all requirements.
+  One call per pool, large prompts, and it reproduces the naming artefact of G-3 for every role at once. Not recommended.
+**Essential to start:** yes — it gates every step.
+
+### D-RD-2 — What produces the relation between a proposal and a requirement?
+- **A** lexical only (name coverage with the corrected labels, incl. `WEAK_ONLY`): no model, fully explainable, low recall
+  (Kestrel: 1 + 3 weak of 9 from the PERSON projection; TDD ↔ Automated Testing, SQL ↔ PostgreSQL missed).
+- **B (recommended as step 3)** PROPOSAL_REQUIREMENT_RELATION_V1: a model evaluates candidate (proposal, requirement) pairs with the
+  existing G2 vocabulary (SEMANTIC_EQUIVALENT / COVERS / PARTIAL / DISTINCT / UNKNOWN, EVIDENCE_*, SCOPE_*), must cite the
+  proposal's evidence ids and the requirement text, authority NONE; persisted with raw provider output and replay like G2.
+  Consequences: new contract and **new persistence** (the G2 tables admit only Phase-4-verified operands), model cost (D-RD-3).
+- **C** Phase-4 verification first, then the existing G2 relation and role-relation producers: canonical authority, but the
+  Phase-4 chain is not built in the product path — largest effort.
+- **D** embedding similarity as relation — excluded (no similarity score as proof); admissible only as candidate retrieval.
+**Essential to start:** no for steps 1–2 (they run on A); yes before step 3.
+
+### D-RD-3 — Model budget and pair pre-selection for step 3
+Measured scale: 4 pools, 78 roles, 507 requirements, 10 proposals → up to ~5 070 pairs.
+- **A (recommended)** one batched call per released role (all its requirements × the proposals), started **explicitly** by the
+  user with the number of calls shown first, hard cap per analysis; development and PINK on the stand-in, real Gemini only with a
+  separate GO.
+- **B** only roles with a lexical candidate — cheaper (here 39 of 78) but blind exactly where G-2 shows the gap.
+- **C** one call per pool — fewest calls, weakest traceability per role.
+- **D** on demand per opened role — cheapest, but no pool-wide discovery.
+**Essential to start:** only for step 3.
+
+### D-RD-4 — How roles are ordered in the Capability Map
+- **A (recommended)** grouped by relation status — all requirements related · partial · weak only · no relation · no
+  requirements — stable order inside a group (pool → organisation → role title); counts shown as facts („3 of 9 requirements
+  name-related“), never used to sort; groups without relation stay listed (collapsed), nothing hidden.
+- **B** sorted by the number of related required requirements — an implicit ranking claim.
+- **C** a score — excluded (NO_UNVERIFIED_MATCH_SCORES).
+**Essential to start:** yes for the frontend (step 2).
+
+### D-RD-5 — The legacy demo-pool comparison inside every analysis read (M-1)
+`GET /api/career/analyses/{id}` compares every analysis, PERSON included, with a hard-coded demo pool (`resonanceScore`) and derives
+gaps and next actions; the PERSON legacy orbits 03–06 show it. With discovery the PERSON map would show two role sources, one scored
+on demo roles, one unscored on released pools.
+- **A** keep — contradictory sources and an unverified score next to the discovery. Not recommended.
+- **B (recommended)** under PERSON the discovery layer replaces the legacy role/organisation/gap/next-action orbits in the map; the
+  legacy computation stays in the API for now, read nowhere in the PERSON map; removal from the API later as cleanup.
+  Consequence: PERSON first-screen change — handled in the same T-07 re-set as D-RD-1 B.
+- **C** remove it from the API and every view now — cleanest, but touches the analysis route and legacy tests beyond the core.
+**Essential to start:** yes for step 2 (the role layer needs its place); not for step 1.
+
+### Minimum to begin an isolated implementation
+- **Step 1 (GELB, POOL_ROLE_DISCOVERY_V1 read route):** D-RD-1.
+- **Step 2 (GRÜN, Capability Map role layer + role details + hand-over to the scoped investigation):** D-RD-1, D-RD-4, D-RD-5
+  (incl. the T-07 re-set).
+- **Step 3 (semantic relations):** D-RD-2, D-RD-3 and a Gemini GO.
