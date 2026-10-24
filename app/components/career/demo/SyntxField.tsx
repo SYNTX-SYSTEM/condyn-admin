@@ -881,7 +881,7 @@ function OrganizationBody({ organization, index, roles, observation, depth, isAn
                 {roles.length > 0 && (
                   <div style={{ marginBottom: "10px" }}>
                     <div style={hudSection}>{t.roles}</div>
-                    <div style={{ display: "flex", flexDirection: "column", gap: "3px" }}>{roles.slice(0, 4).map(role => <div key={role.id} style={{ fontSize: "12px", color: INK, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>• {role.title} · {role.requirementCount} {t.requirements}</div>)}</div>
+                    <div style={{ display: "flex", flexDirection: "column", gap: "3px" }}>{roles.slice(0, 4).map(role => <div key={role.id} title={`${role.title} · ${role.requirementCount} ${t.requirements}`} style={{ fontSize: "12px", color: INK, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>• {role.title} · {role.requirementCount} {t.requirements}</div>)}</div>
                   </div>
                 )}
                 <div style={hudHint}>{t.manifest.focusOrganization}</div>
@@ -1001,7 +1001,7 @@ function OrganizationCosmosLayer({ field, mode, t, size, onObserve, organization
             <span data-sx-role-standing style={{ display: "flex", flexShrink: 0, alignItems: "center", justifyContent: "center", gap: "6px", maxWidth: "100%", fontSize: "7.5px", fontWeight: 600, letterSpacing: "1.8px", lineHeight: 1.2, color: "rgba(150, 224, 255, 0.88)", textShadow: `0 0 8px ${SIL_TOKENS.colors.cyanGlow}`, whiteSpace: "nowrap" }}>
               <span aria-hidden="true" style={{ width: "12px", minWidth: 0, height: "1px", flexShrink: 100, background: `linear-gradient(90deg, transparent, ${azure(0.55)})` }} />
               <span aria-hidden="true" style={{ width: "4px", height: "4px", flexShrink: 0, transform: "rotate(45deg)", background: CYAN, boxShadow: `0 0 5px ${CYAN}` }} />
-              <span title={role.seniority ?? undefined} style={{ overflow: "hidden", textOverflow: "ellipsis" }}>{seniority.length > 0 ? seniority.map(part => part.toUpperCase()).join(" · ") : t.manifest.role}</span>
+              <span title={role.seniority ?? t.manifest.role} style={{ overflow: "hidden", textOverflow: "ellipsis" }}>{seniority.length > 0 ? seniority.map(part => part.toUpperCase()).join(" · ") : t.manifest.role}</span>
               <span aria-hidden="true" style={{ width: "12px", minWidth: 0, height: "1px", flexShrink: 100, background: `linear-gradient(90deg, ${azure(0.55)}, transparent)` }} />
             </span>
             <RoleCardTitle title={role.title} lines={compact ? 2 : box.titleLines} size={compact ? 11 : 11.5} width={node.width} />
@@ -1010,7 +1010,7 @@ function OrganizationCosmosLayer({ field, mode, t, size, onObserve, organization
             <span aria-hidden="true" style={{ display: "block", flexShrink: 0, width: "56%", height: "1px", margin: "3px 0 2px", background: `linear-gradient(90deg, transparent, ${azure(0.32)}, transparent)` }} />
             {/* What the pool states of the role (its requirements) and what was read for it (the presentation matching), each on its own line. */}
             <span data-sx-role-requirements style={{ ...footerLine, display: "block", fontWeight: 700, letterSpacing: "0.6px", color: "rgba(226, 242, 250, 0.96)", overflow: "hidden", textOverflow: "ellipsis" }}>{requirementsText}</span>
-            <span data-sx-role-matching style={{ ...footerLine, display: "flex", alignItems: "center", justifyContent: "center", gap: "5px", fontWeight: 500, letterSpacing: "0.3px", color: "rgba(186, 214, 230, 0.92)" }}><span aria-hidden="true" style={{ display: "block", width: "6px", height: "6px", flexShrink: 0, borderRadius: "50%", border: `1px solid ${azure(role.matching === null ? 0.45 : 0.9)}`, background: role.matching === null ? "transparent" : azure(0.9), boxSizing: "border-box" }} /><span style={{ display: "block", overflow: "hidden", textOverflow: "ellipsis" }}>{matchingText}</span></span>
+            <span data-sx-role-matching style={{ ...footerLine, display: "flex", alignItems: "center", justifyContent: "center", gap: "5px", fontWeight: 500, letterSpacing: "0.3px", color: "rgba(186, 214, 230, 0.92)" }}><span aria-hidden="true" style={{ display: "block", width: "6px", height: "6px", flexShrink: 0, borderRadius: "50%", border: `1px solid ${azure(role.matching === null ? 0.45 : 0.9)}`, background: role.matching === null ? "transparent" : azure(0.9), boxSizing: "border-box" }} /><span title={matchingText} style={{ display: "block", overflow: "hidden", textOverflow: "ellipsis" }}>{matchingText}</span></span>
           </button>
         );
       }}
@@ -1133,7 +1133,7 @@ function RoleCosmosLayer({ field, mode, t, size, onObserve, role }: LayerProps &
               {cardMode !== "glyph" ? (
                 <span style={{ position: "absolute", left: `${card.x - half.w - left}px`, top: `${card.y - half.h - top}px`, width: `${half.w * 2}px`, minHeight: `${half.h * 2}px`, boxSizing: "border-box", ...JOB_NODE_MATERIAL, borderRadius: "14px", padding: cardMode === "full" ? "7px 10px" : "5px 8px", fontFamily: MONO, textAlign: "left", color: INK, pointerEvents: "none" }}>
                   <span style={{ display: "block", color: requirement.support === "OPEN" ? NEUTRAL : CYAN, fontSize: "10px", fontWeight: 700, letterSpacing: "0.8px" }}>{t.manifest.requirement}</span>
-                  <span style={{ display: "-webkit-box", marginTop: "3px", fontSize: cardMode === "full" ? "11.5px" : "10px", fontWeight: 700, lineHeight: 1.28, WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden", overflowWrap: "anywhere" }}>{requirement.name}</span>
+                  <span title={requirement.name} style={{ display: "-webkit-box", marginTop: "3px", fontSize: cardMode === "full" ? "11.5px" : "10px", fontWeight: 700, lineHeight: 1.28, WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden", overflowWrap: "anywhere" }}>{requirement.name}</span>
                 </span>
               ) : (
                 <span title={requirement.name} style={{ position: "absolute", left: `${card.x - left}px`, top: `${card.y - top}px`, transform: "translate(-50%, -50%)", maxWidth: "104px", padding: "2px 6px", borderRadius: "8px", border: "1px solid rgba(56, 229, 255, 0.28)", background: "rgba(3, 12, 20, 0.92)", fontFamily: MONO, fontSize: "10px", fontWeight: 700, color: INK_SOFT, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", pointerEvents: "none" }}>{requirement.name}</span>
@@ -1216,7 +1216,7 @@ function SourceSatellite({ source, point, centre, rotation, t, inSurface = false
             <path d="M 0.5 0.5 L 15.5 15.5" stroke="rgba(190, 255, 232, 0.85)" strokeWidth={1} />
           </svg>
           <span style={{ display: "flex", alignItems: "center", gap: "7px", color: "rgba(126, 255, 204, 0.86)", fontSize: "10px", fontWeight: 800, letterSpacing: "1.15px", lineHeight: 1, paddingRight: "8px", whiteSpace: "nowrap" }}>{sourceGlyph(10)}<span>{t.source} // {t.manifest.document}</span></span>
-          <span style={{ display: "-webkit-box", marginTop: "8px", fontFamily: SANS, fontSize: "13px", fontWeight: 650, letterSpacing: "0.1px", lineHeight: 1.25, WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden", overflowWrap: "anywhere", color: source.title !== null ? "#f2fdff" : MUTED, textShadow: source.title !== null ? "0 0 12px rgba(126, 255, 204, 0.18)" : undefined }}>{source.title ?? (source.titleState === "NOT_READ" ? t.sourceNotRead : t.sourceUnresolved)}</span>
+          <span title={source.title ?? (source.titleState === "NOT_READ" ? t.sourceNotRead : t.sourceUnresolved)} style={{ display: "-webkit-box", marginTop: "8px", fontFamily: SANS, fontSize: "13px", fontWeight: 650, letterSpacing: "0.1px", lineHeight: 1.25, WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden", overflowWrap: "anywhere", color: source.title !== null ? "#f2fdff" : MUTED, textShadow: source.title !== null ? "0 0 12px rgba(126, 255, 204, 0.18)" : undefined }}>{source.title ?? (source.titleState === "NOT_READ" ? t.sourceNotRead : t.sourceUnresolved)}</span>
           <span style={{ display: "flex", alignItems: "center", gap: "6px", marginTop: "8px", color: "rgba(126, 255, 204, 0.74)", fontSize: "10px", fontWeight: 700, letterSpacing: "1.1px", lineHeight: 1 }}><span aria-hidden="true" style={{ width: "12px", height: "1px", background: "linear-gradient(90deg, rgba(126, 255, 204, 0.8), rgba(126, 255, 204, 0.2))" }} />{source.traceCount} {t.manifest.evidenceCount}</span>
         </span>
       </span>
@@ -1332,7 +1332,7 @@ function RequirementFocusLayer({ field, mode, t, onObserve, requirement, focus, 
             return (
               <div key={group.docId} data-testid={`syntx-source-${source.docId}`} data-source-title-state={source.titleState} data-trace-count={source.traceCount} {...signAttributes(source.sign)} aria-label={`${t.source} · ${source.title ?? t.sourceUnresolved}`} style={{ position: "absolute", left: "15px", right: "15px", top: `${group.top}px`, height: `${EVIDENCE_ROW.group}px`, display: "flex", alignItems: "center", gap: "8px", fontSize: "10px", borderTop: "1px solid rgba(126, 255, 204, 0.14)" }}>
                 <span data-sx-carrier-body aria-hidden="true" style={{ color: MINT, display: "inline-flex" }}>{sourceGlyph(11)}</span>
-                <strong style={{ color: "rgba(225, 245, 247, 0.94)", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{source.title ?? (source.titleState === "NOT_READ" ? t.sourceNotRead : t.sourceUnresolved)}</strong>
+                <strong title={source.title ?? (source.titleState === "NOT_READ" ? t.sourceNotRead : t.sourceUnresolved)} style={{ color: "rgba(225, 245, 247, 0.94)", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{source.title ?? (source.titleState === "NOT_READ" ? t.sourceNotRead : t.sourceUnresolved)}</strong>
                 <span style={{ color: "rgba(126, 255, 204, 0.72)", whiteSpace: "nowrap" }}>// {t.manifest.document}</span>
               </div>
             );
@@ -1343,7 +1343,7 @@ function RequirementFocusLayer({ field, mode, t, onObserve, requirement, focus, 
             return (
               <div key={trace.sign.id} data-sx-evidence-row={trace.sign.id} data-trace-kind={trace.kind} aria-hidden="true" onClick={stop(() => inspectTrace(trace))} style={{ position: "absolute", left: "15px", right: "15px", top: `${placed.top}px`, height: `${EVIDENCE_ROW.entry}px`, boxSizing: "border-box", padding: "5px 0 5px 10px", borderLeft: `${trace.kind === "weakly_supports" ? 1 : 2}px ${unscored ? "dashed" : "solid"} ${unscored ? "rgba(142, 239, 255, 0.6)" : trace.kind === "supports" ? "rgba(126, 255, 204, 0.85)" : "rgba(126, 255, 204, 0.5)"}`, cursor: "pointer", background: trace.sign.id === observation.apertureSignId ? "rgba(56, 229, 255, 0.08)" : undefined }}>
                 <div style={{ fontSize: "10px", fontWeight: 800, letterSpacing: "0.8px", color: unscored ? "rgba(142, 239, 255, 0.85)" : MINT, textTransform: "uppercase" }}>{t.relation[trace.kind]} · {unscored ? t.manifest.unscored : t.manifest.scored}</div>
-                <div style={{ marginTop: "4px", fontSize: "10px", color: "rgba(206, 232, 241, 0.74)", fontStyle: "italic", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>“{trace.quote}”</div>
+                <div title={trace.quote} style={{ marginTop: "4px", fontSize: "10px", color: "rgba(206, 232, 241, 0.74)", fontStyle: "italic", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>“{trace.quote}”</div>
               </div>
             );
           })}
