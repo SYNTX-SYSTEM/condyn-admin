@@ -237,6 +237,16 @@ export function resolveSilOrbitAttentionState(
     : null;
 }
 
+/**
+ * V-08 (PINK D-S10-1): the running worker fails a job with errorCode EXECUTION_FAILED and its message as errorSummary; a PDF the
+ * loader cannot parse has a message that starts with the code ERR_PDF_PARSE_FAILURE (lib/career/loaders/pdf.ts). The code is read
+ * as an exact token — bounded by non-code characters on both sides — in the code or the summary; no free-text heuristic.
+ */
+const PDF_PARSE_TOKEN = /(?:^|[^A-Z0-9_])ERR_PDF_PARSE_FAILURE(?![A-Z0-9_])/;
+export function isPdfParseFailure(code: string | null | undefined, summary: string | null | undefined): boolean {
+  return code === "ERR_PDF_PARSE_FAILURE" || (code === "EXECUTION_FAILED" && typeof summary === "string" && PDF_PARSE_TOKEN.test(summary));
+}
+
 export function SemanticCareerIntelligenceField({
   data,
   canonicalSilAssociationId,
@@ -957,7 +967,7 @@ export function SemanticCareerIntelligenceField({
         const jobNotFound = resumedJobOnView && analysisError.status === 404;
         const navigationCopy = NAVIGATION_COPY[locale];
         /** V-08: a source the worker cannot parse fails the same way on every retry: no RETRY, the way to a readable source instead. */
-        const formatFailure = analysisError.code === "ERR_PDF_PARSE_FAILURE";
+        const formatFailure = isPdfParseFailure(analysisError.code, analysisError.message);
 
         return (
         <div
