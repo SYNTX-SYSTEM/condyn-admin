@@ -527,19 +527,26 @@ export function SemanticCareerIntelligenceField({
    *  before G1, after a SUCCEEDED job that names no analysis (the field's own data). Never while a state withholds the analysis. */
   const resultOnView = shownResult !== null || (jobState === "SUCCEEDED" && firstScreen.state === "NO_ANALYSIS");
   /** Q1: under PERSON × JOB the legacy orbits (03 resonance, 04 roles, 05 tension, 06 evolution) are not shown: no orbit, count, HUD
-   *  action, coupling line, inspector node or text. A focus requested on one of them is not shown either. */
-  const legacyHidden = investigationMode === "PERSON_X_JOB";
+   *  action, coupling line, inspector node or text. A focus requested on one of them is not shown either.
+   *  RD-5 (owner D-RD-5 = B): under PERSON as well — role discovery replaces them (organisations, roles with their legacy fit score,
+   *  gaps and next actions of the legacy analysis, lib/career/ui-adapter.ts). 01 and 02 stay; the API is unchanged. */
+  const legacyHidden = investigationMode === "PERSON_X_JOB" || investigationMode === "PERSON";
   const legacyStage = (stageId: string | null) => legacyHidden && stageId !== null && ["03", "04", "05", "06"].includes(stageId);
+  /** VIEW MATCHES on 01 / 02 stays as it was under PERSON (RD-5 removes 03–06 only); not under PERSON × JOB (Q1). */
+  const viewMatchesHidden = investigationMode === "PERSON_X_JOB";
   const stageMasked = legacyStage(requestedStageId);
   const activeStageId = stageMasked ? null : requestedStageId;
   const hoveredStageId = legacyStage(requestedHoverStageId) ? null : requestedHoverStageId;
   const zoomLevel: SemanticZoomLevel = stageMasked ? 0 : requestedZoomLevel;
   const selectedClusterId = stageMasked ? null : requestedClusterId;
   const activeData = React.useMemo(() => {
-    const shown = canonicalSilPresentation !== null || shownResult === null ? data : legacyHidden ? withoutLegacyOrbits(demoStateFromResult(shownResult)) : demoStateFromResult(shownResult);
+    const base = canonicalSilPresentation !== null || shownResult === null ? data : investigationMode === "PERSON_X_JOB" ? withoutLegacyOrbits(demoStateFromResult(shownResult)) : demoStateFromResult(shownResult);
+    // RD-5: under PERSON the legacy role, organisation, gap and next-action data leave the map (inspector included); its capabilities
+    // (02) stay as they were.
+    const shown = investigationMode === "PERSON" ? { ...base, companyMatches: [], roleMatches: [], capabilityGaps: [], nextActions: [] } : base;
     // §07: a placeholder is named as one (title / hash not delivered), never shown as a title or a hash; in every mode.
     return { ...shown, sources: presentSourcePlaceholders(shown.sources, { title: t.pxjFirst.titleNotDelivered, hash: t.pxjFirst.hashNotDelivered }) };
-  }, [data, canonicalSilPresentation, shownResult, legacyHidden, t]);
+  }, [data, canonicalSilPresentation, shownResult, legacyHidden, investigationMode, t]);
   const focusedOrbitPresentation =
     resultOnView
       ? resolveSilFocusedOrbitPresentation(
@@ -601,7 +608,7 @@ export function SemanticCareerIntelligenceField({
 
   const handleHudAction = (action: "OPEN EVIDENCE" | "INSPECT SOURCES" | "VIEW MATCHES", stageId: string) => {
     // No legacy matching in PERSON × JOB (Q1): the action is not rendered there, and not acted on either.
-    if (legacyHidden && (action === "VIEW MATCHES" || legacyStage(stageId))) return;
+    if ((viewMatchesHidden && action === "VIEW MATCHES") || legacyStage(stageId)) return;
     setActiveStageId(stageId);
 
     if (stageId !== "02") {
@@ -1317,7 +1324,7 @@ export function SemanticCareerIntelligenceField({
                         activeData,
                         resultOnView ? "SUCCEEDED" : "WITHHELD"
                       )}
-                      hideViewMatches={legacyHidden}
+                      hideViewMatches={viewMatchesHidden}
                       onClick={() => {
                         const nextFocus = resolveOrbitalFocusNavigation({
                           activeStageId: activeStageId as SilOrbitStageId | null,

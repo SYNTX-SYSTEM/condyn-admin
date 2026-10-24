@@ -50,7 +50,9 @@ const emptyGraph: any = {
   edges: []
 };
 
-// Owner G1 Q1: the default PERSON × JOB hides orbits 03–06; the complete six-orbit chrome is rendered under PERSON.
+// Owner G1 Q1: the default PERSON × JOB hides orbits 03–06; the complete root chrome is rendered under PERSON. RD-5 (owner
+// D-RD-5 = B): orbits 03–06 are not part of the PERSON field either — their names are checked absent here and per locale on the
+// orbit component below.
 describe("SIL global locale wiring", () => {
   it("renders the complete active SIL root chrome in English", () => {
     const html = renderToString(
@@ -66,10 +68,7 @@ describe("SIL global locale wiring", () => {
 
     expect(html).toContain("IDENTITY CORE");
     expect(html).toContain("CAPABILITY FIELD");
-    expect(html).toContain("RESONANCE ORBITS");
-    expect(html).toContain("ROLE MANIFESTATION");
-    expect(html).toContain("TENSION FIELD");
-    expect(html).toContain("EVOLUTION PATHS");
+    for (const name of ["RESONANCE ORBITS", "ROLE MANIFESTATION", "TENSION FIELD", "EVOLUTION PATHS"]) expect(html).not.toContain(name);
 
     expect(html).toContain("DECISION GRAPH INSPECTOR");
     expect(html).toContain("HOW THIS WORKS");
@@ -96,10 +95,7 @@ describe("SIL global locale wiring", () => {
 
     expect(html).toContain("IDENTITÄTSKERN");
     expect(html).toContain("FÄHIGKEITSFELD");
-    expect(html).toContain("RESONANZ-ORBITS");
-    expect(html).toContain("ROLLENMANIFESTATION");
-    expect(html).toContain("SPANNUNGSFELD");
-    expect(html).toContain("ENTWICKLUNGSPFADE");
+    for (const name of ["RESONANZ-ORBITS", "ROLLENMANIFESTATION", "SPANNUNGSFELD", "ENTWICKLUNGSPFADE"]) expect(html).not.toContain(name);
 
     expect(html).toContain("ENTSCHEIDUNGSGRAPH-INSPEKTOR");
     expect(html).toContain("SO FUNKTIONIERT ES");
@@ -108,6 +104,20 @@ describe("SIL global locale wiring", () => {
     expect(html).not.toContain("No sources selected.");
     expect(html).not.toContain("CAPABILITY FIELD");
     expect(html).not.toContain("TENSION FIELD");
+  });
+
+  it("orbits 03–06 (component) carry their names in the selected locale", async () => {
+    const { SIL_COPY } = await import("../lib/career/view-model/sil-language");
+    const names = { en: ["RESONANCE ORBITS", "ROLE MANIFESTATION", "TENSION FIELD", "EVOLUTION PATHS"], de: ["RESONANZ-ORBITS", "ROLLENMANIFESTATION", "SPANNUNGSFELD", "ENTWICKLUNGSPFADE"] } as const;
+    for (const locale of ["en", "de"] as const) {
+      ["03", "04", "05", "06"].forEach((stageId, at) => {
+        const copy = SIL_COPY[locale].orbits[stageId as "03"];
+        expect(copy.name).toBe(names[locale][at]);
+        const html = renderToString(<OrbitalResonanceBubble stageId={stageId} stageName={copy.name} subtitle={copy.subtitle} itemCount={0} previewItems={[]} locale={locale} />);
+        expect(html).toContain(names[locale][at]);
+        expect(html).not.toContain(names[locale === "en" ? "de" : "en"][at]);
+      });
+    }
   });
 
   it("SourceDock consumes the selected locale", () => {

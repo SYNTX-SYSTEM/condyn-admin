@@ -200,15 +200,34 @@ describe("T-07 · legacy orbits under PERSON × JOB", () => {
     expect(html).toContain("Synthetic profile.pdf");
   });
 
-  it("PERSON: all six orbits, the coupling and VIEW MATCHES as on the base; the PERSON result shown", () => {
+  // RD-5 (owner D-RD-5 = B): under PERSON role discovery replaces the legacy orbits — the same absence as under PERSON × JOB. The
+  // legacy items were organisations (analysis.organizations), roles with their legacy fit score (analysis.roles), no gaps and next
+  // actions (analysis.strategies), all from the legacy result through lib/career/ui-adapter.ts.
+  it("PERSON: orbits 01 and 02 only, VIEW MATCHES on them as on the base; no orbit, ray, coupling, inspector node or text of 03 … 06; the PERSON result shown", () => {
     control.boundary = { state: "RESOLVED", value: boundary({ mode: "PERSON", jobScopeSelection: null, investigationScopeHash: null }) };
     const html = field({ investigationMode: "PERSON" });
-    for (const stage of ["01", "02", ...LEGACY_STAGES]) expect(html).toContain(`data-testid="focus-transition-stage-shell-${stage}"`);
-    expect(html).toContain('data-testid="inter-orbital-coupling"');
-    expect(control.bubbles.map(bubble => [bubble.stageId, bubble.hideViewMatches])).toEqual(["01", "02", "03", "04", "05", "06"].map(stage => [stage, false]));
+    for (const stage of ["01", "02"]) expect(html).toContain(`data-testid="focus-transition-stage-shell-${stage}"`);
+    for (const stage of LEGACY_STAGES) {
+      expect(html).not.toContain(`data-testid="focus-transition-stage-shell-${stage}"`);
+      expect(html).not.toContain(`data-testid="energy-ray-${stage}"`);
+    }
+    expect(html).not.toContain('data-testid="inter-orbital-coupling"');
+    expect(control.bubbles.map(bubble => [bubble.stageId, bubble.hideViewMatches])).toEqual([["01", false], ["02", false]]);
+    for (const name of LEGACY_NAMES) expect(html).not.toContain(name);
+    expect(region(html, "decision-graph-inspector-idle") + region(html, "decision-graph-inspector")).not.toMatch(/ORG_L1|ROLE_L1|STR_L1/);
     expect(html).not.toContain('data-testid="pxj-first-screen"');
-    // The legacy orbits carry the PERSON result (organisation, role, strategy: one item each), as on the base.
-    expect(html.match(/1 items/g)?.length ?? 0).toBeGreaterThanOrEqual(4);
+    // The PERSON result is shown on 01 and 02 as on the base: its source (one item) and its capabilities (three items).
+    expect(html.match(/\b1 items/g)?.length).toBe(1);
+    expect(html.match(/\b3 items/g)?.length).toBe(1);
+  });
+
+  it("a legacy stage requested by focus is not shown under PERSON", () => {
+    control.boundary = { state: "RESOLVED", value: boundary({ mode: "PERSON", jobScopeSelection: null, investigationScopeHash: null }) };
+    for (const stageId of LEGACY_STAGES) {
+      const html = field({ investigationMode: "PERSON", initialFocus: { stageId, zoomLevel: 1 } });
+      expect(html).toContain('data-focused-stage-id=""');
+      expect(html).toContain('data-zoom-level="0"');
+    }
   });
 
   it("a legacy stage requested by focus is not shown under PERSON × JOB", () => {

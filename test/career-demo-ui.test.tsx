@@ -32,17 +32,27 @@ describe("CONDYN / SYNTX — Step 22c: Semantic Career Intelligence Field (SIL v
     expect(html).toContain("0 items");
   });
 
+  it("should render orbits 03–06 (component) with 0 items in Zero-State", () => {
+    for (const [stageId, stageName] of [["03", "RESONANCE ORBITS"], ["04", "ROLE MANIFESTATION"], ["05", "TENSION FIELD"], ["06", "EVOLUTION PATHS"]]) {
+      const html = renderToString(<OrbitalResonanceBubble stageId={stageId} stageName={stageName} subtitle="s" itemCount={0} />);
+      expect(html).toContain(stageId);
+      expect(html).toContain(stageName);
+      expect(html).toContain("0 items");
+    }
+  });
+
   it("should render SemanticCareerIntelligenceField in pure Zero-State without fake fallback data", () => {
-    // Owner G1 Q1: the default PERSON × JOB hides orbits 03–06; the six-orbit zero state is the PERSON field.
+    // Owner G1 Q1: the default PERSON × JOB hides orbits 03–06; the zero state is the PERSON field. RD-5 (owner D-RD-5 = B): without
+    // orbits 03–06 (their zero state is checked on the orbit component below).
     const html = renderToString(<SemanticCareerIntelligenceField data={EMPTY_CAREER_INTELLIGENCE_DATA} investigationMode="PERSON" />);
 
     // Basic layout asserts
     expect(html).toContain("SYNTX CORE • ORGANISM");
     expect(html).toContain("CAPABILITY FIELD");
-    expect(html).toContain("RESONANCE ORBITS");
+    expect(html).not.toContain("RESONANCE ORBITS");
     
     // Explicitly assert that 0 items exist across orbits
-    expect(html).toContain("0 items"); // Should appear for all 6 orbits
+    expect(html).toContain("0 items"); // Should appear for orbits 01 and 02
     
     // Explicitly assert that NO demo data exists
     expect(html).not.toContain("Helsing");
