@@ -19,9 +19,9 @@ const css = () => (/<div[^>]*data-testid="career-intelligence-dashboard"[^>]*><s
 describe("V-20 · B2 ends above the runtime telemetry box", () => {
   it("REPRODUCE: full and fit tier — while the box is shown, the panel's bottom clears its measured height", () => {
     const text = css();
-    expect(text).toContain('@media (min-width: 1600px) and (min-height: 1000px) {\n  [data-testid="career-intelligence-dashboard"] [data-testid="semantic-career-intelligence-field"]:has([data-testid="inference-telemetry-hud"]) [data-pxj-panel] { bottom: calc(97px + var(--sx-hud-h, 110px)) !important; }');
+    expect(text).toContain('@media (min-width: 1600px) and (min-height: 1000px) {\n  [data-testid="career-intelligence-dashboard"] [data-testid="semantic-career-intelligence-field"]:has([data-testid="inference-telemetry-hud"]) [data-pxj-panel] { bottom: calc(97px + var(--sx-hud-h, 110px)) !important; max-height: calc(100% - 132px - 97px - var(--sx-hud-h, 110px)) !important; }');
     expect(text).toContain(':has([data-testid="inference-telemetry-hud"]) [data-pxj-panel] { bottom: calc(36px + var(--sx-hud-h, 110px)) !important; }');
-    expect(text.match(/var\(--sx-hud-h/g)).toHaveLength(2);
+    expect(text.match(/var\(--sx-hud-h/g)).toHaveLength(3);
   });
 
   it("REPRODUCE: at 200 % the box stands in the column (not fixed over it)", () => {
@@ -30,6 +30,7 @@ describe("V-20 · B2 ends above the runtime telemetry box", () => {
 
   it("inverse: every clearance hangs on the box being shown", () => {
     const rules = [...css().matchAll(/\n[^\n{}]*\{[^{}\n]*var\(--sx-hud-h[^}]*\}/g)].map(match => match[0]);
+    expect(rules.every(rule => rule.includes("[data-pxj-panel]"))).toBe(true);
     for (const rule of rules) expect(rule).toContain(':has([data-testid="inference-telemetry-hud"])');
   });
 });

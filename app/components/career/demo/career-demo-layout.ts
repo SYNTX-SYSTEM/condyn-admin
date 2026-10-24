@@ -117,7 +117,7 @@ ${HUD} button { font-size: 11px !important; }
 ${HUD} button:disabled { color: rgba(156, 186, 204, 0.95) !important; }
 ${HUD} > span { color: rgba(130, 200, 224, 0.85) !important; }
 @media (min-width: ${LAYOUT_FULL.width}px) and (min-height: ${LAYOUT_FULL.height}px) {
-  ${FIELD}:has(${HUD_BOX}) [data-pxj-panel] { bottom: calc(97px + var(--sx-hud-h, 110px)) !important; }
+  ${FIELD}:has(${HUD_BOX}) [data-pxj-panel] { bottom: calc(97px + var(--sx-hud-h, 110px)) !important; max-height: calc(100% - 132px - 97px - var(--sx-hud-h, 110px)) !important; }
 }
 @media ${FIT} {
   ${FIELD}:has(${HUD_BOX}) [data-pxj-panel] { bottom: calc(36px + var(--sx-hud-h, 110px)) !important; }
