@@ -1,4 +1,5 @@
 import { beforeAll, describe, expect, it } from "vitest";
+import postgres from "postgres";
 import { db } from "../../../lib/career/db/client";
 import { ensureJobPoolPersistenceRegistration } from "../../../lib/career/job-pool/local-composition";
 import { canonicalJson, engineVersionHash, proposalContentHash, relationKey, requirementContentHash, type CachedRelation } from "../../../lib/career/job-pool/relation-cache";
@@ -73,30 +74,41 @@ describe("relation cache repository (PostgreSQL)", () => {
     await expect(repository.getByKeys([r.relationKey])).rejects.toThrow(`ERR_RELATION_CACHE_RECORD_CORRUPT:${r.relationKey}`);
   });
 
-  it("O-RC-3: a table created by the earlier DDL (ccc0cc1) gets every constraint and trigger on registration; a violating row fails it", async () => {
-    // Own schema on a reserved connection, so the shared table of the other test files is never touched.
+  it("O-RC-3/O-RC-6: an earlier table gets every guarantee; a violating row fails the registration atomically, the repair path works", async () => {
+    // Own schemas and own single-connection clients (like the registration client), so the shared table of the other test files is
+    // never touched; the admin connection only creates and drops the schemas.
     const CCC0CC1_TABLE = `CREATE TABLE ${RELATION_CACHE_TABLE} (relation_key text PRIMARY KEY, proposal_content_hash text NOT NULL, requirement_content_hash text NOT NULL,
       engine_version_hash text NOT NULL, relation_state text NOT NULL CHECK (relation_state IN ('EQUIVALENT', 'COVERS', 'PARTIAL', 'DIFFERENT', 'UNCLEAR')),
       authority_state text NOT NULL CHECK (authority_state = 'NONE'), record_json text NOT NULL, created_at text NOT NULL)`;
-    const conn = await db.$client.reserve();
-    const schemas = [`orc3_clean_${Date.now()}`, `orc3_dirty_${Date.now()}`];
+    const stamp = Date.now();
+    const schemas = [`orc3_clean_${stamp}`, `orc3_dirty_${stamp}`];
+    const clientFor = (schema: string) => postgres(process.env.DATABASE_URL!, { max: 1, onnotice: () => undefined, connection: { search_path: schema } });
+    const constraintNames = async (sql: postgres.Sql) => (await sql.unsafe<{ conname: string }[]>(`SELECT conname FROM pg_constraint WHERE conrelid = '${RELATION_CACHE_TABLE}'::regclass`)).map(c => c.conname);
+    const triggerCount = async (sql: postgres.Sql) => (await sql.unsafe(`SELECT tgname FROM pg_trigger WHERE tgrelid = '${RELATION_CACHE_TABLE}'::regclass AND NOT tgisinternal`)).length;
+    for (const schema of schemas) await db.$client.unsafe(`CREATE SCHEMA ${schema}`);
+    const clean = clientFor(schemas[0]), dirty = clientFor(schemas[1]);
     try {
-      await conn.unsafe(`CREATE SCHEMA ${schemas[0]}; SET search_path TO ${schemas[0]}`);
-      await conn.unsafe(CCC0CC1_TABLE);
-      await registerRelationCacheSchema(conn as never);
-      const names = (await conn.unsafe<{ conname: string }[]>(`SELECT conname FROM pg_constraint WHERE conrelid = '${RELATION_CACHE_TABLE}'::regclass`)).map(c => c.conname);
+      await clean.unsafe(CCC0CC1_TABLE);
+      await registerRelationCacheSchema(clean);
+      const names = await constraintNames(clean);
       for (const [name] of RELATION_CACHE_CONSTRAINTS) expect(names, name).toContain(name);
-      await expect(conn.unsafe(`INSERT INTO ${RELATION_CACHE_TABLE} VALUES ('not-a-key','p','r','e','COVERS','NONE','{}','t')`)).rejects.toThrow();
-      await expect(conn.unsafe(`TRUNCATE ${RELATION_CACHE_TABLE}`)).rejects.toThrow(/ERR_RELATION_CACHE_IMMUTABLE/);
+      expect(await triggerCount(clean)).toBe(2);
+      await expect(clean.unsafe(`INSERT INTO ${RELATION_CACHE_TABLE} VALUES ('not-a-key','p','r','e','COVERS','NONE','{}','t')`)).rejects.toThrow();
+      await expect(clean.unsafe(`TRUNCATE ${RELATION_CACHE_TABLE}`)).rejects.toThrow(/ERR_RELATION_CACHE_IMMUTABLE/);
 
-      await conn.unsafe(`CREATE SCHEMA ${schemas[1]}; SET search_path TO ${schemas[1]}`);
-      await conn.unsafe(CCC0CC1_TABLE);
+      await dirty.unsafe(CCC0CC1_TABLE);
       const r = make("Dirty Row", "Requirement");
-      await conn.unsafe(`INSERT INTO ${RELATION_CACHE_TABLE} VALUES ($1,$2,$3,$4,$5,$6,$7,$8)`, [r.relationKey, r.proposalContentHash, r.requirementContentHash, r.engineVersionHash, r.state, r.authorityState, canonicalJson({ ...r, authorityState: "VERIFIED" }), r.createdAt]);
-      await expect(registerRelationCacheSchema(conn as never)).rejects.toThrow();
+      await dirty.unsafe(`INSERT INTO ${RELATION_CACHE_TABLE} VALUES ($1,$2,$3,$4,$5,$6,$7,$8)`, [r.relationKey, r.proposalContentHash, r.requirementContentHash, r.engineVersionHash, r.state, r.authorityState, canonicalJson({ ...r, authorityState: "VERIFIED" }), r.createdAt]);
+      await expect(registerRelationCacheSchema(dirty)).rejects.toThrow();
+      // O-RC-6: nothing of the failed convergence remains — no prr_* constraint, no trigger; the repair path (remove the row, register) works.
+      expect((await constraintNames(dirty)).filter(name => name.startsWith("prr_"))).toEqual([]);
+      expect(await triggerCount(dirty)).toBe(0);
+      await dirty.unsafe(`DELETE FROM ${RELATION_CACHE_TABLE}`);
+      await registerRelationCacheSchema(dirty);
+      expect(await triggerCount(dirty)).toBe(2);
     } finally {
-      await conn.unsafe(`SET search_path TO public; DROP SCHEMA IF EXISTS ${schemas[0]} CASCADE; DROP SCHEMA IF EXISTS ${schemas[1]} CASCADE`);
-      conn.release();
+      await clean.end({ timeout: 5 }); await dirty.end({ timeout: 5 });
+      for (const schema of schemas) await db.$client.unsafe(`DROP SCHEMA IF EXISTS ${schema} CASCADE`);
     }
   });
 

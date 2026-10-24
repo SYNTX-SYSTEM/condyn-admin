@@ -68,14 +68,18 @@ export const RELATION_CACHE_DDL = [
 /** Applies the DDL and verifies the guarantees exist; a missing constraint or trigger fails the registration (O-RC-3). An existing
  *  row that violates a constraint makes the ALTER fail, so such a table is never reported as registered either. */
 export async function registerRelationCacheSchema(sql: Sql): Promise<readonly string[]> {
-  for (const statement of RELATION_CACHE_DDL) await sql.unsafe(statement);
-  const constraints = await sql.unsafe<{ conname: string }[]>(`SELECT conname FROM pg_constraint WHERE conrelid = '${RELATION_CACHE_TABLE}'::regclass`);
-  const triggers = await sql.unsafe<{ tgname: string }[]>(`SELECT tgname FROM pg_trigger WHERE tgrelid = '${RELATION_CACHE_TABLE}'::regclass AND NOT tgisinternal`);
-  const missing = [
-    ...RELATION_CACHE_CONSTRAINTS.map(([name]) => name).filter(name => !constraints.some(c => c.conname === name)),
-    ...RELATION_CACHE_TRIGGERS.filter(name => !triggers.some(t => t.tgname === name))
-  ];
-  if (missing.length) throw new Error(`ERR_RELATION_CACHE_GUARANTEES_MISSING:${missing.join(",")}`);
+  // One transaction (PINK O-RC-6): a failed convergence rolls back completely — the table keeps its previous state, never a
+  // half-converged one. Repair path: RUNBOOK in CONDYN_CAPABILITY_TO_JOBPOOL_DISCOVERY_2026-10-24.md §10.
+  await sql.begin(async tx => {
+    for (const statement of RELATION_CACHE_DDL) await tx.unsafe(statement);
+    const constraints = await tx.unsafe<{ conname: string }[]>(`SELECT conname FROM pg_constraint WHERE conrelid = '${RELATION_CACHE_TABLE}'::regclass`);
+    const triggers = await tx.unsafe<{ tgname: string }[]>(`SELECT tgname FROM pg_trigger WHERE tgrelid = '${RELATION_CACHE_TABLE}'::regclass AND NOT tgisinternal`);
+    const missing = [
+      ...RELATION_CACHE_CONSTRAINTS.map(([name]) => name).filter(name => !constraints.some(c => c.conname === name)),
+      ...RELATION_CACHE_TRIGGERS.filter(name => !triggers.some(t => t.tgname === name))
+    ];
+    if (missing.length) throw new Error(`ERR_RELATION_CACHE_GUARANTEES_MISSING:${missing.join(",")}`);
+  });
   return [RELATION_CACHE_TABLE];
 }
 
