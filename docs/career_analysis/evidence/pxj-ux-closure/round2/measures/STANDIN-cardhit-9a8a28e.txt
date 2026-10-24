@@ -1,0 +1,13 @@
+1920x1080 org-PXJ fullstack:5/5 any6/6 cover[] box[596,567,219,100]  frontend_architect:5/5 any6/6 cover[] box[949,745,158,84]  engineering_lead:5/5 any6/6 cover[] box[1089,468,195,100]
+1920x1080 org-PERSON fullstack:5/5 any6/6 cover[] box[596,562,219,100]  frontend_architect:5/5 any6/6 cover[] box[943,747,158,84]  engineering_lead:5/5 any6/6 cover[] box[1091,471,195,100]
+1600x900 org-PXJ fullstack:5/5 any6/6 cover[] box[446,503,219,100]  frontend_architect:5/5 any6/6 cover[] box[782,691,158,84]  engineering_lead:5/5 any6/6 cover[] box[922,408,195,100]
+1600x900 org-PERSON fullstack:5/5 any6/6 cover[] box[446,502,219,100]  frontend_architect:5/5 any6/6 cover[] box[781,692,158,84]  engineering_lead:5/5 any6/6 cover[] box[923,410,195,100]
+1440x900 org-PXJ fullstack:5/5 any6/6 cover[] box[360,502,219,100]  frontend_architect:5/5 any6/6 cover[] box[703,689,158,84]  engineering_lead:5/5 any6/6 cover[] box[847,409,195,100]
+1440x900 org-PERSON fullstack:5/5 any6/6 cover[] box[360,501,219,100]  frontend_architect:5/5 any6/6 cover[] box[702,689,158,84]  engineering_lead:5/5 any6/6 cover[] box[848,411,195,100]
+1280x720 org-PXJ fullstack:5/5 any6/6 cover[] box[284,502,219,100]  frontend_architect:2/5 any6/6 cover[] box[621,692,158,84]  engineering_lead:5/5 any6/6 cover[] box[763,409,195,100]
+1280x720 org-PERSON fullstack:5/5 any6/6 cover[] box[284,501,219,100]  frontend_architect:2/5 any6/6 cover[] box[620,692,158,84]  engineering_lead:5/5 any6/6 cover[] box[763,409,195,100]
+zoom200-1920x1080 org-PXJ fullstack:0/5 any0/6 cover[] box[161,985,186,118]  frontend_architect:0/5 any0/6 cover[] box[459,1190,158,84]  engineering_lead:0/5 any0/6 cover[] box[589,891,186,100]
+zoom200-1920x1080 org-PERSON fullstack:0/5 any0/6 cover[] box[161,868,186,118]  frontend_architect:0/5 any0/6 cover[] box[455,1078,158,84]  engineering_lead:0/5 any0/6 cover[] box[591,782,186,100]
+zoom200-1280x720 org-PXJ fullstack:0/5 any0/6 cover[] box[44,983,144,118]  frontend_architect:0/5 any0/6 cover[] box[298,1177,144,100]  engineering_lead:0/5 any0/6 cover[] box[431,887,144,118]
+zoom200-1280x720 org-PERSON fullstack:0/5 any0/6 cover[] box[44,867,144,118]  frontend_architect:0/5 any0/6 cover[] box[296,1065,144,100]  engineering_lead:0/5 any0/6 cover[] box[432,776,144,118]
+DONE blocked 0

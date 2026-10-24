@@ -1,0 +1,4 @@
+1920 1080 {"hud":[1564,946,1896,1056],"panel":[1496,193,1896,1045],"overlapPx":32868,"rowHits":["pxj-first-req-req_pink_alpha_1","inference-telemetry-hud","semantic-career-intelligence-field"],"state":"AVAILABLE"}
+1600 900 {"hud":[1244,766,1576,876],"panel":[1176,193,1576,865],"overlapPx":32868,"rowHits":["inference-telemetry-hud","semantic-career-intelligence-field","semantic-career-intelligence-field"],"state":"AVAILABLE"}
+1440 900 {"hud":[1084,766,1416,876],"panel":[1016,485,1416,925],"overlapPx":36520,"rowHits":["pxj-first-proposal-PCAP_2C6DEB475A64BD5AB853833A","pxj-first-proposal-PCAP_2C6DEB475A64BD5AB853833A","pxj-first-proposal-PCAP_2C6DEB475A64BD5AB853833A"],"state":"AVAILABLE"}
+1280 720 {"hud":[924,586,1256,696],"panel":[885,485,1256,925],"overlapPx":36520,"rowHits":["pxj-first-coverage","pxj-first-coverage","pxj-first-coverage"],"state":"AVAILABLE"}

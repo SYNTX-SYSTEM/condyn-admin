@@ -62,25 +62,67 @@ checks the same state on the real persisted result separately.
 - `STANDIN-pools-open.txt`: at a role the uploaded pools open beside the panel (1280 / 1440 / 1600) or below it (1920), in view,
   OPEN clicked for real.
 
-## 3 PERSON: visual change without markup change (GELB decision)
+## 3 PERSON (corrected in round 2, GELB K-UX-2)
 
-T-07 (the PERSON first screen's server markup byte-identical with 49e2bc6) holds. Everything that also shows under PERSON changes
-only through the dashboard's stylesheet (`app/components/career/demo/career-demo-layout.ts`, `CAREER_DEMO_LAYOUT_CSS`): size,
-position, contrast and spacing — no text, element, order or state.
+The first version of this section said that under PERSON no text, element, order or state changes. That holds for the **PERSON
+first screen** (the Capability Field under PERSON) only — not for the Job Field shown under investigationMode=PERSON (PINK §3.62
+K-UX-2). Two lists:
 
+**PERSON first screen — visual only, plus the attribute `data-sx-layout`.** T-07 (its server markup byte-identical with 49e2bc6)
+holds. Everything that shows there changes only through the dashboard's stylesheet (`app/components/career/demo/career-demo-layout.ts`,
+`CAREER_DEMO_LAYOUT_CSS`) — size, position, contrast, spacing — and the dashboard wrapper carries `data-sx-layout` (the tier):
 - every viewport: `[field] > [data-testid="semantic-zoom-telemetry"]` (top 67 px, no width cap; V-16; its buttons 11 px; inactive
   levels and separators AA, V-10); `[data-testid="job-scope-indicator"] [data-testid="job-scope-detail"]` and `… > span:nth-child(2)`
   (11 px, V-09).
-- fit tier (≥ 1100 × 600, below 1600 × 1000): `[data-testid="career-intelligence-dashboard"]` (viewport height, column),
-  `[field]` (no 960 px minimum), the planetarium `div:has(> svg[data-testid="resonance-energy-paths"])` (scale / translate into the
-  free area), the source dock `div:has([data-testid="source-dock"])` (below the shell, above the inspector).
+- fit tier (≥ 1100 × 600, below 1600 × 1000), **only while the Capability Field is active** (round 2, V-18 / V-19):
+  `[data-testid="career-intelligence-dashboard"]` (viewport height, column), `[field][data-field-focus="CAPABILITY"]` (no 960 px
+  minimum), the planetarium `div:has(> svg[data-testid="resonance-energy-paths"])` (scale / translate into the free area), the
+  source dock `div:has([data-testid="source-dock"])` (below the shell, above the inspector).
 - stack tier (200 %): the shell (`[data-sx-shell="controls" | "guide" | "selector" | "job-scope" | "investigation"]`), the
-  telemetry, the planetarium (zoom), the source dock and the inspector (`decision-graph-inspector-idle` / `decision-graph-inspector`)
-  in one scrolling column; the header wraps.
-- Before / after under PERSON: `shots/STANDIN-layout-6c36644-before-person-*.jpg` and `shots/STANDIN-layout-4b826cc-person-*.jpg`
-  (six viewports each), `shots/STANDIN-ux-G-person-*.jpg`; the telemetry at 1920: `shots/STANDIN-V16-telemetry-*-1920.jpg`.
-  At 1920 × 1080 the visible PERSON changes are the telemetry now shown below the shell, the job indicator at 11 px and the
-  telemetry's contrast.
+  telemetry, the planetarium (zoom), the source dock, the inspector (`decision-graph-inspector-idle` / `decision-graph-inspector`)
+  and the runtime telemetry box in one scrolling column; the header wraps.
+- Before / after under PERSON: `shots/STANDIN-layout-6c36644-before-person-*.jpg` and `shots/STANDIN-layout-4b826cc-person-*.jpg`,
+  `shots/STANDIN-ux-G-person-*.jpg`; the telemetry at 1920: `shots/STANDIN-V16-telemetry-*-1920.jpg`.
+
+**Job Field (every mode, PERSON included) — the assigned UX changes.** UX-01 (level line), UX-02 (job action after the path, hint
+at pool / organisation, collapsible legacy box), UX-06 (pools first, empty list → + INTAKE), UX-07 (UPLOADED / OPEN · OPENED /
+SELECTED wording), UX-03 (NO ANALYSIS names both ways), V-09 / V-13 / V-14 / V-15 (type, hover, targets, full names), and the
+fit-tier panel scroll with the pools beside it (4b826cc). Round 2: the panel stands after the stage again (V-11-R) and the Job
+Field keeps 70d1cb4's size (V-18 / V-19) — role cards with their domain line in every mode.
+
+## 3a Round 2 — PINK §3.62 on 41dfa25 (final state 9a8a28e)
+
+| DEFECT_ID | Commit | What changed |
+|---|---|---|
+| V-11-R | 984b0ed | The Job Field panel stands after the stage again (688bdd7 had put it first: after Enter on a role card Tab ran through shell and header, 14 → 21). UX-02's order inside the panel stays |
+| V-18, V-19 | d91ecb0, 99d4d44 | The fit tier makes the page the viewport only while the Capability Field is active; the Job Field keeps 70d1cb4's size (role orbits laid out on it: domain line kept, cards beside the panel clickable); stack stage 960 px; the panel is shorter at the organisation level (shorter NO ANALYSIS, both ways still named) |
+| V-20 | 71a04b0, 9a8a28e | While the runtime telemetry box is shown B2 ends above it (its height measured; full and fit tier; at 200 % the box stands in the column). The overlap existed on 70d1cb4 too |
+| V-08-R | e3f7acf | A broken PDF from the running worker (EXECUTION_FAILED, ERR_PDF_PARSE_FAILURE in the summary) offers no RETRY — exact token match |
+| R-05 | 394e5dc | While a job is CHECKING or INVALID the closed controls' tooltip says the visible cause and way |
+| V-15 | b4b6ed9 | Every cut name in the Job Field carries its full text (title) |
+
+Verification (`round2/measures/`, STAND_IN, GRÜN's labs: candidate :41871 on 9a8a28e, base :41879 on 70d1cb4, both production
+builds; PINK's own probes `pink-v11-order`, `pink-cardhit`, `pink-cardbox` from 831ef92 run unchanged, GET only, 0 blocked):
+- `suite-and-build.txt`: tsc 0; build without the flag exit 0; focused group 63 files, 514 passed (4 skipped).
+- `counterproof-41dfa25.txt`: the 6 new files against 41dfa25 — 10 REPRODUCE fail at their assertions, 6 inverse pass.
+- `STANDIN-v11-tab-path.txt`: Enter on the role → SELECT AS JOB **14** and role view on load **4** at 1920 / 1600 / 1440 / 1280 —
+  identical to 70d1cb4 (41dfa25: 21 / 11 per PINK).
+- `STANDIN-cardbox-*.txt`: every role card in orbit form with its domain line at all six viewports, organisation and role level,
+  PXJ and PERSON (18 / 18), as on 70d1cb4.
+- `STANDIN-cardhit-*.txt`: PINK's probe (no scroll for orbiting cards: Playwright's scrollIntoViewIfNeeded waits for a still
+  element) — 1440 / 1600 / 1920 every card 5/5; 1280 × 720 Full-Stack 5/5 (41dfa25: 0/5), Frontend Architect 2/5 exactly as on
+  70d1cb4 (its lower half below the fold). `STANDIN-card-wheel-*.txt`: the cards reached as a user does — page scrolled by the
+  mouse wheel, then 5 points × 6 samples: **every card 5/5 at 1600, 1440, 1280 and both 200 % viewports, PXJ and PERSON**
+  (70d1cb4: one card 2–3/5 at 200 %).
+- `STANDIN-telemetry-box-*.txt`: overlap of the box and B2 — 70d1cb4 32 868 / 32 868 / 36 520 / 36 520 px² (1920 / 1600 / 1440 /
+  1280), 9a8a28e 0 everywhere.
+- `STANDIN-ux-walk.json`: 21 / 21 (the round-1 steps plus R2-V08: a broken PDF through the real worker → EXECUTION_FAILED, no
+  RETRY, the way shown; R2-R05: the invalid job's tooltip equals the visible cause and way); no non-GET outside ANALYZE.
+  `STANDIN-ux-keyboard.json`: 600 Tabs without URL / history change, Shift+Tab reverse, Esc chain held.
+  `STANDIN-layout-9a8a28e.json`: Capability Field, B2 and PERSON without a covered control at all six viewports (the two remaining
+  items as in §2, both on 421e382).
+- Not implemented (GELB, owner): Back across the document boundary during SUBMITTING (PINK S6) — same class as a reload during
+  SUBMITTING.
 
 ## 4 Existing test literal adjusted
 
@@ -101,6 +143,7 @@ position, contrast and spacing — no text, element, order or state.
 
 ## 6 Files
 
-`measures/` (above), `shots/` (walk steps, layout per scene and viewport before / after, telemetry crops), `scripts/`
+`measures/` (above), `shots/` (walk steps, layout per scene and viewport before / after, telemetry crops), `round2/` (§3a:
+measures, shots, `card-wheel.mjs`, `telemetry-box.mjs`), `scripts/`
 (`pxj-ux-walk.mjs`, `layout-probe.mjs`, `kb-regression.mjs`, `pools-open.mjs`; argv: the lab's state file, the repo root, an
 output directory; the lab launcher is GRÜN's scratch copy of the three-modes lab with `next start`).

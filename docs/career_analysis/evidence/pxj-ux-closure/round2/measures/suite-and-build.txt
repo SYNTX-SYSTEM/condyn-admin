@@ -1,0 +1,4 @@
+Final state 9a8a28e. tsc --noEmit: 0 errors. next build --webpack without typescript.ignoreBuildErrors: exit 0.
+Focused group (as in ../measures/suite-and-build.txt):
+ Test Files  63 passed (63)
+      Tests  514 passed | 4 skipped (518)

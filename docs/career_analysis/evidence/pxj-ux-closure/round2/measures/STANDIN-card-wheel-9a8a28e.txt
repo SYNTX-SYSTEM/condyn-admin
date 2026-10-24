@@ -1,0 +1,10 @@
+9a8a28e {"vp":"1600x900","mode":"PERSON_X_JOB","fullstack":"5/5","frontend_architect":"5/5","engineering_lead":"5/5"}
+9a8a28e {"vp":"1600x900","mode":"PERSON","fullstack":"5/5","frontend_architect":"5/5","engineering_lead":"5/5"}
+9a8a28e {"vp":"1440x900","mode":"PERSON_X_JOB","fullstack":"5/5","frontend_architect":"5/5","engineering_lead":"5/5"}
+9a8a28e {"vp":"1440x900","mode":"PERSON","fullstack":"5/5","frontend_architect":"5/5","engineering_lead":"5/5"}
+9a8a28e {"vp":"1280x720","mode":"PERSON_X_JOB","fullstack":"5/5","frontend_architect":"5/5","engineering_lead":"5/5"}
+9a8a28e {"vp":"1280x720","mode":"PERSON","fullstack":"5/5","frontend_architect":"5/5","engineering_lead":"5/5"}
+9a8a28e {"vp":"zoom200-1920x1080","mode":"PERSON_X_JOB","fullstack":"5/5","frontend_architect":"5/5","engineering_lead":"5/5"}
+9a8a28e {"vp":"zoom200-1920x1080","mode":"PERSON","fullstack":"5/5","frontend_architect":"5/5","engineering_lead":"5/5"}
+9a8a28e {"vp":"zoom200-1280x720","mode":"PERSON_X_JOB","fullstack":"5/5","frontend_architect":"5/5","engineering_lead":"5/5"}
+9a8a28e {"vp":"zoom200-1280x720","mode":"PERSON","fullstack":"5/5","frontend_architect":"5/5","engineering_lead":"5/5"}

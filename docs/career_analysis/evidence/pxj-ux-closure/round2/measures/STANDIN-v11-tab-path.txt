@@ -1,0 +1,8 @@
+cand 9a8a28e 1920 1080 blocked 0 {'from-ORG-Enter-on-ROLE': 14, 'role-view-document-load': 4}
+41879 70d1cb4 1920 1080 blocked 0 {'from-ORG-Enter-on-ROLE': 14, 'role-view-document-load': 4}
+cand 9a8a28e 1600 900 blocked 0 {'from-ORG-Enter-on-ROLE': 14, 'role-view-document-load': 4}
+41879 70d1cb4 1600 900 blocked 0 {'from-ORG-Enter-on-ROLE': 14, 'role-view-document-load': 4}
+cand 9a8a28e 1440 900 blocked 0 {'from-ORG-Enter-on-ROLE': 14, 'role-view-document-load': 4}
+41879 70d1cb4 1440 900 blocked 0 {'from-ORG-Enter-on-ROLE': 14, 'role-view-document-load': 4}
+cand 9a8a28e 1280 720 blocked 0 {'from-ORG-Enter-on-ROLE': 14, 'role-view-document-load': 4}
+41879 70d1cb4 1280 720 blocked 0 {'from-ORG-Enter-on-ROLE': 14, 'role-view-document-load': 4}

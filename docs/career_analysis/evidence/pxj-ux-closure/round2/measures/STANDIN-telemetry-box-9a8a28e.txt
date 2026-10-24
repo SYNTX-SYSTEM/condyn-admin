@@ -1,0 +1,4 @@
+1920 1080 {"hud":[1564,946,1896,1056],"panel":[1496,193,1896,933],"overlapPx":0,"rowHits":["pxj-first-req-req_pink_alpha_1","inference-telemetry-hud","semantic-career-intelligence-field"],"state":"AVAILABLE"}
+1600 900 {"hud":[1244,766,1576,876],"panel":[1176,132,1576,753],"overlapPx":0,"rowHits":["inference-telemetry-hud","semantic-career-intelligence-field","semantic-career-intelligence-field"],"state":"AVAILABLE"}
+1440 900 {"hud":[1084,766,1416,876],"panel":[1016,132,1416,753],"overlapPx":0,"rowHits":["inference-telemetry-hud","semantic-career-intelligence-field","semantic-career-intelligence-field"],"state":"AVAILABLE"}
+1280 720 {"hud":[924,586,1256,696],"panel":[872,132,1256,573],"overlapPx":0,"rowHits":["semantic-career-intelligence-field","semantic-career-intelligence-field","semantic-career-intelligence-field"],"state":"AVAILABLE"}

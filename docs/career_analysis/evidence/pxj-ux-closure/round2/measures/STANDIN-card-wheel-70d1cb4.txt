@@ -1,0 +1,10 @@
+41879 {"vp":"1600x900","mode":"PERSON_X_JOB","fullstack":"5/5","frontend_architect":"5/5","engineering_lead":"5/5"}
+41879 {"vp":"1600x900","mode":"PERSON","fullstack":"5/5","frontend_architect":"5/5","engineering_lead":"5/5"}
+41879 {"vp":"1440x900","mode":"PERSON_X_JOB","fullstack":"5/5","frontend_architect":"5/5","engineering_lead":"5/5"}
+41879 {"vp":"1440x900","mode":"PERSON","fullstack":"5/5","frontend_architect":"5/5","engineering_lead":"5/5"}
+41879 {"vp":"1280x720","mode":"PERSON_X_JOB","fullstack":"5/5","frontend_architect":"5/5","engineering_lead":"5/5"}
+41879 {"vp":"1280x720","mode":"PERSON","fullstack":"5/5","frontend_architect":"5/5","engineering_lead":"5/5"}
+41879 {"vp":"zoom200-1920x1080","mode":"PERSON_X_JOB","fullstack":"5/5","frontend_architect":"5/5","engineering_lead":"3/5 [job-pool-panel-toggle,field-focus-strip]"}
+41879 {"vp":"zoom200-1920x1080","mode":"PERSON","fullstack":"5/5","frontend_architect":"5/5","engineering_lead":"3/5 [job-pool-panel-toggle,field-focus-strip]"}
+41879 {"vp":"zoom200-1280x720","mode":"PERSON_X_JOB","fullstack":"5/5","frontend_architect":"5/5","engineering_lead":"2/5 [job-pool-panel-toggle,field-focus-strip]"}
+41879 {"vp":"zoom200-1280x720","mode":"PERSON","fullstack":"5/5","frontend_architect":"5/5","engineering_lead":"2/5 [job-pool-panel-toggle,field-focus-strip]"}

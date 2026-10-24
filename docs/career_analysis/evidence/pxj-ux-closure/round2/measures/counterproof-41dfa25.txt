@@ -1,0 +1,22 @@
+Counter-proof of round 2: the 6 new test files against 41dfa25 (npm run test:isolated, fresh disposable database).
+Every REPRODUCE fails at its own assertion; every inverse passes.
+
+ Test Files  6 failed (6)
+      Tests  10 failed | 6 passed (16)
+
+   ✓ R-05 · the tooltip says what the visible cause says > inverse: no job — the existing sentence stays (it says the same)
+   × R-05 · the tooltip says what the visible cause says > REPRODUCE: CHECKING — the capsule's and the exit's tooltip carry the cause and the way
+   × R-05 · the tooltip says what the visible cause says > REPRODUCE: INVALID — with the validation's reason
+   ✓ V-08-R · a broken PDF from the running worker offers no RETRY > inverse: an exact token only — a longer code, a prefix glued to it, or another failure keep RETRY
+   × V-08-R · a broken PDF from the running worker offers no RETRY > REPRODUCE: EXECUTION_FAILED with ERR_PDF_PARSE_FAILURE in its summary — no RETRY, the way to a readable source
+   × V-08-R · a broken PDF from the running worker offers no RETRY > REPRODUCE: the token stands anywhere in the summary as a word of its own (a wrapped message)
+   ✓ V-11-R · the Tab path to SELECT AS JOB is no longer than on 70d1cb4 > inverse: inside the panel SELECT AS JOB still follows the path and RETURN (UX-02)
+   × V-11-R · the Tab path to SELECT AS JOB is no longer than on 70d1cb4 > REPRODUCE: from the opened role's anchor, SELECT AS JOB is reached within 70d1cb4's presses — no shell or header stop in between
+   ✓ V-15 · a cut name carries its full text > inverse: the role card title and the path keep their own full text (unchanged)
+   × V-15 · a cut name carries its full text > REPRODUCE: no element in the Job Field cuts a name without title or aria-label (pool, organisation, role, requirement level)
+   ✓ V-18 / V-19 · the Job Field keeps its size > inverse: the Capability Field's fit (B2 from below the shell to the bottom edge, its own row scroll) is unchanged
+   × V-18 / V-19 · the Job Field keeps its size > REPRODUCE: in the fit tier the page becomes the viewport only while the Capability Field is active — no unscoped height rule
+   × V-18 / V-19 · the Job Field keeps its size > REPRODUCE: in the stack tier the Job Field's stage keeps 960 px (its orbits are laid out on the stage's size)
+   ✓ V-20 · B2 ends above the runtime telemetry box > inverse: every clearance hangs on the box being shown
+   × V-20 · B2 ends above the runtime telemetry box > REPRODUCE: at 200 % the box stands in the column (not fixed over it)
+   × V-20 · B2 ends above the runtime telemetry box > REPRODUCE: full and fit tier — while the box is shown, the panel's bottom clears its measured height

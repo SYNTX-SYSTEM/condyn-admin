@@ -1,0 +1,263 @@
+{
+  "gemini": "STAND_IN",
+  "server": "next start (production build, no ignoreBuildErrors)",
+  "note": "STAND-IN · keine Modellausführung",
+  "base": "http://127.0.0.1:41871",
+  "steps": [
+    {
+      "name": "00-existing-analysis-by-analyze",
+      "ok": true,
+      "ms": 3701,
+      "existing": "ANL_1792808197604_137",
+      "posts": [
+        "/api/career/analyze"
+      ],
+      "nonGet": 1
+    },
+    {
+      "name": "A1-start-pools-first",
+      "ok": true,
+      "ms": 2537,
+      "list": true,
+      "intakeHidden": true,
+      "giant": "JOB FIELD // UNBOUND NO JOB POOL OPENED This field awaits an explicitly opened job pool. Open an uploaded pool in POOLS · or upload one via + INTAKE",
+      "nonGet": 0
+    },
+    {
+      "name": "A2-open-pool-org-role",
+      "ok": true,
+      "ms": 2918,
+      "poolLevel": "LEVEL · POOL",
+      "orgLevel": "LEVEL · ORGANIZATION",
+      "roleLevel": "LEVEL · ROLE",
+      "hint": "Open a role to select it as the job.",
+      "opened": "OPENED ROLE · not the selected job",
+      "nonGet": 0
+    },
+    {
+      "name": "A3-tab-order-to-select",
+      "ok": true,
+      "ms": 33,
+      "presses": 8,
+      "order": [
+        null,
+        null,
+        null,
+        "syntx-role-role_pink_alpha_architect",
+        "syntx-path-FIELD",
+        "syntx-path-ORGANIZATION",
+        "syntx-return-btn",
+        "syntx-job-scope-select"
+      ],
+      "nonGet": 0
+    },
+    {
+      "name": "A4-select-as-job",
+      "ok": true,
+      "ms": 1190,
+      "opened": "OPENED ROLE · the selected job",
+      "indicator": "SELECTED JOB Distributed Systems Architect Alpha Industrial Systems · PINK validation pool · role_pink_alpha_architect",
+      "nonGet": 0
+    },
+    {
+      "name": "A5-dpick-from-role-view",
+      "ok": true,
+      "ms": 4076,
+      "offered": [
+        {
+          "id": "ANL_1792808197604_137",
+          "upload": "JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7",
+          "role": "role_pink_alpha_architect"
+        }
+      ],
+      "after": {
+        "analysisId": "ANL_1792808197604_137",
+        "focus": "CAPABILITY",
+        "length": 7
+      },
+      "back": {
+        "analysisId": null,
+        "sameUrl": true
+      },
+      "nonGetInA": 0,
+      "nonGet": 0
+    },
+    {
+      "name": "B1-back-during-submit-a-latency",
+      "ok": true,
+      "ms": 8171,
+      "where": "entry-on-view",
+      "job": "JOB_1792808214421_270",
+      "analysis": "ANL_1792808214421_270",
+      "posts": [
+        "POST /api/career/analyze"
+      ],
+      "jobReads": 3,
+      "nonGet": 1
+    },
+    {
+      "name": "B1-back-during-submit-b-no-latency",
+      "ok": true,
+      "ms": 11071,
+      "where": "entry-of-analyze",
+      "job": "JOB_1792808221242_509",
+      "analysis": "ANL_1792808221242_509",
+      "posts": [
+        "POST /api/career/analyze"
+      ],
+      "jobReads": 2,
+      "nonGet": 1
+    },
+    {
+      "name": "C1-job-banner-close",
+      "ok": true,
+      "ms": 3399,
+      "resume": "NOT_FOUND",
+      "retry": 0,
+      "gone": true,
+      "afterParam": null,
+      "backParam": "JOB_1000000000000_1",
+      "nonGet": 0
+    },
+    {
+      "name": "D1-md-as-text-docx-refused",
+      "ok": true,
+      "ms": 2032,
+      "refused": "Not added: cv.docx — only PDF, Markdown (.md, .markdown) or text (.txt) files. Other text: ENTER TEXT / MARKDOWN.",
+      "stagedHasMd": true,
+      "stagedAsPdf": false,
+      "nonGet": 0
+    },
+    {
+      "name": "R2-V08-broken-pdf-no-retry",
+      "ok": true,
+      "ms": 7897,
+      "code": "EXECUTION_FAILED",
+      "retry": 0,
+      "format": 1,
+      "posts": [
+        "POST /api/career/analyze"
+      ],
+      "nonGet": 1
+    },
+    {
+      "name": "R2-R05-invalid-job-tooltip",
+      "ok": true,
+      "ms": 963,
+      "title": "PERSON × JOB needs a valid role selected as the job: the selected job is not valid · ROLE_NOT_IN_POOL. Way: open a valid role in the Job Field, then SELECT AS JOB",
+      "exitTitle": "PERSON × JOB needs a valid role selected as the job: the selected job is not valid · ROLE_NOT_IN_POOL. Way: open a valid role in the Job Field, then SELECT AS JOB",
+      "nonGet": 0
+    },
+    {
+      "name": "E1-gate-reason-and-mode-keys",
+      "ok": true,
+      "ms": 2683,
+      "gate": "CAPABILITY FIELD CLOSED PERSON × JOB needs a valid role selected as the job: none is selected Way: open a role in the Job Field, then SELECT AS JOB",
+      "focused": "investigation-mode-JOB",
+      "unchanged": true,
+      "chosen": "JOB",
+      "nonGet": 0
+    },
+    {
+      "name": "F-1920x1080",
+      "ok": true,
+      "ms": 5052,
+      "head": true,
+      "binding": true,
+      "counts": true,
+      "countsY": 479,
+      "hScroll": false,
+      "rows": 3,
+      "reached": 3,
+      "enterText": true,
+      "nonGet": 0
+    },
+    {
+      "name": "F-1600x900",
+      "ok": true,
+      "ms": 5733,
+      "head": true,
+      "binding": true,
+      "counts": true,
+      "countsY": 418,
+      "hScroll": false,
+      "rows": 3,
+      "reached": 3,
+      "enterText": true,
+      "nonGet": 0
+    },
+    {
+      "name": "F-1440x900",
+      "ok": true,
+      "ms": 5642,
+      "head": true,
+      "binding": true,
+      "counts": true,
+      "countsY": 418,
+      "hScroll": false,
+      "rows": 3,
+      "reached": 3,
+      "enterText": true,
+      "nonGet": 0
+    },
+    {
+      "name": "F-1280x720",
+      "ok": true,
+      "ms": 5271,
+      "head": true,
+      "binding": true,
+      "counts": true,
+      "countsY": 418,
+      "hScroll": false,
+      "rows": 3,
+      "reached": 3,
+      "enterText": true,
+      "nonGet": 0
+    },
+    {
+      "name": "F-zoom200-1920x1080",
+      "ok": true,
+      "ms": 6010,
+      "head": true,
+      "binding": true,
+      "counts": true,
+      "countsY": 320,
+      "hScroll": false,
+      "rows": 3,
+      "reached": 3,
+      "enterText": true,
+      "nonGet": 0
+    },
+    {
+      "name": "F-zoom200-1280x720",
+      "ok": true,
+      "ms": 5625,
+      "head": true,
+      "binding": true,
+      "counts": true,
+      "countsY": 320,
+      "hScroll": false,
+      "rows": 3,
+      "reached": 3,
+      "enterText": true,
+      "nonGet": 0
+    },
+    {
+      "name": "G-person-1920x1080",
+      "ok": true,
+      "ms": 2384,
+      "nonGet": 0
+    },
+    {
+      "name": "G-person-1280x720",
+      "ok": true,
+      "ms": 2392,
+      "nonGet": 0
+    }
+  ],
+  "summary": {
+    "steps": 21,
+    "pass": 21,
+    "nonGetOutsideAnalyze": 0
+  }
+}

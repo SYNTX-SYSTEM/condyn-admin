@@ -1,0 +1,607 @@
+[
+ {
+  "phase": "00-existing-analysis-by-analyze",
+  "method": "GET",
+  "path": "/api/career/job-pools/JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7"
+ },
+ {
+  "phase": "00-existing-analysis-by-analyze",
+  "method": "GET",
+  "path": "/api/career/job-pools"
+ },
+ {
+  "phase": "00-existing-analysis-by-analyze",
+  "method": "GET",
+  "path": "/api/career/job-pools/JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7"
+ },
+ {
+  "phase": "00-existing-analysis-by-analyze",
+  "method": "POST",
+  "path": "/api/career/analyze"
+ },
+ {
+  "phase": "00-existing-analysis-by-analyze",
+  "method": "GET",
+  "path": "/api/career/jobs/JOB_1792808197604_137"
+ },
+ {
+  "phase": "00-existing-analysis-by-analyze",
+  "method": "GET",
+  "path": "/api/career/jobs/JOB_1792808197604_137"
+ },
+ {
+  "phase": "00-existing-analysis-by-analyze",
+  "method": "GET",
+  "path": "/api/career/analyses/ANL_1792808197604_137"
+ },
+ {
+  "phase": "00-existing-analysis-by-analyze",
+  "method": "GET",
+  "path": "/api/career/analyses/ANL_1792808197604_137/investigation"
+ },
+ {
+  "phase": "00-existing-analysis-by-analyze",
+  "method": "GET",
+  "path": "/api/career/analyses/ANL_1792808197604_137/job-comparison?jobPoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7&poolRoleId=role_pink_alpha_architect"
+ },
+ {
+  "phase": "A1-start-pools-first",
+  "method": "GET",
+  "path": "/api/career/job-pools"
+ },
+ {
+  "phase": "A2-open-pool-org-role",
+  "method": "GET",
+  "path": "/api/career/job-pools/JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7"
+ },
+ {
+  "phase": "A4-select-as-job",
+  "method": "GET",
+  "path": "/api/career/job-pools/JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7"
+ },
+ {
+  "phase": "A5-dpick-from-role-view",
+  "method": "GET",
+  "path": "/api/career/analyses"
+ },
+ {
+  "phase": "A5-dpick-from-role-view",
+  "method": "GET",
+  "path": "/api/career/analyses/ANL_1792808197604_137/investigation"
+ },
+ {
+  "phase": "A5-dpick-from-role-view",
+  "method": "GET",
+  "path": "/api/career/analyses/ANL_JOB_POOL_E2E_0001/investigation"
+ },
+ {
+  "phase": "A5-dpick-from-role-view",
+  "method": "GET",
+  "path": "/api/career/analyses/ANL_GRUEN_LAB_NO_JOB/investigation"
+ },
+ {
+  "phase": "A5-dpick-from-role-view",
+  "method": "GET",
+  "path": "/api/career/analyses/ANL_1792808197604_137/investigation"
+ },
+ {
+  "phase": "A5-dpick-from-role-view",
+  "method": "GET",
+  "path": "/api/career/analyses/ANL_1792808197604_137"
+ },
+ {
+  "phase": "A5-dpick-from-role-view",
+  "method": "GET",
+  "path": "/api/career/analyses/ANL_1792808197604_137/job-comparison?jobPoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7&poolRoleId=role_pink_alpha_architect"
+ },
+ {
+  "phase": "A5-dpick-from-role-view",
+  "method": "GET",
+  "path": "/api/career/job-pools/JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7"
+ },
+ {
+  "phase": "A5-dpick-from-role-view",
+  "method": "GET",
+  "path": "/api/career/job-pools"
+ },
+ {
+  "phase": "A5-dpick-from-role-view",
+  "method": "GET",
+  "path": "/api/career/job-pools/JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7"
+ },
+ {
+  "phase": "B1-back-during-submit-a-latency",
+  "method": "GET",
+  "path": "/api/career/job-pools/JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7"
+ },
+ {
+  "phase": "B1-back-during-submit-a-latency",
+  "method": "GET",
+  "path": "/api/career/job-pools"
+ },
+ {
+  "phase": "B1-back-during-submit-a-latency",
+  "method": "GET",
+  "path": "/api/career/job-pools/JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7"
+ },
+ {
+  "phase": "B1-back-during-submit-a-latency",
+  "method": "POST",
+  "path": "/api/career/analyze"
+ },
+ {
+  "phase": "B1-back-during-submit-a-latency",
+  "method": "GET",
+  "path": "/api/career/job-pools/JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7"
+ },
+ {
+  "phase": "B1-back-during-submit-a-latency",
+  "method": "GET",
+  "path": "/api/career/job-pools"
+ },
+ {
+  "phase": "B1-back-during-submit-a-latency",
+  "method": "GET",
+  "path": "/api/career/job-pools/JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7"
+ },
+ {
+  "phase": "B1-back-during-submit-a-latency",
+  "method": "GET",
+  "path": "/api/career/jobs/JOB_1792808214421_270"
+ },
+ {
+  "phase": "B1-back-during-submit-a-latency",
+  "method": "GET",
+  "path": "/api/career/jobs/JOB_1792808214421_270"
+ },
+ {
+  "phase": "B1-back-during-submit-a-latency",
+  "method": "GET",
+  "path": "/api/career/jobs/JOB_1792808214421_270"
+ },
+ {
+  "phase": "B1-back-during-submit-a-latency",
+  "method": "GET",
+  "path": "/api/career/analyses/ANL_1792808214421_270"
+ },
+ {
+  "phase": "B1-back-during-submit-a-latency",
+  "method": "GET",
+  "path": "/api/career/analyses/ANL_1792808214421_270/investigation"
+ },
+ {
+  "phase": "B1-back-during-submit-b-no-latency",
+  "method": "GET",
+  "path": "/api/career/job-pools/JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7"
+ },
+ {
+  "phase": "B1-back-during-submit-b-no-latency",
+  "method": "GET",
+  "path": "/api/career/job-pools"
+ },
+ {
+  "phase": "B1-back-during-submit-b-no-latency",
+  "method": "GET",
+  "path": "/api/career/job-pools/JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7"
+ },
+ {
+  "phase": "B1-back-during-submit-b-no-latency",
+  "method": "POST",
+  "path": "/api/career/analyze"
+ },
+ {
+  "phase": "B1-back-during-submit-b-no-latency",
+  "method": "GET",
+  "path": "/api/career/jobs/JOB_1792808221242_509"
+ },
+ {
+  "phase": "B1-back-during-submit-b-no-latency",
+  "method": "GET",
+  "path": "/api/career/job-pools/JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7"
+ },
+ {
+  "phase": "B1-back-during-submit-b-no-latency",
+  "method": "GET",
+  "path": "/api/career/job-pools"
+ },
+ {
+  "phase": "B1-back-during-submit-b-no-latency",
+  "method": "GET",
+  "path": "/api/career/job-pools/JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7"
+ },
+ {
+  "phase": "B1-back-during-submit-b-no-latency",
+  "method": "GET",
+  "path": "/api/career/jobs/JOB_1792808221242_509"
+ },
+ {
+  "phase": "B1-back-during-submit-b-no-latency",
+  "method": "GET",
+  "path": "/api/career/job-pools/JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7"
+ },
+ {
+  "phase": "B1-back-during-submit-b-no-latency",
+  "method": "GET",
+  "path": "/api/career/job-pools"
+ },
+ {
+  "phase": "B1-back-during-submit-b-no-latency",
+  "method": "GET",
+  "path": "/api/career/job-pools/JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7"
+ },
+ {
+  "phase": "B1-back-during-submit-b-no-latency",
+  "method": "GET",
+  "path": "/api/career/analyses/ANL_1792808221242_509"
+ },
+ {
+  "phase": "B1-back-during-submit-b-no-latency",
+  "method": "GET",
+  "path": "/api/career/analyses/ANL_1792808221242_509/investigation"
+ },
+ {
+  "phase": "B1-back-during-submit-b-no-latency",
+  "method": "GET",
+  "path": "/api/career/analyses/ANL_1792808221242_509/job-comparison?jobPoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7&poolRoleId=role_pink_alpha_architect"
+ },
+ {
+  "phase": "C1-job-banner-close",
+  "method": "GET",
+  "path": "/api/career/jobs/JOB_1000000000000_1"
+ },
+ {
+  "phase": "C1-job-banner-close",
+  "method": "GET",
+  "path": "/api/career/job-pools/JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7"
+ },
+ {
+  "phase": "C1-job-banner-close",
+  "method": "GET",
+  "path": "/api/career/job-pools"
+ },
+ {
+  "phase": "C1-job-banner-close",
+  "method": "GET",
+  "path": "/api/career/jobs/JOB_1000000000000_1"
+ },
+ {
+  "phase": "C1-job-banner-close",
+  "method": "GET",
+  "path": "/api/career/job-pools/JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7"
+ },
+ {
+  "phase": "C1-job-banner-close",
+  "method": "GET",
+  "path": "/api/career/job-pools"
+ },
+ {
+  "phase": "D1-md-as-text-docx-refused",
+  "method": "GET",
+  "path": "/api/career/job-pools"
+ },
+ {
+  "phase": "R2-V08-broken-pdf-no-retry",
+  "method": "GET",
+  "path": "/api/career/job-pools"
+ },
+ {
+  "phase": "R2-V08-broken-pdf-no-retry",
+  "method": "POST",
+  "path": "/api/career/analyze"
+ },
+ {
+  "phase": "R2-V08-broken-pdf-no-retry",
+  "method": "GET",
+  "path": "/api/career/jobs/JOB_1792808236617_160"
+ },
+ {
+  "phase": "R2-V08-broken-pdf-no-retry",
+  "method": "GET",
+  "path": "/api/career/jobs/JOB_1792808236617_160"
+ },
+ {
+  "phase": "R2-V08-broken-pdf-no-retry",
+  "method": "GET",
+  "path": "/api/career/jobs/JOB_1792808236617_160"
+ },
+ {
+  "phase": "R2-V08-broken-pdf-no-retry",
+  "method": "GET",
+  "path": "/api/career/jobs/JOB_1792808236617_160"
+ },
+ {
+  "phase": "R2-R05-invalid-job-tooltip",
+  "method": "GET",
+  "path": "/api/career/job-pools/JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7"
+ },
+ {
+  "phase": "R2-R05-invalid-job-tooltip",
+  "method": "GET",
+  "path": "/api/career/job-pools"
+ },
+ {
+  "phase": "E1-gate-reason-and-mode-keys",
+  "method": "GET",
+  "path": "/api/career/job-pools"
+ },
+ {
+  "phase": "F-1920x1080",
+  "method": "GET",
+  "path": "/api/career/job-pools/JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7"
+ },
+ {
+  "phase": "F-1920x1080",
+  "method": "GET",
+  "path": "/api/career/analyses/ANL_1792808197604_137/investigation"
+ },
+ {
+  "phase": "F-1920x1080",
+  "method": "GET",
+  "path": "/api/career/job-pools"
+ },
+ {
+  "phase": "F-1920x1080",
+  "method": "GET",
+  "path": "/api/career/job-pools/JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7"
+ },
+ {
+  "phase": "F-1920x1080",
+  "method": "GET",
+  "path": "/api/career/analyses/ANL_1792808197604_137"
+ },
+ {
+  "phase": "F-1920x1080",
+  "method": "GET",
+  "path": "/api/career/analyses/ANL_1792808197604_137/job-comparison?jobPoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7&poolRoleId=role_pink_alpha_architect"
+ },
+ {
+  "phase": "F-1920x1080",
+  "method": "GET",
+  "path": "/api/career/job-pools/JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7"
+ },
+ {
+  "phase": "F-1920x1080",
+  "method": "GET",
+  "path": "/api/career/job-pools"
+ },
+ {
+  "phase": "F-1920x1080",
+  "method": "GET",
+  "path": "/api/career/job-pools/JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7"
+ },
+ {
+  "phase": "F-1600x900",
+  "method": "GET",
+  "path": "/api/career/job-pools/JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7"
+ },
+ {
+  "phase": "F-1600x900",
+  "method": "GET",
+  "path": "/api/career/analyses/ANL_1792808197604_137/investigation"
+ },
+ {
+  "phase": "F-1600x900",
+  "method": "GET",
+  "path": "/api/career/job-pools"
+ },
+ {
+  "phase": "F-1600x900",
+  "method": "GET",
+  "path": "/api/career/job-pools/JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7"
+ },
+ {
+  "phase": "F-1600x900",
+  "method": "GET",
+  "path": "/api/career/analyses/ANL_1792808197604_137"
+ },
+ {
+  "phase": "F-1600x900",
+  "method": "GET",
+  "path": "/api/career/analyses/ANL_1792808197604_137/job-comparison?jobPoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7&poolRoleId=role_pink_alpha_architect"
+ },
+ {
+  "phase": "F-1600x900",
+  "method": "GET",
+  "path": "/api/career/job-pools/JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7"
+ },
+ {
+  "phase": "F-1600x900",
+  "method": "GET",
+  "path": "/api/career/job-pools"
+ },
+ {
+  "phase": "F-1600x900",
+  "method": "GET",
+  "path": "/api/career/job-pools/JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7"
+ },
+ {
+  "phase": "F-1440x900",
+  "method": "GET",
+  "path": "/api/career/job-pools/JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7"
+ },
+ {
+  "phase": "F-1440x900",
+  "method": "GET",
+  "path": "/api/career/analyses/ANL_1792808197604_137/investigation"
+ },
+ {
+  "phase": "F-1440x900",
+  "method": "GET",
+  "path": "/api/career/job-pools"
+ },
+ {
+  "phase": "F-1440x900",
+  "method": "GET",
+  "path": "/api/career/job-pools/JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7"
+ },
+ {
+  "phase": "F-1440x900",
+  "method": "GET",
+  "path": "/api/career/analyses/ANL_1792808197604_137"
+ },
+ {
+  "phase": "F-1440x900",
+  "method": "GET",
+  "path": "/api/career/analyses/ANL_1792808197604_137/job-comparison?jobPoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7&poolRoleId=role_pink_alpha_architect"
+ },
+ {
+  "phase": "F-1440x900",
+  "method": "GET",
+  "path": "/api/career/job-pools/JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7"
+ },
+ {
+  "phase": "F-1440x900",
+  "method": "GET",
+  "path": "/api/career/job-pools"
+ },
+ {
+  "phase": "F-1440x900",
+  "method": "GET",
+  "path": "/api/career/job-pools/JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7"
+ },
+ {
+  "phase": "F-1280x720",
+  "method": "GET",
+  "path": "/api/career/job-pools/JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7"
+ },
+ {
+  "phase": "F-1280x720",
+  "method": "GET",
+  "path": "/api/career/analyses/ANL_1792808197604_137/investigation"
+ },
+ {
+  "phase": "F-1280x720",
+  "method": "GET",
+  "path": "/api/career/job-pools"
+ },
+ {
+  "phase": "F-1280x720",
+  "method": "GET",
+  "path": "/api/career/job-pools/JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7"
+ },
+ {
+  "phase": "F-1280x720",
+  "method": "GET",
+  "path": "/api/career/analyses/ANL_1792808197604_137"
+ },
+ {
+  "phase": "F-1280x720",
+  "method": "GET",
+  "path": "/api/career/analyses/ANL_1792808197604_137/job-comparison?jobPoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7&poolRoleId=role_pink_alpha_architect"
+ },
+ {
+  "phase": "F-1280x720",
+  "method": "GET",
+  "path": "/api/career/job-pools/JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7"
+ },
+ {
+  "phase": "F-1280x720",
+  "method": "GET",
+  "path": "/api/career/job-pools"
+ },
+ {
+  "phase": "F-1280x720",
+  "method": "GET",
+  "path": "/api/career/job-pools/JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7"
+ },
+ {
+  "phase": "F-zoom200-1920x1080",
+  "method": "GET",
+  "path": "/api/career/job-pools/JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7"
+ },
+ {
+  "phase": "F-zoom200-1920x1080",
+  "method": "GET",
+  "path": "/api/career/analyses/ANL_1792808197604_137/investigation"
+ },
+ {
+  "phase": "F-zoom200-1920x1080",
+  "method": "GET",
+  "path": "/api/career/job-pools"
+ },
+ {
+  "phase": "F-zoom200-1920x1080",
+  "method": "GET",
+  "path": "/api/career/job-pools/JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7"
+ },
+ {
+  "phase": "F-zoom200-1920x1080",
+  "method": "GET",
+  "path": "/api/career/analyses/ANL_1792808197604_137"
+ },
+ {
+  "phase": "F-zoom200-1920x1080",
+  "method": "GET",
+  "path": "/api/career/analyses/ANL_1792808197604_137/job-comparison?jobPoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7&poolRoleId=role_pink_alpha_architect"
+ },
+ {
+  "phase": "F-zoom200-1920x1080",
+  "method": "GET",
+  "path": "/api/career/job-pools/JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7"
+ },
+ {
+  "phase": "F-zoom200-1920x1080",
+  "method": "GET",
+  "path": "/api/career/job-pools"
+ },
+ {
+  "phase": "F-zoom200-1920x1080",
+  "method": "GET",
+  "path": "/api/career/job-pools/JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7"
+ },
+ {
+  "phase": "F-zoom200-1280x720",
+  "method": "GET",
+  "path": "/api/career/job-pools/JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7"
+ },
+ {
+  "phase": "F-zoom200-1280x720",
+  "method": "GET",
+  "path": "/api/career/analyses/ANL_1792808197604_137/investigation"
+ },
+ {
+  "phase": "F-zoom200-1280x720",
+  "method": "GET",
+  "path": "/api/career/job-pools"
+ },
+ {
+  "phase": "F-zoom200-1280x720",
+  "method": "GET",
+  "path": "/api/career/job-pools/JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7"
+ },
+ {
+  "phase": "F-zoom200-1280x720",
+  "method": "GET",
+  "path": "/api/career/analyses/ANL_1792808197604_137"
+ },
+ {
+  "phase": "F-zoom200-1280x720",
+  "method": "GET",
+  "path": "/api/career/analyses/ANL_1792808197604_137/job-comparison?jobPoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7&poolRoleId=role_pink_alpha_architect"
+ },
+ {
+  "phase": "F-zoom200-1280x720",
+  "method": "GET",
+  "path": "/api/career/job-pools/JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7"
+ },
+ {
+  "phase": "F-zoom200-1280x720",
+  "method": "GET",
+  "path": "/api/career/job-pools"
+ },
+ {
+  "phase": "F-zoom200-1280x720",
+  "method": "GET",
+  "path": "/api/career/job-pools/JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7"
+ },
+ {
+  "phase": "G-person-1920x1080",
+  "method": "GET",
+  "path": "/api/career/job-pools"
+ },
+ {
+  "phase": "G-person-1280x720",
+  "method": "GET",
+  "path": "/api/career/job-pools"
+ }
+]

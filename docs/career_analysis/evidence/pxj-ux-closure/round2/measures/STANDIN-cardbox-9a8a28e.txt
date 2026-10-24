@@ -1,0 +1,95 @@
+{
+ "blocked": 0,
+ "out": [
+  {
+   "vp": "1920x1080",
+   "scene": "org-PXJ",
+   "cards": "engineering_lead:orbit+domain frontend_architect:orbit+domain fullstack:orbit+domain"
+  },
+  {
+   "vp": "1920x1080",
+   "scene": "role-PXJ",
+   "cards": "engineering_lead:orbit+domain frontend_architect:orbit+domain :orbit+domain"
+  },
+  {
+   "vp": "1920x1080",
+   "scene": "org-PERSON",
+   "cards": "engineering_lead:orbit+domain frontend_architect:orbit+domain fullstack:orbit+domain"
+  },
+  {
+   "vp": "1600x900",
+   "scene": "org-PXJ",
+   "cards": "engineering_lead:orbit+domain frontend_architect:orbit+domain fullstack:orbit+domain"
+  },
+  {
+   "vp": "1600x900",
+   "scene": "role-PXJ",
+   "cards": "engineering_lead:orbit+domain frontend_architect:orbit+domain :orbit+domain"
+  },
+  {
+   "vp": "1600x900",
+   "scene": "org-PERSON",
+   "cards": "engineering_lead:orbit+domain frontend_architect:orbit+domain fullstack:orbit+domain"
+  },
+  {
+   "vp": "1440x900",
+   "scene": "org-PXJ",
+   "cards": "engineering_lead:orbit+domain frontend_architect:orbit+domain fullstack:orbit+domain"
+  },
+  {
+   "vp": "1440x900",
+   "scene": "role-PXJ",
+   "cards": "engineering_lead:orbit+domain frontend_architect:orbit+domain :orbit+domain"
+  },
+  {
+   "vp": "1440x900",
+   "scene": "org-PERSON",
+   "cards": "engineering_lead:orbit+domain frontend_architect:orbit+domain fullstack:orbit+domain"
+  },
+  {
+   "vp": "1280x720",
+   "scene": "org-PXJ",
+   "cards": "engineering_lead:orbit+domain frontend_architect:orbit+domain fullstack:orbit+domain"
+  },
+  {
+   "vp": "1280x720",
+   "scene": "role-PXJ",
+   "cards": "engineering_lead:orbit+domain frontend_architect:orbit+domain :orbit+domain"
+  },
+  {
+   "vp": "1280x720",
+   "scene": "org-PERSON",
+   "cards": "engineering_lead:orbit+domain frontend_architect:orbit+domain fullstack:orbit+domain"
+  },
+  {
+   "vp": "zoom200-1920x1080",
+   "scene": "org-PXJ",
+   "cards": "engineering_lead:orbit+domain frontend_architect:orbit+domain fullstack:orbit+domain"
+  },
+  {
+   "vp": "zoom200-1920x1080",
+   "scene": "role-PXJ",
+   "cards": "engineering_lead:orbit+domain frontend_architect:orbit+domain :orbit+domain"
+  },
+  {
+   "vp": "zoom200-1920x1080",
+   "scene": "org-PERSON",
+   "cards": "engineering_lead:orbit+domain frontend_architect:orbit+domain fullstack:orbit+domain"
+  },
+  {
+   "vp": "zoom200-1280x720",
+   "scene": "org-PXJ",
+   "cards": "engineering_lead:orbit+domain frontend_architect:orbit+domain fullstack:orbit+domain"
+  },
+  {
+   "vp": "zoom200-1280x720",
+   "scene": "role-PXJ",
+   "cards": "engineering_lead:orbit+domain frontend_architect:orbit+domain :orbit+domain"
+  },
+  {
+   "vp": "zoom200-1280x720",
+   "scene": "org-PERSON",
+   "cards": "engineering_lead:orbit+domain frontend_architect:orbit+domain fullstack:orbit+domain"
+  }
+ ]
+}

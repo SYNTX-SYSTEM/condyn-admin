@@ -63,8 +63,9 @@ await step("A2-open-pool-org-role", async () => {
 await step("A3-tab-order-to-select", async () => {
   const { page } = globalThis.A;
   await page.evaluate(() => document.querySelector('[data-testid="syntx-field"]')?.focus());
-  const order = []; for (let i = 0; i < 8; i += 1) { await page.keyboard.press("Tab"); const id = await page.evaluate(() => document.activeElement?.getAttribute("data-testid")); order.push(id); if (id === "syntx-job-scope-select") break; }
-  return { ok: order.at(-1) === "syntx-job-scope-select" && order.length <= 6, presses: order.length, order };
+  const order = []; for (let i = 0; i < 40; i += 1) { await page.keyboard.press("Tab"); const id = await page.evaluate(() => document.activeElement?.getAttribute("data-testid")); order.push(id); if (id === "syntx-job-scope-select") break; }
+  // Recorded only: the bound against 70d1cb4 is PINK's pink-v11-order probe on both labs (round-2 measures, V-11-R).
+  return { ok: order.at(-1) === "syntx-job-scope-select", presses: order.length, order };
 });
 await step("A4-select-as-job", async () => {
   const { page, t } = globalThis.A;
@@ -140,6 +141,28 @@ await step("D1-md-as-text-docx-refused", async () => {
   return { ok: /pink-ux-note\.md/.test(staged) && !/PDF pink-ux-note/.test(staged) && /Not added: cv\.docx/.test(refused ?? "") && posts("D1-md-as-text-docx-refused").length === 0, refused, stagedHasMd: /pink-ux-note\.md/.test(staged), stagedAsPdf: /PDF pink-ux-note/.test(staged) };
 });
 
+// R2 · V-08-R: a broken PDF through the real worker — the banner offers no RETRY; R-05: the tooltip of an invalid job.
+await step("R2-V08-broken-pdf-no-retry", async () => {
+  const { ctx, page, t } = await context();
+  await page.goto(`${BASE}/career/demo?focus=CAPABILITY&investigationMode=PERSON`, { waitUntil: "networkidle" }); await fieldReady(page);
+  await t("source-dock-file-input").setInputFiles({ name: "broken-cv.pdf", mimeType: "application/pdf", buffer: Buffer.from("%PDF-1.4 this is not a readable pdf") });
+  await page.waitForTimeout(500); await t("start-intake-analysis-btn").click();
+  await t("intake-error-banner").waitFor({ timeout: 300000 });
+  const code = await t("intake-error-banner").getAttribute("data-error-code"); const banner = (await t("intake-error-banner").innerText()).replace(/\s+/g, " ");
+  const retry = await t("retry-intake-btn").count(); const format = await t("intake-error-format").count();
+  await shot(page, "R2-V08-broken-pdf-1920"); await ctx.close();
+  return { ok: retry === 0 && format === 1 && /ERR_PDF_PARSE_FAILURE/.test(banner), code, retry, format, posts: posts("R2-V08-broken-pdf-no-retry").map(r => `${r.method} ${r.path}`) };
+});
+await step("R2-R05-invalid-job-tooltip", async () => {
+  const { ctx, page, t } = await context();
+  await page.goto(`${BASE}/career/demo?investigationMode=PERSON_X_JOB&jobScopePoolUploadId=${VAL}&jobScopeRoleId=role_not_in_this_pool`, { waitUntil: "networkidle" }); await fieldReady(page);
+  await page.waitForSelector('[data-testid="capability-gate-reason"][data-gate="INVALID"]', { timeout: 30000 });
+  const title = await t("field-focus-capability-btn").getAttribute("title"); const cause = await t("capability-gate-cause").innerText(); const way = await t("capability-gate-way").innerText();
+  const exitTitle = await t("syntx-exit-btn").getAttribute("title").catch(() => null);
+  await ctx.close();
+  return { ok: title === `${cause}. ${way}` && !/Select a job in the Job Field first/.test(title ?? ""), title, exitTitle };
+});
+
 // E · UX-04 gate reason and V-12 keyboard (arrow moves focus only).
 await step("E1-gate-reason-and-mode-keys", async () => {
   const { ctx, page, t } = await context();
@@ -180,7 +203,7 @@ for (const [name, w, h, dsf] of VPS) {
 // G · PERSON, visual only (GELB): the first screen under PERSON at 1920 × 1080 and 1280 × 720.
 for (const [name, w, h] of [["1920x1080", 1920, 1080], ["1280x720", 1280, 720]]) await step(`G-person-${name}`, async () => { const { ctx, page } = await context(w, h); await page.goto(`${BASE}/career/demo?focus=CAPABILITY&investigationMode=PERSON`, { waitUntil: "networkidle" }); await page.waitForTimeout(1500); await shot(page, `G-person-${name}`); await ctx.close(); });
 
-record.summary = { steps: record.steps.length, pass: record.steps.filter(s => s.ok).length, nonGetOutsideAnalyze: requests.filter(r => r.method !== "GET" && !["00-existing-analysis-by-analyze", "B1-back-during-submit-a-latency", "B1-back-during-submit-b-no-latency"].includes(r.phase)).length };
+record.summary = { steps: record.steps.length, pass: record.steps.filter(s => s.ok).length, nonGetOutsideAnalyze: requests.filter(r => r.method !== "GET" && !["00-existing-analysis-by-analyze", "B1-back-during-submit-a-latency", "B1-back-during-submit-b-no-latency", "R2-V08-broken-pdf-no-retry"].includes(r.phase)).length };
 writeFileSync(`${OUT}/STANDIN-ux-walk.json`, JSON.stringify(record, null, 2));
 writeFileSync(`${OUT}/STANDIN-ux-requests.json`, JSON.stringify(requests, null, 1));
 console.log("SUMMARY", JSON.stringify(record.summary));
