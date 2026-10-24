@@ -22,6 +22,7 @@ export interface CareerIntelligenceDashboardProps {
   jobScopeRoleId?: string;
   investigationMode?: string;
   analysisJobId?: string;
+  discoveryPoolUploadIds?: string[];
 }
 
 /**
@@ -33,7 +34,7 @@ export interface CareerIntelligenceDashboardProps {
  * TensionLayer, EvolutionLayer) are not mounted here: they label absent scores as
  * "UNSUPPORTED" or "0%", which the field semantics forbid (PINK finding F-JF-5).
  */
-export function CareerIntelligenceDashboard({ data, canonicalSilAssociationId, careerDecisionContextRevisionId, decisionContextRevisionId, analysisId, jobPoolUploadId, fieldFocus, jobOrganizationId, jobRoleId, jobRequirementId, jobScopePoolUploadId, jobScopeRoleId, investigationMode, analysisJobId }: CareerIntelligenceDashboardProps) {
+export function CareerIntelligenceDashboard({ data, canonicalSilAssociationId, careerDecisionContextRevisionId, decisionContextRevisionId, analysisId, jobPoolUploadId, fieldFocus, jobOrganizationId, jobRoleId, jobRequirementId, jobScopePoolUploadId, jobScopeRoleId, investigationMode, analysisJobId, discoveryPoolUploadIds }: CareerIntelligenceDashboardProps) {
   /* The brand surface follows the active field: Decision Loop Labs in the Job Field context; the Capability context is unchanged.
      Job Pool first: the Job Field is active until the field reports a VALID job scope and an entered Capability Field. */
   const [activeField, setActiveField] = useState<"CAPABILITY" | "FIELD">("FIELD");
@@ -118,6 +119,7 @@ export function CareerIntelligenceDashboard({ data, canonicalSilAssociationId, c
         jobScopeRoleId={jobScopeRoleId}
         investigationMode={investigationMode}
         analysisJobId={analysisJobId}
+        discoveryPoolUploadIds={discoveryPoolUploadIds}
         onFieldFocusChange={setActiveField}
       />
     </div>

@@ -29,6 +29,9 @@ export interface CareerDemoUrlProps {
   investigationMode?: string;
   /** The analysis job still running when the URL was written (N-2 B-RUN): read again by its id only, never started anew. */
   analysisJobId?: string;
+  /** Role discovery (owner D-RD-1 = B): the job pool uploads the user released explicitly for the PERSON analysis on view —
+   *  repeated parameter `discoveryPoolUploadId`, never "all", never a latest pool. */
+  discoveryPoolUploadIds?: string[];
 }
 
 /** The shape Next.js hands a page: a repeated parameter arrives as an array. */
@@ -43,6 +46,21 @@ export const ANALYSIS_JOB_URL_PARAM = "analysisJobId";
 /** Only the server's own job id format (`JOB_<ms>_<n>`); anything else is no job id (it is removed, never read). */
 export function analysisJobIdFromParam(value: string | null | undefined): string | null {
   return typeof value === "string" && /^JOB_[0-9]{1,16}_[0-9]{1,6}$/.test(value) ? value : null;
+}
+
+/** Role discovery's released pools: the one parameter that repeats by design (one per released upload). */
+export const DISCOVERY_POOLS_URL_PARAM = "discoveryPoolUploadId";
+export const DISCOVERY_POOLS_MAX = 10;
+const UPLOAD_ID = /^JPOOL_[0-9A-F]{32}$/;
+
+/**
+ * The released pools as one set: every value an upload id, none twice, 1 … 10 of them; anything else is no release at all (read as
+ * absent and removed, never partly guessed). The order is the user's.
+ */
+export function discoveryPoolsFromParam(value: string | readonly string[] | undefined): string[] | undefined {
+  const list = typeof value === "string" ? [value] : Array.isArray(value) ? [...value] : [];
+  if (list.length === 0 || list.length > DISCOVERY_POOLS_MAX || new Set(list).size !== list.length || !list.every(id => UPLOAD_ID.test(id))) return undefined;
+  return list;
 }
 
 export function careerDemoPropsFromSearchParams(params: CareerDemoSearchParams): CareerDemoUrlProps {
@@ -60,7 +78,8 @@ export function careerDemoPropsFromSearchParams(params: CareerDemoSearchParams):
     jobScopePoolUploadId: single(params.jobScopePoolUploadId),
     jobScopeRoleId: single(params.jobScopeRoleId),
     investigationMode: single(params.investigationMode),
-    analysisJobId: single(params[ANALYSIS_JOB_URL_PARAM])
+    analysisJobId: single(params[ANALYSIS_JOB_URL_PARAM]),
+    discoveryPoolUploadIds: discoveryPoolsFromParam(params[DISCOVERY_POOLS_URL_PARAM])
   };
 }
 
@@ -74,13 +93,16 @@ export function careerDemoSearchParamsFromSearch(search: string): CareerDemoSear
   return params;
 }
 
-export type CareerDemoUrlChanges = Readonly<Record<string, string | null>>;
+export type CareerDemoUrlChanges = Readonly<Record<string, string | readonly string[] | null>>;
 
-/** The URL after the changes (null removes a parameter); every other parameter, the path and the hash stay as they are. */
+/** The URL after the changes (null removes a parameter, a list writes it once per value in order); every other parameter, the path
+ *  and the hash stay as they are. */
 export function applyCareerDemoUrlChanges(href: string, changes: CareerDemoUrlChanges): string {
   const url = new URL(href);
   for (const [name, value] of Object.entries(changes)) {
-    if (value === null) url.searchParams.delete(name); else url.searchParams.set(name, value);
+    if (value === null) url.searchParams.delete(name);
+    else if (typeof value === "string") url.searchParams.set(name, value);
+    else { url.searchParams.delete(name); for (const item of value) url.searchParams.append(name, item); }
   }
   return url.toString();
 }

@@ -30,7 +30,7 @@ import { useJobPoolWorkflow } from "../../../../lib/career/ui/useJobPool";
 import { useJobScopeValidation } from "../../../../lib/career/ui/useJobScope";
 import { useAnalysisBoundary, useSelectedRoleCoverage } from "../../../../lib/career/ui/useRoleInvestigation";
 import { useAnalysisResult } from "../../../../lib/career/ui/useAnalysisResult";
-import { ANALYSIS_JOB_URL_PARAM, analysisJobIdFromParam, writeCareerDemoUrl } from "../../../../lib/career/ui/career-demo-url";
+import { ANALYSIS_JOB_URL_PARAM, DISCOVERY_POOLS_URL_PARAM, analysisJobIdFromParam, discoveryPoolsFromParam, writeCareerDemoUrl } from "../../../../lib/career/ui/career-demo-url";
 import { careerJobHandoff } from "../../../../lib/career/ui/career-job-handoff";
 import { useAnalysisPicker } from "../../../../lib/career/ui/analysis-picker";
 import { AnalysisPicker } from "./AnalysisPicker";
@@ -82,6 +82,8 @@ export interface SemanticCareerIntelligenceFieldProps {
   investigationMode?: string;
   /** The analysis job of the URL (N-2 B-RUN): a run still going when the page was reloaded, followed by reading it only. */
   analysisJobId?: string;
+  /** Role discovery (owner D-RD-1 = B): the pool uploads released for the PERSON analysis on view (URL discoveryPoolUploadId). */
+  discoveryPoolUploadIds?: string[];
   /** The application shell's brand surface follows the active field (Decision Loop Labs in the Job Field context). */
   onFieldFocusChange?: (focus: "CAPABILITY" | "FIELD") => void;
   initialAnalysisState?: {
@@ -262,6 +264,7 @@ export function SemanticCareerIntelligenceField({
   jobScopeRoleId: initialJobScopeRoleId,
   investigationMode: initialInvestigationMode,
   analysisJobId: initialAnalysisJobId,
+  discoveryPoolUploadIds: initialDiscoveryPools,
   onFieldFocusChange,
   initialAnalysisState,
   initialLocale = SIL_COPY.defaultLocale,
@@ -333,6 +336,19 @@ export function SemanticCareerIntelligenceField({
   useEffect(() => {
     if (investigationModeFromParam(initialInvestigationMode) === null) writeCareerDemoUrl({ [INVESTIGATION_URL_PARAM]: null }, "replace");
   }, []);
+  /** Role discovery (D-RD-1 = B): the pools the user released, from the URL; released again only by the user (one push). A value
+   *  the parser does not accept (not upload ids, repeated, more than 10) is no release: removed on mount (a replace). */
+  const [discoveryPools, setDiscoveryPools] = useState<string[] | null>(() => initialDiscoveryPools ?? null);
+  useEffect(() => {
+    if (typeof window === "undefined" || initialDiscoveryPools !== undefined) return;
+    const named = new URLSearchParams(window.location.search).getAll(DISCOVERY_POOLS_URL_PARAM);
+    if (named.length > 0 && discoveryPoolsFromParam(named) === undefined) writeCareerDemoUrl({ [DISCOVERY_POOLS_URL_PARAM]: null }, "replace");
+  }, []);
+  const releaseDiscoveryPools = (ids: readonly string[]) => {
+    const next = discoveryPoolsFromParam(ids) ?? null;
+    setDiscoveryPools(next);
+    pushUrl({ [DISCOVERY_POOLS_URL_PARAM]: next ?? null });
+  };
   const investigationCopy = t.syntx.investigation;
 
   // Job Connection: one workflow read shared by the control panel and the Job Field focus (presentation only).
@@ -377,7 +393,7 @@ export function SemanticCareerIntelligenceField({
   const [observation, setObservation] = useState<SyntxObservation>(() => observationFromParams(initialJobOrganizationId, initialJobRoleId, initialJobRequirementId));
   /** N-1 B-NAV: every decision the user takes here is one history entry (push; several parameters of one action share it); what the
    *  system adds afterwards replaces the entry on view. Back / Forward remount the field from the entry's URL (CareerDemoHistory). */
-  const pushUrl = (changes: Record<string, string | null>) => writeCareerDemoUrl(changes, "push");
+  const pushUrl = (changes: Record<string, string | readonly string[] | null>) => writeCareerDemoUrl(changes, "push");
   /** The field is always written explicitly (focus=FIELD / focus=CAPABILITY), so a reload reopens the field that was chosen (B-POOL-INITIAL-FOCUS). */
   const FIELD_LEVEL: SyntxObservation = { kind: "FIELD", organizationId: null, roleId: null, requirementId: null, apertureSignId: null };
   const writeObservation = (next: SyntxObservation) => pushUrl({
