@@ -69,6 +69,15 @@ export function careerDemoStageFit(width: number, height: number, header: number
 /** The planetarium in the stack tier: zoomed to the column and to one screen height. */
 export const careerDemoStackZoom = (width: number, height: number) => Math.round(Math.max(0.3, Math.min(1, (width - 32) / STAGE_EXTENT, (height - 24) / STAGE_EXTENT)) * 1000) / 1000;
 
+/**
+ * V-20: the runtime telemetry box (fixed at the lower right, its height following the run's state) lay over B2's lower rows — on
+ * 70d1cb4 too. Its height is written on the root, and while it is shown the B2 panel ends above it (stylesheet).
+ */
+export function applyCareerDemoHudClearance(root: HTMLElement) {
+  const hud = root.querySelector<HTMLElement>('[data-testid="inference-telemetry-hud"]');
+  root.style.setProperty("--sx-hud-h", `${hud === null ? 0 : Math.ceil(hud.getBoundingClientRect().height)}px`);
+}
+
 /** Writes the tier's variables on the dashboard root (no re-render; the field's markup is not touched). */
 export function applyCareerDemoStageFit(root: HTMLElement, width: number, height: number, header: number) {
   const free = careerDemoStageFit(width, height, header, false), panel = careerDemoStageFit(width, height, header, true);
@@ -93,6 +102,7 @@ const PANEL_WRAP = `${FIELD} > div:has(> [data-pxj-panel])`;
 const JOB = '[data-sx-field="job"]';
 const HUD = `${FIELD} > [data-testid="semantic-zoom-telemetry"]`;
 const INSPECTOR = '[data-testid="decision-graph-inspector-idle"], [data-testid="decision-graph-inspector"]';
+const HUD_BOX = '[data-testid="inference-telemetry-hud"]';
 const FIT = `(min-width: ${LAYOUT_FIT.width}px) and (min-height: ${LAYOUT_FIT.height}px) and (max-width: ${LAYOUT_FULL.width - 1}px), (min-width: ${LAYOUT_FIT.width}px) and (min-height: ${LAYOUT_FIT.height}px) and (max-height: ${LAYOUT_FULL.height - 1}px)`;
 const STACK = `(max-width: ${LAYOUT_FIT.width - 1}px), (max-height: ${LAYOUT_FIT.height - 1}px)`;
 
@@ -106,7 +116,11 @@ ${HUD} { top: ${HUD_TOP_FULL - 61}px !important; max-width: none !important; }
 ${HUD} button { font-size: 11px !important; }
 ${HUD} button:disabled { color: rgba(156, 186, 204, 0.95) !important; }
 ${HUD} > span { color: rgba(130, 200, 224, 0.85) !important; }
+@media (min-width: ${LAYOUT_FULL.width}px) and (min-height: ${LAYOUT_FULL.height}px) {
+  ${FIELD}:has(${HUD_BOX}) [data-pxj-panel] { bottom: calc(97px + var(--sx-hud-h, 110px)) !important; }
+}
 @media ${FIT} {
+  ${FIELD}:has(${HUD_BOX}) [data-pxj-panel] { bottom: calc(36px + var(--sx-hud-h, 110px)) !important; }
   ${HUD} { top: ${FIT_TOP - 61}px !important; left: var(--sx-hud-x, 50%) !important; max-width: var(--sx-hud-w, 560px) !important; flex-wrap: wrap; justify-content: center; row-gap: 2px; }
   ${FIELD}:has([data-pxj-panel]) > [data-testid="semantic-zoom-telemetry"] { left: var(--sx-hud-x-panel, 50%) !important; max-width: var(--sx-hud-w-panel, 560px) !important; }
   /* V-18 / V-19: only the Capability Field becomes the viewport. The Job Field keeps 70d1cb4's size (≥ 960 px, the page scrolls):
@@ -142,6 +156,8 @@ ${HUD} > span { color: rgba(130, 200, 224, 0.85) !important; }
   ${FIELD} > [data-sx-shell="gate-reason"] { position: relative !important; left: auto !important; top: auto !important; transform: none !important; order: 4; max-width: 100% !important; width: auto !important; justify-self: stretch; }
   ${FIELD} > [data-testid="intake-telemetry-banner"], ${FIELD} > [data-testid="intake-error-banner"], ${FIELD} > [data-testid="intake-success-banner"] { position: relative !important; left: auto !important; top: auto !important; bottom: auto !important; transform: none !important; order: 5; max-width: 100% !important; width: auto !important; }
   ${PANEL_WRAP} { order: 6; }
+  ${FIELD} > div:has(> ${HUD_BOX}) { order: 5; }
+  ${HUD_BOX} { position: relative !important; right: auto !important; bottom: auto !important; width: auto !important; max-width: 100%; box-sizing: border-box; }
   /* 640 × 360 (GELB): the binding with its counts first, the boundary statement right after it (P-07), then the state, the
      proposals and the rows — the same elements, no duplicate; the coverage section lends its children to the panel's column. */
   ${FIELD} [data-pxj-panel] [data-testid=pxj-first-coverage] { display: contents !important; }

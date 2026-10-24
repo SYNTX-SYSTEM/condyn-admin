@@ -5,7 +5,7 @@ import { DemoCareerIntelligenceData } from "../../../career/demo/demo-data";
 import { SemanticCareerIntelligenceField } from "./SemanticCareerIntelligenceField";
 import { SIL_TOKENS } from "./SILTokens";
 import { DecisionLoopLabsMark, DLL_TEAL } from "./DecisionLoopLabsMark";
-import { CAREER_DEMO_LAYOUT_CSS, applyCareerDemoStageFit } from "./career-demo-layout";
+import { CAREER_DEMO_LAYOUT_CSS, applyCareerDemoHudClearance, applyCareerDemoStageFit } from "./career-demo-layout";
 
 export interface CareerIntelligenceDashboardProps {
   data: DemoCareerIntelligenceData;
@@ -43,7 +43,13 @@ export function CareerIntelligenceDashboard({ data, canonicalSilAssociationId, c
     const fit = () => { const root = rootRef.current; if (root) applyCareerDemoStageFit(root, window.innerWidth, window.innerHeight, root.querySelector<HTMLElement>(":scope > div")?.getBoundingClientRect().height ?? 61); };
     fit();
     window.addEventListener("resize", fit);
-    return () => window.removeEventListener("resize", fit);
+    // V-20: the telemetry box comes and goes with a run; its height follows its content.
+    const root = rootRef.current;
+    let pending = false;
+    const clearance = () => { if (!root || pending) return; pending = true; requestAnimationFrame(() => { pending = false; applyCareerDemoHudClearance(root); }); };
+    const observer = root && typeof MutationObserver !== "undefined" ? new MutationObserver(clearance) : null;
+    if (root && observer) { observer.observe(root, { childList: true, subtree: true }); clearance(); }
+    return () => { window.removeEventListener("resize", fit); observer?.disconnect(); };
   }, []);
   return (
     <div

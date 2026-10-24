@@ -52,7 +52,8 @@ describe("O-PXJ-720 · the dashboard carries the viewport rules", () => {
   });
 
   it("inverse: no viewport tier applies at or above 1600 × 1000 (1920 × 1080 changes only by V-16, below)", () => {
-    const medias = [...css.matchAll(/@media ([^{]+)\{/g)].map(match => match[1]);
+    // The fit and stack tiers (the full tier's own rule, V-20's telemetry clearance, is meant for ≥ 1600 × 1000).
+    const medias = [...css.matchAll(/@media ([^{]+)\{/g)].map(match => match[1]).filter(media => /1100px|1099px/.test(media));
     for (const media of medias) for (const clause of media.split(",")) {
       const holds = (w: number, h: number) => clause.split(" and ").every(term => { const m = /\((min|max)-(width|height): (\d+)px\)/.exec(term); if (!m) return true; const value = m[2] === "width" ? w : h; return m[1] === "min" ? value >= Number(m[3]) : value <= Number(m[3]); });
       expect(holds(1920, 1080), `${clause} at 1920×1080`).toBe(false);
