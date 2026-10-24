@@ -2156,7 +2156,7 @@ export function SyntxField({ workflow, analysisSource, observation: requested, o
           <button data-testid="syntx-exit-btn" data-sx-orient-action data-field-gate={capabilityAvailable ? "OPEN" : "AWAITING_JOB"} disabled={!capabilityAvailable || undefined} aria-disabled={!capabilityAvailable || undefined} aria-describedby={capabilityAvailable ? undefined : CAPABILITY_GATE_REASON_ID} title={capabilityAvailable ? undefined : capabilityGatedHint} onClick={onExit} style={{ ...action("muted"), opacity: capabilityAvailable ? 1 : 0.42, cursor: capabilityAvailable ? "pointer" : "not-allowed", fontSize: "10.5px", letterSpacing: "0.8px", padding: "3px 9px", borderRadius: "999px", border: `1px solid ${azure(0.22)}`, color: "rgba(168, 206, 226, 0.82)" }}>{t.exit}</button>
         </div>
         {/* UX-01 · the level of the observation point, as text (not only implied by the path). */}
-        {field !== null && <span data-testid="syntx-level" data-level={observation.kind} style={{ ...micro, marginTop: "8px", fontSize: "10.5px", fontWeight: 700, letterSpacing: "1.6px", color: "rgba(170, 226, 244, 0.92)" }}>{t.levelLine.label} · {t.levelLine.names[observation.kind]}</span>}
+        {field !== null && <span data-testid="syntx-level" data-level={observation.kind} style={{ ...micro, marginTop: "5px", fontSize: "10.5px", fontWeight: 700, letterSpacing: "1.6px", color: "rgba(170, 226, 244, 0.92)" }}>{t.levelLine.label} · {t.levelLine.names[observation.kind]}</span>}
         {/* B · the active context: the observation path on its rail. */}
         <nav data-testid="syntx-path" aria-label={t.observation[observation.kind]} style={{ ...row(6), rowGap: "3px", marginTop: "10px", paddingLeft: "10px", borderLeft: `1px solid ${azure(0.3)}` }}>
           {path.map((step, index) => (
@@ -2183,7 +2183,7 @@ export function SyntxField({ workflow, analysisSource, observation: requested, o
           return <div style={{ ...row(6), alignSelf: "flex-start", marginTop: "10px" }}>{select}<button data-testid="syntx-job-scope-clear" data-sx-orient-action title={t.jobScope.clearHint} onClick={onClearJobScope} style={{ ...orientAction(false), fontSize: "10.5px", letterSpacing: "1.5px", padding: "5px 12px" }}>{t.jobScope.clear}</button></div>;
         })()}
         {/* UX-02 · at the pool and the organisation level: where the job is chosen (the action itself stands at a role). */}
-        {field !== null && onSelectJobScope !== undefined && (observation.kind === "FIELD" || observation.kind === "ORGANIZATION") && <span data-testid="syntx-job-scope-hint" style={{ ...micro, marginTop: "10px", fontSize: "11px", lineHeight: 1.45, letterSpacing: "0.2px", color: "rgba(196, 230, 244, 0.92)" }}>{t.jobScope.openRoleHint}</span>}
+        {field !== null && onSelectJobScope !== undefined && (observation.kind === "FIELD" || observation.kind === "ORGANIZATION") && <span data-testid="syntx-job-scope-hint" style={{ ...micro, marginTop: "6px", fontSize: "11px", lineHeight: 1.45, letterSpacing: "0.2px", color: "rgba(196, 230, 244, 0.92)" }}>{t.jobScope.openRoleHint}</span>}
         {atSelectedJob && investigation.mode === "PERSON_X_JOB" && analysisPicker !== undefined && <div data-sx-orient-picker style={{ display: "flex", marginTop: "10px", minWidth: 0 }}>{analysisPicker}</div>}
         {/* C · the read state, D · the keys. */}
         {awaitingAnalysis ? (
