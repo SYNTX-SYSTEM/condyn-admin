@@ -1,0 +1,39 @@
+PINK §3.66 · re-check of D-RC-1 / C-2 fix 2dba126 (backend/pool-role-discovery). MEASUREMENT on fresh verified disposable databases
+(npm run test:isolated), code = git archive of 2dba126; scratch-only probe files (scripts/*.txt), never committed as live tests.
+
+Fresh database (pink-rc-fresh):
+  tableBefore                        0
+  registration                       REGISTERED
+  first                              {'inserted': 1, 'duplicates': 0, 'divergent': []}
+  sameResultOtherCreatedAtAndRaw     {'inserted': 0, 'duplicates': 1, 'divergent': []}
+  otherState                         {'inserted': 0, 'duplicates': 0, 'divergent': ['PRREL_25F1280FE7AA3D6312AEA2B9EDB857295D0C3BA5']}
+  otherExplanation                   {'inserted': 0, 'duplicates': 0, 'divergent': ['PRREL_25F1280FE7AA3D6312AEA2B9EDB857295D0C3BA5']}
+  storedAfter                        PARTIAL
+  update                             refused: PostgresError: ERR_RELATION_CACHE_IMMUTABLE: UPDATE on career_proposal_requirement_relatio
+  delete                             refused: PostgresError: ERR_RELATION_CACHE_IMMUTABLE: DELETE on career_proposal_requirement_relatio
+  truncate                           refused: PostgresError: ERR_RELATION_CACHE_IMMUTABLE: TRUNCATE on career_proposal_requirement_relat
+  insertJsonStateMismatch            refused: PostgresError: new row for relation "career_proposal_requirement_relations" violates check
+  insertJsonAuthorityVerified        refused: PostgresError: new row for relation "career_proposal_requirement_relations" violates check
+  insertBadKeyFormat                 refused: PostgresError: new row for relation "career_proposal_requirement_relations" violates check
+  insertBadHashFormat                refused: PostgresError: new row for relation "career_proposal_requirement_relations" violates check
+  insertEmptyExplanation             ok 1
+  insertKeyNotDerived                ok 1
+  readCorruptExplanation             refused: Error: ERR_RELATION_CACHE_RECORD_CORRUPT:PRREL_6EADEFDABAE2FAAAAAB37D46CD7F2F1B78582B7D
+  readKeyNotDerived                  refused: Error: ERR_RELATION_CACHE_RECORD_CORRUPT:PRREL_AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+  readGoodTogetherWithCorrupt        refused: Error: ERR_RELATION_CACHE_RECORD_CORRUPT:PRREL_6EADEFDABAE2FAAAAAB37D46CD7F2F1B78582B7D
+  readGoodAlone                      ok 1
+  canonicalStoredEqualsInput         True
+  disableTriggerAsOwner              ok []
+
+Table created by ccc0cc1's DDL first, then 2dba126's registration (pink-rc-migration):
+  tableBefore                        0
+  registration                       REGISTERED
+  checks                             ['career_proposal_requirement_relations_authority_state_check', 'career_proposal_requirement_relations_relation_state_check']
+  triggers                           ['career_proposal_requirement_relations_no_truncate', 'career_proposal_requirement_relations_no_update_delete']
+  insertJsonAuthorityVerified        ok 1
+  insertBadKeyFormat                 ok 1
+  update                             refused: PostgresError: ERR_RELATION_CACHE_IMMUTABLE: UPDATE on career_proposal_requirement_relatio
+
+Suites: 2dba126 job-pool + pxj-first-screen + three-modes:  Test Files 60 passed (60)  Tests 479 passed | 4 skipped (483) · relation-cache.postgres 7/7, relation-cache 16/16, discovery 9 + 4
+Counter-proof: 2dba126's relation-cache.postgres.test.ts on a ccc0cc1 tree:  Tests 6 failed | 1 passed (7) (only 'refuses invalid records before the database' passes, as GELB)
+tsc --noEmit on 2dba126: 0 errors. Scope ccc0cc1..2dba126:  2 files changed, 100 insertions(+), 35 deletions(-)

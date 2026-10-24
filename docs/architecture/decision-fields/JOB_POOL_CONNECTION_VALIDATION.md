@@ -3297,6 +3297,33 @@ The owner's own text is not in the repository; PINK checked against its renderin
 
 **Run record.** `evidence/role-discovery-ccc0cc1/`: verdicts.txt, route-PERSISTED_REAL_RESULT.txt, cache-MEASUREMENT.txt, static-MEASUREMENT.txt, scripts/ and manifest.sha256.
 
+### 3.66 Relation-cache fix `2dba126` (D-RC-1, C-2) re-checked (2026-10-24)
+
+**Request.** GELB asked for a targeted re-check of `2dba126` on `backend/pool-role-discovery`:
+- a trigger against UPDATE, DELETE and TRUNCATE;
+- CHECKs that bind `record_json` to the columns and fix the key and hash formats;
+- a reader that admits every row again;
+- first-wins writes (C-2).
+
+C-1 is decided as a specification in §10 of the discovery doc (`e2c7191`): the engine sees no role or organisation text.
+
+**Method.** Measurement on fresh verified disposable databases, with scratch-only probes. The probes ran on a fresh DB and on a table created first by `ccc0cc1`'s DDL. No Gemini call.
+
+**Verdicts (`evidence/role-discovery-2dba126/verdicts.txt`).**
+- **D-RC-1 on a fresh database: PASS.**
+  - UPDATE, DELETE and TRUNCATE are refused with ERR_RELATION_CACHE_IMMUTABLE.
+  - The database refuses JSON that differs from the columns, a bad key format and a bad hash format.
+  - Rows the database admits but that do not hold, such as an empty explanation or a key not derived from its parts, are refused by the reader with ERR_RELATION_CACHE_RECORD_CORRUPT.
+- **C-2: PASS.** The same result with another `createdAt` or raw output hash counts as a duplicate. Another result is reported as `divergent`, is not stored and raises no exception; the first record stays.
+- **Tests: PASS.**
+  - The subset passes 60 files, 479 tests, 4 skipped; `relation-cache.postgres` passes 7/7.
+  - On `ccc0cc1` the same test file gives 6 FAIL and 1 PASS, as GELB reports; tsc reports 0 errors.
+- **O-RC-3 (open).** A table that `ccc0cc1` already created gets only the new triggers, not the CHECKs, yet the registration reports REGISTERED. On such a table the database accepts JSON claiming VERIFIED and a malformed key. The reader still refuses those rows, but the database guarantee holds only on databases created from `2dba126` on.
+- **O-RC-4 (observation).** One corrupt row fails the whole read for all requested keys.
+- **O-RC-5 (recorded).** The table owner can still disable the trigger or drop the table.
+
+**Run record.** `evidence/role-discovery-2dba126/`: verdicts.txt, cache-recheck-MEASUREMENT.txt, scripts/ and manifest.sha256.
+
 ## 4. Boundaries and findings for coordination
 
 - F-JP-1 (closed in `b782793`): `JOB_POOL_CONNECTION.md` §4 followed the per-role `JOB_POOL_JSON_ROLE` design;
