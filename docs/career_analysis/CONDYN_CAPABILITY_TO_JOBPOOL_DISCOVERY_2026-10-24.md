@@ -182,3 +182,36 @@ on demo roles, one unscored on released pools.
 - **Step 2 (GRÜN, Capability Map role layer + role details + hand-over to the scoped investigation):** D-RD-1, D-RD-4, D-RD-5
   (incl. the T-07 re-set).
 - **Step 3 (semantic relations):** D-RD-2, D-RD-3 and a Gemini GO.
+
+## 9 Owner decision executed — stage 1 and the persistent cache (branch `backend/pool-role-discovery`)
+
+Owner „OWNER_DECISION_ROLE_DISCOVERY“: D-RD-1 = B, D-RD-2 = B (architecture), D-RD-3 = A (conditional), D-RD-4 = A, D-RD-5 = B.
+Owner directive „persistentes Caching … von Jobpools, Capabilities und ihren Relationen“ (GELB decides the technique).
+Branch `backend/pool-role-discovery` on b77c851 (UX candidate preserved, not integrated).
+
+**Stage 1 — `96651af` POOL_ROLE_DISCOVERY_V1.** `GET /api/career/analyses/{id}/role-discovery?jobPoolUploadId=…` (1–10 explicit
+uploads, no duplicates, never an unnamed pool). Operand only a PERSON analysis whose Discovery run the persisted boundary proves
+scope-free (`RUN_CONTRADICTS_DECLARATION` otherwise); PxJ refused (`ERR_ROLE_DISCOVERY_OPERAND_NOT_PERSON`); proposals pass through
+unchanged. Per role and requirement (key: upload, role, requirement): lexical basis (`NAME_EXACT` / `NAME_ALIAS` /
+`NAME_COMPOSITE_CONSTITUENT` / `WEAK_TOKEN_CONTAINMENT` / `NONE`), proposal, quotes, `quoteNamesRequirement` (evidence limitation),
+`semantic: NOT_EXECUTED`; role status groups in fixed order (ALL / PARTIAL / WEAK_LEXICAL_ONLY / NO_LEXICAL_RELATION /
+NO_REQUIREMENTS), deterministic pool → organisation → role order; fixed authority (`relationBasis: LEXICAL_NAME_COVERAGE`,
+`scored/ranking/decision: false`); read only, no-store.
+
+**Cache architecture — `ccc0cc1`** (decisions from measurement):
+
+| Layer | Existing mechanism (code) | Decision |
+|---|---|---|
+| Job pools | upload id = canonical sha256 (`jobPoolUploadIdFor`); equivalent re-upload → 200, same id, no row (test `job-pool.postgres` „idempotent“; lab: re-uploads 200, uploads 4 / mappings 4) | reuse as is |
+| Capabilities | Discovery / Convergence run id = hash(source bundle, kernel, prompt checksum, provider, model, schema, scope) → `DISCOVERY_RUN_REUSED` / `CONVERGENCE_RUN_REUSED`, no model call (tests `capability-core/discovery/runtime`, `proposal-runtime`) | reuse as is |
+| Lexical relations | computed on read; lab: 33–72 ms for 4 pools / 78 roles / 507 requirements / 10 proposals incl. every read and the plan | **no cache** (no gain, invalidation risk) |
+| Semantic relations (stage 3) | none | **new: content-addressed store** `career_proposal_requirement_relations`, key `PRREL_` = hash(proposal content, requirement content, engine identity); immutable rows (conflict refused); no invalidation — new content or engine = new key; incremental across uploads (same requirement content under other ids hits) and analyses (same proposals hit); every owner field mandatory (state EQUIVALENT/COVERS/PARTIAL/DIFFERENT/UNCLEAR, source evidence, requirement text, explanation, evidence limitation, raw output hash), authority NONE enforced in code and by DB CHECK; DDL registered with the job pool persistence, i.e. only on a verified disposable database (B-ENTRY) |
+| Call volume (D-RD-3 precondition) | none | `semanticPlan` in every discovery: `ENGINE_NOT_SPECIFIED`, pairs, cached, pending, `callsNeeded` (one per role with a pending pair). Lab (4 pools): **5 070 pairs, 77 calls**; distinct requirement contents 470 of 507 (distinct keys 4 700) |
+
+Not cached and identified: the LEGACY Gemini call of every analysis (the live relay log of :41862 shows DISCOVERY, CONVERGENCE,
+LEGACY per analysis; the second LEGACY request was byte-identical in size, 11 477 bytes, same source). Role discovery does not
+use it; reusing it would change the analysis pipeline → separate owner decision (C-LEGACY).
+
+**Tests:** discovery 13/13, relation cache 17/17 (keys, admission, plan, incremental reuse, Postgres immutability, DB checks);
+focused group 73 files 585 passed, 4 skipped; tsc 0. The existing registration gate test stays unchanged (the cache DDL lives in
+`registerJobPoolPersistenceSchema`). No model call anywhere (DETERMINISTIC_FIXTURE / PERSISTED_REAL_RESULT).
