@@ -1,0 +1,84 @@
+# PINK check of POOL_ROLE_DISCOVERY_V1 + semanticPlan (ccc0cc1) on GELB's :41878 — GET only (urllib, no body, no other method).
+# argv: <base> <§3.63 discovery json (GELB proof, PERSON)> <pdftotext file> <out dir>. Writes full responses locally (they hold quotes).
+import json, sys, time, re, hashlib, unicodedata, itertools, urllib.request, urllib.error
+BASE, OLD, TXT, OUT = sys.argv[1:5]
+PERSON, PXJ = "ANL_1792628831636_456", "ANL_1792628993472_10"
+def get(path):
+  t0 = time.time()
+  try:
+    with urllib.request.urlopen(urllib.request.Request(BASE + path, method="GET")) as r: return r.status, json.load(r), dict(r.headers), round((time.time() - t0) * 1000)
+  except urllib.error.HTTPError as e: return e.code, json.loads(e.read() or b"{}"), dict(e.headers), round((time.time() - t0) * 1000)
+pools = [p["jobPoolUploadId"] for p in get("/api/career/job-pools")[1]["jobPools"]]
+q = lambda ids: "&".join(f"jobPoolUploadId={i}" for i in ids)
+rec = {"pools": pools, "cases": {}}
+counts0 = (len(pools), len(get("/api/career/analyses")[1]["analyses"]))
+# A all four, B permuted, C singles
+sA, A, hA, tA = get(f"/api/career/analyses/{PERSON}/role-discovery?{q(pools)}"); json.dump(A, open(f"{OUT}/route-person-all.json", "w"))
+rec["cases"]["A-all"] = {"status": sA, "ms": tA, "cacheControl": hA.get("Cache-Control") or hA.get("cache-control")}
+perm = [list(p) for p in itertools.permutations(pools)][1:6]
+rec["cases"]["B-permutations-identical"] = all(get(f"/api/career/analyses/{PERSON}/role-discovery?{q(p)}")[1] == A for p in perm)
+D = A["discovery"]; roleA = {(r["key"]["jobPoolUploadId"], r["key"]["poolRoleId"]): r for r in D["roles"]}
+singles = {}
+for p in pools:
+  s, d, _, t = get(f"/api/career/analyses/{PERSON}/role-discovery?{q([p])}"); rs = d["discovery"]["roles"]
+  singles[p[-6:]] = {"status": s, "ms": t, "roles": len(rs), "pools": [x["jobPoolUploadId"][-6:] for x in d["discovery"]["pools"]], "rolesEqualToAll": all(r == roleA[(r["key"]["jobPoolUploadId"], r["key"]["poolRoleId"])] for r in rs), "onlyNamedPool": all(r["key"]["jobPoolUploadId"] == p for r in rs)}
+rec["cases"]["C-singles"] = singles
+# D errors
+E = {}
+for name, path in [("none", f"/api/career/analyses/{PERSON}/role-discovery"), ("empty", f"/api/career/analyses/{PERSON}/role-discovery?jobPoolUploadId="), ("whitespace", f"/api/career/analyses/{PERSON}/role-discovery?jobPoolUploadId=%20{pools[0]}"),
+                   ("duplicate", f"/api/career/analyses/{PERSON}/role-discovery?{q([pools[0], pools[0]])}"), ("eleven", f"/api/career/analyses/{PERSON}/role-discovery?{q([f'JPOOL_{i:032X}' for i in range(11)])}"),
+                   ("unknown-pool", f"/api/career/analyses/{PERSON}/role-discovery?{q([pools[0], 'JPOOL_' + '0' * 32])}"), ("pxj-operand", f"/api/career/analyses/{PXJ}/role-discovery?{q(pools)}"),
+                   ("unknown-analysis", f"/api/career/analyses/ANL_1000000000000_1/role-discovery?{q(pools)}"), ("all-keyword", f"/api/career/analyses/{PERSON}/role-discovery?jobPoolUploadId=ALL"),
+                   ("other-param", f"/api/career/analyses/{PERSON}/role-discovery?pool={pools[0]}")]:
+  s, d, h, t = get(path); E[name] = {"status": s, "code": (d.get("issues") or [{}])[0].get("code"), "partial": "discovery" in d}
+rec["cases"]["D-errors"] = E
+rec["readOnly"] = {"before (pools, analyses)": counts0, "after": (len(get("/api/career/job-pools")[1]["jobPools"]), len(get("/api/career/analyses")[1]["analyses"]))}
+# authority, groups
+rec["authority"] = D["authority"]; rec["counts"] = D["counts"]; rec["groups"] = {g["status"]: len(g["roles"]) for g in D["groups"]}
+rec["groupOrderInsideIsRoleOrder"] = all([r for r in [(x["jobPoolUploadId"], x["poolRoleId"]) for x in g["roles"]]] == [k for k in roleA if roleA[k]["status"] == g["status"]] for g in D["groups"])
+rec["semanticStates"] = sorted({r["semantic"]["state"] for r in D["roles"]} | {q_["semantic"]["state"] for r in D["roles"] for q_ in r["requirements"]})
+txtA = json.dumps(A); rec["forbiddenWords"] = {w: len(re.findall(w, txtA)) for w in ["score", "rank", "resonance", "fitScore", "SEMANTIC_EQUIVALENT", "\"COVERS\"", "EQUIVALENT"]}
+# operand unchanged vs the analysis projection
+proj = get(f"/api/career/analyses/{PERSON}")[1]["capabilityProposalProjection"]["capabilities"]
+rec["proposalsUnchanged"] = [(p["id"], p["name"], p["scope"], [(e["evidenceId"], e["sourceDocumentId"], e["exactQuote"]) for e in p["evidence"]]) for p in D["proposals"]] == [(p["id"], p["name"], p["scope"], [(e["evidenceId"], e["sourceDocumentId"], e["exactQuote"]) for e in p["evidence"]]) for p in proj]
+# vs §3.63 (keys upload+role+requirement)
+old = json.load(open(OLD)); M = {"NAME_EXACT": "NAME_EXACT", "NAME_ALIAS": "NAME_ALIAS", "NAME_COMPOSITE_CONSTITUENT": "NAME_COMPOSITE_CONSTITUENT", "WEAK_TOKEN_CONTAINMENT": "WEAK_TOKEN_CONTAINMENT", "NO_NAME_RELATION": "NONE"}
+oldk = {(r["jobPoolUploadId"], r["poolRoleId"], q_["poolRequirementId"]): (M[q_["relation"]], (q_["proposal"] or {}).get("id")) for r in old["roles"] for q_ in r["requirements"]}
+newk = {(q_["key"]["jobPoolUploadId"], q_["key"]["poolRoleId"], q_["key"]["poolRequirementId"]): (q_["lexical"]["basis"], q_["lexical"]["proposalId"]) for r in D["roles"] for q_ in r["requirements"]}
+rec["vs363"] = {"keysEqual": set(oldk) == set(newk), "keysUnique": len(newk) == sum(len(r["requirements"]) for r in D["roles"]), "basisAndProposalEqual": sum(1 for k in newk if oldk.get(k) == newk[k]), "of": len(newk)}
+st = {"PARTIAL": 0}; 
+for r in old["roles"]:
+  if r["status"] == "PARTIAL": st["PARTIAL"] += 1
+rec["vs363"]["oldPartialSplit"] = dict(__import__("collections").Counter(roleA[(r["jobPoolUploadId"], r["poolRoleId"])]["status"] for r in old["roles"] if r["status"] == "PARTIAL"))
+# quoteNamesRequirement
+rec["quoteNamesRequirementFalse"] = [(q_["key"]["jobPoolUploadId"][-6:], q_["key"]["poolRoleId"], q_["requirementText"], q_["lexical"]["proposalName"], [hashlib.sha256(e["exactQuote"].encode()).hexdigest()[:10] for e in q_["lexical"]["evidence"]]) for r in D["roles"] for q_ in r["requirements"] if q_["lexical"]["quoteNamesRequirement"] is False]
+rec["quoteNamesRequirementNullForNone"] = all((q_["lexical"]["quoteNamesRequirement"] is None) == (q_["lexical"]["basis"] == "NONE") for r in D["roles"] for q_ in r["requirements"])
+# inverse via the route
+def n(s): s = unicodedata.normalize("NFKC", s); s = re.sub(r"[‐-―−]", "-", s); return re.sub(r"\s+", " ", s).strip().lower()
+text = n(open(TXT, encoding="utf8").read()); props = {p["id"]: p for p in D["proposals"]}; inv = {"related": 0, "proposalInResponse": 0, "quoteAmongItsEvidence": 0, "quoteInPdfText": 0}
+for r in D["roles"]:
+  for q_ in r["requirements"]:
+    if q_["lexical"]["basis"] == "NONE": continue
+    inv["related"] += 1; p = props.get(q_["lexical"]["proposalId"]); inv["proposalInResponse"] += bool(p)
+    inv["quoteAmongItsEvidence"] += bool(p) and all(any(e["exactQuote"] == x["exactQuote"] and e["sourceDocumentId"] == x["sourceDocumentId"] for x in p["evidence"]) for e in q_["lexical"]["evidence"])
+    inv["quoteInPdfText"] += all(n(e["exactQuote"]) in text for e in q_["lexical"]["evidence"]) and len(q_["lexical"]["evidence"]) > 0
+rec["inverseViaRoute"] = inv
+# counts consistency, necessity values
+rec["countsConsistent"] = all(r["counts"]["requirements"] == r["counts"]["nameRelated"] + r["counts"]["weakLexicalOnly"] + r["counts"]["withoutLexicalRelation"] for r in D["roles"])
+rec["necessityValues"] = dict(__import__("collections").Counter(q_["necessity"] for r in D["roles"] for q_ in r["requirements"]))
+# plan recomputed independently (own canonical JSON + sha256, requirement content from the pool views)
+def cj(v):
+  if isinstance(v, list): return "[" + ",".join(cj(x) for x in v) + "]"
+  if isinstance(v, dict): return "{" + ",".join(json.dumps(k, ensure_ascii=False) + ":" + cj(v[k]) for k in sorted(v)) + "}"
+  return json.dumps(v, ensure_ascii=False)
+sha = lambda s: hashlib.sha256(s.encode("utf8")).hexdigest()
+reqs = {}
+for p in pools:
+  pool = get(f"/api/career/job-pools/{p}")[1]["pool"]
+  for x in pool["requirements"]: reqs[(p, x["role_id"], x["id"])] = sha(cj({"kind": "REQUIREMENT", "text": x["capability_name"], "aliases": sorted(x.get("aliases") or []), "requiredLevel": x["required_level"], "requirementType": x.get("requirement_type") or "CAPABILITY", "domain": x.get("domain"), "necessity": x.get("necessity")}))
+P = D["semanticPlan"]; nprop = len(D["proposals"])
+rec["plan"] = {k: P[k] for k in ("cacheVersion", "engineVersionHash", "state", "pairs", "cachedPairs", "pendingPairs", "callsNeeded")}
+rec["planRecomputed"] = {"pairs": len(newk) * nprop, "callsNeeded": sum(1 for r in D["roles"] if r["counts"]["requirements"] > 0), "distinctRequirementContents": len(set(reqs[k] for k in newk)), "distinctPairKeys": len(set(reqs[k] for k in newk)) * nprop,
+  "perRoleEqual": all(x["pairs"] == roleA[(x["jobPoolUploadId"], x["poolRoleId"])]["counts"]["requirements"] * nprop for x in P["roles"])}
+json.dump(rec, open(f"{OUT}/route-check.json", "w"), indent=1, ensure_ascii=False)
+print(json.dumps({k: v for k, v in rec.items() if k != "quoteNamesRequirementFalse"}, ensure_ascii=False, indent=1)[:6000]); print("quoteNamesRequirement false:", rec["quoteNamesRequirementFalse"])

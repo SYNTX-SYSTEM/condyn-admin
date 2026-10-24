@@ -3253,6 +3253,50 @@ Back across the document boundary during SUBMITTING (S6) stays an open owner cla
 
 **Run record.** `evidence/ux-closure-r2-b77c851/`: verdicts.txt, static-MEASUREMENT.txt, real-41872-PERSISTED_REAL_RESULT.txt, standin-STAND_IN.txt, person-dom-K-UX-2-STAND_IN.txt, shots/ (4), scripts/ and manifest.sha256.
 
+### 3.65 Stage 1 POOL_ROLE_DISCOVERY_V1 and the relation cache (`ccc0cc1`) checked independently (2026-10-24)
+
+**Request.** GELB asked for an independent check of `backend/pool-role-discovery` (`96651af` route, `ccc0cc1` cache; base `b77c851`, not integrated) against the owner decision "OWNER_DECISION_ROLE_DISCOVERY", in six points:
+1. contract;
+2. the §3.63 findings;
+3. inverse trace through the route;
+4. read only;
+5. cache;
+6. regression.
+
+The owner's own text is not in the repository; PINK checked against its rendering in §8/§9 of the discovery doc (`ea3c845`) and GELB's request.
+
+**Method.** GET only on :41878, a production build of `ccc0cc1` on a disposable copy; PINK uploaded nothing. The cache probe ran as a scratch-only test on a fresh disposable database. No Gemini call.
+
+**Verdicts (`evidence/role-discovery-ccc0cc1/verdicts.txt`).**
+- **1 Contract: PASS.**
+  - Only the named uploads are compared: single, several and permuted requests give identical results. "ALL" gives 404; a missing parameter, duplicates, an empty or whitespace value and 11 uploads each give 400.
+  - The PERSON operand is unchanged against the analysis projection. PxJ is refused with 409.
+  - The authority block says no score, no ranking and no decision. Everything semantic is NOT_EXECUTED, and the plan says ENGINE_NOT_SPECIFIED.
+- **2 §3.63 findings: PASS.**
+  - My old PARTIAL 39 splits into PARTIAL_NAME_RELATED 10 and WEAK_LEXICAL_ONLY 29.
+  - The key (upload, role, requirement) is unique, and all 507 rows equal §3.63.
+  - `quoteNamesRequirement` is false exactly for the three rows. The TypeScript / Node.js asymmetry remains, because the lexical rule is unchanged.
+- **3 Inverse via the route: PASS.** 52/52 down to the quote in the PDF text.
+- **4 Read only: PASS.** The route has no write path, the counts are unchanged, there is no model client, and refusals carry no partial result. On a process's first GET the guarded registration may create the schema on the disposable database (existing pattern).
+- **5 Cache.**
+  - Keys **PASS**: independent of ids and order; content changes give new keys, and case and spaces count exactly.
+  - Plan **PASS**: 5 070 pairs, 77 calls, 470 distinct requirement contents, 4 700 distinct keys, recomputed with PINK's own hash code.
+  - DDL **PASS**: created only behind the disposable-database gate.
+  - DB checks **PASS**: the database refuses an unknown state, a NULL state and any authority other than NONE.
+  - Immutability **FAIL (D-RC-1)**: it holds in code only.
+    - UPDATE and DELETE succeed on the database.
+    - `record_json` is not tied to the checked columns: columns COVERS / NONE with JSON EQUIVALENT / VERIFIED are accepted.
+    - `getByKeys` returns the JSON unvalidated.
+  - Conditions for stage 3:
+    - **C-1.** The key has no role context, so the engine must not see role context either, or the key must include it.
+    - **C-2.** Re-storing an evaluated pair with another `createdAt` or raw output aborts with a conflict, so concurrent evaluations of one pair fail.
+- **6 Regression: PASS.**
+  - In `app/api` only the new route is added. `matches` for the PxJ analysis is identical to §3.63, and PERSON is still refused.
+  - B2 answers 200 for PxJ and 409 for PERSON.
+  - tsc reports 0 errors; GRÜN's focused list passes 67 files, 547 tests, 4 skipped. PINK counts 20 cache tests (16 + 4), where GELB names 17.
+
+**Run record.** `evidence/role-discovery-ccc0cc1/`: verdicts.txt, route-PERSISTED_REAL_RESULT.txt, cache-MEASUREMENT.txt, static-MEASUREMENT.txt, scripts/ and manifest.sha256.
+
 ## 4. Boundaries and findings for coordination
 
 - F-JP-1 (closed in `b782793`): `JOB_POOL_CONNECTION.md` §4 followed the per-role `JOB_POOL_JSON_ROLE` design;

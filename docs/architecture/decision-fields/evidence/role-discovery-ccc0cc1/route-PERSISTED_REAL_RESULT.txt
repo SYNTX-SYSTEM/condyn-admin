@@ -1,0 +1,34 @@
+PINK §3.65 · POOL_ROLE_DISCOVERY_V1 route on GELB's :41878 (production build of ccc0cc1, disposable copy), GET only (urllib GET, no
+other method). PERSISTED_REAL_RESULT operand, DETERMINISTIC computation. Quotes only as sha256/10.
+
+A all four pools: {'status': 200, 'ms': 130, 'cacheControl': 'no-store'}
+B five permutations of the pool order give the identical response: True
+C single pools (each returns only the named pool, roles identical to the four-pool response):
+  …9F16C2: {'status': 200, 'ms': 27, 'roles': 16, 'pools': ['9F16C2'], 'rolesEqualToAll': True, 'onlyNamedPool': True}
+  …A076B5: {'status': 200, 'ms': 19, 'roles': 9, 'pools': ['A076B5'], 'rolesEqualToAll': True, 'onlyNamedPool': True}
+  …276294: {'status': 200, 'ms': 38, 'roles': 48, 'pools': ['276294'], 'rolesEqualToAll': True, 'onlyNamedPool': True}
+  …7201A8: {'status': 200, 'ms': 12, 'roles': 5, 'pools': ['7201A8'], 'rolesEqualToAll': True, 'onlyNamedPool': True}
+D refusals (no partial result in any):
+  none               400 ERR_ROLE_DISCOVERY_POOLS_REQUIRED partial False
+  empty              400 ERR_ROLE_DISCOVERY_POOLS_INVALID partial False
+  whitespace         400 ERR_ROLE_DISCOVERY_POOLS_INVALID partial False
+  duplicate          400 ERR_ROLE_DISCOVERY_POOLS_INVALID partial False
+  eleven             400 ERR_ROLE_DISCOVERY_POOLS_INVALID partial False
+  unknown-pool       404 ERR_ROLE_DISCOVERY_POOL_NOT_FOUND partial False
+  pxj-operand        409 ERR_ROLE_DISCOVERY_OPERAND_NOT_PERSON partial False
+  unknown-analysis   404 ERR_ROLE_DISCOVERY_ANALYSIS_NOT_FOUND partial False
+  all-keyword        404 ERR_ROLE_DISCOVERY_POOL_NOT_FOUND partial False
+  other-param        400 ERR_ROLE_DISCOVERY_POOLS_REQUIRED partial False
+read only (pools, analyses) before [4, 2] after [4, 2]
+authority {'relationBasis': 'LEXICAL_NAME_COVERAGE', 'operand': 'PERSON_CAPABILITY_PROPOSAL_PROJECTION', 'semanticRelationState': 'NOT_EXECUTED', 'scored': False, 'ranking': False, 'authorityState': 'NONE', 'decision': False}
+counts {'pools': 4, 'roles': 78, 'requirements': 507, 'proposals': 10}
+groups {'ALL_REQUIREMENTS_NAME_RELATED': 0, 'PARTIAL_NAME_RELATED': 10, 'WEAK_LEXICAL_ONLY': 29, 'NO_LEXICAL_RELATION': 38, 'NO_REQUIREMENTS': 1} (order inside a group = role order: True)
+semantic states anywhere ['NOT_EXECUTED']; words in the response: {'score': 1, 'rank': 1, 'resonance': 0, 'fitScore': 0, 'SEMANTIC_EQUIVALENT': 0, '"COVERS"': 0, 'EQUIVALENT': 0} ('score' / 'rank' only inside the authority keys scored / ranking)
+operand unchanged against GET /api/career/analyses/{id} projection (ids, names, scope, evidence ids, document ids, quotes): True
+vs §3.63 (key upload + role + requirement): {'keysEqual': True, 'keysUnique': True, 'basisAndProposalEqual': 507, 'of': 507, 'oldPartialSplit': {'WEAK_LEXICAL_ONLY': 29, 'PARTIAL_NAME_RELATED': 10}}
+counts consistent True; necessity values {'REQUIRED': 330, 'PREFERRED': 124, 'OPTIONAL': 53}
+quoteNamesRequirement false (the three rows of §3.63): …9F16C2 role_northbeam_data_architect «Dimensional and Domain Data Modeling» ← «Dimensional Data Modeling» quote ['64ba7ee27c']; …A076B5 role_aurelion_backend_interop «Backend Development» ← «TypeScript and Node.js Backend Development» quote ['3b13fe356a']; …A076B5 role_brightwater_backend_ledger «Backend Development» ← «TypeScript and Node.js Backend Development» quote ['3b13fe356a']
+quoteNamesRequirement null exactly where the basis is NONE: True
+inverse via the route (requirement → proposal in the response → quote among its evidence → quote in the pdftotext text): {'related': 52, 'proposalInResponse': 52, 'quoteAmongItsEvidence': 52, 'quoteInPdfText': 52}
+semanticPlan {'cacheVersion': 'PROPOSAL_REQUIREMENT_RELATION_CACHE_V1', 'engineVersionHash': None, 'state': 'ENGINE_NOT_SPECIFIED', 'pairs': 5070, 'cachedPairs': 0, 'pendingPairs': 5070, 'callsNeeded': 77}
+recomputed by PINK (own canonical JSON + sha256 of the requirement content from the pool views): {'pairs': 5070, 'callsNeeded': 77, 'distinctRequirementContents': 470, 'distinctPairKeys': 4700, 'perRoleEqual': True}
