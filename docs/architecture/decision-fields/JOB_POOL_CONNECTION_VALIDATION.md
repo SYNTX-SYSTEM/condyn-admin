@@ -3218,6 +3218,41 @@ FAIL:
 
 **Run record.** `evidence/discovery-bf80a7d/`: verdicts.txt, 1-rerun.txt, 2-inverse.txt, 3-relations.txt, 4-cases.txt, 5-code.txt, 5-live.txt, scripts/ and manifest.sha256.
 
+### 3.64 Round 2: GRÜN `b77c851` (code `9a8a28e`) re-checked against §3.62 (2026-10-24)
+
+**Request.** GELB asked for a targeted re-check of round 2, 9 commits on `41dfa25`. It covers:
+- the §3.62 FAILs: V-08, V-11, V-18, V-19 (card hits plus mouse-wheel reach);
+- R-05 and V-15;
+- V-20 at 1920 in the job NOT_FOUND state;
+- K-UX-2: the PERSON first screen;
+- regression of the held items, D-PICK and navigation;
+- GRÜN's claim about 200 %.
+
+Back across the document boundary during SUBMITTING (S6) stays an open owner class and is not counted as FAIL.
+
+**Labs.**
+- PERSISTED_REAL_RESULT on :41872, a production build of `b77c851`, GET only; 0 non-GET blocked in every probe.
+- STAND_IN on 9 PINK production builds without the flag, `b77c851` and `70d1cb4`.
+- No Gemini call.
+
+**Verdicts (`evidence/ux-closure-r2-b77c851/verdicts.txt`): every item PASS.**
+- **Static.** tsc reports 0 errors; the focused group passes 63 files, 514 tests, 4 skipped. The counter-proof of the 6 new files on `41dfa25` gives 10 FAIL, all REPRODUCE, and 6 PASS. Note: `job-levels.test.tsx` drops 5 expectations and adds 1. That is consistent with restoring `70d1cb4`'s order, but not a 1:1 replacement.
+- **V-08.** With the real worker the result stays `EXECUTION_FAILED`; there is no RETRY, the format way is shown, and there is 1 POST.
+- **V-11.** The same probe gives 14 Tab presses from Enter on the role and 4 on loading the role view, equal to `70d1cb4` (`41dfa25` had 21 / 11). The real lab gives 14 / 4.
+- **V-18.** Every role card keeps its domain line at all 6 viewports.
+- **V-19.** At 1280×720 the owner's card is hit 5/5, as on `70d1cb4` (`41dfa25` had 0/5). Frontend Architect 2/5 is the same as on `70d1cb4`.
+- **GRÜN's 200 % claim, confirmed.** Scrolling with the mouse wheel, `70d1cb4` reaches only 3/5 on the Full-Stack card at 640×360; `b77c851` reaches 5/5 on every card, stand-in and real.
+- **V-20.** In the job NOT_FOUND state the HUD and B2 overlap 0 px² at all four desktop viewports, and all 9 rows are hit.
+- **R-05.** The tooltip equals the visible cause and the way out.
+- **V-15.** Every visibly cut long name carries its full text. Retraction: the earlier item "syntx-summary cut without title" in §3.61 / §3.62 was a PINK probe false positive. That element is the visually hidden aria-live summary.
+- **K-UX-2.** The PERSON first screen is identical to `70d1cb4` apart from `data-sx-layout`, and T-07 is green. The Job Field shows the declared UX changes in every mode, and GRÜN's README §3 now lists both.
+- **D-PICK** and **O-NAV-SUBMIT in page** behave as in §3.62.
+- **Regression.** nav 88/90 with the same two probe errors as before. 600 Tab presses without a violation; hover is look-only; the Esc chain holds; no target is under 24 px; reach holds at all six viewports.
+
+**Still open.** S6 is an owner decision. At 640×360 the binding section and status line lie below the fold on load (GELB's 113/114).
+
+**Run record.** `evidence/ux-closure-r2-b77c851/`: verdicts.txt, static-MEASUREMENT.txt, real-41872-PERSISTED_REAL_RESULT.txt, standin-STAND_IN.txt, person-dom-K-UX-2-STAND_IN.txt, shots/ (4), scripts/ and manifest.sha256.
+
 ## 4. Boundaries and findings for coordination
 
 - F-JP-1 (closed in `b782793`): `JOB_POOL_CONNECTION.md` §4 followed the per-role `JOB_POOL_JSON_ROLE` design;

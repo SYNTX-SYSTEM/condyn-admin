@@ -1,0 +1,30 @@
+// PINK V-15: every visibly cut text in the Job Field (overflow hidden + scroll > client, or line clamp) — does it carry its full text
+// (title on itself or its 2 nearest ancestors, or aria-label)? Visually hidden (≤ 2 px) elements excluded. GET only. Texts not recorded.
+// argv: <base>
+import { pathToFileURL } from "node:url";
+const [BASE] = process.argv.slice(2);
+const pw = await import(pathToFileURL(process.env.CONDYN_PLAYWRIGHT_MODULE).href); const { chromium } = pw.chromium ? pw : pw.default;
+const b = await chromium.launch(); let blocked = 0; const res = [];
+const DLL = "JPOOL_B94850C439974E27496FE3B1A9A076B5", sel = `&jobScopePoolUploadId=${DLL}&jobScopeRoleId=role_kestrel_fullstack`;
+for (const [n, w, h] of [["1920x1080", 1920, 1080], ["1280x720", 1280, 720]]) {
+  const ctx = await b.newContext({ viewport: { width: w, height: h } }); await ctx.addInitScript(() => { try { localStorage.setItem("condyn_onboarding_seen", "true"); } catch {} });
+  await ctx.route("**/*", r => { const m = r.request().method(); if (m !== "GET" && m !== "HEAD") { blocked += 1; return r.abort(); } return r.continue(); });
+  const p = await ctx.newPage();
+  for (const [scene, q] of [["pool", `jobPoolUploadId=${DLL}`], ["org", `jobPoolUploadId=${DLL}&jobOrganizationId=org_kestrel`], ["role", `investigationMode=PERSON_X_JOB&jobPoolUploadId=${DLL}&jobOrganizationId=org_kestrel&jobRoleId=role_kestrel_fullstack${sel}`]]) {
+    await p.goto(`${BASE}/career/demo?${q}`, { waitUntil: "domcontentloaded" }); await new Promise(r => setTimeout(r, 6000));
+    res.push({ vp: n, scene, ...(await p.evaluate(() => {
+      const root = document.querySelector('[data-testid="syntx-field"]') ?? document.body; let cut = 0, withFull = 0; const missing = [];
+      for (const e of root.querySelectorAll("*")) {
+        const cs = getComputedStyle(e); if (cs.visibility === "hidden" || cs.display === "none") continue; const r = e.getBoundingClientRect(); if (r.width <= 2 || r.height <= 2) continue;
+        const own = [...e.childNodes].some(c => c.nodeType === 3 && c.textContent.trim()); if (!own) continue;
+        const clipped = (/(hidden|clip)/.test(cs.overflowX) && e.scrollWidth > e.clientWidth + 1) || (/(hidden|clip)/.test(cs.overflowY) && e.scrollHeight > e.clientHeight + 1);
+        if (!clipped) continue; cut += 1;
+        const full = [e, e.parentElement, e.parentElement?.parentElement].some(x => x && (x.getAttribute("title") || x.getAttribute("aria-label")));
+        if (full) withFull += 1; else missing.push(e.closest("[data-testid]")?.dataset.testid ?? e.tagName.toLowerCase());
+      }
+      return { cut, withFull, missing };
+    })) });
+  }
+  await ctx.close();
+}
+console.log(JSON.stringify({ blocked, res })); await b.close();

@@ -1,0 +1,41 @@
+# PINK §3.64 evidence: round-2 re-check of GRÜN b77c851 (code 9a8a28e) against §3.62. Ids, counts, verdict data; no quote text.
+import json, sys, re
+X, E = sys.argv[1:3]
+L = lambda p: json.load(open(f"{X}/{p}"))
+def w(n, lines): open(f"{E}/{n}", "w").write(re.sub(r"/(?:home|tmp)/[^\s\"']+", "<local>", "\n".join(lines)) + "\n")
+R = ["PERSISTED_REAL_RESULT · GELB :41872 (production build of b77c851, copy condyn_test_2725fd602c574421), GET only, non-GET aborted.", ""]
+ch = L("real2/cardhit-real.json"); R.append(f"V-19 card hit at the organisation level (pink-cardhit, 6 samples × 5 points, blocked {ch['blocked']}):")
+for x in ch["res"]: R.append(f"  {x['vp']:<18} {x['scene']:<10} " + "  ".join(f"{k} {x[k]['hitSelfBest']} cover {x[k]['cover']} box {x[k]['box']}" for k in ["fullstack", "frontend_architect", "engineering_lead"]))
+zw = L("real2/zoomwheel.json"); R.append(f"  200 % by mouse wheel (pink-zoomwheel, best of 40 steps × 60 px, blocked {zw['blocked']}): " + "; ".join(f"{x['vp']} {x['mode']} {x['best']}" for x in zw["res"]))
+cb = L("real2/cardbox.json"); R += ["", f"V-18 role-card form (pink-cardbox, blocked {cb['blocked']}):"] + [f"  {x['vp']:<18} {x['scene']:<10} {x['cards']}" for x in cb["out"]]
+R += ["", "V-11 Tab path (pink-v11-order):"]
+for vp in ["1920x1080", "1280x720"]:
+  d = L(f"real2/v11-{vp}.json"); R.append(f"  {vp} from Enter on the role {d['from-ORG-Enter-on-ROLE']['presses']} · role view on load {d['role-view-document-load']['presses']} · blocked {d['blocked']} · " + " → ".join(str(s['tid']) for s in d["role-view-document-load"]["seq"]))
+g = L("real2/v0506.json"); R += ["", f"R-05 tooltip vs visible cause (pink-v0506, blocked {g['blocked']}):"] + [f"  {k:<9} job {g[k]['job']!s:<9} title «{g[k]['title']}» · cause «{g[k]['cause']}» · way «{g[k]['way']}»" for k in ["NONE", "CHECKING", "INVALID", "JOB"]]
+R.append(f"  job NOT_FOUND banner: {g['jobNotFound']}")
+v20 = L("real2/v20.json"); R += ["", f"V-20 job NOT_FOUND state (pink-v20, blocked {v20['blocked']}):"] + [f"  {x['vp']:<10} banner {x['banner']} HUD {x['hud']} visible {x['hudVisible']} · B2 panel {x['panel']} · overlap {x['overlapPx2']} px² · rows {x['rows']} centre hits self {sum(1 for v in x['hit'].values() if v == 'self')}" for x in v20["res"]]
+r = L("real2/pink-reach-real.json"); R += ["", f"Reach (pink-reach, blocked {r['blocked']}, pageErrors {len(r['pageErrors'])}): B2 rows by wheel " + "; ".join(f"{x['vp']}@{x['step']} {x['fullAndHit']}/{x['rows']}" for x in r["wheel"]),
+  "  key actions (source actions, JOB mode, SELECT AS JOB, picker) not fully in view or 0/5 after a user's scroll: " + str([(m['vp'], m['scene'], m['id']) for m in r['measures'] if m['present'] and m['id'] in ('add-text-source-btn', 'add-pdf-source-btn', 'investigation-mode-JOB', 'syntx-job-scope-select', 'analysis-picker-toggle') and (not m['afterScroll']['full'] or m['afterScroll']['hit'] == '0/5')])]
+ux, ux1 = L("real2/pink-ux-real.json"), L("real/pink-ux-real.json")
+viol = [(k, kk) for k in ["startSweep", "roleSweep", "capabilityNoAnalysisSweep", "b2Sweep", "b2ReverseSweep"] for kk in ["startUrlChangedByTabbing", "historyDelta", "urlChangesDuringTab", "trapped", "focusOnHidden", "focusOutsideViewport", "noIndicator", "unnamed"] if ux["keyboard"][k].get(kk) not in (False, 0, None, [])]
+R += ["", f"Held items (pink-ux): 600 Tab presses, violations {viol or 'none'}; hover changes look only ({all(h['styleChangedOnHover'] and not h['urlChanged'] for h in ux['hover'])}); Esc {[e['after'].split(':')[0] for e in ux['keyboard']['escape']]}; targets < 24 px {sorted({a['id'] for v in ux['viewports'] for a in v['actions'] if a.get('tooSmall')}) or 'none'}; horizontal scroll {any(v['page']['horizontalScroll'] for v in ux['viewports'])}; blocked {len(ux['blockedNonGet'])}, pageErrors {len(ux['pageErrors'])}",
+  "  journey 41dfa25 → b77c851: " + " · ".join(f"{a['name'].split(' (')[0]} {b_['presses'] if b_['reached'] else 'NR'}→{a['presses'] if a['reached'] else 'NR'}" for a in ux["keyboard"]["journey"] for b_ in ux1["keyboard"]["journey"] if a["name"] == b_["name"] and a.get("reached") is not None)]
+mk = L("real2/mode-keys.json"); R.append(f"V-12 (pink-mode-keys, blocked {mk['blocked']}): " + " · ".join(f"{k}:{v['active'].replace('investigation-mode-', '')}/{v['mode']}/h{v['h']}" for k, v in mk.items() if isinstance(v, dict)))
+dp = L("real2/dpick-real.json"); R.append(f"D-PICK (pink-dpick-real, blocked {dp['blocked']}): " + " · ".join(f"{c['vp']} {c['place']} " + (f"offered {[o['id'] for o in c['offered']]} open-quiet {c['openChangedNothing']} push +{c['pick']['hDelta']}" if 'offered' in c else f"pickers {c['pickers']}") for c in dp["cases"]))
+w("real-41872-PERSISTED_REAL_RESULT.txt", R)
+T = ["STAND_IN · PINK's production labs (no LAB_ONLY_BUILD_FLAG, own PIDs, port 41873, disposable DBs), real worker, loopback stand-in.", "STAND-IN · keine Modellausführung.", ""]
+ex = L("out-r2/pink-extra.json"); T += [f"V-08 broken .pdf through the real worker: {ex['brokenPdf']} · POSTs {ex['posts']}", f"  .docx: {ex['docx']}", f"  V-07: {ex['emptyIntake']}", ""]
+T.append("V-11 the same probe on 70d1cb4 / 41dfa25 / b77c851 (from Enter on the role · role view on load):")
+for vp in ["1920x1080", "1280x720"]: T.append(f"  {vp}: " + " | ".join(f"{lab} {L(f'out-{d}/v11-{vp}.json')['from-ORG-Enter-on-ROLE']['presses']} · {L(f'out-{d}/v11-{vp}.json')['role-view-document-load']['presses']}" for lab, d in (("70d1cb4", "base2"), ("41dfa25", "cand2"), ("b77c851", "r2"))))
+for lab, d in (("70d1cb4", "base3"), ("b77c851", "r2")):
+  c = L(f"out-{d}/cardhit-standin.json"); T.append(f"V-19 cardhit {lab}: " + " · ".join(f"{x['vp']} {x['scene']} fullstack {x['fullstack']['hitSelfBest']} frontend {x['frontend_architect']['hitSelfBest']} lead {x['engineering_lead']['hitSelfBest']}" for x in c["res"] if not x["vp"].startswith("zoom")))
+for lab, d in (("70d1cb4", "base4"), ("b77c851", "r2zw")):
+  z = json.loads(open(f"{X}/out-{d}/zoomwheel.json").read()); T.append(f"200 % wheel {lab}: " + "; ".join(f"{x['vp']} {x['mode']} {x['best']}" for x in z["res"]))
+s = L("out-r2/pink-s10-r2-1920.json"); T += ["", f"pink-s10 (D-PICK P0–P12, V-12 K1, O-NAV-SUBMIT S1–S6): PASS {sum(1 for c in s['cases'] if c['ok'] is True)}, OBSERVATION {sum(1 for c in s['cases'] if c['ok'] is None)}, S6 (owner class, not counted): {[c['name'] for c in s['cases'] if c['ok'] is False]}; pageErrors {len(s['pageErrors'])}; non-GET outside ANALYZE {s['nonGetOutsideAnalyze'] or 'none'}"]
+T.append("  " + " · ".join(f"{c['name'].split('-')[0]}:{'PASS' if c['ok'] else ('OBS' if c['ok'] is None else 'OWNER')}" for c in s["cases"]))
+T.append("pink-nav: " + open(f"{X}/out-r2nav/nav.log").read().strip().splitlines()[-1] + " (C15 / C18 = the probe errors of §3.60, unchanged)")
+u = L("out-r2nav/pink-ux-standin.json")
+for x in u["names"][1:]: T.append(f"V-15 long names {x['viewport']} {x['view']}: " + "; ".join(f"{e['id'][:30]}{' cut' if e['truncated'] else ''}{' …' if e['ellipsis'] else ''}{'' if e['full'] else ' partial'}{' +title' if e['title'] else ' NO TITLE'}" for e in x["elements"] if e["id"] and (e["truncated"] or e["ellipsis"] or not e["full"])))
+T.append("  syntx-summary = visually hidden aria-live summary (SyntxField.tsx, style visuallyHidden): PINK probe false positive in §3.61 / §3.62, retracted.")
+w("standin-STAND_IN.txt", T)
+print("ok")

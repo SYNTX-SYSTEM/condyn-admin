@@ -1,0 +1,25 @@
+STAND_IN · PINK's production labs (no LAB_ONLY_BUILD_FLAG, own PIDs, port 41873, disposable DBs), real worker, loopback stand-in.
+STAND-IN · keine Modellausführung.
+
+V-08 broken .pdf through the real worker: {'code': 'EXECUTION_FAILED', 'format': 'This source cannot be read as a PDF; RETRY would fail the same way. Remove it from the staged sources and add it again as a readable PDF, a .md / .txt file or with ENTER TEXT / MARKDOWN.', 'retry': False, 'dismiss': False, 'textHasParse': True} · POSTs 1
+  .docx: {'refused': 'Not added: pink-note.docx — only PDF, Markdown (.md, .markdown) or text (.txt) files. Other text: ENTER TEXT / MARKDOWN.', 'staged': 0, 'analyzeEnabled': False}
+  V-07: {'before': {'list': None, 'button': True, 'upload': False}, 'h0': 2, 'url0': 'http://127.0.0.1:41873/career/demo', 'after': {'upload': True, 'focusIn': 'job-pool-list-empty-intake', 'h': 2, 'urlChanged': False, 'nonGet': []}}
+
+V-11 the same probe on 70d1cb4 / 41dfa25 / b77c851 (from Enter on the role · role view on load):
+  1920x1080: 70d1cb4 14 · 4 | 41dfa25 21 · 11 | b77c851 14 · 4
+  1280x720: 70d1cb4 14 · 4 | 41dfa25 21 · 11 | b77c851 14 · 4
+V-19 cardhit 70d1cb4: 1920x1080 org-PXJ fullstack 5/5 frontend 5/5 lead 5/5 · 1920x1080 org-PERSON fullstack 5/5 frontend 5/5 lead 5/5 · 1600x900 org-PXJ fullstack 5/5 frontend 5/5 lead 5/5 · 1600x900 org-PERSON fullstack 5/5 frontend 5/5 lead 5/5 · 1440x900 org-PXJ fullstack 5/5 frontend 5/5 lead 5/5 · 1440x900 org-PERSON fullstack 5/5 frontend 5/5 lead 5/5 · 1280x720 org-PXJ fullstack 5/5 frontend 2/5 lead 5/5 · 1280x720 org-PERSON fullstack 5/5 frontend 2/5 lead 5/5
+V-19 cardhit b77c851: 1920x1080 org-PXJ fullstack 5/5 frontend 5/5 lead 5/5 · 1920x1080 org-PERSON fullstack 5/5 frontend 5/5 lead 5/5 · 1600x900 org-PXJ fullstack 5/5 frontend 5/5 lead 5/5 · 1600x900 org-PERSON fullstack 5/5 frontend 5/5 lead 5/5 · 1440x900 org-PXJ fullstack 5/5 frontend 5/5 lead 5/5 · 1440x900 org-PERSON fullstack 5/5 frontend 5/5 lead 5/5 · 1280x720 org-PXJ fullstack 5/5 frontend 2/5 lead 5/5 · 1280x720 org-PERSON fullstack 5/5 frontend 2/5 lead 5/5
+200 % wheel 70d1cb4: zoom200-1920x1080 PERSON_X_JOB {'fullstack': 5, 'frontend_architect': 5, 'engineering_lead': 5}; zoom200-1920x1080 PERSON {'fullstack': 5, 'frontend_architect': 5, 'engineering_lead': 5}; zoom200-1280x720 PERSON_X_JOB {'fullstack': 3, 'frontend_architect': 5, 'engineering_lead': 5}; zoom200-1280x720 PERSON {'fullstack': 5, 'frontend_architect': 5, 'engineering_lead': 5}
+200 % wheel b77c851: zoom200-1920x1080 PERSON_X_JOB {'fullstack': 5, 'frontend_architect': 5, 'engineering_lead': 5}; zoom200-1920x1080 PERSON {'fullstack': 5, 'frontend_architect': 5, 'engineering_lead': 5}; zoom200-1280x720 PERSON_X_JOB {'fullstack': 5, 'frontend_architect': 5, 'engineering_lead': 5}; zoom200-1280x720 PERSON {'fullstack': 5, 'frontend_architect': 5, 'engineering_lead': 5}
+
+pink-s10 (D-PICK P0–P12, V-12 K1, O-NAV-SUBMIT S1–S6): PASS 17, OBSERVATION 2, S6 (owner class, not counted): ['S6-back-across-document']; pageErrors 0; non-GET outside ANALYZE none
+  P0:PASS · P1:PASS · P2:PASS · P3:PASS · P4:PASS · P5:PASS · P6:PASS · P7:PASS · P8:PASS · P9:PASS · P10:PASS · P11:PASS · P12:PASS · K1:PASS · S1:PASS · S2:PASS · S3:OBS · S4:OBS · S5:PASS · S6:OWNER
+pink-nav: DONE {"pass":88,"of":90,"failed":["C15-ROLE_SWITCH","C18-CLEAR-JOB"],"errors":0,"inspectorReads":0} (C15 / C18 = the probe errors of §3.60, unchanged)
+V-15 long names 1920x1080 role view: syntx-summary cut NO TITLE; syntx-cosmos-organization partial +title; syntx-path-ORGANIZATION cut … +title; syntx-path-ROLE … +title
+V-15 long names 1920x1080 selected, capability: job-scope-title cut … +title; job-scope-detail cut … +title
+V-15 long names 1920x1080 selected, org view: syntx-summary cut NO TITLE; syntx-role-role_pink_ux_princi partial +title; syntx-path-ORGANIZATION … +title; job-scope-title cut … +title; job-scope-detail cut … +title
+V-15 long names 1280x720 role view: syntx-summary cut NO TITLE; syntx-cosmos-organization partial +title; syntx-path-ORGANIZATION cut … +title; syntx-path-ROLE … +title
+V-15 long names 1280x720 selected, capability: job-scope-title cut … +title; job-scope-detail cut … +title
+V-15 long names 1280x720 selected, org view: syntx-summary cut NO TITLE; syntx-role-role_pink_ux_princi partial +title; syntx-path-ORGANIZATION … +title; job-scope-title cut … +title; job-scope-detail cut … +title
+  syntx-summary = visually hidden aria-live summary (SyntxField.tsx, style visuallyHidden): PINK probe false positive in §3.61 / §3.62, retracted.

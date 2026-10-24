@@ -1,0 +1,61 @@
+PERSISTED_REAL_RESULT · GELB :41872 (production build of b77c851, copy condyn_test_2725fd602c574421), GET only, non-GET aborted.
+
+V-19 card hit at the organisation level (pink-cardhit, 6 samples × 5 points, blocked 0):
+  1920x1080          org-PXJ    fullstack 5/5 cover [] box [596, 565, 219, 100]  frontend_architect 5/5 cover [] box [946, 746, 158, 84]  engineering_lead 5/5 cover [] box [1091, 470, 195, 100]
+  1920x1080          org-PERSON fullstack 5/5 cover [] box [596, 563, 219, 100]  frontend_architect 5/5 cover [] box [942, 747, 158, 84]  engineering_lead 5/5 cover [] box [1091, 472, 195, 100]
+  1600x900           org-PXJ    fullstack 5/5 cover [] box [446, 504, 219, 100]  frontend_architect 5/5 cover [] box [783, 691, 158, 84]  engineering_lead 5/5 cover [] box [921, 407, 195, 100]
+  1600x900           org-PERSON fullstack 5/5 cover [] box [445, 501, 219, 100]  frontend_architect 5/5 cover [] box [780, 692, 158, 84]  engineering_lead 5/5 cover [] box [923, 410, 195, 100]
+  1440x900           org-PXJ    fullstack 5/5 cover [] box [360, 505, 219, 100]  frontend_architect 5/5 cover [] box [706, 688, 158, 84]  engineering_lead 5/5 cover [] box [845, 407, 195, 100]
+  1440x900           org-PERSON fullstack 5/5 cover [] box [360, 501, 219, 100]  frontend_architect 5/5 cover [] box [703, 689, 158, 84]  engineering_lead 5/5 cover [] box [848, 411, 195, 100]
+  1280x720           org-PXJ    fullstack 5/5 cover [] box [284, 503, 219, 100]  frontend_architect 2/5 cover [] box [622, 692, 158, 84]  engineering_lead 5/5 cover [] box [764, 409, 195, 100]
+  1280x720           org-PERSON fullstack 5/5 cover [] box [284, 503, 219, 100]  frontend_architect 2/5 cover [] box [620, 692, 158, 84]  engineering_lead 5/5 cover [] box [765, 411, 195, 100]
+  zoom200-1920x1080  org-PXJ    fullstack 0/5 cover [] box [161, 984, 186, 118]  frontend_architect 0/5 cover [] box [458, 1190, 158, 84]  engineering_lead 0/5 cover [] box [589, 892, 186, 100]
+  zoom200-1920x1080  org-PERSON fullstack 0/5 cover [] box [161, 869, 186, 118]  frontend_architect 0/5 cover [] box [455, 1078, 158, 84]  engineering_lead 0/5 cover [] box [591, 782, 186, 100]
+  zoom200-1280x720   org-PXJ    fullstack 0/5 cover [] box [44, 983, 144, 118]  frontend_architect 0/5 cover [] box [298, 1177, 144, 100]  engineering_lead 0/5 cover [] box [431, 887, 144, 118]
+  zoom200-1280x720   org-PERSON fullstack 0/5 cover [] box [44, 867, 144, 118]  frontend_architect 0/5 cover [] box [296, 1065, 144, 100]  engineering_lead 0/5 cover [] box [432, 776, 144, 118]
+  200 % by mouse wheel (pink-zoomwheel, best of 40 steps × 60 px, blocked 0): zoom200-1920x1080 PERSON_X_JOB {'fullstack': 5, 'frontend_architect': 5, 'engineering_lead': 5}; zoom200-1920x1080 PERSON {'fullstack': 5, 'frontend_architect': 5, 'engineering_lead': 5}; zoom200-1280x720 PERSON_X_JOB {'fullstack': 5, 'frontend_architect': 5, 'engineering_lead': 5}; zoom200-1280x720 PERSON {'fullstack': 5, 'frontend_architect': 5, 'engineering_lead': 5}
+
+V-18 role-card form (pink-cardbox, blocked 0):
+  1920x1080          org-PXJ    engineering_lead:orbit+domain frontend_architect:orbit+domain fullstack:orbit+domain
+  1920x1080          role-PXJ   engineering_lead:orbit+domain frontend_architect:orbit+domain :orbit+domain
+  1920x1080          org-PERSON engineering_lead:orbit+domain frontend_architect:orbit+domain fullstack:orbit+domain
+  1600x900           org-PXJ    engineering_lead:orbit+domain frontend_architect:orbit+domain fullstack:orbit+domain
+  1600x900           role-PXJ   engineering_lead:orbit+domain frontend_architect:orbit+domain :orbit+domain
+  1600x900           org-PERSON engineering_lead:orbit+domain frontend_architect:orbit+domain fullstack:orbit+domain
+  1440x900           org-PXJ    engineering_lead:orbit+domain frontend_architect:orbit+domain fullstack:orbit+domain
+  1440x900           role-PXJ   engineering_lead:orbit+domain frontend_architect:orbit+domain :orbit+domain
+  1440x900           org-PERSON engineering_lead:orbit+domain frontend_architect:orbit+domain fullstack:orbit+domain
+  1280x720           org-PXJ    engineering_lead:orbit+domain frontend_architect:orbit+domain fullstack:orbit+domain
+  1280x720           role-PXJ   engineering_lead:orbit+domain frontend_architect:orbit+domain :orbit+domain
+  1280x720           org-PERSON engineering_lead:orbit+domain frontend_architect:orbit+domain fullstack:orbit+domain
+  zoom200-1920x1080  org-PXJ    engineering_lead:orbit+domain frontend_architect:orbit+domain fullstack:orbit+domain
+  zoom200-1920x1080  role-PXJ   engineering_lead:orbit+domain frontend_architect:orbit+domain :orbit+domain
+  zoom200-1920x1080  org-PERSON engineering_lead:orbit+domain frontend_architect:orbit+domain fullstack:orbit+domain
+  zoom200-1280x720   org-PXJ    engineering_lead:orbit+domain frontend_architect:orbit+domain fullstack:orbit+domain
+  zoom200-1280x720   role-PXJ   engineering_lead:orbit+domain frontend_architect:orbit+domain :orbit+domain
+  zoom200-1280x720   org-PERSON engineering_lead:orbit+domain frontend_architect:orbit+domain fullstack:orbit+domain
+
+V-11 Tab path (pink-v11-order):
+  1920x1080 from Enter on the role 14 · role view on load 4 · blocked 0 · syntx-path-FIELD → syntx-path-ORGANIZATION → syntx-return-btn → syntx-job-scope-select
+  1280x720 from Enter on the role 14 · role view on load 4 · blocked 0 · syntx-path-FIELD → syntx-path-ORGANIZATION → syntx-return-btn → syntx-job-scope-select
+
+R-05 tooltip vs visible cause (pink-v0506, blocked 0):
+  NONE      job NONE      title «Select a job in the Job Field first (open a role, then SELECT AS JOB)» · cause «PERSON × JOB needs a valid role selected as the job: none is selected» · way «Way: open a role in the Job Field, then SELECT AS JOB»
+  CHECKING  job CHECKING  title «PERSON × JOB needs a valid role selected as the job: the selected job is still being checked. Way: wait for the check; it opens once the job is valid» · cause «PERSON × JOB needs a valid role selected as the job: the selected job is still being checked» · way «Way: wait for the check; it opens once the job is valid»
+  INVALID   job INVALID   title «PERSON × JOB needs a valid role selected as the job: the selected job is not valid · ROLE_NOT_IN_POOL. Way: open a valid role in the Job Field, then SELECT AS JOB» · cause «PERSON × JOB needs a valid role selected as the job: the selected job is not valid · ROLE_NOT_IN_POOL» · way «Way: open a valid role in the Job Field, then SELECT AS JOB»
+  JOB       job VALID     title «JOB investigates the job only: the Capability Field holds no person in this mode» · cause «JOB investigates the job only: no person field in this mode» · way «Way: choose PERSON or PERSON × JOB as the investigation boundary»
+  job NOT_FOUND banner: {'banner0': {'code': 'NOT_FOUND', 'resume': 'NOT_FOUND', 'retry': False, 'close': True}, 'closed': {'banner': False, 'job': None, 'analysisId': 'ANL_1792628993472_10', 'h': 8, 'first': 'AVAILABLE', 'hDelta': 1, 'back': {'banner': True, 'job': 'JOB_1000000000000_1'}}}
+
+V-20 job NOT_FOUND state (pink-v20, blocked 0):
+  1920x1080  banner NOT_FOUND HUD [1564, 946, 1896, 1056] visible True · B2 panel [1496, 193, 1896, 933] · overlap 0 px² · rows 9 centre hits self 9
+  1600x900   banner NOT_FOUND HUD [1244, 766, 1576, 876] visible True · B2 panel [1176, 132, 1576, 753] · overlap 0 px² · rows 9 centre hits self 9
+  1440x900   banner NOT_FOUND HUD [1084, 766, 1416, 876] visible True · B2 panel [1016, 132, 1416, 753] · overlap 0 px² · rows 9 centre hits self 9
+  1280x720   banner NOT_FOUND HUD [924, 586, 1256, 696] visible True · B2 panel [872, 132, 1256, 573] · overlap 0 px² · rows 9 centre hits self 9
+
+Reach (pink-reach, blocked 0, pageErrors 0): B2 rows by wheel 1920x1080@60 9/9; 1920x1080@240 9/9; 1600x900@60 9/9; 1600x900@240 9/9; 1440x900@60 9/9; 1440x900@240 9/9; 1280x720@60 9/9; 1280x720@240 9/9; zoom200-1920x1080@60 9/9; zoom200-1920x1080@240 9/9; zoom200-1280x720@60 9/9; zoom200-1280x720@240 8/9
+  key actions (source actions, JOB mode, SELECT AS JOB, picker) not fully in view or 0/5 after a user's scroll: []
+
+Held items (pink-ux): 600 Tab presses, violations none; hover changes look only (True); Esc ['ORGANIZATION', 'FIELD', 'FIELD']; targets < 24 px none; horizontal scroll False; blocked 0, pageErrors 0
+  journey 41dfa25 → b77c851: POOL 3→3 · ORG 3→1 · ROLE 5→5 · SELECT AS JOB 21→14 · CAPABILITY FIELD 18→8 · EVIDENCE 9→9 · RETURN 3→3
+V-12 (pink-mode-keys, blocked 0): start:PERSON_X_JOB/PERSON_X_JOB/h2 · ArrowRight-1:JOB/PERSON_X_JOB/h2 · ArrowRight-2:JOB/PERSON_X_JOB/h2 · ArrowLeft-3:PERSON_X_JOB/PERSON_X_JOB/h2 · ArrowLeft-4:PERSON/PERSON_X_JOB/h2 · ArrowLeft-5:PERSON/PERSON_X_JOB/h2 · Home-6:PERSON/PERSON_X_JOB/h2 · End-7:JOB/PERSON_X_JOB/h2 · Home-8:PERSON/PERSON_X_JOB/h2 · Enter-9:PERSON/PERSON/h3
+D-PICK (pink-dpick-real, blocked 0): 1920x1080 first-screen offered ['ANL_1792628993472_10'] open-quiet True push +1 · 1920x1080 role-view offered ['ANL_1792628993472_10'] open-quiet True push +1 · 1920x1080 PERSON pickers 0 · 1920x1080 PERSON-role pickers 0 · 1920x1080 JOB-role pickers 0 · 1280x720 first-screen offered ['ANL_1792628993472_10'] open-quiet True push +1 · 1280x720 role-view offered ['ANL_1792628993472_10'] open-quiet True push +1 · 1280x720 PERSON pickers 0 · 1280x720 PERSON-role pickers 0 · 1280x720 JOB-role pickers 0
