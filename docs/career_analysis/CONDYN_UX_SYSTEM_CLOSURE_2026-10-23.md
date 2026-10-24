@@ -170,4 +170,35 @@ deliberately below; see §8); wheel steps refined to 80 px, all rows reachable e
 real mouse click opens the owner role card in all 6 viewports (V-19). Navigation R01–R11 **28/28** at 1920 and 1280. The
 discovery lab :41878 was stopped (copy dropped).
 
-PINK targeted re-check: pending.
+PINK targeted re-check: §10.
+
+## 10 Final acceptance state (§10)
+
+| §10 | State |
+|---|---|
+| 1 Candidate | **`b77c851`** on `frontend/pxj-ux-closure` (code `9a8a28e`); base `70d1cb4` = 421e382 + GELB B-3; 31 commits on 70d1cb4 |
+| 2 Owner deep link | `http://127.0.0.1:41872/career/demo?investigationMode=PERSON_X_JOB&jobPoolUploadId=JPOOL_B94850C439974E27496FE3B1A9A076B5&jobScopePoolUploadId=JPOOL_B94850C439974E27496FE3B1A9A076B5&jobScopeRoleId=role_kestrel_fullstack&analysisId=ANL_1792628993472_10&focus=CAPABILITY` — production build of b77c851 on a row-identical copy of the :41862 database (PERSISTED_REAL_RESULT), GET only |
+| 3 Choosing existing analyses (D-PICK) | PASS — GELB (real) and PINK (P0–P12 stand-in + real): only the exact mode/upload/role match, explicit click, one entry, never automatic; same link without `analysisId` |
+| 4 Role selection and source guidance | PASS — level shown (UX-01), select-as-job condition and position (UX-02/V-11, tab path back to 14), uploaded/opened/selected (UX-07), pools first (UX-06), gate cause and way (UX-04), both next steps (UX-03), .md/.txt as text, no useless retry (F-G1-MD/V-08) |
+| 5 B2 on the first Capability Field | PASS — 9/8/1, verified quotes, no score; in view at first sight at 1920, 1600, 1440, 1280 and 200 % of 1920; at 200 % of 1280 (640×360) head, binding and counts are in view, the statement one scroll below |
+| 6 Responsive, no blocked action | PASS — 6 viewports, controls uncovered, rows reachable by wheel, owner role card hit by mouse at the organisation level, no horizontal scroll (GELB 113/114 with the 640×360 statement line; PINK §3.64) |
+| 7 Navigation and reload | PASS — NAV ≡ RELOAD, job resume GET only, O-RF-1, O-NAV-SUBMIT inside the document; R01–R11 28/28 at 1920 and 1280 |
+| 8 Production build without exception | PASS — `next build` exit 0 and `tsc` 0 errors with a pristine `next.config.ts` (B-3, 70d1cb4) |
+| 9 PINK final report | §3.61 pre-sweep → §3.62 on 41dfa25 (5 FAIL) → **§3.64 on b77c851: all PASS, no new FAIL** (b6ef10d); three suite files re-run green in a real checkout (dbc69b6/75ec61b) |
+| 10 Open limits, baseline failures | below |
+
+**Test suite (§07, no blanket „green“).** Full isolated suite on b77c851: 2879 passed, **27 failed**, 32 skipped. The 27 are the known
+baseline (4 files: career-lifecycle-concurrency-idempotency, career-lifecycle-postgres-persistence, career-lifecycle-recovery,
+career-policy-activation-atomicity; 21 × insert `career_policy_versions`, 5 assertions, 1 × insert `career_commitments`) — the same
+signature as on 49e2bc6/88539d3/421e382, untouched by the candidate. Three further file-level failures in GELB's run
+(g2-g3-vertical-proof, hr-decision-loop-p7, local-decision-context-http) were a Turbopack panic on the review worktree's symlinked
+node_modules; PINK re-ran them on b77c851 in a real checkout: 71/71 green. Focused group: 514 passed, 4 skipped (pre-existing).
+Test changes: one literal (K-UX-3); in the branch's own `job-levels.test.tsx` 5 expectations that encoded the V-11 regression were
+removed and 1 added (PINK §3.64) — not a 1:1 replacement, named here.
+
+**Open limits and owner decisions**
+- O-NAV-SUBMIT across the document boundary and reload during SUBMITTING (server lookup by idempotency key).
+- PERSON-HASH-REBASE (`.markdown` in the accept filter, upload label naming MD/TXT).
+- D-PICK-PERSON; role-card sizes (owner values in the orbit geometry); V-10 receded role titles (1.02:1) — readable or decorative.
+- D-SRC (persistence of staged sources).
+- Integration GO — nothing integrated, nothing deployed, no Gemini call in this mandate.
