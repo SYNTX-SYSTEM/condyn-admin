@@ -237,3 +237,10 @@ focused group 73 files 585 passed, 4 skipped; tsc 0. The existing registration g
   to keep checking those orbits. Decision: (1) where a test asserted 03–06 present under PERSON it becomes the inverse (absent, as
   under PxJ), every other assertion verbatim; (2) the orbit components 03–06 are tested directly (focus shell, empty projection,
   labels EN/DE). No test deleted, no assertion loosened; own commit with a before/after table per test; PINK checks coverage.
+- **PINK §3.66 (`82dd938`) on 2dba126:** D-RC-1 and C-2 PASS on a fresh database. **O-RC-3** (tables created by the ccc0cc1 DDL got
+  only the triggers, not the CHECKs, yet registration said REGISTERED) **fixed in the next commit on the branch**: named constraints
+  are added by ALTER when missing; registration verifies every constraint and trigger and fails otherwise; a violating existing row
+  fails the ALTER. **O-RC-4 decided: fail closed** — one corrupt row makes the whole read (plan / route) fail rather than serve a
+  partial or tampered cache; it signals an integrity breach, not a normal state. **O-RC-5 noted:** the table owner (app role) can
+  still disable triggers or drop the table; real protection against that is a role separation (owner role ≠ app role), part of any
+  production migration decision.
