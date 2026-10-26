@@ -16,6 +16,15 @@ export const INVESTIGATION_MODES = ["PERSON", "PERSON_X_JOB", "JOB"] as const;
 export type InvestigationMode = typeof INVESTIGATION_MODES[number];
 export const DEFAULT_INVESTIGATION_MODE: InvestigationMode = "PERSON_X_JOB";
 
+/** Demo entry: an unscoped landing page starts in PERSON so automatic role discovery is reachable without a job choice. */
+export function resolveDemoEntryMode(value: string | null | undefined, hasJobScope: boolean): InvestigationMode {
+  return investigationModeFromParam(value) ?? (hasJobScope ? DEFAULT_INVESTIGATION_MODE : "PERSON");
+}
+
+export function resolveDemoEntryFocus(value: string | null | undefined, hasJobScope: boolean): "CAPABILITY" | "FIELD" {
+  return investigationModeFromParam(value) === null && !hasJobScope ? "CAPABILITY" : "FIELD";
+}
+
 /** The backend's binding wording for an invalid or contradictory boundary (GELB lib/career/investigation/boundary.ts), verbatim. */
 export const INVESTIGATION_INVALID_MESSAGE = "Bitte wähle eine eindeutige Untersuchungsgrenze.";
 export const INVESTIGATION_INVALID_CODE = "ERR_INVESTIGATION_INVALID";

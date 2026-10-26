@@ -42,7 +42,7 @@ import { PxjAnalysisJobOffer, PxjFirstScreen, pxjFirstScreenVisible } from "./Px
 import { legacyJobComparisonPermitted } from "../../../../lib/career/investigation/client";
 import { JOB_SCOPE_REQUIRED_MESSAGE, JOB_SCOPE_URL_PARAMS, isJobScopeErrorCode, jobScopeFromParams, type JobScope } from "../../../../lib/career/job-pool/job-scope";
 import type { SyntxCapabilityGatePresentation, SyntxJobScopePresentation } from "./SyntxFieldSelector";
-import { DEFAULT_INVESTIGATION_MODE, INVESTIGATION_URL_PARAM, declareAnalysis, investigationModeFromParam, isInvestigationErrorCode, type InvestigationMode } from "../../../../lib/career/job-pool/investigation-mode";
+import { INVESTIGATION_URL_PARAM, declareAnalysis, investigationModeFromParam, isInvestigationErrorCode, resolveDemoEntryFocus, resolveDemoEntryMode, type InvestigationMode } from "../../../../lib/career/job-pool/investigation-mode";
 import { describeAnalysisSource } from "../../../../lib/career/job-pool/frontend-presentation";
 import { buildEvidenceGraph } from "../../../../lib/career/evidence/traversal";
 import { computeGraphFocus } from "../../../../lib/career/evidence/highlight";
@@ -329,7 +329,8 @@ export function SemanticCareerIntelligenceField({
 
   /** The investigation boundary (owner GO "DEMO FRONTEND", 2026-10-15): one explicit mode for both fields, written to the URL only
    *  when chosen. A mode change never removes the selected job (G-05) and never touches sources or analyses. */
-  const [investigationMode, setInvestigationMode] = useState<InvestigationMode>(() => investigationModeFromParam(initialInvestigationMode) ?? DEFAULT_INVESTIGATION_MODE);
+  const hasInitialJobScope = initialJobScopePoolUploadId !== undefined || initialJobScopeRoleId !== undefined;
+  const [investigationMode, setInvestigationMode] = useState<InvestigationMode>(() => resolveDemoEntryMode(initialInvestigationMode, hasInitialJobScope));
   const selectInvestigationMode = (next: InvestigationMode) => {
     setInvestigationMode(next);
     writeCareerDemoUrl({ [INVESTIGATION_URL_PARAM]: next }, "push");
@@ -375,7 +376,7 @@ export function SemanticCareerIntelligenceField({
   const analysisPool: string | null = analysisBoundary.state === "RESOLVED" && analysisBoundary.value.mode === "PERSON_X_JOB" ? analysisBoundary.value.jobScopeSelection?.jobPoolUploadId ?? null : null;
   /** The requested field. Job Pool first (owner "JOB POOL FIRST / CAPABILITY GATE"): the Job Field is the ground state; CAPABILITY is
    *  only requested here — it becomes the active field only while the job scope is VALID (`activeFieldFocus`, below). */
-  const [fieldFocus, setFieldFocus] = useState<"CAPABILITY" | "FIELD">(initialFieldFocus ?? "FIELD");
+  const [fieldFocus, setFieldFocus] = useState<"CAPABILITY" | "FIELD">(initialFieldFocus ?? resolveDemoEntryFocus(initialInvestigationMode, hasInitialJobScope));
   /** Capability gate: PERSON always open (the person needs no job); PERSON × JOB open only for a VALID job scope (a loaded, ACTIVE,
    *  mapped pool and one of its roles); JOB closed (no person). Closed, the Job Field is the active field whatever was requested;
    *  the request is kept, so the field returns to Capability as soon as the gate opens again. */

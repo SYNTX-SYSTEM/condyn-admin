@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { DEFAULT_INVESTIGATION_MODE, INVESTIGATION_INVALID_MESSAGE, checkAnalysisPayload, declareAnalysis, investigationModeFromParam } from "../../../lib/career/job-pool/investigation-mode";
+import { DEFAULT_INVESTIGATION_MODE, INVESTIGATION_INVALID_MESSAGE, checkAnalysisPayload, declareAnalysis, investigationModeFromParam, resolveDemoEntryFocus, resolveDemoEntryMode } from "../../../lib/career/job-pool/investigation-mode";
 import { INVESTIGATION_INVALID_MESSAGE as BACKEND_MESSAGE, parseDeclaredInvestigation } from "../../../lib/career/investigation/boundary";
 import type { JobScopeValidation } from "../../../lib/career/job-pool/job-scope";
 
@@ -12,6 +12,10 @@ describe("investigation mode — frontend boundary", () => {
 
   it("restores only an exact mode from the URL; the ground state is PERSON_X_JOB", () => {
     expect(DEFAULT_INVESTIGATION_MODE).toBe("PERSON_X_JOB");
+    expect(resolveDemoEntryMode(undefined, false)).toBe("PERSON");
+    expect(resolveDemoEntryFocus(undefined, false)).toBe("CAPABILITY");
+    expect(resolveDemoEntryMode(undefined, true)).toBe("PERSON_X_JOB");
+    expect(resolveDemoEntryFocus(undefined, true)).toBe("FIELD");
     for (const mode of ["PERSON", "PERSON_X_JOB", "JOB"]) expect(investigationModeFromParam(mode)).toBe(mode);
     for (const value of [undefined, null, "", "person", " PERSON", "PERSON×JOB", "TEAM"]) expect(investigationModeFromParam(value as string | null | undefined)).toBeNull();
   });
