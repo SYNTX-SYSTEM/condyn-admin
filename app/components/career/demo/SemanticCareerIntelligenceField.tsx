@@ -405,7 +405,7 @@ export function SemanticCareerIntelligenceField({
       setAutomaticMatches([]);
       return () => { active = false; };
     }
-    void Promise.all(roleDiscoveryPools.map(pool => fetchJobPoolMatches(pool, viewedAnalysisSource.analysisId)))
+    void Promise.all(roleDiscoveryPools.map(pool => fetchJobPoolMatches(pool, viewedAnalysisSource.analysisId, undefined, true)))
       .then(results => { if (active) setAutomaticMatches(results.flatMap(result => result.state === "AVAILABLE" ? [result.matches] : [])); })
       .catch(() => { if (active) setAutomaticMatches([]); });
     return () => { active = false; };

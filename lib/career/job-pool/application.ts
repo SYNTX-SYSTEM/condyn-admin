@@ -102,10 +102,10 @@ export function createJobPoolApplication(deps: JobPoolApplicationDependencies) {
       return viewOf(record);
     },
 
-    async matches(jobPoolUploadId: string, analysisId: string | null): Promise<JobPoolMatchPresentation> {
+    async matches(jobPoolUploadId: string, analysisId: string | null, mode: "PERSON_DISCOVERY" | null = null): Promise<JobPoolMatchPresentation> {
       if (!analysisId) throw new JobPoolError("ERR_ANALYSIS_ID_REQUIRED", 400, "The query parameter analysisId is required.");
       const view = await this.get(jobPoolUploadId);
-      if (deps.investigationBoundary) await assertComparableBoundary(deps.investigationBoundary, analysisId);
+      if (deps.investigationBoundary) await assertComparableBoundary(deps.investigationBoundary, analysisId, mode === "PERSON_DISCOVERY");
       const analysis = await analyses.load(analysisId);
       if (analysis === null) throw new JobPoolError("ERR_ANALYSIS_NOT_FOUND", 404, `Unknown analysis ${analysisId}.`);
       let capabilitySweep: CapabilitySweepInput = { state: "NOT_PRODUCED" };
@@ -135,14 +135,14 @@ export function createJobPoolApplication(deps: JobPoolApplicationDependencies) {
 export type JobPoolApplication = ReturnType<typeof createJobPoolApplication>;
 
 /** Never compared: a stored PERSON analysis, or an analysis whose boundary cannot be resolved exactly. */
-async function assertComparableBoundary(boundary: NonNullable<JobPoolApplicationDependencies["investigationBoundary"]>, analysisId: string): Promise<void> {
+async function assertComparableBoundary(boundary: NonNullable<JobPoolApplicationDependencies["investigationBoundary"]>, analysisId: string, allowPersonDiscovery: boolean): Promise<void> {
   let investigation: PersistedAnalysisInvestigation;
   try { investigation = await boundary.read(analysisId); } catch (error) {
     if (!(error instanceof AnalysisInvestigationError)) throw error;
     if (error.status === 404) throw new JobPoolError("ERR_ANALYSIS_NOT_FOUND", 404, `Unknown analysis ${analysisId}.`);
     throw new JobPoolError("ERR_JOB_POOL_MATCHES_BOUNDARY_UNRESOLVED", 409, `The investigation boundary of ${analysisId} cannot be resolved (${error.reason}); no job comparison.`, [{ path: "analysisId", message: error.reason ?? "UNRESOLVED" }]);
   }
-  if (investigation.mode === "PERSON") {
+  if (investigation.mode === "PERSON" && !allowPersonDiscovery) {
     throw new JobPoolError("ERR_JOB_POOL_MATCHES_PERSON_ANALYSIS", 409, `${analysisId} is a PERSON analysis, investigated independently of any job; no job comparison.`);
   }
 }
