@@ -42,14 +42,16 @@ describe("CONDYN / SYNTX — Step 22c: Semantic Career Intelligence Field (SIL v
   });
 
   it("should render SemanticCareerIntelligenceField in pure Zero-State without fake fallback data", () => {
-    // Owner G1 Q1: the default PERSON × JOB hides orbits 03–06; the zero state is the PERSON field. RD-5 (owner D-RD-5 = B): without
-    // orbits 03–06 (their zero state is checked on the orbit component below).
+    // The original PERSON field keeps the complete six-orbit Planetarium surface; Role Discovery remains a backend concern here.
     const html = renderToString(<SemanticCareerIntelligenceField data={EMPTY_CAREER_INTELLIGENCE_DATA} investigationMode="PERSON" />);
 
     // Basic layout asserts
     expect(html).toContain("SYNTX CORE • ORGANISM");
     expect(html).toContain("CAPABILITY FIELD");
-    expect(html).not.toContain("RESONANCE ORBITS");
+    expect(html).toContain("RESONANCE ORBITS");
+    expect(html).toContain("ROLE MANIFESTATION");
+    expect(html).toContain("TENSION FIELD");
+    expect(html).toContain("EVOLUTION PATHS");
     
     // Explicitly assert that 0 items exist across orbits
     expect(html).toContain("0 items"); // Should appear for orbits 01 and 02

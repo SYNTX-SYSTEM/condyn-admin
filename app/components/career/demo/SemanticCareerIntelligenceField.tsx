@@ -26,11 +26,9 @@ import { SyntxInvestigationSelector } from "./SyntxInvestigationSelector";
 import { SyntxEnergyRay, SyntxPlanetariumBackdrop } from "./manifestation/SyntxPlanetarium";
 import { FocusTransitionStageShell } from "./manifestation/SyntxFocusShell";
 import { observationFromParams, type SyntxObservation } from "../../../../lib/career/job-pool/syntx-field-view-model";
-import { fetchJobPoolMatches, useJobPoolWorkflow } from "../../../../lib/career/ui/useJobPool";
-import type { JobPoolMatchPresentation } from "../../../../lib/career/job-pool/types";
+import { useJobPoolWorkflow } from "../../../../lib/career/ui/useJobPool";
 import { useJobScopeValidation } from "../../../../lib/career/ui/useJobScope";
 import { useAnalysisBoundary, useSelectedRoleCoverage } from "../../../../lib/career/ui/useRoleInvestigation";
-import { activeDiscoveryPoolIds, useRoleDiscovery } from "../../../../lib/career/ui/role-discovery";
 import { useAnalysisResult } from "../../../../lib/career/ui/useAnalysisResult";
 import { ANALYSIS_JOB_URL_PARAM, DISCOVERY_POOLS_URL_PARAM, analysisJobIdFromParam, discoveryPoolsFromParam, writeCareerDemoUrl } from "../../../../lib/career/ui/career-demo-url";
 import { careerJobHandoff } from "../../../../lib/career/ui/career-job-handoff";
@@ -42,7 +40,7 @@ import { PxjAnalysisJobOffer, PxjFirstScreen, pxjFirstScreenVisible } from "./Px
 import { legacyJobComparisonPermitted } from "../../../../lib/career/investigation/client";
 import { JOB_SCOPE_REQUIRED_MESSAGE, JOB_SCOPE_URL_PARAMS, isJobScopeErrorCode, jobScopeFromParams, type JobScope } from "../../../../lib/career/job-pool/job-scope";
 import type { SyntxCapabilityGatePresentation, SyntxJobScopePresentation } from "./SyntxFieldSelector";
-import { INVESTIGATION_URL_PARAM, declareAnalysis, investigationModeFromParam, isInvestigationErrorCode, resolveDemoEntryFocus, resolveDemoEntryMode, type InvestigationMode } from "../../../../lib/career/job-pool/investigation-mode";
+import { DEFAULT_INVESTIGATION_MODE, INVESTIGATION_URL_PARAM, declareAnalysis, investigationModeFromParam, isInvestigationErrorCode, type InvestigationMode } from "../../../../lib/career/job-pool/investigation-mode";
 import { describeAnalysisSource } from "../../../../lib/career/job-pool/frontend-presentation";
 import { buildEvidenceGraph } from "../../../../lib/career/evidence/traversal";
 import { computeGraphFocus } from "../../../../lib/career/evidence/highlight";
@@ -56,7 +54,6 @@ import { buildOrbitFocusProjection, presentSourcePlaceholders } from "../../../.
 import { resolveOrbitalFocusNavigation } from "../../../../lib/career/view-model/orbital-focus-navigation";
 import type { SilOrbitStageId } from "../../../../lib/career/view-model/sil-language";
 import { decodeCanonicalSilFrontendPresentation, type CanonicalSilFrontendPresentation, type CanonicalSilFrontendRegionName } from "../../../../lib/career/sil-projection/frontend-presentation";
-import { RoleDiscoveryCapabilityMap } from "./RoleDiscoveryCapabilityMap";
 
 export interface SemanticCareerIntelligenceFieldProps {
   data: DemoCareerIntelligenceData;
@@ -329,8 +326,7 @@ export function SemanticCareerIntelligenceField({
 
   /** The investigation boundary (owner GO "DEMO FRONTEND", 2026-10-15): one explicit mode for both fields, written to the URL only
    *  when chosen. A mode change never removes the selected job (G-05) and never touches sources or analyses. */
-  const hasInitialJobScope = initialJobScopePoolUploadId !== undefined || initialJobScopeRoleId !== undefined;
-  const [investigationMode, setInvestigationMode] = useState<InvestigationMode>(() => resolveDemoEntryMode(initialInvestigationMode, hasInitialJobScope));
+  const [investigationMode, setInvestigationMode] = useState<InvestigationMode>(() => investigationModeFromParam(initialInvestigationMode) ?? DEFAULT_INVESTIGATION_MODE);
   const selectInvestigationMode = (next: InvestigationMode) => {
     setInvestigationMode(next);
     writeCareerDemoUrl({ [INVESTIGATION_URL_PARAM]: next }, "push");
@@ -376,7 +372,7 @@ export function SemanticCareerIntelligenceField({
   const analysisPool: string | null = analysisBoundary.state === "RESOLVED" && analysisBoundary.value.mode === "PERSON_X_JOB" ? analysisBoundary.value.jobScopeSelection?.jobPoolUploadId ?? null : null;
   /** The requested field. Job Pool first (owner "JOB POOL FIRST / CAPABILITY GATE"): the Job Field is the ground state; CAPABILITY is
    *  only requested here — it becomes the active field only while the job scope is VALID (`activeFieldFocus`, below). */
-  const [fieldFocus, setFieldFocus] = useState<"CAPABILITY" | "FIELD">(initialFieldFocus ?? resolveDemoEntryFocus(initialInvestigationMode, hasInitialJobScope));
+  const [fieldFocus, setFieldFocus] = useState<"CAPABILITY" | "FIELD">(initialFieldFocus ?? "FIELD");
   /** Capability gate: PERSON always open (the person needs no job); PERSON × JOB open only for a VALID job scope (a loaded, ACTIVE,
    *  mapped pool and one of its roles); JOB closed (no person). Closed, the Job Field is the active field whatever was requested;
    *  the request is kept, so the field returns to Capability as soon as the gate opens again. */
@@ -390,27 +386,6 @@ export function SemanticCareerIntelligenceField({
   const comparisonCandidate = investigationMode === "PERSON_X_JOB" && analysisPool !== null;
   // The legacy pool comparison (/matches) is the Job Field's: read only while the Job Field is the active field (owner G1, A-02).
   const jobPoolWorkflow = useJobPoolWorkflow({ analysisId: comparisonCandidate && activeFieldFocus === "FIELD" && viewedAnalysisSource.kind !== "NONE" ? viewedAnalysisSource.analysisId : null, analysisJobPoolUploadId: analysisPool, initialJobPoolUploadId: jobPoolUploadId ?? null });
-  /** PERSON role discovery consumes the existing Job Pool list automatically; explicit URL releases remain authoritative. */
-  const automaticDiscoveryPools = investigationMode === "PERSON" && jobPoolWorkflow.pools.state === "AVAILABLE"
-    ? activeDiscoveryPoolIds(jobPoolWorkflow.pools.jobPools)
-    : null;
-  const roleDiscoveryPools = discoveryPools ?? automaticDiscoveryPools;
-  const roleDiscovery = useRoleDiscovery(
-    investigationMode === "PERSON" && viewedAnalysisSource.kind !== "NONE" ? viewedAnalysisSource.analysisId : null,
-    roleDiscoveryPools
-  );
-  const [automaticMatches, setAutomaticMatches] = useState<JobPoolMatchPresentation[]>([]);
-  useEffect(() => {
-    let active = true;
-    if (investigationMode !== "PERSON" || viewedAnalysisSource.kind === "NONE" || roleDiscoveryPools === null) {
-      setAutomaticMatches([]);
-      return () => { active = false; };
-    }
-    void Promise.all(roleDiscoveryPools.map(pool => fetchJobPoolMatches(pool, viewedAnalysisSource.analysisId, undefined, true)))
-      .then(results => { if (active) setAutomaticMatches(results.flatMap(result => result.state === "AVAILABLE" ? [result.matches] : [])); })
-      .catch(() => { if (active) setAutomaticMatches([]); });
-    return () => { active = false; };
-  }, [investigationMode, viewedAnalysisSource.kind, viewedAnalysisSource.kind === "NONE" ? null : viewedAnalysisSource.analysisId, roleDiscoveryPools ? JSON.stringify(roleDiscoveryPools) : null]);
   const jobComparisonAllowed = investigationMode === "PERSON_X_JOB" && viewedAnalysisSource.kind !== "NONE" && jobPoolWorkflow.selectedJobPoolUploadId !== null
     && legacyJobComparisonPermitted(analysisBoundary.state === "RESOLVED" ? analysisBoundary : null, { analysisId: viewedAnalysisSource.analysisId, jobPoolUploadId: jobPoolWorkflow.selectedJobPoolUploadId });
   const comparisonWithheld: "RESOLVING" | "PERSON" | "UNRESOLVED" | "OTHER_POOL" | null = investigationMode !== "PERSON_X_JOB" || viewedAnalysisSource.kind === "NONE" || jobComparisonAllowed ? null : analysisBoundary.state === "RESOLVING" || analysisBoundary.state === "IDLE" ? "RESOLVING" : viewedAnalysisMode === "PERSON" ? "PERSON" : analysisPool !== null ? (jobPoolWorkflow.selectedJobPoolUploadId === null ? null : "OTHER_POOL") : "UNRESOLVED";
@@ -553,25 +528,19 @@ export function SemanticCareerIntelligenceField({
   const resultOnView = shownResult !== null || (jobState === "SUCCEEDED" && firstScreen.state === "NO_ANALYSIS");
   /** Q1: under PERSON × JOB the legacy orbits (03 resonance, 04 roles, 05 tension, 06 evolution) are not shown: no orbit, count, HUD
    *  action, coupling line, inspector node or text. A focus requested on one of them is not shown either.
-   *  RD-5 (owner D-RD-5 = B): under PERSON as well — role discovery replaces them (organisations, roles with their legacy fit score,
-   *  gaps and next actions of the legacy analysis, lib/career/ui-adapter.ts). 01 and 02 stay; the API is unchanged. */
-  const legacyHidden = investigationMode === "PERSON_X_JOB" || investigationMode === "PERSON";
+   */
+  const legacyHidden = investigationMode === "PERSON_X_JOB";
   const legacyStage = (stageId: string | null) => legacyHidden && stageId !== null && ["03", "04", "05", "06"].includes(stageId);
-  /** VIEW MATCHES on 01 / 02 stays as it was under PERSON (RD-5 removes 03–06 only); not under PERSON × JOB (Q1). */
-  const viewMatchesHidden = investigationMode === "PERSON_X_JOB";
   const stageMasked = legacyStage(requestedStageId);
   const activeStageId = stageMasked ? null : requestedStageId;
   const hoveredStageId = legacyStage(requestedHoverStageId) ? null : requestedHoverStageId;
   const zoomLevel: SemanticZoomLevel = stageMasked ? 0 : requestedZoomLevel;
   const selectedClusterId = stageMasked ? null : requestedClusterId;
   const activeData = React.useMemo(() => {
-    const base = canonicalSilPresentation !== null || shownResult === null ? data : investigationMode === "PERSON_X_JOB" ? withoutLegacyOrbits(demoStateFromResult(shownResult)) : demoStateFromResult(shownResult);
-    // RD-5: under PERSON the legacy role, organisation, gap and next-action data leave the map (inspector included); its capabilities
-    // (02) stay as they were.
-    const shown = investigationMode === "PERSON" ? { ...base, companyMatches: [], roleMatches: [], capabilityGaps: [], nextActions: [] } : base;
+    const shown = canonicalSilPresentation !== null || shownResult === null ? data : legacyHidden ? withoutLegacyOrbits(demoStateFromResult(shownResult)) : demoStateFromResult(shownResult);
     // §07: a placeholder is named as one (title / hash not delivered), never shown as a title or a hash; in every mode.
     return { ...shown, sources: presentSourcePlaceholders(shown.sources, { title: t.pxjFirst.titleNotDelivered, hash: t.pxjFirst.hashNotDelivered }) };
-  }, [data, canonicalSilPresentation, shownResult, legacyHidden, investigationMode, t]);
+  }, [data, canonicalSilPresentation, shownResult, legacyHidden, t]);
   const focusedOrbitPresentation =
     resultOnView
       ? resolveSilFocusedOrbitPresentation(
@@ -633,7 +602,7 @@ export function SemanticCareerIntelligenceField({
 
   const handleHudAction = (action: "OPEN EVIDENCE" | "INSPECT SOURCES" | "VIEW MATCHES", stageId: string) => {
     // No legacy matching in PERSON × JOB (Q1): the action is not rendered there, and not acted on either.
-    if ((viewMatchesHidden && action === "VIEW MATCHES") || legacyStage(stageId)) return;
+    if (legacyHidden && (action === "VIEW MATCHES" || legacyStage(stageId))) return;
     setActiveStageId(stageId);
 
     if (stageId !== "02") {
@@ -1349,7 +1318,7 @@ export function SemanticCareerIntelligenceField({
                         activeData,
                         resultOnView ? "SUCCEEDED" : "WITHHELD"
                       )}
-                      hideViewMatches={viewMatchesHidden}
+                        hideViewMatches={legacyHidden}
                       onClick={() => {
                         const nextFocus = resolveOrbitalFocusNavigation({
                           activeStageId: activeStageId as SilOrbitStageId | null,
@@ -1695,9 +1664,6 @@ export function SemanticCareerIntelligenceField({
         <div style={{ opacity: isOrbitStageFocus ? 0.12 : 1, filter: isOrbitStageFocus ? "blur(3px)" : undefined, pointerEvents: isOrbitStageFocus ? "none" : "auto", transition: "opacity 0.56s ease, filter 0.56s ease" }}>
           <PxjFirstScreen screen={firstScreen} mode={investigationMode} locale={locale} onSwitchMode={selectInvestigationMode} onSelectRole={selectAnalysisJob} noAnalysis={analysisPicker("first-screen")} />
         </div>
-      )}
-      {activeFieldFocus === "CAPABILITY" && investigationMode === "PERSON" && (
-        <RoleDiscoveryCapabilityMap state={roleDiscovery} matches={automaticMatches} />
       )}
       {activeFieldFocus === "FIELD" && investigationMode === "PERSON_X_JOB" && <PxjAnalysisJobOffer screen={firstScreen} locale={locale} onSelectRole={selectAnalysisJob} />}
 
