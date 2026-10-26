@@ -18,6 +18,11 @@ type Fetcher = (input: string, init: { method: "GET"; cache: "no-store"; signal?
 const defaultFetcher: Fetcher = (input, init) => fetch(input, init);
 
 export const ROLE_DISCOVERY_STATUSES: readonly RoleLexicalStatus[] = ["ALL_REQUIREMENTS_NAME_RELATED", "PARTIAL_NAME_RELATED", "WEAK_LEXICAL_ONLY", "NO_LEXICAL_RELATION", "NO_REQUIREMENTS"];
+/** Derives a bounded deterministic release from the existing Job Pool list; no second pool registry is created. */
+export function activeDiscoveryPoolIds(pools: ReadonlyArray<{ jobPoolUploadId: string; poolStatus: string }>): string[] | null {
+  const ids = pools.filter(pool => pool.poolStatus === "ACTIVE").map(pool => pool.jobPoolUploadId).filter(Boolean).sort().slice(0, 10);
+  return ids.length === 0 ? null : ids;
+}
 const BASES = ["NAME_EXACT", "NAME_ALIAS", "NAME_COMPOSITE_CONSTITUENT", "WEAK_TOKEN_CONTAINMENT", "NONE"];
 const AUTHORITY: Record<string, unknown> = { relationBasis: "LEXICAL_NAME_COVERAGE", operand: "PERSON_CAPABILITY_PROPOSAL_PROJECTION", semanticRelationState: "NOT_EXECUTED", scored: false, ranking: false, authorityState: "NONE", decision: false };
 

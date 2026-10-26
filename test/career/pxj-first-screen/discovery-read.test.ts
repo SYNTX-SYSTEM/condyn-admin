@@ -2,7 +2,7 @@ import { describe, expect, it, vi } from "vitest";
 import { instance } from "./harness";
 vi.mock("react", async (importOriginal) => (await import("./harness")).mockReact(await importOriginal<object>()));
 import { PERSON_ANALYSIS, UPLOAD_ALPHA, UPLOAD_ZETA, discoveryBody } from "./discovery-fixtures";
-import { decodeRoleDiscovery, readRoleDiscovery, roleDiscoveryUrl, useRoleDiscovery } from "../../../lib/career/ui/role-discovery";
+import { activeDiscoveryPoolIds, decodeRoleDiscovery, readRoleDiscovery, roleDiscoveryUrl, useRoleDiscovery } from "../../../lib/career/ui/role-discovery";
 
 /**
  * RD-READ (GELB stage 2): the role-discovery read — GET only, the released pools only, a strict decoder, every refusal its own
@@ -18,6 +18,10 @@ function net(status: number, body: unknown) {
 const refusal = (code: string, extra: Record<string, string> = {}) => ({ success: false, issues: [{ code, ...extra }] });
 
 describe("RD-READ · the role-discovery read", () => {
+  it("derives a deterministic bounded active-pool release from the existing pool list", () => {
+    expect(activeDiscoveryPoolIds([{ jobPoolUploadId: "JPOOL_B", poolStatus: "ACTIVE" }, { jobPoolUploadId: "JPOOL_D", poolStatus: "DRAFT" }, { jobPoolUploadId: "JPOOL_A", poolStatus: "ACTIVE" }])).toEqual(["JPOOL_A", "JPOOL_B"]);
+    expect(activeDiscoveryPoolIds([{ jobPoolUploadId: "JPOOL_D", poolStatus: "DRAFT" }])).toBeNull();
+  });
   it("guard: GET of exactly the released pools, in order, nothing else in the query", async () => {
     const n = net(200, discoveryBody());
     const read = await readRoleDiscovery(PERSON_ANALYSIS, POOLS, n.fetcher);
