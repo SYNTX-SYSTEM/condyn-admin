@@ -37,5 +37,8 @@ source document id.
   read/decoder tests) without a database.
 - Runtime boundary: a current PostgreSQL/Gemini end-to-end run still requires
   the repository's disposable local runner and its external runtime services;
-  no live success is claimed from these static/pure checks.
+  no live success is claimed from these static/pure checks. In this Codex
+  namespace the runner fails before database setup with `listen EPERM` from
+  the `tsx` IPC pipe; the host test database and Gemini key were not modified
+  or exposed.
 
