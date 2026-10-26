@@ -93,6 +93,42 @@ export function assertCachedRelation(record: CachedRelation): void {
 
 /** Read side of the cache: the records present for the given keys. */
 export interface RelationCacheReader { getByKeys(keys: string[]): Promise<CachedRelation[]> }
+export interface RelationCacheWriter { saveIfAbsent(records: CachedRelation[]): Promise<{ inserted: number; existing: number }> }
+
+/** Provider boundary for one role batch. Implementations must return evidence-grounded relation states only. */
+export interface SemanticRelationProvider {
+  execute(input: { engine: RelationEngineIdentity; proposals: Proposal[]; requirements: Requirement[] }): Promise<Array<{
+    proposalName: string; requirementText: string; state: SemanticRelationState; relationExplanation: string;
+    evidenceLimitation: string; sourceEvidence: Array<{ sourceDocumentId: string; exactQuote: string }>;
+    rawOutput: string;
+  }>>;
+}
+
+/** Persist a provider batch through the same immutable relation cache used by planning/ranking. */
+export async function evaluateSemanticRelations(input: {
+  engine: RelationEngineIdentity; proposals: Proposal[]; requirements: Requirement[]; provider: SemanticRelationProvider; writer: RelationCacheWriter; now?: () => string;
+}): Promise<CachedRelation[]> {
+  const output = await input.provider.execute({ engine: input.engine, proposals: input.proposals, requirements: input.requirements });
+  const proposals = new Map(input.proposals.map(value => [value.name, value]));
+  const requirements = new Map(input.requirements.map(value => [value.capability_name, value]));
+  const expected = new Set(input.requirements.flatMap(requirement => input.proposals.map(proposal => `${proposal.name}\u0000${requirement.capability_name}`)));
+  const received = new Set<string>();
+  const records = output.map(item => {
+    const proposal = proposals.get(item.proposalName), requirement = requirements.get(item.requirementText);
+    if (!proposal || !requirement || !item.rawOutput || !item.relationExplanation || !item.evidenceLimitation || item.sourceEvidence.length === 0) throw new Error("ERR_RELATION_PROVIDER_OUTPUT_INVALID");
+    const pair = `${item.proposalName}\u0000${item.requirementText}`;
+    if (!expected.has(pair) || received.has(pair) || item.sourceEvidence.some(evidence => !proposal.evidence.some(source => source.sourceDocumentId === evidence.sourceDocumentId && source.exactQuote === evidence.exactQuote))) throw new Error("ERR_RELATION_PROVIDER_OUTPUT_INVALID");
+    received.add(pair);
+    const proposalHash = proposalContentHash(proposal), requirementHash = requirementContentHash(requirement), version = engineVersionHash(input.engine);
+    return { relationKey: relationKey(proposalHash, requirementHash, version), proposalContentHash: proposalHash, requirementContentHash: requirementHash, engineVersionHash: version, engine: input.engine,
+      state: item.state, capabilityName: proposal.name, requirementText: requirement.capability_name, sourceEvidence: item.sourceEvidence,
+      relationExplanation: item.relationExplanation, evidenceLimitation: item.evidenceLimitation, rawOutputSha256: sha256(item.rawOutput), authorityState: "NONE" as const, createdAt: (input.now ?? (() => new Date().toISOString()))() };
+  });
+  if (received.size !== expected.size) throw new Error("ERR_RELATION_PROVIDER_OUTPUT_INCOMPLETE");
+  for (const record of records) assertCachedRelation(record);
+  await input.writer.saveIfAbsent(records);
+  return records;
+}
 
 export interface SemanticInvestigationPlan {
   cacheVersion: typeof RELATION_CACHE_VERSION;
@@ -105,6 +141,57 @@ export interface SemanticInvestigationPlan {
   /** D-RD-3 A: one batched call per role with at least one pending pair (an upper bound before any execution). */
   callsNeeded: number;
   roles: Array<{ jobPoolUploadId: string; poolRoleId: string; pairs: number; cachedPairs: number; pendingPairs: number }>;
+}
+
+/**
+ * Read-only semantic ranking over immutable cache records.  This deliberately
+ * does not invent a relation when a pair is absent: incomplete cache coverage
+ * is reported and the role is not ranked.  Ranking is presentation only;
+ * authority remains NONE and no hiring decision is derived here.
+ */
+export interface SemanticRoleRanking {
+  jobPoolUploadId: string;
+  poolRoleId: string;
+  score: number | null;
+  evaluatedPairs: number;
+  totalPairs: number;
+  complete: boolean;
+  matched: number;
+}
+
+const semanticWeight: Record<SemanticRelationState, number> = {
+  EQUIVALENT: 1, COVERS: 0.9, PARTIAL: 0.5, UNCLEAR: 0.25, DIFFERENT: 0
+};
+const necessityWeight = (value: string): number => value === "REQUIRED" ? 1 : value === "PREFERRED" ? 0.7 : value === "OPTIONAL" ? 0.4 : 0.5;
+
+/** Compute deterministic role scores from already persisted semantic relations. */
+export function rankSemanticRoles(input: {
+  discovery: Pick<PoolRoleDiscovery, "roles">;
+  proposals: Proposal[];
+  requirementsByKey: (key: { jobPoolUploadId: string; poolRoleId: string; poolRequirementId: string }) => Requirement | null;
+  relations: CachedRelation[];
+  engineVersionHash: string;
+}): SemanticRoleRanking[] {
+  const byKey = new Map(input.relations.map(relation => [relation.relationKey, relation]));
+  return input.discovery.roles.map(role => {
+    let evaluatedPairs = 0, totalPairs = 0, matched = 0, numerator = 0, denominator = 0;
+    for (const requirement of role.requirements) {
+      const content = input.requirementsByKey(requirement.key);
+      if (content === null) continue;
+      const weight = necessityWeight(content.necessity ?? "UNKNOWN");
+      denominator += weight;
+      let best: CachedRelation | null = null;
+      for (const proposal of input.proposals) {
+        totalPairs += 1;
+        const key = relationKey(proposalContentHash(proposal), requirementContentHash(content), input.engineVersionHash);
+        const relation = byKey.get(key);
+        if (relation) { evaluatedPairs += 1; if (!best || semanticWeight[relation.state] > semanticWeight[best.state]) best = relation; }
+      }
+      if (best) { matched += semanticWeight[best.state] > 0 ? 1 : 0; numerator += weight * semanticWeight[best.state]; }
+    }
+    const complete = totalPairs > 0 && evaluatedPairs === totalPairs;
+    return { jobPoolUploadId: role.key.jobPoolUploadId, poolRoleId: role.key.poolRoleId, score: complete && denominator > 0 ? Number((numerator / denominator).toFixed(4)) : null, evaluatedPairs, totalPairs, complete, matched };
+  }).sort((a, b) => (b.score ?? -1) - (a.score ?? -1) || a.jobPoolUploadId.localeCompare(b.jobPoolUploadId) || a.poolRoleId.localeCompare(b.poolRoleId));
 }
 
 /**

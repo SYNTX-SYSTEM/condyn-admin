@@ -9,8 +9,9 @@ import { JobPoolError } from "../../../../../../lib/career/job-pool/errors";
 import { createLocalJobPoolApplication } from "../../../../../../lib/career/job-pool/local-composition";
 import { POOL_ROLE_DISCOVERY_MAX_POOLS, buildPoolRoleDiscovery, type DiscoveryPoolInput } from "../../../../../../lib/career/job-pool/pool-role-discovery";
 import { PostgresJobPoolRepository } from "../../../../../../lib/career/job-pool/repository";
-import { planSemanticInvestigation, type RelationEngineIdentity } from "../../../../../../lib/career/job-pool/relation-cache";
+import { engineVersionHash, evaluateSemanticRelations, planSemanticInvestigation, rankSemanticRoles, proposalContentHash, requirementContentHash, relationKey, type RelationEngineIdentity } from "../../../../../../lib/career/job-pool/relation-cache";
 import { PostgresRelationCacheRepository } from "../../../../../../lib/career/job-pool/relation-cache-repository";
+import { GeminiSemanticRelationProvider } from "../../../../../../lib/career/job-pool/semantic-gemini-provider";
 import { createJobScopeResolver } from "../../../../../../lib/career/job-scope/scope";
 import type { CompanyPoolData } from "../../../../../../lib/career/matching/pool";
 import { JobRepository } from "../../../../../../lib/career/orchestration/job-repository";
@@ -19,8 +20,12 @@ export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 const NO_STORE = { "cache-control": "no-store" };
-/** The semantic relation engine (D-RD-2/D-RD-3, stage 3) is not specified yet: no engine, no lookup, no execution. */
-const SEMANTIC_RELATION_ENGINE: RelationEngineIdentity | null = null;
+/** Semantic execution uses the existing Gemini runtime when configured; explicit role-discovery overrides remain supported. */
+const semanticProvider = process.env.ROLE_DISCOVERY_SEMANTIC_PROVIDER ?? (process.env.GEMINI_API_KEY ? "gemini" : null);
+const semanticModel = process.env.ROLE_DISCOVERY_SEMANTIC_MODEL ?? process.env.GEMINI_MODEL ?? null;
+const SEMANTIC_RELATION_ENGINE: RelationEngineIdentity | null = semanticProvider && semanticModel
+  ? { contractVersion: "PROPOSAL_REQUIREMENT_RELATION_V1", provider: semanticProvider, model: semanticModel, promptChecksum: process.env.ROLE_DISCOVERY_SEMANTIC_PROMPT_SHA256 ?? "ROLE_DISCOVERY_SEMANTIC_PROMPT_V1" }
+  : null;
 const issue = (code: string, status: number, extra: Record<string, string> = {}) => NextResponse.json({ success: false, issues: [{ code, ...extra }] }, { status, headers: NO_STORE });
 
 /**
@@ -77,7 +82,31 @@ export async function GET(request: Request, { params }: { params: Promise<{ anal
       requirementsByKey: key => requirements.get(`${key.jobPoolUploadId}\u0000${key.poolRoleId}\u0000${key.poolRequirementId}`) ?? null,
       engine: SEMANTIC_RELATION_ENGINE, cache: SEMANTIC_RELATION_ENGINE ? new PostgresRelationCacheRepository(db.$client) : null
     });
-    return NextResponse.json({ success: true, discovery: { ...discovery, semanticPlan } }, { headers: NO_STORE });
+    let semanticRanking = undefined;
+    if (SEMANTIC_RELATION_ENGINE) {
+      const engineHash = engineVersionHash(SEMANTIC_RELATION_ENGINE);
+      const cache = new PostgresRelationCacheRepository(db.$client);
+      const keys = discovery.roles.flatMap(role => role.requirements.flatMap(requirement => projection.capabilities.map(proposal => {
+        const requirementContent = requirements.get(`${requirement.key.jobPoolUploadId}\u0000${requirement.key.poolRoleId}\u0000${requirement.key.poolRequirementId}`);
+        if (!requirementContent) return null;
+        return `${proposalContentHash(proposal)}:${requirementContentHash(requirementContent)}:${engineHash}`;
+      }).filter((key): key is string => key !== null)));
+      let relations = keys.length ? await cache.getByKeys(keys.map(key => {
+        const [proposalHash, requirementHash, hash] = key.split(":");
+        return relationKey(proposalHash, requirementHash, hash);
+      })) : [];
+      const relationKeys = new Set(relations.map(relation => relation.relationKey));
+      const provider = new GeminiSemanticRelationProvider({ model: SEMANTIC_RELATION_ENGINE.model });
+      for (const role of discovery.roles) {
+        const pending = role.requirements.map(requirement => requirements.get(`${requirement.key.jobPoolUploadId}\u0000${requirement.key.poolRoleId}\u0000${requirement.key.poolRequirementId}`)).filter((requirement): requirement is NonNullable<typeof requirement> => requirement !== undefined).filter(requirement => projection.capabilities.some(proposal => !relationKeys.has(relationKey(proposalContentHash(proposal), requirementContentHash(requirement), engineHash))));
+        if (pending.length === 0) continue;
+        const created = await evaluateSemanticRelations({ engine: SEMANTIC_RELATION_ENGINE, proposals: projection.capabilities, requirements: pending, provider, writer: cache });
+        relations = [...relations, ...created];
+        created.forEach(relation => relationKeys.add(relation.relationKey));
+      }
+      semanticRanking = rankSemanticRoles({ discovery, proposals: projection.capabilities, requirementsByKey: key => requirements.get(`${key.jobPoolUploadId}\u0000${key.poolRoleId}\u0000${key.poolRequirementId}`) ?? null, relations, engineVersionHash: engineHash });
+    }
+    return NextResponse.json({ success: true, discovery: { ...discovery, semanticPlan, ...(semanticRanking ? { semanticRanking } : {}) } }, { headers: NO_STORE });
   } catch (error) {
     if (error instanceof JobPoolError && error.status === 503) return issue(error.code, 503);
     console.error("[role-discovery] failed", error instanceof Error ? error.name : "unknown");
