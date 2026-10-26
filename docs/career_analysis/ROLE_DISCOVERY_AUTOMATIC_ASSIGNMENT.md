@@ -13,6 +13,11 @@ Its output is rendered as the Capability Map, including role status,
 requirement relation state, and source quotes. No second pool registry,
 selection record, or write path is introduced.
 
+The same active uploads are read through the existing deterministic
+`/matches` presentation endpoint. Its ranked resonance candidates are shown
+separately as automatic job candidates; this is a presentation, not a
+semantic evaluation or an HR decision.
+
 ## Authority and limits
 
 `POOL_ROLE_DISCOVERY_V1` remains lexical candidate discovery only:
