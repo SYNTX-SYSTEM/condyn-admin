@@ -26,7 +26,8 @@ import { SyntxInvestigationSelector } from "./SyntxInvestigationSelector";
 import { SyntxEnergyRay, SyntxPlanetariumBackdrop } from "./manifestation/SyntxPlanetarium";
 import { FocusTransitionStageShell } from "./manifestation/SyntxFocusShell";
 import { observationFromParams, type SyntxObservation } from "../../../../lib/career/job-pool/syntx-field-view-model";
-import { useJobPoolWorkflow } from "../../../../lib/career/ui/useJobPool";
+import { fetchJobPoolMatches, useJobPoolWorkflow } from "../../../../lib/career/ui/useJobPool";
+import type { JobPoolMatchPresentation } from "../../../../lib/career/job-pool/types";
 import { useJobScopeValidation } from "../../../../lib/career/ui/useJobScope";
 import { useAnalysisBoundary, useSelectedRoleCoverage } from "../../../../lib/career/ui/useRoleInvestigation";
 import { activeDiscoveryPoolIds, useRoleDiscovery } from "../../../../lib/career/ui/role-discovery";
@@ -397,6 +398,18 @@ export function SemanticCareerIntelligenceField({
     investigationMode === "PERSON" && viewedAnalysisSource.kind !== "NONE" ? viewedAnalysisSource.analysisId : null,
     roleDiscoveryPools
   );
+  const [automaticMatches, setAutomaticMatches] = useState<JobPoolMatchPresentation[]>([]);
+  useEffect(() => {
+    let active = true;
+    if (investigationMode !== "PERSON" || viewedAnalysisSource.kind === "NONE" || roleDiscoveryPools === null) {
+      setAutomaticMatches([]);
+      return () => { active = false; };
+    }
+    void Promise.all(roleDiscoveryPools.map(pool => fetchJobPoolMatches(pool, viewedAnalysisSource.analysisId)))
+      .then(results => { if (active) setAutomaticMatches(results.flatMap(result => result.state === "AVAILABLE" ? [result.matches] : [])); })
+      .catch(() => { if (active) setAutomaticMatches([]); });
+    return () => { active = false; };
+  }, [investigationMode, viewedAnalysisSource.kind, viewedAnalysisSource.kind === "NONE" ? null : viewedAnalysisSource.analysisId, roleDiscoveryPools ? JSON.stringify(roleDiscoveryPools) : null]);
   const jobComparisonAllowed = investigationMode === "PERSON_X_JOB" && viewedAnalysisSource.kind !== "NONE" && jobPoolWorkflow.selectedJobPoolUploadId !== null
     && legacyJobComparisonPermitted(analysisBoundary.state === "RESOLVED" ? analysisBoundary : null, { analysisId: viewedAnalysisSource.analysisId, jobPoolUploadId: jobPoolWorkflow.selectedJobPoolUploadId });
   const comparisonWithheld: "RESOLVING" | "PERSON" | "UNRESOLVED" | "OTHER_POOL" | null = investigationMode !== "PERSON_X_JOB" || viewedAnalysisSource.kind === "NONE" || jobComparisonAllowed ? null : analysisBoundary.state === "RESOLVING" || analysisBoundary.state === "IDLE" ? "RESOLVING" : viewedAnalysisMode === "PERSON" ? "PERSON" : analysisPool !== null ? (jobPoolWorkflow.selectedJobPoolUploadId === null ? null : "OTHER_POOL") : "UNRESOLVED";
@@ -1683,7 +1696,7 @@ export function SemanticCareerIntelligenceField({
         </div>
       )}
       {activeFieldFocus === "CAPABILITY" && investigationMode === "PERSON" && (
-        <RoleDiscoveryCapabilityMap state={roleDiscovery} />
+        <RoleDiscoveryCapabilityMap state={roleDiscovery} matches={automaticMatches} />
       )}
       {activeFieldFocus === "FIELD" && investigationMode === "PERSON_X_JOB" && <PxjAnalysisJobOffer screen={firstScreen} locale={locale} onSelectRole={selectAnalysisJob} />}
 
