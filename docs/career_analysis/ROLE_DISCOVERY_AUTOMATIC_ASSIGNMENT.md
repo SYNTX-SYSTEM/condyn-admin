@@ -15,16 +15,16 @@ selection record, or write path is introduced.
 
 The same active uploads are read through the existing deterministic
 `/matches` presentation endpoint. Its ranked resonance candidates are shown
-separately as automatic job candidates; this is a presentation, not a
-semantic evaluation or an HR decision.
+separately as automatic job candidates. When Gemini is configured, the
+existing immutable relation cache also evaluates pending proposal/requirement
+pairs and the map shows a separate semantic, proposal-only ranking.
 
 ## Authority and limits
 
-`POOL_ROLE_DISCOVERY_V1` remains lexical candidate discovery only:
-`semanticRelationState=NOT_EXECUTED`, `scored=false`, `ranking=false`, and
-`decision=false`. The map therefore never presents a lexical name relation as
-a verified semantic fit or hiring decision. Every displayed quote retains its
-source document id.
+Lexical discovery remains `POOL_ROLE_DISCOVERY_V1`; semantic evaluation is a
+separate cache-backed layer. Both layers retain `authorityState=NONE` and
+`decision=false`: the map never presents a relation as a hiring decision.
+Every displayed quote retains its source document id.
 
 ## TDD and verification
 
@@ -33,8 +33,9 @@ source document id.
 - Integration: the field invokes the existing Job Pool list and role-discovery
   GET path and renders only the decoded result state.
 - TypeScript: `tsc --noEmit` passes.
-- Pure role-discovery regression: 14 tests pass (9 pool discovery, 5 client
-  read/decoder tests) without a database.
+- Pure role-discovery regression: 34 tests pass (pool discovery, strict client
+  decoding, cache validation and deterministic semantic ranking) without a
+  database.
 - Runtime boundary: a current PostgreSQL/Gemini end-to-end run still requires
   the repository's disposable local runner and its external runtime services;
   no live success is claimed from these static/pure checks. In this Codex
