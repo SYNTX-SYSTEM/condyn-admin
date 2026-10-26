@@ -54,5 +54,7 @@ describe("Job Pool client reads", () => {
     expect(await fetchJobPoolMatches(UPLOAD_ID, "ANL_TEST", script({ [url]: () => json(409, { error: { code: "ERR_INACTIVE_COMPANY_POOL", message: "DRAFT" } }) }))).toEqual({ state: "INACTIVE_POOL", jobPoolUploadId: UPLOAD_ID, analysisId: "ANL_TEST", message: "DRAFT" });
     expect(await fetchJobPoolMatches(UPLOAD_ID, "ANL_TEST", script({ [url]: notProvisioned }))).toEqual({ state: "NOT_PROVISIONED", jobPoolUploadId: UPLOAD_ID, analysisId: "ANL_TEST" });
     expect(await fetchJobPoolMatches("JP OOL", "AN L", script({ "GET /api/career/job-pools/JP%20OOL/matches?analysisId=AN%20L": () => json(500, { error: { code: "ERR_I", message: "m" } }) }))).toEqual({ state: "FAILED", jobPoolUploadId: "JP OOL", analysisId: "AN L", code: "ERR_I" });
+    const discoveryUrl = `GET /api/career/job-pools/${UPLOAD_ID}/matches?analysisId=ANL_TEST&discovery=PERSON`;
+    expect(await fetchJobPoolMatches(UPLOAD_ID, "ANL_TEST", script({ [discoveryUrl]: () => json(200, matches) }), true)).toEqual({ state: "AVAILABLE", jobPoolUploadId: UPLOAD_ID, analysisId: "ANL_TEST", matches });
   });
 });
