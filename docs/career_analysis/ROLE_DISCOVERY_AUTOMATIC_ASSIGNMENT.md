@@ -2,6 +2,12 @@
 
 ## Scope
 
+An unscoped `/career/demo` entry now opens directly in `PERSON` mode with the
+Capability Field active. `PERSON_X_JOB` remains the default only when a job
+scope is already present or the URL explicitly requests it. This removes the
+manual pool/job prerequisite from the automatic discovery path while
+preserving explicit job-scoped investigations.
+
 The existing Job Pool list is the sole source of candidate pools. When the
 Career Intelligence Field is in `PERSON` mode and a persisted analysis is on
 view, all `ACTIVE` uploads are selected deterministically (lexicographic upload
