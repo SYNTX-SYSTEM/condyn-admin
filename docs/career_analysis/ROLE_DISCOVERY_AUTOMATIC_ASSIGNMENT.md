@@ -33,9 +33,9 @@ Every displayed quote retains its source document id.
 - Integration: the field invokes the existing Job Pool list and role-discovery
   GET path and renders only the decoded result state.
 - TypeScript: `tsc --noEmit` passes.
-- Pure role-discovery regression: 34 tests pass (pool discovery, strict client
-  decoding, cache validation and deterministic semantic ranking) without a
-  database.
+- Pure role-discovery regression: 38 tests pass (pool discovery, strict client
+  decoding, cache validation, deterministic semantic ranking and PERSON
+  discovery matching) without a database.
 - Runtime boundary: a current PostgreSQL/Gemini end-to-end run still requires
   the repository's disposable local runner and its external runtime services;
   no live success is claimed from these static/pure checks. In this Codex
