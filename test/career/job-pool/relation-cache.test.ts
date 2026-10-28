@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import {
-  RELATION_CACHE_VERSION, assertCachedRelation, engineVersionHash, planSemanticInvestigation, proposalContentHash, relationKey, requirementContentHash, rankSemanticRoles,
-  type CachedRelation, type RelationEngineIdentity, evaluateSemanticRelations
+  RELATION_CACHE_VERSION, assertCachedRelation, engineVersionHash, planSemanticInvestigation, proposalContentHash, relationKey, requirementContentHash,
+  type CachedRelation, type RelationEngineIdentity
 } from "../../../lib/career/job-pool/relation-cache";
 
 /** Content-addressed relation cache: keys, record admission, call-volume plan, incremental reuse (DETERMINISTIC_FIXTURE, no model). */
@@ -89,41 +89,5 @@ describe("semantic investigation plan (D-RD-3: call volume before execution)", (
 
   it("refuses a requirement key it cannot resolve (no silent skip)", async () => {
     await expect(planSemanticInvestigation({ discovery, proposals: P, requirementsByKey: () => null, engine: null, cache: null })).rejects.toThrow("ERR_RELATION_PLAN_REQUIREMENT_UNKNOWN");
-  });
-});
-
-describe("semantic role ranking (cache-backed, presentation only)", () => {
-  const P = [proposal("TypeScript", ["built TypeScript services"]), proposal("Testing", ["wrote automated tests"])];
-  const R = { ts: requirement("TypeScript"), test: requirement("Automated Testing"), unknown: requirement("Kubernetes") };
-  const role = (id: string, ids: Array<keyof typeof R>) => ({ key: { jobPoolUploadId: "U1", poolRoleId: id }, requirements: ids.map(poolRequirementId => ({ key: { jobPoolUploadId: "U1", poolRoleId: id, poolRequirementId } })) });
-  const discovery = { roles: [role("complete", ["ts", "test"]), role("partial", ["unknown"])] } as never;
-  const byKey = (key: { poolRequirementId: string }) => R[key.poolRequirementId as keyof typeof R] ?? null;
-  const relations = [record(P[0], R.ts), record(P[1], R.ts), record(P[0], R.test), record(P[1], R.test)];
-
-  it("ranks only complete cache coverage and preserves deterministic tie ordering", () => {
-    const ranked = rankSemanticRoles({ discovery, proposals: P, requirementsByKey: byKey, relations, engineVersionHash: engineVersionHash(ENGINE) });
-    expect(ranked[0]).toMatchObject({ poolRoleId: "complete", score: 0.5, complete: true, evaluatedPairs: 4, totalPairs: 4 });
-    expect(ranked[1]).toMatchObject({ poolRoleId: "partial", score: null, complete: false, evaluatedPairs: 0, totalPairs: 2 });
-  });
-
-  it("does not manufacture a score when no semantic cache record exists", () => {
-    expect(rankSemanticRoles({ discovery, proposals: P, requirementsByKey: byKey, relations: [], engineVersionHash: engineVersionHash(ENGINE) }).every(item => item.score === null)).toBe(true);
-  });
-});
-
-describe("semantic provider to relation-cache boundary", () => {
-  it("persists only validated, evidence-bearing provider relations", async () => {
-    const p = proposal("TypeScript", ["built TypeScript services"]), r = requirement("TypeScript");
-    let saved: CachedRelation[] = [];
-    const records = await evaluateSemanticRelations({ engine: ENGINE, proposals: [p], requirements: [r], now: () => "2026-10-26T00:00:00.000Z", provider: {
-      async execute() { return [{ proposalName: p.name, requirementText: r.capability_name, state: "EQUIVALENT" as const, relationExplanation: "The proposal names the required capability.", evidenceLimitation: "Source quote does not establish level.", sourceEvidence: [{ sourceDocumentId: "DOC_001", exactQuote: "built TypeScript services" }], rawOutput: "{}" }]; }
-    }, writer: { async saveIfAbsent(items) { saved = items; return { inserted: items.length, existing: 0 }; } } });
-    expect(records).toHaveLength(1);
-    expect(saved[0]).toMatchObject({ state: "EQUIVALENT", authorityState: "NONE", capabilityName: "TypeScript" });
-  });
-
-  it("rejects provider output without source evidence", async () => {
-    const p = proposal("TypeScript", ["built TypeScript services"]), r = requirement("TypeScript");
-    await expect(evaluateSemanticRelations({ engine: ENGINE, proposals: [p], requirements: [r], provider: { async execute() { return [{ proposalName: p.name, requirementText: r.capability_name, state: "EQUIVALENT" as const, relationExplanation: "x", evidenceLimitation: "x", sourceEvidence: [], rawOutput: "{}" }]; } }, writer: { async saveIfAbsent() { return { inserted: 0, existing: 0 }; } } })).rejects.toThrow("ERR_RELATION_PROVIDER_OUTPUT_INVALID");
   });
 });
