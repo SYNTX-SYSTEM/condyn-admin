@@ -23,8 +23,7 @@ describe("SIL HR Decision Loop dock (server-rendered field)", () => {
   });
 
   it("mounts the dock for an explicit DCTXREV and preserves the complete field geometry", () => {
-    // Owner G1 Q1: the default PERSON × JOB hides orbits 03–06; the complete field geometry is the PERSON field. RD-5 (owner
-    // D-RD-5 = B): without orbits 03–06 under PERSON (their shells are checked as components in career-f12-pulse-alignment).
+    // Owner G1 Q1: the default PERSON × JOB hides orbits 03–06; the complete field geometry is the PERSON field.
     const html = renderToString(<SemanticCareerIntelligenceField data={EMPTY_CAREER_INTELLIGENCE_DATA} careerDecisionContextRevisionId="DCTXREV_SSR" decisionContextRevisionId="DREV_SSR" investigationMode="PERSON" />);
     expect(html).toContain('data-testid="hr-decision-loop-dock"');
     expect(html).toContain('data-hr-decision-loop-context="DCTXREV_SSR"');
@@ -40,8 +39,7 @@ describe("SIL HR Decision Loop dock (server-rendered field)", () => {
     expect(html).not.toContain("hr-decision-loop-declaration");
     expect(html).toContain('data-sil-mode="PRE_CANONICAL_DISCOVERY"');
     for (const id of chrome) expect(html).toContain(`data-testid="${id}"`);
-    for (const stage of stages.slice(0, 2)) expect(html).toContain(`data-testid="focus-transition-stage-shell-${stage}"`);
-    for (const stage of stages.slice(2)) expect(html).not.toContain(`data-testid="focus-transition-stage-shell-${stage}"`);
+    for (const stage of stages) expect(html).toContain(`data-testid="focus-transition-stage-shell-${stage}"`);
     const dockIndex = html.indexOf('data-testid="hr-decision-loop-dock"');
     const guideIndex = html.indexOf('data-testid="semantic-guide-drawer-toggle"');
     expect(dockIndex).toBeGreaterThan(guideIndex);
