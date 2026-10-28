@@ -1,3 +1,9 @@
+> **SUPERSEDED (GELB recovery, 2026-10-28) — kept as history, does not describe the current code.**
+> The behaviour described here was reverted on `recovery/role-discovery`: automatic use of every ACTIVE pool (d821bb6),
+> legacy `/matches` resonance candidates under PERSON incl. the `?discovery=PERSON` bypass of the PERSON refusal (993397e,
+> eff2480, 887da98), and Gemini relation evaluation plus ranking inside the read-only GET route without budget, explicit start or
+> evidence-id citation (d4616c7). Reasons and the current contract: `docs/career_analysis/CONDYN_DLL_SYSTEM_RECOVERY_2026-10-28.md`.
+
 # Automatic PERSON role discovery
 
 ## Scope
