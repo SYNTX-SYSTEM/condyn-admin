@@ -1,7 +1,7 @@
 import { beforeAll, describe, expect, it } from "vitest";
 import postgres from "postgres";
 import { db } from "../../../lib/career/db/client";
-import { ensureJobPoolPersistenceRegistration } from "../../../lib/career/job-pool/local-composition";
+import { ensureRelationCacheRegistration } from "../../../lib/career/job-pool/relation-cache-registration";
 import { canonicalJson, engineVersionHash, proposalContentHash, relationKey, requirementContentHash, type CachedRelation } from "../../../lib/career/job-pool/relation-cache";
 import { PostgresRelationCacheRepository, RELATION_CACHE_CONSTRAINTS, RELATION_CACHE_TABLE, registerRelationCacheSchema } from "../../../lib/career/job-pool/relation-cache-repository";
 
@@ -22,7 +22,7 @@ const rawInsert = (r: CachedRelation, overrides: Partial<Record<"relation_key" |
 
 describe("relation cache repository (PostgreSQL)", () => {
   const repository = new PostgresRelationCacheRepository(db.$client);
-  beforeAll(async () => { expect(await ensureJobPoolPersistenceRegistration()).toBe("REGISTERED"); });
+  beforeAll(async () => { expect(await ensureRelationCacheRegistration()).toBe("REGISTERED"); });
 
   it("the table and its immutability triggers exist after the guarded registration", async () => {
     const tables = await db.$client<{ n: number }[]>`SELECT count(*)::int AS n FROM information_schema.tables WHERE table_name = ${RELATION_CACHE_TABLE}`;

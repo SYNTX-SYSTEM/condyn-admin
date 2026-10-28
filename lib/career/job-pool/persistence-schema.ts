@@ -1,6 +1,5 @@
 import { getTableConfig, integer, pgTable, text, type PgTable } from "drizzle-orm/pg-core";
 import type { Sql } from "postgres";
-import { registerRelationCacheSchema } from "./relation-cache-repository";
 import {
   targetRequirementEntityAdmissions,
   targetRequirementRawProviderOutputs,
@@ -67,10 +66,8 @@ function createTableStatement(table: PgTable): string {
 
 export const JOB_POOL_PERSISTENCE_TABLE_NAMES = Object.freeze(tables.map(table => getTableConfig(table).name));
 
-/** Startup-only, idempotent DDL. Only ever called on a positively verified disposable database. The content-addressed relation
- *  cache of the pool-wide role discovery (relation-cache-repository.ts) belongs to the same persistence and is registered with it. */
+/** Startup-only, idempotent DDL. Only ever called on a positively verified disposable database. */
 export async function registerJobPoolPersistenceSchema(sql: Sql): Promise<readonly string[]> {
   for (const table of tables) await sql.unsafe(createTableStatement(table));
-  await registerRelationCacheSchema(sql);
   return JOB_POOL_PERSISTENCE_TABLE_NAMES;
 }

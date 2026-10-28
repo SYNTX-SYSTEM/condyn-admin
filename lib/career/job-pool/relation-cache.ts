@@ -97,15 +97,25 @@ export interface RelationCacheReader { getByKeys(keys: string[]): Promise<Cached
 export interface SemanticInvestigationPlan {
   cacheVersion: typeof RELATION_CACHE_VERSION;
   engineVersionHash: string | null;
-  /** ENGINE_NOT_SPECIFIED until the semantic engine contract exists: pairs are counted, nothing can be looked up or executed. */
-  state: "ENGINE_NOT_SPECIFIED" | "PLANNED";
+  /**
+   * ENGINE_NOT_SPECIFIED: no engine contract yet — pairs are counted, nothing is looked up or executed.
+   * PLANNED: cache read; cached / pending / calls are exact and an execution may be planned on them.
+   * CACHE_UNAVAILABLE / CACHE_CORRUPT: the cache cannot be trusted or reached — the semantic layer fails closed (nothing cached is
+   * served, nothing may execute: without the cache, idempotency is not guaranteed); the lexical discovery is unaffected.
+   */
+  state: "ENGINE_NOT_SPECIFIED" | "PLANNED" | "CACHE_UNAVAILABLE" | "CACHE_CORRUPT";
+  executable: boolean;
+  cacheIssue: string | null;
   pairs: number;
-  cachedPairs: number;
-  pendingPairs: number;
-  /** D-RD-3 A: one batched call per role with at least one pending pair (an upper bound before any execution). */
-  callsNeeded: number;
-  roles: Array<{ jobPoolUploadId: string; poolRoleId: string; pairs: number; cachedPairs: number; pendingPairs: number }>;
+  /** null when the cache could not be read (unknown, never guessed). */
+  cachedPairs: number | null;
+  pendingPairs: number | null;
+  /** D-RD-3 A: one batched call per role with at least one pending pair (an upper bound before any execution); null when unknown. */
+  callsNeeded: number | null;
+  roles: Array<{ jobPoolUploadId: string; poolRoleId: string; pairs: number; cachedPairs: number | null; pendingPairs: number | null }>;
 }
+
+export type RelationCacheState = { state: "AVAILABLE"; reader: RelationCacheReader } | { state: "NOT_PROVISIONED" } | { state: "UNAVAILABLE"; code: string };
 
 /**
  * The actual call volume before anything runs (D-RD-3 precondition): every (proposal, requirement) pair of the discovery, minus the
@@ -117,7 +127,7 @@ export async function planSemanticInvestigation(input: {
   proposals: Proposal[];
   requirementsByKey: (key: { jobPoolUploadId: string; poolRoleId: string; poolRequirementId: string }) => Requirement | null;
   engine: RelationEngineIdentity | null;
-  cache: RelationCacheReader | null;
+  cache: RelationCacheState | null;
 }): Promise<SemanticInvestigationPlan> {
   const proposalHashes = input.proposals.map(proposalContentHash);
   const engineHash = input.engine ? engineVersionHash(input.engine) : null;
@@ -131,15 +141,31 @@ export async function planSemanticInvestigation(input: {
     }
     return { role, keys };
   });
+  const pairs = perRole.reduce((n, r) => n + r.keys.length, 0);
+  const unknown = (state: SemanticInvestigationPlan["state"], cacheIssue: string | null): SemanticInvestigationPlan => ({
+    cacheVersion: RELATION_CACHE_VERSION, engineVersionHash: engineHash, state, executable: false, cacheIssue, pairs,
+    cachedPairs: state === "ENGINE_NOT_SPECIFIED" ? 0 : null, pendingPairs: state === "ENGINE_NOT_SPECIFIED" ? pairs : null,
+    callsNeeded: state === "ENGINE_NOT_SPECIFIED" ? perRole.filter(r => r.keys.length > 0).length : null,
+    roles: perRole.map(({ role, keys }) => ({ jobPoolUploadId: role.key.jobPoolUploadId, poolRoleId: role.key.poolRoleId, pairs: keys.length,
+      cachedPairs: state === "ENGINE_NOT_SPECIFIED" ? 0 : null, pendingPairs: state === "ENGINE_NOT_SPECIFIED" ? keys.length : null }))
+  });
+  if (engineHash === null) return unknown("ENGINE_NOT_SPECIFIED", null);
+  if (input.cache === null || input.cache.state !== "AVAILABLE") {
+    return unknown("CACHE_UNAVAILABLE", input.cache === null ? "ERR_RELATION_CACHE_NOT_OPENED" : input.cache.state === "UNAVAILABLE" ? input.cache.code : "ERR_RELATION_CACHE_NOT_PROVISIONED");
+  }
   const distinct = [...new Set(perRole.flatMap(r => r.keys))];
-  const cached = engineHash && input.cache && distinct.length ? new Set((await input.cache.getByKeys(distinct)).map(r => r.relationKey)) : new Set<string>();
+  let cached: Set<string>;
+  try { cached = new Set(distinct.length ? (await input.cache.reader.getByKeys(distinct)).map(r => r.relationKey) : []); } catch (error) {
+    const message = error instanceof Error ? error.message : "";
+    return unknown(message.startsWith("ERR_RELATION_CACHE_RECORD_CORRUPT") ? "CACHE_CORRUPT" : "CACHE_UNAVAILABLE", message.startsWith("ERR_") ? message.split(":")[0] : "ERR_RELATION_CACHE_READ_FAILED");
+  }
   const roles = perRole.map(({ role, keys }) => {
     const hit = keys.filter(k => cached.has(k)).length;
     return { jobPoolUploadId: role.key.jobPoolUploadId, poolRoleId: role.key.poolRoleId, pairs: keys.length, cachedPairs: hit, pendingPairs: keys.length - hit };
   });
-  const sum = (f: (r: typeof roles[number]) => number) => roles.reduce((n, r) => n + f(r), 0);
+  const cachedPairs = roles.reduce((n, r) => n + r.cachedPairs, 0);
   return {
-    cacheVersion: RELATION_CACHE_VERSION, engineVersionHash: engineHash, state: engineHash ? "PLANNED" : "ENGINE_NOT_SPECIFIED",
-    pairs: sum(r => r.pairs), cachedPairs: sum(r => r.cachedPairs), pendingPairs: sum(r => r.pendingPairs), callsNeeded: roles.filter(r => r.pendingPairs > 0).length, roles
+    cacheVersion: RELATION_CACHE_VERSION, engineVersionHash: engineHash, state: "PLANNED", executable: true, cacheIssue: null,
+    pairs, cachedPairs, pendingPairs: pairs - cachedPairs, callsNeeded: roles.filter(r => r.pendingPairs > 0).length, roles
   };
 }

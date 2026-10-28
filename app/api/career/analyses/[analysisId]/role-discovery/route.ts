@@ -10,7 +10,7 @@ import { createLocalJobPoolApplication } from "../../../../../../lib/career/job-
 import { POOL_ROLE_DISCOVERY_MAX_POOLS, buildPoolRoleDiscovery, type DiscoveryPoolInput } from "../../../../../../lib/career/job-pool/pool-role-discovery";
 import { PostgresJobPoolRepository } from "../../../../../../lib/career/job-pool/repository";
 import { planSemanticInvestigation, type RelationEngineIdentity } from "../../../../../../lib/career/job-pool/relation-cache";
-import { PostgresRelationCacheRepository } from "../../../../../../lib/career/job-pool/relation-cache-repository";
+import { openRelationCache } from "../../../../../../lib/career/job-pool/relation-cache-registration";
 import { createJobScopeResolver } from "../../../../../../lib/career/job-scope/scope";
 import type { CompanyPoolData } from "../../../../../../lib/career/matching/pool";
 import { JobRepository } from "../../../../../../lib/career/orchestration/job-repository";
@@ -75,7 +75,7 @@ export async function GET(request: Request, { params }: { params: Promise<{ anal
     const semanticPlan = await planSemanticInvestigation({
       discovery, proposals: projection.capabilities,
       requirementsByKey: key => requirements.get(`${key.jobPoolUploadId}\u0000${key.poolRoleId}\u0000${key.poolRequirementId}`) ?? null,
-      engine: SEMANTIC_RELATION_ENGINE, cache: SEMANTIC_RELATION_ENGINE ? new PostgresRelationCacheRepository(db.$client) : null
+      engine: SEMANTIC_RELATION_ENGINE, cache: SEMANTIC_RELATION_ENGINE ? await openRelationCache() : null
     });
     return NextResponse.json({ success: true, discovery: { ...discovery, semanticPlan } }, { headers: NO_STORE });
   } catch (error) {
