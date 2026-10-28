@@ -119,8 +119,8 @@ export async function readJobPoolUpload(jobPoolUploadId: string, fetcher: Fetche
   return { state: "FAILED", jobPoolUploadId, code: error.code };
 }
 
-export async function fetchJobPoolMatches(jobPoolUploadId: string, analysisId: string, fetcher: Fetcher = defaultFetcher, discovery = false): Promise<JobPoolMatchState> {
-  const url = `${JOB_POOL_ROUTE}/${encodeURIComponent(jobPoolUploadId)}/matches?analysisId=${encodeURIComponent(analysisId)}${discovery ? "&discovery=PERSON" : ""}`;
+export async function fetchJobPoolMatches(jobPoolUploadId: string, analysisId: string, fetcher: Fetcher = defaultFetcher): Promise<JobPoolMatchState> {
+  const url = `${JOB_POOL_ROUTE}/${encodeURIComponent(jobPoolUploadId)}/matches?analysisId=${encodeURIComponent(analysisId)}`;
   let response: Response;
   try { response = await fetcher(url); } catch { return { state: "FAILED", jobPoolUploadId, analysisId, code: null }; }
   const body = await bodyOf(response);

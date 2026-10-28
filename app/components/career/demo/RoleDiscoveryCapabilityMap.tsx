@@ -39,13 +39,6 @@ export function RoleDiscoveryCapabilityMap({ state, matches = [] }: { state: Rol
         </div>)}
       </article>)}
     </div>
-    {discovery.semanticRanking && discovery.semanticRanking.length > 0 && <div data-testid="semantic-job-rankings" style={{ marginTop: "10px" }}>
-      <div style={headingStyle}>SEMANTIC ROLE RANKING // PROPOSAL-ONLY</div>
-      {discovery.semanticRanking.slice(0, 10).map((ranking, index) => <div key={`${ranking.jobPoolUploadId}:${ranking.poolRoleId}`} style={{ display: "flex", justifyContent: "space-between", gap: "10px", borderTop: "1px solid rgba(255,255,255,.08)", padding: "5px 0" }}>
-        <span>#{index + 1} · {ranking.poolRoleId}</span>
-        <span style={{ color: ranking.score === null ? "#ffca66" : "#38ff8b" }}>{ranking.score === null ? `${ranking.evaluatedPairs}/${ranking.totalPairs} pairs` : `${Math.round(ranking.score * 100)}% · ${ranking.matched} matched`}</span>
-      </div>)}
-    </div>}
     {matches.length > 0 && <div data-testid="automatic-job-assignments" style={{ marginTop: "10px" }}>
       <div style={headingStyle}>AUTOMATIC JOB CANDIDATES // DETERMINISTIC PRESENTATION</div>
       {matches.flatMap(match => match.roleMatches.map(role => ({ ...role, poolId: match.jobPoolUploadId })))
@@ -55,7 +48,7 @@ export function RoleDiscoveryCapabilityMap({ state, matches = [] }: { state: Rol
           <span>{role.organizationName} · {role.title}</span><span style={{ color: "#38e5ff" }}>{Math.round(role.resonanceScore * 100)}%</span>
         </div>)}
     </div>}
-    <div style={mutedStyle}>{discovery.semanticRanking ? "SEMANTIC RELATION: EXECUTED · SCORE: PRESENTATION ONLY · DECISION: NONE" : "SEMANTIC RELATION: NOT EXECUTED · SCORE: NONE · DECISION: NONE"}</div>
+    <div style={mutedStyle}>SEMANTIC RELATION: NOT EXECUTED · SCORE: NONE · DECISION: NONE</div>
   </section>;
 }
 

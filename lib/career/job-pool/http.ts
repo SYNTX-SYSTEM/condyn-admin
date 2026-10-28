@@ -48,10 +48,8 @@ export async function handleReadJobPoolRequest(jobPoolUploadId: string, factory:
 
 export async function handleJobPoolMatchesRequest(jobPoolUploadId: string, request: Request, factory: JobPoolApplicationFactory): Promise<Response> {
   try {
-    const url = new URL(request.url);
-    const analysisId = url.searchParams.get("analysisId");
-    const mode = url.searchParams.get("discovery") === "PERSON" ? "PERSON_DISCOVERY" as const : null;
-    return json(200, await (await factory()).matches(jobPoolUploadId, analysisId, mode));
+    const analysisId = new URL(request.url).searchParams.get("analysisId");
+    return json(200, await (await factory()).matches(jobPoolUploadId, analysisId));
   } catch (error) {
     return errorResponse(error);
   }

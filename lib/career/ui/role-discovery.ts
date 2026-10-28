@@ -2,7 +2,6 @@
 
 import { useEffect, useRef, useState } from "react";
 import type { PoolRoleDiscovery, RoleLexicalStatus } from "../job-pool/pool-role-discovery";
-import type { SemanticRoleRanking } from "../job-pool/relation-cache";
 import type { SemanticInvestigationPlan } from "../job-pool/relation-cache";
 
 /**
@@ -27,7 +26,7 @@ export function activeDiscoveryPoolIds(pools: ReadonlyArray<{ jobPoolUploadId: s
 const BASES = ["NAME_EXACT", "NAME_ALIAS", "NAME_COMPOSITE_CONSTITUENT", "WEAK_TOKEN_CONTAINMENT", "NONE"];
 const AUTHORITY: Record<string, unknown> = { relationBasis: "LEXICAL_NAME_COVERAGE", operand: "PERSON_CAPABILITY_PROPOSAL_PROJECTION", semanticRelationState: "NOT_EXECUTED", scored: false, ranking: false, authorityState: "NONE", decision: false };
 
-export type RoleDiscoveryWithPlan = PoolRoleDiscovery & { semanticPlan: SemanticInvestigationPlan; semanticRanking?: SemanticRoleRanking[] };
+export type RoleDiscoveryWithPlan = PoolRoleDiscovery & { semanticPlan: SemanticInvestigationPlan };
 
 export type RoleDiscoveryState =
   | { state: "IDLE" }
@@ -76,7 +75,6 @@ export function decodeRoleDiscovery(value: unknown, analysisId: string, pools: r
   if (!Array.isArray(value.groups) || value.groups.length !== ROLE_DISCOVERY_STATUSES.length || !value.groups.every((group, at) => isRecord(group) && group.status === ROLE_DISCOVERY_STATUSES[at] && Array.isArray(group.roles) && group.roles.every(key => isRecord(key) && roleKeys.has(`${key.jobPoolUploadId}\u0000${key.poolRoleId}`)))) return null;
   const plan = value.semanticPlan;
   if (!isRecord(plan) || (plan.state !== "ENGINE_NOT_SPECIFIED" && plan.state !== "PLANNED") || !isCount(plan.pairs) || !isCount(plan.cachedPairs) || !isCount(plan.pendingPairs) || !isCount(plan.callsNeeded)) return null;
-  if (value.semanticRanking !== undefined && (!Array.isArray(value.semanticRanking) || value.semanticRanking.some(item => !isRecord(item) || !isString(item.jobPoolUploadId) || !isString(item.poolRoleId) || !(item.score === null || typeof item.score === "number") || !isCount(item.evaluatedPairs) || !isCount(item.totalPairs) || typeof item.complete !== "boolean" || !isCount(item.matched)))) return null;
   return value as unknown as RoleDiscoveryWithPlan;
 }
 
