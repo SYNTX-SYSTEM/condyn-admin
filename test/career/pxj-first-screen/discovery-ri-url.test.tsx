@@ -114,8 +114,11 @@ describe("RI-URL · the named investigation in the URL", () => {
     again.view.unmount();
   });
 
-  it("REPRODUCE: a malformed or repeated roleInvestigationId is no investigation at all — removed on mount (a replace), nothing read", async () => {
-    for (const bad of [`${ROLE_INVESTIGATION_URL_PARAM}=not-an-id`, `${ROLE_INVESTIGATION_URL_PARAM}=${RINV}&${ROLE_INVESTIGATION_URL_PARAM}=${RINV}`]) {
+  it("REPRODUCE: a malformed, lower-case or repeated roleInvestigationId is no investigation at all — removed on mount (a replace), nothing read", async () => {
+    // F-INT-2 (PINK §3.78, mutation testing): a case-insensitive match of the id (e.g. a mutated character class or an `i` flag)
+    // would pass "not-an-id" and the repeated-valid-id case just as well, since neither depends on letter case — only a
+    // same-format-but-lower-case value actually distinguishes a case-sensitivity regression from every other kind of malformed id.
+    for (const bad of [`${ROLE_INVESTIGATION_URL_PARAM}=not-an-id`, `${ROLE_INVESTIGATION_URL_PARAM}=${RINV.toLowerCase()}`, `${ROLE_INVESTIGATION_URL_PARAM}=${RINV}&${ROLE_INVESTIGATION_URL_PARAM}=${RINV}`]) {
       const { tab, view, props: p } = start(`${RELEASED}&${bad}`);
       view.settle(p);
       await flush();
