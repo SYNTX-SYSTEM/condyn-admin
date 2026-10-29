@@ -18,6 +18,10 @@ PORT="${HR_LOOP_LOCAL_PORT:-3017}"
 ENV_FILE="${CONDYN_ENV_FILE:-/home/codi/Entwicklung/condyn-admin/.env.local}"
 ROLE_FILE="${CONDYN_TEST_ROLE_FILE:-$HOME/.config/condyn/test-db-role.env}"
 LOG_DIR="${CONDYN_RUNTIME_LOG_DIR:-$HOME/.local/state/condyn-runtime}"
+# Semantic investigation of the role discovery: the labelled stand-in only ("no model"), explicit day limit (fails closed to 0 without it).
+# Override per call to change; unset ROLE_DISCOVERY_SEMANTIC_PROVIDER by exporting it empty to disable the start. Real Gemini needs its own owner GO.
+export ROLE_DISCOVERY_SEMANTIC_PROVIDER="${ROLE_DISCOVERY_SEMANTIC_PROVIDER-stand-in}"
+export ROLE_DISCOVERY_DAY_LIMIT="${ROLE_DISCOVERY_DAY_LIMIT-1000}"
 
 listener_pid() { ss -ltnpH "sport = :$PORT" 2>/dev/null | grep -o 'pid=[0-9]*' | head -1 | cut -d= -f2; }
 
