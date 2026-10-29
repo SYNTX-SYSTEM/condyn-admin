@@ -88,7 +88,7 @@ describe("RD-PANEL · role discovery beside the six orbits", () => {
     expect(visibleText(html)).toContain("Namensbezug · lexikalisch · nicht semantisch · nicht bewertet · keine Rangfolge");
     const plan = body.discovery.semanticPlan;
     expect(plan.state).toBe("ENGINE_NOT_SPECIFIED");
-    expect(visibleText(html)).toContain(`Semantische Prüfung: nicht ausgeführt · würde ${plan.callsNeeded} Aufrufe für ${plan.pairs} Paare benötigen · nicht gestartet`);
+    expect(visibleText(html)).toContain(`Semantische Prüfung: nicht ausgeführt · würde ${plan.callsNeeded} Aufrufe für ${plan.pairs} Paare benötigen · keine Untersuchung in dieser Ansicht benannt`);
     const order = [...html.matchAll(/data-testid="rd-group-([A-Z_]+)" data-expanded="(true|false)" data-count="(\d+)"/g)].map(m => [m[1], m[2], Number(m[3])]);
     expect(order.map(([status, expanded]) => [status, expanded])).toEqual([["ALL_REQUIREMENTS_NAME_RELATED", "true"], ["PARTIAL_NAME_RELATED", "true"], ["WEAK_LEXICAL_ONLY", "true"], ["NO_LEXICAL_RELATION", "false"], ["NO_REQUIREMENTS", "false"]]);
     expect(order.map(([, , count]) => count)).toEqual(body.discovery.groups.map(group => group.roles.length));
@@ -102,12 +102,12 @@ describe("RD-PANEL · role discovery beside the six orbits", () => {
 
   it("guard: under a cache failure the semantic state names it and the call count stays unknown; PLANNED states the cache", async () => {
     const corrupt = await discoveryBodyWithPlan(STANDIN_ENGINE, { state: "AVAILABLE", reader: { getByKeys: async () => { throw new Error("ERR_RELATION_CACHE_RECORD_CORRUPT: X"); } } });
-    expect(visibleText(panel(available(corrupt)))).toContain("Semantische Prüfung: nicht ausgeführt · Relationen-Cache beschädigt (ERR_RELATION_CACHE_RECORD_CORRUPT) · Aufrufzahl unbekannt · nicht gestartet");
+    expect(visibleText(panel(available(corrupt)))).toContain("Semantische Prüfung: nicht ausgeführt · Relationen-Cache beschädigt (ERR_RELATION_CACHE_RECORD_CORRUPT) · Aufrufzahl unbekannt · keine Untersuchung in dieser Ansicht benannt");
     const unavailable = await discoveryBodyWithPlan(STANDIN_ENGINE, null);
-    expect(visibleText(panel(available(unavailable)))).toContain("Semantische Prüfung: nicht ausgeführt · Relationen-Cache nicht verfügbar (ERR_RELATION_CACHE_NOT_OPENED) · Aufrufzahl unbekannt · nicht gestartet");
+    expect(visibleText(panel(available(unavailable)))).toContain("Semantische Prüfung: nicht ausgeführt · Relationen-Cache nicht verfügbar (ERR_RELATION_CACHE_NOT_OPENED) · Aufrufzahl unbekannt · keine Untersuchung in dieser Ansicht benannt");
     const planned = await discoveryBodyWithPlan(STANDIN_ENGINE, { state: "AVAILABLE", reader: { getByKeys: async () => [] } });
     const p = planned.discovery.semanticPlan;
-    expect(visibleText(panel(available(planned)))).toContain(`Semantische Prüfung: nicht ausgeführt · 0 von ${p.pairs} Paaren im Relationen-Cache · würde ${p.callsNeeded} Aufrufe benötigen · nicht gestartet`);
+    expect(visibleText(panel(available(planned)))).toContain(`Semantische Prüfung: nicht ausgeführt · 0 von ${p.pairs} Paaren im Relationen-Cache · würde ${p.callsNeeded} Aufrufe benötigen · keine Untersuchung in dieser Ansicht benannt`);
     const en = renderToString(<rd.RoleDiscoveryPanel locale="en" pools={{ state: "EMPTY" }} released={null} discovery={available(discoveryBody())} onRelease={() => undefined} onClose={() => undefined} />);
     expect(visibleText(en)).toContain("Name relation · lexical · not semantic · not scored · no ranking");
     expect(visibleText(en)).toContain("Semantic check: not executed · would need");

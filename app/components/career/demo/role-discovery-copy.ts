@@ -30,16 +30,18 @@ export interface RoleDiscoveryCopy {
   poolNotFound: (id: string) => string;
   poolInactiveRead: (id: string) => string;
   failedCode: (code: string) => string;
-  /** RI-START O-START-5: `tail` is the closing clause — "not started" while no investigation of this release is known, or the
-   *  stored one's own status (never guessed) once a GET or a completed POST has read one. Composed by the caller from `notStarted`
-   *  / `startedStatus` below, never hardcoded at the call site. */
+  /** RI-START O-START-5 / F-RI-1 (PINK §3.76): while no investigation of this release is known, `tail` closes the pre-run
+   *  sentence as `notStarted` — never "never ran" globally, only that none is named in this view (O-RI-3). Once one IS known
+   *  (stored), the whole line is `stored` / `storedUnknownCache` instead — the plan's own numbers, freshly read after that
+   *  investigation (never the pre-run ones), with its real status; "not executed" never stands beside a completed status. */
   semantic: {
     ENGINE_NOT_SPECIFIED: (calls: string, pairs: string, tail: string) => string;
     PLANNED: (cached: string, pairs: string, calls: string, tail: string) => string;
     CACHE_UNAVAILABLE: (issue: string, tail: string) => string;
     CACHE_CORRUPT: (issue: string, tail: string) => string;
     notStarted: string;
-    startedStatus: (status: string) => string;
+    stored: (cached: string, pairs: string, status: string) => string;
+    storedUnknownCache: (status: string) => string;
   };
   /** RI-CONTROL: why an explicit start of the semantic check is not offered (the server's start control, or the cache). */
   startUnavailable: Record<"NOT_CONFIGURED" | "PROVIDER_NOT_AUTHORIZED" | "CACHE", string>;
@@ -139,8 +141,9 @@ export const ROLE_DISCOVERY_COPY: Readonly<Record<SilLocale, RoleDiscoveryCopy>>
       PLANNED: (cached, pairs, calls, tail) => `Semantic check: not executed · ${cached} of ${pairs} pairs in the relation cache · would need ${calls} calls · ${tail}`,
       CACHE_UNAVAILABLE: (issue, tail) => `Semantic check: not executed · relation cache unavailable (${issue}) · calls unknown · ${tail}`,
       CACHE_CORRUPT: (issue, tail) => `Semantic check: not executed · relation cache corrupt (${issue}) · calls unknown · ${tail}`,
-      notStarted: "not started",
-      startedStatus: status => `stand-in check: ${status}`
+      notStarted: "no investigation named in this view",
+      stored: (cached, pairs, status) => `Relation cache: ${cached} of ${pairs} pairs · stand-in check: ${status}`,
+      storedUnknownCache: status => `Relation cache: unavailable on this read · stand-in check: ${status}`
     },
     run: {
       title: "SEMANTIC CHECK · START EXPLICITLY",
@@ -252,8 +255,9 @@ export const ROLE_DISCOVERY_COPY: Readonly<Record<SilLocale, RoleDiscoveryCopy>>
       PLANNED: (cached, pairs, calls, tail) => `Semantische Prüfung: nicht ausgeführt · ${cached} von ${pairs} Paaren im Relationen-Cache · würde ${calls} Aufrufe benötigen · ${tail}`,
       CACHE_UNAVAILABLE: (issue, tail) => `Semantische Prüfung: nicht ausgeführt · Relationen-Cache nicht verfügbar (${issue}) · Aufrufzahl unbekannt · ${tail}`,
       CACHE_CORRUPT: (issue, tail) => `Semantische Prüfung: nicht ausgeführt · Relationen-Cache beschädigt (${issue}) · Aufrufzahl unbekannt · ${tail}`,
-      notStarted: "nicht gestartet",
-      startedStatus: status => `Stand-in-Prüfung: ${status}`
+      notStarted: "keine Untersuchung in dieser Ansicht benannt",
+      stored: (cached, pairs, status) => `Relationen-Cache: ${cached} von ${pairs} Paaren · Stand-in-Prüfung: ${status}`,
+      storedUnknownCache: status => `Relationen-Cache: bei diesem Lesen nicht verfügbar · Stand-in-Prüfung: ${status}`
     },
     run: {
       title: "SEMANTISCHE PRÜFUNG · AUSDRÜCKLICH STARTEN",

@@ -195,7 +195,7 @@ describe("RI-START · the explicit start, its states and its client", () => {
     expect(roleKeys(ready).length).toBeGreaterThan(0);
     // The owner's semantic line stands unchanged while no check was started.
     const p = ready.discovery.semanticPlan;
-    expect(visibleText(html)).toContain(`Semantische Prüfung: nicht ausgeführt · 0 von ${p.pairs} Paaren im Relationen-Cache · würde ${p.callsNeeded} Aufrufe benötigen · nicht gestartet`);
+    expect(visibleText(html)).toContain(`Semantische Prüfung: nicht ausgeführt · 0 von ${p.pairs} Paaren im Relationen-Cache · würde ${p.callsNeeded} Aufrufe benötigen · keine Untersuchung in dieser Ansicht benannt`);
     expect(ROLE_DISCOVERY_COPY.de.detail.semantic).toBe("Semantische Prüfung dieser Rolle: nicht ausgeführt");
   });
 });

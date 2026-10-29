@@ -67,10 +67,10 @@ describe("RI-CONTROL · the start control beside the plan", () => {
     const html = panel(available(planned));
     expect(tag(html, "rd-start-unavailable")).toBeNull();
     const p = planned.semanticPlan;
-    expect(visibleText(html)).toContain(`Semantische Prüfung: nicht ausgeführt · 0 von ${p.pairs} Paaren im Relationen-Cache · würde ${p.callsNeeded} Aufrufe benötigen · nicht gestartet`);
+    expect(visibleText(html)).toContain(`Semantische Prüfung: nicht ausgeführt · 0 von ${p.pairs} Paaren im Relationen-Cache · würde ${p.callsNeeded} Aufrufe benötigen · keine Untersuchung in dieser Ansicht benannt`);
     const none = discoveryBody();
     const plain = panel(available(none.discovery));
-    expect(visibleText(plain)).toContain(`Semantische Prüfung: nicht ausgeführt · würde ${none.discovery.semanticPlan.callsNeeded} Aufrufe für ${none.discovery.semanticPlan.pairs} Paare benötigen · nicht gestartet`);
+    expect(visibleText(plain)).toContain(`Semantische Prüfung: nicht ausgeführt · würde ${none.discovery.semanticPlan.callsNeeded} Aufrufe für ${none.discovery.semanticPlan.pairs} Paare benötigen · keine Untersuchung in dieser Ansicht benannt`);
     expect(visibleText(plain)).toContain("Namensbezug · lexikalisch · nicht semantisch · nicht bewertet · keine Rangfolge");
     expect([...plain.matchAll(/data-testid="rd-group-([A-Z_]+)"/g)].map(m => m[1])).toEqual(["ALL_REQUIREMENTS_NAME_RELATED", "PARTIAL_NAME_RELATED", "WEAK_LEXICAL_ONLY", "NO_LEXICAL_RELATION", "NO_REQUIREMENTS"]);
     expect((await readRoleDiscovery(PERSON_ANALYSIS, POOLS, async () => ({ status: 200, json: async () => none }))).state).toBe("AVAILABLE");

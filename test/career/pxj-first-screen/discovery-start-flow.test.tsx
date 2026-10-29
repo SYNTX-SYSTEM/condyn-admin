@@ -119,6 +119,7 @@ describe("RI-START · flows", () => {
     answer = { status: 201, body: { success: true, created: true, evidenceClass: "STAND_IN", ...s, run: { status: "COMPLETED", roles: [] } } };
     (panel().props.onStart as (r: unknown, n: number) => void)(roles, 1);
     (panel().props.onStart as (r: unknown, n: number) => void)(roles, 1);
+    const firstInvestigationId = s.investigation.investigationId;
     tree = view.settle(props);
     expect(panel().props.investigation).toEqual({ state: "STARTING", roles, confirmedCalls: 1 });
     expect(posts()).toHaveLength(1);
@@ -130,17 +131,32 @@ describe("RI-START · flows", () => {
     await flush();
     tree = view.settle(props);
     expect(panel().props.investigation).toMatchObject({ state: "STORED", created: true, investigation: { status: "COMPLETED", provider: "stand-in" } });
-    // A new START is a new request (its own clientRequestId); still one POST per click.
+    // F-RI-1 (PINK §3.76): a stored investigation is known now — the field re-reads the plan itself, once, for exactly this id
+    // (never the pre-run numbers beside a completed status). One auto GET, no extra POST.
+    expect(posts()).toHaveLength(1);
+    expect(calls.filter(c => c.method === "GET")).toHaveLength(2);
+    // A new START is a new request (its own clientRequestId); still one POST per click; a real second investigation gets its
+    // own id (an idempotency key of its own request) — never the first one's, so the re-read effect sees a real change.
+    const second = storedInvestigation("COMPLETED", [{ ...roles[0], status: "SUCCEEDED", pairs: 16, stored: 16 }]);
+    second.investigation.analysisId = ANALYSIS;
+    second.investigation.investigationId = "RINV_11111111111111111111111111111111";
+    answer = { status: 201, body: { success: true, created: true, evidenceClass: "STAND_IN", ...second, run: { status: "COMPLETED", roles: [] } } };
     (panel().props.onStart as (r: unknown, n: number) => void)(roles, 1);
+    tree = view.settle(props);
     await flush();
+    tree = view.settle(props);
     expect(posts()).toHaveLength(2);
     expect(JSON.parse(posts()[1].body!).clientRequestId).not.toBe(body.clientRequestId);
-    // Re-reading the plan is a GET of the same release, nothing else.
+    expect(panel().props.investigation).toMatchObject({ state: "STORED", investigation: { investigationId: second.investigation.investigationId } });
+    expect(firstInvestigationId).not.toBe(second.investigation.investigationId);
+    // Its own distinct investigation — the field re-reads the plan again for it, exactly once more.
+    expect(calls.filter(c => c.method === "GET")).toHaveLength(3);
+    // Re-reading the plan by hand ("RE-READ PLAN") is one more GET of the same release, nothing else.
     (panel().props.onReread as () => void)();
     tree = view.settle(props);
     await flush();
     tree = view.settle(props);
-    expect(calls.filter(c => c.method === "GET")).toHaveLength(2);
+    expect(calls.filter(c => c.method === "GET")).toHaveLength(4);
     expect(new Set(calls.filter(c => c.method === "GET").map(c => c.url)).size).toBe(1);
     expect(posts()).toHaveLength(2);
     view.unmount();

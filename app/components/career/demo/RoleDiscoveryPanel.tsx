@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { SIL_TOKENS } from "./SILTokens";
 import type { SilLocale } from "../../../../lib/career/view-model/sil-language";
 import type { JobPoolListState } from "../../../../lib/career/ui/useJobPool";
@@ -62,6 +62,10 @@ export function RoleDiscoveryPanel({ locale, pools, released, discovery, onRelea
   const [traced, setTraced] = useState<string | null>(null);
   /** RI-START: the roles the user picked for the semantic check — nothing preselected, no "all", in the panel only (no URL). */
   const [picked, setPicked] = useState<string[]>([]);
+  // O-RI-4 (PINK §3.76): once a run is stored, its picks and their pre-run call count are stale — cleared, so START is inert
+  // (nothing picked) until the user ticks again against the freshly re-read plan (F-RI-1 re-reads it the same moment).
+  const storedInvestigationId = investigation?.state === "STORED" ? investigation.investigation.investigationId : null;
+  useEffect(() => { if (storedInvestigationId !== null) setPicked([]); }, [storedInvestigationId]);
   const choices = pools.state === "AVAILABLE" ? pools.jobPools : [];
   // The release keeps the list's order (deterministic); a release equal to the one in force is no new step.
   const chosen = choices.map(pool => pool.jobPoolUploadId).filter(id => ticked.includes(id));
@@ -143,14 +147,19 @@ export function RoleDiscoveryResults({ c, discovery, open, onToggle, traced, onT
   }
   const d = discovery.discovery;
   const plan = d.semanticPlan;
-  // RI-START O-START-5: once a GET or a completed POST has read a STORED investigation of this exact release, its own status
-  // replaces "not started" — never shown as "not started" when one is known; never shown as a status while only STARTING / LOADING
-  // / REFUSED / FAILED / NOT_FOUND (nothing is stored for this release yet, so "not started" still holds).
+  // RI-START O-START-5 / F-RI-1 (PINK §3.76): once a GET or a completed POST has read a STORED investigation of this exact
+  // release, the line is the plan's own (freshly read after that investigation — the field re-reads it the moment one is known,
+  // never the pre-run numbers) with that investigation's real status; "not executed" never stands beside "completed". Only while
+  // none is known yet (STARTING / LOADING / REFUSED / FAILED / NOT_FOUND / IDLE) does the pre-run sentence stand, and its tail
+  // never claims the check "never ran" globally — only that none is named in this view (O-RI-3).
   const shown = investigation.state !== "IDLE";
-  const tail = investigation.state === "STORED" ? c.semantic.startedStatus(c.run.status[investigation.investigation.status]) : c.semantic.notStarted;
-  const semantic = plan.state === "ENGINE_NOT_SPECIFIED" ? c.semantic.ENGINE_NOT_SPECIFIED(formatCount(plan.callsNeeded ?? 0), formatCount(plan.pairs), tail)
-    : plan.state === "PLANNED" ? c.semantic.PLANNED(formatCount(plan.cachedPairs ?? 0), formatCount(plan.pairs), formatCount(plan.callsNeeded ?? 0), tail)
-    : c.semantic[plan.state](plan.cacheIssue ?? "—", tail);
+  const semantic = investigation.state === "STORED"
+    ? (plan.cachedPairs !== null
+        ? c.semantic.stored(formatCount(plan.cachedPairs), formatCount(plan.pairs), c.run.status[investigation.investigation.status])
+        : c.semantic.storedUnknownCache(c.run.status[investigation.investigation.status]))
+    : plan.state === "ENGINE_NOT_SPECIFIED" ? c.semantic.ENGINE_NOT_SPECIFIED(formatCount(plan.callsNeeded ?? 0), formatCount(plan.pairs), c.semantic.notStarted)
+    : plan.state === "PLANNED" ? c.semantic.PLANNED(formatCount(plan.cachedPairs ?? 0), formatCount(plan.pairs), formatCount(plan.callsNeeded ?? 0), c.semantic.notStarted)
+    : c.semantic[plan.state](plan.cacheIssue ?? "—", c.semantic.notStarted);
   // RI-CONTROL: the start is offered only on READY with an executable plan; otherwise the reason stands (two engine states apart).
   const unavailable = d.startControl.engineState !== "READY" ? d.startControl.engineState : plan.executable ? null : "CACHE" as const;
   // RI-START: the roles picked, in the discovery's own order; the calls are the picked roles with open pairs (one call per role).

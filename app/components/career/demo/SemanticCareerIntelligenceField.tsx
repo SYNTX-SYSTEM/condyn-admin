@@ -531,6 +531,12 @@ export function SemanticCareerIntelligenceField({
       if (result?.state === "STORED") { setRoleInvestigationId(result.investigation.investigationId); writeCareerDemoUrl({ [ROLE_INVESTIGATION_URL_PARAM]: result.investigation.investigationId }, "replace"); }
     });
   };
+  // F-RI-1 / O-RI-1 (PINK §3.76): once a stored investigation is known — from this START or from the GET on mount/reload — the
+  // plan is read again once for that id, so its numbers are never the pre-run ones beside a completed/partial status.
+  const storedSemanticInvestigationId = semanticInvestigation.state.state === "STORED" ? semanticInvestigation.state.investigation.investigationId : null;
+  useEffect(() => {
+    if (storedSemanticInvestigationId !== null) setDiscoveryRevision(previous => previous + 1);
+  }, [storedSemanticInvestigationId]);
   /** D-PICK (UX-05): in PERSON × JOB with a valid selected job, at NO_ANALYSIS on the first screen and at the selected job's role in
    *  the Job Field; V-06: also when the analysis on view is not found (a way out besides Back). Read only while opened there (GET only); chosen only by the explicit OPEN — one push of analysisId (from the role
    *  view with focus=CAPABILITY, one decision), never by itself. Opening runs the first screen's B2 checks unchanged. */
