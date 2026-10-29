@@ -1,0 +1,18 @@
+PINK §3.79 · main 9fb785a (fast-forward from b712152; = integration/dll-full: cdf0c1e + GRÜN int-test-gaps 804834c + GELB F-INT-1 ec06d8a + docs §11).
+STAND_IN only; no Gemini; :3017 untouched. PINK changed nothing on main.
+
+1 Delta                PASS   cdf0c1e..9fb785a touches only test/ (4 files) and docs/ (1 file); no production code. Fast-forward confirmed
+2 Mutants              PARTLY F-INT-1 (M05 day limit fails open) now RED (2 tests); F-INT-3 (M14 picks not cleared) now RED (the new unit test).
+                              Still GREEN, i.e. not caught:
+  F-INT-2 (open)      FAIL   M10 (hex class widened to a–f, prefix still "RINV_"): the new case uses RINV.toLowerCase(), which also lowers the prefix to
+                              "rinv_" — any parser that requires "RINV_" refuses that, mutated or not. Suggest a value "RINV_" + the hex in lower case
+  F-INT-4 (open)      FAIL   M22 (the Field forwards one drop twice to stageFile): the new tests pin the drop zone (onDropFile once) and SourceDock
+                              (one stageFile = one entry), not the Field's wiring between them. Suggest a Field-level test: one drop → stageFile once
+                              / one staged entry. Behaviour on main is right (browser: one staged source per drop, §3.78); only the test is missing
+3 Smoke on main        PASS   tsc 0; the four changed test files green unmutated (19 / 19); next build (production, no flag) exit 0; product path in a
+                              stand-in production lab: PDF → PERSON → release → discovery (0 POST) → explicit start (1 POST, confirmedCalls = shown 2)
+                              → "Relation cache: 192 of 948 pairs · stand-in check: completed" = 192 relations → reload / Back / Forward 0 POST — every
+                              value equal to the cdf0c1e run; six-orbit scenes identical to c670b74
+Unchanged (owner)      —      27 red lifecycle tests = base redness F-JP-5 (§3.78); O-INT-1 SSRF and the app-wide Origin check before any deployment
+                              beyond a local lab; GitHub success path INCONCLUSIVE without network; O-RI-2 observation
+Verdict                       main 9fb785a carries no production finding from PINK. Two test gaps (F-INT-2, F-INT-4) remain, tests only, no revert needed

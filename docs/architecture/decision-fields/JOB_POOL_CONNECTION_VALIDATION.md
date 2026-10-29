@@ -3667,6 +3667,22 @@ No Gemini call.
 
 **Run record.** `evidence/integration-cdf0c1e/`.
 
+### 3.79 Closing check of `main` `9fb785a` (2026-10-29)
+
+**Request.** GELB fast-forwarded `main` to `9fb785a` (= `integration/dll-full`: `cdf0c1e`, GRÜN's test-gap fixes `804834c`, GELB's F-INT-1 `ec06d8a` and docs §11) under the owner mandate. GELB asked for a final check: the delta, the four surviving mutants of §3.78, and a smoke on `main`. Stand-in only.
+
+**Verdicts (`evidence/main-9fb785a/verdicts.txt`).**
+- **1 Delta: PASS.** Only `test/` (4 files) and `docs/` (1 file) changed, and the fast-forward is confirmed.
+- **2 Mutants: partly fixed.**
+  - F-INT-1 and F-INT-3 are now caught.
+  - **F-INT-2 is still open.** The new case lower-cases the whole id including the `RINV_` prefix, so it cannot tell a widened hex class apart. A value of `RINV_` plus lower-case hex would.
+  - **F-INT-4 is still open.** The new tests pin the drop zone and SourceDock, but not the Field wiring between them. A Field-level test is missing.
+  - Both are test gaps only; the behaviour on `main` is correct (§3.78 browser probes).
+- **3 Smoke: PASS.** tsc 0, the changed tests green, the production build succeeds, and the product path is identical to `cdf0c1e` with the numbers equal to the database. Six orbits are unchanged.
+- **Result.** No production finding on `main` and nothing to revert. The open items are F-INT-2 and F-INT-4 (tests) and the owner items of §3.78.
+
+**Run record.** `evidence/main-9fb785a/`.
+
 ## 4. Boundaries and findings for coordination
 
 - F-JP-1 (closed in `b782793`): `JOB_POOL_CONNECTION.md` §4 followed the per-role `JOB_POOL_JSON_ROLE` design;
