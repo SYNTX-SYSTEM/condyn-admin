@@ -1,0 +1,173 @@
+"use client";
+
+import React, { useState } from "react";
+import { SIL_TOKENS } from "./SILTokens";
+import type { SilLocale } from "../../../../lib/career/view-model/sil-language";
+import type { JobPoolListState } from "../../../../lib/career/ui/useJobPool";
+import { ROLE_DISCOVERY_STATUSES, type RoleDiscoveryState } from "../../../../lib/career/ui/role-discovery";
+import type { RoleLexicalStatus } from "../../../../lib/career/job-pool/pool-role-discovery";
+import { DISCOVERY_POOLS_MAX } from "../../../../lib/career/ui/career-demo-url";
+import { ROLE_DISCOVERY_COPY, formatCount, type RoleDiscoveryCopy } from "./role-discovery-copy";
+
+/**
+ * Role discovery (GELB stage 2, additive — recovery §8): a panel in the B2 panel grammar beside the six-orbit planetarium of a
+ * PERSON analysis. It carries the shared panel attribute (data-pxj-panel), so the dashboard's fit / stack / telemetry rules
+ * (career-demo-layout.ts) place it exactly like the B2 panel; the two never stand together (B2 only under PERSON × JOB, this
+ * panel only under PERSON). The orbits are not touched.
+ *
+ * - Pools are released explicitly: the uploaded pools are unticked choices, nothing preselected, no "all"; DISCOVER JOBS releases
+ *   the ticked ones (one push of discoveryPoolUploadId, by the field).
+ * - Roles stand in the five status groups in their fixed order (D-RD-4 A); the counts are descriptive, nothing is sorted by them;
+ *   the groups without a name relation and without requirements are folded but present.
+ * - The semantic state is always stated, with the plan's numbers as facts — or "unknown" when the cache cannot be trusted.
+ */
+const MONO = SIL_TOKENS.typography.mono;
+const SANS = SIL_TOKENS.typography.sans;
+const CYAN_RGB = "56, 229, 255";
+const AMBER_RGB = "245, 196, 107";
+
+const kicker: React.CSSProperties = { fontFamily: MONO, fontSize: "11px", fontWeight: 700, letterSpacing: "1.8px", textTransform: "uppercase", color: "rgba(160, 232, 250, 0.92)" };
+const meta: React.CSSProperties = { fontFamily: MONO, fontSize: "11px", lineHeight: 1.55, letterSpacing: "0.3px", color: "rgba(176, 200, 216, 0.88)", wordBreak: "break-word" };
+const statement: React.CSSProperties = { fontFamily: SANS, fontSize: "12.5px", lineHeight: 1.5, color: "#e6f1f8" };
+const action: React.CSSProperties = { alignSelf: "flex-start", padding: "5px 12px", borderRadius: "999px", border: `1px solid rgba(${CYAN_RGB}, 0.55)`, background: `rgba(${CYAN_RGB}, 0.08)`, color: SIL_TOKENS.colors.cyanActive, fontFamily: MONO, fontSize: "11px", fontWeight: 700, letterSpacing: "1.2px", cursor: "pointer" };
+const layer: React.CSSProperties = { display: "flex", flexDirection: "column", gap: "6px", padding: "10px 12px", borderRadius: "10px", border: "1px solid rgba(120, 214, 255, 0.14)", background: "rgba(4, 12, 21, 0.6)" };
+/** Folded by default: the groups that carry no name relation (D-RD-4: present, findable, not in the way). */
+const FOLDED: readonly RoleLexicalStatus[] = ["NO_LEXICAL_RELATION", "NO_REQUIREMENTS"];
+
+export interface RoleDiscoveryPanelProps {
+  locale: SilLocale;
+  /** The uploaded pools (GET /api/career/job-pools), offered as choices. */
+  pools: JobPoolListState;
+  /** The pools released for this analysis (URL discoveryPoolUploadId), in their order; null when none. */
+  released: readonly string[] | null;
+  discovery: RoleDiscoveryState;
+  onRelease(ids: string[]): void;
+  onClose(): void;
+}
+
+export function RoleDiscoveryPanel({ locale, pools, released, discovery, onRelease, onClose }: RoleDiscoveryPanelProps) {
+  const c = ROLE_DISCOVERY_COPY[locale];
+  const [ticked, setTicked] = useState<string[]>(() => [...(released ?? [])]);
+  const [open, setOpen] = useState<RoleLexicalStatus[]>(() => ROLE_DISCOVERY_STATUSES.filter(status => !FOLDED.includes(status)));
+  const choices = pools.state === "AVAILABLE" ? pools.jobPools : [];
+  // The release keeps the list's order (deterministic); a release equal to the one in force is no new step.
+  const chosen = choices.map(pool => pool.jobPoolUploadId).filter(id => ticked.includes(id));
+  const unchanged = released !== null && chosen.length === released.length && chosen.every((id, at) => id === released[at]);
+  const toggle = (id: string) => setTicked(previous => previous.includes(id) ? previous.filter(other => other !== id) : [...previous, id]);
+  return (
+    <>
+      <style>{`@media (max-width: 1599px) { [data-rd-panel] { top: calc(50% - 56px) !important; max-height: calc(50% - 40px) !important; } }`}</style>
+      <aside
+        data-testid="role-discovery-panel"
+        data-pxj-panel
+        data-rd-panel
+        data-state={discovery.state}
+        aria-label={c.title}
+        onClick={event => event.stopPropagation()}
+        style={{ position: "absolute", right: "24px", top: "132px", bottom: "96px", zIndex: 32, width: "min(400px, 29vw)", display: "flex", flexDirection: "column", gap: "10px", boxSizing: "border-box", padding: "14px 14px 16px", overflowY: "auto", borderRadius: "14px", border: "1px solid rgba(120, 214, 255, 0.2)", background: "radial-gradient(120% 70% at 0% 0%, rgba(56, 229, 255, 0.07), transparent 62%), linear-gradient(180deg, rgba(6, 15, 26, 0.94), rgba(3, 8, 15, 0.95))", boxShadow: "0 0 0 1px rgba(3, 8, 16, 0.6), 0 16px 40px rgba(0, 0, 0, 0.5), 0 0 26px rgba(56, 229, 255, 0.08)", backdropFilter: "blur(10px)", color: "#e6f1f8", maxHeight: "calc(100vh - 228px)", alignSelf: "flex-start" }}
+      >
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "8px" }}>
+          <span style={kicker}>{c.title}</span>
+          <button type="button" data-testid="rd-close" onClick={onClose} style={{ ...action, padding: "3px 10px" }}>{c.close}</button>
+        </div>
+        <span data-testid="rd-header" style={{ ...meta, color: "rgba(214, 232, 242, 0.92)" }}>{c.header}</span>
+
+        <section data-testid="rd-pools" data-state={pools.state} style={layer}>
+          <span style={kicker}>{c.poolsTitle}</span>
+          <span style={meta}>{c.poolsHint}</span>
+          {pools.state === "IDLE" || pools.state === "LOADING" ? <span style={meta}>{c.poolsLoading}</span>
+            : pools.state === "EMPTY" ? <span style={meta}>{c.poolsEmpty}</span>
+            : pools.state === "NOT_PROVISIONED" ? <span style={meta}>{c.poolsNotProvisioned}</span>
+            : pools.state === "FAILED" ? <span style={meta}>{c.poolsFailed}</span>
+            : (
+              <>
+                {choices.map(pool => {
+                  const active = pool.poolStatus === "ACTIVE";
+                  const checked = ticked.includes(pool.jobPoolUploadId);
+                  const full = !checked && chosen.length >= DISCOVERY_POOLS_MAX;
+                  return (
+                    <label key={pool.jobPoolUploadId} data-testid={`rd-pool-${pool.jobPoolUploadId}`} data-released={released?.includes(pool.jobPoolUploadId) ? "true" : "false"} style={{ display: "flex", alignItems: "flex-start", gap: "8px", cursor: active && !full ? "pointer" : "default", opacity: active ? 1 : 0.6 }}>
+                      <input type="checkbox" checked={checked} disabled={!active || full} onChange={() => toggle(pool.jobPoolUploadId)} style={{ marginTop: "3px", accentColor: SIL_TOKENS.colors.cyanActive }} />
+                      <span style={{ display: "flex", flexDirection: "column", gap: "1px", minWidth: 0 }}>
+                        <span style={statement}>{pool.poolName}</span>
+                        <span style={meta}>{c.poolRoles(pool.roleCount)} · v{pool.poolVersion} · {active ? pool.jobPoolUploadId : c.poolInactive(pool.poolStatus)}{released?.includes(pool.jobPoolUploadId) ? ` · ${c.released}` : ""}</span>
+                      </span>
+                    </label>
+                  );
+                })}
+                {chosen.length >= DISCOVERY_POOLS_MAX && <span style={meta}>{c.poolsLimit(DISCOVERY_POOLS_MAX)}</span>}
+                <button type="button" data-testid="rd-discover" disabled={chosen.length === 0 || unchanged} onClick={() => onRelease(chosen)} style={{ ...action, opacity: chosen.length === 0 || unchanged ? 0.45 : 1, cursor: chosen.length === 0 || unchanged ? "default" : "pointer" }}>{c.discover}</button>
+              </>
+            )}
+        </section>
+
+        <DiscoveryBody c={c} discovery={discovery} open={open} onToggle={status => setOpen(previous => previous.includes(status) ? previous.filter(s => s !== status) : [...previous, status])} />
+      </aside>
+    </>
+  );
+}
+
+function DiscoveryBody({ c, discovery, open, onToggle }: { c: RoleDiscoveryCopy; discovery: RoleDiscoveryState; open: RoleLexicalStatus[]; onToggle(status: RoleLexicalStatus): void }) {
+  if (discovery.state !== "AVAILABLE") {
+    const sentence = discovery.state === "BOUNDARY_UNRESOLVED" ? c.boundaryUnresolved(discovery.reason ?? "—")
+      : discovery.state === "POOL_NOT_FOUND" ? c.poolNotFound(discovery.jobPoolUploadId ?? "—")
+      : discovery.state === "POOL_INACTIVE" ? c.poolInactiveRead(discovery.jobPoolUploadId ?? "—")
+      : c.states[discovery.state];
+    const warn = discovery.state !== "IDLE" && discovery.state !== "LOADING";
+    return (
+      <div data-testid="rd-state" data-state={discovery.state} role="status" style={{ ...layer, border: `1px solid rgba(${warn ? AMBER_RGB : CYAN_RGB}, 0.4)` }}>
+        <span style={{ ...statement, color: warn ? `rgb(${AMBER_RGB})` : "#e6f1f8" }}>{sentence}</span>
+        {discovery.state === "FAILED" && discovery.code !== null && <span style={meta}>{c.failedCode(discovery.code)}</span>}
+      </div>
+    );
+  }
+  const d = discovery.discovery;
+  const plan = d.semanticPlan;
+  const semantic = plan.state === "ENGINE_NOT_SPECIFIED" ? c.semantic.ENGINE_NOT_SPECIFIED(formatCount(plan.callsNeeded ?? 0), formatCount(plan.pairs))
+    : plan.state === "PLANNED" ? c.semantic.PLANNED(formatCount(plan.cachedPairs ?? 0), formatCount(plan.pairs), formatCount(plan.callsNeeded ?? 0))
+    : c.semantic[plan.state](plan.cacheIssue ?? "—");
+  const byKey = new Map(d.roles.map(role => [`${role.key.jobPoolUploadId}\u0000${role.key.poolRoleId}`, role] as const));
+  const poolName = new Map(d.pools.map(pool => [pool.jobPoolUploadId, pool.poolName] as const));
+  return (
+    <>
+      <div data-testid="rd-state" data-state="AVAILABLE" role="status" style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
+        <span data-testid="rd-semantic" data-plan-state={plan.state} style={{ ...meta, color: `rgb(${AMBER_RGB})` }}>{semantic}</span>
+        <span data-testid="rd-scope" style={meta}>{c.scope(d.counts.pools, d.counts.roles, d.counts.requirements, d.counts.proposals)}</span>
+      </div>
+      {d.groups.map(group => {
+        const expanded = open.includes(group.status);
+        return (
+          <section key={group.status} data-testid={`rd-group-${group.status}`} data-expanded={expanded ? "true" : "false"} data-count={group.roles.length} style={layer}>
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "8px" }}>
+              <span style={{ ...statement, fontWeight: 600 }}>{c.groups[group.status]} · <span style={meta}>{c.groupRoles(group.roles.length)}</span></span>
+              <button type="button" data-testid={`rd-group-toggle-${group.status}`} aria-expanded={expanded} onClick={() => onToggle(group.status)} style={{ ...action, padding: "2px 9px" }}>{expanded ? c.hide : c.show}</button>
+            </div>
+            {expanded && group.roles.map(key => {
+              const role = byKey.get(`${key.jobPoolUploadId}\u0000${key.poolRoleId}`)!;
+              return (
+                <div key={`${key.jobPoolUploadId}:${key.poolRoleId}`} data-testid="rd-role" data-role-key={`${key.jobPoolUploadId}:${key.poolRoleId}`} data-status={role.status} style={{ display: "flex", flexDirection: "column", gap: "1px", paddingTop: "6px", borderTop: "1px solid rgba(120, 214, 255, 0.08)" }}>
+                  <span style={statement}>{role.title}</span>
+                  <span style={meta}>{role.organizationName} · {poolName.get(key.jobPoolUploadId)}</span>
+                  {role.counts.requirements > 0 && <span data-testid="rd-role-counts" style={meta}>{c.roleCounts(role.counts.nameRelated, role.counts.requirements, role.counts.weakLexicalOnly, role.counts.withoutLexicalRelation)}</span>}
+                  {role.counts.required > 0 && <span style={meta}>{c.roleRequired(role.counts.required, role.counts.requiredWithoutLexicalRelation)}</span>}
+                </div>
+              );
+            })}
+          </section>
+        );
+      })}
+    </>
+  );
+}
+
+/** The explicit entry (recovery §8: "DISCOVER JOBS", reachable near orbit 04 Role Manifestation, below it); the orbit's own HUD
+ *  actions stay as they are. */
+export function RoleDiscoveryEntry({ locale, onOpen }: { locale: SilLocale; onOpen(): void }) {
+  const c = ROLE_DISCOVERY_COPY[locale];
+  return (
+    <div data-testid="rd-entry" data-sx-shell="rd-entry" style={{ position: "absolute", left: "50%", bottom: "28px", transform: "translateX(-50%)", zIndex: 31, display: "flex", alignItems: "center", gap: "12px", maxWidth: "min(560px, calc(100vw - 48px))", boxSizing: "border-box", padding: "6px 8px 6px 14px", borderRadius: "999px", border: `1px solid rgba(${CYAN_RGB}, 0.32)`, background: "linear-gradient(180deg, rgba(8, 21, 34, 0.9), rgba(3, 8, 15, 0.94))", boxShadow: "0 12px 32px rgba(0, 0, 0, 0.5)", backdropFilter: "blur(10px)" }}>
+      <span style={{ ...meta, color: "rgba(196, 222, 236, 0.92)" }}>{c.entryHint}</span>
+      <button type="button" data-testid="rd-open" onClick={onOpen} style={{ ...action, flexShrink: 0 }}>{c.entry}</button>
+    </div>
+  );
+}

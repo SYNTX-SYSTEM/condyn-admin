@@ -172,6 +172,7 @@ ${HUD} > span { color: rgba(130, 200, 224, 0.85) !important; }
   ${DOCK} { position: relative !important; left: auto !important; top: auto !important; transform: none !important; order: 9; justify-self: stretch; }
   ${FIELD} > div:has(${INSPECTOR.split(", ")[0]}), ${FIELD} > div:has(${INSPECTOR.split(", ")[1]}) { order: 10; }
   ${INSPECTOR} { position: relative !important; left: auto !important; bottom: auto !important; width: 100% !important; max-width: 420px; box-sizing: border-box; }
+  ${FIELD} > [data-sx-shell="rd-entry"] { position: relative !important; left: auto !important; bottom: auto !important; transform: none !important; order: 5; max-width: 100% !important; justify-self: center; flex-wrap: wrap; border-radius: 16px !important; }
   ${FIELD} > [data-sx-shell="pxj-offer"] { position: relative !important; left: auto !important; bottom: auto !important; transform: none !important; order: 5; max-width: 100% !important; justify-self: stretch; border-radius: 16px !important; flex-wrap: wrap; }
   /* The Job Field: the Capability Field's layers leave the column (still mounted), the Job Field follows the shell as one column. */
   ${FIELD}[data-field-focus="FIELD"] > :not([data-sx-shell]):not([data-sx-field="job"]):not([data-testid="guided-onboarding-overlay"]):not([data-testid="system-codex-modal-backdrop"]):not(style) { display: none !important; }
