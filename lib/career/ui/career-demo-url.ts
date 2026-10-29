@@ -32,6 +32,9 @@ export interface CareerDemoUrlProps {
   /** Role discovery (owner D-RD-1 = B): the job pool uploads the user released explicitly for the PERSON analysis on view —
    *  repeated parameter `discoveryPoolUploadId`, never "all", never a latest pool. */
   discoveryPoolUploadIds?: string[];
+  /** RI-URL (GELB c1954ca STOP point, owner D-RD-3 A): the semantic investigation of the released pools, read again by its own id
+   *  only (GET, never a repeated POST). Exact server format, never guessed, never derived from the roles or the release. */
+  roleInvestigationId?: string;
 }
 
 /** The shape Next.js hands a page: a repeated parameter arrives as an array. */
@@ -63,6 +66,13 @@ export function discoveryPoolsFromParam(value: string | readonly string[] | unde
   return list;
 }
 
+/** RI-URL: the released investigation's own parameter, never a list, never "all", never guessed — the server's id format only. */
+export const ROLE_INVESTIGATION_URL_PARAM = "roleInvestigationId";
+const INVESTIGATION_ID = /^RINV_[0-9A-F]{32}$/;
+export function roleInvestigationIdFromParam(value: string | string[] | undefined): string | undefined {
+  return typeof value === "string" && INVESTIGATION_ID.test(value) ? value : undefined;
+}
+
 export function careerDemoPropsFromSearchParams(params: CareerDemoSearchParams): CareerDemoUrlProps {
   const focus = single(params.focus);
   return {
@@ -79,7 +89,8 @@ export function careerDemoPropsFromSearchParams(params: CareerDemoSearchParams):
     jobScopeRoleId: single(params.jobScopeRoleId),
     investigationMode: single(params.investigationMode),
     analysisJobId: single(params[ANALYSIS_JOB_URL_PARAM]),
-    discoveryPoolUploadIds: discoveryPoolsFromParam(params[DISCOVERY_POOLS_URL_PARAM])
+    discoveryPoolUploadIds: discoveryPoolsFromParam(params[DISCOVERY_POOLS_URL_PARAM]),
+    roleInvestigationId: roleInvestigationIdFromParam(params[ROLE_INVESTIGATION_URL_PARAM])
   };
 }
 

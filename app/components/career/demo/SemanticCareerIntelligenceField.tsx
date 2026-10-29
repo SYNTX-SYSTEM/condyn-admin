@@ -30,13 +30,13 @@ import { useJobPoolWorkflow } from "../../../../lib/career/ui/useJobPool";
 import { useJobScopeValidation } from "../../../../lib/career/ui/useJobScope";
 import { useAnalysisBoundary, useSelectedRoleCoverage } from "../../../../lib/career/ui/useRoleInvestigation";
 import { useAnalysisResult } from "../../../../lib/career/ui/useAnalysisResult";
-import { ANALYSIS_JOB_URL_PARAM, DISCOVERY_POOLS_URL_PARAM, analysisJobIdFromParam, discoveryPoolsFromParam, writeCareerDemoUrl } from "../../../../lib/career/ui/career-demo-url";
+import { ANALYSIS_JOB_URL_PARAM, DISCOVERY_POOLS_URL_PARAM, ROLE_INVESTIGATION_URL_PARAM, analysisJobIdFromParam, discoveryPoolsFromParam, roleInvestigationIdFromParam, writeCareerDemoUrl } from "../../../../lib/career/ui/career-demo-url";
 import { careerJobHandoff } from "../../../../lib/career/ui/career-job-handoff";
 import { useAnalysisPicker } from "../../../../lib/career/ui/analysis-picker";
 import { AnalysisPicker } from "./AnalysisPicker";
 import { RoleDiscoveryEntry, RoleDiscoveryPanel } from "./RoleDiscoveryPanel";
 import { useRoleDiscovery } from "../../../../lib/career/ui/role-discovery";
-import { useSemanticInvestigation } from "../../../../lib/career/ui/semantic-investigation";
+import { useSemanticInvestigation, type InvestigationRoleKey } from "../../../../lib/career/ui/semantic-investigation";
 import { NAVIGATION_COPY } from "./navigation-copy";
 import { decodeAnalysisResult, demoStateFromResult, firstScreenCoverageRequest, projectPxjFirstScreen, showsAnalysis, withoutLegacyOrbits, type AnalysisResultState } from "../../../../lib/career/view-model/pxj-first-screen";
 import { PxjAnalysisJobOffer, PxjFirstScreen, pxjFirstScreenVisible } from "./PxjFirstScreen";
@@ -87,6 +87,8 @@ export interface SemanticCareerIntelligenceFieldProps {
   analysisJobId?: string;
   /** Role discovery (owner D-RD-1 = B): the pool uploads released for the PERSON analysis on view (URL discoveryPoolUploadId). */
   discoveryPoolUploadIds?: string[];
+  /** RI-URL: the semantic investigation of the released pools, read again by its own id only (URL roleInvestigationId). */
+  roleInvestigationId?: string;
   /** The application shell's brand surface follows the active field (Decision Loop Labs in the Job Field context). */
   onFieldFocusChange?: (focus: "CAPABILITY" | "FIELD") => void;
   initialAnalysisState?: {
@@ -268,6 +270,7 @@ export function SemanticCareerIntelligenceField({
   investigationMode: initialInvestigationMode,
   analysisJobId: initialAnalysisJobId,
   discoveryPoolUploadIds: initialDiscoveryPools,
+  roleInvestigationId: initialRoleInvestigationId,
   onFieldFocusChange,
   initialAnalysisState,
   initialLocale = SIL_COPY.defaultLocale,
@@ -347,10 +350,19 @@ export function SemanticCareerIntelligenceField({
     const named = new URLSearchParams(window.location.search).getAll(DISCOVERY_POOLS_URL_PARAM);
     if (named.length > 0 && discoveryPoolsFromParam(named) === undefined) writeCareerDemoUrl({ [DISCOVERY_POOLS_URL_PARAM]: null }, "replace");
   }, []);
+  // RI-URL: a roleInvestigationId not in the server's own format is no investigation at all — removed on mount, like the pools above.
+  useEffect(() => {
+    if (typeof window === "undefined" || initialRoleInvestigationId !== undefined) return;
+    const named = new URLSearchParams(window.location.search).getAll(ROLE_INVESTIGATION_URL_PARAM);
+    if (named.length > 0) writeCareerDemoUrl({ [ROLE_INVESTIGATION_URL_PARAM]: null }, "replace");
+  }, []);
+  /** RI-URL: the investigation named in the URL (GET only on mount / reload); cleared whenever the release it belonged to ends. */
+  const [roleInvestigationId, setRoleInvestigationId] = useState<string | null>(() => initialRoleInvestigationId ?? null);
   const releaseDiscoveryPools = (ids: readonly string[]) => {
     const next = discoveryPoolsFromParam(ids) ?? null;
     setDiscoveryPools(next);
-    pushUrl({ [DISCOVERY_POOLS_URL_PARAM]: next ?? null });
+    setRoleInvestigationId(null);
+    pushUrl({ [DISCOVERY_POOLS_URL_PARAM]: next ?? null, [ROLE_INVESTIGATION_URL_PARAM]: null });
   };
   /** RD-PANEL: opened only by the explicit DISCOVER JOBS (not a URL state); a release in the URL opens it on its own (NAV ≡ RELOAD). */
   const [discoveryOpen, setDiscoveryOpen] = useState(false);
@@ -480,7 +492,7 @@ export function SemanticCareerIntelligenceField({
   useEffect(() => {
     if (jobState !== "SUCCEEDED" || !job.state.resultAnalysisId) return;
     // A release is given for one analysis (RD-PANEL): a new analysis on view starts without released pools.
-    writeCareerDemoUrl({ analysisId: job.state.resultAnalysisId, [INVESTIGATION_URL_PARAM]: investigationMode, [ANALYSIS_JOB_URL_PARAM]: null, [DISCOVERY_POOLS_URL_PARAM]: null }, "replace");
+    writeCareerDemoUrl({ analysisId: job.state.resultAnalysisId, [INVESTIGATION_URL_PARAM]: investigationMode, [ANALYSIS_JOB_URL_PARAM]: null, [DISCOVERY_POOLS_URL_PARAM]: null, [ROLE_INVESTIGATION_URL_PARAM]: null }, "replace");
     setUrlAnalysisId(job.state.resultAnalysisId);
     setDiscoveryPools(null);
   }, [jobState, job.state.resultAnalysisId]);
@@ -511,8 +523,14 @@ export function SemanticCareerIntelligenceField({
   /** RI-START: "re-read the plan" is the user's explicit second GET of the same release (after a run or a changed call count). */
   const [discoveryRevision, setDiscoveryRevision] = useState(0);
   const roleDiscovery = useRoleDiscovery(discoveryAnalysisId, discoveryPools, undefined, discoveryRevision);
-  /** RI-START: the semantic check of picked roles — one POST per click of START, never by a load, an open or a reload. */
-  const semanticInvestigation = useSemanticInvestigation(discoveryAnalysisId, discoveryPools);
+  /** RI-START: the semantic check of picked roles — one POST per click of START, never by a load, an open or a reload; a named
+   *  roleInvestigationId is read again by GET only (RI-URL, NAV ≡ RELOAD). */
+  const semanticInvestigation = useSemanticInvestigation(discoveryAnalysisId, discoveryPools, roleInvestigationId);
+  const startSemanticInvestigation = (roles: InvestigationRoleKey[], confirmedCalls: number) => {
+    void semanticInvestigation.start(roles, confirmedCalls).then(result => {
+      if (result?.state === "STORED") { setRoleInvestigationId(result.investigation.investigationId); writeCareerDemoUrl({ [ROLE_INVESTIGATION_URL_PARAM]: result.investigation.investigationId }, "replace"); }
+    });
+  };
   /** D-PICK (UX-05): in PERSON × JOB with a valid selected job, at NO_ANALYSIS on the first screen and at the selected job's role in
    *  the Job Field; V-06: also when the analysis on view is not found (a way out besides Back). Read only while opened there (GET only); chosen only by the explicit OPEN — one push of analysisId (from the role
    *  view with focus=CAPABILITY, one decision), never by itself. Opening runs the first screen's B2 checks unchanged. */
@@ -526,8 +544,9 @@ export function SemanticCareerIntelligenceField({
     setUrlAnalysisId(picked);
     setAnalysisPicked(true);
     setPickerOpen(false);
-    pushUrl({ analysisId: picked, [DISCOVERY_POOLS_URL_PARAM]: null });
+    pushUrl({ analysisId: picked, [DISCOVERY_POOLS_URL_PARAM]: null, [ROLE_INVESTIGATION_URL_PARAM]: null });
     setDiscoveryPools(null);
+    setRoleInvestigationId(null);
     if (fromRole) switchFieldFocus("CAPABILITY");
   };
   const analysisPicker = (place: "first-screen" | "role-view") => pickerPlace !== place ? undefined : (
@@ -580,8 +599,9 @@ export function SemanticCareerIntelligenceField({
     setUrlAnalysisId(null);
     setAnalysisPicked(true);
     setDiscoveryPools(null);
+    setRoleInvestigationId(null);
     setDiscoveryOpen(false);
-    pushUrl({ [JOB_SCOPE_URL_PARAMS.jobPoolUploadId]: scope.jobPoolUploadId, [JOB_SCOPE_URL_PARAMS.poolRoleId]: scope.poolRoleId, [INVESTIGATION_URL_PARAM]: "PERSON_X_JOB", analysisId: null, [DISCOVERY_POOLS_URL_PARAM]: null });
+    pushUrl({ [JOB_SCOPE_URL_PARAMS.jobPoolUploadId]: scope.jobPoolUploadId, [JOB_SCOPE_URL_PARAMS.poolRoleId]: scope.poolRoleId, [INVESTIGATION_URL_PARAM]: "PERSON_X_JOB", analysisId: null, [DISCOVERY_POOLS_URL_PARAM]: null, [ROLE_INVESTIGATION_URL_PARAM]: null });
   };
   /** ROLE_MISMATCH offers the analysis's own job as an explicit choice; the selection changes only by this action. */
   const selectAnalysisJob = (scope: JobScope) => {
@@ -1705,7 +1725,7 @@ export function SemanticCareerIntelligenceField({
       {activeFieldFocus === "CAPABILITY" && discoveryAnalysisId !== null && (discoveryOpen || discoveryPools !== null) && (
         <div style={{ opacity: isOrbitStageFocus ? 0.12 : 1, filter: isOrbitStageFocus ? "blur(3px)" : undefined, pointerEvents: isOrbitStageFocus ? "none" : "auto", transition: "opacity 0.56s ease, filter 0.56s ease" }}>
           <RoleDiscoveryPanel locale={locale} pools={jobPoolWorkflow.pools} released={discoveryPools} discovery={roleDiscovery} onRelease={releaseDiscoveryPools} onClose={closeDiscovery} onInvestigate={investigateDiscoveredRole}
-            investigation={semanticInvestigation.state} onStart={(roles, calls) => { void semanticInvestigation.start(roles, calls); }} onReread={() => setDiscoveryRevision(previous => previous + 1)} />
+            investigation={semanticInvestigation.state} onStart={startSemanticInvestigation} onReread={() => setDiscoveryRevision(previous => previous + 1)} />
         </div>
       )}
       {activeFieldFocus === "CAPABILITY" && discoveryAnalysisId !== null && !discoveryOpen && discoveryPools === null && !isOrbitStageFocus && (

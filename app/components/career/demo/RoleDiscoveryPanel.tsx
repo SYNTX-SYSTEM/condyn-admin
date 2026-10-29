@@ -5,6 +5,7 @@ import { SIL_TOKENS } from "./SILTokens";
 import type { SilLocale } from "../../../../lib/career/view-model/sil-language";
 import type { JobPoolListState } from "../../../../lib/career/ui/useJobPool";
 import { ROLE_DISCOVERY_STATUSES, type RoleDiscoveryState } from "../../../../lib/career/ui/role-discovery";
+import type { SemanticInvestigationPlan } from "../../../../lib/career/job-pool/relation-cache";
 import type { DiscoveryRole, PoolRoleDiscovery, RoleLexicalStatus } from "../../../../lib/career/job-pool/pool-role-discovery";
 import type { JobScope } from "../../../../lib/career/job-pool/job-scope";
 import { DISCOVERY_POOLS_MAX } from "../../../../lib/career/ui/career-demo-url";
@@ -142,11 +143,14 @@ export function RoleDiscoveryResults({ c, discovery, open, onToggle, traced, onT
   }
   const d = discovery.discovery;
   const plan = d.semanticPlan;
+  // RI-START O-START-5: once a GET or a completed POST has read a STORED investigation of this exact release, its own status
+  // replaces "not started" — never shown as "not started" when one is known; never shown as a status while only STARTING / LOADING
+  // / REFUSED / FAILED / NOT_FOUND (nothing is stored for this release yet, so "not started" still holds).
   const shown = investigation.state !== "IDLE";
-  const semantic = shown && plan.state === "PLANNED" ? c.run.planAtRead(formatCount(plan.cachedPairs ?? 0), formatCount(plan.pairs), formatCount(plan.callsNeeded ?? 0))
-    : plan.state === "ENGINE_NOT_SPECIFIED" ? c.semantic.ENGINE_NOT_SPECIFIED(formatCount(plan.callsNeeded ?? 0), formatCount(plan.pairs))
-    : plan.state === "PLANNED" ? c.semantic.PLANNED(formatCount(plan.cachedPairs ?? 0), formatCount(plan.pairs), formatCount(plan.callsNeeded ?? 0))
-    : c.semantic[plan.state](plan.cacheIssue ?? "—");
+  const tail = investigation.state === "STORED" ? c.semantic.startedStatus(c.run.status[investigation.investigation.status]) : c.semantic.notStarted;
+  const semantic = plan.state === "ENGINE_NOT_SPECIFIED" ? c.semantic.ENGINE_NOT_SPECIFIED(formatCount(plan.callsNeeded ?? 0), formatCount(plan.pairs), tail)
+    : plan.state === "PLANNED" ? c.semantic.PLANNED(formatCount(plan.cachedPairs ?? 0), formatCount(plan.pairs), formatCount(plan.callsNeeded ?? 0), tail)
+    : c.semantic[plan.state](plan.cacheIssue ?? "—", tail);
   // RI-CONTROL: the start is offered only on READY with an executable plan; otherwise the reason stands (two engine states apart).
   const unavailable = d.startControl.engineState !== "READY" ? d.startControl.engineState : plan.executable ? null : "CACHE" as const;
   // RI-START: the roles picked, in the discovery's own order; the calls are the picked roles with open pairs (one call per role).
@@ -176,7 +180,7 @@ export function RoleDiscoveryResults({ c, discovery, open, onToggle, traced, onT
           <button type="button" data-testid="rd-start-run" data-confirmed-calls={calls} disabled={pickedRoles.length === 0 || running} onClick={() => { if (pickedRoles.length > 0 && !running) onStart!(pickedRoles.map(key => ({ jobPoolUploadId: key.jobPoolUploadId, poolRoleId: key.poolRoleId })), calls); }} style={{ ...action, opacity: pickedRoles.length === 0 || running ? 0.45 : 1, cursor: pickedRoles.length === 0 || running ? "default" : "pointer" }}>{c.run.start}</button>
         </section>
       )}
-      {shown && <RoleInvestigationState c={c} investigation={investigation} roles={d.roles} onReread={onReread} />}
+      {shown && <RoleInvestigationState c={c} investigation={investigation} roles={d.roles} plan={plan} onReread={onReread} />}
       {d.groups.map(group => {
         const expanded = open.includes(group.status);
         return (
@@ -221,7 +225,7 @@ export function RoleDiscoveryResults({ c, discovery, open, onToggle, traced, onT
  * task with its pairs and the count of relations stored. A refusal says that nothing ran; no readable answer says that it is unknown.
  * The relations themselves are not shown; nothing is ranked or re-sorted.
  */
-export function RoleInvestigationState({ c, investigation, roles, onReread }: { c: RoleDiscoveryCopy; investigation: InvestigationState; roles: readonly DiscoveryRole[]; onReread?: () => void }) {
+export function RoleInvestigationState({ c, investigation, roles, plan, onReread }: { c: RoleDiscoveryCopy; investigation: InvestigationState; roles: readonly DiscoveryRole[]; plan: SemanticInvestigationPlan; onReread?: () => void }) {
   const reread = onReread && <button type="button" data-testid="rd-replan" onClick={onReread} style={{ ...action, padding: "2px 9px" }}>{c.run.reread}</button>;
   const box = (state: string, warn: boolean, children: React.ReactNode, extra: Record<string, string | number> = {}) => (
     <section data-testid="rd-investigation" data-state={state} role="status" aria-busy={state === "STARTING" || state === "LOADING"} {...extra} style={{ ...layer, border: `1px solid rgba(${warn ? AMBER_RGB : CYAN_RGB}, 0.4)` }}>{children}</section>
@@ -235,13 +239,15 @@ export function RoleInvestigationState({ c, investigation, roles, onReread }: { 
     {investigation.code !== null && <span style={meta}>{c.failedCode(investigation.code)}</span>}
   </>);
   if (investigation.state === "REFUSED") {
-    const sentence = investigation.code === "ERR_INVESTIGATION_CALLS_NOT_CONFIRMED" && investigation.callsNeeded !== null ? c.run.callsChanged(investigation.callsNeeded, investigation.confirmedCalls)
+    const stale = investigation.code === "ERR_INVESTIGATION_CALLS_NOT_CONFIRMED" && investigation.callsNeeded !== null;
+    const sentence = stale ? c.run.callsChanged(investigation.callsNeeded!, investigation.confirmedCalls)
       : investigation.code === "ERR_INVESTIGATION_TOO_MANY_ROLES" && investigation.max !== null ? c.run.tooMany(investigation.max)
       : c.run.refused[investigation.code] ?? c.run.refusedOther;
     return box("REFUSED", true, <>
       <span style={{ ...statement, color: `rgb(${AMBER_RGB})` }}>{sentence}</span>
       <span style={meta}>{c.failedCode(investigation.code)}</span>
-      {investigation.code === "ERR_INVESTIGATION_CALLS_NOT_CONFIRMED" && reread}
+      {stale && <span data-testid="rd-start-replan" style={meta}>{c.run.planAtRead(formatCount(plan.cachedPairs ?? 0), formatCount(plan.pairs), formatCount(plan.callsNeeded ?? 0))}</span>}
+      {stale && reread}
     </>, { "data-code": investigation.code });
   }
   const stored = investigation.investigation;

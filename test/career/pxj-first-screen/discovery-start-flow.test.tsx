@@ -85,7 +85,7 @@ describe("RI-START · flows", () => {
     const box = (key: string) => all(pick(key), element => element.type === "input")[0];
     const keyOf = (r: { jobPoolUploadId: string; poolRoleId: string }) => `${r.jobPoolUploadId}:${r.poolRoleId}`;
     const cachedRole = keyOf(plan.roles[0]);
-    const pendingRole = keyOf(plan.roles.find(r => r.pendingPairs > 0 && pick(keyOf(r)))!);
+    const pendingRole = keyOf(plan.roles.find(r => (r.pendingPairs ?? 0) > 0 && pick(keyOf(r)))!);
     const third = keyOf(plan.roles.find(r => r.pairs > 0 && keyOf(r) !== cachedRole && keyOf(r) !== pendingRole && pick(keyOf(r)))!);
     expect(byTestId(tree, "rd-start-run")[0].props.disabled).toBe(true);
     // Picked in reverse of the discovery's order: the start still names them in the discovery's order.
@@ -93,7 +93,7 @@ describe("RI-START · flows", () => {
     tree = results();
     (box(cachedRole).props.onChange as () => void)();
     tree = results();
-    const pending = plan.roles.find(r => keyOf(r) === pendingRole)!.pendingPairs!;
+    const pending = plan.roles.find(r => keyOf(r) === pendingRole)!.pendingPairs ?? 0;
     expect(text(byTestId(tree, "rd-start-selection")[0])).toBe(`Auswahl: 2 von höchstens 2 Rollen · würde 1 Aufrufe für ${pending} offene Paare benötigen`);
     // At the limit (2) a further role cannot be picked; the picked ones can be unpicked.
     expect(box(third).props.disabled).toBe(true);

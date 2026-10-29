@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 /**
  * The explicit start of a semantic investigation of discovered roles (GELB c1954ca / 0e03f69, owner D-RD-3 A; stand-in only):
@@ -85,7 +85,9 @@ export async function startInvestigation(analysisId: string, request: Investigat
   try { body = await response.json(); } catch { /* an undecodable body is FAILED below */ }
   if ((response.status === 201 || response.status === 200) && isRecord(body) && body.success === true) {
     const ran = response.status === 201;
-    if (body.created !== ran || (ran ? body.evidenceClass !== "STAND_IN" : "evidenceClass" in body && body.evidenceClass !== "STAND_IN")) return { state: "FAILED", code: null };
+    // PINK §3.74 O-START-2: evidenceClass is reported on every success path now (201, the 200 repeat, and GET below) — required,
+    // never optional. The provider field of the stored investigation is checked too, independently (a safeguard, not a substitute).
+    if (body.created !== ran || body.evidenceClass !== "STAND_IN") return { state: "FAILED", code: null };
     const investigation = decodeStoredInvestigation(body.investigation, body.tasks, analysisId);
     return investigation === null ? { state: "FAILED", code: null } : { state: "STORED", created: ran, investigation };
   }
@@ -104,7 +106,7 @@ export async function readInvestigation(analysisId: string, investigationId: str
   try { response = await fetcher(investigationUrl(analysisId, investigationId), { method: "GET", cache: "no-store", signal }); } catch { return { state: "FAILED", code: null }; }
   try { body = await response.json(); } catch { /* FAILED below */ }
   if (response.status === 200) {
-    const investigation = isRecord(body) && body.success === true ? decodeStoredInvestigation(body.investigation, body.tasks, analysisId, investigationId) : null;
+    const investigation = isRecord(body) && body.success === true && body.evidenceClass === "STAND_IN" ? decodeStoredInvestigation(body.investigation, body.tasks, analysisId, investigationId) : null;
     return investigation === null ? { state: "FAILED", code: null } : { state: "STORED", created: null, investigation };
   }
   const issue = firstIssue(body);
@@ -115,24 +117,42 @@ export async function readInvestigation(analysisId: string, investigationId: str
 const newClientRequestId = () => typeof globalThis.crypto?.randomUUID === "function" ? globalThis.crypto.randomUUID() : `crq_${Date.now().toString(36)}_${Math.random().toString(36).slice(2)}`;
 
 /**
- * The investigation of the analysis on view and its released pools. `start` sends one POST per call while none is open (a second
- * click during the run sends nothing); a new analysis or release drops a late answer. Nothing is started by this hook itself.
+ * The investigation of the analysis on view and its released pools. On mount (and on NAV ≡ RELOAD) `initialInvestigationId` — the
+ * URL's own `roleInvestigationId` (RI-URL) — is read once by GET, never guessed, never re-derived from the roles; a key that is
+ * not this id's exact server format is no investigation at all (IDLE, as if none was named). `start` sends one POST per call while
+ * none is open (a second click during the run, or during that initial GET, sends nothing); a new analysis or release drops a late
+ * answer of either. Nothing is started by this hook itself.
  */
-export function useSemanticInvestigation(analysisId: string | null, pools: readonly string[] | null, fetcher?: Fetcher) {
+export function useSemanticInvestigation(analysisId: string | null, pools: readonly string[] | null, initialInvestigationId: string | null, fetcher?: Fetcher) {
   const key = analysisId === null || pools === null || pools.length === 0 ? null : JSON.stringify([analysisId, ...pools]);
   const [entry, setEntry] = useState<{ key: string | null; value: InvestigationState }>({ key: null, value: { state: "IDLE" } });
   const open = useRef(false);
-  const current = useRef(key);
-  current.current = key;
+  const generation = useRef(0);
+  useEffect(() => {
+    if (key === null) { generation.current += 1; setEntry({ key: null, value: { state: "IDLE" } }); return; }
+    if (!initialInvestigationId) { if (entry.key !== key) { generation.current += 1; setEntry({ key, value: { state: "IDLE" } }); } return; }
+    // Already satisfied — most often by this hook's own just-completed start(), which named this exact id itself: no GET repeats it.
+    if (entry.key === key && entry.value.state === "STORED" && entry.value.investigation.investigationId === initialInvestigationId) return;
+    const current = generation.current + 1;
+    generation.current = current;
+    const controller = new AbortController();
+    setEntry({ key, value: { state: "LOADING" } });
+    void readInvestigation(analysisId!, initialInvestigationId, fetcher, controller.signal)
+      .catch((): InvestigationState => ({ state: "FAILED", code: null }))
+      .then(value => { if (generation.current === current && !controller.signal.aborted) setEntry({ key, value }); });
+    return () => controller.abort();
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- `entry` is read to skip redundant work only; its own setters re-trigger this effect via key/initialInvestigationId already.
+  }, [key, initialInvestigationId]);
   const start = async (roles: readonly InvestigationRoleKey[], confirmedCalls: number): Promise<InvestigationState | null> => {
     if (key === null || open.current || roles.length === 0) return null;
     open.current = true;
-    const startedFor = key;
+    generation.current += 1; // a start in progress outranks any initial GET still pending for this key
+    const startedFor = key, startedGeneration = generation.current;
     setEntry({ key: startedFor, value: { state: "STARTING", roles: [...roles], confirmedCalls } });
     const value = await startInvestigation(analysisId!, { jobPoolUploadIds: pools!, roles, clientRequestId: newClientRequestId(), confirmedCalls }, fetcher)
       .catch((): InvestigationState => ({ state: "FAILED", code: null }));
     open.current = false;
-    if (current.current === startedFor) setEntry({ key: startedFor, value });
+    if (generation.current === startedGeneration) setEntry({ key: startedFor, value });
     return value;
   };
   return { state: entry.key === key && key !== null ? entry.value : { state: "IDLE" } as InvestigationState, start };

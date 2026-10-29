@@ -58,8 +58,8 @@ describe("RI-START · the explicit start, its states and its client", () => {
     expect(sent[0].init.method).toBe("POST");
     expect(JSON.parse(sent[0].init.body!)).toEqual({ jobPoolUploadIds: POOLS, roles: [{ jobPoolUploadId: UPLOAD_ALPHA, poolRoleId: "role_fs" }], clientRequestId: "crq_1", confirmedCalls: 1 });
     expect(ran).toEqual({ state: "STORED", created: true, investigation: { ...stored.investigation, tasks: stored.tasks } });
-    expect(await si.startInvestigation(PERSON_ANALYSIS, request, answer(200, { success: true, created: false, ...stored }) as never)).toMatchObject({ state: "STORED", created: false });
-    const read = await si.readInvestigation(PERSON_ANALYSIS, INVESTIGATION_ID, answer(200, { success: true, ...stored }) as never);
+    expect(await si.startInvestigation(PERSON_ANALYSIS, request, answer(200, { success: true, created: false, evidenceClass: "STAND_IN", ...stored }) as never)).toMatchObject({ state: "STORED", created: false });
+    const read = await si.readInvestigation(PERSON_ANALYSIS, INVESTIGATION_ID, answer(200, { success: true, evidenceClass: "STAND_IN", ...stored }) as never);
     expect(sent.at(-1)!.init.method).toBe("GET");
     expect(sent.at(-1)!.url).toBe(`/api/career/analyses/${PERSON_ANALYSIS}/role-discovery/investigations/${INVESTIGATION_ID}`);
     expect(read).toEqual({ state: "STORED", created: null, investigation: { ...stored.investigation, tasks: stored.tasks } });
@@ -68,7 +68,8 @@ describe("RI-START · the explicit start, its states and its client", () => {
       ["a real provider", 201, { success: true, created: true, evidenceClass: "STAND_IN", ...storedInvestigation("COMPLETED", stored.tasks, { provider: "gemini" }) }],
       ["201 without STAND_IN", 201, { success: true, created: true, ...stored }],
       ["201 not created", 201, { success: true, created: false, evidenceClass: "STAND_IN", ...stored }],
-      ["200 created", 200, { success: true, created: true, ...stored }],
+      ["200 created", 200, { success: true, created: true, evidenceClass: "STAND_IN", ...stored }],
+      ["200 repeat without evidenceClass (PINK §3.74 O-START-2: required on every success path now)", 200, { success: true, created: false, ...stored }],
       ["another analysis", 201, { success: true, created: true, evidenceClass: "STAND_IN", ...storedInvestigation("COMPLETED", stored.tasks, { analysisId: "ANL_OTHER" }) }],
       ["a guessed id", 201, { success: true, created: true, evidenceClass: "STAND_IN", ...storedInvestigation("COMPLETED", stored.tasks, { investigationId: "RINV_1" }) }],
       ["an unknown status", 201, { success: true, created: true, evidenceClass: "STAND_IN", ...storedInvestigation("DONE", stored.tasks) }],
@@ -77,7 +78,8 @@ describe("RI-START · the explicit start, its states and its client", () => {
       ["a task twice", 201, { success: true, created: true, evidenceClass: "STAND_IN", investigation: stored.investigation, tasks: [stored.tasks[0], stored.tasks[0]] }]
     ];
     for (const [name, status, body] of refusedBodies) expect(await si.startInvestigation(PERSON_ANALYSIS, request, answer(status, body) as never), name).toEqual({ state: "FAILED", code: null });
-    expect(await si.readInvestigation(PERSON_ANALYSIS, "RINV_FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF", answer(200, { success: true, ...stored }) as never)).toEqual({ state: "FAILED", code: null });
+    expect(await si.readInvestigation(PERSON_ANALYSIS, "RINV_FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF", answer(200, { success: true, evidenceClass: "STAND_IN", ...stored }) as never)).toEqual({ state: "FAILED", code: null });
+    expect(await si.readInvestigation(PERSON_ANALYSIS, INVESTIGATION_ID, answer(200, { success: true, ...stored }) as never), "GET without evidenceClass").toEqual({ state: "FAILED", code: null });
     // Refusals before a run are REFUSED (nothing ran); a failure from inside or no answer is FAILED (unknown).
     const issue = (code: string, extra: Record<string, unknown> = {}) => ({ success: false, issues: [{ code, ...extra }] });
     expect(await si.startInvestigation(PERSON_ANALYSIS, request, answer(409, issue("ERR_INVESTIGATION_CALLS_NOT_CONFIRMED", { callsNeeded: 3 })) as never)).toEqual({ state: "REFUSED", code: "ERR_INVESTIGATION_CALLS_NOT_CONFIRMED", confirmedCalls: 1, callsNeeded: 3, max: null });
@@ -140,6 +142,10 @@ describe("RI-START · the explicit start, its states and its client", () => {
       [{ state: "REFUSED", code: "ERR_INVESTIGATION_ROLE_NOT_IN_DISCOVERY", confirmedCalls: 2, callsNeeded: null, max: null }, "gehört nicht zur Rollenfindung dieser Freigabe"],
       [{ state: "REFUSED", code: "ERR_RELATION_CACHE_UNAVAILABLE", confirmedCalls: 2, callsNeeded: null, max: null }, "Nicht gestartet: Der Relationen-Cache ist nicht verfügbar."],
       [{ state: "REFUSED", code: "ERR_ROLE_DISCOVERY_POOL_INACTIVE", confirmedCalls: 2, callsNeeded: null, max: null }, "Nicht gestartet."],
+      // PINK §3.74 O-START-1: cross-site and the wrong content type are refused the same way as any other pre-run refusal — a
+      // generic sentence plus the code, never a specific explanation (nothing about the request's own headers is shown to the user).
+      [{ state: "REFUSED", code: "ERR_INVESTIGATION_CROSS_SITE", confirmedCalls: 2, callsNeeded: null, max: null }, "Nicht gestartet."],
+      [{ state: "REFUSED", code: "ERR_INVESTIGATION_CONTENT_TYPE", confirmedCalls: 2, callsNeeded: null, max: null }, "Nicht gestartet."],
       [{ state: "FAILED", code: null }, "Keine lesbare Antwort des Servers. Ob etwas gelaufen ist, ist unbekannt."],
       [{ state: "FAILED", code: "ERR_INVESTIGATION_FAILED" }, "Code: ERR_INVESTIGATION_FAILED"]
     ];
