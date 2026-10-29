@@ -249,14 +249,16 @@ focused group 73 files 585 passed, 4 skipped; tsc 0. The existing registration g
   branch: convergence and verification run in one transaction; a failure rolls back completely.
 
 **RUNBOOK — relation cache registration fails (`ERR_RELATION_CACHE_GUARANTEES_MISSING` or a constraint error at startup)**
-- *Effect (fail closed, by design):* the cache DDL is part of the job pool persistence registration, so every job pool route answers
-  503 `ERR_JOB_POOL_PERSISTENCE_NOT_PROVISIONED` until registration succeeds — not only the discovery. Only disposable databases are
-  ever registered.
+- *Effect (since `94e6028`, PINK R-RB-1 corrected):* the cache has its own guarded registration, separate from the job pool
+  persistence. A failing or corrupt cache affects **only the semantic layer**: the discovery answers 200 with
+  `semanticPlan.state` `CACHE_UNAVAILABLE` or `CACHE_CORRUPT`, counts `null`, `executable: false`. Job pool routes, B2 and the lexical
+  discovery are unaffected. (Earlier text — „all job pool routes answer 503“ — described the pre-`94e6028` coupling and was also
+  wrong about the code: that registration threw and surfaced as 500 `ERR_JOB_POOL_INTERNAL`, never as 503.)
 - *Cause:* a row in `career_proposal_requirement_relations` that violates a guarantee (in practice only a table written by an earlier
   version or by hand).
 - *Find:* `SELECT relation_key FROM career_proposal_requirement_relations WHERE NOT ((record_json::jsonb->>'relationKey') = relation_key
   AND (record_json::jsonb->>'state') = relation_state AND (record_json::jsonb->>'authorityState') = authority_state
   AND authority_state = 'NONE' AND relation_key ~ '^PRREL_[0-9A-F]{40}$')`.
 - *Repair:* the failed registration rolled back, so the table has no triggers yet; delete the listed rows (they are cache entries,
-  re-derivable from raw outputs by replay), then restart the process (the registration memo resets after a failure). No other
-  table is touched.
+  re-derivable from raw outputs by replay), then retry: the registration memo resets after a failure, so the next semantic read registers again — no restart needed (PINK §3.68
+  confirmed). No other table is touched.
