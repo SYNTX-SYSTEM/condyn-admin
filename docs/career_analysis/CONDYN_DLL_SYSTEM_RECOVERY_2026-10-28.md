@@ -142,3 +142,16 @@ Not integrated, not on :3017, no real Gemini call. Evidence classes: STAND_IN an
 | Full product E2E | NOT done: PDF → real Gemini capability extraction → real semantic relation. Needs an owner call budget and a real provider adapter. |
 
 Open for the owner: O-START-1 app-wide origin check before a real provider; O-START-4 concurrent distinct request ids both pay (rule needed); O-START-6 RUNNING after process end (202 plus resume before a real provider, O-NAV-RUNNING); O-RI-2 harmless; integration GO; whether :3017 moves; real Gemini budget and adapter.
+
+## 11 Full integration (owner "DLL FULL INTEGRATION GO", 2026-10-29)
+
+`integration/dll-full` = recovery/role-discovery `edae658` + GRÜN `role-investigation-ui` `9bb6bed` + docs + PINK validation records + GRÜN `dll-entry-gaps` `2ecefc5` + GRÜN `int-test-gaps` `804834c` + GELB F-INT-1 `ec06d8a`; fast-forwarded into `main` after the checks below. No force push, nothing on :3017, no real Gemini call.
+
+| Layer | Result |
+|---|---|
+| Suite (isolated disposable DB) | tsc 0; 474 files: 456 green, 11 skipped, 7 red; 3104 tests green, 27 red, 32 skipped |
+| Red tests | Baseline, not caused by integration (PINK §3.78 reproduced on 27f3253, edae658, 29ae2d7, cdf0c1e): four career-lifecycle files, because `lib/career/db/client.ts` creates `career_policy_versions` without the columns schema and repositories use (F-JP-5, legacy DDL drift, owner decision: DDL change touches the shared DB). Others are the symlinked-node_modules Turbopack panic of GELB's scratch trees (green with real node_modules). |
+| Browser proof | PINK §3.78 on cdf0c1e: PDF → PERSON → pool release → lexical discovery → explicit stand-in check → cache reuse → reload/back/forward; website source end to end; six viewports in the production build; six orbits and three modes intact |
+| Mutation check | 25 one-line mutations, 20 caught; F-INT-1..4 closed with tests; remaining honest gap: the `onDropFile` wiring line in the field is not testable without jsdom (covered by PINK's browser probe) |
+
+Remaining external or owner items: real Gemini (call budget + provider adapter, O-NAV-RUNNING 202/resume); app-wide origin check and SSRF guard on `/api/career/analyze` (O-START-1, O-INT-1) before any non-local operation; O-START-4 concurrent request ids; O-INT-2 unknown document type accepted (202); legacy label on orbits 03–06 (T-07); lifecycle DDL drift; jsdom for the drop wiring; GitHub source success path needs network (INCONCLUSIVE); no source list in the discovery panel and no LinkedIn input; :3017 stays on the Codex branch until the owner moves it.
