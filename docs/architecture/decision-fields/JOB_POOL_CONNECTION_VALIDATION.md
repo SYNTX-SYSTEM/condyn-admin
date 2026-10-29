@@ -3683,6 +3683,36 @@ No Gemini call.
 
 **Run record.** `evidence/main-9fb785a/`.
 
+### 3.80 Runtime candidate `main` `489b167` for :3017 (2026-10-29) — GO with conditions
+
+**Request.** Under the owner mandate SFE FULL_RUNTIME_INTEGRATION, GELB asked for an independent, inverse validation of `main` `489b167` as the replacement of :3017, which runs the old code `175c481`. Stand-in only, no Gemini, nothing on :3017; GELB's :41890 was used read-only. Points:
+- the product path on the real world;
+- HR decision-loop pages, GET without writes, lazy relation-cache registration, no Gemini without a worker;
+- one mutation per seam, and a rollback test.
+
+**Method.**
+- GELB's dump of :41862 restored into a fresh marked disposable database; the source dump was unchanged.
+- Production builds without a flag, `next start` with PINK's net sentinel, no worker, no key.
+- The runner's own seeded HR world as a positive control on both versions.
+- Exact row counts and tuple statistics around every GET sweep.
+- The 25 seam mutations of §3.78.
+
+**Verdict: GO, with three conditions.** Details in `evidence/runtime-candidate-489b167/verdicts.txt`.
+- **Product path: PASS on the real world.** 790 pairs. The displayed "190 of 790" equals the 190 relations in the database. One POST per start, none on reload, Back or Forward. Six viewports, six orbits.
+- **HR pages: PASS (code).** The seeded contexts A and B render identically on `489b167` and `175c481`.
+  - On GELB's :41890 copy the context API answers 404 NOT_FOUND for the same ids. The copy lacks those contexts; this is not a code fault.
+- **GET without writes: PASS.** No row or tuple change and no outbound connection.
+- **Lazy registration: PASS.** The four tables are created on the first discovery GET with 0 rows and the guards enabled.
+- **No Gemini: PASS.** An analyze job stays PENDING with no outbound attempt.
+- **Inverse: 23 of 25 mutations caught.** F-INT-2 is now caught. F-INT-4 remains a test gap, and M17 is an equivalent mutant.
+- **Rollback: PASS.** `175c481` runs on the database the candidate used, and the candidate runs again afterwards.
+- **Conditions.**
+  - **C1:** smoke the HR context API on the new server against the real database before switching.
+  - **C2:** the rollback procedure as tested.
+  - **C3:** set the stand-in and an explicit day limit; no Gemini change without a separate GO.
+
+**Run record.** `evidence/runtime-candidate-489b167/`.
+
 ## 4. Boundaries and findings for coordination
 
 - F-JP-1 (closed in `b782793`): `JOB_POOL_CONNECTION.md` §4 followed the per-role `JOB_POOL_JSON_ROLE` design;

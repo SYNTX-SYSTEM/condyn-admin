@@ -1,0 +1,23 @@
+#!/bin/bash
+# PINK §3.80 rollback (redo) and HR seeded world. Own PIDs only (launcher pid from its state.json); port checked free before each start.
+S=$SCRATCH; W=$SCRATCH/rt; P=$REPO
+set -a; . ~/.config/condyn/test-db-role.env; set +a
+unset DATABASE_URL CONDYN_ALLOW_SHARED_DATABASE GEMINI_API_KEY GEMINI_MODEL GOOGLE_GEMINI_BASE_URL
+export CONDYN_PLAYWRIGHT_MODULE=$PLAYWRIGHT_HOME/node_modules/playwright/index.mjs PINK_SENTINEL=$S/scope-paths/pink-net-sentinel.cjs ROLE_DISCOVERY_SEMANTIC_PROVIDER=stand-in ROLE_DISCOVERY_DAY_LIMIT=1000 ROLE_DISCOVERY_MAX_ROLES=3
+OUT=$W/out; cd $P
+start() { LD=$1; shift; rm -rf "${LD:?}"; if ss -ltn | grep -q ":41873 "; then echo "PORT BUSY"; return 1; fi; npx tsx $W/pink-world-lab.ts $LD 41873 "$@" > $LD.log 2>&1 & for k in $(seq 1 400); do grep -qE "PINK LAB READY|Error|error" $LD.log && break; sleep 3; done; grep -E "created|reuse|seeded|restore|build|READY|rror" $LD.log | sed -E 's/(postgres[a-z]*:\/\/)[^ ]*/\1***/g' | head -6; grep -q "PINK LAB READY" $LD.log; }
+stop() { LD=$1; PID=$(python3 -c "import json;print(json.load(open('$LD/state.json'))['pid'])" 2>/dev/null); [ -n "$PID" ] && kill -TERM $PID; for k in $(seq 1 20); do grep -qE "kept|dropped" $LD.log && break; sleep 1; done; grep -E "kept|dropped" $LD.log; sleep 2; ss -ltn | grep -q ":41873 " && echo "PORT STILL BUSY" || echo "port free"; }
+base() { python3 -c "import json;print(json.load(open('$1/state.json'))['base'])"; }
+srvpid() { python3 -c "import json;print(json.load(open('$1/state.json'))['serverPid'])"; }
+# 1 rollback: old :3017 code 175c481 on the database the candidate 489b167 used (relation-cache + investigation tables now present)
+git checkout -q --detach 175c481 && echo "HEAD $(git rev-parse --short HEAD) (rollback)"
+if start $W/lab-rb --reuse $W/state-a-kept.json --build --keep; then echo "serving pid $(srvpid $W/lab-rb) cwd $(readlink /proc/$(srvpid $W/lab-rb)/cwd | sed 's|.*/||')"; node $W/pink-world.mjs $W/lab-rb/state.json $P $OUT rb old 2>&1 | tail -1 | cut -c1-300; fi; stop $W/lab-rb
+# 2 forward again: 489b167 on the same database after the old code ran; then drop it
+git checkout -q --detach 489b167 && echo "HEAD $(git rev-parse --short HEAD) (forward)"
+if start $W/lab-fw --reuse $W/state-a-kept.json --build; then node $W/pink-world.mjs $W/lab-fw/state.json $P $OUT fw get 2>&1 | tail -1 | cut -c1-300; fi; stop $W/lab-fw
+# 3 HR seeded world on 489b167 (positive control for the HR pages), kept for the rollback check
+if start $W/lab-hr --seed-hr --keep; then node $W/pink-hr.mjs $(base $W/lab-hr) $OUT/hr-seeded-489.json seeded489 $(cat $W/lab-hr/hr-ids.txt) 2>&1 | tail -1 | cut -c1-300; cp $W/lab-hr/state.json $W/state-hr-kept.json; cp $W/lab-hr/hr-ids.txt $W/hr-ids-kept.txt; fi; stop $W/lab-hr
+# 4 the same HR world under the old code 175c481, then drop
+git checkout -q --detach 175c481 && echo "HEAD $(git rev-parse --short HEAD) (HR rollback)"
+if start $W/lab-hrold --reuse $W/state-hr-kept.json --build; then node $W/pink-hr.mjs $(base $W/lab-hrold) $OUT/hr-seeded-old.json seededold $(cat $W/hr-ids-kept.txt) 2>&1 | tail -1 | cut -c1-300; fi; stop $W/lab-hrold
+git status --short | head -3; git checkout -q validation/hr-decision-loop-pink && echo "back on $(git branch --show-current)"; echo "RB-END"

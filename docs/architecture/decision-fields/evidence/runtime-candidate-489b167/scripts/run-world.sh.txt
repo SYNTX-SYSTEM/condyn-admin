@@ -1,0 +1,38 @@
+#!/bin/bash
+# PINK §3.80 runtime candidate: restored world lab on main 489b167, then rollback to 175c481 on the same DB. Own PIDs only.
+S=$SCRATCH; W=$SCRATCH/rt; P=$REPO; DUMP=$GELB_SCRATCH/preserved/condyn_test_f96356700c836e92.dump
+set -a; . ~/.config/condyn/test-db-role.env; set +a
+unset DATABASE_URL CONDYN_ALLOW_SHARED_DATABASE GEMINI_API_KEY GEMINI_MODEL GOOGLE_GEMINI_BASE_URL
+export CONDYN_PLAYWRIGHT_MODULE=$PLAYWRIGHT_HOME/node_modules/playwright/index.mjs PINK_SENTINEL=$S/scope-paths/pink-net-sentinel.cjs ROLE_DISCOVERY_SEMANTIC_PROVIDER=stand-in ROLE_DISCOVERY_DAY_LIMIT=1000 ROLE_DISCOVERY_MAX_ROLES=3
+OUT=$W/out; mkdir -p $OUT; LA=$W/lab-a; LB=$W/lab-old; rm -rf "${LA:?}" "${LB:?}"
+echo "dump sha256 before $(sha256sum $DUMP | cut -c1-16)"
+cd $P && git checkout -q --detach 489b167 && echo "HEAD $(git rev-parse --short HEAD)"
+npx tsx $W/pink-world-lab.ts $LA 41873 --dump $DUMP --build --keep > $LA.log 2>&1 &
+LPID=$!; for k in $(seq 1 400); do grep -qE "PINK LAB READY|Error|error" $LA.log && break; sleep 3; done; grep -E "pg_restore|build|READY|rror" $LA.log | sed -E 's/(postgres[a-z]*:\/\/)[^ ]*/\1***/g' | head -6
+if grep -q "PINK LAB READY" $LA.log; then
+  B=$(python3 -c "import json;print(json.load(open('$LA/state.json'))['base'])")
+  node $W/pink-world.mjs $LA/state.json $P $OUT a get 2>&1 | tail -1 | cut -c1-600
+  PA=ANL_1792628831636_456; XA=$(curl -s $B/api/career/analyses | python3 -c "import json,sys; a=[x['analysisId'] for x in json.load(sys.stdin).get('analyses',[]) if x['analysisId']!='ANL_1792628831636_456']; print(a[0] if a else 'ANL_0_0')")
+  node $W/pink-hr.mjs $B $OUT/hr-a.json a $(cat $OUT/rev-ids-a.txt) 2>&1 | tail -1 | cut -c1-400
+  ri() { LB_=$1; MD=$2; shift 2; timeout 1500 node $S/rd11/pink-ri.mjs $LA/state.json $P $OUT $PA $XA $LB_ $MD "$@" 2>&1 | tail -1 | cut -c1-300; }
+  ri w-1920 main 1920 1080 1
+  for VP in "1280 720 1 1280x720" "1440 900 1 1440x900" "1600 900 1 1600x900" "1920 1080 1 1920x1080" "960 540 2 zoom200-1920x1080" "640 360 2 zoom200-1280x720"; do set -- $VP; ri w-$4 vp $1 $2 $3; done
+  for VP in 1920x1080 1280x720; do timeout 900 node $S/rec/pink-orbits.mjs $B $OUT world $PA $XA ${VP%x*} ${VP#*x} > $OUT/orbits-$VP.log 2>&1; echo "orbits $VP exit $?"; done
+  timeout 900 node $S/rd6/pink-rd-ui.mjs $B $OUT world $PA $XA 1920 1080 > $OUT/rd-ui.log 2>&1; echo "rd-ui exit $?"
+  node $W/pink-world.mjs $LA/state.json $P $OUT a post 2>&1 | tail -1 | cut -c1-500
+  cp $LA/state.json $W/state-a-kept.json
+fi
+kill -TERM $LPID; wait $LPID; tail -2 $LA.log
+# rollback: the old :3017 code (175c481) on the same database
+git checkout -q --detach 175c481 && echo "HEAD $(git rev-parse --short HEAD) (rollback)"
+npx tsx $W/pink-world-lab.ts $LB 41873 --reuse $W/state-a-kept.json --build > $LB.log 2>&1 &
+LPID=$!; for k in $(seq 1 400); do grep -qE "PINK LAB READY|Error|error" $LB.log && break; sleep 3; done; grep -E "reuse|build|READY|rror" $LB.log | sed -E 's/(postgres[a-z]*:\/\/)[^ ]*/\1***/g' | head -6
+if grep -q "PINK LAB READY" $LB.log; then
+  B=$(python3 -c "import json;print(json.load(open('$LB/state.json'))['base'])")
+  node $W/pink-world.mjs $LB/state.json $P $OUT old old 2>&1 | tail -1 | cut -c1-600
+  node $W/pink-hr.mjs $B $OUT/hr-old.json old $(cat $OUT/rev-ids-a.txt) 2>&1 | tail -1 | cut -c1-400
+fi
+kill -TERM $LPID; wait $LPID; tail -2 $LB.log
+echo "dump sha256 after $(sha256sum $DUMP | cut -c1-16)"
+git status --short | head -3; git checkout -q validation/hr-decision-loop-pink && echo "back on $(git branch --show-current)"
+echo "WORLD-END"
