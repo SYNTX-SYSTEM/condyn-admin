@@ -1,0 +1,38 @@
+// PINK recovery check: the six-orbit field under PERSON, the PxJ first screen, JOB — stage shells, rays, coupling, VIEW MATCHES on hover
+// over 03, a real click on 04. Browser GET only (non-GET aborted, counted). argv: <base> <out dir> <label> <personAnalysisId> <pxjAnalysisId> [W] [H]
+import { pathToFileURL } from "node:url";
+import { writeFileSync, mkdirSync } from "node:fs";
+const [BASE, OUT, LABEL, PERSON, PXJ, W = "1920", H = "1080"] = process.argv.slice(2); mkdirSync(OUT, { recursive: true });
+const pw = await import(pathToFileURL(process.env.CONDYN_PLAYWRIGHT_MODULE).href); const { chromium } = pw.chromium ? pw : pw.default;
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+const DLL = "JPOOL_B94850C439974E27496FE3B1A9A076B5", sel = `&jobPoolUploadId=${DLL}&jobScopePoolUploadId=${DLL}&jobScopeRoleId=role_kestrel_fullstack`;
+const b = await chromium.launch(); const ctx = await b.newContext({ viewport: { width: +W, height: +H } }); let blocked = 0; const apis = [];
+await ctx.addInitScript(() => { try { localStorage.setItem("condyn_onboarding_seen", "true"); } catch {} });
+await ctx.route("**/*", r => { const m = r.request().method(); const u = new URL(r.request().url()); if (u.pathname.startsWith("/api/")) apis.push(`${m} ${u.pathname.replace(/(ANL|JPOOL|JOB)_[A-Z0-9_]+/g, "$1_…")}`); if (m !== "GET" && m !== "HEAD") { blocked += 1; return r.abort(); } return r.continue(); });
+const p = await ctx.newPage(); const errors = []; p.on("pageerror", e => errors.push(String(e).slice(0, 140)));
+const look = () => p.evaluate(() => { const q = s => document.querySelector(s); const root = q('[data-testid="semantic-career-intelligence-field"]');
+  return { mode: root?.dataset.investigationMode ?? null, field: root?.dataset.fieldFocus ?? null, gate: root?.dataset.capabilityGate ?? null,
+    shells: [...document.querySelectorAll('[data-testid^="focus-transition-stage-shell-"]')].map(e => e.dataset.testid.replace("focus-transition-stage-shell-", "")).sort(),
+    rays: document.querySelectorAll('[data-testid="resonance-energy-paths"] path, [data-testid="resonance-energy-paths"] line').length, coupling: !!q('[data-testid="inter-orbital-coupling"]'),
+    first: q('[data-testid="pxj-first-screen"]')?.dataset.state ?? null, b2rows: document.querySelectorAll('[data-testid^="pxj-first-req-"]').length,
+    viewMatches: [...document.querySelectorAll("button, [role=button]")].filter(e => /VIEW MATCHES/i.test(e.textContent ?? "") && e.getBoundingClientRect().width > 0).length,
+    url: Object.fromEntries(new URL(location.href).searchParams) }; });
+const out = { label: LABEL, viewport: `${W}x${H}`, scenes: {} };
+const scenes = [["PERSON-analysis", `investigationMode=PERSON&focus=CAPABILITY&analysisId=${PERSON}`], ["PERSON-plain", `investigationMode=PERSON&focus=CAPABILITY`], ["PXJ-analysis", `investigationMode=PERSON_X_JOB${sel}&analysisId=${PXJ}&focus=CAPABILITY`], ["PXJ-person-analysis(mismatch)", `investigationMode=PERSON_X_JOB${sel}&analysisId=${PERSON}&focus=CAPABILITY`], ["JOB", `investigationMode=JOB${sel}&focus=CAPABILITY`], ["PERSON-analysis-discoveryParam", `investigationMode=PERSON&focus=CAPABILITY&analysisId=${PERSON}&discoveryPoolUploadId=${DLL}`]];
+for (const [name, q] of scenes) {
+  await p.goto(`${BASE}/career/demo?${q}`, { waitUntil: "domcontentloaded" }); await sleep(7000);
+  const s = await look(); const h0 = await p.evaluate(() => history.length);
+  if (name === "PERSON-analysis") {
+    const b03 = p.locator('[data-testid="focus-transition-stage-shell-03"]').first();
+    if (await b03.count()) { const box = await b03.boundingBox(); if (box) { await p.mouse.move(box.x + box.width / 2, box.y + box.height / 2); await sleep(1500); s.hover03 = await look(); } }
+    await p.screenshot({ path: `${OUT}/${LABEL}-PERSON-hover03-${W}.jpg`, type: "jpeg", quality: 70, mask: [p.locator("[data-pxj-quote]")] });
+    const b04 = p.locator('[data-testid="focus-transition-stage-shell-04"]').first();
+    if (await b04.count()) { const box = await b04.boundingBox(); if (box) { await p.mouse.click(box.x + box.width / 2, box.y + box.height / 2); await sleep(2500); s.click04 = { ...(await look()), historyDelta: (await p.evaluate(() => history.length)) - h0, focusedBubble: await p.evaluate(() => [...document.querySelectorAll('[data-testid^="focused-stage-bubble-"]')].map(e => e.dataset.testid.replace("focused-stage-bubble-", ""))) }; } }
+  }
+  if (name === "PXJ-analysis") await p.screenshot({ path: `${OUT}/${LABEL}-PXJ-${W}.jpg`, type: "jpeg", quality: 70, mask: [p.locator("[data-pxj-quote]")] });
+  out.scenes[name] = s;
+}
+out.blocked = blocked; out.apis = [...new Set(apis)]; out.pageErrors = errors; writeFileSync(`${OUT}/orbits-${LABEL}-${W}.json`, JSON.stringify(out, null, 1));
+for (const [k, v] of Object.entries(out.scenes)) console.log(k, JSON.stringify({ mode: v.mode, gate: v.gate, shells: v.shells, rays: v.rays, coupling: v.coupling, first: v.first, b2rows: v.b2rows, viewMatches: v.viewMatches, hover03: v.hover03 && { viewMatches: v.hover03.viewMatches }, click04: v.click04 && { url: v.click04.url.focusStage ?? v.click04.url.stage ?? null, focused: v.click04.focusedBubble, h: v.click04.historyDelta } }));
+console.log("blocked", blocked, "errors", errors.length, "nonGET-APIs", out.apis.filter(a => !a.startsWith("GET")));
+await b.close();

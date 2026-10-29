@@ -1,0 +1,67 @@
+PINK §3.69 · six orbits and PxJ (pink-orbits: stage shells, rays, coupling, VIEW MATCHES on hover 03, click 04, B2).
+== PERSISTED_REAL_RESULT :41878 1920x1080 blocked 0 pageErrors 0
+  PERSON-analysis                  mode PERSON gate OPEN shells ['01', '02', '03', '04', '05', '06'] rays 8 coupling True first None b2rows 0 · hover03 VIEW MATCHES 1
+  PERSON-plain                     mode PERSON gate OPEN shells ['01', '02', '03', '04', '05', '06'] rays 8 coupling True first None b2rows 0
+  PXJ-analysis                     mode PERSON_X_JOB gate OPEN shells ['01', '02'] rays 2 coupling False first AVAILABLE b2rows 9
+  PXJ-person-analysis(mismatch)    mode PERSON_X_JOB gate OPEN shells ['01', '02'] rays 2 coupling False first MODE_MISMATCH b2rows 0
+  JOB                              mode JOB gate JOB_MODE shells ['01', '02', '03', '04', '05', '06', 'syntx-org_aurelion', 'syntx-org_brightwater', 'syntx-org_kestrel'] rays 8 coupling True first None b2rows 0
+  PERSON-analysis-discoveryParam   mode PERSON gate OPEN shells ['01', '02', '03', '04', '05', '06'] rays 8 coupling True first None b2rows 0
+== PERSISTED_REAL_RESULT :41878 1280x720 blocked 0 pageErrors 0
+  PERSON-analysis                  mode PERSON gate OPEN shells ['01', '02', '03', '04', '05', '06'] rays 8 coupling True first None b2rows 0 · hover03 VIEW MATCHES 1
+  PERSON-plain                     mode PERSON gate OPEN shells ['01', '02', '03', '04', '05', '06'] rays 8 coupling True first None b2rows 0
+  PXJ-analysis                     mode PERSON_X_JOB gate OPEN shells ['01', '02'] rays 2 coupling False first AVAILABLE b2rows 9
+  PXJ-person-analysis(mismatch)    mode PERSON_X_JOB gate OPEN shells ['01', '02'] rays 2 coupling False first MODE_MISMATCH b2rows 0
+  JOB                              mode JOB gate JOB_MODE shells ['01', '02', '03', '04', '05', '06', 'syntx-org_aurelion', 'syntx-org_brightwater', 'syntx-org_kestrel'] rays 8 coupling True first None b2rows 0
+  PERSON-analysis-discoveryParam   mode PERSON gate OPEN shells ['01', '02', '03', '04', '05', '06'] rays 8 coupling True first None b2rows 0
+== STAND_IN b77c851 1920x1080 blocked 0 pageErrors 0
+  PERSON-analysis                  mode PERSON gate OPEN shells ['01', '02', '03', '04', '05', '06'] rays 8 coupling True first None b2rows 0 · hover03 VIEW MATCHES 1
+  PERSON-plain                     mode PERSON gate OPEN shells ['01', '02', '03', '04', '05', '06'] rays 8 coupling True first None b2rows 0
+  PXJ-analysis                     mode PERSON_X_JOB gate OPEN shells ['01', '02'] rays 2 coupling False first AVAILABLE b2rows 9
+  PXJ-person-analysis(mismatch)    mode PERSON_X_JOB gate OPEN shells ['01', '02'] rays 2 coupling False first MODE_MISMATCH b2rows 0
+  JOB                              mode JOB gate JOB_MODE shells ['01', '02', '03', '04', '05', '06', 'syntx-org_aurelion', 'syntx-org_brightwater', 'syntx-org_kestrel'] rays 8 coupling True first None b2rows 0
+  PERSON-analysis-discoveryParam   mode PERSON gate OPEN shells ['01', '02', '03', '04', '05', '06'] rays 8 coupling True first None b2rows 0
+== STAND_IN b77c851 1280x720 blocked 0 pageErrors 0
+  PERSON-analysis                  mode PERSON gate OPEN shells ['01', '02', '03', '04', '05', '06'] rays 8 coupling True first None b2rows 0 · hover03 VIEW MATCHES 1
+  PERSON-plain                     mode PERSON gate OPEN shells ['01', '02', '03', '04', '05', '06'] rays 8 coupling True first None b2rows 0
+  PXJ-analysis                     mode PERSON_X_JOB gate OPEN shells ['01', '02'] rays 2 coupling False first AVAILABLE b2rows 9
+  PXJ-person-analysis(mismatch)    mode PERSON_X_JOB gate OPEN shells ['01', '02'] rays 2 coupling False first MODE_MISMATCH b2rows 0
+  JOB                              mode JOB gate JOB_MODE shells ['01', '02', '03', '04', '05', '06', 'syntx-org_aurelion', 'syntx-org_brightwater', 'syntx-org_kestrel'] rays 8 coupling True first None b2rows 0
+  PERSON-analysis-discoveryParam   mode PERSON gate OPEN shells ['01', '02', '03', '04', '05', '06'] rays 8 coupling True first None b2rows 0
+== STAND_IN 08ae201 1920x1080 blocked 0 pageErrors 0
+  PERSON-analysis                  mode PERSON gate OPEN shells ['01', '02', '03', '04', '05', '06'] rays 8 coupling True first None b2rows 0 · hover03 VIEW MATCHES 1
+  PERSON-plain                     mode PERSON gate OPEN shells ['01', '02', '03', '04', '05', '06'] rays 8 coupling True first None b2rows 0
+  PXJ-analysis                     mode PERSON_X_JOB gate OPEN shells ['01', '02'] rays 2 coupling False first AVAILABLE b2rows 9
+  PXJ-person-analysis(mismatch)    mode PERSON_X_JOB gate OPEN shells ['01', '02'] rays 2 coupling False first MODE_MISMATCH b2rows 0
+  JOB                              mode JOB gate JOB_MODE shells ['01', '02', '03', '04', '05', '06', 'syntx-org_aurelion', 'syntx-org_brightwater', 'syntx-org_kestrel'] rays 8 coupling True first None b2rows 0
+  PERSON-analysis-discoveryParam   mode PERSON gate OPEN shells ['01', '02', '03', '04', '05', '06'] rays 8 coupling True first None b2rows 0
+== STAND_IN 08ae201 1280x720 blocked 0 pageErrors 0
+  PERSON-analysis                  mode PERSON gate OPEN shells ['01', '02', '03', '04', '05', '06'] rays 8 coupling True first None b2rows 0 · hover03 VIEW MATCHES 1
+  PERSON-plain                     mode PERSON gate OPEN shells ['01', '02', '03', '04', '05', '06'] rays 8 coupling True first None b2rows 0
+  PXJ-analysis                     mode PERSON_X_JOB gate OPEN shells ['01', '02'] rays 2 coupling False first AVAILABLE b2rows 9
+  PXJ-person-analysis(mismatch)    mode PERSON_X_JOB gate OPEN shells ['01', '02'] rays 2 coupling False first MODE_MISMATCH b2rows 0
+  JOB                              mode JOB gate JOB_MODE shells ['01', '02', '03', '04', '05', '06', 'syntx-org_aurelion', 'syntx-org_brightwater', 'syntx-org_kestrel'] rays 8 coupling True first None b2rows 0
+  PERSON-analysis-discoveryParam   mode PERSON gate OPEN shells ['01', '02', '03', '04', '05', '06'] rays 8 coupling True first None b2rows 0
+Click on orbit 04 (real, attribute diff): URL changed False · history + 0 · appeared: ['focus-transition-pulse-04', 'orbital-cosmos-view-04', 'orbital-cosmos-node-ROL_001', 'orbital-cosmos-node-ROL_002', 'orbital-cosmos-center-04', 'semantic-focus-panel']
+Stand-in 08ae201 vs b77c851: every scene identical at 1920 and 1280 (urls excluded: analysis ids differ per lab).
+
+PERSON DOM inventory (pink-persondom) b77c851 vs 08ae201:
+== D1-plain@1920: rows 274->274 added [] removed [] testid-order-changed False attr-changes []
+== D2-person@1920: rows 366->366 added [] removed [] testid-order-changed False attr-changes []
+== D3-person-pool-opened@1920: rows 552->552 added [] removed [] testid-order-changed False attr-changes []
+== D4-person-role-opened@1920: rows 711->711 added [] removed [] testid-order-changed False attr-changes ['data-rotation']
+== D5-person-job-selected-field@1920: rows 714->714 added [] removed [] testid-order-changed False attr-changes ['data-rotation']
+== D6-person-job-selected-capability@1920: rows 270->270 added [] removed [] testid-order-changed False attr-changes []
+== D7-person-analysis@1920: rows 389->389 added [] removed [] testid-order-changed False attr-changes []
+== D8-person-analysis-unknown@1920: rows 366->366 added [] removed [] testid-order-changed False attr-changes []
+== D1-plain@1280: rows 274->274 added [] removed [] testid-order-changed False attr-changes []
+== D2-person@1280: rows 366->366 added [] removed [] testid-order-changed False attr-changes []
+== D3-person-pool-opened@1280: rows 552->552 added [] removed [] testid-order-changed False attr-changes []
+== D4-person-role-opened@1280: rows 711->711 added [] removed [] testid-order-changed False attr-changes ['data-rotation']
+== D5-person-job-selected-field@1280: rows 714->714 added [] removed [] testid-order-changed False attr-changes ['data-rotation']
+== D6-person-job-selected-capability@1280: rows 270->270 added [] removed [] testid-order-changed False attr-changes []
+== D7-person-analysis@1280: rows 389->389 added [] removed [] testid-order-changed False attr-changes []
+== D8-person-analysis-unknown@1280: rows 366->366 added [] removed [] testid-order-changed False attr-changes []
+
+nav 08ae201: DONE {"pass":88,"of":90,"failed":["C15-ROLE_SWITCH","C18-CLEAR-JOB"],"errors":0,"inspectorReads":0}
+s10 08ae201: DONE {"pass":17,"obs":2,"fail":["S6-back-across-document"],"of":20,"errors":0}
+g1 08ae201: 2 × 20 steps, state / mode / job / counts / quotes identical to the 421e382 runs, pageErrors 0

@@ -1,0 +1,15 @@
+// PINK: what a real click on orbit 04 changes (attribute diff before / after, URL, history). GET only. argv: <base> <personAnalysisId>
+import { pathToFileURL } from "node:url";
+const [BASE, PERSON] = process.argv.slice(2);
+const pw = await import(pathToFileURL(process.env.CONDYN_PLAYWRIGHT_MODULE).href); const { chromium } = pw.chromium ? pw : pw.default;
+const b = await chromium.launch(); const ctx = await b.newContext({ viewport: { width: 1920, height: 1080 } }); let blocked = 0;
+await ctx.addInitScript(() => { try { localStorage.setItem("condyn_onboarding_seen", "true"); } catch {} });
+await ctx.route("**/*", r => { if (!["GET", "HEAD"].includes(r.request().method())) { blocked += 1; return r.abort(); } return r.continue(); });
+const p = await ctx.newPage(); await p.goto(`${BASE}/career/demo?investigationMode=PERSON&focus=CAPABILITY&analysisId=${PERSON}`, { waitUntil: "domcontentloaded" }); await new Promise(r => setTimeout(r, 7000));
+const snap = () => p.evaluate(() => Object.fromEntries([...document.querySelectorAll("[data-testid]")].filter(e => /stage|orbit|zoom|focus|telemetry|inspector/.test(e.dataset.testid)).map(e => [e.dataset.testid, [...e.attributes].filter(a => a.name.startsWith("data-") && !/motion|rotation|phase/.test(a.name) && a.name !== "data-testid").map(a => `${a.name}=${a.value}`).join(" ")])));
+const before = await snap(); const h0 = await p.evaluate(() => history.length), u0 = p.url();
+const box = await p.locator('[data-testid="focus-transition-stage-shell-04"]').first().boundingBox();
+await p.mouse.click(box.x + box.width / 2, box.y + box.height / 2); await new Promise(r => setTimeout(r, 3000));
+const after = await snap();
+const changed = Object.keys({ ...before, ...after }).filter(k => before[k] !== after[k]).map(k => `${k}: «${(before[k] ?? "ABSENT").slice(0, 90)}» → «${(after[k] ?? "ABSENT").slice(0, 90)}»`);
+console.log(JSON.stringify({ blocked, urlChanged: p.url() !== u0, url: new URL(p.url()).search.slice(0, 160), historyDelta: (await p.evaluate(() => history.length)) - h0, changed: changed.slice(0, 25) }, null, 1)); await b.close();

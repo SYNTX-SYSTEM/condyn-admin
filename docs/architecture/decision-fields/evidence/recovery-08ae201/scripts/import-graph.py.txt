@@ -1,0 +1,36 @@
+# PINK: which app/api route files reach a Gemini / model-provider module through static or dynamic relative imports (tree = git archive).
+import os, re, sys, json
+ROOT = sys.argv[1]
+IMP = re.compile(r"""(?:import|export)\s[^'"]*?from\s+['"]([^'"]+)['"]|import\(\s*['"]([^'"]+)['"]\s*\)|require\(\s*['"]([^'"]+)['"]\s*\)""")
+def resolve(base, spec):
+  if not spec.startswith("."): return None
+  p = os.path.normpath(os.path.join(os.path.dirname(base), spec))
+  for c in [p, p + ".ts", p + ".tsx", p + ".js", p + ".mjs", os.path.join(p, "index.ts"), os.path.join(p, "index.tsx")]:
+    if os.path.isfile(c): return c
+  return None
+GEM = re.compile(r"(?i)(@google/genai|@google/generative-ai|generativelanguage\.googleapis|generateContent|GoogleGenAI|GEMINI_API_KEY)")
+cache = {}
+def deps(f):
+  if f not in cache:
+    src = open(f, encoding="utf8", errors="ignore").read()
+    cache[f] = ([r for m in IMP.finditer(src) for s in m.groups() if s for r in [resolve(f, s)] if r], bool(GEM.search(src)))
+  return cache[f]
+out = {}
+for dp, _, fs in os.walk(os.path.join(ROOT, "app/api")):
+  for fn in fs:
+    if fn != "route.ts": continue
+    start = os.path.join(dp, fn); seen = {start: None}; stack = [start]; hits = []
+    while stack:
+      f = stack.pop(); ds, gem = deps(f)
+      if gem: hits.append(f)
+      for d in ds:
+        if d not in seen: seen[d] = f; stack.append(d)
+    def path(h):
+      p = [];
+      while h: p.append(os.path.relpath(h, ROOT)); h = seen[h]
+      return list(reversed(p))
+    methods = re.findall(r"export\s+(?:async\s+)?function\s+(GET|POST|PUT|PATCH|DELETE)", open(start).read())
+    if hits: out[os.path.relpath(start, ROOT)] = {"methods": methods, "modules": len(seen), "geminiModules": sorted({os.path.relpath(h, ROOT) for h in hits}), "examplePath": path(hits[0])}
+json.dump(out, open(sys.argv[2], "w"), indent=1)
+for k, v in sorted(out.items()): print(f"{k} {v['methods']} → {len(v['geminiModules'])} gemini modules; e.g. {' → '.join(v['examplePath'])}")
+print("routes reaching gemini:", len(out))

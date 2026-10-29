@@ -3367,6 +3367,50 @@ O-RC-4 (fail-closed) and O-RC-5 (owner ≠ app role) are decided in §10 of the 
 
 **Run record.** `evidence/role-discovery-88ac5ed/`: verdicts.txt, cache-atomic-MEASUREMENT.txt, scripts/ and manifest.sha256.
 
+### 3.69 Recovery branch `recovery/role-discovery` (`08ae201`) validated independently (2026-10-29)
+
+**Request.** Owner mandate "DLL FULL SYSTEM RECOVERY". GELB asked for an independent check of `08ae201`: base `175c481`, six Codex commits reverted, GELB's `backend/pool-role-discovery` merged up to `94e6028`, and four test files reset to `9112682`. No Codex claim was to be taken over unseen. Points:
+1. the reverts;
+2. the six-orbit PERSON contract and PxJ unchanged against `b77c851`;
+3. the four reset test files;
+4. no Gemini path on a GET;
+5. GELB's classification of the Codex work in §2 (a–d) of `CONDYN_DLL_SYSTEM_RECOVERY_2026-10-28.md` (`ece6ace`).
+
+**Method.** PINK used four kinds of evidence, kept apart:
+- code inspection;
+- the real result on :41878, GET only;
+- stand-in production labs on `08ae201` and `b77c851`, with the stand-in model's call log counted;
+- scratch probes on disposable databases.
+
+Read-only metadata of the `_sfe` sandboxes, the main checkout and :3017 complete the picture. Process environments and `codex-home` were not read. No Gemini call.
+
+**Verdicts (`evidence/recovery-08ae201/verdicts.txt`).**
+1. **Reverts: PASS.**
+   - Two reverts are pure; four leave out only hunks `175c481` had already removed, plus the Codex docs, which keep a SUPERSEDED banner.
+   - The named files are byte-identical with `ccc0cc1` and `9112682` at `46e4a0b`. No Codex trace remains on `08ae201`, and every changed file traces to `94e6028`, `175c481` or a documented GELB edit.
+   - **O-REC-1 (observation).** The RD-URL state in the field is unused (dead until stage 2).
+2. **Six orbits / PxJ: PASS.**
+   - PERSON shows shells 01–06, rays, the coupling and VIEW MATCHES on 03; a real click on 04 opens its cosmos.
+   - PxJ shows only 01–02 and B2 AVAILABLE.
+   - Stand-in `08ae201` equals `b77c851` in every scene at 1920 and 1280, and the PERSON DOM matches in 16 of 16 scenes.
+   - g1 is unchanged, nav is 88/90, and s10 matches §3.64.
+3. **Four reset test files: FAIL (narrow).** The 9 RD-5 inverses are rightly gone, and RD-5's component tests have field-level equivalents. The exception is "each Stage 03–06 component labels its empty projection in English and German". Its 4 checks pass on `08ae201`, yet no test covers the German empty projection of 03–06 any more. `career-demo-ui` and `first-screen-ssr` in their `175c481` versions hold every pre-RD-5 assertion.
+4. **No Gemini on a GET: PASS.**
+   - Providers are instantiated only in the worker and scripts.
+   - A stand-in sweep over 15 read routes leaves the model calls at 6 → 6, twice.
+   - The cache decoupling GELB asked for holds: the pool list returns 200 and the plan reports CACHE_UNAVAILABLE / not executable; repair works without restart.
+   - The three suite files pass on `08ae201` with real `node_modules` (3/3, 71/71). The focused list passes 70 files, 566 tests, and tsc reports 0.
+5. **Doc §2: PASS with two corrections and one INCONCLUSIVE.**
+   - Confirmed:
+     - (a) the `gruen` sandbox: 50 commits on stale `ee06ff6`, unpushed;
+     - (c) the local-only branch, including the silent all-ACTIVE pool set, Gemini plus cache write plus ranking inside the GET, and the `?discovery=PERSON` bypass;
+     - (d) :3017 runs from that branch at `175c481` with 0 analyses and 0 pools.
+   - **Correction (a).** The sandbox role discovery builds on embeddings / semantic search ranked by `similarityScore`, not on the demo-pool engine.
+   - **Correction (b).** The four untracked files in the main checkout are empty and date from 2026-08-31, so they predate Codex.
+   - **INCONCLUSIVE.** :3017's Gemini key, model and database name, because PINK reads no process environment.
+
+**Run record.** `evidence/recovery-08ae201/`: verdicts.txt, 1-reverts-CODE_INSPECTION.txt, 2-orbits-PERSISTED_REAL_RESULT-and-STAND_IN.txt, 3-test-coverage-MEASUREMENT.txt, 4-gemini-get-and-decoupling.txt, 5-doc-section2-CODE.txt, shots/ (2, real, no quotes on view), scripts/ and manifest.sha256.
+
 ## 4. Boundaries and findings for coordination
 
 - F-JP-1 (closed in `b782793`): `JOB_POOL_CONNECTION.md` §4 followed the per-role `JOB_POOL_JSON_ROLE` design;

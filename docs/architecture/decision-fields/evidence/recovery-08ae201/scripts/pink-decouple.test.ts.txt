@@ -1,0 +1,31 @@
+// PINK scratch probe (never a live test): 08ae201 availability boundary — a dirty relation cache table must not affect the job pool
+// routes or the lexical discovery; the semantic plan with an engine fails closed (CACHE_UNAVAILABLE / CACHE_CORRUPT); repair without restart.
+import { it } from "vitest";
+import { writeFileSync } from "node:fs";
+import { db } from "../../lib/career/db/client";
+import { GET as listPools } from "../../app/api/career/job-pools/route";
+import { GET as discovery } from "../../app/api/career/analyses/[analysisId]/role-discovery/route";
+import { openRelationCache } from "../../lib/career/job-pool/relation-cache-registration";
+import { planSemanticInvestigation, type RelationEngineIdentity } from "../../lib/career/job-pool/relation-cache";
+import { RELATION_CACHE_TABLE as T } from "../../lib/career/job-pool/relation-cache-repository";
+import { RELATION_CACHE_DDL as OLD } from "./old-ccc0cc1-repo";
+import { attempt, rec } from "./pink-rc-common";
+const ENGINE: RelationEngineIdentity = { contractVersion: "C1", promptChecksum: "P1", provider: "stand-in", model: "m" };
+const discoveryShape = { roles: [{ key: { jobPoolUploadId: "JPOOL_X", poolRoleId: "r" }, requirements: [{ key: { jobPoolUploadId: "JPOOL_X", poolRoleId: "r", poolRequirementId: "q" } }] }] } as never;
+const proposals = [{ name: "Python ETL Development", scope: "ATOMIC", structuralDefinition: "d", evidence: [{ evidenceId: "E1", sourceDocumentId: "DOC_1", exactQuote: "q1", verificationState: "SOURCE_MATCH_VERIFIED" }] }] as never;
+const reqByKey = () => ({ capability_name: "Python", aliases: [], required_level: "L3", requirement_type: "CAPABILITY", domain: "Data", necessity: "REQUIRED" }) as never;
+const plan = async () => { const cache = await openRelationCache(); const p = await planSemanticInvestigation({ discovery: discoveryShape, proposals, requirementsByKey: reqByKey, engine: ENGINE, cache: cache.state === "AVAILABLE" ? cache : cache as never }); return { cacheState: cache.state, code: (cache as { code?: string }).code ?? null, plan: { state: p.state, executable: p.executable, cacheIssue: (p as { cacheIssue?: string }).cacheIssue, pairs: p.pairs } }; };
+const routes = async () => { const a = await listPools(); const b = await discovery(new Request("http://local/api/career/analyses/ANL_1000000000000_1/role-discovery?jobPoolUploadId=JPOOL_" + "0".repeat(32)), { params: Promise.resolve({ analysisId: "ANL_1000000000000_1" }) });
+  const code = async (r: Response) => { const j = await r.json(); return j.error?.code ?? j.issues?.[0]?.code ?? (Array.isArray(j.jobPools) ? `jobPools ${j.jobPools.length}` : "?"); };
+  return { jobPoolsList: `${a.status} ${await code(a)}`, roleDiscoveryUnknownAnalysis: `${b.status} ${await code(b)}` }; };
+it("decoupling", async () => {
+  const o: Record<string, unknown> = {}; const sql = db.$client;
+  for (const s of OLD) await sql.unsafe(s);
+  const b = rec("SQL"); o.dirtyRow = await attempt(sql.unsafe(`INSERT INTO ${T} VALUES ('${b.relationKey}', '${b.proposalContentHash}', '${b.requirementContentHash}', '${b.engineVersionHash}', 'PARTIAL', 'NONE', '${JSON.stringify({ ...b, authorityState: "VERIFIED" })}', '${b.createdAt}')`));
+  o.routesWithDirtyCache = await routes();
+  o.planWithDirtyCache = await plan();
+  o.repair = await attempt(sql.unsafe(`DELETE FROM ${T} WHERE relation_key = '${b.relationKey}'`));
+  o.planAfterRepair = await plan();
+  o.routesAfterRepair = await routes();
+  writeFileSync(process.env.PINK_PROBE_OUT!, JSON.stringify(o, null, 1));
+}, 120000);

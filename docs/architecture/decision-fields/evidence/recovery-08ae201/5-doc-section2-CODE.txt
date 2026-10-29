@@ -1,0 +1,15 @@
+PINK §3.69 · doc §2 (a)–(d), read only (git metadata, process cwd / start time; no environment, no credentials, no codex-home).
+(a) gelb: branch sfe/gelb/baseline head ee06ff6 commits after ee06ff6 0 dates   push DISABLED
+(a) gruen: branch sfe/gruen/baseline head abcbb80 commits after ee06ff6 50 dates 2026-10-25   57 files changed, 2152 insertions(+), 16 deletions(-) push DISABLED
+(a) pink: branch sfe/pink/baseline head ee06ff6 commits after ee06ff6 0 dates   push DISABLED
+    gruen commits present on origin (PINK clone after fetch): 0 of 50; ee06ff6 has lib/career/job-pool: no
+    gruen role discovery imports: embeddings/types, search/store, person-profile, authorized-role-artifact; ranks by similarityScore; no matchCareerAnalysisAgainstPool
+(b) main checkout: capability-mapping 59076c0, 2 commits on ee06ff6 (docs only: docs/career/ROLE_DISCOVERY_ENGINEERING_RECORD.md docs/career_analysis/ROLE_DISCOVERY_SFE_ENGINEERING_RECORD.md )
+    untracked RUNNING size 0 mtime 2026-08-31 05:44
+    untracked currentOperation size 0 mtime 2026-08-31 05:44
+    untracked exact size 0 mtime 2026-08-31 05:44
+    untracked rejected size 0 mtime 2026-08-31 05:44
+(c) frontend/role-discovery-map: local yes, origin 0; commits 12e01f6..175c481: 13 on 2026-10-26
+    d821bb6: activeDiscoveryPoolIds = every ACTIVE pool, sorted, .slice(0, 10); d4616c7: GET route builds a Gemini engine when GEMINI_API_KEY is set, evaluateSemanticRelations(writer: cache), rankSemanticRoles; eff2480: ?discovery=PERSON → PERSON_DISCOVERY bypasses the PERSON refusal
+(d) :3017 next-server (v16.2.4) started Mon Oct 26 20:27:12 2026 from <dev>/condyn-admin-role-discovery on frontend/role-discovery-map 175c481 (5 uncommitted); runner hr-decision-loop-local.ts up --with-worker; GET: 0 analyses, 0 job pools
+    175c481 route holds the Gemini-on-GET path (2 refs) and http.ts the discovery=PERSON bypass; GEMINI_API_KEY / model / DB name: not read (rule) → INCONCLUSIVE
