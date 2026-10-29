@@ -3436,6 +3436,43 @@ Read-only metadata of the `_sfe` sandboxes, the main checkout and :3017 complete
 
 **Run record.** `evidence/semantic-engine-123604f/`: verdicts.txt, engine-probe-DETERMINISTIC.txt, scripts/ and manifest.sha256.
 
+### 3.71 Role layer, engine hardening and investigation store on `c670b74` (2026-10-29)
+
+**Request.** GELB asked for validation of `c670b74` on `recovery/role-discovery`. It combines GRÜN's role layer `fccaafa`, GELB's engine hardening `c3a6a22` from §3.70, and the investigation store with call ledger `d90b22d`. Points:
+1. the role layer with real data and stand-in;
+2. six orbits and T-07 against `b77c851`;
+3. PxJ and the handover;
+4. the §3.70 findings;
+5. store and ledger.
+
+**Method.** Four kinds of evidence, kept apart:
+- real data on :41878, a production build of `c670b74` on a fresh 41862 copy with 4 pools, browser GET only;
+- PINK stand-in production labs on `c670b74` and `b77c851`;
+- scratch probes on disposable databases;
+- code inspection.
+
+No Gemini call.
+
+**Verdicts (`evidence/role-layer-c670b74/verdicts.txt`).**
+- **Static: PASS.** tsc reports 0 errors; GRÜN's list passes 78 files, 659 tests, 4 skipped; T-07 is green.
+- **1 Role layer: PASS** with real data and stand-in, at 1920 and 1280.
+  - The entry sits in the panel slot. Opening the panel changes neither URL nor history; nothing is preselected and there is no "all".
+  - A release is one push and one read of exactly the named pools. Reload, Back and Forward give the same view.
+  - The semantic line always reads "not executed". The CACHE_* forms show no numbers, and malformed plans are rejected by the decoder.
+  - No fit, suitability or semantic-positive wording. The trace from requirement to basis, proposal, quote and source equals the API.
+- **2 Six orbits / T-07: PASS.** The orbit scenes are identical to `b77c851`, also with the panel opened from the URL. With the panel open, VIEW MATCHES on hover over 03 and the click on 04 behave as before. The PERSON DOM matches in 16 of 16 scenes; g1, nav and s10 are unchanged.
+- **3 PxJ / handover: PASS.** Under PxJ there is no entry or panel, even with a release in the URL; B2 stays AVAILABLE. "Gezielt untersuchen" is one push to PERSON × JOB with the role, no analysisId, no release and NO_ANALYSIS; no POST.
+- **4 §3.70: PASS.** D-ENG-1, D-ENG-2 and O-ENG-1 to O-ENG-3 are closed.
+  - **New D-ENG-3: FAIL.** The new guard over-blocks. It refuses 29 of 586 real requirement names on their own, across 26 roles; examples are certifications, qualifications, "Data Provenance", HL7, Neo4j, ISO and IEC numbers, and "Architecture Communication" through a cross-word stem. It also refuses neutral words such as "one", "improve", "approved" and "Frankfurt". One refusal fails the whole role.
+- **5 Store / ledger.**
+  - **PASS:** idempotency, also under 8 concurrent opens; forward-only tasks, also under a race; atomic reservation against both limits; 20 parallel reservations against a limit of 3 give exactly 3; a real provider with a day limit of 0 runs nothing.
+  - **D-LED-1: FAIL.** The investigation status can go backward.
+  - **D-LED-2: FAIL.** A release by an investigation without a reservation frees another investigation's day unit.
+  - **O-LED-1 (observation).** A day limit lowered later the same day does not apply.
+  - **O-LED-2 (observation).** Tasks and ledger rows can be updated backward or deleted on the database.
+
+**Run record.** `evidence/role-layer-c670b74/`: verdicts.txt, measurements.txt, shots/ (2, real, no quote on view), scripts/ and manifest.sha256.
+
 ## 4. Boundaries and findings for coordination
 
 - F-JP-1 (closed in `b782793`): `JOB_POOL_CONNECTION.md` §4 followed the per-role `JOB_POOL_JSON_ROLE` design;

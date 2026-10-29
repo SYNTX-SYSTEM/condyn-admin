@@ -1,0 +1,26 @@
+// PINK scratch probe: the panel's semantic line for the four plan forms, from a real role-discovery response with the plan swapped.
+import { it } from "vitest";
+import React from "react";
+import { readFileSync, writeFileSync } from "node:fs";
+import { renderToStaticMarkup } from "react-dom/server";
+import { decodeRoleDiscovery } from "../../lib/career/ui/role-discovery";
+import { RoleDiscoveryPanel } from "../../app/components/career/demo/RoleDiscoveryPanel";
+it("plan forms", () => {
+  const body = JSON.parse(readFileSync(process.env.PINK_RD!, "utf8")).discovery; const pools = body.pools.map((p: any) => p.jobPoolUploadId); const o: Record<string, unknown> = {};
+  const roles = (counts: boolean) => body.semanticPlan.roles.map((r: any) => ({ ...r, cachedPairs: counts ? 0 : null, pendingPairs: counts ? r.pairs : null }));
+  const forms: Record<string, any> = {
+    ENGINE_NOT_SPECIFIED: body.semanticPlan,
+    CACHE_UNAVAILABLE: { ...body.semanticPlan, state: "CACHE_UNAVAILABLE", engineVersionHash: "e".repeat(64), executable: false, cacheIssue: "ERR_RELATION_CACHE_REGISTRATION_FAILED", cachedPairs: null, pendingPairs: null, callsNeeded: null, roles: roles(false) },
+    CACHE_CORRUPT: { ...body.semanticPlan, state: "CACHE_CORRUPT", engineVersionHash: "e".repeat(64), executable: false, cacheIssue: "ERR_RELATION_CACHE_RECORD_CORRUPT", cachedPairs: null, pendingPairs: null, callsNeeded: null, roles: roles(false) },
+    CACHE_UNAVAILABLE_withNumbers: { ...body.semanticPlan, state: "CACHE_UNAVAILABLE", engineVersionHash: "e".repeat(64), executable: false, cacheIssue: "X", cachedPairs: 0, pendingPairs: 10, callsNeeded: 1, roles: roles(true) },
+    CACHE_CORRUPT_executable: { ...body.semanticPlan, state: "CACHE_CORRUPT", engineVersionHash: "e".repeat(64), executable: true, cacheIssue: "X", cachedPairs: null, pendingPairs: null, callsNeeded: null, roles: roles(false) },
+    PLANNED_notExecutable: { ...body.semanticPlan, state: "PLANNED", engineVersionHash: "e".repeat(64), executable: false }
+  };
+  for (const [name, plan] of Object.entries(forms)) {
+    const decoded = decodeRoleDiscovery({ ...body, semanticPlan: plan }, body.analysis.analysisId, pools);
+    if (!decoded) { o[name] = "REJECTED by decoder"; continue; }
+    const html = renderToStaticMarkup(<RoleDiscoveryPanel locale="en" pools={{ state: "AVAILABLE", jobPools: [] } as never} released={pools} discovery={{ state: "AVAILABLE", discovery: decoded } as never} onRelease={() => {}} onClose={() => {}} onInvestigate={() => {}} />);
+    const line = (html.match(/data-testid="rd-semantic"[^>]*>([^<]*)</) ?? [])[1] ?? null; o[name] = { line, digitsInLine: /\d/.test((line ?? "").replace(/ERR_[A-Z_]+/g, "")) };
+  }
+  writeFileSync(process.env.PINK_PROBE_OUT!, JSON.stringify(o, null, 1));
+});

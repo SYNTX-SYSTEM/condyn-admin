@@ -1,0 +1,44 @@
+// PINK scratch probe (never a live test): d90b22d investigation store + call ledger on a verified disposable DB.
+import { it } from "vitest";
+import { writeFileSync } from "node:fs";
+import { db } from "../../lib/career/db/client";
+import { ensureRelationCacheRegistration } from "../../lib/career/job-pool/relation-cache-registration";
+import { PostgresCallLedger, PostgresInvestigationStore, investigationIdentity } from "../../lib/career/job-pool/semantic-investigation-store";
+const o: Record<string, unknown> = {}; const sql = db.$client;
+const att = (p: Promise<unknown>) => p.then(r => `ok ${JSON.stringify(r)?.slice(0, 90)}`, e => `refused: ${String(e).replace(/\s+/g, " ").slice(0, 100)}`);
+it("store and ledger", async () => {
+  o.registration = await ensureRelationCacheRegistration();
+  const store = new PostgresInvestigationStore(sql); const now = "2026-10-29T00:00:00.000Z";
+  const base = { analysisId: "ANL_1", engineVersionHash: "a".repeat(64), uploads: [{ jobPoolUploadId: "JPOOL_B", canonicalSha256: "b" }, { jobPoolUploadId: "JPOOL_A", canonicalSha256: "a" }], roleKeys: [{ jobPoolUploadId: "JPOOL_B", poolRoleId: "r2" }, { jobPoolUploadId: "JPOOL_A", poolRoleId: "r1" }], clientRequestId: "c1" };
+  const id1 = investigationIdentity(base), id1perm = investigationIdentity({ ...base, uploads: [...base.uploads].reverse(), roleKeys: [...base.roleKeys].reverse() }), id2 = investigationIdentity({ ...base, clientRequestId: "c2" });
+  o.identity = { orderIndependent: id1.idempotencyKey === id1perm.idempotencyKey, otherClientOtherKey: id1.idempotencyKey !== id2.idempotencyKey, idFormat: /^RINV_[0-9A-F]{32}$/.test(id1.investigationId) };
+  const open = (id: typeof id1) => store.open({ ...id, analysisId: "ANL_1", engineVersionHash: "a".repeat(64), provider: "stand-in", request: { x: 1 }, tasks: [{ jobPoolUploadId: "JPOOL_A", poolRoleId: "r1", pairs: 10 }, { jobPoolUploadId: "JPOOL_B", poolRoleId: "r2", pairs: 20 }], now });
+  o.openFirst = await open(id1); o.openAgain = await open(id1);
+  o.openConcurrent = (await Promise.all(Array.from({ length: 8 }, () => open(id2).catch(e => ({ error: String(e).slice(0, 80) }))))).map(r => (r as any).created ?? (r as any).error);
+  o.investigationRows = (await sql`SELECT count(*)::int n FROM career_relation_investigations`)[0].n; o.taskRows = (await sql`SELECT count(*)::int n FROM career_relation_role_tasks`)[0].n;
+  const mv = (from: any, to: any, role = "r1", up = "JPOOL_A") => att(store.moveTask({ investigationId: id1.investigationId, jobPoolUploadId: up, poolRoleId: role, from, to, now }));
+  o.transitions = { pendingToSucceeded: await mv("PENDING", "SUCCEEDED"), pendingToRunning: await mv("PENDING", "RUNNING"), runningToRunningAgain: await mv("PENDING", "RUNNING"), runningToSucceeded: await mv("RUNNING", "SUCCEEDED"), succeededToRunning: await mv("SUCCEEDED", "RUNNING"), wrongFromState: await mv("PENDING", "CANCELLED") };
+  o.raceTwoRunning = (await Promise.all([mv("PENDING", "RUNNING", "r2", "JPOOL_B"), mv("PENDING", "RUNNING", "r2", "JPOOL_B")])).sort();
+  await store.setStatus(id1.investigationId, "COMPLETED", now); o.investigationBackwards = await att(store.setStatus(id1.investigationId, "PLANNED", now).then(async () => (await sql`SELECT status FROM career_relation_investigations WHERE investigation_id = ${id1.investigationId}`)[0].status));
+  o.dbUpdateTaskBackwards = await att(sql.unsafe(`UPDATE career_relation_role_tasks SET status = 'PENDING' WHERE investigation_id = '${id1.investigationId}' AND pool_role_id = 'r1'`).then(r => r.count));
+  o.dbDeleteTask = await att(sql.unsafe(`DELETE FROM career_relation_role_tasks WHERE investigation_id = '${id2.investigationId}'`).then(r => r.count));
+  // ledger: both limits
+  const L = (inv: string, dayLimit: number, invLimit: number, day = "2026-10-29") => new PostgresCallLedger(sql, { investigationId: inv, provider: "stand-in", day, dayLimit, investigationLimit: invLimit });
+  const a = L("RINV_A", 2, 5); o.dayLimit2 = [await a.reserve(), await a.reserve(), await a.reserve()];
+  o.afterDayRefusal = (await sql`SELECT scope_key, limit_units, reserved, consumed, released FROM career_relation_call_ledger ORDER BY scope_key`).map(r => `${r.scope_key}:${r.limit_units}/${r.reserved}/${r.consumed}/${r.released}`);
+  const b = L("RINV_B", 100, 1, "2026-10-30"); o.invLimit1 = [await b.reserve(), await b.reserve()]; o.dayRowAfterInvRefusal = (await sql`SELECT reserved FROM career_relation_call_ledger WHERE scope_key = 'DAY:stand-in:2026-10-30'`)[0].reserved;
+  const c = L("RINV_C", 3, 100, "2026-10-31"); o.race20vsLimit3 = (await Promise.all(Array.from({ length: 20 }, () => c.reserve().catch(e => `err ${String(e).slice(0, 40)}`)))).filter(x => x === true).length;
+  o.raceRows = (await sql`SELECT scope_key, reserved FROM career_relation_call_ledger WHERE scope_key IN ('DAY:stand-in:2026-10-31', 'INV:RINV_C')`).map(r => `${r.scope_key}:${r.reserved}`);
+  // consume / release accounting; release frees the slot; a consumed slot stays counted
+  const d = L("RINV_D", 1, 10, "2026-11-01"); o.reserveRelease = [await d.reserve(), await att(d.release()), await d.reserve(), await att(d.consume({ requestBytes: 10, responseBytes: 20 })), await d.reserve()];
+  // a lower day limit set later the same day
+  const e1 = L("RINV_E", 5, 10, "2026-11-02"); await e1.reserve(); const e0 = L("RINV_E2", 0, 10, "2026-11-02"); o.dayLimitLoweredToZeroLater = await e0.reserve();
+  o.dayRowLimitAfter = (await sql`SELECT limit_units FROM career_relation_call_ledger WHERE scope_key = 'DAY:stand-in:2026-11-02'`)[0].limit_units;
+  // release of an investigation that holds no reservation, on a shared day row
+  const f1 = L("RINV_F1", 5, 10, "2026-11-03"); await f1.reserve(); const f2 = L("RINV_F2", 5, 10, "2026-11-03"); o.foreignRelease = await att(f2.release());
+  o.foreignReleaseRows = (await sql`SELECT scope_key, reserved, released FROM career_relation_call_ledger WHERE scope_key LIKE '%2026-11-03' OR scope_key LIKE 'INV:RINV_F%' ORDER BY scope_key`).map(r => `${r.scope_key}:${r.reserved}/${r.released}`);
+  // real provider default 0
+  const g = new PostgresCallLedger(sql, { investigationId: "RINV_G", provider: "gemini", day: "2026-11-04", dayLimit: 0, investigationLimit: 10 }); o.realProviderDayLimit0 = await g.reserve();
+  o.ledgerDelete = await att(sql.unsafe(`DELETE FROM career_relation_call_ledger WHERE scope_key = 'INV:RINV_C'`).then(r => r.count));
+  writeFileSync(process.env.PINK_PROBE_OUT!, JSON.stringify(o, null, 1));
+}, 120000);

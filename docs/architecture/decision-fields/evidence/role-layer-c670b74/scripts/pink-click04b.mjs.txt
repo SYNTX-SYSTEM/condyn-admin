@@ -1,0 +1,14 @@
+import { pathToFileURL } from "node:url";
+const [BASE, PA, POOL] = process.argv.slice(2);
+const pw = await import(pathToFileURL(process.env.CONDYN_PLAYWRIGHT_MODULE).href); const { chromium } = pw.chromium ? pw : pw.default;
+const b = await chromium.launch(); const ctx = await b.newContext({ viewport: { width: 1920, height: 1080 } }); let blocked = 0;
+await ctx.addInitScript(() => { try { localStorage.setItem("condyn_onboarding_seen", "true"); } catch {} });
+await ctx.route("**/*", r => { if (!["GET", "HEAD"].includes(r.request().method())) { blocked += 1; return r.abort(); } return r.continue(); });
+const p = await ctx.newPage(); const out = {};
+for (const [name, extra] of [["panelClosed", ""], ["panelOpen", `&discoveryPoolUploadId=${POOL}`]]) {
+  await p.goto(`${BASE}/career/demo?investigationMode=PERSON&focus=CAPABILITY&analysisId=${PA}${extra}`, { waitUntil: "domcontentloaded" }); await new Promise(r => setTimeout(r, 7000));
+  const items04 = await p.evaluate(() => document.querySelector('[data-testid="focus-transition-stage-shell-04"]')?.innerText.match(/(\d+) items/)?.[1] ?? null);
+  const bx = await p.locator('[data-testid="focus-transition-stage-shell-04"]').first().boundingBox(); await p.mouse.click(bx.x + bx.width / 2, bx.y + bx.height / 2); await new Promise(r => setTimeout(r, 2500));
+  out[name] = { panel: await p.locator('[data-testid="role-discovery-panel"]').count(), items04, cosmos04: await p.locator('[data-testid="orbital-cosmos-view-04"]').count(), emptyProjection04: await p.locator('[data-testid="orbital-cosmos-empty-04"], [data-testid="sil-orbit-empty-state-04"], [data-testid="empty-copy-foreground-04"]').count(), focusedStage: await p.evaluate(() => document.querySelector("[data-focused-stage-id]")?.getAttribute("data-focused-stage-id") ?? null) };
+}
+console.log(JSON.stringify({ blocked, ...out })); await b.close();
